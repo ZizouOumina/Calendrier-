@@ -76,6 +76,12 @@ console.log('\n== 200) Depuis l\'appli : tout est effacé ici et dans le cloud, 
   const gardes = ['batcave-habits','batcave-fixed-charges','batcave-examens','batcave-pomodial-importees'];
   ok(gardes.every(k => c[k]), 'habitudes, charges fixes, examens et suivi PomoDial gardés dans le cloud' + (gardes.filter(k => !c[k]).length ? ' — manque ' + gardes.filter(k => !c[k]).join(', ') + ' · clés cloud : ' + Object.keys(c).join(' ') : ''));
   ok(c['batcave-reinit'] && c['batcave-reinit'].id && c['batcave-reinit'].date === '2026-09-08', 'le marqueur de nouveau départ est écrit dans le cloud');
+  /* les objectifs de septembre et du trimestre repartent du 8 : debut deplace, cibles cumulees au prorata (23/30 jours) */
+  const objs = c['batcave-objectifs'] && c['batcave-objectifs'].liste || [];
+  const revSept = objs.find(o => o.id === 'M2026-09:revision_h'), revT1 = objs.find(o => o.id === 'T1:revision_h'), sommeilSept = objs.find(o => o.id === 'M2026-09:sommeil_moy');
+  ok(!!revSept && revSept.debut === '2026-09-08' && revSept.cible === 97.4, 'Révision de septembre : repart du 8, cible 127 h → 97,4 h (' + (revSept && revSept.cible) + ')');
+  ok(!!revT1 && revT1.debut === '2026-09-08' && revT1.cible === 350.8, 'Révision du trimestre : repart du 8, cible 380 h → 350,8 h (' + (revT1 && revT1.cible) + ')');
+  ok(!!sommeilSept && sommeilSept.debut === '2026-09-08' && sommeilSept.cible === 7.25, 'une moyenne (sommeil) repart du 8 sans changer de cible');
   await page.waitForTimeout(2200);   /* rechargement automatique */
   await page.frameLocator('#f').locator('#dash-plan').waitFor({ state:'attached', timeout:15000 });
   const fr2 = page.frames().find(x => x.url().includes('batcave.html'));

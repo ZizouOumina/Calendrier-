@@ -988,6 +988,7 @@
           <span class="bc-r bc-clic" id="bc-spotify" role="button" tabindex="0" title="Lecture Spotify — clic : actualiser tout de suite (sinon toutes les 30 s)"><span class="k">♫</span><span class="v" id="dash-spotify" hidden></span><span class="v bc-spotify-off" style="color:var(--ink-faint);">rien en lecture</span></span>
           <span class="bc-r"><span class="k">SAUVEGARDE</span><span class="v" id="bc-backup">—</span></span>
           <span class="bc-r bc-clic" id="bc-cloture" role="button" tabindex="0" title="Clôture du jour : sommeil, poids, eau, humeur, habitudes, une note — 60 secondes"><span class="k">CLÔTURE</span><span class="v">—</span></span>
+          <span class="bc-r bc-clic" id="bc-objectif" role="button" tabindex="0" title="L'objectif du mois le plus en retard — clic : Objectifs"><span class="k">OBJECTIF</span><span class="v">—</span></span>
         </div>
       </header>
 
@@ -1722,13 +1723,20 @@
         <div id="shopify-live-content" class="mini-list"></div>
         <div id="shopify-live-orders" class="mini-list" style="margin-top:8px;"></div>
         <div id="shopify-live-sales" class="mini-list" style="margin-top:8px;"></div>
+        <!-- Le connecteur Shopify est branche sur UNE boutique a la fois : en changer revoque
+             l'acces a la boutique courante et Shopify demande d'autoriser la suivante. -->
+        <div class="card-actions" style="margin-top:12px; flex-wrap:wrap;">
+          <button class="btn" id="shopify-switch-btn" type="button">🔁 Changer de boutique</button>
+          <span class="sub-note" id="shopify-switch-status">une boutique à la fois : Shopify te demande d'autoriser celle que tu veux suivre</span>
+        </div>
       </div>
 
       <div class="panel sub-panel">
         <div class="sub-head"><h3>Bénéfice net — dernier mois saisi</h3><span class="sub-note" id="biz-progress-text">—</span></div>
+        <p class="sub-note" id="biz-source-note" style="margin-bottom:10px; line-height:1.6;">Chiffre d'affaires et commandes viennent de ta boutique Shopify (12 derniers mois, relus à chaque ouverture) ; le bénéfice net et la pub restent à toi : saisis-les pour le mois voulu, la ligne se complète.</p>
         <div class="progress-track" style="margin-bottom:16px;"><div class="progress-fill" id="biz-progress-fill" style="width:0%"></div></div>
         <div class="add-form">
-          <div class="f"><label>Mois</label><input type="text" id="bz-mois" placeholder="ex : Sept. 2026"></div>
+          <div class="f"><label>Mois</label><input type="month" id="bz-mois" placeholder="AAAA-MM"></div>
           <div class="f"><label>Chiffre d'affaires (€)</label><input type="number" id="bz-ca" min="0"></div>
           <div class="f"><label>Bénéfice net (€)</label><input type="number" id="bz-benef" min="0"></div>
           <div class="f"><label>Dépenses pub (€)</label><input type="number" id="bz-pub" min="0"></div>
@@ -2136,7 +2144,7 @@
     'batcave-habits': 'habitudes', 'batcave-transactions': 'transactions',
     'batcave-fixed-charges': 'charges fixes', 'batcave-sessions': 'blocs de travail',
     'batcave-revision': 'journées de révision', 'batcave-projets': 'journées de projets',
-    'batcave-cours': 'cours', 'batcave-sante': 'entrées santé'
+    'batcave-sante': 'entrées santé'
   };
   function alerterSiRetrecit(key, val){
     var nom = LISTES_SURVEILLEES[key];
@@ -2249,7 +2257,7 @@
      vestige : une fonctionnalite retiree (batcave-matieres) ou un essai. Elle prend de la
      place dans le quota de 5000 documents et embrouille les sauvegardes, sans que rien ne
      la lise jamais. On la signale ; la suppression reste ton geste. */
-  var CLES_CONNUES = ['addictions','budget-limits','business','coran','cours','courses','dash-more','duaas','duree-bloc','sport-log','objectifs','objectifs-seed-v1','kcal-ajustement','gcal-ecriture','reinit','fc-migration-v1',
+  var CLES_CONNUES = ['addictions','budget-limits','business','coran','courses','dash-more','duaas','duree-bloc','sport-log','objectifs','objectifs-seed-v1','kcal-ajustement','gcal-ecriture','reinit','fc-migration-v1','charge','shopify-boutique',
     'espagnol','examens','fc-prix-icloud-3','fixed-charges','goals','habitlog','habits','habits-seed-v2','habits-seed-v3',
     'horizon','last-auto-backup','last-manual-backup','last-bilan-prompt','last-compaction','last-open','last-rotation','notion-url',
     'pomodial-purge','projets','report','revision','revision-fusionnee','revue','sante','sauvegarde','sessions',
@@ -2273,6 +2281,13 @@
     }
     var g = load('batcave-gcal-ecriture', null);
     if(g !== null && typeof g !== 'object'){ try{ localStorage.removeItem('batcave-gcal-ecriture'); }catch(e){} supprimerDuCloud('batcave-gcal-ecriture'); }
+    /* « batcave-cours » (fiches de cours avec annales et erreurs) : fonction retiree, Notion
+       s'en charge. Supprimee si aucune fiche ne porte de contenu ; sinon signalee. */
+    var co = load('batcave-cours', null);
+    if(co !== null){
+      var sansContenu = !Array.isArray(co) || co.every(function(c){ return !c || ((!Array.isArray(c.annales) || !c.annales.length) && (!Array.isArray(c.erreurs) || !c.erreurs.length)); });
+      if(sansContenu){ try{ localStorage.removeItem('batcave-cours'); }catch(e){} supprimerDuCloud('batcave-cours'); }
+    }
   }
   function clesInconnues(){
     var out = [];
@@ -2632,7 +2647,7 @@
      Le manifeste déclaré à la publication doit lister exactement ceci :
        AccuWeather® : widgets-current-claude, widgets-daily-claude
        Spotify      : get_currently_playing
-       Shopify      : get-shop-info, list-orders, run-analytics-query
+       Shopify      : get-shop-info, list-orders, run-analytics-query, switch-shop
        Google Drive : create_file          (sauvegarde manuelle + quotidienne)
                      search_files         (retrouver tes sauvegardes, rotation)
                      download_file_content (restauration en un clic)
@@ -2757,6 +2772,7 @@
         if(!p) return;
         panel.hidden = false;
         updated.textContent = 'plan ' + (p.planName || '—');
+        retenirBoutique(p);
         content.innerHTML =
           '<li><span>Boutique</span><b>'+escapeHtml(p.name||'—')+'</b></li>'+
           '<li><span>Domaine</span><b>'+escapeHtml(p.domain||'—')+'</b></li>'+
@@ -2782,6 +2798,26 @@
           if(count !== lastSeen) saveInternal('batcave-shopify-last-order-count', count);
         }
       }, {refetchInterval: 120000});
+      /* Ventes mensuelles → page Business (12 mois, une ligne par mois et par boutique).
+         Forme REELLE observee (5 sept. 2026) : {columns:[{name}], rows:[["2026-09-01","0","0","0","0"],…], shopDomain}. */
+      mcp.watchTool('Shopify', 'run-analytics-query', {query: 'FROM sales SHOW orders, gross_sales, net_sales, total_sales TIMESERIES month SINCE -12m UNTIL today'}, function(ev){
+        if(ev.type === 'error') return;
+        try{ synchroniserBusiness(ev.result.payload); }catch(e){}
+      }, {refetchInterval: 3600000});
+      (function(){
+        var b = document.getElementById('shopify-switch-btn'), st = document.getElementById('shopify-switch-status');
+        if(!b) return;
+        b.addEventListener('click', function(){
+          askConfirm('Changer de boutique Shopify ? L\'accès à la boutique actuelle est révoqué et Shopify te demande d\'autoriser celle que tu veux suivre (celle-ci ou une nouvelle). Les mois déjà lus restent, étiquetés par boutique.', function(){
+            if(st) st.textContent = 'changement en cours…';
+            mcp.callTool('Shopify', 'switch-shop', {}).catch(function(){})
+              .then(function(){ return mcp.invalidate('Shopify'); }).catch(function(){})
+              .then(function(){ return mcp.callTool('Shopify', 'get-shop-info', {}, {cache:{refresh:true}}); })
+              .then(function(r){ var p = r && r.payload; if(p && p.domain){ retenirBoutique(p); if(st) st.textContent = 'boutique suivie : ' + (p.name || p.domain); } else if(st) st.textContent = 'autorise la boutique voulue dans Réglages → Connecteurs → Shopify, puis rouvre la Batcave.'; })
+              .catch(function(err){ var code = (err && err.code) || ''; if(st) st.textContent = (code === 'needs_reauth' || code === 'server_not_connected') ? 'autorise la boutique voulue dans Réglages → Connecteurs → Shopify, puis rouvre la Batcave.' : 'changement impossible pour le moment (' + (code || 'erreur') + ').'; });
+          }, {titre:'Changer de boutique', libelleOk:'Changer'});
+        });
+      })();
       mcp.watchTool('Shopify', 'run-analytics-query', {query: 'FROM sales SHOW orders, gross_sales, net_sales SINCE -30d UNTIL today'}, function(ev){
         var salesEl = document.getElementById('shopify-live-sales');
         if(!salesEl || ev.type === 'error') return;
@@ -3033,7 +3069,7 @@
      ni synchronisee ni rattrapee) et efface ses copies locales AVANT le rattrapage, sinon
      elles repartiraient vers le cloud. La meme remise a zero peut donc etre decidee depuis
      l'appli ou directement dans le cloud. */
-  var REINIT_GARDER = ['habits','habits-seed-v2','habits-seed-v3','fixed-charges','fc-prix-icloud-3','budget-limits','examens','notion-url',
+  var REINIT_GARDER = ['habits','habits-seed-v2','habits-seed-v3','fixed-charges','fc-prix-icloud-3','budget-limits','examens','notion-url','shopify-boutique',
                        'objectifs','objectifs-seed-v1','horizon','gcal-ecriture','duree-bloc','dash-more','revision-fusionnee','reinit'];
   var REINIT_PREFIXES_GARDER = ['pomodial-', 'coherence-ignore-'];
   function reinitGarder(cle){
@@ -3052,11 +3088,31 @@
   }
   function reinitAppliquee(){ try{ return localStorage.getItem('bc-reinit-appliquee') || ''; }catch(e){ return ''; } }
   function marquerReinitAppliquee(id){ try{ localStorage.setItem('bc-reinit-appliquee', String(id)); }catch(e){} }
+  /* Les objectifs de la periode en cours (mois, trimestre) repartent du jour du nouveau
+     depart : leur debut est deplace, et une cible cumulee (heures, seances, euros) est
+     ramenee au prorata des jours restants. Une moyenne ou un niveau garde sa cible. */
+  function ajusterObjectifsAuDepart(iso){
+    var change = false;
+    (objectifsState.liste || []).forEach(function(o){
+      if(!o || !o.debut || !o.fin || !(o.debut < iso && iso <= o.fin)) return;
+      var m = METRIQUES[metriqueDe(o.metrique)] || {mode:'cumul'};
+      if(m.mode === 'cumul'){
+        var total = daysBetween(new Date(o.debut + 'T00:00:00'), new Date(o.fin + 'T00:00:00')) + 1;
+        var restant = daysBetween(new Date(iso + 'T00:00:00'), new Date(o.fin + 'T00:00:00')) + 1;
+        if(total > 0 && restant > 0 && restant < total) o.cible = Math.round((Number(o.cible) || 0) * restant / total * 10) / 10;
+      }
+      o.debut = iso;
+      change = true;
+    });
+    if(change) save('batcave-objectifs', objectifsState);
+    return change;
+  }
   function remettreAZero(){
     var n = clesAEffacerPourReinit().length;
     askConfirm('Effacer ' + n + ' entrée(s) — journal, sessions, repas, sport, dépendances, budget, tâches, Coran, revues, objectifs 6 mois — ici, dans le cloud et sur tes autres appareils ? La configuration (habitudes, charges fixes, plafonds, examens, objectifs par période, options) est gardée. Irréversible : pense à copier l\'export ci-dessus avant.', function(){
       var cles = clesAEffacerPourReinit();
       cles.forEach(function(k){ try{ localStorage.removeItem(k); }catch(e){} supprimerDuCloud(k); });
+      ajusterObjectifsAuDepart(todayISO);
       var marqueur = {id: 'r' + Date.now() + Math.random().toString(36).slice(2, 6), date: todayISO};
       marquerReinitAppliquee(marqueur.id);
       save('batcave-reinit', marqueur);
@@ -5410,7 +5466,7 @@
     if(m === 'poids'){ var pts = weightHistory().filter(function(p){ return p.date <= fin; }); return pts.length ? pts[pts.length - 1].value : null; }
     if(m === 'coran'){ return coranState.reduce(function(mx, c){ return Math.max(mx, Number(c.page) || 0); }, 0); }
     if(m === 'duaas'){ return duaaState.length; }
-    if(m === 'shopify'){ var lb = bizState.length ? bizState[bizState.length - 1] : null; return lb ? (Number(lb.benef) || 0) : null; }
+    if(m === 'shopify'){ var lb = dernierMoisAvecBenefice(); return lb ? (Number(lb.benef) || 0) : null; }
     return null;
   }
   function departMetrique(o){
@@ -5432,6 +5488,14 @@
     var total = Math.max(1, daysBetween(new Date(o.debut + 'T00:00:00'), new Date(o.fin + 'T00:00:00')) + 1);
     var ecoules = clamp(daysBetween(new Date(o.debut + 'T00:00:00'), new Date(todayISO + 'T00:00:00')) + 1, 0, total);
     var f = ecoules / total;
+    /* revision et projets : pendant une charge reduite, le rythme attendu baisse d'autant
+       (les jours reduits pesent 0,8) ; la cible de la periode, elle, ne bouge pas */
+    var mk = metriqueDe(o.metrique);
+    if((mk === 'revision_h' || mk === 'projets_h') && chargeState && chargeState.facteur){
+      var somme = 0, dj = new Date(o.debut + 'T00:00:00');
+      for(var di = 0; di < total; di++){ var isoJ = localISO(dj); if(isoJ <= todayISO) somme += facteurCharge(isoJ); dj.setDate(dj.getDate() + 1); }
+      f = somme / total;
+    }
     var cible = Number(o.cible) || 0;
     var valeur = todayISO < o.debut ? null : valeurMetrique(o.metrique, o.debut, o.fin);
     var depart = m.mode === 'niveau' ? departMetrique(o) : 0;
@@ -5446,7 +5510,7 @@
       var ratio = (sens === '<=') ? (valeur > 0 ? attendu / valeur : 2) : (attendu > 0 ? valeur / attendu : (valeur > 0 ? 2 : 1));
       if(m.mode === 'niveau' && cible !== depart) ratio = attendu - depart > 0 ? (valeur - depart) / (attendu - depart) : 1;
       if(mieux(valeur, cible) && (m.mode !== 'cumul' || f >= 1 || sens === '>=')) statut = 'atteint';
-      else if(f < 0.03) statut = 'ok';
+      else if(f <= 0.05) statut = 'ok';   /* le premier jour et demi : trop tot pour juger */
       else if(ratio >= 1.05) statut = 'avance';
       else if(ratio >= 0.9) statut = 'ok';
       else statut = 'retard';
@@ -5927,7 +5991,7 @@
       var echu = 0;
       blocsDuPlanning(cle).forEach(function(b){
         if(b.type !== type || nowMin < b.fin + GRACE_BLOC_MIN) return;
-        echu += b.minutes;
+        echu += Math.round(b.minutes * facteurCharge());
         if(recouvrement(b, sessions) < b.minutes / 2) res[type].blocs.push(b);
       });
       var deficit = echu - fait;
@@ -5978,6 +6042,10 @@
       if(libres.length) texte += ' · créneau libre : ' + libres[0].label + ' à ' + libres[0].heure + ' (' + Math.floor(libres[0].minutes/60) + ' h ' + (libres[0].minutes%60 ? (libres[0].minutes%60) + ' min' : '') + ')';
       items.push({pri:1, icon:'⏰', text:texte, action:{type:'manque', typeTravail:type, minutes:m.deficit, libre:!!libres.length}});
     });
+
+    /* Charge realiste : deux semaines sous 70 % → proposer une cible reduite, une fois. */
+    var pc = propositionCharge();
+    if(pc) items.push({pri:0.7, icon:'⚖️', text:'Fidélité au plan ' + pc.f2 + ' % puis ' + pc.f1 + ' % : réduire la cible du jour de 20 % pendant deux semaines ?', action:{type:'charge'}});
 
     /* Le soir, cloturer la journee est LA prochaine action : elle remonte dans le plan. */
     if(nowMin >= heureDeCloture() && !journalState.cloture){
@@ -6064,6 +6132,10 @@
         right = '<button class="btn btn-primary" data-plan-pomodoro="1" style="padding:4px 10px; font-size:11px; flex-shrink:0;">🍅 Pomodoro</button>';
       } else if(it.action && it.action.type === 'cloture'){
         right = '<button class="btn btn-primary" data-plan-cloture="1" style="padding:4px 10px; font-size:11px; flex-shrink:0;">🌙 Clôturer</button>';
+      } else if(it.action && it.action.type === 'charge'){
+        right = '<span style="display:flex; gap:6px; flex-wrap:wrap; justify-content:flex-end; flex-shrink:0;">' +
+          '<button class="btn btn-primary" data-plan-charge-oui="1" style="padding:4px 10px; font-size:11px;">⚖️ Réduire 2 semaines</button>' +
+          '<button class="btn" data-plan-charge-non="1" style="padding:4px 8px; font-size:11px;" title="Ne plus proposer cette semaine">✕</button></span>';
       } else if(it.action && it.action.type === 'habits'){
         right = '<span style="display:flex; gap:6px; flex-wrap:wrap; justify-content:flex-end; flex-shrink:0;">'+
           it.action.list.map(function(hb){
@@ -6092,6 +6164,8 @@
     el.querySelectorAll('[data-plan-cloture]').forEach(function(btn){
       btn.addEventListener('click', function(){ ouvrirCloture(); });
     });
+    el.querySelectorAll('[data-plan-charge-oui]').forEach(function(btn){ btn.addEventListener('click', reduireCharge); });
+    el.querySelectorAll('[data-plan-charge-non]').forEach(function(btn){ btn.addEventListener('click', refuserCharge); });
     el.querySelectorAll('[data-plan-manque-lancer]').forEach(function(btn){
       btn.addEventListener('click', function(){
         if(btn.dataset.planManqueLancer === 'projet') document.getElementById('dash-pomodoro-projet').click();
@@ -6117,6 +6191,38 @@
     });
   }
 
+  /* Releve OBJECTIF de la barre : l'objectif du mois le plus en retard, en unites reelles. */
+  function objectifLePlusEnRetard(){
+    var mois = moisListe().filter(function(m){ return todayISO >= m.debut && todayISO <= m.fin; })[0];
+    if(!mois) return null;
+    var objs = objectifsState.liste.filter(function(o){ return o.periode === 'mois' && o.pid === mois.id; }), pire = null;
+    objs.forEach(function(o){
+      var c = comparerObjectif(o);
+      if(c.statut !== 'retard') return;
+      var ecart = c.sens === '<=' ? c.valeur - c.attendu : c.attendu - c.valeur;
+      var ratio = c.attendu ? ecart / Math.abs(c.attendu) : 0;
+      if(!pire || ratio > pire.ratio) pire = {o: o, c: c, ecart: ecart, ratio: ratio};
+    });
+    return {mois: mois, total: objs.length, pire: pire};
+  }
+  function majReleveObjectif(){
+    var el = document.querySelector('#bc-objectif .v');
+    if(!el) return;
+    var r = objectifLePlusEnRetard();
+    if(!r || !r.total){ el.textContent = '—'; el.style.color = ''; el.title = ''; return; }
+    if(!r.pire){ el.textContent = 'mois dans les clous'; el.style.color = 'var(--good)'; el.title = r.total + ' objectifs du mois, aucun en retard'; return; }
+    var u = r.pire.c.unite ? ' ' + r.pire.c.unite : '';
+    el.textContent = r.pire.o.titre + ' ' + (r.pire.c.sens === '<=' ? '+' : '−') + fmtNombre(r.pire.ecart, r.pire.c.dec) + u;
+    el.style.color = 'var(--warn)';
+    el.title = r.pire.o.titre + ' : ' + fmtNombre(r.pire.ecart, r.pire.c.dec) + u + ' de retard sur le mois — réel ' + fmtNombre(r.pire.c.valeur, r.pire.c.dec) + u + ' · attendu à ce jour ' + fmtNombre(r.pire.c.attendu, r.pire.c.dec) + u + ' · cible ' + fmtNombre(r.pire.c.cible, r.pire.c.dec) + u;
+  }
+  (function(){
+    var r = document.getElementById('bc-objectif');
+    if(!r) return;
+    var aller = function(){ var b = document.querySelector('.nav-btn[data-page="objectifs"]'); if(b) b.click(); };
+    r.addEventListener('click', aller);
+    r.addEventListener('keydown', function(e){ if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); aller(); } });
+  })();
   /* Releve SAUVEGARDE de la barre : la plus recente des sauvegardes Drive, auto ou manuelle. */
   function majReleveSauvegarde(){
     var el = document.getElementById('bc-backup');
@@ -6137,7 +6243,7 @@
     var jours = weekRange(0), NOMS = ['DIM','LUN','MAR','MER','JEU','VEN','SAM'];
     var maxMin = 60;
     var lignes = jours.map(function(d){
-      var c = cibleJourMinutes(cleJournee(dowDe(d))), passe = d <= todayISO;
+      var c = cibleJourMinutes(cleJournee(dowDe(d)), d), passe = d <= todayISO;
       var rev = passe ? minutesOn(d) : 0, proj = passe ? minutesOnProj(d) : 0;
       maxMin = Math.max(maxMin, c.rev, c.proj, rev, proj);
       return {d: d, passe: passe, rev: rev, proj: proj, cRev: c.rev, cProj: c.proj};
@@ -6519,7 +6625,7 @@
       }
       return '<div class="temps-cell' + (min ? '' : ' vide') + '">' +
              '<div class="tl">' + label + '</div>' +
-             '<div class="tv">' + h + '<small>h' + (cible ? ' / ' + (cible/60) + 'h' : '') + (reporte ? ' <span title="dont report de la veille">+' + (reporte/60) + 'h ↪</span>' : '') + '</small></div>' +
+             '<div class="tv">' + h + '<small>h' + (cible ? ' / ' + String(Math.round(cible/60*10)/10).replace('.', ',') + 'h' : '') + (reporte ? ' <span title="dont report de la veille">+' + String(Math.round(reporte/60*10)/10).replace('.', ',') + 'h ↪</span>' : '') + '</small></div>' +
              barre + '</div>';
     }
     document.getElementById('dash-temps').innerHTML =
@@ -6532,8 +6638,8 @@
       var tout = !sem.rev.restant && !sem.proj.restant;
       semEl.innerHTML = tout
         ? '✅ Objectifs de la semaine atteints — ' + hh(sem.rev.fait) + ' h de révision, ' + hh(sem.proj.fait) + ' h de projets.'
-        : 'Semaine : <b>' + hh(sem.rev.restant) + ' h</b> de révision restantes sur ' + CIBLE_HEBDO.rev +
-          ' · <b>' + hh(sem.proj.restant) + ' h</b> de projets sur ' + CIBLE_HEBDO.proj +
+        : texteChargeReduite() + 'Semaine : <b>' + hh(sem.rev.restant) + ' h</b> de révision restantes sur ' + String(cibleHebdo(0).rev).replace('.', ',') +
+          ' · <b>' + hh(sem.proj.restant) + ' h</b> de projets sur ' + String(cibleHebdo(0).proj).replace('.', ',') +
           ' · <b>' + sem.jours + '</b> jour' + (sem.jours > 1 ? 's' : '') + ' (soit ~' +
           hh((sem.rev.restant + sem.proj.restant) / sem.jours) + ' h/jour)';
     }
@@ -6545,6 +6651,7 @@
     renderEcheances();
     majReleveSauvegarde();
     majReleveCloture();
+    majReleveObjectif();
     var consoleJour = document.getElementById('dash-console-jour');
     if(consoleJour) consoleJour.textContent = 'CONSOLE · ' + now.toLocaleDateString('fr-FR', {weekday:'long'}).toUpperCase();
 
@@ -6652,7 +6759,7 @@
        deja passes (aujourd'hui compris), plafonnee a 100 */
     var planMin = 0, faitMin = 0;
     validDays.forEach(function(d){
-      var c = cibleJourMinutes(cleJournee(dowDe(d)));
+      var c = cibleJourMinutes(cleJournee(dowDe(d)), d);
       planMin += c.rev + c.proj;
       faitMin += minutesOn(d) + minutesOnProj(d);
     });
@@ -6709,7 +6816,7 @@
     var hh = function(m){ return (m/60).toFixed(1).replace('.', ','); };
     var maxMin = 1;
     var lignes = jours.map(function(d){
-      var c = cibleJourMinutes(cleJournee(dowDe(d))), plan = c.rev + c.proj;
+      var c = cibleJourMinutes(cleJournee(dowDe(d)), d), plan = c.rev + c.proj;
       var fait = d <= todayISO ? minutesOn(d) + minutesOnProj(d) : null;
       maxMin = Math.max(maxMin, plan, fait || 0);
       return {d: d, plan: plan, fait: fait, rev: d <= todayISO ? minutesOn(d) : 0, proj: d <= todayISO ? minutesOnProj(d) : 0, cRev: c.rev, cProj: c.proj};
@@ -6729,7 +6836,7 @@
     '<p class="sub-note" style="margin-top:10px; padding-top:10px; border-top:1px solid var(--border-soft); line-height:1.6;">Barre grise : prévu par le planning · barre cyan : réalisé (vert = tenu, orange = moins de 70 %). ' +
       'Révision <b style="color:var(--ink);">' + hh(lignes.reduce(function(a,l){ return a + l.rev; }, 0)) + ' / ' + hh(lignes.filter(function(l){ return l.fait !== null; }).reduce(function(a,l){ return a + l.cRev; }, 0)) + ' h</b> · ' +
       'Projets <b style="color:var(--ink);">' + hh(lignes.reduce(function(a,l){ return a + l.proj; }, 0)) + ' / ' + hh(lignes.filter(function(l){ return l.fait !== null; }).reduce(function(a,l){ return a + l.cProj; }, 0)) + ' h</b> sur les jours passés.</p>';
-    if(note) note.textContent = cur.planMin ? 'fidélité ' + cur.fidelite + ' % · ' + hh(cur.faitMin) + ' h faites sur ' + hh(cur.planMin) + ' h prévues' : 'aucun bloc prévu pour l\'instant';
+    if(note) note.textContent = texteChargeReduite() + (cur.planMin ? 'fidélité ' + cur.fidelite + ' % · ' + hh(cur.faitMin) + ' h faites sur ' + hh(cur.planMin) + ' h prévues' : 'aucun bloc prévu pour l\'instant');
   }
 
   /* ================= CALENDRIER ================= */
@@ -6867,7 +6974,22 @@
      C'est la source unique : la cible du jour, la cible hebdo et la charge restante en
      decoulent toutes. Avant, revisionTarget() repetait a la main (5 / 4 / 5 / 4) ce que
      le planning disait deja -- juste jusqu'a la prochaine retouche. */
-  function cibleJourMinutes(cle){
+  /* ===== Charge realiste =====
+     Deux semaines de suite sous 70 % de fidelite au plan → la Batcave propose une cible
+     du jour reduite de 20 %, pendant deux semaines, au lieu d'empiler blocs manques et
+     « en retard ». batcave-charge : {facteur, depuis, jusqua, motif} pendant la reduction,
+     ou {refus: lundi} quand la proposition a ete declinee cette semaine-la. La cible du
+     jour, la cible hebdo, les blocs manques, la fidelite et le rythme attendu des objectifs
+     de temps suivent tous le meme facteur, jour par jour. */
+  var chargeState = load('batcave-charge', null);
+  if(!chargeState || typeof chargeState !== 'object' || Array.isArray(chargeState)) chargeState = null;
+  function facteurCharge(iso){
+    iso = iso || todayISO;
+    if(!chargeState || !(Number(chargeState.facteur) > 0) || !chargeState.depuis || !chargeState.jusqua) return 1;
+    return (iso >= chargeState.depuis && iso <= chargeState.jusqua) ? Number(chargeState.facteur) : 1;
+  }
+  function chargeReduiteActive(){ return facteurCharge(todayISO) < 1; }
+  function cibleJourMinutes(cle, iso, base){
     var plan = SCHEDULES[cle] || [];
     var fin = timeToMinutes(heureCoucher(cle));
     var t = {rev:0, proj:0};
@@ -6876,17 +6998,55 @@
       if(/Révision Bloc/.test(b[1])) t.rev += d;
       else if(/Projets perso/.test(b[1])) t.proj += d;
     });
+    if(!base){
+      var f = facteurCharge(iso || todayISO);
+      if(f !== 1){ t.rev = Math.round(t.rev * f); t.proj = Math.round(t.proj * f); }
+    }
     return t;
   }
+  /* la semaine type, hors reduction : la reference des objectifs semes */
   var CIBLE_HEBDO = (function(){
     var semaine = [['weekday',4], ['friday',1], ['saturday',1], ['weekend',1]];
     var t = {rev:0, proj:0};
     semaine.forEach(function(x){
-      var c = cibleJourMinutes(x[0]);
+      var c = cibleJourMinutes(x[0], null, true);
       t.rev += c.rev * x[1]; t.proj += c.proj * x[1];
     });
     return {rev: Math.round(t.rev/60), proj: Math.round(t.proj/60)};
   })();
+  /* la cible de la semaine en cours, jour par jour, reduction comprise (en heures) */
+  function cibleHebdo(offsetWeeks){
+    var t = {rev:0, proj:0};
+    weekRange(offsetWeeks || 0).forEach(function(iso){ var c = cibleJourMinutes(cleJournee(dowDe(iso)), iso); t.rev += c.rev; t.proj += c.proj; });
+    return {rev: Math.round(t.rev/60*10)/10, proj: Math.round(t.proj/60*10)/10};
+  }
+  function propositionCharge(){
+    if(chargeReduiteActive()) return null;
+    var lundi = weekRange(0)[0];
+    if(chargeState && chargeState.refus === lundi) return null;
+    if(chargeState && chargeState.jusqua && chargeState.jusqua >= weekRange(-1)[0]) return null;   /* une reduction vient de finir : on laisse une semaine normale */
+    var s1 = weekStats(weekRange(-1)), s2 = weekStats(weekRange(-2));
+    if(!s1.planMin || !s2.planMin) return null;
+    if(!(s1.faitMin > 0) || !(s2.faitMin > 0)) return null;   /* aucune session : ce n'est pas de la fidelite, c'est du non-usage */
+    if(s1.fidelite < 70 && s2.fidelite < 70) return {f1: s1.fidelite, f2: s2.fidelite};
+    return null;
+  }
+  function reduireCharge(){
+    var fin = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 13);
+    chargeState = {facteur: 0.8, depuis: todayISO, jusqua: localISO(fin), motif: 'fidélité au plan sous 70 % deux semaines de suite'};
+    save('batcave-charge', chargeState);
+    showToast('⚖️ Cible du jour réduite de 20 % jusqu\'au ' + fmtDate(chargeState.jusqua) + ' — objectif : tenir, pas rattraper.');
+    renderDashboard(); renderBilan(); renderAgendas(); renderRevision(); renderProjets();
+    if(document.getElementById('obj-liste')) renderObjectifs();
+  }
+  function refuserCharge(){
+    chargeState = {refus: weekRange(0)[0]};
+    save('batcave-charge', chargeState);
+    renderDashboard();
+  }
+  function texteChargeReduite(){
+    return chargeReduiteActive() ? '⚖️ Charge réduite de 20 % jusqu\'au ' + fmtDate(chargeState.jusqua) + ' · ' : '';
+  }
   /* Charge restante de la semaine (lundi -> dimanche) : cible hebdo moins ce qui est
      deja fait depuis lundi, et le nombre de jours qu'il reste pour l'absorber, aujourd'hui
      compris. C'est la difference entre constater et piloter. */
@@ -6900,9 +7060,10 @@
     }
     var dow = now.getDay();                       /* 0 = dimanche */
     var joursRestants = dow === 0 ? 1 : (8 - dow);  /* aujourd'hui compris, jusqu'a dimanche */
+    var ch = cibleHebdo(0);
     return {
-      rev:  {fait: faitRev,  cible: CIBLE_HEBDO.rev*60,  restant: Math.max(0, CIBLE_HEBDO.rev*60  - faitRev)},
-      proj: {fait: faitProj, cible: CIBLE_HEBDO.proj*60, restant: Math.max(0, CIBLE_HEBDO.proj*60 - faitProj)},
+      rev:  {fait: faitRev,  cible: ch.rev*60,  restant: Math.max(0, Math.round(ch.rev*60)  - faitRev)},
+      proj: {fait: faitProj, cible: ch.proj*60, restant: Math.max(0, Math.round(ch.proj*60) - faitProj)},
       jours: joursRestants
     };
   }
@@ -7747,7 +7908,7 @@
       var d = new Date(now); d.setDate(d.getDate()-i);
       weekMin += minutesOn(localISO(d));
     }
-    var weekTarget = CIBLE_HEBDO.rev;
+    var weekTarget = cibleHebdo(0).rev;
     document.getElementById('rev-stats').innerHTML = SERIE_TUILE() +
       '<div class="stat-tile"><div class="tlabel">Aujourd\'hui</div><div class="tnum" style="font-size:30px;">'+todayH.toFixed(1).replace('.', ',')+'<small>h</small></div></div>'+
       '<div class="stat-tile"><div class="tlabel">7 derniers jours</div><div class="tnum" style="font-size:30px;">'+(weekMin/60).toFixed(1).replace('.', ',')+'<small>h</small></div></div>'+
@@ -8044,19 +8205,81 @@
 
   /* ================= BUSINESS ================= */
   var bizState = loadList('batcave-business');
+  /* La boutique suivie : {domain, name, currency}, retenue a chaque lecture de get-shop-info
+     (configuration : gardee au nouveau depart). */
+  var boutiqueShopify = load('batcave-shopify-boutique', null);
+  if(!boutiqueShopify || typeof boutiqueShopify !== 'object' || !boutiqueShopify.domain) boutiqueShopify = null;
+  function retenirBoutique(p){
+    if(!p || !p.domain) return;
+    var b = {domain: String(p.domain), name: String(p.name || p.domain), currency: String(p.currencyCode || 'EUR')};
+    if(boutiqueShopify && boutiqueShopify.domain === b.domain && boutiqueShopify.name === b.name) return;
+    boutiqueShopify = b;
+    saveInternal('batcave-shopify-boutique', b);
+    renderBusiness();
+  }
+  var MOIS_COURTS = ['janv.','févr.','mars','avr.','mai','juin','juil.','août','sept.','oct.','nov.','déc.'];
+  function libelleMoisISO(m){ var p = String(m || '').split('-'); return p.length >= 2 ? capitaliser(MOIS_COURTS[Number(p[1]) - 1] || p[1]) + ' ' + p[0] : String(m || ''); }
+  function trierBusiness(){
+    bizState.sort(function(a, b){ return String(a.moisISO || '').localeCompare(String(b.moisISO || '')); });
+  }
+  /* Ventes mensuelles lues dans Shopify : une ligne par mois et par boutique, CA (net des
+     remises et retours, hors taxes et port) et commandes ; benefice et pub restent saisis.
+     Un mois a zero sans ligne existante n'est pas cree (la boutique n'existait pas). */
+  function synchroniserBusiness(p){
+    var rows = (p && p.rows) || [], dom = (p && p.shopDomain) || (boutiqueShopify && boutiqueShopify.domain) || '';
+    if(!rows.length || !dom) return false;
+    var cols = ((p && p.columns) || []).map(function(c){ return c && c.name; });
+    var iM = cols.indexOf('month'), iO = cols.indexOf('orders'), iN = cols.indexOf('net_sales'), iG = cols.indexOf('gross_sales');
+    if(iM < 0 || iO < 0 || iN < 0){ iM = 0; iO = 1; iG = 2; iN = 3; }
+    var change = false;
+    rows.forEach(function(r){
+      var moisISO = String(r[iM] || '').slice(0, 7), commandes = Math.round(Number(r[iO]) || 0), ca = Math.round((Number(r[iN]) || 0) * 100) / 100, brut = Math.round((Number(iG >= 0 ? r[iG] : 0) || 0) * 100) / 100;
+      if(!/^\d{4}-\d{2}$/.test(moisISO)) return;
+      var e = bizState.filter(function(x){ return x && x.moisISO === moisISO && (x.domaine || dom) === dom; })[0];
+      if(!e){
+        if(!commandes && !ca) return;
+        bizState.push({id:'bz' + Date.now() + Math.random().toString(36).slice(2, 6), mois: libelleMoisISO(moisISO), moisISO: moisISO, domaine: dom, ca: ca, brut: brut, commandes: commandes, benef: 0, pub: 0, source:'shopify'});
+        change = true;
+        return;
+      }
+      if(Number(e.ca) !== ca || Number(e.commandes) !== commandes || e.source !== 'shopify' || e.domaine !== dom){
+        e.ca = ca; e.brut = brut; e.commandes = commandes; e.source = 'shopify'; e.domaine = dom; change = true;
+      }
+    });
+    if(!change) return false;
+    trierBusiness();
+    save('batcave-business', bizState);
+    renderBusiness(); renderGoals(); renderDashboard();
+    if(document.getElementById('obj-liste')) renderObjectifs();
+    return true;
+  }
+  /* le dernier mois dont le benefice est saisi ; a defaut le dernier mois tout court */
+  function dernierMoisAvecBenefice(){
+    var avec = bizState.filter(function(b){ return Number(b.benef) > 0; });
+    return avec.length ? avec[avec.length - 1] : (bizState.length ? bizState[bizState.length - 1] : null);
+  }
   function renderBusiness(){
-    var last = bizState.length ? bizState[bizState.length-1] : null;
+    trierBusiness();
+    var last = dernierMoisAvecBenefice();
     var benef = last ? Number(last.benef) : 0;
     document.getElementById('biz-progress-text').textContent = benef + ' / ' + OBJECTIF_SHOPIFY_MOIS + ' €';
     document.getElementById('biz-progress-fill').style.width = clamp(Math.round(100*benef/OBJECTIF_SHOPIFY_MOIS),0,100) + '%';
     var descBiz = document.getElementById('biz-objectif-desc');
     if(descBiz) descBiz.textContent = 'Objectif : ' + OBJECTIF_SHOPIFY_MOIS + ' €/mois de bénéfice net d\'ici ' +
       moisEntre(horizonState.debut, horizonState.fin) + ' mois. Paliers indicatifs : ' + PALIERS_SHOPIFY.join(' → ') + ' €.';
+    var srcNote = document.getElementById('biz-source-note');
+    if(srcNote) srcNote.innerHTML = (boutiqueShopify ? 'Boutique suivie : <b style="color:var(--ink-dim);">' + escapeHtml(boutiqueShopify.name) + '</b> (' + escapeHtml(boutiqueShopify.domain) + '). ' : '') +
+      'Chiffre d\'affaires et commandes viennent de ta boutique Shopify (12 derniers mois, relus à chaque ouverture) ; le bénéfice net et la pub restent à toi : saisis-les pour le mois voulu, la ligne se complète.';
     var list = document.getElementById('biz-list');
-    if(!bizState.length){ list.innerHTML = '<li class="entry-empty">Aucun mois enregistré.</li>'; }
+    var plusieurs = bizState.filter(function(b){ return b.domaine; }).map(function(b){ return b.domaine; }).filter(function(d, i, a){ return a.indexOf(d) === i; }).length > 1;
+    if(!bizState.length){ list.innerHTML = '<li class="entry-empty">Aucun mois enregistré' + (boutiqueShopify ? ' — les mois avec des ventes apparaîtront ici tout seuls.' : '.') + '</li>'; }
     else{
       list.innerHTML = bizState.slice().reverse().map(function(b){
-        return '<li class="entry-row"><span class="ecell"><b>'+escapeHtml(b.mois)+'</b></span><span class="ecell small">CA '+b.ca+'€</span><span class="ecell small badge gold">net '+b.benef+'€</span><span class="ecell small">'+(b.commandes||0)+' cmd</span><button class="edel" aria-label="Supprimer" title="Supprimer" data-delbiz="'+b.id+'">×</button></li>';
+        var ca = Number(b.ca) || 0, benef = Number(b.benef) || 0;
+        return '<li class="entry-row"><span class="ecell"><b>'+escapeHtml(b.mois)+'</b>' + (b.source === 'shopify' ? ' <span class="badge" title="CA et commandes lus dans Shopify">Shopify</span>' : '') + (plusieurs && b.domaine ? ' <span class="sub-note">' + escapeHtml(b.domaine) + '</span>' : '') + '</span>' +
+          '<span class="ecell small">CA ' + String(ca).replace('.', ',') + ' €</span><span class="ecell small badge gold">net ' + String(benef).replace('.', ',') + ' €</span><span class="ecell small">' + (b.commandes || 0) + ' cmd</span>' +
+          (Number(b.pub) ? '<span class="ecell small sub-note">pub ' + String(Number(b.pub)).replace('.', ',') + ' €</span>' : '') +
+          '<button class="edel" aria-label="Supprimer" title="Supprimer" data-delbiz="'+b.id+'">×</button></li>';
       }).join('');
       list.querySelectorAll('[data-delbiz]').forEach(function(el){
         el.addEventListener('click', function(){ bizState = bizState.filter(function(x){return x.id!==el.dataset.delbiz;}); save('batcave-business', bizState); renderBusiness(); renderGoals(); });
@@ -8064,9 +8287,21 @@
     }
   }
   document.getElementById('bz-add').addEventListener('click', function(){
-    var mois = document.getElementById('bz-mois').value.trim();
-    if(!mois) return;
-    bizState.push({id:'bz'+Date.now(), mois:mois, ca:document.getElementById('bz-ca').value||0, benef:document.getElementById('bz-benef').value||0, pub:document.getElementById('bz-pub').value||0, commandes:document.getElementById('bz-commandes').value||0});
+    var moisISO = document.getElementById('bz-mois').value.trim();
+    if(!/^\d{4}-\d{2}$/.test(moisISO)){ showToast('⚠️ Indique le mois au format AAAA-MM (ex. 2026-09).'); return; }
+    var dom = boutiqueShopify ? boutiqueShopify.domain : '';
+    var vCa = document.getElementById('bz-ca').value, vBenef = document.getElementById('bz-benef').value, vPub = document.getElementById('bz-pub').value, vCmd = document.getElementById('bz-commandes').value;
+    /* un mois deja lu dans Shopify se complete (benefice, pub) au lieu d'etre double ;
+       son CA et ses commandes restent ceux de la boutique */
+    var e = bizState.filter(function(x){ return x && x.moisISO === moisISO && (x.domaine || dom) === dom; })[0];
+    if(e){
+      if(vBenef !== '') e.benef = Number(vBenef) || 0;
+      if(vPub !== '') e.pub = Number(vPub) || 0;
+      if(e.source !== 'shopify'){ if(vCa !== '') e.ca = Number(vCa) || 0; if(vCmd !== '') e.commandes = Number(vCmd) || 0; }
+    } else {
+      bizState.push({id:'bz'+Date.now(), mois: libelleMoisISO(moisISO), moisISO: moisISO, domaine: dom, ca: Number(vCa) || 0, benef: Number(vBenef) || 0, pub: Number(vPub) || 0, commandes: Number(vCmd) || 0, source:'manuel'});
+    }
+    trierBusiness();
     save('batcave-business', bizState);
     ['bz-mois','bz-ca','bz-benef','bz-pub','bz-commandes'].forEach(function(id){ document.getElementById(id).value=''; });
     renderBusiness();
@@ -8085,7 +8320,7 @@
       var d = new Date(now); d.setDate(d.getDate()-i);
       weekMin += minutesOnProj(localISO(d));
     }
-    var weekTarget = CIBLE_HEBDO.proj;
+    var weekTarget = cibleHebdo(0).proj;
     document.getElementById('proj-stats').innerHTML =
       '<div class="stat-tile"><div class="tlabel">Aujourd\'hui</div><div class="tnum" style="font-size:30px;">'+todayH.toFixed(1).replace('.', ',')+'<small>h</small></div></div>'+
       '<div class="stat-tile"><div class="tlabel">7 derniers jours</div><div class="tnum" style="font-size:30px;">'+(weekMin/60).toFixed(1).replace('.', ',')+'<small>h</small></div></div>'+
