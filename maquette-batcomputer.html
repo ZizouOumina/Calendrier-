@@ -1,0 +1,468 @@
+<title>Batcomputer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+  /* ---------- Batcomputer : la palette de la Batcave, un seul monde visuel ---------- */
+  :root{
+    --bg:#060a10;
+    --screen:#02050a;
+    --surface:#0d141c;
+    --surface-raised:#121b26;
+    --border:#1e3040;
+    --border-soft:#16232e;
+    --ink:#dceef4;
+    --ink-dim:#7fa0b3;
+    --ink-faint:#4a6b7a;
+    --cyan:#35d4e8;
+    --cyan-bright:#7ceaf7;
+    --cyan-dim:#2f8fa8;
+    --cyan-glow:rgba(53,212,232,0.55);
+    --good:#3fae72;
+    --warn:#d9822b;
+    --danger:#c0483f;
+    --f-display:'Bebas Neue','Arial Narrow',Impact,sans-serif;
+    --f-body:'Barlow','Helvetica Neue',Arial,sans-serif;
+    --f-mono:'IBM Plex Mono','SFMono-Regular',Menlo,monospace;
+    --chamfer:14px;
+  }
+  *{box-sizing:border-box;}
+  html,body{height:100%;}
+  body{
+    margin:0; color:var(--ink); background:var(--bg); font-family:var(--f-body); font-size:15px;
+    -webkit-font-smoothing:antialiased; overflow-x:hidden;
+  }
+  .bc{
+    position:relative; min-height:100vh;
+    background:
+      radial-gradient(ellipse 70% 50% at 50% 38%, rgba(53,212,232,0.07), transparent 65%),
+      linear-gradient(rgba(53,212,232,0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(53,212,232,0.035) 1px, transparent 1px),
+      var(--bg);
+    background-size:auto, 56px 56px, 56px 56px, auto;
+    display:grid; grid-template-columns:88px minmax(0,1fr); grid-template-rows:auto 1fr auto auto;
+    grid-template-areas:"bar bar" "systems wall" "systems console" "systems strip";
+  }
+  /* mur d'ecrans : trame CRT tres faible */
+  .bc::after{
+    content:''; position:fixed; inset:0; pointer-events:none; z-index:5;
+    background:repeating-linear-gradient(0deg, rgba(0,0,0,0.12) 0 1px, transparent 1px 3px);
+  }
+  @media (prefers-reduced-motion: reduce){ *{animation-duration:0.001ms !important; transition-duration:0.001ms !important;} }
+
+  /* ---------- barre de titre ---------- */
+  .bar{
+    grid-area:bar; display:flex; align-items:center; gap:22px; padding:12px 28px 12px 22px;
+    border-bottom:1px solid var(--border); background:linear-gradient(180deg, var(--surface-raised), var(--surface));
+    font-family:var(--f-mono); font-size:12px; color:var(--ink-dim); flex-wrap:wrap; row-gap:6px;
+  }
+  /* un relevé ne se coupe jamais au milieu : c'est l'item entier qui passe à la ligne */
+  .bar > span{ white-space:nowrap; }
+  .bar .brand{ display:flex; align-items:center; gap:12px; margin-right:6px; }
+  .bar .brand svg{ width:34px; height:23px; fill:var(--cyan); filter:drop-shadow(0 0 7px var(--cyan-glow)); animation:batglow 4.5s ease-in-out infinite; }
+  @keyframes batglow{ 0%,100%{ filter:drop-shadow(0 0 5px rgba(53,212,232,0.32)); } 50%{ filter:drop-shadow(0 0 12px rgba(53,212,232,0.62)); } }
+  .bar .name{ font-family:var(--f-display); font-size:26px; letter-spacing:0.12em; color:var(--ink); line-height:1; }
+  .bar .name small{ display:block; font-family:var(--f-mono); font-size:9.5px; letter-spacing:0.2em; color:var(--cyan-dim); margin-top:3px; }
+  .bar .clock{ font-family:var(--f-display); font-size:30px; letter-spacing:0.06em; color:var(--cyan-bright); text-shadow:0 0 12px var(--cyan-glow); line-height:1; font-variant-numeric:tabular-nums; }
+  .bar .k{ color:var(--ink-faint); margin-right:6px; letter-spacing:0.1em; }
+  .bar .v{ color:var(--ink); }
+  .bar .sync{ color:var(--good); }
+  .bar .sync i{ display:inline-block; width:7px; height:7px; background:var(--good); box-shadow:0 0 8px var(--good); margin-right:7px; animation:pulse 2.4s ease-in-out infinite; }
+  @keyframes pulse{ 0%,100%{opacity:1;} 50%{opacity:0.3;} }
+  .tag-maquette{ margin-left:auto; font-size:10px; letter-spacing:0.16em; color:var(--warn); border:1px solid rgba(217,130,43,0.55); padding:4px 9px; text-transform:uppercase; }
+
+  /* ---------- systèmes (rail gauche) ---------- */
+  .systems{
+    grid-area:systems; border-right:1px solid var(--border); background:var(--surface);
+    display:flex; flex-direction:column; align-items:stretch; padding:14px 0 18px; position:sticky; top:0; height:calc(100vh - 0px);
+  }
+  .systems .lbl{ font-family:var(--f-mono); font-size:9px; letter-spacing:0.22em; color:var(--ink-faint); text-align:center; margin-bottom:8px; }
+  .sys{
+    border:none; background:transparent; color:var(--ink-faint); cursor:pointer; padding:10px 6px 8px;
+    display:flex; flex-direction:column; align-items:center; gap:5px; font-family:var(--f-display); font-size:12px; letter-spacing:0.14em;
+    border-left:3px solid transparent;
+  }
+  .sys svg{ width:18px; height:18px; stroke:currentColor; fill:none; stroke-width:1.7; }
+  .sys:hover{ color:var(--ink-dim); background:var(--surface-hover, #16212e); }
+  .sys:focus-visible{ outline:2px solid var(--cyan); outline-offset:-2px; }
+  .sys.on{ color:var(--cyan-bright); border-left-color:var(--cyan); background:#16212e; }
+  .sys.on svg{ filter:drop-shadow(0 0 4px var(--cyan-glow)); }
+  .systems .foot{ margin-top:auto; font-family:var(--f-mono); font-size:9px; color:var(--ink-faint); text-align:center; letter-spacing:0.12em; line-height:1.7; }
+
+  /* ---------- moniteur ---------- */
+  .mon{
+    position:relative; background:var(--screen);
+    clip-path:polygon(var(--chamfer) 0, calc(100% - var(--chamfer)) 0, 100% var(--chamfer), 100% calc(100% - var(--chamfer)), calc(100% - var(--chamfer)) 100%, var(--chamfer) 100%, 0 calc(100% - var(--chamfer)), 0 var(--chamfer));
+    padding:1px;
+    background:linear-gradient(160deg, rgba(53,212,232,0.55), var(--border) 40%, var(--border) 60%, rgba(53,212,232,0.35));
+    display:flex; flex-direction:column; min-width:0;
+  }
+  .mon > .scr{
+    background:var(--screen);
+    clip-path:polygon(var(--chamfer) 0, calc(100% - var(--chamfer)) 0, 100% var(--chamfer), 100% calc(100% - var(--chamfer)), calc(100% - var(--chamfer)) 100%, var(--chamfer) 100%, 0 calc(100% - var(--chamfer)), 0 var(--chamfer));
+    box-shadow:inset 0 0 60px rgba(53,212,232,0.05); display:flex; flex-direction:column; flex:1; min-width:0;
+  }
+  .mon-head{
+    display:flex; align-items:center; gap:12px; padding:9px 18px 7px 22px; border-bottom:1px solid var(--border);
+    background:linear-gradient(180deg, var(--surface-raised), var(--surface)); font-family:var(--f-display); font-size:17px; letter-spacing:0.12em; color:var(--cyan);
+  }
+  .mon-head .id{ margin-left:auto; font-family:var(--f-mono); font-size:10px; letter-spacing:0.16em; color:var(--ink-faint); }
+  .mon-head .id b{ color:var(--ink-dim); font-weight:500; }
+  .region{ padding:14px 20px 16px; border-bottom:1px dashed var(--border-soft); }
+  .region:last-child{ border-bottom:none; }
+  .region-title{ font-family:var(--f-mono); font-size:10.5px; letter-spacing:0.2em; text-transform:uppercase; color:var(--cyan-dim); margin-bottom:10px; display:flex; gap:10px; align-items:center; }
+  .region-title b{ color:var(--ink); font-weight:500; letter-spacing:0.06em; }
+  .region-title .r{ margin-left:auto; color:var(--ink-faint); letter-spacing:0.08em; }
+
+  /* ---------- mur ---------- */
+  .wall{
+    grid-area:wall; display:grid; grid-template-columns:minmax(300px,1fr) minmax(380px,500px) minmax(300px,1fr);
+    gap:16px; padding:18px 24px 8px; align-items:stretch;
+  }
+
+  /* ---------- écran central : réacteur ---------- */
+  .core{ display:flex; flex-direction:column; align-items:center; gap:10px; padding:18px 18px 8px; position:relative; flex:1; }
+  .core .bat{ position:absolute; left:50%; top:52%; width:330px; transform:translate(-50%,-50%); opacity:0.05; fill:var(--cyan); pointer-events:none; }
+  .reactor{ position:relative; width:100%; max-width:420px; aspect-ratio:1; }
+  .reactor svg{ position:absolute; inset:0; width:100%; height:100%; overflow:visible; }
+  .reactor .spin-slow{ transform-origin:200px 200px; animation:spin 100s linear infinite; }
+  .reactor .spin-rev{ transform-origin:200px 200px; animation:spin 150s linear infinite reverse; }
+  @keyframes spin{ to{ transform:rotate(360deg); } }
+  .reactor circle.track{ fill:none; stroke:rgba(53,212,232,0.12); stroke-width:8; }
+  .reactor circle.arc{ fill:none; stroke-width:8; stroke-linecap:butt; transform:rotate(-90deg); transform-origin:200px 200px; transition:stroke-dashoffset 1.2s cubic-bezier(.2,.8,.2,1); }
+  .reactor .arc.hab{ stroke:var(--cyan-dim); }
+  .reactor .arc.rev{ stroke:var(--cyan-bright); filter:drop-shadow(0 0 6px var(--cyan-glow)); }
+  .reactor .arc.proj{ stroke:var(--warn); filter:drop-shadow(0 0 5px rgba(217,130,43,0.55)); }
+  .reactor .ticks line{ stroke:rgba(53,212,232,0.3); stroke-width:1; }
+  .reactor .ticks line.big{ stroke:var(--cyan); stroke-width:1.5; }
+  .reactor .dash{ fill:none; stroke:rgba(53,212,232,0.45); stroke-width:1.2; stroke-dasharray:3 9; }
+  .reactor .dash2{ fill:none; stroke:rgba(53,212,232,0.25); stroke-width:1; stroke-dasharray:26 16; }
+  .reactor .glow{ fill:url(#coreglow); }
+  .core-center{ position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:0; text-align:center; }
+  .core-center .lbl{ font-family:var(--f-mono); font-size:10.5px; letter-spacing:0.26em; color:var(--cyan-dim); text-transform:uppercase; }
+  .core-center .score{ font-family:var(--f-display); font-size:104px; line-height:0.95; color:var(--cyan-bright); text-shadow:0 0 18px var(--cyan-glow), 0 0 50px rgba(53,212,232,0.3); font-variant-numeric:tabular-nums; letter-spacing:0.02em; }
+  .core-center .score small{ font-size:36px; color:var(--cyan); margin-left:2px; }
+  .core-center .sub{ font-size:13px; color:var(--ink-dim); margin-top:4px; max-width:190px; line-height:1.35; text-wrap:balance; }
+  .legend{ display:flex; gap:18px; font-family:var(--f-mono); font-size:11px; color:var(--ink-dim); flex-wrap:wrap; justify-content:center; }
+  .legend span::before{ content:''; display:inline-block; width:12px; height:4px; margin-right:7px; vertical-align:middle; }
+  .legend .l-hab::before{ background:var(--cyan-dim); } .legend .l-rev::before{ background:var(--cyan-bright); } .legend .l-proj::before{ background:var(--warn); }
+
+  .next{ width:100%; border-top:1px solid var(--border); padding:14px 20px 16px; }
+  .next .row{ display:flex; align-items:baseline; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+  .next .what{ font-family:var(--f-display); font-size:26px; letter-spacing:0.05em; color:var(--ink); }
+  .next .at{ font-family:var(--f-mono); font-size:13px; color:var(--cyan); }
+  .next .in-min{ font-family:var(--f-mono); font-size:12px; color:var(--warn); }
+  .next .bar2{ height:6px; background:var(--border-soft); margin-top:12px; position:relative; }
+  .next .bar2 i{ position:absolute; left:0; top:0; bottom:0; width:38%; background:linear-gradient(90deg, var(--cyan-dim), var(--cyan-bright)); box-shadow:0 0 8px var(--cyan-glow); }
+
+  /* ---------- directives ---------- */
+  .directives{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; }
+  .directives li{ display:grid; grid-template-columns:14px 1fr auto; align-items:center; gap:12px; padding:10px 0; border-bottom:1px solid var(--border-soft); font-size:15px; }
+  .directives li:last-child{ border-bottom:none; padding-bottom:2px; }
+  .led{ width:8px; height:8px; background:var(--ink-faint); box-shadow:0 0 0 2px rgba(53,212,232,0.08); }
+  li.p0 .led{ background:var(--danger); box-shadow:0 0 8px var(--danger); }
+  li.p1 .led{ background:var(--warn); box-shadow:0 0 8px rgba(217,130,43,0.7); }
+  li.p2 .led{ background:var(--cyan); box-shadow:0 0 8px var(--cyan-glow); }
+  li.done .led{ background:var(--good); }
+  li.done .txt{ color:var(--ink-faint); text-decoration:line-through; }
+  .directives .txt b{ font-weight:600; color:var(--ink); }
+  .directives .meta{ font-family:var(--f-mono); font-size:11px; color:var(--ink-faint); white-space:nowrap; }
+  .btns{ display:flex; gap:6px; flex-wrap:wrap; justify-content:flex-end; }
+  .key{
+    font-family:var(--f-body); font-weight:600; font-size:11.5px; letter-spacing:0.04em; cursor:pointer;
+    color:var(--ink-dim); background:var(--surface-raised); border:1px solid var(--border); padding:5px 10px;
+  }
+  .key:hover{ color:var(--ink); border-color:var(--cyan-dim); }
+  .key:focus-visible{ outline:2px solid var(--cyan); outline-offset:1px; }
+  .key.primary{ background:var(--cyan-dim); border-color:var(--cyan-dim); color:#04151a; }
+  .key.primary:hover{ background:var(--cyan); }
+  .key.warn{ color:var(--warn); border-color:rgba(217,130,43,0.5); }
+  @media (max-width:1320px){ .directives li{ grid-template-columns:14px 1fr; } .directives li .btns, .directives li .meta{ grid-column:2; justify-content:flex-start; } }
+
+  /* ---------- jauges ---------- */
+  .gauges{ display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  .gauge .name{ font-family:var(--f-mono); font-size:10.5px; letter-spacing:0.18em; text-transform:uppercase; color:var(--ink-dim); display:block; margin-bottom:4px; }
+  .gauge .num{ font-family:var(--f-display); font-size:40px; line-height:1; color:var(--cyan-bright); font-variant-numeric:tabular-nums; letter-spacing:0.02em; }
+  .gauge .num small{ font-family:var(--f-mono); font-size:12px; color:var(--ink-faint); margin-left:6px; letter-spacing:0; }
+  .gauge .num .rep{ color:var(--warn); font-size:12px; font-family:var(--f-mono); margin-left:6px; }
+  .seg{ display:flex; gap:3px; height:9px; margin-top:8px; }
+  .seg i{ flex:1; background:var(--border-soft); }
+  .seg i.on{ background:var(--cyan); box-shadow:0 0 6px var(--cyan-glow); }
+  .seg i.half{ background:linear-gradient(90deg, var(--cyan) 50%, var(--border-soft) 50%); }
+  .seg.warn i.on{ background:var(--warn); box-shadow:0 0 6px rgba(217,130,43,0.5); }
+
+  /* ---------- semaine ---------- */
+  .week{ display:grid; grid-template-columns:repeat(7,1fr); gap:6px; align-items:end; height:96px; }
+  .week .d{ display:flex; flex-direction:column; align-items:center; gap:5px; height:100%; justify-content:flex-end; }
+  .week .cols{ width:100%; display:flex; gap:2px; align-items:flex-end; height:62px; }
+  .week .cols i{ flex:1; background:var(--border-soft); }
+  .week .cols i.rev{ background:var(--cyan-bright); }
+  .week .cols i.proj{ background:var(--warn); }
+  .week .cols i.plan{ background:transparent; border:1px dashed var(--cyan-dim); }
+  .week .dn{ font-family:var(--f-mono); font-size:10px; color:var(--ink-faint); letter-spacing:0.12em; }
+  .week .d.today .dn{ color:var(--cyan-bright); }
+  .week .d.today .cols{ outline:1px solid rgba(53,212,232,0.35); outline-offset:3px; }
+  .week-sum{ display:flex; justify-content:space-between; gap:10px; font-family:var(--f-mono); font-size:11.5px; color:var(--ink-dim); margin-top:12px; flex-wrap:wrap; }
+  .week-sum b{ color:var(--ink); font-weight:500; }
+  .week-sum .w{ color:var(--warn); }
+
+  /* ---------- console : habitudes ---------- */
+  .console{ grid-area:console; padding:8px 24px 6px; }
+  .console .deck{ border:1px solid var(--border); background:linear-gradient(180deg, var(--surface), var(--bg)); padding:12px 16px 14px; }
+  .console .region-title{ margin-bottom:10px; }
+  .keys{ display:flex; flex-wrap:wrap; gap:7px; }
+  .cap{
+    font-family:var(--f-body); font-weight:600; font-size:12.5px; letter-spacing:0.03em; color:var(--ink-dim); cursor:pointer;
+    background:var(--surface-raised); border:1px solid var(--border); border-bottom-width:3px; padding:6px 11px 5px 9px;
+    display:inline-flex; align-items:center; gap:8px;
+  }
+  .cap i{ width:7px; height:7px; background:var(--ink-faint); }
+  .cap.on{ color:#04151a; background:var(--cyan-dim); border-color:var(--cyan-dim); border-bottom-color:#1f6a7c; }
+  .cap.on i{ background:#04151a; }
+  .cap:hover{ border-color:var(--cyan-dim); }
+  .cap.on:hover{ background:var(--cyan); }
+  .cap:focus-visible{ outline:2px solid var(--cyan); outline-offset:1px; }
+
+  /* ---------- bandeau bas ---------- */
+  .strip{ grid-area:strip; margin:6px 24px 22px; border-top:1px solid var(--border); border-bottom:1px solid var(--border); display:grid; grid-template-columns:repeat(auto-fit, minmax(150px,1fr)); }
+  .strip .cell{ padding:12px 16px; border-right:1px solid var(--border-soft); display:flex; flex-direction:column; gap:2px; }
+  .strip .cell:last-child{ border-right:none; }
+  .strip .k{ font-family:var(--f-mono); font-size:10px; letter-spacing:0.2em; text-transform:uppercase; color:var(--cyan-dim); }
+  .strip .v{ font-family:var(--f-display); font-size:30px; color:var(--ink); line-height:1; font-variant-numeric:tabular-nums; letter-spacing:0.02em; }
+  .strip .v small{ font-family:var(--f-mono); font-size:11px; color:var(--ink-dim); margin-left:5px; letter-spacing:0; }
+  .strip .v.warn{ color:var(--warn); } .strip .v.good{ color:var(--good); } .strip .v.danger{ color:var(--danger); }
+  .strip .s{ font-size:12px; color:var(--ink-dim); margin-top:2px; }
+
+  /* ---------- allumage des écrans ---------- */
+  .mon, .console, .strip{ animation:on .6s ease both; }
+  @keyframes on{ from{ opacity:0.6; } to{ opacity:1; } }
+  .mon-l{ animation-delay:.05s; } .mon-r{ animation-delay:.1s; } .console{ animation-delay:.15s; } .strip{ animation-delay:.2s; }
+
+  /* ---------- iPad / étroit ---------- */
+  @media (max-width:1180px){ .wall{ grid-template-columns:1fr 1fr; } .mon-c{ grid-column:1 / -1; order:-1; } }
+  @media (max-width:820px){
+    .bc{ grid-template-columns:minmax(0,1fr); grid-template-areas:"bar" "wall" "console" "strip"; }
+    .systems{ display:none; }
+    .wall{ grid-template-columns:minmax(0,1fr); padding:14px 14px 6px; }
+    .bar{ padding:10px 14px; gap:14px; }
+    .console{ padding:6px 14px; } .strip{ margin-left:14px; margin-right:14px; }
+    .core-center .score{ font-size:84px; }
+  }
+</style>
+
+<div class="bc">
+  <header class="bar">
+    <div class="brand">
+      <svg viewBox="0 0 90 60" aria-hidden="true"><path d="M2,34 C12,20 26,14 36,5 L45,16 L54,5 C64,14 78,20 88,34 C76,31 66,36 62,31 C57,40 49,50 45,53 C41,50 33,40 28,31 C24,36 14,31 2,34 Z"/></svg>
+      <div class="name">BATCOMPUTER<small>QG · GOTHAM-ALICANTE</small></div>
+    </div>
+    <span class="clock" id="clock">10:42</span>
+    <span><span class="k">DATE</span><span class="v">ven. 4 sept. 2026</span></span>
+    <span><span class="k">MÉTÉO</span><span class="v">27° · ciel dégagé</span></span>
+    <span class="sync"><i></i>SYNCHRONISÉ · 47 / 5000</span>
+    <span><span class="k">♫</span><span class="v">rien en lecture</span></span>
+    <span><span class="k">SAUVEGARDE</span><span class="v">auto · 08:02</span></span>
+    <span class="tag-maquette">Maquette · données d'exemple</span>
+  </header>
+
+  <nav class="systems" aria-label="Systèmes">
+    <div class="lbl">SYSTÈMES</div>
+    <button class="sys on" type="button"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>BORD</button>
+    <button class="sys" type="button"><svg viewBox="0 0 24 24"><path d="M2 9l10-5 10 5-10 5-10-5z"/><path d="M6 11.5V17c0 1.5 3 3 6 3s6-1.5 6-3v-5.5"/></svg>ÉTUDES</button>
+    <button class="sys" type="button"><svg viewBox="0 0 24 24"><path d="M6 2h9l3 3v17H6z"/><path d="M9 8h6M9 12h6M9 16h4"/></svg>JOURNAL</button>
+    <button class="sys" type="button"><svg viewBox="0 0 24 24"><path d="M12 2l2.5 6.5L21 11l-6.5 2.5L12 20l-2.5-6.5L3 11l6.5-2.5z"/></svg>HABITUDES</button>
+    <button class="sys" type="button"><svg viewBox="0 0 24 24"><path d="M6.5 6.5l11 11M3 3l4 4M17 17l4 4M14.5 3.5l6 6M3.5 14.5l6 6"/></svg>SPORT</button>
+    <button class="sys" type="button"><svg viewBox="0 0 24 24"><path d="M6 3v7a3 3 0 0 0 3 3v8M6 3v6M9 3v6M17 3c-2 0-3 2-3 5s1 5 3 5v8"/></svg>REPAS</button>
+    <button class="sys" type="button"><svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="13"/><path d="M2 10h20M6 15h4"/></svg>BUDGET</button>
+    <button class="sys" type="button"><svg viewBox="0 0 24 24"><path d="M3 21V9l9-6 9 6v12M9 21v-6h6v6"/></svg>BUSINESS</button>
+    <button class="sys" type="button"><svg viewBox="0 0 24 24"><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v17H6.5A2.5 2.5 0 0 0 4 21.5v-17zM4 4.5V19a2.5 2.5 0 0 0 2.5 2.5H20"/></svg>CORAN</button>
+    <button class="sys" type="button"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg>OBJECTIFS</button>
+    <div class="foot">ALICANTE<br>UTC+2</div>
+  </nav>
+
+  <main class="wall">
+    <!-- ================= MON-01 : directives ================= -->
+    <section class="mon mon-l"><div class="scr">
+      <div class="mon-head">PLAN DU JOUR<span class="id">MON-<b>01</b></span></div>
+      <div class="region">
+        <div class="region-title">Priorisé automatiquement<span class="r">7 directives</span></div>
+        <ul class="directives">
+          <li class="p0"><span class="led"></span><span class="txt"><b>Révision</b> — 2,5 h / 4 h visées <span class="meta">(il reste 1,5 h)</span></span><span class="btns"><button class="key primary" type="button">🍅 Pomodoro</button></span></li>
+          <li class="p1"><span class="led"></span><span class="txt"><b>Bloc manqué</b> — 1,0 h de projets non faite (Bloc 1 10:35)</span><span class="btns"><button class="key warn" type="button">↪ Demain</button><button class="key" type="button">✕</button></span></li>
+          <li class="p1"><span class="led"></span><span class="txt"><b>Examen Anatomía I</b> dans 42 jours</span><span class="meta">16 oct.</span></li>
+          <li class="p2"><span class="led"></span><span class="txt">Jumu'ah — trajet mosquée</span><span class="meta">13:15</span></li>
+          <li><span class="led"></span><span class="txt">Nouvelles à la famille</span><span class="btns"><button class="key" type="button">Cocher</button></span></li>
+          <li class="done"><span class="led"></span><span class="txt">Coran (1 page) — Al-Baqara 37</span><span class="meta">06:15</span></li>
+          <li class="done"><span class="led"></span><span class="txt">Sport — Pull, 6 exercices</span><span class="meta">05:00</span></li>
+        </ul>
+      </div>
+      <div class="region">
+        <div class="region-title">À venir<span class="r">vendredi</span></div>
+        <ul class="directives" style="font-size:14px;">
+          <li><span class="led"></span><span class="txt">Jumu'ah (khutba + prière)</span><span class="meta">13:30</span></li>
+          <li><span class="led"></span><span class="txt">😴 Micro-sieste</span><span class="meta">14:30</span></li>
+          <li><span class="led"></span><span class="txt">Cours</span><span class="meta">15:30 → 19:30</span></li>
+          <li><span class="led"></span><span class="txt">Révision Bloc 3</span><span class="meta">20:00 → 21:00</span></li>
+          <li><span class="led"></span><span class="txt">Coucher</span><span class="meta">21:30</span></li>
+        </ul>
+      </div>
+    </div></section>
+
+    <!-- ================= MON-02 : réacteur ================= -->
+    <section class="mon mon-c"><div class="scr">
+      <div class="mon-head">SCORE DU JOUR<span class="id">MON-<b>02</b> · CENTRAL</span></div>
+      <div class="core">
+        <svg class="bat" viewBox="0 0 90 60" aria-hidden="true"><path d="M2,34 C12,20 26,14 36,5 L45,16 L54,5 C64,14 78,20 88,34 C76,31 66,36 62,31 C57,40 49,50 45,53 C41,50 33,40 28,31 C24,36 14,31 2,34 Z"/></svg>
+        <div class="reactor">
+          <svg viewBox="0 0 400 400" aria-hidden="true">
+            <defs>
+              <radialGradient id="coreglow" cx="50%" cy="50%" r="50%">
+                <stop offset="0" stop-color="#7ceaf7" stop-opacity="0.16"/>
+                <stop offset="0.6" stop-color="#35d4e8" stop-opacity="0.05"/>
+                <stop offset="1" stop-color="#35d4e8" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+            <circle class="glow" cx="200" cy="200" r="96"/>
+            <g class="spin-slow"><circle class="dash2" cx="200" cy="200" r="188"/></g>
+            <g class="spin-rev"><circle class="dash" cx="200" cy="200" r="175"/></g>
+            <g class="ticks" id="ticks"></g>
+            <circle class="track" cx="200" cy="200" r="150"/>
+            <circle class="arc hab" cx="200" cy="200" r="150" data-pct="0.61"/>
+            <circle class="track" cx="200" cy="200" r="126"/>
+            <circle class="arc rev" cx="200" cy="200" r="126" data-pct="0.625"/>
+            <circle class="track" cx="200" cy="200" r="102"/>
+            <circle class="arc proj" cx="200" cy="200" r="102" data-pct="0.33"/>
+          </svg>
+          <div class="core-center">
+            <span class="lbl">Score du jour</span>
+            <span class="score">72<small>%</small></span>
+            <span class="sub">11 habitudes sur 18 · 2 repas sur 3 · eau 1,5 L</span>
+          </div>
+        </div>
+        <div class="legend"><span class="l-hab">habitudes 11/18</span><span class="l-rev">révision 2,5/4 h</span><span class="l-proj">projets 1,0/3 h</span></div>
+      </div>
+      <div class="next">
+        <div class="region-title" style="margin-bottom:6px;">Prochain bloc<span class="r in-min" style="color:var(--warn);">dans 12 min</span></div>
+        <div class="row"><span class="what">PROJETS PERSO — BLOC 1</span><span class="at">10:35 → 12:35 · 2 × Pomodoro 1 h</span></div>
+        <div class="bar2"><i></i></div>
+      </div>
+    </div></section>
+
+    <!-- ================= MON-03 : temps, semaine, échéances ================= -->
+    <section class="mon mon-r"><div class="scr">
+      <div class="mon-head">SUIVI<span class="id">MON-<b>03</b></span></div>
+      <div class="region">
+        <div class="region-title">Temps du jour<span class="r">3,5 h au total</span></div>
+        <div class="gauges">
+          <div class="gauge"><span class="name">Révision</span><span class="num">2,5<small>h / 4h</small></span>
+            <div class="seg"><i class="on"></i><i class="on"></i><i class="half"></i><i></i></div></div>
+          <div class="gauge"><span class="name">Projets perso</span><span class="num">1,0<small>h / 3h</small><span class="rep">+1h ↪</span></span>
+            <div class="seg warn"><i class="on"></i><i></i><i></i></div></div>
+        </div>
+      </div>
+      <div class="region">
+        <div class="region-title">Semaine<span class="r">lun. → dim.</span></div>
+        <div class="week">
+          <div class="d"><div class="cols"><i class="rev" style="height:100%"></i><i class="proj" style="height:60%"></i></div><span class="dn">LUN</span></div>
+          <div class="d"><div class="cols"><i class="rev" style="height:100%"></i><i class="proj" style="height:60%"></i></div><span class="dn">MAR</span></div>
+          <div class="d"><div class="cols"><i class="rev" style="height:80%"></i><i class="proj" style="height:40%"></i></div><span class="dn">MER</span></div>
+          <div class="d"><div class="cols"><i class="rev" style="height:100%"></i><i class="proj" style="height:60%"></i></div><span class="dn">JEU</span></div>
+          <div class="d today"><div class="cols"><i class="rev" style="height:50%"></i><i class="proj" style="height:20%"></i></div><span class="dn">VEN</span></div>
+          <div class="d"><div class="cols"><i class="plan" style="height:100%"></i><i class="plan" style="height:60%"></i></div><span class="dn">SAM</span></div>
+          <div class="d"><div class="cols"><i class="plan" style="height:80%"></i><i class="plan" style="height:20%"></i></div><span class="dn">DIM</span></div>
+        </div>
+        <div class="week-sum">
+          <span>Révision <b>13,5 h</b> restantes / 33</span>
+          <span>Projets <b>8,0 h</b> / 18</span>
+          <span class="w">3 jours · ~7,2 h/jour</span>
+        </div>
+      </div>
+      <div class="region">
+        <div class="region-title">Échéances<span class="r">3</span></div>
+        <ul class="directives" style="font-size:14px;">
+          <li class="p1"><span class="led"></span><span class="txt"><b>Anatomía I</b></span><span class="meta" style="color:var(--warn);">J-42 · 16 oct.</span></li>
+          <li><span class="led"></span><span class="txt">Bioquímica</span><span class="meta">J-47 · 21 oct.</span></li>
+          <li><span class="led"></span><span class="txt">Objectifs 6 mois</span><span class="meta">J-191 · 14 mars</span></li>
+        </ul>
+      </div>
+    </div></section>
+  </main>
+
+  <!-- ================= console : habitudes ================= -->
+  <section class="console">
+    <div class="deck">
+      <div class="region-title">Habitudes du jour<b>vendredi</b><span class="r" id="hab-count">11 / 18</span></div>
+      <div class="keys" id="keys">
+        <button class="cap on" type="button"><i></i>🕌 Fajr</button>
+        <button class="cap on" type="button"><i></i>🕌 Jumu'ah (~14h)</button>
+        <button class="cap" type="button"><i></i>🕌 Asr</button>
+        <button class="cap" type="button"><i></i>🕌 Maghrib</button>
+        <button class="cap" type="button"><i></i>🕌 Isha</button>
+        <button class="cap on" type="button"><i></i>🛏️ Lit fait</button>
+        <button class="cap on" type="button"><i></i>🤸 Étirements</button>
+        <button class="cap on" type="button"><i></i>📖 Coran</button>
+        <button class="cap" type="button"><i></i>📵 Pas d'écran avant le coucher</button>
+        <button class="cap on" type="button"><i></i>🤲 Sadaqah</button>
+        <button class="cap" type="button"><i></i>📝 Revue de la veille</button>
+        <button class="cap" type="button"><i></i>📞 Famille</button>
+        <button class="cap on" type="button"><i></i>🚶 Marche</button>
+        <button class="cap on" type="button"><i></i>🙏 Gratitude</button>
+        <button class="cap on" type="button"><i></i>Balais</button>
+        <button class="cap on" type="button"><i></i>Vaisselle</button>
+        <button class="cap on" type="button"><i></i>Linge</button>
+        <button class="cap" type="button"><i></i>Aspirateur</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= bandeau bas ================= -->
+  <footer class="strip">
+    <div class="cell"><span class="k">Snus</span><span class="v good">12<small>j</small></span><span class="s">record 12 j</span></div>
+    <div class="cell"><span class="k">Sucreries</span><span class="v good">5<small>j</small></span><span class="s">record 9 j</span></div>
+    <div class="cell"><span class="k">Malbouffe</span><span class="v warn">1<small>j</small></span><span class="s">record 14 j</span></div>
+    <div class="cell"><span class="k">Budget sept.</span><span class="v danger">−312<small>€</small></span><span class="s">charges 1 187 €/mois</span></div>
+    <div class="cell"><span class="k">Sommeil</span><span class="v">7,5<small>h / 7,5</small></span><span class="s">100 % · coucher 21:30</span></div>
+    <div class="cell"><span class="k">Poids</span><span class="v">64,1<small>kg</small></span><span class="s">cible 70 · +0,4 ce mois</span></div>
+    <div class="cell"><span class="k">Coran</span><span class="v">37<small>/ 180 p.</small></span><span class="s">1 page / jour</span></div>
+  </footer>
+</div>
+
+<script>
+  /* graduations du réacteur : 72 traits, un sur six plus long — générées, pas dessinées à la main */
+  (function(){
+    var g = document.getElementById('ticks'); if(!g) return;
+    var ns = 'http://www.w3.org/2000/svg';
+    for(var i = 0; i < 72; i++){
+      var a = (i / 72) * Math.PI * 2, big = i % 6 === 0;
+      var r1 = big ? 160 : 163, r2 = 168;
+      var l = document.createElementNS(ns, 'line');
+      l.setAttribute('x1', (200 + Math.cos(a) * r1).toFixed(2)); l.setAttribute('y1', (200 + Math.sin(a) * r1).toFixed(2));
+      l.setAttribute('x2', (200 + Math.cos(a) * r2).toFixed(2)); l.setAttribute('y2', (200 + Math.sin(a) * r2).toFixed(2));
+      if(big) l.setAttribute('class', 'big');
+      g.appendChild(l);
+    }
+    document.querySelectorAll('.reactor .arc').forEach(function(c){
+      var r = Number(c.getAttribute('r')), C = 2 * Math.PI * r, p = Number(c.dataset.pct) || 0;
+      c.style.strokeDasharray = C.toFixed(2);
+      c.style.strokeDashoffset = C.toFixed(2);
+      requestAnimationFrame(function(){ requestAnimationFrame(function(){ c.style.strokeDashoffset = (C * (1 - p)).toFixed(2); }); });
+    });
+  })();
+  /* horloge réelle */
+  (function(){
+    var el = document.getElementById('clock');
+    function tick(){ var d = new Date(); el.textContent = String(d.getHours()).padStart(2,'0') + ':' + String(d.getMinutes()).padStart(2,'0'); }
+    tick(); setInterval(tick, 15000);
+  })();
+  /* habitudes : bascule locale (maquette) */
+  (function(){
+    var caps = document.querySelectorAll('#keys .cap'), count = document.getElementById('hab-count');
+    function maj(){ var n = 0; caps.forEach(function(c){ if(c.classList.contains('on')) n++; }); count.textContent = n + ' / ' + caps.length; }
+    caps.forEach(function(c){ c.addEventListener('click', function(){ c.classList.toggle('on'); maj(); }); });
+    maj();
+  })();
+  /* systèmes : sélection visuelle uniquement */
+  (function(){
+    var s = document.querySelectorAll('.sys');
+    s.forEach(function(m){ m.addEventListener('click', function(){ s.forEach(function(x){ x.classList.remove('on'); }); m.classList.add('on'); }); });
+  })();
+</script>
