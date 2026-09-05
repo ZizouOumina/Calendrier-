@@ -1238,7 +1238,7 @@
            Google Calendar, si. Visible seulement quand le connecteur est la (version publiee). -->
       <div class="panel sub-panel" id="gcal-panel" hidden style="margin-bottom:16px;">
         <div class="sub-head"><h3>📲 Rappels sur téléphone</h3><span class="sub-note" id="gcal-statut">désactivé</span></div>
-        <p class="sub-note" style="line-height:1.65; margin-bottom:10px;">Quand c'est activé, les blocs du planning d'<b style="color:var(--ink-dim);">aujourd'hui et de demain</b> (sport, révision, projets perso, coucher) sont écrits dans ton Google Calendar avec un rappel 5 min avant — 30 min pour le coucher, le temps d'éteindre l'écran. Un événement par bloc et par jour, jamais de doublon : un bloc déjà présent est reconnu, un bloc déplacé est mis à jour, un bloc retiré du planning est supprimé. Les blocs déjà commencés ne sont pas envoyés.</p>
+        <p class="sub-note" style="line-height:1.65; margin-bottom:10px;">Ce n'est pas un réglage de notifications : c'est la Batcave qui écrit ton planning dans Google Calendar pour que ton téléphone sonne. Quand c'est activé, tous les blocs d'<b style="color:var(--ink-dim);">aujourd'hui et de demain</b> sont dans ton agenda avec un rappel <b style="color:var(--ink-dim);">5 min avant</b> — <b style="color:var(--ink-dim);">30 min avant le coucher</b>. Un événement par bloc et par jour, jamais de doublon : un bloc déjà présent dans ton agenda (tes événements récurrents « 🦇 ») est reconnu et gardé, son heure et son rappel sont alignés sur le planning, un bloc manquant est créé, un bloc retiré du planning est retiré seulement s'il venait de la Batcave. Désactiver ne supprime que ce que la Batcave a créé. Les blocs déjà commencés ne sont pas envoyés.</p>
         <div class="card-actions" style="flex-wrap:wrap;">
           <button class="btn btn-primary" id="gcal-toggle" type="button">Activer les rappels</button>
           <button class="btn" id="gcal-pousser" type="button" hidden>Pousser maintenant</button>
@@ -1921,6 +1921,17 @@
     <div class="card-actions" style="margin-top:12px;">
       <button class="btn btn-primary" id="backup-import-btn">Restaurer cette sauvegarde</button>
     </div>
+    <!-- Nouveau depart : efface les saisies (journal, minuteur, repas, sport, budget, taches…)
+         partout -- ici, dans le cloud, et sur les autres appareils a leur prochaine ouverture --
+         en gardant la configuration (habitudes, charges fixes, plafonds, examens, objectifs,
+         options). -->
+    <div style="margin-top:18px; padding-top:14px; border-top:1px solid var(--border-soft);">
+      <p style="font-weight:600; color:var(--ink); font-size:13.5px; margin-bottom:6px;">🧹 Nouveau départ</p>
+      <p class="sub-note" style="line-height:1.6; margin-bottom:10px;">Efface toutes les saisies (journal, sessions, repas, sport, dépendances, budget, tâches, Coran, revues…) sur cet appareil, dans le cloud et sur tes autres appareils à leur prochaine ouverture. Garde la configuration : habitudes, charges fixes, plafonds, dates d'examen, objectifs, options. Une sauvegarde JSON est proposée juste avant.</p>
+      <div class="card-actions">
+        <button class="btn btn-danger" id="reinit-btn" type="button">Remettre à zéro (garder la configuration)</button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -2238,7 +2249,7 @@
      vestige : une fonctionnalite retiree (batcave-matieres) ou un essai. Elle prend de la
      place dans le quota de 5000 documents et embrouille les sauvegardes, sans que rien ne
      la lise jamais. On la signale ; la suppression reste ton geste. */
-  var CLES_CONNUES = ['addictions','budget-limits','business','coran','cours','courses','dash-more','duaas','duree-bloc','sport-log','objectifs','objectifs-seed-v1','kcal-ajustement','gcal-ecriture',
+  var CLES_CONNUES = ['addictions','budget-limits','business','coran','cours','courses','dash-more','duaas','duree-bloc','sport-log','objectifs','objectifs-seed-v1','kcal-ajustement','gcal-ecriture','reinit','fc-migration-v1',
     'espagnol','examens','fc-prix-icloud-3','fixed-charges','goals','habitlog','habits','habits-seed-v2','habits-seed-v3',
     'horizon','last-auto-backup','last-manual-backup','last-bilan-prompt','last-compaction','last-open','last-rotation','notion-url',
     'pomodial-purge','projets','report','revision','revision-fusionnee','revue','sante','sauvegarde','sessions',
@@ -2521,6 +2532,17 @@
             }
           });
           cloudConnu = connues;
+          /* Remise a zero decidee ailleurs (autre appareil, ou directement dans le cloud) :
+             on efface les copies locales ICI, avant le rattrapage, sinon elles repartiraient
+             vers le cloud et annuleraient la remise a zero. Appliquee une seule fois par
+             appareil (identifiant retenu localement). */
+          var docReinit = snap.docs.filter(function(d){ return d.id === 'batcave-reinit'; })[0];
+          var reinit = docReinit && docReinit.data() && docReinit.data().v;
+          if(reinit && reinit.id && String(reinit.id) !== reinitAppliquee()){
+            var nEff = effacerLocalPourReinit();
+            marquerReinitAppliquee(reinit.id);
+            try{ sessionStorage.setItem('bc-reinit-info', '🧹 Nouveau départ du ' + fmtDate(reinit.date) + ' appliqué sur cet appareil (' + nEff + ' entrées locales effacées).'); }catch(e){}
+          }
           /* Un drapeau de migration ne fait foi que s'il vient du cloud. Une migration de
              demarrage s'execute sans dbHandle : elle n'ecrit qu'en local. Si le cloud
              detient deja la donnee, la boucle ci-dessous l'ecrase juste apres -- mais le
@@ -3005,6 +3027,45 @@
   document.getElementById('backup-overlay').addEventListener('click', function(e){
     if(e.target.id === 'backup-overlay') document.getElementById('backup-overlay').hidden = true;
   });
+  /* ===== Nouveau depart =====
+     Un marqueur synchronise (batcave-reinit : {id, date}) porte la decision ; chaque appareil
+     l'applique une fois (identifiant retenu dans une cle LOCALE, hors prefixe batcave-, donc
+     ni synchronisee ni rattrapee) et efface ses copies locales AVANT le rattrapage, sinon
+     elles repartiraient vers le cloud. La meme remise a zero peut donc etre decidee depuis
+     l'appli ou directement dans le cloud. */
+  var REINIT_GARDER = ['habits','habits-seed-v2','habits-seed-v3','fixed-charges','fc-prix-icloud-3','budget-limits','examens','notion-url',
+                       'objectifs','objectifs-seed-v1','horizon','gcal-ecriture','duree-bloc','dash-more','revision-fusionnee','reinit'];
+  var REINIT_PREFIXES_GARDER = ['pomodial-', 'coherence-ignore-'];
+  function reinitGarder(cle){
+    var c = cle.indexOf('batcave-') === 0 ? cle.slice(8) : cle;
+    return REINIT_GARDER.indexOf(c) > -1 || REINIT_PREFIXES_GARDER.some(function(p){ return c.indexOf(p) === 0; });
+  }
+  function clesAEffacerPourReinit(){
+    var out = [];
+    for(var i = 0; i < localStorage.length; i++){ var k = localStorage.key(i); if(k && k.indexOf('batcave-') === 0 && !reinitGarder(k)) out.push(k); }
+    return out;
+  }
+  function effacerLocalPourReinit(){
+    var cles = clesAEffacerPourReinit();
+    cles.forEach(function(k){ try{ localStorage.removeItem(k); }catch(e){} });
+    return cles.length;
+  }
+  function reinitAppliquee(){ try{ return localStorage.getItem('bc-reinit-appliquee') || ''; }catch(e){ return ''; } }
+  function marquerReinitAppliquee(id){ try{ localStorage.setItem('bc-reinit-appliquee', String(id)); }catch(e){} }
+  function remettreAZero(){
+    var n = clesAEffacerPourReinit().length;
+    askConfirm('Effacer ' + n + ' entrée(s) — journal, sessions, repas, sport, dépendances, budget, tâches, Coran, revues, objectifs 6 mois — ici, dans le cloud et sur tes autres appareils ? La configuration (habitudes, charges fixes, plafonds, examens, objectifs par période, options) est gardée. Irréversible : pense à copier l\'export ci-dessus avant.', function(){
+      var cles = clesAEffacerPourReinit();
+      cles.forEach(function(k){ try{ localStorage.removeItem(k); }catch(e){} supprimerDuCloud(k); });
+      var marqueur = {id: 'r' + Date.now() + Math.random().toString(36).slice(2, 6), date: todayISO};
+      marquerReinitAppliquee(marqueur.id);
+      save('batcave-reinit', marqueur);
+      showToast('🧹 ' + cles.length + ' entrées effacées — nouveau départ. Rechargement…');
+      setTimeout(function(){ location.reload(); }, dbHandle ? 1800 : 900);
+    }, {titre:'Nouveau départ', libelleOk:'Tout effacer et repartir'});
+  }
+  (function(){ var b = document.getElementById('reinit-btn'); if(b) b.addEventListener('click', remettreAZero); })();
+
   document.getElementById('backup-import-btn').addEventListener('click', function(){
     var raw = document.getElementById('backup-import').value.trim();
     if(!raw) return;
@@ -4344,6 +4405,7 @@
   /* un croisement d'ecritures detecte juste avant un rechargement : le toast survit ici */
   (function(){
     try{ var m = sessionStorage.getItem('bc-conflit'); if(m){ sessionStorage.removeItem('bc-conflit'); showToast(m); } }catch(e){}
+    try{ var r = sessionStorage.getItem('bc-reinit-info'); if(r){ sessionStorage.removeItem('bc-reinit-info'); showToast(r); } }catch(e){}
   })();
   var reacteurPret = false;
   function preparerReacteur(){
@@ -6883,15 +6945,18 @@
   var gcalEnCours = false;
   function gcalActif(){ return !!gcalEcriture.actif; }
   function cleGcalJour(iso){ return 'batcave-gcal-' + iso; }
+  /* Tous les blocs du planning : un rappel 5 min avant chacun, 30 min avant le coucher
+     (le temps d'eteindre l'ecran). « Temps libre » et le coucher n'occupent pas l'agenda. */
   function blocsARappeler(iso){
     var plan = SCHEDULES[cleJournee(dowDe(iso))] || [], out = [];
     plan.forEach(function(b, i){
-      var l = b[1], type = /^Sport/.test(l) ? 'sport' : (/Révision Bloc/.test(l) ? 'cours' : (/Projets perso/.test(l) ? 'projet' : (/^Coucher/.test(l) ? 'coucher' : null)));
-      if(!type) return;
+      var l = b[1], coucher = /^Coucher/.test(l), libre = /Temps libre|Repos/.test(l);
       var d0 = timeToMinutes(b[0]);
-      var d1 = type === 'coucher' ? d0 + 15 : (i < plan.length - 1 ? timeToMinutes(plan[i+1][0]) : d0 + 60);
-      out.push({cle: 'p' + i, type: type, titre: '🦇 ' + l, debut: d0, fin: d1, rappel: type === 'coucher' ? 30 : 5,
-                description: type === 'coucher' ? 'Écran off 30 min avant. Bloc du planning Batcave.' : 'Bloc du planning Batcave.'});
+      var d1 = i < plan.length - 1 ? timeToMinutes(plan[i+1][0]) : d0 + 15;
+      if(d1 <= d0) d1 = d0 + 15;
+      out.push({cle: 'p' + i, type: coucher ? 'coucher' : (libre ? 'libre' : 'bloc'), titre: '🦇 ' + l, debut: d0, fin: d1, rappel: coucher ? 30 : 5,
+                libre: coucher || libre,
+                description: coucher ? 'Écran off 30 min avant. Bloc du planning Batcave.' : 'Bloc du planning Batcave.'});
     });
     return out;
   }
@@ -6908,7 +6973,8 @@
     return (d >= dernierDimanche(2) && d < dernierDimanche(9)) ? '+02:00' : '+01:00';
   }
   function isoAvecHeure(iso, minutes){ return iso + 'T' + minutesToTime(minutes) + ':00' + decalageMadrid(iso); }
-  function empreinteBloc(iso, b){ return isoAvecHeure(iso, b.debut) + '|' + isoAvecHeure(iso, b.fin) + '|' + b.titre; }
+  function empreinteBloc(iso, b){ return isoAvecHeure(iso, b.debut) + '|' + isoAvecHeure(iso, b.fin) + '|' + b.titre + '|' + b.rappel; }
+  function rappelDe(e){ var r = e && e.overrideReminders && e.overrideReminders[0]; return r && r.method === 'popup' ? Number(r.minutes) : null; }
   function pousserRappelsJour(mcp, iso){
     var releve = load(cleGcalJour(iso), null);
     if(!releve || typeof releve !== 'object' || Array.isArray(releve)) releve = {};
@@ -6933,22 +6999,27 @@
             var creer = function(){
               var existant = parTitre[b.titre];
               if(existant && existant.id){
+                /* adopte : jamais recree, jamais supprime par la Batcave (cree:false).
+                   Si l'heure differe, l'instance est alignee ; si le rappel differe, c'est la
+                   SERIE recurrente qui recoit le bon rappel (une fois pour toutes). */
                 var memeHeure = new Date(existant.start.dateTime).getTime() === debutMs && existant.end && existant.end.dateTime && new Date(existant.end.dateTime).getTime() === new Date(isoAvecHeure(iso, b.fin)).getTime();
-                if(memeHeure){ releve[b.cle] = {id: existant.id, empreinte: emp}; bilan.adoptes++; return; }
-                return mcp.callTool('Google Calendar', 'update_event', {calendarId: GCAL_CALENDRIER, eventId: existant.id, startTime: isoAvecHeure(iso, b.debut), endTime: isoAvecHeure(iso, b.fin), timeZone:'Europe/Madrid', notificationLevel:'NONE'})
-                  .then(function(){ releve[b.cle] = {id: existant.id, empreinte: emp}; bilan.majs++; });
+                var memeRappel = rappelDe(existant) === b.rappel;
+                var suite = Promise.resolve();
+                if(!memeHeure) suite = suite.then(function(){ return mcp.callTool('Google Calendar', 'update_event', {calendarId: GCAL_CALENDRIER, eventId: existant.id, startTime: isoAvecHeure(iso, b.debut), endTime: isoAvecHeure(iso, b.fin), timeZone:'Europe/Madrid', notificationLevel:'NONE'}); });
+                if(!memeRappel) suite = suite.then(function(){ return mcp.callTool('Google Calendar', 'update_event', {calendarId: GCAL_CALENDRIER, eventId: existant.recurringEventId || existant.id, overrideReminders:[{method:'popup', minutes: b.rappel}], notificationLevel:'NONE'}); });
+                return suite.then(function(){ releve[b.cle] = {id: existant.id, empreinte: emp, cree: false}; if(memeHeure && memeRappel) bilan.adoptes++; else bilan.majs++; });
               }
               if(debutMs < nowMs - 60000){ bilan.passes++; return; }
               return mcp.callTool('Google Calendar', 'create_event', {calendarId: GCAL_CALENDRIER, summary: b.titre, startTime: isoAvecHeure(iso, b.debut), endTime: isoAvecHeure(iso, b.fin), timeZone:'Europe/Madrid',
                                                                     description: b.description, overrideReminders:[{method:'popup', minutes: b.rappel}], notificationLevel:'NONE',
-                                                                    availability: b.type === 'coucher' ? 'AVAILABILITY_FREE' : 'AVAILABILITY_BUSY'})
-                .then(function(ev){ var p = ev && ev.payload; if(p && p.id){ releve[b.cle] = {id: p.id, empreinte: emp}; bilan.crees++; } });
+                                                                    availability: b.libre ? 'AVAILABILITY_FREE' : 'AVAILABILITY_BUSY'})
+                .then(function(ev){ var p = ev && ev.payload; if(p && p.id){ releve[b.cle] = {id: p.id, empreinte: emp, cree: true}; bilan.crees++; } });
             };
             if(connu && connu.id){
               /* bloc deplace : on met l'evenement a jour ; s'il a ete supprime a la main dans
                  Google, la mise a jour echoue et on le recree (l'envoi n'est pas interrompu) */
               return mcp.callTool('Google Calendar', 'update_event', {calendarId: GCAL_CALENDRIER, eventId: connu.id, summary: b.titre, startTime: isoAvecHeure(iso, b.debut), endTime: isoAvecHeure(iso, b.fin), timeZone:'Europe/Madrid', notificationLevel:'NONE'})
-                .then(function(){ releve[b.cle] = {id: connu.id, empreinte: emp}; bilan.majs++; })
+                .then(function(){ releve[b.cle] = {id: connu.id, empreinte: emp, cree: !!connu.cree}; bilan.majs++; })
                 .catch(function(){ delete releve[b.cle]; return creer(); });
             }
             return creer();
@@ -6958,7 +7029,7 @@
           if(blocs.some(function(b){ return b.cle === k; })) return;
           var r = releve[k];
           chaine = chaine.then(function(){
-            if(!r || !r.id){ delete releve[k]; return; }
+            if(!r || !r.id || !r.cree){ delete releve[k]; return; }   /* adopte : on ne touche pas a ton evenement */
             return mcp.callTool('Google Calendar', 'delete_event', {calendarId: GCAL_CALENDRIER, eventId: r.id, notificationLevel:'NONE'})
               .catch(function(){}).then(function(){ delete releve[k]; bilan.retires++; });
           });
@@ -6996,7 +7067,7 @@
       if(!releve || typeof releve !== 'object') return;
       Object.keys(releve).forEach(function(k){
         var r = releve[k];
-        if(!r || !r.id) return;
+        if(!r || !r.id || !r.cree) return;   /* un evenement adopte (le tien) reste */
         chaine = chaine.then(function(){ return mcp.callTool('Google Calendar', 'delete_event', {calendarId: GCAL_CALENDRIER, eventId: r.id, notificationLevel:'NONE'}).catch(function(){}).then(function(){ n++; }); });
       });
       chaine = chaine.then(function(){ try{ localStorage.removeItem(cleGcalJour(iso)); }catch(e){} supprimerDuCloud(cleGcalJour(iso)); });
@@ -7247,8 +7318,16 @@
   fixedCharges = fixedCharges.filter(function(x){ return x && typeof x === 'object' && !Array.isArray(x); });
 
   /* Migration — ajoute les nouvelles charges connues aux installations déjà seedées, sans dupliquer.
-     Ajuste aussi le budget "Abonnements" s'il n'a jamais été personnalisé (== ancien total auto-calculé). */
-  (function(){
+     Ajuste aussi le budget "Abonnements" s'il n'a jamais été personnalisé (== ancien total auto-calculé).
+     UNE fois, sous drapeau, rejouable apres hydratation (meme protection que les habitudes) :
+     sans drapeau elle rejouait a chaque ouverture -- une charge supprimee a la main revenait,
+     et l'hydratation la voyait differer du cloud a chaque fois (rechargement en boucle). */
+  function migrerChargesFixes(){
+    if(load('batcave-fc-migration-v1', false)) return false;
+    var fc = load('batcave-fixed-charges', null);
+    if(Array.isArray(fc)) fixedCharges = fc.filter(function(x){ return x && typeof x === 'object' && !Array.isArray(x); });
+    var bl = load('batcave-budget-limits', null);
+    if(bl && typeof bl === 'object' && !Array.isArray(bl)) budgetLimits = bl;
     var FIXED_CHARGES_MIGRATION = [
       {id:'fc8', label:'iCloud', montant:3, cat:'Abonnements'},
       {id:'fc9', label:'Claude Pro', montant:22, cat:'Abonnements'}
@@ -7264,7 +7343,15 @@
         save('batcave-budget-limits', budgetLimits);
       }
     }
-  })();
+    saveInternal('batcave-fc-migration-v1', true);
+    return added;
+  }
+  migrerChargesFixes();
+  MIGRATIONS_DEMARRAGE.push({cle:'batcave-fc-migration-v1', rejouer: function(){
+    if(!migrerChargesFixes()) return false;
+    try{ renderBudget(); renderDashboard(); }catch(e){}
+    return true;
+  }});
 
   /* Ajustements de prix connus — appliqués UNE seule fois, et seulement si le montant est resté
      celui d'origine (si tu l'as modifié toi-même, ta valeur est conservée). La charge déjà passée
