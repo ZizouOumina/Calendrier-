@@ -98,15 +98,15 @@ console.log('\n== 102) Bloc en cours / prochain bloc sous le réacteur ==');
 
 console.log('\n== 103) Clés inconnues du code signalées, clés connues laissées tranquilles ==');
 {
-  const { ctx, fr, page } = await ouvrir(VENDREDI, { local: { 'batcave-matieres': [{annales:[]},{annales:[]}], 'batcave-fixed-logged-2026-09': true, 'batcave-examens': {'Anatomía I':'2026-10-16'} } });
+  const { ctx, fr, page } = await ouvrir(VENDREDI, { local: { 'batcave-ancienne-cle': [{annales:[]},{annales:[]}], 'batcave-fixed-logged-2026-09': true, 'batcave-examens': {'Anatomía I':'2026-10-16'} } });
   const t = await txt(fr, '#coherence-liste');
   ok(await visible(fr, '#coherence-banner'), 'la bannière est visible');
-  ok(/Clé inconnue du code : batcave-matieres/.test(t || ''), 'batcave-matieres est signalée');
+  ok(/Clé inconnue du code : batcave-ancienne-cle/.test(t || ''), 'batcave-ancienne-cle est signalée');
   ok(!/fixed-logged|examens/.test(t || ''), 'les clés connues (préfixe daté, examens) ne le sont pas');
   await fr.evaluate(() => document.querySelector('[data-cle-ignorer]').click());
   await page.waitForTimeout(200);
-  ok(await fr.evaluate(() => JSON.parse(localStorage.getItem('batcave-coherence-ignore-cle-batcave-matieres'))) === true, 'Ignorer pose le drapeau');
-  ok(!/batcave-matieres/.test((await txt(fr, '#coherence-liste')) || ''), 'et la ligne disparaît');
+  ok(await fr.evaluate(() => JSON.parse(localStorage.getItem('batcave-coherence-ignore-cle-batcave-ancienne-cle'))) === true, 'Ignorer pose le drapeau');
+  ok(!/batcave-ancienne-cle/.test((await txt(fr, '#coherence-liste')) || ''), 'et la ligne disparaît');
   await ctx.close();
 }
 
