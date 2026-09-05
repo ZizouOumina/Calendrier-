@@ -1,0 +1,50 @@
+name: Campagne Batcave
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  tests:
+    name: Tests Playwright + audit d'affichage
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Dépendances (Playwright, serveur statique)
+        run: npm install --no-audit --no-fund
+
+      - name: Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Serveur de test (sert tests/host.html et la copie de batcave.html)
+        run: |
+          cd tests
+          nohup npx http-server -p 8199 -c-1 --silent . > /tmp/http.log 2>&1 &
+          for i in $(seq 1 30); do curl -sf -o /dev/null http://127.0.0.1:8199/host.html && break; sleep 1; done
+          curl -sf -o /dev/null http://127.0.0.1:8199/host.html
+
+      - name: Campagne complète
+        run: |
+          bash tests/runall.sh
+          echo "== Verdicts =="
+          grep -E "^=== |EXIT:|ERREURS: [0-9]+|TOUT VERT|TOUS LES TESTS|ÉCHEC|  FAIL|PAGEERROR" /tmp/reg10.log | grep -v "ERR_TUNNEL" || true
+          if grep -qE "EXIT:[1-9]|SYNC_FAIL" /tmp/reg10.log || ! grep -q ALL_DONE /tmp/reg10.log; then
+            echo "::error::La campagne a des échecs"; exit 1
+          fi
+
+      - name: Audit d'affichage (3 gabarits)
+        run: |
+          cd tests
+          node audit.mjs | tee /tmp/audit.log | tail -25
+          grep -q "AUCUN DEFAUT" /tmp/audit.log
+
+      - name: Journal complet en cas d'échec
+        if: failure()
+        run: cat /tmp/reg10.log | tail -200

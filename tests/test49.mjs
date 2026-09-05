@@ -77,12 +77,12 @@ console.log('\n== 120) Boucle poids → calories ==');
   k = await fr.evaluate(() => ({ sub: document.getElementById('meal-kcal-sub').innerText, txt: document.getElementById('kcal-analyse').innerText.replace(/\s+/g,' ') }));
   ok(/\/ 3237 kcal \(plan 3087 \+ 150\)/.test(k.sub), 'la barre Repas vise 3237 kcal : ' + k.sub);
   ok(/Cible calorique actuelle : 3237 kcal/.test(k.txt), 'l\'analyse affiche la cible ajustée');
-  /* tout coché aujourd'hui → 3087/3237 = 95 %, partout */
+  /* tout coché aujourd'hui → 3237/3237 = 100 % : l'ajustement vit dans le dîner, l'apport le suit */
   /* un clic redessine la grille : on re-cherche la premiere case non cochee a chaque tour */
   await fr.evaluate(() => { for(let i = 0; i < 60; i++){ const cb = document.querySelector('#meal-grid input[type="checkbox"]:not(:checked)'); if(!cb) break; cb.click(); } });
   await page.waitForTimeout(300);
   const pct = await fr.evaluate(() => ({ repas: document.getElementById('meal-kcal-pct').innerText, dash: document.getElementById('dash-meals-kcal-pct').innerText }));
-  ok(pct.repas === '95%' && /^95% kcal$/.test(pct.dash), 'Repas et tableau de bord d\'accord : 95 % (' + pct.repas + ' / ' + pct.dash + ')');
+  ok(pct.repas === '100%' && /^100% kcal$/.test(pct.dash), 'Repas et tableau de bord d\'accord : 100 % (' + pct.repas + ' / ' + pct.dash + ')');
   await fr.evaluate(() => document.getElementById('kcal-reset').click());
   await page.waitForTimeout(300);
   ok(await local(fr, 'batcave-kcal-ajustement') === null && (await fr.evaluate(() => document.getElementById('meal-kcal-pct').innerText)) === '100%', 'retour au plan de base → 100 %');

@@ -1,0 +1,16 @@
+{
+  "name": "la-batcave",
+  "private": true,
+  "version": "1.0.0",
+  "description": "La Batcave — application personnelle en un seul fichier, avec sa campagne de tests Playwright.",
+  "type": "module",
+  "scripts": {
+    "serve": "cd tests && http-server -p 8199 -c-1 .",
+    "test": "bash tests/runall.sh && grep -q ALL_DONE /tmp/reg10.log && ! grep -qE 'EXIT:[1-9]' /tmp/reg10.log",
+    "audit": "cd tests && node audit.mjs"
+  },
+  "devDependencies": {
+    "http-server": "^14.1.1",
+    "playwright": "1.56.1"
+  }
+}

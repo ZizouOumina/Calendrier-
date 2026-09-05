@@ -660,6 +660,8 @@
   .bc-r .k{ color:var(--ink-faint); letter-spacing:0.12em; font-size:10px; }
   .bc-r .v{ color:var(--ink); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:46ch; }
   .bc-r.bc-alerte{ color:var(--cyan-bright); }
+  .bc-r.bc-clic{ cursor:pointer; } .bc-r.bc-clic:hover .v{ color:var(--cyan-bright); text-decoration:underline; }
+  .bc-r.bc-clic:focus-visible{ outline:2px solid var(--cyan); outline-offset:2px; }
   #dash-spotify:not([hidden]) + .bc-spotify-off{ display:none; }
   .bc-actions{ margin-left:auto; display:inline-flex; gap:6px; align-items:center; }
   .bc-actions .btn{ padding:6px 10px; font-size:11.5px; }
@@ -985,6 +987,7 @@
           <span class="bc-r" id="bc-sync"><span class="k">SYNC</span><span class="v" style="color:var(--ink-faint);">local</span></span>
           <span class="bc-r"><span class="k">♫</span><span class="v" id="dash-spotify" hidden></span><span class="v bc-spotify-off" style="color:var(--ink-faint);">rien en lecture</span></span>
           <span class="bc-r"><span class="k">SAUVEGARDE</span><span class="v" id="bc-backup">—</span></span>
+          <span class="bc-r bc-clic" id="bc-cloture" role="button" tabindex="0" title="Clôture du jour : sommeil, poids, eau, humeur, habitudes, une note — 60 secondes"><span class="k">CLÔTURE</span><span class="v">—</span></span>
         </div>
       </header>
 
@@ -1229,6 +1232,18 @@
         <span class="eyebrow">Dossier N° 17</span>
         <h1>Agenda Batcave</h1>
         <p class="desc">Tout ton temps de travail regroupé : révision et projets perso, mois par mois et heure par heure.</p>
+      </div>
+
+      <!-- Rappels sur telephone : la Batcave tourne dans claude.ai et ne peut pas notifier ;
+           Google Calendar, si. Visible seulement quand le connecteur est la (version publiee). -->
+      <div class="panel sub-panel" id="gcal-panel" hidden style="margin-bottom:16px;">
+        <div class="sub-head"><h3>📲 Rappels sur téléphone</h3><span class="sub-note" id="gcal-statut">désactivé</span></div>
+        <p class="sub-note" style="line-height:1.65; margin-bottom:10px;">Quand c'est activé, les blocs du planning d'<b style="color:var(--ink-dim);">aujourd'hui et de demain</b> (sport, révision, projets perso, coucher) sont écrits dans ton Google Calendar avec un rappel 5 min avant — 30 min pour le coucher, le temps d'éteindre l'écran. Un événement par bloc et par jour, jamais de doublon : un bloc déjà présent est reconnu, un bloc déplacé est mis à jour, un bloc retiré du planning est supprimé. Les blocs déjà commencés ne sont pas envoyés.</p>
+        <div class="card-actions" style="flex-wrap:wrap;">
+          <button class="btn btn-primary" id="gcal-toggle" type="button">Activer les rappels</button>
+          <button class="btn" id="gcal-pousser" type="button" hidden>Pousser maintenant</button>
+        </div>
+        <p class="sub-note" id="gcal-detail" style="margin-top:8px;"></p>
       </div>
 
       <div class="stat-grid" id="ag-stats"></div>
@@ -1820,8 +1835,9 @@
         <div id="shopify-chart"></div>
       </div>
 
-      <div class="panel sub-panel" style="margin-top:18px;">
-        <h3>Revue hebdomadaire</h3>
+      <div class="panel sub-panel" style="margin-top:18px;" id="revue-panel">
+        <div class="sub-head"><h3>Revue hebdomadaire</h3><span class="sub-note">trois constats calculés, puis trois questions</span></div>
+        <ul class="mini-list" id="rv-constats" style="margin-bottom:14px;"></ul>
         <div class="add-form">
           <div class="f"><label>Semaine du</label><input type="date" id="rv-date"></div>
           <div class="f" style="flex:1; min-width:160px;"><label>Ce qui a bien marché</label><input type="text" id="rv-marche" style="width:100%;"></div>
@@ -1865,9 +1881,10 @@
         <button class="btn" id="courses-reset">Réinitialiser pour samedi prochain</button>
       </div>
 
+      <p class="sub-note" id="courses-plan-note" style="margin-bottom:12px; line-height:1.7;"></p>
       <div class="courses-grid" id="courses-grid"></div>
 
-      <p class="sub-note" style="margin-top:16px; line-height:1.7;">Budget réaliste : <b style="color:var(--ink-dim)">~75-80 €/semaine</b> (~64 € avec poulet + riz, le moins cher, à ~90 € avec saumon + patate douce, le plus cher) — soit <b style="color:var(--ink-dim)">~310 €/mois</b>.</p>
+      <p class="sub-note" id="courses-budget" style="margin-top:16px; line-height:1.7;"></p>
     </section>
 
     <footer class="page-foot">La Batcave · suivi personnel · données stockées uniquement sur cet appareil</footer>
@@ -1942,6 +1959,41 @@
     <div class="card-actions" style="justify-content:flex-end;">
       <button class="btn" id="ask-cancel" type="button">Annuler</button>
       <button class="btn btn-primary" id="ask-ok" type="button">Confirmer</button>
+    </div>
+  </div>
+</div>
+
+<!-- Clôture du jour : un seul écran le soir. Sommeil (Bevel te donne le chiffre), poids,
+     eau, humeur, habitudes pas encore cochées, une ligne -- et le dimanche, la revue de
+     la semaine. Tout écrit dans le journal du jour et le carnet d'habitudes existants. -->
+<div class="overlay" id="cloture-overlay" hidden>
+  <div class="overlay-panel" style="max-width:580px;">
+    <div class="overlay-head">
+      <h3>🌙 Clôture du jour</h3>
+      <button class="edel" id="cloture-close" aria-label="Plus tard" style="font-size:22px;">×</button>
+    </div>
+    <p class="sub-note" id="cloture-date" style="margin-bottom:14px;"></p>
+    <div class="field-grid" style="margin-bottom:12px;">
+      <div class="field-row"><label for="cl-sommeil">Sommeil de la nuit dernière (h)</label><input type="number" id="cl-sommeil" min="0" max="16" step="0.5" inputmode="decimal" placeholder="ex : 7,5"></div>
+      <div class="field-row"><label for="cl-poids">Poids ce matin (kg)</label><input type="number" id="cl-poids" min="30" max="200" step="0.1" inputmode="decimal" placeholder="ex : 64,2"></div>
+    </div>
+    <div class="field-row" style="margin-bottom:12px;"><label>Eau bue aujourd'hui</label>
+      <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;"><button class="btn" type="button" id="cl-eau-moins">−250 ml</button><b id="cl-eau" style="min-width:64px; text-align:center; color:var(--cyan-bright); font-family:var(--font-display); font-size:22px;">0,0 L</b><button class="btn" type="button" id="cl-eau-plus">+250 ml</button><span class="sub-note" id="cl-eau-note"></span></div></div>
+    <div class="field-row" style="margin-bottom:12px;"><label>Humeur du jour</label><div class="mood-row" id="cl-humeur"></div></div>
+    <div class="field-row" style="margin-bottom:12px;"><label>Habitudes pas encore cochées <span class="sub-note">(touche pour cocher)</span></label><div class="chip-group" id="cl-habitudes"></div></div>
+    <div class="field-row" style="margin-bottom:14px;"><label for="cl-note">Une ligne sur la journée</label><input type="text" id="cl-note" placeholder="ce qui a marché, ce qui a coincé…" maxlength="300"></div>
+    <div id="cl-revue" hidden style="margin-bottom:14px; padding:12px 14px; background:var(--surface-hover); border:1px solid var(--border);">
+      <p style="font-weight:600; color:var(--ink); font-size:13.5px; margin-bottom:8px;">🗓️ Dimanche : revue de la semaine</p>
+      <ul class="mini-list" id="cl-constats" style="margin-bottom:12px;"></ul>
+      <div class="field-grid">
+        <div class="field-row"><label for="cl-rv-marche">Ce qui a bien marché</label><input type="text" id="cl-rv-marche"></div>
+        <div class="field-row"><label for="cl-rv-coince">Ce qui a coincé</label><input type="text" id="cl-rv-coince"></div>
+        <div class="field-row"><label for="cl-rv-ajust">Un changement pour la semaine prochaine</label><input type="text" id="cl-rv-ajust"></div>
+      </div>
+    </div>
+    <div class="card-actions" style="flex-wrap:wrap;">
+      <button class="btn btn-primary" id="cloture-valider" type="button" style="flex:1; min-width:200px;">Clôturer la journée 🦇</button>
+      <button class="btn" id="cloture-plus-tard" type="button">Plus tard</button>
     </div>
   </div>
 </div>
@@ -2106,7 +2158,7 @@
      re-pousserait un a un des centaines de documents et deferait la compaction. */
   var COMPACTION_AGE_JOURS = 90;
   function moisArchivable(key){
-    var m = /^batcave-(?:journal|meals|sport|cal)-(\d{4}-\d{2})-\d{2}$/.exec(key)
+    var m = /^batcave-(?:journal|meals|sport|cal|gcal)-(\d{4}-\d{2})-\d{2}$/.exec(key)
          || /^batcave-manque-traite-(\d{4}-\d{2})-\d{2}-[a-z]+$/.exec(key)
          || /^batcave-(?:fc-logged-[A-Za-z0-9]+|fixed-logged)-(\d{4}-\d{2})$/.exec(key);
     return m ? m[1] : null;
@@ -2186,17 +2238,30 @@
      vestige : une fonctionnalite retiree (batcave-matieres) ou un essai. Elle prend de la
      place dans le quota de 5000 documents et embrouille les sauvegardes, sans que rien ne
      la lise jamais. On la signale ; la suppression reste ton geste. */
-  var CLES_CONNUES = ['addictions','budget-limits','business','coran','cours','courses','dash-more','duaas','duree-bloc','sport-log','objectifs','objectifs-seed-v1','kcal-ajustement',
+  var CLES_CONNUES = ['addictions','budget-limits','business','coran','cours','courses','dash-more','duaas','duree-bloc','sport-log','objectifs','objectifs-seed-v1','kcal-ajustement','gcal-ecriture',
     'espagnol','examens','fc-prix-icloud-3','fixed-charges','goals','habitlog','habits','habits-seed-v2','habits-seed-v3',
     'horizon','last-auto-backup','last-manual-backup','last-bilan-prompt','last-compaction','last-open','last-rotation','notion-url',
     'pomodial-purge','projets','report','revision','revision-fusionnee','revue','sante','sauvegarde','sessions',
     'shopify-last-order-count','taches','timer','transactions','undo-stack','undo-toast','cloud-reload-at','cloud-toast'];
-  var PREFIXES_CONNUS = ['archive-','cal-','coherence-ignore-','fc-logged-','fixed-logged-','journal-','manque-traite-',
+  var PREFIXES_CONNUS = ['archive-','cal-','coherence-ignore-','fc-logged-','fixed-logged-','gcal-','journal-','manque-traite-',
     'meals-','pomodial-','sauvegarde-','sport-'];
   function cleConnue(k){
     var court = k.replace(/^batcave-/, '');
     if(CLES_CONNUES.indexOf(court) !== -1) return true;
     return PREFIXES_CONNUS.some(function(p){ return court.indexOf(p) === 0; });
+  }
+  /* Vestiges de fonctions retirees : « batcave-matieres » (onglet matieres, remplace par
+     les cours) n'est supprime que s'il ne porte aucune donnee ; « batcave-gcal-ecriture »
+     en booleen est l'ancien drapeau d'ecriture calendrier -- la nouvelle version stocke un
+     objet. Idempotent, sans drapeau : rien a rejouer. */
+  function nettoyerVestiges(){
+    var mat = load('batcave-matieres', null);
+    if(mat !== null){
+      var vide = !Array.isArray(mat) || mat.every(function(m){ return !m || ((!Array.isArray(m.annales) || !m.annales.length) && (m.ressenti === null || m.ressenti === undefined) && !m.nom && !(m.erreurs && m.erreurs.length)); });
+      if(vide){ try{ localStorage.removeItem('batcave-matieres'); }catch(e){} supprimerDuCloud('batcave-matieres'); }
+    }
+    var g = load('batcave-gcal-ecriture', null);
+    if(g !== null && typeof g !== 'object'){ try{ localStorage.removeItem('batcave-gcal-ecriture'); }catch(e){} supprimerDuCloud('batcave-gcal-ecriture'); }
   }
   function clesInconnues(){
     var out = [];
@@ -2550,8 +2615,10 @@
                      search_files         (retrouver tes sauvegardes, rotation)
                      download_file_content (restauration en un clic)
                      trash_file           (rotation : corbeille, jamais de suppression definitive)
-       Google Calendar : list_events       (LECTURE SEULE — l'appli n'écrit jamais
-                         dans ton agenda : les blocs Pomodoro restent en interne)
+       Google Calendar : list_events       (vue semaine + relecture avant tout envoi)
+                         create_event, update_event, delete_event
+                                              (rappels sur telephone : blocs du planning,
+                                               seulement si l'option est activee dans Agenda)
      Rafraîchissement périodique (30-120s selon le widget), pas un push
      instantané — c'est la limite technique du polling côté connecteur. */
   var mcpHandle = null;
@@ -2562,6 +2629,10 @@
       mcpHandle = mcp;
       var driveRow = document.getElementById('drive-backup-row');
       if(driveRow) driveRow.hidden = false;
+      /* rappels Google Calendar : le panneau apparait, et si l'option est active les blocs
+         d'aujourd'hui et de demain partent quelques secondes apres l'ouverture */
+      try{ renderGcalPanel(); }catch(e){}
+      setTimeout(function(){ try{ if(gcalActif()) pousserRappels(mcp); }catch(e){} }, 6000);
 
       /* Météo (AccuWeather) — le fetch direct est bloqué côté hébergé, le connecteur non */
       mcp.watchTool('AccuWeather®', 'widgets-current-claude', {queryParams:{locationKey:'310681', unit:'metric', lang:'fr'}}, function(ev){
@@ -2790,6 +2861,8 @@
   function tickClock(){
     var t = new Date().toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'});
     ['sb-clock', 'bc-clock'].forEach(function(id){ var el = document.getElementById(id); if(el) el.textContent = t; });
+    /* la page reste ouverte toute la soiree : la cloture doit se proposer d'elle-meme */
+    try{ if(typeof journalState !== 'undefined' && journalState){ majReleveCloture(); verifierCloture(); } }catch(e){}
   }
   /* La barre du Batcomputer reflete l'etat de synchro affiche dans le rail : une seule
      source (#cloud-status), recopiee a chaque changement. */
@@ -4445,6 +4518,42 @@
   ];
   var mealKey = 'batcave-meals-' + todayISO;
   var mealState = load(mealKey, {});
+  /* ===== Plan → quantites =====
+     Le feculent et la proteine du dejeuner et du diner tournent ; chaque option porte ses
+     grammes crus par repas, sa densite calorique (kcal/g cru) et son prix. La liste de
+     courses en decoule (× 7 jours), et l'ajustement de la boucle poids → calories se lit
+     dans le feculent du DINER : +150 kcal = +40 g de riz cru, ecrit dans le plan. */
+  var FECULENTS = [
+    {nom:'Riz',            dej:90,  din:110, kcalG:3.6,  prixKg:0.71},
+    {nom:'Pâtes',          dej:90,  din:110, kcalG:3.6,  prixKg:0.79},
+    {nom:'Pomme de terre', dej:420, din:510, kcalG:0.77, prixKg:0.51},
+    {nom:'Patate douce',   dej:380, din:465, kcalG:0.86, prixKg:1.02}
+  ];
+  var PROTEINES = [
+    {nom:'Poulet',           dej:110, din:145, prixKg:6.5},
+    {nom:'Viande hachée 5%', dej:125, din:165, prixKg:7.5},
+    {nom:'Thon',             dej:105, din:140, prixKg:11},
+    {nom:'Saumon / colin',   dej:140, din:190, prixKg:12}
+  ];
+  /* grammes de feculent cru equivalant a un ajustement en kcal, arrondis a 10 g */
+  function grammesAjustement(kcal, kcalG){ return Math.round((Number(kcal) || 0) / kcalG / 10) * 10; }
+  function texteFeculent(repas, ajust){
+    return 'Féculent cru — ' + FECULENTS.map(function(f){
+      var g = f[repas] + (repas === 'din' ? grammesAjustement(ajust, f.kcalG) : 0);
+      return f.nom + ' ' + g + 'g';
+    }).join(' / ') + (repas === 'din' && ajust ? ' (boucle kcal ' + (ajust > 0 ? '+' : '') + ajust + ' kcal)' : '');
+  }
+  /* Le libelle d'un item, avec l'ajustement du jour dans le feculent du diner. */
+  function texteItemRepas(m, it, ii, iso){
+    if(m.name === 'Dîner' && ii === 0) return texteFeculent('din', ajustementKcalPour(iso || todayISO));
+    return it;
+  }
+  function texteKcalRepas(m, iso){
+    var a = m.name === 'Dîner' ? ajustementKcalPour(iso || todayISO) : 0;
+    if(!a) return m.kcal;
+    var base = parseMealMacros(m.kcal);
+    return m.kcal.replace(/~?\d+\s*kcal/, '~' + (base.kcal + a) + ' kcal').replace(/G(\d+)/, function(x, g){ return 'G' + (Number(g) + Math.round(a / 4.8)); });
+  }
 
   function mealTotals(){
     var total=0, checked=0;
@@ -4478,16 +4587,20 @@
     var st = stateOverride || mealState;
     var totals = {kcal:0, p:0, g:0, l:0};
     var targets = {kcal:0, p:0, g:0, l:0};
+    var ajust = ajustementKcalPour(iso || todayISO), plan = 0;
     MEALS.forEach(function(m, mi){
       var macros = parseMealMacros(m.kcal);
+      plan += macros.kcal;
+      /* l'ajustement de la boucle poids est porte par le feculent du diner : la cible ET
+         l'apport consomme (diner coche) le suivent, pas seulement une ligne de total */
+      if(m.name === 'Dîner' && ajust){ macros.kcal += ajust; macros.g += Math.round(ajust / 4.8); }
       targets.kcal += macros.kcal; targets.p += macros.p; targets.g += macros.g; targets.l += macros.l;
       var itemsChecked = m.items.filter(function(it, ii){ return st[mi+'-'+ii]; }).length;
       var frac = m.items.length ? itemsChecked/m.items.length : 0;
       totals.kcal += macros.kcal*frac; totals.p += macros.p*frac; totals.g += macros.g*frac; totals.l += macros.l*frac;
     });
-    targets.plan = targets.kcal;
-    targets.ajustement = ajustementKcalPour(iso || todayISO);
-    targets.kcal += targets.ajustement;
+    targets.plan = plan;
+    targets.ajustement = ajust;
     return {totals:totals, targets:targets};
   }
   /* Tendance de poids : moyenne des pesees des 7 derniers jours contre celle des 7 jours
@@ -4526,8 +4639,8 @@
     lignes.push('Rythme visé : <b style="color:var(--ink);">' + kg(b.rythmeVise) + ' / semaine</b> (objectif poids sur son horizon).');
     if(b.delta !== null) lignes.push('Tendance : <b style="color:var(--ink);">' + kg(b.delta) + '</b> cette semaine (' + b.moyAvant.toFixed(1).replace('.', ',') + ' → ' + b.moyRecente.toFixed(1).replace('.', ',') + ' kg en moyenne).');
     lignes.push((b.delta === null ? '' : '→ ') + b.motif);
-    if(b.reco && b.reco > 0) lignes.push('<span class="sub-note">+150 kcal ≈ 40 g de riz cru en plus au dîner, ou une cuillère à soupe de beurre de cacahuète à la collation du soir.</span>');
-    if(b.reco && b.reco < 0) lignes.push('<span class="sub-note">−100 kcal ≈ l\'huile d\'olive du dîner ramenée à 10 ml, ou 30 g de riz cru en moins.</span>');
+    if(b.reco && b.reco > 0) lignes.push('<span class="sub-note">+150 kcal = +40 g de riz cru au dîner (ou l\'équivalent en pâtes / pommes de terre / patate douce) — écrit dans le plan et dans la liste de courses dès que tu appliques.</span>');
+    if(b.reco && b.reco < 0) lignes.push('<span class="sub-note">−100 kcal = −30 g de riz cru au dîner (ou l\'équivalent) — écrit dans le plan et dans la liste de courses dès que tu appliques.</span>');
     el.innerHTML = lignes.map(function(l){ return '<p>' + l + '</p>'; }).join('');
     var cibleReco = b.delta === null ? null : actuel + b.reco;
     if(bApp){
@@ -4536,8 +4649,8 @@
       bApp.onclick = function(){
         kcalAjust = {valeur: cibleReco, depuis: todayISO};
         save('batcave-kcal-ajustement', kcalAjust);
-        showToast('🍽️ Cible calorique : ' + Math.round(plan + cibleReco) + ' kcal/jour à partir d\'aujourd\'hui.');
-        renderMealBar(); renderKcalBoucle(); renderDashboard(); renderBilan();
+        showToast('🍽️ Cible calorique : ' + Math.round(plan + cibleReco) + ' kcal/jour à partir d\'aujourd\'hui — plan et courses mis à jour.');
+        renderMeals(); renderMealBar(); construireCourses(); renderCourses(); renderCoursesSummary(); renderDashboard(); renderBilan();
       };
     }
     if(bReset){
@@ -4546,8 +4659,8 @@
         kcalAjust = null;
         try{ localStorage.removeItem('batcave-kcal-ajustement'); }catch(e){}
         supprimerDuCloud('batcave-kcal-ajustement');
-        showToast('🍽️ Retour au plan de base (' + Math.round(plan) + ' kcal).');
-        renderMealBar(); renderKcalBoucle(); renderDashboard(); renderBilan();
+        showToast('🍽️ Retour au plan de base (' + Math.round(plan) + ' kcal) — plan et courses mis à jour.');
+        renderMeals(); renderMealBar(); construireCourses(); renderCourses(); renderCoursesSummary(); renderDashboard(); renderBilan();
       };
     }
     if(note) note.textContent = b.delta === null ? 'en attente de pesées' : (b.reco ? 'recommandation : ' + (b.reco > 0 ? '+' : '') + b.reco + ' kcal' : 'rien à changer');
@@ -4561,9 +4674,9 @@
       card.className = 'meal-card';
       var itemsHtml = m.items.map(function(it, ii){
         var key = mi+'-'+ii, checked = !!mealState[key];
-        return '<li class="'+(checked?'checked':'')+'"><input type="checkbox" id="m-'+key+'" data-meal="'+key+'" '+(checked?'checked':'')+'><label for="m-'+key+'">'+it+'</label></li>';
+        return '<li class="'+(checked?'checked':'')+'"><input type="checkbox" id="m-'+key+'" data-meal="'+key+'" '+(checked?'checked':'')+'><label for="m-'+key+'">'+texteItemRepas(m, it, ii)+'</label></li>';
       }).join('');
-      card.innerHTML = '<div class="meal-head"><span class="mtitle">'+m.name+'</span><span class="mkcal">'+m.kcal+'</span></div><ul class="meal-items">'+itemsHtml+'</ul>';
+      card.innerHTML = '<div class="meal-head"><span class="mtitle">'+m.name+'</span><span class="mkcal">'+texteKcalRepas(m)+'</span></div><ul class="meal-items">'+itemsHtml+'</ul>';
       grid.appendChild(card);
     });
     grid.querySelectorAll('input[type="checkbox"]').forEach(function(cb){
@@ -5602,40 +5715,47 @@
   }
 
   /* ================= COURSES ================= */
-  var COURSES = [
-    {cat:'Protéines (rotation, ~14 portions/sem)', items:[
-      'Poulet — 1,8 kg (~11,70 €)',
-      'Viande hachée 5% — 2 kg (~15 €)',
-      'Thon — 1,7 kg (~18,70 €)',
-      'Saumon / colin — 2,3 kg (~27,60 €)',
-      'Œufs — 21 (~5 €)',
-      'Jambon — 280 g (~3 €)',
-      'Fromage — 140 g (~1,80 €)'
-    ]},
-    {cat:'Féculents (selon rotation)', items:[
-      'Riz — 1,4 kg (~1 €)',
-      'Pâtes — 1,4 kg (~1,10 €)',
-      'Pomme de terre — 6,5 kg (~3,30 €)',
-      'Patate douce — 5,9 kg (~6 €)',
-      'Pain complet — 2 paquets (~3,60 €)'
-    ]},
-    {cat:'Fruits & légumes', items:[
-      'Légumes verts — 2,8 kg (~7 €)',
-      'Bananes — ×7 (~1,40 €)',
-      'Fruits variés — ×7 (~2,10 €)',
-      'Avocats — ×4 gros (~6 €)'
-    ]},
-    {cat:'Laitiers', items:[
-      'Lait — 1,5 L (~1,50 €)',
-      'Yaourt grec / skyr — 2,1 kg (~8,40 €)'
-    ]},
-    {cat:'Épicerie', items:[
-      'Beurre de cacahuète (~3,50 €)',
-      'Amandes — 200 g (~3 €)',
-      'Huile d\'olive (~1 €)',
-      'Miel (~2,50 €)'
-    ]}
-  ];
+  /* ===== Liste de courses = plan de repas × 7 jours =====
+     Chaque ligne vient des quantites journalieres du plan (FECULENTS, PROTEINES et les
+     autres items). Le feculent du diner porte l'ajustement kcal en vigueur : +150 kcal =
+     +40 g de riz cru par jour, +280 g sur la semaine. Meme ordre, meme nombre d'articles
+     qu'avant : les cases cochees (batcave-courses, indexees) restent valables. */
+  function planCoursesSemaine(ajust){
+    var J = 7;
+    var kg = function(gJour){ return gJour * J / 1000; };
+    var fmtKg = function(x){ return (Math.round(x * 10) / 10).toFixed(1).replace('.', ',') + ' kg'; };
+    var prot = PROTEINES.map(function(p){ var g = p.dej + p.din; return {label: p.nom, qte: fmtKg(kg(g)) + ' (' + g + ' g/j)', prix: kg(g) * p.prixKg, rotation:'proteine'}; })
+      .concat([{label:'Œufs', qte:'21 (3/j)', prix:5}, {label:'Jambon', qte:'280 g (40 g/j)', prix:3}, {label:'Fromage', qte:'140 g (20 g/j)', prix:1.8}]);
+    var fec = FECULENTS.map(function(f){
+      var plus = grammesAjustement(ajust, f.kcalG), g = f.dej + f.din + plus;
+      return {label: f.nom, qte: fmtKg(kg(g)) + ' (' + g + ' g/j' + (plus ? ', dont ' + (plus > 0 ? '+' : '') + plus + ' g boucle kcal' : '') + ')', prix: kg(g) * f.prixKg, rotation:'feculent'};
+    }).concat([{label:'Pain complet', qte:'2 paquets (120 g/j)', prix:3.6}]);
+    return [
+      {cat:'Protéines (rotation, ~14 portions/sem)', items: prot},
+      {cat:'Féculents (selon rotation)', items: fec},
+      {cat:'Fruits & légumes', items:[{label:'Légumes verts', qte:'2,8 kg (400 g/j)', prix:7}, {label:'Bananes', qte:'×7 (1/j)', prix:1.4}, {label:'Fruits variés', qte:'×7 (1/j)', prix:2.1}, {label:'Avocats', qte:'×4 gros (½/j)', prix:6}]},
+      {cat:'Laitiers', items:[{label:'Lait', qte:'1,5 L (200 ml/j)', prix:1.5}, {label:'Yaourt grec / skyr', qte:'2,1 kg (300 g/j)', prix:8.4}]},
+      {cat:'Épicerie', items:[{label:'Beurre de cacahuète', qte:'280 g (40 g/j)', prix:3.5}, {label:'Amandes', qte:'175 g (25 g/j)', prix:2.6}, {label:'Huile d\'olive', qte:'~200 ml', prix:1}, {label:'Miel', qte:'105 g (15 g/j)', prix:2.5}]}
+    ];
+  }
+  function fmtEuro(x){ var r = Math.round(x * 10) / 10; return '~' + String(r).replace('.', ',') + ' €'; }
+  var COURSES = [];
+  function construireCourses(){
+    var plan = planCoursesSemaine(ajustementKcalPour(todayISO));
+    COURSES = plan.map(function(c){ return {cat: c.cat, items: c.items.map(function(i){ return i.label + ' — ' + i.qte + ' (' + fmtEuro(i.prix) + ')'; })}; });
+    return plan;
+  }
+  /* budget de la semaine : le fixe + la rotation la moins chere / la plus chere */
+  function budgetCourses(plan){
+    var fixe = 0, minRot = 0, maxRot = 0;
+    plan.forEach(function(c){
+      var rot = {};
+      c.items.forEach(function(i){ if(i.rotation){ rot[i.rotation] = rot[i.rotation] || []; rot[i.rotation].push(i.prix); } else fixe += i.prix; });
+      Object.keys(rot).forEach(function(k){ minRot += Math.min.apply(null, rot[k]); maxRot += Math.max.apply(null, rot[k]); });
+    });
+    return {min: fixe + minRot, max: fixe + maxRot};
+  }
+  construireCourses();
   var coursesState = load('batcave-courses', {});
 
   function coursesTotals(){
@@ -5645,6 +5765,13 @@
   }
   function renderCourses(){
     var grid = document.getElementById('courses-grid');
+    if(!grid) return;
+    var plan = construireCourses(), ajust = ajustementKcalPour(todayISO), b = budgetCourses(plan);
+    var note = document.getElementById('courses-plan-note'), budget = document.getElementById('courses-budget');
+    if(note) note.innerHTML = 'Quantités = plan de repas × 7 jours. ' + (ajust
+      ? 'Boucle poids → calories en vigueur : <b style="color:var(--ink-dim);">' + (ajust > 0 ? '+' : '') + ajust + ' kcal/jour</b>, soit ' + (grammesAjustement(ajust, 3.6) > 0 ? '+' : '') + grammesAjustement(ajust, 3.6) + ' g de riz cru au dîner (' + (grammesAjustement(ajust, 3.6) * 7 > 0 ? '+' : '') + grammesAjustement(ajust, 3.6) * 7 + ' g sur la semaine) — déjà compté ci-dessous.'
+      : 'Aucun ajustement calorique en cours : quantités du plan de base.');
+    if(budget) budget.innerHTML = 'Budget réaliste : <b style="color:var(--ink-dim)">' + fmtEuro(b.min) + ' à ' + fmtEuro(b.max) + ' / semaine</b> (du moins cher, poulet + riz, au plus cher, saumon + patate douce) — soit <b style="color:var(--ink-dim)">' + fmtEuro(b.min * 52 / 12) + ' à ' + fmtEuro(b.max * 52 / 12) + ' / mois</b>.';
     grid.innerHTML = '';
     COURSES.forEach(function(c, ci){
       var card = document.createElement('div');
@@ -5769,6 +5896,11 @@
       items.push({pri:1, icon:'⏰', text:texte, action:{type:'manque', typeTravail:type, minutes:m.deficit, libre:!!libres.length}});
     });
 
+    /* Le soir, cloturer la journee est LA prochaine action : elle remonte dans le plan. */
+    if(nowMin >= heureDeCloture() && !journalState.cloture){
+      items.push({pri:0.5, icon:'🌙', text:'Clôturer la journée — 60 secondes', action:{type:'cloture'}});
+    }
+
     /* La priorite Basse / Moyenne / Haute etait affichee mais jamais lue : le plan ne triait
        que sur l'echeance. Elle departage maintenant les taches d'un meme rang (Haute avant
        Moyenne avant Basse), et une tache Haute SANS echeance remonte quand meme dans le
@@ -5847,6 +5979,8 @@
         right = '<button class="btn btn-primary" data-plan-tache="'+escapeHtml(it.action.id)+'" style="padding:4px 10px; font-size:11px; flex-shrink:0;">✓ Fait</button>';
       } else if(it.action && it.action.type === 'revision'){
         right = '<button class="btn btn-primary" data-plan-pomodoro="1" style="padding:4px 10px; font-size:11px; flex-shrink:0;">🍅 Pomodoro</button>';
+      } else if(it.action && it.action.type === 'cloture'){
+        right = '<button class="btn btn-primary" data-plan-cloture="1" style="padding:4px 10px; font-size:11px; flex-shrink:0;">🌙 Clôturer</button>';
       } else if(it.action && it.action.type === 'habits'){
         right = '<span style="display:flex; gap:6px; flex-wrap:wrap; justify-content:flex-end; flex-shrink:0;">'+
           it.action.list.map(function(hb){
@@ -5871,6 +6005,9 @@
     });
     el.querySelectorAll('[data-plan-pomodoro]').forEach(function(btn){
       btn.addEventListener('click', lancerPomodoroDepuisDashboard);
+    });
+    el.querySelectorAll('[data-plan-cloture]').forEach(function(btn){
+      btn.addEventListener('click', function(){ ouvrirCloture(); });
     });
     el.querySelectorAll('[data-plan-manque-lancer]').forEach(function(btn){
       btn.addEventListener('click', function(){
@@ -6324,6 +6461,7 @@
     renderSemaineBarres();
     renderEcheances();
     majReleveSauvegarde();
+    majReleveCloture();
     var consoleJour = document.getElementById('dash-console-jour');
     if(consoleJour) consoleJour.textContent = 'CONSOLE · ' + now.toLocaleDateString('fr-FR', {weekday:'long'}).toUpperCase();
 
@@ -6704,6 +6842,169 @@
   }
   function objectifSommeil(){ return objectifSommeilPour(todayISO); }
   function scheduleKeyForToday(){ return isFriday ? 'friday' : (weekday===6 ? 'saturday' : (weekday===0 ? 'weekend' : 'weekday')); }
+
+  /* ================= RAPPELS GOOGLE CALENDAR =================
+     La Batcave tourne dans claude.ai : pas de notification possible. Le telephone, lui,
+     sonne pour un evenement Google Calendar. Quand l'interrupteur est actif, les blocs du
+     planning d'aujourd'hui et de demain (sport, revision, projets perso, coucher) sont
+     ecrits dans l'agenda, un evenement par bloc et par jour.
+       - releve local par jour (batcave-gcal-AAAA-MM-JJ) : cle du bloc → {id, empreinte} ;
+       - avant de creer, on relit la journee dans Google : un evenement Batcave deja la
+         (meme titre, meme debut) est ADOPTE -- jamais de doublon, meme sans releve ;
+       - bloc deplace → update_event ; bloc retire du planning → delete_event ;
+       - un bloc deja commence n'est pas envoye retroactivement ;
+       - appels sequentiels, jamais en rafale.
+     Formes des reponses observees en session : create_event / update_event / delete_event
+     renvoient l'evenement {id, summary, start:{dateTime}, end:{dateTime}, status}. */
+  var GCAL_CALENDRIER = 'zizou.oumina@gmail.com';
+  var gcalEcriture = load('batcave-gcal-ecriture', null);
+  if(!gcalEcriture || typeof gcalEcriture !== 'object' || Array.isArray(gcalEcriture)) gcalEcriture = {actif:false};
+  var gcalEnCours = false;
+  function gcalActif(){ return !!gcalEcriture.actif; }
+  function cleGcalJour(iso){ return 'batcave-gcal-' + iso; }
+  function blocsARappeler(iso){
+    var plan = SCHEDULES[cleJournee(dowDe(iso))] || [], out = [];
+    plan.forEach(function(b, i){
+      var l = b[1], type = /^Sport/.test(l) ? 'sport' : (/Révision Bloc/.test(l) ? 'cours' : (/Projets perso/.test(l) ? 'projet' : (/^Coucher/.test(l) ? 'coucher' : null)));
+      if(!type) return;
+      var d0 = timeToMinutes(b[0]);
+      var d1 = type === 'coucher' ? d0 + 15 : (i < plan.length - 1 ? timeToMinutes(plan[i+1][0]) : d0 + 60);
+      out.push({cle: 'p' + i, type: type, titre: type === 'coucher' ? '🌙 Coucher — écran off' : '🦇 ' + l, debut: d0, fin: d1, rappel: type === 'coucher' ? 30 : 5});
+    });
+    return out;
+  }
+  /* decalage horaire de Madrid pour une date (heure d'ete ou d'hiver) */
+  function decalageMadrid(iso){
+    try{
+      var parts = new Intl.DateTimeFormat('en-US', {timeZone:'Europe/Madrid', timeZoneName:'longOffset'}).formatToParts(new Date(iso + 'T12:00:00Z'));
+      var tz = parts.filter(function(x){ return x.type === 'timeZoneName'; })[0];
+      var m = tz && /GMT([+-]\d{2}:\d{2})/.exec(tz.value);
+      if(m) return m[1];
+    }catch(e){}
+    var d = new Date(iso + 'T12:00:00Z'), y = d.getUTCFullYear();
+    var dernierDimanche = function(mois){ var x = new Date(Date.UTC(y, mois + 1, 0)); x.setUTCDate(x.getUTCDate() - x.getUTCDay()); return x; };
+    return (d >= dernierDimanche(2) && d < dernierDimanche(9)) ? '+02:00' : '+01:00';
+  }
+  function isoAvecHeure(iso, minutes){ return iso + 'T' + minutesToTime(minutes) + ':00' + decalageMadrid(iso); }
+  function empreinteBloc(iso, b){ return isoAvecHeure(iso, b.debut) + '|' + isoAvecHeure(iso, b.fin) + '|' + b.titre; }
+  function pousserRappelsJour(mcp, iso){
+    var releve = load(cleGcalJour(iso), null);
+    if(!releve || typeof releve !== 'object' || Array.isArray(releve)) releve = {};
+    var blocs = blocsARappeler(iso), nowMs = Date.now();
+    var bilan = {crees:0, majs:0, adoptes:0, retires:0, deja:0, passes:0};
+    return mcp.callTool('Google Calendar', 'list_events', {calendarId: GCAL_CALENDRIER, startTime: iso + 'T00:00:00' + decalageMadrid(iso), endTime: iso + 'T23:59:59' + decalageMadrid(iso), timeZone:'Europe/Madrid', pageSize: 250})
+      .then(function(res){
+        var events = (res && res.payload && res.payload.events) || [], parCle = {};
+        events.forEach(function(e){
+          if(!e || !e.summary || !(e.start && e.start.dateTime) || e.status === 'cancelled') return;
+          parCle[e.summary + '|' + new Date(e.start.dateTime).getTime()] = e;
+        });
+        var chaine = Promise.resolve();
+        blocs.forEach(function(b){
+          var emp = empreinteBloc(iso, b), debutMs = new Date(isoAvecHeure(iso, b.debut)).getTime(), connu = releve[b.cle];
+          if(connu && connu.id && connu.empreinte === emp){ bilan.deja++; return; }
+          chaine = chaine.then(function(){
+            var creer = function(){
+              var existant = parCle[b.titre + '|' + debutMs];
+              if(existant && existant.id){ releve[b.cle] = {id: existant.id, empreinte: emp}; bilan.adoptes++; return; }
+              if(debutMs < nowMs - 60000){ bilan.passes++; return; }
+              return mcp.callTool('Google Calendar', 'create_event', {calendarId: GCAL_CALENDRIER, summary: b.titre, startTime: isoAvecHeure(iso, b.debut), endTime: isoAvecHeure(iso, b.fin), timeZone:'Europe/Madrid',
+                                                                    description:'Bloc du planning Batcave.', overrideReminders:[{method:'popup', minutes: b.rappel}], notificationLevel:'NONE',
+                                                                    availability: b.type === 'coucher' ? 'AVAILABILITY_FREE' : 'AVAILABILITY_BUSY'})
+                .then(function(ev){ var p = ev && ev.payload; if(p && p.id){ releve[b.cle] = {id: p.id, empreinte: emp}; bilan.crees++; } });
+            };
+            if(connu && connu.id){
+              /* bloc deplace : on met l'evenement a jour ; s'il a ete supprime a la main dans
+                 Google, la mise a jour echoue et on le recree (l'envoi n'est pas interrompu) */
+              return mcp.callTool('Google Calendar', 'update_event', {calendarId: GCAL_CALENDRIER, eventId: connu.id, summary: b.titre, startTime: isoAvecHeure(iso, b.debut), endTime: isoAvecHeure(iso, b.fin), timeZone:'Europe/Madrid', notificationLevel:'NONE'})
+                .then(function(){ releve[b.cle] = {id: connu.id, empreinte: emp}; bilan.majs++; })
+                .catch(function(){ delete releve[b.cle]; return creer(); });
+            }
+            return creer();
+          });
+        });
+        Object.keys(releve).forEach(function(k){
+          if(blocs.some(function(b){ return b.cle === k; })) return;
+          var r = releve[k];
+          chaine = chaine.then(function(){
+            if(!r || !r.id){ delete releve[k]; return; }
+            return mcp.callTool('Google Calendar', 'delete_event', {calendarId: GCAL_CALENDRIER, eventId: r.id, notificationLevel:'NONE'})
+              .catch(function(){}).then(function(){ delete releve[k]; bilan.retires++; });
+          });
+        });
+        return chaine.then(function(){ save(cleGcalJour(iso), releve); return bilan; });
+      });
+  }
+  function pousserRappels(mcp){
+    if(!mcp || !gcalActif() || gcalEnCours) return Promise.resolve(null);
+    gcalEnCours = true;
+    var statut = document.getElementById('gcal-statut');
+    if(statut) statut.textContent = 'envoi en cours…';
+    var demain = localISO(new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1));
+    return pousserRappelsJour(mcp, todayISO).then(function(a){
+      return pousserRappelsJour(mcp, demain).then(function(b){ return [a, b]; });
+    }).then(function(r){
+      var t = {}; ['crees','majs','adoptes','retires','deja','passes'].forEach(function(k){ t[k] = r[0][k] + r[1][k]; });
+      gcalEcriture.dernier = new Date().toISOString(); gcalEcriture.bilan = t; delete gcalEcriture.erreur;
+      save('batcave-gcal-ecriture', gcalEcriture);
+      gcalEnCours = false; renderGcalPanel();
+      return t;
+    }).catch(function(err){
+      gcalEcriture.erreur = (err && (err.code || err.message)) || 'erreur';
+      save('batcave-gcal-ecriture', gcalEcriture);
+      gcalEnCours = false; renderGcalPanel();
+      return null;
+    });
+  }
+  /* Desactiver retire les rappels deja envoyes (aujourd'hui et demain) : l'agenda ne garde
+     pas de traces d'une option eteinte. */
+  function retirerRappels(mcp){
+    var demain = localISO(new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1)), chaine = Promise.resolve(), n = 0;
+    [todayISO, demain].forEach(function(iso){
+      var releve = load(cleGcalJour(iso), null);
+      if(!releve || typeof releve !== 'object') return;
+      Object.keys(releve).forEach(function(k){
+        var r = releve[k];
+        if(!r || !r.id) return;
+        chaine = chaine.then(function(){ return mcp.callTool('Google Calendar', 'delete_event', {calendarId: GCAL_CALENDRIER, eventId: r.id, notificationLevel:'NONE'}).catch(function(){}).then(function(){ n++; }); });
+      });
+      chaine = chaine.then(function(){ try{ localStorage.removeItem(cleGcalJour(iso)); }catch(e){} supprimerDuCloud(cleGcalJour(iso)); });
+    });
+    return chaine.then(function(){ return n; });
+  }
+  function renderGcalPanel(){
+    var panel = document.getElementById('gcal-panel'), t = document.getElementById('gcal-toggle'), p = document.getElementById('gcal-pousser'), st = document.getElementById('gcal-statut'), det = document.getElementById('gcal-detail');
+    if(!panel) return;
+    panel.hidden = !mcpHandle;
+    var actif = gcalActif();
+    if(t) t.textContent = actif ? 'Désactiver les rappels' : 'Activer les rappels';
+    if(t) t.className = 'btn' + (actif ? '' : ' btn-primary');
+    if(p) p.hidden = !actif;
+    if(st) st.textContent = gcalEnCours ? 'envoi en cours…' : (actif ? 'actif' + (gcalEcriture.dernier ? ' · dernier envoi ' + new Date(gcalEcriture.dernier).toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'}) : '') : 'désactivé');
+    if(det){
+      var b = gcalEcriture.bilan;
+      det.textContent = gcalEcriture.erreur ? 'Dernier envoi en échec (' + gcalEcriture.erreur + ') — vérifie le connecteur Google Calendar dans Réglages → Connecteurs.'
+        : (actif && b ? 'Dernier envoi : ' + b.crees + ' créé' + (b.crees > 1 ? 's' : '') + ' · ' + b.majs + ' mis à jour · ' + b.adoptes + ' déjà présent' + (b.adoptes > 1 ? 's' : '') + ' reconnu' + (b.adoptes > 1 ? 's' : '') + ' · ' + b.deja + ' inchangé' + (b.deja > 1 ? 's' : '') + ' · ' + b.retires + ' retiré' + (b.retires > 1 ? 's' : '') + (b.passes ? ' · ' + b.passes + ' déjà commencé' + (b.passes > 1 ? 's' : '') + ' (non envoyé' + (b.passes > 1 ? 's' : '') + ')' : '') + '.' : '');
+    }
+  }
+  (function(){
+    var t = document.getElementById('gcal-toggle'), p = document.getElementById('gcal-pousser');
+    if(t) t.addEventListener('click', function(){
+      if(!mcpHandle) return;
+      if(gcalActif()){
+        gcalEcriture = {actif:false, dernier: gcalEcriture.dernier};
+        save('batcave-gcal-ecriture', gcalEcriture);
+        renderGcalPanel();
+        retirerRappels(mcpHandle).then(function(n){ showToast('📲 Rappels désactivés' + (n ? ' · ' + n + ' événement' + (n > 1 ? 's' : '') + ' retiré' + (n > 1 ? 's' : '') + ' de l\'agenda' : '') + '.'); renderGcalPanel(); });
+      } else {
+        gcalEcriture = {actif:true, depuis: todayISO};
+        save('batcave-gcal-ecriture', gcalEcriture);
+        renderGcalPanel();
+        pousserRappels(mcpHandle).then(function(b){ if(b) showToast('📲 Rappels envoyés : ' + b.crees + ' créé' + (b.crees > 1 ? 's' : '') + ', ' + b.adoptes + ' déjà présent' + (b.adoptes > 1 ? 's' : '') + '.'); });
+      }
+    });
+    if(p) p.addEventListener('click', function(){ if(mcpHandle) pousserRappels(mcpHandle).then(function(b){ if(b) showToast('📲 Agenda à jour : ' + b.crees + ' créé' + (b.crees > 1 ? 's' : '') + ', ' + b.majs + ' mis à jour, ' + b.deja + ' inchangé' + (b.deja > 1 ? 's' : '') + '.'); }); });
+  })();
   /* Cible du jour = ce que le planning prevoit + ce qui a ete reporte de la veille. Le
      report est plafonne (2 h par type) : un bloc manque se rattrape, une semaine manquee
      ne doit pas ecraser la journee suivante. */
@@ -7740,11 +8041,45 @@
 
   /* ================= REVUE HEBDOMADAIRE ================= */
   var rvState = loadList('batcave-revue');
+  /* ===== Revue guidee =====
+     Trois constats calcules par le moteur sur la semaine en cours -- objectifs du mois en
+     retard, fidelite au plan, sommeil -- puis les trois questions. Les constats sont
+     enregistres avec la revue : dans six mois on relit ce que les chiffres disaient. */
+  function constatsSemaine(){
+    var cur = weekStats(weekRange(0)), out = [], hh = function(m){ return (m/60).toFixed(1).replace('.', ','); };
+    var mois = moisListe().filter(function(m){ return todayISO >= m.debut && todayISO <= m.fin; })[0];
+    var retard = mois ? objectifsState.liste.filter(function(o){ return o.periode === 'mois' && o.pid === mois.id; })
+                          .map(function(o){ return {o: o, c: comparerObjectif(o)}; })
+                          .filter(function(x){ return x.c.statut === 'retard'; }) : [];
+    out.push(retard.length
+      ? '📊 ' + retard.length + ' objectif' + (retard.length > 1 ? 's' : '') + ' du mois en retard : ' + retard.slice(0, 3).map(function(x){ return x.o.titre + ' (' + fmtNombre(x.c.valeur, x.c.dec) + ' réel / ' + fmtNombre(x.c.attendu, x.c.dec) + ' attendu)'; }).join(', ') + (retard.length > 3 ? '…' : '') + '.'
+      : '📊 Aucun objectif du mois en retard.');
+    out.push(cur.planMin
+      ? '🎯 Fidélité au plan : ' + cur.fidelite + ' % (' + hh(cur.faitMin) + ' h faites sur ' + hh(cur.planMin) + ' h prévues).' + (cur.fidelite < 70 ? ' Sous 70 % : des blocs mal placés, ou trop de blocs ?' : '')
+      : '🎯 Aucun bloc prévu cette semaine.');
+    var cible = objectifSommeil();
+    out.push(cur.sleepH
+      ? '😴 Sommeil moyen : ' + cur.sleepH.toFixed(1).replace('.', ',') + ' h / ' + cible.toFixed(1).replace('.', ',') + ' h visées' + (cur.sleepH < cible - 0.5 ? ' — c\'est le premier levier de la semaine prochaine.' : '.')
+      : '😴 Sommeil non saisi cette semaine (le champ est dans la clôture du jour, chiffre Bevel).');
+    return out;
+  }
+  function enregistrerRevue(date, marche, coince, ajust){
+    rvState.push({id:'rv'+Date.now(), date:date, marche:marche, coince:coince, ajust:ajust, constats: constatsSemaine()});
+    if(rvState.length > 400) rvState = rvState.slice(-400);
+    save('batcave-revue', rvState);
+    saveInternal('batcave-last-bilan-prompt', weekRange(0)[0]);
+    renderRevue();
+  }
   function renderRevue(){
     var list = document.getElementById('rv-list');
+    var constats = document.getElementById('rv-constats');
+    if(constats) constats.innerHTML = constatsSemaine().map(function(c){ return '<li><span>' + escapeHtml(c) + '</span></li>'; }).join('');
+    var dateEl = document.getElementById('rv-date');
+    if(dateEl && !dateEl.value) dateEl.value = weekRange(0)[0];
     if(!rvState.length){ list.innerHTML = '<li class="entry-empty">Aucune revue enregistrée.</li>'; return; }
     list.innerHTML = rvState.slice().reverse().map(function(r){
-      return '<li class="entry-row" style="align-items:flex-start; flex-wrap:wrap;"><span class="ecell small"><b>'+fmtDate(r.date)+'</b></span><span class="ecell">✅ '+escapeHtml(r.marche||'—')+'</span><span class="ecell">⚠️ '+escapeHtml(r.coince||'—')+'</span><span class="ecell">→ '+escapeHtml(r.ajust||'—')+'</span><button class="edel" aria-label="Supprimer" title="Supprimer" data-delrv="'+r.id+'">×</button></li>';
+      var c = Array.isArray(r.constats) && r.constats.length ? '<span class="ecell sub-note" style="flex-basis:100%; line-height:1.5;">' + r.constats.map(escapeHtml).join('<br>') + '</span>' : '';
+      return '<li class="entry-row" style="align-items:flex-start; flex-wrap:wrap;"><span class="ecell small"><b>'+fmtDate(r.date)+'</b></span><span class="ecell">✅ '+escapeHtml(r.marche||'—')+'</span><span class="ecell">⚠️ '+escapeHtml(r.coince||'—')+'</span><span class="ecell">→ '+escapeHtml(r.ajust||'—')+'</span><button class="edel" aria-label="Supprimer" title="Supprimer" data-delrv="'+r.id+'">×</button>' + c + '</li>';
     }).join('');
     list.querySelectorAll('[data-delrv]').forEach(function(el){
       el.addEventListener('click', function(){ rvState = rvState.filter(function(x){return x.id!==el.dataset.delrv;}); save('batcave-revue', rvState); renderRevue(); });
@@ -7755,11 +8090,9 @@
     var coince = document.getElementById('rv-coince').value.trim();
     var ajust = document.getElementById('rv-ajust').value.trim();
     if(!marche && !coince && !ajust) return;
-    var date = document.getElementById('rv-date').value || todayISO;
-    rvState.push({id:'rv'+Date.now(), date:date, marche:marche, coince:coince, ajust:ajust});
-    save('batcave-revue', rvState);
+    var date = document.getElementById('rv-date').value || weekRange(0)[0];
+    enregistrerRevue(date, marche, coince, ajust);
     ['rv-marche','rv-coince','rv-ajust'].forEach(function(id){ document.getElementById(id).value=''; });
-    renderRevue();
   });
 
   /* ================= INIT ================= */
@@ -7781,6 +8114,7 @@
   renderVie();
   renderRevue();
   renderDashboard();
+  nettoyerVestiges();
   verifierCoherence();
   renderBilan();
   renderInsights();
@@ -7819,6 +8153,7 @@
     function dismissRitual(){
       overlay.hidden = true;
       saveInternal('batcave-last-open', todayISO);
+      verifierCloture();
     }
     document.getElementById('ritual-dismiss').addEventListener('click', dismissRitual);
     document.getElementById('ritual-close').addEventListener('click', dismissRitual);
@@ -7829,6 +8164,114 @@
       var btn = document.querySelector('.nav-btn[data-page="bilan"]');
       if(btn) btn.click();
     });
+  })();
+
+  /* ================= CLÔTURE DU JOUR =================
+     Un ecran, le soir, 60 secondes. Tout ce qu'il ecrit existe deja : le journal du jour
+     (sommeil, poids, eau, humeur, note, heure de cloture) et le carnet d'habitudes.
+     Proposee a partir de coucher − 90 min, une fois par soir ; « Plus tard » la repousse
+     au prochain lancement. Le dimanche, la revue de la semaine s'y glisse. */
+  var clotureProposee = false, clEau = 0, clHumeur = null;
+  function heureDeCloture(){ return timeToMinutes(heureCoucher()) - 90; }
+  function fmtLitres(ml){ return ((Number(ml) || 0) / 1000).toFixed(1).replace('.', ',') + ' L'; }
+  function majClEau(){
+    var el = document.getElementById('cl-eau'), n = document.getElementById('cl-eau-note');
+    if(el) el.textContent = fmtLitres(clEau);
+    if(n) n.textContent = clEau >= 3000 ? 'objectif 3 L atteint ✅' : ('objectif 3 L · reste ' + fmtLitres(3000 - clEau));
+  }
+  function renderClHumeur(){
+    var el = document.getElementById('cl-humeur');
+    if(!el) return;
+    el.innerHTML = [1,2,3,4,5].map(function(n){ return '<button type="button" class="chip' + (clHumeur === n ? ' active' : '') + '" data-cl-humeur="' + n + '">' + n + '</button>'; }).join('');
+    el.querySelectorAll('[data-cl-humeur]').forEach(function(b){ b.addEventListener('click', function(){ var n = Number(b.dataset.clHumeur); clHumeur = clHumeur === n ? null : n; renderClHumeur(); }); });
+  }
+  function ouvrirCloture(){
+    var ov = document.getElementById('cloture-overlay');
+    if(!ov) return;
+    clotureProposee = true;
+    document.getElementById('cloture-date').textContent = dateLongue(new Date()) + (journalState.cloture ? ' · déjà clôturée à ' + journalState.cloture + ' — tu peux compléter.' : ' · tout est facultatif, le bouton suffit.');
+    document.getElementById('cl-sommeil').value = journalState.sommeil || '';
+    document.getElementById('cl-poids').value = journalState.poids || '';
+    clEau = Number(journalState.water) || 0; majClEau();
+    clHumeur = journalState.mood; renderClHumeur();
+    var restantes = habitsDuJour(weekday).filter(function(h){ return !habitDoneToday(h.id); });
+    var hab = document.getElementById('cl-habitudes');
+    hab.innerHTML = restantes.length
+      ? restantes.map(function(h){ return '<button type="button" class="chip" data-cl-hab="' + escapeHtml(h.id) + '">' + habitLabel(h) + '</button>'; }).join('')
+      : '<span class="sub-note">toutes cochées ✅</span>';
+    hab.querySelectorAll('[data-cl-hab]').forEach(function(b){ b.addEventListener('click', function(){ b.classList.toggle('active'); }); });
+    document.getElementById('cl-note').value = '';
+    var rv = document.getElementById('cl-revue'), dimanche = weekday === 0;
+    rv.hidden = !dimanche;
+    if(dimanche){
+      document.getElementById('cl-constats').innerHTML = constatsSemaine().map(function(c){ return '<li><span>' + escapeHtml(c) + '</span></li>'; }).join('');
+      ['cl-rv-marche','cl-rv-coince','cl-rv-ajust'].forEach(function(id){ document.getElementById(id).value = ''; });
+    }
+    ov.hidden = false;
+    var premier = document.getElementById('cl-sommeil');
+    if(premier && !premier.value) premier.focus();
+  }
+  function fermerCloture(){ var ov = document.getElementById('cloture-overlay'); if(ov) ov.hidden = true; }
+  function validerCloture(){
+    var som = document.getElementById('cl-sommeil').value, poids = document.getElementById('cl-poids').value;
+    if(som !== '') journalState.sommeil = som;
+    if(poids !== '') journalState.poids = poids;
+    journalState.water = clEau;
+    journalState.mood = clHumeur;
+    var note = document.getElementById('cl-note').value.trim();
+    if(note) journalState.notes = (journalState.notes || '').trim() ? journalState.notes.trim() + '\n' + note : note;
+    journalState.cloture = new Date().toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'});
+    delete journalState.clotureRepoussee;
+    save(journalKey, journalState);
+    var cochees = [].slice.call(document.querySelectorAll('#cl-habitudes [data-cl-hab].active')).map(function(b){ return b.dataset.clHab; });
+    cochees.forEach(function(id){ if(!habitDoneToday(id)) toggleHabit(id); });
+    if(weekday === 0){
+      var m = document.getElementById('cl-rv-marche').value.trim(), c = document.getElementById('cl-rv-coince').value.trim(), a = document.getElementById('cl-rv-ajust').value.trim();
+      if(m || c || a) enregistrerRevue(weekRange(0)[0], m, c, a);
+    }
+    renderJournal(); renderWeightChart(); renderKcalBoucle(); renderCalendar(); renderDashboard(); renderBilan();
+    if(document.getElementById('obj-liste')) renderObjectifs();
+    fermerCloture();
+    showToast('🌙 Journée clôturée' + (cochees.length ? ' · ' + cochees.length + ' habitude' + (cochees.length > 1 ? 's' : '') + ' cochée' + (cochees.length > 1 ? 's' : '') : '') + ' — bonne nuit.');
+  }
+  function repousserCloture(){
+    journalState.clotureRepoussee = true;
+    save(journalKey, journalState);
+    fermerCloture();
+    majReleveCloture();
+  }
+  /* Le releve CLÔTURE de la barre. */
+  function majReleveCloture(){
+    var el = document.querySelector('#bc-cloture .v');
+    if(!el) return;
+    var m = new Date(); m = m.getHours() * 60 + m.getMinutes();
+    if(journalState.cloture){ el.textContent = 'faite ' + journalState.cloture; el.style.color = 'var(--good)'; }
+    else if(m >= heureDeCloture()){ el.textContent = 'à faire — 60 s'; el.style.color = 'var(--warn)'; }
+    else { el.textContent = 'ce soir dès ' + minutesToTime(heureDeCloture()); el.style.color = ''; }
+  }
+  /* Proposee une seule fois par ouverture, jamais par-dessus un autre ecran. */
+  function verifierCloture(){
+    if(!journalState || clotureProposee || journalState.cloture || journalState.clotureRepoussee) return;
+    var d = new Date(), m = d.getHours() * 60 + d.getMinutes();
+    if(m < heureDeCloture()) return;
+    var ouverts = [].slice.call(document.querySelectorAll('.overlay')).some(function(o){ return !o.hidden; });
+    if(ouverts || (typeof focusActif !== 'undefined' && focusActif)) return;
+    ouvrirCloture();
+  }
+  (function(){
+    var v = document.getElementById('cloture-valider'), p = document.getElementById('cloture-plus-tard'), x = document.getElementById('cloture-close');
+    if(v) v.addEventListener('click', validerCloture);
+    if(p) p.addEventListener('click', repousserCloture);
+    if(x) x.addEventListener('click', repousserCloture);
+    var ov = document.getElementById('cloture-overlay');
+    if(ov) ov.addEventListener('click', function(e){ if(e.target.id === 'cloture-overlay') repousserCloture(); });
+    var moins = document.getElementById('cl-eau-moins'), plus = document.getElementById('cl-eau-plus');
+    if(moins) moins.addEventListener('click', function(){ clEau = Math.max(0, clEau - 250); majClEau(); });
+    if(plus) plus.addEventListener('click', function(){ clEau += 250; majClEau(); });
+    var r = document.getElementById('bc-cloture');
+    if(r){ r.addEventListener('click', function(){ ouvrirCloture(); }); r.addEventListener('keydown', function(e){ if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); ouvrirCloture(); } }); }
+    majReleveCloture();
+    verifierCloture();
   })();
 
   document.getElementById('ask-ok').addEventListener('click', function(){

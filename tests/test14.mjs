@@ -37,7 +37,7 @@ console.log('\n== 33) Barre de titre Batcomputer : deux rangées, compacte ==');
              actionsDroite: Math.round(bar.querySelector('.bc-actions').getBoundingClientRect().right) >= Math.round(r1.right) - 20,
              ancienne: !!document.querySelector('.page[data-page="dashboard"] .page-head, .page[data-page="dashboard"] .dash-statusline') };
   });
-  ok(h.n === 4, 'les 4 relevés (météo, sync, ♫, sauvegarde) sont sur la deuxième rangée (' + h.n + ')');
+  ok(h.n === 5, 'les 5 relevés (météo, sync, ♫, sauvegarde, clôture) sont sur la deuxième rangée (' + h.n + ')');
   ok(h.lignes === 1, 'ils tiennent sur une seule ligne à 1440px');
   ok(h.r1 < 50, 'première rangée sur une ligne : ' + h.r1 + 'px');
   ok(h.hauteur < 100, 'barre compacte : ' + h.hauteur + 'px');
