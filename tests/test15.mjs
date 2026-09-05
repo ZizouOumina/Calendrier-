@@ -14,7 +14,7 @@ const MOCK = () => {
   ]};
   window.__spotify = { is_playing: false };
   const mcp = {
-    callTool(){ return Promise.resolve({content:[], payload:{}}); },
+    callTool(server, tool, input, opts){ window.__calls = (window.__calls || []).concat([{server, tool, opts}]); if(tool === 'get_currently_playing') return Promise.resolve({content:[], payload: window.__spotify}); return Promise.resolve({content:[], payload:{}}); },
     watchTool(server, tool, input, handler){
       window.__watches.push(server + '/' + tool);
       window.__handlers = window.__handlers || {};
@@ -106,6 +106,18 @@ await fr.evaluate(() => {
 await page.waitForTimeout(200);
 ok(/ajoute AccuWeather/i.test(await fr.evaluate(() => document.getElementById('dash-weather').textContent)),
    'connecteur absent → invite à l\'ajouter');
+
+console.log('\n== Spotify : un clic sur ♫ actualise tout de suite ==');
+{
+  await fr.evaluate(() => { window.__spotify = {currently_playing_entity:{name:'Sicko Mode', creator:'Travis Scott', creators:[{name:'Travis Scott'}]}}; document.getElementById('bc-spotify').click(); });
+  await page.waitForTimeout(200);
+  const sp = await fr.evaluate(() => ({ txt: document.getElementById('dash-spotify').textContent, hidden: document.getElementById('dash-spotify').hidden, call: (window.__calls || []).filter(c => c.tool === 'get_currently_playing').pop() }));
+  ok(sp.hidden === false && sp.txt === '🎵 Sicko Mode — Travis Scott', 'le titre en lecture apparaît sans attendre le sondage : ' + sp.txt);
+  ok(!!sp.call && sp.call.opts && sp.call.opts.cache && sp.call.opts.cache.refresh === true, 'la lecture force le cache (refresh) au lieu de resservir l\'ancienne valeur');
+  await fr.evaluate(() => { window.__spotify = {}; document.querySelector('.nav-btn[data-page="journal"]').click(); document.querySelector('.nav-btn[data-page="dashboard"]').click(); });
+  await page.waitForTimeout(200);
+  ok(await fr.evaluate(() => document.getElementById('dash-spotify').hidden) === true, 'revenir sur le tableau de bord relit aussi : plus rien en lecture → masqué');
+}
 
 console.log('\nERREURS: ' + errs);
 await browser.close();

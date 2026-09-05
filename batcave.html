@@ -985,7 +985,7 @@
         <div class="bc-row bc-row-2">
           <span class="bc-r"><span class="k">MÉTÉO</span><span class="v" id="dash-weather">🌡️ météo…</span></span>
           <span class="bc-r" id="bc-sync"><span class="k">SYNC</span><span class="v" style="color:var(--ink-faint);">local</span></span>
-          <span class="bc-r"><span class="k">♫</span><span class="v" id="dash-spotify" hidden></span><span class="v bc-spotify-off" style="color:var(--ink-faint);">rien en lecture</span></span>
+          <span class="bc-r bc-clic" id="bc-spotify" role="button" tabindex="0" title="Lecture Spotify — clic : actualiser tout de suite (sinon toutes les 30 s)"><span class="k">♫</span><span class="v" id="dash-spotify" hidden></span><span class="v bc-spotify-off" style="color:var(--ink-faint);">rien en lecture</span></span>
           <span class="bc-r"><span class="k">SAUVEGARDE</span><span class="v" id="bc-backup">—</span></span>
           <span class="bc-r bc-clic" id="bc-cloture" role="button" tabindex="0" title="Clôture du jour : sommeil, poids, eau, humeur, habitudes, une note — 60 secondes"><span class="k">CLÔTURE</span><span class="v">—</span></span>
         </div>
@@ -2622,6 +2622,36 @@
      Rafraîchissement périodique (30-120s selon le widget), pas un push
      instantané — c'est la limite technique du polling côté connecteur. */
   var mcpHandle = null;
+  /* Forme REELLE observee (4 et 5 sept. 2026) : { currently_playing_entity: { name, creator,
+     creators:[{name}], playback:{status}, entity_type } }. Le connecteur ne renvoie l'entite
+     que s'il y a une lecture active ; son absence vaut « rien ne joue ». */
+  function majSpotify(p){
+    var el = document.getElementById('dash-spotify');
+    if(!el) return;
+    var ent = p && p.currently_playing_entity;
+    if(!ent || !ent.name){ el.hidden = true; return; }
+    var artists = (ent.creators || []).map(function(a){ return a && a.name; }).filter(Boolean).join(', ') || ent.creator || '';
+    el.hidden = false;
+    el.textContent = '🎵 ' + ent.name + (artists ? ' — ' + artists : '');
+  }
+  var spotifyEnCours = false;
+  /* Lecture immediate, hors sondage : un clic sur ♫, ou le retour sur le tableau de bord. */
+  function rafraichirSpotify(){
+    if(!mcpHandle || spotifyEnCours) return;
+    spotifyEnCours = true;
+    var off = document.querySelector('#bc-spotify .bc-spotify-off');
+    if(off) off.textContent = 'actualisation…';
+    mcpHandle.callTool('Spotify', 'get_currently_playing', null, {cache:{refresh:true}})
+      .then(function(r){ majSpotify(r && r.payload); })
+      .catch(function(){})
+      .then(function(){ spotifyEnCours = false; if(off) off.textContent = 'rien en lecture'; });
+  }
+  (function(){
+    var r = document.getElementById('bc-spotify');
+    if(!r) return;
+    r.addEventListener('click', rafraichirSpotify);
+    r.addEventListener('keydown', function(e){ if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); rafraichirSpotify(); } });
+  })();
   (function(){
     if(!(window.claude && typeof window.claude.use === 'function')) return;
     window.claude.use('mcp').then(function(mcp){
@@ -2684,21 +2714,11 @@
       }, {refetchInterval: 900000});
 
       /* Spotify — ce qui joue en ce moment */
+      /* Le sondage periodique est plafonne par la plateforme a ~30 s : on le declare a ce
+         plancher, et un clic sur le releve ♫ force une lecture immediate (rafraichirSpotify). */
       mcp.watchTool('Spotify', 'get_currently_playing', null, function(ev){
-        var el = document.getElementById('dash-spotify');
-        if(!el) return;
-        if(ev.type === 'error'){ el.hidden = true; return; }
-        /* Forme REELLE observee (4 sept. 2026) : { currently_playing_entity: { name, creator,
-           creators:[{name}], playback:{status}, entity_type } }. L'ancien code lisait
-           payload.item / is_playing / artists -- des champs qui n'existent pas ici : le
-           widget n'a jamais pu s'afficher. Le connecteur ne renvoie l'entite que s'il y a
-           une lecture active ; son absence vaut « rien ne joue ». */
-        var p = ev.result.payload;
-        var ent = p && p.currently_playing_entity;
-        if(!ent || !ent.name){ el.hidden = true; return; }
-        var artists = (ent.creators || []).map(function(a){ return a && a.name; }).filter(Boolean).join(', ') || ent.creator || '';
-        el.hidden = false;
-        el.textContent = '🎵 ' + ent.name + (artists ? ' — ' + artists : '');
+        if(ev.type === 'error'){ majSpotify(null); return; }
+        majSpotify(ev.result.payload);
       }, {refetchInterval: 30000});
 
       /* Shopify — statut boutique + commandes récentes */
@@ -2844,6 +2864,7 @@
       /* objectifs et bilan lisent toutes les autres pages : on les recalcule a l'ouverture */
       if(btn.dataset.page === 'objectifs'){ renderObjectifs(); }
       if(btn.dataset.page === 'bilan'){ renderBilan(); }
+      if(btn.dataset.page === 'dashboard'){ rafraichirSpotify(); }
     });
   });
   document.addEventListener('keydown', function(e){
