@@ -132,8 +132,10 @@ console.log('\n== 85) Un bloc terminé apparaît sans rechargement, et rien ne p
   await fr.evaluate(() => document.querySelector('.nav-btn[data-page="etudes"]').click());
   await page.waitForTimeout(250);
   ok(await fr.evaluate(() => !document.getElementById('timer-durees')) === false, 'le sélecteur de durée est toujours là');
-  const plusDeGcal = await fr.evaluate(() => !document.getElementById('gcal-row') && !document.getElementById('gcal-toggle'));
-  ok(plusDeGcal, 'plus aucune option Google Agenda sur la page Études');
+  /* l'ecriture calendrier existe a nouveau (rappels des blocs du planning), mais elle vit
+     dans Agenda, cachee sans connecteur, et desactivee par defaut : rien ne part d'ici */
+  const plusDeGcal = await fr.evaluate(() => !document.querySelector('.page[data-page="etudes"] #gcal-row') && !document.querySelector('.page[data-page="etudes"] #gcal-toggle'));
+  ok(plusDeGcal, 'plus aucune option Google Agenda sur la page Études (les rappels vivent dans Agenda, désactivés par défaut)');
 
   await fr.evaluate(() => document.getElementById('timer-pomodoro').click());
   await page.waitForTimeout(150);
