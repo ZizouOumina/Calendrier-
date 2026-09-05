@@ -52,13 +52,14 @@ const attendues = [
   'Shopify/get-shop-info',
   'Shopify/list-orders',
   'Shopify/run-analytics-query',
-  'Google Calendar/list_events'
+  'Google Calendar/list_events',
+  'Shopify/run-analytics-query'   /* deux fois : ventes 30 j (Business en direct) et ventes mensuelles (12 mois) */
 ];
 const w = await fr.evaluate(() => window.__watches);
 attendues.forEach(function(a){
   ok(w.indexOf(a) > -1, a);
 });
-ok(w.length === attendues.length, 'aucune surveillance en trop ni en moins (' + w.length + '/' + attendues.length + ')');
+ok(w.length === attendues.length && w.filter(x => x === 'Shopify/run-analytics-query').length === 2, 'aucune surveillance en trop ni en moins (' + w.length + '/' + attendues.length + ', dont 2 requêtes de ventes Shopify)');
 
 console.log('\n== 39) La météo s\'affiche dans la ligne de statut ==');
 const m = await fr.evaluate(() => ({
