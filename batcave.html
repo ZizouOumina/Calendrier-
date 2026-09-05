@@ -6869,7 +6869,8 @@
       if(!type) return;
       var d0 = timeToMinutes(b[0]);
       var d1 = type === 'coucher' ? d0 + 15 : (i < plan.length - 1 ? timeToMinutes(plan[i+1][0]) : d0 + 60);
-      out.push({cle: 'p' + i, type: type, titre: type === 'coucher' ? '🌙 Coucher — écran off' : '🦇 ' + l, debut: d0, fin: d1, rappel: type === 'coucher' ? 30 : 5});
+      out.push({cle: 'p' + i, type: type, titre: '🦇 ' + l, debut: d0, fin: d1, rappel: type === 'coucher' ? 30 : 5,
+                description: type === 'coucher' ? 'Écran off 30 min avant. Bloc du planning Batcave.' : 'Bloc du planning Batcave.'});
     });
     return out;
   }
@@ -6894,10 +6895,14 @@
     var bilan = {crees:0, majs:0, adoptes:0, retires:0, deja:0, passes:0};
     return mcp.callTool('Google Calendar', 'list_events', {calendarId: GCAL_CALENDRIER, startTime: iso + 'T00:00:00' + decalageMadrid(iso), endTime: iso + 'T23:59:59' + decalageMadrid(iso), timeZone:'Europe/Madrid', pageSize: 250})
       .then(function(res){
-        var events = (res && res.payload && res.payload.events) || [], parCle = {};
+        /* Un evenement Batcave deja present ce jour-la se reconnait a son TITRE : l'agenda
+           porte deja le planning en evenements recurrents « 🦇 … », crees avant cette option.
+           On l'adopte plutot que d'en creer un second ; si son heure ne colle pas au planning,
+           on aligne cette instance (une exception de la serie, pas la serie entiere). */
+        var events = (res && res.payload && res.payload.events) || [], parTitre = {};
         events.forEach(function(e){
           if(!e || !e.summary || !(e.start && e.start.dateTime) || e.status === 'cancelled') return;
-          parCle[e.summary + '|' + new Date(e.start.dateTime).getTime()] = e;
+          if(!parTitre[e.summary]) parTitre[e.summary] = e;
         });
         var chaine = Promise.resolve();
         blocs.forEach(function(b){
@@ -6905,11 +6910,16 @@
           if(connu && connu.id && connu.empreinte === emp){ bilan.deja++; return; }
           chaine = chaine.then(function(){
             var creer = function(){
-              var existant = parCle[b.titre + '|' + debutMs];
-              if(existant && existant.id){ releve[b.cle] = {id: existant.id, empreinte: emp}; bilan.adoptes++; return; }
+              var existant = parTitre[b.titre];
+              if(existant && existant.id){
+                var memeHeure = new Date(existant.start.dateTime).getTime() === debutMs && existant.end && existant.end.dateTime && new Date(existant.end.dateTime).getTime() === new Date(isoAvecHeure(iso, b.fin)).getTime();
+                if(memeHeure){ releve[b.cle] = {id: existant.id, empreinte: emp}; bilan.adoptes++; return; }
+                return mcp.callTool('Google Calendar', 'update_event', {calendarId: GCAL_CALENDRIER, eventId: existant.id, startTime: isoAvecHeure(iso, b.debut), endTime: isoAvecHeure(iso, b.fin), timeZone:'Europe/Madrid', notificationLevel:'NONE'})
+                  .then(function(){ releve[b.cle] = {id: existant.id, empreinte: emp}; bilan.majs++; });
+              }
               if(debutMs < nowMs - 60000){ bilan.passes++; return; }
               return mcp.callTool('Google Calendar', 'create_event', {calendarId: GCAL_CALENDRIER, summary: b.titre, startTime: isoAvecHeure(iso, b.debut), endTime: isoAvecHeure(iso, b.fin), timeZone:'Europe/Madrid',
-                                                                    description:'Bloc du planning Batcave.', overrideReminders:[{method:'popup', minutes: b.rappel}], notificationLevel:'NONE',
+                                                                    description: b.description, overrideReminders:[{method:'popup', minutes: b.rappel}], notificationLevel:'NONE',
                                                                     availability: b.type === 'coucher' ? 'AVAILABILITY_FREE' : 'AVAILABILITY_BUSY'})
                 .then(function(ev){ var p = ev && ev.payload; if(p && p.id){ releve[b.cle] = {id: p.id, empreinte: emp}; bilan.crees++; } });
             };

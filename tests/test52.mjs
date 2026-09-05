@@ -81,7 +81,7 @@ console.log('\n== 171) Activer : un événement par bloc, aujourd\'hui (restants
   ok(!!rev1 && rev1.input.startTime === '2026-09-08T07:20:00+02:00' && rev1.input.endTime === '2026-09-08T09:20:00+02:00', 'Révision Bloc 1 : 07:20 → 09:20 heure de Madrid (' + (rev1 && rev1.input.startTime) + ')');
   ok(!!rev1 && rev1.input.overrideReminders[0].minutes === 5 && rev1.input.timeZone === 'Europe/Madrid' && rev1.input.calendarId === 'zizou.oumina@gmail.com', 'rappel 5 min avant, fuseau et agenda précisés');
   const coucher = crees.find(c => /Coucher/.test(c.input.summary) && c.input.startTime.startsWith('2026-09-08'));
-  ok(!!coucher && coucher.input.startTime === '2026-09-08T21:30:00+02:00' && coucher.input.overrideReminders[0].minutes === 30 && coucher.input.availability === 'AVAILABILITY_FREE', 'Coucher 21:30, rappel 30 min (écran off), n\'occupe pas l\'agenda');
+  ok(!!coucher && coucher.input.summary === '🦇 Coucher' && coucher.input.startTime === '2026-09-08T21:30:00+02:00' && coucher.input.overrideReminders[0].minutes === 30 && coucher.input.availability === 'AVAILABILITY_FREE' && /Écran off/.test(coucher.input.description), 'Coucher 21:30 (même titre que ton agenda), rappel 30 min, écran off en description, n\'occupe pas l\'agenda');
   const sportDemain = crees.find(c => /Sport/.test(c.input.summary));
   ok(!!sportDemain && sportDemain.input.startTime === '2026-09-09T05:00:00+02:00' && sportDemain.input.endTime === '2026-09-09T06:00:00+02:00', 'Sport de demain 05:00 → 06:00');
   const r8 = await local(fr, 'batcave-gcal-2026-09-08'), r9 = await local(fr, 'batcave-gcal-2026-09-09');
@@ -128,6 +128,36 @@ console.log('\n== 172) Option active au démarrage : envoi automatique ; bloc d�
   ok(crees.length === 12, 'les 12 autres sont créés au démarrage (' + crees.length + ')');
   const st = await fr.evaluate(() => document.getElementById('gcal-statut').textContent);
   ok(/actif · dernier envoi/.test(st), 'statut : ' + st);
+  await ctx.close();
+}
+
+console.log('\n== 172b) Ton agenda porte déjà le planning en événements récurrents : adoptés, jamais doublés ==');
+{
+  const ctx = await browser.newContext({ viewport:{width:1440,height:900}, timezoneId:'Europe/Madrid', locale:'fr-FR' });
+  await ctx.addInitScript(() => {
+    window.__gcalEvents = [
+      {id:'rec1_20260908', recurringEventId:'rec1', summary:'🦇 Révision Bloc 1', start:{dateTime:'2026-09-08T07:20:00+02:00'}, end:{dateTime:'2026-09-08T09:20:00+02:00'}, status:'confirmed'},
+      {id:'rec2_20260908', recurringEventId:'rec2', summary:'🦇 Coucher', start:{dateTime:'2026-09-08T21:00:00+02:00'}, end:{dateTime:'2026-09-08T21:15:00+02:00'}, status:'confirmed'},
+      {id:'rec3_20260908', recurringEventId:'rec3', summary:'🦇 Déjeuner', start:{dateTime:'2026-09-08T12:35:00+02:00'}, end:{dateTime:'2026-09-08T12:55:00+02:00'}, status:'confirmed'}
+    ];
+  });
+  await ctx.addInitScript(MOCK);
+  const page = await ctx.newPage();
+  page.on('pageerror', e => { errs++; console.log('  PAGEERROR: ' + e.message); });
+  await page.clock.install({ time: new Date(MARDI) });
+  await page.goto(URL, {timeout:20000}).catch(() => {});
+  await page.frameLocator('#f').locator('#dash-temps').waitFor({ state:'attached', timeout:15000 });
+  const fr = page.frames().find(x => x.url().includes('batcave.html'));
+  await fr.evaluate(() => { const r = document.getElementById('ritual-dismiss'); if(r) r.click(); document.querySelector('.nav-btn[data-page="agenda"]').click(); });
+  await page.waitForTimeout(400);
+  await fr.evaluate(() => document.getElementById('gcal-toggle').click());
+  await page.waitForTimeout(600);
+  const crees = await appels(fr, 'create_event'), maj = await appels(fr, 'update_event');
+  ok(!crees.some(c => c.input.summary === '🦇 Révision Bloc 1' && c.input.startTime.startsWith('2026-09-08')), 'Révision Bloc 1 de mardi, déjà là à la bonne heure : adoptée, pas recréée');
+  ok(!crees.some(c => c.input.summary === '🦇 Coucher' && c.input.startTime.startsWith('2026-09-08')) && maj.some(m => m.input.eventId === 'rec2_20260908' && m.input.startTime === '2026-09-08T21:30:00+02:00'), 'Coucher déjà là à 21:00 : l\'instance est alignée sur le planning (21:30), pas doublée');
+  ok(crees.length === 11, '11 créations seulement (13 − 2 adoptés)');
+  const r8 = await local(fr, 'batcave-gcal-2026-09-08');
+  ok(r8 && r8['p4'] && r8['p4'].id === 'rec1_20260908', 'le relevé pointe sur l\'instance récurrente adoptée');
   await ctx.close();
 }
 
