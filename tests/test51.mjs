@@ -20,13 +20,13 @@ async function ouvrir(quand, local){
 const local = (fr,k) => fr.evaluate(x => JSON.parse(localStorage.getItem(x) || 'null'), k);
 const visible = (fr, id) => fr.evaluate(i => { const e = document.getElementById(i); return !!e && !e.hidden; }, id);
 
-console.log('\n== 160) Le matin : pas de clôture, relevé « ce soir dès 20:00 » ==');
+console.log('\n== 160) Le matin : pas de clôture, relevé « ce soir dès 20:25 » ==');
 {
   const { ctx, fr } = await ouvrir('2026-09-08T10:00:00+02:00');
   await fr.evaluate(() => { const r = document.getElementById('ritual-dismiss'); if(r) r.click(); });
   ok(await visible(fr, 'cloture-overlay') === false, 'aucune clôture proposée le matin');
   const t = await fr.evaluate(() => document.querySelector('#bc-cloture .v').textContent);
-  ok(t === 'ce soir dès 20:00', 'relevé CLÔTURE : ' + t);
+  ok(t === 'ce soir dès 20:25', 'relevé CLÔTURE : ' + t);
   /* le relevé s'ouvre à la demande, même le matin */
   await fr.evaluate(() => document.getElementById('bc-cloture').click());
   ok(await visible(fr, 'cloture-overlay') === true, 'un clic sur le relevé ouvre l\'écran');

@@ -24,8 +24,8 @@ const plan = fr => fr.evaluate(() => document.getElementById('dash-plan').innerT
 
 /* tard dans la soirée, aucune révision saisie → l'alerte de rythme se déclenche à coup sûr */
 const JOURS = [
-  ['mercredi',  '2026-09-02T20:00:00+02:00', '21:30'],
-  ['vendredi',  '2026-09-04T19:00:00+02:00', '21:30'],
+  ['mercredi',  '2026-09-02T20:00:00+02:00', '21:55'],
+  ['vendredi',  '2026-09-04T19:00:00+02:00', '21:55'],
   ['samedi',    '2026-09-05T20:00:00+02:00', '21:00'],
   ['dimanche',  '2026-09-06T19:00:00+02:00', '21:00']
 ];

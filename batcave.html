@@ -1391,7 +1391,7 @@
       <div class="page-head">
         <span class="eyebrow">Dossier N° 05</span>
         <h1>Repas</h1>
-        <p class="desc">Programme du jour, 6 prises : 3 065 kcal, P 174 g, G 335 g, L 114 g, tout pesé cru. Riz à midi, pâtes le soir ; la protéine suit la rotation de la semaine. Les cases se réinitialisent à minuit.</p>
+        <p class="desc">Programme du jour, 5 prises : 3 053 kcal, P 162 g, G 348 g, L 112 g, tout pesé cru. Riz à midi, pâtes le soir ; la protéine suit la rotation de la semaine. Les cases se réinitialisent à minuit.</p>
       </div>
 
       <div class="day-bar">
@@ -2277,7 +2277,7 @@
      vestige : une fonctionnalite retiree (batcave-matieres) ou un essai. Elle prend de la
      place dans le quota de 5000 documents et embrouille les sauvegardes, sans que rien ne
      la lise jamais. On la signale ; la suppression reste ton geste. */
-  var CLES_CONNUES = ['addictions','budget-limits','business','coran','courses','dash-more','duaas','duree-bloc','sport-log','objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','kcal-ajustement','gcal-ecriture','reinit','fc-migration-v1','charge','shopify-boutique',
+  var CLES_CONNUES = ['addictions','budget-limits','business','coran','courses','dash-more','duaas','duree-bloc','sport-log','objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','kcal-ajustement','gcal-ecriture','reinit','fc-migration-v1','charge','shopify-boutique',
     'espagnol','examens','fc-prix-icloud-3','fixed-charges','goals','habitlog','habits','habits-seed-v2','habits-seed-v3',
     'horizon','last-auto-backup','last-manual-backup','last-bilan-prompt','last-compaction','last-open','last-rotation','notion-url',
     'pomodial-purge','projets','report','revision','revision-fusionnee','revue','sante','sauvegarde','sessions',
@@ -3090,7 +3090,7 @@
      elles repartiraient vers le cloud. La meme remise a zero peut donc etre decidee depuis
      l'appli ou directement dans le cloud. */
   var REINIT_GARDER = ['habits','habits-seed-v2','habits-seed-v3','fixed-charges','fc-prix-icloud-3','budget-limits','examens','notion-url','shopify-boutique',
-                       'objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','horizon','gcal-ecriture','duree-bloc','dash-more','revision-fusionnee','reinit'];
+                       'objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','horizon','gcal-ecriture','duree-bloc','dash-more','revision-fusionnee','reinit'];
   var REINIT_PREFIXES_GARDER = ['pomodial-', 'coherence-ignore-'];
   function reinitGarder(cle){
     var c = cle.indexOf('batcave-') === 0 ? cle.slice(8) : cle;
@@ -4730,19 +4730,19 @@
   }
 
   /* ================= REPAS ================= */
-  /* ===== Plan alimentation (6 sept. 2026) =====
+  /* ===== Plan alimentation révisé (6 sept. 2026) — 5 prises =====
      64 kg · 182 cm · 19 ans · 4 séances par semaine · tout pesé cru.
-     3 065 kcal · P 174 g (2,7 g/kg) · G 335 g · L 114 g. Six prises. La protéine du déjeuner et
-     du dîner suit une ROTATION fixe sur la semaine (l'huile d'olive va avec) ; le féculent
-     est le riz à midi (70 g) et les pâtes le soir (85 g). Les chiffres « kcal · P G L » de
-     chaque repas sont ceux du plan ; la barre du jour les prorate aux cases cochées. */
+     3 053 kcal · P 162 g (2,5 g/kg) · G 348 g · L 112 g. Cinq prises : la collation du matin
+     a disparu, le déjeuner porte ses calories (riz 135 g, légumes 200 g). La protéine du
+     déjeuner et du dîner suit une ROTATION fixe sur la semaine (l'huile d'olive va avec) ;
+     le féculent est le riz à midi et les pâtes le soir (85 g). Les chiffres « kcal · P G L »
+     de chaque repas sont ceux du plan ; la barre du jour les prorate aux cases cochées. */
   var MEALS = [
-    {name:'Petit-déjeuner', kcal:'~826 kcal · P42 G98 L33', items:['Flocons d\'avoine (80g)','Lait demi-écrémé (250ml)','2 œufs (100g)','Beurre de cacahuète (25g)','Banane (120g)']},
-    {name:'Collation matin', kcal:'~363 kcal · P21 G44 L13', items:['Skyr (125g)','Cacahuètes (25g)','Dattes (50g)']},
-    {name:'Déjeuner', kcal:'~581 kcal · P33 G60 L22', items:['Féculent cru — Riz 70g','Protéine crue — rotation du jour','Légumes verts (150g)','Huile d\'olive — selon la protéine']},
+    {name:'Petit-déjeuner', kcal:'~826 kcal · P39 G98 L33', items:['Flocons d\'avoine (80g)','Lait demi-écrémé (250ml)','2 œufs (100g)','Beurre de cacahuète (25g)','Banane (120g)']},
+    {name:'Déjeuner', kcal:'~931 kcal · P44 G110 L33', items:['Féculent cru — Riz 135g','Protéine crue — rotation du jour','Légumes verts (200g)','Huile d\'olive — selon la protéine']},
     {name:'Collation entraînement', kcal:'~264 kcal · P18 G28 L8', items:['Pain complet (60g)','Jambon (40g)','Fromage (20g)']},
     {name:'Dîner', kcal:'~726 kcal · P39 G86 L23', items:['Féculent cru — Pâtes 85g','Protéine crue — rotation du jour','Légumes verts (150g)','Huile d\'olive — selon la protéine','1 fruit (~120g)']},
-    {name:'Collation soir', kcal:'~306 kcal · P22 G20 L15', items:['Skyr (125g)','Miel (20g)','Beurre de cacahuète (30g)']}
+    {name:'Collation soir', kcal:'~306 kcal · P22 G26 L15', items:['Skyr (125g)','Miel (20g)','Beurre de cacahuète (30g)']}
   ];
   var mealKey = 'batcave-meals-' + todayISO;
   var mealState = load(mealKey, {});
@@ -4752,13 +4752,15 @@
      poids → calories se lit dans le féculent du DÎNER : +150 kcal = +40 g de pâtes crues,
      écrit dans le plan. */
   var FECULENTS = {
-    dej: {nom:'Riz',   g:70, kcalG:3.6, prixKg:1.1},
-    din: {nom:'Pâtes', g:85, kcalG:3.6, prixKg:1.0}
+    dej: {nom:'Riz',   g:135, kcalG:3.6, prixKg:1.1},
+    din: {nom:'Pâtes', g:85,  kcalG:3.6, prixKg:1.0}
   };
+  /* La rotation ne met que poulet ou saumon à midi, viande hachée ou saumon le soir : les
+     autres cases (poulet le soir, viande hachée à midi) gardent des valeurs de repli. */
   var PROTEINES = {
-    'Poulet':            {dej:{g:110, huile:20}, din:{g:130, huile:15}, prixKg:6.5},
+    'Poulet':            {dej:{g:130, huile:30}, din:{g:130, huile:15}, prixKg:6.5},
     'Viande hachée 5 %': {dej:{g:120, huile:20}, din:{g:145, huile:15}, prixKg:8.0},
-    'Saumon':            {dej:{g:115, huile:10}, din:{g:135, huile:8},  prixKg:13.0}
+    'Saumon':            {dej:{g:135, huile:20}, din:{g:135, huile:8},  prixKg:13.0}
   };
   /* [déjeuner, dîner] par jour de la semaine (0 = dimanche) */
   var ROTATION = {
@@ -6088,23 +6090,25 @@
      autres items). Le feculent du diner porte l'ajustement kcal en vigueur : +150 kcal =
      +40 g de pâtes crues par jour, +280 g sur la semaine. Meme ordre, meme nombre d'articles
      qu'avant : les cases cochees (batcave-courses, indexees) restent valables. */
-  /* La liste d'achat (6 sept. 2026) : quantités arrondies au conditionnement, pas les grammes
-     exacts du plan (poulet 700 g pour 550 g de besoin, etc.). Riz à midi, pâtes le soir : les
-     pâtes portent l'ajustement de la boucle kcal (+40 g/j = +280 g/semaine). L'huile d'olive se rachète toutes les 4 semaines :
-     elle reste dans la liste, on ne la coche que quand il en faut. Prix estimés Alicante 2026. */
+  /* La liste d'achat du plan à 5 prises (6 sept. 2026) : quantités arrondies au
+     conditionnement, pas les grammes exacts du plan. Plus de skyr du matin, plus de dattes ni
+     de cacahuètes ; riz doublé, poulet et saumon en hausse. Les pâtes portent l'ajustement de
+     la boucle kcal (+40 g/j = +280 g/semaine). L'huile d'olive se rachète toutes les
+     4 semaines : elle reste dans la liste, on ne la coche que quand il en faut. Prix estimés
+     Alicante 2026. */
   function planCoursesSemaine(ajust){
     var plus = grammesAjustement(ajust, 3.6) * 7;
     var g = function(n){ return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '\u202f'); };
     return [
       {cat:'Chaque semaine', items:[
-        {label:'Poulet', qte:'700 g', prix:4.55}, {label:'Viande hachée 5 %', qte:'900 g', prix:7.2}, {label:'Saumon', qte:'400 g', prix:5.2},
+        {label:'Poulet', qte:'800 g', prix:5.2}, {label:'Viande hachée 5 %', qte:'900 g', prix:7.2}, {label:'Saumon', qte:'450 g', prix:5.85},
         {label:'Œufs', qte:'15', prix:3.3}, {label:'Jambon', qte:'300 g', prix:3.3}, {label:'Fromage', qte:'150 g', prix:1.35},
-        {label:'Riz', qte:'500 g', prix:0.55},
+        {label:'Riz', qte:'1\u202f000 g', prix:1.1},
         {label:'Pâtes', qte: g(600 + plus) + ' g' + (plus ? ' (dont ' + (plus > 0 ? '+' : '') + g(plus) + ' g boucle kcal)' : ''), prix: (600 + plus) / 1000 * 1.0},
         {label:'Flocons d\'avoine', qte:'600 g', prix:0.95}, {label:'Pain complet', qte:'500 g', prix:1.6},
-        {label:'Skyr', qte:'1\u202f800 g', prix:7.2}, {label:'Lait demi-écrémé', qte:'2\u202f000 ml', prix:1.9},
-        {label:'Légumes verts surgelés', qte:'2\u202f250 g', prix:4.5}, {label:'Bananes', qte:'8', prix:1.4}, {label:'Fruits (pommes, poires, oranges…)', qte:'8', prix:2.2},
-        {label:'Beurre de cacahuète', qte:'400 g', prix:2.1}, {label:'Dattes', qte:'400 g', prix:2}, {label:'Cacahuètes', qte:'200 g', prix:0.9}, {label:'Miel', qte:'200 g', prix:1.3}
+        {label:'Skyr', qte:'900 g', prix:3.6}, {label:'Lait demi-écrémé', qte:'2\u202f000 ml', prix:1.9},
+        {label:'Légumes verts surgelés', qte:'2\u202f500 g', prix:5}, {label:'Bananes', qte:'8', prix:1.4}, {label:'Fruits (pommes, poires, oranges…)', qte:'8', prix:2.2},
+        {label:'Beurre de cacahuète', qte:'400 g', prix:2.1}, {label:'Miel', qte:'200 g', prix:1.3}
       ]},
       {cat:'Toutes les 4 semaines', mensuel:true, items:[{label:'Huile d\'olive', qte:'1\u202f000 ml', prix:7}]}
     ];
@@ -6124,6 +6128,13 @@
   }
   construireCourses();
   var coursesState = load('batcave-courses', {});
+  /* Les cases cochées sont indexées par position. Le plan à 5 prises a retiré deux
+     articles et changé l'ordre : une coche de l'ancienne liste tomberait sur le mauvais
+     article. On repart d'une liste vierge, une fois. */
+  if(!load('batcave-courses-plan-v2', false)){
+    if(Object.keys(coursesState).length){ coursesState = {}; save('batcave-courses', coursesState); }
+    saveInternal('batcave-courses-plan-v2', true);
+  }
 
   function coursesTotals(){
     var total=0, checked=0;
@@ -7068,8 +7079,11 @@
         Pomodoros par heure) sur Anki, où l'attention décroche vite et où chaque carte doit
         être jugée honnêtement ; 55 + 5 sur les annales (un examen dure une heure sans
         pause : on s'entraîne au format réel), les cartes, la compréhension du cours et les
-        projets, qui demandent de la continuité. La dernière pause sert de transition ; la
-        pause longue de 15 min tombe sur la Collation 1 (09:20).
+        projets, qui demandent de la continuité. La dernière pause sert de transition. Il
+        n'y a plus de pause longue à 09:20 : ce quart d'heure est passé au soir, pour la
+        Collation soir (le plan est à cinq prises, sans collation du matin). La matinée
+        avance donc de 15 min, de Cartes (09:20) au déjeuner (12:20), et Projets perso 3
+        gagne ce quart d'heure (14:00 → 14:50).
      2. Chaque bloc porte le nom de ce qu'on y fait, pas un numéro : le plan du jour dit
         « Anki 1 » ou « Comprendre le cours du jour », pas « Révision Bloc 3 ». La règle de
         priorité est fixe : la file Anki d'abord ; si elle déborde, elle prend le bloc
@@ -7078,8 +7092,9 @@
         espacé (Anki) au pic d'attention du matin, les questions notées la veille au soir
         transformées en cartes (J+1), une heure d'annales au format réel, et le cours du jour
         compris le soir même, avant la nuit qui consolide.
-     4. Lever 05:30, coucher 21:30 en semaine et 21:00 le week-end : 8 h au lit en semaine,
-        8 h 30 le week-end. L'heure gagnée le matin vient du Coran lu pendant le
+     4. Lever 05:30, coucher 21:55 en semaine et 21:00 le week-end : 7 h 35 au lit en
+        semaine, 8 h 30 le week-end. Choix assumé : « Comprendre le cours du jour » garde
+        son heure pleine, la collation et la douche du soir viennent après. L'heure gagnée le matin vient du Coran lu pendant le
         petit-déjeuner (06:45 → 07:20), pas du travail : le Bloc 1 démarre toujours à 07:20.
      5. Sport 05:30 → 06:30 : dix minutes de trajet, quarante minutes au parc, dix minutes
         de retour. Programme v2 : lundi haut lourd, mardi bas complet, jeudi haut volume,
@@ -7093,11 +7108,12 @@
         prend en semaine, puis l'après-midi est libre jusqu'au batch cooking.
      9. La fac est à 30 min : 950 m à pied jusqu'au tram, l'attente, 10 min de tram, le
         bout de chemin à l'arrivée. Départ à 15:00, retour 19:30 → 20:00. La Collation entraînement se
-        prend à 14:50, juste avant de partir : sans elle, rien entre le déjeuner (12:35) et
+        prend à 14:50, juste avant de partir : sans elle, rien entre le déjeuner (12:20) et
         le dîner (20:00), sept heures à jeun pendant quatre heures de cours. Projets perso 3
-        s'arrête donc à 14:50 (35 min d'un trait). Le soir : dîner 20:00 → 20:30, cours du
-        jour compris 20:30 → 21:30, coucher 21:30. Les minutes de trajet sont prises sur le
-        temps libre, jamais sur le sommeil.
+        s'arrête donc à 14:50 (50 min d'un trait). Le soir : dîner 20:00 → 20:30, cours du
+        jour compris 20:30 → 21:30 (une heure pleine, non négociable), Collation soir
+        21:30 → 21:45 (skyr, miel, beurre de cacahuète), douche et brossage de dents
+        21:45 → 21:55, coucher 21:55. Les minutes de trajet sont prises sur le temps libre.
     10. Le bloc « Comprendre le cours du jour » se fait sur papier : slides imprimées ou
         cahier, questions écrites à la main. C'est meilleur pour l'auto-explication, et c'est
         ce qui rend possible l'habitude « Téléphone hors de la chambre » un soir de semaine.
@@ -7109,51 +7125,51 @@
   var SCHEDULES = {
     weekday: [
       ['05:30','Sport'],['06:30','Douche + préparation'],['06:45','Petit-déjeuner + Coran (1 page)'],
-      ['07:20','Anki 1'],['08:20','Anki 2'],['09:20','Collation 1'],
-      ['09:35','Cartes du dernier cours'],['10:35','Annales'],
-      ['11:35','Projets perso 1'],['12:35','Déjeuner'],['12:55','😴 Micro-sieste'],
-      ['13:15','Projets perso 2'],['14:15','Projets perso 3'],['14:50','Collation entraînement'],['15:00','Trajet cours'],['15:30','Cours'],
+      ['07:20','Anki 1'],['08:20','Anki 2'],
+      ['09:20','Cartes du dernier cours'],['10:20','Annales'],
+      ['11:20','Projets perso 1'],['12:20','Déjeuner'],['12:40','😴 Micro-sieste'],
+      ['13:00','Projets perso 2'],['14:00','Projets perso 3'],['14:50','Collation entraînement'],['15:00','Trajet cours'],['15:30','Cours'],
       ['19:30','Trajet retour'],['20:00','Dîner'],['20:30','Comprendre le cours du jour'],
-      ['21:30','Coucher']
+      ['21:30','Collation soir'],['21:45','Douche + brossage de dents'],['21:55','Coucher']
     ],
     /* Mercredi : jour off de sport, le créneau de 05:30 est un bloc Anki (voir règle 11). */
     wednesday: [
       ['05:30','Anki matinal'],['06:30','Douche + préparation'],['06:45','Petit-déjeuner + Coran (1 page)'],
-      ['07:20','Anki 1'],['08:20','Anki 2'],['09:20','Collation 1'],
-      ['09:35','Cartes du dernier cours'],['10:35','Annales'],
-      ['11:35','Projets perso 1'],['12:35','Déjeuner'],['12:55','😴 Micro-sieste'],
-      ['13:15','Projets perso 2'],['14:15','Projets perso 3'],['14:50','Collation entraînement'],['15:00','Trajet cours'],['15:30','Cours'],
+      ['07:20','Anki 1'],['08:20','Anki 2'],
+      ['09:20','Cartes du dernier cours'],['10:20','Annales'],
+      ['11:20','Projets perso 1'],['12:20','Déjeuner'],['12:40','😴 Micro-sieste'],
+      ['13:00','Projets perso 2'],['14:00','Projets perso 3'],['14:50','Collation entraînement'],['15:00','Trajet cours'],['15:30','Cours'],
       ['19:30','Trajet retour'],['20:00','Dîner'],['20:30','Comprendre le cours du jour'],
-      ['21:30','Coucher']
+      ['21:30','Collation soir'],['21:45','Douche + brossage de dents'],['21:55','Coucher']
     ],
     friday: [
       ['05:30','Projets perso matinal'],['06:30','Douche + préparation'],['06:45','Petit-déjeuner + Coran (1 page)'],
-      ['07:20','Anki 1'],['08:20','Anki 2'],['09:20','Collation 1'],
-      ['09:35','Cartes du dernier cours'],
-      ['10:35','Projets perso 1'],['11:35','Projets perso 2'],['12:35','Déjeuner'],
+      ['07:20','Anki 1'],['08:20','Anki 2'],
+      ['09:20','Cartes du dernier cours'],
+      ['10:20','Projets perso 1'],['11:20','Projets perso 2'],['12:20','Déjeuner'],
       ['13:15','Trajet mosquée'],['13:30',"Jumu'ah (khutba + prière ~14h)"],['14:30','😴 Micro-sieste'],['14:50','Collation entraînement'],['15:00','Trajet cours'],
       ['15:30','Cours'],['19:30','Trajet retour'],['20:00','Dîner'],['20:30','Comprendre le cours du jour'],
-      ['21:30','Coucher']
+      ['21:30','Collation soir'],['21:45','Douche + brossage de dents'],['21:55','Coucher']
     ],
     weekend: [
       ['05:30','Projets perso matinal'],['06:30','Douche + préparation'],['06:45','Petit-déjeuner + Coran (1 page)'],
-      ['07:20','Anki 1'],['08:20','Anki 2'],['09:20','Collation 1'],
-      ['09:35','Annale complète'],['10:35','Correction + cartes'],
-      ['11:35','Projets perso 1'],['12:35','Déjeuner'],['13:10','😴 Micro-sieste'],
+      ['07:20','Anki 1'],['08:20','Anki 2'],
+      ['09:20','Annale complète'],['10:20','Correction + cartes'],
+      ['11:20','Projets perso 1'],['12:20','Déjeuner'],['13:10','😴 Micro-sieste'],
       ['13:30','Projets perso 2'],['14:30','Repos — après-midi libre'],['16:00','🍲 Batch cooking de la semaine'],
       ['18:00','Temps libre'],['19:00','Dîner'],
-      ['19:30','Temps libre'],['20:30','Collation 2'],
-      ['20:45','Temps libre'],['21:00','Coucher']
+      ['19:30','Temps libre'],['20:30','Collation soir'],
+      ['20:45','Douche + brossage de dents'],['21:00','Coucher']
     ],
     saturday: [
       ['05:30','Sport'],['06:30','Douche + préparation'],['06:45','Petit-déjeuner + Coran (1 page)'],
-      ['07:20','Anki 1'],['08:20','Anki 2'],['09:20','Collation 1'],
-      ['09:35','Cartes du dernier cours'],['10:35','Annales'],
-      ['11:35','Projets perso 1'],['12:35','Déjeuner'],['13:10','😴 Micro-sieste'],
+      ['07:20','Anki 1'],['08:20','Anki 2'],
+      ['09:20','Cartes du dernier cours'],['10:20','Annales'],
+      ['11:20','Projets perso 1'],['12:20','Déjeuner'],['13:10','😴 Micro-sieste'],
       ['13:30','🛒 Courses de la semaine'],['15:30','Rangement des courses'],
       ['16:00',"Cartes d'erreurs de la semaine"],['17:00','Projets perso 2'],['18:00','Projets perso 3'],
-      ['19:00','Dîner'],['19:30','Temps libre'],['20:30','Collation 2'],
-      ['20:45','Temps libre'],['21:00','Coucher']
+      ['19:00','Dîner'],['19:30','Temps libre'],['20:30','Collation soir'],
+      ['20:45','Douche + brossage de dents'],['21:00','Coucher']
     ]
   };
   /* Nature d'un bloc du planning. Les blocs de révision portent le nom de l'activité
@@ -7168,7 +7184,7 @@
   /* Rythme de Pomodoro d'un bloc : 25 min sur Anki (rappel, attention courte), 55 min sur
      tout le reste (annales au format examen, cartes, compréhension, projets : continuité).
      La part de travail d'une heure pleine en découle : 50 min sur 60 en 25 + 5, 55 sur 60
-     en 55 + 5. Un bloc plus court que son rythme (Projets perso 3, 35 min avant la collation)
+     en 55 + 5. Un bloc plus court que son rythme (Projets perso 3, 50 min avant la collation)
      est du travail d'un bout à l'autre : la pause, c'est le trajet. Les cibles du jour et
      de la semaine se lisent en temps de travail réel, pauses exclues. */
   var RYTHME_COURT = /^Anki/;
@@ -7188,13 +7204,13 @@
     return null;
   }
   /* Durée automatique d'un Pomodoro lancé maintenant : celle du bloc de travail en cours,
-     bornée par la longueur du bloc (35 min pour Projets perso 3), 55 min hors bloc (une
+     bornée par la longueur du bloc (50 min pour Projets perso 3), 55 min hors bloc (une
      session hors planning est de la continuité, pas du rappel). */
   function dureeBlocAuto(){
     var b = blocPlanCourant();
     return (b && typeBlocPlan(b[1])) ? Math.min(rythmeBloc(b[1]), b[2]) : 55;
   }
-  /* L'heure du coucher n'est plus la même tous les jours (21:30 en semaine, 21:00 le
+  /* L'heure du coucher n'est plus la même tous les jours (21:55 en semaine, 21:00 le
      week-end) : on la lit dans le planning au lieu de la coder en dur. Sinon la barre de
      progression de la journée et l'alerte « tu finirais après … » continuaient de viser
      22:00, une heure qui n'existe plus. */
@@ -7351,7 +7367,7 @@
       jours: joursRestants
     };
   }
-  /* L'objectif de sommeil était figé à 8 h alors que le coucher varie (21:30 en semaine,
+  /* L'objectif de sommeil était figé à 8 h alors que le coucher varie (21:55 en semaine,
      21:00 le week-end) : une nuit parfaitement conforme au planning affichait un déficit.
      La nuit qui précède aujourd'hui commence au coucher d'HIER — c'est celui-là qui fixe
      la cible, pas celui du soir à venir. */

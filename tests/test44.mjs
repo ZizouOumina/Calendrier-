@@ -33,9 +33,9 @@ console.log('\n== 105) Charge restante : cible hebdo moins le fait depuis lundi 
   const { ctx, fr } = await ouvrir('2026-09-02T10:00:00+02:00', seed);   /* mercredi */
   const t = await texte(fr, '#dash-semaine');
   ok(/21,9 h de révision restantes sur 29,9/.test(t), '29,9 − 8 = 21,9 h de révision (' + t.slice(0,60) + '…)');
-  ok(/13,9 h de projets sur 17,9/.test(t), '17,9 − 4 = 13,9 h de projets');
+  ok(/14,9 h de projets sur 18,9/.test(t), '18,9 − 4 = 14,9 h de projets');
   ok(/5 jours/.test(t), 'mercredi → dimanche : 5 jours');
-  ok(/~7,2 h\/jour/.test(t), '(21,9 + 13,9) / 5 = 7,2 h/jour');
+  ok(/~7,4 h\/jour/.test(t), '(21,9 + 14,9) / 5 = 7,4 h/jour');
   await ctx.close();
 }
 
@@ -47,14 +47,14 @@ console.log('\n== 106) Dimanche : 1 jour restant ; semaine bouclée : message de
 }
 {
   const s = [];
-  ['2026-08-31','2026-09-01','2026-09-02','2026-09-03','2026-09-04','2026-09-05'].forEach(d => { s.push(bloc(d,'cours',330,'07')); s.push(bloc(d,'projet',180,'12')); });
+  ['2026-08-31','2026-09-01','2026-09-02','2026-09-03','2026-09-04','2026-09-05'].forEach(d => { s.push(bloc(d,'cours',330,'07')); s.push(bloc(d,'projet',200,'12')); });
   const { ctx, fr } = await ouvrir('2026-09-06T10:00:00+02:00', {'batcave-sessions': s});
   ok(/Objectifs de la semaine atteints/.test(await texte(fr, '#dash-semaine')), 'tout fait : « Objectifs de la semaine atteints »');
   await ctx.close();
 }
 
 console.log('\n== 107) Cibles du jour dérivées du planning (plus de 5/4/5/4 à la main) ==');
-for(const [nom, quand, rev, proj] of [['mercredi','2026-09-02T10:00:00+02:00','5,3','2,4'],['vendredi','2026-09-04T10:00:00+02:00','3,5','2,8'],['samedi','2026-09-05T10:00:00+02:00','4,4','2,8'],['dimanche','2026-09-06T10:00:00+02:00','3,5','2,8']]){
+for(const [nom, quand, rev, proj] of [['mercredi','2026-09-02T10:00:00+02:00','5,3','2,7'],['vendredi','2026-09-04T10:00:00+02:00','3,5','2,8'],['samedi','2026-09-05T10:00:00+02:00','4,4','2,8'],['dimanche','2026-09-06T10:00:00+02:00','3,5','2,8']]){
   const { ctx, fr } = await ouvrir(quand);
   const cells = await fr.evaluate(() => [...document.querySelectorAll('#dash-temps .temps-cell .tv')].map(e => e.innerText.replace(/\s+/g,' ')));
   ok(new RegExp('/ ' + rev + 'h').test(cells[0] || ''), nom + ' : révision / ' + rev + 'h (' + cells[0] + ')');

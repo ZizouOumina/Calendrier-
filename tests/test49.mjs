@@ -50,12 +50,12 @@ console.log('\n== 119) Prévu vs réalisé — Bilan ==');
   const { ctx, fr, page } = await ouvrir(MERCREDI, { 'batcave-sessions': [S('a','2026-09-07','cours',300,'07'), S('b','2026-09-07','projet',180,'13'), S('c','2026-09-08','cours',240,'07')] });
   await aller(fr, page, 'bilan');
   const fid = await fr.evaluate(() => [...document.querySelectorAll('#bilan-grid .bilan-card')].map(c => c.innerText.replace(/\s+/g,' ')).find(t => /Fidélité/.test(t)));
-  ok(fid && /56%/.test(fid), 'carte « Fidélité au plan » : 56 % (12 h faites / 21,3 h de travail réel prévues lun-mer) : ' + (fid || '').slice(0, 60));
+  ok(fid && /54%/.test(fid), 'carte « Fidélité au plan » : 54 % (12 h faites / 22,1 h de travail réel prévues lun-mer) : ' + (fid || '').slice(0, 60));
   const p = await fr.evaluate(() => ({ txt: document.getElementById('bilan-plan').innerText.replace(/\s+/g,' '), note: document.getElementById('bilan-plan-note').innerText }));
-  ok(/Lun 8,0 \/ 6,8 h/.test(p.txt) && /Mar 4,0 \/ 6,8 h/.test(p.txt) && /Mer 0,0 \/ 7,7 h/.test(p.txt), 'jour par jour : Lun 8/6,8, Mar 4/6,8, Mer 0/7,7');
-  ok(/Jeu prévu 6,8 h/.test(p.txt) && /Dim prévu 6,3 h/.test(p.txt), 'les jours à venir montrent le prévu (jeu 6,8 h, dim 6,3 h)');
-  ok(/Révision 9,0 \/ 14,1 h/.test(p.txt) && /Projets 3,0 \/ 7,3 h/.test(p.txt), 'totaux par type sur les jours passés (rév. 9/14,1, proj. 3/7,3)');
-  ok(/fidélité 56 %/.test(p.note), 'note : ' + p.note);
+  ok(/Lun 8,0 \/ 7,1 h/.test(p.txt) && /Mar 4,0 \/ 7,1 h/.test(p.txt) && /Mer 0,0 \/ 7,9 h/.test(p.txt), 'jour par jour : Lun 8/7,1, Mar 4/7,1, Mer 0/7,9');
+  ok(/Jeu prévu 7,1 h/.test(p.txt) && /Dim prévu 6,3 h/.test(p.txt), 'les jours à venir montrent le prévu (jeu 7,1 h, dim 6,3 h)');
+  ok(/Révision 9,0 \/ 14,1 h/.test(p.txt) && /Projets 3,0 \/ 8,0 h/.test(p.txt), 'totaux par type sur les jours passés (rév. 9/14,1, proj. 3/8,0)');
+  ok(/fidélité 54 %/.test(p.note), 'note : ' + p.note);
   await ctx.close();
 }
 
@@ -69,14 +69,14 @@ console.log('\n== 120) Boucle poids → calories ==');
   ok(/recommandation : \+150 kcal/.test(k.note), 'poids stable deux semaines → +150 kcal recommandé : ' + k.note);
   ok(/Rythme visé : \+0,23 kg \/ semaine/.test(k.txt), 'rythme visé dérivé de l\'objectif poids (64 → 70 sur l\'horizon) : ' + (k.txt.match(/Rythme visé[^.]*/) || [''])[0]);
   ok(/Tendance : \+0,00 kg/.test(k.txt) && !k.btn, 'tendance +0,00 kg, bouton « Appliquer » visible');
-  ok(/\/ 3066 kcal$/.test(k.sub), 'cible de base 3066 kcal : ' + k.sub);
+  ok(/\/ 3053 kcal$/.test(k.sub), 'cible de base 3053 kcal : ' + k.sub);
   await fr.evaluate(() => document.getElementById('kcal-appliquer').click());
   await page.waitForTimeout(300);
   const aj = await local(fr, 'batcave-kcal-ajustement');
   ok(aj && aj.valeur === 150 && aj.depuis === '2026-09-09', 'ajustement enregistré : +150 depuis aujourd\'hui');
   k = await fr.evaluate(() => ({ sub: document.getElementById('meal-kcal-sub').innerText, txt: document.getElementById('kcal-analyse').innerText.replace(/\s+/g,' ') }));
-  ok(/\/ 3216 kcal \(plan 3066 \+ 150\)/.test(k.sub), 'la barre Repas vise 3216 kcal : ' + k.sub);
-  ok(/Cible calorique actuelle : 3216 kcal/.test(k.txt), 'l\'analyse affiche la cible ajustée');
+  ok(/\/ 3203 kcal \(plan 3053 \+ 150\)/.test(k.sub), 'la barre Repas vise 3203 kcal : ' + k.sub);
+  ok(/Cible calorique actuelle : 3203 kcal/.test(k.txt), 'l\'analyse affiche la cible ajustée');
   /* tout coché aujourd'hui → 3237/3237 = 100 % : l'ajustement vit dans le dîner, l'apport le suit */
   /* un clic redessine la grille : on re-cherche la premiere case non cochee a chaque tour */
   await fr.evaluate(() => { for(let i = 0; i < 60; i++){ const cb = document.querySelector('#meal-grid input[type="checkbox"]:not(:checked)'); if(!cb) break; cb.click(); } });

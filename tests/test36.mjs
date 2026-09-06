@@ -17,7 +17,7 @@ const MOCK = () => {
   window.__events = {events: [
     ev(8, 0, 9, 0, 'Anatomie CM'),
     ev(9, 0, 11, 0, 'TP Bioquímica'),
-    ev(14, 0, 15, 0, 'Clinique'),
+    ev(13, 50, 15, 0, 'Clinique'),   /* 13:50 : 14:00 est désormais Projets perso 3, et le planning fait foi à heure égale */
   ]};
   window.__creations = [];
   const mcp = {

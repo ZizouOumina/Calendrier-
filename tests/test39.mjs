@@ -30,7 +30,7 @@ console.log('\n== 83) Les objectifs hebdomadaires se déduisent du planning ==')
   }));
   /* écrits en dur, ils valaient encore 39 h et 23 h : l'ancien planning. */
   ok(nb(v.rev) === '29,9', 'objectif révision = 29,9 h de travail réel (34 h de blocs, pauses exclues, Anki matinal du mercredi) : ' + nb(v.rev));
-  ok(nb(v.proj) === '17,9', 'objectif projets perso = 17,9 h (bloc du dimanche 13:30, matins du vendredi et du dimanche) : ' + nb(v.proj));
+  ok(nb(v.proj) === '18,9', 'objectif projets perso = 18,9 h (bloc du dimanche 13:30, matins du vendredi et du dimanche, Projets perso 3 de 50 min) : ' + nb(v.proj));
   await ctx.close();
 }
 
@@ -43,7 +43,7 @@ for(const [nom, quand, attendu] of [['lundi',LUNDI,'4 h 25'], ['vendredi',VENDRE
 }
 
 console.log('\n== 85) L\'objectif de sommeil suit le coucher de la VEILLE ==');
-for(const [nom, quand, attendu] of [['lundi (veille dim. 21:00, lever 05:30)',LUNDI,'8,5'], ['samedi (veille ven. 21:30)',SAMEDI,'8,0'], ['dimanche (veille sam. 21:00)',DIMANCHE,'8,5']]){
+for(const [nom, quand, attendu] of [['lundi (veille dim. 21:00, lever 05:30)',LUNDI,'8,5'], ['samedi (veille ven. 21:55)',SAMEDI,'7,6'], ['dimanche (veille sam. 21:00)',DIMANCHE,'8,5']]){
   const { ctx, fr } = await ouvrir(quand);
   const t = await fr.evaluate(() => document.getElementById('jr-sleep-sub').textContent);
   ok(t.indexOf('/ ' + attendu + ' h') > -1, nom + ' → ' + attendu + ' h : ' + t);
@@ -73,7 +73,7 @@ console.log('\n== 86) Matinée : séance d\'1 h et petit-déjeuner rapproché ==
 
 console.log('\n== 87) Micro-sieste : les 7 jours, jamais pendant Jumu\'ah ==');
 for(const [nom, quand, heure, apres] of [
-  ['lundi', LUNDI, '12:55', 'Déjeuner'],
+  ['lundi', LUNDI, '12:40', 'Déjeuner'],
   ['vendredi', VENDREDI, '14:30', "Jumu'ah"],
   ['samedi', SAMEDI, '13:10', 'Déjeuner'],
   ['dimanche', DIMANCHE, '13:10', 'Déjeuner']]){

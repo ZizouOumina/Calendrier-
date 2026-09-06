@@ -105,7 +105,7 @@ console.log('\n== 194) Repas cochés → tableau de bord et score ==');
     await page.waitForTimeout(50);
   }
   await page.waitForTimeout(200);
-  ok(/826 \/ 3066 kcal/.test(await txt('#meal-kcal-sub')), 'Repas : 826 / 3066 kcal');
+  ok(/826 \/ 3053 kcal/.test(await txt('#meal-kcal-sub')), 'Repas : 826 / 3053 kcal');
   await aller('dashboard');
   ok(/Petit-déjeuner[\s\S]*?5\/5/.test(await txt('#dash-meals')), 'Tableau de bord : petit-déjeuner 5/5');
   ok(/27% kcal/.test(await txt('#dash-meals-kcal-pct')), 'Tableau de bord : 27 % des kcal');
