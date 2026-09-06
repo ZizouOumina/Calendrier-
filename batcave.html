@@ -1391,7 +1391,7 @@
       <div class="page-head">
         <span class="eyebrow">Dossier N° 05</span>
         <h1>Repas</h1>
-        <p class="desc">Programme du jour, 6 prises : 3 065 kcal, P 174 g, G 335 g, L 114 g, tout pesé cru. La protéine du déjeuner et du dîner suit la rotation de la semaine. Les cases se réinitialisent à minuit.</p>
+        <p class="desc">Programme du jour, 6 prises : 3 065 kcal, P 174 g, G 335 g, L 114 g, tout pesé cru. Riz à midi, pâtes le soir ; la protéine suit la rotation de la semaine. Les cases se réinitialisent à minuit.</p>
       </div>
 
       <div class="day-bar">
@@ -4693,14 +4693,14 @@
      64 kg · 182 cm · 19 ans · 4 séances par semaine · tout pesé cru.
      3 065 kcal · P 174 g (2,7 g/kg) · G 335 g · L 114 g. Six prises. La protéine du déjeuner et
      du dîner suit une ROTATION fixe sur la semaine (l'huile d'olive va avec) ; le féculent
-     reste au choix, riz ou pâtes, mêmes grammes. Les chiffres « kcal · P G L » de chaque
-     repas sont ceux du plan ; la barre du jour les prorate aux cases cochées. */
+     est le riz à midi (70 g) et les pâtes le soir (85 g). Les chiffres « kcal · P G L » de
+     chaque repas sont ceux du plan ; la barre du jour les prorate aux cases cochées. */
   var MEALS = [
     {name:'Petit-déjeuner', kcal:'~826 kcal · P42 G98 L33', items:['Flocons d\'avoine (80g)','Lait demi-écrémé (250ml)','2 œufs (100g)','Beurre de cacahuète (25g)','Banane (120g)']},
     {name:'Collation matin', kcal:'~363 kcal · P21 G44 L13', items:['Skyr (125g)','Cacahuètes (25g)','Dattes (50g)']},
-    {name:'Déjeuner', kcal:'~581 kcal · P33 G60 L22', items:['Féculent cru — Riz 70g ou Pâtes 70g','Protéine crue — rotation du jour','Légumes verts (150g)','Huile d\'olive — selon la protéine']},
+    {name:'Déjeuner', kcal:'~581 kcal · P33 G60 L22', items:['Féculent cru — Riz 70g','Protéine crue — rotation du jour','Légumes verts (150g)','Huile d\'olive — selon la protéine']},
     {name:'Collation entraînement', kcal:'~264 kcal · P18 G28 L8', items:['Pain complet (60g)','Jambon (40g)','Fromage (20g)']},
-    {name:'Dîner', kcal:'~726 kcal · P39 G86 L23', items:['Féculent cru — Riz 85g ou Pâtes 85g','Protéine crue — rotation du jour','Légumes verts (150g)','Huile d\'olive — selon la protéine','1 fruit (~120g)']},
+    {name:'Dîner', kcal:'~726 kcal · P39 G86 L23', items:['Féculent cru — Pâtes 85g','Protéine crue — rotation du jour','Légumes verts (150g)','Huile d\'olive — selon la protéine','1 fruit (~120g)']},
     {name:'Collation soir', kcal:'~306 kcal · P22 G20 L15', items:['Skyr (125g)','Miel (20g)','Beurre de cacahuète (30g)']}
   ];
   var mealKey = 'batcave-meals-' + todayISO;
@@ -4708,12 +4708,12 @@
   /* ===== Plan → quantités =====
      Grammes crus par repas, densité calorique (kcal/g cru) et prix estimé au kilo (Alicante,
      2026). La liste de courses en découle (rotation × 7 jours), et l'ajustement de la boucle
-     poids → calories se lit dans le féculent du DÎNER : +150 kcal = +40 g de riz ou de pâtes
-     cru, écrit dans le plan. */
-  var FECULENTS = [
-    {nom:'Riz',   dej:70, din:85, kcalG:3.6, prixKg:1.1},
-    {nom:'Pâtes', dej:70, din:85, kcalG:3.6, prixKg:1.0}
-  ];
+     poids → calories se lit dans le féculent du DÎNER : +150 kcal = +40 g de pâtes crues,
+     écrit dans le plan. */
+  var FECULENTS = {
+    dej: {nom:'Riz',   g:70, kcalG:3.6, prixKg:1.1},
+    din: {nom:'Pâtes', g:85, kcalG:3.6, prixKg:1.0}
+  };
   var PROTEINES = {
     'Poulet':            {dej:{g:110, huile:20}, din:{g:130, huile:15}, prixKg:6.5},
     'Viande hachée 5 %': {dej:{g:120, huile:20}, din:{g:145, huile:15}, prixKg:8.0},
@@ -4731,10 +4731,8 @@
   /* grammes de féculent cru équivalant à un ajustement en kcal, arrondis à 10 g */
   function grammesAjustement(kcal, kcalG){ return Math.round((Number(kcal) || 0) / kcalG / 10) * 10; }
   function texteFeculent(repas, ajust){
-    return 'Féculent cru — ' + FECULENTS.map(function(f){
-      var g = f[repas] + (repas === 'din' ? grammesAjustement(ajust, f.kcalG) : 0);
-      return f.nom + ' ' + g + 'g';
-    }).join(' ou ') + (repas === 'din' && ajust ? ' (boucle kcal ' + (ajust > 0 ? '+' : '') + ajust + ' kcal)' : '');
+    var f = FECULENTS[repas], g = f.g + (repas === 'din' ? grammesAjustement(ajust, f.kcalG) : 0);
+    return 'Féculent cru — ' + f.nom + ' ' + g + 'g' + (repas === 'din' && ajust ? ' (boucle kcal ' + (ajust > 0 ? '+' : '') + ajust + ' kcal)' : '');
   }
   /* Le libellé d'un item : féculent avec l'ajustement du jour (dîner), protéine et huile de
      la rotation du jour (déjeuner et dîner). */
@@ -4838,8 +4836,8 @@
     lignes.push('Rythme visé : <b style="color:var(--ink);">' + kg(b.rythmeVise) + ' / semaine</b> (objectif poids sur son horizon).');
     if(b.delta !== null) lignes.push('Tendance : <b style="color:var(--ink);">' + kg(b.delta) + '</b> cette semaine (' + b.moyAvant.toFixed(1).replace('.', ',') + ' → ' + b.moyRecente.toFixed(1).replace('.', ',') + ' kg en moyenne).');
     lignes.push((b.delta === null ? '' : '→ ') + b.motif);
-    if(b.reco && b.reco > 0) lignes.push('<span class="sub-note">+150 kcal = +40 g de riz ou de pâtes cru au dîner — écrit dans le plan et dans la liste de courses dès que tu appliques.</span>');
-    if(b.reco && b.reco < 0) lignes.push('<span class="sub-note">−100 kcal = −30 g de riz ou de pâtes cru au dîner — écrit dans le plan et dans la liste de courses dès que tu appliques.</span>');
+    if(b.reco && b.reco > 0) lignes.push('<span class="sub-note">+150 kcal = +40 g de pâtes crues au dîner — écrit dans le plan et dans la liste de courses dès que tu appliques.</span>');
+    if(b.reco && b.reco < 0) lignes.push('<span class="sub-note">−100 kcal = −30 g de pâtes crues au dîner — écrit dans le plan et dans la liste de courses dès que tu appliques.</span>');
     el.innerHTML = lignes.map(function(l){ return '<p>' + l + '</p>'; }).join('');
     var cibleReco = b.delta === null ? null : actuel + b.reco;
     if(bApp){
@@ -5377,7 +5375,7 @@
     if(note) note.textContent = p ? ('prochain : ' + p.matiere + ' dans ' + p.jours + ' j') : 'aucune date saisie';
   }
   var GOALS_NUMERIC = [
-    {id:'poids', label:'🏋️ Poids', unit:'kg', start:64, target:70, step:0.1, note:'Rythme visé : ~1 kg/mois (surplus + PPL).'},
+    {id:'poids', label:'🏋️ Poids', unit:'kg', start:64, target:70, step:0.1, note:'Rythme visé : ~1 kg/mois (surplus + programme v2), soit 70 kg à la fin de l\'horizon.'},
     {id:'coran', label:'📖 Coran', unit:'pages', start:0, target:180, step:1, note:'~9 juz sur 6 mois — 1 page/jour.'},
     {id:'duaas', label:'🤲 Duaas', unit:'duaas', start:0, target:180, step:1, note:'Avec révision espacée des précédentes.'}
   ];
@@ -6044,8 +6042,8 @@
      +40 g de riz cru par jour, +280 g sur la semaine. Meme ordre, meme nombre d'articles
      qu'avant : les cases cochees (batcave-courses, indexees) restent valables. */
   /* La liste d'achat (6 sept. 2026) : quantités arrondies au conditionnement, pas les grammes
-     exacts du plan (poulet 700 g pour 550 g de besoin, etc.). Le riz porte l'ajustement de la
-     boucle kcal (+40 g/j = +280 g/semaine). L'huile d'olive se rachète toutes les 4 semaines :
+     exacts du plan (poulet 700 g pour 550 g de besoin, etc.). Riz à midi, pâtes le soir : les
+     pâtes portent l'ajustement de la boucle kcal (+40 g/j = +280 g/semaine). L'huile d'olive se rachète toutes les 4 semaines :
      elle reste dans la liste, on ne la coche que quand il en faut. Prix estimés Alicante 2026. */
   function planCoursesSemaine(ajust){
     var plus = grammesAjustement(ajust, 3.6) * 7;
@@ -6054,7 +6052,8 @@
       {cat:'Chaque semaine', items:[
         {label:'Poulet', qte:'700 g', prix:4.55}, {label:'Viande hachée 5 %', qte:'900 g', prix:7.2}, {label:'Saumon', qte:'400 g', prix:5.2},
         {label:'Œufs', qte:'15', prix:3.3}, {label:'Jambon', qte:'300 g', prix:3.3}, {label:'Fromage', qte:'150 g', prix:1.35},
-        {label:'Riz', qte: g(1200 + plus) + ' g' + (plus ? ' (dont ' + (plus > 0 ? '+' : '') + g(plus) + ' g boucle kcal)' : ''), prix: (1200 + plus) / 1000 * 1.1},
+        {label:'Riz', qte:'500 g', prix:0.55},
+        {label:'Pâtes', qte: g(600 + plus) + ' g' + (plus ? ' (dont ' + (plus > 0 ? '+' : '') + g(plus) + ' g boucle kcal)' : ''), prix: (600 + plus) / 1000 * 1.0},
         {label:'Flocons d\'avoine', qte:'600 g', prix:0.95}, {label:'Pain complet', qte:'500 g', prix:1.6},
         {label:'Skyr', qte:'1\u202f800 g', prix:7.2}, {label:'Lait demi-écrémé', qte:'2\u202f000 ml', prix:1.9},
         {label:'Légumes verts surgelés', qte:'2\u202f250 g', prix:4.5}, {label:'Bananes', qte:'8', prix:1.4}, {label:'Fruits (pommes, poires, oranges…)', qte:'8', prix:2.2},
@@ -6090,7 +6089,7 @@
     var plan = construireCourses(), ajust = ajustementKcalPour(todayISO), b = budgetCourses(plan);
     var note = document.getElementById('courses-plan-note'), budget = document.getElementById('courses-budget');
     if(note) note.innerHTML = 'Quantités d\'achat arrondies au conditionnement, pour une semaine du plan. ' + (ajust
-      ? 'Boucle poids → calories en vigueur : <b style="color:var(--ink-dim);">' + (ajust > 0 ? '+' : '') + ajust + ' kcal/jour</b>, soit ' + (grammesAjustement(ajust, 3.6) > 0 ? '+' : '') + grammesAjustement(ajust, 3.6) + ' g de riz cru au dîner (' + (grammesAjustement(ajust, 3.6) * 7 > 0 ? '+' : '') + grammesAjustement(ajust, 3.6) * 7 + ' g sur la semaine) — déjà compté ci-dessous.'
+      ? 'Boucle poids → calories en vigueur : <b style="color:var(--ink-dim);">' + (ajust > 0 ? '+' : '') + ajust + ' kcal/jour</b>, soit ' + (grammesAjustement(ajust, 3.6) > 0 ? '+' : '') + grammesAjustement(ajust, 3.6) + ' g de pâtes crues au dîner (' + (grammesAjustement(ajust, 3.6) * 7 > 0 ? '+' : '') + grammesAjustement(ajust, 3.6) * 7 + ' g sur la semaine) — déjà compté ci-dessous.'
       : 'Aucun ajustement calorique en cours : quantités du plan de base.');
     if(budget) budget.innerHTML = 'Budget estimé : <b style="color:var(--ink-dim)">' + fmtEuro(b.total) + ' / semaine</b>, plus <b style="color:var(--ink-dim)">' + fmtEuro(b.mensuel) + '</b> toutes les 4 semaines — soit <b style="color:var(--ink-dim)">' + fmtEuro(b.total * 52 / 12 + b.mensuel * 52 / 12 / 4) + ' / mois</b> environ (prix estimés Alicante 2026, à corriger avec tes tickets).';
     grid.innerHTML = '';
@@ -7046,7 +7045,7 @@
         le dimanche, un bloc de projets à 13:30 rend les quatre quarts d'heure que le trajet
         prend en semaine, puis l'après-midi est libre jusqu'au batch cooking.
      9. La fac est à 30 min : 950 m à pied jusqu'au tram, l'attente, 10 min de tram, le
-        bout de chemin à l'arrivée. Départ à 15:00, retour 19:30 → 20:00. La Collation 2 se
+        bout de chemin à l'arrivée. Départ à 15:00, retour 19:30 → 20:00. La Collation entraînement se
         prend à 14:50, juste avant de partir : sans elle, rien entre le déjeuner (12:35) et
         le dîner (20:00), sept heures à jeun pendant quatre heures de cours. Projets perso 3
         s'arrête donc à 14:50 (35 min d'un trait). Le soir : dîner 20:00 → 20:30, cours du
@@ -7066,7 +7065,7 @@
       ['07:20','Anki 1'],['08:20','Anki 2'],['09:20','Collation 1'],
       ['09:35','Cartes du dernier cours'],['10:35','Annales'],
       ['11:35','Projets perso 1'],['12:35','Déjeuner'],['12:55','😴 Micro-sieste'],
-      ['13:15','Projets perso 2'],['14:15','Projets perso 3'],['14:50','Collation 2'],['15:00','Trajet cours'],['15:30','Cours'],
+      ['13:15','Projets perso 2'],['14:15','Projets perso 3'],['14:50','Collation entraînement'],['15:00','Trajet cours'],['15:30','Cours'],
       ['19:30','Trajet retour'],['20:00','Dîner'],['20:30','Comprendre le cours du jour'],
       ['21:30','Coucher']
     ],
@@ -7076,7 +7075,7 @@
       ['07:20','Anki 1'],['08:20','Anki 2'],['09:20','Collation 1'],
       ['09:35','Cartes du dernier cours'],['10:35','Annales'],
       ['11:35','Projets perso 1'],['12:35','Déjeuner'],['12:55','😴 Micro-sieste'],
-      ['13:15','Projets perso 2'],['14:15','Projets perso 3'],['14:50','Collation 2'],['15:00','Trajet cours'],['15:30','Cours'],
+      ['13:15','Projets perso 2'],['14:15','Projets perso 3'],['14:50','Collation entraînement'],['15:00','Trajet cours'],['15:30','Cours'],
       ['19:30','Trajet retour'],['20:00','Dîner'],['20:30','Comprendre le cours du jour'],
       ['21:30','Coucher']
     ],
@@ -7085,7 +7084,7 @@
       ['07:20','Anki 1'],['08:20','Anki 2'],['09:20','Collation 1'],
       ['09:35','Cartes du dernier cours'],
       ['10:35','Projets perso 1'],['11:35','Projets perso 2'],['12:35','Déjeuner'],
-      ['13:15','Trajet mosquée'],['13:30',"Jumu'ah (khutba + prière ~14h)"],['14:30','😴 Micro-sieste'],['14:50','Collation 2'],['15:00','Trajet cours'],
+      ['13:15','Trajet mosquée'],['13:30',"Jumu'ah (khutba + prière ~14h)"],['14:30','😴 Micro-sieste'],['14:50','Collation entraînement'],['15:00','Trajet cours'],
       ['15:30','Cours'],['19:30','Trajet retour'],['20:00','Dîner'],['20:30','Comprendre le cours du jour'],
       ['21:30','Coucher']
     ],

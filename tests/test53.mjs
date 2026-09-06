@@ -26,8 +26,8 @@ console.log('\n== 180) Sans ajustement : plan de base, liste = plan × 7 ==');
   const { ctx, fr } = await ouvrir(MARDI);
   await page_(fr, 'courses');
   const c = await fr.evaluate(() => ({ items: [...document.querySelectorAll('#courses-grid label')].map(l => l.textContent), note: document.getElementById('courses-plan-note').textContent, budget: document.getElementById('courses-budget').textContent, n: document.querySelectorAll('#courses-grid input').length }));
-  ok(c.n === 19, '19 articles (plan du 6 sept.)');
-  ok(c.items.some(t => /^Riz — 1\u202f200 g \(~1,3 €\)$/.test(t)), 'Riz : 1 200 g (' + c.items.find(t => /^Riz/.test(t)) + ')');
+  ok(c.n === 20, '20 articles (18 chaque semaine, riz et pâtes séparés, plus l\'huile)');
+  ok(c.items.some(t => /^Riz — 500 g \(~0,6 €\)$/.test(t)) && c.items.some(t => /^Pâtes — 600 g \(~0,6 €\)$/.test(t)), 'Riz 500 g le midi, pâtes 600 g le soir (' + c.items.find(t => /^Pâtes/.test(t)) + ')');
   ok(c.items.some(t => /^Poulet — 700 g/.test(t)) && c.items.some(t => /^Viande hachée 5 % — 900 g/.test(t)) && c.items.some(t => /^Saumon — 400 g/.test(t)), 'protéines : poulet 700 g, viande hachée 900 g, saumon 400 g — ' + c.items.filter(t => /^(Poulet|Viande|Saumon)/.test(t)).join(' · '));
   ok(c.items.some(t => /^Œufs — 15/.test(t)) && c.items.some(t => /^Légumes verts surgelés — 2\u202f250 g/.test(t)) && c.items.some(t => /^Huile d'olive — 1\u202f000 ml/.test(t)), 'œufs, légumes surgelés, et l\'huile dans le bloc des 4 semaines');
   ok(/Aucun ajustement/.test(c.note), 'note : ' + c.note.slice(0, 60));
@@ -35,7 +35,7 @@ console.log('\n== 180) Sans ajustement : plan de base, liste = plan × 7 ==');
   ok(!!bud && Number(bud[1].replace(',', '.')) > 45 && Number(bud[1].replace(',', '.')) < 60 && Number(bud[2].replace(',', '.')) === 7, 'budget : ~52 € / semaine + ~7 € toutes les 4 semaines : ' + c.budget.slice(0, 90));
   await page_(fr, 'repas');
   const r = await fr.evaluate(() => ({ diner: [...document.querySelectorAll('.meal-card')].find(c => /Dîner/.test(c.querySelector('.mtitle').textContent)) }) && [...document.querySelectorAll('.meal-card')].find(c => /Dîner/.test(c.querySelector('.mtitle').textContent)).innerText);
-  ok(/Riz 85g ou Pâtes 85g/.test(r) && /~726 kcal/.test(r) && /Viande hachée 5 % 145g/.test(r) && /Huile d'olive \(15ml\)/.test(r), 'dîner de base du mardi : riz ou pâtes 85 g, viande hachée 145 g, huile 15 ml, ~726 kcal');
+  ok(/Pâtes 85g/.test(r) && /~726 kcal/.test(r) && /Viande hachée 5 % 145g/.test(r) && /Huile d'olive \(15ml\)/.test(r), 'dîner de base du mardi : pâtes 85 g, viande hachée 145 g, huile 15 ml, ~726 kcal');
   await ctx.close();
 }
 
@@ -44,7 +44,7 @@ console.log('\n== 181) Avec +150 kcal : le dîner et les courses l\'écrivent ==
   const { ctx, fr, page } = await ouvrir(MARDI, {'batcave-kcal-ajustement': {valeur:150, depuis:'2026-09-01'}});
   await page_(fr, 'repas');
   const r = await fr.evaluate(() => [...document.querySelectorAll('.meal-card')].find(c => /Dîner/.test(c.querySelector('.mtitle').textContent)).innerText);
-  ok(/Riz 125g ou Pâtes 125g/.test(r), 'féculent du dîner : riz ou pâtes 125 g (+40)');
+  ok(/Pâtes 125g/.test(r), 'féculent du dîner : pâtes 125 g (+40)');
   ok(/boucle kcal \+150 kcal/.test(r) && /~876 kcal/.test(r), 'le dîner annonce ~876 kcal et la boucle');
   const sub = await fr.evaluate(() => document.getElementById('meal-kcal-sub').textContent);
   ok(/\/ 3216 kcal \(plan 3066 \+ 150\)/.test(sub), 'cible du jour : ' + sub);
@@ -56,8 +56,8 @@ console.log('\n== 181) Avec +150 kcal : le dîner et les courses l\'écrivent ==
   ok(/^876 \/ 3216 kcal/.test(sub2), 'dîner coché : ' + sub2);
   await page_(fr, 'courses');
   const c = await fr.evaluate(() => ({ items: [...document.querySelectorAll('#courses-grid label')].map(l => l.textContent), note: document.getElementById('courses-plan-note').textContent }));
-  ok(c.items.some(t => /^Riz — 1\u202f480 g \(dont \+280 g boucle kcal\)/.test(t)), 'Riz : 1 200 + 280 g de boucle kcal (' + c.items.find(t => /^Riz/.test(t)) + ')');
-  ok(/\+150 kcal\/jour/.test(c.note) && /\+40 g de riz cru/.test(c.note) && /\+280 g sur la semaine/.test(c.note), 'note : ' + c.note.slice(0, 120));
+  ok(c.items.some(t => /^Pâtes — 880 g \(dont \+280 g boucle kcal\)/.test(t)), 'Pâtes : 600 + 280 g de boucle kcal (' + c.items.find(t => /^Pâtes/.test(t)) + ')');
+  ok(/\+150 kcal\/jour/.test(c.note) && /\+40 g de pâtes crues/.test(c.note) && /\+280 g sur la semaine/.test(c.note), 'note : ' + c.note.slice(0, 120));
   ok(c.items.filter(t => /^Poulet/.test(t)).length === 1 && /700 g/.test(c.items.find(t => /^Poulet/.test(t))), 'les protéines ne bougent pas');
   await ctx.close();
 }
@@ -74,14 +74,14 @@ console.log('\n== 182) Appliquer / revenir depuis la boucle met tout à jour d\'
   await fr.evaluate(() => document.getElementById('kcal-appliquer').click());
   await page.waitForTimeout(250);
   const apres = await fr.evaluate(() => ({ diner: [...document.querySelectorAll('.meal-card')].find(c => /Dîner/.test(c.querySelector('.mtitle').textContent)).innerText,
-    courses: (document.querySelector('.nav-btn[data-page="courses"]').click(), [...document.querySelectorAll('#courses-grid label')].map(l => l.textContent).find(t => /^Riz/.test(t))) }));
-  ok(/Riz 125g/.test(apres.diner) && /1\u202f480 g/.test(apres.courses), 'après « Appliquer » : dîner à 125 g de riz, courses à 1 480 g');
+    courses: (document.querySelector('.nav-btn[data-page="courses"]').click(), [...document.querySelectorAll('#courses-grid label')].map(l => l.textContent).find(t => /^Pâtes/.test(t))) }));
+  ok(/Pâtes 125g/.test(apres.diner) && /880 g/.test(apres.courses), 'après « Appliquer » : dîner à 125 g de pâtes, courses à 880 g');
   await page_(fr, 'repas');
   await fr.evaluate(() => document.getElementById('kcal-reset').click());
   await page.waitForTimeout(250);
   const retour = await fr.evaluate(() => ({ diner: [...document.querySelectorAll('.meal-card')].find(c => /Dîner/.test(c.querySelector('.mtitle').textContent)).innerText,
-    courses: (document.querySelector('.nav-btn[data-page="courses"]').click(), [...document.querySelectorAll('#courses-grid label')].map(l => l.textContent).find(t => /^Riz/.test(t))) }));
-  ok(/Riz 85g/.test(retour.diner) && /1\u202f200 g/.test(retour.courses), 'après « Revenir au plan de base » : 85 g et 1 200 g');
+    courses: (document.querySelector('.nav-btn[data-page="courses"]').click(), [...document.querySelectorAll('#courses-grid label')].map(l => l.textContent).find(t => /^Pâtes/.test(t))) }));
+  ok(/Pâtes 85g/.test(retour.diner) && /600 g/.test(retour.courses), 'après « Revenir au plan de base » : 85 g et 600 g');
   await ctx.close();
 }
 
