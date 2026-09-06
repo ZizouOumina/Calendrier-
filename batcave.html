@@ -1915,7 +1915,7 @@
       <p class="sub-note" id="courses-budget" style="margin-top:16px; line-height:1.7;"></p>
     </section>
 
-    <footer class="page-foot">La Batcave · suivi personnel · données stockées uniquement sur cet appareil</footer>
+    <footer class="page-foot">La Batcave · suivi personnel · données sur cet appareil, synchronisées avec ton cloud Batcave quand la page est ouverte depuis son lien</footer>
   </main>
 </div>
 
@@ -2277,7 +2277,7 @@
      vestige : une fonctionnalite retiree (batcave-matieres) ou un essai. Elle prend de la
      place dans le quota de 5000 documents et embrouille les sauvegardes, sans que rien ne
      la lise jamais. On la signale ; la suppression reste ton geste. */
-  var CLES_CONNUES = ['addictions','budget-limits','business','coran','courses','dash-more','duaas','duree-bloc','sport-log','objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','kcal-ajustement','gcal-ecriture','reinit','fc-migration-v1','charge','shopify-boutique',
+  var CLES_CONNUES = ['addictions','budget-limits','business','coran','courses','dash-more','duaas','duree-bloc','sport-log','objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','kcal-ajustement','gcal-ecriture','reinit','fc-migration-v1','charge','shopify-boutique',
     'espagnol','examens','fc-prix-icloud-3','fixed-charges','goals','habitlog','habits','habits-seed-v2','habits-seed-v3',
     'horizon','last-auto-backup','last-manual-backup','last-bilan-prompt','last-compaction','last-open','last-rotation','notion-url',
     'pomodial-purge','projets','report','revision','revision-fusionnee','revue','sante','sauvegarde','sessions',
@@ -3090,7 +3090,7 @@
      elles repartiraient vers le cloud. La meme remise a zero peut donc etre decidee depuis
      l'appli ou directement dans le cloud. */
   var REINIT_GARDER = ['habits','habits-seed-v2','habits-seed-v3','fixed-charges','fc-prix-icloud-3','budget-limits','examens','notion-url','shopify-boutique',
-                       'objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','horizon','gcal-ecriture','duree-bloc','dash-more','revision-fusionnee','reinit'];
+                       'objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','horizon','gcal-ecriture','duree-bloc','dash-more','revision-fusionnee','reinit'];
   var REINIT_PREFIXES_GARDER = ['pomodial-', 'coherence-ignore-'];
   function reinitGarder(cle){
     var c = cle.indexOf('batcave-') === 0 ? cle.slice(8) : cle;
@@ -4202,9 +4202,39 @@
   }, verifier: function(){ return null; }});
   var habitLog = load('batcave-habitlog', {});
   if(!habitLog || typeof habitLog !== 'object' || Array.isArray(habitLog)) habitLog = {};
+  /* Avant dateCibleHabit, une liste de courses finie un dimanche écrivait la date du dimanche
+     dans le journal de l'habitude du samedi : invisible pour la série et les taux. On
+     rattache ces dates au samedi qui précède, une fois, sans doublon. */
+  function rattacherLogsHebdo(){
+    if(load('batcave-habitlog-hebdo-v1', false)) return false;
+    var change = false;
+    habitsState.forEach(function(hb){
+      var j = habitJour(hb), arr = habitLog[hb.id];
+      if(j === null || !Array.isArray(arr)) return;
+      var vu = {}, nouveau = [];
+      arr.forEach(function(iso){
+        if(!/^\d{4}-\d{2}-\d{2}$/.test(iso)) return;
+        var d = new Date(iso + 'T00:00:00');
+        while(d.getDay() !== j) d.setDate(d.getDate()-1);
+        var cible = localISO(d);
+        if(cible !== iso) change = true;
+        if(!vu[cible]){ vu[cible] = true; nouveau.push(cible); }
+      });
+      if(nouveau.length !== arr.length) change = true;
+      habitLog[hb.id] = nouveau;
+    });
+    if(change) save('batcave-habitlog', habitLog);
+    saveInternal('batcave-habitlog-hebdo-v1', true);
+    return change;
+  }
   Object.keys(habitLog).forEach(function(k){
     habitLog[k] = Array.isArray(habitLog[k]) ? habitLog[k].filter(function(d){ return typeof d === 'string'; }) : [];
   });
+  rattacherLogsHebdo();
+  MIGRATIONS_DEMARRAGE.push({cle:'batcave-habitlog-hebdo-v1', rejouer: function(){
+    if(!rattacherLogsHebdo()) return false;
+    renderHabits(); renderDashboard(); renderBilan(); return true;
+  }, verifier: function(){ return null; }});
   var showArchivedHabits = false;
   var openHeatmaps = {};
 
@@ -4235,13 +4265,24 @@
   }
   /* pas de progression en jours : 7 pour une habitude hebdomadaire, 1 sinon */
   function habitPas(id){ return habitJour(habitParId(id)) === null ? 1 : 7; }
-  function habitDoneToday(id){ return (habitLog[id]||[]).indexOf(todayISO) > -1; }
+  /* Date à laquelle une coche se rattache : aujourd'hui pour une habitude quotidienne ; pour
+     une habitude hebdomadaire, la dernière occurrence de son jour (aujourd'hui s'il tombe).
+     Les courses faites le dimanche comptent pour le samedi de la semaine : la série et les
+     taux ne regardent que les samedis, une date de dimanche y serait invisible. */
+  function dateCibleHabit(id){
+    var j = habitJour(habitParId(id));
+    if(j === null) return todayISO;
+    var d = new Date(now);
+    while(d.getDay() !== j) d.setDate(d.getDate()-1);
+    return localISO(d);
+  }
+  function habitDoneToday(id){ return (habitLog[id]||[]).indexOf(dateCibleHabit(id)) > -1; }
   var HABIT_COURSES = 'core-courses';
   function toggleHabit(id){
-    var arr = habitLog[id] || (habitLog[id] = []);
-    var idx = arr.indexOf(todayISO);
+    var arr = habitLog[id] || (habitLog[id] = []), cible = dateCibleHabit(id);
+    var idx = arr.indexOf(cible);
     var coche = idx < 0;
-    if(idx>-1) arr.splice(idx,1); else arr.push(todayISO);
+    if(idx>-1) arr.splice(idx,1); else arr.push(cible);
     save('batcave-habitlog', habitLog);
     /* Cocher « Courses faites » remplit la liste de ravitaillement, et la décocher la vide :
        les deux disaient la même chose et pouvaient se contredire à l'écran. */
@@ -4265,9 +4306,9 @@
     if(!hb) return;
     var t = coursesTotals();
     var complet = t.total > 0 && t.checked === t.total;
-    var arr = habitLog[HABIT_COURSES] || (habitLog[HABIT_COURSES] = []);
-    var idx = arr.indexOf(todayISO);
-    if(complet && idx < 0) arr.push(todayISO);
+    var arr = habitLog[HABIT_COURSES] || (habitLog[HABIT_COURSES] = []), cible = dateCibleHabit(HABIT_COURSES);
+    var idx = arr.indexOf(cible);
+    if(complet && idx < 0) arr.push(cible);
     else if(!complet && idx > -1) arr.splice(idx, 1);
     else return;
     save('batcave-habitlog', habitLog);
@@ -4420,7 +4461,7 @@
           '</div>'+
           '<div class="streak-display"><span class="streak-num">'+streak+'</span><span class="streak-unit">jour'+(streak>1?'s':'')+' d\'affilée</span>'+streakMilestoneBadge(streak)+'</div>'+
           '<div class="card-row">Record : '+record+' j · 7j '+habitRate(hb.id,7)+'% · 30j '+habitRate(hb.id,30)+'%</div>'+
-          '<div class="card-actions"><button class="btn '+(done?'btn-primary':'')+'" data-togglehab="'+hb.id+'">'+(done?'✓ Fait aujourd\'hui':'Marquer fait')+'</button></div>'+
+          '<div class="card-actions"><button class="btn '+(done?'btn-primary':'')+'" data-togglehab="'+hb.id+'">'+(done ? '✓ Fait ' + (jourCible === null || jourCible === weekday ? 'aujourd\'hui' : NOMS_JOURS[jourCible]) : 'Marquer fait' + (jourCible === null || jourCible === weekday ? '' : ' (' + NOMS_JOURS[jourCible] + ')'))+'</button></div>'+
           '<button class="heat-toggle" data-showheat="'+hb.id+'">Historique (35 jours) '+(openHeatmaps['h-'+hb.id]?'▴':'▾')+'</button>'+
           '<div '+(openHeatmaps['h-'+hb.id]?'':'hidden ')+'id="heat-'+hb.id+'">'+heatmapHTML(habitLog[hb.id], false)+'</div>'+
           '</div>';
@@ -5249,10 +5290,10 @@
     var waterMl = Number(journalState.water)||0;
     var waterL = waterMl/1000;
     var waterPct = pctEau(waterMl);
-    document.getElementById('jr-water-sub').textContent = waterL.toFixed(1).replace('.', ',') + ' / 3,0 L';
+    document.getElementById('jr-water-sub').textContent = waterL.toFixed(1).replace('.', ',') + ' / ' + OBJECTIF_EAU_L.toFixed(1).replace('.', ',') + ' L';
     document.getElementById('jr-water-fill').style.width = waterPct + '%';
     document.getElementById('jr-water-pct').textContent = waterPct + '%';
-    var totalGlasses = 12; /* 3,0 L / 250 ml */
+    var totalGlasses = Math.round(OBJECTIF_EAU_L * 1000 / 250); /* 3,0 L / 250 ml = 12 verres */
     var filledGlasses = Math.min(totalGlasses, Math.round(waterMl/250));
     var glassesHtml = '';
     for(var gi=0; gi<totalGlasses; gi++){ glassesHtml += gi<filledGlasses ? '💧' : '<span style="opacity:.25;">💧</span>'; }
@@ -5406,7 +5447,8 @@
     {id:'T4', debut:'2027-06-01', fin:'2027-08-31', nom:'T4 · juin → août 2027'}
   ];
   /* Cibles semees. Realistes sans etre timides : la revision vise ~89 % de ce que la semaine
-     type permet (33 h × 13 = 429 → 380), le sport 6 seances/semaine tenues 9 fois sur 10,
+     type permet (33 h × 13 = 429 → 380), le sport 6 seances/semaine tenues 9 fois sur 10
+     (ramene a 4 par le recalage automatique depuis le programme v2),
      les tractions montent d'une fourchette par trimestre, le sommeil colle au coucher prevu.
      T2 porte les partiels (revision un peu plus basse, l'examen prime), T4 l'ete (projets
      perso en tete). Tout est editable, rien n'est grave dans le marbre. */
@@ -5848,6 +5890,11 @@
       return '<p style="font-size:12.5px; color:var(--ink-faint); font-style:italic;">'+(emptyMsg || 'Pas encore assez de données enregistrées pour voir la courbe se construire.')+'</p>';
     }
     var values = points.map(function(p){ return p.value; });
+    /* trente jours à zéro ne sont pas une courbe : l'axe affichait « 1,4 » au-dessus d'une
+       ligne plate, comme s'il y avait quelque chose à lire. */
+    if(values.every(function(v){ return !(Number(v) > 0); })){
+      return '<p style="font-size:12.5px; color:var(--ink-faint); font-style:italic;">'+(emptyMsg || 'Rien d\'enregistré sur la période — la courbe se construira à partir du premier bloc.')+'</p>';
+    }
     var min = Math.min.apply(null, values), max = Math.max.apply(null, values);
     if(targetVal !== null){ min = Math.min(min, targetVal); max = Math.max(max, targetVal); }
     /* Heures, pages, duaas, % : jamais négatifs dans la vraie vie. Sans ce garde-fou, une
@@ -6039,7 +6086,7 @@
   /* ===== Liste de courses = plan de repas × 7 jours =====
      Chaque ligne vient des quantites journalieres du plan (FECULENTS, PROTEINES et les
      autres items). Le feculent du diner porte l'ajustement kcal en vigueur : +150 kcal =
-     +40 g de riz cru par jour, +280 g sur la semaine. Meme ordre, meme nombre d'articles
+     +40 g de pâtes crues par jour, +280 g sur la semaine. Meme ordre, meme nombre d'articles
      qu'avant : les cases cochees (batcave-courses, indexees) restent valables. */
   /* La liste d'achat (6 sept. 2026) : quantités arrondies au conditionnement, pas les grammes
      exacts du plan (poulet 700 g pour 550 g de besoin, etc.). Riz à midi, pâtes le soir : les
@@ -6422,11 +6469,11 @@
       maxMin = Math.max(maxMin, c.rev, c.proj, rev, proj);
       return {d: d, passe: passe, rev: rev, proj: proj, cRev: c.rev, cProj: c.proj};
     });
-    var h = function(m){ return Math.round(100 * m / maxMin); };
+    var h = function(m){ return Math.round(100 * m / maxMin); }, hh = function(m){ return (m/60).toFixed(1).replace('.', ','); };
     el.innerHTML = lignes.map(function(l){
       var barres = l.passe
-        ? '<i class="rev" style="height:' + h(l.rev) + '%" title="révision ' + (l.rev/60).toFixed(1).replace('.', ',') + ' h / ' + (l.cRev/60) + ' h"></i><i class="proj" style="height:' + h(l.proj) + '%" title="projets ' + (l.proj/60).toFixed(1).replace('.', ',') + ' h / ' + (l.cProj/60) + ' h"></i>'
-        : '<i class="plan" style="height:' + h(l.cRev) + '%" title="prévu ' + (l.cRev/60) + ' h"></i><i class="plan proj" style="height:' + h(l.cProj) + '%" title="prévu ' + (l.cProj/60) + ' h"></i>';
+        ? '<i class="rev" style="height:' + h(l.rev) + '%" title="révision ' + hh(l.rev) + ' h / ' + hh(l.cRev) + ' h"></i><i class="proj" style="height:' + h(l.proj) + '%" title="projets ' + hh(l.proj) + ' h / ' + hh(l.cProj) + ' h"></i>'
+        : '<i class="plan" style="height:' + h(l.cRev) + '%" title="prévu ' + hh(l.cRev) + ' h de révision"></i><i class="plan proj" style="height:' + h(l.cProj) + '%" title="prévu ' + hh(l.cProj) + ' h de projets"></i>';
       return '<div class="sb-day' + (l.d === todayISO ? ' today' : '') + '"><div class="sb-cols">' + barres + '</div><span class="dn">' + NOMS[dowDe(l.d)] + '</span></div>';
     }).join('');
   }
@@ -7016,7 +7063,7 @@
   }
 
   /* ================= CALENDRIER ================= */
-  /* Règles communes aux quatre journées :
+  /* Règles communes aux cinq journées (lun-mar-jeu, mercredi, vendredi, samedi, dimanche) :
      1. Une heure pleine par bloc de travail, deux rythmes selon la tâche : 25 + 5 (deux
         Pomodoros par heure) sur Anki, où l'attention décroche vite et où chaque carte doit
         être jugée honnêtement ; 55 + 5 sur les annales (un examen dure une heure sans
@@ -7037,7 +7084,7 @@
      5. Sport 05:30 → 06:30 : dix minutes de trajet, quarante minutes au parc, dix minutes
         de retour. Programme v2 : lundi haut lourd, mardi bas complet, jeudi haut volume,
         samedi bras-épaules-mollets ; mercredi, vendredi et dimanche sont off et le créneau
-        devient un bloc de travail (règle 12).
+        devient un bloc de travail (règle 11).
      6. Micro-sieste de 20 min juste après le déjeuner, dans le creux circadien. Le vendredi
         elle suit Jumu'ah, dans les 45 min avant le trajet.
      7. Deux heures de batch cooking le dimanche : le déjeuner de semaine tombe à 20 min.
@@ -7054,7 +7101,7 @@
     10. Le bloc « Comprendre le cours du jour » se fait sur papier : slides imprimées ou
         cahier, questions écrites à la main. C'est meilleur pour l'auto-explication, et c'est
         ce qui rend possible l'habitude « Téléphone hors de la chambre » un soir de semaine.
-    12. Les matins off de sport (mercredi, vendredi, dimanche) gardent le créneau 05:30 → 06:30
+    11. Les matins off de sport (mercredi, vendredi, dimanche) gardent le créneau 05:30 → 06:30
         comme bloc de travail : Anki le mercredi (la file de cartes est au plus haut en milieu
         de semaine, et le rappel se fait bien dix minutes après le réveil), projets perso le
         vendredi et le dimanche (les deux jours les plus pauvres en projets, qui passent à
@@ -7069,7 +7116,7 @@
       ['19:30','Trajet retour'],['20:00','Dîner'],['20:30','Comprendre le cours du jour'],
       ['21:30','Coucher']
     ],
-    /* Mercredi : jour off de sport, le créneau de 05:30 est un bloc Anki (voir règle 12). */
+    /* Mercredi : jour off de sport, le créneau de 05:30 est un bloc Anki (voir règle 11). */
     wednesday: [
       ['05:30','Anki matinal'],['06:30','Douche + préparation'],['06:45','Petit-déjeuner + Coran (1 page)'],
       ['07:20','Anki 1'],['08:20','Anki 2'],['09:20','Collation 1'],
@@ -7121,7 +7168,7 @@
   /* Rythme de Pomodoro d'un bloc : 25 min sur Anki (rappel, attention courte), 55 min sur
      tout le reste (annales au format examen, cartes, compréhension, projets : continuité).
      La part de travail d'une heure pleine en découle : 50 min sur 60 en 25 + 5, 55 sur 60
-     en 55 + 5. Un bloc plus court que son rythme (Projets perso 3, 45 min avant le trajet)
+     en 55 + 5. Un bloc plus court que son rythme (Projets perso 3, 35 min avant la collation)
      est du travail d'un bout à l'autre : la pause, c'est le trajet. Les cibles du jour et
      de la semaine se lisent en temps de travail réel, pauses exclues. */
   var RYTHME_COURT = /^Anki/;
@@ -7141,7 +7188,7 @@
     return null;
   }
   /* Durée automatique d'un Pomodoro lancé maintenant : celle du bloc de travail en cours,
-     bornée par la longueur du bloc (45 min pour Projets perso 3), 55 min hors bloc (une
+     bornée par la longueur du bloc (35 min pour Projets perso 3), 55 min hors bloc (une
      session hors planning est de la continuité, pas du rappel). */
   function dureeBlocAuto(){
     var b = blocPlanCourant();
@@ -7556,7 +7603,7 @@
     var waterPct = pctEau(journalState.water);
     document.getElementById('cal-water-pct').innerHTML = waterPct + '<small>%</small>';
     document.getElementById('cal-water-fill').style.width = waterPct + '%';
-    document.getElementById('cal-water-sub').textContent = waterL.toFixed(1).replace('.', ',') + ' L / 3,0 L';
+    document.getElementById('cal-water-sub').textContent = waterL.toFixed(1).replace('.', ',') + ' L / ' + OBJECTIF_EAU_L.toFixed(1).replace('.', ',') + ' L';
 
     var key = scheduleKeyForToday();
     var labelMap = {weekday:'jour de cours (lun, mar, jeu)', wednesday:'mercredi (Anki matinal)', friday:"vendredi (Jumu'ah)", saturday:'samedi (courses)', weekend:'dimanche'};
@@ -8769,7 +8816,8 @@
   function majClEau(){
     var el = document.getElementById('cl-eau'), n = document.getElementById('cl-eau-note');
     if(el) el.textContent = fmtLitres(clEau);
-    if(n) n.textContent = clEau >= 3000 ? 'objectif 3 L atteint ✅' : ('objectif 3 L · reste ' + fmtLitres(3000 - clEau));
+    var cibleMl = OBJECTIF_EAU_L * 1000;
+    if(n) n.textContent = clEau >= cibleMl ? 'objectif ' + OBJECTIF_EAU_L + ' L atteint ✅' : ('objectif ' + OBJECTIF_EAU_L + ' L · reste ' + fmtLitres(cibleMl - clEau));
   }
   function renderClHumeur(){
     var el = document.getElementById('cl-humeur');
