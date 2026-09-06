@@ -30,7 +30,7 @@ console.log('\n== 83) Les objectifs hebdomadaires se déduisent du planning ==')
   }));
   /* écrits en dur, ils valaient encore 39 h et 23 h : l'ancien planning. */
   ok(nb(v.rev) === '29,1', 'objectif révision = 29,1 h de travail réel (33 h de blocs, pauses exclues, annales en 55/5) : ' + nb(v.rev));
-  ok(nb(v.proj) === '15,8', 'objectif projets perso = 15,8 h (Projets perso 3 finit à 15:00) : ' + nb(v.proj));
+  ok(nb(v.proj) === '16,8', 'objectif projets perso = 16,8 h (Projets perso 3 finit à 15:00, bloc du dimanche 13:30) : ' + nb(v.proj));
   await ctx.close();
 }
 
@@ -91,7 +91,7 @@ console.log('\n== 88) Dimanche : repos puis 2 h de batch cooking ==');
   const { ctx, fr } = await ouvrir(DIMANCHE);
   const l = await fr.evaluate(() => [...document.querySelectorAll('#cal-timeline li')]
     .map(x => x.querySelector('.t-time').textContent + ' ' + x.querySelector('label').textContent.trim()));
-  ok(l.some(x => x.startsWith('13:30 Repos')), 'repos à partir de 13:30');
+  ok(l.some(x => x.startsWith('14:30 Repos')), 'repos à partir de 14:30 (après Projets perso 2)');
   const bc = l.findIndex(x => /Batch cooking/.test(x));
   ok(bc > -1 && l[bc].startsWith('16:00'), 'batch cooking à 16:00 : ' + (l[bc] || 'absent'));
   ok(bc > -1 && l[bc+1] && l[bc+1].startsWith('18:00'), 'il dure 2 h pleines — suivant : ' + (l[bc+1] || '—'));

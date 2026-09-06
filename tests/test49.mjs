@@ -53,7 +53,7 @@ console.log('\n== 119) Prévu vs réalisé — Bilan ==');
   ok(fid && /57%/.test(fid), 'carte « Fidélité au plan » : 57 % (12 h faites / 21 h de travail réel prévues lun-mer) : ' + (fid || '').slice(0, 60));
   const p = await fr.evaluate(() => ({ txt: document.getElementById('bilan-plan').innerText.replace(/\s+/g,' '), note: document.getElementById('bilan-plan-note').innerText }));
   ok(/Lun 8,0 \/ 7,0 h/.test(p.txt) && /Mar 4,0 \/ 7,0 h/.test(p.txt) && /Mer 0,0 \/ 7,0 h/.test(p.txt), 'jour par jour : Lun 8/7,0, Mar 4/7,0, Mer 0/7,0');
-  ok(/Jeu prévu 7,0 h/.test(p.txt) && /Dim prévu 4,4 h/.test(p.txt), 'les jours à venir montrent le prévu (jeu 7,0 h, dim 4,4 h)');
+  ok(/Jeu prévu 7,0 h/.test(p.txt) && /Dim prévu 5,3 h/.test(p.txt), 'les jours à venir montrent le prévu (jeu 7,0 h, dim 5,3 h)');
   ok(/Révision 9,0 \/ 13,3 h/.test(p.txt) && /Projets 3,0 \/ 7,8 h/.test(p.txt), 'totaux par type sur les jours passés (rév. 9/13,3, proj. 3/7,8)');
   ok(/fidélité 57 %/.test(p.note), 'note : ' + p.note);
   await ctx.close();
