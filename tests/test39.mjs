@@ -29,13 +29,13 @@ console.log('\n== 83) Les objectifs hebdomadaires se déduisent du planning ==')
     proj: document.getElementById('proj-stats').innerText,
   }));
   /* écrits en dur, ils valaient encore 39 h et 23 h : l'ancien planning. */
-  ok(nb(v.rev) === '28,6', 'objectif révision = 28,6 h de travail réel (33 h de blocs, pauses exclues) : ' + nb(v.rev));
-  ok(nb(v.proj) === '16,5', 'objectif projets perso = 16,5 h : ' + nb(v.proj));
+  ok(nb(v.rev) === '29,1', 'objectif révision = 29,1 h de travail réel (33 h de blocs, pauses exclues, annales en 55/5) : ' + nb(v.rev));
+  ok(nb(v.proj) === '15,8', 'objectif projets perso = 15,8 h (Projets perso 3 finit à 15:00) : ' + nb(v.proj));
   await ctx.close();
 }
 
 console.log('\n== 84) L\'objectif du jour colle à la journée planifiée ==');
-for(const [nom, quand, attendu] of [['lundi',LUNDI,'4 h 20'], ['vendredi',VENDREDI,'3 h 30'], ['samedi',SAMEDI,'4 h 20'], ['dimanche',DIMANCHE,'3 h 25']]){
+for(const [nom, quand, attendu] of [['lundi',LUNDI,'4 h 25'], ['vendredi',VENDREDI,'3 h 30'], ['samedi',SAMEDI,'4 h 25'], ['dimanche',DIMANCHE,'3 h 30']]){
   const { ctx, fr } = await ouvrir(quand);
   const t = await fr.evaluate(() => document.getElementById('cal-revision-sub').textContent);
   ok(t.indexOf('/ ' + attendu) > -1, nom + ' : objectif ' + attendu + ' — ' + t);

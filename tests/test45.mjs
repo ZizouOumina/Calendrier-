@@ -28,7 +28,7 @@ console.log('\n== 108) Deux blocs de révision échus sans session : signalés, 
 {
   const { ctx, page, fr } = await ouvrir(MERCREDI_MIDI);
   const t = await texte(fr, '#dash-plan');
-  ok(/Bloc manqué — 3,4 h de révision non faites \(Anki 1 07:20, Anki 2 08:20, Cartes du dernier cours 09:35, Annales 10:35\)/.test(t), 'texte : « 3,4 h de révision non faites (Anki 1 07:20, Anki 2 08:20, Cartes du dernier cours 09:35, Annales 10:35) »');
+  ok(/Bloc manqué — 3,5 h de révision non faites \(Anki 1 07:20, Anki 2 08:20, Cartes du dernier cours 09:35, Annales 10:35\)/.test(t), 'texte : « 3,5 h de révision non faites (Anki 1 07:20, Anki 2 08:20, Cartes du dernier cours 09:35, Annales 10:35) »');
   ok(!/créneau libre/.test(t), 'mercredi : aucun créneau libre ≥ 45 min ne reste → pas de suggestion');
   ok(await fr.evaluate(() => !document.querySelector('[data-plan-manque-lancer]')), 'pas de bouton « Maintenant » sans créneau');
   ok(await fr.evaluate(() => !!document.querySelector('[data-plan-manque-demain]')), 'bouton « Demain » présent');
@@ -46,17 +46,17 @@ console.log('\n== 109) Le lendemain, la cible intègre le report ==');
 {
   const { ctx, fr } = await ouvrir('2026-09-03T10:00:00+02:00', {'batcave-report': {date:'2026-09-03', rev:120, proj:0}});
   const cells = await fr.evaluate(() => [...document.querySelectorAll('#dash-temps .temps-cell .tv')].map(e => e.innerText.replace(/\s+/g,' ')));
-  ok(/\/ 6,3h/.test(cells[0]) && /\+2h/.test(cells[0]), 'révision : « / 6,3h +2h ↪ » (obtenu ' + cells[0] + ')');
-  ok(/\/ 2,8h/.test(cells[1]) && !/\+/.test(cells[1]), 'projets : inchangé (obtenu ' + cells[1] + ')');
+  ok(/\/ 6,4h/.test(cells[0]) && /\+2h/.test(cells[0]), 'révision : « / 6,4h +2h ↪ » (obtenu ' + cells[0] + ')');
+  ok(/\/ 2,6h/.test(cells[1]) && !/\+/.test(cells[1]), 'projets : inchangé (obtenu ' + cells[1] + ')');
   const plan = await texte(fr, '#dash-plan');
-  ok(/Révision — 0,0h \/ 6 h 20 visées/.test(plan), 'Plan du jour : cible 6 h 20 (4 h 20 + 2 h de report)');
+  ok(/Révision — 0,0h \/ 6 h 25 visées/.test(plan), 'Plan du jour : cible 6 h 25 (4 h 25 + 2 h de report)');
   await ctx.close();
 }
 {
   /* un report daté d'un autre jour ne s'applique pas */
   const { ctx, fr } = await ouvrir('2026-09-03T10:00:00+02:00', {'batcave-report': {date:'2026-09-02', rev:120, proj:0}});
   const cells = await fr.evaluate(() => [...document.querySelectorAll('#dash-temps .temps-cell .tv')].map(e => e.innerText.replace(/\s+/g,' ')));
-  ok(/\/ 4,3h/.test(cells[0]) && !/\+/.test(cells[0]), 'report périmé ignoré : « / 4,3h »');
+  ok(/\/ 4,4h/.test(cells[0]) && !/\+/.test(cells[0]), 'report périmé ignoré : « / 4,4h »');
   await ctx.close();
 }
 
@@ -84,10 +84,10 @@ console.log('\n== 110) Pas de fausse alerte ==');
   await ctx.close();
 }
 {
-  const s = [bloc('2026-09-02','cours',90,'07:20')];   /* 1 h 30 sur Anki 1 + 2 (100 min de travail) : couverts ; déficit 205 − 90 = 115 min sur Cartes et Annales */
+  const s = [bloc('2026-09-02','cours',90,'07:20')];   /* 1 h 30 sur Anki 1 + 2 (100 min de travail) : couverts ; déficit 210 − 90 = 120 min sur Cartes et Annales */
   const { ctx, fr } = await ouvrir(MERCREDI_MIDI, {'batcave-sessions': s});
   const t = await texte(fr, '#dash-plan');
-  ok(/1,9 h de révision non faites \(Cartes du dernier cours 09:35, Annales 10:35\)/.test(t), 'Anki 1 et 2 couverts ; déficit réel 1,9 h sur Cartes et Annales');
+  ok(/2,0 h de révision non faites \(Cartes du dernier cours 09:35, Annales 10:35\)/.test(t), 'Anki 1 et 2 couverts ; déficit réel 2,0 h sur Cartes et Annales');
   await ctx.close();
 }
 

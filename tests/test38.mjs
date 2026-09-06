@@ -137,7 +137,7 @@ console.log('\n== 80) La journée du samedi réserve 2 h de courses ==');
   ok(duree(/Courses de la semaine|Rangement des courses/) === 150, 'courses + rangement = 2 h 30');
 
   const objectif = await fr.evaluate(() => document.getElementById('cal-revision-sub').textContent);
-  ok(/4 h 20 visées/.test(objectif), 'l\'objectif affiché correspond à la journée réelle : ' + objectif);
+  ok(/4 h 25 visées/.test(objectif), 'l\'objectif affiché correspond à la journée réelle : ' + objectif);
   await ctx.close();
 }
 

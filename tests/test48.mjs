@@ -35,7 +35,7 @@ console.log('\n== 112) Semis : trimestres et mois ==');
   ok(nT === 44 && nM === 96, '44 objectifs trimestriels + 96 mensuels (' + nT + ' / ' + nM + ')');
   ok(await local(fr, 'batcave-objectifs-seed-v1') === true, 'drapeau de semis posé');
   const t1 = o.liste.find(x => x.id === 'T1:revision_h'), m9 = o.liste.find(x => x.id === 'M2026-09:revision_h');
-  ok(t1 && t1.cible === 329 && m9 && m9.cible === 110, 'T1 révision 329 h de travail réel → septembre 110 h');
+  ok(t1 && t1.cible === 335 && m9 && m9.cible === 112, 'T1 révision 335 h de travail réel → septembre 112 h');
   ok(!o.liste.some(x => x.periode === 'mois' && /exo:|snus/.test(x.metrique)), 'les niveaux (tractions) et la série snus restent au trimestre');
   await ctx.close();
 }
@@ -45,7 +45,7 @@ console.log('\n== 113) Comparaison sur des données réelles ==');
   const { ctx, fr, page } = await ouvrir(MI_SEPT, Object.assign({ 'batcave-sessions': sessions }, journaux));
   await aller(fr, page, 'objectifs');
   const rev = await ligne(fr, 'Révision');
-  ok(rev && /réel 40,0 h/.test(rev.txt) && /attendu 55,0 h/.test(rev.txt) && /retard/.test(rev.led), 'Révision : réel 40,0 h, attendu 55,0 h (50 % de 110) → en retard : ' + (rev && rev.txt.slice(0, 80)));
+  ok(rev && /réel 40,0 h/.test(rev.txt) && /attendu 56,0 h/.test(rev.txt) && /retard/.test(rev.led), 'Révision : réel 40,0 h, attendu 56,0 h (50 % de 112) → en retard : ' + (rev && rev.txt.slice(0, 80)));
   ok(rev && /à ce rythme : 80,0 h/.test(rev.txt), 'projection à ce rythme : 80,0 h à la fin');
   const som = await ligne(fr, 'Sommeil');
   ok(som && /réel 7,50 h/.test(som.txt) && /\bok\b/.test(som.led), 'Sommeil moyen 7,50 h sur 7,75 visées (97 %) → dans les clous');
@@ -109,7 +109,7 @@ console.log('\n== 116) Tableau de bord : objectifs du mois ==');
   await fr.evaluate(() => { if(document.getElementById('dash-more').hidden) document.getElementById('dash-more-toggle').click(); });
   const d = await fr.evaluate(() => ({ n: document.querySelectorAll('#dash-goals li').length, leds: document.querySelectorAll('#dash-goals .obj-led').length, txt: document.getElementById('dash-goals').innerText.replace(/\s+/g,' '), note: document.getElementById('dash-goals-note').innerText }));
   ok(d.n === 8 && d.leds === 8, '8 objectifs du mois avec leur LED');
-  ok(/Révision 40,0 \/ 110,0 h/.test(d.txt), 'ligne compacte réel / cible : ' + d.txt.slice(0, 60));
+  ok(/Révision 40,0 \/ 112,0 h/.test(d.txt), 'ligne compacte réel / cible : ' + d.txt.slice(0, 60));
   ok(/\/8 dans les clous · Septembre 2026/.test(d.note), 'note : ' + d.note);
   await ctx.close();
 }

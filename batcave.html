@@ -1612,7 +1612,7 @@
           <div style="display:flex; align-items:center; gap:10px; margin-top:12px; flex-wrap:wrap;">
             <span class="sub-note">Durée du bloc</span>
             <div class="mood-row" id="timer-durees"></div>
-            <span class="sub-note" style="font-size:11px;">auto : 25 + 5 sur Anki et annales, 55 + 5 ailleurs · pauses : 5 min, 15 min tous les 4 blocs</span>
+            <span class="sub-note" style="font-size:11px;">auto : 25 + 5 sur Anki, 55 + 5 ailleurs · pauses : 5 min, 15 min tous les 4 blocs</span>
           </div>
         </div>
         <div id="timer-running" hidden style="text-align:center; padding:6px 0 2px;">
@@ -2257,7 +2257,7 @@
      vestige : une fonctionnalite retiree (batcave-matieres) ou un essai. Elle prend de la
      place dans le quota de 5000 documents et embrouille les sauvegardes, sans que rien ne
      la lise jamais. On la signale ; la suppression reste ton geste. */
-  var CLES_CONNUES = ['addictions','budget-limits','business','coran','courses','dash-more','duaas','duree-bloc','sport-log','objectifs','objectifs-seed-v1','objectifs-v2-55','kcal-ajustement','gcal-ecriture','reinit','fc-migration-v1','charge','shopify-boutique',
+  var CLES_CONNUES = ['addictions','budget-limits','business','coran','courses','dash-more','duaas','duree-bloc','sport-log','objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','kcal-ajustement','gcal-ecriture','reinit','fc-migration-v1','charge','shopify-boutique',
     'espagnol','examens','fc-prix-icloud-3','fixed-charges','goals','habitlog','habits','habits-seed-v2','habits-seed-v3',
     'horizon','last-auto-backup','last-manual-backup','last-bilan-prompt','last-compaction','last-open','last-rotation','notion-url',
     'pomodial-purge','projets','report','revision','revision-fusionnee','revue','sante','sauvegarde','sessions',
@@ -3070,7 +3070,7 @@
      elles repartiraient vers le cloud. La meme remise a zero peut donc etre decidee depuis
      l'appli ou directement dans le cloud. */
   var REINIT_GARDER = ['habits','habits-seed-v2','habits-seed-v3','fixed-charges','fc-prix-icloud-3','budget-limits','examens','notion-url','shopify-boutique',
-                       'objectifs','objectifs-seed-v1','objectifs-v2-55','horizon','gcal-ecriture','duree-bloc','dash-more','revision-fusionnee','reinit'];
+                       'objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','horizon','gcal-ecriture','duree-bloc','dash-more','revision-fusionnee','reinit'];
   var REINIT_PREFIXES_GARDER = ['pomodial-', 'coherence-ignore-'];
   function reinitGarder(cle){
     var c = cle.indexOf('batcave-') === 0 ? cle.slice(8) : cle;
@@ -3314,8 +3314,8 @@
      standard Pomodoro. La valeur choisie voyage DANS l'état du minuteur : changer la
      préférence pendant une série n'altère pas la série déjà lancée. */
   var DUREES_BLOC = ['auto', 25, 45, 55, 60];
-  /* « auto » par défaut : le bloc du planning en cours fixe la durée (25 sur Anki et
-     annales, 55 ailleurs). Un choix explicite (25 / 45 / 55 / 60) le remplace jusqu'au
+  /* « auto » par défaut : le bloc du planning en cours fixe la durée (25 sur Anki, 55
+     ailleurs, jamais plus long que le bloc). Un choix explicite (25 / 45 / 55 / 60) le remplace jusqu'au
      retour sur « auto ». */
   function dureeBlocChoisie(){
     var v = load('batcave-duree-bloc', 'auto');
@@ -4027,7 +4027,7 @@
     var choisie = dureeBlocChoisie();
     el.innerHTML = DUREES_BLOC.map(function(d){
       var lib = d === 'auto' ? 'auto · ' + dureeBlocAuto() + ' min' : d + ' min';
-      return '<button type="button" class="chip' + (d === choisie ? ' active' : '') + '" data-duree="' + d + '" title="' + (d === 'auto' ? 'selon le bloc du planning : 25 sur Anki et annales, 55 ailleurs' : '') + '">' + lib + '</button>';
+      return '<button type="button" class="chip' + (d === choisie ? ' active' : '') + '" data-duree="' + d + '" title="' + (d === 'auto' ? 'selon le bloc du planning : 25 sur Anki, 55 ailleurs' : '') + '">' + lib + '</button>';
     }).join('');
     el.querySelectorAll('[data-duree]').forEach(function(btn){
       btn.addEventListener('click', function(){
@@ -5321,10 +5321,10 @@
      T2 porte les partiels (revision un peu plus basse, l'examen prime), T4 l'ete (projets
      perso en tete). Tout est editable, rien n'est grave dans le marbre. */
   var CIBLES_TRIMESTRE = {
-    T1:{revision_h:329, projets_h:183, sport_seances:70, espagnol_h:35, sommeil_moy:7.75, habitudes_pct:80, eau_moy:2.7, depenses_var:1050, snus_jours:90,  'exo:Tractions':10, 'exo:Dips':12},
-    T2:{revision_h:303, projets_h:202, sport_seances:72, espagnol_h:40, sommeil_moy:7.75, habitudes_pct:82, eau_moy:2.8, depenses_var:1050, snus_jours:180, 'exo:Tractions':12, 'exo:Dips':15},
-    T3:{revision_h:346, projets_h:220, sport_seances:75, espagnol_h:45, sommeil_moy:7.75, habitudes_pct:85, eau_moy:3.0, depenses_var:1050, snus_jours:270, 'exo:Tractions':14, 'exo:Dips':18},
-    T4:{revision_h:225, projets_h:275, sport_seances:75, espagnol_h:55, sommeil_moy:7.75, habitudes_pct:85, eau_moy:3.0, depenses_var:1050, snus_jours:365, 'exo:Tractions':15, 'exo:Dips':20}
+    T1:{revision_h:335, projets_h:176, sport_seances:70, espagnol_h:35, sommeil_moy:7.75, habitudes_pct:80, eau_moy:2.7, depenses_var:1050, snus_jours:90,  'exo:Tractions':10, 'exo:Dips':12},
+    T2:{revision_h:308, projets_h:194, sport_seances:72, espagnol_h:40, sommeil_moy:7.75, habitudes_pct:82, eau_moy:2.8, depenses_var:1050, snus_jours:180, 'exo:Tractions':12, 'exo:Dips':15},
+    T3:{revision_h:352, projets_h:211, sport_seances:75, espagnol_h:45, sommeil_moy:7.75, habitudes_pct:85, eau_moy:3.0, depenses_var:1050, snus_jours:270, 'exo:Tractions':14, 'exo:Dips':18},
+    T4:{revision_h:229, projets_h:264, sport_seances:75, espagnol_h:55, sommeil_moy:7.75, habitudes_pct:85, eau_moy:3.0, depenses_var:1050, snus_jours:365, 'exo:Tractions':15, 'exo:Dips':20}
   };
   /* Les mesures. mode : 'cumul' (s'additionne sur la periode), 'moyenne' (par jour ou par
      mois), 'niveau' (un etat, avec un point de depart). sens '<=' : moins, c'est mieux. */
@@ -5398,6 +5398,7 @@
     if(ajout) save('batcave-objectifs', objectifsState);
     saveInternal('batcave-objectifs-seed-v1', true);
     saveInternal('batcave-objectifs-v2-55', true);
+    saveInternal('batcave-objectifs-v3-trajet', true);
     return ajout;
   }
   semerObjectifs();
@@ -5424,6 +5425,31 @@
   migrerObjectifsV2();
   MIGRATIONS_DEMARRAGE.push({cle:'batcave-objectifs-v2-55', rejouer: function(){
     if(!migrerObjectifsV2()) return false;
+    try{ renderObjectifs(); renderDashboard(); }catch(e){}
+    return true;
+  }, verifier: function(){ return null; }});
+  /* Objectifs semés avant les trajets de 30 min et les annales en 55/5 : la semaine type
+     passe de 28 h 35 à 29 h 05 de révision (× 1745/1715) et de 16 h 30 à 15 h 50 de projets
+     (× 950/990). Même mécanique que la v2 : une fois, rejouable après hydratation, jamais
+     sur un semis frais. */
+  function migrerObjectifsV3(){
+    if(!load('batcave-objectifs-seed-v1', false)) return false;
+    if(load('batcave-objectifs-v3-trajet', false)) return false;
+    /* la v2 doit être passée d'abord : elle se rejoue au même moment, dans l'ordre du registre */
+    if(!load('batcave-objectifs-v2-55', false)) return false;
+    var change = false;
+    objectifsState.liste.forEach(function(o){
+      var m = metriqueDe(o.metrique);
+      if(m === 'revision_h'){ o.cible = Math.round(Number(o.cible) * 1745 / 1715 * 10) / 10; change = true; }
+      else if(m === 'projets_h'){ o.cible = Math.round(Number(o.cible) * 950 / 990 * 10) / 10; change = true; }
+    });
+    if(change) save('batcave-objectifs', objectifsState);
+    saveInternal('batcave-objectifs-v3-trajet', true);
+    return change;
+  }
+  migrerObjectifsV3();
+  MIGRATIONS_DEMARRAGE.push({cle:'batcave-objectifs-v3-trajet', rejouer: function(){
+    if(!migrerObjectifsV3()) return false;
     try{ renderObjectifs(); renderDashboard(); }catch(e){}
     return true;
   }, verifier: function(){ return null; }});
@@ -6002,7 +6028,7 @@
       if(!type) return;
       var d0 = timeToMinutes(b[0]), d1 = i < plan.length-1 ? timeToMinutes(plan[i+1][0]) : fin;
       /* minutes = travail réel attendu dans le bloc (pauses exclues), comme les cibles */
-      out.push({type:type, label:b[1], debut:d0, fin:d1, minutes:Math.round((d1-d0) * partTravail(b[1]))});
+      out.push({type:type, label:b[1], debut:d0, fin:d1, minutes:minutesTravail(b[1], d1-d0)});
     });
     return out;
   }
@@ -6880,10 +6906,11 @@
   /* ================= CALENDRIER ================= */
   /* Règles communes aux quatre journées :
      1. Une heure pleine par bloc de travail, deux rythmes selon la tâche : 25 + 5 (deux
-        Pomodoros par heure) sur Anki et les annales, où l'attention décroche vite et où
-        chaque carte doit être jugée honnêtement ; 55 + 5 sur les cartes, la compréhension
-        du cours et les projets, qui demandent de la continuité. La dernière pause sert de
-        transition ; la pause longue de 15 min tombe sur la Collation 1 (09:20).
+        Pomodoros par heure) sur Anki, où l'attention décroche vite et où chaque carte doit
+        être jugée honnêtement ; 55 + 5 sur les annales (un examen dure une heure sans
+        pause : on s'entraîne au format réel), les cartes, la compréhension du cours et les
+        projets, qui demandent de la continuité. La dernière pause sert de transition ; la
+        pause longue de 15 min tombe sur la Collation 1 (09:20).
      2. Chaque bloc porte le nom de ce qu'on y fait, pas un numéro : le plan du jour dit
         « Anki 1 » ou « Comprendre le cours du jour », pas « Révision Bloc 3 ». La règle de
         priorité est fixe : la file Anki d'abord ; si elle déborde, elle prend le bloc
@@ -6902,25 +6929,31 @@
         elle suit Jumu'ah, dans les 45 min avant le trajet.
      7. Deux heures de batch cooking le dimanche : le déjeuner de semaine tombe à 20 min.
      8. Le samedi, les 2 h 30 de ravitaillement reculent révision et projets d'un quart ;
-        le dimanche après-midi est libre. */
+        le dimanche après-midi est libre.
+     9. La fac est à 30 min : 950 m à pied jusqu'au tram, l'attente, 10 min de tram, le
+        bout de chemin à l'arrivée. Départ à 15:00 (Projets perso 3 s'arrête à 15:00, soit
+        45 min), retour 19:30 → 20:00. Le dîner et la collation du soir se prennent ensemble
+        à 20:00, le cours du jour est compris de 20:30 à 21:30, et le coucher reste à 21:30 :
+        les minutes de trajet sont prises sur le temps libre et la collation séparée, jamais
+        sur le sommeil. Les 10 min de tram, aller et retour, sont du temps d'Anki gratuit. */
   var SCHEDULES = {
     weekday: [
       ['05:30','Sport'],['06:30','Douche + préparation'],['06:45','Petit-déjeuner + Coran (1 page)'],
       ['07:20','Anki 1'],['08:20','Anki 2'],['09:20','Collation 1'],
       ['09:35','Cartes du dernier cours'],['10:35','Annales'],
       ['11:35','Projets perso 1'],['12:35','Déjeuner'],['12:55','😴 Micro-sieste'],
-      ['13:15','Projets perso 2'],['14:15','Projets perso 3'],['15:15','Trajet cours'],['15:30','Cours'],
-      ['19:30','Dîner'],['20:00','Comprendre le cours du jour'],['21:00','Collation 2'],
-      ['21:15','Temps libre'],['21:30','Coucher']
+      ['13:15','Projets perso 2'],['14:15','Projets perso 3'],['15:00','Trajet cours'],['15:30','Cours'],
+      ['19:30','Trajet retour'],['20:00','Dîner + Collation soir'],['20:30','Comprendre le cours du jour'],
+      ['21:30','Coucher']
     ],
     friday: [
       ['05:30','Sport'],['06:30','Douche + préparation'],['06:45','Petit-déjeuner + Coran (1 page)'],
       ['07:20','Anki 1'],['08:20','Anki 2'],['09:20','Collation 1'],
       ['09:35','Cartes du dernier cours'],
       ['10:35','Projets perso 1'],['11:35','Projets perso 2'],['12:35','Déjeuner'],
-      ['13:15','Trajet mosquée'],['13:30',"Jumu'ah (khutba + prière ~14h)"],['14:30','😴 Micro-sieste'],['14:50','Pause'],['15:15','Trajet cours'],
-      ['15:30','Cours'],['19:30','Dîner'],['20:00','Comprendre le cours du jour'],['21:00','Collation 2'],
-      ['21:15','Temps libre'],['21:30','Coucher']
+      ['13:15','Trajet mosquée'],['13:30',"Jumu'ah (khutba + prière ~14h)"],['14:30','😴 Micro-sieste'],['14:50','Pause'],['15:00','Trajet cours'],
+      ['15:30','Cours'],['19:30','Trajet retour'],['20:00','Dîner + Collation soir'],['20:30','Comprendre le cours du jour'],
+      ['21:30','Coucher']
     ],
     weekend: [
       ['05:30','Sport'],['06:30','Douche + préparation'],['06:45','Petit-déjeuner + Coran (1 page)'],
@@ -6952,13 +6985,16 @@
     if(/^Projets perso/.test(label)) return 'projet';
     return null;
   }
-  /* Rythme de Pomodoro d'un bloc : 25 min sur Anki et les annales (rappel, attention
-     courte), 55 min sur tout le reste (cartes, compréhension, projets : continuité). La part
-     de travail d'une heure pleine en découle : 50 min sur 60 en 25 + 5, 55 sur 60 en 55 + 5.
-     Les cibles du jour et de la semaine se lisent en temps de travail réel, pauses exclues. */
-  var RYTHME_COURT = /^(Anki|Annales?\b|Annale complète)/;
+  /* Rythme de Pomodoro d'un bloc : 25 min sur Anki (rappel, attention courte), 55 min sur
+     tout le reste (annales au format examen, cartes, compréhension, projets : continuité).
+     La part de travail d'une heure pleine en découle : 50 min sur 60 en 25 + 5, 55 sur 60
+     en 55 + 5. Un bloc plus court que son rythme (Projets perso 3, 45 min avant le trajet)
+     est du travail d'un bout à l'autre : la pause, c'est le trajet. Les cibles du jour et
+     de la semaine se lisent en temps de travail réel, pauses exclues. */
+  var RYTHME_COURT = /^Anki/;
   function rythmeBloc(label){ return RYTHME_COURT.test(label) ? 25 : 55; }
   function partTravail(label){ var r = rythmeBloc(label); return r / (r + POMODORO.pause); }
+  function minutesTravail(label, d){ return d <= rythmeBloc(label) ? d : Math.round(d * partTravail(label)); }
   /* Le bloc du planning en cours à cet instant (null hors bloc). */
   function blocPlanCourant(){
     /* le minuteur s'initialise avant la grille (SCHEDULES est déclarée plus bas) : hors bloc */
@@ -6967,15 +7003,16 @@
     var d = new Date(), nowMin = d.getHours() * 60 + d.getMinutes();
     for(var i = 0; i < plan.length; i++){
       var d0 = timeToMinutes(plan[i][0]), d1 = i < plan.length - 1 ? timeToMinutes(plan[i + 1][0]) : fin;
-      if(nowMin >= d0 && nowMin < d1) return plan[i];
+      if(nowMin >= d0 && nowMin < d1) return [plan[i][0], plan[i][1], d1 - d0];
     }
     return null;
   }
   /* Durée automatique d'un Pomodoro lancé maintenant : celle du bloc de travail en cours,
-     55 min hors bloc (une session hors planning est de la continuité, pas du rappel). */
+     bornée par la longueur du bloc (45 min pour Projets perso 3), 55 min hors bloc (une
+     session hors planning est de la continuité, pas du rappel). */
   function dureeBlocAuto(){
     var b = blocPlanCourant();
-    return (b && typeBlocPlan(b[1])) ? rythmeBloc(b[1]) : 55;
+    return (b && typeBlocPlan(b[1])) ? Math.min(rythmeBloc(b[1]), b[2]) : 55;
   }
   /* L'heure du coucher n'est plus la même tous les jours (21:30 en semaine, 21:00 le
      week-end) : on la lit dans le planning au lieu de la coder en dur. Sinon la barre de
@@ -7062,8 +7099,8 @@
       var d = (i < plan.length-1 ? timeToMinutes(plan[i+1][0]) : fin) - timeToMinutes(b[0]);
       var type = typeBlocPlan(b[1]);
       /* temps de travail réel du bloc : les pauses de Pomodoro ne comptent pas */
-      if(type === 'cours') t.rev += Math.round(d * partTravail(b[1]));
-      else if(type === 'projet') t.proj += Math.round(d * partTravail(b[1]));
+      if(type === 'cours') t.rev += minutesTravail(b[1], d);
+      else if(type === 'projet') t.proj += minutesTravail(b[1], d);
     });
     if(!base){
       var f = facteurCharge(iso || todayISO);
