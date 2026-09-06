@@ -1456,7 +1456,7 @@
       <!-- Programme v2 (7 sept. 2026) : les regles qui ne tiennent pas dans une case. -->
       <div class="panel sub-panel" id="programme-panel" style="margin-top:16px;">
         <div class="sub-head"><h3>📋 Le programme</h3><span class="sub-note" id="programme-note">—</span></div>
-        <p class="sub-note" style="line-height:1.65; margin-bottom:8px;">Mercredi, vendredi et dimanche sont off : marche et mobilité, rien à cocher. Si la semaine dérape, tu sacrifies samedi, puis jeudi. Jamais lundi ni mardi. Huit semaines sans y toucher, en notant tout.</p>
+        <p class="sub-note" style="line-height:1.65; margin-bottom:8px;">Mercredi, vendredi et dimanche sont off : rien à cocher, le créneau de 05:30 sert à Anki ou aux projets. Si la semaine dérape, tu sacrifies samedi, puis jeudi. Jamais lundi ni mardi. Huit semaines sans y toucher, en notant tout.</p>
         <button type="button" class="heat-toggle" id="programme-toggle" style="padding:0;">Échauffements, calibration, progression, lest, retests ▾</button>
         <div id="programme-details" hidden style="margin-top:10px; font-size:12.5px; color:var(--ink-dim); line-height:1.7; display:flex; flex-direction:column; gap:8px;">
           <p><b style="color:var(--ink);">Échauffement haut (5 min)</b> — suspension 20 s + 10 tirages d'omoplates · 15 rotations d'épaules bras tendus · 15 face pulls élastique · 10 pompes lentes · 2 séries légères du premier exercice, un cran en dessous (moitié du lest quand tu lestes).</p>
@@ -5154,7 +5154,7 @@
         }
         return ligne + '</li>';
       }).join('');
-      if(!session.exercises.length) itemsHtml = '<li class="entry-empty" style="font-style:italic;">Jour off — marche, mobilité. Rien à cocher.</li>';
+      if(!session.exercises.length) itemsHtml = '<li class="entry-empty" style="font-style:italic;">Jour off — pas de séance, rien à cocher. Le créneau de 05:30 est un bloc Anki (mercredi) ou projets perso (vendredi, dimanche).</li>';
       var paires = '';
       if(session.exercises.length){
         var lignesPaires = [];
@@ -6760,7 +6760,7 @@
     var st = sportTotals(todayType);
     document.getElementById('dash-sport').innerHTML =
       (todayType === 'Off'
-        ? '<p style="font-size:12px; color:var(--ink-faint);">Jour off — marche et mobilité, rien à cocher. Prochaine séance : <b style="color:var(--ink-dim)">' + TYPE_BY_DAY[(weekday + 1) % 7] + (TYPE_BY_DAY[(weekday + 1) % 7] === 'Off' ? ' non, ' + TYPE_BY_DAY[(weekday + 2) % 7] : '') + '</b>.</p>'
+        ? '<p style="font-size:12px; color:var(--ink-faint);">Jour off — pas de séance, rien à cocher. Prochaine séance : <b style="color:var(--ink-dim)">' + TYPE_BY_DAY[(weekday + 1) % 7] + (TYPE_BY_DAY[(weekday + 1) % 7] === 'Off' ? ' non, ' + TYPE_BY_DAY[(weekday + 2) % 7] : '') + '</b>.</p>'
         : '<div class="progress-row" style="margin-bottom:8px;"><span class="plabel">'+todayType+'</span><div class="progress-track"><div class="progress-fill" style="width:'+(st.total?Math.round(100*st.checked/st.total):0)+'%"></div></div><span class="progress-count">'+st.checked+'/'+st.total+'</span></div>'+
           '<p style="font-size:12px; color:var(--ink-faint);">Séance du jour : <b style="color:var(--ink-dim)">'+todayType+'</b>' + (facteurTours() < 1 ? ' · semaine ' + semaineProgramme() + ' du programme, tours × ' + (facteurTours() === 0.5 ? '½' : '¾') : '') + '</p>') +
       (function(){
@@ -7029,8 +7029,8 @@
         petit-déjeuner (06:45 → 07:20), pas du travail : le Bloc 1 démarre toujours à 07:20.
      5. Sport 05:30 → 06:30 : dix minutes de trajet, quarante minutes au parc, dix minutes
         de retour. Programme v2 : lundi haut lourd, mardi bas complet, jeudi haut volume,
-        samedi bras-épaules-mollets ; mercredi, vendredi et dimanche sont off (marche,
-        mobilité), le créneau reste le même.
+        samedi bras-épaules-mollets ; mercredi, vendredi et dimanche sont off et le créneau
+        devient un bloc de travail (règle 12).
      6. Micro-sieste de 20 min juste après le déjeuner, dans le creux circadien. Le vendredi
         elle suit Jumu'ah, dans les 45 min avant le trajet.
      7. Deux heures de batch cooking le dimanche : le déjeuner de semaine tombe à 20 min.
@@ -7046,7 +7046,12 @@
         temps libre, jamais sur le sommeil.
     10. Le bloc « Comprendre le cours du jour » se fait sur papier : slides imprimées ou
         cahier, questions écrites à la main. C'est meilleur pour l'auto-explication, et c'est
-        ce qui rend possible l'habitude « Téléphone hors de la chambre » un soir de semaine. */
+        ce qui rend possible l'habitude « Téléphone hors de la chambre » un soir de semaine.
+    12. Les matins off de sport (mercredi, vendredi, dimanche) gardent le créneau 05:30 → 06:30
+        comme bloc de travail : Anki le mercredi (la file de cartes est au plus haut en milieu
+        de semaine, et le rappel se fait bien dix minutes après le réveil), projets perso le
+        vendredi et le dimanche (les deux jours les plus pauvres en projets, qui passent à
+        2 h 45). Le bloc projets du réveil est de l'exécution, jamais une décision de design. */
   var SCHEDULES = {
     weekday: [
       ['05:30','Sport'],['06:30','Douche + préparation'],['06:45','Petit-déjeuner + Coran (1 page)'],
@@ -7057,8 +7062,18 @@
       ['19:30','Trajet retour'],['20:00','Dîner'],['20:30','Comprendre le cours du jour'],
       ['21:30','Coucher']
     ],
+    /* Mercredi : jour off de sport, le créneau de 05:30 est un bloc Anki (voir règle 12). */
+    wednesday: [
+      ['05:30','Anki matinal'],['06:30','Douche + préparation'],['06:45','Petit-déjeuner + Coran (1 page)'],
+      ['07:20','Anki 1'],['08:20','Anki 2'],['09:20','Collation 1'],
+      ['09:35','Cartes du dernier cours'],['10:35','Annales'],
+      ['11:35','Projets perso 1'],['12:35','Déjeuner'],['12:55','😴 Micro-sieste'],
+      ['13:15','Projets perso 2'],['14:15','Projets perso 3'],['14:50','Collation 2'],['15:00','Trajet cours'],['15:30','Cours'],
+      ['19:30','Trajet retour'],['20:00','Dîner'],['20:30','Comprendre le cours du jour'],
+      ['21:30','Coucher']
+    ],
     friday: [
-      ['05:30','Sport'],['06:30','Douche + préparation'],['06:45','Petit-déjeuner + Coran (1 page)'],
+      ['05:30','Projets perso matinal'],['06:30','Douche + préparation'],['06:45','Petit-déjeuner + Coran (1 page)'],
       ['07:20','Anki 1'],['08:20','Anki 2'],['09:20','Collation 1'],
       ['09:35','Cartes du dernier cours'],
       ['10:35','Projets perso 1'],['11:35','Projets perso 2'],['12:35','Déjeuner'],
@@ -7067,7 +7082,7 @@
       ['21:30','Coucher']
     ],
     weekend: [
-      ['05:30','Sport'],['06:30','Douche + préparation'],['06:45','Petit-déjeuner + Coran (1 page)'],
+      ['05:30','Projets perso matinal'],['06:30','Douche + préparation'],['06:45','Petit-déjeuner + Coran (1 page)'],
       ['07:20','Anki 1'],['08:20','Anki 2'],['09:20','Collation 1'],
       ['09:35','Annale complète'],['10:35','Correction + cartes'],
       ['11:35','Projets perso 1'],['12:35','Déjeuner'],['13:10','😴 Micro-sieste'],
@@ -7154,7 +7169,7 @@
      les événements Google s'y ajoutent là où aucun créneau n'existe à la même heure.
      Chaque entrée : [heure, libellé, heureDeFin|null, origine]. */
   function cleJournee(dow){
-    return dow===5 ? 'friday' : (dow===6 ? 'saturday' : (dow===0 ? 'weekend' : 'weekday'));
+    return dow===5 ? 'friday' : (dow===6 ? 'saturday' : (dow===0 ? 'weekend' : (dow===3 ? 'wednesday' : 'weekday')));
   }
   /* Tout ce qui lit agendaDuJour() doit être redessiné ensemble quand Google répond.
      L'oubli de renderCalendar ici faisait diverger l'emploi du temps de la vue semaine :
@@ -7221,7 +7236,7 @@
   }
   /* la semaine type, hors reduction : la reference des objectifs semes */
   var CIBLE_HEBDO = (function(){
-    var semaine = [['weekday',4], ['friday',1], ['saturday',1], ['weekend',1]];
+    var semaine = [['weekday',3], ['wednesday',1], ['friday',1], ['saturday',1], ['weekend',1]];
     var t = {rev:0, proj:0};
     semaine.forEach(function(x){
       var c = cibleJourMinutes(x[0], null, true);
@@ -7300,7 +7315,7 @@
     return (24*60 - couche + timeToMinutes(heureLever(cleJournee(d.getDay())))) / 60;
   }
   function objectifSommeil(){ return objectifSommeilPour(todayISO); }
-  function scheduleKeyForToday(){ return isFriday ? 'friday' : (weekday===6 ? 'saturday' : (weekday===0 ? 'weekend' : 'weekday')); }
+  function scheduleKeyForToday(){ return cleJournee(weekday); }
 
   /* ================= RAPPELS GOOGLE CALENDAR =================
      La Batcave tourne dans claude.ai : pas de notification possible. Le telephone, lui,
@@ -7537,7 +7552,7 @@
     document.getElementById('cal-water-sub').textContent = waterL.toFixed(1).replace('.', ',') + ' L / 3,0 L';
 
     var key = scheduleKeyForToday();
-    var labelMap = {weekday:'jour de cours (Lun–Jeu)', friday:"vendredi (Jumu'ah)", saturday:'samedi (courses)', weekend:'dimanche'};
+    var labelMap = {weekday:'jour de cours (lun, mar, jeu)', wednesday:'mercredi (Anki matinal)', friday:"vendredi (Jumu'ah)", saturday:'samedi (courses)', weekend:'dimanche'};
     document.getElementById('cal-schedule-label').textContent = labelMap[key];
     var blocks = agendaDuJour(weekday);
 

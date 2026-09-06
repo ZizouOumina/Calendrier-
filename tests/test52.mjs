@@ -82,8 +82,8 @@ console.log('\n== 171) Activer : un événement par bloc, aujourd\'hui (restants
   ok(!!rev1 && rev1.input.overrideReminders[0].minutes === 5 && rev1.input.timeZone === 'Europe/Madrid' && rev1.input.calendarId === 'zizou.oumina@gmail.com', 'rappel 5 min avant, fuseau et agenda précisés');
   const coucher = crees.find(c => /Coucher/.test(c.input.summary) && c.input.startTime.startsWith('2026-09-08'));
   ok(!!coucher && coucher.input.summary === '🦇 Coucher' && coucher.input.startTime === '2026-09-08T21:30:00+02:00' && coucher.input.overrideReminders[0].minutes === 30 && coucher.input.availability === 'AVAILABILITY_FREE' && /Écran off/.test(coucher.input.description), 'Coucher 21:30 (même titre que ton agenda), rappel 30 min, écran off en description, n\'occupe pas l\'agenda');
-  const sportDemain = crees.find(c => /Sport/.test(c.input.summary));
-  ok(!!sportDemain && sportDemain.input.startTime === '2026-09-09T05:30:00+02:00' && sportDemain.input.endTime === '2026-09-09T06:30:00+02:00', 'Sport de demain 05:30 → 06:30');
+  const ankiDemain = crees.find(c => /Anki matinal/.test(c.input.summary));
+  ok(!!ankiDemain && ankiDemain.input.startTime === '2026-09-09T05:30:00+02:00' && ankiDemain.input.endTime === '2026-09-09T06:30:00+02:00', 'mercredi (jour off) : Anki matinal de demain 05:30 → 06:30');
   const r8 = await local(fr, 'batcave-gcal-2026-09-08'), r9 = await local(fr, 'batcave-gcal-2026-09-09');
   ok(r8 && Object.keys(r8).length === 19 && r9 && Object.keys(r9).length === 20 && Object.values(r8).every(x => x.id && x.empreinte && x.cree === true), 'relevés locaux : 19 + 20 blocs avec id, empreinte et marque « créé par la Batcave »');
   const opt = await local(fr, 'batcave-gcal-ecriture');

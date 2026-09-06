@@ -50,12 +50,12 @@ console.log('\n== 119) Prévu vs réalisé — Bilan ==');
   const { ctx, fr, page } = await ouvrir(MERCREDI, { 'batcave-sessions': [S('a','2026-09-07','cours',300,'07'), S('b','2026-09-07','projet',180,'13'), S('c','2026-09-08','cours',240,'07')] });
   await aller(fr, page, 'bilan');
   const fid = await fr.evaluate(() => [...document.querySelectorAll('#bilan-grid .bilan-card')].map(c => c.innerText.replace(/\s+/g,' ')).find(t => /Fidélité/.test(t)));
-  ok(fid && /59%/.test(fid), 'carte « Fidélité au plan » : 59 % (12 h faites / 20,5 h de travail réel prévues lun-mer) : ' + (fid || '').slice(0, 60));
+  ok(fid && /56%/.test(fid), 'carte « Fidélité au plan » : 56 % (12 h faites / 21,3 h de travail réel prévues lun-mer) : ' + (fid || '').slice(0, 60));
   const p = await fr.evaluate(() => ({ txt: document.getElementById('bilan-plan').innerText.replace(/\s+/g,' '), note: document.getElementById('bilan-plan-note').innerText }));
-  ok(/Lun 8,0 \/ 6,8 h/.test(p.txt) && /Mar 4,0 \/ 6,8 h/.test(p.txt) && /Mer 0,0 \/ 6,8 h/.test(p.txt), 'jour par jour : Lun 8/6,8, Mar 4/6,8, Mer 0/6,8');
-  ok(/Jeu prévu 6,8 h/.test(p.txt) && /Dim prévu 5,3 h/.test(p.txt), 'les jours à venir montrent le prévu (jeu 6,8 h, dim 5,3 h)');
-  ok(/Révision 9,0 \/ 13,3 h/.test(p.txt) && /Projets 3,0 \/ 7,3 h/.test(p.txt), 'totaux par type sur les jours passés (rév. 9/13,3, proj. 3/7,3)');
-  ok(/fidélité 59 %/.test(p.note), 'note : ' + p.note);
+  ok(/Lun 8,0 \/ 6,8 h/.test(p.txt) && /Mar 4,0 \/ 6,8 h/.test(p.txt) && /Mer 0,0 \/ 7,7 h/.test(p.txt), 'jour par jour : Lun 8/6,8, Mar 4/6,8, Mer 0/7,7');
+  ok(/Jeu prévu 6,8 h/.test(p.txt) && /Dim prévu 6,3 h/.test(p.txt), 'les jours à venir montrent le prévu (jeu 6,8 h, dim 6,3 h)');
+  ok(/Révision 9,0 \/ 14,1 h/.test(p.txt) && /Projets 3,0 \/ 7,3 h/.test(p.txt), 'totaux par type sur les jours passés (rév. 9/14,1, proj. 3/7,3)');
+  ok(/fidélité 56 %/.test(p.note), 'note : ' + p.note);
   await ctx.close();
 }
 
