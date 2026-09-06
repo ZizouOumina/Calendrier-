@@ -91,10 +91,10 @@ console.log('\n== 88) Dimanche : repos puis 2 h de batch cooking ==');
   const { ctx, fr } = await ouvrir(DIMANCHE);
   const l = await fr.evaluate(() => [...document.querySelectorAll('#cal-timeline li')]
     .map(x => x.querySelector('.t-time').textContent + ' ' + x.querySelector('label').textContent.trim()));
-  ok(l.some(x => x.startsWith('14:30 Repos')), 'repos à partir de 14:30 (après Projets perso 2)');
+  ok(l.some(x => x.startsWith('16:30 Repos')), 'repos à partir de 16:30 (après le batch cooking), d\'un seul tenant jusqu\'au dîner');
   const bc = l.findIndex(x => /Batch cooking/.test(x));
-  ok(bc > -1 && l[bc].startsWith('16:00'), 'batch cooking à 16:00 : ' + (l[bc] || 'absent'));
-  ok(bc > -1 && l[bc+1] && l[bc+1].startsWith('18:00'), 'il dure 2 h pleines — suivant : ' + (l[bc+1] || '—'));
+  ok(bc > -1 && l[bc].startsWith('14:30'), 'batch cooking à 14:30, juste après Projets perso 2 : ' + (l[bc] || 'absent'));
+  ok(bc > -1 && l[bc+1] && l[bc+1].startsWith('16:30'), 'il dure 2 h pleines — suivant : ' + (l[bc+1] || '—'));
   await ctx.close();
 }
 

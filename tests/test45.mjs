@@ -95,7 +95,7 @@ console.log('\n== 111) Dimanche : créneau libre proposé, bouton « Maintenant 
 {
   const { ctx, fr } = await ouvrir('2026-09-06T12:00:00+02:00');
   const t = await texte(fr, '#dash-plan');
-  ok(/créneau libre : Repos — après-midi libre à 14:30 \(1 h 30 min\)/.test(t), 'suggestion : Repos à 14:30 (1 h 30 min)');
+  ok(/créneau libre : Repos — après-midi libre à 16:30 \(2 h 30 min\)/.test(t), 'suggestion : Repos à 16:30 (2 h 30 min)');
   ok(await fr.evaluate(() => !!document.querySelector('[data-plan-manque-lancer]')), 'bouton « Maintenant » présent');
   await ctx.close();
 }
