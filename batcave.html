@@ -1391,7 +1391,7 @@
       <div class="page-head">
         <span class="eyebrow">Dossier N° 05</span>
         <h1>Repas</h1>
-        <p class="desc">Programme du jour, 6 prises. Les cases se réinitialisent automatiquement à minuit.</p>
+        <p class="desc">Programme du jour, 6 prises : 3 065 kcal, P 174 g, G 335 g, L 114 g, tout pesé cru. La protéine du déjeuner et du dîner suit la rotation de la semaine. Les cases se réinitialisent à minuit.</p>
       </div>
 
       <div class="day-bar">
@@ -1901,7 +1901,7 @@
       <div class="page-head">
         <span class="eyebrow">Dossier N° 14</span>
         <h1>Courses</h1>
-        <p class="desc">Panier de ravitaillement hebdomadaire — passage tous les samedis. Quantités calées sur ton programme nutrition, une seule protéine et un seul féculent à prendre selon ta rotation de la semaine.</p>
+        <p class="desc">Panier de ravitaillement hebdomadaire — passage tous les samedis. La liste d'achat du plan alimentation, prix estimés. L'huile d'olive se rachète toutes les 4 semaines.</p>
       </div>
 
       <div class="courses-toolbar">
@@ -4689,52 +4689,62 @@
   }
 
   /* ================= REPAS ================= */
+  /* ===== Plan alimentation (6 sept. 2026) =====
+     64 kg · 182 cm · 19 ans · 4 séances par semaine · tout pesé cru.
+     3 065 kcal · P 174 g (2,7 g/kg) · G 335 g · L 114 g. Six prises. La protéine du déjeuner et
+     du dîner suit une ROTATION fixe sur la semaine (l'huile d'olive va avec) ; le féculent
+     reste au choix, riz ou pâtes, mêmes grammes. Les chiffres « kcal · P G L » de chaque
+     repas sont ceux du plan ; la barre du jour les prorate aux cases cochées. */
   var MEALS = [
-    {name:'Petit-déjeuner', kcal:'~727 kcal · P40 G67 L35', items:['3 œufs entiers (150g)','Pain complet (60g)','Beurre de cacahuète (20g)','Banane (120g)','Lait (200ml)']},
-    {name:'Collation matin', kcal:'~239 kcal · P22 G12 L13', items:['Skyr (150g)','Amandes (25g)']},
-    {name:'Déjeuner', kcal:'~732 kcal · P38 G91 L24 (base riz+poulet)', items:[
-      'Féculent cru — Riz 90g / Pâtes 90g / Pomme de terre 420g / Patate douce 380g',
-      'Protéine crue — Poulet 110g / Viande hachée 5% 125g / Thon 105g / Saumon-colin 140g',
-      'Légumes verts (200g)','Avocat 1/2 (75g)','Huile d\'olive (10ml)'
-    ]},
-    {name:'Collation entraînement', kcal:'~286 kcal · P21 G25 L11', items:['Pain complet (60g)','Jambon (40g)','Fromage (20g)']},
-    {name:'Dîner', kcal:'~845 kcal · P45 G121 L19 (base riz+poulet)', items:[
-      'Féculent cru — Riz 110g / Pâtes 110g / Pomme de terre 510g / Patate douce 465g',
-      'Protéine crue — Poulet 145g / Viande hachée 5% 165g / Thon 140g / Saumon-colin 190g',
-      'Légumes verts (200g)','Huile d\'olive (15-20ml)','1 fruit'
-    ]},
-    {name:'Collation soir', kcal:'~258 kcal · P22 G22 L10', items:['Skyr (150g)','Miel (15g)','Beurre de cacahuète (20g)']}
+    {name:'Petit-déjeuner', kcal:'~826 kcal · P42 G98 L33', items:['Flocons d\'avoine (80g)','Lait demi-écrémé (250ml)','2 œufs (100g)','Beurre de cacahuète (25g)','Banane (120g)']},
+    {name:'Collation matin', kcal:'~363 kcal · P21 G44 L13', items:['Skyr (125g)','Cacahuètes (25g)','Dattes (50g)']},
+    {name:'Déjeuner', kcal:'~581 kcal · P33 G60 L22', items:['Féculent cru — Riz 70g ou Pâtes 70g','Protéine crue — rotation du jour','Légumes verts (150g)','Huile d\'olive — selon la protéine']},
+    {name:'Collation entraînement', kcal:'~264 kcal · P18 G28 L8', items:['Pain complet (60g)','Jambon (40g)','Fromage (20g)']},
+    {name:'Dîner', kcal:'~726 kcal · P39 G86 L23', items:['Féculent cru — Riz 85g ou Pâtes 85g','Protéine crue — rotation du jour','Légumes verts (150g)','Huile d\'olive — selon la protéine','1 fruit (~120g)']},
+    {name:'Collation soir', kcal:'~306 kcal · P22 G20 L15', items:['Skyr (125g)','Miel (20g)','Beurre de cacahuète (30g)']}
   ];
   var mealKey = 'batcave-meals-' + todayISO;
   var mealState = load(mealKey, {});
-  /* ===== Plan → quantites =====
-     Le feculent et la proteine du dejeuner et du diner tournent ; chaque option porte ses
-     grammes crus par repas, sa densite calorique (kcal/g cru) et son prix. La liste de
-     courses en decoule (× 7 jours), et l'ajustement de la boucle poids → calories se lit
-     dans le feculent du DINER : +150 kcal = +40 g de riz cru, ecrit dans le plan. */
+  /* ===== Plan → quantités =====
+     Grammes crus par repas, densité calorique (kcal/g cru) et prix estimé au kilo (Alicante,
+     2026). La liste de courses en découle (rotation × 7 jours), et l'ajustement de la boucle
+     poids → calories se lit dans le féculent du DÎNER : +150 kcal = +40 g de riz ou de pâtes
+     cru, écrit dans le plan. */
   var FECULENTS = [
-    {nom:'Riz',            dej:90,  din:110, kcalG:3.6,  prixKg:0.71},
-    {nom:'Pâtes',          dej:90,  din:110, kcalG:3.6,  prixKg:0.79},
-    {nom:'Pomme de terre', dej:420, din:510, kcalG:0.77, prixKg:0.51},
-    {nom:'Patate douce',   dej:380, din:465, kcalG:0.86, prixKg:1.02}
+    {nom:'Riz',   dej:70, din:85, kcalG:3.6, prixKg:1.1},
+    {nom:'Pâtes', dej:70, din:85, kcalG:3.6, prixKg:1.0}
   ];
-  var PROTEINES = [
-    {nom:'Poulet',           dej:110, din:145, prixKg:6.5},
-    {nom:'Viande hachée 5%', dej:125, din:165, prixKg:7.5},
-    {nom:'Thon',             dej:105, din:140, prixKg:11},
-    {nom:'Saumon / colin',   dej:140, din:190, prixKg:12}
-  ];
-  /* grammes de feculent cru equivalant a un ajustement en kcal, arrondis a 10 g */
+  var PROTEINES = {
+    'Poulet':            {dej:{g:110, huile:20}, din:{g:130, huile:15}, prixKg:6.5},
+    'Viande hachée 5 %': {dej:{g:120, huile:20}, din:{g:145, huile:15}, prixKg:8.0},
+    'Saumon':            {dej:{g:115, huile:10}, din:{g:135, huile:8},  prixKg:13.0}
+  };
+  /* [déjeuner, dîner] par jour de la semaine (0 = dimanche) */
+  var ROTATION = {
+    1:['Poulet','Viande hachée 5 %'], 2:['Poulet','Viande hachée 5 %'], 3:['Saumon','Viande hachée 5 %'],
+    4:['Poulet','Viande hachée 5 %'], 5:['Poulet','Saumon'], 6:['Poulet','Viande hachée 5 %'], 0:['Saumon','Viande hachée 5 %']
+  };
+  function proteineDuJour(repas, iso){
+    var dow = new Date((iso || todayISO) + 'T00:00:00').getDay();
+    return ROTATION[dow][repas === 'dej' ? 0 : 1];
+  }
+  /* grammes de féculent cru équivalant à un ajustement en kcal, arrondis à 10 g */
   function grammesAjustement(kcal, kcalG){ return Math.round((Number(kcal) || 0) / kcalG / 10) * 10; }
   function texteFeculent(repas, ajust){
     return 'Féculent cru — ' + FECULENTS.map(function(f){
       var g = f[repas] + (repas === 'din' ? grammesAjustement(ajust, f.kcalG) : 0);
       return f.nom + ' ' + g + 'g';
-    }).join(' / ') + (repas === 'din' && ajust ? ' (boucle kcal ' + (ajust > 0 ? '+' : '') + ajust + ' kcal)' : '');
+    }).join(' ou ') + (repas === 'din' && ajust ? ' (boucle kcal ' + (ajust > 0 ? '+' : '') + ajust + ' kcal)' : '');
   }
-  /* Le libelle d'un item, avec l'ajustement du jour dans le feculent du diner. */
+  /* Le libellé d'un item : féculent avec l'ajustement du jour (dîner), protéine et huile de
+     la rotation du jour (déjeuner et dîner). */
   function texteItemRepas(m, it, ii, iso){
-    if(m.name === 'Dîner' && ii === 0) return texteFeculent('din', ajustementKcalPour(iso || todayISO));
+    var repas = m.name === 'Dîner' ? 'din' : (m.name === 'Déjeuner' ? 'dej' : null);
+    if(!repas) return it;
+    if(ii === 0) return texteFeculent(repas, repas === 'din' ? ajustementKcalPour(iso || todayISO) : 0);
+    var nom = proteineDuJour(repas, iso), p = PROTEINES[nom][repas];
+    if(ii === 1) return 'Protéine crue — ' + nom + ' ' + p.g + 'g';
+    if(ii === 3) return 'Huile d\'olive (' + p.huile + 'ml)';
     return it;
   }
   function texteKcalRepas(m, iso){
@@ -4828,8 +4838,8 @@
     lignes.push('Rythme visé : <b style="color:var(--ink);">' + kg(b.rythmeVise) + ' / semaine</b> (objectif poids sur son horizon).');
     if(b.delta !== null) lignes.push('Tendance : <b style="color:var(--ink);">' + kg(b.delta) + '</b> cette semaine (' + b.moyAvant.toFixed(1).replace('.', ',') + ' → ' + b.moyRecente.toFixed(1).replace('.', ',') + ' kg en moyenne).');
     lignes.push((b.delta === null ? '' : '→ ') + b.motif);
-    if(b.reco && b.reco > 0) lignes.push('<span class="sub-note">+150 kcal = +40 g de riz cru au dîner (ou l\'équivalent en pâtes / pommes de terre / patate douce) — écrit dans le plan et dans la liste de courses dès que tu appliques.</span>');
-    if(b.reco && b.reco < 0) lignes.push('<span class="sub-note">−100 kcal = −30 g de riz cru au dîner (ou l\'équivalent) — écrit dans le plan et dans la liste de courses dès que tu appliques.</span>');
+    if(b.reco && b.reco > 0) lignes.push('<span class="sub-note">+150 kcal = +40 g de riz ou de pâtes cru au dîner — écrit dans le plan et dans la liste de courses dès que tu appliques.</span>');
+    if(b.reco && b.reco < 0) lignes.push('<span class="sub-note">−100 kcal = −30 g de riz ou de pâtes cru au dîner — écrit dans le plan et dans la liste de courses dès que tu appliques.</span>');
     el.innerHTML = lignes.map(function(l){ return '<p>' + l + '</p>'; }).join('');
     var cibleReco = b.delta === null ? null : actuel + b.reco;
     if(bApp){
@@ -6033,22 +6043,24 @@
      autres items). Le feculent du diner porte l'ajustement kcal en vigueur : +150 kcal =
      +40 g de riz cru par jour, +280 g sur la semaine. Meme ordre, meme nombre d'articles
      qu'avant : les cases cochees (batcave-courses, indexees) restent valables. */
+  /* La liste d'achat (6 sept. 2026) : quantités arrondies au conditionnement, pas les grammes
+     exacts du plan (poulet 700 g pour 550 g de besoin, etc.). Le riz porte l'ajustement de la
+     boucle kcal (+40 g/j = +280 g/semaine). L'huile d'olive se rachète toutes les 4 semaines :
+     elle reste dans la liste, on ne la coche que quand il en faut. Prix estimés Alicante 2026. */
   function planCoursesSemaine(ajust){
-    var J = 7;
-    var kg = function(gJour){ return gJour * J / 1000; };
-    var fmtKg = function(x){ return (Math.round(x * 10) / 10).toFixed(1).replace('.', ',') + ' kg'; };
-    var prot = PROTEINES.map(function(p){ var g = p.dej + p.din; return {label: p.nom, qte: fmtKg(kg(g)) + ' (' + g + ' g/j)', prix: kg(g) * p.prixKg, rotation:'proteine'}; })
-      .concat([{label:'Œufs', qte:'21 (3/j)', prix:5}, {label:'Jambon', qte:'280 g (40 g/j)', prix:3}, {label:'Fromage', qte:'140 g (20 g/j)', prix:1.8}]);
-    var fec = FECULENTS.map(function(f){
-      var plus = grammesAjustement(ajust, f.kcalG), g = f.dej + f.din + plus;
-      return {label: f.nom, qte: fmtKg(kg(g)) + ' (' + g + ' g/j' + (plus ? ', dont ' + (plus > 0 ? '+' : '') + plus + ' g boucle kcal' : '') + ')', prix: kg(g) * f.prixKg, rotation:'feculent'};
-    }).concat([{label:'Pain complet', qte:'2 paquets (120 g/j)', prix:3.6}]);
+    var plus = grammesAjustement(ajust, 3.6) * 7;
+    var g = function(n){ return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '\u202f'); };
     return [
-      {cat:'Protéines (rotation, ~14 portions/sem)', items: prot},
-      {cat:'Féculents (selon rotation)', items: fec},
-      {cat:'Fruits & légumes', items:[{label:'Légumes verts', qte:'2,8 kg (400 g/j)', prix:7}, {label:'Bananes', qte:'×7 (1/j)', prix:1.4}, {label:'Fruits variés', qte:'×7 (1/j)', prix:2.1}, {label:'Avocats', qte:'×4 gros (½/j)', prix:6}]},
-      {cat:'Laitiers', items:[{label:'Lait', qte:'1,5 L (200 ml/j)', prix:1.5}, {label:'Yaourt grec / skyr', qte:'2,1 kg (300 g/j)', prix:8.4}]},
-      {cat:'Épicerie', items:[{label:'Beurre de cacahuète', qte:'280 g (40 g/j)', prix:3.5}, {label:'Amandes', qte:'175 g (25 g/j)', prix:2.6}, {label:'Huile d\'olive', qte:'~200 ml', prix:1}, {label:'Miel', qte:'105 g (15 g/j)', prix:2.5}]}
+      {cat:'Chaque semaine', items:[
+        {label:'Poulet', qte:'700 g', prix:4.55}, {label:'Viande hachée 5 %', qte:'900 g', prix:7.2}, {label:'Saumon', qte:'400 g', prix:5.2},
+        {label:'Œufs', qte:'15', prix:3.3}, {label:'Jambon', qte:'300 g', prix:3.3}, {label:'Fromage', qte:'150 g', prix:1.35},
+        {label:'Riz', qte: g(1200 + plus) + ' g' + (plus ? ' (dont ' + (plus > 0 ? '+' : '') + g(plus) + ' g boucle kcal)' : ''), prix: (1200 + plus) / 1000 * 1.1},
+        {label:'Flocons d\'avoine', qte:'600 g', prix:0.95}, {label:'Pain complet', qte:'500 g', prix:1.6},
+        {label:'Skyr', qte:'1\u202f800 g', prix:7.2}, {label:'Lait demi-écrémé', qte:'2\u202f000 ml', prix:1.9},
+        {label:'Légumes verts surgelés', qte:'2\u202f250 g', prix:4.5}, {label:'Bananes', qte:'8', prix:1.4}, {label:'Fruits (pommes, poires, oranges…)', qte:'8', prix:2.2},
+        {label:'Beurre de cacahuète', qte:'400 g', prix:2.1}, {label:'Dattes', qte:'400 g', prix:2}, {label:'Cacahuètes', qte:'200 g', prix:0.9}, {label:'Miel', qte:'200 g', prix:1.3}
+      ]},
+      {cat:'Toutes les 4 semaines', mensuel:true, items:[{label:'Huile d\'olive', qte:'1\u202f000 ml', prix:7}]}
     ];
   }
   function fmtEuro(x){ var r = Math.round(x * 10) / 10; return '~' + String(r).replace('.', ',') + ' €'; }
@@ -6058,15 +6070,11 @@
     COURSES = plan.map(function(c){ return {cat: c.cat, items: c.items.map(function(i){ return i.label + ' — ' + i.qte + ' (' + fmtEuro(i.prix) + ')'; })}; });
     return plan;
   }
-  /* budget de la semaine : le fixe + la rotation la moins chere / la plus chere */
+  /* budget : les lignes hebdomadaires, et à part ce qui se rachète toutes les 4 semaines */
   function budgetCourses(plan){
-    var fixe = 0, minRot = 0, maxRot = 0;
-    plan.forEach(function(c){
-      var rot = {};
-      c.items.forEach(function(i){ if(i.rotation){ rot[i.rotation] = rot[i.rotation] || []; rot[i.rotation].push(i.prix); } else fixe += i.prix; });
-      Object.keys(rot).forEach(function(k){ minRot += Math.min.apply(null, rot[k]); maxRot += Math.max.apply(null, rot[k]); });
-    });
-    return {min: fixe + minRot, max: fixe + maxRot};
+    var semaine = 0, mensuel = 0;
+    plan.forEach(function(c){ c.items.forEach(function(i){ if(c.mensuel) mensuel += i.prix; else semaine += i.prix; }); });
+    return {total: semaine, mensuel: mensuel};
   }
   construireCourses();
   var coursesState = load('batcave-courses', {});
@@ -6081,10 +6089,10 @@
     if(!grid) return;
     var plan = construireCourses(), ajust = ajustementKcalPour(todayISO), b = budgetCourses(plan);
     var note = document.getElementById('courses-plan-note'), budget = document.getElementById('courses-budget');
-    if(note) note.innerHTML = 'Quantités = plan de repas × 7 jours. ' + (ajust
+    if(note) note.innerHTML = 'Quantités d\'achat arrondies au conditionnement, pour une semaine du plan. ' + (ajust
       ? 'Boucle poids → calories en vigueur : <b style="color:var(--ink-dim);">' + (ajust > 0 ? '+' : '') + ajust + ' kcal/jour</b>, soit ' + (grammesAjustement(ajust, 3.6) > 0 ? '+' : '') + grammesAjustement(ajust, 3.6) + ' g de riz cru au dîner (' + (grammesAjustement(ajust, 3.6) * 7 > 0 ? '+' : '') + grammesAjustement(ajust, 3.6) * 7 + ' g sur la semaine) — déjà compté ci-dessous.'
       : 'Aucun ajustement calorique en cours : quantités du plan de base.');
-    if(budget) budget.innerHTML = 'Budget réaliste : <b style="color:var(--ink-dim)">' + fmtEuro(b.min) + ' à ' + fmtEuro(b.max) + ' / semaine</b> (du moins cher, poulet + riz, au plus cher, saumon + patate douce) — soit <b style="color:var(--ink-dim)">' + fmtEuro(b.min * 52 / 12) + ' à ' + fmtEuro(b.max * 52 / 12) + ' / mois</b>.';
+    if(budget) budget.innerHTML = 'Budget estimé : <b style="color:var(--ink-dim)">' + fmtEuro(b.total) + ' / semaine</b>, plus <b style="color:var(--ink-dim)">' + fmtEuro(b.mensuel) + '</b> toutes les 4 semaines — soit <b style="color:var(--ink-dim)">' + fmtEuro(b.total * 52 / 12 + b.mensuel * 52 / 12 / 4) + ' / mois</b> environ (prix estimés Alicante 2026, à corriger avec tes tickets).';
     grid.innerHTML = '';
     COURSES.forEach(function(c, ci){
       var card = document.createElement('div');
