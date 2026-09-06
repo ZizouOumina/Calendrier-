@@ -4,6 +4,7 @@ let errs = 0;
 const ok = (c,m) => { if(c) console.log('  ok  '+m); else { errs++; console.log('  FAIL '+m); } };
 const browser = await chromium.launch();
 const ctx = await browser.newContext({ viewport:{width:1440,height:900}, timezoneId:'Europe/Madrid', locale:'fr-FR' });
+await ctx.addInitScript(() => { try{ localStorage.setItem('batcave-duree-bloc', '60'); }catch(e){} });   /* sessions d'1 h : la durée est accessoire ici */
 const page = await ctx.newPage();
 const consoleErrs = [];
 page.on('pageerror', e => { errs++; console.log('  PAGEERROR: ' + e.message); });

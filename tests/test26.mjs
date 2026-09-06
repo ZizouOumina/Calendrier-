@@ -21,8 +21,8 @@ console.log('\n== 61) Durée de bloc au choix (25 / 45 / 60) ==');
 {
   const { ctx, page, fr } = await ouvrir();
   const chips = await fr.evaluate(() => [...document.querySelectorAll('#timer-durees [data-duree]')].map(b => ({d:b.dataset.duree, actif:b.classList.contains('active')})));
-  ok(chips.length === 3 && chips.map(c=>c.d).join(',') === '25,45,60', '3 durées proposées : ' + chips.map(c=>c.d).join('/'));
-  ok(chips.find(c=>c.d==='60').actif, '60 min sélectionné par défaut (comportement inchangé)');
+  ok(chips.length === 5 && chips.map(c=>c.d).join(',') === 'auto,25,45,55,60', 'auto + 4 durées proposées : ' + chips.map(c=>c.d).join('/'));
+  ok(chips.find(c=>c.d==='auto').actif, '« auto » sélectionné par défaut (le bloc du planning décide)');
 
   // on choisit 25 min et on lance un bloc Cours
   await fr.evaluate(() => document.querySelector('#timer-durees [data-duree="25"]').click());

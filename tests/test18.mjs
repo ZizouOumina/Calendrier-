@@ -67,13 +67,13 @@ console.log('\n== 54) Objectif de révision du jour selon le jour de la semaine 
   const { ctx, fr } = await ouvrir('2026-09-06T10:00:00+02:00');  // dimanche
   const cell = await fr.evaluate(() => document.querySelector('#dash-temps .temps-cell').innerText.replace(/\s+/g,''));
   await ctx.close();
-  ok(/\/4h/.test(cell), 'dimanche (après-midi de repos) : objectif = 4h (obtenu : ' + cell + ')');
+  ok(/\/3,4h/.test(cell), 'dimanche (après-midi de repos) : objectif = 3,4h (obtenu : ' + cell + ')');
 }
 {
   const { ctx, fr } = await ouvrir('2026-09-05T10:00:00+02:00');  // samedi
   const cell = await fr.evaluate(() => document.querySelector('#dash-temps .temps-cell').innerText.replace(/\s+/g,''));
   await ctx.close();
-  ok(/\/5h/.test(cell), 'samedi (2 h de courses) : objectif = 5h (obtenu : ' + cell + ')');
+  ok(/\/4,3h/.test(cell), 'samedi (2 h de courses) : objectif = 4,3h (obtenu : ' + cell + ')');
 }
 
 console.log('\n== 55) Charges fixes : total et suppression restent cohérents ==');

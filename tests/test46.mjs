@@ -84,9 +84,9 @@ console.log('\n== 102) Bloc en cours / prochain bloc sous le réacteur ==');
   await ctx.close();
 }
 {
-  const { ctx, fr } = await ouvrir('2026-09-04T04:30:00+02:00');
+  const { ctx, fr } = await ouvrir('2026-09-04T05:00:00+02:00');
   ok((await txt(fr, '#pb-titre')) === 'Prochain bloc', 'avant le lever : « Prochain bloc »');
-  ok((await txt(fr, '#pb-quoi')) === 'Sport', 'c\'est le Sport de 05:00 : ' + await txt(fr, '#pb-quoi'));
+  ok((await txt(fr, '#pb-quoi')) === 'Sport', 'c\'est le Sport de 05:30 : ' + await txt(fr, '#pb-quoi'));
   ok((await txt(fr, '#pb-dans')) === 'dans 30 min', 'dans 30 min : ' + await txt(fr, '#pb-dans'));
   await ctx.close();
 }

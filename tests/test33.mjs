@@ -5,6 +5,7 @@ const ok = (c,m) => { if(c) console.log('  ok  '+m); else { errs++; console.log(
 const browser = await chromium.launch();
 async function ouvrir(seed){
   const ctx = await browser.newContext({ viewport:{width:1440,height:900}, timezoneId:'Europe/Madrid', locale:'fr-FR' });
+  await ctx.addInitScript(() => { try{ localStorage.setItem('batcave-duree-bloc', '60'); }catch(e){} });   /* sessions d'1 h : la durée est accessoire ici */
   await ctx.addInitScript(x => { if(localStorage.getItem('__s')) return; localStorage.setItem('__s','1');
     Object.keys(x).forEach(k => localStorage.setItem(k, JSON.stringify(x[k]))); }, seed);
   const page = await ctx.newPage();

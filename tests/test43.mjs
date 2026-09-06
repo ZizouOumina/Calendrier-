@@ -102,8 +102,8 @@ async function ordre(quand, dueISO){
   ok(o.iRev > o.iTache && o.iTache >= 0, 'samedi 15:00 : révision pas encore urgente (bloc 3 à 16:00)');
   o = await ordre('2026-09-05T16:30:00+02:00', '2026-09-05');
   ok(o.iRev >= 0 && o.iRev < o.iTache, 'samedi 16:30 : révision urgente, passe devant la tâche du jour');
-  o = await ordre('2026-09-06T10:00:00+02:00', '2026-09-06');       /* dimanche : dernier bloc à 09:35 */
-  ok(o.iRev >= 0 && o.iRev < o.iTache, 'dimanche 10:00 : urgente dès 09:35 (dernier bloc du jour)');
+  o = await ordre('2026-09-06T11:00:00+02:00', '2026-09-06');       /* dimanche : dernier bloc (Correction + cartes) à 10:35 */
+  ok(o.iRev >= 0 && o.iRev < o.iTache, 'dimanche 11:00 : urgente dès 10:35 (dernier bloc du jour)');
   o = await ordre('2026-09-02T19:00:00+02:00', '2026-09-02');       /* mercredi : dernier bloc à 20:00 */
   ok(o.iRev > o.iTache && o.iTache >= 0, 'mercredi 19:00 : pas encore urgente (bloc 3 à 20:00) — l\'ancien seuil 18:00 l\'aurait déjà rougie');
 }

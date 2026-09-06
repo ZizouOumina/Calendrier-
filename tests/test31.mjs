@@ -10,6 +10,7 @@ const bloc = (jour, h, min, type, label) => {
 };
 async function ouvrir(sessions){
   const ctx = await browser.newContext({ viewport:{width:1440,height:900}, timezoneId:'Europe/Madrid', locale:'fr-FR' });
+  await ctx.addInitScript(() => { try{ localStorage.setItem('batcave-duree-bloc', '60'); }catch(e){} });   /* sessions d'1 h : la durée est accessoire ici */
   await ctx.addInitScript(x => { if(localStorage.getItem('__s')) return; localStorage.setItem('__s','1');
     Object.keys(x).forEach(k => localStorage.setItem(k, JSON.stringify(x[k]))); }, {'batcave-sessions': sessions});
   const page = await ctx.newPage();
@@ -115,6 +116,7 @@ console.log('\n== 84) Navigation entre les jours et clic depuis le mois ==');
 console.log('\n== 85) Un bloc terminé apparaît sans rechargement, et rien ne part vers Google ==');
 {
   const ctx = await browser.newContext({ viewport:{width:1440,height:900}, timezoneId:'Europe/Madrid', locale:'fr-FR' });
+  await ctx.addInitScript(() => { try{ localStorage.setItem('batcave-duree-bloc', '60'); }catch(e){} });   /* sessions d'1 h : la durée est accessoire ici */
   await ctx.addInitScript(() => {
     window.__appels = [];
     const mcp = { callTool(s,t,i){ window.__appels.push(t); return Promise.resolve({content:[],payload:{}}); },

@@ -32,10 +32,10 @@ console.log('\n== 105) Charge restante : cible hebdo moins le fait depuis lundi 
   ]};
   const { ctx, fr } = await ouvrir('2026-09-02T10:00:00+02:00', seed);   /* mercredi */
   const t = await texte(fr, '#dash-semaine');
-  ok(/25,0 h de révision restantes sur 33/.test(t), '33 − 8 = 25,0 h de révision (' + t.slice(0,60) + '…)');
-  ok(/14,0 h de projets sur 18/.test(t), '18 − 4 = 14,0 h de projets');
+  ok(/20,6 h de révision restantes sur 28,6/.test(t), '28,6 − 8 = 20,6 h de révision (' + t.slice(0,60) + '…)');
+  ok(/12,5 h de projets sur 16,5/.test(t), '16,5 − 4 = 12,5 h de projets');
   ok(/5 jours/.test(t), 'mercredi → dimanche : 5 jours');
-  ok(/~7,8 h\/jour/.test(t), '(25 + 14) / 5 = 7,8 h/jour');
+  ok(/~6,6 h\/jour/.test(t), '(20,6 + 12,5) / 5 = 6,6 h/jour');
   await ctx.close();
 }
 
@@ -54,7 +54,7 @@ console.log('\n== 106) Dimanche : 1 jour restant ; semaine bouclée : message de
 }
 
 console.log('\n== 107) Cibles du jour dérivées du planning (plus de 5/4/5/4 à la main) ==');
-for(const [nom, quand, rev, proj] of [['mercredi','2026-09-02T10:00:00+02:00','5','3'],['vendredi','2026-09-04T10:00:00+02:00','4','2'],['samedi','2026-09-05T10:00:00+02:00','5','3'],['dimanche','2026-09-06T10:00:00+02:00','4','1']]){
+for(const [nom, quand, rev, proj] of [['mercredi','2026-09-02T10:00:00+02:00','4,3','2,8'],['vendredi','2026-09-04T10:00:00+02:00','3,5','1,8'],['samedi','2026-09-05T10:00:00+02:00','4,3','2,8'],['dimanche','2026-09-06T10:00:00+02:00','3,4','0,9']]){
   const { ctx, fr } = await ouvrir(quand);
   const cells = await fr.evaluate(() => [...document.querySelectorAll('#dash-temps .temps-cell .tv')].map(e => e.innerText.replace(/\s+/g,' ')));
   ok(new RegExp('/ ' + rev + 'h').test(cells[0] || ''), nom + ' : révision / ' + rev + 'h (' + cells[0] + ')');

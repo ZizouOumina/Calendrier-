@@ -122,11 +122,11 @@ console.log('\n== 80) La journée du samedi réserve 2 h de courses ==');
     const fin = i < creneaux.length-1 ? creneaux[i+1].debut : min('22:00');
     return acc + (fin - c.debut);
   }, 0);
-  const rev = duree(/Révision Bloc/), proj = duree(/Projets perso/);
+  const rev = duree(/Anki|Cartes|Annales/), proj = duree(/Projets perso/);
   ok(rev === 300, 'révision samedi = 5 h pile : ' + rev + ' min');
   ok(proj === 180, 'projets perso = 3 h pile : ' + proj + ' min');
   /* contrainte Pomodoro : chaque bloc de travail doit être un multiple d'une heure */
-  const blocs = creneaux.filter(c => /Révision Bloc|Projets perso/.test(c.texte)).map((c) => {
+  const blocs = creneaux.filter(c => /Anki|Cartes|Annales|Projets perso/.test(c.texte)).map((c) => {
     const i = creneaux.indexOf(c);
     const fin = i < creneaux.length-1 ? creneaux[i+1].debut : min('22:00');
     return { texte: c.texte.trim(), duree: fin - c.debut };
@@ -137,7 +137,7 @@ console.log('\n== 80) La journée du samedi réserve 2 h de courses ==');
   ok(duree(/Courses de la semaine|Rangement des courses/) === 150, 'courses + rangement = 2 h 30');
 
   const objectif = await fr.evaluate(() => document.getElementById('cal-revision-sub').textContent);
-  ok(/5h visées/.test(objectif), 'l\'objectif affiché correspond à la journée réelle : ' + objectif);
+  ok(/4 h 20 visées/.test(objectif), 'l\'objectif affiché correspond à la journée réelle : ' + objectif);
   await ctx.close();
 }
 

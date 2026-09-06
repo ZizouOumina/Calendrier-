@@ -24,6 +24,7 @@ const C = 2 * Math.PI * 86;
 
 const browser = await chromium.launch();
 const ctx = await browser.newContext({ viewport:{width:1440,height:900}, timezoneId:'Europe/Madrid', locale:'fr-FR' });
+await ctx.addInitScript(() => { try{ localStorage.setItem('batcave-duree-bloc', '60'); }catch(e){} });   /* sessions d'1 h : la durée est accessoire ici */
 const page = await ctx.newPage();
 page.on('pageerror', e => { errs++; console.log('  PAGEERROR: ' + e.message); });
 await page.clock.install({ time: new Date('2026-09-02T10:00:00+02:00') });
@@ -95,6 +96,7 @@ ok(/Série : 1 jour/.test(await fr.evaluate(() => document.getElementById('focus
 
 console.log('\n== 23) Le cadran marche dans une page neuve ==');
 const ctx2 = await browser.newContext({ viewport:{width:1440,height:900}, timezoneId:'Europe/Madrid', locale:'fr-FR' });
+await ctx2.addInitScript(() => { try{ localStorage.setItem('batcave-duree-bloc', '60'); }catch(e){} });   /* sessions d'1 h : la durée est accessoire ici */
 const p2 = await ctx2.newPage();
 p2.on('pageerror', e => { errs++; console.log('  PAGEERROR: ' + e.message); });
 await p2.clock.install({ time: new Date('2026-09-02T10:00:00+02:00') });

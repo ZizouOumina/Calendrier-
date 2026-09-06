@@ -6,6 +6,7 @@ const browser = await chromium.launch();
 
 async function ouvrir(seed){
   const ctx = await browser.newContext({ viewport:{width:1440,height:900}, timezoneId:'Europe/Madrid', locale:'fr-FR' });
+  await ctx.addInitScript(() => { try{ localStorage.setItem('batcave-duree-bloc', '60'); }catch(e){} });   /* sessions d'1 h : la durée est accessoire ici */
   if(seed) await ctx.addInitScript(s => {
     if(localStorage.getItem('__seed')) return;
     localStorage.setItem('__seed','1');
@@ -42,12 +43,12 @@ console.log('\n== 32) Temps du jour sur le tableau de bord ==');
   }));
   ok(d.page === 'dashboard', 'visible sans changer de page');
   ok(d.cells.length === 2, 'deux compteurs — révision et projets perso : ' + d.cells.join(' | '));
-ok(/Révision2,5h\/5h/.test(d.cells[0]), 'révision avec objectif du jour : ' + d.cells[0]);
+ok(/Révision2,5h\/4,3h/.test(d.cells[0]), 'révision avec objectif du jour : ' + d.cells[0]);
 ok(/Projetsperso1,5h/.test(d.cells[1]), 'projets perso du jour : ' + d.cells[1]);
   ok(/4,0 h au total/.test(d.total), 'total = révision + projets, sans espagnol : ' + d.total);
   /* depuis B3, les projets perso ont aussi une cible du jour derivee du planning (3 h en
      semaine) : deux jauges, la premiere toujours a 50 % de 5 h. */
-  ok(d.barres === 2 && d.largeur === '50%', 'deux jauges (révision et projets), révision à 50 % de 5 h (' + d.largeur + ')');
+  ok(d.barres === 2 && d.largeur === '58%', 'deux jauges (révision et projets), révision à 58 % de 4 h 20 (' + d.largeur + ')');
   await ctx.close();
 }
 {
@@ -59,7 +60,7 @@ ok(/Projetsperso1,5h/.test(d.cells[1]), 'projets perso du jour : ' + d.cells[1])
   }));
   ok(/rien encore aujourd'hui/.test(d.total), 'journée vierge : ' + d.total);
   ok(d.vides === 2, 'les deux compteurs sont grisés');
-  ok(/0,0h\/5h/.test(d.cours), 'objectif tout de même rappelé : ' + d.cours);
+  ok(/0,0h\/4,3h/.test(d.cours), 'objectif tout de même rappelé : ' + d.cours);
   await ctx.close();
 }
 {
@@ -77,7 +78,7 @@ ok(/Projetsperso1,5h/.test(d.cells[1]), 'projets perso du jour : ' + d.cells[1])
     total: document.getElementById('dash-temps-total').textContent,
     serie: document.getElementById('dash-serie').textContent
   }));
-  ok(/1,0h\/5h/.test(d.cours), 'après un bloc de cours : ' + d.cours);
+  ok(/1,0h\/4,3h/.test(d.cours), 'après un bloc de cours : ' + d.cours);
   ok(/1,0 h au total/.test(d.total), 'total mis à jour : ' + d.total);
   ok(/Série : 1 jour/.test(d.serie), 'série affichée à côté du bouton : ' + d.serie.trim());
   await ctx.close();

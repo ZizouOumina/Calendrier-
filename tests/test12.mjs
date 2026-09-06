@@ -6,6 +6,7 @@ const browser = await chromium.launch();
 
 async function ouvrir(seed){
   const ctx = await browser.newContext({ viewport:{width:1440,height:900}, timezoneId:'Europe/Madrid', locale:'fr-FR' });
+  await ctx.addInitScript(() => { try{ localStorage.setItem('batcave-duree-bloc', '60'); }catch(e){} });   /* sessions d'1 h : la durée est accessoire ici */
   if(seed) await ctx.addInitScript(s => {
     if(localStorage.getItem('__seed')) return;
     localStorage.setItem('__seed','1');
