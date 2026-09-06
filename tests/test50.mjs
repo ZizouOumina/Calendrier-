@@ -20,7 +20,8 @@ async function ouvrir(quand, local, garderClaude){
   return { ctx, page, fr };
 }
 const local = (fr,k) => fr.evaluate(x => JSON.parse(localStorage.getItem(x) || 'null'), k);
-const MARDI = '2026-09-08T06:30:00+02:00';
+const MARDI = '2026-09-08T06:30:00+02:00';   /* Bas complet : Split squat bulgare en premier */
+const LUNDI = '2026-09-07T06:30:00+02:00';   /* Haut lourd : Tractions en premier */
 
 console.log('\n== 150) Décocher un exercice retire ses séries du jour ==');
 {
@@ -32,7 +33,7 @@ console.log('\n== 150) Décocher un exercice retire ses séries du jour ==');
   });
   await page.waitForTimeout(200);
   let log = await local(fr, 'batcave-sport-log');
-  ok(Array.isArray(log) && log.length === 1 && log[0].exo === 'Tractions', 'les séries sont dans le journal (' + (log && log.length) + ' entrée)');
+  ok(Array.isArray(log) && log.length === 1 && log[0].exo === 'Split squat bulgare', 'les séries sont dans le journal (' + (log && log.length) + ' entrée)');
   let coche = await fr.evaluate(() => document.querySelector('.sport-card.today input[type="checkbox"]').checked);
   ok(coche === true, 'l\'exercice est coché');
   await fr.evaluate(() => { const cb = document.querySelector('.sport-card.today input[type="checkbox"]'); cb.checked = false; cb.dispatchEvent(new Event('change', {bubbles:true})); });
@@ -40,7 +41,7 @@ console.log('\n== 150) Décocher un exercice retire ses séries du jour ==');
   log = await local(fr, 'batcave-sport-log');
   const st = await local(fr, 'batcave-sport-2026-09-08');
   ok(Array.isArray(log) && log.length === 0, 'décoché → le journal du jour est vidé pour cet exercice (' + log.length + ' entrée)');
-  ok(st && st['Pull-0'] === false, 'et la case reste décochée dans l\'état de la séance');
+  ok(st && st['Bas complet-0'] === false, 'et la case reste décochée dans l\'état de la séance');
   const champ = await fr.evaluate(() => document.querySelector('.sport-card.today [data-series]').value);
   ok(champ === '', 'le champ de séries est vide après re-rendu');
   await ctx.close();
@@ -72,7 +73,7 @@ console.log('\n== 151) Relevé SYNC : copie sans identifiant en double, clic ren
 
 console.log('\n== 152) Objectifs recalculés à l\'ouverture de l\'onglet ==');
 {
-  const { ctx, fr, page } = await ouvrir(MARDI);
+  const { ctx, fr, page } = await ouvrir(LUNDI);
   const avant = await fr.evaluate(() => { document.querySelector('.nav-btn[data-page="objectifs"]').click(); return document.getElementById('obj-liste').innerText; });
   /* une saisie faite ailleurs (journal de sport) doit se voir au retour sur Objectifs */
   await fr.evaluate(() => { document.querySelector('.nav-btn[data-page="sport"]').click(); });

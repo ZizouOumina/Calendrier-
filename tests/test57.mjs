@@ -48,7 +48,7 @@ console.log('\n== 210) Deux semaines à ~50 % : la proposition apparaît dans le
   const ch = await local(fr, 'batcave-charge');
   ok(ch && ch.facteur === 0.8 && ch.depuis === '2026-09-22' && ch.jusqua === '2026-10-05', 'charge réduite de 20 % du 22 sept. au 5 oct.');
   const temps2 = await texte(fr, '#dash-temps');
-  ok(/\/ 3,5h/.test(temps2) && /\/ 2,1h/.test(temps2), 'après : cible du jour 3,5 h de révision et 2,1 h de projets (' + temps2.slice(0, 50) + ')');
+  ok(/\/ 3,5h/.test(temps2) && /\/ 1,9h/.test(temps2), 'après : cible du jour 3,5 h de révision et 1,9 h de projets (' + temps2.slice(0, 50) + ')');
   const sem = await texte(fr, '#dash-semaine');
   ok(/Charge réduite de 20 % jusqu'au 0?5 oct\./.test(sem), 'la note de la semaine le dit : ' + sem.slice(0, 60));
   const objApres = await fr.evaluate(() => { document.querySelector('.nav-btn[data-page="objectifs"]').click(); const r = [...document.querySelectorAll('#obj-liste .obj-row')].find(x => /^Révision/.test(x.innerText)); return r ? r.innerText.replace(/\s+/g,' ') : ''; });

@@ -1446,18 +1446,38 @@
     <section class="page" data-page="sport">
       <div class="page-head">
         <span class="eyebrow">Dossier N° 06</span>
-        <h1>Sport — PPL</h1>
-        <p class="desc">Rotation Push / Pull / Legs / Léger. La séance du jour est surlignée automatiquement.</p>
+        <h1>Sport — Programme v2</h1>
+        <p class="desc">Quatre séances au parc, paires antagonistes en supersets : lundi haut lourd, mardi bas complet, jeudi haut volume, samedi bras, épaules et mollets. La séance du jour est surlignée automatiquement.</p>
       </div>
 
       <div class="week-strip" id="week-strip"></div>
       <div class="sport-grid" id="sport-grid"></div>
 
+      <!-- Programme v2 (7 sept. 2026) : les regles qui ne tiennent pas dans une case. -->
+      <div class="panel sub-panel" id="programme-panel" style="margin-top:16px;">
+        <div class="sub-head"><h3>📋 Le programme</h3><span class="sub-note" id="programme-note">—</span></div>
+        <p class="sub-note" style="line-height:1.65; margin-bottom:8px;">Mercredi, vendredi et dimanche sont off : marche et mobilité, rien à cocher. Si la semaine dérape, tu sacrifies samedi, puis jeudi. Jamais lundi ni mardi. Huit semaines sans y toucher, en notant tout.</p>
+        <button type="button" class="heat-toggle" id="programme-toggle" style="padding:0;">Échauffements, calibration, progression, lest, retests ▾</button>
+        <div id="programme-details" hidden style="margin-top:10px; font-size:12.5px; color:var(--ink-dim); line-height:1.7; display:flex; flex-direction:column; gap:8px;">
+          <p><b style="color:var(--ink);">Échauffement haut (5 min)</b> — suspension 20 s + 10 tirages d'omoplates · 15 rotations d'épaules bras tendus · 15 face pulls élastique · 10 pompes lentes · 2 séries légères du premier exercice, un cran en dessous (moitié du lest quand tu lestes).</p>
+          <p><b style="color:var(--ink);">Échauffement bas (5 min)</b> — 20 mollets debout · 10 fentes marchées · 10 charnières de hanche · 5 squats sautés · 8 split squats à vide par jambe.</p>
+          <p><b style="color:var(--ink);">Calibration (une fois, 20 min)</b> — après échauffement : tractions max, dips max (ou maintien bras tendus, en secondes), pompes max, split squats max par jambe. Saisis-les comme séries de la première séance : les cibles en découlent.</p>
+          <p><b style="color:var(--ink);">Progression</b> — quand toutes les séries touchent le haut de la fourchette, un cran de plus, jamais deux ; tu retombes dans le bas, c'est voulu. Poussée horizontale : pompes inclinées barre haute → barre basse → au sol → déclinées → diamant → archer. Poussée verticale : pike pieds au sol → sur barre basse → sur banc → contre un poteau. Jambes : poids du corps → pied arrière surélevé → + sac → + pied avant surélevé 10 cm → tempo 3 s → pause 2 s en bas → shrimp squat → pistol.</p>
+          <p><b style="color:var(--ink);">Lest</b> — tractions à 12 reps propres sur toutes les séries, dips à 15, jambes dès que tu dépasses proprement le haut de la fourchette : +2,5 kg, une seule fois ; tu retombes à 5-8 reps, tu remontes vers 12, tu rajoutes 2,5 kg. Samedi : jamais lesté sur le haut.</p>
+          <p><b style="color:var(--ink);">Sans traction ni dip</b> — tractions : rows australiens pieds surélevés 10-15, puis négatives 5 s (5-8). Dips : maintien bras tendus 20-40 s, puis négatives 5 s (5-8), puis dips pieds au sol 8-15. Version complète dès 3 reps propres.</p>
+          <p><b style="color:var(--ink);">Arrêter une série</b> — quand la vitesse d'une rep chute nettement, ou quand tu compenses (coup de reins, dos creusé) ; une rep sale ne compte pas. Sur la dernière série de chaque paire, va vraiment jusqu'à ce que ce soit dur.</p>
+          <p><b style="color:var(--ink);">Montée en charge</b> — semaines 1-2 : moitié des tours · semaines 3-4 : trois quarts · à partir de la 5 : complet. Les cibles de la séance du jour appliquent ce facteur toutes seules.</p>
+          <p><b style="color:var(--ink);">Retest</b> — le lundi des semaines 5, 10 et 15 : tractions max, 3 min de repos, dips max, puis séance normale. Décharge seulement si tu stagnes deux séances de suite sur tout : une semaine à 2 tours par paire, sans aller près de l'échec.</p>
+          <p><b style="color:var(--ink);">Sans banc au parc</b> — pied arrière sur la barre basse ou un rebord à hauteur de genou ; step-ups → fentes marchées lestées ; hip thrust → épaules sur un muret ou un rebord, à défaut glute bridge une jambe au sol avec le sac sur les hanches, compensé par le tempo.</p>
+          <p><b style="color:var(--ink);">Le carnet</b> — date, exercice, cran ou charge, reps de chaque série : la seule ligne non négociable. C'est la saisie dans la séance du jour, juste au-dessus.</p>
+        </div>
+      </div>
+
       <!-- Surcharge progressive : chaque exercice de la seance du jour accepte ses series
            reelles (ex. « 9/8/7 ») et une charge ; la cible de la prochaine seance se deduit
            de la derniere par double progression. Ce panneau relit le journal. -->
       <div class="panel sub-panel" id="progression-panel" style="margin-top:16px;">
-        <div class="sub-head"><h3>📈 Progression</h3><span class="sub-note" id="progression-note">double progression : toutes les séries au haut de la fourchette → on monte</span></div>
+        <div class="sub-head"><h3>📈 Progression</h3><span class="sub-note" id="progression-note">double progression : toutes les séries au haut de la fourchette → +2,5 kg ou un cran, et on retombe dans le bas</span></div>
         <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-bottom:12px;">
           <span class="sub-note">Courbe</span>
           <select id="progression-exo" style="background:var(--surface-raised); border:1px solid var(--border); color:var(--ink); padding:6px 9px; font-size:12.5px;"></select>
@@ -2257,7 +2277,7 @@
      vestige : une fonctionnalite retiree (batcave-matieres) ou un essai. Elle prend de la
      place dans le quota de 5000 documents et embrouille les sauvegardes, sans que rien ne
      la lise jamais. On la signale ; la suppression reste ton geste. */
-  var CLES_CONNUES = ['addictions','budget-limits','business','coran','courses','dash-more','duaas','duree-bloc','sport-log','objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','kcal-ajustement','gcal-ecriture','reinit','fc-migration-v1','charge','shopify-boutique',
+  var CLES_CONNUES = ['addictions','budget-limits','business','coran','courses','dash-more','duaas','duree-bloc','sport-log','objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','kcal-ajustement','gcal-ecriture','reinit','fc-migration-v1','charge','shopify-boutique',
     'espagnol','examens','fc-prix-icloud-3','fixed-charges','goals','habitlog','habits','habits-seed-v2','habits-seed-v3',
     'horizon','last-auto-backup','last-manual-backup','last-bilan-prompt','last-compaction','last-open','last-rotation','notion-url',
     'pomodial-purge','projets','report','revision','revision-fusionnee','revue','sante','sauvegarde','sessions',
@@ -3070,7 +3090,7 @@
      elles repartiraient vers le cloud. La meme remise a zero peut donc etre decidee depuis
      l'appli ou directement dans le cloud. */
   var REINIT_GARDER = ['habits','habits-seed-v2','habits-seed-v3','fixed-charges','fc-prix-icloud-3','budget-limits','examens','notion-url','shopify-boutique',
-                       'objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','horizon','gcal-ecriture','duree-bloc','dash-more','revision-fusionnee','reinit'];
+                       'objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','horizon','gcal-ecriture','duree-bloc','dash-more','revision-fusionnee','reinit'];
   var REINIT_PREFIXES_GARDER = ['pomodial-', 'coherence-ignore-'];
   function reinitGarder(cle){
     var c = cle.indexOf('batcave-') === 0 ? cle.slice(8) : cle;
@@ -4093,7 +4113,7 @@
     {id:'core-isha', label:'Isha', icon:'🕌'}
   ];
   var HABIT_SEED_V2 = [
-    {id:'core-ecran', label:"Pas d'écran 30 min avant le coucher", icon:'📵'},
+    {id:'core-ecran', label:'Téléphone hors de la chambre', icon:'📵'},
     {id:'core-sadaqah', label:'Sadaqah du jour', icon:'🤲'},
     {id:'core-revue', label:'Revue de la veille / plan du lendemain', icon:'📝'},
     {id:'core-famille', label:'Nouvelles à la famille', icon:'📞'},
@@ -4160,6 +4180,26 @@
       return 'Le semis d\'habitudes est marqué fait, mais il manque : ' + absentes.map(function(h){ return (h.icon ? h.icon + ' ' : '') + h.label; }).join(', ') + '.';
     }});
   });
+  /* « Pas d'écran 30 min avant le coucher » était intenable cinq soirs sur sept (le cours
+     du jour se comprend jusqu'à 21:30) : l'habitude échouait en boucle et plombait le
+     score. Elle devient « Téléphone hors de la chambre », tenable tous les soirs. Une fois,
+     rejouable après hydratation ; un libellé déjà modifié à la main n'est pas touché. */
+  var ECRAN_ANCIEN = "Pas d'écran 30 min avant le coucher", ECRAN_NOUVEAU = 'Téléphone hors de la chambre';
+  function renommerHabitudeEcran(){
+    if(load('batcave-habits-ecran-v2', false)) return false;
+    var courant = load('batcave-habits', null);
+    if(!Array.isArray(courant)) return false;
+    var change = false;
+    courant.forEach(function(h){ if(h && h.id === 'core-ecran' && h.label === ECRAN_ANCIEN){ h.label = ECRAN_NOUVEAU; change = true; } });
+    if(change){ habitsState = courant.filter(function(x){ return x && typeof x === 'object' && x.id; }); save('batcave-habits', habitsState); }
+    saveInternal('batcave-habits-ecran-v2', true);
+    return change;
+  }
+  renommerHabitudeEcran();
+  MIGRATIONS_DEMARRAGE.push({cle:'batcave-habits-ecran-v2', rejouer: function(){
+    if(!renommerHabitudeEcran()) return false;
+    renderHabits(); renderDashboard(); return true;
+  }, verifier: function(){ return null; }});
   var habitLog = load('batcave-habitlog', {});
   if(!habitLog || typeof habitLog !== 'object' || Array.isArray(habitLog)) habitLog = {};
   Object.keys(habitLog).forEach(function(k){
@@ -4866,24 +4906,49 @@
   }
 
   /* ================= SPORT ================= */
-  var FINISHER = [
-    {name:'Shrugs suspendus', reps:'3×12-15'},
-    {name:'Dead hangs', reps:'3×30-45s'},
-    {name:'Résistance manuelle cou', reps:'2×10s/direction'}
-  ];
+  /* ===== Programme v2 (7 sept. 2026) =====
+     Quatre séances de 40 min au parc, paires antagonistes en supersets (A puis B, repos
+     court entre A et B, plus long avant la paire suivante). Lundi haut lourd, mardi bas
+     complet, jeudi haut volume, samedi bras-épaules-mollets ; mercredi, vendredi, dimanche
+     off. Chaque exercice : « tours × fourchette ». La double progression, les seuils de
+     lest (+2,5 kg) et la montée en charge du premier mois sont ceux du programme. Les noms
+     sont stables : le journal, la courbe et les objectifs « exo:Tractions » / « exo:Dips »
+     les lisent. Tractions et Dips reviennent lundi et jeudi avec des fourchettes
+     différentes ; leur cible se déduit du dernier journal, quel que soit le jour. */
+  var PROGRAMME_DEBUT = '2026-09-07';
   var SESSIONS = [
-    {type:'Push', days:[1,4], exercises:[
-      {name:'Pompes', reps:'3×12-15'},{name:'Dips', reps:'3×8-12'},{name:'Pike push-ups', reps:'3×8-10'},{name:'Pompes diamant', reps:'2×10-12'}
-    ].concat(FINISHER)},
-    {type:'Pull', days:[2,5], exercises:[
-      {name:'Tractions', reps:'3×5-10'},{name:'Rows australiens', reps:'3×10-15'},{name:'Tractions prise large', reps:'2×6-8'},{name:'Curl barre fixe', reps:'2×10-12'}
-    ].concat(FINISHER)},
-    {type:'Legs', days:[3,6], exercises:[
-      {name:'Squats bulgares', reps:'3×10/jambe'},{name:'Fentes marchées', reps:'3×12/jambe'},{name:'Squats sautés', reps:'2×12-15'},{name:'Mollets debout', reps:'2×15-20'}
-    ].concat(FINISHER)},
-    {type:'Léger', days:[0], exercises:FINISHER.concat([{name:'Étirements / mobilité', reps:'15-20 min'}])}
+    {type:'Haut lourd', days:[1], duree:'42 min', repos:['45 s / 90 s', '45 s / 75 s', '30 s / 60 s'], exercises:[
+      {name:'Tractions', reps:'4×6-12'},{name:'Dips', reps:'4×8-15'},
+      {name:'Rows australiens pieds surélevés', reps:'3×10-15'},{name:'Pompes déclinées', reps:'3×8-12'},
+      {name:'Curl barre basse', reps:'2×10-15'},{name:'Extension triceps barre basse', reps:'2×10-15'}
+    ]},
+    {type:'Bas complet', days:[2], duree:'42 min', exercises:[
+      {name:'Split squat bulgare', reps:'4×8-12/jambe'},{name:'Soulevé de terre roumain une jambe', reps:'4×10-12/jambe'},
+      {name:'Fentes marchées', reps:'3×10-12/jambe'},{name:'Hip thrust une jambe', reps:'3×12-20/jambe'},
+      {name:'Relevés de jambes suspendus', reps:'2×8-15'},{name:'Hollow hold', reps:'2×20-40s'}
+    ]},
+    {type:'Haut volume', days:[4], duree:'42 min', exercises:[
+      {name:'Tractions', reps:'4×8-15'},{name:'Dips', reps:'4×10-20'},
+      {name:'Rows prise large coudes hauts', reps:'3×12-15'},{name:'Pike push-ups', reps:'3×6-10'},
+      {name:'Face pulls', reps:'2×15-20'},{name:'Curl prise neutre', reps:'2×10-15'}
+    ]},
+    {type:'Bras · épaules · mollets', days:[6], duree:'38 min', exercises:[
+      {name:'Chin-ups prise serrée', reps:'3×6-12'},{name:'Pompes archer ou diamant', reps:'3×8-12'},
+      {name:'Curl barre basse', reps:'3×10-15'},{name:'Extension triceps barre basse', reps:'3×10-15'},
+      {name:'Face pulls', reps:'3×15-20'},{name:'Shrugs suspendus', reps:'3×12-15'},
+      {name:'Mollets une jambe', reps:'3×15-20/jambe'},{name:'Dead hang', reps:'3×30-45s'}
+    ]},
+    {type:'Off', days:[3,5,0], duree:'', exercises:[]}
   ];
-  var TYPE_BY_DAY = {1:'Push',2:'Pull',3:'Legs',4:'Push',5:'Pull',6:'Legs',0:'Léger'};
+  var TYPE_BY_DAY = {1:'Haut lourd',2:'Bas complet',3:'Off',4:'Haut volume',5:'Off',6:'Bras · épaules · mollets',0:'Off'};
+  /* Montée en charge : semaines 1-2 moitié des tours, 3-4 trois quarts, ensuite complet. */
+  function semaineProgramme(iso){
+    var j = daysBetween(new Date(PROGRAMME_DEBUT + 'T00:00:00'), new Date((iso || todayISO) + 'T00:00:00'));
+    return j < 0 ? 0 : Math.floor(j / 7) + 1;
+  }
+  function facteurTours(iso){ var w = semaineProgramme(iso); return w <= 0 ? 1 : (w <= 2 ? 0.5 : (w <= 4 ? 0.75 : 1)); }
+  function toursDuJour(f){ return Math.max(1, Math.round(f.series * facteurTours())); }
+  function joursEntrainement(){ return Object.keys(TYPE_BY_DAY).filter(function(d){ return TYPE_BY_DAY[d] !== 'Off'; }).length; }
   var DAY_NAMES = {1:'Lun',2:'Mar',3:'Mer',4:'Jeu',5:'Ven',6:'Sam',0:'Dim'};
   var todayType = TYPE_BY_DAY[weekday];
 
@@ -4927,17 +4992,17 @@
   /* La cible de la prochaine seance, deduite du dernier journal de cet exercice. */
   function cibleProchaine(ex){
     var f = parseFourchette(ex.reps), dernier = dernierLog(ex.name);
-    var base = [], i;
-    if(!f.progressif){ for(i = 0; i < f.series; i++) base.push(f.bas); return {series: base, charge: 0, monter: false, f: f}; }
-    if(!dernier){ for(i = 0; i < f.series; i++) base.push(f.bas); return {series: base, charge: 0, monter: false, f: f}; }
+    var base = [], i, n = toursDuJour(f);
+    if(!f.progressif){ for(i = 0; i < n; i++) base.push(f.bas); return {series: base, charge: 0, monter: false, f: f}; }
+    if(!dernier){ for(i = 0; i < n; i++) base.push(f.bas); return {series: base, charge: 0, monter: false, f: f}; }
     var charge = Number(dernier.charge) || 0;
-    var toutesAuHaut = dernier.series.length >= f.series && dernier.series.slice(0, f.series).every(function(x){ return (Number(x) || 0) >= f.haut; });
+    var toutesAuHaut = dernier.series.length >= n && dernier.series.slice(0, n).every(function(x){ return (Number(x) || 0) >= f.haut; });
     if(toutesAuHaut){
-      for(i = 0; i < f.series; i++) base.push(f.bas);
+      for(i = 0; i < n; i++) base.push(f.bas);
       return {series: base, charge: charge + CHARGE_PAS_KG, monter: true, f: f};
     }
     var pas = pasProgression(f.unite);
-    for(i = 0; i < f.series; i++){
+    for(i = 0; i < n; i++){
       var d = Number(dernier.series[i]);
       base.push(isNaN(d) ? f.bas : Math.min(f.haut, Math.max(f.bas, d + pas)));
     }
@@ -5034,6 +5099,14 @@
   (function(){
     var sel = document.getElementById('progression-exo');
     if(sel) sel.addEventListener('change', function(){ progressionExoChoisi = sel.value; renderProgression(); });
+    var t = document.getElementById('programme-toggle'), d = document.getElementById('programme-details');
+    if(t && d) t.addEventListener('click', function(){ d.hidden = !d.hidden; t.textContent = 'Échauffements, calibration, progression, lest, retests ' + (d.hidden ? '▾' : '▴'); });
+    var note = document.getElementById('programme-note');
+    if(note){
+      var w = semaineProgramme(), f = facteurTours();
+      note.textContent = w <= 0 ? 'démarre le ' + fmtDate(PROGRAMME_DEBUT)
+        : 'semaine ' + w + (f < 1 ? ' · tours × ' + (f === 0.5 ? '½' : '¾') : ' · tours complets') + ([5,10,15].indexOf(w) > -1 ? ' · lundi : retest tractions et dips' : '');
+    }
   })();
 
   function renderWeekStrip(){
@@ -5081,9 +5154,18 @@
         }
         return ligne + '</li>';
       }).join('');
+      if(!session.exercises.length) itemsHtml = '<li class="entry-empty" style="font-style:italic;">Jour off — marche, mobilité. Rien à cocher.</li>';
+      var paires = '';
+      if(session.exercises.length){
+        var lignesPaires = [];
+        for(var pi = 0; pi + 1 < session.exercises.length; pi += 2){
+          lignesPaires.push('<span>' + (pi/2 + 1) + ' · ' + escapeHtml(session.exercises[pi].name) + ' + ' + escapeHtml(session.exercises[pi+1].name) + (session.repos && session.repos[pi/2] ? ' <span style="color:var(--ink-faint);">repos ' + session.repos[pi/2] + '</span>' : '') + '</span>');
+        }
+        paires = '<p class="sub-note" style="padding:8px 18px 0; font-size:11px; line-height:1.6; display:flex; flex-direction:column;">' + lignesPaires.join('') + '</p>';
+      }
       card.innerHTML =
-        '<div class="sport-head"><span class="stitle">'+session.type+'</span>'+(isToday?'<span class="sbadge">Aujourd\'hui · '+t.checked+'/'+t.total+'</span>':'<span class="sbadge" style="color:var(--ink-faint); background:transparent;">'+t.checked+'/'+t.total+'</span>')+'</div>'+
-        '<ul class="check-list sport-body">'+itemsHtml+'</ul>';
+        '<div class="sport-head"><span class="stitle">'+session.type+'</span>'+(isToday?'<span class="sbadge">Aujourd\'hui' + (session.exercises.length ? ' · '+t.checked+'/'+t.total : '') + '</span>':'<span class="sbadge" style="color:var(--ink-faint); background:transparent;">'+(session.exercises.length ? t.checked+'/'+t.total : (session.duree || 'off'))+'</span>')+'</div>'+
+        paires + '<ul class="check-list sport-body">'+itemsHtml+'</ul>';
       grid.appendChild(card);
     });
     grid.querySelectorAll('input[type="checkbox"]').forEach(function(cb){
@@ -5320,6 +5402,9 @@
      les tractions montent d'une fourchette par trimestre, le sommeil colle au coucher prevu.
      T2 porte les partiels (revision un peu plus basse, l'examen prime), T4 l'ete (projets
      perso en tete). Tout est editable, rien n'est grave dans le marbre. */
+  /* Semaine type de référence des cibles semées ci-dessous : minutes de travail réel de
+     révision et de projets, et jours d'entraînement (voir le recalage automatique plus bas). */
+  var SEMAINE_SEMIS = {rev:1745, proj:1005, sport:6};
   var CIBLES_TRIMESTRE = {
     T1:{revision_h:335, projets_h:186, sport_seances:70, espagnol_h:35, sommeil_moy:7.75, habitudes_pct:80, eau_moy:2.7, depenses_var:1050, snus_jours:90,  'exo:Tractions':10, 'exo:Dips':12},
     T2:{revision_h:308, projets_h:205, sport_seances:72, espagnol_h:40, sommeil_moy:7.75, habitudes_pct:82, eau_moy:2.8, depenses_var:1050, snus_jours:180, 'exo:Tractions':12, 'exo:Dips':15},
@@ -5362,13 +5447,19 @@
     }
     return out;
   }
+  /* un objectif de temps semé sait pour quelle semaine type il a été calculé */
+  function avecSemaine(o){
+    var m = metriqueDe(o.metrique);
+    if(m === 'revision_h' || m === 'projets_h' || m === 'sport_seances') o.semaine = {rev: SEMAINE_SEMIS.rev, proj: SEMAINE_SEMIS.proj, sport: SEMAINE_SEMIS.sport};
+    return o;
+  }
   function trimestreDe(iso){ return TRIMESTRES.filter(function(t){ return iso >= t.debut && iso <= t.fin; })[0] || null; }
   function objectifsSemes(){
     var out = [];
     TRIMESTRES.forEach(function(t){
       var c = CIBLES_TRIMESTRE[t.id]; if(!c) return;
       Object.keys(c).forEach(function(cle){
-        out.push({id: t.id + ':' + cle, periode:'trimestre', pid: t.id, debut: t.debut, fin: t.fin, metrique: cle, cible: c[cle], titre: libelleMetrique(cle)});
+        out.push(avecSemaine({id: t.id + ':' + cle, periode:'trimestre', pid: t.id, debut: t.debut, fin: t.fin, metrique: cle, cible: c[cle], titre: libelleMetrique(cle)}));
       });
     });
     moisListe().forEach(function(m){
@@ -5378,7 +5469,7 @@
       Object.keys(c).forEach(function(cle){
         var m2 = METRIQUES[metriqueDe(cle)]; if(!m2 || m2.mode === 'niveau' || cle === 'snus_jours') return;
         var cible = m2.mode === 'cumul' ? Math.round(c[cle] / 3) : c[cle];
-        out.push({id: m.id + ':' + cle, periode:'mois', pid: m.id, debut: m.debut, fin: m.fin, metrique: cle, cible: cible, titre: libelleMetrique(cle)});
+        out.push(avecSemaine({id: m.id + ':' + cle, periode:'mois', pid: m.id, debut: m.debut, fin: m.fin, metrique: cle, cible: cible, titre: libelleMetrique(cle)}));
       });
     });
     return out;
@@ -5398,8 +5489,6 @@
     if(ajout) save('batcave-objectifs', objectifsState);
     saveInternal('batcave-objectifs-seed-v1', true);
     saveInternal('batcave-objectifs-v2-55', true);
-    saveInternal('batcave-objectifs-v3-trajet', true);
-    saveInternal('batcave-objectifs-v4-dimanche', true);
     return ajout;
   }
   semerObjectifs();
@@ -5429,48 +5518,39 @@
     try{ renderObjectifs(); renderDashboard(); }catch(e){}
     return true;
   }, verifier: function(){ return null; }});
-  /* Objectifs semés avant les trajets de 30 min et les annales en 55/5 : la semaine type
-     passe de 28 h 35 à 29 h 05 de révision (× 1745/1715) et de 16 h 30 à 15 h 50 de projets
-     (× 950/990). Même mécanique que la v2 : une fois, rejouable après hydratation, jamais
-     sur un semis frais. */
-  function migrerObjectifsV3(){
-    if(!load('batcave-objectifs-seed-v1', false)) return false;
-    if(load('batcave-objectifs-v3-trajet', false)) return false;
-    /* la v2 doit être passée d'abord : elle se rejoue au même moment, dans l'ordre du registre */
-    if(!load('batcave-objectifs-v2-55', false)) return false;
-    var change = false;
+  /* ===== Recalage automatique sur la semaine type =====
+     Les cibles de révision et de projets sont semées pour une semaine type de référence
+     (SEMAINE_SEMIS : minutes de travail réel par semaine, pauses exclues). Chaque fois que
+     la grille change, la semaine type change avec elle (CIBLE_HEBDO) : chaque objectif de
+     temps mémorise la semaine sur laquelle sa cible a été posée (o.semaine) et sa cible
+     suit le nouveau rapport. Une cible modifiée à la main suit le même rapport. Plus de
+     migration par version de grille : idempotent, rejouable après hydratation, valable
+     pour toutes les grilles à venir. Les objectifs d'avant ce mécanisme n'ont pas de
+     semaine mémorisée : elle se déduit des drapeaux des anciennes migrations. */
+  function semaineDeReference(o){
+    if(o.semaine && typeof o.semaine === 'object' && Number(o.semaine.rev) > 0 && Number(o.semaine.proj) > 0) return {rev:Number(o.semaine.rev), proj:Number(o.semaine.proj), sport:Number(o.semaine.sport) || 6};
+    if(load('batcave-objectifs-v4-dimanche', false)) return {rev:1745, proj:1005, sport:6};
+    if(load('batcave-objectifs-v3-trajet', false)) return {rev:1745, proj:950, sport:6};
+    if(load('batcave-objectifs-v2-55', false)) return {rev:1715, proj:990, sport:6};
+    return {rev:1980, proj:1080, sport:6};
+  }
+  function recalerObjectifsSemaine(){
+    if(typeof CIBLE_HEBDO === 'undefined' || !CIBLE_HEBDO) return false;   /* la grille n'est pas encore lue */
+    var courant = load('batcave-objectifs', null);
+    if(courant && typeof courant === 'object' && Array.isArray(courant.liste)) objectifsState = {liste: courant.liste.filter(function(o){ return o && o.id; })};
+    var actuelle = {rev: CIBLE_HEBDO.revMin, proj: CIBLE_HEBDO.projMin, sport: joursEntrainement()}, change = false;
     objectifsState.liste.forEach(function(o){
       var m = metriqueDe(o.metrique);
-      if(m === 'revision_h'){ o.cible = Math.round(Number(o.cible) * 1745 / 1715 * 10) / 10; change = true; }
-      else if(m === 'projets_h'){ o.cible = Math.round(Number(o.cible) * 950 / 990 * 10) / 10; change = true; }
+      if(m !== 'revision_h' && m !== 'projets_h' && m !== 'sport_seances') return;
+      var ref = semaineDeReference(o), k = m === 'revision_h' ? 'rev' : (m === 'projets_h' ? 'proj' : 'sport');
+      if(ref[k] !== actuelle[k]) o.cible = k === 'sport' ? Math.round(Number(o.cible) * actuelle[k] / ref[k]) : Math.round(Number(o.cible) * actuelle[k] / ref[k] * 10) / 10;
+      if(!o.semaine || o.semaine.rev !== actuelle.rev || o.semaine.proj !== actuelle.proj || o.semaine.sport !== actuelle.sport){ o.semaine = {rev: actuelle.rev, proj: actuelle.proj, sport: actuelle.sport}; change = true; }
     });
     if(change) save('batcave-objectifs', objectifsState);
-    saveInternal('batcave-objectifs-v3-trajet', true);
     return change;
   }
-  migrerObjectifsV3();
-  MIGRATIONS_DEMARRAGE.push({cle:'batcave-objectifs-v3-trajet', rejouer: function(){
-    if(!migrerObjectifsV3()) return false;
-    try{ renderObjectifs(); renderDashboard(); }catch(e){}
-    return true;
-  }, verifier: function(){ return null; }});
-  /* Objectifs semés avant le bloc de projets du dimanche : la semaine type passe de 15 h 50
-     à 16 h 45 de projets (× 1005/950). Même mécanique, après la v3. */
-  function migrerObjectifsV4(){
-    if(!load('batcave-objectifs-seed-v1', false)) return false;
-    if(load('batcave-objectifs-v4-dimanche', false)) return false;
-    if(!load('batcave-objectifs-v3-trajet', false)) return false;
-    var change = false;
-    objectifsState.liste.forEach(function(o){
-      if(metriqueDe(o.metrique) === 'projets_h'){ o.cible = Math.round(Number(o.cible) * 1005 / 950 * 10) / 10; change = true; }
-    });
-    if(change) save('batcave-objectifs', objectifsState);
-    saveInternal('batcave-objectifs-v4-dimanche', true);
-    return change;
-  }
-  migrerObjectifsV4();
-  MIGRATIONS_DEMARRAGE.push({cle:'batcave-objectifs-v4-dimanche', rejouer: function(){
-    if(!migrerObjectifsV4()) return false;
+  MIGRATIONS_DEMARRAGE.push({cle:'batcave-objectifs-recalage', rejouer: function(){
+    if(!recalerObjectifsSemaine()) return false;
     try{ renderObjectifs(); renderDashboard(); }catch(e){}
     return true;
   }, verifier: function(){ return null; }});
@@ -5727,7 +5807,9 @@
       var cible = Number(String(document.getElementById('obj-cible').value).replace(',', '.'));
       if(!cle || isNaN(cible) || cible <= 0){ showToast('⚠️ Indique une cible.'); return; }
       var p = periodeCourante();
-      objectifsState.liste.push({id: p.id + ':' + cle + ':' + Date.now(), periode: objVue, pid: p.id, debut: p.debut, fin: p.fin, metrique: cle, cible: cible, titre: titre || libelleMetrique(cle)});
+      var nouvel = {id: p.id + ':' + cle + ':' + Date.now(), periode: objVue, pid: p.id, debut: p.debut, fin: p.fin, metrique: cle, cible: cible, titre: titre || libelleMetrique(cle)};
+      if(['revision_h','projets_h','sport_seances'].indexOf(metriqueDe(cle)) > -1) nouvel.semaine = {rev: CIBLE_HEBDO.revMin, proj: CIBLE_HEBDO.projMin, sport: joursEntrainement()};
+      objectifsState.liste.push(nouvel);
       save('batcave-objectifs', objectifsState);
       document.getElementById('obj-titre').value = ''; document.getElementById('obj-cible').value = '';
       renderObjectifs(); renderDashboard();
@@ -6677,8 +6759,10 @@
 
     var st = sportTotals(todayType);
     document.getElementById('dash-sport').innerHTML =
-      '<div class="progress-row" style="margin-bottom:8px;"><span class="plabel">'+todayType+'</span><div class="progress-track"><div class="progress-fill" style="width:'+(st.total?Math.round(100*st.checked/st.total):0)+'%"></div></div><span class="progress-count">'+st.checked+'/'+st.total+'</span></div>'+
-      '<p style="font-size:12px; color:var(--ink-faint);">Séance recommandée aujourd\'hui : <b style="color:var(--ink-dim)">'+todayType+'</b></p>' +
+      (todayType === 'Off'
+        ? '<p style="font-size:12px; color:var(--ink-faint);">Jour off — marche et mobilité, rien à cocher. Prochaine séance : <b style="color:var(--ink-dim)">' + TYPE_BY_DAY[(weekday + 1) % 7] + (TYPE_BY_DAY[(weekday + 1) % 7] === 'Off' ? ' non, ' + TYPE_BY_DAY[(weekday + 2) % 7] : '') + '</b>.</p>'
+        : '<div class="progress-row" style="margin-bottom:8px;"><span class="plabel">'+todayType+'</span><div class="progress-track"><div class="progress-fill" style="width:'+(st.total?Math.round(100*st.checked/st.total):0)+'%"></div></div><span class="progress-count">'+st.checked+'/'+st.total+'</span></div>'+
+          '<p style="font-size:12px; color:var(--ink-faint);">Séance du jour : <b style="color:var(--ink-dim)">'+todayType+'</b>' + (facteurTours() < 1 ? ' · semaine ' + semaineProgramme() + ' du programme, tours × ' + (facteurTours() === 0.5 ? '½' : '¾') : '') + '</p>') +
       (function(){
         var session = SESSIONS.filter(function(x){ return x.type === todayType; })[0];
         if(!session) return '';
@@ -6944,8 +7028,9 @@
         8 h 30 le week-end. L'heure gagnée le matin vient du Coran lu pendant le
         petit-déjeuner (06:45 → 07:20), pas du travail : le Bloc 1 démarre toujours à 07:20.
      5. Sport 05:30 → 06:30 : dix minutes de trajet, quarante minutes au parc, dix minutes
-        de retour. Le samedi, séance athlétique (sprints, mollets, tronc) ; le dimanche,
-        mobilité et marche.
+        de retour. Programme v2 : lundi haut lourd, mardi bas complet, jeudi haut volume,
+        samedi bras-épaules-mollets ; mercredi, vendredi et dimanche sont off (marche,
+        mobilité), le créneau reste le même.
      6. Micro-sieste de 20 min juste après le déjeuner, dans le creux circadien. Le vendredi
         elle suit Jumu'ah, dans les 45 min avant le trajet.
      7. Deux heures de batch cooking le dimanche : le déjeuner de semaine tombe à 20 min.
@@ -6953,30 +7038,35 @@
         le dimanche, un bloc de projets à 13:30 rend les quatre quarts d'heure que le trajet
         prend en semaine, puis l'après-midi est libre jusqu'au batch cooking.
      9. La fac est à 30 min : 950 m à pied jusqu'au tram, l'attente, 10 min de tram, le
-        bout de chemin à l'arrivée. Départ à 15:00 (Projets perso 3 s'arrête à 15:00, soit
-        45 min), retour 19:30 → 20:00. Le dîner est réchauffé (batch cooking) : 20 min,
-        comme le déjeuner. Le cours du jour est compris de 20:20 à 21:20, la Collation 2
-        reste juste avant le coucher (l'appétit du dîner y tient), et le coucher reste à
-        21:30 : les minutes de trajet sont prises sur le temps libre, jamais sur le sommeil.
-        Les 10 min de tram, aller et retour, sont du temps d'Anki gratuit. */
+        bout de chemin à l'arrivée. Départ à 15:00, retour 19:30 → 20:00. La Collation 2 se
+        prend à 14:50, juste avant de partir : sans elle, rien entre le déjeuner (12:35) et
+        le dîner (20:00), sept heures à jeun pendant quatre heures de cours. Projets perso 3
+        s'arrête donc à 14:50 (35 min d'un trait). Le soir : dîner 20:00 → 20:30, cours du
+        jour compris 20:30 → 21:30, coucher 21:30. Les minutes de trajet sont prises sur le
+        temps libre, jamais sur le sommeil.
+    10. Le bloc « Comprendre le cours du jour » se fait sur papier : slides imprimées ou
+        cahier, questions écrites à la main. C'est meilleur pour l'auto-explication, et c'est
+        ce qui rend possible l'habitude « Téléphone hors de la chambre » un soir de semaine.
+    11. Les 950 m à pied du retour (12 min) sont le créneau de l'appel à la famille ; les
+        10 min de tram, aller et retour, sont de l'Anki sur le téléphone. */
   var SCHEDULES = {
     weekday: [
       ['05:30','Sport'],['06:30','Douche + préparation'],['06:45','Petit-déjeuner + Coran (1 page)'],
       ['07:20','Anki 1'],['08:20','Anki 2'],['09:20','Collation 1'],
       ['09:35','Cartes du dernier cours'],['10:35','Annales'],
       ['11:35','Projets perso 1'],['12:35','Déjeuner'],['12:55','😴 Micro-sieste'],
-      ['13:15','Projets perso 2'],['14:15','Projets perso 3'],['15:00','Trajet cours'],['15:30','Cours'],
-      ['19:30','Trajet retour'],['20:00','Dîner'],['20:20','Comprendre le cours du jour'],
-      ['21:20','Collation 2'],['21:30','Coucher']
+      ['13:15','Projets perso 2'],['14:15','Projets perso 3'],['14:50','Collation 2'],['15:00','Trajet cours'],['15:30','Cours'],
+      ['19:30','Trajet retour'],['20:00','Dîner'],['20:30','Comprendre le cours du jour'],
+      ['21:30','Coucher']
     ],
     friday: [
       ['05:30','Sport'],['06:30','Douche + préparation'],['06:45','Petit-déjeuner + Coran (1 page)'],
       ['07:20','Anki 1'],['08:20','Anki 2'],['09:20','Collation 1'],
       ['09:35','Cartes du dernier cours'],
       ['10:35','Projets perso 1'],['11:35','Projets perso 2'],['12:35','Déjeuner'],
-      ['13:15','Trajet mosquée'],['13:30',"Jumu'ah (khutba + prière ~14h)"],['14:30','😴 Micro-sieste'],['14:50','Pause'],['15:00','Trajet cours'],
-      ['15:30','Cours'],['19:30','Trajet retour'],['20:00','Dîner'],['20:20','Comprendre le cours du jour'],
-      ['21:20','Collation 2'],['21:30','Coucher']
+      ['13:15','Trajet mosquée'],['13:30',"Jumu'ah (khutba + prière ~14h)"],['14:30','😴 Micro-sieste'],['14:50','Collation 2'],['15:00','Trajet cours'],
+      ['15:30','Cours'],['19:30','Trajet retour'],['20:00','Dîner'],['20:30','Comprendre le cours du jour'],
+      ['21:30','Coucher']
     ],
     weekend: [
       ['05:30','Sport'],['06:30','Douche + préparation'],['06:45','Petit-déjeuner + Coran (1 page)'],
@@ -7139,7 +7229,7 @@
       var c = cibleJourMinutes(x[0], null, true);
       t.rev += c.rev * x[1]; t.proj += c.proj * x[1];
     });
-    return {rev: Math.round(t.rev/60), proj: Math.round(t.proj/60)};
+    return {rev: Math.round(t.rev/60), proj: Math.round(t.proj/60), revMin: t.rev, projMin: t.proj};
   })();
   /* la cible de la semaine en cours, jour par jour, reduction comprise (en heures) */
   function cibleHebdo(offsetWeeks){
@@ -8582,6 +8672,7 @@
   renderWeekStrip(); renderSport();
   renderJournal();
   renderCalendar();
+  recalerObjectifsSemaine();   /* la grille est lue : les cibles de temps suivent la semaine type */
   renderGoals();
   renderCourses(); renderCoursesSummary();
   renderTaches();

@@ -30,7 +30,7 @@ console.log('\n== 83) Les objectifs hebdomadaires se déduisent du planning ==')
   }));
   /* écrits en dur, ils valaient encore 39 h et 23 h : l'ancien planning. */
   ok(nb(v.rev) === '29,1', 'objectif révision = 29,1 h de travail réel (33 h de blocs, pauses exclues, annales en 55/5) : ' + nb(v.rev));
-  ok(nb(v.proj) === '16,8', 'objectif projets perso = 16,8 h (Projets perso 3 finit à 15:00, bloc du dimanche 13:30) : ' + nb(v.proj));
+  ok(nb(v.proj) === '16,1', 'objectif projets perso = 16,1 h (Projets perso 3 finit à 14:50, bloc du dimanche 13:30) : ' + nb(v.proj));
   await ctx.close();
 }
 

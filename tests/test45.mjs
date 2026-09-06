@@ -47,7 +47,7 @@ console.log('\n== 109) Le lendemain, la cible intègre le report ==');
   const { ctx, fr } = await ouvrir('2026-09-03T10:00:00+02:00', {'batcave-report': {date:'2026-09-03', rev:120, proj:0}});
   const cells = await fr.evaluate(() => [...document.querySelectorAll('#dash-temps .temps-cell .tv')].map(e => e.innerText.replace(/\s+/g,' ')));
   ok(/\/ 6,4h/.test(cells[0]) && /\+2h/.test(cells[0]), 'révision : « / 6,4h +2h ↪ » (obtenu ' + cells[0] + ')');
-  ok(/\/ 2,6h/.test(cells[1]) && !/\+/.test(cells[1]), 'projets : inchangé (obtenu ' + cells[1] + ')');
+  ok(/\/ 2,4h/.test(cells[1]) && !/\+/.test(cells[1]), 'projets : inchangé (obtenu ' + cells[1] + ')');
   const plan = await texte(fr, '#dash-plan');
   ok(/Révision — 0,0h \/ 6 h 25 visées/.test(plan), 'Plan du jour : cible 6 h 25 (4 h 25 + 2 h de report)');
   await ctx.close();
