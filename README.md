@@ -6,6 +6,8 @@ La version publiée vit sur claude.ai (Artifact) avec synchronisation cloud et c
 - `batcave.html` — l'application complète (HTML + CSS + JS).
 - `maquette-batcomputer.html` — la maquette statique du tableau de bord Batcomputer.
 - `tests/` — campagne Playwright (`test*.mjs`), audit d'affichage (`audit.mjs`), page hôte et scripts.
+- `dossier-dropshipping.html` — le dossier de formation dropshipping (programme 12 semaines, ads, gestion, fiscalité, exercices corrigés, auto-tests, glossaire) ; page autonome, publiée aussi en Artifact.
+- `glossaire-dropshipping-anki.txt` — les 163 cartes du glossaire au format d'import Anki (séparateur tabulation, 3e colonne en étiquettes).
 
 ## Lancer la campagne en local
 
