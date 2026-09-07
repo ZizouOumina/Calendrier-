@@ -77,7 +77,7 @@ console.log('\n== 68) Aucune régression sur les analyses existantes ==');
 {
   const { ctx, fr } = await ouvrir(null);
   const c = await cartes(fr);
-  ok(c.length === 6, '6 cartes au total (4 anciennes + 2 nouvelles) : ' + c.length);
+  ok(c.length === 13, '13 cartes au total (6 anciennes + 7 Insights v2) : ' + c.length);
   const titres = ['créneau le plus productif','Sommeil et révision','Sommeil & humeur','Séances de sport','Habitude la plus délaissée','Révision par jour'];
   const manquants = titres.filter(t => !c.some(x => x.toLowerCase().includes(t.toLowerCase())));
   ok(manquants.length === 0, 'toutes les analyses sont présentes : ' + (manquants.join(', ') || 'OK'));
