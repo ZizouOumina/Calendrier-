@@ -661,6 +661,18 @@
   .bc-r .k{ color:var(--ink-faint); letter-spacing:0.12em; font-size:10px; }
   .bc-r .v{ color:var(--ink); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:46ch; }
   .bc-r.bc-alerte{ color:var(--cyan-bright); }
+  .bc-r.bc-priorite{ color:var(--warn); flex-basis:100%; display:block; overflow:hidden; text-overflow:ellipsis; cursor:pointer; }
+  .bc-r.bc-priorite b{ color:var(--warn); font-weight:600; }
+  .bc-r.bc-priorite:hover{ color:var(--cyan-bright); }
+  .bc-r.bc-priorite:focus-visible{ outline:2px solid var(--cyan); outline-offset:2px; }
+  /* ---- insights v2 : priorites et action par carte ---- */
+  .insights-priorites{ margin-bottom:14px; }
+  .insights-priorites ol{ margin:8px 0 0; padding-left:22px; }
+  .insights-priorites li{ margin:6px 0; line-height:1.5; font-size:13.5px; color:var(--ink-dim); }
+  .insights-priorites li b{ color:var(--ink); }
+  .insight-action{ margin-top:8px; padding:8px 10px; border-left:2px solid var(--cyan-dim); background:var(--surface-raised); font-size:12.5px; line-height:1.5; color:var(--ink-dim); }
+  .insight-action b{ color:var(--cyan); font-family:var(--font-mono); font-size:10.5px; letter-spacing:0.14em; margin-right:6px; }
+  .insight-n{ font-family:var(--font-mono); font-size:10.5px; color:var(--ink-faint); margin-top:6px; }
   .bc-r.bc-clic{ cursor:pointer; } .bc-r.bc-clic:hover .v{ color:var(--cyan-bright); text-decoration:underline; }
   .bc-r.bc-clic:focus-visible{ outline:2px solid var(--cyan); outline-offset:2px; }
   #dash-spotify:not([hidden]) + .bc-spotify-off{ display:none; }
@@ -978,6 +990,7 @@
           <span class="bc-clock" id="bc-clock">--:--</span>
           <span class="bc-r"><span class="k">DATE</span><span class="v" id="dash-greeting">—</span></span>
           <span class="bc-r bc-alerte" id="dash-trend-msg" hidden></span>
+          <span class="bc-r bc-alerte bc-priorite" id="dash-priorite" role="button" tabindex="0" hidden></span>
           <span class="bc-r bc-alerte" id="dash-timer" hidden></span>
           <span class="bc-actions">
             <a class="btn" id="dash-notion-btn" href="#" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; text-decoration:none; line-height:normal;">📓 Notion</a>
@@ -1174,6 +1187,7 @@
         <h1>Insights</h1>
         <p class="desc">Corrélations automatiques à partir de ce que tu traces déjà — rien de magique, juste des stats croisées sur tes propres données.</p>
       </div>
+      <div class="panel insights-priorites" id="insights-priorites" hidden></div>
       <div id="insights-grid" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:14px;"></div>
     </section>
 
@@ -2945,6 +2959,7 @@
       /* objectifs et bilan lisent toutes les autres pages : on les recalcule a l'ouverture */
       if(btn.dataset.page === 'objectifs'){ renderObjectifs(); }
       if(btn.dataset.page === 'bilan'){ renderBilan(); }
+      if(btn.dataset.page === 'insights'){ renderInsights(); }
       if(btn.dataset.page === 'dashboard'){ rafraichirSpotify(); }
     });
   });
@@ -6708,16 +6723,266 @@
                   mC.toFixed(1).replace('.', ',') + 'h après une nuit courte, sur ' + paires.length + ' nuits.)'};
   }
 
-  function buildInsights(){
-    return [insightCreneau(), insightSommeilRevision(), insightSleepMood(), insightSportSkip(),
-            insightWeakestHabit(), insightRevisionByDay()].filter(Boolean);
+  /* ===== Insights v2 =====
+     Chaque insight rend {icon, title, text, action, score, n} : « action » est ce qu'il y a
+     a faire, « score » (0-100) classe les cartes et remonte la premiere sur le tableau de
+     bord, « n » dit sur combien de jours ou de points il repose. Tout vient des donnees
+     deja tracees : blocs de travail, journal, repas, sport, revision par matiere, examens.
+     Rien de nouveau a saisir. */
+  function hminTxt(m){
+    m = Math.round(Number(m) || 0);
+    if(m < 60) return m + ' min';
+    var r = m % 60;
+    return Math.floor(m / 60) + ' h' + (r ? ' ' + String(r).padStart(2, '0') : '');
   }
+  function heureTxt(min){ return String(Math.floor(min/60)).padStart(2,'0') + ':' + String(min%60).padStart(2,'0'); }
+  /* jours suivis = jours passes ou au moins un bloc a ete enregistre avec ses heures */
+  function joursSuivis(nb){
+    var out = [];
+    for(var i = 1; i <= nb; i++){
+      var d = new Date(now); d.setDate(d.getDate() - i);
+      var iso = localISO(d);
+      var s = sessionsState.filter(function(b){ return b && b.date === iso && Number(b.duree) > 0 && b.debut && b.fin; });
+      if(s.length) out.push({iso: iso, dow: d.getDay(), sessions: s});
+    }
+    return out;
+  }
+  function recouvrementJour(iso, bloc, sessions){
+    var minuit = new Date(iso + 'T00:00:00').getTime(), total = 0;
+    sessions.forEach(function(s){
+      var a = Math.max(bloc.debut*60000 + minuit, s.debut), z = Math.min(bloc.fin*60000 + minuit, s.fin);
+      if(z > a) total += (z - a) / 60000;
+    });
+    return total;
+  }
+  function insightBlocFragile(){
+    var jours = joursSuivis(14), stats = {};
+    jours.forEach(function(j){
+      blocsDuPlanning(cleJournee(j.dow)).forEach(function(b){
+        var k = b.label + '|' + b.debut;
+        var s = stats[k] || (stats[k] = {label: b.label, debut: b.debut, minutes: b.minutes, jours: 0, tenus: 0});
+        s.jours++;
+        if(recouvrementJour(j.iso, b, j.sessions) >= b.minutes / 2) s.tenus++;
+      });
+    });
+    var T = 'Bloc le plus fragile';
+    if(jours.length < 5) return {icon:'🧱', title:T, text:'Il faut au moins 5 jours suivis sur les 14 derniers (' + jours.length + ' pour l\'instant) pour voir quel bloc du planning saute le plus souvent.', score:0, n:jours.length};
+    var pire = null;
+    Object.keys(stats).forEach(function(k){
+      var s = stats[k]; if(s.jours < 3) return;
+      var taux = s.tenus / s.jours;
+      if(!pire || taux < pire.taux) pire = {label:s.label, debut:s.debut, taux:taux, jours:s.jours, tenus:s.tenus, minutes:s.minutes};
+    });
+    if(!pire) return {icon:'🧱', title:T, text:'Pas encore assez de répétitions du même bloc (3 minimum) sur les jours suivis.', score:0, n:jours.length};
+    var ou = pire.label + ' (' + heureTxt(pire.debut) + ')';
+    if(pire.taux >= 0.7) return {icon:'🧱', title:T, text:'Aucun bloc ne saute plus de 30 % du temps sur ' + jours.length + ' jours suivis. Le plus fragile : ' + ou + ', tenu ' + pire.tenus + ' fois sur ' + pire.jours + '.', score:5, n:jours.length};
+    var perdu = (pire.jours - pire.tenus) * pire.minutes;
+    return {icon:'🧱', title:T,
+            text: ou + ' est tenu ' + pire.tenus + ' fois sur ' + pire.jours + ' jours suivis, soit ' + hminTxt(perdu) + ' de travail perdues sur ' + jours.length + ' jours.',
+            action:'Écris la veille ce que tu feras dans ce bloc (une ligne dans le journal) et lance le Pomodoro à l\'heure pile : un bloc qui démarre à l\'heure est tenu neuf fois sur dix. Si c\'est toujours le même bloc, c\'est ce qui le précède qui déborde.',
+            score: Math.round((1 - pire.taux) * 100), n: jours.length};
+  }
+  function insightDeriveHoraire(){
+    var jours = joursSuivis(14), retards = [], parDow = {}, premierRef = null;
+    jours.forEach(function(j){
+      var blocs = blocsDuPlanning(cleJournee(j.dow)); if(!blocs.length) return;
+      var minuit = new Date(j.iso + 'T00:00:00').getTime();
+      var debutMin = Math.min.apply(null, j.sessions.map(function(s){ return (s.debut - minuit) / 60000; }));
+      /* Référence = le bloc prévu dans lequel tombe le premier lancement (le dernier qui
+         commence avant lui), pas le premier bloc du jour : un bloc de 05:30 sauté en entier
+         relève du « bloc fragile », pas d'une dérive de 2 h. */
+      var ref = blocs[0];
+      blocs.forEach(function(b){ if(b.debut <= debutMin) ref = b; });
+      var r = debutMin - ref.debut;
+      if(r < -120 || r > 600) return;
+      retards.push(r); (parDow[j.dow] = parDow[j.dow] || []).push(r);
+      if(premierRef === null) premierRef = ref.debut;
+    });
+    var T = 'Dérive du premier bloc';
+    if(retards.length < 5) return {icon:'⏱️', title:T, text:'Il faut 5 jours suivis (' + retards.length + ') pour mesurer à quelle heure tu démarres vraiment par rapport au plan.', score:0, n:retards.length};
+    var moy = retards.reduce(function(a, x){ return a + x; }, 0) / retards.length;
+    var pire = null;
+    Object.keys(parDow).forEach(function(d){ var l = parDow[d]; if(l.length < 2) return; var m = l.reduce(function(a, x){ return a + x; }, 0) / l.length; if(!pire || m > pire.m) pire = {dow: Number(d), m: m}; });
+    if(moy <= 5) return {icon:'⏱️', title:T, text:'Tu démarres ton premier bloc à l\'heure : écart moyen ' + Math.round(moy) + ' min sur ' + retards.length + ' jours.', score:0, n:retards.length};
+    return {icon:'⏱️', title:T,
+            text:'Tu démarres en moyenne ' + Math.round(moy) + ' min après le premier bloc prévu sur ' + retards.length + ' jours' + (pire && pire.m > moy + 5 ? ' ; le ' + DOW_NAMES_LONG[pire.dow] + ', ' + Math.round(pire.m) + ' min.' : '.'),
+            action: Math.round(moy) + ' min par jour, c\'est ' + hminTxt(moy * 6) + ' par semaine qui ne se rattrapent pas dans la journée. Réveil, douche et petit-déjeuner sont dans la grille ; si le retard vient du lever, regarde le coucher de la veille dans le journal.',
+            score: Math.min(100, Math.round(moy * 2)), n: retards.length};
+  }
+  function insightDetteSommeil(){
+    var nuits = [], dette = 0, pire = null;
+    for(var i = 0; i < 7; i++){
+      var d = new Date(now); d.setDate(d.getDate() - i);
+      var iso = localISO(d);
+      var j = (iso === todayISO) ? journalState : load('batcave-journal-' + iso, null);
+      if(!j || j.sommeil === '' || j.sommeil == null) continue;
+      var hN = Number(j.sommeil); if(!(hN > 0)) continue;
+      var obj = objectifSommeilPour(iso);
+      nuits.push(hN);
+      if(obj - hN > 0) dette += obj - hN;
+      if(!pire || hN < pire.h) pire = {h: hN, dow: d.getDay(), obj: obj};
+    }
+    var T = 'Dette de sommeil';
+    if(nuits.length < 4) return {icon:'🛏️', title:T, text:'Il faut au moins 4 nuits renseignées sur les 7 dernières (' + nuits.length + ') : Bevel te donne le chiffre, la clôture du jour le range.', score:0, n:nuits.length};
+    var moy = nuits.reduce(function(a, x){ return a + x; }, 0) / nuits.length;
+    if(dette < 1) return {icon:'🛏️', title:T, text:'Aucune dette sur les ' + nuits.length + ' dernières nuits renseignées (moyenne ' + moy.toFixed(1).replace('.', ',') + ' h ; objectif 7 h 35 en semaine, 8 h 30 le week-end).', score:0, n:nuits.length};
+    return {icon:'🛏️', title:T,
+            text:'Dette de sommeil : ' + hminTxt(dette * 60) + ' cumulées sur ' + nuits.length + ' nuits (moyenne ' + moy.toFixed(1).replace('.', ',') + ' h). La plus courte : ' + DOW_NAMES_LONG[pire.dow] + ', ' + pire.h.toFixed(1).replace('.', ',') + ' h pour ' + hminTxt(pire.obj * 60) + ' prévues.',
+            action: dette >= 3
+              ? 'Au-delà de 3 h de dette, la révision du lendemain baisse (carte « Sommeil et révision »). Récupère-la sur le week-end (8 h 30 prévues), tiens le coucher de 21:55 cette semaine, et pas de sieste au-delà de 20 min.'
+              : 'Tiens le coucher de 21:55 les prochains soirs : moins de 3 h de dette se remboursent en deux nuits.',
+            score: Math.min(100, Math.round(dette * 20)), n: nuits.length};
+  }
+  function insightBalanceEnergetique(){
+    var kcal = [], poids = [];
+    for(var i = 0; i < 28; i++){
+      var d = new Date(now); d.setDate(d.getDate() - i);
+      var iso = localISO(d);
+      if(iso !== todayISO){
+        var ms = load('batcave-meals-' + iso, null);
+        if(ms){ var nut = mealNutritionTotals(ms, iso); if(nut.totals.kcal > 0) kcal.push({kcal: nut.totals.kcal, cible: nut.targets.kcal}); }
+      }
+      var j = (iso === todayISO) ? journalState : load('batcave-journal-' + iso, null);
+      if(j && Number(j.poids) > 0) poids.push({t: 27 - i, kg: Number(j.poids)});
+    }
+    var T = 'Balance énergétique';
+    if(kcal.length < 7 || poids.length < 4) return {icon:'⚖️', title:T, text:'Il faut 7 jours de repas cochés et 4 pesées sur 28 jours (' + kcal.length + ' jours de repas, ' + poids.length + ' pesées) pour relier ce que tu manges à ta courbe de poids.', score:0, n:Math.min(kcal.length, poids.length)};
+    var moyK = kcal.reduce(function(a, x){ return a + x.kcal; }, 0) / kcal.length;
+    var moyC = kcal.reduce(function(a, x){ return a + x.cible; }, 0) / kcal.length;
+    var n = poids.length, sx = 0, sy = 0, sxy = 0, sxx = 0;
+    poids.forEach(function(p){ sx += p.t; sy += p.kg; sxy += p.t * p.kg; sxx += p.t * p.t; });
+    var pente = (n * sxy - sx * sy) / Math.max(1e-9, (n * sxx - sx * sx)) * 7;
+    var signe = function(v){ return (v >= 0 ? '+' : '−') + Math.abs(v).toFixed(2).replace('.', ','); };
+    var texte = 'Sur ' + n + ' pesées : ' + signe(pente) + ' kg par semaine, avec ' + Math.round(moyK) + ' kcal par jour cochées en moyenne (cible ' + Math.round(moyC) + ') sur ' + kcal.length + ' jours.';
+    var action = '', score = 10;
+    if(moyK < moyC - 250){ action = 'Tu coches ' + Math.round(moyC - moyK) + ' kcal de moins que le plan : avant de toucher la cible, coche chaque prise le jour même ; la boucle poids → calories (onglet Nutrition) ne décide juste que sur des journées complètes.'; score = 40; }
+    else if(Math.abs(pente) < 0.1 && moyK >= moyC - 250){ action = 'Poids stable avec le plan tenu : si tu vises une prise, la boucle poids → calories de l\'onglet Nutrition propose +150 kcal ; applique-la de là, elle réécrit le plan et la liste de courses.'; score = 35; }
+    else if(pente > 0.5){ action = 'Plus de 0,5 kg par semaine, c\'est au-delà d\'une prise propre : la boucle poids → calories proposera −100 kcal ; regarde-la avant de changer quoi que ce soit à la main.'; score = 45; }
+    return {icon:'⚖️', title:T, text:texte, action:action, score:score, n:n};
+  }
+  function insightSportStagnation(){
+    var parExo = {};
+    sportLog.forEach(function(l){ if(!l || !l.exo || !l.date) return; (parExo[l.exo] = parExo[l.exo] || []).push(l); });
+    var vol = function(l){ return (l.series || []).reduce(function(a, x){ return a + (Number(x) || 0); }, 0); };
+    var pire = null, nExo = 0;
+    Object.keys(parExo).forEach(function(exo){
+      var L = parExo[exo].slice().sort(function(a, b){ return String(a.date).localeCompare(String(b.date)); });
+      if(L.length < 3) return;
+      nExo++;
+      var dern = L[L.length - 1], n = 1;
+      for(var i = L.length - 2; i >= 0; i--){
+        if(Number(L[i].charge || 0) === Number(dern.charge || 0) && vol(L[i]) >= vol(dern)) n++; else break;
+      }
+      if(n >= 3 && (!pire || n > pire.n)) pire = {exo: exo, n: n, charge: dern.charge, series: dern.series, unite: dern.unite};
+    });
+    var T = 'Stagnation en sport';
+    if(!nExo) return {icon:'🏋️', title:T, text:'Il faut 3 séances enregistrées du même exercice (séries et charge, onglet Sport) pour repérer une stagnation.', score:0, n:0};
+    if(!pire) return {icon:'🏋️', title:T, text:'Tous tes exercices ont progressé (charge ou répétitions) sur leurs trois dernières séances.', score:0, n:nExo};
+    return {icon:'🏋️', title:T,
+            text: pire.exo + ' stagne depuis ' + pire.n + ' séances : ' + fmtSeries(pire.series) + (Number(pire.charge) ? ' à ' + fmtCharge(pire.charge) + ' kg' : '') + ', sans progression de charge ni de volume.',
+            action:'La surcharge progressive de l\'onglet Sport affiche le cran suivant : la prochaine fois, +1 répétition sur la première série, ou +2,5 kg si toutes les séries touchent le haut de la fourchette. Si ça bloque cinq séances, change de variante ou ajoute une série.',
+            score: Math.min(100, pire.n * 15), n: pire.n};
+  }
+  function insightMatiereExamen(){
+    var aujourdhui = new Date(todayISO + 'T00:00:00');
+    var exams = Object.keys(examensState).map(function(m){ return {m: m, iso: examensState[m], jours: daysBetween(aujourdhui, new Date(examensState[m] + 'T00:00:00'))}; })
+                      .filter(function(e){ return e.jours >= 0 && e.jours <= 45; });
+    var T = 'Matière et partiel';
+    if(!exams.length) return {icon:'🎓', title:T, text:'Aucun partiel dans les 45 jours (échéances par matière, onglet Études).', score:0, n:0};
+    var parM = {}, total = 0;
+    revisionState.forEach(function(r){
+      if(!r || !r.date) return;
+      var dj = daysBetween(new Date(r.date + 'T00:00:00'), aujourdhui);
+      if(dj < 0 || dj > 13) return;
+      Object.keys(r.matieres || {}).forEach(function(m){ var v = Number(r.matieres[m]) || 0; parM[m] = (parM[m] || 0) + v; total += v; });
+    });
+    if(total < 120) return {icon:'🎓', title:T, text:'Pas assez de révision étiquetée par matière sur 14 jours (' + hminTxt(total) + ') : nomme la matière au lancement du Pomodoro.', score:0, n:0};
+    var pire = null;
+    exams.forEach(function(e){
+      var min = parM[e.m] || 0, part = min / total, u = (1 - part) * (46 - e.jours) / 46;
+      if(!pire || u > pire.u) pire = {m: e.m, jours: e.jours, min: min, part: part, u: u};
+    });
+    return {icon:'🎓', title:T,
+            text: pire.m + ' : partiel dans ' + pire.jours + ' jour' + (pire.jours > 1 ? 's' : '') + ', ' + hminTxt(pire.min) + ' sur les 14 derniers jours (' + Math.round(pire.part * 100) + ' % de ta révision).',
+            action: pire.part < 0.25
+              ? 'Bascule les blocs Annales (10:20) et Comprendre (20:30) sur ' + pire.m + ' jusqu\'au partiel, et fais l\'annale complète du dimanche dans cette matière.'
+              : 'Rythme cohérent avec l\'échéance : garde une annale complète par semaine dans cette matière et les cartes d\'erreurs du samedi.',
+            score: Math.round(pire.u * 100), n: exams.length};
+  }
+  function insightFideliteHebdo(){
+    var lundi = new Date(now); lundi.setHours(0, 0, 0, 0); lundi.setDate(lundi.getDate() - ((lundi.getDay() + 6) % 7));
+    var semaines = [];
+    for(var w = 1; w <= 4; w++){
+      var deb = new Date(lundi); deb.setDate(deb.getDate() - 7 * w);
+      var fait = 0, prevu = 0, jours = 0;
+      for(var i = 0; i < 7; i++){
+        var d = new Date(deb); d.setDate(d.getDate() + i);
+        var iso = localISO(d), c = cibleJourMinutes(cleJournee(d.getDay()), iso);
+        prevu += c.rev + c.proj;
+        var f = minutesJour(iso, 'cours') + minutesJour(iso, 'projet');
+        fait += f; if(f > 0) jours++;
+      }
+      if(jours >= 3) semaines.push({fait: fait, prevu: prevu, taux: prevu ? fait / prevu : 0});
+    }
+    var T = 'Fidélité au plan';
+    if(!semaines.length) return {icon:'📐', title:T, text:'Il faut une semaine complète suivie (au moins 3 jours avec des blocs enregistrés) pour mesurer la fidélité au plan.', score:0, n:0};
+    var der = semaines[0], pct = Math.round(der.taux * 100);
+    var texte = 'Semaine dernière : ' + pct + ' % du plan (' + hminTxt(der.fait) + ' sur ' + hminTxt(der.prevu) + ' prévues)';
+    if(semaines[1]){ var delta = pct - Math.round(semaines[1].taux * 100); texte += ', ' + (delta >= 0 ? '+' : '−') + Math.abs(delta) + ' points par rapport à la semaine d\'avant.'; } else texte += '.';
+    var action = '';
+    if(der.taux < 0.7) action = 'Sous 70 % deux semaines de suite, la Batcave propose une cible réduite de 20 % (charge réaliste). Mieux vaut un plan tenu à 90 % qu\'un plan idéal tenu à 60 % : accepte la réduction, puis remonte.';
+    else if(der.taux >= 0.9) action = 'Plan tenu à 90 % et plus : c\'est le moment de monter d\'un cran dans les objectifs du mois, pas d\'ajouter des blocs.';
+    return {icon:'📐', title:T, text:texte, action:action, score: Math.round((1 - der.taux) * 80), n: semaines.length};
+  }
+  function buildInsights(){
+    var liste = [insightBlocFragile(), insightDeriveHoraire(), insightDetteSommeil(), insightFideliteHebdo(), insightMatiereExamen(),
+                 insightSportStagnation(), insightBalanceEnergetique(), insightCreneau(), insightSommeilRevision(), insightSleepMood(),
+                 insightSportSkip(), insightWeakestHabit(), insightRevisionByDay()].filter(Boolean);
+    liste.forEach(function(it){ if(typeof it.score !== 'number') it.score = 10; });
+    liste.sort(function(a, b){ return b.score - a.score; });
+    return liste;
+  }
+  var prioCache = {t: 0, v: []};
+  function prioritesInsights(){
+    var t = Date.now();
+    if(t - prioCache.t < 60000) return prioCache.v;
+    var v;
+    try{ v = buildInsights().filter(function(it){ return it.action && it.score >= 20; }).slice(0, 3); }catch(e){ v = []; }
+    prioCache = {t: t, v: v};
+    return v;
+  }
+  function renderPrioriteDash(){
+    var el = document.getElementById('dash-priorite'); if(!el) return;
+    var p = prioritesInsights()[0];
+    if(!p){ el.hidden = true; return; }
+    el.innerHTML = '🔎 <b>' + escapeHtml(p.title) + '</b> — ' + escapeHtml(p.action);
+    el.title = p.title + ' — ' + p.text + '\n\nACTION : ' + p.action + '\n\nClic : Insights';
+    el.hidden = false;
+  }
+  (function(){
+    var r = document.getElementById('dash-priorite');
+    if(!r) return;
+    var aller = function(){ var b = document.querySelector('.nav-btn[data-page="insights"]'); if(b) b.click(); };
+    r.addEventListener('click', aller);
+    r.addEventListener('keydown', function(e){ if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); aller(); } });
+  })();
   function renderInsights(){
     var el = document.getElementById('insights-grid');
     if(!el) return;
     var items = buildInsights();
+    prioCache = {t: 0, v: []};
+    var prio = prioritesInsights(), bandeau = document.getElementById('insights-priorites');
+    if(bandeau){
+      if(prio.length){
+        bandeau.innerHTML = '<div class="sub-head"><h3>🔎 Priorités de la semaine</h3><span class="sub-note">classées par impact, une action chacune</span></div><ol>' +
+          prio.map(function(it){ return '<li><b>' + escapeHtml(it.title) + '</b> — ' + escapeHtml(it.action) + '</li>'; }).join('') + '</ol>';
+        bandeau.hidden = false;
+      } else bandeau.hidden = true;
+    }
     el.innerHTML = items.map(function(it){
-      return '<div class="panel"><div style="font-size:22px; margin-bottom:8px;">'+it.icon+'</div><h3 style="margin-bottom:6px; font-size:15px;">'+escapeHtml(it.title)+'</h3><p class="sub-note" style="line-height:1.5;">'+escapeHtml(it.text)+'</p></div>';
+      return '<div class="panel"><div style="font-size:22px; margin-bottom:8px;">'+it.icon+'</div><h3 style="margin-bottom:6px; font-size:15px;">'+escapeHtml(it.title)+'</h3><p class="sub-note" style="line-height:1.5;">'+escapeHtml(it.text)+'</p>' +
+             (it.action ? '<div class="insight-action"><b>ACTION</b>' + escapeHtml(it.action) + '</div>' : '') +
+             (it.n ? '<div class="insight-n">' + it.n + ' ' + (it.n > 1 ? 'points de données' : 'point de données') + '</div>' : '') + '</div>';
     }).join('');
   }
 
@@ -6782,6 +7047,7 @@
     var trendMsg = computeTrendMessage();
     var trendEl = document.getElementById('dash-trend-msg');
     if(trendMsg){ trendEl.textContent = trendMsg; trendEl.hidden = false; } else { trendEl.hidden = true; }
+    try{ renderPrioriteDash(); }catch(e){}
 
     var statGrid = document.getElementById('dash-stats');
     statGrid.innerHTML = '';
@@ -7456,7 +7722,7 @@
   /* Les series recurrentes de l'agenda portent une consigne apres « · » (« 🦇 Anki 1 · cartes
      dues dentaire ») : un evenement se reconnait a la partie avant le separateur. */
   function titreBaseGcal(s){ return String(s || '').split(' · ')[0].trim(); }
-  try{ window.__bcTitreBase = titreBaseGcal; window.__bcConsigne = consigneBloc; }catch(e){}
+  try{ window.__bcTitreBase = titreBaseGcal; window.__bcConsigne = consigneBloc; window.__bcInsights = buildInsights; window.__bcBlocs = blocsDuPlanning; window.__bcCle = cleJournee; window.__bcJours = joursSuivis; }catch(e){}
   function cleGcalJour(iso){ return 'batcave-gcal-' + iso; }
   /* Tous les blocs du planning : un rappel 5 min avant chacun, 30 min avant le coucher
      (le temps d'eteindre l'ecran). « Temps libre » et le coucher n'occupent pas l'agenda. */
