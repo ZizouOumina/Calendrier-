@@ -317,7 +317,8 @@
   .timeline li.now::before{background:var(--cyan-bright); border-color:var(--cyan-bright); box-shadow:0 0 0 4px rgba(53,212,232,0.18);}
   .timeline .t-time{font-family:var(--font-mono); font-size:11.5px; color:var(--ink-faint); width:44px; flex:none; padding-top:1px;}
   .timeline li.now .t-time{color:var(--cyan-bright); font-weight:600;}
-  .timeline .t-body{flex:1; display:flex; align-items:center; gap:10px; min-width:0;}
+  .timeline .t-body{flex:1; display:flex; align-items:center; gap:10px; min-width:0; flex-wrap:wrap;}
+  .timeline .t-consigne{flex-basis:100%; font-size:12.5px; line-height:1.45; color:var(--ink-dim); margin:2px 0 0 24px;}
   .timeline .t-label{font-size:13.5px; color:var(--ink-dim); flex:1;}
   .timeline li.now .t-label{color:var(--ink); font-weight:600;}
   .timeline li.checked .t-label{text-decoration:line-through; color:var(--ink-faint);}
@@ -779,6 +780,7 @@
   .prochain-bloc .row{ display:flex; align-items:baseline; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-top:6px; }
   .prochain-bloc .what{ font-family:var(--font-display); font-size:24px; letter-spacing:0.05em; color:var(--ink); line-height:1.05; }
   .prochain-bloc .at{ font-family:var(--font-mono); font-size:12px; color:var(--cyan); }
+  .prochain-bloc .pb-consigne{ font-family:var(--font-body); font-size:12.5px; line-height:1.5; color:var(--ink-dim); margin:8px 0 0; max-width:70ch; }
   .prochain-bloc .bar2{ height:6px; background:var(--border-soft); margin-top:10px; position:relative; }
   .prochain-bloc .bar2 i{ position:absolute; left:0; top:0; bottom:0; width:0; background:linear-gradient(90deg, var(--cyan-dim), var(--cyan-bright)); box-shadow:0 0 8px var(--cyan-glow); transition:width .6s; }
 
@@ -1051,6 +1053,7 @@
           <div class="prochain-bloc" id="dash-prochain" hidden>
             <div class="pb-head"><span id="pb-titre">Prochain bloc</span><span class="r" id="pb-dans"></span></div>
             <div class="row"><span class="what" id="pb-quoi"></span><span class="at" id="pb-quand"></span></div>
+            <p class="pb-consigne" id="pb-consigne" hidden></p>
             <div class="bar2"><i id="pb-barre"></i></div>
           </div>
           <div class="bc-boutons" style="display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top:12px;">
@@ -4597,6 +4600,9 @@
     var hm = function(m){ return String(Math.floor(m/60)).padStart(2,'0') + ':' + String(m%60).padStart(2,'0'); };
     var titre = document.getElementById('pb-titre'), quoi = document.getElementById('pb-quoi'), quand = document.getElementById('pb-quand');
     var dans = document.getElementById('pb-dans'), barre = document.getElementById('pb-barre');
+    var consigne = document.getElementById('pb-consigne');
+    var c = consigneBloc((courant || suivant).label, weekday);
+    if(consigne){ consigne.textContent = c; consigne.hidden = !c; }
     if(courant){
       titre.textContent = 'En cours';
       quoi.textContent = courant.label;
@@ -7173,6 +7179,47 @@
       ['20:45','Douche + brossage de dents'],['21:00','Coucher']
     ]
   };
+  /* ===== Consignes des blocs =====
+     Ce qu'il faut faire pendant un bloc, dans les mots de la grille, pour ne plus avoir a
+     s'en souvenir : le tableau de bord l'affiche sous le bloc en cours, la timeline du
+     calendrier sous le bloc « MAINTENANT », et les rappels Google Calendar la recoivent en
+     description. Une consigne peut varier selon le jour (0 = dimanche … 6 = samedi) : la
+     cle du jour, sinon « defaut ». Les memes textes sont dans les series recurrentes de
+     l'agenda Google (titres « 🦇 Bloc · consigne courte »). */
+  var CONSIGNES = {
+    'Sport': "Séance du jour dans l'onglet Sport, surcharge progressive : les charges à faire sont déjà calculées.",
+    'Anki matinal': "Jour off de sport : une heure de cartes de dentaire, deux Pomodoros 25 + 5. Toutes les échéances, puis les cartes des matières faibles.",
+    'Projets perso matinal': "Exécution pure d'une tâche déjà décidée la veille : montage, import, rédaction, fiches, code. Jamais une décision.",
+    'Anki 1': "Toutes les échéances de dentaire, deux Pomodoros 25 + 5 sans téléphone. File vide avant la fin : cartes du cours suivant à partir des notes.",
+    'Anki 2': "Suite des échéances de dentaire. Les 5 dernières minutes : échéances du paquet Business (glossaire dropshipping).",
+    'Cartes du dernier cours': {defaut: "Ta réécriture de 10 lignes du cours de la veille → projet Claude « Dentaire », commande « cartes » → 8 à 15 cartes, import dans Anki.",
+                                6: "Les cours de la semaine restés sans cartes → projet « Dentaire », commande « cartes » → import dans Anki."},
+    'Annales': "Une ou deux questions d'annale sur la matière du jour, réponse écrite en conditions d'examen, puis correction et barème dans le projet « Dentaire », commande « annales ».",
+    'Annale complète': "Un sujet entier en conditions réelles : 55 min sans pause, sans support, comme le jour J.",
+    'Correction + cartes': "Correction de l'annale dans le projet « Dentaire » (« annales »), une carte par erreur, puis la revue de la semaine dans la Batcave.",
+    'Projets perso 1': {defaut: "Dossier dropshipping : la prochaine ligne non cochée de la semaine. Bloc des décisions (produit, fournisseur, pub). Pomodoro nommé « DS S<semaine> · tâche ».",
+                        1: "Dossier dropshipping : la prochaine ligne non cochée. Dès que des pubs tournent, c'est le rituel du lundi (chiffres, décisions pub, opérations, argent, journal).",
+                        6: "Réserve : ce qui a débordé de la semaine dans le dossier ; s'il n'y a rien, la semaine suivante commence.",
+                        0: "Réserve : service client et chiffres du week-end quand la boutique tourne ; sinon, débordement du dossier."},
+    'Projets perso 2': {defaut: "Dossier dropshipping : la ligne suivante de type « construire » : feuille, page, brief, fiche, compte. Quelque chose qui existe à la fin du bloc.",
+                        5: "Bilan de la semaine : cases cochées, porte passée ou non, trois lignes dans le journal de bord, tâche du samedi et du dimanche matin cadrée par écrit.",
+                        6: "Fiscalité F1 (apprendre) : la ligne « Apprendre » de la semaine, section 09 du dossier, à partir de la source officielle. Pomodoro « F1 ».",
+                        0: "Fiscalité F3 (réviser) : relecture des fiches, 10 cartes fiscalité, tableau de maîtrise du dossier (les cinq piliers), page « ce que je sais maintenant ». Pomodoro « F3 »."},
+    'Projets perso 3': {defaut: "50 min d'un trait : une tâche courte du dossier, ou l'exercice corrigé de la semaine (correction fermée jusqu'à ta réponse).",
+                        3: "Révision Business (50 min) : cartes du paquet Business, auto-test de la semaine à livre fermé, score noté dans le dossier, puis Claude en examinateur sur tes erreurs.",
+                        6: "Fiscalité F2 (construire) : la ligne « Construire » de la semaine, section 09 du dossier : fiche, tableau, exercice chiffré. Pomodoro « F2 »."},
+    'Comprendre le cours du jour': "Notes du cours de l'après-midi → projet Claude « Dentaire » (conversation au nom de la matière) : « explique » puis « interroge-moi ». Puis réécriture en 10 lignes dans Notion pour les cartes de demain 09:20.",
+    "Cartes d'erreurs de la semaine": "Tes cartes ratées de la semaine → projet « Dentaire », commande « erreurs de la semaine » → une carte de correction par cause, étiquette « erreur » + semaine.",
+    'Temps libre': {defaut: "Libre.", 0: "10 minutes pour la revue du dimanche guidée (onglet Études), le reste est libre."},
+    'Coucher': "Clôture du jour faite ? Écran off, réveil posé loin du lit."
+  };
+  function consigneBloc(label, dow){
+    var c = CONSIGNES[label];
+    if(!c) return '';
+    if(typeof c === 'string') return c;
+    var d = (dow === undefined || dow === null) ? new Date(now).getDay() : dow;
+    return c[d] || c.defaut || '';
+  }
   /* Nature d'un bloc du planning. Les blocs de révision portent le nom de l'activité
      (Anki, Cartes, Annales, Comprendre…) : c'est ici, et nulle part ailleurs, qu'on décide
      ce qui compte comme révision et comme projets. */
@@ -7406,6 +7453,10 @@
   if(!gcalEcriture || typeof gcalEcriture !== 'object' || Array.isArray(gcalEcriture)) gcalEcriture = {actif:false};
   var gcalEnCours = false;
   function gcalActif(){ return !!gcalEcriture.actif; }
+  /* Les series recurrentes de l'agenda portent une consigne apres « · » (« 🦇 Anki 1 · cartes
+     dues dentaire ») : un evenement se reconnait a la partie avant le separateur. */
+  function titreBaseGcal(s){ return String(s || '').split(' · ')[0].trim(); }
+  try{ window.__bcTitreBase = titreBaseGcal; window.__bcConsigne = consigneBloc; }catch(e){}
   function cleGcalJour(iso){ return 'batcave-gcal-' + iso; }
   /* Tous les blocs du planning : un rappel 5 min avant chacun, 30 min avant le coucher
      (le temps d'eteindre l'ecran). « Temps libre » et le coucher n'occupent pas l'agenda. */
@@ -7418,7 +7469,7 @@
       if(d1 <= d0) d1 = d0 + 15;
       out.push({cle: 'p' + i, type: coucher ? 'coucher' : (libre ? 'libre' : 'bloc'), titre: '🦇 ' + l, debut: d0, fin: d1, rappel: coucher ? 30 : 5,
                 libre: coucher || libre,
-                description: coucher ? 'Écran off 30 min avant. Bloc du planning Batcave.' : 'Bloc du planning Batcave.'});
+                description: (consigneBloc(l, dowDe(iso)) ? consigneBloc(l, dowDe(iso)) + ' ' : '') + (coucher ? 'Écran off 30 min avant. Bloc du planning Batcave.' : 'Bloc du planning Batcave.')});
     });
     return out;
   }
@@ -7451,7 +7502,8 @@
         var events = (res && res.payload && res.payload.events) || [], parTitre = {};
         events.forEach(function(e){
           if(!e || !e.summary || !(e.start && e.start.dateTime) || e.status === 'cancelled') return;
-          if(!parTitre[e.summary]) parTitre[e.summary] = e;
+          var cleT = titreBaseGcal(e.summary);
+          if(!parTitre[cleT]) parTitre[cleT] = e;
         });
         var chaine = Promise.resolve();
         blocs.forEach(function(b){
@@ -7480,7 +7532,7 @@
             if(connu && connu.id){
               /* bloc deplace : on met l'evenement a jour ; s'il a ete supprime a la main dans
                  Google, la mise a jour echoue et on le recree (l'envoi n'est pas interrompu) */
-              return mcp.callTool('Google Calendar', 'update_event', {calendarId: GCAL_CALENDRIER, eventId: connu.id, summary: b.titre, startTime: isoAvecHeure(iso, b.debut), endTime: isoAvecHeure(iso, b.fin), timeZone:'Europe/Madrid', notificationLevel:'NONE'})
+              return mcp.callTool('Google Calendar', 'update_event', Object.assign({calendarId: GCAL_CALENDRIER, eventId: connu.id, startTime: isoAvecHeure(iso, b.debut), endTime: isoAvecHeure(iso, b.fin), timeZone:'Europe/Madrid', notificationLevel:'NONE'}, connu.cree ? {summary: b.titre} : {}))
                 .then(function(){ releve[b.cle] = {id: connu.id, empreinte: emp, cree: !!connu.cree}; bilan.majs++; })
                 .catch(function(){ delete releve[b.cle]; return creer(); });
             }
@@ -7640,7 +7692,7 @@
       var cls = (isPast?'past ':'') + (isNow?'now ':'') + (checked?'checked ':'');
       return '<li class="'+cls.trim()+'">'+
         '<span class="t-time">'+b[0]+'</span>'+
-        '<span class="t-body"><input type="checkbox" id="cal-'+i+'" data-cal="'+b[0]+'" '+(checked?'checked':'')+'><label class="t-label" for="cal-'+i+'">'+(b[3]==='google'?'📅 ':'')+escapeHtml(b[1])+'</label>'+(isNow?'<span class="t-now-badge">MAINTENANT</span>':'')+'</span>'+
+        '<span class="t-body"><input type="checkbox" id="cal-'+i+'" data-cal="'+b[0]+'" '+(checked?'checked':'')+'><label class="t-label" for="cal-'+i+'"'+(consigneBloc(b[1], weekday) ? ' title="'+escapeHtml(consigneBloc(b[1], weekday))+'"' : '')+'>'+(b[3]==='google'?'📅 ':'')+escapeHtml(b[1])+'</label>'+(isNow?'<span class="t-now-badge">MAINTENANT</span>':'')+(isNow && consigneBloc(b[1], weekday) ? '<span class="t-consigne">'+escapeHtml(consigneBloc(b[1], weekday))+'</span>' : '')+'</span>'+
         '</li>';
     }).join('');
     tl.querySelectorAll('input[type="checkbox"]').forEach(function(cb){
