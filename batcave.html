@@ -672,7 +672,24 @@
   .insights-priorites li b{ color:var(--ink); }
   .insight-action{ margin-top:8px; padding:8px 10px; border-left:2px solid var(--cyan-dim); background:var(--surface-raised); font-size:12.5px; line-height:1.5; color:var(--ink-dim); }
   .insight-action b{ color:var(--cyan); font-family:var(--font-mono); font-size:10.5px; letter-spacing:0.14em; margin-right:6px; }
-  .insight-n{ font-family:var(--font-mono); font-size:10.5px; color:var(--ink-faint); margin-top:6px; }
+  .insight-n{ font-family:var(--font-mono); font-size:10.5px; color:var(--ink-faint); }
+  .insight-head{ display:flex; align-items:flex-start; justify-content:space-between; gap:8px; margin-bottom:8px; }
+  .insight-head .ic{ font-size:22px; line-height:1; }
+  .insight-tend{ font-family:var(--font-mono); font-size:10.5px; color:var(--ink-faint); border:1px solid var(--border); padding:2px 7px; text-align:right; max-width:78%; line-height:1.35; }
+  .insight-tend.good{ color:var(--good); border-color:rgba(63,174,114,0.45); }
+  .insight-tend.warn{ color:var(--warn); border-color:rgba(217,130,43,0.45); }
+  .insight-spark{ display:block; width:100%; height:auto; margin-top:8px; }
+  .sp-line{ fill:none; stroke:var(--cyan-bright); stroke-width:1.6; stroke-linejoin:round; stroke-linecap:round; }
+  .sp-area{ fill:rgba(53,212,232,0.12); }
+  .sp-cible{ stroke:var(--ink-faint); stroke-width:1; stroke-dasharray:3 3; }
+  .sp-end{ fill:var(--cyan-bright); }
+  .insight-spark-l{ font-family:var(--font-mono); font-size:10px; color:var(--ink-faint); margin-top:2px; }
+  .insight-foot{ display:flex; align-items:center; justify-content:space-between; gap:6px 10px; margin-top:10px; flex-wrap:wrap; }
+  .insight-outils{ display:inline-flex; gap:6px; align-items:center; flex-wrap:wrap; }
+  .insight-outils .btn{ padding:4px 9px 3px; font-size:11.5px; }
+  .insight-pause{ font-family:var(--font-mono); font-size:10.5px; color:var(--warn); }
+  .insight-card.en-pause{ opacity:0.7; }
+  .insights-priorites li .insight-outils{ margin-left:8px; vertical-align:middle; }
   .bc-r.bc-clic{ cursor:pointer; } .bc-r.bc-clic:hover .v{ color:var(--cyan-bright); text-decoration:underline; }
   .bc-r.bc-clic:focus-visible{ outline:2px solid var(--cyan); outline-offset:2px; }
   #dash-spotify:not([hidden]) + .bc-spotify-off{ display:none; }
@@ -6007,6 +6024,18 @@
     document.getElementById('weight-chart-sub').textContent = pts.length ? pts.length + ' pesée' + (pts.length>1?'s':'') + ' enregistrée' + (pts.length>1?'s':'') : "d'après le Journal";
   }
 
+  /* Poids, Coran et duaas se lisent déjà ailleurs (journal, onglet Coran & Duaas) : la carte
+     suit ces sources au lieu d'une valeur saisie à part, qui restait à 64 kg pendant que le
+     tableau de bord affichait la vraie pesée. Sans donnée, la saisie manuelle reste. */
+  function valeurAutoObjectif(id){
+    try{
+      if(id === 'poids'){ var p = weightHistory(); return p.length ? p[p.length - 1].value : null; }
+      if(id === 'coran'){ return coranState.length ? coranState.reduce(function(mx, c){ return Math.max(mx, Number(c.page) || 0); }, 0) : null; }
+      if(id === 'duaas'){ return duaaState.length ? duaaState.length : null; }
+    }catch(e){}
+    return null;
+  }
+  var SOURCE_AUTO_OBJECTIF = {poids:'lu dans le journal (dernière pesée)', coran:'lu dans l\'onglet Coran & Duaas (page la plus avancée)', duaas:'lu dans l\'onglet Coran & Duaas (duaas enregistrées)'};
   function renderGoals(){
     var deadline = new Date(horizonState.fin + 'T00:00:00');
     var daysLeft = Math.max(0, daysBetween(now, deadline));
@@ -6022,14 +6051,15 @@
     grid.innerHTML = '';
 
     GOALS_NUMERIC.forEach(function(g){
-      var current = Number(goalState[g.id]);
+      var auto = valeurAutoObjectif(g.id);
+      var current = auto !== null ? Number(auto) : Number(goalState[g.id]);
       var pct = clamp(Math.round(100*(current-g.start)/(g.target-g.start)), 0, 100);
       var card = document.createElement('div');
       card.className = 'goal-card';
       card.innerHTML =
         '<div class="goal-top"><span class="gtitle">'+g.label+'</span><span class="gtarget">CIBLE '+g.target+' '+g.unit+'</span></div>'+
         '<div class="goal-track"><div class="goal-fill" style="width:'+pct+'%"></div></div>'+
-        '<div class="goal-meta"><span>'+pct+'% · départ '+g.start+' '+g.unit+'</span><input type="number" step="'+g.step+'" data-goal="'+g.id+'" value="'+escapeHtml(goalState[g.id])+'"></div>'+
+        '<div class="goal-meta"><span>'+pct+'% · départ '+g.start+' '+g.unit+(auto !== null ? ' · auto' : '')+'</span><input type="number" step="'+g.step+'" data-goal="'+g.id+'" value="'+escapeHtml(auto !== null ? current : goalState[g.id])+'"'+(auto !== null ? ' readonly title="'+escapeHtml(SOURCE_AUTO_OBJECTIF[g.id] || '')+'"' : '')+'></div>'+
         '<p class="goal-note">'+g.note+'</p>';
       grid.appendChild(card);
     });
@@ -6581,154 +6611,14 @@
     return out;
   }
   var DOW_NAMES_LONG = {0:'dimanche',1:'lundi',2:'mardi',3:'mercredi',4:'jeudi',5:'vendredi',6:'samedi'};
-  function insightSleepMood(){
-    var days = scanDailyRecords('batcave-journal-').filter(function(r){
-      return r.data && r.data.sommeil !== '' && r.data.sommeil != null && r.data.mood;
-    });
-    if(days.length < 5) return {icon:'😴', title:'Sommeil & humeur', text:'Pas encore assez de jours avec sommeil ET humeur renseignés (minimum 5) — reviens dans quelques jours.'};
-    var low = days.filter(function(r){ return Number(r.data.sommeil) < 6; });
-    var high = days.filter(function(r){ return Number(r.data.sommeil) >= 6; });
-    if(low.length < 2 || high.length < 2) return {icon:'😴', title:'Sommeil & humeur', text:'Pas encore assez de variété (nuits courtes ET longues) pour comparer.'};
-    var avg = function(arr){ return arr.reduce(function(s,r){ return s+Number(r.data.mood); }, 0)/arr.length; };
-    var avgLow = avg(low), avgHigh = avg(high);
-    var diff = avgHigh - avgLow;
-    if(Math.abs(diff) < 0.3) return {icon:'😴', title:'Sommeil & humeur', text:'Pas de lien net entre ton sommeil et ton humeur sur tes données actuelles.'};
-    return {icon:'😴', title:'Sommeil & humeur', text: diff>0
-      ? 'Ton humeur moyenne est de '+avgHigh.toFixed(1).replace('.', ',')+'/5 les jours où tu dors ≥6h, contre '+avgLow.toFixed(1).replace('.', ',')+'/5 en dessous — le sommeil compte.'
-      : 'Étonnamment ton humeur est meilleure les jours où tu dors moins (rare — vérifie que la saisie est fiable).'};
-  }
-  function insightSportSkip(){
-    var days = scanDailyRecords('batcave-sport-');
-    if(days.length < 7) return {icon:'🏋️', title:'Séances de sport', text:'Pas encore assez de jours suivis (minimum 7) pour dégager un schéma.'};
-    var byDow = {};
-    days.forEach(function(r){
-      var dow = new Date(r.date+'T00:00:00').getDay();
-      var type = TYPE_BY_DAY[dow];
-      var checkedCount = 0, totalEx = 0;
-      Object.keys(r.data).forEach(function(k){ if(k.indexOf(type+'-')===0){ totalEx++; if(r.data[k]) checkedCount++; } });
-      if(totalEx===0) return;
-      if(!byDow[dow]) byDow[dow] = {total:0, skipped:0};
-      byDow[dow].total++;
-      if(checkedCount===0) byDow[dow].skipped++;
-    });
-    var worst = null;
-    Object.keys(byDow).forEach(function(d){
-      var s = byDow[d];
-      if(s.total>=2){
-        var rate = s.skipped/s.total;
-        if(rate>=0.5 && (!worst || rate>worst.rate)) worst = {dow:Number(d), rate:rate, total:s.total, skipped:s.skipped};
-      }
-    });
-    if(!worst) return {icon:'🏋️', title:'Séances de sport', text:'Pas de jour de la semaine qui ressort particulièrement — plutôt régulier, bien joué.'};
-    return {icon:'🏋️', title:'Séances de sport', text:'Tu sautes ta séance le '+DOW_NAMES_LONG[worst.dow]+' '+Math.round(worst.rate*100)+'% du temps ('+worst.skipped+'/'+worst.total+' fois suivies).'};
-  }
-  function insightWeakestHabit(){
-    var active = habitsState.filter(function(hb){ return !hb.archived; });
-    if(!active.length) return null;
-    var last30 = [];
-    for(var i=0;i<30;i++){ var d=new Date(now); d.setDate(d.getDate()-i); last30.push(localISO(d)); }
-    if(last30.length < 7) return {icon:'✅', title:'Habitude la plus délaissée', text:'Pas encore assez d\'historique (minimum 7 jours).'};
-    var rates = active.map(function(hb){
-      /* habitRate ne divise que par les jours applicables : une habitude du samedi
-         tenue chaque semaine ressort à 100%, pas à 14%. */
-      return {h:hb, rate: habitRate(hb.id, 30) / 100};
-    });
-    rates.sort(function(a,b){ return a.rate-b.rate; });
-    var worst = rates[0];
-    if(worst.rate >= 0.7) return {icon:'✅', title:'Habitude la plus délaissée', text:'Toutes tes habitudes sont tenues à 70%+ sur les 30 derniers jours — solide.'};
-    return {icon:'✅', title:'Habitude la plus délaissée', text:(worst.h.icon?worst.h.icon+' ':'')+worst.h.label+' — tenue seulement '+Math.round(worst.rate*100)+'% des 30 derniers jours.'};
-  }
-  function insightRevisionByDay(){
-    if(!revisionState.length) return {icon:'📚', title:'Révision par jour', text:'Pas encore d\'entrées de révision enregistrées.'};
-    var byDow = {};
-    revisionState.forEach(function(r){
-      if(!r.date) return;
-      var dow = new Date(r.date+'T00:00:00').getDay();
-      byDow[dow] = (byDow[dow]||0) + Number(r.duree||0);
-    });
-    var entries = Object.keys(byDow).map(function(d){ return {dow:Number(d), min:byDow[d]}; });
-    if(entries.length < 3) return {icon:'📚', title:'Révision par jour', text:'Pas encore assez de jours différents couverts pour comparer.'};
-    entries.sort(function(a,b){ return b.min-a.min; });
-    var best = entries[0], worst = entries[entries.length-1];
-    return {icon:'📚', title:'Révision par jour', text:'Ton meilleur jour est '+DOW_NAMES_LONG[best.dow]+' ('+(best.min/60).toFixed(1).replace('.',',')+'h cumulées), ton plus faible '+DOW_NAMES_LONG[worst.dow]+' ('+(worst.min/60).toFixed(1).replace('.',',')+'h).'};
-  }
-  /* Le journal des blocs enregistre déjà l'heure de début de chaque session : on peut donc
-     dire à quel moment de la journée le travail rentre vraiment, sans rien saisir de plus.
-     On agrège par tranche de 2 h pour lisser le bruit d'un simple découpage horaire. */
-  function insightCreneau(){
-    var blocs = sessionsState.filter(function(b){ return b.debut && Number(b.duree) > 0; });
-    if(blocs.length < 8){
-      return {icon:'🕐', title:'Ton créneau le plus productif',
-              text:'Encore trop peu de blocs enregistrés (' + blocs.length + '/8 minimum) — continue, l\'analyse se débloquera toute seule.'};
-    }
-    var tranches = {};
-    blocs.forEach(function(b){
-      var h = new Date(b.debut).getHours();
-      var t = Math.floor(h/2)*2;
-      tranches[t] = (tranches[t]||0) + Number(b.duree||0);
-    });
-    var liste = Object.keys(tranches).map(function(t){ return {debut:Number(t), min:tranches[t]}; });
-    liste.sort(function(a,b){ return b.min - a.min; });
-    var top = liste[0];
-    var deux = (top.debut<10?'0':'') + top.debut + 'h–' + (top.debut+2<10?'0':'') + (top.debut+2) + 'h';
-    var total = liste.reduce(function(a,x){ return a + x.min; }, 0);
-    var part = Math.round(100 * top.min / total);
-    var txt = 'C\'est entre ' + deux + ' que tu abats le plus de travail : ' +
-              (top.min/60).toFixed(1).replace('.', ',') + 'h cumulées, soit ' + part + '% de ton temps enregistré.';
-    if(liste.length > 1){
-      var faible = liste[liste.length-1];
-      var deuxF = (faible.debut<10?'0':'') + faible.debut + 'h–' + (faible.debut+2<10?'0':'') + (faible.debut+2) + 'h';
-      txt += ' Le créneau ' + deuxF + ' est le moins rentable (' + (faible.min/60).toFixed(1).replace('.', ',') + 'h).';
-    }
-    return {icon:'🕐', title:'Ton créneau le plus productif', text:txt};
-  }
-
-  /* Sommeil de la nuit → travail du lendemain. On compare les lendemains de nuits courtes
-     et de nuits longues (médiane comme séparateur) : c'est la question la plus utile qu'on
-     puisse poser à ces deux séries déjà présentes dans le journal. */
-  function insightSommeilRevision(){
-    var paires = [];
-    for(var i=1; i<=60; i++){
-      var d = new Date(now); d.setDate(d.getDate()-i);
-      var iso = localISO(d);
-      var j = (iso === todayISO) ? journalState : load('batcave-journal-' + iso, null);
-      if(!j || j.sommeil === '' || j.sommeil == null) continue;
-      var lendemain = new Date(d); lendemain.setDate(lendemain.getDate()+1);
-      var isoL = localISO(lendemain);
-      if(isoL > todayISO) continue;
-      paires.push({h: Number(j.sommeil), min: minutesOn(isoL)});
-    }
-    if(paires.length < 6){
-      return {icon:'😴', title:'Sommeil et révision du lendemain',
-              text:'Il faut au moins 6 nuits renseignées avec le lendemain suivi (' + paires.length + ' pour l\'instant) — remplis « Sommeil » dans le Journal.'};
-    }
-    var heures = paires.map(function(p){ return p.h; }).sort(function(a,b){ return a-b; });
-    var mediane = heures[Math.floor(heures.length/2)];
-    var courtes = paires.filter(function(p){ return p.h < mediane; });
-    var longues = paires.filter(function(p){ return p.h >= mediane; });
-    if(!courtes.length || !longues.length){
-      return {icon:'😴', title:'Sommeil et révision du lendemain',
-              text:'Tes nuits sont trop régulières (' + mediane.toFixed(1).replace('.', ',') + 'h) pour dégager un écart — rien à signaler, c\'est plutôt bon signe.'};
-    }
-    var moy = function(t){ return t.reduce(function(a,p){ return a+p.min; }, 0) / t.length / 60; };
-    var mC = moy(courtes), mL = moy(longues);
-    var ecart = mL - mC;
-    var sens = Math.abs(ecart) < 0.25
-      ? 'Aucun écart net pour l\'instant : ton temps de révision ne dépend pas vraiment de ta nuit.'
-      : (ecart > 0
-          ? 'Après une nuit d\'au moins ' + mediane.toFixed(1).replace('.', ',') + 'h, tu révises ' + ecart.toFixed(1).replace('.', ',') + 'h de plus en moyenne.'
-          : 'Curieusement tu révises ' + Math.abs(ecart).toFixed(1).replace('.', ',') + 'h de plus après tes nuits courtes — sur ' + paires.length + ' nuits, ça peut encore être du hasard.');
-    return {icon:'😴', title:'Sommeil et révision du lendemain',
-            text: sens + ' (' + mL.toFixed(1).replace('.', ',') + 'h après une nuit longue contre ' +
-                  mC.toFixed(1).replace('.', ',') + 'h après une nuit courte, sur ' + paires.length + ' nuits.)'};
-  }
-
-  /* ===== Insights v2 =====
-     Chaque insight rend {icon, title, text, action, score, n} : « action » est ce qu'il y a
-     a faire, « score » (0-100) classe les cartes et remonte la premiere sur le tableau de
-     bord, « n » dit sur combien de jours ou de points il repose. Tout vient des donnees
-     deja tracees : blocs de travail, journal, repas, sport, revision par matiere, examens.
-     Rien de nouveau a saisir. */
+  /* ===== Insights v3 =====
+     Neuf cartes, une par thème. Chacune rend {icon, title, text, action, score, n, page,
+     tendance, serie} : « action » est ce qu'il y a à faire, « score » (0-100) classe les
+     cartes et remonte les trois premières en priorités (et la première sur le tableau de
+     bord), « n » dit sur combien de points elle repose, « page » est l'onglet où agir,
+     « tendance » compare à la période précédente de même longueur, « serie » nourrit la
+     mini-courbe. Tout vient des données déjà tracées : blocs de travail, journal, repas,
+     sport, révision par matière, examens, habitudes. Rien de nouveau à saisir. */
   function hminTxt(m){
     m = Math.round(Number(m) || 0);
     if(m < 60) return m + ' min';
@@ -6736,10 +6626,12 @@
     return Math.floor(m / 60) + ' h' + (r ? ' ' + String(r).padStart(2, '0') : '');
   }
   function heureTxt(min){ return String(Math.floor(min/60)).padStart(2,'0') + ':' + String(min%60).padStart(2,'0'); }
-  /* jours suivis = jours passes ou au moins un bloc a ete enregistre avec ses heures */
-  function joursSuivis(nb){
-    var out = [];
-    for(var i = 1; i <= nb; i++){
+  function virg(x, dec){ return Number(x).toFixed(dec == null ? 1 : dec).replace('.', ','); }
+  /* jours suivis = jours passés où au moins un bloc a été enregistré avec ses heures.
+     decal > 0 recule la fenêtre d'autant de jours : la période précédente, pour la tendance. */
+  function joursSuivis(nb, decal){
+    var out = []; decal = decal || 0;
+    for(var i = 1 + decal; i <= nb + decal; i++){
       var d = new Date(now); d.setDate(d.getDate() - i);
       var iso = localISO(d);
       var s = sessionsState.filter(function(b){ return b && b.date === iso && Number(b.duree) > 0 && b.debut && b.fin; });
@@ -6755,8 +6647,43 @@
     });
     return total;
   }
-  function insightBlocFragile(){
-    var jours = joursSuivis(14), stats = {};
+  /* Tendance = valeur actuelle contre la période précédente. o.bonSiHausse : true si monter
+     est bon, false si descendre est bon, null si ça dépend (neutre). o.seuil : écart en
+     dessous duquel on dit « stable ». o.fmt formate l'écart absolu. */
+  function tendance(actuel, avant, o){
+    if(actuel == null || avant == null || isNaN(actuel) || isNaN(avant)) return null;
+    var d = actuel - avant, seuil = o.seuil || 0;
+    var sens = Math.abs(d) <= seuil ? 'flat' : (d > 0 ? 'up' : 'down');
+    var bon = (sens === 'flat' || o.bonSiHausse === null || o.bonSiHausse === undefined) ? null : ((d > 0) === !!o.bonSiHausse);
+    var abs = o.fmt ? o.fmt(Math.abs(d)) : virg(Math.abs(d), o.dec || 0) + (o.unite ? ' ' + o.unite : '');
+    return {delta: d, sens: sens, bon: bon, txt: (sens === 'flat' ? 'stable' : (d > 0 ? '+' : '−') + abs) + ' vs ' + o.ref};
+  }
+  /* Mini-courbe : une série de valeurs, une ligne, une aire, le dernier point marqué,
+     une cible en pointillé si elle existe. Échelle unique sur la série et la cible. */
+  function sparkSvg(serie){
+    if(!serie || !serie.v) return '';
+    var v = serie.v.filter(function(x){ return typeof x === 'number' && !isNaN(x); });
+    if(v.length < 3) return '';
+    var W = 240, H = 40, p = 4, tous = v.slice();
+    if(serie.cible != null && !isNaN(serie.cible)) tous.push(serie.cible);
+    var min = Math.min.apply(null, tous), max = Math.max.apply(null, tous);
+    if(max - min < 1e-9){ max = min + 1; min = min - 1; }
+    var x = function(i){ return p + i * (W - 2*p) / (v.length - 1); };
+    var y = function(val){ return H - p - (val - min) * (H - 2*p) / (max - min); };
+    var pts = v.map(function(val, i){ return x(i).toFixed(1) + ',' + y(val).toFixed(1); });
+    var area = 'M' + pts[0] + ' L' + pts.join(' L') + ' L' + x(v.length - 1).toFixed(1) + ',' + (H - p) + ' L' + x(0).toFixed(1) + ',' + (H - p) + ' Z';
+    var cible = (serie.cible != null && !isNaN(serie.cible)) ? '<line class="sp-cible" x1="' + p + '" x2="' + (W - p) + '" y1="' + y(serie.cible).toFixed(1) + '" y2="' + y(serie.cible).toFixed(1) + '"/>' : '';
+    var dec = serie.dec == null ? 1 : serie.dec, u = serie.unite ? ' ' + serie.unite : '';
+    var legende = (serie.label || v.length + ' points') + ' · ' + virg(Math.min.apply(null, v), dec) + ' → ' + virg(Math.max.apply(null, v), dec) + u + (serie.cible != null ? ' · cible ' + virg(serie.cible, dec) + u : '');
+    return '<svg class="insight-spark" viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + escapeHtml(legende) + '">' +
+           '<path class="sp-area" d="' + area + '"/>' + cible + '<polyline class="sp-line" points="' + pts.join(' ') + '"/>' +
+           '<circle class="sp-end" cx="' + x(v.length - 1).toFixed(1) + '" cy="' + y(v[v.length - 1]).toFixed(1) + '" r="2.6"/></svg>' +
+           '<div class="insight-spark-l">' + escapeHtml(legende) + '</div>';
+  }
+
+  /* 1. Bloc le plus fragile ------------------------------------------------------------ */
+  function statsBlocs(jours){
+    var stats = {};
     jours.forEach(function(j){
       blocsDuPlanning(cleJournee(j.dow)).forEach(function(b){
         var k = b.label + '|' + b.debut;
@@ -6765,25 +6692,33 @@
         if(recouvrementJour(j.iso, b, j.sessions) >= b.minutes / 2) s.tenus++;
       });
     });
-    var T = 'Bloc le plus fragile';
-    if(jours.length < 5) return {icon:'🧱', title:T, text:'Il faut au moins 5 jours suivis sur les 14 derniers (' + jours.length + ' pour l\'instant) pour voir quel bloc du planning saute le plus souvent.', score:0, n:jours.length};
+    return stats;
+  }
+  function insightBlocFragile(){
+    var jours = joursSuivis(14), stats = statsBlocs(jours);
+    var T = 'Bloc le plus fragile', P = 'calendrier';
+    if(jours.length < 5) return {icon:'🧱', title:T, page:P, text:'Il faut au moins 5 jours suivis sur les 14 derniers (' + jours.length + ' pour l\'instant) pour voir quel bloc du planning saute le plus souvent.', score:0, n:jours.length};
     var pire = null;
     Object.keys(stats).forEach(function(k){
       var s = stats[k]; if(s.jours < 3) return;
       var taux = s.tenus / s.jours;
-      if(!pire || taux < pire.taux) pire = {label:s.label, debut:s.debut, taux:taux, jours:s.jours, tenus:s.tenus, minutes:s.minutes};
+      if(!pire || taux < pire.taux) pire = {k:k, label:s.label, debut:s.debut, taux:taux, jours:s.jours, tenus:s.tenus, minutes:s.minutes};
     });
-    if(!pire) return {icon:'🧱', title:T, text:'Pas encore assez de répétitions du même bloc (3 minimum) sur les jours suivis.', score:0, n:jours.length};
+    if(!pire) return {icon:'🧱', title:T, page:P, text:'Pas encore assez de répétitions du même bloc (3 minimum) sur les jours suivis.', score:0, n:jours.length};
+    var avant = statsBlocs(joursSuivis(14, 14))[pire.k], tend = null;
+    if(avant && avant.jours >= 3) tend = tendance(pire.taux * 100, avant.tenus / avant.jours * 100, {bonSiHausse:true, unite:'pts', seuil:5, ref:'14 j avant'});
     var ou = pire.label + ' (' + heureTxt(pire.debut) + ')';
-    if(pire.taux >= 0.7) return {icon:'🧱', title:T, text:'Aucun bloc ne saute plus de 30 % du temps sur ' + jours.length + ' jours suivis. Le plus fragile : ' + ou + ', tenu ' + pire.tenus + ' fois sur ' + pire.jours + '.', score:5, n:jours.length};
+    if(pire.taux >= 0.7) return {icon:'🧱', title:T, page:P, text:'Aucun bloc ne saute plus de 30 % du temps sur ' + jours.length + ' jours suivis. Le plus fragile : ' + ou + ', tenu ' + pire.tenus + ' fois sur ' + pire.jours + '.', score:5, n:jours.length, tendance:tend};
     var perdu = (pire.jours - pire.tenus) * pire.minutes;
-    return {icon:'🧱', title:T,
+    return {icon:'🧱', title:T, page:P,
             text: ou + ' est tenu ' + pire.tenus + ' fois sur ' + pire.jours + ' jours suivis, soit ' + hminTxt(perdu) + ' de travail perdues sur ' + jours.length + ' jours.',
             action:'Écris la veille ce que tu feras dans ce bloc (une ligne dans le journal) et lance le Pomodoro à l\'heure pile : un bloc qui démarre à l\'heure est tenu neuf fois sur dix. Si c\'est toujours le même bloc, c\'est ce qui le précède qui déborde.',
-            score: Math.round((1 - pire.taux) * 100), n: jours.length};
+            score: Math.round((1 - pire.taux) * 100), n: jours.length, tendance: tend};
   }
-  function insightDeriveHoraire(){
-    var jours = joursSuivis(14), retards = [], parDow = {}, premierRef = null;
+
+  /* 2. Dérive du premier bloc ---------------------------------------------------------- */
+  function retardsDemarrage(jours){
+    var out = [];
     jours.forEach(function(j){
       var blocs = blocsDuPlanning(cleJournee(j.dow)); if(!blocs.length) return;
       var minuit = new Date(j.iso + 'T00:00:00').getTime();
@@ -6795,72 +6730,143 @@
       blocs.forEach(function(b){ if(b.debut <= debutMin) ref = b; });
       var r = debutMin - ref.debut;
       if(r < -120 || r > 600) return;
-      retards.push(r); (parDow[j.dow] = parDow[j.dow] || []).push(r);
-      if(premierRef === null) premierRef = ref.debut;
+      out.push({iso: j.iso, dow: j.dow, r: r});
     });
-    var T = 'Dérive du premier bloc';
-    if(retards.length < 5) return {icon:'⏱️', title:T, text:'Il faut 5 jours suivis (' + retards.length + ') pour mesurer à quelle heure tu démarres vraiment par rapport au plan.', score:0, n:retards.length};
-    var moy = retards.reduce(function(a, x){ return a + x; }, 0) / retards.length;
-    var pire = null;
+    return out;
+  }
+  function insightDeriveHoraire(){
+    var retards = retardsDemarrage(joursSuivis(14)), T = 'Dérive du premier bloc', P = 'calendrier';
+    if(retards.length < 5) return {icon:'⏱️', title:T, page:P, text:'Il faut 5 jours suivis (' + retards.length + ') pour mesurer à quelle heure tu démarres vraiment par rapport au plan.', score:0, n:retards.length};
+    var moy = retards.reduce(function(a, x){ return a + x.r; }, 0) / retards.length;
+    var parDow = {}, pire = null;
+    retards.forEach(function(x){ (parDow[x.dow] = parDow[x.dow] || []).push(x.r); });
     Object.keys(parDow).forEach(function(d){ var l = parDow[d]; if(l.length < 2) return; var m = l.reduce(function(a, x){ return a + x; }, 0) / l.length; if(!pire || m > pire.m) pire = {dow: Number(d), m: m}; });
-    if(moy <= 5) return {icon:'⏱️', title:T, text:'Tu démarres ton premier bloc à l\'heure : écart moyen ' + Math.round(moy) + ' min sur ' + retards.length + ' jours.', score:0, n:retards.length};
-    return {icon:'⏱️', title:T,
+    var avant = retardsDemarrage(joursSuivis(14, 14)), tend = null;
+    if(avant.length >= 5) tend = tendance(moy, avant.reduce(function(a, x){ return a + x.r; }, 0) / avant.length, {bonSiHausse:false, unite:'min', seuil:3, ref:'14 j avant'});
+    var serie = {v: retards.slice().reverse().map(function(x){ return Math.round(x.r); }), label: retards.length + ' jours, retard au démarrage', unite:'min', dec:0, cible:0};
+    if(moy <= 5) return {icon:'⏱️', title:T, page:P, text:'Tu démarres ton premier bloc à l\'heure : écart moyen ' + Math.round(moy) + ' min sur ' + retards.length + ' jours.', score:0, n:retards.length, tendance:tend, serie:serie};
+    return {icon:'⏱️', title:T, page:P,
             text:'Tu démarres en moyenne ' + Math.round(moy) + ' min après le premier bloc prévu sur ' + retards.length + ' jours' + (pire && pire.m > moy + 5 ? ' ; le ' + DOW_NAMES_LONG[pire.dow] + ', ' + Math.round(pire.m) + ' min.' : '.'),
             action: Math.round(moy) + ' min par jour, c\'est ' + hminTxt(moy * 6) + ' par semaine qui ne se rattrapent pas dans la journée. Réveil, douche et petit-déjeuner sont dans la grille ; si le retard vient du lever, regarde le coucher de la veille dans le journal.',
-            score: Math.min(100, Math.round(moy * 2)), n: retards.length};
+            score: Math.min(100, Math.round(moy * 2)), n: retards.length, tendance: tend, serie: serie};
   }
-  function insightDetteSommeil(){
-    var nuits = [], dette = 0, pire = null;
-    for(var i = 0; i < 7; i++){
+
+  /* 3. Sommeil : dette sur 7 nuits, puis ce que la nuit fait à la révision et à l'humeur -- */
+  function nuitsRenseignees(nb, decal){
+    var out = []; decal = decal || 0;
+    for(var i = decal; i < nb + decal; i++){
       var d = new Date(now); d.setDate(d.getDate() - i);
       var iso = localISO(d);
       var j = (iso === todayISO) ? journalState : load('batcave-journal-' + iso, null);
       if(!j || j.sommeil === '' || j.sommeil == null) continue;
       var hN = Number(j.sommeil); if(!(hN > 0)) continue;
-      var obj = objectifSommeilPour(iso);
-      nuits.push(hN);
-      if(obj - hN > 0) dette += obj - hN;
-      if(!pire || hN < pire.h) pire = {h: hN, dow: d.getDay(), obj: obj};
+      out.push({iso: iso, dow: d.getDay(), h: hN, obj: objectifSommeilPour(iso)});
     }
-    var T = 'Dette de sommeil';
-    if(nuits.length < 4) return {icon:'🛏️', title:T, text:'Il faut au moins 4 nuits renseignées sur les 7 dernières (' + nuits.length + ') : Bevel te donne le chiffre, la clôture du jour le range.', score:0, n:nuits.length};
-    var moy = nuits.reduce(function(a, x){ return a + x; }, 0) / nuits.length;
-    if(dette < 1) return {icon:'🛏️', title:T, text:'Aucune dette sur les ' + nuits.length + ' dernières nuits renseignées (moyenne ' + moy.toFixed(1).replace('.', ',') + ' h ; objectif 7 h 35 en semaine, 8 h 30 le week-end).', score:0, n:nuits.length};
-    return {icon:'🛏️', title:T,
-            text:'Dette de sommeil : ' + hminTxt(dette * 60) + ' cumulées sur ' + nuits.length + ' nuits (moyenne ' + moy.toFixed(1).replace('.', ',') + ' h). La plus courte : ' + DOW_NAMES_LONG[pire.dow] + ', ' + pire.h.toFixed(1).replace('.', ',') + ' h pour ' + hminTxt(pire.obj * 60) + ' prévues.',
-            action: dette >= 3
-              ? 'Au-delà de 3 h de dette, la révision du lendemain baisse (carte « Sommeil et révision »). Récupère-la sur le week-end (8 h 30 prévues), tiens le coucher de 21:55 cette semaine, et pas de sieste au-delà de 20 min.'
-              : 'Tiens le coucher de 21:55 les prochains soirs : moins de 3 h de dette se remboursent en deux nuits.',
-            score: Math.min(100, Math.round(dette * 20)), n: nuits.length};
+    return out;
+  }
+  function detteDe(nuits){ return nuits.reduce(function(a, n){ return a + Math.max(0, n.obj - n.h); }, 0); }
+  function insightSommeil(){
+    var nuits = nuitsRenseignees(7), T = 'Sommeil', P = 'journal';
+    var dette = detteDe(nuits), moy = nuits.length ? nuits.reduce(function(a, n){ return a + n.h; }, 0) / nuits.length : 0;
+    var pire = null; nuits.forEach(function(n){ if(!pire || n.h < pire.h) pire = n; });
+    var texte, action = '', score = 0;
+    if(nuits.length < 4) texte = 'Il faut au moins 4 nuits renseignées sur les 7 dernières (' + nuits.length + ') : Bevel te donne le chiffre, la clôture du jour le range.';
+    else if(dette < 1) texte = 'Aucune dette sur les ' + nuits.length + ' dernières nuits renseignées (moyenne ' + virg(moy) + ' h ; objectif 7 h 35 en semaine, 8 h 30 le week-end).';
+    else {
+      texte = 'Dette de sommeil : ' + hminTxt(dette * 60) + ' cumulées sur ' + nuits.length + ' nuits (moyenne ' + virg(moy) + ' h). La plus courte : ' + DOW_NAMES_LONG[pire.dow] + ', ' + virg(pire.h) + ' h pour ' + hminTxt(pire.obj * 60) + ' prévues.';
+      action = 'Au-delà de 3 h de dette, la révision du lendemain baisse (voir ci-dessous). Récupère-la sur le week-end (8 h 30 prévues), tiens le coucher de ' + heureCoucher('weekday') + ' cette semaine, et pas de sieste au-delà de 20 min.';
+      score = Math.min(100, Math.round(dette * 20));
+    }
+    /* Nuit → travail du lendemain : lendemains de nuits courtes contre lendemains de nuits
+       longues, la médiane comme séparateur, sur 60 jours. */
+    var paires = [];
+    for(var i = 1; i <= 60; i++){
+      var d = new Date(now); d.setDate(d.getDate() - i);
+      var iso = localISO(d);
+      var j = (iso === todayISO) ? journalState : load('batcave-journal-' + iso, null);
+      if(!j || j.sommeil === '' || j.sommeil == null) continue;
+      var lendemain = new Date(d); lendemain.setDate(lendemain.getDate() + 1);
+      var isoL = localISO(lendemain);
+      if(isoL > todayISO) continue;
+      paires.push({h: Number(j.sommeil), min: minutesOn(isoL), mood: j.mood ? Number(j.mood) : null});
+    }
+    var corr = '';
+    if(paires.length >= 6){
+      var heures = paires.map(function(p){ return p.h; }).sort(function(a, b){ return a - b; });
+      var mediane = heures[Math.floor(heures.length / 2)];
+      var courtes = paires.filter(function(p){ return p.h < mediane; }), longues = paires.filter(function(p){ return p.h >= mediane; });
+      if(courtes.length && longues.length){
+        var m = function(t){ return t.reduce(function(a, p){ return a + p.min; }, 0) / t.length / 60; };
+        var mC = m(courtes), mL = m(longues), ecart = mL - mC;
+        if(Math.abs(ecart) >= 0.25){
+          corr += ecart > 0
+            ? ' Après une nuit d\'au moins ' + virg(mediane) + ' h, tu révises ' + virg(ecart) + ' h de plus en moyenne (' + virg(mL) + ' h contre ' + virg(mC) + ' h, sur ' + paires.length + ' nuits).'
+            : ' Curieusement tu révises ' + virg(Math.abs(ecart)) + ' h de plus après tes nuits courtes (sur ' + paires.length + ' nuits, ça peut encore être du hasard).';
+          if(!action && ecart > 0) action = 'Ta révision suit ta nuit : ' + virg(ecart) + ' h de plus après une nuit d\'au moins ' + virg(mediane) + ' h. Le coucher de ' + heureCoucher('weekday') + ' est ton meilleur levier de révision, avant tout changement de méthode.';
+        } else corr += ' Ton temps de révision ne dépend pas de ta nuit sur ' + paires.length + ' nuits.';
+      }
+      var avecMood = paires.filter(function(p){ return p.mood; });
+      var bas = avecMood.filter(function(p){ return p.h < 6; }), haut = avecMood.filter(function(p){ return p.h >= 6; });
+      if(bas.length >= 2 && haut.length >= 2){
+        var mm = function(t){ return t.reduce(function(a, p){ return a + p.mood; }, 0) / t.length; };
+        var mB = mm(bas), mH = mm(haut);
+        if(mH - mB >= 0.3) corr += ' Humeur ' + virg(mH) + '/5 les jours où tu dors 6 h et plus, ' + virg(mB) + '/5 en dessous.';
+      }
+    }
+    var avant = nuitsRenseignees(7, 7), tend = null;
+    /* dette PAR NUIT : deux fenêtres n'ont pas forcément le même nombre de nuits renseignées */
+    if(nuits.length >= 4 && avant.length >= 4) tend = tendance(dette / nuits.length, detteDe(avant) / avant.length, {bonSiHausse:false, fmt:function(x){ return hminTxt(x * 60) + '/nuit de dette'; }, seuil:0.15, ref:'7 nuits avant'});
+    var quatorze = nuitsRenseignees(14).reverse();
+    var serie = {v: quatorze.map(function(n){ return n.h; }), label: quatorze.length + ' nuits', unite:'h', dec:1, cible: quatorze.length ? Math.round(quatorze.reduce(function(a, n){ return a + n.obj; }, 0) / quatorze.length * 10) / 10 : null};
+    return {icon:'🛏️', title:T, page:P, text: texte + corr, action: action, score: score, n: nuits.length + paires.length, tendance: tend, serie: serie};
+  }
+
+  /* 4. Balance énergétique : calories cochées contre pente du poids, sur 28 jours -------- */
+  function joursRepas(nb, decal){
+    var complets = [], partiels = 0; decal = decal || 0;
+    for(var i = 1 + decal; i <= nb + decal; i++){
+      var d = new Date(now); d.setDate(d.getDate() - i);
+      var iso = localISO(d), ms = load('batcave-meals-' + iso, null);
+      if(!ms) continue;
+      var nut = mealNutritionTotals(ms, iso);
+      if(!(nut.totals.kcal > 0)) continue;
+      /* Une journée à moitié cochée n'est pas une journée à moitié mangée : on ne garde
+         que les jours où au moins la moitié de la cible est cochée, et on dit combien de
+         jours partiels ont été écartés. */
+      if(nut.targets.kcal > 0 && nut.totals.kcal < nut.targets.kcal / 2) partiels++;
+      else complets.push({kcal: nut.totals.kcal, cible: nut.targets.kcal});
+    }
+    return {complets: complets, partiels: partiels};
   }
   function insightBalanceEnergetique(){
-    var kcal = [], poids = [];
+    var rep = joursRepas(28), kcal = rep.complets, poids = [];
     for(var i = 0; i < 28; i++){
       var d = new Date(now); d.setDate(d.getDate() - i);
       var iso = localISO(d);
-      if(iso !== todayISO){
-        var ms = load('batcave-meals-' + iso, null);
-        if(ms){ var nut = mealNutritionTotals(ms, iso); if(nut.totals.kcal > 0) kcal.push({kcal: nut.totals.kcal, cible: nut.targets.kcal}); }
-      }
       var j = (iso === todayISO) ? journalState : load('batcave-journal-' + iso, null);
       if(j && Number(j.poids) > 0) poids.push({t: 27 - i, kg: Number(j.poids)});
     }
-    var T = 'Balance énergétique';
-    if(kcal.length < 7 || poids.length < 4) return {icon:'⚖️', title:T, text:'Il faut 7 jours de repas cochés et 4 pesées sur 28 jours (' + kcal.length + ' jours de repas, ' + poids.length + ' pesées) pour relier ce que tu manges à ta courbe de poids.', score:0, n:Math.min(kcal.length, poids.length)};
+    var T = 'Balance énergétique', P = 'repas';
+    var serie = {v: poids.slice().reverse().map(function(p){ return p.kg; }), label: poids.length + ' pesées', unite:'kg', dec:1};
+    if(kcal.length < 7 || poids.length < 4) return {icon:'⚖️', title:T, page:P, text:'Il faut 7 jours de repas complets (au moins la moitié de la cible cochée) et 4 pesées sur 28 jours : ' + kcal.length + ' jours complets, ' + rep.partiels + ' partiels ignorés, ' + poids.length + ' pesées. Coche chaque prise le jour même.', score:0, n:kcal.length + poids.length, serie:serie};
     var moyK = kcal.reduce(function(a, x){ return a + x.kcal; }, 0) / kcal.length;
     var moyC = kcal.reduce(function(a, x){ return a + x.cible; }, 0) / kcal.length;
     var n = poids.length, sx = 0, sy = 0, sxy = 0, sxx = 0;
     poids.forEach(function(p){ sx += p.t; sy += p.kg; sxy += p.t * p.kg; sxx += p.t * p.t; });
     var pente = (n * sxy - sx * sy) / Math.max(1e-9, (n * sxx - sx * sx)) * 7;
-    var signe = function(v){ return (v >= 0 ? '+' : '−') + Math.abs(v).toFixed(2).replace('.', ','); };
-    var texte = 'Sur ' + n + ' pesées : ' + signe(pente) + ' kg par semaine, avec ' + Math.round(moyK) + ' kcal par jour cochées en moyenne (cible ' + Math.round(moyC) + ') sur ' + kcal.length + ' jours.';
+    var signe = function(v){ return (v >= 0 ? '+' : '−') + virg(Math.abs(v), 2); };
+    var texte = 'Sur ' + n + ' pesées : ' + signe(pente) + ' kg par semaine, avec ' + Math.round(moyK) + ' kcal par jour cochées en moyenne (cible ' + Math.round(moyC) + ') sur ' + kcal.length + ' jours complets' + (rep.partiels ? ', ' + rep.partiels + ' jours partiels ignorés' : '') + '.';
     var action = '', score = 10;
-    if(moyK < moyC - 250){ action = 'Tu coches ' + Math.round(moyC - moyK) + ' kcal de moins que le plan : avant de toucher la cible, coche chaque prise le jour même ; la boucle poids → calories (onglet Nutrition) ne décide juste que sur des journées complètes.'; score = 40; }
-    else if(Math.abs(pente) < 0.1 && moyK >= moyC - 250){ action = 'Poids stable avec le plan tenu : si tu vises une prise, la boucle poids → calories de l\'onglet Nutrition propose +150 kcal ; applique-la de là, elle réécrit le plan et la liste de courses.'; score = 35; }
+    if(moyK < moyC - 250){ action = 'Tu coches ' + Math.round(moyC - moyK) + ' kcal de moins que le plan : avant de toucher la cible, coche chaque prise le jour même ; la boucle poids → calories (onglet Nutrition) ne décide juste que sur des journées complètes.'; score = 30; }
+    else if(Math.abs(pente) < 0.1 && moyK >= moyC - 250){ action = 'Poids stable avec le plan tenu : si tu vises une prise, la boucle poids → calories de l\'onglet Nutrition propose +150 kcal ; applique-la de là, elle réécrit le plan et la liste de courses.'; score = 25; }
     else if(pente > 0.5){ action = 'Plus de 0,5 kg par semaine, c\'est au-delà d\'une prise propre : la boucle poids → calories proposera −100 kcal ; regarde-la avant de changer quoi que ce soit à la main.'; score = 45; }
-    return {icon:'⚖️', title:T, text:texte, action:action, score:score, n:n};
+    var avant = joursRepas(28, 28).complets, tend = null;
+    if(avant.length >= 7) tend = tendance(moyK, avant.reduce(function(a, x){ return a + x.kcal; }, 0) / avant.length, {bonSiHausse:null, unite:'kcal/j', seuil:50, ref:'28 j avant'});
+    return {icon:'⚖️', title:T, page:P, text:texte, action:action, score:score, n:n + kcal.length, tendance:tend, serie:serie};
   }
-  function insightSportStagnation(){
+
+  /* 5. Sport : stagnation d'un exercice, puis le jour de séance qui saute ----------------- */
+  function insightSport(){
     var parExo = {};
     sportLog.forEach(function(l){ if(!l || !l.exo || !l.date) return; (parExo[l.exo] = parExo[l.exo] || []).push(l); });
     var vol = function(l){ return (l.series || []).reduce(function(a, x){ return a + (Number(x) || 0); }, 0); };
@@ -6875,44 +6881,145 @@
       }
       if(n >= 3 && (!pire || n > pire.n)) pire = {exo: exo, n: n, charge: dern.charge, series: dern.series, unite: dern.unite};
     });
-    var T = 'Stagnation en sport';
-    if(!nExo) return {icon:'🏋️', title:T, text:'Il faut 3 séances enregistrées du même exercice (séries et charge, onglet Sport) pour repérer une stagnation.', score:0, n:0};
-    if(!pire) return {icon:'🏋️', title:T, text:'Tous tes exercices ont progressé (charge ou répétitions) sur leurs trois dernières séances.', score:0, n:nExo};
-    return {icon:'🏋️', title:T,
-            text: pire.exo + ' stagne depuis ' + pire.n + ' séances : ' + fmtSeries(pire.series) + (Number(pire.charge) ? ' à ' + fmtCharge(pire.charge) + ' kg' : '') + ', sans progression de charge ni de volume.',
-            action:'La surcharge progressive de l\'onglet Sport affiche le cran suivant : la prochaine fois, +1 répétition sur la première série, ou +2,5 kg si toutes les séries touchent le haut de la fourchette. Si ça bloque cinq séances, change de variante ou ajoute une série.',
-            score: Math.min(100, pire.n * 15), n: pire.n};
+    /* jours de séance : une fiche batcave-sport-<date> avec au moins une case cochée */
+    var days = scanDailyRecords('batcave-sport-'), byDow = {}, seances = {};
+    days.forEach(function(r){
+      var dow = new Date(r.date + 'T00:00:00').getDay(), type = TYPE_BY_DAY[dow], coches = 0, total = 0;
+      Object.keys(r.data || {}).forEach(function(k){ if(k.indexOf(type + '-') === 0){ total++; if(r.data[k]) coches++; } });
+      if(!total) return;
+      if(!byDow[dow]) byDow[dow] = {total:0, skipped:0};
+      byDow[dow].total++;
+      if(!coches) byDow[dow].skipped++; else seances[r.date] = true;
+    });
+    var saute = null;
+    Object.keys(byDow).forEach(function(d){
+      var s = byDow[d]; if(s.total < 2) return;
+      var rate = s.skipped / s.total;
+      if(rate >= 0.5 && (!saute || rate > saute.rate)) saute = {dow:Number(d), rate:rate, total:s.total, skipped:s.skipped};
+    });
+    var compte = function(deb, fin){ var c = 0; Object.keys(seances).forEach(function(iso){ var dj = daysBetween(new Date(iso + 'T00:00:00'), new Date(todayISO + 'T00:00:00')); if(dj >= deb && dj < fin) c++; }); return c; };
+    var nowN = compte(0, 14), avantN = compte(14, 28);
+    var tend = (days.length >= 14) ? tendance(nowN, avantN, {bonSiHausse:true, unite:'séances', seuil:0, ref:'14 j avant'}) : null;
+    var T = 'Sport', P = 'sport', texte, action = '', score = 0;
+    if(pire){
+      texte = pire.exo + ' stagne depuis ' + pire.n + ' séances : ' + fmtSeries(pire.series) + (Number(pire.charge) ? ' à ' + fmtCharge(pire.charge) + ' kg' : '') + ', sans progression de charge ni de volume.';
+      action = 'La surcharge progressive de l\'onglet Sport affiche le cran suivant : la prochaine fois, +1 répétition sur la première série, ou +2,5 kg si toutes les séries touchent le haut de la fourchette. Si ça bloque cinq séances, change de variante ou ajoute une série.';
+      score = Math.min(100, pire.n * 15);
+    } else if(nExo) texte = 'Tous tes exercices ont progressé (charge ou répétitions) sur leurs trois dernières séances.';
+    else texte = 'Il faut 3 séances enregistrées du même exercice (séries et charge, onglet Sport) pour repérer une stagnation.';
+    if(saute){
+      texte += ' Tu sautes ta séance le ' + DOW_NAMES_LONG[saute.dow] + ' ' + Math.round(saute.rate * 100) + ' % du temps (' + saute.skipped + '/' + saute.total + ' fois suivies).';
+      if(!action){ action = 'Le ' + DOW_NAMES_LONG[saute.dow] + ' est ton jour de sport le plus fragile : prévois-y la version courte de la séance (30 min, les deux premiers exercices) plutôt que rien. Une séance courte tenue garde la série vivante.'; score = Math.round(saute.rate * 60); }
+    } else if(days.length >= 7) texte += ' Aucun jour de la semaine ne saute particulièrement.';
+    return {icon:'🏋️', title:T, page:P, text:texte, action:action, score:score, n:sportLog.length + days.length, tendance:tend};
+  }
+
+  /* 6. Matière et partiel --------------------------------------------------------------- */
+  function revisionParMatiere(deb, fin){
+    var parM = {}, total = 0, entrees = 0, aujourdhui = new Date(todayISO + 'T00:00:00');
+    revisionState.forEach(function(r){
+      if(!r || !r.date) return;
+      var dj = daysBetween(new Date(r.date + 'T00:00:00'), aujourdhui);
+      if(dj < deb || dj >= fin) return;
+      var ms = r.matieres || {}; if(!Object.keys(ms).length) return;
+      entrees++;
+      Object.keys(ms).forEach(function(m){ var v = Number(ms[m]) || 0; parM[m] = (parM[m] || 0) + v; total += v; });
+    });
+    return {parM: parM, total: total, entrees: entrees};
   }
   function insightMatiereExamen(){
     var aujourdhui = new Date(todayISO + 'T00:00:00');
     var exams = Object.keys(examensState).map(function(m){ return {m: m, iso: examensState[m], jours: daysBetween(aujourdhui, new Date(examensState[m] + 'T00:00:00'))}; })
                       .filter(function(e){ return e.jours >= 0 && e.jours <= 45; });
-    var T = 'Matière et partiel';
-    if(!exams.length) return {icon:'🎓', title:T, text:'Aucun partiel dans les 45 jours (échéances par matière, onglet Études).', score:0, n:0};
-    var parM = {}, total = 0;
-    revisionState.forEach(function(r){
-      if(!r || !r.date) return;
-      var dj = daysBetween(new Date(r.date + 'T00:00:00'), aujourdhui);
-      if(dj < 0 || dj > 13) return;
-      Object.keys(r.matieres || {}).forEach(function(m){ var v = Number(r.matieres[m]) || 0; parM[m] = (parM[m] || 0) + v; total += v; });
-    });
-    if(total < 120) return {icon:'🎓', title:T, text:'Pas assez de révision étiquetée par matière sur 14 jours (' + hminTxt(total) + ') : nomme la matière au lancement du Pomodoro.', score:0, n:0};
+    var T = 'Matière et partiel', P = 'etudes';
+    if(!exams.length) return {icon:'🎓', title:T, page:P, text:'Aucun partiel dans les 45 jours (échéances par matière, onglet Études).', score:0, n:0};
+    var rv = revisionParMatiere(0, 14);
+    if(rv.total < 120) return {icon:'🎓', title:T, page:P, text:'Pas assez de révision étiquetée par matière sur 14 jours (' + hminTxt(rv.total) + ') : nomme la matière au lancement du Pomodoro.', score:0, n:rv.entrees};
     var pire = null;
     exams.forEach(function(e){
-      var min = parM[e.m] || 0, part = min / total, u = (1 - part) * (46 - e.jours) / 46;
+      var min = rv.parM[e.m] || 0, part = min / rv.total, u = (1 - part) * (46 - e.jours) / 46;
       if(!pire || u > pire.u) pire = {m: e.m, jours: e.jours, min: min, part: part, u: u};
     });
-    return {icon:'🎓', title:T,
+    var avant = revisionParMatiere(14, 28), tend = null;
+    if(avant.total >= 120) tend = tendance(pire.part * 100, (avant.parM[pire.m] || 0) / avant.total * 100, {bonSiHausse:true, unite:'pts de part', seuil:5, ref:'14 j avant'});
+    return {icon:'🎓', title:T, page:P,
             text: pire.m + ' : partiel dans ' + pire.jours + ' jour' + (pire.jours > 1 ? 's' : '') + ', ' + hminTxt(pire.min) + ' sur les 14 derniers jours (' + Math.round(pire.part * 100) + ' % de ta révision).',
             action: pire.part < 0.25
               ? 'Bascule les blocs Annales (10:20) et Comprendre (20:30) sur ' + pire.m + ' jusqu\'au partiel, et fais l\'annale complète du dimanche dans cette matière.'
               : 'Rythme cohérent avec l\'échéance : garde une annale complète par semaine dans cette matière et les cartes d\'erreurs du samedi.',
-            score: Math.round(pire.u * 100), n: exams.length};
+            score: Math.round(pire.u * 100), n: rv.entrees, tendance: tend};
   }
+
+  /* 7. Habitude la plus délaissée ------------------------------------------------------- */
+  function tauxHabitude(hb, deb, fin){
+    var doneSet = {}; (habitLog[hb.id] || []).forEach(function(d){ doneSet[d] = true; });
+    var cible = habitJour(hb), count = 0, applicables = 0;
+    for(var i = deb; i < fin; i++){
+      var d = new Date(now); d.setDate(d.getDate() - i);
+      if(cible !== null && d.getDay() !== cible) continue;
+      applicables++;
+      if(doneSet[localISO(d)]) count++;
+    }
+    return applicables ? count / applicables : null;
+  }
+  function insightHabitudes(){
+    var active = habitsState.filter(function(hb){ return !hb.archived; }), T = 'Habitude la plus délaissée', P = 'habitudes';
+    if(!active.length) return {icon:'✅', title:T, page:P, text:'Aucune habitude active : ajoute-en dans l\'onglet Habitudes, la carte se remplira toute seule.', score:0, n:0};
+    /* Sans historique, « tenue 0 % » ne veut rien dire : il faut 7 jours cochés, toutes
+       habitudes confondues, avant de désigner une délaissée. */
+    var joursH = {}; Object.keys(habitLog || {}).forEach(function(id){ (habitLog[id] || []).forEach(function(d){ joursH[d] = true; }); });
+    var nJ = Object.keys(joursH).length;
+    if(nJ < 7) return {icon:'✅', title:T, page:P, text:'Pas encore assez d\'historique : ' + nJ + ' jour' + (nJ > 1 ? 's' : '') + ' avec une habitude cochée sur 7 minimum. Coche-les chaque soir à la clôture du jour, la carte se remplira toute seule.', score:0, n:nJ};
+    var rates = active.map(function(hb){ return {h: hb, rate: tauxHabitude(hb, 0, 30)}; }).filter(function(x){ return x.rate !== null; });
+    if(!rates.length) return {icon:'✅', title:T, page:P, text:'Pas encore assez d\'historique (minimum 7 jours).', score:0, n:nJ};
+    rates.sort(function(a, b){ return a.rate - b.rate; });
+    var worst = rates[0], nom = (worst.h.icon ? worst.h.icon + ' ' : '') + worst.h.label;
+    var avant = tauxHabitude(worst.h, 30, 60), tend = avant === null ? null : tendance(worst.rate * 100, avant * 100, {bonSiHausse:true, unite:'pts', seuil:5, ref:'30 j avant'});
+    var tenues = rates.filter(function(x){ return x.rate >= 0.7; }).length;
+    if(worst.rate >= 0.7) return {icon:'✅', title:T, page:P, text:'Toutes tes habitudes sont tenues à 70 % et plus sur les 30 derniers jours (' + rates.length + ' habitudes) ; la moins tenue : ' + nom + ', ' + Math.round(worst.rate * 100) + ' %.', action:'', score:0, n:rates.length, tendance:tend};
+    return {icon:'✅', title:T, page:P,
+            text: nom + ' est tenue ' + Math.round(worst.rate * 100) + ' % des 30 derniers jours' + (tenues ? ' ; ' + tenues + ' habitude' + (tenues > 1 ? 's' : '') + ' sur ' + rates.length + ' tiennent à 70 % et plus.' : '.'),
+            action:'Accroche « ' + worst.h.label + ' » à un bloc fixe de la grille (juste après le petit-déjeuner, ou à la clôture du soir) : une habitude sans heure n\'a pas de déclencheur. Si elle saute depuis un mois, réduis-la à sa version de deux minutes et remonte ensuite.',
+            score: Math.max(0, Math.round((0.7 - worst.rate) * 120)), n: rates.length, tendance: tend};
+  }
+
+  /* 8. Créneau le plus productif, et le jour le plus fort ------------------------------- */
+  function heuresTranche(deb, fin, tranche){
+    var t = 0, aujourdhui = new Date(todayISO + 'T00:00:00');
+    sessionsState.forEach(function(b){
+      if(!b || !b.debut || !(Number(b.duree) > 0) || !b.date) return;
+      var dj = daysBetween(new Date(b.date + 'T00:00:00'), aujourdhui);
+      if(dj < deb || dj >= fin) return;
+      if(Math.floor(new Date(b.debut).getHours() / 2) * 2 === tranche) t += Number(b.duree);
+    });
+    return t / 60;
+  }
+  function insightCreneau(){
+    var blocs = sessionsState.filter(function(b){ return b.debut && Number(b.duree) > 0; }), T = 'Ton créneau le plus productif', P = 'calendrier';
+    if(blocs.length < 8) return {icon:'🕐', title:T, page:P, text:'Encore trop peu de blocs enregistrés (' + blocs.length + '/8 minimum) — continue, l\'analyse se débloquera toute seule.', score:0, n:blocs.length};
+    var tranches = {};
+    blocs.forEach(function(b){ var t = Math.floor(new Date(b.debut).getHours() / 2) * 2; tranches[t] = (tranches[t] || 0) + Number(b.duree || 0); });
+    var liste = Object.keys(tranches).map(function(t){ return {debut: Number(t), min: tranches[t]}; }).sort(function(a, b){ return b.min - a.min; });
+    var top = liste[0], hh = function(t){ return (t < 10 ? '0' : '') + t + 'h'; };
+    var total = liste.reduce(function(a, x){ return a + x.min; }, 0), part = Math.round(100 * top.min / total);
+    var txt = 'C\'est entre ' + hh(top.debut) + '–' + hh(top.debut + 2) + ' que tu abats le plus de travail : ' + virg(top.min / 60) + 'h cumulées, soit ' + part + '% de ton temps enregistré.';
+    if(liste.length > 1){ var f = liste[liste.length - 1]; txt += ' Le créneau ' + hh(f.debut) + '–' + hh(f.debut + 2) + ' est le moins rentable (' + virg(f.min / 60) + 'h).'; }
+    var byDow = {};
+    revisionState.forEach(function(r){ if(!r.date) return; var dow = new Date(r.date + 'T00:00:00').getDay(); byDow[dow] = (byDow[dow] || 0) + Number(r.duree || 0); });
+    var jours = Object.keys(byDow).map(function(d){ return {dow: Number(d), min: byDow[d]}; }).sort(function(a, b){ return b.min - a.min; });
+    if(jours.length >= 3) txt += ' Ton meilleur jour est ' + DOW_NAMES_LONG[jours[0].dow] + ' (' + virg(jours[0].min / 60) + 'h cumulées), ton plus faible ' + DOW_NAMES_LONG[jours[jours.length - 1].dow] + ' (' + virg(jours[jours.length - 1].min / 60) + 'h).';
+    /* pas de tendance sans période précédente suivie : « +17 h » contre un vide ne dit rien */
+    var tend = joursSuivis(14, 14).length >= 3 ? tendance(heuresTranche(0, 14, top.debut), heuresTranche(14, 28, top.debut), {bonSiHausse:true, unite:'h ici', dec:1, seuil:0.5, ref:'14 j avant'}) : null;
+    return {icon:'🕐', title:T, page:P, text:txt,
+            action:'Mets la tâche la plus exigeante de la journée dans ce créneau (annale, compréhension du cours) et garde Anki pour les creux : le même travail y coûte moins.',
+            score:10, n:blocs.length, tendance:tend};
+  }
+
+  /* 9. Fidélité au plan ----------------------------------------------------------------- */
   function insightFideliteHebdo(){
     var lundi = new Date(now); lundi.setHours(0, 0, 0, 0); lundi.setDate(lundi.getDate() - ((lundi.getDay() + 6) % 7));
     var semaines = [];
-    for(var w = 1; w <= 4; w++){
+    for(var w = 1; w <= 6; w++){
       var deb = new Date(lundi); deb.setDate(deb.getDate() - 7 * w);
       var fait = 0, prevu = 0, jours = 0;
       for(var i = 0; i < 7; i++){
@@ -6924,30 +7031,45 @@
       }
       if(jours >= 3) semaines.push({fait: fait, prevu: prevu, taux: prevu ? fait / prevu : 0});
     }
-    var T = 'Fidélité au plan';
-    if(!semaines.length) return {icon:'📐', title:T, text:'Il faut une semaine complète suivie (au moins 3 jours avec des blocs enregistrés) pour mesurer la fidélité au plan.', score:0, n:0};
+    var T = 'Fidélité au plan', P = 'bilan';
+    if(!semaines.length) return {icon:'📐', title:T, page:P, text:'Il faut une semaine complète suivie (au moins 3 jours avec des blocs enregistrés) pour mesurer la fidélité au plan.', score:0, n:0};
     var der = semaines[0], pct = Math.round(der.taux * 100);
     var texte = 'Semaine dernière : ' + pct + ' % du plan (' + hminTxt(der.fait) + ' sur ' + hminTxt(der.prevu) + ' prévues)';
-    if(semaines[1]){ var delta = pct - Math.round(semaines[1].taux * 100); texte += ', ' + (delta >= 0 ? '+' : '−') + Math.abs(delta) + ' points par rapport à la semaine d\'avant.'; } else texte += '.';
+    var tend = null;
+    if(semaines[1]){ var delta = pct - Math.round(semaines[1].taux * 100); texte += ', ' + (delta >= 0 ? '+' : '−') + Math.abs(delta) + ' points par rapport à la semaine d\'avant.'; tend = tendance(pct, Math.round(semaines[1].taux * 100), {bonSiHausse:true, unite:'pts', seuil:2, ref:'semaine d\'avant'}); } else texte += '.';
     var action = '';
     if(der.taux < 0.7) action = 'Sous 70 % deux semaines de suite, la Batcave propose une cible réduite de 20 % (charge réaliste). Mieux vaut un plan tenu à 90 % qu\'un plan idéal tenu à 60 % : accepte la réduction, puis remonte.';
     else if(der.taux >= 0.9) action = 'Plan tenu à 90 % et plus : c\'est le moment de monter d\'un cran dans les objectifs du mois, pas d\'ajouter des blocs.';
-    return {icon:'📐', title:T, text:texte, action:action, score: Math.round((1 - der.taux) * 80), n: semaines.length};
+    var serie = {v: semaines.slice().reverse().map(function(s){ return Math.round(s.taux * 100); }), label: semaines.length + ' semaines, % du plan', unite:'%', dec:0, cible:100};
+    return {icon:'📐', title:T, page:P, text:texte, action:action, score: Math.round((1 - der.taux) * 80), n: semaines.length, tendance:tend, serie:serie};
   }
+
+  /* ---- assemblage, priorités, « vu », rendu ---- */
+  var PAGES_INSIGHT = {calendrier:'Calendrier', journal:'Journal', repas:'Repas', sport:'Sport', etudes:'Études', habitudes:'Habitudes', bilan:'Bilan'};
   function buildInsights(){
-    var liste = [insightBlocFragile(), insightDeriveHoraire(), insightDetteSommeil(), insightFideliteHebdo(), insightMatiereExamen(),
-                 insightSportStagnation(), insightBalanceEnergetique(), insightCreneau(), insightSommeilRevision(), insightSleepMood(),
-                 insightSportSkip(), insightWeakestHabit(), insightRevisionByDay()].filter(Boolean);
+    var liste = [insightBlocFragile(), insightDeriveHoraire(), insightSommeil(), insightFideliteHebdo(), insightMatiereExamen(),
+                 insightSport(), insightBalanceEnergetique(), insightHabitudes(), insightCreneau()].filter(Boolean);
     liste.forEach(function(it){ if(typeof it.score !== 'number') it.score = 10; });
     liste.sort(function(a, b){ return b.score - a.score; });
     return liste;
   }
+  /* « Vu » : une priorité mise en pause sept jours ne remonte plus (bandeau, tableau de
+     bord) ; sa carte reste, marquée, et se réactive d'un clic. Clé batcave-*, donc
+     synchronisée comme le reste. */
+  var insightsVu = load('batcave-insights-vu', {});
+  (function(){ var ch = false; Object.keys(insightsVu).forEach(function(t){ if(!(insightsVu[t] >= todayISO)){ delete insightsVu[t]; ch = true; } }); if(ch) save('batcave-insights-vu', insightsVu, true); })();
+  function insightEnPause(title){ return !!insightsVu[title] && insightsVu[title] >= todayISO; }
+  function mettreInsightEnPause(title, jours){
+    if(jours === 0){ delete insightsVu[title]; }
+    else { var d = new Date(now); d.setDate(d.getDate() + (jours || 7)); insightsVu[title] = localISO(d); }
+    save('batcave-insights-vu', insightsVu);
+  }
+  function prioritesDe(items){ return items.filter(function(it){ return it.action && it.score >= 20 && !insightEnPause(it.title); }).slice(0, 3); }
   var prioCache = {t: 0, v: []};
   function prioritesInsights(){
     var t = Date.now();
     if(t - prioCache.t < 60000) return prioCache.v;
-    var v;
-    try{ v = buildInsights().filter(function(it){ return it.action && it.score >= 20; }).slice(0, 3); }catch(e){ v = []; }
+    var v; try{ v = prioritesDe(buildInsights()); }catch(e){ v = []; }
     prioCache = {t: t, v: v};
     return v;
   }
@@ -6966,25 +7088,52 @@
     r.addEventListener('click', aller);
     r.addEventListener('keydown', function(e){ if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); aller(); } });
   })();
+  function tendanceHtml(t){
+    if(!t) return '';
+    var fl = {up:'↗', down:'↘', flat:'→'}[t.sens] || '→';
+    return '<span class="insight-tend ' + (t.bon === true ? 'good' : (t.bon === false ? 'warn' : '')) + '" title="Tendance par rapport à la période précédente de même longueur">' + fl + ' ' + escapeHtml(t.txt) + '</span>';
+  }
+  function boutonAller(it){ return it.page && PAGES_INSIGHT[it.page] ? '<button class="btn" type="button" data-aller="' + it.page + '">→ ' + PAGES_INSIGHT[it.page] + '</button>' : ''; }
   function renderInsights(){
     var el = document.getElementById('insights-grid');
     if(!el) return;
     var items = buildInsights();
-    prioCache = {t: 0, v: []};
-    var prio = prioritesInsights(), bandeau = document.getElementById('insights-priorites');
+    var prio = prioritesDe(items);
+    prioCache = {t: Date.now(), v: prio};
+    var bandeau = document.getElementById('insights-priorites');
     if(bandeau){
       if(prio.length){
-        bandeau.innerHTML = '<div class="sub-head"><h3>🔎 Priorités de la semaine</h3><span class="sub-note">classées par impact, une action chacune</span></div><ol>' +
-          prio.map(function(it){ return '<li><b>' + escapeHtml(it.title) + '</b> — ' + escapeHtml(it.action) + '</li>'; }).join('') + '</ol>';
+        bandeau.innerHTML = '<div class="sub-head"><h3>🔎 Priorités de la semaine</h3><span class="sub-note">classées par impact, une action chacune · « Vu » la met en pause 7 jours</span></div><ol>' +
+          prio.map(function(it){ return '<li><span class="txt"><b>' + escapeHtml(it.title) + '</b> — ' + escapeHtml(it.action) + '</span><span class="insight-outils">' + boutonAller(it) + '<button class="btn" type="button" data-vu="' + escapeHtml(it.title) + '" title="Ne plus la remonter pendant 7 jours">Vu</button></span></li>'; }).join('') + '</ol>';
         bandeau.hidden = false;
       } else bandeau.hidden = true;
     }
     el.innerHTML = items.map(function(it){
-      return '<div class="panel"><div style="font-size:22px; margin-bottom:8px;">'+it.icon+'</div><h3 style="margin-bottom:6px; font-size:15px;">'+escapeHtml(it.title)+'</h3><p class="sub-note" style="line-height:1.5;">'+escapeHtml(it.text)+'</p>' +
+      var pause = insightEnPause(it.title);
+      return '<div class="panel insight-card' + (pause ? ' en-pause' : '') + '" data-titre="' + escapeHtml(it.title) + '">' +
+             '<div class="insight-head"><span class="ic">' + it.icon + '</span>' + tendanceHtml(it.tendance) + '</div>' +
+             '<h3 style="margin-bottom:6px; font-size:15px;">' + escapeHtml(it.title) + '</h3><p class="sub-note" style="line-height:1.5;">' + escapeHtml(it.text) + '</p>' +
+             sparkSvg(it.serie) +
              (it.action ? '<div class="insight-action"><b>ACTION</b>' + escapeHtml(it.action) + '</div>' : '') +
-             (it.n ? '<div class="insight-n">' + it.n + ' ' + (it.n > 1 ? 'points de données' : 'point de données') + '</div>' : '') + '</div>';
+             '<div class="insight-foot">' +
+               (it.n ? '<span class="insight-n">' + it.n + ' ' + (it.n > 1 ? 'points de données' : 'point de données') + '</span>' : '<span class="insight-n">pas encore de données</span>') +
+               '<span class="insight-outils">' + boutonAller(it) +
+               (pause ? '<span class="insight-pause">en pause jusqu\'au ' + escapeHtml(insightsVu[it.title].slice(8, 10) + '/' + insightsVu[it.title].slice(5, 7)) + '</span><button class="btn" type="button" data-reactiver="' + escapeHtml(it.title) + '">Réactiver</button>'
+                      : (it.action && it.score >= 20 ? '<button class="btn" type="button" data-vu="' + escapeHtml(it.title) + '" title="Ne plus la remonter pendant 7 jours">Vu</button>' : '')) +
+               '</span></div></div>';
     }).join('');
   }
+  (function(){
+    var zone = document.querySelector('.page[data-page="insights"]');
+    if(!zone) return;
+    zone.addEventListener('click', function(e){
+      var b = e.target.closest('[data-aller],[data-vu],[data-reactiver]'); if(!b) return;
+      if(b.dataset.aller){ var nb = document.querySelector('.nav-btn[data-page="' + b.dataset.aller + '"]'); if(nb) nb.click(); return; }
+      if(b.dataset.vu){ mettreInsightEnPause(b.dataset.vu, 7); showToast('« ' + b.dataset.vu + ' » en pause 7 jours'); }
+      else if(b.dataset.reactiver){ mettreInsightEnPause(b.dataset.reactiver, 0); showToast('« ' + b.dataset.reactiver + ' » réactivée'); }
+      renderInsights(); renderPrioriteDash();
+    });
+  })();
 
   /* Score d'une journée quelconque — sert au Dashboard (aujourd'hui) et à la courbe 30 jours
      du Bilan. Une seule définition : le score du jour et son historique ne peuvent plus diverger. */
@@ -7722,7 +7871,7 @@
   /* Les series recurrentes de l'agenda portent une consigne apres « · » (« 🦇 Anki 1 · cartes
      dues dentaire ») : un evenement se reconnait a la partie avant le separateur. */
   function titreBaseGcal(s){ return String(s || '').split(' · ')[0].trim(); }
-  try{ window.__bcTitreBase = titreBaseGcal; window.__bcConsigne = consigneBloc; window.__bcInsights = buildInsights; window.__bcBlocs = blocsDuPlanning; window.__bcCle = cleJournee; window.__bcJours = joursSuivis; }catch(e){}
+  try{ window.__bcTitreBase = titreBaseGcal; window.__bcConsigne = consigneBloc; window.__bcInsights = buildInsights; window.__bcBlocs = blocsDuPlanning; window.__bcCle = cleJournee; window.__bcJours = joursSuivis; window.__bcInsightsVu = function(){ return insightsVu; }; }catch(e){}
   function cleGcalJour(iso){ return 'batcave-gcal-' + iso; }
   /* Tous les blocs du planning : un rappel 5 min avant chacun, 30 min avant le coucher
      (le temps d'eteindre l'ecran). « Temps libre » et le coucher n'occupent pas l'agenda. */

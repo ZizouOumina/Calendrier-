@@ -19,6 +19,7 @@ async function ouvrir(seed){
   return { ctx, page, fr };
 }
 const cartes = fr => fr.evaluate(() => [...document.querySelectorAll('#insights-grid .panel')].map(p => p.innerText.replace(/\s+/g,' ')));
+const carte = (fr, titre) => fr.evaluate(t => { const p = document.querySelector('#insights-grid .panel[data-titre="' + t + '"]'); return p ? p.innerText.replace(/\s+/g,' ') : ''; }, titre);
 
 console.log('\n== 65) Créneau le plus productif (données insuffisantes) ==');
 {
@@ -66,8 +67,8 @@ console.log('\n== 67) Sommeil → révision du lendemain ==');
   seed['batcave-revision'] = rev;
   const { ctx, fr } = await ouvrir(seed);
   const c = await cartes(fr);
-  const som = c.find(x => /Sommeil et révision du lendemain/i.test(x));
-  ok(!!som, 'la carte sommeil→révision est affichée');
+  const som = await carte(fr, 'Sommeil');
+  ok(!!som, 'la carte Sommeil est affichée (nuit → révision du lendemain intégrée)');
   ok(/tu révises .* de plus en moyenne/.test(som), 'détecte que les nuits longues précèdent plus de révision : ' + som.slice(0,150));
   ok(/8 nuits/.test(som), 'indique la taille de l\'échantillon (8 nuits)');
   await ctx.close();
@@ -77,8 +78,8 @@ console.log('\n== 68) Aucune régression sur les analyses existantes ==');
 {
   const { ctx, fr } = await ouvrir(null);
   const c = await cartes(fr);
-  ok(c.length === 13, '13 cartes au total (6 anciennes + 7 Insights v2) : ' + c.length);
-  const titres = ['créneau le plus productif','Sommeil et révision','Sommeil & humeur','Séances de sport','Habitude la plus délaissée','Révision par jour'];
+  ok(c.length === 9, '9 cartes au total (Insights v3, une par thème) : ' + c.length);
+  const titres = ['Bloc le plus fragile','Dérive du premier bloc','Sommeil','Balance énergétique','Sport','Matière et partiel','Habitude la plus délaissée','créneau le plus productif','Fidélité au plan'];
   const manquants = titres.filter(t => !c.some(x => x.toLowerCase().includes(t.toLowerCase())));
   ok(manquants.length === 0, 'toutes les analyses sont présentes : ' + (manquants.join(', ') || 'OK'));
   await ctx.close();
