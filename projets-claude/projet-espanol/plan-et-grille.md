@@ -3,12 +3,12 @@
 ## Les phases
 | Phase | Dates | Niveau visé | Temps |
 |---|---|---|---|
-| 0 · Remise à niveau | 8 → 13 sept. 2026 | A1 → B1 automatisé | ≈ 36 h |
+| 0 · Remise à niveau | 11 → 13 sept. 2026 | diagnostic, bases, passés, subjonctif | ≈ 9 h |
 | 1 · Production | 14 sept. → 18 oct. | B1 → B2 : écrit correct, oral fluide, notes en espagnol | ≈ 17 h/sem + 20 h de cours |
 | 2 · Espagnol d'examen | 19 oct. → partiels (nov.) | B2 opérationnel en examen | ≈ 8 h/sem |
 | 3 · Vers le C1 | déc. 2026 → mars 2027 | C1 ; DELE C1 blanc le 14 février | ≈ 6 h/sem |
 
-Jalons : diagnostic le 8 sept. ; notes de cours en espagnol le 27 sept. ; trois minutes d'oral sans pause le 4 oct. ; DELE B2 blanc les 17-18 oct. ; partiels en novembre ; DELE C1 blanc le 14 fév. 2027 ; inscription DELE C1 en mars.
+Jalons : diagnostic le 11 sept. ; notes de cours en espagnol le 27 sept. ; trois minutes d'oral sans pause le 4 oct. ; DELE B2 blanc les 17-18 oct. ; partiels en novembre ; DELE C1 blanc le 14 fév. 2027 ; inscription DELE C1 en mars.
 
 ## Mes blocs Español (phase 1, lundi → vendredi)
 | Heure | Bloc | Ce que je fais avec toi |
