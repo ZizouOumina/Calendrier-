@@ -164,3 +164,89 @@ Capital de test	Argent à toi que tu acceptes de perdre pour acheter des répons
 Capital de croissance	L'argent qui ne finance que ce qui a déjà prouvé qu'il gagne : ici le prêt de 4 000 €, dont 2 000 € au plus en pub par tranches et 2 000 € de fonds de roulement. Il ne sort qu'au palier 3, sous trois conditions tenues trois semaines.	business
 Palier de budget	Niveau de dépense pub quotidienne avec sa condition d'entrée, sa source d'argent, son fonds de roulement et sa règle de descente. On monte d'un palier après trois semaines de conditions vraies, on descend de 30 % en un jour si elles cassent.	ads
 Tranche	Virement de 500 € du compte prêt vers le compte pub, décidé par écrit avec les trois chiffres du jour. La suivante part quand la marge cumulée a remboursé la précédente ; une perte de 150 € sur une tranche arrête tout.	business
+Admin Shopify	L'interface d'administration de la boutique (admin.shopify.com). Tout s'y règle : produits, commandes, clients, thème, paiements, expéditions, taxes, applications. Les chemins de ce glossaire s'écrivent Réglages → Paiements, etc.	shopify
+Thème	Le code qui affiche la boutique. Un thème gratuit récent (Dawn) suffit pour commencer ; changer de thème plus tard fait perdre les personnalisations. Boutique en ligne → Thèmes.	shopify
+Liquid	Le langage de gabarit de Shopify (balises {% %} et {{ }}). C'est lui qu'on édite quand aucun réglage du thème ne suffit. Modifier le code d'un thème sans dupliquer d'abord est la première cause de boutique cassée.	shopify
+Section et bloc	Unités modulaires d'une page de thème, réordonnables dans l'éditeur sans toucher au code. Les sections dynamiques peuvent être ajoutées à n'importe quelle page ; c'est ainsi qu'on construit une page produit longue sans application.	shopify
+Modèle (template)	Le gabarit appliqué à un type de page : produit, collection, page, article, panier. On peut créer plusieurs modèles de produit et en assigner un différent à chaque produit, par exemple un modèle « produit test » sans avis.	shopify
+Variante	Une déclinaison d'un produit (taille, couleur). 100 variantes maximum par produit sur les forfaits standard, 3 options. Chaque variante a son SKU, son prix, son stock et son poids.	shopify
+Métachamp (metafield)	Champ personnalisé attaché à un produit, une collection, un client ou une commande (matière, délai de livraison, ingrédients). Affiché dans le thème sans code depuis l'éditeur. Réglages → Données personnalisées.	shopify
+Métaobjet	Un enregistrement structuré réutilisable (une FAQ, un témoignage, un guide des tailles) qu'on relie à plusieurs produits par métachamp. Évite de recopier le même bloc sur cinquante fiches.	shopify
+Collection manuelle / automatique	Un regroupement de produits. Automatique = règles (étiquette, prix, stock) qui ajoutent les produits toutes seules ; c'est ce qu'il faut pour les collections de saison ou de promotions.	shopify
+Profil de livraison	Réglage qui définit les tarifs d'expédition par zone et par produit. Réglages → Expédition. Un tarif mal réglé est la cause silencieuse la plus fréquente d'abandon au paiement.	shopify
+Tarif d'expédition basé sur le prix ou le poids	Deux façons de facturer le port. Le seuil « livraison offerte à partir de X » se règle ici, pas dans une application.	shopify
+Markets (Marchés)	Fonction qui gère plusieurs pays : devise, langue, prix arrondis, domaines, taxes. Vendre en Espagne et en France proprement passe par Markets, pas par une application de devises.	shopify
+Shopify Payments	La passerelle de paiement native. Réglages → Paiements. Elle conditionne Shop Pay, les paiements accélérés et la vitesse des versements ; elle n'est pas disponible dans tous les pays.	shopify
+Versement (payout)	Le virement de Shopify vers ton compte bancaire, après délai (souvent 2 à 5 jours ouvrés). Le décalage entre encaissement et versement est ce qui crée le besoin de trésorerie quand la publicité est payée d'avance.	shopify
+Réserve de paiement	Retenue d'une part des versements par Shopify Payments ou le processeur en cas de risque jugé élevé (nouveau compte, litiges, pré-commandes). Peut geler plusieurs milliers d'euros ; l'anticiper fait partie du plan de trésorerie.	shopify
+Analyse de fraude	Le score de risque affiché sur chaque commande. Une commande à risque élevé se vérifie avant expédition ; expédier quand même transfère le risque de chargeback sur toi.	shopify
+Shopify Protect	Protection contre les chargebacks pour fraude, sous conditions (Shop Pay, Shopify Payments). Ne couvre pas les litiges « produit non conforme ».	shopify
+Paiement accéléré	Les boutons Shop Pay, Apple Pay, Google Pay, PayPal sur la fiche produit et le panier. Ils sautent des étapes du tunnel : c'est le gain de conversion le moins cher à activer.	shopify
+Checkout extensibility	La nouvelle façon de personnaliser la page de paiement (extensions d'application, blocs), qui remplace le fichier checkout.liquid. Sur les forfaits non-Plus, la page de paiement se modifie peu, et c'est voulu.	shopify
+Panier abandonné	Une commande commencée non payée. Shopify envoie un e-mail de relance paramétrable (Réglages → Notifications) ; une séquence de trois relances dans Klaviyo fait mieux.	shopify
+Commande brouillon	Commande créée à la main depuis l'admin, avec facture envoyée par lien. Sert aux ventes hors ligne, aux échantillons, aux remplacements et aux tests de paiement.	shopify
+Code de réduction vs remise automatique	Le code se saisit ; la remise automatique s'applique seule au panier. Une remise automatique convertit mieux, un code se traque mieux (influenceurs, affiliés).	shopify
+Shopify Flow	L'automatisation native, gratuite : si une commande est à risque élevé, l'étiqueter ; si le stock passe sous 5, prévenir. Remplace plusieurs applications payantes.	shopify
+Application (app) et coût mensuel	Chaque application ajoute un abonnement et souvent du script sur la page. Cinq applications à 15 € font 900 € par an et une page plus lente : les compter dans le P&L et les auditer chaque mois.	shopify
+Boutique de développement / mot de passe	La boutique reste protégée par mot de passe tant qu'elle n'est pas publiée. Ne jamais lancer une campagne avant d'avoir retiré le mot de passe et passé une commande de test réelle.	shopify
+Commande de test	Une vraie commande passée par toi, remboursée ensuite : elle vérifie le paiement, les taxes, le port, les e-mails de confirmation, l'étiquette d'expédition. À faire avant chaque lancement.	shopify
+Notifications de commande	Les e-mails automatiques (confirmation, expédition, livraison). Modifiés dans Réglages → Notifications. Les réécrire dans ta voix vaut plus que la plupart des applications de marque.	shopify
+Politiques de la boutique	Pages légales générées par Shopify : remboursement, confidentialité, conditions, expédition. Obligatoires pour Meta, Google et la loi ; à relire, pas à laisser telles quelles.	shopify
+Domaine et sous-domaine	Le nom de la boutique. Acheté chez Shopify ou raccordé depuis un registrar. Le domaine principal doit être unique, sinon le référencement se dilue.	shopify
+Canaux de vente	Les endroits où le catalogue est publié : boutique en ligne, Meta, Google, TikTok Shop, POS. Un produit non publié sur un canal n'y apparaît jamais, cause classique de flux publicitaire vide.	shopify
+Shopify POS	Le point de vente physique. Sans objet en dropshipping, à connaître si un jour tu vends en salon ou en cabinet.	shopify
+Rapports Shopify	Analyses natives : ventes par produit, par canal, par référent, taux de conversion du tunnel. Le rapport « taux de conversion par étape » est celui qui dit où le tunnel fuit.	shopify
+ShopifyQL	Le langage de requête des rapports Shopify (SELECT … FROM sales SINCE …). Permet des analyses que l'interface ne propose pas, et c'est ce que la Batcave utilise pour lire ton chiffre.	shopify
+Admin API et clé privée	L'accès programmatique à la boutique. Ne jamais coller une clé d'API dans un chat, une extension ou une application non vérifiée.	shopify
+Vitesse de la boutique	Score dans Boutique en ligne → Vitesse. Trois leviers : moins d'applications, images compressées en WebP, thème récent. Chaque seconde de chargement coûte des ventes.	shopify
+Bilan	Photo du patrimoine à un instant : actif (ce que tu possèdes, stock, trésorerie, créances) et passif (ce que tu dois, prêt, fournisseurs, capital). Le compte de résultat raconte l'année, le bilan raconte l'état.	finance
+Compte de résultat	Chiffre d'affaires moins charges sur une période : il dit si l'activité gagne de l'argent. Une entreprise peut être rentable au compte de résultat et morte faute de trésorerie.	finance
+Trésorerie vs bénéfice	Le bénéfice est comptable, la trésorerie est ce qu'il y a sur le compte. Payer la publicité aujourd'hui et être versé dans cinq jours crée un trou de trésorerie même en étant rentable.	finance
+Seuil de rentabilité	Le chiffre d'affaires à partir duquel les charges fixes sont couvertes. Charges fixes divisées par le taux de marge sur coûts variables. En dessous, chaque mois creuse.	finance
+Charges fixes vs variables	Fixes : abonnements, loyer, applications, indépendantes des ventes. Variables : achat produit, port, frais de paiement, publicité. Seules les variables entrent dans la marge de contribution.	finance
+Taux de marge vs taux de marque	Marge = bénéfice divisé par le coût d'achat. Marque = bénéfice divisé par le prix de vente. Les confondre fait surestimer sa rentabilité de dix à vingt points.	finance
+Coefficient multiplicateur	Prix de vente divisé par le coût d'achat. En dropshipping, viser 3 à 4 sur les produits testés, sinon la publicité ne rentre pas dans la marge.	finance
+EBITDA	Résultat avant intérêts, impôts, amortissements. Approxime la génération de cash de l'exploitation ; utile pour comparer, à ne pas confondre avec la trésorerie réelle.	finance
+Amortissement	Étalement comptable du coût d'un bien durable (ordinateur, matériel) sur sa durée d'usage. Diminue le résultat imposable sans sortie de cash l'année suivante.	finance
+Prévisionnel de trésorerie	Tableau mois par mois des entrées et sorties attendues. C'est le document qui dit si un prêt est tenable, pas le compte de résultat.	finance
+Besoin en fonds de roulement	L'argent immobilisé entre le moment où tu paies (stock, publicité) et celui où tu es payé. Il grandit quand les ventes montent : croître trop vite sans cash est un risque, pas une réussite.	finance
+Effet de levier	Utiliser de la dette pour financer une activité. Il multiplie les gains et les pertes ; sur un prêt étudiant, la seule dette raisonnable est celle qui finance les études, pas les tests publicitaires.	finance
+Taux annuel effectif global (TAEG)	Le coût total d'un crédit en pourcentage annuel : intérêts, assurance, frais. C'est le seul chiffre qui permet de comparer deux offres de prêt.	finance
+Différé d'amortissement	Période où tu ne rembourses pas le capital (parfois ni les intérêts) d'un prêt étudiant. Les intérêts courent souvent quand même : le coût total dépend de la longueur du différé.	finance
+Intérêts composés	Les intérêts qui produisent eux-mêmes des intérêts. Le moteur de l'épargne longue et, dans l'autre sens, de la dette non remboursée.	finance
+Rendement réel	Rendement nominal moins inflation moins fiscalité. Un livret à 2 % avec 3 % d'inflation fait perdre du pouvoir d'achat.	finance
+Fonds d'urgence	Trois à six mois de charges fixes, disponibles immédiatement, jamais investis. Pour toi, environ 3 500 à 7 000 € au vu de charges de 1 187 € par mois.	finance
+Liquidité	La facilité à récupérer son argent sans perte. Un compte rémunéré est liquide, un investissement en actions ne l'est pas à horizon court.	finance
+Horizon de placement	La durée avant d'avoir besoin de l'argent. Moins de trois ans : aucun risque, pas d'actions. L'argent emprunté n'a pas d'horizon long, il a une échéance.	finance
+Diversification	Répartir pour ne pas dépendre d'un seul produit, d'un seul fournisseur, d'une seule plateforme publicitaire. Vaut pour un portefeuille comme pour une boutique.	finance
+ETF et frais de gestion	Fonds indiciel coté qui réplique un indice à frais réduits. Les frais annuels sont le seul paramètre que tu contrôles vraiment ; 1 % par an mange près d'un quart du capital sur trente ans.	finance
+Résidence fiscale	Le pays où tu es imposé, déterminé par le séjour (souvent plus de 183 jours) et le centre des intérêts. Elle décide des produits accessibles : un résident fiscal espagnol n'ouvre pas de PEA.	finance
+Impôt sur l'épargne en Espagne	Les revenus du capital (intérêts, dividendes, plus-values) sont imposés par tranches d'environ 19 à 28 %. À intégrer avant de comparer un rendement affiché.	finance
+Cuenta remunerada et depósito	Compte rémunéré et dépôt à terme espagnols, garantis jusqu'à 100 000 € par le fonds de garantie. C'est là que dort l'argent d'un prêt non encore dépensé, pas en bourse.	finance
+Coût d'opportunité	Ce à quoi tu renonces en choisissant. Deux heures de boutique pendant la semaine 0 coûtent deux heures d'espagnol : c'est le vrai prix, pas zéro.	finance
+Runway personnel	Nombre de mois que ton argent disponible couvre à charges constantes. Le chiffre à regarder avant toute dépense de test.	finance
+SEO produit	Titre, méta-description, texte alternatif des images, URL propre, texte unique. Une fiche copiée du fournisseur est invisible dans Google et pénalisée comme contenu dupliqué.	seo
+Longue traîne	Requêtes précises et peu concurrentielles (« cepillo interdental para brackets »). Peu de volume chacune, mais elles convertissent et sont accessibles à une jeune boutique.	seo
+Contenu de marque (blog)	Articles qui répondent aux questions de l'avatar. Coût en temps, effet différé de trois à six mois : à ne pas lancer pendant une phase de test payant.	seo
+Backlink	Lien d'un autre site vers le tien. Signal de confiance pour Google. Acheter des liens en masse est un risque de pénalité.	seo
+Organique vs payant	L'organique est un actif qui compose, le payant est un robinet qui s'arrête avec le budget. Une boutique saine finit avec les deux ; elle commence rarement par l'organique.	seo
+Google Search Console	Outil gratuit qui montre les requêtes qui amènent des visiteurs, les pages indexées et les erreurs. À raccorder dès la mise en ligne.	seo
+GA4	La version actuelle de Google Analytics, orientée événements. Utile pour le parcours ; ne remplace pas les rapports Shopify pour le chiffre d'affaires.	seo
+Contenu généré par le créateur (UGC) organique	Vidéos publiées sur ton propre compte TikTok ou Instagram, sans budget. Sert de banc d'essai gratuit pour les accroches avant de les passer en publicité.	seo
+Affiliation	Rémunération au pourcentage des ventes apportées, suivie par code ou lien. Coût variable, donc sans risque de trésorerie, mais demande du suivi anti-fraude.	seo
+Influenceur et tarif	Paiement en produit, en fixe ou au résultat. Demander toujours les statistiques d'audience réelles et le droit d'utiliser la vidéo en publicité (whitelisting).	seo
+Whitelisting / partenariat publicitaire	Diffuser une publicité depuis le compte d'un créateur, avec son autorisation. Meilleure preuve sociale, souvent meilleur coût par acquisition qu'une créative de marque.	seo
+SLA de réponse	Le délai que tu t'engages à tenir pour répondre à un client (par exemple 24 heures ouvrées). Écrit sur la page contact, il fait baisser les litiges.	service
+Macro / réponse type	Réponse préécrite pour les demandes fréquentes : où est ma commande, retour, taille. Dix macros couvrent quatre-vingts pour cent des messages.	service
+Suivi post-achat	Page ou e-mails qui informent de l'avancée de la livraison. En dropshipping, l'absence de suivi est la première cause de litige, avant le produit lui-même.	service
+Politique de retour	Délai, qui paie le retour, état accepté, remboursement ou avoir. En Union européenne, le droit de rétractation de quatorze jours s'applique et ne se contourne pas.	service
+Geste commercial	Remboursement partiel, renvoi, remise. Presque toujours moins cher qu'un litige perdu et qu'un avis négatif.	service
+Avis clients	Preuve sociale collectée après achat. Les avis fabriqués sont interdits (Union européenne, plateformes) et se repèrent : c'est un risque juridique et de confiance.	service
+NPS	Question « recommanderiez-vous, de 0 à 10 » et score qui en découle. Indicateur simple de satisfaction, à suivre par cohorte.	service
+Taux de contact	Nombre de tickets divisé par nombre de commandes. Au-dessus de dix pour cent, le problème est dans le produit, la livraison ou la fiche, pas dans le service.	service
+Positionnement	La place que tu occupes dans la tête du client : pour qui, contre quoi, pourquoi toi. Une boutique sans positionnement ne se distingue que par le prix, et perd.	marque
+Proposition de valeur	La phrase qui dit le bénéfice principal et pour qui. Elle se teste : c'est souvent la même que la meilleure accroche publicitaire.	marque
+Identité visuelle	Logo, palette, typographies, style photo, appliqués partout de la même façon. Cohérence supérieure à originalité pour une jeune boutique.	marque
+Voix de marque	La façon d'écrire : tutoiement ou vouvoiement, niveau de langue, humour ou sobriété. Documentée dans un fichier, sinon chaque texte diverge.	marque
+Preuve	Ce qui rend une promesse crédible : démonstration filmée, avis, chiffres, garantie, certification. Sans preuve, une promesse forte fait fuir plus qu'elle ne vend.	marque
+Marque vs boutique de test	Une boutique de test cherche un produit gagnant ; une marque construit un actif revendable. Le passage de l'une à l'autre est une décision, pas un accident.	marque
