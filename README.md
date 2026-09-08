@@ -9,7 +9,7 @@ La version publiée vit sur claude.ai (Artifact) avec synchronisation cloud et c
 - `tests/qa-shots.mjs`, `tests/qa-shots2.mjs` — parcours visuel : chaque onglet photographié avec un jeu de données réaliste (images dans `/tmp/qa/`).
 - `tests/rapport-hebdo.mjs` — le bilan du dimanche sans ouvrir la page : charge la Batcave dans Chromium avec les documents du cloud (`--cloud <dossier>`, un JSON par clé, tels que les écrit l'action `read_db` de l'outil Artifact) ou un export (`--seed`), et produit `rapport.html` (courriel), `rapport.md` (Notion) et `rapport.json`. Une Routine hebdomadaire l'exécute le dimanche soir et envoie le résultat.
 - `dossier-dropshipping.html` — le dossier de formation dropshipping (programme 12 semaines, ads, gestion, fiscalité, exercices corrigés, auto-tests, glossaire) ; page autonome, publiée aussi en Artifact.
-- `dossier-espagnol.html` — le dossier Español (du zéro au C1 : phases datées, semaine 0 jour par jour, grille pendant les cours, programme grammatical A1→C1 en check-list, lexiques, espagnol d'examen, pièges du francophone, outils, mesures) ; page autonome, publiée aussi en Artifact.
+- `dossier-espagnol.html` — le Dossier Español (du zéro au C1 : phases, semaine 0, grille, grammaire A1→C1 en check-list, lexiques, formules, compétences, examens, pièges, outils, mesures) ; page autonome, publiée aussi en Artifact.
 - `glossaire-dropshipping-anki.txt` — les 163 cartes du glossaire au format d'import Anki (séparateur tabulation, 3e colonne en étiquettes).
 
 ## Lancer la campagne en local
