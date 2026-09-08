@@ -1,0 +1,335 @@
+<title>Prise en main de la Batcave</title>
+<meta name="description" content="Tout ce avec quoi se familiariser : la Batcave onglet par onglet, le sport, la nutrition, Anki, les projets Claude, les dossiers, les routines et les connecteurs, avec le moment où chaque chose sert.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root{
+    --bg:#f3f5f7; --paper:#ffffff; --paper-2:#e9eef2; --line:#d3dbe2; --line-soft:#e3e9ee;
+    --ink:#14202b; --ink-2:#4a5b6a; --ink-3:#7b8b98;
+    --accent:#0e7c8c; --accent-ink:#0a5f6c; --accent-soft:#d9f0f3;
+    --now:#b8541c; --now-soft:#fbe9dd; --later:#5b6b7a; --later-soft:#e6ebef;
+    --done:#2f8f5b;
+    --display:'Bebas Neue','Arial Narrow',Impact,sans-serif;
+    --body:'Barlow','Helvetica Neue',Arial,sans-serif;
+    --mono:'IBM Plex Mono','SFMono-Regular',Menlo,monospace;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#0b1219; --paper:#111b25; --paper-2:#172330; --line:#243544; --line-soft:#1c2a37;
+      --ink:#e2ecf2; --ink-2:#a3b4c2; --ink-3:#6f8292;
+      --accent:#3fc7d9; --accent-ink:#7ddbe8; --accent-soft:#12333b;
+      --now:#f0935a; --now-soft:#3a2416; --later:#93a4b3; --later-soft:#1d2a36;
+      --done:#4fc07f;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#0b1219; --paper:#111b25; --paper-2:#172330; --line:#243544; --line-soft:#1c2a37;
+    --ink:#e2ecf2; --ink-2:#a3b4c2; --ink-3:#6f8292;
+    --accent:#3fc7d9; --accent-ink:#7ddbe8; --accent-soft:#12333b;
+    --now:#f0935a; --now-soft:#3a2416; --later:#93a4b3; --later-soft:#1d2a36;
+    --done:#4fc07f;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; background:var(--bg); color:var(--ink); font-family:var(--body); font-size:15px; line-height:1.5; -webkit-font-smoothing:antialiased;}
+  a{color:var(--accent-ink);}
+  h1,h2,h3{font-family:var(--display); font-weight:400; letter-spacing:.03em; margin:0; text-wrap:balance;}
+  p{margin:0;}
+  .wrap{display:grid; grid-template-columns:220px minmax(0,1fr); gap:32px; max-width:1180px; margin:0 auto; padding:36px 28px 90px;}
+  @media (max-width:860px){ .wrap{grid-template-columns:minmax(0,1fr); padding:22px 16px 80px;} .side{position:static;} }
+  .side{position:sticky; top:20px; align-self:start; display:flex; flex-direction:column; gap:14px;}
+  .brand{display:flex; flex-direction:column; gap:2px;}
+  .brand .t{font-family:var(--display); font-size:30px; line-height:1;}
+  .brand .s{font-family:var(--mono); font-size:10.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--accent);}
+  .progress{background:var(--paper); border:1px solid var(--line); padding:12px 14px;}
+  .progress .n{font-family:var(--display); font-size:34px; line-height:1; font-variant-numeric:tabular-nums;}
+  .progress .n small{font-family:var(--mono); font-size:11px; color:var(--ink-3); margin-left:6px;}
+  .bar{height:6px; background:var(--line-soft); margin-top:8px; overflow:hidden;}
+  .bar i{display:block; height:100%; width:0; background:var(--accent);}
+  .toc{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:2px;}
+  .toc a{display:flex; justify-content:space-between; gap:8px; text-decoration:none; color:var(--ink-2); font-size:13.5px; padding:5px 8px; border-left:2px solid transparent;}
+  .toc a:hover{color:var(--ink); background:var(--paper);}
+  .toc a b{font-family:var(--mono); font-weight:500; font-size:11px; color:var(--ink-3);}
+  .legend{font-size:12px; color:var(--ink-3); line-height:1.7; padding:0 8px;}
+  .legend .tag{margin-right:4px;}
+  .filters{display:flex; flex-wrap:wrap; gap:6px; padding:0 8px;}
+  .filters button{font-family:var(--body); font-size:12px; font-weight:600; border:1px solid var(--line); background:var(--paper); color:var(--ink-2); padding:5px 10px; cursor:pointer;}
+  .filters button[aria-pressed="true"]{background:var(--accent); border-color:var(--accent); color:#fff;}
+  .filters button:focus-visible{outline:2px solid var(--accent); outline-offset:1px;}
+
+  header.top{margin-bottom:26px; max-width:66ch;}
+  header.top h1{font-size:46px; line-height:1;}
+  header.top .lead{color:var(--ink-2); margin-top:12px; font-size:16px;}
+  header.top .lead b{color:var(--ink); font-weight:600;}
+
+  section.grp{margin-bottom:34px; scroll-margin-top:16px;}
+  section.grp h2{font-size:26px; color:var(--ink); display:flex; align-items:baseline; gap:12px; margin-bottom:4px;}
+  section.grp h2 .k{font-family:var(--mono); font-size:12px; color:var(--accent); letter-spacing:.1em;}
+  section.grp .intro{color:var(--ink-2); font-size:14px; max-width:70ch; margin-bottom:12px;}
+  .items{display:flex; flex-direction:column; border-top:1px solid var(--line);}
+  .item{display:grid; grid-template-columns:26px minmax(0,1fr) auto; gap:4px 12px; padding:11px 6px 11px 2px; border-bottom:1px solid var(--line-soft); align-items:start;}
+  .item[hidden]{display:none;}
+  .item input{width:18px; height:18px; margin:3px 0 0; accent-color:var(--accent); cursor:pointer;}
+  .item .ti{font-weight:600; color:var(--ink); font-size:15px; cursor:pointer;}
+  .item .tx{grid-column:2; color:var(--ink-2); font-size:14px; max-width:78ch;}
+  .item .tx code{font-family:var(--mono); font-size:12.5px; background:var(--paper-2); padding:1px 5px;}
+  .item.done .ti{color:var(--ink-3); text-decoration:line-through;}
+  .item.done .tx{color:var(--ink-3);}
+  .tag{font-family:var(--mono); font-size:10.5px; letter-spacing:.06em; text-transform:uppercase; padding:3px 7px; white-space:nowrap; border:1px solid transparent; align-self:start;}
+  .tag.now{color:var(--now); background:var(--now-soft);}
+  .tag.week{color:var(--accent-ink); background:var(--accent-soft);}
+  .tag.later{color:var(--later); background:var(--later-soft);}
+  .item .tag{grid-column:3; grid-row:1;}
+  @media (max-width:560px){ .item{grid-template-columns:26px minmax(0,1fr);} .item .tag{grid-column:2; grid-row:auto; justify-self:start;} }
+  .note{background:var(--paper); border-left:3px solid var(--accent); padding:10px 14px; font-size:14px; color:var(--ink-2); margin:10px 0 0; max-width:78ch;}
+  .note b{color:var(--ink);}
+  table{border-collapse:collapse; width:100%; font-size:13.5px; margin:8px 0 12px;}
+  .tbl{overflow-x:auto;}
+  th,td{text-align:left; padding:6px 10px 6px 0; border-bottom:1px solid var(--line-soft); vertical-align:top;}
+  th{font-family:var(--mono); font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-3); font-weight:500;}
+  td.h{font-family:var(--mono); font-size:12.5px; white-space:nowrap; color:var(--accent-ink); font-variant-numeric:tabular-nums;}
+  footer{margin-top:40px; padding-top:14px; border-top:1px solid var(--line); font-family:var(--mono); font-size:11.5px; color:var(--ink-3);}
+  @media (prefers-reduced-motion: reduce){ *{transition:none !important;} }
+</style>
+
+<div class="wrap">
+  <aside class="side">
+    <div class="brand"><span class="t">Prise en main</span><span class="s">La Batcave · 8 sept. 2026</span></div>
+    <div class="progress"><div class="n"><span id="p-done">0</span><small>/ <span id="p-total">0</span> vus</small></div><div class="bar"><i id="p-bar"></i></div></div>
+    <div class="filters" role="group" aria-label="Filtrer par moment">
+      <button type="button" data-f="all" aria-pressed="true">Tout</button>
+      <button type="button" data-f="now" aria-pressed="false">Aujourd'hui</button>
+      <button type="button" data-f="week" aria-pressed="false">Avant lundi 14</button>
+      <button type="button" data-f="later" aria-pressed="false">Plus tard</button>
+    </div>
+    <ul class="toc" id="toc"></ul>
+    <p class="legend"><span class="tag now">Aujourd'hui</span> sert dès cette semaine 0 · <span class="tag week">Avant lundi 14</span> sert dès la rentrée · <span class="tag later">Plus tard</span> sert à partir du 19 octobre ou après.</p>
+  </aside>
+
+  <main>
+    <header class="top">
+      <h1>Tout ce avec quoi te familiariser</h1>
+      <p class="lead">Une ligne par chose, groupée par domaine, avec le moment où elle sert. Coche quand tu l'as vue une fois en vrai : ouverte, essayée, comprise. <b>Rien ici n'est à apprendre par cœur</b> : la Batcave affiche la consigne du bloc en cours, le dossier reste la référence, les projets Claude connaissent leurs commandes. Ton travail, c'est de savoir que chaque chose existe et où elle est.</p>
+    </header>
+
+    <section class="grp" id="journee">
+      <h2><span class="k">01</span>La journée type</h2>
+      <p class="intro">La grille de base, celle qui revient quand aucune période Español n'est active. Les blocs dentaires ne bougent jamais ; les blocs « Projets perso » sont ceux que les périodes Español renomment.</p>
+      <div class="tbl"><table>
+        <tr><th>Heure</th><th>Semaine</th><th>Ce que c'est</th></tr>
+        <tr><td class="h">05:30</td><td>Sport (lun, mar, jeu, sam) · Anki matinal (mer) · Projets perso matinal (ven, dim)</td><td>40 min au parc, ou un bloc avant la douche.</td></tr>
+        <tr><td class="h">06:45</td><td>Petit-déjeuner + Coran (1 page)</td><td>La page du jour se coche dans Coran &amp; Duaas.</td></tr>
+        <tr><td class="h">07:20 · 08:20</td><td>Anki 1 · Anki 2</td><td>Deux Pomodoros 25 + 5. Les cinq dernières minutes d'Anki 2 : les dix formules espagnoles du jour.</td></tr>
+        <tr><td class="h">09:20</td><td>Cartes du dernier cours</td><td>Les questions écrites la veille à 20:30 deviennent des cartes (projet Dentaire, « cartes »).</td></tr>
+        <tr><td class="h">10:20</td><td>Annales</td><td>Une question d'annale, corrigée avec « annales ».</td></tr>
+        <tr><td class="h">11:20 · 13:00 · 14:00</td><td>Projets perso 1, 2, 3</td><td>Jusqu'au 18 oct. : gramática, escribir, preparar la clase. Ensuite : dossier dropshipping et boutique.</td></tr>
+        <tr><td class="h">12:20</td><td>Déjeuner + lectura, micro-sieste 12:40</td><td>Vingt pages en espagnol, papier, sans dictionnaire.</td></tr>
+        <tr><td class="h">15:00 → 19:30</td><td>Trajet, Cours, Trajet retour</td><td>Podcast à l'aller, résumé oral d'une minute et Anki dans le tram au retour.</td></tr>
+        <tr><td class="h">20:30</td><td>Comprendre le cours du jour</td><td>Notes du jour dans le projet Dentaire, en espagnol : « explica », puis « interrógame ».</td></tr>
+        <tr><td class="h">21:55</td><td>Coucher</td><td>Clôture du jour faite avant, écran off, réveil loin du lit.</td></tr>
+      </table></div>
+      <div class="items">
+        <div class="item" data-w="now"><input type="checkbox" id="c-journee-1"><label class="ti" for="c-journee-1">Les variantes de jours</label><p class="tx">Vendredi : Jumu'ah 13:30 à la place des blocs de l'après-midi. Samedi : courses 13:30, cartes d'erreurs 16:00, Projets perso 2 et 3 à 17:00 et 18:00. Dimanche : annale complète 09:20, correction 10:20, batch cooking 14:30, après-midi libre. Coucher 21:00 le week-end.</p><span class="tag now">Aujourd'hui</span></div>
+        <div class="item" data-w="now"><input type="checkbox" id="c-journee-2"><label class="ti" for="c-journee-2">Les quatre périodes Español et leurs dates</label><p class="tx">Semaine 0 du 8 au 13 sept. (grille entièrement remplacée, neuf heures d'espagnol par jour). Phase 1 du 14 sept. au 18 oct. (les trois Projets perso deviennent Español). Phase 2 du 19 oct. au 29 nov. (Projets perso 1 revient, 13:00 devient annales en espagnol). Phase 3 du 30 nov. au 14 mars (un seul bloc Español à 13:00). Le 15 mars, grille de base.</p><span class="tag now">Aujourd'hui</span></div>
+        <div class="item" data-w="now"><input type="checkbox" id="c-journee-3"><label class="ti" for="c-journee-3">Les quatre non-négociables d'une journée qui déborde</label><p class="tx">Anki tous les jours, un texte écrit et corrigé, l'heure de conversation réelle, les trois chiffres du dimanche. Si une journée craque, tu coupes le registre académique de 13:00 ou un bloc Projets perso, jamais ces quatre-là ni un bloc dentaire.</p><span class="tag now">Aujourd'hui</span></div>
+      </div>
+    </section>
+
+    <section class="grp" id="batcave">
+      <h2><span class="k">02</span>La Batcave, onglet par onglet</h2>
+      <p class="intro">Dix-huit onglets, mais cinq gestes nourrissent tout le reste : le rituel d'ouverture, le Pomodoro nommé, la coche du calendrier, la clôture du soir, la revue du dimanche. Le reste se lit.</p>
+      <div class="items">
+        <div class="item" data-w="now"><input type="checkbox" id="c-bc-1"><label class="ti" for="c-bc-1">Le rituel d'ouverture</label><p class="tx">Au premier lancement de la journée, un écran te montre le score d'hier et propose « Voir mon bilan hebdo » ou « C'est parti ». Trente secondes.</p><span class="tag now">Aujourd'hui</span></div>
+        <div class="item" data-w="now"><input type="checkbox" id="c-bc-2"><label class="ti" for="c-bc-2">La barre du haut (Batcomputer)</label><p class="tx">Horloge, date, météo, synchro cloud, lecture Spotify, dernière sauvegarde, et le relevé <code>GRILLE</code> (« Español · semaine 0 · J-5 ») qui dit dans quelle période tu es. La ligne orange en dessous est la priorité du moment : un clic ouvre l'onglet où agir. Le bouton Clôture y vit à partir de 20:25.</p><span class="tag now">Aujourd'hui</span></div>
+        <div class="item" data-w="now"><input type="checkbox" id="c-bc-3"><label class="ti" for="c-bc-3">Tableau de bord : le bloc en cours et sa consigne</label><p class="tx">Le bloc de la grille à cette heure, avec la consigne exacte (ce que tu fais, avec quel outil, quelle commande Claude). C'est l'écran que tu regardes quand tu ne sais plus quoi faire.</p><span class="tag now">Aujourd'hui</span></div>
+        <div class="item" data-w="now"><input type="checkbox" id="c-bc-4"><label class="ti" for="c-bc-4">Tableau de bord : les trois boutons Pomodoro</label><p class="tx">Révision (tu choisis la matière), Projets perso (tu nommes la tâche) et 🇪🇸 Español (la tâche du bloc en cours est proposée). Nommer la session est obligatoire : c'est ce qui remplit Études, Agenda, les objectifs et les cartes Insights.</p><span class="tag now">Aujourd'hui</span></div>
+        <div class="item" data-w="now"><input type="checkbox" id="c-bc-5"><label class="ti" for="c-bc-5">Tableau de bord : le plan du jour et les cellules de temps</label><p class="tx">Le plan du jour avec « Maintenant / Demain / croix » pour chaque tâche, les cellules Révision, Projets et Español (temps fait sur temps prévu), la checklist « agir », la ligne de statut, le lien vers ton Notion.</p><span class="tag now">Aujourd'hui</span></div>
+        <div class="item" data-w="now"><input type="checkbox" id="c-bc-6"><label class="ti" for="c-bc-6">Le minuteur et le mode focus</label><p class="tx">Durée automatique : 25 + 5 pour Anki, 55 + 5 pour le reste (modifiable dans Études). Plein écran avec le cadran, Échap pour sortir. Un bloc trouvé expiré demande confirmation avant d'être compté. Le minuteur survit à un rechargement de page.</p><span class="tag now">Aujourd'hui</span></div>
+        <div class="item" data-w="now"><input type="checkbox" id="c-bc-7"><label class="ti" for="c-bc-7">Calendrier du jour : cocher chaque bloc fait</label><p class="tx">La ligne du temps de la journée, avec la consigne de chaque bloc. Les blocs couverts par un Pomodoro se cochent seuls ; les autres (repas, trajets, conversation réelle) tu les coches à la main. C'est la source de « fidélité au plan » et de « bloc fragile ». La vue semaine et la vue jour montrent la période Español en cours.</p><span class="tag now">Aujourd'hui</span></div>
+        <div class="item" data-w="now"><input type="checkbox" id="c-bc-8"><label class="ti" for="c-bc-8">La clôture du jour</label><p class="tx">Un écran le soir : sommeil de la nuit dernière (le chiffre vient de Bevel), poids du matin, eau, humeur, habitudes pas encore cochées, une ligne sur la journée en espagnol. Le dimanche, la revue (ce qui a marché, ce qui a coincé, un changement) et les trois chiffres Español. Une minute, jamais sautée.</p><span class="tag now">Aujourd'hui</span></div>
+        <div class="item" data-w="now"><input type="checkbox" id="c-bc-9"><label class="ti" for="c-bc-9">Habitudes</label><p class="tx">Seize cases par jour : lit fait, étirements, les cinq prières, téléphone hors de la chambre, sadaqah, revue de la veille et plan du lendemain, nouvelles à la famille, marche, trois gratitudes, courses (samedi), et les trois espagnoles : 30 min avec un natif, les dix formules, 20 pages lues. Le streak se construit seul.</p><span class="tag now">Aujourd'hui</span></div>
+        <div class="item" data-w="now"><input type="checkbox" id="c-bc-10"><label class="ti" for="c-bc-10">Journal quotidien</label><p class="tx">Poids du matin à jeun (tous les jours, sinon la boucle poids → calories reste aveugle), eau, humeur, duaa apprise, note. La plupart de ces champs se remplissent aussi depuis la clôture.</p><span class="tag now">Aujourd'hui</span></div>
+        <div class="item" data-w="now"><input type="checkbox" id="c-bc-11"><label class="ti" for="c-bc-11">Repas</label><p class="tx">Cinq prises à cocher dans la journée (petit-déjeuner, déjeuner, collation entraînement, dîner, collation soir). La barre du jour prorate les calories aux cases cochées. La boucle poids → calories propose un ajustement après trois pesées par semaine sur deux semaines ; « Appliquer » l'écrit dans le plan (dans les pâtes du dîner).</p><span class="tag now">Aujourd'hui</span></div>
+        <div class="item" data-w="now"><input type="checkbox" id="c-bc-12"><label class="ti" for="c-bc-12">Sport : la saisie après la séance</label><p class="tx">La séance du jour est surlignée. Pour chaque exercice : cocher, taper les séries « 9/8/7 » et le lest en kg. La cible de la prochaine séance apparaît aussitôt, la courbe de progression aussi. À faire au parc ou juste après, pas le soir.</p><span class="tag now">Aujourd'hui</span></div>
+        <div class="item" data-w="now"><input type="checkbox" id="c-bc-13"><label class="ti" for="c-bc-13">Coran &amp; Duaas</label><p class="tx">Une page par jour (environ 180 pages, neuf juz sur six mois) et une duaa par jour. Tu saisis la page ou le juz atteint ; l'objectif « Coran » se lit tout seul dans Objectifs.</p><span class="tag now">Aujourd'hui</span></div>
+        <div class="item" data-w="now"><input type="checkbox" id="c-bc-14"><label class="ti" for="c-bc-14">Objectifs et la revue du dimanche</label><p class="tx">Trimestres et mois : révision, projets, espagnol (110 h au T1), poids, Coran, duaas, sport, classement. La plupart se calculent seuls. Le dimanche, la revue guidée : trois constats calculés (dont l'espagnol au minuteur), trois questions, et les cibles du mois suivant.</p><span class="tag now">Aujourd'hui</span></div>
+        <div class="item" data-w="now"><input type="checkbox" id="c-bc-15"><label class="ti" for="c-bc-15">Sauvegarde, restauration, Annuler</label><p class="tx">Le bouton en bas du rail : export texte complet, sauvegarde sur Google Drive (manuelle, plus une automatique par jour avec rotation), restaurer depuis Drive ou un fichier, remise à zéro qui garde la configuration. « Annuler ⌘Z » défait la dernière saisie.</p><span class="tag now">Aujourd'hui</span></div>
+        <div class="item" data-w="now"><input type="checkbox" id="c-bc-16"><label class="ti" for="c-bc-16">Synchro cloud et plusieurs appareils</label><p class="tx">Mac, iPad, iPhone lisent la même base. Un « nouveau départ » lancé sur un appareil recharge les autres. Sur iPad portrait le rail devient compact ; sur iPhone le mode essentiel ne garde que le tableau de bord. Tout se pilote au clavier (Tab, Entrée, Échap).</p><span class="tag now">Aujourd'hui</span></div>
+        <div class="item" data-w="week"><input type="checkbox" id="c-bc-17"><label class="ti" for="c-bc-17">Bilan</label><p class="tx">Cette semaine contre la semaine dernière : révision, projets, sommeil, poids, sport, habitudes. Imprimable. À regarder le dimanche avant la revue.</p><span class="tag week">Avant lundi 14</span></div>
+        <div class="item" data-w="week"><input type="checkbox" id="c-bc-18"><label class="ti" for="c-bc-18">Insights</label><p class="tx">Neuf cartes calculées sur tes données : bloc fragile, dérive du premier bloc, sommeil, balance énergétique, sport, matière et partiel, habitude délaissée, créneau productif, fidélité au plan. Chacune a une action, une tendance, un lien vers l'onglet. « Vu » met une priorité en pause sept jours. Muet avant une semaine de données.</p><span class="tag week">Avant lundi 14</span></div>
+        <div class="item" data-w="week"><input type="checkbox" id="c-bc-19"><label class="ti" for="c-bc-19">Études</label><p class="tx">Chaque bloc de révision lancé au minuteur atterrit ici avec sa matière et son heure. Les dates de partiels par matière (éditables), le calendrier des révisions, la heatmap annuelle, le réglage de la durée des blocs. Le contenu des cours reste dans Notion.</p><span class="tag week">Avant lundi 14</span></div>
+        <div class="item" data-w="week"><input type="checkbox" id="c-bc-20"><label class="ti" for="c-bc-20">Agenda Batcave</label><p class="tx">Tout ton temps de travail, mois par mois et heure par heure. C'est aussi là que se règlent les rappels Google Agenda (éteints pour l'instant).</p><span class="tag week">Avant lundi 14</span></div>
+        <div class="item" data-w="week"><input type="checkbox" id="c-bc-21"><label class="ti" for="c-bc-21">Courses</label><p class="tx">Le panier du samedi 13:30, calculé depuis le plan alimentaire (rotation × 7 jours, quantités crues, prix estimés). L'huile d'olive se rachète toutes les trois semaines avec ce plan.</p><span class="tag week">Avant lundi 14</span></div>
+        <div class="item" data-w="week"><input type="checkbox" id="c-bc-22"><label class="ti" for="c-bc-22">Budget</label><p class="tx">Transactions du mois, charges fixes mensuelles, limites par catégorie. Le tuteur et les livres d'espagnol passent ici, sur le budget courant, jamais sur le prêt.</p><span class="tag week">Avant lundi 14</span></div>
+        <div class="item" data-w="week"><input type="checkbox" id="c-bc-23"><label class="ti" for="c-bc-23">Tâches</label><p class="tx">Une liste simple : le badge de statut avance de « à faire » à « en cours » à « fait ». Pour ce qui n'a pas de bloc : appeler l'université, acheter le livre, réserver le tuteur.</p><span class="tag week">Avant lundi 14</span></div>
+        <div class="item" data-w="week"><input type="checkbox" id="c-bc-24"><label class="ti" for="c-bc-24">Dépendances</label><p class="tx">Un compteur de jours par dépendance, « J'ai craqué » loggue l'incident et repart, le record reste. L'historique en heatmap.</p><span class="tag week">Avant lundi 14</span></div>
+        <div class="item" data-w="week"><input type="checkbox" id="c-bc-25"><label class="ti" for="c-bc-25">Santé</label><p class="tx">Bilans, rendez-vous, douleurs récurrentes à surveiller. Rarement ouvert, mais c'est là que ça se note.</p><span class="tag week">Avant lundi 14</span></div>
+        <div class="item" data-w="later"><input type="checkbox" id="c-bc-26"><label class="ti" for="c-bc-26">Business (Shopify)</label><p class="tx">La boutique en direct (commandes, ventes) via le connecteur Shopify, une boutique à la fois ; le bénéfice net mensuel et son objectif. Sert quand la boutique existe, donc après le 19 octobre.</p><span class="tag later">Plus tard</span></div>
+      </div>
+      <p class="note"><b>Les réglages qui restent à toi.</b> Le lien Notion sur le tableau de bord (crayon à côté du bouton), la clé météo, le compte Spotify, le dossier Drive des sauvegardes. Google Agenda n'a pas été renommé pendant la période Español : les blocs y gardent leurs titres « Projets perso », seule la Batcave montre les noms Español.</p>
+    </section>
+
+    <section class="grp" id="sport">
+      <h2><span class="k">03</span>Le sport</h2>
+      <p class="intro">Programme v2, commencé le 7 septembre. Quatre séances de 40 minutes au parc, en supersets de deux exercices antagonistes : A puis B, repos court entre les deux, plus long avant la paire suivante.</p>
+      <div class="tbl"><table>
+        <tr><th>Jour</th><th>Séance</th><th>Exercices (tours × fourchette)</th></tr>
+        <tr><td class="h">Lundi</td><td>Haut lourd</td><td>Tractions 4×6-12 · Dips 4×8-15 · Rows australiens pieds surélevés 3×10-15 · Pompes déclinées 3×8-12 · Curl barre basse 2×10-15 · Extension triceps barre basse 2×10-15</td></tr>
+        <tr><td class="h">Mardi</td><td>Bas complet</td><td>Split squat bulgare 4×8-12/jambe · Soulevé de terre roumain une jambe 4×10-12 · Fentes marchées 3×10-12 · Hip thrust une jambe 3×12-20 · Relevés de jambes suspendus 2×8-15 · Hollow hold 2×20-40 s</td></tr>
+        <tr><td class="h">Jeudi</td><td>Haut volume</td><td>Tractions 4×8-15 · Dips 4×10-20 · Rows prise large coudes hauts 3×12-15 · Pike push-ups 3×6-10 · Face pulls 2×15-20 · Curl prise neutre 2×10-15</td></tr>
+        <tr><td class="h">Samedi</td><td>Bras, épaules, mollets</td><td>Chin-ups prise serrée 3×6-12 · Pompes archer ou diamant 3×8-12 · Curl et extension barre basse 3×10-15 · Face pulls 3×15-20 · Shrugs suspendus 3×12-15 · Mollets une jambe 3×15-20 · Dead hang 3×30-45 s</td></tr>
+      </table></div>
+      <div class="items">
+        <div class="item" data-w="now"><input type="checkbox" id="c-sp-1"><label class="ti" for="c-sp-1">Les quinze mouvements, vus une fois chacun</label><p class="tx">Une vidéo de chaque, deux ou trois répétitions à vide chez toi, et repérer au parc où chaque exercice se fait : barre basse, rebord à hauteur de genou pour le split squat, muret pour le hip thrust, élastique pour les face pulls.</p><span class="tag now">Aujourd'hui</span></div>
+        <div class="item" data-w="now"><input type="checkbox" id="c-sp-2"><label class="ti" for="c-sp-2">La montée en charge du premier mois</label><p class="tx">Semaines 1 et 2 : la moitié des tours. Semaines 3 et 4 : les trois quarts. Ensuite le programme complet. La Batcave applique ce facteur toute seule ; ne cherche pas à en faire plus.</p><span class="tag now">Aujourd'hui</span></div>
+        <div class="item" data-w="now"><input type="checkbox" id="c-sp-3"><label class="ti" for="c-sp-3">La double progression</label><p class="tx">Sans historique, la cible est le bas de la fourchette. Toutes les séries au haut de la fourchette lors de la dernière séance : on monte, +2,5 kg de lest ou une variante plus dure, et on repart du bas. Sinon chaque série vise la dernière plus une répétition. Les exercices en secondes progressent de 5 s.</p><span class="tag now">Aujourd'hui</span></div>
+        <div class="item" data-w="now"><input type="checkbox" id="c-sp-4"><label class="ti" for="c-sp-4">Les deux échauffements de cinq minutes</label><p class="tx">Un pour le haut, un pour le bas, à connaître par cœur, sinon ils sautent. Podcast en espagnol pendant.</p><span class="tag now">Aujourd'hui</span></div>
+        <div class="item" data-w="week"><input type="checkbox" id="c-sp-5"><label class="ti" for="c-sp-5">La calibration</label><p class="tx">Tractions max, dips max ou maintien, pompes max, split squats max par jambe. Sans elle, la Batcave part des bas de fourchette, ce qui est acceptable en semaine 1 et 2 vu la demi-charge.</p><span class="tag week">Avant lundi 14</span></div>
+      </div>
+    </section>
+
+    <section class="grp" id="nutrition">
+      <h2><span class="k">04</span>Nutrition et logistique</h2>
+      <p class="intro">Plan à 3 053 kcal, 162 g de protéines, tout pesé cru, cinq prises. Il ne demande aucune décision au quotidien : la rotation choisit la protéine, la liste de courses en découle.</p>
+      <div class="items">
+        <div class="item" data-w="now"><input type="checkbox" id="c-nu-1"><label class="ti" for="c-nu-1">Les cinq prises et leurs quantités</label><p class="tx">Petit-déjeuner : avoine 80 g, lait 250 ml, deux œufs, beurre de cacahuète 25 g, banane. Déjeuner : riz 135 g cru, protéine du jour, légumes 200 g, huile. Collation entraînement 14:50 : pain complet, jambon, fromage. Dîner : pâtes 85 g crues, protéine du jour, légumes 150 g, un fruit. Collation soir : skyr, miel, beurre de cacahuète.</p><span class="tag now">Aujourd'hui</span></div>
+        <div class="item" data-w="now"><input type="checkbox" id="c-nu-2"><label class="ti" for="c-nu-2">La rotation des protéines</label><p class="tx">Midi : poulet, sauf saumon le mercredi et le dimanche. Soir : viande hachée 5 %, sauf saumon le vendredi. L'huile d'olive suit la protéine (30 ml avec le poulet à midi, 8 ml avec le saumon le soir).</p><span class="tag now">Aujourd'hui</span></div>
+        <div class="item" data-w="week"><input type="checkbox" id="c-nu-3"><label class="ti" for="c-nu-3">Le batch cooking du dimanche 14:30</label><p class="tx">Cinq déjeuners et cinq dîners d'un coup, liste de courses sous les yeux. Deux heures prévues : chronomètre la première fois et note le temps réel.</p><span class="tag week">Avant lundi 14</span></div>
+        <div class="item" data-w="week"><input type="checkbox" id="c-nu-4"><label class="ti" for="c-nu-4">Les courses du samedi 13:30</label><p class="tx">L'onglet Courses donne la liste avec quantités et prix estimés. Rangement à 15:30. L'habitude « Courses faites » n'apparaît que le samedi.</p><span class="tag week">Avant lundi 14</span></div>
+        <div class="item" data-w="week"><input type="checkbox" id="c-nu-5"><label class="ti" for="c-nu-5">Le trajet vers la fac</label><p class="tx">950 m à pied puis dix minutes de tram. À tester une fois avant lundi 14 à 15:00 avec l'horaire réel, pour savoir si les trente minutes tiennent.</p><span class="tag week">Avant lundi 14</span></div>
+        <div class="item" data-w="week"><input type="checkbox" id="c-nu-6"><label class="ti" for="c-nu-6">Sommeil et pesée</label><p class="tx">Bevel pour le sommeil, la balance le matin à jeun. Deux chiffres par jour, saisis à la clôture. Cible 7,75 h de sommeil en moyenne sur la semaine ; 7 h 35 en semaine est ton choix, à rouvrir si le score du matin baisse deux semaines de suite.</p><span class="tag week">Avant lundi 14</span></div>
+      </div>
+    </section>
+
+    <section class="grp" id="anki">
+      <h2><span class="k">05</span>Anki : trois decks</h2>
+      <p class="intro">Ordinateur gratuit, AnkiWeb dans le navigateur sur iPhone (gratuit) ou AnkiMobile (payant une fois). Synchronisation AnkiWeb pour réviser dans le tram.</p>
+      <div class="items">
+        <div class="item" data-w="now"><input type="checkbox" id="c-an-1"><label class="ti" for="c-an-1">Deck Español, importé depuis le fichier .apkg</label><p class="tx">485 cartes à trou, tout en espagnol, audio au verso. Sept sous-decks numérotés dans l'ordre du dossier : 1 Conjugación, 2 Gramática, 3 Fórmulas, 4 Conectores, 5 Vocabulario general, 6 Académico, 7 Odontología. Tu crées toi-même <code>Español::0 Errores</code>, vide, pour tes cartes d'erreurs.</p><span class="tag now">Aujourd'hui</span></div>
+        <div class="item" data-w="now"><input type="checkbox" id="c-an-2"><label class="ti" for="c-an-2">Les réglages qui comptent</label><p class="tx">Vingt nouvelles cartes par jour sur le deck parent Español (Anki pioche dans les sous-decks dans l'ordre). Les quatre boutons de réponse : jamais « Facile » par confort. Zéro jour sans révision, y compris le jour du partiel.</p><span class="tag now">Aujourd'hui</span></div>
+        <div class="item" data-w="now"><input type="checkbox" id="c-an-3"><label class="ti" for="c-an-3">Le format d'une carte d'erreur</label><p class="tx"><code>Phrase avec {{c1::forme juste::indice}}</code>, tabulation, la règle en une phrase en espagnol, tabulation, l'étiquette <code>errores CODE</code>. Le projet Español les produit dans ce format avec « cartas » ; tu les colles dans 0 Errores par Import.</p><span class="tag now">Aujourd'hui</span></div>
+        <div class="item" data-w="week"><input type="checkbox" id="c-an-4"><label class="ti" for="c-an-4">Deck Dentaire, un sous-deck par asignatura</label><p class="tx">Dentaire::Anatomía, Bioquímica, Biología celular, Histología, Fisiología, Microbiología, Bioestadística, Anatomía dental, Materiales dentales, Introducción. Cartes en espagnol dès le premier cours, étiquette = nom de la matière, plus <code>erreur</code> et la semaine pour les cartes d'erreurs.</p><span class="tag week">Avant lundi 14</span></div>
+        <div class="item" data-w="later"><input type="checkbox" id="c-an-5"><label class="ti" for="c-an-5">Deck Business, glossaire dropshipping</label><p class="tx">Le fichier glossaire-dropshipping-anki.txt s'importe tel quel (163 cartes, étiquettes en troisième colonne). Cinq sous-decks facultatifs pour piloter l'ordre : 1 Ads, 2 Gestion et finances, 3 Produit et conversion, 4 Opérations, e-mail et IA, 5 Fiscalité et légal. À importer quand les projets perso reviennent.</p><span class="tag later">Plus tard</span></div>
+        <div class="item" data-w="later"><input type="checkbox" id="c-an-6"><label class="ti" for="c-an-6">Le deck partagé « 9000 Spanish sentences »</label><p class="tx">Complément facultatif à partir de décembre, le seul deck AnkiWeb qui respecte la règle « jamais un mot seul ».</p><span class="tag later">Plus tard</span></div>
+      </div>
+    </section>
+
+    <section class="grp" id="projets">
+      <h2><span class="k">06</span>Les trois projets Claude</h2>
+      <p class="intro">Dans claude.ai, Projets. Chaque projet a ses Instructions et ses fichiers de Connaissances (dans le zip projets-claude). Un projet ne se met pas à jour seul : quand un fichier change, tu remplaces l'ancien.</p>
+      <div class="items">
+        <div class="item" data-w="now"><input type="checkbox" id="c-pr-1"><label class="ti" for="c-pr-1">Projet Español : neuf commandes</label><p class="tx">corrige (texte → corrigé, tableau des erreurs avec codes, erreurs pour 100 mots, cartes), interroga, examen (question d'examen, correction contenu puis langue, modèle de 200 mots), explica (réponse en français), conversa puis stop, cartas, dictado, formulas, balance (le dimanche). Le fichier progresion.md se remplit chaque dimanche.</p><span class="tag now">Aujourd'hui</span></div>
+        <div class="item" data-w="now"><input type="checkbox" id="c-pr-2"><label class="ti" for="c-pr-2">Les neuf codes d'erreurs</label><p class="tx">CONC concordance, TV temps ou mode verbal, S/E ser-estar-hay, PREP préposition, PRON pronom, LEX lexique et faux amis, ORT orthographe et tildes, SINT ordre des mots, REG registre. Une erreur = une occurrence ; le code au-dessus de 30 % devient le point de grammaire de la semaine suivante.</p><span class="tag now">Aujourd'hui</span></div>
+        <div class="item" data-w="week"><input type="checkbox" id="c-pr-3"><label class="ti" for="c-pr-3">Projet Dentaire : cinq commandes, un fichier par matière</label><p class="tx">explique (par couches), interroge-moi (cinq questions), cartes (format tabulé prêt à coller), annales (le correcteur, note sur 10), erreurs de la semaine (regroupées par cause). Dix fichiers de matières dans Connaissances, une conversation renommée par matière. À partir du 14 septembre, tu lui parles en espagnol : la langue est vérifiée par le projet Español, le contenu par celui-ci.</p><span class="tag week">Avant lundi 14</span></div>
+        <div class="item" data-w="later"><input type="checkbox" id="c-pr-4"><label class="ti" for="c-pr-4">Projet Boutique : huit commandes</label><p class="tx">hooks, script, critique, audit boutique, lecture des chiffres, recherche produit, point Shopify, lundi (le rituel hebdo de 55 min). Six fichiers de Connaissances dont trois « à compléter » (contexte, ton de marque, unit economics). Sert quand le dossier dropshipping reprend.</p><span class="tag later">Plus tard</span></div>
+      </div>
+    </section>
+
+    <section class="grp" id="dossiers">
+      <h2><span class="k">07</span>Les deux dossiers</h2>
+      <p class="intro">Deux pages autonomes, publiées et dans le dépôt, avec des check-lists qui se souviennent de ce que tu as coché.</p>
+      <div class="items">
+        <div class="item" data-w="now"><input type="checkbox" id="c-do-1"><label class="ti" for="c-do-1">Dossier Español : ce qui se lit maintenant</label><p class="tx">01 le point de départ et le diagnostic, 02 la méthode en dix règles, 05 la semaine 0 jour par jour, 11 les pièges du francophone. Environ 45 minutes.</p><span class="tag now">Aujourd'hui</span></div>
+        <div class="item" data-w="week"><input type="checkbox" id="c-do-2"><label class="ti" for="c-do-2">Dossier Español : ce qui se lit dimanche 13</label><p class="tx">06 la grille avec les cours, 10 l'espagnol des cours et des partiels (avant, pendant, après le cours ; le gabarit d'une réponse de desarrollo), 13 ce qu'on mesure, 14 le suivi dans la Batcave.</p><span class="tag week">Avant lundi 14</span></div>
+        <div class="item" data-w="later"><input type="checkbox" id="c-do-3"><label class="ti" for="c-do-3">Dossier Español : la référence</label><p class="tx">03 les huit accélérateurs, 04 le calendrier en quatre phases, 07 le programme grammatical A1 → C1 en check-list, 08 les trois lexiques et les formules, 09 les compétences une par une, 12 les outils. Tu y vas quand une consigne t'y renvoie.</p><span class="tag later">Plus tard</span></div>
+        <div class="item" data-w="later"><input type="checkbox" id="c-do-4"><label class="ti" for="c-do-4">Dossier dropshipping : le programme de douze semaines</label><p class="tx">Quatorze sections : le cadre, le programme semaine par semaine, les outils, les ads, gérer l'entreprise, monter la boîte en Espagne, impôts et TVA, éducation financière, fiscalité internationale, la piste fiscalité, ce que la recherche démontre, Claude dans le business, le glossaire, les ressources. Trois niveaux, des exercices corrigés et des auto-tests. Il reprend le 19 octobre avec le bloc Projets perso 1, à plein régime le 30 novembre.</p><span class="tag later">Plus tard</span></div>
+      </div>
+    </section>
+
+    <section class="grp" id="espagnol">
+      <h2><span class="k">08</span>L'espagnol hors écran</h2>
+      <p class="intro">Ce qui se met en place une fois et ne se règle plus.</p>
+      <div class="items">
+        <div class="item" data-w="now"><input type="checkbox" id="c-es-1"><label class="ti" for="c-es-1">Le tuteur</label><p class="tx">italki ou Preply, tuteur communautaire d'Espagne, étudiant en santé si possible. Trois séances cette semaine (mercredi, jeudi, vendredi à 11:20), puis vendredi et samedi en phase 1, une par semaine ensuite. Format : 3 min de conversation, 12 min à expliquer le cours de la veille, 10 min de corrections répétées, 5 min de jeu de rôle en usted. Environ 150 € sur six semaines.</p><span class="tag now">Aujourd'hui</span></div>
+        <div class="item" data-w="now"><input type="checkbox" id="c-es-2"><label class="ti" for="c-es-2">Le livre de grammaire</label><p class="tx">Gramática de uso del español A1-B2 (SM) : un chapitre par jour en semaine 0, un par semaine ensuite. En attendant : ProfeDeELE et Kwiziq (le test de niveau se refait chaque mois).</p><span class="tag now">Aujourd'hui</span></div>
+        <div class="item" data-w="now"><input type="checkbox" id="c-es-3"><label class="ti" for="c-es-3">L'environnement en espagnol</label><p class="tx">Téléphone et ordinateur en espagnol, une série espagnole sans sous-titres français (sous-titres espagnols au début), un podcast pour le sport et le tram (Hoy hablamos, Nadie sabe nada, La Hiperactina), El País ou un roman papier pour le déjeuner.</p><span class="tag now">Aujourd'hui</span></div>
+        <div class="item" data-w="now"><input type="checkbox" id="c-es-4"><label class="ti" for="c-es-4">Le diagnostic d'aujourd'hui</label><p class="tx">« Preséntate y explica tus estudios » passé dans « corrige », trois minutes d'oral enregistrées, le drill de conjugaison chronométré. Les chiffres vont dans la première ligne de progresion.md : c'est la ligne de départ que tu compares dimanche.</p><span class="tag now">Aujourd'hui</span></div>
+        <div class="item" data-w="now"><input type="checkbox" id="c-es-5"><label class="ti" for="c-es-5">La conversation réelle de 15:00</label><p class="tx">Une heure avec des Espagnols, tous les jours : intercambio (service de langues de l'Universidad de Alicante, Tandem, HelloTalk), compañeros déjà sur place, voisins, mosquée, parc. Jamais d'anglais ni de français. C'est le bloc qui fait le plus avancer.</p><span class="tag now">Aujourd'hui</span></div>
+        <div class="item" data-w="week"><input type="checkbox" id="c-es-6"><label class="ti" for="c-es-6">Wuolah et les guías docentes</label><p class="tx">Dimanche 13 à 13:30 : la guía docente de chaque matière (programme, type d'examen, pondération), les apuntes et examens des années précédentes sur Wuolah, trente termes par matière en cartes, la question à poser au premier cours écrite dans le journal.</p><span class="tag week">Avant lundi 14</span></div>
+        <div class="item" data-w="week"><input type="checkbox" id="c-es-7"><label class="ti" for="c-es-7">Les techniques d'oral</label><p class="tx">Shadowing (répéter en simultané un cours en espagnol, quinze minutes par jour), la technique 4-3-2 (le même mécanisme expliqué en quatre minutes, puis trois, puis deux), le dictogloss (écouter deux minutes, reconstruire le texte), le résumé oral d'une minute enregistré en marchant.</p><span class="tag week">Avant lundi 14</span></div>
+        <div class="item" data-w="later"><input type="checkbox" id="c-es-8"><label class="ti" for="c-es-8">Les examens officiels</label><p class="tx">DELE B2 blanc les 17 et 18 octobre, DELE C1 blanc le 14 février, inscription au DELE C1 en mars (Alicante a un centre). SIELE en alternative, en ligne à date libre. Une tâche complète par mois avec les grilles officielles.</p><span class="tag later">Plus tard</span></div>
+      </div>
+    </section>
+
+    <section class="grp" id="routines">
+      <h2><span class="k">09</span>Routines, connecteurs et coulisses</h2>
+      <p class="intro">Ce qui tourne sans toi, et ce qui existe au cas où.</p>
+      <div class="items">
+        <div class="item" data-w="week"><input type="checkbox" id="c-ro-1"><label class="ti" for="c-ro-1">Le bilan du dimanche, 20:45</label><p class="tx">Une Routine lit la base de la Batcave, génère le rapport de la semaine (priorités, bilan chiffré contre la semaine d'avant, les neuf cartes) et l'envoie par mail et notification, avec une page publiée à la même adresse chaque semaine. Rien à faire de ton côté ; premier vrai envoi dimanche 13.</p><span class="tag week">Avant lundi 14</span></div>
+        <div class="item" data-w="week"><input type="checkbox" id="c-ro-2"><label class="ti" for="c-ro-2">Google Agenda</label><p class="tx">Les blocs de la grille y ont été poussés avec leur consigne en description. L'écriture automatique est désactivée en ce moment, et les titres « Projets perso » n'ont pas été renommés pendant la période Español. Les rappels à cinq minutes se réactivent dans l'onglet Agenda si tu les veux sur le téléphone.</p><span class="tag week">Avant lundi 14</span></div>
+        <div class="item" data-w="week"><input type="checkbox" id="c-ro-3"><label class="ti" for="c-ro-3">Google Drive</label><p class="tx">Une sauvegarde de la Batcave par jour dans ton Drive, avec rotation des anciennes. C'est le filet en cas de perte de la base cloud ; « Restaurer depuis Drive » la relit.</p><span class="tag week">Avant lundi 14</span></div>
+        <div class="item" data-w="week"><input type="checkbox" id="c-ro-4"><label class="ti" for="c-ro-4">Notion</label><p class="tx">Tes notes de cours y vivent (le projet Dentaire en reçoit une copie collée). Le lien direct est sur le tableau de bord de la Batcave.</p><span class="tag week">Avant lundi 14</span></div>
+        <div class="item" data-w="week"><input type="checkbox" id="c-ro-5"><label class="ti" for="c-ro-5">Météo et Spotify</label><p class="tx">La météo d'Alicante et le morceau en cours dans la barre du haut, par connecteurs. Décoratifs : s'ils tombent, rien d'autre ne tombe.</p><span class="tag week">Avant lundi 14</span></div>
+        <div class="item" data-w="later"><input type="checkbox" id="c-ro-6"><label class="ti" for="c-ro-6">Le connecteur Shopify</label><p class="tx">Une boutique à la fois ; en changer révoque l'accès à la précédente. Alimente l'onglet Business et le bénéfice mensuel dans Objectifs.</p><span class="tag later">Plus tard</span></div>
+        <div class="item" data-w="later"><input type="checkbox" id="c-ro-7"><label class="ti" for="c-ro-7">Le dépôt GitHub et la campagne de tests</label><p class="tx">Calendrier-, branche claude/notion-addictions-nutrition-tracker-pf3lmg : batcave.html, les deux dossiers, le deck et son générateur, 58 tests Playwright rejoués à chaque push. Tu n'y touches que si tu veux modifier la Batcave toi-même ; sinon, tu me demandes.</p><span class="tag later">Plus tard</span></div>
+      </div>
+    </section>
+
+    <section class="grp" id="dates">
+      <h2><span class="k">10</span>Les dates qui changent quelque chose</h2>
+      <div class="tbl"><table>
+        <tr><th>Date</th><th>Ce qui change</th></tr>
+        <tr><td class="h">Mar 8 sept.</td><td>Semaine 0. Diagnostic, installation d'Anki, du projet Español, du tuteur, du livre.</td></tr>
+        <tr><td class="h">Dim 13 sept.</td><td>Simulation, bilan chiffré, préparation de la semaine 1 (guías, Wuolah), premier bilan du dimanche par mail.</td></tr>
+        <tr><td class="h">Lun 14 sept.</td><td>Rentrée. Phase 1 : les trois Projets perso sont Español, le dentaire passe en espagnol (notes, cartes, projet Dentaire).</td></tr>
+        <tr><td class="h">Dim 27 sept.</td><td>Jalon : notes de cours entièrement en espagnol.</td></tr>
+        <tr><td class="h">Dim 4 oct.</td><td>Jalon : trois minutes d'oral sans pause.</td></tr>
+        <tr><td class="h">Sam 17 · dim 18 oct.</td><td>DELE B2 blanc. Fin de la phase 1.</td></tr>
+        <tr><td class="h">Lun 19 oct.</td><td>Phase 2 : Projets perso 1 et le vendredi matin reviennent (dossier dropshipping), 13:00 devient annales en espagnol.</td></tr>
+        <tr><td class="h">Novembre</td><td>Partiels. Anki tous les jours, y compris le jour même.</td></tr>
+        <tr><td class="h">Lun 30 nov.</td><td>Phase 3 : un seul bloc Español par jour, le reste revient aux projets.</td></tr>
+        <tr><td class="h">Dim 14 fév. 2027</td><td>DELE C1 blanc.</td></tr>
+        <tr><td class="h">Lun 15 mars 2027</td><td>Grille de base, inscription au DELE C1.</td></tr>
+      </table></div>
+    </section>
+
+    <footer>Coches gardées dans ce navigateur. Les consignes détaillées de chaque bloc sont dans la Batcave ; les méthodes dans le Dossier Español (sections 05, 06, 09, 10) et le dossier dropshipping.</footer>
+  </main>
+</div>
+
+<script>
+(function(){
+  var KEY = 'prise-en-main-checks';
+  var etat = {};
+  try{ etat = JSON.parse(localStorage.getItem(KEY) || '{}') || {}; }catch(e){ etat = {}; }
+  var items = Array.prototype.slice.call(document.querySelectorAll('.item'));
+  var boxes = items.map(function(it){ return it.querySelector('input[type="checkbox"]'); });
+  function sauver(){ try{ localStorage.setItem(KEY, JSON.stringify(etat)); }catch(e){} }
+  function majCompteur(){
+    var n = 0; boxes.forEach(function(b){ if(b.checked) n++; });
+    document.getElementById('p-done').textContent = n;
+    document.getElementById('p-total').textContent = boxes.length;
+    document.getElementById('p-bar').style.width = (boxes.length ? Math.round(100 * n / boxes.length) : 0) + '%';
+    document.querySelectorAll('.grp').forEach(function(g){
+      var ins = g.querySelectorAll('.item input'), d = 0;
+      ins.forEach(function(b){ if(b.checked) d++; });
+      var a = document.querySelector('#toc a[href="#' + g.id + '"] b');
+      if(a) a.textContent = ins.length ? d + '/' + ins.length : '';
+    });
+  }
+  boxes.forEach(function(b){
+    var it = b.closest('.item');
+    if(etat[b.id]){ b.checked = true; it.classList.add('done'); }
+    b.addEventListener('change', function(){
+      etat[b.id] = b.checked; if(!b.checked) delete etat[b.id];
+      it.classList.toggle('done', b.checked); sauver(); majCompteur();
+    });
+  });
+  var toc = document.getElementById('toc');
+  document.querySelectorAll('.grp').forEach(function(g){
+    var h = g.querySelector('h2'); if(!h) return;
+    var li = document.createElement('li'), a = document.createElement('a');
+    a.href = '#' + g.id; a.innerHTML = '<span></span><b></b>';
+    a.firstChild.textContent = h.textContent.replace(/^\d+\s*/, '');
+    li.appendChild(a); toc.appendChild(li);
+  });
+  var filtre = 'all';
+  document.querySelectorAll('.filters button').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      filtre = btn.dataset.f;
+      document.querySelectorAll('.filters button').forEach(function(b){ b.setAttribute('aria-pressed', String(b === btn)); });
+      items.forEach(function(it){ it.hidden = filtre !== 'all' && it.dataset.w !== filtre; });
+    });
+  });
+  majCompteur();
+})();
+</script>
