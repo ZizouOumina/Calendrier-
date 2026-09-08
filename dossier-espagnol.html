@@ -1,0 +1,760 @@
+<title>Dossier Español</title>
+<meta name="description" content="Du zéro au C1 : le plan complet d'espagnol d'un étudiant en odontologie à Alicante, calé sur sa grille et ses partiels.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root{
+    color-scheme: light dark;
+    --bg:#f5f7f4; --surface:#ffffff; --surface-2:#eef2ee;
+    --ink:#182029; --ink-dim:#4c5b69; --ink-faint:#8391a0; --line:#d8dfe2; --line-soft:#e7ecee;
+    --accent:#1d5aa3; --accent-ink:#ffffff; --accent-soft:#e4edf9;
+    --warn:#a86a08; --warn-soft:#fbf0d9;
+    --pen:#b3261e; --pen-soft:#fbe6e3;
+    --good:#2d7a4d; --good-soft:#e0f1e6;
+    --font-display:'Barlow Condensed','Arial Narrow',Impact,sans-serif;
+    --font-body:'Source Serif 4',Georgia,'Times New Roman',serif;
+    --font-mono:'IBM Plex Mono','SFMono-Regular',Menlo,Consolas,monospace;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#0f1419; --surface:#161d25; --surface-2:#1c2530;
+      --ink:#e7edf2; --ink-dim:#aab7c3; --ink-faint:#71808f; --line:#27323d; --line-soft:#1f2933;
+      --accent:#7fb0ff; --accent-ink:#0b1730; --accent-soft:#182a44;
+      --warn:#e3aa45; --warn-soft:#3a2c12;
+      --pen:#ff8a80; --pen-soft:#3d1c19;
+      --good:#6fcf97; --good-soft:#153320;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#0f1419; --surface:#161d25; --surface-2:#1c2530;
+    --ink:#e7edf2; --ink-dim:#aab7c3; --ink-faint:#71808f; --line:#27323d; --line-soft:#1f2933;
+    --accent:#7fb0ff; --accent-ink:#0b1730; --accent-soft:#182a44;
+    --warn:#e3aa45; --warn-soft:#3a2c12;
+    --pen:#ff8a80; --pen-soft:#3d1c19;
+    --good:#6fcf97; --good-soft:#153320;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; background:var(--bg); color:var(--ink); font-family:var(--font-body); font-size:16.5px; line-height:1.6; -webkit-font-smoothing:antialiased;}
+  h1,h2,h3,h4{font-family:var(--font-display); font-weight:600; letter-spacing:.01em; line-height:1.05; margin:0; text-wrap:balance;}
+  h1{font-size:clamp(40px,7vw,64px);}
+  h2{font-size:clamp(26px,4vw,34px); margin-bottom:10px;}
+  h3{font-size:22px; margin:26px 0 8px;}
+  h4{font-size:18px; margin:18px 0 6px; color:var(--ink-dim);}
+  p{margin:0 0 12px;}
+  a{color:var(--accent);}
+  strong{font-weight:600;}
+  em{font-style:italic;}
+  .eyebrow{font-family:var(--font-mono); font-size:11.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--accent);}
+  .mono{font-family:var(--font-mono); font-size:13px;}
+  .wrap{max-width:820px; margin:0 auto; padding:0 20px;}
+  header.hero{padding:40px 0 22px; border-bottom:1px solid var(--line);}
+  header.hero .lede{font-size:19px; color:var(--ink-dim); max-width:62ch; margin-top:10px;}
+  .facts{display:flex; flex-wrap:wrap; gap:8px 22px; margin-top:18px; font-family:var(--font-mono); font-size:12.5px; color:var(--ink-dim);}
+  .facts b{color:var(--ink); font-weight:500;}
+  nav.toc{position:sticky; top:0; z-index:5; background:var(--bg); border-bottom:1px solid var(--line);}
+  nav.toc .wrap{display:flex; gap:4px; overflow-x:auto; padding-top:6px; padding-bottom:6px; scrollbar-width:none;}
+  nav.toc a{flex:none; font-family:var(--font-mono); font-size:11.5px; letter-spacing:.06em; text-transform:uppercase; text-decoration:none; color:var(--ink-dim); padding:6px 9px; border-radius:4px;}
+  nav.toc a:hover{background:var(--surface-2); color:var(--ink);}
+  nav.toc a:focus-visible{outline:2px solid var(--accent); outline-offset:1px;}
+  section{padding:38px 0 8px; border-bottom:1px solid var(--line-soft);}
+  section:last-of-type{border-bottom:none;}
+  .num{font-family:var(--font-mono); font-size:12px; color:var(--ink-faint); letter-spacing:.14em; margin-bottom:6px;}
+  ul,ol{margin:0 0 14px; padding-left:22px;}
+  li{margin:4px 0;}
+  li::marker{color:var(--ink-faint);}
+  .table-wrap{overflow-x:auto; margin:12px 0 18px; border:1px solid var(--line); border-radius:8px; background:var(--surface);}
+  table{border-collapse:collapse; width:100%; font-size:14.5px; min-width:560px;}
+  th,td{text-align:left; vertical-align:top; padding:9px 12px; border-bottom:1px solid var(--line-soft);}
+  th{font-family:var(--font-mono); font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-dim); font-weight:500; background:var(--surface-2);}
+  tr:last-child td{border-bottom:none;}
+  td.k{font-family:var(--font-mono); font-size:12.5px; white-space:nowrap; color:var(--ink-dim);}
+  td.es{font-style:italic;}
+  .callout{border-left:3px solid var(--accent); background:var(--accent-soft); padding:12px 16px; border-radius:0 8px 8px 0; margin:14px 0 18px;}
+  .callout.warn{border-color:var(--warn); background:var(--warn-soft);}
+  .callout.pen{border-color:var(--pen); background:var(--pen-soft);}
+  .callout.good{border-color:var(--good); background:var(--good-soft);}
+  .callout p:last-child{margin-bottom:0;}
+  .callout .t{font-family:var(--font-mono); font-size:11px; letter-spacing:.14em; text-transform:uppercase; margin-bottom:4px; color:var(--ink-dim);}
+  .grid2{display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:14px; margin:12px 0 18px;}
+  .card{background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:16px 18px;}
+  .card h4{margin-top:0;}
+  .card p:last-child, .card ul:last-child{margin-bottom:0;}
+  .pill{display:inline-block; font-family:var(--font-mono); font-size:11px; letter-spacing:.08em; padding:2px 8px; border-radius:20px; border:1px solid var(--line); color:var(--ink-dim); margin-left:6px; vertical-align:middle;}
+  .pill.good{color:var(--good); border-color:var(--good);}
+  .pill.warn{color:var(--warn); border-color:var(--warn);}
+  .pill.pen{color:var(--pen); border-color:var(--pen);}
+  /* check-lists persistantes */
+  .check{list-style:none; padding:0; margin:8px 0 6px; display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:2px 18px;}
+  .check li{margin:0;}
+  .check label{display:flex; gap:9px; align-items:flex-start; padding:5px 4px; border-radius:6px; cursor:pointer; font-size:15px; line-height:1.4;}
+  .check label:hover{background:var(--surface-2);}
+  .check input{margin:5px 0 0; width:15px; height:15px; flex:none; accent-color:var(--accent); cursor:pointer;}
+  .check input:focus-visible{outline:2px solid var(--accent); outline-offset:2px;}
+  .check input:checked + span{color:var(--ink-faint); text-decoration:line-through;}
+  .check .trap{font-family:var(--font-mono); font-size:10.5px; color:var(--pen); letter-spacing:.06em; margin-left:4px;}
+  details.level{background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:4px 16px 8px; margin:10px 0;}
+  details.level summary{cursor:pointer; padding:10px 0; display:flex; align-items:baseline; gap:12px; flex-wrap:wrap; list-style:none;}
+  details.level summary::-webkit-details-marker{display:none;}
+  details.level summary h3{margin:0; font-size:24px;}
+  details.level summary .cnt{font-family:var(--font-mono); font-size:12px; color:var(--ink-faint); margin-left:auto;}
+  details.level summary .fr{font-family:var(--font-body); font-size:14.5px; color:var(--ink-dim); flex-basis:100%;}
+  .day{display:grid; grid-template-columns:96px minmax(0,1fr); gap:6px 14px; padding:12px 0; border-top:1px solid var(--line-soft);}
+  .day .d{font-family:var(--font-display); font-size:22px; line-height:1.1; color:var(--accent);}
+  .day .d small{display:block; font-family:var(--font-mono); font-size:11px; color:var(--ink-faint); letter-spacing:.08em; margin-top:2px;}
+  .day ul{margin:0; padding-left:18px;}
+  .day li{margin:3px 0; font-size:15.5px;}
+  .day li b{font-family:var(--font-mono); font-size:11.5px; color:var(--ink-dim); font-weight:500; letter-spacing:.06em;}
+  .kpi{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:10px; margin:12px 0 18px;}
+  .kpi > div{background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:12px 14px;}
+  .kpi .v{font-family:var(--font-display); font-size:32px; line-height:1; color:var(--accent);}
+  .kpi .l{font-family:var(--font-mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-dim); margin-top:6px;}
+  pre{background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:12px 14px; font-family:var(--font-mono); font-size:13px; line-height:1.55; white-space:pre-wrap; overflow-x:auto; margin:8px 0 16px;}
+  footer{padding:30px 0 60px; font-family:var(--font-mono); font-size:12px; color:var(--ink-faint);}
+  @media (max-width:640px){
+    body{font-size:16px;}
+    .day{grid-template-columns:1fr;}
+    .check{grid-template-columns:1fr;}
+  }
+  @media (prefers-reduced-motion: reduce){ *{scroll-behavior:auto !important;} }
+  html{scroll-behavior:smooth; scroll-padding-top:52px;}
+  @media print{ nav.toc{display:none;} section{break-inside:avoid-page;} .table-wrap{border:none;} }
+</style>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">🦇 La Batcave · Dossier N° 18 · Español</div>
+    <h1>Dossier Español</h1>
+    <p class="lede">Du zéro au C1. Tout ce qu'il y a à savoir, à faire et à mesurer, calé sur ta grille, tes cours d'odontologie et tes partiels. Tu comprends déjà l'espagnol parlé : ce dossier sert à te faire parler et écrire juste, vite, et dans le registre des cours.</p>
+    <div class="facts">
+      <span>Départ <b>mardi 8 sept. 2026</b></span>
+      <span>Cours <b>lundi 14 sept.</b></span>
+      <span>DELE B2 blanc <b>17-18 oct.</b></span>
+      <span>Partiels <b>novembre</b></span>
+      <span>C1 visé <b>mars 2027</b></span>
+    </div>
+  </div>
+</header>
+
+<nav class="toc" aria-label="Sections">
+  <div class="wrap">
+    <a href="#depart">01 Départ</a><a href="#methode">02 Méthode</a><a href="#calendrier">03 Calendrier</a><a href="#semaine0">04 Semaine 0</a><a href="#grille">05 Grille</a><a href="#grammaire">06 Grammaire</a><a href="#vocabulaire">07 Vocabulaire</a><a href="#competences">08 Compétences</a><a href="#examens">09 Cours et partiels</a><a href="#pieges">10 Pièges</a><a href="#outils">11 Outils</a><a href="#mesures">12 Mesures</a><a href="#batcave">13 Batcave</a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+<!-- ============================ 01 DÉPART ============================ -->
+<section id="depart">
+  <div class="num">01</div>
+  <h2>Point de départ : où tu en es vraiment</h2>
+  <p>Comprendre presque tout à l'oral, c'est déjà un niveau B1 réceptif, probablement plus. Ce qui manque est la <strong>production</strong> : parler sans chercher ses mots, écrire sans faute de temps ni d'accord, prendre des notes en espagnol sans passer par le français, et tenir le registre académique. On ne repart donc pas de zéro pour comprendre, on repart de zéro pour <em>produire</em>, ce qui va très vite pour un francophone à condition de le faire tous les jours.</p>
+
+  <h3>Le diagnostic à faire aujourd'hui (40 minutes)</h3>
+  <ol>
+    <li><b>Écrit, 30 min, sans dictionnaire.</b> 300 mots sur : <em>« Preséntate, explica por qué estudias Odontología en Alicante y qué esperas de este semestre. »</em> Fais corriger par Claude avec la commande « corrige » (section 08) et compte les erreurs pour 100 mots.</li>
+    <li><b>Oral, 3 min, enregistré au téléphone.</b> <em>« Describe un día típico tuyo. »</em> Note le nombre de pauses de plus de trois secondes et si tu arrives au bout.</li>
+    <li><b>Grammaire, 15 min.</b> Le test de niveau adaptatif de Kwiziq Spanish (gratuit) : il dit exactement quels points sont acquis.</li>
+    <li><b>Écoute, 10 min.</b> Dix minutes d'un cours universitaire d'anatomía sur YouTube, puis résumé en cinq lignes en espagnol.</li>
+  </ol>
+  <div class="table-wrap"><table>
+    <tr><th>Erreurs / 100 mots</th><th>Niveau de production</th><th>Ce que ça veut dire pour toi</th></tr>
+    <tr><td class="k">plus de 12</td><td>A2</td><td>Les bases ne sont pas automatiques : la semaine 0 est faite pour ça.</td></tr>
+    <tr><td class="k">6 à 12</td><td>B1</td><td>Tu te fais comprendre, mais une copie d'examen perdrait des points sur la forme.</td></tr>
+    <tr><td class="k">3 à 6</td><td>B2</td><td>Suffisant pour les partiels ; il reste le débit et la nuance.</td></tr>
+    <tr><td class="k">moins de 3</td><td>C1</td><td>La langue n'est plus le sujet, seul le contenu compte.</td></tr>
+  </table></div>
+  <p class="mono" style="color:var(--ink-faint);">Repère maison, pas une échelle officielle : il sert à mesurer ta progression d'un dimanche à l'autre.</p>
+
+  <h3>Les niveaux traduits dans ta vie</h3>
+  <div class="table-wrap"><table>
+    <tr><th>Niveau</th><th>En cours</th><th>À l'examen</th><th>Dans la vie</th></tr>
+    <tr><td class="k">A2</td><td>Tu suis le fil, tu perds le détail.</td><td>Tu comprends les questions, tes réponses sont courtes et fautives.</td><td>Courses, administration simple.</td></tr>
+    <tr><td class="k">B1</td><td>Tu prends des notes partielles, en traduisant.</td><td>Tu réponds, avec des fautes de temps et d'accord.</td><td>Conversation avec les compañeros, en cherchant tes mots.</td></tr>
+    <tr><td class="k">B2</td><td>Notes complètes en espagnol, questions posées en cours.</td><td>Réponse structurée, peu de fautes, registre correct.</td><td>Sortir, débattre, comprendre l'humour lent.</td></tr>
+    <tr><td class="k">C1</td><td>Tu reformules, tu nuances, tu argumentes avec le prof.</td><td>Copie fluide, vocabulaire précis, nominalisations, aucune faute pénalisante.</td><td>Séries sans sous-titres, humour rapide, argot compris, accent qui ne gêne plus.</td></tr>
+  </table></div>
+</section>
+
+<!-- ============================ 02 MÉTHODE ============================ -->
+<section id="methode">
+  <div class="num">02</div>
+  <h2>La méthode en dix règles</h2>
+  <ol>
+    <li><strong>Produire d'abord.</strong> 70 % du temps à parler et écrire, 30 % à la grammaire. La grammaire se lit en vingt minutes ; elle s'acquiert en l'utilisant.</li>
+    <li><strong>Le dentaire passe en espagnol dès lundi.</strong> Notes, cartes Anki, projet Claude « Dentaire » (« explique » et « interroge-moi » en espagnol), réécriture du cours en dix lignes en espagnol. Chaque heure de cours devient une heure d'espagnol : c'est ce qui rend le plan tenable.</li>
+    <li><strong>Chaque erreur devient une carte.</strong> Une phrase corrigée = une carte à trou. Le carnet d'erreurs est ta vraie méthode ; le livre de grammaire n'est que la référence.</li>
+    <li><strong>Répétition espacée quotidienne.</strong> Anki tous les jours, vingt nouvelles cartes maximum, jamais de zéro jour. Les révisions se font dans le tram du retour.</li>
+    <li><strong>Shadowing quotidien.</strong> Quinze minutes à répéter à voix haute, en simultané, un cours universitaire en espagnol. C'est ce qui règle la prononciation et le débit, pas la théorie.</li>
+    <li><strong>Deux séances de parole corrigée par semaine.</strong> Tuteur, tandem ou compañero, avec les corrections notées puis mises en cartes.</li>
+    <li><strong>Un point de grammaire par semaine, pas dix.</strong> Pratique délibérée : le point de la semaine est traqué dans tout ce que tu écris et dis.</li>
+    <li><strong>Une épreuve chronométrée par semaine.</strong> Le dimanche, en conditions d'examen : sans dictionnaire, temps limité, correction sur deux axes (contenu, langue).</li>
+    <li><strong>Tout l'environnement en espagnol.</strong> Téléphone et ordinateur en espagnol, séries en VO sans sous-titres français (sous-titres espagnols au début), presse en espagnol, Claude en espagnol.</li>
+    <li><strong>On mesure, on ne « sent » pas.</strong> Chaque dimanche : erreurs pour 100 mots, minutes d'oral sans pause, heures faites. Les chiffres remontent dans la Batcave.</li>
+  </ol>
+  <div class="callout warn"><div class="t">Ce qu'on ne fait pas</div>
+    <p>Pas de traduction français → espagnol dans les cartes. Pas de listes de mots hors contexte. Pas d'application gamifiée comme méthode principale (en complément dans une file d'attente, à la rigueur). Pas de grammaire lue sans exercices écrits derrière. Pas de sous-titres français. Pas de « je referai demain » : vingt minutes minimum tous les jours, y compris le jour du partiel.</p>
+  </div>
+</section>
+
+<!-- ============================ 03 CALENDRIER ============================ -->
+<section id="calendrier">
+  <div class="num">03</div>
+  <h2>Le calendrier en quatre phases</h2>
+  <div class="table-wrap"><table>
+    <tr><th>Phase</th><th>Dates</th><th>Niveau visé</th><th>Temps</th><th>Ce qui change dans ta grille</th></tr>
+    <tr><td><b>0 · Remise à niveau</b></td><td class="k">mar 8 → dim 13 sept.</td><td>A1 → B1 automatisé : temps du passé, subjonctif présent, pronoms, ser/estar, por/para</td><td class="k">≈ 36 h</td><td>Pas encore de cours : tous les blocs du matin et deux heures l'après-midi</td></tr>
+    <tr><td><b>1 · Production</b></td><td class="k">lun 14 sept. → dim 18 oct.</td><td>B1 → B2 : écrit correct, oral fluide, notes en espagnol</td><td class="k">≈ 17 h/sem + 20 h de cours</td><td>Les blocs Projets perso deviennent des blocs Español</td></tr>
+    <tr><td><b>2 · Espagnol d'examen</b></td><td class="k">lun 19 oct. → partiels (nov.)</td><td>B2 opérationnel en examen</td><td class="k">≈ 8 h/sem</td><td>Projets perso reviennent à moitié ; annales en espagnol chronométrées</td></tr>
+    <tr><td><b>3 · Vers le C1</b></td><td class="k">déc. 2026 → mars 2027</td><td>C1 : registre, nuance, débit natif ; DELE C1 blanc en février</td><td class="k">≈ 6 h/sem</td><td>Un bloc par jour, un tuteur par semaine, simulation le dimanche</td></tr>
+  </table></div>
+
+  <div class="kpi">
+    <div><div class="v">36 h</div><div class="l">semaine 0</div></div>
+    <div><div class="v">≈ 120 h</div><div class="l">au 18 octobre</div></div>
+    <div><div class="v">≈ 160 h</div><div class="l">aux partiels</div></div>
+    <div><div class="v">≈ 250 h</div><div class="l">à mi-mars 2027</div></div>
+  </div>
+  <p>À ces heures s'ajoutent tes cours, soit trois cents heures d'immersion d'ici mars. Pour un francophone qui comprend déjà, c'est largement ce qu'il faut pour un C1 de production ; les grilles officielles comptent deux à trois fois plus pour quelqu'un qui part sans comprendre.</p>
+
+  <h3>Jalons</h3>
+  <div class="table-wrap"><table>
+    <tr><th>Date</th><th>Jalon</th><th>Réussi si</th></tr>
+    <tr><td class="k">mar 8 sept.</td><td>Diagnostic</td><td>Chiffres notés : erreurs/100 mots, pauses à l'oral, résultat Kwiziq.</td></tr>
+    <tr><td class="k">dim 13 sept.</td><td>Simulation de fin de semaine 0</td><td>Deux réponses d'examen en 55 min, cinq minutes d'oral, erreurs classées.</td></tr>
+    <tr><td class="k">dim 27 sept.</td><td>Notes de cours</td><td>Deux semaines de notes prises directement en espagnol, sans traduction.</td></tr>
+    <tr><td class="k">dim 4 oct.</td><td>Oral tenu</td><td>Trois minutes sur un thème de cours sans t'arrêter ni repasser au français.</td></tr>
+    <tr><td class="k">sam 17 - dim 18 oct.</td><td>DELE B2 blanc</td><td>Expression écrite et orale des modelos de examen, 30/50 dans chaque groupe.</td></tr>
+    <tr><td class="k">novembre</td><td>Partiels</td><td>La langue ne t'a coûté aucun point ; tu sais le dire question par question.</td></tr>
+    <tr><td class="k">dim 14 fév. 2027</td><td>DELE C1 blanc</td><td>Les quatre épreuves, en temps réel.</td></tr>
+    <tr><td class="k">mars 2027</td><td>Inscription</td><td>Une convocatoria DELE C1 du printemps (calendrier sur examenes.cervantes.es), ou le SIELE si les dates ne collent pas.</td></tr>
+  </table></div>
+</section>
+
+<!-- ============================ 04 SEMAINE 0 ============================ -->
+<section id="semaine0">
+  <div class="num">04</div>
+  <h2>Semaine 0 : du 8 au 13 septembre, remise à niveau</h2>
+  <p>Les cours n'ont pas commencé : les blocs Anki, Cartes, Annales et Projets perso sont vides de dentaire. On les prend tous. Même journée chaque jour, seul le contenu change.</p>
+  <div class="table-wrap"><table>
+    <tr><th>Heure (grille)</th><th>Quoi</th><th>Comment</th></tr>
+    <tr><td class="k">07:20 → 09:20</td><td>Grammaire du jour</td><td>Un chapitre de la <em>Gramática de uso del español</em> (A1-B2), théorie puis <em>tous</em> les exercices, corrigés à la main. Point traqué ensuite dans tout ce que tu produis.</td></tr>
+    <tr><td class="k">09:20 → 10:20</td><td>Anki Español</td><td>Révisions, puis les cartes d'erreurs de la veille et trente mots nouveaux du jour, toujours en phrase.</td></tr>
+    <tr><td class="k">10:20 → 11:20</td><td>Écrire</td><td>200 mots sur le thème du jour, 25 min sans dictionnaire, puis « corrige » avec Claude, une carte par erreur.</td></tr>
+    <tr><td class="k">11:20 → 12:20</td><td>Parler</td><td>20 min de shadowing sur un cours d'anatomía, puis 40 min de tuteur (ou conversation dictée avec Claude, ou un compañero).</td></tr>
+    <tr><td class="k">13:00 → 14:50</td><td>Lire et écouter le registre académique</td><td>Un chapitre d'un manuel de 1º en espagnol (biología celular, anatomía), notes prises en espagnol ; ou un cours universitaire en vidéo avec prise de notes.</td></tr>
+    <tr><td class="k">15:30 → 17:00</td><td>Léger</td><td>Une série en VO (sous-titres espagnols), lecture à voix haute 10 min, téléphone réglé en espagnol, tout le reste est libre.</td></tr>
+  </table></div>
+
+  <div class="day"><div class="d">Mar 8<small>DIAGNOSTIC · BASES</small></div><ul>
+    <li><b>GRAMMAIRE</b> Diagnostic (section 01), puis : alphabet et sons, accent tonique et règles de la tilde (agudas, llanas, esdrújulas, tilde diacrítica), articles, genre et nombre (el problema, la mano, el agua), ser / estar / hay, présent régulier et les irréguliers fréquents (ser, estar, tener, ir, hacer, poder, querer, saber, conocer, poner, salir, venir, decir, haber).</li>
+    <li><b>ÉCRIRE</b> <em>Preséntate y explica tus estudios</em> (c'est le texte du diagnostic).</li>
+    <li><b>PARLER</b> Trois minutes enregistrées, puis shadowing sur les dix premières minutes d'un cours d'introducción a la anatomía.</li>
+    <li><b>LIRE</b> Premier chapitre d'un manuel de biología celular en espagnol, dix termes en cartes.</li>
+  </ul></div>
+  <div class="day"><div class="d">Mer 9<small>LES PASSÉS</small></div><ul>
+    <li><b>GRAMMAIRE</b> Pretérito perfecto (hoy, esta semana, ya, todavía no), pretérito indefinido (ayer, en 2020, hace dos años) et ses irréguliers (fui, tuve, hice, pude, puse, dije, vine, estuve, supe, quise, trajo, hubo), imperfecto (description, habitude, décor). Le contraste entre les trois est le piège n° 1 du francophone : le passé composé français ne se traduit pas par le perfecto.</li>
+    <li><b>ÉCRIRE</b> <em>Ayer</em> : ta journée d'hier, puis un souvenir d'enfance (imperfecto obligatoire).</li>
+    <li><b>PARLER</b> Raconter la veille au tuteur, qui note chaque temps faux.</li>
+    <li><b>LIRE</b> Un article d'El País, au passé, surligner tous les verbes et nommer leur temps.</li>
+  </ul></div>
+  <div class="day"><div class="d">Jeu 10<small>FUTUR · PRONOMS</small></div><ul>
+    <li><b>GRAMMAIRE</b> Futuro simple (tendré, haré, podré, sabré, pondré, saldré, vendré, diré, querré, habrá), condicional, ir a + infinitivo, impératif affirmatif (tú, vosotros, usted) et négatif (= subjonctif), pronoms OD/OI (lo, la, le, se lo) et leur place (enclise : dímelo, voy a hacerlo), verbes du type gustar (encantar, doler, parecer, faltar), réfléchis.</li>
+    <li><b>ÉCRIRE</b> <em>Mi plan para el semestre</em>, au futur et au conditionnel.</li>
+    <li><b>PARLER</b> Donner des consignes à l'impératif (une recette, un exercice de sport), puis expliquer ta routine avec des pronoms.</li>
+    <li><b>LIRE</b> Deux pages d'anatomía dental : le vocabulaire des dents (section 07) commence ici.</li>
+  </ul></div>
+  <div class="day"><div class="d">Ven 11<small>SUBJONCTIF</small></div><ul>
+    <li><b>GRAMMAIRE</b> Présent du subjonctif : formation et irréguliers (sea, esté, vaya, haya, sepa, dé, tenga, haga, pueda, quiera, venga, diga, ponga, salga). Déclencheurs : volonté (quiero que), doute (no creo que), jugement (es importante que, es normal que), but (para que), temporelle au futur (cuando llegue), ojalá, quizás. Opinion : creo que + indicatif, no creo que + subjonctif.</li>
+    <li><b>ÉCRIRE</b> Argumentation : <em>Por qué elegí Odontología</em>, avec dix subjonctifs justifiés.</li>
+    <li><b>PARLER</b> Dix minutes de débat avec le tuteur sur un sujet simple (¿Es mejor estudiar por la mañana o por la noche?).</li>
+    <li><b>LIRE</b> Un modelo d'expression écrite DELE B2, juste pour voir le format.</li>
+  </ul></div>
+  <div class="day"><div class="d">Sam 12<small>LIER LES PHRASES</small></div><ul>
+    <li><b>GRAMMAIRE</b> Por / para ; régime prépositionnel des verbes fréquents (pensar en, depender de, consistir en, soñar con, tratar de, empezar a, dejar de) ; connecteurs (además, sin embargo, no obstante, por lo tanto, en consecuencia, en cuanto a, por un lado / por otro, es decir, dado que, mientras que) ; relatifs (que, el cual, cuyo, donde) ; comparatifs et superlatifs ; le « se » passif et impersonnel du registre scientifique (se observa, se produce, se ha demostrado).</li>
+    <li><b>ÉCRIRE</b> Décrire un mécanisme : <em>Explica cómo se produce la caries</em> (ou la mitose), 200 mots, avec dix connecteurs différents.</li>
+    <li><b>PARLER</b> Technique 4-3-2 : le même mécanisme expliqué en quatre minutes, puis trois, puis deux.</li>
+    <li><b>LIRE</b> Un article de divulgation scientifique (Investigación y Ciencia, Muy Interesante) : repérer les nominalisations et les « se ».</li>
+  </ul></div>
+  <div class="day"><div class="d">Dim 13<small>SIMULATION</small></div><ul>
+    <li><b>09:20</b> Deux réponses de type examen en 55 min, sans dictionnaire : <em>Describe la estructura de la membrana celular</em> et <em>Explica las funciones de la saliva</em>.</li>
+    <li><b>10:20</b> Cinq minutes d'oral enregistrées sur l'une des deux, puis correction des trois productions par Claude (« examen »), erreurs classées par code (section 08).</li>
+    <li><b>11:20</b> Toutes les erreurs de la semaine en cartes ; bilan chiffré : erreurs/100 mots, comparé au diagnostic de mardi.</li>
+    <li><b>13:30</b> Préparer la semaine 1 : lire la <em>guía docente</em> de chaque matière (programme, type d'examen, pondération), trente termes par matière en cartes, et poser dans le journal la question à faire au premier cours.</li>
+  </ul></div>
+</section>
+
+<!-- ============================ 05 GRILLE ============================ -->
+<section id="grille">
+  <div class="num">05</div>
+  <h2>La grille pendant les cours</h2>
+  <h3>Phase 1 · 14 septembre → 18 octobre</h3>
+  <p>Les blocs Projets perso deviennent des blocs Español. Rien d'autre ne bouge : sport, Anki dentaire, cartes, annales, cours, coucher à 21:55.</p>
+  <div class="table-wrap"><table>
+    <tr><th>Bloc</th><th>Lun · Mar · Jeu</th><th>Mer</th><th>Ven</th><th>Sam</th><th>Dim</th></tr>
+    <tr><td class="k">05:30</td><td>Sport</td><td>Anki matinal (dentaire)</td><td>Español · escribir largo : 300 mots chronométrés</td><td>Sport</td><td>Anki Español + cartes d'erreurs de la semaine</td></tr>
+    <tr><td class="k">08:20 Anki 2</td><td colspan="5">Les cinq dernières minutes passent du paquet Business au paquet Español.</td></tr>
+    <tr><td class="k">10:20</td><td>Annales (dentaire)</td><td>Annales</td><td>Español · gramática</td><td>Annales</td><td>Correction + cartes</td></tr>
+    <tr><td class="k">11:20</td><td>Español · gramática : le point de la semaine et ses exercices</td><td>idem</td><td>Tuteur ou tandem</td><td>Español · gramática</td><td>Simulation : deux questions d'annales en espagnol, 55 min</td></tr>
+    <tr><td class="k">13:00</td><td>Español · escribir : 200 mots sur le cours de la veille, correction, cartes</td><td>idem</td><td>(Jumu'ah)</td><td>—</td><td>13:30 · Bilan d'erreurs, chiffres du dimanche, point de grammaire de la semaine suivante</td></tr>
+    <tr><td class="k">14:00</td><td>Español · preparar la clase : slides du jour, quinze termes, deux questions préparées (50 min)</td><td>idem</td><td>—</td><td>—</td><td>—</td></tr>
+    <tr><td class="k">15:00 Trajet</td><td colspan="3">Shadowing dans le tram, écouteurs, quinze minutes.</td><td>—</td><td>—</td></tr>
+    <tr><td class="k">17:00 / 18:00</td><td>—</td><td>—</td><td>—</td><td>Tuteur ou tandem (1 h), puis une tâche d'expression écrite DELE B2</td><td>—</td></tr>
+    <tr><td class="k">19:30 Trajet</td><td colspan="3">Anki Español sur le téléphone.</td><td>—</td><td>—</td></tr>
+    <tr><td class="k">20:30</td><td colspan="3">Comprendre le cours du jour : le même bloc, entièrement en espagnol (« explica », « interrógame »), puis réécriture en dix lignes en espagnol.</td><td>—</td><td>—</td></tr>
+  </table></div>
+  <p><strong>Le bloc le plus rentable est 14:00, préparer la classe.</strong> Tu entres en cours en connaissant les quinze mots que le prof va utiliser : tu prends des notes au lieu de décoder. Le tram est ta demi-heure de langue quotidienne gratuite : shadowing à l'aller, Anki au retour.</p>
+
+  <h3>Le point de grammaire de chaque semaine</h3>
+  <div class="table-wrap"><table>
+    <tr><th>Semaine</th><th>Point traqué partout</th><th>Épreuve du dimanche</th></tr>
+    <tr><td class="k">1 · 14 sept.</td><td>Ser / estar / hay avec adjectifs et participes ; concordance genre-nombre systématique.</td><td>Deux questions d'annales.</td></tr>
+    <tr><td class="k">2 · 21 sept.</td><td>Les trois passés dans un récit ; pluscuamperfecto.</td><td>Deux questions + résumé de cours de 150 mots.</td></tr>
+    <tr><td class="k">3 · 28 sept.</td><td>Subjonctif présent : tous les déclencheurs ; relatives au subjonctif (busco un artículo que explique).</td><td>Idem + oral de trois minutes.</td></tr>
+    <tr><td class="k">4 · 5 oct.</td><td>Imperfecto de subjuntivo, conditionnelles irréelles (si tuviera / si hubiera… habría), concordance des temps.</td><td>Tâche DELE B2 : carta formal ou artículo de opinión.</td></tr>
+    <tr><td class="k">5 · 12 oct.</td><td>Registre académique : « se » passif, nominalisation, connecteurs argumentatifs, périphrases (deber de, llevar + gerundio, ir + gerundio).</td><td>DELE B2 blanc complet, écrit et oral (17-18 oct.).</td></tr>
+  </table></div>
+
+  <h3>Phase 2 · 19 octobre → partiels</h3>
+  <ul>
+    <li>Projets perso 1 (11:20) redevient dropshipping. Projets perso 2 (13:00) reste Español, et devient une <strong>réponse d'annale en espagnol, chronométrée</strong>, corrigée sur deux axes : contenu, puis langue.</li>
+    <li>Préparer la classe (14:00) continue, c'est la meilleure heure de la journée.</li>
+    <li>Tuteur : une séance par semaine, consacrée à expliquer un thème d'examen à l'oral.</li>
+    <li>Le dimanche : trois questions d'annales au lieu de deux, dans les matières du partiel.</li>
+    <li>La semaine du partiel : plus de grammaire nouvelle, trois simulations, Anki seulement, sommeil.</li>
+  </ul>
+
+  <h3>Phase 3 · décembre → mars</h3>
+  <ul>
+    <li>Un bloc Español par jour (Projets perso 2, 13:00) : lundi grammaire C1, mardi écrit long (informe, ensayo), mercredi lecture littéraire ou presse avec fiche de vingt mots, jeudi oral (tuteur), vendredi écoute exigeante (podcast d'humour, débat radio) avec dictée de cinq minutes, samedi une tâche DELE C1, dimanche simulation ou bilan.</li>
+    <li>Anki Español dans le tram tous les jours, tuteur hebdomadaire, une série ou un livre en cours en permanence.</li>
+    <li>DELE C1 blanc le dimanche 14 février, inscription en mars.</li>
+  </ul>
+</section>
+
+<!-- ============================ 06 GRAMMAIRE ============================ -->
+<section id="grammaire">
+  <div class="num">06</div>
+  <h2>Programme grammatical A1 → C1</h2>
+  <p>La liste complète, niveau par niveau. Coche ce qui est acquis (la case reste cochée sur cet appareil) ; ce qui est marqué <span class="trap" style="font-family:var(--font-mono); font-size:10.5px; color:var(--pen); letter-spacing:.06em;">PIÈGE FR</span> est un point où le français te tend un faux ami. En semaine 0 tu balaies A1 et A2 en deux jours ; B1 et B2 sont le cœur des phases 1 et 2 ; C1 se travaille dès la phase 3.</p>
+
+  <details class="level" open><summary><h3>A1 · Les fondations</h3><span class="cnt" data-cnt="a1"></span><span class="fr">Une journée pour toi. À vérifier, pas à apprendre.</span></summary>
+  <ul class="check" data-level="a1">
+    <li><label><input type="checkbox" data-k="a1-1"><span>Alphabet et sons : ñ, ll, rr, j, z/c, h muette, qu/gu</span></label></li>
+    <li><label><input type="checkbox" data-k="a1-2"><span>Accent tonique et tilde : agudas, llanas, esdrújulas <span class="trap">PIÈGE FR</span></span></label></li>
+    <li><label><input type="checkbox" data-k="a1-3"><span>Tilde diacrítica : él/el, tú/tu, sí/si, más/mas, qué/que, dé/de, sé/se</span></label></li>
+    <li><label><input type="checkbox" data-k="a1-4"><span>Articles définis et indéfinis, contractions al / del</span></label></li>
+    <li><label><input type="checkbox" data-k="a1-5"><span>Genre et nombre, exceptions (el problema, el mapa, la mano, la foto, el agua, el día)</span></label></li>
+    <li><label><input type="checkbox" data-k="a1-6"><span>Adjectifs : accord et place (après le nom), apocope (buen, gran, primer)</span></label></li>
+    <li><label><input type="checkbox" data-k="a1-7"><span>Pronoms sujets et leur omission</span></label></li>
+    <li><label><input type="checkbox" data-k="a1-8"><span>Ser / estar / hay <span class="trap">PIÈGE FR</span></span></label></li>
+    <li><label><input type="checkbox" data-k="a1-9"><span>Présent de l'indicatif : réguliers, diphtongue e&gt;ie, o&gt;ue, e&gt;i, 1re personne en -go et -zco</span></label></li>
+    <li><label><input type="checkbox" data-k="a1-10"><span>Verbes réfléchis (levantarse, ducharse) et pronoms réfléchis</span></label></li>
+    <li><label><input type="checkbox" data-k="a1-11"><span>Gustar, encantar, doler : accord avec la chose aimée</span></label></li>
+    <li><label><input type="checkbox" data-k="a1-12"><span>Tener que / hay que / deber ; tener + âge, hambre, sueño, frío</span></label></li>
+    <li><label><input type="checkbox" data-k="a1-13"><span>Ir a + infinitif ; estar + gérondif</span></label></li>
+    <li><label><input type="checkbox" data-k="a1-14"><span>Interrogatifs (qué, cuál, quién, dónde, cuándo, cómo, cuánto) et ponctuation ¿ ¡</span></label></li>
+    <li><label><input type="checkbox" data-k="a1-15"><span>Nombres, heures, dates, jours et mois sans majuscule</span></label></li>
+    <li><label><input type="checkbox" data-k="a1-16"><span>Démonstratifs (este, ese, aquel) et possessifs (mi / mío)</span></label></li>
+    <li><label><input type="checkbox" data-k="a1-17"><span>Muy / mucho ; también / tampoco ; double négation (no… nada, nadie, nunca)</span></label></li>
+    <li><label><input type="checkbox" data-k="a1-18"><span>Prépositions de base : a, de, en, con, por, para, desde, hasta, sin</span></label></li>
+  </ul></details>
+
+  <details class="level" open><summary><h3>A2 · Raconter et situer</h3><span class="cnt" data-cnt="a2"></span><span class="fr">Une journée et demie : les passés sont le gros morceau.</span></summary>
+  <ul class="check" data-level="a2">
+    <li><label><input type="checkbox" data-k="a2-1"><span>Pretérito perfecto (he hecho) et ses marqueurs (hoy, esta semana, ya, todavía, alguna vez)</span></label></li>
+    <li><label><input type="checkbox" data-k="a2-2"><span>Pretérito indefinido : réguliers, irréguliers forts, changements orthographiques (busqué, llegué, leyó)</span></label></li>
+    <li><label><input type="checkbox" data-k="a2-3"><span>Imperfecto : description, habitude, décor, âge, heure</span></label></li>
+    <li><label><input type="checkbox" data-k="a2-4"><span>Contraste perfecto / indefinido / imperfecto <span class="trap">PIÈGE FR</span></span></label></li>
+    <li><label><input type="checkbox" data-k="a2-5"><span>Futuro simple, irréguliers ; condicional simple</span></label></li>
+    <li><label><input type="checkbox" data-k="a2-6"><span>Impératif affirmatif (tú, vosotros, usted, ustedes) et négatif</span></label></li>
+    <li><label><input type="checkbox" data-k="a2-7"><span>Pronoms OD et OI : lo, la, le ; combinaison se lo ; enclise avec infinitif, gérondif, impératif <span class="trap">PIÈGE FR</span></span></label></li>
+    <li><label><input type="checkbox" data-k="a2-8"><span>Comparatifs et superlatifs : más… que, tan… como, el más, -ísimo, mejor / peor / mayor / menor</span></label></li>
+    <li><label><input type="checkbox" data-k="a2-9"><span>Périphrases : acabar de, volver a, seguir + gérondif, empezar a, dejar de, llevar + gérondif</span></label></li>
+    <li><label><input type="checkbox" data-k="a2-10"><span>Ser / estar avec adjectifs à double sens (listo, malo, rico, aburrido, cansado)</span></label></li>
+    <li><label><input type="checkbox" data-k="a2-11"><span>Por / para <span class="trap">PIÈGE FR</span></span></label></li>
+    <li><label><input type="checkbox" data-k="a2-12"><span>Prépositions de lieu et de temps (encima de, debajo de, dentro de, a las, en, desde… hasta, hace)</span></label></li>
+    <li><label><input type="checkbox" data-k="a2-13"><span>Indéfinis : algo / nada, alguien / nadie, algún / ningún, otro (jamais « un otro »)</span></label></li>
+    <li><label><input type="checkbox" data-k="a2-14"><span>Relatives simples avec que, donde</span></label></li>
+    <li><label><input type="checkbox" data-k="a2-15"><span>Discours indirect au présent (dice que…)</span></label></li>
+    <li><label><input type="checkbox" data-k="a2-16"><span>Connecteurs de base : y, pero, porque, por eso, entonces, primero, luego, después, al final</span></label></li>
+    <li><label><input type="checkbox" data-k="a2-17"><span>Hace / desde hace / llevar + gérondif pour la durée <span class="trap">PIÈGE FR</span></span></label></li>
+  </ul></details>
+
+  <details class="level" open><summary><h3>B1 · Nuancer, vouloir, douter</h3><span class="cnt" data-cnt="b1"></span><span class="fr">Le cœur des semaines 1 à 3.</span></summary>
+  <ul class="check" data-level="b1">
+    <li><label><input type="checkbox" data-k="b1-1"><span>Présent du subjonctif : formation, irréguliers, changements orthographiques</span></label></li>
+    <li><label><input type="checkbox" data-k="b1-2"><span>Subjonctif après volonté, souhait, ordre (quiero que, pido que, ojalá)</span></label></li>
+    <li><label><input type="checkbox" data-k="b1-3"><span>Subjonctif après doute et négation d'opinion (no creo que, dudo que) ; indicatif après creo que <span class="trap">PIÈGE FR</span></span></label></li>
+    <li><label><input type="checkbox" data-k="b1-4"><span>Subjonctif après jugement (es importante que, es normal que, me parece bien que)</span></label></li>
+    <li><label><input type="checkbox" data-k="b1-5"><span>Subjonctif dans les temporelles au futur (cuando, en cuanto, hasta que) <span class="trap">PIÈGE FR</span></span></label></li>
+    <li><label><input type="checkbox" data-k="b1-6"><span>Subjonctif de but (para que, a fin de que) et relatives à antécédent inconnu (busco un piso que tenga)</span></label></li>
+    <li><label><input type="checkbox" data-k="b1-7"><span>Impératif + pronoms (dímelo, no me lo digas)</span></label></li>
+    <li><label><input type="checkbox" data-k="b1-8"><span>Pluscuamperfecto (había hecho)</span></label></li>
+    <li><label><input type="checkbox" data-k="b1-9"><span>Futur et conditionnel de probabilité (serán las tres, tendría veinte años)</span></label></li>
+    <li><label><input type="checkbox" data-k="b1-10"><span>Conditionnelles réelles (si + présent, futur / impératif)</span></label></li>
+    <li><label><input type="checkbox" data-k="b1-11"><span>Verbes de changement : ponerse, volverse, hacerse, quedarse, llegar a ser, convertirse en</span></label></li>
+    <li><label><input type="checkbox" data-k="b1-12"><span>Voix passive, passive réfléchie (se venden), se impersonnel (se dice)</span></label></li>
+    <li><label><input type="checkbox" data-k="b1-13"><span>Les valeurs de « se » : réfléchi, réciproque, passif, impersonnel, involontaire (se me olvidó)</span></label></li>
+    <li><label><input type="checkbox" data-k="b1-14"><span>Discours indirect au passé, concordance des temps (dijo que vendría)</span></label></li>
+    <li><label><input type="checkbox" data-k="b1-15"><span>Régime prépositionnel : pensar en, depender de, consistir en, soñar con, tratar de, casarse con, enamorarse de <span class="trap">PIÈGE FR</span></span></label></li>
+    <li><label><input type="checkbox" data-k="b1-16"><span>Lo + adjectif (lo importante, lo que), diminutifs et augmentatifs</span></label></li>
+    <li><label><input type="checkbox" data-k="b1-17"><span>Connecteurs d'organisation : además, sin embargo, por lo tanto, en cuanto a, por un lado / por otro, es decir, en resumen</span></label></li>
+    <li><label><input type="checkbox" data-k="b1-18"><span>Exprimer l'opinion, l'accord et le désaccord avec le mode juste (estoy de acuerdo con, no me parece que)</span></label></li>
+  </ul></details>
+
+  <details class="level" open><summary><h3>B2 · Argumenter et supposer</h3><span class="cnt" data-cnt="b2"></span><span class="fr">Semaines 4 et 5, puis toute la phase 2.</span></summary>
+  <ul class="check" data-level="b2">
+    <li><label><input type="checkbox" data-k="b2-1"><span>Imperfecto de subjuntivo (-ra / -se) et pluscuamperfecto de subjuntivo</span></label></li>
+    <li><label><input type="checkbox" data-k="b2-2"><span>Conditionnelles irréelles : si tuviera… haría ; si hubiera sabido… habría hecho <span class="trap">PIÈGE FR</span></span></label></li>
+    <li><label><input type="checkbox" data-k="b2-3"><span>Concordance des temps complète (quería que vinieras ; me habría gustado que hubieras venido)</span></label></li>
+    <li><label><input type="checkbox" data-k="b2-4"><span>Concessives : aunque + indicatif ou subjonctif, a pesar de que, por mucho que</span></label></li>
+    <li><label><input type="checkbox" data-k="b2-5"><span>Causales (porque, ya que, puesto que, dado que, como) et consécutives (así que, de modo que, por consiguiente)</span></label></li>
+    <li><label><input type="checkbox" data-k="b2-6"><span>Temporelles complètes (mientras, hasta que, antes de que + subj., después de que, en cuanto, tan pronto como)</span></label></li>
+    <li><label><input type="checkbox" data-k="b2-7"><span>Modales : como si + imperfecto de subjuntivo</span></label></li>
+    <li><label><input type="checkbox" data-k="b2-8"><span>Discours indirect avec impératif et subjonctif (me dijo que viniera)</span></label></li>
+    <li><label><input type="checkbox" data-k="b2-9"><span>Passive avec ser + participe (registre formel) et estar + participe (résultat)</span></label></li>
+    <li><label><input type="checkbox" data-k="b2-10"><span>Périphrases avancées : deber de, venir + gérondif, ir + gérondif, andar + gérondif, tener + participe, llegar a + inf., acabar + gérondif</span></label></li>
+    <li><label><input type="checkbox" data-k="b2-11"><span>Relatives complexes : el cual, cuyo, lo que, lo cual, quien</span></label></li>
+    <li><label><input type="checkbox" data-k="b2-12"><span>Quedar, sobrar, faltar, caber, hacer falta</span></label></li>
+    <li><label><input type="checkbox" data-k="b2-13"><span>Verbes de perception + infinitif ou gérondif (la vi salir / saliendo)</span></label></li>
+    <li><label><input type="checkbox" data-k="b2-14"><span>Leísmo, laísmo, loísmo : la norme et l'usage madrilène</span></label></li>
+    <li><label><input type="checkbox" data-k="b2-15"><span>Formation des mots : préfixes et suffixes (des-, in-, re-, -ción, -miento, -able, -izar)</span></label></li>
+    <li><label><input type="checkbox" data-k="b2-16"><span>Adverbes en -mente et leur place ; adjectifs à valeur adverbiale</span></label></li>
+    <li><label><input type="checkbox" data-k="b2-17"><span>Connecteurs argumentatifs : no obstante, ahora bien, en cambio, de hecho, en definitiva, cabe señalar que</span></label></li>
+    <li><label><input type="checkbox" data-k="b2-18"><span>Usages avancés des articles (el + infinitif, omission dans les énumérations)</span></label></li>
+  </ul></details>
+
+  <details class="level" open><summary><h3>C1 · Précision, registre, style</h3><span class="cnt" data-cnt="c1"></span><span class="fr">Phase 3, puis toute la vie.</span></summary>
+  <ul class="check" data-level="c1">
+    <li><label><input type="checkbox" data-k="c1-1"><span>Subjonctif dans tous ses contextes fins : el hecho de que, que yo sepa, no es que… sino que, dudo que vs no dudo que</span></label></li>
+    <li><label><input type="checkbox" data-k="c1-2"><span>Futuro perfecto et condicional compuesto (habré terminado, habría hecho), valeurs de conjecture</span></label></li>
+    <li><label><input type="checkbox" data-k="c1-3"><span>Valeurs stylistiques des temps : présent historique, imperfecto de courtoisie, futur d'obligation</span></label></li>
+    <li><label><input type="checkbox" data-k="c1-4"><span>Structures de mise en relief : fue Juan quien…, lo que pasa es que…, es por eso por lo que…</span></label></li>
+    <li><label><input type="checkbox" data-k="c1-5"><span>Concessives complexes : por más que, aun cuando, y eso que, si bien, a sabiendas de que</span></label></li>
+    <li><label><input type="checkbox" data-k="c1-6"><span>Locutions prépositionnelles du registre formel : a raíz de, en función de, con respecto a, a la hora de, en vista de, en aras de, a expensas de</span></label></li>
+    <li><label><input type="checkbox" data-k="c1-7"><span>Nominalisation académique (la aparición de, la realización de, el hecho de) et « se » aspectuel (se comió toda la pizza)</span></label></li>
+    <li><label><input type="checkbox" data-k="c1-8"><span>Collocations : cometer un error, tomar una decisión, plantear una cuestión, desempeñar un papel, llevar a cabo, arrojar luz sobre, poner de manifiesto</span></label></li>
+    <li><label><input type="checkbox" data-k="c1-9"><span>Probabilité nuancée : a lo mejor + ind., quizá(s) + ind./subj., puede que + subj., lo mismo + ind., igual + ind.</span></label></li>
+    <li><label><input type="checkbox" data-k="c1-10"><span>Registre familier vs formel : vale, tío, mola, flipar, currar / no obstante, cabe destacar, en lo que atañe a</span></label></li>
+    <li><label><input type="checkbox" data-k="c1-11"><span>Modismes et refranes fréquents (estar en las nubes, no tener pelos en la lengua, más vale tarde que nunca)</span></label></li>
+    <li><label><input type="checkbox" data-k="c1-12"><span>Variétés : vosotros / ustedes, distinción / seseo, lexique d'Espagne vs d'Amérique (coche / carro, móvil / celular)</span></label></li>
+    <li><label><input type="checkbox" data-k="c1-13"><span>Orthographe fine : porque / por qué / porqué / por que ; sino / si no ; a ver / haber ; hay / ahí / ay ; echo / hecho ; a / ha</span></label></li>
+    <li><label><input type="checkbox" data-k="c1-14"><span>Ponctuation espagnole : virgule avant les incises, point-virgule, deux-points, guillemets « », tirets de dialogue</span></label></li>
+    <li><label><input type="checkbox" data-k="c1-15"><span>Langage figuré, ironie, humour : comprendre un podcast d'humour sans effort</span></label></li>
+    <li><label><input type="checkbox" data-k="c1-16"><span>Genres écrits C1 : informe, ensayo argumentativo, reseña, correo formal de reclamación, résumé d'exposé oral</span></label></li>
+  </ul></details>
+</section>
+
+<!-- ============================ 07 VOCABULAIRE ============================ -->
+<section id="vocabulaire">
+  <div class="num">07</div>
+  <h2>Vocabulaire : trois lexiques, une seule règle</h2>
+  <p>La règle : <strong>jamais un mot seul</strong>. Une carte, c'est une phrase à trou ou un mot avec sa définition en espagnol et un exemple. Vingt nouvelles cartes par jour, pas plus. Objectif : 3 000 mots actifs au B2, 6 000 au C1. Le francophone en possède déjà la moitié par transparence ; le travail porte sur les mots courants qui ne ressemblent à rien (todavía, aunque, quizás, hasta, seguir, quedar, sacar, dejar) et sur les faux amis.</p>
+
+  <div class="grid2">
+    <div class="card"><h4>1 · Lexique général</h4>
+      <p>Source : ce que tu croises (cours, séries, presse), plus les 3 000 mots les plus fréquents pour combler les trous. Étiquette Anki <span class="mono">general</span>.</p>
+      <p>Familles à traiter tôt : verbes passe-partout (poner, sacar, dejar, quedar, llevar, meter, echar, coger), marqueurs de temps (todavía, ya, aún, hace, desde, hasta, luego, entonces), quantité (bastante, demasiado, apenas, casi, incluso), le corps et la santé, la vie universitaire (matrícula, asignatura, apuntes, convocatoria, tutoría, prácticas, nota de corte).</p></div>
+    <div class="card"><h4>2 · Lexique académique</h4>
+      <p>Verbes : analizar, plantear, constatar, evidenciar, abordar, subrayar, conllevar, desencadenar, suponer, implicar, derivar de, radicar en, dar lugar a, poner de manifiesto, cabe destacar. Étiquette <span class="mono">academico</span>.</p>
+      <p>Noms : planteamiento, enfoque, hallazgo, hipótesis, muestra, variable, sesgo, ensayo clínico, revisión sistemática, evidencia, mecanismo, fundamento.</p></div>
+    <div class="card"><h4>3 · Lexique d'odontologie</h4>
+      <p>Alimenté chaque jour depuis les slides, vérifié dans le <em>Diccionario de términos médicos</em> de la Real Academia Nacional de Medicina. Étiquette <span class="mono">odontologia</span>, plus une étiquette par matière.</p>
+      <p>Trente termes par matière avant le premier cours, quinze par cours ensuite, définition en espagnol, jamais en français.</p></div>
+  </div>
+
+  <h3>Les connecteurs à savoir par cœur (registre écrit)</h3>
+  <div class="table-wrap"><table>
+    <tr><th>Fonction</th><th>Connecteurs</th></tr>
+    <tr><td>Ajouter</td><td class="es">además, asimismo, igualmente, por otra parte, cabe añadir que</td></tr>
+    <tr><td>Opposer</td><td class="es">sin embargo, no obstante, en cambio, mientras que, ahora bien, pese a, a pesar de que</td></tr>
+    <tr><td>Cause</td><td class="es">porque, ya que, puesto que, dado que, debido a, a causa de, gracias a</td></tr>
+    <tr><td>Conséquence</td><td class="es">por lo tanto, por consiguiente, así pues, de modo que, en consecuencia, de ahí que + subj.</td></tr>
+    <tr><td>Exemple et précision</td><td class="es">por ejemplo, en concreto, en particular, es decir, o sea, dicho de otro modo, a saber</td></tr>
+    <tr><td>Ordonner</td><td class="es">en primer lugar, en segundo lugar, por último, a continuación, finalmente</td></tr>
+    <tr><td>Conclure</td><td class="es">en conclusión, en definitiva, en resumen, en suma, para terminar</td></tr>
+    <tr><td>Opinion et évidence</td><td class="es">desde mi punto de vista, a mi juicio, es evidente que, cabe señalar que, conviene recordar que</td></tr>
+    <tr><td>Condition et but</td><td class="es">siempre que + subj., con tal de que, a menos que, para que, con el fin de, a fin de que</td></tr>
+  </table></div>
+
+  <h3>Lexique d'odontologie : le socle des cent premiers termes</h3>
+  <div class="grid2">
+    <div class="card"><h4>Anatomie dentaire</h4><p class="es">diente, muela, incisivo, canino, premolar, molar, cordal (muela del juicio), corona, cuello, raíz, ápice, esmalte, dentina, pulpa, cemento, ligamento periodontal, alvéolo, hueso alveolar, encía, cúspide, surco, fosa, borde incisal, cara vestibular / lingual / palatina / oclusal / mesial / distal, arcada, maxilar superior, mandíbula, oclusión, dentición temporal / permanente, erupción.</p></div>
+    <div class="card"><h4>Pathologie</h4><p class="es">caries, placa bacteriana, sarro (cálculo), gingivitis, periodontitis, absceso, flemón, pulpitis, necrosis pulpar, halitosis, bruxismo, maloclusión, sensibilidad dental, erosión, desgaste, fractura, traumatismo, lesión, inflamación, infección, dolor agudo / crónico.</p></div>
+    <div class="card"><h4>Traitements et matériel</h4><p class="es">empaste (obturación), endodoncia, extracción (exodoncia), implante, prótesis, corona, puente, carilla, ortodoncia, brackets, limpieza (profilaxis), tartrectomía, blanqueamiento, sellado de fisuras, anestesia local, sutura, radiografía, sonda periodontal, espejo, pinza, fresa, turbina, jeringa, aspirador, sillón, composite, amalgama, resina, cemento, molde, impresión.</p></div>
+    <div class="card"><h4>Anatomie générale et sciences de base</h4><p class="es">cráneo, hueso, cartílago, articulación temporomandibular, nervio trigémino, arteria, vena, músculo masetero / temporal, glándula salival, saliva, célula, tejido, membrana, núcleo, mitocondria, proteína, enzima, sustrato, aminoácido, hidrato de carbono, lípido, ácido nucleico, mitosis, homeostasis, metabolismo, pH, tampón.</p></div>
+  </div>
+
+  <h3>Les trois gabarits de cartes Anki</h3>
+  <div class="table-wrap"><table>
+    <tr><th>Type</th><th>Recto</th><th>Verso</th><th>Quand</th></tr>
+    <tr><td>Erreur (cloze)</td><td class="es">Ayer {{c1::fui}} al dentista.</td><td>Indefinido : action ponctuelle achevée (ayer). Code TV.</td><td>Chaque correction : la phrase corrigée, le mot fautif en trou.</td></tr>
+    <tr><td>Mot en contexte</td><td class="es">El esmalte es la capa más ____ del cuerpo humano. (dur)</td><td class="es">dura · esmalte: tejido que recubre la corona · [audio Forvo]</td><td>Vocabulaire des cours et lectures.</td></tr>
+    <tr><td>Collocation</td><td class="es">____ una decisión</td><td class="es">tomar (jamais « coger » ici)</td><td>Verbes supports et registre.</td></tr>
+  </table></div>
+  <div class="callout"><div class="t">Réglages Anki</div><p>Un seul paquet « Español » avec les étiquettes <span class="mono">errores · general · academico · odontologia</span>. Vingt nouvelles cartes par jour, révisions illimitées, audio activé, et l'application ouverte dans le tram du retour. Le glossaire dropshipping et le paquet dentaire restent à part.</p></div>
+</section>
+
+<!-- ============================ 08 COMPÉTENCES ============================ -->
+<section id="competences">
+  <div class="num">08</div>
+  <h2>Les compétences, une par une</h2>
+
+  <h3>Prononciation : les huit chantiers du francophone</h3>
+  <div class="table-wrap"><table>
+    <tr><th>Chantier</th><th>Le réflexe français</th><th>La règle espagnole</th><th>Exercice</th></tr>
+    <tr><td>Accent tonique</td><td>Tout en fin de groupe</td><td>Chaque mot a le sien ; le déplacer change le mot (médico, medico, medicó)</td><td>Lire vingt mots par jour en tapant la syllabe tonique.</td></tr>
+    <tr><td>Voyelles</td><td>Nasales, « e » muet, voyelles longues</td><td>Cinq voyelles pures et courtes ; toutes prononcées (parte = par-te)</td><td>Répéter des listes a-e-i-o-u dans les mots des cours.</td></tr>
+    <tr><td>r / rr</td><td>« r » grasseyé</td><td>r simple = battue rapide (pero, caro) ; rr et r initial = roulé (perro, carro, rojo)</td><td>Paires minimales cinq minutes par jour : pero/perro, caro/carro, coral/corral.</td></tr>
+    <tr><td>j, ge, gi</td><td>« j » français</td><td>Son raclé /x/ : jamón, gente, giro, ejemplo</td><td>Répéter en sentant la gorge.</td></tr>
+    <tr><td>z, ce, ci</td><td>« s »</td><td>En Espagne, /θ/ comme le « th » anglais : zapato, cero, cien (distinción, c'est la norme d'Alicante)</td><td>Lire à voix haute des textes avec c/z surlignés.</td></tr>
+    <tr><td>b / v</td><td>« v » labiodental</td><td>Même son, bilabial : baca = vaca</td><td>Dire vivir, beber, vaso sans toucher les dents.</td></tr>
+    <tr><td>d entre voyelles, d final</td><td>« d » net</td><td>Douce, presque « th » anglais : nada, hablado ; quasi muette en fin : Madrid, verdad</td><td>Shadowing.</td></tr>
+    <tr><td>Rythme</td><td>Syllabes inégales</td><td>Syllabes de même longueur, intonation montante en question fermée</td><td>Shadowing quinze minutes par jour, enregistrement le dimanche.</td></tr>
+  </table></div>
+  <p>Le shadowing : un cours d'anatomía sur YouTube, écouteurs, tu répètes en simultané une demi-seconde derrière la voix, sans lire, sans t'arrêter. Quinze minutes. Trois trabalenguas pour finir (<em>tres tristes tigres</em>, <em>el perro de San Roque</em>, <em>Pablito clavó un clavito</em>). Test de réussite : un Espagnol te comprend sans te faire répéter.</p>
+
+  <h3>Parler</h3>
+  <div class="grid2">
+    <div class="card"><h4>La séance de tuteur (30 min)</h4>
+      <ul>
+        <li>3 min : petite conversation, en tutoiement.</li>
+        <li>12 min : tu expliques le cours de la veille comme à un patient, puis comme à un examinateur. Le tuteur note, sans t'interrompre.</li>
+        <li>10 min : corrections, et tu redis chaque phrase corrigée.</li>
+        <li>5 min : jeu de rôle en usted (consulta, secretaría, tutoría avec un prof).</li>
+        <li>Après : dix cartes d'erreurs. Les corrections non converties en cartes sont perdues.</li>
+      </ul></div>
+    <div class="card"><h4>Seul, tous les jours</h4>
+      <ul>
+        <li>Technique 4-3-2 : un thème expliqué en quatre minutes, puis trois, puis deux. Le débit monte, les hésitations tombent.</li>
+        <li>Monologue intérieur en espagnol : ce que tu fais, ce que tu vas faire.</li>
+        <li>Lecture à voix haute dix minutes : un paragraphe du manuel, enregistré une fois par semaine.</li>
+        <li>Conversation dictée avec Claude (application mobile, dictée) sur le thème du jour, puis « corrige ».</li>
+      </ul></div>
+    <div class="card"><h4>À la fac</h4>
+      <ul>
+        <li>Espagnol uniquement, avec tout le monde, y compris les francophones.</li>
+        <li>Une question par cours, préparée dans le bloc de 14:00.</li>
+        <li>Les tutorías des profs : y aller une fois par mois, avec une question de fond.</li>
+        <li>Un groupe d'étude avec des compañeros espagnols dès la deuxième semaine.</li>
+        <li>Tandem : le service de langues de ta fac ou de l'Universidad de Alicante organise des intercambios ; trente minutes d'espagnol contre trente de français.</li>
+      </ul></div>
+  </div>
+
+  <h3>Écrire</h3>
+  <p>Deux cents mots par jour sur le cours de la veille : c'est de la révision et de l'espagnol en même temps. Trois cents mots chronométrés le vendredi matin. Chaque texte passe par la commande « corrige », chaque erreur reçoit un code et devient une carte. Les codes :</p>
+  <div class="table-wrap"><table>
+    <tr><th>Code</th><th>Type d'erreur</th><th>Exemple</th></tr>
+    <tr><td class="k">CONC</td><td>Concordance genre, nombre, personne</td><td class="es">los dientes blanca → blancos</td></tr>
+    <tr><td class="k">TV</td><td>Temps ou mode verbal</td><td class="es">ayer he ido → fui ; quiero que vienes → vengas</td></tr>
+    <tr><td class="k">S/E</td><td>Ser / estar / hay</td><td class="es">es cansado → está cansado</td></tr>
+    <tr><td class="k">PREP</td><td>Préposition, régime</td><td class="es">pienso a ti → en ti</td></tr>
+    <tr><td class="k">PRON</td><td>Pronom, place, leísmo</td><td class="es">le vi (a ella) → la vi</td></tr>
+    <tr><td class="k">LEX</td><td>Mot faux, faux ami, collocation</td><td class="es">realizar que → darse cuenta de que</td></tr>
+    <tr><td class="k">ORT</td><td>Orthographe, tilde, majuscule</td><td class="es">Lunes → lunes ; medico → médico</td></tr>
+    <tr><td class="k">SINT</td><td>Ordre des mots, structure</td><td class="es">la blanca dentina → la dentina blanca</td></tr>
+    <tr><td class="k">REG</td><td>Registre, connecteur inadapté</td><td class="es">yo pienso que… → cabe señalar que…</td></tr>
+  </table></div>
+  <h4>Les commandes du projet Claude « Español »</h4>
+  <pre>corrige — Corrige mi texto en español de España. Devuelve: (1) el texto corregido, (2) una tabla con cada error: original, corrección, código (CONC, TV, S/E, PREP, PRON, LEX, ORT, SINT, REG) y la regla en una frase, (3) el número de errores por cada 100 palabras, (4) tres frases del texto reescritas en registro académico.
+
+interroga — Sobre el tema que te doy, hazme diez preguntas orales de examen, una a una. Tras cada respuesta mía (dictada), corrige primero el contenido y luego la lengua, y no pases a la siguiente hasta que la repita bien.
+
+examen — Redacta una pregunta de examen de primero de Odontología sobre el tema que te doy. Espera mi respuesta. Corrígela en dos partes separadas: contenido (qué falta, qué sobra, qué está mal) y lengua (errores con código). Termina con una versión modelo de 200 palabras.</pre>
+
+  <h3>Écouter</h3>
+  <p>Ta force ; on la met au service du registre. Trois niveaux, tous en espagnol d'Espagne :</p>
+  <ul>
+    <li><strong>Académique</strong> : cours universitaires en vidéo (anatomía, histología, bioquímica), avec prise de notes ; <em>La Hiperactina</em> pour la biomédecine grand public.</li>
+    <li><strong>Standard</strong> : RTVE Play (informativos, documentaires), <em>Hoy hablamos</em> (podcast quotidien), presse lue à voix haute.</li>
+    <li><strong>Familier et rapide</strong> : <em>Nadie sabe nada</em>, <em>Aquí no hay quien viva</em>, séries espagnoles sans sous-titres. Comprendre l'humour rapide, c'est le test du C1.</li>
+  </ul>
+  <p>Une dictée de cinq minutes par semaine (un extrait de cours, transcription comparée) : c'est l'orthographe et la tilde qui se règlent là. Prise de notes en cours : méthode Cornell en espagnol, abréviations (q = que, x = por, tb = también, + = más, p. ej., dcha./izda., 1º, s. XX).</p>
+
+  <h3>Lire</h3>
+  <ul>
+    <li><strong>Manuels en édition espagnole</strong>, le chapitre lu avant le cours : Moore <em>Anatomía con orientación clínica</em>, Netter <em>Atlas de anatomía humana</em>, Lehninger <em>Principios de bioquímica</em>, Alberts <em>Biología molecular de la célula</em>, Ross <em>Histología</em>, et pour la dentaire <em>Wheeler. Anatomía, fisiología y oclusión dental</em>.</li>
+    <li><strong>Presse et science</strong> : El País, <em>Investigación y Ciencia</em>, <em>Muy Interesante</em>, articles SciELO en espagnol.</li>
+    <li><strong>Pour le C1</strong> : nouvelles (Cortázar, Borges), romans (<em>Nada</em> de Carmen Laforet, <em>Patria</em> d'Aramburu, <em>La sombra del viento</em> de Ruiz Zafón), une fiche de vingt mots par chapitre.</li>
+    <li>Vitesse visée : deux cents mots par minute sur un texte de presse, sans relire.</li>
+  </ul>
+</section>
+
+<!-- ============================ 09 COURS ET PARTIELS ============================ -->
+<section id="examens">
+  <div class="num">09</div>
+  <h2>L'espagnol des cours et des partiels</h2>
+  <div class="grid2">
+    <div class="card"><h4>Avant le cours (14:00)</h4><ul><li>Slides ou plan du cours : quinze termes en cartes, définition en espagnol.</li><li>Deux questions préparées, écrites.</li><li>La <em>guía docente</em> lue une fois pour toutes : programme, type d'examen, pondération, si les erreurs enlèvent des points.</li></ul></div>
+    <div class="card"><h4>Pendant le cours</h4><ul><li>Notes en espagnol, jamais de traduction.</li><li>Un mot inconnu = un « ? » dans la marge, cherché le soir, pas pendant.</li><li>Ta question posée avant la fin.</li><li>Le tiers droit de la page pour les mots-clés (Cornell).</li></ul></div>
+    <div class="card"><h4>Après le cours (20:30)</h4><ul><li>« explica » puis « interrógame » en espagnol dans le projet Dentaire.</li><li>Réécriture en dix lignes, en espagnol, dans Notion : ce sont les cartes de demain 09:20.</li><li>Les « ? » de la marge résolus et mis en cartes.</li></ul></div>
+  </div>
+
+  <h3>Connaître le format avant de s'entraîner</h3>
+  <p>À demander la première semaine (guía docente, profs, étudiants de deuxième année) : tipo test ou desarrollo, nombre de questions, temps, si les erreurs retirent des points (<em>restan</em>), part des prácticas et des seminarios dans la note, existence d'un oral. La stratégie change selon la réponse.</p>
+  <div class="table-wrap"><table>
+    <tr><th>Format</th><th>Ce qui compte en espagnol</th><th>Entraînement</th></tr>
+    <tr><td>Tipo test</td><td>Lecture piégeuse : <em>excepto, salvo, no es cierto que, todas las anteriores, siempre / nunca / únicamente, ¿cuál es FALSA?</em>, doubles négations.</td><td>Vingt questions chronométrées par semaine, chaque erreur de lecture analysée à part des erreurs de contenu.</td></tr>
+    <tr><td>Preguntas cortas</td><td>Définitions précises, phrase complète, vocabulaire exact.</td><td>Dix définitions en trois lignes, chronomètre.</td></tr>
+    <tr><td>Desarrollo</td><td>Structure, connecteurs, registre, aucune faute pénalisante.</td><td>Le gabarit de réponse ci-dessous, une question par jour en phase 2.</td></tr>
+    <tr><td>Oral, exposición</td><td>Débit, structure annoncée, réponse aux questions du prof.</td><td>Technique 4-3-2 puis séance de tuteur en mode examinateur.</td></tr>
+  </table></div>
+
+  <h3>Le gabarit d'une réponse de desarrollo</h3>
+  <ol>
+    <li><strong>Definición</strong> : <em>Se define como… / Se entiende por… / Es el conjunto de…</em></li>
+    <li><strong>Localización o contexto</strong> : <em>Se localiza en… / Está constituido por… / Forma parte de…</em></li>
+    <li><strong>Estructura o mecanismo</strong>, dans l'ordre, avec connecteurs : <em>En primer lugar… A continuación… Por último…</em></li>
+    <li><strong>Función o relevancia clínica</strong> : <em>Desempeña un papel fundamental en… / Su alteración da lugar a…</em></li>
+    <li><strong>Cierre</strong> : <em>En definitiva… / Cabe destacar que…</em></li>
+  </ol>
+  <h4>La banque de formules à savoir par cœur</h4>
+  <p class="es">Se define como · Se caracteriza por · Está constituido por · Está formado por · Se localiza en · Se sitúa entre · Está inervado por · Está irrigado por · Se inserta en · Su función consiste en · Desempeña un papel fundamental en · Interviene en · Da lugar a · Se debe a que · Esto se explica porque · A diferencia de · En comparación con · Por consiguiente · Cabe destacar que · Conviene señalar que · Dicho de otro modo · En conclusión · Se ha demostrado que · Se observa que · Se produce · Se distinguen tres tipos</p>
+
+  <div class="callout good"><div class="t">La semaine du partiel</div><p>Plus de grammaire nouvelle. Trois simulations complètes dans les conditions réelles, Anki uniquement en révision, coucher à 21:55 sans exception. Le jour J : lire chaque question deux fois, souligner le verbe de consigne (<em>describe, explica, compara, enumera, justifica</em>), écrire le gabarit en marge, puis rédiger. Après l'examen, demander la <em>revisión</em> : c'est là qu'on apprend ce qui a coûté des points.</p></div>
+</section>
+
+<!-- ============================ 10 PIÈGES ============================ -->
+<section id="pieges">
+  <div class="num">10</div>
+  <h2>Les pièges du francophone</h2>
+  <p>Trente erreurs que le français te fait faire. Chacune vaut une carte dès le premier jour.</p>
+  <div class="table-wrap"><table>
+    <tr><th>Tu écris</th><th>Il faut</th><th>La règle</th></tr>
+    <tr><td class="es">Estoy estudiante.</td><td class="es">Soy estudiante.</td><td>Ser pour l'identité, la profession, l'origine.</td></tr>
+    <tr><td class="es">Es cansado.</td><td class="es">Está cansado.</td><td>Estar pour l'état, le résultat, la position.</td></tr>
+    <tr><td class="es">Es muy bien.</td><td class="es">Está muy bien. / Es muy bueno.</td><td>Bien est un adverbe : jamais avec ser.</td></tr>
+    <tr><td class="es">Ayer he ido al dentista.</td><td class="es">Ayer fui al dentista.</td><td>Marqueur de passé révolu = indefinido. Perfecto seulement pour hoy, esta semana, ya.</td></tr>
+    <tr><td class="es">De niño, fui al colegio cada día.</td><td class="es">De niño, iba al colegio cada día.</td><td>Habitude passée = imperfecto.</td></tr>
+    <tr><td class="es">Le vi (a María).</td><td class="es">La vi.</td><td>OD féminin = la. Le = OI (le di el libro).</td></tr>
+    <tr><td class="es">Me gusta los dientes.</td><td class="es">Me gustan los dientes.</td><td>Le verbe s'accorde avec la chose aimée.</td></tr>
+    <tr><td class="es">Pienso a ti.</td><td class="es">Pienso en ti.</td><td>Pensar en, depender de, consistir en, soñar con, tratar de.</td></tr>
+    <tr><td class="es">Voy al médico por ver.</td><td class="es">Voy al médico para ver.</td><td>Para = but, destinataire, délai. Por = cause, moyen, échange, lieu traversé.</td></tr>
+    <tr><td class="es">Quiero que vienes.</td><td class="es">Quiero que vengas.</td><td>Volonté + que = subjonctif.</td></tr>
+    <tr><td class="es">No creo que es difícil.</td><td class="es">No creo que sea difícil.</td><td>Opinion niée = subjonctif ; creo que = indicatif.</td></tr>
+    <tr><td class="es">Cuando llegaré, te llamo.</td><td class="es">Cuando llegue, te llamo.</td><td>Temporelle au futur = subjonctif présent.</td></tr>
+    <tr><td class="es">Si tendría tiempo, iría.</td><td class="es">Si tuviera tiempo, iría.</td><td>Jamais de conditionnel après si.</td></tr>
+    <tr><td class="es">un otro problema</td><td class="es">otro problema</td><td>Otro s'emploie sans article indéfini.</td></tr>
+    <tr><td class="es">La gente son simpáticos.</td><td class="es">La gente es simpática.</td><td>Gente est un singulier.</td></tr>
+    <tr><td class="es">mucho bien / muy libros</td><td class="es">muy bien / muchos libros</td><td>Muy devant adjectif ou adverbe, mucho devant nom ou après verbe.</td></tr>
+    <tr><td class="es">Yo también no.</td><td class="es">Yo tampoco.</td><td>Négation en accord = tampoco.</td></tr>
+    <tr><td class="es">Tengo veinte años. / Soy veinte años.</td><td class="es">Tengo veinte años.</td><td>Tener pour l'âge, la faim, le sommeil, le froid.</td></tr>
+    <tr><td class="es">Estudio español desde dos años.</td><td class="es">Estudio español desde hace dos años. / Llevo dos años estudiando.</td><td>Durée : desde hace, hace… que, llevar + gérondif.</td></tr>
+    <tr><td class="es">Soy de acuerdo.</td><td class="es">Estoy de acuerdo.</td><td>Estar de acuerdo con.</td></tr>
+    <tr><td class="es">Preguntar un favor.</td><td class="es">Pedir un favor.</td><td>Pedir = demander une chose ; preguntar = poser une question.</td></tr>
+    <tr><td class="es">Es las tres.</td><td class="es">Son las tres. / Es la una.</td><td>Ser s'accorde avec l'heure.</td></tr>
+    <tr><td class="es">el Lunes, en Septiembre, el Español</td><td class="es">el lunes, en septiembre, el español</td><td>Pas de majuscule aux jours, mois, langues, nationalités.</td></tr>
+    <tr><td class="es">He realizado que…</td><td class="es">Me he dado cuenta de que…</td><td>Realizar = effectuer. Se rendre compte = darse cuenta de.</td></tr>
+    <tr><td class="es">Estoy constipado (pour « constipé »).</td><td class="es">Estoy estreñido.</td><td>Constipado = enrhumé. Embarazada = enceinte, jamais « embarrassée ».</td></tr>
+    <tr><td class="es">un largo pasillo (pour « large »)</td><td class="es">un pasillo ancho</td><td>Largo = long ; ancho = large.</td></tr>
+    <tr><td class="es">Asistir a un paciente.</td><td class="es">Atender a un paciente.</td><td>Asistir a = assister à ; atender = s'occuper de.</td></tr>
+    <tr><td class="es">Es un éxito (pour « une sortie »).</td><td class="es">Es una salida.</td><td>Éxito = succès ; salida = sortie ; suceso = événement.</td></tr>
+    <tr><td class="es">eventualmente (pour « éventuellement »)</td><td class="es">posiblemente / en su caso</td><td>Eventualmente = occasionnellement. Actual = actuel ; actualmente = actuellement (ceux-là sont vrais).</td></tr>
+    <tr><td class="es">¿Que hora es?</td><td class="es">¿Qué hora es?</td><td>Tilde sur l'interrogatif ; ¿ ¡ ouvrants obligatoires.</td></tr>
+  </table></div>
+  <div class="callout pen"><div class="t">Autres faux amis à mettre en cartes</div><p class="es" style="font-style:normal;">quitar (enlever) · salir (sortir) · subir (monter) · molestar (déranger) · sensible (sensible = sensitif) / sensato (sensé) · carpeta (chemise, dossier) / alfombra (tapis) · débil (faible) · demandar (poursuivre en justice) / pedir (demander) · discutir (se disputer) · entender (comprendre) / oír (entendre) · equipaje (bagages) / equipo (équipe) · gato (chat) · nombre (nom) / número (nombre) · pie (pied) / tarta (tarte) · rato (moment) / rata (rat) · ropa (vêtements) / cuerda (corde) · sol (soleil) / suelo (sol) · vaso (verre) / jarrón (vase) · mesa (table) / misa (messe) · contestar (répondre) · apellido (nom de famille) · exprimir (presser) / expresar (exprimer) · bizarro (courageux) / raro (bizarre) · cuello (cou, mais aussi collet de la dent).</p></div>
+</section>
+
+<!-- ============================ 11 OUTILS ============================ -->
+<section id="outils">
+  <div class="num">11</div>
+  <h2>Outils : peu nombreux, tous en espagnol</h2>
+  <div class="table-wrap"><table>
+    <tr><th>Quoi</th><th>Pour quoi</th><th>Coût</th></tr>
+    <tr><td><b>Gramática de uso del español</b> (SM), volume A1-B2, puis le volume supérieur en phase 3</td><td>Théorie courte, exercices avec corrigés. Un chapitre par jour en semaine 0, un par semaine ensuite.</td><td class="k">≈ 25 € le volume</td></tr>
+    <tr><td><b>Uso de la gramática española</b> (Edelsa), niveau avanzado</td><td>Exercices supplémentaires pour B2-C1 quand le premier livre est fini.</td><td class="k">≈ 20 €</td></tr>
+    <tr><td><b>Anki</b> (ordinateur gratuit, AnkiMobile sur iPhone)</td><td>Le paquet Español, tous les jours dans le tram.</td><td class="k">0 € / 30 € une fois</td></tr>
+    <tr><td><b>Projet Claude « Español »</b></td><td>Les trois commandes corrige, interroga, examen. Le projet Dentaire passe en espagnol.</td><td class="k">inclus</td></tr>
+    <tr><td><b>Tuteur italki ou Preply</b>, tuteur communautaire espagnol d'Espagne</td><td>Deux séances de 30 min par semaine en phases 0-1, une par semaine ensuite.</td><td class="k">≈ 7-10 € la demi-heure, ≈ 100 € pour six semaines</td></tr>
+    <tr><td><b>Tandem</b> : service de langues de ta fac, Universidad de Alicante, applications Tandem ou HelloTalk</td><td>Gratuit, en remplacement ou en plus du tuteur.</td><td class="k">0 €</td></tr>
+    <tr><td><b>Escuela Oficial de Idiomas d'Alicante</b>, español para extranjeros</td><td>Cours du soir officiels et très bon marché, si les inscriptions de septembre sont encore ouvertes et si le créneau tient dans la grille.</td><td class="k">quelques dizaines d'euros l'année</td></tr>
+    <tr><td><b>Kwiziq Spanish</b></td><td>Test de niveau adaptatif et exercices ciblés sur tes lacunes.</td><td class="k">gratuit (version de base)</td></tr>
+    <tr><td><b>ProfeDeELE.es</b></td><td>Exercices gratuits par niveau et par point de grammaire.</td><td class="k">0 €</td></tr>
+    <tr><td><b>Diccionario de la lengua española (RAE), Diccionario panhispánico de dudas</b></td><td>Définitions en espagnol ; le DPD tranche les doutes (leísmo, porque/por qué).</td><td class="k">0 €</td></tr>
+    <tr><td><b>Diccionario de términos médicos</b> (RANM)</td><td>Le vocabulaire des cours, défini en espagnol médical.</td><td class="k">0 €</td></tr>
+    <tr><td><b>WordReference</b> et ses forums</td><td>Pour les nuances français-espagnol, en dernier recours.</td><td class="k">0 €</td></tr>
+    <tr><td><b>Forvo</b></td><td>Prononciation native de n'importe quel mot, à coller dans les cartes.</td><td class="k">0 €</td></tr>
+    <tr><td><b>Modelos de examen DELE B2 et C1</b> (Instituto Cervantes)</td><td>Les tâches d'expression écrite et orale, une par semaine.</td><td class="k">0 €</td></tr>
+    <tr><td><b>SIELE</b></td><td>Alternative au DELE : en ligne, dates libres, résultats en trois semaines, valable cinq ans.</td><td class="k">≈ 155 € l'examen complet</td></tr>
+    <tr><td><b>RTVE Play, La Hiperactina, Hoy hablamos, Nadie sabe nada, Aquí no hay quien viva</b></td><td>L'écoute, du registre académique au familier rapide.</td><td class="k">0 €</td></tr>
+    <tr><td><b>Manuels en édition espagnole</b> (Moore, Netter, Lehninger, Alberts, Ross, Wheeler)</td><td>La bibliothèque de la fac les a ; à lire avant le cours.</td><td class="k">0 €</td></tr>
+  </table></div>
+  <p>Budget total réaliste : le tuteur, un ou deux livres, AnkiMobile. Une centaine d'euros sur six semaines, prise sur le budget courant, jamais sur le prêt.</p>
+</section>
+
+<!-- ============================ 12 MESURES ============================ -->
+<section id="mesures">
+  <div class="num">12</div>
+  <h2>Ce qu'on mesure, et quand</h2>
+  <h3>Chaque dimanche (13:30)</h3>
+  <div class="table-wrap"><table>
+    <tr><th>Mesure</th><th>Comment</th><th>Cible au 18 oct.</th><th>Cible au 14 fév.</th></tr>
+    <tr><td>Erreurs pour 100 mots</td><td>Le texte chronométré du dimanche, corrigé par « corrige »</td><td class="k">&lt; 3</td><td class="k">&lt; 1,5</td></tr>
+    <tr><td>Oral sans pause</td><td>Minutes parlées sur un thème de cours avant la première pause de trois secondes</td><td class="k">3 min</td><td class="k">6 min</td></tr>
+    <tr><td>Heures d'espagnol</td><td>Pomodoros Español de la semaine dans la Batcave</td><td class="k">≥ 15 h/sem</td><td class="k">≥ 6 h/sem</td></tr>
+    <tr><td>Cartes</td><td>Cartes dues faites tous les jours ; nouvelles cartes créées</td><td class="k">7/7 jours · ≥ 80/sem</td><td class="k">7/7 jours</td></tr>
+    <tr><td>Répartition des erreurs</td><td>Le code qui domine cette semaine devient le point de grammaire de la suivante</td><td colspan="2">Aucun code au-dessus de 30 % des erreurs</td></tr>
+    <tr><td>Notes de cours</td><td>Pages prises en espagnol / pages totales</td><td class="k">100 %</td><td class="k">100 %</td></tr>
+  </table></div>
+  <h3>Chaque mois</h3>
+  <ul>
+    <li>Une tâche complète DELE (B2 jusqu'en novembre, C1 ensuite) dans les quatre compétences, notée avec les grilles officielles.</li>
+    <li>Réécoute de l'enregistrement oral du mois précédent : ce qui a changé, ce qui reste.</li>
+    <li>Le test Kwiziq refait : le pourcentage par niveau doit monter.</li>
+  </ul>
+  <h3>Les examens officiels</h3>
+  <div class="table-wrap"><table>
+    <tr><th>Examen</th><th>Épreuves</th><th>Réussite</th></tr>
+    <tr><td><b>DELE B2</b></td><td>Compréhension de lecture (70 min), compréhension auditive (40 min), expression et interaction écrites (80 min), expression et interaction orales (20 min, 20 min de préparation).</td><td>Deux groupes (lecture + écrit ; écoute + oral) : au moins 30 points sur 50 dans chacun.</td></tr>
+    <tr><td><b>DELE C1</b></td><td>Compréhension de lecture et usage de la langue (90 min), compréhension auditive et usage de la langue (50 min), compétences intégrées écrites (80 min), compétences intégrées orales (20 min, 20 min de préparation).</td><td>Même règle des deux groupes. Calendrier et centres sur examenes.cervantes.es ; Alicante a un centre d'examen.</td></tr>
+    <tr><td><b>SIELE</b></td><td>Quatre épreuves en ligne, environ trois heures, à la date de ton choix.</td><td>Score sur 1 000, converti en niveau ; pas de seuil d'échec, valable cinq ans.</td></tr>
+  </table></div>
+</section>
+
+<!-- ============================ 13 BATCAVE ============================ -->
+<section id="batcave">
+  <div class="num">13</div>
+  <h2>Le suivi dans la Batcave</h2>
+  <p>Tout existe déjà pour suivre ce plan sans rien ajouter à la main : le minuteur connaît la cible « espagnol », la page Objectifs a une mesure « Espagnol » (35 h prévues au T1), les blocs de la grille portent des consignes, et la revue du dimanche sait poser trois constats. Ce qui reste à activer, sur ton feu vert :</p>
+  <ul>
+    <li><strong>Une grille « Español » pour six semaines</strong> (14 sept. → 25 oct.) : les blocs Projets perso renommés Español · gramática, escribir, preparar la clase, avec leurs consignes ; le paquet Español dans les cinq dernières minutes d'Anki 2 ; le bloc Comprendre le cours en espagnol. Retour automatique à la grille normale le 26 octobre.</li>
+    <li><strong>Un bouton Pomodoro Español</strong> sur le tableau de bord et la page Études, avec la matière du bloc (gramática, escribir, hablar, clase) pour que la revue du dimanche sache où sont passées les heures.</li>
+    <li><strong>Objectifs</strong> : Espagnol T1 de 35 h à 110 h, septembre 40 h, octobre 55 h, novembre 15 h ; niveau de départ noté dans la carte Espagnol (A2 ou B1 selon le diagnostic) ; jalon DELE B2 blanc le 18 octobre.</li>
+    <li><strong>La revue du dimanche</strong> reçoit une ligne Espagnol : erreurs pour 100 mots et minutes d'oral, saisies en trente secondes à la clôture.</li>
+    <li><strong>L'agenda Google</strong> : les séries « 🦇 Projets perso 1, 2, 3 » renommées Español pour six semaines. Je te demande avant d'y toucher.</li>
+  </ul>
+  <div class="callout"><div class="t">Une réserve honnête</div><p>Tout niquer aux partiels se joue sur le contenu dentaire ; l'espagnol n'est que le véhicule. C'est pourquoi le temps rebascule sur les annales dès le 19 octobre, et pourquoi le coucher à 21:55 ne bouge pas : une nuit courte coûte plus qu'une heure de grammaire ne rapporte.</p></div>
+</section>
+
+</main>
+<footer><div class="wrap">La Batcave · Dossier Español · rédigé le 8 septembre 2026 · les cases cochées restent sur cet appareil.</div></footer>
+
+<script>
+(function(){
+  var KEY = 'dossier-es-checks', etat = {};
+  try{ etat = JSON.parse(localStorage.getItem(KEY) || '{}') || {}; }catch(e){ etat = {}; }
+  var cases = document.querySelectorAll('.check input[type="checkbox"]');
+  function compter(){
+    var parNiveau = {};
+    cases.forEach(function(c){
+      var lv = c.closest('.check').getAttribute('data-level');
+      parNiveau[lv] = parNiveau[lv] || {t:0, f:0};
+      parNiveau[lv].t++; if(c.checked) parNiveau[lv].f++;
+    });
+    document.querySelectorAll('[data-cnt]').forEach(function(el){
+      var s = parNiveau[el.getAttribute('data-cnt')];
+      if(s) el.textContent = s.f + ' / ' + s.t + ' acquis';
+    });
+  }
+  cases.forEach(function(c){
+    var k = c.getAttribute('data-k');
+    if(etat[k]) c.checked = true;
+    c.addEventListener('change', function(){
+      etat[k] = c.checked;
+      try{ localStorage.setItem(KEY, JSON.stringify(etat)); }catch(e){}
+      compter();
+    });
+  });
+  compter();
+})();
+</script>
