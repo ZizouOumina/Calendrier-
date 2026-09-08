@@ -1,0 +1,347 @@
+<title>Réflexion Batcave II</title>
+<meta name="description" content="Deuxième dossier de réflexion sur la Batcave : état réel au 8 septembre 2026, diagnostic sans complaisance, modèle de maturité, vingt propositions classées, ce qu'on enlève, l'ordre et les questions.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root{
+    --bg:#eef0f1; --paper:#ffffff; --paper-2:#e4e8ea; --line:#cfd6da; --line-soft:#e1e6e9;
+    --ink:#161d23; --ink-2:#465560; --ink-3:#77878f;
+    --accent:#0f6f7d; --accent-ink:#0b5866; --accent-soft:#d5ecef;
+    --amber:#a85a12; --amber-soft:#f6e6d4;
+    --red:#a63a2e; --red-soft:#f5dcd8;
+    --green:#2c7a4f; --green-soft:#d9eee0;
+    --display:'Bebas Neue','Arial Narrow',Impact,sans-serif;
+    --body:'Barlow','Helvetica Neue',Arial,sans-serif;
+    --mono:'IBM Plex Mono','SFMono-Regular',Menlo,monospace;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#0c1216; --paper:#121a20; --paper-2:#182228; --line:#26343c; --line-soft:#1d2930;
+      --ink:#e4ecf0; --ink-2:#a6b6bf; --ink-3:#71838d;
+      --accent:#3fbccd; --accent-ink:#7fd8e4; --accent-soft:#113239;
+      --amber:#e9995a; --amber-soft:#3a2614;
+      --red:#e2776b; --red-soft:#3b1d19;
+      --green:#5fc48a; --green-soft:#153324;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#0c1216; --paper:#121a20; --paper-2:#182228; --line:#26343c; --line-soft:#1d2930;
+    --ink:#e4ecf0; --ink-2:#a6b6bf; --ink-3:#71838d;
+    --accent:#3fbccd; --accent-ink:#7fd8e4; --accent-soft:#113239;
+    --amber:#e9995a; --amber-soft:#3a2614;
+    --red:#e2776b; --red-soft:#3b1d19;
+    --green:#5fc48a; --green-soft:#153324;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; background:var(--bg); color:var(--ink); font-family:var(--body); font-size:15.5px; line-height:1.55; -webkit-font-smoothing:antialiased;}
+  a{color:var(--accent-ink);}
+  h1,h2,h3,h4{font-family:var(--display); font-weight:400; letter-spacing:.03em; margin:0; text-wrap:balance;}
+  p{margin:0;}
+  .wrap{max-width:900px; margin:0 auto; padding:40px 28px 90px;}
+  @media (max-width:640px){ .wrap{padding:22px 16px 70px;} }
+  .masthead{border-bottom:2px solid var(--ink); padding-bottom:16px; margin-bottom:28px;}
+  .masthead .kicker{font-family:var(--mono); font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:var(--accent); margin-bottom:8px;}
+  .masthead h1{font-size:54px; line-height:.95;}
+  @media (max-width:640px){ .masthead h1{font-size:40px;} }
+  .masthead .sub{color:var(--ink-2); margin-top:12px; max-width:66ch; font-size:16px;}
+  .minute{background:var(--paper); border:1px solid var(--line); padding:18px 22px; margin-bottom:34px;}
+  .minute h2{font-size:20px; letter-spacing:.08em; color:var(--accent); margin-bottom:10px;}
+  .minute p{max-width:72ch; margin-bottom:8px;}
+  .minute p b{color:var(--ink);}
+  section.ch{margin-bottom:44px; scroll-margin-top:16px;}
+  section.ch > h2{font-size:30px; display:flex; align-items:baseline; gap:12px; margin-bottom:6px;}
+  section.ch > h2 .n{font-family:var(--mono); font-size:12px; color:var(--accent); letter-spacing:.12em;}
+  section.ch > .lead{color:var(--ink-2); max-width:70ch; margin-bottom:16px;}
+  section.ch h3{font-size:21px; margin:22px 0 8px; color:var(--ink);}
+  section.ch p{max-width:72ch; margin-bottom:10px;}
+  section.ch ul{margin:0 0 12px; padding-left:20px; max-width:72ch;}
+  section.ch li{margin-bottom:5px;}
+  .facts{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:10px; margin:14px 0 18px;}
+  .fact{background:var(--paper); border:1px solid var(--line); padding:10px 12px;}
+  .fact .v{font-family:var(--display); font-size:30px; line-height:1; font-variant-numeric:tabular-nums;}
+  .fact .l{font-size:12px; color:var(--ink-3); margin-top:4px;}
+  .tbl{overflow-x:auto; margin:10px 0 16px;}
+  table{border-collapse:collapse; width:100%; font-size:14px;}
+  th,td{text-align:left; padding:7px 10px 7px 0; border-bottom:1px solid var(--line-soft); vertical-align:top;}
+  th{font-family:var(--mono); font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-3); font-weight:500;}
+  td.k{font-family:var(--mono); font-size:12.5px; white-space:nowrap; color:var(--accent-ink);}
+  @media (max-width:640px){ table{min-width:560px;} }
+  .pill{font-family:var(--mono); font-size:10.5px; letter-spacing:.06em; text-transform:uppercase; padding:2px 7px; white-space:nowrap;}
+  .pill.ok{color:var(--green); background:var(--green-soft);}
+  .pill.no{color:var(--red); background:var(--red-soft);}
+  .pill.part{color:var(--amber); background:var(--amber-soft);}
+  .pill.eff{color:var(--ink-2); background:var(--paper-2);}
+  .constat{border-left:3px solid var(--amber); padding:8px 14px; margin:14px 0; background:var(--paper);}
+  .constat b{color:var(--ink);}
+  .constat .v{display:block; font-family:var(--mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--amber); margin-bottom:4px;}
+  .maturity{display:grid; grid-template-columns:repeat(5,1fr); gap:6px; margin:14px 0 18px;}
+  .lvl{background:var(--paper); border:1px solid var(--line); padding:10px 10px 12px; min-width:0;}
+  .lvl .num{font-family:var(--display); font-size:26px; line-height:1; color:var(--ink-3);}
+  .lvl.on .num{color:var(--accent);}
+  .lvl.half .num{color:var(--amber);}
+  .lvl .t{font-weight:700; font-size:13.5px; margin:4px 0 4px;}
+  .lvl .d{font-size:12.5px; color:var(--ink-2); line-height:1.4;}
+  @media (max-width:700px){ .maturity{grid-template-columns:repeat(2,1fr);} }
+  .prop{background:var(--paper); border:1px solid var(--line); padding:16px 18px 14px; margin:14px 0;}
+  .prop .head{display:flex; flex-wrap:wrap; align-items:baseline; gap:8px 12px; margin-bottom:8px;}
+  .prop .code{font-family:var(--mono); font-size:12px; color:var(--accent); letter-spacing:.08em;}
+  .prop h4{font-size:19px; letter-spacing:.04em;}
+  .prop .meta{margin-left:auto; display:flex; gap:6px; flex-wrap:wrap;}
+  .prop p{margin-bottom:8px; max-width:72ch;}
+  .prop p b.k{font-family:var(--mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-3); margin-right:6px; font-weight:500;}
+  .prop ul{margin:4px 0 8px; padding-left:20px;}
+  .grp-title{font-family:var(--mono); font-size:11.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-3); margin:26px 0 6px; padding-bottom:4px; border-bottom:1px solid var(--line);}
+  .no-list li{margin-bottom:8px;}
+  .no-list b{color:var(--ink);}
+  .order{list-style:none; padding:0; margin:0;}
+  .order li{display:grid; grid-template-columns:150px minmax(0,1fr); gap:12px; padding:9px 0; border-bottom:1px solid var(--line-soft);}
+  .order li .w{font-family:var(--mono); font-size:12.5px; color:var(--accent-ink);}
+  @media (max-width:560px){ .order li{grid-template-columns:minmax(0,1fr);} }
+  .q{counter-reset:q;}
+  .q li{margin-bottom:10px;}
+  footer{margin-top:44px; padding-top:14px; border-top:1px solid var(--line); font-family:var(--mono); font-size:11.5px; color:var(--ink-3); line-height:1.7;}
+  code{font-family:var(--mono); font-size:12.5px; background:var(--paper-2); padding:1px 5px;}
+</style>
+
+<div class="wrap">
+  <header class="masthead">
+    <div class="kicker">Dossier de réflexion · II · 8 septembre 2026 · lecture ≈ 25 min</div>
+    <h1>Réflexion Batcave II</h1>
+    <p class="sub">Trois jours après le premier dossier, seize lots plus tard, la veille de sa première vraie semaine. Ce que la Batcave est devenue, ce qu'elle ne sait toujours pas faire, et vingt propositions pour la porter à ce qu'elle devrait être. Rien n'a été modifié dans l'application pour écrire ceci.</p>
+  </header>
+
+  <div class="minute">
+    <h2>En une minute</h2>
+    <p><b>Elle n'a jamais vécu une vraie semaine.</b> Tout ce qu'elle sait faire a été testé sur des données fabriquées. Le premier verdict tombe dimanche 13 au bilan. Les propositions ci-dessous sont classées pour que celles qui comptent avant novembre passent en premier, et pour que rien d'autre ne te distraie de la semaine 0.</p>
+    <p><b>Le risque numéro un n'est pas une fonction manquante, c'est l'abandon.</b> Une journée complète demande environ quarante gestes de saisie. Chacun est court ; ensemble, c'est ce qui tue les systèmes en novembre. La première série de propositions réduit ce chiffre de moitié (R3, R4, R20).</p>
+    <p><b>Le trou le plus coûteux est le mode Partiels.</b> Les périodes Español existent ; rien n'existe pour novembre. Sans lui, la Batcave te reprochera tes blocs Projets perso pendant tes examens (R1).</p>
+    <p><b>Elle mesure, elle conseille, elle ne décide pas encore.</b> Neuf cartes Insights disent quoi faire ; rien ne vérifie la semaine suivante si ça a marché. La boucle expérience → verdict est ce qui transforme un tableau de bord en méthode (R2, R4).</p>
+    <p><b>Elle ne lit pas ses sources.</b> Anki, Notion, la banque, le temps d'écran : quatre informations qui existent déjà ailleurs et qu'elle te demande de recopier ou ignore (R5, R6, R12, R19).</p>
+  </div>
+
+  <section class="ch" id="etat">
+    <h2><span class="n">01</span>Où elle en est, chiffres à l'appui</h2>
+    <p class="lead">L'état de l'application au soir du 8 septembre, et le sort des douze propositions du premier dossier.</p>
+    <div class="facts">
+      <div class="fact"><div class="v">9 865</div><div class="l">lignes dans un seul fichier, 641 Ko</div></div>
+      <div class="fact"><div class="v">411</div><div class="l">fonctions, aucun module</div></div>
+      <div class="fact"><div class="v">59</div><div class="l">clés de données synchronisées</div></div>
+      <div class="fact"><div class="v">18</div><div class="l">onglets, 16 habitudes, 9 cartes Insights</div></div>
+      <div class="fact"><div class="v">62</div><div class="l">fichiers de tests, 58 scénarios verts</div></div>
+      <div class="fact"><div class="v">16</div><div class="l">lots livrés en 14 jours</div></div>
+    </div>
+    <h3>Le premier dossier, trois jours après</h3>
+    <div class="tbl"><table>
+      <tr><th>Proposition du 5 septembre</th><th>Sort</th><th>Commentaire</th></tr>
+      <tr><td class="k">P1 Mode Bootcamp</td><td><span class="pill ok">Fait</span></td><td>Devenu les quatre périodes Español du lot 16, pilotées par la date, avec consignes.</td></tr>
+      <tr><td class="k">P2 Blocs nommés</td><td><span class="pill part">Moitié</span></td><td>Anki 1 et 2, Cartes, Annales, Comprendre existent. La lecture de Notion (cours pas fichés) n'existe pas.</td></tr>
+      <tr><td class="k">P3 Modes Partiels, Vacances</td><td><span class="pill no">Non</span></td><td>Le plus coûteux des manques restants. Repris en R1.</td></tr>
+      <tr><td class="k">P4 Une expérience par semaine</td><td><span class="pill no">Non</span></td><td>Repris en R2, inchangé sur le fond.</td></tr>
+      <tr><td class="k">P5 Auto-allègement</td><td><span class="pill no">Non</span></td><td>Repris et élargi en R3.</td></tr>
+      <tr><td class="k">P6 Prières</td><td><span class="pill no">Non</span></td><td>Le coucher est passé à 21:55, Isha 21:48 : le conflit de septembre est réglé de fait. Il revient en avril. R9.</td></tr>
+      <tr><td class="k">P7 Feuille de route Shopify</td><td><span class="pill no">Non</span></td><td>Sans objet avant le 19 octobre. Conservé, hors de ce dossier.</td></tr>
+      <tr><td class="k">P8 Budget sans BankSync</td><td><span class="pill no">Non</span></td><td>R12, en attente du nom de la banque.</td></tr>
+      <tr><td class="k">P9 Examens dans Google Agenda</td><td><span class="pill no">Non</span></td><td>Absorbé par R1 (le mode Partiels pousse ses propres événements).</td></tr>
+      <tr><td class="k">P10 Snus</td><td><span class="pill no">Non</span></td><td>R14.</td></tr>
+      <tr><td class="k">P11 Liens</td><td><span class="pill no">Non</span></td><td>R13, avec l'humeur.</td></tr>
+      <tr><td class="k">P12 Moins de pages</td><td><span class="pill no">Non</span></td><td>R11. Encore plus vrai qu'il y a trois jours : deux onglets se sont ajoutés depuis.</td></tr>
+    </table></div>
+    <p>Ce qui a été livré à la place, entre le 5 et le 8 : les consignes de bloc partout (lot 12), Insights v2 puis v3 (lots 13 et 14), les coches automatiques du calendrier, l'iPad et l'iPhone, le bilan du dimanche par mail, le clavier (lot 15), les périodes Español, le Pomodoro Español, la clôture Español, la correction du rechargement après un nouveau départ (lot 16). Le socle est plus solide qu'il y a trois jours ; les trous de fond sont les mêmes.</p>
+  </section>
+
+  <section class="ch" id="diag">
+    <h2><span class="n">02</span>Diagnostic à 100 %</h2>
+    <p class="lead">Seize constats. Chacun dit ce qui est vrai aujourd'hui, pourquoi ça compte, et renvoie à la proposition qui le règle. Je n'ai rien adouci.</p>
+
+    <div class="constat"><span class="v">01 · Adoption</span><b>Elle coûte quarante gestes par jour.</b> Seize habitudes, cinq repas, six champs de clôture, les coches du calendrier non couvertes par un Pomodoro, la saisie sport, le nommage de chaque session, l'eau. Aucun mécanisme ne baisse ce coût quand tu décroches, et rien ne distingue une habitude que tu as déjà acquise (lit fait) d'une habitude que tu construis (conversation réelle). Le compteur du score te punit d'un oubli de coche autant que d'un vrai manquement. → R3, R20.</div>
+    <div class="constat"><span class="v">02 · Décision</span><b>Neuf cartes disent quoi faire, aucune ne vérifie si tu l'as fait ni si ça a marché.</b> « Vu » met une priorité en pause sept jours ; la semaine suivante la même carte peut revenir avec la même action, sans dire qu'elle a déjà été proposée trois fois. Un conseil sans suite devient du bruit en un mois. → R2, R4.</div>
+    <div class="constat"><span class="v">03 · Rythmes</span><b>Elle connaît la semaine type, le samedi, le vendredi, le dimanche et quatre périodes Español. Elle ne connaît pas les partiels, les vacances, la maladie.</b> En novembre, elle affichera des blocs Español annales et des Projets perso pendant tes examens, comptera des blocs manqués et te mettra en retard sur l'objectif projets. Le jour où tu es malade, elle comptera une journée à zéro. → R1.</div>
+    <div class="constat"><span class="v">04 · Contenu</span><b>Elle compte les heures par matière, jamais ce qui a été couvert.</b> Le nombre de cours pas encore fichés, la matière la plus en retard, les cartes Anki dues et ratées : tout ça existe dans Notion et dans Anki, à portée de lecture, et elle ne le lit pas. La carte « matière et partiel » raisonne sur des heures ; un examen se prépare sur des cours couverts. → R5, R6.</div>
+    <div class="constat"><span class="v">05 · Anki</span><b>Le deck Español est dans le mauvais ordre pour ta rentrée.</b> Vingt nouvelles cartes par jour, sept sous-decks pris dans l'ordre : le sous-deck 7 Odontología (84 cartes) n'arrive qu'après 400 cartes, soit vers le 30 septembre. Or c'est le vocabulaire des cours du 14. Ce n'est pas la Batcave, c'est un réglage Anki à corriger cette semaine. → R5, point c.</div>
+    <div class="constat"><span class="v">06 · Espagnol</span><b>Le plan s'arrête le 14 mars, et les chiffres du dimanche sont déclaratifs.</b> Après la phase 3, aucun bloc d'entretien : un C1 sans pratique redescend en six mois. Et les trois chiffres du dimanche sont saisis à la main, sans lien avec ce que tu produis (mots écrits, cartes d'erreurs créées), sans alerte quand une cible est manquée deux dimanches de suite. → R7.</div>
+    <div class="constat"><span class="v">07 · Sport</span><b>Le programme n'a ni décharge ni gestion de douleur.</b> Quatre séances par semaine à 05:30, sans semaine légère programmée, sans substitution quand une épaule tire, sans lien avec les partiels ni avec le sommeil. La double progression monte toujours ; rien ne redescend. → R8.</div>
+    <div class="constat"><span class="v">08 · Structure</span><b>Dix-huit onglets, dont cinq se marchent dessus.</b> Journal et Clôture saisissent les mêmes champs. Bilan, Insights et la revue d'Objectifs répondent tous à « comment va ma semaine ». L'habitude « revue de la veille / plan du lendemain » est un doublon de la clôture. Santé et Dépendances sont deux petites pages qui pourraient n'en faire qu'une. Business est vide jusqu'à la boutique. → R11, R20.</div>
+    <div class="constat"><span class="v">09 · Architecture</span><b>Un fichier de 641 Ko, 411 fonctions globales, des migrations sans numéro de version.</b> Ça marche parce que la campagne de tests est là. Mais chaque lot touche des globales, les tests dépendent de la vraie date (onze ont cassé quand la semaine 0 a été ajoutée), et le fichier se charge en entier sur iPhone à chaque ouverture. Un script d'assemblage existe déjà dans l'atelier et n'est pas utilisé pour la production. → R16.</div>
+    <div class="constat"><span class="v">10 · Résilience</span><b>La sauvegarde Drive ne tourne que si la page est ouverte, et personne n'a jamais restauré pour de vrai.</b> Le cloud est en dernier-écrivain-gagne : deux appareils ouverts en même temps peuvent s'écraser. Le test de restauration existe dans la campagne, pas dans ta vie. → R15.</div>
+    <div class="constat"><span class="v">11 · Confidentialité</span><b>Les sauvegardes Drive contiennent en clair les dépendances, l'humeur, le poids, le budget.</b> C'est ton Drive, mais un fichier JSON lisible par n'importe quelle application connectée à ce Drive. Une option de chiffrement par phrase de passe coûte peu. → R15.</div>
+    <div class="constat"><span class="v">12 · Notifications</span><b>Elle ne peut rien te dire quand elle est fermée.</b> Pas de notification depuis un Artifact. Les rappels Google Agenda existent et sont éteints. Pour la semaine 0 et la phase 1, trois rappels par jour (les blocs Español) suffiraient. → R10.</div>
+    <div class="constat"><span class="v">13 · Les gens</span><b>L'humeur est saisie chaque soir et ne sert presque à rien.</b> Elle n'entre dans aucune corrélation avec le sommeil, la conversation réelle, le sport ou le nombre de blocs tenus. Première année seul à l'étranger : la variable sociale n'existe nulle part dans le système. → R13.</div>
+    <div class="constat"><span class="v">14 · Prières</span><b>Réglé pour cet automne, pas pour le printemps.</b> Coucher 21:55 et Isha 21:48 en septembre, puis Isha recule jusqu'à 19:12 en décembre. À partir d'avril, Isha repasse après le coucher (22:05 mi-avril, 23:15 en juin). Asr tombe pendant les cours toute l'année. → R9.</div>
+    <div class="constat"><span class="v">15 · Horizon</span><b>Tout est calé sur six mois et rien n'est prévu après.</b> Objectifs à mars 2027, périodes Español jusqu'au 14 mars, programme sport sans fin. Le 15 mars, la Batcave affichera des objectifs terminés et une grille de base sans projet. Une saison a besoin d'une clôture et d'un redémarrage. → R18.</div>
+    <div class="constat"><span class="v">16 · Expérience réelle</span><b>Elle a été conçue et testée en quatorze jours sur des données fabriquées.</b> C'est la vraie limite de ce dossier : une partie de ces constats sera confirmée ou démentie par deux semaines d'usage. La meilleure amélioration des deux prochaines semaines est de n'en faire aucune qui ne réduise pas la charge, et de lire le bilan du 13 et du 20.</div>
+  </section>
+
+  <section class="ch" id="maturite">
+    <h2><span class="n">03</span>Le modèle : cinq niveaux</h2>
+    <p class="lead">Pour savoir où elle va, il faut dire ce qu'est une Batcave finie. Cinq niveaux, cumulatifs.</p>
+    <div class="maturity">
+      <div class="lvl on"><div class="num">1</div><div class="t">Elle mesure</div><div class="d">Une source par donnée, temps au minuteur, clôture en une minute, synchro, sauvegardes.</div></div>
+      <div class="lvl on"><div class="num">2</div><div class="t">Elle conseille</div><div class="d">Consignes par bloc, neuf cartes avec action, priorité orange, bilan du dimanche.</div></div>
+      <div class="lvl half"><div class="num">3</div><div class="t">Elle décide et vérifie</div><div class="d">Modes automatiques, une expérience par semaine, verdict chiffré, historique des actions.</div></div>
+      <div class="lvl"><div class="num">4</div><div class="t">Elle s'efface</div><div class="d">Lit Anki, Notion, la banque ; moins de vingt gestes par jour ; s'allège seule quand tu décroches.</div></div>
+      <div class="lvl"><div class="num">5</div><div class="t">Elle dure</div><div class="d">Saisons, archives, restauration éprouvée, versions de schéma, fonctionne sans le cloud.</div></div>
+    </div>
+    <p>Elle est solidement au niveau 2, avec un pied au niveau 3 grâce aux périodes Español. Les vingt propositions ci-dessous la portent aux niveaux 3, 4 et 5, dans cet ordre, parce que c'est l'ordre dans lequel les trous te coûtent.</p>
+  </section>
+
+  <section class="ch" id="props">
+    <h2><span class="n">04</span>Vingt propositions</h2>
+    <p class="lead">Effort : petit = une demi-journée de travail et de tests, moyen = une journée, gros = deux jours ou plus. « Quand » tient compte de ta charge : rien qui te demande de l'attention avant le 19 octobre, sauf ce qui t'en enlève.</p>
+
+    <div class="grp-title">Niveau 3 · Elle décide et vérifie</div>
+
+    <div class="prop"><div class="head"><span class="code">R1</span><h4>Mode Partiels automatique, mode Vacances, journée cassée</h4><div class="meta"><span class="pill eff">moyen</span><span class="pill part">avant le 1ᵉʳ nov.</span></div></div>
+      <p><b class="k">Quoi</b>Le mode Partiels s'active seul quatorze jours avant le premier examen saisi dans Études et s'éteint au dernier. Les blocs Español annales et Projets perso deviennent Révision de la matière la plus proche ; le sport passe en séance légère ; le batch cooking reste ; la charge réaliste est suspendue ; l'objectif projets du mois est recalé au prorata ; Google Agenda reçoit un événement par examen avec rappel J−7 et J−1. Le mode Vacances est sur dates : habitudes, Coran, sport, aucun plan de travail, aucun bloc manqué, objectifs cumulés en pause. La journée cassée est un bouton : « aujourd'hui ne compte pas » (maladie, voyage), sans casser les séries d'habitudes.</p>
+      <p><b class="k">Pourquoi</b>C'est le constat 03. Novembre est le premier moment où la Batcave peut te nuire au lieu de t'aider. Le mécanisme des périodes existe déjà (lot 16) : il suffit de le rendre déclenchable par les dates d'examens plutôt que par des dates fixes.</p>
+      <p><b class="k">Il me faut</b>Les dates des partiels dès qu'elles sont publiées.</p>
+    </div>
+
+    <div class="prop"><div class="head"><span class="code">R2</span><h4>Une expérience par semaine, verdict le dimanche suivant</h4><div class="meta"><span class="pill eff">moyen</span><span class="pill part">dès le 27 sept.</span></div></div>
+      <p><b class="k">Quoi</b>La revue du dimanche se termine par une seule expérience pour la semaine à venir, choisie parmi des propositions calculées ou écrite librement, avec la mesure qu'elle doit faire bouger. Le dimanche d'après : avant / après sur sept jours, écart en unités réelles, verdict garder ou jeter. Les règles gardées s'empilent dans une liste « Ce que je sais de moi ».</p>
+      <p><b class="k">Pourquoi</b>C'est la différence entre suivre sa vie et l'améliorer. Toutes les mesures nécessaires existent déjà (sommeil, fidélité, heures, score, habitudes, eau, kcal, dépenses, jours sans snus, erreurs pour 100 mots). Aucune saisie nouvelle.</p>
+      <p><b class="k">Exemples</b>« Coucher 21:40 » → sommeil moyen. « Pomodoro Español lancé avant de lire le mail » → heure réelle du premier bloc. « Conversation réelle avant 15:00 » → minutes déclarées et humeur.</p>
+    </div>
+
+    <div class="prop"><div class="head"><span class="code">R4</span><h4>Historique des priorités et vérification des actions</h4><div class="meta"><span class="pill eff">petit</span><span class="pill part">avec R2</span></div></div>
+      <p><b class="k">Quoi</b>Chaque carte Insights garde la trace de ses apparitions : première fois, nombre de semaines, action proposée, et si la mesure sous-jacente a bougé depuis. Une carte qui revient une troisième fois avec la même action change de ton : « proposé deux fois, sans effet ; soit l'action est fausse, soit elle n'est pas faite ». Le bilan du dimanche liste les priorités closes.</p>
+      <p><b class="k">Pourquoi</b>Constat 02. Sans mémoire, le système répète ; avec mémoire, il apprend ce qui ne marche pas sur toi.</p>
+    </div>
+
+    <div class="prop"><div class="head"><span class="code">R7</span><h4>Espagnol : chiffres vérifiés, alertes, et une phase 4</h4><div class="meta"><span class="pill eff">petit</span><span class="pill part">semaine du 21 sept.</span></div></div>
+      <p><b class="k">Quoi</b>Trois choses. Les cibles du dossier (erreurs pour 100 mots &lt; 3 au 18 oct., 3 min d'oral, drill 90 s) entrent dans la Batcave : un chiffre manqué deux dimanches de suite devient une priorité orange avec l'action du dossier. Deux compteurs de production s'ajoutent à la clôture du dimanche : mots écrits dans la semaine, cartes créées dans 0 Errores (Anki affiche les deux en trois secondes). Et une phase 4 « entretien » du 15 mars à juin : un bloc Español par semaine, le tuteur tous les quinze jours, pour que le C1 tienne.</p>
+      <p><b class="k">Pourquoi</b>Constat 06. Le projet Español produit déjà une ligne « balance » chaque dimanche ; elle mérite d'être lue par la Batcave plutôt que recopiée à moitié.</p>
+    </div>
+
+    <div class="prop"><div class="head"><span class="code">R8</span><h4>Sport : décharge, douleur, séance légère</h4><div class="meta"><span class="pill eff">petit</span><span class="pill part">avant la semaine 6 (12 oct.)</span></div></div>
+      <p><b class="k">Quoi</b>Une semaine de décharge automatique toutes les six semaines (moitié des tours, même charge), la première la semaine du 12 octobre. Un bouton « douleur » sur un exercice : il est remplacé par sa variante douce pendant deux semaines et la carte Santé reçoit une entrée. En mode Partiels, deux séances au lieu de quatre, à 06:00. La durée réelle de la séance est notée avec un chronomètre lancé depuis l'onglet Sport, pour savoir si les 40 min tiennent.</p>
+      <p><b class="k">Pourquoi</b>Constat 07. Un programme qui monte sans jamais descendre finit en blessure ou en abandon vers la huitième semaine, c'est-à-dire en plein partiels.</p>
+    </div>
+
+    <div class="grp-title">Niveau 4 · Elle s'efface</div>
+
+    <div class="prop"><div class="head"><span class="code">R3</span><h4>Auto-allègement du suivi et mode minimal</h4><div class="meta"><span class="pill eff">petit</span><span class="pill part">tout de suite</span></div></div>
+      <p><b class="k">Quoi</b>Deux mécanismes. Le premier : une saisie non faite cinq jours de suite (repas, sport, eau, journal) est proposée en pause de deux semaines, sans casser le score ; les habitudes ne sont jamais mises en pause. Le second : un mode minimal à un clic, qui ne demande que trois gestes par jour (lancer le Pomodoro, cocher les habitudes, faire la clôture) et masque le reste, avec retour automatique au bout d'une semaine.</p>
+      <p><b class="k">Pourquoi</b>Constat 01. La charge réaliste protège ta cible de travail ; rien ne protège ton suivi. Un système qui s'allège quand tu décroches survit à novembre.</p>
+    </div>
+
+    <div class="prop"><div class="head"><span class="code">R20</span><h4>Ce qu'on enlève ou fusionne dans les saisies</h4><div class="meta"><span class="pill eff">petit</span><span class="pill part">tout de suite</span></div></div>
+      <p><b class="k">Quoi</b>L'habitude « revue de la veille / plan du lendemain » se coche seule quand la clôture est faite. « Marche / pas » disparaît (rien ne la mesure) ou devient « dix minutes de marche après le déjeuner ». Les habitudes acquises depuis trente jours à plus de 90 % passent en « acquise » : toujours comptées, plus affichées dans la liste quotidienne, réactivées si elles tombent. La page Journal disparaît dans la clôture. Repas : une seule case « journée conforme » avec un détail dépliable, au lieu de cinq cases. Résultat visé : quarante gestes deviennent une vingtaine.</p>
+      <p><b class="k">Pourquoi</b>Constat 01 et 08. Chaque case que tu n'as pas à cocher est une raison de moins d'abandonner.</p>
+    </div>
+
+    <div class="prop"><div class="head"><span class="code">R5</span><h4>Anki lu, et le deck Español remis dans l'ordre</h4><div class="meta"><span class="pill eff">moyen</span><span class="pill part">octobre, sauf le point c cette semaine</span></div></div>
+      <p><b class="k">Quoi</b>a) Sur le Mac, le fichier batcave.html ouvert en local peut interroger Anki par le module AnkiConnect (port 8765) : cartes dues, faites, ratées par paquet. La Batcave affiche alors dans Études le vrai état de chaque matière et de l'espagnol. b) Sans le Mac, un chiffre saisi le dimanche (cartes faites dans la semaine, lu dans les statistiques d'Anki) suffit à l'objectif « 7/7 jours ». c) Immédiat et sans code : dans Anki, donner au sous-deck 7 Odontología sa propre limite de nouvelles cartes (dix par jour) pour qu'il avance en parallèle des autres dès cette semaine, et non après le 30 septembre.</p>
+      <p><b class="k">Pourquoi</b>Constats 04 et 05. Anki est la vraie mesure de ta révision ; la Batcave n'en voit qu'un minuteur.</p>
+      <p><b class="k">Il me faut</b>Ton accord pour installer AnkiConnect sur le Mac, et un test du fichier local avec Anki ouvert.</p>
+    </div>
+
+    <div class="prop"><div class="head"><span class="code">R6</span><h4>Notion lu : cours pas fichés, matière en retard</h4><div class="meta"><span class="pill eff">moyen</span><span class="pill part">quand les vrais cours sont dans Notion, fin sept.</span></div></div>
+      <p><b class="k">Quoi</b>Lecture seule, une base par matière : le nombre de cours au statut « pas fait » et leur date, la matière dont l'examen est le plus proche avec le plus de cours non fichés. Deux fichages manqués d'affilée passent en tête du plan du jour. Rien n'est recopié, cache local seulement, la page Études fonctionne sans Notion.</p>
+      <p><b class="k">Pourquoi</b>Constat 04. Un cours non fiché n'est pas dans Anki, donc jamais révisé : c'est la seule fuite du système d'études, et elle est invisible aujourd'hui.</p>
+      <p><b class="k">Il me faut</b>Confirmer que « pas fait » veut dire « pas encore fiché ».</p>
+    </div>
+
+    <div class="prop"><div class="head"><span class="code">R12</span><h4>Budget sans saisie : mails de la banque ou relevé mensuel</h4><div class="meta"><span class="pill eff">moyen</span><span class="pill part">octobre</span></div></div>
+      <p><b class="k">Quoi</b>Si ta banque envoie un mail par paiement carte, la Batcave lit ces mails (uniquement cet expéditeur) et crée la transaction ; tu valides la catégorie. Sinon, un export mensuel collé dans Budget, dédupliqué et catégorisé par mots-clés appris. Les versements Shopify s'ajouteront en recette automatique.</p>
+      <p><b class="k">Il me faut</b>Le nom de la banque, et ton feu vert explicite avant toute lecture de Gmail.</p>
+    </div>
+
+    <div class="prop"><div class="head"><span class="code">R19</span><h4>Temps d'écran : un chiffre par semaine</h4><div class="meta"><span class="pill eff">petit</span><span class="pill part">avec R2</span></div></div>
+      <p><b class="k">Quoi</b>iOS ne laisse rien lire, mais Temps d'écran affiche une moyenne hebdomadaire. Un champ à la revue du dimanche, une courbe, et une corrélation avec la dérive du premier bloc et le sommeil. Le téléphone hors de la chambre est déjà une habitude ; ceci lui donne un chiffre.</p>
+    </div>
+
+    <div class="prop"><div class="head"><span class="code">R10</span><h4>Rappels sur le téléphone, ciblés</h4><div class="meta"><span class="pill eff">petit</span><span class="pill part">cette semaine si tu le veux</span></div></div>
+      <p><b class="k">Quoi</b>Réactiver l'écriture Google Agenda pour trois événements par jour seulement : les blocs Español (et, en semaine 0, la conversation réelle de 15:00), avec rappel cinq minutes avant et la consigne en description. Les titres suivent la période, ce que je n'ai pas fait au lot 16 sans ton accord.</p>
+      <p><b class="k">Pourquoi</b>Constat 12. C'est la seule voie de notification qui existe, et elle est déjà construite et testée.</p>
+      <p><b class="k">Il me faut</b>Ton accord : ça écrit dans ton agenda.</p>
+    </div>
+
+    <div class="prop"><div class="head"><span class="code">R13</span><h4>Les gens et l'humeur</h4><div class="meta"><span class="pill eff">petit</span><span class="pill part">octobre</span></div></div>
+      <p><b class="k">Quoi</b>Cinq personnes à ne pas laisser filer, la date du dernier contact, un rappel doux dans le plan du jour passé un délai que tu fixes. L'humeur entre dans les corrélations : contre le sommeil, la conversation réelle, le sport, les blocs tenus, et une dixième carte Insights « ce qui te fait du bien » quand sept semaines de données existent. Se loge dans la page Corps (R11), pas de page nouvelle.</p>
+      <p><b class="k">Pourquoi</b>Constat 13. La première année seul à l'étranger est le moment où un système qui ne regarde que le travail se trompe de priorité.</p>
+    </div>
+
+    <div class="prop"><div class="head"><span class="code">R14</span><h4>Snus : envies, jalons, argent</h4><div class="meta"><span class="pill eff">petit</span><span class="pill part">à la carte</span></div></div>
+      <p><b class="k">Quoi</b>Un bouton « envie » qui lance trois minutes et note l'heure et le bloc en cours ; la frise des jalons du sevrage nicotinique (72 h, deux semaines, un mois, trois mois) ; l'argent économisé depuis l'ancien rythme. Après quatre semaines, l'insight « tes envies tombent à 21 h après Comprendre le cours » vaut plus qu'un record.</p>
+      <p><b class="k">Il me faut</b>Prix d'une boîte et boîtes par semaine avant l'arrêt.</p>
+    </div>
+
+    <div class="prop"><div class="head"><span class="code">R9</span><h4>Prières dans le plan, alerte Isha au printemps</h4><div class="meta"><span class="pill eff">petit</span><span class="pill part">mars 2027, ou avant si tu le veux</span></div></div>
+      <p><b class="k">Quoi</b>Horaires calculés dans l'application (aucun réseau, méthode réglable), prochaine prière sous l'horloge, une pause de dix minutes insérée dans le bloc où tombe chaque prière, et une alerte quand Isha repasse après le coucher. Utile dès maintenant pour Asr pendant les cours ; indispensable en avril.</p>
+    </div>
+
+    <div class="grp-title">Structure</div>
+
+    <div class="prop"><div class="head"><span class="code">R11</span><h4>Dix-huit onglets deviennent douze</h4><div class="meta"><span class="pill eff">gros</span><span class="pill part">le plus tôt possible</span></div></div>
+      <p><b class="k">Quoi</b>Journal disparaît dans la clôture. Bilan, Insights et la revue d'Objectifs fusionnent en « Semaine » (une page : les chiffres, les neuf cartes, la revue du dimanche, l'expérience en cours). Santé et Dépendances deviennent « Corps » avec le poids, le sommeil et les liens. Tâches remonte dans le tableau de bord. Business reste masqué jusqu'à la première boutique connectée. Agenda se fond dans Études. Aucune donnée perdue, tous les tests réécrits.</p>
+      <p><b class="k">Pourquoi</b>Constat 08. Changement de structure, donc à faire une fois, tôt, avant que tes habitudes de navigation ne se figent : c'est cette semaine ou octobre, pas janvier.</p>
+    </div>
+
+    <div class="grp-title">Niveau 5 · Elle dure</div>
+
+    <div class="prop"><div class="head"><span class="code">R15</span><h4>Résilience : sauvegarde côté serveur, restauration éprouvée, chiffrement</h4><div class="meta"><span class="pill eff">moyen</span><span class="pill part">octobre</span></div></div>
+      <p><b class="k">Quoi</b>La Routine du dimanche lit déjà la base cloud : elle dépose aussi une sauvegarde complète sur Drive, que la page soit ouverte ou non. Un exercice de restauration trimestriel guidé (restaurer sur un autre appareil, comparer, trois minutes). Une phrase de passe optionnelle qui chiffre les sauvegardes et l'export. Un verrou léger : quand deux appareils écrivent la même clé à moins de dix secondes d'écart, le second demande avant d'écraser.</p>
+      <p><b class="k">Pourquoi</b>Constats 10 et 11. La perte de six mois de données est le seul événement qui rendrait tout le reste inutile.</p>
+      <p><b class="k">Il me faut</b>Accorder le connecteur Drive à la Routine (et Gmail, pour que le bilan parte vraiment par mail).</p>
+    </div>
+
+    <div class="prop"><div class="head"><span class="code">R16</span><h4>Atelier : horloge gelée, données de six mois, modules assemblés</h4><div class="meta"><span class="pill eff">moyen</span><span class="pill part">en fond, sans effet visible</span></div></div>
+      <p><b class="k">Quoi</b>Les tests reçoivent une date injectée au lieu de lire l'horloge, pour ne plus casser à chaque changement de période. Un jeu de données de 180 jours réaliste, rejoué avant chaque publication, pour vérifier les Insights et la vitesse sur iPhone (budget : moins d'une seconde à l'ouverture). Le fichier unique reste le produit livré, mais il est assemblé depuis des modules par le script d'assemblage déjà présent, avec un numéro de version de schéma et des migrations numérotées.</p>
+      <p><b class="k">Pourquoi</b>Constat 09. C'est ce qui permet de continuer à livrer un lot par semaine sans casser ce qui marche.</p>
+    </div>
+
+    <div class="prop"><div class="head"><span class="code">R17</span><h4>Deux Routines de plus : lundi matin et fin de phase</h4><div class="meta"><span class="pill eff">petit</span><span class="pill part">octobre</span></div></div>
+      <p><b class="k">Quoi</b>Le lundi à 06:45, « la semaine qui vient » : examens à J−x, changement de phase, semaine du programme sport (décharge ou non), tâches datées, expérience en cours. Aux dates de fin de phase (18 octobre, 29 novembre, 14 mars), une Routine qui relit les six semaines, compare aux cibles et propose les objectifs de la phase suivante, à accepter en un clic.</p>
+    </div>
+
+    <div class="prop"><div class="head"><span class="code">R18</span><h4>Saison 2 : clôturer six mois, repartir</h4><div class="meta"><span class="pill eff">moyen</span><span class="pill part">février 2027</span></div></div>
+      <p><b class="k">Quoi</b>Le 14 mars, une clôture de saison : bilan des objectifs, règles validées par les expériences, archive de la saison consultable, puis un nouvel horizon avec ses objectifs, ses périodes et son programme sport, sans tout ressaisir. Le mécanisme d'horizon existe déjà ; il lui manque le rituel de fin et le redémarrage.</p>
+      <p><b class="k">Pourquoi</b>Constat 15.</p>
+    </div>
+  </section>
+
+  <section class="ch" id="non">
+    <h2><span class="n">05</span>Ce que je ne recommande pas</h2>
+    <ul class="no-list">
+      <li><b>Un nouveau lot de fonctions avant le 20 septembre</b>, hors R3, R20 et le point c de R5. Deux vraies semaines de données valent plus que n'importe quelle idée de ce dossier.</li>
+      <li><b>Recopier Anki ou Notion dans la Batcave.</b> R5 et R6 lisent, ils ne recopient pas.</li>
+      <li><b>Un coach qui commente tes journées en texte libre.</b> Ça produit du bruit agréable ; R2 produit des décisions.</li>
+      <li><b>Badges, niveaux, points.</b> Le score du jour et les records suffisent.</li>
+      <li><b>Une application native.</b> Le fichier unique, le cloud et le mode local couvrent Mac, iPad et iPhone ; une application à maintenir doublerait le coût pour un gain de notifications que R10 obtient autrement.</li>
+      <li><b>Réécrire dans un framework.</b> Le vanilla tient ; R16 règle la dette sans réécriture.</li>
+      <li><b>Un septième relevé dans la barre.</b> Deux lignes, c'est la limite testée sur iPad.</li>
+      <li><b>Lire les mails de la fac pour en faire des tâches.</b> Fragile, bruyant, et tu perdrais confiance dans la liste en deux semaines.</li>
+    </ul>
+  </section>
+
+  <section class="ch" id="ordre">
+    <h2><span class="n">06</span>L'ordre</h2>
+    <p class="lead">Ce que je ferais, semaine par semaine, en respectant ta charge d'espagnol.</p>
+    <ul class="order">
+      <li><span class="w">Cette semaine</span><span>R5 point c (réglage Anki, cinq minutes, toi). R3 et R20 (moins de gestes) : livrés sans changer ce que tu vois d'autre. R10 si tu veux les rappels.</span></li>
+      <li><span class="w">14 → 20 sept.</span><span>Rien. Première vraie semaine avec les cours. Je lis le bilan du 13 et du 20.</span></li>
+      <li><span class="w">21 → 27 sept.</span><span>R7 (cibles et alertes Español). R2 et R4 : première expérience choisie le dimanche 27. R11 si tu dis oui, parce qu'il touche la structure et que c'est maintenant qu'il coûte le moins.</span></li>
+      <li><span class="w">Fin septembre</span><span>R6 dès que tes vrais cours sont dans Notion. R8 avant la semaine 6 du programme.</span></li>
+      <li><span class="w">Octobre</span><span>R1 avec les dates des partiels, impérativement avant le 1ᵉʳ novembre. R5 a et b. R15, R17, R12, R13 selon tes réponses. R16 en fond.</span></li>
+      <li><span class="w">Novembre</span><span>Rien de nouveau. Mode Partiels en service, je surveille.</span></li>
+      <li><span class="w">Décembre → février</span><span>R14, R19, R9 à la carte. R18 en février.</span></li>
+    </ul>
+  </section>
+
+  <section class="ch" id="questions">
+    <h2><span class="n">07</span>Tes réponses</h2>
+    <p class="lead">Sept questions, les seules qui changent le travail. Les codes suffisent.</p>
+    <ol class="q">
+      <li><b>Structure.</b> R11, dix-huit onglets vers douze : oui ou non ? Si oui, cette semaine ou fin septembre ?</li>
+      <li><b>Rappels.</b> R10 : j'écris trois événements par jour dans ton Google Agenda, avec rappel, oui ou non ?</li>
+      <li><b>Partiels.</b> Les dates, dès que tu les as. Et le premier examen tombe-t-il avant le 29 novembre (fin de la phase 2) ?</li>
+      <li><b>Anki.</b> D'accord pour AnkiConnect sur le Mac ? Et le point c (dix nouvelles cartes par jour pour Odontología) est-il fait ?</li>
+      <li><b>Notion.</b> « Pas fait » veut dire « pas encore fiché » ?</li>
+      <li><b>Banque.</b> Laquelle, et envoie-t-elle un mail par paiement ?</li>
+      <li><b>Routine.</b> Puis-je lui accorder Gmail et Drive, pour que le bilan parte vraiment par mail et que la sauvegarde tourne sans toi ?</li>
+    </ol>
+    <p>Exemple de réponse : « R11 oui fin sept, R10 oui, partiels 16-27 nov, AnkiConnect oui, Notion oui, BBVA mails oui, Routine oui ». Je lance dans l'ordre du chapitre 06.</p>
+  </section>
+
+  <footer>Rien n'a été modifié dans la Batcave pour ce dossier · Chiffres lus dans le fichier du 8 septembre au soir · Horaires de prière calculés localement (Ligue islamique mondiale) · Le premier dossier reste disponible pour comparaison.</footer>
+</div>
