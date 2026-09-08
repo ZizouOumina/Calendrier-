@@ -6,6 +6,8 @@ La version publiée vit sur claude.ai (Artifact) avec synchronisation cloud et c
 - `batcave.html` — l'application complète (HTML + CSS + JS).
 - `maquette-batcomputer.html` — la maquette statique du tableau de bord Batcomputer.
 - `tests/` — campagne Playwright (`test*.mjs`), audit d'affichage (`audit.mjs`), page hôte et scripts.
+- `tests/qa-shots.mjs`, `tests/qa-shots2.mjs` — parcours visuel : chaque onglet photographié avec un jeu de données réaliste (images dans `/tmp/qa/`).
+- `tests/rapport-hebdo.mjs` — le bilan du dimanche sans ouvrir la page : charge la Batcave dans Chromium avec les documents du cloud (`--cloud <dossier>`, un JSON par clé, tels que les écrit l'action `read_db` de l'outil Artifact) ou un export (`--seed`), et produit `rapport.html` (courriel), `rapport.md` (Notion) et `rapport.json`. Une Routine hebdomadaire l'exécute le dimanche soir et envoie le résultat.
 - `dossier-dropshipping.html` — le dossier de formation dropshipping (programme 12 semaines, ads, gestion, fiscalité, exercices corrigés, auto-tests, glossaire) ; page autonome, publiée aussi en Artifact.
 - `glossaire-dropshipping-anki.txt` — les 163 cartes du glossaire au format d'import Anki (séparateur tabulation, 3e colonne en étiquettes).
 

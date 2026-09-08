@@ -877,8 +877,46 @@
   /* ---- bannières et divers ---- */
   #coherence-banner{ border-radius:0 !important; }
   .dash-statusline{ font-family:var(--font-mono); font-size:11.5px; }
+  /* ---------- accessibilité clavier ---------- */
+  .skip-link{ position:absolute; left:-9999px; top:8px; z-index:100; background:var(--cyan-dim); color:#04151a; padding:8px 14px; font-weight:600; border-radius:0; }
+  .skip-link:focus{ left:8px; outline:2px solid var(--cyan-bright); }
+  main:focus{ outline:none; }
+  .cal-day:focus-visible, .heat-toggle:focus-visible, .chip:focus-visible, .timeline input:focus-visible, .check-list input:focus-visible, .meal-items input:focus-visible, .cat-card input:focus-visible, .edel:focus-visible, select:focus-visible, input:focus-visible, textarea:focus-visible{ outline:2px solid var(--cyan); outline-offset:2px; }
+  /* bloc coché par une session au minuteur */
+  .timeline .t-auto{ font-family:var(--font-mono); font-size:9.5px; color:var(--cyan-dim); border:1px solid var(--border); padding:1px 6px; flex:none; }
+  /* ---------- iPad portrait : écran central plus compact (après le thème, pour l'emporter) ---------- */
+  @media (min-width:781px) and (max-width:1023px){
+    .panel.mon-central{ grid-template-columns:230px minmax(0,1fr); column-gap:16px; }
+    .panel.mon-central > .reactor{ max-width:230px; }
+    .core-center .streak-num{ font-size:52px; }
+    .core-center .lbl{ font-size:9px; letter-spacing:0.18em; }
+    .core-center .sub-note{ display:none; }
+  }
+  /* ---------- téléphone : mode essentiel ---------- */
+  .mode-essentiel-toggle{ display:none; }
+  @media (max-width:780px){
+    .mode-essentiel-toggle{ display:inline-flex; padding:6px 10px; font-size:11.5px; }
+    body.mode-essentiel .bc-actions,
+    body.mode-essentiel .bc-row-2 > .bc-r:not(#bc-cloture):not(#bc-objectif),
+    body.mode-essentiel .bc-row-2 > .bc-spotify-off,
+    body.mode-essentiel .dash-wall > .mon-plan,
+    body.mode-essentiel .dash-wall > .mon-suivi,
+    body.mode-essentiel #dash-stats,
+    body.mode-essentiel #dash-releves,
+    body.mode-essentiel #dash-more-toggle,
+    body.mode-essentiel #dash-more,
+    body.mode-essentiel .page[data-page="dashboard"] footer.page-foot{ display:none !important; }
+    body.mode-essentiel .panel.mon-central{ display:flex; flex-direction:column; }
+    body.mode-essentiel .panel.mon-central > .reactor{ max-width:190px; margin:2px auto 0; order:2; }
+    body.mode-essentiel .panel.mon-central > .reactor-legend{ order:3; }
+    body.mode-essentiel .panel.mon-central > .prochain-bloc{ order:0; border-top:none; padding-top:0; margin-top:2px; }
+    body.mode-essentiel .panel.mon-central > .bc-boutons{ order:1; }
+    body.mode-essentiel .core-center .streak-num{ font-size:48px; }
+    body.mode-essentiel .core-center .sub-note{ display:none; }
+  }
 </style>
 
+<a class="skip-link" href="#main">Aller au contenu</a>
 <div class="shell">
   <aside class="sidebar">
     <div class="brand">
@@ -991,7 +1029,7 @@
     </div>
   </aside>
 
-  <main>
+  <main id="main" tabindex="-1">
     <!-- ================= DASHBOARD ================= -->
     <section class="page active" data-page="dashboard">
       <!-- Barre de titre du Batcomputer : l'identite, l'horloge et les releves du jour sur
@@ -1011,8 +1049,9 @@
           <span class="bc-r bc-alerte" id="dash-timer" hidden></span>
           <span class="bc-actions">
             <a class="btn" id="dash-notion-btn" href="#" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; text-decoration:none; line-height:normal;">📓 Notion</a>
-            <button class="btn" id="dash-notion-edit" title="Changer le lien" style="padding:8px 10px;">✎</button>
+            <button class="btn" id="dash-notion-edit" title="Changer le lien" aria-label="Changer le lien Notion" style="padding:8px 10px;">✎</button>
           </span>
+          <button class="btn mode-essentiel-toggle" id="mode-essentiel-toggle" type="button" aria-pressed="false" title="Sur téléphone : ne garder que la barre, le bloc en cours et les habitudes">Essentiel</button>
         </div>
         <div class="bc-row bc-row-2">
           <span class="bc-r"><span class="k">MÉTÉO</span><span class="v" id="dash-weather">🌡️ météo…</span></span>
@@ -1953,7 +1992,7 @@
   </main>
 </div>
 
-<div class="toast" id="toast" hidden></div>
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
 
 <div class="overlay" id="backup-overlay" hidden>
   <div class="overlay-panel">
@@ -3488,6 +3527,8 @@
     /* garde-fou : on ne laisse pas le journal grossir sans fin */
     if(sessionsState.length > 3000) sessionsState = sessionsState.slice(-3000);
     save('batcave-sessions', sessionsState);
+    /* le calendrier du jour se recoche tout seul dès qu'une session est enregistrée */
+    try{ rafraichirAgendas(); }catch(e){}
   }
   function reporterTemps(mins, st){
     logSession(mins, st, todayISO);
@@ -6404,7 +6445,7 @@
     el.innerHTML = items.slice(0,7).map(function(it, idx){
       var right = '';
       if(it.action && it.action.type === 'manque'){
-        right = '<span style="display:flex; gap:6px; flex-wrap:wrap; justify-content:flex-end; flex-shrink:0;">'+
+        right = '<span style="display:flex; gap:6px; flex-wrap:wrap; justify-content:flex-end; min-width:0; max-width:100%;">'+
           (it.action.libre ? '<button class="btn btn-primary" data-plan-manque-lancer="'+it.action.typeTravail+'" style="padding:4px 10px; font-size:11px;">🍅 Maintenant</button>' : '')+
           '<button class="btn" data-plan-manque-demain="'+it.action.typeTravail+'" data-minutes="'+it.action.minutes+'" style="padding:4px 10px; font-size:11px;">↪ Demain</button>'+
           '<button class="btn" data-plan-manque-ignorer="'+it.action.typeTravail+'" style="padding:4px 8px; font-size:11px;" title="Ne plus le signaler aujourd\'hui">✕</button>'+
@@ -6416,11 +6457,11 @@
       } else if(it.action && it.action.type === 'cloture'){
         right = '<button class="btn btn-primary" data-plan-cloture="1" style="padding:4px 10px; font-size:11px; flex-shrink:0;">🌙 Clôturer</button>';
       } else if(it.action && it.action.type === 'charge'){
-        right = '<span style="display:flex; gap:6px; flex-wrap:wrap; justify-content:flex-end; flex-shrink:0;">' +
+        right = '<span style="display:flex; gap:6px; flex-wrap:wrap; justify-content:flex-end; min-width:0; max-width:100%;">' +
           '<button class="btn btn-primary" data-plan-charge-oui="1" style="padding:4px 10px; font-size:11px;">⚖️ Réduire 2 semaines</button>' +
           '<button class="btn" data-plan-charge-non="1" style="padding:4px 8px; font-size:11px;" title="Ne plus proposer cette semaine">✕</button></span>';
       } else if(it.action && it.action.type === 'habits'){
-        right = '<span style="display:flex; gap:6px; flex-wrap:wrap; justify-content:flex-end; flex-shrink:0;">'+
+        right = '<span style="display:flex; gap:6px; flex-wrap:wrap; justify-content:flex-end; min-width:0; max-width:100%;">'+
           it.action.list.map(function(hb){
             return '<button class="btn" data-plan-habit="'+escapeHtml(hb.id)+'" title="Cocher : '+escapeHtml(hb.label)+'" style="padding:4px 8px; font-size:11px;">'+(hb.icon?escapeHtml(hb.icon)+' ':'')+escapeHtml(hb.label)+'</button>';
           }).join('')+
@@ -7871,7 +7912,16 @@
   /* Les series recurrentes de l'agenda portent une consigne apres « · » (« 🦇 Anki 1 · cartes
      dues dentaire ») : un evenement se reconnait a la partie avant le separateur. */
   function titreBaseGcal(s){ return String(s || '').split(' · ')[0].trim(); }
-  try{ window.__bcTitreBase = titreBaseGcal; window.__bcConsigne = consigneBloc; window.__bcInsights = buildInsights; window.__bcBlocs = blocsDuPlanning; window.__bcCle = cleJournee; window.__bcJours = joursSuivis; window.__bcInsightsVu = function(){ return insightsVu; }; }catch(e){}
+  try{ window.__bcTitreBase = titreBaseGcal; window.__bcConsigne = consigneBloc; window.__bcInsights = buildInsights; window.__bcBlocs = blocsDuPlanning; window.__bcCle = cleJournee; window.__bcJours = joursSuivis; window.__bcInsightsVu = function(){ return insightsVu; }; window.__bcLogSession = logSession;
+       /* rapport hebdomadaire (tests/rapport-hebdo.mjs) : la semaine à un décalage donné, ses
+          statistiques de bilan et le prévu/réalisé de chaque jour */
+       window.__bcSemaine = function(off){
+         var jours = weekRange(off || 0);
+         return {jours: jours, stats: weekStats(jours), parJour: jours.map(function(iso){
+           var c = cibleJourMinutes(cleJournee(dowDe(iso)), iso);
+           return {iso: iso, prevu: c.rev + c.proj, rev: minutesOn(iso), proj: minutesOnProj(iso)};
+         })};
+       }; }catch(e){}
   function cleGcalJour(iso){ return 'batcave-gcal-' + iso; }
   /* Tous les blocs du planning : un rappel 5 min avant chacun, 30 min avant le coucher
      (le temps d'eteindre l'ecran). « Temps libre » et le coucher n'occupent pas l'agenda. */
@@ -8094,6 +8144,17 @@
     document.getElementById('cal-schedule-label').textContent = labelMap[key];
     var blocks = agendaDuJour(weekday);
 
+    /* Un bloc de travail couvert au moins à moitié par une session au minuteur est coché
+       tout seul (valeur 'auto', pour le distinguer d'une coche à la main). Une case que
+       tu as décochée toi-même (false) n'est jamais recochée. */
+    var plansParDebut = {}; blocsDuPlanning(key).forEach(function(pb){ plansParDebut[pb.debut] = pb; });
+    var sessC = sessionsAujourdhui('cours'), sessP = sessionsAujourdhui('projet'), calChange = false;
+    blocks.forEach(function(b){
+      var typeB = typeBlocPlan(b[1]); if(!typeB || calState[b[0]] !== undefined) return;
+      var pb = plansParDebut[timeToMinutes(b[0])]; if(!pb) return;
+      if(recouvrement(pb, typeB === 'projet' ? sessP : sessC) >= (pb.fin - pb.debut) / 2){ calState[b[0]] = 'auto'; calChange = true; }
+    });
+    if(calChange) save(calKey, calState, true);
     var tl = document.getElementById('cal-timeline');
     tl.innerHTML = blocks.map(function(b, i){
       var startM = timeToMinutes(b[0]);
@@ -8103,11 +8164,11 @@
       var isNow = nowMin >= startM && nowMin < nextM;
       /* Cases indexées par HEURE et non par position : un événement Google qui s'insère
          décalait toutes les positions et faisait sauter les cases déjà cochées. */
-      var checked = !!calState[b[0]];
+      var checked = !!calState[b[0]], auto = calState[b[0]] === 'auto';
       var cls = (isPast?'past ':'') + (isNow?'now ':'') + (checked?'checked ':'');
       return '<li class="'+cls.trim()+'">'+
         '<span class="t-time">'+b[0]+'</span>'+
-        '<span class="t-body"><input type="checkbox" id="cal-'+i+'" data-cal="'+b[0]+'" '+(checked?'checked':'')+'><label class="t-label" for="cal-'+i+'"'+(consigneBloc(b[1], weekday) ? ' title="'+escapeHtml(consigneBloc(b[1], weekday))+'"' : '')+'>'+(b[3]==='google'?'📅 ':'')+escapeHtml(b[1])+'</label>'+(isNow?'<span class="t-now-badge">MAINTENANT</span>':'')+(isNow && consigneBloc(b[1], weekday) ? '<span class="t-consigne">'+escapeHtml(consigneBloc(b[1], weekday))+'</span>' : '')+'</span>'+
+        '<span class="t-body"><input type="checkbox" id="cal-'+i+'" data-cal="'+b[0]+'" '+(checked?'checked':'')+'><label class="t-label" for="cal-'+i+'"'+(consigneBloc(b[1], weekday) ? ' title="'+escapeHtml(consigneBloc(b[1], weekday))+'"' : '')+'>'+(b[3]==='google'?'📅 ':'')+escapeHtml(b[1])+'</label>'+(auto?'<span class="t-auto" title="Coché automatiquement : une session au minuteur a couvert ce bloc">auto</span>':'')+(isNow?'<span class="t-now-badge">MAINTENANT</span>':'')+(isNow && consigneBloc(b[1], weekday) ? '<span class="t-consigne">'+escapeHtml(consigneBloc(b[1], weekday))+'</span>' : '')+'</span>'+
         '</li>';
     }).join('');
     tl.querySelectorAll('input[type="checkbox"]').forEach(function(cb){
@@ -9420,5 +9481,85 @@
       });
     });
   });
+  /* ---------- téléphone : mode essentiel ----------
+     Préférence locale à l'appareil (clé sans préfixe batcave-, donc jamais synchronisée) :
+     activé par défaut sous 600 px, un bouton dans la barre bascule. Hors téléphone, la
+     classe n'a aucun effet (règles limitées à la requête média). */
+  (function(){
+    var b = document.getElementById('mode-essentiel-toggle'); if(!b) return;
+    var pref = null; try{ pref = localStorage.getItem('bc-mode-essentiel'); }catch(e){}
+    var actif = (pref === null || pref === undefined) ? window.matchMedia('(max-width:600px)').matches : pref === '1';
+    function appliquer(){
+      document.body.classList.toggle('mode-essentiel', actif);
+      b.textContent = actif ? 'Tout afficher' : 'Essentiel';
+      b.setAttribute('aria-pressed', actif ? 'true' : 'false');
+    }
+    appliquer();
+    b.addEventListener('click', function(){ actif = !actif; try{ localStorage.setItem('bc-mode-essentiel', actif ? '1' : '0'); }catch(e){} appliquer(); });
+    try{ window.__bcModeEssentiel = function(){ return document.body.classList.contains('mode-essentiel'); }; }catch(e){}
+  })();
+
+  /* ---------- clavier : fenêtres (Échap, focus, piège à tabulation) ----------
+     Toute fenêtre qui s'ouvre reçoit le focus sur son premier champ ou bouton ; Échap la
+     ferme ; Tab reste dedans ; à la fermeture, le focus revient là où il était. */
+  (function(){
+    var OVERLAYS = [
+      {id:'ask-overlay', fermer:'ask-cancel'},
+      {id:'cloture-overlay', fermer:'cloture-close'},
+      {id:'backup-overlay', fermer:'backup-close'},
+      {id:'opening-ritual-overlay', fermer:'ritual-close'},
+      {id:'focus-overlay', fermer:null}
+    ];
+    var FOCUSABLE = 'a[href], button:not([disabled]), input:not([type="hidden"]):not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+    var ouvreurs = {}, dernierHors = null;
+    function visible(el){ return el && !el.hidden; }
+    document.addEventListener('focusin', function(e){
+      var t = e.target; if(!t || t === document.body) return;
+      var dansFenetre = OVERLAYS.some(function(o){ var el = document.getElementById(o.id); return el && el.contains(t); });
+      if(!dansFenetre) dernierHors = t;
+    });
+    function focusables(ov){ return Array.prototype.filter.call(ov.querySelectorAll(FOCUSABLE), function(el){ return el.offsetParent !== null || el === document.activeElement; }); }
+    function ouvertes(){ return OVERLAYS.map(function(o){ return {o:o, el:document.getElementById(o.id)}; }).filter(function(x){ return visible(x.el); }); }
+    function entrer(x){
+      var act = document.activeElement;
+      ouvreurs[x.o.id] = (act && act !== document.body && !x.el.contains(act)) ? act : dernierHors;
+      var f = focusables(x.el);
+      var cible = f.filter(function(el){ return !/edel/.test(el.className); })[0] || f[0];
+      if(cible && !x.el.contains(document.activeElement)) cible.focus();
+    }
+    function sortir(x){
+      var prec = ouvreurs[x.o.id]; delete ouvreurs[x.o.id];
+      if(prec && document.body.contains(prec) && typeof prec.focus === 'function' && !prec.hidden) prec.focus();
+    }
+    OVERLAYS.forEach(function(o){
+      var el = document.getElementById(o.id); if(!el) return;
+      var etait = visible(el);
+      if(etait) entrer({o:o, el:el});
+      new MutationObserver(function(){
+        var est = visible(el);
+        if(est && !etait) entrer({o:o, el:el});
+        else if(!est && etait) sortir({o:o, el:el});
+        etait = est;
+      }).observe(el, {attributes:true, attributeFilter:['hidden']});
+    });
+    document.addEventListener('keydown', function(e){
+      var o = ouvertes(); if(!o.length) return;
+      var top = o[o.length - 1];
+      if(e.key === 'Escape'){
+        if(e.defaultPrevented || !top.o.fermer) return;
+        e.preventDefault();
+        var b = document.getElementById(top.o.fermer); if(b) b.click();
+        return;
+      }
+      if(e.key === 'Tab'){
+        var f = focusables(top.el); if(!f.length) return;
+        var i = f.indexOf(document.activeElement);
+        if(i === -1){ e.preventDefault(); f[0].focus(); return; }
+        if(e.shiftKey && i === 0){ e.preventDefault(); f[f.length - 1].focus(); }
+        else if(!e.shiftKey && i === f.length - 1){ e.preventDefault(); f[0].focus(); }
+      }
+    });
+    try{ window.__bcOverlaysOuvertes = function(){ return ouvertes().map(function(x){ return x.o.id; }); }; }catch(e){}
+  })();
 })();
 </script>
