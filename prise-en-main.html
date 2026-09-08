@@ -35,7 +35,6 @@
   h1,h2,h3{font-family:var(--display); font-weight:400; letter-spacing:.03em; margin:0; text-wrap:balance;}
   p{margin:0;}
   .wrap{display:grid; grid-template-columns:220px minmax(0,1fr); gap:32px; max-width:1180px; margin:0 auto; padding:36px 28px 90px;}
-  @media (max-width:860px){ .wrap{grid-template-columns:minmax(0,1fr); padding:22px 16px 80px;} .side{position:static;} }
   .side{position:sticky; top:20px; align-self:start; display:flex; flex-direction:column; gap:14px;}
   .brand{display:flex; flex-direction:column; gap:2px;}
   .brand .t{font-family:var(--display); font-size:30px; line-height:1;}
@@ -87,6 +86,25 @@
   th,td{text-align:left; padding:6px 10px 6px 0; border-bottom:1px solid var(--line-soft); vertical-align:top;}
   th{font-family:var(--mono); font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-3); font-weight:500;}
   td.h{font-family:var(--mono); font-size:12.5px; white-space:nowrap; color:var(--accent-ink); font-variant-numeric:tabular-nums;}
+  /* Écrans étroits (iPad portrait, iPhone) : la colonne latérale passe au-dessus du contenu,
+     en statique (plus de sticky qui recouvrait le texte), et le sommaire devient une rangée
+     de puces qui s'enroule au lieu d'une liste de dix-huit lignes. */
+  @media (max-width:860px){
+    .wrap{grid-template-columns:minmax(0,1fr); gap:18px; padding:22px 16px 80px;}
+    .side{position:static; top:auto; gap:10px;}
+    .brand .t{font-size:26px;}
+    .progress{display:flex; align-items:center; gap:14px; padding:8px 12px;}
+    .progress .n{font-size:26px;}
+    .progress .bar{flex:1; margin:0;}
+    .filters{padding:0;}
+    .toc{flex-direction:row; flex-wrap:wrap; gap:6px;}
+    .toc a{border:1px solid var(--line); background:var(--paper); border-left-width:1px; padding:4px 9px; font-size:12.5px; gap:6px;}
+    .toc a b{font-size:10.5px;}
+    .legend{padding:0; font-size:11.5px;}
+    header.top{margin-top:6px;}
+    header.top h1{font-size:38px;}
+    table{min-width:600px;}
+  }
   footer{margin-top:40px; padding-top:14px; border-top:1px solid var(--line); font-family:var(--mono); font-size:11.5px; color:var(--ink-3);}
   @media (prefers-reduced-motion: reduce){ *{transition:none !important;} }
 </style>
