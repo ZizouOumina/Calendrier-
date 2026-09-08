@@ -14,6 +14,7 @@ La version publiée vit sur claude.ai (Artifact) avec synchronisation cloud et c
 - `dossier-espagnol.html` — le Dossier Español (du zéro au C1 : phases, semaine 0, grille, grammaire en check-list, lexiques, examens, pièges, outils, mesures) ; page autonome, publiée aussi en Artifact.
 - `reflexion-batcave-v2.html` — le deuxième dossier de réflexion sur la Batcave (état au 8 septembre, diagnostic, modèle de maturité, vingt propositions, ordre, questions) ; page autonome, publiée aussi en Artifact.
 - `programme-alimentation.md`, `programme-sport.md` — copies de référence du plan alimentaire (prises, rotation, boucle poids → calories, courses) et du programme de sport v2 (séances, échauffements, progression, lest).
+- `vocabulaire-espagnol.md`, `vocabulaire-shopify-finance.md` — les mêmes cartes en listes de lecture (485 phrases espagnoles par sous-deck, 163 termes e-commerce et finance par thème).
 - `prise-en-main.html` — la check-list de prise en main (Batcave onglet par onglet, sport, nutrition, Anki, projets Claude, dossiers, routines, dates), coches gardées dans le navigateur ; page autonome, publiée aussi en Artifact.
 - `espagnol-batcave.apkg` — le paquet Anki « Español · Batcave » : 485 cartes à trou en espagnol, sept sous-paquets dans l'ordre du dossier ; `espagnol-batcave-anki.txt` est la même chose en import texte (type Cloze, 4e colonne = sous-paquet) et `deck-espagnol.py` le générateur (genanki).
 
