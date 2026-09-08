@@ -11,6 +11,8 @@ La version publiée vit sur claude.ai (Artifact) avec synchronisation cloud et c
 - `dossier-dropshipping.html` — le dossier de formation dropshipping (programme 12 semaines, ads, gestion, fiscalité, exercices corrigés, auto-tests, glossaire) ; page autonome, publiée aussi en Artifact.
 - `dossier-espagnol.html` — le Dossier Español (du zéro au C1 : phases, semaine 0, grille, grammaire A1→C1 en check-list, lexiques, formules, compétences, examens, pièges, outils, mesures) ; page autonome, publiée aussi en Artifact.
 - `glossaire-dropshipping-anki.txt` — les 163 cartes du glossaire au format d'import Anki (séparateur tabulation, 3e colonne en étiquettes).
+- `dossier-espagnol.html` — le Dossier Español (du zéro au C1 : phases, semaine 0, grille, grammaire en check-list, lexiques, examens, pièges, outils, mesures) ; page autonome, publiée aussi en Artifact.
+- `espagnol-batcave.apkg` — le paquet Anki « Español · Batcave » : 485 cartes à trou en espagnol, sept sous-paquets dans l'ordre du dossier ; `espagnol-batcave-anki.txt` est la même chose en import texte (type Cloze, 4e colonne = sous-paquet) et `deck-espagnol.py` le générateur (genanki).
 
 ## Lancer la campagne en local
 

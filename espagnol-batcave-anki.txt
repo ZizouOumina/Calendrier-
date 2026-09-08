@@ -1,0 +1,490 @@
+#separator:tab
+#html:false
+#notetype:Cloze
+#deck column:4
+#tags column:3
+Ayer {{c1::fui::ir, indefinido}} al dentista.	ir / ser: fui, fuiste, fue, fuimos, fuisteis, fueron. Mismas formas para los dos verbos.	espanol conjugacion	Español::1 Conjugación
+El año pasado {{c1::tuve::tener, indefinido}} un examen muy difícil.	tener: tuve, tuviste, tuvo, tuvimos, tuvisteis, tuvieron.	espanol conjugacion	Español::1 Conjugación
+Anoche no {{c1::hice::hacer, indefinido}} los deberes.	hacer: hice, hiciste, hizo (con z), hicimos, hicisteis, hicieron.	espanol conjugacion	Español::1 Conjugación
+No {{c1::pude::poder, indefinido}} venir porque estaba enfermo.	poder: pude, pudiste, pudo, pudimos, pudisteis, pudieron.	espanol conjugacion	Español::1 Conjugación
+{{c1::Puse::poner, indefinido}} los apuntes en la carpeta.	poner: puse, pusiste, puso, pusimos, pusisteis, pusieron.	espanol conjugacion	Español::1 Conjugación
+Me {{c1::dijo::decir, indefinido}} que el examen es en noviembre.	decir: dije, dijiste, dijo, dijimos, dijisteis, dijeron (sin i: dijeron).	espanol conjugacion	Español::1 Conjugación
+Mis padres {{c1::vinieron::venir, indefinido}} a verme en agosto.	venir: vine, viniste, vino, vinimos, vinisteis, vinieron.	espanol conjugacion	Español::1 Conjugación
+{{c1::Estuve::estar, indefinido}} tres horas en la biblioteca.	estar: estuve, estuviste, estuvo, estuvimos, estuvisteis, estuvieron.	espanol conjugacion	Español::1 Conjugación
+No {{c1::supe::saber, indefinido}} qué responder.	saber: supe, supiste, supo, supimos, supisteis, supieron.	espanol conjugacion	Español::1 Conjugación
+Ella no {{c1::quiso::querer, indefinido}} salir.	querer: quise, quisiste, quiso, quisimos, quisisteis, quisieron.	espanol conjugacion	Español::1 Conjugación
+El profesor {{c1::trajo::traer, indefinido}} las radiografías.	traer: traje, trajiste, trajo, trajimos, trajisteis, trajeron.	espanol conjugacion	Español::1 Conjugación
+{{c1::Hubo::haber, indefinido}} un problema con la matrícula.	haber impersonal: hubo (pasado), hay (presente), habrá (futuro), había (imperfecto).	espanol conjugacion	Español::1 Conjugación
+{{c1::Anduve::andar, indefinido}} media hora hasta el tranvía.	andar: anduve, anduviste, anduvo… (irregular, como estar).	espanol conjugacion	Español::1 Conjugación
+Le {{c1::di::dar, indefinido}} las gracias al profesor.	dar: di, diste, dio, dimos, disteis, dieron (sin tilde).	espanol conjugacion	Español::1 Conjugación
+El profesor {{c1::leyó::leer, indefinido}} la lista.	leer: leí, leíste, leyó, leímos, leísteis, leyeron (i → y entre vocales).	espanol conjugacion	Español::1 Conjugación
+{{c1::Busqué::buscar, indefinido}} los apuntes toda la tarde.	buscar → busqué (c → qu delante de e). Igual: llegar → llegué, empezar → empecé.	espanol conjugacion	Español::1 Conjugación
+Hoy {{c1::he hecho::hacer, pretérito perfecto}} dos horas de Anki.	Participios irregulares: hecho, dicho, visto, puesto, escrito, vuelto, abierto, roto, muerto, cubierto.	espanol conjugacion	Español::1 Conjugación
+¿Has {{c1::visto::ver, participio}} la clase de anatomía?	ver → visto.	espanol conjugacion	Español::1 Conjugación
+Ya he {{c1::escrito::escribir, participio}} el resumen.	escribir → escrito.	espanol conjugacion	Español::1 Conjugación
+He {{c1::vuelto::volver, participio}} a casa a las ocho.	volver → vuelto.	espanol conjugacion	Español::1 Conjugación
+Todavía no he {{c1::dicho::decir, participio}} nada.	decir → dicho.	espanol conjugacion	Español::1 Conjugación
+He {{c1::puesto::poner, participio}} el despertador a las cinco y media.	poner → puesto.	espanol conjugacion	Español::1 Conjugación
+¿Has {{c1::abierto::abrir, participio}} el libro?	abrir → abierto.	espanol conjugacion	Español::1 Conjugación
+Hemos {{c1::roto::romper, participio}} el récord de la serie.	romper → roto.	espanol conjugacion	Español::1 Conjugación
+Cuando {{c1::era::ser, imperfecto}} niño, {{c2::iba::ir, imperfecto}} al colegio andando.	Solo tres imperfectos irregulares: ser (era), ir (iba), ver (veía).	espanol conjugacion	Español::1 Conjugación
+{{c1::Veíamos::ver, imperfecto}} la tele todas las noches.	ver: veía, veías, veía, veíamos, veíais, veían.	espanol conjugacion	Español::1 Conjugación
+Mañana {{c1::tendré::tener, futuro}} clase a las tres y media.	Futuros irregulares: tendré, haré, podré, sabré, pondré, saldré, vendré, diré, querré, habrá, cabré, valdré.	espanol conjugacion	Español::1 Conjugación
+{{c1::Haré::hacer, futuro}} los ejercicios esta tarde.	hacer → haré.	espanol conjugacion	Español::1 Conjugación
+No {{c1::podré::poder, futuro}} ir el viernes.	poder → podré.	espanol conjugacion	Español::1 Conjugación
+{{c1::Sabrás::saber, futuro}} el resultado el lunes.	saber → sabré.	espanol conjugacion	Español::1 Conjugación
+{{c1::Pondré::poner, futuro}} el resumen en Notion.	poner → pondré.	espanol conjugacion	Español::1 Conjugación
+{{c1::Saldré::salir, futuro}} de casa a las siete.	salir → saldré.	espanol conjugacion	Español::1 Conjugación
+{{c1::Vendrán::venir, futuro}} a Alicante en Navidad.	venir → vendré.	espanol conjugacion	Español::1 Conjugación
+Te lo {{c1::diré::decir, futuro}} mañana.	decir → diré.	espanol conjugacion	Español::1 Conjugación
+{{c1::Habrá::haber, futuro}} examen en noviembre.	haber → habrá (impersonal).	espanol conjugacion	Español::1 Conjugación
+Me {{c1::gustaría::gustar, condicional}} hablar mejor español.	Condicional: infinitivo + ía. Irregulares como el futuro: tendría, haría, podría, diría…	espanol conjugacion	Español::1 Conjugación
+{{c1::Tendría::tener, condicional}} que estudiar más.	tener → tendría.	espanol conjugacion	Español::1 Conjugación
+Quiero que {{c1::vengas::venir, presente de subjuntivo}} a la biblioteca.	venir: venga, vengas, venga, vengamos, vengáis, vengan (desde 'vengo').	espanol conjugacion	Español::1 Conjugación
+Es importante que {{c1::sepas::saber, subjuntivo}} las bases.	saber: sepa, sepas, sepa, sepamos, sepáis, sepan.	espanol conjugacion	Español::1 Conjugación
+Ojalá {{c1::haya::haber, subjuntivo}} suerte en el examen.	haber: haya. Ojalá siempre con subjuntivo.	espanol conjugacion	Español::1 Conjugación
+No creo que {{c1::sea::ser, subjuntivo}} tan difícil.	ser: sea, seas, sea, seamos, seáis, sean.	espanol conjugacion	Español::1 Conjugación
+Cuando {{c1::tenga::tener, subjuntivo}} tiempo, te llamo.	tener: tenga… Temporal referida al futuro → subjuntivo.	espanol conjugacion	Español::1 Conjugación
+Dudo que {{c1::pueda::poder, subjuntivo}} terminar hoy.	poder: pueda, puedas, pueda, podamos, podáis, puedan.	espanol conjugacion	Español::1 Conjugación
+Espero que {{c1::vayas::ir, subjuntivo}} bien preparado.	ir: vaya, vayas, vaya, vayamos, vayáis, vayan.	espanol conjugacion	Español::1 Conjugación
+Es normal que {{c1::estés::estar, subjuntivo}} cansado.	estar: esté, estés, esté, estemos, estéis, estén.	espanol conjugacion	Español::1 Conjugación
+Necesito que me {{c1::des::dar, subjuntivo}} los apuntes.	dar: dé, des, dé, demos, deis, den.	espanol conjugacion	Español::1 Conjugación
+Quizás {{c1::diga::decir, subjuntivo}} algo en clase.	decir: diga, digas, diga, digamos, digáis, digan.	espanol conjugacion	Español::1 Conjugación
+Te lo explico para que lo {{c1::hagas::hacer, subjuntivo}} bien.	hacer: haga, hagas, haga, hagamos, hagáis, hagan.	espanol conjugacion	Español::1 Conjugación
+Prefiero que {{c1::pongas::poner, subjuntivo}} el móvil fuera.	poner: ponga, pongas… (desde 'pongo').	espanol conjugacion	Español::1 Conjugación
+Si {{c1::tuviera::tener, imperfecto de subjuntivo}} más tiempo, leería más.	tener: tuviera / tuviese. Se forma desde la 3.ª persona plural del indefinido: tuvieron → tuviera.	espanol conjugacion	Español::1 Conjugación
+Si {{c1::supiera::saber, imperfecto de subjuntivo}} la respuesta, te la diría.	supieron → supiera.	espanol conjugacion	Español::1 Conjugación
+Me pidió que {{c1::fuera::ir, imperfecto de subjuntivo}} a la tutoría.	fueron → fuera (ir y ser).	espanol conjugacion	Español::1 Conjugación
+Si {{c1::hubiera::haber, imperfecto de subjuntivo}} estudiado, habría aprobado.	Condicional irreal del pasado: si hubiera + participio, habría + participio.	espanol conjugacion	Español::1 Conjugación
+Ojalá {{c1::pudiera::poder, imperfecto de subjuntivo}} dormir más.	pudieron → pudiera. Ojalá + imperfecto de subjuntivo = deseo poco probable.	espanol conjugacion	Español::1 Conjugación
+{{c1::Dime::decir + me, imperativo tú}} la verdad.	Imperativos irregulares de tú: di, pon, ven, haz, sal, ten, ve, sé.	espanol conjugacion	Español::1 Conjugación
+{{c1::Pon::poner, imperativo tú}} el móvil fuera de la habitación.	poner → pon.	espanol conjugacion	Español::1 Conjugación
+{{c1::Ven::venir, imperativo tú}} aquí un momento.	venir → ven.	espanol conjugacion	Español::1 Conjugación
+{{c1::Haz::hacer, imperativo tú}} las cartas cada día.	hacer → haz.	espanol conjugacion	Español::1 Conjugación
+{{c1::Sal::salir, imperativo tú}} temprano para no perder el tranvía.	salir → sal.	espanol conjugacion	Español::1 Conjugación
+{{c1::Ten::tener, imperativo tú}} paciencia.	tener → ten.	espanol conjugacion	Español::1 Conjugación
+No {{c1::hables::hablar, imperativo negativo}} en francés en la facultad.	Imperativo negativo = presente de subjuntivo: no hables, no comas, no vengas.	espanol conjugacion	Español::1 Conjugación
+{{c1::Siéntese::sentarse, imperativo usted}}, por favor.	Usted = subjuntivo: siéntese, dígame, pase, tenga.	espanol conjugacion	Español::1 Conjugación
+{{c1::Conozco::conocer, presente}} a un dentista de Alicante.	Verbos en -cer / -cir: conozco, parezco, conduzco, traduzco.	espanol conjugacion	Español::1 Conjugación
+No {{c1::sé::saber, presente}} la respuesta.	saber: sé (con tilde para distinguirlo de 'se').	espanol conjugacion	Español::1 Conjugación
+{{c1::Sigo::seguir, presente}} las clases en español.	seguir: sigo, sigues, sigue, seguimos, seguís, siguen.	espanol conjugacion	Español::1 Conjugación
+El paciente {{c1::siente::sentir, presente}} dolor al masticar.	e → ie: siento, sientes, siente, sentimos, sentís, sienten.	espanol conjugacion	Español::1 Conjugación
+{{c1::Duermo::dormir, presente}} siete horas y media.	o → ue: duermo, duermes, duerme, dormimos, dormís, duermen.	espanol conjugacion	Español::1 Conjugación
+{{c1::Empiezo::empezar, presente}} a las siete y veinte.	e → ie: empiezo, empiezas, empieza, empezamos, empezáis, empiezan.	espanol conjugacion	Español::1 Conjugación
+{{c1::Traigo::traer, presente}} los apuntes a clase.	1.ª persona en -go: traigo, pongo, salgo, tengo, vengo, hago, digo, oigo.	espanol conjugacion	Español::1 Conjugación
+{{c1::Salgo::salir, presente}} de casa a las tres.	salir → salgo.	espanol conjugacion	Español::1 Conjugación
+¿{{c1::Oyes::oír, presente}} al profesor desde el fondo?	oír: oigo, oyes, oye, oímos, oís, oyen.	espanol conjugacion	Español::1 Conjugación
+{{c1::Soy::ser}} estudiante de Odontología.	Ser: identidad, profesión, origen, características permanentes.	espanol gramatica	Español::2 Gramática
+Hoy {{c1::estoy::estar}} cansado.	Estar: estado, resultado, posición, lugar.	espanol gramatica	Español::2 Gramática
+La clase {{c1::está::estar}} muy bien explicada.	'Bien' y 'mal' son adverbios: siempre con estar. Con ser: bueno / malo.	espanol gramatica	Español::2 Gramática
+Este manual {{c1::es::ser}} muy bueno.	Cualidad → ser + bueno. Estado → estar + bien.	espanol gramatica	Español::2 Gramática
+La biblioteca {{c1::está::estar}} cerca del tranvía.	Lugar de una cosa o persona → estar.	espanol gramatica	Español::2 Gramática
+El examen {{c1::es::ser}} en el aula 3.	Lugar de un evento (examen, clase, reunión) → ser.	espanol gramatica	Español::2 Gramática
+{{c1::Hay::haber}} muchos estudiantes en clase.	Existencia → hay (invariable). 'Están' se usa con sujeto determinado: los estudiantes están en clase.	espanol gramatica	Español::2 Gramática
+Ayer {{c1::fui::indefinido}} al dentista y hoy {{c2::he ido::pretérito perfecto}} a clase.	Marcador de tiempo cerrado (ayer, en 2020) → indefinido. Tiempo abierto (hoy, esta semana, ya) → perfecto.	espanol gramatica	Español::2 Gramática
+De niño, {{c1::iba::imperfecto}} al colegio en bici.	Hábito o descripción en el pasado → imperfecto.	espanol gramatica	Español::2 Gramática
+Cuando llegué, el profesor ya {{c1::había empezado::pluscuamperfecto}}.	Acción anterior a otra acción pasada → pluscuamperfecto (había + participio).	espanol gramatica	Español::2 Gramática
+A María {{c1::la::OD femenino}} vi ayer.	Objeto directo: lo / la / los / las. 'Le' es objeto indirecto (con 'a' de persona, solo se admite 'le' para hombre).	espanol gramatica	Español::2 Gramática
+A Juan {{c1::le::OI}} di los apuntes.	Objeto indirecto: le / les. Con lo/la delante se convierte en 'se': se los di.	espanol gramatica	Español::2 Gramática
+El libro {{c1::lo::OD masculino}} dejé en casa.	Objeto directo masculino singular → lo.	espanol gramatica	Español::2 Gramática
+Me {{c1::gustan::concordancia}} los dientes sanos.	Gustar concuerda con lo que gusta: me gusta el café, me gustan los dientes.	espanol gramatica	Español::2 Gramática
+Pienso {{c1::en::pensar en}} el examen.	Régimen: pensar en, depender de, consistir en, soñar con, tratar de, casarse con, enamorarse de.	espanol gramatica	Español::2 Gramática
+Todo depende {{c1::de::depender de}} la nota.	depender de.	espanol gramatica	Español::2 Gramática
+El tratamiento consiste {{c1::en::consistir en}} tres sesiones.	consistir en.	espanol gramatica	Español::2 Gramática
+Sueño {{c1::con::soñar con}} ser dentista.	soñar con.	espanol gramatica	Español::2 Gramática
+Trato {{c1::de::tratar de}} hablar solo español.	tratar de + infinitivo = intentar.	espanol gramatica	Español::2 Gramática
+Empiezo {{c1::a::empezar a}} entender las clases.	empezar a, aprender a, ayudar a, volver a.	espanol gramatica	Español::2 Gramática
+He dejado {{c1::de::dejar de}} hablar francés en la facultad.	dejar de + infinitivo = parar de. Acabar de + inf. = hace muy poco.	espanol gramatica	Español::2 Gramática
+Estudio {{c1::para::finalidad}} aprobar.	Para: finalidad, destinatario, plazo, dirección.	espanol gramatica	Español::2 Gramática
+Gracias {{c1::por::causa}} tu ayuda.	Por: causa, medio, precio, lugar por donde se pasa, tiempo aproximado.	espanol gramatica	Español::2 Gramática
+Paso {{c1::por::lugar}} el centro para ir a la facultad.	por = a través de.	espanol gramatica	Español::2 Gramática
+Este libro es {{c1::para::destinatario}} ti.	para = destinatario.	espanol gramatica	Español::2 Gramática
+Lo compré {{c1::por::precio}} diez euros.	por = precio, intercambio.	espanol gramatica	Español::2 Gramática
+Tengo que entregarlo {{c1::para::plazo}} el lunes.	para = fecha límite.	espanol gramatica	Español::2 Gramática
+Quiero que {{c1::vengas::subjuntivo tras voluntad}} a la biblioteca.	Verbos de voluntad, deseo, orden + que → subjuntivo.	espanol gramatica	Español::2 Gramática
+Creo que {{c1::es::indicativo tras 'creo que'}} fácil.	Opinión afirmativa → indicativo.	espanol gramatica	Español::2 Gramática
+No creo que {{c1::sea::subjuntivo tras opinión negada}} fácil.	Opinión negada, duda → subjuntivo.	espanol gramatica	Español::2 Gramática
+Cuando {{c1::termine::subjuntivo, futuro}} la clase, te escribo.	Temporal referida al futuro → subjuntivo. Hábito → indicativo: cuando termina la clase, siempre me voy.	espanol gramatica	Español::2 Gramática
+Si {{c1::tuviera::imperfecto de subjuntivo}} tiempo, iría al intercambio.	Condicional irreal: si + imperfecto de subjuntivo, condicional. Nunca condicional después de 'si'.	espanol gramatica	Español::2 Gramática
+Si {{c1::tengo::presente, condición real}} tiempo, iré al intercambio.	Condición real: si + presente, futuro / presente / imperativo.	espanol gramatica	Español::2 Gramática
+Tengo {{c1::otro::sin artículo}} examen el viernes.	Otro nunca lleva 'un': otro día, otra vez.	espanol gramatica	Español::2 Gramática
+La gente {{c1::es::singular}} muy amable aquí.	Gente es singular: la gente es, la gente dice.	espanol gramatica	Español::2 Gramática
+Hablo {{c1::muy::adverbio}} bien, pero cometo {{c2::muchos::nombre}} errores.	Muy + adjetivo o adverbio. Mucho + nombre, o después de verbo (trabajo mucho).	espanol gramatica	Español::2 Gramática
+— No entiendo la pregunta. — Yo {{c1::tampoco::negación}}.	Acuerdo con una negación → tampoco. Con afirmación → también.	espanol gramatica	Español::2 Gramática
+{{c1::Tengo::edad}} diecinueve años.	Tener: años, hambre, sed, sueño, frío, calor, miedo, razón, prisa.	espanol gramatica	Español::2 Gramática
+Estudio español {{c1::desde hace::duración}} dos semanas.	Duración: desde hace + tiempo; hace + tiempo + que; llevar + tiempo + gerundio.	espanol gramatica	Español::2 Gramática
+{{c1::Llevo::llevar + gerundio}} dos años viviendo en Alicante.	llevar + tiempo + gerundio = hace X que.	espanol gramatica	Español::2 Gramática
+{{c1::Estoy::estar de acuerdo}} de acuerdo contigo.	estar de acuerdo con (nunca 'ser').	espanol gramatica	Español::2 Gramática
+Voy a {{c1::pedir::pedir vs preguntar}} un favor al profesor.	Pedir = solicitar algo. Preguntar = hacer una pregunta.	espanol gramatica	Español::2 Gramática
+Voy a {{c1::preguntar::hacer una pregunta}} al profesor si hay examen.	preguntar si / preguntar por alguien.	espanol gramatica	Español::2 Gramática
+{{c1::Son::hora}} las tres y media.	Ser concuerda con la hora: es la una, son las dos.	espanol gramatica	Español::2 Gramática
+El examen es el {{c1::lunes::minúscula}} 16 de {{c2::noviembre::minúscula}}.	Días, meses, idiomas y gentilicios van en minúscula: lunes, noviembre, español, francés.	espanol gramatica	Español::2 Gramática
+Me he {{c1::dado cuenta::darse cuenta}} de que necesito más práctica.	darse cuenta de = percatarse. 'Realizar' = hacer, llevar a cabo.	espanol gramatica	Español::2 Gramática
+Tengo tos y mocos: estoy {{c1::constipado::resfriado}}.	constipado = resfriado. Para el intestino: estreñido.	espanol gramatica	Español::2 Gramática
+Mi hermana está {{c1::embarazada::va a tener un bebé}}.	embarazada = que espera un hijo. 'Avergonzado' = que siente vergüenza.	espanol gramatica	Español::2 Gramática
+El pasillo es muy {{c1::largo::longitud}} y bastante {{c2::ancho::anchura}}.	largo = de gran longitud; ancho = de gran anchura; estrecho = poco ancho.	espanol gramatica	Español::2 Gramática
+La enfermera {{c1::atiende::cuidar, ocuparse de}} a los pacientes.	atender = ocuparse de. Asistir a = estar presente en (asistir a clase).	espanol gramatica	Español::2 Gramática
+El congreso fue un {{c1::éxito::resultado muy positivo}}.	éxito = triunfo. Salida = lugar por donde se sale. Suceso = acontecimiento.	espanol gramatica	Español::2 Gramática
+La {{c1::salida::puerta para salir}} de emergencia está a la derecha.	salida ≠ éxito.	espanol gramatica	Español::2 Gramática
+¿{{c1::Qué::con tilde}} hora es?	Interrogativos y exclamativos llevan tilde: qué, cuál, quién, dónde, cuándo, cómo, cuánto.	espanol gramatica	Español::2 Gramática
+{{c1::Quítate::quitar, retirar}} la chaqueta, hace calor.	quitar = retirar, sacar. Quitarse = retirar de uno mismo.	espanol gramatica	Español::2 Gramática
+{{c1::Sube::subir, ir arriba}} las escaleras, la clase es en el primer piso.	subir = ir hacia arriba. Salir = ir fuera.	espanol gramatica	Español::2 Gramática
+No me {{c1::molestes::molestar, importunar}}, estoy estudiando.	molestar = incomodar, importunar.	espanol gramatica	Español::2 Gramática
+Necesito una {{c1::carpeta::para guardar hojas}} para los apuntes.	carpeta = donde se guardan papeles. Alfombra = tejido para el suelo.	espanol gramatica	Español::2 Gramática
+Tengo un {{c1::rato::momento}} libre a las dos.	rato = momento breve. Rata = animal.	espanol gramatica	Español::2 Gramática
+Un {{c1::vaso::para beber}} de agua, por favor.	vaso = recipiente para beber (y vaso sanguíneo). Jarrón = para flores.	espanol gramatica	Español::2 Gramática
+Mi {{c1::apellido::nombre de familia}} es Oumina.	nombre = de pila; apellido = de familia.	espanol gramatica	Español::2 Gramática
+El {{c1::suelo::el piso, donde pisamos}} del laboratorio está mojado.	suelo = superficie donde se pisa. Sol = la estrella.	espanol gramatica	Español::2 Gramática
+Se me ha {{c1::olvidado::se + me, involuntario}} el libro en casa.	Se me olvidó / se me cayó / se me rompió: acción involuntaria.	espanol gramatica	Español::2 Gramática
+{{c1::Se::pasiva refleja}} observa una lesión en el molar.	Pasiva refleja: se + verbo en 3.ª persona. Registro científico: se observa, se produce, se ha demostrado.	espanol gramatica	Español::2 Gramática
+Es un molar {{c1::sano::que no está enfermo}}.	sano = con salud. 'Sensible' = que siente mucho; 'sensato' = que tiene juicio.	espanol gramatica	Español::2 Gramática
+El paciente {{c1::eventualmente::de vez en cuando}} nota dolor; {{c2::posiblemente::quizás}} sea la encía.	eventualmente = ocasionalmente. Para 'quizás': posiblemente, tal vez, en su caso.	espanol gramatica	Español::2 Gramática
+— ¿Vienes al parque? — {{c1::La verdad es que}} estoy agotado.	Introduce una confesión sincera o un matiz.	espanol formulas	Español::3 Fórmulas
+— ¿Qué has hecho hoy? — {{c1::Bueno, pues}} Anki, clase y poco más.	Muletilla para empezar a responder.	espanol formulas	Español::3 Fórmulas
+{{c1::A ver}}, ¿qué tenemos que entregar mañana?	Para pensar en voz alta o llamar la atención.	espanol formulas	Español::3 Fórmulas
+No pude venir, {{c1::es que}} tenía examen.	Introduce una excusa o una explicación.	espanol formulas	Español::3 Fórmulas
+Es un músculo, {{c1::o sea}}, un tejido que se contrae.	Reformular, explicar de otra manera.	espanol formulas	Español::3 Fórmulas
+Vamos a repasar {{c1::en plan}} rápido.	Coloquial, muy usado por los jóvenes: 'de manera', 'como'.	espanol formulas	Español::3 Fórmulas
+{{c1::Total, que}} al final no fuimos.	Resumir una historia larga.	espanol formulas	Español::3 Fórmulas
+{{c1::Vamos, que}} no tengo ni idea.	Concluir, resumir.	espanol formulas	Español::3 Fórmulas
+{{c1::El caso es que}} no encuentro los apuntes.	Introduce el problema real.	espanol formulas	Español::3 Fórmulas
+{{c1::Lo que pasa es que}} no entendí la pregunta.	Explicar la causa de algo.	espanol formulas	Español::3 Fórmulas
+{{c1::Digamos que}} no fue mi mejor examen.	Suavizar una afirmación.	espanol formulas	Español::3 Fórmulas
+Es un tirano, {{c1::por así decirlo}}.	Matizar una expresión fuerte.	espanol formulas	Español::3 Fórmulas
+— Hoy hay examen. — ¡{{c1::Qué va}}! Es la semana que viene.	Negar con fuerza: 'para nada'.	espanol formulas	Español::3 Fórmulas
+— He aprobado todo. — ¡{{c1::No me digas}}!	Sorpresa.	espanol formulas	Español::3 Fórmulas
+— Voy a estudiar diez horas. — ¡{{c1::Anda ya}}!	Incredulidad, 'no te creo'.	espanol formulas	Español::3 Fórmulas
+— Lo suspendió todo. — ¡{{c1::Qué fuerte}}!	Impacto, sorpresa fuerte.	espanol formulas	Español::3 Fórmulas
+{{c1::Menos mal}} que llevaba el paraguas.	Alivio: 'por suerte'.	espanol formulas	Español::3 Fórmulas
+— ¿Dónde está el aula 3? — {{c1::Ni idea}}.	No tener ninguna idea.	espanol formulas	Español::3 Fórmulas
+— ¿Arroz o pasta? — Me {{c1::da igual}}.	Indiferencia.	espanol formulas	Español::3 Fórmulas
+— Es por la izquierda. — Ah, {{c1::ya veo}}.	Entender.	espanol formulas	Español::3 Fórmulas
+{{c1::Vale}}, nos vemos a las tres.	De acuerdo (España).	espanol formulas	Español::3 Fórmulas
+¡{{c1::Venga}}, que llegamos tarde!	Animar, meter prisa; también para despedirse.	espanol formulas	Español::3 Fórmulas
+{{c1::Ojalá}} apruebe anatomía.	Deseo. Siempre con subjuntivo.	espanol formulas	Español::3 Fórmulas
+— No puedo ir. — ¡{{c1::Qué pena}}!	Lástima.	espanol formulas	Español::3 Fórmulas
+— Perdona el retraso. — Tranquilo, {{c1::no pasa nada}}.	Quitar importancia.	espanol formulas	Español::3 Fórmulas
+— ¿Vas a salir hoy? — {{c1::Ni de coña}}, tengo examen.	Muy coloquial: de ninguna manera.	espanol formulas	Español::3 Fórmulas
+{{c1::A mí me parece que}} este tema es más fácil.	Dar la opinión.	espanol formulas	Español::3 Fórmulas
+{{c1::Yo diría que}} hay tres tipos de caries.	Opinión prudente.	espanol formulas	Español::3 Fórmulas
+{{c1::Desde mi punto de vista}}, es mejor estudiar por la mañana.	Opinión, registro formal.	espanol formulas	Español::3 Fórmulas
+{{c1::No estoy del todo de acuerdo}} contigo.	Desacuerdo suave.	espanol formulas	Español::3 Fórmulas
+{{c1::Tienes razón, pero}} hay otra opción.	Conceder antes de contradecir.	espanol formulas	Español::3 Fórmulas
+— ¿Es difícil la asignatura? — {{c1::Depende}}.	Según el caso.	espanol formulas	Español::3 Fórmulas
+{{c1::En el fondo}}, tiene razón.	En realidad.	espanol formulas	Español::3 Fórmulas
+{{c1::Si te digo la verdad}}, no he estudiado.	Confesión.	espanol formulas	Español::3 Fórmulas
+¿{{c1::Te importa si}} abro la ventana?	Pedir permiso.	espanol formulas	Español::3 Fórmulas
+¿{{c1::Te apetece}} un café después de clase?	Proponer (apetecer = tener ganas de).	espanol formulas	Español::3 Fórmulas
+¿{{c1::Qué tal si}} repasamos juntos?	Proponer.	espanol formulas	Español::3 Fórmulas
+¿{{c1::Me echas una mano}} con esto?	Pedir ayuda.	espanol formulas	Español::3 Fórmulas
+¿{{c1::Me lo puedes repetir}}, por favor?	Pedir repetición.	espanol formulas	Español::3 Fórmulas
+¿{{c1::Cómo se dice}} esto en español?	Pedir una palabra.	espanol formulas	Español::3 Fórmulas
+¿{{c1::A qué te refieres}}?	Pedir aclaración.	espanol formulas	Español::3 Fórmulas
+¿{{c1::Te suena}} este apellido?	Resultar familiar.	espanol formulas	Español::3 Fórmulas
+{{c1::De hecho}}, ya lo había leído.	Confirmar reforzando: 'en realidad'.	espanol formulas	Español::3 Fórmulas
+{{c1::Por cierto}}, ¿a qué hora es la clase?	Cambiar de tema, 'a propósito'.	espanol formulas	Español::3 Fórmulas
+{{c1::En cuanto a}} la nota, no sé nada todavía.	Respecto a.	espanol formulas	Español::3 Fórmulas
+{{c1::Ya que estamos}}, repasamos también el tema 2.	Aprovechar la ocasión.	espanol formulas	Español::3 Fórmulas
+{{c1::Al fin y al cabo}}, es solo un parcial.	En definitiva.	espanol formulas	Español::3 Fórmulas
+{{c1::A fin de cuentas}}, lo importante es aprender.	En definitiva.	espanol formulas	Español::3 Fórmulas
+{{c1::En cualquier caso}}, te aviso mañana.	Pase lo que pase.	espanol formulas	Español::3 Fórmulas
+{{c1::De todas formas}}, no iba a ir.	De todos modos.	espanol formulas	Español::3 Fórmulas
+{{c1::Por lo visto}}, el examen es tipo test.	Según se dice, aparentemente.	espanol formulas	Español::3 Fórmulas
+{{c1::Según parece}}, hay dos convocatorias.	Aparentemente.	espanol formulas	Español::3 Fórmulas
+{{c1::Que yo sepa}}, no hay clase el viernes.	Hasta donde sé. Con subjuntivo.	espanol formulas	Español::3 Fórmulas
+{{c1::Si no me equivoco}}, el trigémino tiene tres ramas.	Prudencia al afirmar.	espanol formulas	Español::3 Fórmulas
+{{c1::Corrígeme si me equivoco}}, pero el esmalte no tiene células.	Afirmar con prudencia.	espanol formulas	Español::3 Fórmulas
+¿{{c1::Podría explicar de nuevo}} la última parte?	En clase, a un profesor (usted).	espanol formulas	Español::3 Fórmulas
+{{c1::No me queda claro}} el segundo punto.	Expresar una duda.	espanol formulas	Español::3 Fórmulas
+{{c1::Lo que quiero decir es que}} el proceso es reversible.	Aclarar lo dicho.	espanol formulas	Español::3 Fórmulas
+{{c1::Para resumir}}, hay tres fases.	Cerrar una exposición.	espanol formulas	Español::3 Fórmulas
+{{c1::Dicho esto}}, pasemos al siguiente punto.	Transición.	espanol formulas	Español::3 Fórmulas
+{{c1::En pocas palabras}}, es una infección.	Resumir.	espanol formulas	Español::3 Fórmulas
+— ¡Hola! ¿{{c1::Qué tal}}? — Bien, ¿y tú?	Saludo informal más común.	espanol formulas	Español::3 Fórmulas
+Me voy, ¡{{c1::hasta luego}}!	Despedida más común.	espanol formulas	Español::3 Fórmulas
+¡{{c1::Nos vemos}} mañana en clase!	Despedida.	espanol formulas	Español::3 Fórmulas
+{{c1::Perdona}}, ¿me dejas pasar?	Llamar la atención, disculparse (tú). Con usted: perdone.	espanol formulas	Español::3 Fórmulas
+{{c1::Lo siento}}, llego tarde.	Disculparse.	espanol formulas	Español::3 Fórmulas
+— ¿Quedamos a las cinco? — {{c1::Me parece bien}}.	Aceptar.	espanol formulas	Español::3 Fórmulas
+— ¿Me ayudas? — {{c1::Claro que sí}}.	Aceptar con energía.	espanol formulas	Español::3 Fórmulas
+— ¿Vendrás? — {{c1::Por supuesto}}.	Aceptar formalmente.	espanol formulas	Español::3 Fórmulas
+{{c1::Ahora mismo}} voy.	Inmediatamente.	espanol formulas	Español::3 Fórmulas
+{{c1::Enseguida}} vuelvo.	Muy pronto.	espanol formulas	Español::3 Fórmulas
+{{c1::Cuanto antes}}, mejor.	Lo más pronto posible.	espanol formulas	Español::3 Fórmulas
+{{c1::Poco a poco}} se aprende.	Progresivamente.	espanol formulas	Español::3 Fórmulas
+— ¿Lo entiendes? — {{c1::Más o menos}}.	Aproximadamente.	espanol formulas	Español::3 Fórmulas
+{{c1::Vale la pena}} leer este capítulo.	Merece el esfuerzo (también: merece la pena).	espanol formulas	Español::3 Fórmulas
+Después de la sesión de sport {{c1::estoy hecho polvo}}.	Estar agotado.	espanol formulas	Español::3 Fórmulas
+Esta clase de bioquímica {{c1::me suena a chino}}.	No entender nada.	espanol formulas	Español::3 Fórmulas
+{{c1::Echo de menos}} a mi familia.	Sentir la ausencia de alguien.	espanol formulas	Español::3 Fórmulas
+{{c1::Tengo ganas de}} aprobar el primer parcial.	Desear algo.	espanol formulas	Español::3 Fórmulas
+El profesor de anatomía {{c1::me cae bien}}.	Resultar simpático.	espanol formulas	Español::3 Fórmulas
+Tengo que {{c1::ponerme las pilas}} con el español.	Esforzarse más, activarse.	espanol formulas	Español::3 Fórmulas
+{{c1::Hazme caso}}: lee la guía docente.	Hacer caso = obedecer, prestar atención.	espanol formulas	Español::3 Fórmulas
+¿{{c1::Me estás tomando el pelo}}?	Burlarse, bromear.	espanol formulas	Español::3 Fórmulas
+No tenemos tiempo: {{c1::vamos al grano}}.	Ir a lo esencial.	espanol formulas	Español::3 Fórmulas
+{{c1::Estoy al día}} con las cartas de Anki.	No tener retraso.	espanol formulas	Español::3 Fórmulas
+¿{{c1::Quedamos}} a las cinco en la biblioteca?	Quedar = citarse con alguien.	espanol formulas	Español::3 Fórmulas
+{{c1::Me apunto}} al intercambio del domingo.	Apuntarse = inscribirse, unirse.	espanol formulas	Español::3 Fórmulas
+{{c1::Me he liado}} con los tiempos verbales.	Liarse = confundirse.	espanol formulas	Español::3 Fórmulas
+Hoy {{c1::he currado}} mucho.	Currar = trabajar (coloquial).	espanol formulas	Español::3 Fórmulas
+Esta aplicación {{c1::mola}}.	Molar = gustar (coloquial, España).	espanol formulas	Español::3 Fórmulas
+{{c1::Flipé}} con la nota.	Flipar = sorprenderse mucho (coloquial).	espanol formulas	Español::3 Fórmulas
+Tío, {{c1::qué pasada}} de examen.	Qué pasada = qué impresionante (coloquial).	espanol formulas	Español::3 Fórmulas
+{{c1::Me da vergüenza}} hablar en clase.	Sentir vergüenza (no 'embarazo').	espanol formulas	Español::3 Fórmulas
+{{c1::Cuídate}}, hasta mañana.	Despedida cariñosa.	espanol formulas	Español::3 Fórmulas
+{{c1::Además::añadir}}, el esmalte protege la dentina.	Adición. Sinónimos: asimismo, igualmente, por otra parte.	espanol conectores	Español::4 Conectores
+{{c1::Asimismo::añadir, formal}}, se observa inflamación de la encía.	Adición formal.	espanol conectores	Español::4 Conectores
+{{c1::Por otra parte::otro aspecto}}, el coste del tratamiento es elevado.	Añadir un aspecto distinto.	espanol conectores	Español::4 Conectores
+{{c1::Sin embargo::oposición}}, la dentina es sensible.	Oposición. Sinónimo formal: no obstante.	espanol conectores	Español::4 Conectores
+{{c1::No obstante::oposición formal}}, existen excepciones.	Oposición, registro formal.	espanol conectores	Español::4 Conectores
+La caries avanza lentamente; {{c1::en cambio::contraste}}, un traumatismo es inmediato.	Contraste entre dos elementos.	espanol conectores	Español::4 Conectores
+El esmalte es duro, {{c1::mientras que::contraste}} la pulpa es blanda.	Contraste.	espanol conectores	Español::4 Conectores
+{{c1::Ahora bien::matiz}}, no todos los pacientes responden igual.	Introduce una restricción.	espanol conectores	Español::4 Conectores
+{{c1::A pesar de que::concesión}} estudió mucho, suspendió.	Concesión + verbo conjugado. Con nombre: a pesar de / pese a + nombre.	espanol conectores	Español::4 Conectores
+{{c1::Pese a::concesión + nombre}} la anestesia, sintió dolor.	Concesión con nombre.	espanol conectores	Español::4 Conectores
+Aprobó {{c1::porque::causa}} estudió cada día.	Causa neutra.	espanol conectores	Español::4 Conectores
+{{c1::Ya que::causa conocida}} estás aquí, repasamos el tema 2.	Causa ya conocida por el oyente.	espanol conectores	Español::4 Conectores
+{{c1::Puesto que::causa formal}} no hay datos, no podemos concluir.	Causa, registro formal.	espanol conectores	Español::4 Conectores
+{{c1::Dado que::causa formal}} el paciente es diabético, se ajusta el tratamiento.	Causa, registro formal / científico.	espanol conectores	Español::4 Conectores
+{{c1::Debido a::causa + nombre}} la infección, hay dolor.	Causa con nombre: debido a, a causa de, gracias a (positivo).	espanol conectores	Español::4 Conectores
+{{c1::Como::causa al inicio}} no tenía apuntes, pedí los de un compañero.	Causa colocada al principio de la frase.	espanol conectores	Español::4 Conectores
+{{c1::Por lo tanto::consecuencia}}, el diente debe extraerse.	Consecuencia.	espanol conectores	Español::4 Conectores
+{{c1::Por consiguiente::consecuencia formal}}, se recomienda una radiografía.	Consecuencia formal.	espanol conectores	Español::4 Conectores
+Estaba cansado, {{c1::así que::consecuencia coloquial}} me fui a casa.	Consecuencia, registro coloquial.	espanol conectores	Español::4 Conectores
+Llovía, {{c1::de modo que::consecuencia}} no fuimos al parque.	Consecuencia.	espanol conectores	Español::4 Conectores
+{{c1::En consecuencia::consecuencia formal}}, la placa se convierte en sarro.	Consecuencia formal.	espanol conectores	Español::4 Conectores
+El pH baja, {{c1::de ahí que::consecuencia + subjuntivo}} el esmalte se desmineralice.	De ahí que + subjuntivo.	espanol conectores	Español::4 Conectores
+Hay varios factores, {{c1::por ejemplo::ejemplo}}, el azúcar.	Ejemplificar.	espanol conectores	Español::4 Conectores
+{{c1::En concreto::precisión}}, los molares inferiores.	Precisar.	espanol conectores	Español::4 Conectores
+{{c1::Es decir::reformular}}, una pérdida de minerales.	Reformular.	espanol conectores	Español::4 Conectores
+{{c1::Dicho de otro modo::reformular}}, la caries es reversible al principio.	Reformular, registro escrito.	espanol conectores	Español::4 Conectores
+{{c1::En primer lugar::ordenar}}, la definición; {{c2::en segundo lugar::ordenar}}, el mecanismo.	Ordenar una exposición.	espanol conectores	Español::4 Conectores
+{{c1::A continuación::ordenar}}, describiremos la estructura.	Después, seguidamente.	espanol conectores	Español::4 Conectores
+{{c1::Por último::ordenar, final}}, la relevancia clínica.	Cerrar una enumeración.	espanol conectores	Español::4 Conectores
+{{c1::En conclusión::concluir}}, el flúor es fundamental.	Concluir.	espanol conectores	Español::4 Conectores
+{{c1::En definitiva::concluir}}, la prevención es la clave.	Concluir.	espanol conectores	Español::4 Conectores
+{{c1::En resumen::concluir}}, hay tres fases.	Resumir.	espanol conectores	Español::4 Conectores
+{{c1::Cabe señalar que::énfasis formal}} el 90 % de los adultos ha tenido caries.	Destacar, registro académico. También: cabe destacar que.	espanol conectores	Español::4 Conectores
+{{c1::Conviene recordar que::énfasis}} la saliva protege el esmalte.	Recordar algo importante.	espanol conectores	Español::4 Conectores
+{{c1::Es evidente que::evidencia}} la higiene influye.	Evidencia (+ indicativo).	espanol conectores	Español::4 Conectores
+{{c1::Siempre que::condición + subjuntivo}} te cepilles, no habrá problema.	Condición: siempre que, con tal de que, a condición de que + subjuntivo.	espanol conectores	Español::4 Conectores
+Iré {{c1::con tal de que::condición + subjuntivo}} me avisen antes.	Condición.	espanol conectores	Español::4 Conectores
+No aprobarás {{c1::a menos que::condición negativa + subjuntivo}} estudies.	Condición negativa: a menos que, a no ser que.	espanol conectores	Español::4 Conectores
+Se aplica flúor {{c1::para que::finalidad + subjuntivo}} el esmalte se refuerce.	Finalidad con sujeto distinto → subjuntivo.	espanol conectores	Español::4 Conectores
+{{c1::Con el fin de::finalidad + infinitivo}} prevenir la caries, se sellan las fisuras.	Finalidad con infinitivo.	espanol conectores	Español::4 Conectores
+{{c1::Aunque::concesión}} sea difícil, lo conseguiré.	Aunque + subjuntivo = aunque no sea seguro; + indicativo = hecho real.	espanol conectores	Español::4 Conectores
+{{c1::Por un lado::dos aspectos}}, es caro; {{c2::por otro::dos aspectos}}, es eficaz.	Presentar dos aspectos.	espanol conectores	Español::4 Conectores
+{{c1::Todavía::aún}} no he terminado el resumen.	todavía = aún. 'Todavía no' = ya no ha ocurrido.	espanol general	Español::5 Vocabulario general
+{{c1::Ya::en este momento, por fin}} he terminado el resumen.	ya = ahora, por fin. 'Ya no' = antes sí, ahora no.	espanol general	Español::5 Vocabulario general
+{{c1::Aunque::a pesar de que}} llueva, iré a clase.	aunque = a pesar de que.	espanol general	Español::5 Vocabulario general
+{{c1::Quizás::tal vez}} el examen sea tipo test.	quizás / quizá / tal vez = posiblemente.	espanol general	Español::5 Vocabulario general
+Estudié {{c1::hasta::límite}} las diez.	hasta = límite de tiempo o lugar. 'Hasta luego'.	espanol general	Español::5 Vocabulario general
+{{c1::Sigo::continuar}} estudiando cada mañana.	seguir + gerundio = continuar.	espanol general	Español::5 Vocabulario general
+{{c1::Quedan::faltar, restar}} dos semanas para el examen.	quedar = restar; quedarse = permanecer; quedar con = citarse.	espanol general	Español::5 Vocabulario general
+{{c1::Saqué::obtener}} un ocho en el examen.	sacar = obtener (una nota), extraer, quitar.	espanol general	Español::5 Vocabulario general
+{{c1::Dejé::olvidar, poner}} el libro en la biblioteca.	dejar = poner y no llevar; permitir; dejar de = parar.	espanol general	Español::5 Vocabulario general
+{{c1::Cogí::tomar}} el tranvía a las tres.	coger = tomar, agarrar (España). Coger el autobús, coger un resfriado.	espanol general	Español::5 Vocabulario general
+{{c1::Echa::poner, verter}} un poco de aceite en la sartén.	echar = verter, lanzar. Echar de menos = extrañar.	espanol general	Español::5 Vocabulario general
+{{c1::Mete::introducir}} los apuntes en la carpeta.	meter = introducir.	espanol general	Español::5 Vocabulario general
+{{c1::Llevo::transportar}} el libro a clase.	llevar = transportar de aquí a allá; traer = de allá a aquí.	espanol general	Español::5 Vocabulario general
+{{c1::Apenas::casi no}} entendí la clase.	apenas = casi no; también 'nada más' (apenas llegué).	espanol general	Español::5 Vocabulario general
+{{c1::Incluso::hasta, también}} el profesor se rio.	incluso = hasta, aun.	espanol general	Español::5 Vocabulario general
+Hablo {{c1::bastante::suficientemente}} bien.	bastante = suficiente(mente), considerablemente.	espanol general	Español::5 Vocabulario general
+Hay {{c1::demasiado::más de lo necesario}} ruido.	demasiado = en exceso.	espanol general	Español::5 Vocabulario general
+{{c1::Cualquier::no importa cuál}} compañero puede ayudarte.	cualquier + nombre; cualquiera solo.	espanol general	Español::5 Vocabulario general
+{{c1::Ni siquiera::ni tan solo}} abrió el libro.	ni siquiera = ni tan solo.	espanol general	Español::5 Vocabulario general
+{{c1::En cuanto::tan pronto como}} llegue, te llamo.	en cuanto = tan pronto como (+ subjuntivo si es futuro).	espanol general	Español::5 Vocabulario general
+{{c1::Mientras::durante el tiempo en que}} estudio, no miro el móvil.	mientras = al mismo tiempo que.	espanol general	Español::5 Vocabulario general
+No es un hueso, {{c1::sino::corrección después de negación}} un cartílago.	sino corrige una negación. 'Si no' = condición negativa.	espanol general	Español::5 Vocabulario general
+{{c1::Luego::después}} vamos a la biblioteca.	luego = después; también 'por lo tanto'.	espanol general	Español::5 Vocabulario general
+Me levanto muy {{c1::temprano::pronto por la mañana}}.	temprano = pronto. Contrario: tarde.	espanol general	Español::5 Vocabulario general
+La facultad está {{c1::cerca::a poca distancia}} del centro.	cerca de ≠ lejos de.	espanol general	Español::5 Vocabulario general
+El aula está {{c1::arriba::en el piso superior}}, en el segundo piso.	arriba ≠ abajo.	espanol general	Español::5 Vocabulario general
+Siéntate {{c1::delante::en la parte anterior}}, se oye mejor.	delante de ≠ detrás de.	espanol general	Español::5 Vocabulario general
+Deja la mochila {{c1::fuera::en el exterior}}.	fuera ≠ dentro.	espanol general	Español::5 Vocabulario general
+{{c1::A veces::en ocasiones}} estudio en la playa.	a veces = en ocasiones; a menudo = con frecuencia; casi nunca.	espanol general	Español::5 Vocabulario general
+{{c1::Casi::aproximadamente, por poco}} apruebo.	casi = por poco.	espanol general	Español::5 Vocabulario general
+{{c1::Sobre todo::principalmente}}, hay que dormir bien.	sobre todo = principalmente.	espanol general	Español::5 Vocabulario general
+{{c1::Al menos::como mínimo}} lee el resumen.	al menos = como mínimo.	espanol general	Español::5 Vocabulario general
+{{c1::De repente::súbitamente}}, empezó a llover.	de repente = de pronto.	espanol general	Español::5 Vocabulario general
+Habla más {{c1::despacio::lentamente}}, por favor.	despacio = lentamente. Deprisa = rápidamente.	espanol general	Español::5 Vocabulario general
+Este libro es {{c1::barato::cuesta poco}}, solo diez euros.	barato ≠ caro.	espanol general	Español::5 Vocabulario general
+¿Estás {{c1::listo::preparado}} para el examen?	estar listo = preparado; ser listo = inteligente.	espanol general	Español::5 Vocabulario general
+Estoy {{c1::ocupado::sin tiempo libre}} hasta las cinco.	ocupado ≠ libre.	espanol general	Español::5 Vocabulario general
+El pasillo es {{c1::estrecho::poco ancho}}.	estrecho ≠ ancho.	espanol general	Español::5 Vocabulario general
+La sala está {{c1::llena::sin espacio libre}}.	lleno ≠ vacío.	espanol general	Español::5 Vocabulario general
+Tengo la {{c1::misma::igual}} duda que tú.	mismo = igual; también refuerza: yo mismo.	espanol general	Español::5 Vocabulario general
+{{c1::Nadie::ninguna persona}} contestó la pregunta.	nadie ≠ alguien; nada ≠ algo; ninguno ≠ alguno.	espanol general	Español::5 Vocabulario general
+{{c1::Cada::todos, uno a uno}} lunes hay laboratorio.	cada = todos, uno por uno.	espanol general	Español::5 Vocabulario general
+{{c1::Ambos::los dos}} dientes están sanos.	ambos = los dos.	espanol general	Español::5 Vocabulario general
+Los {{c1::demás::los otros}} estudiantes ya se han ido.	los demás = los otros.	espanol general	Español::5 Vocabulario general
+Me queda la {{c1::mitad::50 %}} del tema por leer.	mitad = una de dos partes iguales.	espanol general	Español::5 Vocabulario general
+Llegué {{c1::hace::tiempo transcurrido}} dos semanas.	hace + tiempo = tiempo transcurrido.	espanol general	Español::5 Vocabulario general
+{{c1::Durante::a lo largo de}} la clase no se puede comer.	durante = a lo largo de.	espanol general	Español::5 Vocabulario general
+{{c1::Según::de acuerdo con}} el profesor, el examen es fácil.	según = de acuerdo con.	espanol general	Español::5 Vocabulario general
+Voy {{c1::hacia::en dirección a}} la facultad.	hacia = en dirección a.	espanol general	Español::5 Vocabulario general
+Está {{c1::entre::en medio de}} la biblioteca y el laboratorio.	entre = en medio de dos cosas.	espanol general	Español::5 Vocabulario general
+{{c1::Tras::después de}} el examen, descansaré.	tras = después de (formal).	espanol general	Español::5 Vocabulario general
+El libro está {{c1::encima de::sobre}} la mesa.	encima de ≠ debajo de.	espanol general	Español::5 Vocabulario general
+Siéntate {{c1::junto a::al lado de}} la ventana.	junto a = al lado de.	espanol general	Español::5 Vocabulario general
+La farmacia está {{c1::enfrente de::al otro lado, delante}} la facultad.	enfrente de = frente a.	espanol general	Español::5 Vocabulario general
+{{c1::Busco::intentar encontrar}} un piso cerca del centro.	buscar ≠ encontrar (resultado).	espanol general	Español::5 Vocabulario general
+He {{c1::perdido::extraviar}} las llaves.	perder = extraviar; perder el tranvía; perder un examen no se dice: suspender.	espanol general	Español::5 Vocabulario general
+{{c1::Aprobé::superar un examen}} anatomía y {{c2::suspendí::no superar}} bioquímica.	aprobar ≠ suspender. Sacar buena / mala nota.	espanol general	Español::5 Vocabulario general
+Tengo que {{c1::pagar::dar dinero por algo}} la matrícula.	pagar. Cobrar = recibir dinero.	espanol general	Español::5 Vocabulario general
+{{c1::Bajo::ir hacia abajo}} las escaleras corriendo.	bajar ≠ subir.	espanol general	Español::5 Vocabulario general
+{{c1::Entré::pasar al interior}} en clase a las tres y media.	entrar en ≠ salir de.	espanol general	Español::5 Vocabulario general
+{{c1::Vuelvo::regresar}} a casa a las ocho.	volver = regresar.	espanol general	Español::5 Vocabulario general
+Me {{c1::parece::opinar, dar la impresión}} que es fácil.	parecer = dar la impresión; parecerse a = ser similar.	espanol general	Español::5 Vocabulario general
+Se me ha {{c1::olvidado::no recordar}} la contraseña.	olvidar ≠ recordar / acordarse de.	espanol general	Español::5 Vocabulario general
+No me {{c1::acuerdo::recordar}} del nombre del nervio.	acordarse de = recordar.	espanol general	Español::5 Vocabulario general
+El profesor {{c1::enseña::dar clase}} bioquímica.	enseñar = dar clase, mostrar. Aprender = adquirir.	espanol general	Español::5 Vocabulario general
+¿Puedes {{c1::explicar::hacer comprender}} este punto?	explicar.	espanol general	Español::5 Vocabulario general
+{{c1::Contesta::responder}} en español, por favor.	contestar = responder.	espanol general	Español::5 Vocabulario general
+{{c1::Toma::coger, agarrar}} el bolígrafo.	tomar = coger; tomar un café.	espanol general	Español::5 Vocabulario general
+¿A qué hora {{c1::termina::acabar}} la clase?	terminar = acabar ≠ empezar.	espanol general	Español::5 Vocabulario general
+{{c1::Intento::tratar de}} hablar solo en español.	intentar = tratar de.	espanol general	Español::5 Vocabulario general
+{{c1::Conseguí::lograr}} una plaza en el laboratorio.	conseguir = lograr, obtener.	espanol general	Español::5 Vocabulario general
+El tranvía {{c1::tarda::necesitar tiempo}} diez minutos.	tardar = emplear tiempo.	espanol general	Español::5 Vocabulario general
+Me {{c1::faltan::no tener suficiente}} dos cartas por revisar.	faltar = no haber suficiente; sobrar = haber de más.	espanol general	Español::5 Vocabulario general
+Me {{c1::duele::sentir dolor}} la muela.	doler: me duele, me duelen (como gustar).	espanol general	Español::5 Vocabulario general
+Hay que {{c1::cuidar::atender, proteger}} los dientes cada día.	cuidar = proteger, atender.	espanol general	Español::5 Vocabulario general
+{{c1::Elige::escoger}} una asignatura optativa.	elegir = escoger.	espanol general	Español::5 Vocabulario general
+Me {{c1::acuesto::ir a la cama}} a las diez menos cinco.	acostarse ≠ levantarse; despertarse = abrir los ojos.	espanol general	Español::5 Vocabulario general
+{{c1::Desayuno::comer por la mañana}} avena y huevos.	desayunar, comer / almorzar, merendar, cenar.	espanol general	Español::5 Vocabulario general
+{{c1::Ceno::comer por la noche}} a las ocho.	cenar = comida de la noche.	espanol general	Español::5 Vocabulario general
+{{c1::Descanso::reposar}} veinte minutos después de comer.	descansar = reposar.	espanol general	Español::5 Vocabulario general
+Te {{c1::espero::aguardar}} en la puerta.	esperar = aguardar y también tener esperanza.	espanol general	Español::5 Vocabulario general
+{{c1::Suelo::tener la costumbre de}} estudiar por la mañana.	soler + infinitivo = acostumbrar.	espanol general	Español::5 Vocabulario general
+En el aula no {{c1::caben::haber espacio para}} más de cien personas.	caber = tener espacio (quepo, cabes…).	espanol general	Español::5 Vocabulario general
+¿Cuánto {{c1::cuesta::valer}} el libro?	costar = valer.	espanol general	Español::5 Vocabulario general
+Se ha {{c1::roto::estropearse}} el espejo.	romperse = estropearse; arreglar = reparar.	espanol general	Español::5 Vocabulario general
+{{c1::Apaga::desconectar}} la luz al salir.	apagar ≠ encender.	espanol general	Español::5 Vocabulario general
+Las clases {{c1::empiezan::comenzar}} el catorce de septiembre.	empezar = comenzar.	espanol general	Español::5 Vocabulario general
+Tengo {{c1::sueño::ganas de dormir}}.	tener sueño ≠ tener un sueño (soñar).	espanol general	Español::5 Vocabulario general
+Hace {{c1::calor::temperatura alta}} en Alicante en septiembre.	hace calor / frío / sol / viento; tengo calor / frío.	espanol general	Español::5 Vocabulario general
+¿Me {{c1::prestas::dejar temporalmente}} tus apuntes?	prestar = dejar temporalmente; pedir prestado = tomar prestado.	espanol general	Español::5 Vocabulario general
+El estudio {{c1::plantea::proponer, formular}} una nueva hipótesis.	plantear = proponer, exponer (una cuestión, un problema).	espanol academico	Español::6 Académico
+Los resultados {{c1::ponen de manifiesto::mostrar claramente}} la relación entre azúcar y caries.	poner de manifiesto = evidenciar.	espanol academico	Español::6 Académico
+El autor {{c1::aborda::tratar un tema}} el problema desde la clínica.	abordar = tratar.	espanol academico	Español::6 Académico
+{{c1::Cabe destacar::hay que subrayar}} que la muestra era pequeña.	cabe destacar / cabe señalar.	espanol academico	Español::6 Académico
+La falta de higiene {{c1::conlleva::implicar como consecuencia}} inflamación.	conllevar = implicar.	espanol academico	Español::6 Académico
+El estrés puede {{c1::desencadenar::provocar el inicio de}} bruxismo.	desencadenar = provocar.	espanol academico	Español::6 Académico
+Esto {{c1::supone::implicar}} un cambio en el tratamiento.	suponer = implicar; también 'creer'.	espanol academico	Español::6 Académico
+El problema {{c1::radica en::estar en, consistir en}} la falta de flúor.	radicar en = consistir en.	espanol academico	Español::6 Académico
+La acidez {{c1::da lugar a::producir}} una desmineralización.	dar lugar a = provocar.	espanol academico	Español::6 Académico
+Los datos {{c1::evidencian::demostrar}} una mejora.	evidenciar = demostrar.	espanol academico	Español::6 Académico
+Se {{c1::constata::comprobar}} una reducción del dolor.	constatar = comprobar.	espanol academico	Español::6 Académico
+La caries {{c1::se define como::definición}} una enfermedad infecciosa del diente.	Fórmula de definición. También: se entiende por, se denomina.	espanol academico	Español::6 Académico
+El diente {{c1::está constituido por::composición}} esmalte, dentina, pulpa y cemento.	Composición. También: está formado por, consta de.	espanol academico	Español::6 Académico
+La pulpa {{c1::se localiza en::situación}} la cámara pulpar.	Localización. También: se sitúa en, se encuentra en.	espanol academico	Español::6 Académico
+El masetero {{c1::está inervado por::nervio}} el nervio trigémino.	Inervación.	espanol academico	Español::6 Académico
+La encía {{c1::está irrigada por::vasos}} ramas de la arteria maxilar.	Irrigación.	espanol academico	Español::6 Académico
+El músculo temporal {{c1::se inserta en::inserción}} la apófisis coronoides.	Inserción muscular.	espanol academico	Español::6 Académico
+La saliva {{c1::desempeña un papel::tener una función}} fundamental en la protección del esmalte.	desempeñar un papel = tener una función.	espanol academico	Español::6 Académico
+Su función {{c1::consiste en::función}} neutralizar los ácidos.	Función.	espanol academico	Español::6 Académico
+Se {{c1::distinguen::diferenciar}} tres tipos de dentición.	Clasificación: se distinguen, se clasifican en.	espanol academico	Español::6 Académico
+{{c1::A diferencia de::contraste}} la dentina, el esmalte no se regenera.	Contraste.	espanol academico	Español::6 Académico
+{{c1::Se ha demostrado que::evidencia científica}} el flúor reduce la caries.	Evidencia científica.	espanol academico	Español::6 Académico
+{{c1::En comparación con::comparación}} los incisivos, los molares tienen más raíces.	Comparación.	espanol academico	Español::6 Académico
+La {{c1::muestra::conjunto estudiado}} incluía cien pacientes.	muestra = grupo estudiado.	espanol academico	Español::6 Académico
+Un {{c1::sesgo::error sistemático}} de selección invalida el estudio.	sesgo = error sistemático.	espanol academico	Español::6 Académico
+Un {{c1::ensayo clínico::estudio con pacientes}} aleatorizado es la mejor evidencia.	ensayo clínico.	espanol academico	Español::6 Académico
+El {{c1::hallazgo::descubrimiento}} principal fue inesperado.	hallazgo = descubrimiento.	espanol academico	Español::6 Académico
+El {{c1::enfoque::manera de tratar el tema}} preventivo es más eficaz.	enfoque = perspectiva, planteamiento.	espanol academico	Español::6 Académico
+Es necesario {{c1::llevar a cabo::realizar}} una radiografía.	llevar a cabo = realizar.	espanol academico	Español::6 Académico
+Hay que {{c1::tomar una decisión::decidir}} antes del viernes.	Colocación: tomar (no 'coger') una decisión.	espanol academico	Español::6 Académico
+El paciente {{c1::cometió un error::equivocarse}} al cepillarse.	Colocación: cometer un error.	espanol academico	Español::6 Académico
+Esto {{c1::se debe a que::causa}} el pH desciende.	Explicar la causa.	espanol academico	Español::6 Académico
+Por {{c1::consiguiente::consecuencia}}, se recomienda el sellado.	Consecuencia formal.	espanol academico	Español::6 Académico
+Los {{c1::apuntes::notas de clase}} del año pasado están en Wuolah.	apuntes = notas tomadas en clase.	espanol academico	Español::6 Académico
+La {{c1::guía docente::programa oficial}} indica el tipo de examen.	guía docente = programa de la asignatura.	espanol academico	Español::6 Académico
+La {{c1::convocatoria::fecha oficial de examen}} de junio es la segunda oportunidad.	convocatoria = llamada oficial a examen.	espanol academico	Español::6 Académico
+Pedí una {{c1::tutoría::cita con el profesor}} para resolver dudas.	tutoría = hora de atención del profesor.	espanol academico	Español::6 Académico
+Las {{c1::prácticas::clases de laboratorio}} son obligatorias.	prácticas = parte aplicada de la asignatura.	espanol academico	Español::6 Académico
+Los errores {{c1::restan::quitar puntos}} en el examen tipo test.	restar = quitar. 'Las preguntas mal contestadas restan'.	espanol academico	Español::6 Académico
+El {{c1::esmalte::tejido más duro del cuerpo}} recubre la corona del diente.	esmalte: tejido acelular, 96 % mineral, no se regenera.	espanol odontologia	Español::7 Odontología
+La {{c1::dentina::tejido bajo el esmalte}} es sensible y forma la mayor parte del diente.	dentina: tejido calcificado con túbulos, producido por los odontoblastos.	espanol odontologia	Español::7 Odontología
+La {{c1::pulpa::tejido blando interior}} contiene los vasos y los nervios del diente.	pulpa dental: en la cámara pulpar y los conductos radiculares.	espanol odontologia	Español::7 Odontología
+El {{c1::cemento::tejido que cubre la raíz}} recubre la raíz y ancla el ligamento.	cemento: tejido calcificado sobre la raíz.	espanol odontologia	Español::7 Odontología
+El {{c1::ligamento periodontal::une raíz y hueso}} une el diente al hueso alveolar.	ligamento periodontal: fibras entre cemento y hueso.	espanol odontologia	Español::7 Odontología
+La {{c1::corona::parte visible}} es la parte del diente que sobresale de la encía.	corona ≠ raíz. El cuello está entre las dos.	espanol odontologia	Español::7 Odontología
+La {{c1::raíz::parte dentro del hueso}} está dentro del alvéolo.	raíz; el extremo es el ápice.	espanol odontologia	Español::7 Odontología
+El {{c1::cuello::unión corona-raíz}} del diente está a nivel de la encía.	cuello dental = unión amelocementaria.	espanol odontologia	Español::7 Odontología
+El {{c1::ápice::extremo de la raíz}} es la punta de la raíz, por donde entran vasos y nervios.	ápice; foramen apical.	espanol odontologia	Español::7 Odontología
+El {{c1::alvéolo::cavidad ósea}} es la cavidad del hueso donde se aloja la raíz.	alvéolo dental, en el hueso alveolar.	espanol odontologia	Español::7 Odontología
+La {{c1::encía::tejido blando alrededor del diente}} es la mucosa que rodea el cuello del diente.	encía: gingiva. Gingivitis = inflamación de la encía.	espanol odontologia	Español::7 Odontología
+Los {{c1::incisivos::dientes anteriores, cortan}} cortan los alimentos.	incisivos: 8 en total (central y lateral).	espanol odontologia	Español::7 Odontología
+Los {{c1::caninos::desgarran}} desgarran los alimentos.	caninos ('colmillos'): 4.	espanol odontologia	Español::7 Odontología
+Los {{c1::premolares::entre caninos y molares}} tienen una o dos cúspides principales.	premolares: 8, solo en la dentición permanente.	espanol odontologia	Español::7 Odontología
+Los {{c1::molares::trituran, al fondo}} trituran los alimentos.	molares: 12, incluidos los cordales.	espanol odontologia	Español::7 Odontología
+La {{c1::muela del juicio::tercer molar}} suele salir entre los 17 y los 25 años.	cordal = muela del juicio = tercer molar.	espanol odontologia	Español::7 Odontología
+Coloquialmente, un molar se llama {{c1::muela::palabra coloquial para molar}}.	muela = molar o premolar (uso común). Dolor de muelas.	espanol odontologia	Español::7 Odontología
+La {{c1::cúspide::punta de la corona}} es la elevación de la superficie masticatoria.	cúspide; fosas y surcos entre ellas.	espanol odontologia	Español::7 Odontología
+El {{c1::surco::depresión lineal}} es una depresión lineal entre las cúspides.	surco; los surcos profundos se sellan (sellado de fisuras).	espanol odontologia	Español::7 Odontología
+La cara {{c1::vestibular::hacia el labio o la mejilla}} mira hacia los labios o las mejillas.	vestibular (labial / bucal).	espanol odontologia	Español::7 Odontología
+La cara {{c1::lingual::hacia la lengua}} de los dientes inferiores mira hacia la lengua.	lingual (abajo); palatina (arriba).	espanol odontologia	Español::7 Odontología
+La cara {{c1::palatina::hacia el paladar}} de los dientes superiores mira hacia el paladar.	palatina.	espanol odontologia	Español::7 Odontología
+La cara {{c1::oclusal::superficie de masticación}} es la superficie masticatoria de molares y premolares.	oclusal; en incisivos: borde incisal.	espanol odontologia	Español::7 Odontología
+La cara {{c1::mesial::hacia la línea media}} mira hacia la línea media de la arcada.	mesial ≠ distal.	espanol odontologia	Español::7 Odontología
+La cara {{c1::distal::lejos de la línea media}} se aleja de la línea media.	distal.	espanol odontologia	Español::7 Odontología
+La {{c1::arcada::conjunto de dientes de un maxilar}} superior tiene dieciséis dientes permanentes.	arcada dentaria superior e inferior.	espanol odontologia	Español::7 Odontología
+El {{c1::maxilar::hueso superior}} superior es fijo; la {{c2::mandíbula::hueso inferior}} es móvil.	maxilar (superior) y mandíbula (inferior).	espanol odontologia	Español::7 Odontología
+La {{c1::oclusión::contacto entre arcadas}} es el contacto entre los dientes superiores e inferiores.	oclusión; maloclusión = contacto anómalo.	espanol odontologia	Español::7 Odontología
+La {{c1::dentición temporal::dientes de leche}} tiene veinte dientes.	temporal / decidua / de leche: 20. Permanente: 32.	espanol odontologia	Español::7 Odontología
+La {{c1::erupción::salida del diente}} es la salida del diente a través de la encía.	erupción dental.	espanol odontologia	Español::7 Odontología
+La {{c1::caries::enfermedad que destruye el diente}} es la destrucción del diente por ácidos bacterianos.	caries: infecciosa, multifactorial, reversible al inicio.	espanol odontologia	Español::7 Odontología
+La {{c1::placa bacteriana::película de bacterias}} es la película de bacterias adherida al diente.	placa bacteriana / biofilm.	espanol odontologia	Español::7 Odontología
+El {{c1::sarro::placa calcificada}} es la placa endurecida por los minerales de la saliva.	sarro = cálculo dental. Se elimina con la tartrectomía.	espanol odontologia	Español::7 Odontología
+La {{c1::gingivitis::inflamación de la encía}} es la inflamación de la encía, reversible.	gingivitis → si avanza, periodontitis.	espanol odontologia	Español::7 Odontología
+La {{c1::periodontitis::pérdida de hueso alrededor del diente}} destruye el hueso y el ligamento.	periodontitis: irreversible, causa de pérdida de dientes.	espanol odontologia	Español::7 Odontología
+Un {{c1::absceso::acumulación de pus}} es una acumulación localizada de pus.	absceso; flemón = inflamación difusa.	espanol odontologia	Español::7 Odontología
+La {{c1::pulpitis::inflamación de la pulpa}} produce un dolor intenso y espontáneo.	pulpitis reversible / irreversible.	espanol odontologia	Español::7 Odontología
+El {{c1::bruxismo::apretar o rechinar los dientes}} es el hábito de apretar o rechinar los dientes.	bruxismo, a menudo nocturno; férula de descarga.	espanol odontologia	Español::7 Odontología
+La {{c1::halitosis::mal aliento}} es el mal aliento.	halitosis.	espanol odontologia	Español::7 Odontología
+La {{c1::sensibilidad dental::dolor breve al frío}} es un dolor breve ante el frío o el dulce.	por exposición de la dentina.	espanol odontologia	Español::7 Odontología
+Un {{c1::empaste::relleno de una caries}} es la restauración de una cavidad de caries.	empaste = obturación. Materiales: composite, amalgama.	espanol odontologia	Español::7 Odontología
+La {{c1::endodoncia::tratamiento de la pulpa}} elimina la pulpa y sella los conductos.	endodoncia = tratamiento de conductos.	espanol odontologia	Español::7 Odontología
+La {{c1::extracción::sacar el diente}} es la retirada del diente.	extracción = exodoncia.	espanol odontologia	Español::7 Odontología
+Un {{c1::implante::tornillo en el hueso}} es un tornillo de titanio que sustituye la raíz.	implante dental; sobre él, una corona.	espanol odontologia	Español::7 Odontología
+Una {{c1::prótesis::sustituye dientes ausentes}} sustituye dientes ausentes.	prótesis fija (corona, puente) o removible.	espanol odontologia	Español::7 Odontología
+Un {{c1::puente::une dos dientes para sustituir uno}} sustituye un diente apoyándose en los vecinos.	puente dental.	espanol odontologia	Español::7 Odontología
+La {{c1::ortodoncia::corrige la posición}} corrige la posición de los dientes.	ortodoncia; brackets, alineadores.	espanol odontologia	Español::7 Odontología
+Una {{c1::limpieza::eliminación de placa y sarro}} dental elimina placa y sarro.	limpieza = profilaxis; tartrectomía.	espanol odontologia	Español::7 Odontología
+El {{c1::blanqueamiento::aclarar el color}} aclara el color del diente.	blanqueamiento dental.	espanol odontologia	Español::7 Odontología
+El {{c1::sellado de fisuras::proteger los surcos}} protege los surcos de los molares.	prevención en niños.	espanol odontologia	Español::7 Odontología
+La {{c1::anestesia local::insensibilizar una zona}} insensibiliza la zona a tratar.	anestesia local, infiltrativa o troncular.	espanol odontologia	Español::7 Odontología
+La {{c1::radiografía::imagen con rayos X}} permite ver caries y hueso.	radiografía periapical, panorámica (ortopantomografía).	espanol odontologia	Español::7 Odontología
+La {{c1::sonda::instrumento para explorar}} periodontal mide la profundidad del surco.	sonda: exploradora, periodontal.	espanol odontologia	Español::7 Odontología
+El {{c1::espejo::para ver zonas ocultas}} bucal permite ver las caras ocultas.	espejo bucal.	espanol odontologia	Español::7 Odontología
+La {{c1::fresa::instrumento rotatorio que corta}} corta el esmalte y la dentina.	fresa montada en la turbina.	espanol odontologia	Español::7 Odontología
+La {{c1::turbina::pieza de mano rápida}} gira a alta velocidad.	turbina; contraángulo a baja velocidad.	espanol odontologia	Español::7 Odontología
+La {{c1::jeringa::para inyectar}} sirve para inyectar la anestesia.	jeringa; aguja.	espanol odontologia	Español::7 Odontología
+El {{c1::sillón::asiento del paciente}} dental permite reclinar al paciente.	sillón dental.	espanol odontologia	Español::7 Odontología
+El {{c1::composite::material del color del diente}} es un material estético de restauración.	composite; resina.	espanol odontologia	Español::7 Odontología
+La {{c1::amalgama::material metálico gris}} es un material metálico de obturación.	amalgama, cada vez menos usada.	espanol odontologia	Español::7 Odontología
+El {{c1::flúor::refuerza el esmalte}} refuerza el esmalte y previene la caries.	flúor: pasta dentífrica, barniz.	espanol odontologia	Español::7 Odontología
+El {{c1::cráneo::hueso de la cabeza}} protege el encéfalo.	cráneo; huesos: frontal, parietal, temporal, occipital, esfenoides, etmoides.	espanol odontologia	Español::7 Odontología
+El {{c1::hueso::tejido duro del esqueleto}} alveolar sostiene los dientes.	hueso; osteoblastos, osteoclastos.	espanol odontologia	Español::7 Odontología
+El {{c1::cartílago::tejido flexible}} recubre las superficies articulares.	cartílago.	espanol odontologia	Español::7 Odontología
+La {{c1::articulación temporomandibular::une mandíbula y cráneo}} permite abrir y cerrar la boca.	ATM.	espanol odontologia	Español::7 Odontología
+El nervio {{c1::trigémino::V par craneal}} da sensibilidad a la cara y los dientes.	trigémino: ramas oftálmica, maxilar y mandibular.	espanol odontologia	Español::7 Odontología
+Las {{c1::arterias::llevan sangre desde el corazón}} llevan sangre desde el corazón.	arteria ≠ vena.	espanol odontologia	Español::7 Odontología
+Las {{c1::venas::devuelven sangre al corazón}} devuelven la sangre al corazón.	vena.	espanol odontologia	Español::7 Odontología
+El {{c1::masetero::músculo de la masticación}} eleva la mandíbula al masticar.	músculos masticadores: masetero, temporal, pterigoideos.	espanol odontologia	Español::7 Odontología
+Las {{c1::glándulas salivales::producen saliva}} producen la saliva.	parótida, submandibular, sublingual.	espanol odontologia	Español::7 Odontología
+La {{c1::saliva::líquido de la boca}} lubrica, protege y neutraliza los ácidos.	saliva: pH, amortiguación, enzimas.	espanol odontologia	Español::7 Odontología
+La {{c1::célula::unidad básica de la vida}} es la unidad básica de los seres vivos.	célula.	espanol odontologia	Español::7 Odontología
+Un {{c1::tejido::conjunto de células}} es un conjunto de células con la misma función.	tejidos: epitelial, conjuntivo, muscular, nervioso.	espanol odontologia	Español::7 Odontología
+La {{c1::membrana::límite de la célula}} plasmática separa la célula del exterior.	membrana plasmática: bicapa lipídica.	espanol odontologia	Español::7 Odontología
+El {{c1::núcleo::contiene el ADN}} contiene el material genético.	núcleo celular.	espanol odontologia	Español::7 Odontología
+Las {{c1::mitocondrias::producen energía}} producen la energía de la célula.	mitocondria: ATP.	espanol odontologia	Español::7 Odontología
+Las {{c1::proteínas::cadenas de aminoácidos}} son cadenas de aminoácidos.	proteína; aminoácido.	espanol odontologia	Español::7 Odontología
+Una {{c1::enzima::proteína que acelera reacciones}} acelera una reacción química.	enzima; sustrato.	espanol odontologia	Español::7 Odontología
+Los {{c1::hidratos de carbono::azúcares}} son la principal fuente de energía.	hidratos de carbono = glúcidos = carbohidratos.	espanol odontologia	Español::7 Odontología
+Los {{c1::lípidos::grasas}} forman las membranas.	lípidos.	espanol odontologia	Español::7 Odontología
+La {{c1::mitosis::división celular}} produce dos células idénticas.	mitosis; meiosis para gametos.	espanol odontologia	Español::7 Odontología
+La {{c1::homeostasis::equilibrio interno}} mantiene estable el medio interno.	homeostasis.	espanol odontologia	Español::7 Odontología
+El {{c1::pH::medida de acidez}} de la boca baja después de comer azúcar.	pH crítico del esmalte: 5,5.	espanol odontologia	Español::7 Odontología
+El {{c1::metabolismo::conjunto de reacciones}} es el conjunto de reacciones químicas del organismo.	metabolismo: anabolismo y catabolismo.	espanol odontologia	Español::7 Odontología
