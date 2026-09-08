@@ -20,14 +20,14 @@ async function ouvrir(quand, local){
 }
 const aller = async (fr, page, p) => { await fr.evaluate(pg => document.querySelector('.nav-btn[data-page="'+pg+'"]').click(), p); await page.waitForTimeout(250); };
 const local = (fr,k) => fr.evaluate(x => JSON.parse(localStorage.getItem(x) || 'null'), k);
-const MERCREDI = '2026-09-09T10:00:00+02:00';
+const MERCREDI = '2026-09-02T10:00:00+02:00';
 
 console.log('\n== 118) La priorité des tâches compte enfin ==');
 {
   const { ctx, fr, page } = await ouvrir(MERCREDI, { 'batcave-taches': [
-    {id:'A', text:'Rendre TP', due:'2026-09-07', priority:'Moyenne', status:'À faire'},
-    {id:'B', text:'Inscription examen', due:'2026-09-06', priority:'Haute', status:'À faire'},
-    {id:'C', text:'Ranger le bureau', due:'2026-09-09', priority:'Basse', status:'À faire'},
+    {id:'A', text:'Rendre TP', due:'2026-08-31', priority:'Moyenne', status:'À faire'},
+    {id:'B', text:'Inscription examen', due:'2026-08-30', priority:'Haute', status:'À faire'},
+    {id:'C', text:'Ranger le bureau', due:'2026-09-02', priority:'Basse', status:'À faire'},
     {id:'D', text:'Préparer le DELE blanc', due:'', priority:'Haute', status:'À faire'},
     {id:'E', text:'Acheter des stylos', due:'', priority:'Moyenne', status:'À faire'}
   ]});
@@ -47,7 +47,7 @@ console.log('\n== 119) Prévu vs réalisé — Bilan ==');
 {
   /* lundi 7 : 5 h révision + 3 h projets (= 8 h prévues) ; mardi 8 : 4 h révision (8 prévues) ; mercredi 9 : rien encore (8 prévues) */
   const S = (id, date, type, min, h) => ({id, date, type, duree:min, label: type === 'cours' ? 'Anatomía I' : 'Shopify', debut: new Date(date + 'T' + h + ':00:00+02:00').getTime(), fin: new Date(date + 'T' + h + ':00:00+02:00').getTime() + min*60000});
-  const { ctx, fr, page } = await ouvrir(MERCREDI, { 'batcave-sessions': [S('a','2026-09-07','cours',300,'07'), S('b','2026-09-07','projet',180,'13'), S('c','2026-09-08','cours',240,'07')] });
+  const { ctx, fr, page } = await ouvrir(MERCREDI, { 'batcave-sessions': [S('a','2026-08-31','cours',300,'07'), S('b','2026-08-31','projet',180,'13'), S('c','2026-09-01','cours',240,'07')] });
   await aller(fr, page, 'bilan');
   const fid = await fr.evaluate(() => [...document.querySelectorAll('#bilan-grid .bilan-card')].map(c => c.innerText.replace(/\s+/g,' ')).find(t => /Fidélité/.test(t)));
   ok(fid && /54%/.test(fid), 'carte « Fidélité au plan » : 54 % (12 h faites / 22,1 h de travail réel prévues lun-mer) : ' + (fid || '').slice(0, 60));
@@ -62,7 +62,7 @@ console.log('\n== 119) Prévu vs réalisé — Bilan ==');
 console.log('\n== 120) Boucle poids → calories ==');
 {
   const stagne = {};
-  for(let i = 13; i >= 0; i--){ const d = new Date('2026-09-09T00:00:00+02:00'); d.setDate(d.getDate() - i); const iso = d.toISOString().slice(0,10); stagne['batcave-journal-' + iso] = {poids: 64.0, water: 0}; }
+  for(let i = 13; i >= 0; i--){ const d = new Date('2026-09-02T00:00:00+02:00'); d.setDate(d.getDate() - i); const iso = d.toISOString().slice(0,10); stagne['batcave-journal-' + iso] = {poids: 64.0, water: 0}; }
   const { ctx, fr, page } = await ouvrir(MERCREDI, stagne);
   await aller(fr, page, 'repas');
   let k = await fr.evaluate(() => ({ note: document.getElementById('kcal-note').innerText, txt: document.getElementById('kcal-analyse').innerText.replace(/\s+/g,' '), sub: document.getElementById('meal-kcal-sub').innerText, btn: document.getElementById('kcal-appliquer').hidden }));
@@ -73,7 +73,7 @@ console.log('\n== 120) Boucle poids → calories ==');
   await fr.evaluate(() => document.getElementById('kcal-appliquer').click());
   await page.waitForTimeout(300);
   const aj = await local(fr, 'batcave-kcal-ajustement');
-  ok(aj && aj.valeur === 150 && aj.depuis === '2026-09-09', 'ajustement enregistré : +150 depuis aujourd\'hui');
+  ok(aj && aj.valeur === 150 && aj.depuis === '2026-09-02', 'ajustement enregistré : +150 depuis aujourd\'hui');
   k = await fr.evaluate(() => ({ sub: document.getElementById('meal-kcal-sub').innerText, txt: document.getElementById('kcal-analyse').innerText.replace(/\s+/g,' ') }));
   ok(/\/ 3203 kcal \(plan 3053 \+ 150\)/.test(k.sub), 'la barre Repas vise 3203 kcal : ' + k.sub);
   ok(/Cible calorique actuelle : 3203 kcal/.test(k.txt), 'l\'analyse affiche la cible ajustée');
@@ -91,7 +91,7 @@ console.log('\n== 120) Boucle poids → calories ==');
 {
   /* prise trop rapide : 64,0 → 65,0 en une semaine (> 2 × 0,23) → −100 */
   const rapide = {};
-  for(let i = 13; i >= 0; i--){ const d = new Date('2026-09-09T00:00:00+02:00'); d.setDate(d.getDate() - i); const iso = d.toISOString().slice(0,10); rapide['batcave-journal-' + iso] = {poids: i >= 7 ? 64.0 : 65.0, water: 0}; }
+  for(let i = 13; i >= 0; i--){ const d = new Date('2026-09-02T00:00:00+02:00'); d.setDate(d.getDate() - i); const iso = d.toISOString().slice(0,10); rapide['batcave-journal-' + iso] = {poids: i >= 7 ? 64.0 : 65.0, water: 0}; }
   const { ctx, fr, page } = await ouvrir(MERCREDI, rapide);
   await aller(fr, page, 'repas');
   const note = await fr.evaluate(() => document.getElementById('kcal-note').innerText);
@@ -99,7 +99,7 @@ console.log('\n== 120) Boucle poids → calories ==');
   await ctx.close();
 }
 {
-  const { ctx, fr, page } = await ouvrir(MERCREDI, { 'batcave-journal-2026-09-08': {poids: 64} });
+  const { ctx, fr, page } = await ouvrir(MERCREDI, { 'batcave-journal-2026-09-01': {poids: 64} });
   await aller(fr, page, 'repas');
   const k = await fr.evaluate(() => ({ note: document.getElementById('kcal-note').innerText, txt: document.getElementById('kcal-analyse').innerText, btn: document.getElementById('kcal-appliquer').hidden }));
   ok(/en attente de pesées/.test(k.note) && /au moins 3 pesées/.test(k.txt) && k.btn, 'pas assez de pesées → pas de recommandation, bouton masqué');

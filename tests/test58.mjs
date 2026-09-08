@@ -6,7 +6,7 @@ const URL = 'http://127.0.0.1:8199/host.html';
 let errs = 0;
 const ok = (c,m) => { if(c) console.log('  ok  '+m); else { errs++; console.log('  FAIL '+m); } };
 const browser = await chromium.launch();
-const JOURS = [['lundi','2026-09-07','Sport','jour de cours (lun, mar, jeu)'],['mardi','2026-09-08','Sport','jour de cours (lun, mar, jeu)'],['mercredi','2026-09-09','Anki matinal','mercredi (Anki matinal)'],['jeudi','2026-09-10','Sport','jour de cours (lun, mar, jeu)'],['vendredi','2026-09-11','Projets perso matinal',"vendredi (Jumu'ah)"],['samedi','2026-09-12','Sport','samedi (courses)'],['dimanche','2026-09-13','Projets perso matinal','dimanche']];
+const JOURS = [['lundi','2026-08-31','Sport','jour de cours (lun, mar, jeu)'],['mardi','2026-09-01','Sport','jour de cours (lun, mar, jeu)'],['mercredi','2026-09-02','Anki matinal','mercredi (Anki matinal)'],['jeudi','2026-09-03','Sport','jour de cours (lun, mar, jeu)'],['vendredi','2026-09-04','Projets perso matinal',"vendredi (Jumu'ah)"],['samedi','2026-09-05','Sport','samedi (courses)'],['dimanche','2026-09-06','Projets perso matinal','dimanche']];
 for(const [nom, iso, premier, libelle] of JOURS){
   const ctx = await browser.newContext({ viewport:{width:1440,height:900}, timezoneId:'Europe/Madrid', locale:'fr-FR' });
   await ctx.addInitScript(() => { window.claude = undefined; });

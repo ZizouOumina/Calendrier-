@@ -27,11 +27,11 @@ console.log('\n== 61) Cloisonnement des pages : Études = révision, Business = 
 {
   const { ctx, page, fr } = await ouvrir(null);
   const boutons = await fr.evaluate(() => ({
-    etudes: [...document.querySelectorAll('.page[data-page="etudes"] button')].map(b => b.textContent.trim()).filter(t => /Pomodoro/.test(t)),
+    etudes: [...document.querySelectorAll('.page[data-page="etudes"] button:not([hidden])')].map(b => b.textContent.trim()).filter(t => /Pomodoro/.test(t)),
     business: [...document.querySelectorAll('.page[data-page="business"] button')].map(b => b.textContent.trim()).filter(t => /Pomodoro/.test(t)),
     /* le plan du jour fabrique un bouton Pomodoro par créneau : on ne compte que
        les deux lanceurs fixes du tableau de bord. */
-    dash: [...document.querySelectorAll('.page[data-page="dashboard"] button:not([data-plan-pomodoro])')].map(b => b.textContent.trim()).filter(t => /Pomodoro/.test(t)),
+    dash: [...document.querySelectorAll('.page[data-page="dashboard"] button:not([data-plan-pomodoro]):not([hidden])')].map(b => b.textContent.trim()).filter(t => /Pomodoro/.test(t)),
   }));
   ok(boutons.etudes.length === 1 && /Révision/.test(boutons.etudes[0]),
      'la page Études ne lance que de la révision : ' + JSON.stringify(boutons.etudes));

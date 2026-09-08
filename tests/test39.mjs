@@ -17,8 +17,8 @@ async function ouvrir(quand, seed){
   await page.waitForTimeout(500);
   return { ctx, page, fr };
 }
-const LUNDI = '2026-09-07T10:00:00+02:00', VENDREDI = '2026-09-04T10:00:00+02:00';
-const SAMEDI = '2026-09-05T10:00:00+02:00', DIMANCHE = '2026-09-06T10:00:00+02:00';
+const LUNDI = '2026-08-31T10:00:00+02:00', VENDREDI = '2026-08-28T10:00:00+02:00';
+const SAMEDI = '2026-08-29T10:00:00+02:00', DIMANCHE = '2026-08-30T10:00:00+02:00';
 const nb = t => (t.replace(/\s+/g,'').match(/Objectifsemaine([\d,]+)/)||[])[1];
 
 console.log('\n== 83) Les objectifs hebdomadaires se déduisent du planning ==');
@@ -51,9 +51,9 @@ for(const [nom, quand, attendu] of [['lundi (veille dim. 21:00, lever 05:30)',LU
 }
 {
   /* une nuit conforme au planning doit valoir 100%, pas 94% */
-  const { ctx, fr } = await ouvrir(LUNDI, {'batcave-journal-2026-09-06': {sommeil:'8', water:0}});
+  const { ctx, fr } = await ouvrir(LUNDI, {'batcave-journal-2026-08-30': {sommeil:'8', water:0}});
   const pct = await fr.evaluate(() => {
-    const j = JSON.parse(localStorage.getItem('batcave-journal-2026-09-06'));
+    const j = JSON.parse(localStorage.getItem('batcave-journal-2026-08-30'));
     return { veille: j.sommeil };
   });
   ok(pct.veille === '8', 'la nuit de dimanche est bien lue : ' + pct.veille + ' h');

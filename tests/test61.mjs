@@ -27,7 +27,7 @@ async function ouvrir(quand){
 
 console.log('\n== 214) Consigne du bloc en cours sur le tableau de bord (lundi 11:30, Projets perso 1) ==');
 {
-  const { ctx, fr } = await ouvrir('2026-09-07T11:30:00+02:00');
+  const { ctx, fr } = await ouvrir('2026-08-31T11:30:00+02:00');
   const r = await fr.evaluate(() => { const c = document.getElementById('pb-consigne'); return { hidden: c.hidden, txt: c.textContent, quoi: document.getElementById('pb-quoi').textContent }; });
   ok(r.quoi === 'Projets perso 1', 'bloc en cours : Projets perso 1 (' + r.quoi + ')');
   ok(!r.hidden && /ligne non cochée/.test(r.txt) && /rituel du lundi/.test(r.txt), 'consigne du lundi affichée : ' + r.txt.slice(0, 70) + '…');
@@ -36,7 +36,7 @@ console.log('\n== 214) Consigne du bloc en cours sur le tableau de bord (lundi 1
 
 console.log('\n== 215) Mercredi 14:10 : Projets perso 3 = révision Business ; samedi 17:30 : Fiscalité F1 ; dimanche 13:40 : F3 ==');
 {
-  const cas = [['2026-09-09T14:10:00+02:00', 'Projets perso 3', /auto-test/], ['2026-09-12T17:30:00+02:00', 'Projets perso 2', /Fiscalité F1/], ['2026-09-13T13:40:00+02:00', 'Projets perso 2', /Fiscalité F3/]];
+  const cas = [['2026-09-02T14:10:00+02:00', 'Projets perso 3', /auto-test/], ['2026-09-05T17:30:00+02:00', 'Projets perso 2', /Fiscalité F1/], ['2026-09-06T13:40:00+02:00', 'Projets perso 2', /Fiscalité F3/]];
   for(const [quand, bloc, re] of cas){
     const { ctx, fr } = await ouvrir(quand);
     const r = await fr.evaluate(() => ({ quoi: document.getElementById('pb-quoi').textContent, txt: document.getElementById('pb-consigne').textContent }));
@@ -47,7 +47,7 @@ console.log('\n== 215) Mercredi 14:10 : Projets perso 3 = révision Business ; s
 
 console.log('\n== 216) Timeline du calendrier : consigne sous MAINTENANT, infobulle sur les autres blocs ; prochain bloc quand rien n\'est en cours ==');
 {
-  const { ctx, fr } = await ouvrir('2026-09-07T20:40:00+02:00');
+  const { ctx, fr } = await ouvrir('2026-08-31T20:40:00+02:00');
   await fr.evaluate(() => document.querySelector('.nav-btn[data-page="calendrier"]').click());
   const r = await fr.evaluate(() => {
     const now = document.querySelector('#cal-timeline li.now');
@@ -59,7 +59,7 @@ console.log('\n== 216) Timeline du calendrier : consigne sous MAINTENANT, infobu
   ok(r.nb === 1, 'une seule consigne dépliée dans la timeline (' + r.nb + ')');
   ok(/échéances/.test(r.titre || ''), 'infobulle sur Anki 1 : ' + (r.titre || '').slice(0, 50) + '…');
   await ctx.close();
-  const o2 = await ouvrir('2026-09-07T12:25:00+02:00');
+  const o2 = await ouvrir('2026-08-31T12:25:00+02:00');
   const r2 = await o2.fr.evaluate(() => ({ quoi: document.getElementById('pb-quoi').textContent, hidden: document.getElementById('pb-consigne').hidden, titre: document.getElementById('pb-titre').textContent }));
   ok(r2.quoi === 'Déjeuner' && r2.hidden === true, 'bloc sans consigne (Déjeuner) : la ligne est masquée');
   await o2.ctx.close();
@@ -67,7 +67,7 @@ console.log('\n== 216) Timeline du calendrier : consigne sous MAINTENANT, infobu
 
 console.log('\n== 217) Google Calendar : un titre « 🦇 Bloc · consigne » se reconnaît à sa base ; consigne par jour ==');
 {
-  const { ctx, fr } = await ouvrir('2026-09-07T09:00:00+02:00');
+  const { ctx, fr } = await ouvrir('2026-08-31T09:00:00+02:00');
   const r = await fr.evaluate(() => ({
     a: window.__bcTitreBase('🦇 Anki 1 · cartes dues dentaire (25/5)'),
     b: window.__bcTitreBase('🦇 Projets perso 3 · tâche courte · mer : révision Business'),

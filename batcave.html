@@ -400,6 +400,9 @@
     /* minmax(0,1fr) : même piège qu'ailleurs — une colonne "1fr" ne descend pas sous la
        largeur de son contenu, ce qui faisait déborder le dashboard et le calendrier. */
     .stat-grid, .addiction-grid, .meal-grid, .courses-grid, .goal-grid, .sport-grid, .journal-grid, .field-grid, .two-col, .bilan-grid{grid-template-columns:minmax(0,1fr);}
+    /* les grilles de tuiles à colonnes fixées en ligne (calendrier, études, business) débordaient
+       du téléphone : sur un écran étroit, une seule colonne, quoi qu'en dise l'attribut style */
+    .stat-grid[style*="grid-template-columns"]{grid-template-columns:minmax(0,1fr) !important;}
     .dash-row, .dash-row2{grid-template-columns:minmax(0,1fr);}
     .panel, .card, .meal-card, .sport-card{min-width:0;}
     .entry-row{flex-wrap:wrap;}
@@ -782,7 +785,7 @@
   .reactor-legend{ display:flex; gap:16px; font-family:var(--font-mono); font-size:11px; color:var(--ink-dim); flex-wrap:wrap; justify-content:center; margin-bottom:14px; }
   .reactor-legend span::before{ content:''; display:inline-block; width:12px; height:4px; margin-right:7px; vertical-align:middle; }
   .reactor-legend .l-hab::before{ background:var(--cyan-dim); } .reactor-legend .l-rev::before{ background:var(--cyan-bright); } .reactor-legend .l-proj::before{ background:var(--warn); }
-  .mon-suivi .temps-grid{ grid-template-columns:repeat(2, minmax(0,1fr)); }
+  .mon-suivi .temps-grid{ grid-template-columns:repeat(auto-fit, minmax(120px, 1fr)); }
   .temps-cell{ background:transparent; border:none; padding:4px 4px 0; }
   .temps-cell .tl{ font-family:var(--font-mono); font-size:11px; letter-spacing:0.14em; color:var(--ink-dim); }
   .temps-cell .tv{ font-size:38px; }
@@ -818,7 +821,7 @@
   #dash-checklist li{ flex:0 1 auto; max-width:100%; }
   #dash-checklist li label{ flex:0 1 auto; }
   #dash-checklist li{
-    background:var(--surface-raised); border:1px solid var(--border); border-bottom-width:3px; padding:7px 10px 6px 9px;
+    background:var(--surface-raised); border:1px solid var(--border); border-bottom-width:3px; padding:6px 10px 5px 9px;
     font-family:var(--font-body); font-weight:600; font-size:12.5px; letter-spacing:0.02em; color:var(--ink-dim); gap:8px; min-height:0;
   }
   #dash-checklist li:hover{ border-color:var(--cyan-dim); }
@@ -1060,6 +1063,7 @@
           <span class="bc-r"><span class="k">SAUVEGARDE</span><span class="v" id="bc-backup">—</span></span>
           <span class="bc-r bc-clic" id="bc-cloture" role="button" tabindex="0" title="Clôture du jour : sommeil, poids, eau, humeur, habitudes, une note — 60 secondes"><span class="k">CLÔTURE</span><span class="v">—</span></span>
           <span class="bc-r bc-clic" id="bc-objectif" role="button" tabindex="0" title="L'objectif du mois le plus en retard — clic : Objectifs"><span class="k">OBJECTIF</span><span class="v">—</span></span>
+          <span class="bc-r bc-clic" id="bc-grille" role="button" tabindex="0" title="La grille en vigueur aujourd'hui — clic : Calendrier"><span class="k">GRILLE</span><span class="v">—</span></span>
         </div>
       </header>
 
@@ -1128,6 +1132,7 @@
           <div class="bc-boutons" style="display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top:12px;">
             <button class="btn btn-primary" id="dash-pomodoro">🍅 Pomodoro — Révision</button>
             <button class="btn btn-primary" id="dash-pomodoro-projet">🍅 Pomodoro — Projet perso</button>
+            <button class="btn btn-primary" id="dash-pomodoro-espanol" hidden>🇪🇸 Pomodoro — Español</button>
             <p class="dial-serie" id="dash-serie" hidden style="margin:0 0 0 auto;"></p>
           </div>
         </div>
@@ -1701,6 +1706,7 @@
         <div id="timer-idle">
           <div class="add-form" style="margin-bottom:0;">
             <button class="btn btn-primary" id="timer-pomodoro" style="border-color:var(--cyan);">🍅 Pomodoro — Révision</button>
+            <button class="btn btn-primary" id="timer-pomodoro-espanol" style="border-color:var(--cyan);" hidden>🇪🇸 Pomodoro — Español</button>
           </div>
           <div style="display:flex; align-items:center; gap:10px; margin-top:12px; flex-wrap:wrap;">
             <span class="sub-note">Durée du bloc</span>
@@ -2102,6 +2108,14 @@
         <div class="field-row"><label for="cl-rv-coince">Ce qui a coincé</label><input type="text" id="cl-rv-coince"></div>
         <div class="field-row"><label for="cl-rv-ajust">Un changement pour la semaine prochaine</label><input type="text" id="cl-rv-ajust"></div>
       </div>
+      <div id="cl-espanol" hidden style="margin-top:10px;">
+        <p class="sub-note" style="margin-bottom:6px; font-weight:600; color:var(--ink-dim);">🇪🇸 Les chiffres du dimanche (Dossier Español)</p>
+        <div class="field-grid">
+          <div class="field-row"><label for="cl-es-errores">Erreurs / 100 mots</label><input type="number" id="cl-es-errores" min="0" step="0.5" inputmode="decimal" placeholder="ex : 4,5"></div>
+          <div class="field-row"><label for="cl-es-oral">Oral sans pause (min)</label><input type="number" id="cl-es-oral" min="0" step="0.5" inputmode="decimal" placeholder="ex : 2"></div>
+          <div class="field-row"><label for="cl-es-drill">Drill conjugaison (s)</label><input type="number" id="cl-es-drill" min="0" step="1" inputmode="numeric" placeholder="ex : 110"></div>
+        </div>
+      </div>
     </div>
     <div class="card-actions" style="flex-wrap:wrap;">
       <button class="btn btn-primary" id="cloture-valider" type="button" style="flex:1; min-width:200px;">Clôturer la journée 🦇</button>
@@ -2351,7 +2365,7 @@
      place dans le quota de 5000 documents et embrouille les sauvegardes, sans que rien ne
      la lise jamais. On la signale ; la suppression reste ton geste. */
   var CLES_CONNUES = ['addictions','budget-limits','business','coran','courses','dash-more','duaas','duree-bloc','sport-log','objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','kcal-ajustement','gcal-ecriture','reinit','fc-migration-v1','charge','shopify-boutique',
-    'espagnol','examens','fc-prix-icloud-3','fixed-charges','goals','habitlog','habits','habits-seed-v2','habits-seed-v3',
+    'espagnol','examens','fc-prix-icloud-3','fixed-charges','goals','habitlog','habits','habits-seed-v2','habits-seed-v3','habits-seed-v4','objectifs-v5-espanol',
     'horizon','last-auto-backup','last-manual-backup','last-bilan-prompt','last-compaction','last-open','last-rotation','notion-url',
     'pomodial-purge','projets','report','revision','revision-fusionnee','revue','sante','sauvegarde','sessions',
     'shopify-last-order-count','taches','timer','transactions','undo-stack','undo-toast','cloud-reload-at','cloud-toast'];
@@ -2595,6 +2609,7 @@
   /* Actif seulement quand cette page est ouverte via son lien Artifact
      (pas depuis le fichier .html téléchargé, où window.claude n'existe pas). */
   var dbHandle = null;
+  var reinitVientDEtreAppliquee = false;
   (function(){
     var toastFlag; try{ toastFlag = sessionStorage.getItem('batcave-cloud-toast'); }catch(e){}
     if(toastFlag){
@@ -2649,6 +2664,7 @@
           if(reinit && reinit.id && String(reinit.id) !== reinitAppliquee()){
             var nEff = effacerLocalPourReinit();
             marquerReinitAppliquee(reinit.id);
+            reinitVientDEtreAppliquee = true;
             try{ sessionStorage.setItem('bc-reinit-info', '🧹 Nouveau départ du ' + fmtDate(reinit.date) + ' appliqué sur cet appareil (' + nEff + ' entrées locales effacées).'); }catch(e){}
           }
           /* Un drapeau de migration ne fait foi que s'il vient du cloud. Une migration de
@@ -2708,6 +2724,16 @@
           var msgConflit = '⚠️ Un autre appareil a écrit « ' + conflits.join(' », « ') + ' » en même temps que toi ; sa version a été gardée. Vérifie la page concernée.';
           try{ sessionStorage.setItem('bc-conflit', msgConflit); }catch(e){}
           try{ showToast(msgConflit); }catch(e){}
+        }
+        /* Un nouveau depart venu d'ailleurs vient d'effacer le stockage local : l'etat en memoire
+           (taches, sessions, journal…) est perime, et la prochaine saisie le reecrirait tel quel,
+           annulant l'effacement. On recharge tout de suite, sans passer par la garde anti-boucle
+           ni attendre la fin d'une saisie : il n'y a rien a preserver. */
+        if(reinitVientDEtreAppliquee){
+          reinitVientDEtreAppliquee = false;
+          try{ sessionStorage.setItem('batcave-cloud-reload-at', String(Date.now())); }catch(e){}
+          location.reload();
+          return;
         }
         if(!changed) return;
         /* Garde-fou anti-boucle : jamais deux rechargements automatiques coup sur coup. */
@@ -3163,7 +3189,7 @@
      ni synchronisee ni rattrapee) et efface ses copies locales AVANT le rattrapage, sinon
      elles repartiraient vers le cloud. La meme remise a zero peut donc etre decidee depuis
      l'appli ou directement dans le cloud. */
-  var REINIT_GARDER = ['habits','habits-seed-v2','habits-seed-v3','fixed-charges','fc-prix-icloud-3','budget-limits','examens','notion-url','shopify-boutique',
+  var REINIT_GARDER = ['habits','habits-seed-v2','habits-seed-v3','habits-seed-v4','objectifs-v5-espanol','fixed-charges','fc-prix-icloud-3','budget-limits','examens','notion-url','shopify-boutique',
                        'objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','horizon','gcal-ecriture','duree-bloc','dash-more','revision-fusionnee','reinit'];
   var REINIT_PREFIXES_GARDER = ['pomodial-', 'coherence-ignore-'];
   function reinitGarder(cle){
@@ -4154,7 +4180,54 @@
       if(nav) nav.click();
     }, Object.keys(projetsState.reduce(function(a,p){ a[p.projet]=1; return a; }, {})));
   }
+  /* ===== Pomodoro Español =====
+     Le temps d'espagnol est un temps de projet (cible « projet », libelle « Español · tache ») :
+     il compte dans l'arc, la cible du jour et la fidelite comme les blocs Español de la grille,
+     et la mesure Objectifs « Espagnol » le relit par son libelle. La tache par defaut est celle
+     du bloc en cours. Le bouton n'apparait que pendant une periode Español. */
+  var ESPANOL_TAREAS = ['gramática','escribir','hablar','preparar la clase','conjugación y fórmulas','lectura','DELE','annales','simulación','registro académico','tutor','balance de la semana','Anki'];
+  function tareaEspanolParDefaut(){
+    var b = blocPlanCourant(), m = b && /^Español · (.+)$/.exec(b[1]);
+    if(m && m[1]) return m[1];
+    var h = new Date().getHours();
+    return h < 12 ? 'gramática' : (h < 14 ? 'escribir' : 'preparar la clase');
+  }
+  function lancerPomodoroEspanol(){
+    if(timerState && !timerState.finished){
+      showToast('⏱️ Une session est déjà en cours.');
+      var navEnCours = document.querySelector('.nav-btn[data-page="etudes"]');
+      if(navEnCours) navEnCours.click();
+      return;
+    }
+    var defaut = tareaEspanolParDefaut(), options = ESPANOL_TAREAS.slice();
+    if(options.indexOf(defaut) === -1) options.unshift(defaut);
+    askDialog({titre:'🇪🇸 Español', message:'Tâche de ce bloc :', options: options, valeur: defaut, libelleOk:'Lancer'}, function(choix){
+      if(choix === null) return;
+      startTimer(dureeBlocPref(), {pomodoro:true, mode:'travail', cycle:0, cible:'projet', projet:'Español · ' + choix});
+      var nav = document.querySelector('.nav-btn[data-page="etudes"]');
+      if(nav) nav.click();
+    });
+  }
+  function majBoutonsEspanol(){
+    var actif = !!periodeGrille(todayISO);
+    ['dash-pomodoro-espanol','timer-pomodoro-espanol'].forEach(function(id){ var b = document.getElementById(id); if(b) b.hidden = !actif; });
+  }
+  /* minutes d'espagnol d'une journee (sessions de projet dont le libelle commence par « Español ») */
+  function minutesEspanol(iso){
+    var t = 0;
+    sessionsState.forEach(function(b){ if(b && b.date === iso && Number(b.duree) > 0 && b.type === 'projet' && /^Español/.test(b.label || '')) t += Number(b.duree); });
+    return t;
+  }
+  function cibleEspanolJour(iso){
+    iso = iso || todayISO;
+    var t = 0;
+    blocsDuPlanning(cleJournee(dowDe(iso)), iso).forEach(function(b){ if(/^Español/.test(b.label)) t += b.minutes; });
+    return Math.round(t * facteurCharge(iso));
+  }
   document.getElementById('timer-pomodoro').addEventListener('click', function(){ lancerPomodoroCours(null); });
+  (function(){
+    ['dash-pomodoro-espanol','timer-pomodoro-espanol'].forEach(function(id){ var b = document.getElementById(id); if(b) b.addEventListener('click', lancerPomodoroEspanol); });
+  })();
   document.getElementById('biz-pomodoro-projet').addEventListener('click', lancerPomodoroProjet);
   document.getElementById('dash-pomodoro').addEventListener('click', lancerPomodoroDepuisDashboard);
   document.getElementById('dash-pomodoro-projet').addEventListener('click', lancerPomodoroProjet);
@@ -4208,9 +4281,18 @@
      vierge les voyait, ce que les tests faisaient justement. Un drapeau par lot : chaque
      generation est ajoutee exactement une fois, et une habitude supprimee a la main ne
      ressuscite pas au rechargement suivant. */
+  /* Les trois habitudes du Dossier Español : conversation reelle, formules du jour, lecture.
+     Quotidiennes, comme les autres ; elles entrent dans le score du jour et dans la carte
+     Insights « Habitude la plus delaissee ». */
+  var HABIT_SEED_V4 = [
+    {id:'core-es-conversacion', label:'30 min en espagnol avec un natif', icon:'🗣️'},
+    {id:'core-es-formulas', label:'Les dix formules du jour', icon:'💬'},
+    {id:'core-es-lectura', label:'20 pages lues en espagnol', icon:'📖'}
+  ];
   var HABIT_GENERATIONS = [
     {cle: 'batcave-habits-seed-v2', graines: HABIT_SEED_V2},
-    {cle: 'batcave-habits-seed-v3', graines: HABIT_SEED_V3}
+    {cle: 'batcave-habits-seed-v3', graines: HABIT_SEED_V3},
+    {cle: 'batcave-habits-seed-v4', graines: HABIT_SEED_V4}
   ];
   var habitsState = load('batcave-habits', null);
   if(habitsState !== null && !Array.isArray(habitsState)) habitsState = null;
@@ -4236,7 +4318,7 @@
     return ajoutees;
   }
   if(habitsState === null){
-    habitsState = HABIT_SEED.concat(HABIT_SEED_V2, HABIT_SEED_V3);
+    habitsState = HABIT_SEED.concat(HABIT_SEED_V2, HABIT_SEED_V3, HABIT_SEED_V4);
     save('batcave-habits', habitsState);
     HABIT_GENERATIONS.forEach(function(g){ save(g.cle, true); });
   } else {
@@ -5537,8 +5619,8 @@
      révision et de projets, et jours d'entraînement (voir le recalage automatique plus bas). */
   var SEMAINE_SEMIS = {rev:1745, proj:1005, sport:6};
   var CIBLES_TRIMESTRE = {
-    T1:{revision_h:335, projets_h:186, sport_seances:70, espagnol_h:35, sommeil_moy:7.75, habitudes_pct:80, eau_moy:2.7, depenses_var:1050, snus_jours:90,  'exo:Tractions':10, 'exo:Dips':12},
-    T2:{revision_h:308, projets_h:205, sport_seances:72, espagnol_h:40, sommeil_moy:7.75, habitudes_pct:82, eau_moy:2.8, depenses_var:1050, snus_jours:180, 'exo:Tractions':12, 'exo:Dips':15},
+    T1:{revision_h:335, projets_h:186, sport_seances:70, espagnol_h:110, sommeil_moy:7.75, habitudes_pct:80, eau_moy:2.7, depenses_var:1050, snus_jours:90,  'exo:Tractions':10, 'exo:Dips':12},
+    T2:{revision_h:308, projets_h:205, sport_seances:72, espagnol_h:70, sommeil_moy:7.75, habitudes_pct:82, eau_moy:2.8, depenses_var:1050, snus_jours:180, 'exo:Tractions':12, 'exo:Dips':15},
     T3:{revision_h:352, projets_h:223, sport_seances:75, espagnol_h:45, sommeil_moy:7.75, habitudes_pct:85, eau_moy:3.0, depenses_var:1050, snus_jours:270, 'exo:Tractions':14, 'exo:Dips':18},
     T4:{revision_h:229, projets_h:279, sport_seances:75, espagnol_h:55, sommeil_moy:7.75, habitudes_pct:85, eau_moy:3.0, depenses_var:1050, snus_jours:365, 'exo:Tractions':15, 'exo:Dips':20}
   };
@@ -5585,6 +5667,8 @@
     return o;
   }
   function trimestreDe(iso){ return TRIMESTRES.filter(function(t){ return iso >= t.debut && iso <= t.fin; })[0] || null; }
+  /* Cibles mensuelles d'espagnol du Dossier Español (phases 1, 2, 3), au lieu du tiers du trimestre. */
+  var MOIS_ESPANOL = {'M2026-09':40, 'M2026-10':55, 'M2026-11':15, 'M2026-12':23, 'M2027-01':23, 'M2027-02':24};
   function objectifsSemes(){
     var out = [];
     TRIMESTRES.forEach(function(t){
@@ -5600,6 +5684,7 @@
       Object.keys(c).forEach(function(cle){
         var m2 = METRIQUES[metriqueDe(cle)]; if(!m2 || m2.mode === 'niveau' || cle === 'snus_jours') return;
         var cible = m2.mode === 'cumul' ? Math.round(c[cle] / 3) : c[cle];
+        if(cle === 'espagnol_h' && MOIS_ESPANOL[m.id]) cible = MOIS_ESPANOL[m.id];
         out.push(avecSemaine({id: m.id + ':' + cle, periode:'mois', pid: m.id, debut: m.debut, fin: m.fin, metrique: cle, cible: cible, titre: libelleMetrique(cle)}));
       });
     });
@@ -5620,9 +5705,35 @@
     if(ajout) save('batcave-objectifs', objectifsState);
     saveInternal('batcave-objectifs-seed-v1', true);
     saveInternal('batcave-objectifs-v2-55', true);
+    saveInternal('batcave-objectifs-v5-espanol', true);
     return ajout;
   }
   semerObjectifs();
+  /* Dossier Español (8 sept. 2026) : les cibles d'espagnol semees (35 h au T1, 12 h par mois)
+     passent aux valeurs du plan. Seule une cible restee a sa valeur semee est touchee : une
+     cible modifiee a la main est gardee. Une fois, rejouable apres hydratation. */
+  function migrerObjectifsEspanol(){
+    if(!load('batcave-objectifs-seed-v1', false)) return false;
+    if(load('batcave-objectifs-v5-espanol', false)) return false;
+    var courant = load('batcave-objectifs', null);
+    if(courant && typeof courant === 'object' && Array.isArray(courant.liste)) objectifsState = {liste: courant.liste.filter(function(o){ return o && o.id; })};
+    var anciennes = {'T1:espagnol_h':[35,110], 'T2:espagnol_h':[40,70]};
+    Object.keys(MOIS_ESPANOL).forEach(function(mid){ anciennes[mid + ':espagnol_h'] = [mid < 'M2026-12' ? 12 : 13, MOIS_ESPANOL[mid]]; });
+    var change = false;
+    objectifsState.liste.forEach(function(o){
+      var a = anciennes[o.id];
+      if(a && Number(o.cible) === a[0]){ o.cible = a[1]; change = true; }
+    });
+    if(change) save('batcave-objectifs', objectifsState);
+    saveInternal('batcave-objectifs-v5-espanol', true);
+    return change;
+  }
+  migrerObjectifsEspanol();
+  MIGRATIONS_DEMARRAGE.push({cle:'batcave-objectifs-v5-espanol', rejouer: function(){
+    if(!migrerObjectifsEspanol()) return false;
+    try{ renderObjectifs(); renderDashboard(); }catch(e){}
+    return true;
+  }, verifier: function(){ return null; }});
   /* Objectifs semés avant les rythmes de Pomodoro par bloc et le lever 05:30 : les cibles de
      révision et de projets étaient en heures de blocs (sessions d'1 h) ; elles passent en
      temps de travail réel (révision × 1715/1980, soit 28 h 35 sur 33 h de blocs par semaine ;
@@ -5734,10 +5845,16 @@
     if(m === 'revision_h' || m === 'projets_h'){
       var carte = carteMinutes(), type = m === 'revision_h' ? 'cours' : 'projet';
       jours.forEach(function(iso){ somme += (carte[iso] || {})[type] || 0; });
-      return somme / 60;
+      /* les sessions Español sont des projets pour la grille, pas pour l'objectif « Projets perso » */
+      if(m === 'projets_h') jours.forEach(function(iso){ somme -= minutesEspanol(iso); });
+      return Math.max(0, somme) / 60;
     }
     if(m === 'sport_seances'){ jours.forEach(function(iso){ if(seanceTenue(iso)) n++; }); return n; }
-    if(m === 'espagnol_h'){ esState.forEach(function(e){ if(e && e.date >= debut && e.date <= fin && e.date <= todayISO) somme += Number(e.duree) || 0; }); return somme / 60; }
+    if(m === 'espagnol_h'){
+      esState.forEach(function(e){ if(e && e.date >= debut && e.date <= fin && e.date <= todayISO) somme += Number(e.duree) || 0; });
+      jours.forEach(function(iso){ somme += minutesEspanol(iso); });
+      return somme / 60;
+    }
     if(m === 'depenses_var'){ txState.forEach(function(t){ if(t && t.type === 'Dépense' && !t.fixed && t.date >= debut && t.date <= fin) somme += Number(t.montant) || 0; }); return somme; }
     if(m === 'snus_jours'){ var a = addictionState.snus; var st = a ? currentStreak(a) : null; return st === null ? null : st; }
     if(m === 'sommeil_moy' || m === 'eau_moy'){
@@ -6281,8 +6398,8 @@
      que si le TOTAL fait aujourd'hui pour ce type est inferieur au total des blocs deja
      echus. Le deficit annonce est cette difference, pas la somme des blocs. */
   var GRACE_BLOC_MIN = 15;
-  function blocsDuPlanning(cle){
-    var plan = SCHEDULES[cle] || [], fin = timeToMinutes(heureCoucher(cle)), out = [];
+  function blocsDuPlanning(cle, iso){
+    var plan = grilleDe(cle, iso || todayISO), fin = timeToMinutes(heureCoucher(cle)), out = [];
     plan.forEach(function(b, i){
       var type = typeBlocPlan(b[1]);
       if(!type) return;
@@ -6327,7 +6444,7 @@
   /* Creneaux encore a venir aujourd'hui ou l'on peut caser du travail : temps libre,
      repos, pause -- jamais un repas, un trajet, une priere ou le sommeil. */
   function creneauxLibresRestants(nowMin){
-    var cle = scheduleKeyForToday(), plan = SCHEDULES[cle] || [], fin = timeToMinutes(heureCoucher(cle)), out = [];
+    var cle = scheduleKeyForToday(), plan = grilleDe(cle, todayISO), fin = timeToMinutes(heureCoucher(cle)), out = [];
     plan.forEach(function(b, i){
       if(!/Temps libre|Repos|Pause/.test(b[1])) return;
       var d0 = timeToMinutes(b[0]), d1 = i < plan.length-1 ? timeToMinutes(plan[i+1][0]) : fin;
@@ -6547,6 +6664,25 @@
     r.addEventListener('click', aller);
     r.addEventListener('keydown', function(e){ if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); aller(); } });
   })();
+  /* Releve GRILLE de la barre : la periode en vigueur (Dossier Español) et sa fin. */
+  function majReleveGrille(){
+    var el = document.querySelector('#bc-grille .v');
+    if(!el) return;
+    var p = periodeGrille(todayISO), releve = document.getElementById('bc-grille');
+    if(releve) releve.hidden = !p;
+    if(!p){ el.textContent = 'grille type'; el.style.color = ''; el.title = 'Aucune période en cours : la grille type s\'applique.'; return; }
+    var j = daysBetween(new Date(todayISO + 'T00:00:00'), new Date(p.fin + 'T00:00:00'));
+    el.textContent = p.nom + ' · J-' + j;
+    el.style.color = 'var(--cyan-bright)';
+    el.title = p.description + ' Jusqu\'au ' + fmtDate(p.fin) + ' ; ensuite : ' + (p.suite || 'grille type') + '.';
+  }
+  (function(){
+    var r = document.getElementById('bc-grille');
+    if(!r) return;
+    var aller = function(){ var b = document.querySelector('.nav-btn[data-page="calendrier"]'); if(b) b.click(); };
+    r.addEventListener('click', aller);
+    r.addEventListener('keydown', function(e){ if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); aller(); } });
+  })();
   /* Releve SAUVEGARDE de la barre : la plus recente des sauvegardes Drive, auto ou manuelle. */
   function majReleveSauvegarde(){
     var el = document.getElementById('bc-backup');
@@ -6726,7 +6862,7 @@
   function statsBlocs(jours){
     var stats = {};
     jours.forEach(function(j){
-      blocsDuPlanning(cleJournee(j.dow)).forEach(function(b){
+      blocsDuPlanning(cleJournee(j.dow), j.iso).forEach(function(b){
         var k = b.label + '|' + b.debut;
         var s = stats[k] || (stats[k] = {label: b.label, debut: b.debut, minutes: b.minutes, jours: 0, tenus: 0});
         s.jours++;
@@ -6761,7 +6897,7 @@
   function retardsDemarrage(jours){
     var out = [];
     jours.forEach(function(j){
-      var blocs = blocsDuPlanning(cleJournee(j.dow)); if(!blocs.length) return;
+      var blocs = blocsDuPlanning(cleJournee(j.dow), j.iso); if(!blocs.length) return;
       var minuit = new Date(j.iso + 'T00:00:00').getTime();
       var debutMin = Math.min.apply(null, j.sessions.map(function(s){ return (s.debut - minuit) / 60000; }));
       /* Référence = le bloc prévu dans lequel tombe le premier lancement (le dernier qui
@@ -7326,7 +7462,8 @@
     }
     document.getElementById('dash-temps').innerHTML =
       celluleTemps('📚 Révision', revMin, cibleRev, rep.rev) +
-      celluleTemps('💻 Projets perso', projMin, projetsTarget()*60 || null, rep.proj);
+      celluleTemps('💻 Projets perso', projMin, projetsTarget()*60 || null, rep.proj) +
+      (function(){ var e = minutesEspanol(todayISO), c = cibleEspanolJour(todayISO); return (e || c) ? celluleTemps('🇪🇸 Español', e, c || null, 0) : ''; })();
     var sem = chargeRestanteSemaine();
     var hh = function(m){ return (m/60).toFixed(1).replace('.', ','); };
     var semEl = document.getElementById('dash-semaine');
@@ -7348,6 +7485,8 @@
     majReleveSauvegarde();
     majReleveCloture();
     majReleveObjectif();
+    majReleveGrille();
+    majBoutonsEspanol();
     var consoleJour = document.getElementById('dash-console-jour');
     if(consoleJour) consoleJour.textContent = 'CONSOLE · ' + now.toLocaleDateString('fr-FR', {weekday:'long'}).toUpperCase();
 
@@ -7669,12 +7808,145 @@
     'Temps libre': {defaut: "Libre.", 0: "10 minutes pour la revue du dimanche guidée (onglet Études), le reste est libre."},
     'Coucher': "Clôture du jour faite ? Écran off, réveil posé loin du lit."
   };
-  function consigneBloc(label, dow){
-    var c = CONSIGNES[label];
+  /* ===== Consignes des blocs Español (Dossier Español, sections 05 et 06) ===== */
+  var CONSIGNES_ES = {
+    'Español · gramática': "Le point de grammaire de la semaine (Dossier Español, section 06) : chaque règle lue → dix phrases écrites et dix dites à voix haute sur tes sujets, puis les exercices du livre corrigés à la main. Pomodoro Español « gramática ».",
+    'Español · gramática (repaso)': "Relire les règles de la semaine, refaire les exercices ratés, dix phrases par règle à voix haute.",
+    'Español · conjugación y fórmulas': "Cinq minutes de conjugaison chronométrée à voix haute (dix verbes, trois temps), puis les dix formules du jour en cartes-phrases (Español::3 Fórmulas).",
+    'Español · Anki': "Révisions du paquet Español, les cartes d'erreurs de la veille, trente mots du jour en phrase.",
+    'Español · Anki matinal': "Toutes les révisions du paquet Español, puis les cartes d'erreurs de la veille.",
+    'Español · Anki y errores': "Révisions Español, puis toutes les erreurs de la semaine en cartes à trou dans Español::0 Errores.",
+    'Español · cartas de errores': "Chaque erreur de la veille devient une carte à trou dans Español::0 Errores, code d'erreur en étiquette.",
+    'Español · escribir': "Dix minutes de réécriture de mémoire du texte de la veille, comparaison. Puis 200 mots sur le cours de la veille, 25 min sans dictionnaire, « corrige » avec Claude, une carte par erreur.",
+    'Español · escribir largo': "300 mots chronométrés (30 min) sur un sujet d'examen, sans dictionnaire, puis « corrige » et les cartes d'erreurs.",
+    'Español · hablar': "Quinze minutes de shadowing sur un cours d'anatomía, puis 45 min de tuteur, ou de conversation avec un compañero, ou en dictée avec Claude. Technique 4-3-2 pour finir.",
+    'Español · tutor': "Séance de tuteur : 3 min de conversation, 12 min à expliquer le cours de la veille, 10 min de corrections répétées, 5 min de jeu de rôle en usted. Dix cartes d'erreurs après.",
+    'Español · preparar la clase': "Slides du cours de 15:30 : quinze termes en cartes (définition en espagnol), deux questions préparées par écrit. Tu entres en cours en connaissant les mots du prof.",
+    'Español · registro académico': "Apuntes Wuolah de l'asignatura du jour et un chapitre du manuel en espagnol, notes en espagnol ; ou un cours universitaire en vidéo avec prise de notes, puis dictogloss de deux minutes.",
+    'Español · conversación real': "Une heure avec des Espagnols : intercambio, compañeros, voisins, mosquée, parc. En espagnol uniquement, jamais d'anglais ni de français. Le bloc qui fait le plus avancer.",
+    'Español · DELE': "Une tâche d'expression écrite ou orale des modelos DELE B2 (C1 à partir de décembre), en temps réel, corrigée avec « examen ».",
+    'Español · annales': "Une question d'annale en espagnol, chronométrée, corrigée en deux temps : contenu, puis langue avec les codes d'erreur.",
+    'Español · simulación': "Deux questions d'annales en espagnol en 55 min sans dictionnaire, puis « examen » avec Claude : contenu, puis langue.",
+    'Español · simulación de examen': "Deux réponses de type examen en 55 min sans dictionnaire (« Describe la estructura de la membrana celular », « Explica las funciones de la saliva »).",
+    'Español · corrección y oral': "Cinq minutes d'oral enregistrées sur l'une des deux réponses, puis correction des trois productions par « examen », erreurs classées par code.",
+    'Español · balance de errores': "Toutes les erreurs de la semaine en cartes ; erreurs pour 100 mots comparées au diagnostic de mardi.",
+    'Español · balance de la semana': "Les cinq chiffres du dimanche : erreurs pour 100 mots, minutes d'oral sans pause, temps du drill, pages lues, minutes de conversation. Le code d'erreur dominant devient le point de grammaire de la semaine. Saisis-les à la clôture du jour.",
+    'Español · preparar la semana 1': "Guía docente de chaque matière (programme, type d'examen, pondération), apuntes et examens des années précédentes sur Wuolah, trente termes par matière en cartes, la question à poser au premier cours écrite dans le journal.",
+    'Español · errores de la semana': "Les erreurs d'annales et les cartes ratées de la semaine → une carte de correction par cause (Dentaire), puis les erreurs d'espagnol de la semaine en cartes.",
+    'Español': "Un bloc au choix selon le jour : lundi grammaire C1, mardi écrit long, mercredi lecture avec fiche de vingt mots, jeudi tuteur, vendredi écoute exigeante avec dictée, samedi DELE C1, dimanche bilan.",
+    'Déjeuner + lectura': "Vingt minutes de roman ou de presse en espagnol, livre papier, sans dictionnaire, cinq mots notés après.",
+    'Serie en VO + diario en español': "Une série espagnole sans sous-titres français (sous-titres espagnols au début), puis la ligne du jour à la clôture, en espagnol."
+  };
+  /* Consignes des blocs de base pendant une periode Español (les blocs eux-memes ne bougent pas). */
+  var CONSIGNES_PERIODE_ES = {
+    'Anki 2': "Suite des échéances de dentaire. Les 5 dernières minutes : les dix formules du jour (paquet Español).",
+    'Comprendre le cours du jour': "Notes du cours → projet Claude « Dentaire », en espagnol : « explica » puis « interrógame ». Puis réécriture en dix lignes en espagnol dans Notion pour les cartes de demain.",
+    'Trajet cours': "Podcast en marchant, shadowing à mi-voix dans le tram. Arrivé avant 15:30 : conversation avec les compañeros, pas le téléphone.",
+    'Trajet retour': "Une minute de résumé oral du cours enregistrée en marchant, puis Anki Español dans le tram et trois minutes de paquet Business.",
+    'Cours': "Notes en espagnol, un « ? » dans la marge pour chaque mot inconnu, ta question posée avant la fin. Trente minutes de conversation réelle dans la journée.",
+    'Sport': "Podcast espagnol sur le trajet et pendant l'échauffement, puis la séance du jour dans l'onglet Sport.",
+    'Coucher': "Clôture du jour faite, la ligne en espagnol ? Écran off, réveil posé loin du lit."
+  };
+  function consigneBloc(label, dow, iso){
+    var p = periodeGrille(iso || todayISO);
+    var c = (p && p.consignes && p.consignes[label]) || CONSIGNES_ES[label] || CONSIGNES[label];
     if(!c) return '';
     if(typeof c === 'string') return c;
     var d = (dow === undefined || dow === null) ? new Date(now).getDay() : dow;
     return c[d] || c.defaut || '';
+  }
+  /* ===== Périodes de grille (Dossier Español) =====
+     Entre deux dates, une periode remplace des blocs de la grille type : par libelle
+     (renommages, avec une variante par journee) ou par journee entiere (grille). Le dentaire
+     ne bouge jamais : seuls les blocs listes changent. La date fait foi, pas un reglage : le
+     19 octobre la grille passe d'elle-meme a la phase suivante, et le 15 mars a la grille type.
+     Les rappels Google Calendar gardent les titres de la grille type (pas de doublon avec les
+     series existantes) ; seule la consigne suit la periode. */
+  var GRILLE_S0_SEMAINE = [
+    ['05:30','Sport'],['06:30','Douche + préparation'],['06:45','Petit-déjeuner + Coran (1 page)'],
+    ['07:20','Español · gramática'],['08:50','Español · conjugación y fórmulas'],['09:20','Español · Anki'],
+    ['10:20','Español · escribir'],['11:20','Español · hablar'],['12:20','Déjeuner + lectura'],['12:40','😴 Micro-sieste'],
+    ['13:00','Español · registro académico'],['14:50','Collation entraînement'],['15:00','Español · conversación real'],
+    ['17:00','Temps libre'],['20:00','Dîner'],['20:30','Serie en VO + diario en español'],
+    ['21:30','Collation soir'],['21:45','Douche + brossage de dents'],['21:55','Coucher']
+  ];
+  var PERIODES_GRILLE = [
+    {id:'es-0', nom:'Español · semaine 0', debut:'2026-09-08', fin:'2026-09-13', suite:'Español · phase 1',
+     description:'Remise à niveau intensive avant les cours : grammaire, conjugaison, écrit, oral, lecture, conversation.',
+     grille: {
+       weekday: GRILLE_S0_SEMAINE,
+       wednesday: [['05:30','Español · Anki matinal']].concat(GRILLE_S0_SEMAINE.slice(1).map(function(b){ return b[1] === 'Español · Anki' ? [b[0], 'Español · cartas de errores'] : b; })),
+       friday: [
+         ['05:30','Español · escribir largo'],['06:30','Douche + préparation'],['06:45','Petit-déjeuner + Coran (1 page)'],
+         ['07:20','Español · gramática'],['08:50','Español · conjugación y fórmulas'],['09:20','Español · Anki'],
+         ['10:20','Español · escribir'],['11:20','Español · hablar'],['12:20','Déjeuner + lectura'],
+         ['13:15','Trajet mosquée'],['13:30',"Jumu'ah (khutba + prière ~14h)"],['14:30','😴 Micro-sieste'],['14:50','Collation entraînement'],
+         ['15:00','Español · conversación real'],['17:00','Temps libre'],['20:00','Dîner'],['20:30','Serie en VO + diario en español'],
+         ['21:30','Collation soir'],['21:45','Douche + brossage de dents'],['21:55','Coucher']
+       ],
+       saturday: [
+         ['05:30','Sport'],['06:30','Douche + préparation'],['06:45','Petit-déjeuner + Coran (1 page)'],
+         ['07:20','Español · gramática'],['08:50','Español · conjugación y fórmulas'],['09:20','Español · Anki'],
+         ['10:20','Español · escribir'],['11:20','Español · hablar'],['12:20','Déjeuner + lectura'],['13:10','😴 Micro-sieste'],
+         ['13:30','🛒 Courses de la semaine'],['15:30','Rangement des courses'],
+         ['16:00','Español · errores de la semana'],['17:00','Español · conversación real'],['18:00','Español · DELE'],
+         ['19:00','Dîner'],['19:30','Temps libre'],['20:30','Collation soir'],['20:45','Douche + brossage de dents'],['21:00','Coucher']
+       ],
+       weekend: [
+         ['05:30','Español · Anki matinal'],['06:30','Douche + préparation'],['06:45','Petit-déjeuner + Coran (1 page)'],
+         ['07:20','Español · gramática (repaso)'],['08:50','Español · conjugación y fórmulas'],['09:20','Español · simulación de examen'],
+         ['10:20','Español · corrección y oral'],['11:20','Español · balance de errores'],['12:20','Déjeuner + lectura'],['13:10','😴 Micro-sieste'],
+         ['13:30','Español · preparar la semana 1'],['14:30','🍲 Batch cooking de la semaine'],['16:30','Repos — après-midi libre'],
+         ['19:00','Dîner'],['19:30','Temps libre'],['20:30','Collation soir'],['20:45','Douche + brossage de dents'],['21:00','Coucher']
+       ]
+     }},
+    {id:'es-1', nom:'Español · phase 1', debut:'2026-09-14', fin:'2026-10-18', suite:'Español · phase 2 (Projets perso 1 revient)',
+     description:'Avec les cours : les trois blocs Projets perso sont des blocs Español.',
+     renommages: {
+       'Projets perso 1': {defaut:'Español · gramática', weekend:'Español · simulación'},
+       'Projets perso 2': {defaut:'Español · escribir', friday:'Español · tutor', saturday:'Español · tutor', weekend:'Español · balance de la semana'},
+       'Projets perso 3': {defaut:'Español · preparar la clase', saturday:'Español · DELE'},
+       'Projets perso matinal': {friday:'Español · escribir largo', weekend:'Español · Anki y errores'},
+       'Déjeuner': 'Déjeuner + lectura'
+     }, consignes: CONSIGNES_PERIODE_ES},
+    {id:'es-2', nom:'Español · phase 2', debut:'2026-10-19', fin:'2026-11-29', suite:'Español · phase 3 (un bloc par jour)',
+     description:"L'espagnol d'examen : annales en espagnol à 13:00, préparation de la classe à 14:00 ; Projets perso 1 et le vendredi matin reviennent.",
+     renommages: {
+       'Projets perso 2': {defaut:'Español · annales', friday:'Español · tutor', saturday:'Español · tutor', weekend:'Español · balance de la semana'},
+       'Projets perso 3': {defaut:'Español · preparar la clase'},
+       'Projets perso matinal': {weekend:'Español · Anki y errores'},
+       'Déjeuner': 'Déjeuner + lectura'
+     }, consignes: CONSIGNES_PERIODE_ES},
+    {id:'es-3', nom:'Español · phase 3', debut:'2026-11-30', fin:'2027-03-14', suite:'grille type',
+     description:'Vers le C1 : un bloc Español par jour à 13:00, le reste revient aux projets.',
+     renommages: {
+       'Projets perso 2': {defaut:'Español', friday:'Español · tutor', saturday:'Español · DELE', weekend:'Español · balance de la semana'},
+       'Déjeuner': 'Déjeuner + lectura'
+     }, consignes: CONSIGNES_PERIODE_ES}
+  ];
+  function periodeGrille(iso){
+    if(typeof PERIODES_GRILLE === 'undefined' || !PERIODES_GRILLE) return null;
+    iso = iso || todayISO;
+    for(var i = 0; i < PERIODES_GRILLE.length; i++){ if(iso >= PERIODES_GRILLE[i].debut && iso <= PERIODES_GRILLE[i].fin) return PERIODES_GRILLE[i]; }
+    return null;
+  }
+  /* la date de ce jour de la semaine dans la semaine en cours (pour les vues hebdomadaires) */
+  function isoDuJourDeSemaine(dow){
+    var j = weekRange(0);
+    for(var i = 0; i < j.length; i++){ if(dowDe(j[i]) === dow) return j[i]; }
+    return todayISO;
+  }
+  function grilleDe(cle, iso){
+    var base = SCHEDULES[cle] || [];
+    var p = periodeGrille(iso);
+    if(!p) return base;
+    if(p.grille && p.grille[cle]) return p.grille[cle];
+    if(!p.renommages) return base;
+    return base.map(function(b){
+      var nv = p.renommages[b[1]];
+      if(nv && typeof nv === 'object') nv = nv[cle] || nv.defaut;
+      return nv ? [b[0], nv] : b;
+    });
   }
   /* Nature d'un bloc du planning. Les blocs de révision portent le nom de l'activité
      (Anki, Cartes, Annales, Comprendre…) : c'est ici, et nulle part ailleurs, qu'on décide
@@ -7683,6 +7955,10 @@
   function typeBlocPlan(label){
     if(BLOCS_REVISION.test(label)) return 'cours';
     if(/^Projets perso/.test(label)) return 'projet';
+    /* les blocs Español sont du temps de projet (la grille et le minuteur les comptent ainsi),
+       sauf la conversation reelle et les revisions Anki, qui se cochent en habitudes */
+    if(/^Español · (conversación|Anki|cartas)/.test(label)) return null;
+    if(/^Español/.test(label)) return 'projet';
     return null;
   }
   /* Rythme de Pomodoro d'un bloc : 25 min sur Anki (rappel, attention courte), 55 min sur
@@ -7699,7 +7975,7 @@
   function blocPlanCourant(){
     /* le minuteur s'initialise avant la grille (SCHEDULES est déclarée plus bas) : hors bloc */
     if(typeof SCHEDULES === 'undefined' || !SCHEDULES) return null;
-    var plan = SCHEDULES[scheduleKeyForToday()] || [], fin = timeToMinutes(heureCoucher());
+    var plan = grilleDe(scheduleKeyForToday(), todayISO), fin = timeToMinutes(heureCoucher());
     var d = new Date(), nowMin = d.getHours() * 60 + d.getMinutes();
     for(var i = 0; i < plan.length; i++){
       var d0 = timeToMinutes(plan[i][0]), d1 = i < plan.length - 1 ? timeToMinutes(plan[i + 1][0]) : fin;
@@ -7754,7 +8030,7 @@
     if(document.getElementById('dash-plan')) renderPlanDuJour();
   }
   function agendaDuJour(dow){
-    var base = (SCHEDULES[cleJournee(dow)] || []).map(function(b){
+    var base = grilleDe(cleJournee(dow), isoDuJourDeSemaine(dow)).map(function(b){
       return [b[0], b[1], null, 'plan'];
     });
     var occupes = {};
@@ -7792,7 +8068,7 @@
   }
   function chargeReduiteActive(){ return facteurCharge(todayISO) < 1; }
   function cibleJourMinutes(cle, iso, base){
-    var plan = SCHEDULES[cle] || [];
+    var plan = base ? (SCHEDULES[cle] || []) : grilleDe(cle, iso || todayISO);
     var fin = timeToMinutes(heureCoucher(cle));
     var t = {rev:0, proj:0};
     plan.forEach(function(b, i){
@@ -7912,7 +8188,7 @@
   /* Les series recurrentes de l'agenda portent une consigne apres « · » (« 🦇 Anki 1 · cartes
      dues dentaire ») : un evenement se reconnait a la partie avant le separateur. */
   function titreBaseGcal(s){ return String(s || '').split(' · ')[0].trim(); }
-  try{ window.__bcTitreBase = titreBaseGcal; window.__bcConsigne = consigneBloc; window.__bcInsights = buildInsights; window.__bcBlocs = blocsDuPlanning; window.__bcCle = cleJournee; window.__bcJours = joursSuivis; window.__bcInsightsVu = function(){ return insightsVu; }; window.__bcLogSession = logSession;
+  try{ window.__bcTitreBase = titreBaseGcal; window.__bcConsigne = consigneBloc; window.__bcInsights = buildInsights; window.__bcBlocs = blocsDuPlanning; window.__bcCle = cleJournee; window.__bcJours = joursSuivis; window.__bcInsightsVu = function(){ return insightsVu; }; window.__bcLogSession = logSession; window.__bcPeriode = periodeGrille; window.__bcGrille = grilleDe; window.__bcMinutesEspanol = minutesEspanol; window.__bcCibleEspanol = cibleEspanolJour; window.__bcTypeBloc = typeBlocPlan;
        /* rapport hebdomadaire (tests/rapport-hebdo.mjs) : la semaine à un décalage donné, ses
           statistiques de bilan et le prévu/réalisé de chaque jour */
        window.__bcSemaine = function(off){
@@ -7934,7 +8210,7 @@
       if(d1 <= d0) d1 = d0 + 15;
       out.push({cle: 'p' + i, type: coucher ? 'coucher' : (libre ? 'libre' : 'bloc'), titre: '🦇 ' + l, debut: d0, fin: d1, rappel: coucher ? 30 : 5,
                 libre: coucher || libre,
-                description: (consigneBloc(l, dowDe(iso)) ? consigneBloc(l, dowDe(iso)) + ' ' : '') + (coucher ? 'Écran off 30 min avant. Bloc du planning Batcave.' : 'Bloc du planning Batcave.')});
+                description: (consigneBloc(l, dowDe(iso), iso) ? consigneBloc(l, dowDe(iso), iso) + ' ' : '') + (coucher ? 'Écran off 30 min avant. Bloc du planning Batcave.' : 'Bloc du planning Batcave.')});
     });
     return out;
   }
@@ -8141,7 +8417,8 @@
 
     var key = scheduleKeyForToday();
     var labelMap = {weekday:'jour de cours (lun, mar, jeu)', wednesday:'mercredi (Anki matinal)', friday:"vendredi (Jumu'ah)", saturday:'samedi (courses)', weekend:'dimanche'};
-    document.getElementById('cal-schedule-label').textContent = labelMap[key];
+    var periodeJour = periodeGrille(todayISO);
+    document.getElementById('cal-schedule-label').textContent = labelMap[key] + (periodeJour ? ' · ' + periodeJour.nom : '');
     var blocks = agendaDuJour(weekday);
 
     /* Un bloc de travail couvert au moins à moitié par une session au minuteur est coché
@@ -8211,7 +8488,7 @@
     }).join('');
     document.getElementById('week-cal').innerHTML = html;
     var srcLabel = document.getElementById('week-cal-source');
-    if(srcLabel) srcLabel.textContent = live ? 'planning type + 📅 Google Agenda' : 'planning type';
+    if(srcLabel){ var pS = periodeGrille(todayISO); srcLabel.textContent = (pS ? pS.nom : 'planning type') + (live ? ' + 📅 Google Agenda' : ''); }
   }
   setInterval(renderCalendar, 60000);
   setInterval(renderPlanDuJour, 60000);
@@ -9239,14 +9516,24 @@
     out.push(cur.planMin
       ? '🎯 Fidélité au plan : ' + cur.fidelite + ' % (' + hh(cur.faitMin) + ' h faites sur ' + hh(cur.planMin) + ' h prévues).' + (cur.fidelite < 70 ? ' Sous 70 % : des blocs mal placés, ou trop de blocs ?' : '')
       : '🎯 Aucun bloc prévu cette semaine.');
+    /* espagnol : heures de la semaine contre la cible des blocs, et les chiffres du dernier dimanche */
+    if(periodeGrille(todayISO)){
+      var esFait = 0, esCible = 0;
+      weekRange(0).forEach(function(iso){ if(iso <= todayISO){ esFait += minutesEspanol(iso); esCible += cibleEspanolJour(iso); } });
+      var dernier = rvState.slice().reverse().filter(function(r){ return r && r.espanol; })[0];
+      out.push('🇪🇸 Espagnol : ' + hh(esFait) + ' h au minuteur sur ' + hh(esCible) + ' h de blocs Español cette semaine.' +
+        (dernier && dernier.espanol.errores !== null && dernier.espanol.errores !== undefined ? ' Dernier bilan : ' + fmtNombre(dernier.espanol.errores, 1) + ' erreurs / 100 mots.' : ' Saisis les chiffres du dimanche ci-dessous.'));
+    }
     var cible = objectifSommeil();
     out.push(cur.sleepH
       ? '😴 Sommeil moyen : ' + cur.sleepH.toFixed(1).replace('.', ',') + ' h / ' + cible.toFixed(1).replace('.', ',') + ' h visées' + (cur.sleepH < cible - 0.5 ? ' — c\'est le premier levier de la semaine prochaine.' : '.')
       : '😴 Sommeil non saisi cette semaine (le champ est dans la clôture du jour, chiffre Bevel).');
     return out;
   }
-  function enregistrerRevue(date, marche, coince, ajust){
-    rvState.push({id:'rv'+Date.now(), date:date, marche:marche, coince:coince, ajust:ajust, constats: constatsSemaine()});
+  function enregistrerRevue(date, marche, coince, ajust, espanol){
+    var entree = {id:'rv'+Date.now(), date:date, marche:marche, coince:coince, ajust:ajust, constats: constatsSemaine()};
+    if(espanol) entree.espanol = espanol;
+    rvState.push(entree);
     if(rvState.length > 400) rvState = rvState.slice(-400);
     save('batcave-revue', rvState);
     saveInternal('batcave-last-bilan-prompt', weekRange(0)[0]);
@@ -9261,6 +9548,13 @@
     if(!rvState.length){ list.innerHTML = '<li class="entry-empty">Aucune revue enregistrée.</li>'; return; }
     list.innerHTML = rvState.slice().reverse().map(function(r){
       var c = Array.isArray(r.constats) && r.constats.length ? '<span class="ecell sub-note" style="flex-basis:100%; line-height:1.5;">' + r.constats.map(escapeHtml).join('<br>') + '</span>' : '';
+      if(r.espanol && typeof r.espanol === 'object'){
+        var e = r.espanol, bouts = [];
+        if(e.errores !== null && e.errores !== undefined) bouts.push(fmtNombre(e.errores, 1) + ' err. / 100 mots');
+        if(e.oral !== null && e.oral !== undefined) bouts.push(fmtNombre(e.oral, 1) + ' min d\'oral sans pause');
+        if(e.drill !== null && e.drill !== undefined) bouts.push('drill ' + fmtNombre(e.drill, 0) + ' s');
+        if(bouts.length) c += '<span class="ecell sub-note" style="flex-basis:100%;">🇪🇸 ' + escapeHtml(bouts.join(' · ')) + '</span>';
+      }
       return '<li class="entry-row" style="align-items:flex-start; flex-wrap:wrap;"><span class="ecell small"><b>'+fmtDate(r.date)+'</b></span><span class="ecell">✅ '+escapeHtml(r.marche||'—')+'</span><span class="ecell">⚠️ '+escapeHtml(r.coince||'—')+'</span><span class="ecell">→ '+escapeHtml(r.ajust||'—')+'</span><button class="edel" aria-label="Supprimer" title="Supprimer" data-delrv="'+r.id+'">×</button>' + c + '</li>';
     }).join('');
     list.querySelectorAll('[data-delrv]').forEach(function(el){
@@ -9304,6 +9598,7 @@
   renderInsights();
   majSerie();
   renderTimer();
+  majBoutonsEspanol();
 
   var bilanExportBtn = document.getElementById('bilan-export-btn');
   if(bilanExportBtn) bilanExportBtn.addEventListener('click', function(){ window.print(); });
@@ -9390,7 +9685,9 @@
     rv.hidden = !dimanche;
     if(dimanche){
       document.getElementById('cl-constats').innerHTML = constatsSemaine().map(function(c){ return '<li><span>' + escapeHtml(c) + '</span></li>'; }).join('');
-      ['cl-rv-marche','cl-rv-coince','cl-rv-ajust'].forEach(function(id){ document.getElementById(id).value = ''; });
+      ['cl-rv-marche','cl-rv-coince','cl-rv-ajust','cl-es-errores','cl-es-oral','cl-es-drill'].forEach(function(id){ var el = document.getElementById(id); if(el) el.value = ''; });
+      var esBox = document.getElementById('cl-espanol');
+      if(esBox) esBox.hidden = !periodeGrille(todayISO);
     }
     ov.hidden = false;
     var premier = document.getElementById('cl-sommeil');
@@ -9412,7 +9709,10 @@
     cochees.forEach(function(id){ if(!habitDoneToday(id)) toggleHabit(id); });
     if(weekday === 0){
       var m = document.getElementById('cl-rv-marche').value.trim(), c = document.getElementById('cl-rv-coince').value.trim(), a = document.getElementById('cl-rv-ajust').value.trim();
-      if(m || c || a) enregistrerRevue(weekRange(0)[0], m, c, a);
+      var lire = function(id){ var el = document.getElementById(id); var v = el && el.value !== '' ? Number(String(el.value).replace(',', '.')) : null; return (v === null || isNaN(v)) ? null : v; };
+      var es = {errores: lire('cl-es-errores'), oral: lire('cl-es-oral'), drill: lire('cl-es-drill')};
+      if(es.errores === null && es.oral === null && es.drill === null) es = null;
+      if(m || c || a || es) enregistrerRevue(weekRange(0)[0], m, c, a, es);
     }
     renderJournal(); renderWeightChart(); renderKcalBoucle(); renderCalendar(); renderDashboard(); renderBilan();
     if(document.getElementById('obj-liste')) renderObjectifs();

@@ -115,7 +115,7 @@ console.log('\n== 201) Décidé ailleurs (cloud) : l\'autre appareil s\'efface �
   const fr2 = page.frames().find(x => x.url().includes('batcave.html'));
   await page.waitForTimeout(700);
   const tk = await local(fr2, 'batcave-taches');
-  ok(Array.isArray(tk) && tk.length === 1 && tk[0].text === 'Nouvelle tâche du 8', 'une saisie faite après le nouveau départ survit à la réouverture');
+  ok(Array.isArray(tk) && tk.length === 1 && tk[0].text === 'Nouvelle tâche du 8', 'une saisie faite après le nouveau départ survit à la réouverture : ' + JSON.stringify(tk));
   await ctx.close();
 }
 

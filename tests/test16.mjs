@@ -27,7 +27,7 @@ console.log('\n== 43) Le Pomodoro reste le SEUL moyen d\'ajouter du temps (aucun
 {
   const { ctx, fr } = await ouvrir(null);
   const etat = await fr.evaluate(() => ({
-    boutons: [...document.querySelectorAll('#timer-idle .btn')].map(b => b.id || b.textContent.trim()),
+    boutons: [...document.querySelectorAll('#timer-idle .btn')].filter(b => !b.hidden).map(b => b.id || b.textContent.trim()),
     projetBiz: !!document.getElementById('biz-pomodoro-projet'),
     dataTimerStart: document.querySelectorAll('[data-timer-start]').length,
     custom: !!document.getElementById('timer-custom'),

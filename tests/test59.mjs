@@ -9,7 +9,7 @@ const ctx = await browser.newContext({ viewport:{width:1440,height:900}, timezon
 await ctx.addInitScript(() => { window.claude = undefined; try{ localStorage.setItem('batcave-duree-bloc', '25'); }catch(e){} });
 const page = await ctx.newPage();
 page.on('pageerror', e => { errs++; console.log('  PAGEERROR: ' + e.message); });
-await page.clock.install({ time: new Date('2026-09-08T10:00:00+02:00') });   /* mardi : Bas complet, Cartes du dernier cours */
+await page.clock.install({ time: new Date('2026-09-01T10:00:00+02:00') });   /* mardi : Bas complet, Cartes du dernier cours */
 await page.goto(URL, {timeout:20000}).catch(() => {});
 await page.frameLocator('#f').locator('#dash-plan').waitFor({ state:'attached', timeout:15000 });
 let fr = page.frames().find(x => x.url().includes('batcave.html'));
@@ -125,7 +125,7 @@ console.log('\n== 195) Séries de sport → Sport, tableau de bord, Objectifs ==
 console.log('\n== 196) Tâche, dépense, Coran → tableau de bord et Bilan ==');
 {
   await aller('taches');
-  await setVal('tk-text', 'Réviser anatomie'); await setVal('tk-due', '2026-09-08'); await click('#tk-add');
+  await setVal('tk-text', 'Réviser anatomie'); await setVal('tk-due', '2026-09-01'); await click('#tk-add');
   await aller('dashboard');
   ok(/Réviser anatomie/.test(await txt('#dash-taches')), 'Tableau de bord : la tâche est listée');
   ok(/À faire aujourd'hui — Réviser anatomie/.test(await txt('#dash-plan')), 'Plan du jour : « À faire aujourd\'hui — Réviser anatomie »');
