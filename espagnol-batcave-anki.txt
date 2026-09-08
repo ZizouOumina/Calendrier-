@@ -139,100 +139,100 @@ Se me ha {{c1::olvidado::se + me, involuntario}} el libro en casa.	Se me olvidó
 {{c1::Se::pasiva refleja}} observa una lesión en el molar.	Pasiva refleja: se + verbo en 3.ª persona. Registro científico: se observa, se produce, se ha demostrado.	espanol gramatica	Español::2 Gramática
 Es un molar {{c1::sano::que no está enfermo}}.	sano = con salud. 'Sensible' = que siente mucho; 'sensato' = que tiene juicio.	espanol gramatica	Español::2 Gramática
 El paciente {{c1::eventualmente::de vez en cuando}} nota dolor; {{c2::posiblemente::quizás}} sea la encía.	eventualmente = ocasionalmente. Para 'quizás': posiblemente, tal vez, en su caso.	espanol gramatica	Español::2 Gramática
-— ¿Vienes al parque? — {{c1::La verdad es que}} estoy agotado.	Introduce una confesión sincera o un matiz.	espanol formulas	Español::3 Fórmulas
-— ¿Qué has hecho hoy? — {{c1::Bueno, pues}} Anki, clase y poco más.	Muletilla para empezar a responder.	espanol formulas	Español::3 Fórmulas
-{{c1::A ver}}, ¿qué tenemos que entregar mañana?	Para pensar en voz alta o llamar la atención.	espanol formulas	Español::3 Fórmulas
-No pude venir, {{c1::es que}} tenía examen.	Introduce una excusa o una explicación.	espanol formulas	Español::3 Fórmulas
-Es un músculo, {{c1::o sea}}, un tejido que se contrae.	Reformular, explicar de otra manera.	espanol formulas	Español::3 Fórmulas
-Vamos a repasar {{c1::en plan}} rápido.	Coloquial, muy usado por los jóvenes: 'de manera', 'como'.	espanol formulas	Español::3 Fórmulas
-{{c1::Total, que}} al final no fuimos.	Resumir una historia larga.	espanol formulas	Español::3 Fórmulas
-{{c1::Vamos, que}} no tengo ni idea.	Concluir, resumir.	espanol formulas	Español::3 Fórmulas
-{{c1::El caso es que}} no encuentro los apuntes.	Introduce el problema real.	espanol formulas	Español::3 Fórmulas
-{{c1::Lo que pasa es que}} no entendí la pregunta.	Explicar la causa de algo.	espanol formulas	Español::3 Fórmulas
-{{c1::Digamos que}} no fue mi mejor examen.	Suavizar una afirmación.	espanol formulas	Español::3 Fórmulas
-Es un tirano, {{c1::por así decirlo}}.	Matizar una expresión fuerte.	espanol formulas	Español::3 Fórmulas
-— Hoy hay examen. — ¡{{c1::Qué va}}! Es la semana que viene.	Negar con fuerza: 'para nada'.	espanol formulas	Español::3 Fórmulas
-— He aprobado todo. — ¡{{c1::No me digas}}!	Sorpresa.	espanol formulas	Español::3 Fórmulas
-— Voy a estudiar diez horas. — ¡{{c1::Anda ya}}!	Incredulidad, 'no te creo'.	espanol formulas	Español::3 Fórmulas
-— Lo suspendió todo. — ¡{{c1::Qué fuerte}}!	Impacto, sorpresa fuerte.	espanol formulas	Español::3 Fórmulas
-{{c1::Menos mal}} que llevaba el paraguas.	Alivio: 'por suerte'.	espanol formulas	Español::3 Fórmulas
-— ¿Dónde está el aula 3? — {{c1::Ni idea}}.	No tener ninguna idea.	espanol formulas	Español::3 Fórmulas
-— ¿Arroz o pasta? — Me {{c1::da igual}}.	Indiferencia.	espanol formulas	Español::3 Fórmulas
-— Es por la izquierda. — Ah, {{c1::ya veo}}.	Entender.	espanol formulas	Español::3 Fórmulas
-{{c1::Vale}}, nos vemos a las tres.	De acuerdo (España).	espanol formulas	Español::3 Fórmulas
-¡{{c1::Venga}}, que llegamos tarde!	Animar, meter prisa; también para despedirse.	espanol formulas	Español::3 Fórmulas
-{{c1::Ojalá}} apruebe anatomía.	Deseo. Siempre con subjuntivo.	espanol formulas	Español::3 Fórmulas
-— No puedo ir. — ¡{{c1::Qué pena}}!	Lástima.	espanol formulas	Español::3 Fórmulas
-— Perdona el retraso. — Tranquilo, {{c1::no pasa nada}}.	Quitar importancia.	espanol formulas	Español::3 Fórmulas
-— ¿Vas a salir hoy? — {{c1::Ni de coña}}, tengo examen.	Muy coloquial: de ninguna manera.	espanol formulas	Español::3 Fórmulas
-{{c1::A mí me parece que}} este tema es más fácil.	Dar la opinión.	espanol formulas	Español::3 Fórmulas
-{{c1::Yo diría que}} hay tres tipos de caries.	Opinión prudente.	espanol formulas	Español::3 Fórmulas
-{{c1::Desde mi punto de vista}}, es mejor estudiar por la mañana.	Opinión, registro formal.	espanol formulas	Español::3 Fórmulas
-{{c1::No estoy del todo de acuerdo}} contigo.	Desacuerdo suave.	espanol formulas	Español::3 Fórmulas
-{{c1::Tienes razón, pero}} hay otra opción.	Conceder antes de contradecir.	espanol formulas	Español::3 Fórmulas
-— ¿Es difícil la asignatura? — {{c1::Depende}}.	Según el caso.	espanol formulas	Español::3 Fórmulas
-{{c1::En el fondo}}, tiene razón.	En realidad.	espanol formulas	Español::3 Fórmulas
-{{c1::Si te digo la verdad}}, no he estudiado.	Confesión.	espanol formulas	Español::3 Fórmulas
-¿{{c1::Te importa si}} abro la ventana?	Pedir permiso.	espanol formulas	Español::3 Fórmulas
-¿{{c1::Te apetece}} un café después de clase?	Proponer (apetecer = tener ganas de).	espanol formulas	Español::3 Fórmulas
-¿{{c1::Qué tal si}} repasamos juntos?	Proponer.	espanol formulas	Español::3 Fórmulas
-¿{{c1::Me echas una mano}} con esto?	Pedir ayuda.	espanol formulas	Español::3 Fórmulas
-¿{{c1::Me lo puedes repetir}}, por favor?	Pedir repetición.	espanol formulas	Español::3 Fórmulas
-¿{{c1::Cómo se dice}} esto en español?	Pedir una palabra.	espanol formulas	Español::3 Fórmulas
-¿{{c1::A qué te refieres}}?	Pedir aclaración.	espanol formulas	Español::3 Fórmulas
-¿{{c1::Te suena}} este apellido?	Resultar familiar.	espanol formulas	Español::3 Fórmulas
-{{c1::De hecho}}, ya lo había leído.	Confirmar reforzando: 'en realidad'.	espanol formulas	Español::3 Fórmulas
-{{c1::Por cierto}}, ¿a qué hora es la clase?	Cambiar de tema, 'a propósito'.	espanol formulas	Español::3 Fórmulas
-{{c1::En cuanto a}} la nota, no sé nada todavía.	Respecto a.	espanol formulas	Español::3 Fórmulas
-{{c1::Ya que estamos}}, repasamos también el tema 2.	Aprovechar la ocasión.	espanol formulas	Español::3 Fórmulas
-{{c1::Al fin y al cabo}}, es solo un parcial.	En definitiva.	espanol formulas	Español::3 Fórmulas
-{{c1::A fin de cuentas}}, lo importante es aprender.	En definitiva.	espanol formulas	Español::3 Fórmulas
-{{c1::En cualquier caso}}, te aviso mañana.	Pase lo que pase.	espanol formulas	Español::3 Fórmulas
-{{c1::De todas formas}}, no iba a ir.	De todos modos.	espanol formulas	Español::3 Fórmulas
-{{c1::Por lo visto}}, el examen es tipo test.	Según se dice, aparentemente.	espanol formulas	Español::3 Fórmulas
-{{c1::Según parece}}, hay dos convocatorias.	Aparentemente.	espanol formulas	Español::3 Fórmulas
-{{c1::Que yo sepa}}, no hay clase el viernes.	Hasta donde sé. Con subjuntivo.	espanol formulas	Español::3 Fórmulas
-{{c1::Si no me equivoco}}, el trigémino tiene tres ramas.	Prudencia al afirmar.	espanol formulas	Español::3 Fórmulas
-{{c1::Corrígeme si me equivoco}}, pero el esmalte no tiene células.	Afirmar con prudencia.	espanol formulas	Español::3 Fórmulas
-¿{{c1::Podría explicar de nuevo}} la última parte?	En clase, a un profesor (usted).	espanol formulas	Español::3 Fórmulas
-{{c1::No me queda claro}} el segundo punto.	Expresar una duda.	espanol formulas	Español::3 Fórmulas
-{{c1::Lo que quiero decir es que}} el proceso es reversible.	Aclarar lo dicho.	espanol formulas	Español::3 Fórmulas
-{{c1::Para resumir}}, hay tres fases.	Cerrar una exposición.	espanol formulas	Español::3 Fórmulas
-{{c1::Dicho esto}}, pasemos al siguiente punto.	Transición.	espanol formulas	Español::3 Fórmulas
-{{c1::En pocas palabras}}, es una infección.	Resumir.	espanol formulas	Español::3 Fórmulas
-— ¡Hola! ¿{{c1::Qué tal}}? — Bien, ¿y tú?	Saludo informal más común.	espanol formulas	Español::3 Fórmulas
-Me voy, ¡{{c1::hasta luego}}!	Despedida más común.	espanol formulas	Español::3 Fórmulas
-¡{{c1::Nos vemos}} mañana en clase!	Despedida.	espanol formulas	Español::3 Fórmulas
-{{c1::Perdona}}, ¿me dejas pasar?	Llamar la atención, disculparse (tú). Con usted: perdone.	espanol formulas	Español::3 Fórmulas
-{{c1::Lo siento}}, llego tarde.	Disculparse.	espanol formulas	Español::3 Fórmulas
-— ¿Quedamos a las cinco? — {{c1::Me parece bien}}.	Aceptar.	espanol formulas	Español::3 Fórmulas
-— ¿Me ayudas? — {{c1::Claro que sí}}.	Aceptar con energía.	espanol formulas	Español::3 Fórmulas
-— ¿Vendrás? — {{c1::Por supuesto}}.	Aceptar formalmente.	espanol formulas	Español::3 Fórmulas
-{{c1::Ahora mismo}} voy.	Inmediatamente.	espanol formulas	Español::3 Fórmulas
-{{c1::Enseguida}} vuelvo.	Muy pronto.	espanol formulas	Español::3 Fórmulas
-{{c1::Cuanto antes}}, mejor.	Lo más pronto posible.	espanol formulas	Español::3 Fórmulas
-{{c1::Poco a poco}} se aprende.	Progresivamente.	espanol formulas	Español::3 Fórmulas
-— ¿Lo entiendes? — {{c1::Más o menos}}.	Aproximadamente.	espanol formulas	Español::3 Fórmulas
-{{c1::Vale la pena}} leer este capítulo.	Merece el esfuerzo (también: merece la pena).	espanol formulas	Español::3 Fórmulas
-Después de la sesión de sport {{c1::estoy hecho polvo}}.	Estar agotado.	espanol formulas	Español::3 Fórmulas
-Esta clase de bioquímica {{c1::me suena a chino}}.	No entender nada.	espanol formulas	Español::3 Fórmulas
-{{c1::Echo de menos}} a mi familia.	Sentir la ausencia de alguien.	espanol formulas	Español::3 Fórmulas
-{{c1::Tengo ganas de}} aprobar el primer parcial.	Desear algo.	espanol formulas	Español::3 Fórmulas
-El profesor de anatomía {{c1::me cae bien}}.	Resultar simpático.	espanol formulas	Español::3 Fórmulas
-Tengo que {{c1::ponerme las pilas}} con el español.	Esforzarse más, activarse.	espanol formulas	Español::3 Fórmulas
-{{c1::Hazme caso}}: lee la guía docente.	Hacer caso = obedecer, prestar atención.	espanol formulas	Español::3 Fórmulas
-¿{{c1::Me estás tomando el pelo}}?	Burlarse, bromear.	espanol formulas	Español::3 Fórmulas
-No tenemos tiempo: {{c1::vamos al grano}}.	Ir a lo esencial.	espanol formulas	Español::3 Fórmulas
-{{c1::Estoy al día}} con las cartas de Anki.	No tener retraso.	espanol formulas	Español::3 Fórmulas
-¿{{c1::Quedamos}} a las cinco en la biblioteca?	Quedar = citarse con alguien.	espanol formulas	Español::3 Fórmulas
-{{c1::Me apunto}} al intercambio del domingo.	Apuntarse = inscribirse, unirse.	espanol formulas	Español::3 Fórmulas
-{{c1::Me he liado}} con los tiempos verbales.	Liarse = confundirse.	espanol formulas	Español::3 Fórmulas
-Hoy {{c1::he currado}} mucho.	Currar = trabajar (coloquial).	espanol formulas	Español::3 Fórmulas
-Esta aplicación {{c1::mola}}.	Molar = gustar (coloquial, España).	espanol formulas	Español::3 Fórmulas
-{{c1::Flipé}} con la nota.	Flipar = sorprenderse mucho (coloquial).	espanol formulas	Español::3 Fórmulas
-Tío, {{c1::qué pasada}} de examen.	Qué pasada = qué impresionante (coloquial).	espanol formulas	Español::3 Fórmulas
-{{c1::Me da vergüenza}} hablar en clase.	Sentir vergüenza (no 'embarazo').	espanol formulas	Español::3 Fórmulas
-{{c1::Cuídate}}, hasta mañana.	Despedida cariñosa.	espanol formulas	Español::3 Fórmulas
+— ¿Vienes al parque? — {{c1::La verdad es que::introduce una confesión sincera o un matiz}} estoy agotado.	Introduce una confesión sincera o un matiz.	espanol formulas	Español::3 Fórmulas
+— ¿Qué has hecho hoy? — {{c1::Bueno, pues::muletilla para empezar a responder}} Anki, clase y poco más.	Muletilla para empezar a responder.	espanol formulas	Español::3 Fórmulas
+{{c1::A ver::para pensar en voz alta o llamar la atención}}, ¿qué tenemos que entregar mañana?	Para pensar en voz alta o llamar la atención.	espanol formulas	Español::3 Fórmulas
+No pude venir, {{c1::es que::introduce una excusa o una explicación}} tenía examen.	Introduce una excusa o una explicación.	espanol formulas	Español::3 Fórmulas
+Es un músculo, {{c1::o sea::reformular, explicar de otra manera}}, un tejido que se contrae.	Reformular, explicar de otra manera.	espanol formulas	Español::3 Fórmulas
+Vamos a repasar {{c1::en plan::coloquial, muy usado por los jóvenes}} rápido.	Coloquial, muy usado por los jóvenes: 'de manera', 'como'.	espanol formulas	Español::3 Fórmulas
+{{c1::Total, que::resumir una historia larga}} al final no fuimos.	Resumir una historia larga.	espanol formulas	Español::3 Fórmulas
+{{c1::Vamos, que::concluir, resumir}} no tengo ni idea.	Concluir, resumir.	espanol formulas	Español::3 Fórmulas
+{{c1::El caso es que::introduce el problema real}} no encuentro los apuntes.	Introduce el problema real.	espanol formulas	Español::3 Fórmulas
+{{c1::Lo que pasa es que::explicar la causa de algo}} no entendí la pregunta.	Explicar la causa de algo.	espanol formulas	Español::3 Fórmulas
+{{c1::Digamos que::suavizar una afirmación}} no fue mi mejor examen.	Suavizar una afirmación.	espanol formulas	Español::3 Fórmulas
+Es un tirano, {{c1::por así decirlo::matizar una expresión fuerte}}.	Matizar una expresión fuerte.	espanol formulas	Español::3 Fórmulas
+— Hoy hay examen. — ¡{{c1::Qué va::negar con fuerza}}! Es la semana que viene.	Negar con fuerza: 'para nada'.	espanol formulas	Español::3 Fórmulas
+— He aprobado todo. — ¡{{c1::No me digas::sorpresa}}!	Sorpresa.	espanol formulas	Español::3 Fórmulas
+— Voy a estudiar diez horas. — ¡{{c1::Anda ya::incredulidad, 'no te creo'}}!	Incredulidad, 'no te creo'.	espanol formulas	Español::3 Fórmulas
+— Lo suspendió todo. — ¡{{c1::Qué fuerte::impacto, sorpresa fuerte}}!	Impacto, sorpresa fuerte.	espanol formulas	Español::3 Fórmulas
+{{c1::Menos mal::alivio}} que llevaba el paraguas.	Alivio: 'por suerte'.	espanol formulas	Español::3 Fórmulas
+— ¿Dónde está el aula 3? — {{c1::Ni idea::no tener ninguna idea}}.	No tener ninguna idea.	espanol formulas	Español::3 Fórmulas
+— ¿Arroz o pasta? — Me {{c1::da igual::indiferencia}}.	Indiferencia.	espanol formulas	Español::3 Fórmulas
+— Es por la izquierda. — Ah, {{c1::ya veo::entender}}.	Entender.	espanol formulas	Español::3 Fórmulas
+{{c1::Vale::de acuerdo}}, nos vemos a las tres.	De acuerdo (España).	espanol formulas	Español::3 Fórmulas
+¡{{c1::Venga::animar, meter prisa}}, que llegamos tarde!	Animar, meter prisa; también para despedirse.	espanol formulas	Español::3 Fórmulas
+{{c1::Ojalá::deseo}} apruebe anatomía.	Deseo. Siempre con subjuntivo.	espanol formulas	Español::3 Fórmulas
+— No puedo ir. — ¡{{c1::Qué pena::lástima}}!	Lástima.	espanol formulas	Español::3 Fórmulas
+— Perdona el retraso. — Tranquilo, {{c1::no pasa nada::quitar importancia}}.	Quitar importancia.	espanol formulas	Español::3 Fórmulas
+— ¿Vas a salir hoy? — {{c1::Ni de coña::muy coloquial}}, tengo examen.	Muy coloquial: de ninguna manera.	espanol formulas	Español::3 Fórmulas
+{{c1::A mí me parece que::dar la opinión}} este tema es más fácil.	Dar la opinión.	espanol formulas	Español::3 Fórmulas
+{{c1::Yo diría que::opinión prudente}} hay tres tipos de caries.	Opinión prudente.	espanol formulas	Español::3 Fórmulas
+{{c1::Desde mi punto de vista::opinión, registro formal}}, es mejor estudiar por la mañana.	Opinión, registro formal.	espanol formulas	Español::3 Fórmulas
+{{c1::No estoy del todo de acuerdo::desacuerdo suave}} contigo.	Desacuerdo suave.	espanol formulas	Español::3 Fórmulas
+{{c1::Tienes razón, pero::conceder antes de contradecir}} hay otra opción.	Conceder antes de contradecir.	espanol formulas	Español::3 Fórmulas
+— ¿Es difícil la asignatura? — {{c1::Depende::según el caso}}.	Según el caso.	espanol formulas	Español::3 Fórmulas
+{{c1::En el fondo::en realidad}}, tiene razón.	En realidad.	espanol formulas	Español::3 Fórmulas
+{{c1::Si te digo la verdad::confesión}}, no he estudiado.	Confesión.	espanol formulas	Español::3 Fórmulas
+¿{{c1::Te importa si::pedir permiso}} abro la ventana?	Pedir permiso.	espanol formulas	Español::3 Fórmulas
+¿{{c1::Te apetece::proponer}} un café después de clase?	Proponer (apetecer = tener ganas de).	espanol formulas	Español::3 Fórmulas
+¿{{c1::Qué tal si::proponer}} repasamos juntos?	Proponer.	espanol formulas	Español::3 Fórmulas
+¿{{c1::Me echas una mano::pedir ayuda}} con esto?	Pedir ayuda.	espanol formulas	Español::3 Fórmulas
+¿{{c1::Me lo puedes repetir::pedir repetición}}, por favor?	Pedir repetición.	espanol formulas	Español::3 Fórmulas
+¿{{c1::Cómo se dice::pedir una palabra}} esto en español?	Pedir una palabra.	espanol formulas	Español::3 Fórmulas
+¿{{c1::A qué te refieres::pedir aclaración}}?	Pedir aclaración.	espanol formulas	Español::3 Fórmulas
+¿{{c1::Te suena::resultar familiar}} este apellido?	Resultar familiar.	espanol formulas	Español::3 Fórmulas
+{{c1::De hecho::confirmar reforzando}}, ya lo había leído.	Confirmar reforzando: 'en realidad'.	espanol formulas	Español::3 Fórmulas
+{{c1::Por cierto::cambiar de tema, 'a propósito'}}, ¿a qué hora es la clase?	Cambiar de tema, 'a propósito'.	espanol formulas	Español::3 Fórmulas
+{{c1::En cuanto a::respecto a}} la nota, no sé nada todavía.	Respecto a.	espanol formulas	Español::3 Fórmulas
+{{c1::Ya que estamos::aprovechar la ocasión}}, repasamos también el tema 2.	Aprovechar la ocasión.	espanol formulas	Español::3 Fórmulas
+{{c1::Al fin y al cabo::en definitiva}}, es solo un parcial.	En definitiva.	espanol formulas	Español::3 Fórmulas
+{{c1::A fin de cuentas::en definitiva}}, lo importante es aprender.	En definitiva.	espanol formulas	Español::3 Fórmulas
+{{c1::En cualquier caso::pase lo que pase}}, te aviso mañana.	Pase lo que pase.	espanol formulas	Español::3 Fórmulas
+{{c1::De todas formas::de todos modos}}, no iba a ir.	De todos modos.	espanol formulas	Español::3 Fórmulas
+{{c1::Por lo visto::según se dice, aparentemente}}, el examen es tipo test.	Según se dice, aparentemente.	espanol formulas	Español::3 Fórmulas
+{{c1::Según parece::aparentemente}}, hay dos convocatorias.	Aparentemente.	espanol formulas	Español::3 Fórmulas
+{{c1::Que yo sepa::hasta donde sé}}, no hay clase el viernes.	Hasta donde sé. Con subjuntivo.	espanol formulas	Español::3 Fórmulas
+{{c1::Si no me equivoco::prudencia al afirmar}}, el trigémino tiene tres ramas.	Prudencia al afirmar.	espanol formulas	Español::3 Fórmulas
+{{c1::Corrígeme si me equivoco::afirmar con prudencia}}, pero el esmalte no tiene células.	Afirmar con prudencia.	espanol formulas	Español::3 Fórmulas
+¿{{c1::Podría explicar de nuevo::en clase, a un profesor}} la última parte?	En clase, a un profesor (usted).	espanol formulas	Español::3 Fórmulas
+{{c1::No me queda claro::expresar una duda}} el segundo punto.	Expresar una duda.	espanol formulas	Español::3 Fórmulas
+{{c1::Lo que quiero decir es que::aclarar lo dicho}} el proceso es reversible.	Aclarar lo dicho.	espanol formulas	Español::3 Fórmulas
+{{c1::Para resumir::cerrar una exposición}}, hay tres fases.	Cerrar una exposición.	espanol formulas	Español::3 Fórmulas
+{{c1::Dicho esto::transición}}, pasemos al siguiente punto.	Transición.	espanol formulas	Español::3 Fórmulas
+{{c1::En pocas palabras::resumir}}, es una infección.	Resumir.	espanol formulas	Español::3 Fórmulas
+— ¡Hola! ¿{{c1::Qué tal::saludo informal más común}}? — Bien, ¿y tú?	Saludo informal más común.	espanol formulas	Español::3 Fórmulas
+Me voy, ¡{{c1::hasta luego::despedida más común}}!	Despedida más común.	espanol formulas	Español::3 Fórmulas
+¡{{c1::Nos vemos::despedida}} mañana en clase!	Despedida.	espanol formulas	Español::3 Fórmulas
+{{c1::Perdona::llamar la atención, disculparse}}, ¿me dejas pasar?	Llamar la atención, disculparse (tú). Con usted: perdone.	espanol formulas	Español::3 Fórmulas
+{{c1::Lo siento::disculparse}}, llego tarde.	Disculparse.	espanol formulas	Español::3 Fórmulas
+— ¿Quedamos a las cinco? — {{c1::Me parece bien::aceptar}}.	Aceptar.	espanol formulas	Español::3 Fórmulas
+— ¿Me ayudas? — {{c1::Claro que sí::aceptar con energía}}.	Aceptar con energía.	espanol formulas	Español::3 Fórmulas
+— ¿Vendrás? — {{c1::Por supuesto::aceptar formalmente}}.	Aceptar formalmente.	espanol formulas	Español::3 Fórmulas
+{{c1::Ahora mismo::inmediatamente}} voy.	Inmediatamente.	espanol formulas	Español::3 Fórmulas
+{{c1::Enseguida::muy pronto}} vuelvo.	Muy pronto.	espanol formulas	Español::3 Fórmulas
+{{c1::Cuanto antes::lo más pronto posible}}, mejor.	Lo más pronto posible.	espanol formulas	Español::3 Fórmulas
+{{c1::Poco a poco::progresivamente}} se aprende.	Progresivamente.	espanol formulas	Español::3 Fórmulas
+— ¿Lo entiendes? — {{c1::Más o menos::aproximadamente}}.	Aproximadamente.	espanol formulas	Español::3 Fórmulas
+{{c1::Vale la pena::merece el esfuerzo}} leer este capítulo.	Merece el esfuerzo (también: merece la pena).	espanol formulas	Español::3 Fórmulas
+Después de la sesión de sport {{c1::estoy hecho polvo::estar agotado}}.	Estar agotado.	espanol formulas	Español::3 Fórmulas
+Esta clase de bioquímica {{c1::me suena a chino::no entender nada}}.	No entender nada.	espanol formulas	Español::3 Fórmulas
+{{c1::Echo de menos::sentir la ausencia de alguien}} a mi familia.	Sentir la ausencia de alguien.	espanol formulas	Español::3 Fórmulas
+{{c1::Tengo ganas de::desear algo}} aprobar el primer parcial.	Desear algo.	espanol formulas	Español::3 Fórmulas
+El profesor de anatomía {{c1::me cae bien::resultar simpático}}.	Resultar simpático.	espanol formulas	Español::3 Fórmulas
+Tengo que {{c1::ponerme las pilas::esforzarse más, activarse}} con el español.	Esforzarse más, activarse.	espanol formulas	Español::3 Fórmulas
+{{c1::Hazme caso::hacer caso = obedecer, prestar atención}}: lee la guía docente.	Hacer caso = obedecer, prestar atención.	espanol formulas	Español::3 Fórmulas
+¿{{c1::Me estás tomando el pelo::burlarse, bromear}}?	Burlarse, bromear.	espanol formulas	Español::3 Fórmulas
+No tenemos tiempo: {{c1::vamos al grano::ir a lo esencial}}.	Ir a lo esencial.	espanol formulas	Español::3 Fórmulas
+{{c1::Estoy al día::no tener retraso}} con las cartas de Anki.	No tener retraso.	espanol formulas	Español::3 Fórmulas
+¿{{c1::Quedamos::quedar = citarse con alguien}} a las cinco en la biblioteca?	Quedar = citarse con alguien.	espanol formulas	Español::3 Fórmulas
+{{c1::Me apunto::apuntarse = inscribirse, unirse}} al intercambio del domingo.	Apuntarse = inscribirse, unirse.	espanol formulas	Español::3 Fórmulas
+{{c1::Me he liado::liarse = confundirse}} con los tiempos verbales.	Liarse = confundirse.	espanol formulas	Español::3 Fórmulas
+Hoy {{c1::he currado::currar = trabajar}} mucho.	Currar = trabajar (coloquial).	espanol formulas	Español::3 Fórmulas
+Esta aplicación {{c1::mola::molar = gustar}}.	Molar = gustar (coloquial, España).	espanol formulas	Español::3 Fórmulas
+{{c1::Flipé::flipar = sorprenderse mucho}} con la nota.	Flipar = sorprenderse mucho (coloquial).	espanol formulas	Español::3 Fórmulas
+Tío, {{c1::qué pasada::qué pasada = qué impresionante}} de examen.	Qué pasada = qué impresionante (coloquial).	espanol formulas	Español::3 Fórmulas
+{{c1::Me da vergüenza::sentir vergüenza}} hablar en clase.	Sentir vergüenza (no 'embarazo').	espanol formulas	Español::3 Fórmulas
+{{c1::Cuídate::despedida cariñosa}}, hasta mañana.	Despedida cariñosa.	espanol formulas	Español::3 Fórmulas
 {{c1::Además::añadir}}, el esmalte protege la dentina.	Adición. Sinónimos: asimismo, igualmente, por otra parte.	espanol conectores	Español::4 Conectores
 {{c1::Asimismo::añadir, formal}}, se observa inflamación de la encía.	Adición formal.	espanol conectores	Español::4 Conectores
 {{c1::Por otra parte::otro aspecto}}, el coste del tratamiento es elevado.	Añadir un aspecto distinto.	espanol conectores	Español::4 Conectores

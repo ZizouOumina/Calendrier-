@@ -534,6 +534,12 @@ SOUS = {'conjugacion':'1 Conjugación','gramatica':'2 Gramática','formulas':'3 
 DECKS = {}
 for i,(tag,nom) in enumerate(SOUS.items()):
     DECKS[tag] = genanki.Deck(1958473021 + i + 1, 'Español::' + nom)
+# Les formules de conversation portent un indice tiré de leur fonction (le trou seul serait ambigu).
+def _indice(extra):
+    m = re.split(r'[.:;(]', extra, 1)[0].strip().rstrip('.')
+    m = m[0].lower() + m[1:] if m else 'fórmula'
+    return m[:48]
+C = [(re.sub(r'\{\{c(\d+)::([^:}]+)\}\}', lambda mm: '{{c'+mm.group(1)+'::'+mm.group(2)+'::'+_indice(x)+'}}', t) if tag == 'formulas' else t, x, tag) for (t, x, tag) in C]
 seen=set()
 for i,(t,x,tag) in enumerate(C):
     assert '{{c1::' in t, t
