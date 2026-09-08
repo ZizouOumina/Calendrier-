@@ -7862,66 +7862,36 @@
      19 octobre la grille passe d'elle-meme a la phase suivante, et le 15 mars a la grille type.
      Les rappels Google Calendar gardent les titres de la grille type (pas de doublon avec les
      series existantes) ; seule la consigne suit la periode. */
-  var GRILLE_S0_SEMAINE = [
-    ['05:30','Sport'],['06:30','Douche + préparation'],['06:45','Petit-déjeuner + Coran (1 page)'],
-    ['07:20','Español · gramática'],['08:50','Español · conjugación y fórmulas'],['09:20','Español · Anki'],
-    ['10:20','Español · escribir'],['11:20','Español · hablar'],['12:20','Déjeuner + lectura'],['12:40','😴 Micro-sieste'],
-    ['13:00','Español · registro académico'],['14:50','Collation entraînement'],['15:00','Español · conversación real'],
-    ['17:00','Temps libre'],['20:00','Dîner'],['20:30','Serie en VO + diario en español'],
-    ['21:30','Collation soir'],['21:45','Douche + brossage de dents'],['21:55','Coucher']
-  ];
   var PERIODES_GRILLE = [
-    {id:'es-0', nom:'Español · semaine 0', debut:'2026-09-08', fin:'2026-09-13', suite:'Español · phase 1',
-     description:'Remise à niveau intensive avant les cours : grammaire, conjugaison, écrit, oral, lecture, conversation.',
-     grille: {
-       weekday: GRILLE_S0_SEMAINE,
-       wednesday: [['05:30','Español · Anki matinal']].concat(GRILLE_S0_SEMAINE.slice(1).map(function(b){ return b[1] === 'Español · Anki' ? [b[0], 'Español · cartas de errores'] : b; })),
-       friday: [
-         ['05:30','Español · escribir largo'],['06:30','Douche + préparation'],['06:45','Petit-déjeuner + Coran (1 page)'],
-         ['07:20','Español · gramática'],['08:50','Español · conjugación y fórmulas'],['09:20','Español · Anki'],
-         ['10:20','Español · escribir'],['11:20','Español · hablar'],['12:20','Déjeuner + lectura'],
-         ['13:15','Trajet mosquée'],['13:30',"Jumu'ah (khutba + prière ~14h)"],['14:30','😴 Micro-sieste'],['14:50','Collation entraînement'],
-         ['15:00','Español · conversación real'],['17:00','Temps libre'],['20:00','Dîner'],['20:30','Serie en VO + diario en español'],
-         ['21:30','Collation soir'],['21:45','Douche + brossage de dents'],['21:55','Coucher']
-       ],
-       saturday: [
-         ['05:30','Sport'],['06:30','Douche + préparation'],['06:45','Petit-déjeuner + Coran (1 page)'],
-         ['07:20','Español · gramática'],['08:50','Español · conjugación y fórmulas'],['09:20','Español · Anki'],
-         ['10:20','Español · escribir'],['11:20','Español · hablar'],['12:20','Déjeuner + lectura'],['13:10','😴 Micro-sieste'],
-         ['13:30','🛒 Courses de la semaine'],['15:30','Rangement des courses'],
-         ['16:00','Español · errores de la semana'],['17:00','Español · conversación real'],['18:00','Español · DELE'],
-         ['19:00','Dîner'],['19:30','Temps libre'],['20:30','Collation soir'],['20:45','Douche + brossage de dents'],['21:00','Coucher']
-       ],
-       weekend: [
-         ['05:30','Español · Anki matinal'],['06:30','Douche + préparation'],['06:45','Petit-déjeuner + Coran (1 page)'],
-         ['07:20','Español · gramática (repaso)'],['08:50','Español · conjugación y fórmulas'],['09:20','Español · simulación de examen'],
-         ['10:20','Español · corrección y oral'],['11:20','Español · balance de errores'],['12:20','Déjeuner + lectura'],['13:10','😴 Micro-sieste'],
-         ['13:30','Español · preparar la semana 1'],['14:30','🍲 Batch cooking de la semaine'],['16:30','Repos — après-midi libre'],
-         ['19:00','Dîner'],['19:30','Temps libre'],['20:30','Collation soir'],['20:45','Douche + brossage de dents'],['21:00','Coucher']
-       ]
-     }},
+    /* Semaine 0 : les cours n'ont pas commencé, mais la grille dentaire reste intacte.
+       Comme dans les phases suivantes, SEULS les blocs « Projets perso » changent de nom. */
+    {id:'es-0', nom:'Español · semaine 0', debut:'2026-09-11', fin:'2026-09-13', suite:'Español · phase 1',
+     description:'Remise à niveau avant les cours : les blocs Projets perso deviennent des blocs Español, le reste de la journée ne bouge pas.',
+     renommages: {
+       'Projets perso 1': {defaut:'Español · gramática', weekend:'Español · simulación'},
+       'Projets perso 2': {defaut:'Español · escribir', friday:'Español · tutor', saturday:'Español · tutor', weekend:'Español · balance de la semana'},
+       'Projets perso 3': {defaut:'Español · hablar', saturday:'Español · DELE'},
+       'Projets perso matinal': {friday:'Español · escribir largo', weekend:'Español · Anki y errores'}
+     }, consignes: CONSIGNES_PERIODE_ES},
     {id:'es-1', nom:'Español · phase 1', debut:'2026-09-14', fin:'2026-10-18', suite:'Español · phase 2 (Projets perso 1 revient)',
      description:'Avec les cours : les trois blocs Projets perso sont des blocs Español.',
      renommages: {
        'Projets perso 1': {defaut:'Español · gramática', weekend:'Español · simulación'},
        'Projets perso 2': {defaut:'Español · escribir', friday:'Español · tutor', saturday:'Español · tutor', weekend:'Español · balance de la semana'},
        'Projets perso 3': {defaut:'Español · preparar la clase', saturday:'Español · DELE'},
-       'Projets perso matinal': {friday:'Español · escribir largo', weekend:'Español · Anki y errores'},
-       'Déjeuner': 'Déjeuner + lectura'
+       'Projets perso matinal': {friday:'Español · escribir largo', weekend:'Español · Anki y errores'}
      }, consignes: CONSIGNES_PERIODE_ES},
     {id:'es-2', nom:'Español · phase 2', debut:'2026-10-19', fin:'2026-11-29', suite:'Español · phase 3 (un bloc par jour)',
      description:"L'espagnol d'examen : annales en espagnol à 13:00, préparation de la classe à 14:00 ; Projets perso 1 et le vendredi matin reviennent.",
      renommages: {
        'Projets perso 2': {defaut:'Español · annales', friday:'Español · tutor', saturday:'Español · tutor', weekend:'Español · balance de la semana'},
        'Projets perso 3': {defaut:'Español · preparar la clase'},
-       'Projets perso matinal': {weekend:'Español · Anki y errores'},
-       'Déjeuner': 'Déjeuner + lectura'
+       'Projets perso matinal': {weekend:'Español · Anki y errores'}
      }, consignes: CONSIGNES_PERIODE_ES},
     {id:'es-3', nom:'Español · phase 3', debut:'2026-11-30', fin:'2027-03-14', suite:'grille type',
      description:'Vers le C1 : un bloc Español par jour à 13:00, le reste revient aux projets.',
      renommages: {
-       'Projets perso 2': {defaut:'Español', friday:'Español · tutor', saturday:'Español · DELE', weekend:'Español · balance de la semana'},
-       'Déjeuner': 'Déjeuner + lectura'
+       'Projets perso 2': {defaut:'Español', friday:'Español · tutor', saturday:'Español · DELE', weekend:'Español · balance de la semana'}
      }, consignes: CONSIGNES_PERIODE_ES}
   ];
   function periodeGrille(iso){

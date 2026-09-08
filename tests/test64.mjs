@@ -59,7 +59,7 @@ console.log('\n== 231) Phase 1 (mercredi 16 septembre) : blocs Projets perso ren
     };
   });
   ok(g.w1120 === 'Español · gramática' && g.w1300 === 'Español · escribir' && g.w1400 === 'Español · preparar la clase', 'lun-mer-jeu : 11:20 gramática, 13:00 escribir, 14:00 preparar la clase : ' + [g.w1120, g.w1300, g.w1400].join(' / '));
-  ok(g.w1220 === 'Déjeuner + lectura', 'le déjeuner porte la lecture : ' + g.w1220);
+  ok(g.w1220 === 'Déjeuner', 'le déjeuner reste le déjeuner : aucun bloc hors Projets perso n\'est renommé (' + g.w1220 + ')');
   ok(g.w0720 === 'Anki 1' && g.w1530 === 'Cours', 'le dentaire ne bouge pas : ' + g.w0720 + ', ' + g.w1530);
   ok(g.f0530 === 'Español · escribir largo' && g.f1120 === 'Español · tutor', 'vendredi : 05:30 escribir largo, 11:20 tutor : ' + g.f0530 + ' / ' + g.f1120);
   ok(g.s1700 === 'Español · tutor' && g.s1800 === 'Español · DELE', 'samedi : 17:00 tutor, 18:00 DELE : ' + g.s1700 + ' / ' + g.s1800);
@@ -113,22 +113,33 @@ console.log('\n== 231) Phase 1 (mercredi 16 septembre) : blocs Projets perso ren
   await ctx.close();
 }
 
-console.log('\n== 232) Semaine 0 (jeudi 10 septembre) : journée entière Español, dentaire absent, conversation hors compteur ==');
+console.log('\n== 232) Semaine 0 (vendredi 11 au dimanche 13) : SEULS les blocs Projets perso changent ==');
 {
-  const { ctx, fr } = await ouvrir('2026-09-10T08:00:00+02:00');
+  const { ctx, fr } = await ouvrir('2026-09-11T08:00:00+02:00');
   const g = await fr.evaluate(() => {
-    const grille = window.__bcGrille('weekday', '2026-09-10');
-    const at = h => (grille.find(b => b[0] === h) || [])[1];
-    return { p: (window.__bcPeriode('2026-09-10') || {}).id, a0720: at('07:20'), a0850: at('08:50'), a1500: at('15:00'), a2030: at('20:30'), a0530: at('05:30'),
-             cible: window.__bcCibleEspanol('2026-09-10'), anki: grille.some(b => b[1] === 'Anki 1'), releve: document.querySelector('#bc-grille .v').textContent,
-             mercredi: (window.__bcGrille('wednesday', '2026-09-09').find(b => b[0] === '05:30') || [])[1],
-             dimanche: (window.__bcGrille('weekend', '2026-09-13').find(b => b[0] === '09:20') || [])[1] };
+    const base = window.__bcGrille ? null : null;
+    const gv = window.__bcGrille('friday', '2026-09-11');
+    const at = (grille, h) => (grille.find(b => b[0] === h) || [])[1];
+    const gd = window.__bcGrille('weekend', '2026-09-13');
+    return { p: (window.__bcPeriode('2026-09-11') || {}).id,
+             avant: (window.__bcPeriode('2026-09-10') || {}).id || null,
+             v0530: at(gv, '05:30'), v0720: at(gv, '07:20'), v0820: at(gv, '08:20'), v0920: at(gv, '09:20'),
+             v1020: at(gv, '10:20'), v1120: at(gv, '11:20'), v1220: at(gv, '12:20'), v1530: at(gv, '15:30'),
+             d1120: at(gd, '11:20'), d0920: at(gd, '09:20'),
+             releve: document.querySelector('#bc-grille .v').textContent,
+             lignes: gv.length };
   });
-  ok(g.p === 'es-0' && g.a0720 === 'Español · gramática' && g.a0850 === 'Español · conjugación y fórmulas' && g.a1500 === 'Español · conversación real', 'jeudi de la semaine 0 : gramática 07:20, conjugación 08:50, conversación real 15:00');
-  ok(g.a0530 === 'Sport' && !g.anki && g.a2030 === 'Serie en VO + diario en español', 'sport gardé, pas de bloc Anki dentaire, soirée série : ' + g.a0530 + ' / ' + g.a2030);
-  ok(g.cible >= 300 && g.cible <= 340, 'cible Español du jour ≈ 5 h 20 de travail (obtenu ' + g.cible + ' min)');
-  ok(/semaine 0 · J-3$/.test(g.releve), 'relevé GRILLE : « Español · semaine 0 · J-3 » (obtenu « ' + g.releve + ' »)');
-  ok(g.mercredi === 'Español · Anki matinal' && g.dimanche === 'Español · simulación de examen', 'mercredi 05:30 Anki matinal, dimanche 09:20 simulación : ' + g.mercredi + ' / ' + g.dimanche);
+  ok(g.p === 'es-0', 'le vendredi 11 est bien dans la semaine 0 (obtenu ' + g.p + ')');
+  ok(g.avant === null, 'le jeudi 10 n\'est dans aucune période : la grille reste la grille type');
+  ok(g.v0720 === 'Anki 1' && g.v0820 === 'Anki 2' && g.v0920 === 'Cartes du dernier cours',
+     'les blocs de révision dentaire sont intacts : ' + g.v0720 + ' / ' + g.v0820 + ' / ' + g.v0920);
+  ok(g.v1220 === 'Déjeuner' && g.v1530 === 'Cours',
+     'déjeuner et cours inchangés : ' + g.v1220 + ' / ' + g.v1530);
+  ok(g.v0530 === 'Español · escribir largo' && g.v1020 === 'Español · gramática' && g.v1120 === 'Español · tutor',
+     'seuls les Projets perso deviennent Español : ' + g.v0530 + ' / ' + g.v1020 + ' / ' + g.v1120);
+  ok(g.d0920 === 'Annale complète' && g.d1120 === 'Español · simulación',
+     'dimanche : annale complète gardée, Projets perso 1 en simulación : ' + g.d0920 + ' / ' + g.d1120);
+  ok(/semaine 0 · J-2$/.test(g.releve), 'relevé GRILLE : « Español · semaine 0 · J-2 » (obtenu « ' + g.releve + ' »)');
   await ctx.close();
 }
 
