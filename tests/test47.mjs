@@ -1,5 +1,6 @@
 /* Surcharge progressive : journal series × reps, double progression, cible, PR, courbe. */
 import { chromium } from 'playwright';
+import { saisirSeries, effacerSaisie, valeursSaisie } from './saisir.mjs';
 const URL = 'http://127.0.0.1:8199/host.html';
 let errs = 0;
 const ok = (c,m) => { if(c) console.log('  ok  '+m); else { errs++; console.log('  FAIL '+m); } };
@@ -31,8 +32,8 @@ console.log('\n== 107) Première séance : cible = tours × bas de fourchette ==
   const t = await fr.evaluate(() => document.querySelector('.sport-card.today').innerText);
   ok(/Haut lourd/.test(t) && /Tractions/.test(t) && /première séance/.test(t), 'la séance du jour est Haut lourd et n\'a pas d\'historique');
   ok(/cible 6\/6\/6\/6/.test(t), 'Tractions 4×6-12 → cible 6/6/6/6 : ' + (t.match(/cible [^\n]*/) || [''])[0]);
-  const ph = await fr.evaluate(() => document.querySelector('.sport-card.today [data-series]').placeholder);
-  ok(ph === '6/6/6/6', 'le champ propose la cible en placeholder (' + ph + ')');
+  const pre = await valeursSaisie(fr);
+  ok(pre === '6/6/6/6', 'la saisie au pas s\'ouvre sur la cible (' + pre + ')');
   ok(/1 · Tractions \+ Dips/.test(t) && /repos 45 s \/ 90 s/.test(t), 'les paires et les repos du lundi sont affichés');
   await ctx.close();
 }
@@ -52,19 +53,16 @@ console.log('\n== 107b) Montée en charge : semaine 1 = moitié des tours ==');
 console.log('\n== 108) Saisir des séries enregistre le journal et coche l\'exercice ==');
 {
   const { ctx, fr, page } = await ouvrir(LUNDI);
-  await fr.evaluate(() => {
-    const inp = document.querySelector('.sport-card.today [data-series]');   /* Tractions */
-    inp.value = '8/7/6/6'; inp.dispatchEvent(new Event('change', {bubbles:true}));
-  });
+  await saisirSeries(fr, [8, 7, 6, 6]);   /* Tractions */
   await page.waitForTimeout(250);
   const log = await local(fr, 'batcave-sport-log');
   ok(Array.isArray(log) && log.length === 1 && log[0].exo === 'Tractions' && JSON.stringify(log[0].series) === '[8,7,6,6]', 'journal : Tractions 8/7/6/6 (' + JSON.stringify(log && log[0] && log[0].series) + ')');
   const st = await local(fr, 'batcave-sport-2026-10-12');
   ok(st && st['Haut lourd-0'] === true, 'l\'exercice est coché automatiquement');
   ok(await fr.evaluate(() => document.querySelector('.sport-card.today li').classList.contains('checked')), 'la ligne apparaît cochée');
-  await fr.evaluate(() => { const inp = document.querySelector('.sport-card.today [data-series]'); inp.value = ''; inp.dispatchEvent(new Event('change', {bubbles:true})); });
+  await effacerSaisie(fr);
   await page.waitForTimeout(200);
-  ok((await local(fr, 'batcave-sport-log')).length === 0 && (await local(fr, 'batcave-sport-2026-10-12'))['Haut lourd-0'] === false, 'vider → journal vide et case décochée');
+  ok((await local(fr, 'batcave-sport-log')).length === 0 && (await local(fr, 'batcave-sport-2026-10-12'))['Haut lourd-0'] === false, 'effacer → journal vide et case décochée');
   await ctx.close();
 }
 
@@ -92,7 +90,7 @@ console.log('\n== 110) Record, panneau de progression et courbe ==');
     {id:'a', date:'2026-10-05', type:'Haut lourd', exo:'Tractions', series:[6,5,5,5], charge:0, unite:'reps'},
     {id:'b', date:'2026-10-08', type:'Haut volume', exo:'Tractions', series:[7,6,5,5], charge:0, unite:'reps'}
   ]});
-  await fr.evaluate(() => { const inp = document.querySelector('.sport-card.today [data-series]'); inp.value = '8/7/6/6'; inp.dispatchEvent(new Event('change', {bubbles:true})); });
+  await saisirSeries(fr, [8, 7, 6, 6]);
   await page.waitForTimeout(250);
   const t = await fr.evaluate(() => document.querySelector('.sport-card.today').innerText);
   ok(/PR/.test(t), 'nouveau volume record → badge PR');

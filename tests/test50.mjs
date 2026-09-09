@@ -1,6 +1,7 @@
 /* Relecture finale : décocher retire les séries, copie SYNC sans id en double, objectifs
    recalculés à l'ouverture de l'onglet, relevé SAUVEGARDE, touches d'habitudes en ligne. */
 import { chromium } from 'playwright';
+import { saisirSeries, valeursSaisie } from './saisir.mjs';
 const URL = 'http://127.0.0.1:8199/host.html';
 let errs = 0;
 const ok = (c,m) => { if(c) console.log('  ok  '+m); else { errs++; console.log('  FAIL '+m); } };
@@ -27,10 +28,7 @@ console.log('\n== 150) Décocher un exercice retire ses séries du jour ==');
 {
   const { ctx, fr, page } = await ouvrir(MARDI);
   await fr.evaluate(() => document.querySelector('.nav-btn[data-page="sport"]').click());
-  await fr.evaluate(() => {
-    const inp = document.querySelector('.sport-card.today [data-series]');
-    inp.value = '6/6/5'; inp.dispatchEvent(new Event('change', {bubbles:true}));
-  });
+  await saisirSeries(fr, [6, 6, 5]);
   await page.waitForTimeout(200);
   let log = await local(fr, 'batcave-sport-log');
   ok(Array.isArray(log) && log.length === 1 && log[0].exo === 'Split squat bulgare', 'les séries sont dans le journal (' + (log && log.length) + ' entrée)');
@@ -42,8 +40,8 @@ console.log('\n== 150) Décocher un exercice retire ses séries du jour ==');
   const st = await local(fr, 'batcave-sport-2026-09-08');
   ok(Array.isArray(log) && log.length === 0, 'décoché → le journal du jour est vidé pour cet exercice (' + log.length + ' entrée)');
   ok(st && st['Bas complet-0'] === false, 'et la case reste décochée dans l\'état de la séance');
-  const champ = await fr.evaluate(() => document.querySelector('.sport-card.today [data-series]').value);
-  ok(champ === '', 'le champ de séries est vide après re-rendu');
+  const champ = await fr.evaluate(() => document.querySelector('.sport-card.today .saisie [data-valider]').textContent.trim());
+  ok(champ === 'Enregistrer', 'le bloc de saisie est revenu à l\'état « rien d\'enregistré » (' + champ + ')');
   await ctx.close();
 }
 
@@ -77,7 +75,7 @@ console.log('\n== 152) Objectifs recalculés à l\'ouverture de l\'onglet ==');
   const avant = await fr.evaluate(() => { document.querySelector('.nav-btn[data-page="objectifs"]').click(); return document.getElementById('obj-liste').innerText; });
   /* une saisie faite ailleurs (journal de sport) doit se voir au retour sur Objectifs */
   await fr.evaluate(() => { document.querySelector('.nav-btn[data-page="sport"]').click(); });
-  await fr.evaluate(() => { const inp = document.querySelector('.sport-card.today [data-series]'); inp.value = '9/9/8'; inp.dispatchEvent(new Event('change', {bubbles:true})); });
+  await saisirSeries(fr, [9, 9, 8]);
   await page.waitForTimeout(200);
   await fr.evaluate(() => { document.querySelector('[data-obj-vue="trimestre"]').click(); document.querySelector('.nav-btn[data-page="objectifs"]').click(); });
   await page.waitForTimeout(150);
