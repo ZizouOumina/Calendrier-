@@ -3,7 +3,7 @@
 Copie de référence du programme appliqué dans la Batcave (onglet Sport), commencé le lundi 14 septembre 2026 (premier jour de cours).
 
 ## Le cadre
-- Quatre séances de 46 à 50 minutes au parc, à 05:30 : lundi haut lourd, mardi bas complet, jeudi haut volume, samedi bras, épaules et mollets. Mercredi, vendredi et dimanche off. Chaque séance finit par des abdos lestés ; le cou travaille en flexion et extension le lundi et le jeudi, en inclinaison latérale le mardi ; les trapèzes le jeudi et le samedi.
+- Quatre séances de 47 à 53 minutes au parc, à 05:30 : lundi haut lourd, mardi bas complet, jeudi haut volume, samedi bras, épaules et mollets. Mercredi, vendredi et dimanche off. Chaque séance finit par des abdos lestés ; le cou travaille en flexion et extension le lundi et le jeudi, en inclinaison latérale le mardi ; les trapèzes le jeudi et le samedi ; les avant-bras le lundi (curl inversé) et le samedi (curl des poignets).
 - Paires antagonistes en supersets : exercice A puis exercice B, repos court entre A et B, repos plus long avant la paire suivante.
 - Chaque exercice se lit « tours × fourchette » : 4×6-12 = quatre séries, de six à douze répétitions.
 - Le parc est à 1 km : l'aller se fait en courant, allure conversation (5 à 6 min), c'est l'échauffement général ; l'échauffement haut se réduit alors à la mobilité des épaules et aux séries légères, l'échauffement bas garde ses mouvements. Retour en marchant les jours haut du corps (lundi, jeudi, samedi), en trottinant le mardi. Jamais plus vite qu'une allure où l'on peut parler : les tractions du lundi ne doivent rien perdre.
@@ -11,7 +11,7 @@ Copie de référence du programme appliqué dans la Batcave (onglet Sport), comm
 
 ## Les quatre séances
 
-### Lundi · Haut lourd (50 min)
+### Lundi · Haut lourd (53 min)
 Repos par paire : 45 s entre A et B, puis 90 s · 45 s / 75 s · 30 s / 60 s.
 
 | Paire | Exercice | Tours × fourchette |
@@ -23,8 +23,9 @@ Repos par paire : 45 s entre A et B, puis 90 s · 45 s / 75 s · 30 s / 60 s.
 | 3 A | Curl barre basse | 2 × 10-15 |
 | 3 B | Extension triceps barre basse | 2 × 10-15 |
 | 4 A | Relevés de jambes suspendus | 4 × 8-15 |
-| 4 B | Flexion du cou | 3 × 12-20 |
-| 5 A | Extension du cou | 3 × 12-20 |
+| 4 B | Curl inversé lesté | 3 × 12-20 |
+| 5 A | Flexion du cou | 3 × 12-20 |
+| 5 B | Extension du cou | 3 × 12-20 |
 
 ### Mardi · Bas complet (47 min)
 
@@ -51,7 +52,7 @@ Repos par paire : 45 s entre A et B, puis 90 s · 45 s / 75 s · 30 s / 60 s.
 | 4 B | Flexion du cou | 3 × 12-20 |
 | 5 A | Extension du cou | 3 × 12-20 |
 
-### Samedi · Bras, épaules, mollets (46 min)
+### Samedi · Bras, épaules, mollets (49 min)
 
 | Paire | Exercice | Tours × fourchette |
 |---|---|---|
@@ -63,9 +64,21 @@ Repos par paire : 45 s entre A et B, puis 90 s · 45 s / 75 s · 30 s / 60 s.
 | 3 B | Shrugs suspendus | 3 × 12-15 |
 | 4 A | Mollets une jambe | 3 × 15-20 par jambe |
 | 4 B | Dragon flag négatif | 3 × 5-8 |
-| 5 A | Dead hang | 3 × 30-45 s |
+| 5 A | Curl des poignets lesté | 3 × 15-25 |
+| 5 B | Dead hang | 3 × 30-45 s |
 
 Tractions et dips reviennent lundi et jeudi avec des fourchettes différentes ; leur cible se déduit du dernier journal, quel que soit le jour. Le samedi, jamais de lest sur le haut du corps.
+
+## Les avant-bras — deux groupes, pas un
+
+L'avant-bras est deux groupes opposés, et le programme n'en travaillait qu'un sans le savoir. Tractions, dead hang, shrugs suspendus et relevés suspendus chargent les **fléchisseurs et la poigne** en permanence ; les **extenseurs et le brachio-radial** — la masse visible sur le dessus, près du coude — ne recevaient rien. C'est ce déséquilibre qui donne un avant-bras plat vu de dessus malgré une bonne poigne, et c'est aussi celui qui finit en épicondylite chez ceux qui tirent beaucoup. Même logique que pour le cou : on travaille les deux sens, pas un seul.
+
+| Jour | Exercice | Ce qu'il vise | Exécution |
+|---|---|---|---|
+| Lundi | Curl inversé lesté, 3 × 12-20 | Brachio-radial et extenseurs — le côté négligé | Prise pronation (paumes vers le bas), coudes collés au corps, montée lente, descente contrôlée sur trois temps. La charge est plus légère qu'au curl classique : c'est normal, ce n'est pas le biceps qui travaille. |
+| Samedi | Curl des poignets lesté, 3 × 15-25 | Fléchisseurs — l'épaisseur | Avant-bras posé sur la cuisse, paume vers le haut, poignet dans le vide. Amplitude complète : on laisse le poids rouler jusqu'au bout des doigts, puis on referme. Fourchette haute en répétitions, l'avant-bras répond au volume. |
+
+Les deux se font avec un poids en main : au parc, ou **à la maison le soir si le créneau du matin déborde** — même règle que le cou, on ne les saute jamais. Surcharge : +1 répétition sur la première série, ou +1 à 2 kg quand toutes les séries touchent le haut de la fourchette. Le dead hang du samedi reste : c'est de l'endurance de poigne, pas de la construction.
 
 ## Le cou — faire grossir, pas entretenir
 
