@@ -6269,7 +6269,17 @@
          flag négatif (samedi). Les gainages isométriques ont disparu : ils entretiennent,
          ils ne font pas grossir ;
        — trapèzes : shrugs suspendus jeudi et samedi (supérieurs), face pulls jeudi et samedi
-         (moyens et inférieurs) — c'est ce couple qui tient l'épaule et la posture. */
+         (moyens et inférieurs) — c'est ce couple qui tient l'épaule et la posture ;
+       — AVANT-BRAS : l'avant-bras est DEUX groupes, et tout le programme n'en travaillait
+         qu'un. Les tractions, le dead hang, les shrugs suspendus et les relevés suspendus
+         chargent les flechisseurs et la poigne en permanence ; les extenseurs et le
+         brachio-radial (la masse visible sur le dessus, pres du coude) ne recevaient rien.
+         C'est le desequilibre qui donne un avant-bras plat vu de dessus, et c'est aussi
+         celui qui finit en epicondylite quand on tire beaucoup. Donc deux exercices, un
+         par groupe, deux seances par semaine : curl inverse lundi (brachio-radial et
+         extenseurs), curl des poignets samedi (flechisseurs, l'epaisseur). Les deux se
+         font avec une charge en main : ils passent aussi bien au parc qu'a la maison le
+         soir si le creneau du matin deborde -- meme regle que le cou. */
   var PROGRAMME_DEBUT = '2026-09-14';
   /* Le programme va du premier jour de cours au dernier jour de la phase 3 d'espagnol :
      c'est la fenetre que le reacteur annonce le matin du jour 1, quand il n'y a encore
@@ -6283,11 +6293,12 @@
     return daysBetween(new Date(PROGRAMME_DEBUT + 'T00:00:00'), new Date(PROGRAMME_FIN + 'T00:00:00')) + 1;
   }
   var SESSIONS = [
-    {type:'Haut lourd', days:[1], duree:'50 min', repos:['45 s / 90 s', '45 s / 75 s', '30 s / 60 s'], exercises:[
+    {type:'Haut lourd', days:[1], duree:'53 min', repos:['45 s / 90 s', '45 s / 75 s', '30 s / 60 s'], exercises:[
       {name:'Tractions', reps:'4×6-12'},{name:'Dips', reps:'4×8-15'},
       {name:'Rows australiens pieds surélevés', reps:'3×10-15'},{name:'Pompes déclinées', reps:'3×8-12'},
       {name:'Curl barre basse', reps:'2×10-15'},{name:'Extension triceps barre basse', reps:'2×10-15'},
       {name:'Relevés de jambes suspendus', reps:'4×8-15'},
+      {name:'Curl inversé lesté', reps:'3×12-20'},
       {name:'Flexion du cou', reps:'3×12-20'},{name:'Extension du cou', reps:'3×12-20'}
     ]},
     {type:'Bas complet', days:[2], duree:'47 min', exercises:[
@@ -6303,11 +6314,12 @@
       {name:'Relevés de genoux latéraux suspendus', reps:'3×10-15/côté'},
       {name:'Flexion du cou', reps:'3×12-20'},{name:'Extension du cou', reps:'3×12-20'}
     ]},
-    {type:'Bras · épaules · mollets', days:[6], duree:'46 min', exercises:[
+    {type:'Bras · épaules · mollets', days:[6], duree:'49 min', exercises:[
       {name:'Chin-ups prise serrée', reps:'3×6-12'},{name:'Pompes archer ou diamant', reps:'3×8-12'},
       {name:'Curl barre basse', reps:'3×10-15'},{name:'Extension triceps barre basse', reps:'3×10-15'},
       {name:'Face pulls', reps:'3×15-20'},{name:'Shrugs suspendus', reps:'3×12-15'},
       {name:'Mollets une jambe', reps:'3×15-20/jambe'},{name:'Dragon flag négatif', reps:'3×5-8'},
+      {name:'Curl des poignets lesté', reps:'3×15-25'},
       {name:'Dead hang', reps:'3×30-45s'}
     ]},
     {type:'Off', days:[3,5,0], duree:'', exercises:[]}
@@ -10149,7 +10161,7 @@
      cle du jour, sinon « defaut ». Les memes textes sont dans les series recurrentes de
      l'agenda Google (titres « 🦇 Bloc · consigne courte »). */
   var CONSIGNES = {
-    'Sport': "1 km en courant jusqu'au parc, allure conversation : c'est l'échauffement. Séance du jour dans l'onglet Sport, surcharge progressive : les charges à faire sont déjà calculées. La fin de séance est le cou (flexion et extension lundi et jeudi, latéral mardi) et les abdos lestés — si le créneau est trop court, le cou se fait à la maison le soir, il ne demande qu'une serviette et un poids. Retour en marchant, en trottinant le mardi.",
+    'Sport': "1 km en courant jusqu'au parc, allure conversation : c'est l'échauffement. Séance du jour dans l'onglet Sport, surcharge progressive : les charges à faire sont déjà calculées. La fin de séance, dans l'ordre : les abdos lestés, le cou (flexion et extension lundi et jeudi, latéral mardi), puis l'avant-bras (curl inversé lundi, curl des poignets samedi). Ces trois-là ne demandent qu'un poids en main — si le créneau déborde, ils se font à la maison le soir, jamais on ne les saute. Retour en marchant, en trottinant le mardi.",
     'Anki matinal': "Jour off de sport : une heure de cartes de dentaire, deux Pomodoros 25 + 5. Toutes les échéances, puis les cartes des matières faibles.",
     'Projets perso matinal': "Exécution pure d'une tâche déjà décidée la veille : montage, import, rédaction, fiches, code. Jamais une décision.",
     'Anki 1': "Toutes les échéances de dentaire, deux Pomodoros 25 + 5 sans téléphone. File vide avant la fin : cartes du cours suivant à partir des notes.",
