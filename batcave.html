@@ -480,7 +480,10 @@
     #habits-grid > .card > .streak-display{ grid-column:1; align-items:baseline; }
     #habits-grid > .card > .streak-display .streak-num{ font-size:30px; }
     #habits-grid > .card > .streak-display .streak-unit{ font-size:10.5px; letter-spacing:0.05em; }
-    #habits-grid > .card > .card-row{ grid-column:1; font-size:11px; margin:0; }
+    /* « dimanche seulement · Record : … » passe a la ligne la ou « lundi seulement » tient :
+       la carte des photos etait 5 px plus haute que ses voisines. On reserve deux lignes
+       pour toutes, comme pour les cellules de temps du tableau de bord. */
+    #habits-grid > .card > .card-row{ grid-column:1; font-size:11px; margin:0; min-height:24px; }
     #habits-grid > .card > .card-actions{ grid-column:2; grid-row:2 / span 2; margin:0; align-self:stretch; }
     #habits-grid > .card > .card-actions .btn{ height:100%; min-height:54px; padding:0 15px; white-space:nowrap; }
     #habits-grid > .card > .heat-toggle{ grid-column:1 / -1; }
@@ -3047,7 +3050,7 @@
      place dans le quota de 5000 documents et embrouille les sauvegardes, sans que rien ne
      la lise jamais. On la signale ; la suppression reste ton geste. */
   var CLES_CONNUES = ['addictions','budget-limits','business','coran','courses','dash-more','duaas','duree-bloc','sport-log','objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','kcal-ajustement','gcal-ecriture','reinit','fc-migration-v1','charge','shopify-boutique','journees','examens-heures','vacances','jours-exclus',
-    'espagnol','examens','fc-prix-icloud-3','fixed-charges','goals','goals-depart','saisons','insights-hist','last-restore-drill','habitlog','habits','habits-seed-v2','habits-seed-v3','habits-seed-v4','objectifs-v5-espanol',
+    'espagnol','examens','fc-prix-icloud-3','fixed-charges','goals','goals-depart','saisons','insights-hist','last-restore-drill','habitlog','habits','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','objectifs-v5-espanol',
     'horizon','last-auto-backup','last-manual-backup','last-bilan-prompt','last-compaction','last-open','last-rotation','notion-url',
     'pomodial-purge','projets','report','revision','revision-fusionnee','revue','sante','sauvegarde','sessions',
     'shopify-last-order-count','taches','timer','transactions','undo-stack','undo-toast','cloud-reload-at','cloud-toast','notion-cache','anki',
@@ -3961,7 +3964,7 @@
      ni synchronisee ni rattrapee) et efface ses copies locales AVANT le rattrapage, sinon
      elles repartiraient vers le cloud. La meme remise a zero peut donc etre decidee depuis
      l'appli ou directement dans le cloud. */
-  var REINIT_GARDER = ['habits','habits-seed-v2','habits-seed-v3','habits-seed-v4','objectifs-v5-espanol','fixed-charges','fc-prix-icloud-3','budget-limits','examens','examens-heures','journees','vacances','jours-exclus','notion-url','shopify-boutique',
+  var REINIT_GARDER = ['habits','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','objectifs-v5-espanol','fixed-charges','fc-prix-icloud-3','budget-limits','examens','examens-heures','journees','vacances','jours-exclus','notion-url','shopify-boutique',
                        'objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','horizon','goals-depart','saisons','gcal-ecriture','duree-bloc','dash-more','revision-fusionnee','reinit','copie-vierge'];
   var REINIT_PREFIXES_GARDER = ['pomodial-', 'coherence-ignore-'];
   function reinitGarder(cle){
@@ -5244,10 +5247,20 @@
     {id:'core-es-formulas', label:'Les dix formules du jour', icon:'💬'},
     {id:'core-es-lectura', label:'20 pages lues en espagnol', icon:'📖'}
   ];
+  /* Deux rituels de suivi du corps, demandes le 9 septembre. La pesee est HEBDOMADAIRE et
+     non quotidienne : un poids se lit sur une tendance, pas sur une journee, et se peser
+     tous les jours fait prendre des decisions sur du bruit. Toujours le lundi, au reveil,
+     a jeun, apres les toilettes, avant de boire — les memes conditions, sinon la
+     comparaison ne vaut rien. */
+  var HABIT_SEED_V5 = [
+    {id:'core-pesee', label:'Pesée du lundi, à jeun', icon:'⚖️', jours:[1]},
+    {id:'core-photos', label:'Photos du corps (2 min)', icon:'📸', jours:[0], quinzaine:true}
+  ];
   var HABIT_GENERATIONS = [
     {cle: 'batcave-habits-seed-v2', graines: HABIT_SEED_V2},
     {cle: 'batcave-habits-seed-v3', graines: HABIT_SEED_V3},
-    {cle: 'batcave-habits-seed-v4', graines: HABIT_SEED_V4}
+    {cle: 'batcave-habits-seed-v4', graines: HABIT_SEED_V4},
+    {cle: 'batcave-habits-seed-v5', graines: HABIT_SEED_V5}
   ];
   var habitsState = load('batcave-habits', null);
   if(habitsState !== null && !Array.isArray(habitsState)) habitsState = null;
@@ -5273,7 +5286,7 @@
     return ajoutees;
   }
   if(habitsState === null){
-    habitsState = HABIT_SEED.concat(HABIT_SEED_V2, HABIT_SEED_V3, HABIT_SEED_V4);
+    habitsState = HABIT_SEED.concat(HABIT_SEED_V2, HABIT_SEED_V3, HABIT_SEED_V4, HABIT_SEED_V5);
     save('batcave-habits', habitsState);
     HABIT_GENERATIONS.forEach(function(g){ save(g.cle, true); });
   } else {
@@ -5377,12 +5390,27 @@
     var j = habitJour(hb);
     return j === null ? null : [j];
   }
-  function habitVautLe(hb, dow){
-    var js = habitJours(hb);
-    return !hb.archived && (js === null || js.indexOf(dow) > -1);
+  /* Une habitude d'une QUINZAINE (hb.quinzaine) ne vaut qu'un jour sur deux semaines : les
+     photos du corps, par exemple. Le rythme se compte depuis le premier jour du programme,
+     donc les dimanches concernes sont le 27 septembre, le 11 octobre, et ainsi de suite —
+     jamais « une semaine sur deux » a partir d'aujourd'hui, ce qui deriverait. Il faut la
+     DATE et pas seulement le jour de la semaine : d'ou le second parametre, optionnel,
+     qui vaut aujourd'hui par defaut pour tous les appels qui n'en ont pas besoin. */
+  function quinzaineActive(iso){
+    var d = iso || todayISO;
+    if(d < PROGRAMME_DEBUT) return false;
+    var j = daysBetween(new Date(PROGRAMME_DEBUT + 'T00:00:00'), new Date(d + 'T00:00:00'));
+    return Math.floor(j / 7) % 2 === 1;   /* semaines 2, 4, 6... du programme */
   }
-  function habitsDuJour(dow){
-    return habitsState.filter(function(h){ return habitVautLe(h, dow); });
+  function habitVautLe(hb, dow, iso){
+    var js = habitJours(hb);
+    if(hb.archived) return false;
+    if(js !== null && js.indexOf(dow) === -1) return false;
+    if(hb.quinzaine && !quinzaineActive(iso)) return false;
+    return true;
+  }
+  function habitsDuJour(dow, iso){
+    return habitsState.filter(function(h){ return habitVautLe(h, dow, iso); });
   }
   function dowDe(iso){ return new Date(iso + 'T00:00:00').getDay(); }
   function habitParId(id){
@@ -6325,12 +6353,16 @@
     {type:'Off', days:[3,5,0], duree:'', exercises:[]}
   ];
   var TYPE_BY_DAY = {1:'Haut lourd',2:'Bas complet',3:'Off',4:'Haut volume',5:'Off',6:'Bras · épaules · mollets',0:'Off'};
-  /* Montée en charge : semaines 1-2 moitié des tours, 3-4 trois quarts, ensuite complet. */
+  /* Montée en charge : deux semaines à la moitié des tours, puis le programme complet.
+     Sa décision, prise le 9 septembre : il veut le volume entier au bout de deux semaines
+     plutôt qu'un palier intermédiaire à trois quarts. C'est un doublement du volume d'un
+     coup en semaine 3 — si les courbatures font sauter une séance cette semaine-là, la
+     réduction de charge de l'onglet Bilan est là pour ça. */
   function semaineProgramme(iso){
     var j = daysBetween(new Date(PROGRAMME_DEBUT + 'T00:00:00'), new Date((iso || todayISO) + 'T00:00:00'));
     return j < 0 ? 0 : Math.floor(j / 7) + 1;
   }
-  function facteurTours(iso){ var w = semaineProgramme(iso); return w <= 0 ? 1 : (w <= 2 ? 0.5 : (w <= 4 ? 0.75 : 1)); }
+  function facteurTours(iso){ var w = semaineProgramme(iso); return (w > 0 && w <= 2) ? 0.5 : 1; }
   function toursDuJour(f){ return Math.max(1, Math.round(f.series * facteurTours())); }
   function joursEntrainement(){ return Object.keys(TYPE_BY_DAY).filter(function(d){ return TYPE_BY_DAY[d] !== 'Off'; }).length; }
   var DAY_NAMES = {1:'Lun',2:'Mar',3:'Mer',4:'Jeu',5:'Ven',6:'Sam',0:'Dim'};
@@ -7001,6 +7033,11 @@
     return mesuresState.filter(function(m){ return m && m.date; })
       .slice().sort(function(a, b){ return String(a.date).localeCompare(String(b.date)); });
   }
+  /* ===== Seance de reference =====
+     Le premier jour du programme, on ne fait pas la seance normale : on mesure le point de
+     depart. Sans ce chiffre, la surcharge progressive part du bas de la fourchette et on
+     ne saura jamais ce qu'on valait au debut. */
+  function seanceReferenceDue(){ return todayISO === PROGRAMME_DEBUT; }
   function mesureDue(){
     /* proposée à partir du 1er de chaque mois, tant que le mois n'a pas sa mesure */
     return !mesureDuMois(moisCourant());
@@ -7947,7 +7984,7 @@
     if(m === 'habitudes_pct'){
       jours.forEach(function(iso){
         if(jourExclu(iso)) return;
-        var duJour = habitsDuJour(dowDe(iso)); if(!duJour.length) return;
+        var duJour = habitsDuJour(dowDe(iso), iso); if(!duJour.length) return;
         var faits = duJour.filter(function(h){ return (habitLog[h.id] || []).indexOf(iso) > -1; }).length;
         somme += faits / duJour.length; n++;
       });
@@ -8664,6 +8701,7 @@
     }
     /* Le test du mois : trier par sangsues et réécrire les dix pires cartes. */
     if(copieViergeDue()) items.push({pri:0.5, icon:'🌱', text:'Copie vierge à prendre — avant la première saisie, pour pouvoir revenir exactement à aujourd\u2019hui', action:{type:'vierge'}});
+    if(seanceReferenceDue()) items.push({pri:0.6, icon:'🧪', text:'Séance de référence — aujourd\u2019hui on mesure le point de départ, on ne suit pas la séance normale', action:{type:'sport'}});
     if(mesureDue()) items.push({pri:2.7, icon:'📏', text:'Mensurations du mois — cou, bras et taille au mètre ruban' + (mesuresTriees().length ? '' : ' (première mesure : c\u2019est le point de départ)'), action:{type:'mesure'}});
     if(testAnkiDu()) items.push({pri:2.6, icon:'🧪', text:'Test du mois Anki — trie par Lapses et réécris tes dix pires cartes' + (ankiState && ankiState.sangsues ? ' (' + ankiState.sangsues + ' sangsue' + (ankiState.sangsues > 1 ? 's' : '') + ' étiquetée' + (ankiState.sangsues > 1 ? 's' : '') + ')' : ''), action:{type:'test-anki'}});
 
@@ -8764,6 +8802,8 @@
         right = '<button class="btn btn-primary" data-plan-anki="1" style="padding:4px 10px; font-size:11px; flex-shrink:0;">🍅 Anki</button>';
       } else if(it.action && it.action.type === 'mesure'){
         right = '<button class="btn" data-plan-mesure="1" style="padding:4px 10px; font-size:11px; flex-shrink:0;">📏 Mesurer</button>';
+      } else if(it.action && it.action.type === 'sport'){
+        right = '<button class="btn btn-primary" data-ouvrir="sport" style="padding:4px 10px; font-size:11px; flex-shrink:0;">Ouvrir</button>';
       } else if(it.action && it.action.type === 'vierge'){
         right = '<button class="btn btn-primary" data-plan-vierge="1" style="padding:4px 10px; font-size:11px; flex-shrink:0;">🌱 Prendre</button>';
       } else if(it.action && it.action.type === 'test-anki'){
@@ -9650,7 +9690,7 @@
     var parts = [];
     /* filtré sur le jour de CETTE date : une habitude du samedi ne doit pas compter
        comme ratée du dimanche au vendredi dans la courbe des 30 jours. */
-    var actifs = habitsDuJour(dowDe(iso));
+    var actifs = habitsDuJour(dowDe(iso), iso);
     if(actifs.length){
       var faits = actifs.filter(function(h){ return (habitLog[h.id]||[]).indexOf(iso) > -1; }).length;
       parts.push(Math.round(100*faits/actifs.length));
@@ -9676,7 +9716,7 @@
      le score n'est pas un zero merite : c'est un ecran vide. Le reacteur affiche alors le
      rang du jour dans le programme au lieu d'un « 0 % À reprendre » qui accueille mal. */
   function jourEntame(iso){
-    var actifs = habitsDuJour(dowDe(iso));
+    var actifs = habitsDuJour(dowDe(iso), iso);
     if(actifs.some(function(h){ return (habitLog[h.id]||[]).indexOf(iso) > -1; })) return true;
     var ms = (iso === todayISO) ? mealState : load('batcave-meals-'+iso, null);
     if(ms && mealNutritionTotals(ms, iso).totals.kcal > 0) return true;
@@ -9939,7 +9979,7 @@
       var sum=0, joursComptes=0;
       validDays.forEach(function(d){
         /* chaque jour n'est jugé que sur les habitudes qui s'y appliquent */
-        var duJour = habitsDuJour(dowDe(d));
+        var duJour = habitsDuJour(dowDe(d), d);
         if(!duJour.length) return;
         var doneCount = duJour.filter(function(h){ return (habitLog[h.id]||[]).indexOf(d)>-1; }).length;
         sum += doneCount/duJour.length;
