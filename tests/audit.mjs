@@ -61,9 +61,11 @@ for(const p of pages){
     const txt = sec ? (txtAnki ? sec.innerText.split(txtAnki).join(' ') : sec.innerText) : '';
     const pb = [];
     // valeurs cassées visibles
-    ['undefined','NaN','[object Object]','Infinity','null'].forEach(m => {
+    ['undefined','NaN','[object Object]','Infinity'].forEach(m => {
       if(txt.includes(m)) pb.push('valeur cassée « '+m+' »');
     });
+    /* « null » seul est une valeur cassée ; « nulle part » est du français. */
+    if(/\bnull\b/.test(txt)) pb.push('valeur cassée « null »');
     // décimales à l'anglaise dans le texte affiché (hors dates jj.mm et versions)
     const pts = (txt.match(/\b\d+\.\d+\s*(h|€|%|\/5|L|kg)?/g)||[]).filter(t => /[hL€%]|\/5|kg/.test(t));
     if(pts.length) pb.push('décimale à point : ' + [...new Set(pts)].slice(0,4).join(', '));

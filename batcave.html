@@ -873,7 +873,13 @@
   .reactor-legend{ display:flex; gap:16px; font-family:var(--font-mono); font-size:11px; color:var(--ink-dim); flex-wrap:wrap; justify-content:center; margin-bottom:14px; }
   .reactor-legend span::before{ content:''; display:inline-block; width:12px; height:4px; margin-right:7px; vertical-align:middle; }
   .reactor-legend .l-hab::before{ background:var(--dom-corps); } .reactor-legend .l-rev::before{ background:var(--dom-etudes); } .reactor-legend .l-proj::before{ background:var(--dom-argent); }
-  .mon-suivi .temps-grid{ grid-template-columns:repeat(auto-fit, minmax(120px, 1fr)); }
+  /* trois compteurs (révision, projets, espagnol) doivent tenir sur UNE ligne dans la
+     colonne Suivi : à 120 px de minimum ils passaient à la ligne et coûtaient 90 px de
+     hauteur au tableau de bord. */
+  .mon-suivi .temps-grid{ grid-template-columns:repeat(3, minmax(0, 1fr)); gap:8px; }
+  .mon-suivi .temps-cell .tv{ font-size:30px; }
+  .mon-suivi .temps-cell .tl{ font-size:10px; letter-spacing:0.08em; }
+  @media (max-width:780px){ .mon-suivi .temps-grid{ grid-template-columns:repeat(auto-fit, minmax(110px, 1fr)); } }
   .temps-cell{ background:transparent; border:none; padding:4px 4px 0; }
   .temps-cell .tl{ font-family:var(--font-mono); font-size:11px; letter-spacing:0.14em; color:var(--ink-dim); }
   .temps-cell .tv{ font-size:38px; }
@@ -2127,6 +2133,27 @@
 
       </div>
 
+      <!-- Espagnol : les heures que le minuteur enregistre sous « Español ». Elles sortent
+           de « Projets perso » et ont leur propre objectif ; sans ce panneau, on ne sait pas
+           où elles atterrissent. -->
+      <div class="panel sub-panel" id="es-panel">
+        <div class="sub-head"><h3>🇪🇸 Espagnol</h3><span class="sub-note" id="es-note">—</span></div>
+        <p class="sub-note" style="margin-bottom:12px; line-height:1.65;">Tout ce que le minuteur enregistre sous <b style="color:var(--ink-dim);">Español</b> : les blocs de la grille pendant les phases (gramática, escribir, preparar la clase, annales…) et les Pomodoros Español lancés à la main. Ces heures <b style="color:var(--ink-dim);">ne comptent pas</b> dans « Projets perso » : elles ont leur propre objectif et leur propre ligne dans le bilan de la semaine.</p>
+        <div class="stat-grid" style="grid-template-columns:repeat(auto-fit, minmax(150px, 1fr)); margin-bottom:16px;" id="es-stats"></div>
+        <p class="sub-note" style="margin-bottom:8px;">Temps d'espagnol — 30 derniers jours</p>
+        <div id="es-chart"></div>
+        <div class="two-col" style="margin-top:18px;">
+          <div>
+            <p class="sub-note" style="margin-bottom:8px;">Par tâche — 7 derniers jours</p>
+            <div class="mini-list" id="es-taches-7"></div>
+          </div>
+          <div>
+            <p class="sub-note" style="margin-bottom:8px;">Par tâche — 30 derniers jours</p>
+            <div class="mini-list" id="es-taches-30"></div>
+          </div>
+        </div>
+      </div>
+
       <!-- Anki : saisi à la main depuis la page publiée, lu tout seul depuis le fichier local. -->
       <div class="panel sub-panel" id="anki-panel" hidden>
         <div class="sub-head"><h3>🃏 Anki</h3><span class="sub-note" id="anki-maj">—</span></div>
@@ -2664,6 +2691,9 @@
      Posé ici, tout en haut, pour que la page ne s'affiche jamais dans le mauvais thème
      avant de basculer. */
   var THEME_JOUR_DEBUT = 7, THEME_JOUR_FIN = 19;
+  /* Par défaut : AUTOMATIQUE — clair de 7 h à 19 h, sombre le soir. Le bouton 🌗 de la barre
+     force le clair ou le sombre en un clic, et le réglage vit sur l'appareil, jamais dans la
+     sauvegarde : l'iPhone au soleil et le Mac dans le noir n'ont pas le même besoin. */
   function themeChoisi(){
     try{ var v = localStorage.getItem('bc-theme'); return (v === 'jour' || v === 'nuit') ? v : 'auto'; }
     catch(e){ return 'auto'; }
@@ -2694,6 +2724,7 @@
   }
   appliquerTheme();
   function basculerTheme(){
+    /* automatique (défaut) → clair → sombre → automatique */
     var suite = {auto:'jour', jour:'nuit', nuit:'auto'};
     try{ localStorage.setItem('bc-theme', suite[themeChoisi()]); }catch(e){}
     appliquerTheme();
@@ -8525,10 +8556,13 @@
     var jours = weekRange(0), NOMS = ['DIM','LUN','MAR','MER','JEU','VEN','SAM'];
     var maxMin = 60;
     var lignes = jours.map(function(d){
+      /* minutesOnProj inclut l'espagnol : le prévu doit l'inclure aussi, sinon la barre
+         « réalisé » dépasse la barre « prévu » pendant les phases Español. */
       var c = cibleJourMinutes(cleJournee(dowDe(d)), d), passe = d <= todayISO;
+      var cProj = c.proj + (c.es || 0);
       var rev = passe ? minutesOn(d) : 0, proj = passe ? minutesOnProj(d) : 0;
-      maxMin = Math.max(maxMin, c.rev, c.proj, rev, proj);
-      return {d: d, passe: passe, rev: rev, proj: proj, cRev: c.rev, cProj: c.proj};
+      maxMin = Math.max(maxMin, c.rev, cProj, rev, proj);
+      return {d: d, passe: passe, rev: rev, proj: proj, cRev: c.rev, cProj: cProj};
     });
     var h = function(m){ return Math.round(100 * m / maxMin); }, hh = function(m){ return (m/60).toFixed(1).replace('.', ','); };
     el.innerHTML = lignes.map(function(l){
@@ -9025,7 +9059,7 @@
       for(var i = 0; i < 7; i++){
         var d = new Date(deb); d.setDate(d.getDate() + i);
         var iso = localISO(d), c = cibleJourMinutes(cleJournee(d.getDay()), iso);
-        prevu += c.rev + c.proj;
+        prevu += c.rev + c.proj + (c.es || 0);   /* tout le travail prévu, espagnol compris */
         var f = minutesJour(iso, 'cours') + minutesJour(iso, 'projet');
         fait += f; if(f > 0) jours++;
       }
@@ -9321,7 +9355,8 @@
 
     /* Les trois compteurs du jour, côte à côte : c'est la question qu'on se pose le plus
        souvent en ouvrant la page — combien j'ai bossé, et sur quoi. */
-    var revMin = todayRevisionMinutes(), projMin = minutesOnProj(todayISO);
+    /* projMin exclut l'espagnol : les mêmes minutes ne peuvent pas remplir deux cellules */
+    var revMin = todayRevisionMinutes(), projMin = minutesOnProjSeuls(todayISO);
     var cibleRev = revisionTarget() * 60;
     var rep = reportDuJour();
     function celluleTemps(label, min, cible, reporte, dom){
@@ -9339,21 +9374,32 @@
     document.getElementById('dash-temps').innerHTML =
       celluleTemps('📚 Révision', revMin, cibleRev, rep.rev, 'rev') +
       celluleTemps('💻 Projets perso', projMin, projetsTarget()*60 || null, rep.proj, 'proj') +
-      (function(){ var e = minutesEspanol(todayISO), c = cibleEspanolJour(todayISO); return (e || c) ? celluleTemps('🇪🇸 Español', e, c || null, 0, 'es') : ''; })();
+      /* La cellule Español ne se cache plus quand la journée n'a pas de bloc : sinon on ne
+         sait pas où atterrissent ces heures, et on croit qu'elles ne sont pas comptées.
+         Elle affiche 0,0 h sans cible les jours où la grille n'en prévoit pas. */
+      celluleTemps('🇪🇸 Español', minutesEspanol(todayISO), cibleEspanolJour(todayISO) || null, 0, 'es');
     var sem = chargeRestanteSemaine();
     var hh = function(m){ return (m/60).toFixed(1).replace('.', ','); };
     var semEl = document.getElementById('dash-semaine');
     if(semEl){
-      var tout = !sem.rev.restant && !sem.proj.restant;
+      /* Les trois charges de la semaine viennent de la GRILLE du jour, jour par jour : elles
+         suivent la phase Español, le mode partiels, les TP, les vacances et les jours exclus
+         sans qu'on saisisse quoi que ce soit. L'espagnol n'apparaît que quand la grille en
+         prévoit — hors phase, la ligne se tait au lieu d'afficher un zéro. */
+      var ch = cibleHebdo(0);
+      var tout = !sem.rev.restant && !sem.proj.restant && !sem.es.restant;
       semEl.innerHTML = tout
-        ? '✅ Objectifs de la semaine atteints — ' + hh(sem.rev.fait) + ' h de révision, ' + hh(sem.proj.fait) + ' h de projets.'
-        : texteChargeReduite() + 'Semaine : <b>' + hh(sem.rev.restant) + ' h</b> de révision restantes sur ' + String(cibleHebdo(0).rev).replace('.', ',') +
-          ' · <b>' + hh(sem.proj.restant) + ' h</b> de projets sur ' + String(cibleHebdo(0).proj).replace('.', ',') +
+        ? '✅ Objectifs de la semaine atteints — ' + hh(sem.rev.fait) + ' h de révision, ' + hh(sem.proj.fait) + ' h de projets' + (ch.es ? ', ' + hh(sem.es.fait) + ' h d\'espagnol' : '') + '.'
+        : texteChargeReduite() + 'Semaine : <b>' + hh(sem.rev.restant) + ' h</b> de révision restantes sur ' + String(ch.rev).replace('.', ',') +
+          /* en phase 1, les trois blocs « Projets perso » sont de l'espagnol : la grille ne
+             prévoit aucun projet cette semaine-là, et « sur 0 » ne veut rien dire */
+          (ch.proj ? ' · <b>' + hh(sem.proj.restant) + ' h</b> de projets sur ' + String(ch.proj).replace('.', ',') : '') +
+          (ch.es ? ' · <b>' + hh(sem.es.restant) + ' h</b> d\'espagnol sur ' + String(ch.es).replace('.', ',') : '') +
           ' · <b>' + sem.jours + '</b> jour' + (sem.jours > 1 ? 's' : '') + ' (soit ~' +
-          hh((sem.rev.restant + sem.proj.restant) / sem.jours) + ' h/jour)';
+          hh((sem.rev.restant + sem.proj.restant + sem.es.restant) / sem.jours) + ' h/jour)';
     }
     majReacteur();
-    var totalJourMin = revMin + projMin;
+    var totalJourMin = revMin + projMin + minutesEspanol(todayISO);
     document.getElementById('dash-temps-total').textContent =
       totalJourMin ? (totalJourMin/60).toFixed(1).replace('.', ',') + ' h au total' : 'rien encore aujourd\'hui';
     renderSemaineBarres();
@@ -9429,8 +9475,10 @@
   }
   function weekStats(days){
     var validDays = days.filter(function(d){ return d<=todayISO; });
-    var revMin=0, projMin=0;
-    days.forEach(function(d){ revMin += minutesOn(d); projMin += minutesOnProj(d); });
+    var revMin=0, projMin=0, esMin=0;
+    /* l'espagnol est un « projet » pour la grille, mais il a sa propre ligne : sans elle,
+       cinq heures d'espagnol se cachent dans « Projets perso » et on ne les voit jamais. */
+    days.forEach(function(d){ revMin += minutesOn(d); projMin += minutesOnProj(d); esMin += minutesEspanol(d); });
     /* dépenses VARIABLES uniquement : les charges fixes tombent toutes le 1er du mois et
        écraseraient la comparaison d'une semaine à l'autre (cf. t.fixed). */
     var dep = txState.filter(function(t){ return days.indexOf(t.date)>-1 && t.type==='Dépense' && !t.fixed; }).reduce(function(s,t){return s+Number(t.montant);},0);
@@ -9471,12 +9519,13 @@
     var planMin = 0, faitMin = 0;
     validDays.forEach(function(d){
       var c = cibleJourMinutes(cleJournee(dowDe(d)), d);
-      planMin += c.rev + c.proj;
+      /* tout le travail prévu, espagnol compris : le réalisé (minutesOnProj) l'inclut */
+      planMin += c.rev + c.proj + (c.es || 0);
       faitMin += minutesOn(d) + minutesOnProj(d);
     });
     var n = validDays.length || 1;
     return {
-      revH: revMin/60, projH: projMin/60, dep: dep, habitPct: habitPct,
+      revH: revMin/60, projH: projMin/60, esH: esMin/60, projHorsEs: Math.max(0, projMin - esMin)/60, dep: dep, habitPct: habitPct,
       planMin: planMin, faitMin: faitMin, fidelite: planMin ? Math.min(100, Math.round(100 * faitMin / planMin)) : 0,
       sleepH: sleepDays ? sleepSum/sleepDays : 0,
       waterL: waterSum/n,
@@ -9493,7 +9542,8 @@
     var prev = weekStats(weekRange(-1));
     var rows = [
       {icon:'📚', label:'Révision', cur:cur.revH, prev:prev.revH, unit:'h', higher:true},
-      {icon:'💻', label:'Projets perso', cur:cur.projH, prev:prev.projH, unit:'h', higher:true},
+      {icon:'💻', label:'Projets perso', cur:cur.projHorsEs, prev:prev.projHorsEs, unit:'h', higher:true},
+      {icon:'🇪🇸', label:'Espagnol', cur:cur.esH, prev:prev.esH, unit:'h', higher:true},
       {icon:'💶', label:'Dépenses variables', cur:cur.dep, prev:prev.dep, unit:'€', higher:false},
       {icon:'✅', label:'Habitudes tenues', cur:cur.habitPct, prev:prev.habitPct, unit:'%', higher:true},
       {icon:'😴', label:'Sommeil / nuit', cur:cur.sleepH, prev:prev.sleepH, unit:'h', higher:true},
@@ -9528,10 +9578,10 @@
     var hh = function(m){ return (m/60).toFixed(1).replace('.', ','); };
     var maxMin = 1;
     var lignes = jours.map(function(d){
-      var c = cibleJourMinutes(cleJournee(dowDe(d)), d), plan = c.rev + c.proj;
+      var c = cibleJourMinutes(cleJournee(dowDe(d)), d), plan = c.rev + c.proj + (c.es || 0);
       var fait = d <= todayISO ? minutesOn(d) + minutesOnProj(d) : null;
       maxMin = Math.max(maxMin, plan, fait || 0);
-      return {d: d, plan: plan, fait: fait, rev: d <= todayISO ? minutesOn(d) : 0, proj: d <= todayISO ? minutesOnProj(d) : 0, cRev: c.rev, cProj: c.proj};
+      return {d: d, plan: plan, fait: fait, rev: d <= todayISO ? minutesOn(d) : 0, proj: d <= todayISO ? minutesOnProj(d) : 0, cRev: c.rev, cProj: c.proj + (c.es || 0)};
     });
     el.innerHTML = lignes.map(function(l){
       var futur = l.fait === null, pct = Math.round(100 * l.plan / maxMin), pctF = futur ? 0 : Math.round(100 * l.fait / maxMin);
@@ -9932,20 +9982,28 @@
     return (iso >= chargeState.depuis && iso <= chargeState.jusqua) ? Number(chargeState.facteur) : 1;
   }
   function chargeReduiteActive(){ return facteurCharge(todayISO) < 1; }
+  /* Trois compteurs, pas deux. Les blocs Español sont des « projets » pour la grille, mais
+     ils ont leur propre objectif, leur propre ligne de bilan et leur propre cellule : les
+     laisser dans « proj » comptait les mêmes minutes deux fois sur le tableau de bord. La
+     grille du jour connaît la phase Español en cours, donc ces trois cibles suivent la
+     phase toutes seules, sans rien saisir. */
   function cibleJourMinutes(cle, iso, base){
     var plan = base ? (SCHEDULES[cle] || []) : grilleDe(cle, iso || todayISO);
     var fin = timeToMinutes(heureCoucher(cle));
-    var t = {rev:0, proj:0};
+    var t = {rev:0, proj:0, es:0};
     plan.forEach(function(b, i){
       var d = (i < plan.length-1 ? timeToMinutes(plan[i+1][0]) : fin) - timeToMinutes(b[0]);
       var type = typeBlocPlan(b[1]);
       /* temps de travail réel du bloc : les pauses de Pomodoro ne comptent pas */
       if(type === 'cours') t.rev += minutesTravail(b[1], d);
-      else if(type === 'projet') t.proj += minutesTravail(b[1], d);
+      else if(type === 'projet'){
+        if(/^Español/.test(b[1])) t.es += minutesTravail(b[1], d);
+        else t.proj += minutesTravail(b[1], d);
+      }
     });
     if(!base){
       var f = facteurCharge(iso || todayISO);
-      if(f !== 1){ t.rev = Math.round(t.rev * f); t.proj = Math.round(t.proj * f); }
+      if(f !== 1){ t.rev = Math.round(t.rev * f); t.proj = Math.round(t.proj * f); t.es = Math.round(t.es * f); }
     }
     return t;
   }
@@ -9955,15 +10013,18 @@
     var t = {rev:0, proj:0};
     semaine.forEach(function(x){
       var c = cibleJourMinutes(x[0], null, true);
-      t.rev += c.rev * x[1]; t.proj += c.proj * x[1];
+      t.rev += c.rev * x[1]; t.proj += (c.proj + (c.es || 0)) * x[1];
     });
     return {rev: Math.round(t.rev/60), proj: Math.round(t.proj/60), revMin: t.rev, projMin: t.proj};
   })();
   /* la cible de la semaine en cours, jour par jour, reduction comprise (en heures) */
   function cibleHebdo(offsetWeeks){
-    var t = {rev:0, proj:0};
-    weekRange(offsetWeeks || 0).forEach(function(iso){ var c = cibleJourMinutes(cleJournee(dowDe(iso)), iso); t.rev += c.rev; t.proj += c.proj; });
-    return {rev: Math.round(t.rev/60*10)/10, proj: Math.round(t.proj/60*10)/10};
+    var t = {rev:0, proj:0, es:0};
+    weekRange(offsetWeeks || 0).forEach(function(iso){
+      var c = cibleJourMinutes(cleJournee(dowDe(iso)), iso);
+      t.rev += c.rev; t.proj += c.proj; t.es += c.es || 0;
+    });
+    return {rev: Math.round(t.rev/60*10)/10, proj: Math.round(t.proj/60*10)/10, es: Math.round(t.es/60*10)/10};
   }
   /* ===== Cibles et rythme calculés depuis la grille =====
      Une cible de temps n'est plus un chiffre écrit à la main : c'est ce que la grille
@@ -10051,12 +10112,12 @@
      deja fait depuis lundi, et le nombre de jours qu'il reste pour l'absorber, aujourd'hui
      compris. C'est la difference entre constater et piloter. */
   function chargeRestanteSemaine(){
-    var lundi = lundiDe(now), faitRev = 0, faitProj = 0;
+    var lundi = lundiDe(now), faitRev = 0, faitProj = 0, faitEs = 0;
     for(var k = 0; k < 7; k++){
       var d = new Date(lundi); d.setDate(d.getDate() + k);
       var iso = localISO(d);
       if(iso > todayISO) break;
-      faitRev += minutesOn(iso); faitProj += minutesOnProj(iso);
+      faitRev += minutesOn(iso); faitProj += minutesOnProjSeuls(iso); faitEs += minutesEspanol(iso);
     }
     var dow = now.getDay();                       /* 0 = dimanche */
     var joursRestants = dow === 0 ? 1 : (8 - dow);  /* aujourd'hui compris, jusqu'a dimanche */
@@ -10064,6 +10125,7 @@
     return {
       rev:  {fait: faitRev,  cible: ch.rev*60,  restant: Math.max(0, Math.round(ch.rev*60)  - faitRev)},
       proj: {fait: faitProj, cible: ch.proj*60, restant: Math.max(0, Math.round(ch.proj*60) - faitProj)},
+      es:   {fait: faitEs,   cible: ch.es*60,   restant: Math.max(0, Math.round((ch.es||0)*60) - faitEs)},
       jours: joursRestants
     };
   }
@@ -10141,7 +10203,7 @@
          var jours = weekRange(off || 0);
          return {jours: jours, stats: weekStats(jours), parJour: jours.map(function(iso){
            var c = cibleJourMinutes(cleJournee(dowDe(iso)), iso), pom = blocsSansPomodoroJour(iso);
-           return {iso: iso, prevu: c.rev + c.proj, rev: minutesOn(iso), proj: minutesOnProj(iso),
+           return {iso: iso, prevu: c.rev + c.proj + (c.es || 0), rev: minutesOn(iso), proj: minutesOnProj(iso),
                    blocs: pom.total, sansPomodoro: pom.sans, exclu: jourExclu(iso), vacances: !!enVacances(iso)};
          })};
        }; }catch(e){}
@@ -11002,6 +11064,7 @@
     }
     document.getElementById('rev-chart').innerHTML = lineChartSVG(pts, null, 'h');
     renderMatieres();
+    renderEspagnol();
     renderExamens();
     renderAgendas();
   }
@@ -11026,6 +11089,74 @@
       el.innerHTML = lignes.join('');
     });
   }
+  /* ===== Le panneau Espagnol =====
+     Même forme que Révision, sur une autre source : les sessions de projet dont le libellé
+     commence par « Español ». La cible de la semaine vient des blocs Español de la grille,
+     donc elle bouge toute seule quand la phase change. */
+  function minutesEsSur(jours){
+    var t = 0;
+    for(var k = 0; k < jours; k++){
+      var d = new Date(now); d.setDate(d.getDate() - k);
+      t += minutesEspanol(localISO(d));
+    }
+    return t;
+  }
+  function cibleEsSemaine(){
+    var t = 0;
+    weekRange(0).forEach(function(iso){ t += cibleEspanolJour(iso); });
+    return t;
+  }
+  function esParTache(jours){
+    var somme = {}, total = 0;
+    for(var k = 0; k < jours; k++){
+      var d = new Date(now); d.setDate(d.getDate() - k);
+      var iso = localISO(d);
+      sessionsState.forEach(function(b){
+        if(!b || b.date !== iso || !(Number(b.duree) > 0) || b.type !== 'projet' || !/^Español/.test(b.label || '')) return;
+        var nom = String(b.label).replace(/^Español\s*[·:-]?\s*/, '').trim() || 'Sans précision';
+        somme[nom] = (somme[nom] || 0) + Number(b.duree);
+        total += Number(b.duree);
+      });
+    }
+    return {liste: Object.keys(somme).map(function(n){ return {nom: n, min: somme[n]}; })
+                    .sort(function(a, b){ return b.min - a.min; }), total: total};
+  }
+  function renderEspagnol(){
+    var stats = document.getElementById('es-stats');
+    if(!stats) return;
+    var hh = function(m){ return (m / 60).toFixed(1).replace('.', ','); };
+    var aujourdhui = minutesEspanol(todayISO), sept = minutesEsSur(7);
+    var semFait = 0;
+    weekRange(0).forEach(function(iso){ if(iso <= todayISO) semFait += minutesEspanol(iso); });
+    var semCible = cibleEsSemaine();
+    var note = document.getElementById('es-note');
+    var phase = typeof periodeGrille === 'function' ? periodeGrille(todayISO) : null;
+    if(note) note.textContent = phase ? 'phase en cours · ' + hh(semCible) + ' h de blocs cette semaine'
+                                      : (semCible ? hh(semCible) + ' h de blocs cette semaine' : 'aucun bloc Español dans la grille cette semaine');
+    stats.innerHTML =
+      '<div class="stat-tile"><div class="tlabel">Aujourd\'hui</div><div class="tnum" style="font-size:30px;">' + hh(aujourdhui) + '<small>h</small></div></div>' +
+      '<div class="stat-tile"><div class="tlabel">7 derniers jours</div><div class="tnum" style="font-size:30px;">' + hh(sept) + '<small>h</small></div></div>' +
+      '<div class="stat-tile"><div class="tlabel">Cette semaine</div><div class="tnum" style="font-size:30px;">' + hh(semFait) + '<small>h</small></div></div>' +
+      '<div class="stat-tile"><div class="tlabel">Blocs prévus</div><div class="tnum" style="font-size:30px; color:var(--ink-dim);">' + hh(semCible) + '<small>h</small></div></div>';
+    var pts = [];
+    for(var k = 29; k >= 0; k--){
+      var dk = new Date(now); dk.setDate(dk.getDate() - k);
+      pts.push({date: localISO(dk), value: minutesEspanol(localISO(dk)) / 60});
+    }
+    var chart = document.getElementById('es-chart');
+    if(chart) chart.innerHTML = lineChartSVG(pts, null, 'h',
+      'Rien encore au minuteur. Les blocs Español de la grille se lancent avec le bouton 🇪🇸 du tableau de bord ou d\'Études : sans minuteur, ces heures n\'existent nulle part.');
+    [7, 30].forEach(function(jours){
+      var el = document.getElementById('es-taches-' + jours);
+      if(!el) return;
+      var r = esParTache(jours);
+      if(!r.total){ el.innerHTML = '<li style="border:none; font-style:italic; color:var(--ink-faint);">Aucune session Español sur la période.</li>'; return; }
+      el.innerHTML = r.liste.map(function(x){
+        return '<li><span>' + escapeHtml(x.nom) + '</span><b>' + (x.min / 60).toFixed(1).replace('.', ',') + 'h · ' + Math.round(100 * x.min / r.total) + '%</b></li>';
+      }).join('');
+    });
+  }
+
   /* ================= CALENDRIER DES RÉVISIONS =================
      Une grille mensuelle : chaque jour porte son total et s'ouvre au clic pour montrer
      les matières travaillées. C'est la vue qui manquait pour relire une semaine. */
@@ -11630,13 +11761,17 @@
   var projetsState = loadList('batcave-projets');
   function agregatProjets(iso){ return projetsState.filter(function(p){ return p.date===iso; }).reduce(function(s,p){ return s+Number(p.duree||0); }, 0); }
   function minutesOnProj(iso){ return minutesJour(iso, 'projet'); }
+  /* Les projets perso SANS l'espagnol : c'est ce chiffre-là qu'on compare à la cible
+     « Projets perso », partout où les deux sont affichés côte à côte. */
+  function minutesOnProjSeuls(iso){ return Math.max(0, minutesOnProj(iso) - minutesEspanol(iso)); }
 
   function renderProjets(){
-    var todayH = minutesOnProj(todayISO)/60;
+    /* sans l'espagnol : il a son propre panneau, sa propre cible et sa propre ligne de bilan */
+    var todayH = minutesOnProjSeuls(todayISO)/60;
     var weekMin = 0;
     for(var i=0;i<7;i++){
       var d = new Date(now); d.setDate(d.getDate()-i);
-      weekMin += minutesOnProj(localISO(d));
+      weekMin += minutesOnProjSeuls(localISO(d));
     }
     var weekTarget = String(cibleHebdo(0).proj).replace('.', ',');
     document.getElementById('proj-stats').innerHTML =

@@ -126,7 +126,10 @@ const esc = s => String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g,
 const jours = data.semaine.jours;
 const titreSemaine = `Semaine du ${dateFr(jours[0])} au ${dateFr(jours[6])}`;
 const LIGNES = [
-  ['revH', 'Révision', 'h', true], ['projH', 'Projets perso', 'h', true], ['fidelitePct', 'Fidélité au plan', '%', true],
+  /* projHorsEs : les projets perso SANS l'espagnol, comme sur le tableau de bord et dans
+     l'objectif du mois. L'espagnol a sa propre ligne depuis le lot 24. */
+  ['revH', 'Révision', 'h', true], ['projHorsEs', 'Projets perso', 'h', true], ['esH', 'Espagnol', 'h', true],
+  ['fidelitePct', 'Fidélité au plan', '%', true],
   ['habitPct', 'Habitudes tenues', '%', true], ['sleepH', 'Sommeil par nuit', 'h', true], ['waterL', 'Eau par jour', 'L', true],
   ['kcalPct', 'Nutrition par jour', '%', true], ['sportPct', 'Séances tenues', '%', true], ['dep', 'Dépenses variables', '€', false]
 ];
