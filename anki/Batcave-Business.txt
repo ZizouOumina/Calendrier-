@@ -1,24 +1,24 @@
 #separator:tab
-#html:false
+#html:true
 #tags column:3
-AOV (panier moyen)	Average Order Value : chiffre d'affaires divisé par le nombre de commandes. Levier : bundles, upsell, seuil de livraison offerte.	business
-CAC	Coût d'acquisition d'un client : dépenses marketing totales divisées par le nombre de nouveaux clients sur la période. À comparer à la marge de contribution du premier achat, puis à la LTV.	business
-LTV (valeur vie client)	Marge totale qu'un client rapporte sur toute sa relation avec la boutique. Estimée par cohortes ou par modèle BG/NBD. Une boutique mono-produit sans réachat a une LTV égale à la marge de la première commande.	business
-COGS	Cost of Goods Sold : coût du produit livré, port compris. Base du calcul de la marge brute.	business
-Marge brute	Prix de vente hors TVA moins COGS. Exprimée en euros ou en pourcentage du prix.	business
-Marge de contribution	Marge brute moins tous les coûts variables d'une commande : frais de paiement, apps par commande, pub attribuée, retours, service client. C'est le seul chiffre qui dit si une commande enrichit ou appauvrit.	business
-Marge nette	Ce qui reste après les coûts variables et les coûts fixes (Shopify, apps, gestor, cotisations). Pour une bonne boutique de dropshipping, 10 à 20 % du chiffre d'affaires.	business
-MER (Marketing Efficiency Ratio)	Chiffre d'affaires total divisé par la dépense publicitaire totale, toutes plateformes, sans attribution. Le ROAS « vrai » de la boutique, calculé depuis Shopify et le relevé bancaire, pas depuis les gestionnaires de pub.	business
-ROAS d'équilibre	Return On Ad Spend minimal pour ne pas perdre d'argent : prix TTC divisé par la marge de contribution avant pub. Si ta marge est 14,29 € sur 34,90 €, le ROAS d'équilibre est 2,44.	business
-CPA maximal	Le coût par achat au-delà duquel une commande perd de l'argent : marge de contribution avant pub. Écrit avant de lancer une campagne, jamais après.	business
-Payback period	Nombre de jours ou de commandes avant que la marge cumulée d'un client rembourse son CAC. Une boutique sans réachat doit rembourser dès la première commande.	business
-Cohorte	Groupe de clients acquis la même semaine ou le même mois, suivi dans le temps : réachat, LTV, retours. Seule façon honnête de voir si la boutique s'améliore.	business
-Taux de réachat	Part des clients qui commandent une deuxième fois sur une période donnée. En dropshipping mono-produit, souvent sous 10 % ; c'est ce qu'une marque change.	business
-Cash conversion cycle	Jours entre le moment où tu paies le fournisseur et celui où l'argent du client arrive sur ton compte. Négatif en dropshipping bien réglé (le client paie avant le fournisseur), positif dès que tu as du stock.	business
-Fonds de roulement (working capital)	Argent immobilisé pour faire tourner l'activité : stock, pub payée d'avance, paiements en attente de Shopify Payments (payout à J+3 environ). Grossit avec les ventes ; à provisionner avant de scaler.	business
-Runway	Nombre de mois que ta trésorerie couvre au rythme actuel des pertes. Sous 3 mois, on ne teste plus, on coupe.	business
-P&L (compte de résultat)	Tableau mensuel : chiffre d'affaires, COGS, marge brute, pub, autres variables, fixes, résultat. À produire chaque mois, même à 0 €.	business
-Unit economics	Économie d'une seule commande : prix, coûts, marge, pub. Si l'unité ne gagne pas d'argent, le volume ne fait qu'amplifier la perte.	business
+AOV (panier moyen)	Average Order Value : chiffre d'affaires divisé par le nombre de commandes. Levier : bundles, upsell, seuil de livraison offerte.	business business prioritaire
+CAC	Coût d'acquisition d'un client : dépenses marketing totales divisées par le nombre de nouveaux clients sur la période. À comparer à la marge de contribution du premier achat, puis à la LTV.	business business
+LTV (valeur vie client)	Marge totale qu'un client rapporte sur toute sa relation avec la boutique. Estimée par cohortes ou par modèle BG/NBD. Une boutique mono-produit sans réachat a une LTV égale à la marge de la première commande.	business business
+COGS	Cost of Goods Sold : coût du produit livré, port compris. Base du calcul de la marge brute.	business business prioritaire
+Marge brute	Prix de vente hors TVA moins COGS. Exprimée en euros ou en pourcentage du prix.	business business prioritaire
+Marge de contribution	Marge brute moins tous les coûts variables d'une commande : frais de paiement, apps par commande, pub attribuée, retours, service client. C'est le seul chiffre qui dit si une commande enrichit ou appauvrit.	business business prioritaire
+Marge nette	Ce qui reste après les coûts variables et les coûts fixes (Shopify, apps, gestor, cotisations). Pour une bonne boutique de dropshipping, 10 à 20 % du chiffre d'affaires.	business business prioritaire
+MER (Marketing Efficiency Ratio)	Chiffre d'affaires total divisé par la dépense publicitaire totale, toutes plateformes, sans attribution. Le ROAS « vrai » de la boutique, calculé depuis Shopify et le relevé bancaire, pas depuis les gestionnaires de pub.	business business prioritaire
+ROAS d'équilibre	Return On Ad Spend minimal pour ne pas perdre d'argent : prix TTC divisé par la marge de contribution avant pub. Si ta marge est 14,29 € sur 34,90 €, le ROAS d'équilibre est 2,44.	business business prioritaire
+CPA maximal	Le coût par achat au-delà duquel une commande perd de l'argent : marge de contribution avant pub. Écrit avant de lancer une campagne, jamais après.	business business prioritaire
+Payback period	Nombre de jours ou de commandes avant que la marge cumulée d'un client rembourse son CAC. Une boutique sans réachat doit rembourser dès la première commande.	business business
+Cohorte	Groupe de clients acquis la même semaine ou le même mois, suivi dans le temps : réachat, LTV, retours. Seule façon honnête de voir si la boutique s'améliore.	business business
+Taux de réachat	Part des clients qui commandent une deuxième fois sur une période donnée. En dropshipping mono-produit, souvent sous 10 % ; c'est ce qu'une marque change.	business business
+Cash conversion cycle	Jours entre le moment où tu paies le fournisseur et celui où l'argent du client arrive sur ton compte. Négatif en dropshipping bien réglé (le client paie avant le fournisseur), positif dès que tu as du stock.	business business
+Fonds de roulement (working capital)	Argent immobilisé pour faire tourner l'activité : stock, pub payée d'avance, paiements en attente de Shopify Payments (payout à J+3 environ). Grossit avec les ventes ; à provisionner avant de scaler.	business business
+Runway	Nombre de mois que ta trésorerie couvre au rythme actuel des pertes. Sous 3 mois, on ne teste plus, on coupe.	business business
+P&amp;L (compte de résultat)	Tableau mensuel : chiffre d'affaires, COGS, marge brute, pub, autres variables, fixes, résultat. À produire chaque mois, même à 0 €.	business business
+Unit economics	Économie d'une seule commande : prix, coûts, marge, pub. Si l'unité ne gagne pas d'argent, le volume ne fait qu'amplifier la perte.	business business prioritaire
 SKU	Stock Keeping Unit : référence unique d'un produit et de sa variante (couleur, taille). Une page produit peut avoir plusieurs SKU.	business ops
 GTIN / EAN	Code-barres mondial d'un produit (13 chiffres en Europe). Exigé par Google Merchant Center pour la plupart des produits de marque ; un produit générique peut en être exempté.	business ops
 MOQ	Minimum Order Quantity : quantité minimale qu'un fournisseur accepte de vendre. Zéro en dropshipping, 100 à 500 pièces en marque privée.	business ops
@@ -28,8 +28,8 @@ Fulfilment	Ensemble des opérations entre la commande et la livraison : prépara
 Agent de sourcing	Intermédiaire (souvent en Chine) qui négocie, contrôle la qualité, stocke et expédie pour plusieurs boutiques. Meilleur délai et meilleur prix qu'AliExpress au-delà de 10 commandes par jour.	business ops
 Landed cost	Coût complet d'un produit arrivé chez le client : achat, transport, droits de douane, TVA à l'import, assurance. C'est le vrai COGS.	business ops
 Incoterms (EXW, FOB, DDP)	Règles internationales qui disent qui paie et qui assure quoi entre le vendeur et l'acheteur. DDP (Delivered Duty Paid) : le fournisseur livre droits et taxes payés, le client ne paie rien à la porte.	business ops
-IOSS	Import One-Stop Shop : guichet TVA de l'UE pour les envois de moins de 150 € venant de pays tiers. La TVA est collectée à la vente ; sans IOSS, le client la paie au livreur et refuse souvent le colis.	business ops
-OSS	One-Stop Shop : déclaration unique (modelo 369 en Espagne) pour la TVA des ventes à distance aux particuliers d'autres pays de l'UE, au-delà de 10 000 € par an.	business ops
+IOSS	Import One-Stop Shop : guichet TVA de l'UE pour les envois de moins de 150 € venant de pays tiers. La TVA est collectée à la vente ; sans IOSS, le client la paie au livreur et refuse souvent le colis.	business ops prioritaire
+OSS	One-Stop Shop : déclaration unique (modelo 369 en Espagne) pour la TVA des ventes à distance aux particuliers d'autres pays de l'UE, au-delà de 10 000 € par an.	business ops prioritaire
 GPSR	General Product Safety Regulation, appliqué depuis le 13 décembre 2024 : tout produit vendu dans l'UE doit avoir un opérateur économique responsable établi dans l'UE, des avertissements dans la langue du pays et une traçabilité. Rend l'import direct de Chine risqué pour un vendeur seul.	business legal
 Personne responsable (UE)	Opérateur établi dans l'UE qui répond de la conformité d'un produit importé (GPSR, marquage CE). Un fournisseur européen ou un service payant peut jouer ce rôle.	business legal
 Marquage CE	Déclaration du fabricant qu'un produit respecte les normes européennes applicables (jouets, électronique, cosmétiques). Sans CE valable, le produit est saisi à la douane ou interdit à la vente.	business legal
@@ -46,12 +46,12 @@ AUTOCONTROL	Organisme espagnol d'autorégulation de la publicité. Son code sur 
 Impressions	Nombre de fois où une pub a été affichée. Une même personne peut compter plusieurs fois.	business ads
 Reach (couverture)	Nombre de personnes distinctes qui ont vu la pub au moins une fois.	business ads
 Fréquence	Impressions divisées par reach : combien de fois en moyenne une personne a vu la pub. Au-delà de 3 à 4 par semaine sur une audience froide, la fatigue créative commence.	business ads
-CPM	Coût pour mille impressions. Reflète la concurrence dans l'enchère et la qualité de la créative. E-commerce en Espagne et en France, 2025-2026 : ordre de grandeur 5 à 15 € sur Meta, plus bas sur TikTok.	business ads
-CTR	Click-Through Rate : clics divisés par impressions. Sur Meta, un CTR (tous clics) sous 1 % signale une créative ou un ciblage faibles ; le CTR sur lien sortant est le plus honnête.	business ads
+CPM	Coût pour mille impressions. Reflète la concurrence dans l'enchère et la qualité de la créative. E-commerce en Espagne et en France, 2025-2026 : ordre de grandeur 5 à 15 € sur Meta, plus bas sur TikTok.	business ads prioritaire
+CTR	Click-Through Rate : clics divisés par impressions. Sur Meta, un CTR (tous clics) sous 1 % signale une créative ou un ciblage faibles ; le CTR sur lien sortant est le plus honnête.	business ads prioritaire
 CPC	Coût par clic : dépense divisée par clics. Dérivé du CPM et du CTR (CPC = CPM ÷ (CTR × 1000)).	business ads
-CVR (taux de conversion)	Achats divisés par visites (ou par clics). E-commerce mobile : 1 à 3 % est normal, sous 1 % le problème est la page ou l'offre, pas la pub.	business ads
-CPA	Coût par acquisition (par achat) : dépense divisée par achats attribués. À comparer au CPA maximal.	business ads
-ROAS	Return On Ad Spend : chiffre d'affaires attribué divisé par dépense, tel que la plateforme le calcule. Surestimé par nature (attribution, vues) ; le MER corrige.	business ads
+CVR (taux de conversion)	Achats divisés par visites (ou par clics). E-commerce mobile : 1 à 3 % est normal, sous 1 % le problème est la page ou l'offre, pas la pub.	business ads prioritaire
+CPA	Coût par acquisition (par achat) : dépense divisée par achats attribués. À comparer au CPA maximal.	business ads prioritaire
+ROAS	Return On Ad Spend : chiffre d'affaires attribué divisé par dépense, tel que la plateforme le calcule. Surestimé par nature (attribution, vues) ; le MER corrige.	business ads prioritaire
 Fenêtre d'attribution	Période pendant laquelle un achat est crédité à une pub : sur Meta, par défaut 7 jours après un clic et 1 jour après une vue. Change la fenêtre et le ROAS change, sans qu'une vente de plus ait eu lieu.	business ads
 Attribution vue (view-through)	Achat crédité à une pub simplement vue, sans clic. Gonfle le ROAS ; à exclure quand tu compares des campagnes.	business ads
 Pixel	Script sur la boutique qui envoie à Meta, TikTok ou Google les événements (vue de page, ajout au panier, achat). Limité par les bloqueurs et par iOS ; à doubler avec l'API de conversion.	business ads
@@ -92,7 +92,7 @@ Spark Ads	Format TikTok qui sponsorise une vidéo organique existante (la tienne
 Smart+	Campagnes automatisées de TikTok (2024), équivalent d'Advantage+ : ciblage, enchères et créatives gérés par l'algorithme.	business ads
 TikTok Shop	Vente directe dans l'application TikTok, avec paiement intégré et commissions. Disponible en Espagne depuis fin 2024 ; canal à part entière pour les produits « TikTok made me buy it ».	business ads
 Performance Max (PMax)	Campagne automatisée de Google qui diffuse sur Search, Shopping, YouTube, Display et Gmail à partir d'un flux Merchant Center et de quelques éléments. Fonctionne quand il existe une demande de recherche pour le produit.	business ads
-Google Merchant Center	Compte où l'on envoie le flux produit (titre, prix, GTIN, disponibilité, livraison) pour Shopping et PMax. Exige des pages légales et des délais de livraison exacts ; les suspensions pour « fausse déclaration » sont fréquentes.	business ads
+Google Merchant Center	Compte où l'on envoie le flux produit (titre, prix, GTIN, disponibilité, livraison) pour Shopping et PMax. Exige des pages légales et des délais de livraison exacts ; les suspensions pour « fausse déclaration » sont fréquentes.	business ads prioritaire
 Recherche de marque (brand search)	Mots-clés contenant le nom de ta marque. Une part des clics serait venue gratuitement : l'expérience d'eBay (Blake et al., 2015) a montré des rendements quasi nuls sur ces enchères pour une marque connue.	business ads
 Intention de recherche	Ce que la personne cherche à faire quand elle tape une requête : s'informer, comparer, acheter. Google capture l'intention ; Meta et TikTok la créent.	business ads
 MMM (Marketing Mix Modeling)	Modèle statistique qui explique les ventes par les dépenses par canal, sans suivi individuel. Outil de marques établies ; ordre de grandeur de données nécessaires : un an de ventes quotidiennes.	business ads
@@ -102,7 +102,7 @@ Geo-lift	Test d'incrémentalité par zones : on coupe ou on augmente la pub dans
 Sondage post-achat	Question posée après le paiement : « Comment nous as-tu connus ? ». Corrige les trous de l'attribution ; apps gratuites ou presque (Fairing, KnoCommerce, ou un champ Shopify).	business ads
 Politiques publicitaires Meta	Règles de contenu : pas d'avant/après pour la perte de poids, pas d'attributs personnels (« vous êtes diabétique »), pas de promesses médicales, pas de fausses urgences. Une violation répétée ferme le compte publicitaire ; la vérification d'entreprise et la double authentification protègent.	business ads
 Limite de dépense du compte	Plafond quotidien que Meta impose aux nouveaux comptes, relevé progressivement avec l'historique de paiement. Prévoir cette montée en charge dans le plan de scaling.	business ads
-Taux de conversion (CRO)	Conversion Rate Optimization : discipline d'amélioration de la page et du tunnel de commande à partir de données et de tests, pas d'opinions.	business cro
+Taux de conversion (CRO)	Conversion Rate Optimization : discipline d'amélioration de la page et du tunnel de commande à partir de données et de tests, pas d'opinions.	business cro prioritaire
 Taux de rebond	Part des visites qui quittent sans interaction. Sur une page produit issue d'une pub, 60 à 80 % est courant ; on regarde plutôt le taux d'ajout au panier.	business cro
 Taux d'ajout au panier	Ajouts au panier divisés par visites de la page produit. Ordre de grandeur sain : 8 à 12 % depuis une pub Meta. Sous 5 %, page ou offre à revoir.	business cro
 Abandon de panier	Part des paniers non convertis : environ 70 % en moyenne (Baymard). Première cause : frais imprévus (port, taxes) affichés trop tard.	business cro
@@ -111,7 +111,7 @@ Au-dessus de la ligne de flottaison	Ce que l'on voit sans faire défiler : image
 Preuve sociale	Avis, notes, nombre de clients, photos de clients, mentions presse. Effet démontré sur la conversion ; les avis doivent être authentiques (Omnibus : obligation de vérifier qu'ils viennent d'acheteurs).	business cro
 Ancrage	Biais cognitif : le premier prix vu sert de référence. Un prix barré légal (règle des 30 jours) ou un bundle plus cher à côté du produit principal ancre la valeur.	business cro
 Prix psychologique (terminaison en 9)	Effet mesuré en expérience terrain (Anderson et Simester, 2003) : un prix finissant par 9 augmente la demande, parfois même face à un prix plus bas.	business cro
-Upsell / cross-sell	Proposer une version supérieure (upsell) ou un produit complémentaire (cross-sell) sur la page, dans le panier ou après paiement. Levier principal du panier moyen.	business cro
+Upsell / cross-sell	Proposer une version supérieure (upsell) ou un produit complémentaire (cross-sell) sur la page, dans le panier ou après paiement. Levier principal du panier moyen.	business cro prioritaire
 Bundle	Lot de plusieurs unités ou produits à un prix unitaire réduit. Augmente le panier moyen et dilue le port ; exemple : 1 / 2 / 3 unités avec la deuxième option mise en avant.	business cro
 Livraison offerte à partir de	Seuil au-dessus duquel le port est gratuit. Placé 15 à 25 % au-dessus du panier moyen, il augmente le montant des commandes (Lewis, 2006).	business cro
 Shop Pay	Paiement accéléré de Shopify (informations mémorisées). Utilisé par une part importante des acheteurs Shopify ; à laisser activé pour la conversion mobile.	business cro
@@ -160,32 +160,62 @@ Hallucination	Réponse plausible mais fausse : un chiffre, une loi, une statisti
 Frontière dentelée (jagged frontier)	Constat de Dell'Acqua et al. (2023) : l'IA améliore fortement les tâches à l'intérieur de ses compétences et dégrade celles juste au-delà, sans prévenir. Savoir où passe la frontière est la compétence.	business ia
 Évaluation (eval)	Jeu de cas de test pour vérifier qu'un prompt ou un automatisme fait ce qu'on attend : 20 e-mails clients types et la réponse attendue, avant de laisser Claude rédiger des brouillons.	business ia
 Humain dans la boucle	Principe : l'IA propose, une personne valide tout ce qui engage de l'argent, un client ou la loi. Remboursements, réponses aux litiges, publication de pubs.	business ia
-Capital de test	Argent à toi que tu acceptes de perdre pour acheter des réponses (produit, créative, page, offre). Plafond de référence 900 € sur 12 semaines. Le seul argent qui touche un test.	business
-Capital de croissance	L'argent qui ne finance que ce qui a déjà prouvé qu'il gagne : ici le prêt de 4 000 €, dont 2 000 € au plus en pub par tranches et 2 000 € de fonds de roulement. Il ne sort qu'au palier 3, sous trois conditions tenues trois semaines.	business
+Capital de test	Argent à toi que tu acceptes de perdre pour acheter des réponses (produit, créative, page, offre). Plafond de référence 900 € sur 12 semaines. Le seul argent qui touche un test.	business business
+Capital de croissance	L'argent qui ne finance que ce qui a déjà prouvé qu'il gagne : ici le prêt de 4 000 €, dont 2 000 € au plus en pub par tranches et 2 000 € de fonds de roulement. Il ne sort qu'au palier 3, sous trois conditions tenues trois semaines.	business business
 Palier de budget	Niveau de dépense pub quotidienne avec sa condition d'entrée, sa source d'argent, son fonds de roulement et sa règle de descente. On monte d'un palier après trois semaines de conditions vraies, on descend de 30 % en un jour si elles cassent.	business ads
-Tranche	Virement de 500 € du compte prêt vers le compte pub, décidé par écrit avec les trois chiffres du jour. La suivante part quand la marge cumulée a remboursé la précédente ; une perte de 150 € sur une tranche arrête tout.	business
+Tranche	Virement de 500 € du compte prêt vers le compte pub, décidé par écrit avec les trois chiffres du jour. La suivante part quand la marge cumulée a remboursé la précédente ; une perte de 150 € sur une tranche arrête tout.	business business
 Droit forfaitaire de 3 €	Droit de douane appliqué depuis le 1er juillet 2026 à tout envoi de moins de 150 € venant hors UE, par LIGNE TARIFAIRE et non par colis. Temporaire jusqu'en juillet 2028. Non couvert par l'IOSS, non récupérable sur un retour.	business legal
 Ligne tarifaire	Regroupement douanier : des marchandises ne comptent pour un seul article que si elles partagent classification, désignation ET origine. Trois produits différents dans un colis = trois lignes = 9 € de droits.	business legal
-IOSS	Guichet unique à l'importation : sert à déclarer la TVA des colis de moins de 150 €. Il ne couvre PAS le droit de douane, qui est une obligation distincte.	business legal
-OSS (seuil 10 000 €)	Au-delà de 10 000 € de ventes à distance vers d'autres pays de l'UE dans l'année, tu appliques la TVA du pays du client et tu déclares via le guichet OSS.	business legal
+OSS (seuil 10 000 €)	Au-delà de 10 000 € de ventes à distance vers d'autres pays de l'UE dans l'année, tu appliques la TVA du pays du client et tu déclares via le guichet OSS.	business legal prioritaire
 REP / EPR	Responsabilité élargie du producteur : enregistrement obligatoire pour qui met un produit emballé sur le marché européen. Espagne depuis 2023, France avec identifiant unique et logo Triman. Les places de marché retirent les annonces sans numéro.	business legal
 Personne responsable (GPSR)	Opérateur établi dans l'UE qui répond de la sécurité d'un produit. Peut être l'importateur, un mandataire ou un prestataire logistique. Sans lui, le produit ne peut pas être mis sur le marché européen.	business legal
 Transparencia fiscal internacional	Règles CFC espagnoles : si tu détiens au moins 50 % d'une société étrangère peu imposée, ses bénéfices te sont attribués personnellement, même non distribués.	business legal
-Siège de direction effective	Lieu d'où une société est réellement dirigée. Diriger depuis l'Espagne rend la société résidente fiscale espagnole, quel que soit son pays d'immatriculation.	business legal
 Établissement stable	Lieu fixe d'activité en Espagne d'une société étrangère. Ton propre domicile peut en constituer un, ce qui rend imposable en Espagne la part d'activité qui s'y exerce.	business legal
-Modelo 720	Déclaration espagnole des biens détenus à l'étranger au-delà de 50 000 €, participation dans une société étrangère comprise.	business legal
 Programme affilié (TikTok Shop)	Des créateurs promeuvent ton produit contre une commission que tu fixes. L'acquisition se paie APRÈS la vente : un produit qui échoue ne coûte rien. 60 à 70 % du chiffre de la plateforme passe par là.	business ads
-Spark Ads	Publicité qui amplifie une publication organique existante, la tienne ou celle d'un créateur avec son code d'autorisation. Commentaires et partages sont conservés. Le code EXPIRE : négocie une durée longue dès l'envoi de l'échantillon.	business ads
 Score de performance boutique	Note de 1 à 5 d'une boutique TikTok Shop, fondée sur les délais, les annulations et les avis. En dessous de 3,5, l'accès au programme affilié est coupé.	business ops
 Seuil d'apprentissage	Volume minimal pour qu'une campagne automatique optimise vraiment : environ 50 conversions par semaine et par ensemble de publicités. En dessous, l'algorithme tâtonne.	business ads
-Phase d'apprentissage	Période pendant laquelle une campagne cherche son optimum. Toute modification la relance et fait repayer l'apprentissage : on écrit ses règles d'arrêt AVANT de lancer.	business ads
 API de conversions	Envoi des conversions depuis ton serveur, en complément du pixel qui part du navigateur et se fait bloquer. Les deux ensemble, avec déduplication, sinon la moitié des ventes est invisible.	business ads
 Qualité de correspondance	Score mesurant la capacité de la plateforme à rattacher une vente à une personne, selon les informations transmises (e-mail et téléphone hachés, ville, code postal). Faible, la campagne apprend mal.	business ads
-Angle	Raison pour laquelle quelqu'un achète. Un même produit en a plusieurs : c'est en changeant d'angle, pas de produit, qu'on trouve la créative gagnante.	business ads
 Accroche (hook)	Les trois premières secondes d'une vidéo. Environ 80 % du résultat : si personne ne reste, le reste de la pub n'existe pas.	business ads
 Agent (sourcing)	Partenaire en Chine qui achète pour toi sur 1688, contrôle la qualité, stocke et réexpédie. Indispensable car 1688 n'accepte ni carte étrangère ni adresse hors de Chine.	business ops
 1688	Place de marché intérieure chinoise, aux prix d'usine, souvent 30 à 60 % sous AliExpress. On y accède par recherche d'image et on y achète via un agent.	business ops
 Recherche par image	Déposer la photo d'un produit AliExpress dans la recherche 1688 ou Alibaba pour trouver le vrai fabricant et son prix par palier. À faire AVANT tout test payant.	business ops
 Ligne spéciale	Acheminement Chine → Europe en 7 à 12 jours avec suivi, par opposition au courrier standard à 15-30 jours qui fabrique les litiges.	business ops
 Taux de litiges	Part des transactions contestées. Au-delà d'environ 0,75 %, le prestataire de paiement alerte ; vers 0,9 % les réseaux de cartes interviennent. Un compte suspendu arrête tout.	business ops
-Trou de trésorerie	Décalage entre le paiement du fournisseur (immédiat) et le versement de la plateforme (7 à 14 jours). C'est ce qui tue les boutiques au moment où les ventes accélèrent.	business
+Trou de trésorerie	Décalage entre le paiement du fournisseur (immédiat) et le versement de la plateforme (7 à 14 jours). C'est ce qui tue les boutiques au moment où les ventes accélèrent.	business business
+Valeur intrinsèque	Le prix des marchandises seules, sans le transport ni l'assurance. C'est elle qu'on compare au seuil de 150 € pour savoir quel régime douanier s'applique. Un produit à 140 € avec 20 € de port a une valeur intrinsèque de 140 €, donc il reste sous le seuil.	business douane prioritaire
+De minimis	Le seuil en dessous duquel on ne payait aucun droit de douane. Il valait 150 € dans l'UE, il a été supprimé le 1ᵉʳ juillet 2026. Quand tu lis un guide qui en parle encore comme d'une exonération, ce guide est périmé.	business douane
+Classification tarifaire	Le code qui range un produit dans une catégorie douanière (un T-shirt et une montre n'ont pas le même). Le droit forfaitaire de 3 € se compte par classification présente dans le colis, pas par objet : cinq T-shirts identiques comptent pour une seule classification, donc 3 €.	business douane
+Position tarifaire	Autre nom de la classification tarifaire, souvent désignée par son code à quatre ou six chiffres. Le vocabulaire officiel dit « nomenclature combinée ».	business douane
+Origine préférentielle	Le fait qu'une marchandise soit reconnue comme fabriquée dans un pays qui a un accord commercial avec l'UE, ce qui lui donne 0 % de droits de douane. Elle ne se déclare pas, elle se PROUVE avec un certificat (EUR.1, A.TR). Sans le certificat, tu paies le tarif normal.	business douane
+EUR.1	Le certificat qui prouve qu'une marchandise vient bien du Maroc (ou d'un autre pays sous accord d'association) et lui ouvre le 0 % de droits. Délivré par la douane du pays exportateur. À exiger du fournisseur AVANT de commander.	business douane
+A.TR	L'équivalent turc de l'EUR.1 : le document qui prouve qu'une marchandise circule librement dans l'union douanière UE-Turquie et lui donne 0 % de droits sur les biens industriels.	business douane
+MFN (nation la plus favorisée)	Le tarif douanier « normal », celui qu'on paie quand aucun accord commercial ne s'applique. C'est le cas de la Chine. Quand une source dit « taux plein », c'est de ça qu'elle parle.	business douane
+PID (identifiant produit)	Un code de traçabilité qui devra accompagner les marchandises importées : obligatoire à partir du 1ᵉʳ novembre 2026. Il permet aux douanes de bloquer les produits non conformes. À vérifier auprès du fournisseur et du transporteur avant de lancer.	business douane
+EORI	Le numéro d'identification que toute entreprise doit avoir pour importer ou exporter dans l'UE. Il se demande une fois, gratuitement, auprès de l'administration douanière de ton pays.	business douane
+Déclaration H7	Le formulaire douanier simplifié réservé aux petits envois (valeur intrinsèque ≤ 150 €). H1 est la déclaration standard, complète. Le droit de 3 € s'applique quelle que soit celle que tu utilises.	business douane
+Modelo 035	Le formulaire espagnol par lequel on s'inscrit au guichet OSS. Gratuit, et possible avant d'avoir franchi le seuil : c'est ce qui évite d'avoir à refacturer rétroactivement.	business fiscal
+Modelo 036	La déclaration par laquelle on se déclare en activité auprès du fisc espagnol (le « alta censal »). C'est le premier acte administratif de ton entreprise.	business fiscal
+Modelo 369	La déclaration trimestrielle de la TVA collectée via le guichet OSS dans les autres pays de l'UE.	business fiscal
+Modelo 390	Le résumé annuel de TVA en Espagne, à déposer en janvier. Il récapitule les quatre modelos 303 de l'année.	business fiscal
+Autónomo	Le statut espagnol du travailleur indépendant. C'est celui sous lequel tu exerceras : pas de capital à apporter, mais des cotisations sociales mensuelles et une responsabilité personnelle sur les dettes.	business fiscal
+Gestor / gestoría	Le comptable-conseil espagnol. Il fait tes déclarations, te dit quel statut prendre et t'évite les erreurs coûteuses. Compte 40 à 80 € par mois. Ce n'est pas une dépense optionnelle.	business fiscal
+Sede de dirección efectiva	« Siège de direction effective » : le lieu d'où les décisions d'une société sont réellement prises. Si tu pilotes une société étrangère depuis Alicante, le fisc espagnol la considère comme espagnole. C'est le principe qui rend inutile toute société montée à l'étranger tant que tu vis en Espagne.	business fiscal
+ATAD	Directive européenne anti-évasion fiscale. Avec l'échange automatique d'informations entre administrations, elle rend l'opacité impossible à l'intérieur de l'UE.	business fiscal
+DAC	Les directives européennes qui organisent l'échange automatique d'informations fiscales entre les États membres. Concrètement : ce que tu déclares dans un pays est visible par les autres.	business fiscal
+SARL-S	La société luxembourgeoise à responsabilité limitée simplifiée : capital à partir de 1 €, réservée aux personnes physiques. Intéressante seulement si tu vis au Luxembourg — une société ne se « loge » pas dans un pays où l'on n'habite pas.	business legal
+UIN	L'identifiant unique délivré en France quand on s'enregistre à la REP. Les marketplaces le réclament et retirent les annonces qui n'en ont pas.	business legal
+Triman	Le logo français de tri qui doit figurer sur l'emballage des produits vendus en France, accompagné de la consigne de tri.	business legal
+LUCID	Le registre allemand des emballages (loi VerpackG). L'équivalent allemand de l'UIN français.	business legal
+PPWR	Le règlement européen sur les emballages et leurs déchets, applicable depuis le 12 août 2026 à tous les emballages mis sur le marché de l'UE.	business legal
+EBA (Everything But Arms)	Le régime européen qui accorde 0 % de droits de douane aux pays les moins avancés, comme le Bangladesh. Attention : ce statut se perd quand le pays se développe, et le Bangladesh doit en sortir en novembre 2026.	business douane
+LDC (pays les moins avancés)	La catégorie de l'ONU qui ouvre droit au régime EBA. Un pays qui « gradue » perd cet avantage après une période de transition.	business douane
+EVFTA	L'accord de libre-échange entre l'UE et le Vietnam. En 2026, l'UE achève son calendrier : environ 99 % des marchandises vietnamiennes entrent sans droits.	business douane
+CEPA	L'accord de partenariat économique global entre l'UE et l'Indonésie : plus de 98 % des lignes tarifaires libérées.	business douane
+Coût rendu (landed cost)	Ce que le produit te coûte VRAIMENT une fois arrivé chez le client : prix + transport + droits + TVA non récupérable + emballage + part des retours. Le prix affiché sur AliExpress n'est jamais ton coût.	business business prioritaire
+Poids volumétrique	Le poids que facture un transporteur quand un colis est encombrant mais léger : il calcule un poids à partir du volume et retient le plus élevé des deux. C'est pourquoi un objet gonflable coûte cher à expédier.	business ops
+Shopify Markets	La fonction de Shopify qui gère plusieurs pays, devises et langues sur une seule boutique. À configurer dès le départ : le faire après coup casse les adresses de pages et l'historique du pixel.	business ops
+Canton Fair	La grande foire commerciale de Guangzhou, deux fois par an. C'est là que les acheteurs rencontrent les fabricants en personne.	business ops
+Discovery call	Un appel avec un client potentiel AVANT de construire quoi que ce soit, pour entendre son problème dans ses mots. Le principe se transpose en e-commerce : le test à 50 € du chapitre 24 en est l'équivalent.	business business
+Core offer (offre principale)	Ce que tu vends vraiment : pas l'objet, mais l'ensemble prix + promesse + garantie + preuve. Deux boutiques qui vendent le même objet avec deux offres différentes n'ont pas les mêmes résultats.	business business
+MVP (produit minimum viable)	La plus petite version de ton offre qui permet déjà d'encaisser et d'apprendre. En e-commerce : une page produit et une vidéo, avant tout stock.	business business
