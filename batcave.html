@@ -1443,6 +1443,7 @@
       <div class="add-form">
         <div class="f" style="width:64px;"><label>Icône</label><input type="text" id="hab-icon" maxlength="4" placeholder="✅"></div>
         <div class="f" style="flex:1; min-width:220px;"><label>Nouvelle habitude</label><input type="text" id="hab-text" style="width:100%;" placeholder="ex : vitamine D, ranger le bureau, appeler mes parents"></div>
+        <div class="f" style="width:170px;"><label>Quand</label><select id="hab-jours" style="width:100%;"><option value="">Tous les jours</option><option value="1,3,5">Lun · mer · ven</option><option value="2,4,6">Mar · jeu · sam</option><option value="1">Le lundi</option><option value="2">Le mardi</option><option value="3">Le mercredi</option><option value="4">Le jeudi</option><option value="5">Le vendredi</option><option value="6">Le samedi</option><option value="0">Le dimanche</option></select></div>
         <button class="btn btn-primary" id="hab-add">Ajouter</button>
       </div>
 
@@ -1531,7 +1532,7 @@
       <div class="week-strip" id="week-strip"></div>
       <div class="sport-grid" id="sport-grid"></div>
 
-      <!-- Programme v2 (7 sept. 2026) : les regles qui ne tiennent pas dans une case. -->
+      <!-- Programme v2 (14 sept. 2026) : les regles qui ne tiennent pas dans une case. -->
       <div class="panel sub-panel" id="programme-panel" style="margin-top:16px;">
         <div class="sub-head"><h3>📋 Le programme</h3><span class="sub-note" id="programme-note">—</span></div>
         <p class="sub-note" style="line-height:1.65; margin-bottom:8px;">Mercredi, vendredi et dimanche sont off : rien à cocher, le créneau de 05:30 sert à Anki ou aux projets. Si la semaine dérape, tu sacrifies samedi, puis jeudi. Jamais lundi ni mardi. Huit semaines sans y toucher, en notant tout.</p>
@@ -3359,7 +3360,10 @@
      Elle ne touche QU'AUX fichiers « batcave-sauvegarde-auto-AAAA-MM-JJ.json » du dossier :
      jamais une sauvegarde manuelle, jamais le sous-dossier HTML, jamais un fichier
      inconnu. La date est lue dans le nom, pas dans Drive : deterministe, et testable.
-     Les fichiers vont a la corbeille (trash_file), pas en suppression definitive. */
+     Un meme jour ecrit deux fois (deux appareils ouverts avant que le releve « derniere
+     sauvegarde » ne se synchronise) : la premiere copie est gardee, l'autre jetee, quel
+     que soit l'age. Les fichiers vont a la corbeille (trash_file), jamais en suppression
+     definitive. */
   function planRotation(fichiers, refISO){
     var auto = [];
     (fichiers || []).forEach(function(f){
@@ -3368,8 +3372,10 @@
     });
     auto.sort(function(a, b){ return b.iso.localeCompare(a.iso); });   /* la plus recente d'abord */
     var ref = new Date(refISO + 'T00:00:00');
-    var garder = [], jeter = [], vusSemaine = {}, vusMois = {};
+    var garder = [], jeter = [], vusJour = {}, vusSemaine = {}, vusMois = {};
     auto.forEach(function(f){
+      if(vusJour[f.iso]){ jeter.push(f); return; }   /* doublon du meme jour */
+      vusJour[f.iso] = true;
       var d = new Date(f.iso + 'T00:00:00');
       var age = Math.round((ref - d) / 86400000);
       if(age <= 7){ garder.push(f); return; }
@@ -3783,9 +3789,19 @@
   }
   /* On demande la matière au lancement : c'est la seule façon d'obtenir la répartition
      (2 h d'anatomie, 1 h de bioquímica) plutôt qu'un total indifférencié. */
+  /* Le protocole : sur Anki 1 et Anki 2 (toutes les matieres melangees) on choisit « Sans
+     preciser » ; sur Cartes, Annales, Correction, on nomme LA matiere travaillee. Sinon la
+     repartition par matiere de l'onglet Etudes ment. Le bloc en cours fixe donc le choix
+     propose et le message ; le choix reste libre. */
+  var BLOC_ANKI = /^Anki/, BLOC_MATIERE = /^(Cartes|Annales?\b|Annale complète|Correction)/;
   function lancerPomodoroCours(apres){
-    var defaut = derniereMatiere() || MATIERES_SEED[0].court;
-    askDialog({titre:'Quelle matière ?', message:'Matière révisée pendant ce bloc :',
+    var bloc = blocPlanCourant(), libelle = bloc ? bloc[1] : '';
+    var surAnki = BLOC_ANKI.test(libelle), surMatiere = BLOC_MATIERE.test(libelle);
+    var defaut = surAnki ? MATIERE_SANS : (derniereMatiere() || MATIERES_SEED[0].court);
+    var message = surAnki ? 'Bloc ' + libelle + ' : « Sans préciser », toutes les matières passent dans le paquet Dentaire. La matière ne se choisit que sur Cartes et Annales.'
+                : surMatiere ? 'Bloc ' + libelle + ' : choisis LA matière travaillée, c\'est elle qui fait la répartition par matière de l\'onglet Études.'
+                : 'Matière révisée pendant ce bloc :';
+    askDialog({titre:'Quelle matière ?', message: message,
                options: optionsMatieres(), valeur: defaut, libelleOk:'Lancer',
                libellesLongs: true}, function(choix){
       if(choix === null) return;                        /* annulé : aucun bloc lancé */
@@ -4405,13 +4421,26 @@
      ça elles apparaîtraient ratées en permanence et feraient chuter le score quotidien,
      exactement le défaut qui rendait ce genre d'habitude inutilisable. Le pas de calcul
      des séries et des taux passe alors à 7 jours au lieu de 1. */
+  function jourValide(j){ return j === 0 || (typeof j === 'number' && j > 0 && j < 7); }
   function habitJour(hb){
     var j = hb && hb.jour;
-    return (j === 0 || (typeof j === 'number' && j > 0 && j < 7)) ? j : null;
+    return jourValide(j) ? j : null;
+  }
+  /* Plusieurs jours par semaine via hb.jours ([1,3,5] = lundi, mercredi, vendredi) : le linge
+     trois fois par semaine, par exemple. Tableau trie des jours ou l'habitude s'applique,
+     null pour une quotidienne ; hb.jour (un seul jour) reste accepte. */
+  function habitJours(hb){
+    if(hb && Array.isArray(hb.jours)){
+      var js = hb.jours.filter(jourValide).filter(function(j, i, a){ return a.indexOf(j) === i; }).sort();
+      if(js.length >= 7) return null;
+      if(js.length) return js;
+    }
+    var j = habitJour(hb);
+    return j === null ? null : [j];
   }
   function habitVautLe(hb, dow){
-    var j = habitJour(hb);
-    return !hb.archived && (j === null || j === dow);
+    var js = habitJours(hb);
+    return !hb.archived && (js === null || js.indexOf(dow) > -1);
   }
   function habitsDuJour(dow){
     return habitsState.filter(function(h){ return habitVautLe(h, dow); });
@@ -4421,18 +4450,29 @@
     for(var i=0;i<habitsState.length;i++){ if(habitsState[i].id === id) return habitsState[i]; }
     return null;
   }
-  /* pas de progression en jours : 7 pour une habitude hebdomadaire, 1 sinon */
-  function habitPas(id){ return habitJour(habitParId(id)) === null ? 1 : 7; }
+  /* Les occurrences d'une habitude : chaque jour pour une quotidienne, ses jours de la
+     semaine sinon. occurrenceAvant(d) = la derniere occurrence a partir de d (d elle-meme
+     si elle s'applique) ; precedente et suivante avancent d'une occurrence a l'autre. */
+  function occurrenceAvant(hb, d){
+    var js = habitJours(hb), x = new Date(d);
+    if(js === null) return x;
+    while(js.indexOf(x.getDay()) === -1) x.setDate(x.getDate()-1);
+    return x;
+  }
+  function occurrencePrecedente(hb, d){ var x = new Date(d); x.setDate(x.getDate()-1); return occurrenceAvant(hb, x); }
+  function occurrenceSuivante(hb, d){
+    var js = habitJours(hb), x = new Date(d);
+    x.setDate(x.getDate()+1);
+    if(js === null) return x;
+    while(js.indexOf(x.getDay()) === -1) x.setDate(x.getDate()+1);
+    return x;
+  }
   /* Date à laquelle une coche se rattache : aujourd'hui pour une habitude quotidienne ; pour
-     une habitude hebdomadaire, la dernière occurrence de son jour (aujourd'hui s'il tombe).
+     une habitude a jours fixes, la dernière occurrence (aujourd'hui si elle tombe).
      Les courses faites le dimanche comptent pour le samedi de la semaine : la série et les
      taux ne regardent que les samedis, une date de dimanche y serait invisible. */
   function dateCibleHabit(id){
-    var j = habitJour(habitParId(id));
-    if(j === null) return todayISO;
-    var d = new Date(now);
-    while(d.getDay() !== j) d.setDate(d.getDate()-1);
-    return localISO(d);
+    return localISO(occurrenceAvant(habitParId(id), new Date(now)));
   }
   function habitDoneToday(id){ return (habitLog[id]||[]).indexOf(dateCibleHabit(id)) > -1; }
   var HABIT_COURSES = 'core-courses';
@@ -4473,27 +4513,21 @@
   }
   function habitStreak(id){
     var set = {}; (habitLog[id]||[]).forEach(function(d){ set[d]=true; });
-    var pas = habitPas(id);
-    var d = new Date(now);
-    /* pour une habitude hebdomadaire, on part de sa dernière occurrence, pas d'hier */
-    if(pas > 1){
-      var hb = habitParId(id), cible = habitJour(hb);
-      while(d.getDay() !== cible) d.setDate(d.getDate()-1);
-      if(!set[localISO(d)]) d.setDate(d.getDate()-pas);
-    } else if(!set[todayISO]){ d.setDate(d.getDate()-1); }
+    var hb = habitParId(id);
+    /* on part de la derniere occurrence (aujourd'hui pour une quotidienne) ; si elle n'est
+       pas encore cochee, la serie se lit depuis l'occurrence d'avant, sans etre cassee */
+    var d = occurrenceAvant(hb, new Date(now));
+    if(!set[localISO(d)]) d = occurrencePrecedente(hb, d);
     var streak = 0;
-    while(true){
-      var iso = localISO(d);
-      if(set[iso]){ streak++; d.setDate(d.getDate()-pas); } else break;
-    }
+    while(set[localISO(d)]){ streak++; d = occurrencePrecedente(hb, d); }
     return streak;
   }
   function habitRecord(id){
     var dates = (habitLog[id]||[]).slice().sort();
-    var pas = habitPas(id);
+    var hb = habitParId(id);
     var best=0, cur=0, prev=null;
     dates.forEach(function(iso){
-      cur = (prev && daysBetween(new Date(prev+"T00:00:00"), new Date(iso+"T00:00:00"))===pas) ? cur+1 : 1;
+      cur = (prev && localISO(occurrenceSuivante(hb, new Date(prev+"T00:00:00"))) === iso) ? cur+1 : 1;
       if(cur>best) best=cur;
       prev=iso;
     });
@@ -4501,13 +4535,13 @@
   }
   function habitRate(id, days){
     var doneSet = {}; (habitLog[id]||[]).forEach(function(d){ doneSet[d]=true; });
-    var hb = habitParId(id), cible = habitJour(hb);
+    var hb = habitParId(id), jours = habitJours(hb);
     var count = 0, applicables = 0;
     for(var i=0;i<days;i++){
       var d = new Date(now); d.setDate(d.getDate()-i);
       /* on ne divise que par les jours où l'habitude s'applique : sinon une habitude
          du samedi plafonnerait à 14% même tenue chaque semaine. */
-      if(cible !== null && d.getDay() !== cible) continue;
+      if(jours !== null && jours.indexOf(d.getDay()) === -1) continue;
       applicables++;
       if(doneSet[localISO(d)]) count++;
     }
@@ -4604,11 +4638,14 @@
         var done = habitDoneToday(hb.id), streak = habitStreak(hb.id), record = habitRecord(hb.id);
         /* les habitudes d'un jour précis restent listées ici pour rester gérables,
            mais on dit clairement quand elles s'appliquent. */
-        var jourCible = habitJour(hb);
+        var joursCible = habitJours(hb), duJour = joursCible === null || joursCible.indexOf(weekday) > -1;
         var NOMS_JOURS = ['dimanche','lundi','mardi','mercredi','jeudi','vendredi','samedi'];
-        var badgeJour = jourCible === null ? '' :
+        var libelleJours = joursCible === null ? '' : (joursCible.length === 1 ? NOMS_JOURS[joursCible[0]]
+          : joursCible.map(function(j){ return NOMS_JOURS[j].slice(0, 3); }).join(' · '));
+        var jourDerniereOccurrence = NOMS_JOURS[dowDe(dateCibleHabit(hb.id))];
+        var badgeJour = joursCible === null ? '' :
           ' <span class="sub-note" style="font-size:10px; color:var(--warn);">· '
-          + NOMS_JOURS[jourCible] + (jourCible === weekday ? '' : ' seulement') + '</span>';
+          + libelleJours + (duJour ? '' : ' seulement') + '</span>';
         return '<div class="card">'+
           '<div class="card-top"><div class="ctitle"><span class="cicon" style="background:'+(done?'var(--good)':'var(--ink-faint)')+'; box-shadow:0 0 8px '+(done?'var(--good)':'transparent')+';"></span>'+habitLabel(hb)+badgeJour+'</div>'+
             '<span style="display:flex; gap:2px; flex:none;">'+
@@ -4619,7 +4656,7 @@
           '</div>'+
           '<div class="streak-display"><span class="streak-num">'+streak+'</span><span class="streak-unit">jour'+(streak>1?'s':'')+' d\'affilée</span>'+streakMilestoneBadge(streak)+'</div>'+
           '<div class="card-row">Record : '+record+' j · 7j '+habitRate(hb.id,7)+'% · 30j '+habitRate(hb.id,30)+'%</div>'+
-          '<div class="card-actions"><button class="btn '+(done?'btn-primary':'')+'" data-togglehab="'+hb.id+'">'+(done ? '✓ Fait ' + (jourCible === null || jourCible === weekday ? 'aujourd\'hui' : NOMS_JOURS[jourCible]) : 'Marquer fait' + (jourCible === null || jourCible === weekday ? '' : ' (' + NOMS_JOURS[jourCible] + ')'))+'</button></div>'+
+          '<div class="card-actions"><button class="btn '+(done?'btn-primary':'')+'" data-togglehab="'+hb.id+'">'+(done ? '✓ Fait ' + (duJour ? 'aujourd\'hui' : jourDerniereOccurrence) : 'Marquer fait' + (duJour ? '' : ' (' + jourDerniereOccurrence + ')'))+'</button></div>'+
           '<button class="heat-toggle" data-showheat="'+hb.id+'">Historique (35 jours) '+(openHeatmaps['h-'+hb.id]?'▴':'▾')+'</button>'+
           '<div '+(openHeatmaps['h-'+hb.id]?'':'hidden ')+'id="heat-'+hb.id+'">'+heatmapHTML(habitLog[hb.id], false)+'</div>'+
           '</div>';
@@ -4671,9 +4708,13 @@
     var label = document.getElementById('hab-text').value.trim();
     if(!label) return;
     var icon = document.getElementById('hab-icon').value.trim();
-    habitsState.push({id:'hab'+Date.now(), label:label, icon:icon});
+    var selJours = document.getElementById('hab-jours');
+    var js = ((selJours && selJours.value) || '').split(',').filter(Boolean).map(Number).filter(jourValide);
+    var hb = {id:'hab'+Date.now(), label:label, icon:icon};
+    if(js.length === 1) hb.jour = js[0]; else if(js.length) hb.jours = js;
+    habitsState.push(hb);
     save('batcave-habits', habitsState);
-    document.getElementById('hab-text').value=''; document.getElementById('hab-icon').value='';
+    document.getElementById('hab-text').value=''; document.getElementById('hab-icon').value=''; if(selJours) selJours.value = '';
     renderHabits(); renderDashboard(); renderBilan();
   });
   document.getElementById('habits-archived').querySelector('.arch-toggle').addEventListener('click', function(){
@@ -4817,7 +4858,8 @@
 
   function currentStreak(a){
     if(!a.start) return null;
-    return daysBetween(new Date(a.start+"T00:00:00"), new Date(todayISO+"T00:00:00"));
+    /* un depart pose a une date future (nouveau depart du 14 septembre) compte 0, pas un negatif */
+    return Math.max(0, daysBetween(new Date(a.start+"T00:00:00"), new Date(todayISO+"T00:00:00")));
   }
   function startAddiction(id){
     addictionState[id].start = todayISO;
@@ -5118,7 +5160,7 @@
   }
 
   /* ================= SPORT ================= */
-  /* ===== Programme v2 (7 sept. 2026) =====
+  /* ===== Programme v2 (14 sept. 2026) =====
      Quatre séances de 40 min au parc, paires antagonistes en supersets (A puis B, repos
      court entre A et B, plus long avant la paire suivante). Lundi haut lourd, mardi bas
      complet, jeudi haut volume, samedi bras-épaules-mollets ; mercredi, vendredi, dimanche
@@ -5127,7 +5169,7 @@
      sont stables : le journal, la courbe et les objectifs « exo:Tractions » / « exo:Dips »
      les lisent. Tractions et Dips reviennent lundi et jeudi avec des fourchettes
      différentes ; leur cible se déduit du dernier journal, quel que soit le jour. */
-  var PROGRAMME_DEBUT = '2026-09-07';
+  var PROGRAMME_DEBUT = '2026-09-14';
   var SESSIONS = [
     {type:'Haut lourd', days:[1], duree:'42 min', repos:['45 s / 90 s', '45 s / 75 s', '30 s / 60 s'], exercises:[
       {name:'Tractions', reps:'4×6-12'},{name:'Dips', reps:'4×8-15'},
@@ -5619,8 +5661,8 @@
      révision et de projets, et jours d'entraînement (voir le recalage automatique plus bas). */
   var SEMAINE_SEMIS = {rev:1745, proj:1005, sport:6};
   var CIBLES_TRIMESTRE = {
-    T1:{revision_h:335, projets_h:186, sport_seances:70, espagnol_h:110, sommeil_moy:7.75, habitudes_pct:80, eau_moy:2.7, depenses_var:1050, snus_jours:90,  'exo:Tractions':10, 'exo:Dips':12},
-    T2:{revision_h:308, projets_h:205, sport_seances:72, espagnol_h:70, sommeil_moy:7.75, habitudes_pct:82, eau_moy:2.8, depenses_var:1050, snus_jours:180, 'exo:Tractions':12, 'exo:Dips':15},
+    T1:{revision_h:335, projets_h:186, sport_seances:70, espagnol_h:137, sommeil_moy:7.75, habitudes_pct:80, eau_moy:2.7, depenses_var:1050, snus_jours:90,  'exo:Tractions':10, 'exo:Dips':12},
+    T2:{revision_h:308, projets_h:205, sport_seances:72, espagnol_h:73, sommeil_moy:7.75, habitudes_pct:82, eau_moy:2.8, depenses_var:1050, snus_jours:180, 'exo:Tractions':12, 'exo:Dips':15},
     T3:{revision_h:352, projets_h:223, sport_seances:75, espagnol_h:45, sommeil_moy:7.75, habitudes_pct:85, eau_moy:3.0, depenses_var:1050, snus_jours:270, 'exo:Tractions':14, 'exo:Dips':18},
     T4:{revision_h:229, projets_h:279, sport_seances:75, espagnol_h:55, sommeil_moy:7.75, habitudes_pct:85, eau_moy:3.0, depenses_var:1050, snus_jours:365, 'exo:Tractions':15, 'exo:Dips':20}
   };
@@ -5667,8 +5709,9 @@
     return o;
   }
   function trimestreDe(iso){ return TRIMESTRES.filter(function(t){ return iso >= t.debut && iso <= t.fin; })[0] || null; }
-  /* Cibles mensuelles d'espagnol du Dossier Español (phases 1, 2, 3), au lieu du tiers du trimestre. */
-  var MOIS_ESPANOL = {'M2026-09':40, 'M2026-10':55, 'M2026-11':15, 'M2026-12':23, 'M2027-01':23, 'M2027-02':24};
+  /* Cibles mensuelles d'espagnol : 89 % des blocs Español de la grille par periode (phases 1,
+     2, 3 du Dossier Español, a partir du 14 septembre), au lieu du tiers du trimestre. */
+  var MOIS_ESPANOL = {'M2026-09':39, 'M2026-10':59, 'M2026-11':39, 'M2026-12':25, 'M2027-01':25, 'M2027-02':23};
   function objectifsSemes(){
     var out = [];
     TRIMESTRES.forEach(function(t){
@@ -5717,7 +5760,7 @@
     if(load('batcave-objectifs-v5-espanol', false)) return false;
     var courant = load('batcave-objectifs', null);
     if(courant && typeof courant === 'object' && Array.isArray(courant.liste)) objectifsState = {liste: courant.liste.filter(function(o){ return o && o.id; })};
-    var anciennes = {'T1:espagnol_h':[35,110], 'T2:espagnol_h':[40,70]};
+    var anciennes = {'T1:espagnol_h':[35,137], 'T2:espagnol_h':[40,73]};
     Object.keys(MOIS_ESPANOL).forEach(function(mid){ anciennes[mid + ':espagnol_h'] = [mid < 'M2026-12' ? 12 : 13, MOIS_ESPANOL[mid]]; });
     var change = false;
     objectifsState.liste.forEach(function(o){
@@ -5922,7 +5965,7 @@
       var ratio = (sens === '<=') ? (valeur > 0 ? attendu / valeur : 2) : (attendu > 0 ? valeur / attendu : (valeur > 0 ? 2 : 1));
       if(m.mode === 'niveau' && cible !== depart) ratio = attendu - depart > 0 ? (valeur - depart) / (attendu - depart) : 1;
       if(mieux(valeur, cible) && (m.mode !== 'cumul' || f >= 1 || sens === '>=')) statut = 'atteint';
-      else if(f <= 0.05) statut = 'ok';   /* le premier jour et demi : trop tot pour juger */
+      else if(f <= 0.05 || ecoules <= 1) statut = 'ok';   /* le premier jour (et le premier jour et demi d'une longue periode) : trop tot pour juger */
       else if(ratio >= 1.05) statut = 'avance';
       else if(ratio >= 0.9) statut = 'ok';
       else statut = 'retard';
@@ -7130,10 +7173,10 @@
   /* 7. Habitude la plus délaissée ------------------------------------------------------- */
   function tauxHabitude(hb, deb, fin){
     var doneSet = {}; (habitLog[hb.id] || []).forEach(function(d){ doneSet[d] = true; });
-    var cible = habitJour(hb), count = 0, applicables = 0;
+    var jours = habitJours(hb), count = 0, applicables = 0;
     for(var i = deb; i < fin; i++){
       var d = new Date(now); d.setDate(d.getDate() - i);
-      if(cible !== null && d.getDay() !== cible) continue;
+      if(jours !== null && jours.indexOf(d.getDay()) === -1) continue;
       applicables++;
       if(doneSet[localISO(d)]) count++;
     }
@@ -7863,16 +7906,8 @@
      Les rappels Google Calendar gardent les titres de la grille type (pas de doublon avec les
      series existantes) ; seule la consigne suit la periode. */
   var PERIODES_GRILLE = [
-    /* Semaine 0 : les cours n'ont pas commencé, mais la grille dentaire reste intacte.
-       Comme dans les phases suivantes, SEULS les blocs « Projets perso » changent de nom. */
-    {id:'es-0', nom:'Español · semaine 0', debut:'2026-09-11', fin:'2026-09-13', suite:'Español · phase 1',
-     description:'Remise à niveau avant les cours : les blocs Projets perso deviennent des blocs Español, le reste de la journée ne bouge pas.',
-     renommages: {
-       'Projets perso 1': {defaut:'Español · gramática', weekend:'Español · simulación'},
-       'Projets perso 2': {defaut:'Español · escribir', friday:'Español · tutor', saturday:'Español · tutor', weekend:'Español · balance de la semana'},
-       'Projets perso 3': {defaut:'Español · hablar', saturday:'Español · DELE'},
-       'Projets perso matinal': {friday:'Español · escribir largo', weekend:'Español · Anki y errores'}
-     }, consignes: CONSIGNES_PERIODE_ES},
+    /* Tout commence le lundi 14 septembre 2026, premier jour de cours : avant, la grille type.
+       Dans chaque phase, SEULS les blocs « Projets perso » changent de nom. */
     {id:'es-1', nom:'Español · phase 1', debut:'2026-09-14', fin:'2026-10-18', suite:'Español · phase 2 (Projets perso 1 revient)',
      description:'Avec les cours : les trois blocs Projets perso sont des blocs Español.',
      renommages: {
@@ -8158,7 +8193,7 @@
   /* Les series recurrentes de l'agenda portent une consigne apres « · » (« 🦇 Anki 1 · cartes
      dues dentaire ») : un evenement se reconnait a la partie avant le separateur. */
   function titreBaseGcal(s){ return String(s || '').split(' · ')[0].trim(); }
-  try{ window.__bcTitreBase = titreBaseGcal; window.__bcConsigne = consigneBloc; window.__bcInsights = buildInsights; window.__bcBlocs = blocsDuPlanning; window.__bcCle = cleJournee; window.__bcJours = joursSuivis; window.__bcInsightsVu = function(){ return insightsVu; }; window.__bcLogSession = logSession; window.__bcPeriode = periodeGrille; window.__bcGrille = grilleDe; window.__bcMinutesEspanol = minutesEspanol; window.__bcCibleEspanol = cibleEspanolJour; window.__bcTypeBloc = typeBlocPlan;
+  try{ window.__bcTitreBase = titreBaseGcal; window.__bcConsigne = consigneBloc; window.__bcInsights = buildInsights; window.__bcBlocs = blocsDuPlanning; window.__bcCle = cleJournee; window.__bcJours = joursSuivis; window.__bcInsightsVu = function(){ return insightsVu; }; window.__bcLogSession = logSession; window.__bcPeriode = periodeGrille; window.__bcGrille = grilleDe; window.__bcMinutesEspanol = minutesEspanol; window.__bcCibleEspanol = cibleEspanolJour; window.__bcTypeBloc = typeBlocPlan; window.__bcPlanRotation = planRotation; window.__bcHabitJours = habitJours; window.__bcProgrammeDebut = PROGRAMME_DEBUT;
        /* rapport hebdomadaire (tests/rapport-hebdo.mjs) : la semaine à un décalage donné, ses
           statistiques de bilan et le prévu/réalisé de chaque jour */
        window.__bcSemaine = function(off){

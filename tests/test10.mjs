@@ -36,7 +36,7 @@ await fr.evaluate(() => document.getElementById('timer-pomodoro').click());
 await page.waitForTimeout(200);
 let d = await dlg();
 ok(d.ouvert && d.selVisible && !d.inputVisible, 'menu déroulant proposé (pas un champ libre)');
-ok(/Matière révisée/i.test(d.msg), 'question : ' + d.msg.trim());
+ok(/Matière révisée|Sans préciser|LA matière/i.test(d.msg), 'question : ' + d.msg.trim());
 ok(d.options.length === 13, '11 matières + « Sans préciser » + « Autre matière… » = ' + d.options.length + ' choix');
 ok(d.options.indexOf('Anatomía I') === 0 && d.options.indexOf('Psicología') === 10, 'tes matières dans l\'ordre de la maquette');
 ok(d.options[11] === 'Sans préciser' && d.options[12] === 'Autre matière…', 'échappatoires en fin de liste');

@@ -1,4 +1,4 @@
-/* Lot 16 : grille Español par périodes datées (semaine 0, phases 1-3), consignes, Pomodoro
+/* Lot 16 : grille Español par périodes datées (phases 1-3 à partir du lundi 14 septembre), consignes, Pomodoro
    Español, cellule et relevé du tableau de bord, habitudes du plan, objectifs Espagnol
    relevés, chiffres du dimanche à la clôture, retour à la grille type après mars. */
 import { chromium } from 'playwright';
@@ -85,9 +85,9 @@ console.log('\n== 231) Phase 1 (mercredi 16 septembre) : blocs Projets perso ren
   ok(cal.now === 'Español · gramática' && /point de grammaire/.test(cal.consigne), 'bloc MAINTENANT = Español · gramática, consigne affichée');
   ok(/Español · phase 1/.test(cal.source) && cal.semaine.every(n => n >= 2), 'vue semaine : chaque jour porte au moins deux blocs Español (' + cal.semaine.join(',') + '), source « ' + cal.source + ' »');
 
-  /* objectifs : migration 35 → 110 (T1), 12 → 40 (septembre) */
+  /* objectifs : migration 35 → 137 (T1), 12 → 39 (septembre) */
   const objs = await fr.evaluate(() => JSON.parse(localStorage.getItem('batcave-objectifs')).liste.reduce((a, o) => { a[o.id] = o.cible; return a; }, {}));
-  ok(objs['T1:espagnol_h'] === 110 && objs['M2026-09:espagnol_h'] === 40 && objs['M2026-09:projets_h'] > 0, 'objectifs Espagnol relevés (T1 110, septembre 40), Projets perso toujours là : ' + JSON.stringify(objs));
+  ok(objs['T1:espagnol_h'] === 137 && objs['M2026-09:espagnol_h'] === 39 && objs['M2026-09:projets_h'] > 0, 'objectifs Espagnol relevés (T1 137, septembre 39), Projets perso toujours là : ' + JSON.stringify(objs));
 
   /* Pomodoro Español : la tâche par défaut est celle du bloc en cours (gramática à 12:00), le bloc part en projet « Español · gramática » */
   await fr.evaluate(() => document.querySelector('.nav-btn[data-page="dashboard"]').click());
@@ -113,33 +113,31 @@ console.log('\n== 231) Phase 1 (mercredi 16 septembre) : blocs Projets perso ren
   await ctx.close();
 }
 
-console.log('\n== 232) Semaine 0 (vendredi 11 au dimanche 13) : SEULS les blocs Projets perso changent ==');
+console.log('\n== 232) Avant le lundi 14 septembre : aucune période, la grille type ; le 14, phase 1 ==');
 {
   const { ctx, fr } = await ouvrir('2026-09-11T08:00:00+02:00');
   const g = await fr.evaluate(() => {
-    const base = window.__bcGrille ? null : null;
-    const gv = window.__bcGrille('friday', '2026-09-11');
     const at = (grille, h) => (grille.find(b => b[0] === h) || [])[1];
-    const gd = window.__bcGrille('weekend', '2026-09-13');
-    return { p: (window.__bcPeriode('2026-09-11') || {}).id,
-             avant: (window.__bcPeriode('2026-09-10') || {}).id || null,
-             v0530: at(gv, '05:30'), v0720: at(gv, '07:20'), v0820: at(gv, '08:20'), v0920: at(gv, '09:20'),
-             v1020: at(gv, '10:20'), v1120: at(gv, '11:20'), v1220: at(gv, '12:20'), v1530: at(gv, '15:30'),
-             d1120: at(gd, '11:20'), d0920: at(gd, '09:20'),
-             releve: document.querySelector('#bc-grille .v').textContent,
-             lignes: gv.length };
+    const gv = window.__bcGrille('friday', '2026-09-11');
+    const gl = window.__bcGrille('weekday', '2026-09-14');
+    return { p11: (window.__bcPeriode('2026-09-11') || {}).id || null, p13: (window.__bcPeriode('2026-09-13') || {}).id || null,
+             p14: (window.__bcPeriode('2026-09-14') || {}).id || null,
+             v0530: at(gv, '05:30'), v0720: at(gv, '07:20'), v1020: at(gv, '10:20'), v1120: at(gv, '11:20'),
+             l0720: at(gl, '07:20'), l0820: at(gl, '08:20'), l0920: at(gl, '09:20'), l1120: at(gl, '11:20'),
+             l1220: at(gl, '12:20'), l1300: at(gl, '13:00'), l1400: at(gl, '14:00'), l1530: at(gl, '15:30'),
+             releve: document.querySelector('#bc-grille .v').textContent, cache: document.getElementById('bc-grille').hidden,
+             sport: document.getElementById('programme-note').textContent };
   });
-  ok(g.p === 'es-0', 'le vendredi 11 est bien dans la semaine 0 (obtenu ' + g.p + ')');
-  ok(g.avant === null, 'le jeudi 10 n\'est dans aucune période : la grille reste la grille type');
-  ok(g.v0720 === 'Anki 1' && g.v0820 === 'Anki 2' && g.v0920 === 'Cartes du dernier cours',
-     'les blocs de révision dentaire sont intacts : ' + g.v0720 + ' / ' + g.v0820 + ' / ' + g.v0920);
-  ok(g.v1220 === 'Déjeuner' && g.v1530 === 'Cours',
-     'déjeuner et cours inchangés : ' + g.v1220 + ' / ' + g.v1530);
-  ok(g.v0530 === 'Español · escribir largo' && g.v1020 === 'Español · gramática' && g.v1120 === 'Español · tutor',
-     'seuls les Projets perso deviennent Español : ' + g.v0530 + ' / ' + g.v1020 + ' / ' + g.v1120);
-  ok(g.d0920 === 'Annale complète' && g.d1120 === 'Español · simulación',
-     'dimanche : annale complète gardée, Projets perso 1 en simulación : ' + g.d0920 + ' / ' + g.d1120);
-  ok(/semaine 0 · J-2$/.test(g.releve), 'relevé GRILLE : « Español · semaine 0 · J-2 » (obtenu « ' + g.releve + ' »)');
+  ok(g.p11 === null && g.p13 === null, 'les 11, 12 et 13 septembre ne sont dans aucune période (obtenu ' + g.p11 + ' / ' + g.p13 + ')');
+  ok(g.v0530 === 'Projets perso matinal' && g.v1020 === 'Projets perso 1' && g.v1120 === 'Projets perso 2' && g.v0720 === 'Anki 1',
+     'le vendredi 11 garde la grille type : ' + [g.v0530, g.v0720, g.v1020, g.v1120].join(' / '));
+  ok(g.cache === true && g.releve === 'grille type', 'relevé GRILLE masqué avant le 14 (« ' + g.releve + ' »)');
+  ok(g.p14 === 'es-1', 'le lundi 14 est en phase 1 (obtenu ' + g.p14 + ')');
+  ok(g.l0720 === 'Anki 1' && g.l0820 === 'Anki 2' && g.l0920 === 'Cartes du dernier cours' && g.l1220 === 'Déjeuner' && g.l1530 === 'Cours',
+     'le 14 : révision dentaire, déjeuner et cours intacts : ' + [g.l0720, g.l0820, g.l0920, g.l1220, g.l1530].join(' / '));
+  ok(g.l1120 === 'Español · gramática' && g.l1300 === 'Español · escribir' && g.l1400 === 'Español · preparar la clase',
+     'le 14 : seuls les Projets perso deviennent Español : ' + [g.l1120, g.l1300, g.l1400].join(' / '));
+  ok(/démarre le/.test(g.sport) && /14/.test(g.sport), 'sport : avant le 14, « démarre le 14 sept. » (' + g.sport + ')');
   await ctx.close();
 }
 
