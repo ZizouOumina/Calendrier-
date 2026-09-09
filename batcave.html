@@ -878,7 +878,13 @@
      hauteur au tableau de bord. */
   .mon-suivi .temps-grid{ grid-template-columns:repeat(3, minmax(0, 1fr)); gap:8px; }
   .mon-suivi .temps-cell .tv{ font-size:30px; }
-  .mon-suivi .temps-cell .tl{ font-size:10px; letter-spacing:0.08em; }
+  /* Trois cellules cote a cote dans un panneau etroit : « Projets perso » ne tient pas
+     sur une ligne, et sur iPad les trois etaient coupes. On laisse le libelle passer a
+     la ligne, avec une hauteur de deux lignes reservee pour que les trois chiffres
+     restent alignes. */
+  .mon-suivi .temps-cell .tl{ font-size:10px; letter-spacing:0.04em; white-space:normal;
+    overflow:visible; text-overflow:clip; line-height:1.25; min-height:2.5em;
+    display:flex; align-items:flex-start; }
   @media (max-width:780px){ .mon-suivi .temps-grid{ grid-template-columns:repeat(auto-fit, minmax(110px, 1fr)); } }
   .temps-cell{ background:transparent; border:none; padding:4px 4px 0; }
   .temps-cell .tl{ font-family:var(--font-mono); font-size:11px; letter-spacing:0.14em; color:var(--ink-dim); }
@@ -5830,7 +5836,9 @@
     var hh = function(m){ return (m/60).toFixed(1).replace('.', ','); };
     var lh = document.getElementById('leg-hab'), lr = document.getElementById('leg-rev'), lp = document.getElementById('leg-proj');
     if(lh) lh.textContent = 'habitudes ' + reacteurHabits.fait + '/' + reacteurHabits.total;
-    if(lr) lr.textContent = 'révision ' + hh(revMin) + '/' + cibleRevisionTexte() + ' h';
+    /* cibleRevisionTexte() rend deja « 4 h 25 » quand la cible a des minutes : on n'ajoute
+       l'unite que sur un nombre entier, sinon on affiche « 4 h 25 h ». */
+    if(lr) lr.textContent = 'révision ' + hh(revMin) + '/' + cibleRevisionTexte() + (Number.isInteger(revisionTarget()) ? ' h' : '');
     if(lp) lp.textContent = 'projets ' + hh(projMin) + '/' + hh(cibleProj) + ' h';
   }
   function renderDashHabits(){

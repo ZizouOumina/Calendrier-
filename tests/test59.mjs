@@ -33,7 +33,8 @@ console.log('\n== 190) Un Pomodoro de révision se voit sur six pages ==');
   ok(/Anatomía I[\s\S]*?0,4h/.test(await txt('#rev-matieres-7')), 'Études : par matière, Anatomía I 0,4 h');
   await aller('dashboard');
   ok(/Révision[\s\S]*?0,4h/.test(await txt('#dash-temps')), 'Tableau de bord : temps du jour 0,4 h');
-  ok(/révision 0,4\/4 h 25 h/.test(await txt('#leg-rev')), 'Réacteur : légende révision 0,4 / 4 h 25 (' + await txt('#leg-rev') + ')');
+  /* « 4 h 25 » porte deja son unite : pas de « h » en trop derriere (ce test figeait le bug). */
+  ok(/révision 0,4\/4 h 25(?! h)/.test(await txt('#leg-rev')), 'Réacteur : légende révision 0,4/4 h 25, sans unité en double (' + await txt('#leg-rev') + ')');
   await aller('calendrier');
   ok(/0,4h \/ 4 h 25 visées/.test(await txt('#cal-revision-sub')), 'Calendrier : 0,4h / 4 h 25 visées');
   await aller('agenda');
