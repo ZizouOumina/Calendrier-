@@ -690,6 +690,8 @@
   .insight-foot{ display:flex; align-items:center; justify-content:space-between; gap:6px 10px; margin-top:10px; flex-wrap:wrap; }
   .insight-outils{ display:inline-flex; gap:6px; align-items:center; flex-wrap:wrap; }
   .insight-outils .btn{ padding:4px 9px 3px; font-size:11.5px; }
+  .prio-retour{ color:var(--warn); margin-right:6px; }
+  .prio-retour.insistant{ color:var(--danger); text-transform:uppercase; letter-spacing:.06em; }
   .insight-pause{ font-family:var(--font-mono); font-size:10.5px; color:var(--warn); }
   .insight-card.en-pause{ opacity:0.7; }
   .insights-priorites li .insight-outils{ margin-left:8px; vertical-align:middle; }
@@ -934,15 +936,15 @@
 
     <nav aria-label="Navigation">
       <span class="nav-label">Quotidien</span>
-      <button class="nav-btn active" data-page="dashboard" aria-current="page">
+      <button class="nav-btn active" data-page="dashboard" data-pages="dashboard taches" aria-current="page">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>
         Tableau de bord
       </button>
-      <button class="nav-btn" data-page="bilan">
+      <button class="nav-btn" data-page="bilan" data-pages="bilan insights">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 15l4-5 3 3 5-7"/></svg>
-        Bilan
+        Semaine
       </button>
-      <button class="nav-btn" data-page="insights">
+      <button class="nav-btn" data-page="insights" hidden>
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7c.6.4 1 1.1 1 1.8v.5h6v-.5c0-.7.4-1.4 1-1.8A7 7 0 0 0 12 2z"/></svg>
         Insights
       </button>
@@ -950,11 +952,11 @@
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/><path d="M12 13v4l3 2"/></svg>
         Calendrier
       </button>
-      <button class="nav-btn" data-page="agenda">
+      <button class="nav-btn" data-page="agenda" hidden>
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/><circle cx="8.5" cy="14" r="1.4" fill="currentColor" stroke="none"/><circle cx="12" cy="14" r="1.4" fill="currentColor" stroke="none"/><circle cx="15.5" cy="14" r="1.4" fill="currentColor" stroke="none"/></svg>
         Agenda Batcave
       </button>
-      <button class="nav-btn" data-page="journal">
+      <button class="nav-btn" data-page="journal" hidden>
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2h9l3 3v17H6z"/><path d="M9 8h6M9 12h6M9 16h4"/></svg>
         Journal
       </button>
@@ -962,9 +964,9 @@
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l2.5 6.5L21 11l-6.5 2.5L12 20l-2.5-6.5L3 11l6.5-2.5z"/></svg>
         Habitudes
       </button>
-      <button class="nav-btn" data-page="addictions">
+      <button class="nav-btn" data-page="addictions" data-pages="addictions vie">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
-        Dépendances
+        Corps
       </button>
       <button class="nav-btn" data-page="repas">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3v7a3 3 0 0 0 3 3v8"/><path d="M6 3v6M9 3v6"/><path d="M17 3c-2 0-3 2-3 5s1 5 3 5v8"/></svg>
@@ -980,7 +982,7 @@
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v17H6.5A2.5 2.5 0 0 0 4 21.5v-17z"/><path d="M4 4.5V19a2.5 2.5 0 0 0 2.5 2.5H20"/></svg>
         Coran &amp; Duaas
       </button>
-      <button class="nav-btn" data-page="taches">
+      <button class="nav-btn" data-page="taches" hidden>
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l2 2 4-4"/><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
         Tâches
       </button>
@@ -990,11 +992,11 @@
       </button>
 
       <span class="nav-label">Projets</span>
-      <button class="nav-btn" data-page="etudes">
+      <button class="nav-btn" data-page="etudes" data-pages="etudes agenda">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 9l10-5 10 5-10 5-10-5z"/><path d="M6 11.5V17c0 1.5 3 3 6 3s6-1.5 6-3v-5.5"/></svg>
         Études
       </button>
-      <button class="nav-btn" data-page="business">
+      <button class="nav-btn" data-page="business" id="nav-business" hidden>
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21V9l9-6 9 6v12"/><path d="M9 21v-6h6v6"/></svg>
         Business
       </button>
@@ -1004,7 +1006,7 @@
       </button>
 
       <span class="nav-label">Logistique</span>
-      <button class="nav-btn" data-page="vie">
+      <button class="nav-btn" data-page="vie" hidden>
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 1 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>
         Santé
       </button>
@@ -1217,6 +1219,21 @@
       </div>
     </section>
 
+    <section class="page" data-page="taches">
+      <div class="page-head">
+        <span class="eyebrow">Dossier N° 08</span>
+        <h1>Tâches</h1>
+        <p class="desc">Clique le badge de statut pour le faire avancer : à faire → en cours → fait.</p>
+      </div>
+      <div class="add-form">
+        <div class="f" style="flex:1; min-width:220px;"><label>Tâche</label><input type="text" id="tk-text" placeholder="ex : réviser anatomie dentaire" style="width:100%;"></div>
+        <div class="f"><label>Échéance</label><input type="date" id="tk-due"></div>
+        <div class="f"><label>Priorité</label><select id="tk-priority"><option>Basse</option><option selected>Moyenne</option><option>Haute</option></select></div>
+        <button class="btn btn-primary" id="tk-add">Ajouter</button>
+      </div>
+      <ul class="entry-list" id="taches-list"></ul>
+    </section>
+
     <!-- ================= BILAN ================= -->
     <section class="page" data-page="bilan">
       <div id="bilan-print-area">
@@ -1316,6 +1333,20 @@
         <ul class="entry-list" id="journees-liste"></ul>
       </div>
 
+      <!-- Vacances et jours qui ne comptent pas : la grille et les objectifs suivent. -->
+      <div class="panel sub-panel" id="vacances-panel">
+        <div class="sub-head"><h3>🏝️ Vacances &amp; jours qui ne comptent pas</h3><span class="sub-note" id="vacances-note">—</span></div>
+        <p class="sub-note" style="margin-bottom:12px; line-height:1.6;">Pendant des vacances, tous les blocs de travail deviennent du <b style="color:var(--ink-dim);">temps libre</b> : les cibles du jour, de la semaine et des objectifs tombent d'elles-mêmes — rien ne passe en retard, et rien n'est effacé. « Aujourd'hui ne compte pas » sort une seule journée du score, des séries d'habitudes, des taux et des objectifs.</p>
+        <div class="add-form">
+          <div class="f"><label>Du</label><input type="date" id="vac-debut"></div>
+          <div class="f"><label>Au</label><input type="date" id="vac-fin"></div>
+          <div class="f" style="flex:1; min-width:160px;"><label>Libellé</label><input type="text" id="vac-label" placeholder="ex : Noël en famille" style="width:100%;"></div>
+          <button class="btn btn-primary" id="vac-add" type="button">Ajouter</button>
+          <button class="btn" id="vac-exclu" type="button">Aujourd'hui ne compte pas</button>
+        </div>
+        <ul class="entry-list" id="vacances-liste"></ul>
+      </div>
+
       <div class="panel sub-panel">
         <div class="sub-head"><h3>Vue de la semaine</h3><span class="sub-note" id="week-cal-source">planning type</span></div>
         <div class="week-cal-wrap">
@@ -1325,58 +1356,6 @@
     </section>
 
     <!-- ================= AGENDA BATCAVE ================= -->
-    <section class="page" data-page="agenda">
-      <div class="page-head">
-        <span class="eyebrow">Dossier N° 17</span>
-        <h1>Agenda Batcave</h1>
-        <p class="desc">Tout ton temps de travail regroupé : révision et projets perso, mois par mois et heure par heure.</p>
-      </div>
-
-      <!-- Rappels sur telephone : la Batcave tourne dans claude.ai et ne peut pas notifier ;
-           Google Calendar, si. Visible seulement quand le connecteur est la (version publiee). -->
-      <div class="panel sub-panel" id="gcal-panel" hidden style="margin-bottom:16px;">
-        <div class="sub-head"><h3>📲 Rappels sur téléphone</h3><span class="sub-note" id="gcal-statut">désactivé</span></div>
-        <p class="sub-note" style="line-height:1.65; margin-bottom:10px;">Ce n'est pas un réglage de notifications : c'est la Batcave qui écrit ton planning dans Google Calendar pour que ton téléphone sonne. Quand c'est activé, tous les blocs d'<b style="color:var(--ink-dim);">aujourd'hui et de demain</b> sont dans ton agenda avec un rappel <b style="color:var(--ink-dim);">5 min avant</b> — <b style="color:var(--ink-dim);">30 min avant le coucher</b>. Un événement par bloc et par jour, jamais de doublon : un bloc déjà présent dans ton agenda (tes événements récurrents « 🦇 ») est reconnu et gardé, son heure et son rappel sont alignés sur le planning, un bloc manquant est créé, un bloc retiré du planning est retiré seulement s'il venait de la Batcave. L'agenda suit la grille du jour : pendant une phase Español, les partiels ou une journée exceptionnelle, l'instance du jour prend le nom du bloc réel (« 🦇 Español · gramática » à la place de « 🦇 Projets perso 1 »), la série reste intacte. Désactiver ne supprime que ce que la Batcave a créé. Les blocs déjà commencés ne sont pas envoyés.</p>
-        <div class="card-actions" style="flex-wrap:wrap;">
-          <button class="btn btn-primary" id="gcal-toggle" type="button">Activer les rappels</button>
-          <button class="btn" id="gcal-pousser" type="button" hidden>Pousser maintenant</button>
-        </div>
-        <p class="sub-note" id="gcal-detail" style="margin-top:8px;"></p>
-      </div>
-
-      <div class="stat-grid" id="ag-stats"></div>
-
-      <div class="panel sub-panel">
-        <div class="sub-head">
-          <h3>Tout le travail</h3>
-          <span style="display:flex; gap:6px; align-items:center;">
-            <button class="btn" id="ag-prev" type="button" aria-label="Mois précédent">◀</button>
-            <span class="sub-note" id="ag-mois" style="min-width:130px; text-align:center;">—</span>
-            <button class="btn" id="ag-next" type="button" aria-label="Mois suivant">▶</button>
-          </span>
-        </div>
-        <p class="sub-note" style="margin-bottom:10px;">Clique un jour pour voir sa grille horaire. 🔵 révision · 🟠 projets perso</p>
-        <div class="cal-head" id="ag-head"></div>
-        <div class="cal-grid" id="ag-grid"></div>
-        <div class="jr-nav" style="margin-top:16px;">
-          <button class="btn" type="button" id="ag-jprev" aria-label="Jour précédent">◀</button>
-          <b id="ag-jlabel" style="min-width:190px; text-align:center;">—</b>
-          <button class="btn" type="button" id="ag-jnext" aria-label="Jour suivant">▶</button>
-          <button class="btn" type="button" id="ag-jtoday">Aujourd'hui</button>
-          <span class="sub-note" id="ag-jtotal" style="margin-left:auto;"></span>
-        </div>
-        <div id="ag-jour"></div>
-      </div>
-
-      <div class="panel sub-panel">
-        <button type="button" class="heat-toggle" id="rev-annee-toggle">Vue 12 mois ▾</button>
-        <div hidden id="rev-annee">
-          <p class="sub-note" style="margin:10px 0;">Une case par jour sur les 12 derniers mois — révision et projets perso confondus.</p>
-          <div class="an-wrap"><div id="rev-annee-mois" class="an-mois"></div><div class="an-grid" id="rev-annee-grid"></div></div>
-          <div class="an-legende"><span>moins</span><span class="an-cell"></span><span class="an-cell n1"></span><span class="an-cell n2"></span><span class="an-cell n3"></span><span class="an-cell n4"></span><span>plus</span><span id="rev-annee-resume" style="margin-left:auto;"></span></div>
-        </div>
-      </div>
-    </section>
 
     <!-- ================= JOURNAL ================= -->
     <section class="page" data-page="journal">
@@ -1444,7 +1423,7 @@
         </div>
       </div>
 
-      <div class="panel sub-panel" style="margin-top:14px;">
+      <div class="panel sub-panel" id="journal-hist-panel" style="margin-top:14px;">
         <div class="sub-head"><h3>Journées précédentes</h3><span class="sub-note" id="journal-hist-count"></span></div>
         <p class="sub-note" style="margin-bottom:12px;">Tes notes, ton humeur, ton sommeil et ton poids, jour par jour — les plus récentes en premier.</p>
         <div id="journal-hist"></div>
@@ -1467,6 +1446,14 @@
       </div>
 
       <div class="addiction-grid" id="habits-grid"></div>
+
+      <!-- Acquises : tenues à 90 % sur trente jours. Elles comptent toujours, elles ne
+           réclament plus rien. « Je l'ai ratée » les remet dans la liste du jour. -->
+      <div class="panel sub-panel" id="habits-acquises" hidden style="margin-top:16px;">
+        <div class="sub-head"><h3>🏅 Habitudes acquises</h3><span class="sub-note acq-note">—</span></div>
+        <p class="sub-note" style="margin-bottom:10px;">Elles se cochent toutes seules et comptent dans ton score ; elles ne s'affichent plus dans la check-list du jour ni dans la clôture.</p>
+        <ul class="entry-list acq-list"></ul>
+      </div>
 
       <div class="panel sub-panel" id="habits-archived" hidden style="margin-top:16px;">
         <button type="button" class="heat-toggle arch-toggle" style="padding:0;"><span class="arch-toggle-label">Habitudes archivées</span></button>
@@ -1545,7 +1532,7 @@
       <div class="page-head">
         <span class="eyebrow">Dossier N° 06</span>
         <h1>Sport — Programme v2</h1>
-        <p class="desc">Quatre séances au parc, paires antagonistes en supersets : lundi haut lourd, mardi bas complet, jeudi haut volume, samedi bras, épaules et mollets. La séance du jour est surlignée automatiquement.</p>
+        <p class="desc">Quatre séances au parc, paires antagonistes en supersets : lundi haut lourd, mardi bas complet, jeudi haut volume, samedi bras, épaules et mollets. Chaque séance finit par les abdos ; le cou en isométrie le lundi et le jeudi, les trapèzes le jeudi et le samedi. La séance du jour est surlignée automatiquement.</p>
       </div>
 
       <div class="week-strip" id="week-strip"></div>
@@ -1638,20 +1625,6 @@
     </section>
 
     <!-- ================= TÂCHES ================= -->
-    <section class="page" data-page="taches">
-      <div class="page-head">
-        <span class="eyebrow">Dossier N° 08</span>
-        <h1>Tâches</h1>
-        <p class="desc">Clique le badge de statut pour le faire avancer : à faire → en cours → fait.</p>
-      </div>
-      <div class="add-form">
-        <div class="f" style="flex:1; min-width:220px;"><label>Tâche</label><input type="text" id="tk-text" placeholder="ex : réviser anatomie dentaire" style="width:100%;"></div>
-        <div class="f"><label>Échéance</label><input type="date" id="tk-due"></div>
-        <div class="f"><label>Priorité</label><select id="tk-priority"><option>Basse</option><option selected>Moyenne</option><option>Haute</option></select></div>
-        <button class="btn btn-primary" id="tk-add">Ajouter</button>
-      </div>
-      <ul class="entry-list" id="taches-list"></ul>
-    </section>
 
     <!-- ================= BUDGET ================= -->
     <section class="page" data-page="budget">
@@ -1783,6 +1756,13 @@
 
       </div>
 
+      <!-- Cours pas encore faits, lus dans les bases Notion (lecture seule). -->
+      <div class="panel sub-panel" id="notion-panel" hidden>
+        <div class="sub-head"><h3>📓 Cours pas encore faits (Notion)</h3><span class="sub-note" id="notion-maj">—</span></div>
+        <p class="sub-note" style="margin-bottom:10px; line-height:1.6;">Lu dans tes bases de cours, matière par matière : un cours compte comme « pas fait » tant que son état le dit. La matière la plus en retard remonte dans le plan du jour. La Batcave n'écrit rien dans Notion.</p>
+        <div id="notion-liste" class="mini-list"></div>
+      </div>
+
       <!-- Une date par matiere, saisie ici. La plus proche remonte sur le Plan du jour
            a partir de 30 jours, et devient prioritaire a 14. L'heure (facultative, 09:00 → 11:00
            sinon) construit la journee de l'examen ; les dates declenchent le mode partiels. -->
@@ -1828,6 +1808,59 @@
           <span class="sub-note" id="rv-jtotal" style="margin-left:auto;"></span>
         </div>
         <div id="rv-jour"></div>
+      </div>
+    </section>
+
+    <section class="page" data-page="agenda">
+      <div class="page-head">
+        <span class="eyebrow">Dossier N° 17</span>
+        <h1>Agenda Batcave</h1>
+        <p class="desc">Tout ton temps de travail regroupé : révision et projets perso, mois par mois et heure par heure.</p>
+      </div>
+
+      <!-- Rappels sur telephone : la Batcave tourne dans claude.ai et ne peut pas notifier ;
+           Google Calendar, si. Visible seulement quand le connecteur est la (version publiee). -->
+      <div class="panel sub-panel" id="gcal-panel" hidden style="margin-bottom:16px;">
+        <div class="sub-head"><h3>📲 Rappels sur téléphone</h3><span class="sub-note" id="gcal-statut">désactivé</span></div>
+        <p class="sub-note" style="line-height:1.65; margin-bottom:10px;">Ce n'est pas un réglage de notifications : c'est la Batcave qui écrit ton planning dans Google Calendar pour que ton téléphone sonne. Quand c'est activé, tous les blocs d'<b style="color:var(--ink-dim);">aujourd'hui et de demain</b> sont dans ton agenda avec un rappel <b style="color:var(--ink-dim);">5 min avant</b> — <b style="color:var(--ink-dim);">30 min avant le coucher</b>. Un événement par bloc et par jour, jamais de doublon : un bloc déjà présent dans ton agenda (tes événements récurrents « 🦇 ») est reconnu et gardé, son heure et son rappel sont alignés sur le planning, un bloc manquant est créé, un bloc retiré du planning est retiré seulement s'il venait de la Batcave. L'agenda suit la grille du jour : pendant une phase Español, les partiels ou une journée exceptionnelle, l'instance du jour prend le nom du bloc réel (« 🦇 Español · gramática » à la place de « 🦇 Projets perso 1 »), la série reste intacte. Désactiver ne supprime que ce que la Batcave a créé. Les blocs déjà commencés ne sont pas envoyés.</p>
+        <div class="card-actions" style="flex-wrap:wrap;">
+          <button class="btn btn-primary" id="gcal-toggle" type="button">Activer les rappels</button>
+          <button class="btn" id="gcal-pousser" type="button" hidden>Pousser maintenant</button>
+        </div>
+        <p class="sub-note" id="gcal-detail" style="margin-top:8px;"></p>
+      </div>
+
+      <div class="stat-grid" id="ag-stats"></div>
+
+      <div class="panel sub-panel">
+        <div class="sub-head">
+          <h3>Tout le travail</h3>
+          <span style="display:flex; gap:6px; align-items:center;">
+            <button class="btn" id="ag-prev" type="button" aria-label="Mois précédent">◀</button>
+            <span class="sub-note" id="ag-mois" style="min-width:130px; text-align:center;">—</span>
+            <button class="btn" id="ag-next" type="button" aria-label="Mois suivant">▶</button>
+          </span>
+        </div>
+        <p class="sub-note" style="margin-bottom:10px;">Clique un jour pour voir sa grille horaire. 🔵 révision · 🟠 projets perso</p>
+        <div class="cal-head" id="ag-head"></div>
+        <div class="cal-grid" id="ag-grid"></div>
+        <div class="jr-nav" style="margin-top:16px;">
+          <button class="btn" type="button" id="ag-jprev" aria-label="Jour précédent">◀</button>
+          <b id="ag-jlabel" style="min-width:190px; text-align:center;">—</b>
+          <button class="btn" type="button" id="ag-jnext" aria-label="Jour suivant">▶</button>
+          <button class="btn" type="button" id="ag-jtoday">Aujourd'hui</button>
+          <span class="sub-note" id="ag-jtotal" style="margin-left:auto;"></span>
+        </div>
+        <div id="ag-jour"></div>
+      </div>
+
+      <div class="panel sub-panel">
+        <button type="button" class="heat-toggle" id="rev-annee-toggle">Vue 12 mois ▾</button>
+        <div hidden id="rev-annee">
+          <p class="sub-note" style="margin:10px 0;">Une case par jour sur les 12 derniers mois — révision et projets perso confondus.</p>
+          <div class="an-wrap"><div id="rev-annee-mois" class="an-mois"></div><div class="an-grid" id="rev-annee-grid"></div></div>
+          <div class="an-legende"><span>moins</span><span class="an-cell"></span><span class="an-cell n1"></span><span class="an-cell n2"></span><span class="an-cell n3"></span><span class="an-cell n4"></span><span>plus</span><span id="rev-annee-resume" style="margin-left:auto;"></span></div>
+        </div>
       </div>
     </section>
 
@@ -1919,8 +1952,9 @@
            apres le 14 mars 2027 le compteur serait reste a 0 pour toujours. Il se lit et
            se modifie ici, et tout le reste en decoule. -->
       <div class="deadline-banner">
-        <span>Échéance : <b id="goal-deadline-days">—</b> jours restants</span>
+        <span>Échéance : <b id="goal-deadline-days">—</b> jours restants <span class="sub-note" id="saison-note"></span></span>
         <span style="display:flex; align-items:center; gap:8px;">
+          <button class="btn btn-primary" id="saison-cloturer" type="button" hidden>🏁 Clôturer la saison</button>
           <label for="goal-horizon-fin" style="font-size:11px; color:var(--ink-faint);">jusqu'au</label>
           <input type="date" id="goal-horizon-fin" style="background:var(--surface-raised); border:1px solid var(--border); color:var(--ink); border-radius:6px; padding:4px 7px; font-size:12px; font-family:var(--font-mono);">
         </span>
@@ -2051,6 +2085,27 @@
     <div class="card-actions" style="margin-top:12px;">
       <button class="btn btn-primary" id="backup-import-btn">Restaurer cette sauvegarde</button>
     </div>
+    <!-- Chiffrement et exercice de restauration : une sauvegarde qu'on n'a jamais relue
+         n'est pas une sauvegarde, et un fichier en clair sur un Drive est un fichier lisible. -->
+    <div style="margin-top:16px; padding-top:14px; border-top:1px solid var(--border-soft);">
+      <p style="font-weight:600; color:var(--ink); font-size:13.5px; margin-bottom:6px;">🔒 Phrase de passe des sauvegardes Drive <span class="sub-note" id="backup-phrase-etat"></span></p>
+      <p class="sub-note" style="line-height:1.6; margin-bottom:10px;">Elle chiffre ce qui part sur Drive (AES-GCM). Elle reste sur cet appareil et n'est jamais synchronisée : note-la ailleurs, sans elle une sauvegarde chiffrée est définitivement illisible.</p>
+      <div class="card-actions" style="margin-bottom:14px;">
+        <button class="btn" id="backup-phrase-set" type="button">Définir la phrase</button>
+        <button class="btn" id="backup-phrase-clear" type="button">Retirer la phrase</button>
+      </div>
+      <p style="font-weight:600; color:var(--ink); font-size:13.5px; margin-bottom:6px;">🧪 Exercice de restauration <span class="sub-note" id="drill-etat"></span></p>
+      <ol class="sub-note" style="line-height:1.7; margin:0 0 10px 18px;">
+        <li>Ouvre une sauvegarde (fichier téléchargé ou Drive) et vérifie qu'elle se relit.</li>
+        <li>Vérifie qu'elle contient tes clés : journal, sessions, habitudes, objectifs.</li>
+        <li>Si elle est chiffrée, vérifie que ta phrase la déchiffre.</li>
+        <li>Note l'exercice ici — la Batcave te le redemandera dans trois mois.</li>
+      </ol>
+      <div class="card-actions">
+        <button class="btn btn-primary" id="drill-fait" type="button">✅ J'ai fait l'exercice</button>
+      </div>
+    </div>
+
     <!-- Nouveau depart : efface les saisies (journal, minuteur, repas, sport, budget, taches…)
          partout -- ici, dans le cloud, et sur les autres appareils a leur prochaine ouverture --
          en gardant la configuration (habitudes, charges fixes, plafonds, examens, objectifs,
@@ -2121,7 +2176,13 @@
     <div class="field-row" style="margin-bottom:12px;"><label>Eau bue aujourd'hui</label>
       <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;"><button class="btn" type="button" id="cl-eau-moins">−250 ml</button><b id="cl-eau" style="min-width:64px; text-align:center; color:var(--cyan-bright); font-family:var(--font-display); font-size:22px;">0,0 L</b><button class="btn" type="button" id="cl-eau-plus">+250 ml</button><span class="sub-note" id="cl-eau-note"></span></div></div>
     <div class="field-row" style="margin-bottom:12px;"><label>Humeur du jour</label><div class="mood-row" id="cl-humeur"></div></div>
+    <div class="field-grid" style="margin-bottom:12px;">
+      <div class="field-row"><label for="cl-coran">Page de Coran</label><input type="number" id="cl-coran" min="0" inputmode="numeric" placeholder="n°"></div>
+      <div class="field-row"><label for="cl-duaa">Duaa apprise</label><input type="text" id="cl-duaa" placeholder="ex : duaa du voyage"></div>
+    </div>
+    <div class="field-row" style="margin-bottom:12px;"><label>Compléments pris</label><div class="chip-group" id="cl-complements"></div></div>
     <div class="field-row" style="margin-bottom:12px;"><label>Habitudes pas encore cochées <span class="sub-note">(touche pour cocher)</span></label><div class="chip-group" id="cl-habitudes"></div></div>
+    <p class="sub-note" id="cl-pomodoro" style="margin:-6px 0 12px;"></p>
     <div class="field-row" style="margin-bottom:14px;"><label for="cl-note">Une ligne sur la journée</label><input type="text" id="cl-note" placeholder="ce qui a marché, ce qui a coincé…" maxlength="300"></div>
     <div id="cl-revue" hidden style="margin-bottom:14px; padding:12px 14px; background:var(--surface-hover); border:1px solid var(--border);">
       <p style="font-weight:600; color:var(--ink); font-size:13.5px; margin-bottom:8px;">🗓️ Dimanche : revue de la semaine</p>
@@ -2387,12 +2448,12 @@
      vestige : une fonctionnalite retiree (batcave-matieres) ou un essai. Elle prend de la
      place dans le quota de 5000 documents et embrouille les sauvegardes, sans que rien ne
      la lise jamais. On la signale ; la suppression reste ton geste. */
-  var CLES_CONNUES = ['addictions','budget-limits','business','coran','courses','dash-more','duaas','duree-bloc','sport-log','objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','kcal-ajustement','gcal-ecriture','reinit','fc-migration-v1','charge','shopify-boutique','journees','examens-heures',
-    'espagnol','examens','fc-prix-icloud-3','fixed-charges','goals','habitlog','habits','habits-seed-v2','habits-seed-v3','habits-seed-v4','objectifs-v5-espanol',
+  var CLES_CONNUES = ['addictions','budget-limits','business','coran','courses','dash-more','duaas','duree-bloc','sport-log','objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','kcal-ajustement','gcal-ecriture','reinit','fc-migration-v1','charge','shopify-boutique','journees','examens-heures','vacances','jours-exclus',
+    'espagnol','examens','fc-prix-icloud-3','fixed-charges','goals','goals-depart','saisons','insights-hist','last-restore-drill','habitlog','habits','habits-seed-v2','habits-seed-v3','habits-seed-v4','objectifs-v5-espanol',
     'horizon','last-auto-backup','last-manual-backup','last-bilan-prompt','last-compaction','last-open','last-rotation','notion-url',
     'pomodial-purge','projets','report','revision','revision-fusionnee','revue','sante','sauvegarde','sessions',
-    'shopify-last-order-count','taches','timer','transactions','undo-stack','undo-toast','cloud-reload-at','cloud-toast'];
-  var PREFIXES_CONNUS = ['archive-','cal-','coherence-ignore-','fc-logged-','fixed-logged-','gcal-','journal-','manque-traite-',
+    'shopify-last-order-count','taches','timer','transactions','undo-stack','undo-toast','cloud-reload-at','cloud-toast','notion-cache'];
+  var PREFIXES_CONNUS = ['archive-','cal-','coherence-ignore-','drill-ignore-','fc-logged-','fixed-logged-','gcal-','journal-','manque-traite-',
     'meals-','pomodial-','sauvegarde-','sport-'];
   function cleConnue(k){
     var court = k.replace(/^batcave-/, '');
@@ -2900,6 +2961,14 @@
         majSpotify(ev.result.payload);
       }, {refetchInterval: 30000});
 
+      /* Notion — cours « pas fait » par matière (lecture seule, une heure de fraîcheur) */
+      NOTION_BASES.forEach(function(b){
+        mcp.watchTool('Notion', 'notion-query-data-sources', {data:{mode:'rows', data_source_url: b.ds, limit:100}}, function(ev){
+          if(ev.type === 'error') return;
+          absorberNotion(b.m, ev.result && ev.result.payload);
+        }, {refetchInterval: 3600000});
+      });
+
       /* Shopify — statut boutique + commandes récentes */
       mcp.watchTool('Shopify', 'get-shop-info', {}, function(ev){
         var panel = document.getElementById('shopify-live-panel');
@@ -2982,9 +3051,8 @@
         var lastAuto = load('batcave-last-auto-backup', null);
         var due = lastAuto !== todayISO;
         if(!due) return;
-        var content = JSON.stringify(allBatcaveData(), null, 2);
         var filename = 'batcave-sauvegarde-auto-' + todayISO + '.json';
-        sauverSurDrive(mcp, filename, content).then(function(){
+        contenuSauvegarde().then(function(content){ return sauverSurDrive(mcp, filename, content); }).then(function(){
           saveInternal('batcave-last-auto-backup', todayISO);
           majReleveSauvegarde();
           var statusEl = document.getElementById('drive-backup-status');
@@ -3042,6 +3110,18 @@
   });
   document.querySelectorAll('.undo-trigger').forEach(function(btn){ btn.addEventListener('click', undoLast); });
 
+  /* Regroupement des pages : la revue de la semaine et l'historique du journal rejoignent
+     la page « Semaine » (Bilan), là où on regarde en arrière. Un simple déplacement dans
+     le DOM : les identifiants ne changent pas, rien de ce qui les alimente ne bouge. */
+  (function(){
+    var sem = document.querySelector('.page[data-page="bilan"]');
+    if(!sem) return;
+    ['revue-panel', 'journal-hist-panel'].forEach(function(id){
+      var el = document.getElementById(id);
+      if(el) sem.appendChild(el);
+    });
+  })();
+
   /* ---------------- navigation ---------------- */
   /* Seuls les boutons porteurs d'un data-page changent de page : "Sauvegarde" et "Annuler"
      (visibles en nav mobile) partagent la classe .nav-btn mais n'ont pas de page associée —
@@ -3049,15 +3129,23 @@
      laissant l'écran vide sur iPad/mobile. Ils gardent leurs propres gestionnaires. */
   var navBtns = document.querySelectorAll('.nav-btn[data-page]');
   var pages = document.querySelectorAll('.page');
+  /* Un bouton peut porter PLUSIEURS pages (data-pages) : « Semaine » ouvre Bilan et
+     Insights, « Corps » ouvre Dépendances et Santé, « Études » ouvre Études et l'Agenda,
+     le tableau de bord porte les Tâches. Les pages regroupées gardent leur section et
+     leur bouton (masqué) : tout ce qui les visait par leur nom continue de fonctionner. */
   navBtns.forEach(function(btn){
     btn.addEventListener('click', function(){
-      var target = document.querySelector('.page[data-page="'+btn.dataset.page+'"]');
-      if(!target) return;
+      var noms = (btn.dataset.pages || btn.dataset.page).split(/\s+/).filter(Boolean);
+      var cibles = noms.map(function(n){ return document.querySelector('.page[data-page="' + n + '"]'); }).filter(Boolean);
+      if(!cibles.length) return;
+      var target = cibles[0];
       navBtns.forEach(function(b){ b.classList.remove('active'); b.removeAttribute('aria-current'); });
       pages.forEach(function(p){ p.classList.remove('active'); });
       btn.classList.add('active');
       btn.setAttribute('aria-current','page');
-      target.classList.add('active');
+      cibles.forEach(function(p){ p.classList.add('active'); });
+      if(noms.indexOf('insights') > -1 && btn.dataset.page !== 'insights') try{ renderInsights(); }catch(e){}
+      if(noms.indexOf('agenda') > -1 && btn.dataset.page !== 'agenda') try{ renderAgendas(); }catch(e){}
       /* l'agenda Batcave se recalcule à l'ouverture de l'onglet : les blocs ont pu
          changer ailleurs (minuteur, suppression sur Études/Business) pendant ce temps */
       if(btn.dataset.page === 'agenda'){ renderAgendas(); }
@@ -3073,9 +3161,11 @@
     var tag = document.activeElement && document.activeElement.tagName;
     if(tag==='INPUT' || tag==='TEXTAREA' || tag==='SELECT') return;
     var n = Number(e.key);
-    if(n>=1 && n<=9 && navBtns[n-1]){
+    /* les chiffres suivent les onglets VISIBLES : les pages regroupées n'ont plus de rang */
+    var visibles = [].slice.call(navBtns).filter(function(b){ return !b.hidden; });
+    if(n>=1 && n<=9 && visibles[n-1]){
       e.preventDefault();
-      navBtns[n-1].click();
+      visibles[n-1].click();
     }
   });
 
@@ -3200,6 +3290,19 @@
       showToast('Horizon des objectifs : ' + fmtDate(v) + '.');
     });
   })();
+  (function(){
+    var set = document.getElementById('backup-phrase-set'), clr = document.getElementById('backup-phrase-clear'), drill = document.getElementById('drill-fait');
+    if(set) set.addEventListener('click', function(){
+      askText('Phrase de passe des sauvegardes Drive (garde-la ailleurs : sans elle, elles sont illisibles).', phraseLocale(), function(v){
+        definirPhrase(String(v || '').trim());
+        renderExercice();
+        showToast(phraseLocale() ? '🔒 Les prochaines sauvegardes Drive seront chiffrées.' : 'Phrase retirée : sauvegardes en clair.');
+      });
+    });
+    if(clr) clr.addEventListener('click', function(){ definirPhrase(''); renderExercice(); showToast('Phrase retirée : les prochaines sauvegardes partiront en clair.'); });
+    if(drill) drill.addEventListener('click', marquerExercice);
+  })();
+  document.querySelectorAll('.backup-trigger').forEach(function(b){ b.addEventListener('click', function(){ try{ renderExercice(); }catch(e){} }); });
   document.getElementById('backup-close').addEventListener('click', function(){
     document.getElementById('backup-overlay').hidden = true;
   });
@@ -3212,8 +3315,8 @@
      ni synchronisee ni rattrapee) et efface ses copies locales AVANT le rattrapage, sinon
      elles repartiraient vers le cloud. La meme remise a zero peut donc etre decidee depuis
      l'appli ou directement dans le cloud. */
-  var REINIT_GARDER = ['habits','habits-seed-v2','habits-seed-v3','habits-seed-v4','objectifs-v5-espanol','fixed-charges','fc-prix-icloud-3','budget-limits','examens','examens-heures','journees','notion-url','shopify-boutique',
-                       'objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','horizon','gcal-ecriture','duree-bloc','dash-more','revision-fusionnee','reinit'];
+  var REINIT_GARDER = ['habits','habits-seed-v2','habits-seed-v3','habits-seed-v4','objectifs-v5-espanol','fixed-charges','fc-prix-icloud-3','budget-limits','examens','examens-heures','journees','vacances','jours-exclus','notion-url','shopify-boutique',
+                       'objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','horizon','goals-depart','saisons','gcal-ecriture','duree-bloc','dash-more','revision-fusionnee','reinit'];
   var REINIT_PREFIXES_GARDER = ['pomodial-', 'coherence-ignore-'];
   function reinitGarder(cle){
     var c = cle.indexOf('batcave-') === 0 ? cle.slice(8) : cle;
@@ -3274,7 +3377,75 @@
     appliquerRestauration(obj);
   });
   /* Restauration commune au collage manuel et au téléchargement depuis Drive. */
+  /* ===== Sauvegardes chiffrées =====
+     Une phrase de passe (AES-GCM, clé dérivée en PBKDF2 150 000 tours) chiffre le contenu
+     envoyé sur Drive. La phrase reste sur CET appareil, dans une clé locale hors préfixe
+     batcave- : elle n'est ni synchronisée, ni sauvegardée, ni lisible depuis le cloud.
+     Sans elle, le fichier Drive est illisible — pour un tiers comme pour toi. Une
+     sauvegarde chiffrée est une enveloppe { batcaveChiffre:1, sel, iv, data }. */
+  function phraseLocale(){ try{ return localStorage.getItem('bc-phrase') || ''; }catch(e){ return ''; } }
+  function definirPhrase(p){ try{ if(p) localStorage.setItem('bc-phrase', p); else localStorage.removeItem('bc-phrase'); }catch(e){} }
+  function cryptoDispo(){ return !!(window.crypto && window.crypto.subtle && window.TextEncoder && window.TextDecoder); }
+  function versB64(buf){ var b = new Uint8Array(buf), t = ''; for(var i = 0; i < b.length; i++) t += String.fromCharCode(b[i]); return btoa(t); }
+  function depuisB64(t){ var bin = atob(t), a = new Uint8Array(bin.length); for(var i = 0; i < bin.length; i++) a[i] = bin.charCodeAt(i); return a; }
+  function cleDePhrase(phrase, sel){
+    return crypto.subtle.importKey('raw', new TextEncoder().encode(phrase), 'PBKDF2', false, ['deriveKey'])
+      .then(function(k){ return crypto.subtle.deriveKey({name:'PBKDF2', salt: sel, iterations: 150000, hash:'SHA-256'}, k, {name:'AES-GCM', length:256}, false, ['encrypt','decrypt']); });
+  }
+  function chiffrerTexte(texte, phrase){
+    if(!cryptoDispo()) return Promise.resolve(texte);
+    var sel = crypto.getRandomValues(new Uint8Array(16)), iv = crypto.getRandomValues(new Uint8Array(12));
+    return cleDePhrase(phrase, sel)
+      .then(function(k){ return crypto.subtle.encrypt({name:'AES-GCM', iv: iv}, k, new TextEncoder().encode(texte)); })
+      .then(function(ct){ return JSON.stringify({batcaveChiffre:1, sel: versB64(sel), iv: versB64(iv), data: versB64(ct)}, null, 2); });
+  }
+  function estChiffre(obj){ return !!(obj && typeof obj === 'object' && obj.batcaveChiffre === 1 && obj.sel && obj.iv && obj.data); }
+  function dechiffrerEnveloppe(obj, phrase){
+    if(!cryptoDispo()) return Promise.reject(new Error('WebCrypto indisponible'));
+    return cleDePhrase(phrase, depuisB64(obj.sel))
+      .then(function(k){ return crypto.subtle.decrypt({name:'AES-GCM', iv: depuisB64(obj.iv)}, k, depuisB64(obj.data)); })
+      .then(function(pt){ return JSON.parse(new TextDecoder('utf-8').decode(pt)); });
+  }
+  /* Le contenu à envoyer : chiffré si une phrase est posée sur cet appareil, sinon en clair. */
+  function contenuSauvegarde(){
+    var texte = JSON.stringify(allBatcaveData(), null, 2), phrase = phraseLocale();
+    return phrase ? chiffrerTexte(texte, phrase) : Promise.resolve(texte);
+  }
+  /* ===== Exercice de restauration trimestriel =====
+     Une sauvegarde jamais restaurée n'est pas une sauvegarde : tous les 90 jours, la
+     Batcave demande de la relire pour de vrai (fichier ou Drive) et note la date. */
+  var JOURS_EXERCICE = 90;
+  function dernierExercice(){ var d = load('batcave-last-restore-drill', null); return /^\d{4}-\d{2}-\d{2}$/.test(String(d)) ? d : null; }
+  function exerciceDu(){
+    var d = dernierExercice();
+    return !d || daysBetween(new Date(d + 'T00:00:00'), new Date(todayISO + 'T00:00:00')) >= JOURS_EXERCICE;
+  }
+  function marquerExercice(){
+    save('batcave-last-restore-drill', todayISO, true);
+    renderExercice(); renderDashboard();
+    showToast('✅ Exercice de restauration noté — le prochain dans ' + JOURS_EXERCICE + ' jours.');
+  }
+  function renderExercice(){
+    var el = document.getElementById('drill-etat'), phr = document.getElementById('backup-phrase-etat');
+    if(el){
+      var d = dernierExercice();
+      el.textContent = d ? (exerciceDu() ? '⚠️ dernier exercice le ' + fmtDate(d) + ' — il est temps' : '✅ dernier exercice le ' + fmtDate(d))
+                         : '⚠️ jamais fait — c\'est le moment';
+      el.style.color = exerciceDu() ? 'var(--warn)' : 'var(--good)';
+    }
+    if(phr) phr.textContent = phraseLocale() ? '🔒 chiffrées avec ta phrase (cet appareil)' : 'en clair — pas de phrase de passe';
+  }
   function appliquerRestauration(obj){
+    /* sauvegarde chiffrée : on demande la phrase, on déchiffre, puis on reprend le chemin normal */
+    if(estChiffre(obj)){
+      askText('Cette sauvegarde est chiffrée. Entre la phrase de passe utilisée pour l\'écrire.', '', function(ph){
+        if(!ph) return;
+        dechiffrerEnveloppe(obj, ph)
+          .then(function(clair){ appliquerRestauration(clair); })
+          .catch(function(){ showToast('⚠️ Phrase incorrecte ou fichier abîmé — rien n\'a été restauré.'); });
+      });
+      return;
+    }
     var keys = Object.keys(obj).filter(function(k){ return k.indexOf('batcave-') === 0; });
     if(!keys.length){ showToast('⚠️ Aucune donnée Batcave trouvée dans ce texte.'); return; }
     /* écrasement irréversible : confirmation explicite */
@@ -3359,10 +3530,9 @@
     if(!mcpHandle) return;
     var statusEl = document.getElementById('drive-backup-status');
     statusEl.textContent = 'Envoi en cours…';
-    var content = JSON.stringify(allBatcaveData(), null, 2);
     var filename = 'batcave-sauvegarde-' + todayISO + '.json';
-    sauverSurDrive(mcpHandle, filename, content).then(function(){
-      statusEl.textContent = '✓ Sauvegardé sur Drive (' + filename + ').';
+    contenuSauvegarde().then(function(content){ return sauverSurDrive(mcpHandle, filename, content); }).then(function(){
+      statusEl.textContent = '✓ Sauvegardé sur Drive (' + filename + (phraseLocale() ? ', chiffrée' : '') + ').';
       saveInternal('batcave-last-manual-backup', todayISO);
       majReleveSauvegarde();
     }).catch(function(err){
@@ -4545,8 +4715,14 @@
        pas encore cochee, la serie se lit depuis l'occurrence d'avant, sans etre cassee */
     var d = occurrenceAvant(hb, new Date(now));
     if(!set[localISO(d)]) d = occurrencePrecedente(hb, d);
-    var streak = 0;
-    while(set[localISO(d)]){ streak++; d = occurrencePrecedente(hb, d); }
+    var streak = 0, garde = 0;
+    /* un jour exclu (« aujourd'hui ne compte pas ») ne casse pas la série : on l'enjambe */
+    while(garde++ < 4000){
+      var iso = localISO(d);
+      if(set[iso]) streak++;
+      else if(!jourExclu(iso)) break;
+      d = occurrencePrecedente(hb, d);
+    }
     return streak;
   }
   function habitRecord(id){
@@ -4569,10 +4745,52 @@
       /* on ne divise que par les jours où l'habitude s'applique : sinon une habitude
          du samedi plafonnerait à 14% même tenue chaque semaine. */
       if(jours !== null && jours.indexOf(d.getDay()) === -1) continue;
+      if(jourExclu(localISO(d))) continue;   /* journée qui ne compte pas */
       applicables++;
       if(doneSet[localISO(d)]) count++;
     }
     return applicables ? Math.round(100*count/applicables) : 0;
+  }
+  /* ===== Habitudes acquises =====
+     Tenue à 90 % ou plus sur trente jours, avec au moins trente jours d'historique : une
+     habitude est acquise. Elle continue de COMPTER — elle se coche d'elle-même chaque jour
+     où elle s'applique — mais quitte la check-list du jour et la clôture : une liste ne
+     doit contenir que ce qui demande encore un effort. Elle reste dans un bloc « Acquises »,
+     avec un bouton « Je l'ai ratée » qui la remet dans la liste pour trente jours. */
+  var SEUIL_ACQUISE = 90, JOURS_ACQUISE = 30;
+  function habitPremierJour(id){
+    var min = null;
+    (habitLog[id] || []).forEach(function(d){ if(!min || d < min) min = d; });
+    return min;
+  }
+  function habitAcquise(hb){
+    if(!hb || hb.archived) return false;
+    if(hb.reprise && daysBetween(new Date(hb.reprise + 'T00:00:00'), new Date(todayISO + 'T00:00:00')) < JOURS_ACQUISE) return false;
+    var p = habitPremierJour(hb.id);
+    if(!p || daysBetween(new Date(p + 'T00:00:00'), new Date(todayISO + 'T00:00:00')) < JOURS_ACQUISE) return false;
+    return habitRate(hb.id, JOURS_ACQUISE) >= SEUIL_ACQUISE;
+  }
+  function habitsAcquises(){ return habitsState.filter(function(h){ return habitAcquise(h); }); }
+  /* Une acquise s'inscrit toute seule le jour où elle s'applique : elle compte sans être
+     réclamée. Rejouable : elle n'écrit que ce qui manque. */
+  function consignerAcquises(){
+    var change = false;
+    habitsState.forEach(function(hb){
+      if(!habitAcquise(hb) || !habitVautLe(hb, weekday)) return;
+      var arr = habitLog[hb.id] || (habitLog[hb.id] = []), cible = dateCibleHabit(hb.id);
+      if(arr.indexOf(cible) < 0){ arr.push(cible); change = true; }
+    });
+    if(change) save('batcave-habitlog', habitLog, true);
+    return change;
+  }
+  function raterAcquise(id){
+    var hb = habitParId(id); if(!hb) return;
+    var arr = habitLog[id] || [], cible = dateCibleHabit(id), i = arr.indexOf(cible);
+    if(i > -1) arr.splice(i, 1);
+    hb.reprise = todayISO;
+    save('batcave-habitlog', habitLog); save('batcave-habits', habitsState);
+    renderHabits(); renderDashboard(); renderBilan();
+    showToast('↩︎ « ' + hb.label +' » revient dans la liste du jour.');
   }
   var STREAK_MILESTONES = [100, 30, 7];
   function streakMilestoneBadge(streak){
@@ -4592,6 +4810,21 @@
       cells += '<span class="hcell'+(on?(' on'+(danger?' danger':'')):'')+'" title="'+iso+'"></span>';
     }
     return '<div class="heatmap">'+cells+'</div>';
+  }
+  /* Rythme d'une habitude : modifiable sur sa carte, sans l'archiver ni la recréer.
+     Les coches déjà posées restent : seules les occurrences à venir changent. */
+  var OPTIONS_JOURS = [['', 'Tous les jours'], ['1,3,5', 'Lun · mer · ven'], ['2,4,6', 'Mar · jeu · sam'],
+    ['1', 'Le lundi'], ['2', 'Le mardi'], ['3', 'Le mercredi'], ['4', 'Le jeudi'], ['5', 'Le vendredi'], ['6', 'Le samedi'], ['0', 'Le dimanche']];
+  function valeurRythme(hb){ var js = habitJours(hb); return js === null ? '' : js.join(','); }
+  function changerRythme(id, valeur){
+    var hb = habitParId(id); if(!hb) return;
+    var js = String(valeur || '').split(',').filter(Boolean).map(Number).filter(jourValide);
+    delete hb.jour; delete hb.jours;
+    if(js.length === 1) hb.jour = js[0]; else if(js.length) hb.jours = js;
+    save('batcave-habits', habitsState);
+    renderHabits(); renderDashboard(); renderBilan();
+    var lib = OPTIONS_JOURS.filter(function(o){ return o[0] === String(valeur || ''); })[0];
+    showToast('🔁 « ' + hb.label + ' » : ' + (lib ? lib[1].toLowerCase() : 'rythme mis à jour') + '.');
   }
   function moveHabit(id, dir){
     var idx = -1;
@@ -4657,7 +4890,9 @@
   }
   function renderHabits(){
     var grid = document.getElementById('habits-grid');
-    var active = habitsState.filter(function(h){ return !h.archived; });
+    consignerAcquises();
+    var acquises = habitsAcquises();
+    var active = habitsState.filter(function(h){ return !h.archived && acquises.indexOf(h) < 0; });
     if(!active.length){
       grid.innerHTML = '<p class="entry-empty" style="grid-column:1/-1;">Aucune habitude active — ajoute-en une ci-dessus (ex : vitamine D, ranger le bureau, appeler tes parents…).</p>';
     } else {
@@ -4683,11 +4918,29 @@
           '</div>'+
           '<div class="streak-display"><span class="streak-num">'+streak+'</span><span class="streak-unit">jour'+(streak>1?'s':'')+' d\'affilée</span>'+streakMilestoneBadge(streak)+'</div>'+
           '<div class="card-row">Record : '+record+' j · 7j '+habitRate(hb.id,7)+'% · 30j '+habitRate(hb.id,30)+'%</div>'+
+          '<div class="card-row" style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;"><span class="sub-note">Rythme</span>'+
+            '<select data-hab-rythme="'+hb.id+'" aria-label="Rythme de l\'habitude" style="flex:1; min-width:120px;">'+
+            OPTIONS_JOURS.map(function(o){ return '<option value="'+o[0]+'"'+(o[0] === valeurRythme(hb) ? ' selected' : '')+'>'+o[1]+'</option>'; }).join('')+
+            '</select></div>'+
           '<div class="card-actions"><button class="btn '+(done?'btn-primary':'')+'" data-togglehab="'+hb.id+'">'+(done ? '✓ Fait ' + (duJour ? 'aujourd\'hui' : jourDerniereOccurrence) : 'Marquer fait' + (duJour ? '' : ' (' + jourDerniereOccurrence + ')'))+'</button></div>'+
           '<button class="heat-toggle" data-showheat="'+hb.id+'">Historique (35 jours) '+(openHeatmaps['h-'+hb.id]?'▴':'▾')+'</button>'+
           '<div '+(openHeatmaps['h-'+hb.id]?'':'hidden ')+'id="heat-'+hb.id+'">'+heatmapHTML(habitLog[hb.id], false)+'</div>'+
           '</div>';
       }).join('');
+    }
+
+    var acqEl = document.getElementById('habits-acquises');
+    if(acqEl){
+      acqEl.hidden = !acquises.length;
+      if(acquises.length){
+        acqEl.querySelector('.acq-note').textContent = acquises.length + ' habitude' + (acquises.length > 1 ? 's' : '') + ' tenue' + (acquises.length > 1 ? 's' : '') + ' à ' + SEUIL_ACQUISE + ' % sur ' + JOURS_ACQUISE + ' jours';
+        acqEl.querySelector('.acq-list').innerHTML = acquises.map(function(hb){
+          return '<li class="entry-row"><span class="ecell">'+habitLabel(hb)+'</span>' +
+            '<span class="ecell small sub-note">série '+habitStreak(hb.id)+' j · 30j '+habitRate(hb.id, 30)+'%</span>' +
+            '<button class="btn" data-raterhab="'+hb.id+'" title="Elle revient dans la liste du jour">Je l\'ai ratée</button></li>';
+        }).join('');
+        acqEl.querySelectorAll('[data-raterhab]').forEach(function(b){ b.addEventListener('click', function(){ raterAcquise(b.dataset.raterhab); }); });
+      }
     }
 
     var archived = habitsState.filter(function(h){ return h.archived; });
@@ -4715,6 +4968,9 @@
     });
     grid.querySelectorAll('[data-archivehab]').forEach(function(el){
       el.addEventListener('click', function(){ setHabitArchived(el.dataset.archivehab, true); });
+    });
+    grid.querySelectorAll('[data-hab-rythme]').forEach(function(sel){
+      sel.addEventListener('change', function(){ changerRythme(sel.dataset.habRythme, sel.value); });
     });
     grid.querySelectorAll('[data-showheat]').forEach(function(el){
       el.addEventListener('click', function(){
@@ -4897,7 +5153,8 @@
     var el = document.getElementById('dash-checklist');
     if(!el) return;
     var done = 0;
-    var active = habitsDuJour(weekday);
+    /* les acquises comptent (elles se cochent seules) mais ne prennent plus de place ici */
+    var active = habitsDuJour(weekday).filter(function(h){ return !habitAcquise(h); });
     el.innerHTML = active.map(function(hb, i){
       var checked = habitDoneToday(hb.id);
       if(checked) done++;
@@ -5234,28 +5491,44 @@
      sont stables : le journal, la courbe et les objectifs « exo:Tractions » / « exo:Dips »
      les lisent. Tractions et Dips reviennent lundi et jeudi avec des fourchettes
      différentes ; leur cible se déduit du dernier journal, quel que soit le jour. */
+  /* Abdos, cou et trapèzes : trois zones absentes du programme d'origine, ajoutées le 9
+     septembre en fin de séance, sans allonger la partie lourde.
+       — abdos : lundi (relevés de jambes), mardi (relevés, hollow hold, planche latérale),
+         jeudi (relevés de genoux), samedi (hollow rock) ; anti-extension et anti-rotation,
+         pas de crunch ;
+       — cou : lundi et jeudi, isométrie seule, main en résistance, 20 à 30 s par direction
+         (flexion, extension, latéral droit, latéral gauche). Jamais de pont de cou, jamais
+         de charge : la progression se fait en secondes. C'est la zone qui paie le plus cher
+         les heures penché sur un fauteuil ;
+       — trapèzes : shrugs suspendus jeudi et samedi (supérieurs), face pulls jeudi et samedi
+         (moyens et inférieurs) — c'est ce couple qui tient l'épaule et la posture. */
   var PROGRAMME_DEBUT = '2026-09-14';
   var SESSIONS = [
-    {type:'Haut lourd', days:[1], duree:'42 min', repos:['45 s / 90 s', '45 s / 75 s', '30 s / 60 s'], exercises:[
+    {type:'Haut lourd', days:[1], duree:'46 min', repos:['45 s / 90 s', '45 s / 75 s', '30 s / 60 s'], exercises:[
       {name:'Tractions', reps:'4×6-12'},{name:'Dips', reps:'4×8-15'},
       {name:'Rows australiens pieds surélevés', reps:'3×10-15'},{name:'Pompes déclinées', reps:'3×8-12'},
-      {name:'Curl barre basse', reps:'2×10-15'},{name:'Extension triceps barre basse', reps:'2×10-15'}
+      {name:'Curl barre basse', reps:'2×10-15'},{name:'Extension triceps barre basse', reps:'2×10-15'},
+      {name:'Relevés de jambes suspendus', reps:'3×8-15'},{name:'Isométrie du cou', reps:'2×20-30s/direction'}
     ]},
-    {type:'Bas complet', days:[2], duree:'42 min', exercises:[
+    {type:'Bas complet', days:[2], duree:'45 min', exercises:[
       {name:'Split squat bulgare', reps:'4×8-12/jambe'},{name:'Soulevé de terre roumain une jambe', reps:'4×10-12/jambe'},
       {name:'Fentes marchées', reps:'3×10-12/jambe'},{name:'Hip thrust une jambe', reps:'3×12-20/jambe'},
-      {name:'Relevés de jambes suspendus', reps:'2×8-15'},{name:'Hollow hold', reps:'2×20-40s'}
+      {name:'Relevés de jambes suspendus', reps:'2×8-15'},{name:'Hollow hold', reps:'2×20-40s'},
+      {name:'Planche latérale', reps:'2×20-40s/côté'}
     ]},
-    {type:'Haut volume', days:[4], duree:'42 min', exercises:[
+    {type:'Haut volume', days:[4], duree:'47 min', exercises:[
       {name:'Tractions', reps:'4×8-15'},{name:'Dips', reps:'4×10-20'},
       {name:'Rows prise large coudes hauts', reps:'3×12-15'},{name:'Pike push-ups', reps:'3×6-10'},
-      {name:'Face pulls', reps:'2×15-20'},{name:'Curl prise neutre', reps:'2×10-15'}
+      {name:'Face pulls', reps:'2×15-20'},{name:'Curl prise neutre', reps:'2×10-15'},
+      {name:'Shrugs suspendus', reps:'3×12-15'},{name:'Relevés de genoux suspendus', reps:'3×10-20'},
+      {name:'Isométrie du cou', reps:'2×20-30s/direction'}
     ]},
-    {type:'Bras · épaules · mollets', days:[6], duree:'38 min', exercises:[
+    {type:'Bras · épaules · mollets', days:[6], duree:'41 min', exercises:[
       {name:'Chin-ups prise serrée', reps:'3×6-12'},{name:'Pompes archer ou diamant', reps:'3×8-12'},
       {name:'Curl barre basse', reps:'3×10-15'},{name:'Extension triceps barre basse', reps:'3×10-15'},
       {name:'Face pulls', reps:'3×15-20'},{name:'Shrugs suspendus', reps:'3×12-15'},
-      {name:'Mollets une jambe', reps:'3×15-20/jambe'},{name:'Dead hang', reps:'3×30-45s'}
+      {name:'Mollets une jambe', reps:'3×15-20/jambe'},{name:'Hollow rock', reps:'3×15-25'},
+      {name:'Dead hang', reps:'3×30-45s'}
     ]},
     {type:'Off', days:[3,5,0], duree:'', exercises:[]}
   ];
@@ -5655,6 +5928,44 @@
   if(!examensHeures || typeof examensHeures !== 'object' || Array.isArray(examensHeures)) examensHeures = {};
   var EXAMEN_HEURE_DEFAUT = {debut:'09:00', fin:'11:00'};
   var TYPES_JOURNEE = {tp:'TP', examen:'Examen', autre:'Événement'};
+  /* ===== Mode Vacances et jours qui ne comptent pas =====
+     batcave-vacances : [{id, debut, fin, label}]. Entre ces dates, les blocs de travail de
+     la grille (revision, projets, Español) deviennent « Temps libre » : les cibles du jour,
+     de la semaine et des objectifs tombent d'elles-memes, donc rien ne passe en retard.
+     batcave-jours-exclus : ['AAAA-MM-JJ']. Une journee qui ne compte pas (malade, imprevu) :
+     elle sort du score, des series d'habitudes, des taux et des objectifs -- sans etre effacee.
+     Les deux sont de la configuration : gardees au nouveau depart. */
+  var vacancesState = load('batcave-vacances', []);
+  if(!Array.isArray(vacancesState)) vacancesState = [];
+  vacancesState = vacancesState.filter(function(v){ return v && typeof v === 'object' && /^\d{4}-\d{2}-\d{2}$/.test(String(v.debut)) && /^\d{4}-\d{2}-\d{2}$/.test(String(v.fin)) && v.fin >= v.debut; });
+  var joursExclusState = load('batcave-jours-exclus', []);
+  if(!Array.isArray(joursExclusState)) joursExclusState = [];
+  joursExclusState = joursExclusState.filter(function(d){ return /^\d{4}-\d{2}-\d{2}$/.test(String(d)); });
+  function enVacances(iso){
+    iso = iso || todayISO;
+    for(var i = 0; i < vacancesState.length; i++){ if(iso >= vacancesState[i].debut && iso <= vacancesState[i].fin) return vacancesState[i]; }
+    return null;
+  }
+  function jourExclu(iso){ return joursExclusState.indexOf(iso || todayISO) > -1; }
+  /* Une periode de grille comme les autres : elle remplace les blocs de travail par du
+     temps libre, quel que soit leur nom (Anki, Cartes, Annales, Projets perso, Español). */
+  function periodeVacances(iso){
+    var v = enVacances(iso);
+    if(!v) return null;
+    return {id:'vacances', nom:'Vacances' + (v.label ? ' · ' + v.label : ''), vacances:true, debut: v.debut, fin: v.fin,
+            suite:'la grille reprend le ' + fmtDate(isoDecale(v.fin, 1)),
+            description:'Les blocs de travail deviennent du temps libre : aucune cible, aucun retard.',
+            transformer: function(b){ return typeBlocPlan(b[1]) ? [b[0], 'Temps libre'] : b; }};
+  }
+  function basculerJourExclu(iso){
+    iso = iso || todayISO;
+    var i = joursExclusState.indexOf(iso), ajoute = i < 0;
+    if(ajoute) joursExclusState.push(iso); else joursExclusState.splice(i, 1);
+    joursExclusState.sort();
+    save('batcave-jours-exclus', joursExclusState);
+    viderCachePrevu();
+    return ajoute;
+  }
   function heuresExamen(m){
     var h = examensHeures[m];
     return (h && /^\d{2}:\d{2}$/.test(String(h.debut)) && /^\d{2}:\d{2}$/.test(String(h.fin)) && timeToMinutes(h.fin) > timeToMinutes(h.debut))
@@ -5789,11 +6100,78 @@
       b.addEventListener('click', function(){
         delete journeesState[b.dataset.deljx];
         save('batcave-journees', journeesState);
+        viderCachePrevu(); recalerObjectifsSemaine();
         renderJournees(); rafraichirAgendas(); renderDashboard();
         showToast('📌 Journée du ' + fmtDate(b.dataset.deljx) + ' retirée : la grille type reprend.');
       });
     });
   }
+  function renderVacances(){
+    var ul = document.getElementById('vacances-liste'), note = document.getElementById('vacances-note');
+    if(!ul) return;
+    var bt = document.getElementById('vac-exclu');
+    if(bt){
+      var ex = jourExclu(todayISO);
+      bt.textContent = ex ? '↩︎ Aujourd\'hui compte à nouveau' : 'Aujourd\'hui ne compte pas';
+      bt.classList.toggle('btn-primary', ex);
+    }
+    var vac = vacancesState.slice().sort(function(a, b){ return a.debut.localeCompare(b.debut); });
+    var exclus = joursExclusState.slice().sort().reverse();
+    if(note) note.textContent = (vac.length ? vac.length + ' période' + (vac.length > 1 ? 's' : '') : 'aucune période') +
+      ' · ' + (exclus.length ? exclus.length + ' jour' + (exclus.length > 1 ? 's' : '') + ' exclu' + (exclus.length > 1 ? 's' : '') : 'aucun jour exclu');
+    var lignes = vac.map(function(v){
+      var encours = todayISO >= v.debut && todayISO <= v.fin;
+      return '<li class="entry-row">' +
+        '<span class="ecell small"><b>' + escapeHtml(fmtDate(v.debut)) + ' → ' + escapeHtml(fmtDate(v.fin)) + '</b></span>' +
+        '<span class="ecell">🏝️ ' + escapeHtml(v.label || 'Vacances') + '</span>' +
+        '<span class="ecell small">' + (encours ? '<span class="badge warn">en cours</span>' : (v.fin < todayISO ? '<span class="badge">passées</span>' : '<span class="badge gold">à venir</span>')) + '</span>' +
+        '<button class="edel" aria-label="Supprimer" title="Supprimer cette période" data-delvac="' + escapeHtml(v.id) + '">×</button></li>';
+    }).concat(exclus.slice(0, 30).map(function(iso){
+      return '<li class="entry-row"><span class="ecell small"><b>' + escapeHtml(fmtDate(iso)) + '</b></span>' +
+        '<span class="ecell">🚫 Journée qui ne compte pas</span><span class="ecell small"></span>' +
+        '<button class="edel" aria-label="Réintégrer" title="Remettre cette journée dans les calculs" data-delexclu="' + iso + '">×</button></li>';
+    }));
+    ul.innerHTML = lignes.length ? lignes.join('') : '<li class="entry-empty">Aucune période de vacances, aucune journée exclue.</li>';
+    ul.querySelectorAll('[data-delvac]').forEach(function(b){
+      b.addEventListener('click', function(){
+        vacancesState = vacancesState.filter(function(v){ return v.id !== b.dataset.delvac; });
+        save('batcave-vacances', vacancesState);
+        appliquerChangementGrille('🏝️ Période de vacances retirée : la grille reprend.');
+      });
+    });
+    ul.querySelectorAll('[data-delexclu]').forEach(function(b){
+      b.addEventListener('click', function(){
+        basculerJourExclu(b.dataset.delexclu);
+        appliquerChangementGrille('↩︎ Le ' + fmtDate(b.dataset.delexclu) + ' compte à nouveau.');
+      });
+    });
+  }
+  /* Un seul chemin quand la grille change (vacances, jour exclu, journée exceptionnelle,
+     date d'examen) : vider le cache des minutes prévues, recaler les cibles, tout redessiner. */
+  function appliquerChangementGrille(message){
+    viderCachePrevu();
+    try{ recalerObjectifsSemaine(); }catch(e){}
+    try{ renderVacances(); renderJournees(); rafraichirAgendas(); renderDashboard(); renderBilan(); }catch(e){}
+    if(document.getElementById('obj-liste')) try{ renderObjectifs(); }catch(e){}
+    if(message) showToast(message);
+  }
+  (function(){
+    var add = document.getElementById('vac-add');
+    if(add) add.addEventListener('click', function(){
+      var d = document.getElementById('vac-debut').value, f = document.getElementById('vac-fin').value;
+      var l = document.getElementById('vac-label').value.trim();
+      if(!/^\d{4}-\d{2}-\d{2}$/.test(d) || !/^\d{4}-\d{2}-\d{2}$/.test(f) || f < d){ showToast('⚠️ Indique un début et une fin, la fin après le début.'); return; }
+      vacancesState.push({id:'v' + Date.now(), debut: d, fin: f, label: l});
+      save('batcave-vacances', vacancesState);
+      document.getElementById('vac-label').value = '';
+      appliquerChangementGrille('🏝️ Vacances du ' + fmtDate(d) + ' au ' + fmtDate(f) + ' : les blocs de travail deviennent du temps libre.');
+    });
+    var ex = document.getElementById('vac-exclu');
+    if(ex) ex.addEventListener('click', function(){
+      var ajoute = basculerJourExclu(todayISO);
+      appliquerChangementGrille(ajoute ? '🚫 Aujourd\'hui ne compte pas : hors score, hors séries, hors objectifs.' : '↩︎ Aujourd\'hui compte à nouveau.');
+    });
+  })();
   (function(){
     var b = document.getElementById('jx-add'); if(!b) return;
     b.addEventListener('click', function(){
@@ -5803,6 +6181,7 @@
       if(!/^\d{2}:\d{2}$/.test(deb) || !/^\d{2}:\d{2}$/.test(fin) || timeToMinutes(fin) <= timeToMinutes(deb)){ showToast('⚠️ Il faut un début et une fin, la fin après le début.'); return; }
       journeesState[iso] = {type: type, label: label, debut: deb, fin: fin, trajet: trajet};
       save('batcave-journees', journeesState);
+      viderCachePrevu(); recalerObjectifsSemaine();
       document.getElementById('jx-label').value = '';
       renderJournees(); rafraichirAgendas(); renderDashboard();
       showToast('📌 ' + (TYPES_JOURNEE[type] || 'Événement') + (label ? ' · ' + label : '') + ' le ' + fmtDate(iso) + ' : la veille et le jour même sont réorganisés.');
@@ -5851,7 +6230,9 @@
         var m = inp.dataset.examen, v = inp.value;
         if(v && /^\d{4}-\d{2}-\d{2}$/.test(v)) examensState[m] = v; else delete examensState[m];
         save('batcave-examens', examensState);
+        viderCachePrevu(); recalerObjectifsSemaine();
         renderExamens(); renderDashboard(); rafraichirAgendas(); renderJournees();
+        if(document.getElementById('obj-liste')) renderObjectifs();
       });
     });
     /* l'horaire n'est retenu que complet et coherent ; sinon la journee garde 09:00 → 11:00 */
@@ -5863,6 +6244,7 @@
         if(/^\d{2}:\d{2}$/.test(vd) && /^\d{2}:\d{2}$/.test(vf) && timeToMinutes(vf) > timeToMinutes(vd)) examensHeures[m] = {debut: vd, fin: vf};
         else { delete examensHeures[m]; if(vd || vf) showToast('⚠️ Il faut un début et une fin, la fin après le début.'); }
         save('batcave-examens-heures', examensHeures);
+        viderCachePrevu(); recalerObjectifsSemaine();
         renderExamens(); rafraichirAgendas(); renderJournees(); renderDashboard();
       });
     });
@@ -5879,6 +6261,11 @@
     {id:'classement', label:'📚 Classement', target:'1ᵉʳ de promo', type:'number', note:'Checkpoint aux partiels de mi-semestre.'},
     {id:'espagnol', label:'🇪🇸 Espagnol', target:'C1', type:'select', options:['A2','B1','B1+','B2','B2+','C1'], note:'Checkpoint : DELE blanc au mois 3.'}
   ];
+  /* Après une clôture de saison, une carte repart de la valeur atteinte : le départ n'est
+     plus celui du code, mais celui de la saison en cours. */
+  var goalsDepart = load('batcave-goals-depart', {});
+  if(!goalsDepart || typeof goalsDepart !== 'object' || Array.isArray(goalsDepart)) goalsDepart = {};
+  function departGoal(g){ return goalsDepart[g.id] !== undefined && goalsDepart[g.id] !== null ? Number(goalsDepart[g.id]) : g.start; }
   var goalState = load('batcave-goals', {});
   GOALS_NUMERIC.forEach(function(g){ if(goalState[g.id] === undefined) goalState[g.id] = g.start; });
   GOALS_STATUS.forEach(function(g){ if(goalState[g.id] === undefined) goalState[g.id] = ''; });
@@ -5895,12 +6282,24 @@
        - projection a la fin de la periode, a ce rythme.
      Les six objectifs a 180 jours restent la ou ils sont (cartes ci-dessous) et passent par
      le meme moteur dans l'onglet « 6 mois » : ils ne sont pas dupliques ici. */
-  var TRIMESTRES = [
-    {id:'T1', debut:'2026-09-01', fin:'2026-11-30', nom:'T1 · sept. → nov. 2026'},
-    {id:'T2', debut:'2026-12-01', fin:'2027-02-28', nom:'T2 · déc. 2026 → fév. 2027'},
-    {id:'T3', debut:'2027-03-01', fin:'2027-05-31', nom:'T3 · mars → mai 2027'},
-    {id:'T4', debut:'2027-06-01', fin:'2027-08-31', nom:'T4 · juin → août 2027'}
-  ];
+  /* Les trimestres se construisent depuis septembre 2026, par pas de trois mois, aussi
+     loin que l'horizon en cours. Ils étaient écrits en dur jusqu'à T4 : après une clôture
+     de saison, il n'y en avait plus. Les noms sont ceux d'avant, au caractère près. */
+  var MOIS_T = ['janv.','févr.','mars','avr.','mai','juin','juil.','août','sept.','oct.','nov.','déc.'];
+  var MOIS_T_COURT = {1:'fév.'};
+  function construireTrimestres(){
+    var out = [], d = new Date(2026, 8, 1), n = clamp(Math.ceil(nbMoisHorizon() / 3), 4, 20);
+    for(var i = 0; i < n; i++){
+      var y = d.getFullYear(), m = d.getMonth();
+      var fin = new Date(y, m + 3, 0);
+      var m1 = MOIS_T[m], m2 = MOIS_T_COURT[fin.getMonth()] || MOIS_T[fin.getMonth()];
+      var nom = 'T' + (i + 1) + ' · ' + m1 + (y !== fin.getFullYear() ? ' ' + y : '') + ' → ' + m2 + ' ' + fin.getFullYear();
+      out.push({id:'T' + (i + 1), debut: localISO(new Date(y, m, 1)), fin: localISO(fin), nom: nom});
+      d.setMonth(d.getMonth() + 3);
+    }
+    return out;
+  }
+  var TRIMESTRES = construireTrimestres();
   /* Cibles semees. Realistes sans etre timides : la revision vise ~89 % de ce que la semaine
      type permet (33 h × 13 = 429 → 380), le sport 6 seances/semaine tenues 9 fois sur 10
      (ramene a 4 par le recalage automatique depuis le programme v2),
@@ -5941,9 +6340,15 @@
     if(!m) return cle;
     return metriqueDe(cle) === 'exo' ? m.nom + ' — ' + paramDe(cle) : m.nom;
   }
+  /* Les mois couverts : au moins douze, et toujours jusqu'à la fin de l'horizon en cours.
+     Après une clôture de saison, les mois de la saison suivante apparaissent d'eux-mêmes. */
+  function nbMoisHorizon(){
+    var f = new Date((horizonState && horizonState.fin ? horizonState.fin : '2027-03-14') + 'T00:00:00');
+    return clamp((f.getFullYear() - 2026) * 12 + (f.getMonth() - 8) + 1, 12, 60);
+  }
   function moisListe(){
-    var out = [], d = new Date(2026, 8, 1);
-    for(var i = 0; i < 12; i++){
+    var out = [], d = new Date(2026, 8, 1), n = nbMoisHorizon();
+    for(var i = 0; i < n; i++){
       var y = d.getFullYear(), m = d.getMonth();
       var debut = localISO(new Date(y, m, 1)), fin = localISO(new Date(y, m + 1, 0));
       out.push({id:'M' + debut.slice(0, 7), debut: debut, fin: fin,
@@ -5962,16 +6367,23 @@
   /* Cibles mensuelles d'espagnol : 89 % des blocs Español de la grille par periode (phases 1,
      2, 3 du Dossier Español, a partir du 14 septembre), au lieu du tiers du trimestre. */
   var MOIS_ESPANOL = {'M2026-09':39, 'M2026-10':59, 'M2026-11':39, 'M2026-12':25, 'M2027-01':25, 'M2027-02':23};
+  /* Un trimestre au-delà de ceux qui ont des cibles écrites reprend le modèle du dernier :
+     les cibles de temps sont de toute façon recalculées depuis la grille juste après. */
+  function ciblesDuTrimestre(id){
+    if(CIBLES_TRIMESTRE[id]) return CIBLES_TRIMESTRE[id];
+    var cles = Object.keys(CIBLES_TRIMESTRE).sort();
+    return CIBLES_TRIMESTRE[cles[cles.length - 1]] || null;
+  }
   function objectifsSemes(){
     var out = [];
     TRIMESTRES.forEach(function(t){
-      var c = CIBLES_TRIMESTRE[t.id]; if(!c) return;
+      var c = ciblesDuTrimestre(t.id); if(!c) return;
       Object.keys(c).forEach(function(cle){
         out.push(avecSemaine({id: t.id + ':' + cle, periode:'trimestre', pid: t.id, debut: t.debut, fin: t.fin, metrique: cle, cible: c[cle], titre: libelleMetrique(cle)}));
       });
     });
     moisListe().forEach(function(m){
-      var t = trimestreDe(m.debut), c = t && CIBLES_TRIMESTRE[t.id]; if(!c) return;
+      var t = trimestreDe(m.debut), c = t && ciblesDuTrimestre(t.id); if(!c) return;
       /* un mois = le tiers d'un cumul trimestriel, la meme moyenne, pas de niveau (le
          trimestre les porte : une serie de tractions ne se decoupe pas en mois) */
       Object.keys(c).forEach(function(cle){
@@ -6069,17 +6481,23 @@
     if(load('batcave-objectifs-v2-55', false)) return {rev:1715, proj:990, sport:6};
     return {rev:1980, proj:1080, sport:6};
   }
+  /* Recalage : chaque objectif de temps (révision, projets, espagnol, séances de sport)
+     reprend la cible que la grille prévoit sur SA période. Idempotent, rejouable après
+     hydratation, valable pour toutes les grilles à venir : un changement de phase, une
+     journée de TP ajoutée, une date d'examen ou des vacances le déclenchent. Une cible
+     modifiée à la main (o.auto === false) n'est jamais touchée. */
   function recalerObjectifsSemaine(){
-    if(typeof CIBLE_HEBDO === 'undefined' || !CIBLE_HEBDO) return false;   /* la grille n'est pas encore lue */
+    if(typeof CHAMP_PREVU === 'undefined') return false;   /* la grille n'est pas encore lue */
     var courant = load('batcave-objectifs', null);
     if(courant && typeof courant === 'object' && Array.isArray(courant.liste)) objectifsState = {liste: courant.liste.filter(function(o){ return o && o.id; })};
-    var actuelle = {rev: CIBLE_HEBDO.revMin, proj: CIBLE_HEBDO.projMin, sport: joursEntrainement()}, change = false;
+    var change = false;
     objectifsState.liste.forEach(function(o){
-      var m = metriqueDe(o.metrique);
-      if(m !== 'revision_h' && m !== 'projets_h' && m !== 'sport_seances') return;
-      var ref = semaineDeReference(o), k = m === 'revision_h' ? 'rev' : (m === 'projets_h' ? 'proj' : 'sport');
-      if(ref[k] !== actuelle[k]) o.cible = k === 'sport' ? Math.round(Number(o.cible) * actuelle[k] / ref[k]) : Math.round(Number(o.cible) * actuelle[k] / ref[k] * 10) / 10;
-      if(!o.semaine || o.semaine.rev !== actuelle.rev || o.semaine.proj !== actuelle.proj || o.semaine.sport !== actuelle.sport){ o.semaine = {rev: actuelle.rev, proj: actuelle.proj, sport: actuelle.sport}; change = true; }
+      if(!CHAMP_PREVU[metriqueDe(o.metrique)] || o.auto === false || o.fixe) return;
+      var c = cibleDepuisGrille(o.metrique, o.debut, o.fin);
+      if(c === null) return;
+      if(Number(o.cible) !== c){ o.cible = c; change = true; }
+      if(o.auto !== true){ o.auto = true; change = true; }
+      if(o.semaine){ delete o.semaine; change = true; }
     });
     if(change) save('batcave-objectifs', objectifsState);
     return change;
@@ -6161,6 +6579,7 @@
     }
     if(m === 'habitudes_pct'){
       jours.forEach(function(iso){
+        if(jourExclu(iso)) return;
         var duJour = habitsDuJour(dowDe(iso)); if(!duJour.length) return;
         var faits = duJour.filter(function(h){ return (habitLog[h.id] || []).indexOf(iso) > -1; }).length;
         somme += faits / duJour.length; n++;
@@ -6183,7 +6602,7 @@
       var ex = tousExercices().filter(function(e){ return e.name === paramDe(o.metrique); })[0];
       return ex ? parseFourchette(ex.reps).bas : 0;
     }
-    if(m === 'poids'){ var g = GOALS_NUMERIC.filter(function(x){ return x.id === 'poids'; })[0]; return g ? g.start : 0; }
+    if(m === 'poids'){ var g = GOALS_NUMERIC.filter(function(x){ return x.id === 'poids'; })[0]; return g ? departGoal(g) : 0; }
     return 0;
   }
   /* Le coeur : reel, attendu, cible, statut, projection. */
@@ -6193,13 +6612,14 @@
     var total = Math.max(1, daysBetween(new Date(o.debut + 'T00:00:00'), new Date(o.fin + 'T00:00:00')) + 1);
     var ecoules = clamp(daysBetween(new Date(o.debut + 'T00:00:00'), new Date(todayISO + 'T00:00:00')) + 1, 0, total);
     var f = ecoules / total;
-    /* revision et projets : pendant une charge reduite, le rythme attendu baisse d'autant
-       (les jours reduits pesent 0,8) ; la cible de la periode, elle, ne bouge pas */
+    /* Temps de travail et séances de sport : le rythme attendu se lit dans la grille, pas
+       dans le calendrier. Un jour de TP, un jour d'examen, un jour exclu ou une journée de
+       vacances ne prévoit rien : il ne crée donc aucun retard. Une charge réduite pèse
+       0,8 comme avant ; la cible de la période, elle, ne bouge pas. */
     var mk = metriqueDe(o.metrique);
-    if((mk === 'revision_h' || mk === 'projets_h') && chargeState && chargeState.facteur){
-      var somme = 0, dj = new Date(o.debut + 'T00:00:00');
-      for(var di = 0; di < total; di++){ var isoJ = localISO(dj); if(isoJ <= todayISO) somme += facteurCharge(isoJ); dj.setDate(dj.getDate() + 1); }
-      f = somme / total;
+    if(CHAMP_PREVU[mk]){
+      var pf = partEcoulee(mk, o.debut, o.fin);
+      if(pf !== null) f = pf;
     }
     var cible = Number(o.cible) || 0;
     var valeur = todayISO < o.debut ? null : valeurMetrique(o.metrique, o.debut, o.fin);
@@ -6246,7 +6666,7 @@
     if(objVue === 'horizon'){
       /* les six objectifs a 180 jours, passes par le moteur, sans etre stockes en double */
       var out = GOALS_NUMERIC.map(function(g){
-        return {id:'H:' + g.id, periode:'horizon', debut: horizonState.debut, fin: horizonState.fin, metrique: g.id, cible: g.target, depart: g.start, titre: g.label.replace(/^\S+\s/, ''), fixe: true};
+        return {id:'H:' + g.id, periode:'horizon', debut: horizonState.debut, fin: horizonState.fin, metrique: g.id, cible: g.target, depart: departGoal(g), titre: g.label.replace(/^\S+\s/, ''), fixe: true};
       });
       out.push({id:'H:shopify', periode:'horizon', debut: horizonState.debut, fin: horizonState.fin, metrique:'shopify', cible: OBJECTIF_SHOPIFY_MOIS, depart: 0, titre:'Shopify (bénéfice / mois)', fixe: true});
       return out;
@@ -6267,7 +6687,7 @@
       '<span class="titre">' + escapeHtml(o.titre) + '<small>' + libelleStatut(c.statut) + (c.mode === 'niveau' ? ' · départ ' + fmtNombre(c.depart, c.dec) + u : '') + '</small></span>' +
       '<span class="val"><small>réel</small><b>' + fmtNombre(c.valeur, c.dec) + '</b>' + u + '</span>' +
       '<span class="val attendu"><small>attendu</small>' + fmtNombre(c.attendu, c.dec) + u + '</span>' +
-      '<span class="val"><small>cible</small>' + (o.fixe ? fmtNombre(c.cible, c.dec) + u : '<input class="obj-cible" type="number" step="0.1" min="0" value="' + escapeHtml(o.cible) + '" data-obj-cible="' + escapeHtml(o.id) + '" aria-label="Cible">' + (u ? '<span style="margin-left:4px;">' + u.trim() + '</span>' : '')) + '</span>' +
+      '<span class="val"><small>cible' + (o.auto ? ' · auto' : '') + '</small>' + (o.fixe ? fmtNombre(c.cible, c.dec) + u : '<input class="obj-cible" type="number" step="0.1" min="0" value="' + escapeHtml(o.cible) + '" data-obj-cible="' + escapeHtml(o.id) + '" title="' + (o.auto ? 'Calculée depuis la grille de la période — la modifier la fige' : 'Cible saisie à la main') + '" aria-label="Cible">' + (u ? '<span style="margin-left:4px;">' + u.trim() + '</span>' : '')) + '</span>' +
       '<span class="proj">' + (ecartTxt ? '<b>' + ecartTxt + '</b> vs attendu · ' : '') + projTxt + '</span>' +
       (o.fixe ? '<span></span>' : '<button class="edel" aria-label="Supprimer" title="Supprimer cet objectif" data-obj-del="' + escapeHtml(o.id) + '">×</button>') +
       '</div>';
@@ -6299,6 +6719,7 @@
         var v = Number(String(inp.value).replace(',', '.'));
         if(!o || isNaN(v) || v < 0){ renderObjectifs(); return; }
         o.cible = v;
+        o.auto = false;   /* saisie à la main : la grille ne la recalcule plus */
         save('batcave-objectifs', objectifsState);
         renderObjectifs(); renderDashboard();
       });
@@ -6349,7 +6770,7 @@
       if(!cle || isNaN(cible) || cible <= 0){ showToast('⚠️ Indique une cible.'); return; }
       var p = periodeCourante();
       var nouvel = {id: p.id + ':' + cle + ':' + Date.now(), periode: objVue, pid: p.id, debut: p.debut, fin: p.fin, metrique: cle, cible: cible, titre: titre || libelleMetrique(cle)};
-      if(['revision_h','projets_h','sport_seances'].indexOf(metriqueDe(cle)) > -1) nouvel.semaine = {rev: CIBLE_HEBDO.revMin, proj: CIBLE_HEBDO.projMin, sport: joursEntrainement()};
+      if(CHAMP_PREVU[metriqueDe(cle)]) nouvel.auto = false;   /* cible saisie : la grille ne l'écrase pas */
       objectifsState.liste.push(nouvel);
       save('batcave-objectifs', objectifsState);
       document.getElementById('obj-titre').value = ''; document.getElementById('obj-cible').value = '';
@@ -6357,6 +6778,59 @@
     });
   })();
 
+  /* ===== Clôture de saison =====
+     À la fin de l'horizon, la saison se clôt en un bouton : objectifs et cartes sont
+     archivés tels quels (batcave-saisons), l'horizon avance de six mois, les cartes
+     repartent de la valeur atteinte, et les objectifs des nouvelles périodes sont semés
+     puis calculés depuis la grille. Rien à ressaisir. */
+  var saisonsState = loadList('batcave-saisons');
+  function joursAvantFinSaison(){ return daysBetween(new Date(todayISO + 'T00:00:00'), new Date(horizonState.fin + 'T00:00:00')); }
+  function saisonClosable(){ return joursAvantFinSaison() <= 7; }
+  function semerPeriodesManquantes(){
+    var pids = {};
+    objectifsState.liste.forEach(function(o){ pids[o.pid] = true; });
+    var ajout = false;
+    objectifsSemes().forEach(function(o){ if(!pids[o.pid]){ objectifsState.liste.push(o); ajout = true; } });
+    if(ajout) save('batcave-objectifs', objectifsState);
+    return ajout;
+  }
+  function cloturerSaison(){
+    var ancien = {debut: horizonState.debut, fin: horizonState.fin};
+    var bilan = GOALS_NUMERIC.map(function(g){
+      var v = valeurAutoObjectif(g.id);
+      return {id: g.id, label: g.label, depart: departGoal(g), atteint: v !== null ? Number(v) : (Number(goalState[g.id]) || 0), cible: g.target};
+    });
+    saisonsState.push({id:'sa' + Date.now(), cloturee: todayISO, horizon: ancien, goals: bilan,
+                       objectifs: objectifsState.liste.filter(function(o){ return o.fin <= ancien.fin; })});
+    if(saisonsState.length > 20) saisonsState = saisonsState.slice(-20);
+    save('batcave-saisons', saisonsState);
+    bilan.forEach(function(b){ goalsDepart[b.id] = b.atteint; });
+    save('batcave-goals-depart', goalsDepart);
+    var d = new Date(ancien.fin + 'T00:00:00');
+    horizonState = {debut: ancien.fin, fin: localISO(new Date(d.getFullYear(), d.getMonth() + 6, d.getDate()))};
+    save('batcave-horizon', horizonState);
+    TRIMESTRES = construireTrimestres();
+    semerPeriodesManquantes();
+    viderCachePrevu();
+    recalerObjectifsSemaine();
+    renderGoals(); renderDashboard(); renderBilan();
+    showToast('🏁 Saison clôturée — nouvel horizon jusqu\'au ' + fmtDate(horizonState.fin) + ', objectifs semés depuis la grille.');
+  }
+  function renderSaison(){
+    var b = document.getElementById('saison-cloturer'), n = document.getElementById('saison-note');
+    if(!b) return;
+    var j = joursAvantFinSaison();
+    b.hidden = !saisonClosable();
+    if(n) n.textContent = saisonsState.length ? saisonsState.length + ' saison' + (saisonsState.length > 1 ? 's' : '') + ' archivée' + (saisonsState.length > 1 ? 's' : '') : '';
+    if(!b.hidden) b.textContent = j <= 0 ? '🏁 Clôturer la saison et repartir 6 mois' : '🏁 Clôturer la saison (fin dans ' + j + ' j)';
+  }
+  (function(){
+    var b = document.getElementById('saison-cloturer');
+    if(b) b.addEventListener('click', function(){
+      askConfirm('Clôturer la saison ' + fmtDate(horizonState.debut) + ' → ' + fmtDate(horizonState.fin) + ' ? Les objectifs et les cartes sont archivés, l\'horizon avance de six mois et les nouvelles périodes sont semées depuis la grille.',
+        cloturerSaison, {titre:'Clôture de saison', libelleOk:'Clôturer et repartir'});
+    });
+  })();
   function weightHistory(){
     var pts = [];
     for(var i=0;i<localStorage.length;i++){
@@ -6504,13 +6978,13 @@
     GOALS_NUMERIC.forEach(function(g){
       var auto = valeurAutoObjectif(g.id);
       var current = auto !== null ? Number(auto) : Number(goalState[g.id]);
-      var pct = clamp(Math.round(100*(current-g.start)/(g.target-g.start)), 0, 100);
+      var dep = departGoal(g), pct = clamp(Math.round(100*(current-dep)/((g.target-dep) || 1)), 0, 100);
       var card = document.createElement('div');
       card.className = 'goal-card';
       card.innerHTML =
         '<div class="goal-top"><span class="gtitle">'+g.label+'</span><span class="gtarget">CIBLE '+g.target+' '+g.unit+'</span></div>'+
         '<div class="goal-track"><div class="goal-fill" style="width:'+pct+'%"></div></div>'+
-        '<div class="goal-meta"><span>'+pct+'% · départ '+g.start+' '+g.unit+(auto !== null ? ' · auto' : '')+'</span><input type="number" step="'+g.step+'" data-goal="'+g.id+'" value="'+escapeHtml(auto !== null ? current : goalState[g.id])+'"'+(auto !== null ? ' readonly title="'+escapeHtml(SOURCE_AUTO_OBJECTIF[g.id] || '')+'"' : '')+'></div>'+
+        '<div class="goal-meta"><span>'+pct+'% · départ '+dep+' '+g.unit+(auto !== null ? ' · auto' : '')+'</span><input type="number" step="'+g.step+'" data-goal="'+g.id+'" value="'+escapeHtml(auto !== null ? current : goalState[g.id])+'"'+(auto !== null ? ' readonly title="'+escapeHtml(SOURCE_AUTO_OBJECTIF[g.id] || '')+'"' : '')+'></div>'+
         '<p class="goal-note">'+g.note+'</p>';
       grid.appendChild(card);
     });
@@ -6551,6 +7025,7 @@
     renderWeightChart();
     renderShopifyChart();
     renderObjectifs();
+    renderSaison();
   }
   function shopifyChartSVG(entries){
     var w = 560, h = 150, padL = 14, padR = 14, padT = 14, padB = 30, gap = 10;
@@ -6707,8 +7182,8 @@
       return b && b.date === todayISO && Number(b.duree) > 0 && ((b.type === 'projet') ? 'projet' : 'cours') === type;
     });
   }
-  function recouvrement(bloc, sessions){
-    var minuit = new Date(todayISO + 'T00:00:00').getTime(), total = 0;
+  function recouvrement(bloc, sessions, iso){
+    var minuit = new Date((iso || todayISO) + 'T00:00:00').getTime(), total = 0;
     sessions.forEach(function(s){
       if(!s.debut || !s.fin) return;
       var a = Math.max(bloc.debut*60000 + minuit, s.debut), z = Math.min(bloc.fin*60000 + minuit, s.fin);
@@ -6745,6 +7220,28 @@
     });
     return out;
   }
+  /* Combien de blocs de travail déjà passés n'ont vu aucun Pomodoro : la clôture le dit,
+     le journal du jour le garde. Un bloc encore à venir ne peut pas manquer. */
+  function blocsSansPomodoroJour(iso){
+    iso = iso || todayISO;
+    var sc = [], sp = [];
+    sessionsState.forEach(function(b){
+      if(!b || b.date !== iso || !(Number(b.duree) > 0)) return;
+      (b.type === 'projet' ? sp : sc).push(b);
+    });
+    /* aujourd'hui : les blocs déjà passés ; un jour révolu : tous ; un jour à venir : aucun */
+    var limite = 1441;
+    if(iso === todayISO){ var n = new Date(); limite = n.getHours() * 60 + n.getMinutes(); }
+    else if(iso > todayISO) limite = -1;
+    var total = 0, sans = 0, noms = [];
+    blocsDuPlanning(cleJournee(dowDe(iso)), iso).forEach(function(b){
+      if(limite < b.fin) return;
+      total++;
+      if(recouvrement(b, b.type === 'projet' ? sp : sc, iso) < b.minutes / 2){ sans++; noms.push(b.label + ' ' + minutesToTime(b.debut)); }
+    });
+    return {total: total, sans: sans, noms: noms};
+  }
+  function blocsSansPomodoroDuJour(){ return blocsSansPomodoroJour(todayISO); }
   function cleTraiteManque(type){ return 'batcave-manque-traite-' + todayISO + '-' + type; }
   function reporterADemain(type, minutes){
     var demain = new Date(now); demain.setDate(demain.getDate() + 1);
@@ -6780,6 +7277,16 @@
     /* Charge realiste : deux semaines sous 70 % → proposer une cible reduite, une fois. */
     var pc = propositionCharge();
     if(pc) items.push({pri:0.7, icon:'⚖️', text:'Fidélité au plan ' + pc.f2 + ' % puis ' + pc.f1 + ' % : réduire la cible du jour de 20 % pendant deux semaines ?', action:{type:'charge'}});
+
+    /* Notion : la matière qui a le plus de cours pas faits, à partir de deux. */
+    var retard = notionRetards()[0];
+    if(retard && retard.n >= 2) items.push({pri:2.2, icon:'📓', text: retard.matiere + ' — ' + retard.n + ' cours pas faits dans Notion (' + retard.cours.slice(0, 2).map(function(c){ return c.titre; }).join(', ') + (retard.n > 2 ? '…' : '') + ')', action:{type:'notion'}});
+
+    /* Exercice de restauration : tous les trois mois, une ligne dans le plan. */
+    if(exerciceDu() && !load('batcave-drill-ignore-' + todayISO, false)) items.push({pri:2.8, icon:'🧪', text:'Exercice de restauration — relis une sauvegarde et vérifie qu\'elle s\'ouvre', action:{type:'drill'}});
+
+    /* Fin de saison : à J-7, clôturer et repartir devient une action du plan. */
+    if(saisonClosable()) items.push({pri:0.6, icon:'🏁', text:'Fin de saison le ' + fmtDate(horizonState.fin) + ' — clôturer et repartir six mois', action:{type:'saison'}});
 
     /* Le soir, cloturer la journee est LA prochaine action : elle remonte dans le plan. */
     if(nowMin >= heureDeCloture() && !journalState.cloture){
@@ -6864,6 +7371,14 @@
         right = '<button class="btn btn-primary" data-plan-tache="'+escapeHtml(it.action.id)+'" style="padding:4px 10px; font-size:11px; flex-shrink:0;">✓ Fait</button>';
       } else if(it.action && it.action.type === 'revision'){
         right = '<button class="btn btn-primary" data-plan-pomodoro="1" style="padding:4px 10px; font-size:11px; flex-shrink:0;">🍅 Pomodoro</button>';
+      } else if(it.action && it.action.type === 'notion'){
+        right = '<button class="btn" data-plan-notion="1" style="padding:4px 10px; font-size:11px; flex-shrink:0;">→ Études</button>';
+      } else if(it.action && it.action.type === 'drill'){
+        right = '<span style="display:flex; gap:6px; flex-wrap:wrap; justify-content:flex-end;">' +
+          '<button class="btn btn-primary" data-plan-drill="1" style="padding:4px 10px; font-size:11px;">💾 Ouvrir</button>' +
+          '<button class="btn" data-plan-drill-ignorer="1" style="padding:4px 8px; font-size:11px;" title="Pas aujourd\'hui">✕</button></span>';
+      } else if(it.action && it.action.type === 'saison'){
+        right = '<button class="btn btn-primary" data-plan-saison="1" style="padding:4px 10px; font-size:11px; flex-shrink:0;">🏁 Objectifs</button>';
       } else if(it.action && it.action.type === 'cloture'){
         right = '<button class="btn btn-primary" data-plan-cloture="1" style="padding:4px 10px; font-size:11px; flex-shrink:0;">🌙 Clôturer</button>';
       } else if(it.action && it.action.type === 'charge'){
@@ -6897,6 +7412,22 @@
     });
     el.querySelectorAll('[data-plan-cloture]').forEach(function(btn){
       btn.addEventListener('click', function(){ ouvrirCloture(); });
+    });
+    el.querySelectorAll('[data-plan-notion]').forEach(function(btn){
+      btn.addEventListener('click', function(){ var nb = document.querySelector('.nav-btn[data-page="etudes"]'); if(nb) nb.click(); });
+    });
+    el.querySelectorAll('[data-plan-drill]').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        document.getElementById('backup-export').value = JSON.stringify(allBatcaveData(), null, 2);
+        document.getElementById('backup-overlay').hidden = false;
+        try{ renderExercice(); }catch(e){}
+      });
+    });
+    el.querySelectorAll('[data-plan-drill-ignorer]').forEach(function(btn){
+      btn.addEventListener('click', function(){ saveInternal('batcave-drill-ignore-' + todayISO, true); renderDashboard(); });
+    });
+    el.querySelectorAll('[data-plan-saison]').forEach(function(btn){
+      btn.addEventListener('click', function(){ var nb = document.querySelector('.nav-btn[data-page="objectifs"]'); if(nb) nb.click(); });
     });
     el.querySelectorAll('[data-plan-charge-oui]').forEach(function(btn){ btn.addEventListener('click', reduireCharge); });
     el.querySelectorAll('[data-plan-charge-non]').forEach(function(btn){ btn.addEventListener('click', refuserCharge); });
@@ -7236,7 +7767,7 @@
   }
   function detteDe(nuits){ return nuits.reduce(function(a, n){ return a + Math.max(0, n.obj - n.h); }, 0); }
   function insightSommeil(){
-    var nuits = nuitsRenseignees(7), T = 'Sommeil', P = 'journal';
+    var nuits = nuitsRenseignees(7), T = 'Sommeil', P = 'bilan';
     var dette = detteDe(nuits), moy = nuits.length ? nuits.reduce(function(a, n){ return a + n.h; }, 0) / nuits.length : 0;
     var pire = null; nuits.forEach(function(n){ if(!pire || n.h < pire.h) pire = n; });
     var texte, action = '', score = 0;
@@ -7427,6 +7958,7 @@
     for(var i = deb; i < fin; i++){
       var d = new Date(now); d.setDate(d.getDate() - i);
       if(jours !== null && jours.indexOf(d.getDay()) === -1) continue;
+      if(jourExclu(localISO(d))) continue;   /* journée qui ne compte pas */
       applicables++;
       if(doneSet[localISO(d)]) count++;
     }
@@ -7515,7 +8047,7 @@
   }
 
   /* ---- assemblage, priorités, « vu », rendu ---- */
-  var PAGES_INSIGHT = {calendrier:'Calendrier', journal:'Journal', repas:'Repas', sport:'Sport', etudes:'Études', habitudes:'Habitudes', bilan:'Bilan'};
+  var PAGES_INSIGHT = {calendrier:'Calendrier', journal:'Semaine', repas:'Repas', sport:'Sport', etudes:'Études', habitudes:'Habitudes', bilan:'Semaine'};
   function buildInsights(){
     var liste = [insightBlocFragile(), insightDeriveHoraire(), insightSommeil(), insightFideliteHebdo(), insightMatiereExamen(),
                  insightSport(), insightBalanceEnergetique(), insightHabitudes(), insightCreneau()].filter(Boolean);
@@ -7535,6 +8067,50 @@
     save('batcave-insights-vu', insightsVu);
   }
   function prioritesDe(items){ return items.filter(function(it){ return it.action && it.score >= 20 && !insightEnPause(it.title); }).slice(0, 3); }
+  /* ===== Histoire des priorités =====
+     Une carte qui remonte trois semaines de suite n'est plus une suggestion : elle change
+     de ton. On garde par titre les semaines où elle est remontée et la dernière action ;
+     une priorité qui n'est plus revenue depuis huit semaines est close et disparaît. */
+  var insightsHist = load('batcave-insights-hist', {});
+  if(!insightsHist || typeof insightsHist !== 'object' || Array.isArray(insightsHist)) insightsHist = {};
+  function noterPriorites(prio){
+    var sem = weekRange(0)[0], change = false;
+    (prio || []).forEach(function(it){
+      var h = insightsHist[it.title];
+      if(!h || typeof h !== 'object' || !Array.isArray(h.semaines)){ h = {premiere: sem, semaines: [], action: it.action}; insightsHist[it.title] = h; change = true; }
+      if(h.semaines.indexOf(sem) < 0){ h.semaines.push(sem); h.semaines.sort(); if(h.semaines.length > 30) h.semaines = h.semaines.slice(-30); change = true; }
+      if(h.action !== it.action){ h.action = it.action; change = true; }
+    });
+    Object.keys(insightsHist).forEach(function(t){
+      var h = insightsHist[t], dernier = h && Array.isArray(h.semaines) && h.semaines[h.semaines.length - 1];
+      if(!dernier || daysBetween(new Date(dernier + 'T00:00:00'), new Date(sem + 'T00:00:00')) > 56){ delete insightsHist[t]; change = true; }
+    });
+    if(change) save('batcave-insights-hist', insightsHist, true);
+    return insightsHist;
+  }
+  function retoursPriorite(title){
+    var h = insightsHist[title];
+    return (h && Array.isArray(h.semaines)) ? h.semaines.length : 0;
+  }
+  /* Le ton monte avec les retours : neuf, « déjà vue », puis « le sujet de la semaine ». */
+  function tonPriorite(title){
+    var n = retoursPriorite(title);
+    if(n >= 3) return {n: n, niveau:'insistant', prefixe: n + 'ᵉ semaine — ', note:'Elle revient depuis ' + n + ' semaines : ce n\'est plus un conseil, c\'est le sujet de la semaine.'};
+    if(n === 2) return {n: n, niveau:'revient', prefixe:'2ᵉ semaine — ', note:'Déjà là la semaine dernière.'};
+    return {n: n, niveau:'neuf', prefixe:'', note:''};
+  }
+  /* Priorités closes : remontées au moins deux semaines, plus revenues depuis deux semaines. */
+  function prioritesCloses(){
+    var sem = weekRange(0)[0], out = [];
+    Object.keys(insightsHist).forEach(function(t){
+      var h = insightsHist[t];
+      if(!h || !Array.isArray(h.semaines) || h.semaines.length < 2) return;
+      var dernier = h.semaines[h.semaines.length - 1];
+      var ecart = daysBetween(new Date(dernier + 'T00:00:00'), new Date(sem + 'T00:00:00'));
+      if(ecart >= 14) out.push({titre: t, semaines: h.semaines.length, depuis: dernier});
+    });
+    return out.sort(function(a, b){ return b.semaines - a.semaines; });
+  }
   var prioCache = {t: 0, v: []};
   function prioritesInsights(){
     var t = Date.now();
@@ -7547,8 +8123,9 @@
     var el = document.getElementById('dash-priorite'); if(!el) return;
     var p = prioritesInsights()[0];
     if(!p){ el.hidden = true; return; }
-    el.innerHTML = '🔎 <b>' + escapeHtml(p.title) + '</b> — ' + escapeHtml(p.action);
-    el.title = p.title + ' — ' + p.text + '\n\nACTION : ' + p.action + '\n\nClic : Insights';
+    var ton = tonPriorite(p.title);
+    el.innerHTML = '🔎 ' + escapeHtml(ton.prefixe) + '<b>' + escapeHtml(p.title) + '</b> — ' + escapeHtml(p.action);
+    el.title = p.title + ' — ' + p.text + '\n\nACTION : ' + p.action + (ton.note ? '\n\n' + ton.note : '') + '\n\nClic : Insights';
     el.hidden = false;
   }
   (function(){
@@ -7570,11 +8147,19 @@
     var items = buildInsights();
     var prio = prioritesDe(items);
     prioCache = {t: Date.now(), v: prio};
+    noterPriorites(prio);
+    var closes = prioritesCloses();
     var bandeau = document.getElementById('insights-priorites');
     if(bandeau){
       if(prio.length){
         bandeau.innerHTML = '<div class="sub-head"><h3>🔎 Priorités de la semaine</h3><span class="sub-note">classées par impact, une action chacune · « Vu » la met en pause 7 jours</span></div><ol>' +
-          prio.map(function(it){ return '<li><span class="txt"><b>' + escapeHtml(it.title) + '</b> — ' + escapeHtml(it.action) + '</span><span class="insight-outils">' + boutonAller(it) + '<button class="btn" type="button" data-vu="' + escapeHtml(it.title) + '" title="Ne plus la remonter pendant 7 jours">Vu</button></span></li>'; }).join('') + '</ol>';
+          prio.map(function(it){
+            var ton = tonPriorite(it.title);
+            return '<li><span class="txt">' + (ton.prefixe ? '<b class="prio-retour' + (ton.niveau === 'insistant' ? ' insistant' : '') + '">' + escapeHtml(ton.prefixe) + '</b>' : '') +
+              '<b>' + escapeHtml(it.title) + '</b> — ' + escapeHtml(it.action) + (ton.note ? '<small class="sub-note" style="display:block;">' + escapeHtml(ton.note) + '</small>' : '') +
+              '</span><span class="insight-outils">' + boutonAller(it) + '<button class="btn" type="button" data-vu="' + escapeHtml(it.title) + '" title="Ne plus la remonter pendant 7 jours">Vu</button></span></li>';
+          }).join('') + '</ol>' +
+          (closes.length ? '<p class="sub-note" style="margin-top:8px;">✔️ Priorités closes : ' + closes.slice(0, 3).map(function(c){ return escapeHtml(c.titre) + ' (' + c.semaines + ' semaines)'; }).join(' · ') + '</p>' : '');
         bandeau.hidden = false;
       } else bandeau.hidden = true;
     }
@@ -7641,7 +8226,7 @@
       var d = new Date(now); d.setDate(d.getDate()-i);
       var iso = localISO(d);
       var hasData = (iso === todayISO) || load('batcave-journal-'+iso, null) || load('batcave-meals-'+iso, null) || load('batcave-sport-'+iso, null);
-      if(hasData) pts.push({date: iso, value: dayScoreFor(iso)});
+      if(hasData && !jourExclu(iso)) pts.push({date: iso, value: dayScoreFor(iso)});
     }
     el.innerHTML = lineChartSVG(pts, 85, '%', 'Pas encore assez de journées suivies — la courbe se construira jour après jour.', 'Courbe du score du jour');
     var sub = document.getElementById('score-trend-sub');
@@ -8075,7 +8660,7 @@
      cle du jour, sinon « defaut ». Les memes textes sont dans les series recurrentes de
      l'agenda Google (titres « 🦇 Bloc · consigne courte »). */
   var CONSIGNES = {
-    'Sport': "1 km en courant jusqu'au parc, allure conversation : c'est l'échauffement. Séance du jour dans l'onglet Sport, surcharge progressive : les charges à faire sont déjà calculées. Retour en marchant, en trottinant le mardi.",
+    'Sport': "1 km en courant jusqu'au parc, allure conversation : c'est l'échauffement. Séance du jour dans l'onglet Sport, surcharge progressive : les charges à faire sont déjà calculées. Les cinq dernières minutes sont la finition : abdos, et le cou en isométrie le lundi et le jeudi. Retour en marchant, en trottinant le mardi.",
     'Anki matinal': "Jour off de sport : une heure de cartes de dentaire, deux Pomodoros 25 + 5. Toutes les échéances, puis les cartes des matières faibles.",
     'Projets perso matinal': "Exécution pure d'une tâche déjà décidée la veille : montage, import, rédaction, fiches, code. Jamais une décision.",
     'Anki 1': "Toutes les échéances de dentaire, deux Pomodoros 25 + 5 sans téléphone. File vide avant la fin : cartes du cours suivant à partir des notes.",
@@ -8191,6 +8776,8 @@
     iso = iso || todayISO;
     var partiels = (typeof examensState !== 'undefined') ? periodePartiels(iso) : null;
     if(partiels) return partiels;
+    var vac = (typeof vacancesState !== 'undefined') ? periodeVacances(iso) : null;
+    if(vac) return vac;
     for(var i = 0; i < PERIODES_GRILLE.length; i++){ if(iso >= PERIODES_GRILLE[i].debut && iso <= PERIODES_GRILLE[i].fin) return PERIODES_GRILLE[i]; }
     return null;
   }
@@ -8206,7 +8793,8 @@
     iso = iso || todayISO;
     var p = periodeGrille(iso), g = base;
     if(p){
-      if(p.grille && p.grille[cle]) g = p.grille[cle];
+      if(p.transformer) g = base.map(function(b){ return p.transformer(b, cle); });
+      else if(p.grille && p.grille[cle]) g = p.grille[cle];
       else if(p.renommages) g = base.map(function(b){
         var nv = p.renommages[b[1]];
         if(nv && typeof nv === 'object') nv = nv[cle] || nv.defaut;
@@ -8378,6 +8966,60 @@
     weekRange(offsetWeeks || 0).forEach(function(iso){ var c = cibleJourMinutes(cleJournee(dowDe(iso)), iso); t.rev += c.rev; t.proj += c.proj; });
     return {rev: Math.round(t.rev/60*10)/10, proj: Math.round(t.proj/60*10)/10};
   }
+  /* ===== Cibles et rythme calculés depuis la grille =====
+     Une cible de temps n'est plus un chiffre écrit à la main : c'est ce que la grille
+     PRÉVOIT sur la période, avec une marge (89 % en révision et en espagnol, 85 % en
+     projets, 90 % des séances de sport) -- la marge qui rend l'objectif tenable. Comme la
+     grille connaît les phases Español, le mode partiels, les journées de TP ou d'examen,
+     les vacances et les jours exclus, un mois avec deux TP demande moins qu'un mois plein,
+     et « Projets perso » ne passe pas en retard pendant les partiels : ces jours-là, la
+     grille ne prévoit pas de projets. Le rythme attendu (la part de la période écoulée)
+     suit la même règle : des minutes prévues, jamais des jours de calendrier. */
+  var cachePrevu = {};
+  function viderCachePrevu(){ cachePrevu = {}; }
+  function minutesPrevuesJour(iso){
+    if(cachePrevu[iso]) return cachePrevu[iso];
+    var c = {rev:0, proj:0, es:0, sport:0};
+    if(!jourExclu(iso)){
+      blocsDuPlanning(cleJournee(dowDe(iso)), iso).forEach(function(b){
+        var es = /^Español/.test(b.label);
+        if(es) c.es += b.minutes;
+        if(b.type === 'cours') c.rev += b.minutes;
+        else if(b.type === 'projet' && !es) c.proj += b.minutes;
+      });
+      var t = TYPE_BY_DAY[dowDe(iso)];
+      if(t && t !== 'Off') c.sport = 1;
+    }
+    cachePrevu[iso] = c;
+    return c;
+  }
+  var CHAMP_PREVU = {revision_h:'rev', projets_h:'proj', espagnol_h:'es', sport_seances:'sport'};
+  var MARGE_CIBLE = {revision_h:0.89, projets_h:0.85, espagnol_h:0.89, sport_seances:0.9};
+  function prevuSurPeriode(cle, debut, fin, avecCharge){
+    var champ = CHAMP_PREVU[metriqueDe(cle)]; if(!champ) return 0;
+    var t = 0, d = new Date(debut + 'T00:00:00'), n = 0;
+    while(localISO(d) <= fin && n < 800){
+      var iso = localISO(d);
+      t += minutesPrevuesJour(iso)[champ] * (avecCharge ? facteurCharge(iso) : 1);
+      d.setDate(d.getDate() + 1); n++;
+    }
+    return t;
+  }
+  function cibleDepuisGrille(cle, debut, fin){
+    var m = metriqueDe(cle), champ = CHAMP_PREVU[m]; if(!champ) return null;
+    var t = prevuSurPeriode(m, debut, fin, false) * MARGE_CIBLE[m];
+    return champ === 'sport' ? Math.round(t) : Math.round(t / 60 * 10) / 10;
+  }
+  /* Part de la période réellement écoulée, en minutes prévues. Le total est celui de la
+     grille pleine ; les jours déjà passés sont pondérés par la charge du jour, si bien
+     qu'une charge réduite fait BAISSER le rythme attendu au lieu de le relever. */
+  function partEcoulee(cle, debut, fin){
+    var tot = prevuSurPeriode(cle, debut, fin, false);
+    if(!(tot > 0)) return null;
+    if(todayISO < debut) return 0;
+    var stop = fin < todayISO ? fin : todayISO;
+    return clamp(prevuSurPeriode(cle, debut, stop, true) / tot, 0, 1);
+  }
   function propositionCharge(){
     if(chargeReduiteActive()) return null;
     var lundi = weekRange(0)[0];
@@ -8466,14 +9108,36 @@
   /* Les series recurrentes de l'agenda portent une consigne apres « · » (« 🦇 Anki 1 · cartes
      dues dentaire ») : un evenement se reconnait a la partie avant le separateur. */
   function titreBaseGcal(s){ return String(s || '').split(' · ')[0].trim(); }
-  try{ window.__bcTitreBase = titreBaseGcal; window.__bcConsigne = consigneBloc; window.__bcInsights = buildInsights; window.__bcBlocs = blocsDuPlanning; window.__bcCle = cleJournee; window.__bcJours = joursSuivis; window.__bcInsightsVu = function(){ return insightsVu; }; window.__bcLogSession = logSession; window.__bcPeriode = periodeGrille; window.__bcGrille = grilleDe; window.__bcMinutesEspanol = minutesEspanol; window.__bcCibleEspanol = cibleEspanolJour; window.__bcTypeBloc = typeBlocPlan; window.__bcPlanRotation = planRotation; window.__bcHabitJours = habitJours; window.__bcProgrammeDebut = PROGRAMME_DEBUT; window.__bcJournees = function(){ return journeesState; }; window.__bcJourneeDe = journeeDe; window.__bcPartiels = periodePartiels; window.__bcSessionsPartiels = sessionsPartiels; window.__bcBlocSansPomodoro = blocSansPomodoro; window.__bcRappels = blocsARappeler; window.__bcExamens = function(){ return examensState; };
+  try{ window.__bcTitreBase = titreBaseGcal; window.__bcConsigne = consigneBloc; window.__bcInsights = buildInsights; window.__bcBlocs = blocsDuPlanning; window.__bcCle = cleJournee; window.__bcJours = joursSuivis; window.__bcInsightsVu = function(){ return insightsVu; }; window.__bcLogSession = logSession; window.__bcPeriode = periodeGrille; window.__bcGrille = grilleDe; window.__bcMinutesEspanol = minutesEspanol; window.__bcCibleEspanol = cibleEspanolJour; window.__bcTypeBloc = typeBlocPlan; window.__bcPlanRotation = planRotation; window.__bcHabitJours = habitJours; window.__bcProgrammeDebut = PROGRAMME_DEBUT; window.__bcJournees = function(){ return journeesState; }; window.__bcJourneeDe = journeeDe; window.__bcPartiels = periodePartiels; window.__bcSessionsPartiels = sessionsPartiels; window.__bcBlocSansPomodoro = blocSansPomodoro; window.__bcRappels = blocsARappeler; window.__bcExamens = function(){ return examensState; }; window.__bcPrevu = minutesPrevuesJour; window.__bcCibleGrille = cibleDepuisGrille; window.__bcPartEcoulee = partEcoulee; window.__bcVacances = function(){ return vacancesState; }; window.__bcJourExclu = jourExclu; window.__bcObjectifs = function(){ return objectifsState.liste; }; window.__bcComparer = comparerObjectif; window.__bcAcquise = habitAcquise; window.__bcAcquises = habitsAcquises; window.__bcSansPomodoro = blocsSansPomodoroDuJour; window.__bcTonPriorite = tonPriorite; window.__bcPrioHist = function(){ return insightsHist; }; window.__bcCloturerSaison = cloturerSaison; window.__bcSaisons = function(){ return saisonsState; }; window.__bcTrimestres = function(){ return TRIMESTRES; }; window.__bcMois = moisListe; window.__bcRapport = function(){
+         var mois = moisListe().filter(function(m){ return todayISO >= m.debut && todayISO <= m.fin; })[0];
+         var objs = mois ? objectifsState.liste.filter(function(o){ return o.periode === 'mois' && o.pid === mois.id; }) : [];
+         var p = periodeGrille(todayISO), hist = {};
+         Object.keys(insightsHist).forEach(function(t){ hist[t] = (insightsHist[t].semaines || []).length; });
+         return {
+           phase: p ? p.nom : 'grille type',
+           mois: mois ? mois.nom : '',
+           objectifs: objs.map(function(o){
+             var c = comparerObjectif(o);
+             return {titre: o.titre, reel: c.valeur, attendu: c.attendu, cible: c.cible, unite: c.unite, dec: c.dec, statut: c.statut, auto: !!o.auto};
+           }),
+           acquises: habitsAcquises().map(function(h){ return {label: h.label, taux: habitRate(h.id, 30)}; }),
+           notion: notionRetards().map(function(x){ return {matiere: x.matiere, n: x.n, total: x.total}; }),
+           retours: hist,
+           closes: prioritesCloses(),
+           exclus: joursExclusState.slice(),
+           vacances: vacancesState.map(function(v){ return {debut: v.debut, fin: v.fin, label: v.label || ''}; }),
+           saison: {debut: horizonState.debut, fin: horizonState.fin, jours: joursAvantFinSaison(), closable: saisonClosable()},
+           exercice: {dernier: dernierExercice(), du: exerciceDu()}
+         };
+       }; window.__bcNotion = absorberNotion; window.__bcNotionRetards = notionRetards; window.__bcCoursPasFait = coursPasFait; window.__bcExercice = exerciceDu; window.__bcChiffrer = chiffrerTexte; window.__bcDechiffrer = dechiffrerEnveloppe;
        /* rapport hebdomadaire (tests/rapport-hebdo.mjs) : la semaine à un décalage donné, ses
           statistiques de bilan et le prévu/réalisé de chaque jour */
        window.__bcSemaine = function(off){
          var jours = weekRange(off || 0);
          return {jours: jours, stats: weekStats(jours), parJour: jours.map(function(iso){
-           var c = cibleJourMinutes(cleJournee(dowDe(iso)), iso);
-           return {iso: iso, prevu: c.rev + c.proj, rev: minutesOn(iso), proj: minutesOnProj(iso)};
+           var c = cibleJourMinutes(cleJournee(dowDe(iso)), iso), pom = blocsSansPomodoroJour(iso);
+           return {iso: iso, prevu: c.rev + c.proj, rev: minutesOn(iso), proj: minutesOnProj(iso),
+                   blocs: pom.total, sansPomodoro: pom.sans, exclu: jourExclu(iso), vacances: !!enVacances(iso)};
          })};
        }; }catch(e){}
   function cleGcalJour(iso){ return 'batcave-gcal-' + iso; }
@@ -8492,7 +9156,7 @@
       if(d1 <= d0) d1 = d0 + 15;
       out.push({cle: 'p' + i, type: coucher ? 'coucher' : (libre ? 'libre' : 'bloc'), titre: '🦇 ' + l, titreBase: '🦇 ' + (memeStructure ? base[i][1] : l), debut: d0, fin: d1, rappel: coucher ? 30 : 5,
                 libre: coucher || libre,
-                description: (consigneBloc(l, dowDe(iso), iso) ? consigneBloc(l, dowDe(iso), iso) + ' ' : '') + (coucher ? 'Écran off 30 min avant. Bloc du planning Batcave.' : 'Bloc du planning Batcave.')});
+                description: (typeBlocPlan(l) ? 'Lance le Pomodoro « ' + l + ' ». ' : '') + (consigneBloc(l, dowDe(iso), iso) ? consigneBloc(l, dowDe(iso), iso) + ' ' : '') + (coucher ? 'Écran off 30 min avant. Bloc du planning Batcave.' : 'Bloc du planning Batcave.')});
     });
     return out;
   }
@@ -8554,6 +9218,17 @@
                   return mcp.callTool('Google Calendar', 'update_event', maj);
                 });
                 if(!memeRappel) suite = suite.then(function(){ return mcp.callTool('Google Calendar', 'update_event', {calendarId: GCAL_CALENDRIER, eventId: existant.recurringEventId || existant.id, overrideReminders:[{method:'popup', minutes: b.rappel}], notificationLevel:'NONE'}); });
+                /* Le rappel du téléphone doit dire quoi lancer. Sur un bloc de travail dont la
+                   série ne le dit pas encore, on AJOUTE la phrase devant la description
+                   existante (jamais on ne la remplace : elle porte la consigne du bloc), une
+                   fois pour toutes, sur la série. */
+                var descSerie = String(existant.description || '');
+                if(!b.libre && typeBlocPlan(b.titre.replace('🦇 ', '')) && descSerie.indexOf('Lance le Pomodoro') < 0){
+                  suite = suite.then(function(){
+                    return mcp.callTool('Google Calendar', 'update_event', {calendarId: GCAL_CALENDRIER, eventId: existant.recurringEventId || existant.id,
+                      description: 'Lance le Pomodoro « ' + b.titre.replace('🦇 ', '') + ' ». ' + descSerie, notificationLevel:'NONE'});
+                  }).catch(function(){});
+                }
                 return suite.then(function(){ releve[b.cle] = {id: existant.id, empreinte: emp, cree: false}; if(memeHeure && memeRappel && memeTitre) bilan.adoptes++; else bilan.majs++; });
               }
               if(debutMs < nowMs - 60000){ bilan.passes++; return; }
@@ -8712,7 +9387,8 @@
     var periodeJour = periodeGrille(todayISO);
     var evJour = journeeDe(todayISO), evDemain = journeeDe(isoDecale(todayISO, 1));
     document.getElementById('cal-schedule-label').textContent = labelMap[key] + (periodeJour ? ' · ' + periodeJour.nom : '') +
-      (evJour ? ' · 📌 ' + evJour.titre + ' ' + evJour.debut : (evDemain ? ' · veille de ' + evDemain.titre : ''));
+      (evJour ? ' · 📌 ' + evJour.titre + ' ' + evJour.debut : (evDemain ? ' · veille de ' + evDemain.titre : '')) +
+      (jourExclu(todayISO) ? ' · 🚫 ne compte pas' : '');
     var blocks = agendaDuJour(weekday);
 
     /* Un bloc de travail couvert au moins à moitié par une session au minuteur est coché
@@ -9573,6 +10249,70 @@
       saveInternal('batcave-notion-url', DEFAULT_NOTION_URL);
     }
   })();
+  /* ===== Cours « pas fait », lus dans Notion =====
+     Une base par matière (bases du dossier de cours). On lit les lignes en mode « rows »
+     (forme observée : { "": "PAS FAIT ", "Fiché":"__NO__", "Compris":"__NO__",
+     "Cartes Anki":"__NO__", "Cours": titre, url }) et on garde ce qui n'est pas fait.
+     Le résultat est mis en cache (batcave-notion-cache) : la Batcave sait quoi afficher
+     même hors connecteur, et le plan du jour remonte la matière la plus en retard.
+     Rien n'est écrit dans Notion : lecture seule. */
+  var NOTION_BASES = [
+    {m:'Anatomía I',            ds:'collection://54fecda1-d27b-826e-a172-076e1c212d80'},
+    {m:'Anatomía II',           ds:'collection://11becda1-d27b-8326-aa5f-8798d4219150'},
+    {m:'Antropología',          ds:'collection://251ecda1-d27b-82ea-92e3-079802a72b29'},
+    {m:'Biología celular',      ds:'collection://320ecda1-d27b-82ad-a7d7-87207a49f394'},
+    {m:'Bioquímica',            ds:'collection://7e3ecda1-d27b-82bf-8370-0740b68f04ae'},
+    {m:'Documentación',         ds:'collection://97cecda1-d27b-82d6-9dfe-873590a4ea32'},
+    {m:'Epidemiología',         ds:'collection://024ecda1-d27b-830e-818b-87005cb8ed7f'},
+    {m:'Idioma moderno',        ds:'collection://63eecda1-d27b-822f-afdd-87b10a135f3d'},
+    {m:'Clínica odontológica',  ds:'collection://383ecda1-d27b-8299-822a-07032a68a51b'},
+    {m:'Microbiología',         ds:'collection://37eecda1-d27b-8245-956b-074681f10f7c'},
+    {m:'Psicología',            ds:'collection://fd6ecda1-d27b-8307-8843-07baf78eb321'}
+  ];
+  var notionCache = load('batcave-notion-cache', {});
+  if(!notionCache || typeof notionCache !== 'object' || Array.isArray(notionCache)) notionCache = {};
+  /* Une ligne est « pas faite » si sa colonne d'état le dit ; sans colonne d'état, si
+     aucune des trois cases (fiché, compris, cartes Anki) n'est cochée. */
+  function coursPasFait(r){
+    if(!r || typeof r !== 'object') return false;
+    var etat = String(r[''] !== undefined ? r[''] : (r['État'] !== undefined ? r['État'] : (r['Etat'] !== undefined ? r['Etat'] : (r['État 1'] || '')))).trim();
+    if(etat) return /PAS\s*FAIT/i.test(etat);
+    return r['Fiché'] !== '__YES__' && r['Compris'] !== '__YES__' && r['Cartes Anki'] !== '__YES__';
+  }
+  function absorberNotion(matiere, payload){
+    var res = (payload && (payload.results || payload.rows)) || [];
+    if(!Array.isArray(res)) return;
+    var pasFait = [];
+    res.forEach(function(r){
+      if(!coursPasFait(r)) return;
+      pasFait.push({titre: String(r['Cours'] || r['Nom'] || r['Name'] || 'sans titre'), url: String(r.url || '')});
+    });
+    notionCache[matiere] = {maj: new Date().toISOString(), total: res.length, pasFait: pasFait.slice(0, 40)};
+    save('batcave-notion-cache', notionCache, true);
+    try{ renderNotionCours(); renderDashboard(); }catch(e){}
+  }
+  function notionRetards(){
+    return Object.keys(notionCache).map(function(m){
+      var c = notionCache[m] || {};
+      return {matiere: m, n: (c.pasFait || []).length, total: Number(c.total) || 0, maj: c.maj, cours: c.pasFait || []};
+    }).filter(function(x){ return x.n > 0; }).sort(function(a, b){ return b.n - a.n; });
+  }
+  function renderNotionCours(){
+    var panel = document.getElementById('notion-panel'), liste = document.getElementById('notion-liste'), maj = document.getElementById('notion-maj');
+    if(!panel || !liste) return;
+    var r = notionRetards();
+    var lu = Object.keys(notionCache).length;
+    panel.hidden = !lu;
+    if(!lu) return;
+    var dates = Object.keys(notionCache).map(function(m){ return notionCache[m].maj; }).filter(Boolean).sort();
+    if(maj) maj.textContent = (dates.length ? 'lu ' + new Date(dates[dates.length - 1]).toLocaleString('fr-FR', {day:'2-digit', month:'2-digit', hour:'2-digit', minute:'2-digit'}) : '') + ' · ' + lu + ' matière' + (lu > 1 ? 's' : '');
+    liste.innerHTML = r.length
+      ? '<ul class="mini-list">' + r.map(function(x){
+          return '<li><span>' + escapeHtml(x.matiere) + ' — <b>' + x.n + '</b> cours pas fait' + (x.n > 1 ? 's' : '') + ' sur ' + x.total + '</span>' +
+            '<span class="sub-note" style="text-align:right; max-width:55%;">' + escapeHtml(x.cours.slice(0, 2).map(function(c){ return c.titre; }).join(' · ')) + (x.cours.length > 2 ? ' …' : '') + '</span></li>';
+        }).join('') + '</ul>'
+      : '<p class="sub-note">Tout est à jour dans Notion — aucun cours en attente. 🦇</p>';
+  }
   function setNotionLink(){
     askText('Lien de la page Notion à ouvrir depuis le tableau de bord :',
             load('batcave-notion-url', DEFAULT_NOTION_URL) || '',
@@ -9609,12 +10349,19 @@
      (configuration : gardee au nouveau depart). */
   var boutiqueShopify = load('batcave-shopify-boutique', null);
   if(!boutiqueShopify || typeof boutiqueShopify !== 'object' || !boutiqueShopify.domain) boutiqueShopify = null;
+  /* L'onglet Business ne s'affiche que lorsqu'une boutique est connue : tant que Shopify
+     n'est pas branché, il n'a rien à montrer. La page reste accessible par son bouton. */
+  function majOngletBusiness(){
+    var b = document.getElementById('nav-business');
+    if(b) b.hidden = !(boutiqueShopify && boutiqueShopify.domain) && !(typeof bizState !== 'undefined' && bizState.length);
+  }
   function retenirBoutique(p){
     if(!p || !p.domain) return;
     var b = {domain: String(p.domain), name: String(p.name || p.domain), currency: String(p.currencyCode || 'EUR')};
     if(boutiqueShopify && boutiqueShopify.domain === b.domain && boutiqueShopify.name === b.name) return;
     boutiqueShopify = b;
     saveInternal('batcave-shopify-boutique', b);
+    majOngletBusiness();
     renderBusiness();
   }
   var MOIS_COURTS = ['janv.','févr.','mars','avr.','mai','juin','juil.','août','sept.','oct.','nov.','déc.'];
@@ -9866,6 +10613,7 @@
   });
 
   /* ================= INIT ================= */
+  consignerAcquises();
   renderHabits();
   renderAddictions();
   renderMeals(); renderMealBar();
@@ -9894,6 +10642,10 @@
   renderTimer();
   majBoutonsEspanol();
   renderJournees();
+  renderVacances();
+  majOngletBusiness();
+  renderNotionCours();
+  renderExercice();
   try{ proposerPomodoroBloc(); }catch(e){}   /* Pomodoro ferme : un bloc de travail vient de commencer ? */
 
   var bilanExportBtn = document.getElementById('bilan-export-btn');
@@ -9946,7 +10698,21 @@
      (sommeil, poids, eau, humeur, note, heure de cloture) et le carnet d'habitudes.
      Proposee a partir de coucher − 90 min, une fois par soir ; « Plus tard » la repousse
      au prochain lancement. Le dimanche, la revue de la semaine s'y glisse. */
-  var clotureProposee = false, clEau = 0, clHumeur = null;
+  var clotureProposee = false, clEau = 0, clHumeur = null, clComplements = [];
+  function renderClComplements(){
+    var el = document.getElementById('cl-complements');
+    if(!el) return;
+    el.innerHTML = COMPLEMENTS.map(function(c){
+      return '<button type="button" class="chip' + (clComplements.indexOf(c) > -1 ? ' active' : '') + '" data-cl-comp="' + escapeHtml(c) + '">' + escapeHtml(c) + '</button>';
+    }).join('');
+    el.querySelectorAll('[data-cl-comp]').forEach(function(b){
+      b.addEventListener('click', function(){
+        var c = b.dataset.clComp, i = clComplements.indexOf(c);
+        if(i > -1) clComplements.splice(i, 1); else clComplements.push(c);
+        renderClComplements();
+      });
+    });
+  }
   function heureDeCloture(){ return timeToMinutes(heureCoucher()) - 90; }
   function fmtLitres(ml){ return ((Number(ml) || 0) / 1000).toFixed(1).replace('.', ',') + ' L'; }
   function majClEau(){
@@ -9970,6 +10736,10 @@
     document.getElementById('cl-poids').value = journalState.poids || '';
     clEau = Number(journalState.water) || 0; majClEau();
     clHumeur = journalState.mood; renderClHumeur();
+    document.getElementById('cl-coran').value = journalState.coran || '';
+    document.getElementById('cl-duaa').value = journalState.duaa || '';
+    clComplements = Array.isArray(journalState.complements) ? journalState.complements.slice() : [];
+    renderClComplements();
     var restantes = habitsDuJour(weekday).filter(function(h){ return !habitDoneToday(h.id); });
     var hab = document.getElementById('cl-habitudes');
     hab.innerHTML = restantes.length
@@ -9977,6 +10747,10 @@
       : '<span class="sub-note">toutes cochées ✅</span>';
     hab.querySelectorAll('[data-cl-hab]').forEach(function(b){ b.addEventListener('click', function(){ b.classList.toggle('active'); }); });
     document.getElementById('cl-note').value = '';
+    var pom = document.getElementById('cl-pomodoro'), bp = blocsSansPomodoroDuJour();
+    if(pom) pom.textContent = !bp.total ? '' : (bp.sans
+      ? '🍅 ' + bp.sans + ' bloc' + (bp.sans > 1 ? 's' : '') + ' sur ' + bp.total + ' sans Pomodoro aujourd\'hui : ' + bp.noms.slice(0, 3).join(', ') + (bp.noms.length > 3 ? '…' : '') + '.'
+      : '🍅 Tous les blocs de la journée (' + bp.total + ') ont eu leur Pomodoro.');
     var rv = document.getElementById('cl-revue'), dimanche = weekday === 0;
     rv.hidden = !dimanche;
     if(dimanche){
@@ -9996,13 +10770,23 @@
     if(poids !== '') journalState.poids = poids;
     journalState.water = clEau;
     journalState.mood = clHumeur;
+    var cor = document.getElementById('cl-coran').value, du = document.getElementById('cl-duaa').value.trim();
+    if(cor !== '') journalState.coran = cor;
+    if(du) journalState.duaa = du;
+    journalState.complements = clComplements.slice();
     var note = document.getElementById('cl-note').value.trim();
     if(note) journalState.notes = (journalState.notes || '').trim() ? journalState.notes.trim() + '\n' + note : note;
     journalState.cloture = new Date().toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'});
+    var bilanPom = blocsSansPomodoroDuJour();
+    journalState.sansPomodoro = bilanPom.sans; journalState.blocsEchus = bilanPom.total;
     delete journalState.clotureRepoussee;
     save(journalKey, journalState);
     var cochees = [].slice.call(document.querySelectorAll('#cl-habitudes [data-cl-hab].active')).map(function(b){ return b.dataset.clHab; });
     cochees.forEach(function(id){ if(!habitDoneToday(id)) toggleHabit(id); });
+    /* Clôturer la journée, C'EST faire la revue de la veille et le plan du lendemain :
+       l'habitude se coche d'elle-même au lieu d'être réclamée une seconde fois. */
+    var revue = habitParId('core-revue');
+    if(revue && habitVautLe(revue, weekday) && !habitDoneToday('core-revue')){ toggleHabit('core-revue'); cochees.push('core-revue'); }
     if(weekday === 0){
       var m = document.getElementById('cl-rv-marche').value.trim(), c = document.getElementById('cl-rv-coince').value.trim(), a = document.getElementById('cl-rv-ajust').value.trim();
       var lire = function(id){ var el = document.getElementById(id); var v = el && el.value !== '' ? Number(String(el.value).replace(',', '.')) : null; return (v === null || isNaN(v)) ? null : v; };

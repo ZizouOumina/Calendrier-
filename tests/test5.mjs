@@ -62,6 +62,7 @@ await ctx2.addInitScript(([ch]) => {
   localStorage.setItem('batcave-budget-limits', JSON.stringify({'Abonnements': 45}));
 }, [SEED.concat([{id:'fc8', label:'iCloud', montant:1, cat:'Abonnements'}])]);
 const p2 = await ctx2.newPage();
+await p2.clock.install({ time: new Date('2026-09-15T09:00:00+02:00') });   /* date injectée : jamais l'horloge de la machine */
 p2.on('pageerror', e => { errs++; console.log('  PAGEERROR: ' + e.message); });
 await p2.goto(URL);
 await p2.frameLocator('#f').locator('#timer-pomodoro').waitFor({ state:'attached', timeout:15000 });
@@ -79,6 +80,7 @@ ok(r3.charges.filter(c=>c.id==='fc8')[0].montant === 5, 'un montant modifié à 
 // installation neuve
 const ctx4 = await browser.newContext({ viewport:{width:1440,height:900}, timezoneId:'Europe/Madrid', locale:'fr-FR' });
 const p4 = await ctx4.newPage();
+await p4.clock.install({ time: new Date('2026-09-15T09:00:00+02:00') });   /* date injectée : jamais l'horloge de la machine */
 p4.on('pageerror', e => { errs++; console.log('  PAGEERROR: ' + e.message); });
 await p4.goto(URL);
 await p4.frameLocator('#f').locator('#timer-pomodoro').waitFor({ state:'attached', timeout:15000 });

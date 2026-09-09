@@ -9,6 +9,7 @@ console.log('\n== H) Fichier .html autonome (double-clic, hors artefact) ==');
   const page = await ctx.newPage();
   const pe = [];
   page.on('pageerror', e => pe.push(e.message));
+  await page.clock.install({ time: new Date('2026-09-15T09:00:00+02:00') });   /* date injectée : jamais l'horloge de la machine */
   await page.goto('file://' + process.cwd() + '/batcave.html');
   await page.locator('#timer-pomodoro').waitFor({ state:'attached', timeout:15000 });
   const rd = page.locator('#ritual-dismiss'); if(await rd.count()) await rd.click();
@@ -27,8 +28,10 @@ console.log('\n== H) Fichier .html autonome (double-clic, hors artefact) ==');
     const found = await page.evaluate(pg => { const n=document.querySelector('.nav-btn[data-page="'+pg+'"]'); if(!n) return false; n.click(); return true; }, p);
     if(!found){ bad.push(p+':nav-absent'); continue; }
     await page.waitForTimeout(70);
-    const st = await page.evaluate(() => { const a=document.querySelectorAll('.page.active'); return {n:a.length, vide:a.length?a[0].innerText.trim().length:0}; });
-    if(st.n !== 1) bad.push(p+':pages-actives='+st.n);
+    const st = await page.evaluate(pg => { const a=document.querySelectorAll('.page.active');
+      const n=document.querySelector('.nav-btn[data-page="'+pg+'"]');
+      return {n:a.length, attendu:(n.dataset.pages || n.dataset.page).split(/\s+/).filter(Boolean).length, vide:a.length?a[0].innerText.trim().length:0}; }, p);
+    if(st.n !== st.attendu) bad.push(p+':pages-actives='+st.n+'/'+st.attendu);
     if(st.vide < 40) bad.push(p+':vide');
   }
   ok(bad.length === 0 && pe.length === 0, pages.length + ' pages navigables en mode fichier : ' + (bad.join(' ') || 'toutes OK'));

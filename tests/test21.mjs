@@ -9,6 +9,7 @@ console.log('\n== 59) Cases à cocher « Courses » agrandies au doigt sur iPad 
   const ctx = await browser.newContext({ viewport:{width:1180,height:820}, hasTouch:true, isMobile:false, timezoneId:'Europe/Madrid', locale:'fr-FR' });
   const page = await ctx.newPage();
   page.on('pageerror', e => { errs++; console.log('  PAGEERROR: ' + e.message); });
+  await page.clock.install({ time: new Date('2026-09-15T09:00:00+02:00') });   /* date injectée : jamais l'horloge de la machine */
   await page.goto(URL);
   await page.frameLocator('#f').locator('#timer-pomodoro').waitFor({ state:'attached', timeout:15000 });
   const fr = page.frames().find(x => x.url().includes('batcave.html'));
@@ -32,6 +33,7 @@ console.log('\n== 59) Cases à cocher « Courses » agrandies au doigt sur iPad 
   const ctx = await browser.newContext({ viewport:{width:1440,height:900}, hasTouch:false, isMobile:false, timezoneId:'Europe/Madrid', locale:'fr-FR' });
   const page = await ctx.newPage();
   page.on('pageerror', e => { errs++; console.log('  PAGEERROR: ' + e.message); });
+  await page.clock.install({ time: new Date('2026-09-15T09:00:00+02:00') });   /* date injectée : jamais l'horloge de la machine */
   await page.goto(URL);
   await page.frameLocator('#f').locator('#timer-pomodoro').waitFor({ state:'attached', timeout:15000 });
   const fr = page.frames().find(x => x.url().includes('batcave.html'));

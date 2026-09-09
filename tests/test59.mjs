@@ -119,7 +119,7 @@ console.log('\n== 195) Séries de sport → Sport, tableau de bord, Objectifs ==
   ok(await fr.evaluate(() => document.querySelector('.sport-card.today li').classList.contains('checked')), 'Sport : Split squat bulgare coché');
   await aller('dashboard');
   await fr.evaluate(() => { const b = document.getElementById('dash-more-toggle'); if(document.getElementById('dash-more').hidden) b.click(); });
-  ok(/Bas complet[\s\S]*?1\/6/.test(await txt('#dash-sport')), 'Tableau de bord : Bas complet 1/6');
+  ok(/Bas complet[\s\S]*?1\/7/.test(await txt('#dash-sport')), 'Tableau de bord : Bas complet 1/7 (la planche latérale s\'ajoute aux abdos du mardi)');
 }
 
 console.log('\n== 196) Tâche, dépense, Coran → tableau de bord et Bilan ==');

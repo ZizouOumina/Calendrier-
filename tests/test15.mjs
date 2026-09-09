@@ -53,13 +53,16 @@ const attendues = [
   'Shopify/list-orders',
   'Shopify/run-analytics-query',
   'Google Calendar/list_events',
-  'Shopify/run-analytics-query'   /* deux fois : ventes 30 j (Business en direct) et ventes mensuelles (12 mois) */
+  'Shopify/run-analytics-query',   /* deux fois : ventes 30 j (Business en direct) et ventes mensuelles (12 mois) */
+  'Notion/notion-query-data-sources'   /* onze fois : une base de cours par matière */
 ];
 const w = await fr.evaluate(() => window.__watches);
 attendues.forEach(function(a){
   ok(w.indexOf(a) > -1, a);
 });
-ok(w.length === attendues.length && w.filter(x => x === 'Shopify/run-analytics-query').length === 2, 'aucune surveillance en trop ni en moins (' + w.length + '/' + attendues.length + ', dont 2 requêtes de ventes Shopify)');
+const notion = w.filter(x => x === 'Notion/notion-query-data-sources').length;
+ok(notion === 11, 'une lecture Notion par matière (' + notion + '/11)');
+ok(w.length === attendues.length + 10 && w.filter(x => x === 'Shopify/run-analytics-query').length === 2, 'aucune surveillance en trop ni en moins (' + w.length + '/' + (attendues.length + 10) + ', dont 2 requêtes de ventes Shopify et 11 bases Notion)');
 
 console.log('\n== 39) La météo s\'affiche dans la ligne de statut ==');
 const m = await fr.evaluate(() => ({

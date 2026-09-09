@@ -79,8 +79,8 @@ console.log('\n== 200) Depuis l\'appli : tout est effacé ici et dans le cloud, 
   /* les objectifs de septembre et du trimestre repartent du 8 : debut deplace, cibles cumulees au prorata (23/30 jours) */
   const objs = c['batcave-objectifs'] && c['batcave-objectifs'].liste || [];
   const revSept = objs.find(o => o.id === 'M2026-09:revision_h'), revT1 = objs.find(o => o.id === 'T1:revision_h'), sommeilSept = objs.find(o => o.id === 'M2026-09:sommeil_moy');
-  ok(!!revSept && revSept.debut === '2026-09-08' && revSept.cible === 88.3, 'Révision de septembre : repart du 8, cible 115,2 h → 88,3 h (' + (revSept && revSept.cible) + ')');
-  ok(!!revT1 && revT1.debut === '2026-09-08' && revT1.cible === 318.1, 'Révision du trimestre : repart du 8, cible 344,6 h → 318,1 h (' + (revT1 && revT1.cible) + ')');
+  ok(!!revSept && revSept.debut === '2026-09-08' && revSept.cible === 88.2, 'Révision de septembre : repart du 8, cible ramenée au prorata des jours restants → 88,2 h (' + (revSept && revSept.cible) + ')');
+  ok(!!revT1 && revT1.debut === '2026-09-08' && revT1.cible === 329.5, 'Révision du trimestre : repart du 8 → 329,5 h (' + (revT1 && revT1.cible) + ')');
   ok(!!sommeilSept && sommeilSept.debut === '2026-09-08' && sommeilSept.cible === 7.75, 'une moyenne (sommeil, 7,75 h) repart du 8 sans changer de cible');
   await page.waitForTimeout(2200);   /* rechargement automatique */
   await page.frameLocator('#f').locator('#dash-plan').waitFor({ state:'attached', timeout:15000 });

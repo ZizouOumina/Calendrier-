@@ -79,6 +79,7 @@ const pages = ['dashboard','etudes','budget','business','habitudes','bilan','ins
 for(const [nom,w,h,touch] of configs){
   const ctx = await browser.newContext({ viewport:{width:w,height:h}, hasTouch:touch, isMobile:false, timezoneId:'Europe/Madrid', locale:'fr-FR' });
   const page = await ctx.newPage();
+  await page.clock.install({ time: new Date('2026-09-15T09:00:00+02:00') });   /* date injectée : jamais l'horloge de la machine */
   let pe = 0; page.on('pageerror', e => { pe++; console.log('  PAGEERROR ['+nom+']: ' + e.message); });
   await page.goto(URL);
   await page.frameLocator('#f').locator('#timer-pomodoro').waitFor({ state:'attached', timeout:15000 });
@@ -90,10 +91,12 @@ for(const [nom,w,h,touch] of configs){
     if(!found){ bad.push(pg+':nav-absent'); continue; }
     await page.waitForTimeout(90);
     const ov = await fr.evaluate(p => { const a = document.querySelectorAll('.page.active');
+      const n = document.querySelector('.nav-btn[data-page="'+p+'"]');
+      const attendu = (n.dataset.pages || n.dataset.page).split(/\s+/).filter(Boolean).length;
       return { sw:document.documentElement.scrollWidth, cw:document.documentElement.clientWidth,
-               actives:a.length, nom: a.length ? a[0].dataset.page : null, vide: a.length ? a[0].innerText.trim().length : 0 }; }, pg);
+               actives:a.length, attendu: attendu, nom: a.length ? a[0].dataset.page : null, vide: a.length ? a[0].innerText.trim().length : 0 }; }, pg);
     if(ov.sw > ov.cw + 1) bad.push(pg+':+'+(ov.sw-ov.cw)+'px');
-    if(ov.actives !== 1) bad.push(pg+':pages-actives='+ov.actives);
+    if(ov.actives !== ov.attendu) bad.push(pg+':pages-actives='+ov.actives+'/'+ov.attendu);
     if(ov.nom !== pg) bad.push(pg+':affiche='+ov.nom);
     if(ov.vide < 40) bad.push(pg+':page-vide('+ov.vide+')');
   }

@@ -106,7 +106,8 @@ try{
     const ins = window.__bcInsights().map(i => ({ icon: i.icon, title: i.title, text: i.text, action: i.action || '', score: i.score, n: i.n || 0, page: i.page || '', tendance: i.tendance ? { txt: i.tendance.txt, sens: i.tendance.sens, bon: i.tendance.bon } : null, serie: i.serie && i.serie.v ? { v: i.serie.v, label: i.serie.label || '', unite: i.serie.unite || '', cible: i.serie.cible == null ? null : i.serie.cible } : null }));
     const vu = window.__bcInsightsVu ? window.__bcInsightsVu() : {};
     const prio = ins.filter(i => i.action && i.score >= 20 && !vu[i.title]).slice(0, 3);
-    return { insights: ins, priorites: prio, semaine: window.__bcSemaine(-1), avant: window.__bcSemaine(-2) };
+    const extra = window.__bcRapport ? window.__bcRapport() : null;
+    return { insights: ins, priorites: prio, semaine: window.__bcSemaine(-1), avant: window.__bcSemaine(-2), extra: extra };
   });
   await ctx.close();
 } finally {
@@ -145,6 +146,19 @@ const totalPrevu = data.semaine.parJour.reduce((s, j) => s + j.prevu, 0), totalF
 const joursSuivis = data.semaine.parJour.filter(j => j.rev + j.proj > 0).length;
 const rien = joursSuivis === 0 && !lignesBilan.some(l => /[1-9]/.test(l.valeur));
 
+/* --- lot 20 : phase, objectifs du mois, Pomodoro, acquises, Notion, saison --- */
+const X = data.extra || {};
+const parJour = data.semaine.parJour;
+const blocsSemaine = parJour.reduce((s, j) => s + (j.blocs || 0), 0);
+const sansPomodoro = parJour.reduce((s, j) => s + (j.sansPomodoro || 0), 0);
+const joursExclus = parJour.filter(j => j.exclu).length;
+const joursVacances = parJour.filter(j => j.vacances).length;
+const STATUT = { atteint:'atteint', avance:'en avance', ok:'dans les clous', retard:'en retard', vide:'pas de données' };
+const objRetard = (X.objectifs || []).filter(o => o.statut === 'retard');
+const objBons = (X.objectifs || []).filter(o => o.statut === 'atteint' || o.statut === 'avance' || o.statut === 'ok').length;
+const nb = (v, d) => v === null || v === undefined || Number.isNaN(v) ? '—' : virg(v, d || 0);
+const retoursDe = t => (X.retours && X.retours[t]) || 0;
+const prefixePrio = t => { const n = retoursDe(t); return n >= 3 ? `${n}ᵉ semaine — ` : (n === 2 ? '2ᵉ semaine — ' : ''); };
 const C = { fond:'#f5f7f9', carte:'#ffffff', ink:'#141c24', dim:'#5b6b78', bord:'#dfe5ea', accent:'#0e7c8c', bon:'#2e8b57', warn:'#b8651b', faint:'#8a98a3' };
 const fleche = t => !t ? '' : (t.sens === 'up' ? '↗' : t.sens === 'down' ? '↘' : '→') + ' ' + t.txt;
 const couleurT = t => !t || t.bon === null ? C.faint : (t.bon ? C.bon : C.warn);
@@ -174,10 +188,11 @@ const html = `<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta n
 <div style="max-width:640px; margin:0 auto; padding:24px 16px 40px;">
   <div style="font:11px monospace; letter-spacing:.16em; color:${C.accent}; text-transform:uppercase;">🦇 La Batcave · bilan du dimanche</div>
   <h1 style="margin:6px 0 4px; font-size:26px; line-height:1.15;">${esc(titreSemaine)}</h1>
-  <div style="font-size:13px; color:${C.dim}; margin-bottom:18px;">${joursSuivis} jour${joursSuivis > 1 ? 's' : ''} avec du travail enregistré · ${hmin(totalFait)} faites sur ${hmin(totalPrevu)} prévues${rien ? ' · aucune donnée cette semaine : la Batcave n\'a rien reçu (clôture du soir, Pomodoro, calendrier coché)' : ''}</div>
+  <div style="font-size:13px; color:${C.dim}; margin-bottom:18px;">${X.phase ? esc(X.phase) + ' · ' : ''}${joursSuivis} jour${joursSuivis > 1 ? 's' : ''} avec du travail enregistré · ${hmin(totalFait)} faites sur ${hmin(totalPrevu)} prévues${joursVacances ? ' · ' + joursVacances + ' jour' + (joursVacances > 1 ? 's' : '') + ' de vacances' : ''}${joursExclus ? ' · ' + joursExclus + ' jour' + (joursExclus > 1 ? 's' : '') + ' qui ne compte' + (joursExclus > 1 ? 'nt' : '') + ' pas' : ''}${rien ? ' · aucune donnée cette semaine : la Batcave n\'a rien reçu (clôture du soir, Pomodoro, calendrier coché)' : ''}</div>
   ${data.priorites.length ? `<div style="background:${C.carte}; border:1px solid ${C.bord}; border-left:4px solid ${C.accent}; border-radius:10px; padding:14px 18px; margin-bottom:18px;">
     <div style="font-size:15px; font-weight:600; margin-bottom:6px;">🔎 Priorités de la semaine</div>
-    <ol style="margin:0; padding-left:20px; font-size:14px; line-height:1.5; color:${C.ink};">${data.priorites.map(p => `<li style="margin:4px 0;"><b>${esc(p.title)}</b> — ${esc(p.action)}</li>`).join('')}</ol>
+    <ol style="margin:0; padding-left:20px; font-size:14px; line-height:1.5; color:${C.ink};">${data.priorites.map(p => `<li style="margin:4px 0;">${prefixePrio(p.title) ? `<b style="color:${retoursDe(p.title) >= 3 ? C.warn : C.dim};">${esc(prefixePrio(p.title))}</b>` : ''}<b>${esc(p.title)}</b> — ${esc(p.action)}</li>`).join('')}</ol>
+    ${(X.closes && X.closes.length) ? `<div style="margin-top:8px; font-size:12.5px; color:${C.faint};">✔️ Closes : ${X.closes.slice(0, 3).map(c => esc(c.titre) + ' (' + c.semaines + ' semaines)').join(' · ')}</div>` : ''}
   </div>` : `<div style="font-size:13px; color:${C.dim}; margin-bottom:18px;">Aucune priorité à remonter cette semaine.</div>`}
   <h2 style="font-size:17px; margin:18px 0 8px;">Bilan de la semaine</h2>
   <table style="width:100%; border-collapse:collapse; background:${C.carte}; border:1px solid ${C.bord}; border-radius:10px; font-size:13.5px;">
@@ -189,16 +204,34 @@ const html = `<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta n
     <tr>${data.semaine.parJour.map(j => `<td style="text-align:center; padding:2px 0; color:${j.rev + j.proj >= j.prevu * 0.7 ? C.bon : (j.rev + j.proj > 0 ? C.warn : C.faint)}; font-weight:600;">${virg((j.rev + j.proj) / 60)}</td>`).join('')}</tr>
     <tr>${data.semaine.parJour.map(j => `<td style="text-align:center; padding:2px 0; color:${C.faint};">/ ${virg(j.prevu / 60)} h</td>`).join('')}</tr>
   </table>
+  ${blocsSemaine ? `<div style="background:${C.carte}; border:1px solid ${C.bord}; border-radius:10px; padding:14px 18px; margin-top:14px;">
+    <div style="font-size:15px; font-weight:600; margin-bottom:6px;">🍅 Pomodoro sur les blocs</div>
+    <div style="font-size:14px; color:${C.dim}; line-height:1.5;"><b style="color:${sansPomodoro > blocsSemaine * 0.25 ? C.warn : C.bon};">${blocsSemaine - sansPomodoro} bloc${blocsSemaine - sansPomodoro > 1 ? 's' : ''} sur ${blocsSemaine}</b> ont eu leur minuteur cette semaine.${sansPomodoro ? ` ${sansPomodoro} sans Pomodoro : ce temps n'existe nulle part, ni dans les objectifs ni dans la fidélité au plan.` : ' Aucun bloc n\'est passé à la trappe.'}</div>
+  </div>` : ''}
+  ${(X.objectifs && X.objectifs.length) ? `<div style="background:${C.carte}; border:1px solid ${C.bord}; border-radius:10px; padding:14px 18px; margin-top:12px;">
+    <div style="font-size:15px; font-weight:600; margin-bottom:8px;">📊 Objectifs${X.mois ? ' · ' + esc(X.mois) : ''}</div>
+    <div style="font-size:13px; color:${C.dim}; margin-bottom:8px;">${objBons}/${X.objectifs.length} dans les clous ou mieux. Les cibles marquées « auto » sont calculées depuis la grille de la période : un TP, un partiel ou des vacances les font baisser d'eux-mêmes.</div>
+    <table style="width:100%; border-collapse:collapse; font-size:13.5px;">
+      ${X.objectifs.map(o => `<tr style="border-top:1px solid ${C.bord};"><td style="padding:6px 10px 6px 0;">${esc(o.titre)}${o.auto ? ' <span style="font:10px monospace; color:' + C.faint + ';">auto</span>' : ''}</td><td style="padding:6px 10px; text-align:right; font-weight:600;">${nb(o.reel, o.dec)} ${esc(o.unite || '')}</td><td style="padding:6px 10px; text-align:right; color:${C.faint};">attendu ${nb(o.attendu, o.dec)}</td><td style="padding:6px 0 6px 10px; text-align:right; color:${o.statut === 'retard' ? C.warn : (o.statut === 'vide' ? C.faint : C.bon)};">${STATUT[o.statut] || o.statut}</td></tr>`).join('')}
+    </table>
+  </div>` : ''}
+  ${((X.notion && X.notion.length) || (X.acquises && X.acquises.length) || (X.exercice && X.exercice.du) || (X.saison && X.saison.closable)) ? `<div style="background:${C.carte}; border:1px solid ${C.bord}; border-radius:10px; padding:14px 18px; margin-top:12px; font-size:13.5px; color:${C.dim}; line-height:1.6;">
+    ${(X.notion && X.notion.length) ? `<div>📓 <b style="color:${C.ink};">Notion</b> — ${X.notion.slice(0, 3).map(x => esc(x.matiere) + ' : ' + x.n + ' cours pas faits sur ' + x.total).join(' · ')}</div>` : ''}
+    ${(X.acquises && X.acquises.length) ? `<div>🏅 <b style="color:${C.ink};">Habitudes acquises</b> — ${X.acquises.map(a => esc(a.label)).join(' · ')} : comptées, plus affichées.</div>` : ''}
+    ${(X.exercice && X.exercice.du) ? `<div>🧪 <b style="color:${C.ink};">Exercice de restauration</b> — ${X.exercice.dernier ? 'dernier le ' + esc(X.exercice.dernier) : 'jamais fait'} : ouvre une sauvegarde et vérifie qu'elle se relit.</div>` : ''}
+    ${(X.saison && X.saison.closable) ? `<div>🏁 <b style="color:${C.ink};">Fin de saison</b> — ${X.saison.jours <= 0 ? 'aujourd\'hui' : 'dans ' + X.saison.jours + ' jours'} : clôture la saison dans Objectifs, tout est archivé et resemé.</div>` : ''}
+  </div>` : ''}
   <h2 style="font-size:17px; margin:22px 0 10px;">Les neuf cartes</h2>
   ${data.insights.map(carteHtml).join('')}
   <div style="margin-top:22px; font:11px monospace; color:${C.faint}; line-height:1.6;">Généré par la Batcave depuis ton cloud, sans intervention. Les actions sont des propositions : c'est toi qui décides. Pour mettre une priorité en pause sept jours, ouvre l'onglet Insights et appuie sur « Vu ».</div>
 </div></body></html>`;
 
 const md = [
-  `**${titreSemaine}** · ${joursSuivis} jour${joursSuivis > 1 ? 's' : ''} avec du travail enregistré · ${hmin(totalFait)} faites sur ${hmin(totalPrevu)} prévues`,
+  `**${titreSemaine}**${X.phase ? ' · ' + X.phase : ''} · ${joursSuivis} jour${joursSuivis > 1 ? 's' : ''} avec du travail enregistré · ${hmin(totalFait)} faites sur ${hmin(totalPrevu)} prévues${joursVacances ? ' · ' + joursVacances + ' jour(s) de vacances' : ''}${joursExclus ? ' · ' + joursExclus + ' jour(s) qui ne comptent pas' : ''}`,
   '',
   '## 🔎 Priorités de la semaine',
-  data.priorites.length ? data.priorites.map((p, i) => `${i + 1}. **${p.title}** — ${p.action}`).join('\n') : 'Aucune priorité à remonter cette semaine.',
+  data.priorites.length ? data.priorites.map((p, i) => `${i + 1}. ${prefixePrio(p.title)}**${p.title}** — ${p.action}`).join('\n') : 'Aucune priorité à remonter cette semaine.',
+  (X.closes && X.closes.length) ? 'Priorités closes : ' + X.closes.slice(0, 3).map(c => `${c.titre} (${c.semaines} semaines)`).join(' · ') : '',
   '',
   '## Bilan de la semaine',
   '| Mesure | Cette semaine | Semaine d\'avant | Écart |', '|---|---|---|---|',
@@ -208,6 +241,12 @@ const md = [
   '|' + data.semaine.parJour.map(() => '---').join('|') + '|',
   '| ' + data.semaine.parJour.map(j => `${virg((j.rev + j.proj) / 60)} / ${virg(j.prevu / 60)} h`).join(' | ') + ' |',
   '',
+  blocsSemaine ? `## 🍅 Pomodoro sur les blocs\n${blocsSemaine - sansPomodoro} bloc(s) sur ${blocsSemaine} ont eu leur minuteur.${sansPomodoro ? ' ' + sansPomodoro + ' sans Pomodoro : ce temps n\'existe nulle part.' : ''}\n` : '',
+  (X.objectifs && X.objectifs.length) ? `## 📊 Objectifs${X.mois ? ' · ' + X.mois : ''}\n${objBons}/${X.objectifs.length} dans les clous ou mieux.\n` + X.objectifs.map(o => `- ${o.titre}${o.auto ? ' (auto)' : ''} : ${nb(o.reel, o.dec)} ${o.unite || ''} · attendu ${nb(o.attendu, o.dec)} · ${STATUT[o.statut] || o.statut}`).join('\n') + '\n' : '',
+  (X.notion && X.notion.length) ? '## 📓 Notion\n' + X.notion.slice(0, 5).map(x => `- ${x.matiere} : ${x.n} cours pas faits sur ${x.total}`).join('\n') + '\n' : '',
+  (X.acquises && X.acquises.length) ? '## 🏅 Habitudes acquises\n' + X.acquises.map(a => `- ${a.label} (${a.taux} % sur 30 jours) — comptée, plus affichée`).join('\n') + '\n' : '',
+  (X.exercice && X.exercice.du) ? `## 🧪 Exercice de restauration\nDû : ${X.exercice.dernier ? 'dernier le ' + X.exercice.dernier : 'jamais fait'}.\n` : '',
+  (X.saison && X.saison.closable) ? `## 🏁 Fin de saison\n${X.saison.jours <= 0 ? 'Aujourd\'hui' : 'Dans ' + X.saison.jours + ' jours'} : clôture la saison dans Objectifs.\n` : '',
   '## Les neuf cartes',
   ...data.insights.map(it => [`### ${it.icon} ${it.title}${it.tendance ? ' · ' + fleche(it.tendance) : ''}`, it.text, it.action ? `> **Action** — ${it.action}` : '', `_${it.n ? it.n + ' points de données' : 'pas encore de données'}_`, ''].join('\n')),
   '_Généré par la Batcave depuis ton cloud. Les actions sont des propositions._'
@@ -215,6 +254,6 @@ const md = [
 
 fs.writeFileSync(path.join(OUT, 'rapport.html'), html);
 fs.writeFileSync(path.join(OUT, 'rapport.md'), md);
-fs.writeFileSync(path.join(OUT, 'rapport.json'), JSON.stringify({ asof: ASOF, titre: titreSemaine, sujet: `🦇 Batcave · ${titreSemaine}`, priorites: data.priorites, bilan: lignesBilan, parJour: data.semaine.parJour, insights: data.insights }, null, 2));
+fs.writeFileSync(path.join(OUT, 'rapport.json'), JSON.stringify({ asof: ASOF, titre: titreSemaine, sujet: `🦇 Batcave · ${titreSemaine}`, priorites: data.priorites, bilan: lignesBilan, parJour: data.semaine.parJour, insights: data.insights, contexte: X, pomodoro: { blocs: blocsSemaine, sans: sansPomodoro } }, null, 2));
 fs.writeFileSync(path.join(OUT, 'sujet.txt'), `🦇 Batcave · ${titreSemaine}`);
-console.log('rapport écrit dans', OUT, '·', data.priorites.length, 'priorités ·', data.insights.length, 'cartes ·', lignesBilan.length, 'lignes de bilan');
+console.log('rapport écrit dans', OUT, '·', data.priorites.length, 'priorités ·', data.insights.length, 'cartes ·', lignesBilan.length, 'lignes de bilan ·', (X.objectifs || []).length, 'objectifs ·', sansPomodoro + '/' + blocsSemaine, 'blocs sans Pomodoro');

@@ -187,6 +187,7 @@ console.log('\n== 75 bis) Un fichier invalide ne casse rien et le dit ==');
   const ctx = await browser.newContext({ viewport:{width:1440,height:900}, timezoneId:'Europe/Madrid', locale:'fr-FR' });
   await ctx.addInitScript(() => { window.claude = undefined; });
   const page = await ctx.newPage();
+  await page.clock.install({ time: new Date('2026-09-15T09:00:00+02:00') });   /* date injectée : jamais l'horloge de la machine */
   page.on('pageerror', e => { errs++; console.log('  PAGEERROR: ' + e.message); });
   await page.goto(URL);
   await page.frameLocator('#f').locator('#backup-import').waitFor({ state:'attached', timeout:15000 });
