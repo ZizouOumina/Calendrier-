@@ -6,7 +6,8 @@ Copie de référence du programme appliqué dans la Batcave (onglet Sport), comm
 - Quatre séances de 40 minutes au parc, à 05:30 : lundi haut lourd, mardi bas complet, jeudi haut volume, samedi bras, épaules et mollets. Mercredi, vendredi et dimanche off.
 - Paires antagonistes en supersets : exercice A puis exercice B, repos court entre A et B, repos plus long avant la paire suivante.
 - Chaque exercice se lit « tours × fourchette » : 4×6-12 = quatre séries, de six à douze répétitions.
-- Podcast en espagnol sur le trajet et pendant l'échauffement.
+- Le parc est à 1 km : l'aller se fait en courant, allure conversation (5 à 6 min), c'est l'échauffement général ; l'échauffement haut se réduit alors à la mobilité des épaules et aux séries légères, l'échauffement bas garde ses mouvements. Retour en marchant les jours haut du corps (lundi, jeudi, samedi), en trottinant le mardi. Jamais plus vite qu'une allure où l'on peut parler : les tractions du lundi ne doivent rien perdre.
+- Podcast en espagnol sur le kilomètre de course et pendant l'échauffement.
 
 ## Les quatre séances
 

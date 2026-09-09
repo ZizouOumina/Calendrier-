@@ -1297,6 +1297,25 @@
         <ul class="timeline" id="cal-timeline"></ul>
       </div>
 
+      <!-- Journees exceptionnelles : un TP, un examen, un rendez-vous a heure fixe. La veille,
+           le dernier bloc de travail devient « Preparer » ; le jour meme, la grille est
+           reconstruite autour de l'evenement (preparation, trajet, evenement, retour), et les
+           blocs perdus sont dits. Les examens dates dans Etudes en creent une d'eux-memes. -->
+      <div class="panel sub-panel" id="journees-panel">
+        <div class="sub-head"><h3>📌 Journées exceptionnelles</h3><span class="sub-note" id="journees-note">—</span></div>
+        <p class="sub-note" style="margin-bottom:12px; line-height:1.6;">Un TP, un examen, un rendez-vous : donne la date et l'horaire. La veille, le bloc « Comprendre le cours du jour » devient « Préparer » ; le jour même, la journée est reconstruite autour de l'événement (une heure de préparation, le trajet, l'événement, le retour) et les blocs sacrifiés sont listés. Les examens datés dans Études créent leur journée tout seuls, et déclenchent le mode partiels de J-7 au dernier examen.</p>
+        <div class="add-form">
+          <div class="f"><label>Date</label><input type="date" id="jx-date"></div>
+          <div class="f"><label>Début</label><input type="time" id="jx-debut" value="11:00"></div>
+          <div class="f"><label>Fin</label><input type="time" id="jx-fin" value="13:00"></div>
+          <div class="f"><label>Type</label><select id="jx-type"><option value="tp">TP</option><option value="examen">Examen</option><option value="autre">Autre</option></select></div>
+          <div class="f" style="flex:1; min-width:160px;"><label>Libellé</label><input type="text" id="jx-label" placeholder="ex : Anatomía I" style="width:100%;"></div>
+          <div class="f"><label>Trajet</label><select id="jx-trajet"><option value="0">aucun</option><option value="15">15 min</option><option value="30" selected>30 min</option><option value="45">45 min</option></select></div>
+          <button class="btn btn-primary" id="jx-add" type="button">Ajouter</button>
+        </div>
+        <ul class="entry-list" id="journees-liste"></ul>
+      </div>
+
       <div class="panel sub-panel">
         <div class="sub-head"><h3>Vue de la semaine</h3><span class="sub-note" id="week-cal-source">planning type</span></div>
         <div class="week-cal-wrap">
@@ -1317,7 +1336,7 @@
            Google Calendar, si. Visible seulement quand le connecteur est la (version publiee). -->
       <div class="panel sub-panel" id="gcal-panel" hidden style="margin-bottom:16px;">
         <div class="sub-head"><h3>📲 Rappels sur téléphone</h3><span class="sub-note" id="gcal-statut">désactivé</span></div>
-        <p class="sub-note" style="line-height:1.65; margin-bottom:10px;">Ce n'est pas un réglage de notifications : c'est la Batcave qui écrit ton planning dans Google Calendar pour que ton téléphone sonne. Quand c'est activé, tous les blocs d'<b style="color:var(--ink-dim);">aujourd'hui et de demain</b> sont dans ton agenda avec un rappel <b style="color:var(--ink-dim);">5 min avant</b> — <b style="color:var(--ink-dim);">30 min avant le coucher</b>. Un événement par bloc et par jour, jamais de doublon : un bloc déjà présent dans ton agenda (tes événements récurrents « 🦇 ») est reconnu et gardé, son heure et son rappel sont alignés sur le planning, un bloc manquant est créé, un bloc retiré du planning est retiré seulement s'il venait de la Batcave. Désactiver ne supprime que ce que la Batcave a créé. Les blocs déjà commencés ne sont pas envoyés.</p>
+        <p class="sub-note" style="line-height:1.65; margin-bottom:10px;">Ce n'est pas un réglage de notifications : c'est la Batcave qui écrit ton planning dans Google Calendar pour que ton téléphone sonne. Quand c'est activé, tous les blocs d'<b style="color:var(--ink-dim);">aujourd'hui et de demain</b> sont dans ton agenda avec un rappel <b style="color:var(--ink-dim);">5 min avant</b> — <b style="color:var(--ink-dim);">30 min avant le coucher</b>. Un événement par bloc et par jour, jamais de doublon : un bloc déjà présent dans ton agenda (tes événements récurrents « 🦇 ») est reconnu et gardé, son heure et son rappel sont alignés sur le planning, un bloc manquant est créé, un bloc retiré du planning est retiré seulement s'il venait de la Batcave. L'agenda suit la grille du jour : pendant une phase Español, les partiels ou une journée exceptionnelle, l'instance du jour prend le nom du bloc réel (« 🦇 Español · gramática » à la place de « 🦇 Projets perso 1 »), la série reste intacte. Désactiver ne supprime que ce que la Batcave a créé. Les blocs déjà commencés ne sont pas envoyés.</p>
         <div class="card-actions" style="flex-wrap:wrap;">
           <button class="btn btn-primary" id="gcal-toggle" type="button">Activer les rappels</button>
           <button class="btn" id="gcal-pousser" type="button" hidden>Pousser maintenant</button>
@@ -1540,6 +1559,7 @@
         <div id="programme-details" hidden style="margin-top:10px; font-size:12.5px; color:var(--ink-dim); line-height:1.7; display:flex; flex-direction:column; gap:8px;">
           <p><b style="color:var(--ink);">Échauffement haut (5 min)</b> — suspension 20 s + 10 tirages d'omoplates · 15 rotations d'épaules bras tendus · 15 face pulls élastique · 10 pompes lentes · 2 séries légères du premier exercice, un cran en dessous (moitié du lest quand tu lestes).</p>
           <p><b style="color:var(--ink);">Échauffement bas (5 min)</b> — 20 mollets debout · 10 fentes marchées · 10 charnières de hanche · 5 squats sautés · 8 split squats à vide par jambe.</p>
+          <p><b style="color:var(--ink);">Trajet en courant</b> — le parc est à 1 km : l'aller se fait en courant, allure conversation (5 à 6 min), c'est l'échauffement général ; l'échauffement haut se réduit alors à la mobilité des épaules et aux séries légères, l'échauffement bas garde ses mouvements. Retour en marchant les jours haut du corps (lundi, jeudi, samedi), en trottinant le mardi. Jamais plus vite qu'une allure où tu peux parler : les tractions du lundi ne doivent rien perdre.</p>
           <p><b style="color:var(--ink);">Calibration (une fois, 20 min)</b> — après échauffement : tractions max, dips max (ou maintien bras tendus, en secondes), pompes max, split squats max par jambe. Saisis-les comme séries de la première séance : les cibles en découlent.</p>
           <p><b style="color:var(--ink);">Progression</b> — quand toutes les séries touchent le haut de la fourchette, un cran de plus, jamais deux ; tu retombes dans le bas, c'est voulu. Poussée horizontale : pompes inclinées barre haute → barre basse → au sol → déclinées → diamant → archer. Poussée verticale : pike pieds au sol → sur barre basse → sur banc → contre un poteau. Jambes : poids du corps → pied arrière surélevé → + sac → + pied avant surélevé 10 cm → tempo 3 s → pause 2 s en bas → shrimp squat → pistol.</p>
           <p><b style="color:var(--ink);">Lest</b> — tractions à 12 reps propres sur toutes les séries, dips à 15, jambes dès que tu dépasses proprement le haut de la fourchette : +2,5 kg, une seule fois ; tu retombes à 5-8 reps, tu remontes vers 12, tu rajoutes 2,5 kg. Samedi : jamais lesté sur le haut.</p>
@@ -1764,12 +1784,14 @@
       </div>
 
       <!-- Une date par matiere, saisie ici. La plus proche remonte sur le Plan du jour
-           a partir de 30 jours, et devient prioritaire a 14. -->
+           a partir de 30 jours, et devient prioritaire a 14. L'heure (facultative, 09:00 → 11:00
+           sinon) construit la journee de l'examen ; les dates declenchent le mode partiels. -->
       <div class="panel sub-panel" id="examens-panel">
         <div class="sub-head">
           <h3>📅 Échéances d'examens</h3>
           <span class="sub-note" id="examens-note">—</span>
         </div>
+        <p class="sub-note" style="margin-bottom:10px; line-height:1.6;">Une date par matière, et l'horaire si tu le connais (sinon 09:00 → 11:00). De J-7 au dernier examen, la Batcave passe en <b style="color:var(--ink-dim);">mode partiels</b> : Anki intact, Cartes → Annales ciblées, Projets perso → Révision ciblée sur la matière la plus proche, Comprendre → Fiches de synthèse, un seul bloc Español par jour. Le jour de l'examen est une journée exceptionnelle (préparation, trajet, examen, retour).</p>
         <ul class="entry-list" id="examens-liste"></ul>
       </div>
 
@@ -2365,7 +2387,7 @@
      vestige : une fonctionnalite retiree (batcave-matieres) ou un essai. Elle prend de la
      place dans le quota de 5000 documents et embrouille les sauvegardes, sans que rien ne
      la lise jamais. On la signale ; la suppression reste ton geste. */
-  var CLES_CONNUES = ['addictions','budget-limits','business','coran','courses','dash-more','duaas','duree-bloc','sport-log','objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','kcal-ajustement','gcal-ecriture','reinit','fc-migration-v1','charge','shopify-boutique',
+  var CLES_CONNUES = ['addictions','budget-limits','business','coran','courses','dash-more','duaas','duree-bloc','sport-log','objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','kcal-ajustement','gcal-ecriture','reinit','fc-migration-v1','charge','shopify-boutique','journees','examens-heures',
     'espagnol','examens','fc-prix-icloud-3','fixed-charges','goals','habitlog','habits','habits-seed-v2','habits-seed-v3','habits-seed-v4','objectifs-v5-espanol',
     'horizon','last-auto-backup','last-manual-backup','last-bilan-prompt','last-compaction','last-open','last-rotation','notion-url',
     'pomodial-purge','projets','report','revision','revision-fusionnee','revue','sante','sauvegarde','sessions',
@@ -3190,7 +3212,7 @@
      ni synchronisee ni rattrapee) et efface ses copies locales AVANT le rattrapage, sinon
      elles repartiraient vers le cloud. La meme remise a zero peut donc etre decidee depuis
      l'appli ou directement dans le cloud. */
-  var REINIT_GARDER = ['habits','habits-seed-v2','habits-seed-v3','habits-seed-v4','objectifs-v5-espanol','fixed-charges','fc-prix-icloud-3','budget-limits','examens','notion-url','shopify-boutique',
+  var REINIT_GARDER = ['habits','habits-seed-v2','habits-seed-v3','habits-seed-v4','objectifs-v5-espanol','fixed-charges','fc-prix-icloud-3','budget-limits','examens','examens-heures','journees','notion-url','shopify-boutique',
                        'objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','horizon','gcal-ecriture','duree-bloc','dash-more','revision-fusionnee','reinit'];
   var REINIT_PREFIXES_GARDER = ['pomodial-', 'coherence-ignore-'];
   function reinitGarder(cle){
@@ -3528,6 +3550,7 @@
                   dureeTravail: Number(opts.dureeTravail) || dureeBlocPref()};
     saveInternal('batcave-timer', timerState);
     renderTimer();
+    try{ renderProchainBloc(); }catch(e){}   /* le rappel « aucun Pomodoro » du bloc en cours s'efface */
   }
   /* Enchaînement Pomodoro : à la fin d'un bloc de travail terminé page ouverte, le temps est
      reporté tout seul et la pause démarre — c'est tout l'intérêt, ne rien saisir à la main.
@@ -3626,8 +3649,9 @@
     var dashT = document.getElementById('dash-timer');
     if(!timerState){
       idle.hidden = false; run.hidden = true; done.hidden = true;
-      if(dashT) dashT.hidden = true;
+      if(dashT){ dashT.hidden = true; dashT.style.color = ''; }
       if(focusActif) quitterFocus();   /* plus de session : on ne reste pas bloqué en plein écran */
+      try{ renderProchainBloc(); }catch(e){}   /* le rappel « aucun Pomodoro » du bloc en cours se recalcule */
       return;
     }
     if(timerState.finished || timerRemainingMs() <= 0){
@@ -3643,6 +3667,7 @@
       return;
     }
     idle.hidden = true; run.hidden = false; done.hidden = true;
+    if(dashT) dashT.style.color = '';
     var ms = timerRemainingMs();
     var mm = Math.floor(ms/60000), ss = Math.floor((ms%60000)/1000);
     var horloge = (mm<10?'0':'')+mm + ':' + (ss<10?'0':'')+ss;
@@ -3793,11 +3818,13 @@
      preciser » ; sur Cartes, Annales, Correction, on nomme LA matiere travaillee. Sinon la
      repartition par matiere de l'onglet Etudes ment. Le bloc en cours fixe donc le choix
      propose et le message ; le choix reste libre. */
-  var BLOC_ANKI = /^Anki/, BLOC_MATIERE = /^(Cartes|Annales?\b|Annale complète|Correction)/;
+  var BLOC_ANKI = /^Anki/, BLOC_MATIERE = /^(Cartes|Annales?\b|Annale complète|Correction|Révision ciblée|Fiches de synthèse|Préparer · )/;
   function lancerPomodoroCours(apres){
     var bloc = blocPlanCourant(), libelle = bloc ? bloc[1] : '';
     var surAnki = BLOC_ANKI.test(libelle), surMatiere = BLOC_MATIERE.test(libelle);
-    var defaut = surAnki ? MATIERE_SANS : (derniereMatiere() || MATIERES_SEED[0].court);
+    var suivante = (surMatiere && typeof matiereExamenSuivante === 'function') ? matiereExamenSuivante(todayISO) : null;
+    var pPartiels = surMatiere && periodeGrille(todayISO) && periodeGrille(todayISO).partiels;
+    var defaut = surAnki ? MATIERE_SANS : ((pPartiels && suivante) ? suivante.m : (derniereMatiere() || MATIERES_SEED[0].court));
     var message = surAnki ? 'Bloc ' + libelle + ' : « Sans préciser », toutes les matières passent dans le paquet Dentaire. La matière ne se choisit que sur Cartes et Annales.'
                 : surMatiere ? 'Bloc ' + libelle + ' : choisis LA matière travaillée, c\'est elle qui fait la répartition par matière de l\'onglet Études.'
                 : 'Matière révisée pendant ce bloc :';
@@ -4791,6 +4818,9 @@
       if(deb <= nowMin && nowMin < fin && !courant) courant = {label: blocs[i][1], deb: deb, fin: fin};
       if(deb > nowMin && !suivant) suivant = {label: blocs[i][1], deb: deb, fin: fin};
     }
+    /* rappel du Pomodoro ferme : un bloc de travail en cours sans minuteur se lit ici, en
+       orange, a la place de « puis … » -- la barre du haut reste sur une ligne */
+    var sans = null; try{ sans = blocSansPomodoro(); }catch(e){}
     if(!courant && !suivant){ box.hidden = true; return; }
     box.hidden = false;
     var hm = function(m){ return String(Math.floor(m/60)).padStart(2,'0') + ':' + String(m%60).padStart(2,'0'); };
@@ -4804,7 +4834,8 @@
       quoi.textContent = courant.label;
       quand.textContent = hm(courant.deb) + ' → ' + hm(courant.fin);
       barre.style.width = Math.round(100 * (nowMin - courant.deb) / Math.max(1, courant.fin - courant.deb)) + '%';
-      dans.textContent = suivant ? 'puis ' + suivant.label + ' à ' + hm(suivant.deb) + ' · dans ' + (suivant.deb - nowMin) + ' min' : 'dernier bloc de la journée';
+      dans.textContent = (sans ? '⚠️ aucun Pomodoro depuis ' + sans.depuis + ' min · ' : '') + (suivant ? 'puis ' + suivant.label + ' à ' + hm(suivant.deb) + ' · dans ' + (suivant.deb - nowMin) + ' min' : 'dernier bloc de la journée');
+      dans.title = sans ? sans.label + ' a commencé à ' + hm(sans.debut) + ' et rien ne tourne au minuteur : lance le Pomodoro (bouton ci-dessous, ou Études).' : '';
     } else {
       titre.textContent = 'Prochain bloc';
       quoi.textContent = suivant.label;
@@ -4814,6 +4845,40 @@
     }
   }
   setInterval(function(){ try{ renderProchainBloc(); }catch(e){} }, 30000);
+  /* ===== Pomodoro ferme =====
+     Chaque bloc de travail doit tourner au minuteur. Dans les dix premieres minutes d'un bloc
+     de travail, sans minuteur et sans session deja enregistree dessus, le lanceur s'ouvre de
+     lui-meme, matiere ou tache deja proposee selon le protocole (Sans preciser sur Anki, la
+     matiere sur Cartes et Annales, la tache Español sur un bloc Español). Une fois par bloc
+     et par appareil ; la memoire est celle de l'onglet, elle survit au rechargement de la
+     synchro. Passe les dix minutes, l'ecran central (« En cours ») affiche en orange « aucun
+     Pomodoro depuis n min » tant que rien ne tourne : c'est le rappel, pas la contrainte. */
+  var POMODORO_FERME_MIN = 10;
+  function blocsProposes(){ try{ return JSON.parse(sessionStorage.getItem('bc-pomo-propose') || '{}'); }catch(e){ return {}; } }
+  function marquerBlocPropose(k){ try{ var o = blocsProposes(); o[k] = 1; sessionStorage.setItem('bc-pomo-propose', JSON.stringify(o)); }catch(e){} }
+  function blocSansPomodoro(){
+    var b = blocPlanCourant(); if(!b) return null;
+    var type = typeBlocPlan(b[1]); if(!type) return null;
+    if(timerState) return null;
+    var d0 = timeToMinutes(b[0]), n = new Date(), nowMin = n.getHours()*60 + n.getMinutes();
+    var bloc = {debut: d0, fin: d0 + b[2], label: b[1], type: type};
+    if(recouvrement(bloc, sessionsAujourdhui(type)) > 0) return null;
+    bloc.depuis = nowMin - d0;
+    return bloc;
+  }
+  function proposerPomodoroBloc(){
+    var b = blocSansPomodoro(); if(!b || b.depuis > POMODORO_FERME_MIN) return;
+    var k = todayISO + '|' + minutesToTime(b.debut);
+    if(blocsProposes()[k]) return;
+    var ouverts = [].slice.call(document.querySelectorAll('.overlay')).some(function(o){ return !o.hidden; });
+    if(ouverts || focusActif) return;   /* une fenetre est deja la : on retente au prochain tick */
+    marquerBlocPropose(k);
+    var versEtudes = function(){ var nav = document.querySelector('.nav-btn[data-page="etudes"]'); if(nav) nav.click(); };
+    if(b.type === 'projet' && /^Español/.test(b.label)) lancerPomodoroEspanol();
+    else if(b.type === 'projet') lancerPomodoroProjet();
+    else lancerPomodoroCours(versEtudes);
+  }
+  setInterval(function(){ try{ proposerPomodoroBloc(); }catch(e){} }, 30000);
   function majReacteur(){
     preparerReacteur();
     try{ renderProchainBloc(); }catch(e){}
@@ -5576,6 +5641,173 @@
   Object.keys(examensState).forEach(function(k){
     if(!/^\d{4}-\d{2}-\d{2}$/.test(String(examensState[k]))) delete examensState[k];
   });
+  /* ===== Journees exceptionnelles et mode partiels =====
+     batcave-journees : { 'AAAA-MM-JJ': {type:'tp'|'examen'|'autre', label, debut:'11:00', fin:'13:00',
+     trajet: minutes} } -- saisies dans Calendrier. batcave-examens-heures : { matiere: {debut, fin} }.
+     Les deux sont de la configuration : gardees au nouveau depart, comme les dates d'examen. */
+  var journeesState = load('batcave-journees', {});
+  if(!journeesState || typeof journeesState !== 'object' || Array.isArray(journeesState)) journeesState = {};
+  Object.keys(journeesState).forEach(function(k){
+    var j = journeesState[k];
+    if(!/^\d{4}-\d{2}-\d{2}$/.test(k) || !j || typeof j !== 'object' || !/^\d{2}:\d{2}$/.test(String(j.debut)) || !/^\d{2}:\d{2}$/.test(String(j.fin))) delete journeesState[k];
+  });
+  var examensHeures = load('batcave-examens-heures', {});
+  if(!examensHeures || typeof examensHeures !== 'object' || Array.isArray(examensHeures)) examensHeures = {};
+  var EXAMEN_HEURE_DEFAUT = {debut:'09:00', fin:'11:00'};
+  var TYPES_JOURNEE = {tp:'TP', examen:'Examen', autre:'Événement'};
+  function heuresExamen(m){
+    var h = examensHeures[m];
+    return (h && /^\d{2}:\d{2}$/.test(String(h.debut)) && /^\d{2}:\d{2}$/.test(String(h.fin)) && timeToMinutes(h.fin) > timeToMinutes(h.debut))
+      ? {debut: h.debut, fin: h.fin, defaut: false} : {debut: EXAMEN_HEURE_DEFAUT.debut, fin: EXAMEN_HEURE_DEFAUT.fin, defaut: true};
+  }
+  function isoDecale(iso, n){ var d = new Date(iso + 'T00:00:00'); d.setDate(d.getDate() + n); return localISO(d); }
+  /* La journee exceptionnelle d'une date : saisie dans Calendrier, sinon deduite d'un examen. */
+  function journeeDe(iso){
+    var j = journeesState[iso];
+    if(j){
+      var type = TYPES_JOURNEE[j.type] ? j.type : 'autre', label = String(j.label || '').trim();
+      return {iso: iso, type: type, label: label, titre: TYPES_JOURNEE[type] + (label ? ' · ' + label : ''), debut: j.debut, fin: j.fin,
+              trajet: Number(j.trajet) >= 0 ? Number(j.trajet) : 30, source:'calendrier'};
+    }
+    var mats = Object.keys(examensState).filter(function(m){ return examensState[m] === iso; }).sort();
+    if(!mats.length) return null;
+    var h = heuresExamen(mats[0]);
+    return {iso: iso, type:'examen', label: mats.join(' + '), titre: 'Examen · ' + mats.join(' + '), debut: h.debut, fin: h.fin, trajet: 30,
+            source:'etudes', heureDefaut: h.defaut, matieres: mats};
+  }
+  /* Une journee reconstruite autour d'un evenement : une heure de preparation, le trajet,
+     l'evenement, le retour. Ce que la grille prevoyait dans cette fenetre s'efface ; un bloc
+     de travail qui y perd plus de la moitie est dit « sacrifie ». Le dejeuner perdu est
+     replace juste apres le retour. */
+  function grilleEvenement(cle, iso, ev, base){
+    var deb = timeToMinutes(ev.debut), fin = timeToMinutes(ev.fin);
+    if(!(fin > deb)) return {grille: base, sacrifies: []};
+    var trajet = Number(ev.trajet) || 0, depart = deb - trajet, retour = fin + trajet, prep = depart - 60;
+    var finJ = timeToMinutes(heureCoucher(cle)), lever = base.length ? timeToMinutes(base[0][0]) : 0;
+    var avecPrep = prep >= lever + 60;      /* pas de preparation quand l'evenement est au reveil */
+    var gel = avecPrep ? prep : depart;     /* a partir de la, la grille type s'efface */
+    var out = [], sacrifies = [], dejeunerPerdu = false, coursPerdu = false;
+    /* un bloc « sacrifie » : du travail, le cours ou le sport -- ce qu'on veut savoir la veille */
+    var notable = function(l){ return !!typeBlocPlan(l) || /^(Cours|Sport)$/.test(l); };
+    base.forEach(function(b, i){
+      var d0 = timeToMinutes(b[0]), d1 = i < base.length - 1 ? timeToMinutes(base[i+1][0]) : finJ, travail = notable(b[1]);
+      if(d1 <= gel){ out.push(b); return; }
+      if(d0 < gel){ out.push(b); if(travail && d1 - gel > (d1 - d0) / 2) sacrifies.push(b[1]); return; }
+      if(d0 < retour){ if(travail) sacrifies.push(b[1]); if(/Déjeuner/.test(b[1])) dejeunerPerdu = true; if(b[1] === 'Cours') coursPerdu = true; return; }
+      if(dejeunerPerdu && d0 < retour + 30){ if(travail) sacrifies.push(b[1]); return; }
+      out.push(b);
+    });
+    /* le cours de l'apres-midi est tombe dans la fenetre : son trajet retour (19:30) n'a plus de sens */
+    if(coursPerdu) out = out.filter(function(b){ return b[1] !== 'Trajet retour' && b[1] !== 'Trajet cours'; });
+    if(avecPrep) out.push([minutesToTime(prep), 'Préparer · ' + ev.titre]);
+    if(trajet > 0) out.push([minutesToTime(depart), 'Trajet · ' + ev.titre]);
+    out.push([minutesToTime(deb), ev.titre]);
+    if(trajet > 0) out.push([minutesToTime(fin), 'Trajet retour']);
+    if(dejeunerPerdu) out.push([minutesToTime(retour), 'Déjeuner']);
+    out.sort(function(a, b){ return timeToMinutes(a[0]) - timeToMinutes(b[0]); });
+    return {grille: out, sacrifies: sacrifies};
+  }
+  /* ===== Mode partiels =====
+     Les dates d'examen (Etudes) font les periodes : les examens a moins de 21 jours les uns des
+     autres forment une session, et la periode va de J-7 avant le premier au dernier. Anki
+     reste intact (c'est lui qui rend la revision intensive inutile) ; Cartes devient des
+     annales ciblees, les blocs Projets perso de la revision ciblee sur la matiere la plus
+     proche, Comprendre des fiches de synthese, et l'espagnol garde un bloc par jour. */
+  var PARTIELS_AVANT_J = 7, PARTIELS_ECART_J = 21;
+  var RENOMMAGES_PARTIELS = {
+    'Projets perso matinal': 'Révision ciblée',
+    'Projets perso 1': 'Révision ciblée',
+    'Projets perso 2': {defaut:'Révision ciblée', friday:'Español', weekend:'Español'},
+    'Projets perso 3': 'Español',
+    'Cartes du dernier cours': 'Annales ciblées',
+    'Comprendre le cours du jour': 'Fiches de synthèse'
+  };
+  function matiereExamenSuivante(iso){
+    iso = iso || todayISO;
+    var meilleur = null;
+    Object.keys(examensState).forEach(function(m){
+      var d = examensState[m];
+      if(d < iso) return;
+      if(!meilleur || d < meilleur.iso || (d === meilleur.iso && m < meilleur.m)) meilleur = {m: m, iso: d};
+    });
+    if(!meilleur) return null;
+    meilleur.jours = daysBetween(new Date(iso + 'T00:00:00'), new Date(meilleur.iso + 'T00:00:00'));
+    return meilleur;
+  }
+  var CONSIGNES_PARTIELS = {
+    'Révision ciblée': function(dow, iso){ var e = matiereExamenSuivante(iso); return e ? 'Révision ciblée : ' + e.m + ' (examen le ' + fmtDate(e.iso) + ', J-' + e.jours + '). Annales de cette matière en conditions, puis les cartes ratées ; jamais de relecture passive.' : 'Révision ciblée : la matière la plus proche dans Études.'; },
+    'Annales ciblées': function(dow, iso){ var e = matiereExamenSuivante(iso); return 'Une annale complète' + (e ? ' de ' + e.m : '') + ' en conditions, 55 min sans support, puis correction et barème dans le projet « Dentaire », commande « annales ».'; },
+    'Fiches de synthèse': function(dow, iso){ var e = matiereExamenSuivante(iso); return 'Une page recto par chapitre' + (e ? ' de ' + e.m : '') + ' : ce qui doit être su par cœur, écrit de mémoire d\'abord, vérifié ensuite. Coucher à l\'heure : la nuit consolide.'; },
+    'Anki 1': "Toutes les échéances, même pendant les partiels : c'est ce qui rend la révision intensive inutile. File vide avant la fin : les cartes ratées de la matière la plus proche.",
+    'Español': "Un seul bloc d'espagnol par jour pendant les partiels : lecture, Anki Español ou conversation, rien qui demande de la mémoire fraîche."
+  };
+  function sessionsPartiels(){
+    if(typeof examensState === 'undefined') return [];
+    var dates = Object.keys(examensState).map(function(m){ return examensState[m]; }).sort();
+    var out = [], cur = null;
+    dates.forEach(function(d){
+      if(cur && daysBetween(new Date(cur.dernier + 'T00:00:00'), new Date(d + 'T00:00:00')) <= PARTIELS_ECART_J){ if(d !== cur.dernier) cur.n++; cur.dernier = d; }
+      else { cur = {premier: d, dernier: d, n: 1}; out.push(cur); }
+    });
+    return out.map(function(x){ return {debut: isoDecale(x.premier, -PARTIELS_AVANT_J), fin: x.dernier, premier: x.premier, n: x.n}; });
+  }
+  function periodePartiels(iso){
+    var x = sessionsPartiels().filter(function(y){ return iso >= y.debut && iso <= y.fin; })[0];
+    if(!x) return null;
+    var es = (typeof PERIODES_GRILLE !== 'undefined' && PERIODES_GRILLE || []).filter(function(q){ return iso >= q.debut && iso <= q.fin; })[0];
+    return {id:'partiels', nom:'Partiels', partiels:true, debut:x.debut, fin:x.fin, premier:x.premier, n:x.n, suite: es ? es.nom : 'grille type',
+            description:'Mode partiels, de J-7 au dernier examen : Anki intact, Cartes → Annales ciblées, Projets perso → Révision ciblée sur la matière la plus proche, Comprendre → Fiches de synthèse, un seul bloc Español par jour.',
+            renommages: RENOMMAGES_PARTIELS, consignes: CONSIGNES_PARTIELS};
+  }
+  /* Le panneau Journees exceptionnelles (Calendrier) : les journees saisies et celles deduites
+     des examens, avec les blocs que chacune sacrifie. */
+  function renderJournees(){
+    var ul = document.getElementById('journees-liste'), note = document.getElementById('journees-note');
+    if(!ul) return;
+    var dates = {};
+    Object.keys(journeesState).forEach(function(k){ dates[k] = true; });
+    Object.keys(examensState).forEach(function(m){ dates[examensState[m]] = true; });
+    var liste = Object.keys(dates).sort().map(function(iso){ return journeeDe(iso); }).filter(Boolean);
+    var aVenir = liste.filter(function(ev){ return ev.iso >= todayISO; }).length;
+    if(note) note.textContent = liste.length ? aVenir + ' à venir · ' + (liste.length - aVenir) + ' passée' + (liste.length - aVenir > 1 ? 's' : '') : 'aucune';
+    if(!liste.length){ ul.innerHTML = '<li class="entry-empty">Aucune journée exceptionnelle — ajoute un TP ou un rendez-vous ci-dessus, ou date un examen dans Études.</li>'; return; }
+    ul.innerHTML = liste.map(function(ev){
+      var cle = cleJournee(dowDe(ev.iso)), g = grilleEvenement(cle, ev.iso, ev, grilleDe(cle, ev.iso, true));
+      var j = daysBetween(new Date(todayISO + 'T00:00:00'), new Date(ev.iso + 'T00:00:00'));
+      var badge = j < 0 ? '<span class="badge">passée</span>' : (j === 0 ? '<span class="badge warn">aujourd\'hui</span>' : (j === 1 ? '<span class="badge warn">demain</span>' : '<span class="badge' + (j <= 7 ? ' gold' : '') + '">J-' + j + '</span>'));
+      return '<li class="entry-row" style="flex-wrap:wrap;' + (j < 0 ? ' opacity:.55;' : '') + '">' +
+        '<span class="ecell small"><b>' + escapeHtml(capitaliser(dateLongue(new Date(ev.iso + 'T00:00:00')))) + '</b></span>' +
+        '<span class="ecell"><b>' + escapeHtml(ev.titre) + '</b> <span class="sub-note">' + ev.debut + ' → ' + ev.fin + (ev.trajet ? ' · trajet ' + ev.trajet + ' min' : '') + (ev.heureDefaut ? ' · horaire par défaut, précise-le dans Études' : '') + '</span></span>' +
+        '<span class="ecell small">' + badge + '</span>' +
+        (ev.source === 'etudes' ? '<span class="ecell small badge" title="Déduite de la date d\'examen saisie dans Études">depuis Études</span>'
+                                : '<button class="edel" aria-label="Supprimer" title="Supprimer cette journée" data-deljx="' + ev.iso + '">×</button>') +
+        (g.sacrifies.length ? '<span class="ecell sub-note" style="flex-basis:100%;">Sacrifié ce jour-là : ' + escapeHtml(g.sacrifies.join(', ')) + '. La veille, le bloc de 20:30 devient « Préparer ».</span>'
+                            : '<span class="ecell sub-note" style="flex-basis:100%;">Aucun bloc de travail sacrifié. La veille, le bloc de 20:30 devient « Préparer ».</span>') +
+        '</li>';
+    }).join('');
+    ul.querySelectorAll('[data-deljx]').forEach(function(b){
+      b.addEventListener('click', function(){
+        delete journeesState[b.dataset.deljx];
+        save('batcave-journees', journeesState);
+        renderJournees(); rafraichirAgendas(); renderDashboard();
+        showToast('📌 Journée du ' + fmtDate(b.dataset.deljx) + ' retirée : la grille type reprend.');
+      });
+    });
+  }
+  (function(){
+    var b = document.getElementById('jx-add'); if(!b) return;
+    b.addEventListener('click', function(){
+      var iso = document.getElementById('jx-date').value, deb = document.getElementById('jx-debut').value, fin = document.getElementById('jx-fin').value;
+      var type = document.getElementById('jx-type').value, label = document.getElementById('jx-label').value.trim(), trajet = Number(document.getElementById('jx-trajet').value) || 0;
+      if(!/^\d{4}-\d{2}-\d{2}$/.test(iso)){ showToast('⚠️ Indique la date.'); return; }
+      if(!/^\d{2}:\d{2}$/.test(deb) || !/^\d{2}:\d{2}$/.test(fin) || timeToMinutes(fin) <= timeToMinutes(deb)){ showToast('⚠️ Il faut un début et une fin, la fin après le début.'); return; }
+      journeesState[iso] = {type: type, label: label, debut: deb, fin: fin, trajet: trajet};
+      save('batcave-journees', journeesState);
+      document.getElementById('jx-label').value = '';
+      renderJournees(); rafraichirAgendas(); renderDashboard();
+      showToast('📌 ' + (TYPES_JOURNEE[type] || 'Événement') + (label ? ' · ' + label : '') + ' le ' + fmtDate(iso) + ' : la veille et le jour même sont réorganisés.');
+    });
+  })();
   function prochainExamen(){
     var meilleur = null;
     Object.keys(examensState).forEach(function(m){
@@ -5603,10 +5835,15 @@
               : j === 0 ? '<span class="badge warn">aujourd\'hui</span>'
               : '<span class="badge' + (j <= 14 ? ' warn' : (j <= 30 ? ' gold' : '')) + '">J-' + j + '</span>';
       }
+      var h = heuresExamen(m), champ = 'background:var(--surface-raised); border:1px solid var(--border); color:var(--ink); border-radius:6px; padding:5px 8px; font-size:12px;';
       return '<li class="entry-row"><span class="ecell"><b>' + escapeHtml(m) + '</b></span>' +
              '<span class="ecell small">' + badge + '</span>' +
-             '<input type="date" data-examen="' + escapeHtml(m) + '" value="' + escapeHtml(iso) + '" ' +
-             'style="background:var(--surface-raised); border:1px solid var(--border); color:var(--ink); border-radius:6px; padding:5px 8px; font-size:12px;">' +
+             '<input type="date" data-examen="' + escapeHtml(m) + '" value="' + escapeHtml(iso) + '" style="' + champ + '">' +
+             (iso ? '<span class="ecell small" style="display:flex; gap:4px; align-items:center;" title="Horaire de l\'examen — sans horaire, la journée se construit sur 09:00 → 11:00">' +
+                    '<input type="time" data-examen-h="debut" data-mat="' + escapeHtml(m) + '" value="' + (h.defaut ? '' : h.debut) + '" aria-label="Heure de début" style="' + champ + ' width:92px;">' +
+                    '<span class="sub-note">→</span>' +
+                    '<input type="time" data-examen-h="fin" data-mat="' + escapeHtml(m) + '" value="' + (h.defaut ? '' : h.fin) + '" aria-label="Heure de fin" style="' + champ + ' width:92px;">' +
+                    (h.defaut ? '<span class="sub-note" style="font-size:10.5px;">09:00 → 11:00 par défaut</span>' : '') + '</span>' : '') +
              '</li>';
     }).join('');
     ul.querySelectorAll('[data-examen]').forEach(function(inp){
@@ -5614,11 +5851,24 @@
         var m = inp.dataset.examen, v = inp.value;
         if(v && /^\d{4}-\d{2}-\d{2}$/.test(v)) examensState[m] = v; else delete examensState[m];
         save('batcave-examens', examensState);
-        renderExamens(); renderDashboard();
+        renderExamens(); renderDashboard(); rafraichirAgendas(); renderJournees();
       });
     });
-    var p = prochainExamen();
-    if(note) note.textContent = p ? ('prochain : ' + p.matiere + ' dans ' + p.jours + ' j') : 'aucune date saisie';
+    /* l'horaire n'est retenu que complet et coherent ; sinon la journee garde 09:00 → 11:00 */
+    ul.querySelectorAll('[data-examen-h]').forEach(function(inp){
+      inp.addEventListener('change', function(){
+        var m = inp.dataset.mat;
+        var d = ul.querySelector('[data-examen-h="debut"][data-mat="' + m.replace(/"/g, '\\"') + '"]'), f = ul.querySelector('[data-examen-h="fin"][data-mat="' + m.replace(/"/g, '\\"') + '"]');
+        var vd = d ? d.value : '', vf = f ? f.value : '';
+        if(/^\d{2}:\d{2}$/.test(vd) && /^\d{2}:\d{2}$/.test(vf) && timeToMinutes(vf) > timeToMinutes(vd)) examensHeures[m] = {debut: vd, fin: vf};
+        else { delete examensHeures[m]; if(vd || vf) showToast('⚠️ Il faut un début et une fin, la fin après le début.'); }
+        save('batcave-examens-heures', examensHeures);
+        renderExamens(); rafraichirAgendas(); renderJournees(); renderDashboard();
+      });
+    });
+    var p = prochainExamen(), sess = sessionsPartiels().filter(function(x){ return x.fin >= todayISO; })[0];
+    if(note) note.textContent = (p ? ('prochain : ' + p.matiere + ' dans ' + p.jours + ' j') : 'aucune date saisie') +
+      (sess ? ' · mode partiels du ' + fmtDate(sess.debut) + ' au ' + fmtDate(sess.fin) : '');
   }
   var GOALS_NUMERIC = [
     {id:'poids', label:'🏋️ Poids', unit:'kg', start:64, target:70, step:0.1, note:'Rythme visé : ~1 kg/mois (surplus + programme v2), soit 70 kg à la fin de l\'horizon.'},
@@ -7825,7 +8075,7 @@
      cle du jour, sinon « defaut ». Les memes textes sont dans les series recurrentes de
      l'agenda Google (titres « 🦇 Bloc · consigne courte »). */
   var CONSIGNES = {
-    'Sport': "Séance du jour dans l'onglet Sport, surcharge progressive : les charges à faire sont déjà calculées.",
+    'Sport': "1 km en courant jusqu'au parc, allure conversation : c'est l'échauffement. Séance du jour dans l'onglet Sport, surcharge progressive : les charges à faire sont déjà calculées. Retour en marchant, en trottinant le mardi.",
     'Anki matinal': "Jour off de sport : une heure de cartes de dentaire, deux Pomodoros 25 + 5. Toutes les échéances, puis les cartes des matières faibles.",
     'Projets perso matinal': "Exécution pure d'une tâche déjà décidée la veille : montage, import, rédaction, fiches, code. Jamais une décision.",
     'Anki 1': "Toutes les échéances de dentaire, deux Pomodoros 25 + 5 sans téléphone. File vide avant la fin : cartes du cours suivant à partir des notes.",
@@ -7887,15 +8137,20 @@
     'Trajet cours': "Podcast en marchant, shadowing à mi-voix dans le tram. Arrivé avant 15:30 : conversation avec les compañeros, pas le téléphone.",
     'Trajet retour': "Une minute de résumé oral du cours enregistrée en marchant, puis Anki Español dans le tram et trois minutes de paquet Business.",
     'Cours': "Notes en espagnol, un « ? » dans la marge pour chaque mot inconnu, ta question posée avant la fin. Trente minutes de conversation réelle dans la journée.",
-    'Sport': "Podcast espagnol sur le trajet et pendant l'échauffement, puis la séance du jour dans l'onglet Sport.",
+    'Sport': "Podcast espagnol sur le kilomètre de course jusqu'au parc et pendant l'échauffement, puis la séance du jour dans l'onglet Sport. Retour en marchant, en trottinant le mardi.",
     'Coucher': "Clôture du jour faite, la ligne en espagnol ? Écran off, réveil posé loin du lit."
   };
   function consigneBloc(label, dow, iso){
     var p = periodeGrille(iso || todayISO);
     var c = (p && p.consignes && p.consignes[label]) || CONSIGNES_ES[label] || CONSIGNES[label];
+    /* blocs des journees exceptionnelles : la veille, le trajet, l'evenement lui-meme */
+    if(!c && /^Préparer · /.test(label)) c = 'Veille de ' + label.slice(11) + ' : documents et matériel prêts, protocole ou programme relu, trois questions écrites, tenue et trajet préparés. Coucher à l\'heure.';
+    if(!c && /^Trajet · /.test(label)) c = 'Départ pour ' + label.slice(9) + '. Téléphone en silencieux ; en route, une page de notes, pas plus.';
+    if(!c && /^(TP|Examen|Événement) · /.test(label)) c = 'C\'est le moment. Téléphone en silencieux, lecture complète de la consigne avant de commencer.';
     if(!c) return '';
-    if(typeof c === 'string') return c;
     var d = (dow === undefined || dow === null) ? new Date(now).getDay() : dow;
+    if(typeof c === 'function') return c(d, iso || todayISO) || '';
+    if(typeof c === 'string') return c;
     return c[d] || c.defaut || '';
   }
   /* ===== Périodes de grille (Dossier Español) =====
@@ -7903,8 +8158,10 @@
      (renommages, avec une variante par journee) ou par journee entiere (grille). Le dentaire
      ne bouge jamais : seuls les blocs listes changent. La date fait foi, pas un reglage : le
      19 octobre la grille passe d'elle-meme a la phase suivante, et le 15 mars a la grille type.
-     Les rappels Google Calendar gardent les titres de la grille type (pas de doublon avec les
-     series existantes) ; seule la consigne suit la periode. */
+     Les rappels Google Calendar suivent la grille du jour : un evenement recurrent « 🦇 Projets
+     perso 1 » deja dans l'agenda est reconnu a son titre de base et son instance du jour
+     prend le nom du bloc de la phase (« 🦇 Español · gramática »), sans doublon.
+     Le mode partiels (periodePartiels, calcule depuis les dates d'examen) passe avant. */
   var PERIODES_GRILLE = [
     /* Tout commence le lundi 14 septembre 2026, premier jour de cours : avant, la grille type.
        Dans chaque phase, SEULS les blocs « Projets perso » changent de nom. */
@@ -7932,6 +8189,8 @@
   function periodeGrille(iso){
     if(typeof PERIODES_GRILLE === 'undefined' || !PERIODES_GRILLE) return null;
     iso = iso || todayISO;
+    var partiels = (typeof examensState !== 'undefined') ? periodePartiels(iso) : null;
+    if(partiels) return partiels;
     for(var i = 0; i < PERIODES_GRILLE.length; i++){ if(iso >= PERIODES_GRILLE[i].debut && iso <= PERIODES_GRILLE[i].fin) return PERIODES_GRILLE[i]; }
     return null;
   }
@@ -7941,22 +8200,36 @@
     for(var i = 0; i < j.length; i++){ if(dowDe(j[i]) === dow) return j[i]; }
     return todayISO;
   }
-  function grilleDe(cle, iso){
+  /* sansJournee : la grille de la periode seule (sert a construire la journee exceptionnelle) */
+  function grilleDe(cle, iso, sansJournee){
     var base = SCHEDULES[cle] || [];
-    var p = periodeGrille(iso);
-    if(!p) return base;
-    if(p.grille && p.grille[cle]) return p.grille[cle];
-    if(!p.renommages) return base;
-    return base.map(function(b){
-      var nv = p.renommages[b[1]];
-      if(nv && typeof nv === 'object') nv = nv[cle] || nv.defaut;
-      return nv ? [b[0], nv] : b;
-    });
+    iso = iso || todayISO;
+    var p = periodeGrille(iso), g = base;
+    if(p){
+      if(p.grille && p.grille[cle]) g = p.grille[cle];
+      else if(p.renommages) g = base.map(function(b){
+        var nv = p.renommages[b[1]];
+        if(nv && typeof nv === 'object') nv = nv[cle] || nv.defaut;
+        return nv ? [b[0], nv] : b;
+      });
+    }
+    if(sansJournee || typeof journeesState === 'undefined') return g;
+    var ev = journeeDe(iso);
+    if(ev) return grilleEvenement(cle, iso, ev, g).grille;
+    /* la veille : le dernier bloc de travail du soir prepare le lendemain */
+    var demain = journeeDe(isoDecale(iso, 1));
+    if(demain){
+      var idx = -1;
+      base.forEach(function(b, i){ if(idx < 0 && b[1] === 'Comprendre le cours du jour') idx = i; });
+      if(idx < 0) base.forEach(function(b, i){ if(idx < 0 && b[1] === 'Temps libre') idx = i; });
+      if(idx > -1 && g.length === base.length) g = g.map(function(b, i){ return i === idx ? [b[0], 'Préparer · ' + demain.titre] : b; });
+    }
+    return g;
   }
   /* Nature d'un bloc du planning. Les blocs de révision portent le nom de l'activité
      (Anki, Cartes, Annales, Comprendre…) : c'est ici, et nulle part ailleurs, qu'on décide
      ce qui compte comme révision et comme projets. */
-  var BLOCS_REVISION = /^(Anki|Cartes|Annales?\b|Annale complète|Correction|Comprendre)/;
+  var BLOCS_REVISION = /^(Anki|Cartes|Annales?\b|Annale complète|Correction|Comprendre|Révision ciblée|Fiches de synthèse|Préparer · )/;
   function typeBlocPlan(label){
     if(BLOCS_REVISION.test(label)) return 'cours';
     if(/^Projets perso/.test(label)) return 'projet';
@@ -8193,7 +8466,7 @@
   /* Les series recurrentes de l'agenda portent une consigne apres « · » (« 🦇 Anki 1 · cartes
      dues dentaire ») : un evenement se reconnait a la partie avant le separateur. */
   function titreBaseGcal(s){ return String(s || '').split(' · ')[0].trim(); }
-  try{ window.__bcTitreBase = titreBaseGcal; window.__bcConsigne = consigneBloc; window.__bcInsights = buildInsights; window.__bcBlocs = blocsDuPlanning; window.__bcCle = cleJournee; window.__bcJours = joursSuivis; window.__bcInsightsVu = function(){ return insightsVu; }; window.__bcLogSession = logSession; window.__bcPeriode = periodeGrille; window.__bcGrille = grilleDe; window.__bcMinutesEspanol = minutesEspanol; window.__bcCibleEspanol = cibleEspanolJour; window.__bcTypeBloc = typeBlocPlan; window.__bcPlanRotation = planRotation; window.__bcHabitJours = habitJours; window.__bcProgrammeDebut = PROGRAMME_DEBUT;
+  try{ window.__bcTitreBase = titreBaseGcal; window.__bcConsigne = consigneBloc; window.__bcInsights = buildInsights; window.__bcBlocs = blocsDuPlanning; window.__bcCle = cleJournee; window.__bcJours = joursSuivis; window.__bcInsightsVu = function(){ return insightsVu; }; window.__bcLogSession = logSession; window.__bcPeriode = periodeGrille; window.__bcGrille = grilleDe; window.__bcMinutesEspanol = minutesEspanol; window.__bcCibleEspanol = cibleEspanolJour; window.__bcTypeBloc = typeBlocPlan; window.__bcPlanRotation = planRotation; window.__bcHabitJours = habitJours; window.__bcProgrammeDebut = PROGRAMME_DEBUT; window.__bcJournees = function(){ return journeesState; }; window.__bcJourneeDe = journeeDe; window.__bcPartiels = periodePartiels; window.__bcSessionsPartiels = sessionsPartiels; window.__bcBlocSansPomodoro = blocSansPomodoro; window.__bcRappels = blocsARappeler; window.__bcExamens = function(){ return examensState; };
        /* rapport hebdomadaire (tests/rapport-hebdo.mjs) : la semaine à un décalage donné, ses
           statistiques de bilan et le prévu/réalisé de chaque jour */
        window.__bcSemaine = function(off){
@@ -8206,14 +8479,18 @@
   function cleGcalJour(iso){ return 'batcave-gcal-' + iso; }
   /* Tous les blocs du planning : un rappel 5 min avant chacun, 30 min avant le coucher
      (le temps d'eteindre l'ecran). « Temps libre » et le coucher n'occupent pas l'agenda. */
+  /* La grille DU JOUR (phase Español, partiels, journee exceptionnelle), pas la grille type :
+     l'agenda doit dire Español quand c'est de l'espagnol qu'il faut faire. Le titre de base
+     (grille type, meme index) sert a reconnaitre la serie recurrente deja dans l'agenda. */
   function blocsARappeler(iso){
-    var plan = SCHEDULES[cleJournee(dowDe(iso))] || [], out = [];
+    var cle = cleJournee(dowDe(iso)), plan = grilleDe(cle, iso), base = SCHEDULES[cle] || [], out = [];
+    var memeStructure = plan.length === base.length && plan.every(function(b, i){ return b[0] === base[i][0]; });
     plan.forEach(function(b, i){
       var l = b[1], coucher = /^Coucher/.test(l), libre = /Temps libre|Repos/.test(l);
       var d0 = timeToMinutes(b[0]);
       var d1 = i < plan.length - 1 ? timeToMinutes(plan[i+1][0]) : d0 + 15;
       if(d1 <= d0) d1 = d0 + 15;
-      out.push({cle: 'p' + i, type: coucher ? 'coucher' : (libre ? 'libre' : 'bloc'), titre: '🦇 ' + l, debut: d0, fin: d1, rappel: coucher ? 30 : 5,
+      out.push({cle: 'p' + i, type: coucher ? 'coucher' : (libre ? 'libre' : 'bloc'), titre: '🦇 ' + l, titreBase: '🦇 ' + (memeStructure ? base[i][1] : l), debut: d0, fin: d1, rappel: coucher ? 30 : 5,
                 libre: coucher || libre,
                 description: (consigneBloc(l, dowDe(iso), iso) ? consigneBloc(l, dowDe(iso), iso) + ' ' : '') + (coucher ? 'Écran off 30 min avant. Bloc du planning Batcave.' : 'Bloc du planning Batcave.')});
     });
@@ -8248,6 +8525,9 @@
         var events = (res && res.payload && res.payload.events) || [], parTitre = {};
         events.forEach(function(e){
           if(!e || !e.summary || !(e.start && e.start.dateTime) || e.status === 'cancelled') return;
+          /* par titre entier (une instance deja renommee « 🦇 Español · gramática ») et par
+             titre de base (la serie « 🦇 Projets perso 1 · consigne ») */
+          if(!parTitre[e.summary]) parTitre[e.summary] = e;
           var cleT = titreBaseGcal(e.summary);
           if(!parTitre[cleT]) parTitre[cleT] = e;
         });
@@ -8257,17 +8537,24 @@
           if(connu && connu.id && connu.empreinte === emp){ bilan.deja++; return; }
           chaine = chaine.then(function(){
             var creer = function(){
-              var existant = parTitre[b.titre];
+              var existant = parTitre[b.titre] || parTitre[b.titreBase];
               if(existant && existant.id){
                 /* adopte : jamais recree, jamais supprime par la Batcave (cree:false).
-                   Si l'heure differe, l'instance est alignee ; si le rappel differe, c'est la
-                   SERIE recurrente qui recoit le bon rappel (une fois pour toutes). */
+                   Si l'heure differe, l'instance est alignee ; si le titre differe (bloc renomme
+                   par une phase Español, les partiels ou une journee exceptionnelle), l'instance
+                   du jour prend le titre et la consigne du bloc -- la serie, elle, ne change pas ;
+                   si le rappel differe, c'est la SERIE qui recoit le bon rappel (une fois pour toutes). */
                 var memeHeure = new Date(existant.start.dateTime).getTime() === debutMs && existant.end && existant.end.dateTime && new Date(existant.end.dateTime).getTime() === new Date(isoAvecHeure(iso, b.fin)).getTime();
                 var memeRappel = rappelDe(existant) === b.rappel;
+                var memeTitre = existant.summary === b.titre || titreBaseGcal(existant.summary) === b.titre;
                 var suite = Promise.resolve();
-                if(!memeHeure) suite = suite.then(function(){ return mcp.callTool('Google Calendar', 'update_event', {calendarId: GCAL_CALENDRIER, eventId: existant.id, startTime: isoAvecHeure(iso, b.debut), endTime: isoAvecHeure(iso, b.fin), timeZone:'Europe/Madrid', notificationLevel:'NONE'}); });
+                if(!memeHeure || !memeTitre) suite = suite.then(function(){
+                  var maj = {calendarId: GCAL_CALENDRIER, eventId: existant.id, startTime: isoAvecHeure(iso, b.debut), endTime: isoAvecHeure(iso, b.fin), timeZone:'Europe/Madrid', notificationLevel:'NONE'};
+                  if(!memeTitre){ maj.summary = b.titre; maj.description = b.description; }
+                  return mcp.callTool('Google Calendar', 'update_event', maj);
+                });
                 if(!memeRappel) suite = suite.then(function(){ return mcp.callTool('Google Calendar', 'update_event', {calendarId: GCAL_CALENDRIER, eventId: existant.recurringEventId || existant.id, overrideReminders:[{method:'popup', minutes: b.rappel}], notificationLevel:'NONE'}); });
-                return suite.then(function(){ releve[b.cle] = {id: existant.id, empreinte: emp, cree: false}; if(memeHeure && memeRappel) bilan.adoptes++; else bilan.majs++; });
+                return suite.then(function(){ releve[b.cle] = {id: existant.id, empreinte: emp, cree: false}; if(memeHeure && memeRappel && memeTitre) bilan.adoptes++; else bilan.majs++; });
               }
               if(debutMs < nowMs - 60000){ bilan.passes++; return; }
               return mcp.callTool('Google Calendar', 'create_event', {calendarId: GCAL_CALENDRIER, summary: b.titre, startTime: isoAvecHeure(iso, b.debut), endTime: isoAvecHeure(iso, b.fin), timeZone:'Europe/Madrid',
@@ -8278,7 +8565,7 @@
             if(connu && connu.id){
               /* bloc deplace : on met l'evenement a jour ; s'il a ete supprime a la main dans
                  Google, la mise a jour echoue et on le recree (l'envoi n'est pas interrompu) */
-              return mcp.callTool('Google Calendar', 'update_event', Object.assign({calendarId: GCAL_CALENDRIER, eventId: connu.id, startTime: isoAvecHeure(iso, b.debut), endTime: isoAvecHeure(iso, b.fin), timeZone:'Europe/Madrid', notificationLevel:'NONE'}, connu.cree ? {summary: b.titre} : {}))
+              return mcp.callTool('Google Calendar', 'update_event', Object.assign({calendarId: GCAL_CALENDRIER, eventId: connu.id, startTime: isoAvecHeure(iso, b.debut), endTime: isoAvecHeure(iso, b.fin), timeZone:'Europe/Madrid', notificationLevel:'NONE'}, (connu.cree || b.titre !== b.titreBase) ? {summary: b.titre, description: b.description} : {}))
                 .then(function(){ releve[b.cle] = {id: connu.id, empreinte: emp, cree: !!connu.cree}; bilan.majs++; })
                 .catch(function(){ delete releve[b.cle]; return creer(); });
             }
@@ -8423,7 +8710,9 @@
     var key = scheduleKeyForToday();
     var labelMap = {weekday:'jour de cours (lun, mar, jeu)', wednesday:'mercredi (Anki matinal)', friday:"vendredi (Jumu'ah)", saturday:'samedi (courses)', weekend:'dimanche'};
     var periodeJour = periodeGrille(todayISO);
-    document.getElementById('cal-schedule-label').textContent = labelMap[key] + (periodeJour ? ' · ' + periodeJour.nom : '');
+    var evJour = journeeDe(todayISO), evDemain = journeeDe(isoDecale(todayISO, 1));
+    document.getElementById('cal-schedule-label').textContent = labelMap[key] + (periodeJour ? ' · ' + periodeJour.nom : '') +
+      (evJour ? ' · 📌 ' + evJour.titre + ' ' + evJour.debut : (evDemain ? ' · veille de ' + evDemain.titre : ''));
     var blocks = agendaDuJour(weekday);
 
     /* Un bloc de travail couvert au moins à moitié par une session au minuteur est coché
@@ -9604,6 +9893,8 @@
   majSerie();
   renderTimer();
   majBoutonsEspanol();
+  renderJournees();
+  try{ proposerPomodoroBloc(); }catch(e){}   /* Pomodoro ferme : un bloc de travail vient de commencer ? */
 
   var bilanExportBtn = document.getElementById('bilan-export-btn');
   if(bilanExportBtn) bilanExportBtn.addEventListener('click', function(){ window.print(); });
