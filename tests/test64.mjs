@@ -85,9 +85,16 @@ console.log('\n== 231) Phase 1 (mercredi 16 septembre) : blocs Projets perso ren
   ok(cal.now === 'Español · gramática' && /point de grammaire/.test(cal.consigne), 'bloc MAINTENANT = Español · gramática, consigne affichée');
   ok(/Español · phase 1/.test(cal.source) && cal.semaine.every(n => n >= 2), 'vue semaine : chaque jour porte au moins deux blocs Español (' + cal.semaine.join(',') + '), source « ' + cal.source + ' »');
 
-  /* objectifs d'espagnol : calculés depuis les blocs Español de la grille (T1 ≈ 138 h, septembre ≈ 39 h) */
-  const objs = await fr.evaluate(() => JSON.parse(localStorage.getItem('batcave-objectifs')).liste.reduce((a, o) => { a[o.id] = o.cible; return a; }, {}));
-  ok(Math.abs(objs['T1:espagnol_h'] - 138) < 2 && Math.abs(objs['M2026-09:espagnol_h'] - 39) < 2 && objs['M2026-09:projets_h'] > 0, 'objectifs Espagnol calculés depuis la grille (T1 ≈ 138, septembre ≈ 39), Projets perso toujours là : ' + JSON.stringify(objs));
+  /* Objectifs d'espagnol : calculés depuis les blocs Español de la grille (T1 ≈ 138 h,
+     septembre ≈ 39 h). En septembre, la part programmée du mois (du 14 au 30) est
+     entièrement en phase 1, où les trois blocs Projets perso DEVIENNENT de l'espagnol :
+     la cible « Projets perso » de septembre vaut donc zéro, et c'est exact. Les jours
+     d'avant le 14 ne comptent plus — c'est ce qui affichait « Projets perso −29,9 h »
+     au matin du premier jour. */
+  const objs = await fr.evaluate(() => JSON.parse(localStorage.getItem('batcave-objectifs')).liste
+    .filter(o => /^(T1|M2026-09|M2026-12):(espagnol_h|projets_h|revision_h)$/.test(o.id))
+    .reduce((a, o) => { a[o.id] = o.cible; return a; }, {}));
+  ok(Math.abs(objs['T1:espagnol_h'] - 138) < 2 && Math.abs(objs['M2026-09:espagnol_h'] - 39) < 2 && objs['M2026-09:projets_h'] === 0 && objs['T1:revision_h'] > 0, 'objectifs Espagnol calculés depuis la grille (T1 ≈ 138, septembre ≈ 39) ; Projets perso ramené à zéro en septembre, où la phase 1 occupe toute la part programmée du mois : ' + JSON.stringify(objs));
 
   /* Pomodoro Español : la tâche par défaut est celle du bloc en cours (gramática à 12:00), le bloc part en projet « Español · gramática » */
   await fr.evaluate(() => document.querySelector('.nav-btn[data-page="dashboard"]').click());

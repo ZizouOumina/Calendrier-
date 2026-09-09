@@ -86,13 +86,16 @@ console.log('\n== 223) Téléphone : mode essentiel actif par défaut, bascule �
     return { mode: window.__bcModeEssentiel(), btn: document.getElementById('mode-essentiel-toggle').textContent, plan: v('.dash-wall > .mon-plan'), suivi: v('.dash-wall > .mon-suivi'), central: v('.panel.mon-central'), habits: v('.mon-habits'), cloture: v('#bc-cloture'), meteo: v('#dash-weather, .bc-row-2 > .bc-r:first-child'), releves: v('#dash-releves'), pomodoro: v('#timer-pomodoro'), reactor: document.querySelector('.reactor').getBoundingClientRect().width, sync: (() => { const s = document.getElementById('cloud-status'); return s ? getComputedStyle(s).display : 'absent'; })() };
   });
   ok(st.mode && st.btn === 'Tout afficher', 'mode essentiel actif par défaut à 390 px, bouton « Tout afficher »');
-  ok(!st.plan && !st.suivi && !st.releves, 'plan du jour, suivi et relevés masqués');
+  /* Le Plan du jour RESTE, meme en mode essentiel : c'est ce qu'on ouvre la Batcave pour
+     lire un matin. Ce qui part, c'est le suivi chiffre et les releves. */
+  ok(st.plan, 'le plan du jour reste visible : c\'est l\'essentiel de l\'essentiel');
+  ok(!st.suivi && !st.releves, 'le suivi chiffré et les relevés sont masqués');
   ok(st.central && st.habits && st.cloture && st.pomodoro, 'bloc central, habitudes, clôture et Pomodoro visibles');
-  ok(st.reactor > 100 && st.reactor <= 200, 'réacteur réduit (' + Math.round(st.reactor) + ' px)');
+  ok(st.reactor > 100 && st.reactor <= 130, 'réacteur réduit à ' + Math.round(st.reactor) + ' px, en bande à côté de ses lectures');
   await fr.evaluate(() => document.getElementById('mode-essentiel-toggle').click());
   await page.waitForTimeout(150);
   const st2 = await fr.evaluate(() => ({ mode: window.__bcModeEssentiel(), plan: getComputedStyle(document.querySelector('.dash-wall > .mon-plan')).display !== 'none', pref: localStorage.getItem('bc-mode-essentiel'), btn: document.getElementById('mode-essentiel-toggle').textContent }));
-  ok(!st2.mode && st2.plan && st2.pref === '0' && st2.btn === 'Essentiel', '« Tout afficher » : tout revient, préférence 0 mémorisée localement');
+  ok(!st2.mode && st2.plan && st2.pref === '0' && st2.btn === 'Essentiel', '« Tout afficher » : le suivi revient, préférence 0 mémorisée localement');
   const deb = await fr.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1);
   ok(deb, 'aucun débordement horizontal en mode complet à 390 px');
   await ctx.close();

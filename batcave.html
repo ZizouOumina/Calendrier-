@@ -25,7 +25,10 @@
     --border-soft:#16232e;
     --ink:#dceef4;
     --ink-dim:#7fa0b3;
-    --ink-faint:#4a6b7a;
+    /* #4a6b7a ne faisait que 3,2:1 sur le fond des panneaux : les libelles de formulaire
+       (« Date », « Type », « Cible »…) etaient a la limite du lisible. Remonte a 5,2:1,
+       le minimum WCAG AA pour du texte courant etant 4,5:1. Meme correction en clair. */
+    --ink-faint:#688d9e;
     --cyan:#35d4e8;
     --cyan-bright:#7ceaf7;
     --cyan-dim:#2f8fa8;
@@ -148,6 +151,13 @@
   .progress-track{flex:1; height:8px; border-radius:5px; background:var(--border-soft); overflow:hidden;}
   .progress-fill{height:100%; background:linear-gradient(90deg, var(--cyan-dim), var(--cyan-bright)); border-radius:5px;}
   .progress-count{font-family:var(--font-mono); font-size:12px; color:var(--ink-faint); width:38px; text-align:right; flex:none;}
+  /* Budget par categorie : le montant et le champ de reglage sont incompressibles (78 px de
+     champ). Sur iPad paysage et sur iPhone, « Eau & Électricité » se faisait rogner par ce
+     bloc. Le nom demande 150 px ; en dessous, il passe a la ligne au lieu d'etre coupe. */
+  .bud-cat{ display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center;
+    gap:6px 10px; margin-bottom:4px; }
+  .bud-cat .bc-nom{ font-size:13px; color:var(--ink-dim); flex:1 1 150px; min-width:0; }
+  .bud-cat .bc-reglage{ display:flex; align-items:center; gap:8px; flex:0 0 auto; }
 
   .mini-list{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:8px;}
   .mini-list li{display:flex; justify-content:space-between; font-size:13px; color:var(--ink-dim); border-bottom:1px dashed var(--border-soft); padding-bottom:8px;}
@@ -431,7 +441,15 @@
       padding:6px 4px calc(6px + env(safe-area-inset-bottom)); gap:0;
       border-right:none; border-top:1px solid var(--border);
       overflow-x:auto; -webkit-overflow-scrolling:touch;
+      /* Quatorze onglets, six visibles sur un iPhone : rien ne disait que la barre defile.
+         Le masque estompe les deux bords -- un onglet coupe en degrade se lit comme « il y
+         en a d'autres a cote », la ou un onglet coupe net se lit comme un bug. Le rail de
+         defilement, lui, reste cache : iOS ne l'affiche pas. */
+      -webkit-mask-image:linear-gradient(90deg, transparent 0, #000 16px, #000 calc(100% - 20px), transparent 100%);
+      mask-image:linear-gradient(90deg, transparent 0, #000 16px, #000 calc(100% - 20px), transparent 100%);
+      scroll-behavior:smooth;
     }
+    .sidebar::-webkit-scrollbar{ height:0; }
     .brand, .nav-label, .sidebar-foot{display:none;}
     nav{flex-direction:row; gap:2px;}
     .nav-btn{
@@ -453,8 +471,11 @@
       gap:5px 12px; padding:11px 13px 12px; }
     /* deux lignes de titre au maximum, dans une boîte de hauteur fixe : une habitude au nom
        long ne fait plus une carte plus haute que ses voisines. */
+    /* Le bandeau de titre porte une marge negative calee sur le rembourrage NORMAL de la
+       carte (-22 px) ; sur telephone la carte n'a plus que 13 px de rembourrage, et le
+       bandeau depassait de 9 px de chaque cote -- la page entiere partait en travers. */
     #habits-grid > .card > .card-top{ grid-column:1 / -1; min-height:44px; max-height:44px;
-      overflow:hidden; align-items:center; }
+      overflow:hidden; align-items:center; margin:-11px -13px 8px; padding:9px 13px 7px; }
     #habits-grid > .card > .card-top .ctitle{ font-size:14.5px; line-height:1.3; }
     #habits-grid > .card > .streak-display{ grid-column:1; align-items:baseline; }
     #habits-grid > .card > .streak-display .streak-num{ font-size:30px; }
@@ -516,10 +537,10 @@
      On agrandit les cibles uniquement sur appareil tactile — le Mac garde sa densité. */
   @media (pointer: coarse){
     .check-list input[type="checkbox"], .timeline input[type="checkbox"], .meal-items input[type="checkbox"], .cat-card input[type="checkbox"]{
-      width:26px; height:26px;
+      width:28px; height:28px;
     }
-    .check-list li, .meal-items li, .timeline li, .cat-card li{min-height:40px;}
-    .btn{padding:11px 16px; font-size:13.5px; min-height:38px;}
+    .check-list li, .meal-items li, .timeline li, .cat-card li{min-height:44px;}
+    .btn{padding:11px 16px; font-size:13.5px; min-height:44px;}
     a.btn{display:inline-flex; align-items:center;}
     .edel{padding:9px 12px; font-size:19px;}
     .nav-btn{padding-top:11px; padding-bottom:11px;}
@@ -844,7 +865,31 @@
   .dash-wall .mon-plan .mini-list li > span:first-child{ flex:1 1 180px; }
   .panel.mon-central{ --chamfer:var(--chamfer-lg); }
   .panel.mon-central::before{ box-shadow:inset 0 0 70px rgba(53,212,232,0.07); }
-  @media (max-width:780px){ .dash-wall{ grid-template-columns:minmax(0,1fr); } .dash-wall .mon-central{ grid-column:auto; } }
+  /* Hors telephone, la note du score se lit au centre de l'anneau : ce doublon reste cache. */
+  .reactor-note{ display:none; }
+  /* Telephone : l'anneau de 380 px prenait le premier ecran a lui tout seul. On ouvrait la
+     Batcave sur un chiffre, alors que la question du matin est « qu'est-ce que je fais
+     maintenant ». Le Plan du jour passe devant, et le reacteur se lit en bande : anneau de
+     124 px a gauche, ses trois lectures et sa note a droite. */
+  @media (max-width:780px){
+    .dash-wall{ grid-template-columns:minmax(0,1fr); }
+    .dash-wall .mon-central{ grid-column:auto; order:0; }
+    .dash-wall .mon-plan{ order:-1; }
+    .panel.mon-central{ display:grid; grid-template-columns:124px minmax(0,1fr); column-gap:14px;
+      align-items:center; row-gap:10px; }
+    .panel.mon-central > .sub-head:first-child{ grid-column:1 / -1; }
+    .panel.mon-central > .reactor{ grid-column:1; grid-row:2; max-width:124px; margin:0; }
+    .panel.mon-central > .reactor-legend{ grid-column:2; grid-row:2; flex-direction:column;
+      align-items:flex-start; justify-content:center; gap:6px; margin:0; font-size:11.5px; }
+    .core-center{ padding:0 6%; }
+    .core-center .lbl{ display:none; }
+    .core-center .streak-num{ font-size:32px; }
+    .core-center .streak-unit{ font-size:13px; }
+    .core-center .sub-note{ display:none; }
+    /* la note du score sort de l'anneau : dans 124 px elle ne tient pas */
+    .reactor-note{ display:block; grid-column:1 / -1; grid-row:3; margin:0; font-size:11.5px;
+      line-height:1.4; color:var(--ink-faint); }
+  }
 
   /* ---- réacteur ---- */
   .reactor{ position:relative; width:100%; max-width:380px; aspect-ratio:1; margin:6px auto 2px; }
@@ -931,7 +976,14 @@
   #dash-checklist input[type="checkbox"]{ appearance:none; -webkit-appearance:none; width:8px; height:8px; margin:0; border:none; background:var(--ink-faint); border-radius:0; cursor:pointer; }
   #dash-checklist li.checked input[type="checkbox"]{ background:#04151a; }
   #dash-checklist input[type="checkbox"]:focus-visible{ outline:2px solid var(--cyan); outline-offset:2px; }
-  @media (pointer: coarse){ #dash-checklist input[type="checkbox"]{ width:10px; height:10px; } #dash-checklist li{ min-height:40px; } }
+  /* Apple demande 44 pt de cote. La pastille faisait 40 de haut et seul le TEXTE du label
+     repondait au doigt : sur iPhone on ratait la case une fois sur trois. On monte a 44 et
+     le label couvre toute la pastille, marge comprise -- on coche en visant n'importe ou. */
+  @media (pointer: coarse){
+    #dash-checklist input[type="checkbox"]{ width:10px; height:10px; }
+    #dash-checklist li{ min-height:44px; position:relative; }
+    #dash-checklist li label::after{ content:''; position:absolute; inset:0; }
+  }
 
   /* ---- dépendances : un bandeau de relevés, pas des tuiles ---- */
   #dash-stats{ gap:0; border-top:1px solid var(--border); border-bottom:1px solid var(--border); margin-bottom:14px; }
@@ -999,8 +1051,10 @@
     font-size:10.5px; text-decoration:underline; cursor:pointer; padding:5px 2px; }
   @media (pointer: coarse){
     .sport-body .saisie{ font-size:11.5px; gap:7px; padding-left:12px; }
-    .pas button{ width:38px; min-height:38px; font-size:19px; }
-    .pas .v{ min-width:46px; font-size:14px; }
+    /* 44 pt : c'est la regle d'Apple, et ces deux touches servent entre chaque serie,
+       le bras encore charge -- c'est le pire moment pour viser petit. */
+    .pas button{ width:44px; min-height:44px; font-size:20px; }
+    .pas .v{ min-width:50px; font-size:14px; }
     .saisie-ok{ padding:10px 16px; font-size:12px; }
   }
 
@@ -1131,19 +1185,18 @@
     body.mode-essentiel #dash-notion-edit,
     body.mode-essentiel .bc-row-2 > .bc-r:not(#bc-cloture):not(#bc-objectif),
     body.mode-essentiel .bc-row-2 > .bc-spotify-off,
-    body.mode-essentiel .dash-wall > .mon-plan,
+    /* Le Plan du jour NE PART PLUS : le mode essentiel cachait precisement ce qu'on ouvre
+       la Batcave pour lire un matin. Ce qui part, c'est le suivi chiffre (temps, semaine,
+       echeances), qui se regarde le soir a la cloture, pas au reveil. */
     body.mode-essentiel .dash-wall > .mon-suivi,
     body.mode-essentiel #dash-stats,
     body.mode-essentiel #dash-releves,
     body.mode-essentiel #dash-more-toggle,
     body.mode-essentiel #dash-more,
     body.mode-essentiel .page[data-page="dashboard"] footer.page-foot{ display:none !important; }
-    body.mode-essentiel .panel.mon-central{ display:flex; flex-direction:column; }
-    body.mode-essentiel .panel.mon-central > .reactor{ max-width:190px; margin:2px auto 0; }
     /* le bloc en cours et son Pomodoro vivent maintenant dans #dash-focus, en tête de page :
-       le mode essentiel n'a plus rien a remonter ici. */
-    body.mode-essentiel .core-center .streak-num{ font-size:48px; }
-    body.mode-essentiel .core-center .sub-note{ display:none; }
+       le mode essentiel n'a plus rien a remonter ici. Le reacteur garde la mise en bande
+       du telephone (anneau de 124 px + lectures a cote), reglee plus haut. */
   }
   /* =====================================================================================
      THÈME DE JOUR — la Batcave en plein soleil.
@@ -1171,10 +1224,13 @@
     --border-soft:#dae6ec;
     --ink:#0b1a22;
     --ink-dim:#3d5b6a;
-    --ink-faint:#6d8b9a;
+    --ink-faint:#4c6b79;
     --cyan:#0b7c92;
     --cyan-bright:#065a6b;
-    --cyan-dim:#3d95aa;
+    /* #3d95aa portait du blanc a 3,5:1 (boutons primaires, puces cochees, onglets actifs)
+       et servait aussi de couleur de texte : deux fois sous le seuil. #26788c donne 5,1:1
+       dans les deux emplois. */
+    --cyan-dim:#26788c;
     --good:#1c7a4e;
     --warn:#9a5709;
     --danger:#a5372f;
@@ -1475,11 +1531,12 @@
             </svg>
             <div class="core-center">
               <span class="lbl">Score du jour</span>
-              <div class="streak-display"><span class="streak-num" id="dash-score-num">0</span><span class="streak-unit">%</span></div>
+              <div class="streak-display"><span class="streak-num" id="dash-score-num">0</span><span class="streak-unit" id="dash-score-unit">%</span></div>
               <p class="sub-note" id="dash-score-detail">—</p>
             </div>
           </div>
           <div class="reactor-legend"><span class="l-hab" id="leg-hab">habitudes</span><span class="l-rev" id="leg-rev">révision</span><span class="l-proj" id="leg-proj">projets</span></div>
+          <p class="reactor-note" id="dash-score-note"></p>
           <!-- Bloc en cours / prochain bloc : lu dans le meme agenda que la vue semaine
                (agendaDuJour), donc toujours d'accord avec elle. -->
           <!-- Le bloc en cours et les boutons Pomodoro sont montes en tete de page
@@ -3696,8 +3753,21 @@
       if(btn.dataset.page === 'bilan'){ renderBilan(); }
       if(btn.dataset.page === 'insights'){ renderInsights(); }
       if(btn.dataset.page === 'dashboard'){ rafraichirSpotify(); }
+      centrerOnglet(btn);
     });
   });
+  /* Sur telephone la barre du bas est un rail qui defile : quatorze onglets, six visibles.
+     Apres un changement de page, l'onglet actif est ramene dans le champ de vision --
+     sinon on ouvre « Courses » depuis un lien et la barre continue d'afficher « Tableau
+     de bord » comme si rien n'avait bouge. */
+  function centrerOnglet(btn){
+    try{
+      var rail = document.querySelector('.sidebar');
+      if(!rail || rail.scrollWidth <= rail.clientWidth + 4) return;
+      var x = btn.offsetLeft - (rail.clientWidth - btn.offsetWidth) / 2;
+      rail.scrollTo({left: Math.max(0, x), behavior: 'smooth'});
+    }catch(e){}
+  }
   /* Un bouton [data-ouvrir="page"] pose n'importe ou ouvre l'onglet correspondant : un
      ecouteur unique sur le document, les rendus peuvent recreer ces boutons librement. */
   document.addEventListener('click', function(e){
@@ -6201,6 +6271,17 @@
        — trapèzes : shrugs suspendus jeudi et samedi (supérieurs), face pulls jeudi et samedi
          (moyens et inférieurs) — c'est ce couple qui tient l'épaule et la posture. */
   var PROGRAMME_DEBUT = '2026-09-14';
+  /* Le programme va du premier jour de cours au dernier jour de la phase 3 d'espagnol :
+     c'est la fenetre que le reacteur annonce le matin du jour 1, quand il n'y a encore
+     rien a mesurer. Un « 0 % » geant le 14 au reveil n'est pas une note, c'est une
+     journee qui commence : on affiche le rang du jour tant que rien n'est saisi. */
+  var PROGRAMME_FIN = '2027-03-14';
+  function jourProgramme(iso){
+    return daysBetween(new Date(PROGRAMME_DEBUT + 'T00:00:00'), new Date((iso || todayISO) + 'T00:00:00')) + 1;
+  }
+  function joursProgramme(){
+    return daysBetween(new Date(PROGRAMME_DEBUT + 'T00:00:00'), new Date(PROGRAMME_FIN + 'T00:00:00')) + 1;
+  }
   var SESSIONS = [
     {type:'Haut lourd', days:[1], duree:'50 min', repos:['45 s / 90 s', '45 s / 75 s', '30 s / 60 s'], exercises:[
       {name:'Tractions', reps:'4×6-12'},{name:'Dips', reps:'4×8-15'},
@@ -7883,8 +7964,14 @@
   function comparerObjectif(o){
     var m = METRIQUES[metriqueDe(o.metrique)] || {mode:'cumul', unite:'', dec:0};
     var sens = o.sens || m.sens || '>=';
-    var total = Math.max(1, daysBetween(new Date(o.debut + 'T00:00:00'), new Date(o.fin + 'T00:00:00')) + 1);
-    var ecoules = clamp(daysBetween(new Date(o.debut + 'T00:00:00'), new Date(todayISO + 'T00:00:00')) + 1, 0, total);
+    /* Un objectif ne se juge JAMAIS sur des journees anterieures au premier jour du
+       programme : une moyenne d'habitudes calculee depuis le 1er septembre valait 0 % le
+       14 au matin, et l'objectif du mois s'ouvrait « en retard » sur treize jours ou la
+       Batcave ne servait pas encore. La periode utile commence au plus tot le 14. */
+    var debutUtile = o.debut > PROGRAMME_DEBUT ? o.debut : PROGRAMME_DEBUT;
+    if(debutUtile > o.fin) debutUtile = o.debut;
+    var total = Math.max(1, daysBetween(new Date(debutUtile + 'T00:00:00'), new Date(o.fin + 'T00:00:00')) + 1);
+    var ecoules = clamp(daysBetween(new Date(debutUtile + 'T00:00:00'), new Date(todayISO + 'T00:00:00')) + 1, 0, total);
     var f = ecoules / total;
     /* Temps de travail et séances de sport : le rythme attendu se lit dans la grille, pas
        dans le calendrier. Un jour de TP, un jour d'examen, un jour exclu ou une journée de
@@ -7892,10 +7979,13 @@
        0,8 comme avant ; la cible de la période, elle, ne bouge pas. */
     var mk = metriqueDe(o.metrique);
     if(CHAMP_PREVU[mk]){
-      var pf = partEcoulee(mk, o.debut, o.fin);
+      var pf = partEcoulee(mk, debutUtile, o.fin);
       if(pf !== null) f = pf;
     }
     var cible = Number(o.cible) || 0;
+    /* Le REEL, lui, se lit sur toute la periode declaree : si une session a ete
+       enregistree avant le 14, elle a bien eu lieu -- on ne l'efface pas. Seule
+       l'ATTENTE est ramenee au programme, ci-dessus. */
     var valeur = todayISO < o.debut ? null : valeurMetrique(o.metrique, o.debut, o.fin);
     var depart = m.mode === 'niveau' ? departMetrique(o) : 0;
     var attendu, projection = null;
@@ -8205,9 +8295,11 @@
     var legend = data.map(function(e, i){
       var pct = Math.round(100 * e.value / total);
       var color = PIE_COLORS[i % PIE_COLORS.length];
-      return '<li style="display:flex; align-items:center; gap:8px; font-size:12.5px; color:var(--ink-dim); margin-bottom:6px;">'+
-        '<span style="width:10px; height:10px; border-radius:3px; background:'+color+'; flex:none;"></span>'+
-        '<span style="flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">'+escapeHtml(e.label)+'</span>'+
+      /* Le nom de categorie passe a la ligne au lieu d'etre coupe par des points de
+         suspension : « Eau & Élec… » ne dit pas ce qui coute 70 € par mois. */
+      return '<li style="display:flex; align-items:baseline; gap:8px; font-size:12.5px; color:var(--ink-dim); margin-bottom:6px;">'+
+        '<span style="width:10px; height:10px; border-radius:3px; background:'+color+'; flex:none; align-self:center;"></span>'+
+        '<span style="flex:1 1 auto; min-width:0; overflow-wrap:anywhere;">'+escapeHtml(e.label)+'</span>'+
         '<b style="color:var(--ink); flex:none;">'+e.value.toFixed(0)+' €<span style="color:var(--ink-faint); font-weight:500;"> · '+pct+'%</span></b>'+
         '</li>';
     }).join('');
@@ -9014,17 +9106,33 @@
     });
     return stats;
   }
+  /* ===== Quand cette carte s'allume-t-elle ? =====
+     Une carte d'Insights qui repond « il faut 5 jours suivis (0 pour l'instant) » laisse
+     croire qu'elle est cassee. Chaque carte muette porte donc une date : le jour ou, si la
+     Batcave est remplie chaque jour, elle aura de quoi parler. C'est « au plus tot » --
+     sauter un jour repousse la date d'autant. */
+  function dansNJours(n){ var d = new Date(now); d.setDate(d.getDate() + Math.max(1, Math.ceil(n))); return localISO(d); }
+  function dansNSeances(n){
+    var d = new Date(now), c = 0, k = 0;
+    while(k < 90 && c < Math.max(1, n)){ d.setDate(d.getDate() + 1); k++; if(typeSportDe(localISO(d)) !== 'Off') c++; }
+    return localISO(d);
+  }
+  function lundiProchain(){
+    var d = new Date(now); d.setHours(0,0,0,0);
+    d.setDate(d.getDate() + (8 - (d.getDay() || 7)));
+    return localISO(d);
+  }
   function insightBlocFragile(){
     var jours = joursSuivis(14), stats = statsBlocs(jours);
     var T = 'Bloc le plus fragile', P = 'calendrier';
-    if(jours.length < 5) return {icon:'🧱', title:T, page:P, text:'Il faut au moins 5 jours suivis sur les 14 derniers (' + jours.length + ' pour l\'instant) pour voir quel bloc du planning saute le plus souvent.', score:0, n:jours.length};
+    if(jours.length < 5) return {icon:'🧱', title:T, page:P, text:'Il faut au moins 5 jours suivis sur les 14 derniers (' + jours.length + ' pour l\'instant) pour voir quel bloc du planning saute le plus souvent.', score:0, n:jours.length, des:dansNJours(5 - jours.length)};
     var pire = null;
     Object.keys(stats).forEach(function(k){
       var s = stats[k]; if(s.jours < 3) return;
       var taux = s.tenus / s.jours;
       if(!pire || taux < pire.taux) pire = {k:k, label:s.label, debut:s.debut, taux:taux, jours:s.jours, tenus:s.tenus, minutes:s.minutes};
     });
-    if(!pire) return {icon:'🧱', title:T, page:P, text:'Pas encore assez de répétitions du même bloc (3 minimum) sur les jours suivis.', score:0, n:jours.length};
+    if(!pire) return {icon:'🧱', title:T, page:P, text:'Pas encore assez de répétitions du même bloc (3 minimum) sur les jours suivis.', score:0, n:jours.length, des:dansNJours(3)};
     var avant = statsBlocs(joursSuivis(14, 14))[pire.k], tend = null;
     if(avant && avant.jours >= 3) tend = tendance(pire.taux * 100, avant.tenus / avant.jours * 100, {bonSiHausse:true, unite:'pts', seuil:5, ref:'14 j avant'});
     var ou = pire.label + ' (' + heureTxt(pire.debut) + ')';
@@ -9056,7 +9164,7 @@
   }
   function insightDeriveHoraire(){
     var retards = retardsDemarrage(joursSuivis(14)), T = 'Dérive du premier bloc', P = 'calendrier';
-    if(retards.length < 5) return {icon:'⏱️', title:T, page:P, text:'Il faut 5 jours suivis (' + retards.length + ') pour mesurer à quelle heure tu démarres vraiment par rapport au plan.', score:0, n:retards.length};
+    if(retards.length < 5) return {icon:'⏱️', title:T, page:P, text:'Il faut 5 jours suivis (' + retards.length + ') pour mesurer à quelle heure tu démarres vraiment par rapport au plan.', score:0, n:retards.length, des:dansNJours(5 - retards.length)};
     var moy = retards.reduce(function(a, x){ return a + x.r; }, 0) / retards.length;
     var parDow = {}, pire = null;
     retards.forEach(function(x){ (parDow[x.dow] = parDow[x.dow] || []).push(x.r); });
@@ -9090,7 +9198,8 @@
     var dette = detteDe(nuits), moy = nuits.length ? nuits.reduce(function(a, n){ return a + n.h; }, 0) / nuits.length : 0;
     var pire = null; nuits.forEach(function(n){ if(!pire || n.h < pire.h) pire = n; });
     var texte, action = '', score = 0;
-    if(nuits.length < 4) texte = 'Il faut au moins 4 nuits renseignées sur les 7 dernières (' + nuits.length + ') : Bevel te donne le chiffre, la clôture du jour le range.';
+    var desSommeil = null;
+    if(nuits.length < 4){ texte = 'Il faut au moins 4 nuits renseignées sur les 7 dernières (' + nuits.length + ') : Bevel te donne le chiffre, la clôture du jour le range.'; desSommeil = dansNJours(4 - nuits.length); }
     else if(dette < 1) texte = 'Aucune dette sur les ' + nuits.length + ' dernières nuits renseignées (moyenne ' + virg(moy) + ' h ; objectif 7 h 35 en semaine, 8 h 30 le week-end).';
     else {
       texte = 'Dette de sommeil : ' + hminTxt(dette * 60) + ' cumulées sur ' + nuits.length + ' nuits (moyenne ' + virg(moy) + ' h). La plus courte : ' + DOW_NAMES_LONG[pire.dow] + ', ' + virg(pire.h) + ' h pour ' + hminTxt(pire.obj * 60) + ' prévues.';
@@ -9138,7 +9247,7 @@
     if(nuits.length >= 4 && avant.length >= 4) tend = tendance(dette / nuits.length, detteDe(avant) / avant.length, {bonSiHausse:false, fmt:function(x){ return hminTxt(x * 60) + '/nuit de dette'; }, seuil:0.15, ref:'7 nuits avant'});
     var quatorze = nuitsRenseignees(14).reverse();
     var serie = {v: quatorze.map(function(n){ return n.h; }), label: quatorze.length + ' nuits', unite:'h', dec:1, cible: quatorze.length ? Math.round(quatorze.reduce(function(a, n){ return a + n.obj; }, 0) / quatorze.length * 10) / 10 : null};
-    return {icon:'🛏️', title:T, page:P, text: texte + corr, action: action, score: score, n: nuits.length + paires.length, tendance: tend, serie: serie};
+    return {icon:'🛏️', title:T, page:P, text: texte + corr, action: action, score: score, n: nuits.length + paires.length, tendance: tend, serie: serie, des: desSommeil};
   }
 
   /* 4. Balance énergétique : calories cochées contre pente du poids, sur 28 jours -------- */
@@ -9168,7 +9277,7 @@
     }
     var T = 'Balance énergétique', P = 'repas';
     var serie = {v: poids.slice().reverse().map(function(p){ return p.kg; }), label: poids.length + ' pesées', unite:'kg', dec:1};
-    if(kcal.length < 7 || poids.length < 4) return {icon:'⚖️', title:T, page:P, text:'Il faut 7 jours de repas complets (au moins la moitié de la cible cochée) et 4 pesées sur 28 jours : ' + kcal.length + ' jours complets, ' + rep.partiels + ' partiels ignorés, ' + poids.length + ' pesées. Coche chaque prise le jour même.', score:0, n:kcal.length + poids.length, serie:serie};
+    if(kcal.length < 7 || poids.length < 4) return {icon:'⚖️', title:T, page:P, text:'Il faut 7 jours de repas complets (au moins la moitié de la cible cochée) et 4 pesées sur 28 jours : ' + kcal.length + ' jours complets, ' + rep.partiels + ' partiels ignorés, ' + poids.length + ' pesées. Coche chaque prise le jour même.', score:0, n:kcal.length + poids.length, serie:serie, des:dansNJours(Math.max(7 - kcal.length, 4 - poids.length))};
     var moyK = kcal.reduce(function(a, x){ return a + x.kcal; }, 0) / kcal.length;
     var moyC = kcal.reduce(function(a, x){ return a + x.cible; }, 0) / kcal.length;
     var n = poids.length, sx = 0, sy = 0, sxy = 0, sxx = 0;
@@ -9226,12 +9335,13 @@
       action = 'La surcharge progressive de l\'onglet Sport affiche le cran suivant : la prochaine fois, +1 répétition sur la première série, ou +2,5 kg si toutes les séries touchent le haut de la fourchette. Si ça bloque cinq séances, change de variante ou ajoute une série.';
       score = Math.min(100, pire.n * 15);
     } else if(nExo) texte = 'Tous tes exercices ont progressé (charge ou répétitions) sur leurs trois dernières séances.';
-    else texte = 'Il faut 3 séances enregistrées du même exercice (séries et charge, onglet Sport) pour repérer une stagnation.';
+    var desSport = null;
+    if(!pire && !nExo){ texte = 'Il faut 3 séances enregistrées du même exercice (séries et charge, onglet Sport) pour repérer une stagnation.'; desSport = dansNSeances(3); }
     if(saute){
       texte += ' Tu sautes ta séance le ' + DOW_NAMES_LONG[saute.dow] + ' ' + Math.round(saute.rate * 100) + ' % du temps (' + saute.skipped + '/' + saute.total + ' fois suivies).';
       if(!action){ action = 'Le ' + DOW_NAMES_LONG[saute.dow] + ' est ton jour de sport le plus fragile : prévois-y la version courte de la séance (30 min, les deux premiers exercices) plutôt que rien. Une séance courte tenue garde la série vivante.'; score = Math.round(saute.rate * 60); }
     } else if(days.length >= 7) texte += ' Aucun jour de la semaine ne saute particulièrement.';
-    return {icon:'🏋️', title:T, page:P, text:texte, action:action, score:score, n:sportLog.length + days.length, tendance:tend};
+    return {icon:'🏋️', title:T, page:P, text:texte, action:action, score:score, n:sportLog.length + days.length, tendance:tend, des:desSport};
   }
 
   /* 6. Matière et partiel --------------------------------------------------------------- */
@@ -9252,9 +9362,18 @@
     var exams = Object.keys(examensState).map(function(m){ return {m: m, iso: examensState[m], jours: daysBetween(aujourdhui, new Date(examensState[m] + 'T00:00:00'))}; })
                       .filter(function(e){ return e.jours >= 0 && e.jours <= 45; });
     var T = 'Matière et partiel', P = 'etudes';
-    if(!exams.length) return {icon:'🎓', title:T, page:P, text:'Aucun partiel dans les 45 jours (échéances par matière, onglet Études).', score:0, n:0};
+    if(!exams.length){
+      /* Un partiel plus lointain donne quand meme une date : la carte s'allume 45 jours
+         avant. Sans aucune echeance saisie, elle dit ce qu'il manque, pas une date. */
+      var futurs = Object.keys(examensState).map(function(m){ return examensState[m]; })
+                         .filter(function(d){ return d && d > todayISO; }).sort();
+      var d45 = null;
+      if(futurs.length){ var x = new Date(futurs[0] + 'T00:00:00'); x.setDate(x.getDate() - 45); d45 = localISO(x); }
+      return {icon:'🎓', title:T, page:P, des:d45,
+              text:'Aucun partiel dans les 45 jours.' + (d45 ? '' : ' Renseigne les échéances par matière dans l\'onglet Études : elle s’allume aussitôt.'), score:0, n:0};
+    }
     var rv = revisionParMatiere(0, 14);
-    if(rv.total < 120) return {icon:'🎓', title:T, page:P, text:'Pas assez de révision étiquetée par matière sur 14 jours (' + hminTxt(rv.total) + ') : nomme la matière au lancement du Pomodoro.', score:0, n:rv.entrees};
+    if(rv.total < 120) return {icon:'🎓', title:T, page:P, text:'Pas assez de révision étiquetée par matière sur 14 jours (' + hminTxt(rv.total) + ') : nomme la matière au lancement du Pomodoro.', score:0, n:rv.entrees, des:dansNJours(1)};
     var pire = null;
     exams.forEach(function(e){
       var min = rv.parM[e.m] || 0, part = min / rv.total, u = (1 - part) * (46 - e.jours) / 46;
@@ -9290,7 +9409,7 @@
        habitudes confondues, avant de désigner une délaissée. */
     var joursH = {}; Object.keys(habitLog || {}).forEach(function(id){ (habitLog[id] || []).forEach(function(d){ joursH[d] = true; }); });
     var nJ = Object.keys(joursH).length;
-    if(nJ < 7) return {icon:'✅', title:T, page:P, text:'Pas encore assez d\'historique : ' + nJ + ' jour' + (nJ > 1 ? 's' : '') + ' avec une habitude cochée sur 7 minimum. Coche-les chaque soir à la clôture du jour, la carte se remplira toute seule.', score:0, n:nJ};
+    if(nJ < 7) return {icon:'✅', title:T, page:P, text:'Pas encore assez d\'historique : ' + nJ + ' jour' + (nJ > 1 ? 's' : '') + ' avec une habitude cochée sur 7 minimum. Coche-les chaque soir à la clôture du jour, la carte se remplira toute seule.', score:0, n:nJ, des:dansNJours(7 - nJ)};
     var rates = active.map(function(hb){ return {h: hb, rate: tauxHabitude(hb, 0, 30)}; }).filter(function(x){ return x.rate !== null; });
     if(!rates.length) return {icon:'✅', title:T, page:P, text:'Pas encore assez d\'historique (minimum 7 jours).', score:0, n:nJ};
     rates.sort(function(a, b){ return a.rate - b.rate; });
@@ -9317,7 +9436,7 @@
   }
   function insightCreneau(){
     var blocs = sessionsState.filter(function(b){ return b.debut && Number(b.duree) > 0; }), T = 'Ton créneau le plus productif', P = 'calendrier';
-    if(blocs.length < 8) return {icon:'🕐', title:T, page:P, text:'Encore trop peu de blocs enregistrés (' + blocs.length + '/8 minimum) — continue, l\'analyse se débloquera toute seule.', score:0, n:blocs.length};
+    if(blocs.length < 8) return {icon:'🕐', title:T, page:P, text:'Encore trop peu de blocs enregistrés (' + blocs.length + '/8 minimum) — continue, l\'analyse se débloquera toute seule.', score:0, n:blocs.length, des:dansNJours((8 - blocs.length) / 3)};
     var tranches = {};
     blocs.forEach(function(b){ var t = Math.floor(new Date(b.debut).getHours() / 2) * 2; tranches[t] = (tranches[t] || 0) + Number(b.duree || 0); });
     var liste = Object.keys(tranches).map(function(t){ return {debut: Number(t), min: tranches[t]}; }).sort(function(a, b){ return b.min - a.min; });
@@ -9353,7 +9472,7 @@
       if(jours >= 3) semaines.push({fait: fait, prevu: prevu, taux: prevu ? fait / prevu : 0});
     }
     var T = 'Fidélité au plan', P = 'bilan';
-    if(!semaines.length) return {icon:'📐', title:T, page:P, text:'Il faut une semaine complète suivie (au moins 3 jours avec des blocs enregistrés) pour mesurer la fidélité au plan.', score:0, n:0};
+    if(!semaines.length) return {icon:'📐', title:T, page:P, text:'Il faut une semaine complète suivie (au moins 3 jours avec des blocs enregistrés) pour mesurer la fidélité au plan.', score:0, n:0, des:lundiProchain()};
     var der = semaines[0], pct = Math.round(der.taux * 100);
     var texte = 'Semaine dernière : ' + pct + ' % du plan (' + hminTxt(der.fait) + ' sur ' + hminTxt(der.prevu) + ' prévues)';
     var tend = null;
@@ -9370,7 +9489,11 @@
   function buildInsights(){
     var liste = [insightBlocFragile(), insightDeriveHoraire(), insightSommeil(), insightFideliteHebdo(), insightMatiereExamen(),
                  insightSport(), insightBalanceEnergetique(), insightHabitudes(), insightCreneau()].filter(Boolean);
-    liste.forEach(function(it){ if(typeof it.score !== 'number') it.score = 10; });
+    liste.forEach(function(it){
+      if(typeof it.score !== 'number') it.score = 10;
+      /* Une carte muette dit QUAND elle parlera : sinon on la croit cassée. */
+      if(it.des) it.text += ' Elle s’allume au plus tôt le ' + fmtDate(it.des) + ', si la Batcave est remplie chaque jour d’ici là.';
+    });
     liste.sort(function(a, b){ return b.score - a.score; });
     return liste;
   }
@@ -9537,6 +9660,20 @@
     }
     return parts.length ? Math.round(parts.reduce(function(a,b){return a+b;},0)/parts.length) : 0;
   }
+  /* Une journee est ENTAMEE des qu'une seule chose y a ete saisie. Tant que rien ne l'est,
+     le score n'est pas un zero merite : c'est un ecran vide. Le reacteur affiche alors le
+     rang du jour dans le programme au lieu d'un « 0 % À reprendre » qui accueille mal. */
+  function jourEntame(iso){
+    var actifs = habitsDuJour(dowDe(iso));
+    if(actifs.some(function(h){ return (habitLog[h.id]||[]).indexOf(iso) > -1; })) return true;
+    var ms = (iso === todayISO) ? mealState : load('batcave-meals-'+iso, null);
+    if(ms && mealNutritionTotals(ms, iso).totals.kcal > 0) return true;
+    var ss = (iso === todayISO) ? sportState : load('batcave-sport-'+iso, null);
+    if(ss && sportTotals(typeSportDe(iso), ss).checked > 0) return true;
+    var j = (iso === todayISO) ? journalState : load('batcave-journal-'+iso, null);
+    if(j && (Number(j.water) > 0 || (j.sommeil !== '' && j.sommeil != null) || j.mood || j.coran)) return true;
+    return false;
+  }
   function renderScoreChart(){
     var el = document.getElementById('score-chart');
     if(!el) return;
@@ -9637,8 +9774,24 @@
     var habitsDoneToday = activeHabitsToday.filter(function(h){ return habitDoneToday(h.id); }).length;
     var dayScore = dayScoreFor(todayISO);
     var scoreLabel = dayScore>=85 ? 'Excellent 🔥' : dayScore>=60 ? 'Bien 👍' : dayScore>=35 ? 'Moyen' : 'À reprendre';
-    document.getElementById('dash-score-num').textContent = dayScore;
-    document.getElementById('dash-score-detail').textContent = scoreLabel + ' · habitudes, nutrition, sport, eau et sommeil combinés';
+    var numEl = document.getElementById('dash-score-num'), uniEl = document.getElementById('dash-score-unit');
+    var jourN = jourProgramme(todayISO), totalN = joursProgramme(), noteScore;
+    if(jourEntame(todayISO) || jourN < 1 || jourN > totalN){
+      numEl.textContent = dayScore;
+      if(uniEl) uniEl.textContent = '%';
+      noteScore = scoreLabel + ' · habitudes, nutrition, sport, eau et sommeil combinés';
+    } else {
+      /* Rien de saisi aujourd'hui : on annonce le rang du jour, pas une note. */
+      numEl.textContent = jourN;
+      if(uniEl) uniEl.textContent = '/' + totalN;
+      noteScore = (jourN === 1 ? 'Premier jour du programme.' : 'Jour ' + jourN + ' sur ' + totalN + '.') +
+        ' Le score s’allume à la première case cochée.';
+    }
+    document.getElementById('dash-score-detail').textContent = noteScore;
+    /* le meme texte hors de l'anneau : sur telephone, l'anneau fait 124 px et n'a pas la
+       place de le porter (voir .reactor-note) */
+    var noteEl = document.getElementById('dash-score-note');
+    if(noteEl) noteEl.textContent = noteScore;
 
     /* Les trois compteurs du jour, côte à côte : c'est la question qu'on se pose le plus
        souvent en ouvrant la page — combien j'ai bossé, et sur quoi. */
@@ -10345,10 +10498,15 @@
   var MARGE_CIBLE = {revision_h:0.89, projets_h:0.85, espagnol_h:0.89, sport_seances:0.9};
   function prevuSurPeriode(cle, debut, fin, avecCharge){
     var champ = CHAMP_PREVU[metriqueDe(cle)]; if(!champ) return 0;
+    /* Un jour ANTERIEUR au premier jour du programme ne prevoit rien : on ne peut pas etre
+       en retard sur des journees ou la Batcave ne servait pas encore. Sans ce garde-fou, un
+       objectif de septembre commence le 1er comptait les projets perso du 1er au 13 (grille
+       type, avant la phase 1 qui les remplace par de l'espagnol) : au matin du 14 la periode
+       paraissait ecoulee a 100 % et l'objectif s'affichait en retard de sa cible entiere. */
     var t = 0, d = new Date(debut + 'T00:00:00'), n = 0;
     while(localISO(d) <= fin && n < 800){
       var iso = localISO(d);
-      t += minutesPrevuesJour(iso)[champ] * (avecCharge ? facteurCharge(iso) : 1);
+      if(iso >= PROGRAMME_DEBUT) t += minutesPrevuesJour(iso)[champ] * (avecCharge ? facteurCharge(iso) : 1);
       d.setDate(d.getDate() + 1); n++;
     }
     return t;
@@ -10361,12 +10519,38 @@
   /* Part de la période réellement écoulée, en minutes prévues. Le total est celui de la
      grille pleine ; les jours déjà passés sont pondérés par la charge du jour, si bien
      qu'une charge réduite fait BAISSER le rythme attendu au lieu de le relever. */
+  /* Part du travail prevu AUJOURD'HUI qui est deja passee, bloc par bloc.
+     Sans elle, la journee en cours comptait pour une journee entiere des le reveil : a
+     06:45 le tableau de bord annoncait « en retard » de la cible complete du jour, tous
+     les matins, alors qu'aucun bloc n'avait encore commence. On compte les blocs finis en
+     entier, et le bloc en cours au prorata des minutes ecoulees. */
+  function partJourEcoulee(champ, iso){
+    if(iso !== todayISO) return 1;
+    if(champ === 'sport') return now.getHours() >= 21 ? 1 : 0;   /* la seance a sa place dans la journee */
+    var blocs = blocsDuPlanning(cleJournee(dowDe(iso)), iso);
+    var mn = now.getHours() * 60 + now.getMinutes(), tot = 0, passe = 0;
+    blocs.forEach(function(b){
+      var es = /^Español/.test(b.label), c;
+      if(es) c = 'es'; else if(b.type === 'cours') c = 'rev'; else if(b.type === 'projet') c = 'proj'; else return;
+      if(c !== champ) return;
+      tot += b.minutes;
+      passe += b.minutes * clamp((mn - b.debut) / Math.max(1, b.fin - b.debut), 0, 1);
+    });
+    return tot > 0 ? clamp(passe / tot, 0, 1) : (mn >= 21 * 60 ? 1 : 0);
+  }
   function partEcoulee(cle, debut, fin){
+    var champ = CHAMP_PREVU[metriqueDe(cle)];
     var tot = prevuSurPeriode(cle, debut, fin, false);
     if(!(tot > 0)) return null;
     if(todayISO < debut) return 0;
-    var stop = fin < todayISO ? fin : todayISO;
-    return clamp(prevuSurPeriode(cle, debut, stop, true) / tot, 0, 1);
+    if(fin < todayISO) return clamp(prevuSurPeriode(cle, debut, fin, true) / tot, 0, 1);
+    /* jusqu'a HIER en entier, plus la part d'aujourd'hui reellement ecoulee */
+    var hier = isoDecale(todayISO, -1);
+    var cumul = hier < debut ? 0 : prevuSurPeriode(cle, debut, hier, true);
+    if(todayISO >= debut && champ){
+      cumul += minutesPrevuesJour(todayISO)[champ] * facteurCharge(todayISO) * partJourEcoulee(champ, todayISO);
+    }
+    return clamp(cumul / tot, 0, 1);
   }
   function propositionCharge(){
     if(chargeReduiteActive()) return null;
@@ -11081,9 +11265,9 @@
       var pct = limit ? Math.round(100*spent/limit) : 0;
       var over = limit>0 && spent>limit;
       return '<div style="margin-bottom:12px;">'+
-        '<div style="display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:4px;">'+
-          '<span style="font-size:13px; color:var(--ink-dim);">'+escapeHtml(cat)+'</span>'+
-          '<span style="display:flex; align-items:center; gap:8px;">'+
+        '<div class="bud-cat">'+
+          '<span class="bc-nom">'+escapeHtml(cat)+'</span>'+
+          '<span class="bc-reglage">'+
             (limit ? '<span class="sub-note" style="font-size:11.5px; color:'+(over?'var(--danger)':'var(--ink-faint)')+';">'+spent.toFixed(0)+' / '+limit.toFixed(0)+' € · '+pct+'%</span>' : '<span class="sub-note" style="font-size:11.5px;">'+spent.toFixed(0)+' € ce mois</span>')+
             '<input type="number" min="0" step="10" data-budget-cat="'+escapeHtml(cat)+'" value="'+(limit||'')+'" placeholder="budget €" style="width:78px; background:var(--surface-raised); border:1px solid var(--border); color:var(--ink); border-radius:6px; padding:4px 7px; font-size:12px;">'+
           '</span>'+

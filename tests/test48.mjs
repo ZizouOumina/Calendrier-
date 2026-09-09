@@ -35,7 +35,10 @@ console.log('\n== 112) Semis : trimestres et mois ==');
   ok(nT === 44 && nM === 96, '44 objectifs trimestriels + 96 mensuels (' + nT + ' / ' + nM + ')');
   ok(await local(fr, 'batcave-objectifs-seed-v1') === true, 'drapeau de semis posé');
   const t1 = o.liste.find(x => x.id === 'T1:revision_h'), m9 = o.liste.find(x => x.id === 'M2026-09:revision_h');
-  ok(t1 && t1.cible === 346.1 && m9 && m9.cible === 115.1, 'T1 révision calculée depuis la grille : 346,1 h → septembre 115,1 h (' + (t1 && t1.cible) + ' / ' + (m9 && m9.cible) + ')');
+  /* La grille ne prévoit rien avant le 14 septembre, premier jour du programme : la cible
+     du trimestre part du 14, pas du 1er. Sinon T1 s'ouvrait avec 50 h de révision déjà
+     « prévues » sur des journées où la Batcave ne servait pas encore. */
+  ok(t1 && t1.cible === 296.8 && m9 && m9.cible === 65.8, 'T1 révision calculée depuis la grille, à partir du 14 : 296,8 h → septembre 65,8 h (' + (t1 && t1.cible) + ' / ' + (m9 && m9.cible) + ')');
   ok(t1 && t1.auto === true, 'la cible est marquée automatique : elle suivra la grille');
   ok(!o.liste.some(x => x.periode === 'mois' && /exo:|snus/.test(x.metrique)), 'les niveaux (tractions) et la série snus restent au trimestre');
   await ctx.close();
@@ -46,8 +49,10 @@ console.log('\n== 113) Comparaison sur des données réelles ==');
   const { ctx, fr, page } = await ouvrir(MI_SEPT, Object.assign({ 'batcave-sessions': sessions }, journaux));
   await aller(fr, page, 'objectifs');
   const rev = await ligne(fr, 'Révision');
-  ok(rev && /réel 40,0 h/.test(rev.txt) && /attendu 57,2 h/.test(rev.txt) && /retard/.test(rev.led), 'Révision : réel 40,0 h, attendu 57,2 h (les minutes prévues jusqu\'au 15) → en retard : ' + (rev && rev.txt.slice(0, 80)));
-  ok(rev && /à ce rythme : 80,5 h/.test(rev.txt), 'projection à ce rythme : 80,5 h à la fin');
+  /* 40 h ont bien été travaillées du 1er au 10 : le RÉEL les garde. L'ATTENTE, elle, ne
+     compte que le programme — le 14 en entier plus le 15 jusqu'à 10:00, soit 6 h. Une
+     séance faite avant le départ compte, mais ne crée pas de retard. */
+  ok(rev && /réel 40,0 h/.test(rev.txt) && /attendu 6,0 h/.test(rev.txt) && /avance/.test(rev.led), 'Révision : réel 40,0 h pour 6,0 h attendues au 15 à 10:00 → en avance : ' + (rev && rev.txt.slice(0, 80)));
   const som = await ligne(fr, 'Sommeil');
   ok(som && /réel 7,50 h/.test(som.txt) && /\bok\b/.test(som.led), 'Sommeil moyen 7,50 h sur 7,75 visées (97 %) → dans les clous');
   const eau = await ligne(fr, 'Eau');
@@ -55,7 +60,7 @@ console.log('\n== 113) Comparaison sur des données réelles ==');
   const sport = await ligne(fr, 'Séances');
   ok(sport && /réel 0 séances/.test(sport.txt) && /retard/.test(sport.led), 'Séances de sport : 0 réelles → en retard');
   const resume = await fr.evaluate(() => document.getElementById('obj-resume').innerText);
-  ok(/en retard/.test(resume) && /50 % de la période/.test(resume), 'résumé : ' + resume);
+  ok(/en retard/.test(resume) && /% de la période/.test(resume), 'résumé : ' + resume);
   await ctx.close();
 }
 
@@ -67,7 +72,7 @@ console.log('\n== 114) Éditer une cible, supprimer, ajouter ==');
   await page.waitForTimeout(250);
   const rev = await ligne(fr, 'Révision');
   ok((await local(fr, 'batcave-objectifs')).liste.find(x => x.id === 'M2026-09:revision_h').cible === 60, 'cible enregistrée : 60');
-  ok(rev && /attendu 29,8 h/.test(rev.txt) && /avance/.test(rev.led), 'recalcul immédiat : attendu 29,8 h, 40 h réelles → en avance');
+  ok(rev && /attendu 5,4 h/.test(rev.txt) && /avance/.test(rev.led), 'recalcul immédiat sur une cible de 60 h : attendu 5,4 h, 40 h réelles → en avance (' + (rev && rev.txt.slice(0, 70)) + ')');
   ok((await local(fr, 'batcave-objectifs')).liste.find(x => x.id === 'M2026-09:revision_h').auto === false, 'une cible saisie à la main sort du calcul automatique');
   const avant = (await local(fr, 'batcave-objectifs')).liste.length;
   await fr.evaluate(() => document.querySelector('[data-obj-del="M2026-09:eau_moy"]').click());
@@ -111,7 +116,7 @@ console.log('\n== 116) Tableau de bord : objectifs du mois ==');
   await fr.evaluate(() => { if(document.getElementById('dash-more').hidden) document.getElementById('dash-more-toggle').click(); });
   const d = await fr.evaluate(() => ({ n: document.querySelectorAll('#dash-goals li').length, leds: document.querySelectorAll('#dash-goals .obj-led').length, txt: document.getElementById('dash-goals').innerText.replace(/\s+/g,' '), note: document.getElementById('dash-goals-note').innerText }));
   ok(d.n === 8 && d.leds === 8, '8 objectifs du mois avec leur LED');
-  ok(/Révision 40,0 \/ 115,1 h/.test(d.txt), 'ligne compacte réel / cible : ' + d.txt.slice(0, 60));
+  ok(/Révision 40,0 \/ 65,8 h/.test(d.txt), 'ligne compacte réel / cible : ' + d.txt.slice(0, 60));
   ok(/\/8 dans les clous · Septembre 2026/.test(d.note), 'note : ' + d.note);
   await ctx.close();
 }

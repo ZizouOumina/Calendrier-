@@ -76,11 +76,14 @@ console.log('\n== 200) Depuis l\'appli : tout est effacé ici et dans le cloud, 
   const gardes = ['batcave-habits','batcave-fixed-charges','batcave-examens','batcave-pomodial-importees'];
   ok(gardes.every(k => c[k]), 'habitudes, charges fixes, examens et suivi PomoDial gardés dans le cloud' + (gardes.filter(k => !c[k]).length ? ' — manque ' + gardes.filter(k => !c[k]).join(', ') + ' · clés cloud : ' + Object.keys(c).join(' ') : ''));
   ok(c['batcave-reinit'] && c['batcave-reinit'].id && c['batcave-reinit'].date === '2026-09-08', 'le marqueur de nouveau départ est écrit dans le cloud');
-  /* les objectifs de septembre et du trimestre repartent du 8 : debut deplace, cibles cumulees au prorata (23/30 jours) */
+  /* Les objectifs de septembre et du trimestre repartent du 8 : debut deplace, cibles
+     recalculees sur la grille des jours restants. Cette grille ne prevoit rien avant le
+     14 septembre, premier jour du programme : les cibles ne comptent donc que du 14 au
+     30 (septembre) et du 14 au 30 novembre (trimestre). */
   const objs = c['batcave-objectifs'] && c['batcave-objectifs'].liste || [];
   const revSept = objs.find(o => o.id === 'M2026-09:revision_h'), revT1 = objs.find(o => o.id === 'T1:revision_h'), sommeilSept = objs.find(o => o.id === 'M2026-09:sommeil_moy');
-  ok(!!revSept && revSept.debut === '2026-09-08' && revSept.cible === 88.2, 'Révision de septembre : repart du 8, cible ramenée au prorata des jours restants → 88,2 h (' + (revSept && revSept.cible) + ')');
-  ok(!!revT1 && revT1.debut === '2026-09-08' && revT1.cible === 329.5, 'Révision du trimestre : repart du 8 → 329,5 h (' + (revT1 && revT1.cible) + ')');
+  ok(!!revSept && revSept.debut === '2026-09-08' && revSept.cible === 50.4, 'Révision de septembre : repart du 8, cible ramenée aux jours réellement programmés → 50,4 h (' + (revSept && revSept.cible) + ')');
+  ok(!!revT1 && revT1.debut === '2026-09-08' && revT1.cible === 284, 'Révision du trimestre : repart du 8 → 284 h (' + (revT1 && revT1.cible) + ')');
   ok(!!sommeilSept && sommeilSept.debut === '2026-09-08' && sommeilSept.cible === 7.75, 'une moyenne (sommeil, 7,75 h) repart du 8 sans changer de cible');
   await page.waitForTimeout(2200);   /* rechargement automatique */
   await page.frameLocator('#f').locator('#dash-plan').waitFor({ state:'attached', timeout:15000 });

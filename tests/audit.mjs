@@ -1,16 +1,22 @@
 import { chromium } from 'playwright';
 const URL = 'http://127.0.0.1:8199/host.html';
 const browser = await chromium.launch();
-/* trois gabarits : Mac large, iPad portrait, iPad paysage */
+/* Les quatre ecrans reellement utilises : Mac, iPad dans les deux sens, et l'iPhone --
+   c'est sur le telephone que la troncature de texte apparait en premier, et c'est le
+   gabarit qui manquait a cet audit. `tactile` bascule Playwright en pointeur grossier :
+   sans lui, les regles @media (pointer: coarse) ne s'appliquent pas et l'audit mesure
+   une Batcave que personne n'utilise. */
 const VUES = [
-  {nom:'Mac 1440', w:1440, h:1000},
-  {nom:'iPad portrait 834', w:834, h:1112},
-  {nom:'iPad paysage 1024', w:1024, h:768},
+  {nom:'Mac 1440', w:1440, h:1000, tactile:false},
+  {nom:'iPad portrait 834', w:834, h:1112, tactile:true},
+  {nom:'iPad paysage 1024', w:1024, h:768, tactile:true},
+  {nom:'iPhone 390', w:390, h:844, tactile:true},
 ];
 let TOTAL = 0;
 for(const V of VUES){
 console.log('\n===== ' + V.nom + ' =====');
-const ctx = await browser.newContext({ viewport:{width:V.w,height:V.h}, timezoneId:'Europe/Madrid', locale:'fr-FR' });
+const ctx = await browser.newContext({ viewport:{width:V.w,height:V.h}, timezoneId:'Europe/Madrid', locale:'fr-FR',
+  hasTouch:V.tactile, isMobile:false, deviceScaleFactor:V.tactile ? 2 : 1 });
 await ctx.addInitScript(() => {
   if(localStorage.getItem('__seed')) return;
   localStorage.setItem('__seed','1');
@@ -75,6 +81,24 @@ for(const p of pages){
     if(vides) pb.push(vides + ' panneau(x) vide(s)');
     // débordement horizontal
     if(sec && sec.scrollWidth > sec.clientWidth + 2) pb.push('débordement horizontal ('+sec.scrollWidth+'>'+sec.clientWidth+')');
+    /* Troncature : un texte plus large que sa boite est coupe -- par un ellipsis, ou pire,
+       net. Ce n'est un defaut que si la boite ne peut pas defiler : les conteneurs en
+       overflow auto/scroll (tableaux larges, rail d'onglets) sont voulus. On ne regarde
+       que les FEUILLES de texte : un parent plus large que son enfant n'est pas coupe. */
+    const tronq = [];
+    [...(sec ? sec.querySelectorAll('*') : [])].forEach(el => {
+      if(el.offsetParent === null) return;
+      const t = (el.textContent || '').trim();
+      if(!t) return;
+      if([...el.children].some(c => (c.textContent || '').trim())) return;
+      const cs = getComputedStyle(el);
+      if(cs.display === 'inline' || cs.display === 'none') return;
+      if(cs.overflowX === 'auto' || cs.overflowX === 'scroll') return;
+      if(el.scrollWidth > el.clientWidth + 1){
+        tronq.push(t.replace(/\s+/g, ' ').slice(0, 34) + ' (' + el.scrollWidth + '>' + el.clientWidth + ')');
+      }
+    });
+    if(tronq.length) pb.push('texte tronqué : ' + [...new Set(tronq)].slice(0, 4).join(' / '));
     return pb;
   }, p);
   if(r.length){ total += r.length; console.log('  ⚠ ' + p + ' : ' + r.join(' | ')); }
@@ -84,6 +108,6 @@ erreurs.forEach(e => console.log('  ⚠ ' + e));
 TOTAL += total + erreurs.length;
 await ctx.close();
 }
-console.log(TOTAL === 0 ? '\nAUCUN DEFAUT SUR LES 3 GABARITS' : `\nDEFAUTS: ${TOTAL}`);
+console.log(TOTAL === 0 ? '\nAUCUN DEFAUT SUR LES 4 GABARITS' : `\nDEFAUTS: ${TOTAL}`);
 await browser.close();
 process.exit(TOTAL === 0 ? 0 : 1);
