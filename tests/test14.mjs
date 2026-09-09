@@ -98,10 +98,10 @@ console.log('\n== 36) Agir en haut, consulter replié ==');
   // 1400 → 1500 : la vision Batcomputer ajoute le bandeau de relevés (budget, sommeil, poids,
   // Coran) sous les dépendances, pour lire ces quatre chiffres sans déplier la suite.
   // 1560 → 1680 (lot 22) : le bloc en cours et son Pomodoro sont montés en tête de page
-  // (#dash-focus, ~150 px). L'écran central, qui les portait, a rendu ~100 px en échange
-  // (réacteur 300 → 236 px, lectures à côté). Le solde net est d'une cinquantaine de pixels,
-  // pour la seule chose qu'on regarde en ouvrant la Batcave.
-  ok(e.basAgir < 1680, 'la zone « agir » tient en environ un écran et demi (' + e.basAgir + 'px)');
+  // (#dash-focus, ~150 px). 1680 → 1600 (lot 23) : le réacteur descend à 150 px et ses trois
+  // lectures se lisent à côté, ce qui rend les pixels empruntés. La zone « agir » est donc
+  // revenue à ce qu'elle était avant le bandeau, bandeau compris.
+  ok(e.basAgir < 1600, 'la zone « agir » tient en environ un écran et demi (' + e.basAgir + 'px)');
   // les panneaux repliés restent alimentés
   const caches = await fr.evaluate(() => document.getElementById('dash-more').innerText.length);
   ok(caches > 50, 'le contenu replié est déjà rendu (' + caches + ' caractères), pas vide');

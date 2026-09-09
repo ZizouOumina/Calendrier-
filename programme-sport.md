@@ -139,6 +139,19 @@ Tractions à 12 reps propres sur toutes les séries, dips à 15, jambes dès que
 - **Sans banc au parc** : pied arrière sur la barre basse ou un rebord à hauteur de genou ; step-ups → fentes marchées lestées ; hip thrust → épaules sur un muret ou un rebord, à défaut glute bridge une jambe au sol avec le sac sur les hanches, compensé par le tempo.
 - **Le carnet** : date, exercice, cran ou charge, reps de chaque série. C'est la seule ligne non négociable. Dans la Batcave, sur la séance du jour : le nombre de séries, les répétitions de chaque série et le lest se règlent aux boutons + et −, puis « Enregistrer ». L'exercice se coche tout seul.
 - **Séance un jour off, ou séance échangée** : en haut de l'onglet Sport, le bandeau « Séance du jour » permet de choisir n'importe quelle séance pour aujourd'hui, même un mercredi. Elle devient cochable et compte comme séance tenue ; la cible du mois ne bouge pas, c'est un bonus. « Revenir au plan » annule.
+- **Le repos entre les séries** : la barre « Repos » en haut de l'onglet Sport propose les temps de la séance du jour (30, 45, 60, 75, 90, 120 s). Un appui lance le décompte, un bip et une vibration sonnent la fin. On ne compte plus dans sa tête, et les repos courts arrêtent de s'allonger.
+
+## Les mensurations
+
+Le cou et les bras ne se lisent pas dans un journal de séries : ils se mesurent. Une fois par mois, le matin, à froid, avant de manger, toujours dans le même ordre et les mêmes conditions.
+
+| Mesure | Où | Comment |
+|---|---|---|
+| Cou | Au niveau de la pomme d'Adam | Tête droite, sans contracter, ruban à plat |
+| Bras | Bras dominant, contracté | Au plus large du biceps, coude à 90° |
+| Taille | Au nombril | Expiration normale, sans rentrer le ventre |
+
+La Batcave réclame la mesure au début de chaque mois dans le plan du jour, et affiche l'écart avec le mois précédent plus la courbe du tour de cou. Sans ce chiffre, rien ne dit si le travail de cou sert à quelque chose : les séries ne mesurent que l'effort, pas le résultat.
 
 ## Autour de la séance
 - Collation entraînement à 14:50 (pain complet, jambon, fromage) ; le petit-déjeuner suit la séance à 06:45.

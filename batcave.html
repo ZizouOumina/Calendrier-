@@ -29,6 +29,19 @@
     --cyan:#35d4e8;
     --cyan-bright:#7ceaf7;
     --cyan-dim:#2f8fa8;
+    /* ===== Une couleur par domaine =====
+       Le cyan servait à tout, donc il ne distinguait rien. Six familles, six teintes bien
+       écartées ; chaque page pose --accent, et titres, barres de panneau, onglet actif et
+       jauges le suivent. --warn et --danger restent réservés aux alertes : une couleur de
+       domaine ne doit jamais se confondre avec un avertissement. */
+    --dom-etudes:#35d4e8;    /* pilotage, calendrier, études, agenda, tâches */
+    --dom-suivi:#e879b9;     /* bilan, insights, objectifs */
+    --dom-corps:#46bd7e;     /* habitudes, dépendances, santé, sport, journal */
+    --dom-table:#e0a23a;     /* repas, courses */
+    --dom-argent:#8b9df0;    /* budget, business, projets perso */
+    --dom-foi:#b58cf0;       /* Coran et duaas */
+    --dom-espagnol:#f2724b;  /* l'espagnol, partout où il apparaît */
+    --accent:var(--dom-etudes);
     --good:#3fae72;
     --warn:#d9822b;
     --danger:#c0483f;
@@ -232,6 +245,24 @@
   .meal-items li{display:flex; align-items:center; gap:10px; font-size:13.5px; color:var(--ink-dim);}
 
   .sport-card.today{border-color:var(--cyan-dim); box-shadow:0 0 0 1px var(--cyan-dim);}
+  /* ---- la séance du jour d'abord, et sur toute la largeur ----
+     C'est la seule qu'on fait, et celle où l'on saisit ; les trois autres sont là pour
+     mémoire. Elle prend donc toute la ligne, en premier, et passe ses exercices sur
+     plusieurs colonnes plutôt que sur une longue liste à faire défiler. */
+  .sport-grid{ align-items:start; }
+  .sport-card.today{ grid-column:1 / -1; order:-1; }
+  /* Une seule colonne dans la carte du jour, volontairement : la saisie au pas (séries,
+     S1…S4, lest) a besoin de la largeur pour tenir sur une ligne. C'est tout l'intérêt de
+     la pleine largeur. */
+  .sport-card.today .sport-body{ padding:14px 20px 18px; }
+  .sport-card.today .sport-body > li{ padding-bottom:6px; border-bottom:1px dashed var(--border-soft); }
+  .sport-card.today .sport-body > li:last-child{ border-bottom:none; }
+  /* les séances qui ne sont pas d'aujourd'hui : plus discrètes, plus serrées */
+  .sport-card:not(.today) .sport-body{ font-size:12.5px; padding:9px 14px 12px; }
+  .sport-card:not(.today) .sport-body li{ gap:7px; }
+  .sport-card:not(.today) .sport-head{ padding:10px 14px; }
+  .sport-card:not(.today){ opacity:.86; }
+  .sport-card:not(.today):hover{ opacity:1; }
   .sport-body{padding:12px 18px 16px;}
   .week-strip{display:flex; gap:6px; margin-bottom:18px;}
   .week-day{flex:1; text-align:center; background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:9px 4px;}
@@ -538,6 +569,15 @@
   .temps-cell .tv{font-family:var(--font-display); font-size:26px; line-height:1.1; color:var(--cyan-bright); margin-top:3px; font-variant-numeric:tabular-nums;}
   .temps-cell .tv small{font-family:var(--font-mono); font-size:11px; color:var(--ink-faint); margin-left:3px;}
   .temps-cell.vide .tv{color:var(--ink-faint);}
+  /* chaque cellule de temps porte la couleur de son domaine : on lit d'un coup d'œil
+     laquelle des trois est en retard, sans lire les chiffres */
+  .temps-cell.t-rev .tv{ color:var(--dom-etudes); }
+  .temps-cell.t-proj .tv{ color:var(--dom-argent); }
+  .temps-cell.t-es .tv{ color:var(--dom-espagnol); }
+  .temps-cell.t-rev .progress-fill{ background:var(--dom-etudes); }
+  .temps-cell.t-proj .progress-fill{ background:var(--dom-argent); }
+  .temps-cell.t-es .progress-fill{ background:var(--dom-espagnol); }
+  .temps-cell.vide .progress-fill{ opacity:.4; }
   .temps-cell .progress-track{margin-top:7px; height:5px;}
 
   /* ---------- calendrier des révisions ---------- */
@@ -669,6 +709,9 @@
   .chip{ border-bottom-width:3px; }
   .chip.active{ border-bottom-color:#1f6a7c; }
   .progress-fill, .goal-fill, .day-bar .dfill{ box-shadow:0 0 8px var(--cyan-glow); }
+  /* une jauge dans une page prend la couleur de la page (sauf les trois cellules de temps,
+     qui ont chacune leur domaine, réglées plus haut) */
+  .page .progress-fill:not(.temps-cell .progress-fill), .page .goal-fill{ background:var(--accent); }
 
   /* ---- rail des systèmes ---- */
   .sidebar{ background:var(--surface); }
@@ -744,10 +787,10 @@
   .semaine-bars .sb-day{ display:flex; flex-direction:column; align-items:center; gap:5px; height:100%; justify-content:flex-end; min-width:0; }
   .semaine-bars .sb-cols{ width:100%; display:flex; gap:2px; align-items:flex-end; height:60px; }
   .semaine-bars .sb-cols i{ flex:1; display:block; background:var(--border-soft); min-height:1px; }
-  .semaine-bars .sb-cols i.rev{ background:var(--cyan-bright); box-shadow:0 0 6px var(--cyan-glow); }
-  .semaine-bars .sb-cols i.proj{ background:var(--warn); }
-  .semaine-bars .sb-cols i.plan{ background:transparent; border:1px dashed var(--cyan-dim); }
-  .semaine-bars .sb-cols i.plan.proj{ border-color:rgba(217,130,43,0.6); }
+  .semaine-bars .sb-cols i.rev{ background:var(--dom-etudes); box-shadow:0 0 6px var(--cyan-glow); }
+  .semaine-bars .sb-cols i.proj{ background:var(--dom-argent); }
+  .semaine-bars .sb-cols i.plan{ background:transparent; border:1px dashed var(--dom-etudes); }
+  .semaine-bars .sb-cols i.plan.proj{ border-color:var(--dom-argent); }
   .semaine-bars .dn{ font-family:var(--font-mono); font-size:9.5px; color:var(--ink-faint); letter-spacing:0.1em; }
   .semaine-bars .sb-day.today .dn{ color:var(--cyan-bright); }
   .semaine-bars .sb-day.today .sb-cols{ outline:1px solid rgba(53,212,232,0.35); outline-offset:3px; }
@@ -774,16 +817,23 @@
      Le reacteur a gauche, ses lectures a droite -- sinon la zone « agir » descendait sous
      1,5 ecran, ce que le tableau de bord s'interdit depuis toujours (test14). */
   @media (min-width:781px) and (max-width:1499px){
-    /* Le bloc en cours et son Pomodoro sont montés dans #dash-focus : l'écran central n'a
-       plus que le réacteur et ses trois lectures. On le rend donc plus bas et plus large,
-       sinon la colonne de droite reste vide et la zone « agir » descend pour rien. */
-    .panel.mon-central{ display:grid; grid-template-columns:236px minmax(0,1fr); column-gap:24px; align-items:center; }
+    /* Le score du jour est UN chiffre : il n'a pas besoin d'un panneau entier. Le réacteur
+       descend à 150 px et ses trois lectures se lisent à côté, en une bande courte. Les
+       ~90 px rendus vont au Plan du jour, qui commence plus haut et prend la colonne large.
+       Le bloc en cours, lui, vit dans #dash-focus, tout en tête. */
+    .panel.mon-central{ display:grid; grid-template-columns:150px minmax(0,1fr); column-gap:22px; align-items:center; padding-top:14px; padding-bottom:14px; }
     .panel.mon-central > .sub-head:first-child{ grid-column:1 / -1; }
-    .panel.mon-central > .reactor{ grid-column:1; grid-row:2; align-self:center; max-width:236px; margin:0; }
+    .panel.mon-central > .reactor{ grid-column:1; grid-row:2; align-self:center; max-width:150px; margin:0; }
     .panel.mon-central > .reactor-legend{ grid-column:2; grid-row:2; justify-content:flex-start;
-      flex-direction:column; align-items:flex-start; gap:9px; margin:0; }
-    .core-center .streak-num{ font-size:56px; }
-    .core-center .sub-note{ font-size:10.5px; }
+      flex-direction:column; align-items:flex-start; gap:7px; margin:0; font-size:12px; }
+    .core-center{ padding:0 12%; }
+    .core-center .streak-num{ font-size:40px; }
+    /* la barre de titre du panneau dit déjà « Score du jour » : dans un anneau de 150 px,
+       le rappel écrase le chiffre */
+    .core-center .lbl{ display:none; }
+    .core-center .sub-note{ display:none; }
+    /* la colonne du Plan est la plus large : c'est la seule qu'on lit ligne à ligne */
+    .dash-wall{ grid-template-columns:minmax(0,1.32fr) minmax(0,1fr); }
   }
   @media (min-width:1500px){
     .dash-wall{ grid-template-columns:minmax(0,1fr) minmax(360px,460px) minmax(0,1fr); }
@@ -805,9 +855,10 @@
   @keyframes rspin{ to{ transform:rotate(360deg); } }
   .reactor circle.track{ fill:none; stroke:rgba(53,212,232,0.12); stroke-width:8; }
   .reactor circle.arc{ fill:none; stroke-width:8; stroke-linecap:butt; transform:rotate(-90deg); transform-origin:200px 200px; transition:stroke-dashoffset 1.1s cubic-bezier(.2,.8,.2,1); }
-  .reactor .arc.hab{ stroke:var(--cyan-dim); }
-  .reactor .arc.rev{ stroke:var(--cyan-bright); filter:drop-shadow(0 0 6px var(--cyan-glow)); }
-  .reactor .arc.proj{ stroke:var(--warn); filter:drop-shadow(0 0 5px rgba(217,130,43,0.55)); }
+  /* les trois arcs sont trois domaines : le corps, les études, les projets */
+  .reactor .arc.hab{ stroke:var(--dom-corps); }
+  .reactor .arc.rev{ stroke:var(--dom-etudes); filter:drop-shadow(0 0 6px var(--cyan-glow)); }
+  .reactor .arc.proj{ stroke:var(--dom-argent); }
   .reactor .ticks line{ stroke:rgba(53,212,232,0.3); stroke-width:1; }
   .reactor .ticks line.big{ stroke:var(--cyan); stroke-width:1.5; }
   .reactor .dash{ fill:none; stroke:rgba(53,212,232,0.45); stroke-width:1.2; stroke-dasharray:3 9; }
@@ -821,7 +872,7 @@
   .core-center .sub-note{ font-size:12px; line-height:1.35; margin-top:4px; text-wrap:balance; }
   .reactor-legend{ display:flex; gap:16px; font-family:var(--font-mono); font-size:11px; color:var(--ink-dim); flex-wrap:wrap; justify-content:center; margin-bottom:14px; }
   .reactor-legend span::before{ content:''; display:inline-block; width:12px; height:4px; margin-right:7px; vertical-align:middle; }
-  .reactor-legend .l-hab::before{ background:var(--cyan-dim); } .reactor-legend .l-rev::before{ background:var(--cyan-bright); } .reactor-legend .l-proj::before{ background:var(--warn); }
+  .reactor-legend .l-hab::before{ background:var(--dom-corps); } .reactor-legend .l-rev::before{ background:var(--dom-etudes); } .reactor-legend .l-proj::before{ background:var(--dom-argent); }
   .mon-suivi .temps-grid{ grid-template-columns:repeat(auto-fit, minmax(120px, 1fr)); }
   .temps-cell{ background:transparent; border:none; padding:4px 4px 0; }
   .temps-cell .tl{ font-family:var(--font-mono); font-size:11px; letter-spacing:0.14em; color:var(--ink-dim); }
@@ -941,6 +992,28 @@
     .saisie-ok{ padding:10px 16px; font-size:12px; }
   }
 
+  /* ---- minuteur de repos ---- */
+  .repos-barre{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin:0 0 14px; padding:10px 12px;
+    border:1px solid var(--border); background:var(--surface); font-family:var(--font-mono); font-size:11px; }
+  .repos-barre .rb-lbl{ letter-spacing:0.14em; font-size:9.5px; color:var(--accent); text-transform:uppercase; }
+  .repos-barre .rb-boutons{ display:flex; gap:6px; flex-wrap:wrap; }
+  .rb-btn{ border:1px solid var(--border); background:var(--surface-raised); color:var(--ink-dim);
+    font-family:var(--font-mono); font-size:11px; padding:6px 11px; cursor:pointer; }
+  .rb-btn:hover{ border-color:var(--accent); color:var(--ink); }
+  .repos-barre .rb-compte{ display:inline-flex; align-items:center; gap:10px; margin-left:auto; }
+  .repos-barre .rb-compte b{ font-family:var(--font-display); font-size:30px; line-height:1; color:var(--accent);
+    font-variant-numeric:tabular-nums; }
+  .repos-barre .rb-compte.bientot b{ color:var(--warn); }
+  .repos-barre .rb-compte.fini b{ color:var(--good); font-size:20px; }
+  .rb-stop{ border:none; background:transparent; color:var(--ink-faint); font-family:var(--font-mono);
+    font-size:10.5px; text-decoration:underline; cursor:pointer; padding:4px 2px; }
+  .repos-barre .rb-aide{ flex-basis:100%; color:var(--ink-faint); line-height:1.6; }
+  @media (pointer: coarse){
+    .rb-btn{ padding:10px 14px; font-size:12.5px; }
+    .repos-barre .rb-compte{ margin-left:0; }
+    .repos-barre .rb-compte b{ font-size:34px; }
+  }
+
   /* ---- seance choisie a la main (jour off, echange de seance) ---- */
   .seance-choix{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin:10px 0 4px; padding:10px 12px;
     border:1px solid var(--border); background:var(--surface); font-family:var(--font-mono); font-size:11px; color:var(--ink-faint); }
@@ -962,6 +1035,25 @@
     cursor:pointer; padding:2px 0; }
   .lien-page:hover{ color:var(--cyan-bright); }
   @media (pointer: coarse){ .lien-page{ padding:8px 0; display:inline-block; } }
+
+  /* ---- l'accent du domaine ----
+     Une seule variable, posée par la page ou le bouton, et tout ce qui identifie l'endroit
+     la suit : l'exergue, le titre, la barre de titre des panneaux, le liseré de l'onglet. */
+  [data-dom="etudes"]{ --accent:var(--dom-etudes); }
+  [data-dom="suivi"]{ --accent:var(--dom-suivi); }
+  [data-dom="corps"]{ --accent:var(--dom-corps); }
+  [data-dom="table"]{ --accent:var(--dom-table); }
+  [data-dom="argent"]{ --accent:var(--dom-argent); }
+  [data-dom="foi"]{ --accent:var(--dom-foi); }
+  .page .eyebrow{ color:var(--accent); }
+  .page .page-head h1{ color:var(--ink); border-bottom:2px solid var(--accent); padding-bottom:10px; display:inline-block; }
+  .page .panel > h3:first-child, .page .panel > .sub-head:first-child h3,
+  .page .card > .card-top:first-child .ctitle, .page .cat-card h4,
+  .page .goal-card > .goal-top:first-child .gtitle, .page .bilan-card .blabel,
+  .page .meal-head .mtitle, .page .sport-head .stitle, .page .region-title{ color:var(--accent); }
+  .nav-btn.active{ border-left-color:var(--accent); }
+  .nav-btn.active svg{ color:var(--accent); }
+  @media (max-width:780px){ .nav-btn.active{ border-left-color:transparent; border-top-color:var(--accent); } }
 
   /* ---- en-tête « maintenant » : le bloc en cours + son Pomodoro, seuls ---- */
   .focus-now{ display:flex; gap:14px 18px; align-items:center; flex-wrap:wrap; margin-bottom:14px; padding:11px 16px;
@@ -1052,6 +1144,13 @@
      ===================================================================================== */
   :root[data-theme="jour"]{
     color-scheme:light;
+    --dom-etudes:#0b7c92;
+    --dom-suivi:#a82e73;
+    --dom-corps:#1c7a4e;
+    --dom-table:#8a5a10;
+    --dom-argent:#3f4fa8;
+    --dom-foi:#6a3fa8;
+    --dom-espagnol:#b8442a;
     --bg:#e8eef2;
     --surface:#ffffff;
     --surface-raised:#f2f7f9;
@@ -1156,81 +1255,81 @@
 
     <nav aria-label="Navigation">
       <span class="nav-label">Quotidien</span>
-      <button class="nav-btn active" data-page="dashboard" data-pages="dashboard taches" aria-current="page">
+      <button class="nav-btn active" data-page="dashboard" data-dom="etudes" data-pages="dashboard taches" aria-current="page">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>
         Tableau de bord
       </button>
-      <button class="nav-btn" data-page="bilan" data-pages="bilan insights">
+      <button class="nav-btn" data-page="bilan" data-dom="suivi" data-pages="bilan insights">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 15l4-5 3 3 5-7"/></svg>
         Semaine
       </button>
-      <button class="nav-btn" data-page="insights" hidden>
+      <button class="nav-btn" data-page="insights" data-dom="suivi" hidden>
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7c.6.4 1 1.1 1 1.8v.5h6v-.5c0-.7.4-1.4 1-1.8A7 7 0 0 0 12 2z"/></svg>
         Insights
       </button>
-      <button class="nav-btn" data-page="calendrier">
+      <button class="nav-btn" data-page="calendrier" data-dom="etudes">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/><path d="M12 13v4l3 2"/></svg>
         Calendrier
       </button>
-      <button class="nav-btn" data-page="agenda" hidden>
+      <button class="nav-btn" data-page="agenda" data-dom="etudes" hidden>
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/><circle cx="8.5" cy="14" r="1.4" fill="currentColor" stroke="none"/><circle cx="12" cy="14" r="1.4" fill="currentColor" stroke="none"/><circle cx="15.5" cy="14" r="1.4" fill="currentColor" stroke="none"/></svg>
         Agenda Batcave
       </button>
-      <button class="nav-btn" data-page="journal" hidden>
+      <button class="nav-btn" data-page="journal" data-dom="corps" hidden>
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2h9l3 3v17H6z"/><path d="M9 8h6M9 12h6M9 16h4"/></svg>
         Journal
       </button>
-      <button class="nav-btn" data-page="habitudes">
+      <button class="nav-btn" data-page="habitudes" data-dom="corps">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l2.5 6.5L21 11l-6.5 2.5L12 20l-2.5-6.5L3 11l6.5-2.5z"/></svg>
         Habitudes
       </button>
-      <button class="nav-btn" data-page="addictions" data-pages="addictions vie">
+      <button class="nav-btn" data-page="addictions" data-dom="corps" data-pages="addictions vie">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
         Corps
       </button>
-      <button class="nav-btn" data-page="repas">
+      <button class="nav-btn" data-page="repas" data-dom="table">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3v7a3 3 0 0 0 3 3v8"/><path d="M6 3v6M9 3v6"/><path d="M17 3c-2 0-3 2-3 5s1 5 3 5v8"/></svg>
         Repas
       </button>
-      <button class="nav-btn" data-page="sport">
+      <button class="nav-btn" data-page="sport" data-dom="corps">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6.5 6.5l11 11"/><path d="M3 3l4 4M17 17l4 4"/><path d="M14.5 3.5l6 6M3.5 14.5l6 6"/><rect x="1.5" y="8.5" width="4" height="7" rx="1" transform="rotate(-45 3.5 12)"/><rect x="18.5" y="8.5" width="4" height="7" rx="1" transform="rotate(-45 20.5 12)"/></svg>
         Sport
       </button>
 
       <span class="nav-label">Suivi</span>
-      <button class="nav-btn" data-page="coran">
+      <button class="nav-btn" data-page="coran" data-dom="foi">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v17H6.5A2.5 2.5 0 0 0 4 21.5v-17z"/><path d="M4 4.5V19a2.5 2.5 0 0 0 2.5 2.5H20"/></svg>
         Coran &amp; Duaas
       </button>
-      <button class="nav-btn" data-page="taches" hidden>
+      <button class="nav-btn" data-page="taches" data-dom="etudes" hidden>
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l2 2 4-4"/><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
         Tâches
       </button>
-      <button class="nav-btn" data-page="budget">
+      <button class="nav-btn" data-page="budget" data-dom="argent">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="13" rx="2"/><path d="M2 10h20"/><path d="M6 15h4"/></svg>
         Budget
       </button>
 
       <span class="nav-label">Projets</span>
-      <button class="nav-btn" data-page="etudes" data-pages="etudes agenda">
+      <button class="nav-btn" data-page="etudes" data-dom="etudes" data-pages="etudes agenda">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 9l10-5 10 5-10 5-10-5z"/><path d="M6 11.5V17c0 1.5 3 3 6 3s6-1.5 6-3v-5.5"/></svg>
         Études
       </button>
-      <button class="nav-btn" data-page="business" id="nav-business" hidden>
+      <button class="nav-btn" data-page="business" data-dom="argent" id="nav-business" hidden>
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21V9l9-6 9 6v12"/><path d="M9 21v-6h6v6"/></svg>
         Business
       </button>
-      <button class="nav-btn" data-page="objectifs">
+      <button class="nav-btn" data-page="objectifs" data-dom="suivi">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg>
         Objectifs
       </button>
 
       <span class="nav-label">Logistique</span>
-      <button class="nav-btn" data-page="vie" hidden>
+      <button class="nav-btn" data-page="vie" data-dom="corps" hidden>
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 1 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>
         Santé
       </button>
-      <button class="nav-btn" data-page="courses">
+      <button class="nav-btn" data-page="courses" data-dom="table">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 4h2l2.4 12.4a2 2 0 0 0 2 1.6h7.6a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="9" cy="21" r="1"/><circle cx="18" cy="21" r="1"/></svg>
         Courses
       </button>
@@ -1256,7 +1355,7 @@
 
   <main id="main" tabindex="-1">
     <!-- ================= DASHBOARD ================= -->
-    <section class="page active" data-page="dashboard">
+    <section class="page active" data-page="dashboard" data-dom="etudes">
       <!-- Barre de titre du Batcomputer : l'identite, l'horloge et les releves du jour sur
            une seule ligne (date, meteo, synchro, lecture Spotify, derniere sauvegarde),
            plus les rappels (tendance, minuteur en cours). Les identifiants sont ceux de
@@ -1455,7 +1554,7 @@
       </div>
     </section>
 
-    <section class="page" data-page="taches">
+    <section class="page" data-page="taches" data-dom="etudes">
       <div class="page-head">
         <span class="eyebrow">Dossier N° 08</span>
         <h1>Tâches</h1>
@@ -1471,7 +1570,7 @@
     </section>
 
     <!-- ================= BILAN ================= -->
-    <section class="page" data-page="bilan">
+    <section class="page" data-page="bilan" data-dom="suivi">
       <div id="bilan-print-area">
         <div class="page-head">
           <span class="eyebrow">Dossier N° 15</span>
@@ -1479,6 +1578,12 @@
           <p class="desc">Cette semaine (lundi → dimanche) comparée à la semaine dernière.</p>
         </div>
         <div class="bilan-grid" id="bilan-grid"></div>
+        <!-- L'expérience en cours et les verdicts passés : une ligne par semaine testée. -->
+        <div class="panel" id="exp-panel" style="margin-top:14px;">
+          <div class="sub-head"><h3>🧪 L'expérience de la semaine</h3><span class="sub-note" id="exp-note">—</span></div>
+          <div id="exp-courante"></div>
+          <ul class="entry-list" id="exp-liste" style="margin-top:10px;"></ul>
+        </div>
         <!-- Prevu vs realise : le planning dit combien d'heures chaque jour devait porter ;
              le minuteur dit ce qui a ete fait. La difference, jour par jour, c'est la seule
              mesure honnete de la fidelite au plan. -->
@@ -1495,7 +1600,7 @@
     </section>
 
     <!-- ================= INSIGHTS ================= -->
-    <section class="page" data-page="insights">
+    <section class="page" data-page="insights" data-dom="suivi">
       <div class="page-head">
         <span class="eyebrow">Dossier N° 16</span>
         <h1>Insights</h1>
@@ -1506,7 +1611,7 @@
     </section>
 
     <!-- ================= CALENDRIER ================= -->
-    <section class="page" data-page="calendrier">
+    <section class="page" data-page="calendrier" data-dom="etudes">
       <div class="page-head">
         <span class="eyebrow">Dossier N° 01</span>
         <h1>Calendrier du jour</h1>
@@ -1594,7 +1699,7 @@
     <!-- ================= AGENDA BATCAVE ================= -->
 
     <!-- ================= JOURNAL ================= -->
-    <section class="page" data-page="journal">
+    <section class="page" data-page="journal" data-dom="corps">
       <div class="page-head">
         <span class="eyebrow">Dossier N° 02</span>
         <h1>Journal quotidien</h1>
@@ -1667,7 +1772,7 @@
     </section>
 
     <!-- ================= HABITUDES ================= -->
-    <section class="page" data-page="habitudes">
+    <section class="page" data-page="habitudes" data-dom="corps">
       <div class="page-head">
         <span class="eyebrow">Dossier N° 03</span>
         <h1>Habitudes</h1>
@@ -1698,7 +1803,7 @@
     </section>
 
     <!-- ================= ADDICTIONS ================= -->
-    <section class="page" data-page="addictions">
+    <section class="page" data-page="addictions" data-dom="corps">
       <div class="page-head">
         <span class="eyebrow">Dossier N° 04</span>
         <h1>Dépendances</h1>
@@ -1708,7 +1813,7 @@
     </section>
 
     <!-- ================= REPAS ================= -->
-    <section class="page" data-page="repas">
+    <section class="page" data-page="repas" data-dom="table">
       <div class="page-head">
         <span class="eyebrow">Dossier N° 05</span>
         <h1>Repas</h1>
@@ -1764,7 +1869,7 @@
     </section>
 
     <!-- ================= SPORT ================= -->
-    <section class="page" data-page="sport">
+    <section class="page" data-page="sport" data-dom="corps">
       <div class="page-head">
         <span class="eyebrow">Dossier N° 06</span>
         <h1>Sport — Programme v2</h1>
@@ -1773,6 +1878,17 @@
 
       <div class="week-strip" id="week-strip"></div>
       <div class="seance-choix" id="seance-choix"></div>
+
+      <!-- Minuteur de repos : les temps du programme sont déjà écrits paire par paire.
+           Un appui lance le décompte, un bip et une vibration à zéro. Il vit dans la page
+           Sport et s'arrête si on la quitte : c'est un chronomètre de séance, pas un rappel. -->
+      <div class="repos-barre" id="repos-barre">
+        <span class="rb-lbl">Repos</span>
+        <span class="rb-boutons" id="repos-boutons"></span>
+        <span class="rb-compte" id="repos-compte" hidden><b id="repos-reste">0:00</b><button type="button" class="rb-stop" id="repos-stop">arrêter</button></span>
+        <span class="rb-aide" id="repos-aide">Les temps de la séance du jour, plus les durées courantes. Le décompte reste visible en haut de l'onglet.</span>
+      </div>
+
       <div class="sport-grid" id="sport-grid"></div>
 
       <!-- Programme v2 (14 sept. 2026) : les regles qui ne tiennent pas dans une case. -->
@@ -1812,6 +1928,22 @@
         <ul class="entry-list" id="progression-liste"></ul>
       </div>
 
+      <!-- Mensurations : le cou et les bras ne se mesurent pas en répétitions. Une fois par
+           mois, mètre ruban, toujours dans les mêmes conditions. Sans ce chiffre, rien ne dit
+           si le travail de cou sert à quelque chose. -->
+      <div class="panel sub-panel" id="mesures-panel" style="margin-top:16px;">
+        <div class="sub-head"><h3>📏 Mensurations</h3><span class="sub-note" id="mesures-note">—</span></div>
+        <p class="sub-note" style="line-height:1.65; margin-bottom:12px;">Une fois par mois, le matin, à froid, avant de manger. <b style="color:var(--ink-dim);">Cou</b> : mètre ruban au niveau de la pomme d'Adam, tête droite, sans contracter. <b style="color:var(--ink-dim);">Bras</b> : le bras dominant, contracté, au plus large. <b style="color:var(--ink-dim);">Taille</b> : au nombril, expiration normale. Toujours dans le même ordre et les mêmes conditions, sinon la comparaison ne vaut rien.</p>
+        <div class="add-form" style="margin-bottom:12px;">
+          <div class="f"><label for="ms-cou">Cou (cm)</label><input type="text" id="ms-cou" inputmode="decimal" placeholder="ex : 37,5"></div>
+          <div class="f"><label for="ms-bras">Bras contracté (cm)</label><input type="text" id="ms-bras" inputmode="decimal" placeholder="ex : 31,0"></div>
+          <div class="f"><label for="ms-taille">Taille (cm)</label><input type="text" id="ms-taille" inputmode="decimal" placeholder="ex : 76,0"></div>
+          <button class="btn btn-primary" id="ms-add" type="button">Enregistrer la mesure</button>
+        </div>
+        <div id="mesures-chart" style="margin-bottom:12px;"></div>
+        <ul class="entry-list" id="mesures-liste"></ul>
+      </div>
+
       <div class="two-col" style="margin-top:16px;">
         <div class="panel">
           <h3>Étirements — avant (dynamique)</h3>
@@ -1827,7 +1959,7 @@
     </section>
 
     <!-- ================= CORAN & DUAAS ================= -->
-    <section class="page" data-page="coran">
+    <section class="page" data-page="coran" data-dom="foi">
       <div class="page-head">
         <span class="eyebrow">Dossier N° 07</span>
         <h1>Coran &amp; Duaas</h1>
@@ -1866,7 +1998,7 @@
     <!-- ================= TÂCHES ================= -->
 
     <!-- ================= BUDGET ================= -->
-    <section class="page" data-page="budget">
+    <section class="page" data-page="budget" data-dom="argent">
       <div class="page-head">
         <span class="eyebrow">Dossier N° 09</span>
         <h1>Budget</h1>
@@ -1927,7 +2059,7 @@
     </section>
 
     <!-- ================= ÉTUDES ================= -->
-    <section class="page" data-page="etudes">
+    <section class="page" data-page="etudes" data-dom="etudes">
       <div class="page-head">
         <span class="eyebrow">Dossier N° 10</span>
         <h1>Études</h1>
@@ -1995,13 +2127,26 @@
 
       </div>
 
-      <!-- Anki lu par AnkiConnect (fichier local sur le Mac, Anki lancé). Lecture seule. -->
+      <!-- Anki : saisi à la main depuis la page publiée, lu tout seul depuis le fichier local. -->
       <div class="panel sub-panel" id="anki-panel" hidden>
-        <div class="sub-head"><h3>🃏 Anki en direct</h3><span class="sub-note" id="anki-maj">—</span></div>
-        <p class="sub-note" style="margin-bottom:10px; line-height:1.6;">Échéances, nouvelles cartes et sangsues de tes trois paquets, lues dans Anki. Ça ne marche que depuis le fichier <b style="color:var(--ink-dim);">batcave.html</b> ouvert en local sur le Mac, Anki lancé : une page servie en https ne peut pas parler à ton ordinateur. Le résultat est gardé, avec sa date.</p>
+        <div class="sub-head"><h3>🃏 Anki</h3><span class="sub-note" id="anki-maj">—</span></div>
+        <p class="sub-note" style="margin-bottom:10px; line-height:1.6;" id="anki-explique">—</p>
         <div id="anki-corps"></div>
+        <!-- La saisie à la main : c'est la voie normale depuis l'artefact. Les trois chiffres
+             se lisent sur l'écran d'accueil d'Anki, colonne « À revoir » de chaque paquet. -->
+        <div id="anki-saisie" style="margin-top:12px; padding-top:10px; border-top:1px dashed var(--border);">
+          <p class="sub-note" style="margin-bottom:8px; font-weight:600; color:var(--ink-dim);">Saisir les chiffres du jour (15 secondes)</p>
+          <div class="add-form">
+            <div class="f"><label for="ak-dentaire">Dentaire · à revoir</label><input type="text" id="ak-dentaire" inputmode="numeric" placeholder="ex : 180"></div>
+            <div class="f"><label for="ak-espanol">Español · à revoir</label><input type="text" id="ak-espanol" inputmode="numeric" placeholder="ex : 60"></div>
+            <div class="f"><label for="ak-business">Business · à revoir</label><input type="text" id="ak-business" inputmode="numeric" placeholder="ex : 0"></div>
+            <div class="f"><label for="ak-revues">Révisées aujourd'hui</label><input type="text" id="ak-revues" inputmode="numeric" placeholder="ex : 240"></div>
+            <div class="f"><label for="ak-sangsues">Sangsues (étiquette leech)</label><input type="text" id="ak-sangsues" inputmode="numeric" placeholder="ex : 7"></div>
+            <button class="btn btn-primary" id="ak-add" type="button">Enregistrer</button>
+          </div>
+        </div>
         <div class="card-actions" style="margin-top:10px;">
-          <button class="btn btn-primary" id="anki-lire" type="button">🃏 Lire Anki maintenant</button>
+          <button class="btn" id="anki-lire" type="button">🃏 Lire Anki automatiquement</button>
         </div>
       </div>
 
@@ -2060,7 +2205,7 @@
       </div>
     </section>
 
-    <section class="page" data-page="agenda">
+    <section class="page" data-page="agenda" data-dom="etudes">
       <div class="page-head">
         <span class="eyebrow">Dossier N° 17</span>
         <h1>Agenda Batcave</h1>
@@ -2114,7 +2259,7 @@
     </section>
 
     <!-- ================= BUSINESS ================= -->
-    <section class="page" data-page="business">
+    <section class="page" data-page="business" data-dom="argent">
       <div class="page-head">
         <span class="eyebrow">Dossier N° 11</span>
         <h1>Business — Shopify</h1>
@@ -2190,7 +2335,7 @@
     </section>
 
     <!-- ================= OBJECTIFS ================= -->
-    <section class="page" data-page="objectifs">
+    <section class="page" data-page="objectifs" data-dom="suivi">
       <div class="page-head">
         <span class="eyebrow">Dossier N° 12</span>
         <h1 id="goal-titre">Objectifs</h1>
@@ -2263,7 +2408,7 @@
     </section>
 
     <!-- ================= VIE PRATIQUE ================= -->
-    <section class="page" data-page="vie">
+    <section class="page" data-page="vie" data-dom="corps">
       <div class="page-head">
         <span class="eyebrow">Dossier N° 13</span>
         <h1>Santé</h1>
@@ -2282,7 +2427,7 @@
     </section>
 
     <!-- ================= COURSES ================= -->
-    <section class="page" data-page="courses">
+    <section class="page" data-page="courses" data-dom="table">
       <div class="page-head">
         <span class="eyebrow">Dossier N° 14</span>
         <h1>Courses</h1>
@@ -2437,6 +2582,12 @@
       <div class="field-row"><label for="cl-coran">Page de Coran</label><input type="number" id="cl-coran" min="0" inputmode="numeric" placeholder="n°"></div>
       <div class="field-row"><label for="cl-duaa">Duaa apprise</label><input type="text" id="cl-duaa" placeholder="ex : duaa du voyage"></div>
     </div>
+    <!-- Anki du jour : deux chiffres lus sur l'écran d'accueil d'Anki. C'est ce qui remplace
+         AnkiConnect quand on travaille depuis la page publiée. -->
+    <div class="field-grid" style="margin-bottom:12px;" data-cl-plus>
+      <div class="field-row"><label for="cl-ak-dus">🃏 Dentaire · cartes à revoir</label><input type="text" id="cl-ak-dus" inputmode="numeric" placeholder="ex : 180"></div>
+      <div class="field-row"><label for="cl-ak-revues">🃏 Cartes révisées aujourd'hui</label><input type="text" id="cl-ak-revues" inputmode="numeric" placeholder="ex : 240"></div>
+    </div>
     <div class="field-row" style="margin-bottom:12px;" data-cl-plus><label>Compléments pris</label><div class="chip-group" id="cl-complements"></div></div>
     <div class="field-row" style="margin-bottom:12px;"><label>Habitudes pas encore cochées <span class="sub-note">(touche pour cocher)</span></label><div class="chip-group" id="cl-habitudes"></div></div>
     <p class="sub-note" id="cl-pomodoro" style="margin:-6px 0 12px;"></p>
@@ -2456,6 +2607,17 @@
           <div class="field-row"><label for="cl-anki-creees">Cartes créées cette semaine</label><input type="number" id="cl-anki-creees" min="0" step="1" inputmode="numeric" placeholder="ex : 85"></div>
         </div>
       </div>
+      <!-- Une expérience par semaine : on change UNE chose, et une mesure dit si ça a
+           marché. Le verdict tombe le dimanche suivant, calculé, pas ressenti. -->
+      <div id="cl-exp" style="margin-top:12px; padding-top:10px; border-top:1px dashed var(--border);">
+        <p class="sub-note" style="margin-bottom:6px; font-weight:600; color:var(--ink-dim);">🧪 L'expérience de la semaine</p>
+        <div id="cl-exp-verdict" hidden style="margin-bottom:10px;"></div>
+        <div class="field-grid">
+          <div class="field-row"><label for="cl-exp-quoi">Une seule chose à changer la semaine prochaine</label><input type="text" id="cl-exp-quoi" maxlength="140" placeholder="ex : coucher à 21:30 tous les soirs"></div>
+          <div class="field-row"><label for="cl-exp-mesure">La mesure qui dira si ça a marché</label><select id="cl-exp-mesure"></select></div>
+        </div>
+      </div>
+
       <div id="cl-espanol" hidden style="margin-top:10px;">
         <p class="sub-note" style="margin-bottom:6px; font-weight:600; color:var(--ink-dim);">🇪🇸 Les chiffres du dimanche (Dossier Español)</p>
         <div class="field-grid">
@@ -2766,7 +2928,8 @@
     'espagnol','examens','fc-prix-icloud-3','fixed-charges','goals','goals-depart','saisons','insights-hist','last-restore-drill','habitlog','habits','habits-seed-v2','habits-seed-v3','habits-seed-v4','objectifs-v5-espanol',
     'horizon','last-auto-backup','last-manual-backup','last-bilan-prompt','last-compaction','last-open','last-rotation','notion-url',
     'pomodial-purge','projets','report','revision','revision-fusionnee','revue','sante','sauvegarde','sessions',
-    'shopify-last-order-count','taches','timer','transactions','undo-stack','undo-toast','cloud-reload-at','cloud-toast','notion-cache','anki'];
+    'shopify-last-order-count','taches','timer','transactions','undo-stack','undo-toast','cloud-reload-at','cloud-toast','notion-cache','anki',
+    'mesures','experiences'];
   var PREFIXES_CONNUS = ['archive-','cal-','coherence-ignore-','drill-ignore-','test-anki-','fc-logged-','fixed-logged-','gcal-','journal-','manque-traite-',
     'meals-','pomodial-','sauvegarde-','sport-'];
   function cleConnue(k){
@@ -6370,8 +6533,189 @@
       });
     }
     renderChoixSeance();
+    renderRepos();
+    renderMesures();
     renderProgression();
   }
+
+
+  /* ================= MINUTEUR DE REPOS =================
+     Entre deux séries, on compte dans sa tête ou on ne compte pas du tout. Les temps sont
+     déjà écrits dans le programme, paire par paire : ils deviennent des boutons. Le
+     décompte est calculé sur un horodatage, jamais en additionnant des ticks -- un onglet
+     en arrière-plan ralentit les setInterval. Il ne survit pas volontairement à un
+     rechargement : un repos oublié n'a plus de sens dix minutes plus tard. */
+  var reposFin = 0, reposTimer = null;
+  var REPOS_COURANTS = [45, 60, 90, 120];
+  function reposSecondesDeLaSeance(){
+    var session = SESSIONS.filter(function(x){ return x.type === todayType; })[0];
+    var out = [];
+    ((session && session.repos) || []).forEach(function(txt){
+      String(txt).split('/').forEach(function(part){
+        var m = /(\d+)\s*s/.exec(part);
+        if(m) out.push(Number(m[1]));
+      });
+    });
+    return out;
+  }
+  function reposListe(){
+    var vus = {}, out = [];
+    reposSecondesDeLaSeance().concat(REPOS_COURANTS).forEach(function(n){
+      if(n > 0 && n <= 600 && !vus[n]){ vus[n] = 1; out.push(n); }
+    });
+    return out.sort(function(a, b){ return a - b; }).slice(0, 7);
+  }
+  function fmtRepos(sec){
+    sec = Math.max(0, Math.round(sec));
+    return Math.floor(sec / 60) + ':' + String(sec % 60).padStart(2, '0');
+  }
+  function bipRepos(){
+    try{
+      var Ctx = window.AudioContext || window.webkitAudioContext;
+      if(Ctx){
+        var ctx = new Ctx(), o = ctx.createOscillator(), g = ctx.createGain();
+        o.type = 'sine'; o.frequency.value = 880;
+        g.gain.setValueAtTime(0.0001, ctx.currentTime);
+        g.gain.exponentialRampToValueAtTime(0.25, ctx.currentTime + 0.02);
+        g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.45);
+        o.connect(g); g.connect(ctx.destination); o.start(); o.stop(ctx.currentTime + 0.5);
+        setTimeout(function(){ try{ ctx.close(); }catch(e){} }, 900);
+      }
+    }catch(e){}
+    try{ if(navigator.vibrate) navigator.vibrate([180, 90, 180]); }catch(e){}
+  }
+  function majRepos(){
+    var box = document.getElementById('repos-compte'), val = document.getElementById('repos-reste');
+    var aide = document.getElementById('repos-aide');
+    if(!box || !val) return;
+    if(!reposFin){
+      box.hidden = true;
+      if(aide) aide.hidden = false;
+      return;
+    }
+    var reste = (reposFin - Date.now()) / 1000;
+    box.hidden = false;
+    if(aide) aide.hidden = true;
+    if(reste <= 0){
+      val.textContent = 'terminé';
+      box.classList.add('fini');
+      arreterRepos(true);
+      return;
+    }
+    box.classList.toggle('bientot', reste <= 10);
+    val.textContent = fmtRepos(reste);
+  }
+  function lancerRepos(sec){
+    if(reposTimer) clearInterval(reposTimer);
+    reposFin = Date.now() + sec * 1000;
+    var box = document.getElementById('repos-compte');
+    if(box) box.classList.remove('fini');
+    majRepos();
+    reposTimer = setInterval(majRepos, 250);
+  }
+  function arreterRepos(termine){
+    if(reposTimer){ clearInterval(reposTimer); reposTimer = null; }
+    reposFin = 0;
+    if(termine){
+      bipRepos();
+      var box = document.getElementById('repos-compte');
+      setTimeout(function(){ if(box && !reposFin){ box.hidden = true; box.classList.remove('fini'); var a = document.getElementById('repos-aide'); if(a) a.hidden = false; } }, 4000);
+    } else {
+      majRepos();
+    }
+  }
+  function renderRepos(){
+    var zone = document.getElementById('repos-boutons');
+    if(!zone) return;
+    zone.innerHTML = reposListe().map(function(n){
+      return '<button type="button" class="rb-btn" data-repos="' + n + '">' + n + ' s</button>';
+    }).join('');
+    zone.querySelectorAll('[data-repos]').forEach(function(b){
+      b.addEventListener('click', function(){ lancerRepos(Number(b.dataset.repos)); });
+    });
+  }
+  (function(){
+    var st = document.getElementById('repos-stop');
+    if(st) st.addEventListener('click', function(){ arreterRepos(false); });
+  })();
+
+  /* ================= MENSURATIONS =================
+     Le cou et les bras ne se lisent pas dans un journal de séries : ils se mesurent. Une
+     entrée par mois suffit ; deux mesures dans le même mois remplacent la précédente, pour
+     que la courbe garde un point par mois et reste comparable. */
+  var mesuresState = loadList('batcave-mesures');
+  function mesureDuMois(mois){ return mesuresState.filter(function(m){ return m && String(m.date).slice(0, 7) === mois; })[0] || null; }
+  function mesuresTriees(){
+    return mesuresState.filter(function(m){ return m && m.date; })
+      .slice().sort(function(a, b){ return String(a.date).localeCompare(String(b.date)); });
+  }
+  function mesureDue(){
+    /* proposée à partir du 1er de chaque mois, tant que le mois n'a pas sa mesure */
+    return !mesureDuMois(moisCourant());
+  }
+  function ajouterMesure(){
+    var lire = function(id){ var e = document.getElementById(id); var v = e ? Number(String(e.value).replace(',', '.')) : NaN; return isNaN(v) || v <= 0 ? null : Math.round(v * 10) / 10; };
+    var cou = lire('ms-cou'), bras = lire('ms-bras'), taille = lire('ms-taille');
+    if(cou === null && bras === null && taille === null){ showToast('Saisis au moins une mesure.'); return; }
+    var mois = todayISO.slice(0, 7), existante = mesureDuMois(mois);
+    if(existante){
+      if(cou !== null) existante.cou = cou;
+      if(bras !== null) existante.bras = bras;
+      if(taille !== null) existante.taille = taille;
+      existante.date = todayISO;
+    } else {
+      mesuresState.push({id:'ms' + Date.now() + Math.random().toString(36).slice(2, 5), date: todayISO, cou: cou, bras: bras, taille: taille});
+    }
+    save('batcave-mesures', mesuresState);
+    ['ms-cou','ms-bras','ms-taille'].forEach(function(id){ var e = document.getElementById(id); if(e) e.value = ''; });
+    renderMesures(); renderDashboard();
+    showToast('📏 Mesure du mois enregistrée.');
+  }
+  function renderMesures(){
+    var liste = document.getElementById('mesures-liste'), note = document.getElementById('mesures-note'), chart = document.getElementById('mesures-chart');
+    if(!liste) return;
+    var m = mesuresTriees();
+    if(note) note.textContent = m.length
+      ? m.length + ' mesure' + (m.length > 1 ? 's' : '') + ' · dernière le ' + fmtDate(m[m.length - 1].date)
+      : 'jamais mesuré';
+    if(chart){
+      var pts = m.filter(function(x){ return Number(x.cou); }).map(function(x){ return {date: x.date, value: Number(x.cou)}; });
+      chart.innerHTML = lineChartSVG(pts, null, 'cm',
+        'Deux mesures suffisent à voir la pente. La première aujourd\u2019hui, la suivante le mois prochain.', 'Tour de cou');
+    }
+    if(!m.length){
+      liste.innerHTML = '<li class="entry-empty">Aucune mesure. Prends la première maintenant : sans point de départ, aucune des suivantes ne veut dire quoi que ce soit.</li>';
+      return;
+    }
+    var lignes = m.slice().reverse().map(function(x, i, arr){
+      var prec = arr[i + 1];
+      var ecart = function(cle, unite){
+        var v = Number(x[cle]);
+        if(!v) return '<span class="ecell small sub-note">—</span>';
+        var d = prec && Number(prec[cle]) ? Math.round((v - Number(prec[cle])) * 10) / 10 : null;
+        var col = d === null ? 'var(--ink-faint)' : (d > 0 ? 'var(--good)' : (d < 0 ? 'var(--warn)' : 'var(--ink-faint)'));
+        return '<span class="ecell small"><b>' + String(v).replace('.', ',') + '</b> ' + unite +
+               (d === null ? '' : ' <span style="color:' + col + ';">' + (d > 0 ? '+' : '') + String(d).replace('.', ',') + '</span>') + '</span>';
+      };
+      return '<li class="entry-row"><span class="ecell">' + fmtDate(x.date) + '</span>' +
+             '<span class="ecell small sub-note">cou</span>' + ecart('cou', 'cm') +
+             '<span class="ecell small sub-note">bras</span>' + ecart('bras', 'cm') +
+             '<span class="ecell small sub-note">taille</span>' + ecart('taille', 'cm') +
+             '<button class="edel" data-delmesure="' + escapeHtml(x.id) + '" aria-label="Supprimer cette mesure" title="Supprimer">×</button></li>';
+    }).join('');
+    liste.innerHTML = lignes;
+    liste.querySelectorAll('[data-delmesure]').forEach(function(b){
+      b.addEventListener('click', function(){
+        mesuresState = mesuresState.filter(function(x){ return x.id !== b.dataset.delmesure; });
+        save('batcave-mesures', mesuresState);
+        renderMesures(); renderDashboard();
+      });
+    });
+  }
+  (function(){
+    var b = document.getElementById('ms-add');
+    if(b) b.addEventListener('click', ajouterMesure);
+  })();
 
   /* ================= JOURNAL ================= */
   var COMPLEMENTS = ['Créatine','Magnésium'];
@@ -7904,6 +8248,7 @@
       if(dus > 0 && !ankiFait) items.push({pri: nowMin >= 12 * 60 ? 0.9 : 2.4, icon:'🃏', text: dus + ' carte' + (dus > 1 ? 's' : '') + ' due' + (dus > 1 ? 's' : '') + ' dans Anki' + (ankiDus('Dentaire') >= ANKI_SEUIL_CHARGE ? ' — la file dentaire déborde, baisse les nouvelles à 35' : ''), action:{type:'anki'}});
     }
     /* Le test du mois : trier par sangsues et réécrire les dix pires cartes. */
+    if(mesureDue()) items.push({pri:2.7, icon:'📏', text:'Mensurations du mois — cou, bras et taille au mètre ruban' + (mesuresTriees().length ? '' : ' (première mesure : c\u2019est le point de départ)'), action:{type:'mesure'}});
     if(testAnkiDu()) items.push({pri:2.6, icon:'🧪', text:'Test du mois Anki — trie par Lapses et réécris tes dix pires cartes' + (ankiState && ankiState.sangsues ? ' (' + ankiState.sangsues + ' sangsue' + (ankiState.sangsues > 1 ? 's' : '') + ' étiquetée' + (ankiState.sangsues > 1 ? 's' : '') + ')' : ''), action:{type:'test-anki'}});
 
     /* Notion : la matière qui a le plus de cours pas faits, à partir de deux. */
@@ -8001,6 +8346,8 @@
         right = '<button class="btn btn-primary" data-plan-pomodoro="1" style="padding:4px 10px; font-size:11px; flex-shrink:0;">🍅 Pomodoro</button>';
       } else if(it.action && it.action.type === 'anki'){
         right = '<button class="btn btn-primary" data-plan-anki="1" style="padding:4px 10px; font-size:11px; flex-shrink:0;">🍅 Anki</button>';
+      } else if(it.action && it.action.type === 'mesure'){
+        right = '<button class="btn" data-plan-mesure="1" style="padding:4px 10px; font-size:11px; flex-shrink:0;">📏 Mesurer</button>';
       } else if(it.action && it.action.type === 'test-anki'){
         right = '<span style="display:flex; gap:6px; flex-wrap:wrap; justify-content:flex-end;">' +
           '<button class="btn btn-primary" data-plan-testanki="1" style="padding:4px 10px; font-size:11px;">✓ Fait</button>' +
@@ -8049,6 +8396,14 @@
     });
     el.querySelectorAll('[data-plan-anki]').forEach(function(btn){
       btn.addEventListener('click', function(){ lancerPomodoroCours(MATIERE_SANS); });
+    });
+    el.querySelectorAll('[data-plan-mesure]').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var nav = document.querySelector('.nav-btn[data-page="sport"]');
+        if(nav) nav.click();
+        var cible = document.getElementById('ms-cou');
+        if(cible){ cible.scrollIntoView({block:'center'}); cible.focus(); }
+      });
     });
     el.querySelectorAll('[data-plan-testanki]').forEach(function(btn){
       btn.addEventListener('click', function(){ marquerTestAnki(); });
@@ -8969,22 +9324,22 @@
     var revMin = todayRevisionMinutes(), projMin = minutesOnProj(todayISO);
     var cibleRev = revisionTarget() * 60;
     var rep = reportDuJour();
-    function celluleTemps(label, min, cible, reporte){
+    function celluleTemps(label, min, cible, reporte, dom){
       var h = (min/60).toFixed(1).replace('.', ',');
       var barre = '';
       if(cible){
         var pct = clamp(Math.round(100*min/cible), 0, 100);
         barre = '<div class="progress-track"><div class="progress-fill" style="width:'+pct+'%"></div></div>';
       }
-      return '<div class="temps-cell' + (min ? '' : ' vide') + '">' +
+      return '<div class="temps-cell' + (min ? '' : ' vide') + (dom ? ' t-' + dom : '') + '">' +
              '<div class="tl">' + label + '</div>' +
              '<div class="tv">' + h + '<small>h' + (cible ? ' / ' + String(Math.round(cible/60*10)/10).replace('.', ',') + 'h' : '') + (reporte ? ' <span title="dont report de la veille">+' + String(Math.round(reporte/60*10)/10).replace('.', ',') + 'h ↪</span>' : '') + '</small></div>' +
              barre + '</div>';
     }
     document.getElementById('dash-temps').innerHTML =
-      celluleTemps('📚 Révision', revMin, cibleRev, rep.rev) +
-      celluleTemps('💻 Projets perso', projMin, projetsTarget()*60 || null, rep.proj) +
-      (function(){ var e = minutesEspanol(todayISO), c = cibleEspanolJour(todayISO); return (e || c) ? celluleTemps('🇪🇸 Español', e, c || null, 0) : ''; })();
+      celluleTemps('📚 Révision', revMin, cibleRev, rep.rev, 'rev') +
+      celluleTemps('💻 Projets perso', projMin, projetsTarget()*60 || null, rep.proj, 'proj') +
+      (function(){ var e = minutesEspanol(todayISO), c = cibleEspanolJour(todayISO); return (e || c) ? celluleTemps('🇪🇸 Español', e, c || null, 0, 'es') : ''; })();
     var sem = chargeRestanteSemaine();
     var hh = function(m){ return (m/60).toFixed(1).replace('.', ','); };
     var semEl = document.getElementById('dash-semaine');
@@ -9132,6 +9487,7 @@
   function renderBilan(){
     var grid = document.getElementById('bilan-grid');
     if(!grid) return;
+    try{ renderExperience(); }catch(e){}
     renderScoreChart();
     var cur = weekStats(weekRange(0));
     var prev = weekStats(weekRange(-1));
@@ -11017,6 +11373,42 @@
       return null;
     });
   }
+  /* ===== Anki à la main =====
+     C'est la voie NORMALE depuis la page publiée : une page en https n'a pas le droit de
+     parler à http://127.0.0.1, donc AnkiConnect ne répondra jamais depuis l'artefact, même
+     module installé. Les trois chiffres se lisent sur l'écran d'accueil d'Anki (colonne
+     « À revoir » de chaque paquet) et le nombre de révisions du jour dans les statistiques.
+     Une saisie vaut lecture : elle alimente le plan du jour, le seuil de 220 et le test du
+     mois exactement comme AnkiConnect. */
+  function ankiPeutLire(){ return location.protocol === 'file:'; }
+  function enregistrerAnkiManuel(vals){
+    /* Number('') vaut 0, pas NaN : un champ laissé vide écrirait « 0 carte à revoir » et
+       effacerait la vraie valeur. On distingue donc le vide du zéro, qui est légitime. */
+    var n = function(v){
+      var t = String(v === null || v === undefined ? '' : v).trim();
+      if(!t) return null;
+      var x = Number(t.replace(',', '.'));
+      return (isNaN(x) || x < 0) ? null : Math.round(x);
+    };
+    var d = n(vals.dentaire), e = n(vals.espanol), b = n(vals.business), r = n(vals.revues), sg = n(vals.sangsues);
+    if(d === null && e === null && b === null && r === null && sg === null) return false;
+    var base = (ankiState && ankiState.paquets) || {};
+    var paquets = {};
+    ANKI_PAQUETS.forEach(function(p){
+      var av = base[p] || {};
+      paquets[p] = {dus: av.dus, nouvelles: av.nouvelles, sangsues: av.sangsues};
+    });
+    if(d !== null) paquets['Dentaire'] = {dus: d, nouvelles: paquets['Dentaire'].nouvelles, sangsues: paquets['Dentaire'].sangsues};
+    if(e !== null) paquets['Español'] = {dus: e, nouvelles: paquets['Español'].nouvelles, sangsues: paquets['Español'].sangsues};
+    if(b !== null) paquets['Business'] = {dus: b, nouvelles: paquets['Business'].nouvelles, sangsues: paquets['Business'].sangsues};
+    ankiState = {maj: new Date().toISOString(), source:'saisie', paquets: paquets,
+                 revues: r !== null ? r : (ankiState && ankiState.revues) || 0,
+                 sangsues: sg !== null ? sg : (ankiState && ankiState.sangsues) || 0,
+                 creees: ankiState && ankiState.creees};
+    save('batcave-anki', ankiState, true);
+    try{ renderAnki(); renderDashboard(); }catch(x){}
+    return true;
+  }
   function ankiAgeHeures(){
     if(!ankiState || !ankiState.maj) return null;
     return (Date.now() - new Date(ankiState.maj).getTime()) / 3600000;
@@ -11030,17 +11422,27 @@
     var panel = document.getElementById('anki-panel'), corps = document.getElementById('anki-corps'), note = document.getElementById('anki-maj');
     if(!panel || !corps) return;
     panel.hidden = false;
+    var expl = document.getElementById('anki-explique'), bLire = document.getElementById('anki-lire');
+    if(expl){
+      expl.innerHTML = ankiPeutLire()
+        ? 'Fichier local : la Batcave lit Anki toute seule (échéances, nouvelles cartes, sangsues, révisions du jour). Une fois dans Anki : Outils › Modules › AnkiConnect › Configuration, ajoute <code>"null"</code> et <code>"file://"</code> à <code>webCorsOriginList</code>, puis relance Anki.'
+        : 'Tu es sur la page publiée : elle ne peut pas parler à ton Mac, et aucun réglage d\'AnkiConnect n\'y changera rien (une page en https n\'a pas le droit d\'appeler <code>127.0.0.1</code>). <b style="color:var(--ink-dim);">Saisis les chiffres à la main ci-dessous</b> : ça alimente le plan du jour, le seuil de charge et le test du mois exactement pareil. La lecture automatique n\'existe que depuis le fichier <b style="color:var(--ink-dim);">batcave.html</b> ouvert en local.';
+    }
+    if(bLire) bLire.hidden = !ankiPeutLire();
     if(!ankiState){
-      if(note) note.textContent = erreur ? 'pas de réponse' : 'jamais lu';
-      corps.innerHTML = '<p class="sub-note" style="line-height:1.6;">Aucune lecture pour l\'instant. Ouvre <b style="color:var(--ink-dim);">batcave.html</b> en local sur le Mac avec Anki lancé, puis « Lire Anki maintenant ». Une fois dans Anki : Outils › Modules › AnkiConnect › Configuration, ajoute <code>"null"</code> et <code>"file://"</code> à <code>webCorsOriginList</code>, et relance Anki.</p>';
+      if(note) note.textContent = erreur ? 'pas de réponse' : 'jamais renseigné';
+      corps.innerHTML = '<p class="sub-note" style="line-height:1.6;">Aucun chiffre pour l\'instant. Ouvre Anki : le nombre à revoir de chaque paquet est sur l\'écran d\'accueil, les révisions du jour dans Statistiques, les sangsues avec la recherche <code>tag:leech</code>.</p>';
       return;
     }
     var d = new Date(ankiState.maj);
-    if(note) note.textContent = 'lu ' + d.toLocaleString('fr-FR', {day:'2-digit', month:'2-digit', hour:'2-digit', minute:'2-digit'}) + (ankiFrais() ? '' : ' · à rafraîchir');
+    var quoi = ankiState.source === 'saisie' ? 'saisi ' : 'lu ';
+    if(note) note.textContent = quoi + d.toLocaleString('fr-FR', {day:'2-digit', month:'2-digit', hour:'2-digit', minute:'2-digit'}) + (ankiFrais() ? '' : ' · à rafraîchir');
     var lignes = ANKI_PAQUETS.map(function(p){
       var x = ankiState.paquets[p]; if(!x) return '';
       var alerte = p === 'Dentaire' && Number(x.dus) >= ANKI_SEUIL_CHARGE;
-      return '<li><span>' + escapeHtml(p) + '</span><span><b' + (alerte ? ' style="color:var(--warn);"' : '') + '>' + x.dus + '</b> dues · ' + x.nouvelles + ' nouvelles · ' + x.sangsues + ' sangsue' + (x.sangsues > 1 ? 's' : '') + '</span></li>';
+      var opt = function(v, mot){ return (v === null || v === undefined) ? '' : ' · ' + v + ' ' + mot; };
+      if(x.dus === null || x.dus === undefined) return '<li><span>' + escapeHtml(p) + '</span><span class="sub-note">pas renseigné</span></li>';
+      return '<li><span>' + escapeHtml(p) + '</span><span><b' + (alerte ? ' style="color:var(--warn);"' : '') + '>' + x.dus + '</b> à revoir' + opt(x.nouvelles, 'nouvelles') + opt(x.sangsues, x.sangsues > 1 ? 'sangsues' : 'sangsue') + '</span></li>';
     }).join('');
     corps.innerHTML = '<ul class="mini-list">' + lignes + '<li><span>Cartes révisées aujourd\'hui</span><b>' + (Number(ankiState.revues) || 0) + '</b></li></ul>' +
       (Number(ankiDus('Dentaire')) >= ANKI_SEUIL_CHARGE
@@ -11048,6 +11450,16 @@
         : '');
   }
   (function(){
+    var add = document.getElementById('ak-add');
+    if(add) add.addEventListener('click', function(){
+      var v = function(id){ var e = document.getElementById(id); return e ? e.value : ''; };
+      var ok = enregistrerAnkiManuel({dentaire: v('ak-dentaire'), espanol: v('ak-espanol'), business: v('ak-business'),
+                                      revues: v('ak-revues'), sangsues: v('ak-sangsues')});
+      if(ok){
+        ['ak-dentaire','ak-espanol','ak-business','ak-revues','ak-sangsues'].forEach(function(id){ var e = document.getElementById(id); if(e) e.value = ''; });
+        showToast('🃏 Chiffres d\'Anki enregistrés.');
+      } else showToast('Saisis au moins un chiffre.');
+    });
     var b = document.getElementById('anki-lire');
     if(b) b.addEventListener('click', function(){ lireAnki(true); });
     /* Ouvert en local sur le Mac : on lit tout seul au démarrage, puis toutes les vingt
@@ -11348,6 +11760,93 @@
     saveInternal('batcave-last-bilan-prompt', weekRange(0)[0]);
     renderRevue();
   }
+
+  /* ================= L'EXPÉRIENCE DE LA SEMAINE =================
+     Une seule chose changée à la fois, et une mesure choisie à l'avance qui dira si ça a
+     marché. La valeur de départ est figée le dimanche de la déclaration : sans elle, on
+     compare à un souvenir. Le verdict tombe le dimanche suivant, calculé sur weekStats,
+     avec un seuil d'indifférence -- une variation de 2 % n'est pas un résultat.
+     Une expérience par semaine, jamais deux : c'est tout l'intérêt. */
+  var EXP_MESURES = [
+    {cle:'fidelite',  label:'Fidélité au plan',        unite:'%', dec:0, haut:true,  seuil:4},
+    {cle:'revH',      label:'Heures de révision',      unite:'h', dec:1, haut:true,  seuil:1},
+    {cle:'projH',     label:'Heures de projets perso', unite:'h', dec:1, haut:true,  seuil:0.7},
+    {cle:'habitPct',  label:'Habitudes tenues',        unite:'%', dec:0, haut:true,  seuil:4},
+    {cle:'sleepH',    label:'Sommeil par nuit',        unite:'h', dec:1, haut:true,  seuil:0.3},
+    {cle:'waterL',    label:'Eau par jour',            unite:'L', dec:1, haut:true,  seuil:0.2},
+    {cle:'kcalPct',   label:'Nutrition',               unite:'%', dec:0, haut:true,  seuil:5},
+    {cle:'sportPct',  label:'Séances tenues',          unite:'%', dec:0, haut:true,  seuil:8},
+    {cle:'dep',       label:'Dépenses variables',      unite:'€', dec:0, haut:false, seuil:15}
+  ];
+  function expMesure(cle){ return EXP_MESURES.filter(function(m){ return m.cle === cle; })[0] || null; }
+  var expState = loadList('batcave-experiences');
+  function expDeLundi(lundi){ return expState.filter(function(e){ return e && e.lundi === lundi; })[0] || null; }
+  function expEnCours(){ var e = expDeLundi(weekRange(0)[0]); return e && !e.clos ? e : null; }
+  function expValeur(cle, decalage){
+    var st = weekStats(weekRange(decalage || 0));
+    var v = st[cle];
+    return (typeof v === 'number' && isFinite(v)) ? Math.round(v * 100) / 100 : null;
+  }
+  function verdictExp(e){
+    var m = e && expMesure(e.mesure);
+    if(!m) return 'inconnu';
+    var a = Number(e.avant), b = Number(e.apres);
+    if(!isFinite(a) || !isFinite(b)) return 'inconnu';
+    var d = b - a;
+    var seuil = Math.max(m.seuil, Math.abs(a) * 0.05);
+    if(Math.abs(d) < seuil) return 'neutre';
+    return (m.haut ? d > 0 : d < 0) ? 'marche' : 'pire';
+  }
+  var VERDICT_TEXTE = {marche:'ça a marché', pire:'c\u2019est moins bien', neutre:'pas d\u2019effet mesurable', inconnu:'pas assez de données'};
+  var VERDICT_COULEUR = {marche:'var(--good)', pire:'var(--danger)', neutre:'var(--ink-faint)', inconnu:'var(--ink-faint)'};
+  function fmtMesure(v, m){
+    if(v === null || v === undefined || !isFinite(v)) return '—';
+    return fmtNombre(v, m ? m.dec : 1) + (m ? ' ' + m.unite : '');
+  }
+  /* Clôt l'expérience de la semaine qui s'achève : on lit la mesure choisie et on tranche. */
+  function cloreExperience(){
+    var e = expEnCours();
+    if(!e) return null;
+    e.apres = expValeur(e.mesure, 0);
+    e.verdict = verdictExp(e);
+    e.clos = todayISO;
+    save('batcave-experiences', expState);
+    return e;
+  }
+  function declarerExperience(enonce, cle){
+    enonce = String(enonce || '').trim();
+    if(!enonce || !expMesure(cle)) return null;
+    var lundi = weekRange(1)[0];
+    var deja = expDeLundi(lundi);
+    var avant = expValeur(cle, 0);
+    if(deja){ deja.enonce = enonce; deja.mesure = cle; deja.avant = avant; }
+    else expState.push({id:'xp' + Date.now() + Math.random().toString(36).slice(2, 5), lundi: lundi, enonce: enonce, mesure: cle, avant: avant, apres: null, verdict: null, clos: null});
+    if(expState.length > 200) expState = expState.slice(-200);
+    save('batcave-experiences', expState);
+    return expDeLundi(lundi);
+  }
+  function renderExperience(){
+    var courante = document.getElementById('exp-courante'), liste = document.getElementById('exp-liste'), note = document.getElementById('exp-note');
+    if(!courante || !liste) return;
+    var e = expEnCours();
+    if(note) note.textContent = e ? 'une en cours' : 'aucune en cours';
+    courante.innerHTML = e
+      ? '<p style="font-size:13.5px; color:var(--ink); line-height:1.6;"><b>Cette semaine :</b> ' + escapeHtml(e.enonce) + '</p>' +
+        '<p class="sub-note" style="margin-top:5px;">Mesure suivie : <b style="color:var(--ink-dim);">' + escapeHtml((expMesure(e.mesure) || {}).label || e.mesure) +
+        '</b> · départ ' + fmtMesure(e.avant, expMesure(e.mesure)) + ' · verdict dimanche soir, à la clôture.</p>'
+      : '<p class="sub-note" style="line-height:1.6;">Aucune expérience en cours. Le dimanche soir, à la clôture, tu en déclares une : <b style="color:var(--ink-dim);">une seule chose à changer</b>, et la mesure qui dira si ça a marché. Trois changements à la fois ne se départagent pas.</p>';
+    var passees = expState.filter(function(x){ return x && x.clos; }).slice().reverse();
+    liste.innerHTML = passees.length
+      ? passees.map(function(x){
+          var m = expMesure(x.mesure), v = x.verdict || 'inconnu';
+          return '<li class="entry-row" style="align-items:flex-start; flex-wrap:wrap;">' +
+                 '<span class="ecell small"><b>' + fmtDate(x.lundi) + '</b></span>' +
+                 '<span class="ecell">' + escapeHtml(x.enonce) + '</span>' +
+                 '<span class="ecell small sub-note">' + escapeHtml((m || {}).label || x.mesure) + ' : ' + fmtMesure(x.avant, m) + ' → ' + fmtMesure(x.apres, m) + '</span>' +
+                 '<span class="ecell small" style="color:' + VERDICT_COULEUR[v] + '; font-weight:600;">' + VERDICT_TEXTE[v] + '</span></li>';
+        }).join('')
+      : '<li class="entry-empty">Aucune expérience terminée pour l\u2019instant.</li>';
+  }
   function renderRevue(){
     var list = document.getElementById('rv-list');
     var constats = document.getElementById('rv-constats');
@@ -11538,6 +12037,7 @@
       : '<span class="sub-note">toutes cochées ✅</span>';
     hab.querySelectorAll('[data-cl-hab]').forEach(function(b){ b.addEventListener('click', function(){ b.classList.toggle('active'); }); });
     document.getElementById('cl-note').value = '';
+    ['cl-ak-dus','cl-ak-revues'].forEach(function(id){ var e = document.getElementById(id); if(e) e.value = ''; });
     var pom = document.getElementById('cl-pomodoro'), bp = blocsSansPomodoroDuJour();
     if(pom) pom.textContent = !bp.total ? '' : (bp.sans
       ? '🍅 ' + bp.sans + ' bloc' + (bp.sans > 1 ? 's' : '') + ' sur ' + bp.total + ' sans Pomodoro aujourd\'hui : ' + bp.noms.slice(0, 3).join(', ') + (bp.noms.length > 3 ? '…' : '') + '.'
@@ -11549,6 +12049,26 @@
       ['cl-rv-marche','cl-rv-coince','cl-rv-ajust','cl-es-errores','cl-es-oral','cl-es-drill','cl-anki-revues','cl-anki-creees'].forEach(function(id){ var el = document.getElementById(id); if(el) el.value = ''; });
       var esBox = document.getElementById('cl-espanol');
       if(esBox) esBox.hidden = !periodeGrille(todayISO);
+      /* l'expérience : le verdict de celle qui s'achève, puis la déclaration de la suivante */
+      var sel = document.getElementById('cl-exp-mesure');
+      if(sel && !sel.options.length){
+        sel.innerHTML = EXP_MESURES.map(function(m){ return '<option value="' + m.cle + '">' + m.label + '</option>'; }).join('');
+      }
+      var vBox = document.getElementById('cl-exp-verdict'), enCours = expEnCours();
+      if(vBox){
+        if(enCours){
+          var apercu = expValeur(enCours.mesure, 0), mm = expMesure(enCours.mesure);
+          var faux = {mesure: enCours.mesure, avant: enCours.avant, apres: apercu};
+          var v = verdictExp(faux);
+          vBox.hidden = false;
+          vBox.innerHTML = '<p class="sub-note" style="line-height:1.6;">Ton expérience de la semaine : <b style="color:var(--ink-dim);">' + escapeHtml(enCours.enonce) + '</b><br>' +
+            escapeHtml((mm || {}).label || enCours.mesure) + ' : ' + fmtMesure(enCours.avant, mm) + ' → <b style="color:' + VERDICT_COULEUR[v] + ';">' + fmtMesure(apercu, mm) + '</b> · <b style="color:' + VERDICT_COULEUR[v] + ';">' + VERDICT_TEXTE[v] + '</b>. Le verdict est enregistré en clôturant.</p>';
+        } else { vBox.hidden = true; vBox.innerHTML = ''; }
+      }
+      var qEl = document.getElementById('cl-exp-quoi');
+      var suivante = expDeLundi(weekRange(1)[0]);
+      if(qEl) qEl.value = suivante ? suivante.enonce : '';
+      if(sel && suivante) sel.value = suivante.mesure;
     }
     ov.hidden = false;
     var premier = document.getElementById('cl-sommeil');
@@ -11576,6 +12096,11 @@
     cochees.forEach(function(id){ if(!habitDoneToday(id)) toggleHabit(id); });
     /* Clôturer la journée, C'EST faire la revue de la veille et le plan du lendemain :
        l'habitude se coche d'elle-même au lieu d'être réclamée une seconde fois. */
+    /* les deux chiffres d'Anki du soir : une saisie vaut lecture */
+    (function(){
+      var d = document.getElementById('cl-ak-dus'), r = document.getElementById('cl-ak-revues');
+      if((d && d.value !== '') || (r && r.value !== '')) enregistrerAnkiManuel({dentaire: d ? d.value : '', revues: r ? r.value : ''});
+    })();
     var revue = habitParId('core-revue');
     if(revue && habitVautLe(revue, weekday) && !habitDoneToday('core-revue')){ toggleHabit('core-revue'); cochees.push('core-revue'); }
     if(weekday === 0){
@@ -11586,6 +12111,12 @@
       var ank = {revues: lire('cl-anki-revues'), creees: lire('cl-anki-creees')};
       if(ank.revues === null && ank.creees === null) ank = null;
       if(m || c || a || es || ank) enregistrerRevue(weekRange(0)[0], m, c, a, es, ank);
+      /* on clôt l'expérience de la semaine écoulée, puis on déclare celle de la suivante */
+      var fini = cloreExperience();
+      var qEl = document.getElementById('cl-exp-quoi'), sEl = document.getElementById('cl-exp-mesure');
+      if(qEl && sEl && qEl.value.trim()) declarerExperience(qEl.value, sEl.value);
+      try{ renderExperience(); }catch(e2){}
+      if(fini) showToast('🧪 Expérience close : ' + VERDICT_TEXTE[fini.verdict || 'inconnu'] + '.');
     }
     renderJournal(); renderWeightChart(); renderKcalBoucle(); renderCalendar(); renderDashboard(); renderBilan();
     if(document.getElementById('obj-liste')) renderObjectifs();
