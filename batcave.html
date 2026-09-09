@@ -1675,6 +1675,7 @@
           <div class="f"><label>Type</label><select id="jx-type"><option value="tp">TP</option><option value="examen">Examen</option><option value="autre">Autre</option></select></div>
           <div class="f" style="flex:1; min-width:160px;"><label>Libellé</label><input type="text" id="jx-label" placeholder="ex : Anatomía I" style="width:100%;"></div>
           <div class="f"><label>Trajet</label><select id="jx-trajet"><option value="0">aucun</option><option value="15">15 min</option><option value="30" selected>30 min</option><option value="45">45 min</option></select></div>
+          <div class="f"><label title="Un TP qui revient chaque semaine se pose une fois, pas huit">Chaque semaine jusqu'au</label><input type="date" id="jx-jusqua"></div>
           <button class="btn btn-primary" id="jx-add" type="button">Ajouter</button>
         </div>
         <ul class="entry-list" id="journees-liste"></ul>
@@ -1893,6 +1894,20 @@
         <span class="rb-boutons" id="repos-boutons"></span>
         <span class="rb-compte" id="repos-compte" hidden><b id="repos-reste">0:00</b><button type="button" class="rb-stop" id="repos-stop">arrêter</button></span>
         <span class="rb-aide" id="repos-aide">Les temps de la séance du jour, plus les durées courantes. Le décompte reste visible en haut de l'onglet.</span>
+      </div>
+
+      <!-- Chronometre de seance : la duree REELLE, pour savoir si les 40 min tiennent.
+           Contrairement au minuteur de repos, il survit au rechargement et au telephone
+           verrouille : il ne compte pas des ticks, il lit un horodatage de depart. Une
+           seance oubliee en marche est fermee d'office au-dela de trois heures. -->
+      <div class="repos-barre" id="chrono-barre">
+        <span class="rb-lbl">Séance</span>
+        <span class="rb-boutons">
+          <button type="button" class="rb-btn" id="chrono-start">Démarrer la séance</button>
+          <button type="button" class="rb-btn" id="chrono-stop" hidden>Terminer</button>
+        </span>
+        <span class="rb-aide" id="chrono-aide">—</span>
+        <span class="rb-compte" id="chrono-compte" hidden><b id="chrono-ecoule">0:00</b><button type="button" class="rb-stop" id="chrono-annuler">annuler</button></span>
       </div>
 
       <div class="sport-grid" id="sport-grid"></div>
@@ -2536,6 +2551,19 @@
       <p class="sub-note" style="line-height:1.6; margin-bottom:10px;">Efface toutes les saisies (journal, sessions, repas, sport, dépendances, budget, tâches, Coran, revues…) sur cet appareil, dans le cloud et sur tes autres appareils à leur prochaine ouverture. Garde la configuration : habitudes, charges fixes, plafonds, dates d'examen, objectifs, options. Une sauvegarde JSON est proposée juste avant.</p>
       <div class="card-actions">
         <button class="btn btn-danger" id="reinit-btn" type="button">Remettre à zéro (garder la configuration)</button>
+      </div>
+    </div>
+
+    <!-- Copie vierge : le nouveau depart garde la configuration mais pas le POINT DE DEPART
+         (objectifs cales sur le 14, habitudes d'origine, cibles du premier jour). Si quelque
+         chose casse en novembre, on veut revenir au 14, pas a un etat intermediaire. -->
+    <div style="margin-top:18px; padding-top:14px; border-top:1px solid var(--border-soft);">
+      <p style="font-weight:600; color:var(--ink); font-size:13.5px; margin-bottom:6px;">🌱 Copie vierge</p>
+      <p class="sub-note" style="line-height:1.6; margin-bottom:10px;">L'état exact du premier jour, gardé de côté : configuration, objectifs calés sur le 14, habitudes d'origine. À prendre le 14 septembre au matin, <b>avant la première saisie</b>. « Remettre à zéro » garde la configuration mais pas ce point de départ ; ici, tu reviens au 14 exactement.</p>
+      <p class="sub-note" id="vierge-etat" style="margin-bottom:10px;">—</p>
+      <div class="card-actions">
+        <button class="btn" id="vierge-prendre" type="button">Prendre la copie vierge maintenant</button>
+        <button class="btn btn-danger" id="vierge-restaurer" type="button" hidden>Repartir de la copie vierge</button>
       </div>
     </div>
   </div>
@@ -3813,6 +3841,7 @@
   document.querySelectorAll('.backup-trigger').forEach(function(btn){
     btn.addEventListener('click', function(){
       document.getElementById('backup-export').value = JSON.stringify(allBatcaveData(), null, 2);
+      renderCopieVierge();
       document.getElementById('backup-overlay').hidden = false;
     });
   });
@@ -3857,7 +3886,7 @@
      elles repartiraient vers le cloud. La meme remise a zero peut donc etre decidee depuis
      l'appli ou directement dans le cloud. */
   var REINIT_GARDER = ['habits','habits-seed-v2','habits-seed-v3','habits-seed-v4','objectifs-v5-espanol','fixed-charges','fc-prix-icloud-3','budget-limits','examens','examens-heures','journees','vacances','jours-exclus','notion-url','shopify-boutique',
-                       'objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','horizon','goals-depart','saisons','gcal-ecriture','duree-bloc','dash-more','revision-fusionnee','reinit'];
+                       'objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','horizon','goals-depart','saisons','gcal-ecriture','duree-bloc','dash-more','revision-fusionnee','reinit','copie-vierge'];
   var REINIT_PREFIXES_GARDER = ['pomodial-', 'coherence-ignore-'];
   function reinitGarder(cle){
     var c = cle.indexOf('batcave-') === 0 ? cle.slice(8) : cle;
@@ -3908,6 +3937,83 @@
     }, {titre:'Nouveau départ', libelleOk:'Tout effacer et repartir'});
   }
   (function(){ var b = document.getElementById('reinit-btn'); if(b) b.addEventListener('click', remettreAZero); })();
+
+  /* ================= COPIE VIERGE =================
+     « Nouveau départ » garde la configuration, pas le POINT DE DÉPART : les objectifs sont
+     recalés sur le jour où on le déclenche, et les habitudes ont pu bouger depuis. Si
+     quelque chose casse en novembre, on veut revenir au 14 septembre exactement.
+
+     La copie ne s'inclut jamais elle-même, sinon chaque prise doublerait la précédente. */
+  var VIERGE_MAX_OCTETS = 900000;
+  function copieVierge(){ return load('batcave-copie-vierge', null); }
+  function donneesSansCopie(){
+    var d = allBatcaveData();
+    delete d['batcave-copie-vierge'];
+    return d;
+  }
+  function prendreCopieVierge(){
+    var data = donneesSansCopie(), n = Object.keys(data).length;
+    var poids = 0;
+    try{ poids = JSON.stringify(data).length; }catch(e){}
+    if(poids > VIERGE_MAX_OCTETS){
+      showToast('⚠️ Trop volumineux pour une copie vierge (' + Math.round(poids / 1024) + ' Ko) — une copie vierge se prend avant les premières saisies.');
+      return;
+    }
+    var deja = copieVierge();
+    var faire = function(){
+      save('batcave-copie-vierge', {date: todayISO, pris: new Date().toISOString(), n: n, data: data});
+      renderCopieVierge();
+      showToast('🌱 Copie vierge prise : ' + n + ' entrées, état du ' + fmtDate(todayISO) + '.');
+    };
+    if(deja) askConfirm('Une copie vierge du ' + fmtDate(deja.date) + ' existe déjà (' + (deja.n || 0) + ' entrées). La remplacer par l\'état d\'aujourd\'hui ? L\'ancienne sera perdue.', faire, {titre:'Copie vierge', libelleOk:'Remplacer'});
+    else faire();
+  }
+  function restaurerCopieVierge(){
+    var v = copieVierge();
+    if(!v || !v.data){ showToast('Aucune copie vierge enregistrée.'); return; }
+    var cles = Object.keys(v.data).filter(function(k){ return k.indexOf('batcave-') === 0; });
+    askConfirm('Revenir à l\'état du ' + fmtDate(v.date) + ' (' + cles.length + ' entrées) ? Tout ce qui a été saisi depuis sera effacé, ici, dans le cloud et sur tes autres appareils. Irréversible : fais une sauvegarde avant si tu veux garder la période écoulée.', function(){
+      /* les cles apparues APRES la copie n'y sont pas : il faut les retirer, sinon on
+         garderait des saisies posterieures a l'etat qu'on restaure. La copie vierge
+         elle-meme survit : on doit pouvoir y revenir deux fois. */
+      var actuelles = Object.keys(donneesSansCopie());
+      actuelles.forEach(function(k){
+        if(cles.indexOf(k) !== -1) return;
+        try{ localStorage.removeItem(k); }catch(e){}
+        supprimerDuCloud(k);
+      });
+      cles.forEach(function(k){
+        try{ localStorage.setItem(k, JSON.stringify(v.data[k])); }catch(e){}
+        if(dbHandle) pousserVersCloud(k, v.data[k]);
+      });
+      showToast('🌱 Retour à l\'état du ' + fmtDate(v.date) + ' — rechargement…');
+      setTimeout(function(){ location.reload(); }, dbHandle ? 1800 : 900);
+    }, {titre:'Repartir de la copie vierge', libelleOk:'Revenir au ' + fmtDate(v.date)});
+  }
+  function copieViergeDue(){
+    /* proposee a partir du premier jour du programme, tant qu'aucune copie n'est prise */
+    return todayISO >= PROGRAMME_DEBUT && !copieVierge();
+  }
+  function renderCopieVierge(){
+    var et = document.getElementById('vierge-etat'), pr = document.getElementById('vierge-prendre'), re = document.getElementById('vierge-restaurer');
+    if(!et) return;
+    var v = copieVierge();
+    if(v){
+      et.textContent = 'Copie du ' + fmtDate(v.date) + ' · ' + (v.n || 0) + ' entrées' +
+        (v.date === PROGRAMME_DEBUT ? ' · c\'est bien l\'état du premier jour.' : ' · prise après le premier jour : elle contient déjà des saisies.');
+    } else {
+      et.textContent = todayISO < PROGRAMME_DEBUT
+        ? 'Aucune copie vierge. À prendre le ' + fmtDate(PROGRAMME_DEBUT) + ' au matin, avant la première saisie.'
+        : 'Aucune copie vierge — c\'est le filet qui manque si quelque chose casse plus tard.';
+    }
+    if(pr) pr.textContent = v ? 'Remplacer la copie vierge' : 'Prendre la copie vierge maintenant';
+    if(re) re.hidden = !v;
+  }
+  (function(){
+    var a = document.getElementById('vierge-prendre'), b = document.getElementById('vierge-restaurer');
+    if(a) a.addEventListener('click', prendreCopieVierge);
+    if(b) b.addEventListener('click', restaurerCopieVierge);
+  })();
 
   document.getElementById('backup-import-btn').addEventListener('click', function(){
     var raw = document.getElementById('backup-import').value.trim();
@@ -6565,6 +6671,7 @@
     }
     renderChoixSeance();
     renderRepos();
+    renderChrono();
     renderMesures();
     renderProgression();
   }
@@ -6668,6 +6775,119 @@
   (function(){
     var st = document.getElementById('repos-stop');
     if(st) st.addEventListener('click', function(){ arreterRepos(false); });
+  })();
+
+  /* ================= CHRONOMÈTRE DE SÉANCE =================
+     Les séries disent ce qui a été fait, jamais combien de temps ça a pris. Le programme
+     annonce 46 à 50 min : sans mesure, on ne sait pas si ça tient une fois au parc, avec
+     le trajet et les repos réels. Un horodatage de départ, une durée à l'arrivée.
+
+     Il SURVIT au rechargement et au téléphone verrouillé, contrairement au minuteur de
+     repos : une séance dure cinquante minutes, l'écran s'éteint vingt fois entre-temps.
+     D'où le calcul sur un horodatage plutôt que sur des ticks accumulés. */
+  var CHRONO_MAX_MIN = 180;   /* au-dela, c'est un chrono oublie, pas une seance */
+  var chronoState = load('batcave-chrono-seance', null);
+  if(!chronoState || typeof chronoState !== 'object' || !(Number(chronoState.debut) > 0)) chronoState = null;
+  var dureesSeance = loadList('batcave-seance-duree');
+  var chronoTimer = null;
+
+  function dureeSeanceDe(iso){
+    var e = dureesSeance.filter(function(d){ return d && d.date === iso; })[0];
+    return e ? Number(e.minutes) || 0 : 0;
+  }
+  /* La duree annoncee par le programme pour la seance du jour : « 50 min » → 50. */
+  function dureePrevueSeance(iso){
+    var t = typeSportDe(iso || todayISO);
+    if(!t || t === 'Off') return 0;
+    var s = SESSIONS.filter(function(x){ return x.type === t; })[0];
+    var m = s && /(\d+)/.exec(s.duree || '');
+    return m ? Number(m[1]) : 0;
+  }
+  function moyenneDureesSeance(n){
+    var d = dureesSeance.filter(function(x){ return x && Number(x.minutes) > 0; })
+                        .sort(function(a, b){ return String(a.date).localeCompare(String(b.date)); })
+                        .slice(-(n || 4));
+    if(!d.length) return 0;
+    return Math.round(d.reduce(function(a, x){ return a + Number(x.minutes); }, 0) / d.length);
+  }
+  function chronoMinutesEcoulees(){
+    if(!chronoState) return 0;
+    return Math.max(0, Math.round((Date.now() - Number(chronoState.debut)) / 60000));
+  }
+  function demarrerChrono(){
+    if(chronoState) return;
+    chronoState = {debut: Date.now(), date: todayISO, type: typeSportDe(todayISO) || ''};
+    save('batcave-chrono-seance', chronoState);
+    majChrono(); renderChrono();
+    showToast('⏱️ Séance lancée. Le chrono tient même écran éteint — termine-la en revenant ici.');
+  }
+  /* Une seance de zero minute n'existe pas : sous une minute, on annule au lieu d'ecrire
+     une ligne fausse dans l'historique. */
+  function terminerChrono(){
+    if(!chronoState) return;
+    var min = chronoMinutesEcoulees(), iso = chronoState.date;
+    chronoState = null;
+    try{ localStorage.removeItem('batcave-chrono-seance'); }catch(e){}
+    supprimerDuCloud('batcave-chrono-seance');
+    if(min < 1){ renderChrono(); showToast('⏱️ Moins d\'une minute — rien enregistré.'); return; }
+    if(min > CHRONO_MAX_MIN){ renderChrono(); showToast('⏱️ Plus de ' + Math.round(CHRONO_MAX_MIN / 60) + ' h : chrono oublié, rien enregistré.'); return; }
+    dureesSeance = dureesSeance.filter(function(d){ return !(d && d.date === iso); });
+    dureesSeance.push({id:'ds' + Date.now(), date: iso, minutes: min});
+    if(dureesSeance.length > 500) dureesSeance = dureesSeance.slice(-500);
+    save('batcave-seance-duree', dureesSeance);
+    renderChrono();
+    var prevu = dureePrevueSeance(iso);
+    showToast('⏱️ Séance de ' + min + ' min enregistrée' + (prevu ? ' (programme : ' + prevu + ' min)' : '') + '.');
+  }
+  function annulerChrono(){
+    if(!chronoState) return;
+    chronoState = null;
+    try{ localStorage.removeItem('batcave-chrono-seance'); }catch(e){}
+    supprimerDuCloud('batcave-chrono-seance');
+    renderChrono();
+    showToast('⏱️ Chrono annulé — rien enregistré.');
+  }
+  function majChrono(){
+    var e = document.getElementById('chrono-ecoule');
+    if(!e || !chronoState) return;
+    var sec = Math.max(0, Math.floor((Date.now() - Number(chronoState.debut)) / 1000));
+    e.textContent = Math.floor(sec / 60) + ':' + ('0' + (sec % 60)).slice(-2);
+  }
+  function renderChrono(){
+    var barre = document.getElementById('chrono-barre');
+    if(!barre) return;
+    var start = document.getElementById('chrono-start'), stop = document.getElementById('chrono-stop');
+    var box = document.getElementById('chrono-compte'), aide = document.getElementById('chrono-aide');
+    /* un chrono laisse en marche la veille n'est pas une seance : on le ferme sans rien ecrire */
+    if(chronoState && (chronoState.date !== todayISO || chronoMinutesEcoulees() > CHRONO_MAX_MIN)){
+      chronoState = null;
+      try{ localStorage.removeItem('batcave-chrono-seance'); }catch(e){}
+      supprimerDuCloud('batcave-chrono-seance');
+    }
+    var enCours = !!chronoState, faite = dureeSeanceDe(todayISO), prevu = dureePrevueSeance(todayISO), moy = moyenneDureesSeance(4);
+    if(start) start.hidden = enCours || faite > 0;
+    if(stop) stop.hidden = !enCours;
+    if(box) box.hidden = !enCours;
+    if(chronoTimer){ clearInterval(chronoTimer); chronoTimer = null; }
+    if(enCours){ majChrono(); chronoTimer = setInterval(majChrono, 1000); }
+    if(aide){
+      var txt;
+      if(enCours) txt = 'En cours' + (prevu ? ' · le programme annonce ' + prevu + ' min' : '') + '.';
+      else if(faite) txt = 'Aujourd\'hui : ' + faite + ' min' + (prevu ? ' pour ' + prevu + ' min annoncées' : '') +
+                           (faite > prevu && prevu ? ' · ' + (faite - prevu) + ' min de plus' : '') + '.' +
+                           (moy ? ' Moyenne des dernières : ' + moy + ' min.' : '');
+      else if(prevu) txt = 'Le programme annonce ' + prevu + ' min' + (moy ? ' · tes dernières séances : ' + moy + ' min en moyenne' : '') + '. Lance le chrono en arrivant au parc.';
+      else txt = 'Jour de repos — le chrono sert le jour où tu choisis une séance quand même.';
+      aide.textContent = txt;
+    }
+    /* on n'affiche la barre que les jours ou une seance est prevue ou faite */
+    barre.hidden = !(prevu || faite || enCours);
+  }
+  (function(){
+    var a = document.getElementById('chrono-start'), b = document.getElementById('chrono-stop'), c = document.getElementById('chrono-annuler');
+    if(a) a.addEventListener('click', demarrerChrono);
+    if(b) b.addEventListener('click', terminerChrono);
+    if(c) c.addEventListener('click', annulerChrono);
   })();
 
   /* ================= MENSURATIONS =================
@@ -7073,6 +7293,25 @@
     Object.keys(journeesState).forEach(function(k){ dates[k] = true; });
     Object.keys(examensState).forEach(function(m){ dates[examensState[m]] = true; });
     var liste = Object.keys(dates).sort().map(function(iso){ return journeeDe(iso); }).filter(Boolean);
+    /* Une serie hebdomadaire tient sur UNE ligne, sinon huit TP identiques noient le
+       panneau. On garde l'occurrence la plus proche encore a venir (la derniere si tout
+       est passe) et on lui accroche le compte des autres. */
+    (function(){
+      var parSerie = {}, sansSerie = [];
+      liste.forEach(function(ev){
+        var j = journeesState[ev.iso], id = j && j.serie;
+        if(!id){ sansSerie.push(ev); return; }
+        (parSerie[id] = parSerie[id] || []).push(ev);
+      });
+      Object.keys(parSerie).forEach(function(id){
+        var g = parSerie[id].sort(function(a, b){ return a.iso.localeCompare(b.iso); });
+        var rep = g.filter(function(e){ return e.iso >= todayISO; })[0] || g[g.length - 1];
+        rep.serie = {id: id, total: g.length, restantes: g.filter(function(e){ return e.iso >= todayISO; }).length,
+                     fin: (journeesState[g[0].iso] || {}).serieFin || g[g.length - 1].iso, dow: dowDe(g[0].iso)};
+        sansSerie.push(rep);
+      });
+      liste = sansSerie.sort(function(a, b){ return a.iso.localeCompare(b.iso); });
+    })();
     var aVenir = liste.filter(function(ev){ return ev.iso >= todayISO; }).length;
     if(note) note.textContent = liste.length ? aVenir + ' à venir · ' + (liste.length - aVenir) + ' passée' + (liste.length - aVenir > 1 ? 's' : '') : 'aucune';
     if(!liste.length){ ul.innerHTML = '<li class="entry-empty">Aucune journée exceptionnelle — ajoute un TP ou un rendez-vous ci-dessus, ou date un examen dans Études.</li>'; return; }
@@ -7082,21 +7321,30 @@
       var badge = j < 0 ? '<span class="badge">passée</span>' : (j === 0 ? '<span class="badge warn">aujourd\'hui</span>' : (j === 1 ? '<span class="badge warn">demain</span>' : '<span class="badge' + (j <= 7 ? ' gold' : '') + '">J-' + j + '</span>'));
       return '<li class="entry-row" style="flex-wrap:wrap;' + (j < 0 ? ' opacity:.55;' : '') + '">' +
         '<span class="ecell small"><b>' + escapeHtml(capitaliser(dateLongue(new Date(ev.iso + 'T00:00:00')))) + '</b></span>' +
-        '<span class="ecell"><b>' + escapeHtml(ev.titre) + '</b> <span class="sub-note">' + ev.debut + ' → ' + ev.fin + (ev.trajet ? ' · trajet ' + ev.trajet + ' min' : '') + (ev.heureDefaut ? ' · horaire par défaut, précise-le dans Études' : '') + '</span></span>' +
+        '<span class="ecell"><b>' + escapeHtml(ev.titre) + '</b> <span class="sub-note">' + ev.debut + ' → ' + ev.fin + (ev.trajet ? ' · trajet ' + ev.trajet + ' min' : '') + (ev.heureDefaut ? ' · horaire par défaut, précise-le dans Études' : '') +
+          (ev.serie ? ' · chaque ' + ['dimanche','lundi','mardi','mercredi','jeudi','vendredi','samedi'][ev.serie.dow] + ' jusqu\'au ' + fmtDate(ev.serie.fin) + ' (' + ev.serie.restantes + ' sur ' + ev.serie.total + ' à venir)' : '') + '</span></span>' +
         '<span class="ecell small">' + badge + '</span>' +
         (ev.source === 'etudes' ? '<span class="ecell small badge" title="Déduite de la date d\'examen saisie dans Études">depuis Études</span>'
-                                : '<button class="edel" aria-label="Supprimer" title="Supprimer cette journée" data-deljx="' + ev.iso + '">×</button>') +
+                                : '<button class="edel" aria-label="Supprimer" title="' + (ev.serie ? 'Supprimer toute la série' : 'Supprimer cette journée') + '" data-deljx="' + ev.iso + '"' + (ev.serie ? ' data-delserie="' + ev.serie.id + '"' : '') + '>×</button>') +
         (g.sacrifies.length ? '<span class="ecell sub-note" style="flex-basis:100%;">Sacrifié ce jour-là : ' + escapeHtml(g.sacrifies.join(', ')) + '. La veille, le bloc de 20:30 devient « Préparer ».</span>'
                             : '<span class="ecell sub-note" style="flex-basis:100%;">Aucun bloc de travail sacrifié. La veille, le bloc de 20:30 devient « Préparer ».</span>') +
         '</li>';
     }).join('');
     ul.querySelectorAll('[data-deljx]').forEach(function(b){
       b.addEventListener('click', function(){
-        delete journeesState[b.dataset.deljx];
+        var serie = b.dataset.delserie, n = 0;
+        if(serie){
+          /* une serie se retire en entier : les occurrences PASSEES restent, elles ont
+             deja compte dans les scores et les objectifs. */
+          Object.keys(journeesState).forEach(function(k){
+            if(journeesState[k] && journeesState[k].serie === serie && k >= todayISO){ delete journeesState[k]; n++; }
+          });
+        } else { delete journeesState[b.dataset.deljx]; n = 1; }
         save('batcave-journees', journeesState);
         viderCachePrevu(); recalerObjectifsSemaine();
         renderJournees(); rafraichirAgendas(); renderDashboard();
-        showToast('📌 Journée du ' + fmtDate(b.dataset.deljx) + ' retirée : la grille type reprend.');
+        showToast(serie ? '📌 Série retirée : ' + n + ' journée' + (n > 1 ? 's' : '') + ' à venir, la grille type reprend.'
+                        : '📌 Journée du ' + fmtDate(b.dataset.deljx) + ' retirée : la grille type reprend.');
       });
     });
   }
@@ -7173,12 +7421,36 @@
       var type = document.getElementById('jx-type').value, label = document.getElementById('jx-label').value.trim(), trajet = Number(document.getElementById('jx-trajet').value) || 0;
       if(!/^\d{4}-\d{2}-\d{2}$/.test(iso)){ showToast('⚠️ Indique la date.'); return; }
       if(!/^\d{2}:\d{2}$/.test(deb) || !/^\d{2}:\d{2}$/.test(fin) || timeToMinutes(fin) <= timeToMinutes(deb)){ showToast('⚠️ Il faut un début et une fin, la fin après le début.'); return; }
-      journeesState[iso] = {type: type, label: label, debut: deb, fin: fin, trajet: trajet};
+      /* Recurrence : l'emploi du temps de la fac ne ressemble pas a la grille type. Un TP
+         qui revient chaque jeudi pendant huit semaines, c'est huit journees identiques ;
+         on les ecrit toutes (le reste du code lit journeesState par date, rien d'autre ne
+         change), mais elles portent le meme identifiant de serie pour se lire et se
+         supprimer d'un bloc. */
+      var jusqua = (document.getElementById('jx-jusqua') || {}).value || '';
+      var dates = [iso], serie = '';
+      if(/^\d{4}-\d{2}-\d{2}$/.test(jusqua)){
+        if(jusqua < iso){ showToast('⚠️ La fin de la série doit être après la première date.'); return; }
+        serie = 's' + Date.now().toString(36);
+        var d = new Date(iso + 'T00:00:00'), n = 0;
+        while(n < 60){
+          d.setDate(d.getDate() + 7);
+          var x = localISO(d);
+          if(x > jusqua) break;
+          dates.push(x); n++;
+        }
+      }
+      dates.forEach(function(x){
+        journeesState[x] = {type: type, label: label, debut: deb, fin: fin, trajet: trajet};
+        if(serie){ journeesState[x].serie = serie; journeesState[x].serieFin = jusqua; }
+      });
       save('batcave-journees', journeesState);
       viderCachePrevu(); recalerObjectifsSemaine();
       document.getElementById('jx-label').value = '';
+      if(document.getElementById('jx-jusqua')) document.getElementById('jx-jusqua').value = '';
       renderJournees(); rafraichirAgendas(); renderDashboard();
-      showToast('📌 ' + (TYPES_JOURNEE[type] || 'Événement') + (label ? ' · ' + label : '') + ' le ' + fmtDate(iso) + ' : la veille et le jour même sont réorganisés.');
+      showToast('📌 ' + (TYPES_JOURNEE[type] || 'Événement') + (label ? ' · ' + label : '') +
+                (dates.length > 1 ? ' : ' + dates.length + ' séances, chaque ' + ['dimanche','lundi','mardi','mercredi','jeudi','vendredi','samedi'][dowDe(iso)] + ' jusqu\'au ' + fmtDate(jusqua) + '.'
+                                  : ' le ' + fmtDate(iso) + ' : la veille et le jour même sont réorganisés.'));
     });
   })();
   function prochainExamen(){
@@ -8279,6 +8551,7 @@
       if(dus > 0 && !ankiFait) items.push({pri: nowMin >= 12 * 60 ? 0.9 : 2.4, icon:'🃏', text: dus + ' carte' + (dus > 1 ? 's' : '') + ' due' + (dus > 1 ? 's' : '') + ' dans Anki' + (ankiDus('Dentaire') >= ANKI_SEUIL_CHARGE ? ' — la file dentaire déborde, baisse les nouvelles à 35' : ''), action:{type:'anki'}});
     }
     /* Le test du mois : trier par sangsues et réécrire les dix pires cartes. */
+    if(copieViergeDue()) items.push({pri:0.5, icon:'🌱', text:'Copie vierge à prendre — avant la première saisie, pour pouvoir revenir exactement à aujourd\u2019hui', action:{type:'vierge'}});
     if(mesureDue()) items.push({pri:2.7, icon:'📏', text:'Mensurations du mois — cou, bras et taille au mètre ruban' + (mesuresTriees().length ? '' : ' (première mesure : c\u2019est le point de départ)'), action:{type:'mesure'}});
     if(testAnkiDu()) items.push({pri:2.6, icon:'🧪', text:'Test du mois Anki — trie par Lapses et réécris tes dix pires cartes' + (ankiState && ankiState.sangsues ? ' (' + ankiState.sangsues + ' sangsue' + (ankiState.sangsues > 1 ? 's' : '') + ' étiquetée' + (ankiState.sangsues > 1 ? 's' : '') + ')' : ''), action:{type:'test-anki'}});
 
@@ -8379,6 +8652,8 @@
         right = '<button class="btn btn-primary" data-plan-anki="1" style="padding:4px 10px; font-size:11px; flex-shrink:0;">🍅 Anki</button>';
       } else if(it.action && it.action.type === 'mesure'){
         right = '<button class="btn" data-plan-mesure="1" style="padding:4px 10px; font-size:11px; flex-shrink:0;">📏 Mesurer</button>';
+      } else if(it.action && it.action.type === 'vierge'){
+        right = '<button class="btn btn-primary" data-plan-vierge="1" style="padding:4px 10px; font-size:11px; flex-shrink:0;">🌱 Prendre</button>';
       } else if(it.action && it.action.type === 'test-anki'){
         right = '<span style="display:flex; gap:6px; flex-wrap:wrap; justify-content:flex-end;">' +
           '<button class="btn btn-primary" data-plan-testanki="1" style="padding:4px 10px; font-size:11px;">✓ Fait</button>' +
@@ -8428,6 +8703,9 @@
     el.querySelectorAll('[data-plan-anki]').forEach(function(btn){
       btn.addEventListener('click', function(){ lancerPomodoroCours(MATIERE_SANS); });
     });
+    el.querySelectorAll('[data-plan-vierge]').forEach(function(btn){
+      btn.addEventListener('click', function(){ prendreCopieVierge(); renderDashboard(); });
+    });
     el.querySelectorAll('[data-plan-mesure]').forEach(function(btn){
       btn.addEventListener('click', function(){
         var nav = document.querySelector('.nav-btn[data-page="sport"]');
@@ -8448,6 +8726,7 @@
     el.querySelectorAll('[data-plan-drill]').forEach(function(btn){
       btn.addEventListener('click', function(){
         document.getElementById('backup-export').value = JSON.stringify(allBatcaveData(), null, 2);
+      renderCopieVierge();
         document.getElementById('backup-overlay').hidden = false;
         try{ renderExercice(); }catch(e){}
       });
@@ -10196,7 +10475,7 @@
            saison: {debut: horizonState.debut, fin: horizonState.fin, jours: joursAvantFinSaison(), closable: saisonClosable()},
            exercice: {dernier: dernierExercice(), du: exerciceDu()}
          };
-       }; window.__bcNotion = absorberNotion; window.__bcNotionRetards = notionRetards; window.__bcCoursPasFait = coursPasFait; window.__bcExercice = exerciceDu; window.__bcChiffrer = chiffrerTexte; window.__bcDechiffrer = dechiffrerEnveloppe;
+       }; window.__bcReinitGarder = reinitGarder; window.__bcDureeSeance = dureeSeanceDe; window.__bcCopieVierge = copieVierge; window.__bcNotion = absorberNotion; window.__bcNotionRetards = notionRetards; window.__bcCoursPasFait = coursPasFait; window.__bcExercice = exerciceDu; window.__bcChiffrer = chiffrerTexte; window.__bcDechiffrer = dechiffrerEnveloppe;
        /* rapport hebdomadaire (tests/rapport-hebdo.mjs) : la semaine à un décalage donné, ses
           statistiques de bilan et le prévu/réalisé de chaque jour */
        window.__bcSemaine = function(off){
@@ -10328,6 +10607,10 @@
   }
   function pousserRappels(mcp){
     if(!mcp || !gcalActif() || gcalEnCours) return Promise.resolve(null);
+    /* La grille ne s'applique qu'a partir du premier jour du programme : avant, envoyer des
+       rappels remplirait l'agenda de blocs qu'on ne suit pas encore. On active quand on veut,
+       les evenements arrivent le 14. */
+    if(todayISO < PROGRAMME_DEBUT) return Promise.resolve(null);
     gcalEnCours = true;
     var statut = document.getElementById('gcal-statut');
     if(statut) statut.textContent = 'envoi en cours…';
@@ -10371,7 +10654,7 @@
     if(t) t.textContent = actif ? 'Désactiver les rappels' : 'Activer les rappels';
     if(t) t.className = 'btn' + (actif ? '' : ' btn-primary');
     if(p) p.hidden = !actif;
-    if(st) st.textContent = gcalEnCours ? 'envoi en cours…' : (actif ? 'actif' + (gcalEcriture.dernier ? ' · dernier envoi ' + new Date(gcalEcriture.dernier).toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'}) : '') : 'désactivé');
+    if(st) st.textContent = gcalEnCours ? 'envoi en cours…' : (actif && todayISO < PROGRAMME_DEBUT ? 'actif · premiers rappels le ' + fmtDate(PROGRAMME_DEBUT) : actif ? 'actif' + (gcalEcriture.dernier ? ' · dernier envoi ' + new Date(gcalEcriture.dernier).toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'}) : '') : 'désactivé');
     if(det){
       var b = gcalEcriture.bilan;
       det.textContent = gcalEcriture.erreur ? 'Dernier envoi en échec (' + gcalEcriture.erreur + ') — vérifie le connecteur Google Calendar dans Réglages → Connecteurs.'

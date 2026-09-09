@@ -57,8 +57,8 @@ async function ouvrir(quand, local){
 }
 const local = (fr,k) => fr.evaluate(x => JSON.parse(localStorage.getItem(x) || 'null'), k);
 const appels = (fr, tool) => fr.evaluate(t => window.__appels.filter(a => a.tool === t), tool);
-/* mardi 8 sept 06:30 : Sport 05:30 déjà commencé (la Douche démarre à 06:30 pile) ; il reste 19 blocs sur 20 ; mercredi : 20 */
-const MARDI = '2026-09-08T06:30:00+02:00';
+/* mardi 15 sept 06:30 : Sport 05:30 déjà commencé (la Douche démarre à 06:30 pile) ; il reste 19 blocs sur 20 ; mercredi : 20 */
+const MARDI = '2026-09-15T06:30:00+02:00';
 
 console.log('\n== 170) Désactivé par défaut, panneau visible avec le connecteur ==');
 {
@@ -77,14 +77,14 @@ console.log('\n== 171) Activer : un événement par bloc, aujourd\'hui (restants
   await page.waitForTimeout(600);
   const crees = await appels(fr, 'create_event');
   ok(crees.length === 41, '41 événements créés : 20 pour mardi (1 bloc déjà commencé) + 21 pour mercredi (' + crees.length + ')');
-  const rev1 = crees.find(c => c.input.summary === '🦇 Anki 1' && c.input.startTime.startsWith('2026-09-08'));
-  ok(!!rev1 && rev1.input.startTime === '2026-09-08T07:20:00+02:00' && rev1.input.endTime === '2026-09-08T08:20:00+02:00', 'Anki 1 : 07:20 → 08:20 heure de Madrid (' + (rev1 && rev1.input.startTime) + ')');
+  const rev1 = crees.find(c => c.input.summary === '🦇 Anki 1' && c.input.startTime.startsWith('2026-09-15'));
+  ok(!!rev1 && rev1.input.startTime === '2026-09-15T07:20:00+02:00' && rev1.input.endTime === '2026-09-15T08:20:00+02:00', 'Anki 1 : 07:20 → 08:20 heure de Madrid (' + (rev1 && rev1.input.startTime) + ')');
   ok(!!rev1 && rev1.input.overrideReminders[0].minutes === 5 && rev1.input.timeZone === 'Europe/Madrid' && rev1.input.calendarId === 'zizou.oumina@gmail.com', 'rappel 5 min avant, fuseau et agenda précisés');
-  const coucher = crees.find(c => /Coucher/.test(c.input.summary) && c.input.startTime.startsWith('2026-09-08'));
-  ok(!!coucher && coucher.input.summary === '🦇 Coucher' && coucher.input.startTime === '2026-09-08T21:55:00+02:00' && coucher.input.overrideReminders[0].minutes === 30 && coucher.input.availability === 'AVAILABILITY_FREE' && /Écran off/.test(coucher.input.description), 'Coucher 21:55 (même titre que ton agenda), rappel 30 min, écran off en description, n\'occupe pas l\'agenda');
+  const coucher = crees.find(c => /Coucher/.test(c.input.summary) && c.input.startTime.startsWith('2026-09-15'));
+  ok(!!coucher && coucher.input.summary === '🦇 Coucher' && coucher.input.startTime === '2026-09-15T21:55:00+02:00' && coucher.input.overrideReminders[0].minutes === 30 && coucher.input.availability === 'AVAILABILITY_FREE' && /Écran off/.test(coucher.input.description), 'Coucher 21:55 (même titre que ton agenda), rappel 30 min, écran off en description, n\'occupe pas l\'agenda');
   const ankiDemain = crees.find(c => /Anki matinal/.test(c.input.summary));
-  ok(!!ankiDemain && ankiDemain.input.startTime === '2026-09-09T05:30:00+02:00' && ankiDemain.input.endTime === '2026-09-09T06:30:00+02:00', 'mercredi (jour off) : Anki matinal de demain 05:30 → 06:30');
-  const r8 = await local(fr, 'batcave-gcal-2026-09-08'), r9 = await local(fr, 'batcave-gcal-2026-09-09');
+  ok(!!ankiDemain && ankiDemain.input.startTime === '2026-09-16T05:30:00+02:00' && ankiDemain.input.endTime === '2026-09-16T06:30:00+02:00', 'mercredi (jour off) : Anki matinal de demain 05:30 → 06:30');
+  const r8 = await local(fr, 'batcave-gcal-2026-09-15'), r9 = await local(fr, 'batcave-gcal-2026-09-16');
   ok(r8 && Object.keys(r8).length === 20 && r9 && Object.keys(r9).length === 21 && Object.values(r8).every(x => x.id && x.empreinte && x.cree === true), 'relevés locaux : 20 + 21 blocs avec id, empreinte et marque « créé par la Batcave »');
   const opt = await local(fr, 'batcave-gcal-ecriture');
   ok(opt && opt.actif === true && opt.bilan && opt.bilan.crees === 41 && opt.bilan.passes === 1, 'option active, bilan : 41 créés, 1 déjà commencé non envoyé');
@@ -98,11 +98,11 @@ console.log('\n== 171) Activer : un événement par bloc, aujourd\'hui (restants
   const det = await fr.evaluate(() => document.getElementById('gcal-detail').textContent);
   ok(/41 inchangés/.test(det), 'détail : ' + det.slice(0, 90));
   /* relevé local perdu (autre appareil) : les événements présents sont adoptés, pas doublés */
-  await fr.evaluate(() => localStorage.removeItem('batcave-gcal-2026-09-09'));
+  await fr.evaluate(() => localStorage.removeItem('batcave-gcal-2026-09-16'));
   await fr.evaluate(() => document.getElementById('gcal-pousser').click());
   await page.waitForTimeout(400);
   const crees3 = await appels(fr, 'create_event');
-  const r9b = await local(fr, 'batcave-gcal-2026-09-09');
+  const r9b = await local(fr, 'batcave-gcal-2026-09-16');
   ok(crees3.length === 41 && r9b && Object.keys(r9b).length === 21 && Object.values(r9b).every(x => x.cree === false), 'sans relevé local, les 21 événements de demain sont reconnus et adoptés (marqués « pas créés par la Batcave »), aucun doublon');
   const opt2 = await local(fr, 'batcave-gcal-ecriture');
   ok(opt2.bilan.adoptes === 21, 'bilan : 21 adoptés');
@@ -111,19 +111,19 @@ console.log('\n== 171) Activer : un événement par bloc, aujourd\'hui (restants
   await page.waitForTimeout(500);
   const sup = await appels(fr, 'delete_event');
   ok(sup.length === 20, 'désactiver ne retire que ce que la Batcave a créé : les 20 de mardi (ceux de mercredi, adoptés au tour précédent, restent) — ' + sup.length);
-  const r8c = await local(fr, 'batcave-gcal-2026-09-08');
+  const r8c = await local(fr, 'batcave-gcal-2026-09-15');
   ok(r8c === null && (await local(fr, 'batcave-gcal-ecriture')).actif === false, 'relevés effacés, option éteinte');
   await ctx.close();
 }
 
 console.log('\n== 172) Option active au démarrage : envoi automatique ; bloc déplacé → mise à jour ==');
 {
-  const { ctx, fr, page } = await ouvrir(MARDI, {'batcave-gcal-ecriture': {actif:true, depuis:'2026-09-01'},
-    'batcave-gcal-2026-09-08': {'p3': {id:'ancien1', empreinte:'2026-09-08T07:00:00+02:00|2026-09-08T08:00:00+02:00|🦇 Anki 1'}}});
+  const { ctx, fr, page } = await ouvrir(MARDI, {'batcave-gcal-ecriture': {actif:true, depuis:'2026-09-14'},
+    'batcave-gcal-2026-09-15': {'p3': {id:'ancien1', empreinte:'2026-09-15T07:00:00+02:00|2026-09-15T08:00:00+02:00|🦇 Anki 1'}}});
   await page.clock.runFor(7000);
   await page.waitForTimeout(600);
   const maj = await appels(fr, 'update_event');
-  ok(maj.length === 1 && maj[0].input.eventId === 'ancien1' && maj[0].input.startTime === '2026-09-08T07:20:00+02:00', 'le bloc dont l\'heure a changé est mis à jour, pas recréé');
+  ok(maj.length === 1 && maj[0].input.eventId === 'ancien1' && maj[0].input.startTime === '2026-09-15T07:20:00+02:00', 'le bloc dont l\'heure a changé est mis à jour, pas recréé');
   const crees = await appels(fr, 'create_event');
   ok(crees.length === 40, 'les 40 autres sont créés au démarrage (' + crees.length + ')');
   const st = await fr.evaluate(() => document.getElementById('gcal-statut').textContent);
@@ -136,9 +136,9 @@ console.log('\n== 172b) Ton agenda porte déjà le planning en événements réc
   const ctx = await browser.newContext({ viewport:{width:1440,height:900}, timezoneId:'Europe/Madrid', locale:'fr-FR' });
   await ctx.addInitScript(() => {
     window.__gcalEvents = [
-      {id:'rec1_20260908', recurringEventId:'rec1', summary:'🦇 Anki 1', start:{dateTime:'2026-09-08T07:20:00+02:00'}, end:{dateTime:'2026-09-08T08:20:00+02:00'}, status:'confirmed'},
-      {id:'rec2_20260908', recurringEventId:'rec2', summary:'🦇 Coucher', start:{dateTime:'2026-09-08T21:00:00+02:00'}, end:{dateTime:'2026-09-08T21:15:00+02:00'}, status:'confirmed'},
-      {id:'rec3_20260908', recurringEventId:'rec3', summary:'🦇 Déjeuner', start:{dateTime:'2026-09-08T12:35:00+02:00'}, end:{dateTime:'2026-09-08T12:55:00+02:00'}, status:'confirmed'}
+      {id:'rec1_20260908', recurringEventId:'rec1', summary:'🦇 Anki 1', start:{dateTime:'2026-09-15T07:20:00+02:00'}, end:{dateTime:'2026-09-15T08:20:00+02:00'}, status:'confirmed'},
+      {id:'rec2_20260908', recurringEventId:'rec2', summary:'🦇 Coucher', start:{dateTime:'2026-09-15T21:00:00+02:00'}, end:{dateTime:'2026-09-15T21:15:00+02:00'}, status:'confirmed'},
+      {id:'rec3_20260908', recurringEventId:'rec3', summary:'🦇 Déjeuner', start:{dateTime:'2026-09-15T12:35:00+02:00'}, end:{dateTime:'2026-09-15T12:55:00+02:00'}, status:'confirmed'}
     ];
   });
   await ctx.addInitScript(MOCK);
@@ -153,11 +153,11 @@ console.log('\n== 172b) Ton agenda porte déjà le planning en événements réc
   await fr.evaluate(() => document.getElementById('gcal-toggle').click());
   await page.waitForTimeout(600);
   const crees = await appels(fr, 'create_event'), maj = await appels(fr, 'update_event');
-  ok(!crees.some(c => c.input.summary === '🦇 Anki 1' && c.input.startTime.startsWith('2026-09-08')), 'Anki 1 de mardi, déjà là à la bonne heure : adopté, pas recréé');
-  ok(!crees.some(c => c.input.summary === '🦇 Coucher' && c.input.startTime.startsWith('2026-09-08')) && maj.some(m => m.input.eventId === 'rec2_20260908' && m.input.startTime === '2026-09-08T21:55:00+02:00'), 'Coucher déjà là à 21:00 : l\'instance est alignée sur le planning (21:55), pas doublée');
+  ok(!crees.some(c => c.input.summary === '🦇 Anki 1' && c.input.startTime.startsWith('2026-09-15')), 'Anki 1 de mardi, déjà là à la bonne heure : adopté, pas recréé');
+  ok(!crees.some(c => c.input.summary === '🦇 Coucher' && c.input.startTime.startsWith('2026-09-15')) && maj.some(m => m.input.eventId === 'rec2_20260908' && m.input.startTime === '2026-09-15T21:55:00+02:00'), 'Coucher déjà là à 21:00 : l\'instance est alignée sur le planning (21:55), pas doublée');
   ok(maj.some(m => m.input.eventId === 'rec1' && m.input.overrideReminders && m.input.overrideReminders[0].minutes === 5) && maj.some(m => m.input.eventId === 'rec2' && m.input.overrideReminders[0].minutes === 30), 'les rappels manquants sont posés sur la SÉRIE récurrente : 5 min (révision), 30 min (coucher)');
   ok(crees.length === 38, '38 créations seulement (41 − 3 adoptés)');
-  const r8 = await local(fr, 'batcave-gcal-2026-09-08');
+  const r8 = await local(fr, 'batcave-gcal-2026-09-15');
   ok(r8 && r8['p3'] && r8['p3'].id === 'rec1_20260908' && r8['p3'].cree === false, 'le relevé pointe sur l\'instance récurrente adoptée, marquée « pas créée par la Batcave »');
   /* désactiver : les 3 événements adoptés (les tiens) restent, seuls les 30 créés partent */
   await fr.evaluate(() => document.getElementById('gcal-toggle').click());
