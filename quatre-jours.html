@@ -1,0 +1,335 @@
+<title>Quatre jours avant le 14</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --ground:#f6f5f2; --sheet:#ffffff; --sheet-2:#efedE8;
+    --ink:#16181c; --ink-2:#4a4f57; --ink-3:#7b818a;
+    --line:#dcd9d2; --line-2:#e9e6e0;
+    --signal:#b4471f;      /* ce qui bloque */
+    --signal-soft:#fbeee8;
+    --amber:#8a6412;       /* date butoir */
+    --amber-soft:#faf2dd;
+    --done:#3f6b4a;        /* fait */
+    --done-soft:#e9f0e9;
+    --cool:#2f5d78;        /* la Batcave */
+    --cool-soft:#e7eff4;
+    --display:'Bricolage Grotesque',Georgia,serif;
+    --body:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    --mono:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --ground:#131417; --sheet:#191b1f; --sheet-2:#212429;
+      --ink:#eceae6; --ink-2:#b3b7bd; --ink-3:#82878f;
+      --line:#2e3238; --line-2:#25282d;
+      --signal:#e2825c; --signal-soft:#2b1d17;
+      --amber:#d8b45c; --amber-soft:#2a2318;
+      --done:#78ad86; --done-soft:#1a241c;
+      --cool:#87b8d4; --cool-soft:#182229;
+    }
+  }
+  :root[data-theme="dark"]{
+    --ground:#131417; --sheet:#191b1f; --sheet-2:#212429;
+    --ink:#eceae6; --ink-2:#b3b7bd; --ink-3:#82878f;
+    --line:#2e3238; --line-2:#25282d;
+    --signal:#e2825c; --signal-soft:#2b1d17;
+    --amber:#d8b45c; --amber-soft:#2a2318;
+    --done:#78ad86; --done-soft:#1a241c;
+    --cool:#87b8d4; --cool-soft:#182229;
+  }
+  *{box-sizing:border-box;}
+  body{background:var(--ground); color:var(--ink); font-family:var(--body); font-size:15px; line-height:1.6;
+       -webkit-text-size-adjust:100%;}
+  .wrap{max-width:820px; margin:0 auto; padding:0 18px 80px;}
+
+  header.top{padding:38px 0 20px;}
+  .kicker{font-family:var(--mono); font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:var(--signal); margin-bottom:12px;}
+  h1{font-family:var(--display); font-weight:700; font-size:clamp(30px,7vw,46px); line-height:1.05; margin:0 0 10px; text-wrap:balance;}
+  .lede{color:var(--ink-2); font-size:16px; max-width:60ch; margin:0;}
+
+  /* barre de progression collante */
+  .bar-wrap{position:sticky; top:0; z-index:20; background:var(--ground); padding:12px 0 10px; margin-bottom:22px;
+            border-bottom:1px solid var(--line);}
+  .bar-head{display:flex; justify-content:space-between; align-items:baseline; gap:12px; font-family:var(--mono);
+            font-size:11.5px; letter-spacing:.08em; color:var(--ink-3); margin-bottom:7px;}
+  .bar-head b{color:var(--ink); font-weight:500;}
+  .bar{height:6px; background:var(--line-2); overflow:hidden;}
+  .bar i{display:block; height:100%; width:0; background:var(--done); transition:width .35s ease;}
+
+  h2{font-family:var(--display); font-weight:700; font-size:clamp(21px,4.4vw,27px); line-height:1.15;
+     margin:38px 0 4px; padding-top:20px; border-top:1px solid var(--line); text-wrap:balance;}
+  h2:first-of-type{border-top:none; padding-top:0;}
+  h2 .when{display:block; font-family:var(--mono); font-size:11px; font-weight:400; letter-spacing:.14em;
+           text-transform:uppercase; color:var(--ink-3); margin-bottom:6px;}
+  h3{font-family:var(--body); font-weight:600; font-size:15px; letter-spacing:.01em; margin:24px 0 8px; color:var(--ink);}
+  h3 .n{font-family:var(--mono); font-size:11px; color:var(--ink-3); font-weight:400; margin-left:8px;}
+  p{margin:10px 0;}
+  .sec-note{color:var(--ink-2); font-size:14.5px; margin:6px 0 16px; max-width:62ch;}
+
+  /* encadrés */
+  .box{border-left:3px solid var(--line); background:var(--sheet); padding:14px 16px; margin:18px 0; font-size:14.5px;}
+  .box.stop{border-left-color:var(--signal); background:var(--signal-soft);}
+  .box.date{border-left-color:var(--amber); background:var(--amber-soft);}
+  .box.calm{border-left-color:var(--cool); background:var(--cool-soft);}
+  .box b{color:var(--ink);}
+
+  /* listes à cocher */
+  ul.todo{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:2px;}
+  ul.todo li{display:flex; align-items:flex-start; gap:12px; padding:11px 12px; background:var(--sheet);
+             border:1px solid var(--line-2); min-height:48px;}
+  ul.todo li:hover{border-color:var(--line);}
+  ul.todo input[type="checkbox"]{appearance:none; -webkit-appearance:none; flex:none; width:22px; height:22px;
+    margin:1px 0 0; border:1.5px solid var(--ink-3); background:transparent; cursor:pointer; position:relative;}
+  ul.todo input[type="checkbox"]:checked{background:var(--done); border-color:var(--done);}
+  ul.todo input[type="checkbox"]:checked::after{content:'✓'; position:absolute; inset:0; display:flex;
+    align-items:center; justify-content:center; color:var(--sheet); font-size:14px; font-weight:700;}
+  ul.todo input[type="checkbox"]:focus-visible{outline:2px solid var(--cool); outline-offset:2px;}
+  ul.todo label{flex:1 1 auto; min-width:0; cursor:pointer; position:relative;}
+  ul.todo label::after{content:''; position:absolute; inset:-11px -12px -11px -34px;}
+  ul.todo li.done{background:var(--done-soft); border-color:transparent;}
+  ul.todo li.done label{color:var(--ink-3); text-decoration:line-through; text-decoration-thickness:1px;}
+  .why{display:block; font-size:13px; color:var(--ink-3); margin-top:3px; line-height:1.5; text-decoration:none !important;}
+  li.done .why{opacity:.6;}
+
+  .tag{display:inline-block; font-family:var(--mono); font-size:9.5px; letter-spacing:.1em; text-transform:uppercase;
+       padding:2px 6px; border:1px solid var(--line); color:var(--ink-3); margin-right:7px; vertical-align:1px;
+       white-space:nowrap;}
+  .tag.stop{border-color:var(--signal); color:var(--signal);}
+  .tag.date{border-color:var(--amber); color:var(--amber);}
+  .tag.sante{border-color:var(--done); color:var(--done);}
+  .tag.bat{border-color:var(--cool); color:var(--cool);}
+
+  .chain{counter-reset:step; list-style:none; margin:14px 0; padding:0;}
+  .chain li{counter-increment:step; position:relative; padding:0 0 14px 38px; border-left:1px solid var(--line);
+            margin-left:12px;}
+  .chain li:last-child{border-left-color:transparent; padding-bottom:0;}
+  .chain li::before{content:counter(step); position:absolute; left:-12px; top:0; width:24px; height:24px;
+    background:var(--signal); color:#fff; font-family:var(--mono); font-size:12px; display:flex;
+    align-items:center; justify-content:center;}
+  .chain b{display:block;}
+  .chain span{color:var(--ink-2); font-size:14px;}
+
+  table{width:100%; border-collapse:collapse; font-size:14px; margin:14px 0;}
+  th,td{text-align:left; padding:9px 10px; border-bottom:1px solid var(--line-2); vertical-align:top;}
+  th{font-family:var(--mono); font-size:10.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-3);
+     border-bottom:1px solid var(--line);}
+  td.h{font-family:var(--mono); font-size:12.5px; color:var(--ink-3); white-space:nowrap;}
+  .tw{overflow-x:auto;}
+
+  footer{margin-top:48px; padding-top:20px; border-top:1px solid var(--line); font-family:var(--mono);
+         font-size:11.5px; line-height:1.7; color:var(--ink-3);}
+  .reset{font-family:var(--mono); font-size:11px; background:transparent; border:1px solid var(--line);
+         color:var(--ink-3); padding:6px 10px; cursor:pointer; margin-top:14px;}
+  .reset:hover{border-color:var(--signal); color:var(--signal);}
+  @media (max-width:520px){
+    .wrap{padding:0 14px 70px;}
+    ul.todo li{padding:12px 11px;}
+  }
+</style>
+
+<div class="wrap">
+<header class="top">
+  <div class="kicker">Mercredi 9 → dimanche 13 septembre 2026</div>
+  <h1>Quatre jours avant le&nbsp;14</h1>
+  <p class="lede">Tout ce qu'il reste à faire avant le premier jour de cours, trié par ce qui bloque le reste. Les cases se souviennent de leur état sur cet appareil.</p>
+</header>
+
+<div class="bar-wrap">
+  <div class="bar-head"><span><b id="pn">0</b> / <span id="pt">0</span> cochées</span><span id="pr">Reste 4 jours</span></div>
+  <div class="bar"><i id="pb"></i></div>
+</div>
+
+<div class="box stop"><b>L'ordre dans lequel j'ai trié.</b> D'abord ce qui <b>bloque autre chose</b> — le NIE commande la moitié de ta vie administrative en Espagne. Ensuite ce qui a une <b>date butoir</b> : lundi, tu as cours à 15:30. Puis ce qui a un <b>long délai</b> — un rendez-vous médical se demande maintenant même s'il tombe dans six semaines. Puis ce qui prend <b>deux minutes</b>, parce que ça libère la tête. Enfin ce qui <b>allège les semaines suivantes</b>. Le confort passe en dernier, et c'est normal.</div>
+
+<h2><span class="when">La clé de voûte</span>Le NIE, et les trois portes qu'il ouvre</h2>
+<p class="sec-note">Tu as trois lignes sur ta liste qui parlent du NIE. Ce n'est pas trois tâches, c'est <strong>une chaîne</strong>, et elle est lente. Sans NIE : pas de compte bancaire espagnol, pas de carte sanitaire, pas de tarif étudiant sur les transports, et plus tard, pas de statut d'autónomo pour la boutique. Commence par le bout de la chaîne, aujourd'hui.</p>
+<ol class="chain">
+  <li><b>Demander au propriétaire un accord écrit</b><span>Justificatif de domicile ou autorisation d'empadronamiento. C'est le document que la mairie et la police réclament, et c'est celui qui dépend de quelqu'un d'autre — donc celui qu'on demande en premier.</span></li>
+  <li><b>Demander à l'université le document pour le NIE</b><span>Lettre d'admission ou certificat de matriculation. Le secrétariat met souvent quelques jours ; envoie le mail aujourd'hui, pas dimanche.</span></li>
+  <li><b>Prendre la cita previa à la police</b><span>Les créneaux partent très vite à la rentrée. Tu peux réserver avant d'avoir tous les papiers : ce qui compte est de bloquer la date. C'est l'action la plus urgente de tout ce dossier.</span></li>
+</ol>
+<ul class="todo" data-g="nie">
+  <li><input type="checkbox" id="n1"><label for="n1"><span class="tag stop">Bloquant</span>Demander au proprio un accord écrit<span class="why">Il dépend de quelqu'un d'autre : c'est pour ça qu'il passe premier.</span></label></li>
+  <li><input type="checkbox" id="n2"><label for="n2"><span class="tag stop">Bloquant</span>Demander à l'université le document pour le NIE<span class="why">Un mail au secrétariat suffit à lancer la machine.</span></label></li>
+  <li><input type="checkbox" id="n3"><label for="n3"><span class="tag stop">Bloquant</span>Demander le NIE à la police (cita previa)<span class="why">Réserve la date même sans tous les papiers. Les créneaux de rentrée partent en heures.</span></label></li>
+</ul>
+
+<h2><span class="when">Jeudi 10 septembre</span>Vérifier, débloquer, appeler</h2>
+<p class="sec-note">La journée la plus utile des quatre. Tout ce qui dépend de quelqu'un d'autre part aujourd'hui, pour que la réponse arrive pendant que tu fais autre chose.</p>
+
+<h3>Les trois qui coûtent deux minutes<span class="n">fais-les en premier, tu n'y penseras plus</span></h3>
+<ul class="todo" data-g="j1a">
+  <li><input type="checkbox" id="a1"><label for="a1"><span class="tag">2 min</span>Payer Saint Vincent de Paul<span class="why">Un engagement pris. Il ne mérite pas de traîner quatre jours de plus.</span></label></li>
+  <li><input type="checkbox" id="a2"><label for="a2"><span class="tag">2 min</span>Demander à Reda les 2 € de l'épicerie<span class="why">Un message. Deux euros ne valent pas la charge mentale de s'en souvenir.</span></label></li>
+  <li><input type="checkbox" id="a3"><label for="a3"><span class="tag">2 min</span>Contacter Ikea<span class="why">Note ce que tu attends d'eux avant d'appeler : commande, livraison, retour ?</span></label></li>
+</ul>
+
+<h3>Santé — les délais sont longs, on appelle maintenant<span class="n">4 rendez-vous, 1 seule visite si tu groupes</span></h3>
+<div class="box calm"><b>Groupe tes soucis dentaires en un seul rendez-vous.</b> Dents de sagesse, fil de contention, mal à la mâchoire et blanchiment : c'est un même praticien et probablement une même cause. Le mal de mâchoire peut venir des dents de sagesse qui poussent, d'un bruxisme, ou de la contention. <strong>Dis-lui les quatre choses au téléphone en prenant le rendez-vous</strong>, il prévoira le temps qu'il faut — au lieu de te faire revenir trois fois. Le blanchiment se discute à la fin, une fois le reste réglé.</div>
+<ul class="todo" data-g="j1b">
+  <li><input type="checkbox" id="b1"><label for="b1"><span class="tag sante">Santé</span>Prendre RDV pour les amygdales<span class="why">ORL : les délais sont les plus longs de tous. C'est l'appel le plus urgent du lot.</span></label></li>
+  <li><input type="checkbox" id="b2"><label for="b2"><span class="tag sante">Santé</span>Prendre RDV dents de sagesse<span class="why">À grouper avec les trois lignes ci-dessous.</span></label></li>
+  <li><input type="checkbox" id="b3"><label for="b3"><span class="tag sante">Santé</span>RDV dentiste — et le fil dans la bouche<span class="why">Le fil de contention décollé se répare vite, mais il ne se répare pas tout seul.</span></label></li>
+  <li><input type="checkbox" id="b4"><label for="b4"><span class="tag sante">Santé</span>Signaler le mal à la mâchoire<span class="why">À dire au même rendez-vous. Ne le mets pas de côté : une douleur articulaire qui dure change ta façon de mastiquer, puis ta posture.</span></label></li>
+  <li><input type="checkbox" id="b5"><label for="b5"><span class="tag">Confort</span>Blanchiment dentaire<span class="why">À évoquer à la fin de la même consultation. Après le reste, jamais avant.</span></label></li>
+</ul>
+
+<h3>La fac — avant que la rentrée n'embouteille tout<span class="n">le secrétariat sera injoignable la semaine prochaine</span></h3>
+<ul class="todo" data-g="j1c">
+  <li><input type="checkbox" id="c1"><label for="c1"><span class="tag date">Avant lundi</span>Récupérer ton emploi du temps réel, écrit noir sur blanc<span class="why">C'est la seule chose qui peut invalider toute la grille de la Batcave. Elle suppose cours 15:30 → 19:30, trajet à 15:00. Si c'est différent, dis-le-moi : refaire la grille prend une heure, le découvrir lundi à 15h coûte la semaine.</span></label></li>
+  <li><input type="checkbox" id="c2"><label for="c2"><span class="tag stop">Bloquant</span>Envoyer le mail pour payer l'école<span class="why">Un paiement en retard peut bloquer l'inscription, donc la carte étudiante, donc les réductions et le NIE.</span></label></li>
+  <li><input type="checkbox" id="c3"><label for="c3"><span class="tag">Argent</span>Comparer : paiement mensuel ou annuel<span class="why">Demande les deux montants dans le même mail. Souvent l'annuel donne 3 à 5 % de remise ; le mensuel garde ta trésorerie libre pour le capital de test de la boutique. Décide avec les chiffres, pas au feeling.</span></label></li>
+  <li><input type="checkbox" id="c4"><label for="c4"><span class="tag">Fac</span>Demander la bourse de la fac<span class="why">Les dossiers ont des dates de dépôt courtes en début d'année. Demande au moins le calendrier aujourd'hui.</span></label></li>
+  <li><input type="checkbox" id="c5"><label for="c5"><span class="tag">Fac</span>Vérifier les réductions universitaires<span class="why">Transport, logiciels, salles de sport, musées, banques. Demande la liste au bureau des étudiants, pas à Google.</span></label></li>
+  <li><input type="checkbox" id="c6"><label for="c6"><span class="tag">Fac</span>Repérer les office hours des profs<span class="why">Note-les dans la Batcave dès que tu les as. Un prof vu trois fois dans l'année note différemment un étudiant qu'il reconnaît.</span></label></li>
+</ul>
+
+<h3>Administratif espagnol<span class="n">tout dépend du NIE, sauf une chose</span></h3>
+<ul class="todo" data-g="j1d">
+  <li><input type="checkbox" id="d1"><label for="d1"><span class="tag date">Avant lundi</span>Abonnement de transport<span class="why">Tu as cours lundi à 15:30. C'est la seule ligne administrative avec une vraie date butoir. Demande le tarif étudiant — et si la carte étudiante n'est pas prête, prends l'abonnement plein tarif quand même, tu régulariseras.</span></label></li>
+  <li><input type="checkbox" id="d2"><label for="d2"><span class="tag">Santé</span>Carte de sécurité sociale pour les médecins en Espagne<span class="why">Deux choses différentes : la <strong>carte européenne (CEAM/TSE)</strong> se demande côté français ou luxembourgeois et couvre l'urgence tout de suite ; la <strong>tarjeta sanitaria</strong> espagnole demande le NIE et l'empadronamiento. Fais la première maintenant, la seconde après le NIE.</span></label></li>
+  <li><input type="checkbox" id="d3"><label for="d3"><span class="tag">Argent</span>Compte bancaire espagnol<span class="why">La plupart des banques exigent le NIE. Mais tu as les passeports français et luxembourgeois : un compte européen ouvert en ligne peut te dépanner en attendant, et te servira plus tard de compte de secours.</span></label></li>
+  <li><input type="checkbox" id="d4"><label for="d4"><span class="tag">?</span>« Changer »<span class="why">Je n'ai pas compris cette ligne de ta liste — changer de l'argent, changer un abonnement, changer un objet ? Je la garde ici pour ne pas la perdre. Dis-moi et je la range au bon endroit.</span></label></li>
+  <li><input type="checkbox" id="d5"><label for="d5"><span class="tag">Admin</span>Luxtrust<span class="why">Ton accès aux services luxembourgeois. Vérifie qu'il n'est pas expiré avant d'en avoir besoin en urgence.</span></label></li>
+  <li><input type="checkbox" id="d6"><label for="d6"><span class="tag">Admin</span>Appeler ILIS<span class="why">Note avant d'appeler ce que tu veux obtenir, en une phrase.</span></label></li>
+  <li><input type="checkbox" id="d7"><label for="d7"><span class="tag">Admin</span>Se renseigner sur l'aide au logement<span class="why">En Espagne comme au Luxembourg selon ton statut. Un appel, une réponse, et tu sauras si ça vaut un dossier.</span></label></li>
+</ul>
+
+<h3>Le soir — et on décale le sommeil<span class="n">c'est la chose la plus fragile des quatre jours</span></h3>
+<div class="box date"><b>05:30 de lever, c'est 21:55 de coucher.</b> Si tu dors à 1 h en ce moment, lundi est perdu d'avance — et une semaine 1 ratée fait abandonner tout le système. Quatre nuits pour décaler : <b>jeudi 23:20 · vendredi 23:00 · samedi 22:20 · dimanche 21:55</b>. Lumière du jour dès le réveil, téléphone hors de la chambre le soir.</div>
+<ul class="todo" data-g="j1e">
+  <li><input type="checkbox" id="e1"><label for="e1"><span class="tag bat">Batcave</span>Renseigner les dates de tes partiels dans l'onglet Études<span class="why">Cinq minutes. Aujourd'hui aucune date n'est saisie — c'est pour ça que la carte « Matière et partiel » reste éteinte, et c'est la seule qui ne s'allumera jamais toute seule.</span></label></li>
+  <li><input type="checkbox" id="e2"><label for="e2"><span class="tag bat">Batcave</span>Anki dentaire : 5 cours en retard transformés en cartes<span class="why">Le plus rentable des quatre jours. Tu as 20 cours en attente dans Notion : chacun fait maintenant est un soir de moins à courir en octobre.</span></label></li>
+  <li><input type="checkbox" id="e3"><label for="e3"><span class="tag">Espagnol</span>1 h d'espagnol<span class="why">Ta cible du 14 est 2,7 h par jour. Arriver froid lundi, c'est prendre le mur.</span></label></li>
+  <li><input type="checkbox" id="e4"><label for="e4"><span class="tag date">Sommeil</span>Coucher à 23:20<span class="why">Première marche des quatre.</span></label></li>
+</ul>
+
+<h2><span class="when">Vendredi 11 septembre</span>Apprendre le geste</h2>
+<p class="sec-note">La Batcave est construite, mais le geste ne l'est pas. Lundi, tu vas lui demander cinq gestes neufs le même matin. Aujourd'hui on les répète à vide — et comme le « nouveau départ » du 14 effacera tout, rien de ce que tu saisis aujourd'hui ne restera. C'est fait pour.</p>
+<ul class="todo" data-g="j2">
+  <li><input type="checkbox" id="f1"><label for="f1"><span class="tag bat">Batcave</span>Une clôture du jour complète, pour de vrai<span class="why">Sommeil, poids, eau, humeur. Le 9 septembre tu l'as ouverte et repoussée — c'est exactement ce qu'il ne faut pas que lundi ressemble.</span></label></li>
+  <li><input type="checkbox" id="f2"><label for="f2"><span class="tag bat">Batcave</span>Un Pomodoro de bout en bout<span class="why">Lancer, travailler, et voir le bloc se cocher tout seul dans le calendrier. Une fois suffit pour comprendre la boucle.</span></label></li>
+  <li><input type="checkbox" id="f3"><label for="f3"><span class="tag bat">Batcave</span>Batcave sur l'écran d'accueil des trois appareils<span class="why">iPhone, iPad, Mac. Safari → Partager → « Sur l'écran d'accueil ». Vérifie qu'elle s'ouvre sans connexion.</span></label></li>
+  <li><input type="checkbox" id="f4"><label for="f4"><span class="tag bat">Batcave</span>Lire la Prise en main en entier<span class="why">Trente minutes pour un outil que tu vas ouvrir 182 jours de suite. C'est un très bon échange.</span></label></li>
+  <li><input type="checkbox" id="f5"><label for="f5"><span class="tag bat">Anki</span>Regarder la vidéo AnKing sur les réglages d'Anki<span class="why">Tes réglages décident de ta charge quotidienne pour six mois. Une heure passée là dessus vaut vingt heures de cartes mal espacées.</span></label></li>
+  <li><input type="checkbox" id="f6"><label for="f6"><span class="tag bat">Batcave</span>Anki dentaire : 5 cours de plus<span class="why">Dix sur vingt à la fin de la journée.</span></label></li>
+  <li><input type="checkbox" id="f7"><label for="f7"><span class="tag">Espagnol</span>1 h 30 d'espagnol</label></li>
+  <li><input type="checkbox" id="f8"><label for="f8"><span class="tag">Maison</span>Trier les fichiers iCloud<span class="why">Une heure, minuteur en marche, et on s'arrête quand il sonne. Ce genre de tâche s'étale à l'infini si on la laisse faire.</span></label></li>
+  <li><input type="checkbox" id="f9"><label for="f9"><span class="tag">Réseaux</span>Supprimer les réseaux sociaux<span class="why">À faire un vendredi soir, pas un lundi matin : tu veux passer le premier week-end sans, pour arriver au 14 déjà sevré.</span></label></li>
+  <li><input type="checkbox" id="f10"><label for="f10"><span class="tag">Réseaux</span>Contacter les gens sur LinkedIn<span class="why">Le seul réseau que tu gardes, et pour une raison précise. Écris à qui, et pourquoi, avant d'ouvrir l'appli.</span></label></li>
+  <li><input type="checkbox" id="f11"><label for="f11"><span class="tag date">Sommeil</span>Coucher à 23:00</label></li>
+</ul>
+
+<h2><span class="when">Samedi 12 septembre</span>Le corps, la maison, la semaine</h2>
+<p class="sec-note">La journée physique. Rien d'administratif, tout est fermé — c'est le moment de préparer ce qui te portera pendant six mois.</p>
+<div class="box stop"><b>Reconnaissance du parc, pas de séance.</b> Tu commences le sport le 14, et tu as raison : ta première séance enregistrée doit être ta séance de référence. Aujourd'hui tu vas seulement <b>vérifier</b> — 20 minutes, en tenue, sans t'entraîner.</div>
+<ul class="todo" data-g="j3a">
+  <li><input type="checkbox" id="g1"><label for="g1"><span class="tag date">Avant lundi</span>Parc : barre de traction assez haute pour te suspendre jambes fléchies<span class="why">Cinq exercices en dépendent : tractions, dead hang, relevés de jambes, shrugs suspendus, relevés de genoux.</span></label></li>
+  <li><input type="checkbox" id="g2"><label for="g2"><span class="tag date">Avant lundi</span>Parc : barre basse, barres parallèles, sol plat, point d'ancrage pour élastique<span class="why">Rows australiens et curls · dips · roue abdominale et dragon flag · face pulls. S'il manque quelque chose, dis-le-moi, j'adapte les exercices.</span></label></li>
+  <li><input type="checkbox" id="g3"><label for="g3"><span class="tag stop">Sécurité</span>Parc : l'éclairage, et le trajet à 5h30<span class="why">Le 14 septembre à Alicante, le soleil se lève vers 7h45. Il fera nuit noire pendant toute ta séance. Si le parc n'est pas éclairé, on déplace le créneau ou on prévoit une version maison — c'est ce qui tue un programme en semaine 2, pas en semaine 1.</span></label></li>
+  <li><input type="checkbox" id="g4"><label for="g4"><span class="tag">Sport</span>Chronométrer le kilomètre jusqu'au parc<span class="why">C'est ton échauffement : il doit tenir en 5 à 6 min à allure conversation.</span></label></li>
+</ul>
+
+<h3>Les points de départ — sans eux, aucune progression ne sera mesurable</h3>
+<ul class="todo" data-g="j3b">
+  <li><input type="checkbox" id="h1"><label for="h1"><span class="tag bat">Batcave</span>Poids et mensurations de départ : cou, bras, taille<span class="why">Le matin, à froid, avant de manger. Toujours dans les mêmes conditions, sinon la comparaison ne vaut rien.</span></label></li>
+  <li><input type="checkbox" id="h2"><label for="h2"><span class="tag bat">Batcave</span>Première série de photos du corps<span class="why">Face, profil, dos. L'habitude ne tombe que le 27, mais tu veux le point zéro <em>avant</em> de commencer. Même lieu, même lumière, mêmes poses — c'est la répétabilité qui fait la valeur, pas la qualité.</span></label></li>
+  <li><input type="checkbox" id="h3"><label for="h3"><span class="tag">Corps</span>Corriger la posture — commencer<span class="why">Ce n'est pas une case à cocher, c'est un chantier. Le programme t'y aide déjà : face pulls, shrugs, travail du cou dans les deux sens. Aujourd'hui, juste une photo de profil debout au naturel : c'est ta référence, et tu la reprendras dans trois mois.</span></label></li>
+</ul>
+
+<h3>La maison et la semaine</h3>
+<ul class="todo" data-g="j3c">
+  <li><input type="checkbox" id="i1"><label for="i1"><span class="tag date">Avant lundi</span>Courses de la semaine, depuis l'onglet Courses<span class="why">La liste est déjà calculée depuis ton plan de repas.</span></label></li>
+  <li><input type="checkbox" id="i2"><label for="i2"><span class="tag date">Avant lundi</span>Batch cooking, 2 h : féculents et protéines de la semaine<span class="why">La nutrition est la première chose qui lâche quand les journées à 8 h commencent. Cuisiner le samedi, c'est six décisions en moins par semaine.</span></label></li>
+  <li><input type="checkbox" id="i3"><label for="i3"><span class="tag">Maison</span>Vaisselle<span class="why">Commencer lundi dans une cuisine propre change l'humeur du premier matin plus qu'on ne croit.</span></label></li>
+  <li><input type="checkbox" id="i4"><label for="i4"><span class="tag">Maison</span>Passer un coup sur le canapé</label></li>
+  <li><input type="checkbox" id="i5"><label for="i5"><span class="tag bat">Batcave</span>Anki dentaire : 5 cours de plus<span class="why">Quinze sur vingt.</span></label></li>
+  <li><input type="checkbox" id="i6"><label for="i6"><span class="tag">Espagnol</span>2 h d'espagnol</label></li>
+  <li><input type="checkbox" id="i7"><label for="i7"><span class="tag date">Sommeil</span>Coucher à 22:20</label></li>
+</ul>
+
+<h2><span class="when">Dimanche 13 septembre</span>La répétition générale</h2>
+<p class="sec-note">Dernier jour. On ferme les boucles et on prépare le premier matin, pour que lundi ne demande aucune décision.</p>
+<ul class="todo" data-g="j4">
+  <li><input type="checkbox" id="k1"><label for="k1"><span class="tag bat">Batcave</span>Le bilan du dimanche en entier, à blanc<span class="why">Le rituel le plus important du système, et celui que tu n'as jamais fait une seule fois. Quarante-cinq minutes. La Routine te l'enverra ce soir à 20h45.</span></label></li>
+  <li><input type="checkbox" id="k2"><label for="k2"><span class="tag bat">Anki</span>Les trois paquets importés et testés sur le bon appareil<span class="why">Dentaire, Español, Business. Fais dix cartes de chaque : tu veux découvrir un problème d'import aujourd'hui, pas mardi à 7h20.</span></label></li>
+  <li><input type="checkbox" id="k3"><label for="k3"><span class="tag bat">Batcave</span>Anki dentaire : les 5 derniers cours<span class="why">Vingt sur vingt. Tu arrives lundi à jour.</span></label></li>
+  <li><input type="checkbox" id="k4"><label for="k4"><span class="tag">Business</span>Palier 1 du chapitre 29 : les 7 termes de l'argent d'une vente<span class="why">Prix HT, COGS, coût rendu, marge brute, coûts variables, marge de contribution, panier moyen. Une heure, plus l'exercice. Tu prends de l'avance sur la boutique sans y toucher.</span></label></li>
+  <li><input type="checkbox" id="k5"><label for="k5"><span class="tag">Espagnol</span>2 h d'espagnol<span class="why">Total sur les quatre jours : environ 6 h 30. Tu arrives chaud.</span></label></li>
+  <li><input type="checkbox" id="k6"><label for="k6"><span class="tag">Foi</span>Travailler le tajweed, 30 min<span class="why">Une session posée, pas en fond sonore. Ensuite ça rejoindra la lecture quotidienne du Coran, qui est déjà dans ta grille.</span></label></li>
+  <li><input type="checkbox" id="k7"><label for="k7"><span class="tag date">Avant lundi</span>Sac de sport et affaires de lundi préparés, ce soir<span class="why">Poids en main pour le cou, les abdos et les avant-bras. Élastique. Serviette. Eau. Téléphone chargé pour le chronomètre.</span></label></li>
+  <li><input type="checkbox" id="k8"><label for="k8"><span class="tag date">Sommeil</span>Coucher à 21:55 — la vraie heure<span class="why">Téléphone hors de la chambre. C'est la case la plus importante de ce dossier.</span></label></li>
+</ul>
+
+<h2><span class="when">Lundi 14, 05:30</span>Le premier matin, dans l'ordre</h2>
+<div class="tw"><table>
+  <thead><tr><th>Ordre</th><th>Quoi</th></tr></thead>
+  <tbody>
+    <tr><td class="h">1</td><td><strong>La copie vierge, avant la moindre saisie.</strong> Le plan du jour te la propose en un bouton. C'est ton point de retour exact si tout part de travers.</td></tr>
+    <tr><td class="h">2</td><td><strong>La séance de référence.</strong> Le plan l'affiche juste après. On ne suit pas la séance normale : échauffement, puis une seule série à l'échec sur tractions, dips, pompes et dead hang, notée dans l'onglet Sport. Puis on s'arrête pour le haut du corps ; cou et avant-bras en douceur.</td></tr>
+    <tr><td class="h">3</td><td><strong>Le reste : tu suis le Plan du jour.</strong> Tu n'improvises pas, tu exécutes. Les cibles, les blocs et les rappels sont déjà calculés.</td></tr>
+  </tbody>
+</table></div>
+<div class="box stop"><b>La règle unique de la semaine 1 : tu ne modifies rien.</b> Pas une habitude, pas un horaire, pas une cible. Tout ce qui coince, tu l'écris dans le journal — et au bilan du <b>dimanche 20</b>, on décide ensemble ce qui change. Un système qu'on ajuste pendant qu'on l'essaie ne s'évalue jamais.</div>
+
+<h2><span class="when">Le parking</span>Plus tard, et c'est très bien</h2>
+<p class="sec-note">Ces lignes sont sur ta liste et elles y restent — mais aucune ne mérite un quart d'heure avant lundi. Les mettre ici, c'est arrêter d'y penser.</p>
+<ul class="todo" data-g="plus">
+  <li><input type="checkbox" id="p1"><label for="p1"><span class="tag">Après la rentrée</span>Plan d'investissement<span class="why">À reprendre quand tu auras un revenu régulier à investir. Aujourd'hui, ton meilleur placement est ton capital de test et ton diplôme.</span></label></li>
+  <li><input type="checkbox" id="p2"><label for="p2"><span class="tag">Après la rentrée</span>Montage financier<span class="why">Dis-moi ce que tu as en tête et on le regarde sérieusement — mais après le 14.</span></label></li>
+  <li><input type="checkbox" id="p3"><label for="p3"><span class="tag">Après la rentrée</span>Watch the Stroke Genius</label></li>
+  <li><input type="checkbox" id="p4"><label for="p4"><span class="tag">Après la rentrée</span>Agent vocal<span class="why">Une bonne idée, et un chantier. Après six mois de données, pas avant.</span></label></li>
+  <li><input type="checkbox" id="p5"><label for="p5"><span class="tag">Après la rentrée</span>Laisser Claude tourner Mac fermé<span class="why">Les sessions à distance tournent déjà dans le cloud, Mac fermé ou non : c'est exactement ce que font tes six Routines. Ce que tu vises est peut-être déjà là — on vérifiera ensemble.</span></label></li>
+  <li><input type="checkbox" id="p6"><label for="p6"><span class="tag bat">Batcave</span>« Finir tout Batcave et tout »<span class="why">Elle est finie. 70 tests verts, audit propre sur quatre écrans, contraste tenu sur deux thèmes. Ce qui reste n'est pas du travail de construction : c'est six mois d'usage. La prochaine décision de développement se prend au bilan du 20 septembre, pas avant.</span></label></li>
+</ul>
+
+<h2><span class="when">Deux points à part</span>Ce que je te dois d'honnêteté</h2>
+<div class="box"><b>Réduire ta consommation Claude.</b> Trois leviers réels, du plus efficace au moins : <b>(1)</b> une conversation par sujet, et on en ouvre une neuve quand elle devient longue — une conversation de cent messages renvoie tout son historique à chaque fois, c'est de loin le premier poste ; <b>(2)</b> demander le travail groupé plutôt qu'un aller-retour par question ; <b>(3)</b> pour les tâches simples, un modèle plus léger suffit. Tes six Routines, elles, sont peu coûteuses : elles tournent une fois par semaine sur une session neuve.</div>
+<div class="box stop"><b>Versions craquées des applications.</b> Cette ligne est sur ta liste, je ne l'efface pas — mais je ne t'aiderai pas dessus, et je te dois la raison : sur la machine où vivent tes six mois de données, tes sauvegardes et tes accès bancaires, un logiciel piraté est le vecteur d'infection le plus banal qui soit. <b>Et tu n'en as probablement pas besoin.</b> Anki est gratuit. Ta fac donne très souvent Office, Adobe et Windows gratuitement — c'est exactement la ligne « réductions universitaires » de jeudi. Zotero, LibreOffice, GIMP et DaVinci Resolve sont gratuits et sérieux. Fais la demande à la fac d'abord : dans neuf cas sur dix, la question ne se pose plus.</div>
+
+<footer>
+  Dossier des quatre jours · établi le 9 septembre 2026 pour la rentrée du lundi 14.<br>
+  39 lignes de ta liste, aucune perdue, plus la préparation de la Batcave. Les cases sont enregistrées sur cet appareil seulement.
+  <br><button class="reset" id="rz" type="button">Tout décocher</button>
+</footer>
+</div>
+
+<script>
+(function(){
+  var KEY = 'quatre-jours-2026-09';
+  var etat = {};
+  try { etat = JSON.parse(localStorage.getItem(KEY) || '{}') || {}; } catch(e) { etat = {}; }
+  var boxes = [].slice.call(document.querySelectorAll('ul.todo input[type="checkbox"]'));
+  var pn = document.getElementById('pn'), pt = document.getElementById('pt'),
+      pb = document.getElementById('pb'), pr = document.getElementById('pr');
+  pt.textContent = boxes.length;
+
+  function ligne(b){ return b.closest('li'); }
+  function maj(){
+    var n = 0;
+    boxes.forEach(function(b){
+      var li = ligne(b);
+      if(li) li.classList.toggle('done', b.checked);
+      if(b.checked) n++;
+    });
+    pn.textContent = n;
+    pb.style.width = (boxes.length ? Math.round(100 * n / boxes.length) : 0) + '%';
+    var reste = boxes.length - n;
+    pr.textContent = reste === 0 ? 'Tout est fait 🦇' : reste + ' restante' + (reste > 1 ? 's' : '');
+  }
+  function sauver(){
+    try { localStorage.setItem(KEY, JSON.stringify(etat)); } catch(e) {}
+  }
+  boxes.forEach(function(b){
+    if(etat[b.id]) b.checked = true;
+    b.addEventListener('change', function(){ etat[b.id] = b.checked; sauver(); maj(); });
+  });
+  document.getElementById('rz').addEventListener('click', function(){
+    if(!window.confirm('Décocher les ' + boxes.length + ' cases ?')) return;
+    etat = {}; sauver();
+    boxes.forEach(function(b){ b.checked = false; });
+    maj();
+  });
+  maj();
+})();
+</script>
