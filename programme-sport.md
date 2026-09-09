@@ -1,6 +1,6 @@
 # Programme de sport — La Batcave · Programme v2
 
-Copie de référence du programme appliqué dans la Batcave (onglet Sport), commencé le lundi 7 septembre 2026.
+Copie de référence du programme appliqué dans la Batcave (onglet Sport), commencé le lundi 14 septembre 2026 (premier jour de cours).
 
 ## Le cadre
 - Quatre séances de 40 minutes au parc, à 05:30 : lundi haut lourd, mardi bas complet, jeudi haut volume, samedi bras, épaules et mollets. Mercredi, vendredi et dimanche off.
@@ -67,9 +67,9 @@ Tractions et dips reviennent lundi et jeudi avec des fourchettes différentes ; 
 Après échauffement : tractions max, dips max (ou maintien bras tendus, en secondes), pompes max, split squats max par jambe. Saisis-les comme séries de la première séance : les cibles en découlent. Sans calibration, la Batcave part du bas de chaque fourchette.
 
 ## Montée en charge du premier mois
-- Semaines 1 et 2 (7 au 20 septembre) : la moitié des tours.
-- Semaines 3 et 4 (21 septembre au 4 octobre) : les trois quarts.
-- À partir de la semaine 5 (5 octobre) : programme complet.
+- Semaines 1 et 2 (14 au 27 septembre) : la moitié des tours.
+- Semaines 3 et 4 (28 septembre au 11 octobre) : les trois quarts.
+- À partir de la semaine 5 (12 octobre) : programme complet.
 La Batcave applique ce facteur toute seule aux cibles de la séance du jour.
 
 ## La double progression
@@ -93,7 +93,7 @@ Tractions à 12 reps propres sur toutes les séries, dips à 15, jambes dès que
 
 ## Règles de séance
 - **Arrêter une série** quand la vitesse d'une rep chute nettement, ou quand tu compenses (coup de reins, dos creusé). Une rep sale ne compte pas. Sur la dernière série de chaque paire, va vraiment jusqu'à ce que ce soit dur.
-- **Retest** le lundi des semaines 5, 10 et 15 (5 octobre, 9 novembre, 14 décembre) : tractions max, 3 min de repos, dips max, puis séance normale.
+- **Retest** le lundi des semaines 5, 10 et 15 (12 octobre, 16 novembre, 21 décembre) : tractions max, 3 min de repos, dips max, puis séance normale.
 - **Décharge** seulement si tu stagnes deux séances de suite sur tout : une semaine à 2 tours par paire, sans aller près de l'échec.
 - **Sans banc au parc** : pied arrière sur la barre basse ou un rebord à hauteur de genou ; step-ups → fentes marchées lestées ; hip thrust → épaules sur un muret ou un rebord, à défaut glute bridge une jambe au sol avec le sac sur les hanches, compensé par le tempo.
 - **Le carnet** : date, exercice, cran ou charge, reps de chaque série. C'est la seule ligne non négociable. Dans la Batcave : cocher l'exercice, taper les séries « 9/8/7 » et le lest en kg, tout de suite après la séance.

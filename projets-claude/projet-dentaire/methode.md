@@ -9,6 +9,7 @@
 | Cartes d'erreurs de la semaine | samedi 16:00 | Je colle mes cartes ratées de la semaine. Tu regroupes par cause et tu proposes une carte de correction par cause. |
 
 ## Règles Anki
+- Paquet Dentaire : 50 nouvelles cartes par jour, révisions illimitées (9999), le même preset posé sur chaque sous-deck (Anki n'hérite pas). Après un mois, 150 à 180 révisions par jour : une demi-heure, dans Anki 1 et Anki 2.
 - Paquets par matière, étiquettes en minuscules (anatomia, histologia, bioquimica, fisiologia, ...).
 - Une carte = une idée ; jamais une carte « liste les 7 ... » sans cloze.
 - Les cartes d'erreurs portent l'étiquette supplémentaire `erreur` et la semaine (`s03`).
