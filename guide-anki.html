@@ -286,14 +286,33 @@
     <div class="avert"><b>Ce qu'Anki ne fait pas.</b> Il n'apprend pas à ta place, il entretient. Il ne remplace ni la compréhension du cours (bloc de 20:30), ni l'entraînement en conditions (annales de 10:20), ni le geste. Un paquet parfait avec zéro annale faite donne une note moyenne : tu sauras tout, sans savoir répondre.</div>
   </section>
 
+  <section id="lecture">
+    <h2><span class="n">10</span>La Batcave lit Anki</h2>
+    <p class="lead">Depuis le 9 septembre, tu ne recopies plus rien : la Batcave lit tes paquets et affiche ce qui est dû.</p>
+    <h3>À faire une fois</h3>
+    <ul>
+      <li>Dans Anki : <b>Outils › Modules complémentaires › Obtenir des modules</b>, code <code>2055492159</code> (AnkiConnect), puis relancer Anki.</li>
+      <li><b>Outils › Modules › AnkiConnect › Configuration</b> : ajoute <code>"file://"</code> et l'origine vide (le mot entre guillemets que ton navigateur envoie pour un fichier local) à la liste <code>webCorsOriginList</code>. Relance Anki.</li>
+      <li>Ouvre <b>batcave.html en local</b> sur le Mac, Anki lancé. Le panneau « Anki en direct » apparaît dans Études et se remplit seul.</li>
+    </ul>
+    <h3>Ce que ça change</h3>
+    <ul>
+      <li>Les <b>échéances, nouvelles cartes et sangsues</b> de Dentaire, Español et Business, avec les cartes révisées du jour.</li>
+      <li>Les cartes dues <b>remontent dans le plan du jour</b> tant qu'aucun bloc Anki n'a tourné.</li>
+      <li>Au-delà de <b>220 cartes dues en dentaire</b>, la Batcave te dit d'abaisser les nouvelles à 35 pendant deux semaines. C'est le seuil où les deux blocs du matin ne suffisent plus.</li>
+      <li>Le <b>test du mois</b> arrive dans le plan le premier dimanche, avec le nombre de sangsues étiquetées.</li>
+    </ul>
+    <div class="avert"><b>La page publiée sur claude.ai ne peut pas lire Anki.</b> Un site en https n'a pas le droit de parler à ton ordinateur : c'est une protection du navigateur, pas un réglage. Elle affiche la dernière lecture avec sa date. Pour que le chiffre existe même sans le fichier local, la clôture du dimanche demande deux nombres : cartes révisées dans la semaine et cartes créées, tous deux lisibles en trois secondes dans les statistiques d'Anki.</div>
+  </section>
+
   <section id="chaine">
-    <h2><span class="n">10</span>La chaîne complète, sans rien recopier</h2>
+    <h2><span class="n">11</span>La chaîne complète, sans rien recopier</h2>
     <p class="lead">Chaque outil produit ce que le suivant consomme. Si tu recopies quelque chose à la main, c'est qu'un maillon manque.</p>
     <ul class="grille">
       <li><span class="h">Notion</span><span>Le cours et sa réécriture en dix lignes. Trois cases par cours : Fiché, Cartes Anki, Compris. La Batcave les lit et remonte dans le plan du jour la matière qui a le plus de cours pas faits.</span></li>
       <li><span class="h">Claude</span><span>Projet « Dentaire », commande <code>cartes</code> : il rend le format tabulé prêt à coller, une ligne par carte. Commande <code>erreurs de la semaine</code> : tes cartes ratées regroupées par cause, avec une carte de correction par cause.</span></li>
       <li><span class="h">Anki</span><span>Import du texte tabulé, étiquettes posées à l'import. Synchronisation AnkiWeb pour réviser dans le tram : c'est là que passent les échéances qui débordent du matin.</span></li>
-      <li><span class="h">Batcave</span><span>Le temps passé (Pomodoro nommé), le nombre de cartes créées dans la semaine à la clôture du dimanche, et les objectifs par matière. Elle mesure ; elle ne fabrique rien.</span></li>
+      <li><span class="h">Batcave</span><span>Le temps passé (Pomodoro nommé), l'état de tes paquets lu dans Anki, les deux chiffres du dimanche, et les objectifs par matière. Elle mesure ; elle ne fabrique rien et n'écrit jamais dans Anki.</span></li>
     </ul>
     <div class="note"><b>Sauvegarde.</b> Un export <code>.apkg</code> de tes trois paquets, une fois par mois, dans le dossier Drive de la Batcave. La synchronisation AnkiWeb n'est pas une sauvegarde : une suppression se synchronise aussi.</div>
   </section>

@@ -1756,6 +1756,16 @@
 
       </div>
 
+      <!-- Anki lu par AnkiConnect (fichier local sur le Mac, Anki lancé). Lecture seule. -->
+      <div class="panel sub-panel" id="anki-panel" hidden>
+        <div class="sub-head"><h3>🃏 Anki en direct</h3><span class="sub-note" id="anki-maj">—</span></div>
+        <p class="sub-note" style="margin-bottom:10px; line-height:1.6;">Échéances, nouvelles cartes et sangsues de tes trois paquets, lues dans Anki. Ça ne marche que depuis le fichier <b style="color:var(--ink-dim);">batcave.html</b> ouvert en local sur le Mac, Anki lancé : une page servie en https ne peut pas parler à ton ordinateur. Le résultat est gardé, avec sa date.</p>
+        <div id="anki-corps"></div>
+        <div class="card-actions" style="margin-top:10px;">
+          <button class="btn btn-primary" id="anki-lire" type="button">🃏 Lire Anki maintenant</button>
+        </div>
+      </div>
+
       <!-- Cours pas encore faits, lus dans les bases Notion (lecture seule). -->
       <div class="panel sub-panel" id="notion-panel" hidden>
         <div class="sub-head"><h3>📓 Cours pas encore faits (Notion)</h3><span class="sub-note" id="notion-maj">—</span></div>
@@ -2192,6 +2202,13 @@
         <div class="field-row"><label for="cl-rv-coince">Ce qui a coincé</label><input type="text" id="cl-rv-coince"></div>
         <div class="field-row"><label for="cl-rv-ajust">Un changement pour la semaine prochaine</label><input type="text" id="cl-rv-ajust"></div>
       </div>
+      <div style="margin-top:10px;">
+        <p class="sub-note" style="margin-bottom:6px; font-weight:600; color:var(--ink-dim);">🃏 Anki de la semaine</p>
+        <div class="field-grid">
+          <div class="field-row"><label for="cl-anki-revues">Cartes révisées (Anki › Statistiques)</label><input type="number" id="cl-anki-revues" min="0" step="1" inputmode="numeric" placeholder="ex : 1200"></div>
+          <div class="field-row"><label for="cl-anki-creees">Cartes créées cette semaine</label><input type="number" id="cl-anki-creees" min="0" step="1" inputmode="numeric" placeholder="ex : 85"></div>
+        </div>
+      </div>
       <div id="cl-espanol" hidden style="margin-top:10px;">
         <p class="sub-note" style="margin-bottom:6px; font-weight:600; color:var(--ink-dim);">🇪🇸 Les chiffres du dimanche (Dossier Español)</p>
         <div class="field-grid">
@@ -2452,8 +2469,8 @@
     'espagnol','examens','fc-prix-icloud-3','fixed-charges','goals','goals-depart','saisons','insights-hist','last-restore-drill','habitlog','habits','habits-seed-v2','habits-seed-v3','habits-seed-v4','objectifs-v5-espanol',
     'horizon','last-auto-backup','last-manual-backup','last-bilan-prompt','last-compaction','last-open','last-rotation','notion-url',
     'pomodial-purge','projets','report','revision','revision-fusionnee','revue','sante','sauvegarde','sessions',
-    'shopify-last-order-count','taches','timer','transactions','undo-stack','undo-toast','cloud-reload-at','cloud-toast','notion-cache'];
-  var PREFIXES_CONNUS = ['archive-','cal-','coherence-ignore-','drill-ignore-','fc-logged-','fixed-logged-','gcal-','journal-','manque-traite-',
+    'shopify-last-order-count','taches','timer','transactions','undo-stack','undo-toast','cloud-reload-at','cloud-toast','notion-cache','anki'];
+  var PREFIXES_CONNUS = ['archive-','cal-','coherence-ignore-','drill-ignore-','test-anki-','fc-logged-','fixed-logged-','gcal-','journal-','manque-traite-',
     'meals-','pomodial-','sauvegarde-','sport-'];
   function cleConnue(k){
     var court = k.replace(/^batcave-/, '');
@@ -3414,6 +3431,23 @@
   /* ===== Exercice de restauration trimestriel =====
      Une sauvegarde jamais restaurée n'est pas une sauvegarde : tous les 90 jours, la
      Batcave demande de la relire pour de vrai (fichier ou Drive) et note la date. */
+  /* ===== Test du mois (guide Anki) =====
+     Le premier dimanche de chaque mois : trier le navigateur par Lapses et réécrire les dix
+     pires cartes. Elles sont presque toujours mal écrites, pas difficiles. Une clé par mois :
+     batcave-test-anki-AAAA-MM. */
+  function moisCourant(){ return todayISO.slice(0, 7); }
+  function testAnkiFait(mois){ return !!load('batcave-test-anki-' + (mois || moisCourant()), false); }
+  function testAnkiDu(){
+    if(testAnkiFait() || load('batcave-test-anki-report-' + todayISO, false)) return false;
+    var j = Number(todayISO.slice(8, 10));
+    /* proposé le premier dimanche, puis tous les dimanches du mois tant qu'il n'est pas fait */
+    return dowDe(todayISO) === 0 && j <= 28;
+  }
+  function marquerTestAnki(){
+    save('batcave-test-anki-' + moisCourant(), todayISO, true);
+    renderDashboard();
+    showToast('🧪 Test du mois noté — tes dix pires cartes sont réécrites, le prochain le mois prochain.');
+  }
   var JOURS_EXERCICE = 90;
   function dernierExercice(){ var d = load('batcave-last-restore-drill', null); return /^\d{4}-\d{2}-\d{2}$/.test(String(d)) ? d : null; }
   function exerciceDu(){
@@ -5083,7 +5117,8 @@
     var titre = document.getElementById('pb-titre'), quoi = document.getElementById('pb-quoi'), quand = document.getElementById('pb-quand');
     var dans = document.getElementById('pb-dans'), barre = document.getElementById('pb-barre');
     var consigne = document.getElementById('pb-consigne');
-    var c = consigneBloc((courant || suivant).label, weekday);
+    var bloc0 = courant || suivant;
+    var c = consigneBloc(bloc0.label, weekday, todayISO, hm(bloc0.debut));
     if(consigne){ consigne.textContent = c; consigne.hidden = !c; }
     if(courant){
       titre.textContent = 'En cours';
@@ -5542,7 +5577,21 @@
   function toursDuJour(f){ return Math.max(1, Math.round(f.series * facteurTours())); }
   function joursEntrainement(){ return Object.keys(TYPE_BY_DAY).filter(function(d){ return TYPE_BY_DAY[d] !== 'Off'; }).length; }
   var DAY_NAMES = {1:'Lun',2:'Mar',3:'Mer',4:'Jeu',5:'Ven',6:'Sam',0:'Dim'};
-  var todayType = TYPE_BY_DAY[weekday];
+  /* ===== Sport pendant les partiels =====
+     Deux séances au lieu de quatre : lundi (haut lourd) et jeudi (haut volume). Le mardi et
+     le samedi passent en jour off. Le corps entretient, il ne progresse pas cette semaine ;
+     c'est le sommeil et la révision qui comptent. Tout ce qui lit le type d'un jour passe
+     par ici : la bande de la semaine, le score, les taux, la cible du mois. */
+  var SPORT_PARTIELS_JOURS = [1, 4];
+  function typeSportDe(iso){
+    iso = iso || todayISO;
+    var t = TYPE_BY_DAY[dowDe(iso)];
+    if(!t || t === 'Off') return t;
+    if(typeof periodePartiels === 'function' && periodePartiels(iso) && SPORT_PARTIELS_JOURS.indexOf(dowDe(iso)) < 0) return 'Off';
+    return t;
+  }
+  function sportAllege(iso){ return typeof periodePartiels === 'function' && !!periodePartiels(iso || todayISO); }
+  var todayType = typeSportDe(todayISO);
 
   var sportKey = 'batcave-sport-' + todayISO;
   var sportState = load(sportKey, {});
@@ -5707,7 +5756,7 @@
     [1,2,3,4,5,6,0].forEach(function(d){
       var el = document.createElement('div');
       el.className = 'week-day' + (d === weekday ? ' today' : '');
-      el.innerHTML = '<span class="wd-name">'+DAY_NAMES[d]+'</span><span class="wd-type">'+TYPE_BY_DAY[d]+'</span>';
+      el.innerHTML = '<span class="wd-name">'+DAY_NAMES[d]+'</span><span class="wd-type">'+typeSportDe(isoDuJourDeSemaine(d))+'</span>';
       strip.appendChild(el);
     });
   }
@@ -6045,12 +6094,61 @@
     meilleur.jours = daysBetween(new Date(iso + 'T00:00:00'), new Date(meilleur.iso + 'T00:00:00'));
     return meilleur;
   }
+  /* ===== Répartition de la révision entre les matières d'une session de partiels =====
+     Nommer toujours la matière la plus proche revenait à ne réviser la seconde que les deux
+     derniers jours. Chaque matière de la session reçoit un besoin : les heures déjà faites
+     sur trente jours, divisées par les jours qui restent avant SON examen. La matière au
+     besoin le plus fort prend le premier bloc ciblé du jour, la suivante le deuxième, et
+     ainsi de suite : une journée à trois blocs ciblés couvre trois matières. Déterministe :
+     la grille, la consigne et l'agenda disent tous la même chose. */
+  function matieresDeLaSession(iso){
+    iso = iso || todayISO;
+    var sess = sessionsPartiels().filter(function(x){ return iso >= x.debut && iso <= x.fin; })[0];
+    if(!sess) return [];
+    return Object.keys(examensState)
+      .filter(function(m){ return examensState[m] >= iso && examensState[m] <= sess.fin; })
+      .map(function(m){ return {m: m, iso: examensState[m], jours: Math.max(0, daysBetween(new Date(iso + 'T00:00:00'), new Date(examensState[m] + 'T00:00:00'))) }; });
+  }
+  function besoinsPartiels(iso){
+    iso = iso || todayISO;
+    var mats = matieresDeLaSession(iso);
+    if(!mats.length) return [];
+    var heures = revisionParMatiere(0, 30).parM || {};
+    mats.forEach(function(x){
+      var h = (Number(heures[x.m]) || 0) / 60;
+      /* besoin = ce qu'il reste à faire par jour disponible ; plus c'est haut, plus ça presse */
+      x.heures = Math.round(h * 10) / 10;
+      x.besoin = (10 - Math.min(10, h)) / Math.max(1, x.jours + 1);
+    });
+    return mats.sort(function(a, b){ return b.besoin - a.besoin || a.iso.localeCompare(b.iso) || a.m.localeCompare(b.m); });
+  }
+  /* Les blocs ciblés du jour, dans l'ordre de la grille : chacun reçoit sa matière. */
+  function blocsCiblesDuJour(iso){
+    iso = iso || todayISO;
+    var g = grilleDe(cleJournee(dowDe(iso)), iso), out = [];
+    g.forEach(function(b){ if(/^(Révision ciblée|Annales ciblées|Fiches de synthèse)/.test(b[1])) out.push(b[0]); });
+    return out;
+  }
+  function matierePourBloc(iso, heure){
+    var ordre = besoinsPartiels(iso);
+    if(!ordre.length) return null;
+    var blocs = blocsCiblesDuJour(iso), i = blocs.indexOf(heure);
+    if(i < 0) i = 0;
+    return ordre[i % ordre.length];
+  }
+  /* La consigne nomme la matière de CE bloc-là (répartition ci-dessus), pas la plus proche. */
+  function consigneCiblee(iso, heure, avant, apres){
+    var x = matierePourBloc(iso, heure) || matiereExamenSuivante(iso);
+    if(!x) return avant + apres;
+    return avant + x.m + ' (examen le ' + fmtDate(x.iso) + ', J-' + x.jours + (x.heures !== undefined ? ' · ' + fmtNombre(x.heures, 1) + ' h faites sur 30 jours' : '') + ')' + apres;
+  }
   var CONSIGNES_PARTIELS = {
-    'Révision ciblée': function(dow, iso){ var e = matiereExamenSuivante(iso); return e ? 'Révision ciblée : ' + e.m + ' (examen le ' + fmtDate(e.iso) + ', J-' + e.jours + '). Annales de cette matière en conditions, puis les cartes ratées ; jamais de relecture passive.' : 'Révision ciblée : la matière la plus proche dans Études.'; },
-    'Annales ciblées': function(dow, iso){ var e = matiereExamenSuivante(iso); return 'Une annale complète' + (e ? ' de ' + e.m : '') + ' en conditions, 55 min sans support, puis correction et barème dans le projet « Dentaire », commande « annales ».'; },
-    'Fiches de synthèse': function(dow, iso){ var e = matiereExamenSuivante(iso); return 'Une page recto par chapitre' + (e ? ' de ' + e.m : '') + ' : ce qui doit être su par cœur, écrit de mémoire d\'abord, vérifié ensuite. Coucher à l\'heure : la nuit consolide.'; },
+    'Révision ciblée': function(dow, iso, heure){ return consigneCiblee(iso, heure, 'Révision ciblée : ', '. Annales de cette matière en conditions, puis les cartes ratées ; jamais de relecture passive. La matière est choisie par ce qu\'il te reste à faire divisé par les jours qui restent, pas par la date la plus proche.'); },
+    'Annales ciblées': function(dow, iso, heure){ return consigneCiblee(iso, heure, 'Une annale complète de ', ' en conditions, 55 min sans support, puis correction et barème dans le projet « Dentaire », commande « annales ».'); },
+    'Fiches de synthèse': function(dow, iso, heure){ return consigneCiblee(iso, heure, 'Une page recto par chapitre de ', ' : ce qui doit être su par cœur, écrit de mémoire d\'abord, vérifié ensuite. Coucher à l\'heure : la nuit consolide.'); },
     'Anki 1': "Toutes les échéances, même pendant les partiels : c'est ce qui rend la révision intensive inutile. File vide avant la fin : les cartes ratées de la matière la plus proche.",
-    'Español': "Un seul bloc d'espagnol par jour pendant les partiels : lecture, Anki Español ou conversation, rien qui demande de la mémoire fraîche."
+    'Español': "Un seul bloc d'espagnol par jour pendant les partiels : lecture, Anki Español ou conversation, rien qui demande de la mémoire fraîche.",
+    'Sport': "Mode partiels : séance allégée, deux séances par semaine (lundi et jeudi). Le corps entretient, il ne progresse pas cette semaine — c'est le sommeil qui compte."
   };
   function sessionsPartiels(){
     if(typeof examensState === 'undefined') return [];
@@ -6067,7 +6165,7 @@
     if(!x) return null;
     var es = (typeof PERIODES_GRILLE !== 'undefined' && PERIODES_GRILLE || []).filter(function(q){ return iso >= q.debut && iso <= q.fin; })[0];
     return {id:'partiels', nom:'Partiels', partiels:true, debut:x.debut, fin:x.fin, premier:x.premier, n:x.n, suite: es ? es.nom : 'grille type',
-            description:'Mode partiels, de J-7 au dernier examen : Anki intact, Cartes → Annales ciblées, Projets perso → Révision ciblée sur la matière la plus proche, Comprendre → Fiches de synthèse, un seul bloc Español par jour.',
+            description:'Mode partiels, de J-7 au dernier examen : Anki intact, Cartes → Annales ciblées, Projets perso → Révision ciblée répartie entre les matières de la session (celle qui en a le plus besoin passe en premier), Comprendre → Fiches de synthèse, un seul bloc Español par jour, sport allégé à deux séances (lundi et jeudi), sommeil visé +30 min.',
             renommages: RENOMMAGES_PARTIELS, consignes: CONSIGNES_PARTIELS};
   }
   /* Le panneau Journees exceptionnelles (Calendrier) : les journees saisies et celles deduites
@@ -6547,7 +6645,7 @@
   function seanceTenue(iso){
     var st = (iso === todayISO) ? sportState : load('batcave-sport-' + iso, null);
     if(!st) return false;
-    var t = sportTotals(TYPE_BY_DAY[dowDe(iso)], st);
+    var t = sportTotals(typeSportDe(iso), st);
     return t.total > 0 && t.checked >= t.total / 2;
   }
   function valeurMetrique(cle, debut, fin){
@@ -7278,6 +7376,15 @@
     var pc = propositionCharge();
     if(pc) items.push({pri:0.7, icon:'⚖️', text:'Fidélité au plan ' + pc.f2 + ' % puis ' + pc.f1 + ' % : réduire la cible du jour de 20 % pendant deux semaines ?', action:{type:'charge'}});
 
+    /* Anki : les cartes dues du jour, tant qu'aucun bloc Anki n'a tourné. */
+    if(ankiFrais() && ankiDus('Dentaire') !== null){
+      var dus = ankiDus('Dentaire') + (ankiDus('Español') || 0) + (ankiDus('Business') || 0);
+      var ankiFait = sessionsState.some(function(b){ return b && b.date === todayISO && Number(b.duree) > 0 && /Anki/i.test(b.label || ''); }) || (Number(ankiState.revues) || 0) >= dus;
+      if(dus > 0 && !ankiFait) items.push({pri: nowMin >= 12 * 60 ? 0.9 : 2.4, icon:'🃏', text: dus + ' carte' + (dus > 1 ? 's' : '') + ' due' + (dus > 1 ? 's' : '') + ' dans Anki' + (ankiDus('Dentaire') >= ANKI_SEUIL_CHARGE ? ' — la file dentaire déborde, baisse les nouvelles à 35' : ''), action:{type:'anki'}});
+    }
+    /* Le test du mois : trier par sangsues et réécrire les dix pires cartes. */
+    if(testAnkiDu()) items.push({pri:2.6, icon:'🧪', text:'Test du mois Anki — trie par Lapses et réécris tes dix pires cartes' + (ankiState && ankiState.sangsues ? ' (' + ankiState.sangsues + ' sangsue' + (ankiState.sangsues > 1 ? 's' : '') + ' étiquetée' + (ankiState.sangsues > 1 ? 's' : '') + ')' : ''), action:{type:'test-anki'}});
+
     /* Notion : la matière qui a le plus de cours pas faits, à partir de deux. */
     var retard = notionRetards()[0];
     if(retard && retard.n >= 2) items.push({pri:2.2, icon:'📓', text: retard.matiere + ' — ' + retard.n + ' cours pas faits dans Notion (' + retard.cours.slice(0, 2).map(function(c){ return c.titre; }).join(', ') + (retard.n > 2 ? '…' : '') + ')', action:{type:'notion'}});
@@ -7371,6 +7478,12 @@
         right = '<button class="btn btn-primary" data-plan-tache="'+escapeHtml(it.action.id)+'" style="padding:4px 10px; font-size:11px; flex-shrink:0;">✓ Fait</button>';
       } else if(it.action && it.action.type === 'revision'){
         right = '<button class="btn btn-primary" data-plan-pomodoro="1" style="padding:4px 10px; font-size:11px; flex-shrink:0;">🍅 Pomodoro</button>';
+      } else if(it.action && it.action.type === 'anki'){
+        right = '<button class="btn btn-primary" data-plan-anki="1" style="padding:4px 10px; font-size:11px; flex-shrink:0;">🍅 Anki</button>';
+      } else if(it.action && it.action.type === 'test-anki'){
+        right = '<span style="display:flex; gap:6px; flex-wrap:wrap; justify-content:flex-end;">' +
+          '<button class="btn btn-primary" data-plan-testanki="1" style="padding:4px 10px; font-size:11px;">✓ Fait</button>' +
+          '<button class="btn" data-plan-testanki-plus-tard="1" style="padding:4px 8px; font-size:11px;" title="Pas aujourd\'hui">✕</button></span>';
       } else if(it.action && it.action.type === 'notion'){
         right = '<button class="btn" data-plan-notion="1" style="padding:4px 10px; font-size:11px; flex-shrink:0;">→ Études</button>';
       } else if(it.action && it.action.type === 'drill'){
@@ -7412,6 +7525,15 @@
     });
     el.querySelectorAll('[data-plan-cloture]').forEach(function(btn){
       btn.addEventListener('click', function(){ ouvrirCloture(); });
+    });
+    el.querySelectorAll('[data-plan-anki]').forEach(function(btn){
+      btn.addEventListener('click', function(){ lancerPomodoroCours(MATIERE_SANS); });
+    });
+    el.querySelectorAll('[data-plan-testanki]').forEach(function(btn){
+      btn.addEventListener('click', function(){ marquerTestAnki(); });
+    });
+    el.querySelectorAll('[data-plan-testanki-plus-tard]').forEach(function(btn){
+      btn.addEventListener('click', function(){ saveInternal('batcave-test-anki-report-' + todayISO, true); renderDashboard(); });
     });
     el.querySelectorAll('[data-plan-notion]').forEach(function(btn){
       btn.addEventListener('click', function(){ var nb = document.querySelector('.nav-btn[data-page="etudes"]'); if(nb) nb.click(); });
@@ -7577,7 +7699,7 @@
     var missed = 0, tracked = 0;
     last7.forEach(function(d){
       var dow = new Date(d+'T00:00:00').getDay();
-      var type = TYPE_BY_DAY[dow];
+      var type = typeSportDe(d);
       var st = load('batcave-sport-'+d, {});
       var totalEx = 0, checked = 0;
       Object.keys(st).forEach(function(k){ if(k.indexOf(type+'-')===0){ totalEx++; if(st[k]) checked++; } });
@@ -7885,7 +8007,7 @@
     /* jours de séance : une fiche batcave-sport-<date> avec au moins une case cochée */
     var days = scanDailyRecords('batcave-sport-'), byDow = {}, seances = {};
     days.forEach(function(r){
-      var dow = new Date(r.date + 'T00:00:00').getDay(), type = TYPE_BY_DAY[dow], coches = 0, total = 0;
+      var dow = new Date(r.date + 'T00:00:00').getDay(), type = typeSportDe(r.date), coches = 0, total = 0;
       Object.keys(r.data || {}).forEach(function(k){ if(k.indexOf(type + '-') === 0){ total++; if(r.data[k]) coches++; } });
       if(!total) return;
       if(!byDow[dow]) byDow[dow] = {total:0, skipped:0};
@@ -8208,7 +8330,7 @@
     }
     var ss = (iso === todayISO) ? sportState : load('batcave-sport-'+iso, null);
     if(ss){
-      var t = sportTotals(TYPE_BY_DAY[new Date(iso+'T00:00:00').getDay()], ss);
+      var t = sportTotals(typeSportDe(iso), ss);
       if(t.total) parts.push(Math.round(100*t.checked/t.total));
     }
     var j = (iso === todayISO) ? journalState : load('batcave-journal-'+iso, null);
@@ -8301,7 +8423,7 @@
     var st = sportTotals(todayType);
     document.getElementById('dash-sport').innerHTML =
       (todayType === 'Off'
-        ? '<p style="font-size:12px; color:var(--ink-faint);">Jour off — pas de séance, rien à cocher. Prochaine séance : <b style="color:var(--ink-dim)">' + TYPE_BY_DAY[(weekday + 1) % 7] + (TYPE_BY_DAY[(weekday + 1) % 7] === 'Off' ? ' non, ' + TYPE_BY_DAY[(weekday + 2) % 7] : '') + '</b>.</p>'
+        ? '<p style="font-size:12px; color:var(--ink-faint);">Jour off — pas de séance, rien à cocher.' + (sportAllege() ? ' <b style="color:var(--warn);">Mode partiels : deux séances par semaine, lundi et jeudi.</b>' : ' Prochaine séance : <b style="color:var(--ink-dim)">' + typeSportDe(isoDecale(todayISO, 1)) + (typeSportDe(isoDecale(todayISO, 1)) === 'Off' ? ' non, ' + typeSportDe(isoDecale(todayISO, 2)) : '') + '</b>.') + '</p>'
         : '<div class="progress-row" style="margin-bottom:8px;"><span class="plabel">'+todayType+'</span><div class="progress-track"><div class="progress-fill" style="width:'+(st.total?Math.round(100*st.checked/st.total):0)+'%"></div></div><span class="progress-count">'+st.checked+'/'+st.total+'</span></div>'+
           '<p style="font-size:12px; color:var(--ink-faint);">Séance du jour : <b style="color:var(--ink-dim)">'+todayType+'</b>' + (facteurTours() < 1 ? ' · semaine ' + semaineProgramme() + ' du programme, tours × ' + (facteurTours() === 0.5 ? '½' : '¾') : '') + '</p>') +
       (function(){
@@ -8464,7 +8586,7 @@
       }
       var ss = load('batcave-sport-'+d, null);
       if(ss){
-        var t = sportTotals(TYPE_BY_DAY[new Date(d+'T00:00:00').getDay()], ss);
+        var t = sportTotals(typeSportDe(d), ss);
         if(t.total){ sportPctSum += 100*t.checked/t.total; sportDays++; }
       }
     });
@@ -8725,7 +8847,7 @@
     'Sport': "Podcast espagnol sur le kilomètre de course jusqu'au parc et pendant l'échauffement, puis la séance du jour dans l'onglet Sport. Retour en marchant, en trottinant le mardi.",
     'Coucher': "Clôture du jour faite, la ligne en espagnol ? Écran off, réveil posé loin du lit."
   };
-  function consigneBloc(label, dow, iso){
+  function consigneBloc(label, dow, iso, heure){
     var p = periodeGrille(iso || todayISO);
     var c = (p && p.consignes && p.consignes[label]) || CONSIGNES_ES[label] || CONSIGNES[label];
     /* blocs des journees exceptionnelles : la veille, le trajet, l'evenement lui-meme */
@@ -8734,7 +8856,7 @@
     if(!c && /^(TP|Examen|Événement) · /.test(label)) c = 'C\'est le moment. Téléphone en silencieux, lecture complète de la consigne avant de commencer.';
     if(!c) return '';
     var d = (dow === undefined || dow === null) ? new Date(now).getDay() : dow;
-    if(typeof c === 'function') return c(d, iso || todayISO) || '';
+    if(typeof c === 'function') return c(d, iso || todayISO, heure) || '';
     if(typeof c === 'string') return c;
     return c[d] || c.defaut || '';
   }
@@ -8987,7 +9109,7 @@
         if(b.type === 'cours') c.rev += b.minutes;
         else if(b.type === 'projet' && !es) c.proj += b.minutes;
       });
-      var t = TYPE_BY_DAY[dowDe(iso)];
+      var t = typeSportDe(iso);
       if(t && t !== 'Off') c.sport = 1;
     }
     cachePrevu[iso] = c;
@@ -9078,11 +9200,15 @@
     var plan = SCHEDULES[cle || scheduleKeyForToday()] || [];
     return plan.length ? plan[0][0] : '05:00';
   }
+  /* Pendant les partiels, la cible de sommeil monte d'une demi-heure : c'est la nuit qui
+     consolide ce qui a été révisé, et c'est la première chose qu'on sacrifie à tort. */
+  var SOMMEIL_PARTIELS_BONUS = 0.5;
   function objectifSommeilPour(iso){
     var d = new Date(iso + 'T00:00:00');
     var hier = (d.getDay() + 6) % 7;
     var couche = timeToMinutes(heureCoucher(cleJournee(hier)));
-    return (24*60 - couche + timeToMinutes(heureLever(cleJournee(d.getDay())))) / 60;
+    var base = (24*60 - couche + timeToMinutes(heureLever(cleJournee(d.getDay())))) / 60;
+    return base + (typeof periodePartiels === 'function' && periodePartiels(iso) ? SOMMEIL_PARTIELS_BONUS : 0);
   }
   function objectifSommeil(){ return objectifSommeilPour(todayISO); }
   function scheduleKeyForToday(){ return cleJournee(weekday); }
@@ -9108,7 +9234,8 @@
   /* Les series recurrentes de l'agenda portent une consigne apres « · » (« 🦇 Anki 1 · cartes
      dues dentaire ») : un evenement se reconnait a la partie avant le separateur. */
   function titreBaseGcal(s){ return String(s || '').split(' · ')[0].trim(); }
-  try{ window.__bcTitreBase = titreBaseGcal; window.__bcConsigne = consigneBloc; window.__bcInsights = buildInsights; window.__bcBlocs = blocsDuPlanning; window.__bcCle = cleJournee; window.__bcJours = joursSuivis; window.__bcInsightsVu = function(){ return insightsVu; }; window.__bcLogSession = logSession; window.__bcPeriode = periodeGrille; window.__bcGrille = grilleDe; window.__bcMinutesEspanol = minutesEspanol; window.__bcCibleEspanol = cibleEspanolJour; window.__bcTypeBloc = typeBlocPlan; window.__bcPlanRotation = planRotation; window.__bcHabitJours = habitJours; window.__bcProgrammeDebut = PROGRAMME_DEBUT; window.__bcJournees = function(){ return journeesState; }; window.__bcJourneeDe = journeeDe; window.__bcPartiels = periodePartiels; window.__bcSessionsPartiels = sessionsPartiels; window.__bcBlocSansPomodoro = blocSansPomodoro; window.__bcRappels = blocsARappeler; window.__bcExamens = function(){ return examensState; }; window.__bcPrevu = minutesPrevuesJour; window.__bcCibleGrille = cibleDepuisGrille; window.__bcPartEcoulee = partEcoulee; window.__bcVacances = function(){ return vacancesState; }; window.__bcJourExclu = jourExclu; window.__bcObjectifs = function(){ return objectifsState.liste; }; window.__bcComparer = comparerObjectif; window.__bcAcquise = habitAcquise; window.__bcAcquises = habitsAcquises; window.__bcSansPomodoro = blocsSansPomodoroDuJour; window.__bcTonPriorite = tonPriorite; window.__bcPrioHist = function(){ return insightsHist; }; window.__bcCloturerSaison = cloturerSaison; window.__bcSaisons = function(){ return saisonsState; }; window.__bcTrimestres = function(){ return TRIMESTRES; }; window.__bcMois = moisListe; window.__bcRapport = function(){
+  try{ window.__bcTitreBase = titreBaseGcal; window.__bcConsigne = consigneBloc; window.__bcInsights = buildInsights; window.__bcBlocs = blocsDuPlanning; window.__bcCle = cleJournee; window.__bcJours = joursSuivis; window.__bcInsightsVu = function(){ return insightsVu; }; window.__bcLogSession = logSession; window.__bcPeriode = periodeGrille; window.__bcGrille = grilleDe; window.__bcMinutesEspanol = minutesEspanol; window.__bcCibleEspanol = cibleEspanolJour; window.__bcTypeBloc = typeBlocPlan; window.__bcPlanRotation = planRotation; window.__bcHabitJours = habitJours; window.__bcProgrammeDebut = PROGRAMME_DEBUT; window.__bcJournees = function(){ return journeesState; }; window.__bcJourneeDe = journeeDe; window.__bcPartiels = periodePartiels; window.__bcSessionsPartiels = sessionsPartiels; window.__bcBlocSansPomodoro = blocSansPomodoro; window.__bcRappels = blocsARappeler; window.__bcExamens = function(){ return examensState; }; window.__bcPrevu = minutesPrevuesJour; window.__bcCibleGrille = cibleDepuisGrille; window.__bcPartEcoulee = partEcoulee; window.__bcVacances = function(){ return vacancesState; }; window.__bcJourExclu = jourExclu; window.__bcObjectifs = function(){ return objectifsState.liste; }; window.__bcComparer = comparerObjectif; window.__bcAcquise = habitAcquise; window.__bcAcquises = habitsAcquises; window.__bcSansPomodoro = blocsSansPomodoroDuJour; window.__bcTonPriorite = tonPriorite; window.__bcPrioHist = function(){ return insightsHist; }; window.__bcCloturerSaison = cloturerSaison; window.__bcSaisons = function(){ return saisonsState; }; window.__bcTrimestres = function(){ return TRIMESTRES; }; window.__bcMois = moisListe; window.__bcAnki = function(){ return ankiState; }; window.__bcLireAnki = lireAnki; window.__bcBesoins = besoinsPartiels; window.__bcMatiereBloc = matierePourBloc;
+       window.__bcTypeSport = typeSportDe; window.__bcSommeilCible = objectifSommeilPour; window.__bcTestAnki = testAnkiDu; window.__bcRapport = function(){
          var mois = moisListe().filter(function(m){ return todayISO >= m.debut && todayISO <= m.fin; })[0];
          var objs = mois ? objectifsState.liste.filter(function(o){ return o.periode === 'mois' && o.pid === mois.id; }) : [];
          var p = periodeGrille(todayISO), hist = {};
@@ -9156,7 +9283,7 @@
       if(d1 <= d0) d1 = d0 + 15;
       out.push({cle: 'p' + i, type: coucher ? 'coucher' : (libre ? 'libre' : 'bloc'), titre: '🦇 ' + l, titreBase: '🦇 ' + (memeStructure ? base[i][1] : l), debut: d0, fin: d1, rappel: coucher ? 30 : 5,
                 libre: coucher || libre,
-                description: (typeBlocPlan(l) ? 'Lance le Pomodoro « ' + l + ' ». ' : '') + (consigneBloc(l, dowDe(iso), iso) ? consigneBloc(l, dowDe(iso), iso) + ' ' : '') + (coucher ? 'Écran off 30 min avant. Bloc du planning Batcave.' : 'Bloc du planning Batcave.')});
+                description: (typeBlocPlan(l) ? 'Lance le Pomodoro « ' + l + ' ». ' : '') + (consigneBloc(l, dowDe(iso), iso, b[0]) ? consigneBloc(l, dowDe(iso), iso, b[0]) + ' ' : '') + (coucher ? 'Écran off 30 min avant. Bloc du planning Batcave.' : 'Bloc du planning Batcave.')});
     });
     return out;
   }
@@ -9415,7 +9542,7 @@
       var cls = (isPast?'past ':'') + (isNow?'now ':'') + (checked?'checked ':'');
       return '<li class="'+cls.trim()+'">'+
         '<span class="t-time">'+b[0]+'</span>'+
-        '<span class="t-body"><input type="checkbox" id="cal-'+i+'" data-cal="'+b[0]+'" '+(checked?'checked':'')+'><label class="t-label" for="cal-'+i+'"'+(consigneBloc(b[1], weekday) ? ' title="'+escapeHtml(consigneBloc(b[1], weekday))+'"' : '')+'>'+(b[3]==='google'?'📅 ':'')+escapeHtml(b[1])+'</label>'+(auto?'<span class="t-auto" title="Coché automatiquement : une session au minuteur a couvert ce bloc">auto</span>':'')+(isNow?'<span class="t-now-badge">MAINTENANT</span>':'')+(isNow && consigneBloc(b[1], weekday) ? '<span class="t-consigne">'+escapeHtml(consigneBloc(b[1], weekday))+'</span>' : '')+'</span>'+
+        '<span class="t-body"><input type="checkbox" id="cal-'+i+'" data-cal="'+b[0]+'" '+(checked?'checked':'')+'><label class="t-label" for="cal-'+i+'"'+(consigneBloc(b[1], weekday, todayISO, b[0]) ? ' title="'+escapeHtml(consigneBloc(b[1], weekday, todayISO, b[0]))+'"' : '')+'>'+(b[3]==='google'?'📅 ':'')+escapeHtml(b[1])+'</label>'+(auto?'<span class="t-auto" title="Coché automatiquement : une session au minuteur a couvert ce bloc">auto</span>':'')+(isNow?'<span class="t-now-badge">MAINTENANT</span>':'')+(isNow && consigneBloc(b[1], weekday, todayISO, b[0]) ? '<span class="t-consigne">'+escapeHtml(consigneBloc(b[1], weekday, todayISO, b[0]))+'</span>' : '')+'</span>'+
         '</li>';
     }).join('');
     tl.querySelectorAll('input[type="checkbox"]').forEach(function(cb){
@@ -10313,6 +10440,102 @@
         }).join('') + '</ul>'
       : '<p class="sub-note">Tout est à jour dans Notion — aucun cours en attente. 🦇</p>';
   }
+  /* ===== Anki lu, pas recopié =====
+     AnkiConnect (module Anki, port 8765) répond en JSON à une requête POST. Une page servie
+     en https ne peut pas parler à http://127.0.0.1 : cette lecture ne marche donc QUE depuis
+     le fichier batcave.html ouvert en local sur le Mac, Anki lancé. C'est voulu : c'est là
+     que tu révises. Ce qui est lu est mis en cache (batcave-anki) et reste lisible partout
+     ensuite, avec sa date de lecture. Rien n'est jamais écrit dans Anki.
+     Réglage à faire une fois dans Anki : Outils › Modules › AnkiConnect › Configuration,
+     ajouter "null" et "file://" à webCorsOriginList, puis relancer Anki. */
+  var ANKI_URL = 'http://127.0.0.1:8765';
+  var ANKI_PAQUETS = ['Dentaire', 'Español', 'Business'];
+  var ANKI_SEUIL_CHARGE = 220;   /* au-delà, Anki 1 et Anki 2 ne suffisent plus */
+  var ankiState = load('batcave-anki', null);
+  if(!ankiState || typeof ankiState !== 'object' || Array.isArray(ankiState)) ankiState = null;
+  var ankiEnCours = false;
+  function ankiAppel(action, params){
+    var ctrl = (typeof AbortController !== 'undefined') ? new AbortController() : null;
+    var t = setTimeout(function(){ if(ctrl) ctrl.abort(); }, 2500);
+    return fetch(ANKI_URL, {method:'POST', headers:{'Content-Type':'application/json'},
+                            body: JSON.stringify({action: action, version: 6, params: params || {}}),
+                            signal: ctrl ? ctrl.signal : undefined})
+      .then(function(r){ return r.json(); })
+      .then(function(j){ clearTimeout(t); if(j && j.error) throw new Error(j.error); return j ? j.result : null; })
+      .catch(function(e){ clearTimeout(t); throw e; });
+  }
+  function ankiCompte(requete){ return ankiAppel('findCards', {query: requete}).then(function(ids){ return (ids || []).length; }); }
+  /* Une lecture = les échéances, les nouvelles et les sangsues de chaque paquet, plus les
+     cartes révisées aujourd'hui. Sept appels courts, jamais bloquants. */
+  function lireAnki(manuel){
+    if(ankiEnCours) return Promise.resolve(null);
+    ankiEnCours = true;
+    var res = {maj: new Date().toISOString(), source:'ankiconnect', paquets:{}, revues:0, sangsues:0};
+    var chaine = ankiAppel('getNumCardsReviewedToday').then(function(n){ res.revues = Number(n) || 0; });
+    ANKI_PAQUETS.forEach(function(p){
+      chaine = chaine
+        .then(function(){ return ankiCompte('deck:"' + p + '::*" OR deck:"' + p + '" is:due -is:suspended'); })
+        .then(function(n){ res.paquets[p] = {dus: n}; })
+        .then(function(){ return ankiCompte('(deck:"' + p + '::*" OR deck:"' + p + '") is:new -is:suspended'); })
+        .then(function(n){ res.paquets[p].nouvelles = n; })
+        .then(function(){ return ankiCompte('(deck:"' + p + '::*" OR deck:"' + p + '") tag:leech -is:suspended'); })
+        .then(function(n){ res.paquets[p].sangsues = n; res.sangsues += n; });
+    });
+    return chaine.then(function(){
+      ankiState = res;
+      save('batcave-anki', ankiState, true);
+      ankiEnCours = false;
+      try{ renderAnki(); renderDashboard(); }catch(e){}
+      if(manuel) showToast('🃏 Anki lu : ' + (res.paquets.Dentaire ? res.paquets.Dentaire.dus + ' cartes dues en dentaire' : 'aucun paquet trouvé') + '.');
+      return res;
+    }).catch(function(e){
+      ankiEnCours = false;
+      try{ renderAnki(String(e && e.message || e)); }catch(x){}
+      if(manuel) showToast('🃏 Anki ne répond pas — ouvre Anki sur le Mac, avec le fichier batcave.html local.');
+      return null;
+    });
+  }
+  function ankiAgeHeures(){
+    if(!ankiState || !ankiState.maj) return null;
+    return (Date.now() - new Date(ankiState.maj).getTime()) / 3600000;
+  }
+  function ankiFrais(){ var a = ankiAgeHeures(); return a !== null && a < 20; }
+  function ankiDus(paquet){
+    var p = ankiState && ankiState.paquets && ankiState.paquets[paquet];
+    return p ? Number(p.dus) || 0 : null;
+  }
+  function renderAnki(erreur){
+    var panel = document.getElementById('anki-panel'), corps = document.getElementById('anki-corps'), note = document.getElementById('anki-maj');
+    if(!panel || !corps) return;
+    panel.hidden = false;
+    if(!ankiState){
+      if(note) note.textContent = erreur ? 'pas de réponse' : 'jamais lu';
+      corps.innerHTML = '<p class="sub-note" style="line-height:1.6;">Aucune lecture pour l\'instant. Ouvre <b style="color:var(--ink-dim);">batcave.html</b> en local sur le Mac avec Anki lancé, puis « Lire Anki maintenant ». Une fois dans Anki : Outils › Modules › AnkiConnect › Configuration, ajoute <code>"null"</code> et <code>"file://"</code> à <code>webCorsOriginList</code>, et relance Anki.</p>';
+      return;
+    }
+    var d = new Date(ankiState.maj);
+    if(note) note.textContent = 'lu ' + d.toLocaleString('fr-FR', {day:'2-digit', month:'2-digit', hour:'2-digit', minute:'2-digit'}) + (ankiFrais() ? '' : ' · à rafraîchir');
+    var lignes = ANKI_PAQUETS.map(function(p){
+      var x = ankiState.paquets[p]; if(!x) return '';
+      var alerte = p === 'Dentaire' && Number(x.dus) >= ANKI_SEUIL_CHARGE;
+      return '<li><span>' + escapeHtml(p) + '</span><span><b' + (alerte ? ' style="color:var(--warn);"' : '') + '>' + x.dus + '</b> dues · ' + x.nouvelles + ' nouvelles · ' + x.sangsues + ' sangsue' + (x.sangsues > 1 ? 's' : '') + '</span></li>';
+    }).join('');
+    corps.innerHTML = '<ul class="mini-list">' + lignes + '<li><span>Cartes révisées aujourd\'hui</span><b>' + (Number(ankiState.revues) || 0) + '</b></li></ul>' +
+      (Number(ankiDus('Dentaire')) >= ANKI_SEUIL_CHARGE
+        ? '<p class="sub-note" style="margin-top:10px; color:var(--warn); line-height:1.6;">⚠️ Plus de ' + ANKI_SEUIL_CHARGE + ' cartes dues en dentaire : les deux blocs Anki du matin ne suffisent plus. Abaisse les nouvelles cartes à 35 par jour pendant deux semaines, laisse la file redescendre, puis remonte.</p>'
+        : '');
+  }
+  (function(){
+    var b = document.getElementById('anki-lire');
+    if(b) b.addEventListener('click', function(){ lireAnki(true); });
+    /* Ouvert en local sur le Mac : on lit tout seul au démarrage, puis toutes les vingt
+       minutes tant que la page reste ouverte. Ailleurs (page https), on ne tente rien :
+       le navigateur refuserait la requête, et le cache suffit à afficher l'état. */
+    if(location.protocol === 'file:'){
+      setTimeout(function(){ lireAnki(false); }, 1500);
+      setInterval(function(){ lireAnki(false); }, 1200000);
+    }
+  })();
   function setNotionLink(){
     askText('Lien de la page Notion à ouvrir depuis le tableau de bord :',
             load('batcave-notion-url', DEFAULT_NOTION_URL) || '',
@@ -10353,7 +10576,7 @@
      n'est pas branché, il n'a rien à montrer. La page reste accessible par son bouton. */
   function majOngletBusiness(){
     var b = document.getElementById('nav-business');
-    if(b) b.hidden = !(boutiqueShopify && boutiqueShopify.domain) && !(typeof bizState !== 'undefined' && bizState.length);
+    if(b) b.hidden = !(boutiqueShopify && boutiqueShopify.domain);
   }
   function retenirBoutique(p){
     if(!p || !p.domain) return;
@@ -10571,9 +10794,18 @@
       : '😴 Sommeil non saisi cette semaine (le champ est dans la clôture du jour, chiffre Bevel).');
     return out;
   }
-  function enregistrerRevue(date, marche, coince, ajust, espanol){
+  function enregistrerRevue(date, marche, coince, ajust, espanol, anki){
     var entree = {id:'rv'+Date.now(), date:date, marche:marche, coince:coince, ajust:ajust, constats: constatsSemaine()};
     if(espanol) entree.espanol = espanol;
+    if(anki){
+      entree.anki = anki;
+      /* la saisie du dimanche fait aussi office de lecture quand AnkiConnect n'est pas là */
+      if(!ankiFrais() && anki.revues !== null && anki.revues !== undefined){
+        ankiState = {maj: new Date().toISOString(), source:'saisie', paquets: (ankiState && ankiState.paquets) || {}, revues: anki.revues, sangsues: (ankiState && ankiState.sangsues) || 0, creees: anki.creees};
+        save('batcave-anki', ankiState, true);
+        try{ renderAnki(); }catch(e){}
+      }
+    }
     rvState.push(entree);
     if(rvState.length > 400) rvState = rvState.slice(-400);
     save('batcave-revue', rvState);
@@ -10589,6 +10821,12 @@
     if(!rvState.length){ list.innerHTML = '<li class="entry-empty">Aucune revue enregistrée.</li>'; return; }
     list.innerHTML = rvState.slice().reverse().map(function(r){
       var c = Array.isArray(r.constats) && r.constats.length ? '<span class="ecell sub-note" style="flex-basis:100%; line-height:1.5;">' + r.constats.map(escapeHtml).join('<br>') + '</span>' : '';
+      if(r.anki && typeof r.anki === 'object'){
+        var an = [];
+        if(r.anki.revues !== null && r.anki.revues !== undefined) an.push(fmtNombre(r.anki.revues, 0) + ' cartes révisées');
+        if(r.anki.creees !== null && r.anki.creees !== undefined) an.push(fmtNombre(r.anki.creees, 0) + ' créées');
+        if(an.length) c += '<span class="ecell sub-note" style="flex-basis:100%;">🃏 ' + escapeHtml(an.join(' · ')) + '</span>';
+      }
       if(r.espanol && typeof r.espanol === 'object'){
         var e = r.espanol, bouts = [];
         if(e.errores !== null && e.errores !== undefined) bouts.push(fmtNombre(e.errores, 1) + ' err. / 100 mots');
@@ -10644,6 +10882,7 @@
   renderJournees();
   renderVacances();
   majOngletBusiness();
+  renderAnki();
   renderNotionCours();
   renderExercice();
   try{ proposerPomodoroBloc(); }catch(e){}   /* Pomodoro ferme : un bloc de travail vient de commencer ? */
@@ -10755,7 +10994,7 @@
     rv.hidden = !dimanche;
     if(dimanche){
       document.getElementById('cl-constats').innerHTML = constatsSemaine().map(function(c){ return '<li><span>' + escapeHtml(c) + '</span></li>'; }).join('');
-      ['cl-rv-marche','cl-rv-coince','cl-rv-ajust','cl-es-errores','cl-es-oral','cl-es-drill'].forEach(function(id){ var el = document.getElementById(id); if(el) el.value = ''; });
+      ['cl-rv-marche','cl-rv-coince','cl-rv-ajust','cl-es-errores','cl-es-oral','cl-es-drill','cl-anki-revues','cl-anki-creees'].forEach(function(id){ var el = document.getElementById(id); if(el) el.value = ''; });
       var esBox = document.getElementById('cl-espanol');
       if(esBox) esBox.hidden = !periodeGrille(todayISO);
     }
@@ -10792,7 +11031,9 @@
       var lire = function(id){ var el = document.getElementById(id); var v = el && el.value !== '' ? Number(String(el.value).replace(',', '.')) : null; return (v === null || isNaN(v)) ? null : v; };
       var es = {errores: lire('cl-es-errores'), oral: lire('cl-es-oral'), drill: lire('cl-es-drill')};
       if(es.errores === null && es.oral === null && es.drill === null) es = null;
-      if(m || c || a || es) enregistrerRevue(weekRange(0)[0], m, c, a, es);
+      var ank = {revues: lire('cl-anki-revues'), creees: lire('cl-anki-creees')};
+      if(ank.revues === null && ank.creees === null) ank = null;
+      if(m || c || a || es || ank) enregistrerRevue(weekRange(0)[0], m, c, a, es, ank);
     }
     renderJournal(); renderWeightChart(); renderKcalBoucle(); renderCalendar(); renderDashboard(); renderBilan();
     if(document.getElementById('obj-liste')) renderObjectifs();

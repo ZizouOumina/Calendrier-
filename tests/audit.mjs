@@ -54,7 +54,11 @@ for(const p of pages){
   await page.waitForTimeout(450);
   const r = await fr.evaluate(x => {
     const sec = document.querySelector('.page[data-page="'+x+'"]');
-    const txt = sec ? sec.innerText : '';
+    /* Le panneau Anki cite la valeur de configuration d'AnkiConnect, qui contient
+       littéralement le mot « null » : c'est une consigne, pas une valeur cassée. */
+    const ank = document.getElementById('anki-panel');
+    const txtAnki = (ank && sec && sec.contains(ank)) ? ank.innerText : '';
+    const txt = sec ? (txtAnki ? sec.innerText.split(txtAnki).join(' ') : sec.innerText) : '';
     const pb = [];
     // valeurs cassées visibles
     ['undefined','NaN','[object Object]','Infinity','null'].forEach(m => {

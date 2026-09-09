@@ -84,8 +84,8 @@ console.log('\n== 263) iPhone : rien ne déborde, tout est lisible ==');
 {
   const { ctx, page, fr, pe } = await ouvrir({viewport:{width:390,height:844}, hasTouch:true, isMobile:true, deviceScaleFactor:3});
   const pages = await fr.evaluate(() => [...document.querySelectorAll('.nav-btn[data-page]')].filter(b => !b.hidden).map(b => b.dataset.page));
-  /* douze onglets, plus Business : ce jeu de données contient des mois de boutique */
-  ok(pages.length === 13 && pages.indexOf('business') > -1, 'douze onglets + Business (la boutique a des chiffres) : ' + pages.join(' '));
+  /* douze onglets : Business n'apparaît qu'avec une boutique branchée, pas avec des chiffres */
+  ok(pages.length === 12 && pages.indexOf('business') < 0, 'douze onglets sur iPhone : ' + pages.join(' '));
   let deborde = [];
   for(const p of pages){
     await fr.evaluate(x => document.querySelector('.nav-btn[data-page="' + x + '"]').click(), p);
