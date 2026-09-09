@@ -188,7 +188,9 @@ console.log('\n== 235) Après le 14 mars 2027 : grille type, boutons cachés, pl
     cellules: document.querySelectorAll('#dash-temps .temps-cell').length, mardi: (window.__bcGrille('weekday','2027-03-16').find(b => b[0] === '13:00') || [])[1]
   }));
   ok(g.p === null && g.a1120 === 'Projets perso 1' && g.mardi === 'Projets perso 2', 'grille type revenue d\'elle-même');
-  ok(g.releve === 'grille type' && g.btn && g.cellules === 2, 'relevé « grille type », bouton caché, deux cellules');
+  /* la cellule Español reste affichée hors phase (à 0,0 h, sans cible) : c'est ce qui dit
+     où atterrissent ces heures quand il y en a. Le bouton Pomodoro Español, lui, disparaît. */
+  ok(g.releve === 'grille type' && g.btn && g.cellules === 3, 'relevé « grille type », bouton Español caché, trois cellules');
   await ctx.close();
 }
 

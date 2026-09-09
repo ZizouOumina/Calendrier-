@@ -94,7 +94,7 @@ console.log('\n== 91) Compteurs du tableau de bord séparés + 2 boutons Pomodor
     total: document.getElementById('dash-temps-total').textContent,
     boutons: [...document.querySelectorAll('#dash-pomodoro, #dash-pomodoro-projet')].map(b => b.textContent),
   }));
-  ok(v.cellules.length === 2, '2 compteurs seulement : ' + v.cellules.length);
+  ok(v.cellules.length === 3, '3 compteurs : révision, projets, espagnol (' + v.cellules.length + ')');
   ok(/Révision2,0h/.test(v.cellules[0]), 'le compteur révision ne compte QUE la révision : ' + v.cellules[0]);
   ok(/Projetsperso2,0h/.test(v.cellules[1]), 'le compteur projets ne compte QUE les projets : ' + v.cellules[1]);
   ok(/4,0 h au total/.test(v.total), 'total = 4h, les 3h d\'espagnol ne comptent plus : ' + v.total);

@@ -42,7 +42,9 @@ console.log('\n== 32) Temps du jour sur le tableau de bord ==');
     page: document.querySelector('.page.active').dataset.page
   }));
   ok(d.page === 'dashboard', 'visible sans changer de page');
-  ok(d.cells.length === 2, 'deux compteurs — révision et projets perso : ' + d.cells.join(' | '));
+  /* trois compteurs depuis le lot 24 : l'espagnol a sa propre cellule, il ne se cache plus
+     dans « Projets perso » */
+  ok(d.cells.length === 3, 'trois compteurs — révision, projets perso, espagnol : ' + d.cells.join(' | '));
 ok(/Révision2,5h\/5,3h/.test(d.cells[0]), 'révision avec objectif du jour : ' + d.cells[0]);
 ok(/Projetsperso1,5h/.test(d.cells[1]), 'projets perso du jour : ' + d.cells[1]);
   ok(/4,0 h au total/.test(d.total), 'total = révision + projets, sans espagnol : ' + d.total);
@@ -59,7 +61,7 @@ ok(/Projetsperso1,5h/.test(d.cells[1]), 'projets perso du jour : ' + d.cells[1])
     cours: document.querySelector('#dash-temps .temps-cell').innerText.replace(/\s+/g,'')
   }));
   ok(/rien encore aujourd'hui/.test(d.total), 'journée vierge : ' + d.total);
-  ok(d.vides === 2, 'les deux compteurs sont grisés');
+  ok(d.vides === 3, 'les trois compteurs sont grisés');
   ok(/0,0h\/5,3h/.test(d.cours), 'objectif tout de même rappelé : ' + d.cours);
   await ctx.close();
 }

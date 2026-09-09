@@ -67,7 +67,8 @@ console.log('\n== 262) Bilan, objectifs et courbes sur six mois ==');
              revue: document.querySelectorAll('#rv-list li').length,
              journal: document.querySelectorAll('#journal-hist .jr-b').length };
   });
-  ok(b.cartes === 9, '9 cartes de bilan (' + b.cartes + ')');
+  /* dix depuis le lot 24 : l'espagnol a sa propre ligne, sortie de « Projets perso » */
+  ok(b.cartes === 10, 'dix cartes de bilan (' + b.cartes + ')');
   ok(b.points > 0, 'la courbe du score est tracée');
   ok(b.revue >= 1 && b.journal >= 10, 'la revue et l\'historique du journal sont bien sur la page Semaine (' + b.revue + ' revue(s), ' + b.journal + ' journées)');
   const o = await fr.evaluate(() => {

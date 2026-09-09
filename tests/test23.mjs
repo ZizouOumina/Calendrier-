@@ -38,7 +38,8 @@ const dash = await fr.evaluate(() => {
   return [...document.querySelectorAll('#dash-temps .temps-cell')].map(c => c.innerText.replace(/\s+/g,''));
 });
 ok(/1,0h/.test(dash[0]), 'Cours : ' + dash[0]);
-ok(dash.length === 2 && /0,0h/.test(dash[1]), 'Projets perso à zéro (séparation respectée) : ' + dash[1]);
+/* trois cellules depuis le lot 24 : l'espagnol ne se cache plus dans « Projets perso » */
+ok(dash.length === 3 && /0,0h/.test(dash[1]) && /0,0h/.test(dash[2]), 'Projets perso et espagnol à zéro (séparation respectée) : ' + dash[1] + ' | ' + dash[2]);
 
 console.log('\n== C) Agenda des révisions + journal des blocs ==');
 const cal = await fr.evaluate(() => {
