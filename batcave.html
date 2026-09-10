@@ -1529,10 +1529,13 @@
           <button class="btn btn-primary" id="dash-pomodoro">🍅 Pomodoro — Révision</button>
           <button class="btn btn-primary" id="dash-pomodoro-projet">🍅 Pomodoro — Projet perso</button>
           <button class="btn btn-primary" id="dash-pomodoro-espanol" hidden>🇪🇸 Pomodoro — Español</button>
-          <!-- Commande vocale : masquée si le navigateur ne sait pas écouter. Elle vit ici,
-               avec les Pomodoros : c'est une action, pas un relevé. -->
+          <!-- Alfred : masqué si le navigateur ne sait pas écouter. Il vit ici, avec les
+               Pomodoros : c'est une action, pas un relevé. Le second bouton arme le mode
+               veille (micro ouvert, mot d'appel « Alfred »), éteint par défaut. -->
           <button class="btn bc-voix-btn" id="voix-btn" type="button" aria-pressed="false" hidden
-                  title="Parler à la Batcave : « pomodoro révision », « coche le petit-déjeuner », « clôture », « stop »">🎙️ Parler</button>
+                  title="Appuie et parle : « pomodoro révision », « coche le petit-déjeuner », « clôture », « stop ». « Alfred, … » au début est accepté.">🎙️ Alfred</button>
+          <button class="btn bc-voix-btn" id="alfred-veille" type="button" aria-pressed="false" hidden
+                  title="Mode veille : Alfred garde le micro ouvert tant que la Batcave est ouverte et n'obéit qu'aux phrases qui commencent par « Alfred ». Éteint par défaut.">🦇 Veille</button>
           <p class="dial-serie" id="dash-serie" hidden></p>
         </div>
         <p class="focus-kb"><b>P</b> lance le Pomodoro du bloc · <b>C</b> ouvre la clôture · <b>H</b> coche l’habitude suivante · <b>1-9</b> changent d’onglet</p>
@@ -12848,23 +12851,32 @@
   var bilanExportBtn = document.getElementById('bilan-export-btn');
   if(bilanExportBtn) bilanExportBtn.addEventListener('click', function(){ window.print(); });
 
-  /* ================= COMMANDE VOCALE ================= */
-  /* Parler à la Batcave. Ce n'est pas un assistant : c'est un raccourci pour les gestes qui
-     se font les mains prises — cocher un repas en cuisinant, lancer un Pomodoro en s'asseyant,
-     ouvrir la clôture le soir. Reconnaissance locale du navigateur (Web Speech), rien n'est
-     envoyé nulle part par la Batcave elle-même. Le bouton reste masqué si le navigateur ne
-     sait pas écouter, et une seule commande est prise par écoute : on parle, ça agit, ça
-     s'arrête. Pas de mot d'éveil, pas de micro ouvert en permanence. */
+  /* ================= ALFRED, LA COMMANDE VOCALE =================
+     Deux façons de lui parler, et une seule grammaire.
+       - Appuyer sur « 🎙️ Alfred », dire la phrase : le micro s'ouvre le temps d'une commande.
+       - Armer « 🦇 Veille » : le micro reste ouvert tant que la Batcave est ouverte, et
+         SEULES les phrases qui commencent par « Alfred » déclenchent quelque chose. Le
+         reste de ce qui se dit dans la pièce est entendu, reconnu, et jeté sans rien faire.
+     La veille est ÉTEINTE par défaut, et son réglage reste sur l'appareil (clé sans
+     préfixe batcave-, donc jamais synchronisée) : le micro d'un Mac ne se décide pas
+     depuis un iPhone. Elle se coupe d'elle-même quand l'onglet passe en arrière-plan —
+     un micro ouvert sur une page qu'on ne regarde pas, c'est de la batterie et rien d'autre.
+     Un navigateur qui ne sait pas écouter ne montre aucun des deux boutons. */
   var VOIX = (function(){
     var Reco = window.SpeechRecognition || window.webkitSpeechRecognition;
-    var btn = document.getElementById('voix-btn');
+    var btn = document.getElementById('voix-btn'), btnVeille = document.getElementById('alfred-veille');
     if(!Reco || !btn) return {dispo:false};
     btn.hidden = false;
-    var reco = null, ecoute = false;
+    if(btnVeille) btnVeille.hidden = false;
+    var reco = null, ecoute = false, continu = false, relance = null, echecs = 0;
 
     function normaliser(t){
       return String(t || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').trim();
     }
+    /* Le mot d'appel, et ce que la reconnaissance en fait quand elle hésite. */
+    var APPEL = /^(ok |hey |eh |dis |dit )?(alfred|alfredo|alfret|alfrede|alfredh)\b[\s,.:!?]*/;
+    function appele(t){ return APPEL.test(t); }
+    function sansAppel(t){ return t.replace(APPEL, '').trim(); }
     /* Les repas dans l'ordre du plan : les mots qu'on emploie vraiment pour les nommer. */
     var MOTS_REPAS = [
       {i:0, mots:['petit dejeuner','petit-dejeuner','petit dej','matin']},
@@ -12889,9 +12901,10 @@
       try{ renderDashHabits(); renderHabits(); }catch(e){}
       return habitLabel(cible);
     }
-    /* Une phrase → une action. On rend le texte du retour, ou null si on n'a pas compris. */
+    /* Une phrase → une action. On rend le texte du retour, ou null si on n'a pas compris.
+       « Alfred » en tête est retiré ici aussi : la même phrase marche dans les deux modes. */
     function executer(phrase){
-      var t = normaliser(phrase);
+      var t = sansAppel(normaliser(phrase));
       if(!t) return null;
       if(/\b(stop|arrete|arreter|annule)\b/.test(t)){
         if(typeof timerState !== 'undefined' && timerState){ stopTimer(true); return 'Minuteur arrêté et enregistré.'; }
@@ -12920,46 +12933,129 @@
       }
       return null;
     }
-    function arreter(){
-      ecoute = false;
-      btn.setAttribute('aria-pressed', 'false');
-      btn.classList.remove('voix-active');
-      if(reco){ try{ reco.stop(); }catch(e){} }
+
+    /* ----- micro ----- */
+    function lireVeille(){ try{ return localStorage.getItem('bc-alfred-veille') === '1'; }catch(e){ return false; } }
+    function ecrireVeille(){ try{ localStorage.setItem('bc-alfred-veille', continu ? '1' : '0'); }catch(e){} }
+    function majBoutons(){
+      btn.setAttribute('aria-pressed', (ecoute && !continu) ? 'true' : 'false');
+      btn.classList.toggle('voix-active', ecoute && !continu);
+      if(!btnVeille) return;
+      btnVeille.setAttribute('aria-pressed', continu ? 'true' : 'false');
+      btnVeille.classList.toggle('voix-active', continu && ecoute);
+      btnVeille.textContent = continu ? '🦇 Écoute' : '🦇 Veille';
+      btnVeille.title = continu
+        ? 'Alfred écoute : commence tes phrases par « Alfred ». Clique pour couper le micro.'
+        : 'Mode veille : Alfred garde le micro ouvert tant que la Batcave est ouverte et n’obéit qu’aux phrases qui commencent par « Alfred ». Éteint par défaut.';
     }
-    function ecouter(){
-      if(ecoute){ arreter(); return; }
+    function couper(){
+      if(relance){ clearTimeout(relance); relance = null; }
+      if(reco){ try{ reco.abort ? reco.abort() : reco.stop(); }catch(e){} }
+      ecoute = false;
+      majBoutons();
+    }
+    function desarmer(message){
+      continu = false; ecrireVeille(); couper();
+      if(message) showToast(message);
+    }
+    function programmerRelance(){
+      if(relance || !continu) return;
+      relance = setTimeout(function(){ relance = null; if(continu && !document.hidden) demarrer(); }, 400);
+    }
+    function brancher(r){
+      r.onresult = function(ev){
+        for(var i = ev.resultIndex === undefined ? 0 : ev.resultIndex; i < ev.results.length; i++){
+          var res = ev.results[i];
+          if(res.isFinal === false) continue;
+          /* On essaie les interprétations dans l'ordre : la première qui donne une action gagne. */
+          var dit = '', rep = null, adresse = !continu;
+          for(var k = 0; k < res.length; k++){
+            var brut = res[k].transcript, t = normaliser(brut);
+            if(continu && !appele(t)) continue;
+            adresse = true; dit = brut;
+            rep = executer(t);
+            if(rep) break;
+          }
+          if(!adresse) continue;                    /* pas pour nous : on se tait */
+          if(!dit) dit = res[0] ? res[0].transcript : '';
+          echecs = 0;
+          if(rep) showToast('🎙️ ' + rep);
+          else if(!sansAppel(normaliser(dit))) showToast('🎙️ Oui ?');
+          else showToast('🎙️ Pas compris : « ' + dit + ' »');
+          if(!continu){ couper(); return; }
+        }
+      };
+      r.onerror = function(ev){
+        var c = ev && ev.error;
+        if(c === 'not-allowed' || c === 'service-not-allowed'){
+          desarmer('🎙️ Micro refusé — autorise-le dans les réglages du site.');
+          return;
+        }
+        if(continu){
+          /* « rien entendu » est l'état normal d'une veille : on relance sans rien dire. */
+          if(c === 'no-speech' || c === 'aborted') return;
+          if(++echecs >= 5) desarmer('🦇 Alfred repasse en veille — le micro ne répond plus.');
+          return;
+        }
+        couper();
+        showToast(c === 'no-speech' ? '🎙️ Rien entendu.' : '🎙️ Micro indisponible.');
+      };
+      r.onend = function(){
+        ecoute = false;
+        majBoutons();
+        if(continu && !document.hidden) programmerRelance();
+      };
+    }
+    function demarrer(){
+      if(ecoute) return;
       try{
         reco = new Reco();
         reco.lang = 'fr-FR';
         reco.interimResults = false;
         reco.maxAlternatives = 3;
-        reco.continuous = false;
+        reco.continuous = continu;
       }catch(e){ showToast('🎙️ Le micro n’est pas disponible ici.'); return; }
-      reco.onresult = function(ev){
-        var dit = '', rep = null;
-        for(var i = 0; i < ev.results[0].length && !rep; i++){
-          dit = ev.results[0][i].transcript;
-          rep = executer(dit);
-        }
-        arreter();
-        showToast(rep ? '🎙️ ' + rep : '🎙️ Pas compris : « ' + dit + ' »');
-      };
-      reco.onerror = function(ev){
-        arreter();
-        var c = ev && ev.error;
-        showToast(c === 'not-allowed' || c === 'service-not-allowed'
-          ? '🎙️ Micro refusé — autorise-le dans les réglages du site.'
-          : (c === 'no-speech' ? '🎙️ Rien entendu.' : '🎙️ Micro indisponible.'));
-      };
-      reco.onend = function(){ if(ecoute) arreter(); };
+      brancher(reco);
       ecoute = true;
-      btn.setAttribute('aria-pressed', 'true');
-      btn.classList.add('voix-active');
-      try{ reco.start(); showToast('🎙️ J’écoute…'); }
-      catch(e){ arreter(); showToast('🎙️ Micro indisponible.'); }
+      majBoutons();
+      try{ reco.start(); }
+      catch(e){ ecoute = false; majBoutons(); if(!continu) showToast('🎙️ Micro indisponible.'); }
     }
+    function ecouter(){
+      if(continu){ showToast('🦇 Alfred écoute déjà — dis « Alfred, … ».'); return; }
+      if(ecoute) couper(); else { demarrer(); if(ecoute) showToast('🎙️ J’écoute…'); }
+    }
+    function basculerVeille(force){
+      continu = (force === undefined) ? !continu : !!force;
+      ecrireVeille();
+      if(continu){
+        echecs = 0;
+        if(ecoute) couper();
+        demarrer();
+        showToast('🦇 Alfred écoute — commence tes phrases par « Alfred ».');
+      } else {
+        couper();
+        showToast('🦇 Alfred en veille — micro coupé.');
+      }
+      majBoutons();
+      return continu;
+    }
+
     btn.addEventListener('click', ecouter);
-    return {dispo:true, executer:executer, ecouter:ecouter};
+    if(btnVeille) btnVeille.addEventListener('click', function(){ basculerVeille(); });
+    document.addEventListener('visibilitychange', function(){
+      if(!continu) return;
+      if(document.hidden) couper();
+      else programmerRelance();
+    });
+    /* Le mode choisi sur CET appareil est repris à l'ouverture : s'il n'est plus autorisé,
+       onerror le désarme tout seul. */
+    continu = lireVeille();
+    majBoutons();
+    if(continu) demarrer();
+
+    return {dispo:true, executer:executer, ecouter:ecouter, veille:basculerVeille,
+            enVeille:function(){ return continu; }, ecoutant:function(){ return ecoute; }};
   })();
   try{ window.__bcVoix = VOIX; }catch(e){}
   /* Crochet de test : injecter des évènements d'agenda sans connecteur, pour éprouver la

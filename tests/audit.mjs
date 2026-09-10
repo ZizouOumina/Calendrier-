@@ -94,6 +94,9 @@ for(const p of pages){
       const cs = getComputedStyle(el);
       if(cs.display === 'inline' || cs.display === 'none') return;
       if(cs.overflowX === 'auto' || cs.overflowX === 'scroll') return;
+      /* Une étiquette .sr-only fait 1 px de large exprès : elle est lue par les lecteurs
+         d'écran, jamais affichée. La signaler « tronquée » est un faux positif. */
+      if(el.classList.contains('sr-only') || el.closest('.sr-only')) return;
       if(el.scrollWidth > el.clientWidth + 1){
         tronq.push(t.replace(/\s+/g, ' ').slice(0, 34) + ' (' + el.scrollWidth + '>' + el.clientWidth + ')');
       }
