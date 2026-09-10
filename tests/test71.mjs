@@ -177,7 +177,10 @@ console.log('\n== 286) Installation sur l\'écran d\'accueil ==');
   }));
   const json = JSON.parse(decodeURIComponent(m.manifeste.replace('data:application/manifest+json,', '')));
   ok(json.display === 'standalone' && json.short_name === 'Batcave', 'le manifeste ouvre en application, nom court « Batcave »');
-  ok(Array.isArray(json.icons) && json.icons.length === 1 && json.icons[0].sizes === '180x180', 'le manifeste porte une icône 180×180');
+  /* lot 29 : le manifeste porte deux tailles au lieu d'une. 180 px pour l'écran d'accueil,
+     48 px pour les endroits où le système veut une petite icône et ne redimensionne pas bien. */
+  const tailles = (json.icons || []).map(i => i.sizes).sort().join(' ');
+  ok(Array.isArray(json.icons) && json.icons.length === 2 && tailles === '180x180 48x48', 'le manifeste porte les icônes 180×180 et 48×48 (' + tailles + ')');
   ok(m.apple.startsWith('data:image/png;base64,'), 'une icône PNG est embarquée pour iOS');
   ok(m.standalone === 'yes' && m.barre === 'black', 'mode application, barre d\'état opaque');
   ok(/viewport-fit=cover/.test(m.viewport), 'viewport-fit=cover : les marges de sécurité de l\'iPhone deviennent effectives');
