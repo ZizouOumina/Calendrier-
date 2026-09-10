@@ -87,7 +87,7 @@
   *{box-sizing:border-box;}
   /* L'hébergement Artifact impose déjà [hidden]{display:none!important}, mais le fichier .html
      téléchargé s'ouvre tel quel dans un navigateur classique : là, ce sont NOS propres règles
-     (ex. ".dash-statusline > span{display:inline-flex}") qui l'emportent sur le [hidden] par
+     (ex. ".temps-cell{display:flex}") qui l'emportent sur le [hidden] par
      défaut du navigateur — les éléments masqués restaient visibles (vides). On réaffirme la
      règle nous-mêmes pour que "hidden" masque vraiment, dans les deux contextes. */
   [hidden]{display:none!important;}
@@ -608,11 +608,6 @@
   #focus-dial .dial-tag{font-size:12px;}
   .dial-serie{font-family:var(--font-mono); font-size:11px; color:var(--cyan-dim); margin-top:8px;}
 
-  /* ---------- ligne de statut du tableau de bord ---------- */
-  .dash-statusline{display:flex; flex-wrap:wrap; align-items:center; gap:3px 12px; margin-top:8px;
-                   font-size:12.5px; color:var(--ink-dim); line-height:1.6;}
-  .dash-statusline > span{display:inline-flex; align-items:center; min-width:0;}
-  .dash-statusline > span + span::before{content:'·'; color:var(--ink-faint); margin-right:12px;}
   #dash-trend-msg, #dash-timer{color:var(--cyan-bright);}
   #dash-timer{font-family:var(--font-mono);}
 
@@ -1202,7 +1197,6 @@
 
   /* ---- bannières et divers ---- */
   #coherence-banner{ border-radius:0 !important; }
-  .dash-statusline{ font-family:var(--font-mono); font-size:11.5px; }
   /* ---- clôture : express / complète ---- */
   .cl-modes{ display:flex; gap:6px; margin-bottom:14px; flex-wrap:wrap; }
   .cl-modes .chip[aria-pressed="true"]{ border-color:var(--cyan); color:var(--cyan-bright); background:var(--surface-hover); }
@@ -6654,7 +6648,6 @@
   }
   function facteurTours(iso){ var w = semaineProgramme(iso); return (w > 0 && w <= 2) ? 0.5 : 1; }
   function toursDuJour(f){ return Math.max(1, Math.round(f.series * facteurTours())); }
-  function joursEntrainement(){ return Object.keys(TYPE_BY_DAY).filter(function(d){ return TYPE_BY_DAY[d] !== 'Off'; }).length; }
   var DAY_NAMES = {1:'Lun',2:'Mar',3:'Mer',4:'Jeu',5:'Ven',6:'Sam',0:'Dim'};
   /* ===== Sport pendant les partiels =====
      Deux séances au lieu de quatre : lundi (haut lourd) et jeudi (haut volume). Le mardi et
@@ -8182,13 +8175,6 @@
      migration par version de grille : idempotent, rejouable après hydratation, valable
      pour toutes les grilles à venir. Les objectifs d'avant ce mécanisme n'ont pas de
      semaine mémorisée : elle se déduit des drapeaux des anciennes migrations. */
-  function semaineDeReference(o){
-    if(o.semaine && typeof o.semaine === 'object' && Number(o.semaine.rev) > 0 && Number(o.semaine.proj) > 0) return {rev:Number(o.semaine.rev), proj:Number(o.semaine.proj), sport:Number(o.semaine.sport) || 6};
-    if(load('batcave-objectifs-v4-dimanche', false)) return {rev:1745, proj:1005, sport:6};
-    if(load('batcave-objectifs-v3-trajet', false)) return {rev:1745, proj:950, sport:6};
-    if(load('batcave-objectifs-v2-55', false)) return {rev:1715, proj:990, sport:6};
-    return {rev:1980, proj:1080, sport:6};
-  }
   /* Recalage : chaque objectif de temps (révision, projets, espagnol, séances de sport)
      reprend la cible que la grille prévoit sur SA période. Idempotent, rejouable après
      hydratation, valable pour toutes les grilles à venir : un changement de phase, une
@@ -11429,7 +11415,6 @@
 
   /* remplacée par fmtDuree / fmtHeures : une seule façon d'écrire une durée dans toute
      l'application. Gardée en alias le temps que plus rien ne l'appelle. */
-  function cibleRevisionTexte(){ return fmtHeures(revisionTarget()); }
   function minutesToTime(m){ m = ((Math.round(m) % 1440) + 1440) % 1440; return (Math.floor(m/60)+'').padStart(2,'0') + ':' + ((m%60)+'').padStart(2,'0'); }
   function timeToMinutes(t){ var p=t.split(':'); return Number(p[0])*60+Number(p[1]); }
 

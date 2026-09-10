@@ -2,7 +2,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800&family=Public+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
 <style>
   :root{
-    --ground:#f4f4f1; --sheet:#ffffff; --sheet-2:#eceCe9;
+    --ground:#f4f4f1; --sheet:#ffffff; --sheet-2:#ececE9;
     --ink:#15171a; --ink-2:#474b52; --ink-3:#767b83;
     --line:#dbdbd7; --line-2:#e8e8e4;
     --deep:#0e5b4f;         /* ce qu'on construit */
@@ -65,7 +65,6 @@
   .argent{border-left:3px solid var(--slate); background:var(--slate-soft); padding:15px 17px; margin:18px 0;}
   .argent p{max-width:none;}
 
-  /* chiffres clés */
   .chiffres{display:grid; grid-template-columns:repeat(auto-fit,minmax(168px,1fr)); gap:1px;
             background:var(--line-2); border:1px solid var(--line-2); margin:20px 0;}
   .chiffres div{background:var(--sheet); padding:14px 15px;}
@@ -73,7 +72,6 @@
                font-size:27px; line-height:1.05; color:var(--deep); font-variant-numeric:tabular-nums;}
   .chiffres .l{font-size:13px; color:var(--ink-2); margin-top:5px; line-height:1.45;}
 
-  /* rail des années */
   .an{position:relative; padding-left:78px; margin:36px 0 0;}
   .an::before{content:attr(data-an); position:absolute; left:0; top:2px; width:60px;
     font-family:var(--mono); font-size:11px; letter-spacing:.03em; color:var(--deep); font-weight:500;
@@ -93,7 +91,6 @@
   .fiche dd{margin:0; font-size:14px; color:var(--ink); font-weight:500;}
   .stop{color:var(--clay); font-weight:600;}
 
-  /* idées de vidéos */
   .idees{list-style:none; margin:14px 0; padding:0; border-top:1px solid var(--line-2);}
   .idees li{padding:9px 0 9px 26px; border-bottom:1px solid var(--line-2); position:relative; font-size:14.5px;}
   .idees li::before{content:'▸'; position:absolute; left:4px; top:9px; color:var(--deep); font-size:12px;}
@@ -139,92 +136,112 @@
 
 <div class="wrap">
 <header class="top">
-  <div class="kicker">Odontología · Alicante · septembre 2026 → juin 2031</div>
+  <div class="kicker">Français · English · Español — septembre 2026 → juin 2031</div>
   <h1>Cinq ans en public</h1>
-  <p class="lede">Un plan de marque personnelle qui tient pendant six mois de programme intensif, cinq ans d'études et une boutique en parallèle. <b>Il est écrit pour être suivi, pas pour être admiré</b> — la contrainte qui le gouverne n'est pas la créativité, c'est le temps que tu n'as pas.</p>
+  <p class="lede">Devenir connu, en trois langues, sans que les études en paient le prix. <b>Le plan est écrit pour être suivi, pas pour être admiré</b> — la contrainte qui le gouverne n'est pas la créativité, c'est le temps que tu n'as pas.</p>
 </header>
 
 <h2>La thèse</h2>
-<p>Tu ne construis pas une audience. Tu construis une <strong>archive</strong>.</p>
-<p>En juin 2031, tu seras un dentiste parmi des milliers de diplômés européens de l'année. Tes notes ne se verront pas, ta faculté non plus. Ce qui te distinguera, c'est cinq ans de traces publiques montrant <em>comment tu travailles</em> — et cette chose-là ne se rattrape pas. Un compte lancé en 2031 met deux à trois ans à valoir ce qu'un compte lancé en 2026 vaudra le jour du diplôme.</p>
-<p>Le corollaire est libérateur : <strong>le contenu n'est pas un projet à côté des études, c'est leur journal de bord.</strong> Tu ne cherches pas quoi publier — tu filmes ce que tu fais déjà. Le jour où produire demande de faire quelque chose que tu ne ferais pas de toute façon, le plan a échoué et il faut revenir en arrière.</p>
-<div class="note"><strong>La seule métrique de la première année : la survie.</strong> Publier 150 fois en douze mois sans que ta moyenne baisse vaut infiniment mieux que 500 000 vues en novembre et un abandon en février. Les comptes qui gagnent ne sont pas les meilleurs, ce sont ceux qui sont encore là au bout de dix-huit mois.</div>
+<p>Tu ne comptes pas rester en Espagne. Ça change tout, et en mieux : <strong>ton actif n'est pas une clientèle locale, c'est un nom portable.</strong> Une patientèle d'Alicante ne se déménage pas. Une audience francophone et anglophone, si — elle te suit à Paris, à Londres, à Montréal, à Dubaï ou à Casablanca, et elle vaut autant pour un cabinet que pour une marque que tu vendras en ligne.</p>
+<p>Le corollaire, qui est la seule chose à retenir de cette page : <strong>la dentisterie n'est pas ton sujet, c'est ta preuve.</strong> Le sujet, c'est ce que tu fais avec ta vie — se lever à 5 h 30, apprendre une langue de zéro pendant qu'on apprend un métier, construire une entreprise à côté, tenir un corps, tenir une pratique religieuse, arrêter une addiction. Des milliers de gens font du contenu de motivation. Presque personne ne peut prouver ce qu'il raconte avec cinq ans d'un cursus de santé filmé en direct.</p>
+<div class="note"><strong>La différence entre toi et un compte de motivation quelconque tient en une phrase.</strong> Eux disent « lève-toi tôt ». Toi tu montres, jour 1 puis jour 400, un examen d'anatomie passé dans une langue que tu ne parlais pas au jour 1. La motivation est la <em>forme</em> ; le cursus, la langue et le business sont la <em>substance</em>. Sans substance, la motivation est une marchandise que n'importe qui peut fabriquer avec une IA — et les données 2026 sont formelles : « lifestyle » n'est pas une niche, « lifestyle de quelqu'un de précis en train de faire une chose précise » en est une <sup>[1]</sup>.</div>
+<p>Deuxième corollaire, moins agréable : <strong>la première année, l'objectif n'est pas la croissance, c'est la survie.</strong> Publier 150 fois en douze mois sans que ta moyenne baisse vaut infiniment mieux que 500 000 vues en novembre et un abandon en février. Les comptes qui deviennent connus ne sont pas les meilleurs, ce sont ceux qui sont encore là au bout de dix-huit mois.</p>
 
 <h2>Ce que disent les chiffres</h2>
-<p class="sub">Six données publiques qui décident de presque tout ce qui suit. Sources numérotées en bas de page.</p>
+<p class="sub">Sept données publiques qui décident de presque tout ce qui suit. Sources numérotées en bas de page.</p>
 <div class="chiffres">
-  <div><div class="n">1 h 57</div><div class="l">TikTok par jour chez la Gen Z espagnole ; 61 % de pénétration <sup>[1]</sup></div></div>
-  <div><div class="n">77 %</div><div class="l">suivent leurs créateurs sur <strong>Instagram</strong> — loin devant YouTube (35 %) et TikTok (33 %) <sup>[1]</sup></div></div>
   <div><div class="n">50 %</div><div class="l">des spectateurs partent dans les <strong>trois premières secondes</strong> <sup>[2]</sup></div></div>
   <div><div class="n">5-10×</div><div class="l">de portée en plus pour une vidéo retenue à &gt; 60 % à 3 s, contre &lt; 40 % <sup>[2]</sup></div></div>
   <div><div class="n">3-5×</div><div class="l">le poids d'un <strong>partage en message privé</strong> par rapport à un like, pour toucher des non-abonnés <sup>[3]</sup></div></div>
-  <div><div class="n">0,62 %</div><div class="l">taux médian de conversion d'une liste e-mail gratuite vers un abonnement payant <sup>[4]</sup></div></div>
+  <div><div class="n">&gt; 25 %</div><div class="l">du temps de visionnage vient des <strong>langues secondaires</strong> quand une vidéo porte plusieurs pistes audio <sup>[4]</sup></div></div>
+  <div><div class="n">77 %</div><div class="l">des Espagnols suivent leurs créateurs sur <strong>Instagram</strong>, contre 33 % sur TikTok <sup>[5]</sup></div></div>
+  <div><div class="n">0,62 %</div><div class="l">taux médian de conversion d'une liste e-mail gratuite vers du payant <sup>[6]</sup></div></div>
+  <div><div class="n">12-18 mois</div><div class="l">avant qu'1 à 3 % d'une audience régulière devienne une audience qui achète <sup>[7]</sup></div></div>
 </div>
-<p><strong>Ce qu'il faut en tirer, et qui n'est pas évident.</strong> En Espagne, TikTok a le <em>temps</em> mais Instagram a la <em>relation</em> : on y passe moins d'heures, mais c'est là qu'on suit vraiment quelqu'un. Un créateur qui vise l'Espagne produit donc au format TikTok — c'est là que l'algorithme apprend le plus vite ce qu'est ton contenu — et fait d'<strong>Instagram son domicile</strong> : la bio, le lien, les messages privés, la communauté. Se tromper de domicile coûte deux ans.</p>
-<p>Deuxième conséquence : la métrique à travailler n'est pas le nombre de vues, c'est la <strong>rétention</strong>. Instagram compte désormais les secondes vues, replays compris <sup>[3]</sup> — une vidéo de 15 secondes revue trois fois bat une vidéo d'une minute vue une fois. C'est une bonne nouvelle pour quelqu'un qui n'a pas le temps de monter : le format court, dense et rejouable est à la fois le moins cher à produire et le mieux récompensé.</p>
+<p><strong>La conséquence la plus importante</strong> : la métrique à travailler n'est pas le nombre de vues, c'est la <strong>rétention</strong>. Instagram compte désormais les secondes vues, replays compris <sup>[3]</sup> — une vidéo de 15 secondes revue trois fois bat une vidéo d'une minute vue une fois. Bonne nouvelle pour quelqu'un qui n'a pas le temps de monter : le format court, dense et rejouable est à la fois le moins cher à produire et le mieux récompensé.</p>
 
-<h2>Les trois murs</h2>
-<p class="sub">À poser avant la première vidéo, parce qu'aucun des trois ne se répare.</p>
+<h2>Trois langues : l'architecture, et pourquoi</h2>
+<p>C'est la décision structurante du plan, et c'est là que la plupart des gens se ruinent : ils ouvrent trois comptes le même mois, en nourrissent zéro, et concluent au bout de six mois que « ça ne marche pas ». Les deux formats n'obéissent pas aux mêmes règles, et il faut les traiter séparément.</p>
 
-<div class="mur"><span class="t">Mur 1 · Tu n'es pas dentiste avant 2031</span>
-  <p>Le <strong>Real Decreto 1907/1996</strong> encadre toute communication à finalité sanitaire adressée au public. Son <strong>article 4</strong> interdit explicitement d'attribuer des garanties de guérison ou de suggérer des résultats sûrs et absolus, ainsi que les témoignages, images ou déclarations pouvant induire en erreur sur les résultats d'un traitement, et les actes cliniques offerts comme appât commercial. Le non-respect des articles 4, 5 et 6 constitue une <strong>infraction grave</strong>, et les Colegios profesionales collaborent explicitement à son application <sup>[5]</sup>. La FDI a acté en 2025 que les réseaux sociaux ne sont pas un espace hors norme <sup>[6]</sup>.</p>
-  <p>À cela s'ajoute le fait, plus simple encore, que tu n'es <strong>pas colegiado</strong> : donner un conseil clinique personnalisé, c'est exercer sans titre.</p>
-  <p><strong>Concrètement, dès la première publication :</strong> ta bio porte la mention <em>« Estudiante de Odontología · esto no es consejo médico »</em> dans tes deux langues. Tu ne réponds jamais à « docteur, j'ai mal à cette dent » autrement que par « va voir un dentiste ». Aucun avant/après, jamais. Aucun « ça guérit », « ça blanchit », « c'est sans danger ». Tu peux tout dire du <em>savoir</em> — anatomie, histoire, matériaux, ce que dit une étude — et rien du <em>soin</em>.</p>
-  <p>Une capture d'écran de 2027 te suivra en 2032. C'est le mur le plus important des trois.</p>
-</div>
-
-<div class="mur"><span class="t">Mur 2 · Jamais un patient, jamais une pièce</span>
-  <p>La littérature d'e-professionnalisme en odontologie est constante depuis dix ans : les trois risques qui coûtent une carrière sont la <strong>violation de la confidentialité d'un patient</strong>, la <strong>tromperie du public</strong> et l'<strong>atteinte à la réputation</strong> ; côté britannique, ils déclenchent une procédure de <em>Fitness to Practise</em>, et les facultés sanctionnent jusqu'à l'exclusion <sup>[7]</sup>.</p>
-  <p>Donc : aucun patient réel, même flouté, même consentant, même de dos. Aucune pièce anatomique, aucune dissection, aucun cadavre, aucune image de bloc — le respect dû aux donneurs est une règle de faculté avant d'être une règle de droit, et c'est le manquement qui fait exclure des étudiants tous les ans, dans toutes les facultés d'Europe. Le RGPD s'occupe du reste.</p>
-  <p>Tu as tout le reste : les mannequins, les dents artificielles, les modèles en plâtre, les instruments, les livres, ton écran, tes mains.</p>
-</div>
-
-<div class="mur"><span class="t">Mur 3 · Le dropshipping ne touche pas ton visage</span>
-  <p>Une marque de dropshipping est un objet <strong>jetable</strong> : on la teste, elle marche ou elle meurt, on recommence. Un nom de futur médecin ne l'est pas. Le jour où un produit arrive cassé, où un litige tourne mal, où un client mécontent écrit ton nom sur Trustpilot, tu ne veux pas que ce nom soit celui qui figurera sur ta plaque.</p>
-  <p><strong>Cloison étanche :</strong> tes boutiques ont leurs marques, leurs comptes, leur propre visage — ou pas de visage du tout. Tu peux parler <em>d'entreprendre</em> sur ton compte personnel — les chiffres, les leçons, les échecs — sans jamais y vendre le produit.</p>
-</div>
-
-<h2>L'architecture des comptes</h2>
+<h3>Format court (TikTok, Reels, Shorts) — un compte = une langue</h3>
+<p>Il n'existe pas de piste audio multiple en format court. L'algorithme classe un compte par la langue qu'il entend et par l'audience qui réagit : mélanger français et anglais sur un même compte, c'est lui donner deux signaux contradictoires et récolter la moitié de chaque. Donc un compte par langue — <strong>mais pas tous en même temps</strong>.</p>
 <div class="tw"><table>
-  <thead><tr><th>Compte</th><th>Ce que c'est</th><th>Ton visage</th><th>Horizon</th></tr></thead>
+  <thead><tr><th>Quand</th><th>Ce que tu ouvres</th><th>Pourquoi ce moment</th></tr></thead>
   <tbody>
-    <tr><td><strong>A — ton nom</strong></td><td>Le journal des cinq ans. Domicile sur Instagram, production au format TikTok, republication en Shorts.</td><td>Oui, partout</td><td class="n">10 ans</td></tr>
-    <tr><td><strong>B — les boutiques</strong></td><td>Une marque par test, sans lien public avec toi. Elles meurent sans rien emporter.</td><td class="stop">Jamais</td><td class="n">3 à 18 mois</td></tr>
-    <tr><td><strong>C — ta vraie marque</strong></td><td>Le jour où une boutique mérite d'être gardée (an 4). Là seulement, ton visage revient.</td><td>Oui, choisi</td><td class="n">indéfini</td></tr>
+    <tr><td class="n">Sept. 2026</td><td><strong>Français seul</strong></td><td>Tu es rapide, drôle et précis en français. Tu dois faire 150 vidéos pour trouver ton format : autant les faire dans la langue où tu ne réfléchis pas. En anglais moyen ou en espagnol A2, tu serais lent et plat, et tu abandonnerais en six semaines.</td></tr>
+    <tr><td class="n">Mois 7-9</td><td><strong>+ English</strong></td><td>Le format est stable, tu sais ce qui marche. Tu <strong>tournes une fois, tu publies deux fois</strong> : mêmes images, deuxième prise de voix. Le coût marginal est de vingt minutes par semaine, pas du double. C'est là qu'est le plafond : le marché anglophone est le seul où « devenir connu » n'a pas de limite basse.</td></tr>
+    <tr><td class="n">An 2-3</td><td><strong>+ Español</strong>, si et seulement si</td><td>Il ne s'ouvre que le jour où les deux premiers tournent seuls. Il est presque gratuit — tu vis en espagnol — mais il reste le troisième marché de ton avenir, pas le premier.</td></tr>
   </tbody>
 </table></div>
-<p class="sub">Un seul compte A. La tentation de lancer « un compte études, un compte sport, un compte business » est la façon la plus efficace de n'en nourrir aucun. Ta vie <em>est</em> le sujet : c'est l'assemblage — dentaire, espagnol, sport, prière, business — qui n'existe nulle part ailleurs et qui te rend impossible à confondre.</p>
+<div class="note"><strong>Le test qui tranche, si tu hésites entre commencer en français ou en anglais :</strong> filme-toi 60 secondes dans chaque langue sans script, et regarde les deux le lendemain. Celle où tu ne t'entends pas chercher tes mots est la bonne. Il n'y a pas de mauvaise réponse — il y a une réponse qui te fera tenir douze mois et une qui te fera arrêter en novembre.</div>
 
-<h2>La langue, et quand basculer</h2>
-<p>C'est la décision structurante du plan, et elle se prend une fois.</p>
+<h3>Format long (YouTube) — une seule chaîne, trois pistes audio</h3>
+<p>Là, la règle s'inverse, et c'est le point le moins connu de tout ce plan. YouTube accepte <strong>plusieurs pistes audio sur une même vidéo</strong>. Toutes les vues, tous les abonnés et tous les signaux se consolident sur une seule chaîne au lieu de se diviser en trois — et en moyenne, <strong>plus d'un quart du temps de visionnage vient des langues secondaires</strong> <sup>[4]</sup>. Une chaîne forte, pas trois faibles.</p>
+<p>La limite connue : le titre et la miniature restent dans une seule langue, ce qui gêne la découverte dans les autres <sup>[4]</sup>. C'est acceptable pour toi, parce que YouTube n'est pas ton moteur de découverte — le format court l'est. YouTube est ton moteur de <em>confiance</em> : c'est là qu'on décide si on te suit vraiment.</p>
 <div class="tw"><table>
-  <thead><tr><th>Période</th><th>Langue</th><th>Pourquoi</th></tr></thead>
+  <thead><tr><th></th><th>Format court</th><th>Format long</th></tr></thead>
   <tbody>
-    <tr><td class="n">An 1</td><td><strong>Français</strong></td><td>Tu écris et tu parles bien, donc tu vas vite et tu es drôle. En espagnol A2 tu serais lent et plat, et tu abandonnerais en six semaines. Le marché francophone est large et sous-servi en contenu « études de santé ».</td></tr>
-    <tr><td class="n">An 2</td><td><strong>Bascule</strong></td><td>Ton C1 arrive. Tu publies en espagnol avec sous-titres français. <em>La bascule elle-même est un contenu</em> : montrer un francophone passer de zéro à publier en espagnol en dix-huit mois est une preuve que personne ne peut fabriquer.</td></tr>
-    <tr><td class="n">An 3-5</td><td><strong>Espagnol d'abord</strong></td><td>C'est là que vivent ta future patientèle et ton réseau professionnel — et le marché où la Gen Z passe près de deux heures par jour sur TikTok <sup>[1]</sup>. Le français reste sur les sujets méthode, qui voyagent.</td></tr>
+    <tr><td><strong>Rôle</strong></td><td>Être découvert</td><td>Être cru</td></tr>
+    <tr><td><strong>Structure</strong></td><td>Un compte par langue, ouverts l'un après l'autre</td><td>Une chaîne, plusieurs pistes audio</td></tr>
+    <tr><td><strong>Domicile</strong></td><td>Instagram pour l'Espagne <sup>[5]</sup>, TikTok pour le reste ; republication croisée systématique</td><td>YouTube</td></tr>
+    <tr><td><strong>Rythme</strong></td><td>3 à 4 par semaine, an 1</td><td>1 par mois à partir de l'an 2</td></tr>
   </tbody>
 </table></div>
-<p class="sub">L'anglais : seulement si un format précis le mérite (une vidéo longue sur le système Anki, par exemple). Ne le fais pas par défaut « pour la portée » — tu serais un francophone moyen de plus dans un océan anglophone, au lieu d'être le seul à faire ce que tu fais.</p>
+<p class="sub"><strong>Et le doublage plutôt que les sous-titres</strong>, quand tu passeras à l'anglais sur le format long : sur un téléphone, les sous-titres occupent la zone de l'image et demandent une attention qu'on préfère donner ailleurs ; une piste audio doublée passe partout <sup>[4]</sup>. En format court, refaire la prise reste plus rapide et plus vivant que n'importe quel outil.</p>
+
+<h2>Ce que tu publies, et ce qui traverse les frontières</h2>
+<p class="sub">Tout ne se traduit pas. Voilà la ligne de partage, et elle décide de ce que tu tournes une fois pour deux comptes.</p>
+<div class="tw"><table>
+  <thead><tr><th>Sujet</th><th>FR</th><th>EN</th><th>ES</th><th>Remarque</th></tr></thead>
+  <tbody>
+    <tr><td>Discipline, routine, 5 h 30, sommeil</td><td class="n">✓</td><td class="n">✓</td><td class="n">✓</td><td>Universel. Le cœur du compte.</td></tr>
+    <tr><td>Système d'étude, Anki, la Batcave</td><td class="n">✓</td><td class="n">✓</td><td class="n">✓</td><td>Ton contenu le plus rare, et le plus exportable.</td></tr>
+    <tr><td>Transformation physique, parc, nutrition</td><td class="n">✓</td><td class="n">✓</td><td class="n">✓</td><td>Universel, et visuel : idéal en accroche.</td></tr>
+    <tr><td>Arrêter une addiction, tenir une pratique</td><td class="n">✓</td><td class="n">✓</td><td class="n">✓</td><td>Ce qui crée l'attachement, pas la portée.</td></tr>
+    <tr><td>Apprendre l'espagnol depuis zéro</td><td class="n">✓✓</td><td class="n">✓</td><td class="n">—</td><td>Fascinant vu de l'extérieur, banal vu d'Espagne.</td></tr>
+    <tr><td>Le business en ligne, les chiffres réels</td><td class="n">✓</td><td class="n">✓✓</td><td class="n">✓</td><td>L'anglais est le marché qui paie le plus cher ce sujet.</td></tr>
+    <tr><td>Le cursus espagnol, les profs, les partiels</td><td class="n">✓</td><td class="n">—</td><td class="n">✓✓</td><td>Trop local pour l'anglophone.</td></tr>
+    <tr><td>Le geste technique sur mannequin (an 3+)</td><td class="n">✓</td><td class="n">✓✓</td><td class="n">✓</td><td>Aucune parole nécessaire : se publie partout tel quel.</td></tr>
+  </tbody>
+</table></div>
 
 <h2>Les quatre piliers</h2>
 <p class="sub">Une rotation, pas une improvisation. Une publication par pilier et par semaine : le compte a une forme reconnaissable au bout de trois semaines, et tu ne te demandes jamais quoi faire.</p>
 <ol class="piliers">
-  <li><b>Le système</b><span>Anki, la Batcave, comment on tient dix matières sans se noyer. C'est ton contenu le plus <em>rare</em> : presque personne ne montre sa mécanique de travail, et c'est ce que tout étudiant cherche à deux heures du matin. C'est aussi le pilier qui construit l'audience qui achètera plus tard.</span></li>
+  <li><b>La discipline, prouvée</b><span>Le réveil, le parc à 6 h, le coucher à 21 h 55, la semaine ratée. C'est le pilier « motivation », mais toujours attaché à une preuve datée. Jamais une citation sur fond de coucher de soleil : ce format-là est mort, et il ne construit rien.</span></li>
+  <li><b>Le système</b><span>Anki, la Batcave, comment on tient dix matières sans se noyer. Presque personne ne montre sa mécanique de travail, et c'est ce que tout étudiant cherche à deux heures du matin. C'est le pilier qui construit l'audience qui achètera plus tard.</span></li>
   <li><b>L'épreuve</b><span>L'espagnol depuis zéro, les partiels, les notes ratées, la semaine à 40 % du plan. Le contenu qui crée l'attachement n'est pas celui où tu réussis — c'est celui où on te voit encaisser.</span></li>
-  <li><b>Le corps et la tenue</b><span>Le parc à 6 h, 64 → 70 kg, l'arrêt du snus, la prière, le coucher à 21 h 55. Cinq ans de discipline visible valent tous les discours sur la discipline.</span></li>
-  <li><b>Le métier</b><span>Ce que tu apprends vraiment : l'anatomie de la face, l'histoire de l'odontologie, les matériaux, la microbiologie. Du savoir, jamais du soin. À partir de l'an 3, le geste sur mannequin — c'est le pilier qui devient irrésistible.</span></li>
+  <li><b>Le métier</b><span>Ce que tu apprends vraiment : l'anatomie de la face, l'histoire de l'odontologie, les matériaux. Du savoir, jamais du soin. À partir de l'an 3, le geste sur mannequin — le pilier qui devient irrésistible, et qui n'a besoin d'aucune traduction.</span></li>
 </ol>
 <p class="sub"><strong>Un cinquième pilier, plus tard :</strong> le business. Il n'ouvre que le jour où tu as des chiffres réels à montrer. Parler d'e-commerce avant d'avoir vendu est le raccourci le plus court vers l'insignifiance.</p>
 
+<h2>Les trois murs</h2>
+<p class="sub">À poser avant la première vidéo, parce qu'aucun des trois ne se répare — et d'autant plus si tu deviens connu : une audience large transforme la moindre erreur en dossier.</p>
+
+<div class="mur"><span class="t">Mur 1 · Tu n'es pas dentiste avant 2031</span>
+  <p>Le <strong>Real Decreto 1907/1996</strong> encadre toute communication à finalité sanitaire adressée au public. Son <strong>article 4</strong> interdit d'attribuer des garanties de guérison ou de suggérer des résultats sûrs, ainsi que les témoignages et images pouvant induire en erreur sur le résultat d'un traitement. Le non-respect des articles 4, 5 et 6 est une <strong>infraction grave</strong>, et les Colegios profesionales collaborent à son application <sup>[8]</sup>. La FDI a acté en 2025 que les réseaux sociaux ne sont pas un espace hors norme <sup>[9]</sup>.</p>
+  <p>Et le fait, plus simple encore, que tu n'es <strong>pas colegiado</strong> : donner un conseil clinique personnalisé, c'est exercer sans titre. Les pays où tu voudras exercer ensuite ont tous une règle équivalente — le General Dental Council britannique ou l'Ordre des dentistes en France ne sont pas plus permissifs. Une archive publique s'examine au moment de l'inscription.</p>
+  <p><strong>Concrètement, dès la première publication :</strong> ta bio porte la mention <em>« Dental student · not medical advice »</em> et son équivalent français, en clair. Tu ne réponds jamais à « docteur, j'ai mal à cette dent » autrement que par « va voir un dentiste ». Aucun avant/après, jamais. Aucun « ça guérit », « ça blanchit », « c'est sans danger ». Tu peux tout dire du <em>savoir</em> et rien du <em>soin</em>.</p>
+</div>
+
+<div class="mur"><span class="t">Mur 2 · Jamais un patient, jamais une pièce</span>
+  <p>La littérature d'e-professionnalisme en odontologie est constante depuis dix ans : les trois choses qui coûtent une carrière sont la <strong>violation de la confidentialité d'un patient</strong>, la <strong>tromperie du public</strong> et l'<strong>atteinte à la réputation</strong> — et elles déclenchent des procédures disciplinaires <sup>[10]</sup>.</p>
+  <p>Donc : aucun patient réel, même flouté, même consentant, même de dos. Aucune pièce anatomique, aucune dissection, aucun cadavre. C'est le manquement qui fait exclure des étudiants tous les ans, dans toutes les facultés d'Europe. Tu as tout le reste : les mannequins, les dents artificielles, les modèles en plâtre, les instruments, les livres, tes mains.</p>
+</div>
+
+<div class="mur"><span class="t">Mur 3 · Le dropshipping ne touche pas ton visage</span>
+  <p>Une marque de dropshipping est un objet <strong>jetable</strong> : on la teste, elle marche ou elle meurt. Un nom de futur médecin ne l'est pas. Le jour où un produit arrive cassé, où un litige tourne mal, tu ne veux pas que ce nom soit celui qui figurera sur ta plaque — ni celui qu'un recruteur trouvera en premier.</p>
+  <p><strong>Cloison étanche :</strong> tes boutiques ont leurs marques, leurs comptes, leur propre visage — ou pas de visage du tout. Tu peux parler <em>d'entreprendre</em> sur ton compte personnel — les chiffres, les leçons, les échecs — sans jamais y vendre le produit.</p>
+</div>
+
 <h2>Comment se construit une vidéo</h2>
-<p>Vu les chiffres, une seule structure mérite d'être apprise, et elle tient en quatre temps. Elle s'applique aux quatre piliers sans changer.</p>
+<p>Vu les chiffres, une seule structure mérite d'être apprise, et elle tient en quatre temps. Elle s'applique aux quatre piliers et aux trois langues sans changer.</p>
 <div class="tw"><table>
   <thead><tr><th>Temps</th><th>Durée</th><th>Ce qui s'y passe</th></tr></thead>
   <tbody>
     <tr><td><strong>L'accroche</strong></td><td class="n">0 → 3 s</td><td>La moitié de l'audience se décide ici <sup>[2]</sup>. Une image inhabituelle <em>et</em> une phrase qui pose un manque : « J'ai raté mon premier partiel d'anatomie. » Jamais « salut à tous ».</td></tr>
-    <tr><td><strong>La tension</strong></td><td class="n">3 → 10 s</td><td>On donne la raison de rester : le chiffre, l'enjeu, la promesse précise. « 8,5 sur 20. Voilà les trois choses que j'ai changées. »</td></tr>
-    <tr><td><strong>La substance</strong></td><td class="n">10 → 35 s</td><td>Trois points maximum, un par plan. Chaque coupe est une micro-relance : TikTok redemande l'attention toutes les quelques secondes <sup>[2]</sup>.</td></tr>
+    <tr><td><strong>La tension</strong></td><td class="n">3 → 10 s</td><td>La raison de rester : le chiffre, l'enjeu, la promesse précise. « 8,5 sur 20. Voilà les trois choses que j'ai changées. »</td></tr>
+    <tr><td><strong>La substance</strong></td><td class="n">10 → 35 s</td><td>Trois points maximum, un par plan. Chaque coupe est une micro-relance : l'attention se redemande toutes les quelques secondes <sup>[2]</sup>.</td></tr>
     <tr><td><strong>La boucle</strong></td><td class="n">35 → 45 s</td><td>La dernière phrase renvoie à la première, pour que la vidéo se rejoue sans qu'on s'en aperçoive — les replays comptent dans le temps vu <sup>[3]</sup>. Pas d'appel à s'abonner : un appel à <em>envoyer à quelqu'un</em>, qui pèse 3 à 5 fois plus <sup>[3]</sup>.</td></tr>
   </tbody>
 </table></div>
@@ -234,83 +251,83 @@
 
 <div class="an" data-an="2026-27">
   <h3>L'archive silencieuse</h3>
-  <div class="role">An 1 · Anatomía, Bioquímica, español desde cero</div>
-  <p>C'est l'année la plus chargée des cinq, et la seule où tu apprends une langue en même temps qu'un métier. <strong>L'objectif n'est pas la croissance, c'est l'existence.</strong> Un chiffre, un seul : <strong>150 publications</strong> en douze mois. Si elles font 200 vues chacune, tant mieux — tu auras acquis la seule chose qui compte à ce stade, la capacité de produire sans y penser, et 150 essais pour trouver ce qui accroche.</p>
-  <p>Tu tournes tout en un bloc, le dimanche, dans le créneau « Projets perso » du matin. Tu ne montes pas : tu coupes le début et la fin, tu ajoutes un texte, tu programmes. Une vidéo tournée en quatre minutes et publiée bat une vidéo parfaite jamais finie.</p>
+  <div class="role">An 1 · Français seul · Anatomía, Bioquímica, español desde cero</div>
+  <p>L'année la plus chargée des cinq, et la seule où tu apprends une langue en même temps qu'un métier. Un chiffre, un seul : <strong>100 publications</strong> en douze mois. Si elles font 200 vues chacune, tant mieux — tu auras acquis la seule chose qui compte à ce stade, la capacité de produire sans y penser, et cent essais pour trouver ce qui accroche.</p>
+  <p><strong>La cadence n'est pas constante, et c'est délibéré</strong> : elle suit les phases de ta grille, parce qu'un plan qui demande trois vidéos par semaine en octobre demande des heures qui n'existent pas. Le détail est dans « Comment ce plan s'emboîte », plus bas ; en résumé : <strong>1 par semaine jusqu'au 18 octobre, 2 jusqu'au 29 novembre, 3 ensuite</strong>. Les données de marché disent d'ailleurs qu'un débutant doit commencer à 3-4 par semaine et que le saut de rendement se joue entre 2 et 5 publications hebdomadaires <sup>[12]</sup> — tu es dans la bonne fenêtre dès décembre, et les cinq premières semaines servent à trouver ton cadre, pas à croître.</p>
+  <p>Tu tournes tout en un bloc, le dimanche. Tu ne montes pas : tu coupes le début et la fin, tu ajoutes un texte, tu programmes. Une vidéo tournée en quatre minutes et publiée bat une vidéo parfaite jamais finie.</p>
   <h3>Les vingt premières vidéos, déjà écrites</h3>
   <ul class="idees">
-    <li><b>« Demain je commence dentaire à Alicante et je ne parle pas espagnol. »</b> <span>Le plan des six mois à l'écran. Une promesse datée et vérifiable — c'est le meilleur premier contenu qui existe, parce qu'il crée l'obligation de revenir.</span></li>
+    <li><b>« Demain je commence dentaire à Alicante et je ne parle pas espagnol. »</b> <span>Le plan des six mois à l'écran. Une promesse datée et vérifiable — le meilleur premier contenu qui existe, parce qu'il crée l'obligation de revenir.</span></li>
     <li><b>Une journée entière, 5 h 30 → 21 h 55, en 40 secondes.</b> <span>Un plan par bloc. À refaire au mois 6 et au mois 12 : la comparaison est un contenu à elle seule.</span></li>
-    <li><b>« Mon système de révision tient dans un fichier HTML que j'ai écrit moi-même. »</b> <span>L'écran de la Batcave. Le pilier « système », et ta signature.</span></li>
-    <li><b>La fabrication d'une carte Anki, en temps réel.</b> <span>Une carte = une chose à récupérer. Montre la mauvaise version d'abord, puis la bonne.</span></li>
+    <li><b>« Mon système de révision tient dans un fichier que j'ai écrit moi-même. »</b> <span>L'écran de la Batcave. Le pilier « système », et ta signature.</span></li>
+    <li><b>La fabrication d'une carte Anki, en temps réel.</b> <span>Montre la mauvaise version d'abord, puis la bonne.</span></li>
     <li><b>« 1 200 cartes en retard. Voilà ce que je fais au lieu de paniquer. »</b> <span>Le contenu qui sauve la journée de quelqu'un est celui qu'on envoie à un ami — et l'envoi pèse 3 à 5 fois un like <sup>[3]</sup>.</span></li>
-    <li><b>Le parc à 6 h 15, sous la lampe, seul.</b> <span>Aucune parole. Le son ambiant. La discipline se montre, elle ne s'explique pas.</span></li>
+    <li><b>Le parc à 6 h 15, sous la lampe, seul.</b> <span>Aucune parole. Le son ambiant. La discipline se montre, elle ne s'explique pas. Publiable telle quelle dans les trois langues.</span></li>
     <li><b>« Le mot espagnol que j'ai dit de travers devant toute la classe. »</b> <span>L'humiliation racontée soi-même est la forme la plus efficace de sympathie.</span></li>
-    <li><b>Trois minutes de conjugaison chronométrée, à voix haute.</b> <span>Filmé sans coupe. La progression sur douze mois de ce même exercice fera une vidéo à part.</span></li>
+    <li><b>Trois minutes de conjugaison chronométrée, à voix haute.</b> <span>Sans coupe. La progression sur douze mois de ce même exercice fera une vidéo à part.</span></li>
     <li><b>« Ce que personne ne dit sur la première semaine de fac de dentaire. »</b> <span>Format liste. Trois points, un par plan.</span></li>
     <li><b>Le mur d'Anki : combien de cartes par matière, en vrai.</b> <span>Le chiffre brut, sans commentaire, est souvent le meilleur crochet.</span></li>
     <li><b>« J'ai arrêté le snus le … . Jour 12. »</b> <span>Un compteur public. À reprendre au jour 100, au jour 365.</span></li>
-    <li><b>Le plan alimentaire de la semaine, préparé le dimanche.</b> <span>3 000 kcal quand on pèse 64 kg pour prendre du muscle : c'est contre-intuitif, donc ça retient.</span></li>
+    <li><b>Le plan alimentaire de la semaine, préparé le dimanche.</b> <span>3 000 kcal quand on pèse 64 kg pour prendre du muscle : contre-intuitif, donc retenu.</span></li>
     <li><b>« Pourquoi j'apprends l'anatomie en espagnol alors que je pense en français. »</b> <span>Le double effort, expliqué. Personne d'autre ne peut faire cette vidéo.</span></li>
-    <li><b>Une page de mon cours, avant et après avoir été transformée en cartes.</b> <span>Le pilier système, en une image.</span></li>
+    <li><b>Une page de cours, avant et après avoir été transformée en cartes.</b> <span>Le pilier système, en une image.</span></li>
     <li><b>« La première fois qu'un prof m'a posé une question en espagnol. »</b> <span>Raconté, pas reconstitué.</span></li>
     <li><b>Le rituel de clôture du soir, en 60 secondes.</b> <span>Ce que je note, pourquoi, et ce que ça change le lendemain.</span></li>
-    <li><b>« J'ai fait 40 % de mon plan cette semaine. »</b> <span>L'échec publié le jour où il arrive. C'est la vidéo qui fera le plus d'abonnés de l'année.</span></li>
+    <li><b>« J'ai fait 40 % de mon plan cette semaine. »</b> <span>L'échec publié le jour où il arrive. La vidéo qui fera le plus d'abonnés de l'année.</span></li>
     <li><b>Trois choses que je croyais sur la dentisterie et qui sont fausses.</b> <span>Du savoir, jamais du soin. Vérifie chaque affirmation dans un cours, pas dans une vidéo.</span></li>
     <li><b>La bibliothèque à 22 h, la ville vide, le trajet retour.</b> <span>L'atmosphère. Une vidéo sur cinq n'a rien à apprendre à personne, et c'est celle-là qu'on se rappelle.</span></li>
     <li><b>« Mois 3 : ce que je referais autrement. »</b> <span>Le premier bilan. Il installe le rendez-vous trimestriel pour cinq ans.</span></li>
   </ul>
+  <p><strong>Au mois 7, l'anglais s'ouvre</strong> : tu reprends les dix vidéos françaises qui ont le mieux marché, tu refais la prise de voix, tu les publies sur le second compte. Tu ne réinventes rien — tu traduis ce qui a déjà fait ses preuves. C'est la façon la moins risquée d'ouvrir un marché.</p>
   <div class="fiche">
-    <div><dt>Cadence</dt><dd>3 / semaine</dd></div>
-    <div><dt>Coût en temps</dt><dd>2 h le dimanche</dd></div>
+    <div><dt>Cadence</dt><dd>1 → 2 → 3 / semaine</dd></div>
+    <div><dt>Coût en temps</dt><dd>40 min → 2 h le dimanche</dd></div>
     <div><dt>Palier visé</dt><dd>1 000 – 5 000 abonnés</dd></div>
-    <div><dt>Actif construit</dt><dd>l'habitude, et 150 pièces</dd></div>
+    <div><dt>Actif construit</dt><dd>l'habitude, et 100 pièces</dd></div>
   </div>
-  <p><span class="stop">Interdit de l'année :</span> parler de dents comme si tu savais. Tu es en anatomie et en biochimie, pas en clinique. Et ne monétise rien : à ce stade, une seule publicité coûte plus de crédibilité qu'elle ne rapporte d'euros.</p>
+  <p><span class="stop">Interdit de l'année :</span> ouvrir les trois comptes en septembre, et parler de dents comme si tu savais. Ne monétise rien : à ce stade, une seule publicité coûte plus de crédibilité qu'elle ne rapporte d'euros.</p>
 </div>
 
 <div class="an" data-an="2027-28">
-  <h3>La bascule espagnole</h3>
-  <div class="role">An 2 · Le C1 arrive, et la liste e-mail s'ouvre</div>
-  <p>Ton espagnol devient publiable. Tu passes progressivement à l'espagnol avec sous-titres français, et tu fais de la bascule un feuilleton : la première vidéo entièrement en espagnol, avec l'accent qui traîne, est exactement le genre de pièce qu'on partage.</p>
-  <p>Tu ajoutes un <strong>format long</strong> : 8 à 12 minutes, une fois par mois. « Comment j'ai appris l'espagnol en six mois », « Le système Anki d'une première année de dentaire », « Une journée entière, minute par minute ». Le court apporte la portée, le long apporte la <em>confiance</em> — et c'est la confiance qui se convertit.</p>
-  <p><strong>Et tu ouvres la liste e-mail.</strong> C'est le seul actif que tu possèdes : un compte peut être suspendu du jour au lendemain, une liste ne peut pas. Une lettre par mois, courte, honnête. Objectif : 500 adresses.</p>
+  <h3>Les deux voix</h3>
+  <div class="role">An 2 · Français + English · le format long s'ouvre</div>
+  <p>Deux comptes courts nourris par un seul tournage, et une <strong>chaîne YouTube unique à deux pistes audio</strong>. Une vidéo de 8 à 12 minutes par mois : « Comment j'ai appris l'espagnol en six mois », « Le système Anki d'une première année de dentaire », « Une journée entière, minute par minute ». Le court apporte la portée, le long apporte la confiance — et c'est la confiance qui se convertit.</p>
+  <p><strong>Et tu ouvres la liste e-mail.</strong> C'est le seul actif que tu possèdes : un compte peut être suspendu du jour au lendemain, une liste ne peut pas. Une lettre par mois, courte, honnête, bilingue. Objectif : 500 adresses.</p>
   <h3>Ce que tu publies</h3>
   <ul class="idees">
-    <li><b>« Ma première vidéo entièrement en espagnol. »</b> <span>Avec les fautes. Le sous-titrage français en dessous.</span></li>
-    <li><b>Le même exercice de conjugaison qu'au mois 1, un an plus tard.</b> <span>Split-screen. Aucune parole nécessaire.</span></li>
-    <li><b>« Combien de temps ça prend vraiment d'apprendre une langue en immersion. »</b> <span>Tes chiffres réels : heures, cartes, conversations.</span></li>
-    <li><b>Format long : « Le système complet, de zéro. »</b> <span>La pièce que tu épingles et qui travaillera pour toi pendant trois ans.</span></li>
+    <li><b>« J'ai appris l'espagnol en un an. Voilà exactement comment. »</b> <span>Le format long fondateur, en deux pistes audio. La pièce que tu épingles et qui travaillera trois ans pour toi.</span></li>
+    <li><b>Le même exercice de conjugaison qu'au mois 1, un an plus tard.</b> <span>Split-screen. Aucune parole nécessaire : publiable dans les trois langues.</span></li>
     <li><b>Les résultats du premier semestre, notes comprises.</b> <span>Toutes, pas seulement les bonnes.</span></li>
-    <li><b>« Ce que la faculté ne t'apprend pas et que tu dois chercher seul. »</b> <span>Sans jamais nommer un enseignant.</span></li>
+    <li><b>« 365 jours sans snus. »</b> <span>Le compteur arrive à terme. Un an de preuve, une minute de vidéo.</span></li>
+    <li><b>« Ce que ça coûte vraiment de se lever à 5 h 30 pendant un an. »</b> <span>Le pilier discipline dans sa version honnête — l'envers, pas l'affiche.</span></li>
+    <li><b>Une semaine filmée intégralement, résumée en 10 minutes.</b> <span>Le format qui fait passer un spectateur d'abonné à fidèle.</span></li>
   </ul>
   <div class="fiche">
-    <div><dt>Cadence</dt><dd>4 courtes / sem. + 1 longue / mois</dd></div>
+    <div><dt>Cadence</dt><dd>4 courtes / sem. ×2 langues + 1 longue / mois</dd></div>
     <div><dt>Coût en temps</dt><dd>3 h / semaine</dd></div>
-    <div><dt>Palier visé</dt><dd>10 – 25 k · 500 e-mails</dd></div>
+    <div><dt>Palier visé</dt><dd>10 – 25 k cumulés · 500 e-mails</dd></div>
     <div><dt>Actif construit</dt><dd>la liste, et une chaîne longue</dd></div>
   </div>
-  <p><span class="stop">Interdit de l'année :</span> les partenariats blanchiment, gouttières, brosses connectées, compléments. C'est précisément l'année où ils arriveront, précisément parce que tu es étudiant en dentaire, donc crédible et pas cher. La crédibilité se vend une fois et ne se rachète jamais. S'il faut accepter de l'argent cette année, que ce soit pour un produit sans rapport avec la santé, et que tu utilises vraiment.</p>
+  <p><span class="stop">Interdit de l'année :</span> les partenariats blanchiment, gouttières, brosses connectées, compléments. C'est l'année où ils arriveront, précisément parce que tu es étudiant en dentaire, donc crédible et pas cher. La crédibilité se vend une fois et ne se rachète jamais.</p>
 </div>
 
 <div class="an" data-an="2028-29">
   <h3>La preuve technique</h3>
-  <div class="role">An 3 · Le simulateur, le geste, la macro</div>
-  <p>Tu entres dans les matières cliniques et dans la salle de simulation. Tu accèdes enfin à un contenu à la fois <strong>visuellement irrésistible et parfaitement légal</strong> : le geste sur mannequin, la préparation d'une cavité sur dent artificielle, filmée en macro, en silence. C'est ce type de séquence qui fait décoller les comptes d'odontologie, et tu peux en faire sans jamais approcher un patient.</p>
-  <p>Tu commences à <strong>collaborer</strong> : d'autres étudiants, des internes, un professeur en entretien, un prothésiste dans son laboratoire. Une collaboration te fait rencontrer une audience adjacente : c'est le levier de croissance le moins cher qui existe.</p>
+  <div class="role">An 3 · Le simulateur, le geste, la macro · l'espagnol s'ouvre</div>
+  <p>Tu entres dans les matières cliniques et dans la salle de simulation. Tu accèdes enfin à un contenu à la fois <strong>visuellement irrésistible, parfaitement légal et sans langue</strong> : le geste sur mannequin, la préparation d'une cavité sur dent artificielle, filmée en macro, en silence. Une même séquence part sur les trois comptes sans une ligne de traduction. C'est aussi ce qui justifie enfin d'ouvrir le troisième.</p>
+  <p>Tu commences à <strong>collaborer</strong> : d'autres étudiants, des internes, un professeur en entretien, un prothésiste dans son laboratoire. Une collaboration te fait rencontrer une audience adjacente : le levier de croissance le moins cher qui existe.</p>
   <h3>Ce que tu publies</h3>
   <ul class="idees">
-    <li><b>Une préparation de cavité, en macro, sans musique.</b> <span>Le son de l'instrument suffit. Format le plus rejoué du pilier « métier ».</span></li>
+    <li><b>Une préparation de cavité, en macro, sans musique.</b> <span>Le son de l'instrument suffit. Format le plus rejoué du pilier « métier », et le seul qui se publie tel quel partout.</span></li>
     <li><b>« Dix heures pour réussir ce geste. Voilà la première tentative. »</b> <span>Le ratage montré d'abord.</span></li>
     <li><b>Le laboratoire de prothèse, une journée avec un technicien.</b> <span>Métier voisin, audience adjacente, zéro risque déontologique.</span></li>
-    <li><b>« Ce que coûte vraiment une trousse d'étudiant en dentaire. »</b> <span>Le contenu utilitaire qui amène l'affiliation matériel — la seule monétisation acceptable à ce stade.</span></li>
-    <li><b>Entretien avec un dentiste installé : ses trois regrets.</b> <span>Format long, en espagnol.</span></li>
-    <li><b>« Anatomie de la mâchoire expliquée sur un crâne en résine. »</b> <span>Résine, pas os réel. Le mur 2 tient même quand personne ne regarde.</span></li>
+    <li><b>« What a dental student's toolkit actually costs. »</b> <span>Le contenu utilitaire qui amène l'affiliation matériel — la seule monétisation acceptable à ce stade.</span></li>
+    <li><b>Entretien avec un dentiste installé : ses trois regrets.</b> <span>Format long, trois pistes audio.</span></li>
   </ul>
   <div class="fiche">
-    <div><dt>Cadence</dt><dd>4 courtes / sem. + 2 longues / mois</dd></div>
+    <div><dt>Cadence</dt><dd>4 courtes ×3 langues + 2 longues / mois</dd></div>
     <div><dt>Coût en temps</dt><dd>4 h / semaine</dd></div>
-    <div><dt>Palier visé</dt><dd>50 – 100 k · 2 000 e-mails</dd></div>
+    <div><dt>Palier visé</dt><dd>50 – 100 k cumulés · 2 000 e-mails</dd></div>
     <div><dt>Actif construit</dt><dd>un réseau, une signature visuelle</dd></div>
   </div>
   <p><span class="stop">Interdit de l'année :</span> filmer dans une clinique universitaire sans autorisation écrite de la faculté, même sans patient à l'image. Une autorisation prend un e-mail ; une exclusion prend une année.</p>
@@ -319,10 +336,10 @@
 <div class="an" data-an="2029-30">
   <h3>Le produit</h3>
   <div class="role">An 4 · L'audience devient un actif</div>
-  <p>Tu as une audience d'étudiants qui te suivent parce que ta méthode marche. Tu leur vends ce que tu maîtrises réellement : <strong>ta méthode</strong>. Un paquet Anki de première année (tu en fabriques déjà un), un cours court « réussir la première année », un espace payant de suivi. Marge quasi totale, aucun stock, aucun conflit déontologique — tu ne vends pas du soin, tu vends de la pédagogie.</p>
-  <div class="argent"><strong>Les ordres de grandeur, sans illusion.</strong> Une page de vente convertit entre 1 et 3 % en 2026, 5 à 10 % pour les meilleurs ; une page d'inscription à la liste, 3 à 5 % <sup>[8]</sup>. Une liste gratuite convertit vers du payant autour de 0,6 % en médiane <sup>[4]</sup>. Et il faut compter douze à dix-huit mois d'audience régulière pour que 1 à 3 % deviennent de vrais acheteurs récurrents <sup>[9]</sup>.<br>
-  Traduit dans ton cas : <strong>2 000 adresses e-mail et un produit à 40 €</strong> qui convertit à 2 % au lancement, c'est 1 600 € sur un lancement, deux fois par an. Ce n'est pas un empire — c'est déjà plus que ce que rapporte la plupart des boutiques de dropshipping après frais publicitaires, pour un dixième du risque et zéro stock.</div>
-  <div class="argent"><strong>Et la bascule de l'e-commerce.</strong> Si une boutique a survécu à trois cycles de produits et gagne de l'argent sans toi, c'est le moment de la transformer en <em>vraie</em> marque : fournisseur stable, marque déposée, e-mails, clients qui reviennent. C'est là — et seulement là — que ton visage peut y revenir, parce que la marque n'est plus jetable. Si aucune boutique n'a survécu, c'est une réponse aussi : l'audience est devenue ton meilleur actif, et elle coûte moins cher en publicité que n'importe quel produit.</div>
+  <p>Tu as une audience qui te suit parce que ta méthode marche. Tu lui vends ce que tu maîtrises réellement : <strong>ta méthode</strong>. Un paquet Anki, un cours court, un espace payant de suivi. Marge quasi totale, aucun stock, aucun conflit déontologique — tu ne vends pas du soin, tu vends de la pédagogie. Et c'est vendable dans les trois langues avec le même travail.</p>
+  <div class="argent"><strong>Les ordres de grandeur, sans illusion.</strong> Une page de vente convertit entre 1 et 3 %, 5 à 10 % pour les meilleurs ; une page d'inscription à la liste, 3 à 5 % <sup>[11]</sup>. Une liste gratuite convertit vers du payant autour de 0,62 % en médiane <sup>[6]</sup>. Et il faut douze à dix-huit mois d'audience régulière pour que 1 à 3 % deviennent de vrais acheteurs <sup>[7]</sup>.<br>
+  Traduit : <strong>2 000 adresses et un produit à 40 €</strong> qui convertit à 2 % au lancement, c'est 1 600 € par lancement, deux fois par an. Ce n'est pas un empire — c'est déjà plus que ce que rapporte la plupart des boutiques de dropshipping après frais publicitaires, pour un dixième du risque et zéro stock.</div>
+  <div class="argent"><strong>Et la bascule de l'e-commerce.</strong> Si une boutique a survécu à trois cycles de produits et gagne de l'argent sans toi, c'est le moment de la transformer en <em>vraie</em> marque : fournisseur stable, marque déposée, clients qui reviennent. C'est là — et seulement là — que ton visage peut y revenir, parce que la marque n'est plus jetable.</div>
   <div class="fiche">
     <div><dt>Cadence</dt><dd>inchangée</dd></div>
     <div><dt>Coût en temps</dt><dd>4 h / sem. + les lancements</dd></div>
@@ -333,32 +350,51 @@
 </div>
 
 <div class="an" data-an="2030-31">
-  <h3>La transition</h3>
-  <div class="role">An 5 · De l'étudiant au praticien</div>
-  <p>Le contenu glisse. Tu n'es plus celui qui apprend, tu es celui qui est sur le point d'exercer, et l'audience doit faire le trajet avec toi. C'est aussi l'année où tu construis, en espagnol et en local, la <strong>liste d'attente de ta future patientèle</strong> : de la prévention, de l'explication, du démontage d'idées reçues — sans une seule promesse, sans un seul avant/après. Les gens ne choisissent pas un dentiste sur une publicité ; ils choisissent celui dont ils ont l'impression de connaître la tête depuis trois ans.</p>
-  <p>Tu ouvres <strong>LinkedIn</strong> sérieusement — cabinets, fournisseurs, congrès, sociétés savantes. C'est le seul réseau où les opportunités professionnelles arrivent d'elles-mêmes, et il ne demande qu'une publication par semaine, recyclée de ton format long.</p>
+  <h3>Le choix du pays</h3>
+  <div class="role">An 5 · Un nom qui se déménage</div>
+  <p>C'est l'année où l'audience sert à ce pour quoi elle a été construite : <strong>choisir</strong>. Tu n'es pas un jeune diplômé qui envoie des candidatures ; tu es quelqu'un dont trois marchés connaissent le nom, et à qui l'on propose des choses. Le contenu glisse de « celui qui apprend » à « celui qui est sur le point d'exercer », dans les trois langues à la fois.</p>
+  <p>Tu ouvres <strong>LinkedIn</strong> sérieusement — cabinets, fournisseurs, congrès, sociétés savantes, en français et en anglais. C'est le seul réseau où les opportunités professionnelles arrivent d'elles-mêmes, et il ne demande qu'une publication par semaine, recyclée de ton format long.</p>
+  <p>Et tu prépares la reconnaissance de ton diplôme dans le pays visé, ce qui est en soi un contenu que personne ne fait bien : un diplôme européen d'odontologie se reconnaît, mais les démarches, les délais et les épreuves de langue varient. Documenter ça t'apporte exactement l'audience qui te sera utile ensuite.</p>
   <div class="fiche">
-    <div><dt>Cadence</dt><dd>4 courtes + 2 longues + 1 LinkedIn</dd></div>
+    <div><dt>Cadence</dt><dd>4 courtes ×3 + 2 longues + 1 LinkedIn</dd></div>
     <div><dt>Coût en temps</dt><dd>4 h / semaine</dd></div>
-    <div><dt>Palier visé</dt><dd>150 k+ · liste de plusieurs milliers</dd></div>
-    <div><dt>Actif construit</dt><dd>des offres entrantes</dd></div>
+    <div><dt>Palier visé</dt><dd>150 k+ cumulés · liste de plusieurs milliers</dd></div>
+    <div><dt>Actif construit</dt><dd>des offres entrantes, dans plusieurs pays</dd></div>
   </div>
-  <p><span class="stop">Interdit de l'année :</span> annoncer une installation, une clinique ou des tarifs avant d'être colegiado. Toute la publicité sanitaire attend le titre.</p>
+  <p><span class="stop">Interdit de l'année :</span> annoncer une installation, une clinique ou des tarifs avant d'être inscrit à l'ordre du pays où tu exerces. Toute la publicité sanitaire attend le titre, partout.</p>
 </div>
 
 <div class="an" data-an="2031→">
   <h3>L'encaissement</h3>
-  <div class="role">Après le diplôme · colegiado</div>
-  <p>Le mur 1 s'abaisse — il ne tombe pas. Le RD 1907/1996 continue d'interdire la promesse de résultat et les témoignages trompeurs même à un praticien inscrit <sup>[5]</sup> ; ce qui change, c'est que tu peux enfin dire ce que tu fais, et pourquoi. Cinq ans d'archives se convertissent alors en trois choses à la fois : une patientèle qui arrive sans publicité, un produit pédagogique qui tourne, et un pouvoir de négociation face à n'importe quel cabinet qui voudra t'embaucher.</p>
+  <div class="role">Après le diplôme</div>
+  <p>Le mur 1 s'abaisse — il ne tombe pas. Les règles de publicité sanitaire continuent d'interdire la promesse de résultat même à un praticien inscrit <sup>[8]</sup> ; ce qui change, c'est que tu peux enfin dire ce que tu fais, et pourquoi. Cinq ans d'archives se convertissent en trois choses à la fois : une patientèle qui arrive sans publicité <em>dans le pays que tu auras choisi</em>, un produit pédagogique qui tourne dans trois langues, et un pouvoir de négociation face à n'importe quel cabinet.</p>
   <p>C'est le moment où le plan rapporte tout ce qu'il a coûté. Et c'est aussi le moment où il devient impossible à rattraper pour ceux qui commencent.</p>
 </div>
+
+<h2>Comment ce plan s'emboîte dans les autres</h2>
+<p class="sub">Un plan de contenu qui ignore les autres plans est un vœu. Voilà les heures réelles, calculées sur ta grille — pas estimées.</p>
+<p>Ta semaine porte déjà <strong>33 heures de révision</strong> et <strong>20 heures de « Projets perso »</strong> dans la grille type, plus une vingtaine d'heures de cours et quatre séances de sport. Mais les blocs « Projets perso » ne sont pas tous à toi : les phases Español les réquisitionnent, et voilà le compte exact.</p>
+<div class="tw"><table>
+  <thead><tr><th>Période</th><th>Projets perso disponibles</th><th>Ce qui les occupe</th><th>Contenu</th></tr></thead>
+  <tbody>
+    <tr><td class="n">14 sept → 18 oct</td><td class="n">0 h / sem.</td><td>L'espagnol prend les trois blocs quotidiens, sans exception</td><td class="n">1 / sem.</td></tr>
+    <tr><td class="n">19 oct → 29 nov</td><td class="n">8 h / sem.</td><td>Projets perso 1 revient. Le programme e-commerce démarre ici</td><td class="n">2 / sem.</td></tr>
+    <tr><td class="n">30 nov → 14 mars</td><td class="n">13 h / sem.</td><td>Un seul bloc Español par jour. E-commerce + contenu</td><td class="n">3 / sem.</td></tr>
+    <tr><td class="n">à partir du 15 mars</td><td class="n">20 h / sem.</td><td>Grille type entière</td><td class="n">3 / sem.</td></tr>
+  </tbody>
+</table></div>
+<div class="note"><strong>Ce que ça impose, et qu'il vaut mieux savoir en septembre qu'en découvrir en novembre.</strong>
+  <strong>Un.</strong> Pendant les cinq premières semaines, tu n'as aucune heure de projet libre. Une vidéo par semaine, tournée sur ton temps libre du dimanche, en 40 minutes. Pas trois. Vouloir trois, c'est les prendre à l'espagnol ou à la révision, et ces heures-là décident de ton année.
+  <strong>Deux.</strong> Le programme e-commerce de douze semaines ne peut pas commencer avant le <strong>19 octobre</strong>, et avec 8 puis 13 heures par semaine, ses douze semaines s'étalent sur <strong>cinq à six mois de calendrier</strong>. Le dossier a été recalé en conséquence.
+  <strong>Trois.</strong> Ces deux projets ne se disputent pas les mêmes heures si tu les sépares proprement : <strong>le contenu vit sur le dimanche, l'e-commerce sur la semaine</strong>. Le jour où ils se marchent dessus, c'est le contenu qui cède — il se rattrape, une vente manquée aussi, une matière non révisée en novembre non.</div>
+<p><strong>Et le seul vrai risque, que ni l'un ni l'autre des dossiers ne dit :</strong> tu as trois projets ambitieux qui démarrent le même mois — un cursus dans une langue étrangère, une entreprise, une marque personnelle — plus un corps à transformer et une addiction à arrêter. Aucun être humain ne tient les cinq à fond simultanément. La grille les a déjà séquencés pour toi : <em>l'espagnol d'abord</em> (sept-oct), <em>l'entreprise ensuite</em> (à partir du 19 oct), <em>le contenu en fil continu à faible débit</em> tout du long. Respecter cet ordre est plus important que n'importe quelle astuce de ce document.</p>
 
 <h2>La semaine de production</h2>
 <p class="sub">Tout tient dans un bloc, et le bloc existe déjà dans ta grille. Rien de ce qui suit ne s'ajoute à ta semaine : ça remplace un créneau « Projets perso » du dimanche.</p>
 <div class="semaine">
   <div class="bloc"><div class="h">Dimanche · 55 min</div><b>Tourner</b><span>Quatre séquences d'affilée, une prise chacune. Même mur, même lumière, même cadre : la contrainte fait la reconnaissance visuelle et supprime la décision.</span></div>
+  <div class="bloc"><div class="h">Dimanche · 20 min</div><b>Doubler</b><span>À partir du mois 7 : les mêmes images, la voix refaite en anglais. Deux comptes nourris pour un seul tournage.</span></div>
   <div class="bloc"><div class="h">Dimanche · 25 min</div><b>Couper et programmer</b><span>Le début, la fin, un texte, une accroche. Programmées mardi, jeudi, samedi. Tu ne rouvres pas l'application de la semaine.</span></div>
-  <div class="bloc"><div class="h">Dans la semaine · 0 min</div><b>Capturer</b><span>Une photo, un bout d'écran, une phrase notée dans la Batcave quand quelque chose arrive. C'est la matière du dimanche suivant, et ça ne coûte rien.</span></div>
   <div class="bloc"><div class="h">Dimanche · 10 min</div><b>Répondre</b><span>Commentaires et messages, en une fois. Répondre à tout la première année : c'est là que se fabriquent les mille premiers.</span></div>
 </div>
 <div class="note"><strong>La règle qui protège les études :</strong> si une semaine tu es sous 70 % de ton plan de révision, tu sautes la production — pas la révision. Le contenu se rattrape, une matière non révisée en novembre se paie en janvier. La Batcave connaît déjà ta fidélité au plan : sers-t'en comme d'un feu rouge.</div>
@@ -368,9 +404,10 @@
 <div class="tw"><table>
   <thead><tr><th>Mesure</th><th>Ce qu'elle dit</th><th>Seuil correct</th></tr></thead>
   <tbody>
-    <tr><td><strong>Rétention à 3 secondes</strong></td><td>Si ton accroche tient. Au-dessus de 60 %, la portée est multipliée par 5 à 10 par rapport à moins de 40 % <sup>[2]</sup>. C'est le seul levier qui multiplie tout le reste.</td><td class="n">&gt; 60 %</td></tr>
+    <tr><td><strong>Rétention à 3 secondes</strong></td><td>Si ton accroche tient. Au-dessus de 60 %, la portée est multipliée par 5 à 10 par rapport à moins de 40 % <sup>[2]</sup>. Le seul levier qui multiplie tout le reste.</td><td class="n">&gt; 60 %</td></tr>
     <tr><td><strong>Temps vu total, replays compris</strong></td><td>Le premier signal de classement d'Instagram <sup>[3]</sup>. Une vidéo courte rejouée bat une longue vue une fois.</td><td class="n">en hausse</td></tr>
     <tr><td><strong>Envois en message privé</strong></td><td>Le levier des non-abonnés : 3 à 5 fois le poids d'un like <sup>[3]</sup>.</td><td class="n">&gt; 1 % des vues</td></tr>
+    <tr><td><strong>Part des langues secondaires</strong></td><td>Sur YouTube, ce que rapportent réellement les pistes audio. La moyenne du marché dépasse 25 % <sup>[4]</sup> ; en dessous de 10 %, la piste n'est pas rentable.</td><td class="n">&gt; 15 %</td></tr>
     <tr><td><strong>Abonnés pour 1 000 vues</strong></td><td>Si tu es mémorable ou seulement divertissant. Une vidéo à 100 k vues qui ne convertit pas est une vidéo pour quelqu'un d'autre.</td><td class="n">&gt; 5</td></tr>
     <tr><td><strong>Inscriptions e-mail</strong></td><td>Le seul chiffre que personne ne peut t'enlever.</td><td class="n">croissance nette</td></tr>
     <tr><td><strong>Publications tenues / prévues</strong></td><td>La seule mesure de l'an 1. Elle est déjà dans la Batcave.</td><td class="n">&gt; 85 %</td></tr>
@@ -379,43 +416,48 @@
 
 <h2>Les dix pièges</h2>
 <ul>
-  <li><strong>Lancer quatre comptes.</strong> Tu en nourriras zéro. Un seul, cinq ans.</li>
-  <li><strong>Choisir TikTok comme domicile en Espagne.</strong> C'est là qu'on regarde, pas là qu'on suit : 77 % suivent leurs créateurs sur Instagram, contre 33 % sur TikTok <sup>[1]</sup>. Produis pour TikTok, habite Instagram.</li>
+  <li><strong>Ouvrir les trois langues en septembre.</strong> Le piège numéro un de ce plan précis. Trois comptes faibles ne font pas un compte fort, et tu nourriras zéro.</li>
+  <li><strong>Publier trois fois par semaine dès le 14 septembre.</strong> Le second piège, et il est arithmétique : jusqu'au 18 octobre tu as zéro heure de projet libre. Ces heures-là existent, mais elles appartiennent à l'espagnol.</li>
+  <li><strong>Mélanger deux langues sur un même compte court.</strong> Deux signaux contradictoires, la moitié de chaque audience. La règle s'inverse en format long, et seulement là <sup>[4]</sup>.</li>
+  <li><strong>Faire de la motivation sans substance.</strong> Une citation sur fond de coucher de soleil est une marchandise qu'une IA fabrique en trois secondes. « Lifestyle » n'est pas une niche <sup>[1]</sup> — ton cursus, ta langue et ton business en font une.</li>
   <li><strong>Attendre d'être « prêt ».</strong> Le matériel, le logo, le nom parfait : des façons élégantes de ne pas commencer. Ton téléphone, la lumière de la fenêtre, ton prénom.</li>
   <li><strong>Confondre régularité et fréquence.</strong> Trois par semaine pendant cinq ans écrasent sept par semaine pendant deux mois.</li>
   <li><strong>Vendre trop tôt.</strong> Chaque publicité avant l'an 3 coûte plus de confiance qu'elle ne rapporte.</li>
   <li><strong>Accepter le premier partenariat santé.</strong> Le seul piège qui peut coûter le diplôme, pas seulement l'audience.</li>
-  <li><strong>Copier un créateur américain.</strong> Ton avantage est d'être exactement là où tu es : un francophone qui fait dentaire en espagnol à Alicante. Personne ne peut copier ça.</li>
   <li><strong>Ne publier que ses réussites.</strong> Le jour où tu rates, tu disparais — et c'est ce jour-là que le contenu vaut le plus.</li>
-  <li><strong>Filmer au lieu de vivre.</strong> Si une séance de sport devient un tournage, arrête le tournage.</li>
-  <li><strong>Croire que ça ne marche pas au bout de six mois.</strong> Rien ne se voit avant douze à dix-huit mois — c'est aussi le délai au bout duquel 1 à 3 % d'une audience régulière devient une audience qui achète <sup>[9]</sup>. Le plan est calibré là-dessus : c'est pour ça que l'objectif de l'an 1 est un nombre de publications, pas un nombre d'abonnés.</li>
+  <li><strong>Filmer au lieu de vivre.</strong> Si une séance de sport devient un tournage, arrête le tournage. Le jour où le contenu dicte la vie, la substance meurt et il ne reste que la forme.</li>
+  <li><strong>Croire que ça ne marche pas au bout de six mois.</strong> Rien ne se voit avant douze à dix-huit mois <sup>[7]</sup>. C'est pour ça que l'objectif de l'an 1 est un nombre de publications, pas un nombre d'abonnés.</li>
 </ul>
 
 <h2>Ce qu'il faut décider cette semaine</h2>
 <ul>
-  <li><strong>Le nom du compte.</strong> Ton prénom et ton nom, ou une variante lisible. Pas de pseudonyme : tu construis un nom de médecin.</li>
-  <li><strong>Le domicile et l'atelier.</strong> Instagram comme domicile, format TikTok comme atelier, republication automatique en Shorts. Une seule bio à écrire, une seule communauté à tenir.</li>
+  <li><strong>Le nom.</strong> Ton prénom et ton nom, ou une variante prononçable en français comme en anglais. Pas de pseudonyme : tu construis un nom de médecin. Le même partout, avec juste un suffixe de langue pour le second compte.</li>
+  <li><strong>La langue de départ</strong>, par le test des 60 secondes ci-dessus. Et la date d'ouverture du compte anglais, notée dans la Batcave : <strong>avril 2027</strong>.</li>
+  <li><strong>Le domicile.</strong> TikTok comme atelier, Instagram comme domicile, republication automatique en Shorts. Une bio, une communauté.</li>
   <li><strong>La bio</strong>, avec la mention d'étudiant et l'absence de conseil médical, dans les deux langues.</li>
   <li><strong>Le mur, la lumière, le cadre.</strong> Décidés une fois, jamais rediscutés.</li>
   <li><strong>Le créneau du dimanche</strong>, posé dans la Batcave comme un bloc récurrent, au même titre qu'une séance de sport.</li>
   <li><strong>Les vingt premières vidéos</strong> — elles sont écrites plus haut. Tu ne recommences pas cette réflexion avant l'an 2.</li>
 </ul>
-<div class="note"><strong>La première, le 14 septembre au soir :</strong> le plan des six mois à l'écran, et une phrase — <em>« Je commence dentaire à Alicante demain, je ne parle pas espagnol, et voilà le système que j'ai construit pour tenir. Rendez-vous dans six mois. »</em> Une promesse datée, publique et vérifiable. C'est le meilleur premier contenu qui existe, parce qu'il crée l'obligation de revenir.</div>
+<div class="note"><strong>La première, le 14 septembre au soir :</strong> le plan des six mois à l'écran, et une phrase — <em>« Je commence dentaire à Alicante demain, je ne parle pas espagnol, et voilà le système que j'ai construit pour tenir. Rendez-vous dans six mois. »</em> Une promesse datée, publique et vérifiable. C'est le meilleur premier contenu qui existe, parce qu'il crée l'obligation de revenir — et parce que dans cinq ans, ce sera la première pièce d'une archive que personne ne pourra rattraper.</div>
 
 <footer>
   <h3>Sources</h3>
   <ol>
-    <li><a href="https://iabspain.es/iab-spain-presenta-estudio-rrss-2026/">IAB Spain — Estudio de Redes Sociales 2026</a> : temps par plateforme, pénétration TikTok en Gen Z, et la part de ceux qui suivent des créateurs sur Instagram (77 %) contre YouTube (35 %) et TikTok (33 %).</li>
+    <li><a href="https://influenceflow.io/resources/finding-your-creator-niche-a-complete-2026-guide/">Finding Your Creator Niche (2026)</a> : « lifestyle » n'est pas une niche ; la spécificité et une perspective non générique sont ce qui distingue les comptes qui monétisent.</li>
     <li><a href="https://hypenest.ai/blogs/tiktok-algorithm-2026-video-hooks-retention">TikTok Algorithm 2026 — hooks et rétention</a> et <a href="https://fobetmedia.com/instagram-reel-hooks/">analyse des accroches de Reels</a> : la moitié de l'audience part avant 3 secondes ; une rétention à 3 s supérieure à 60 % multiplie la portée par 5 à 10.</li>
-    <li><a href="https://buffer.com/resources/instagram-algorithms/">Buffer — How the Instagram Algorithm Works (2026)</a> et <a href="https://blog.hootsuite.com/instagram-algorithm/">Hootsuite — Instagram algorithm 2026</a> : le temps vu (replays compris) comme premier signal, confirmé par Adam Mosseri ; le poids des envois en message privé pour la portée hors abonnés.</li>
+    <li><a href="https://buffer.com/resources/instagram-algorithms/">Buffer — How the Instagram Algorithm Works (2026)</a> et <a href="https://blog.hootsuite.com/instagram-algorithm/">Hootsuite — Instagram algorithm 2026</a> : le temps vu, replays compris, comme premier signal (confirmé par Adam Mosseri) ; le poids des envois en message privé pour la portée hors abonnés.</li>
+    <li><a href="https://air.io/en/youtube-hacks/should-you-create-another-channel-for-a-different-language">AIR Media-Tech — une chaîne par langue ou des pistes audio ?</a> et <a href="https://blog.novadub.ai/blog/en/multilingual-youtube-channel-guide-2026/">Multilingual YouTube 2026</a> : consolidation des signaux sur une chaîne unique, plus de 25 % du temps de visionnage venu des langues secondaires, limite des titres et miniatures, supériorité du doublage sur les sous-titres en mobilité.</li>
+    <li><a href="https://iabspain.es/iab-spain-presenta-estudio-rrss-2026/">IAB Spain — Estudio de Redes Sociales 2026</a> : 77 % suivent leurs créateurs sur Instagram contre 33 % sur TikTok, et près de deux heures de TikTok par jour en Gen Z.</li>
     <li><a href="https://www.beehiiv.com/blog/the-state-of-paid-newsletters-2026">beehiiv — The State of Paid Newsletters 2026</a> : taux médian de conversion gratuit → payant de 0,62 %.</li>
-    <li><a href="https://www.boe.es/buscar/act.php?id=BOE-A-1996-18085">Real Decreto 1907/1996</a> (BOE, texte consolidé) : interdictions de l'article 4, régime des infractions graves pour les articles 4, 5 et 6, et rôle des Colegios profesionales.</li>
+    <li><a href="https://a16z.com/1000-true-fans-try-100/">a16z — « 1000 True Fans? Try 100 »</a> et données de conversion en « superfans » : 1 à 3 % d'une audience régulière sur douze à dix-huit mois.</li>
+    <li><a href="https://www.boe.es/buscar/act.php?id=BOE-A-1996-18085">Real Decreto 1907/1996</a> (BOE, texte consolidé) : interdictions de l'article 4, infractions graves des articles 4 à 6, rôle des Colegios profesionales.</li>
     <li><a href="https://consejodentistas.es/la-federacion-dental-internacional-aprueba-dos-declaraciones-oficiales-sobre-publicidad-sanitaria-y-especializacion-en-odontologia/">Consejo General de Dentistas de España</a> : déclarations de la FDI sur la publicité sanitaire et les réseaux sociaux.</li>
     <li><a href="https://www.nature.com/articles/sj.bdj.2015.294">British Dental Journal — « Social media and dentistry: some reflections on e-professionalism »</a> : confidentialité, tromperie du public, atteinte à la réputation, et procédures disciplinaires.</li>
     <li><a href="https://www.acceleroi.com/blog/unlocking-success-exploring-the-average-conversion-rate-for-online-courses">Taux de conversion des cours en ligne, repères 2026</a> : 1 à 3 % sur une page de vente, 3 à 5 % sur une page d'inscription.</li>
-    <li><a href="https://a16z.com/1000-true-fans-try-100/">a16z — « 1000 True Fans? Try 100 »</a> et données de conversion en « superfans » : 1 à 3 % d'une audience régulière sur douze à dix-huit mois.</li>
+    <li><a href="https://buffer.com/resources/how-to-get-followers-on-tiktok/">Buffer — Ways to Get More Followers on TikTok (2026)</a> et <a href="https://influenceflow.io/resources/tiktok-posting-schedule-optimization-the-complete-2026-guide-to-maximizing-views-and-engagement/">TikTok Posting Schedule Optimization 2026</a> : un débutant démarre à 3-4 publications par semaine, le saut de rendement se joue entre 2 et 5 par semaine, et au-delà de 5 par jour l'algorithme lit du spam. Croissance significative constatée en trois à six mois de publication régulière.</li>
   </ol>
   <h3>Avertissement</h3>
-  <p>Les paliers d'audience sont des ordres de grandeur, pas des promesses, et les taux de conversion cités sont des médianes de marché — les tiens dépendront de ton offre. Le seul engagement du plan est celui de l'an 1 : publier 150 fois. Les règles de publicité sanitaire évoluent (une proposition de loi espagnole était en discussion en 2025) : revois ce chapitre avant chaque rentrée, et fais valider ta bio par ton Colegio le jour de ton inscription.</p>
+  <p>Les paliers d'audience sont des ordres de grandeur, pas des promesses, et les taux de conversion cités sont des médianes de marché. Le seul engagement du plan est celui de l'an 1 : publier 150 fois. Les règles de publicité sanitaire évoluent et diffèrent d'un pays à l'autre : revois ce chapitre avant chaque rentrée, et avant toute installation, vérifie les règles de l'ordre professionnel du pays visé.</p>
 </footer>
 </div>
