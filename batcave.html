@@ -680,6 +680,17 @@
   .cal-day:hover{border-color:var(--cyan-dim);}
   .cal-day:focus-visible{outline:2px solid var(--cyan); outline-offset:1px;}
   .cal-day.vide{background:transparent; border-color:transparent; cursor:default; pointer-events:none;}
+  /* « rien n'était prévu » ≠ « rien n'a été fait ». Un dimanche sans blocs, un jour de
+     vacances, un jour exclu et une journée d'avant le 14 septembre s'affichaient
+     exactement comme une journée pleine où tu n'as rien fait : case blanche, sans heure,
+     sans teinte. On ne peut pas repérer ses vrais trous dans un mois pareil. Les jours
+     que la grille ne prévoyait pas reculent donc d'un cran — contour pointillé, fond
+     transparent, quantième atténué — et parmi les cases pleines restées blanches, celles
+     du passé sont des journées ratées (le survol le dit, comme il dit « à venir » pour
+     les suivantes). Pas de teinte en plus : la couleur reste réservée au travail fait. */
+  .cal-day.hors-plan{background:transparent; border-style:dashed; border-color:var(--border-soft);}
+  .cal-day.hors-plan .cal-num{color:var(--ink-faint); font-weight:500;}
+  .cal-day.hors-plan:hover{border-color:var(--border);}
   .cal-day.aujourdhui{border-color:var(--cyan-dim);}
   .cal-day.actif{border-color:var(--cyan-bright); box-shadow:0 0 0 1px var(--cyan-bright);}
   .cal-day .cal-num{font-size:12.5px; font-weight:600; color:var(--ink);}
@@ -2380,7 +2391,7 @@
             <button class="btn" id="rv-next" type="button" aria-label="Mois suivant">▶</button>
           </span>
         </div>
-        <p class="sub-note" style="margin-bottom:10px;">Uniquement tes séances de révision. Clique un jour pour voir sa grille horaire.</p>
+        <p class="sub-note" style="margin-bottom:10px;">Uniquement tes séances de révision. Clique un jour pour voir sa grille horaire. <span style="white-space:nowrap;">· <span style="display:inline-block; width:9px; height:9px; border:1px dashed var(--border-soft); vertical-align:-1px; margin-right:2px;"></span> rien n’était prévu ce jour-là</span></p>
         <div class="cal-head" id="rv-head"></div>
         <div class="cal-grid" id="rv-grid"></div>
         <div class="jr-nav" style="margin-top:16px;">
@@ -2424,7 +2435,7 @@
             <button class="btn" id="ag-next" type="button" aria-label="Mois suivant">▶</button>
           </span>
         </div>
-        <p class="sub-note" style="margin-bottom:10px;">Clique un jour pour voir sa grille horaire. 🔵 révision · 🟠 projets perso</p>
+        <p class="sub-note" style="margin-bottom:10px;">Clique un jour pour voir sa grille horaire. 🔵 révision · 🟠 projets perso <span style="white-space:nowrap;">· <span style="display:inline-block; width:9px; height:9px; border:1px dashed var(--border-soft); vertical-align:-1px; margin-right:2px;"></span> rien n’était prévu ce jour-là</span></p>
         <div class="cal-head" id="ag-head"></div>
         <div class="cal-grid" id="ag-grid"></div>
         <div class="jr-nav" style="margin-top:16px;">
@@ -2509,7 +2520,7 @@
             <button class="btn" id="pj-next" type="button" aria-label="Mois suivant">▶</button>
           </span>
         </div>
-        <p class="sub-note" style="margin-bottom:10px;">Uniquement tes séances de projet perso. Clique un jour pour voir sa grille horaire.</p>
+        <p class="sub-note" style="margin-bottom:10px;">Uniquement tes séances de projet perso. Clique un jour pour voir sa grille horaire. <span style="white-space:nowrap;">· <span style="display:inline-block; width:9px; height:9px; border:1px dashed var(--border-soft); vertical-align:-1px; margin-right:2px;"></span> rien n’était prévu ce jour-là</span></p>
         <div class="cal-head" id="pj-head"></div>
         <div class="cal-grid" id="pj-grid"></div>
         <div class="jr-nav" style="margin-top:16px;">
@@ -4961,6 +4972,28 @@
     if(aJournal) return journal;
     return type === 'projet' ? agregatProjets(iso) : agregatRevision(iso);
   }
+  /* Ce que la GRILLE prévoyait ce jour-là, pour la vue affichée : c'est la seule chose qui
+     sépare « rien n'était prévu » de « rien n'a été fait ». Avant le premier jour du
+     programme, rien n'était prévu — on ne rate pas une journée où la Batcave ne servait
+     pas encore. minutesPrevuesJour() connaît déjà les vacances (les blocs y deviennent du
+     temps libre), les jours exclus, les phases Español et le mode partiels. */
+  function prevuVue(pre, iso){
+    if(iso < PROGRAMME_DEBUT) return 0;
+    var c = minutesPrevuesJour(iso), t = (VUES[pre] || {}).types;
+    if(!t) return c.rev + c.proj + c.es;
+    if(t.indexOf('projet') > -1) return c.proj + c.es;   /* la vue Projets montre aussi l'Español */
+    return c.rev;
+  }
+  function horsPlan(pre, iso, min){ return !(min > 0) && !(prevuVue(pre, iso) > 0); }
+  /* Ce que dit une case au survol. Une journée vide n'a pas une explication mais trois, et
+     c'est tout l'objet du pointillé : « rien n'était prévu » (contour pointillé), « prévu,
+     pas fait » (case pleine et blanche — la seule qui soit une dette) et « à venir », qui
+     ne se juge pas encore. */
+  function etatJour(pre, iso, min){
+    if(min > 0) return fmtDuree(min);
+    if(horsPlan(pre, iso, min)) return 'rien n\u2019était prévu';
+    return iso > todayISO ? '\u00e0 venir' : 'prévu, pas fait';
+  }
   /* Total d'une journée pour une vue donnée. */
   function totalVue(pre, iso){
     var t = VUES[pre].types;
@@ -5071,9 +5104,10 @@
           }
         });
       }
-      cases.push('<button type="button" class="cal-day' + niveauJour(min) +
+      var sansPlan = horsPlan(pre, iso, min);
+      cases.push('<button type="button" class="cal-day' + niveauJour(min) + (sansPlan ? ' hors-plan' : '') +
                  (iso === todayISO ? ' aujourdhui' : '') + (iso === jrISO(pre) ? ' actif' : '') +
-                 '" data-agjour="' + iso + '">' +
+                 '" data-agjour="' + iso + '" title="' + escapeHtml(fmtDate(iso) + ' — ' + etatJour(pre, iso, min)) + '">' +
                  '<span class="cal-num">' + j + '</span>' +
                  '<span class="cal-h">' + (min ? fmtDuree(min) : '') + '</span>' +
                  (pastilles ? '<span class="cal-pts">' + pastilles + '</span>' : '') + '</button>');
@@ -12210,7 +12244,7 @@
       var dj = new Date(iso + 'T00:00:00');
       var titre = (dj.getDate() === 1 ? '1\u1d49\u02b3' : dj.getDate()) + ' ' +
                   dj.toLocaleDateString('fr-FR', {month:'long', year:'numeric'}) +
-                  ' — ' + (min ? fmtDuree(min) : 'rien');
+                  ' — ' + etatJour('ag', iso, min);
       cases.push('<span class="' + cls + '" title="' + titre + '"></span>');
 
       /* étiquette de mois au-dessus de la première semaine de chaque mois */
