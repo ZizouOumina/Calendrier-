@@ -29,7 +29,9 @@ console.log('\n== 180) Sans ajustement : plan de base, liste = plan × 7 ==');
   ok(c.n === 18, '18 articles (17 chaque semaine, plus l\'huile)');
   ok(c.items.some(t => /^Riz — 1\u202f000 g \(~1,1 €\)$/.test(t)) && c.items.some(t => /^Pâtes — 600 g \(~0,6 €\)$/.test(t)), 'Riz 1 000 g le midi, pâtes 600 g le soir (' + c.items.find(t => /^Pâtes/.test(t)) + ')');
   ok(c.items.some(t => /^Poulet — 800 g/.test(t)) && c.items.some(t => /^Viande hachée 5 % — 900 g/.test(t)) && c.items.some(t => /^Saumon — 450 g/.test(t)) && !c.items.some(t => /^(Dattes|Cacahuètes)/.test(t)) && c.items.some(t => /^Skyr — 900 g/.test(t)), 'protéines : poulet 800 g, viande hachée 900 g, saumon 450 g ; skyr 900 g ; plus de dattes ni de cacahuètes — ' + c.items.filter(t => /^(Poulet|Viande|Saumon)/.test(t)).join(' · '));
-  ok(c.items.some(t => /^Œufs — 15/.test(t)) && c.items.some(t => /^Légumes verts surgelés — 2\u202f500 g/.test(t)) && c.items.some(t => /^Huile d'olive — 1\u202f000 ml/.test(t)), 'œufs, légumes surgelés, et l\'huile dans le bloc des 4 semaines');
+  /* lot 29 : le libellé des légumes nomme désormais les espèces les moins fermentescibles
+     (haricots verts, épinards, courgettes) — même quantité, même prix, moins de gaz. */
+  ok(c.items.some(t => /^Œufs — 15/.test(t)) && c.items.some(t => /^Légumes verts surgelés \(haricots verts, épinards, courgettes\) — 2\u202f500 g/.test(t)) && c.items.some(t => /^Huile d'olive — 1\u202f000 ml/.test(t)), 'œufs, légumes surgelés, et l\'huile dans le bloc des 4 semaines');
   ok(/Aucun ajustement/.test(c.note), 'note : ' + c.note.slice(0, 60));
   const bud = c.budget.match(/~(\d+(?:,\d)?) € \/ semaine.*?plus ~(\d+(?:,\d)?) € toutes les 4 semaines/);
   ok(!!bud && Number(bud[1].replace(',', '.')) > 45 && Number(bud[1].replace(',', '.')) < 60 && Number(bud[2].replace(',', '.')) === 7, 'budget : ~48 € / semaine + ~7 € toutes les 4 semaines : ' + c.budget.slice(0, 90));
