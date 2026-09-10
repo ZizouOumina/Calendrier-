@@ -8232,18 +8232,14 @@
     });
     return out;
   }
-  function seanceTenue(iso){
-    var st = (iso === todayISO) ? sportState : load('batcave-sport-' + iso, null);
-    if(!st) return false;
-    var t = sportTotals(typeSportDe(iso), st);
-    return t.total > 0 && t.checked >= t.total / 2;
-  }
-  /* Ce que VAUT une seance, entre 0 et 1 : la part des cases cochees. seanceTenue() reste
-     le booleen « tu es alle t'entrainer » -- le score du jour, les series et les Insights
-     ont besoin d'une reponse par oui ou par non. L'objectif « seances tenues », lui, se
-     comptait avec ce meme booleen : cinq exercices sur dix valaient une seance entiere, et
-     quatre sur dix ne valaient rien du tout. Il compte maintenant la fraction : une demi-
-     seance vaut 0,5, et une seance abandonnee au quart vaut 0,25. */
+  /* Ce que VAUT une seance, entre 0 et 1 : la part des cases cochees. L'objectif « seances
+     tenues » se comptait avec un seuil -- cinq exercices sur dix valaient une seance
+     entiere, quatre sur dix ne valaient rien -- et c'est la fraction qui compte desormais :
+     une demi-seance vaut 0,5, une seance abandonnee au quart vaut 0,25. Le seuil vivait
+     dans seanceTenue(), qui n'avait plus aucun appelant : il est parti avec lui. Partout
+     ailleurs, la seance etait deja jugee a la proportion -- le score du jour fait la
+     moyenne de checked/total avec les autres domaines, et les Insights lisent les series
+     d'exercices, pas un booleen. */
   function valeurSeance(iso){
     var st = (iso === todayISO) ? sportState : load('batcave-sport-' + iso, null);
     if(!st) return 0;
