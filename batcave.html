@@ -1890,7 +1890,7 @@
       <div class="page-head">
         <span class="eyebrow">Dossier N° 05</span>
         <h1>Repas</h1>
-        <p class="desc">Programme du jour, 5 prises : 3 053 kcal à plein volume, P 162 g, G 348 g, L 112 g, tout pesé cru. Riz à midi, pâtes le soir ; la protéine suit la rotation de la semaine. Les cases se réinitialisent à minuit.</p>
+        <p class="desc">Programme du jour, 5 prises : 3 053 kcal, P 162 g, G 348 g, L 112 g, tout pesé cru. Riz à midi, pâtes le soir ; la protéine suit la rotation de la semaine. Les cases se réinitialisent à minuit.</p>
       </div>
 
       <div class="day-bar">
@@ -1898,10 +1898,6 @@
         <div class="dtrack"><div class="dfill" id="meal-fill" style="width:0%"></div></div>
         <span class="dtext" id="meal-count">0/0</span>
       </div>
-
-      <!-- Montee en charge des fibres et du lactose : visible seulement pendant les trois
-           premieres semaines du programme, masque ensuite. -->
-      <p class="sub-note" id="meal-rampe" style="margin:-4px 0 14px; line-height:1.65;" hidden></p>
 
       <div class="panel" style="margin-bottom:14px;">
         <h3 style="margin-bottom:10px;">Apport nutritionnel du jour</h3>
@@ -6096,86 +6092,22 @@
     var f = FECULENTS[repas], g = f.g + (repas === 'din' ? grammesAjustement(ajust, f.kcalG) : 0);
     return 'Féculent cru — ' + f.nom + ' ' + g + 'g' + (repas === 'din' && ajust ? ' (boucle kcal ' + (ajust > 0 ? '+' : '') + ajust + ' kcal)' : '');
   }
-  /* ===== Montée en charge des fibres et du lactose (10 sept. 2026) =====
-     Le ventre gonflé et les gaz ne viennent ni du riz ni du poulet : ils viennent de la
-     charge fermentescible. Ce plan fait passer d'un coup les légumes verts de presque rien
-     à 350 g par jour et le lait à 250 ml, alors que la flore du côlon met deux à trois
-     semaines à s'adapter. Le résultat d'un démarrage à plein volume est connu : ballonnement,
-     gaz, et un plan abandonné en dix jours. On monte donc en trois paliers — moitié pendant
-     deux semaines, trois quarts la troisième, plein à partir de la quatrième — exactement
-     comme la moitié des tours au sport, et pour la même raison.
-     Les calories, elles, ne bougent presque pas : ce palier coûte environ 120 kcal par jour
-     pendant deux semaines, moins de 4 % du plan. La montée porte sur les fibres et le
-     lactose, pas sur l'énergie : couper les calories retarderait la prise de poids sans rien
-     régler du ballonnement. La cible affichée suit le palier, donc la barre du jour reste
-     honnête pendant la montée — pas de faux échec. */
-  var ITEMS_RAMPE = {
-    'Légumes verts':    0.35,  /* kcal par gramme, surgelés */
-    'Lait demi-écrémé': 0.46   /* kcal par millilitre, demi-écrémé */
-  };
-  function facteurFibres(iso){
-    var w = semaineProgramme(iso);
-    if(w <= 0) return 1;
-    if(w <= 2) return 0.5;
-    if(w === 3) return 0.75;
-    return 1;
-  }
-  function grammesRampe(n, f){ return Math.round(n * f / 5) * 5; }
-  /* la clé de ITEMS_RAMPE que porte ce libellé, ou null */
-  function cleRampe(it){
-    var cles = Object.keys(ITEMS_RAMPE);
-    for(var i = 0; i < cles.length; i++){ if(it.indexOf(cles[i]) === 0) return cles[i]; }
-    return null;
-  }
-  /* « Légumes verts (200g) » → « Légumes verts (100g) » pendant la montée */
-  function texteRampe(it, iso){
-    var f = facteurFibres(iso);
-    if(f >= 1 || !cleRampe(it)) return it;
-    return it.replace(/\((\d+)\s*(g|ml)\)/, function(x, n, u){ return '(' + grammesRampe(Number(n), f) + u + ')'; });
-  }
-  /* Ce que la montée retire à un repas, en kcal. Seul le total calorique bouge : les grammes
-     retirés sont des légumes et du lait, l'écart sur P/G/L est sous le bruit du plan. */
-  function deltaRampeRepas(m, iso){
-    var f = facteurFibres(iso);
-    if(f >= 1) return 0;
-    var d = 0;
-    m.items.forEach(function(it){
-      var cle = cleRampe(it);
-      if(!cle) return;
-      var n = it.match(/\((\d+)\s*(?:g|ml)\)/);
-      if(n) d -= (Number(n[1]) - grammesRampe(Number(n[1]), f)) * ITEMS_RAMPE[cle];
-    });
-    return Math.round(d);
-  }
-  function deltaRampeJour(iso){
-    return MEALS.reduce(function(t, m){ return t + deltaRampeRepas(m, iso); }, 0);
-  }
-  /* Le palier en une phrase, pour l'onglet Repas et le tableau de bord. */
-  function noteRampe(iso){
-    var f = facteurFibres(iso), w = semaineProgramme(iso);
-    if(f >= 1) return '';
-    return 'Semaine ' + w + ' — montée en charge : légumes et lait à ' + Math.round(f * 100) +
-      ' % (' + deltaRampeJour(iso) + ' kcal). Le côlon met deux à trois semaines à s\'adapter ; ' +
-      'démarrer à plein volume, c\'est le ballonnement et les gaz. Plein volume à partir de la semaine 4.';
-  }
-
   /* Le libellé d'un item : féculent avec l'ajustement du jour (dîner), protéine et huile de
      la rotation du jour (déjeuner et dîner). */
   function texteItemRepas(m, it, ii, iso){
     var repas = m.name === 'Dîner' ? 'din' : (m.name === 'Déjeuner' ? 'dej' : null);
-    if(!repas) return texteRampe(it, iso);
+    if(!repas) return it;
     if(ii === 0) return texteFeculent(repas, repas === 'din' ? ajustementKcalPour(iso || todayISO) : 0);
     var nom = proteineDuJour(repas, iso), p = PROTEINES[nom][repas];
     if(ii === 1) return 'Protéine crue — ' + nom + ' ' + p.g + 'g';
     if(ii === 3) return 'Huile d\'olive (' + p.huile + 'ml)';
-    return texteRampe(it, iso);
+    return it;
   }
   function texteKcalRepas(m, iso){
     var a = m.name === 'Dîner' ? ajustementKcalPour(iso || todayISO) : 0;
-    var r = deltaRampeRepas(m, iso);
-    if(!a && !r) return m.kcal;
+    if(!a) return m.kcal;
     var base = parseMealMacros(m.kcal);
-    return m.kcal.replace(/~?\d+\s*kcal/, '~' + (base.kcal + a + r) + ' kcal').replace(/G(\d+)/, function(x, g){ return 'G' + (Number(g) + Math.round(a / 4.8)); });
+    return m.kcal.replace(/~?\d+\s*kcal/, '~' + (base.kcal + a) + ' kcal').replace(/G(\d+)/, function(x, g){ return 'G' + (Number(g) + Math.round(a / 4.8)); });
   }
 
   function mealTotals(){
@@ -6217,8 +6149,6 @@
       /* l'ajustement de la boucle poids est porte par le feculent du diner : la cible ET
          l'apport consomme (diner coche) le suivent, pas seulement une ligne de total */
       if(m.name === 'Dîner' && ajust){ macros.kcal += ajust; macros.g += Math.round(ajust / 4.8); }
-      /* le palier de montée en charge : moins de légumes et de lait, donc une cible plus basse */
-      macros.kcal += deltaRampeRepas(m, iso || todayISO);
       targets.kcal += macros.kcal; targets.p += macros.p; targets.g += macros.g; targets.l += macros.l;
       var itemsChecked = m.items.filter(function(it, ii){ return st[mi+'-'+ii]; }).length;
       var frac = m.items.length ? itemsChecked/m.items.length : 0;
@@ -6260,11 +6190,7 @@
     var b = boucleKcal(), plan = mealNutritionTotals().targets.plan, actuel = ajustementKcalPour(todayISO);
     var kg = function(v){ return (v >= 0 ? '+' : '−') + Math.abs(v).toFixed(2).replace('.', ',') + ' kg'; };
     var lignes = [];
-    var rampe = deltaRampeJour(todayISO);
-    lignes.push('Cible calorique actuelle : <b style="color:var(--ink);">' + Math.round(plan + actuel + rampe) + ' kcal</b> (plan ' + Math.round(plan) + (actuel ? (actuel > 0 ? ' + ' : ' − ') + Math.abs(actuel) + ' kcal depuis le ' + fmtDate(kcalAjust.depuis) : '') + (rampe ? ' − ' + Math.abs(rampe) + ' kcal de montée en charge' : '') + ').');
-    /* pendant la montee, l'ecart de poids vient en partie du palier, pas du plan : on le dit
-       avant de proposer un ajustement, pour ne pas empiler deux corrections sur la meme cause */
-    if(rampe) lignes.push('<span class="sub-note">La montée en charge des légumes et du lait retire ' + Math.abs(rampe) + ' kcal par jour jusqu\'à la semaine 4. Une prise un peu lente ces semaines-ci vient de là, pas du plan.</span>');
+    lignes.push('Cible calorique actuelle : <b style="color:var(--ink);">' + Math.round(plan + actuel) + ' kcal</b> (plan ' + Math.round(plan) + (actuel ? (actuel > 0 ? ' + ' : ' − ') + Math.abs(actuel) + ' kcal depuis le ' + fmtDate(kcalAjust.depuis) : '') + ').');
     lignes.push('Rythme visé : <b style="color:var(--ink);">' + kg(b.rythmeVise) + ' / semaine</b> (objectif poids sur son horizon).');
     if(b.delta !== null) lignes.push('Tendance : <b style="color:var(--ink);">' + kg(b.delta) + '</b> cette semaine (' + b.moyAvant.toFixed(1).replace('.', ',') + ' → ' + b.moyRecente.toFixed(1).replace('.', ',') + ' kg en moyenne).');
     lignes.push((b.delta === null ? '' : '→ ') + b.motif);
@@ -6342,8 +6268,6 @@
       document.getElementById('meal-l-pct').textContent = lPct + '%';
       document.getElementById('meal-macros-sub').textContent = 'P ' + Math.round(n.totals.p) + '/' + n.targets.p + 'g · G ' + Math.round(n.totals.g) + '/' + n.targets.g + 'g · L ' + Math.round(n.totals.l) + '/' + n.targets.l + 'g';
     }
-    var rEl = document.getElementById('meal-rampe'), rTxt = noteRampe(todayISO);
-    if(rEl){ rEl.textContent = rTxt; rEl.hidden = !rTxt; }
     renderKcalBoucle();
   }
 
@@ -8563,12 +8487,7 @@
      de cacahuètes ; riz doublé, poulet et saumon en hausse. Les pâtes portent l'ajustement de
      la boucle kcal (+40 g/j = +280 g/semaine). L'huile d'olive se rachète toutes les
      4 semaines : elle reste dans la liste, on ne la coche que quand il en faut. Prix estimés
-     Alicante 2026.
-     Deux libellés precisent l'espece plutot que la famille, contre le ballonnement : les
-     pommes et les poires sont les deux fruits courants les plus fermentescibles, le brocoli
-     et le chou-fleur les deux legumes verts les plus fermentescibles. A calories et prix
-     egaux, oranges, kiwis, raisin, fraises d'un cote, haricots verts, epinards, courgettes
-     de l'autre coutent beaucoup moins cher au ventre. */
+     Alicante 2026. */
   function planCoursesSemaine(ajust){
     var plus = grammesAjustement(ajust, 3.6) * 7;
     var g = function(n){ return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '\u202f'); };
@@ -8580,7 +8499,7 @@
         {label:'Pâtes', qte: g(600 + plus) + ' g' + (plus ? ' (dont ' + (plus > 0 ? '+' : '') + g(plus) + ' g boucle kcal)' : ''), prix: (600 + plus) / 1000 * 1.0},
         {label:'Flocons d\'avoine', qte:'600 g', prix:0.95}, {label:'Pain complet', qte:'500 g', prix:1.6},
         {label:'Skyr', qte:'900 g', prix:3.6}, {label:'Lait demi-écrémé', qte:'2\u202f000 ml', prix:1.9},
-        {label:'Légumes verts surgelés (haricots verts, épinards, courgettes)', qte:'2\u202f500 g', prix:5}, {label:'Bananes', qte:'8', prix:1.4}, {label:'Fruits (oranges, kiwis, raisin, fraises…)', qte:'8', prix:2.2},
+        {label:'Légumes verts surgelés', qte:'2\u202f500 g', prix:5}, {label:'Bananes', qte:'8', prix:1.4}, {label:'Fruits (pommes, poires, oranges…)', qte:'8', prix:2.2},
         {label:'Beurre de cacahuète', qte:'400 g', prix:2.1}, {label:'Miel', qte:'200 g', prix:1.3}
       ]},
       {cat:'Toutes les 4 semaines', mensuel:true, items:[{label:'Huile d\'olive', qte:'1\u202f000 ml', prix:7}]}
