@@ -46,8 +46,8 @@ console.log('\n== 66) Créneau le plus productif (assez de données) ==');
   const c = await cartes(fr);
   const creneau = c.find(x => /créneau le plus productif/i.test(x));
   ok(/08h–10h/.test(creneau), 'identifie bien la tranche 08h–10h : ' + creneau.slice(0,120));
-  ok(/6,0h/.test(creneau), 'cumule les 6 blocs d\'une heure : ' + (creneau.match(/[\d,]+h cumulées/)||[])[0]);
-  ok(/20h–22h/.test(creneau) && /1,7h/.test(creneau), 'et signale le créneau le moins rentable (4×25 min = 1,7h)');
+  ok(/6 h cumulées/.test(creneau), 'cumule les 6 blocs d\'une heure : ' + (creneau.match(/[^:]*cumulées/)||[])[0]);
+  ok(/20h–22h/.test(creneau) && /1 h 40/.test(creneau), 'et signale le créneau le moins rentable (4×25 min = 1 h 40)');
   await ctx.close();
 }
 
