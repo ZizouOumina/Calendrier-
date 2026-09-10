@@ -2326,6 +2326,20 @@
         <ul class="entry-list" id="examens-liste"></ul>
       </div>
 
+      <div class="panel sub-panel" id="portes-panel">
+        <div class="sub-head">
+          <h3>🚪 Les portes d'espagnol</h3>
+          <span class="sub-note" id="portes-note">—</span>
+        </div>
+        <p class="sub-note" style="margin-bottom:10px; line-height:1.6;">Le seul test qui compte est gratuit : tu es évalué vingt heures par semaine en amphi. Chaque jour de cours, une note de 0 à 3 à la clôture. La moyenne des <b>21 derniers jours</b> — jours de cours notés seulement — décide si un bloc Español peut devenir un bloc Projets perso. Jamais sur la note seule : il faut aussi les erreurs pour 100 mots du dimanche, et pour la deuxième porte un examen réellement passé en espagnol.</p>
+        <div id="portes-aujourdhui" hidden style="margin-bottom:12px; padding:11px 13px; background:var(--surface-hover); border:1px solid var(--border);">
+          <p class="sub-note" style="margin-bottom:8px; font-weight:600; color:var(--ink);">Aujourd'hui, tu as suivi le cours…</p>
+          <div class="mood-row" id="portes-note-jour"></div>
+        </div>
+        <div id="portes-etat"></div>
+        <p class="sub-note" style="margin-top:10px; line-height:1.6;">Le troisième bloc — <b>escribir</b> — reste jusqu'au 14 mars, quelle que soit la moyenne. La compréhension progresse vite, la production non : tu seras à l'aise en cours bien avant de savoir écrire une réponse d'examen, et c'est l'écrit qui est noté.</p>
+      </div>
+
       <div class="panel sub-panel">
         <div class="sub-head">
           <h3>Heures par matière</h3>
@@ -2748,6 +2762,7 @@
     <div class="field-row" style="margin-bottom:12px;"><label>Eau bue aujourd'hui</label>
       <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;"><button class="btn" type="button" id="cl-eau-moins">−250 ml</button><b id="cl-eau" style="min-width:64px; text-align:center; color:var(--cyan-bright); font-family:var(--font-display); font-size:22px;">0,0 L</b><button class="btn" type="button" id="cl-eau-plus">+250 ml</button><span class="sub-note" id="cl-eau-note"></span></div></div>
     <div class="field-row" style="margin-bottom:12px;"><label>Humeur du jour</label><div class="mood-row" id="cl-humeur"></div></div>
+    <div class="field-row" style="margin-bottom:12px;" id="cl-cours-row" hidden><label>🚪 Aujourd'hui, tu as suivi le cours <span class="sub-note">(0 à 3 — c'est ce qui ouvre les portes d'espagnol)</span></label><div class="mood-row" id="cl-cours"></div></div>
     <div class="field-grid" style="margin-bottom:12px;" data-cl-plus>
       <div class="field-row"><label for="cl-coran">Page de Coran</label><input type="number" id="cl-coran" min="0" inputmode="numeric" placeholder="n°"></div>
       <div class="field-row"><label for="cl-duaa">Duaa apprise</label><input type="text" id="cl-duaa" placeholder="ex : duaa du voyage"></div>
@@ -2983,7 +2998,7 @@
      rendus), on prévient : l'annulation ⌘Z reste disponible juste après. */
   var LISTES_SURVEILLEES = {
     'batcave-habits': 'habitudes', 'batcave-transactions': 'transactions',
-    'batcave-fixed-charges': 'charges fixes', 'batcave-sessions': 'blocs de travail',
+    'batcave-fixed-charges': 'charges fixes', 'batcave-sessions': 'blocs de travail', 'batcave-cours-suivi': 'suivi des cours en espagnol',
     'batcave-revision': 'journées de révision', 'batcave-projets': 'journées de projets',
     'batcave-sante': 'entrées santé'
   };
@@ -3099,7 +3114,7 @@
      place dans le quota de 5000 documents et embrouille les sauvegardes, sans que rien ne
      la lise jamais. On la signale ; la suppression reste ton geste. */
   var CLES_CONNUES = ['addictions','budget-limits','business','coran','courses','dash-more','duaas','duree-bloc','sport-log','objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','kcal-ajustement','gcal-ecriture','reinit','fc-migration-v1','charge','shopify-boutique','journees','examens-heures','vacances','jours-exclus',
-    'espagnol','examens','fc-prix-icloud-3','fixed-charges','goals','goals-depart','saisons','insights-hist','last-restore-drill','habitlog','habits','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','objectifs-v5-espanol',
+    'espagnol','examens','cours-suivi','portes','fc-prix-icloud-3','fixed-charges','goals','goals-depart','saisons','insights-hist','last-restore-drill','habitlog','habits','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','objectifs-v5-espanol',
     'horizon','last-auto-backup','last-manual-backup','last-bilan-prompt','last-compaction','last-open','last-rotation','notion-url',
     'pomodial-purge','projets','report','revision','revision-fusionnee','revue','sante','sauvegarde','sessions',
     'shopify-last-order-count','taches','timer','transactions','undo-stack','undo-toast','cloud-reload-at','cloud-toast','notion-cache','anki',
@@ -10877,6 +10892,198 @@
   function cleJournee(dow){
     return dow===5 ? 'friday' : (dow===6 ? 'saturday' : (dow===0 ? 'weekend' : (dow===3 ? 'wednesday' : 'weekday')));
   }
+
+  /* ===== Les portes d'espagnol =====
+     Le Dossier Español mesure dix choses le dimanche : erreurs pour 100 mots, oral sans
+     pause, conjugaison chronometree, DELE mensuel. Toutes utiles, aucune ne repond a la
+     question qui decide reellement de son emploi du temps : « est-ce que je suis un cours
+     d'Anatomia en espagnol assez bien pour arreter d'y consacrer trois blocs par jour ? »
+     Un DELE B2 ne repond pas a ca.
+
+     Or le meilleur test est gratuit et quotidien : a partir du 14 septembre il est evalue
+     vingt heures par semaine dans un amphitheatre. Il suffit de l'enregistrer. Chaque jour
+     de cours, une note de 0 a 3 a la cloture -- 3 : j'ai suivi le fil du debut a la fin ;
+     2 : perdu par moments, rattrape ; 1 : perdu souvent, mes notes sont des trous ;
+     0 : je n'ai pas suivi.
+
+     La decision ne se prend jamais sur le dernier point, mais sur une MOYENNE GLISSANTE de
+     21 jours : chaque soir la fenetre se deplace, le jour le plus vieux sort. Une fenetre
+     calendaire ne s'ouvrirait que le lundi ; une fenetre glissante s'ouvre le jour ou c'est
+     vrai. Trois semaines couvrent toutes ses matieres au moins deux fois : une bonne semaine
+     de Documentacion ne prouve pas qu'il suivra Bioquimica.
+
+     Deux garde-fous. La note est auto-declaree : une moyenne sur douze jours rend
+     l'auto-indulgence difficile mais pas impossible, donc chaque porte exige AUSSI un
+     critere objectif -- les erreurs pour 100 mots, corrigees sur un texte, puis un examen
+     reellement passe en espagnol. Et une HYSTERESIS : la porte s'ouvre a 2,5 mais ne se
+     referme qu'en dessous de 2,2, sinon le planning changerait toutes les semaines.
+
+     Enfin, le troisieme bloc ne s'ouvre jamais ici. La comprehension progresse vite, la
+     PRODUCTION non : il se sentira a l'aise en cours bien avant de savoir ecrire une reponse
+     d'examen. Or c'est l'ecrit qui est note. « escribir » reste jusqu'au 14 mars. */
+  var PORTES_FENETRE_J = 21;      /* largeur de la fenetre glissante, en jours */
+  var PORTES_MIN_JOURS = 12;      /* jours de cours notes en dessous desquels on ne conclut rien */
+  var PORTES = [
+    {n:1, ouvre:2.5, ferme:2.2, erreurs:3, examen:false,
+     titre:'Un bloc Español devient un bloc Projets perso'},
+    {n:2, ouvre:2.8, ferme:2.5, erreurs:2, examen:true,
+     titre:'Un deuxième bloc Español devient un bloc Projets perso'}
+  ];
+  var coursSuiviState = load('batcave-cours-suivi', {});
+  if(!coursSuiviState || typeof coursSuiviState !== 'object' || Array.isArray(coursSuiviState)) coursSuiviState = {};
+  Object.keys(coursSuiviState).forEach(function(k){
+    var v = Number(coursSuiviState[k]);
+    if(!/^\d{4}-\d{2}-\d{2}$/.test(k) || isNaN(v) || v < 0 || v > 3) delete coursSuiviState[k];
+    else coursSuiviState[k] = Math.round(v);
+  });
+  var portesEtat = load('batcave-portes', {});
+  if(!portesEtat || typeof portesEtat !== 'object' || Array.isArray(portesEtat)) portesEtat = {};
+
+  /* Un jour de cours est un jour dont le PLANNING porte un bloc « Cours » : la grille tient
+     deja compte des vacances, des partiels et des jours exclus, on ne les redetecte pas. */
+  function jourDeCours(iso){
+    if(!iso || iso < PROGRAMME_DEBUT) return false;
+    /* grilleDe et non blocsDuPlanning : ce dernier filtre par typeBlocPlan, qui rend null
+       pour « Cours » -- un bloc de cours n'est pas du temps de travail personnel. */
+    var blocs = grilleDe(cleJournee(dowDe(iso)), iso) || [];
+    for(var i = 0; i < blocs.length; i++){ if(blocs[i] && blocs[i][1] === 'Cours') return true; }
+    return false;
+  }
+  function noteCours(iso){
+    var v = coursSuiviState[iso];
+    return (v === 0 || v > 0) ? Number(v) : null;
+  }
+  function noterCours(iso, v){
+    if(v === null || v === undefined || v === ''){ delete coursSuiviState[iso]; }
+    else {
+      var n = Math.round(Number(v));
+      if(isNaN(n) || n < 0 || n > 3) return;
+      coursSuiviState[iso] = n;
+    }
+    save('batcave-cours-suivi', coursSuiviState);
+  }
+  /* La fenetre : les 21 derniers jours, jours de cours NOTES seulement. Les week-ends et les
+     jours sans amphi ne diluent rien, ils sont absents. */
+  function fenetrePortes(iso){
+    var fin = iso || todayISO, notes = [];
+    for(var i = PORTES_FENETRE_J - 1; i >= 0; i--){
+      var j = isoDecale(fin, -i), v = noteCours(j);
+      if(v !== null && jourDeCours(j)) notes.push({date:j, v:v});
+    }
+    var somme = notes.reduce(function(a, x){ return a + x.v; }, 0);
+    return {n: notes.length, notes: notes, debut: isoDecale(fin, -(PORTES_FENETRE_J - 1)), fin: fin,
+            moyenne: notes.length ? somme / notes.length : null,
+            assez: notes.length >= PORTES_MIN_JOURS};
+  }
+  /* Le critere objectif : les erreurs pour 100 mots du dernier bilan du dimanche tombant
+     dans la fenetre. Hors fenetre, un bon chiffre d'il y a deux mois ne prouve rien. */
+  function erreursFenetre(f){
+    if(typeof rvState === 'undefined' || !rvState) return null;
+    var dans = rvState.filter(function(r){
+      return r && r.date && r.date >= f.debut && r.date <= f.fin &&
+             r.espanol && r.espanol.errores !== null && r.espanol.errores !== undefined;
+    }).sort(function(a, b){ return a.date < b.date ? 1 : -1; });
+    return dans.length ? Number(dans[0].espanol.errores) : null;
+  }
+  function examenPasse(iso){
+    var ref = iso || todayISO;
+    if(typeof examensState === 'undefined' || !examensState) return null;
+    var passes = Object.keys(examensState).filter(function(m){ return examensState[m] && examensState[m] < ref; })
+                       .sort(function(a, b){ return examensState[a] < examensState[b] ? 1 : -1; });
+    return passes.length ? {matiere: passes[0], date: examensState[passes[0]]} : null;
+  }
+  /* L'etat d'une porte, hysteresis comprise. Ouverte, elle le reste tant que la moyenne n'est
+     pas retombee SOUS le seuil de fermeture ; fermee, il faut atteindre le seuil d'ouverture.
+     Entre les deux, on ne touche a rien -- c'est la zone morte qui evite le yo-yo. */
+  function etatPortes(iso){
+    var f = fenetrePortes(iso), err = erreursFenetre(f), ex = examenPasse(iso), out = [];
+    PORTES.forEach(function(P, k){
+      var etaitOuverte = !!portesEtat['p' + P.n];
+      var manque = [], ouverte = false;
+      if(!f.assez) manque.push(f.n + ' jour' + (f.n > 1 ? 's' : '') + ' de cours noté' + (f.n > 1 ? 's' : '') + ' sur ' + PORTES_MIN_JOURS + ' — la fenêtre ne conclut rien');
+      if(k > 0 && !(out[0] && out[0].ouverte)) manque.push('la première porte n’est pas franchie');
+      if(P.examen && !ex) manque.push('aucun examen encore passé en espagnol');
+      if(err === null) manque.push('aucun relevé d’erreurs pour 100 mots depuis le ' + fmtDate(f.debut));
+      else if(!(err < P.erreurs)) manque.push('erreurs pour 100 mots : ' + fmtNombre(err, 1) + ' — il en faut moins de ' + P.erreurs);
+      if(f.assez && f.moyenne !== null){
+        var seuil = etaitOuverte ? P.ferme : P.ouvre;
+        if(!(f.moyenne >= seuil)) manque.push('suivi en cours : ' + fmtNombre(f.moyenne, 2) + ' — il faut ' + fmtNombre(seuil, 1) + (etaitOuverte ? ' pour la garder' : ' pour l’ouvrir'));
+      }
+      ouverte = !manque.length;
+      out.push({n:P.n, titre:P.titre, ouverte:ouverte, etaitOuverte:etaitOuverte, manque:manque,
+                seuil: etaitOuverte ? P.ferme : P.ouvre, ouvre:P.ouvre, ferme:P.ferme,
+                erreursSeuil:P.erreurs, examen:ex});
+    });
+    return {fenetre:f, erreurs:err, examen:ex, portes:out};
+  }
+  /* La memoire de l'hysteresis. Ecrite au rendu, une seule fois par changement : sans elle,
+     etatPortes retomberait au seuil d'ouverture des le lendemain d'une ouverture. */
+  function memoriserPortes(e){
+    var change = false;
+    e.portes.forEach(function(p){
+      if(!!portesEtat['p' + p.n] !== p.ouverte){ portesEtat['p' + p.n] = p.ouverte; change = true; }
+    });
+    if(change){ portesEtat.maj = todayISO; save('batcave-portes', portesEtat); }
+    return change;
+  }
+
+  var COURS_NOTES = {
+    3: {court:'3 · suivi', long:'j’ai suivi le fil du début à la fin'},
+    2: {court:'2 · rattrapé', long:'j’ai perdu le fil par moments, je l’ai rattrapé'},
+    1: {court:'1 · perdu', long:'j’ai perdu le fil souvent, mes notes sont des trous'},
+    0: {court:'0 · rien', long:'je n’ai pas suivi, j’ai recopié des sons'}
+  };
+  function renderNoteCoursDu(elId, iso, apres){
+    var el = document.getElementById(elId);
+    if(!el) return;
+    var actuelle = noteCours(iso);
+    el.innerHTML = [3, 2, 1, 0].map(function(n){
+      return '<button type="button" class="chip' + (actuelle === n ? ' active' : '') + '" data-note-cours="' + n +
+             '" title="' + COURS_NOTES[n].long + '">' + COURS_NOTES[n].court + '</button>';
+    }).join('');
+    el.querySelectorAll('[data-note-cours]').forEach(function(b){
+      b.addEventListener('click', function(){
+        var n = Number(b.dataset.noteCours);
+        noterCours(iso, noteCours(iso) === n ? null : n);
+        renderNoteCoursDu(elId, iso, apres);
+        if(typeof apres === 'function') apres();
+      });
+    });
+  }
+  function renderPortes(){
+    var zone = document.getElementById('portes-etat');
+    if(!zone) return;
+    var jour = document.getElementById('portes-aujourdhui');
+    if(jour){
+      jour.hidden = !jourDeCours(todayISO);
+      if(!jour.hidden) renderNoteCoursDu('portes-note-jour', todayISO, renderPortes);
+    }
+    var e = etatPortes(todayISO);
+    memoriserPortes(e);
+    var f = e.fenetre, blocs = [];
+    var entete = f.moyenne === null
+      ? 'Aucun jour de cours noté sur les 21 derniers jours.'
+      : 'Suivi en cours : <b style="color:var(--ink);">' + fmtNombre(f.moyenne, 2) + ' / 3</b> sur <b style="color:var(--ink);">' + f.n + '</b> jour' + (f.n > 1 ? 's' : '') + ' de cours noté' + (f.n > 1 ? 's' : '') + ', du ' + fmtDate(f.debut) + ' au ' + fmtDate(f.fin) + '.';
+    blocs.push('<p class="sub-note" style="line-height:1.6;">' + entete +
+      (e.erreurs === null ? ' Aucun relevé d’erreurs pour 100 mots dans la fenêtre.' : ' Erreurs pour 100 mots : <b style="color:var(--ink);">' + fmtNombre(e.erreurs, 1) + '</b>.') +
+      (e.examen ? ' Premier examen passé : ' + e.examen.matiere + ', le ' + fmtDate(e.examen.date) + '.' : '') + '</p>');
+    e.portes.forEach(function(p){
+      var couleur = p.ouverte ? 'var(--good)' : 'var(--ink-dim)';
+      var corps = p.ouverte
+        ? '<p class="sub-note" style="margin-top:4px;">Tu peux convertir ce bloc dès demain. Elle ne se refermera qu’en dessous de ' + fmtNombre(p.ferme, 1) + ' de moyenne — la zone entre ' + fmtNombre(p.ferme, 1) + ' et ' + fmtNombre(p.ouvre, 1) + ' ne change rien.</p>'
+        : '<ul class="mini-list" style="margin-top:4px;">' + p.manque.map(function(m){ return '<li>' + m + '</li>'; }).join('') + '</ul>';
+      blocs.push('<div style="margin-top:12px; padding:10px 12px; border-left:3px solid ' + couleur + '; background:var(--surface-hover);">' +
+        '<p style="font-weight:600; color:var(--ink); font-size:13.5px;">' + (p.ouverte ? '✅ Porte ' + p.n + ' franchie' : '🔒 Porte ' + p.n) + ' — ' + p.titre + '</p>' +
+        corps + '</div>');
+    });
+    zone.innerHTML = blocs.join('');
+    var note = document.getElementById('portes-note');
+    if(note){
+      var ouvertes = e.portes.filter(function(p){ return p.ouverte; }).length;
+      note.textContent = !f.assez ? (f.n + '/' + PORTES_MIN_JOURS + ' jours notés')
+                       : (ouvertes ? ouvertes + ' porte' + (ouvertes > 1 ? 's' : '') + ' franchie' + (ouvertes > 1 ? 's' : '') : 'aucune porte franchie');
+    }
+  }
   /* Tout ce qui lit agendaDuJour() doit être redessiné ensemble quand Google répond.
      L'oubli de renderCalendar ici faisait diverger l'emploi du temps de la vue semaine :
      l'un gardait le planning seul pendant que l'autre affichait déjà les événements. */
@@ -12062,7 +12269,7 @@
     document.getElementById('rev-chart').innerHTML = lineChartSVG(pts, null, 'h');
     renderMatieres();
     renderEspagnol();
-    renderExamens();
+    renderExamens(); renderPortes();
     renderAgendas();
   }
   function renderMatieres(){
@@ -13160,6 +13367,13 @@
     if(!ov) return;
     clotureProposee = true;
     appliquerModeCloture();
+    (function(){
+      var row = document.getElementById('cl-cours-row');
+      if(row){
+        row.hidden = !jourDeCours(todayISO);
+        if(!row.hidden) renderNoteCoursDu('cl-cours', todayISO, function(){ try{ renderPortes(); }catch(e){} });
+      }
+    })();
     document.getElementById('cloture-date').textContent = dateLongue(new Date()) + (journalState.cloture ? ' · déjà clôturée à ' + journalState.cloture + ' — tu peux compléter.' : ' · tout est facultatif, le bouton suffit.');
     document.getElementById('cl-sommeil').value = journalState.sommeil || '';
     document.getElementById('cl-poids').value = journalState.poids || '';

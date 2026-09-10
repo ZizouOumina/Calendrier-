@@ -139,7 +139,7 @@ console.log('\n== 284) Raccourcis P, C, H ==');
   await t2.ctx.close();
 }
 
-console.log('\n== 285) Clôture express : quatre champs, et jamais le dimanche ==');
+console.log('\n== 285) Clôture express : le minimum, et jamais le dimanche ==');
 {
   const { ctx, fr, page } = await ouvrir(MERCREDI_SOIR);
   await fr.evaluate(() => document.getElementById('bc-cloture').click());
@@ -149,8 +149,11 @@ console.log('\n== 285) Clôture express : quatre champs, et jamais le dimanche =
   await fr.evaluate(() => document.querySelector('[data-cl-mode="court"]').click());
   await page.waitForTimeout(150);
   const champs = await fr.evaluate(() => [...document.querySelectorAll('#cloture-overlay .field-row')].filter(e => e.offsetParent !== null).map(e => (e.querySelector('label') || {}).textContent || ''));
-  ok(champs.length === 4, 'en express, quatre champs seulement (' + champs.length + ')');
-  ok(/Sommeil/.test(champs[0]) && /Eau/.test(champs[1]) && /Humeur/.test(champs[2]) && /Habitudes/.test(champs[3]), 'sommeil, eau, humeur, habitudes : ' + champs.join(' | ').slice(0, 90));
+  /* Le mercredi est un jour de cours : la note de suivi du cours s'ajoute aux quatre
+     champs de base. Elle y a sa place -- un seul geste, et c'est elle qui ouvre les portes
+     d'espagnol ; l'express garde « ce qui change les chiffres du lendemain ». */
+  ok(champs.length === 5, 'en express un jour de cours : les quatre champs de base plus la note du cours (' + champs.length + ')');
+  ok(/Sommeil/.test(champs[0]) && /Eau/.test(champs[1]) && /Humeur/.test(champs[2]) && /suivi le cours/.test(champs[3]) && /Habitudes/.test(champs[4]), 'sommeil, eau, humeur, cours, habitudes : ' + champs.join(' | ').slice(0, 110));
   ok(await fr.evaluate(() => localStorage.getItem('bc-cloture-mode')) === 'court', 'le choix est mémorisé sur l\'appareil');
   /* et il n'est pas dans la sauvegarde : c'est un réglage d'appareil */
   const dansSauvegarde = await fr.evaluate(() => { try{ return JSON.stringify(window.__bcSauvegarde ? window.__bcSauvegarde() : {}).indexOf('bc-cloture-mode') > -1; }catch(e){ return false; } });
