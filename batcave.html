@@ -12916,7 +12916,6 @@
        absent ne dit rien, et on passe la soirée à chercher dans les réglages. Cliqué, il
        explique. Seul l'interrupteur de veille disparaît, il n'aurait rien à armer. */
     btn.hidden = false;
-    if(btnVeille) btnVeille.hidden = !Reco;
     var reco = null, ecoute = false, continu = false, relance = null, echecs = 0;
 
     function normaliser(t){
@@ -13089,6 +13088,29 @@
       derniereCause = cause;
       showToast(EXPLIQUE[cause] || EXPLIQUE['cadre']);
     }
+    /* ===== Quand le micro est hors de portée =====
+       Dans la page publiée, le cadre de claude.ai n'accorde pas le micro : la
+       reconnaissance du navigateur ne démarrera jamais, quoi qu'on règle. Mais le micro
+       du CLAVIER, lui, marche partout — la dictée de macOS (Fn Fn) et celle de l'iPhone
+       (la touche 🎤 du clavier) écrivent dans n'importe quel champ de texte, et c'est le
+       système qui écoute, pas la page. On lui ouvre donc un champ : tu dictes la même
+       phrase, avec la même grammaire, et Alfred répond de la même voix.
+       Ce n'est pas un lot de consolation : ça marche sur les trois appareils, sans
+       autorisation à donner, et ça n'écoute rien tant que tu n'as pas appuyé. */
+    function parlerAuClavier(){
+      askDialog({titre:'🦇 Alfred', libelleOk:'Exécuter', saisie:true, valeur:'',
+                 message:'Dicte ou écris ta phrase — « pomodoro révision », « coche le déjeuner », « clôture », « stop ». Sur le Mac : Fn Fn pour dicter. Sur l\'iPhone : la touche 🎤 du clavier.'},
+        function(phrase){
+          if(phrase === null) return;
+          phrase = String(phrase).trim();
+          if(!phrase) return;
+          var rep = executer(phrase);
+          repondreTout(rep || 'Je n’ai pas compris, Monsieur : « ' + phrase + ' »');
+        });
+    }
+    /* Vrai si le micro ne peut PAS s'ouvrir ici, su sans rien demander à personne :
+       navigateur sans reconnaissance, ou cadre qui la refuse. */
+    function microHorsDePortee(){ return !Reco || cadreInterdit(); }
 
     /* ----- micro ----- */
     function lireVeille(){ try{ return localStorage.getItem('bc-alfred-veille') === '1'; }catch(e){ return false; } }
@@ -13096,6 +13118,13 @@
     function majBoutons(){
       btn.setAttribute('aria-pressed', (ecoute && !continu) ? 'true' : 'false');
       btn.classList.toggle('voix-active', ecoute && !continu);
+      if(microHorsDePortee()){
+        btn.textContent = '⌨️ Alfred';
+        btn.title = 'Le micro du navigateur n’est pas accessible ici. Appuie et DICTE ta phrase avec le micro de ton clavier (Fn Fn sur le Mac, la touche 🎤 sur l’iPhone) : même grammaire, même réponse à voix haute.';
+      } else {
+        btn.textContent = '🎙️ Alfred';
+        btn.title = 'Appuie et parle : « pomodoro révision », « coche le petit-déjeuner », « clôture », « stop ». « Alfred, … » au début est accepté. Il répond à voix haute.';
+      }
       if(!btnVeille) return;
       btnVeille.setAttribute('aria-pressed', continu ? 'true' : 'false');
       btnVeille.classList.toggle('voix-active', continu && ecoute);
@@ -13181,8 +13210,15 @@
     function ecouter(){
       if(continu){ showToast('🦇 Alfred écoute déjà — dis « Alfred, … ».'); return; }
       if(ecoute){ couper(); return; }
+      /* micro impossible : on ne fait pas semblant d'essayer, on ouvre le champ de dictée */
+      if(microHorsDePortee()){ parlerAuClavier(); return; }
       demanderMicro().then(function(cause){
-        if(cause){ expliquer(cause); return; }
+        if(cause){
+          expliquer(cause);
+          /* refus réparable : on laisse le message. Sinon la dictée prend le relais. */
+          if(cause !== 'refus') setTimeout(parlerAuClavier, 1200);
+          return;
+        }
         derniereCause = null;
         demarrer();
         if(ecoute) showToast('🎙️ J’écoute…');
@@ -13217,9 +13253,13 @@
     });
     /* Le mode choisi sur CET appareil est repris à l'ouverture : s'il n'est plus autorisé,
        onerror le désarme tout seul. */
-    continu = lireVeille();
+    /* La veille n'a de sens que si le micro peut s'ouvrir : sinon elle n'aurait rien à
+       armer, et un interrupteur qui ne fait rien est pire que pas d'interrupteur. */
+    if(btnVeille) btnVeille.hidden = microHorsDePortee();
+    continu = lireVeille() && !microHorsDePortee();
     majBoutons();
     if(continu) demanderMicro().then(function(cause){
+
       /* la veille avait été armée sur cet appareil : si le micro n'est plus accessible,
          on désarme en silence — un message d'erreur à chaque ouverture serait pire. */
       if(cause){ derniereCause = cause; continu = false; ecrireVeille(); majBoutons(); return; }

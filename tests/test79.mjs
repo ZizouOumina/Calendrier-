@@ -272,6 +272,62 @@ for(const [cas, attendu, quoi] of [
   await ctx.close();
 }
 
+console.log('\n== 9) Micro hors de portée : la dictée du clavier prend le relais ==');
+{
+  /* Le cas réel de la page publiée : le cadre refuse le micro AVANT toute demande.
+     La politique de permissions est simulée telle que Chrome l'expose. */
+  const ctx = await b.newContext({viewport:{width:1440,height:1300}, timezoneId:'Europe/Madrid', locale:'fr-FR'});
+  await ctx.addInitScript(FAUX_MICRO);
+  await ctx.addInitScript(() => {
+    window.claude = undefined;
+    try{ Object.defineProperty(document, 'featurePolicy', {configurable:true, value:{
+      allowsFeature: function(f){ return f !== 'microphone'; }
+    }}); }catch(e){}
+  });
+  const page = await ctx.newPage();
+  page.on('pageerror', e=>{err++; console.log('  PAGEERROR '+e.message);});
+  await page.clock.install({time:new Date('2026-09-14T09:00:00+02:00')});
+  await page.goto('http://127.0.0.1:8199/host.html');
+  await page.frameLocator('#f').locator('#dash-focus').waitFor({state:'attached',timeout:20000});
+  const fr = page.frames().find(x=>x.url().includes('batcave.html'));
+  await fr.evaluate(()=>document.querySelectorAll('.overlay').forEach(o=>o.hidden=true));
+  await page.waitForTimeout(400);
+
+  const e = await etatBoutons(fr);
+  ok(e.parlerVisible && e.parlerTexte === '⌨️ Alfred', 'le bouton annonce la dictée : « ' + e.parlerTexte + ' »');
+  ok(e.veilleVisible === false, 'l\'interrupteur de veille disparaît : il n\'aurait rien à armer');
+  ok(await fr.evaluate(()=>window.__micro.demarrages) === 0, 'aucune tentative d\'ouverture du micro');
+
+  /* on appuie : un champ de texte s'ouvre, pas un micro */
+  await fr.evaluate(()=>document.getElementById('voix-btn').click());
+  await page.waitForTimeout(200);
+  const champ = await fr.evaluate(()=>({ouvert: !document.getElementById('ask-overlay').hidden,
+                                        titre: document.getElementById('ask-title').textContent,
+                                        msg: document.getElementById('ask-msg').textContent}));
+  ok(champ.ouvert, 'un champ s\'ouvre au lieu du micro');
+  ok(/Alfred/.test(champ.titre) && /Fn Fn|🎤/.test(champ.msg), 'et il dit comment dicter : « ' + champ.msg.slice(0, 80) + ' »');
+
+  /* la phrase dictée passe par la même grammaire, et la réponse est dite à voix haute */
+  await fr.evaluate(()=>{ document.getElementById('ask-input').value = 'Alfred, coche le déjeuner';
+                          document.getElementById('ask-ok').click(); });
+  await page.waitForTimeout(220);
+  const coches = await fr.evaluate(()=>{ const s = JSON.parse(localStorage.getItem('batcave-meals-2026-09-14') || '{}');
+                                         return Object.keys(s).filter(k=>s[k]).length; });
+  ok(coches > 0, 'la phrase dictée agit : le déjeuner est coché');
+  const dit = await fr.evaluate(()=>window.__dit.map(x=>x.texte));
+  ok(dit.length === 1 && /Déjeuner coché, Monsieur\.$/.test(dit[0]), 'et Alfred répond de la même voix : « ' + (dit[0]||'') + ' »');
+
+  /* une phrase hors périmètre le dit aussi, au lieu de ne rien faire */
+  await fr.evaluate(()=>document.getElementById('voix-btn').click());
+  await page.waitForTimeout(150);
+  await fr.evaluate(()=>{ document.getElementById('ask-input').value = 'fais-moi un café';
+                          document.getElementById('ask-ok').click(); });
+  await page.waitForTimeout(220);
+  const dit2 = await fr.evaluate(()=>window.__dit.map(x=>x.texte));
+  ok(dit2.length === 2 && /pas compris, Monsieur/.test(dit2[1]), 'une phrase hors périmètre est dite, pas ignorée : « ' + (dit2[1]||'') + ' »');
+  await ctx.close();
+}
+
 await b.close();
 console.log(err ? '\n' + err + ' ÉCHEC(S)' : '\nTOUT VERT');
 process.exit(err ? 1 : 0);
