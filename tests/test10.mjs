@@ -61,7 +61,12 @@ await fr.evaluate(() => document.getElementById('timer-pomodoro').click());
 await page.waitForTimeout(200);
 d = await dlg();
 const presel = await fr.evaluate(() => document.getElementById('ask-select').value);
-ok(presel === 'Anatomía I', 'la dernière matière est présélectionnée : ' + presel);
+const motif = await fr.evaluate(() => document.getElementById('ask-msg').textContent);
+/* Ce n'est plus la DERNIÈRE matière travaillée qui est proposée — ce serait proposer
+   précisément celle dont on a le moins besoin — mais celle qui en a le plus besoin : ici,
+   Anatomía I vient de recevoir une heure, donc une autre passe devant. */
+ok(presel !== 'Anatomía I', 'la matière qu\'on vient de travailler n\'est plus reproposée : ' + presel);
+ok(/Proposé : /.test(motif) && /h faites sur 30 jours/.test(motif), 'et la proposition est motivée : ' + (motif.match(/Proposé :[^.]*\./) || [''])[0]);
 await repondre('Bioquímica');
 await page.clock.fastForward('01:00:01'); await page.waitForTimeout(400);
 let rev = await ls('batcave-revision');

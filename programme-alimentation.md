@@ -39,8 +39,9 @@ Quantités crues et huile d'olive par protéine :
 | Saumon | 135 g + 20 ml d'huile | 135 g + 8 ml d'huile |
 
 ## La boucle poids → calories
-- Pesée tous les matins à jeun, saisie dans le Journal ou à la clôture du soir.
-- La Batcave ne propose un ajustement qu'avec au moins trois pesées par semaine sur deux semaines.
+- Pesée le **lundi matin** à jeun, après les toilettes, avant de boire — une par semaine, toujours dans les mêmes conditions. Saisie dans le Journal ou à la clôture du soir.
+- La Batcave lit une **pente** : une droite des moindres carrés sur les pesées des huit dernières semaines, dont elle tire le gain par semaine. Il lui faut 4 pesées étalées sur 12 jours, soit quatre lundis, pour se prononcer.
+- Elle rejoue le calcul en retirant chaque pesée une par une : si la recommandation change en enlevant une seule d'entre elles, elle ne propose rien et nomme la pesée qui décidait de tout. Un lundi salé ne fait donc pas retirer 100 kcal.
 - L'ajustement s'écrit dans les pâtes du dîner : +150 kcal = +40 g de pâtes crues (3,6 kcal par gramme cru, arrondi à 10 g). La liste de courses suit (× 7 jours).
 - Rythme visé : environ 1 kg par mois. Si le poids stagne trois semaines, on rouvre le chiffre, pas tout le plan.
 

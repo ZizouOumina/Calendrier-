@@ -96,8 +96,10 @@ console.log('\n== 3) Une séance à moitié faite vaut une demi-séance ==');
 console.log('\n== 4) Une pesée salée ne fait plus retirer 100 kcal ==');
 {
   /* Deux semaines de pesées : 7 jours à 64,0 puis 7 jours à 64,4 — SAUF un matin à 66,0.
-     Moyenne brute des 7 derniers jours : 64,63 → +0,63 kg, soit plus de deux fois le
-     rythme visé (0,23) → l'ancien calcul retirait 100 kcal pour un dîner salé. */
+     Ce seul matin salé tire la pente à +0,47 kg / semaine, soit plus de deux fois le rythme
+     visé (0,23) : l'ancien calcul retirait 100 kcal pour un dîner de la veille. Sans lui, la
+     pente retombe dans la cible — donc la recommandation tient à cette pesée-là, et la
+     Batcave refuse de conclure au lieu de couper les calories. */
   const av = jours('2026-09-01', 7).map(iso => [iso, 64.0]);
   const rec = jours('2026-09-08', 7).map((iso, i) => [iso, i === 3 ? 66.0 : 64.4]);
   const {ctx, page, fr} = await ouvrir(pesees(av.concat(rec)));
@@ -105,8 +107,8 @@ console.log('\n== 4) Une pesée salée ne fait plus retirer 100 kcal ==');
   const k = await fr.evaluate(() => ({note: document.getElementById('kcal-note').innerText,
                                       txt: document.getElementById('kcal-analyse').innerText.replace(/\s+/g,' ')}));
   ok(!/-100/.test(k.note), 'la pesée à 66,0 kg ne déclenche plus de coupe : ' + k.note);
-  ok(/rien à changer/.test(k.note), 'verdict : rien à changer (' + k.note + ')');
-  ok(/Tendance : \+0,40 kg/.test(k.txt), 'tendance élaguée : +0,40 kg au lieu de +0,63 — ' + (k.txt.match(/Tendance[^.]*/) || [''])[0]);
+  ok(/une seule pesée décide/.test(k.note), 'verdict : on ne conclut pas sur un matin salé (' + k.note + ')');
+  ok(/sans celle du 11 sept/.test(k.txt) && /66,0 kg/.test(k.txt), 'et la pesée en cause est nommée : ' + (k.txt.match(/Une seule pesée[^.]*\./) || [''])[0]);
   await ctx.close();
 }
 {

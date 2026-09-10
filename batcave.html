@@ -4859,6 +4859,12 @@
     var vues = matieresConnues();                       /* déjà utilisées, les plus travaillées d'abord */
     var noms = MATIERES_SEED.map(function(m){ return m.court; });
     vues.forEach(function(v){ if(noms.indexOf(v) === -1) noms.push(v); });   /* matières ajoutées à la main */
+    /* Une matière dont l'examen est daté doit être choisissable même si aucune minute n'y a
+       encore été passée : sans ça, la Batcave pouvait proposer une matière que la liste ne
+       contenait pas, et le navigateur retombait silencieusement sur la première. */
+    try{
+      Object.keys(examensState || {}).forEach(function(m){ if(m && noms.indexOf(m) === -1) noms.push(m); });
+    }catch(e){}
     return noms.concat([MATIERE_SANS, MATIERE_AUTRE]);
   }
   function libelleLongMatiere(court){
@@ -4871,16 +4877,64 @@
      preciser » ; sur Cartes, Annales, Correction, on nomme LA matiere travaillee. Sinon la
      repartition par matiere de l'onglet Etudes ment. Le bloc en cours fixe donc le choix
      propose et le message ; le choix reste libre. */
+  /* ===== Quelle matière réviser — toute l'année, pas seulement en partiels =====
+     Pendant les partiels, chaque bloc ciblé reçoit sa matière (besoinsPartiels, plus bas).
+     Le reste de l'année, le lanceur proposait derniereMatiere() : la matière la PLUS
+     travaillée le dernier jour travaillé. Il reproposait donc précisément celle dont tu
+     avais le moins besoin, et c'est comme ça qu'une matière se fait oublier trois semaines
+     sans que rien ne le signale.
+     Même règle que pendant les partiels, étendue à toutes les matières : ce qu'il te reste
+     à faire, divisé par les jours qui restent avant SON examen. Une matière dont l'examen
+     est daté et proche passe devant ; à examens équivalents, c'est celle qui a le moins
+     d'heures sur trente jours. Une matière sans date saisie n'est pas écartée pour autant :
+     elle est jugée sur un horizon par défaut, donc elle revient dès qu'on l'a délaissée.
+     Le choix reste libre : c'est une proposition, motivée à l'écran, jamais une contrainte. */
+  var HORIZON_SANS_DATE_J = 90;
+  function besoinsMatieres(iso){
+    iso = iso || todayISO;
+    var heures = revisionParMatiere(0, 30).parM || {};
+    var besoin = function(h, j){ return (10 - Math.min(10, h)) / Math.max(1, j + 1); };
+    var out = [], vus = {};
+    Object.keys(examensState).forEach(function(m){
+      var d = examensState[m];
+      if(!d || d < iso) return;
+      var h = (Number(heures[m]) || 0) / 60;
+      var j = Math.max(0, daysBetween(new Date(iso + 'T00:00:00'), new Date(d + 'T00:00:00')));
+      vus[m] = true;
+      out.push({m:m, iso:d, jours:j, heures:Math.round(h * 10) / 10, besoin:besoin(h, j)});
+    });
+    optionsMatieres().forEach(function(m){
+      if(vus[m] || m === MATIERE_SANS || m === MATIERE_AUTRE) return;
+      var h = (Number(heures[m]) || 0) / 60;
+      out.push({m:m, iso:null, jours:null, heures:Math.round(h * 10) / 10, besoin:besoin(h, HORIZON_SANS_DATE_J)});
+    });
+    return out.sort(function(a, b){
+      return b.besoin - a.besoin || (a.iso || '9999').localeCompare(b.iso || '9999') || a.m.localeCompare(b.m);
+    });
+  }
+  function matiereConseillee(iso){ return besoinsMatieres(iso)[0] || null; }
+  /* Pourquoi celle-là, en une phrase — sinon la proposition est un caprice de la machine. */
+  function motifMatiere(x){
+    if(!x) return '';
+    return x.m + ' — ' + (x.iso ? 'examen le ' + fmtDate(x.iso) + ', J-' + x.jours : 'pas d\u2019examen daté') +
+           ' · ' + fmtNombre(x.heures, 1) + ' h faites sur 30 jours';
+  }
   var BLOC_ANKI = /^Anki/, BLOC_MATIERE = /^(Cartes|Annales?\b|Annale complète|Correction|Révision ciblée|Fiches de synthèse|Préparer · )/;
   function lancerPomodoroCours(apres){
     var bloc = blocPlanCourant(), libelle = bloc ? bloc[1] : '';
     var surAnki = BLOC_ANKI.test(libelle), surMatiere = BLOC_MATIERE.test(libelle);
-    var suivante = (surMatiere && typeof matiereExamenSuivante === 'function') ? matiereExamenSuivante(todayISO) : null;
-    var pPartiels = surMatiere && periodeGrille(todayISO) && periodeGrille(todayISO).partiels;
-    var defaut = surAnki ? MATIERE_SANS : ((pPartiels && suivante) ? suivante.m : (derniereMatiere() || MATIERES_SEED[0].court));
+    var pPartiels = periodeGrille(todayISO) && periodeGrille(todayISO).partiels;
+    /* En partiels, la matière du bloc EST celle que sa consigne annonce : le lanceur lisait
+       jusqu'ici l'examen le plus proche, et proposait donc parfois une autre matière que
+       celle écrite deux lignes plus haut dans le planning. */
+    var conseil = surAnki ? null
+                : ((pPartiels && bloc ? matierePourBloc(todayISO, bloc[0]) : null) || matiereConseillee(todayISO));
+    var defaut = surAnki ? MATIERE_SANS : ((conseil && conseil.m) || derniereMatiere() || MATIERES_SEED[0].court);
+    /* #ask-msg est rempli en textContent : la phrase reste du texte, sans balise. */
+    var motif = conseil ? ' Proposé : ' + motifMatiere(conseil) + '.' : '';
     var message = surAnki ? 'Bloc ' + libelle + ' : « Sans préciser », toutes les matières passent dans le paquet Dentaire. La matière ne se choisit que sur Cartes et Annales.'
-                : surMatiere ? 'Bloc ' + libelle + ' : choisis LA matière travaillée, c\'est elle qui fait la répartition par matière de l\'onglet Études.'
-                : 'Matière révisée pendant ce bloc :';
+                : (surMatiere ? 'Bloc ' + libelle + ' : choisis LA matière travaillée, c\'est elle qui fait la répartition par matière de l\'onglet Études.'
+                              : 'Matière révisée pendant ce bloc :') + motif;
     askDialog({titre:'Quelle matière ?', message: message,
                options: optionsMatieres(), valeur: defaut, libelleOk:'Lancer',
                libellesLongs: true}, function(choix){
@@ -6388,27 +6442,32 @@
     targets.ajustement = ajust;
     return {totals:totals, targets:targets};
   }
-  /* Tendance de poids : moyenne des pesees des 7 derniers jours contre celle des 7 jours
-     precedents (au moins 3 pesees chacune, sinon on ne conclut rien). Rythme vise : celui
-     de l'objectif poids sur son horizon (64 → 70 kg en ~6 mois ≈ +0,23 kg/semaine).
-
-     Le poids d'un matin ne dit pas grand-chose : un diner sale, une nuit courte, une
-     balance posee sur un tapis, et le voila plus haut d'un kilo sans qu'un gramme de
-     muscle ait bouge. Une moyenne de trois pesees encaisse mal ce genre de chiffre --
-     il en deplace le tiers. Deux garde-fous, donc :
-       1. Des qu'une semaine porte 5 pesees ou plus, sa moyenne est ELAGUEE : la plus
-          haute et la plus basse sortent avant de faire la moyenne. Le matin sale ne
-          compte plus, et le matin a jeun apres une seance non plus -- on ne coupe pas
-          d'un seul cote.
-       2. On rejoue ensuite tout le calcul en retirant CHAQUE pesee, une par une. Si la
-          recommandation change en enlevant une seule d'entre elles, c'est qu'elle tient
-          a cette pesee-la et pas a une tendance : on ne recommande rien, et on dit
-          laquelle. Une pesee de plus tranchera demain matin. */
-  function moyElaguee(a){
-    if(!a.length) return null;
-    var v = a.map(function(p){ return p.value; }).sort(function(x, y){ return x - y; });
-    if(v.length >= 5) v = v.slice(1, v.length - 1);
-    return v.reduce(function(x, y){ return x + y; }, 0) / v.length;
+  /* ===== Tendance de poids, à raison d'une pesée par lundi matin =====
+     Le protocole a changé : une seule pesée par semaine, le lundi matin à jeun. L'ancien
+     calcul comparait la moyenne des 7 derniers jours à celle des 7 précédents et exigeait
+     TROIS pesées dans chacune des deux semaines — avec une pesée hebdomadaire, il n'aurait
+     jamais rien conclu, pas une seule fois en six mois.
+     On mesure donc la PENTE : une droite des moindres carrés sur les pesées des huit
+     dernières semaines, dont on lit le gain par semaine. Ça marche avec une pesée par
+     semaine comme avec une par jour, chaque point pèse pareil, et huit points suffisent à
+     noyer le bruit d'un matin (un dîner salé, une nuit courte, la balance sur un tapis).
+     Il faut au moins 4 pesées étalées sur 12 jours : en deçà, deux points voisins donnent
+     une pente qui ne veut rien dire.
+     Reste le garde-fou : on rejoue la régression en retirant CHAQUE pesée, une par une. Si
+     la recommandation change en enlevant une seule d'entre elles, elle tient à ce point-là
+     et pas à une tendance — on ne recommande rien, et on dit laquelle. Le lundi suivant
+     tranchera. */
+  var KCAL_FENETRE_J = 56, KCAL_MIN_PESEES = 4, KCAL_MIN_ETALEMENT_J = 12;
+  /* pente d'une droite des moindres carrés, en kg par jour ; null si les x sont tous égaux */
+  function penteParJour(pts){
+    var n = pts.length;
+    if(n < 2) return null;
+    var x = pts.map(function(p){ return daysBetween(new Date(pts[0].date + 'T00:00:00'), new Date(p.date + 'T00:00:00')); });
+    var mx = x.reduce(function(a, b){ return a + b; }, 0) / n;
+    var my = pts.reduce(function(a, p){ return a + p.value; }, 0) / n;
+    var sxy = 0, sxx = 0;
+    for(var i = 0; i < n; i++){ sxy += (x[i] - mx) * (pts[i].value - my); sxx += (x[i] - mx) * (x[i] - mx); }
+    return sxx > 0 ? sxy / sxx : null;
   }
   function recoKcal(delta, rythmeVise){
     if(delta < rythmeVise * 0.5) return 150;
@@ -6416,36 +6475,43 @@
     return 0;
   }
   function boucleKcal(){
-    var pts = weightHistory(), ref = new Date(todayISO + 'T00:00:00');
-    var iso7 = localISO(new Date(ref.getFullYear(), ref.getMonth(), ref.getDate() - 6));
-    var iso14 = localISO(new Date(ref.getFullYear(), ref.getMonth(), ref.getDate() - 13));
-    var recents = pts.filter(function(p){ return p.date >= iso7 && p.date <= todayISO; });
-    var avant = pts.filter(function(p){ return p.date >= iso14 && p.date < iso7; });
+    var pts = weightHistory().filter(function(p){ return p.date <= todayISO; });
+    var depuis = isoDecale(todayISO, -(KCAL_FENETRE_J - 1));
+    pts = pts.filter(function(p){ return p.date >= depuis; });
     var g = GOALS_NUMERIC.filter(function(x){ return x.id === 'poids'; })[0];
     var semaines = Math.max(1, daysBetween(new Date(horizonState.debut + 'T00:00:00'), new Date(horizonState.fin + 'T00:00:00')) / 7);
     var rythmeVise = g ? (g.target - g.start) / semaines : 0;
-    var out = {recents: recents.length, avant: avant.length, rythmeVise: rythmeVise, delta: null, reco: 0, motif: '', fragile: false};
-    if(recents.length < 3 || avant.length < 3){
-      out.motif = 'Il faut au moins 3 pesées sur chacune des deux dernières semaines (' + avant.length + ' puis ' + recents.length + ' pour l\'instant) — pèse-toi le matin, dans le Journal.';
+    var etalement = pts.length ? daysBetween(new Date(pts[0].date + 'T00:00:00'), new Date(pts[pts.length - 1].date + 'T00:00:00')) : 0;
+    var out = {n: pts.length, etalement: etalement, rythmeVise: rythmeVise, delta: null, reco: 0, motif: '', fragile: false};
+    if(pts.length < KCAL_MIN_PESEES || etalement < KCAL_MIN_ETALEMENT_J){
+      out.motif = 'Il faut au moins ' + KCAL_MIN_PESEES + ' pesées étalées sur ' + KCAL_MIN_ETALEMENT_J +
+                  ' jours pour lire une pente — ' + pts.length + ' pesée' + (pts.length > 1 ? 's' : '') +
+                  ' sur ' + etalement + ' jour' + (etalement > 1 ? 's' : '') + ' pour l\'instant. Une pesée par lundi matin, à jeun : au bout de quatre lundis, la Batcave sait.';
       return out;
     }
-    var ecart = function(rs, av){ return moyElaguee(rs) - moyElaguee(av); };
-    out.delta = ecart(recents, avant);
-    out.moyRecente = moyElaguee(recents); out.moyAvant = moyElaguee(avant);
+    var parSemaine = function(liste){ var p = penteParJour(liste); return p === null ? null : p * 7; };
+    out.delta = parSemaine(pts);
+    if(out.delta === null){ out.motif = 'Toutes les pesées sont du même jour : rien à lire.'; return out; }
+    out.premier = pts[0].value; out.dernier = pts[pts.length - 1].value;
     out.reco = recoKcal(out.delta, rythmeVise);
-    /* la pesee qui, a elle seule, ferait dire autre chose */
-    var pivot = null;
-    recents.concat(avant).forEach(function(p){
-      if(pivot) return;
-      var rs = recents.filter(function(q){ return q !== p; }), av = avant.filter(function(q){ return q !== p; });
-      if(!rs.length || !av.length) return;
-      if(recoKcal(ecart(rs, av), rythmeVise) !== out.reco) pivot = p;
+    /* La pesée qui, à elle seule, ferait dire autre chose. Plusieurs peuvent faire basculer
+       le verdict ; on nomme CELLE QUI PÈSE LE PLUS, c'est-à-dire celle dont le retrait
+       déplace le plus la pente — sinon on désignait la première venue dans l'ordre des
+       dates, et le message accusait un matin ordinaire à la place du matin salé. */
+    var pivot = null, ecartPivot = 0;
+    pts.forEach(function(p){
+      var reste = pts.filter(function(q){ return q !== p; });
+      if(reste.length < 3) return;
+      var d = parSemaine(reste);
+      if(d === null || recoKcal(d, rythmeVise) === out.reco) return;
+      var poids = Math.abs(d - out.delta);
+      if(!pivot || poids > ecartPivot){ pivot = p; ecartPivot = poids; }
     });
     if(pivot){
       out.fragile = true; out.pivot = pivot; out.reco = 0;
       out.motif = 'Une seule pesée décide de tout : sans celle du ' + fmtDate(pivot.date) + ' (' +
                   pivot.value.toFixed(1).replace('.', ',') + ' kg), la recommandation change. ' +
-                  'On ne touche à rien tant qu\'une pesée de plus n\'a pas tranché — pèse-toi demain matin.';
+                  'On ne touche à rien — la pesée de lundi prochain tranchera.';
       return out;
     }
     if(out.reco > 0) out.motif = 'Prise trop lente : ajoute 150 kcal par jour.';
@@ -6462,7 +6528,7 @@
     var lignes = [];
     lignes.push('Cible calorique actuelle : <b style="color:var(--ink);">' + Math.round(plan + actuel) + ' kcal</b> (plan ' + Math.round(plan) + (actuel ? (actuel > 0 ? ' + ' : ' − ') + Math.abs(actuel) + ' kcal depuis le ' + fmtDate(kcalAjust.depuis) : '') + ').');
     lignes.push('Rythme visé : <b style="color:var(--ink);">' + kg(b.rythmeVise) + ' / semaine</b> (objectif poids sur son horizon).');
-    if(b.delta !== null) lignes.push('Tendance : <b style="color:var(--ink);">' + kg(b.delta) + '</b> cette semaine (' + b.moyAvant.toFixed(1).replace('.', ',') + ' → ' + b.moyRecente.toFixed(1).replace('.', ',') + ' kg en moyenne).');
+    if(b.delta !== null) lignes.push('Tendance : <b style="color:var(--ink);">' + kg(b.delta) + ' / semaine</b> sur ' + b.n + ' pesées étalées sur ' + b.etalement + ' jours (' + b.premier.toFixed(1).replace('.', ',') + ' → ' + b.dernier.toFixed(1).replace('.', ',') + ' kg).');
     lignes.push((b.delta === null ? '' : '→ ') + b.motif);
     if(b.reco && b.reco > 0) lignes.push('<span class="sub-note">+150 kcal = +40 g de pâtes crues au dîner — écrit dans le plan et dans la liste de courses dès que tu appliques.</span>');
     if(b.reco && b.reco < 0) lignes.push('<span class="sub-note">−100 kcal = −30 g de pâtes crues au dîner — écrit dans le plan et dans la liste de courses dès que tu appliques.</span>');
@@ -13263,10 +13329,12 @@
        on ferme le micro le temps qu'il parle, et on le rouvre après. */
     function repondreTout(texte){
       showToast('🎙️ ' + texte);
-      if(!continu){ dire(texte); return; }
+      if(ALF && ALF.ouvert()) ALF.repond(texte);
+      var fini = function(){ if(ALF && ALF.ouvert()) ALF.fini(); };
+      if(!continu){ dire(texte, fini); return; }
       parle = true;
       couper();
-      dire(texte, function(){ parle = false; if(continu && !document.hidden) programmerRelance(); });
+      dire(texte, function(){ parle = false; fini(); if(continu && !document.hidden) programmerRelance(); });
     }
 
     /* ===== Pourquoi le micro ne s'ouvre pas =====
@@ -13666,8 +13734,16 @@
       if(bOk) bOk.addEventListener('click', valider);
       if(bF) bF.addEventListener('click', fermer);
       ov.addEventListener('click', function(e){ if(e.target === ov) fermer(); });
+      /* La réponse arrivée par le MICRO doit s'écrire sur le réacteur comme celle du champ :
+         même texte, même passage au vert, même impulsion. */
+      function repond(texte){
+        if(ov.hidden) return;
+        if(elRep) elRep.textContent = texte;
+        majEtat('parle'); impulsion(0.9);
+      }
       return {ouvrir: ouvrir, fermer: fermer, impulsion: impulsion, etat: function(){ return etat; },
-              dit: majDit, ouvert: function(){ return !ov.hidden; }};
+              dit: majDit, repond: repond, fini: function(){ if(!ov.hidden) majEtat('fini'); },
+              ouvert: function(){ return !ov.hidden; }};
     })();
 
     function parlerAuClavier(){
@@ -13758,7 +13834,9 @@
           return;
         }
         couper();
-        showToast(c === 'no-speech' ? '🎙️ Rien entendu.' : '🎙️ Micro indisponible.');
+        var m = c === 'no-speech' ? 'Rien entendu, Monsieur.' : 'Micro indisponible, Monsieur.';
+        showToast('🎙️ ' + m);
+        if(ALF && ALF.ouvert()){ ALF.repond(m); ALF.fini(); }
       };
       r.onend = function(){
         ecoute = false;
@@ -13771,7 +13849,10 @@
       try{
         reco = new Reco();
         reco.lang = 'fr-FR';
-        reco.interimResults = false;
+        /* Les résultats intermédiaires n'existent que pour l'écran : c'est ce qui fait
+           s'écrire la phrase mot à mot pendant qu'on parle. Les actions, elles, n'écoutent
+           que les résultats FINALS (voir le isFinal === false de brancher). */
+        reco.interimResults = true;
         reco.maxAlternatives = 3;
         reco.continuous = continu;
       }catch(e){ showToast('🎙️ Le micro n’est pas disponible ici.'); return; }
@@ -13795,7 +13876,12 @@
         }
         derniereCause = null;
         demarrer();
-        if(ecoute) showToast('🎙️ J’écoute…');
+        /* Le réacteur ne s'allumait QUE sur le chemin du clavier : quand le micro marchait
+           vraiment — batcave.html ouvert en local sur le Mac —, on parlait devant un simple
+           toast « J'écoute… », sans transcription ni animation. Il s'ouvre des deux côtés
+           maintenant. Le champ garde le focus (le piège à focus des fenêtres le lui donne,
+           et c'est bien) : on peut parler OU taper, sans rien rouvrir. */
+        if(ecoute){ if(ALF) ALF.ouvrir(); else showToast('🎙️ J’écoute…'); }
       });
     }
     function basculerVeille(force){

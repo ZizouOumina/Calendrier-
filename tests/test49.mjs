@@ -102,7 +102,7 @@ console.log('\n== 120) Boucle poids → calories ==');
   const { ctx, fr, page } = await ouvrir(MERCREDI, { 'batcave-journal-2026-09-01': {poids: 64} });
   await aller(fr, page, 'repas');
   const k = await fr.evaluate(() => ({ note: document.getElementById('kcal-note').innerText, txt: document.getElementById('kcal-analyse').innerText, btn: document.getElementById('kcal-appliquer').hidden }));
-  ok(/en attente de pesées/.test(k.note) && /au moins 3 pesées/.test(k.txt) && k.btn, 'pas assez de pesées → pas de recommandation, bouton masqué');
+  ok(/en attente de pesées/.test(k.note) && /au moins 4 pesées/.test(k.txt) && k.btn, 'pas assez de pesées → pas de recommandation, bouton masqué');
   await ctx.close();
 }
 
