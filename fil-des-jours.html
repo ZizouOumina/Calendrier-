@@ -1,0 +1,336 @@
+<title>Le fil des jours</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&family=Roboto+Mono:wght@400;500&display=swap">
+<style>
+  :root{
+    --paper:#EBEEF2; --sheet:#FFFFFF; --line:#CBD3DC; --line-soft:#DFE5EB;
+    --ink:#151A21; --ink-2:#4A5560; --ink-3:#78838F;
+    --rail:#1B4D8F; --rail-soft:#DCE7F5;
+    --wait:#A96B00; --wait-soft:#F7EBD4;
+    --stop:#A6382C; --stop-soft:#F6E1DD;
+    --done:#1D6B4E; --done-soft:#DCEDE4;
+    --display:'Oswald','Helvetica Neue',Arial,sans-serif;
+    --body:'Source Sans 3','Helvetica Neue',Arial,sans-serif;
+    --mono:'Roboto Mono','SFMono-Regular',Menlo,monospace;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper:#0F1419; --sheet:#161C23; --line:#2B343E; --line-soft:#212932;
+      --ink:#E3E9EF; --ink-2:#AAB5C0; --ink-3:#7A8592;
+      --rail:#6FA8E8; --rail-soft:#16283D;
+      --wait:#DFAF5A; --wait-soft:#33280F;
+      --stop:#E08A7E; --stop-soft:#39201C;
+      --done:#5CC297; --done-soft:#123227;
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#0F1419; --sheet:#161C23; --line:#2B343E; --line-soft:#212932;
+    --ink:#E3E9EF; --ink-2:#AAB5C0; --ink-3:#7A8592;
+    --rail:#6FA8E8; --rail-soft:#16283D;
+    --wait:#DFAF5A; --wait-soft:#33280F;
+    --stop:#E08A7E; --stop-soft:#39201C;
+    --done:#5CC297; --done-soft:#123227;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; background:var(--paper); color:var(--ink); font-family:var(--body); font-size:16px; line-height:1.6; -webkit-font-smoothing:antialiased;}
+  a{color:var(--rail);}
+  .shell{display:grid; grid-template-columns:210px minmax(0,1fr); gap:44px; max-width:1140px; margin:0 auto; padding:36px 24px 96px;}
+  @media (max-width:920px){
+    .shell{grid-template-columns:minmax(0,1fr); gap:18px; padding:22px 16px 72px;}
+    /* Sur un téléphone, un sommaire vertical de huit lignes repousse le titre hors de
+       l'écran : il devient une rangée de pastilles, qui tient en trois lignes. */
+    .toc{position:static !important;}
+    .toc ol{flex-direction:row; flex-wrap:wrap; gap:7px 8px;}
+    .toc a{border:1px solid var(--line); background:var(--sheet); padding:6px 10px; font-size:12.5px;}
+    .toc a b{display:none;}
+  }
+  .toc{position:sticky; top:20px; align-self:start; font-size:13.5px;}
+  .toc .k{font-family:var(--mono); font-size:10.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--ink-3); margin-bottom:12px;}
+  .toc ol{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:7px;}
+  .toc a{color:var(--ink-2); text-decoration:none; display:flex; gap:9px; align-items:baseline;}
+  .toc a b{font-family:var(--mono); font-weight:400; color:var(--ink-3); font-size:11px; min-width:18px;}
+  .toc a:hover{color:var(--ink);}
+  main{max-width:74ch; min-width:0;}
+  h1,h2,h3{font-family:var(--display); line-height:1.12; text-wrap:balance; margin:0;}
+  h1{font-size:46px; font-weight:700; letter-spacing:.005em; text-transform:uppercase;}
+  h2{font-size:25px; font-weight:600; margin-top:52px; padding-top:18px; border-top:2px solid var(--ink); text-transform:uppercase; letter-spacing:.02em;}
+  h3{font-size:18.5px; font-weight:600; margin-top:28px;}
+  .eyebrow{font-family:var(--mono); font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:var(--rail); margin-bottom:10px;}
+  .lede{font-size:17.5px; color:var(--ink-2); margin-top:14px; max-width:62ch;}
+  p{margin:12px 0;} ul{padding-left:20px;} li{margin:6px 0;}
+  .strip{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:1px; background:var(--line); border:1px solid var(--line); margin:26px 0 8px;}
+  .strip div{background:var(--sheet); padding:11px 13px;}
+  .strip .k{font-family:var(--mono); font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-3);}
+  .strip .v{font-family:var(--display); font-size:23px; font-weight:600; margin-top:3px; font-variant-numeric:tabular-nums; line-height:1.1;}
+  .strip .s{font-size:12.5px; color:var(--ink-2); line-height:1.35; margin-top:2px;}
+  @media (max-width:640px){ .strip{grid-template-columns:1fr 1fr;} }
+  .stamp{font-family:var(--mono); font-size:12px; color:var(--ink-3); letter-spacing:.03em;}
+  .note{border-left:3px solid var(--wait); background:var(--wait-soft); padding:11px 15px; margin:18px 0; font-size:15px;}
+  .danger{border-left:3px solid var(--stop); background:var(--stop-soft); padding:11px 15px; margin:18px 0; font-size:15px;}
+  .ok{border-left:3px solid var(--done); background:var(--done-soft); padding:11px 15px; margin:18px 0; font-size:15px;}
+  /* ---- le rail ---- */
+  .rail{list-style:none; margin:22px 0 0; padding:0; position:relative;}
+  .rail::before{content:""; position:absolute; left:9px; top:6px; bottom:6px; width:2px; background:var(--line);}
+  .rail > li{position:relative; padding:0 0 22px 38px;}
+  .rail > li::before{content:""; position:absolute; left:3px; top:6px; width:15px; height:15px; border-radius:50%; background:var(--paper); border:2px solid var(--line);}
+  .rail > li.now::before{background:var(--rail); border-color:var(--rail); box-shadow:0 0 0 4px var(--rail-soft);}
+  .rail > li.past::before{background:var(--line); border-color:var(--line);}
+  .rail > li.past{opacity:.62;}
+  .rail .when{display:flex; gap:10px; align-items:baseline; flex-wrap:wrap;}
+  .rail .date{font-family:var(--mono); font-size:12px; letter-spacing:.1em; text-transform:uppercase; color:var(--rail); font-weight:500;}
+  .rail li.past .date{color:var(--ink-3);}
+  .rail .dist{font-family:var(--mono); font-size:11px; color:var(--ink-3);}
+  .rail .t{font-family:var(--display); font-size:19px; font-weight:600; margin:3px 0 4px; line-height:1.2;}
+  .rail .d{font-size:15px; color:var(--ink-2);}
+  .rail .d b{color:var(--ink);}
+  /* ---- listes à cocher ---- */
+  .todo{list-style:none; margin:16px 0; padding:0; border:1px solid var(--line); background:var(--sheet);}
+  .todo li{display:grid; grid-template-columns:24px 96px minmax(0,1fr); gap:11px; align-items:start; padding:11px 13px; border-bottom:1px dashed var(--line-soft); font-size:15px;}
+  .todo li:last-child{border-bottom:none;}
+  .todo input{width:17px; height:17px; margin-top:3px; accent-color:var(--rail); cursor:pointer;}
+  .todo li.done label{color:var(--ink-3); text-decoration:line-through;}
+  .todo label{cursor:pointer;}
+  .todo label .why{display:block; font-size:13.5px; color:var(--ink-3); margin-top:3px; text-decoration:none;}
+  .tag{font-family:var(--mono); font-size:9.5px; letter-spacing:.1em; padding:4px 5px; text-transform:uppercase; text-align:center; margin-top:2px; line-height:1.25;}
+  .tag.toi{background:var(--stop-soft); color:var(--stop);}
+  .tag.dec{background:var(--wait-soft); color:var(--wait);}
+  .tag.auto{background:var(--rail-soft); color:var(--rail);}
+  .tag.faire{background:var(--done-soft); color:var(--done);}
+  @media (max-width:560px){ .todo li{grid-template-columns:24px minmax(0,1fr); } .todo .tag{grid-column:2; justify-self:start; margin-bottom:2px;} }
+  /* ---- tables ---- */
+  .tw{overflow-x:auto; margin:16px 0;}
+  table{border-collapse:collapse; width:100%; font-size:14.5px; background:var(--sheet); min-width:480px;}
+  th,td{padding:9px 11px; border:1px solid var(--line); vertical-align:top; text-align:left;}
+  th{font-family:var(--mono); font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-3); background:var(--paper); font-weight:400;}
+  td.num{font-variant-numeric:tabular-nums; font-family:var(--mono); font-size:13px; white-space:nowrap;}
+  .prog{font-family:var(--mono); font-size:12.5px; color:var(--ink-2); margin-top:10px;}
+  .prog .bar{height:6px; background:var(--line-soft); margin-top:7px;}
+  .prog .bar i{display:block; height:100%; background:var(--rail); width:0;}
+  footer{margin-top:64px; padding-top:16px; border-top:1px solid var(--line); font-family:var(--mono); font-size:11.5px; color:var(--ink-3); line-height:1.75;}
+  input:focus-visible,a:focus-visible{outline:2px solid var(--rail); outline-offset:2px;}
+  .maj{list-style:none; margin:16px 0 0; padding:0;}
+  .maj li{display:grid; grid-template-columns:120px minmax(0,1fr); gap:12px; padding:9px 0; border-bottom:1px dashed var(--line-soft); font-size:14.5px;}
+  .maj li:last-child{border-bottom:none;}
+  .maj .d{font-family:var(--mono); font-size:12px; color:var(--ink-3); padding-top:2px;}
+  @media (max-width:560px){ .maj li{grid-template-columns:1fr; gap:2px;} }
+</style>
+
+<div class="shell">
+  <nav class="toc" aria-label="Sommaire">
+    <div class="k">Suivi · N° 1</div>
+    <ol>
+      <li><a href="#etat"><b>·</b>Où on en est</a></li>
+      <li><a href="#bloque"><b>01</b>Ce qui bloque</a></li>
+      <li><a href="#decisions"><b>02</b>Ce qu'il faut décider</a></li>
+      <li><a href="#jours"><b>03</b>Les quatre jours</a></li>
+      <li><a href="#jalons"><b>04</b>Les jalons</a></li>
+      <li><a href="#allume"><b>05</b>Ce qui s'allume, et quand</a></li>
+      <li><a href="#batcave"><b>06</b>Ce que la Batcave attend</a></li>
+      <li><a href="#maj"><b>·</b>Journal des mises à jour</a></li>
+    </ol>
+    <div class="prog"><span id="prog-txt">0 / 0 cochées</span><div class="bar"><i id="prog-bar"></i></div></div>
+  </nav>
+
+  <main>
+    <div class="eyebrow">Suivi · actualisé au fil des jours</div>
+    <h1>Le fil des jours</h1>
+    <p class="lede">Ce qui vient, dans l'ordre, et ce qui change à quelle date. Les quatre jours avant le 14 septembre, puis les bascules du programme jusqu'au printemps 2027. Une seule page à ouvrir pour savoir ce qui est à toi, ce qui est décidé, et ce qui arrive tout seul.</p>
+
+    <div class="strip">
+      <div><div class="k">Aujourd'hui</div><div class="v" id="s-jour">—</div><div class="s" id="s-jour-s">avant le premier jour de cours</div></div>
+      <div><div class="k">Qui bloque</div><div class="v">2</div><div class="s">vérifications qui faussent les calculs tant qu'elles ne sont pas faites</div></div>
+      <div><div class="k">À décider</div><div class="v">3</div><div class="s">choix qui n'appartiennent qu'à toi</div></div>
+      <div><div class="k">Prochaine bascule</div><div class="v" id="s-next">—</div><div class="s" id="s-next-s">—</div></div>
+    </div>
+    <p class="stamp">Dernière mise à jour : jeudi 10 septembre 2026, en fin de journée. La page se met à jour toute seule sur un point : le rail avance, les jalons passés s'estompent et les distances se recalculent à chaque ouverture.</p>
+
+    <h2 id="etat">Où on en est</h2>
+    <p>Tout ce qui pouvait être construit à l'avance l'est. La Batcave est publiée et vérifiée, les cinq dossiers sont à jour et concordants, le plan de marque personnelle est calé sur les heures qui existent vraiment, et la liste des quatre jours attend d'être cochée. Ce qui reste tient en trois catégories, et deux d'entre elles ne dépendent que de toi.</p>
+    <div class="danger"><strong>Le seul vrai risque de la semaine n'est pas le travail : c'est de démarrer sur deux hypothèses fausses.</strong> La grille suppose des cours de 15 h 30 à 19 h 30 et un départ à 15 h 00. Le sport suppose un parc utilisable à 5 h 30. Si l'une des deux est fausse, ce n'est pas un détail à corriger en route : c'est la journée entière qui se décale, et tous les chiffres du premier mois avec elle.</div>
+
+    <h2 id="bloque">01 · Ce qui bloque, et qui n'attend que toi</h2>
+    <p>Deux vérifications, une heure en tout. Tant qu'elles ne sont pas faites, la grille est une hypothèse — une bonne hypothèse, mais une hypothèse.</p>
+    <ul class="todo" id="t-bloque">
+      <li><input type="checkbox" id="b1"><span class="tag toi">Chez toi</span><label for="b1">Récupérer l'emploi du temps <strong>réel</strong> de la fac, horaire par horaire.
+        <span class="why">La grille place les cours de 15 h 30 à 19 h 30 et le trajet à 15 h 00. Un cours qui commence à 14 h, ou qui finit à 20 h, déplace les trois blocs quotidiens et change le budget de projets perso. Envoie-le-moi : je réajuste la grille en une passe, avant lundi.</span></label></li>
+      <li><input type="checkbox" id="b2"><span class="tag toi">Chez toi</span><label for="b2">Aller reconnaître le parc <strong>de nuit</strong>, pas en journée.
+        <span class="why">Ta séance est à 5 h 30. À Alicante, le soleil se lève vers 7 h 45 à la mi-septembre, et plus tard chaque semaine ensuite : tu t'entraîneras dans le noir jusqu'au printemps. Ce qu'il faut vérifier : l'éclairage, l'accès aux barres, et si l'endroit est fréquentable à cette heure-là. Si la réponse est non, on change de lieu ou d'horaire maintenant — pas le 15 au matin.</span></label></li>
+    </ul>
+
+    <h2 id="decisions">02 · Ce qu'il faut décider</h2>
+    <p>Trois choix en attente. Aucun n'est urgent au point de bloquer lundi, mais chacun coûte plus cher plus il est repoussé.</p>
+    <ul class="todo" id="t-dec">
+      <li><input type="checkbox" id="d1"><span class="tag dec">À décider</span><label for="d1">L'automatisation des publications : lequel des trois scénarios.
+        <span class="why">1 · Une routine qui lit ton dossier Drive et te prépare les légendes en trois langues et le calendrier dans Notion — tu publies à la main. 2 · La même chose, plus LinkedIn de bout en bout. 3 · Rien de sur mesure : un planificateur du commerce (Metricool, Publer) à 15-25 € par mois. Ma recommandation reste la 1 : le travail cher, c'est l'écriture, pas le bouton « publier ».</span></label></li>
+      <li><input type="checkbox" id="d2"><span class="tag dec">À décider</span><label for="d2">L'écriture dans Google Agenda : oui ou non.
+        <span class="why">Aujourd'hui la Batcave <strong>lit</strong> ton agenda et pose des rappels, elle n'y écrit rien. Elle peut y pousser les blocs de la grille pour que ton téléphone sonne au bon moment sans ouvrir l'application. C'est une écriture dans ton vrai calendrier : elle ne s'active que sur ton oui explicite.</span></label></li>
+      <li><input type="checkbox" id="d3"><span class="tag dec">À décider</span><label for="d3">La langue du compte, à trancher samedi et plus jamais après.
+        <span class="why">Le test de soixante secondes : tu te filmes en français, puis en anglais, sur le même sujet. Tu réécoutes. Celle où tu ne réfléchis pas gagne. Le plan recommande le français seul jusqu'au mois 7, puis l'anglais en second compte — mais c'est le test qui décide, pas le plan.</span></label></li>
+    </ul>
+
+    <h2 id="jours">03 · Les quatre jours</h2>
+    <p>Le détail, case par case, est dans la liste dédiée — celle-ci ne garde que la colonne vertébrale.</p>
+    <ul class="rail" id="rail-jours">
+      <li data-d="2026-09-10"><div class="when"><span class="date">Jeudi 10 septembre</span><span class="dist"></span></div>
+        <div class="t">Les deux vérifications</div>
+        <div class="d">Emploi du temps de la fac, et le parc de nuit. Rien d'autre n'a de valeur tant que ces deux-là ne sont pas faites.</div></li>
+      <li data-d="2026-09-11"><div class="when"><span class="date">Vendredi 11</span><span class="dist"></span></div>
+        <div class="t">Le matériel et les courses</div>
+        <div class="d">Les courses de la semaine 1 selon la liste que la Batcave génère depuis les repas, la balance, et le bureau rangé une bonne fois.</div></li>
+      <li data-d="2026-09-12"><div class="when"><span class="date">Samedi 12</span><span class="dist"></span></div>
+        <div class="t">Les cinq décisions du compte</div>
+        <div class="d">Le test de langue, le nom et le domicile, la biographie avec la mention d'étudiant qu'impose le <b>RD 1907/1996</b>, le mur et la lumière, et le bloc récurrent du dimanche à 35 minutes dans le calendrier. Cinq choix qui ne se rediscutent plus après.</div></li>
+      <li data-d="2026-09-13"><div class="when"><span class="date">Dimanche 13</span><span class="dist"></span></div>
+        <div class="t">La première vidéo, et l'amorçage</div>
+        <div class="d">Tu <b>tournes</b>, tu ne prépares pas : elle doit être prête à publier lundi soir. Et tu amorces la Batcave — la liste est plus bas, elle tient en cinq lignes.</div></li>
+      <li data-d="2026-09-14"><div class="when"><span class="date">Lundi 14</span><span class="dist"></span></div>
+        <div class="t">Jour 1</div>
+        <div class="d">Premier jour de cours, première pesée du matin, première séance, phase Español 1. Le soir : tu publies.</div></li>
+    </ul>
+    <p><a href="https://claude.ai/code/artifact/f9d415fe-ed28-4f19-a0f1-a8ac1711bd9a">Ouvrir la liste des quatre jours &rarr;</a></p>
+
+    <h2 id="jalons">04 · Les jalons</h2>
+    <p>Ces dates ne sont pas des intentions : elles sont écrites dans la grille de la Batcave et dans les dossiers, et tout en découle — le budget d'heures, la cadence de publication, le volume de sport, le moment où les calculs deviennent fiables.</p>
+    <ul class="rail" id="rail-jalons">
+      <li data-d="2026-09-14"><div class="when"><span class="date">Lun. 14 sept. 2026</span><span class="dist"></span></div>
+        <div class="t">Le programme démarre · phase Español 1</div>
+        <div class="d">Les trois blocs « Projets perso » deviennent des blocs Español : gramática, escribir, preparar la clase. Budget projets perso : <b>0 h par semaine</b>. Révision : 33 h. Sport : 4 séances, à <b>la moitié du volume</b> pendant deux semaines.</div></li>
+      <li data-d="2026-09-28"><div class="when"><span class="date">Lun. 28 sept.</span><span class="dist"></span></div>
+        <div class="t">Le sport passe au volume entier</div>
+        <div class="d">Semaine 3 : les tours ne sont plus divisés par deux. C'est un doublement d'un coup — ta décision du 9 septembre. Si les courbatures font sauter une séance cette semaine-là, la réduction de charge de l'onglet Bilan est prévue pour ça.</div></li>
+      <li data-d="2026-10-05"><div class="when"><span class="date">Lun. 5 oct.</span><span class="dist"></span></div>
+        <div class="t">La boucle poids &rarr; calories peut enfin conclure</div>
+        <div class="d">Quatrième pesée du lundi. Il en faut <b>quatre</b>, étalées sur <b>au moins douze jours</b> : du 14 septembre au 5 octobre, il y en a vingt et un. C'est ce matin-là que la Batcave te dira pour la première fois s'il faut ajouter 150 kcal, en retirer 100, ou ne rien changer. Avant, elle se taira — et c'est normal, pas une panne.</div></li>
+      <li data-d="2026-10-19"><div class="when"><span class="date">Lun. 19 oct.</span><span class="dist"></span></div>
+        <div class="t">Phase Español 2 · les heures reviennent</div>
+        <div class="d">« Projets perso 1 » redevient à toi : <b>8 h par semaine</b>. C'est le vrai départ du programme e-commerce — pas le 14 septembre, parce qu'avant cette date les heures n'existent pas. La cadence de contenu passe à <b>2 publications par semaine</b>.</div></li>
+      <li data-d="2026-11-30"><div class="when"><span class="date">Lun. 30 nov.</span><span class="dist"></span></div>
+        <div class="t">Phase Español 3 · un seul bloc par jour</div>
+        <div class="d"><b>13 h par semaine</b> de projets perso. E-commerce et contenu tiennent enfin ensemble dans la semaine. Cadence : <b>3 publications par semaine</b> — c'est là que tu entres dans la fenêtre où le rendement décolle vraiment.</div></li>
+      <li data-d="2027-03-15"><div class="when"><span class="date">Lun. 15 mars 2027</span><span class="dist"></span></div>
+        <div class="t">La grille type, entière</div>
+        <div class="d">Fin des phases Español. <b>20 h par semaine</b> de projets perso : les « 21 blocs » cités dans le dossier e-commerce ne sont vrais qu'à partir de ce jour-là. Six mois de programme derrière toi.</div></li>
+      <li data-d="2027-09-13"><div class="when"><span class="date">Sept. 2027</span><span class="dist"></span></div>
+        <div class="t">Bilan de l'an 1 en public</div>
+        <div class="d">Environ <b>100 publications</b> derrière toi, l'anglais ouvert depuis le mois 7. Le repère du plan de marque : pas les vues, le nombre d'essais.</div></li>
+      <li data-d="2028-01-01"><div class="when"><span class="date">2027, déclaré en 2028</span><span class="dist"></span></div>
+        <div class="t">Première année de résidence fiscale espagnole</div>
+        <div class="d">2026 ne compte pas : moins de 183 jours en Espagne. À partir de 2027, tes revenus mondiaux se déclarent en Espagne — et le compte à l'étranger du prêt étudiant devient déclarable au <b>modelo 720</b> si l'ensemble de tes comptes hors d'Espagne dépasse 50 000 € — solde au 31 décembre, ou solde moyen du dernier trimestre. Un prêt n'est pas un revenu ; le modelo 720 vise le compte, pas son origine.</div></li>
+      <li data-d="2028-03-31"><div class="when"><span class="date">31 mars 2028</span><span class="dist"></span></div>
+        <div class="t">Dernier jour du modelo 720</div>
+        <div class="d">Pour l'exercice 2027. C'est la date la plus lointaine de ce fil, et la seule dont l'oubli coûte de l'argent. Elle est ici pour que tu ne la découvres pas en 2028.</div></li>
+    </ul>
+
+    <h2 id="allume">05 · Ce qui s'allume dans la Batcave, et quand</h2>
+    <p>Une carte d'analyse qui dit « il faut 5 jours suivis » n'est pas cassée : elle attend d'avoir de quoi parler. Voici ce que chacune attend et la date au plus tôt, si tu remplis la Batcave chaque jour à partir du 14. Sauter un jour repousse la date d'autant.</p>
+    <div class="tw"><table>
+      <tr><th>Ce qui s'allume</th><th>Ce qu'il lui faut</th><th>Au plus tôt</th></tr>
+      <tr><td>La matière conseillée au lancement d'un Pomodoro</td><td>Rien — elle marche dès le premier bloc, sur un horizon de 90 jours tant qu'aucun examen n'est daté</td><td class="num">14 sept.</td></tr>
+      <tr><td>Fidélité au plan de la semaine</td><td>Une semaine avec au moins 3 jours de blocs enregistrés</td><td class="num">~17 sept.</td></tr>
+      <tr><td>Ton heure la plus productive</td><td>8 blocs enregistrés</td><td class="num">~16 sept.</td></tr>
+      <tr><td>Bloc le plus fragile · dérive du premier bloc</td><td>5 jours suivis sur les 14 derniers</td><td class="num">~19 sept.</td></tr>
+      <tr><td>Habitudes tenues</td><td>7 jours avec au moins une habitude cochée</td><td class="num">~20 sept.</td></tr>
+      <tr><td>Stagnation d'un exercice</td><td>3 séances enregistrées du <em>même</em> exercice — un exercice revient une fois par semaine</td><td class="num">~28 sept.</td></tr>
+      <tr><td>Balance énergétique · recommandation calorique</td><td>7 jours de repas complets et 4 pesées sur 28 jours</td><td class="num">5 oct.</td></tr>
+      <tr><td>Mode partiels</td><td>Des dates d'examens saisies. Il s'annonce 7 jours avant de s'enclencher, et s'enclenche 7 jours avant le premier examen — soit <b>14 jours d'avance</b></td><td class="num">dès que tu as les dates</td></tr>
+      <tr><td>Test Anki du mois</td><td>Un dimanche du mois (jour ≤ 28), reproposé chaque dimanche tant qu'il n'est pas fait</td><td class="num">dim. 13 sept.</td></tr>
+      <tr><td>Exercice de restauration</td><td>Tous les 90 jours — marqué « jamais fait » tant que tu ne l'as pas fait une fois</td><td class="num">dès maintenant</td></tr>
+    </table></div>
+    <div class="note"><strong>Le seul de ces réglages qui dépende d'une information extérieure, ce sont les dates d'examens.</strong> Sans elles, la Batcave suggère les matières sur un horizon de 90 jours au lieu de viser l'examen le plus proche, et le mode partiels ne s'enclenche jamais. Dès que la fac publie son calendrier, saisis-les : c'est dix minutes qui rendent la moitié des calculs plus justes.</div>
+
+    <h2 id="batcave">06 · Ce que la Batcave attend de toi</h2>
+    <p>Tout le reste est déjà en place : les onze matières, les charges fixes, les habitudes, les objectifs, les repas, le programme de sport. Il ne reste que ceci — l'affaire d'une demi-heure, dimanche soir.</p>
+    <ul class="todo" id="t-batcave">
+      <li><input type="checkbox" id="c1"><span class="tag faire">Dimanche</span><label for="c1">Faire une <strong>sauvegarde manuelle</strong>, puis l'<strong>exercice de restauration</strong>.
+        <span class="why">Il est marqué « jamais fait » tant que tu ne l'as pas fait une fois, et il revient tous les 90 jours. Une sauvegarde qu'on n'a jamais restaurée n'est pas une sauvegarde : c'est un fichier.</span></label></li>
+      <li><input type="checkbox" id="c2"><span class="tag faire">Dimanche</span><label for="c2">Installer la Batcave sur l'écran d'accueil des <strong>trois</strong> appareils : iPhone, iPad, Mac.
+        <span class="why">Sur iPhone et iPad : Partager &rarr; « Sur l'écran d'accueil ». C'est ce qui donne l'icône de chauve-souris et le plein écran ; dans un onglet de navigateur, la page reste dans un cadre et l'icône appartient au site hôte.</span></label></li>
+      <li><input type="checkbox" id="c3"><span class="tag faire">Dimanche</span><label for="c3">Coller le <strong>lien Notion</strong> de tes cours (le crayon à côté du bouton, sur le tableau de bord).
+        <span class="why">La Batcave lit Notion, elle n'y écrit jamais. Ta structure reste la tienne.</span></label></li>
+      <li><input type="checkbox" id="c4"><span class="tag faire">Lundi matin</span><label for="c4">La <strong>première pesée</strong>, à jeun, avant tout le reste.
+        <span class="why">C'est le point de départ de la droite. Une seule par semaine, le lundi matin, toujours dans les mêmes conditions : c'est le protocole que tu as choisi, et la boucle a été recalculée pour lui.</span></label></li>
+      <li><input type="checkbox" id="c5"><span class="tag auto">Dès que possible</span><label for="c5">Saisir les <strong>dates d'examens</strong> dans l'onglet Études.
+        <span class="why">Elles débloquent le mode partiels (annoncé 14 jours avant le premier examen) et font viser la matière la plus urgente au lieu d'un horizon générique. Dès que la fac publie son calendrier.</span></label></li>
+    </ul>
+
+    <h2 id="maj">Journal des mises à jour</h2>
+    <p>Cette page est faite pour être réécrite. Chaque révision est datée ici, pour que tu voies ce qui a bougé depuis ta dernière lecture.</p>
+    <ul class="maj">
+      <li><span class="d">10 sept. 2026</span><span>Création. État à J-4 : deux blocages, trois décisions, les quatre jours, les neuf jalons jusqu'au 31 mars 2028, les dix cartes d'analyse et leur date d'allumage, les cinq amorçages de la Batcave.</span></li>
+    </ul>
+
+    <footer>
+      La Batcave &middot; document de suivi &middot; les coches restent dans ce navigateur, sur cet appareil.<br>
+      Les dates des phases viennent de la grille de la Batcave ; les budgets d'heures en sont calculés bloc par bloc, pas estimés.
+    </footer>
+  </main>
+</div>
+
+<script>
+(function(){
+  var K = 'fil-des-jours-v1';
+  function lire(){ try{ return JSON.parse(localStorage.getItem(K) || '{}') || {}; }catch(e){ return {}; } }
+  function ecrire(o){ try{ localStorage.setItem(K, JSON.stringify(o)); }catch(e){} }
+
+  /* ---- coches ---- */
+  var etat = lire();
+  var cases = Array.prototype.slice.call(document.querySelectorAll('.todo input[type=checkbox]'));
+  function majProgres(){
+    var n = cases.filter(function(c){ return c.checked; }).length;
+    var txt = document.getElementById('prog-txt'), bar = document.getElementById('prog-bar');
+    if(txt) txt.textContent = n + ' / ' + cases.length + ' cochées';
+    if(bar) bar.style.width = cases.length ? (n / cases.length * 100) + '%' : '0';
+  }
+  cases.forEach(function(c){
+    if(etat[c.id]) { c.checked = true; c.closest('li').classList.add('done'); }
+    c.addEventListener('change', function(){
+      var o = lire(); o[c.id] = c.checked; ecrire(o);
+      c.closest('li').classList.toggle('done', c.checked);
+      majProgres();
+    });
+  });
+  majProgres();
+
+  /* ---- le rail avance tout seul ---- */
+  function iso(d){
+    return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+  }
+  function jours(a, b){
+    return Math.round((new Date(b + 'T00:00:00') - new Date(a + 'T00:00:00')) / 86400000);
+  }
+  function dire(n){
+    if(n === 0) return "aujourd'hui";
+    if(n === 1) return 'demain';
+    if(n === -1) return 'hier';
+    if(n < 0) return 'il y a ' + (-n) + ' jours';
+    if(n < 45) return 'dans ' + n + ' jours';
+    var m = Math.round(n / 30.4);
+    if(m < 24) return 'dans ' + m + ' mois';
+    return 'dans ' + (Math.round(n / 365 * 10) / 10).toString().replace('.', ',') + ' ans';
+  }
+  var auj = iso(new Date());
+  var prochain = null;
+  Array.prototype.slice.call(document.querySelectorAll('.rail > li[data-d]')).forEach(function(li){
+    var d = li.getAttribute('data-d'), n = jours(auj, d), dist = li.querySelector('.dist');
+    if(n < 0) li.classList.add('past');
+    else if(n === 0) li.classList.add('now');
+    if(dist) dist.textContent = dire(n);
+    if(n > 0 && li.parentNode.id === 'rail-jalons' && !prochain){
+      prochain = {n: n, t: (li.querySelector('.t') || {}).textContent || '', date: (li.querySelector('.date') || {}).textContent || ''};
+    }
+  });
+
+  /* ---- la bandeau d'état ---- */
+  var debut = '2026-09-14', j = jours(auj, debut);
+  var sj = document.getElementById('s-jour'), sjs = document.getElementById('s-jour-s');
+  if(sj){
+    if(j > 0){ sj.textContent = 'J−' + j; if(sjs) sjs.textContent = 'avant le premier jour de cours'; }
+    else if(j === 0){ sj.textContent = 'Jour 1'; if(sjs) sjs.textContent = 'le programme commence aujourd’hui'; }
+    else { sj.textContent = 'Jour ' + (1 - j); if(sjs) sjs.textContent = 'semaine ' + (Math.floor((-j) / 7) + 1) + ' du programme'; }
+  }
+  var sn = document.getElementById('s-next'), sns = document.getElementById('s-next-s');
+  if(sn && prochain){ sn.textContent = 'J−' + prochain.n; if(sns) sns.textContent = prochain.date + ' · ' + prochain.t; }
+  else if(sn){ sn.textContent = '—'; if(sns) sns.textContent = 'plus de bascule programmée'; }
+})();
+</script>
