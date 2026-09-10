@@ -433,17 +433,20 @@
   .alf-head{display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:4px;}
   .alf-head .t{font-family:var(--font-display); font-size:20px; letter-spacing:.04em; color:var(--ink);}
   .alf-etat{font-family:var(--font-mono); font-size:10.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--cyan);}
-  .alf-onde{display:block; width:100%; height:86px; margin:10px 0 4px;}
-  .alf-dit{font-size:19px; line-height:1.45; color:var(--ink); min-height:52px; margin:6px 0 2px; overflow-wrap:anywhere;}
+  .alf-reacteur{display:block; width:262px; height:262px; max-width:78vw; max-height:78vw; margin:6px auto 2px;}
+  .alf-scene{position:relative; display:flex; align-items:center; justify-content:center;}
+  .alf-scene::after{content:''; position:absolute; inset:-8% -4%; pointer-events:none;
+                    background:radial-gradient(closest-side, rgba(53,212,232,.10), transparent 72%);}
+  .alf-dit{font-size:19px; line-height:1.45; color:var(--ink); min-height:52px; margin:10px 0 2px; text-align:center; overflow-wrap:anywhere;}
   .alf-dit.vide{color:var(--ink-faint); font-style:italic; font-size:15px;}
-  .alf-rep{font-size:15px; line-height:1.5; color:var(--cyan-bright); min-height:22px; margin-bottom:12px; overflow-wrap:anywhere;}
+  .alf-rep{font-size:15px; line-height:1.5; color:var(--cyan-bright); min-height:22px; margin-bottom:12px; text-align:center; overflow-wrap:anywhere;}
   .alf-saisie{position:absolute; opacity:0; pointer-events:none; width:1px; height:1px;}
   .alf-champ{width:100%; background:var(--surface); border:1px solid var(--border); color:var(--ink);
              border-radius:9px; padding:10px 12px; font-size:14px; font-family:var(--font-body);}
   .alf-aide{font-size:11.5px; color:var(--ink-faint); line-height:1.55; margin:10px 0 14px;}
   .alf-aide kbd{font-family:var(--font-mono); font-size:11px; background:var(--surface-raised);
                 border:1px solid var(--border); border-radius:4px; padding:1px 5px; color:var(--ink-dim);}
-  @media (prefers-reduced-motion: reduce){ .alf-onde{opacity:.75;} }
+  @media (prefers-reduced-motion: reduce){ .alf-reacteur{opacity:.85;} }
 
   /* ---------- week calendar ---------- */
   .week-cal-wrap{overflow-x:auto; padding-bottom:4px;}
@@ -2742,7 +2745,7 @@
       <span class="t">🦇 Alfred</span>
       <span class="alf-etat" id="alfred-etat">à l’écoute</span>
     </div>
-    <canvas class="alf-onde" id="alfred-onde" width="1120" height="172" aria-hidden="true"></canvas>
+    <div class="alf-scene"><canvas class="alf-reacteur" id="alfred-onde" width="524" height="524" aria-hidden="true"></canvas></div>
     <p class="alf-dit vide" id="alfred-dit" aria-live="polite"></p>
     <p class="alf-rep" id="alfred-rep" aria-live="polite"></p>
     <label class="sr-only" for="alfred-champ">Ta phrase pour Alfred</label>
@@ -13156,33 +13159,112 @@
       var ctx2d = cnv && cnv.getContext ? cnv.getContext('2d') : null;
       var anim = null, energie = 0, phase = 0, etat = 'ecoute', calme = false;
       try{ calme = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches; }catch(e){}
-      var TEINTES = {ecoute:[[124,234,247],[53,212,232],[47,140,168]],
-                     parle: [[126,247,205],[63,232,178],[40,150,120]],
-                     fini:  [[124,234,247],[53,212,232],[47,140,168]]};
+      /* ===== Le réacteur =====
+         Le même vocabulaire que le Batcomputer : anneau gradué qui tourne, arc de balayage,
+         onde radiale, cœur, chauve-souris au centre. Il s'ALLUME à l'ouverture (il monte en
+         taille et en lumière), il respire au repos, et il se déforme à chaque mot qui arrive.
+         Cyan quand il t'écoute, vert quand Alfred répond. */
+      var BAT = null;
+      try{ BAT = new Path2D('M2,34 C12,20 26,14 36,5 L45,16 L54,5 C64,14 78,20 88,34 C76,31 66,36 62,31 C57,40 49,50 45,53 C41,50 33,40 28,31 C24,36 14,31 2,34 Z'); }catch(e){}
+      var TEINTES = {
+        ecoute:{vif:'124,234,247', cle:'53,212,232', sourd:'47,140,168'},
+        parle: {vif:'150,247,205', cle:'63,232,178', sourd:'40,150,120'},
+        fini:  {vif:'124,234,247', cle:'53,212,232', sourd:'47,140,168'}
+      };
+      var neLe = 0;   /* horodatage d'ouverture : c'est lui qui fait « apparaître » */
       function impulsion(force){ energie = Math.min(1, energie + (force || 0.34)); }
       function dessiner(){
         if(!ctx2d) return;
-        var W = cnv.width, H = cnv.height, mid = H / 2;
+        var W = cnv.width, H = cnv.height, cx = W / 2, cy = H / 2, R = Math.min(W, H) / 2;
         ctx2d.clearRect(0, 0, W, H);
-        var base = etat === 'parle' ? 0.30 : 0.13;
-        var amp = (base + energie * 0.62) * (H * 0.40);
-        var teintes = TEINTES[etat] || TEINTES.ecoute;
-        for(var b = 0; b < 3; b++){
-          var c = teintes[b], k = 1 - b * 0.28;
+        var t = TEINTES[etat] || TEINTES.ecoute;
+        /* l'allumage : 480 ms pour monter, en douceur */
+        var age = neLe ? Math.min(1, (Date.now() - neLe) / 480) : 1;
+        var app = 1 - Math.pow(1 - age, 3);
+        ctx2d.save();
+        ctx2d.globalAlpha = app;
+        ctx2d.translate(cx, cy);
+        ctx2d.scale(0.74 + 0.26 * app, 0.74 + 0.26 * app);
+        var e = energie, souffle = calme ? 0 : Math.sin(phase * 1.7) * 0.02;
+
+        /* halo */
+        var halo = ctx2d.createRadialGradient(0, 0, R * 0.12, 0, 0, R * (0.92 + e * 0.08));
+        halo.addColorStop(0, 'rgba(' + t.cle + ',' + (0.20 + e * 0.26) + ')');
+        halo.addColorStop(0.55, 'rgba(' + t.cle + ',0.055)');
+        halo.addColorStop(1, 'rgba(' + t.cle + ',0)');
+        ctx2d.fillStyle = halo;
+        ctx2d.beginPath(); ctx2d.arc(0, 0, R * 0.98, 0, Math.PI * 2); ctx2d.fill();
+
+        /* anneau gradué : un trait tous les 5°, plus long tous les 30° */
+        ctx2d.save();
+        ctx2d.rotate(phase * 0.16);
+        for(var a = 0; a < 360; a += 5){
+          var lg = (a % 30 === 0), rad = a * Math.PI / 180;
+          var r1 = R * 0.90, r2 = R * (lg ? 0.79 : 0.845);
           ctx2d.beginPath();
-          for(var x = 0; x <= W; x += 6){
-            var u = x / W;
-            /* une enveloppe qui s'éteint aux deux bouts : le ruban ne se coupe pas net */
-            var env = Math.pow(Math.sin(Math.PI * u), 1.6);
-            var y = mid + Math.sin(u * (7.5 + b * 3.1) + phase * (1 + b * 0.42)) * amp * k * env
-                        + Math.sin(u * (17 + b * 5) - phase * 1.7) * amp * 0.22 * k * env;
-            if(x === 0) ctx2d.moveTo(x, y); else ctx2d.lineTo(x, y);
-          }
-          ctx2d.strokeStyle = 'rgba(' + c[0] + ',' + c[1] + ',' + c[2] + ',' + (0.92 - b * 0.26) + ')';
-          ctx2d.lineWidth = 5 - b * 1.2;
-          ctx2d.lineCap = 'round';
+          ctx2d.moveTo(Math.cos(rad) * r1, Math.sin(rad) * r1);
+          ctx2d.lineTo(Math.cos(rad) * r2, Math.sin(rad) * r2);
+          ctx2d.strokeStyle = 'rgba(' + (lg ? t.vif : t.sourd) + ',' + (lg ? 0.72 : 0.34) + ')';
+          ctx2d.lineWidth = lg ? 2.6 : 1.4;
           ctx2d.stroke();
         }
+        ctx2d.restore();
+
+        /* arc de balayage : il tourne à l'envers, comme un radar */
+        ctx2d.save();
+        ctx2d.rotate(-phase * 0.55);
+        ctx2d.beginPath();
+        ctx2d.arc(0, 0, R * 0.74, 0, Math.PI * 0.42);
+        ctx2d.strokeStyle = 'rgba(' + t.vif + ',' + (0.55 + e * 0.35) + ')';
+        ctx2d.lineWidth = 3.2; ctx2d.lineCap = 'round';
+        ctx2d.stroke();
+        ctx2d.beginPath();
+        ctx2d.arc(0, 0, R * 0.74, Math.PI, Math.PI * 1.22);
+        ctx2d.strokeStyle = 'rgba(' + t.sourd + ',0.45)';
+        ctx2d.lineWidth = 2; ctx2d.stroke();
+        ctx2d.restore();
+
+        /* l'onde radiale : c'est elle qui bouge quand tu parles */
+        var base = R * 0.56, amp = base * (0.05 + souffle + e * 0.30);
+        for(var c = 0; c < 2; c++){
+          ctx2d.beginPath();
+          for(var d = 0; d <= 360; d += 3){
+            var th = d * Math.PI / 180;
+            var m = Math.sin(th * 6 + phase * (1.6 + c * 0.7)) * 0.62
+                  + Math.sin(th * 11 - phase * 2.1) * 0.28
+                  + Math.sin(th * 3 + phase * 0.9) * 0.34;
+            var rr = base * (1 - c * 0.13) + m * amp * (1 - c * 0.35);
+            var x = Math.cos(th) * rr, y = Math.sin(th) * rr;
+            if(d === 0) ctx2d.moveTo(x, y); else ctx2d.lineTo(x, y);
+          }
+          ctx2d.closePath();
+          ctx2d.strokeStyle = 'rgba(' + (c ? t.sourd : t.vif) + ',' + (c ? 0.42 : 0.9) + ')';
+          ctx2d.lineWidth = c ? 1.8 : 3;
+          ctx2d.stroke();
+          if(!c){
+            ctx2d.fillStyle = 'rgba(' + t.cle + ',' + (0.07 + e * 0.13) + ')';
+            ctx2d.fill();
+          }
+        }
+
+        /* le cœur, et la chauve-souris dedans */
+        var coeur = ctx2d.createRadialGradient(0, 0, 0, 0, 0, R * 0.34);
+        coeur.addColorStop(0, 'rgba(' + t.vif + ',' + (0.34 + e * 0.4) + ')');
+        coeur.addColorStop(1, 'rgba(' + t.cle + ',0)');
+        ctx2d.fillStyle = coeur;
+        ctx2d.beginPath(); ctx2d.arc(0, 0, R * 0.34, 0, Math.PI * 2); ctx2d.fill();
+        if(BAT){
+          var k = (R * 0.44) / 90 * (1 + e * 0.06);
+          ctx2d.save();
+          ctx2d.scale(k, k);
+          ctx2d.translate(-45, -29);
+          ctx2d.fillStyle = 'rgba(' + t.vif + ',' + (0.82 + e * 0.18) + ')';
+          ctx2d.shadowColor = 'rgba(' + t.cle + ',0.9)';
+          ctx2d.shadowBlur = 18 + e * 26;
+          ctx2d.fill(BAT);
+          ctx2d.restore();
+        }
+        ctx2d.restore();
       }
       function boucle(){
         phase += calme ? 0 : (etat === 'parle' ? 0.085 : 0.055);
@@ -13206,6 +13288,7 @@
         if(elAide) elAide.innerHTML = microHorsDePortee()
           ? 'Le micro du navigateur n’est pas accessible ici, mais celui de ton clavier l’est : <kbd>Fn</kbd> <kbd>Fn</kbd> sur le Mac, la touche 🎤 sur l’iPhone. Dicte ta phrase, elle s’écrit ici. <kbd>Entrée</kbd> pour exécuter.'
           : 'Parle, ou écris. <kbd>Entrée</kbd> pour exécuter, <kbd>Échap</kbd> pour fermer.';
+        neLe = Date.now();
         ov.hidden = false;
         if(!anim) boucle();
         if(champ) setTimeout(function(){ try{ champ.focus(); }catch(e){} }, 30);
