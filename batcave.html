@@ -1533,7 +1533,7 @@
                Pomodoros : c'est une action, pas un relevé. Le second bouton arme le mode
                veille (micro ouvert, mot d'appel « Alfred »), éteint par défaut. -->
           <button class="btn bc-voix-btn" id="voix-btn" type="button" aria-pressed="false" hidden
-                  title="Appuie et parle : « pomodoro révision », « coche le petit-déjeuner », « clôture », « stop ». « Alfred, … » au début est accepté.">🎙️ Alfred</button>
+                  title="Appuie et parle : « pomodoro révision », « coche le petit-déjeuner », « clôture », « stop ». « Alfred, … » au début est accepté. Il répond à voix haute.">🎙️ Alfred</button>
           <button class="btn bc-voix-btn" id="alfred-veille" type="button" aria-pressed="false" hidden
                   title="Mode veille : Alfred garde le micro ouvert tant que la Batcave est ouverte et n'obéit qu'aux phrases qui commencent par « Alfred ». Éteint par défaut.">🦇 Veille</button>
           <p class="dial-serie" id="dash-serie" hidden></p>
@@ -12907,31 +12907,79 @@
       var t = sansAppel(normaliser(phrase));
       if(!t) return null;
       if(/\b(stop|arrete|arreter|annule)\b/.test(t)){
-        if(typeof timerState !== 'undefined' && timerState){ stopTimer(true); return 'Minuteur arrêté et enregistré.'; }
-        return 'Rien ne tournait.';
+        if(typeof timerState !== 'undefined' && timerState){ stopTimer(true); return 'Minuteur arrêté, et enregistré, Monsieur.'; }
+        return 'Rien ne tournait, Monsieur.';
       }
-      if(/\b(cloture|cloturer|bilan du soir)\b/.test(t)){ ouvrirCloture(); return 'Clôture ouverte.'; }
+      if(/\b(cloture|cloturer|bilan du soir)\b/.test(t)){ ouvrirCloture(); return 'La clôture du jour, Monsieur.'; }
       if(/pomodoro|minuteur|chrono/.test(t)){
-        if(/espagnol|espanol|español/.test(t)){ lancerPomodoroEspanol(); return 'Pomodoro Español.'; }
-        if(/projet|business|boutique/.test(t)){ lancerPomodoroProjet(); return 'Pomodoro projet perso.'; }
-        lancerPomodoroCours(false); return 'Pomodoro révision.';
+        if(/espagnol|espanol|español/.test(t)){ lancerPomodoroEspanol(); return 'Pomodoro Español, Monsieur.'; }
+        if(/projet|business|boutique/.test(t)){ lancerPomodoroProjet(); return 'Pomodoro projet perso, Monsieur.'; }
+        lancerPomodoroCours(false); return 'Pomodoro révision, Monsieur.';
       }
       if(/\b(coche|cocher|valide|fait|mange|pris)\b/.test(t) || /repas|dejeuner|diner|collation/.test(t)){
         for(var k = 0; k < MOTS_REPAS.length; k++){
           for(var j = 0; j < MOTS_REPAS[k].mots.length; j++){
             if(t.indexOf(MOTS_REPAS[k].mots[j]) > -1){
               var nom = cocherRepas(MOTS_REPAS[k].i);
-              return nom ? nom + ' coché.' : null;
+              return nom ? nom + ' coché, Monsieur.' : null;
             }
           }
         }
         var apres = t.replace(/.*\b(coche|cocher|valide)\b\s*(l[ae'] )?/, '').trim();
         if(apres){
           var hab = cocherHabitude(apres);
-          if(hab) return hab + ' coché.';
+          if(hab) return hab + ' coché, Monsieur.';
         }
       }
       return null;
+    }
+
+    /* ----- la voix d'Alfred -----
+       Le navigateur sait lire un texte à haute voix (Web Speech). On ne peut pas cloner
+       la voix du film : on prend la plus proche disponible sur l'appareil — une voix
+       FRANÇAISE masculine, ralentie et descendue d'un cran, ce qui donne le majordome
+       plutôt que le GPS. macOS et iOS ont « Thomas » ; ailleurs on prend la première voix
+       française. Il ne parle que si on lui a parlé : les boutons, eux, restent muets. */
+    var NOMS_GRAVES = ['thomas','nicolas','aurelien','jacques','paul','henri','male','homme'];
+    var voixAlfred = null, parle = false;
+    function choisirVoix(){
+      var S = window.speechSynthesis;
+      var vs = (S && S.getVoices) ? (S.getVoices() || []) : [];
+      var fr = vs.filter(function(v){ return /^fr/i.test(v.lang || ''); });
+      if(!fr.length) return null;
+      for(var i = 0; i < NOMS_GRAVES.length; i++){
+        var t = fr.filter(function(v){ return normaliser(v.name).indexOf(NOMS_GRAVES[i]) > -1; })[0];
+        if(t) return t;
+      }
+      return fr[0];
+    }
+    try{ if(window.speechSynthesis) window.speechSynthesis.onvoiceschanged = function(){ voixAlfred = choisirVoix(); }; }catch(e){}
+    function dire(texte, apres){
+      var S = window.speechSynthesis;
+      if(!S || !texte){ if(apres) apres(); return; }
+      var fini = false, finir = function(){ if(fini) return; fini = true; if(apres) apres(); };
+      try{
+        S.cancel();
+        /* les guillemets et les emoji se prononceraient : on les retire avant de parler */
+        var u = new SpeechSynthesisUtterance(String(texte).replace(/[«»🎙️🦇]/g, ' ').replace(/\s+/g, ' ').trim());
+        if(!voixAlfred) voixAlfred = choisirVoix();
+        if(voixAlfred){ u.voice = voixAlfred; u.lang = voixAlfred.lang; } else u.lang = 'fr-FR';
+        u.rate = 0.94; u.pitch = 0.8; u.volume = 1;
+        u.onend = finir; u.onerror = finir;
+        /* filet : une synthèse qui ne rend jamais la main ne doit pas laisser le micro fermé */
+        setTimeout(finir, 9000);
+        S.speak(u);
+      }catch(e){ finir(); }
+      return true;
+    }
+    /* Répondre : à l'écran ET à voix haute. En veille, Alfred s'entendrait lui-même —
+       on ferme le micro le temps qu'il parle, et on le rouvre après. */
+    function repondreTout(texte){
+      showToast('🎙️ ' + texte);
+      if(!continu){ dire(texte); return; }
+      parle = true;
+      couper();
+      dire(texte, function(){ parle = false; if(continu && !document.hidden) programmerRelance(); });
     }
 
     /* ----- micro ----- */
@@ -12955,11 +13003,12 @@
       majBoutons();
     }
     function desarmer(message){
-      continu = false; ecrireVeille(); couper();
+      continu = false; parle = false; ecrireVeille(); couper();
+      try{ if(window.speechSynthesis) window.speechSynthesis.cancel(); }catch(e){}
       if(message) showToast(message);
     }
     function programmerRelance(){
-      if(relance || !continu) return;
+      if(relance || !continu || parle) return;
       relance = setTimeout(function(){ relance = null; if(continu && !document.hidden) demarrer(); }, 400);
     }
     function brancher(r){
@@ -12979,9 +13028,9 @@
           if(!adresse) continue;                    /* pas pour nous : on se tait */
           if(!dit) dit = res[0] ? res[0].transcript : '';
           echecs = 0;
-          if(rep) showToast('🎙️ ' + rep);
-          else if(!sansAppel(normaliser(dit))) showToast('🎙️ Oui ?');
-          else showToast('🎙️ Pas compris : « ' + dit + ' »');
+          if(rep) repondreTout(rep);
+          else if(!sansAppel(normaliser(dit))) repondreTout('Monsieur ?');
+          else repondreTout('Je n’ai pas compris, Monsieur : « ' + dit + ' »');
           if(!continu){ couper(); return; }
         }
       };
@@ -13055,7 +13104,9 @@
     if(continu) demarrer();
 
     return {dispo:true, executer:executer, ecouter:ecouter, veille:basculerVeille,
-            enVeille:function(){ return continu; }, ecoutant:function(){ return ecoute; }};
+            dire:dire, voix:choisirVoix,
+            enVeille:function(){ return continu; }, ecoutant:function(){ return ecoute; },
+            parlant:function(){ return parle; }};
   })();
   try{ window.__bcVoix = VOIX; }catch(e){}
   /* Crochet de test : injecter des évènements d'agenda sans connecteur, pour éprouver la

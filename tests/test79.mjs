@@ -25,6 +25,26 @@ const FAUX_MICRO = () => {
   Faux.prototype.abort = function(){ this.demarre = false; if(this.onend) this.onend(); };
   window.SpeechRecognition = Faux;
   window.webkitSpeechRecognition = Faux;
+  /* Fausse synthèse : elle note ce qu'Alfred dit, sans qu'aucun son ne sorte. Les voix
+     proposées imitent celles d'un Mac : deux françaises, une anglaise. */
+  window.__dit = [];
+  const VOIX = [{name:'Amélie', lang:'fr-CA'}, {name:'Daniel', lang:'en-GB'},
+                {name:'Thomas', lang:'fr-FR'}, {name:'Google français', lang:'fr-FR'}];
+  window.SpeechSynthesisUtterance = function(t){ this.text = t; this.rate = 1; this.pitch = 1; this.volume = 1;
+                                                 this.voice = null; this.lang = ''; this.onend = null; this.onerror = null; };
+  /* window.speechSynthesis est en lecture seule dans un vrai navigateur : on le remplace
+     par definePropertyc, sinon l'affectation est ignorée sans rien dire. */
+  const FAUSSE_SYNTHESE = {
+    getVoices: function(){ return VOIX; },
+    onvoiceschanged: null,
+    annulations: 0,
+    cancel: function(){ this.annulations++; },
+    speak: function(u){ window.__dit.push({texte:u.text, rate:u.rate, pitch:u.pitch,
+                                           voix:u.voice ? u.voice.name : null, lang:u.lang});
+                        setTimeout(function(){ if(u.onend) u.onend(); }, 20); }
+  };
+  try{ Object.defineProperty(window, 'speechSynthesis', {value: FAUSSE_SYNTHESE, configurable: true, writable: true}); }
+  catch(e){ window.speechSynthesis = FAUSSE_SYNTHESE; }
   /* dire(phrase) : le micro courant « entend » cette phrase, en une seule alternative. */
   window.__dire = function(phrase){
     const r = window.__micro.dernier;
@@ -84,9 +104,9 @@ console.log('\n== 2) « Alfred » est accepté puis ignoré en tête de phrase =
     window.__bcVoix.executer('alfred lance un pomodoro espagnol'),
     window.__bcVoix.executer('Alfred')
   ]);
-  ok(r[0] === 'Déjeuner coché.', 'sans le nom : « ' + r[0] + ' »');
-  ok(r[1] === 'Petit-déjeuner coché.', 'avec le nom : « ' + r[1] + ' »');
-  ok(r[2] === 'Pomodoro Español.', 'le nom ne gêne pas la commande : « ' + r[2] + ' »');
+  ok(r[0] === 'Déjeuner coché, Monsieur.', 'sans le nom : « ' + r[0] + ' »');
+  ok(r[1] === 'Petit-déjeuner coché, Monsieur.', 'avec le nom : « ' + r[1] + ' »');
+  ok(r[2] === 'Pomodoro Español, Monsieur.', 'le nom ne gêne pas la commande : « ' + r[2] + ' »');
   ok(r[3] === null, 'le nom seul ne déclenche rien');
   await ctx.close();
 }
@@ -152,6 +172,53 @@ console.log('\n== 6) Micro refusé : Alfred se désarme au lieu d\'insister ==')
   const e = await etatBoutons(fr);
   ok(e.veilleTexte === '🦇 Veille' && e.veilleArmee === 'false', 'la veille se coupe d\'elle-même');
   ok(await fr.evaluate(()=>localStorage.getItem('bc-alfred-veille')) === '0', 'et le réglage suit : pas de boucle au prochain chargement');
+  await ctx.close();
+}
+
+console.log('\n== 7) Alfred répond à voix haute, et ne s\'écoute pas parler ==');
+{
+  const {ctx, page, fr} = await ouvrir();
+  const v = await fr.evaluate(()=>{ const x = window.__bcVoix.voix(); return x ? {nom:x.name, lang:x.lang} : null; });
+  ok(v && v.nom === 'Thomas', 'il choisit une voix française masculine parmi celles de l\'appareil : ' + JSON.stringify(v));
+
+  await fr.evaluate(()=>document.getElementById('voix-btn').click());
+  await page.waitForTimeout(60);
+  await fr.evaluate(()=>window.__dire('Alfred, coche le déjeuner'));
+  await page.waitForTimeout(120);
+  const d = await fr.evaluate(()=>window.__dit);
+  ok(d.length === 1, 'une seule phrase prononcée (' + d.length + ')');
+  ok(d[0] && /Déjeuner coché, Monsieur\.$/.test(d[0].texte), 'et c\'est bien sa réponse, dans son registre : « ' + (d[0]||{}).texte + ' »');
+  ok(d[0] && d[0].voix === 'Thomas' && d[0].lang === 'fr-FR', 'prononcée avec la voix choisie : ' + (d[0]||{}).voix);
+  ok(d[0] && d[0].rate < 1 && d[0].pitch < 1, 'ralentie et descendue d\'un cran : débit ' + (d[0]||{}).rate + ', hauteur ' + (d[0]||{}).pitch);
+  await ctx.close();
+}
+{
+  /* En veille, le micro est ouvert : s'il restait ouvert pendant qu'Alfred parle, il
+     s'entendrait lui-même. Le micro doit se fermer, puis se rouvrir seul. */
+  const {ctx, page, fr} = await ouvrir();
+  await fr.evaluate(()=>document.getElementById('alfred-veille').click());
+  await page.waitForTimeout(80);
+  const avant = await fr.evaluate(()=>window.__micro.demarrages);
+  await fr.evaluate(()=>window.__dire('Alfred, clôture'));
+  await page.waitForTimeout(10);
+  ok(await fr.evaluate(()=>window.__micro.dernier.demarre) === false, 'le micro se ferme pendant qu\'il parle');
+  await page.waitForTimeout(700);
+  const apres = await fr.evaluate(()=>window.__micro.demarrages);
+  ok(apres > avant, 'et se rouvre tout seul une fois la phrase finie (' + avant + ' → ' + apres + ')');
+  ok(await fr.evaluate(()=>window.__bcVoix.enVeille()) === true, 'la veille est toujours armée');
+  const d = await fr.evaluate(()=>window.__dit.map(x=>x.texte));
+  ok(d.length === 1 && /Monsieur/.test(d[0]), 'une phrase, une seule : « ' + d[0] + ' »');
+  await ctx.close();
+}
+{
+  /* Ce qui n'est pas compris se dit aussi : le silence laisse croire à une panne. */
+  const {ctx, page, fr} = await ouvrir();
+  await fr.evaluate(()=>document.getElementById('voix-btn').click());
+  await page.waitForTimeout(60);
+  await fr.evaluate(()=>window.__dire('fais-moi un café'));
+  await page.waitForTimeout(120);
+  const d = await fr.evaluate(()=>window.__dit.map(x=>x.texte));
+  ok(d.length === 1 && /pas compris, Monsieur/.test(d[0]), 'il le dit au lieu de se taire : « ' + (d[0]||'') + ' »');
   await ctx.close();
 }
 
