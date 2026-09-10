@@ -6,6 +6,8 @@ La version publiée vit sur claude.ai (Artifact) avec synchronisation cloud et c
 - `batcave.html` — l'application complète (HTML + CSS + JS).
 - `maquette-batcomputer.html` — la maquette statique du tableau de bord Batcomputer.
 - `tests/` — campagne Playwright (`test*.mjs`), audit d'affichage (`audit.mjs`), page hôte et scripts.
+- `tests/audit-suivi.mjs` — l'audit des procédés de suivi : onze familles de vérifications d'ARITHMÉTIQUE (une minute travaillée se retrouve une fois, dans le bon compteur, et une seule fois) plutôt que de code. C'est lui qui a trouvé les deux erreurs du lot 30 : l'espagnol compté dans les projets perso par le réacteur, et les blocs Español manqués reportés en dette de projets.
+- `tests/test79.mjs` — Alfred (la commande vocale) : le mot d'appel, le mode veille, la voix. La reconnaissance et la synthèse du navigateur y sont remplacées par des fausses pilotées par le test — aucun micro n'est ouvert, aucun son n'est émis.
 - `tests/saisir.mjs` — le pilote de la saisie du sport au pas (boutons + et −), partagé par les tests qui enregistrent une séance.
 - `tests/jeu-180.mjs` — jeu de données déterministe de 180 jours (journal, repas, sport, sessions, habitudes, budget, business), rejoué par `test67.mjs` avant chaque publication : chargement, insights, douze onglets sur iPhone.
 - `guide-anki.html` — la méthode Anki pour le dentaire (une carte = une chose à récupérer, trois formats, séance de fabrication en trois passes, huit erreurs, réglages des trois paquets) ; page autonome, publiée aussi en Artifact.
@@ -33,4 +35,4 @@ npm test                         # tous les tests, verdicts dans /tmp/reg10.log
 npm run audit                    # toutes les pages × 3 gabarits
 ```
 
-Le workflow GitHub Actions (`.github/workflows/campagne.yml`) rejoue la campagne et l'audit à chaque push.
+Le workflow GitHub Actions (`.github/workflows/campagne.yml`) rejoue la campagne et l'audit **sur `main`, sur les pull requests et à la demande** (onglet Actions → « Run workflow »). Il ne tourne plus sur chaque push : la campagne tourne en local avant chaque push, et un e-mail d'échec par commit intermédiaire n'apportait rien.
