@@ -428,20 +428,20 @@
      qui ARRIVENT (la dictée du système les écrit un par un) et, quand Alfred parle, aux
      limites de mots que la synthèse lui donne. Ce qui bouge est vrai. */
   .alf-panel{background:linear-gradient(180deg, var(--surface-raised), var(--surface));
-             border:1px solid var(--cyan-dim); border-radius:18px; padding:26px 26px 20px; width:100%;
-             max-width:560px; box-shadow:0 24px 70px rgba(0,0,0,.55), 0 0 0 1px rgba(53,212,232,.12) inset;}
+             border:1px solid rgba(255,166,54,.42); border-radius:18px; padding:26px 26px 20px; width:100%;
+             max-width:560px; box-shadow:0 24px 70px rgba(0,0,0,.6), 0 0 0 1px rgba(255,166,54,.10) inset;}
   .alf-head{display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:4px;}
   .alf-head .t{font-family:var(--font-display); font-size:20px; letter-spacing:.04em; color:var(--ink);}
-  .alf-etat{font-family:var(--font-mono); font-size:10.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--cyan);}
+  .alf-etat{font-family:var(--font-mono); font-size:10.5px; letter-spacing:.14em; text-transform:uppercase; color:#ffb454;}
   .alf-reacteur{display:block; width:262px; height:262px; max-width:78vw; max-height:78vw; margin:6px auto 2px;}
   .alf-scene{position:relative; display:flex; align-items:center; justify-content:center;}
   .alf-scene::after{content:''; position:absolute; inset:-8% -4%; pointer-events:none;
-                    background:radial-gradient(closest-side, rgba(53,212,232,.10), transparent 72%);}
+                    background:radial-gradient(closest-side, rgba(255,166,54,.09), transparent 72%);}
   .alf-dit{font-size:19px; line-height:1.45; color:var(--ink); min-height:52px; margin:10px 0 2px; text-align:center; overflow-wrap:anywhere;}
   .alf-dit.vide{color:var(--ink-faint); font-style:italic; font-size:15px;}
-  .alf-rep{font-size:15px; line-height:1.5; color:var(--cyan-bright); min-height:22px; margin-bottom:12px; text-align:center; overflow-wrap:anywhere;}
+  .alf-rep{font-size:15px; line-height:1.5; color:#ffd49a; min-height:22px; margin-bottom:12px; text-align:center; overflow-wrap:anywhere;}
   .alf-saisie{position:absolute; opacity:0; pointer-events:none; width:1px; height:1px;}
-  .alf-champ{width:100%; background:var(--surface); border:1px solid var(--border); color:var(--ink);
+  .alf-champ{width:100%; background:var(--surface); border:1px solid rgba(255,166,54,.34); color:var(--ink);
              border-radius:9px; padding:10px 12px; font-size:14px; font-family:var(--font-body);}
   .alf-aide{font-size:11.5px; color:var(--ink-faint); line-height:1.55; margin:10px 0 14px;}
   .alf-aide kbd{font-family:var(--font-mono); font-size:11px; background:var(--surface-raised);
@@ -13160,37 +13160,46 @@
       var anim = null, energie = 0, phase = 0, etat = 'ecoute', calme = false;
       try{ calme = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches; }catch(e){}
       /* ===== Le réacteur =====
-         Une sphère de particules, pas un cercle dessiné : mille quatre cents points répartis
-         sur une sphère (suite de Fibonacci, la seule répartition qui ne fasse pas de paquets),
-         tournés en trois dimensions et projetés à plat. Ils s'allument sur le bord — c'est
-         l'assombrissement au centre qui fait lire la boule comme une boule. Par-dessus :
-         des arcs brisés, des rais qui partent du cœur, et le cadre d'instrument autour.
-         Chaque mot qui arrive envoie une onde de choc du centre vers le bord.
-         Tout est calculé, rien n'est une image : ça pèse deux mille caractères et ça suit
-         la couleur de l'état (cyan à l'écoute, vert quand Alfred répond). */
+         Une sphère de particules, pas un cercle dessiné : deux mille quatre cents points
+         répartis par la suite de Fibonacci, tournés en trois dimensions, projetés à plat.
+         Un relief plaqué dessus fait des continents et des vides — sans lui, la régularité
+         parfaite de Fibonacci se voit comme une trame et l'objet cesse d'être de la matière.
+
+         DEUX COULEURS, pas une : le cœur reste cyan, la peau est ambre, et chaque point
+         prend un mélange des deux selon sa distance à la silhouette. C'est ce dégradé qui
+         donne la profondeur — un bord chaud, un centre froid.
+
+         LA MISE EN ROUTE se fait en quatre temps, sur neuf cents millisecondes : le cadre
+         se trace, les arcs se déploient, la sphère s'allume du bord vers le centre, puis
+         le cœur s'amorce. On voit un instrument démarrer, pas une image qui apparaît. */
       var BAT = null;
       try{ BAT = new Path2D('M2,34 C12,20 26,14 36,5 L45,16 L54,5 C64,14 78,20 88,34 C76,31 66,36 62,31 C57,40 49,50 45,53 C41,50 33,40 28,31 C24,36 14,31 2,34 Z'); }catch(e){}
       var TEINTES = {
-        ecoute:{vif:'168,240,252', cle:'53,212,232', sourd:'34,110,134'},
-        parle: {vif:'182,252,214', cle:'63,232,178', sourd:'28,120,96'},
-        fini:  {vif:'168,240,252', cle:'53,212,232', sourd:'34,110,134'}
+        ecoute:{chaud:[255,166,54], chaudVif:[255,228,170], froid:[53,212,232], froidVif:[176,244,253], sourd:[150,92,30]},
+        parle: {chaud:[120,242,186], chaudVif:[196,255,224], froid:[53,212,232], froidVif:[176,244,253], sourd:[38,126,102]},
+        fini:  {chaud:[255,166,54], chaudVif:[255,228,170], froid:[53,212,232], froidVif:[176,244,253], sourd:[150,92,30]}
       };
-      /* la sphère : répartition de Fibonacci, calculée une fois */
+      function melange(a, b, k){
+        k = k < 0 ? 0 : (k > 1 ? 1 : k);
+        return [(a[0] + (b[0] - a[0]) * k) | 0, (a[1] + (b[1] - a[1]) * k) | 0, (a[2] + (b[2] - a[2]) * k) | 0];
+      }
+      function rgba(c, a){ return 'rgba(' + c[0] + ',' + c[1] + ',' + c[2] + ',' + a + ')'; }
       var GRAINS = (function(){
         var n = 2400, out = [], phi = Math.PI * (3 - Math.sqrt(5));
         for(var k = 0; k < n; k++){
           var y = 1 - (k / (n - 1)) * 2, r = Math.sqrt(Math.max(0, 1 - y * y)), th = phi * k;
           var h = (k * 2654435761) % 1000 / 1000;
-          out.push({x: Math.cos(th) * r, y: y, z: Math.sin(th) * r,
-                    /* éclat propre et stable, avec quelques points beaucoup plus vifs :
-                       c'est ce grain irrégulier qui empêche la sphère de faire tramée */
-                    v: (h < 0.06 ? 1.7 : 0.30 + h * 0.75),
-                    l: ((k * 40503) % 100) < 34,                       /* un tiers sont des filaments */
-                    lg: 0.6 + ((k * 15485863) % 100) / 100 * 1.9});    /* de longueurs inégales */
+          var X = Math.cos(th) * r, Z = Math.sin(th) * r;
+          var d = 0.5 + 0.5 * Math.sin(X * 3.1 + y * 1.7) * Math.sin(y * 2.3 + Z * 2.9) * Math.sin(Z * 3.7 + X * 2.1);
+          d = Math.pow(d, 1.5);
+          out.push({x: X, y: y, z: Z, d: d,
+                    v: (h < 0.05 ? 2.1 : 0.22 + h * 0.85),
+                    l: ((k * 40503) % 100) < 38,
+                    ray: ((k * 27644437) % 100) < 5,
+                    lg: 0.5 + ((k * 15485863) % 100) / 100 * 2.4});
         }
         return out;
       })();
-      /* les arcs brisés et les rais : tirés une fois, pour qu'ils ne scintillent pas au hasard */
       var ARCS = (function(){
         var out = [];
         for(var k = 0; k < 14; k++){
@@ -13211,7 +13220,7 @@
         return out;
       })();
       var CHOCS = [];
-      var neLe = 0;   /* horodatage d'ouverture : c'est lui qui fait « apparaître » */
+      var neLe = 0;
       function impulsion(force){
         force = force || 0.34;
         energie = Math.min(1, energie + force);
@@ -13222,41 +13231,53 @@
         var W = cnv.width, H = cnv.height, cx = W / 2, cy = H / 2, R = Math.min(W, H) / 2;
         ctx2d.clearRect(0, 0, W, H);
         var t = TEINTES[etat] || TEINTES.ecoute;
-        var age = neLe ? Math.min(1, (Date.now() - neLe) / 620) : 1;
-        var app = 1 - Math.pow(1 - age, 3);
-        var e = energie, RS = R * 0.62;                 /* rayon de la sphère */
+        var brut = neLe ? Math.min(1, (Date.now() - neLe) / 1150) : 1;
+        var app = 1 - Math.pow(1 - brut, 2);
+        /* les quatre temps de la mise en route */
+        var pas = function(a, b){ var v = (app - a) / (b - a); return v < 0 ? 0 : (v > 1 ? 1 : v); };
+        var tCadre = pas(0, 0.20), tArcs = pas(0.14, 0.60), tSphere = pas(0.26, 0.92), tCoeur = pas(0.68, 1);
+        var e = energie, RS = R * 0.66;
         ctx2d.save();
         ctx2d.translate(cx, cy);
-        ctx2d.globalAlpha = app;
-        ctx2d.scale(0.72 + 0.28 * app, 0.72 + 0.28 * app);
         ctx2d.globalCompositeOperation = 'lighter';
+        ctx2d.scale(0.80 + 0.20 * app, 0.80 + 0.20 * app);
 
-        /* le halo, et le creux sombre au centre qui donne le volume */
+        /* halo */
         var halo = ctx2d.createRadialGradient(0, 0, RS * 0.15, 0, 0, RS * 1.5);
-        halo.addColorStop(0, 'rgba(' + t.cle + ',' + (0.05 + e * 0.10) + ')');
-        halo.addColorStop(0.62, 'rgba(' + t.cle + ',' + (0.13 + e * 0.16) + ')');
-        halo.addColorStop(1, 'rgba(' + t.cle + ',0)');
+        halo.addColorStop(0, rgba(t.froid, 0));
+        halo.addColorStop(0.68, rgba(t.chaud, (0.10 + e * 0.14) * tSphere));
+        halo.addColorStop(1, rgba(t.chaud, 0));
         ctx2d.fillStyle = halo;
         ctx2d.beginPath(); ctx2d.arc(0, 0, RS * 1.5, 0, Math.PI * 2); ctx2d.fill();
 
-        /* la sphère de particules */
+        /* la sphère : elle s'allume du BORD vers le centre */
         var ry = phase * 0.34, rx = 0.42 + Math.sin(phase * 0.2) * 0.06;
         var cy1 = Math.cos(ry), sy1 = Math.sin(ry), cx1 = Math.cos(rx), sx1 = Math.sin(rx);
+        var seuil = 1 - tSphere * 1.25;
         for(var g = 0; g < GRAINS.length; g++){
           var P = GRAINS[g];
+          if(P.d < 0.14) continue;
           var X = P.x * cy1 + P.z * sy1, Z = -P.x * sy1 + P.z * cy1;
           var Y = P.y * cx1 - Z * sx1;  Z = P.y * sx1 + Z * cx1;
-          var prof = (Z + 1) / 2;                       /* 0 derrière, 1 devant */
-          var bord = 1 - Math.abs(Z);                   /* 1 sur la silhouette */
-          /* l'assombrissement au centre (le bord brille bien plus que le milieu) est ce qui
-             fait lire une boule et non un disque : c'est la puissance appliquée à « bord ». */
-          var lum = (0.16 + prof * 0.52) * (0.26 + Math.pow(bord, 2.8) * 2.6) * P.v * (0.8 + e * 0.6);
+          var prof = (Z + 1) / 2, bord = 1 - Math.abs(Z);
+          if(bord < seuil) continue;
+          var lum = (0.17 + prof * 0.52) * (0.46 + Math.pow(bord, 1.9) * 2.3) * P.v * P.d * (0.9 + e * 0.55);
           if(lum < 0.03) continue;
-          var px = X * RS, py = Y * RS, taille = (0.95 + prof * 1.6) * (1 + e * 0.35);
-          ctx2d.fillStyle = 'rgba(' + (bord > 0.66 ? t.vif : t.cle) + ',' + Math.min(1, lum) + ')';
+          var px = X * RS, py = Y * RS, taille = (0.95 + prof * 1.7) * (1 + e * 0.35);
+          /* cyan au cœur, ambre sur la peau : le mélange se fait ici, point par point */
+          var c = melange(t.froid, t.chaud, Math.pow(bord, 1.35));
+          if(P.v > 1.5) c = melange(t.froidVif, t.chaudVif, Math.pow(bord, 1.35));
+          ctx2d.fillStyle = rgba(c, Math.min(1, lum));
+          if(P.ray && bord > 0.5){
+            var ang0 = Math.atan2(py, px), lo = RS * (1 + P.lg * 0.16 * (0.6 + e));
+            ctx2d.beginPath();
+            ctx2d.moveTo(px, py);
+            ctx2d.lineTo(Math.cos(ang0) * lo, Math.sin(ang0) * lo);
+            ctx2d.strokeStyle = rgba(t.chaudVif, Math.min(0.7, lum * 0.8));
+            ctx2d.lineWidth = 1;
+            ctx2d.stroke();
+          }
           if(P.l){
-            /* les filaments suivent la surface (perpendiculaires au rayon) : c'est ce qui
-               donne la texture de latitude, plutôt que des tirets tous couchés pareil */
             var ta = Math.atan2(py, px) + Math.PI / 2, L = taille * P.lg * 2.2;
             ctx2d.save();
             ctx2d.translate(px, py); ctx2d.rotate(ta);
@@ -13267,31 +13288,62 @@
           }
         }
 
-        /* la silhouette : le trait vif qui cerne la boule */
+        /* la coque intérieure : c'est elle qui fait le croissant clair, et elle est CYAN */
+        var ry2 = -phase * 0.21 + 1.1, cy2 = Math.cos(ry2), sy2 = Math.sin(ry2);
+        for(var g2 = 0; g2 < GRAINS.length; g2 += 2){
+          var Q = GRAINS[g2];
+          if(Q.d < 0.30) continue;
+          var X2 = Q.x * cy2 + Q.z * sy2, Z2 = -Q.x * sy2 + Q.z * cy2;
+          var Y2 = Q.y * cx1 - Z2 * sx1; Z2 = Q.y * sx1 + Z2 * cx1;
+          var pr2 = (Z2 + 1) / 2, bo2 = 1 - Math.abs(Z2);
+          var l2 = (0.10 + pr2 * 0.34) * (0.30 + Math.pow(bo2, 2.2) * 1.8) * Q.v * Q.d * (0.7 + e * 0.5) * tSphere;
+          if(l2 < 0.035) continue;
+          var qx = X2 * RS * 0.66, qy = Y2 * RS * 0.66, ts = 0.8 + pr2 * 1.1;
+          ctx2d.fillStyle = rgba(bo2 > 0.6 ? t.froidVif : t.froid, Math.min(0.85, l2));
+          if(Q.l){
+            var ta2 = Math.atan2(qy, qx) + Math.PI / 2, L2 = ts * Q.lg * 1.8;
+            ctx2d.save(); ctx2d.translate(qx, qy); ctx2d.rotate(ta2);
+            ctx2d.fillRect(-L2 / 2, -ts * 0.3, L2, ts * 0.6);
+            ctx2d.restore();
+          } else ctx2d.fillRect(qx - ts / 2, qy - ts / 2, ts, ts);
+        }
+
+        /* cordes qui traversent la boule */
+        for(var ch = 0; ch < 9; ch++){
+          var a1c = (ch * 79.3 + phase * 8) * Math.PI / 180, a2c = a1c + 1.9 + (ch % 4) * 0.42;
+          ctx2d.beginPath();
+          ctx2d.moveTo(Math.cos(a1c) * RS * 0.97, Math.sin(a1c) * RS * 0.97);
+          ctx2d.lineTo(Math.cos(a2c) * RS * 0.97, Math.sin(a2c) * RS * 0.97);
+          ctx2d.strokeStyle = rgba(t.froid, (0.06 + e * 0.10) * tSphere);
+          ctx2d.lineWidth = 0.9;
+          ctx2d.stroke();
+        }
+
+        /* la silhouette */
         ctx2d.beginPath();
         ctx2d.arc(0, 0, RS, 0, Math.PI * 2);
-        ctx2d.strokeStyle = 'rgba(' + t.vif + ',' + (0.16 + e * 0.22) + ')';
+        ctx2d.strokeStyle = rgba(t.chaudVif, (0.14 + e * 0.20) * tSphere);
         ctx2d.lineWidth = 1.4;
         ctx2d.stroke();
 
-        /* les rais qui partent du cœur */
+        /* les rais : ambre, ils poussent avec l'énergie */
         for(var q = 0; q < RAIS.length; q++){
           var S = RAIS[q], ang = S.a + phase * 0.09;
           var a0 = S.r0 * RS * 1.55, a1 = (S.r0 + S.len * (0.7 + e * 0.6)) * RS * 1.55;
           ctx2d.beginPath();
           ctx2d.moveTo(Math.cos(ang) * a0, Math.sin(ang) * a0);
-          ctx2d.lineTo(Math.cos(ang) * a1, Math.sin(ang) * a1);
-          ctx2d.strokeStyle = 'rgba(' + t.cle + ',' + (S.al * (0.30 + e * 0.6)) + ')';
+          ctx2d.lineTo(Math.cos(ang) * (a0 + (a1 - a0) * tArcs), Math.sin(ang) * (a0 + (a1 - a0) * tArcs));
+          ctx2d.strokeStyle = rgba(t.chaud, S.al * (0.30 + e * 0.6));
           ctx2d.lineWidth = 1.15;
           ctx2d.stroke();
         }
 
-        /* les arcs brisés */
+        /* les arcs brisés : cyan et ambre alternés, ils se DÉPLOIENT à l'allumage */
         for(var m = 0; m < ARCS.length; m++){
           var A = ARCS[m], deb = A.a + phase * 0.13 * A.sens;
           ctx2d.beginPath();
-          ctx2d.arc(0, 0, A.r * RS * 1.62, deb, deb + A.span);
-          ctx2d.strokeStyle = 'rgba(' + (A.ep > 2 ? t.vif : t.cle) + ',' + (A.al * (0.42 + e * 0.5)) + ')';
+          ctx2d.arc(0, 0, A.r * RS * 1.62, deb, deb + A.span * tArcs);
+          ctx2d.strokeStyle = rgba(m % 2 ? t.froid : t.chaud, A.al * (0.42 + e * 0.5));
           ctx2d.lineWidth = A.ep;
           ctx2d.lineCap = 'butt';
           ctx2d.stroke();
@@ -13304,33 +13356,34 @@
           if(C.a < 0.03 || C.r > 1.5){ CHOCS.splice(o, 1); continue; }
           ctx2d.beginPath();
           ctx2d.arc(0, 0, C.r * RS * 1.6, 0, Math.PI * 2);
-          ctx2d.strokeStyle = 'rgba(' + t.vif + ',' + (C.a * 0.5) + ')';
+          ctx2d.strokeStyle = rgba(melange(t.froidVif, t.chaudVif, C.r), C.a * 0.5);
           ctx2d.lineWidth = 1.6;
           ctx2d.stroke();
         }
 
-        /* le cœur et la chauve-souris */
-        var coeur = ctx2d.createRadialGradient(0, 0, 0, 0, 0, RS * 0.42);
-        coeur.addColorStop(0, 'rgba(' + t.vif + ',' + (0.30 + e * 0.42) + ')');
-        coeur.addColorStop(1, 'rgba(' + t.cle + ',0)');
+        /* le cœur : serré, cyan, et la chauve-souris dedans */
+        var coeur = ctx2d.createRadialGradient(0, 0, 0, 0, 0, RS * 0.30);
+        coeur.addColorStop(0, rgba(t.froidVif, (0.34 + e * 0.46) * tCoeur));
+        coeur.addColorStop(0.45, rgba(t.froid, (0.10 + e * 0.14) * tCoeur));
+        coeur.addColorStop(1, rgba(t.froid, 0));
         ctx2d.fillStyle = coeur;
-        ctx2d.beginPath(); ctx2d.arc(0, 0, RS * 0.42, 0, Math.PI * 2); ctx2d.fill();
-        if(BAT){
-          var k2 = (RS * 0.42) / 90 * (1 + e * 0.07);
+        ctx2d.beginPath(); ctx2d.arc(0, 0, RS * 0.30, 0, Math.PI * 2); ctx2d.fill();
+        if(BAT && tCoeur > 0){
+          var k2 = (RS * 0.42) / 90 * (0.7 + 0.3 * tCoeur) * (1 + e * 0.07);
           ctx2d.save();
           ctx2d.scale(k2, k2); ctx2d.translate(-45, -29);
-          ctx2d.fillStyle = 'rgba(' + t.vif + ',' + (0.80 + e * 0.20) + ')';
-          ctx2d.shadowColor = 'rgba(' + t.cle + ',0.95)';
+          ctx2d.fillStyle = rgba(t.froidVif, (0.80 + e * 0.20) * tCoeur);
+          ctx2d.shadowColor = rgba(t.froid, 0.95);
           ctx2d.shadowBlur = 20 + e * 30;
           ctx2d.fill(BAT);
           ctx2d.restore();
         }
 
-        /* ===== le cadre d'instrument ===== */
+        /* ===== le cadre d'instrument : il se trace en premier ===== */
         ctx2d.globalCompositeOperation = 'source-over';
-        ctx2d.globalAlpha = app * 0.9;
-        var M = R * 0.97, coin = R * 0.30;
-        ctx2d.strokeStyle = 'rgba(' + t.sourd + ',0.85)';
+        ctx2d.globalAlpha = tCadre;
+        var M = R * 0.97, coin = R * 0.30 * tCadre;
+        ctx2d.strokeStyle = rgba(t.sourd, 0.9);
         ctx2d.lineWidth = 1.6;
         [[-1,-1],[1,-1],[-1,1],[1,1]].forEach(function(c){
           ctx2d.beginPath();
@@ -13339,30 +13392,28 @@
           ctx2d.lineTo(c[0] * M - c[0] * coin, c[1] * M);
           ctx2d.stroke();
         });
-        /* barres segmentées, en haut et en bas : elles se remplissent avec l'énergie */
         [-1, 1].forEach(function(sgn){
-          var y = sgn * R * 0.90, x0 = -R * 0.52, larg = R * 1.04, seg = 22;
-          ctx2d.strokeStyle = 'rgba(' + t.sourd + ',0.5)';
+          var y = sgn * R * 0.90, x0 = -R * 0.52, larg = R * 1.04 * tCadre, seg = 22;
+          ctx2d.strokeStyle = rgba(t.sourd, 0.5);
           ctx2d.lineWidth = 1;
           ctx2d.strokeRect(x0, y - 5, larg, 10);
-          for(var b2 = 0; b2 < seg; b2++){
+          for(var b2 = 0; b2 < seg * tCadre; b2++){
             var rempli = (b2 / seg) < (0.25 + e * 0.7);
-            ctx2d.fillStyle = 'rgba(' + (rempli ? t.cle : t.sourd) + ',' + (rempli ? 0.7 : 0.22) + ')';
-            ctx2d.fillRect(x0 + 2 + b2 * (larg - 4) / seg, y - 3, (larg - 4) / seg - 1.6, 6);
+            ctx2d.fillStyle = rgba(rempli ? t.chaud : t.sourd, rempli ? 0.75 : 0.22);
+            ctx2d.fillRect(x0 + 2 + b2 * (R * 1.04 - 4) / seg, y - 3, (R * 1.04 - 4) / seg - 1.6, 6);
           }
         });
-        /* le petit cadran, en bas à droite */
         ctx2d.save();
         ctx2d.translate(R * 0.72, R * 0.72);
-        ctx2d.strokeStyle = 'rgba(' + t.cle + ',0.6)';
+        ctx2d.strokeStyle = rgba(t.chaud, 0.65);
         ctx2d.lineWidth = 1.2;
-        ctx2d.beginPath(); ctx2d.arc(0, 0, R * 0.11, 0, Math.PI * 2); ctx2d.stroke();
+        ctx2d.beginPath(); ctx2d.arc(0, 0, R * 0.11, 0, Math.PI * 2 * tCadre); ctx2d.stroke();
         for(var d2 = 0; d2 < 12; d2++){
           var ad = d2 * Math.PI / 6 + phase * 0.5;
           ctx2d.beginPath();
           ctx2d.moveTo(Math.cos(ad) * R * 0.075, Math.sin(ad) * R * 0.075);
           ctx2d.lineTo(Math.cos(ad) * R * 0.105, Math.sin(ad) * R * 0.105);
-          ctx2d.strokeStyle = 'rgba(' + (d2 % 3 ? t.sourd : t.vif) + ',' + (d2 % 3 ? 0.4 : 0.85) + ')';
+          ctx2d.strokeStyle = rgba(d2 % 3 ? t.sourd : t.froidVif, d2 % 3 ? 0.42 : 0.9);
           ctx2d.stroke();
         }
         ctx2d.restore();
