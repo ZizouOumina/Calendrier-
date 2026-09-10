@@ -1,3 +1,5 @@
+/* lot 30 : les durées s'écrivent en heures et minutes (« 4 h 25 », « 55 min »)
+   et non plus en dixièmes d'heure (« 4,4h ») — les attentes suivent. */
 import { chromium } from 'playwright';
 const URL = 'http://127.0.0.1:8199/host.html';
 let errs = 0;
@@ -116,7 +118,7 @@ console.log('\n== 30) Journée antérieure au journal : on le dit ==');
   await page.waitForTimeout(250);
   const t = await fr.evaluate(() => document.getElementById('rv-jour').innerText.replace(/\s+/g,' '));
   ok(/sans détail horaire/.test(t), 'message honnête plutôt qu\'une grille vide : ' + t.slice(0, 90));
-  ok(/2,0 h enregistrées/.test(t), 'le total connu est quand même montré');
+  ok(/2 h enregistrées/.test(t), 'le total connu est quand même montré');
   await ctx.close();
 }
 
@@ -140,7 +142,7 @@ console.log('\n== 31) Supprimer un bloc corrige les totaux ==');
   ok(rev[0].matieres['Anatomía I'] === undefined && rev[0].matieres['Bioquímica'] === 60, 'la matière supprimée disparaît de la répartition');
   ok(sess.length === 1, 'le bloc est retiré du journal');
   const cal = await fr.evaluate(() => document.querySelector('#rv-grid [data-agjour="2026-09-02"]').innerText.replace(/\s+/g,' '));
-  ok(/1,0h/.test(cal), 'le calendrier se met à jour : ' + cal);
+  ok(/1 h/.test(cal), 'le calendrier se met à jour : ' + cal);
   const j7 = await fr.evaluate(() => document.getElementById('rev-matieres-7').innerText.replace(/\s+/g,' '));
   ok(!/Anatomía I/.test(j7) && /Bioquímica/.test(j7), 'la répartition par matière suit aussi : ' + j7);
   await ctx.close();

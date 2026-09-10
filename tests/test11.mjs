@@ -1,3 +1,5 @@
+/* lot 30 : les durées s'écrivent en heures et minutes (« 4 h 25 », « 55 min »)
+   et non plus en dixièmes d'heure (« 4,4h ») — les attentes suivent. */
 import { chromium } from 'playwright';
 const URL = 'http://127.0.0.1:8199/host.html';
 let errs = 0;
@@ -92,8 +94,8 @@ console.log('\n== 25) Le calendrier des révisions ==');
   ok(g.jours === 30, 'septembre : 30 cases (obtenu ' + g.jours + ')');
   const decalage = (new Date(2026, 8, 1).getDay() + 6) % 7;
   ok(g.vides === decalage, 'décalage du 1er correct (' + g.vides + ' cases vides)');
-  ok(/3,0h/.test(g.j2), 'le 02/09 affiche 3,0h : « ' + g.j2 + ' »');
-  ok(/1,0h/.test(g.j1), 'le 01/09 affiche 1,0h');
+  ok(/3 h/.test(g.j2), 'le 02/09 affiche 3 h : « ' + g.j2 + ' »');
+  ok(/1 h/.test(g.j1), 'le 01/09 affiche 1 h');
   ok(/aujourdhui/.test(g.j2cls) && /actif/.test(g.j2cls), 'aujourd\'hui est marqué et sélectionné par défaut');
   ok(/n3/.test(g.j2cls), 'intensité forte pour 3 h (' + g.j2cls.trim() + ')');
   ok(g.j5 === '5', 'un jour sans révision reste vide');
@@ -104,7 +106,7 @@ console.log('\n== 25) Le calendrier des révisions ==');
     corps: document.getElementById('rv-jour').innerText.replace(/\s+/g,' ')
   }));
   ok(/mercredi 2 septembre/i.test(det.jour), 'jour sélectionné : ' + det.jour.trim());
-  ok(/3,0 h/.test(det.total), 'total du jour affiché : ' + det.total);
+  ok(/3 h/.test(det.total), 'total du jour affiché : ' + det.total);
   ok(/sans détail horaire/.test(det.corps), 'journée sans blocs journalisés : message explicite : ' + det.corps.slice(0,80));
 
   await fr.evaluate(() => document.querySelector('#rv-grid [data-agjour="2026-09-01"]').click());
@@ -113,7 +115,7 @@ console.log('\n== 25) Le calendrier des révisions ==');
     jour: document.getElementById('rv-jlabel').textContent,
     total: document.getElementById('rv-jtotal').textContent
   }));
-  ok(/mardi 1ᵉʳ septembre/i.test(det1.jour) && /1,0 h/.test(det1.total), 'clic sur le 01/09 : ' + det1.jour.trim() + ' — ' + det1.total);
+  ok(/mardi 1ᵉʳ septembre/i.test(det1.jour) && /1 h/.test(det1.total), 'clic sur le 01/09 : ' + det1.jour.trim() + ' — ' + det1.total);
 
   await fr.evaluate(() => document.querySelector('#rv-grid [data-agjour="2026-09-05"]').click());
   await page.waitForTimeout(200);
@@ -144,11 +146,11 @@ console.log('\n== 25) Le calendrier des révisions ==');
       j29: document.querySelector('#pj-grid [data-agjour="2026-08-29"]').innerText.replace(/\s+/g,' ')
     };
   });
-  ok(/0,8h/.test(proj.j31) && /1,5h/.test(proj.j29), 'et elles apparaissent bien sur la grille Business : ' + proj.j31 + ' / ' + proj.j29);
+  ok(/45 min/.test(proj.j31) && /1 h 30/.test(proj.j29), 'et elles apparaissent bien sur la grille Business : ' + proj.j31 + ' / ' + proj.j29);
   await fr.evaluate(() => document.querySelector('#pj-grid [data-agjour="2026-08-29"]').click());
   await page.waitForTimeout(200);
   const det29 = await fr.evaluate(() => document.getElementById('pj-jtotal').textContent);
-  ok(/1,5 h/.test(det29), 'total d\'un jour de projet côté Business : ' + det29);
+  ok(/1 h 30/.test(det29), 'total d\'un jour de projet côté Business : ' + det29);
   await fr.evaluate(() => { document.querySelector('.nav-btn[data-page="etudes"]').click();
                             document.getElementById('rv-next').click(); document.getElementById('rv-next').click(); });
   await page.waitForTimeout(200);
@@ -169,7 +171,7 @@ console.log('\n== 27) Le calendrier suit les nouveaux blocs ==');
     detail: document.getElementById('rv-jour').innerText.replace(/\s+/g,' '),
     serie: document.getElementById('timer-serie').textContent
   }));
-  ok(/1,0h/.test(apres.case), 'la case du jour se met à jour sans recharger : ' + apres.case);
+  ok(/1 h/.test(apres.case), 'la case du jour se met à jour sans recharger : ' + apres.case);
   ok(/🔵 Psicología/.test(apres.detail), 'la matière apparaît sur le bloc : ' + apres.detail.slice(-70));
   ok(/Série : 1 jour/.test(apres.serie), 'et la série démarre : ' + apres.serie.trim());
   await ctx.close();

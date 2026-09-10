@@ -618,6 +618,15 @@
 
   /* ---------- temps du jour (tableau de bord) ---------- */
   .temps-grid{display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:10px;}
+  /* étiquette lue par les lecteurs d'écran, invisible à l'œil */
+  .sr-only{position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden;
+           clip:rect(0 0 0 0); white-space:nowrap; border:0;}
+  mark{background:var(--cyan-dim); color:var(--bg); border-radius:2px; padding:0 2px;}
+  .bc-voix-btn{padding:5px 6px; font-size:12px; line-height:1.1; letter-spacing:0;}
+  .bc-voix-btn.voix-active{background:var(--cyan-dim); color:var(--bg); animation:voix-pulse 1.1s ease-in-out infinite;}
+  @keyframes voix-pulse{0%,100%{opacity:1;} 50%{opacity:.55;}}
+  @media (prefers-reduced-motion: reduce){ .bc-voix-btn.voix-active{animation:none;} }
+  .temps-cell .tnote{font-size:10px; color:var(--ink-faint); margin-top:2px; line-height:1.25;}
   .temps-cell{background:var(--surface-raised); border:1px solid var(--border); border-radius:9px; padding:10px 11px; min-width:0;}
   .temps-cell .tl{font-size:11.5px; color:var(--ink-dim); font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
   .temps-cell .tv{font-family:var(--font-display); font-size:26px; line-height:1.1; color:var(--cyan-bright); margin-top:3px; font-variant-numeric:tabular-nums;}
@@ -1466,7 +1475,7 @@
       <header class="bc-bar" aria-label="Batcomputer — statut du jour">
         <div class="bc-row bc-row-1">
           <div class="bc-brand">
-            <svg viewBox="0 0 90 60" aria-hidden="true"><path d="M2,34 C12,20 26,14 36,5 L45,16 L54,5 C64,14 78,20 88,34 C76,31 66,36 62,31 C57,40 49,50 45,53 C41,50 33,40 28,31 C24,36 14,31 2,34 Z"/></svg>
+            <svg viewBox="0 0 512 240" aria-hidden="true"><path d="M 256 236 C 268 200, 283 150, 291 110 C 318 120, 345 128, 368 129 C 404 112, 452 86, 506 62 C 486 26, 432 4, 372 14 C 348 18, 324 30, 306 46 C 300 34, 292 16, 282 4 C 274 16, 265 28, 256 34 C 247 28, 238 16, 230 4 C 220 16, 212 34, 206 46 C 188 30, 164 18, 140 14 C 80 4, 26 26, 6 62 C 60 86, 108 112, 144 129 C 167 128, 194 120, 221 110 C 229 150, 244 200, 256 236 Z"/></svg>
             <h1 class="bc-name">BATCOMPUTER<small>QG · GOTHAM-ALICANTE</small></h1>
           </div>
           <span class="bc-clock" id="bc-clock">--:--</span>
@@ -1520,6 +1529,10 @@
           <button class="btn btn-primary" id="dash-pomodoro">🍅 Pomodoro — Révision</button>
           <button class="btn btn-primary" id="dash-pomodoro-projet">🍅 Pomodoro — Projet perso</button>
           <button class="btn btn-primary" id="dash-pomodoro-espanol" hidden>🇪🇸 Pomodoro — Español</button>
+          <!-- Commande vocale : masquée si le navigateur ne sait pas écouter. Elle vit ici,
+               avec les Pomodoros : c'est une action, pas un relevé. -->
+          <button class="btn bc-voix-btn" id="voix-btn" type="button" aria-pressed="false" hidden
+                  title="Parler à la Batcave : « pomodoro révision », « coche le petit-déjeuner », « clôture », « stop »">🎙️ Parler</button>
           <p class="dial-serie" id="dash-serie" hidden></p>
         </div>
         <p class="focus-kb"><b>P</b> lance le Pomodoro du bloc · <b>C</b> ouvre la clôture · <b>H</b> coche l’habitude suivante · <b>1-9</b> changent d’onglet</p>
@@ -1544,7 +1557,7 @@
         <div class="panel mon-central">
           <div class="sub-head"><h3>Score du jour</h3><span class="sub-note"><span id="dash-temps-total"></span> · <b class="mon-id">MON-02 · CENTRAL</b></span></div>
           <div class="reactor" id="dash-reactor">
-            <svg class="bat" viewBox="0 0 90 60" aria-hidden="true"><path d="M2,34 C12,20 26,14 36,5 L45,16 L54,5 C64,14 78,20 88,34 C76,31 66,36 62,31 C57,40 49,50 45,53 C41,50 33,40 28,31 C24,36 14,31 2,34 Z"/></svg>
+            <svg class="bat" viewBox="0 0 512 240" aria-hidden="true"><path d="M 256 236 C 268 200, 283 150, 291 110 C 318 120, 345 128, 368 129 C 404 112, 452 86, 506 62 C 486 26, 432 4, 372 14 C 348 18, 324 30, 306 46 C 300 34, 292 16, 282 4 C 274 16, 265 28, 256 34 C 247 28, 238 16, 230 4 C 220 16, 212 34, 206 46 C 188 30, 164 18, 140 14 C 80 4, 26 26, 6 62 C 60 86, 108 112, 144 129 C 167 128, 194 120, 221 110 C 229 150, 244 200, 256 236 Z"/></svg>
             <svg class="rings" viewBox="0 0 400 400" aria-hidden="true">
               <defs>
                 <radialGradient id="dash-coreglow" cx="50%" cy="50%" r="50%">
@@ -1871,7 +1884,14 @@
 
       <div class="panel sub-panel" id="journal-hist-panel" style="margin-top:14px;">
         <div class="sub-head"><h3>Journées précédentes</h3><span class="sub-note" id="journal-hist-count"></span></div>
-        <p class="sub-note" style="margin-bottom:12px;">Tes notes, ton humeur, ton sommeil et ton poids, jour par jour — les plus récentes en premier.</p>
+        <p class="sub-note" style="margin-bottom:10px;">Tes notes, ton humeur, ton sommeil et ton poids, jour par jour — les plus récentes en premier.</p>
+        <!-- Recherche plein texte : six mois de journal ne valent que si on peut y revenir.
+             « qu'est-ce qui coinçait en novembre ? » se répond en tapant un mot. -->
+        <div class="field-row" style="margin-bottom:12px;">
+          <label for="journal-recherche" class="sr-only">Chercher dans le journal</label>
+          <input type="search" id="journal-recherche" placeholder="Chercher dans tout le journal — un mot, un prénom, « novembre »…" autocomplete="off">
+          <button class="btn" id="journal-recherche-vider" type="button" hidden>Effacer</button>
+        </div>
         <div id="journal-hist"></div>
       </div>
     </section>
@@ -4870,13 +4890,13 @@
     var blocs = blocsDuJour(iso, conf.types);
     if(tot){
       var m = totalVue(pre, iso);
-      tot.textContent = m ? ((m/60).toFixed(1).replace('.', ',') + ' h' +
+      tot.textContent = m ? (fmtDuree(m) +
                             (blocs.length ? ' · ' + blocs.length + ' bloc' + (blocs.length>1?'s':'') : '')) : '';
     }
     if(!blocs.length){
       var sansDetail = totalVue(pre, iso);
       box.innerHTML = '<p class="jr-vide">' + (sansDetail
-        ? (sansDetail/60).toFixed(1).replace('.', ',') + ' h enregistrées ce jour-là, sans détail horaire (journée antérieure au journal des blocs).'
+        ? fmtDuree(sansDetail) + ' enregistrées ce jour-là, sans détail horaire (journée antérieure au journal des blocs).'
         : conf.vide) + '</p>';
       return;
     }
@@ -4961,7 +4981,7 @@
                  (iso === todayISO ? ' aujourdhui' : '') + (iso === jrISO(pre) ? ' actif' : '') +
                  '" data-agjour="' + iso + '">' +
                  '<span class="cal-num">' + j + '</span>' +
-                 '<span class="cal-h">' + (min ? (min/60).toFixed(1).replace('.', ',') + 'h' : '') + '</span>' +
+                 '<span class="cal-h">' + (min ? fmtDuree(min) : '') + '</span>' +
                  (pastilles ? '<span class="cal-pts">' + pastilles + '</span>' : '') + '</button>');
     }
     grille.innerHTML = cases.join('');
@@ -4989,7 +5009,7 @@
     }
     function tuile(label, min){
       return '<div class="stat-tile"><div class="tlabel">' + label + '</div><div class="tnum" style="font-size:30px;">' +
-             (min/60).toFixed(1).replace('.', ',') + '<small>h</small></div></div>';
+             fmtDuree(min) + '<small>h</small></div></div>';
     }
     el.innerHTML = tuile('Total du mois', parType.cours + parType.projet) +
                    tuile('🔵 Révision', parType.cours) + tuile('🟠 Projets perso', parType.projet) +
@@ -5104,12 +5124,12 @@
       var fleche = stable ? '→' : (delta > 0 ? '↑' : '↓');
       var couleur = stable ? 'var(--ink-faint)' : (delta > 0 ? 'var(--good)' : 'var(--danger)');
       /* sous 5 min d'écart, afficher « -0,0 h » ferait croire à une baisse : on dit "stable" */
-      var deltaTxt = stable ? 'stable' : (delta>0?'+':'') + (delta/60).toFixed(1).replace('.', ',') + ' h';
+      var deltaTxt = stable ? 'stable' : (delta>0?'+':'') + fmtDuree(delta);
       return '<div style="margin-bottom:12px;">' +
         '<div style="display:flex; justify-content:space-between; align-items:baseline; gap:10px; margin-bottom:4px;">' +
           '<span style="font-size:13px; color:var(--ink);">' + escapeHtml(x.nom) + '</span>' +
           '<span class="sub-note" style="font-size:11.5px; flex:none;"><b style="color:var(--ink);">' +
-            (x.min/60).toFixed(1).replace('.', ',') + ' h</b> · ' + part + '%' +
+            fmtDuree(x.min) + '</b> · ' + part + '%' +
             ' <span style="color:' + couleur + ';">' + fleche + ' ' + deltaTxt + '</span></span>' +
         '</div>' +
         '<div class="progress-track"><div class="progress-fill" style="width:' + pct + '%"></div></div>' +
@@ -5120,12 +5140,12 @@
     /* même règle que les flèches par matière : sous 5 min d'écart, « +0,0 h » laisserait
        croire à une progression nulle mesurée, alors que c'est simplement identique. */
     var ecartTxt = Math.abs(ecart) < 5 ? 'stable'
-                 : (ecart>0?'+':'') + (ecart/60).toFixed(1).replace('.', ',') + ' h';
+                 : (ecart>0?'+':'') + fmtDuree(ecart);
     el.innerHTML = lignes +
       '<p class="sub-note" style="margin-top:14px; padding-top:12px; border-top:1px solid var(--border-soft);">' +
-      '<b style="color:var(--ink);">' + (totalMin/60).toFixed(1).replace('.', ',') + ' h</b> au total sur ' +
+      '<b style="color:var(--ink);">' + fmtDuree(totalMin) + '</b> au total sur ' +
       cette.liste.length + ' matière' + (cette.liste.length>1?'s':'') + ' · semaine précédente ' +
-      (totalAvant/60).toFixed(1).replace('.', ',') + ' h (' + ecartTxt + ')</p>';
+      fmtDuree(totalAvant) + ' (' + ecartTxt + ')</p>';
   }
   (function(){
     var p = document.getElementById('sem-prev'), n2 = document.getElementById('sem-next');
@@ -5212,7 +5232,8 @@
     iso = iso || todayISO;
     var t = 0;
     blocsDuPlanning(cleJournee(dowDe(iso)), iso).forEach(function(b){ if(/^Español/.test(b.label)) t += b.minutes; });
-    return Math.round(t * facteurCharge(iso));
+    /* comme la révision et les projets : ce qui a été reporté d'hier s'ajoute à la cible */
+    return Math.round(t * facteurCharge(iso)) + ((iso === todayISO) ? reportDuJour().es : 0);
   }
   document.getElementById('timer-pomodoro').addEventListener('click', function(){ lancerPomodoroCours(null); });
   (function(){
@@ -5651,6 +5672,23 @@
 
   /* Le journal était en écriture seule : tes notes partaient dans une clé datée et
      aucune page ne les réaffichait jamais. */
+  /* Ce que l'on cherche dans le journal : le texte tapé, sans accents ni casse. */
+  var journalQuery = '';
+  function sansAccents(t){
+    return String(t == null ? '' : t).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  }
+  function surligner(texte, q){
+    var brut = escapeHtml(String(texte == null ? '' : texte));
+    if(!q) return brut;
+    var plat = sansAccents(brut), aiguille = sansAccents(q), out = '', i = 0;
+    while(true){
+      var k = plat.indexOf(aiguille, i);
+      if(k < 0 || !aiguille) break;
+      out += brut.slice(i, k) + '<mark>' + brut.slice(k, k + aiguille.length) + '</mark>';
+      i = k + aiguille.length;
+    }
+    return out + brut.slice(i);
+  }
   function renderJournalHistorique(){
     var el = document.getElementById('journal-hist');
     if(!el) return;
@@ -5668,13 +5706,30 @@
       }
     }
     jours.sort(function(a, b){ return a.iso < b.iso ? 1 : -1; });
+    var total = jours.length, q = journalQuery.trim();
+    if(q){
+      /* la date en toutes lettres fait partie du texte cherché : « novembre » trouve
+         les journées de novembre sans qu'on ait à taper une date ISO */
+      var aig = sansAccents(q);
+      jours = jours.filter(function(x){
+        var j = x.j;
+        var champ = [j.notes, j.coran, j.duaa, j.mood, x.iso,
+                     dateLongue(new Date(x.iso + 'T00:00:00'))].join(' ');
+        return sansAccents(champ).indexOf(aig) > -1;
+      });
+    }
     var cpt = document.getElementById('journal-hist-count');
-    if(cpt) cpt.textContent = jours.length ? jours.length + (jours.length > 1 ? ' journées' : ' journée') : '';
+    if(cpt) cpt.textContent = q ? (jours.length + ' sur ' + total + (total > 1 ? ' journées' : ' journée'))
+                                : (total ? total + (total > 1 ? ' journées' : ' journée') : '');
+    var vider = document.getElementById('journal-recherche-vider');
+    if(vider) vider.hidden = !q;
     if(!jours.length){
-      el.innerHTML = '<p class="entry-empty">Rien d\'autre pour l\'instant — tes journées remplies s\'afficheront ici.</p>';
+      el.innerHTML = q
+        ? '<p class="entry-empty">Aucune journée ne contient « ' + escapeHtml(q) + ' ».</p>'
+        : '<p class="entry-empty">Rien d\'autre pour l\'instant — tes journées remplies s\'afficheront ici.</p>';
       return;
     }
-    el.innerHTML = jours.slice(0, 60).map(function(x){
+    el.innerHTML = jours.slice(0, q ? 200 : 60).map(function(x){
       var j = x.j, bouts = [];
       if(j.mood) bouts.push('🙂 humeur ' + j.mood + '/5');
       if(j.sommeil) bouts.push('😴 ' + String(j.sommeil).replace('.', ',') + ' h');
@@ -5686,10 +5741,21 @@
         '<div style="display:flex; gap:10px; align-items:baseline; flex-wrap:wrap;">' +
         '<b style="color:var(--ink); text-transform:capitalize;">' + escapeHtml(dateLongue(new Date(x.iso + 'T00:00:00'))) + '</b>' +
         '<span class="sub-note">' + bouts.join(' · ') + '</span></div>' +
-        (j.notes ? '<p style="margin:6px 0 0; font-size:13px; color:var(--ink-dim); white-space:pre-wrap;">' + escapeHtml(j.notes) + '</p>' : '') +
+        (j.notes ? '<p style="margin:6px 0 0; font-size:13px; color:var(--ink-dim); white-space:pre-wrap;">' + surligner(j.notes, journalQuery.trim()) + '</p>' : '') +
         '</div>';
     }).join('');
   }
+  (function(){
+    var champ = document.getElementById('journal-recherche');
+    var vider = document.getElementById('journal-recherche-vider');
+    if(!champ) return;
+    var minuteur = null;
+    champ.addEventListener('input', function(){
+      clearTimeout(minuteur);
+      minuteur = setTimeout(function(){ journalQuery = champ.value; renderJournalHistorique(); }, 150);
+    });
+    if(vider) vider.addEventListener('click', function(){ champ.value = ''; journalQuery = ''; renderJournalHistorique(); champ.focus(); });
+  })();
   function renderHabits(){
     var grid = document.getElementById('habits-grid');
     consignerAcquises();
@@ -5959,17 +6025,21 @@
     preparerReacteur();
     try{ renderProchainBloc(); }catch(e){}
     var revMin = todayRevisionMinutes(), cibleRev = revisionTarget() * 60;
-    var projMin = minutesOnProj(todayISO), cibleProj = projetsTarget() * 60;
+    /* minutesOnProjSeuls, pas minutesOnProj : la cible des projets exclut l'espagnol, donc
+       le réalisé doit l'exclure aussi. Avec minutesOnProj, une heure d'espagnol remplissait
+       l'arc « projets » — le réacteur et la cellule du tableau de bord se contredisaient. */
+    var projMin = minutesOnProjSeuls(todayISO), cibleProj = projetsTarget() * 60;
     majArc('arc-hab', reacteurHabits.total ? reacteurHabits.fait / reacteurHabits.total : 0);
     majArc('arc-rev', cibleRev ? revMin / cibleRev : 0);
     majArc('arc-proj', cibleProj ? projMin / cibleProj : 0);
-    var hh = function(m){ return (m/60).toFixed(1).replace('.', ','); };
+    var hh = fmtDuree;
     var lh = document.getElementById('leg-hab'), lr = document.getElementById('leg-rev'), lp = document.getElementById('leg-proj');
     if(lh) lh.textContent = 'habitudes ' + reacteurHabits.fait + '/' + reacteurHabits.total;
-    /* cibleRevisionTexte() rend deja « 4 h 25 » quand la cible a des minutes : on n'ajoute
-       l'unite que sur un nombre entier, sinon on affiche « 4 h 25 h ». */
-    if(lr) lr.textContent = 'révision ' + hh(revMin) + '/' + cibleRevisionTexte() + (Number.isInteger(revisionTarget()) ? ' h' : '');
-    if(lp) lp.textContent = 'projets ' + hh(projMin) + '/' + hh(cibleProj) + ' h';
+    if(lr) lr.textContent = 'révision ' + fmtDuree(revMin) + ' / ' + fmtDuree(cibleRev);
+    /* Phase sans projets perso (jusqu'au 18 octobre, la grille n'en prévoit aucune minute) :
+       l'arc ne veut rien dire, la légende le dit au lieu d'afficher « 0,0/0,0 ». */
+    if(lp) lp.textContent = cibleProj ? ('projets ' + fmtDuree(projMin) + ' / ' + fmtDuree(cibleProj))
+                                      : ('projets — ' + phraseSansProjets());
   }
   function renderDashHabits(){
     var el = document.getElementById('dash-checklist');
@@ -7215,7 +7285,7 @@
     document.getElementById('jr-sleep-fill').style.width = sleepPct + '%';
     document.getElementById('jr-sleep-pct').textContent = sleepPct + '%';
     var cibleS = objectifSommeil();
-    document.getElementById('jr-sleep-sub').textContent = sleepH.toFixed(1).replace('.',',') + ' / ' + cibleS.toFixed(1).replace('.',',') + ' h';
+    document.getElementById('jr-sleep-sub').textContent = fmtHeures(sleepH) + ' sur ' + fmtHeures(cibleS);
   }
 
   [['j-coran','coran'],['j-duaa','duaa'],['j-sommeil','sommeil'],['j-poids','poids'],['j-notes','notes']].forEach(function(pair){
@@ -8620,13 +8690,13 @@
       if(!type) return;
       var d0 = timeToMinutes(b[0]), d1 = i < plan.length-1 ? timeToMinutes(plan[i+1][0]) : fin;
       /* minutes = travail réel attendu dans le bloc (pauses exclues), comme les cibles */
-      out.push({type:type, label:b[1], debut:d0, fin:d1, minutes:minutesTravail(b[1], d1-d0)});
+      out.push({type:type, suivi:typeSuiviBloc(b[1]), label:b[1], debut:d0, fin:d1, minutes:minutesTravail(b[1], d1-d0)});
     });
     return out;
   }
   function sessionsAujourdhui(type){
     return sessionsState.filter(function(b){
-      return b && b.date === todayISO && Number(b.duree) > 0 && ((b.type === 'projet') ? 'projet' : 'cours') === type;
+      return b && b.date === todayISO && Number(b.duree) > 0 && typeSuiviSession(b) === type;
     });
   }
   function recouvrement(bloc, sessions, iso){
@@ -8638,15 +8708,43 @@
     });
     return total;
   }
+  /* ===== Ce que ton agenda Google occupe vraiment =====
+     Un rendez-vous chez le médecin à 11:20 n'est pas un bloc « manqué » : il n'a pas pu
+     avoir lieu. Un bloc recouvert de moitié ou plus par un événement que la Batcave n'a PAS
+     poussé (les siens portent le préfixe « 🦇 ») sort donc du calcul : ni alerte, ni dette.
+     Les événements sur la journée entière (12 h et plus) sont ignorés — un anniversaire dans
+     l'agenda ne doit pas effacer une journée de suivi. */
+  function evenementsExterieursDuJour(dow){
+    var l = (typeof gcalWeekEvents !== 'undefined' && gcalWeekEvents && gcalWeekEvents[dow]) || [];
+    var out = [];
+    l.forEach(function(e){
+      var titre = e[1] || '';
+      if(/^\uD83E\uDD87/.test(titre)) return;              /* 🦇 : c'est la Batcave elle-même */
+      if(!e[0] || !e[2]) return;                            /* sans heure de fin, on ne conclut rien */
+      var d = timeToMinutes(e[0]), f = timeToMinutes(e[2]);
+      if(!(f > d) || (f - d) >= 12 * 60) return;
+      out.push({debut:d, fin:f, titre:titre});
+    });
+    return out;
+  }
+  function minutesOccupees(b, evs){
+    var t = 0;
+    evs.forEach(function(e){ t += Math.max(0, Math.min(b.fin, e.fin) - Math.max(b.debut, e.debut)); });
+    return t;
+  }
   function blocsManques(nowMin){
-    var res = {cours:{blocs:[], deficit:0}, projet:{blocs:[], deficit:0}};
+    var res = {cours:{blocs:[], deficit:0, occupes:[]}, projet:{blocs:[], deficit:0, occupes:[]},
+               es:{blocs:[], deficit:0, occupes:[]}};
     var cle = scheduleKeyForToday();
-    ['cours','projet'].forEach(function(type){
+    var evs = evenementsExterieursDuJour(dowDe(todayISO));
+    ['cours','projet','es'].forEach(function(type){
       var sessions = sessionsAujourdhui(type);
       var fait = sessions.reduce(function(a,s){ return a + Number(s.duree); }, 0);
       var echu = 0;
       blocsDuPlanning(cle).forEach(function(b){
-        if(b.type !== type || nowMin < b.fin + GRACE_BLOC_MIN) return;
+        if(b.suivi !== type || nowMin < b.fin + GRACE_BLOC_MIN) return;
+        /* occupé par un vrai rendez-vous : le bloc n'était pas disponible, il ne compte pas */
+        if(minutesOccupees(b, evs) >= (b.fin - b.debut) / 2){ res[type].occupes.push(b); return; }
         echu += Math.round(b.minutes * facteurCharge());
         if(recouvrement(b, sessions) < b.minutes / 2) res[type].blocs.push(b);
       });
@@ -8694,13 +8792,38 @@
     var demain = new Date(now); demain.setDate(demain.getDate() + 1);
     var iso = localISO(demain);
     var r = load('batcave-report', null);
-    if(!r || typeof r !== 'object' || r.date !== iso) r = {date: iso, rev: 0, proj: 0};
-    var champ = type === 'projet' ? 'proj' : 'rev';
+    if(!r || typeof r !== 'object' || r.date !== iso) r = {date: iso, rev: 0, proj: 0, es: 0};
+    /* trois champs, un par compteur : l'espagnol reporté revient en espagnol, pas en projets */
+    var champ = {cours:'rev', projet:'proj', es:'es'}[type] || 'rev';
     r[champ] = Math.min(REPORT_MAX_MIN, (Number(r[champ])||0) + minutes);
     save('batcave-report', r);
     saveInternal(cleTraiteManque(type), true);
-    showToast('↪ ' + (minutes/60).toFixed(1).replace('.', ',') + ' h de ' + (type === 'projet' ? 'projets' : 'révision') + ' reportées à demain (plafond 2 h).');
+    showToast('↪ ' + fmtDuree(minutes) + ' ' + (/^[aeiou\u00e9\u00e8\u00eah]/i.test(NOM_SUIVI[type]) ? "d'" : 'de ') + NOM_SUIVI[type] + ' reportées à demain (plafond 2 h).');
   }
+  /* ===== Rattrapage unique après une absence =====
+     Si la Batcave est restée fermée trois jours, elle ne doit pas se réveiller en rejouant
+     trois clôtures, trois rituels et trois rappels à la file : c'est le meilleur moyen de la
+     refermer. On rejoue UNE fois — un seul item qui dit ce qui manque, et qui disparaît dès
+     qu'on l'a vu. Les journées manquées ne sont jamais remplies à ta place : une case cochée
+     d'office est une donnée fausse, et six mois de suivi n'y survivent pas. */
+  var RATTRAPAGE_MAX_JOURS = 14;
+  function journeesManquees(){
+    var dernier = load('batcave-last-open', null);
+    if(!dernier || dernier >= todayISO) return [];
+    var out = [], d = new Date(dernier + 'T00:00:00');
+    d.setDate(d.getDate() + 1);
+    while(localISO(d) < todayISO && out.length <= RATTRAPAGE_MAX_JOURS){
+      var iso = localISO(d);
+      if(iso >= PROGRAMME_DEBUT && !jourExclu(iso)){
+        var j = load('batcave-journal-' + iso, null);
+        var rempli = j && typeof j === 'object' && (j.notes || j.mood || j.sommeil || j.poids || j.water);
+        if(!rempli) out.push(iso);
+      }
+      d.setDate(d.getDate() + 1);
+    }
+    return out;
+  }
+  function cleRattrapageVu(){ return 'batcave-rattrapage-vu-' + todayISO; }
   function poidsPriorite(p){ return p === 'Haute' ? 0 : (p === 'Basse' ? 0.2 : 0.1); }
   function buildPlanDuJour(){
     var n = new Date();
@@ -8710,16 +8833,49 @@
     /* Blocs manques : un item par type, avec de quoi decider -- replacer aujourd'hui
        si un creneau libre existe encore, sinon reporter a demain. */
     var manques = blocsManques(nowMin), libres = creneauxLibresRestants(nowMin);
-    ['cours','projet'].forEach(function(type){
+    /* un bloc que ton agenda Google occupait n'est pas une dette : on le dit une fois, sans
+       bouton, pour que tu saches pourquoi il ne compte pas */
+    function phraseOccupes(liste){
+      if(!liste || !liste.length) return '';
+      return ' · ' + liste.length + ' bloc' + (liste.length > 1 ? 's' : '') + ' pris par ton agenda (' +
+             liste.map(function(b){ return b.label + ' ' + minutesToTime(b.debut); }).join(', ') + ')' +
+             (liste.length > 1 ? ' — ils ne comptent pas' : ' — il ne compte pas');
+    }
+    ['cours','projet','es'].forEach(function(type){
       var m = manques[type];
-      if(!m.deficit || load(cleTraiteManque(type), false)) return;
-      var nomType = type === 'projet' ? 'projets perso' : 'révision';
-      var h = (m.deficit/60).toFixed(1).replace('.', ',');
+      var pris = m.occupes || [];
+      if(!m.deficit || load(cleTraiteManque(type), false)){
+        /* aucune dette, mais l'agenda avait pris la place : on le dit, sinon on croit que
+           la Batcave n'a rien vu */
+        if(pris.length && !m.deficit) items.push({pri:2.9, icon:'📅',
+          text:'Agenda — ' + NOM_SUIVI[type] + (pris.length > 1 ? ' : ' : ' : ') + pris.length + ' bloc' +
+               (pris.length > 1 ? 's occupés' : ' occupé') + ' par un rendez-vous (' +
+               pris.map(function(b){ return b.label + ' ' + minutesToTime(b.debut); }).join(', ') +
+               ') — aucune dette pour autant', action:null});
+        return;
+      }
+      var nomType = NOM_SUIVI[type];
+      /* « de espagnol » se dit « d'espagnol » : l'élision se décide sur la première lettre */
+      var de = /^[aeiou\u00e9\u00e8\u00eah]/i.test(nomType) ? "d'" : 'de ';
       var noms = m.blocs.map(function(b){ return b.label + ' ' + minutesToTime(b.debut); }).join(', ');
-      var texte = 'Bloc manqué — ' + h + ' h de ' + nomType + ' non faites (' + noms + ')';
+      var texte = 'Bloc manqué — ' + fmtDuree(m.deficit) + ' ' + de + nomType + ' non faites (' + noms + ')' + phraseOccupes(pris);
       if(libres.length) texte += ' · créneau libre : ' + libres[0].label + ' à ' + libres[0].heure + ' (' + Math.floor(libres[0].minutes/60) + ' h ' + (libres[0].minutes%60 ? (libres[0].minutes%60) + ' min' : '') + ')';
       items.push({pri:1, icon:'⏰', text:texte, action:{type:'manque', typeTravail:type, minutes:m.deficit, libre:!!libres.length}});
     });
+
+    /* Rattrapage : un seul item pour toute l'absence, vu une fois. */
+    if(!load(cleRattrapageVu(), false)){
+      var manquees = journeesManquees();
+      if(manquees.length){
+        var trop = manquees.length > RATTRAPAGE_MAX_JOURS;
+        var liste = manquees.slice(0, 3).map(function(iso){ return fmtDate(iso); }).join(', ');
+        items.push({pri:1.2, icon:'🕳️',
+          text:'Absence — ' + (trop ? 'plus de ' + RATTRAPAGE_MAX_JOURS : manquees.length) + ' journée' +
+               (manquees.length > 1 ? 's' : '') + ' sans clôture (' + liste + (manquees.length > 3 ? '…' : '') +
+               '). Rien n\'a été rempli à ta place : ouvre le journal pour les compléter, ou laisse-les vides et repars d\'aujourd\'hui.',
+          action:{type:'rattrapage'}});
+      }
+    }
 
     /* Charge realiste : deux semaines sous 70 % → proposer une cible reduite, une fois. */
     var pc = propositionCharge();
@@ -8776,8 +8932,9 @@
     var revH = todayRevisionMinutes()/60;
     var target = revisionTarget();
     if(revH < target){
-      var restant = (target-revH).toFixed(1).replace('.',',');
-      items.push({pri: nowMin >= seuilUrgenceRevision() ? 0 : 2, icon:'📚', text:'Révision — '+revH.toFixed(1).replace('.',',')+'h / '+cibleRevisionTexte()+(Number.isInteger(target)?'h':'')+' visées ('+'il reste '+restant+'h)', action:{type:'revision'}});
+      items.push({pri: nowMin >= seuilUrgenceRevision() ? 0 : 2, icon:'📚',
+                  text:'Révision — ' + fmtHeures(revH) + ' sur ' + fmtHeures(target) + ' — il reste ' + fmtHeures(target - revH),
+                  action:{type:'revision'}});
 
       /* Alerte de rythme : temps de révision restant vs temps avant le coucher DU JOUR.
          Le calcul lisait bien heureCoucher(), mais le message affichait « 22h » en dur --
@@ -8836,6 +8993,8 @@
         right = '<button class="btn" data-plan-mesure="1" style="padding:4px 10px; font-size:11px; flex-shrink:0;">📏 Mesurer</button>';
       } else if(it.action && it.action.type === 'sport'){
         right = '<button class="btn btn-primary" data-ouvrir="sport" style="padding:4px 10px; font-size:11px; flex-shrink:0;">Ouvrir</button>';
+      } else if(it.action && it.action.type === 'rattrapage'){
+        right = '<button class="btn btn-primary" data-plan-rattrapage="1" style="padding:4px 10px; font-size:11px; flex-shrink:0;">📓 Journal</button>';
       } else if(it.action && it.action.type === 'vierge'){
         right = '<button class="btn btn-primary" data-plan-vierge="1" style="padding:4px 10px; font-size:11px; flex-shrink:0;">🌱 Prendre</button>';
       } else if(it.action && it.action.type === 'test-anki'){
@@ -8886,6 +9045,17 @@
     });
     el.querySelectorAll('[data-plan-anki]').forEach(function(btn){
       btn.addEventListener('click', function(){ lancerPomodoroCours(MATIERE_SANS); });
+    });
+    el.querySelectorAll('[data-plan-rattrapage]').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        /* vu une fois : il ne revient pas demain */
+        saveInternal(cleRattrapageVu(), true);
+        var nav = document.querySelector('.nav-btn[data-page="bilan"]');
+        if(nav) nav.click();
+        var champ = document.getElementById('journal-recherche');
+        if(champ) champ.focus();
+        renderPlanDuJour();
+      });
     });
     el.querySelectorAll('[data-plan-vierge]').forEach(function(btn){
       btn.addEventListener('click', function(){ prendreCopieVierge(); renderDashboard(); });
@@ -9027,7 +9197,7 @@
       maxMin = Math.max(maxMin, c.rev, cProj, rev, proj);
       return {d: d, passe: passe, rev: rev, proj: proj, cRev: c.rev, cProj: cProj};
     });
-    var h = function(m){ return Math.round(100 * m / maxMin); }, hh = function(m){ return (m/60).toFixed(1).replace('.', ','); };
+    var h = function(m){ return Math.round(100 * m / maxMin); }, hh = function(m){ return fmtDuree(m); };
     el.innerHTML = lignes.map(function(l){
       var barres = l.passe
         ? '<i class="rev" style="height:' + h(l.rev) + '%" title="révision ' + hh(l.rev) + ' h / ' + hh(l.cRev) + ' h"></i><i class="proj" style="height:' + h(l.proj) + '%" title="projets ' + hh(l.proj) + ' h / ' + hh(l.cProj) + ' h"></i>'
@@ -9087,7 +9257,7 @@
     }
     var revH2 = todayRevisionMinutes()/60;
     if(revH2 >= revisionTarget()){
-      return '📚 Objectif révision du jour atteint (' + revH2.toFixed(1).replace('.',',') + 'h) — bien joué.';
+      return '📚 Objectif révision du jour atteint (' + fmtHeures(revH2) + ') — bien joué.';
     }
     return null;
   }
@@ -9830,7 +10000,7 @@
     journalList.innerHTML =
       '<li><span>Coran</span><b>'+(journalState.coran ? 'page '+journalState.coran : '—')+'</b></li>'+
       '<li><span>Eau</span><b>'+litres(journalState.water).toFixed(1).replace('.',',')+' / '+OBJECTIF_EAU_L.toFixed(1).replace('.',',')+' L · '+pctEau(journalState.water)+'%</b></li>'+
-      '<li><span>Sommeil</span><b>'+(journalState.sommeil ? sleepHDash.toFixed(1).replace('.',',')+'h · '+pctSommeil(sleepHDash)+'%' : '—')+'</b></li>'+
+      '<li><span>Sommeil</span><b>'+(journalState.sommeil ? fmtHeures(sleepHDash)+' · '+pctSommeil(sleepHDash)+'%' : '—')+'</b></li>'+
       '<li><span>Humeur</span><b>'+(journalState.mood ? journalState.mood+'/5' : '—')+'</b></li>';
 
     var ct = coursesTotals();
@@ -9883,8 +10053,7 @@
     var revMin = todayRevisionMinutes(), projMin = minutesOnProjSeuls(todayISO);
     var cibleRev = revisionTarget() * 60;
     var rep = reportDuJour();
-    function celluleTemps(label, min, cible, reporte, dom){
-      var h = (min/60).toFixed(1).replace('.', ',');
+    function celluleTemps(label, min, cible, reporte, dom, note){
       var barre = '';
       if(cible){
         var pct = clamp(Math.round(100*min/cible), 0, 100);
@@ -9892,18 +10061,19 @@
       }
       return '<div class="temps-cell' + (min ? '' : ' vide') + (dom ? ' t-' + dom : '') + '">' +
              '<div class="tl">' + label + '</div>' +
-             '<div class="tv">' + h + '<small>h' + (cible ? ' / ' + String(Math.round(cible/60*10)/10).replace('.', ',') + 'h' : '') + (reporte ? ' <span title="dont report de la veille">+' + String(Math.round(reporte/60*10)/10).replace('.', ',') + 'h ↪</span>' : '') + '</small></div>' +
-             barre + '</div>';
+             '<div class="tv">' + fmtDuree(min) + '<small>' + (cible ? ' / ' + fmtDuree(cible) : '') + (reporte ? ' <span title="dont report de la veille">+' + fmtDuree(reporte) + ' ↪</span>' : '') + '</small></div>' +
+             (note ? '<div class="tnote">' + note + '</div>' : '') + barre + '</div>';
     }
     document.getElementById('dash-temps').innerHTML =
       celluleTemps('📚 Révision', revMin, cibleRev, rep.rev, 'rev') +
-      celluleTemps('💻 Projets perso', projMin, projetsTarget()*60 || null, rep.proj, 'proj') +
+      celluleTemps('💻 Projets perso', projMin, projetsTarget()*60 || null, rep.proj, 'proj',
+                   projetsTarget() ? '' : phraseSansProjets()) +
       /* La cellule Español ne se cache plus quand la journée n'a pas de bloc : sinon on ne
          sait pas où atterrissent ces heures, et on croit qu'elles ne sont pas comptées.
          Elle affiche 0,0 h sans cible les jours où la grille n'en prévoit pas. */
       celluleTemps('🇪🇸 Español', minutesEspanol(todayISO), cibleEspanolJour(todayISO) || null, 0, 'es');
     var sem = chargeRestanteSemaine();
-    var hh = function(m){ return (m/60).toFixed(1).replace('.', ','); };
+    var hh = fmtDuree;
     var semEl = document.getElementById('dash-semaine');
     if(semEl){
       /* Les trois charges de la semaine viennent de la GRILLE du jour, jour par jour : elles
@@ -9925,7 +10095,7 @@
     majReacteur();
     var totalJourMin = revMin + projMin + minutesEspanol(todayISO);
     document.getElementById('dash-temps-total').textContent =
-      totalJourMin ? (totalJourMin/60).toFixed(1).replace('.', ',') + ' h au total' : 'rien encore aujourd\'hui';
+      totalJourMin ? fmtDuree(totalJourMin) + ' au total' : 'rien encore aujourd\'hui';
     renderSemaineBarres();
     renderEcheances();
     majReleveSauvegarde();
@@ -9968,7 +10138,7 @@
       };
       releves.innerHTML =
         tuile('Budget ' + now.toLocaleDateString('fr-FR', {month:'short'}), (solde >= 0 ? '+' : '−') + Math.abs(solde).toFixed(0), '€', solde >= 0 ? 'good' : 'danger', 'charges ' + fixedChargesTotal().toFixed(0) + ' €/mois') +
-        tuile('Sommeil', journalState.sommeil ? sleepHDash.toFixed(1).replace('.', ',') : '—', journalState.sommeil ? 'h / ' + cibleS.toFixed(1).replace('.', ',') : '', journalState.sommeil ? (sleepHDash >= cibleS ? 'good' : (sleepHDash >= cibleS - 1 ? '' : 'warn')) : '', journalState.sommeil ? pctSommeil(sleepHDash) + ' % · coucher ' + heureCoucher() : 'à saisir dans le Journal') +
+        tuile('Sommeil', journalState.sommeil ? fmtHeures(sleepHDash) : '—', journalState.sommeil ? ' / ' + fmtHeures(cibleS) : '', journalState.sommeil ? (sleepHDash >= cibleS ? 'good' : (sleepHDash >= cibleS - 1 ? '' : 'warn')) : '', journalState.sommeil ? pctSommeil(sleepHDash) + ' % · coucher ' + heureCoucher() : 'à saisir dans le Journal') +
         tuile('Poids', dernierPoids !== null ? dernierPoids.toFixed(1).replace('.', ',') : '—', dernierPoids !== null ? 'kg' : '', '', gPoids ? 'cible ' + gPoids.target + ' kg' + (dernierPoids !== null ? ' · ' + (dernierPoids >= gPoids.start ? '+' : '−') + Math.abs(dernierPoids - gPoids.start).toFixed(1).replace('.', ',') + ' depuis le départ' : '') : '') +
         tuile('Coran', String(pagesMax), '/ 180 p.', '', duaaState.length + ' duaa' + (duaaState.length > 1 ? 's' : '') + ' · 1 page / jour');
     }
@@ -10099,7 +10269,7 @@
     var el = document.getElementById('bilan-plan'), note = document.getElementById('bilan-plan-note');
     if(!el) return;
     var jours = weekRange(0), NOMS = ['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'];
-    var hh = function(m){ return (m/60).toFixed(1).replace('.', ','); };
+    var hh = fmtDuree;
     var maxMin = 1;
     var lignes = jours.map(function(d){
       var c = cibleJourMinutes(cleJournee(dowDe(d)), d), plan = c.rev + c.proj + (c.es || 0);
@@ -10400,12 +10570,46 @@
     if(/^Español/.test(label)) return 'projet';
     return null;
   }
+  /* ===== Deux notions de « type de bloc », longtemps confondues =====
+     typeBlocPlan dit ce qu'est un bloc POUR LE MINUTEUR : l'espagnol y est du temps de
+     projet, parce que le Pomodoro Español écrit une session de type « projet ».
+     typeSuiviBloc dit ce qu'est un bloc POUR LE SUIVI : l'espagnol est son propre
+     compteur, avec sa cible, sa cellule et sa ligne d'objectif.
+     Confondre les deux faisait atterrir une matinée d'espagnol manquée dans la dette de
+     PROJETS PERSO : la cible du lendemain gonflait du mauvais côté, et la dette d'espagnol
+     disparaissait. Les trois compteurs du suivi sont donc « cours », « projet » et « es ». */
+  function typeSuiviBloc(label){
+    var t = typeBlocPlan(label);
+    if(!t) return null;
+    return (t === 'projet' && /^Español/.test(label)) ? 'es' : t;
+  }
+  /* la même distinction, côté sessions enregistrées */
+  function typeSuiviSession(b){
+    if(!b) return null;
+    if(b.type === 'projet') return /^Español/.test(b.label || '') ? 'es' : 'projet';
+    return 'cours';
+  }
+  var NOM_SUIVI = {cours:'révision', projet:'projets perso', es:'espagnol'};
   /* Rythme de Pomodoro d'un bloc : 25 min sur Anki (rappel, attention courte), 55 min sur
      tout le reste (annales au format examen, cartes, compréhension, projets : continuité).
      La part de travail d'une heure pleine en découle : 50 min sur 60 en 25 + 5, 55 sur 60
      en 55 + 5. Un bloc plus court que son rythme (Projets perso 3, 50 min avant la collation)
      est du travail d'un bout à l'autre : la pause, c'est le trajet. Les cibles du jour et
      de la semaine se lisent en temps de travail réel, pauses exclues. */
+  /* ===== Une seule façon d'écrire une durée =====
+     « 0,9 h » ne se lit pas : personne ne compte en dixièmes d'heure, et il faut multiplier
+     de tête pour savoir que c'est 55 minutes. Pire, la même quantité s'écrivait dans deux
+     formats dans la même phrase — « 4 h 25 visées (il reste 4,4h) » — ce qui se lit comme
+     deux nombres alors que c'en est un seul. Partout : heures et minutes, rien d'autre. */
+  function fmtDuree(minutes){
+    var m = Math.round(Number(minutes) || 0), signe = m < 0 ? '−' : '';
+    m = Math.abs(m);
+    if(!m) return '0';
+    var h = Math.floor(m / 60), r = m % 60;
+    return signe + (h ? (r ? h + ' h ' + (r < 10 ? '0' : '') + r : h + ' h') : r + ' min');
+  }
+  /* même chose depuis des heures décimales, pour les endroits qui en manipulent encore */
+  function fmtHeures(heures){ return fmtDuree(Math.round((Number(heures) || 0) * 60)); }
   var RYTHME_COURT = /^Anki/;
   function rythmeBloc(label){ return RYTHME_COURT.test(label) ? 25 : 55; }
   function partTravail(label){ var r = rythmeBloc(label); return r / (r + POMODORO.pause); }
@@ -10961,8 +11165,9 @@
   var REPORT_MAX_MIN = 120;
   function reportDuJour(){
     var r = load('batcave-report', null);
-    if(!r || typeof r !== 'object' || r.date !== todayISO) return {rev:0, proj:0};
-    return {rev: Math.min(REPORT_MAX_MIN, Number(r.rev)||0), proj: Math.min(REPORT_MAX_MIN, Number(r.proj)||0)};
+    if(!r || typeof r !== 'object' || r.date !== todayISO) return {rev:0, proj:0, es:0};
+    var b = function(v){ return Math.min(REPORT_MAX_MIN, Number(v)||0); };
+    return {rev: b(r.rev), proj: b(r.proj), es: b(r.es)};
   }
   function revisionTarget(){
     return (cibleJourMinutes(scheduleKeyForToday()).rev + reportDuJour().rev) / 60;
@@ -10970,13 +11175,34 @@
   function projetsTarget(){
     return (cibleJourMinutes(scheduleKeyForToday()).proj + reportDuJour().proj) / 60;
   }
-
-  /* « 5.42 » ne doit jamais s'afficher tel quel : ni le point, ni les centièmes d'heure. */
-  function cibleRevisionTexte(){
-    var t = revisionTarget();
-    var h = Math.floor(t), m = Math.round((t - h) * 60);
-    return m ? h + ' h ' + (m < 10 ? '0' : '') + m : String(h);
+  /* ===== Un compteur qui n'est pas encore au programme le dit =====
+     Jusqu'au 18 octobre, la phase Español 1 remplace les trois blocs « Projets perso » : la
+     grille ne prévoit donc AUCUNE minute de projets perso, et afficher « 0,0 / 0,0 h » donne
+     l'impression d'un compteur cassé. On cherche le premier jour où la grille en reprévoit —
+     lu dans la grille, jamais écrit en dur, pour que ça reste vrai si les phases bougent. */
+  var _repriseProjets;
+  function repriseProjets(){
+    if(_repriseProjets !== undefined) return _repriseProjets;
+    _repriseProjets = null;
+    var d = new Date(todayISO + 'T00:00:00');
+    for(var i = 0; i < 220; i++){
+      var iso = localISO(d);
+      if(cibleJourMinutes(cleJournee(dowDe(iso)), iso).proj > 0){ _repriseProjets = iso; break; }
+      d.setDate(d.getDate() + 1);
+    }
+    return _repriseProjets;
   }
+  function phraseSansProjets(){
+    var r = repriseProjets();
+    if(!r) return 'pas au programme';
+    var p = (typeof periodeGrille === 'function') ? periodeGrille(r) : null;
+    /* la phase n'apporte rien ici : c'est la DATE qu'on veut, et la cellule est étroite */
+    return 'pas au programme avant le ' + fmtDate(r);
+  }
+
+  /* remplacée par fmtDuree / fmtHeures : une seule façon d'écrire une durée dans toute
+     l'application. Gardée en alias le temps que plus rien ne l'appelle. */
+  function cibleRevisionTexte(){ return fmtHeures(revisionTarget()); }
   function minutesToTime(m){ m = ((Math.round(m) % 1440) + 1440) % 1440; return (Math.floor(m/60)+'').padStart(2,'0') + ':' + ((m%60)+'').padStart(2,'0'); }
   function timeToMinutes(t){ var p=t.split(':'); return Number(p[0])*60+Number(p[1]); }
 
@@ -11000,7 +11226,7 @@
     var revPct = clamp(Math.round(100*revH/target), 0, 100);
     document.getElementById('cal-revision-pct').innerHTML = revPct + '<small>%</small>';
     document.getElementById('cal-revision-fill').style.width = revPct + '%';
-    document.getElementById('cal-revision-sub').textContent = revH.toFixed(1).replace('.',',') + 'h / ' + cibleRevisionTexte() + (Number.isInteger(target)?'h':'') + ' visées';
+    document.getElementById('cal-revision-sub').textContent = fmtHeures(revH) + ' sur ' + fmtHeures(target) + ' visées';
 
     var waterL = (Number(journalState.water)||0)/1000;
     var waterPct = pctEau(journalState.water);
@@ -11612,8 +11838,8 @@
     }
     var weekTarget = String(cibleHebdo(0).rev).replace('.', ',');
     document.getElementById('rev-stats').innerHTML = SERIE_TUILE() +
-      '<div class="stat-tile"><div class="tlabel">Aujourd\'hui</div><div class="tnum" style="font-size:30px;">'+todayH.toFixed(1).replace('.', ',')+'<small>h</small></div></div>'+
-      '<div class="stat-tile"><div class="tlabel">7 derniers jours</div><div class="tnum" style="font-size:30px;">'+(weekMin/60).toFixed(1).replace('.', ',')+'<small>h</small></div></div>'+
+      '<div class="stat-tile"><div class="tlabel">Aujourd\'hui</div><div class="tnum" style="font-size:26px;">'+fmtHeures(todayH)+'</div></div>'+
+      '<div class="stat-tile"><div class="tlabel">7 derniers jours</div><div class="tnum" style="font-size:26px;">'+fmtDuree(weekMin)+'</div></div>'+
       '<div class="stat-tile"><div class="tlabel">Objectif semaine</div><div class="tnum" style="font-size:30px; color:var(--ink-dim);">'+weekTarget+'<small>h</small></div></div>';
 
     var pts = [];
@@ -11639,11 +11865,11 @@
       }
       var lignes = r.liste.map(function(x){
         var pct = Math.round(100 * x.min / total);
-        return '<li><span>' + escapeHtml(x.nom) + '</span><b>' + (x.min/60).toFixed(1).replace('.', ',') + 'h · ' + pct + '%</b></li>';
+        return '<li><span>' + escapeHtml(x.nom) + '</span><b>' + fmtDuree(x.min) + ' · ' + pct + '%</b></li>';
       });
       if(r.sansNom > 0){
         lignes.push('<li><span style="color:var(--ink-faint);">Sans matière précisée</span><b>' +
-                    (r.sansNom/60).toFixed(1).replace('.', ',') + 'h</b></li>');
+                    fmtDuree(r.sansNom) + '</b></li>');
       }
       el.innerHTML = lignes.join('');
     });
@@ -11683,7 +11909,7 @@
   function renderEspagnol(){
     var stats = document.getElementById('es-stats');
     if(!stats) return;
-    var hh = function(m){ return (m / 60).toFixed(1).replace('.', ','); };
+    var hh = fmtDuree;
     var aujourdhui = minutesEspanol(todayISO), sept = minutesEsSur(7);
     var semFait = 0;
     weekRange(0).forEach(function(iso){ if(iso <= todayISO) semFait += minutesEspanol(iso); });
@@ -11711,7 +11937,7 @@
       var r = esParTache(jours);
       if(!r.total){ el.innerHTML = '<li style="border:none; font-style:italic; color:var(--ink-faint);">Aucune session Español sur la période.</li>'; return; }
       el.innerHTML = r.liste.map(function(x){
-        return '<li><span>' + escapeHtml(x.nom) + '</span><b>' + (x.min / 60).toFixed(1).replace('.', ',') + 'h · ' + Math.round(100 * x.min / r.total) + '%</b></li>';
+        return '<li><span>' + escapeHtml(x.nom) + '</span><b>' + fmtDuree(x.min ) + ' · ' + Math.round(100 * x.min / r.total) + '%</b></li>';
       }).join('');
     });
   }
@@ -11807,7 +12033,7 @@
       var dj = new Date(iso + 'T00:00:00');
       var titre = (dj.getDate() === 1 ? '1\u1d49\u02b3' : dj.getDate()) + ' ' +
                   dj.toLocaleDateString('fr-FR', {month:'long', year:'numeric'}) +
-                  ' — ' + (min ? (min/60).toFixed(1).replace('.', ',') + ' h' : 'rien');
+                  ' — ' + (min ? fmtDuree(min) : 'rien');
       cases.push('<span class="' + cls + '" title="' + titre + '"></span>');
 
       /* étiquette de mois au-dessus de la première semaine de chaque mois */
@@ -11828,7 +12054,7 @@
     if(resume){
       resume.textContent = joursActifs
         ? (total/60).toFixed(0) + ' h sur ' + joursActifs + ' jours travaillés · record ' +
-          (record/60).toFixed(1).replace('.', ',') + ' h le ' + new Date(recordJour + 'T00:00:00').toLocaleDateString('fr-FR', {day:'numeric', month:'short'})
+          fmtDuree(record) + ' le ' + new Date(recordJour + 'T00:00:00').toLocaleDateString('fr-FR', {day:'numeric', month:'short'})
         : 'aucune session sur 12 mois';
     }
   }
@@ -12334,15 +12560,15 @@
     }
     var weekTarget = String(cibleHebdo(0).proj).replace('.', ',');
     document.getElementById('proj-stats').innerHTML =
-      '<div class="stat-tile"><div class="tlabel">Aujourd\'hui</div><div class="tnum" style="font-size:30px;">'+todayH.toFixed(1).replace('.', ',')+'<small>h</small></div></div>'+
-      '<div class="stat-tile"><div class="tlabel">7 derniers jours</div><div class="tnum" style="font-size:30px;">'+(weekMin/60).toFixed(1).replace('.', ',')+'<small>h</small></div></div>'+
+      '<div class="stat-tile"><div class="tlabel">Aujourd\'hui</div><div class="tnum" style="font-size:26px;">'+fmtHeures(todayH)+'</div></div>'+
+      '<div class="stat-tile"><div class="tlabel">7 derniers jours</div><div class="tnum" style="font-size:26px;">'+fmtDuree(weekMin)+'</div></div>'+
       '<div class="stat-tile"><div class="tlabel">Objectif semaine</div><div class="tnum" style="font-size:30px; color:var(--ink-dim);">'+weekTarget+'<small>h</small></div></div>';
 
     var byName = {};
     projetsState.forEach(function(p){ byName[p.projet] = (byName[p.projet]||0) + Number(p.duree||0); });
     var nameEntries = Object.keys(byName).map(function(k){ return [k, byName[k]]; }).sort(function(a,b){ return b[1]-a[1]; });
     document.getElementById('proj-by-name').innerHTML = nameEntries.length ? nameEntries.map(function(e){
-      return '<li><span>'+escapeHtml(e[0])+'</span><b>'+(e[1]/60).toFixed(1).replace('.', ',')+'h</b></li>';
+      return '<li><span>'+escapeHtml(e[0])+'</span><b>'+fmtDuree(e[1]) + '</b></li>';
     }).join('') : '<li style="border:none; font-style:italic; color:var(--ink-faint);">Aucune session enregistrée.</li>';
 
     var pts = [];
@@ -12411,7 +12637,7 @@
      retard, fidelite au plan, sommeil -- puis les trois questions. Les constats sont
      enregistres avec la revue : dans six mois on relit ce que les chiffres disaient. */
   function constatsSemaine(){
-    var cur = weekStats(weekRange(0)), out = [], hh = function(m){ return (m/60).toFixed(1).replace('.', ','); };
+    var cur = weekStats(weekRange(0)), out = [], hh = function(m){ return fmtDuree(m); };
     var mois = moisListe().filter(function(m){ return todayISO >= m.debut && todayISO <= m.fin; })[0];
     var retard = mois ? objectifsState.liste.filter(function(o){ return o.periode === 'mois' && o.pid === mois.id; })
                           .map(function(o){ return {o: o, c: comparerObjectif(o)}; })
@@ -12432,7 +12658,7 @@
     }
     var cible = objectifSommeil();
     out.push(cur.sleepH
-      ? '😴 Sommeil moyen : ' + cur.sleepH.toFixed(1).replace('.', ',') + ' h / ' + cible.toFixed(1).replace('.', ',') + ' h visées' + (cur.sleepH < cible - 0.5 ? ' — c\'est le premier levier de la semaine prochaine.' : '.')
+      ? '😴 Sommeil moyen : ' + fmtHeures(cur.sleepH) + ' sur ' + fmtHeures(cible) + ' visées' + (cur.sleepH < cible - 0.5 ? ' — c\'est le premier levier de la semaine prochaine.' : '.')
       : '😴 Sommeil non saisi cette semaine (le champ est dans la clôture du jour, chiffre Bevel).');
     return out;
   }
@@ -12618,6 +12844,127 @@
 
   var bilanExportBtn = document.getElementById('bilan-export-btn');
   if(bilanExportBtn) bilanExportBtn.addEventListener('click', function(){ window.print(); });
+
+  /* ================= COMMANDE VOCALE ================= */
+  /* Parler à la Batcave. Ce n'est pas un assistant : c'est un raccourci pour les gestes qui
+     se font les mains prises — cocher un repas en cuisinant, lancer un Pomodoro en s'asseyant,
+     ouvrir la clôture le soir. Reconnaissance locale du navigateur (Web Speech), rien n'est
+     envoyé nulle part par la Batcave elle-même. Le bouton reste masqué si le navigateur ne
+     sait pas écouter, et une seule commande est prise par écoute : on parle, ça agit, ça
+     s'arrête. Pas de mot d'éveil, pas de micro ouvert en permanence. */
+  var VOIX = (function(){
+    var Reco = window.SpeechRecognition || window.webkitSpeechRecognition;
+    var btn = document.getElementById('voix-btn');
+    if(!Reco || !btn) return {dispo:false};
+    btn.hidden = false;
+    var reco = null, ecoute = false;
+
+    function normaliser(t){
+      return String(t || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').trim();
+    }
+    /* Les repas dans l'ordre du plan : les mots qu'on emploie vraiment pour les nommer. */
+    var MOTS_REPAS = [
+      {i:0, mots:['petit dejeuner','petit-dejeuner','petit dej','matin']},
+      {i:1, mots:['dejeuner','midi','repas de midi']},
+      {i:2, mots:['collation entrainement','collation d entrainement','gouter']},
+      {i:3, mots:['diner','soir','repas du soir']},
+      {i:4, mots:['collation du soir','collation soir']}
+    ];
+    function cocherRepas(i){
+      if(typeof MEALS === 'undefined' || !MEALS[i]) return null;
+      MEALS[i].items.forEach(function(it, ii){ mealState[i + '-' + ii] = true; });
+      save(mealKey, mealState);
+      try{ renderMeals(); renderMealBar(); renderDashboard(); }catch(e){}
+      return MEALS[i].name;
+    }
+    function cocherHabitude(mot){
+      var cible = habitsDuJour(weekday).filter(function(h){
+        return normaliser(habitLabel(h)).indexOf(mot) > -1;
+      })[0];
+      if(!cible) return null;
+      if(!habitDoneToday(cible.id)) toggleHabit(cible.id);
+      try{ renderDashHabits(); renderHabits(); }catch(e){}
+      return habitLabel(cible);
+    }
+    /* Une phrase → une action. On rend le texte du retour, ou null si on n'a pas compris. */
+    function executer(phrase){
+      var t = normaliser(phrase);
+      if(!t) return null;
+      if(/\b(stop|arrete|arreter|annule)\b/.test(t)){
+        if(typeof timerState !== 'undefined' && timerState){ stopTimer(true); return 'Minuteur arrêté et enregistré.'; }
+        return 'Rien ne tournait.';
+      }
+      if(/\b(cloture|cloturer|bilan du soir)\b/.test(t)){ ouvrirCloture(); return 'Clôture ouverte.'; }
+      if(/pomodoro|minuteur|chrono/.test(t)){
+        if(/espagnol|espanol|español/.test(t)){ lancerPomodoroEspanol(); return 'Pomodoro Español.'; }
+        if(/projet|business|boutique/.test(t)){ lancerPomodoroProjet(); return 'Pomodoro projet perso.'; }
+        lancerPomodoroCours(false); return 'Pomodoro révision.';
+      }
+      if(/\b(coche|cocher|valide|fait|mange|pris)\b/.test(t) || /repas|dejeuner|diner|collation/.test(t)){
+        for(var k = 0; k < MOTS_REPAS.length; k++){
+          for(var j = 0; j < MOTS_REPAS[k].mots.length; j++){
+            if(t.indexOf(MOTS_REPAS[k].mots[j]) > -1){
+              var nom = cocherRepas(MOTS_REPAS[k].i);
+              return nom ? nom + ' coché.' : null;
+            }
+          }
+        }
+        var apres = t.replace(/.*\b(coche|cocher|valide)\b\s*(l[ae'] )?/, '').trim();
+        if(apres){
+          var hab = cocherHabitude(apres);
+          if(hab) return hab + ' coché.';
+        }
+      }
+      return null;
+    }
+    function arreter(){
+      ecoute = false;
+      btn.setAttribute('aria-pressed', 'false');
+      btn.classList.remove('voix-active');
+      if(reco){ try{ reco.stop(); }catch(e){} }
+    }
+    function ecouter(){
+      if(ecoute){ arreter(); return; }
+      try{
+        reco = new Reco();
+        reco.lang = 'fr-FR';
+        reco.interimResults = false;
+        reco.maxAlternatives = 3;
+        reco.continuous = false;
+      }catch(e){ showToast('🎙️ Le micro n’est pas disponible ici.'); return; }
+      reco.onresult = function(ev){
+        var dit = '', rep = null;
+        for(var i = 0; i < ev.results[0].length && !rep; i++){
+          dit = ev.results[0][i].transcript;
+          rep = executer(dit);
+        }
+        arreter();
+        showToast(rep ? '🎙️ ' + rep : '🎙️ Pas compris : « ' + dit + ' »');
+      };
+      reco.onerror = function(ev){
+        arreter();
+        var c = ev && ev.error;
+        showToast(c === 'not-allowed' || c === 'service-not-allowed'
+          ? '🎙️ Micro refusé — autorise-le dans les réglages du site.'
+          : (c === 'no-speech' ? '🎙️ Rien entendu.' : '🎙️ Micro indisponible.'));
+      };
+      reco.onend = function(){ if(ecoute) arreter(); };
+      ecoute = true;
+      btn.setAttribute('aria-pressed', 'true');
+      btn.classList.add('voix-active');
+      try{ reco.start(); showToast('🎙️ J’écoute…'); }
+      catch(e){ arreter(); showToast('🎙️ Micro indisponible.'); }
+    }
+    btn.addEventListener('click', ecouter);
+    return {dispo:true, executer:executer, ecouter:ecouter};
+  })();
+  try{ window.__bcVoix = VOIX; }catch(e){}
+  /* Crochet de test : injecter des évènements d'agenda sans connecteur, pour éprouver la
+     règle « un bloc occupé par un vrai rendez-vous n'est pas manqué ». */
+  try{ window.__bcSetGcal = function(o){ gcalWeekEvents = o; try{ rafraichirAgendas(); }catch(e){} }; }catch(e){}
+  try{ window.__bcFmtDuree = fmtDuree; window.__bcManques = blocsManques; window.__bcReport = reportDuJour;
+       window.__bcManquees = journeesManquees; window.__bcTypeSuivi = typeSuiviBloc;
+       window.__bcRenderPlan = renderPlanDuJour; }catch(e){}
 
   /* ================= RITUEL D'OUVERTURE ================= */
   (function(){

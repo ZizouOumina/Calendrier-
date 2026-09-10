@@ -1,3 +1,5 @@
+/* lot 30 : les durées s'écrivent en heures et minutes (« 4 h 25 », « 55 min »)
+   et non plus en dixièmes d'heure (« 4,4h ») — les attentes suivent. */
 import { chromium } from 'playwright';
 const URL = 'http://127.0.0.1:8199/host.html';
 let errs = 0;
@@ -72,8 +74,8 @@ console.log('\n== 35) La répartition s\'affiche ==');
 const rep = await fr.evaluate(() => ({ j7: document.getElementById('rev-matieres-7').innerText,
                                         j30: document.getElementById('rev-matieres-30').innerText,
                                         hist: (document.querySelector('.nav-btn[data-page="etudes"]').click(), document.getElementById('rv-jour').innerText) }));
-ok(/Anatomía I/.test(rep.j7) && /2,0h · 67%/.test(rep.j7.replace(/\s+/g,' ')), '7 jours : ' + rep.j7.replace(/\n/g,' | '));
-ok(/Bioquímica/.test(rep.j7) && /1,0h · 33%/.test(rep.j7.replace(/\s+/g,' ')), 'pourcentages corrects');
+ok(/Anatomía I/.test(rep.j7) && /2 h · 67%/.test(rep.j7.replace(/\s+/g,' ')), '7 jours : ' + rep.j7.replace(/\n/g,' | '));
+ok(/Bioquímica/.test(rep.j7) && /1 h · 33%/.test(rep.j7.replace(/\s+/g,' ')), 'pourcentages corrects');
 ok(/Anatomía I/.test(rep.j30) && /Bioquímica/.test(rep.j30), '30 jours : ' + rep.j30.replace(/\n/g,' | '));
 const blocsHist = (rep.hist.match(/→/g) || []).length;
 ok(blocsHist === 3 && /Anatomía I/.test(rep.hist) && /Bioquímica/.test(rep.hist),
@@ -87,7 +89,7 @@ await page.clock.fastForward('01:00:01'); await page.waitForTimeout(400);
 rev = await ls('batcave-revision');
 ok(rev[0].duree === 240 && !rev[0].matieres['Sans préciser'] && !rev[0].matieres[''], '« Sans préciser » ne crée aucune fausse matière');
 const j7 = await fr.evaluate(() => document.getElementById('rev-matieres-7').innerText);
-ok(/Sans matière précisée/.test(j7) && /1,0h/.test(j7), 'part non renseignée isolée : ' + j7.replace(/\n/g,' | '));
+ok(/Sans matière précisée/.test(j7) && /1 h/.test(j7), 'part non renseignée isolée : ' + j7.replace(/\n/g,' | '));
 await fr.evaluate(() => document.getElementById('timer-discard').click());
 await page.waitForTimeout(150);
 await fr.evaluate(() => document.getElementById('timer-pomodoro').click());
