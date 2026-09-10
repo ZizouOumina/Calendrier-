@@ -43,10 +43,13 @@ console.log('\n== 82) Vue mois : totaux, pastilles par type, navigation ==');
   }));
   ok(/Septembre 2026/.test(v.mois), 'mois affiché : ' + v.mois);
   ok(/Totaldumois5h/.test(v.tuiles[0]), 'total du mois = 4h le 3 + 1h le 1er = 5h : ' + v.tuiles[0]);
-  /* les tuiles ne distinguent plus que Révision / Projets perso : l'espagnol a été
-     retiré comme catégorie propre et compte désormais dans la révision
-     (60 + 60 + 60 de cours + 30 d'espagnol = 210 min = 3,5 h). */
-  ok(/Révision3h30/.test(v.tuiles[1]) && /Projetsperso1h30/.test(v.tuiles[2]) && /Blocs5/.test(v.tuiles[3]), 'répartition par type : ' + v.tuiles.slice(1,4).join(' '));
+  /* Les tuiles ne distinguent que Révision / Projets perso — l'espagnol n'y a pas de
+     colonne à lui. La session de type « espagnol » du fixture est du VIEUX format : elle
+     est normalisée en session de projet « Español · … », donc elle tombe du côté projets
+     (90 + 30 = 120 min) et non plus dans la révision (60 + 60 + 60 = 180 min).
+     C'est le comportement voulu : de l'espagnol n'est pas de la révision de dentaire.
+     Les trois pastilles du 3, elles, distinguent bien les trois couleurs (test suivant). */
+  ok(/Révision3h/.test(v.tuiles[1]) && /Projetsperso2h/.test(v.tuiles[2]) && /Blocs5/.test(v.tuiles[3]), 'répartition par type : ' + v.tuiles.slice(1,4).join(' '));
   ok(/34h/.test(v.j3), 'le 3 affiche 4 h : ' + v.j3);
   ok(v.pastillesJ3 === 3, '3 pastilles le 3 (cours+projet+espagnol) : ' + v.pastillesJ3);
   ok(v.pastillesJ1 === 1, '1 seule pastille le 1er (cours) : ' + v.pastillesJ1);

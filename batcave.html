@@ -4865,7 +4865,7 @@
   var jrJour = {};          /* jour affiché par vue ; absent = aujourd'hui */
   var agMoisVue = {};       /* mois affiché par vue */
   var JR_PX_H = 40;
-  var JR_TEINTES = {cours:'var(--cyan)', projet:'var(--warn)', espagnol:'var(--good)'};
+  var JR_TEINTES = {cours:'var(--cyan)', projet:'var(--warn)', es:'var(--good)', espagnol:'var(--good)'};
   var TYPE_PASTILLES = {cours:'🔵', projet:'🟠', espagnol:'🟢'};
   /* Les blocs d'une journée, lus dans le journal local des sessions. `types` filtre par
      nature de bloc (révision / projet) ; absent = tout. */
@@ -4876,7 +4876,8 @@
       })
       .map(function(b){
         return {id:b.id, debut:new Date(b.debut), fin:new Date(b.fin || (b.debut + b.duree*60000)),
-                min:Number(b.duree), type:b.type || 'cours', label:b.label || 'Sans matière précisée'};
+                min:Number(b.duree), type:b.type || 'cours', suivi: typeSuiviSession(b),
+                label:b.label || 'Sans matière précisée'};
       })
       .sort(function(a,b){ return a.debut - b.debut; });
   }
@@ -4972,7 +4973,7 @@
     var corps = blocs.map(function(b){
       var dd = b.debut.getHours()*60 + b.debut.getMinutes();
       var top = px(dd), hh = Math.max(20, (b.min/60) * JR_PX_H);
-      var teinte = JR_TEINTES[b.type] || 'var(--cyan)';
+      var teinte = JR_TEINTES[b.suivi || b.type] || 'var(--cyan)';
       var titre = b.label;
       return '<div class="jr-b" style="top:' + top.toFixed(1) + 'px; height:' + hh.toFixed(1) + 'px; ' +
              'background:color-mix(in srgb, ' + teinte + ' 16%, transparent); border-left-color:' + teinte + ';" ' +
@@ -5019,8 +5020,8 @@
       var min = totalVue(pre, iso);
       var pastilles = '';
       if(!conf.types || conf.types.length > 1){
-        ['cours','projet','espagnol'].forEach(function(t){
-          if(blocs.some(function(b){ return b.type === t; })){
+        ['cours','projet','es'].forEach(function(t){
+          if(blocs.some(function(b){ return (b.suivi || b.type) === t; })){
             pastilles += '<span class="cal-pt" style="background:' + JR_TEINTES[t] + '"></span>';
           }
         });
