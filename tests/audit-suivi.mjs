@@ -106,21 +106,20 @@ console.log('\n═══ 5. Le bloc « Cours » de la fac n\'est pas de la révi
   await ctx.close();
 }
 
-console.log('\n═══ 6. Sport : une séance compte à partir de la moitié des cases ═══');
+console.log('\n═══ 6. Sport : une séance vaut la part de ses cases cochées ═══');
 {
-  /* lundi = « Haut lourd », 12 exercices ; les clés sont « <type>-<index> » */
-  const TYPE = 'Haut lourd', N = 10;   /* 10 exercices le lundi, donc la moitié = 5 */
-  for(const [n, desc] of [[0,'aucune case'],[4,'4 sur 10 (moins de la moitié)'],[5,'5 sur 10 (la moitié)'],[10,'les 10']]){
+  /* lundi = « Haut lourd », 10 exercices ; les clés sont « <type>-<index> » */
+  const TYPE = 'Haut lourd', N = 10;
+  for(const n of [0, 3, 4, 5, 7, 10]){
     const st = {}; for(let i=0;i<n;i++) st[TYPE+'-'+i] = true;
     const {ctx, page, fr} = await ouvrir({['batcave-sport-'+JOUR]: st});
     const o = await objectifs(fr, page);
-    const m = o.match(/Séances de sport tenues[\s\S]{0,60}?réel\s*\n?(\d+) séances/);
-    const v = m ? Number(m[1]) : null;
-    const attendu = n >= N/2 ? 1 : 0;
-    ok(v === attendu, desc + ' → ' + v + ' séance(s) comptée(s) (' + attendu + ' attendu)');
+    const m = o.match(/Séances de sport tenues[\s\S]{0,60}?réel\s*\n?([\d,]+) séances/);
+    const v = m ? m[1] : null;
+    const attendu = (n / N).toFixed(1).replace('.', ',');
+    ok(v === attendu, n + ' case(s) sur ' + N + ' → ' + v + ' séance comptée (' + attendu + ' attendu)');
     await ctx.close();
   }
-  note('la règle est « au moins la moitié des cases cochées vaut une séance tenue » : une séance faite à moitié compte autant qu\'une séance entière dans l\'objectif « séances ». C\'est un choix, pas une erreur — mais sache qu\'il est là.');
 }
 
 console.log('\n═══ 6 bis. Blocs Español manqués : reportés dans QUEL compteur ? ═══');

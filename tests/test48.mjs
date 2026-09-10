@@ -58,7 +58,7 @@ console.log('\n== 113) Comparaison sur des données réelles ==');
   const eau = await ligne(fr, 'Eau');
   ok(eau && /réel 3,0 L/.test(eau.txt) && /atteint/.test(eau.led), 'Eau 3,0 L ≥ 2,7 → atteint');
   const sport = await ligne(fr, 'Séances');
-  ok(sport && /réel 0 séances/.test(sport.txt) && /retard/.test(sport.led), 'Séances de sport : 0 réelles → en retard');
+  ok(sport && /réel 0,0 séances/.test(sport.txt) && /retard/.test(sport.led), 'Séances de sport : 0 réelles → en retard');
   const resume = await fr.evaluate(() => document.getElementById('obj-resume').innerText);
   ok(/en retard/.test(resume) && /% de la période/.test(resume), 'résumé : ' + resume);
   await ctx.close();

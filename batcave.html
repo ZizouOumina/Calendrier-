@@ -6356,27 +6356,67 @@
   }
   /* Tendance de poids : moyenne des pesees des 7 derniers jours contre celle des 7 jours
      precedents (au moins 3 pesees chacune, sinon on ne conclut rien). Rythme vise : celui
-     de l'objectif poids sur son horizon (64 → 70 kg en ~6 mois ≈ +0,23 kg/semaine). */
+     de l'objectif poids sur son horizon (64 → 70 kg en ~6 mois ≈ +0,23 kg/semaine).
+
+     Le poids d'un matin ne dit pas grand-chose : un diner sale, une nuit courte, une
+     balance posee sur un tapis, et le voila plus haut d'un kilo sans qu'un gramme de
+     muscle ait bouge. Une moyenne de trois pesees encaisse mal ce genre de chiffre --
+     il en deplace le tiers. Deux garde-fous, donc :
+       1. Des qu'une semaine porte 5 pesees ou plus, sa moyenne est ELAGUEE : la plus
+          haute et la plus basse sortent avant de faire la moyenne. Le matin sale ne
+          compte plus, et le matin a jeun apres une seance non plus -- on ne coupe pas
+          d'un seul cote.
+       2. On rejoue ensuite tout le calcul en retirant CHAQUE pesee, une par une. Si la
+          recommandation change en enlevant une seule d'entre elles, c'est qu'elle tient
+          a cette pesee-la et pas a une tendance : on ne recommande rien, et on dit
+          laquelle. Une pesee de plus tranchera demain matin. */
+  function moyElaguee(a){
+    if(!a.length) return null;
+    var v = a.map(function(p){ return p.value; }).sort(function(x, y){ return x - y; });
+    if(v.length >= 5) v = v.slice(1, v.length - 1);
+    return v.reduce(function(x, y){ return x + y; }, 0) / v.length;
+  }
+  function recoKcal(delta, rythmeVise){
+    if(delta < rythmeVise * 0.5) return 150;
+    if(delta > rythmeVise * 2) return -100;
+    return 0;
+  }
   function boucleKcal(){
     var pts = weightHistory(), ref = new Date(todayISO + 'T00:00:00');
     var iso7 = localISO(new Date(ref.getFullYear(), ref.getMonth(), ref.getDate() - 6));
     var iso14 = localISO(new Date(ref.getFullYear(), ref.getMonth(), ref.getDate() - 13));
     var recents = pts.filter(function(p){ return p.date >= iso7 && p.date <= todayISO; });
     var avant = pts.filter(function(p){ return p.date >= iso14 && p.date < iso7; });
-    var moy = function(a){ return a.reduce(function(x, p){ return x + p.value; }, 0) / a.length; };
     var g = GOALS_NUMERIC.filter(function(x){ return x.id === 'poids'; })[0];
     var semaines = Math.max(1, daysBetween(new Date(horizonState.debut + 'T00:00:00'), new Date(horizonState.fin + 'T00:00:00')) / 7);
     var rythmeVise = g ? (g.target - g.start) / semaines : 0;
-    var out = {recents: recents.length, avant: avant.length, rythmeVise: rythmeVise, delta: null, reco: 0, motif: ''};
+    var out = {recents: recents.length, avant: avant.length, rythmeVise: rythmeVise, delta: null, reco: 0, motif: '', fragile: false};
     if(recents.length < 3 || avant.length < 3){
       out.motif = 'Il faut au moins 3 pesées sur chacune des deux dernières semaines (' + avant.length + ' puis ' + recents.length + ' pour l\'instant) — pèse-toi le matin, dans le Journal.';
       return out;
     }
-    out.delta = moy(recents) - moy(avant);
-    out.moyRecente = moy(recents); out.moyAvant = moy(avant);
-    if(out.delta < rythmeVise * 0.5){ out.reco = 150; out.motif = 'Prise trop lente : ajoute 150 kcal par jour.'; }
-    else if(out.delta > rythmeVise * 2){ out.reco = -100; out.motif = 'Prise trop rapide (plus de gras que de muscle) : retire 100 kcal par jour.'; }
-    else { out.reco = 0; out.motif = 'Rythme dans la cible : on ne touche à rien.'; }
+    var ecart = function(rs, av){ return moyElaguee(rs) - moyElaguee(av); };
+    out.delta = ecart(recents, avant);
+    out.moyRecente = moyElaguee(recents); out.moyAvant = moyElaguee(avant);
+    out.reco = recoKcal(out.delta, rythmeVise);
+    /* la pesee qui, a elle seule, ferait dire autre chose */
+    var pivot = null;
+    recents.concat(avant).forEach(function(p){
+      if(pivot) return;
+      var rs = recents.filter(function(q){ return q !== p; }), av = avant.filter(function(q){ return q !== p; });
+      if(!rs.length || !av.length) return;
+      if(recoKcal(ecart(rs, av), rythmeVise) !== out.reco) pivot = p;
+    });
+    if(pivot){
+      out.fragile = true; out.pivot = pivot; out.reco = 0;
+      out.motif = 'Une seule pesée décide de tout : sans celle du ' + fmtDate(pivot.date) + ' (' +
+                  pivot.value.toFixed(1).replace('.', ',') + ' kg), la recommandation change. ' +
+                  'On ne touche à rien tant qu\'une pesée de plus n\'a pas tranché — pèse-toi demain matin.';
+      return out;
+    }
+    if(out.reco > 0) out.motif = 'Prise trop lente : ajoute 150 kcal par jour.';
+    else if(out.reco < 0) out.motif = 'Prise trop rapide (plus de gras que de muscle) : retire 100 kcal par jour.';
+    else out.motif = 'Rythme dans la cible : on ne touche à rien.';
     return out;
   }
   function renderKcalBoucle(){
@@ -6414,7 +6454,7 @@
         renderMeals(); renderMealBar(); construireCourses(); renderCourses(); renderCoursesSummary(); renderDashboard(); renderBilan();
       };
     }
-    if(note) note.textContent = b.delta === null ? 'en attente de pesées' : (b.reco ? 'recommandation : ' + (b.reco > 0 ? '+' : '') + b.reco + ' kcal' : 'rien à changer');
+    if(note) note.textContent = b.delta === null ? 'en attente de pesées' : (b.fragile ? 'une seule pesée décide — en attente' : (b.reco ? 'recommandation : ' + (b.reco > 0 ? '+' : '') + b.reco + ' kcal' : 'rien à changer'));
   }
 
   function renderMeals(){
@@ -7610,6 +7650,20 @@
     });
     return out.map(function(x){ return {debut: isoDecale(x.premier, -PARTIELS_AVANT_J), fin: x.dernier, premier: x.premier, n: x.n}; });
   }
+  /* Le mode partiels s'enclenche a J-7 du premier examen, et jusqu'ici il tombait sans
+     prevenir : un matin la grille n'etait plus la meme, Cartes etait devenu Annales, et il
+     fallait le decouvrir en ouvrant l'agenda. Il s'annonce maintenant une semaine avant de
+     commencer, avec la date exacte et ce qui change. */
+  var PARTIELS_ANNONCE_J = 7;
+  function partielsAnnonce(iso){
+    var ref = iso || todayISO;
+    if(periodePartiels(ref)) return null;               /* deja dedans : plus rien a annoncer */
+    var x = sessionsPartiels().filter(function(y){ return y.debut > ref; })[0];
+    if(!x) return null;
+    var j = daysBetween(new Date(ref + 'T00:00:00'), new Date(x.debut + 'T00:00:00'));
+    if(j < 1 || j > PARTIELS_ANNONCE_J) return null;
+    return {jours: j, debut: x.debut, fin: x.fin, premier: x.premier, n: x.n};
+  }
   function periodePartiels(iso){
     var x = sessionsPartiels().filter(function(y){ return iso >= y.debut && iso <= y.fin; })[0];
     if(!x) return null;
@@ -7920,7 +7974,7 @@
   var METRIQUES = {
     revision_h:   {nom:'Révision',                 unite:'h',       mode:'cumul',   dec:1},
     projets_h:    {nom:'Projets perso',            unite:'h',       mode:'cumul',   dec:1},
-    sport_seances:{nom:'Séances de sport tenues',  unite:'séances', mode:'cumul',   dec:0},
+    sport_seances:{nom:'Séances de sport tenues',  unite:'séances', mode:'cumul',   dec:1},
     espagnol_h:   {nom:'Espagnol',                 unite:'h',       mode:'cumul',   dec:1},
     depenses_var: {nom:'Dépenses variables',       unite:'€',       mode:'cumul',   dec:0, sens:'<='},
     snus_jours:   {nom:'Jours sans snus (série)',  unite:'j',       mode:'cumul',   dec:0},
@@ -8150,6 +8204,19 @@
     var t = sportTotals(typeSportDe(iso), st);
     return t.total > 0 && t.checked >= t.total / 2;
   }
+  /* Ce que VAUT une seance, entre 0 et 1 : la part des cases cochees. seanceTenue() reste
+     le booleen « tu es alle t'entrainer » -- le score du jour, les series et les Insights
+     ont besoin d'une reponse par oui ou par non. L'objectif « seances tenues », lui, se
+     comptait avec ce meme booleen : cinq exercices sur dix valaient une seance entiere, et
+     quatre sur dix ne valaient rien du tout. Il compte maintenant la fraction : une demi-
+     seance vaut 0,5, et une seance abandonnee au quart vaut 0,25. */
+  function valeurSeance(iso){
+    var st = (iso === todayISO) ? sportState : load('batcave-sport-' + iso, null);
+    if(!st) return 0;
+    var t = sportTotals(typeSportDe(iso), st);
+    if(!(t.total > 0)) return 0;
+    return Math.max(0, Math.min(1, t.checked / t.total));
+  }
   function valeurMetrique(cle, debut, fin){
     var m = metriqueDe(cle), jours = joursDe(debut, fin), n = 0, somme = 0, i, j;
     if(!jours.length && m !== 'niveau') return null;
@@ -8160,7 +8227,7 @@
       if(m === 'projets_h') jours.forEach(function(iso){ somme -= minutesEspanol(iso); });
       return Math.max(0, somme) / 60;
     }
-    if(m === 'sport_seances'){ jours.forEach(function(iso){ if(seanceTenue(iso)) n++; }); return n; }
+    if(m === 'sport_seances'){ jours.forEach(function(iso){ somme += valeurSeance(iso); }); return Math.round(somme * 10) / 10; }
     if(m === 'espagnol_h'){
       esState.forEach(function(e){ if(e && e.date >= debut && e.date <= fin && e.date <= todayISO) somme += Number(e.duree) || 0; });
       jours.forEach(function(iso){ somme += minutesEspanol(iso); });
@@ -8997,6 +9064,14 @@
     /* Fin de saison : à J-7, clôturer et repartir devient une action du plan. */
     if(saisonClosable()) items.push({pri:0.6, icon:'🏁', text:'Fin de saison le ' + fmtDate(horizonState.fin) + ' — clôturer et repartir six mois', action:{type:'saison'}});
 
+    /* Mode partiels : annoncé une semaine avant de s'enclencher, avec ce qui change. */
+    var annP = partielsAnnonce();
+    if(annP) items.push({pri:0.8, icon:'📣',
+      text:'Mode partiels dans ' + annP.jours + ' jour' + (annP.jours > 1 ? 's' : '') + ' — il s\'enclenche le ' +
+           fmtDate(annP.debut) + ' (' + annP.n + ' examen' + (annP.n > 1 ? 's' : '') + ', premier le ' + fmtDate(annP.premier) +
+           ', dernier le ' + fmtDate(annP.fin) + '). Cartes → Annales ciblées, Projets perso → Révision ciblée, Comprendre → Fiches de synthèse, un seul bloc Español par jour, sport allégé à deux séances, coucher +30 min.',
+      action:{type:'partiels'}});
+
     /* Le soir, cloturer la journee est LA prochaine action : elle remonte dans le plan. */
     if(nowMin >= heureDeCloture() && !journalState.cloture){
       items.push({pri:0.5, icon:'🌙', text:'Clôturer la journée — 60 secondes', action:{type:'cloture'}});
@@ -9103,6 +9178,8 @@
           '<button class="btn" data-plan-drill-ignorer="1" style="padding:4px 8px; font-size:11px;" title="Pas aujourd\'hui">✕</button></span>';
       } else if(it.action && it.action.type === 'saison'){
         right = '<button class="btn btn-primary" data-plan-saison="1" style="padding:4px 10px; font-size:11px; flex-shrink:0;">🏁 Objectifs</button>';
+      } else if(it.action && it.action.type === 'partiels'){
+        right = '<button class="btn" data-plan-partiels="1" style="padding:4px 10px; font-size:11px; flex-shrink:0;">📅 Voir la grille</button>';
       } else if(it.action && it.action.type === 'cloture'){
         right = '<button class="btn btn-primary" data-plan-cloture="1" style="padding:4px 10px; font-size:11px; flex-shrink:0;">🌙 Clôturer</button>';
       } else if(it.action && it.action.type === 'charge'){
@@ -9184,6 +9261,9 @@
     });
     el.querySelectorAll('[data-plan-saison]').forEach(function(btn){
       btn.addEventListener('click', function(){ var nb = document.querySelector('.nav-btn[data-page="objectifs"]'); if(nb) nb.click(); });
+    });
+    el.querySelectorAll('[data-plan-partiels]').forEach(function(btn){
+      btn.addEventListener('click', function(){ var nb = document.querySelector('.nav-btn[data-page="calendrier"]'); if(nb) nb.click(); });
     });
     el.querySelectorAll('[data-plan-charge-oui]').forEach(function(btn){ btn.addEventListener('click', reduireCharge); });
     el.querySelectorAll('[data-plan-charge-non]').forEach(function(btn){ btn.addEventListener('click', refuserCharge); });
@@ -12963,8 +13043,12 @@
     btn.hidden = false;
     var reco = null, ecoute = false, continu = false, relance = null, echecs = 0;
 
+    /* iOS et Chrome rendent l'apostrophe typographique (’) la ou un clavier ecrit ' :
+       « ou j’en suis » et « ou j'en suis » doivent etre la meme phrase. Les accents
+       partent aussi -- la reconnaissance ecrit « espagnol » aussi souvent qu'« español ». */
     function normaliser(t){
-      return String(t || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').trim();
+      return String(t || '').toLowerCase().replace(/[‘’ʼ`´]/g, "'")
+               .normalize('NFD').replace(/[̀-ͯ]/g, '').trim();
     }
     /* Le mot d'appel, et ce que la reconnaissance en fait quand elle hésite. */
     var APPEL = /^(ok |hey |eh |dis |dit )?(alfred|alfredo|alfret|alfrede|alfredh)\b[\s,.:!?]*/;
@@ -12994,6 +13078,82 @@
       try{ renderDashHabits(); renderHabits(); }catch(e){}
       return habitLabel(cible);
     }
+    /* ----- Alfred répond aussi aux questions -----
+       Il n'obéissait qu'à des ordres : « Alfred, où j'en suis ? » ne rendait rien du tout.
+       Il LIT maintenant la journée à voix haute — et il ne fait que lire : aucune case n'est
+       cochée, aucun minuteur ne démarre, rien n'est écrit. Une question ne change jamais
+       l'état de la Batcave. */
+    /* « 4 h 25 » se prononce « quatre ache vingt-cinq » : à l'oral on écrit les heures et
+       les minutes en toutes lettres. À l'écran, c'est fmtDuree qui garde la main. */
+    function direDuree(min){
+      min = Math.max(0, Math.round(Number(min) || 0));
+      var h = Math.floor(min / 60), m = min % 60;
+      if(!h) return m + ' minute' + (m > 1 ? 's' : '');
+      if(!m) return h + ' heure' + (h > 1 ? 's' : '');
+      return h + ' heure' + (h > 1 ? 's' : '') + ' ' + m;
+    }
+    function bilanVocal(){
+      var p = [];
+      try{
+        var rev = todayRevisionMinutes(), cRev = Math.round(revisionTarget() * 60);
+        p.push('révision ' + direDuree(rev) + ' sur ' + direDuree(cRev) +
+               (rev >= cRev ? ', c\'est fait' : ', il reste ' + direDuree(cRev - rev)));
+      }catch(e){}
+      try{
+        /* projets perso et espagnol sont deux compteurs : les sessions Español sont
+           rangees en « projet » pour la grille, jamais pour l'objectif. Les melanger a
+           voix haute donnerait « 1 heure de projets sur 0 minute » un jour d'Español. */
+        var cj = cibleJourMinutes(scheduleKeyForToday()), rep = reportDuJour();
+        var es = minutesEspanol(todayISO), cEs = cj.es + rep.es;
+        var proj = Math.max(0, minutesJour(todayISO, 'projet') - es), cProj = cj.proj + rep.proj;
+        if(cProj > 0 || proj > 0) p.push('projets perso ' + direDuree(proj) + ' sur ' + direDuree(cProj));
+        if(cEs > 0 || es > 0) p.push('espagnol ' + direDuree(es) + ' sur ' + direDuree(cEs));
+      }catch(e){}
+      try{
+        var hs = habitsDuJour(weekday), faits = hs.filter(function(h){ return habitDoneToday(h.id); }).length;
+        if(hs.length) p.push(faits + ' habitude' + (faits > 1 ? 's' : '') + ' sur ' + hs.length);
+      }catch(e){}
+      try{ p.push(pctKcal(mealNutritionTotals()) + ' pour cent des calories'); }catch(e){}
+      try{
+        var sp = sportTotals(typeSportDe(todayISO));
+        if(sp && sp.total) p.push('séance ' + sp.checked + ' sur ' + sp.total + ' exercices');
+      }catch(e){}
+      try{ if(journalState && journalState.cloture) p.push('journée clôturée'); }catch(e){}
+      if(!p.length) return 'Rien à signaler pour aujourd\'hui, Monsieur.';
+      return 'Aujourd\'hui, Monsieur : ' + p.join(', ') + '.';
+    }
+    function blocVocal(){
+      var n = new Date(), nowMin = n.getHours() * 60 + n.getMinutes(), suite = null;
+      try{
+        suite = agendaDuJour(weekday).filter(function(b){ return timeToMinutes(b[0]) >= nowMin; })[0];
+      }catch(e){}
+      if(!suite) return 'Plus rien au planning aujourd\'hui, Monsieur.';
+      var dans = timeToMinutes(suite[0]) - nowMin;
+      return 'Prochain bloc, Monsieur : ' + suite[1] + ' à ' + suite[0].replace(':', ' h ') +
+             (dans > 0 ? ', dans ' + direDuree(dans) : ', maintenant') + '.';
+    }
+    function cartesVocal(){
+      var d = null;
+      try{ d = ankiDus('Dentaire'); }catch(e){}
+      if(d === null || d === undefined) return 'Je n\'ai pas le compte des cartes, Monsieur : le relevé Anki n\'est pas à jour.';
+      var tot = d;
+      try{ tot += (ankiDus('Español') || 0) + (ankiDus('Business') || 0); }catch(e){}
+      return tot ? tot + ' carte' + (tot > 1 ? 's' : '') + ' due' + (tot > 1 ? 's' : '') + ', Monsieur.'
+                 : 'Aucune carte due, Monsieur.';
+    }
+    /* Une question ne doit jamais être prise pour un ordre : « où j'en suis en révision »
+       contient « révision », et « combien de cartes » contient « cartes ». On les reconnaît
+       AVANT les branches qui lancent quelque chose. « bilan du soir », lui, reste la
+       clôture — c'est un ordre, et il est traité plus haut. */
+    var QUESTIONS = [
+      {re:/ou\s+j'?\s?en\s+suis|ou\s+en\s+suis|ou\s+en\s+est|\bbilan\b|\bresume\b|le point\b|ca donne quoi|ca en est ou|etat des lieux/, rep:bilanVocal},
+      {re:/prochain bloc|prochaine? (?:seance|session)|(?:c'?est quoi |quoi )?(?:la )?suite\b|quoi (?:apres|ensuite|maintenant)|(?:et )?maintenant\s*\?*$|au programme/, rep:blocVocal},
+      {re:/combien de cartes|cartes dues|\bdues?\b.*anki|anki.*\bdues?\b/, rep:cartesVocal}
+    ];
+    function repondreQuestion(t){
+      for(var i = 0; i < QUESTIONS.length; i++){ if(QUESTIONS[i].re.test(t)) return QUESTIONS[i].rep(); }
+      return null;
+    }
     /* Une phrase → une action. On rend le texte du retour, ou null si on n'a pas compris.
        « Alfred » en tête est retiré ici aussi : la même phrase marche dans les deux modes. */
     function executer(phrase){
@@ -13004,6 +13164,8 @@
         return 'Rien ne tournait, Monsieur.';
       }
       if(/\b(cloture|cloturer|bilan du soir)\b/.test(t)){ ouvrirCloture(); return 'La clôture du jour, Monsieur.'; }
+      var q = repondreQuestion(t);
+      if(q) return q;
       if(/pomodoro|minuteur|chrono/.test(t)){
         if(/espagnol|espanol|español/.test(t)){ lancerPomodoroEspanol(); return 'Pomodoro Español, Monsieur.'; }
         if(/projet|business|boutique/.test(t)){ lancerPomodoroProjet(); return 'Pomodoro projet perso, Monsieur.'; }
