@@ -13160,110 +13160,212 @@
       var anim = null, energie = 0, phase = 0, etat = 'ecoute', calme = false;
       try{ calme = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches; }catch(e){}
       /* ===== Le réacteur =====
-         Le même vocabulaire que le Batcomputer : anneau gradué qui tourne, arc de balayage,
-         onde radiale, cœur, chauve-souris au centre. Il s'ALLUME à l'ouverture (il monte en
-         taille et en lumière), il respire au repos, et il se déforme à chaque mot qui arrive.
-         Cyan quand il t'écoute, vert quand Alfred répond. */
+         Une sphère de particules, pas un cercle dessiné : mille quatre cents points répartis
+         sur une sphère (suite de Fibonacci, la seule répartition qui ne fasse pas de paquets),
+         tournés en trois dimensions et projetés à plat. Ils s'allument sur le bord — c'est
+         l'assombrissement au centre qui fait lire la boule comme une boule. Par-dessus :
+         des arcs brisés, des rais qui partent du cœur, et le cadre d'instrument autour.
+         Chaque mot qui arrive envoie une onde de choc du centre vers le bord.
+         Tout est calculé, rien n'est une image : ça pèse deux mille caractères et ça suit
+         la couleur de l'état (cyan à l'écoute, vert quand Alfred répond). */
       var BAT = null;
       try{ BAT = new Path2D('M2,34 C12,20 26,14 36,5 L45,16 L54,5 C64,14 78,20 88,34 C76,31 66,36 62,31 C57,40 49,50 45,53 C41,50 33,40 28,31 C24,36 14,31 2,34 Z'); }catch(e){}
       var TEINTES = {
-        ecoute:{vif:'124,234,247', cle:'53,212,232', sourd:'47,140,168'},
-        parle: {vif:'150,247,205', cle:'63,232,178', sourd:'40,150,120'},
-        fini:  {vif:'124,234,247', cle:'53,212,232', sourd:'47,140,168'}
+        ecoute:{vif:'168,240,252', cle:'53,212,232', sourd:'34,110,134'},
+        parle: {vif:'182,252,214', cle:'63,232,178', sourd:'28,120,96'},
+        fini:  {vif:'168,240,252', cle:'53,212,232', sourd:'34,110,134'}
       };
+      /* la sphère : répartition de Fibonacci, calculée une fois */
+      var GRAINS = (function(){
+        var n = 2400, out = [], phi = Math.PI * (3 - Math.sqrt(5));
+        for(var k = 0; k < n; k++){
+          var y = 1 - (k / (n - 1)) * 2, r = Math.sqrt(Math.max(0, 1 - y * y)), th = phi * k;
+          var h = (k * 2654435761) % 1000 / 1000;
+          out.push({x: Math.cos(th) * r, y: y, z: Math.sin(th) * r,
+                    /* éclat propre et stable, avec quelques points beaucoup plus vifs :
+                       c'est ce grain irrégulier qui empêche la sphère de faire tramée */
+                    v: (h < 0.06 ? 1.7 : 0.30 + h * 0.75),
+                    l: ((k * 40503) % 100) < 34,                       /* un tiers sont des filaments */
+                    lg: 0.6 + ((k * 15485863) % 100) / 100 * 1.9});    /* de longueurs inégales */
+        }
+        return out;
+      })();
+      /* les arcs brisés et les rais : tirés une fois, pour qu'ils ne scintillent pas au hasard */
+      var ARCS = (function(){
+        var out = [];
+        for(var k = 0; k < 14; k++){
+          out.push({r: 0.42 + (k % 7) * 0.085, a: (k * 137.5) % 360 * Math.PI / 180,
+                    span: (0.25 + ((k * 7919) % 100) / 100 * 0.9), sens: k % 2 ? 1 : -1,
+                    ep: k % 3 === 0 ? 2.2 : 1.1, al: 0.2 + ((k * 104729) % 100) / 100 * 0.5});
+        }
+        return out;
+      })();
+      var RAIS = (function(){
+        var out = [];
+        for(var k = 0; k < 74; k++){
+          out.push({a: ((k * 4871) % 360) * Math.PI / 180,
+                    r0: 0.34 + ((k * 6151) % 100) / 100 * 0.30,
+                    len: 0.10 + ((k * 3517) % 100) / 100 * 0.36,
+                    al: 0.10 + ((k * 9973) % 100) / 100 * 0.55});
+        }
+        return out;
+      })();
+      var CHOCS = [];
       var neLe = 0;   /* horodatage d'ouverture : c'est lui qui fait « apparaître » */
-      function impulsion(force){ energie = Math.min(1, energie + (force || 0.34)); }
+      function impulsion(force){
+        force = force || 0.34;
+        energie = Math.min(1, energie + force);
+        if(force >= 0.24 && CHOCS.length < 6) CHOCS.push({r: 0.30, a: 1});
+      }
       function dessiner(){
         if(!ctx2d) return;
         var W = cnv.width, H = cnv.height, cx = W / 2, cy = H / 2, R = Math.min(W, H) / 2;
         ctx2d.clearRect(0, 0, W, H);
         var t = TEINTES[etat] || TEINTES.ecoute;
-        /* l'allumage : 480 ms pour monter, en douceur */
-        var age = neLe ? Math.min(1, (Date.now() - neLe) / 480) : 1;
+        var age = neLe ? Math.min(1, (Date.now() - neLe) / 620) : 1;
         var app = 1 - Math.pow(1 - age, 3);
+        var e = energie, RS = R * 0.62;                 /* rayon de la sphère */
         ctx2d.save();
-        ctx2d.globalAlpha = app;
         ctx2d.translate(cx, cy);
-        ctx2d.scale(0.74 + 0.26 * app, 0.74 + 0.26 * app);
-        var e = energie, souffle = calme ? 0 : Math.sin(phase * 1.7) * 0.02;
+        ctx2d.globalAlpha = app;
+        ctx2d.scale(0.72 + 0.28 * app, 0.72 + 0.28 * app);
+        ctx2d.globalCompositeOperation = 'lighter';
 
-        /* halo */
-        var halo = ctx2d.createRadialGradient(0, 0, R * 0.12, 0, 0, R * (0.92 + e * 0.08));
-        halo.addColorStop(0, 'rgba(' + t.cle + ',' + (0.20 + e * 0.26) + ')');
-        halo.addColorStop(0.55, 'rgba(' + t.cle + ',0.055)');
+        /* le halo, et le creux sombre au centre qui donne le volume */
+        var halo = ctx2d.createRadialGradient(0, 0, RS * 0.15, 0, 0, RS * 1.5);
+        halo.addColorStop(0, 'rgba(' + t.cle + ',' + (0.05 + e * 0.10) + ')');
+        halo.addColorStop(0.62, 'rgba(' + t.cle + ',' + (0.13 + e * 0.16) + ')');
         halo.addColorStop(1, 'rgba(' + t.cle + ',0)');
         ctx2d.fillStyle = halo;
-        ctx2d.beginPath(); ctx2d.arc(0, 0, R * 0.98, 0, Math.PI * 2); ctx2d.fill();
+        ctx2d.beginPath(); ctx2d.arc(0, 0, RS * 1.5, 0, Math.PI * 2); ctx2d.fill();
 
-        /* anneau gradué : un trait tous les 5°, plus long tous les 30° */
-        ctx2d.save();
-        ctx2d.rotate(phase * 0.16);
-        for(var a = 0; a < 360; a += 5){
-          var lg = (a % 30 === 0), rad = a * Math.PI / 180;
-          var r1 = R * 0.90, r2 = R * (lg ? 0.79 : 0.845);
-          ctx2d.beginPath();
-          ctx2d.moveTo(Math.cos(rad) * r1, Math.sin(rad) * r1);
-          ctx2d.lineTo(Math.cos(rad) * r2, Math.sin(rad) * r2);
-          ctx2d.strokeStyle = 'rgba(' + (lg ? t.vif : t.sourd) + ',' + (lg ? 0.72 : 0.34) + ')';
-          ctx2d.lineWidth = lg ? 2.6 : 1.4;
-          ctx2d.stroke();
+        /* la sphère de particules */
+        var ry = phase * 0.34, rx = 0.42 + Math.sin(phase * 0.2) * 0.06;
+        var cy1 = Math.cos(ry), sy1 = Math.sin(ry), cx1 = Math.cos(rx), sx1 = Math.sin(rx);
+        for(var g = 0; g < GRAINS.length; g++){
+          var P = GRAINS[g];
+          var X = P.x * cy1 + P.z * sy1, Z = -P.x * sy1 + P.z * cy1;
+          var Y = P.y * cx1 - Z * sx1;  Z = P.y * sx1 + Z * cx1;
+          var prof = (Z + 1) / 2;                       /* 0 derrière, 1 devant */
+          var bord = 1 - Math.abs(Z);                   /* 1 sur la silhouette */
+          /* l'assombrissement au centre (le bord brille bien plus que le milieu) est ce qui
+             fait lire une boule et non un disque : c'est la puissance appliquée à « bord ». */
+          var lum = (0.16 + prof * 0.52) * (0.26 + Math.pow(bord, 2.8) * 2.6) * P.v * (0.8 + e * 0.6);
+          if(lum < 0.03) continue;
+          var px = X * RS, py = Y * RS, taille = (0.95 + prof * 1.6) * (1 + e * 0.35);
+          ctx2d.fillStyle = 'rgba(' + (bord > 0.66 ? t.vif : t.cle) + ',' + Math.min(1, lum) + ')';
+          if(P.l){
+            /* les filaments suivent la surface (perpendiculaires au rayon) : c'est ce qui
+               donne la texture de latitude, plutôt que des tirets tous couchés pareil */
+            var ta = Math.atan2(py, px) + Math.PI / 2, L = taille * P.lg * 2.2;
+            ctx2d.save();
+            ctx2d.translate(px, py); ctx2d.rotate(ta);
+            ctx2d.fillRect(-L / 2, -taille * 0.34, L, taille * 0.68);
+            ctx2d.restore();
+          } else {
+            ctx2d.fillRect(px - taille / 2, py - taille / 2, taille, taille);
+          }
         }
-        ctx2d.restore();
 
-        /* arc de balayage : il tourne à l'envers, comme un radar */
-        ctx2d.save();
-        ctx2d.rotate(-phase * 0.55);
+        /* la silhouette : le trait vif qui cerne la boule */
         ctx2d.beginPath();
-        ctx2d.arc(0, 0, R * 0.74, 0, Math.PI * 0.42);
-        ctx2d.strokeStyle = 'rgba(' + t.vif + ',' + (0.55 + e * 0.35) + ')';
-        ctx2d.lineWidth = 3.2; ctx2d.lineCap = 'round';
+        ctx2d.arc(0, 0, RS, 0, Math.PI * 2);
+        ctx2d.strokeStyle = 'rgba(' + t.vif + ',' + (0.16 + e * 0.22) + ')';
+        ctx2d.lineWidth = 1.4;
         ctx2d.stroke();
-        ctx2d.beginPath();
-        ctx2d.arc(0, 0, R * 0.74, Math.PI, Math.PI * 1.22);
-        ctx2d.strokeStyle = 'rgba(' + t.sourd + ',0.45)';
-        ctx2d.lineWidth = 2; ctx2d.stroke();
-        ctx2d.restore();
 
-        /* l'onde radiale : c'est elle qui bouge quand tu parles */
-        var base = R * 0.56, amp = base * (0.05 + souffle + e * 0.30);
-        for(var c = 0; c < 2; c++){
+        /* les rais qui partent du cœur */
+        for(var q = 0; q < RAIS.length; q++){
+          var S = RAIS[q], ang = S.a + phase * 0.09;
+          var a0 = S.r0 * RS * 1.55, a1 = (S.r0 + S.len * (0.7 + e * 0.6)) * RS * 1.55;
           ctx2d.beginPath();
-          for(var d = 0; d <= 360; d += 3){
-            var th = d * Math.PI / 180;
-            var m = Math.sin(th * 6 + phase * (1.6 + c * 0.7)) * 0.62
-                  + Math.sin(th * 11 - phase * 2.1) * 0.28
-                  + Math.sin(th * 3 + phase * 0.9) * 0.34;
-            var rr = base * (1 - c * 0.13) + m * amp * (1 - c * 0.35);
-            var x = Math.cos(th) * rr, y = Math.sin(th) * rr;
-            if(d === 0) ctx2d.moveTo(x, y); else ctx2d.lineTo(x, y);
-          }
-          ctx2d.closePath();
-          ctx2d.strokeStyle = 'rgba(' + (c ? t.sourd : t.vif) + ',' + (c ? 0.42 : 0.9) + ')';
-          ctx2d.lineWidth = c ? 1.8 : 3;
+          ctx2d.moveTo(Math.cos(ang) * a0, Math.sin(ang) * a0);
+          ctx2d.lineTo(Math.cos(ang) * a1, Math.sin(ang) * a1);
+          ctx2d.strokeStyle = 'rgba(' + t.cle + ',' + (S.al * (0.30 + e * 0.6)) + ')';
+          ctx2d.lineWidth = 1.15;
           ctx2d.stroke();
-          if(!c){
-            ctx2d.fillStyle = 'rgba(' + t.cle + ',' + (0.07 + e * 0.13) + ')';
-            ctx2d.fill();
-          }
         }
 
-        /* le cœur, et la chauve-souris dedans */
-        var coeur = ctx2d.createRadialGradient(0, 0, 0, 0, 0, R * 0.34);
-        coeur.addColorStop(0, 'rgba(' + t.vif + ',' + (0.34 + e * 0.4) + ')');
+        /* les arcs brisés */
+        for(var m = 0; m < ARCS.length; m++){
+          var A = ARCS[m], deb = A.a + phase * 0.13 * A.sens;
+          ctx2d.beginPath();
+          ctx2d.arc(0, 0, A.r * RS * 1.62, deb, deb + A.span);
+          ctx2d.strokeStyle = 'rgba(' + (A.ep > 2 ? t.vif : t.cle) + ',' + (A.al * (0.42 + e * 0.5)) + ')';
+          ctx2d.lineWidth = A.ep;
+          ctx2d.lineCap = 'butt';
+          ctx2d.stroke();
+        }
+
+        /* les ondes de choc : une par mot qui arrive */
+        for(var o = CHOCS.length - 1; o >= 0; o--){
+          var C = CHOCS[o];
+          C.r += 0.018; C.a *= 0.94;
+          if(C.a < 0.03 || C.r > 1.5){ CHOCS.splice(o, 1); continue; }
+          ctx2d.beginPath();
+          ctx2d.arc(0, 0, C.r * RS * 1.6, 0, Math.PI * 2);
+          ctx2d.strokeStyle = 'rgba(' + t.vif + ',' + (C.a * 0.5) + ')';
+          ctx2d.lineWidth = 1.6;
+          ctx2d.stroke();
+        }
+
+        /* le cœur et la chauve-souris */
+        var coeur = ctx2d.createRadialGradient(0, 0, 0, 0, 0, RS * 0.42);
+        coeur.addColorStop(0, 'rgba(' + t.vif + ',' + (0.30 + e * 0.42) + ')');
         coeur.addColorStop(1, 'rgba(' + t.cle + ',0)');
         ctx2d.fillStyle = coeur;
-        ctx2d.beginPath(); ctx2d.arc(0, 0, R * 0.34, 0, Math.PI * 2); ctx2d.fill();
+        ctx2d.beginPath(); ctx2d.arc(0, 0, RS * 0.42, 0, Math.PI * 2); ctx2d.fill();
         if(BAT){
-          var k = (R * 0.44) / 90 * (1 + e * 0.06);
+          var k2 = (RS * 0.42) / 90 * (1 + e * 0.07);
           ctx2d.save();
-          ctx2d.scale(k, k);
-          ctx2d.translate(-45, -29);
-          ctx2d.fillStyle = 'rgba(' + t.vif + ',' + (0.82 + e * 0.18) + ')';
-          ctx2d.shadowColor = 'rgba(' + t.cle + ',0.9)';
-          ctx2d.shadowBlur = 18 + e * 26;
+          ctx2d.scale(k2, k2); ctx2d.translate(-45, -29);
+          ctx2d.fillStyle = 'rgba(' + t.vif + ',' + (0.80 + e * 0.20) + ')';
+          ctx2d.shadowColor = 'rgba(' + t.cle + ',0.95)';
+          ctx2d.shadowBlur = 20 + e * 30;
           ctx2d.fill(BAT);
           ctx2d.restore();
         }
+
+        /* ===== le cadre d'instrument ===== */
+        ctx2d.globalCompositeOperation = 'source-over';
+        ctx2d.globalAlpha = app * 0.9;
+        var M = R * 0.97, coin = R * 0.30;
+        ctx2d.strokeStyle = 'rgba(' + t.sourd + ',0.85)';
+        ctx2d.lineWidth = 1.6;
+        [[-1,-1],[1,-1],[-1,1],[1,1]].forEach(function(c){
+          ctx2d.beginPath();
+          ctx2d.moveTo(c[0] * M, c[1] * M - c[1] * coin);
+          ctx2d.lineTo(c[0] * M, c[1] * M);
+          ctx2d.lineTo(c[0] * M - c[0] * coin, c[1] * M);
+          ctx2d.stroke();
+        });
+        /* barres segmentées, en haut et en bas : elles se remplissent avec l'énergie */
+        [-1, 1].forEach(function(sgn){
+          var y = sgn * R * 0.90, x0 = -R * 0.52, larg = R * 1.04, seg = 22;
+          ctx2d.strokeStyle = 'rgba(' + t.sourd + ',0.5)';
+          ctx2d.lineWidth = 1;
+          ctx2d.strokeRect(x0, y - 5, larg, 10);
+          for(var b2 = 0; b2 < seg; b2++){
+            var rempli = (b2 / seg) < (0.25 + e * 0.7);
+            ctx2d.fillStyle = 'rgba(' + (rempli ? t.cle : t.sourd) + ',' + (rempli ? 0.7 : 0.22) + ')';
+            ctx2d.fillRect(x0 + 2 + b2 * (larg - 4) / seg, y - 3, (larg - 4) / seg - 1.6, 6);
+          }
+        });
+        /* le petit cadran, en bas à droite */
+        ctx2d.save();
+        ctx2d.translate(R * 0.72, R * 0.72);
+        ctx2d.strokeStyle = 'rgba(' + t.cle + ',0.6)';
+        ctx2d.lineWidth = 1.2;
+        ctx2d.beginPath(); ctx2d.arc(0, 0, R * 0.11, 0, Math.PI * 2); ctx2d.stroke();
+        for(var d2 = 0; d2 < 12; d2++){
+          var ad = d2 * Math.PI / 6 + phase * 0.5;
+          ctx2d.beginPath();
+          ctx2d.moveTo(Math.cos(ad) * R * 0.075, Math.sin(ad) * R * 0.075);
+          ctx2d.lineTo(Math.cos(ad) * R * 0.105, Math.sin(ad) * R * 0.105);
+          ctx2d.strokeStyle = 'rgba(' + (d2 % 3 ? t.sourd : t.vif) + ',' + (d2 % 3 ? 0.4 : 0.85) + ')';
+          ctx2d.stroke();
+        }
+        ctx2d.restore();
         ctx2d.restore();
       }
       function boucle(){
