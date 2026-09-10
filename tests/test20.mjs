@@ -60,13 +60,13 @@ console.log('\n== 58) Projets perso : plus de formulaire manuel, Pomodoro unique
   await fr.evaluate(() => document.querySelector('.nav-btn[data-page="business"]').click());
   await page.waitForTimeout(200);
   const byName = await fr.evaluate(() => document.getElementById('proj-by-name').innerText.replace(/\s+/g,''));
-  ok(/Refontesite1,0h/.test(byName), 'la session Pomodoro alimente bien "Par projet (total)" sans formulaire manuel : ' + byName);
+  ok(/Refontesite1h/.test(byName), 'la session Pomodoro alimente bien "Par projet (total)" sans formulaire manuel : ' + byName);
 
   const cell = await fr.evaluate(() => {
     document.querySelector('.nav-btn[data-page="dashboard"]').click();
     return document.querySelectorAll('#dash-temps .temps-cell')[1].innerText.replace(/\s+/g,'');
   });
-  ok(/1,0h/.test(cell), 'et le tableau de bord aussi : ' + cell);
+  ok(/1h/.test(cell), 'et le tableau de bord aussi : ' + cell);
 
   await ctx.close();
 }

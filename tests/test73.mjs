@@ -32,9 +32,9 @@ console.log('\n== 300) Trois compteurs, et les mêmes minutes ne remplissent qu\
   const { ctx, fr } = await ouvrir('2026-09-15T18:00:00+02:00', {'batcave-sessions': SESSIONS});
   const c = await cellules(fr);
   ok(c.length === 3, 'trois cellules : révision, projets perso, espagnol');
-  ok(/Révision 2,0h/.test(c[0]), 'révision : 2,0 h (' + c[0] + ')');
-  ok(/Projets perso 1,0h/.test(c[1]), 'projets perso : 1,0 h, l\'espagnol en est sorti (' + c[1] + ')');
-  ok(/Español 0,8h/.test(c[2]), 'espagnol : 0,8 h (' + c[2] + ')');
+  ok(/Révision 2 h/.test(c[0]), 'révision : 2 h (' + c[0] + ')');
+  ok(/Projets perso 1 h/.test(c[1]), 'projets perso : 1 h, l\'espagnol en est sorti (' + c[1] + ')');
+  ok(/Español 50 min/.test(c[2]), 'espagnol : 50 min (' + c[2] + ')');
   await ctx.close();
 }
 
@@ -44,7 +44,7 @@ console.log('\n== 301) Les cibles du jour et de la semaine viennent de la grille
   const p1 = await ouvrir('2026-09-15T18:00:00+02:00');
   const c1 = await cellules(p1.fr);
   const sem1 = await p1.fr.evaluate(() => document.getElementById('dash-semaine').innerText.replace(/\s+/g, ' '));
-  ok(/\/ 2,7h/.test(c1[2]), 'phase 1 : la cellule Español porte une cible du jour (' + c1[2] + ')');
+  ok(/\/ 2 h 40/.test(c1[2]), 'phase 1 : la cellule Español porte une cible du jour (' + c1[2] + ')');
   ok(/d'espagnol sur 18/.test(sem1), 'phase 1 : 18 h d\'espagnol prévues dans la semaine (' + sem1.slice(0, 110) + ')');
   ok(!/de projets sur 0/.test(sem1), 'phase 1 : la ligne « projets » se tait au lieu d\'afficher « sur 0 »');
   await p1.ctx.close();
@@ -52,9 +52,9 @@ console.log('\n== 301) Les cibles du jour et de la semaine viennent de la grille
   const p3 = await ouvrir('2026-12-08T18:00:00+02:00');
   const sem3 = await p3.fr.evaluate(() => document.getElementById('dash-semaine').innerText.replace(/\s+/g, ' '));
   const c3 = await cellules(p3.fr);
-  ok(/de projets sur 12,5/.test(sem3), 'phase 3 : les projets perso reviennent à 12,5 h (' + sem3.slice(0, 130) + ')');
-  ok(/d'espagnol sur 6,4/.test(sem3), 'phase 3 : l\'espagnol descend à 6,4 h');
-  ok(/\/ 0,9h/.test(c3[2]), 'phase 3 : la cible du jour tombe à 0,9 h (' + c3[2] + ')');
+  ok(/de projets sur 12 h 30/.test(sem3), 'phase 3 : les projets perso reviennent à 12 h 30 (' + sem3.slice(0, 130) + ')');
+  ok(/d'espagnol sur 6 h 24/.test(sem3), 'phase 3 : l\'espagnol descend à 6 h 24');
+  ok(/\/ 55 min/.test(c3[2]), 'phase 3 : la cible du jour tombe à 55 min (' + c3[2] + ')');
   await p3.ctx.close();
   /* hors phase : plus de bloc Español, la cellule reste mais sans cible */
   const t = await ouvrir('2027-03-16T18:00:00+02:00');
@@ -62,7 +62,7 @@ console.log('\n== 301) Les cibles du jour et de la semaine viennent de la grille
   const semt = await t.fr.evaluate(() => document.getElementById('dash-semaine').innerText.replace(/\s+/g, ' '));
   ok(ct.length === 3 && !/\/ /.test(ct[2]), 'grille type : la cellule Español reste, sans cible (' + ct[2] + ')');
   ok(!/espagnol/.test(semt), 'grille type : la ligne de la semaine ne parle plus d\'espagnol');
-  ok(/de projets sur 18,9/.test(semt), 'grille type : 18,9 h de projets prévues (' + semt.slice(0, 100) + ')');
+  ok(/de projets sur 18 h 54/.test(semt), 'grille type : 18 h 54 de projets prévues (' + semt.slice(0, 100) + ')');
   await t.ctx.close();
 }
 
@@ -95,12 +95,12 @@ console.log('\n== 303) L\'espagnol a son panneau dans Études ==');
     taches: document.getElementById('es-taches-7').innerText.replace(/\s+/g, ' '),
     projets: document.getElementById('proj-stats').innerText.replace(/\s+/g, ' ')
   }));
-  ok(/Aujourd'hui 0,8h/.test(p.stats), 'aujourd\'hui : 0,8 h (' + p.stats.slice(0, 60) + ')');
-  ok(/7 derniers jours 1,8h/.test(p.stats), 'sept jours : 1,8 h');
-  ok(/Blocs prévus 18,0h/.test(p.stats), 'la cible de la semaine vient de la grille : 18 h');
+  ok(/Aujourd'hui 50 min/.test(p.stats), 'aujourd\'hui : 50 min (' + p.stats.slice(0, 60) + ')');
+  ok(/7 derniers jours 1 h 50/.test(p.stats), 'sept jours : 1 h 50');
+  ok(/Blocs prévus 18 h/.test(p.stats), 'la cible de la semaine vient de la grille : 18 h');
   ok(/phase en cours/.test(p.note), 'le panneau dit qu\'une phase est en cours');
   ok(/gramática/.test(p.taches) && /preparar la clase/.test(p.taches), 'la répartition par tâche est là (' + p.taches.slice(0, 70) + ')');
-  ok(/Aujourd'hui\s*1,0h/.test(p.projets), 'le panneau Projets perso ne compte plus l\'espagnol (' + p.projets.slice(0, 50) + ')');
+  ok(/Aujourd'hui\s*1 h/.test(p.projets), 'le panneau Projets perso ne compte plus l\'espagnol (' + p.projets.slice(0, 50) + ')');
   await ctx.close();
 }
 
@@ -113,8 +113,8 @@ console.log('\n== 304) L\'espagnol a sa ligne dans le bilan de la semaine ==');
   const es = cartes.find(c => /Espagnol/.test(c)) || '';
   const proj = cartes.find(c => /Projets perso/.test(c)) || '';
   ok(cartes.length === 10, 'dix mesures dans le bilan (' + cartes.length + ')');
-  ok(/0,8h/.test(es), 'la ligne Espagnol montre 0,8 h (' + es.slice(0, 40) + ')');
-  ok(/1,0h/.test(proj), 'la ligne Projets perso montre 1,0 h, sans l\'espagnol (' + proj.slice(0, 40) + ')');
+  ok(/50 min/.test(es), 'la ligne Espagnol montre 50 min (' + es.slice(0, 40) + ')');
+  ok(/1 h/.test(proj), 'la ligne Projets perso montre 1 h, sans l\'espagnol (' + proj.slice(0, 40) + ')');
   await ctx.close();
 }
 

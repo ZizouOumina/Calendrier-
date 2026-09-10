@@ -1,3 +1,5 @@
+/* lot 30 : durées en heures et minutes. La cible « projets perso » n'est plus
+   affichée en septembre : la grille n'en prévoit aucune minute avant le 19 octobre. */
 /* Charge réaliste (deux semaines sous 70 % → cible réduite temporaire) et relevé OBJECTIF dans la barre. */
 import { chromium } from 'playwright';
 const URL = 'http://127.0.0.1:8199/host.html';
@@ -39,7 +41,7 @@ console.log('\n== 210) Deux semaines à ~50 % : la proposition apparaît dans le
   const plan = await texte(fr, '#dash-plan');
   ok(/réduire la cible du jour de 20 %/.test(plan), 'proposition dans le plan : ' + (plan.match(/Fidélité[^?]*\?/) || [''])[0].slice(0, 90));
   const temps = await texte(fr, '#dash-temps');
-  ok(/\/ 4,4h/.test(temps), 'avant : cible du jour 4,4 h de révision (' + temps.slice(0, 40) + ')');
+  ok(/\/ 4 h 25/.test(temps), 'avant : cible du jour 4 h 25 de révision (' + temps.slice(0, 40) + ')');
   const objAvant = await fr.evaluate(() => { document.querySelector('.nav-btn[data-page="objectifs"]').click(); const r = [...document.querySelectorAll('#obj-liste .obj-row')].find(x => /^Révision/.test(x.innerText)); return r ? r.innerText.replace(/\s+/g,' ') : ''; });
   const attenduAvant = Number((objAvant.match(/attendu ([\d,]+)/) || ['', '0'])[1].replace(',', '.'));
   await fr.evaluate(() => document.querySelector('.nav-btn[data-page="dashboard"]').click());
@@ -48,7 +50,7 @@ console.log('\n== 210) Deux semaines à ~50 % : la proposition apparaît dans le
   const ch = await local(fr, 'batcave-charge');
   ok(ch && ch.facteur === 0.8 && ch.depuis === '2026-09-22' && ch.jusqua === '2026-10-05', 'charge réduite de 20 % du 22 sept. au 5 oct.');
   const temps2 = await texte(fr, '#dash-temps');
-  ok(/\/ 3,5h/.test(temps2) && /\/ 2,1h/.test(temps2), 'après : cible du jour 3,5 h de révision et 2,1 h de projets (' + temps2.slice(0, 50) + ')');
+  ok(/\/ 3 h 32/.test(temps2), 'après : cible du jour réduite de 20 % (3 h 32 au lieu de 4 h 25) (' + temps2.slice(0, 50) + ')');
   const sem = await texte(fr, '#dash-semaine');
   ok(/Charge réduite de 20 % jusqu'au 0?5 oct\./.test(sem), 'la note de la semaine le dit : ' + sem.slice(0, 60));
   const objApres = await fr.evaluate(() => { document.querySelector('.nav-btn[data-page="objectifs"]').click(); const r = [...document.querySelectorAll('#obj-liste .obj-row')].find(x => /^Révision/.test(x.innerText)); return r ? r.innerText.replace(/\s+/g,' ') : ''; });
@@ -66,7 +68,7 @@ console.log('\n== 211) Refuser : plus proposé cette semaine ; sans aucune sessi
   const ch = await local(fr, 'batcave-charge');
   ok(ch && ch.refus === '2026-09-21', 'le refus est noté pour la semaine du 21 sept.');
   ok(!/réduire la cible du jour/.test(await texte(fr, '#dash-plan')), 'et la proposition disparaît');
-  ok(/\/ 4,4h/.test(await texte(fr, '#dash-temps')), 'la cible reste à 4,4 h');
+  ok(/\/ 4 h 25/.test(await texte(fr, '#dash-temps')), 'la cible reste à 4 h 25');
   await ctx.close();
   const o = await ouvrir(MARDI22);
   ok(!/réduire la cible du jour/.test(await texte(o.fr, '#dash-plan')), 'sans aucune session les deux semaines précédentes : pas de proposition (non-usage ≠ infidélité)');
@@ -76,7 +78,7 @@ console.log('\n== 211) Refuser : plus proposé cette semaine ; sans aucune sessi
 console.log('\n== 212) La réduction se termine toute seule ==');
 {
   const { ctx, fr } = await ouvrir('2026-10-06T10:00:00+02:00', {'batcave-charge': {facteur:0.8, depuis:'2026-09-22', jusqua:'2026-10-05', motif:'test'}});
-  ok(/\/ 4,4h/.test(await texte(fr, '#dash-temps')), 'le 6 octobre : cible de nouveau à 4,4 h');
+  ok(/\/ 4 h 25/.test(await texte(fr, '#dash-temps')), 'le 6 octobre : cible de nouveau à 4 h 25');
   ok(!/Charge réduite/.test(await texte(fr, '#dash-semaine')), 'plus de mention de charge réduite');
   await ctx.close();
 }

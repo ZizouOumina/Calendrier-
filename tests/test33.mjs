@@ -36,7 +36,7 @@ console.log('\n== 86) La fusion de l\'historique conserve le détail par matièr
      'le détail par matière est conservé ET additionné : ' + JSON.stringify(j2 && j2.matieres));
 
   const rep = await fr.evaluate(() => document.getElementById('rev-matieres-7').innerText.replace(/\s+/g,' '));
-  ok(/Anatomía I 2,0h/.test(rep) && /Bioquímica 1,0h/.test(rep) && /Fisiología 1,5h/.test(rep),
+  ok(/Anatomía I 2 h/.test(rep) && /Bioquímica 1 h/.test(rep) && /Fisiología 1 h 30/.test(rep),
      'la répartition « Par matière » est correcte : ' + rep);
   ok(!/Sans matière précisée/.test(rep), 'rien ne bascule en « Sans matière précisée »');
   await ctx.close();
@@ -48,13 +48,13 @@ console.log('\n== 87) Séparateur décimal français partout ==');
     {id:'r1', date:'2026-09-03', duree:150, matieres:{'Anatomía I':150}},
   ]});
   const rev = await fr.evaluate(() => document.getElementById('rev-stats').innerText.replace(/\s+/g,' '));
-  ok(/2,5h/.test(rev) && !/2\.5/.test(rev), 'Révision — aujourd\'hui en virgule : ' + rev.slice(0,80));
+  ok(/2 h 30/.test(rev) && !/2[.,]5/.test(rev), 'Révision — aujourd\'hui en heures et minutes : ' + rev.slice(0,80));
   /* le panneau Espagnol a été retiré : on vérifie la virgule sur l'agenda à la place */
   const ag = await fr.evaluate(() => {
     document.querySelector('.nav-btn[data-page="agenda"]').click();
     return document.getElementById('ag-stats').innerText.replace(/\s+/g,' ');
   });
-  ok(/2,5h/.test(ag) && !/2\.5/.test(ag), 'Agenda — total du mois en virgule : ' + ag.slice(0,80));
+  ok(/2 h 30/.test(ag) && !/2[.,]5/.test(ag), 'Agenda — total du mois en heures et minutes : ' + ag.slice(0,80));
   const pageEtudes = await fr.evaluate(() => document.querySelector('.page[data-page="etudes"]').innerText);
   const points = (pageEtudes.match(/\d+\.\d+\s*h/g) || []);
   ok(points.length === 0, 'aucun nombre d\'heures avec un point sur la page : ' + (points.join(', ') || 'aucun'));

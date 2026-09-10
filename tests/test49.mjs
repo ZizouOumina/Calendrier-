@@ -52,9 +52,9 @@ console.log('\n== 119) Prévu vs réalisé — Bilan ==');
   const fid = await fr.evaluate(() => [...document.querySelectorAll('#bilan-grid .bilan-card')].map(c => c.innerText.replace(/\s+/g,' ')).find(t => /Fidélité/.test(t)));
   ok(fid && /54%/.test(fid), 'carte « Fidélité au plan » : 54 % (12 h faites / 22,1 h de travail réel prévues lun-mer) : ' + (fid || '').slice(0, 60));
   const p = await fr.evaluate(() => ({ txt: document.getElementById('bilan-plan').innerText.replace(/\s+/g,' '), note: document.getElementById('bilan-plan-note').innerText }));
-  ok(/Lun 8,0 \/ 7,1 h/.test(p.txt) && /Mar 4,0 \/ 7,1 h/.test(p.txt) && /Mer 0,0 \/ 7,9 h/.test(p.txt), 'jour par jour : Lun 8/7,1, Mar 4/7,1, Mer 0/7,9');
-  ok(/Jeu prévu 7,1 h/.test(p.txt) && /Dim prévu 6,3 h/.test(p.txt), 'les jours à venir montrent le prévu (jeu 7,1 h, dim 6,3 h)');
-  ok(/Révision 9,0 \/ 14,1 h/.test(p.txt) && /Projets 3,0 \/ 8,0 h/.test(p.txt), 'totaux par type sur les jours passés (rév. 9/14,1, proj. 3/8,0)');
+  ok(/Lun 8 h \/ 7 h 05/.test(p.txt) && /Mar 4 h \/ 7 h 05/.test(p.txt) && /Mer 0 \/ 7 h 55/.test(p.txt), 'jour par jour : ' + (p.txt.match(/Lun[^M]*Mar[^M]*Mer[^J]*/)||[])[0]);
+  ok(/Jeu prévu 7 h 05/.test(p.txt) && /Dim prévu 6 h 15/.test(p.txt), 'les jours à venir montrent le prévu (jeu 7 h 05, dim 6 h 15)');
+  ok(/Révision 9 h \/ 14 h 05/.test(p.txt) && /Projets 3 h \/ 8 h/.test(p.txt), 'totaux par type sur les jours passés : ' + (p.txt.match(/Révision[^·]*·[^·]*/)||[])[0]);
   ok(/fidélité 54 %/.test(p.note), 'note : ' + p.note);
   await ctx.close();
 }

@@ -40,9 +40,9 @@ console.log('\n== 57) Supprimer une ligne agrégée « Projet perso » nettoie t
   await page.clock.fastForward('01:00:01'); await page.waitForTimeout(400);
 
   // le bloc projet doit apparaître sur l'agenda Batcave ET sur l'agenda Business, mais PAS sur celui des révisions
-  ok(/1,0h/.test(await caseMois(fr, 'ag', '2026-09-02')), 'agenda Batcave : le projet est visible');
-  ok(/1,0h/.test(await caseMois(fr, 'pj', '2026-09-02')), 'agenda Projets perso : le projet est visible');
-  ok(!/1,0h/.test(await caseMois(fr, 'rv', '2026-09-02')), 'agenda Révision : le projet n\'y est PAS (cloisonnement)');
+  ok(/1h/.test(await caseMois(fr, 'ag', '2026-09-02')), 'agenda Batcave : le projet est visible');
+  ok(/1h/.test(await caseMois(fr, 'pj', '2026-09-02')), 'agenda Projets perso : le projet est visible');
+  ok(!/1h/.test(await caseMois(fr, 'rv', '2026-09-02')), 'agenda Révision : le projet n\'y est PAS (cloisonnement)');
 
   // suppression depuis l'historique agrégé des projets (Business)
   await fr.evaluate(() => document.querySelector('.nav-btn[data-page="business"]').click());
@@ -54,10 +54,10 @@ console.log('\n== 57) Supprimer une ligne agrégée « Projet perso » nettoie t
 
   const proj = await ls(fr, 'batcave-projets');
   ok(!proj.length, 'la ligne projet a bien disparu');
-  ok(!/1,0h/.test(await caseMois(fr, 'ag', '2026-09-02')), 'agenda Batcave à jour SANS action supplémentaire');
-  ok(!/1,0h/.test(await caseMois(fr, 'pj', '2026-09-02')), 'agenda Projets perso à jour SANS action supplémentaire');
+  ok(!/1h/.test(await caseMois(fr, 'ag', '2026-09-02')), 'agenda Batcave à jour SANS action supplémentaire');
+  ok(!/1h/.test(await caseMois(fr, 'pj', '2026-09-02')), 'agenda Projets perso à jour SANS action supplémentaire');
   const cell = await fr.evaluate(() => { document.querySelector('.nav-btn[data-page="dashboard"]').click(); return document.querySelectorAll('#dash-temps .temps-cell')[1].innerText.replace(/\s+/g,''); });
-  ok(/Projetsperso0,0h/.test(cell), 'le tableau de bord aussi : ' + cell);
+  ok(/Projetsperso0\//.test(cell), 'le tableau de bord aussi : ' + cell);
   const sessions = await ls(fr, 'batcave-sessions');
   ok(!sessions.some(s => s.type === 'projet' && s.date === '2026-09-02'), 'aucun bloc "fantôme" dans le journal');
   await ctx.close();

@@ -32,10 +32,10 @@ console.log('\n== 105) Charge restante : cible hebdo moins le fait depuis lundi 
   ]};
   const { ctx, fr } = await ouvrir('2026-09-02T10:00:00+02:00', seed);   /* mercredi */
   const t = await texte(fr, '#dash-semaine');
-  ok(/21,9 h de révision restantes sur 29,9/.test(t), '29,9 − 8 = 21,9 h de révision (' + t.slice(0,60) + '…)');
-  ok(/14,9 h de projets sur 18,9/.test(t), '18,9 − 4 = 14,9 h de projets');
+  ok(/21 h 54 de révision restantes sur 29 h 54/.test(t), '29 h 54 − 8 h = 21 h 54 de révision (' + t.slice(0,70) + '…)');
+  ok(/14 h 54 de projets sur 18 h 54/.test(t), '18 h 54 − 4 h = 14 h 54 de projets');
   ok(/5 jours/.test(t), 'mercredi → dimanche : 5 jours');
-  ok(/~7,4 h\/jour/.test(t), '(21,9 + 14,9) / 5 = 7,4 h/jour');
+  ok(/~7 h \d\d\/jour/.test(t), '(21 h 54 + 14 h 54) / 5 jours : ' + (t.match(/~[^)]*/)||[])[0]);
   await ctx.close();
 }
 
@@ -54,11 +54,11 @@ console.log('\n== 106) Dimanche : 1 jour restant ; semaine bouclée : message de
 }
 
 console.log('\n== 107) Cibles du jour dérivées du planning (plus de 5/4/5/4 à la main) ==');
-for(const [nom, quand, rev, proj] of [['mercredi','2026-09-02T10:00:00+02:00','5,3','2,7'],['vendredi','2026-09-04T10:00:00+02:00','3,5','2,8'],['samedi','2026-09-05T10:00:00+02:00','4,4','2,8'],['dimanche','2026-09-06T10:00:00+02:00','3,5','2,8']]){
+for(const [nom, quand, rev, proj] of [['mercredi','2026-09-02T10:00:00+02:00','5 h 15','2 h 40'],['vendredi','2026-09-04T10:00:00+02:00','3 h 30','2 h 45'],['samedi','2026-09-05T10:00:00+02:00','4 h 25','2 h 45'],['dimanche','2026-09-06T10:00:00+02:00','3 h 30','2 h 45']]){
   const { ctx, fr } = await ouvrir(quand);
   const cells = await fr.evaluate(() => [...document.querySelectorAll('#dash-temps .temps-cell .tv')].map(e => e.innerText.replace(/\s+/g,' ')));
-  ok(new RegExp('/ ' + rev + 'h').test(cells[0] || ''), nom + ' : révision / ' + rev + 'h (' + cells[0] + ')');
-  ok(new RegExp('/ ' + proj + 'h').test(cells[1] || ''), nom + ' : projets / ' + proj + 'h (' + cells[1] + ')');
+  ok((cells[0] || '').indexOf('/ ' + rev) > -1, nom + ' : révision / ' + rev + ' (' + cells[0] + ')');
+  ok((cells[1] || '').indexOf('/ ' + proj) > -1, nom + ' : projets / ' + proj + ' (' + cells[1] + ')');
   await ctx.close();
 }
 

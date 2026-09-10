@@ -47,7 +47,7 @@ console.log('\n== 69) Vue 12 mois : repliée par défaut, se déploie au clic ==
   ok(etat.cases >= 365 && etat.cases <= 372, 'environ un an de cases : ' + etat.cases);
   ok(etat.mois >= 12 && etat.mois <= 13, 'une étiquette par mois couvert : ' + etat.mois);
   ok(/6 h sur 2 jours travaillés/.test(etat.resume), 'résumé correct (300+60 min = 6h sur 2 jours, le jour hors fenêtre exclu) : ' + etat.resume);
-  ok(/record 5,0 h/.test(etat.resume), 'record du jour identifié : ' + etat.resume);
+  ok(/record 5 h/.test(etat.resume), 'record du jour identifié : ' + etat.resume);
   await ctx.close();
 }
 
@@ -69,7 +69,7 @@ console.log('\n== 70) Intensités et infobulles ==');
     titre: [...document.querySelectorAll('#rev-annee-grid .an-cell')].map(c=>c.title).find(t => /^2 septembre 2026/.test(t)),
   }));
   ok(n.n1===1 && n.n2===1 && n.n3===1 && n.n4===1, 'les 4 niveaux d\'intensité sont représentés : ' + JSON.stringify(n).slice(0,60));
-  ok(/2 septembre 2026 — 0,5 h/.test(n.titre||''), 'infobulle avec date et durée : ' + n.titre);
+  ok(/2 septembre 2026 — 30 min/.test(n.titre||''), 'infobulle avec date et durée : ' + n.titre);
   await ctx.close();
 }
 

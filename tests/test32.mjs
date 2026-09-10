@@ -32,8 +32,8 @@ console.log('\n== 81) Dates françaises : « 1ᵉʳ » et majuscule au seul prem
   await page.waitForTimeout(300);
   await fr.evaluate(() => document.getElementById('rev-annee-toggle').click());
   await page.waitForTimeout(350);
-  const bulle = await fr.evaluate(() => [...document.querySelectorAll('#rev-annee-grid .an-cell')].map(c=>c.title).find(t => /2,0 h/.test(t)));
-  ok(/1ᵉʳ septembre 2026 — 2,0 h/.test(bulle||''), 'infobulle 12 mois : ' + bulle);
+  const bulle = await fr.evaluate(() => [...document.querySelectorAll('#rev-annee-grid .an-cell')].map(c=>c.title).find(t => /2 h/.test(t)));
+  ok(/1ᵉʳ septembre 2026 — 2 h/.test(bulle||''), 'infobulle 12 mois : ' + bulle);
 
   await fr.evaluate(() => document.querySelector('.nav-btn[data-page="repas"]').click());
   await page.waitForTimeout(200);

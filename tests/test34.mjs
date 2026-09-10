@@ -40,8 +40,8 @@ console.log('\n== 88) Page Études : uniquement la révision ==');
   }));
   ok(v.blocs.length === 2, '2 blocs le 3 (les 2 cours seulement) : ' + v.blocs.length);
   ok(v.blocs.every(b => /Anatomía|Bioquímica/.test(b)), 'aucun projet perso : ' + v.blocs.join(' | '));
-  ok(/2,0 h/.test(v.total), 'total = 2h de révision (pas 4h) : ' + v.total);
-  ok(/34,0h/.test(v.case3) === false && /32,0h/.test(v.case3), 'la case du 3 compte 2,0h : ' + v.case3);
+  ok(/2 h/.test(v.total), 'total = 2 h de révision (pas 4 h) : ' + v.total);
+  ok(/34h/.test(v.case3) === false && /32h/.test(v.case3), 'la case du 3 compte 2 h : ' + v.case3);
   ok(v.case2 === '2', 'le 2 (projet seul) est vide côté révision : « ' + v.case2 + ' »');
   ok(!v.espagnol, 'plus aucun panneau Espagnol');
   await ctx.close();
@@ -59,8 +59,8 @@ console.log('\n== 89) Page Business : uniquement les projets perso ==');
   }));
   ok(v.blocs.length === 2, '2 blocs le 3 (les 2 projets seulement) : ' + v.blocs.length);
   ok(v.blocs.every(b => /Boutique|Refonte/.test(b)), 'aucune révision : ' + v.blocs.join(' | '));
-  ok(/2,0 h/.test(v.total), 'total = 90+30 min = 2h : ' + v.total);
-  ok(/32,0h/.test(v.case3), 'la case du 3 compte 2,0h de projets : ' + v.case3);
+  ok(/2 h/.test(v.total), 'total = 90+30 min = 2 h : ' + v.total);
+  ok(/32h/.test(v.case3), 'la case du 3 compte 2 h de projets : ' + v.case3);
   ok(v.case1 === '1ᵉʳ' || v.case1 === '1', 'le 1er (révision seule) est vide côté projets : « ' + v.case1 + ' »');
   await ctx.close();
 }
@@ -76,9 +76,9 @@ console.log('\n== 90) Agenda Batcave : les deux regroupés ==');
     pastilles: document.querySelectorAll('#ag-grid [data-agjour="2026-09-03"] .cal-pt').length,
   }));
   ok(v.blocs.length === 4, 'les 4 blocs du 3 sont là : ' + v.blocs.length);
-  ok(/4,0 h/.test(v.total), 'total = 2h révision + 2h projets = 4h : ' + v.total);
-  ok(/Totaldumois5,8h/.test(v.tuiles[0]), 'total du mois = 345 min = 5,8h : ' + v.tuiles[0]);
-  ok(/Révision3,0h/.test(v.tuiles[1]) && /Projetsperso2,7h|Projetsperso2,8h/.test(v.tuiles[2]), 'répartition : ' + v.tuiles.slice(1,3).join(' '));
+  ok(/4 h/.test(v.total), 'total = 2 h révision + 2 h projets = 4 h : ' + v.total);
+  ok(/Totaldumois5h45/.test(v.tuiles[0]), 'total du mois = 345 min = 5 h 45 : ' + v.tuiles[0]);
+  ok(/Révision3h/.test(v.tuiles[1]) && /Projetsperso2h45/.test(v.tuiles[2]), 'répartition : ' + v.tuiles.slice(1,3).join(' '));
   ok(v.pastilles === 2, '2 pastilles le 3 (révision + projet) : ' + v.pastilles);
   await ctx.close();
 }
@@ -95,9 +95,9 @@ console.log('\n== 91) Compteurs du tableau de bord séparés + 2 boutons Pomodor
     boutons: [...document.querySelectorAll('#dash-pomodoro, #dash-pomodoro-projet')].map(b => b.textContent),
   }));
   ok(v.cellules.length === 3, '3 compteurs : révision, projets, espagnol (' + v.cellules.length + ')');
-  ok(/Révision2,0h/.test(v.cellules[0]), 'le compteur révision ne compte QUE la révision : ' + v.cellules[0]);
-  ok(/Projetsperso2,0h/.test(v.cellules[1]), 'le compteur projets ne compte QUE les projets : ' + v.cellules[1]);
-  ok(/4,0 h au total/.test(v.total), 'total = 4h, les 3h d\'espagnol ne comptent plus : ' + v.total);
+  ok(/Révision2h\//.test(v.cellules[0]), 'le compteur révision ne compte QUE la révision : ' + v.cellules[0]);
+  ok(/Projetsperso2h\//.test(v.cellules[1]), 'le compteur projets ne compte QUE les projets : ' + v.cellules[1]);
+  ok(/4 h au total/.test(v.total), 'total = 4 h, les 3 h d\'espagnol ne comptent plus : ' + v.total);
   ok(v.boutons.length === 2 && /Révision/.test(v.boutons[0]) && /Projet perso/.test(v.boutons[1]),
      'deux boutons Pomodoro : ' + v.boutons.join(' | '));
 
@@ -130,19 +130,19 @@ console.log('\n== 92) Heures par matière, à la semaine (page Études) ==');
     txt: document.getElementById('sem-matieres').innerText.replace(/\s+/g,' '),
   }));
   ok(/Cette semaine/.test(v.label), 'semaine en cours par défaut : ' + v.label);
-  ok(/Anatomía I 3,0 h/.test(v.txt), 'Anatomía I cumulée sur la semaine (120+60 min) : ' + (v.txt.match(/Anatomía I [^·]*/)||[])[0]);
-  ok(/Bioquímica 1,5 h/.test(v.txt), 'Bioquímica 90 min');
-  ok(/Fisiología 1,0 h/.test(v.txt), 'Fisiología 60 min');
+  ok(/Anatomía I 3 h/.test(v.txt), 'Anatomía I cumulée sur la semaine (120+60 min) : ' + (v.txt.match(/Anatomía I [^·]*/)||[])[0]);
+  ok(/Bioquímica 1 h 30/.test(v.txt), 'Bioquímica 90 min');
+  ok(/Fisiología 1 h/.test(v.txt), 'Fisiología 60 min');
   ok(!/Boutique/.test(v.txt), 'les projets perso ne sont pas comptés');
-  ok(/5,5 h au total sur 3 matières/.test(v.txt), 'total de la semaine : ' + (v.txt.match(/[\d,]+ h au total[^·]*/)||[])[0]);
-  ok(/semaine précédente 4,0 h \(\+1,5 h\)/.test(v.txt), 'comparaison à la semaine précédente : ' + (v.txt.match(/semaine précédente.*/)||[])[0]);
-  ok(/↓ -1,5 h/.test(v.txt), 'Bioquímica en baisse vs semaine dernière (3,0 → 1,5 h)');
+  ok(/5 h 30 au total sur 3 matières/.test(v.txt), 'total de la semaine : ' + (v.txt.match(/[^·]*au total[^·]*/)||[])[0]);
+  ok(/semaine précédente 4 h \(\+1 h 30\)/.test(v.txt), 'comparaison à la semaine précédente : ' + (v.txt.match(/semaine précédente.*/)||[])[0]);
+  ok(/↓ −1 h 30/.test(v.txt), 'Bioquímica en baisse vs semaine dernière (3 h → 1 h 30)');
 
   await fr.evaluate(() => document.getElementById('sem-prev').click());
   await page.waitForTimeout(250);
   const p2 = await fr.evaluate(() => ({ label: document.getElementById('sem-label').textContent, txt: document.getElementById('sem-matieres').innerText.replace(/\s+/g,' ') }));
   ok(/Semaine dernière/.test(p2.label), 'navigation vers la semaine précédente : ' + p2.label);
-  ok(/Bioquímica 3,0 h/.test(p2.txt) && /4,0 h au total/.test(p2.txt), 'ses chiffres à elle : ' + (p2.txt.match(/[\d,]+ h au total[^·]*/)||[])[0]);
+  ok(/Bioquímica 3 h/.test(p2.txt) && /4 h au total/.test(p2.txt), 'ses chiffres à elle : ' + (p2.txt.match(/[^·]*au total[^·]*/)||[])[0]);
   await ctx.close();
 }
 await browser.close();

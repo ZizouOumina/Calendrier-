@@ -114,10 +114,10 @@ console.log('\n== 63) Heures par matière : les semaines antérieures au journal
   }));
   ok(/17 août → 23 août/.test(t.label), 'semaine visée : ' + t.label);
   ok(!/Aucune révision/.test(t.txt), 'la semaine agrégée n\'est plus déclarée vide');
-  ok(/Anatomía I/.test(t.txt) && /3,5 h/.test(t.txt), 'Anatomía I : 120 + 90 = 3,5 h — ' + t.txt.slice(0,90));
-  ok(/Bioquímica/.test(t.txt) && /1,0 h/.test(t.txt), 'Bioquímica : 1,0 h');
+  ok(/Anatomía I/.test(t.txt) && /3 h 30/.test(t.txt), 'Anatomía I : 120 + 90 = 3 h 30 — ' + t.txt.slice(0,90));
+  ok(/Bioquímica/.test(t.txt) && /1 h/.test(t.txt), 'Bioquímica : 1 h');
   ok(/Sans matière précisée/.test(t.txt), 'le reliquat non attribué apparaît honnêtement');
-  ok(/5,5 h au total sur 3 matières/.test(t.txt), 'total hebdo cohérent (180 + 150 = 5,5 h) : ' + t.txt.slice(-120));
+  ok(/5 h 30 au total sur 3 matières/.test(t.txt), 'total hebdo cohérent (180 + 150 = 5 h 30) : ' + t.txt.slice(-120));
   await ctx.close();
 }
 
@@ -154,9 +154,9 @@ console.log('\n== 65) Agenda Batcave : les tuiles d\'un mois ancien ne mentent p
     case19: document.querySelector('#ag-grid [data-agjour="2026-08-19"]').innerText.replace(/\s+/g,''),
   }));
   ok(/Août 2026/i.test(vue.mois), 'mois affiché : ' + vue.mois);
-  ok(/3,0h/.test(vue.case18) && /2,0h/.test(vue.case19), 'la grille montre bien les heures agrégées : ' + vue.case18 + ' / ' + vue.case19);
-  ok(/Total du mois 5,0/.test(vue.tuiles), 'tuile « Total du mois » cohérente avec la grille : ' + vue.tuiles);
-  ok(/Révision 3,0/.test(vue.tuiles) && /Projets perso 2,0/.test(vue.tuiles), 'répartition révision / projets correcte');
+  ok(/183h/.test(vue.case18) && /192h/.test(vue.case19), 'la grille montre bien les heures agrégées : ' + vue.case18 + ' / ' + vue.case19);
+  ok(/Total du mois 5 h/.test(vue.tuiles), 'tuile « Total du mois » cohérente avec la grille : ' + vue.tuiles);
+  ok(/Révision 3 h/.test(vue.tuiles) && /Projets perso 2 h/.test(vue.tuiles), 'répartition révision / projets correcte');
   await ctx.close();
 }
 

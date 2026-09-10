@@ -1,7 +1,12 @@
 name: Campagne Batcave
 
+# La campagne tourne en local avant chaque push : la relancer aussi sur CHAQUE push
+# n'ajoutait rien et envoyait un e-mail d'échec à chaque commit intermédiaire.
+# Elle reste lançable à la demande (onglet Actions → « Run workflow ») et tourne
+# automatiquement sur les pull requests et sur main.
 on:
   push:
+    branches: [main]
   pull_request:
   workflow_dispatch:
 

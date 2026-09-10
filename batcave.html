@@ -5009,7 +5009,7 @@
     }
     function tuile(label, min){
       return '<div class="stat-tile"><div class="tlabel">' + label + '</div><div class="tnum" style="font-size:30px;">' +
-             fmtDuree(min) + '<small>h</small></div></div>';
+             fmtDuree(min) + '</div></div>';
     }
     el.innerHTML = tuile('Total du mois', parType.cours + parType.projet) +
                    tuile('🔵 Révision', parType.cours) + tuile('🟠 Projets perso', parType.projet) +
@@ -9200,8 +9200,8 @@
     var h = function(m){ return Math.round(100 * m / maxMin); }, hh = function(m){ return fmtDuree(m); };
     el.innerHTML = lignes.map(function(l){
       var barres = l.passe
-        ? '<i class="rev" style="height:' + h(l.rev) + '%" title="révision ' + hh(l.rev) + ' h / ' + hh(l.cRev) + ' h"></i><i class="proj" style="height:' + h(l.proj) + '%" title="projets ' + hh(l.proj) + ' h / ' + hh(l.cProj) + ' h"></i>'
-        : '<i class="plan" style="height:' + h(l.cRev) + '%" title="prévu ' + hh(l.cRev) + ' h de révision"></i><i class="plan proj" style="height:' + h(l.cProj) + '%" title="prévu ' + hh(l.cProj) + ' h de projets"></i>';
+        ? '<i class="rev" style="height:' + h(l.rev) + '%" title="révision ' + hh(l.rev) + ' / ' + hh(l.cRev) + '"></i><i class="proj" style="height:' + h(l.proj) + '%" title="projets ' + hh(l.proj) + ' / ' + hh(l.cProj) + '"></i>'
+        : '<i class="plan" style="height:' + h(l.cRev) + '%" title="prévu ' + hh(l.cRev) + ' de révision"></i><i class="plan proj" style="height:' + h(l.cProj) + '%" title="prévu ' + hh(l.cProj) + ' de projets"></i>';
       return '<div class="sb-day' + (l.d === todayISO ? ' today' : '') + '"><div class="sb-cols">' + barres + '</div><span class="dn">' + NOMS[dowDe(l.d)] + '</span></div>';
     }).join('');
   }
@@ -9696,12 +9696,12 @@
     var liste = Object.keys(tranches).map(function(t){ return {debut: Number(t), min: tranches[t]}; }).sort(function(a, b){ return b.min - a.min; });
     var top = liste[0], hh = function(t){ return (t < 10 ? '0' : '') + t + 'h'; };
     var total = liste.reduce(function(a, x){ return a + x.min; }, 0), part = Math.round(100 * top.min / total);
-    var txt = 'C\'est entre ' + hh(top.debut) + '–' + hh(top.debut + 2) + ' que tu abats le plus de travail : ' + virg(top.min / 60) + 'h cumulées, soit ' + part + '% de ton temps enregistré.';
-    if(liste.length > 1){ var f = liste[liste.length - 1]; txt += ' Le créneau ' + hh(f.debut) + '–' + hh(f.debut + 2) + ' est le moins rentable (' + virg(f.min / 60) + 'h).'; }
+    var txt = 'C\'est entre ' + hh(top.debut) + '–' + hh(top.debut + 2) + ' que tu abats le plus de travail : ' + fmtDuree(top.min) + ' cumulées, soit ' + part + '% de ton temps enregistré.';
+    if(liste.length > 1){ var f = liste[liste.length - 1]; txt += ' Le créneau ' + hh(f.debut) + '–' + hh(f.debut + 2) + ' est le moins rentable (' + fmtDuree(f.min) + ').'; }
     var byDow = {};
     revisionState.forEach(function(r){ if(!r.date) return; var dow = new Date(r.date + 'T00:00:00').getDay(); byDow[dow] = (byDow[dow] || 0) + Number(r.duree || 0); });
     var jours = Object.keys(byDow).map(function(d){ return {dow: Number(d), min: byDow[d]}; }).sort(function(a, b){ return b.min - a.min; });
-    if(jours.length >= 3) txt += ' Ton meilleur jour est ' + DOW_NAMES_LONG[jours[0].dow] + ' (' + virg(jours[0].min / 60) + 'h cumulées), ton plus faible ' + DOW_NAMES_LONG[jours[jours.length - 1].dow] + ' (' + virg(jours[jours.length - 1].min / 60) + 'h).';
+    if(jours.length >= 3) txt += ' Ton meilleur jour est ' + DOW_NAMES_LONG[jours[0].dow] + ' (' + fmtDuree(jours[0].min) + ' cumulées), ton plus faible ' + DOW_NAMES_LONG[jours[jours.length - 1].dow] + ' (' + fmtDuree(jours[jours.length - 1].min) + ').';
     /* pas de tendance sans période précédente suivie : « +17 h » contre un vide ne dit rien */
     var tend = joursSuivis(14, 14).length >= 3 ? tendance(heuresTranche(0, 14, top.debut), heuresTranche(14, 28, top.debut), {bonSiHausse:true, unite:'h ici', dec:1, seuil:0.5, ref:'14 j avant'}) : null;
     return {icon:'🕐', title:T, page:P, text:txt,
@@ -10083,14 +10083,14 @@
       var ch = cibleHebdo(0);
       var tout = !sem.rev.restant && !sem.proj.restant && !sem.es.restant;
       semEl.innerHTML = tout
-        ? '✅ Objectifs de la semaine atteints — ' + hh(sem.rev.fait) + ' h de révision, ' + hh(sem.proj.fait) + ' h de projets' + (ch.es ? ', ' + hh(sem.es.fait) + ' h d\'espagnol' : '') + '.'
-        : texteChargeReduite() + 'Semaine : <b>' + hh(sem.rev.restant) + ' h</b> de révision restantes sur ' + String(ch.rev).replace('.', ',') +
+        ? '✅ Objectifs de la semaine atteints — ' + hh(sem.rev.fait) + ' de révision, ' + hh(sem.proj.fait) + ' de projets' + (ch.es ? ', ' + hh(sem.es.fait) + ' d\'espagnol' : '') + '.'
+        : texteChargeReduite() + 'Semaine : <b>' + hh(sem.rev.restant) + '</b> de révision restantes sur ' + fmtHeures(ch.rev) +
           /* en phase 1, les trois blocs « Projets perso » sont de l'espagnol : la grille ne
              prévoit aucun projet cette semaine-là, et « sur 0 » ne veut rien dire */
-          (ch.proj ? ' · <b>' + hh(sem.proj.restant) + ' h</b> de projets sur ' + String(ch.proj).replace('.', ',') : '') +
-          (ch.es ? ' · <b>' + hh(sem.es.restant) + ' h</b> d\'espagnol sur ' + String(ch.es).replace('.', ',') : '') +
+          (ch.proj ? ' · <b>' + hh(sem.proj.restant) + '</b> de projets sur ' + fmtHeures(ch.proj) : '') +
+          (ch.es ? ' · <b>' + hh(sem.es.restant) + '</b> d\'espagnol sur ' + fmtHeures(ch.es) : '') +
           ' · <b>' + sem.jours + '</b> jour' + (sem.jours > 1 ? 's' : '') + ' (soit ~' +
-          hh((sem.rev.restant + sem.proj.restant + sem.es.restant) / sem.jours) + ' h/jour)';
+          hh((sem.rev.restant + sem.proj.restant + sem.es.restant) / sem.jours) + '/jour)';
     }
     majReacteur();
     var totalJourMin = revMin + projMin + minutesEspanol(todayISO);
@@ -10252,13 +10252,16 @@
       var arrow = Math.abs(diff) < 0.05 ? '→' : (diff>0 ? '↑' : '↓');
       var good = Math.abs(diff) < 0.05 ? null : (r.higher ? diff>0 : diff<0);
       var color = good===null ? 'var(--ink-faint)' : (good ? 'var(--good)' : 'var(--danger)');
-      /* notation française : ce formateur alimente toute la page Bilan, il affichait « 5.5 h ». */
-      var fmt = function(v){ return r.unit==='€' ? v.toFixed(0) : (r.unit==='%' ? v.toFixed(0) : v.toFixed(1).replace('.', ',')); };
-      var diffTxt = (diff>=0?'+':'') + fmt(diff) + r.unit;
+      /* Les heures s'écrivent « 5 h 30 » (l'unité est dans le texte) ; le reste garde son
+         unité à part, en notation française. */
+      var heures = r.unit === 'h';
+      var fmt = function(v){ return heures ? fmtHeures(v) : (r.unit==='€' || r.unit==='%' ? v.toFixed(0) : v.toFixed(1).replace('.', ',')); };
+      var u = heures ? '' : r.unit;
+      var diffTxt = (heures ? (diff >= 0 ? '+' : '') + fmtHeures(Math.abs(diff)) : (diff>=0?'+':'') + fmt(diff)) + u;
       return '<div class="bilan-card">'+
         '<div class="blabel">'+r.icon+' '+r.label+'</div>'+
-        '<div class="bvalue">'+fmt(r.cur)+'<small>'+r.unit+'</small></div>'+
-        '<div class="btrend">Semaine dernière : '+fmt(r.prev)+r.unit+' · <span style="color:'+color+'">'+arrow+' '+diffTxt+'</span></div>'+
+        '<div class="bvalue">'+fmt(r.cur)+(u ? '<small>'+u+'</small>' : '')+'</div>'+
+        '<div class="btrend">Semaine dernière : '+fmt(r.prev)+u+' · <span style="color:'+color+'">'+arrow+' '+diffTxt+'</span></div>'+
         '</div>';
     }).join('');
   }
@@ -10286,13 +10289,13 @@
           '<span class="progress-track" style="height:5px; opacity:.55;"><span class="progress-fill" style="display:block; width:' + pct + '%; background:var(--ink-faint); box-shadow:none;"></span></span>' +
           '<span class="progress-track" style="height:7px;"><span class="progress-fill" style="display:block; width:' + pctF + '%;' + (etat ? ' background:' + etat + ';' : '') + '"></span></span>' +
         '</span>' +
-        '<span class="sub-note" style="font-size:11.5px; text-align:right; font-family:var(--font-mono);">' + (futur ? 'prévu ' + hh(l.plan) + ' h' : '<b style="color:var(--ink);">' + hh(l.fait) + '</b> / ' + hh(l.plan) + ' h') + '</span>' +
+        '<span class="sub-note" style="font-size:11.5px; text-align:right; font-family:var(--font-mono);">' + (futur ? 'prévu ' + hh(l.plan) : '<b style="color:var(--ink);">' + hh(l.fait) + '</b> / ' + hh(l.plan)) + '</span>' +
         '</div>';
     }).join('') +
     '<p class="sub-note" style="margin-top:10px; padding-top:10px; border-top:1px solid var(--border-soft); line-height:1.6;">Barre grise : prévu par le planning · barre cyan : réalisé (vert = tenu, orange = moins de 70 %). ' +
-      'Révision <b style="color:var(--ink);">' + hh(lignes.reduce(function(a,l){ return a + l.rev; }, 0)) + ' / ' + hh(lignes.filter(function(l){ return l.fait !== null; }).reduce(function(a,l){ return a + l.cRev; }, 0)) + ' h</b> · ' +
-      'Projets <b style="color:var(--ink);">' + hh(lignes.reduce(function(a,l){ return a + l.proj; }, 0)) + ' / ' + hh(lignes.filter(function(l){ return l.fait !== null; }).reduce(function(a,l){ return a + l.cProj; }, 0)) + ' h</b> sur les jours passés.</p>';
-    if(note) note.textContent = texteChargeReduite() + (cur.planMin ? 'fidélité ' + cur.fidelite + ' % · ' + hh(cur.faitMin) + ' h faites sur ' + hh(cur.planMin) + ' h prévues' : 'aucun bloc prévu pour l\'instant');
+      'Révision <b style="color:var(--ink);">' + hh(lignes.reduce(function(a,l){ return a + l.rev; }, 0)) + ' / ' + hh(lignes.filter(function(l){ return l.fait !== null; }).reduce(function(a,l){ return a + l.cRev; }, 0)) + '</b> · ' +
+      'Projets <b style="color:var(--ink);">' + hh(lignes.reduce(function(a,l){ return a + l.proj; }, 0)) + ' / ' + hh(lignes.filter(function(l){ return l.fait !== null; }).reduce(function(a,l){ return a + l.cProj; }, 0)) + '</b> sur les jours passés.</p>';
+    if(note) note.textContent = texteChargeReduite() + (cur.planMin ? 'fidélité ' + cur.fidelite + ' % · ' + hh(cur.faitMin) + ' faites sur ' + hh(cur.planMin) + ' prévues' : 'aucun bloc prévu pour l\'instant');
   }
 
   /* ================= CALENDRIER ================= */
@@ -11836,11 +11839,11 @@
       var d = new Date(now); d.setDate(d.getDate()-i);
       weekMin += minutesOn(localISO(d));
     }
-    var weekTarget = String(cibleHebdo(0).rev).replace('.', ',');
+    var weekTarget = fmtHeures(cibleHebdo(0).rev);
     document.getElementById('rev-stats').innerHTML = SERIE_TUILE() +
       '<div class="stat-tile"><div class="tlabel">Aujourd\'hui</div><div class="tnum" style="font-size:26px;">'+fmtHeures(todayH)+'</div></div>'+
       '<div class="stat-tile"><div class="tlabel">7 derniers jours</div><div class="tnum" style="font-size:26px;">'+fmtDuree(weekMin)+'</div></div>'+
-      '<div class="stat-tile"><div class="tlabel">Objectif semaine</div><div class="tnum" style="font-size:30px; color:var(--ink-dim);">'+weekTarget+'<small>h</small></div></div>';
+      '<div class="stat-tile"><div class="tlabel">Objectif semaine</div><div class="tnum" style="font-size:26px; color:var(--ink-dim);">'+weekTarget+'</div></div>';
 
     var pts = [];
     for(var k=29;k>=0;k--){
@@ -11916,13 +11919,13 @@
     var semCible = cibleEsSemaine();
     var note = document.getElementById('es-note');
     var phase = typeof periodeGrille === 'function' ? periodeGrille(todayISO) : null;
-    if(note) note.textContent = phase ? 'phase en cours · ' + hh(semCible) + ' h de blocs cette semaine'
-                                      : (semCible ? hh(semCible) + ' h de blocs cette semaine' : 'aucun bloc Español dans la grille cette semaine');
+    if(note) note.textContent = phase ? 'phase en cours · ' + hh(semCible) + ' de blocs cette semaine'
+                                      : (semCible ? hh(semCible) + ' de blocs cette semaine' : 'aucun bloc Español dans la grille cette semaine');
     stats.innerHTML =
-      '<div class="stat-tile"><div class="tlabel">Aujourd\'hui</div><div class="tnum" style="font-size:30px;">' + hh(aujourdhui) + '<small>h</small></div></div>' +
-      '<div class="stat-tile"><div class="tlabel">7 derniers jours</div><div class="tnum" style="font-size:30px;">' + hh(sept) + '<small>h</small></div></div>' +
-      '<div class="stat-tile"><div class="tlabel">Cette semaine</div><div class="tnum" style="font-size:30px;">' + hh(semFait) + '<small>h</small></div></div>' +
-      '<div class="stat-tile"><div class="tlabel">Blocs prévus</div><div class="tnum" style="font-size:30px; color:var(--ink-dim);">' + hh(semCible) + '<small>h</small></div></div>';
+      '<div class="stat-tile"><div class="tlabel">Aujourd\'hui</div><div class="tnum" style="font-size:26px;">' + hh(aujourdhui) + '</div></div>' +
+      '<div class="stat-tile"><div class="tlabel">7 derniers jours</div><div class="tnum" style="font-size:26px;">' + hh(sept) + '</div></div>' +
+      '<div class="stat-tile"><div class="tlabel">Cette semaine</div><div class="tnum" style="font-size:26px;">' + hh(semFait) + '</div></div>' +
+      '<div class="stat-tile"><div class="tlabel">Blocs prévus</div><div class="tnum" style="font-size:26px; color:var(--ink-dim);">' + hh(semCible) + '</div></div>';
     var pts = [];
     for(var k = 29; k >= 0; k--){
       var dk = new Date(now); dk.setDate(dk.getDate() - k);
@@ -12558,11 +12561,11 @@
       var d = new Date(now); d.setDate(d.getDate()-i);
       weekMin += minutesOnProjSeuls(localISO(d));
     }
-    var weekTarget = String(cibleHebdo(0).proj).replace('.', ',');
+    var weekTarget = fmtHeures(cibleHebdo(0).proj);
     document.getElementById('proj-stats').innerHTML =
       '<div class="stat-tile"><div class="tlabel">Aujourd\'hui</div><div class="tnum" style="font-size:26px;">'+fmtHeures(todayH)+'</div></div>'+
       '<div class="stat-tile"><div class="tlabel">7 derniers jours</div><div class="tnum" style="font-size:26px;">'+fmtDuree(weekMin)+'</div></div>'+
-      '<div class="stat-tile"><div class="tlabel">Objectif semaine</div><div class="tnum" style="font-size:30px; color:var(--ink-dim);">'+weekTarget+'<small>h</small></div></div>';
+      '<div class="stat-tile"><div class="tlabel">Objectif semaine</div><div class="tnum" style="font-size:26px; color:var(--ink-dim);">'+weekTarget+'</div></div>';
 
     var byName = {};
     projetsState.forEach(function(p){ byName[p.projet] = (byName[p.projet]||0) + Number(p.duree||0); });
@@ -12646,14 +12649,14 @@
       ? '📊 ' + retard.length + ' objectif' + (retard.length > 1 ? 's' : '') + ' du mois en retard : ' + retard.slice(0, 3).map(function(x){ return x.o.titre + ' (' + fmtNombre(x.c.valeur, x.c.dec) + ' réel / ' + fmtNombre(x.c.attendu, x.c.dec) + ' attendu)'; }).join(', ') + (retard.length > 3 ? '…' : '') + '.'
       : '📊 Aucun objectif du mois en retard.');
     out.push(cur.planMin
-      ? '🎯 Fidélité au plan : ' + cur.fidelite + ' % (' + hh(cur.faitMin) + ' h faites sur ' + hh(cur.planMin) + ' h prévues).' + (cur.fidelite < 70 ? ' Sous 70 % : des blocs mal placés, ou trop de blocs ?' : '')
+      ? '🎯 Fidélité au plan : ' + cur.fidelite + ' % (' + hh(cur.faitMin) + ' faites sur ' + hh(cur.planMin) + ' prévues).' + (cur.fidelite < 70 ? ' Sous 70 % : des blocs mal placés, ou trop de blocs ?' : '')
       : '🎯 Aucun bloc prévu cette semaine.');
     /* espagnol : heures de la semaine contre la cible des blocs, et les chiffres du dernier dimanche */
     if(periodeGrille(todayISO)){
       var esFait = 0, esCible = 0;
       weekRange(0).forEach(function(iso){ if(iso <= todayISO){ esFait += minutesEspanol(iso); esCible += cibleEspanolJour(iso); } });
       var dernier = rvState.slice().reverse().filter(function(r){ return r && r.espanol; })[0];
-      out.push('🇪🇸 Espagnol : ' + hh(esFait) + ' h au minuteur sur ' + hh(esCible) + ' h de blocs Español cette semaine.' +
+      out.push('🇪🇸 Espagnol : ' + hh(esFait) + ' au minuteur sur ' + hh(esCible) + ' de blocs Español cette semaine.' +
         (dernier && dernier.espanol.errores !== null && dernier.espanol.errores !== undefined ? ' Dernier bilan : ' + fmtNombre(dernier.espanol.errores, 1) + ' erreurs / 100 mots.' : ' Saisis les chiffres du dimanche ci-dessous.'));
     }
     var cible = objectifSommeil();

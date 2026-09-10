@@ -42,12 +42,12 @@ console.log('\n== 82) Vue mois : totaux, pastilles par type, navigation ==');
     pastillesJ1: document.querySelectorAll('[data-agjour="2026-09-01"] .cal-pt').length,
   }));
   ok(/Septembre 2026/.test(v.mois), 'mois affiché : ' + v.mois);
-  ok(/Totaldumois5,0h/.test(v.tuiles[0]), 'total du mois = 4h le 3 + 1h le 1er = 5h : ' + v.tuiles[0]);
+  ok(/Totaldumois5h/.test(v.tuiles[0]), 'total du mois = 4h le 3 + 1h le 1er = 5h : ' + v.tuiles[0]);
   /* les tuiles ne distinguent plus que Révision / Projets perso : l'espagnol a été
      retiré comme catégorie propre et compte désormais dans la révision
      (60 + 60 + 60 de cours + 30 d'espagnol = 210 min = 3,5 h). */
-  ok(/Révision3,5h/.test(v.tuiles[1]) && /Projetsperso1,5h/.test(v.tuiles[2]) && /Blocs5/.test(v.tuiles[3]), 'répartition par type : ' + v.tuiles.slice(1,4).join(' '));
-  ok(/34,0h/.test(v.j3), 'le 3 affiche 4,0h : ' + v.j3);
+  ok(/Révision3h30/.test(v.tuiles[1]) && /Projetsperso1h30/.test(v.tuiles[2]) && /Blocs5/.test(v.tuiles[3]), 'répartition par type : ' + v.tuiles.slice(1,4).join(' '));
+  ok(/34h/.test(v.j3), 'le 3 affiche 4 h : ' + v.j3);
   ok(v.pastillesJ3 === 3, '3 pastilles le 3 (cours+projet+espagnol) : ' + v.pastillesJ3);
   ok(v.pastillesJ1 === 1, '1 seule pastille le 1er (cours) : ' + v.pastillesJ1);
   ok(v.j2 === '2', 'un jour sans bloc reste vide : « ' + v.j2 + ' »');
@@ -75,7 +75,7 @@ console.log('\n== 83) Vue jour : grille horaire des blocs ==');
     heures: [...document.querySelectorAll('#ag-jour .jr-h')].map(h => h.textContent),
   }));
   ok(/Jeudi 3 septembre/.test(v.label), 'jour du jour par défaut : ' + v.label);
-  ok(/3,0 h · 3 blocs/.test(v.total), 'total de la journée : ' + v.total);
+  ok(/3 h · 3 blocs/.test(v.total), 'total de la journée : ' + v.total);
   ok(v.blocs.length === 3, '3 blocs dessinés : ' + v.blocs.length);
   ok(v.heures[0] === '05:00' && v.heures[v.heures.length-1] === '23:00', 'la journée entière est visible (05:00 → 23:00) : ' + v.heures[0] + '…' + v.heures[v.heures.length-1]);
   ok(v.heures.length === 19, '19 repères horaires (05h à 23h inclus) : ' + v.heures.length);
@@ -154,8 +154,8 @@ console.log('\n== 85) Un bloc terminé apparaît sans rechargement, et rien ne p
     total: document.getElementById('ag-jtotal').textContent,
     case3: document.querySelector('#ag-grid [data-agjour="2026-09-03"]').innerText.replace(/\s+/g,''),
   }));
-  ok(v.blocs === 1 && /1,0 h/.test(v.total), 'le bloc terminé apparaît dans la vue jour : ' + v.total);
-  ok(/1,0h/.test(v.case3), 'et dans la grille du mois : ' + v.case3);
+  ok(v.blocs === 1 && /1 h/.test(v.total), 'le bloc terminé apparaît dans la vue jour : ' + v.total);
+  ok(/1h/.test(v.case3), 'et dans la grille du mois : ' + v.case3);
   await ctx.close();
 }
 await browser.close();

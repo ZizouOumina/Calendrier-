@@ -37,9 +37,9 @@ const dash = await fr.evaluate(() => {
   document.querySelector('.nav-btn[data-page="dashboard"]').click();
   return [...document.querySelectorAll('#dash-temps .temps-cell')].map(c => c.innerText.replace(/\s+/g,''));
 });
-ok(/1,0h/.test(dash[0]), 'Cours : ' + dash[0]);
+ok(/1h/.test(dash[0]), 'Cours : ' + dash[0]);
 /* trois cellules depuis le lot 24 : l'espagnol ne se cache plus dans « Projets perso » */
-ok(dash.length === 3 && /0,0h/.test(dash[1]) && /0,0h/.test(dash[2]), 'Projets perso et espagnol à zéro (séparation respectée) : ' + dash[1] + ' | ' + dash[2]);
+ok(dash.length === 3 && /Projetsperso0\//.test(dash[1]) && /Español0$/.test(dash[2]), 'Projets perso et espagnol à zéro (séparation respectée) : ' + dash[1] + ' | ' + dash[2]);
 
 console.log('\n== C) Agenda des révisions + journal des blocs ==');
 const cal = await fr.evaluate(() => {
@@ -47,7 +47,7 @@ const cal = await fr.evaluate(() => {
   const c = document.querySelector('#rv-grid [data-agjour="2026-09-03"]');
   return c ? c.innerText.replace(/\s+/g,'') : '(absent)';
 });
-ok(/1,0h/.test(cal), 'la journée du 3 sept. affiche 1,0h : ' + cal);
+ok(/1h/.test(cal), 'la journée du 3 sept. affiche 1 h : ' + cal);
 const blocs = await fr.evaluate(() => JSON.parse(localStorage.getItem('batcave-sessions')||'[]').length);
 ok(blocs === 1, 'exactement 1 bloc journalisé (pas de doublon) : ' + blocs);
 
@@ -103,7 +103,7 @@ const apresReload = await fr2.evaluate(() => {
     tx: JSON.parse(localStorage.getItem('batcave-transactions')||'[]').length,
   };
 });
-ok(/1,0h/.test(apresReload.temps) && apresReload.rev === 60, 'révision conservée après rechargement : ' + apresReload.temps);
+ok(/1h/.test(apresReload.temps) && apresReload.rev === 60, 'révision conservée après rechargement : ' + apresReload.temps);
 ok(apresReload.tx > 0, 'transactions conservées : ' + apresReload.tx);
 
 await ctx.close();

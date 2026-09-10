@@ -42,7 +42,7 @@ console.log('\n== 190) Tableau de bord : habitude, Pomodoro, séance ==');
   const sessions = await local('batcave-sessions');
   ok(Array.isArray(sessions) && sessions.length === 1 && sessions[0].date === '2026-09-08' && sessions[0].duree === 10, 'arrêt après 10 min → une session de 10 min enregistrée (' + (sessions && sessions.length) + ')');
   const temps = await texte('#dash-temps');
-  ok(/0,2/.test(temps), 'le temps du jour affiche 0,2 h : ' + temps.slice(0, 40));
+  ok(/10 min/.test(temps), 'le temps du jour affiche 10 min : ' + temps.slice(0, 40));
 }
 
 console.log('\n== 191) Bilan, Insights, Calendrier, Agenda ==');

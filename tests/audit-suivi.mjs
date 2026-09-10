@@ -26,6 +26,12 @@ async function ouvrir(seed, quand){
   return {ctx, page, fr};
 }
 const plan = fr => fr.evaluate(()=>document.getElementById('dash-plan').innerText);
+/* Les durées s'écrivent « 4 h 25 », « 55 min », « 0 » : on lit la ligne, pas un nombre. */
+const ligneRev = t => {
+  const m = t.match(/Révision — (\S[^\n]*?) sur (\S[^\n]*?) — il reste (\S[^\n🍅]*)/);
+  return m ? {fait: m[1].trim(), cible: m[2].trim(), reste: m[3].trim()} : null;
+};
+const faitDe = (t, quoi) => { const m = t.match(new RegExp(quoi + ' — (\\S[^\\n]*?) sur ')); return m ? m[1].trim() : undefined; };
 async function objectifs(fr, page){
   await fr.evaluate(()=>document.querySelector('.nav-btn[data-page="objectifs"]').click());
   await page.waitForTimeout(700);
@@ -40,14 +46,11 @@ console.log('\n═══ 1. La minute de révision : entrée = sortie ═══'
 {
   const {ctx, page, fr} = await ouvrir({'batcave-sessions':[sess('cours','Anatomie',55)]});
   const t = await plan(fr);
-  const m = t.match(/Révision — ([\d,]+)h \/ (.+?) visées \(il reste ([\d,]+)h\)/);
-  ok(m && m[1] === '0,9', '55 min de révision → ' + (m?m[1]:'?') + 'h affichées (0,9 attendu)');
-  ok(m && m[2].replace(/\s/g,'') === '4h25', 'cible du lundi : ' + (m?m[2]:'?') + ' (4 h 25 attendu)');
-  if(m){
-    const cible = 4 + 25/60, reste = Number(m[3].replace(',','.'));
-    ok(Math.abs(reste - (cible - 0.9166)) < 0.06, 'reste = cible − fait : ' + m[3] + 'h');
-    note('« 4 h 25 » et « 4,4h » sont le MÊME nombre, écrit deux fois dans la même phrase — 4 h 25 = 4,4166 h. C\'est de l\'affichage, pas du calcul, mais ça se lit comme deux quantités.');
-  }
+  const m = ligneRev(t);
+  ok(m && m.fait === '55 min', '55 min de révision → « ' + (m?m.fait:'?') + ' » affichées (55 min attendu)');
+  ok(m && m.cible === '4 h 25', 'cible du lundi : ' + (m?m.cible:'?') + ' (4 h 25 attendu)');
+  /* 265 − 55 = 210 min : la même phrase ne mélange plus heures décimales et heures-minutes */
+  ok(m && m.reste === '3 h 30', 'reste = cible − fait : ' + (m?m.reste:'?') + ' (3 h 30 attendu)');
   await ctx.close();
 }
 
@@ -55,10 +58,10 @@ console.log('\n═══ 2. Espagnol : ni dans révision, ni dans projets ══
 {
   const {ctx, page, fr} = await ouvrir({'batcave-sessions':[sess('projet','Español · Conversation',60)]});
   const t = await plan(fr);
-  const rev = (t.match(/Révision — ([\d,]+)h/)||[])[1];
-  const pro = (t.match(/Projets perso — ([\d,]+)h/)||[])[1];
-  ok(rev === '0,0', '1 h d\'espagnol n\'entre PAS dans révision (révision = ' + rev + 'h)');
-  ok(pro === undefined || pro === '0,0', '1 h d\'espagnol n\'entre PAS dans projets perso (projets = ' + (pro===undefined?'ligne absente':pro+'h') + ')');
+  const rev = faitDe(t, 'Révision');
+  const pro = faitDe(t, 'Projets perso');
+  ok(rev === '0', '1 h d\'espagnol n\'entre PAS dans révision (révision = ' + rev + ')');
+  ok(pro === undefined || pro === '0', '1 h d\'espagnol n\'entre PAS dans projets perso (projets = ' + (pro===undefined?'ligne absente':pro) + ')');
   const o = await objectifs(fr, page);
   ok(/Espagnol/.test(o), 'l\'objectif Espagnol existe');
   await ctx.close();
@@ -68,9 +71,9 @@ console.log('\n═══ 3. Le type « espagnol » hérité d\'anciennes session
 {
   const {ctx, page, fr} = await ouvrir({'batcave-sessions':[sess('espagnol','Conversation',60)]});
   const t = await plan(fr);
-  const rev = (t.match(/Révision — ([\d,]+)h/)||[])[1];
-  if(rev === '1,0') note('une session de type « espagnol » (ancien format, plus produit par le bouton actuel) est comptée comme RÉVISION : carteMinutes et minutesJour ramènent tout ce qui n\'est pas « projet » à « cours ». Sans conséquence sur tes données — tu n\'as aucune session enregistrée — mais une vieille sauvegarde restaurée gonflerait la révision.');
-  else ok(rev === '0,0', 'session de type « espagnol » : révision = ' + rev + 'h');
+  const rev = faitDe(t, 'Révision');
+  if(rev === '1 h') note('une session de type « espagnol » (ancien format, plus produit par le bouton actuel) est comptée comme RÉVISION : carteMinutes et minutesJour ramènent tout ce qui n\'est pas « projet » à « cours ». Sans conséquence sur tes données — tu n\'as aucune session enregistrée — mais une vieille sauvegarde restaurée gonflerait la révision.');
+  else ok(rev === '0', 'session de type « espagnol » : révision = ' + rev);
   await ctx.close();
 }
 
@@ -80,14 +83,14 @@ console.log('\n═══ 4. Journal + agrégat le même jour : pas de double com
     'batcave-sessions':[sess('cours','Anatomie',60)],
     'batcave-revision':[{id:'r1', date:JOUR, duree:60, matieres:{Anatomie:60}}]
   });
-  const rev = ((await plan(fr)).match(/Révision — ([\d,]+)h/)||[])[1];
-  ok(rev === '1,0', '60 min dans le journal + 60 min dans l\'agrégat → ' + rev + 'h (1,0 attendu, pas 2,0)');
+  const rev = faitDe(await plan(fr), 'Révision');
+  ok(rev === '1 h', '60 min dans le journal + 60 min dans l\'agrégat → ' + rev + ' (1 h attendu, pas 2 h)');
   await ctx.close();
 }
 {
   const {ctx, page, fr} = await ouvrir({'batcave-revision':[{id:'r1', date:JOUR, duree:90, matieres:{}}]});
-  const rev = ((await plan(fr)).match(/Révision — ([\d,]+)h/)||[])[1];
-  ok(rev === '1,5', 'agrégat seul (journée sans journal) → ' + rev + 'h (1,5 attendu)');
+  const rev = faitDe(await plan(fr), 'Révision');
+  ok(rev === '1 h 30', 'agrégat seul (journée sans journal) → ' + rev + ' (1 h 30 attendu)');
   await ctx.close();
 }
 
@@ -95,9 +98,9 @@ console.log('\n═══ 5. Le bloc « Cours » de la fac n\'est pas de la révi
 {
   const {ctx, page, fr} = await ouvrir({});
   const t = await plan(fr);
-  const cible = (t.match(/visées/) ? t.match(/\/ ([^(]+) visées/)[1] : '').trim();
+  const cible = (ligneRev(t) || {}).cible || '';
   /* 4 h de cours magistral en plus feraient 8 h 25 : la cible doit rester à 4 h 25 */
-  ok(cible.replace(/\s/g,'') === '4h25', 'cible = 4 h 25, les 15:30–19:30 de fac ne sont pas comptés (' + cible + ')');
+  ok(cible === '4 h 25', 'cible = 4 h 25, les 15:30–19:30 de fac ne sont pas comptés (' + cible + ')');
   await ctx.close();
 }
 
@@ -203,9 +206,9 @@ console.log('\n═══ 11. Le réacteur et les cellules comptent-ils la même 
       reacteur: (document.getElementById('leg-proj')||{}).textContent || '',
       cellules: document.getElementById('dash-temps').innerText.replace(/\n/g,' ')
     }));
-    const arc = (r.reacteur.match(/projets ([\d,]+)\//)||[])[1];
-    const cel = (r.cellules.match(/Projets perso ([\d,]+)h/)||[])[1];
-    ok(arc === cel, d + ' : réacteur « ' + r.reacteur.trim() + ' » vs cellule « Projets perso ' + cel + 'h » — les deux doivent dire la même chose');
+    const arc = (r.reacteur.match(/projets (\S[^/]*?) *\//)||[])[1];
+    const cel = (r.cellules.match(/Projets perso (\S[^/]*?) *\//)||[])[1];
+    ok(arc !== undefined && arc === cel, d + ' : réacteur « ' + r.reacteur.trim() + ' » vs cellule « Projets perso ' + cel + ' » — les deux doivent dire la même chose');
     await ctx.close();
   }
 }

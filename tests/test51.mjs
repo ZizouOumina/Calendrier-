@@ -66,7 +66,7 @@ console.log('\n== 161) Le soir : proposée après le rituel, remplie en 60 s, to
   const t = await fr.evaluate(() => document.querySelector('#bc-cloture .v').textContent);
   ok(t === 'faite 21:00', 'relevé CLÔTURE : ' + t);
   const dash = await fr.evaluate(() => document.getElementById('dash-releves').innerText.replace(/\s+/g,' '));
-  ok(/7,5/.test(dash) && /64,3/.test(dash), 'le tableau de bord reflète sommeil et poids : ' + dash.slice(0, 80));
+  ok(/7 h 30/.test(dash) && /64,3/.test(dash), 'le tableau de bord reflète sommeil et poids : ' + dash.slice(0, 80));
   const poidsJournal = await fr.evaluate(() => document.getElementById('j-poids').value);
   ok(poidsJournal === '64.3', 'la page Journal montre le même poids');
   /* rechargement : la journée est clôturée, plus de proposition */
