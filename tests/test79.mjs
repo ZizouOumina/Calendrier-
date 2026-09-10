@@ -245,7 +245,7 @@ console.log('\n== 7) Alfred répond à voix haute, et ne s\'écoute pas parler =
 console.log('\n== 8) Micro impossible : Alfred dit laquelle des trois raisons ==');
 for(const [cas, attendu, quoi] of [
   ['refus',       /refus.*pour ce site|Param.*tres du site/i, 'tu as refusé → où le rétablir'],
-  ['cadre',       /n.{0,3}a même pas demandé|pas le droit d.{0,3}ouvrir le micro/i, 'le cadre de claude.ai → ce n\'est pas ton réglage'],
+  ['cadre',       /refusé par le CADRE|aucun réglage ne le débloquera/i, 'le cadre de claude.ai → ce n\'est pas ton réglage, et les deux sorties'],
   ['aucun-micro', /Aucun micro/i, 'pas de micro branché']
 ]){
   const {ctx, page, fr} = await ouvrir();

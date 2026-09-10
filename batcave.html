@@ -2763,10 +2763,13 @@
     <input type="text" class="alf-champ" id="alfred-champ" autocomplete="off"
            placeholder="Dicte ou écris ta phrase…">
     <p class="alf-aide" id="alfred-aide"></p>
-    <div class="card-actions" style="justify-content:flex-end;">
+    <div class="card-actions" style="justify-content:flex-end; flex-wrap:wrap;">
+      <button class="btn" id="alfred-onglet" type="button" hidden
+              title="La page publiée vit dans un cadre qui lui refuse le micro. Ouverte dans son propre onglet, elle n’a plus ce cadre — et le micro s’ouvre.">🔓 Ouvrir dans un onglet</button>
       <button class="btn" id="alfred-fermer" type="button">Fermer</button>
       <button class="btn btn-primary" id="alfred-ok" type="button">Exécuter</button>
     </div>
+    <p class="alf-aide" id="alfred-url" hidden style="word-break:break-all;"></p>
   </div>
 </div>
 <div class="overlay" id="ask-overlay" hidden>
@@ -4920,7 +4923,17 @@
            ' · ' + fmtNombre(x.heures, 1) + ' h faites sur 30 jours';
   }
   var BLOC_ANKI = /^Anki/, BLOC_MATIERE = /^(Cartes|Annales?\b|Annale complète|Correction|Révision ciblée|Fiches de synthèse|Préparer · )/;
-  function lancerPomodoroCours(apres){
+  /* `sansMatiere` : démarrer tout de suite un bloc Anki, sans demander la matière — sur
+     Anki 1 et Anki 2 toutes les matières sont mélangées dans le paquet Dentaire, la
+     question n'a pas de réponse. Le bouton « 🍅 Anki » du Plan du jour passait jusqu'ici
+     MATIERE_SANS à la place du callback `apres`, qui était donc appelé comme une fonction :
+     une chaîne de caractères invoquée, et le cycle Pomodoro qui s'arrêtait là. */
+  function lancerPomodoroCours(apres, sansMatiere){
+    if(sansMatiere){
+      startTimer(dureeBlocPref(), {pomodoro:true, mode:'travail', cycle:0, cible:'cours', matiere:''});
+      if(typeof apres === 'function') apres();
+      return;
+    }
     var bloc = blocPlanCourant(), libelle = bloc ? bloc[1] : '';
     var surAnki = BLOC_ANKI.test(libelle), surMatiere = BLOC_MATIERE.test(libelle);
     var pPartiels = periodeGrille(todayISO) && periodeGrille(todayISO).partiels;
@@ -9311,7 +9324,7 @@
       btn.addEventListener('click', function(){ ouvrirCloture(); });
     });
     el.querySelectorAll('[data-plan-anki]').forEach(function(btn){
-      btn.addEventListener('click', function(){ lancerPomodoroCours(MATIERE_SANS); });
+      btn.addEventListener('click', function(){ lancerPomodoroCours(null, true); });
     });
     el.querySelectorAll('[data-plan-rattrapage]').forEach(function(btn){
       btn.addEventListener('click', function(){
@@ -13174,11 +13187,19 @@
       try{ renderDashHabits(); renderHabits(); }catch(e){}
       return habitLabel(cible);
     }
-    /* ----- Alfred répond aussi aux questions -----
-       Il n'obéissait qu'à des ordres : « Alfred, où j'en suis ? » ne rendait rien du tout.
-       Il LIT maintenant la journée à voix haute — et il ne fait que lire : aucune case n'est
-       cochée, aucun minuteur ne démarre, rien n'est écrit. Une question ne change jamais
-       l'état de la Batcave. */
+    /* =========================================================================
+       ALFRED, CE QU'IL COMPREND
+       Une grammaire, pas une liste de mots-clés. Trois principes :
+         1. Une phrase → une INTENTION. Les intentions sont essayées dans l'ordre du
+            tableau ci-dessous, la première qui rend un texte gagne. Ajouter une commande,
+            c'est ajouter une ligne, pas retoucher un enchaînement de « si ».
+         2. La dictée écrit mal. « petit dej », « pti déj », « anatomie » pour « Anatomía » :
+            les noms (habitudes, exercices, matières, onglets) sont retrouvés à deux fautes
+            près, jamais par égalité stricte.
+         3. Il ne fait JAMAIS semblant. Ce qu'il n'a pas compris, il le dit — et il propose
+            la commande la plus proche de ce qu'il a entendu, prête à être confirmée.
+       Les QUESTIONS ne changent jamais rien : elles lisent, elles n'écrivent pas. ========= */
+
     /* « 4 h 25 » se prononce « quatre ache vingt-cinq » : à l'oral on écrit les heures et
        les minutes en toutes lettres. À l'écran, c'est fmtDuree qui garde la main. */
     function direDuree(min){
@@ -13188,6 +13209,72 @@
       if(!m) return h + ' heure' + (h > 1 ? 's' : '');
       return h + ' heure' + (h > 1 ? 's' : '') + ' ' + m;
     }
+    /* ---------- retrouver un nom malgré la dictée ---------- */
+    /* Distance de Levenshtein, bornée : au-delà de deux corrections ce n'est plus une faute
+       de dictée mais un autre mot, et deviner à ce stade ferait plus de dégâts que de bien. */
+    function distance(a, b){
+      if(a === b) return 0;
+      var m = a.length, n = b.length;
+      if(Math.abs(m - n) > 2) return 3;
+      var ligne = [], i, j, prec, tmp;
+      for(j = 0; j <= n; j++) ligne[j] = j;
+      for(i = 1; i <= m; i++){
+        prec = ligne[0]; ligne[0] = i;
+        for(j = 1; j <= n; j++){
+          tmp = ligne[j];
+          ligne[j] = Math.min(ligne[j] + 1, ligne[j - 1] + 1, prec + (a.charAt(i - 1) === b.charAt(j - 1) ? 0 : 1));
+          prec = tmp;
+        }
+      }
+      return ligne[n];
+    }
+    function motsDe(t){ return String(t || '').split(/[^a-z0-9]+/).filter(Boolean); }
+    /* Le nom est-il dans la phrase ? Contenu tel quel, ou à deux fautes près sur une de ses
+       fenêtres de mots — « tractions lestées » se reconnaît dans « j'ai fait les traction
+       lesté ». Rend un score : plus le nom trouvé est long, plus il est spécifique. */
+    function scoreNom(phrase, nom){
+      var n = normaliser(nom);
+      if(!n) return 0;
+      if(phrase.indexOf(n) > -1) return n.length + 2;
+      var mp = motsDe(phrase), mn = motsDe(n), k = mn.length;
+      if(!k || mp.length < k) return 0;
+      for(var i = 0; i + k <= mp.length; i++){
+        var bout = mp.slice(i, i + k).join(' ');
+        var seuil = bout.length <= 4 ? 1 : 2;
+        if(distance(bout, mn.join(' ')) <= seuil) return n.length;
+      }
+      return 0;
+    }
+    /* Dans une liste, l'élément dont le nom colle le mieux à la phrase. */
+    function meilleurNom(phrase, liste, nomDe){
+      var best = null, score = 0;
+      (liste || []).forEach(function(x){
+        var s = scoreNom(phrase, nomDe ? nomDe(x) : x);
+        if(s > score){ score = s; best = x; }
+      });
+      return score ? best : null;
+    }
+    /* ---------- les nombres, dits comme on les dit ---------- */
+    var CHIFFRES = {zero:0, un:1, une:1, deux:2, trois:3, quatre:4, cinq:5, six:6, sept:7,
+                    huit:8, neuf:9, dix:10, onze:11, douze:12, quinze:15, vingt:20, trente:30,
+                    quarante:40, cinquante:50, soixante:60, cent:100, demi:0.5};
+    function nombreDans(t){
+      var m = String(t).match(/(\d+(?:[.,]\d+)?)/);
+      if(m) return Number(m[1].replace(',', '.'));
+      var mots = motsDe(t);
+      for(var i = 0; i < mots.length; i++) if(CHIFFRES[mots[i]] !== undefined) return CHIFFRES[mots[i]];
+      return null;
+    }
+    /* « 7h30 », « sept heures trente », « 7,5 » → des minutes. */
+    function dureeDans(t){
+      var m = String(t).match(/(\d+)\s*(?:h|heures?)\s*(\d{1,2})?/);
+      if(m) return Number(m[1]) * 60 + (m[2] ? Number(m[2]) : 0);
+      var n = nombreDans(t);
+      if(n === null) return null;
+      return /min/.test(t) ? Math.round(n) : Math.round(n * 60);
+    }
+
+    /* ---------- ce qu'il LIT (aucune écriture) ---------- */
     function bilanVocal(){
       var p = [];
       try{
@@ -13197,8 +13284,7 @@
       }catch(e){}
       try{
         /* projets perso et espagnol sont deux compteurs : les sessions Español sont
-           rangees en « projet » pour la grille, jamais pour l'objectif. Les melanger a
-           voix haute donnerait « 1 heure de projets sur 0 minute » un jour d'Español. */
+           rangées en « projet » pour la grille, jamais pour l'objectif. */
         var cj = cibleJourMinutes(scheduleKeyForToday()), rep = reportDuJour();
         var es = minutesEspanol(todayISO), cEs = cj.es + rep.es;
         var proj = Math.max(0, minutesJour(todayISO, 'projet') - es), cProj = cj.proj + rep.proj;
@@ -13220,9 +13306,7 @@
     }
     function blocVocal(){
       var n = new Date(), nowMin = n.getHours() * 60 + n.getMinutes(), suite = null;
-      try{
-        suite = agendaDuJour(weekday).filter(function(b){ return timeToMinutes(b[0]) >= nowMin; })[0];
-      }catch(e){}
+      try{ suite = agendaDuJour(weekday).filter(function(b){ return timeToMinutes(b[0]) >= nowMin; })[0]; }catch(e){}
       if(!suite) return 'Plus rien au planning aujourd\'hui, Monsieur.';
       var dans = timeToMinutes(suite[0]) - nowMin;
       return 'Prochain bloc, Monsieur : ' + suite[1] + ' à ' + suite[0].replace(':', ' h ') +
@@ -13237,54 +13321,235 @@
       return tot ? tot + ' carte' + (tot > 1 ? 's' : '') + ' due' + (tot > 1 ? 's' : '') + ', Monsieur.'
                  : 'Aucune carte due, Monsieur.';
     }
-    /* Une question ne doit jamais être prise pour un ordre : « où j'en suis en révision »
-       contient « révision », et « combien de cartes » contient « cartes ». On les reconnaît
-       AVANT les branches qui lancent quelque chose. « bilan du soir », lui, reste la
-       clôture — c'est un ordre, et il est traité plus haut. */
-    var QUESTIONS = [
-      {re:/ou\s+j'?\s?en\s+suis|ou\s+en\s+suis|ou\s+en\s+est|\bbilan\b|\bresume\b|le point\b|ca donne quoi|ca en est ou|etat des lieux/, rep:bilanVocal},
-      {re:/prochain bloc|prochaine? (?:seance|session)|(?:c'?est quoi |quoi )?(?:la )?suite\b|quoi (?:apres|ensuite|maintenant)|(?:et )?maintenant\s*\?*$|au programme/, rep:blocVocal},
-      {re:/combien de cartes|cartes dues|\bdues?\b.*anki|anki.*\bdues?\b/, rep:cartesVocal}
-    ];
-    function repondreQuestion(t){
-      for(var i = 0; i < QUESTIONS.length; i++){ if(QUESTIONS[i].re.test(t)) return QUESTIONS[i].rep(); }
-      return null;
+    function eauVocal(){
+      var l = 0;
+      try{ l = (Number(journalState.water) || 0) / 1000; }catch(e){ return 'Je ne trouve pas le journal, Monsieur.'; }
+      var cible = (typeof OBJECTIF_EAU_L === 'number') ? OBJECTIF_EAU_L : 3;
+      var dit = function(x){ return String(Math.round(x * 10) / 10).replace('.', ' virgule '); };
+      return l >= cible ? dit(l) + ' litre sur ' + dit(cible) + ', c\'est fait, Monsieur.'
+                        : dit(l) + ' litre sur ' + dit(cible) + ', il reste ' + dit(cible - l) + ' litre, Monsieur.';
     }
+    function scoreVocal(){
+      try{ return 'Score du jour : ' + dayScoreFor(todayISO) + ' pour cent, Monsieur.'; }
+      catch(e){ return 'Je n\'arrive pas à calculer le score, Monsieur.'; }
+    }
+    function seanceVocal(){
+      try{
+        var t = typeSportDe(todayISO);
+        if(!t || t === 'Off') return 'Jour sans séance, Monsieur.';
+        var s = sportTotals(t);
+        return 'Séance du jour : ' + t + (s && s.total ? ', ' + s.checked + ' exercice' + (s.checked > 1 ? 's' : '') + ' sur ' + s.total : '') + ', Monsieur.';
+      }catch(e){ return 'Je ne trouve pas la séance du jour, Monsieur.'; }
+    }
+    function aideVocal(){
+      return 'Je sais : lancer un pomodoro, cocher un repas, une habitude ou un exercice, ' +
+             'noter ton eau, ton sommeil, ton poids, ta page de Coran, tes cartes Anki, ' +
+             'ajouter une tâche, ouvrir un onglet, clôturer la journée. Et je réponds à : ' +
+             'où j\'en suis, c\'est quoi la suite, combien de cartes, combien d\'eau, mon score, ' +
+             'quelle séance aujourd\'hui. Dites « stop » pour arrêter un minuteur.';
+    }
+
+    /* ---------- ce qu'il ÉCRIT ---------- */
+    function cocherExercice(t){
+      var type, ex;
+      try{
+        type = typeSportDe(todayISO);
+        var sess = (typeof SESSIONS !== 'undefined' ? SESSIONS : []).filter(function(x){ return x.type === type; })[0];
+        if(!sess || !sess.exercises.length) return null;
+        ex = meilleurNom(t, sess.exercises.map(function(e, i){ return {nom: e.name, i: i}; }), function(x){ return x.nom; });
+        if(!ex) return null;
+        sportState[type + '-' + ex.i] = true;
+        save(sportKey, sportState);
+        try{ majLigneSport(type, ex.i); renderDashboard(); }catch(e){}
+        var s = sportTotals(type);
+        return ex.nom + ' coché, Monsieur — ' + s.checked + ' sur ' + s.total + '.';
+      }catch(e){ return null; }
+    }
+    function seanceFinie(){
+      try{
+        var type = typeSportDe(todayISO);
+        var sess = (typeof SESSIONS !== 'undefined' ? SESSIONS : []).filter(function(x){ return x.type === type; })[0];
+        if(!sess || !sess.exercises.length) return 'Aucune séance à cocher aujourd\'hui, Monsieur.';
+        sess.exercises.forEach(function(e, i){ sportState[type + '-' + i] = true; });
+        save(sportKey, sportState);
+        try{ renderSport(); renderDashboard(); }catch(e){}
+        return 'Séance ' + type + ' terminée, Monsieur — les ' + sess.exercises.length + ' exercices cochés.';
+      }catch(e){ return null; }
+    }
+    function ouvrirOnglet(t){
+      var PAGES = [
+        {p:'dashboard', n:'tableau de bord'}, {p:'dashboard', n:'accueil'}, {p:'etudes', n:'études'},
+        {p:'agenda', n:'agenda'}, {p:'sport', n:'sport'}, {p:'repas', n:'repas'}, {p:'courses', n:'courses'},
+        {p:'habitudes', n:'habitudes'}, {p:'objectifs', n:'objectifs'}, {p:'insights', n:'insights'},
+        {p:'bilan', n:'semaine'}, {p:'journal', n:'journal'}, {p:'taches', n:'tâches'},
+        {p:'budget', n:'budget'}, {p:'business', n:'business'}, {p:'coran', n:'coran'},
+        {p:'addictions', n:'addictions'}, {p:'calendrier', n:'calendrier'}, {p:'vie', n:'vie'}
+      ];
+      var x = meilleurNom(t, PAGES, function(o){ return o.n; });
+      if(!x) return null;
+      var nav = document.querySelector('.nav-btn[data-page="' + x.p + '"]');
+      if(!nav) return null;
+      nav.hidden = false; nav.click();
+      if(ALF) ALF.fermer();
+      return x.n.charAt(0).toUpperCase() + x.n.slice(1) + ', Monsieur.';
+    }
+
+    /* ---------- le tableau des intentions ---------- */
+    /* Chaque entrée : un motif, et ce qu'il faut faire. La première qui rend un texte gagne.
+       L'ordre compte : les QUESTIONS passent avant les ordres qui partagent leurs mots
+       (« combien de cartes » avant « 42 cartes dues »), et « bilan du soir » — un ordre —
+       passe avant « bilan », qui est une question. */
+    var INTENTIONS = [
+      {id:'stop', re:/\b(stop|arrete|arreter|annule|annuler)\b/, faire:function(){
+        if(typeof timerState !== 'undefined' && timerState){ stopTimer(true); return 'Minuteur arrêté, et enregistré, Monsieur.'; }
+        return 'Rien ne tournait, Monsieur.';
+      }},
+      {id:'cloture', re:/\b(cloture|cloturer|bilan du soir)\b/, faire:function(){
+        ouvrirCloture(); return 'La clôture du jour, Monsieur.';
+      }},
+      {id:'aide', re:/\b(aide|aider)\b|que sais tu|qu est ce que tu sais|tu sais faire|tes commandes/, faire:aideVocal},
+      {id:'q-bilan', re:/ou\s+j'?\s?en\s+suis|ou\s+en\s+suis|ou\s+en\s+est|\bbilan\b|\bresume\b|le point\b|ca donne quoi|ca en est ou|etat des lieux/, faire:bilanVocal},
+      {id:'q-suite', re:/prochain bloc|prochaine? (?:seance|session)|(?:c'?est quoi )?(?:la )?suite\b|quoi (?:apres|ensuite|maintenant)|au programme/, faire:blocVocal},
+      {id:'anki-saisie', re:/\d+\s*(?:cartes?|revues?|nouvelles?)|(?:cartes?|revues?)\s*:?\s*\d+/, faire:function(t){
+        var n = nombreDans(t);
+        if(n === null) return null;
+        var vals = {};
+        if(/revue/.test(t)) vals.revues = n;
+        else if(/espagnol|espanol|español/.test(t)) vals.espanol = n;
+        else if(/business/.test(t)) vals.business = n;
+        else vals.dentaire = n;
+        if(!enregistrerAnkiManuel(vals)) return null;
+        return Math.round(n) + (/revue/.test(t) ? ' revues notées, Monsieur.' : ' cartes dues notées, Monsieur.');
+      }},
+      {id:'q-cartes', re:/combien de cartes|(?:^|\s)cartes? dues?\s*\?*$|reste.*cartes/, faire:cartesVocal},
+      {id:'q-eau', re:/combien d'?eau|(?:^|\s)eau\s*\?*$|j'?ai bu combien/, faire:eauVocal},
+      {id:'q-score', re:/mon score|(?:c'?est quoi le |le )?score\b/, faire:scoreVocal},
+      {id:'q-seance', re:/quelle seance|seance du jour|seance aujourd'?hui|je fais quoi (?:au sport|a la salle)/, faire:seanceVocal},
+      {id:'pomodoro', re:/pomodoro|minuteur|chrono|demarre|lance/, faire:function(t){
+        if(/espagnol|espanol|español/.test(t)){ lancerPomodoroEspanol(); return 'Pomodoro Español, Monsieur.'; }
+        if(/projet|business|boutique/.test(t)){ lancerPomodoroProjet(); return 'Pomodoro projet perso, Monsieur.'; }
+        if(/anki|carte/.test(t)){ lancerPomodoroCours(null, true); return 'Pomodoro Anki, Monsieur.'; }
+        lancerPomodoroCours(false); return 'Pomodoro révision, Monsieur.';
+      }},
+      {id:'seance-finie', re:/seance (?:finie|terminee|faite)|j'?ai fini (?:ma|la) seance|entrainement (?:fini|termine)/, faire:seanceFinie},
+      {id:'eau', re:/\b(bu|boire|bois|eau|verre|litre|gorgee)\b/, faire:function(t){
+        var n = nombreDans(t), ml;
+        if(/litre/.test(t) && n !== null) ml = Math.round(n * 1000);
+        else if(/\bml\b|millilitre/.test(t) && n !== null) ml = Math.round(n);
+        else if(/verre|gorgee/.test(t)) ml = 250 * (n && n <= 10 ? n : 1);
+        else if(n !== null && n >= 50) ml = Math.round(n);
+        else ml = 250;
+        if(!(ml > 0)) return null;
+        adjustWater(ml);
+        return ml + ' millilitres notés, Monsieur — ' + eauVocal();
+      }},
+      {id:'sommeil', re:/\b(dormi|sommeil|nuit)\b/, faire:function(t){
+        var min = dureeDans(t);
+        if(min === null || min <= 0 || min > 16 * 60) return null;
+        journalState.sommeil = Math.round(min / 6) / 10;
+        save(journalKey, journalState);
+        try{ renderJournal(); renderDashboard(); }catch(e){}
+        return direDuree(min) + ' de sommeil notées, Monsieur.';
+      }},
+      {id:'poids', re:/\b(pese|pesee|poids|kilo|kg)\b/, faire:function(t){
+        var n = nombreDans(t);
+        if(n === null || n < 30 || n > 200) return null;
+        journalState.poids = n;
+        save(journalKey, journalState);
+        try{ renderJournal(); renderDashboard(); renderKcalBoucle(); }catch(e){}
+        return String(n).replace('.', ' virgule ') + ' kilos notés, Monsieur.';
+      }},
+      {id:'humeur', re:/\b(humeur|moral)\b/, faire:function(t){
+        var n = nombreDans(t);
+        if(n === null || n < 1 || n > 5) return null;
+        journalState.mood = Math.round(n);
+        save(journalKey, journalState);
+        try{ renderJournal(); renderDashboard(); }catch(e){}
+        return 'Humeur ' + Math.round(n) + ' sur 5, Monsieur.';
+      }},
+      {id:'coran', re:/\b(coran|page)\b/, faire:function(t){
+        var n = nombreDans(t);
+        if(n === null || n < 1 || n > 700) return null;
+        journalState.coran = Math.round(n);
+        save(journalKey, journalState);
+        try{ renderJournal(); renderDashboard(); }catch(e){}
+        return 'Page ' + Math.round(n) + ' du Coran, Monsieur.';
+      }},
+      {id:'tache', re:/ajoute (?:une )?tache|nouvelle tache|rappelle moi|note que|pense a/, faire:function(t){
+        var texte = t.replace(/^.*?(ajoute (?:une )?tache|nouvelle tache|rappelle moi|note que|pense a)\s*(de |d'|que |:)?\s*/, '').trim();
+        if(texte.length < 2) return null;
+        tachesState.push({id:'t' + Date.now(), text: texte.charAt(0).toUpperCase() + texte.slice(1),
+                          due:'', priority:'Moyenne', status:'À faire'});
+        save('batcave-taches', tachesState);
+        try{ renderTaches(); renderDashboard(); }catch(e){}
+        return 'Tâche ajoutée, Monsieur : « ' + texte + ' ».';
+      }},
+      {id:'ouvrir', re:/\b(ouvre|ouvrir|va dans|montre|affiche)\b/, faire:function(t){ return ouvrirOnglet(t); }},
+      /* La dictée conjugue : « coche », « cochez », « j'ai coché », « validé », « mangé ».
+         Un motif qui exige la forme exacte rate tout ça — on prend les radicaux. */
+      {id:'cocher', re:/\b(coch|valid|mang|termin|avale)\w*|\b(fait|faite|faits|faites|pris|prise|prises)\b|repas|dejeun\w*|diner|collation|gouter/, faire:function(t){
+        for(var k = 0; k < MOTS_REPAS.length; k++){
+          for(var j = 0; j < MOTS_REPAS[k].mots.length; j++){
+            if(scoreNom(t, MOTS_REPAS[k].mots[j])){
+              var nom = cocherRepas(MOTS_REPAS[k].i);
+              if(nom) return nom + ' coché, Monsieur.';
+            }
+          }
+        }
+        var ex = cocherExercice(t);
+        if(ex) return ex;
+        var hb = meilleurNom(t, habitsDuJour(weekday), function(h){ return habitLabel(h); });
+        if(hb){
+          if(!habitDoneToday(hb.id)) toggleHabit(hb.id);
+          try{ renderDashHabits(); renderHabits(); }catch(e){}
+          return habitLabel(hb) + ' coché, Monsieur.';
+        }
+        return null;
+      }},
+      {id:'fermer', re:/\b(merci|ferme|fermer|c'?est tout|au revoir|bonne nuit|rien)\b/, faire:function(){
+        if(ALF) setTimeout(function(){ ALF.fermer(); }, 1400);
+        return 'À votre service, Monsieur.';
+      }}
+    ];
+    /* Les exemples servent à deux choses : proposer la commande la plus proche quand rien
+       n'a été compris, et documenter la grammaire à un seul endroit. */
+    var EXEMPLES = [
+      'pomodoro révision', 'pomodoro espagnol', 'pomodoro projet', 'stop',
+      'coche le petit-déjeuner', 'coche le déjeuner', 'coche le dîner', 'coche la collation du soir',
+      'séance finie', 'clôture', 'j\'ai bu 500 ml', 'j\'ai dormi 7 h 30', 'je pèse 64,5 kg',
+      'humeur 4', 'page 12 du Coran', '42 cartes dues', 'ajoute une tâche appeler la fac',
+      'ouvre le sport', 'où j\'en suis', 'c\'est quoi la suite', 'combien de cartes', 'mon score', 'aide'
+    ];
+    function suggestion(t){
+      var mots = motsDe(t);
+      if(!mots.length) return null;
+      var best = null, score = 0;
+      EXEMPLES.forEach(function(ex){
+        var me = motsDe(normaliser(ex)), n = 0;
+        me.forEach(function(w){
+          if(w.length < 3) return;
+          for(var i = 0; i < mots.length; i++){
+            if(mots[i] === w){ n += 2; return; }
+            if(mots[i].length > 3 && distance(mots[i], w) <= 1){ n += 1; return; }
+          }
+        });
+        if(n > score){ score = n; best = ex; }
+      });
+      return score >= 2 ? best : null;
+    }
+
     /* Une phrase → une action. On rend le texte du retour, ou null si on n'a pas compris.
        « Alfred » en tête est retiré ici aussi : la même phrase marche dans les deux modes. */
     function executer(phrase){
       var t = sansAppel(normaliser(phrase));
       if(!t) return null;
-      if(/\b(stop|arrete|arreter|annule)\b/.test(t)){
-        if(typeof timerState !== 'undefined' && timerState){ stopTimer(true); return 'Minuteur arrêté, et enregistré, Monsieur.'; }
-        return 'Rien ne tournait, Monsieur.';
-      }
-      if(/\b(cloture|cloturer|bilan du soir)\b/.test(t)){ ouvrirCloture(); return 'La clôture du jour, Monsieur.'; }
-      var q = repondreQuestion(t);
-      if(q) return q;
-      if(/pomodoro|minuteur|chrono/.test(t)){
-        if(/espagnol|espanol|español/.test(t)){ lancerPomodoroEspanol(); return 'Pomodoro Español, Monsieur.'; }
-        if(/projet|business|boutique/.test(t)){ lancerPomodoroProjet(); return 'Pomodoro projet perso, Monsieur.'; }
-        lancerPomodoroCours(false); return 'Pomodoro révision, Monsieur.';
-      }
-      if(/\b(coche|cocher|valide|fait|mange|pris)\b/.test(t) || /repas|dejeuner|diner|collation/.test(t)){
-        for(var k = 0; k < MOTS_REPAS.length; k++){
-          for(var j = 0; j < MOTS_REPAS[k].mots.length; j++){
-            if(t.indexOf(MOTS_REPAS[k].mots[j]) > -1){
-              var nom = cocherRepas(MOTS_REPAS[k].i);
-              return nom ? nom + ' coché, Monsieur.' : null;
-            }
-          }
-        }
-        var apres = t.replace(/.*\b(coche|cocher|valide)\b\s*(l[ae'] )?/, '').trim();
-        if(apres){
-          var hab = cocherHabitude(apres);
-          if(hab) return hab + ' coché, Monsieur.';
-        }
+      for(var i = 0; i < INTENTIONS.length; i++){
+        if(!INTENTIONS[i].re.test(t)) continue;
+        var rep = INTENTIONS[i].faire(t);
+        if(rep) return rep;
       }
       return null;
     }
-
     /* ----- la voix d'Alfred -----
        Le navigateur sait lire un texte à haute voix (Web Speech). On ne peut pas cloner
        la voix du film : on prend la plus proche disponible sur l'appareil — une voix
@@ -13330,7 +13595,9 @@
     function repondreTout(texte){
       showToast('🎙️ ' + texte);
       if(ALF && ALF.ouvert()) ALF.repond(texte);
-      var fini = function(){ if(ALF && ALF.ouvert()) ALF.fini(); };
+      /* Une réponse n'est pas une fin : l'écran repasse à l'écoute et le micro repart, pour
+         qu'on enchaîne sans rouvrir quoi que ce soit. */
+      var fini = function(){ if(ALF && ALF.ouvert()){ ALF.fini(); setTimeout(ALF.repartir, 900); } };
       if(!continu){ dire(texte, fini); return; }
       parle = true;
       couper();
@@ -13359,6 +13626,12 @@
     }
     /* Le cadre se détecte parfois AVANT de demander (Chrome expose la politique de
        permissions) ; sinon on le déduit de l'échec, ci-dessous. */
+    /* La page vit-elle dans un cadre ? C'est ce qui décide si « ouvrir dans un onglet » a
+       un sens : hors cadre, il n'y a rien à quitter. Une lecture de window.top peut lever
+       (cadre d'une autre origine) — et si elle lève, c'est justement qu'il y a un cadre. */
+    function dansUnCadre(){
+      try{ return window.top !== window.self; }catch(e){ return true; }
+    }
     function cadreInterdit(){
       try{
         var pol = document.featurePolicy || document.permissionsPolicy;
@@ -13387,7 +13660,7 @@
     }
     var EXPLIQUE = {
       'navigateur': '🎙️ Ce navigateur ne sait pas écouter. Chrome et Safari le savent, Firefox non.',
-      'cadre': '🎙️ Le navigateur n’a même pas demandé : la page publiée n’a pas le droit d’ouvrir le micro. Ce n’est pas un réglage de ton côté — aucun ne le débloquera. Les touches P, C et H font le même travail.',
+      'cadre': '🎙️ Le micro est refusé par le CADRE de claude.ai, pas par un réglage : aucun réglage ne le débloquera. Deux sorties : dicte au clavier (Fn Fn sur le Mac, 🎤 sur l’iPhone), ou ouvre la Batcave dans son propre onglet — le bouton est sur l’écran d’Alfred, et là le micro répond.',
       'refus': '🎙️ Micro refusé pour ce site. Chrome : l’icône à gauche de l’adresse → Paramètres du site → Microphone → Autoriser, puis recharge la page.',
       'aucun-micro': '🎙️ Aucun micro détecté sur cet appareil.'
     };
@@ -13415,7 +13688,8 @@
       if(!ov) return null;
       var cnv = document.getElementById('alfred-onde'), champ = document.getElementById('alfred-champ'),
           elDit = document.getElementById('alfred-dit'), elRep = document.getElementById('alfred-rep'),
-          elEtat = document.getElementById('alfred-etat'), elAide = document.getElementById('alfred-aide');
+          elEtat = document.getElementById('alfred-etat'), elAide = document.getElementById('alfred-aide'),
+          bOnglet = document.getElementById('alfred-onglet'), elUrl = document.getElementById('alfred-url');
       var ctx2d = cnv && cnv.getContext ? cnv.getContext('2d') : null;
       var anim = null, energie = 0, phase = 0, etat = 'ecoute', calme = false;
       try{ calme = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches; }catch(e){}
@@ -13685,9 +13959,10 @@
         dessiner();
         anim = requestAnimationFrame(boucle);
       }
+      var LIBELLES = {ecoute:'à l’écoute', parle:'Alfred répond', fini:'terminé'};
       function majEtat(e){
         etat = e;
-        if(elEtat) elEtat.textContent = e === 'parle' ? 'Alfred répond' : (e === 'fini' ? 'terminé' : 'à l’écoute');
+        if(elEtat) elEtat.textContent = LIBELLES[e] || LIBELLES.ecoute;
       }
       function majDit(t){
         if(!elDit) return;
@@ -13698,9 +13973,12 @@
       function ouvrir(){
         majEtat('ecoute'); majDit(''); if(elRep) elRep.textContent = '';
         if(champ) champ.value = '';
-        if(elAide) elAide.innerHTML = microHorsDePortee()
-          ? 'Le micro du navigateur n’est pas accessible ici, mais celui de ton clavier l’est : <kbd>Fn</kbd> <kbd>Fn</kbd> sur le Mac, la touche 🎤 sur l’iPhone. Dicte ta phrase, elle s’écrit ici. <kbd>Entrée</kbd> pour exécuter.'
-          : 'Parle, ou écris. <kbd>Entrée</kbd> pour exécuter, <kbd>Échap</kbd> pour fermer.';
+        var bloque = microHorsDePortee();
+        if(elAide) elAide.innerHTML = bloque
+          ? 'Le micro du navigateur n’est pas accessible ici, mais celui de ton clavier l’est : <kbd>Fn</kbd> <kbd>Fn</kbd> sur le Mac, la touche 🎤 sur l’iPhone. Dicte ta phrase — <b>elle part toute seule une seconde après ton dernier mot</b>, pas besoin d’<kbd>Entrée</kbd>. Dis « aide » pour la liste.'
+          : 'Parle : ta phrase s’écrit ici et <b>part toute seule</b>. Tu peux aussi taper. <kbd>Échap</kbd> pour fermer, « aide » pour la liste.';
+        if(bOnglet) bOnglet.hidden = !(bloque && dansUnCadre());
+        if(elUrl){ elUrl.hidden = true; elUrl.textContent = ''; }
         neLe = Date.now();
         ov.hidden = false;
         if(!anim) boucle();
@@ -13711,28 +13989,93 @@
         if(anim){ cancelAnimationFrame(anim); anim = null; }
         energie = 0;
       }
+      /* ===== On ne tape pas sur Entrée quand on parle =====
+         La dictée du clavier écrit dans le champ, puis s'arrête. Exiger Entrée après ça,
+         c'est reposer le téléphone, viser une touche, et perdre tout l'intérêt de parler.
+         Alfred exécute donc TOUT SEUL une seconde après le dernier mot reçu. Le compte à
+         rebours s'affiche, n'importe quelle frappe le remet à zéro, Entrée court-circuite,
+         Échap l'annule. Celui qui écrit au clavier n'est pas gêné : tant qu'il tape, le
+         délai repart. */
+      var ATTENTE_MS = 1100, minuterie = null, reste = 0, tic = null;
+      function annulerAuto(){
+        if(minuterie){ clearTimeout(minuterie); minuterie = null; }
+        if(tic){ clearInterval(tic); tic = null; }
+        reste = 0;
+        if(elEtat && etat === 'ecoute') elEtat.textContent = LIBELLES.ecoute;
+      }
+      function armerAuto(){
+        annulerAuto();
+        var phrase = champ ? String(champ.value || '').trim() : '';
+        if(phrase.length < 3) return;
+        reste = ATTENTE_MS;
+        tic = setInterval(function(){
+          reste -= 100;
+          if(elEtat && etat === 'ecoute') elEtat.textContent = 'j’exécute dans ' + (Math.max(0, reste) / 1000).toFixed(1).replace('.', ',') + ' s';
+        }, 100);
+        minuterie = setTimeout(function(){ annulerAuto(); valider(); }, ATTENTE_MS);
+      }
+      /* ===== Une réponse n'est pas une fin de conversation =====
+         L'écran restait sur sa réponse, champ vidé, état « fini » : pour dire la phrase
+         suivante il fallait fermer et rouvrir. Il repasse maintenant à l'écoute tout seul —
+         et sur le chemin du micro, la reconnaissance est relancée. On enchaîne. */
+      var relancerEcoute = null;   /* posé par VOIX, plus bas */
+      function repartir(){
+        if(ov.hidden) return;
+        majEtat('ecoute'); majDit('');
+        if(champ){ champ.value = ''; try{ champ.focus(); }catch(e){} }
+        if(typeof relancerEcoute === 'function') relancerEcoute();
+      }
       function valider(){
         var phrase = champ ? String(champ.value || '').trim() : '';
         if(!phrase) return;
+        annulerAuto();
         majDit(phrase);
-        var rep = executer(phrase);
-        var texte = rep || 'Je n’ai pas compris, Monsieur : « ' + phrase + ' »';
+        var rep = executer(phrase), texte;
+        if(rep) texte = rep;
+        else {
+          /* Il n'a pas compris : plutôt que de le dire et de s'arrêter là, il propose la
+             commande la plus proche et la met dans le champ — Entrée, ou l'exécution
+             automatique, confirme. */
+          var s = suggestion(phrase);
+          texte = s ? 'Je n’ai pas compris, Monsieur. Vouliez-vous dire : « ' + s + ' » ?'
+                    : 'Je n’ai pas compris, Monsieur : « ' + phrase + ' ». Dites « aide » pour ce que je sais faire.';
+          if(s && champ) champ.value = s;
+        }
         if(elRep) elRep.textContent = texte;
-        if(champ) champ.value = '';
+        if(champ && rep) champ.value = '';
         majEtat('parle'); impulsion(0.9);
         showToast('🎙️ ' + texte);
-        dire(texte, function(){ majEtat('fini'); });
+        dire(texte, function(){ majEtat('fini'); setTimeout(repartir, 900); });
       }
       if(champ){
         /* chaque mot qui arrive donne une impulsion : la dictée les écrit un par un */
-        champ.addEventListener('input', function(){ majDit(champ.value); impulsion(0.26); });
+        champ.addEventListener('input', function(){ majDit(champ.value); impulsion(0.26); armerAuto(); });
         champ.addEventListener('keydown', function(e){
-          if(e.key === 'Enter'){ e.preventDefault(); valider(); }
+          if(e.key === 'Enter'){ e.preventDefault(); annulerAuto(); valider(); }
+          else if(e.key === 'Escape') annulerAuto();
         });
       }
       var bOk = document.getElementById('alfred-ok'), bF = document.getElementById('alfred-fermer');
-      if(bOk) bOk.addEventListener('click', valider);
-      if(bF) bF.addEventListener('click', fermer);
+      if(bOk) bOk.addEventListener('click', function(){ annulerAuto(); valider(); });
+      if(bF) bF.addEventListener('click', function(){ annulerAuto(); fermer(); });
+      /* ===== La seule vraie sortie : quitter le cadre =====
+         Le micro n'est pas refusé par un réglage, il est refusé par le CADRE dans lequel
+         claude.ai affiche la page. La même page, ouverte dans son propre onglet, n'a plus
+         ce cadre — donc plus ce refus. C'est le seul chemin qui rend le micro, et il tient
+         en un bouton. Si le cadre interdit aussi d'ouvrir un onglet, on affiche l'adresse :
+         copiée dans un onglet neuf, elle fait la même chose. */
+      if(bOnglet) bOnglet.addEventListener('click', function(){
+        var url = '';
+        try{ url = String(location.href); }catch(e){}
+        var f = null;
+        try{ f = window.open(url, '_blank', 'noopener'); }catch(e){}
+        if(f){ showToast('🔓 Ouverte dans un onglet — le micro devrait y répondre.'); return; }
+        if(elUrl){
+          elUrl.hidden = false;
+          elUrl.textContent = 'Le cadre refuse aussi d’ouvrir un onglet. Copie cette adresse dans un onglet neuf : ' + url;
+        }
+        try{ if(navigator.clipboard && url) navigator.clipboard.writeText(url); }catch(e){}
+      });
       ov.addEventListener('click', function(e){ if(e.target === ov) fermer(); });
       /* La réponse arrivée par le MICRO doit s'écrire sur le réacteur comme celle du champ :
          même texte, même passage au vert, même impulsion. */
@@ -13743,8 +14086,16 @@
       }
       return {ouvrir: ouvrir, fermer: fermer, impulsion: impulsion, etat: function(){ return etat; },
               dit: majDit, repond: repond, fini: function(){ if(!ov.hidden) majEtat('fini'); },
+              repartir: repartir, surRelance: function(f){ relancerEcoute = f; },
               ouvert: function(){ return !ov.hidden; }};
     })();
+
+    /* Quand l'écran repart à l'écoute, c'est au micro de se rouvrir — mais seulement s'il y
+       en a un, et seulement hors veille (en veille il ne s'est jamais fermé). */
+    if(ALF) ALF.surRelance(function(){
+      if(continu || parle || microHorsDePortee()) return;
+      try{ demarrer(); }catch(e){}
+    });
 
     function parlerAuClavier(){
       if(ALF){ ALF.ouvrir(); return; }
