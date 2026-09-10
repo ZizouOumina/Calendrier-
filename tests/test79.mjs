@@ -12,7 +12,7 @@ const ok = (c,m)=>{ if(c) console.log('  ok  '+m); else { err++; console.log('  
 /* Fausse reconnaissance : elle note ce qu'on lui demande et laisse le test livrer un
    résultat quand il veut. Aucun micro réel n'est ouvert. */
 const FAUX_MICRO = () => {
-  window.__micro = {instances:[], demarrages:0};
+  window.__micro = Object.assign({instances:[], demarrages:0}, window.__micro || {});
   function Faux(){
     this.lang = ''; this.continuous = false; this.interimResults = true; this.maxAlternatives = 1;
     this.onresult = null; this.onerror = null; this.onend = null;
@@ -45,6 +45,26 @@ const FAUX_MICRO = () => {
   };
   try{ Object.defineProperty(window, 'speechSynthesis', {value: FAUSSE_SYNTHESE, configurable: true, writable: true}); }
   catch(e){ window.speechSynthesis = FAUSSE_SYNTHESE; }
+  /* Fausse autorisation : c'est getUserMedia qui fait apparaître la bulle du navigateur.
+     window.__micro.autorisation pilote la réponse — 'ok', 'refus', 'cadre', 'aucun-micro'. */
+  window.__micro = window.__micro || {};
+  window.__micro.autorisation = 'ok';
+  const erreur = (nom) => { const e = new Error(nom); e.name = nom; return e; };
+  const FAUX_MEDIA = {
+    getUserMedia: function(){
+      const a = window.__micro.autorisation;
+      window.__micro.demandes = (window.__micro.demandes || 0) + 1;
+      if(a === 'refus' || a === 'cadre') return Promise.reject(erreur('NotAllowedError'));
+      if(a === 'aucun-micro') return Promise.reject(erreur('NotFoundError'));
+      return Promise.resolve({getTracks: function(){ return [{stop: function(){}}]; }});
+    }
+  };
+  try{ Object.defineProperty(navigator, 'mediaDevices', {value: FAUX_MEDIA, configurable: true, writable: true}); }
+  catch(e){}
+  /* et l'état de la permission, qui départage « tu as refusé » de « on ne t'a rien demandé » */
+  try{ Object.defineProperty(navigator, 'permissions', {configurable: true, writable: true, value: {
+    query: function(){ return Promise.resolve({state: window.__micro.autorisation === 'refus' ? 'denied' : 'prompt'}); }
+  }}); }catch(e){}
   /* dire(phrase) : le micro courant « entend » cette phrase, en une seule alternative. */
   window.__dire = function(phrase){
     const r = window.__micro.dernier;
@@ -219,6 +239,36 @@ console.log('\n== 7) Alfred répond à voix haute, et ne s\'écoute pas parler =
   await page.waitForTimeout(120);
   const d = await fr.evaluate(()=>window.__dit.map(x=>x.texte));
   ok(d.length === 1 && /pas compris, Monsieur/.test(d[0]), 'il le dit au lieu de se taire : « ' + (d[0]||'') + ' »');
+  await ctx.close();
+}
+
+console.log('\n== 8) Micro impossible : Alfred dit laquelle des trois raisons ==');
+for(const [cas, attendu, quoi] of [
+  ['refus',       /refus.*pour ce site|Param.*tres du site/i, 'tu as refusé → où le rétablir'],
+  ['cadre',       /n.{0,3}a même pas demandé|pas le droit d.{0,3}ouvrir le micro/i, 'le cadre de claude.ai → ce n\'est pas ton réglage'],
+  ['aucun-micro', /Aucun micro/i, 'pas de micro branché']
+]){
+  const {ctx, page, fr} = await ouvrir();
+  await fr.evaluate(a => { window.__micro.autorisation = a; }, cas);
+  await fr.evaluate(() => document.getElementById('voix-btn').click());
+  await page.waitForTimeout(200);
+  const cause = await fr.evaluate(() => window.__bcVoix.cause());
+  const msg = await fr.evaluate(() => (document.querySelector('.toast, #toast') || {}).textContent || '');
+  ok(cause === cas, cas + ' : la cause est reconnue (' + cause + ')');
+  ok(attendu.test(msg), '  → il explique ' + quoi + ' : « ' + msg.slice(0, 96) + ' »');
+  ok(await fr.evaluate(() => window.__micro.dernier && window.__micro.dernier.demarre) !== true, '  → et il n\'ouvre pas le micro pour rien');
+  await ctx.close();
+}
+{
+  /* le cas du cadre est le plus probable sur la page publiée : la veille doit refuser
+     de s'armer, pas rester allumée sur un micro qui n'écoutera jamais. */
+  const {ctx, page, fr} = await ouvrir();
+  await fr.evaluate(() => { window.__micro.autorisation = 'cadre'; });
+  await fr.evaluate(() => document.getElementById('alfred-veille').click());
+  await page.waitForTimeout(220);
+  const e = await etatBoutons(fr);
+  ok(e.veilleTexte === '🦇 Veille' && e.veilleArmee === 'false', 'la veille refuse de s\'armer sans micro');
+  ok(await fr.evaluate(() => localStorage.getItem('bc-alfred-veille')) === '0', 'et le réglage ne ment pas au prochain chargement');
   await ctx.close();
 }
 

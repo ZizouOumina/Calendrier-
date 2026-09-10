@@ -162,6 +162,41 @@ console.log('\n== 8) La commande vocale ==');
   }
   await ctx.close();
 }
+console.log('\n== 9) Une sauvegarde du vieux format : l\'espagnol ne gonfle plus la révision ==');
+{
+  /* Trois lignes fictives d'une sauvegarde d'avant le changement de format : type
+     « espagnol », le type que plus aucun bouton ne produit. Elles doivent atterrir dans
+     Español, pas dans la révision — et être réécrites au format actuel. */
+  const D = '2026-11-16';   /* phase 2 : la grille prévoit à la fois des projets et de l'espagnol */
+  const vieille = (h, min, quoi) => ({id:'v'+h, date:D, debut:Date.parse(D+'T'+h+':00:00+01:00'),
+    fin:Date.parse(D+'T'+h+':00:00+01:00')+min*60000, duree:min, type:'espagnol', label:quoi});
+  const {ctx, page, fr} = await ouvrir({'batcave-sessions':[
+    vieille('11', 60, 'Conversation'), vieille('13', 30, 'Español · annales'), vieille('16', 30, '')
+  ]}, D+'T21:00:00+01:00');
+  const t = await temps(fr);
+  const cel = (nom) => (t.match(new RegExp(nom + ' \\| ([^|]+)'))||[])[1] || '';
+  ok(/^\s*0/.test(cel('Révision')), 'la révision reste à zéro : ' + cel('Révision').trim());
+  ok(/2 h/.test(cel('Español')), 'les 2 h atterrissent dans Español : ' + cel('Español').trim());
+  ok(/^\s*0/.test(cel('Projets perso')), 'et pas dans les projets perso : ' + cel('Projets perso').trim());
+
+  /* la normalisation a réécrit les lignes au format actuel, une fois pour toutes */
+  const apres = await fr.evaluate(()=>JSON.parse(localStorage.getItem('batcave-sessions')||'[]'));
+  ok(apres.length === 3 && apres.every(x => x.type === 'projet'), 'les trois lignes sont passées en « projet » : ' + apres.map(x=>x.type).join(', '));
+  ok(apres.every(x => /^Español/.test(x.label)), 'et leur libellé commence par « Español » : ' + apres.map(x=>x.label).join(' · '));
+  ok(apres.filter(x => x.label === 'Español · annales').length === 1, 'un libellé déjà correct n\'est pas préfixé deux fois');
+  ok(apres.filter(x => x.label === 'Español · Conversación').length === 1, 'un libellé vide reçoit un nom lisible');
+
+  /* et la répartition par tâche du panneau Español les voit */
+  const parTache = await fr.evaluate(()=>{ document.querySelector('.nav-btn[data-page="etudes"]').click();
+                                           return document.getElementById('es-taches-7').innerText.replace(/\s+/g,' '); });
+  ok(/Conversation/.test(parTache) && /annales/.test(parTache), 'le panneau Español les répartit par tâche : ' + parTache.slice(0, 80));
+
+  /* le vérificateur de cohérence ne doit rien signaler une fois normalisé */
+  const reste = await fr.evaluate(()=>JSON.parse(localStorage.getItem('batcave-sessions')||'[]').filter(x=>x.type==='espagnol').length);
+  ok(reste === 0, 'plus aucune ligne au vieux format (' + reste + ')');
+  await ctx.close();
+}
+
 await b.close();
 console.log(err? '\n'+err+' ECHEC(S)' : '\nTOUT VERT');
 process.exit(err?1:0);

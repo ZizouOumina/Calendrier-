@@ -72,8 +72,10 @@ console.log('\n═══ 3. Le type « espagnol » hérité d\'anciennes session
   const {ctx, page, fr} = await ouvrir({'batcave-sessions':[sess('espagnol','Conversation',60)]});
   const t = await plan(fr);
   const rev = faitDe(t, 'Révision');
-  if(rev === '1 h') note('une session de type « espagnol » (ancien format, plus produit par le bouton actuel) est comptée comme RÉVISION : carteMinutes et minutesJour ramènent tout ce qui n\'est pas « projet » à « cours ». Sans conséquence sur tes données — tu n\'as aucune session enregistrée — mais une vieille sauvegarde restaurée gonflerait la révision.');
-  else ok(rev === '0', 'session de type « espagnol » : révision = ' + rev);
+  ok(rev === '0', 'une session au vieux type « espagnol » n\'entre PAS dans la révision (révision = ' + rev + ')');
+  const lignes = await fr.evaluate(()=>JSON.parse(localStorage.getItem('batcave-sessions')||'[]'));
+  ok(lignes.length === 1 && lignes[0].type === 'projet' && /^Español/.test(lignes[0].label || ''),
+     'et elle a été réécrite au format actuel : ' + lignes.map(x=>x.type + ' / ' + x.label).join(', '));
   await ctx.close();
 }
 
