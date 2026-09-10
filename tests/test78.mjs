@@ -147,22 +147,8 @@ console.log('\n== 7) Rattrapage unique après une absence ==');
   await ctx.close();
 }
 
-console.log('\n== 8) La commande vocale ==');
-{
-  const {ctx, page, fr} = await ouvrir({}, '2026-09-14T12:30:00+02:00');
-  const dispo = await fr.evaluate(()=>!!(window.__bcVoix && window.__bcVoix.dispo));
-  if(!dispo){ ok(await fr.evaluate(()=>document.getElementById('voix-btn').hidden), 'navigateur sans reconnaissance vocale : le bouton reste masqué'); }
-  else {
-    const dire = async p => fr.evaluate(x=>window.__bcVoix.executer(x), p);
-    ok(/Déjeuner coché/.test(await dire('coche le déjeuner') || ''), '« coche le déjeuner » → ' + await dire('coche le déjeuner'));
-    const m = await fr.evaluate(()=>{document.querySelector('.nav-btn[data-page="repas"]').click(); return document.getElementById('meal-kcal-sub').textContent;});
-    ok(/^(?!0 )/.test(m), 'les calories du déjeuner sont comptées : ' + m);
-    ok(/Pomodoro révision/.test(await dire('lance un pomodoro') || ''), '« lance un pomodoro » → ' + await dire('lance un pomodoro'));
-    ok((await dire('fais-moi un café')) === null, 'une phrase hors périmètre ne fait rien');
-  }
-  await ctx.close();
-}
-console.log('\n== 9) Une sauvegarde du vieux format : l\'espagnol ne gonfle plus la révision ==');
+
+console.log('\n== 8) Une sauvegarde du vieux format : l\'espagnol ne gonfle plus la révision ==');
 {
   /* Trois lignes fictives d'une sauvegarde d'avant le changement de format : type
      « espagnol », le type que plus aucun bouton ne produit. Elles doivent atterrir dans

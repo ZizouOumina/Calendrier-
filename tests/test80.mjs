@@ -1,9 +1,8 @@
-/* Lot 31 — les quatre améliorations choisies, éprouvées sur des données fictives.
-     1. Alfred répond aux QUESTIONS (« où j'en suis ? », « et après ? », « combien de
-        cartes ? ») sans rien cocher ni rien lancer.
-     4. Une séance de sport à moitié faite vaut une demi-séance dans l'objectif.
-     6. La boucle poids → calories ne se laisse plus retourner par une seule pesée.
-     7. Le mode partiels s'annonce une semaine avant de s'enclencher. */
+/* Lot 31 — trois améliorations, éprouvées sur des données fictives.
+     · Une séance de sport à moitié faite vaut une demi-séance dans l'objectif.
+     · La boucle poids → calories ne se laisse plus retourner par une seule pesée.
+     · Le mode partiels s'annonce une semaine avant de s'enclencher.
+   (Le quatrième point de ce lot, les questions posées à Alfred, est parti avec Alfred.) */
 import { chromium } from 'playwright';
 const URL = 'http://127.0.0.1:8199/host.html';
 const b = await chromium.launch();
@@ -29,58 +28,12 @@ async function ouvrir(seed, quand){
 }
 const aller = async (fr, page, p) => { await fr.evaluate(pg => document.querySelector('.nav-btn[data-page="'+pg+'"]').click(), p); await page.waitForTimeout(600); };
 const plan = fr => fr.evaluate(() => document.getElementById('dash-plan').innerText);
-const dit  = (fr, phrase) => fr.evaluate(p => window.__bcVoix.executer(p), phrase);
 const journalPoids = (iso, kg) => ({['batcave-journal-' + iso]: {poids: kg, water: 0}});
 const pesees = liste => Object.assign({}, ...liste.map(([iso, kg]) => journalPoids(iso, kg)));
 const jours = (debut, n) => { const out = []; const d = new Date(debut + 'T00:00:00'); for(let i = 0; i < n; i++){ out.push(d.toISOString().slice(0,10)); d.setDate(d.getDate() + 1); } return out; };
 
-console.log('\n== 1) Alfred répond aux questions ==');
-{
-  /* une séance de révision et une d'espagnol déjà faites, trois exercices de sport cochés */
-  const seed = {
-    'batcave-sessions': [
-      {id:'q1', date:JOUR, debut:0, fin:0, duree:110, type:'cours',  label:'Anatomie'},
-      {id:'q2', date:JOUR, debut:0, fin:0, duree:60,  type:'projet', label:'Español · Conversación'}
-    ],
-    ['batcave-sport-' + JOUR]: {'Haut lourd-0':true, 'Haut lourd-1':true, 'Haut lourd-2':true},
-    'batcave-anki': {paquets: {'Dentaire': {dus:42}, 'Español': {dus:8}}, maj: Date.now()}
-  };
-  const {ctx, fr} = await ouvrir(seed);
-  const r = await fr.evaluate(() => ({
-    bilan:   window.__bcVoix.executer('Alfred, où j’en suis ?'),
-    bilan2:  window.__bcVoix.executer('alfred fais le point'),
-    suite:   window.__bcVoix.executer('Alfred, c’est quoi la suite ?'),
-    cartes:  window.__bcVoix.executer('Alfred, combien de cartes dues ?'),
-    inconnu: window.__bcVoix.executer('Alfred, quelle est la capitale du Pérou')
-  }));
-  ok(/^Aujourd'hui, Monsieur : /.test(r.bilan), 'Alfred lit la journée : « ' + String(r.bilan) + ' »');
-  ok(/1 heure 50/.test(r.bilan), 'les 110 min de révision sont dites en toutes lettres, pas « 1 h 50 » : ' + (String(r.bilan).match(/révision[^,]*/) || [''])[0]);
-  ok(/révision 1 heure 50 sur 4 heures 25, il reste 2 heures 35/.test(r.bilan), 'fait, cible et reste, tous les trois : ' + (String(r.bilan).match(/révision[^,]*, [^,]*/) || [''])[0]);
-  ok(/séance 3 sur 10 exercices/.test(r.bilan), 'la séance du jour est comptée en exercices : ' + (String(r.bilan).match(/séance[^,.]*/) || [''])[0]);
-  ok(/espagnol 1 heure sur /.test(r.bilan) && !/projets perso 1 heure/.test(r.bilan), 'l’heure d’Español est dite en espagnol, pas en projets perso : ' + (String(r.bilan).match(/projets perso[^,]*, espagnol[^,]*/) || [''])[0]);
-  ok(/0 pour cent des calories/.test(r.bilan), 'et les calories du jour : ' + (String(r.bilan).match(/[\d]+ pour cent des calories/) || [''])[0]);
-  ok(r.bilan2 === r.bilan, '« fais le point » donne exactement la même réponse');
-  ok(/^Prochain bloc, Monsieur : |^Plus rien au planning/.test(String(r.suite)), 'le prochain bloc : « ' + r.suite + ' »');
-  ok(r.cartes === '50 cartes dues, Monsieur.', 'les cartes dues, tous paquets confondus (42 + 8) : « ' + r.cartes + ' »');
-  ok(r.inconnu === null, 'une question hors sujet ne rend rien (elle sera dite « je n’ai pas compris »)');
-  /* et surtout : une QUESTION ne change rien */
-  const apres = await fr.evaluate(() => ({
-    minuteur: !!(window.__bcVoix && document.getElementById('timer-overlay') && !document.getElementById('timer-overlay').hidden),
-    repas: Object.keys(JSON.parse(localStorage.getItem('batcave-meals-' + '2026-09-14') || '{}')).length
-  }));
-  ok(apres.minuteur === false && apres.repas === 0, 'aucun minuteur lancé, aucun repas coché : une question ne fait que lire');
-  await ctx.close();
-}
 
-console.log('\n== 2) « bilan du soir » reste la clôture, pas une question ==');
-{
-  const {ctx, fr} = await ouvrir();
-  const r = await dit(fr, 'Alfred, bilan du soir');
-  ok(r === 'La clôture du jour, Monsieur.', 'l’ordre garde la priorité sur la question : « ' + r + ' »');
-  await ctx.close();
-}
-
-console.log('\n== 3) Une séance à moitié faite vaut une demi-séance ==');
+console.log('\n== 1) Une séance à moitié faite vaut une demi-séance ==');
 {
   for(const [n, attendu, desc] of [[0,'0,0','aucune case'], [3,'0,3','3 sur 10'], [5,'0,5','5 sur 10, la moitié'], [10,'1,0','les 10']]){
     const st = {}; for(let i = 0; i < n; i++) st['Haut lourd-' + i] = true;
@@ -93,7 +46,7 @@ console.log('\n== 3) Une séance à moitié faite vaut une demi-séance ==');
   }
 }
 
-console.log('\n== 4) Une pesée salée ne fait plus retirer 100 kcal ==');
+console.log('\n== 2) Une pesée salée ne fait plus retirer 100 kcal ==');
 {
   /* Deux semaines de pesées : 7 jours à 64,0 puis 7 jours à 64,4 — SAUF un matin à 66,0.
      Ce seul matin salé tire la pente à +0,47 kg / semaine, soit plus de deux fois le rythme
@@ -113,7 +66,7 @@ console.log('\n== 4) Une pesée salée ne fait plus retirer 100 kcal ==');
 }
 {
   /* Quand la tendance tient VRAIMENT à une seule pesée (4 pesées par semaine, donc pas
-     d'élagage), Alfred ne recommande rien et dit laquelle. */
+     d'élagage), la Batcave ne recommande rien et dit laquelle. */
   const av = ['2026-09-01','2026-09-03','2026-09-05','2026-09-07'].map(iso => [iso, 64.0]);
   const rec = [['2026-09-08',64.4],['2026-09-10',64.4],['2026-09-12',64.4],['2026-09-14',66.0]];
   const {ctx, page, fr} = await ouvrir(pesees(av.concat(rec)));
@@ -137,7 +90,7 @@ console.log('\n== 4) Une pesée salée ne fait plus retirer 100 kcal ==');
   await ctx.close();
 }
 
-console.log('\n== 5) Le mode partiels s’annonce une semaine avant ==');
+console.log('\n== 3) Le mode partiels s’annonce une semaine avant ==');
 {
   /* premier examen le 24 : le mode s'enclenche le 17 (J-7), donc 3 jours après le 14 */
   const {ctx, fr} = await ouvrir({'batcave-examens': {Anatomie:'2026-09-24', Biochimie:'2026-09-26'}});
