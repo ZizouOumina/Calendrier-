@@ -298,33 +298,68 @@ console.log('\n== 9) Micro hors de portée : la dictée du clavier prend le rela
   ok(e.veilleVisible === false, 'l\'interrupteur de veille disparaît : il n\'aurait rien à armer');
   ok(await fr.evaluate(()=>window.__micro.demarrages) === 0, 'aucune tentative d\'ouverture du micro');
 
-  /* on appuie : un champ de texte s'ouvre, pas un micro */
+  /* on appuie : l'écran d'écoute s'ouvre, pas un micro */
   await fr.evaluate(()=>document.getElementById('voix-btn').click());
-  await page.waitForTimeout(200);
-  const champ = await fr.evaluate(()=>({ouvert: !document.getElementById('ask-overlay').hidden,
-                                        titre: document.getElementById('ask-title').textContent,
-                                        msg: document.getElementById('ask-msg').textContent}));
-  ok(champ.ouvert, 'un champ s\'ouvre au lieu du micro');
-  ok(/Alfred/.test(champ.titre) && /Fn Fn|🎤/.test(champ.msg), 'et il dit comment dicter : « ' + champ.msg.slice(0, 80) + ' »');
+  await page.waitForTimeout(220);
+  const ec = await fr.evaluate(()=>({
+    ouvert: !document.getElementById('alfred-overlay').hidden,
+    etat: document.getElementById('alfred-etat').textContent,
+    dit: document.getElementById('alfred-dit').textContent,
+    aide: document.getElementById('alfred-aide').textContent,
+    focus: document.activeElement && document.activeElement.id
+  }));
+  ok(ec.ouvert, 'l\'écran d\'écoute s\'ouvre au lieu du micro');
+  ok(/à l.écoute/i.test(ec.etat), 'il annonce son état : « ' + ec.etat + ' »');
+  ok(/Fn|🎤/.test(ec.aide), 'et il dit comment dicter : « ' + ec.aide.slice(0, 76) + ' »');
+  ok(ec.focus === 'alfred-champ', 'le champ a le focus : la dictée écrit dedans sans un clic de plus (' + ec.focus + ')');
+
+  /* la phrase s'écrit en direct pendant la dictée, mot après mot */
+  await fr.evaluate(()=>{ const c = document.getElementById('alfred-champ');
+                          c.value = 'Alfred, coche'; c.dispatchEvent(new Event('input', {bubbles:true})); });
+  await page.waitForTimeout(80);
+  ok(/Alfred, coche/.test(await fr.evaluate(()=>document.getElementById('alfred-dit').textContent)),
+     'ce qui est dicté s\'affiche en direct');
+
+  /* l'onde bouge : elle prend une impulsion à chaque mot qui arrive */
+  const bouge = await fr.evaluate(async ()=>{
+    const c = document.getElementById('alfred-onde');
+    const pix = () => { const d = c.getContext('2d').getImageData(0,0,c.width,c.height).data;
+                        let n = 0; for(let i=3;i<d.length;i+=4) if(d[i]) n++; return n; };
+    const a = pix();
+    await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(() => setTimeout(r, 120))));
+    return {a, b: pix()};
+  });
+  ok(bouge.a > 0 && bouge.b > 0 && bouge.a !== bouge.b, 'l\'onde est dessinée ET elle bouge (' + bouge.a + ' → ' + bouge.b + ' pixels)');
 
   /* la phrase dictée passe par la même grammaire, et la réponse est dite à voix haute */
-  await fr.evaluate(()=>{ document.getElementById('ask-input').value = 'Alfred, coche le déjeuner';
-                          document.getElementById('ask-ok').click(); });
-  await page.waitForTimeout(220);
+  await fr.evaluate(()=>{ const c = document.getElementById('alfred-champ');
+                          c.value = 'Alfred, coche le déjeuner';
+                          c.dispatchEvent(new Event('input', {bubbles:true}));
+                          document.getElementById('alfred-ok').click(); });
+  await page.waitForTimeout(240);
   const coches = await fr.evaluate(()=>{ const s = JSON.parse(localStorage.getItem('batcave-meals-2026-09-14') || '{}');
                                          return Object.keys(s).filter(k=>s[k]).length; });
   ok(coches > 0, 'la phrase dictée agit : le déjeuner est coché');
   const dit = await fr.evaluate(()=>window.__dit.map(x=>x.texte));
   ok(dit.length === 1 && /Déjeuner coché, Monsieur\.$/.test(dit[0]), 'et Alfred répond de la même voix : « ' + (dit[0]||'') + ' »');
+  const rep = await fr.evaluate(()=>({rep: document.getElementById('alfred-rep').textContent,
+                                      dit: document.getElementById('alfred-dit').textContent}));
+  ok(/Déjeuner coché/.test(rep.rep), 'sa réponse reste à l\'écran : « ' + rep.rep + ' »');
+  ok(/coche le déjeuner/.test(rep.dit), 'et la phrase dite aussi : « ' + rep.dit + ' »');
 
   /* une phrase hors périmètre le dit aussi, au lieu de ne rien faire */
-  await fr.evaluate(()=>document.getElementById('voix-btn').click());
-  await page.waitForTimeout(150);
-  await fr.evaluate(()=>{ document.getElementById('ask-input').value = 'fais-moi un café';
-                          document.getElementById('ask-ok').click(); });
-  await page.waitForTimeout(220);
+  await fr.evaluate(()=>{ const c = document.getElementById('alfred-champ');
+                          c.value = 'fais-moi un café';
+                          c.dispatchEvent(new Event('input', {bubbles:true}));
+                          document.getElementById('alfred-ok').click(); });
+  await page.waitForTimeout(240);
   const dit2 = await fr.evaluate(()=>window.__dit.map(x=>x.texte));
   ok(dit2.length === 2 && /pas compris, Monsieur/.test(dit2[1]), 'une phrase hors périmètre est dite, pas ignorée : « ' + (dit2[1]||'') + ' »');
+
+  /* Échap ferme, et l'animation s'arrête avec l'écran */
+  await page.keyboard.press('Escape');
+  await page.waitForTimeout(150);
+  ok(await fr.evaluate(()=>document.getElementById('alfred-overlay').hidden) === true, 'Échap referme l\'écran');
   await ctx.close();
 }
 

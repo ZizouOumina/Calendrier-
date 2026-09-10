@@ -422,6 +422,29 @@
   .overlay-head{display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;}
   .overlay-head h3{font-size:20px; color:var(--ink);}
 
+  /* ---------- Alfred : l'écran d'écoute ----------
+     Une onde qui vit, la phrase qui s'écrit, la réponse en dessous. L'onde ne prétend
+     pas mesurer ta voix — la page n'a pas le droit de l'entendre : elle réagit aux mots
+     qui ARRIVENT (la dictée du système les écrit un par un) et, quand Alfred parle, aux
+     limites de mots que la synthèse lui donne. Ce qui bouge est vrai. */
+  .alf-panel{background:linear-gradient(180deg, var(--surface-raised), var(--surface));
+             border:1px solid var(--cyan-dim); border-radius:18px; padding:26px 26px 20px; width:100%;
+             max-width:560px; box-shadow:0 24px 70px rgba(0,0,0,.55), 0 0 0 1px rgba(53,212,232,.12) inset;}
+  .alf-head{display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:4px;}
+  .alf-head .t{font-family:var(--font-display); font-size:20px; letter-spacing:.04em; color:var(--ink);}
+  .alf-etat{font-family:var(--font-mono); font-size:10.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--cyan);}
+  .alf-onde{display:block; width:100%; height:86px; margin:10px 0 4px;}
+  .alf-dit{font-size:19px; line-height:1.45; color:var(--ink); min-height:52px; margin:6px 0 2px; overflow-wrap:anywhere;}
+  .alf-dit.vide{color:var(--ink-faint); font-style:italic; font-size:15px;}
+  .alf-rep{font-size:15px; line-height:1.5; color:var(--cyan-bright); min-height:22px; margin-bottom:12px; overflow-wrap:anywhere;}
+  .alf-saisie{position:absolute; opacity:0; pointer-events:none; width:1px; height:1px;}
+  .alf-champ{width:100%; background:var(--surface); border:1px solid var(--border); color:var(--ink);
+             border-radius:9px; padding:10px 12px; font-size:14px; font-family:var(--font-body);}
+  .alf-aide{font-size:11.5px; color:var(--ink-faint); line-height:1.55; margin:10px 0 14px;}
+  .alf-aide kbd{font-family:var(--font-mono); font-size:11px; background:var(--surface-raised);
+                border:1px solid var(--border); border-radius:4px; padding:1px 5px; color:var(--ink-dim);}
+  @media (prefers-reduced-motion: reduce){ .alf-onde{opacity:.75;} }
+
   /* ---------- week calendar ---------- */
   .week-cal-wrap{overflow-x:auto; padding-bottom:4px;}
   .week-cal{display:grid; grid-template-columns:repeat(7,minmax(128px,1fr)); gap:10px; min-width:800px;}
@@ -2713,6 +2736,25 @@
   </div>
 </div>
 
+<div class="overlay" id="alfred-overlay" hidden>
+  <div class="overlay-panel alf-panel">
+    <div class="alf-head">
+      <span class="t">🦇 Alfred</span>
+      <span class="alf-etat" id="alfred-etat">à l’écoute</span>
+    </div>
+    <canvas class="alf-onde" id="alfred-onde" width="1120" height="172" aria-hidden="true"></canvas>
+    <p class="alf-dit vide" id="alfred-dit" aria-live="polite"></p>
+    <p class="alf-rep" id="alfred-rep" aria-live="polite"></p>
+    <label class="sr-only" for="alfred-champ">Ta phrase pour Alfred</label>
+    <input type="text" class="alf-champ" id="alfred-champ" autocomplete="off"
+           placeholder="Dicte ou écris ta phrase…">
+    <p class="alf-aide" id="alfred-aide"></p>
+    <div class="card-actions" style="justify-content:flex-end;">
+      <button class="btn" id="alfred-fermer" type="button">Fermer</button>
+      <button class="btn btn-primary" id="alfred-ok" type="button">Exécuter</button>
+    </div>
+  </div>
+</div>
 <div class="overlay" id="ask-overlay" hidden>
   <div class="overlay-panel" style="max-width:420px;">
     <div class="overlay-head"><h3 id="ask-title">Confirmer</h3></div>
@@ -13014,6 +13056,8 @@
         if(voixAlfred){ u.voice = voixAlfred; u.lang = voixAlfred.lang; } else u.lang = 'fr-FR';
         u.rate = 0.94; u.pitch = 0.8; u.volume = 1;
         u.onend = finir; u.onerror = finir;
+        /* chaque mot prononcé fait respirer l'onde : c'est la synthèse qui le dit */
+        try{ u.onboundary = function(){ if(ALF) ALF.impulsion(0.38); }; }catch(e){}
         /* filet : une synthèse qui ne rend jamais la main ne doit pas laisser le micro fermé */
         setTimeout(finir, 9000);
         S.speak(u);
@@ -13097,16 +13141,114 @@
        phrase, avec la même grammaire, et Alfred répond de la même voix.
        Ce n'est pas un lot de consolation : ça marche sur les trois appareils, sans
        autorisation à donner, et ça n'écoute rien tant que tu n'as pas appuyé. */
-    function parlerAuClavier(){
-      askDialog({titre:'🦇 Alfred', libelleOk:'Exécuter', saisie:true, valeur:'',
-                 message:'Dicte ou écris ta phrase — « pomodoro révision », « coche le déjeuner », « clôture », « stop ». Sur le Mac : Fn Fn pour dicter. Sur l\'iPhone : la touche 🎤 du clavier.'},
-        function(phrase){
-          if(phrase === null) return;
-          phrase = String(phrase).trim();
-          if(!phrase) return;
-          var rep = executer(phrase);
-          repondreTout(rep || 'Je n’ai pas compris, Monsieur : « ' + phrase + ' »');
+    /* ===== L'écran d'écoute =====
+       Une onde qui vit, la phrase qui s'écrit en direct, la réponse en dessous.
+       L'onde ne mesure pas ta voix : la page n'a pas le droit de l'entendre. Elle réagit
+       à ce qui ARRIVE vraiment — chaque mot que la dictée écrit lui donne une impulsion,
+       et quand Alfred parle, chaque limite de mot que la synthèse annonce. Ce qui bouge
+       est donc vrai ; ce n'est pas une décoration qui s'agite dans le vide. */
+    var ALF = (function(){
+      var ov = document.getElementById('alfred-overlay');
+      if(!ov) return null;
+      var cnv = document.getElementById('alfred-onde'), champ = document.getElementById('alfred-champ'),
+          elDit = document.getElementById('alfred-dit'), elRep = document.getElementById('alfred-rep'),
+          elEtat = document.getElementById('alfred-etat'), elAide = document.getElementById('alfred-aide');
+      var ctx2d = cnv && cnv.getContext ? cnv.getContext('2d') : null;
+      var anim = null, energie = 0, phase = 0, etat = 'ecoute', calme = false;
+      try{ calme = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches; }catch(e){}
+      var TEINTES = {ecoute:[[124,234,247],[53,212,232],[47,140,168]],
+                     parle: [[126,247,205],[63,232,178],[40,150,120]],
+                     fini:  [[124,234,247],[53,212,232],[47,140,168]]};
+      function impulsion(force){ energie = Math.min(1, energie + (force || 0.34)); }
+      function dessiner(){
+        if(!ctx2d) return;
+        var W = cnv.width, H = cnv.height, mid = H / 2;
+        ctx2d.clearRect(0, 0, W, H);
+        var base = etat === 'parle' ? 0.30 : 0.13;
+        var amp = (base + energie * 0.62) * (H * 0.40);
+        var teintes = TEINTES[etat] || TEINTES.ecoute;
+        for(var b = 0; b < 3; b++){
+          var c = teintes[b], k = 1 - b * 0.28;
+          ctx2d.beginPath();
+          for(var x = 0; x <= W; x += 6){
+            var u = x / W;
+            /* une enveloppe qui s'éteint aux deux bouts : le ruban ne se coupe pas net */
+            var env = Math.pow(Math.sin(Math.PI * u), 1.6);
+            var y = mid + Math.sin(u * (7.5 + b * 3.1) + phase * (1 + b * 0.42)) * amp * k * env
+                        + Math.sin(u * (17 + b * 5) - phase * 1.7) * amp * 0.22 * k * env;
+            if(x === 0) ctx2d.moveTo(x, y); else ctx2d.lineTo(x, y);
+          }
+          ctx2d.strokeStyle = 'rgba(' + c[0] + ',' + c[1] + ',' + c[2] + ',' + (0.92 - b * 0.26) + ')';
+          ctx2d.lineWidth = 5 - b * 1.2;
+          ctx2d.lineCap = 'round';
+          ctx2d.stroke();
+        }
+      }
+      function boucle(){
+        phase += calme ? 0 : (etat === 'parle' ? 0.085 : 0.055);
+        energie *= calme ? 0.5 : 0.945;
+        dessiner();
+        anim = requestAnimationFrame(boucle);
+      }
+      function majEtat(e){
+        etat = e;
+        if(elEtat) elEtat.textContent = e === 'parle' ? 'Alfred répond' : (e === 'fini' ? 'terminé' : 'à l’écoute');
+      }
+      function majDit(t){
+        if(!elDit) return;
+        var v = String(t || '').trim();
+        elDit.textContent = v || 'Dis-lui quoi faire…';
+        elDit.classList.toggle('vide', !v);
+      }
+      function ouvrir(){
+        majEtat('ecoute'); majDit(''); if(elRep) elRep.textContent = '';
+        if(champ) champ.value = '';
+        if(elAide) elAide.innerHTML = microHorsDePortee()
+          ? 'Le micro du navigateur n’est pas accessible ici, mais celui de ton clavier l’est : <kbd>Fn</kbd> <kbd>Fn</kbd> sur le Mac, la touche 🎤 sur l’iPhone. Dicte ta phrase, elle s’écrit ici. <kbd>Entrée</kbd> pour exécuter.'
+          : 'Parle, ou écris. <kbd>Entrée</kbd> pour exécuter, <kbd>Échap</kbd> pour fermer.';
+        ov.hidden = false;
+        if(!anim) boucle();
+        if(champ) setTimeout(function(){ try{ champ.focus(); }catch(e){} }, 30);
+      }
+      function fermer(){
+        ov.hidden = true;
+        if(anim){ cancelAnimationFrame(anim); anim = null; }
+        energie = 0;
+      }
+      function valider(){
+        var phrase = champ ? String(champ.value || '').trim() : '';
+        if(!phrase) return;
+        majDit(phrase);
+        var rep = executer(phrase);
+        var texte = rep || 'Je n’ai pas compris, Monsieur : « ' + phrase + ' »';
+        if(elRep) elRep.textContent = texte;
+        if(champ) champ.value = '';
+        majEtat('parle'); impulsion(0.9);
+        showToast('🎙️ ' + texte);
+        dire(texte, function(){ majEtat('fini'); });
+      }
+      if(champ){
+        /* chaque mot qui arrive donne une impulsion : la dictée les écrit un par un */
+        champ.addEventListener('input', function(){ majDit(champ.value); impulsion(0.26); });
+        champ.addEventListener('keydown', function(e){
+          if(e.key === 'Enter'){ e.preventDefault(); valider(); }
         });
+      }
+      var bOk = document.getElementById('alfred-ok'), bF = document.getElementById('alfred-fermer');
+      if(bOk) bOk.addEventListener('click', valider);
+      if(bF) bF.addEventListener('click', fermer);
+      ov.addEventListener('click', function(e){ if(e.target === ov) fermer(); });
+      return {ouvrir: ouvrir, fermer: fermer, impulsion: impulsion, etat: function(){ return etat; },
+              dit: majDit, ouvert: function(){ return !ov.hidden; }};
+    })();
+
+    function parlerAuClavier(){
+      if(ALF){ ALF.ouvrir(); return; }
+      askText('🦇 Alfred — dicte ou écris ta phrase :', '', function(phrase){
+        if(!phrase) return;
+        var rep = executer(phrase);
+        repondreTout(rep || 'Je n’ai pas compris, Monsieur : « ' + String(phrase).trim() + ' »');
+      });
     }
     /* Vrai si le micro ne peut PAS s'ouvrir ici, su sans rien demander à personne :
        navigateur sans reconnaissance, ou cadre qui la refuse. */
@@ -13150,6 +13292,10 @@
     }
     function brancher(r){
       r.onresult = function(ev){
+        try{
+          var der = ev.results[ev.resultIndex === undefined ? 0 : ev.resultIndex];
+          if(ALF && ALF.ouvert() && der && der[0]) ALF.dit(der[0].transcript);
+        }catch(e){}
         for(var i = ev.resultIndex === undefined ? 0 : ev.resultIndex; i < ev.results.length; i++){
           var res = ev.results[i];
           if(res.isFinal === false) continue;
@@ -13266,13 +13412,13 @@
       demarrer();
     });
 
-    return {dispo: !!Reco, executer:executer, ecouter:ecouter, veille:basculerVeille,
+    return {dispo: !!Reco, executer:executer, ecouter:ecouter, veille:basculerVeille, ecran: ALF,
             dire:dire, voix:choisirVoix, diagnostic:demanderMicro, explique:EXPLIQUE,
             cause:function(){ return derniereCause; },
             enVeille:function(){ return continu; }, ecoutant:function(){ return ecoute; },
             parlant:function(){ return parle; }};
   })();
-  try{ window.__bcVoix = VOIX; }catch(e){}
+  try{ window.__bcVoix = VOIX; window.__bcAlfred = VOIX && VOIX.ecran; }catch(e){}
   /* Crochet de test : injecter des évènements d'agenda sans connecteur, pour éprouver la
      règle « un bloc occupé par un vrai rendez-vous n'est pas manqué ». */
   try{ window.__bcSetGcal = function(o){ gcalWeekEvents = o; try{ rafraichirAgendas(); }catch(e){} }; }catch(e){}
@@ -13570,6 +13716,7 @@
   (function(){
     var OVERLAYS = [
       {id:'ask-overlay', fermer:'ask-cancel'},
+      {id:'alfred-overlay', fermer:'alfred-fermer'},
       {id:'cloture-overlay', fermer:'cloture-close'},
       {id:'backup-overlay', fermer:'backup-close'},
       {id:'opening-ritual-overlay', fermer:'ritual-close'},
