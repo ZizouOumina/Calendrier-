@@ -56,6 +56,15 @@
   em{font-style:italic; color:var(--ink-2);}
   a{color:var(--deep);}
 
+  nav.som{margin:30px 0 6px; padding:18px 20px; background:var(--sheet); border:1px solid var(--line-2);}
+  nav.som .k{font-family:var(--mono); font-size:10.5px; letter-spacing:.14em; text-transform:uppercase;
+             color:var(--ink-3); margin-bottom:12px;}
+  nav.som ol{list-style:none; margin:0; padding:0; columns:2; column-gap:34px;}
+  nav.som li{margin:0 0 7px; break-inside:avoid;}
+  nav.som a{color:var(--ink-2); text-decoration:none; display:flex; gap:10px; align-items:baseline;}
+  nav.som a b{font-family:var(--mono); font-weight:500; color:var(--deep); font-size:11px; min-width:18px;}
+  nav.som a:hover{color:var(--ink);}
+  @media (max-width:560px){ nav.som ol{columns:1;} }
   .mur{border-left:3px solid var(--clay); background:var(--clay-soft); padding:15px 17px; margin:18px 0;}
   .mur .t{font-family:var(--mono); font-size:10.5px; letter-spacing:.12em; text-transform:uppercase;
           color:var(--clay); display:block; margin-bottom:6px;}
@@ -141,13 +150,35 @@
   <p class="lede">Devenir connu, en trois langues, sans que les études en paient le prix. <b>Le plan est écrit pour être suivi, pas pour être admiré</b> — la contrainte qui le gouverne n'est pas la créativité, c'est le temps que tu n'as pas.</p>
 </header>
 
-<h2>La thèse</h2>
+<nav class="som" aria-label="Sommaire">
+  <div class="k">Ce que contient ce plan</div>
+  <ol>
+    <li><a href="#these"><b>01</b>La thèse</a></li>
+    <li><a href="#chiffres"><b>02</b>Ce que disent les chiffres</a></li>
+    <li><a href="#langues"><b>03</b>Trois langues</a></li>
+    <li><a href="#frontieres"><b>04</b>Ce qui traverse les frontières</a></li>
+    <li><a href="#piliers"><b>05</b>Les quatre piliers</a></li>
+    <li><a href="#murs"><b>06</b>Les trois murs</a></li>
+    <li><a href="#video"><b>07</b>Comment se construit une vidéo</a></li>
+    <li><a href="#universel"><b>08</b>Du contenu que tout le monde comprend</a></li>
+    <li><a href="#annees"><b>09</b>Année par année</a></li>
+    <li><a href="#emboitement"><b>10</b>Comment il s'emboîte dans tes autres plans</a></li>
+    <li><a href="#production"><b>11</b>La semaine de production</a></li>
+    <li><a href="#mesurer"><b>12</b>Ce qu'il faut mesurer</a></li>
+    <li><a href="#pieges"><b>13</b>Les onze pièges</a></li>
+    <li><a href="#decider"><b>14</b>Ce qu'il faut décider cette semaine</a></li>
+    <li><a href="#automatiser"><b>15</b>Ce que tu automatises, et ce que tu n'automatises pas</a></li>
+    <li><a href="#semaine1"><b>16</b>Les sept premiers jours</a></li>
+  </ol>
+</nav>
+
+<h2 id="these">La thèse</h2>
 <p>Tu ne comptes pas rester en Espagne. Ça change tout, et en mieux : <strong>ton actif n'est pas une clientèle locale, c'est un nom portable.</strong> Une patientèle d'Alicante ne se déménage pas. Une audience francophone et anglophone, si — elle te suit à Paris, à Londres, à Montréal, à Dubaï ou à Casablanca, et elle vaut autant pour un cabinet que pour une marque que tu vendras en ligne.</p>
 <p>Le corollaire, qui est la seule chose à retenir de cette page : <strong>la dentisterie n'est pas ton sujet, c'est ta preuve.</strong> Le sujet, c'est ce que tu fais avec ta vie — se lever à 5 h 30, apprendre une langue de zéro pendant qu'on apprend un métier, construire une entreprise à côté, tenir un corps, tenir une pratique religieuse, arrêter une addiction. Des milliers de gens font du contenu de motivation. Presque personne ne peut prouver ce qu'il raconte avec cinq ans d'un cursus de santé filmé en direct.</p>
 <div class="note"><strong>La différence entre toi et un compte de motivation quelconque tient en une phrase.</strong> Eux disent « lève-toi tôt ». Toi tu montres, jour 1 puis jour 400, un examen d'anatomie passé dans une langue que tu ne parlais pas au jour 1. La motivation est la <em>forme</em> ; le cursus, la langue et le business sont la <em>substance</em>. Sans substance, la motivation est une marchandise que n'importe qui peut fabriquer avec une IA — et les données 2026 sont formelles : « lifestyle » n'est pas une niche, « lifestyle de quelqu'un de précis en train de faire une chose précise » en est une <sup>[1]</sup>.</div>
-<p>Deuxième corollaire, moins agréable : <strong>la première année, l'objectif n'est pas la croissance, c'est la survie.</strong> Publier 150 fois en douze mois sans que ta moyenne baisse vaut infiniment mieux que 500 000 vues en novembre et un abandon en février. Les comptes qui deviennent connus ne sont pas les meilleurs, ce sont ceux qui sont encore là au bout de dix-huit mois.</p>
+<p>Deuxième corollaire, moins agréable : <strong>la première année, l'objectif n'est pas la croissance, c'est la survie.</strong> Publier 100 fois en douze mois sans que ta moyenne baisse vaut infiniment mieux que 500 000 vues en novembre et un abandon en février. Les comptes qui deviennent connus ne sont pas les meilleurs, ce sont ceux qui sont encore là au bout de dix-huit mois.</p>
 
-<h2>Ce que disent les chiffres</h2>
+<h2 id="chiffres">Ce que disent les chiffres</h2>
 <p class="sub">Sept données publiques qui décident de presque tout ce qui suit. Sources numérotées en bas de page.</p>
 <div class="chiffres">
   <div><div class="n">50 %</div><div class="l">des spectateurs partent dans les <strong>trois premières secondes</strong> <sup>[2]</sup></div></div>
@@ -160,7 +191,7 @@
 </div>
 <p><strong>La conséquence la plus importante</strong> : la métrique à travailler n'est pas le nombre de vues, c'est la <strong>rétention</strong>. Instagram compte désormais les secondes vues, replays compris <sup>[3]</sup> — une vidéo de 15 secondes revue trois fois bat une vidéo d'une minute vue une fois. Bonne nouvelle pour quelqu'un qui n'a pas le temps de monter : le format court, dense et rejouable est à la fois le moins cher à produire et le mieux récompensé.</p>
 
-<h2>Trois langues : l'architecture, et pourquoi</h2>
+<h2 id="langues">Trois langues : l'architecture, et pourquoi</h2>
 <p>C'est la décision structurante du plan, et c'est là que la plupart des gens se ruinent : ils ouvrent trois comptes le même mois, en nourrissent zéro, et concluent au bout de six mois que « ça ne marche pas ». Les deux formats n'obéissent pas aux mêmes règles, et il faut les traiter séparément.</p>
 
 <h3>Format court (TikTok, Reels, Shorts) — un compte = une langue</h3>
@@ -189,7 +220,7 @@
 </table></div>
 <p class="sub"><strong>Et le doublage plutôt que les sous-titres</strong>, quand tu passeras à l'anglais sur le format long : sur un téléphone, les sous-titres occupent la zone de l'image et demandent une attention qu'on préfère donner ailleurs ; une piste audio doublée passe partout <sup>[4]</sup>. En format court, refaire la prise reste plus rapide et plus vivant que n'importe quel outil.</p>
 
-<h2>Ce que tu publies, et ce qui traverse les frontières</h2>
+<h2 id="frontieres">Ce que tu publies, et ce qui traverse les frontières</h2>
 <p class="sub">Tout ne se traduit pas. Voilà la ligne de partage, et elle décide de ce que tu tournes une fois pour deux comptes.</p>
 <div class="tw"><table>
   <thead><tr><th>Sujet</th><th>FR</th><th>EN</th><th>ES</th><th>Remarque</th></tr></thead>
@@ -205,7 +236,7 @@
   </tbody>
 </table></div>
 
-<h2>Les quatre piliers</h2>
+<h2 id="piliers">Les quatre piliers</h2>
 <p class="sub">Une rotation, pas une improvisation. Une publication par pilier et par semaine : le compte a une forme reconnaissable au bout de trois semaines, et tu ne te demandes jamais quoi faire.</p>
 <ol class="piliers">
   <li><b>La discipline, prouvée</b><span>Le réveil, le parc à 6 h, le coucher à 21 h 55, la semaine ratée. C'est le pilier « motivation », mais toujours attaché à une preuve datée. Jamais une citation sur fond de coucher de soleil : ce format-là est mort, et il ne construit rien.</span></li>
@@ -215,7 +246,7 @@
 </ol>
 <p class="sub"><strong>Un cinquième pilier, plus tard :</strong> le business. Il n'ouvre que le jour où tu as des chiffres réels à montrer. Parler d'e-commerce avant d'avoir vendu est le raccourci le plus court vers l'insignifiance.</p>
 
-<h2>Les trois murs</h2>
+<h2 id="murs">Les trois murs</h2>
 <p class="sub">À poser avant la première vidéo, parce qu'aucun des trois ne se répare — et d'autant plus si tu deviens connu : une audience large transforme la moindre erreur en dossier.</p>
 
 <div class="mur"><span class="t">Mur 1 · Tu n'es pas dentiste avant 2031</span>
@@ -234,7 +265,7 @@
   <p><strong>Cloison étanche :</strong> tes boutiques ont leurs marques, leurs comptes, leur propre visage — ou pas de visage du tout. Tu peux parler <em>d'entreprendre</em> sur ton compte personnel — les chiffres, les leçons, les échecs — sans jamais y vendre le produit.</p>
 </div>
 
-<h2>Comment se construit une vidéo</h2>
+<h2 id="video">Comment se construit une vidéo</h2>
 <p>Vu les chiffres, une seule structure mérite d'être apprise, et elle tient en quatre temps. Elle s'applique aux quatre piliers et aux trois langues sans changer.</p>
 <div class="tw"><table>
   <thead><tr><th>Temps</th><th>Durée</th><th>Ce qui s'y passe</th></tr></thead>
@@ -247,7 +278,7 @@
 </table></div>
 <div class="note"><strong>La règle des 45 secondes.</strong> Tant que tu es étudiant, ne dépasse pas 45 secondes en format court. Une vidéo de 30 secondes retenue à 70 % rapporte plus qu'une de 90 secondes retenue à 25 %, et elle te coûte trois fois moins à tourner. La longueur est une récompense qu'on gagne, pas un point de départ.</div>
 
-<h2>Du contenu que tout le monde comprend</h2>
+<h2 id="universel">Du contenu que tout le monde comprend</h2>
 <p>Il y a un piège dans « je veux que tout le monde puisse aimer ». Pris au pied de la lettre, il produit du contenu <em>sur rien</em> — une citation, une musique, un plan de coucher de soleil — et ce contenu-là n'appartient à personne, donc personne ne s'y attache. C'est exactement ce que disent les données de niche : « lifestyle » n'est pas un sujet, quelqu'un de précis en train de faire une chose précise en est un <sup>[1]</sup>.</p>
 <p><strong>La bonne lecture est l'inverse : forme universelle, substance spécifique.</strong> Ce qui doit être compréhensible par tous, ce n'est pas le sujet — c'est la <em>façon</em>. Un plan macro sur une fraise qui creuse une dent artificielle n'a besoin d'aucune langue, d'aucun contexte et d'aucun diplôme pour être regardé jusqu'au bout. Et il ne parle que de toi.</p>
 
@@ -366,7 +397,7 @@
   <li><strong>Ne jamais publier ce qu'on n'a pas vécu la semaine même.</strong> C'est la règle qui protège la substance. Le jour où tu inventes une journée pour faire une vidéo, le compte devient un compte de motivation comme les autres — et il n'a plus rien d'unique.</li>
 </ul>
 
-<h2>Année par année</h2>
+<h2 id="annees">Année par année</h2>
 
 <div class="an" data-an="2026-27">
   <h3>L'archive silencieuse</h3>
@@ -375,6 +406,7 @@
   <p><strong>La cadence n'est pas constante, et c'est délibéré</strong> : elle suit les phases de ta grille, parce qu'un plan qui demande trois vidéos par semaine en octobre demande des heures qui n'existent pas. Le détail est dans « Comment ce plan s'emboîte », plus bas ; en résumé : <strong>1 par semaine jusqu'au 18 octobre, 2 jusqu'au 29 novembre, 3 ensuite</strong>. Les données de marché disent d'ailleurs qu'un débutant doit commencer à 3-4 par semaine et que le saut de rendement se joue entre 2 et 5 publications hebdomadaires <sup>[12]</sup> — tu es dans la bonne fenêtre dès décembre, et les cinq premières semaines servent à trouver ton cadre, pas à croître.</p>
   <p>Tu tournes tout en un bloc, le dimanche. Tu ne montes pas : tu coupes le début et la fin, tu ajoutes un texte, tu programmes. Une vidéo tournée en quatre minutes et publiée bat une vidéo parfaite jamais finie.</p>
   <h3>Les vingt premières vidéos, déjà écrites</h3>
+  <p class="sub">Celles-ci se font <strong>dans l'ordre</strong> : elles installent le cadre, le ton et les séries. Une fois épuisées, tu pioches alors dans la bibliothèque des <a href="#universel">cinquante publications rangées par format</a>, en respectant la rotation des quatre piliers.</p>
   <ul class="idees">
     <li><b>« Demain je commence dentaire à Alicante et je ne parle pas espagnol. »</b> <span>Le plan des six mois à l'écran. Une promesse datée et vérifiable — le meilleur premier contenu qui existe, parce qu'il crée l'obligation de revenir.</span></li>
     <li><b>Une journée entière, 5 h 30 → 21 h 55, en 40 secondes.</b> <span>Un plan par bloc. À refaire au mois 6 et au mois 12 : la comparaison est un contenu à elle seule.</span></li>
@@ -490,7 +522,7 @@
   <p>C'est le moment où le plan rapporte tout ce qu'il a coûté. Et c'est aussi le moment où il devient impossible à rattraper pour ceux qui commencent.</p>
 </div>
 
-<h2>Comment ce plan s'emboîte dans les autres</h2>
+<h2 id="emboitement">Comment ce plan s'emboîte dans les autres</h2>
 <p class="sub">Un plan de contenu qui ignore les autres plans est un vœu. Voilà les heures réelles, calculées sur ta grille — pas estimées.</p>
 <p>Ta semaine porte déjà <strong>33 heures de révision</strong> et <strong>20 heures de « Projets perso »</strong> dans la grille type, plus une vingtaine d'heures de cours et quatre séances de sport. Mais les blocs « Projets perso » ne sont pas tous à toi : les phases Español les réquisitionnent, et voilà le compte exact.</p>
 <div class="tw"><table>
@@ -508,17 +540,27 @@
   <strong>Trois.</strong> Ces deux projets ne se disputent pas les mêmes heures si tu les sépares proprement : <strong>le contenu vit sur le dimanche, l'e-commerce sur la semaine</strong>. Le jour où ils se marchent dessus, c'est le contenu qui cède — il se rattrape, une vente manquée aussi, une matière non révisée en novembre non.</div>
 <p><strong>Et le seul vrai risque, que ni l'un ni l'autre des dossiers ne dit :</strong> tu as trois projets ambitieux qui démarrent le même mois — un cursus dans une langue étrangère, une entreprise, une marque personnelle — plus un corps à transformer et une addiction à arrêter. Aucun être humain ne tient les cinq à fond simultanément. La grille les a déjà séquencés pour toi : <em>l'espagnol d'abord</em> (sept-oct), <em>l'entreprise ensuite</em> (à partir du 19 oct), <em>le contenu en fil continu à faible débit</em> tout du long. Respecter cet ordre est plus important que n'importe quelle astuce de ce document.</p>
 
-<h2>La semaine de production</h2>
-<p class="sub">Tout tient dans un bloc, et le bloc existe déjà dans ta grille. Rien de ce qui suit ne s'ajoute à ta semaine : ça remplace un créneau « Projets perso » du dimanche.</p>
+<h2 id="production">La semaine de production</h2>
+<p class="sub">Tout tient dans un seul bloc du dimanche, et sa longueur suit la phase de ta grille — pas l'inverse. Rien ne s'ajoute à ta semaine.</p>
+<div class="tw"><table>
+  <thead><tr><th>Période</th><th>Vidéos</th><th>Tourner</th><th>Doubler</th><th>Couper &amp; programmer</th><th>Répondre</th><th>Total</th></tr></thead>
+  <tbody>
+    <tr><td class="n">14 sept → 18 oct</td><td class="n">1</td><td class="n">15 min</td><td class="n">—</td><td class="n">10 min</td><td class="n">10 min</td><td class="n"><strong>35 min</strong></td></tr>
+    <tr><td class="n">19 oct → 29 nov</td><td class="n">2</td><td class="n">25 min</td><td class="n">—</td><td class="n">15 min</td><td class="n">10 min</td><td class="n"><strong>50 min</strong></td></tr>
+    <tr><td class="n">30 nov → mars</td><td class="n">3</td><td class="n">40 min</td><td class="n">—</td><td class="n">20 min</td><td class="n">10 min</td><td class="n"><strong>1 h 10</strong></td></tr>
+    <tr><td class="n">à partir d'avril</td><td class="n">3 ×2 langues</td><td class="n">40 min</td><td class="n">20 min</td><td class="n">25 min</td><td class="n">15 min</td><td class="n"><strong>1 h 40</strong></td></tr>
+  </tbody>
+</table></div>
 <div class="semaine">
-  <div class="bloc"><div class="h">Dimanche · 55 min</div><b>Tourner</b><span>Quatre séquences d'affilée, une prise chacune. Même mur, même lumière, même cadre : la contrainte fait la reconnaissance visuelle et supprime la décision.</span></div>
-  <div class="bloc"><div class="h">Dimanche · 20 min</div><b>Doubler</b><span>À partir du mois 7 : les mêmes images, la voix refaite en anglais. Deux comptes nourris pour un seul tournage.</span></div>
-  <div class="bloc"><div class="h">Dimanche · 25 min</div><b>Couper et programmer</b><span>Le début, la fin, un texte, une accroche. Programmées mardi, jeudi, samedi. Tu ne rouvres pas l'application de la semaine.</span></div>
-  <div class="bloc"><div class="h">Dimanche · 10 min</div><b>Répondre</b><span>Commentaires et messages, en une fois. Répondre à tout la première année : c'est là que se fabriquent les mille premiers.</span></div>
+  <div class="bloc"><div class="h">Étape 1</div><b>Tourner</b><span>Les séquences d'affilée, une prise chacune. Même mur, même lumière, même cadre : la contrainte fait la reconnaissance visuelle et supprime la décision.</span></div>
+  <div class="bloc"><div class="h">Étape 2</div><b>Doubler</b><span>À partir d'avril 2027 : les mêmes images, la voix refaite en anglais. Deux comptes nourris pour un seul tournage.</span></div>
+  <div class="bloc"><div class="h">Étape 3</div><b>Couper et programmer</b><span>Le début, la fin, un texte, une accroche. Programmées à l'avance. Tu ne rouvres pas l'application de la semaine.</span></div>
+  <div class="bloc"><div class="h">Étape 4</div><b>Répondre</b><span>Commentaires et messages, en une fois. Répondre à tout la première année : c'est là que se fabriquent les mille premiers.</span></div>
+  <div class="bloc"><div class="h">Dans la semaine · 0 min</div><b>Capturer</b><span>Une photo, un bout d'écran, une phrase notée dans la Batcave quand quelque chose arrive. C'est la matière du dimanche suivant, et ça ne coûte rien.</span></div>
 </div>
 <div class="note"><strong>La règle qui protège les études :</strong> si une semaine tu es sous 70 % de ton plan de révision, tu sautes la production — pas la révision. Le contenu se rattrape, une matière non révisée en novembre se paie en janvier. La Batcave connaît déjà ta fidélité au plan : sers-t'en comme d'un feu rouge.</div>
 
-<h2>Ce qu'il faut mesurer</h2>
+<h2 id="mesurer">Ce qu'il faut mesurer</h2>
 <p class="sub">Les vues et les abonnés sont les deux chiffres les plus visibles et les moins utiles. Voilà ceux qui prédisent quelque chose.</p>
 <div class="tw"><table>
   <thead><tr><th>Mesure</th><th>Ce qu'elle dit</th><th>Seuil correct</th></tr></thead>
@@ -533,7 +575,7 @@
   </tbody>
 </table></div>
 
-<h2>Les dix pièges</h2>
+<h2 id="pieges">Les onze pièges</h2>
 <ul>
   <li><strong>Ouvrir les trois langues en septembre.</strong> Le piège numéro un de ce plan précis. Trois comptes faibles ne font pas un compte fort, et tu nourriras zéro.</li>
   <li><strong>Publier trois fois par semaine dès le 14 septembre.</strong> Le second piège, et il est arithmétique : jusqu'au 18 octobre tu as zéro heure de projet libre. Ces heures-là existent, mais elles appartiennent à l'espagnol.</li>
@@ -548,7 +590,52 @@
   <li><strong>Croire que ça ne marche pas au bout de six mois.</strong> Rien ne se voit avant douze à dix-huit mois <sup>[7]</sup>. C'est pour ça que l'objectif de l'an 1 est un nombre de publications, pas un nombre d'abonnés.</li>
 </ul>
 
-<h2>Ce qu'il faut décider cette semaine</h2>
+<h2 id="automatiser">Ce que tu automatises, et ce que tu n'automatises pas</h2>
+<p>La tentation est de tout automatiser dès le départ : je dépose une vidéo, elle part partout. C'est faisable, et c'est un mauvais calcul — les chiffres ci-dessous viennent des documentations officielles, vérifiées.</p>
+<div class="tw"><table>
+  <thead><tr><th>Plateforme</th><th>Publication par programme</th><th>Ce que ça coûte vraiment</th></tr></thead>
+  <tbody>
+    <tr><td><strong>LinkedIn</strong></td><td class="n">✅ simple</td><td>Une app, le produit « Share on LinkedIn », le scope <code>w_member_social</code>. En libre-service, une heure. <sup>[14]</sup></td></tr>
+    <tr><td><strong>Instagram / Reels</strong></td><td class="n">⚠️ lourd</td><td>Compte professionnel + Page Facebook liée + app Meta + <strong>revue d'app</strong> de <code>instagram_business_content_publish</code>, avec démonstration filmée. <strong>Deux à quatre semaines.</strong> <sup>[15]</sup></td></tr>
+    <tr><td><strong>TikTok</strong></td><td class="n">⚠️ piégeux</td><td>L'API existe, mais <strong>sans audit validé, toute publication directe est en <code>SELF_ONLY</code></strong> — visible de toi seul. La seule voie sans audit dépose dans tes brouillons, et tu finis à la main. <sup>[16]</sup></td></tr>
+    <tr><td><strong>YouTube</strong></td><td class="n">✅ mais quota</td><td>Data API v3 : 10 000 unités par jour, un envoi en coûte 1 600, soit six par jour. App non vérifiée : vidéos forcées en privé.</td></tr>
+    <tr><td><strong>X</strong></td><td class="n">💸</td><td>Accès en écriture payant, de l'ordre de 100 $ par mois.</td></tr>
+  </tbody>
+</table></div>
+<div class="note"><strong>La décision : n'automatise pas la publication, automate l'ÉCRITURE.</strong> Un planificateur du commerce — Metricool, Publer, Buffer, Later — coûte 15 à 25 € par mois, a déjà passé tous ces audits, gère le renouvellement des jetons (ceux d'Instagram expirent tous les 60 jours), et plusieurs se branchent directement sur un dossier Google Drive. Reconstruire ça te coûterait des jours de paperasse et une maintenance permanente, pour un débit de trois vidéos par semaine. Mauvais échange.</div>
+<p><strong>En revanche, ce qu'aucun de ces outils ne fait, c'est écrire.</strong> Or le travail cher, dans ce plan, n'est pas d'appuyer sur « publier » : c'est de produire pour chaque vidéo l'accroche des trois premières secondes, la légende en trois langues, le titre YouTube et les hashtags — trois fois par semaine, pendant cinq ans, en plus des études. C'est <em>ça</em> qu'il faut automatiser, et ça se fait avec ce que tu as déjà : un dossier Drive, une base Notion, et une routine hebdomadaire qui lit l'un et remplit l'autre.</p>
+<div class="tw"><table>
+  <thead><tr><th></th><th>Toi</th><th>La machine</th></tr></thead>
+  <tbody>
+    <tr><td>Vivre la semaine</td><td class="n">✓</td><td class="n">—</td></tr>
+    <tr><td>Filmer, dimanche</td><td class="n">✓</td><td class="n">—</td></tr>
+    <tr><td>Déposer les fichiers dans Drive</td><td class="n">✓</td><td class="n">—</td></tr>
+    <tr><td>Écrire accroches, légendes ×3, titres, hashtags</td><td class="n">—</td><td class="n">✓</td></tr>
+    <tr><td>Placer les dates selon la cadence de la phase</td><td class="n">—</td><td class="n">✓</td></tr>
+    <tr><td>Vérifier qu'aucun contenu ne frôle le mur 1</td><td class="n">✓ relecture</td><td class="n">✓ alerte</td></tr>
+    <tr><td>Publier</td><td class="n">—</td><td class="n">le planificateur</td></tr>
+    <tr><td>Répondre aux commentaires</td><td class="n"><strong>✓ toujours</strong></td><td class="n">jamais</td></tr>
+  </tbody>
+</table></div>
+<p class="sub">La dernière ligne n'est pas négociable. Une réponse écrite par une machine se repère, et le jour où ça se voit, tout le reste devient suspect — y compris ce qui est vrai.</p>
+
+<h2 id="semaine1">Les sept premiers jours</h2>
+<p class="sub">Du lundi 14 au dimanche 20 septembre. Tout tient dans des créneaux qui existent déjà, et rien ne mord sur la révision.</p>
+<div class="tw"><table>
+  <thead><tr><th>Jour</th><th>Quand</th><th>Quoi</th><th>Durée</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Lundi 14</strong></td><td class="n">le soir</td><td><strong>La vidéo 1.</strong> Le plan des six mois à l'écran, une phrase, une promesse datée. Publiée le soir même, avant de te dégonfler.</td><td class="n">15 min</td></tr>
+    <tr><td><strong>Mardi 15</strong></td><td class="n">trajet</td><td>Le test des 60 secondes : une prise en français, une en anglais, sans script. Tu regardes les deux mercredi.</td><td class="n">5 min</td></tr>
+    <tr><td><strong>Mercredi 16</strong></td><td class="n">le soir</td><td><strong>Tu tranches la langue de départ</strong>, tu crées le compte, tu écris la bio avec la mention d'étudiant et l'absence de conseil médical.</td><td class="n">20 min</td></tr>
+    <tr><td><strong>Jeudi 17</strong></td><td class="n">—</td><td>Rien. Tu vis ta semaine, tu captures ce qui passe : une photo, un bout d'écran, une phrase dans la Batcave.</td><td class="n">0</td></tr>
+    <tr><td><strong>Vendredi 18</strong></td><td class="n">le soir</td><td>Tu choisis <strong>le mur, la lumière et le cadre</strong>. Une fois pour cinq ans. Tu fais un essai de dix secondes pour voir ce que ça donne.</td><td class="n">10 min</td></tr>
+    <tr><td><strong>Samedi 19</strong></td><td class="n">—</td><td>Rien.</td><td class="n">0</td></tr>
+    <tr><td><strong>Dimanche 20</strong></td><td class="n">bloc du matin</td><td><strong>Le premier vrai bloc de production</strong> : tu tournes la vidéo 2 de la liste, tu la coupes, tu la programmes. Et tu poses le bloc récurrent dans la Batcave.</td><td class="n">35 min</td></tr>
+  </tbody>
+</table></div>
+<div class="note"><strong>Total de la première semaine : environ une heure vingt.</strong> C'est tout ce que ce plan te demande pour exister. Si tu ne trouves pas cette heure-là, ce n'est pas un problème de plan — c'est que le moment n'est pas le bon, et il vaut mieux le savoir le 20 septembre que le 20 janvier.</div>
+
+<h2 id="decider">Ce qu'il faut décider cette semaine</h2>
 <ul>
   <li><strong>Le nom.</strong> Ton prénom et ton nom, ou une variante prononçable en français comme en anglais. Pas de pseudonyme : tu construis un nom de médecin. Le même partout, avec juste un suffixe de langue pour le second compte.</li>
   <li><strong>La langue de départ</strong>, par le test des 60 secondes ci-dessus. Et la date d'ouverture du compte anglais, notée dans la Batcave : <strong>avril 2027</strong>.</li>
@@ -576,8 +663,11 @@
     <li><a href="https://www.acceleroi.com/blog/unlocking-success-exploring-the-average-conversion-rate-for-online-courses">Taux de conversion des cours en ligne, repères 2026</a> : 1 à 3 % sur une page de vente, 3 à 5 % sur une page d'inscription.</li>
     <li><a href="https://buffer.com/resources/how-to-get-followers-on-tiktok/">Buffer — Ways to Get More Followers on TikTok (2026)</a> et <a href="https://influenceflow.io/resources/tiktok-posting-schedule-optimization-the-complete-2026-guide-to-maximizing-views-and-engagement/">TikTok Posting Schedule Optimization 2026</a> : un débutant démarre à 3-4 publications par semaine, le saut de rendement se joue entre 2 et 5 par semaine, et au-delà de 5 par jour l'algorithme lit du spam. Croissance significative constatée en trois à six mois de publication régulière.</li>
     <li><a href="https://journals.sagepub.com/doi/abs/10.1509/jmr.10.0353">Berger, J. et Milkman, K. — « What Makes Online Content Viral? », <em>Journal of Marketing Research</em>, 2012</a> (<a href="http://jonahberger.com/wp-content/uploads/2013/02/ViralityB.pdf">texte intégral</a>) : sur l'ensemble des articles du <em>New York Times</em> publiés en trois mois, ce sont les émotions à forte activation — émerveillement, colère, anxiété — qui se transmettent, et non les émotions à faible activation comme la tristesse ; l'utilité pratique, la surprise et l'intérêt jouent indépendamment.</li>
+    <li><a href="https://learn.microsoft.com/en-us/linkedin/consumer/integrations/self-serve/share-on-linkedin">LinkedIn — Share on LinkedIn (documentation Microsoft)</a> : produit en libre-service, scope <code>w_member_social</code> pour publier sur un profil personnel.</li>
+    <li><a href="https://postproxy.dev/blog/instagram-reels-api-publishing-guide/">Instagram Reels API — guide de publication (2026)</a> et <a href="https://www.netrows.com/blog/instagram-graph-api-guide-2026">Instagram Graph API 2026</a> : compte professionnel lié à une Page, revue d'app de <code>instagram_business_content_publish</code>, deux à quatre semaines, limites de publication.</li>
+    <li><a href="https://developers.tiktok.com/docs/en/content-posting-api-get-started">TikTok for Developers — Content Posting API</a> et <a href="https://www.postpeer.dev/blog/best-tiktok-posting-api">analyse de l'audit 2026</a> : sans audit validé, la publication directe est restreinte à <code>SELF_ONLY</code> ; l'alternative dépose dans les brouillons du créateur.</li>
   </ol>
   <h3>Avertissement</h3>
-  <p>Les paliers d'audience sont des ordres de grandeur, pas des promesses, et les taux de conversion cités sont des médianes de marché. Le seul engagement du plan est celui de l'an 1 : publier 150 fois. Les règles de publicité sanitaire évoluent et diffèrent d'un pays à l'autre : revois ce chapitre avant chaque rentrée, et avant toute installation, vérifie les règles de l'ordre professionnel du pays visé.</p>
+  <p>Les paliers d'audience sont des ordres de grandeur, pas des promesses, et les taux de conversion cités sont des médianes de marché. Le seul engagement du plan est celui de l'an 1 : publier 100 fois. Les règles de publicité sanitaire évoluent et diffèrent d'un pays à l'autre : revois ce chapitre avant chaque rentrée, et avant toute installation, vérifie les règles de l'ordre professionnel du pays visé.</p>
 </footer>
 </div>
