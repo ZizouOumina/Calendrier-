@@ -1,0 +1,246 @@
+<title>Le protocole peau</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Epilogue:wght@600;700;800&family=Karla:ital,wght@0,400;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root{
+    --paper:#F2F5F4; --sheet:#FFFFFF; --sunk:#E8EEEC; --line:#CBD8D5; --line-soft:#DEE7E5;
+    --ink:#16201F; --ink-2:#4A5A58; --ink-3:#7C8C8A;
+    --teal:#0E6B63; --teal-soft:#DCEDEA;
+    --sun:#B45D12; --sun-soft:#FAECDB;
+    --no:#9E3B34; --no-soft:#F7E3E1;
+    --display:'Epilogue','Helvetica Neue',Arial,sans-serif;
+    --body:'Karla','Helvetica Neue',Arial,sans-serif;
+    --mono:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper:#0E1514; --sheet:#161F1E; --sunk:#1D2726; --line:#2C3937; --line-soft:#232E2D;
+      --ink:#E4ECEA; --ink-2:#A9B8B5; --ink-3:#7A8A87;
+      --teal:#5CC9BB; --teal-soft:#0F2E2B;
+      --sun:#E0A055; --sun-soft:#33240F;
+      --no:#E08B82; --no-soft:#39201E;
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#0E1514; --sheet:#161F1E; --sunk:#1D2726; --line:#2C3937; --line-soft:#232E2D;
+    --ink:#E4ECEA; --ink-2:#A9B8B5; --ink-3:#7A8A87;
+    --teal:#5CC9BB; --teal-soft:#0F2E2B;
+    --sun:#E0A055; --sun-soft:#33240F;
+    --no:#E08B82; --no-soft:#39201E;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; background:var(--paper); color:var(--ink); font-family:var(--body); font-size:16.5px; line-height:1.6; -webkit-font-smoothing:antialiased;}
+  a{color:var(--teal);}
+  .wrap{max-width:880px; margin:0 auto; padding:38px 20px 96px;}
+  @media (max-width:560px){ .wrap{padding:24px 15px 70px;} }
+
+  h1{font-family:var(--display); font-weight:800; font-size:clamp(34px,8vw,56px); line-height:1.02; margin:0; letter-spacing:-.02em; text-wrap:balance;}
+  h2{font-family:var(--display); font-weight:700; font-size:clamp(22px,4.5vw,29px); line-height:1.12; margin:0; text-wrap:balance;}
+  h3{font-family:var(--display); font-weight:700; font-size:17.5px; margin:0; line-height:1.25;}
+  .eyebrow{font-family:var(--mono); font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:var(--teal); margin-bottom:12px;}
+  .lede{font-size:18px; color:var(--ink-2); margin:15px 0 0; max-width:58ch;}
+  p{margin:11px 0;} ul{padding-left:20px; margin:10px 0;} li{margin:6px 0;}
+  .sec{margin-top:50px; padding-top:20px; border-top:2px solid var(--ink);}
+
+  /* les deux moments de la journée */
+  .moments{display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-top:22px;}
+  @media (max-width:720px){ .moments{grid-template-columns:1fr;} }
+  .moment{border:1px solid var(--line); background:var(--sheet); display:flex; flex-direction:column;}
+  .moment-head{padding:14px 17px; border-bottom:1px solid var(--line); background:var(--sunk); display:flex; align-items:baseline; justify-content:space-between; gap:10px;}
+  .moment-head .q{font-family:var(--mono); font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-3); white-space:nowrap;}
+  ol.etapes{list-style:none; margin:0; padding:6px 0; counter-reset:e;}
+  ol.etapes > li{counter-increment:e; display:grid; grid-template-columns:30px minmax(0,1fr); gap:12px; padding:12px 17px; border-bottom:1px dashed var(--line-soft); align-items:start;}
+  ol.etapes > li:last-child{border-bottom:none;}
+  ol.etapes > li::before{content:counter(e); font-family:var(--mono); font-size:13px; font-weight:500; color:var(--sheet); background:var(--teal); width:24px; height:24px; display:flex; align-items:center; justify-content:center; margin-top:1px;}
+  ol.etapes .quoi{font-weight:700; display:block; line-height:1.3;}
+  ol.etapes .comment{display:block; font-size:14.5px; color:var(--ink-2); margin-top:4px; line-height:1.5;}
+  li.spf::before{background:var(--sun) !important;}
+  li.spf .quoi{color:var(--sun);}
+  .attente{display:inline-flex; align-items:center; gap:6px; font-family:var(--mono); font-size:11.5px; letter-spacing:.06em; text-transform:uppercase; color:var(--teal); background:var(--teal-soft); padding:3px 7px; margin-top:6px;}
+
+  /* règles : à faire / à ne pas faire */
+  .regles{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:20px;}
+  @media (max-width:720px){ .regles{grid-template-columns:1fr;} }
+  .col{border:1px solid var(--line); background:var(--sheet);}
+  .col > .k{font-family:var(--mono); font-size:11px; letter-spacing:.14em; text-transform:uppercase; padding:11px 15px; border-bottom:1px solid var(--line);}
+  .col.oui > .k{color:var(--teal); background:var(--teal-soft);}
+  .col.non > .k{color:var(--no); background:var(--no-soft);}
+  .col ul{list-style:none; margin:0; padding:8px 15px 14px;}
+  .col li{padding:7px 0; border-bottom:1px dashed var(--line-soft); font-size:15.5px; line-height:1.5;}
+  .col li:last-child{border-bottom:none;}
+  .col li b{font-weight:700;}
+
+  .note{border-left:3px solid var(--sun); background:var(--sun-soft); padding:12px 15px; margin:18px 0; font-size:15.5px;}
+  .cle{border-left:3px solid var(--teal); background:var(--teal-soft); padding:12px 15px; margin:18px 0; font-size:15.5px;}
+  .stop{border-left:3px solid var(--no); background:var(--no-soft); padding:12px 15px; margin:18px 0; font-size:15.5px;}
+  .note b,.cle b,.stop b{color:var(--ink);}
+
+  /* la ligne des douze semaines */
+  .suivi{list-style:none; margin:22px 0 0; padding:0; position:relative;}
+  .suivi::before{content:""; position:absolute; left:10px; top:8px; bottom:8px; width:2px; background:var(--line);}
+  .suivi > li{position:relative; padding:0 0 20px 40px;}
+  .suivi > li::before{content:""; position:absolute; left:4px; top:5px; width:15px; height:15px; border-radius:50%; background:var(--paper); border:2px solid var(--line);}
+  .suivi > li.now::before{background:var(--teal); border-color:var(--teal); box-shadow:0 0 0 4px var(--teal-soft);}
+  .suivi > li.past::before{background:var(--line); border-color:var(--line);}
+  .suivi > li.past{opacity:.6;}
+  .suivi > li.verdict::before{background:var(--sun); border-color:var(--sun); box-shadow:0 0 0 4px var(--sun-soft);}
+  .suivi .d{font-family:var(--mono); font-size:12px; letter-spacing:.1em; text-transform:uppercase; color:var(--teal);}
+  .suivi li.verdict .d{color:var(--sun);}
+  .suivi li.past .d{color:var(--ink-3);}
+  .suivi .t{font-weight:700; margin:2px 0 3px; display:flex; align-items:center; gap:9px; flex-wrap:wrap;}
+  .suivi .s{font-size:15px; color:var(--ink-2);}
+  .suivi input{width:17px; height:17px; accent-color:var(--teal); cursor:pointer; flex:none;}
+  .suivi li.fait .t label{color:var(--ink-3); text-decoration:line-through;}
+
+  .tw{overflow-x:auto; margin:16px 0;}
+  table{border-collapse:collapse; width:100%; font-size:15px; background:var(--sheet); min-width:440px;}
+  th,td{padding:9px 12px; border:1px solid var(--line); text-align:left; vertical-align:top;}
+  th{font-family:var(--mono); font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-3); background:var(--sunk); font-weight:400;}
+  footer{margin-top:56px; padding-top:16px; border-top:1px solid var(--line); font-family:var(--mono); font-size:11.5px; color:var(--ink-3); line-height:1.8;}
+</style>
+
+<div class="wrap">
+
+  <div class="eyebrow">Protocole · à partir du 11 septembre 2026</div>
+  <h1>Le protocole peau</h1>
+  <p class="lede">Deux gestes le matin, deux le soir, et douze semaines avant de juger. Tout est ici : ce qu'on fait, ce qu'on ne fait pas, et la date exacte à laquelle on décide de la suite.</p>
+
+  <div class="cle" style="margin-top:24px;"><b>La seule chose à retenir si tu ne lis rien d'autre :</b> le Skinoren se met en <b>fine couche sur toute la zone</b> — visage entier, dos entier — jamais en touches sur les boutons. Il traite la peau qui va faire des boutons, pas ceux qui sont déjà là. Et l'écran solaire du matin n'est pas une option : c'est ce qui empêche les marques de s'installer.</div>
+
+  <div class="sec">
+    <h2>La routine quotidienne</h2>
+    <div class="moments">
+
+      <div class="moment">
+        <div class="moment-head"><h3>☀️ Matin</h3><span class="q">4 étapes</span></div>
+        <ol class="etapes">
+          <li><span class="quoi">Douche</span><span class="comment">Nettoyant Avène sur le visage, <b>à la main</b>. Gel douche au peroxyde de benzoyle 5 % sur le dos : on pose <b>1 à 2 minutes</b>, puis on rince. Eau tiède, jamais chaude.</span></li>
+          <li><span class="quoi">Tamponner</span><span class="comment">Serviette propre, on tapote. On ne frotte pas.</span></li>
+          <li><span class="quoi">Skinoren</span><span class="comment">Fine couche sur <b>tout</b> le visage et <b>tout</b> le dos. Pas en touches sur les boutons.</span></li>
+          <li class="spf"><span class="quoi">Écran solaire SPF 50</span><span class="comment">Fluide, non comédogène, sur le visage. <b>Obligatoire</b> avec le Skinoren — et à Alicante, obligatoire tout court.</span></li>
+        </ol>
+      </div>
+
+      <div class="moment">
+        <div class="moment-head"><h3>🌙 Soir</h3><span class="q">3 étapes</span></div>
+        <ol class="etapes">
+          <li><span class="quoi">Nettoyer</span><span class="comment">Nettoyant Avène sur le visage. Eau ou gel doux sur le dos — pas de peroxyde une deuxième fois.</span></li>
+          <li><span class="quoi">Sécher, puis attendre</span><span class="comment">On tamponne, et on laisse la peau sécher complètement.<span class="attente">⏳ 5 minutes</span></span></li>
+          <li><span class="quoi">Skinoren</span><span class="comment">Fine couche, partout, comme le matin.</span></li>
+        </ol>
+      </div>
+
+    </div>
+    <div class="note"><b>Pourquoi les cinq minutes.</b> Appliqué sur une peau encore humide, le Skinoren pénètre davantage et irrite davantage. Ces cinq minutes sont la différence entre une routine qu'on tient trois mois et une routine qu'on abandonne au bout de dix jours parce que ça brûle. C'est le moment de préparer ton petit-déjeuner du lendemain.</div>
+  </div>
+
+  <div class="sec">
+    <h2>Les règles</h2>
+    <div class="regles">
+
+      <div class="col oui">
+        <div class="k">Ce qu'on fait</div>
+        <ul>
+          <li><b>Deux lavages par jour, maximum.</b> Seule exception : un rinçage après le sport.</li>
+          <li><b>Les mains suffisent.</b> Rien d'autre ne touche la peau.</li>
+          <li><b>Un applicateur à manche</b>, en pharmacie, pour atteindre le milieu du dos.</li>
+          <li><b>Rincer l'après-shampoing penché en avant</b>, pour qu'il ne coule pas sur le dos.</li>
+          <li><b>Serviette de visage</b> changée tous les 2-3 jours, <b>taie d'oreiller</b> une fois par semaine. Séchage à plat.</li>
+          <li><b>Vêtements amples</b>, et douche rapide après la séance.</li>
+          <li><b>Hydratant seulement si ça tire</b> : léger, non comédogène.</li>
+        </ul>
+      </div>
+
+      <div class="col non">
+        <div class="k">Ce qu'on ne fait pas</div>
+        <ul>
+          <li><b>Pas de loofah, pas de gommage, pas de brosse.</b> Frotter aggrave, toujours.</li>
+          <li><b>Ne pas percer les boutons.</b> C'est ce qui fait les cicatrices, pas l'acné elle-même.</li>
+          <li><b>Ne pas se toucher le visage</b> dans la journée — en cours, en révision, devant l'écran.</li>
+          <li><b>Pas de Nivea Rica sur le visage ni sur le dos.</b> Elle reste pour les bras et les jambes.</li>
+          <li><b>Pas de troisième lavage</b> parce que « ça graisse ». C'est justement ce qui fait graisser.</li>
+          <li><b>Pas de nouveau produit</b> en cours de route. Voir la section suivi.</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="sec">
+    <h2>Côté alimentation</h2>
+    <p>C'est déjà fait dans ton plan : le <b>lait demi-écrémé du petit-déjeuner est parti</b>, remplacé par 180 g de skyr. La liste de courses du samedi est à jour.</p>
+    <div class="tw"><table>
+      <tr><th>Ce qui change</th><th>Ce qu'on fait</th></tr>
+      <tr><td><b>Le lait</b></td><td>Retiré. Skyr ou yaourt grec nature le matin, ou une boisson de soja <b>enrichie en calcium</b>. Surveille l'apport en calcium si tu prends du soja non enrichi.</td></tr>
+      <tr><td><b>Sucres rapides et ultra-transformés</b></td><td>À réduire. C'est la piste la mieux documentée des deux — mieux que les laitages.</td></tr>
+      <tr><td><b>Huile d'olive, œufs, noix, avocat, chocolat noir</b></td><td>Aucun problème. On n'y touche pas.</td></tr>
+      <tr><td><b>Le reste</b></td><td>On ne va pas plus loin dans les restrictions.</td></tr>
+    </table></div>
+    <div class="note"><b>L'effet de l'alimentation est réel, mais mineur.</b> C'est important de le dire, parce que c'est le levier sur lequel on est tenté de tout miser — et parce qu'un étudiant en prise de masse qui se met à retirer des aliments finit par manquer de calories avant de voir sa peau changer. Le vrai travail se fait dans la salle de bain, deux fois par jour.</div>
+  </div>
+
+  <div class="sec">
+    <h2>Le suivi, et la date de la décision</h2>
+    <p>Une photo maintenant, puis toutes les trois semaines, <b>à la même lumière et au même endroit</b>. Le premier lundi du mois, tu prends déjà tes mensurations — fais-en le même geste. Douze semaines avant de juger : une lésion met des semaines à se former et autant à partir, et juger plus tôt, c'est lire du bruit.</p>
+
+    <ul class="suivi" id="suivi">
+      <li data-d="2026-09-11" data-id="p0"><div class="d">Vendredi 11 septembre</div><div class="t"><input type="checkbox" id="p0"><label for="p0">Photo zéro, et on démarre</label></div><div class="s">C'est la seule photo qui compte vraiment : sans elle, dans trois mois, tu n'auras aucun moyen de savoir si ça a marché. Face, profil gauche, profil droit, dos.</div></li>
+      <li data-d="2026-10-02" data-id="p1"><div class="d">Vendredi 2 octobre</div><div class="t"><input type="checkbox" id="p1"><label for="p1">Photo · semaine 3</label></div><div class="s">Trop tôt pour conclure quoi que ce soit. Si ça pèle ou picote, voir l'encadré plus bas.</div></li>
+      <li data-d="2026-10-23" data-id="p2"><div class="d">Vendredi 23 octobre</div><div class="t"><input type="checkbox" id="p2"><label for="p2">Photo · semaine 6</label></div><div class="s">Moitié du parcours. Encore trop tôt, et c'est normal si rien n'a bougé.</div></li>
+      <li data-d="2026-11-13" data-id="p3"><div class="d">Vendredi 13 novembre</div><div class="t"><input type="checkbox" id="p3"><label for="p3">Photo · semaine 9</label></div><div class="s">C'est ici que les premiers signes apparaissent chez la plupart des gens.</div></li>
+      <li data-d="2026-12-04" data-id="p4"><div class="d">Vendredi 4 décembre</div><div class="t"><input type="checkbox" id="p4"><label for="p4">Photo · semaine 12</label></div><div class="s">La dernière avant le verdict. Compare-la à celle du 11 septembre, pas à celle d'il y a trois semaines.</div></li>
+      <li class="verdict" data-d="2026-12-11" data-id="p5"><div class="d">Vendredi 11 décembre · trois mois</div><div class="t"><input type="checkbox" id="p5"><label for="p5">Le verdict</label></div><div class="s">Amélioration nette ? On continue tel quel. <b>Pas d'amélioration nette ? Rendez-vous chez ton médecin</b> — les traitements oraux sont efficaces, et agir tôt évite les cicatrices. Ce n'est pas un échec, c'est l'étape suivante prévue d'avance.</div></li>
+    </ul>
+
+    <div class="stop"><b>Si ça pèle, tire ou picote dans les premières semaines.</b> C'est fréquent et ce n'est pas une raison d'arrêter. <b>Une seule application par jour pendant deux semaines</b> — celle du soir — puis on reprend à deux. Si ça brûle vraiment, ou si la peau devient rouge et gonflée, tu arrêtes et tu appelles ton médecin : ce n'est plus de l'irritation normale.</div>
+
+    <div class="cle"><b>N'ajoute aucun produit en cours de route.</b> C'est la règle qui casse le plus de protocoles. Si tu ajoutes une crème en octobre et que ça s'améliore en novembre, tu ne sauras jamais lequel des deux a agi — et si ça empire, tu ne sauras pas lequel retirer. Trois mois, mêmes produits, aucune exception. Ce qui te démange d'essayer, tu l'écris quelque part et tu l'essaieras après le 11 décembre.</div>
+  </div>
+
+  <div class="sec">
+    <h2>La liste des courses en pharmacie</h2>
+    <div class="tw"><table>
+      <tr><th>Produit</th><th>Pour quoi</th><th>Quand</th></tr>
+      <tr><td>Nettoyant Avène</td><td>Visage</td><td>Matin et soir</td></tr>
+      <tr><td>Gel douche peroxyde de benzoyle 5 %</td><td>Dos</td><td>Matin seulement · poser 1-2 min</td></tr>
+      <tr><td>Skinoren</td><td>Visage entier et dos entier</td><td>Matin et soir · fine couche</td></tr>
+      <tr><td>Écran solaire SPF 50 fluide non comédogène</td><td>Visage</td><td>Matin · obligatoire</td></tr>
+      <tr><td><b>Applicateur à manche</b></td><td>Milieu du dos</td><td>À acheter — sinon la moitié du dos n'est jamais traitée</td></tr>
+      <tr><td>Hydratant léger non comédogène</td><td>Visage</td><td>Seulement si ça tire</td></tr>
+    </table></div>
+    <p>L'applicateur à manche est le seul article que tu n'as probablement pas encore. Sans lui, le Skinoren n'atteint pas le milieu du dos — et c'est souvent là que ça résiste.</p>
+  </div>
+
+  <footer>
+    La Batcave &middot; protocole du 11 septembre 2026 &middot; les coches restent dans ce navigateur, sur cet appareil.<br>
+    Ce document met en forme le protocole qui t'a été donné. Il ne le remplace pas et ne le modifie pas : toute question sur les produits ou les doses revient à ton médecin.
+  </footer>
+</div>
+
+<script>
+(function(){
+  var K = 'protocole-peau-v1';
+  function lire(){ try{ return JSON.parse(localStorage.getItem(K) || '{}') || {}; }catch(e){ return {}; } }
+  function ecrire(o){ try{ localStorage.setItem(K, JSON.stringify(o)); }catch(e){} }
+
+  var etat = lire();
+  Array.prototype.slice.call(document.querySelectorAll('#suivi input[type=checkbox]')).forEach(function(c){
+    var li = c.closest('li');
+    if(etat[c.id]){ c.checked = true; li.classList.add('fait'); }
+    c.addEventListener('change', function(){
+      var o = lire(); o[c.id] = c.checked; ecrire(o);
+      li.classList.toggle('fait', c.checked);
+    });
+  });
+
+  /* La ligne avance toute seule : les rendez-vous passés s'estompent, celui du jour s'allume. */
+  function iso(d){ return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); }
+  var auj = iso(new Date());
+  Array.prototype.slice.call(document.querySelectorAll('#suivi > li[data-d]')).forEach(function(li){
+    var d = li.getAttribute('data-d');
+    if(d < auj) li.classList.add('past');
+    else if(d === auj && !li.classList.contains('verdict')) li.classList.add('now');
+  });
+})();
+</script>
