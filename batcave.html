@@ -6294,13 +6294,13 @@
   /* ================= REPAS ================= */
   /* ===== Plan alimentation révisé (6 sept. 2026) — 5 prises =====
      64 kg · 182 cm · 19 ans · 4 séances par semaine · tout pesé cru.
-     3 053 kcal · P 162 g (2,5 g/kg) · G 348 g · L 112 g. Cinq prises : la collation du matin
+     3 051 kcal · P 173 g (2,7 g/kg) · G 343 g · L 108 g. Cinq prises : la collation du matin
      a disparu, le déjeuner porte ses calories (riz 135 g, légumes 200 g). La protéine du
      déjeuner et du dîner suit une ROTATION fixe sur la semaine (l'huile d'olive va avec) ;
      le féculent est le riz à midi et les pâtes le soir (85 g). Les chiffres « kcal · P G L »
      de chaque repas sont ceux du plan ; la barre du jour les prorate aux cases cochées. */
   var MEALS = [
-    {name:'Petit-déjeuner', kcal:'~826 kcal · P39 G98 L33', items:['Flocons d\'avoine (80g)','Lait demi-écrémé (250ml)','2 œufs (100g)','Beurre de cacahuète (25g)','Banane (120g)']},
+    {name:'Petit-déjeuner', kcal:'~824 kcal · P50 G93 L29', items:['Flocons d\'avoine (80g)','Skyr (180g)','2 œufs (100g)','Beurre de cacahuète (25g)','Banane (120g)']},
     {name:'Déjeuner', kcal:'~931 kcal · P44 G110 L33', items:['Féculent cru — Riz 135g','Protéine crue — rotation du jour','Légumes verts (200g)','Huile d\'olive — selon la protéine']},
     {name:'Collation entraînement', kcal:'~264 kcal · P18 G28 L8', items:['Pain complet (60g)','Jambon (40g)','Fromage (20g)']},
     {name:'Dîner', kcal:'~726 kcal · P39 G86 L23', items:['Féculent cru — Pâtes 85g','Protéine crue — rotation du jour','Légumes verts (150g)','Huile d\'olive — selon la protéine','1 fruit (~120g)']},
@@ -8812,7 +8812,7 @@
         {label:'Riz', qte:'1\u202f000 g', prix:1.1},
         {label:'Pâtes', qte: g(600 + plus) + ' g' + (plus ? ' (dont ' + (plus > 0 ? '+' : '') + g(plus) + ' g boucle kcal)' : ''), prix: (600 + plus) / 1000 * 1.0},
         {label:'Flocons d\'avoine', qte:'600 g', prix:0.95}, {label:'Pain complet', qte:'500 g', prix:1.6},
-        {label:'Skyr', qte:'900 g', prix:3.6}, {label:'Lait demi-écrémé', qte:'2\u202f000 ml', prix:1.9},
+        {label:'Skyr', qte:'2\u202f200 g', prix:8.8},
         {label:'Légumes verts surgelés', qte:'2\u202f500 g', prix:5}, {label:'Bananes', qte:'8', prix:1.4}, {label:'Fruits (pommes, poires, oranges…)', qte:'8', prix:2.2},
         {label:'Beurre de cacahuète', qte:'400 g', prix:2.1}, {label:'Miel', qte:'200 g', prix:1.3}
       ]},

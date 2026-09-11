@@ -152,8 +152,8 @@ console.log('\n═══ 7. Repas : les calories sont proratisées aux cases coc
     return document.getElementById('meal-kcal-sub').textContent;
   });
   const m = s.match(/(\d+) \/ (\d+) kcal/);
-  ok(m && Number(m[2]) > 3000 && Number(m[2]) < 3110, 'cible du jour ' + (m?m[2]:'?') + ' kcal (~3 053)');
-  ok(m && Math.abs(Number(m[1]) - 826/5) < 2, '1 item sur 5 du petit-déjeuner (826 kcal) → ' + (m?m[1]:'?') + ' kcal (165 attendu)');
+  ok(m && Number(m[2]) > 3000 && Number(m[2]) < 3110, 'cible du jour ' + (m?m[2]:'?') + ' kcal (~3 051)');
+  ok(m && Math.abs(Number(m[1]) - 824/5) < 2, '1 item sur 5 du petit-déjeuner (824 kcal) → ' + (m?m[1]:'?') + ' kcal (165 attendu)');
   await ctx.close();
 }
 

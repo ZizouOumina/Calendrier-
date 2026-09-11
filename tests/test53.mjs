@@ -26,9 +26,11 @@ console.log('\n== 180) Sans ajustement : plan de base, liste = plan × 7 ==');
   const { ctx, fr } = await ouvrir(MARDI);
   await page_(fr, 'courses');
   const c = await fr.evaluate(() => ({ items: [...document.querySelectorAll('#courses-grid label')].map(l => l.textContent), note: document.getElementById('courses-plan-note').textContent, budget: document.getElementById('courses-budget').textContent, n: document.querySelectorAll('#courses-grid input').length }));
-  ok(c.n === 18, '18 articles (17 chaque semaine, plus l\'huile)');
+  /* Le lait demi-écrémé est parti : le petit-déjeuner se fait au skyr, comme la collation
+     du soir. Seize articles chaque semaine, plus l'huile toutes les quatre. */
+  ok(c.n === 17, '17 articles (16 chaque semaine, plus l\'huile)');
   ok(c.items.some(t => /^Riz — 1\u202f000 g \(~1,1 €\)$/.test(t)) && c.items.some(t => /^Pâtes — 600 g \(~0,6 €\)$/.test(t)), 'Riz 1 000 g le midi, pâtes 600 g le soir (' + c.items.find(t => /^Pâtes/.test(t)) + ')');
-  ok(c.items.some(t => /^Poulet — 800 g/.test(t)) && c.items.some(t => /^Viande hachée 5 % — 900 g/.test(t)) && c.items.some(t => /^Saumon — 450 g/.test(t)) && !c.items.some(t => /^(Dattes|Cacahuètes)/.test(t)) && c.items.some(t => /^Skyr — 900 g/.test(t)), 'protéines : poulet 800 g, viande hachée 900 g, saumon 450 g ; skyr 900 g ; plus de dattes ni de cacahuètes — ' + c.items.filter(t => /^(Poulet|Viande|Saumon)/.test(t)).join(' · '));
+  ok(c.items.some(t => /^Poulet — 800 g/.test(t)) && c.items.some(t => /^Viande hachée 5 % — 900 g/.test(t)) && c.items.some(t => /^Saumon — 450 g/.test(t)) && !c.items.some(t => /^(Dattes|Cacahuètes)/.test(t)) && c.items.some(t => /^Skyr — 2\u202f200 g/.test(t)) && !c.items.some(t => /^Lait/.test(t)), 'protéines : poulet 800 g, viande hachée 900 g, saumon 450 g ; skyr 2 200 g et plus de lait ; plus de dattes ni de cacahuètes — ' + c.items.filter(t => /^(Poulet|Viande|Saumon)/.test(t)).join(' · '));
   ok(c.items.some(t => /^Œufs — 15/.test(t)) && c.items.some(t => /^Légumes verts surgelés — 2\u202f500 g/.test(t)) && c.items.some(t => /^Huile d'olive — 1\u202f000 ml/.test(t)), 'œufs, légumes surgelés, et l\'huile dans le bloc des 4 semaines');
   ok(/Aucun ajustement/.test(c.note), 'note : ' + c.note.slice(0, 60));
   const bud = c.budget.match(/~(\d+(?:,\d)?) € \/ semaine.*?plus ~(\d+(?:,\d)?) € toutes les 4 semaines/);
@@ -47,13 +49,13 @@ console.log('\n== 181) Avec +150 kcal : le dîner et les courses l\'écrivent ==
   ok(/Pâtes 125g/.test(r), 'féculent du dîner : pâtes 125 g (+40)');
   ok(/boucle kcal \+150 kcal/.test(r) && /~876 kcal/.test(r), 'le dîner annonce ~876 kcal et la boucle');
   const sub = await fr.evaluate(() => document.getElementById('meal-kcal-sub').textContent);
-  ok(/\/ 3203 kcal \(plan 3053 \+ 150\)/.test(sub), 'cible du jour : ' + sub);
+  ok(/\/ 3201 kcal \(plan 3051 \+ 150\)/.test(sub), 'cible du jour : ' + sub);
   /* cocher tout le dîner : l\'apport consommé porte les 150 kcal */
   /* un clic redessine la grille : on re-cherche la première case non cochée du dîner à chaque tour */
   await fr.evaluate(() => { for(let i = 0; i < 10; i++){ const card = [...document.querySelectorAll('.meal-card')].find(c => /Dîner/.test(c.querySelector('.mtitle').textContent)); const cb = card && card.querySelector('input:not(:checked)'); if(!cb) break; cb.click(); } });
   await page.waitForTimeout(200);
   const sub2 = await fr.evaluate(() => document.getElementById('meal-kcal-sub').textContent);
-  ok(/^876 \/ 3203 kcal/.test(sub2), 'dîner coché : ' + sub2);
+  ok(/^876 \/ 3201 kcal/.test(sub2), 'dîner coché : ' + sub2);
   await page_(fr, 'courses');
   const c = await fr.evaluate(() => ({ items: [...document.querySelectorAll('#courses-grid label')].map(l => l.textContent), note: document.getElementById('courses-plan-note').textContent }));
   ok(c.items.some(t => /^Pâtes — 880 g \(dont \+280 g boucle kcal\)/.test(t)), 'Pâtes : 600 + 280 g de boucle kcal (' + c.items.find(t => /^Pâtes/.test(t)) + ')');
