@@ -150,10 +150,10 @@
     <div class="strip">
       <div><div class="k">Aujourd'hui</div><div class="v" id="s-jour">—</div><div class="s" id="s-jour-s">avant le premier jour de cours</div></div>
       <div><div class="k">Qui bloque</div><div class="v">1</div><div class="s">l'emploi du temps de la fac. Le parc est reconnu — ce bloquant-là est mort.</div></div>
-      <div><div class="k">Avant lundi</div><div class="v">4</div><div class="s">lignes, pas soixante. Le reste se rattrape sans conséquence.</div></div>
+      <div><div class="k">Avant lundi</div><div class="v">6</div><div class="s">lignes sur quatre-vingt-quatorze. Le reste se rattrape sans conséquence.</div></div>
       <div><div class="k">Prochaine bascule</div><div class="v" id="s-next">—</div><div class="s" id="s-next-s">—</div></div>
     </div>
-    <p class="stamp">Dernière mise à jour : samedi 12 septembre 2026, au petit matin. Les deux documents sont fusionnés ; le rail avance tout seul et les distances se recalculent à chaque ouverture.</p>
+    <p class="stamp">Dernière mise à jour : samedi 12 septembre 2026. Les <b>trois</b> documents sont fusionnés — la liste des quatre jours et les quatorze lignes qui ne vivaient que dans la Prise en main. Rien n'est plus ailleurs.</p>
 
     <h2 id="etat">Où on en est</h2>
     <p><strong>Vingt-deux lignes sont faites.</strong> Pas zéro. Dont tout le protocole digestif, toute la chaîne du paiement de l'école, et <strong>l'intégralité de la reconnaissance du parc</strong> — qui était l'un des deux seuls vrais bloquants. Il en reste un.</p>
@@ -258,7 +258,7 @@
       <li><input type="checkbox" id="f6"><span class="tag auto">Plus tard</span><label for="f6"><span class="ref">F6</span> 5 cours de plus</label></li>
       <li><input type="checkbox" id="i5"><span class="tag auto">Plus tard</span><label for="i5"><span class="ref">I5</span> 5 cours de plus</label></li>
       <li><input type="checkbox" id="k3"><span class="tag auto">Plus tard</span><label for="k3"><span class="ref">K3</span> Les 5 derniers cours</label></li>
-      <li><input type="checkbox" id="k2"><span class="tag auto">Plus tard</span><label for="k2"><span class="ref">K2</span> Les trois paquets importés et testés sur le bon appareil</label></li>
+      <li class="done"><input type="checkbox" id="k2" checked><span class="tag faire">Fait</span><label for="k2"><span class="ref">K2</span> Les trois paquets importés et testés sur le bon appareil</label></li>
     </ul>
     <h3>🇪🇸 Espagnol</h3>
     <p class="sub">Ces heures-là reprennent naturellement avec la grille à partir de lundi. Ne les rattrape pas — elles reviennent toutes seules.</p>
@@ -308,6 +308,25 @@
       <li><input type="checkbox" id="k4"><span class="tag auto">Plus tard</span><label for="k4"><span class="ref">K4</span> Palier 1 du chapitre 29 : les 7 termes de l'argent d'une vente</label></li>
       <li><input type="checkbox" id="a1"><span class="tag auto">Plus tard</span><label for="a1"><span class="ref">A1</span> Payer Saint Vincent de Paul</label></li>
       <li><input type="checkbox" id="a2"><span class="tag auto">Plus tard</span><label for="a2"><span class="ref">A2</span> Demander à Reda les 2 € de l'épicerie</label></li>
+    </ul>
+
+    <h3>🆕 Ce qui vivait dans la Prise en main</h3>
+    <p class="sub">Quatorze lignes qui n'étaient dans aucune des deux listes parce qu'elles vivaient dans un troisième document. Elles sont ici maintenant. Deux d'entre elles comptent vraiment avant lundi.</p>
+    <ul class="todo">
+      <li><input type="checkbox" id="q1"><span class="tag toi">Avant lundi</span><label for="q1"><span class="ref">Q1</span> <strong>Les réglages Anki (presets)</strong><span class="why">Trois presets, chacun appliqué au paquet parent <b>ET à chaque sous-paquet</b> — Anki n'hérite pas. Dentaire : 50 nouvelles cartes par jour, 9999 révisions. Español : 20 nouvelles. Business : 20, à partir du 19 octobre. Sans ça, tes paquets ne débitent pas : la moitié des cartes s'empile sans jamais être vue. Dix minutes, et ça décide de six mois d'Anki.</span></label></li>
+      <li><input type="checkbox" id="q2"><span class="tag toi">Avant lundi</span><label for="q2"><span class="ref">Q2</span> <strong>Tester le trajet jusqu'à la fac</strong><span class="why">950 m à pied puis le tram. À faire une fois avant lundi, à l'heure réelle, pour savoir si les trente minutes tiennent. Si elles ne tiennent pas, tout l'après-midi de la grille bouge.</span></label></li>
+      <li><input type="checkbox" id="q3"><span class="tag dec">Cette semaine</span><label for="q3"><span class="ref">Q3</span> Réserver le tuteur d'espagnol<span class="why">italki ou Preply, tuteur d'Espagne, étudiant en santé si possible. <b>Première séance prévue vendredi 18 à 11 h 20</b> — donc à réserver dans les jours qui viennent. Format : 3 min de conversation, 12 min à expliquer le cours de la veille, 10 min de corrections, 5 min de jeu de rôle en usted. Environ 150 € sur six semaines, sur le budget courant.</span></label></li>
+      <li><input type="checkbox" id="q4"><span class="tag dec">Cette semaine</span><label for="q4"><span class="ref">Q4</span> L'empadronamiento<span class="why">Il n'était dans aucune liste, et c'est souvent un prérequis du NIE et de la tarjeta sanitaria. À faire à la mairie du quartier, sur rendez-vous.</span></label></li>
+      <li><input type="checkbox" id="q5"><span class="tag dec">Cette semaine</span><label for="q5"><span class="ref">Q5</span> L'administration de la fac<span class="why">Matrícula validée, carte étudiante, accès au campus virtuel, horaires et salles de chaque matière, guías docentes, delegación de alumnos, bibliothèque. Tout en espagnol, y compris les mails aux profs.</span></label></li>
+      <li><input type="checkbox" id="q6"><span class="tag dec">Cette semaine</span><label for="q6"><span class="ref">Q6</span> Le matériel de sport à la maison<span class="why">Une serviette épaisse et un poids de 1,25 à 5 kg pour le travail de cou, une roue abdominale (ou deux chiffons qui glissent) pour le mardi. Sans ça, quatre exercices du programme n'existent pas.</span></label></li>
+      <li><input type="checkbox" id="q7"><span class="tag dec">Cette semaine</span><label for="q7"><span class="ref">Q7</span> La calibration sport<span class="why">Tractions max, dips max ou maintien, pompes max, split squats max par jambe. Sans elle, la Batcave part des bas de fourchette — acceptable les deux premières semaines vu la demi-charge, à faire avant la semaine 3.</span></label></li>
+      <li><input type="checkbox" id="q8"><span class="tag dec">Cette semaine</span><label for="q8"><span class="ref">Q8</span> Le livre de grammaire espagnole<span class="why"><i>Gramática de uso del español A1-B2</i> (SM) : un chapitre par bloc gramática les deux premières semaines, un par semaine ensuite. En attendant : ProfeDeELE et Kwiziq, dont le test de niveau se refait chaque mois.</span></label></li>
+      <li><input type="checkbox" id="q9"><span class="tag dec">Cette semaine</span><label for="q9"><span class="ref">Q9</span> Passer ton environnement en espagnol<span class="why">Téléphone et ordinateur en espagnol, une série espagnole sans sous-titres français, un podcast pour le sport et le tram (Hoy hablamos, Nadie sabe nada, La Hiperactina), El País ou un roman papier pour le déjeuner. Une demi-heure, une seule fois.</span></label></li>
+      <li><input type="checkbox" id="q10"><span class="tag dec">Cette semaine</span><label for="q10"><span class="ref">Q10</span> Lire le Dossier Español — sections 01, 02, 05, 11<span class="why">Le point de départ, la méthode en dix règles, le jour 1 heure par heure, les pièges du francophone. Environ 45 minutes. C'est ce qui rend les blocs Español intelligibles au lieu d'être une case à cocher.</span></label></li>
+      <li><input type="checkbox" id="q11"><span class="tag auto">Plus tard</span><label for="q11"><span class="ref">Q11</span> Lire le Dossier Español — sections 06, 10, 13, 14<span class="why">La grille avec les cours, l'espagnol des cours et des partiels, ce qu'on mesure, le suivi dans la Batcave.</span></label></li>
+      <li><input type="checkbox" id="q12"><span class="tag auto">Plus tard</span><label for="q12"><span class="ref">Q12</span> Vérifier les projets Claude<span class="why">Projet <b>Español</b> : neuf commandes (corrige, interroga, examen, explica, conversa, cartas, dictado, formulas, balance) et les neuf codes d'erreurs. Projet <b>Dentaire</b> : cinq commandes et un fichier par matière. Les ouvrir une fois, vérifier que les fichiers de Connaissances sont à jour.</span></label></li>
+      <li><input type="checkbox" id="q13"><span class="tag auto">Plus tard</span><label for="q13"><span class="ref">Q13</span> Wuolah et les guías docentes<span class="why">Prévu lundi 14 à 10 h 20, pendant le premier bloc Annales — il n'y a pas encore d'annale à faire. La guía docente de chaque matière, les apuntes et examens des années précédentes, trente termes par matière en cartes, la question à poser au premier cours.</span></label></li>
+      <li><input type="checkbox" id="q14"><span class="tag auto">Plus tard</span><label for="q14"><span class="ref">Q14</span> Les techniques d'oral<span class="why">Shadowing, la technique 4-3-2, le dictogloss, le résumé oral d'une minute enregistré en marchant. À lire une fois, à appliquer dans les blocs existants.</span></label></li>
     </ul>
 
     <h3>Le parking</h3>
