@@ -87,7 +87,7 @@ console.log('\n== 231) Phase 1 (mercredi 16 septembre) : blocs Projets perso ren
 
   /* Objectifs d'espagnol : calculés depuis les blocs Español de la grille (T1 ≈ 138 h,
      septembre ≈ 39 h). En septembre, la part programmée du mois (du 14 au 30) est
-     entièrement en phase 1, où les trois blocs Projets perso DEVIENNENT de l'espagnol :
+     entièrement en phase 1, où TOUS les blocs Projets perso DEVIENNENT de l'espagnol :
      la cible « Projets perso » de septembre vaut donc zéro, et c'est exact. Les jours
      d'avant le 14 ne comptent plus — c'est ce qui affichait « Projets perso −29,9 h »
      au matin du premier jour. */
