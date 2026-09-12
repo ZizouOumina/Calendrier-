@@ -63,13 +63,15 @@ console.log('\n== 84.4) Les heures liberees entrent dans le pool, pas en dur =='
       es1_mar20: lab('tuesday', '2026-09-22', '20:30'),
       es1_lun14: lab('monday',  '2026-09-21', '14:00'),
       es2_mar20: lab('tuesday', '2026-10-20', '20:30'),
-      type_lun15: lab('monday', '2027-03-22', '15:00')
+      type_lun15: lab('monday', '2027-03-22', '15:00'),
+      type_mar20: window.__bcTypeBloc(lab('tuesday', '2026-09-22', '20:30'))
     };
   });
   ok(/^Español/.test(r.es1_lun15), 'phase 1 : lundi 15:00 est de l\'espagnol (' + r.es1_lun15 + ')');
   ok(r.es1_lun14 !== r.es1_lun15, 'lundi 14:00 et 15:00 ne sont pas le meme bloc deux fois (' + r.es1_lun14 + ' / ' + r.es1_lun15 + ')');
   ok(/^Español/.test(r.es1_mar19), 'phase 1 : mardi 19:00 est de l\'espagnol (' + r.es1_mar19 + ')');
-  ok(/Serie en VO/.test(r.es1_mar20), 'phase 1 : mardi 20:30 est la serie en VO (' + r.es1_mar20 + ')');
+  ok(r.es1_mar20 === 'Español · serie en VO', 'phase 1 : mardi 20:30 est la serie en VO (' + r.es1_mar20 + ')');
+  ok(r.type_mar20 === 'projet', 'et elle est COMPTEE comme du travail, pas ignoree (' + r.type_mar20 + ')');
   ok(r.es2_mar20 === 'Projets perso 6', 'phase 2 : mardi 20:30 est la PREMIERE heure qui revient aux projets (' + r.es2_mar20 + ')');
   ok(r.type_lun15 === 'Projets perso 4', 'grille type : lundi 15:00 est un bloc de projet (' + r.type_lun15 + ')');
 }
@@ -99,7 +101,7 @@ console.log('\n== 84.6) Cibles hebdo : constantes en revision, croissantes en pr
      'la revision ne bouge pas d\'une phase a l\'autre : ' + pr(e1.rev) + ' h');
   ok(pr(e1.rev) === 29.92, 'revision = 29 h 55 de travail reel par semaine (' + pr(e1.rev) + ')');
   ok(pr(e1.proj) === 0, 'phase 1 : aucun temps de projet, tout va a l\'espagnol (' + pr(e1.proj) + ')');
-  ok(e1.es > 20 && e1.es < 21, 'phase 1 : 20 h 41 d\'espagnol (' + pr(e1.es) + ')');
+  ok(e1.es > 21.5 && e1.es < 22, 'phase 1 : 21 h 35 d\'espagnol, serie du mardi comprise (' + pr(e1.es) + ')');
   ok(e1.proj < e2.proj && e2.proj < e3.proj && e3.proj < t.proj,
      'les projets montent a chaque phase : ' + [pr(e1.proj), pr(e2.proj), pr(e3.proj), pr(t.proj)].join(' -> '));
   ok(e1.es > e2.es && e2.es > e3.es, 'l\'espagnol descend a chaque phase : ' + [pr(e1.es), pr(e2.es), pr(e3.es)].join(' -> '));
