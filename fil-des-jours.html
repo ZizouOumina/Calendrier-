@@ -114,20 +114,30 @@
   .maj li:last-child{border-bottom:none;}
   .maj .d{font-family:var(--mono); font-size:12px; color:var(--ink-3); padding-top:2px;}
   @media (max-width:560px){ .maj li{grid-template-columns:1fr; gap:2px;} }
+
+  /* fusion : la liste thématique */
+  .todo .ref{font-family:var(--mono); font-size:11px; color:var(--ink-3); letter-spacing:.06em; margin-right:4px;}
+  .todo li.done .ref{text-decoration:none;}
+  h3{margin-top:34px;}
+  p.sub{color:var(--ink-2); font-size:15px; margin:8px 0 0; max-width:62ch;}
+  .nuit{border-collapse:collapse; width:100%; background:var(--sheet); font-size:15px; min-width:420px;}
+  .nuit td{padding:10px 12px; border:1px solid var(--line); vertical-align:top;}
+  .nuit td:first-child{font-family:var(--mono); font-size:12.5px; white-space:nowrap; color:var(--rail); font-weight:500; width:1%;}
+  .gros{font-family:var(--display); font-size:20px; font-weight:600; margin:0 0 6px;}
 </style>
 
 <div class="shell">
   <nav class="toc" aria-label="Sommaire">
-    <div class="k">Suivi · N° 1</div>
+    <div class="k">Suivi · N° 2</div>
     <ol>
       <li><a href="#etat"><b>·</b>Où on en est</a></li>
-      <li><a href="#bloque"><b>01</b>Ce qui bloque</a></li>
-      <li><a href="#decisions"><b>02</b>Ce qu'il faut décider</a></li>
-      <li><a href="#jours"><b>03</b>Les quatre jours</a></li>
-      <li><a href="#jalons"><b>04</b>Les jalons</a></li>
-      <li><a href="#allume"><b>05</b>Ce qui s'allume, et quand</a></li>
-      <li><a href="#batcave"><b>06</b>Ce que la Batcave attend</a></li>
-      <li><a href="#maj"><b>·</b>Journal des mises à jour</a></li>
+      <li><a href="#nuit"><b>01</b>Remettre le sommeil à l'heure</a></li>
+      <li><a href="#lundi"><b>02</b>Avant lundi, et lundi</a></li>
+      <li><a href="#decisions"><b>03</b>Ce qu'il faut décider</a></li>
+      <li><a href="#liste"><b>04</b>Tout le reste</a></li>
+      <li><a href="#jalons"><b>05</b>Les jalons</a></li>
+      <li><a href="#allume"><b>06</b>Ce qui s'allume, et quand</a></li>
+      <li><a href="#maj"><b>·</b>Journal</a></li>
     </ol>
     <div class="prog"><span id="prog-txt">0 / 0 cochées</span><div class="bar"><i id="prog-bar"></i></div></div>
   </nav>
@@ -135,136 +145,229 @@
   <main>
     <div class="eyebrow">Suivi · actualisé au fil des jours</div>
     <h1>Le fil des jours</h1>
-    <p class="lede">Ce qui vient, dans l'ordre, et ce qui change à quelle date. Les quatre jours avant le 14 septembre, puis les bascules du programme jusqu'au printemps 2027. Une seule page à ouvrir pour savoir ce qui est à toi, ce qui est décidé, et ce qui arrive tout seul.</p>
+    <p class="lede">Le document unique. Ce qui reste à faire, ce qui est déjà fait, et chaque bascule datée du programme jusqu'au printemps 2027. La liste des quatre jours a été absorbée ici — il n'y a plus qu'une page à ouvrir.</p>
 
     <div class="strip">
       <div><div class="k">Aujourd'hui</div><div class="v" id="s-jour">—</div><div class="s" id="s-jour-s">avant le premier jour de cours</div></div>
-      <div><div class="k">Qui bloque</div><div class="v">2</div><div class="s">vérifications qui faussent les calculs tant qu'elles ne sont pas faites</div></div>
-      <div><div class="k">À décider</div><div class="v">3</div><div class="s">choix qui n'appartiennent qu'à toi</div></div>
+      <div><div class="k">Qui bloque</div><div class="v">1</div><div class="s">l'emploi du temps de la fac. Le parc est reconnu — ce bloquant-là est mort.</div></div>
+      <div><div class="k">Avant lundi</div><div class="v">4</div><div class="s">lignes, pas soixante. Le reste se rattrape sans conséquence.</div></div>
       <div><div class="k">Prochaine bascule</div><div class="v" id="s-next">—</div><div class="s" id="s-next-s">—</div></div>
     </div>
-    <p class="stamp">Dernière mise à jour : jeudi 10 septembre 2026, en fin de journée. La page se met à jour toute seule sur un point : le rail avance, les jalons passés s'estompent et les distances se recalculent à chaque ouverture.</p>
+    <p class="stamp">Dernière mise à jour : samedi 12 septembre 2026, au petit matin. Les deux documents sont fusionnés ; le rail avance tout seul et les distances se recalculent à chaque ouverture.</p>
 
     <h2 id="etat">Où on en est</h2>
-    <p>Tout ce qui pouvait être construit à l'avance l'est. La Batcave est publiée et vérifiée, les cinq dossiers sont à jour et concordants, le plan de marque personnelle est calé sur les heures qui existent vraiment, et la liste des quatre jours attend d'être cochée. Ce qui reste tient en trois catégories, et deux d'entre elles ne dépendent que de toi.</p>
-    <div class="danger"><strong>Le seul vrai risque de la semaine n'est pas le travail : c'est de démarrer sur deux hypothèses fausses.</strong> La grille suppose des cours de 15 h 30 à 19 h 30 et un départ à 15 h 00. Le sport suppose un parc utilisable à 5 h 30. Si l'une des deux est fausse, ce n'est pas un détail à corriger en route : c'est la journée entière qui se décale, et tous les chiffres du premier mois avec elle.</div>
+    <p><strong>Vingt-deux lignes sont faites.</strong> Pas zéro. Dont tout le protocole digestif, toute la chaîne du paiement de l'école, et <strong>l'intégralité de la reconnaissance du parc</strong> — qui était l'un des deux seuls vrais bloquants. Il en reste un.</p>
+    <div class="danger"><strong>Ce qui s'est passé ces trois derniers jours :</strong> tu es malade depuis deux jours — gorge, ventre, tête — et ton sommeil est complètement inversé. Ce n'est ni un présage ni un échec. Tomber malade la semaine avant la rentrée, dans une nouvelle ville, avec un sommeil déjà décalé, c'est banal. Le plan ci-dessous en tient compte : la rentrée est révisée à la baisse, exprès.</div>
+    <div class="ok"><strong>Ton objectif de lundi tient en une phrase :</strong> être présent et réveillé à l'heure de ton premier cours. Rien d'autre. Tout le reste de cette page peut attendre la semaine, et la plupart peut attendre le mois.</div>
 
-    <h2 id="bloque">01 · Ce qui bloque, et qui n'attend que toi</h2>
-    <p>Deux vérifications, une heure en tout. Tant qu'elles ne sont pas faites, la grille est une hypothèse — une bonne hypothèse, mais une hypothèse.</p>
-    <ul class="todo" id="t-bloque">
-      <li><input type="checkbox" id="b1"><span class="tag toi">Chez toi</span><label for="b1">Récupérer l'emploi du temps <strong>réel</strong> de la fac, horaire par horaire.
-        <span class="why">La grille place les cours de 15 h 30 à 19 h 30 et le trajet à 15 h 00. Un cours qui commence à 14 h, ou qui finit à 20 h, déplace les trois blocs quotidiens et change le budget de projets perso. Envoie-le-moi : je réajuste la grille en une passe, avant lundi.</span></label></li>
-      <li><input type="checkbox" id="b2"><span class="tag toi">Chez toi</span><label for="b2">Aller reconnaître le parc <strong>de nuit</strong>, pas en journée.
-        <span class="why">Ta séance est à 5 h 30. À Alicante, le soleil se lève vers 7 h 45 à la mi-septembre, et plus tard chaque semaine ensuite : tu t'entraîneras dans le noir jusqu'au printemps. Ce qu'il faut vérifier : l'éclairage, l'accès aux barres, et si l'endroit est fréquentable à cette heure-là. Si la réponse est non, on change de lieu ou d'horaire maintenant — pas le 15 au matin.</span></label></li>
-    </ul>
+    <h2 id="nuit">01 &middot; Remettre le sommeil à l'heure</h2>
+    <p>Tu as dormi toute la journée de vendredi et tu es réveillé à 4 h du matin : tu es en inversion complète. Te recoucher maintenant ne ferait que verrouiller le cycle. <strong>On fait une seule grosse correction au lieu de deux demi-mesures.</strong></p>
+    <div class="tw"><table class="nuit">
+      <tr><td>Maintenant → 7 h 45</td><td>Tu restes debout. Quelque chose de calme, lumière basse. Ne force rien.</td></tr>
+      <tr><td>~7 h 45</td><td><strong>Lever du soleil : tu sors 20 à 30 minutes dehors.</strong> C'est le signal le plus puissant qui existe pour recaler l'horloge — plus que tout le reste réuni.</td></tr>
+      <tr><td>Matinée</td><td>Café si tu veux. <strong>Rien après 14 h.</strong></td></tr>
+      <tr><td>13 h → 14 h 30</td><td>Une sieste, <strong>90 minutes maximum, réveil avant 15 h</strong>. Tu es malade, ne te prive pas complètement — mais pas une minute au-delà.</td></tr>
+      <tr><td>~18 h</td><td>Mélatonine <strong>0,5 à 1 mg</strong> si tu en as. En Espagne, jusqu'à 1,9 mg s'achète sans ordonnance. Ce n'est pas un somnifère : c'est un décaleur d'horloge, et la dose faible marche mieux que la forte. Pas au coucher — quatre heures avant.</td></tr>
+      <tr><td>21 h</td><td>Lumières basses, écrans loin du visage, chambre fraîche.</td></tr>
+      <tr><td>22 h → 22 h 30</td><td>Tu t'endors sans effort. Tu seras debout depuis une trentaine d'heures.</td></tr>
+      <tr><td>Dimanche</td><td>Réveil <strong>8 h 30</strong>, dehors 20 minutes. Journée calme mais éveillée. Coucher 23 h.</td></tr>
+      <tr><td>Lundi</td><td>Réveil <strong>7 h 00</strong>.</td></tr>
+    </table></div>
 
-    <h2 id="decisions">02 · Ce qu'il faut décider</h2>
-    <p>Trois choix en attente. Aucun n'est urgent au point de bloquer lundi, mais chacun coûte plus cher plus il est repoussé.</p>
+    <h2 id="lundi">02 &middot; Avant lundi, et lundi</h2>
+    <p class="gros">Quatre lignes avant lundi</p>
+    <p>Elles sont marquées <b>Avant lundi</b> dans la liste complète, plus bas. Les voici rassemblées : <b>C1/Z1</b> ton emploi du temps &middot; <b>D1</b> l'abonnement de transport &middot; <b>I1</b> de quoi manger lundi et mardi &middot; <b>K7</b> le sac préparé dimanche soir. Et <b>une seule chose à lancer dès que tu es sur pied</b> : le NIE.</p>
+
+    <div class="note"><strong>Lundi, révisé — et je suis catégorique.</strong><br>
+      <strong>Réveil à 7 h. Pas de sport à 5 h 30.</strong> Un réveil à 5 h 30 sur quatre heures de sommeil, malade, le premier jour de cours dans une langue que tu apprends : tu t'endors en amphi et tu rates la seule chose qui compte.<br><br>
+      <strong>Le sport reprend mercredi</strong>, ou lundi prochain. Tu as douze mois devant toi ; décaler trois séances ne change rien à ton corps. Rater la première semaine de cours, si. La grille prévoit déjà deux semaines à la moitié du volume — tu n'es pas en retard, tu démarres deux jours plus tard.</div>
+
+    <h2 id="decisions">03 &middot; Ce qu'il faut décider</h2>
     <ul class="todo" id="t-dec">
-      <li><input type="checkbox" id="d1"><span class="tag dec">À décider</span><label for="d1">L'automatisation des publications : lequel des trois scénarios.
-        <span class="why">1 · Une routine qui lit ton dossier Drive et te prépare les légendes en trois langues et le calendrier dans Notion — tu publies à la main. 2 · La même chose, plus LinkedIn de bout en bout. 3 · Rien de sur mesure : un planificateur du commerce (Metricool, Publer) à 15-25 € par mois. Ma recommandation reste la 1 : le travail cher, c'est l'écriture, pas le bouton « publier ».</span></label></li>
-      <li><input type="checkbox" id="d2"><span class="tag dec">À décider</span><label for="d2">L'écriture dans Google Agenda : oui ou non.
-        <span class="why">Aujourd'hui la Batcave <strong>lit</strong> ton agenda et pose des rappels, elle n'y écrit rien. Elle peut y pousser les blocs de la grille pour que ton téléphone sonne au bon moment sans ouvrir l'application. C'est une écriture dans ton vrai calendrier : elle ne s'active que sur ton oui explicite.</span></label></li>
-      <li><input type="checkbox" id="d3"><span class="tag dec">À décider</span><label for="d3">La langue du compte, à trancher samedi et plus jamais après.
-        <span class="why">Le test de soixante secondes : tu te filmes en français, puis en anglais, sur le même sujet. Tu réécoutes. Celle où tu ne réfléchis pas gagne. Le plan recommande le français seul jusqu'au mois 7, puis l'anglais en second compte — mais c'est le test qui décide, pas le plan.</span></label></li>
-          <li><input type="checkbox" id="d4"><span class="tag dec">Tranché</span><label for="d4">Réduire les heures de révision pour dégager du temps de projets perso : <strong>non</strong>.
-        <span class="why">Le constat est juste — en semaine 1 il n'y a rien à réviser, et les blocs finiront en avance. La destination ne l'est pas. Ces heures vont à l'<strong>espagnol</strong> (de l'écoute réelle, pas de la grammaire) puis à la <strong>fabrication de tes cartes Anki</strong> : le paquet construit en octobre est ce qui porte novembre. C'est un choix à l'intérieur du bloc, pas une coupe dans la grille — réversible, et tu gardes l'habitude, la seule chose qui ne se reconstruit pas en novembre. Ce qui est léger au début, c'est le débit des cours, pas la charge de rétention : Anatomía et Bioquímica sont cumulatives. Réexaminé le 5 octobre, sur des chiffres.</span></label></li>
-</ul>
-
-    <h2 id="jours">03 · Les quatre jours</h2>
-    <p>Le détail, case par case, est dans la liste dédiée — celle-ci ne garde que la colonne vertébrale.</p>
-    <ul class="rail" id="rail-jours">
-      <li data-d="2026-09-10"><div class="when"><span class="date">Jeudi 10 septembre</span><span class="dist"></span></div>
-        <div class="t">Les deux vérifications</div>
-        <div class="d">Emploi du temps de la fac, et le parc de nuit. Rien d'autre n'a de valeur tant que ces deux-là ne sont pas faites.</div></li>
-      <li data-d="2026-09-11"><div class="when"><span class="date">Vendredi 11</span><span class="dist"></span></div>
-        <div class="t">Le matériel et les courses</div>
-        <div class="d">Les courses de la semaine 1 selon la liste que la Batcave génère depuis les repas, la balance, et le bureau rangé une bonne fois.</div></li>
-      <li data-d="2026-09-12"><div class="when"><span class="date">Samedi 12</span><span class="dist"></span></div>
-        <div class="t">Les cinq décisions du compte</div>
-        <div class="d">Le test de langue, le nom et le domicile, la biographie avec la mention d'étudiant qu'impose le <b>RD 1907/1996</b>, le mur et la lumière, et le bloc récurrent du dimanche à 35 minutes dans le calendrier. Cinq choix qui ne se rediscutent plus après.</div></li>
-      <li data-d="2026-09-13"><div class="when"><span class="date">Dimanche 13</span><span class="dist"></span></div>
-        <div class="t">La première vidéo, et l'amorçage</div>
-        <div class="d">Tu <b>tournes</b>, tu ne prépares pas : elle doit être prête à publier lundi soir. Et tu amorces la Batcave — la liste est plus bas, elle tient en cinq lignes.</div></li>
-      <li data-d="2026-09-14"><div class="when"><span class="date">Lundi 14</span><span class="dist"></span></div>
-        <div class="t">Jour 1</div>
-        <div class="d">Premier jour de cours, première pesée du matin, première séance, phase Español 1. Le soir : tu publies.</div></li>
+      <li><input type="checkbox" id="d-auto"><span class="tag dec">À décider</span><label for="d-auto">L'automatisation des publications : lequel des trois scénarios.
+        <span class="why">1 · Une routine qui lit ton dossier Drive et prépare les légendes et le calendrier dans Notion — tu publies à la main. 2 · La même chose, plus LinkedIn de bout en bout. 3 · Rien de sur mesure : Metricool ou Publer, 15-25 €/mois. Ma recommandation : la 1. Le travail cher, c'est l'écriture, pas le bouton « publier ».</span></label></li>
+      <li><input type="checkbox" id="d-gcal"><span class="tag dec">À décider</span><label for="d-gcal">L'écriture dans Google Agenda : oui ou non.
+        <span class="why">Aujourd'hui la Batcave <strong>lit</strong> ton agenda et pose des rappels, elle n'y écrit rien. Elle peut y pousser les blocs de la grille. C'est une écriture dans ton vrai calendrier : elle ne s'active que sur ton oui explicite.</span></label></li>
+      <li><input type="checkbox" id="d-langue"><span class="tag dec">À décider</span><label for="d-langue">La langue du compte.
+        <span class="why">Le test de soixante secondes : tu te filmes en français, puis en anglais, sur le même sujet. Celle où tu ne réfléchis pas gagne. Repoussé au week-end prochain — aucune urgence.</span></label></li>
+      <li class="done"><input type="checkbox" id="d-rev" checked><span class="tag faire">Tranché</span><label for="d-rev">Réduire les heures de révision pour dégager du temps de projets perso : <strong>non</strong>.
+        <span class="why">Le constat était juste — en semaine 1 il n'y a rien à réviser. La destination ne l'était pas. Ces heures vont à l'<strong>espagnol</strong> (de l'écoute réelle), puis à la <strong>fabrication de tes cartes Anki</strong>. C'est un choix à l'intérieur du bloc, pas une coupe dans la grille. Réexaminé le 5 octobre, sur trois semaines de chiffres.</span></label></li>
     </ul>
-    <p><a href="https://claude.ai/code/artifact/f9d415fe-ed28-4f19-a0f1-a8ac1711bd9a">Ouvrir la liste des quatre jours &rarr;</a></p>
 
-    <h2 id="jalons">04 · Les jalons</h2>
-    <p>Ces dates ne sont pas des intentions : elles sont écrites dans la grille de la Batcave et dans les dossiers, et tout en découle — le budget d'heures, la cadence de publication, le volume de sport, le moment où les calculs deviennent fiables.</p>
+    <h2 id="liste">04 &middot; Tout le reste</h2>
+    <p>La liste entière, rangée par thème et non plus par jour — les jours sont passés. Ce qui est coché est fait. Ce qui est marqué <b>Plus tard</b> n'a <strong>aucune échéance réelle avant la fin du mois</strong>.</p>
+    <h3>🔑 Le NIE</h3>
+    <p class="sub">La clé de voûte : sans lui, ni compte bancaire, ni carte de santé. Les rendez-vous à la police se prennent des semaines à l'avance — c'est le seul retard qui en crée d'autres.</p>
+    <ul class="todo">
+      <li><input type="checkbox" id="n1"><span class="tag dec">Cette semaine</span><label for="n1"><span class="ref">N1</span> Demander au proprio un accord écrit</label></li>
+      <li><input type="checkbox" id="n2"><span class="tag dec">Cette semaine</span><label for="n2"><span class="ref">N2</span> Demander à l'université le document pour le NIE</label></li>
+      <li><input type="checkbox" id="n3"><span class="tag dec">Cette semaine</span><label for="n3"><span class="ref">N3</span> Demander le NIE à la police (cita previa)</label></li>
+    </ul>
+    <h3>🏥 Santé</h3>
+    <ul class="todo">
+      <li class="done"><input type="checkbox" id="v1" checked><span class="tag faire">Fait</span><label for="v1"><span class="ref">V1</span> RDV chez un généraliste — le ventre et le poids</label></li>
+      <li class="done"><input type="checkbox" id="v2" checked><span class="tag faire">Fait</span><label for="v2"><span class="ref">V2</span> Ne pas supprimer le gluten avant d'être testé</label></li>
+      <li class="done"><input type="checkbox" id="v3" checked><span class="tag faire">Fait</span><label for="v3"><span class="ref">V3</span> Manger assis, 20 minutes, sans écran</label></li>
+      <li class="done"><input type="checkbox" id="v4" checked><span class="tag faire">Fait</span><label for="v4"><span class="ref">V4</span> Marcher 10 à 15 min après le dîner</label></li>
+      <li class="done"><input type="checkbox" id="v5" checked><span class="tag faire">Fait</span><label for="v5"><span class="ref">V5</span> Noter le ballonnement de 0 à 3 chaque soir</label></li>
+      <li class="done"><input type="checkbox" id="v6" checked><span class="tag faire">Fait</span><label for="v6"><span class="ref">V6</span> Test 1 : le lait remplacé — réglé par le skyr</label></li>
+      <li class="done"><input type="checkbox" id="v7" checked><span class="tag faire">Fait</span><label for="v7"><span class="ref">V7</span> Savoir quand ce n'est plus une question d'alimentation</label></li>
+      <li class="done"><input type="checkbox" id="b5" checked><span class="tag faire">Fait</span><label for="b5"><span class="ref">B5</span> Blanchiment dentaire</label></li>
+      <li><input type="checkbox" id="b1"><span class="tag auto">Plus tard</span><label for="b1"><span class="ref">B1</span> Prendre RDV pour les amygdales</label></li>
+      <li><input type="checkbox" id="b2"><span class="tag auto">Plus tard</span><label for="b2"><span class="ref">B2</span> Prendre RDV dents de sagesse</label></li>
+      <li><input type="checkbox" id="b3"><span class="tag auto">Plus tard</span><label for="b3"><span class="ref">B3</span> RDV dentiste — et le fil dans la bouche</label></li>
+      <li><input type="checkbox" id="b4"><span class="tag auto">Plus tard</span><label for="b4"><span class="ref">B4</span> Signaler le mal à la mâchoire</label></li>
+    </ul>
+    <h3>🎓 Fac et argent</h3>
+    <ul class="todo">
+      <li><input type="checkbox" id="c1"><span class="tag toi">Bloquant</span><label for="c1"><span class="ref">C1</span> <strong>Récupérer ton emploi du temps réel</strong>, horaire par horaire<span class="why">C'est le dernier bloquant. La grille suppose des cours de 15 h 30 à 19 h 30 : si c'est faux, tous les chiffres du premier mois le sont aussi. Dix minutes, assis dans ton lit.</span></label></li>
+      <li class="done"><input type="checkbox" id="c2" checked><span class="tag faire">Fait</span><label for="c2"><span class="ref">C2</span> Envoyer le mail pour payer l'école</label></li>
+      <li class="done"><input type="checkbox" id="c3" checked><span class="tag faire">Fait</span><label for="c3"><span class="ref">C3</span> Comparer : paiement mensuel ou annuel</label></li>
+      <li class="done"><input type="checkbox" id="c4" checked><span class="tag faire">Fait</span><label for="c4"><span class="ref">C4</span> Demander la bourse de la fac</label></li>
+      <li><input type="checkbox" id="c5"><span class="tag auto">Plus tard</span><label for="c5"><span class="ref">C5</span> Vérifier les réductions universitaires</label></li>
+      <li><input type="checkbox" id="c6"><span class="tag auto">Plus tard</span><label for="c6"><span class="ref">C6</span> Repérer les office hours des profs</label></li>
+    </ul>
+    <h3>📋 Administratif</h3>
+    <ul class="todo">
+      <li class="done"><input type="checkbox" id="d7" checked><span class="tag faire">Fait</span><label for="d7"><span class="ref">D7</span> Se renseigner sur l'aide au logement</label></li>
+      <li><input type="checkbox" id="d1"><span class="tag toi">Avant lundi</span><label for="d1"><span class="ref">D1</span> <strong>Abonnement de transport</strong><span class="why">Comment tu vas en cours lundi. À faire aujourd'hui ou demain.</span></label></li>
+      <li><input type="checkbox" id="d2"><span class="tag auto">Plus tard</span><label for="d2"><span class="ref">D2</span> Carte de sécurité sociale espagnole<span class="why">Dépend du NIE.</span></label></li>
+      <li><input type="checkbox" id="d3"><span class="tag auto">Plus tard</span><label for="d3"><span class="ref">D3</span> Compte bancaire espagnol<span class="why">Dépend du NIE.</span></label></li>
+      <li><input type="checkbox" id="d5"><span class="tag auto">Plus tard</span><label for="d5"><span class="ref">D5</span> Vérifier que LuxTrust fonctionne</label></li>
+      <li><input type="checkbox" id="d4"><span class="tag auto">Plus tard</span><label for="d4"><span class="ref">D4</span> Changer les montants dans MyGuichet</label></li>
+      <li><input type="checkbox" id="d6"><span class="tag auto">Plus tard</span><label for="d6"><span class="ref">D6</span> Appeler ILIS</label></li>
+      <li><input type="checkbox" id="d8"><span class="tag auto">Plus tard</span><label for="d8"><span class="ref">D8</span> Déposer la demande d'AideFi<span class="why">Échéance réelle : 30 novembre. Tu as le temps.</span></label></li>
+    </ul>
+    <h3>🦇 La Batcave</h3>
+    <ul class="todo">
+      <li><input type="checkbox" id="z1"><span class="tag toi">Bloquant</span><label for="z1"><span class="ref">Z1</span> Saisir ton vrai emploi du temps dans la grille<span class="why">Même chose que C1, côté application. Envoie-le-moi et je le fais.</span></label></li>
+      <li><input type="checkbox" id="e1"><span class="tag auto">Plus tard</span><label for="e1"><span class="ref">E1</span> Renseigner les dates de tes partiels dans Études<span class="why">Elles débloquent le mode partiels — annoncé 14 jours avant le premier examen — et la matière conseillée.</span></label></li>
+      <li><input type="checkbox" id="f1"><span class="tag auto">Plus tard</span><label for="f1"><span class="ref">F1</span> Une clôture du jour complète, pour de vrai</label></li>
+      <li><input type="checkbox" id="f2"><span class="tag auto">Plus tard</span><label for="f2"><span class="ref">F2</span> Un Pomodoro de bout en bout</label></li>
+      <li><input type="checkbox" id="f3"><span class="tag auto">Plus tard</span><label for="f3"><span class="ref">F3</span> Batcave sur l'écran d'accueil des trois appareils<span class="why">iPhone, iPad, Mac. Partager → « Sur l'écran d'accueil ». C'est ce qui donne l'icône de chauve-souris et le plein écran.</span></label></li>
+      <li><input type="checkbox" id="f4"><span class="tag auto">Plus tard</span><label for="f4"><span class="ref">F4</span> Lire la Prise en main en entier</label></li>
+      <li><input type="checkbox" id="k1"><span class="tag auto">Plus tard</span><label for="k1"><span class="ref">K1</span> Le bilan du dimanche en entier, à blanc</label></li>
+      <li><input type="checkbox" id="m1"><span class="tag auto">Plus tard</span><label for="m1"><span class="ref">M1</span> Sauvegarde manuelle, puis exercice de restauration<span class="why">Marqué « jamais fait » tant que tu ne l'as pas fait une fois. Une sauvegarde jamais restaurée n'est pas une sauvegarde.</span></label></li>
+      <li><input type="checkbox" id="m2"><span class="tag auto">Plus tard</span><label for="m2"><span class="ref">M2</span> Coller le lien Notion de tes cours</label></li>
+      <li><input type="checkbox" id="m3"><span class="tag auto">Plus tard</span><label for="m3"><span class="ref">M3</span> La première pesée, à jeun, un lundi matin<span class="why">Le point de départ de la droite. Une par semaine, le lundi, toujours dans les mêmes conditions.</span></label></li>
+    </ul>
+    <h3>🃏 Anki</h3>
+    <ul class="todo">
+      <li class="done"><input type="checkbox" id="e2" checked><span class="tag faire">Fait</span><label for="e2"><span class="ref">E2</span> 5 cours en retard transformés en cartes</label></li>
+      <li><input type="checkbox" id="f5"><span class="tag auto">Plus tard</span><label for="f5"><span class="ref">F5</span> Regarder la vidéo AnKing sur les réglages</label></li>
+      <li><input type="checkbox" id="f6"><span class="tag auto">Plus tard</span><label for="f6"><span class="ref">F6</span> 5 cours de plus</label></li>
+      <li><input type="checkbox" id="i5"><span class="tag auto">Plus tard</span><label for="i5"><span class="ref">I5</span> 5 cours de plus</label></li>
+      <li><input type="checkbox" id="k3"><span class="tag auto">Plus tard</span><label for="k3"><span class="ref">K3</span> Les 5 derniers cours</label></li>
+      <li><input type="checkbox" id="k2"><span class="tag auto">Plus tard</span><label for="k2"><span class="ref">K2</span> Les trois paquets importés et testés sur le bon appareil</label></li>
+    </ul>
+    <h3>🇪🇸 Espagnol</h3>
+    <p class="sub">Ces heures-là reprennent naturellement avec la grille à partir de lundi. Ne les rattrape pas — elles reviennent toutes seules.</p>
+    <ul class="todo">
+      <li><input type="checkbox" id="e3"><span class="tag auto">Plus tard</span><label for="e3"><span class="ref">E3</span> 1 h d'espagnol</label></li>
+      <li><input type="checkbox" id="f7"><span class="tag auto">Plus tard</span><label for="f7"><span class="ref">F7</span> 1 h 30 d'espagnol</label></li>
+      <li><input type="checkbox" id="i6"><span class="tag auto">Plus tard</span><label for="i6"><span class="ref">I6</span> 2 h d'espagnol</label></li>
+      <li><input type="checkbox" id="k5"><span class="tag auto">Plus tard</span><label for="k5"><span class="ref">K5</span> 2 h d'espagnol</label></li>
+    </ul>
+    <h3>💪 Le corps et le parc</h3>
+    <p class="sub">Entièrement bouclé côté parc. C'était l'un des deux bloquants — il est mort.</p>
+    <ul class="todo">
+      <li class="done"><input type="checkbox" id="z2" checked><span class="tag faire">Fait</span><label for="z2"><span class="ref">Z2</span> Le repérage du parc : matériel et lumière</label></li>
+      <li class="done"><input type="checkbox" id="g1" checked><span class="tag faire">Fait</span><label for="g1"><span class="ref">G1</span> Barre de traction assez haute pour te suspendre jambes fléchies</label></li>
+      <li class="done"><input type="checkbox" id="g2" checked><span class="tag faire">Fait</span><label for="g2"><span class="ref">G2</span> Barre basse, barres parallèles, sol plat, point d'ancrage</label></li>
+      <li class="done"><input type="checkbox" id="g3" checked><span class="tag faire">Fait</span><label for="g3"><span class="ref">G3</span> L'éclairage, et le trajet à 5 h 30</label></li>
+      <li class="done"><input type="checkbox" id="g4" checked><span class="tag faire">Fait</span><label for="g4"><span class="ref">G4</span> Le kilomètre jusqu'au parc, chronométré</label></li>
+      <li><input type="checkbox" id="h1"><span class="tag auto">Plus tard</span><label for="h1"><span class="ref">H1</span> Poids et mensurations de départ : cou, bras, taille</label></li>
+      <li><input type="checkbox" id="h2"><span class="tag auto">Plus tard</span><label for="h2"><span class="ref">H2</span> Première série de photos du corps</label></li>
+      <li><input type="checkbox" id="h3"><span class="tag auto">Plus tard</span><label for="h3"><span class="ref">H3</span> Corriger la posture — commencer</label></li>
+    </ul>
+    <h3>🏠 La maison, les courses, les écrans</h3>
+    <ul class="todo">
+      <li class="done"><input type="checkbox" id="i3" checked><span class="tag faire">Fait</span><label for="i3"><span class="ref">I3</span> Vaisselle</label></li>
+      <li class="done"><input type="checkbox" id="i4" checked><span class="tag faire">Fait</span><label for="i4"><span class="ref">I4</span> Passer un coup sur le canapé</label></li>
+      <li><input type="checkbox" id="i1"><span class="tag toi">Avant lundi</span><label for="i1"><span class="ref">I1</span> <strong>De quoi manger lundi et mardi</strong><span class="why">Pas la liste complète à 51 €, pas le batch cooking. Du pain, des œufs, des bananes, du skyr, de la soupe. Vingt minutes.</span></label></li>
+      <li><input type="checkbox" id="k7"><span class="tag toi">Avant lundi</span><label for="k7"><span class="ref">K7</span> <strong>Sac et affaires de lundi préparés, dimanche soir</strong></label></li>
+      <li><input type="checkbox" id="i2"><span class="tag auto">Plus tard</span><label for="i2"><span class="ref">I2</span> Batch cooking, 2 h : féculents et protéines de la semaine</label></li>
+      <li><input type="checkbox" id="f8"><span class="tag auto">Plus tard</span><label for="f8"><span class="ref">F8</span> Trier les fichiers iCloud</label></li>
+      <li><input type="checkbox" id="f9"><span class="tag auto">Plus tard</span><label for="f9"><span class="ref">F9</span> Supprimer les réseaux sociaux</label></li>
+      <li><input type="checkbox" id="f10"><span class="tag auto">Plus tard</span><label for="f10"><span class="ref">F10</span> Contacter les gens sur LinkedIn</label></li>
+    </ul>
+    <h3>📡 La marque</h3>
+    <p class="sub">Rien ici n'a d'échéance. Le week-end prochain suffit largement.</p>
+    <ul class="todo">
+      <li><input type="checkbox" id="y1"><span class="tag auto">Plus tard</span><label for="y1"><span class="ref">Y1</span> Le test des 60 secondes, et la langue de départ</label></li>
+      <li><input type="checkbox" id="y2"><span class="tag auto">Plus tard</span><label for="y2"><span class="ref">Y2</span> Le nom, et le domicile</label></li>
+      <li><input type="checkbox" id="y3"><span class="tag auto">Plus tard</span><label for="y3"><span class="ref">Y3</span> La bio, avec la mention d'étudiant<span class="why">Non négociable quand tu ouvriras le compte : c'est le RD 1907/1996 qui l'impose.</span></label></li>
+      <li><input type="checkbox" id="y4"><span class="tag auto">Plus tard</span><label for="y4"><span class="ref">Y4</span> Le mur, la lumière, le cadre</label></li>
+      <li><input type="checkbox" id="y5"><span class="tag auto">Plus tard</span><label for="y5"><span class="ref">Y5</span> Le créneau du dimanche, posé en bloc récurrent</label></li>
+      <li><input type="checkbox" id="k9"><span class="tag auto">Plus tard</span><label for="k9"><span class="ref">K9</span> La première vidéo, tournée</label></li>
+    </ul>
+    <h3>💼 Business, règlements, foi</h3>
+    <ul class="todo">
+      <li class="done"><input type="checkbox" id="k6" checked><span class="tag faire">Fait</span><label for="k6"><span class="ref">K6</span> Travailler le tajweed, 30 min</label></li>
+      <li class="done"><input type="checkbox" id="a3" checked><span class="tag faire">Fait</span><label for="a3"><span class="ref">A3</span> Contacter Ikea</label></li>
+      <li><input type="checkbox" id="k4"><span class="tag auto">Plus tard</span><label for="k4"><span class="ref">K4</span> Palier 1 du chapitre 29 : les 7 termes de l'argent d'une vente</label></li>
+      <li><input type="checkbox" id="a1"><span class="tag auto">Plus tard</span><label for="a1"><span class="ref">A1</span> Payer Saint Vincent de Paul</label></li>
+      <li><input type="checkbox" id="a2"><span class="tag auto">Plus tard</span><label for="a2"><span class="ref">A2</span> Demander à Reda les 2 € de l'épicerie</label></li>
+    </ul>
+
+    <h3>Le parking</h3>
+    <p class="sub">Après la rentrée, et c'est très bien : plan d'investissement &middot; montage financier &middot; Watch the Stroke Genius &middot; laisser Claude tourner Mac fermé &middot; « finir tout Batcave ».</p>
+
+    <h2 id="jalons">05 &middot; Les jalons</h2>
+    <p>Ces dates sont écrites dans la grille de la Batcave. Tout en découle : le budget d'heures, la cadence de publication, le volume de sport, le moment où les calculs deviennent fiables.</p>
     <ul class="rail" id="rail-jalons">
       <li data-d="2026-09-14"><div class="when"><span class="date">Lun. 14 sept. 2026</span><span class="dist"></span></div>
-        <div class="t">Le programme démarre · phase Español 1</div>
-        <div class="d">Les trois blocs « Projets perso » deviennent des blocs Español : gramática, escribir, preparar la clase. Budget projets perso : <b>0 h par semaine</b>. Révision : 33 h. Sport : 4 séances, à <b>la moitié du volume</b> pendant deux semaines.</div></li>
+        <div class="t">Le programme démarre &middot; phase Español 1</div>
+        <div class="d">Les trois blocs « Projets perso » deviennent des blocs Español. Budget projets perso : <b>0 h par semaine</b>. Révision : 33 h. Sport : 4 séances à la moitié du volume — <b>mais tu commences mercredi cette semaine</b>.</div></li>
       <li data-d="2026-09-28"><div class="when"><span class="date">Lun. 28 sept.</span><span class="dist"></span></div>
         <div class="t">Le sport passe au volume entier</div>
-        <div class="d">Semaine 3 : les tours ne sont plus divisés par deux. C'est un doublement d'un coup — ta décision du 9 septembre. Si les courbatures font sauter une séance cette semaine-là, la réduction de charge de l'onglet Bilan est prévue pour ça.</div></li>
+        <div class="d">Semaine 3 : les tours ne sont plus divisés par deux. Si les courbatures font sauter une séance cette semaine-là, la réduction de charge de l'onglet Bilan est prévue pour ça.</div></li>
       <li data-d="2026-10-05"><div class="when"><span class="date">Lun. 5 oct.</span><span class="dist"></span></div>
         <div class="t">Premiers verdicts chiffrés &middot; poids, et charge de révision</div>
-        <div class="d">Quatrième pesée du lundi. Il en faut <b>quatre</b>, étalées sur <b>au moins douze jours</b> : du 14 septembre au 5 octobre, il y en a vingt et un. C'est ce matin-là que la Batcave te dira pour la première fois s'il faut ajouter 150 kcal, en retirer 100, ou ne rien changer. Avant, elle se taira — et c'est normal, pas une panne.<br><br><b>Et le même jour, la question des heures de révision se tranche sur des chiffres.</b> Trois semaines pleines de données : si tu as tenu tes blocs de révision et que le temps réel reste nettement sous la cible parce que la matière ne remplit pas les heures, la coupe est justifiée et la grille se retaille. Pas avant, et pas sur une impression.</div></li>
+        <div class="d">Quatrième pesée du lundi. Il en faut <b>quatre</b>, étalées sur <b>au moins douze jours</b> : c'est ce matin-là que la Batcave te dira pour la première fois s'il faut ajouter 150 kcal, en retirer 100, ou ne rien changer.<br><br><b>Et le même jour, la question des heures de révision se tranche sur des chiffres.</b> Trois semaines pleines de données : si tu as tenu tes blocs et que le temps réel reste nettement sous la cible, la coupe est justifiée et la grille se retaille. Pas avant, et pas sur une impression.</div></li>
       <li data-d="2026-10-19"><div class="when"><span class="date">Lun. 19 oct.</span><span class="dist"></span></div>
-        <div class="t">Phase Español 2 · les heures reviennent</div>
-        <div class="d">« Projets perso 1 » redevient à toi : <b>8 h par semaine</b>. C'est le vrai départ du programme e-commerce — pas le 14 septembre, parce qu'avant cette date les heures n'existent pas. La cadence de contenu passe à <b>2 publications par semaine</b>.</div></li>
+        <div class="t">Phase Español 2 &middot; les heures reviennent</div>
+        <div class="d">« Projets perso 1 » redevient à toi : <b>8 h par semaine</b>. C'est le vrai départ du programme e-commerce — pas le 14 septembre, parce qu'avant cette date les heures n'existent pas. Cadence de contenu : <b>2 par semaine</b>.</div></li>
       <li data-d="2026-11-30"><div class="when"><span class="date">Lun. 30 nov.</span><span class="dist"></span></div>
-        <div class="t">Phase Español 3 · un seul bloc par jour</div>
-        <div class="d"><b>13 h par semaine</b> de projets perso. E-commerce et contenu tiennent enfin ensemble dans la semaine. Cadence : <b>3 publications par semaine</b> — c'est là que tu entres dans la fenêtre où le rendement décolle vraiment.</div></li>
+        <div class="t">Phase Español 3 &middot; un seul bloc par jour</div>
+        <div class="d"><b>13 h par semaine</b> de projets perso. E-commerce et contenu tiennent enfin ensemble dans la semaine. Cadence : <b>3 par semaine</b>. C'est aussi la date limite de l'<b>AideFi</b>.</div></li>
+      <li data-d="2026-12-11"><div class="when"><span class="date">Ven. 11 déc.</span><span class="dist"></span></div>
+        <div class="t">Le verdict du protocole peau</div>
+        <div class="d">Trois mois pleins. Amélioration nette ? On continue. Pas d'amélioration nette ? <b>Rendez-vous chez ton médecin</b> — ce n'est pas un échec, c'est l'étape suivante, prévue d'avance.</div></li>
       <li data-d="2027-03-15"><div class="when"><span class="date">Lun. 15 mars 2027</span><span class="dist"></span></div>
         <div class="t">La grille type, entière</div>
-        <div class="d">Fin des phases Español. <b>20 h par semaine</b> de projets perso : les « 21 blocs » cités dans le dossier e-commerce ne sont vrais qu'à partir de ce jour-là. Six mois de programme derrière toi.</div></li>
-      <li data-d="2027-09-13"><div class="when"><span class="date">Sept. 2027</span><span class="dist"></span></div>
-        <div class="t">Bilan de l'an 1 en public</div>
-        <div class="d">Environ <b>100 publications</b> derrière toi, l'anglais ouvert depuis le mois 7. Le repère du plan de marque : pas les vues, le nombre d'essais.</div></li>
-      <li data-d="2028-01-01"><div class="when"><span class="date">2027, déclaré en 2028</span><span class="dist"></span></div>
-        <div class="t">Première année de résidence fiscale espagnole</div>
-        <div class="d">2026 ne compte pas : moins de 183 jours en Espagne. À partir de 2027, tes revenus mondiaux se déclarent en Espagne — et le compte à l'étranger du prêt étudiant devient déclarable au <b>modelo 720</b> si l'ensemble de tes comptes hors d'Espagne dépasse 50 000 € — solde au 31 décembre, ou solde moyen du dernier trimestre. Un prêt n'est pas un revenu ; le modelo 720 vise le compte, pas son origine.</div></li>
+        <div class="d">Fin des phases Español. <b>20 h par semaine</b> de projets perso. Six mois de programme derrière toi.</div></li>
       <li data-d="2028-03-31"><div class="when"><span class="date">31 mars 2028</span><span class="dist"></span></div>
         <div class="t">Dernier jour du modelo 720</div>
-        <div class="d">Pour l'exercice 2027. C'est la date la plus lointaine de ce fil, et la seule dont l'oubli coûte de l'argent. Elle est ici pour que tu ne la découvres pas en 2028.</div></li>
+        <div class="d">Pour l'exercice 2027, ta première année de résidence fiscale espagnole. Déclarable si l'ensemble de tes comptes hors d'Espagne dépasse 50 000 € — solde au 31 décembre, ou solde moyen du dernier trimestre. Un prêt n'est pas un revenu ; le modelo 720 vise le compte, pas son origine.</div></li>
     </ul>
 
-    <h2 id="allume">05 · Ce qui s'allume dans la Batcave, et quand</h2>
-    <p>Une carte d'analyse qui dit « il faut 5 jours suivis » n'est pas cassée : elle attend d'avoir de quoi parler. Voici ce que chacune attend et la date au plus tôt, si tu remplis la Batcave chaque jour à partir du 14. Sauter un jour repousse la date d'autant.</p>
+    <h2 id="allume">06 &middot; Ce qui s'allume dans la Batcave, et quand</h2>
+    <p>Une carte d'analyse qui dit « il faut 5 jours suivis » n'est pas cassée : elle attend d'avoir de quoi parler. Voici ce que chacune attend, au plus tôt, si tu remplis la Batcave chaque jour à partir du 14.</p>
     <div class="tw"><table>
       <tr><th>Ce qui s'allume</th><th>Ce qu'il lui faut</th><th>Au plus tôt</th></tr>
-      <tr><td>La matière conseillée au lancement d'un Pomodoro</td><td>Rien — elle marche dès le premier bloc, sur un horizon de 90 jours tant qu'aucun examen n'est daté</td><td class="num">14 sept.</td></tr>
+      <tr><td>La matière conseillée au lancement d'un Pomodoro</td><td>Rien — dès le premier bloc, sur un horizon de 90 jours tant qu'aucun examen n'est daté</td><td class="num">14 sept.</td></tr>
       <tr><td>Fidélité au plan de la semaine</td><td>Une semaine avec au moins 3 jours de blocs enregistrés</td><td class="num">~17 sept.</td></tr>
       <tr><td>Ton heure la plus productive</td><td>8 blocs enregistrés</td><td class="num">~16 sept.</td></tr>
-      <tr><td>Bloc le plus fragile · dérive du premier bloc</td><td>5 jours suivis sur les 14 derniers</td><td class="num">~19 sept.</td></tr>
+      <tr><td>Bloc le plus fragile &middot; dérive du premier bloc</td><td>5 jours suivis sur les 14 derniers</td><td class="num">~19 sept.</td></tr>
       <tr><td>Habitudes tenues</td><td>7 jours avec au moins une habitude cochée</td><td class="num">~20 sept.</td></tr>
-      <tr><td>Stagnation d'un exercice</td><td>3 séances enregistrées du <em>même</em> exercice — un exercice revient une fois par semaine</td><td class="num">~28 sept.</td></tr>
-      <tr><td>Balance énergétique · recommandation calorique</td><td>7 jours de repas complets et 4 pesées sur 28 jours</td><td class="num">5 oct.</td></tr>
-      <tr><td>Mode partiels</td><td>Des dates d'examens saisies. Il s'annonce 7 jours avant de s'enclencher, et s'enclenche 7 jours avant le premier examen — soit <b>14 jours d'avance</b></td><td class="num">dès que tu as les dates</td></tr>
-      <tr><td>Test Anki du mois</td><td>Un dimanche du mois (jour ≤ 28), reproposé chaque dimanche tant qu'il n'est pas fait</td><td class="num">dim. 13 sept.</td></tr>
-      <tr><td>Exercice de restauration</td><td>Tous les 90 jours — marqué « jamais fait » tant que tu ne l'as pas fait une fois</td><td class="num">dès maintenant</td></tr>
+      <tr><td>Les portes d'espagnol</td><td>12 jours de cours notés sur une fenêtre de 21 jours, plus les erreurs pour 100 mots du dimanche</td><td class="num">~2 oct.</td></tr>
+      <tr><td>Stagnation d'un exercice</td><td>3 séances du <em>même</em> exercice — il revient une fois par semaine</td><td class="num">~30 sept.</td></tr>
+      <tr><td>Balance énergétique &middot; recommandation calorique</td><td>7 jours de repas complets et 4 pesées sur 28 jours</td><td class="num">5 oct.</td></tr>
+      <tr><td>Mode partiels</td><td>Des dates d'examens saisies. Annoncé 7 jours avant de s'enclencher, enclenché 7 jours avant le premier examen — soit <b>14 jours d'avance</b></td><td class="num">dès que tu as les dates</td></tr>
+      <tr><td>Exercice de restauration</td><td>Tous les 90 jours — « jamais fait » tant que tu ne l'as pas fait une fois</td><td class="num">dès maintenant</td></tr>
     </table></div>
-    <div class="note"><strong>Le seul de ces réglages qui dépende d'une information extérieure, ce sont les dates d'examens.</strong> Sans elles, la Batcave suggère les matières sur un horizon de 90 jours au lieu de viser l'examen le plus proche, et le mode partiels ne s'enclenche jamais. Dès que la fac publie son calendrier, saisis-les : c'est dix minutes qui rendent la moitié des calculs plus justes.</div>
-
-    <h2 id="batcave">06 · Ce que la Batcave attend de toi</h2>
-    <p>Tout le reste est déjà en place : les onze matières, les charges fixes, les habitudes, les objectifs, les repas, le programme de sport. Il ne reste que ceci — l'affaire d'une demi-heure, dimanche soir.</p>
-    <ul class="todo" id="t-batcave">
-      <li><input type="checkbox" id="c1"><span class="tag faire">Dimanche</span><label for="c1">Faire une <strong>sauvegarde manuelle</strong>, puis l'<strong>exercice de restauration</strong>.
-        <span class="why">Il est marqué « jamais fait » tant que tu ne l'as pas fait une fois, et il revient tous les 90 jours. Une sauvegarde qu'on n'a jamais restaurée n'est pas une sauvegarde : c'est un fichier.</span></label></li>
-      <li><input type="checkbox" id="c2"><span class="tag faire">Dimanche</span><label for="c2">Installer la Batcave sur l'écran d'accueil des <strong>trois</strong> appareils : iPhone, iPad, Mac.
-        <span class="why">Sur iPhone et iPad : Partager &rarr; « Sur l'écran d'accueil ». C'est ce qui donne l'icône de chauve-souris et le plein écran ; dans un onglet de navigateur, la page reste dans un cadre et l'icône appartient au site hôte.</span></label></li>
-      <li><input type="checkbox" id="c3"><span class="tag faire">Dimanche</span><label for="c3">Coller le <strong>lien Notion</strong> de tes cours (le crayon à côté du bouton, sur le tableau de bord).
-        <span class="why">La Batcave lit Notion, elle n'y écrit jamais. Ta structure reste la tienne.</span></label></li>
-      <li><input type="checkbox" id="c4"><span class="tag faire">Lundi matin</span><label for="c4">La <strong>première pesée</strong>, à jeun, avant tout le reste.
-        <span class="why">C'est le point de départ de la droite. Une seule par semaine, le lundi matin, toujours dans les mêmes conditions : c'est le protocole que tu as choisi, et la boucle a été recalculée pour lui.</span></label></li>
-      <li><input type="checkbox" id="c5"><span class="tag auto">Dès que possible</span><label for="c5">Saisir les <strong>dates d'examens</strong> dans l'onglet Études.
-        <span class="why">Elles débloquent le mode partiels (annoncé 14 jours avant le premier examen) et font viser la matière la plus urgente au lieu d'un horizon générique. Dès que la fac publie son calendrier.</span></label></li>
-    </ul>
+    <div class="note"><strong>Le seul de ces réglages qui dépende d'une information extérieure, ce sont les dates d'examens.</strong> Sans elles, la Batcave suggère les matières sur un horizon générique et le mode partiels ne s'enclenche jamais. Dix minutes, dès que la fac publie son calendrier.</div>
 
     <h2 id="maj">Journal des mises à jour</h2>
-    <p>Cette page est faite pour être réécrite. Chaque révision est datée ici, pour que tu voies ce qui a bougé depuis ta dernière lecture.</p>
     <ul class="maj">
-      <li><span class="d">10 sept. 2026, soir</span><span>Question tranchée : les heures de révision des premières semaines ne partent pas aux projets perso, elles partent à l'espagnol puis aux cartes Anki. Réexamen daté au 5 octobre, sur les chiffres de trois semaines.</span></li>
-      <li><span class="d">10 sept. 2026</span><span>Création. État à J-4 : deux blocages, trois décisions, les quatre jours, les neuf jalons jusqu'au 31 mars 2028, les dix cartes d'analyse et leur date d'allumage, les cinq amorçages de la Batcave.</span></li>
+      <li><span class="d">12 sept. 2026, 5 h</span><span><b>Fusion.</b> La liste des quatre jours est absorbée ici : un seul document désormais. La liste est rangée par thème et non plus par jour, les 22 lignes faites sont cochées, le parc sort des bloquants — il n'en reste qu'un. Ajout du plan de remise à l'heure du sommeil et de la rentrée révisée : lundi 7 h, pas de sport, reprise mercredi.</span></li>
+      <li><span class="d">10 sept. 2026, soir</span><span>Question tranchée : les heures de révision des premières semaines ne partent pas aux projets perso, elles partent à l'espagnol puis aux cartes Anki. Réexamen daté au 5 octobre.</span></li>
+      <li><span class="d">10 sept. 2026</span><span>Création. État à J-4 : deux blocages, trois décisions, les jalons jusqu'au 31 mars 2028, les cartes d'analyse et leur date d'allumage.</span></li>
     </ul>
 
     <footer>
-      La Batcave &middot; document de suivi &middot; les coches restent dans ce navigateur, sur cet appareil.<br>
+      La Batcave &middot; document de suivi unique &middot; les coches restent dans ce navigateur, sur cet appareil.<br>
       Les dates des phases viennent de la grille de la Batcave ; les budgets d'heures en sont calculés bloc par bloc, pas estimés.
     </footer>
   </main>
@@ -272,11 +375,10 @@
 
 <script>
 (function(){
-  var K = 'fil-des-jours-v1';
+  var K = 'fil-des-jours-v2';
   function lire(){ try{ return JSON.parse(localStorage.getItem(K) || '{}') || {}; }catch(e){ return {}; } }
   function ecrire(o){ try{ localStorage.setItem(K, JSON.stringify(o)); }catch(e){} }
 
-  /* ---- coches ---- */
   var etat = lire();
   var cases = Array.prototype.slice.call(document.querySelectorAll('.todo input[type=checkbox]'));
   function majProgres(){
@@ -286,7 +388,11 @@
     if(bar) bar.style.width = cases.length ? (n / cases.length * 100) + '%' : '0';
   }
   cases.forEach(function(c){
-    if(etat[c.id]) { c.checked = true; c.closest('li').classList.add('done'); }
+    /* L'état enregistré fait foi quand il existe ; sinon la case garde ce que le
+       document dit. Sans ce « in », décocher une ligne cochée d'avance se serait
+       recoché au rechargement. */
+    if(c.id in etat) c.checked = !!etat[c.id];
+    c.closest('li').classList.toggle('done', c.checked);
     c.addEventListener('change', function(){
       var o = lire(); o[c.id] = c.checked; ecrire(o);
       c.closest('li').classList.toggle('done', c.checked);
@@ -295,13 +401,8 @@
   });
   majProgres();
 
-  /* ---- le rail avance tout seul ---- */
-  function iso(d){
-    return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
-  }
-  function jours(a, b){
-    return Math.round((new Date(b + 'T00:00:00') - new Date(a + 'T00:00:00')) / 86400000);
-  }
+  function iso(d){ return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
+  function jours(a, b){ return Math.round((new Date(b + 'T00:00:00') - new Date(a + 'T00:00:00')) / 86400000); }
   function dire(n){
     if(n === 0) return "aujourd'hui";
     if(n === 1) return 'demain';
@@ -312,28 +413,26 @@
     if(m < 24) return 'dans ' + m + ' mois';
     return 'dans ' + (Math.round(n / 365 * 10) / 10).toString().replace('.', ',') + ' ans';
   }
-  var auj = iso(new Date());
-  var prochain = null;
+  var auj = iso(new Date()), prochain = null;
   Array.prototype.slice.call(document.querySelectorAll('.rail > li[data-d]')).forEach(function(li){
     var d = li.getAttribute('data-d'), n = jours(auj, d), dist = li.querySelector('.dist');
     if(n < 0) li.classList.add('past');
     else if(n === 0) li.classList.add('now');
     if(dist) dist.textContent = dire(n);
-    if(n > 0 && li.parentNode.id === 'rail-jalons' && !prochain){
+    if(n > 0 && !prochain){
       prochain = {n: n, t: (li.querySelector('.t') || {}).textContent || '', date: (li.querySelector('.date') || {}).textContent || ''};
     }
   });
 
-  /* ---- la bandeau d'état ---- */
   var debut = '2026-09-14', j = jours(auj, debut);
   var sj = document.getElementById('s-jour'), sjs = document.getElementById('s-jour-s');
   if(sj){
-    if(j > 0){ sj.textContent = 'J−' + j; if(sjs) sjs.textContent = 'avant le premier jour de cours'; }
-    else if(j === 0){ sj.textContent = 'Jour 1'; if(sjs) sjs.textContent = 'le programme commence aujourd’hui'; }
+    if(j > 0){ sj.textContent = 'J\u2212' + j; if(sjs) sjs.textContent = 'avant le premier jour de cours'; }
+    else if(j === 0){ sj.textContent = 'Jour 1'; if(sjs) sjs.textContent = 'le programme commence aujourd\u2019hui'; }
     else { sj.textContent = 'Jour ' + (1 - j); if(sjs) sjs.textContent = 'semaine ' + (Math.floor((-j) / 7) + 1) + ' du programme'; }
   }
   var sn = document.getElementById('s-next'), sns = document.getElementById('s-next-s');
-  if(sn && prochain){ sn.textContent = 'J−' + prochain.n; if(sns) sns.textContent = prochain.date + ' · ' + prochain.t; }
-  else if(sn){ sn.textContent = '—'; if(sns) sns.textContent = 'plus de bascule programmée'; }
+  if(sn && prochain){ sn.textContent = 'J\u2212' + prochain.n; if(sns) sns.textContent = prochain.date + ' \u00b7 ' + prochain.t; }
+  else if(sn){ sn.textContent = '\u2014'; if(sns) sns.textContent = 'plus de bascule programmée'; }
 })();
 </script>
