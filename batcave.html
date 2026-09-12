@@ -11735,10 +11735,16 @@
 
     var revH = todayRevisionMinutes()/60;
     var target = revisionTarget();
-    var revPct = clamp(Math.round(100*revH/target), 0, 100);
+    /* Un jour sans revision prevue -- vacances, jour exclu, journee exceptionnelle qui
+       mange la matinee -- donnait une cible de zero : 100 x 0 / 0 = NaN, et l'anneau
+       affichait « NaN% » pendant les quinze jours de Noel. Cent pour cent d'un objectif
+       nul est atteint par definition, et le sous-titre dit pourquoi. */
+    var revPct = target > 0 ? clamp(Math.round(100*revH/target), 0, 100) : 100;
     document.getElementById('cal-revision-pct').innerHTML = revPct + '<small>%</small>';
     document.getElementById('cal-revision-fill').style.width = revPct + '%';
-    document.getElementById('cal-revision-sub').textContent = fmtHeures(revH) + ' sur ' + fmtHeures(target) + ' visées';
+    document.getElementById('cal-revision-sub').textContent = target > 0
+      ? fmtHeures(revH) + ' sur ' + fmtHeures(target) + ' visées'
+      : (revH > 0 ? fmtHeures(revH) + ' — aucune révision prévue aujourd\u2019hui' : 'aucune révision prévue aujourd\u2019hui');
 
     var waterL = (Number(journalState.water)||0)/1000;
     var waterPct = pctEau(journalState.water);
@@ -12239,7 +12245,7 @@
     else{
       cList.innerHTML = coranState.slice().reverse().map(function(c){
         var d = daysSince(c.revision), stale = d===null || d>14;
-        return '<li class="entry-row"><span class="ecell"><b>'+escapeHtml(c.sourate)+'</b></span><span class="ecell small">p.'+c.page+' · juz '+c.juz+'</span><span class="ecell small badge">'+escapeHtml(c.statut)+'</span><span class="ecell small badge '+(stale?'warn':'good')+'" data-revcoran="'+c.id+'">'+(d===null?'jamais révisé':'il y a '+d+'j')+'</span><button class="edel" aria-label="Supprimer" title="Supprimer" data-delcoran="'+c.id+'">×</button></li>';
+        return '<li class="entry-row"><span class="ecell"><b>'+escapeHtml(c.sourate || 'Sourate non précisée')+'</b></span><span class="ecell small">p.'+(c.page || '—')+' · juz '+(c.juz || '—')+'</span><span class="ecell small badge">'+escapeHtml(c.statut || 'à mémoriser')+'</span><span class="ecell small badge '+(stale?'warn':'good')+'" data-revcoran="'+c.id+'">'+(d===null?'jamais révisé':'il y a '+d+'j')+'</span><button class="edel" aria-label="Supprimer" title="Supprimer" data-delcoran="'+c.id+'">×</button></li>';
       }).join('');
       cList.querySelectorAll('[data-revcoran]').forEach(function(el){
         el.addEventListener('click', function(){ coranState.filter(function(x){return x.id===el.dataset.revcoran;})[0].revision = todayISO; save('batcave-coran', coranState); renderCoranDuaa(); renderDashboard(); });
