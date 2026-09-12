@@ -3130,9 +3130,16 @@
     'horizon','last-auto-backup','last-manual-backup','last-bilan-prompt','last-compaction','last-open','last-rotation','notion-url',
     'pomodial-purge','projets','report','revision','revision-fusionnee','revue','sante','sauvegarde','sessions',
     'shopify-last-order-count','taches','timer','transactions','undo-stack','undo-toast','cloud-reload-at','cloud-toast','notion-cache','anki',
-    'mesures','experiences'];
+    'mesures','experiences',
+    /* Cinq cles que le code ecrit depuis longtemps et que ce registre ne connaissait pas :
+       le verificateur de cohabitation les signalait au demarrage comme des cles inconnues,
+       une fausse alerte a chaque fois. « jours-sans-cours » et « copie-vierge » sont en plus
+       gardees au nouveau depart, donc l'alerte aurait survecu a la remise a zero.
+       Un test statique (test89) verifie desormais que ce registre couvre TOUTES les cles
+       que le code ecrit : cette categorie de faux signalement ne peut plus revenir. */
+    'jours-sans-cours','copie-vierge','chrono-seance','insights-vu','seance-duree'];
   var PREFIXES_CONNUS = ['archive-','cal-','coherence-ignore-','drill-ignore-','test-anki-','fc-logged-','fixed-logged-','gcal-','journal-','manque-traite-',
-    'meals-','pomodial-','sauvegarde-','sport-'];
+    'meals-','pomodial-','rattrapage-vu-','sauvegarde-','sport-'];
   function cleConnue(k){
     var court = k.replace(/^batcave-/, '');
     if(CLES_CONNUES.indexOf(court) !== -1) return true;
@@ -11093,16 +11100,20 @@
      }, consignes: CONSIGNES_PERIODE_ES},
     /* ===== L'ete 2027 =====
        Le dernier cours est le vendredi 4 juin. A partir du 5, sansCoursLe libere deja la
-       plage de cours de chaque jour ouvre ; cette periode vide le reste. Ce vide est un
-       choix, pas un oubli : rien n'est encore decide de cet ete -- stage, boutique,
-       rattrapages -- et une grille inventee aurait fabrique trois mois de retard sur des
-       cibles auxquelles il n'a jamais souscrit. Les blocs de travail deviennent du temps
-       libre, exactement comme en vacances, donc les cibles tombent d'elles-memes et
-       recalerObjectifsSemaine ramene les objectifs de temps a zero. Ce qui reste est ce qui
-       ne depend pas de l'ete : le sport, les repas, le Coran, le sommeil. */
-    {id:'ete', nom:'Été 2027', debut:'2027-06-05', fin:'2027-08-31', suite:'à décider',
-     description:"Les cours sont finis depuis le 4 juin et rien n'est encore décidé de cet été : la grille est volontairement vide. Le sport, les repas, le Coran et le sommeil restent ; tout le temps de travail est du temps libre, donc aucune cible et aucun retard. À remplacer dès que l'été est arrêté.",
-     transformer: function(b){ return typeBlocPlan(b[1]) ? [b[0], 'Temps libre'] : b; }}
+       plage de cours de chaque jour ouvre : l'ete est donc, par construction, une suite de
+       journees sans cours -- Anki, cartes, annales, annale complete, correction, projets.
+
+       Cette periode a d'abord VIDE l'ete (tous les blocs de travail en temps libre), parce
+       que rien n'en etait decide. Elle ne le vide plus : il travaille tous les jours, et un
+       trimestre sans une seule cible ne lui apprend rien. Elle ne garde que son NOM, pour
+       que la barre dise « Été 2027 » plutot que « hors semestre » -- ni transformer, ni
+       renommage, ni grille : la journee sans cours fait tout le travail.
+
+       Ce qui reste a preciser n'est pas la charge, c'est la DESTINATION : stage, boutique a
+       plein temps, rattrapages, avance sur la deuxieme annee. Le jour ou c'est decide, les
+       libelles des blocs changent ; le volume, lui, est deja juste. */
+    {id:'ete', nom:'Été 2027', debut:'2027-06-05', fin:'2027-08-31', suite:'la rentrée suivante',
+     description:"Plus de cours depuis le 4 juin : chaque jour ouvré est une journée sans cours — Anki, cartes, annales, une annale complète et sa correction l'après-midi, puis les blocs de projet. Le volume est celui d'un jour libre de l'année ; ce qui reste à préciser, c'est à quoi il sert (stage, boutique à plein temps, rattrapages, avance sur la deuxième année)."}
   ];
   function periodeGrille(iso){
     if(typeof PERIODES_GRILLE === 'undefined' || !PERIODES_GRILLE) return null;

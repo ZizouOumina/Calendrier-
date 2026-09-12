@@ -122,7 +122,7 @@
       <div><div class="k">Chantiers ouverts</div><div class="v">5</div><div class="s">plus aucun avec une date</div></div>
       <div><div class="k">Bloqués sur toi</div><div class="v">3</div><div class="s">une décision, pas du code</div></div>
       <div><div class="k">Bloqués ailleurs</div><div class="v">2</div><div class="s">une vraie réponse de connecteur</div></div>
-      <div><div class="k">Tests</div><div class="v">81</div><div class="s">fichiers, tous verts</div></div>
+      <div><div class="k">Tests</div><div class="v">82</div><div class="s">fichiers, tous verts</div></div>
     </div>
     <p>Cinq chantiers, et <b>plus un seul n'a de date</b> : la section « ce qui a une date » a disparu de ce
     dossier. Le semestre 2 est dans la grille, l'été est vidé, le rappel des dates d'examen est en place. Ce qui
@@ -136,19 +136,25 @@
     l'absolu — seulement la tienne.</p>
 
     <div class="job you">
-      <div class="head"><span class="chip you">à remplir</span><h3>L'été — vidé, pas encore rempli</h3><span class="ref">T4</span></div>
+      <div class="head"><span class="chip you">à destiner</span><h3>L'été — travaillé, mais pour quoi faire ?</h3><span class="ref">T4</span></div>
       <p>Les cours s'arrêtent le <b>vendredi 4 juin 2027</b>. La grille projetait jusqu'ici une année scolaire sur
       juillet et août : elle annonçait des blocs <i>Cours</i>, <i>Trajet cours</i> et <i>Comprendre le cours du
       jour</i> en plein été, et l'objectif du quatrième trimestre — 229 h de révision, 279 h de projets — était
       calculé là-dessus. C'était <b>le dernier chiffre faux de l'application</b>.</p>
-      <p>Comme demandé : <b>l'été est maintenant vide</b>. Une période <code>été</code> court du 5 juin au
-      31 août, tous les blocs de travail y sont du temps libre, et les cibles tombent donc à zéro d'elles-mêmes —
-      T4 ne raconte plus d'histoire. Ce qui reste debout est ce qui ne dépend pas de l'été : le sport, les repas,
-      le Coran, le sommeil. Et l'agenda ne pousse plus rien : une journée sans un seul bloc de travail ne rappelle
-      pas son temps libre.</p>
-      <p class="why"><b>Ce qu'il reste</b>Le remplir, le jour où tu sais — stage, retour au Luxembourg, plein temps
-      sur la boutique, ou les trois. Chacun donne une grille différente, et c'est une heure de travail à partir de
-      la réponse. D'ici là le vide est honnête : il ne te met pas en retard sur un été que personne n'a décidé.</p>
+      <p>L'été a d'abord été <b>vidé</b>, puisque rien n'en était décidé. Il ne l'est plus : <b>tu travailles
+      tous les jours et tu ne prends pas de vacances avant 2028</b>, donc un trimestre sans une seule cible ne
+      t'apprend rien. À partir du 5 juin, chaque jour ouvré est une <b>journée sans cours</b> — Anki, cartes,
+      annales, une annale complète et sa correction l'après-midi, puis les blocs de projet. Soit <b>5 h 20 de
+      révision et 4 h 30 de projets</b> par jour : exactement la charge d'un jour libre de l'année scolaire, ni
+      inventée ni gonflée. La période <code>été</code> ne garde plus que son nom, pour que la barre dise
+      « Été 2027 ».</p>
+      <p>T4 vaut donc <b>389 h de révision et 308 h de projets</b>. C'est réel, mais c'est un <i>volume</i>, pas
+      un programme.</p>
+      <p class="why"><b>Ce qu'il reste</b>Non pas la charge — elle est juste — mais la <b>destination</b> de ces
+      heures : stage, retour au Luxembourg, plein temps sur la boutique, rattrapages, avance sur la deuxième
+      année. C'est la seule chose qui manque, et le jour où tu la donnes, seuls les libellés des blocs changent.
+      Une réserve honnête en attendant : « 389 h de révision » en juillet suppose des examens en septembre ou des
+      rattrapages. Si ton été n'en contient pas, ce sont ces heures-là qui iront ailleurs.</p>
     </div>
 
     <div class="job you">
@@ -260,9 +266,18 @@
       libère : une <b>annale complète</b> en conditions réelles, sa correction carte par carte, puis les blocs de
       projet de la phase en cours — dîner à 19:00, coucher à 21:00. Un panneau de l'onglet Calendrier corrige la
       liste quand le portail de la fac dit autre chose : c'est ta saisie qui fait foi.</li>
-      <li><b>L'été est vidé</b> et le doublon <b>« 🦇 Cours »</b> a quitté l'agenda — les trois séries récurrentes
-      sont supprimées, et l'application ne les recréera pas. Le rappel des dates d'examen apparaît dans le Plan du
-      jour à partir du 15 octobre et disparaît à la première date saisie.</li>
+      <li><b>Le doublon « 🦇 Cours » a quitté l'agenda</b> — les trois séries récurrentes sont supprimées, et
+      l'application ne les recréera pas. Le rappel des dates d'examen apparaît dans le Plan du jour à partir du
+      15 octobre et disparaît à la première date saisie. Vérifié sur les sept jours de la première semaine :
+      l'agenda porte exactement les heures de la grille, aucun bloc en double, et les vrais cours à côté.</li>
+      <li><b>Cinq clés de données manquaient au registre du vérificateur de cohérence</b>, dont deux gardées au
+      nouveau départ : l'application les aurait signalées comme inconnues à chaque démarrage, et l'alerte aurait
+      survécu à la remise à zéro. Un test qui relit le code (<code>test89</code>) vérifie désormais que le registre
+      couvre les 65 clés que l'application écrit, qu'aucune clé datée n'est gardée par erreur, et qu'aucune
+      décision de configuration ne se perd.</li>
+      <li><b>Les sept anciennes sauvegardes Drive sont supprimées.</b> Elles portaient tes données de test de début
+      septembre et d'anciennes cibles d'objectifs — une restauration depuis l'une d'elles aurait ramené la
+      confusion. Le dossier est vide ; la première sauvegarde de la nouvelle série part lundi.</li>
       <li><b>Les portes d'espagnol convertissent vraiment un bloc.</b> Le panneau disait « tu peux convertir ce
       bloc » et personne ne le faisait — il aurait fallu éditer le HTML à la main. Un bouton enregistre désormais
       une date, à partir de laquelle le bloc redevient Projets perso. Le passé n'est pas réécrit, et en semaine
@@ -278,8 +293,9 @@
       <li><b>Les seize séries de l'agenda Google</b> refaites jour par jour : lundi 22 blocs, mardi 13, mercredi
       exact, aucun doublon.</li>
     </ul>
-    <div class="ok"><b>81 fichiers de tests, tous verts</b>, dont quatre nouveaux : une simulation de six mois
-    de vie fictive traversée à douze dates charnières, vingt-quatre assertions sur les portes, et deux fichiers
-    pour les deux semestres, les jours sans cours et l'été.</div>
+    <div class="ok"><b>82 fichiers de tests, tous verts</b>, dont cinq nouveaux : une simulation de six mois
+    de vie fictive traversée à douze dates charnières, vingt-quatre assertions sur les portes, deux fichiers pour
+    les deux semestres, les jours sans cours et l'été, et un test d'analyse statique qui garde le registre des
+    clés aligné sur le code.</div>
   </main>
 </div>

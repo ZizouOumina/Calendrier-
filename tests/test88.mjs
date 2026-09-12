@@ -2,10 +2,11 @@
 
    Trois choses sans rapport entre elles, sauf qu'elles enlevent du bruit.
 
-   L'ETE : le dernier cours est le vendredi 4 juin 2027. Apres, la grille est
-   volontairement vide -- rien n'est encore decide de cet ete, et une grille inventee
-   aurait fabrique trois mois de retard sur des cibles auxquelles il n'a jamais souscrit.
-   Ce qui reste est ce qui ne depend pas de l'ete : sport, repas, Coran, sommeil.
+   L'ETE : le dernier cours est le vendredi 4 juin 2027. Apres, chaque jour ouvre est une
+   JOURNEE SANS COURS -- il travaille tous les jours, il ne prend pas de vacances avant
+   2028. La periode « ete » a d'abord vide la grille ; elle ne garde plus que son nom, pour
+   que la barre dise « Été 2027 ». Ce qui reste a preciser n'est pas la charge (elle est
+   deja juste, celle d'un jour libre de l'annee) mais la DESTINATION de ces heures.
 
    LE DOUBLON : l'agenda Google porte deja les vrais cours, avec la matiere et la salle,
    importes du portail de la fac. Un « 🦇 Cours » de quatre heures pose par-dessus
@@ -37,7 +38,7 @@ async function ouvrir(quand, seed){
   return { ctx, page, fr };
 }
 
-console.log('\n== 291) Le 4 juin est le dernier jour de cours ; le 5, l\'été commence ==');
+console.log('\n== 291) Le 4 juin est le dernier jour de cours ; le 5, l\'été travaillé commence ==');
 {
   const { ctx, fr } = await ouvrir('2027-06-04T09:00:00+02:00');
   const v = await fr.evaluate(() => ({
@@ -46,19 +47,28 @@ console.log('\n== 291) Le 4 juin est le dernier jour de cours ; le 5, l\'été c
     g4: window.__bcGrille('friday', '2027-06-04').map(b => b[0] + ' ' + b[1]),
     g7: window.__bcGrille('monday', '2027-06-07').map(b => b[0] + ' ' + b[1]),
     prevu4: window.__bcPrevu('2027-06-04'), prevu7: window.__bcPrevu('2027-06-07'),
-    c7: window.__bcCibleJour('monday', '2027-06-07')
+    c7: window.__bcCibleJour('monday', '2027-06-07'),
+    cJuin: window.__bcCibleJour('monday', '2027-06-01')
   }));
   ok(v.sans4 === false && v.p4 === null && v.g4.includes('15:30 Cours'),
      'le vendredi 4 juin a encore cours à 15:30 et n\'est dans aucune période');
   ok(v.sans7 === true && v.p7 === 'ete', 'le lundi 7 juin est dans la période « été » et sans cours');
-  ok(!v.g7.some(x => /Cours|Trajet cours|Anki|Annale|Projets perso|Español|Comprendre|Cartes/.test(x)),
-     'plus un seul bloc de travail : ' + v.g7.filter(x => /Temps libre/.test(x)).length + ' créneaux de temps libre');
-  ok(v.g7.some(x => /05:30 Sport/.test(x)) && v.g7.some(x => /Coran/.test(x)) && v.g7.some(x => /Dîner/.test(x)) && v.g7.some(x => /21:00 Coucher/.test(x)),
-     'ce qui ne dépend pas de l\'été reste : sport, Coran, repas, coucher');
-  ok(v.c7.rev === 0 && v.c7.proj === 0 && v.c7.es === 0 && v.prevu7.rev === 0 && v.prevu7.proj === 0,
-     'aucune cible, donc aucun retard possible (' + JSON.stringify(v.c7) + ')');
-  ok(v.prevu7.sport === 1, 'le sport, lui, reste prévu — c\'est la seule chose qui ne dépend pas de l\'été');
-  ok(v.prevu4.rev > 0, 'et le 4 juin prévoyait encore de la révision (' + v.prevu4.rev + ' min)');
+  ok(!v.g7.some(x => /Cours|Trajet cours|Trajet retour/.test(x)), 'plus de cours ni de trajets');
+  ok(v.g7.includes('15:00 Annale complète') && v.g7.includes('16:00 Correction + cartes') && v.g7.includes('17:00 Projets perso 4'),
+     'la journée est celle d\'un jour sans cours : annale complète, correction, projets');
+  ok(v.g7.includes('07:20 Anki 1') && v.g7.includes('08:20 Anki 2'),
+     'Anki ne s\'arrête pas : les cartes arrivent à échéance tous les jours, été compris');
+  ok(v.g7.some(x => /05:30 Sport/.test(x)) && v.g7.some(x => /Coran/.test(x)) && v.g7.some(x => /19:00 Dîner/.test(x)) && v.g7.some(x => /21:00 Coucher/.test(x)),
+     'et le reste de la journée tient : sport, Coran, repas, coucher à 21:00');
+  /* La charge d'un jour d'ete est celle d'un jour libre de l'annee scolaire, ni plus ni
+     moins : 5 h 20 de revision et 4 h 30 de projets. Ce n'est PAS zero -- une grille vide
+     n'apprend rien a quelqu'un qui travaille tous les jours -- et ce n'est pas invente non
+     plus : c'est exactement la journee sans cours du 12 octobre ou du 21 janvier. */
+  ok(v.c7.rev === 320 && v.c7.proj === 270 && v.c7.es === 0,
+     'la charge est celle d\'un jour libre : ' + JSON.stringify(v.c7));
+  ok(v.prevu7.rev === 320 && v.prevu7.proj === 270 && v.prevu7.sport === 1,
+     'et elle est bien PRÉVUE, donc comptée dans les objectifs du quatrième trimestre');
+  ok(v.prevu4.rev > 0 && v.cJuin.rev === 265, 'le 1er et le 4 juin restent des jours de cours (' + v.cJuin.rev + ' min de révision)');
   await ctx.close();
 }
 {
@@ -95,12 +105,29 @@ console.log('\n== 292) L\'agenda Google : ni 🦇 Cours, ni 🦇 Temps libre =='
   await ctx.close();
 }
 {
-  /* pendant l'ete, les rappels tombent a ce qui reste vrai */
+  /* Une journee VRAIMENT vide -- des vacances saisies a la main -- ne pousse plus rien : le
+     mecanisme existe toujours, meme s'il ne compte pas s'en servir avant 2028. */
+  const { ctx, fr } = await ouvrir('2027-07-01T09:00:00+02:00',
+    {'batcave-vacances': [{id:'v1', debut:'2027-07-01', fin:'2027-07-01', label:'test'}]});
+  const v = await fr.evaluate(() => ({
+    r: window.__bcRappels('2027-07-01').map(b => b.titre),
+    g: window.__bcGrille('weekday', '2027-07-01').map(b => b[1]),
+    c: window.__bcCibleJour('weekday', '2027-07-01')
+  }));
+  ok(!v.g.some(x => /Anki|Annale|Cartes|Projets perso|Comprendre|Correction/.test(x)) && v.c.rev === 0 && v.c.proj === 0,
+     'des vacances saisies vident bien la journée et mettent les cibles à zéro (' + JSON.stringify(v.c) + ')');
+  ok(!v.r.some(x => /Temps libre/.test(x)) && v.r.length <= 12,
+     'et une journée sans un seul bloc de travail ne pousse plus douze « temps libre » dans le téléphone : ' + v.r.length + ' rappels');
+  ok(v.r.includes('🦇 Sport') && v.r.includes('🦇 Dîner'), 'restent les ancres : sport et repas');
+  await ctx.close();
+}
+{
+  /* Un jour d'ete ORDINAIRE, lui, pousse la journee entiere : c'est un jour de travail. */
   const { ctx, fr } = await ouvrir('2027-07-01T09:00:00+02:00');
   const r = await fr.evaluate(() => window.__bcRappels('2027-07-01').map(b => b.titre));
-  ok(!r.some(x => /Temps libre/.test(x)) && r.length <= 12,
-     'une journée SANS aucun bloc de travail ne pousse plus douze « temps libre » dans le téléphone : ' + r.length + ' rappels');
-  ok(r.includes('🦇 Sport') && r.includes('🦇 Dîner'), 'restent les ancres : sport et repas');
+  ok(r.includes('🦇 Anki 1') && r.includes('🦇 Annale complète') && r.length >= 20,
+     'un jour d\'été ordinaire rappelle la journée entière : ' + r.length + ' rappels');
+  ok(!r.includes('🦇 Cours'), 'et toujours pas de bloc Cours — il n\'y en a plus');
   await ctx.close();
 }
 
