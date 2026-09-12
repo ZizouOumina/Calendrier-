@@ -184,6 +184,24 @@ console.log('\n== 294) Le panneau « Jours sans cours » : la saisie fait foi ==
   await ctx.close();
 }
 
+console.log('\n== 295) La remise à zéro du 14 garde les décisions de calendrier ==');
+{
+  /* Les jours sans cours corriges a la main et la date de conversion d'une porte sont de la
+     CONFIGURATION, pas des saisies du quotidien : une remise a zero qui les effacerait
+     annulerait en silence deux decisions sur son emploi du temps -- la liste de depart
+     reprendrait la main, et un bloc rendu aux projets redeviendrait de l'espagnol. */
+  const { ctx, fr } = await ouvrir('2026-09-14T09:00:00+02:00');
+  const v = await fr.evaluate(() => ({
+    garde: ['batcave-jours-sans-cours', 'batcave-portes', 'batcave-vacances', 'batcave-jours-exclus', 'batcave-examens']
+             .map(k => k + '=' + String(window.__bcReinitGarder(k))),
+    efface: ['batcave-sessions', 'batcave-taches', 'batcave-cours-suivi']
+             .map(k => k + '=' + String(window.__bcReinitGarder(k)))
+  }));
+  ok(v.garde.every(x => /=true$/.test(x)), 'gardés : ' + v.garde.join(' · '));
+  ok(v.efface.every(x => /=false$/.test(x)), 'effacés : ' + v.efface.join(' · '));
+  await ctx.close();
+}
+
 await browser.close();
 console.log(errs ? '\n' + errs + ' ECHEC(S)' : '\nTOUT VERT');
 process.exit(errs ? 1 : 0);
