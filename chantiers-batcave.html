@@ -1,0 +1,301 @@
+<title>Les chantiers de la Batcave</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&family=Roboto+Mono:wght@400;500&display=swap">
+<style>
+  :root{
+    --paper:#EBEEF2; --sheet:#FFFFFF; --line:#CBD3DC; --line-soft:#DFE5EB;
+    --ink:#151A21; --ink-2:#4A5560; --ink-3:#78838F;
+    --rail:#1B4D8F; --rail-soft:#DCE7F5;
+    --wait:#A96B00; --wait-soft:#F7EBD4;
+    --stop:#A6382C; --stop-soft:#F6E1DD;
+    --done:#1D6B4E; --done-soft:#DCEDE4;
+    --hold:#5B4E9C; --hold-soft:#E3E0F2;
+    --display:'Oswald','Helvetica Neue',Arial,sans-serif;
+    --body:'Source Sans 3','Helvetica Neue',Arial,sans-serif;
+    --mono:'Roboto Mono','SFMono-Regular',Menlo,monospace;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper:#0F1419; --sheet:#161C23; --line:#2B343E; --line-soft:#212932;
+      --ink:#E3E9EF; --ink-2:#AAB5C0; --ink-3:#7A8592;
+      --rail:#6FA8E8; --rail-soft:#16283D;
+      --wait:#DFAF5A; --wait-soft:#33280F;
+      --stop:#E08A7E; --stop-soft:#39201C;
+      --done:#5CC297; --done-soft:#123227;
+      --hold:#A79BE0; --hold-soft:#221E38;
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#0F1419; --sheet:#161C23; --line:#2B343E; --line-soft:#212932;
+    --ink:#E3E9EF; --ink-2:#AAB5C0; --ink-3:#7A8592;
+    --rail:#6FA8E8; --rail-soft:#16283D;
+    --wait:#DFAF5A; --wait-soft:#33280F;
+    --stop:#E08A7E; --stop-soft:#39201C;
+    --done:#5CC297; --done-soft:#123227;
+    --hold:#A79BE0; --hold-soft:#221E38;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; background:var(--paper); color:var(--ink); font-family:var(--body); font-size:16px; line-height:1.6; -webkit-font-smoothing:antialiased;}
+  a{color:var(--rail);}
+  .shell{display:grid; grid-template-columns:210px minmax(0,1fr); gap:44px; max-width:1140px; margin:0 auto; padding:36px 24px 96px;}
+  @media (max-width:920px){
+    .shell{grid-template-columns:minmax(0,1fr); gap:18px; padding:22px 16px 72px;}
+    .toc{position:static !important;}
+    .toc ol{flex-direction:row; flex-wrap:wrap; gap:7px 8px;}
+    .toc a{border:1px solid var(--line); background:var(--sheet); padding:6px 10px; font-size:12.5px;}
+    .toc a b{display:none;}
+  }
+  .toc{position:sticky; top:20px; align-self:start; font-size:13.5px;}
+  .toc .k{font-family:var(--mono); font-size:10.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--ink-3); margin-bottom:12px;}
+  .toc ol{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:7px;}
+  .toc a{color:var(--ink-2); text-decoration:none; display:flex; gap:9px; align-items:baseline;}
+  .toc a b{font-family:var(--mono); font-weight:400; color:var(--ink-3); font-size:11px; min-width:18px;}
+  .toc a:hover{color:var(--ink);}
+  main{max-width:74ch; min-width:0;}
+  h1,h2,h3{font-family:var(--display); line-height:1.12; text-wrap:balance; margin:0;}
+  h1{font-size:46px; font-weight:700; letter-spacing:.005em; text-transform:uppercase;}
+  @media (max-width:520px){ h1{font-size:34px;} }
+  h2{font-size:25px; font-weight:600; margin-top:52px; padding-top:18px; border-top:2px solid var(--ink); text-transform:uppercase; letter-spacing:.02em;}
+  h3{font-size:18.5px; font-weight:600; margin-top:0;}
+  .eyebrow{font-family:var(--mono); font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:var(--rail); margin-bottom:10px;}
+  .lede{font-size:17.5px; color:var(--ink-2); margin-top:14px; max-width:62ch;}
+  p{margin:12px 0;} ul{padding-left:20px;} li{margin:6px 0;}
+  .stamp{font-family:var(--mono); font-size:12px; color:var(--ink-3); letter-spacing:.03em;}
+  .strip{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:1px; background:var(--line); border:1px solid var(--line); margin:26px 0 8px;}
+  .strip div{background:var(--sheet); padding:11px 13px;}
+  .strip .k{font-family:var(--mono); font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-3);}
+  .strip .v{font-family:var(--display); font-size:23px; font-weight:600; margin-top:3px; font-variant-numeric:tabular-nums; line-height:1.1;}
+  .strip .s{font-size:12.5px; color:var(--ink-2); line-height:1.35; margin-top:2px;}
+  @media (max-width:640px){ .strip{grid-template-columns:1fr 1fr;} }
+  .note{border-left:3px solid var(--wait); background:var(--wait-soft); padding:11px 15px; margin:18px 0; font-size:15px;}
+  .danger{border-left:3px solid var(--stop); background:var(--stop-soft); padding:11px 15px; margin:18px 0; font-size:15px;}
+  .ok{border-left:3px solid var(--done); background:var(--done-soft); padding:11px 15px; margin:18px 0; font-size:15px;}
+  /* ---- une fiche par chantier ---- */
+  .job{border:1px solid var(--line); background:var(--sheet); padding:16px 18px; margin:18px 0;}
+  .job.dated{border-left:3px solid var(--stop);}
+  .job.you{border-left:3px solid var(--wait);}
+  .job.conn{border-left:3px solid var(--hold);}
+  .job.limit{border-left:3px solid var(--ink-3);}
+  .head{display:flex; gap:10px; align-items:baseline; flex-wrap:wrap; margin-bottom:4px;}
+  .ref{font-family:var(--mono); font-size:11px; color:var(--ink-3); letter-spacing:.08em;}
+  .chip{font-family:var(--mono); font-size:10px; letter-spacing:.12em; text-transform:uppercase; padding:3px 7px; border:1px solid var(--line); color:var(--ink-2); white-space:nowrap;}
+  .chip.dated{border-color:var(--stop); color:var(--stop); background:var(--stop-soft);}
+  .chip.you{border-color:var(--wait); color:var(--wait); background:var(--wait-soft);}
+  .chip.conn{border-color:var(--hold); color:var(--hold); background:var(--hold-soft);}
+  .job p{margin:9px 0; font-size:15.3px;}
+  .job p:last-child{margin-bottom:0;}
+  .why{font-size:14px; color:var(--ink-2); border-top:1px solid var(--line-soft); padding-top:9px; margin-top:11px !important;}
+  .why b{font-family:var(--mono); font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-3); display:block; margin-bottom:2px; font-weight:400;}
+  code{font-family:var(--mono); font-size:.9em; background:var(--line-soft); padding:1px 5px;}
+  table{border-collapse:collapse; width:100%; margin:16px 0; font-size:14.5px;}
+  th,td{border:1px solid var(--line); padding:7px 10px; text-align:left; vertical-align:top;}
+  th{font-family:var(--mono); font-size:10.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-3); font-weight:400; background:var(--sheet);}
+  td b{font-variant-numeric:tabular-nums;}
+  .wrap{overflow-x:auto;}
+  .closed{list-style:none; padding:0; margin:18px 0;}
+  .closed li{display:flex; gap:10px; align-items:baseline; padding:7px 0; border-bottom:1px solid var(--line-soft); font-size:15px;}
+  .closed li::before{content:"✓"; color:var(--done); font-weight:700;}
+</style>
+
+<div class="shell">
+  <nav class="toc">
+    <div class="k">Sommaire</div>
+    <ol>
+      <li><a href="#etat"><b>00</b><span>Où on en est</span></a></li>
+      <li><a href="#date"><b>01</b><span>Ce qui a une date</span></a></li>
+      <li><a href="#toi"><b>02</b><span>Ce qui t'attend</span></a></li>
+      <li><a href="#conn"><b>03</b><span>Ce qui attend un connecteur</span></a></li>
+      <li><a href="#limites"><b>04</b><span>Les limites assumées</span></a></li>
+      <li><a href="#ferme"><b>05</b><span>Fermé dans la nuit</span></a></li>
+    </ol>
+  </nav>
+
+  <main>
+    <div class="eyebrow">Dossier · les chantiers</div>
+    <h1>Les chantiers de la Batcave</h1>
+    <p class="stamp">à jour au 12 septembre 2026, 08 h · deux jours avant le premier jour · lecture ≈ 7 min</p>
+    <p class="lede">Tout ce qui reste à construire dans l'application, et rien d'autre. Les démarches, les rendez-vous
+    et l'administration sont dans <b>Le fil des jours</b> — ce dossier-ci ne parle que du logiciel.</p>
+
+    <h2 id="etat">00 · Où on en est</h2>
+    <div class="strip">
+      <div><div class="k">Chantiers ouverts</div><div class="v">9</div><div class="s">dont 2 avec une date</div></div>
+      <div><div class="k">Bloqués sur toi</div><div class="v">4</div><div class="s">une décision, pas du code</div></div>
+      <div><div class="k">Bloqués ailleurs</div><div class="v">2</div><div class="s">un connecteur qui n'existe pas encore</div></div>
+      <div><div class="k">Tests</div><div class="v">79</div><div class="s">fichiers, tous verts</div></div>
+    </div>
+    <p>Neuf chantiers : deux ont une date, quatre attendent une décision de ta part, deux un connecteur, et le
+    dernier attend juste ton feu vert. C'est une bonne nouvelle : <b>aucun d'eux n'empêche de démarrer lundi.</b></p>
+    <p>Ce dossier remplace la liste de <i>Réflexion Batcave II</i>, qui annonçait « il ne reste qu'un chantier ».
+    C'était vrai au 10 septembre. Depuis, ton emploi du temps réel est entré dans la grille et il a ouvert des
+    questions que personne ne s'était posées — le semestre 2, l'été, le mode partiels sur les nouveaux blocs.</p>
+
+    <h2 id="date">01 · Ce qui a une date</h2>
+    <p>Deux chantiers qui ne peuvent pas attendre indéfiniment, parce qu'une date les rattrape.</p>
+
+    <div class="job dated">
+      <div class="head"><span class="chip dated">25 janvier</span><h3>Le semestre 2 dans la grille</h3><span class="ref">S2</span></div>
+      <p>Le 25 janvier tu passes de <b>16 h à 24 h de cours par semaine</b>, mardi et mercredi jusqu'à 21:30,
+      avec Idioma Moderno (anglais, groupe T13). La grille actuelle ne connaît que le semestre 1.</p>
+      <p>Passé le 19 janvier, elle <b>sous-estime tes cours de 8 h par semaine</b> : toutes les cibles — révision,
+      projets, espagnol — sont calculées sur des heures qui n'existent plus. L'application ne peut pas le deviner.</p>
+      <p class="why"><b>Ce que ça coûte</b>Une soirée. J'ai les trente-neuf semaines de captures d'écran, relevées
+      une par une. Le faire en janvier, c'est le faire pendant tes premiers partiels. Un jalon daté au 19 janvier
+      porte déjà le rappel dans <i>Le fil des jours</i>, et un avertissement est inscrit dans le code, au-dessus
+      de la grille du lundi.</p>
+    </div>
+
+    <div class="job dated">
+      <div class="head"><span class="chip dated">dès la publication</span><h3>Un rappel pour les dates d'examens</h3><span class="ref">EX</span></div>
+      <p>Le mode partiels — Anki intact, Cartes → Annales ciblées, Projets perso → Révision ciblée, un seul bloc
+      Español par jour — se calcule uniquement à partir des dates que tu saisis dans Études. Elles sont vides.
+      <b>Tant qu'elles le restent, ce mode ne s'enclenchera jamais</b>, et la matière conseillée au lancement d'un
+      Pomodoro tourne sur un horizon générique de 90 jours.</p>
+      <p>Rien dans l'application ne te le rappelle. Chantier : une ligne dans le Plan du jour à partir de mi-octobre,
+      qui disparaît dès qu'au moins une date est saisie.</p>
+      <p class="why"><b>Ce que ça coûte</b>Une demi-heure de code. Dix minutes de ta part le jour où la fac publie
+      son calendrier.</p>
+    </div>
+
+    <h2 id="toi">02 · Ce qui t'attend</h2>
+    <p>Quatre questions. Aucune ne se code avant que tu aies répondu, et deux d'entre elles n'ont pas de bonne
+    réponse dans l'absolu — seulement la tienne.</p>
+
+    <div class="job you">
+      <div class="head"><span class="chip you">à décider</span><h3>L'été — et le dernier chiffre faux</h3><span class="ref">T4</span></div>
+      <p>Les cours s'arrêtent le <b>4 juin</b>. La grille, elle, projette une année scolaire sur juillet et août :
+      elle t'annonce des blocs <i>Cours</i>, <i>Trajet cours</i> et <i>Comprendre le cours du jour</i> en plein été.
+      L'objectif du quatrième trimestre — 229 h de révision, 279 h de projets — est calculé là-dessus.</p>
+      <p>C'est <b>le dernier chiffre faux de l'application</b>. Les trois autres trimestres tombent au dixième près
+      sur la mesure réelle ; celui-là est du vent.</p>
+      <p>Je ne peux pas le corriger sans savoir ce que sera ton été : un stage, un retour au Luxembourg, du plein
+      temps sur le dropshipping, ou les trois. Chacun donne une grille différente.</p>
+      <p class="why"><b>Ce que ça coûte</b>Une heure, le jour où tu sais. Une quatrième période <code>été</code>
+      du 5 juin au 31 août, avec ses propres blocs — et T4 devient juste comme les autres.</p>
+    </div>
+
+    <div class="job you">
+      <div class="head"><span class="chip you">recommandation faite</span><h3>Pomodoro : les pauses comptent-elles ?</h3><span class="ref">PM</span></div>
+      <p>Aujourd'hui elles sont <b>exclues</b> : chaque bloc est multiplié par 55/60, ou 25/30 sur les blocs Anki.
+      C'est pour ça que 34 h de blocs de révision par semaine s'affichent comme 29 h 55.</p>
+      <div class="wrap"><table>
+        <tr><th>&nbsp;</th><th>Blocs bruts</th><th>Compté</th><th>Écart</th></tr>
+        <tr><td>Révision</td><td><b>34 h 00</b></td><td><b>29 h 55</b></td><td>4 h 05</td></tr>
+        <tr><td>Projets + espagnol</td><td><b>24 h 20</b></td><td><b>22 h 31</b></td><td>1 h 49</td></tr>
+        <tr><td>Semaine</td><td><b>58 h 20</b></td><td><b>52 h 26</b></td><td><b>5 h 54</b></td></tr>
+      </table></div>
+      <p><b>Ma recommandation : ne change rien.</b> Tu craignais d'avoir à recalculer selon le modèle Pomodoro du
+      bloc — mais tu n'as jamais de calcul à faire. Le minuteur n'enregistre que les phases de travail : la fin
+      d'une pause ne passe jamais par l'enregistrement. Les deux côtés de la comparaison sont donc déjà alignés.
+      Inclure les pauses mettrait la cible à 34 h pendant que le minuteur continuerait d'enregistrer 29 h 55 :
+      tu serais à −4 h tous les lundis matin sans avoir rien loupé.</p>
+      <p class="why"><b>Le vrai réglage, plus tard</b>Le ratio est figé à 55/5. Si tes modèles s'écartent
+      durablement, la correction juste n'est pas d'inclure les pauses, c'est de faire suivre <code>partTravail()</code>
+      au modèle choisi. Pas avant un mois de données réelles — sinon c'est du réglage à l'aveugle. L'écart maximal
+      d'ici là est de 1 h 35 par semaine, et la marge des cibles en absorbe déjà 3 h 20.</p>
+    </div>
+
+    <div class="job you">
+      <div class="head"><span class="chip you">à décider</span><h3>L'automatisation des publications</h3><span class="ref">PB</span></div>
+      <p>Trois scénarios, déjà posés : une routine qui prépare légendes et calendrier dans Notion et te laisse
+      publier à la main ; la même chose plus LinkedIn de bout en bout ; ou rien de sur mesure, un Metricool ou
+      un Publer à 15–25 €/mois.</p>
+      <p><b>Ma recommandation reste la première.</b> Le travail cher, c'est l'écriture, pas le bouton « publier ».</p>
+    </div>
+
+    <div class="job you">
+      <div class="head"><span class="chip you">à décider</span><h3>La langue du compte</h3><span class="ref">LG</span></div>
+      <p>Le test de soixante secondes : tu te filmes en français, puis en anglais, sur le même sujet. Celle où tu
+      ne réfléchis pas gagne. Aucune urgence — ça peut attendre un week-end calme.</p>
+    </div>
+
+    <h2 id="conn">03 · Ce qui attend un connecteur</h2>
+    <p>Deux onglets où la saisie manuelle tient pour l'instant, et où un connecteur changerait tout. L'un est
+    déjà possible, l'autre pas encore.</p>
+
+    <div class="job conn">
+      <div class="head"><span class="chip conn">possible aujourd'hui</span><h3>Finance — brancher la banque</h3><span class="ref">FI</span></div>
+      <p>L'onglet Budget est <b>entièrement en saisie manuelle</b> : charges fixes, plafonds par catégorie, et
+      chaque transaction tapée à la main. C'est le seul onglet où je pense que la saisie décrochera vraiment —
+      pas au bout d'une semaine, au bout de trois.</p>
+      <p>Un connecteur bancaire existe déjà côté Claude et sait lire comptes, soldes et transactions. Il s'appelle <b>BankSync</b>, il est dans ta liste
+      de connecteurs, et <b>rien ne le lit dans la Batcave</b> — le mot n'apparaît pas une seule fois dans les
+      13 800 lignes du fichier.</p>
+      <p>Ce que ça donnerait : les transactions arrivent seules, la catégorisation devient automatique, et le
+      plafond par catégorie compare du réel à du réel — au lieu de comparer à ce que tu as bien voulu saisir.</p>
+      <p class="why"><b>La réserve</b>Avant d'écrire une ligne, il faut voir une vraie requête et une vraie réponse
+      du connecteur. Je ne code pas contre une forme devinée : une page publiée qui appelle un outil sur une
+      structure supposée casse en silence chez toi, pas chez moi. Donc : tu connectes ta banque, on regarde une
+      réponse ensemble, et ensuite je construis.</p>
+    </div>
+
+    <div class="job conn">
+      <div class="head"><span class="chip conn">pas encore possible</span><h3>Santé — le poids et le sommeil qui arrivent seuls</h3><span class="ref">SA</span></div>
+      <p>Poids, sommeil, eau, humeur, compléments : saisis à la main chaque matin dans le journal. Il n'y a
+      <b>aucun connecteur Apple Santé ou Google Fit</b> dans ton compte aujourd'hui, et ce n'est pas quelque chose
+      que je peux créer — ça dépend de ce que Claude propose.</p>
+      <p>Le jour où il y en a un : poids, sommeil, pas et fréquence cardiaque au repos arrivent seuls, et la
+      balance énergétique — qui demande 7 jours de repas complets et 4 pesées sur 28 jours — s'allume sans effort.</p>
+      <p>En attendant, <b>la saisie du matin suffit largement</b>. C'est deux minutes, et c'est exactement elle qui
+      nourrit la recommandation calorique. Ce chantier n'est pas un manque, c'est un confort à venir.</p>
+    </div>
+
+    <h2 id="limites">04 · Les limites assumées</h2>
+    <p>Trois choses qui ne sont pas des bugs et qui ne seront pas « réparées » : il vaut mieux les connaître
+    avant lundi 07:20 que les découvrir lundi 07:20.</p>
+
+    <div class="job limit">
+      <div class="head"><span class="chip">limite</span><h3>Anki ne se lira jamais tout seul sur l'iPhone</h3><span class="ref">AK</span></div>
+      <p>Deux chemins existent dans le code : AnkiConnect, qui appelle <code>http://127.0.0.1:8765</code>, et la
+      saisie à la main. Sur la page publiée, <b>le premier ne répondra jamais</b> : la politique de sécurité des
+      artefacts bloque tout appel réseau sortant, localhost compris. Il ne fonctionne que si tu ouvres le fichier
+      HTML local sur ton Mac, avec Anki lancé.</p>
+      <p>Donc sur iPhone et iPad : les trois chiffres se lisent sur l'écran d'accueil d'Anki (colonne « À revoir »
+      de chaque paquet) et le nombre de révisions du jour dans les statistiques. C'est la voie normale, et
+      l'application le dit quand la lecture échoue.</p>
+    </div>
+
+    <div class="job limit">
+      <div class="head"><span class="chip">à trancher</span><h3>Le doublon « 🦇 Cours » dans l'agenda</h3><span class="ref">AG</span></div>
+      <p>Depuis cette nuit ton agenda porte deux événements au même créneau : <b>🦇 Cours</b>, le bloc de la grille,
+      et le vrai cours avec son nom et sa salle — <i>Documentación… VL08</i>, <i>Biología Celular… VL08</i>. Deux
+      notifications pour la même chose.</p>
+      <p>Supprimer les séries 🦇 Cours ne suffirait pas : l'application les recrée chaque jour, parce que <i>Cours</i>
+      est un bloc de la grille comme un autre. <b>La sortie propre est d'exclure <code>Cours</code> des blocs que la
+      Batcave rappelle</b> — une ligne — puisque les vrais cours, eux, portent le nom du prof et la salle.</p>
+      <p class="why"><b>Pourquoi je ne l'ai pas fait</b>Ça change un comportement que tu as peut-être voulu. Dis oui
+      et c'est fait en deux minutes.</p>
+    </div>
+
+    <div class="job limit">
+      <div class="head"><span class="chip">à l'usage</span><h3>La charge</h3><span class="ref">CH</span></div>
+      <p>En phase 1 : <b>29 h 55 de révision et 21 h 36 d'espagnol</b> par semaine, soit 51 h 31 de travail
+      personnel, environ <b>7 h 22 par jour sur sept jours</b> — en plus de 16 h de cours.</p>
+      <p>Ce n'est pas un chantier, c'est le seul vrai risque du 14. Aucun test ne peut le juger : il faut une
+      vraie semaine. <b>Premier verdict le dimanche 20 septembre</b>, au bilan. Si une chose doit céder, il vaut
+      mieux que ce soit décidé que subi.</p>
+    </div>
+
+    <h2 id="ferme">05 · Fermé dans la nuit</h2>
+    <p>Ce qui n'est plus sur la liste, depuis hier soir.</p>
+    <ul class="closed">
+      <li><b>Les portes d'espagnol convertissent vraiment un bloc.</b> Le panneau disait « tu peux convertir ce
+      bloc » et personne ne le faisait — il aurait fallu éditer le HTML à la main. Un bouton enregistre désormais
+      une date, à partir de laquelle le bloc redevient Projets perso. Le passé n'est pas réécrit, et en semaine
+      d'examen la révision passe avant.</li>
+      <li><b>Ton emploi du temps réel est dans la grille</b>, lundi et mardi compris, et les quatre heures
+      libérées suivent le mécanisme des phases au lieu d'être posées à la main.</li>
+      <li><b>Le mode partiels connaît les trois nouveaux blocs.</b> Sans ça, trois heures restaient du dropshipping
+      en semaine d'examen, et le mardi portait deux blocs Español au lieu d'un.</li>
+      <li><b>« NaN % » pendant les vacances</b> — l'anneau de révision du Calendrier, les quinze jours de Noël et
+      tout jour exclu. Trouvé par la simulation de six mois de vie fictive.</li>
+      <li><b>« juz undefined »</b> sur la page Coran, pour une entrée incomplète venue d'une vieille sauvegarde.</li>
+      <li><b>« Emploi du temps — undefined »</b> le lundi et le mardi, depuis que ces deux jours ont leur propre grille.</li>
+      <li><b>Les seize séries de l'agenda Google</b> refaites jour par jour : lundi 22 blocs, mardi 13, mercredi
+      exact, aucun doublon.</li>
+    </ul>
+    <div class="ok"><b>79 fichiers de tests, tous verts</b>, dont deux nouveaux : une simulation de six mois de vie
+    fictive traversée à douze dates charnières, et vingt-quatre assertions sur les portes.</div>
+  </main>
+</div>
