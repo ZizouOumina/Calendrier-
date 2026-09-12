@@ -18,7 +18,12 @@ for(const f of pages){
       if(m.type() === 'error' && !/ERR_CONNECTION_RESET|fonts\.g(oogleapis|static)/.test(t))
         err.push('console: ' + t.slice(0,80)); });
     page.on('requestfailed', r => { if(!/fonts\.g(oogleapis|static)/.test(r.url())) err.push('requête échouée : ' + r.url().slice(0,60)); });
-    await page.goto('file:///home/user/Calendrier-/' + f);
+    /* « load » attend la feuille Google Fonts, que le proxy du bac a sable refuse : chaque
+       page partait alors au bout de la temporisation par defaut, et la campagne entiere
+       finissait par se bloquer, navigateur perdu. « domcontentloaded » n'attend pas les
+       ressources externes -- ce sont justement celles qu'on a deja decide d'ignorer
+       (voir le filtre de console ci-dessus). Plafond explicite par securite. */
+    await page.goto('file:///home/user/Calendrier-/' + f, {waitUntil:'domcontentloaded', timeout:15000});
     await page.waitForTimeout(700);
     const r = await page.evaluate(() => {
       const debord = document.documentElement.scrollWidth > window.innerWidth + 1;
