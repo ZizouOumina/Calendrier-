@@ -4380,17 +4380,31 @@
      Elle ne touche QU'AUX fichiers « batcave-sauvegarde-auto-AAAA-MM-JJ.json » du dossier :
      jamais une sauvegarde manuelle, jamais le sous-dossier HTML, jamais un fichier
      inconnu. La date est lue dans le nom, pas dans Drive : deterministe, et testable.
-     Un meme jour ecrit deux fois (deux appareils ouverts avant que le releve « derniere
-     sauvegarde » ne se synchronise) : la premiere copie est gardee, l'autre jetee, quel
-     que soit l'age. Les fichiers vont a la corbeille (trash_file), jamais en suppression
+     Un meme jour ecrit deux fois -- deux appareils ouverts avant que le releve « derniere
+     sauvegarde » ne se synchronise, ou une remise a zero au milieu de la journee -- : c'est
+     la copie la PLUS RECENTE qui est gardee, l'autre jetee, quel que soit l'age.
+
+     Ce depart-la n'etait pas anodin. Le code gardait la PREMIERE copie du jour, et le
+     scenario qui casse est celui du 14 septembre : ouvrir l'application le matin envoie une
+     sauvegarde des anciennes donnees, puis la remise a zero efface « derniere sauvegarde »,
+     donc l'ouverture suivante en envoie une seconde sous le MEME nom. Garder la premiere,
+     c'etait garder l'ancienne -- et une restauration « du 14 septembre » ramenait les
+     donnees de test de septembre. Garder la plus recente est juste dans tous les cas : la
+     derniere copie d'un jour est celle qui decrit l'etat de ce jour.
+
+     La date vient du NOM du fichier, l'heure de createdTime : Drive peut rendre les fichiers
+     dans n'importe quel ordre, le tri ne doit dependre que des donnees, jamais de l'ordre
+     d'arrivee. Les fichiers vont a la corbeille (trash_file), jamais en suppression
      definitive. */
   function planRotation(fichiers, refISO){
     var auto = [];
     (fichiers || []).forEach(function(f){
       var m = /^batcave-sauvegarde-auto-(\d{4}-\d{2}-\d{2})\.json$/.exec((f && f.title) || '');
-      if(m && f.id) auto.push({id: f.id, title: f.title, iso: m[1]});
+      if(m && f.id) auto.push({id: f.id, title: f.title, iso: m[1], cree: String(f.createdTime || '')});
     });
-    auto.sort(function(a, b){ return b.iso.localeCompare(a.iso); });   /* la plus recente d'abord */
+    /* jour decroissant, puis heure de creation decroissante : vusJour garde donc, pour un
+       jour ecrit deux fois, la copie la plus recente. */
+    auto.sort(function(a, b){ return b.iso.localeCompare(a.iso) || b.cree.localeCompare(a.cree); });
     var ref = new Date(refISO + 'T00:00:00');
     var garder = [], jeter = [], vusJour = {}, vusSemaine = {}, vusMois = {};
     auto.forEach(function(f){

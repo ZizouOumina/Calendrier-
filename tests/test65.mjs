@@ -106,6 +106,26 @@ console.log('\n== 243) Rotation Drive : deux sauvegardes auto du même jour → 
   });
   ok(r.jeter.length === 2 && r.jeter.indexOf('b') > -1 && r.jeter.indexOf('e2') > -1, 'les doublons (b, e2) partent à la corbeille : ' + JSON.stringify(r.jeter));
   ok(r.garder.indexOf('a') > -1 && r.garder.indexOf('c') > -1 && r.garder.indexOf('e') > -1 && r.garder.indexOf('d') === -1, 'une copie par jour gardée, la sauvegarde manuelle jamais touchée : ' + JSON.stringify(r.garder));
+
+  /* Le scenario du 14 septembre : ouvrir l'application le matin envoie une sauvegarde des
+     ANCIENNES donnees ; la remise a zero efface « derniere sauvegarde » ; l'ouverture
+     suivante en envoie une seconde, sous le MEME nom de fichier. C'est la plus RECENTE qui
+     doit survivre -- garder la premiere, c'etait garder les donnees d'avant la remise a
+     zero, et une restauration « du 14 septembre » ramenait septembre. L'ordre dans lequel
+     Drive rend les fichiers ne doit rien changer : on le teste dans les deux sens. */
+  const dbl = await fr.evaluate(() => {
+    const f = (t, id, cree) => ({title: t, id: id, createdTime: cree});
+    const avant  = f('batcave-sauvegarde-auto-2026-09-14.json', 'vieille', '2026-09-14T06:10:00.000Z');
+    const apres  = f('batcave-sauvegarde-auto-2026-09-14.json', 'fraiche', '2026-09-14T18:45:00.000Z');
+    const p1 = window.__bcPlanRotation([avant, apres], '2026-09-14');
+    const p2 = window.__bcPlanRotation([apres, avant], '2026-09-14');
+    return { g1: p1.garder.map(x => x.id), j1: p1.jeter.map(x => x.id),
+             g2: p2.garder.map(x => x.id), j2: p2.jeter.map(x => x.id) };
+  });
+  ok(dbl.g1.length === 1 && dbl.g1[0] === 'fraiche' && dbl.j1[0] === 'vieille',
+     'deux copies du même jour : la plus récente est gardée (' + JSON.stringify(dbl.g1) + ' gardée, ' + JSON.stringify(dbl.j1) + ' jetée)');
+  ok(JSON.stringify(dbl.g1) === JSON.stringify(dbl.g2) && JSON.stringify(dbl.j1) === JSON.stringify(dbl.j2),
+     'et le résultat ne dépend pas de l\'ordre dans lequel Drive rend les fichiers');
   await ctx.close();
 }
 
