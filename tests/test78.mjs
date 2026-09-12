@@ -49,10 +49,10 @@ console.log('\n== 2) L\'espagnol manqué est une dette d\'espagnol, pas de proje
 }
 {
   /* 2 h reportées en espagnol reviennent bien dans la cible d'espagnol du lendemain.
-     Le mardi 15 prévoit 2 h 40 d'espagnol : avec 2 h de report on attend 4 h 40. */
+     Le mardi 15 prévoit 4 h 30 d'espagnol : avec 2 h de report on attend 6 h 30. */
   const {ctx, fr} = await ouvrir({'batcave-report':{date:'2026-09-15', rev:0, proj:0, es:120}}, '2026-09-15T06:00:00+02:00');
   const t = await temps(fr);
-  ok(/Español \| 0 \/ 4 h 40/.test(t), 'mardi 15 : 2 h 40 au programme + 2 h reportées = 4 h 40 de cible d\'espagnol' + (/Español \| 0 \/ 4 h 40/.test(t) ? '' : ' — obtenu : ' + t));
+  ok(/Español \| 0 \/ 6 h 30/.test(t), 'mardi 15 : 4 h 30 au programme + 2 h reportées = 6 h 30 de cible d\'espagnol' + (/Español \| 0 \/ 6 h 30/.test(t) ? '' : ' — obtenu : ' + t));
   await ctx.close();
 }
 
