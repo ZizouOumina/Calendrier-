@@ -77,12 +77,14 @@
   .job.you{border-left:3px solid var(--wait);}
   .job.conn{border-left:3px solid var(--hold);}
   .job.limit{border-left:3px solid var(--ink-3);}
+  .job.done{border-left:3px solid var(--done);}
   .head{display:flex; gap:10px; align-items:baseline; flex-wrap:wrap; margin-bottom:4px;}
   .ref{font-family:var(--mono); font-size:11px; color:var(--ink-3); letter-spacing:.08em;}
   .chip{font-family:var(--mono); font-size:10px; letter-spacing:.12em; text-transform:uppercase; padding:3px 7px; border:1px solid var(--line); color:var(--ink-2); white-space:nowrap;}
   .chip.dated{border-color:var(--stop); color:var(--stop); background:var(--stop-soft);}
   .chip.you{border-color:var(--wait); color:var(--wait); background:var(--wait-soft);}
   .chip.conn{border-color:var(--hold); color:var(--hold); background:var(--hold-soft);}
+  .chip.done{border-color:var(--done); color:var(--done); background:var(--done-soft);}
   .job p{margin:9px 0; font-size:15.3px;}
   .job p:last-child{margin-bottom:0;}
   .why{font-size:14px; color:var(--ink-2); border-top:1px solid var(--line-soft); padding-top:9px; margin-top:11px !important;}
@@ -120,25 +122,28 @@
 
     <h2 id="etat">00 · Où on en est</h2>
     <div class="strip">
-      <div><div class="k">Chantiers bloqués</div><div class="v">5</div><div class="s">3 sur une décision, 2 sur un connecteur</div></div>
+      <div><div class="k">Chantiers bloqués</div><div class="v">4</div><div class="s">2 sur toi, 2 sur un accès</div></div>
       <div><div class="k">Améliorations proposées</div><div class="v">8</div><div class="s">dont 3 sur la charge, ton seul vrai risque</div></div>
       <div><div class="k">À ne pas construire</div><div class="v">3</div><div class="s">et la raison de chacune</div></div>
       <div><div class="k">Tests</div><div class="v">82</div><div class="s">fichiers, tous verts</div></div>
     </div>
-    <p>Cinq chantiers, et <b>plus un seul n'a de date</b> : la section « ce qui a une date » a disparu de ce
+    <p>Quatre chantiers, et <b>plus un seul n'a de date</b> : la section « ce qui a une date » a disparu de ce
     dossier. Les deux semestres sont dans la grille, les jours fériés ont un agenda, l'été est travaillé, le
     rappel des dates d'examen est en place.</p>
-    <div class="note"><b>Les cinq derniers ne se codent pas.</b> Trois attendent une décision que je ne peux pas
-    prendre à ta place, un attend de voir une vraie réponse de ton connecteur bancaire, et le dernier attend un
-    connecteur qui n'existe pas encore chez Claude. <b>Aucun n'attend du temps de développement</b> — c'est la
+    <div class="note"><b>Les quatre derniers ne se codent pas.</b> Un attend une information que personne n'a
+    encore — auras-tu un stage cet été ? Un attend deux minutes de ta part demain matin. Et les deux derniers
+    attendent un accès : tu es <b>sur liste d'attente</b> pour brancher tes comptes bancaires, et le connecteur
+    santé n'existe pas encore chez Claude. <b>Aucun n'attend du temps de développement</b> — c'est la
     différence avec les vingt-cinq chantiers d'avant, et c'est pour ça qu'on ne peut pas « finir » cette liste ce
     soir. La <a href="#ameliorations">section 04</a> dit ce qui peut encore être construit, et elle, elle est
     ouverte.</div>
 
     <h2 id="toi">01 · Ce qui t'attend</h2>
-    <p>Trois questions. Aucune ne se code avant que tu aies répondu, et aucune n'a de bonne réponse dans
-    l'absolu — seulement la tienne. Chacune finit par <b>la phrase exacte</b> qu'il me faut pour la débloquer :
-    réponds à ces trois lignes et les trois chantiers tombent.</p>
+    <p>Trois lignes, et <b>l'une des trois est tombée ce soir</b> : tu as choisi le scénario 1 pour les
+    publications, et elle est passée de « à décider » à « à installer ». Restent deux questions — l'une attend
+    une information que personne n'a encore, l'autre attend deux minutes de ta part demain matin. Aucune n'a de
+    bonne réponse dans l'absolu, seulement la tienne, et chacune finit par <b>la phrase exacte</b> qu'il me faut
+    pour la débloquer.</p>
 
     <div class="job you">
       <div class="head"><span class="chip you">à destiner</span><h3>L'été — travaillé, mais pour quoi faire ?</h3><span class="ref">T4</span></div>
@@ -170,10 +175,10 @@
       n'en contient pas, ce sont ces heures-là qui iront au projet.</p>
     </div>
 
-    <div class="job you">
-      <div class="head"><span class="chip you">à décider</span><h3>L'automatisation des publications</h3><span class="ref">PB</span></div>
-      <p>Trois scénarios étaient sur la table. <b>Il n'en reste que deux</b> : j'ai vérifié ce que tes
-      connecteurs savent réellement faire, et le deuxième n'est pas réalisable.</p>
+    <div class="job done">
+      <div class="head"><span class="chip done">décidé — reste à installer</span><h3>L'automatisation des publications</h3><span class="ref">PB</span></div>
+      <p><b>Tu as choisi : scénario 1.</b> Le rappel des trois options reste ici pour que la décision garde sa
+      raison — et parce que le deuxième n'est pas réalisable, ce qui n'était pas évident avant vérification.</p>
       <div class="wrap"><table>
         <tr><th>&nbsp;</th><th>Ce que ça fait</th><th>Ce que ça te coûte</th><th>Ce que ça t'enlève</th></tr>
         <tr><td><b>1 · La routine</b></td><td>Chaque dimanche, elle lit ton dossier Drive, écrit les légendes,
@@ -190,15 +195,25 @@
         <td><b>15–25 €/mois</b> · rien à construire</td>
         <td><b>La programmation</b>, pas l'écriture</td></tr>
       </table></div>
-      <p><b>Ma recommandation : le scénario 1, et pas le 3 — pour l'instant.</b> À une vidéo par semaine, puis
-      deux, puis trois, publier à la main prend <b>quatre-vingt-dix secondes par semaine</b>. Payer 20 €/mois pour
-      économiser quatre-vingt-dix secondes est un mauvais échange quand ton loyer est à 700 €. Ce qui te coûte
-      cher, c'est d'écrire les légendes — et c'est précisément ce que le scénario 1 enlève.</p>
-      <p class="why"><b>Le seuil où le 3 devient juste</b>Le jour où tu publies sur <b>trois comptes en trois
-      langues</b>, soit neuf publications par semaine : là, la programmation devient un vrai travail et 20 €/mois
-      se justifient. D'après ton plan de contenu, c'est <b>l'an 3</b>, pas cette année.<br><br>
-      <b>La phrase qu'il me faut :</b> « scénario 1 ». C'est le seul des cinq chantiers que je peux fermer
-      entièrement sans rien attendre d'autre que ton oui.</p>
+      <p>Le raisonnement tenait en une ligne et il tient toujours : à une vidéo par semaine, puis deux, puis
+      trois, publier à la main prend <b>quatre-vingt-dix secondes par semaine</b>. Payer 20 €/mois pour économiser
+      quatre-vingt-dix secondes est un mauvais échange quand ton loyer est à 700 €. Ce qui te coûte cher, c'est
+      d'écrire les légendes — et c'est exactement ce que le scénario 1 enlève.</p>
+      <p><b>Ce qui est fait :</b> le dossier Drive <b>Batcave / 12 · Contenu</b> est créé — c'est là que tu
+      déposeras tes idées et tes rushes, et c'est là que la routine ira chercher de quoi écrire. Et le
+      <b>texte complet de la routine</b> est écrit et posé dans ce dossier : la cadence par phase (1 par semaine
+      jusqu'au 18 octobre, 2 jusqu'au 29 novembre, 3 ensuite), la rotation des quatre piliers, les trois séries,
+      la structure 0–3 / 3–10 / 10–35 / 35–45 secondes, le français seul pour l'an 1, les trois murs à vérifier
+      avant de proposer, et l'interdiction d'inventer un chiffre.</p>
+      <p><b>Ce qui reste, et pourquoi c'est à toi :</b> la routine doit être créée <b>depuis claude.ai</b>, pas
+      d'ici. Une routine créée depuis une session de code n'emporte aucun connecteur — elle n'aurait accès ni à
+      ton Drive ni à Notion, donc elle ne lirait rien et n'écrirait rien. J'en avais créé une, je l'ai supprimée
+      plutôt que de te laisser un rendez-vous vide tous les dimanches.</p>
+      <p class="why"><b>Les cinq minutes, dimanche</b>claude.ai → Routines → nouvelle routine → hebdomadaire,
+      dimanche 10:00 → <b>coche Google Drive et Notion</b> (c'est l'étape qui compte) → colle le texte du
+      document. Le premier dimanche utile est le 20 septembre.<br><br>
+      <b>Le seuil où le scénario 3 deviendrait juste</b> : le jour où tu publies sur trois comptes en trois
+      langues, soit neuf publications par semaine. D'après ton plan de contenu, c'est l'an 3, pas cette année.</p>
     </div>
 
     <div class="job you">
@@ -206,17 +221,18 @@
       <p>Le test de soixante secondes : tu te filmes en français, puis en anglais, sur le même sujet. Celle où tu
       ne réfléchis pas gagne. Aucune urgence — ça peut attendre un week-end calme.</p>
       <p class="why"><b>La phrase qu'il me faut</b>« français » ou « anglais ». Mais ne devine pas : fais le test,
-      c'est deux minutes, et c'est la seule des trois questions dont la réponse ne s'invente pas de tête.<br><br>
+      c'est deux minutes, et c'est la seule des trois lignes ci-dessus dont la réponse ne s'invente pas de tête.<br><br>
       <b>Et c'est déjà dans ta liste :</b> c'est la ligne <b>Y1</b> du <i>Fil des jours</i>, « le test des
       60 secondes, et la langue de départ ». Une seule chose à faire, deux cases qui tombent.</p>
     </div>
 
     <h2 id="conn">02 · Ce qui attend un connecteur</h2>
-    <p>Deux onglets où la saisie manuelle tient pour l'instant, et où un connecteur changerait tout. L'un est
-    déjà possible, l'autre pas encore.</p>
+    <p>Deux onglets où la saisie manuelle tient pour l'instant, et où un connecteur changerait tout. <b>Aucun
+    des deux ne dépend de toi</b> : l'un attend que ta place sur une liste d'attente arrive, l'autre attend un
+    connecteur qui n'existe pas encore.</p>
 
     <div class="job conn">
-      <div class="head"><span class="chip conn">possible aujourd'hui</span><h3>Finance — brancher la banque</h3><span class="ref">FI</span></div>
+      <div class="head"><span class="chip conn">en attente d'accès</span><h3>Finance — brancher la banque</h3><span class="ref">FI</span></div>
       <p>L'onglet Budget est <b>entièrement en saisie manuelle</b> : charges fixes, plafonds par catégorie, et
       chaque transaction tapée à la main. C'est le seul onglet où je pense que la saisie décrochera vraiment —
       pas au bout d'une semaine, au bout de trois.</p>
@@ -225,13 +241,15 @@
       13 800 lignes du fichier.</p>
       <p>Ce que ça donnerait : les transactions arrivent seules, la catégorisation devient automatique, et le
       plafond par catégorie compare du réel à du réel — au lieu de comparer à ce que tu as bien voulu saisir.</p>
-      <p class="why"><b>La réserve, et ce qu'elle demande de toi</b>Avant d'écrire une ligne, il faut voir une
-      vraie requête et une vraie réponse du connecteur. Je ne code pas contre une forme devinée : une page publiée
-      qui appelle un outil sur une structure supposée casse en silence chez toi, pas chez moi.<br><br>
-      <b>Celui-là n'est donc pas hors de tes mains</b>, contrairement à la santé : il tient à une action de dix
-      minutes, connecter ta banque à BankSync. Le jour où c'est fait, on regarde une réponse ensemble et je
-      construis. Tant que ce n'est pas fait, il n'y a rien à construire — mais ce n'est pas un blocage technique,
-      c'est une porte que tu n'as pas encore ouverte.</p>
+      <p class="why"><b>Ce qui bloque vraiment</b>Tu es <b>sur liste d'attente</b> pour brancher tes comptes au
+      connecteur. La porte existe, elle n'est pas encore ouverte pour toi, et ni toi ni moi ne décidons de la
+      date. Ce chantier rejoint donc la santé : il n'attend pas une action de dix minutes, il attend un accès.<br><br>
+      Et même une fois l'accès obtenu, il restera une étape avant la première ligne de code : voir une vraie
+      requête et une vraie réponse. Je ne code pas contre une forme devinée — une page publiée qui appelle un
+      outil sur une structure supposée casse en silence chez toi, pas chez moi. Le jour où ton compte est
+      branché, on regarde une réponse ensemble et je construis. D'ici là la saisie manuelle tient, mais
+      souviens-toi que c'est l'onglet où je la crois la plus fragile : ne t'étonne pas si c'est le premier à
+      prendre du retard, et dis-le-moi plutôt que de le laisser pourrir.</p>
     </div>
 
     <div class="job conn">
@@ -246,7 +264,7 @@
     </div>
 
     <h2 id="ameliorations">03 · Ce qui peut encore être construit</h2>
-    <p>Les cinq chantiers ci-dessus attendent une décision ou un connecteur. Ces neuf-là n'attendent que ton
+    <p>Les chantiers ci-dessus attendent une information, un test de deux minutes ou un accès. Ces neuf-là n'attendent que ton
     accord — et je les ai classées par ce qu'elles te rapportent, pas par ce qu'elles me coûtent. Les trois
     premières visent la même chose : <b>ton seul vrai risque, la charge</b>.</p>
 

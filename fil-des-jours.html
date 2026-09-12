@@ -120,6 +120,7 @@
   .todo li.done .ref{text-decoration:none;}
   h3{margin-top:34px;}
   p.sub{color:var(--ink-2); font-size:15px; margin:8px 0 0; max-width:62ch;}
+  .rr{font-family:var(--mono); font-size:11px; color:var(--rail); letter-spacing:.06em; border:1px solid var(--line); padding:1px 4px; white-space:nowrap;}
   .nuit{border-collapse:collapse; width:100%; background:var(--sheet); font-size:15px; min-width:420px;}
   .nuit td{padding:10px 12px; border:1px solid var(--line); vertical-align:top;}
   .nuit td:first-child{font-family:var(--mono); font-size:12.5px; white-space:nowrap; color:var(--rail); font-weight:500; width:1%;}
@@ -132,12 +133,13 @@
     <ol>
       <li><a href="#etat"><b>·</b>Où on en est</a></li>
       <li><a href="#nuit"><b>01</b>Remettre le sommeil à l'heure</a></li>
-      <li><a href="#lundi"><b>02</b>Avant lundi, et lundi</a></li>
-      <li><a href="#decisions"><b>03</b>Ce qu'il faut décider</a></li>
-      <li><a href="#liste"><b>04</b>Tout le reste</a></li>
-      <li><a href="#jalons"><b>05</b>Les jalons</a></li>
-      <li><a href="#allume"><b>06</b>Ce qui s'allume, et quand</a></li>
-      <li><a href="#fait"><b>07</b>Ce qui est déjà fait</a></li>
+      <li><a href="#dimanche"><b>02</b>Dimanche 13/09, heure par heure</a></li>
+      <li><a href="#lundi"><b>03</b>Avant lundi, et lundi</a></li>
+      <li><a href="#decisions"><b>04</b>Ce qu'il faut décider</a></li>
+      <li><a href="#liste"><b>05</b>Tout le reste</a></li>
+      <li><a href="#jalons"><b>06</b>Les jalons</a></li>
+      <li><a href="#allume"><b>07</b>Ce qui s'allume, et quand</a></li>
+      <li><a href="#fait"><b>08</b>Ce qui est déjà fait</a></li>
       <li><a href="#maj"><b>·</b>Journal</a></li>
     </ol>
     <div class="prog"><span id="prog-txt">0 / 0 cochées</span><div class="bar"><i id="prog-bar"></i></div></div>
@@ -151,13 +153,13 @@
     <div class="strip">
       <div><div class="k">Aujourd'hui</div><div class="v" id="s-jour">—</div><div class="s" id="s-jour-s">avant le premier jour de cours</div></div>
       <div><div class="k">Qui bloque</div><div class="v">0</div><div class="s">plus rien. L'emploi du temps est relevé et saisi, le parc est reconnu.</div></div>
-      <div><div class="k">Avant lundi</div><div class="v">5</div><div class="s">lignes sur les soixante-quatre qui restent. Le reste se rattrape sans conséquence.</div></div>
+      <div><div class="k">Avant lundi</div><div class="v">4</div><div class="s">lignes, dont trois sont placées dans la journée de dimanche. Le reste se rattrape sans conséquence.</div></div>
       <div><div class="k">Prochaine bascule</div><div class="v" id="s-next">—</div><div class="s" id="s-next-s">—</div></div>
     </div>
-    <p class="stamp">Dernière mise à jour : samedi 12 septembre 2026, le soir. La <a href="#nuit">section 01</a> est refaite sur ta vraie nuit (8 h → 14 h), et la ligne <b>E4</b> est close : pas de mode vacances avant 2028. Les <b>trois</b> documents sont fusionnés, et ce qui est fait est descendu en bas de page : la liste du haut ne montre plus que ce qui reste.</p>
+    <p class="stamp">Dernière mise à jour : samedi 12 septembre 2026, 23 h. Nouvelle <a href="#dimanche">section 02</a> : <b>dimanche 13/09 heure par heure</b>, du réveil de 9 h au coucher de 23 h, construite sur ce qui est réellement possible un dimanche en Espagne. La décision <b>d'automatisation des publications est prise</b> — scénario 1 — et la ligne <b>E4</b> reste close : pas de mode vacances avant 2028.</p>
 
     <h2 id="etat">Où on en est</h2>
-    <p><strong>Vingt-six lignes sont faites.</strong> Pas zéro. Dont tout le protocole digestif, toute la chaîne du paiement de l'école, et <strong>l'intégralité de la reconnaissance du parc</strong> — qui était l'un des deux seuls vrais bloquants. Il en reste un. Le détail est en bas de page, <a href="#fait">section 07</a> : ce qui est fini n'encombre plus la liste.
+    <p><strong>Vingt-six lignes sont faites.</strong> Pas zéro. Dont tout le protocole digestif, toute la chaîne du paiement de l'école, et <strong>l'intégralité de la reconnaissance du parc</strong> — qui était l'un des deux seuls vrais bloquants. Il en reste un. Le détail est en bas de page, <a href="#fait">section 08</a> : ce qui est fini n'encombre plus la liste.
     <div class="danger"><strong>Ce qui s'est passé ces trois derniers jours :</strong> tu es malade depuis deux jours — gorge, ventre, tête — et ton sommeil est complètement inversé. Ce n'est ni un présage ni un échec. Tomber malade la semaine avant la rentrée, dans une nouvelle ville, avec un sommeil déjà décalé, c'est banal. Le plan ci-dessous en tient compte : la rentrée est révisée à la baisse, exprès.</div>
     <div class="ok"><strong>Ton objectif de lundi tient en une phrase :</strong> être présent et réveillé à l'heure de ton premier cours. Rien d'autre. Tout le reste de cette page peut attendre la semaine, et la plupart peut attendre le mois.</div>
 
@@ -172,11 +174,11 @@
     ton corps que le lit n'est pas un endroit où l'on dort. On corrige donc <strong>en deux marches</strong> :
     14 h → 9 h → 7 h.</p>
     <div class="tw"><table class="nuit">
-      <tr><td>Maintenant → 1 h</td><td>Tu restes debout, et surtout <strong>pas de sieste</strong> — c'est la seule chose qui peut encore casser la nuit. Bouge un peu en fin d'après-midi : une marche dehors, tant qu'il fait jour. C'est le moment idéal pour <b>Q2</b>, le trajet testé une fois.</td></tr>
+      <tr><td>Maintenant → 1 h</td><td>Tu restes debout, et surtout <strong>pas de sieste</strong> — c'est la seule chose qui peut encore casser la nuit. Il est trop tard pour sortir : garde les lumières basses et occupe-toi de choses calmes. <b>Q2</b>, le trajet testé une fois, est reporté à dimanche 11 h 30 — c'est dans la <a href="#dimanche">section 02</a>.</td></tr>
       <tr><td>22 h 30</td><td>Lumières basses, écrans loin du visage, chambre fraîche. Rien de nouveau ni d'excitant : on se laisse glisser.</td></tr>
       <tr><td>~1 h</td><td><strong>Au lit.</strong> Onze heures d'éveil : tu t'endors. Si dans vingt minutes tu ne dors pas, tu te relèves dans le noir cinq minutes, puis tu te recouches — jamais d'attente prolongée au lit.</td></tr>
       <tr><td>Dimanche 9 h</td><td><strong>Réveil au réveil, huit heures pleines.</strong> Puis, dans les dix minutes : <strong>20 à 30 minutes dehors</strong>. C'est le signal le plus puissant qui existe pour recaler l'horloge — plus que tout le reste réuni, mélatonine comprise.</td></tr>
-      <tr><td>Dimanche, journée</td><td>Café si tu veux, <strong>rien après 14 h</strong>. Si tu dois absolument fermer les yeux : <strong>20 minutes maximum, avant 15 h</strong>. Une activité physique l'après-midi, même légère.</td></tr>
+      <tr><td>Dimanche, journée</td><td>Café si tu veux, <strong>rien après 14 h</strong>. Si tu dois absolument fermer les yeux : <strong>20 minutes maximum, avant 15 h</strong>. Une activité physique l'après-midi, même légère. Le détail heure par heure est juste en dessous, <a href="#dimanche">section 02</a>.</td></tr>
       <tr><td>Dimanche 19 h</td><td>Mélatonine <strong>0,5 à 1 mg</strong> si tu en as — quatre heures avant le coucher, pas au coucher. En Espagne, jusqu'à 1,9 mg s'achète sans ordonnance. Ce n'est pas un somnifère, c'est un décaleur d'horloge, et la dose faible marche mieux que la forte.</td></tr>
       <tr><td>Dimanche 23 h</td><td><strong>Au lit.</strong> Quatorze heures d'éveil derrière toi : c'est confortable. Le sac de lundi est déjà prêt (<b>K7</b>) — on ne prépare rien à cette heure-là.</td></tr>
       <tr><td>Lundi 7 h</td><td><strong>Réveil.</strong> Huit heures. Dehors 10 minutes avec ton café. Ton premier cours est à <strong>17 h 30</strong> : c'est le premier jour le plus clément que l'emploi du temps pouvait te donner.</td></tr>
@@ -188,28 +190,145 @@
     que la journée disparaisse complètement des calculs, le bouton est dans l'onglet Calendrier :
     <i>« Aujourd'hui ne compte pas »</i>.</div>
 
-    <h2 id="lundi">02 &middot; Avant lundi, et lundi</h2>
-    <p class="gros">Cinq lignes avant lundi</p>
-    <p>Elles sont marquées <b>Avant lundi</b> dans la liste complète, plus bas. Les voici rassemblées : <b>C1/Z1</b> ton emploi du temps &middot; <b>D1</b> l'abonnement de transport &middot; <b>Q2</b> le trajet testé une fois à l'heure réelle &middot; <b>I1</b> de quoi manger lundi et mardi &middot; <b>K7</b> le sac préparé dimanche soir. Et <b>une seule chose à lancer dès que tu es sur pied</b> : le NIE.</p>
+
+    <h2 id="dimanche">02 &middot; Dimanche 13/09, heure par heure</h2>
+    <p>La section 01 dit <i>quand dormir</i>. Celle-ci dit <b>quoi faire entre les deux</b>. Elle est construite
+    sur une contrainte simple : <strong>c'est dimanche, en Espagne</strong>. La mairie, la fac, le guichet TAM, les
+    médecins et la police sont fermés — une bonne moitié de ta liste est donc impossible aujourd'hui, et ce n'est
+    pas un retard. Ce qui reste possible, c'est tout ce qui se fait <b>depuis chez toi, dehors, ou sur un écran</b>,
+    et il y en a largement assez pour remplir la journée.</p>
+
+    <div class="ok"><strong>Si tu n'as l'énergie que pour trois choses, ce sont celles-là :</strong>
+    <b>1.</b> sortir 20 à 30 minutes dans les dix minutes qui suivent ton réveil &middot;
+    <b>2.</b> <span class="rr">I1</span> de quoi manger lundi et mardi &middot;
+    <b>3.</b> <span class="rr">K7</span> le sac de lundi, posé à la porte avant 22 h.
+    Tout le reste de cette page peut glisser d'un jour sans conséquence. Ces trois-là, non : la première décide de
+    ta nuit, les deux autres décident de ton lundi matin.</div>
+
+    <div class="tw"><table class="nuit">
+      <tr><td>09:00</td><td><strong>Réveil au réveil.</strong> Huit heures pleines. Pas de snooze — le snooze
+      rendort par tranches de neuf minutes et te fait sortir du lit plus groggy qu'au premier son.</td></tr>
+      <tr><td>09:05<br>→ 09:35</td><td><strong>Dehors, 20 à 30 minutes. C'est le geste de la journée.</strong>
+      Prends ton café dehors s'il le faut, mais sors. La lumière du matin est le signal le plus puissant qui
+      existe pour recaler une horloge décalée — plus que tout le reste réuni. Même couvert, même pluvieux : dehors
+      reste dix fois plus lumineux que ta cuisine.</td></tr>
+      <tr><td>09:35</td><td>Petit-déjeuner. Tu es malade depuis deux jours : quelque chose de simple et de chaud
+      vaut mieux que quelque chose de complet.</td></tr>
+      <tr><td>10:00</td><td><span class="rr">Y1</span> <strong>Le test des 60 secondes.</strong> Tu te filmes une
+      minute en français sur un sujet quelconque, puis la même minute en anglais. Tu regardes les deux. <b>Celle où
+      tu ne réfléchis pas gagne.</b> C'est tout — pas de délibération, pas de tableau comparatif. Ça ferme
+      <span class="rr">Y1</span> ici et le chantier <b>LG</b> dans le dossier des chantiers : une seule chose à
+      faire, deux cases qui tombent. Dis-moi le mot ensuite.</td></tr>
+      <tr><td>10:20<br>→ 11:15</td><td><span class="rr">I1</span> <strong>Les courses de lundi et mardi.</strong>
+      Du pain, des œufs, des bananes, du skyr, de la soupe. Pas la liste complète, pas le batch cooking : vingt
+      minutes de courses.<br><b>Vérifie les horaires sur Maps avant de sortir</b> — en Espagne beaucoup
+      d'enseignes (Mercadona en tête) ferment le dimanche, et celles qui ouvrent le font souvent en matinée
+      seulement. C'est la seule ligne de la journée qui peut se retrouver bloquée par une porte fermée, et c'est
+      exactement pour ça qu'elle est placée le matin.</td></tr>
+      <tr><td>11:30<br>→ 12:30</td><td><span class="rr">Q2</span> <strong>Le trajet jusqu'à la fac, une fois.</strong>
+      950 m à pied, puis le tram. <b>Chronomètre la marche et le temps de tram, pas l'attente</b> : le dimanche le
+      tram passe moins souvent, donc le total d'aujourd'hui ne vaut rien — seules les deux premières valeurs se
+      reportent à lundi. Ce que tu viens vraiment chercher, c'est le chemin, l'arrêt, le quai et la porte du
+      bâtiment, pour que lundi rien ne soit une première fois.<br>
+      <span class="rr">D1</span> <b>Pendant que tu y es :</b> regarde le guichet TAM et les distributeurs — s'il
+      est fermé, note ce qu'il faut comme pièces pour le tarif jeune, et regarde si la carte s'achète en ligne.
+      Sinon c'est lundi matin : ton premier cours est à 17:30, tu as toute la journée devant toi.</td></tr>
+      <tr><td>12:45</td><td>Déjeuner.</td></tr>
+      <tr><td>13:00<br>→ 15:00</td><td><strong>La fenêtre de sieste, et elle se ferme à 15 h.</strong> Si tu dois
+      absolument fermer les yeux : <b>20 minutes maximum, réveil sonné, avant 15 h</b>. Après 15 h, une sieste te
+      coûte ta nuit — et ta nuit décide de ton lundi. <b>Dernier café à 14 h</b>, rien après.</td></tr>
+      <tr><td>15:00<br>→ 16:30</td><td><strong>La Batcave, à blanc — et c'est le bon jour pour ça.</strong>
+      Tout ce que tu saisis aujourd'hui sera effacé lundi par la remise à zéro : tu peux donc tout essayer sans
+      rien salir. Dans cet ordre :<br>
+      <span class="rr">F3</span> la Batcave sur l'écran d'accueil de <b>tes trois appareils</b> — iPhone, iPad,
+      Mac. Partager → « Sur l'écran d'accueil ». 10 min.<br>
+      <span class="rr">F2</span> <b>un Pomodoro complet</b>, du départ à la pause, pour que lundi 7 h 20 ne soit
+      pas la première fois. 30 min.<br>
+      <span class="rr">F1</span> <b>une clôture du jour complète</b>, toutes les questions. 10 min.<br>
+      <span class="rr">M6</span> <b>la phrase de passe de sauvegarde</b> — Addictions → 💾 Sauvegarde. <b>Tu peux
+      la poser aujourd'hui</b> : elle n'est pas rangée avec tes données, donc la remise à zéro de lundi ne
+      l'efface pas. Note-la ailleurs que dans la Batcave, et pas seulement dans ta tête. 5 min.<br>
+      <span class="rr">M2</span> le lien Notion de tes cours, collé dans l'onglet Études. 2 min.</td></tr>
+      <tr><td>16:30<br>→ 17:00</td><td><strong>La routine de contenu</strong> — cinq minutes, une seule fois,
+      depuis claude.ai. Routines → nouvelle → hebdomadaire, dimanche 10:00 → <b>coche Google Drive et Notion</b>
+      → colle le texte du document <i>« Routine · Brief contenu du dimanche »</i>, qui t'attend dans le dossier
+      Drive <b>Batcave / 12 · Contenu</b>. C'est la mise en œuvre du scénario 1 que tu as choisi ce soir. Le
+      premier dimanche utile est le 20 septembre — donc rien ne se perd si ça glisse à la semaine prochaine.<br>
+      <span class="rr">Q13</span> <span class="rr">E1</span> <b>Si le campus virtuel répond un dimanche</b> :
+      les <i>guías docentes</i> de tes matières, et dans la foulée les dates de partiels dans l'onglet Études.
+      Ce sont elles qui allument le mode partiels et la matière conseillée. Si le portail ne répond pas, c'est
+      prévu lundi 10 h 20 — n'insiste pas.</td></tr>
+      <tr><td>17:00<br>→ 18:00</td><td><strong>Bouger, sans t'entraîner.</strong> Une marche, du vélo tranquille,
+      rien qui essouffle. <b>Pas de séance</b> : tu es malade et la reprise est fixée à mercredi. L'activité de
+      l'après-midi aide la nuit ; une séance dure, non.</td></tr>
+      <tr><td>18:00<br>→ 18:45</td><td><span class="rr">N1</span> <span class="rr">N2</span> <strong>Les deux
+      mails, envoyés ce soir.</strong> Ils sont déjà écrits : l'accord écrit du propriétaire, et le certificat de
+      matrícula à l'université. Personne ne répond un dimanche soir — c'est justement l'intérêt : lundi matin ils
+      sont en haut de la pile.<br>
+      <span class="rr">N3</span> <b>La cita previa, en repérage seulement.</b> Ouvre
+      <i>icp.administracionelectronica.gob.es</i> une fois et retrouve le chemin exact : Alicante →
+      <b>CERTIFICADO DE REGISTRO DE CIUDADANO DE LA U.E.</b> (surtout pas <i>Toma de huellas</i>). Tu ne prendras
+      pas de créneau aujourd'hui — ils sortent en semaine entre 8 h et 14 h et partent en minutes. Mais demain
+      matin tu seras rapide, et la vitesse est tout ce qui compte sur ce site. Ne paie jamais personne pour un
+      rendez-vous.</td></tr>
+      <tr><td>19:00</td><td><strong>Mélatonine 0,5 à 1 mg</strong> si tu en as. <b>Quatre heures avant le coucher,
+      pas au coucher</b> : ce n'est pas un somnifère, c'est un décaleur d'horloge, et la dose faible marche mieux
+      que la forte. En Espagne, jusqu'à 1,9 mg s'achète sans ordonnance.</td></tr>
+      <tr><td>19:30</td><td>Dîner.</td></tr>
+      <tr><td>20:30<br>→ 21:30</td><td><span class="rr">F4</span> <strong>Lire la Prise en main en entier.</strong>
+      C'est la bonne lecture de fin de soirée : rien à cliquer, rien d'excitant, et demain tu ouvres une
+      application dont tu connais les douze onglets. Sur papier ou sur l'iPad en mode sombre, écran loin du
+      visage.</td></tr>
+      <tr><td>21:30</td><td><span class="rr">K7</span> <strong>Le sac de lundi, posé à la porte.</strong> Tout ce
+      qui doit sortir de la maison : le sac, les papiers, la gourde, la tenue. <b>Fait maintenant, pas à 23 h</b>
+      — préparer un sac est exactement le genre d'activité qui réveille juste avant le coucher.</td></tr>
+      <tr><td>22:00</td><td>Lumières basses, écrans loin du visage, chambre fraîche. Rien de nouveau ni
+      d'excitant : on se laisse glisser.</td></tr>
+      <tr><td>23:00</td><td><strong>Au lit.</strong> Quatorze heures d'éveil derrière toi : c'est confortable.
+      Si dans vingt minutes tu ne dors pas, tu te relèves cinq minutes dans le noir, puis tu te recouches — jamais
+      d'attente prolongée au lit.</td></tr>
+    </table></div>
+
+    <div class="danger"><strong>Les trois choses à ne pas faire dimanche.</strong><br>
+    <b>1. La remise à zéro de la Batcave.</b> Elle est lundi, et la <i>copie vierge</i> <span class="rr">M5</span>
+    doit être prise juste après — faite aujourd'hui, elle contiendrait encore tes essais du dimanche, donc elle ne
+    serait pas vierge.<br>
+    <b>2. Une sieste après 15 h, ou un café après 14 h.</b> C'est la seule chose qui peut encore casser la nuit du
+    dimanche au lundi, et c'est la nuit qui compte.<br>
+    <b>3. Essayer de faire les trente lignes « Cette semaine ».</b> La moitié demande une porte ouverte : mairie,
+    université, guichet TAM, médecins, police. Elles sont impossibles aujourd'hui — les tenter ne produit que de
+    la frustration.</div>
+
+    <div class="note"><strong>Ce que dimanche ferme réellement, si tout se passe bien :</strong>
+    <span class="rr">Y1</span> <span class="rr">I1</span> <span class="rr">Q2</span> <span class="rr">F3</span>
+    <span class="rr">F2</span> <span class="rr">F1</span> <span class="rr">M6</span> <span class="rr">M2</span>
+    <span class="rr">N1</span> <span class="rr">N2</span> <span class="rr">F4</span> <span class="rr">K7</span>,
+    plus la routine de contenu et peut-être <span class="rr">Q13</span> et <span class="rr">E1</span>. Soit
+    <b>douze à quatorze lignes en une journée</b>, sans forcer, dont trois des quatre « Avant lundi ». Il ne
+    resterait que <span class="rr">D1</span>, qui se règle lundi matin avant 17:30.</div>
+
+    <h2 id="lundi">03 &middot; Avant lundi, et lundi</h2>
+    <p class="gros">Quatre lignes avant lundi</p>
+    <p>Elles sont marquées <b>Avant lundi</b> dans la liste complète, plus bas — ton emploi du temps (<b>C1/Z1</b>) en est sorti, il est relevé et saisi. Restent : <b>D1</b> l'abonnement de transport &middot; <b>Q2</b> le trajet testé une fois &middot; <b>I1</b> de quoi manger lundi et mardi &middot; <b>K7</b> le sac préparé dimanche soir. <b>Trois des quatre sont placées dans la journée de dimanche</b> (<a href="#dimanche">section 02</a>) ; la quatrième, <b>D1</b>, se règle lundi matin si le guichet est fermé le dimanche. Et <b>une seule chose à lancer dès que tu es sur pied</b> : le NIE.</p>
 
     <div class="note"><strong>Lundi, révisé — et je suis catégorique.</strong><br>
       <strong>Réveil à 7 h. Pas de sport à 5 h 30.</strong> Un réveil à 5 h 30 sur quatre heures de sommeil, malade, le premier jour de cours dans une langue que tu apprends : tu t'endors en amphi et tu rates la seule chose qui compte.<br><br>
       <strong>Le sport reprend mercredi</strong>, ou lundi prochain. Tu as douze mois devant toi ; décaler trois séances ne change rien à ton corps. Rater la première semaine de cours, si. La grille prévoit déjà deux semaines à la moitié du volume — tu n'es pas en retard, tu démarres deux jours plus tard.</div>
 
-    <h2 id="decisions">03 &middot; Ce qu'il faut décider</h2>
+    <h2 id="decisions">04 &middot; Ce qu'il faut décider</h2>
     <ul class="todo" id="t-dec">
-      <li><input type="checkbox" id="d-auto"><span class="tag dec">À décider</span><label for="d-auto">L'automatisation des publications : lequel des trois scénarios.
-        <span class="why">1 · Une routine qui lit ton dossier Drive et prépare les légendes et le calendrier dans Notion — tu publies à la main. 2 · La même chose, plus LinkedIn de bout en bout. 3 · Rien de sur mesure : Metricool ou Publer, 15-25 €/mois. Ma recommandation : la 1. Le travail cher, c'est l'écriture, pas le bouton « publier ».</span></label></li>
+      <li class="done"><input type="checkbox" id="d-auto" checked><span class="tag faire">Tranché</span><label for="d-auto">L'automatisation des publications : <strong>scénario 1</strong>, décidé le 12 septembre.
+        <span class="why">Une routine hebdomadaire lit ton dossier Drive et écrit les légendes ; tu relis et tu publies à la main, en quatre-vingt-dix secondes. Le scénario 2 s'est révélé <b>impossible</b> : ton connecteur LinkedIn ne fait que de la publicité, et la seule publication organique disponible ailleurs est une image sur Instagram — or ton contenu est de la vidéo. Le scénario 3 (Metricool, 20 €/mois) ne deviendra juste qu'à neuf publications par semaine, soit l'an 3.<br><br><b>Ce qui reste, et c'est dans la journée de dimanche :</b> la routine doit être créée <b>depuis claude.ai</b>, pas depuis une session de code — sinon elle n'emporte pas tes connecteurs et n'a accès ni à Drive ni à Notion. Son texte complet t'attend dans le document <i>« Routine · Brief contenu du dimanche »</i>, dans le dossier Drive <b>Batcave / 12 · Contenu</b>. Cinq minutes, une seule fois.</span></label></li>
       <li class="done"><input type="checkbox" id="d-gcal" checked><span class="tag faire">Tranché</span><label for="d-gcal">L'écriture dans Google Agenda : <strong>oui</strong>, active depuis le 9 septembre.
         <span class="why">Cette ligne traînait ici alors que la décision était prise. La Batcave <strong>écrit</strong> dans ton agenda : chaque bloc de travail t'y prévient cinq minutes avant en disant quel Pomodoro lancer, et le coucher trente minutes avant. <b>Rien ne part avant le 14</b> — le premier envoi est le matin du premier jour, c'est écrit dans le code. Les séries 🦇 déjà dans ton agenda sont <i>adoptées</i>, jamais doublées : vérifié sur les sept jours de la première semaine, les heures correspondent exactement à la grille. L'interrupteur pour couper est dans Études, sous l'agenda du travail.</span></label></li>
       <li><input type="checkbox" id="d-langue"><span class="tag dec">À décider</span><label for="d-langue">La langue du compte.
-        <span class="why">Le test de soixante secondes : tu te filmes en français, puis en anglais, sur le même sujet. Celle où tu ne réfléchis pas gagne. Repoussé au week-end prochain — aucune urgence.</span></label></li>
+        <span class="why">Le test de soixante secondes : tu te filmes en français, puis en anglais, sur le même sujet. Celle où tu ne réfléchis pas gagne. <b>Placé dimanche 10 h</b> — c'est la ligne <b>Y1</b> plus bas, et les deux cases tombent ensemble.</span></label></li>
       <li class="done"><input type="checkbox" id="d-rev" checked><span class="tag faire">Tranché</span><label for="d-rev">Réduire les heures de révision pour dégager du temps de projets perso : <strong>non</strong>.
         <span class="why">Le constat était juste — en semaine 1 il n'y a rien à réviser. La destination ne l'était pas. Ces heures vont à l'<strong>espagnol</strong> (de l'écoute réelle), puis à la <strong>fabrication de tes cartes Anki</strong>. C'est un choix à l'intérieur du bloc, pas une coupe dans la grille. Réexaminé le 5 octobre, sur trois semaines de chiffres.</span></label></li>
     </ul>
 
-    <h2 id="liste">04 &middot; Tout le reste</h2>
-    <p><strong>Ici, il n'y a que ce qui reste.</strong> Soixante-quatre lignes, rangées par thème et non plus par jour — les jours sont passés. Les vingt-six déjà faites sont descendues tout en bas, en section 07. Ce qui est marqué <b>Plus tard</b> n'a <strong>aucune échéance réelle avant la fin du mois</strong>.</p>
+    <h2 id="liste">05 &middot; Tout le reste</h2>
+    <p><strong>Ici, il n'y a que ce qui reste.</strong> Soixante-quatre lignes, rangées par thème et non plus par jour — les jours sont passés. Les vingt-six déjà faites sont descendues tout en bas, en section 08. Ce qui est marqué <b>Plus tard</b> n'a <strong>aucune échéance réelle avant la fin du mois</strong>.</p>
     <h3>🔑 Le NIE</h3>
     <p class="sub">La clé de voûte : sans lui, ni compte bancaire, ni carte de santé. Tu as trois mois à partir de ton arrivée pour t'enregistrer — mais les rendez-vous partent en quelques minutes, d'où l'avance.</p>
     <ul class="todo">
@@ -248,7 +367,7 @@
     <ul class="todo">
       <li><input type="checkbox" id="m4"><span class="tag toi">Lundi, en premier</span><label for="m4"><span class="ref">M4</span> <strong>La remise à zéro</strong><span class="why">Addictions → 💾 Sauvegarde des données → Nouveau départ. Elle efface tes saisies de septembre <b>partout</b> — ici, dans le cloud et sur tes autres appareils — et garde la configuration : habitudes, charges fixes, plafonds de budget, boutique, objectifs, dates d'examen, jours sans cours. Les sept anciennes sauvegardes Drive sont déjà supprimées, donc rien ne peut te ramener septembre par erreur.</span></label></li>
       <li><input type="checkbox" id="m5"><span class="tag toi">Lundi, juste après</span><label for="m5"><span class="ref">M5</span> <strong>La copie vierge</strong><span class="why">Plan du jour → « 🌱 Prendre ». <b>Après la remise à zéro, pas avant</b> : prise avant, elle contiendrait encore septembre, donc elle ne serait pas vierge. C'est la seule façon de revenir exactement à l'état de départ, et après ta première session enregistrée c'est trop tard.</span></label></li>
-      <li><input type="checkbox" id="m6"><span class="tag toi">Lundi</span><label for="m6"><span class="ref">M6</span> <strong>La phrase de passe de sauvegarde</strong><span class="why">Addictions → 💾 Sauvegarde. Elle chiffre (AES-GCM) ce qui part sur Drive. Elle reste sur l'appareil où tu la poses et n'est <b>jamais</b> synchronisée ni incluse dans une sauvegarde : <b>note-la ailleurs que dans la Batcave</b>. La restauration la demande sur n'importe quel appareil, donc ton iPhone peut lire une sauvegarde chiffrée sur le Mac — à condition que tu t'en souviennes.</span></label></li>
+      <li><input type="checkbox" id="m6"><span class="tag toi">Dimanche, 5 min</span><label for="m6"><span class="ref">M6</span> <strong>La phrase de passe de sauvegarde</strong><span class="why">Addictions → 💾 Sauvegarde. Elle chiffre (AES-GCM) ce qui part sur Drive. <b>Tu peux la poser dès dimanche</b> : elle n'est pas rangée avec tes données, donc la remise à zéro de lundi ne l'efface pas — vérifié dans le code. Elle reste sur l'appareil où tu la poses et n'est <b>jamais</b> synchronisée ni incluse dans une sauvegarde : <b>note-la ailleurs que dans la Batcave</b>. La restauration la demande sur n'importe quel appareil, donc ton iPhone peut lire une sauvegarde chiffrée sur le Mac — à condition que tu t'en souviennes.</span></label></li>
       <li><input type="checkbox" id="f3"><span class="tag dec">Cette semaine</span><label for="f3"><span class="ref">F3</span> Batcave sur l'écran d'accueil des trois appareils<span class="why">iPhone, iPad, Mac. Partager → « Sur l'écran d'accueil ». C'est ce qui donne l'icône de chauve-souris et le plein écran.</span></label></li>
       <li><input type="checkbox" id="f2"><span class="tag dec">Cette semaine</span><label for="f2"><span class="ref">F2</span> Un Pomodoro de bout en bout, à blanc<span class="why">Pour que lundi 7 h 20 ne soit pas la première fois.</span></label></li>
       <li><input type="checkbox" id="f1"><span class="tag dec">Cette semaine</span><label for="f1"><span class="ref">F1</span> Une clôture du jour complète, à blanc</label></li>
@@ -302,7 +421,7 @@
     <h3>📡 La marque</h3>
     <p class="sub">Rien ici n'a d'échéance. Le week-end prochain suffit largement.</p>
     <ul class="todo">
-      <li><input type="checkbox" id="y1"><span class="tag auto">Plus tard</span><label for="y1"><span class="ref">Y1</span> Le test des 60 secondes, et la langue de départ</label></li>
+      <li><input type="checkbox" id="y1"><span class="tag toi">Dimanche 10 h</span><label for="y1"><span class="ref">Y1</span> <strong>Le test des 60 secondes, et la langue de départ</strong><span class="why">Une minute filmée en français, une minute en anglais, même sujet. Celle où tu ne réfléchis pas gagne. Deux minutes en tout, et ça ferme aussi la décision <b>La langue du compte</b> plus haut.</span></label></li>
       <li><input type="checkbox" id="y2"><span class="tag auto">Plus tard</span><label for="y2"><span class="ref">Y2</span> Le nom, et le domicile</label></li>
       <li><input type="checkbox" id="y3"><span class="tag auto">Plus tard</span><label for="y3"><span class="ref">Y3</span> La bio, avec la mention d'étudiant<span class="why">Non négociable quand tu ouvriras le compte : c'est le RD 1907/1996 qui l'impose.</span></label></li>
       <li><input type="checkbox" id="y4"><span class="tag auto">Plus tard</span><label for="y4"><span class="ref">Y4</span> Le mur, la lumière, le cadre</label></li>
@@ -319,7 +438,7 @@
     <h3>Le parking</h3>
     <p class="sub">Après la rentrée, et c'est très bien : plan d'investissement &middot; montage financier &middot; Watch the Stroke Genius &middot; laisser Claude tourner Mac fermé &middot; « finir tout Batcave ».</p>
 
-    <h2 id="jalons">05 &middot; Les jalons</h2>
+    <h2 id="jalons">06 &middot; Les jalons</h2>
     <p>Ces dates sont écrites dans la grille de la Batcave. Tout en découle : le budget d'heures, la cadence de publication, le volume de sport, le moment où les calculs deviennent fiables.</p>
     <ul class="rail" id="rail-jalons">
       <li data-d="2026-09-14"><div class="when"><span class="date">Lun. 14 sept. 2026</span><span class="dist"></span></div>
@@ -360,7 +479,7 @@
         <div class="d">Pour l'exercice 2027, ta première année de résidence fiscale espagnole. Déclarable si l'ensemble de tes comptes hors d'Espagne dépasse 50 000 € — solde au 31 décembre, ou solde moyen du dernier trimestre. Un prêt n'est pas un revenu ; le modelo 720 vise le compte, pas son origine.</div></li>
     </ul>
 
-    <h2 id="allume">06 &middot; Ce qui s'allume dans la Batcave, et quand</h2>
+    <h2 id="allume">07 &middot; Ce qui s'allume dans la Batcave, et quand</h2>
     <p>Une carte d'analyse qui dit « il faut 5 jours suivis » n'est pas cassée : elle attend d'avoir de quoi parler. Voici ce que chacune attend, au plus tôt, si tu remplis la Batcave chaque jour à partir du 14.</p>
     <div class="tw"><table>
       <tr><th>Ce qui s'allume</th><th>Ce qu'il lui faut</th><th>Au plus tôt</th></tr>
@@ -378,7 +497,7 @@
     </table></div>
     <div class="note"><strong>Le seul de ces réglages qui dépende d'une information extérieure, ce sont les dates d'examens.</strong> Sans elles, la Batcave suggère les matières sur un horizon générique et le mode partiels ne s'enclenche jamais — et avec lui la révision répartie entre les matières, le sommeil visé +30 min et le sport allégé. Dix minutes, dès que la fac publie son calendrier. À partir du <b>15 octobre</b>, le Plan du jour te le rappelle tous les matins jusqu'à ce que ce soit fait.</div>
 
-    <h2 id="fait">07 &middot; Ce qui est déjà fait</h2>
+    <h2 id="fait">08 &middot; Ce qui est déjà fait</h2>
     <p>Vingt-six lignes, dont les <strong>deux</strong> bloquants. Elles sont tout en bas, pour qu'elles ne t'encombrent plus la liste du haut — mais elles comptent, et elles restent cochables si jamais tu veux en défaire une.</p>
     <h3>🎓 L'emploi du temps réel — le dernier bloquant</h3>
     <ul class="todo">
@@ -427,6 +546,21 @@
 
     <h2 id="maj">Journal des mises à jour</h2>
     <ul class="maj">
+      <li><span class="d">12 sept. 2026, 23 h</span><span><b>Une journée de dimanche, heure par heure.</b>
+      Nouvelle <a href="#dimanche">section 02</a> : du réveil de 9 h au coucher de 23 h, construite sur ce qui est
+      réellement faisable <b>un dimanche en Espagne</b> — la moitié de la liste demande une porte ouverte et reste
+      donc impossible, et c'est dit plutôt que caché. Douze à quatorze lignes y tiennent sans forcer, dont trois
+      des quatre « Avant lundi ».<br>
+      <b>L'automatisation des publications est tranchée : scénario 1.</b> Le texte complet de la routine est écrit
+      et déposé dans le dossier Drive <b>Batcave / 12 · Contenu</b> ; il reste à la créer depuis claude.ai, parce
+      qu'une routine créée depuis une session de code n'emporte pas les connecteurs — j'en avais créé une, je l'ai
+      supprimée plutôt que de te laisser un rendez-vous vide tous les dimanches.<br>
+      Trois corrections de ce que je t'avais dit : <b>Y1</b> (le test des 60 secondes) passe de « plus tard » à
+      dimanche 10 h ; <b>M6</b> (la phrase de passe) passe de lundi à dimanche, parce qu'elle survit à la remise à
+      zéro — elle n'est pas rangée avec tes données ; et <b>« Avant lundi » compte quatre lignes, pas cinq</b>,
+      ton emploi du temps étant relevé et saisi depuis hier. Enfin, <b>brancher tes comptes bancaires n'est plus
+      « possible aujourd'hui »</b> : tu es sur liste d'attente, donc ce chantier rejoint la santé — il attend un
+      accès, pas une action de ta part.</span></li>
       <li><span class="d">12 sept. 2026, soir</span><span><b>Plus de mode vacances, et tout vérifié avant lundi.</b>
       Tu ne prends pas de vacances avant 2028 : la ligne <b>E4</b> est close (rien à saisir, les 23 fériés sont dans
       le code comme <i>jours sans cours</i>, donc des journées de travail complètes) et <b>l'été n'est plus vidé</b> —
