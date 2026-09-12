@@ -10855,11 +10855,19 @@
     if(p){
       if(p.transformer) g = base.map(function(b){ return p.transformer(b, cle); });
       else if(p.grille && p.grille[cle]) g = p.grille[cle];
-      else if(p.renommages) g = base.map(function(b){
-        var nv = p.renommages[b[1]];
-        if(nv && typeof nv === 'object') nv = nv[cle] || nv.defaut;
-        return nv ? [b[0], nv] : b;
-      });
+      else if(p.renommages){
+        /* Les blocs rendus par une porte franchie et convertie gardent leur nom d'origine.
+           Uniquement pendant les phases Español : en mode partiels, la revision passe avant
+           quoi qu'il arrive, une porte ne rend pas trois heures au dropshipping la semaine
+           d'un examen. */
+        var rendus = /^es-/.test(p.id || '') ? blocsRendusParLesPortes(iso) : null;
+        g = base.map(function(b){
+          if(rendus && rendus[b[1]]) return b;
+          var nv = p.renommages[b[1]];
+          if(nv && typeof nv === 'object') nv = nv[cle] || nv.defaut;
+          return nv ? [b[0], nv] : b;
+        });
+      }
     }
     if(sansJournee || typeof journeesState === 'undefined') return g;
     var ev = journeeDe(iso);
@@ -11016,11 +11024,17 @@
      d'examen. Or c'est l'ecrit qui est note. « escribir » reste jusqu'au 14 mars. */
   var PORTES_FENETRE_J = 21;      /* largeur de la fenetre glissante, en jours */
   var PORTES_MIN_JOURS = 12;      /* jours de cours notes en dessous desquels on ne conclut rien */
+  /* Chaque porte nomme le bloc qu'elle rend. L'ordre n'est pas arbitraire : les deux portes
+     mesurent une seule chose, suivre un cours d'Anatomia en espagnol. Les blocs qui existent
+     POUR rendre le cours comprehensible tombent donc les premiers -- « preparar la clase »
+     (machet les slides avant l'amphi), puis « registro academico » (le vocabulaire du manuel).
+     « escribir » n'est jamais rendu ici : c'est de la PRODUCTION, elle progresse bien plus
+     lentement que la comprehension, et c'est l'ecrit qui est note. Il reste au 14 mars. */
   var PORTES = [
-    {n:1, ouvre:2.5, ferme:2.2, erreurs:3, examen:false,
-     titre:'Un bloc Español devient un bloc Projets perso'},
-    {n:2, ouvre:2.8, ferme:2.5, erreurs:2, examen:true,
-     titre:'Un deuxième bloc Español devient un bloc Projets perso'}
+    {n:1, ouvre:2.5, ferme:2.2, erreurs:3, examen:false, bloc:'Projets perso 3',
+     titre:'Un bloc Español devient un bloc Projets perso', quoi:'« preparar la clase », 14:00'},
+    {n:2, ouvre:2.8, ferme:2.5, erreurs:2, examen:true, bloc:'Projets perso 5',
+     titre:'Un deuxième bloc Español devient un bloc Projets perso', quoi:'« registro académico », mardi 19:00'}
   ];
   var coursSuiviState = load('batcave-cours-suivi', {});
   if(!coursSuiviState || typeof coursSuiviState !== 'object' || Array.isArray(coursSuiviState)) coursSuiviState = {};
@@ -11031,6 +11045,41 @@
   });
   var portesEtat = load('batcave-portes', {});
   if(!portesEtat || typeof portesEtat !== 'object' || Array.isArray(portesEtat)) portesEtat = {};
+  /* ===== Une porte franchie ne fait rien tant qu'elle n'est pas CONVERTIE =====
+     Le panneau disait « tu peux convertir ce bloc » et personne ne le faisait : portesEtat
+     n'etait lu nulle part par la grille. Il l'est maintenant, sous la forme d'une DATE --
+     « cN » porte le jour a partir duquel le bloc de la porte N redevient Projets perso.
+
+     Une date, et non un booleen, pour trois raisons. La grille se projette : prevuSurPeriode
+     calcule des journees a six mois, et recalculer l'etat des portes a chaque date futur
+     serait faux (on ne connait pas les notes a venir) autant que lent (21 jours de fenetre
+     par appel). Le passe ne se reecrit pas : les journees deja vecues gardent la grille
+     qu'elles avaient. Et la decision reste la sienne -- la porte autorise, elle n'impose pas.
+
+     Si la porte se referme ensuite (hysteresis), rien ne change tout seul : le panneau le
+     dit et propose de rendre le bloc a l'espagnol. Une grille qui bougerait sans qu'il l'ait
+     demande serait pire que le probleme. */
+  function porteConvertieLe(n){
+    var v = portesEtat['c' + n];
+    return (typeof v === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(v)) ? v : null;
+  }
+  function blocsRendusParLesPortes(iso){
+    /* grilleDe est declaree plus haut que PORTES : au tout premier appel du demarrage,
+       les deux var ne sont pas encore affectees (hissees a undefined). Aucune conversion
+       n'existe a ce moment-la, on rend null plutot que de lever. */
+    if(typeof PORTES === 'undefined' || !PORTES || typeof portesEtat === 'undefined' || !portesEtat) return null;
+    var out = null;
+    PORTES.forEach(function(P){
+      var d = porteConvertieLe(P.n);
+      if(d && iso >= d){ out = out || {}; out[P.bloc] = true; }
+    });
+    return out;
+  }
+  function convertirPorte(n, iso){
+    if(iso){ portesEtat['c' + n] = iso; } else { delete portesEtat['c' + n]; }
+    save('batcave-portes', portesEtat);
+    viderCachePrevu();
+  }
 
   /* Un jour de cours est un jour dont le PLANNING porte un bloc « Cours » : la grille tient
      deja compte des vacances, des partiels et des jours exclus, on ne les redetecte pas. */
@@ -11160,22 +11209,67 @@
     blocs.push('<p class="sub-note" style="line-height:1.6;">' + entete +
       (e.erreurs === null ? ' Aucun relevé d’erreurs pour 100 mots dans la fenêtre.' : ' Erreurs pour 100 mots : <b style="color:var(--ink);">' + fmtNombre(e.erreurs, 1) + '</b>.') +
       (e.examen ? ' Premier examen passé : ' + e.examen.matiere + ', le ' + fmtDate(e.examen.date) + '.' : '') + '</p>');
+    var demain = isoDecale(todayISO, 1);
     e.portes.forEach(function(p){
-      var couleur = p.ouverte ? 'var(--good)' : 'var(--ink-dim)';
-      var corps = p.ouverte
-        ? '<p class="sub-note" style="margin-top:4px;">Tu peux convertir ce bloc dès demain. Elle ne se refermera qu’en dessous de ' + fmtNombre(p.ferme, 1) + ' de moyenne — la zone entre ' + fmtNombre(p.ferme, 1) + ' et ' + fmtNombre(p.ouvre, 1) + ' ne change rien.</p>'
-        : '<ul class="mini-list" style="margin-top:4px;">' + p.manque.map(function(m){ return '<li>' + m + '</li>'; }).join('') + '</ul>';
+      var P = PORTES.filter(function(x){ return x.n === p.n; })[0] || {};
+      var depuis = porteConvertieLe(p.n), actif = depuis && todayISO >= depuis;
+      var couleur = depuis ? 'var(--accent)' : (p.ouverte ? 'var(--good)' : 'var(--ink-dim)');
+      var corps;
+      if(depuis){
+        /* Convertie. Si la porte s'est refermee depuis, on le dit -- mais on ne reprend
+           rien tout seul : c'est a lui de decider s'il rend le bloc a l'espagnol. */
+        corps = '<p class="sub-note" style="margin-top:4px;">' +
+          (actif ? P.quoi + ' est un bloc Projets perso depuis le ' + fmtDate(depuis) + '.'
+                 : P.quoi + ' redeviendra un bloc Projets perso le ' + fmtDate(depuis) + '.') +
+          (p.ouverte ? '' : ' <b style="color:var(--warn);">La porte s’est refermée</b> — ' + p.manque[0] + '. Le bloc reste aux projets tant que tu ne le rends pas.') +
+          '</p><button type="button" class="btn" data-porte-rendre="' + p.n + '" style="margin-top:8px;">Rendre ce bloc à l’espagnol</button>';
+      } else if(p.ouverte){
+        corps = '<p class="sub-note" style="margin-top:4px;">Tu peux convertir ' + P.quoi + ' dès demain. ' +
+          'Elle ne se refermera qu’en dessous de ' + fmtNombre(p.ferme, 1) + ' de moyenne — la zone entre ' +
+          fmtNombre(p.ferme, 1) + ' et ' + fmtNombre(p.ouvre, 1) + ' ne change rien.</p>' +
+          '<button type="button" class="btn btn-primary" data-porte-convertir="' + p.n + '" style="margin-top:8px;">Convertir ce bloc à partir du ' + fmtDate(demain) + '</button>';
+      } else {
+        corps = '<ul class="mini-list" style="margin-top:4px;">' + p.manque.map(function(m){ return '<li>' + m + '</li>'; }).join('') + '</ul>';
+      }
       blocs.push('<div style="margin-top:12px; padding:10px 12px; border-left:3px solid ' + couleur + '; background:var(--surface-hover);">' +
-        '<p style="font-weight:600; color:var(--ink); font-size:13.5px;">' + (p.ouverte ? '✅ Porte ' + p.n + ' franchie' : '🔒 Porte ' + p.n) + ' — ' + p.titre + '</p>' +
+        '<p style="font-weight:600; color:var(--ink); font-size:13.5px;">' +
+        (depuis ? '🔓 Porte ' + p.n + ' convertie' : (p.ouverte ? '✅ Porte ' + p.n + ' franchie' : '🔒 Porte ' + p.n)) + ' — ' + p.titre + '</p>' +
         corps + '</div>');
     });
     zone.innerHTML = blocs.join('');
+    /* La conversion touche la grille : tout ce qui la lit doit etre redessine, et le cache
+       de prevuSurPeriode vide, sinon les cibles resteraient sur l'ancienne repartition. */
+    zone.querySelectorAll('[data-porte-convertir]').forEach(function(b){
+      b.addEventListener('click', function(){
+        var n = Number(b.dataset.porteConvertir);
+        convertirPorte(n, isoDecale(todayISO, 1));
+        showToast('🔓 Porte ' + n + ' convertie — le bloc revient aux projets à partir de demain.');
+        apresConversionPorte();
+      });
+    });
+    zone.querySelectorAll('[data-porte-rendre]').forEach(function(b){
+      b.addEventListener('click', function(){
+        var n = Number(b.dataset.porteRendre);
+        convertirPorte(n, null);
+        showToast('↩️ Bloc rendu à l’espagnol.');
+        apresConversionPorte();
+      });
+    });
     var note = document.getElementById('portes-note');
     if(note){
+      var converties = e.portes.filter(function(p){ return porteConvertieLe(p.n); }).length;
       var ouvertes = e.portes.filter(function(p){ return p.ouverte; }).length;
-      note.textContent = !f.assez ? (f.n + '/' + PORTES_MIN_JOURS + ' jours notés')
-                       : (ouvertes ? ouvertes + ' porte' + (ouvertes > 1 ? 's' : '') + ' franchie' + (ouvertes > 1 ? 's' : '') : 'aucune porte franchie');
+      note.textContent = converties ? converties + ' porte' + (converties > 1 ? 's' : '') + ' convertie' + (converties > 1 ? 's' : '')
+                       : (!f.assez ? (f.n + '/' + PORTES_MIN_JOURS + ' jours notés')
+                       : (ouvertes ? ouvertes + ' porte' + (ouvertes > 1 ? 's' : '') + ' franchie' + (ouvertes > 1 ? 's' : '') : 'aucune porte franchie'));
     }
+  }
+  function apresConversionPorte(){
+    try{
+      recalerObjectifsSemaine();
+      renderPortes(); rafraichirAgendas(); renderObjectifs(); renderDashboard();
+      if(document.getElementById('cal-timeline')) renderCalendar();
+    }catch(err){}
   }
   /* Tout ce qui lit agendaDuJour() doit être redessiné ensemble quand Google répond.
      L'oubli de renderCalendar ici faisait diverger l'emploi du temps de la vue semaine :
@@ -11446,7 +11540,7 @@
   /* Les series recurrentes de l'agenda portent une consigne apres « · » (« 🦇 Anki 1 · cartes
      dues dentaire ») : un evenement se reconnait a la partie avant le separateur. */
   function titreBaseGcal(s){ return String(s || '').split(' · ')[0].trim(); }
-  try{ window.__bcTitreBase = titreBaseGcal; window.__bcConsigne = consigneBloc; window.__bcInsights = buildInsights; window.__bcBlocs = blocsDuPlanning; window.__bcCle = cleJournee; window.__bcJours = joursSuivis; window.__bcInsightsVu = function(){ return insightsVu; }; window.__bcLogSession = logSession; window.__bcPeriode = periodeGrille; window.__bcGrille = grilleDe; window.__bcMinutesEspanol = minutesEspanol; window.__bcCibleEspanol = cibleEspanolJour; window.__bcTypeBloc = typeBlocPlan; window.__bcPlanRotation = planRotation; window.__bcHabitJours = habitJours; window.__bcProgrammeDebut = PROGRAMME_DEBUT; window.__bcJournees = function(){ return journeesState; }; window.__bcJourneeDe = journeeDe; window.__bcPartiels = periodePartiels; window.__bcSessionsPartiels = sessionsPartiels; window.__bcBlocSansPomodoro = blocSansPomodoro; window.__bcRappels = blocsARappeler; window.__bcExamens = function(){ return examensState; }; window.__bcPrevu = minutesPrevuesJour; window.__bcCibleGrille = cibleDepuisGrille; window.__bcPartEcoulee = partEcoulee; window.__bcVacances = function(){ return vacancesState; }; window.__bcJourExclu = jourExclu; window.__bcObjectifs = function(){ return objectifsState.liste; }; window.__bcComparer = comparerObjectif; window.__bcAcquise = habitAcquise; window.__bcAcquises = habitsAcquises; window.__bcSansPomodoro = blocsSansPomodoroDuJour; window.__bcTonPriorite = tonPriorite; window.__bcPrioHist = function(){ return insightsHist; }; window.__bcCloturerSaison = cloturerSaison; window.__bcSaisons = function(){ return saisonsState; }; window.__bcTrimestres = function(){ return TRIMESTRES; }; window.__bcMois = moisListe; window.__bcAnki = function(){ return ankiState; }; window.__bcLireAnki = lireAnki; window.__bcBesoins = besoinsPartiels; window.__bcMatiereBloc = matierePourBloc;
+  try{ window.__bcTitreBase = titreBaseGcal; window.__bcConsigne = consigneBloc; window.__bcInsights = buildInsights; window.__bcBlocs = blocsDuPlanning; window.__bcCle = cleJournee; window.__bcJours = joursSuivis; window.__bcInsightsVu = function(){ return insightsVu; }; window.__bcLogSession = logSession; window.__bcPeriode = periodeGrille; window.__bcGrille = grilleDe; window.__bcMinutesEspanol = minutesEspanol; window.__bcCibleEspanol = cibleEspanolJour; window.__bcTypeBloc = typeBlocPlan; window.__bcPlanRotation = planRotation; window.__bcHabitJours = habitJours; window.__bcProgrammeDebut = PROGRAMME_DEBUT; window.__bcJournees = function(){ return journeesState; }; window.__bcJourneeDe = journeeDe; window.__bcPartiels = periodePartiels; window.__bcSessionsPartiels = sessionsPartiels; window.__bcBlocSansPomodoro = blocSansPomodoro; window.__bcRappels = blocsARappeler; window.__bcExamens = function(){ return examensState; }; window.__bcPrevu = minutesPrevuesJour; window.__bcCibleGrille = cibleDepuisGrille; window.__bcPartEcoulee = partEcoulee; window.__bcVacances = function(){ return vacancesState; }; window.__bcJourExclu = jourExclu; window.__bcObjectifs = function(){ return objectifsState.liste; }; window.__bcComparer = comparerObjectif; window.__bcAcquise = habitAcquise; window.__bcAcquises = habitsAcquises; window.__bcSansPomodoro = blocsSansPomodoroDuJour; window.__bcTonPriorite = tonPriorite; window.__bcPrioHist = function(){ return insightsHist; }; window.__bcCloturerSaison = cloturerSaison; window.__bcSaisons = function(){ return saisonsState; }; window.__bcTrimestres = function(){ return TRIMESTRES; }; window.__bcMois = moisListe; window.__bcAnki = function(){ return ankiState; }; window.__bcLireAnki = lireAnki; window.__bcBesoins = besoinsPartiels; window.__bcMatiereBloc = matierePourBloc; window.__bcPortes = etatPortes; window.__bcPortesEtat = function(){ return portesEtat; }; window.__bcConvertirPorte = convertirPorte; window.__bcNoterCours = noterCours;
        window.__bcTypeSport = typeSportDe; window.__bcSommeilCible = objectifSommeilPour; window.__bcTestAnki = testAnkiDu; window.__bcRapport = function(){
          var mois = moisListe().filter(function(m){ return todayISO >= m.debut && todayISO <= m.fin; })[0];
          var objs = mois ? objectifsState.liste.filter(function(o){ return o.periode === 'mois' && o.pid === mois.id; }) : [];

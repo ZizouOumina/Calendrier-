@@ -83,7 +83,12 @@ console.log('\n== 200) Depuis l\'appli : tout est effacé ici et dans le cloud, 
   const objs = c['batcave-objectifs'] && c['batcave-objectifs'].liste || [];
   const revSept = objs.find(o => o.id === 'M2026-09:revision_h'), revT1 = objs.find(o => o.id === 'T1:revision_h'), sommeilSept = objs.find(o => o.id === 'M2026-09:sommeil_moy');
   ok(!!revSept && revSept.debut === '2026-09-08' && revSept.cible === 50.4, 'Révision de septembre : repart du 8, cible ramenée aux jours réellement programmés → 50,4 h (' + (revSept && revSept.cible) + ')');
-  ok(!!revT1 && revT1.debut === '2026-09-08' && revT1.cible === 284, 'Révision du trimestre : repart du 8 → 284 h (' + (revT1 && revT1.cible) + ')');
+  /* 286,9 et non 284 depuis que « Projets perso 4, 5 et 6 » basculent en revision ciblee
+     pendant les partiels. L'examen seme ici (16 octobre) ouvre une fenetre du 9 au 16 qui
+     contient un lundi et un mardi : 101 min le lundi (le bloc de 15:00) et 2 x 55 le mardi
+     (19:00 et 20:30), soit 211 min de travail net. x 0,89 de marge = 3,13 h, x 84/91 de
+     prorata du nouveau depart = 2,89 h. 284 + 2,89 = 286,9. */
+  ok(!!revT1 && revT1.debut === '2026-09-08' && revT1.cible === 286.9, 'Révision du trimestre : repart du 8 → 286,9 h (' + (revT1 && revT1.cible) + ')');
   ok(!!sommeilSept && sommeilSept.debut === '2026-09-08' && sommeilSept.cible === 7.75, 'une moyenne (sommeil, 7,75 h) repart du 8 sans changer de cible');
   await page.waitForTimeout(2200);   /* rechargement automatique */
   await page.frameLocator('#f').locator('#dash-plan').waitFor({ state:'attached', timeout:15000 });
