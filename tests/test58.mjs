@@ -6,7 +6,10 @@ const URL = 'http://127.0.0.1:8199/host.html';
 let errs = 0;
 const ok = (c,m) => { if(c) console.log('  ok  '+m); else { errs++; console.log('  FAIL '+m); } };
 const browser = await chromium.launch();
-const JOURS = [['lundi','2026-08-31','Sport','jour de cours (lun, mar, jeu)'],['mardi','2026-09-01','Sport','jour de cours (lun, mar, jeu)'],['mercredi','2026-09-02','Anki matinal','mercredi (Anki matinal)'],['jeudi','2026-09-03','Sport','jour de cours (lun, mar, jeu)'],['vendredi','2026-09-04','Projets perso matinal',"vendredi (Jumu'ah)"],['samedi','2026-09-05','Sport','samedi (courses)'],['dimanche','2026-09-06','Projets perso matinal','dimanche']];
+/* Un libelle par cle de SCHEDULES. Lundi et mardi ont leur propre grille depuis l'emploi
+   du temps reel du S1, et « weekday » ne designe plus que le jeudi : sans leurs entrees
+   dans labelMap, l'en-tete du Calendrier affichait « undefined » deux jours sur sept. */
+const JOURS = [['lundi','2026-08-31','Sport','lundi (cours 17:30 \u2192 19:30)'],['mardi','2026-09-01','Sport','mardi (cours 15:30 \u2192 17:30)'],['mercredi','2026-09-02','Anki matinal','mercredi (Anki matinal)'],['jeudi','2026-09-03','Sport','jeudi (cours 15:30 \u2192 19:30)'],['vendredi','2026-09-04','Projets perso matinal',"vendredi (Jumu'ah)"],['samedi','2026-09-05','Sport','samedi (courses)'],['dimanche','2026-09-06','Projets perso matinal','dimanche']];
 for(const [nom, iso, premier, libelle] of JOURS){
   const ctx = await browser.newContext({ viewport:{width:1440,height:900}, timezoneId:'Europe/Madrid', locale:'fr-FR' });
   await ctx.addInitScript(() => { window.claude = undefined; });

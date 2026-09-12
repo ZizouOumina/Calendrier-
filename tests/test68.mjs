@@ -29,9 +29,11 @@ console.log('\n== 264) Les cibles sortent de la grille, phase par phase ==');
   const p = await fr.evaluate(() => ({
     s14: window.__bcPrevu('2026-09-14'), s19oct: window.__bcPrevu('2026-10-19'), s1dec: window.__bcPrevu('2026-12-01')
   }));
-  ok(p.s14.proj === 0 && p.s14.es === 160, 'phase 1 : aucun projet perso prévu, 160 min d\'espagnol (' + JSON.stringify(p.s14) + ')');
-  ok(p.s19oct.proj === 55 && p.s19oct.es === 105, 'phase 2 : Projets perso 1 revient (55 min), espagnol 105 min');
-  ok(p.s1dec.proj === 105 && p.s1dec.es === 55, 'phase 3 : un seul bloc Español, le reste aux projets');
+  /* Le 14/09 et le 19/10 sont des lundis (4 blocs de projet : 11:20, 13:00, 14:00, 15:00),
+     le 01/12 un mardi (5 blocs : 11:20, 13:00, 14:00, 19:00, 20:30). Pauses deduites. */
+  ok(p.s14.proj === 0 && p.s14.es === 266, 'phase 1 : aucun projet perso prévu, 266 min d\'espagnol (' + JSON.stringify(p.s14) + ')');
+  ok(p.s19oct.proj === 55 && p.s19oct.es === 211, 'phase 2 : Projets perso 1 revient (55 min), espagnol 211 min (' + JSON.stringify(p.s19oct) + ')');
+  ok(p.s1dec.proj === 215 && p.s1dec.es === 55, 'phase 3 : un seul bloc Español, le reste aux projets (' + JSON.stringify(p.s1dec) + ')');
   const o = await fr.evaluate(() => { const l = {}; window.__bcObjectifs().forEach(x => l[x.id] = {c:x.cible, a:x.auto}); return l; });
   /* Septembre ne compte qu'à partir du 14, et cette part du mois est entièrement en
      phase 1 : aucun bloc Projets perso, donc cible zéro. Octobre en a un peu (la phase 2

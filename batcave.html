@@ -7631,6 +7631,13 @@
     'Projets perso 1': 'Révision ciblée',
     'Projets perso 2': {defaut:'Révision ciblée', friday:'Español', weekend:'Español'},
     'Projets perso 3': 'Español',
+    /* Les trois blocs nes de l'emploi du temps reel du semestre 1 (lundi 15:00, mardi 19:00
+       et 20:30). Sans ces lignes ils restaient « Projets perso » PENDANT les partiels : trois
+       heures de dropshipping en semaine d'examen, comptees en projets et non en revision, et
+       la regle « un seul bloc Español par jour » sautait aussi, le mardi en portant deux. */
+    'Projets perso 4': 'Révision ciblée',
+    'Projets perso 5': 'Révision ciblée',
+    'Projets perso 6': 'Révision ciblée',
     'Cartes du dernier cours': 'Annales ciblées',
     'Comprendre le cours du jour': 'Fiches de synthèse'
   };
@@ -11740,10 +11747,16 @@
     document.getElementById('cal-water-sub').textContent = waterL.toFixed(1).replace('.', ',') + ' L / ' + OBJECTIF_EAU_L.toFixed(1).replace('.', ',') + ' L';
 
     var key = scheduleKeyForToday();
-    var labelMap = {weekday:'jour de cours (lun, mar, jeu)', wednesday:'mercredi (Anki matinal)', friday:"vendredi (Jumu'ah)", saturday:'samedi (courses)', weekend:'dimanche'};
+    /* Un libelle par cle de SCHEDULES. Depuis que lundi et mardi ont leur propre grille
+       (cours 17:30 le lundi, cours qui s'arrete a 17:30 le mardi), « weekday » ne designe
+       plus que le jeudi : sans leurs deux entrees, l'en-tete affichait « undefined ».
+       Le repli sur la cle protege des prochaines grilles ajoutees sans libelle. */
+    var labelMap = {monday:'lundi (cours 17:30 \u2192 19:30)', tuesday:'mardi (cours 15:30 \u2192 17:30)',
+      weekday:'jeudi (cours 15:30 \u2192 19:30)', wednesday:'mercredi (Anki matinal)',
+      friday:"vendredi (Jumu'ah)", saturday:'samedi (courses)', weekend:'dimanche'};
     var periodeJour = periodeGrille(todayISO);
     var evJour = journeeDe(todayISO), evDemain = journeeDe(isoDecale(todayISO, 1));
-    document.getElementById('cal-schedule-label').textContent = labelMap[key] + (periodeJour ? ' · ' + periodeJour.nom : '') +
+    document.getElementById('cal-schedule-label').textContent = (labelMap[key] || key) + (periodeJour ? ' · ' + periodeJour.nom : '') +
       (evJour ? ' · 📌 ' + evJour.titre + ' ' + evJour.debut : (evDemain ? ' · veille de ' + evDemain.titre : '')) +
       (jourExclu(todayISO) ? ' · 🚫 ne compte pas' : '');
     var blocks = agendaDuJour(weekday);

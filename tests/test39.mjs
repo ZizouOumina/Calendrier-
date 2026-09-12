@@ -30,7 +30,9 @@ console.log('\n== 83) Les objectifs hebdomadaires se déduisent du planning ==')
   }));
   /* écrits en dur, ils valaient encore 39 h et 23 h : l'ancien planning. */
   ok(nb(v.rev) === '29h54', 'objectif révision = 29 h 54 de travail réel (34 h de blocs, pauses exclues, Anki matinal du mercredi) : ' + nb(v.rev));
-  ok(nb(v.proj) === '18h54', 'objectif projets perso = 18 h 54 (bloc du dimanche 13:30, matins du vendredi et du dimanche, Projets perso 3 de 50 min) : ' + nb(v.proj));
+  /* 22 h 30 depuis l'emploi du temps reel du S1 : lundi gagne « Projets perso 4 » (1 h 50)
+     et mardi « Projets perso 5 » et « 6 » (2 h), soit 3 h 36 de travail net en plus. */
+  ok(nb(v.proj) === '22h30', 'objectif projets perso = 22 h 30 (dimanche 13:30, matins du vendredi et du dimanche, les trois blocs nes de l\'emploi du temps reel) : ' + nb(v.proj));
   await ctx.close();
 }
 

@@ -88,7 +88,14 @@ console.log('\n== 252) Mode partiels : J-7 avant le premier examen, jusqu\'au de
   ok(p8 && p8.id === 'es-2', 'le 8 novembre reste en phase Español 2');
   const g = await grille(fr, 'tuesday', '2026-11-10');
   ok(g.includes('07:20 Anki 1') && g.includes('08:20 Anki 2') && g.includes('10:20 Annales'), 'Anki 1, Anki 2, Annales intacts');
-  ok(g.includes('09:20 Annales ciblées') && g.includes('11:20 Révision ciblée') && g.includes('13:00 Révision ciblée') && g.includes('14:00 Español') && g.includes('20:30 Fiches de synthèse'), 'Cartes → Annales ciblées, Projets perso → Révision ciblée, un bloc Español, Comprendre → Fiches (' + g.filter(x => /ciblée|Español|Fiches/.test(x)) + ')');
+  /* Le mardi, « Comprendre le cours du jour » est a 18:00 (sortie d'amphi a 17:30), et les
+     blocs « Projets perso 5 » (19:00) et « 6 » (20:30) doivent eux aussi basculer en revision
+     ciblee : sans leur ligne dans RENOMMAGES_PARTIELS ils restaient du dropshipping en
+     semaine d'examen, et le mardi portait deux blocs Español au lieu d'un. */
+  ok(g.includes('09:20 Annales ciblées') && g.includes('11:20 Révision ciblée') && g.includes('13:00 Révision ciblée') && g.includes('14:00 Español') && g.includes('18:00 Fiches de synthèse') && g.includes('19:00 Révision ciblée') && g.includes('20:30 Révision ciblée'), 'Cartes → Annales ciblées, Projets perso → Révision ciblée (les 6), un seul bloc Español, Comprendre → Fiches (' + g.filter(x => /ciblée|Español|Fiches/.test(x)) + ')');
+  ok(g.filter(x => /Español/.test(x)).length === 1, 'mardi en partiels : un seul bloc Español (' + g.filter(x => /Español/.test(x)) + ')');
+  const gl = await grille(fr, 'monday', '2026-11-09');
+  ok(gl.includes('15:00 Révision ciblée') && gl.filter(x => /Español/.test(x)).length === 1 && gl.includes('20:30 Fiches de synthèse'), 'lundi en partiels : 15:00 en révision ciblée, un seul Español (' + gl.filter(x => /ciblée|Español|Fiches/.test(x)) + ')');
   const gv = await grille(fr, 'friday', '2026-11-13');
   ok(gv.includes('05:30 Révision ciblée') && gv.includes('10:20 Révision ciblée') && gv.includes('11:20 Español'), 'vendredi : matinal et PP1 en révision ciblée, PP2 en Español');
   const c = await fr.evaluate(() => [window.__bcConsigne('Révision ciblée', 2, '2026-11-10'), window.__bcConsigne('Annales ciblées', 2, '2026-11-17'), window.__bcTypeBloc('Révision ciblée'), window.__bcTypeBloc('Fiches de synthèse')]);

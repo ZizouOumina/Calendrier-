@@ -33,9 +33,9 @@ console.log('\n== 105) Charge restante : cible hebdo moins le fait depuis lundi 
   const { ctx, fr } = await ouvrir('2026-09-02T10:00:00+02:00', seed);   /* mercredi */
   const t = await texte(fr, '#dash-semaine');
   ok(/21 h 54 de révision restantes sur 29 h 54/.test(t), '29 h 54 − 8 h = 21 h 54 de révision (' + t.slice(0,70) + '…)');
-  ok(/14 h 54 de projets sur 18 h 54/.test(t), '18 h 54 − 4 h = 14 h 54 de projets');
+  ok(/18 h 30 de projets sur 22 h 30/.test(t), '22 h 30 − 4 h = 18 h 30 de projets');
   ok(/5 jours/.test(t), 'mercredi → dimanche : 5 jours');
-  ok(/~7 h \d\d\/jour/.test(t), '(21 h 54 + 14 h 54) / 5 jours : ' + (t.match(/~[^)]*/)||[])[0]);
+  ok(/~8 h \d\d\/jour/.test(t), '(21 h 54 + 18 h 30) / 5 jours : ' + (t.match(/~[^)]*/)||[])[0]);
   await ctx.close();
 }
 
@@ -47,7 +47,9 @@ console.log('\n== 106) Dimanche : 1 jour restant ; semaine bouclée : message de
 }
 {
   const s = [];
-  ['2026-08-31','2026-09-01','2026-09-02','2026-09-03','2026-09-04','2026-09-05'].forEach(d => { s.push(bloc(d,'cours',330,'07')); s.push(bloc(d,'projet',200,'12')); });
+  /* 240 min/jour et non 200 : la cible de projets est passee a 22 h 30 avec les trois blocs
+     nes de l'emploi du temps reel, et 6 x 200 min = 20 h ne la couvrait plus. */
+  ['2026-08-31','2026-09-01','2026-09-02','2026-09-03','2026-09-04','2026-09-05'].forEach(d => { s.push(bloc(d,'cours',330,'07')); s.push(bloc(d,'projet',240,'12')); });
   const { ctx, fr } = await ouvrir('2026-09-06T10:00:00+02:00', {'batcave-sessions': s});
   ok(/Objectifs de la semaine atteints/.test(await texte(fr, '#dash-semaine')), 'tout fait : « Objectifs de la semaine atteints »');
   await ctx.close();

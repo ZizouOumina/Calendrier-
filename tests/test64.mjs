@@ -94,7 +94,9 @@ console.log('\n== 231) Phase 1 (mercredi 16 septembre) : blocs Projets perso ren
   const objs = await fr.evaluate(() => JSON.parse(localStorage.getItem('batcave-objectifs')).liste
     .filter(o => /^(T1|M2026-09|M2026-12):(espagnol_h|projets_h|revision_h)$/.test(o.id))
     .reduce((a, o) => { a[o.id] = o.cible; return a; }, {}));
-  ok(Math.abs(objs['T1:espagnol_h'] - 138) < 2 && Math.abs(objs['M2026-09:espagnol_h'] - 39) < 2 && objs['M2026-09:projets_h'] === 0 && objs['T1:revision_h'] > 0, 'objectifs Espagnol calculés depuis la grille (T1 ≈ 138, septembre ≈ 39) ; Projets perso ramené à zéro en septembre, où la phase 1 occupe toute la part programmée du mois : ' + JSON.stringify(objs));
+  /* 168 et 49 depuis l'emploi du temps reel : lundi et mardi apportent 3 h 50 de blocs
+     de plus, tous renommes Español en phase 1. */
+  ok(Math.abs(objs['T1:espagnol_h'] - 168) < 2 && Math.abs(objs['M2026-09:espagnol_h'] - 49) < 2 && objs['M2026-09:projets_h'] === 0 && objs['T1:revision_h'] > 0, 'objectifs Espagnol calculés depuis la grille (T1 ≈ 168, septembre ≈ 49) ; Projets perso ramené à zéro en septembre, où la phase 1 occupe toute la part programmée du mois : ' + JSON.stringify(objs));
 
   /* Pomodoro Español : la tâche par défaut est celle du bloc en cours (gramática à 12:00), le bloc part en projet « Español · gramática » */
   await fr.evaluate(() => document.querySelector('.nav-btn[data-page="dashboard"]').click());
@@ -131,7 +133,7 @@ console.log('\n== 232) Avant le lundi 14 septembre : aucune période, la grille 
              p14: (window.__bcPeriode('2026-09-14') || {}).id || null,
              v0530: at(gv, '05:30'), v0720: at(gv, '07:20'), v1020: at(gv, '10:20'), v1120: at(gv, '11:20'),
              l0720: at(gl, '07:20'), l0820: at(gl, '08:20'), l0920: at(gl, '09:20'), l1120: at(gl, '11:20'),
-             l1220: at(gl, '12:20'), l1300: at(gl, '13:00'), l1400: at(gl, '14:00'), l1530: at(gl, '15:30'),
+             l1220: at(gl, '12:20'), l1300: at(gl, '13:00'), l1400: at(gl, '14:00'), l1500: at(gl, '15:00'), l1730: at(gl, '17:30'),
              releve: document.querySelector('#bc-grille .v').textContent, cache: document.getElementById('bc-grille').hidden,
              sport: document.getElementById('programme-note').textContent };
   });
@@ -140,10 +142,11 @@ console.log('\n== 232) Avant le lundi 14 septembre : aucune période, la grille 
      'le vendredi 11 garde la grille type : ' + [g.v0530, g.v0720, g.v1020, g.v1120].join(' / '));
   ok(g.cache === true && g.releve === 'grille type', 'relevé GRILLE masqué avant le 14 (« ' + g.releve + ' »)');
   ok(g.p14 === 'es-1', 'le lundi 14 est en phase 1 (obtenu ' + g.p14 + ')');
-  ok(g.l0720 === 'Anki 1' && g.l0820 === 'Anki 2' && g.l0920 === 'Cartes du dernier cours' && g.l1220 === 'Déjeuner' && g.l1530 === 'Cours',
-     'le 14 : révision dentaire, déjeuner et cours intacts : ' + [g.l0720, g.l0820, g.l0920, g.l1220, g.l1530].join(' / '));
-  ok(g.l1120 === 'Español · gramática' && g.l1300 === 'Español · escribir' && g.l1400 === 'Español · preparar la clase',
-     'le 14 : seuls les Projets perso deviennent Español : ' + [g.l1120, g.l1300, g.l1400].join(' / '));
+  /* Le lundi, le cours est a 17:30 et non 15:30 : 15:00 est « Projets perso 4 ». */
+  ok(g.l0720 === 'Anki 1' && g.l0820 === 'Anki 2' && g.l0920 === 'Cartes du dernier cours' && g.l1220 === 'Déjeuner' && g.l1730 === 'Cours',
+     'le 14 : révision dentaire, déjeuner et cours intacts : ' + [g.l0720, g.l0820, g.l0920, g.l1220, g.l1730].join(' / '));
+  ok(g.l1120 === 'Español · gramática' && g.l1300 === 'Español · escribir' && g.l1400 === 'Español · preparar la clase' && g.l1500 === 'Español · hablar',
+     'le 14 : seuls les Projets perso deviennent Español, les quatre du lundi : ' + [g.l1120, g.l1300, g.l1400, g.l1500].join(' / '));
   ok(/démarre le/.test(g.sport) && /14/.test(g.sport), 'sport : avant le 14, « démarre le 14 sept. » (' + g.sport + ')');
   await ctx.close();
 }
