@@ -8016,10 +8016,30 @@
     return out;
   }
   var TRIMESTRES = construireTrimestres();
-  /* Cibles semees. Realistes sans etre timides : la revision vise ~89 % de ce que la semaine
-     type permet. Le chiffre seme (380 h par trimestre) date d'une grille a 33 h ; la grille
-     reelle en compte 34 depuis le releve de l'emploi du temps. La cible n'est PAS relevee
-     automatiquement : deplacer un objectif deja seme fausserait l'historique. A rediscuter.
+  /* Cibles semees.
+
+     ATTENTION avant de toucher aux quatre premieres valeurs de chaque trimestre
+     (revision_h, projets_h, espagnol_h, sport_seances) : elles ne sont qu'un POINT DE
+     DEPART. recalerObjectifsSemaine() tourne a chaque demarrage et les remplace par
+     cibleDepuisGrille(), qui lit la grille reelle et applique MARGE_CIBLE. Un objectif
+     garde sa valeur semee seulement si tu l'as edite a la main (auto === false ou fixe).
+     Les valeurs ci-dessous sont donc alignees sur ce que la grille produit, pour que le
+     code ne raconte pas autre chose que l'application -- mais les changer ne change rien
+     a ce que tu vois.
+
+     Mesure du 12 septembre 2026, apres le releve de l'emploi du temps reel :
+       T1  296,8 h de revision · 45,1 de projets · 168,2 d'espagnol · 41 seances
+       T2  342,2 · 174,9 · 73,4 · 46
+       T3  350,1 · 241,7 · 11,4 · 48
+     T1 est court parce que prevuSurPeriode ignore tout jour anterieur au 14 septembre :
+     le trimestre commence le 1er mais ne compte que 11,14 semaines.
+
+     T4 (juin -> aout) reste a part : la grille projette une annee scolaire sur l'ete alors
+     que les cours s'arretent le 4 juin. Sa cible sera fausse tant qu'on n'aura pas dit a la
+     Batcave a quoi ressemble l'ete -- par des vacances saisies, ou une phase dediee.
+
+     Les autres metriques (sommeil, habitudes, eau, depenses, snus, exercices) ne sont PAS
+     recalculees : leurs valeurs ci-dessous sont celles qui s'appliquent vraiment.
      Le sport 6 seances/semaine tenues 9 fois sur 10
      (ramene a 4 par le recalage automatique depuis le programme v2),
      les tractions montent d'une fourchette par trimestre, le sommeil colle au coucher prevu.
@@ -8029,9 +8049,9 @@
      révision et de projets, et jours d'entraînement (voir le recalage automatique plus bas). */
   var SEMAINE_SEMIS = {rev:1745, proj:1005, sport:6};
   var CIBLES_TRIMESTRE = {
-    T1:{revision_h:335, projets_h:186, sport_seances:70, espagnol_h:137, sommeil_moy:7.75, habitudes_pct:80, eau_moy:2.7, depenses_var:1050, snus_jours:90,  'exo:Tractions':10, 'exo:Dips':12},
-    T2:{revision_h:308, projets_h:205, sport_seances:72, espagnol_h:73, sommeil_moy:7.75, habitudes_pct:82, eau_moy:2.8, depenses_var:1050, snus_jours:180, 'exo:Tractions':12, 'exo:Dips':15},
-    T3:{revision_h:352, projets_h:223, sport_seances:75, espagnol_h:45, sommeil_moy:7.75, habitudes_pct:85, eau_moy:3.0, depenses_var:1050, snus_jours:270, 'exo:Tractions':14, 'exo:Dips':18},
+    T1:{revision_h:296.8, projets_h:45.1, sport_seances:41, espagnol_h:168.2, sommeil_moy:7.75, habitudes_pct:80, eau_moy:2.7, depenses_var:1050, snus_jours:90,  'exo:Tractions':10, 'exo:Dips':12},
+    T2:{revision_h:342.2, projets_h:174.9, sport_seances:46, espagnol_h:73.4, sommeil_moy:7.75, habitudes_pct:82, eau_moy:2.8, depenses_var:1050, snus_jours:180, 'exo:Tractions':12, 'exo:Dips':15},
+    T3:{revision_h:350.1, projets_h:241.7, sport_seances:48, espagnol_h:11.4, sommeil_moy:7.75, habitudes_pct:85, eau_moy:3.0, depenses_var:1050, snus_jours:270, 'exo:Tractions':14, 'exo:Dips':18},
     T4:{revision_h:229, projets_h:279, sport_seances:75, espagnol_h:55, sommeil_moy:7.75, habitudes_pct:85, eau_moy:3.0, depenses_var:1050, snus_jours:365, 'exo:Tractions':15, 'exo:Dips':20}
   };
   /* Les mesures. mode : 'cumul' (s'additionne sur la periode), 'moyenne' (par jour ou par
@@ -8085,7 +8105,10 @@
   function trimestreDe(iso){ return TRIMESTRES.filter(function(t){ return iso >= t.debut && iso <= t.fin; })[0] || null; }
   /* Cibles mensuelles d'espagnol : 89 % des blocs Español de la grille par periode (phases 1,
      2, 3 du Dossier Español, a partir du 14 septembre), au lieu du tiers du trimestre. */
-  var MOIS_ESPANOL = {'M2026-09':39, 'M2026-10':59, 'M2026-11':39, 'M2026-12':25, 'M2027-01':25, 'M2027-02':23};
+  /* Meme remarque que pour CIBLES_TRIMESTRE : ces valeurs sont ecrasees au demarrage par
+     cibleDepuisGrille(). Alignees sur la mesure du 12 septembre 2026 pour que le code dise
+     la verite ; les changer ne change rien a ce qui s'affiche. */
+  var MOIS_ESPANOL = {'M2026-09':48.8, 'M2026-10':70.3, 'M2026-11':49.2, 'M2026-12':25.3, 'M2027-01':25.3, 'M2027-02':22.8};
   /* Un trimestre au-delà de ceux qui ont des cibles écrites reprend le modèle du dernier :
      les cibles de temps sont de toute façon recalculées depuis la grille juste après. */
   function ciblesDuTrimestre(id){
