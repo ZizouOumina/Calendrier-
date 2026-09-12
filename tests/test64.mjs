@@ -126,7 +126,7 @@ console.log('\n== 232) Avant le lundi 14 septembre : aucune période, la grille 
   const g = await fr.evaluate(() => {
     const at = (grille, h) => (grille.find(b => b[0] === h) || [])[1];
     const gv = window.__bcGrille('friday', '2026-09-11');
-    const gl = window.__bcGrille('weekday', '2026-09-14');
+    const gl = window.__bcGrille('monday', '2026-09-14');
     return { p11: (window.__bcPeriode('2026-09-11') || {}).id || null, p13: (window.__bcPeriode('2026-09-13') || {}).id || null,
              p14: (window.__bcPeriode('2026-09-14') || {}).id || null,
              v0530: at(gv, '05:30'), v0720: at(gv, '07:20'), v1020: at(gv, '10:20'), v1120: at(gv, '11:20'),
@@ -153,9 +153,9 @@ console.log('\n== 233) Phase 2 (mardi 20 octobre) puis phase 3 (mardi 8 décembr
   const { ctx, fr } = await ouvrir('2026-10-20T12:00:00+02:00');
   const g = await fr.evaluate(() => {
     const at = (cle, iso, h) => (window.__bcGrille(cle, iso).find(b => b[0] === h) || [])[1];
-    return { p: (window.__bcPeriode('2026-10-20') || {}).id, a1120: at('weekday','2026-10-20','11:20'), a1300: at('weekday','2026-10-20','13:00'), a1400: at('weekday','2026-10-20','14:00'),
+    return { p: (window.__bcPeriode('2026-10-20') || {}).id, a1120: at('tuesday','2026-10-20','11:20'), a1300: at('tuesday','2026-10-20','13:00'), a1400: at('tuesday','2026-10-20','14:00'),
              f0530: at('friday','2026-10-23','05:30'), releve: document.querySelector('#bc-grille .v').textContent,
-             p3: (window.__bcPeriode('2026-12-08') || {}).id, d1120: at('weekday','2026-12-08','11:20'), d1300: at('weekday','2026-12-08','13:00'), d1400: at('weekday','2026-12-08','14:00'), ds1800: at('saturday','2026-12-12','18:00') };
+             p3: (window.__bcPeriode('2026-12-08') || {}).id, d1120: at('tuesday','2026-12-08','11:20'), d1300: at('tuesday','2026-12-08','13:00'), d1400: at('tuesday','2026-12-08','14:00'), ds1800: at('saturday','2026-12-12','18:00') };
   });
   ok(g.p === 'es-2' && g.a1120 === 'Projets perso 1' && g.a1300 === 'Español · annales' && g.a1400 === 'Español · preparar la clase' && g.f0530 === 'Projets perso matinal', 'phase 2 : Projets perso 1 et le vendredi matin reviennent, annales à 13:00, classe à 14:00');
   ok(/phase 2/.test(g.releve), 'relevé GRILLE : ' + g.releve);
@@ -192,7 +192,7 @@ console.log('\n== 235) Après le 14 mars 2027 : grille type, boutons cachés, pl
   const g = await fr.evaluate(() => ({
     p: window.__bcPeriode('2027-03-20'), a1120: (window.__bcGrille('saturday','2027-03-20').find(b => b[0] === '11:20') || [])[1],
     releve: document.querySelector('#bc-grille .v').textContent, btn: document.getElementById('dash-pomodoro-espanol').hidden,
-    cellules: document.querySelectorAll('#dash-temps .temps-cell').length, mardi: (window.__bcGrille('weekday','2027-03-16').find(b => b[0] === '13:00') || [])[1]
+    cellules: document.querySelectorAll('#dash-temps .temps-cell').length, mardi: (window.__bcGrille('tuesday','2027-03-16').find(b => b[0] === '13:00') || [])[1]
   }));
   ok(g.p === null && g.a1120 === 'Projets perso 1' && g.mardi === 'Projets perso 2', 'grille type revenue d\'elle-même');
   /* la cellule Español reste affichée hors phase (à 0,0 h, sans cible) : c'est ce qui dit

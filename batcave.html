@@ -10583,6 +10583,33 @@
       ['19:30','Trajet retour'],['20:00','Dîner'],['20:30','Comprendre le cours du jour'],
       ['21:30','Collation soir'],['21:45','Douche + brossage de dents'],['21:55','Coucher']
     ],
+    /* Lundi : le cours ne commence qu'a 17:30 (et non 15:30). Deux heures se liberent
+       l'apres-midi, juste avant de partir : c'est « Projets perso 4 », donc de l'espagnol
+       tant que la periode le renomme ainsi, et du projet des que les portes s'ouvrent. */
+    monday: [
+      ['05:30','Sport'],['06:30','Douche + préparation'],['06:45','Petit-déjeuner + Coran (1 page)'],
+      ['07:20','Anki 1'],['08:20','Anki 2'],
+      ['09:20','Cartes du dernier cours'],['10:20','Annales'],
+      ['11:20','Projets perso 1'],['12:20','Déjeuner'],['12:40','😴 Micro-sieste'],
+      ['13:00','Projets perso 2'],['14:00','Projets perso 3'],
+      ['15:00','Projets perso 4'],['16:50','Collation entraînement'],['17:00','Trajet cours'],['17:30','Cours'],
+      ['19:30','Trajet retour'],['20:00','Dîner'],['20:30','Comprendre le cours du jour'],
+      ['21:30','Collation soir'],['21:45','Douche + brossage de dents'],['21:55','Coucher']
+    ],
+    /* Mardi : le cours s'arrete a 17:30 (et non 19:30). « Comprendre le cours du jour » remonte
+       de 20:30 a 18:00 -- une demi-heure apres etre sorti de l'amphi, le cours est encore chaud.
+       Les deux heures nettes ainsi liberees sont « Projets perso 5 » et « Projets perso 6 » :
+       de l'espagnol tant que la periode les renomme, du projet des que les portes s'ouvrent. */
+    tuesday: [
+      ['05:30','Sport'],['06:30','Douche + préparation'],['06:45','Petit-déjeuner + Coran (1 page)'],
+      ['07:20','Anki 1'],['08:20','Anki 2'],
+      ['09:20','Cartes du dernier cours'],['10:20','Annales'],
+      ['11:20','Projets perso 1'],['12:20','Déjeuner'],['12:40','😴 Micro-sieste'],
+      ['13:00','Projets perso 2'],['14:00','Projets perso 3'],['14:50','Collation entraînement'],['15:00','Trajet cours'],['15:30','Cours'],
+      ['17:30','Trajet retour'],['18:00','Comprendre le cours du jour'],['19:00','Projets perso 5'],
+      ['20:00','Dîner'],['20:30','Projets perso 6'],
+      ['21:30','Collation soir'],['21:45','Douche + brossage de dents'],['21:55','Coucher']
+    ],
     /* Mercredi : jour off de sport, le créneau de 05:30 est un bloc Anki (voir règle 11). */
     wednesday: [
       ['05:30','Anki matinal'],['06:30','Douche + préparation'],['06:45','Petit-déjeuner + Coran (1 page)'],
@@ -10652,6 +10679,10 @@
     'Projets perso 3': {defaut: "50 min d'un trait : une tâche courte du dossier, ou l'exercice corrigé de la semaine (correction fermée jusqu'à ta réponse).",
                         3: "Révision Business (50 min) : cartes du paquet Business, auto-test de la semaine à livre fermé, score noté dans le dossier, puis Claude en examinateur sur tes erreurs.",
                         6: "Fiscalité F2 (construire) : la ligne « Construire » de la semaine, section 09 du dossier : fiche, tableau, exercice chiffré. Pomodoro « F2 »."},
+    'Projets perso 4': "Lundi, 15:00-16:50, juste avant de partir en cours. Même règle que les autres blocs de projet : "
+      + "ce que la période en fait, la période le dit. Hors période Español, c'est la prochaine ligne non cochée du dossier dropshipping.",
+    'Projets perso 5': "Mardi, 19:00-20:00, au retour des cours. Même règle : la période décide, sinon dossier dropshipping.",
+    'Projets perso 6': "Mardi, 20:30-21:30, l'heure qu'a libérée « Comprendre le cours » en remontant à 18:00. Même règle.",
     'Comprendre le cours du jour': "Notes du cours de l'après-midi → projet Claude « Dentaire » (conversation au nom de la matière) : « explique » puis « interroge-moi ». Puis réécriture en 10 lignes dans Notion pour les cartes de demain 09:20.",
     "Cartes d'erreurs de la semaine": "Tes cartes ratées de la semaine → projet « Dentaire », commande « erreurs de la semaine » → une carte de correction par cause, étiquette « erreur » + semaine.",
     'Temps libre': {defaut: "Libre.", 0: "10 minutes pour la revue du dimanche guidée (onglet Études), le reste est libre."},
@@ -10727,6 +10758,15 @@
        'Projets perso 1': {defaut:'Español · gramática', weekend:'Español · simulación'},
        'Projets perso 2': {defaut:'Español · escribir', friday:'Español · tutor', saturday:'Español · tutor', weekend:'Español · balance de la semana'},
        'Projets perso 3': {defaut:'Español · preparar la clase', saturday:'Español · DELE'},
+       /* Les trois blocs nes de l'emploi du temps reel. Lundi 15:00 tombe juste avant le cours
+          de 17:30 : c'est le meilleur creneau de la semaine pour preparer la classe. */
+       'Projets perso 4': {defaut:'Español · preparar la clase'},
+       'Projets perso 5': {defaut:'Español · registro académico'},
+       /* 20:30 le mardi, apres le diner, une heure avant le coucher : la seule intensite
+          tenable a cette heure-la. C'est aussi le seul bloc qui entraine l'espagnol a vitesse
+          reelle et non scolaire -- ce que mesurent justement les portes. En phase 2 il n'est
+          plus renomme : c'est la premiere heure qui revient aux projets. */
+       'Projets perso 6': {defaut:'Serie en VO + diario en español'},
        'Projets perso matinal': {friday:'Español · escribir largo', weekend:'Español · Anki y errores'}
      }, consignes: CONSIGNES_PERIODE_ES},
     {id:'es-2', nom:'Español · phase 2', debut:'2026-10-19', fin:'2026-11-29', suite:'Español · phase 3 (un bloc par jour)',
@@ -10734,6 +10774,8 @@
      renommages: {
        'Projets perso 2': {defaut:'Español · annales', friday:'Español · tutor', saturday:'Español · tutor', weekend:'Español · balance de la semana'},
        'Projets perso 3': {defaut:'Español · preparar la clase'},
+       'Projets perso 4': {defaut:'Español · preparar la clase'},
+       'Projets perso 5': {defaut:'Español · registro académico'},
        'Projets perso matinal': {weekend:'Español · Anki y errores'}
      }, consignes: CONSIGNES_PERIODE_ES},
     {id:'es-3', nom:'Español · phase 3', debut:'2026-11-30', fin:'2027-03-14', suite:'grille type',
@@ -10890,7 +10932,11 @@
      les événements Google s'y ajoutent là où aucun créneau n'existe à la même heure.
      Chaque entrée : [heure, libellé, heureDeFin|null, origine]. */
   function cleJournee(dow){
-    return dow===5 ? 'friday' : (dow===6 ? 'saturday' : (dow===0 ? 'weekend' : (dow===3 ? 'wednesday' : 'weekday')));
+    /* Lundi (cours 17:30-19:30) et mardi (cours 15:30-17:30) ont leurs propres horaires :
+       l'emploi du temps reel de la fac, releve semaine par semaine sur le portail.
+       « weekday » ne designe plus que le jeudi. */
+    return dow===5 ? 'friday' : (dow===6 ? 'saturday' : (dow===0 ? 'weekend'
+         : (dow===3 ? 'wednesday' : (dow===1 ? 'monday' : (dow===2 ? 'tuesday' : 'weekday')))));
   }
 
   /* ===== Les portes d'espagnol =====
@@ -11157,7 +11203,7 @@
   }
   /* la semaine type, hors reduction : la reference des objectifs semes */
   var CIBLE_HEBDO = (function(){
-    var semaine = [['weekday',3], ['wednesday',1], ['friday',1], ['saturday',1], ['weekend',1]];
+    var semaine = [['monday',1], ['tuesday',1], ['weekday',1], ['wednesday',1], ['friday',1], ['saturday',1], ['weekend',1]];
     var t = {rev:0, proj:0};
     semaine.forEach(function(x){
       var c = cibleJourMinutes(x[0], null, true);

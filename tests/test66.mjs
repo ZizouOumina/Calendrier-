@@ -35,7 +35,7 @@ console.log('\n== 250) Journée exceptionnelle : TP jeudi 24 sept. 11:00 → 13:
   ok(g.includes('15:30 Cours') && g.includes('21:55 Coucher'), 'l\'après-midi et le soir ne bougent pas');
   const veille = await grille(fr, 'wednesday', '2026-09-23');
   ok(veille.includes('20:30 Préparer · TP · Anatomía I') && veille.includes('07:20 Anki 1'), 'la veille (mercredi 23) : 20:30 devient « Préparer », le reste ne bouge pas');
-  const lundi = await grille(fr, 'weekday', '2026-09-21');
+  const lundi = await grille(fr, 'monday', '2026-09-21');
   ok(lundi.includes('20:30 Comprendre le cours du jour'), 'un autre jour reste tel quel');
   const cs = await fr.evaluate(() => [window.__bcConsigne('Préparer · TP · Anatomía I', 3, '2026-09-23'), window.__bcConsigne('TP · Anatomía I', 4, '2026-09-24'), window.__bcTypeBloc('Préparer · TP · Anatomía I'), window.__bcTypeBloc('TP · Anatomía I')]);
   ok(/Veille de TP · Anatomía I/.test(cs[0]) && /silencieux/.test(cs[1]), 'consignes de la veille et de l\'événement');
@@ -86,7 +86,7 @@ console.log('\n== 252) Mode partiels : J-7 avant le premier examen, jusqu\'au de
   ok(p && p.id === 'partiels' && p.debut === '2026-11-09', 'le 10 novembre est en mode partiels');
   const p8 = await fr.evaluate(() => window.__bcPeriode('2026-11-08'));
   ok(p8 && p8.id === 'es-2', 'le 8 novembre reste en phase Español 2');
-  const g = await grille(fr, 'weekday', '2026-11-10');
+  const g = await grille(fr, 'tuesday', '2026-11-10');
   ok(g.includes('07:20 Anki 1') && g.includes('08:20 Anki 2') && g.includes('10:20 Annales'), 'Anki 1, Anki 2, Annales intacts');
   ok(g.includes('09:20 Annales ciblées') && g.includes('11:20 Révision ciblée') && g.includes('13:00 Révision ciblée') && g.includes('14:00 Español') && g.includes('20:30 Fiches de synthèse'), 'Cartes → Annales ciblées, Projets perso → Révision ciblée, un bloc Español, Comprendre → Fiches (' + g.filter(x => /ciblée|Español|Fiches/.test(x)) + ')');
   const gv = await grille(fr, 'friday', '2026-11-13');
@@ -109,7 +109,7 @@ console.log('\n== 252) Mode partiels : J-7 avant le premier examen, jusqu\'au de
 console.log('\n== 253) Jour d\'examen et veille ==');
 {
   const { ctx, fr } = await ouvrir('2026-11-16T06:00:00+02:00', EXAMENS);   /* lundi, Anatomía I 09:00 (défaut) */
-  const g = await grille(fr, 'weekday', '2026-11-16');
+  const g = await grille(fr, 'monday', '2026-11-16');
   ok(g.includes('09:00 Examen · Anatomía I') && g.includes('08:30 Trajet · Examen · Anatomía I') && g.includes('11:00 Trajet retour'), 'lundi 16 : trajet 08:30, examen 09:00 → 11:00 (' + g.filter(x => /Examen|retour/.test(x)) + ')');
   ok(g.includes('07:20 Anki 1') && !g.some(x => /08:20 Anki 2/.test(x)) && g.includes('07:30 Préparer · Examen · Anatomía I'), 'Anki 1 gardé, Anki 2 sacrifié pour la préparation à 07:30');
   const v = await grille(fr, 'weekend', '2026-11-15');
