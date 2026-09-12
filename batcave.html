@@ -8017,7 +8017,10 @@
   }
   var TRIMESTRES = construireTrimestres();
   /* Cibles semees. Realistes sans etre timides : la revision vise ~89 % de ce que la semaine
-     type permet (33 h × 13 = 429 → 380), le sport 6 seances/semaine tenues 9 fois sur 10
+     type permet. Le chiffre seme (380 h par trimestre) date d'une grille a 33 h ; la grille
+     reelle en compte 34 depuis le releve de l'emploi du temps. La cible n'est PAS relevee
+     automatiquement : deplacer un objectif deja seme fausserait l'historique. A rediscuter.
+     Le sport 6 seances/semaine tenues 9 fois sur 10
      (ramene a 4 par le recalage automatique depuis le programme v2),
      les tractions montent d'une fourchette par trimestre, le sommeil colle au coucher prevu.
      T2 porte les partiels (revision un peu plus basse, l'examen prime), T4 l'ete (projets
@@ -8157,7 +8160,7 @@
   }, verifier: function(){ return null; }});
   /* Objectifs semés avant les rythmes de Pomodoro par bloc et le lever 05:30 : les cibles de
      révision et de projets étaient en heures de blocs (sessions d'1 h) ; elles passent en
-     temps de travail réel (révision × 1715/1980, soit 28 h 35 sur 33 h de blocs par semaine ;
+     temps de travail réel (révision × 1715/1980, soit 29 h 55 sur 34 h de blocs par semaine ;
      projets × 55/60). Le sommeil visait 7,25 h avec un lever à 05:00 ; avec 8 h au lit, la
      moyenne réelle visée est 7,75 h. Une seule fois, rejouable après
      hydratation, jamais sur un semis frais (le drapeau v2 est posé avec le semis). */
@@ -10583,7 +10586,13 @@
       ['19:30','Trajet retour'],['20:00','Dîner'],['20:30','Comprendre le cours du jour'],
       ['21:30','Collation soir'],['21:45','Douche + brossage de dents'],['21:55','Coucher']
     ],
-    /* Lundi : le cours ne commence qu'a 17:30 (et non 15:30). Deux heures se liberent
+    /* ATTENTION -- ces horaires sont ceux du SEMESTRE 1 UNIQUEMENT, valides du 14 septembre
+       2026 au 19 janvier 2027. Le semestre 2 demarre le 25 janvier avec un emploi du temps
+       tout autre : 24 h de cours par semaine au lieu de 16, mardi et mercredi jusqu'a 21:30.
+       Passe le 19 janvier, cette grille sous-estime les cours de 8 h par semaine. Le jalon
+       du 19 janvier dans « Le fil des jours » porte le rappel de recalibrage.
+
+       Lundi : le cours ne commence qu'a 17:30 (et non 15:30). Deux heures se liberent
        l'apres-midi, juste avant de partir : c'est « Projets perso 4 », donc de l'espagnol
        tant que la periode le renomme ainsi, et du projet des que les portes s'ouvrent. */
     monday: [
@@ -10758,9 +10767,10 @@
        'Projets perso 1': {defaut:'Español · gramática', weekend:'Español · simulación'},
        'Projets perso 2': {defaut:'Español · escribir', friday:'Español · tutor', saturday:'Español · tutor', weekend:'Español · balance de la semana'},
        'Projets perso 3': {defaut:'Español · preparar la clase', saturday:'Español · DELE'},
-       /* Les trois blocs nes de l'emploi du temps reel. Lundi 15:00 tombe juste avant le cours
-          de 17:30 : c'est le meilleur creneau de la semaine pour preparer la classe. */
-       'Projets perso 4': {defaut:'Español · preparar la clase'},
+       /* Les trois blocs nes de l'emploi du temps reel. « Projets perso 3 » prepare deja la
+          classe a 14:00 ; a 15:00, juste avant de partir, on parle : une heure de bouche en
+          espagnol et on entre en amphi deja chaud, au lieu d'y arriver muet. */
+       'Projets perso 4': {defaut:'Español · hablar'},
        'Projets perso 5': {defaut:'Español · registro académico'},
        /* 20:30 le mardi, apres le diner, une heure avant le coucher : la seule intensite
           tenable a cette heure-la. C'est aussi le seul bloc qui entraine l'espagnol a vitesse
@@ -10774,7 +10784,7 @@
      renommages: {
        'Projets perso 2': {defaut:'Español · annales', friday:'Español · tutor', saturday:'Español · tutor', weekend:'Español · balance de la semana'},
        'Projets perso 3': {defaut:'Español · preparar la clase'},
-       'Projets perso 4': {defaut:'Español · preparar la clase'},
+       'Projets perso 4': {defaut:'Español · hablar'},
        'Projets perso 5': {defaut:'Español · registro académico'},
        'Projets perso matinal': {weekend:'Español · Anki y errores'}
      }, consignes: CONSIGNES_PERIODE_ES},
