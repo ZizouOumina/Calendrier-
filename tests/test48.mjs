@@ -38,7 +38,12 @@ console.log('\n== 112) Semis : trimestres et mois ==');
   /* La grille ne prévoit rien avant le 14 septembre, premier jour du programme : la cible
      du trimestre part du 14, pas du 1er. Sinon T1 s'ouvrait avec 50 h de révision déjà
      « prévues » sur des journées où la Batcave ne servait pas encore. */
-  ok(t1 && t1.cible === 296.8 && m9 && m9.cible === 65.8, 'T1 révision calculée depuis la grille, à partir du 14 : 296,8 h → septembre 65,8 h (' + (t1 && t1.cible) + ' / ' + (m9 && m9.cible) + ')');
+  /* 296,8 → 298,4 h depuis que les jours feries ont un agenda. T1 en contient deux, le
+     vendredi 9 et le lundi 12 octobre : chacun perd « Comprendre le cours du jour »
+     (55 min) et gagne « Annale complète » et « Correction + cartes » (110 min), soit
+     +55 min de revision par jour. Deux jours × 55 min × 0,89 de marge = +1,6 h.
+     Septembre ne bouge pas : les deux jours sont en octobre. */
+  ok(t1 && t1.cible === 298.4 && m9 && m9.cible === 65.8, 'T1 révision calculée depuis la grille, à partir du 14 : 298,4 h → septembre 65,8 h (' + (t1 && t1.cible) + ' / ' + (m9 && m9.cible) + ')');
   ok(t1 && t1.auto === true, 'la cible est marquée automatique : elle suivra la grille');
   ok(!o.liste.some(x => x.periode === 'mois' && /exo:|snus/.test(x.metrique)), 'les niveaux (tractions) et la série snus restent au trimestre');
   await ctx.close();

@@ -1803,6 +1803,18 @@
         <ul class="entry-list" id="vacances-liste"></ul>
       </div>
 
+      <!-- Jours sans cours : la plage de cours se libère, la journée reste une journée de travail. -->
+      <div class="panel sub-panel" id="sans-cours-panel">
+        <div class="sub-head"><h3>📅 Jours sans cours</h3><span class="sub-note" id="sans-cours-note">—</span></div>
+        <p class="sub-note" style="margin-bottom:12px; line-height:1.6;">Un férié, un pont, l'entre-deux des semestres : pas de cours, mais une journée de travail. La plage de cours se libère et devient <b style="color:var(--ink-dim);">une annale complète, sa correction, puis les blocs de projet de la phase en cours</b> — dîner à 19:00, coucher à 21:00, une nuit pleine. La liste de départ vient du calendrier des fériés espagnols, pas du portail de la fac : <b style="color:var(--ink-dim);">c'est ta saisie qui fait foi</b>. Pour de vraies vacances, où rien n'est attendu, c'est le panneau au-dessus.</p>
+        <div class="add-form">
+          <div class="f"><label>Date</label><input type="date" id="sc-date"></div>
+          <button class="btn btn-primary" id="sc-add" type="button">Pas de cours ce jour-là</button>
+          <button class="btn" id="sc-cours" type="button">Cours finalement</button>
+        </div>
+        <ul class="entry-list" id="sans-cours-liste"></ul>
+      </div>
+
       <div class="panel sub-panel">
         <div class="sub-head"><h3>Vue de la semaine</h3><span class="sub-note" id="week-cal-source">planning type</span></div>
         <div class="week-cal-wrap">
@@ -7595,7 +7607,7 @@
     var deb = timeToMinutes(ev.debut), fin = timeToMinutes(ev.fin);
     if(!(fin > deb)) return {grille: base, sacrifies: []};
     var trajet = Number(ev.trajet) || 0, depart = deb - trajet, retour = fin + trajet, prep = depart - 60;
-    var finJ = timeToMinutes(heureCoucher(cle)), lever = base.length ? timeToMinutes(base[0][0]) : 0;
+    var finJ = timeToMinutes(heureCoucher(cle, iso)), lever = base.length ? timeToMinutes(base[0][0]) : 0;
     var avecPrep = prep >= lever + 60;      /* pas de preparation quand l'evenement est au reveil */
     var gel = avecPrep ? prep : depart;     /* a partir de la, la grille type s'efface */
     var out = [], sacrifies = [], dejeunerPerdu = false, coursPerdu = false;
@@ -7845,12 +7857,64 @@
       });
     });
   }
+  /* Les jours sans cours a venir, liste de depart et saisies melangees, plus les dates ou
+     il a dit qu'il y avait cours finalement -- pour pouvoir revenir sur les deux. */
+  function renderSansCours(){
+    var ul = document.getElementById('sans-cours-liste'), note = document.getElementById('sans-cours-note');
+    if(!ul) return;
+    var set = joursSansCoursSet();
+    var dates = Object.keys(set).filter(function(d){ return set[d] !== 'cours'; }).sort();
+    var avenir = dates.filter(function(d){ return d >= todayISO; });
+    var passes = dates.length - avenir.length;
+    var repris = joursSansCoursState.retires.filter(function(d){ return d >= todayISO; }).sort();
+    if(note) note.textContent = (avenir.length ? avenir.length + ' jour' + (avenir.length > 1 ? 's' : '') + ' à venir' : 'aucun jour à venir') +
+      (passes ? ' · ' + passes + ' passé' + (passes > 1 ? 's' : '') : '') + (repris.length ? ' · ' + repris.length + ' repris' : '');
+    var lignes = avenir.slice(0, 24).map(function(iso){
+      var dow = dowDe(iso), ouvre = dow >= 1 && dow <= 5;
+      return '<li class="entry-row"><span class="ecell small"><b>' + escapeHtml(fmtDate(iso)) + '</b></span>' +
+        '<span class="ecell">' + (ouvre ? '📅 Pas de cours' : '— week-end, la grille ne change pas') + '</span>' +
+        '<span class="ecell small">' + (set[iso] === 'saisi' ? '<span class="badge gold">saisi</span>' : '<span class="badge">liste</span>') + '</span>' +
+        '<button class="edel" aria-label="Il y a cours" title="Il y a cours finalement ce jour-là" data-sccours="' + iso + '">×</button></li>';
+    }).concat(repris.slice(0, 12).map(function(iso){
+      return '<li class="entry-row"><span class="ecell small"><b>' + escapeHtml(fmtDate(iso)) + '</b></span>' +
+        '<span class="ecell">🎓 Cours ce jour-là</span><span class="ecell small"><span class="badge gold">saisi</span></span>' +
+        '<button class="edel" aria-label="Remettre sans cours" title="Remettre ce jour sans cours" data-scsans="' + iso + '">×</button></li>';
+    }));
+    ul.innerHTML = lignes.length ? lignes.join('') : '<li class="entry-empty">Aucun jour sans cours à venir.</li>';
+    ul.querySelectorAll('[data-sccours]').forEach(function(b){ b.addEventListener('click', function(){ marquerSansCours(b.dataset.sccours, false); }); });
+    ul.querySelectorAll('[data-scsans]').forEach(function(b){ b.addEventListener('click', function(){ marquerSansCours(b.dataset.scsans, true); }); });
+  }
+  /* On ne garde qu'un ECART a la liste de depart : « pas de cours » sur une date deja dans
+     la liste ne s'ecrit nulle part, et effacer la liste un jour n'effacerait pas ses choix. */
+  function marquerSansCours(iso, sans){
+    if(!/^\d{4}-\d{2}-\d{2}$/.test(String(iso))) return;
+    var A = joursSansCoursState.ajoutes, R = joursSansCoursState.retires;
+    var iA = A.indexOf(iso); if(iA > -1) A.splice(iA, 1);
+    var iR = R.indexOf(iso); if(iR > -1) R.splice(iR, 1);
+    if(sans){ if(JOURS_SANS_COURS_LISTE.indexOf(iso) < 0) A.push(iso); }
+    else R.push(iso);
+    A.sort(); R.sort();
+    save('batcave-jours-sans-cours', joursSansCoursState);
+    viderCacheSansCours();
+    appliquerChangementGrille(sans ? '📅 Le ' + fmtDate(iso) + ' : pas de cours, la plage se libère.'
+                                   : '🎓 Le ' + fmtDate(iso) + ' : cours comme d\u2019habitude.');
+  }
+  (function(){
+    var add = document.getElementById('sc-add'), cours = document.getElementById('sc-cours');
+    var lire = function(){
+      var v = document.getElementById('sc-date');
+      if(!v || !v.value){ showToast('Choisis une date.'); return null; }
+      return v.value;
+    };
+    if(add) add.addEventListener('click', function(){ var d = lire(); if(d) marquerSansCours(d, true); });
+    if(cours) cours.addEventListener('click', function(){ var d = lire(); if(d) marquerSansCours(d, false); });
+  })();
   /* Un seul chemin quand la grille change (vacances, jour exclu, journée exceptionnelle,
      date d'examen) : vider le cache des minutes prévues, recaler les cibles, tout redessiner. */
   function appliquerChangementGrille(message){
     viderCachePrevu();
     try{ recalerObjectifsSemaine(); }catch(e){}
-    try{ renderVacances(); renderJournees(); rafraichirAgendas(); renderDashboard(); renderBilan(); }catch(e){}
+    try{ renderVacances(); renderSansCours(); renderJournees(); rafraichirAgendas(); renderDashboard(); renderBilan(); }catch(e){}
     if(document.getElementById('obj-liste')) try{ renderObjectifs(); }catch(e){}
     if(message) showToast(message);
   }
@@ -8929,7 +8993,7 @@
      echus. Le deficit annonce est cette difference, pas la somme des blocs. */
   var GRACE_BLOC_MIN = 15;
   function blocsDuPlanning(cle, iso){
-    var plan = grilleDe(cle, iso || todayISO), fin = timeToMinutes(heureCoucher(cle)), out = [];
+    var plan = grilleDe(cle, iso || todayISO), fin = timeToMinutes(heureCoucher(cle, iso)), out = [];
     plan.forEach(function(b, i){
       var type = typeBlocPlan(b[1]);
       if(!type) return;
@@ -9182,6 +9246,16 @@
                   action:null});
     }
 
+    /* ===== Sans dates d'examen, la moitie de la Batcave dort =====
+       Le mode partiels, la repartition de la revision entre matieres, la cible de sommeil
+       majoree, le sport allege, « Cartes → Annales ciblees » : tout part de examensState,
+       et examensState est vide jusqu'a ce qu'il saisisse les dates. Un mois apres la
+       rentree il les a ; la ligne le dit alors, avec ce qui reste eteint tant qu'elles
+       manquent, et disparait a la premiere date saisie. */
+    if(todayISO >= isoDecale(PROGRAMME_DEBUT, 31) && !Object.keys(examensState).length){
+      items.push({pri:2, icon:'📝', text:'Aucune date d\u2019examen saisie — sans elles, pas de mode partiels, pas de révision répartie entre les matières, pas de sommeil majoré', action:{type:'examens'}});
+    }
+
     var revH = todayRevisionMinutes()/60;
     var target = revisionTarget();
     if(revH < target){
@@ -9254,6 +9328,8 @@
         right = '<span style="display:flex; gap:6px; flex-wrap:wrap; justify-content:flex-end;">' +
           '<button class="btn btn-primary" data-plan-testanki="1" style="padding:4px 10px; font-size:11px;">✓ Fait</button>' +
           '<button class="btn" data-plan-testanki-plus-tard="1" style="padding:4px 8px; font-size:11px;" title="Pas aujourd\'hui">✕</button></span>';
+      } else if(it.action && it.action.type === 'examens'){
+        right = '<button class="btn btn-primary" data-ouvrir="etudes" style="padding:4px 10px; font-size:11px; flex-shrink:0;">📝 Saisir</button>';
       } else if(it.action && it.action.type === 'notion'){
         right = '<button class="btn" data-plan-notion="1" style="padding:4px 10px; font-size:11px; flex-shrink:0;">→ Études</button>';
       } else if(it.action && it.action.type === 'drill'){
@@ -9413,12 +9489,27 @@
     var el = document.querySelector('#bc-grille .v');
     if(!el) return;
     var p = periodeGrille(todayISO), releve = document.getElementById('bc-grille');
-    if(releve) releve.hidden = !p;
-    if(!p){ el.textContent = 'grille type'; el.style.color = ''; el.title = 'Aucune période en cours : la grille type s\'applique.'; return; }
+    /* « Pas de cours aujourd'hui » change la journee autant qu'une periode : la plage de
+       l'apres-midi devient une annale complete et le coucher tombe a 21:00. Le releve le
+       dit donc, meme hors periode -- sinon l'information n'existait nulle part sur le
+       tableau de bord, seulement dans l'onglet Calendrier. */
+    /* Pendant des vacances ou l'ete, « pas de cours » est deja dit par le nom de la periode :
+       on ne l'ajoute qu'aux periodes ou la journee de travail existe encore. */
+    var sans = sansCoursLe(todayISO) && !(p && (p.vacances || p.id === 'ete')), sem = semestreDe(todayISO);
+    if(releve) releve.hidden = !p && !sans;
+    if(!p){
+      el.textContent = sans ? 'pas de cours' : 'grille type';
+      el.title = sans
+        ? 'Pas de cours aujourd\'hui' + (sem ? ' (' + sem.nom + ')' : ' (hors semestre)') + ' : la plage de cours devient une annale complète, sa correction, puis les blocs de projet. Dîner à 19:00, coucher à 21:00.'
+        : 'Aucune période en cours : la grille type s\'applique.';
+      el.style.color = sans ? 'var(--cyan-bright)' : '';
+      return;
+    }
     var j = daysBetween(new Date(todayISO + 'T00:00:00'), new Date(p.fin + 'T00:00:00'));
-    el.textContent = p.nom + ' · J-' + j;
+    el.textContent = p.nom + ' · J-' + j + (sans ? ' · pas de cours' : '');
     el.style.color = 'var(--cyan-bright)';
-    el.title = p.description + ' Jusqu\'au ' + fmtDate(p.fin) + ' ; ensuite : ' + (p.suite || 'grille type') + '.';
+    el.title = p.description + ' Jusqu\'au ' + fmtDate(p.fin) + ' ; ensuite : ' + (p.suite || 'grille type') + '.' +
+      (sans ? ' Pas de cours aujourd\'hui : la plage de cours devient une annale complète, sa correction, puis les blocs de projet.' : '');
   }
   (function(){
     var r = document.getElementById('bc-grille');
@@ -10620,15 +10711,15 @@
       ['19:30','Trajet retour'],['20:00','Dîner'],['20:30','Comprendre le cours du jour'],
       ['21:30','Collation soir'],['21:45','Douche + brossage de dents'],['21:55','Coucher']
     ],
-    /* ATTENTION -- ces horaires sont ceux du SEMESTRE 1 UNIQUEMENT, valides du 14 septembre
-       2026 au 19 janvier 2027. Le semestre 2 demarre le 25 janvier avec un emploi du temps
-       tout autre : 24 h de cours par semaine au lieu de 16, mardi et mercredi jusqu'a 21:30.
-       Passe le 19 janvier, cette grille sous-estime les cours de 8 h par semaine. Le jalon
-       du 19 janvier dans « Le fil des jours » porte le rappel de recalibrage.
+    /* Ces horaires sont ceux du SEMESTRE 1, du 14 septembre 2026 au 19 janvier 2027. Le
+       semestre 2 a sa propre grille (SCHEDULES_S2, plus bas) et grilleBase choisit selon
+       la date : il n'y a plus rien a recalibrer le 19 janvier.
 
        Lundi : le cours ne commence qu'a 17:30 (et non 15:30). Deux heures se liberent
        l'apres-midi, juste avant de partir : c'est « Projets perso 4 », donc de l'espagnol
-       tant que la periode le renomme ainsi, et du projet des que les portes s'ouvrent. */
+       tant que la periode le renomme ainsi, et du projet des que les portes s'ouvrent.
+       ATTENTION : ces deux heures sont propres au semestre 1. Au semestre 2 le lundi
+       redemarre a 15:30 et elles disparaissent. */
     monday: [
       ['05:30','Sport'],['06:30','Douche + préparation'],['06:45','Petit-déjeuner + Coran (1 page)'],
       ['07:20','Anki 1'],['08:20','Anki 2'],
@@ -10693,6 +10784,173 @@
       ['20:45','Douche + brossage de dents'],['21:00','Coucher']
     ]
   };
+
+  /* ===== Deux semestres, et les jours ouvrés sans cours =====
+     SCHEDULES ci-dessus est la grille du SEMESTRE 1. Le semestre 2, releve sur le portail
+     de la fac, est un autre emploi du temps : 24 h de cours par semaine au lieu de 16,
+     mardi et mercredi jusqu'a 21:30 (Idioma Moderno de 19:30 a 21:30, groupe T13), et le
+     lundi qui redemarre a 15:30 -- les deux heures libres du lundi apres-midi du semestre 1
+     disparaissent. Jeudi et vendredi ne changent pas : 15:30 → 19:30 aux deux semestres.
+
+     Le semestre appartient a la GRILLE DE BASE, pas aux periodes, et c'est la seule facon
+     de le faire coexister avec les phases Español : periodeGrille ne rend QU'UNE periode
+     par date, et la phase 3 court du 30 novembre au 14 mars -- elle chevauche donc les
+     sept premieres semaines du semestre 2. Un « semestre 2 » range parmi les periodes
+     aurait masque la phase 3 pendant tout ce chevauchement. La base porte l'emploi du
+     temps, les periodes renomment par-dessus : les deux sont independantes. */
+  var SCHEDULES_S2 = {
+    /* Lundi : cours 15:30 → 19:30 comme le jeudi, et jour de sport comme le jeudi. La
+       grille est mot pour mot celle du jeudi -- on la partage au lieu de la recopier,
+       pour qu'une retouche du jeudi ne laisse pas le lundi derriere. */
+    monday: SCHEDULES.weekday,
+    /* Mardi : cours 15:30 → 21:30. Il n'y a pas de bloc de travail le soir parce qu'il n'y
+       a plus de soir : diner a 22:00, coucher a 22:40. Six heures cinquante de sommeil --
+       la Batcave l'affiche telle quelle plutot que de viser 8 h que l'emploi du temps ne
+       permet pas. C'est la nuit la plus courte de la semaine, et elle est connue d'avance. */
+    tuesday: [
+      ['05:30','Sport'],['06:30','Douche + préparation'],['06:45','Petit-déjeuner + Coran (1 page)'],
+      ['07:20','Anki 1'],['08:20','Anki 2'],
+      ['09:20','Cartes du dernier cours'],['10:20','Annales'],
+      ['11:20','Projets perso 1'],['12:20','Déjeuner'],['12:40','😴 Micro-sieste'],
+      ['13:00','Projets perso 2'],['14:00','Projets perso 3'],['14:50','Collation entraînement'],['15:00','Trajet cours'],['15:30','Cours'],
+      ['21:30','Trajet retour'],['22:00','Dîner'],
+      ['22:30','Douche + brossage de dents'],['22:40','Coucher']
+    ],
+    /* Mercredi : meme journee de cours que le mardi, mais le lendemain d'un coucher a
+       22:40 -- et jour off de sport. Le creneau de 05:30 saute donc et le reveil passe a
+       06:30 : sept heures cinquante de sommeil au lieu de six cinquante. C'est le seul
+       endroit de la semaine ou l'emploi du temps laisse le choix, et une heure d'Anki
+       matinal ne vaut pas une deuxieme nuit courte d'affilee. */
+    wednesday: [
+      ['06:30','Douche + préparation'],['06:45','Petit-déjeuner + Coran (1 page)'],
+      ['07:20','Anki 1'],['08:20','Anki 2'],
+      ['09:20','Cartes du dernier cours'],['10:20','Annales'],
+      ['11:20','Projets perso 1'],['12:20','Déjeuner'],['12:40','😴 Micro-sieste'],
+      ['13:00','Projets perso 2'],['14:00','Projets perso 3'],['14:50','Collation entraînement'],['15:00','Trajet cours'],['15:30','Cours'],
+      ['21:30','Trajet retour'],['22:00','Dîner'],
+      ['22:30','Douche + brossage de dents'],['22:40','Coucher']
+    ]
+  };
+  /* Le dernier cours du semestre 2 est le vendredi 4 juin 2027 a 17:30. Les quinze derniers
+     jours se degradent matiere par matiere (Anatomía II finit avant les autres, il reste des
+     trous d'une ou deux heures) : ce n'est pas modelise, parce que ce serait encoder une
+     supposition sur un emploi du temps qui aura change. L'imprecision est bornee : au plus
+     quelques heures de cours annoncees qui n'ont pas lieu, sur deux semaines. */
+  var SEMESTRES = [
+    {id:'s1', nom:'Semestre 1', debut:'2026-09-14', fin:'2027-01-19', grilles:null},
+    {id:'s2', nom:'Semestre 2', debut:'2027-01-25', fin:'2027-06-04', grilles:SCHEDULES_S2}
+  ];
+  function semestreDe(iso){
+    if(typeof SEMESTRES === 'undefined' || !SEMESTRES) return null;
+    iso = iso || todayISO;
+    for(var i = 0; i < SEMESTRES.length; i++){ if(iso >= SEMESTRES[i].debut && iso <= SEMESTRES[i].fin) return SEMESTRES[i]; }
+    return null;
+  }
+  /* Hors semestre -- l'entre-deux du 20 au 22 janvier, et tout l'apres-4-juin -- la forme
+     de la journee reste celle du DERNIER semestre commence. Sans ce repli, le lundi de
+     l'ete reprenait la forme du lundi du semestre 1 (collation a 16:50, apres un bloc de
+     deux heures) au milieu d'une semaine batie sur celle du semestre 2 : une incoherence
+     visible pour rien, puisque la plage de cours est de toute facon liberee. */
+  function grillesDuJour(iso){
+    var s = semestreDe(iso), dernier = null;
+    if(s) return s.grilles;
+    (SEMESTRES || []).forEach(function(x){ if(x.debut <= iso) dernier = x; });
+    return dernier ? dernier.grilles : null;
+  }
+  /* Les jours ouvres OU IL N'Y A PAS COURS : feries nationaux et de la Communaute de Madrid
+     qui tombent en semaine, ponts de la fac, Semana Santa (Paques le 28 mars 2027), Noel et
+     Reyes. Cette liste est un PREMIER JET -- elle vient du calendrier officiel des feries,
+     pas du portail de la fac, et le portail ajoute des ponts que personne ne peut deviner.
+     Le panneau « Jours sans cours » de l'onglet Calendrier ajoute et retire des dates : la
+     saisie fait foi, jamais cette liste.
+     L'entre-deux des semestres (20, 21 et 22 janvier) et tout ce qui suit le 4 juin n'y sont
+     PAS : ils se deduisent des dates de semestre, une date qui change au meme endroit. */
+  var JOURS_SANS_COURS_LISTE = [
+    '2026-10-09','2026-10-12',
+    '2026-12-07','2026-12-08',
+    '2026-12-23','2026-12-24','2026-12-25','2026-12-28','2026-12-29','2026-12-30','2026-12-31',
+    '2027-01-01','2027-01-04','2027-01-05','2027-01-06',
+    '2027-03-25','2027-03-26','2027-03-29','2027-03-30','2027-03-31','2027-04-01','2027-04-02','2027-04-05'
+  ];
+  var joursSansCoursState = load('batcave-jours-sans-cours', null);
+  if(!joursSansCoursState || typeof joursSansCoursState !== 'object' || Array.isArray(joursSansCoursState)) joursSansCoursState = {ajoutes:[], retires:[]};
+  if(!Array.isArray(joursSansCoursState.ajoutes)) joursSansCoursState.ajoutes = [];
+  if(!Array.isArray(joursSansCoursState.retires)) joursSansCoursState.retires = [];
+  /* grilleBase est appelee des milliers de fois par un balayage de six mois : l'ensemble
+     des jours sans cours est calcule une fois et vide a chaque saisie. */
+  var _cacheSansCours = null;
+  function joursSansCoursSet(){
+    if(_cacheSansCours) return _cacheSansCours;
+    var re = /^\d{4}-\d{2}-\d{2}$/, out = {};
+    JOURS_SANS_COURS_LISTE.forEach(function(d){ out[d] = 'liste'; });
+    joursSansCoursState.ajoutes.forEach(function(d){ if(re.test(d)) out[d] = 'saisi'; });
+    /* « cours » est une valeur, pas une suppression : il doit aussi pouvoir contredire les
+       jours sans cours DEDUITS des dates de semestre (l'entre-deux de janvier, l'apres-4-juin),
+       qui ne sont dans aucune liste. Retirer la cle n'aurait rien contredit du tout. */
+    joursSansCoursState.retires.forEach(function(d){ if(re.test(d)) out[d] = 'cours'; });
+    _cacheSansCours = out;
+    return out;
+  }
+  function viderCacheSansCours(){ _cacheSansCours = null; }
+  /* Avant le 14 septembre, la grille type garde ses cours : c'est la semaine de reference
+     des objectifs semes (CIBLE_HEBDO), elle ne doit pas se vider. */
+  function sansCoursLe(iso){
+    if(typeof joursSansCoursState === 'undefined' || !joursSansCoursState) return false;
+    iso = iso || todayISO;
+    if(iso < PROGRAMME_DEBUT) return false;
+    var v = joursSansCoursSet()[iso];
+    if(v === 'cours') return false;
+    if(v) return true;
+    return !semestreDe(iso);
+  }
+  /* ===== L'agenda d'un jour sans cours =====
+     La plage de cours se libere : de la collation de 14:50 (16:50 le lundi du semestre 1)
+     jusqu'au coucher, la journee est reecrite. Ce qui la remplace n'invente aucun nom de
+     bloc. « Annale complète » puis « Correction + cartes » sont les deux blocs du dimanche
+     matin -- un sujet entier en conditions reelles, 55 min sans support, puis sa correction
+     carte par carte. C'est exactement ce qui ne rentre jamais dans une journee a quatre
+     heures d'amphi, et c'est le meilleur usage connu d'une journee libre avant un examen.
+     Les blocs de projet gardent les noms « Projets perso 4, 5, 6 » : les phases Español et
+     le mode partiels les renomment deja, donc un jour sans cours suit la phase en cours et
+     les partiels sans une seule ligne de configuration de plus.
+     Un bloc deja present plus tot dans la journee n'est pas repose une seconde fois : le
+     lundi du semestre 1 garde son « Projets perso 4 » de 15:00, il ne le voit pas revenir.
+     Le soir est celui du week-end -- diner 19:00, coucher 21:00. Un jour libre est aussi
+     l'occasion d'une nuit pleine, et le semestre 2 le rend indispensable : sans cela, un
+     mardi ferie aurait garde le diner a 22:00 et le coucher a 22:40 d'une journee de cours
+     qui n'a pas eu lieu. */
+  var REMPLISSAGE_SANS_COURS = ['Annale complète', 'Correction + cartes', 'Projets perso 4', 'Projets perso 5', 'Projets perso 6'];
+  var SANS_COURS_FIN_TRAVAIL = '19:00';
+  var SOIREE_SANS_COURS = [['19:00','Dîner'],['19:30','Temps libre'],['20:30','Collation soir'],
+                           ['20:45','Douche + brossage de dents'],['21:00','Coucher']];
+  function libere(base){
+    var iC = -1;
+    base.forEach(function(b, i){ if(iC < 0 && (b[1] === 'Collation entraînement' || b[1] === 'Trajet cours')) iC = i; });
+    if(iC < 0) return base;                  /* samedi et dimanche : il n'y a rien a liberer */
+    var out = base.slice(0, iC), pris = {};
+    out.forEach(function(b){ pris[b[1]] = true; });
+    var t = timeToMinutes(base[iC][0]);
+    out.push([minutesToTime(t), 'Collation entraînement']);
+    t += 10;                                 /* toutes les collations sont a :50 : on retombe sur l'heure pleine */
+    var fin = timeToMinutes(SANS_COURS_FIN_TRAVAIL);
+    REMPLISSAGE_SANS_COURS.forEach(function(l){
+      if(pris[l] || t + 60 > fin) return;
+      out.push([minutesToTime(t), l]); pris[l] = true; t += 60;
+    });
+    if(t < fin) out.push([minutesToTime(t), 'Temps libre']);
+    return out.concat(SOIREE_SANS_COURS);
+  }
+  /* La grille de base d'un jour A UNE DATE : le semestre d'abord, la liberation ensuite.
+     Tout ce qui lisait SCHEDULES[cle] directement passe par ici -- y compris l'heure du
+     coucher et celle du lever, qui ne sont plus les memes d'un semestre a l'autre ni d'un
+     jour de cours a un jour sans cours. */
+  function grilleBase(cle, iso){
+    if(typeof SCHEDULES === 'undefined' || !SCHEDULES) return [];
+    iso = iso || todayISO;
+    var g = grillesDuJour(iso);
+    var base = (g && g[cle]) || SCHEDULES[cle] || [];
+    return sansCoursLe(iso) ? libere(base) : base;
+  }
   /* ===== Consignes des blocs =====
      Ce qu'il faut faire pendant un bloc, dans les mots de la grille, pour ne plus avoir a
      s'en souvenir : le tableau de bord l'affiche sous le bloc en cours, la timeline du
@@ -10799,7 +11057,7 @@
     /* Tout commence le lundi 14 septembre 2026, premier jour de cours : avant, la grille type.
        Dans chaque phase, SEULS les blocs « Projets perso » changent de nom. */
     {id:'es-1', nom:'Español · phase 1', debut:'2026-09-14', fin:'2026-10-18', suite:'Español · phase 2 (Projets perso 1 revient)',
-     description:'Avec les cours : tous les blocs Projets perso sont des blocs Español — trois les mercredi, jeudi et vendredi, quatre le lundi, cinq le mardi.',
+     description:'Avec les cours : tous les blocs Projets perso sont des blocs Español — trois les mercredi, jeudi et vendredi, quatre le lundi, cinq le mardi, et davantage un jour sans cours, où la plage de cours se libère.',
      renommages: {
        'Projets perso 1': {defaut:'Español · gramática', weekend:'Español · simulación'},
        'Projets perso 2': {defaut:'Español · escribir', friday:'Español · tutor', saturday:'Español · tutor', weekend:'Español · balance de la semana'},
@@ -10829,7 +11087,19 @@
      description:'Vers le C1 : un bloc Español par jour à 13:00, le reste revient aux projets.',
      renommages: {
        'Projets perso 2': {defaut:'Español', friday:'Español · tutor', saturday:'Español · DELE', weekend:'Español · balance de la semana'}
-     }, consignes: CONSIGNES_PERIODE_ES}
+     }, consignes: CONSIGNES_PERIODE_ES},
+    /* ===== L'ete 2027 =====
+       Le dernier cours est le vendredi 4 juin. A partir du 5, sansCoursLe libere deja la
+       plage de cours de chaque jour ouvre ; cette periode vide le reste. Ce vide est un
+       choix, pas un oubli : rien n'est encore decide de cet ete -- stage, boutique,
+       rattrapages -- et une grille inventee aurait fabrique trois mois de retard sur des
+       cibles auxquelles il n'a jamais souscrit. Les blocs de travail deviennent du temps
+       libre, exactement comme en vacances, donc les cibles tombent d'elles-memes et
+       recalerObjectifsSemaine ramene les objectifs de temps a zero. Ce qui reste est ce qui
+       ne depend pas de l'ete : le sport, les repas, le Coran, le sommeil. */
+    {id:'ete', nom:'Été 2027', debut:'2027-06-05', fin:'2027-08-31', suite:'à décider',
+     description:"Les cours sont finis depuis le 4 juin et rien n'est encore décidé de cet été : la grille est volontairement vide. Le sport, les repas, le Coran et le sommeil restent ; tout le temps de travail est du temps libre, donc aucune cible et aucun retard. À remplacer dès que l'été est arrêté.",
+     transformer: function(b){ return typeBlocPlan(b[1]) ? [b[0], 'Temps libre'] : b; }}
   ];
   function periodeGrille(iso){
     if(typeof PERIODES_GRILLE === 'undefined' || !PERIODES_GRILLE) return null;
@@ -10849,8 +11119,8 @@
   }
   /* sansJournee : la grille de la periode seule (sert a construire la journee exceptionnelle) */
   function grilleDe(cle, iso, sansJournee){
-    var base = SCHEDULES[cle] || [];
     iso = iso || todayISO;
+    var base = grilleBase(cle, iso);
     var p = periodeGrille(iso), g = base;
     if(p){
       if(p.transformer) g = base.map(function(b){ return p.transformer(b, cle); });
@@ -10966,14 +11236,18 @@
      du DERNIER bloc de revision du planning du jour -- c'est la derniere occasion. Le seuil
      etait « 18:00 » en dur, deconnecte des journees (le samedi, le dernier bloc commence
      a 16:00 ; le dimanche, a 09:35). */
-  function seuilUrgenceRevision(cle){
-    var plan = SCHEDULES[cle || scheduleKeyForToday()] || [];
+  function seuilUrgenceRevision(cle, iso){
+    var plan = grilleBase(cle || scheduleKeyForToday(), iso);
     var dernier = null;
     plan.forEach(function(b){ if(typeBlocPlan(b[1]) === 'cours') dernier = b[0]; });
     return dernier ? timeToMinutes(dernier) : timeToMinutes('18:00');
   }
-  function heureCoucher(cle){
-    var plan = SCHEDULES[cle || scheduleKeyForToday()] || [];
+  /* La DATE compte autant que le jour de la semaine : le coucher est a 21:55 un mardi du
+     semestre 1, a 22:40 un mardi du semestre 2, et a 21:00 un mardi sans cours. Sans la
+     date, la barre de progression de la journee, la cible de sommeil et l'alerte « tu
+     finirais apres … » auraient continue de viser l'heure du semestre 1. */
+  function heureCoucher(cle, iso){
+    var plan = grilleBase(cle || scheduleKeyForToday(), iso);
     for(var i = plan.length - 1; i >= 0; i--){
       if(/Coucher/.test(plan[i][1])) return plan[i][0];
     }
@@ -11323,8 +11597,8 @@
      grille du jour connaît la phase Español en cours, donc ces trois cibles suivent la
      phase toutes seules, sans rien saisir. */
   function cibleJourMinutes(cle, iso, base){
-    var plan = base ? (SCHEDULES[cle] || []) : grilleDe(cle, iso || todayISO);
-    var fin = timeToMinutes(heureCoucher(cle));
+    var plan = base ? grilleBase(cle, iso) : grilleDe(cle, iso || todayISO);
+    var fin = timeToMinutes(heureCoucher(cle, iso));
     var t = {rev:0, proj:0, es:0};
     plan.forEach(function(b, i){
       var d = (i < plan.length-1 ? timeToMinutes(plan[i+1][0]) : fin) - timeToMinutes(b[0]);
@@ -11502,8 +11776,8 @@
   /* L'heure de LEVER se lit dans le planning, comme celle du coucher. Elle était écrite
      en dur à 05:00 : la barre de progression de la journée et l'objectif de sommeil
      auraient dérivé silencieusement à la première modification du réveil. */
-  function heureLever(cle){
-    var plan = SCHEDULES[cle || scheduleKeyForToday()] || [];
+  function heureLever(cle, iso){
+    var plan = grilleBase(cle || scheduleKeyForToday(), iso);
     return plan.length ? plan[0][0] : '05:00';
   }
   /* Pendant les partiels, la cible de sommeil monte d'une demi-heure : c'est la nuit qui
@@ -11512,8 +11786,8 @@
   function objectifSommeilPour(iso){
     var d = new Date(iso + 'T00:00:00');
     var hier = (d.getDay() + 6) % 7;
-    var couche = timeToMinutes(heureCoucher(cleJournee(hier)));
-    var base = (24*60 - couche + timeToMinutes(heureLever(cleJournee(d.getDay())))) / 60;
+    var couche = timeToMinutes(heureCoucher(cleJournee(hier), isoDecale(iso, -1)));
+    var base = (24*60 - couche + timeToMinutes(heureLever(cleJournee(d.getDay()), iso))) / 60;
     return base + (typeof periodePartiels === 'function' && periodePartiels(iso) ? SOMMEIL_PARTIELS_BONUS : 0);
   }
   function objectifSommeil(){ return objectifSommeilPour(todayISO); }
@@ -11540,7 +11814,7 @@
   /* Les series recurrentes de l'agenda portent une consigne apres « · » (« 🦇 Anki 1 · cartes
      dues dentaire ») : un evenement se reconnait a la partie avant le separateur. */
   function titreBaseGcal(s){ return String(s || '').split(' · ')[0].trim(); }
-  try{ window.__bcTitreBase = titreBaseGcal; window.__bcConsigne = consigneBloc; window.__bcInsights = buildInsights; window.__bcBlocs = blocsDuPlanning; window.__bcCle = cleJournee; window.__bcJours = joursSuivis; window.__bcInsightsVu = function(){ return insightsVu; }; window.__bcLogSession = logSession; window.__bcPeriode = periodeGrille; window.__bcGrille = grilleDe; window.__bcMinutesEspanol = minutesEspanol; window.__bcCibleEspanol = cibleEspanolJour; window.__bcTypeBloc = typeBlocPlan; window.__bcPlanRotation = planRotation; window.__bcHabitJours = habitJours; window.__bcProgrammeDebut = PROGRAMME_DEBUT; window.__bcJournees = function(){ return journeesState; }; window.__bcJourneeDe = journeeDe; window.__bcPartiels = periodePartiels; window.__bcSessionsPartiels = sessionsPartiels; window.__bcBlocSansPomodoro = blocSansPomodoro; window.__bcRappels = blocsARappeler; window.__bcExamens = function(){ return examensState; }; window.__bcPrevu = minutesPrevuesJour; window.__bcCibleGrille = cibleDepuisGrille; window.__bcPartEcoulee = partEcoulee; window.__bcVacances = function(){ return vacancesState; }; window.__bcJourExclu = jourExclu; window.__bcObjectifs = function(){ return objectifsState.liste; }; window.__bcComparer = comparerObjectif; window.__bcAcquise = habitAcquise; window.__bcAcquises = habitsAcquises; window.__bcSansPomodoro = blocsSansPomodoroDuJour; window.__bcTonPriorite = tonPriorite; window.__bcPrioHist = function(){ return insightsHist; }; window.__bcCloturerSaison = cloturerSaison; window.__bcSaisons = function(){ return saisonsState; }; window.__bcTrimestres = function(){ return TRIMESTRES; }; window.__bcMois = moisListe; window.__bcAnki = function(){ return ankiState; }; window.__bcLireAnki = lireAnki; window.__bcBesoins = besoinsPartiels; window.__bcMatiereBloc = matierePourBloc; window.__bcPortes = etatPortes; window.__bcPortesEtat = function(){ return portesEtat; }; window.__bcConvertirPorte = convertirPorte; window.__bcNoterCours = noterCours;
+  try{ window.__bcTitreBase = titreBaseGcal; window.__bcConsigne = consigneBloc; window.__bcInsights = buildInsights; window.__bcBlocs = blocsDuPlanning; window.__bcCle = cleJournee; window.__bcJours = joursSuivis; window.__bcInsightsVu = function(){ return insightsVu; }; window.__bcLogSession = logSession; window.__bcPeriode = periodeGrille; window.__bcGrille = grilleDe; window.__bcMinutesEspanol = minutesEspanol; window.__bcCibleEspanol = cibleEspanolJour; window.__bcTypeBloc = typeBlocPlan; window.__bcPlanRotation = planRotation; window.__bcHabitJours = habitJours; window.__bcProgrammeDebut = PROGRAMME_DEBUT; window.__bcJournees = function(){ return journeesState; }; window.__bcJourneeDe = journeeDe; window.__bcPartiels = periodePartiels; window.__bcSessionsPartiels = sessionsPartiels; window.__bcBlocSansPomodoro = blocSansPomodoro; window.__bcRappels = blocsARappeler; window.__bcExamens = function(){ return examensState; }; window.__bcPrevu = minutesPrevuesJour; window.__bcCibleGrille = cibleDepuisGrille; window.__bcPartEcoulee = partEcoulee; window.__bcVacances = function(){ return vacancesState; }; window.__bcJourExclu = jourExclu; window.__bcObjectifs = function(){ return objectifsState.liste; }; window.__bcComparer = comparerObjectif; window.__bcAcquise = habitAcquise; window.__bcAcquises = habitsAcquises; window.__bcSansPomodoro = blocsSansPomodoroDuJour; window.__bcTonPriorite = tonPriorite; window.__bcPrioHist = function(){ return insightsHist; }; window.__bcCloturerSaison = cloturerSaison; window.__bcSaisons = function(){ return saisonsState; }; window.__bcTrimestres = function(){ return TRIMESTRES; }; window.__bcMois = moisListe; window.__bcAnki = function(){ return ankiState; }; window.__bcLireAnki = lireAnki; window.__bcBesoins = besoinsPartiels; window.__bcMatiereBloc = matierePourBloc; window.__bcPortes = etatPortes; window.__bcPortesEtat = function(){ return portesEtat; }; window.__bcConvertirPorte = convertirPorte; window.__bcNoterCours = noterCours; window.__bcGrilleBase = grilleBase; window.__bcSemestre = semestreDe; window.__bcSansCours = sansCoursLe; window.__bcCoucher = heureCoucher; window.__bcLever = heureLever; window.__bcSommeilCible = objectifSommeilPour; window.__bcMarquerSansCours = marquerSansCours; window.__bcJoursSansCours = function(){ return joursSansCoursState; }; window.__bcSeuilRevision = seuilUrgenceRevision; window.__bcCibleJour = cibleJourMinutes;
        window.__bcTypeSport = typeSportDe; window.__bcSommeilCible = objectifSommeilPour; window.__bcTestAnki = testAnkiDu; window.__bcRapport = function(){
          var mois = moisListe().filter(function(m){ return todayISO >= m.debut && todayISO <= m.fin; })[0];
          var objs = mois ? objectifsState.liste.filter(function(o){ return o.periode === 'mois' && o.pid === mois.id; }) : [];
@@ -11580,9 +11854,23 @@
      l'agenda doit dire Español quand c'est de l'espagnol qu'il faut faire. Le titre de base
      (grille type, meme index) sert a reconnaitre la serie recurrente deja dans l'agenda. */
   function blocsARappeler(iso){
-    var cle = cleJournee(dowDe(iso)), plan = grilleDe(cle, iso), base = SCHEDULES[cle] || [], out = [];
+    var cle = cleJournee(dowDe(iso)), plan = grilleDe(cle, iso), base = grilleBase(cle, iso), out = [];
     var memeStructure = plan.length === base.length && plan.every(function(b, i){ return b[0] === base[i][0]; });
+    /* Une journee SANS aucun bloc de travail -- vacances, ete -- n'a rien a rappeler de son
+       temps libre : ce serait jusqu'a douze notifications par jour pour ne rien annoncer.
+       Les jours qui travaillent le gardent : la, « Temps libre » marque une frontiere (le
+       travail est fini) et c'est lui qui porte, le dimanche, la consigne de la revue de la
+       semaine. Le coucher est rappele dans tous les cas. */
+    var aDuTravail = plan.some(function(b){ return typeBlocPlan(b[1]); });
     plan.forEach(function(b, i){
+      /* Le bloc « Cours » n'est PAS pousse dans l'agenda. Les vrais cours y sont deja, avec
+         la matiere, la salle et l'enseignant, et ils viennent du portail de la fac : un
+         « 🦇 Cours » de quatre heures pose par-dessus n'ajoutait rien et recouvrait le seul
+         evenement qui disait quelque chose. Le creneau reste dans la grille de la Batcave --
+         c'est lui qui structure la journee et qui calcule les cibles -- il n'est simplement
+         plus rappele. L'index i sert de cle de releve : on saute sans le decaler. */
+      if(b[1] === 'Cours') return;
+      if(!aDuTravail && /Temps libre|Repos/.test(b[1])) return;
       var l = b[1], coucher = /^Coucher/.test(l), libre = /Temps libre|Repos/.test(l);
       var d0 = timeToMinutes(b[0]);
       var d1 = i < plan.length - 1 ? timeToMinutes(plan[i+1][0]) : d0 + 15;
@@ -11847,16 +12135,24 @@
     document.getElementById('cal-water-sub').textContent = waterL.toFixed(1).replace('.', ',') + ' L / ' + OBJECTIF_EAU_L.toFixed(1).replace('.', ',') + ' L';
 
     var key = scheduleKeyForToday();
-    /* Un libelle par cle de SCHEDULES. Depuis que lundi et mardi ont leur propre grille
-       (cours 17:30 le lundi, cours qui s'arrete a 17:30 le mardi), « weekday » ne designe
-       plus que le jeudi : sans leurs deux entrees, l'en-tete affichait « undefined ».
-       Le repli sur la cle protege des prochaines grilles ajoutees sans libelle. */
-    var labelMap = {monday:'lundi (cours 17:30 \u2192 19:30)', tuesday:'mardi (cours 15:30 \u2192 17:30)',
-      weekday:'jeudi (cours 15:30 \u2192 19:30)', wednesday:'mercredi (Anki matinal)',
-      friday:"vendredi (Jumu'ah)", saturday:'samedi (courses)', weekend:'dimanche'};
+    /* L'en-tete annoncait la plage de cours EN DUR, une entree par cle de grille : « mardi
+       (cours 15:30 → 17:30) ». Faux des le semestre 2, ou le mardi finit a 21:30, et faux
+       tous les jours sans cours, ou il n'y a pas de cours du tout. La plage est desormais
+       LUE dans la grille de base du jour -- une seule source, elle ne peut plus mentir. */
+    var JOURS_FR = ['dimanche','lundi','mardi','mercredi','jeudi','vendredi','samedi'];
+    var notesJour = [];
+    if(key === 'friday') notesJour.push("Jumu'ah");
+    if(key === 'saturday') notesJour.push('courses');
+    var plageCours = (function(){
+      var g = grilleBase(key, todayISO), i = -1;
+      g.forEach(function(b, k){ if(i < 0 && b[1] === 'Cours') i = k; });
+      return i < 0 ? null : g[i][0] + ' \u2192 ' + (g[i + 1] ? g[i + 1][0] : '?');
+    })();
+    if(plageCours) notesJour.push('cours ' + plageCours);
+    else if(key !== 'weekend' && key !== 'saturday') notesJour.push('pas de cours');
     var periodeJour = periodeGrille(todayISO);
     var evJour = journeeDe(todayISO), evDemain = journeeDe(isoDecale(todayISO, 1));
-    document.getElementById('cal-schedule-label').textContent = (labelMap[key] || key) + (periodeJour ? ' · ' + periodeJour.nom : '') +
+    document.getElementById('cal-schedule-label').textContent = (JOURS_FR[weekday] || key) + (notesJour.length ? ' (' + notesJour.join(' · ') + ')' : '') + (periodeJour ? ' · ' + periodeJour.nom : '') +
       (evJour ? ' · 📌 ' + evJour.titre + ' ' + evJour.debut : (evDemain ? ' · veille de ' + evDemain.titre : '')) +
       (jourExclu(todayISO) ? ' · 🚫 ne compte pas' : '');
     var blocks = agendaDuJour(weekday);
@@ -11910,7 +12206,7 @@
     var html = order.map(function(d, idx){
       var dDate = new Date(monday); dDate.setDate(monday.getDate()+idx);
       var isToday = d === dow;
-      var finJournee = timeToMinutes(heureCoucher(cleJournee(d)));
+      var finJournee = timeToMinutes(heureCoucher(cleJournee(d), localISO(dDate)));
       var blocks = agendaDuJour(d);
       var rows = blocks.map(function(b,i){
         var startM = timeToMinutes(b[0]);
@@ -13454,6 +13750,7 @@
   majBoutonsEspanol();
   renderJournees();
   renderVacances();
+  renderSansCours();
   majOngletBusiness();
   renderAnki();
   renderNotionCours();

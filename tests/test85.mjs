@@ -159,19 +159,33 @@ console.log('\n== 278) Vacances de Noël : du temps libre, et aucune dette fabri
   await ctx.close();
 }
 
-console.log('\n== 279) Le 19 janvier, fin du semestre 1 : le jalon de recalibrage est là ==');
+console.log('\n== 279) Le 19 janvier, fin du semestre 1 : la bascule se fait toute seule ==');
 {
-  /* Passe cette date, la grille du S1 sous-estime les cours de 8 h par semaine. Rien dans
-     le code ne peut le deviner : c'est un rappel humain, il doit exister et etre daté. */
+  /* Ce test demandait un AVERTISSEMENT date dans le code (« SEMESTRE 1 UNIQUEMENT ») parce
+     que rien ne savait ce qu'etait le semestre 2. Il est desormais dans la grille : ce qu'on
+     verifie, c'est la bascule elle-meme, aux quatre dates qui la bornent. */
   const { ctx, fr } = await ouvrir('2027-01-19');
-  const g = await fr.evaluate(() => window.__bcGrille('tuesday', '2027-01-19').map(b => b[0] + ' ' + b[1]));
-  ok(g.some(x => /Cours/.test(x)), 'le mardi 19 janvier porte encore un bloc Cours : ' + g.filter(x => /Cours|Trajet/.test(x)).join(' · '));
+  const v = await fr.evaluate(() => ({
+    ma19: window.__bcGrille('tuesday', '2027-01-19').map(b => b[0] + ' ' + b[1]),
+    s19: (window.__bcSemestre('2027-01-19') || {}).id || null,
+    sans20: window.__bcSansCours('2027-01-20'),
+    sans22: window.__bcSansCours('2027-01-22'),
+    s25: (window.__bcSemestre('2027-01-25') || {}).id || null,
+    ma26: window.__bcGrille('tuesday', '2027-01-26').map(b => b[0] + ' ' + b[1])
+  }));
+  ok(v.s19 === 's1' && v.ma19.includes('15:30 Cours') && v.ma19.includes('17:30 Trajet retour'),
+     'le mardi 19 janvier est encore au semestre 1 : cours 15:30 → 17:30');
+  ok(v.sans20 === true && v.sans22 === true, 'du 20 au 22 janvier, pas de cours — déduit des dates, pas saisi');
+  ok(v.s25 === 's2' && v.ma26.includes('15:30 Cours') && v.ma26.includes('21:30 Trajet retour') && v.ma26.includes('22:40 Coucher'),
+     'le mardi 26 janvier est au semestre 2 : cours jusqu\'à 21:30, coucher 22:40');
   await ctx.close();
   const fs = await import('node:fs');
   const src = fs.readFileSync('../batcave.html', 'utf8');
-  ok(/SEMESTRE 1 UNIQUEMENT/.test(src) && /19 janvier/.test(src), 'la grille porte l\'avertissement daté du semestre 2');
+  ok(/SCHEDULES_S2/.test(src) && /2027-01-25/.test(src) && /2027-06-04/.test(src),
+     'le code porte la grille du semestre 2 et ses deux bornes');
   const fil = fs.readFileSync('../fil-des-jours.html', 'utf8');
-  ok(/2027-01-19/.test(fil), 'le fil des jours porte le jalon du 19 janvier');
+  ok(/2027-01-19/.test(fil) && /2027-01-25/.test(fil) && /2027-06-04/.test(fil),
+     'le fil des jours porte les trois jalons : fin du S1, début du S2, dernier cours');
 }
 
 console.log('\n== 280) Six mois plus tard : la saison se clôture sans rien perdre ==');

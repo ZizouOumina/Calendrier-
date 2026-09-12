@@ -103,97 +103,52 @@
     <div class="k">Sommaire</div>
     <ol>
       <li><a href="#etat"><b>00</b><span>Où on en est</span></a></li>
-      <li><a href="#date"><b>01</b><span>Ce qui a une date</span></a></li>
-      <li><a href="#toi"><b>02</b><span>Ce qui t'attend</span></a></li>
-      <li><a href="#conn"><b>03</b><span>Ce qui attend un connecteur</span></a></li>
-      <li><a href="#limites"><b>04</b><span>Les limites assumées</span></a></li>
-      <li><a href="#ferme"><b>05</b><span>Fermé dans la nuit</span></a></li>
+      <li><a href="#toi"><b>01</b><span>Ce qui t'attend</span></a></li>
+      <li><a href="#conn"><b>02</b><span>Ce qui attend un connecteur</span></a></li>
+      <li><a href="#limites"><b>03</b><span>Les limites assumées</span></a></li>
+      <li><a href="#ferme"><b>04</b><span>Fermé depuis</span></a></li>
     </ol>
   </nav>
 
   <main>
     <div class="eyebrow">Dossier · les chantiers</div>
     <h1>Les chantiers de la Batcave</h1>
-    <p class="stamp">à jour au 12 septembre 2026, 08 h · deux jours avant le premier jour · lecture ≈ 7 min</p>
+    <p class="stamp">à jour au 12 septembre 2026, fin d'après-midi · deux jours avant le premier jour · lecture ≈ 6 min</p>
     <p class="lede">Tout ce qui reste à construire dans l'application, et rien d'autre. Les démarches, les rendez-vous
     et l'administration sont dans <b>Le fil des jours</b> — ce dossier-ci ne parle que du logiciel.</p>
 
     <h2 id="etat">00 · Où on en est</h2>
     <div class="strip">
-      <div><div class="k">Chantiers ouverts</div><div class="v">9</div><div class="s">dont 2 avec une date</div></div>
-      <div><div class="k">Bloqués sur toi</div><div class="v">4</div><div class="s">une décision, pas du code</div></div>
-      <div><div class="k">Bloqués ailleurs</div><div class="v">2</div><div class="s">un connecteur qui n'existe pas encore</div></div>
-      <div><div class="k">Tests</div><div class="v">79</div><div class="s">fichiers, tous verts</div></div>
+      <div><div class="k">Chantiers ouverts</div><div class="v">5</div><div class="s">plus aucun avec une date</div></div>
+      <div><div class="k">Bloqués sur toi</div><div class="v">3</div><div class="s">une décision, pas du code</div></div>
+      <div><div class="k">Bloqués ailleurs</div><div class="v">2</div><div class="s">une vraie réponse de connecteur</div></div>
+      <div><div class="k">Tests</div><div class="v">81</div><div class="s">fichiers, tous verts</div></div>
     </div>
-    <p>Neuf chantiers : deux ont une date, quatre attendent une décision de ta part, deux un connecteur, et le
-    dernier attend juste ton feu vert. C'est une bonne nouvelle : <b>aucun d'eux n'empêche de démarrer lundi.</b></p>
+    <p>Cinq chantiers, et <b>plus un seul n'a de date</b> : la section « ce qui a une date » a disparu de ce
+    dossier. Le semestre 2 est dans la grille, l'été est vidé, le rappel des dates d'examen est en place. Ce qui
+    reste attend une décision de ta part ou une vraie réponse de connecteur — jamais une échéance.</p>
     <p>Ce dossier remplace la liste de <i>Réflexion Batcave II</i>, qui annonçait « il ne reste qu'un chantier ».
-    C'était vrai au 10 septembre. Depuis, ton emploi du temps réel est entré dans la grille et il a ouvert des
-    questions que personne ne s'était posées — le semestre 2, l'été, le mode partiels sur les nouveaux blocs.</p>
+    C'était vrai au 10 septembre. Depuis, ton emploi du temps réel est entré dans la grille — les deux semestres,
+    les jours fériés, l'été — et il a fermé les trois chantiers datés qui restaient.</p>
 
-    <h2 id="date">01 · Ce qui a une date</h2>
-    <p>Deux chantiers qui ne peuvent pas attendre indéfiniment, parce qu'une date les rattrape.</p>
-
-    <div class="job dated">
-      <div class="head"><span class="chip dated">25 janvier</span><h3>Le semestre 2 dans la grille</h3><span class="ref">S2</span></div>
-      <p>Le 25 janvier tu passes de <b>16 h à 24 h de cours par semaine</b>, mardi et mercredi jusqu'à 21:30,
-      avec Idioma Moderno (anglais, groupe T13). La grille actuelle ne connaît que le semestre 1.</p>
-      <p>Passé le 19 janvier, elle <b>sous-estime tes cours de 8 h par semaine</b> : toutes les cibles — révision,
-      projets, espagnol — sont calculées sur des heures qui n'existent plus. L'application ne peut pas le deviner.</p>
-      <p class="why"><b>Ce que ça coûte</b>Une soirée. J'ai les trente-neuf semaines de captures d'écran, relevées
-      une par une. Le faire en janvier, c'est le faire pendant tes premiers partiels. Un jalon daté au 19 janvier
-      porte déjà le rappel dans <i>Le fil des jours</i>, et un avertissement est inscrit dans le code, au-dessus
-      de la grille du lundi.</p>
-    </div>
-
-    <div class="job dated">
-      <div class="head"><span class="chip dated">dès la publication</span><h3>Un rappel pour les dates d'examens</h3><span class="ref">EX</span></div>
-      <p>Le mode partiels — Anki intact, Cartes → Annales ciblées, Projets perso → Révision ciblée, un seul bloc
-      Español par jour — se calcule uniquement à partir des dates que tu saisis dans Études. Elles sont vides.
-      <b>Tant qu'elles le restent, ce mode ne s'enclenchera jamais</b>, et la matière conseillée au lancement d'un
-      Pomodoro tourne sur un horizon générique de 90 jours.</p>
-      <p>Rien dans l'application ne te le rappelle. Chantier : une ligne dans le Plan du jour à partir de mi-octobre,
-      qui disparaît dès qu'au moins une date est saisie.</p>
-      <p class="why"><b>Ce que ça coûte</b>Une demi-heure de code. Dix minutes de ta part le jour où la fac publie
-      son calendrier.</p>
-    </div>
-
-    <h2 id="toi">02 · Ce qui t'attend</h2>
-    <p>Quatre questions. Aucune ne se code avant que tu aies répondu, et deux d'entre elles n'ont pas de bonne
-    réponse dans l'absolu — seulement la tienne.</p>
+    <h2 id="toi">01 · Ce qui t'attend</h2>
+    <p>Trois questions. Aucune ne se code avant que tu aies répondu, et aucune n'a de bonne réponse dans
+    l'absolu — seulement la tienne.</p>
 
     <div class="job you">
-      <div class="head"><span class="chip you">à décider</span><h3>L'été — et le dernier chiffre faux</h3><span class="ref">T4</span></div>
-      <p>Les cours s'arrêtent le <b>4 juin</b>. La grille, elle, projette une année scolaire sur juillet et août :
-      elle t'annonce des blocs <i>Cours</i>, <i>Trajet cours</i> et <i>Comprendre le cours du jour</i> en plein été.
-      L'objectif du quatrième trimestre — 229 h de révision, 279 h de projets — est calculé là-dessus.</p>
-      <p>C'est <b>le dernier chiffre faux de l'application</b>. Les trois autres trimestres tombent au dixième près
-      sur la mesure réelle ; celui-là est du vent.</p>
-      <p>Je ne peux pas le corriger sans savoir ce que sera ton été : un stage, un retour au Luxembourg, du plein
-      temps sur le dropshipping, ou les trois. Chacun donne une grille différente.</p>
-      <p class="why"><b>Ce que ça coûte</b>Une heure, le jour où tu sais. Une quatrième période <code>été</code>
-      du 5 juin au 31 août, avec ses propres blocs — et T4 devient juste comme les autres.</p>
-    </div>
-
-    <div class="job you">
-      <div class="head"><span class="chip you">recommandation faite</span><h3>Pomodoro : les pauses comptent-elles ?</h3><span class="ref">PM</span></div>
-      <p>Aujourd'hui elles sont <b>exclues</b> : chaque bloc est multiplié par 55/60, ou 25/30 sur les blocs Anki.
-      C'est pour ça que 34 h de blocs de révision par semaine s'affichent comme 29 h 55.</p>
-      <div class="wrap"><table>
-        <tr><th>&nbsp;</th><th>Blocs bruts</th><th>Compté</th><th>Écart</th></tr>
-        <tr><td>Révision</td><td><b>34 h 00</b></td><td><b>29 h 55</b></td><td>4 h 05</td></tr>
-        <tr><td>Projets + espagnol</td><td><b>24 h 20</b></td><td><b>22 h 31</b></td><td>1 h 49</td></tr>
-        <tr><td>Semaine</td><td><b>58 h 20</b></td><td><b>52 h 26</b></td><td><b>5 h 54</b></td></tr>
-      </table></div>
-      <p><b>Ma recommandation : ne change rien.</b> Tu craignais d'avoir à recalculer selon le modèle Pomodoro du
-      bloc — mais tu n'as jamais de calcul à faire. Le minuteur n'enregistre que les phases de travail : la fin
-      d'une pause ne passe jamais par l'enregistrement. Les deux côtés de la comparaison sont donc déjà alignés.
-      Inclure les pauses mettrait la cible à 34 h pendant que le minuteur continuerait d'enregistrer 29 h 55 :
-      tu serais à −4 h tous les lundis matin sans avoir rien loupé.</p>
-      <p class="why"><b>Le vrai réglage, plus tard</b>Le ratio est figé à 55/5. Si tes modèles s'écartent
-      durablement, la correction juste n'est pas d'inclure les pauses, c'est de faire suivre <code>partTravail()</code>
-      au modèle choisi. Pas avant un mois de données réelles — sinon c'est du réglage à l'aveugle. L'écart maximal
-      d'ici là est de 1 h 35 par semaine, et la marge des cibles en absorbe déjà 3 h 20.</p>
+      <div class="head"><span class="chip you">à remplir</span><h3>L'été — vidé, pas encore rempli</h3><span class="ref">T4</span></div>
+      <p>Les cours s'arrêtent le <b>vendredi 4 juin 2027</b>. La grille projetait jusqu'ici une année scolaire sur
+      juillet et août : elle annonçait des blocs <i>Cours</i>, <i>Trajet cours</i> et <i>Comprendre le cours du
+      jour</i> en plein été, et l'objectif du quatrième trimestre — 229 h de révision, 279 h de projets — était
+      calculé là-dessus. C'était <b>le dernier chiffre faux de l'application</b>.</p>
+      <p>Comme demandé : <b>l'été est maintenant vide</b>. Une période <code>été</code> court du 5 juin au
+      31 août, tous les blocs de travail y sont du temps libre, et les cibles tombent donc à zéro d'elles-mêmes —
+      T4 ne raconte plus d'histoire. Ce qui reste debout est ce qui ne dépend pas de l'été : le sport, les repas,
+      le Coran, le sommeil. Et l'agenda ne pousse plus rien : une journée sans un seul bloc de travail ne rappelle
+      pas son temps libre.</p>
+      <p class="why"><b>Ce qu'il reste</b>Le remplir, le jour où tu sais — stage, retour au Luxembourg, plein temps
+      sur la boutique, ou les trois. Chacun donne une grille différente, et c'est une heure de travail à partir de
+      la réponse. D'ici là le vide est honnête : il ne te met pas en retard sur un été que personne n'a décidé.</p>
     </div>
 
     <div class="job you">
@@ -210,7 +165,7 @@
       ne réfléchis pas gagne. Aucune urgence — ça peut attendre un week-end calme.</p>
     </div>
 
-    <h2 id="conn">03 · Ce qui attend un connecteur</h2>
+    <h2 id="conn">02 · Ce qui attend un connecteur</h2>
     <p>Deux onglets où la saisie manuelle tient pour l'instant, et où un connecteur changerait tout. L'un est
     déjà possible, l'autre pas encore.</p>
 
@@ -241,9 +196,9 @@
       nourrit la recommandation calorique. Ce chantier n'est pas un manque, c'est un confort à venir.</p>
     </div>
 
-    <h2 id="limites">04 · Les limites assumées</h2>
-    <p>Trois choses qui ne sont pas des bugs et qui ne seront pas « réparées » : il vaut mieux les connaître
-    avant lundi 07:20 que les découvrir lundi 07:20.</p>
+    <h2 id="limites">03 · Les limites assumées</h2>
+    <p>Trois choses qui ne sont pas des bugs et qui ne seront pas « réparées » : une contrainte technique, une
+    décision prise, et un risque. Il vaut mieux les connaître avant lundi 07:20 que les découvrir lundi 07:20.</p>
 
     <div class="job limit">
       <div class="head"><span class="chip">limite</span><h3>Anki ne se lira jamais tout seul sur l'iPhone</h3><span class="ref">AK</span></div>
@@ -257,15 +212,24 @@
     </div>
 
     <div class="job limit">
-      <div class="head"><span class="chip">à trancher</span><h3>Le doublon « 🦇 Cours » dans l'agenda</h3><span class="ref">AG</span></div>
-      <p>Depuis cette nuit ton agenda porte deux événements au même créneau : <b>🦇 Cours</b>, le bloc de la grille,
-      et le vrai cours avec son nom et sa salle — <i>Documentación… VL08</i>, <i>Biología Celular… VL08</i>. Deux
-      notifications pour la même chose.</p>
-      <p>Supprimer les séries 🦇 Cours ne suffirait pas : l'application les recrée chaque jour, parce que <i>Cours</i>
-      est un bloc de la grille comme un autre. <b>La sortie propre est d'exclure <code>Cours</code> des blocs que la
-      Batcave rappelle</b> — une ligne — puisque les vrais cours, eux, portent le nom du prof et la salle.</p>
-      <p class="why"><b>Pourquoi je ne l'ai pas fait</b>Ça change un comportement que tu as peut-être voulu. Dis oui
-      et c'est fait en deux minutes.</p>
+      <div class="head"><span class="chip">tranché</span><h3>Les pauses de Pomodoro restent exclues</h3><span class="ref">PM</span></div>
+      <p>Aujourd'hui elles sont <b>exclues</b> : chaque bloc est multiplié par 55/60, ou 25/30 sur les blocs Anki.
+      C'est pour ça que 34 h de blocs de révision par semaine s'affichent comme 29 h 55.</p>
+      <div class="wrap"><table>
+        <tr><th>&nbsp;</th><th>Blocs bruts</th><th>Compté</th><th>Écart</th></tr>
+        <tr><td>Révision</td><td><b>34 h 00</b></td><td><b>29 h 55</b></td><td>4 h 05</td></tr>
+        <tr><td>Projets + espagnol</td><td><b>24 h 20</b></td><td><b>22 h 31</b></td><td>1 h 49</td></tr>
+        <tr><td>Semaine</td><td><b>58 h 20</b></td><td><b>52 h 26</b></td><td><b>5 h 54</b></td></tr>
+      </table></div>
+      <p><b>Tu as tranché : on ne change rien.</b> Tu craignais d'avoir à recalculer selon le modèle Pomodoro du
+      bloc — mais tu n'as jamais de calcul à faire. Le minuteur n'enregistre que les phases de travail : la fin
+      d'une pause ne passe jamais par l'enregistrement. Les deux côtés de la comparaison sont donc déjà alignés.
+      Inclure les pauses mettrait la cible à 34 h pendant que le minuteur continuerait d'enregistrer 29 h 55 :
+      tu serais à −4 h tous les lundis matin sans avoir rien loupé.</p>
+      <p class="why"><b>Le vrai réglage, plus tard</b>Le ratio est figé à 55/5. Si tes modèles s'écartent
+      durablement, la correction juste n'est pas d'inclure les pauses, c'est de faire suivre <code>partTravail()</code>
+      au modèle choisi. Pas avant un mois de données réelles — sinon c'est du réglage à l'aveugle. L'écart maximal
+      d'ici là est de 1 h 35 par semaine, et la marge des cibles en absorbe déjà 3 h 20.</p>
     </div>
 
     <div class="job limit">
@@ -275,11 +239,30 @@
       <p>Ce n'est pas un chantier, c'est le seul vrai risque du 14. Aucun test ne peut le juger : il faut une
       vraie semaine. <b>Premier verdict le dimanche 20 septembre</b>, au bilan. Si une chose doit céder, il vaut
       mieux que ce soit décidé que subi.</p>
+      <p>Et la charge n'est pas constante : au semestre 2 les cours passent de 16 h à <b>24 h par semaine</b>, donc
+      le travail personnel baisse d'autant — mais deux nuits y sont courtes par construction (coucher 22:40 le
+      mardi et le mercredi), et le jeudi n'a que <b>6 h 50</b> de sommeil possible entre le mercredi 22:40 et le
+      réveil de 05:30. La Batcave affiche cette cible telle quelle au lieu de viser 8 h qu'aucun emploi du temps
+      ne permet. Si une seule chose doit être arbitrée en janvier, c'est ce jeudi-là — décaler la séance de sport
+      du jeudi au soir, ou l'accepter.</p>
     </div>
 
-    <h2 id="ferme">05 · Fermé dans la nuit</h2>
-    <p>Ce qui n'est plus sur la liste, depuis hier soir.</p>
+    <h2 id="ferme">04 · Fermé depuis</h2>
+    <p>Ce qui n'est plus sur la liste. Les trois premières lignes sont de cet après-midi, le reste de la nuit.</p>
     <ul class="closed">
+      <li><b>Le semestre 2 est dans la grille</b>, du 25 janvier au 4 juin : 24 h de cours par semaine, mardi et
+      mercredi jusqu'à 21:30, et le lundi qui redémarre à 15:30 — les deux heures libres du lundi après-midi du
+      semestre 1 disparaissent. Le semestre est dans la grille de <i>base</i>, pas dans les périodes : c'était la
+      seule façon de le faire coexister avec la phase Español 3, qui court jusqu'au 14 mars et chevauche donc ses
+      sept premières semaines. Il n'y a plus rien à recalibrer le 19 janvier.</li>
+      <li><b>Les jours fériés et les ponts ont un agenda.</b> Vingt-trois jours ouvrés sans cours d'ici mars, plus
+      l'entre-deux des semestres et tout l'après-4-juin, déduits des dates. Ces jours-là la plage de cours se
+      libère : une <b>annale complète</b> en conditions réelles, sa correction carte par carte, puis les blocs de
+      projet de la phase en cours — dîner à 19:00, coucher à 21:00. Un panneau de l'onglet Calendrier corrige la
+      liste quand le portail de la fac dit autre chose : c'est ta saisie qui fait foi.</li>
+      <li><b>L'été est vidé</b> et le doublon <b>« 🦇 Cours »</b> a quitté l'agenda — les trois séries récurrentes
+      sont supprimées, et l'application ne les recréera pas. Le rappel des dates d'examen apparaît dans le Plan du
+      jour à partir du 15 octobre et disparaît à la première date saisie.</li>
       <li><b>Les portes d'espagnol convertissent vraiment un bloc.</b> Le panneau disait « tu peux convertir ce
       bloc » et personne ne le faisait — il aurait fallu éditer le HTML à la main. Un bouton enregistre désormais
       une date, à partir de laquelle le bloc redevient Projets perso. Le passé n'est pas réécrit, et en semaine
@@ -295,7 +278,8 @@
       <li><b>Les seize séries de l'agenda Google</b> refaites jour par jour : lundi 22 blocs, mardi 13, mercredi
       exact, aucun doublon.</li>
     </ul>
-    <div class="ok"><b>79 fichiers de tests, tous verts</b>, dont deux nouveaux : une simulation de six mois de vie
-    fictive traversée à douze dates charnières, et vingt-quatre assertions sur les portes.</div>
+    <div class="ok"><b>81 fichiers de tests, tous verts</b>, dont quatre nouveaux : une simulation de six mois
+    de vie fictive traversée à douze dates charnières, vingt-quatre assertions sur les portes, et deux fichiers
+    pour les deux semestres, les jours sans cours et l'été.</div>
   </main>
 </div>

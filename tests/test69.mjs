@@ -54,7 +54,12 @@ console.log('\n== 276) Partiels : sport allégé et sommeil +30 min ==');
   ok(sport.lun !== 'Off' && sport.jeu !== 'Off', 'lundi et jeudi gardent leur séance (' + sport.lun + ' · ' + sport.jeu + ')');
   ok(sport.mar === 'Off' && sport.sam === 'Off', 'mardi et samedi passent en jour off pendant les partiels');
   ok(sport.horsPartiels === 'Bas complet', 'hors partiels, le mardi reste Bas complet');
-  const som = await fr.evaluate(() => ({ pendant: window.__bcSommeilCible('2027-01-15'), hors: window.__bcSommeilCible('2026-12-08') }));
+  /* La reference hors partiels doit etre un VENDREDI comme le 15 janvier, et un vendredi
+     avec cours : le 8 decembre (Inmaculada) est desormais un jour sans cours, ou l'on se
+     couche a 21:00 -- comparer 21:00 a 21:55 ne mesurait plus le bonus de sommeil des
+     partiels mais l'ecart entre deux soirees differentes. Le vendredi 11 decembre est hors
+     de la fenetre de partiels (qui court du 13 au 23 janvier) et a cours normalement. */
+  const som = await fr.evaluate(() => ({ pendant: window.__bcSommeilCible('2027-01-15'), hors: window.__bcSommeilCible('2026-12-11') }));
   ok(Math.abs(som.pendant - som.hors - 0.5) < 0.01, 'la cible de sommeil monte de 30 min pendant les partiels (' + som.hors.toFixed(2) + ' → ' + som.pendant.toFixed(2) + ' h)');
   const prevu = await fr.evaluate(() => window.__bcPrevu('2027-01-19'));
   ok(prevu.sport === 0, 'un mardi de partiels ne compte plus de séance prévue : la cible du mois baisse d\'elle-même');

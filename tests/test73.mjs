@@ -62,7 +62,13 @@ console.log('\n== 301) Les cibles du jour et de la semaine viennent de la grille
   const semt = await t.fr.evaluate(() => document.getElementById('dash-semaine').innerText.replace(/\s+/g, ' '));
   ok(ct.length === 3 && !/\/ /.test(ct[2]), 'grille type : la cellule Español reste, sans cible (' + ct[2] + ')');
   ok(!/espagnol/.test(semt), 'grille type : la ligne de la semaine ne parle plus d\'espagnol');
-  ok(/de projets sur 22 h 30/.test(semt), 'grille type : 22 h 30 de projets prévues (' + semt.slice(0, 100) + ')');
+  /* 22 h 30 → 18 h 54 : le 16 mars 2027 est un mardi du SEMESTRE 2, ou les cours passent de
+     16 h a 24 h par semaine. Ce que la semaine perd en projets, ce sont exactement les blocs
+     que l'emploi du temps du semestre 1 liberait et que celui du semestre 2 reprend : le
+     « Projets perso 4 » du lundi (15:00 → 16:50, 101 min de travail net, le cours du lundi
+     ne commence plus a 17:30 mais a 15:30) et les « Projets perso 5 » et « 6 » du mardi soir
+     (2 x 55 min, il n'y a plus de mardi soir : le cours va jusqu'a 21:30). 211 min = 3 h 31. */
+  ok(/de projets sur 18 h 54/.test(semt), 'semestre 2, grille type : 18 h 54 de projets prévues (' + semt.slice(0, 100) + ')');
   await t.ctx.close();
 }
 
