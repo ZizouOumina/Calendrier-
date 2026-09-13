@@ -126,7 +126,7 @@ console.log('\n== 334b) Ce qu\'il a déjà en réserve ne se rachète pas ==');
   ok(/Huile d'olive[^\n]*à racheter le 10 oct\./.test(t), 'l\'huile aussi');
   ok(/Pâtes[^\n]*à racheter le 07 nov\./.test(t), 'les pâtes tiennent jusqu\'au 7 novembre (7 kg)');
   /* Les deux quantites d'un seul jour : 3 oeufs au lieu de 15, 1,5 kg de beurre au lieu de 2. */
-  ok(/Œufs — 3 .*tu en as déjà 12/.test(t), '3 œufs seulement, il en a 12');
+  ok(/Œufs — 6 \(une boîte\).*il t\u2019en faut 15/.test(t), 'une boîte de 6 œufs : il en a 12, il en faut 15');
   ok(/Beurre de cacahuète — 1\u202f500 g .*tu en as déjà 500 g/.test(t), '1,5 kg de beurre, il en a 500 g');
   await ctx.close();
 }
@@ -137,6 +137,41 @@ console.log('\n== 334b) Ce qu\'il a déjà en réserve ne se rachète pas ==');
   ok(/Pâtes[^\n]*à racheter le 07 nov\./.test(t), 'les pâtes attendent encore');
   const somme = await fr.evaluate(() => document.getElementById('courses-summary').textContent);
   ok(/\/25 articles/.test(somme), 'le 10 octobre : 25 articles, les pâtes en moins (' + somme + ')');
+  await ctx.close();
+}
+
+console.log('\n== 334c) Le total du jour est calculé, jamais additionné à la main ==');
+/* J'ai annonce « ~88 EUR » deux fois pour une liste a 118,60 : une addition de tete.
+   La ligne « A prendre aujourd'hui » sort donc du code, et ce bloc la recompte
+   INDEPENDAMMENT depuis les prix affiches. Si les deux divergent, c'est un echec. */
+for (const [d, nArt] of [['2026-09-13', 24], ['2026-09-19', 10], ['2026-10-10', 25], ['2026-10-17', 11]]) {
+  const { ctx, fr } = await jour(d + 'T10:00:00+02:00');
+  const r = await fr.evaluate(() => {
+    const ligne = document.getElementById('courses-aujourdhui').innerText;
+    let n = 0, som = 0;
+    document.querySelectorAll('#courses-grid .cat-card').forEach(c => {
+      if(/pas cette semaine/.test(c.innerText)) return;
+      c.querySelectorAll('li').forEach(l => {
+        const t = l.innerText;
+        if(/à racheter le/.test(t)) return;
+        const m = t.match(/~([\d,]+) €/);
+        n++; som += m ? Number(m[1].replace(',', '.')) : 0;
+      });
+    });
+    const mn = ligne.match(/(\d+) article/), mp = ligne.match(/~([\d,]+) €/);
+    return {n, som, annonceN: mn ? Number(mn[1]) : -1, annonceP: mp ? Number(mp[1].replace(',', '.')) : -1};
+  });
+  ok(r.annonceN === nArt && r.n === nArt, d + ' : ' + nArt + ' articles annoncés et comptés (' + r.annonceN + ' / ' + r.n + ')');
+  /* Tolerance 0,2 EUR : la Batcave somme les prix exacts puis arrondit une fois,
+     le recompte additionne des prix deja arrondis. */
+  ok(Math.abs(r.annonceP - r.som) < 0.2, d + ' : ' + r.annonceP + ' € annoncés vs ' + Math.round(r.som * 10) / 10 + ' € recomptés');
+  await ctx.close();
+}
+{
+  const { ctx, fr } = await jour('2026-09-13T10:00:00+02:00');
+  const t = await fr.evaluate(() => document.getElementById('courses-grid').innerText);
+  /* « 3 oeufs » ne s'achete pas : ils se vendent par 6, 12 ou 30. */
+  ok(/Œufs — 6 \(une boîte\)/.test(t), 'les œufs se prennent par boîte, pas à l\'unité');
   await ctx.close();
 }
 

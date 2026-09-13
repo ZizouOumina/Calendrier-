@@ -2616,6 +2616,7 @@
       </div>
 
       <p class="sub-note" id="courses-plan-note" style="margin-bottom:12px; line-height:1.7;"></p>
+      <p id="courses-aujourdhui" style="margin-bottom:12px; font-size:14px; color:var(--ink);"></p>
       <div class="courses-grid" id="courses-grid"></div>
 
       <p class="sub-note" id="courses-budget" style="margin-top:16px; line-height:1.7;"></p>
@@ -9191,7 +9192,7 @@
     var cat = [
       {cat:'Chaque semaine', semaines:1, items:[
         {label:'Poulet', qte:'800 g', prix:5.2}, {label:'Viande hachée 5 %', qte:'900 g', prix:7.2}, {label:'Saumon', qte:'450 g', prix:5.85},
-        {label:'Œufs', qte:'15', prix:3.3, exception:{date:'2026-09-13', qte:'3', prix:0.7, pourquoi:'tu en as déjà 12'}}, {label:'Jambon', qte:'300 g', prix:3.3}, {label:'Fromage', qte:'150 g', prix:1.35},
+        {label:'Œufs', qte:'15', prix:3.3, exception:{date:'2026-09-13', qte:'6 (une boîte)', prix:1.3, pourquoi:'tu en as 12, il t\u2019en faut 15 — 3 d\u2019avance'}}, {label:'Jambon', qte:'300 g', prix:3.3}, {label:'Fromage', qte:'150 g', prix:1.35},
         {label:'Pain complet', qte:'500 g', prix:1.6},
         {label:'Skyr', qte:'2\u202f200 g', prix:8.8},
         {label:'Bananes', qte:'8', prix:1.4}, {label:'Fruits (pommes, poires, oranges…)', qte:'8', prix:2.2}
@@ -9277,6 +9278,21 @@
     for(var i = 0; i < 400; i++){ if(categorieCoursesDue(c, localISO(d))) return localISO(d); d.setDate(d.getDate() + 1); }
     return null;
   }
+  /* Ce que coute la course du jour : les articles DUS, en excluant ceux qu'il a deja.
+     C'est la seule addition qui compte au moment de partir, et elle doit sortir du code --
+     j'ai annonce « ~88 € » deux fois pour une liste a 118,60 € en additionnant de tete. */
+  function coursesDuJour(plan, iso){
+    var n = 0, prix = 0;
+    plan.forEach(function(c){
+      if(!categorieCoursesDue(c, iso)) return;
+      c.items.forEach(function(i){
+        if(i.des && (iso || todayISO) < i.des) return;
+        var ex = i.exception && i.exception.date === (iso || todayISO) ? i.exception : null;
+        n++; prix += ex ? ex.prix : i.prix;
+      });
+    });
+    return {n: n, prix: prix};
+  }
   function fmtEuro(x){ var r = Math.round(x * 10) / 10; return '~' + String(r).replace('.', ',') + ' €'; }
   var COURSES = [];
   function construireCourses(){
@@ -9352,6 +9368,12 @@
     if(!grid) return;
     var plan = construireCourses(), ajust = ajustementKcalPour(todayISO), b = budgetCourses(plan);
     var note = document.getElementById('courses-plan-note'), budget = document.getElementById('courses-budget');
+    var auj = document.getElementById('courses-aujourdhui');
+    if(auj){
+      var a = coursesDuJour(plan);
+      auj.innerHTML = '🛒 <b>À prendre aujourd\'hui : ' + a.n + ' article' + (a.n > 1 ? 's' : '') +
+                      '</b> · <b style="color:var(--ink-dim);">' + fmtEuro(a.prix) + '</b>';
+    }
     if(note) note.innerHTML = 'Quantités d\'achat arrondies au conditionnement, pour une semaine du plan. ' + (ajust
       ? 'Boucle poids → calories en vigueur : <b style="color:var(--ink-dim);">' + (ajust > 0 ? '+' : '') + ajust + ' kcal/jour</b>, soit ' + (grammesAjustement(ajust, 3.6) > 0 ? '+' : '') + grammesAjustement(ajust, 3.6) + ' g de pâtes crues au dîner (' + (grammesAjustement(ajust, 3.6) * 7 > 0 ? '+' : '') + grammesAjustement(ajust, 3.6) * 7 + ' g sur la semaine) — déjà compté ci-dessous.'
       : 'Aucun ajustement calorique en cours : quantités du plan de base.');
