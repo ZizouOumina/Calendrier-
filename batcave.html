@@ -2322,6 +2322,15 @@
         <ul class="entry-list" id="examens-liste"></ul>
       </div>
 
+      <div class="panel sub-panel" id="matieres-eval-panel">
+        <div class="sub-head">
+          <h3>⚖️ Comment chaque matière est notée</h3>
+          <span class="sub-note" id="matieres-eval-note">—</span>
+        </div>
+        <p class="sub-note" style="margin-bottom:10px; line-height:1.6;">Relevé dans les onze <i>guías docentes</i> 2026-27. <b style="color:var(--ink-dim);">Ce qui n'y est pas :</b> la note minimale par activité et les dates de rendu — elles sont sur le Campus Virtual, matière par matière, et ce sont les deux premières choses à y chercher.<br><b style="color:var(--ink-dim);">Le règlement de l'université :</b> 70 % de présence à justifier sur les cursus présentiels, et 90 % pour les séances que le professeur déclare obligatoires — absence justifiée ou non. Sans justificatif, il a le droit de te noter échoué en convocatoria ordinaria. Et une matière ratée en ordinaria <i>et</i> en extraordinaria se refait <b>en entier</b> : aucune note partielle n'est reportée.</p>
+        <div id="matieres-eval-corps"></div>
+      </div>
+
       <div class="panel sub-panel" id="portes-panel">
         <div class="sub-head">
           <h3>🚪 Les portes d'espagnol</h3>
@@ -4901,6 +4910,58 @@
     {court:'Microbiología',    long:'MICROBIOLOGÍA GENERAL E INMUNOLOGÍA'},
     {court:'Psicología',       long:'PSICOLOGÍA Y HABILIDADES DE COMUNICACIÓN'}
   ];
+  /* ================= EVALUATION PAR MATIERE =================
+     Releve a la main dans les onze guias docentes 2026-27 du Grado en Odontologia
+     (dossier Drive « Guia docente P1 »), le 13 septembre. Chaque bloc « eval » doit
+     totaliser 100 : c'est verifie par un test, parce qu'une ponderation fausse ici
+     enverrait travailler au mauvais endroit pendant six mois.
+     Ce que les guias NE disent PAS, et qu'il faut aller chercher matiere par matiere
+     sur le Campus Virtual : la note minimale par activite (sauf Idioma et Psicologia,
+     les deux seules a l'ecrire) et les dates de rendu (sauf Idioma). */
+  var EVAL_MATIERES = [
+    {court:'Anatomía I', sem:1, ects:6, coord:'Sara Ferrando Colomer', temas:15,
+     eval:[['Examen', 70, 'examen', true], ['Informes y escritos', 10, 'ecrit', false], ['Cuaderno de prácticas', 20, 'pratique', false]],
+     livre:'Tortora & Derrickson, Principios de Anatomía y Fisiología, 15ᵉ · Netter, Atlas de anatomía humana'},
+    {court:'Biología celular', sem:1, ects:6, coord:'Nicla Flacco', temas:14,
+     eval:[['Examen', 50, 'examen', true], ['Exposiciones orales', 15, 'oral', false], ['Caso / problema', 15, 'ecrit', false], ['Cuaderno de prácticas', 20, 'pratique', false]],
+     livre:'Karp, Biología celular y molecular, 7ᵉ · Klug, Conceptos de Genética, 10ᵉ'},
+    {court:'Epidemiología', sem:1, ects:6, coord:'Maria Cuevas Tena', temas:21,
+     eval:[['Examen', 50, 'examen', true], ['Informes y escritos', 20, 'ecrit', false], ['Caso / problema', 30, 'ecrit', false]],
+     livre:'Hernández-Aguado & Lumbreras, Manual de Epidemiología y Salud Pública para Grados, 3ᵉ'},
+    {court:'Idioma moderno', sem:1, ects:6, coord:'Ibrahim Casanova',
+     eval:[['Examen écrit', 30, 'examen', true], ['Examen oral', 20, 'oral', true], ['Projects', 40, 'ecrit', false], ['Debates · participation', 10, 'oral', false]],
+     alerte:'La seule matière qui écrit ses conditions. <b>70 % de présence minimum</b> : en dessous tu peux passer les examens, mais <b>ils ne sont pas corrigés</b> — note NP. Les séances d’examen ne comptent pas comme présence. Et il faut <b>5/10 à l’écrit ET 5/10 à l’oral, séparément</b> : un 8 à l’écrit ne rattrape pas un 4 à l’oral.',
+     dates:'Projets : 2ᵉ semaine d’octobre, 2ᵉ semaine de novembre, 1ʳᵉ semaine de décembre. Examens : 2ᵉ semaine de décembre, puis le 7 janvier.',
+     langue:'tout en anglais · 100 % présentiel',
+     doute:'Sa guía indique « Semester 3 », ce qui ne colle pas : sans elle ton S1 ne ferait que 24 ECTS, avec elle il en fait 30 — le compte rond. Elle est donc presque sûrement au S1, mais vérifie sur ton emploi du temps.',
+     livre:'McCullagh & Wright, <b>Good Practice Student’s Book</b> — ISBN 9780521755900 · <b>obligatoire</b>'},
+    {court:'Antropología', sem:1, ects:3, coord:'Ester Moya Soriano', temas:10,
+     eval:[['Examen', 50, 'examen', true], ['Exposiciones orales', 20, 'oral', false], ['Ejercicios prácticos', 20, 'pratique', false], ['Análisis de casos', 10, 'ecrit', false]],
+     livre:'Ring, Historia ilustrada de la Odontología · Harris, Introducción a la Antropología General'},
+    {court:'Documentación', sem:1, ects:3, coord:'Daniel López Malo', temas:8,
+     eval:[['Examen', 50, 'examen', true], ['Informes y escritos', 20, 'ecrit', false], ['Caso / problema', 30, 'ecrit', false]],
+     livre:'Greenhalgh, How to read a paper, 6ᵉ'},
+    {court:'Anatomía II', sem:2, ects:6, coord:'Sara Ferrando Colomer', temas:6,
+     eval:[['Examen', 70, 'examen', true], ['Informes y escritos', 10, 'ecrit', false], ['Cuaderno de prácticas', 20, 'pratique', false]],
+     note:'La guía exige d’avoir suivi Anatomía I avant.',
+     livre:'Tortora & Derrickson, 15ᵉ · Netter, Atlas, 8ᵉ'},
+    {court:'Bioquímica', sem:2, ects:6, coord:'Javier Roig Arcos',
+     eval:[['Examen', 60, 'examen', true], ['Exposiciones orales', 10, 'oral', false], ['Portfolio', 15, 'ecrit', false], ['Cuaderno de prácticas', 15, 'pratique', false]],
+     note:'2,5 points sur les 15 du portfolio viennent des questionnaires LABSTER.',
+     livre:'Nelson & Cox, Principios de bioquímica (Lehninger), 7ᵉ'},
+    {court:'Microbiología', sem:2, ects:6, coord:'Antonio Pellín Carcelén', temas:12,
+     eval:[['Examen', 50, 'examen', true], ['Caso / problema', 30, 'ecrit', false], ['Cuaderno de prácticas', 20, 'pratique', false]],
+     livre:'Brock, Biología de los microorganismos, 14ᵉ · Abbas, Inmunología básica, 5ᵉ'},
+    {court:'Clínica odontológica', sem:2, ects:6, coord:'Mª Jesús Escrivá Morant',
+     eval:[['Examen', 30, 'examen', true], ['Exposiciones orales', 15, 'oral', false], ['Informes y escritos', 10, 'ecrit', false], ['Cuaderno de prácticas', 45, 'pratique', false]],
+     alerte:'<b>La seule des onze où l’examen ne décide pas</b> : 45 % se jouent sur le cuaderno de prácticas, 30 % seulement sur l’examen. Elle se gagne en TP, semaine après semaine.',
+     livre:'Camps Alemany & Pascual Moscardó, Cuaderno de Biomateriales · Nelson, Wheeler, 11ᵉ'},
+    {court:'Psicología', sem:2, ects:6, coord:'José Vicente Viguer Ballester',
+     eval:[['Examen', 50, 'examen', true], ['Informes y escritos', 30, 'ecrit', false], ['Portfolio', 20, 'ecrit', false]],
+     alerte:'Il faut <b>≥ 5/10 dans CHAQUE système d’évaluation, séparément</b> — aucune compensation entre eux. Et <b>50 % de présence minimum</b> pour que l’examen soit corrigé.',
+     livre:'Morris & Maisto, Introducción a la psicología, 12ᵉ'}
+  ];
+  var EVAL_COULEURS = {examen:'var(--dom-etudes)', oral:'var(--dom-espagnol)', ecrit:'var(--dom-table)', pratique:'var(--dom-corps)'};
   var MATIERE_AUTRE = 'Autre matière…';
   var MATIERE_SANS = 'Sans préciser';
   function optionsMatieres(){
@@ -8139,6 +8200,72 @@
   }
   function matieresPourExamens(){
     return optionsMatieres().filter(function(m){ return m !== MATIERE_SANS && m !== MATIERE_AUTRE; });
+  }
+  /* Le panneau des ponderations. Le semestre en cours passe en premier et en entier ;
+     l'autre est plie derriere un bouton -- il ne sert qu'a preparer, pas a travailler. */
+  function renderEvalMatieres(){
+    var corps = document.getElementById('matieres-eval-corps');
+    if(!corps) return;
+    /* SEMESTRES n'expose pas de numero, seulement un id ('s1' / 's2'). Et hors semestre
+       -- l'entre-deux de janvier, l'ete -- semestreDe rend null : on retombe alors sur le
+       semestre 2 des que le 25 janvier est passe, sur le 1 avant. */
+    var sem = semestreDe(todayISO), numCourant;
+    if(sem) numCourant = sem.id === 's2' ? 2 : 1;
+    else numCourant = todayISO >= (SEMESTRES[1] ? SEMESTRES[1].debut : '2027-01-25') ? 2 : 1;
+    var groupes = [numCourant, numCourant === 1 ? 2 : 1];
+    var html = '';
+    groupes.forEach(function(n, idx){
+      var liste = EVAL_MATIERES.filter(function(m){ return m.sem === n; });
+      if(!liste.length) return;
+      var ects = liste.reduce(function(a, m){ return a + m.ects; }, 0);
+      var replie = idx === 1;
+      html += '<div style="margin-top:' + (idx ? '14px' : '0') + ';">' +
+              '<p class="sub-note" style="margin-bottom:8px;"><b style="color:var(--ink-dim);">Semestre ' + n +
+              (idx ? '' : ' — en cours') + '</b> · ' + liste.length + ' matières · ' + ects + ' ECTS' +
+              (replie ? ' <button class="btn" id="eval-s-autre" style="padding:2px 8px; font-size:11px; margin-left:6px;">afficher</button>' : '') + '</p>' +
+              '<div' + (replie ? ' id="eval-autre-corps" hidden' : '') + '>' +
+              liste.map(blocEvalMatiere).join('') + '</div></div>';
+    });
+    corps.innerHTML = html;
+    var b = document.getElementById('eval-s-autre'), c = document.getElementById('eval-autre-corps');
+    if(b && c) b.addEventListener('click', function(){ c.hidden = !c.hidden; b.textContent = c.hidden ? 'afficher' : 'masquer'; });
+    var note = document.getElementById('matieres-eval-note');
+    if(note){
+      var enCours = EVAL_MATIERES.filter(function(m){ return m.sem === numCourant; });
+      var continu = enCours.reduce(function(a, m){
+        /* e[3] dit « ceci est un examen », e[2] ne dit que la couleur. Les confondre
+           faisait compter l'examen ORAL d'Idioma comme du controle continu -- 50 % annonces
+           au lieu de 46 %. Un test garde la difference fermee. */
+        var ex = m.eval.reduce(function(t, e){ return t + (e[3] ? e[1] : 0); }, 0);
+        return a + (100 - ex) * m.ects;
+      }, 0) / Math.max(1, enCours.reduce(function(a, m){ return a + m.ects; }, 0));
+      note.textContent = Math.round(continu) + ' % de ta note du semestre se joue hors examen';
+    }
+  }
+  function blocEvalMatiere(m){
+    var barres = m.eval.map(function(e){
+      return '<span title="' + escapeHtml(e[0] + ' — ' + e[1] + ' %') + '" style="flex:' + e[1] +
+             '; background:' + (EVAL_COULEURS[e[2]] || 'var(--ink-faint)') + ';"></span>';
+    }).join('');
+    var lignes = m.eval.map(function(e){
+      return '<li style="display:flex; align-items:baseline; gap:8px; padding:2px 0; border:none;">' +
+             '<span style="width:9px; height:9px; border-radius:2px; flex:none; background:' + (EVAL_COULEURS[e[2]] || 'var(--ink-faint)') + ';"></span>' +
+             '<span style="flex:1; color:var(--ink-dim);">' + escapeHtml(e[0]) + '</span>' +
+             '<b style="font-variant-numeric:tabular-nums; color:var(--ink);">' + e[1] + ' %</b></li>';
+    }).join('');
+    var sousTitre = [m.ects + ' ECTS', m.coord].concat(m.temas ? [m.temas + ' temas'] : []).concat(m.langue ? [m.langue] : []).join(' · ');
+    return '<div style="padding:10px 0; border-top:1px solid var(--border-soft);">' +
+           '<div style="display:flex; flex-wrap:wrap; align-items:baseline; gap:8px; margin-bottom:6px;">' +
+           '<b style="color:var(--ink); font-size:14px;">' + escapeHtml(m.court) + '</b>' +
+           '<span class="sub-note">' + escapeHtml(sousTitre) + '</span></div>' +
+           '<div style="display:flex; height:9px; border-radius:5px; overflow:hidden; gap:1px; margin-bottom:7px;">' + barres + '</div>' +
+           '<ul style="list-style:none; margin:0 0 2px; padding:0; font-size:12.5px;">' + lignes + '</ul>' +
+           (m.alerte ? '<p class="sub-note" style="margin-top:6px; line-height:1.55; border-left:2px solid var(--dom-suivi); padding-left:8px;">⚠️ ' + m.alerte + '</p>' : '') +
+           (m.doute ? '<p class="sub-note" style="margin-top:6px; line-height:1.55; border-left:2px solid var(--dom-table); padding-left:8px;">❓ ' + m.doute + '</p>' : '') +
+           (m.dates ? '<p class="sub-note" style="margin-top:6px; line-height:1.55;"><b style="color:var(--ink-dim);">Dates connues :</b> ' + m.dates + '</p>' : '') +
+           (m.note ? '<p class="sub-note" style="margin-top:6px; line-height:1.55;">' + m.note + '</p>' : '') +
+           (m.livre ? '<p class="sub-note" style="margin-top:6px; line-height:1.55;">📕 ' + m.livre + '</p>' : '') +
+           '</div>';
   }
   function renderExamens(){
     var ul = document.getElementById('examens-liste'), note = document.getElementById('examens-note');
@@ -12003,7 +12130,7 @@
     window.__bcMeteoInjecter = function(liste){ meteoHeures = liste; try{ majMeteoSeance(); }catch(e){} };
     window.__bcMeteoSeance = texteMeteoSeance;
     window.__bcSeanceDehors = seanceExterieureLe;
-    window.__bcChiffresSemaine = chiffresSemaine; window.__bcCopieVierge = copieVierge; window.__bcNotion = absorberNotion; window.__bcNotionRetards = notionRetards; window.__bcCoursPasFait = coursPasFait; window.__bcExercice = exerciceDu; window.__bcChiffrer = chiffrerTexte; window.__bcDechiffrer = dechiffrerEnveloppe;
+    window.__bcChiffresSemaine = chiffresSemaine; window.__bcEvalMatieres = EVAL_MATIERES; window.__bcCopieVierge = copieVierge; window.__bcNotion = absorberNotion; window.__bcNotionRetards = notionRetards; window.__bcCoursPasFait = coursPasFait; window.__bcExercice = exerciceDu; window.__bcChiffrer = chiffrerTexte; window.__bcDechiffrer = dechiffrerEnveloppe;
        /* rapport hebdomadaire (tests/rapport-hebdo.mjs) : la semaine à un décalage donné, ses
           statistiques de bilan et le prévu/réalisé de chaque jour */
        window.__bcSemaine = function(off){
@@ -12931,7 +13058,7 @@
     document.getElementById('rev-chart').innerHTML = lineChartSVG(pts, null, 'h');
     renderMatieres();
     renderEspagnol();
-    renderExamens(); renderPortes();
+    renderExamens(); renderEvalMatieres(); renderPortes();
     renderAgendas();
   }
   function renderMatieres(){
