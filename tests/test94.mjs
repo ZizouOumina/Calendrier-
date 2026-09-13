@@ -35,7 +35,7 @@ console.log('\n== 330) Quatre catégories, et le frais seul reste hebdomadaire =
   const hebdo = c[0];
   ok(/Chaque semaine/.test(hebdo.titre) && hebdo.n === 10, 'la liste hebdomadaire fait 10 articles frais (' + hebdo.n + ')');
   const t = await fr.evaluate(() => document.getElementById('courses-grid').innerText);
-  ok(!/Riz/.test(hebdo.titre + '') && /Riz — 4 kg/.test(t) && /demande 3\u202f780 g/.test(t), 'le riz est en réserve : 4 kg achetés pour 3 780 g demandés');
+  ok(!/Riz/.test(hebdo.titre + '') && /Riz — 5 kg/.test(t) && /demande 4\u202f340 g/.test(t), 'le riz est en réserve : 5 kg achetés pour 4 340 g demandés');
   ok(/Shampooing/.test(t) && /Cotons-tiges/.test(t) && /Nettoyant visage/.test(t) && /Brosse à dents/.test(t), 'santé et hygiène : shampooing, cotons-tiges, nettoyant visage, brosse à dents');
   ok(!/Éponges|Sacs poubelle|Nettoyant sols/.test(t), 'les produits ménagers sont sortis de la Batcave');
   await ctx.close();
@@ -138,7 +138,7 @@ console.log('\n== 334b) Aucun stock n\'est supposé : il coche ce qu\'il a ==');
   /* Le 17 octobre les reserves reviennent, aux memes quantites : aucun report. */
   const { ctx, fr } = await jour('2026-10-17T10:00:00+02:00');
   const t = await fr.evaluate(() => document.getElementById('courses-grid').innerText);
-  ok(/Riz — 4 kg/.test(t) && /Pâtes — 2,5 kg/.test(t), 'le 17 octobre, riz et pâtes reviennent aux mêmes quantités');
+  ok(/Riz — 5 kg/.test(t) && /Pâtes — 3 kg/.test(t), 'le 17 octobre, riz et pâtes reviennent aux mêmes quantités');
   await ctx.close();
 }
 

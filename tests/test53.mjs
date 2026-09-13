@@ -36,22 +36,22 @@ console.log('\n== 180) Sans ajustement : plan de base, liste = plan × 7 ==');
      135 g/jour -> 945/semaine -> 3 780 sur 4 semaines, donc 4 paquets de 1 kg ;
      pates 85 -> 595 -> 2 380, donc 5 paquets de 500 g. Acheter en dessous du besoin
      serait une rupture en milieu de cycle : l'arrondi va toujours VERS LE HAUT. */
-  ok(c.items.some(t => /^Riz — 4 kg\b/.test(t) && /le plan en demande 3\u202f780 g/.test(t)), 'riz : 4 kg achetés pour 3 780 g demandés (' + c.items.find(t => /^Riz/.test(t)) + ')');
-  ok(c.items.some(t => /^Pâtes — 2,5 kg\b/.test(t) && /le plan en demande 2\u202f380 g/.test(t)), 'pâtes : 2,5 kg achetés pour 2 380 g demandés (' + c.items.find(t => /^Pâtes/.test(t)) + ')');
+  ok(c.items.some(t => /^Riz — 5 kg\b/.test(t) && /le plan en demande 4\u202f340 g/.test(t)), 'riz : 5 kg achetés pour 4 340 g demandés (' + c.items.find(t => /^Riz/.test(t)) + ')');
+  ok(c.items.some(t => /^Pâtes — 3 kg\b/.test(t) && /le plan en demande 2\u202f940 g/.test(t)), 'pâtes : 3 kg achetés pour 2 940 g demandés (' + c.items.find(t => /^Pâtes/.test(t)) + ')');
   /* La rotation donne 5 dejeuners de poulet, 6 diners de viande hachee, 2 dejeuners et
      1 diner de saumon : 650, 870 et 405 g par semaine. */
   /* La viande et le poisson ne s'arrondissent PAS : le boucher pese le montant exact.
      Ces trois lignes doivent donc porter le chiffre du plan tel quel, sans surplus. */
-  ok(c.items.some(t => /^Poulet — 650 g .*pesé au comptoir/.test(t) && !/demande/.test(t))
-  && c.items.some(t => /^Viande hachée 5 % — 870 g .*pesée au comptoir/.test(t))
-  && c.items.some(t => /^Saumon — 405 g .*pesé au comptoir/.test(t)),
+  ok(c.items.some(t => /^Poulet — 400 g .*pesé au comptoir/.test(t) && !/demande/.test(t))
+  && c.items.some(t => /^Viande hachée 5 % — 540 g .*pesée au comptoir/.test(t))
+  && c.items.some(t => /^Saumon — 255 g .*pesé au comptoir/.test(t)),
      'viande et poisson au gramme près, pesés au comptoir : ' + c.items.filter(t => /^(Poulet|Viande|Saumon)/.test(t)).join(' · '));
   /* Les fruits se comptent, ils ne se pesent pas. */
   ok(c.items.some(t => /^Bananes — 7 .*l'unité/.test(t)) && c.items.some(t => /^Fruits[^\n]*— 7 .*l'unité/.test(t)),
      'bananes et fruits à l\'unité : ' + c.items.filter(t => /^(Bananes|Fruits)/.test(t)).join(' · '));
   /* Le reste au paquet, avec le plus petit format courant : 5 pots de 450 g laissent
      115 g de surplus de skyr, la ou 5 pots de 500 en laissaient 365. */
-  ok(c.items.some(t => /^Skyr — 2,25 kg\b/.test(t) && /demande 2\u202f135 g/.test(t))
+  ok(c.items.some(t => /^Skyr — 2,25 kg\b/.test(t) && /demande 2\u202f135 g/.test(t) && /5 pots de 450 g/.test(t))
   && !c.items.some(t => /^(Dattes|Cacahuètes|Lait)/.test(t)),
      'skyr : 2,25 kg en 5 pots de 450 g pour 2 135 g demandés');
   /* L'HUILE etait la vraie erreur : 288 ml par semaine, donc 1 152 sur 4 semaines alors
@@ -73,10 +73,10 @@ console.log('\n== 180) Sans ajustement : plan de base, liste = plan × 7 ==');
   ok(!!bud, 'le budget annonce les trois rythmes et un total mensuel : ' + c.budget.slice(0, 110));
   if(bud){
     const sem = Number(bud[1].replace(',', '.')), quatre = Number(bud[2].replace(',', '.')), mois = Number(bud[4].replace(',', '.'));
-    ok(sem > 35 && sem < 43, 'frais : ' + sem + ' € / semaine');
+    ok(sem > 29 && sem < 36, 'frais : ' + sem + ' € / semaine');
     /* Le bloc de 4 semaines a maigri : les produits menagers en sont sortis, et l'huile
        comme le beurre de cacahuete sont passes sur le cycle de 5 semaines. */
-    ok(quatre > 72 && quatre < 90, 'réserves + santé : ' + quatre + ' € toutes les 4 semaines');
+    ok(quatre > 76 && quatre < 94, 'réserves + santé : ' + quatre + ' € toutes les 4 semaines');
     /* On relit TOUS les cycles annonces plutot que d'en coder trois en dur : le beurre de
        cacahuete en a ajoute un quatrieme, et une somme ecrite a la main aurait menti. */
     const cycles = [...c.budget.matchAll(/~([\d,]+) € toutes les (\d+) semaines/g)]
@@ -86,7 +86,7 @@ console.log('\n== 180) Sans ajustement : plan de base, liste = plan × 7 ==');
   }
   await page_(fr, 'repas');
   const r = await fr.evaluate(() => ({ diner: [...document.querySelectorAll('.meal-card')].find(c => /Dîner/.test(c.querySelector('.mtitle').textContent)) }) && [...document.querySelectorAll('.meal-card')].find(c => /Dîner/.test(c.querySelector('.mtitle').textContent)).innerText);
-  ok(/Pâtes 85g/.test(r) && /~726 kcal/.test(r) && /Viande hachée 5 % 145g/.test(r) && /Huile d'olive \(15ml\)/.test(r), 'dîner de base du mardi : pâtes 85 g, viande hachée 145 g, huile 15 ml, ~726 kcal');
+  ok(/Pâtes 105g/.test(r) && /~752 kcal/.test(r) && /Viande hachée 5 % 90g/.test(r) && /Huile d'olive \(15ml\)/.test(r), 'dîner de base du mardi : pâtes 105 g, viande hachée 90 g, huile 15 ml, ~752 kcal');
   await ctx.close();
 }
 
@@ -95,26 +95,28 @@ console.log('\n== 181) Avec +150 kcal : le dîner et les courses l\'écrivent ==
   const { ctx, fr, page } = await ouvrir(MARDI, {'batcave-kcal-ajustement': {valeur:150, depuis:'2026-09-01'}});
   await page_(fr, 'repas');
   const r = await fr.evaluate(() => [...document.querySelectorAll('.meal-card')].find(c => /Dîner/.test(c.querySelector('.mtitle').textContent)).innerText);
-  ok(/Pâtes 125g/.test(r), 'féculent du dîner : pâtes 125 g (+40)');
-  ok(/boucle kcal \+150 kcal/.test(r) && /~876 kcal/.test(r), 'le dîner annonce ~876 kcal et la boucle');
+  ok(/Pâtes 145g/.test(r), 'féculent du dîner : pâtes 145 g (+40)');
+  ok(/boucle kcal \+150 kcal/.test(r) && /~896 kcal/.test(r), 'le dîner annonce ~896 kcal et la boucle');
   const sub = await fr.evaluate(() => document.getElementById('meal-kcal-sub').textContent);
-  ok(/\/ 3201 kcal \(plan 3051 \+ 150\)/.test(sub), 'cible du jour : ' + sub);
+  /* 3 131 + 144 : la boucle demande +150 kcal, mais les pates s'ajustent par pas de 10 g,
+     donc elle en ajoute 144. On annonce l'ecart REEL entre les deux journees, pas la
+     consigne -- sinon la soustraction affichee ne tombe pas juste. */
+  ok(/\/ 3275 kcal \(plan 3131 \+ 144\)/.test(sub), 'cible du jour : ' + sub);
   /* cocher tout le dîner : l\'apport consommé porte les 150 kcal */
   /* un clic redessine la grille : on re-cherche la première case non cochée du dîner à chaque tour */
   await fr.evaluate(() => { for(let i = 0; i < 10; i++){ const card = [...document.querySelectorAll('.meal-card')].find(c => /Dîner/.test(c.querySelector('.mtitle').textContent)); const cb = card && card.querySelector('input:not(:checked)'); if(!cb) break; cb.click(); } });
   await page.waitForTimeout(200);
   const sub2 = await fr.evaluate(() => document.getElementById('meal-kcal-sub').textContent);
-  ok(/^876 \/ 3201 kcal/.test(sub2), 'dîner coché : ' + sub2);
+  ok(/^896 \/ 3275 kcal/.test(sub2), 'dîner coché : ' + sub2);
   await page_(fr, 'courses');
   const c = await fr.evaluate(() => ({ items: [...document.querySelectorAll('#courses-grid label')].map(l => l.textContent), note: document.getElementById('courses-plan-note').textContent }));
   /* L'ajustement suit le sac : +280 g par semaine font +1 120 g sur quatre semaines.
      Pas de ligne hebdomadaire en plus -- on n'achete pas un sachet de 280 g. */
-  /* 3 500 g tombe pile sur 7 paquets de 500 : aucun surplus, donc aucune mention de besoin. */
-  ok(c.items.some(t => /^Pâtes — 3,5 kg\b/.test(t) && !/demande/.test(t)), 'la boucle kcal remonte le besoin à (595 + 280) × 4 = 3 500 g, et l\'achat tombe pile (' + c.items.find(t => /^Pâtes/.test(t)) + ')');
+  ok(c.items.some(t => /^Pâtes — 4,5 kg\b/.test(t) && /demande 4\u202f060 g/.test(t)), 'la boucle kcal remonte le besoin à (735 + 280) × 4 = 4 060 g, et l\'achat suit à 4,5 kg (' + c.items.find(t => /^Pâtes/.test(t)) + ')');
   ok(/\+150 kcal\/jour/.test(c.note) && /\+40 g de pâtes crues/.test(c.note) && /\+280 g sur la semaine/.test(c.note), 'note : ' + c.note.slice(0, 120));
   /* La boucle kcal ne touche QUE le feculent du diner : les proteines gardent la quantite
      de la rotation, 650 g de poulet par semaine. */
-  ok(c.items.filter(t => /^Poulet/.test(t)).length === 1 && /650 g/.test(c.items.find(t => /^Poulet/.test(t))), 'les protéines ne bougent pas');
+  ok(c.items.filter(t => /^Poulet/.test(t)).length === 1 && /400 g/.test(c.items.find(t => /^Poulet/.test(t))), 'les protéines ne bougent pas');
   await ctx.close();
 }
 
@@ -131,13 +133,95 @@ console.log('\n== 182) Appliquer / revenir depuis la boucle met tout à jour d\'
   await page.waitForTimeout(250);
   const apres = await fr.evaluate(() => ({ diner: [...document.querySelectorAll('.meal-card')].find(c => /Dîner/.test(c.querySelector('.mtitle').textContent)).innerText,
     courses: (document.querySelector('.nav-btn[data-page="courses"]').click(), [...document.querySelectorAll('#courses-grid label')].map(l => l.textContent).find(t => /^Pâtes/.test(t))) }));
-  ok(/Pâtes 125g/.test(apres.diner) && /3,5 kg/.test(apres.courses), 'après « Appliquer » : dîner à 125 g de pâtes, courses à 3,5 kg');
+  ok(/Pâtes 145g/.test(apres.diner) && /4,5 kg/.test(apres.courses), 'après « Appliquer » : dîner à 145 g de pâtes, courses à 4,5 kg');
   await page_(fr, 'repas');
   await fr.evaluate(() => document.getElementById('kcal-reset').click());
   await page.waitForTimeout(250);
   const retour = await fr.evaluate(() => ({ diner: [...document.querySelectorAll('.meal-card')].find(c => /Dîner/.test(c.querySelector('.mtitle').textContent)).innerText,
     courses: (document.querySelector('.nav-btn[data-page="courses"]').click(), [...document.querySelectorAll('#courses-grid label')].map(l => l.textContent).find(t => /^Pâtes/.test(t))) }));
-  ok(/Pâtes 85g/.test(retour.diner) && /2,5 kg/.test(retour.courses), 'après « Revenir au plan de base » : 85 g au dîner et 2,5 kg de pâtes');
+  ok(/Pâtes 105g/.test(retour.diner) && /3 kg/.test(retour.courses), 'après « Revenir au plan de base » : 105 g au dîner et 3 kg de pâtes');
+  await ctx.close();
+}
+
+console.log('\n== 182) Les macros ne sont plus ecrites : elles se recalculent, et on les recompte ==');
+/* Le vrai risque du plan alimentaire n'est pas un mauvais chiffre, c'est un chiffre JUSTE
+   QUI DEVIENT FAUX : « ~931 kcal · P44 G110 L33 » etait ecrit a cote des aliments, et
+   changer un grammage ne le changeait pas. Ce bloc recompte tout DE SON COTE, depuis la
+   table de composition et les grammages du jour, et compare a ce que l'ecran affiche.
+   Si les deux divergent d'une seule calorie, c'est un echec. */
+for (const jour of ['2026-09-20','2026-09-21','2026-09-22','2026-09-23','2026-09-24','2026-09-25','2026-09-26']) {
+  const { ctx, fr, page } = await ouvrir(jour + 'T10:00:00+02:00');
+  await page_(fr, 'repas');
+  const r = await fr.evaluate(iso => {
+    const A = window.__bcAliments, noms = ['Petit-déjeuner','Déjeuner','Collation entraînement','Dîner','Collation soir'];
+    const recompte = n => {
+      const t = {kcal:0, p:0, g:0, l:0};
+      window.__bcCompoRepas(n, iso, false).forEach(x => {
+        const a = A[x.c];
+        t.kcal += a.kcal * x.q / 100; t.p += a.p * x.q / 100; t.g += a.g * x.q / 100; t.l += a.l * x.q / 100;
+      });
+      return {kcal: Math.round(t.kcal), p: Math.round(t.p), g: Math.round(t.g), l: Math.round(t.l)};
+    };
+    const affiche = {};
+    document.querySelectorAll('.meal-card').forEach(c => {
+      affiche[c.querySelector('.mtitle').textContent] = c.querySelector('.mkcal').textContent;
+    });
+    const jourRecompte = {kcal:0, p:0, g:0, l:0};
+    const lignes = noms.map(n => {
+      const x = recompte(n);
+      for(const k in jourRecompte) jourRecompte[k] += x[k];
+      return {nom:n, attendu: '~' + x.kcal + ' kcal · P' + x.p + ' G' + x.g + ' L' + x.l, lu: affiche[n]};
+    });
+    return {lignes, jourRecompte, sub: document.getElementById('meal-kcal-sub').textContent};
+  }, jour);
+  const faux = r.lignes.filter(x => x.attendu !== x.lu);
+  ok(faux.length === 0, jour + ' : les 5 repas affichent ce que la table de composition donne' +
+     (faux.length ? ' — ' + faux.map(x => x.nom + ' lu « ' + x.lu +' » vs recompté « ' + x.attendu + ' »').join(' ; ') : ''));
+  const cible = Number((r.sub.match(/\/ (\d+) kcal/) || [])[1]);
+  ok(cible === r.jourRecompte.kcal, jour + ' : la cible du jour (' + cible + ') est la somme des cinq repas (' + r.jourRecompte.kcal + ')');
+  /* La prise de masse : besoin estime 3 084 kcal (Mifflin-St Jeor 1 688 x PAL 1,65, plus
+     300 de surplus). On exige que chaque journee de la rotation reste dans +/- 100. */
+  ok(Math.abs(r.jourRecompte.kcal - 3084) <= 100, jour + ' : ' + r.jourRecompte.kcal + ' kcal, dans les clous de la prise de masse (3 084 ± 100)');
+  /* Proteines entre 2,0 et 2,6 g/kg a 64 kg : au-dela de 2,2 le gain s'arrete, en dessous
+     de 1,6 la prise de muscle souffre. On garde une fourchette qui laisse respirer. */
+  ok(r.jourRecompte.p >= 128 && r.jourRecompte.p <= 166, jour + ' : P ' + r.jourRecompte.p + ' g (' + (r.jourRecompte.p / 64).toFixed(2) + ' g/kg)');
+  ok(r.jourRecompte.l >= 64, jour + ' : L ' + r.jourRecompte.l + ' g, au-dessus du plancher hormonal (1 g/kg)');
+  ok(Math.abs((r.jourRecompte.p * 4 + r.jourRecompte.g * 4 + r.jourRecompte.l * 9) - r.jourRecompte.kcal) <= 40,
+     jour + ' : les macros redonnent les calories (P×4 + G×4 + L×9 = ' + (r.jourRecompte.p*4 + r.jourRecompte.g*4 + r.jourRecompte.l*9) + ')');
+  await ctx.close();
+}
+
+console.log('\n== 183) La liste de courses sort du MEME plan que les repas ==');
+/* Les besoins hebdomadaires etaient recopies a la main sous le plan de repas : deux
+   listes de grammages a tenir en phase. On verifie ici qu'ils sont bien la somme, jour
+   par jour, de ce que compoRepas fait manger. */
+{
+  const { ctx, fr } = await ouvrir('2026-09-22T10:00:00+02:00');
+  const r = await fr.evaluate(() => {
+    const A = window.__bcAliments, alias = {banane:'bananes', fruit:'fruits'};
+    const noms = ['Petit-déjeuner','Déjeuner','Collation entraînement','Dîner','Collation soir'];
+    const b = {};
+    for(let j = 20; j <= 26; j++){
+      noms.forEach(n => window.__bcCompoRepas(n, '2026-09-' + j, true).forEach(x => {
+        const a = A[x.c], k = alias[x.c] || x.c;
+        b[k] = (b[k] || 0) + (a && a.piece ? x.q / a.piece : x.q);
+      }));
+    }
+    return {recompte: b, lu: window.__bcBesoinSemaine};
+  });
+  const cles = Object.keys(r.recompte).sort();
+  const faux = cles.filter(k => Math.abs(r.recompte[k] - r.lu[k]) > 0.001);
+  ok(faux.length === 0 && cles.length === 17,
+     'les 17 besoins de la semaine sont exactement la somme des repas' + (faux.length ? ' — ' + faux.map(k => k + ' : ' + r.lu[k] + ' vs ' + r.recompte[k]).join(', ') : ' (' + cles.length + ')'));
+  /* Et aucun aliment du plan ne manque a la liste de courses. */
+  const manquants = await fr.evaluate(() => {
+    const noms = ['Petit-déjeuner','Déjeuner','Collation entraînement','Dîner','Collation soir'];
+    const dans = {};
+    for(let j = 20; j <= 26; j++) noms.forEach(n => window.__bcCompoRepas(n, '2026-09-' + j, true).forEach(x => { dans[x.c] = true; }));
+    const alias = {banane:'bananes', fruit:'fruits'};
+    return Object.keys(dans).filter(c => !((alias[c] || c) in window.__bcBesoinSemaine));
+  });
+  ok(manquants.length === 0, 'aucun aliment du plan n\'est absent de la liste de courses' + (manquants.length ? ' — ' + manquants.join(', ') : ''));
   await ctx.close();
 }
 

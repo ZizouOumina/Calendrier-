@@ -107,10 +107,10 @@ console.log('\n== 194) Repas cochés → tableau de bord et score ==');
     await page.waitForTimeout(50);
   }
   await page.waitForTimeout(200);
-  ok(/824 \/ 3051 kcal/.test(await txt('#meal-kcal-sub')), 'Repas : 824 / 3051 kcal');
+  ok(/821 \/ 3131 kcal/.test(await txt('#meal-kcal-sub')), 'Repas : 821 / 3131 kcal (' + (await txt('#meal-kcal-sub')) + ')');
   await aller('dashboard');
   ok(/Petit-déjeuner[\s\S]*?5\/5/.test(await txt('#dash-meals')), 'Tableau de bord : petit-déjeuner 5/5');
-  ok(/27% kcal/.test(await txt('#dash-meals-kcal-pct')), 'Tableau de bord : 27 % des kcal');
+  ok(/26% kcal/.test(await txt('#dash-meals-kcal-pct')), 'Tableau de bord : 26 % des kcal (' + (await txt('#dash-meals-kcal-pct')) + ')');
 }
 
 console.log('\n== 195) Séries de sport → Sport, tableau de bord, Objectifs ==');

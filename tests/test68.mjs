@@ -1,7 +1,7 @@
 /* Lot 20 : cibles calculées depuis la grille (R21, R26), vacances et jour exclu (R1),
    habitudes acquises et revue automatique (R20), rythme modifiable (R23), rappels et
    clôture Pomodoro (R28), histoire des priorités (R4), clôture de saison (R18),
-   sauvegardes chiffrées et exercice de restauration (R15), Notion (R6), douze onglets (R11). */
+   sauvegardes chiffrées et exercice de restauration (R15), Notion (R6), treize onglets (R11). */
 import { chromium } from 'playwright';
 const URL = 'http://127.0.0.1:8199/host.html';
 let errs = 0;
@@ -226,11 +226,11 @@ console.log('\n== 273) Notion : les cours pas faits remontent ==');
   await ctx.close();
 }
 
-console.log('\n== 274) Douze onglets, et rien de perdu ==');
+console.log('\n== 274) Treize onglets, et rien de perdu ==');
 {
   const { ctx, page, fr } = await ouvrir('2026-09-15T09:00:00+02:00');
   const nav = await fr.evaluate(() => [...document.querySelectorAll('.nav-btn[data-page]')].filter(b => !b.hidden).map(b => b.dataset.page));
-  ok(nav.length === 12, 'douze onglets visibles : ' + nav.join(' '));
+  ok(nav.length === 13, 'treize onglets visibles : ' + nav.join(' '));
   ok(nav.indexOf('business') < 0, 'Business reste caché tant qu\'aucune boutique n\'est branchée');
   const sem = await fr.evaluate(() => { document.querySelector('.nav-btn[data-page="bilan"]').click();
     return {actives: [...document.querySelectorAll('.page.active')].map(p => p.dataset.page),
