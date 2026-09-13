@@ -2,9 +2,32 @@
    le 14 (jour 1), un mercredi, un samedi, un dimanche. Aucune erreur JS, aucune incohérence,
    et ce que chaque écran dit. */
 import { chromium } from 'playwright';
-import fs from 'fs';
-const seed = JSON.parse(fs.readFileSync('../sauvegarde-0909-vierge.json', 'utf8'));
 const browser = await chromium.launch();
+/* La graine etait un fichier de sauvegarde du 9 septembre, jamais versionne et disparu
+   depuis : le script echouait au premier import. Elle est desormais FABRIQUEE par
+   l'application elle-meme -- on ouvre une Batcave vierge et on lui demande sa copie
+   vierge (__bcCopieVierge), exactement ce que produit la remise a zero. Le parcours
+   teste donc la meme chose qu'avant, sans dependre d'un fichier hors du depot. */
+const seed = await (async () => {
+  const ctx = await browser.newContext({ timezoneId:'Europe/Madrid', locale:'fr-FR' });
+  await ctx.addInitScript(() => { window.claude = undefined; });
+  const p = await ctx.newPage();
+  await p.clock.install({ time: new Date('2026-09-13T12:00:00+02:00') });
+  await p.goto('http://127.0.0.1:8199/host.html', {timeout:20000});
+  await p.frameLocator('#f').locator('#dash-plan').waitFor({ state:'attached', timeout:15000 });
+  const f = p.frames().find(x => x.url().includes('batcave.html'));
+  await p.waitForTimeout(700);
+  const g = await f.evaluate(() => {
+    const out = {};
+    for(let i = 0; i < localStorage.length; i++){
+      const k = localStorage.key(i);
+      if(k && k.indexOf('batcave-') === 0){ try{ out[k] = JSON.parse(localStorage.getItem(k)); }catch(e){} }
+    }
+    return out;
+  });
+  await ctx.close();
+  return g;
+})();
 let errs = 0;
 async function ouvrir(quand){
   const ctx = await browser.newContext({ viewport:{width:1440,height:900}, timezoneId:'Europe/Madrid', locale:'fr-FR' });
