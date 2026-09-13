@@ -8234,8 +8234,9 @@
       var enCours = EVAL_MATIERES.filter(function(m){ return m.sem === numCourant; });
       var continu = enCours.reduce(function(a, m){
         /* e[3] dit « ceci est un examen », e[2] ne dit que la couleur. Les confondre
-           faisait compter l'examen ORAL d'Idioma comme du controle continu -- 50 % annonces
-           au lieu de 46 %. Un test garde la difference fermee. */
+           faisait compter l'examen ORAL d'Idioma comme du controle continu. Idioma etant au
+           S2, c'est ce semestre-la que le bug faussait : 52 % annonces au lieu de 48 %.
+           Un test garde la difference fermee. */
         var ex = m.eval.reduce(function(t, e){ return t + (e[3] ? e[1] : 0); }, 0);
         return a + (100 - ex) * m.ects;
       }, 0) / Math.max(1, enCours.reduce(function(a, m){ return a + m.ects; }, 0));
