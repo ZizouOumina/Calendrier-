@@ -33,7 +33,7 @@ console.log('\n== 330) Quatre catégories, et le frais seul reste hebdomadaire =
   const c = await cartes(fr);
   ok(c.length === 4, '4 catégories (' + c.length + ')');
   const hebdo = c[0];
-  ok(/Chaque semaine/.test(hebdo.titre) && hebdo.n === 11, 'la liste hebdomadaire tombe à 11 articles (' + hebdo.n + ')');
+  ok(/Chaque semaine/.test(hebdo.titre) && hebdo.n === 10, 'la liste hebdomadaire tombe à 10 articles (' + hebdo.n + ')');
   const t = await fr.evaluate(() => document.getElementById('courses-grid').innerText);
   ok(!/Riz/.test(hebdo.titre + '') && /Riz — 4/.test(t), 'le riz est passé en réserve de 4 kg');
   ok(/Shampooing/.test(t) && /Lessive/.test(t) && /Brosse à dents/.test(t), 'hygiène, ménage et brosse à dents existent enfin');
@@ -79,12 +79,35 @@ console.log('\n== 333) L\'habitude « Courses faites » reste validable ==');
     await new Promise(r => setTimeout(r, 120));
   }
   const somme = await fr.evaluate(() => document.getElementById('courses-summary').textContent);
-  ok(/^11\/11/.test(somme), 'cocher le frais suffit : ' + somme + ' (' + avant + ' cases)');
+  ok(/^10\/10/.test(somme), 'cocher le frais suffit : ' + somme + ' (' + avant + ' cases)');
   const coche = await fr.evaluate(() => {
     const l = [...document.querySelectorAll('#dash-checklist li label')].map(x => x.textContent);
     return l.some(x => /Courses/.test(x));
   });
   ok(coche, 'l\'habitude Courses est bien présente le samedi');
+  await ctx.close();
+}
+
+console.log('\n== 334b) Ce qu\'il a déjà en réserve ne se rachète pas ==');
+/* Courses du 12 septembre : 7 kg de pates, 4 kg de riz, 2,4 kg de flocons. Ces trois
+   lignes restent AFFICHEES -- les coches sont indexees par position, les retirer
+   decalerait tout -- mais grisees, datees, et hors du compte. */
+{
+  const { ctx, fr } = await jour('2026-09-19T10:00:00+02:00');
+  const t = await fr.evaluate(() => document.getElementById('courses-grid').innerText);
+  ok(/Riz[^\n]*déjà en réserve, à racheter le 17 oct\./.test(t), 'le riz attend le 17 octobre');
+  ok(/Flocons d'avoine[^\n]*à racheter le 17 oct\./.test(t), 'les flocons aussi');
+  ok(/Pâtes[^\n]*à racheter le 14 nov\./.test(t), 'les pâtes tiennent jusqu\'au 14 novembre (7 kg)');
+  const somme = await fr.evaluate(() => document.getElementById('courses-summary').textContent);
+  /* 10 frais + 4 reserves restantes + 10 maison + 1 brosse = 25, et non 28 */
+  ok(/\/25 articles/.test(somme), 'le 19 septembre : 25 articles à prendre, pas 28 (' + somme + ')');
+  await ctx.close();
+}
+{
+  const { ctx, fr } = await jour('2026-10-17T10:00:00+02:00');
+  const t = await fr.evaluate(() => document.getElementById('courses-grid').innerText);
+  ok(!/Riz[^\n]*à racheter/.test(t), 'le 17 octobre : le riz revient dans la liste');
+  ok(/Pâtes[^\n]*à racheter le 14 nov\./.test(t), 'les pâtes attendent encore');
   await ctx.close();
 }
 

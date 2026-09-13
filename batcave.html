@@ -9196,13 +9196,20 @@
         {label:'Skyr', qte:'2\u202f200 g', prix:8.8},
         {label:'Bananes', qte:'8', prix:1.4}, {label:'Fruits (pommes, poires, oranges…)', qte:'8', prix:2.2}
       ]},
+      /* Courses faites le 12 septembre : 7 kg de pates, 4 kg de riz, 2,4 kg de flocons.
+         Ces trois lignes ne se rachetent donc pas au premier passage. « des » dit a partir
+         de quelle date l'article revient dans le compte -- calcule sur la consommation du
+         plan : riz et flocons tiennent 4 semaines (1 kg et 600 g par semaine), les pates
+         environ onze (600 g par semaine). L'article reste AFFICHE et a sa place dans la
+         liste, sinon les coches -- indexees par position -- tomberaient sur le voisin. */
       {cat:'Réserves — toutes les 4 semaines', semaines:4, ancre:ANCRE_COURSES, items:[
-        {label:'Riz', qte:'4\u202f000 g', prix:4.4},
+        {label:'Riz', qte:'4\u202f000 g', prix:4.4, des:'2026-10-17', stock:'4 kg déjà en réserve'},
         /* Les pates portent l'ajustement de la boucle kcal, multiplie par quatre comme le
            reste du sac. Il n'y a PAS de ligne hebdomadaire en plus : on n'achete pas un
            sachet de 280 g de pates, on prend le gros sac une fois par mois. */
-        {label:'Pâtes', qte: g((600 + plus) * 4) + ' g' + (plus ? ' (dont ' + (plus > 0 ? '+' : '') + g(plus * 4) + ' g boucle kcal)' : ''), prix: (600 + plus) * 4 / 1000 * 1.0},
-        {label:'Flocons d\'avoine', qte:'2\u202f400 g', prix:3.8},
+        {label:'Pâtes', qte: g((600 + plus) * 4) + ' g' + (plus ? ' (dont ' + (plus > 0 ? '+' : '') + g(plus * 4) + ' g boucle kcal)' : ''), prix: (600 + plus) * 4 / 1000 * 1.0,
+         des: plus > 0 ? '2026-10-17' : '2026-11-14', stock:'7 kg déjà en réserve'},
+        {label:'Flocons d\'avoine', qte:'2\u202f400 g', prix:3.8, des:'2026-10-17', stock:'2,4 kg déjà en réserve'},
         /* Deja surgeles : quatre semaines ne leur font rien. 10 kg, en revanche, demandent
            de la place -- c'est la seule ligne mensuelle limitee par le congelateur. */
         {label:'Légumes verts surgelés', qte:'10\u202f000 g', prix:20},
@@ -9250,7 +9257,7 @@
   function construireCourses(){
     var plan = planCoursesSemaine(ajustementKcalPour(todayISO));
     COURSES = plan.map(function(c){ return {cat: c.cat, semaines: c.semaines || 1, ancre: c.ancre,
-      items: c.items.map(function(i){ return i.label + ' — ' + i.qte + ' (' + fmtEuro(i.prix) + ')'; })}; });
+      items: c.items.map(function(i){ return {texte: i.label + ' — ' + i.qte + ' (' + fmtEuro(i.prix) + ')', des: i.des, stock: i.stock}; })}; });
     return plan;
   }
   /* Budget : chaque categorie a son cycle, et le cout mensuel est la somme de
@@ -9295,11 +9302,15 @@
   /* Seules les categories DUES cette semaine comptent. Sans ce filtre, l'habitude
      « Courses faites » -- qui ne se coche que lorsque tout est coche -- ne se validerait
      plus jamais des qu'une reserve mensuelle n'est pas due. */
+  function articleEnStock(it, iso){ return !!(it && it.des && (iso || todayISO) < it.des); }
   function coursesTotals(iso){
     var total=0, checked=0;
     COURSES.forEach(function(c,ci){
       if(!categorieCoursesDue(c, iso)) return;
-      c.items.forEach(function(it,ii){ total++; if(coursesState[ci+'-'+ii]) checked++; });
+      c.items.forEach(function(it,ii){
+        if(articleEnStock(it, iso)) return;
+        total++; if(coursesState[ci+'-'+ii]) checked++;
+      });
     });
     return {total:total, checked:checked};
   }
@@ -9320,8 +9331,12 @@
       card.className = 'cat-card';
       var due = categorieCoursesDue(c);
       var itemsHtml = c.items.map(function(it, ii){
-        var key = ci+'-'+ii, checked = !!coursesState[key];
-        return '<li class="'+(checked?'checked':'')+'"><input type="checkbox" id="c-'+key+'" data-course="'+key+'" '+(checked?'checked':'')+'><label for="c-'+key+'">'+it+'</label></li>';
+        var key = ci+'-'+ii, checked = !!coursesState[key], stock = articleEnStock(it);
+        return '<li class="'+(checked?'checked':'')+'"'+(stock?' style="opacity:0.5;"':'')+'>' +
+               '<input type="checkbox" id="c-'+key+'" data-course="'+key+'" '+(checked?'checked':'')+'>' +
+               '<label for="c-'+key+'">'+it.texte +
+               (stock ? ' <span class="sub-note">— ' + escapeHtml(it.stock || 'déjà en réserve') + ', à racheter le ' + fmtDate(it.des) + '</span>' : '') +
+               '</label></li>';
       }).join('');
       /* Une categorie non due reste VISIBLE mais grisee et hors du compte : il peut toujours
          racheter en avance s'il passe devant, sans que ca lui reproche une liste incomplete. */
