@@ -9213,7 +9213,6 @@
         /* Deja surgeles : quatre semaines ne leur font rien. 10 kg, en revanche, demandent
            de la place -- c'est la seule ligne mensuelle limitee par le congelateur. */
         {label:'Légumes verts surgelés', qte:'10\u202f000 g', prix:20},
-        {label:'Beurre de cacahuète', qte:'1\u202f600 g', prix:8.4},
         {label:'Miel', qte:'800 g', prix:5.2},
         {label:'Huile d\'olive', qte:'1\u202f000 ml', prix:7}
       ]},
@@ -9230,6 +9229,13 @@
         {label:'Nettoyant sols et salle de bain', qte:'2', prix:4},
         {label:'Sacs poubelle', qte:'1 rouleau', prix:2.5},
         {label:'Éponges et papier absorbant', qte:'1 lot', prix:4}
+      ]},
+      /* Cinq semaines, et pas quatre : a 400 g par semaine, 2 kg tombent PILE sur cinq.
+         Un pot de 1,6 kg tous les mois laissait un fond a chaque fois. Sa propre carte
+         plutot qu'une ligne a part dans les reserves : un rythme cache dans une categorie
+         qui en annonce un autre se lit de travers. */
+      {cat:'Toutes les 5 semaines', semaines:5, ancre:ANCRE_COURSES, items:[
+        {label:'Beurre de cacahuète', qte:'2\u202f000 g', prix:10.5}
       ]},
       {cat:'Tous les 3 mois', semaines:12, ancre:ANCRE_COURSES, items:[
         {label:'Brosse à dents', qte:'1', prix:3.5}

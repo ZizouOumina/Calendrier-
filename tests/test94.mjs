@@ -31,7 +31,7 @@ console.log('\n== 330) Quatre catégories, et le frais seul reste hebdomadaire =
 {
   const { ctx, fr } = await jour('2026-09-19T10:00:00+02:00');
   const c = await cartes(fr);
-  ok(c.length === 4, '4 catégories (' + c.length + ')');
+  ok(c.length === 5, '5 catégories — le beurre de cacahuète a son propre rythme (' + c.length + ')');
   const hebdo = c[0];
   ok(/Chaque semaine/.test(hebdo.titre) && hebdo.n === 10, 'la liste hebdomadaire tombe à 10 articles (' + hebdo.n + ')');
   const t = await fr.evaluate(() => document.getElementById('courses-grid').innerText);
@@ -44,7 +44,7 @@ console.log('\n== 331) Le 19 septembre, tout est dû en même temps ==');
 {
   const { ctx, fr } = await jour('2026-09-19T10:00:00+02:00');
   const c = await cartes(fr);
-  ok(c.every(x => x.due), 'les 4 catégories sont dues le 19 (ancre)');
+  ok(c.every(x => x.due), 'les 5 catégories sont dues le 19 (ancre commune)');
   await ctx.close();
 }
 
@@ -52,7 +52,7 @@ console.log('\n== 332) Une semaine plus tard, seul le frais est dû ==');
 {
   const { ctx, fr } = await jour('2026-09-26T10:00:00+02:00');
   const c = await cartes(fr);
-  ok(c[0].due && !c[1].due && !c[2].due && !c[3].due, 'le 26 : frais seulement');
+  ok(c[0].due && c.slice(1).every(x => !x.due), 'le 26 : frais seulement');
   const t = await fr.evaluate(() => document.getElementById('courses-grid').innerText);
   ok(/prochaine fois le 17 oct\./.test(t), 'les réserves annoncent le 17 octobre');
   ok(/prochaine fois le 12 déc\./.test(t), 'la brosse à dents annonce le 12 décembre');
@@ -88,6 +88,17 @@ console.log('\n== 333) L\'habitude « Courses faites » reste validable ==');
   await ctx.close();
 }
 
+console.log('\n== 333b) Le beurre de cacahuète tourne sur cinq semaines ==');
+/* 400 g par semaine : 2 kg tombent pile sur cinq semaines, sans fond de pot qui traine.
+   C'est le seul article a ne pas suivre le rythme de sa voisine de rayon. */
+for (const [d, nom, du] of [['2026-09-19','19 sept',true], ['2026-10-17','17 oct',false],
+                            ['2026-10-24','24 oct',true], ['2026-11-28','28 nov',true]]) {
+  const { ctx, fr } = await jour(d + 'T10:00:00+02:00');
+  const c = (await cartes(fr)).filter(x => /5 semaines/.test(x.titre))[0];
+  ok(!!c && c.due === du, nom + ' : beurre de cacahuète dû ' + (c ? c.due : '?') + ' (' + du + ' attendu)');
+  await ctx.close();
+}
+
 console.log('\n== 334b) Ce qu\'il a déjà en réserve ne se rachète pas ==');
 /* Courses du 12 septembre : 7 kg de pates, 4 kg de riz, 2,4 kg de flocons. Ces trois
    lignes restent AFFICHEES -- les coches sont indexees par position, les retirer
@@ -99,7 +110,7 @@ console.log('\n== 334b) Ce qu\'il a déjà en réserve ne se rachète pas ==');
   ok(/Flocons d'avoine[^\n]*à racheter le 17 oct\./.test(t), 'les flocons aussi');
   ok(/Pâtes[^\n]*à racheter le 14 nov\./.test(t), 'les pâtes tiennent jusqu\'au 14 novembre (7 kg)');
   const somme = await fr.evaluate(() => document.getElementById('courses-summary').textContent);
-  /* 10 frais + 4 reserves restantes + 10 maison + 1 brosse = 25, et non 28 */
+  /* 10 frais + 3 reserves restantes + 10 maison + 1 beurre + 1 brosse = 25, et non 28 */
   ok(/\/25 articles/.test(somme), 'le 19 septembre : 25 articles à prendre, pas 28 (' + somme + ')');
   await ctx.close();
 }
