@@ -3124,7 +3124,7 @@
      vestige : une fonctionnalite retiree (batcave-matieres) ou un essai. Elle prend de la
      place dans le quota de 5000 documents et embrouille les sauvegardes, sans que rien ne
      la lise jamais. On la signale ; la suppression reste ton geste. */
-  var CLES_CONNUES = ['addictions','budget-limits','business','coran','courses','dash-more','duaas','duree-bloc','sport-log','objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','kcal-ajustement','gcal-ecriture','reinit','fc-migration-v1','charge','shopify-boutique','journees','examens-heures','vacances','jours-exclus',
+  var CLES_CONNUES = ['addictions','budget-limits','business','coran','courses','dash-more','duaas','duree-bloc','sport-log','objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','courses-plan-v3','kcal-ajustement','gcal-ecriture','reinit','fc-migration-v1','charge','shopify-boutique','journees','examens-heures','vacances','jours-exclus',
     'espagnol','examens','cours-suivi','portes','fc-prix-icloud-3','fixed-charges','goals','goals-depart','saisons','insights-hist','last-restore-drill','habitlog','habits','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','habits-seed-v7','objectifs-v5-espanol',
     'horizon','last-auto-backup','last-manual-backup','last-bilan-prompt','last-compaction','last-open','last-rotation','notion-url',
     'pomodial-purge','projets','report','revision','revision-fusionnee','revue','sante','sauvegarde','sessions',
@@ -4119,7 +4119,7 @@
      elles repartiraient vers le cloud. La meme remise a zero peut donc etre decidee depuis
      l'appli ou directement dans le cloud. */
   var REINIT_GARDER = ['habits','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','habits-seed-v7','objectifs-v5-espanol','fixed-charges','fc-prix-icloud-3','budget-limits','examens','examens-heures','journees','vacances','jours-exclus','jours-sans-cours','portes','notion-url','shopify-boutique',
-                       'objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','horizon','goals-depart','saisons','gcal-ecriture','duree-bloc','dash-more','revision-fusionnee','reinit','copie-vierge'];
+                       'objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','courses-plan-v3','horizon','goals-depart','saisons','gcal-ecriture','duree-bloc','dash-more','revision-fusionnee','reinit','copie-vierge'];
   var REINIT_PREFIXES_GARDER = ['pomodial-', 'coherence-ignore-'];
   function reinitGarder(cle){
     var c = cle.indexOf('batcave-') === 0 ? cle.slice(8) : cle;
@@ -9182,32 +9182,94 @@
   function planCoursesSemaine(ajust){
     var plus = grammesAjustement(ajust, 3.6) * 7;
     var g = function(n){ return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '\u202f'); };
-    return [
-      {cat:'Chaque semaine', items:[
+    /* Le sec, l'hygiene et le menage quittent la liste hebdomadaire : rien n'y perime en
+       quatre semaines, et les sortir fait passer le samedi de 16 articles a 11. Ce qui reste
+       chaque semaine est ce qui se gate -- viande, poisson, laitier, pain, frais.
+       Les PATES portent l'ajustement de la boucle kcal. Il reste une ligne HEBDOMADAIRE
+       quand il n'est pas nul : quelques dizaines de grammes par semaine ne se preachetent
+       pas dans un sac de 2,4 kg, et le sac mensuel couvre la base. */
+    var cat = [
+      {cat:'Chaque semaine', semaines:1, items:[
         {label:'Poulet', qte:'800 g', prix:5.2}, {label:'Viande hachée 5 %', qte:'900 g', prix:7.2}, {label:'Saumon', qte:'450 g', prix:5.85},
         {label:'Œufs', qte:'15', prix:3.3}, {label:'Jambon', qte:'300 g', prix:3.3}, {label:'Fromage', qte:'150 g', prix:1.35},
-        {label:'Riz', qte:'1\u202f000 g', prix:1.1},
-        {label:'Pâtes', qte: g(600 + plus) + ' g' + (plus ? ' (dont ' + (plus > 0 ? '+' : '') + g(plus) + ' g boucle kcal)' : ''), prix: (600 + plus) / 1000 * 1.0},
-        {label:'Flocons d\'avoine', qte:'600 g', prix:0.95}, {label:'Pain complet', qte:'500 g', prix:1.6},
+        {label:'Pain complet', qte:'500 g', prix:1.6},
         {label:'Skyr', qte:'2\u202f200 g', prix:8.8},
-        {label:'Légumes verts surgelés', qte:'2\u202f500 g', prix:5}, {label:'Bananes', qte:'8', prix:1.4}, {label:'Fruits (pommes, poires, oranges…)', qte:'8', prix:2.2},
-        {label:'Beurre de cacahuète', qte:'400 g', prix:2.1}, {label:'Miel', qte:'200 g', prix:1.3}
+        {label:'Légumes verts surgelés', qte:'2\u202f500 g', prix:5}, {label:'Bananes', qte:'8', prix:1.4}, {label:'Fruits (pommes, poires, oranges…)', qte:'8', prix:2.2}
       ]},
-      {cat:'Toutes les 4 semaines', mensuel:true, items:[{label:'Huile d\'olive', qte:'1\u202f000 ml', prix:7}]}
+      {cat:'Réserves — toutes les 4 semaines', semaines:4, ancre:ANCRE_COURSES, items:[
+        {label:'Riz', qte:'4\u202f000 g', prix:4.4},
+        {label:'Pâtes', qte:'2\u202f400 g', prix:4},
+        {label:'Flocons d\'avoine', qte:'2\u202f400 g', prix:3.8},
+        {label:'Beurre de cacahuète', qte:'1\u202f600 g', prix:8.4},
+        {label:'Miel', qte:'800 g', prix:5.2},
+        {label:'Huile d\'olive', qte:'1\u202f000 ml', prix:7}
+      ]},
+      /* Aucune de ces lignes n'existait nulle part : elles se rachetaient donc au coup par
+         coup, c'est-a-dire par un aller-retour en plus le jour ou le flacon est vide. */
+      {cat:'Maison et hygiène — toutes les 4 semaines', semaines:4, ancre:ANCRE_COURSES, items:[
+        {label:'Shampooing', qte:'400 ml', prix:3.5},
+        {label:'Après-shampooing', qte:'400 ml', prix:3.5},
+        {label:'Gel douche', qte:'750 ml', prix:2.8},
+        {label:'Dentifrice', qte:'2 tubes', prix:4},
+        {label:'Fil dentaire', qte:'2', prix:4},
+        {label:'Lames de rasoir', qte:'4', prix:8},
+        {label:'Lessive', qte:'40 doses', prix:8},
+        {label:'Nettoyant sols et salle de bain', qte:'2', prix:4},
+        {label:'Sacs poubelle', qte:'1 rouleau', prix:2.5},
+        {label:'Éponges et papier absorbant', qte:'1 lot', prix:4}
+      ]},
+      {cat:'Tous les 3 mois', semaines:12, ancre:ANCRE_COURSES, items:[
+        {label:'Brosse à dents', qte:'1', prix:3.5}
+      ]}
     ];
+    /* L'ajustement kcal reste hebdomadaire, et seulement s'il existe. */
+    if(plus) cat[0].items.push({label:'Pâtes — ajustement de la boucle kcal', qte: (plus > 0 ? '+' : '') + g(plus) + ' g', prix: plus / 1000 * 1.0});
+    return cat;
+  }
+  /* Les categories a cycle sont ancrees sur le premier SAMEDI de courses du programme,
+     le 19 septembre : elles retombent donc toujours un jour de courses, jamais entre deux. */
+  var ANCRE_COURSES = '2026-09-19';
+  function categorieCoursesDue(c, iso){
+    var n = c.semaines || 1;
+    if(n < 2) return true;
+    var d = iso || todayISO, a = c.ancre || ANCRE_COURSES;
+    if(d < a) return false;
+    return Math.floor(daysBetween(new Date(a + 'T00:00:00'), new Date(d + 'T00:00:00')) / 7) % n === 0;
+  }
+  function prochaineCourseCat(c, iso){
+    var d = new Date((iso || todayISO) + 'T00:00:00');
+    for(var i = 0; i < 400; i++){ if(categorieCoursesDue(c, localISO(d))) return localISO(d); d.setDate(d.getDate() + 1); }
+    return null;
   }
   function fmtEuro(x){ var r = Math.round(x * 10) / 10; return '~' + String(r).replace('.', ',') + ' €'; }
   var COURSES = [];
   function construireCourses(){
     var plan = planCoursesSemaine(ajustementKcalPour(todayISO));
-    COURSES = plan.map(function(c){ return {cat: c.cat, items: c.items.map(function(i){ return i.label + ' — ' + i.qte + ' (' + fmtEuro(i.prix) + ')'; })}; });
+    COURSES = plan.map(function(c){ return {cat: c.cat, semaines: c.semaines || 1, ancre: c.ancre,
+      items: c.items.map(function(i){ return i.label + ' — ' + i.qte + ' (' + fmtEuro(i.prix) + ')'; })}; });
     return plan;
   }
-  /* budget : les lignes hebdomadaires, et à part ce qui se rachète toutes les 4 semaines */
+  /* Budget : chaque categorie a son cycle, et le cout mensuel est la somme de
+     (panier de la categorie) / (semaines du cycle) x 52/12. Avant, tout ce qui n'etait pas
+     hebdomadaire tombait dans un seul seau « mensuel » -- ca ne tenait plus des qu'une
+     categorie tournait sur douze semaines. */
   function budgetCourses(plan){
-    var semaine = 0, mensuel = 0;
-    plan.forEach(function(c){ c.items.forEach(function(i){ if(c.mensuel) mensuel += i.prix; else semaine += i.prix; }); });
-    return {total: semaine, mensuel: mensuel};
+    var semaine = 0, cycles = [];
+    plan.forEach(function(c){
+      var t = c.items.reduce(function(a, i){ return a + i.prix; }, 0);
+      if((c.semaines || 1) < 2) semaine += t; else cycles.push({semaines: c.semaines, cat: c.cat, total: t});
+    });
+    var mois = semaine * 52 / 12 + cycles.reduce(function(a, x){ return a + x.total * 52 / 12 / x.semaines; }, 0);
+    /* Deux categories au meme rythme font une seule ligne de budget : sinon on lit
+       « plus X toutes les 4 semaines, plus Y toutes les 4 semaines », ce qui se relit deux fois. */
+    var parCycle = [];
+    cycles.forEach(function(x){
+      var d = parCycle.filter(function(y){ return y.semaines === x.semaines; })[0];
+      if(d) d.total += x.total; else parCycle.push({semaines: x.semaines, total: x.total});
+    });
+    parCycle.sort(function(a, c){ return a.semaines - c.semaines; });
+    return {total: semaine, cycles: parCycle, detail: cycles, mois: mois,
+            mensuel: cycles.reduce(function(a, x){ return a + (x.semaines === 4 ? x.total : 0); }, 0)};
   }
   construireCourses();
   var coursesState = load('batcave-courses', {});
@@ -9218,10 +9280,23 @@
     if(Object.keys(coursesState).length){ coursesState = {}; save('batcave-courses', coursesState); }
     saveInternal('batcave-courses-plan-v2', true);
   }
+  /* v3 : le sec, l'hygiene et le menage sont sortis de la liste hebdomadaire, donc les
+     positions ont toutes bouge. Une coche de l'ancienne liste tomberait sur un autre
+     article -- on repart d'une liste vierge, une fois. */
+  if(!load('batcave-courses-plan-v3', false)){
+    if(Object.keys(coursesState).length){ coursesState = {}; save('batcave-courses', coursesState); }
+    saveInternal('batcave-courses-plan-v3', true);
+  }
 
-  function coursesTotals(){
+  /* Seules les categories DUES cette semaine comptent. Sans ce filtre, l'habitude
+     « Courses faites » -- qui ne se coche que lorsque tout est coche -- ne se validerait
+     plus jamais des qu'une reserve mensuelle n'est pas due. */
+  function coursesTotals(iso){
     var total=0, checked=0;
-    COURSES.forEach(function(c,ci){ c.items.forEach(function(it,ii){ total++; if(coursesState[ci+'-'+ii]) checked++; }); });
+    COURSES.forEach(function(c,ci){
+      if(!categorieCoursesDue(c, iso)) return;
+      c.items.forEach(function(it,ii){ total++; if(coursesState[ci+'-'+ii]) checked++; });
+    });
     return {total:total, checked:checked};
   }
   function renderCourses(){
@@ -9232,16 +9307,27 @@
     if(note) note.innerHTML = 'Quantités d\'achat arrondies au conditionnement, pour une semaine du plan. ' + (ajust
       ? 'Boucle poids → calories en vigueur : <b style="color:var(--ink-dim);">' + (ajust > 0 ? '+' : '') + ajust + ' kcal/jour</b>, soit ' + (grammesAjustement(ajust, 3.6) > 0 ? '+' : '') + grammesAjustement(ajust, 3.6) + ' g de pâtes crues au dîner (' + (grammesAjustement(ajust, 3.6) * 7 > 0 ? '+' : '') + grammesAjustement(ajust, 3.6) * 7 + ' g sur la semaine) — déjà compté ci-dessous.'
       : 'Aucun ajustement calorique en cours : quantités du plan de base.');
-    if(budget) budget.innerHTML = 'Budget estimé : <b style="color:var(--ink-dim)">' + fmtEuro(b.total) + ' / semaine</b>, plus <b style="color:var(--ink-dim)">' + fmtEuro(b.mensuel) + '</b> toutes les 4 semaines — soit <b style="color:var(--ink-dim)">' + fmtEuro(b.total * 52 / 12 + b.mensuel * 52 / 12 / 4) + ' / mois</b> environ (prix estimés Alicante 2026, à corriger avec tes tickets).';
+    if(budget) budget.innerHTML = 'Budget estimé : <b style="color:var(--ink-dim)">' + fmtEuro(b.total) + ' / semaine</b>' +
+      b.cycles.map(function(x){ return ', plus <b style="color:var(--ink-dim)">' + fmtEuro(x.total) + '</b> toutes les ' + x.semaines + ' semaines'; }).join('') +
+      ' — soit <b style="color:var(--ink-dim)">' + fmtEuro(b.mois) + ' / mois</b> environ (prix estimés Alicante 2026, à corriger avec tes tickets).';
     grid.innerHTML = '';
     COURSES.forEach(function(c, ci){
       var card = document.createElement('div');
       card.className = 'cat-card';
+      var due = categorieCoursesDue(c);
       var itemsHtml = c.items.map(function(it, ii){
         var key = ci+'-'+ii, checked = !!coursesState[key];
         return '<li class="'+(checked?'checked':'')+'"><input type="checkbox" id="c-'+key+'" data-course="'+key+'" '+(checked?'checked':'')+'><label for="c-'+key+'">'+it+'</label></li>';
       }).join('');
-      card.innerHTML = '<h4>'+c.cat+'</h4><ul>'+itemsHtml+'</ul>';
+      /* Une categorie non due reste VISIBLE mais grisee et hors du compte : il peut toujours
+         racheter en avance s'il passe devant, sans que ca lui reproche une liste incomplete. */
+      var suite = '';
+      if(!due){
+        var pro = prochaineCourseCat(c);
+        suite = '<p class="sub-note" style="margin:0 0 6px;">pas cette semaine — prochaine fois le <b style="color:var(--ink-dim);">' + (pro ? fmtDate(pro) : '—') + '</b></p>';
+        card.style.opacity = '0.55';
+      }
+      card.innerHTML = '<h4>'+c.cat+'</h4>'+suite+'<ul>'+itemsHtml+'</ul>';
       grid.appendChild(card);
     });
     grid.querySelectorAll('input[type="checkbox"]').forEach(function(cb){
