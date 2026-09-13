@@ -43,8 +43,8 @@ console.log('\n== 301) Installation neuve : les retirees ne sont jamais semees =
   ok(l.includes('core-pesee-dim') && l.includes('core-photos-dim') && l.includes('core-cheveux')
      && l.includes('core-rasage') && l.includes('core-brosse-dents') && l.includes('core-shampoing')
      && l.includes('core-serviette-visage') && l.includes('core-serviette-corps')
-     && l.includes('core-draps') && l.includes('core-menage'),
-     'les dix nouvelles sont là (' + l.length + ' habitudes au total)');
+     && l.includes('core-draps') && l.includes('core-menage') && l.includes('core-ongles'),
+     'les onze nouvelles sont là (' + l.length + ' habitudes au total)');
   await ctx.close();
 }
 
@@ -55,7 +55,7 @@ console.log('\n== 302) Une liste venue du cloud avec les retirees est nettoyée,
                 {id:'core-pesee', label:'Pesée du lundi, à jeun', icon:'⚖️', jours:[1]}];
   const { ctx, fr } = await jour('2026-09-21T09:00:00+02:00', {
     'batcave-habits': sale, 'batcave-habits-seed-v2': true, 'batcave-habits-seed-v3': true,
-    'batcave-habits-seed-v4': true, 'batcave-habits-seed-v5': true, 'batcave-habits-seed-v6': true });
+    'batcave-habits-seed-v4': true, 'batcave-habits-seed-v5': true, 'batcave-habits-seed-v6': true, 'batcave-habits-seed-v7': true });
   const l = await ids(fr);
   ok(!l.includes('core-gratitude') && !l.includes('core-pesee') && l.includes('core-lit'),
      'les deux retirées sont parties, le reste est intact (' + l.join(', ') + ')');
@@ -70,7 +70,7 @@ console.log('\n== 303) Un cloud déjà propre ne déclenche aucune réécriture 
                   {id:'core-pesee-dim', label:'Pesée du dimanche, à jeun', icon:'⚖️', jours:[0]}];
   const { ctx, fr } = await jour('2026-09-21T09:00:00+02:00', {
     'batcave-habits': propre, 'batcave-habits-seed-v2': true, 'batcave-habits-seed-v3': true,
-    'batcave-habits-seed-v4': true, 'batcave-habits-seed-v5': true, 'batcave-habits-seed-v6': true });
+    'batcave-habits-seed-v4': true, 'batcave-habits-seed-v5': true, 'batcave-habits-seed-v6': true, 'batcave-habits-seed-v7': true });
   const n = await fr.evaluate(() => window.__w.filter(k => k === 'batcave-habits').length);
   ok(n === 0, 'aucune écriture (' + n + ')');
   await ctx.close();
@@ -133,6 +133,39 @@ for (const [d, nom, pesee, photos, shamp] of [['2026-09-13','dim. 13 sept',true,
      nom + ' : pesée ' + pe + ' · photos ' + p + ' · shampoing ' + sh);
   /* une photo sans pesee le meme matin serait une erreur d'ancrage */
   if(p) ok(pe, nom + ' : la séance photo tombe bien un dimanche de pesée');
+  await ctx.close();
+}
+
+console.log('\n== 305c) Les ongles : un dimanche sur deux, et les pieds les dimanches de photo ==');
+/* Une seule ligne, ancree au 13 septembre comme la pesee -- donc les MEMES dimanches qu'elle.
+   Les pieds n'ont pas leur propre habitude : le libelle dit qu'ils tombent les dimanches de
+   photo, et comme les photos sont un cycle de quatre semaines sur la meme ancre, un dimanche
+   de photo est toujours un dimanche d'ongles. C'est cette implication-la qu'on verrouille
+   ici : si quelqu'un deplace une des deux ancres, le libelle devient un mensonge. */
+for (const [d, nom, du] of [['2026-09-13','dim. 13 sept',true],
+                            ['2026-09-20','dim. 20 sept',false],
+                            ['2026-09-27','dim. 27 sept',true],
+                            ['2026-10-04','dim. 4 oct',false],
+                            ['2026-10-11','dim. 11 oct',true],
+                            ['2026-11-08','dim. 8 nov',true],
+                            ['2026-12-06','dim. 6 déc',true],
+                            ['2026-09-14','lun. 14',false],
+                            ['2026-09-19','sam. 19',false]]) {
+  const { ctx, fr } = await jour(d + 'T09:00:00+02:00');
+  const l = await duJour(fr);
+  const on = l.some(t => /Ongles/.test(t)), ph = l.some(t => /Photos/.test(t)),
+        pe = l.some(t => /Pesée/.test(t));
+  ok(on === du, nom + ' : ongles ' + on + ' (' + du + ' attendu)');
+  ok(on === pe, nom + ' : les ongles tombent exactement les dimanches de pesée');
+  /* le libelle promet « pieds les dimanches de photo » : une photo sans ongles le rendrait faux */
+  if(ph) ok(on, nom + ' : jour de photo, donc jour d\'ongles — les pieds ont bien une case');
+  await ctx.close();
+}
+{
+  const { ctx, fr } = await jour('2026-09-13T09:00:00+02:00');
+  const t = (await duJour(fr)).find(x => /Ongles/.test(x)) || '';
+  ok(/mains/.test(t) && /pieds les dimanches de photo/.test(t),
+     'le libellé porte la règle : « ' + t.trim() + ' »');
   await ctx.close();
 }
 

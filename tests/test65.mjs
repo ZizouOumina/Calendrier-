@@ -26,7 +26,7 @@ const HABITS = [
   {id:'hab-balai', label:'Passer le balai', icon:'🧹', jour:6},
   {id:'core-courses', label:'Courses faites', icon:'🛒', jour:6}
 ];
-const seedHab = {'batcave-habits': HABITS, 'batcave-habits-seed-v2': true, 'batcave-habits-seed-v3': true, 'batcave-habits-seed-v4': true, 'batcave-habits-seed-v5': true, 'batcave-habits-seed-v6': true, 'batcave-habits-ecran-v2': true, 'batcave-habitlog-hebdo-v1': true};
+const seedHab = {'batcave-habits': HABITS, 'batcave-habits-seed-v2': true, 'batcave-habits-seed-v3': true, 'batcave-habits-seed-v4': true, 'batcave-habits-seed-v5': true, 'batcave-habits-seed-v6': true, 'batcave-habits-seed-v7': true, 'batcave-habits-ecran-v2': true, 'batcave-habitlog-hebdo-v1': true};
 const cartes = fr => fr.evaluate(() => [...document.querySelectorAll('#habits-grid .card')].map(c => c.innerText.replace(/\s+/g,' ')));
 
 console.log('\n== 240) Sport : lundi 14 septembre = semaine 1 (moitié des tours), 12 octobre = retest ==');

@@ -113,7 +113,7 @@ console.log('\n== 96) Jamais le drapeau seul (l\'état corrompu observé en prod
 console.log('\n== 97) Un cloud déjà à jour ne déclenche aucune réécriture ==');
 {
   const aJour = {'batcave-habits': HABITS_17.concat([{id:'core-courses', label:'Courses faites', icon:'🛒', jour:6}]),
-                 'batcave-habits-seed-v2': true, 'batcave-habits-seed-v3': true, 'batcave-habits-seed-v4': true, 'batcave-habits-seed-v5': true, 'batcave-habits-seed-v6': true, 'batcave-objectifs-v5-espanol': true};
+                 'batcave-habits-seed-v2': true, 'batcave-habits-seed-v3': true, 'batcave-habits-seed-v4': true, 'batcave-habits-seed-v5': true, 'batcave-habits-seed-v6': true, 'batcave-habits-seed-v7': true, 'batcave-objectifs-v5-espanol': true};
   const { ctx, fr } = await ouvrir(aJour, aJour, SAMEDI);
   const ecrits = await fr.evaluate(() => window.__w.filter(k => k === 'batcave-habits'));
   ok(ecrits.length === 0, 'aucune réécriture inutile de batcave-habits');
@@ -150,7 +150,7 @@ console.log('\n== 99) La fusion de l\'historique de révision survit à l\'hydra
     {id:'r3', date:'2026-08-30', duree:45}
   ];
   const cl0 = {'batcave-revision': DOUBLONS, 'batcave-habits': HABITS_17,
-               'batcave-habits-seed-v2': true, 'batcave-habits-seed-v3': true, 'batcave-habits-seed-v4': true, 'batcave-habits-seed-v5': true, 'batcave-habits-seed-v6': true, 'batcave-objectifs-v5-espanol': true};
+               'batcave-habits-seed-v2': true, 'batcave-habits-seed-v3': true, 'batcave-habits-seed-v4': true, 'batcave-habits-seed-v5': true, 'batcave-habits-seed-v6': true, 'batcave-habits-seed-v7': true, 'batcave-objectifs-v5-espanol': true};
   const { ctx, fr } = await ouvrir(cl0, cl0, SAMEDI);
   const cl = await dansCloud(fr);
   const rev = cl['batcave-revision'] || [];
@@ -168,7 +168,7 @@ console.log('\n== 100) Jamais un drapeau de migration seul, quelle que soit la m
      « drapeau posé ET prix resté à 1 » — la migration serait perdue pour toujours. */
   const CHARGES = [{cat:'Abonnements', id:'fc8', label:'iCloud', montant:1}];
   const cl0 = {'batcave-fixed-charges': CHARGES, 'batcave-habits': HABITS_17,
-               'batcave-habits-seed-v2': true, 'batcave-habits-seed-v3': true, 'batcave-habits-seed-v4': true, 'batcave-habits-seed-v5': true, 'batcave-habits-seed-v6': true, 'batcave-objectifs-v5-espanol': true};
+               'batcave-habits-seed-v2': true, 'batcave-habits-seed-v3': true, 'batcave-habits-seed-v4': true, 'batcave-habits-seed-v5': true, 'batcave-habits-seed-v6': true, 'batcave-habits-seed-v7': true, 'batcave-objectifs-v5-espanol': true};
   const { ctx, fr } = await ouvrir(cl0, cl0, SAMEDI);
   const cl = await dansCloud(fr);
   const drapeau = cl['batcave-fc-prix-icloud-3'] === true;

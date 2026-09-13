@@ -3116,7 +3116,7 @@
      place dans le quota de 5000 documents et embrouille les sauvegardes, sans que rien ne
      la lise jamais. On la signale ; la suppression reste ton geste. */
   var CLES_CONNUES = ['addictions','budget-limits','business','coran','courses','dash-more','duaas','duree-bloc','sport-log','objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','kcal-ajustement','gcal-ecriture','reinit','fc-migration-v1','charge','shopify-boutique','journees','examens-heures','vacances','jours-exclus',
-    'espagnol','examens','cours-suivi','portes','fc-prix-icloud-3','fixed-charges','goals','goals-depart','saisons','insights-hist','last-restore-drill','habitlog','habits','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','objectifs-v5-espanol',
+    'espagnol','examens','cours-suivi','portes','fc-prix-icloud-3','fixed-charges','goals','goals-depart','saisons','insights-hist','last-restore-drill','habitlog','habits','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','habits-seed-v7','objectifs-v5-espanol',
     'horizon','last-auto-backup','last-manual-backup','last-bilan-prompt','last-compaction','last-open','last-rotation','notion-url',
     'pomodial-purge','projets','report','revision','revision-fusionnee','revue','sante','sauvegarde','sessions',
     'shopify-last-order-count','taches','timer','transactions','undo-stack','undo-toast','cloud-reload-at','cloud-toast','notion-cache','anki',
@@ -4109,7 +4109,7 @@
      ni synchronisee ni rattrapee) et efface ses copies locales AVANT le rattrapage, sinon
      elles repartiraient vers le cloud. La meme remise a zero peut donc etre decidee depuis
      l'appli ou directement dans le cloud. */
-  var REINIT_GARDER = ['habits','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','objectifs-v5-espanol','fixed-charges','fc-prix-icloud-3','budget-limits','examens','examens-heures','journees','vacances','jours-exclus','jours-sans-cours','portes','notion-url','shopify-boutique',
+  var REINIT_GARDER = ['habits','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','habits-seed-v7','objectifs-v5-espanol','fixed-charges','fc-prix-icloud-3','budget-limits','examens','examens-heures','journees','vacances','jours-exclus','jours-sans-cours','portes','notion-url','shopify-boutique',
                        'objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','horizon','goals-depart','saisons','gcal-ecriture','duree-bloc','dash-more','revision-fusionnee','reinit','copie-vierge'];
   var REINIT_PREFIXES_GARDER = ['pomodial-', 'coherence-ignore-'];
   function reinitGarder(cle){
@@ -5586,6 +5586,20 @@
     {id:'core-draps', label:'Draps et taies d\u2019oreiller changés', icon:'🧺', jours:[0]},
     {id:'core-menage', label:'Ménage du dimanche', icon:'🧽', jours:[0]}
   ];
+  /* Le lot du 13 septembre : les ONGLES. Une seule ligne, le dimanche, une semaine sur DEUX,
+     ancree au 13 septembre -- donc exactement le rythme de la pesee, et les memes dimanches.
+     Deux semaines parce qu'un ongle de main pousse d'environ 3,5 mm par mois : a quinze jours
+     il y a de quoi couper, a un mois on coupe trop tard. Les ongles de PIED poussent deux a
+     trois fois moins vite ; les faire tous les quinze jours ne sert a rien, et leur donner
+     leur propre ligne aurait ajoute une case de plus au dimanche.
+     D'ou la formulation du libelle : les pieds tombent LES DIMANCHES DE PHOTO. Ce n'est pas
+     une image -- les photos sont un cycle de QUATRE semaines sur la MEME ancre du 13, donc
+     un dimanche de photo est toujours un dimanche d'ongles, et c'est exactement un sur deux.
+     Il lui suffit de voir la carte photo dans la liste du jour pour savoir que les pieds y
+     passent aussi : la regle est lisible sur l'ecran, sans deuxieme habitude a cocher. */
+  var HABIT_SEED_V7 = [
+    {id:'core-ongles', label:'Ongles \u2014 mains ; pieds les dimanches de photo', icon:'\u2702\ufe0f', jours:[0], cycleSemaines:2, ancre:'2026-09-13'}
+  ];
   /* Retirees a la demande. Ce n'est pas un simple retrait du semis : l'habitude est deja
      dans le stockage de l'utilisateur, elle survit a la remise a zero (« habits » est garde),
      et un autre appareil encore sur l'ancienne version la renverrait par la synchro. On la
@@ -5603,7 +5617,8 @@
     {cle: 'batcave-habits-seed-v3', graines: HABIT_SEED_V3},
     {cle: 'batcave-habits-seed-v4', graines: HABIT_SEED_V4},
     {cle: 'batcave-habits-seed-v5', graines: HABIT_SEED_V5},
-    {cle: 'batcave-habits-seed-v6', graines: HABIT_SEED_V6}
+    {cle: 'batcave-habits-seed-v6', graines: HABIT_SEED_V6},
+    {cle: 'batcave-habits-seed-v7', graines: HABIT_SEED_V7}
   ];
   var habitsState = load('batcave-habits', null);
   if(habitsState !== null && !Array.isArray(habitsState)) habitsState = null;
@@ -5632,7 +5647,7 @@
     return ajoutees || retirees;
   }
   if(habitsState === null){
-    habitsState = HABIT_SEED.concat(HABIT_SEED_V2, HABIT_SEED_V3, HABIT_SEED_V4, HABIT_SEED_V5, HABIT_SEED_V6);
+    habitsState = HABIT_SEED.concat(HABIT_SEED_V2, HABIT_SEED_V3, HABIT_SEED_V4, HABIT_SEED_V5, HABIT_SEED_V6, HABIT_SEED_V7);
     save('batcave-habits', habitsState);
     HABIT_GENERATIONS.forEach(function(g){ save(g.cle, true); });
   } else {
