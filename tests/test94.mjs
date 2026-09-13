@@ -40,11 +40,22 @@ console.log('\n== 330) Quatre catégories, et le frais seul reste hebdomadaire =
   await ctx.close();
 }
 
-console.log('\n== 331) Le 19 septembre, tout est dû en même temps ==');
+console.log('\n== 331) Le 13 septembre, jour de courses exceptionnel, tout est dû ==');
+/* Il a fait ses courses un DIMANCHE, une fois, avant que le rythme du samedi demarre.
+   Sans cette exception il aurait fallu ancrer les cycles sur un dimanche, et tous les
+   rachats suivants seraient tombes un dimanche. */
+{
+  const { ctx, fr } = await jour('2026-09-13T10:00:00+02:00');
+  const c = await cartes(fr);
+  ok(c.every(x => x.due), 'les 5 catégories sont dues le 13 (exception)');
+  const somme = await fr.evaluate(() => document.getElementById('courses-summary').textContent);
+  ok(/\/24 articles/.test(somme), '24 articles à prendre le 13 (' + somme + ')');
+  await ctx.close();
+}
 {
   const { ctx, fr } = await jour('2026-09-19T10:00:00+02:00');
   const c = await cartes(fr);
-  ok(c.every(x => x.due), 'les 5 catégories sont dues le 19 (ancre commune)');
+  ok(c[0].due && c.slice(1).every(x => !x.due), 'le samedi 19 : le frais seulement, tout le reste vient d\'être acheté');
   await ctx.close();
 }
 
@@ -54,8 +65,8 @@ console.log('\n== 332) Une semaine plus tard, seul le frais est dû ==');
   const c = await cartes(fr);
   ok(c[0].due && c.slice(1).every(x => !x.due), 'le 26 : frais seulement');
   const t = await fr.evaluate(() => document.getElementById('courses-grid').innerText);
-  ok(/prochaine fois le 17 oct\./.test(t), 'les réserves annoncent le 17 octobre');
-  ok(/prochaine fois le 12 déc\./.test(t), 'la brosse à dents annonce le 12 décembre');
+  ok(/prochaine fois le 10 oct\./.test(t), 'les réserves annoncent le 10 octobre');
+  ok(/prochaine fois le 05 déc\./.test(t), 'la brosse à dents annonce le 5 décembre');
   await ctx.close();
 }
 
@@ -91,8 +102,11 @@ console.log('\n== 333) L\'habitude « Courses faites » reste validable ==');
 console.log('\n== 333b) Le beurre de cacahuète tourne sur cinq semaines ==');
 /* 400 g par semaine : 2 kg tombent pile sur cinq semaines, sans fond de pot qui traine.
    C'est le seul article a ne pas suivre le rythme de sa voisine de rayon. */
-for (const [d, nom, du] of [['2026-09-19','19 sept',true], ['2026-10-17','17 oct',false],
-                            ['2026-10-24','24 oct',true], ['2026-11-28','28 nov',true]]) {
+/* 500 g au placard + 1,5 kg achetes le 13 = 2 kg = cinq semaines a 400 g, epuises le
+   19 octobre : le rachat tombe donc le samedi 17, et pas avec les reserves du 10. */
+for (const [d, nom, du] of [['2026-09-13','13 sept',true], ['2026-09-19','19 sept',false],
+                            ['2026-10-10','10 oct',false], ['2026-10-17','17 oct',true],
+                            ['2026-11-21','21 nov',true]]) {
   const { ctx, fr } = await jour(d + 'T10:00:00+02:00');
   const c = (await cartes(fr)).filter(x => /5 semaines/.test(x.titre))[0];
   ok(!!c && c.due === du, nom + ' : beurre de cacahuète dû ' + (c ? c.due : '?') + ' (' + du + ' attendu)');
@@ -100,25 +114,29 @@ for (const [d, nom, du] of [['2026-09-19','19 sept',true], ['2026-10-17','17 oct
 }
 
 console.log('\n== 334b) Ce qu\'il a déjà en réserve ne se rachète pas ==');
-/* Courses du 12 septembre : 7 kg de pates, 4 kg de riz, 2,4 kg de flocons. Ces trois
-   lignes restent AFFICHEES -- les coches sont indexees par position, les retirer
-   decalerait tout -- mais grisees, datees, et hors du compte. */
+/* Stock du 12 septembre : 7 kg de pates, 4 kg de riz, 2,4 kg de flocons, de l'huile pour
+   quatre semaines, 500 g de beurre de cacahuete, 12 oeufs. Ces lignes restent AFFICHEES --
+   les coches sont indexees par position, les retirer decalerait tout -- mais grisees,
+   datees, et hors du compte. On se place le 13, son vrai jour de courses. */
 {
-  const { ctx, fr } = await jour('2026-09-19T10:00:00+02:00');
+  const { ctx, fr } = await jour('2026-09-13T10:00:00+02:00');
   const t = await fr.evaluate(() => document.getElementById('courses-grid').innerText);
-  ok(/Riz[^\n]*déjà en réserve, à racheter le 17 oct\./.test(t), 'le riz attend le 17 octobre');
-  ok(/Flocons d'avoine[^\n]*à racheter le 17 oct\./.test(t), 'les flocons aussi');
-  ok(/Pâtes[^\n]*à racheter le 14 nov\./.test(t), 'les pâtes tiennent jusqu\'au 14 novembre (7 kg)');
-  const somme = await fr.evaluate(() => document.getElementById('courses-summary').textContent);
-  /* 10 frais + 3 reserves restantes + 10 maison + 1 beurre + 1 brosse = 25, et non 28 */
-  ok(/\/25 articles/.test(somme), 'le 19 septembre : 25 articles à prendre, pas 28 (' + somme + ')');
+  ok(/Riz[^\n]*à racheter le 10 oct\./.test(t), 'le riz attend le 10 octobre (4 kg, 1 kg par semaine)');
+  ok(/Flocons d'avoine[^\n]*à racheter le 10 oct\./.test(t), 'les flocons aussi (2,4 kg, 600 g par semaine)');
+  ok(/Huile d'olive[^\n]*à racheter le 10 oct\./.test(t), 'l\'huile aussi');
+  ok(/Pâtes[^\n]*à racheter le 07 nov\./.test(t), 'les pâtes tiennent jusqu\'au 7 novembre (7 kg)');
+  /* Les deux quantites d'un seul jour : 3 oeufs au lieu de 15, 1,5 kg de beurre au lieu de 2. */
+  ok(/Œufs — 3 .*tu en as déjà 12/.test(t), '3 œufs seulement, il en a 12');
+  ok(/Beurre de cacahuète — 1\u202f500 g .*tu en as déjà 500 g/.test(t), '1,5 kg de beurre, il en a 500 g');
   await ctx.close();
 }
 {
-  const { ctx, fr } = await jour('2026-10-17T10:00:00+02:00');
+  const { ctx, fr } = await jour('2026-10-10T10:00:00+02:00');
   const t = await fr.evaluate(() => document.getElementById('courses-grid').innerText);
-  ok(!/Riz[^\n]*à racheter/.test(t), 'le 17 octobre : le riz revient dans la liste');
-  ok(/Pâtes[^\n]*à racheter le 14 nov\./.test(t), 'les pâtes attendent encore');
+  ok(!/Riz[^\n]*à racheter/.test(t) && !/Huile d'olive[^\n]*à racheter/.test(t), 'le 10 octobre : riz et huile reviennent dans la liste');
+  ok(/Pâtes[^\n]*à racheter le 07 nov\./.test(t), 'les pâtes attendent encore');
+  const somme = await fr.evaluate(() => document.getElementById('courses-summary').textContent);
+  ok(/\/25 articles/.test(somme), 'le 10 octobre : 25 articles, les pâtes en moins (' + somme + ')');
   await ctx.close();
 }
 

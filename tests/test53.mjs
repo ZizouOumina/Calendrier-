@@ -47,7 +47,12 @@ console.log('\n== 180) Sans ajustement : plan de base, liste = plan × 7 ==');
     const sem = Number(bud[1].replace(',', '.')), quatre = Number(bud[2].replace(',', '.')), mois = Number(bud[4].replace(',', '.'));
     ok(sem > 35 && sem < 45, 'frais : ' + sem + ' € / semaine');
     ok(quatre > 85 && quatre < 105, 'réserves + maison : ' + quatre + ' € toutes les 4 semaines');
-    ok(Math.abs(mois - (sem * 52 / 12 + quatre * 52 / 12 / 4 + 3.5 * 52 / 12 / 12)) < 1, 'le total mensuel est la somme des trois cycles (' + mois + ' €)');
+    /* On relit TOUS les cycles annonces plutot que d'en coder trois en dur : le beurre de
+       cacahuete en a ajoute un quatrieme, et une somme ecrite a la main aurait menti. */
+    const cycles = [...c.budget.matchAll(/~([\d,]+) € toutes les (\d+) semaines/g)]
+      .map(m => Number(m[1].replace(',', '.')) * 52 / 12 / Number(m[2]));
+    const attendu = sem * 52 / 12 + cycles.reduce((a, x) => a + x, 0);
+    ok(Math.abs(mois - attendu) < 1, 'le total mensuel est la somme de tous les cycles annoncés (' + mois + ' € vs ' + Math.round(attendu * 10) / 10 + ')');
   }
   await page_(fr, 'repas');
   const r = await fr.evaluate(() => ({ diner: [...document.querySelectorAll('.meal-card')].find(c => /Dîner/.test(c.querySelector('.mtitle').textContent)) }) && [...document.querySelectorAll('.meal-card')].find(c => /Dîner/.test(c.querySelector('.mtitle').textContent)).innerText);

@@ -9191,7 +9191,7 @@
     var cat = [
       {cat:'Chaque semaine', semaines:1, items:[
         {label:'Poulet', qte:'800 g', prix:5.2}, {label:'Viande hachée 5 %', qte:'900 g', prix:7.2}, {label:'Saumon', qte:'450 g', prix:5.85},
-        {label:'Œufs', qte:'15', prix:3.3}, {label:'Jambon', qte:'300 g', prix:3.3}, {label:'Fromage', qte:'150 g', prix:1.35},
+        {label:'Œufs', qte:'15', prix:3.3, exception:{date:'2026-09-13', qte:'3', prix:0.7, pourquoi:'tu en as déjà 12'}}, {label:'Jambon', qte:'300 g', prix:3.3}, {label:'Fromage', qte:'150 g', prix:1.35},
         {label:'Pain complet', qte:'500 g', prix:1.6},
         {label:'Skyr', qte:'2\u202f200 g', prix:8.8},
         {label:'Bananes', qte:'8', prix:1.4}, {label:'Fruits (pommes, poires, oranges…)', qte:'8', prix:2.2}
@@ -9202,23 +9202,27 @@
          plan : riz et flocons tiennent 4 semaines (1 kg et 600 g par semaine), les pates
          environ onze (600 g par semaine). L'article reste AFFICHE et a sa place dans la
          liste, sinon les coches -- indexees par position -- tomberaient sur le voisin. */
-      {cat:'Réserves — toutes les 4 semaines', semaines:4, ancre:ANCRE_COURSES, items:[
-        {label:'Riz', qte:'4\u202f000 g', prix:4.4, des:'2026-10-17', stock:'4 kg déjà en réserve'},
+      /* Riz, flocons et huile achetes avant le 13 tiennent 4 semaines pile : epuises le
+         12 octobre, donc rachetes le samedi 10. C'est l'ancre de toute la categorie. */
+      {cat:'Réserves — toutes les 4 semaines', semaines:4, ancre:'2026-10-10', aussi:COURSES_EXCEPTION, items:[
+        {label:'Riz', qte:'4\u202f000 g', prix:4.4, des:'2026-10-10', stock:'4 kg en réserve, 1 kg/semaine'},
         /* Les pates portent l'ajustement de la boucle kcal, multiplie par quatre comme le
            reste du sac. Il n'y a PAS de ligne hebdomadaire en plus : on n'achete pas un
            sachet de 280 g de pates, on prend le gros sac une fois par mois. */
         {label:'Pâtes', qte: g((600 + plus) * 4) + ' g' + (plus ? ' (dont ' + (plus > 0 ? '+' : '') + g(plus * 4) + ' g boucle kcal)' : ''), prix: (600 + plus) * 4 / 1000 * 1.0,
-         des: plus > 0 ? '2026-10-17' : '2026-11-14', stock:'7 kg déjà en réserve'},
-        {label:'Flocons d\'avoine', qte:'2\u202f400 g', prix:3.8, des:'2026-10-17', stock:'2,4 kg déjà en réserve'},
+         /* 7 kg a 600 g/semaine tiennent jusqu'au 4 decembre ; a 880 g (boucle kcal a fond)
+            jusqu'au 8 novembre. Les deux cas retombent sur le meme samedi utile. */
+         des:'2026-11-07', stock:'7 kg en réserve, jusqu\u2019à début décembre'},
+        {label:'Flocons d\'avoine', qte:'2\u202f400 g', prix:3.8, des:'2026-10-10', stock:'2,4 kg en réserve, 600 g/semaine'},
         /* Deja surgeles : quatre semaines ne leur font rien. 10 kg, en revanche, demandent
            de la place -- c'est la seule ligne mensuelle limitee par le congelateur. */
         {label:'Légumes verts surgelés', qte:'10\u202f000 g', prix:20},
         {label:'Miel', qte:'800 g', prix:5.2},
-        {label:'Huile d\'olive', qte:'1\u202f000 ml', prix:7}
+        {label:'Huile d\'olive', qte:'1\u202f000 ml', prix:7, des:'2026-10-10', stock:'de quoi tenir 4 semaines'}
       ]},
       /* Aucune de ces lignes n'existait nulle part : elles se rachetaient donc au coup par
          coup, c'est-a-dire par un aller-retour en plus le jour ou le flacon est vide. */
-      {cat:'Maison et hygiène — toutes les 4 semaines', semaines:4, ancre:ANCRE_COURSES, items:[
+      {cat:'Maison et hygiène — toutes les 4 semaines', semaines:4, ancre:'2026-10-10', aussi:COURSES_EXCEPTION, items:[
         {label:'Shampooing', qte:'400 ml', prix:3.5},
         {label:'Après-shampooing', qte:'400 ml', prix:3.5},
         {label:'Gel douche', qte:'750 ml', prix:2.8},
@@ -9234,10 +9238,15 @@
          Un pot de 1,6 kg tous les mois laissait un fond a chaque fois. Sa propre carte
          plutot qu'une ligne a part dans les reserves : un rythme cache dans une categorie
          qui en annonce un autre se lit de travers. */
-      {cat:'Toutes les 5 semaines', semaines:5, ancre:ANCRE_COURSES, items:[
-        {label:'Beurre de cacahuète', qte:'2\u202f000 g', prix:10.5}
+      /* 500 g au placard + 1,5 kg achetes le 13 font 2 kg pile, soit cinq semaines a
+         400 g : epuises le 19 octobre, donc rachetes le samedi 17. */
+      {cat:'Toutes les 5 semaines', semaines:5, ancre:'2026-10-17', aussi:COURSES_EXCEPTION, items:[
+        {label:'Beurre de cacahuète', qte:'2\u202f000 g', prix:10.5,
+         exception:{date:'2026-09-13', qte:'1\u202f500 g', prix:7.9, pourquoi:'tu en as déjà 500 g'}}
       ]},
-      {cat:'Tous les 3 mois', semaines:12, ancre:ANCRE_COURSES, items:[
+      /* Brosse a dents changee le 13 ; la suivante l'est le 6 decembre (habitude a
+         12 semaines), donc elle s'achete le samedi 5. */
+      {cat:'Tous les 3 mois', semaines:12, ancre:'2026-12-05', aussi:COURSES_EXCEPTION, items:[
         {label:'Brosse à dents', qte:'1', prix:3.5}
       ]}
     ];
@@ -9246,10 +9255,20 @@
   /* Les categories a cycle sont ancrees sur le premier SAMEDI de courses du programme,
      le 19 septembre : elles retombent donc toujours un jour de courses, jamais entre deux. */
   var ANCRE_COURSES = '2026-09-19';
+  /* Il a fait ses courses le dimanche 13, une fois, avant que le rythme du samedi demarre.
+     Ce jour-la tout est du ; ensuite chaque cycle repart de son propre samedi, calcule sur
+     l'epuisement reel de ce qu'il a achete. */
+  var COURSES_EXCEPTION = ['2026-09-13'];
   function categorieCoursesDue(c, iso){
     var n = c.semaines || 1;
     if(n < 2) return true;
-    var d = iso || todayISO, a = c.ancre || ANCRE_COURSES;
+    var d = iso || todayISO;
+    /* « aussi » : les jours de courses exceptionnels, hors rythme. Le 13 septembre en est
+       un -- il fait ses courses un dimanche, une fois, avant que le rythme du samedi
+       commence. Sans ca il faudrait ancrer les cycles sur un dimanche, et TOUS les
+       rachats suivants tomberaient un dimanche. */
+    if(c.aussi && c.aussi.indexOf(d) > -1) return true;
+    var a = c.ancre || ANCRE_COURSES;
     if(d < a) return false;
     return Math.floor(daysBetween(new Date(a + 'T00:00:00'), new Date(d + 'T00:00:00')) / 7) % n === 0;
   }
@@ -9262,8 +9281,16 @@
   var COURSES = [];
   function construireCourses(){
     var plan = planCoursesSemaine(ajustementKcalPour(todayISO));
-    COURSES = plan.map(function(c){ return {cat: c.cat, semaines: c.semaines || 1, ancre: c.ancre,
-      items: c.items.map(function(i){ return {texte: i.label + ' — ' + i.qte + ' (' + fmtEuro(i.prix) + ')', des: i.des, stock: i.stock}; })}; });
+    /* « aussi » doit voyager jusqu'ici : sans lui la date d'exception etait perdue entre
+       le plan et l'affichage, et le 13 septembre ne montrait que le frais. */
+    COURSES = plan.map(function(c){ return {cat: c.cat, semaines: c.semaines || 1, ancre: c.ancre, aussi: c.aussi,
+      items: c.items.map(function(i){
+        /* Un fond de placard ne se modelise pas : il vaut pour UNE course et jamais plus.
+           « exception » remplace donc la quantite ce jour-la seulement, en disant pourquoi. */
+        var ex = i.exception && i.exception.date === todayISO ? i.exception : null;
+        return {texte: i.label + ' — ' + (ex ? ex.qte : i.qte) + ' (' + fmtEuro(ex ? ex.prix : i.prix) + ')' + (ex ? ' · ' + ex.pourquoi : ''),
+                des: i.des, stock: i.stock};
+      })}; });
     return plan;
   }
   /* Budget : chaque categorie a son cycle, et le cout mensuel est la somme de
