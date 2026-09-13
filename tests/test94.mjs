@@ -35,7 +35,7 @@ console.log('\n== 330) Quatre catégories, et le frais seul reste hebdomadaire =
   const hebdo = c[0];
   ok(/Chaque semaine/.test(hebdo.titre) && hebdo.n === 10, 'la liste hebdomadaire fait 10 articles frais (' + hebdo.n + ')');
   const t = await fr.evaluate(() => document.getElementById('courses-grid').innerText);
-  ok(!/Riz/.test(hebdo.titre + '') && /Riz — 3\u202f780 g/.test(t), 'le riz est en réserve, 3 780 g sur 4 semaines');
+  ok(!/Riz/.test(hebdo.titre + '') && /Riz — 4 kg/.test(t) && /demande 3\u202f780 g/.test(t), 'le riz est en réserve : 4 kg achetés pour 3 780 g demandés');
   ok(/Shampooing/.test(t) && /Cotons-tiges/.test(t) && /Nettoyant visage/.test(t) && /Brosse à dents/.test(t), 'santé et hygiène : shampooing, cotons-tiges, nettoyant visage, brosse à dents');
   ok(!/Éponges|Sacs poubelle|Nettoyant sols/.test(t), 'les produits ménagers sont sortis de la Batcave');
   await ctx.close();
@@ -49,9 +49,10 @@ console.log('\n== 331) Samedi 19 septembre : l\'ancre, tout est dû ==');
   const c = await cartes(fr);
   ok(c.every(x => x.due), 'les 5 catégories sont dues le 19 (ancre commune)');
   const somme = await fr.evaluate(() => document.getElementById('courses-summary').textContent);
-  /* 10 frais + 2 reserves (surgeles, miel) + 5 lignes de maison + 1 beurre = 18.
-     Riz, pates, flocons, huile et huit produits d'hygiene sont deja au placard. */
-  ok(/\/16 articles/.test(somme), '16 articles le 19 : son stock enlève riz, pâtes, flocons et huit produits de santé (' + somme + ')');
+  /* Aucun stock n'est suppose : le 19, TOUTES les categories sont dues et toutes leurs
+     lignes comptent. 10 frais + 5 reserves + 2 (cycle de 5 semaines) + 10 sante + 1 brosse
+     a dents = 28. Ce qu'il a deja, il le coche a la main. */
+  ok(/\/28 articles/.test(somme), '28 articles le 19 : tout part de zéro (' + somme + ')');
   await ctx.close();
 }
 {
@@ -121,28 +122,23 @@ for (const [d, nom, du] of [['2026-09-19','19 sept',true], ['2026-09-26','26 sep
   await ctx.close();
 }
 
-console.log('\n== 334b) Ce qu\'il a déjà en réserve ne se rachète pas ==');
-/* Stock du 12 septembre : 7 kg de pates, 4 kg de riz, 2,4 kg de flocons, de l'huile pour
-   quatre semaines, 500 g de beurre de cacahuete, 12 oeufs. Ces lignes restent AFFICHEES --
-   les coches sont indexees par position, les retirer decalerait tout -- mais grisees,
-   datees, et hors du compte. On se place le 13, son vrai jour de courses. */
+console.log('\n== 334b) Aucun stock n\'est supposé : il coche ce qu\'il a ==');
+/* Modeliser un fond de placard etait une fausse bonne idee : il fallait le tenir a jour,
+   et la liste mentait des qu'il mangeait autre chose. Tout part de zero le 19, et une
+   case cochee dit « je l'ai deja ». Rien ne doit donc rester d'un calcul de stock. */
 {
   const { ctx, fr } = await jour('2026-09-19T10:00:00+02:00');
   const t = await fr.evaluate(() => document.getElementById('courses-grid').innerText);
-  ok(/Riz[^\n]*à racheter le 17 oct\./.test(t), 'le riz attend le 17 octobre (4 kg, 945 g/semaine)');
-  ok(/Flocons d'avoine[^\n]*à racheter le 17 oct\./.test(t), 'les flocons aussi (2,4 kg, 560 g/semaine)');
-  ok(/Pâtes[^\n]*à racheter le 14 nov\./.test(t), 'les pâtes tiennent jusqu\'au 14 novembre (7 kg)');
-  /* On ne rachete que le MANQUE : il a 500 g de beurre et un litre d'huile, donc il
-     complete au lieu de reprendre un cycle entier. */
-  ok(/Beurre de cacahuète — 1\u202f425 g/.test(t), 'beurre : 1 425 g pour compléter ses 500 g à 1 925');
-  ok(/Huile d'olive — 440 ml/.test(t), 'huile : 440 ml pour compléter son litre à 1 440');
+  ok(!/tu en as|il t’en reste|à racheter le/.test(t), 'aucune ligne ne parle de stock ni de date de rachat');
+  ok(/Beurre de cacahuète — 2 kg/.test(t) && /demande 1\u202f925 g/.test(t), 'beurre de cacahuète : 2 kg pleins, pour 1 925 g demandés');
+  ok(/Huile d'olive — 1,5 L/.test(t) && /demande 1\u202f440 ml/.test(t), 'huile : la bouteille d\'1,5 L entière, pour 1 440 ml demandés');
   await ctx.close();
 }
 {
+  /* Le 17 octobre les reserves reviennent, aux memes quantites : aucun report. */
   const { ctx, fr } = await jour('2026-10-17T10:00:00+02:00');
   const t = await fr.evaluate(() => document.getElementById('courses-grid').innerText);
-  ok(!/Riz[^\n]*à racheter/.test(t), 'le 17 octobre : le riz revient dans la liste');
-  ok(/Pâtes[^\n]*à racheter le 14 nov\./.test(t), 'les pâtes attendent encore');
+  ok(/Riz — 4 kg/.test(t) && /Pâtes — 2,5 kg/.test(t), 'le 17 octobre, riz et pâtes reviennent aux mêmes quantités');
   await ctx.close();
 }
 
@@ -176,34 +172,32 @@ for (const d of ['2026-09-19', '2026-09-26', '2026-10-17', '2026-11-14']) {
 {
   const { ctx, fr } = await jour('2026-09-19T10:00:00+02:00');
   const t = await fr.evaluate(() => document.getElementById('courses-grid').innerText);
-  /* 14 par semaine : 2 par jour au petit-dejeuner, tire du plan de repas. */
-  ok(/Œufs — 14/.test(t), 'les œufs suivent le plan : 14 par semaine');
+  /* 14 par semaine : 2 par jour au petit-dejeuner, tire du plan de repas. Mais on
+     n'achete pas 14 oeufs : une boite de 12 plus une de 6 font 18. */
+  ok(/Œufs — 18/.test(t) && /demande 14 œufs/.test(t), 'les œufs : 18 achetés pour les 14 du plan');
   await ctx.close();
 }
 
-console.log('\n== 334d) Les dates d\'hygiène se calculent, elles ne sont pas écrites en dur ==');
-/* stock / conso par semaine donne la rupture ; le rachat est la derniere date du cycle
-   strictement avant. Corriger une estimation = changer un seul nombre. */
+console.log('\n== 334d) L\'hygiène s\'achète au flacon entier ==');
+/* Ces lignes-la n'ont pas besoin d'etre arrondies : un shampooing se vend au flacon. Ce
+   qui compte, c'est que chacune affiche SON rythme, pour qu'une estimation fausse se
+   corrige en un seul endroit visible. */
 {
   const { ctx, fr } = await jour('2026-09-19T10:00:00+02:00');
   const t = await fr.evaluate(() => document.getElementById('courses-grid').innerText);
-  for (const [prod, fini, achat] of [
-        ['Shampooing', '20 oct.', '17 oct.'],
-        ['Après-shampooing', '11 nov.', '17 oct.'],
-        ['Gel douche', '02 nov.', '17 oct.'],
-        ['Nettoyant visage', '19 nov.', '14 nov.'],
-        ['Dentifrice', '01 févr.', '09 janv.'],
-        ['Déodorant', '09 nov.', '17 oct.'],
-        ['Cotons-tiges', '11 févr.', '06 févr.'],
-        ['Rasoirs jetables', '04 janv.', '12 déc.'],
-        ['Brosse à dents', '01 mars', '12 déc.']]) {
-    const re = new RegExp(prod.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&') +
-      '[^\n]*fini vers le ' + fini.replace('.', '\\.') + '[^\n]*à racheter le ' + achat.replace('.', '\\.'));
-    ok(re.test(t), prod + ' : fini vers le ' + fini + ', racheté le ' + achat);
+  const esc = x => x.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+  for (const [prod, qte, pourquoi] of [
+        ['Shampooing', '1 flacon de 400 ml', '4 lavages par semaine'],
+        ['Gel douche', '1 flacon de 750 ml', '8 douches par semaine'],
+        ['Dentifrice', '2 tubes', '1 tube par mois'],
+        ['Cotons-tiges', '1 boîte de 200', '2 par jour'],
+        ['Rasoirs jetables', '1 paquet de 4', '1 par mois'],
+        ['Brosse à dents', '1', 'une toutes les 12 semaines']]) {
+    const re = new RegExp(esc(prod) + ' — ' + esc(qte) + '[^\n]*' + esc(pourquoi));
+    ok(re.test(t), prod + ' : ' + qte + ' · ' + pourquoi);
   }
-  /* Les trois produits qui n'existaient nulle part. */
   ok(/Nettoyant visage/.test(t) && /Déodorant/.test(t) && /Cotons-tiges/.test(t),
-     'nettoyant visage, déodorant et cotons-tiges ont enfin une ligne');
+     'nettoyant visage, déodorant et cotons-tiges ont chacun leur ligne');
   await ctx.close();
 }
 

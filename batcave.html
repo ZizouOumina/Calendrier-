@@ -9209,82 +9209,82 @@
     }
     return b;
   })();
-  /* La nourriture demarre le samedi 19 -- son jour 1 pour les repas et les courses.
-     L'hygiene, elle, se consomme deja : elle part du 14. */
-  var CONSO_DEBUT_REPAS = '2026-09-19';
-  var CONSO_DEBUT_HYGIENE = '2026-09-14';
+  /* ===== Des quantites qu'on peut vraiment acheter =====
+     Le plan de repas donne un besoin exact -- 650 g de poulet, 2 135 g de skyr, 405 g de
+     saumon. Le magasin, lui, vend des barquettes, des pots et des paquets. Chaque ligne
+     arrondit donc le besoin AU-DESSUS du conditionnement reel, et affiche les deux : ce
+     qu'il prend, et ce que le plan demande. Le surplus se cuit et part en tupperware --
+     quelques calories de plus ne changent rien, une rupture en milieu de semaine si.
+     Aucun stock n'est modelise : tout part de zero le samedi 19, et ce qu'il a deja se
+     coche a la main dans la liste. Un fond de placard ne se calcule pas, il se regarde. */
+  function arrondiPack(besoin, pas){ return Math.ceil(besoin / pas) * pas; }
   function planCoursesSemaine(ajust){
     var plus = grammesAjustement(ajust, 3.6) * 7;          /* g de pates en plus par semaine */
-    var g = function(n){ return String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ' '); };
+    /* espace fine insecable (U+202F) : « 3 780 g », comme partout ailleurs dans la Batcave */
+    var sep = function(n){ return String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ' '); };
+    /* 2 500 g s'ecrit « 2,5 kg », 500 g reste « 500 g » : on achete en kilos, pas en grammes. */
+    var poids = function(n){ return n >= 1000 ? String(n / 1000).replace('.', ',') + ' kg' : sep(n) + ' g'; };
+    var vol   = function(n){ return n >= 1000 ? String(n / 1000).replace('.', ',') + ' L'  : sep(n) + ' ml'; };
     var B = BESOIN_SEMAINE;
-    var q = function(n, u){ return g(n) + (u || ' g'); };
+    /* Une ligne d'achat : le besoin du cycle, le conditionnement, le prix au kilo (ou a
+       l'unite). Le prix facture est celui de la quantite ARRONDIE -- c'est ce qu'il paie. */
+    function art(label, besoin, pas, prixPas, fmt, pack, besoinTxt){
+      var achat = arrondiPack(besoin, pas), n = Math.round(achat / pas);
+      /* Le BESOIN se lit dans son unite brute -- « 2 135 g », pas « 2,135 kg » : c'est un
+         chiffre du plan, pas une quantite qu'on va chercher en rayon. */
+      return {label: label, qte: fmt(achat), prix: n * prixPas,
+              note: (pack || (n + ' × ' + fmt(pas))) + ' · le plan en demande ' +
+                    (besoinTxt || (sep(besoin) + (fmt === vol ? ' ml' : ' g')))};
+    }
     var cat = [
+      /* Le frais, chaque samedi. Tout est arrondi au paquet ou a la barquette. */
       {cat:'Chaque semaine', semaines:1, items:[
-        {label:'Poulet',              qte:q(B.poulet),  prix:B.poulet/1000*6.5},
-        {label:'Viande hachée 5 %',   qte:q(B.hachee),  prix:B.hachee/1000*8.0},
-        {label:'Saumon',              qte:q(B.saumon),  prix:B.saumon/1000*13.0},
-        {label:'Skyr',                qte:q(B.skyr),    prix:B.skyr/1000*4.0},
-        /* Ses 12 oeufs partent cette semaine, a la va-vite : il n'en restera pas samedi. */
-        {label:'Œufs',                qte:g(B.oeufs),   prix:B.oeufs*0.22},
-        {label:'Jambon',              qte:q(B.jambon),  prix:B.jambon/1000*11.0},
-        {label:'Fromage',             qte:q(B.fromage), prix:B.fromage/1000*9.0},
-        {label:'Pain complet',        qte:q(B.pain),    prix:B.pain/1000*3.2},
-        {label:'Bananes',             qte:g(B.bananes), prix:B.bananes*0.18},
-        {label:'Fruits (pommes, poires, oranges…)', qte:g(B.fruits), prix:B.fruits*0.28}
+        art('Poulet',            B.poulet,  500, 3.25, poids, '2 barquettes de 500 g'),
+        art('Viande hachée 5 %', B.hachee,  500, 4.00, poids, '2 barquettes de 500 g'),
+        art('Saumon',            B.saumon,  250, 3.25, poids, '2 pavés de 250 g'),
+        art('Skyr',              B.skyr,    500, 2.00, poids, '5 pots de 500 g'),
+        art('Œufs',              B.oeufs,     6, 1.32, sep,   'une boîte de 12 + une de 6', B.oeufs + ' œufs'),
+        art('Jambon',            B.jambon,  200, 2.20, poids, '2 paquets de 200 g'),
+        art('Fromage en tranches', B.fromage, 200, 1.80, poids, '1 paquet de 200 g'),
+        art('Pain complet',      B.pain,    500, 1.60, poids, '1 paquet de 500 g'),
+        /* Bananes et fruits se pesent : 7 pieces font ~840 g, on prend le kilo. */
+        art('Bananes',           B.bananes * 120, 1000, 1.50, poids, '1 kg, soit 7 ou 8', B.bananes + ' bananes'),
+        art('Fruits (pommes, poires, oranges…)', B.fruits * 120, 1000, 2.00, poids, '1 kg, soit 7 ou 8', B.fruits + ' fruits')
       ]},
       /* Cycle de 4 semaines, ancre au samedi 19 septembre : 19/9, 17/10, 14/11, 12/12. */
       {cat:'Réserves — toutes les 4 semaines', semaines:4, ancre:ANCRE_COURSES, items:[
-        {label:'Riz',                 qte:q(B.riz*4),     prix:B.riz*4/1000*1.1,
-         stockQte:4000, conso:B.riz, debut:CONSO_DEBUT_REPAS, stockTxt:'4 kg', pourquoi:g(B.riz) + ' g par semaine',
-         besoinCycle:B.riz*4, unite:' g', prixUnite:1.1/1000},
-        {label:'Pâtes',               qte:q((B.pates+plus)*4) + (plus ? ' (dont +' + g(plus*4) + ' g boucle kcal)' : ''), prix:(B.pates+plus)*4/1000*1.0,
-         stockQte:7000, conso:B.pates, debut:CONSO_DEBUT_REPAS, stockTxt:'7 kg', pourquoi:g(B.pates) + ' g par semaine',
-         besoinCycle:(B.pates+plus)*4, unite:' g', prixUnite:1.0/1000},
-        {label:'Flocons d\'avoine',   qte:q(B.flocons*4), prix:B.flocons*4/1000*1.6,
-         stockQte:2400, conso:B.flocons, debut:CONSO_DEBUT_REPAS, stockTxt:'2,4 kg', pourquoi:g(B.flocons) + ' g par semaine',
-         besoinCycle:B.flocons*4, unite:' g', prixUnite:1.6/1000},
-        {label:'Légumes verts surgelés', qte:q(B.legumes*4), prix:B.legumes*4/1000*2.0},
-        {label:'Miel',                qte:q(B.miel*4),    prix:B.miel*4/1000*6.5}
+        art('Riz',               B.riz * 4,            1000, 1.10, poids, '4 paquets de 1 kg'),
+        art('Pâtes',            (B.pates + plus) * 4,  500, 0.50, poids, '5 paquets de 500 g'),
+        art('Flocons d\'avoine',  B.flocons * 4,        1000, 1.60, poids, '3 paquets de 1 kg'),
+        art('Légumes verts surgelés', B.legumes * 4, 1000, 2.00, poids, '10 sachets de 1 kg'),
+        art('Miel',              B.miel * 4,           1000, 6.50, poids, '1 pot de 1 kg')
       ]},
-      /* Cinq semaines : 2 kg de beurre de cacahuete tombent pile (385 x 5 = 1 925), et
-         1,5 L d'huile aussi (288 x 5 = 1 440). A quatre semaines, un litre d'huile
+      /* Cinq semaines : 2 kg de beurre de cacahuete tombent presque pile (385 x 5 = 1 925),
+         et 1,5 L d'huile aussi (288 x 5 = 1 440). A quatre semaines, un litre d'huile
          manquait de 152 ml -- quatre jours de rupture par cycle. */
       {cat:'Toutes les 5 semaines', semaines:5, ancre:ANCRE_COURSES, items:[
-        {label:'Beurre de cacahuète', qte:q(B.cacahuete*5), prix:B.cacahuete*5/1000*5.25,
-         stockQte:500, conso:B.cacahuete, debut:CONSO_DEBUT_REPAS, stockTxt:'500 g', pourquoi:g(B.cacahuete) + ' g par semaine',
-         besoinCycle:B.cacahuete*5, unite:' g', prixUnite:5.25/1000},
-        {label:'Huile d\'olive',      qte:q(B.huile*5, ' ml'), prix:B.huile*5/1000*7.0,
-         stockQte:1000, conso:B.huile, debut:CONSO_DEBUT_REPAS, stockTxt:'1 L', pourquoi:g(B.huile) + ' ml par semaine',
-         besoinCycle:B.huile*5, unite:' ml', prixUnite:7.0/1000}
+        art('Beurre de cacahuète', B.cacahuete * 5, 1000, 5.25, poids, '2 pots de 1 kg'),
+        art('Huile d\'olive',        B.huile * 5,      500, 3.50, vol,   '1 bouteille d\'1,5 L')
       ]},
-      /* Sante et hygiene : les taux sont des ESTIMATIONS, ecrites pour etre corrigees.
-         Changer « conso » suffit, la date de rachat se recalcule. */
+      /* Sante et hygiene : deja vendus au flacon, rien a arrondir. Les rythmes sont des
+         ESTIMATIONS ecrites pour etre corrigees -- il coche ce qu'il a deja. */
       {cat:'Santé et hygiène — toutes les 4 semaines', semaines:4, ancre:ANCRE_COURSES, items:[
-        {label:'Shampooing', qte:'400 ml', prix:3.5,
-         stockQte:250, conso:48, debut:CONSO_DEBUT_HYGIENE, stockTxt:'250 ml', pourquoi:'4 lavages/semaine × 12 ml'},
-        {label:'Après-shampooing', qte:'400 ml', prix:3.5,
-         stockQte:500, conso:60, debut:CONSO_DEBUT_HYGIENE, stockTxt:'500 ml', pourquoi:'4 fois/semaine × 15 ml'},
-        {label:'Gel douche', qte:'750 ml', prix:2.8,
-         stockQte:850, conso:120, debut:CONSO_DEBUT_HYGIENE, stockTxt:'850 ml', pourquoi:'8 douches/semaine × 15 ml'},
-        {label:'Nettoyant visage', qte:'400 ml', prix:6,
-         stockQte:400, conso:42, debut:CONSO_DEBUT_HYGIENE, stockTxt:'400 ml', pourquoi:'2 fois/jour, protocole peau'},
-        {label:'Dentifrice', qte:'2 tubes', prix:4,
-         stockQte:5, conso:0.25, debut:CONSO_DEBUT_HYGIENE, stockTxt:'5 tubes', pourquoi:'1 tube par mois'},
-        {label:'Déodorant', qte:'200 ml', prix:3,
-         stockQte:400, conso:50, debut:CONSO_DEBUT_HYGIENE, stockTxt:'2 × 200 ml', pourquoi:'un 200 ml tient 2 mois'},
-        {label:'Cotons-tiges', qte:'200', prix:1.5,
-         stockQte:300, conso:14, debut:CONSO_DEBUT_HYGIENE, stockTxt:'300', pourquoi:'2 par jour'},
-        {label:'Rasoirs jetables', qte:'4', prix:8,
-         stockQte:4, conso:0.25, debut:CONSO_DEBUT_HYGIENE, stockTxt:'4 rasoirs', pourquoi:'1 par mois'},
-        {label:'Fil dentaire', qte:'2', prix:4},
-        {label:'Lessive', qte:'40 doses', prix:8}
+        {label:'Shampooing',       qte:'1 flacon de 400 ml', prix:3.5, note:'4 lavages par semaine'},
+        {label:'Après-shampooing', qte:'1 flacon de 400 ml', prix:3.5, note:'4 fois par semaine'},
+        {label:'Gel douche',       qte:'1 flacon de 750 ml', prix:2.8, note:'8 douches par semaine'},
+        {label:'Nettoyant visage', qte:'1 flacon de 400 ml', prix:6,   note:'2 fois par jour, protocole peau'},
+        {label:'Dentifrice',       qte:'2 tubes',            prix:4,   note:'1 tube par mois'},
+        {label:'Déodorant',        qte:'1 de 200 ml',        prix:3,   note:'un 200 ml tient 2 mois'},
+        {label:'Cotons-tiges',     qte:'1 boîte de 200',     prix:1.5, note:'2 par jour'},
+        {label:'Rasoirs jetables', qte:'1 paquet de 4',      prix:8,   note:'1 par mois'},
+        {label:'Fil dentaire',     qte:'2',                  prix:4},
+        {label:'Lessive',          qte:'1 bidon de 40 doses', prix:8,  note:'une lessive par samedi'}
       ]},
       {cat:'Tous les 3 mois', semaines:12, ancre:ANCRE_COURSES, items:[
-        {label:'Brosse à dents', qte:'1', prix:3.5,
-         stockQte:2, conso:1/12, debut:CONSO_DEBUT_HYGIENE, stockTxt:'2 brosses', pourquoi:'1 toutes les 12 semaines'}
+        {label:'Brosse à dents', qte:'1', prix:3.5, note:'une toutes les 12 semaines'}
       ]}
     ];
-    return calerSurStock(cat);
+    return cat;
   }
   /* Les categories a cycle sont ancrees sur le premier SAMEDI de courses du programme,
      le 19 septembre : elles retombent donc toujours un jour de courses, jamais entre deux. */
@@ -9319,69 +9319,11 @@
     plan.forEach(function(c){
       if(!categorieCoursesDue(c, iso)) return;
       c.items.forEach(function(i){
-        if(i.des && (iso || todayISO) < i.des) return;
         var ex = i.exception && i.exception.date === (iso || todayISO) ? i.exception : null;
         n++; prix += ex ? ex.prix : i.prix;
       });
     });
     return {n: n, prix: prix};
-  }
-  /* Une date de rachat ecrite en dur est invisible et faussable. Ici elle se CALCULE :
-     stock / conso par semaine donne la rupture, et le rachat est la derniere date du cycle
-     strictement AVANT elle. Corriger une estimation = changer un seul nombre, et toutes
-     les dates suivent. Le taux est affiche a l'ecran, donc verifiable. */
-  function dateRuptureStock(it){
-    if(!(it.stockQte > 0) || !(it.conso > 0)) return null;
-    return isoDecale(it.debut || PROGRAMME_DEBUT, Math.floor(it.stockQte / it.conso * 7));
-  }
-  function desDepuisStock(cat, it){
-    var rupture = dateRuptureStock(it);
-    if(!rupture) return it.des || null;
-    var n = cat.semaines || 1;
-    if(n < 2) return null;                       /* hebdomadaire : il rachete des qu'il manque */
-    var d = new Date((cat.ancre || ANCRE_COURSES) + 'T00:00:00'), dernier = null;
-    for(var i = 0; i < 60; i++){
-      var iso = localISO(d);
-      /* <= et non < : on fait les courses le matin, donc acheter le jour meme ou le stock
-         tombe a zero est juste a temps. Avec « < », un stock qui dure exactement un cycle
-         faisait racheter un cycle entier trop tot. */
-      if(iso > rupture) break;
-      dernier = iso;
-      d.setDate(d.getDate() + n * 7);
-    }
-    return dernier;
-  }
-  /* Ce qu'il reste d'un stock a une date donnee. Sert a NE PAS racheter ce qu'on a deja :
-     le jour ou l'article redevient du, on ne prend que « besoin du cycle moins ce qui
-     reste ». Sans ca la Batcave demandait 14 oeufs a quelqu'un qui en avait 12, et
-     1 925 g de beurre de cacahuete a quelqu'un qui en avait 500. */
-  function resteStock(it, iso){
-    if(!(it.stockQte > 0) || !(it.conso > 0)) return 0;
-    var j = daysBetween(new Date((it.debut || PROGRAMME_DEBUT) + 'T00:00:00'),
-                        new Date((iso || todayISO) + 'T00:00:00'));
-    if(j < 0) j = 0;
-    return Math.max(0, it.stockQte - it.conso * j / 7);
-  }
-  function calerSurStock(liste){
-    liste.forEach(function(c){
-      c.items.forEach(function(i){
-        if(!(i.stockQte > 0) || !(i.conso > 0)) return;
-        var d = desDepuisStock(c, i), r = dateRuptureStock(i);
-        if(d) i.des = d;
-        i.stock = 'tu en as ' + i.stockTxt + ' · ' + i.pourquoi + (r ? ' → fini vers le ' + fmtDate(r) : '');
-        var reste = resteStock(i, todayISO);
-        if(reste > 0 && i.besoinCycle > 0 && !articleEnStock(i, todayISO)){
-          var manque = i.besoinCycle - reste;
-          if(manque > 0){
-            var fmt = function(n){ return String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + (i.unite || ''); };
-            i.qte = fmt(manque);
-            if(i.prixUnite) i.prix = i.prixUnite * manque;
-            i.stock = 'il t’en reste ' + fmt(reste) + ' · ' + i.pourquoi + ' → tu complètes seulement';
-          }
-        }
-      });
-    });
-    return liste;
   }
   function fmtEuro(x){ var r = Math.round(x * 10) / 10; return '~' + String(r).replace('.', ',') + ' €'; }
   var COURSES = [];
@@ -9395,7 +9337,7 @@
            « exception » remplace donc la quantite ce jour-la seulement, en disant pourquoi. */
         var ex = i.exception && i.exception.date === todayISO ? i.exception : null;
         return {texte: i.label + ' — ' + (ex ? ex.qte : i.qte) + ' (' + fmtEuro(ex ? ex.prix : i.prix) + ')' + (ex ? ' · ' + ex.pourquoi : ''),
-                des: i.des, stock: i.stock};
+                note: i.note};
       })}; });
     return plan;
   }
@@ -9441,15 +9383,11 @@
   /* Seules les categories DUES cette semaine comptent. Sans ce filtre, l'habitude
      « Courses faites » -- qui ne se coche que lorsque tout est coche -- ne se validerait
      plus jamais des qu'une reserve mensuelle n'est pas due. */
-  function articleEnStock(it, iso){ return !!(it && it.des && (iso || todayISO) < it.des); }
   function coursesTotals(iso){
     var total=0, checked=0;
     COURSES.forEach(function(c,ci){
       if(!categorieCoursesDue(c, iso)) return;
-      c.items.forEach(function(it,ii){
-        if(articleEnStock(it, iso)) return;
-        total++; if(coursesState[ci+'-'+ii]) checked++;
-      });
+      c.items.forEach(function(it,ii){ total++; if(coursesState[ci+'-'+ii]) checked++; });
     });
     return {total:total, checked:checked};
   }
@@ -9464,7 +9402,7 @@
       auj.innerHTML = '🛒 <b>À prendre aujourd\'hui : ' + a.n + ' article' + (a.n > 1 ? 's' : '') +
                       '</b> · <b style="color:var(--ink-dim);">' + fmtEuro(a.prix) + '</b>';
     }
-    if(note) note.innerHTML = 'Quantités d\'achat arrondies au conditionnement, pour une semaine du plan. ' + (ajust
+    if(note) note.innerHTML = 'Quantités arrondies au conditionnement du magasin, jamais en dessous du besoin : chaque ligne dit ce que tu prends et ce que le plan demande. Le surplus se cuit et part en tupperware. Coche ce que tu as déjà — aucun stock n\'est supposé. ' + (ajust
       ? 'Boucle poids → calories en vigueur : <b style="color:var(--ink-dim);">' + (ajust > 0 ? '+' : '') + ajust + ' kcal/jour</b>, soit ' + (grammesAjustement(ajust, 3.6) > 0 ? '+' : '') + grammesAjustement(ajust, 3.6) + ' g de pâtes crues au dîner (' + (grammesAjustement(ajust, 3.6) * 7 > 0 ? '+' : '') + grammesAjustement(ajust, 3.6) * 7 + ' g sur la semaine) — déjà compté ci-dessous.'
       : 'Aucun ajustement calorique en cours : quantités du plan de base.');
     if(budget) budget.innerHTML = 'Budget estimé : <b style="color:var(--ink-dim)">' + fmtEuro(b.total) + ' / semaine</b>' +
@@ -9476,11 +9414,11 @@
       card.className = 'cat-card';
       var due = categorieCoursesDue(c);
       var itemsHtml = c.items.map(function(it, ii){
-        var key = ci+'-'+ii, checked = !!coursesState[key], stock = articleEnStock(it);
-        return '<li class="'+(checked?'checked':'')+'"'+(stock?' style="opacity:0.5;"':'')+'>' +
+        var key = ci+'-'+ii, checked = !!coursesState[key];
+        return '<li class="'+(checked?'checked':'')+'">' +
                '<input type="checkbox" id="c-'+key+'" data-course="'+key+'" '+(checked?'checked':'')+'>' +
                '<label for="c-'+key+'">'+it.texte +
-               (stock ? ' <span class="sub-note">— ' + escapeHtml(it.stock || 'déjà en réserve') + ', à racheter le ' + fmtDate(it.des) + '</span>' : '') +
+               (it.note ? ' <span class="sub-note">— ' + escapeHtml(it.note) + '</span>' : '') +
                '</label></li>';
       }).join('');
       /* Une categorie non due reste VISIBLE mais grisee et hors du compte : il peut toujours
