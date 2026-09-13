@@ -142,7 +142,12 @@ console.log('\n== 278) Le programme parle du vrai travail de cou et d\'abdos =='
   const t = await fr.evaluate(() => { document.getElementById('programme-toggle').click(); return document.getElementById('programme-details').innerText; });
   ok(/jamais de pont sur la tête/.test(t), 'le guide interdit explicitement le pont de cou');
   ok(/1,25 kg/.test(t), 'la progression du cou se fait en kilos');
-  ok(/roue abdominale/i.test(t) && /dragon flag/i.test(t), 'les abdos lestés sont décrits');
+  /* La roue abdominale du mardi est remplacee par un CRUNCH LESTE : il n'a pas de roue, le
+     sol du parc ne glisse pas, et le fall-out sur barre etait plus complique que le probleme.
+     Le crunch est le seul des quatre qui travaille les abdos par le HAUT, et il reutilise le
+     poids deja necessaire au cou -- donc zero materiel de plus. */
+  ok(/crunch lesté/i.test(t) && /par le\s*<?b?>?\s*haut/i.test(t) && /dragon flag/i.test(t),
+     'les abdos lestés sont décrits, crunch du mardi compris');
   const cartes = await fr.evaluate(() => [...document.querySelectorAll('.sport-card')].map(c => c.innerText).join('\n'));
   ok(/Flexion du cou/.test(cartes) && /Extension du cou/.test(cartes) && /Inclinaisons latérales du cou/.test(cartes), 'les trois mouvements de cou sont dans les séances');
   ok(!/Hollow hold|Planche latérale|Isométrie du cou/.test(cartes), 'les gainages isométriques ont disparu');
