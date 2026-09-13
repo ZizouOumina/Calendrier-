@@ -48,6 +48,7 @@ console.log('\n== 38) Toutes les surveillances de connecteurs sont branchées ==
 const attendues = [
   'AccuWeather®/widgets-current-claude',
   'AccuWeather®/widgets-daily-claude',
+  'AccuWeather®/widgets-hourly-claude',   /* A4 : la pluie de 5 h 30, dite la veille au soir */
   'Spotify/get_currently_playing',
   'Shopify/get-shop-info',
   'Shopify/list-orders',

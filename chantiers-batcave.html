@@ -96,8 +96,12 @@
   td b{font-variant-numeric:tabular-nums;}
   .wrap{overflow-x:auto;}
   .closed{list-style:none; padding:0; margin:18px 0;}
-  .closed li{display:flex; gap:10px; align-items:baseline; padding:7px 0; border-bottom:1px solid var(--line-soft); font-size:15px;}
-  .closed li::before{content:"✓"; color:var(--done); font-weight:700;}
+  /* Surtout PAS display:flex ici : chaque <b> de la phrase devenait un element de flex, et
+     les morceaux se rangeaient COTE A COTE au lieu de couler. Les lignes courtes tenaient
+     quand meme sur 390 px, ce qui a masque le defaut jusqu'a une ligne plus longue. Retrait
+     suspendu : le texte coule normalement, la coche reste dans la marge. */
+  .closed li{position:relative; padding:7px 0 7px 22px; border-bottom:1px solid var(--line-soft); font-size:15px;}
+  .closed li::before{content:"✓"; position:absolute; left:0; top:7px; color:var(--done); font-weight:700;}
 </style>
 
 <div class="shell">
@@ -123,7 +127,7 @@
     <h2 id="etat">00 · Où on en est</h2>
     <div class="strip">
       <div><div class="k">Chantiers bloqués</div><div class="v">4</div><div class="s">2 sur toi, 2 sur un accès</div></div>
-      <div><div class="k">Améliorations proposées</div><div class="v">8</div><div class="s">dont 3 sur la charge, ton seul vrai risque</div></div>
+      <div><div class="k">Améliorations proposées</div><div class="v">6</div><div class="s">A4 et A5 sont construites &middot; 3 portent sur la charge</div></div>
       <div><div class="k">À ne pas construire</div><div class="v">3</div><div class="s">et la raison de chacune</div></div>
       <div><div class="k">Tests</div><div class="v">82</div><div class="s">fichiers, tous verts</div></div>
     </div>
@@ -258,7 +262,7 @@
       <b>aucun connecteur Apple Santé ou Google Fit</b> dans ton compte aujourd'hui, et ce n'est pas quelque chose
       que je peux créer — ça dépend de ce que Claude propose.</p>
       <p>Le jour où il y en a un : poids, sommeil, pas et fréquence cardiaque au repos arrivent seuls, et la
-      balance énergétique — qui demande 7 jours de repas complets et 4 pesées sur 28 jours — s'allume sans effort.</p>
+      balance énergétique — qui demande 7 jours de repas complets sur 28 jours et 4 pesées sur 12 semaines — s'allume sans effort.</p>
       <p>En attendant, <b>la saisie du matin suffit largement</b>. C'est deux minutes, et c'est exactement elle qui
       nourrit la recommandation calorique. Ce chantier n'est pas un manque, c'est un confort à venir.</p>
     </div>
@@ -303,22 +307,6 @@
       <p class="why"><b>Pourquoi maintenant et pas en janvier</b>Parce qu'en janvier tu seras dans tes premiers
       partiels, et qu'un arbitrage de sommeil pris en semaine d'examen est toujours le mauvais. <b>Une demi-heure
       de code</b> une fois que tu as tranché — l'échange des deux jours de sport est un réglage, pas un chantier.</p>
-    </div>
-
-    <div class="job you">
-      <div class="head"><span class="chip">utile</span><h3>La pluie de 5 h 30, dite la veille</h3><span class="ref">A4</span></div>
-      <p>Les prévisions à sept jours sont dans le Calendrier, mais il faut aller les chercher. Tu t'entraînes
-      <b>dehors, au parc, à 5 h 30</b>, quatre fois par semaine, d'octobre à mars. Une ligne à la clôture du soir
-      — <i>« demain 5 h 30 : 12 °C, pluie probable »</i> — et tu décides la veille au lieu de le découvrir en bas
-      de l'immeuble. <b>Quarante minutes.</b></p>
-    </div>
-
-    <div class="job you">
-      <div class="head"><span class="chip">utile</span><h3>Le dimanche ferme la semaine tout seul</h3><span class="ref">A5</span></div>
-      <p>La revue du dimanche est guidée, mais c'est toi qui l'ouvres. Un écran de fin de semaine qui s'ouvre de
-      lui-même le dimanche à la clôture, avec les sept chiffres de la semaine déjà remplis et trois champs à
-      écrire. <b>Une heure.</b> Le risque de ne pas le faire est le plus élevé de tous les rituels, parce que c'est
-      le seul hebdomadaire.</p>
     </div>
 
     <div class="job you">
@@ -415,6 +403,20 @@
     <h2 id="ferme">05 · Fermé depuis</h2>
     <p>Ce qui n'est plus sur la liste. Les trois premières lignes sont de cet après-midi, le reste de la nuit.</p>
     <ul class="closed">
+      <li><b>A4 · La pluie de 5 h 30 est dite la veille au soir.</b> Une ligne dans la clôture — « demain 5 h 30 au
+      parc : 11° (ressenti 9°), averses, pluie 62 %, vent NE 21 km/h — décide maintenant : veste, ou séance à la
+      maison ». Elle n'apparaît que les <b>quatre jours où le bloc de 05:30 est vraiment dehors</b> (lundi, mardi,
+      jeudi, samedi) : les autres matins sont de l'Anki ou du projet, à la maison, et la météo n'y change rien.
+      Le connecteur ne prévoit que <b>douze heures</b> — ce qui couvre exactement 5 h du lendemain depuis la
+      clôture du soir. Au-delà, ou si le connecteur ne répond pas, <b>la ligne se tait</b> plutôt que de deviner.
+      Le conseil suit le chiffre : au-dessus de 50 % on décide le soir, au-dessus de 25 % on regarde le ciel, et
+      en dessous de 8 °C c'est le froid qui prend la main sur la pluie.</li>
+      <li><b>A5 · Le dimanche ferme la semaine tout seul.</b> Les <b>sept chiffres de la semaine</b> — révision,
+      projets, espagnol, fidélité au plan, sommeil, séances, habitudes — sont désormais <i>dans</i> la clôture du
+      dimanche, déjà calculés, chacun avec sa valeur de la semaine précédente et le sens de l'écart. Ils étaient
+      dans l'onglet Semaine, donc derrière un clic que personne ne fait un dimanche à 21 h 30. Sept et pas dix :
+      les dépenses, l'eau et la nutrition ne se décident pas un dimanche soir, et une liste qu'on ne lit pas ne
+      vaut rien.</li>
       <li><b>Le semestre 2 est dans la grille</b>, du 25 janvier au 4 juin : 24 h de cours par semaine, mardi et
       mercredi jusqu'à 21:30, et le lundi qui redémarre à 15:30 — les deux heures libres du lundi après-midi du
       semestre 1 disparaissent. Le semestre est dans la grille de <i>base</i>, pas dans les périodes : c'était la

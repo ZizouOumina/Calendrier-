@@ -2772,9 +2772,15 @@
     <div class="field-row" style="margin-bottom:12px;" data-cl-plus><label>Compléments pris</label><div class="chip-group" id="cl-complements"></div></div>
     <div class="field-row" style="margin-bottom:12px;"><label>Habitudes pas encore cochées <span class="sub-note">(touche pour cocher)</span></label><div class="chip-group" id="cl-habitudes"></div></div>
     <p class="sub-note" id="cl-pomodoro" style="margin:-6px 0 12px;"></p>
+    <!-- A4 : le temps qu'il fera au parc demain 5 h 30, dit ce soir. Masqué les jours où le
+         bloc de 05:30 n'est pas en extérieur, et masqué si la prévision ne couvre pas l'heure. -->
+    <p class="sub-note" id="cl-meteo" hidden style="margin:-6px 0 12px; color:var(--cyan-bright); line-height:1.5;"></p>
     <div class="field-row" style="margin-bottom:14px;" data-cl-plus><label for="cl-note">Une ligne sur la journée</label><input type="text" id="cl-note" placeholder="ce qui a marché, ce qui a coincé…" maxlength="300"></div>
     <div id="cl-revue" hidden style="margin-bottom:14px; padding:12px 14px; background:var(--surface-hover); border:1px solid var(--border);">
       <p style="font-weight:600; color:var(--ink); font-size:13.5px; margin-bottom:8px;">🗓️ Dimanche : revue de la semaine</p>
+      <!-- A5 : les sept chiffres de la semaine, déjà remplis. Ils étaient dans l'onglet
+           Semaine, donc derrière un clic que personne ne fait le dimanche soir. -->
+      <div id="cl-semaine" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(112px,1fr)); gap:7px; margin-bottom:12px;"></div>
       <ul class="mini-list" id="cl-constats" style="margin-bottom:12px;"></ul>
       <div class="field-grid">
         <div class="field-row"><label for="cl-rv-marche">Ce qui a bien marché</label><input type="text" id="cl-rv-marche"></div>
@@ -3531,6 +3537,64 @@
      Rafraîchissement périodique (30-120s selon le widget), pas un push
      instantané — c'est la limite technique du polling côté connecteur. */
   var mcpHandle = null;
+  /* ===== A4 · La pluie de 5 h 30, dite la veille =====
+     Forme REELLE observee le 13 septembre 2026 sur widgets-hourly-claude (Alicante,
+     locationKey 310681, metric, fr) : { hourlyForecast: [ { date:'2026-09-13T05:00:00+02:00',
+     dateTime:'05 h', temperature:'23°', temperatureValue:22.6, realFeel:'21°',
+     phrase:'Ciel dégagé', precip:'0 %', hasPrecip:false,
+     extended:{ rainProbability:'0 %', wind:'NNE 9 km/h', gusts:'19 km/h' } } ], ... }
+     Douze heures d'horizon, pas davantage. Rien n'est devine : si la tranche de 05 h n'est
+     pas dans la fenetre, la ligne ne s'affiche pas. */
+  var meteoHeures = null;
+  function meteoALHeure(iso, hh){
+    if(!Array.isArray(meteoHeures)) return null;
+    for(var i = 0; i < meteoHeures.length; i++){
+      var h = meteoHeures[i], d = String((h && h.date) || '');
+      if(d.slice(0, 10) === iso && d.slice(11, 13) === hh) return h;
+    }
+    return null;
+  }
+  /* Le bloc de 05:30 n'est en exterieur QUE les jours de sport : les autres matins (Anki,
+     projets perso) se font chez soi, et la meteo n'y change rien. Inutile d'annoncer 8 °C a
+     quelqu'un qui va s'asseoir a son bureau. */
+  function seanceExterieureLe(iso){
+    if(typeof grilleBase !== 'function') return false;
+    var g = grilleBase(cleJournee(dowDe(iso)), iso) || [];
+    for(var i = 0; i < g.length; i++){ if(g[i][0] === '05:30') return /^Sport/.test(g[i][1]); }
+    return false;
+  }
+  function pourcentPluie(h){
+    var e = (h && h.extended) || {};
+    var brut = e.rainProbability !== undefined ? e.rainProbability : (h && h.precip);
+    var n = parseInt(String(brut || '').replace(/[^0-9]/g, ''), 10);
+    return isNaN(n) ? 0 : n;
+  }
+  function texteMeteoSeance(iso){
+    var demain = iso || isoDecale(todayISO, 1);
+    if(!seanceExterieureLe(demain)) return '';
+    var h = meteoALHeure(demain, '05');
+    if(!h) return '';
+    var e = h.extended || {}, pluie = pourcentPluie(h);
+    var t = h.temperature || (h.temperatureValue !== undefined ? Math.round(h.temperatureValue) + '°' : null);
+    if(!t) return '';
+    var bouts = ['🌧️ Demain 5 h 30 au parc : ' + t + (h.realFeel ? ' (ressenti ' + h.realFeel + ')' : '')];
+    if(h.phrase) bouts.push(String(h.phrase).toLowerCase());
+    bouts.push('pluie ' + pluie + ' %');
+    if(e.wind) bouts.push('vent ' + e.wind);
+    var tv = h.temperatureValue;
+    var conseil = pluie >= 50 ? ' — décide maintenant : veste, ou séance à la maison.'
+      : pluie >= 25 ? ' — pluie possible, regarde le ciel avant de descendre.'
+      : (typeof tv === 'number' && tv <= 8) ? ' — il fera froid : manches longues sur le kilomètre de course.'
+      : ' — rien à prévoir.';
+    return bouts.join(' · ') + conseil;
+  }
+  function majMeteoSeance(){
+    var el = document.getElementById('cl-meteo');
+    if(!el) return;
+    var txt = texteMeteoSeance();
+    el.textContent = txt;
+    el.hidden = !txt;
+  }
   /* Forme REELLE observee (4 et 5 sept. 2026) : { currently_playing_entity: { name, creator,
      creators:[{name}], playback:{status}, entity_type } }. Le connecteur ne renvoie l'entite
      que s'il y a une lecture active ; son absence vaut « rien ne joue ». */
@@ -3621,6 +3685,20 @@
             '</div>';
         }).join('');
       }, {refetchInterval: 900000});
+
+      /* A4 — Prévisions HEURE PAR HEURE, pour une seule chose : dire la veille au soir le
+         temps qu'il fera au parc a 5 h 30. L'horizon du connecteur est de DOUZE HEURES, et
+         ca suffit tres exactement : la cloture s'ouvre a partir de 20:25, donc 05:00 le
+         lendemain est toujours dans la fenetre. Si elle n'y est pas — cloture repoussee en
+         plein apres-midi — on n'affiche rien plutot qu'une valeur devinee.
+         Une heure de rafraichissement, pas quinze minutes : une prevision a huit heures ne
+         change pas toutes les quinze minutes, et c'est du quota depense pour rien. */
+      mcp.watchTool('AccuWeather®', 'widgets-hourly-claude', {queryParams:{locationKey:'310681', unit:'metric', lang:'fr'}}, function(ev){
+        if(ev.type === 'error'){ meteoHeures = null; return; }
+        var p = ev.result && ev.result.payload;
+        meteoHeures = (p && p.hourlyForecast) || null;
+        try{ majMeteoSeance(); }catch(e){}
+      }, {refetchInterval: 3600000});
 
       /* Spotify — ce qui joue en ce moment */
       /* Le sondage periodique est plafonne par la plateforme a ~30 s : on le declare a ce
@@ -5461,11 +5539,11 @@
     {id:'core-es-formulas', label:'Les dix formules du jour', icon:'💬'},
     {id:'core-es-lectura', label:'20 pages lues en espagnol', icon:'📖'}
   ];
-  /* Deux rituels de suivi du corps, demandes le 9 septembre, remplaces le 12 septembre par
+  /* Deux rituels de suivi du corps, demandes le 9 septembre, remplaces le 13 septembre par
      leurs versions du DIMANCHE (voir V6) : ils restent ici pour memoire, mais sont dans la
-     liste des retirees. La pesee est HEBDOMADAIRE et non quotidienne : un poids se lit sur
-     une tendance, pas sur une journee, et se peser tous les jours fait prendre des decisions
-     sur du bruit. */
+     liste des retirees. Le principe n'a pas change : un poids se lit sur une TENDANCE, pas
+     sur une journee, et se peser tous les jours fait prendre des decisions sur du bruit. Seul
+     le pas a bouge -- hebdomadaire d'abord, puis un dimanche sur deux. */
   var HABIT_SEED_V5 = [];   /* vide : ses deux habitudes sont retirees, V6 les remplace */
   /* Le lot du 12 septembre au soir : le DIMANCHE devient le jour d'entretien du corps et
      de la maison. Une seule journee porte tout ce qui n'est ni quotidien ni scolaire, plutot
@@ -9901,7 +9979,15 @@
     return {icon:'🛏️', title:T, page:P, text: texte + corr, action: action, score: score, n: nuits.length + paires.length, tendance: tend, serie: serie, des: desSommeil};
   }
 
-  /* 4. Balance énergétique : calories cochées contre pente du poids, sur 28 jours -------- */
+  /* 4. Balance énergétique : calories cochées contre pente du poids ----------------------
+     DEUX FENETRES, et ce n'est pas un oubli. Les repas se lisent sur 28 jours : une moyenne
+     calorique plus ancienne ne dit plus ce qu'on mange en ce moment. Les pesées se lisent sur
+     84 jours, comme la boucle poids → calories, parce qu'il n'y a plus qu'UNE PESEE TOUS LES
+     QUINZE JOURS : sur 28 jours il n'en existe que deux, et la carte exigeait quatre pesées —
+     elle ne se serait jamais allumée, pas une fois en six mois, sans que rien ne le signale.
+     C'est le genre de panne silencieuse qu'un changement de rythme provoque ailleurs que la
+     ou on l'a fait. */
+  var BE_FENETRE_REPAS_J = 28, BE_FENETRE_POIDS_J = 84;
   function joursRepas(nb, decal){
     var complets = [], partiels = 0; decal = decal || 0;
     for(var i = 1 + decal; i <= nb + decal; i++){
@@ -9919,16 +10005,16 @@
     return {complets: complets, partiels: partiels};
   }
   function insightBalanceEnergetique(){
-    var rep = joursRepas(28), kcal = rep.complets, poids = [];
-    for(var i = 0; i < 28; i++){
+    var rep = joursRepas(BE_FENETRE_REPAS_J), kcal = rep.complets, poids = [];
+    for(var i = 0; i < BE_FENETRE_POIDS_J; i++){
       var d = new Date(now); d.setDate(d.getDate() - i);
       var iso = localISO(d);
       var j = (iso === todayISO) ? journalState : load('batcave-journal-' + iso, null);
-      if(j && Number(j.poids) > 0) poids.push({t: 27 - i, kg: Number(j.poids)});
+      if(j && Number(j.poids) > 0) poids.push({t: BE_FENETRE_POIDS_J - 1 - i, kg: Number(j.poids)});
     }
     var T = 'Balance énergétique', P = 'repas';
     var serie = {v: poids.slice().reverse().map(function(p){ return p.kg; }), label: poids.length + ' pesées', unite:'kg', dec:1};
-    if(kcal.length < 7 || poids.length < 4) return {icon:'⚖️', title:T, page:P, text:'Il faut 7 jours de repas complets (au moins la moitié de la cible cochée) et 4 pesées sur 28 jours : ' + kcal.length + ' jours complets, ' + rep.partiels + ' partiels ignorés, ' + poids.length + ' pesées. Coche chaque prise le jour même.', score:0, n:kcal.length + poids.length, serie:serie, des:dansNJours(Math.max(7 - kcal.length, 4 - poids.length))};
+    if(kcal.length < 7 || poids.length < 4) return {icon:'⚖️', title:T, page:P, text:'Il faut 7 jours de repas complets (au moins la moitié de la cible cochée) sur 28 jours, et 4 pesées sur 12 semaines : ' + kcal.length + ' jours complets, ' + rep.partiels + ' partiels ignorés, ' + poids.length + ' pesées. Coche chaque prise le jour même.', score:0, n:kcal.length + poids.length, serie:serie, des:dansNJours(Math.max(7 - kcal.length, 4 - poids.length))};
     var moyK = kcal.reduce(function(a, x){ return a + x.kcal; }, 0) / kcal.length;
     var moyC = kcal.reduce(function(a, x){ return a + x.cible; }, 0) / kcal.length;
     var n = poids.length, sx = 0, sy = 0, sxy = 0, sxx = 0;
@@ -11895,7 +11981,14 @@
            saison: {debut: horizonState.debut, fin: horizonState.fin, jours: joursAvantFinSaison(), closable: saisonClosable()},
            exercice: {dernier: dernierExercice(), du: exerciceDu()}
          };
-       }; window.__bcReinitGarder = reinitGarder; window.__bcDureeSeance = dureeSeanceDe; window.__bcCopieVierge = copieVierge; window.__bcNotion = absorberNotion; window.__bcNotionRetards = notionRetards; window.__bcCoursPasFait = coursPasFait; window.__bcExercice = exerciceDu; window.__bcChiffrer = chiffrerTexte; window.__bcDechiffrer = dechiffrerEnveloppe;
+       }; window.__bcReinitGarder = reinitGarder; window.__bcDureeSeance = dureeSeanceDe;
+    /* A4/A5 : les tests injectent une charge utile METEO de forme REELLE (relevee le
+       13 septembre sur widgets-hourly-claude) et lisent la phrase produite ; ils ne
+       simulent jamais le connecteur lui-meme. */
+    window.__bcMeteoInjecter = function(liste){ meteoHeures = liste; try{ majMeteoSeance(); }catch(e){} };
+    window.__bcMeteoSeance = texteMeteoSeance;
+    window.__bcSeanceDehors = seanceExterieureLe;
+    window.__bcChiffresSemaine = chiffresSemaine; window.__bcCopieVierge = copieVierge; window.__bcNotion = absorberNotion; window.__bcNotionRetards = notionRetards; window.__bcCoursPasFait = coursPasFait; window.__bcExercice = exerciceDu; window.__bcChiffrer = chiffrerTexte; window.__bcDechiffrer = dechiffrerEnveloppe;
        /* rapport hebdomadaire (tests/rapport-hebdo.mjs) : la semaine à un décalage donné, ses
           statistiques de bilan et le prévu/réalisé de chaque jour */
        window.__bcSemaine = function(off){
@@ -13609,6 +13702,43 @@
      Trois constats calcules par le moteur sur la semaine en cours -- objectifs du mois en
      retard, fidelite au plan, sommeil -- puis les trois questions. Les constats sont
      enregistres avec la revue : dans six mois on relit ce que les chiffres disaient. */
+  /* ===== A5 · Le dimanche ferme la semaine tout seul =====
+     Les sept chiffres etaient dans l'onglet Semaine, donc derriere un clic que personne ne
+     fait le dimanche a 21 h 30. Ils viennent maintenant AU-DEVANT, deja calcules, dans la
+     cloture — le seul rituel hebdomadaire, et donc celui qu'on saute le plus facilement.
+     Sept et pas dix : on retire ce qui ne se decide pas un dimanche soir (depenses, eau,
+     nutrition) pour ne garder que ce sur quoi la semaine suivante peut agir. */
+  var CHIFFRES_SEMAINE = [
+    {icon:'📚', label:'Révision',    cle:'revH',        unite:'h', haut:true},
+    {icon:'💻', label:'Projets',     cle:'projHorsEs',  unite:'h', haut:true},
+    {icon:'🇪🇸', label:'Espagnol',    cle:'esH',         unite:'h', haut:true},
+    {icon:'🎯', label:'Fidélité',    cle:'fidelite',    unite:'%', haut:true},
+    {icon:'😴', label:'Sommeil/nuit',cle:'sleepH',      unite:'h', haut:true},
+    {icon:'🏋️', label:'Séances',     cle:'sportPct',    unite:'%', haut:true},
+    {icon:'✅', label:'Habitudes',   cle:'habitPct',    unite:'%', haut:true}
+  ];
+  function chiffresSemaine(){
+    var cur = weekStats(weekRange(0)), prev = weekStats(weekRange(-1));
+    return CHIFFRES_SEMAINE.map(function(c){
+      var a = Number(cur[c.cle]) || 0, b = Number(prev[c.cle]) || 0, d = a - b;
+      var fmt = function(v){ return c.unite === 'h' ? fmtHeures(v) : Math.round(v) + ' %'; };
+      return {label: c.label, icon: c.icon, valeur: fmt(a), avant: fmt(b),
+              delta: d, sens: Math.abs(d) < 0.05 ? '→' : (d > 0 ? '↑' : '↓'),
+              bon: Math.abs(d) < 0.05 ? null : (c.haut ? d > 0 : d < 0)};
+    });
+  }
+  function remplirChiffresSemaine(){
+    var box = document.getElementById('cl-semaine');
+    if(!box) return;
+    box.innerHTML = chiffresSemaine().map(function(c){
+      var col = c.bon === null ? 'var(--ink-faint)' : (c.bon ? 'var(--good)' : 'var(--danger)');
+      return '<div style="background:var(--surface-raised); border:1px solid var(--border); padding:7px 9px;">' +
+        '<div style="font-size:10.5px; color:var(--ink-faint); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">' + c.icon + ' ' + escapeHtml(c.label) + '</div>' +
+        '<div style="font-family:var(--font-display); font-size:17px; color:var(--ink); line-height:1.25;">' + escapeHtml(c.valeur) + '</div>' +
+        '<div style="font-family:var(--font-mono); font-size:9.5px; color:' + col + ';">' + c.sens + ' ' + escapeHtml(c.avant) + ' la sem. dernière</div>' +
+        '</div>';
+    }).join('');
+  }
   function constatsSemaine(){
     var cur = weekStats(weekRange(0)), out = [], hh = function(m){ return fmtDuree(m); };
     var mois = moisListe().filter(function(m){ return todayISO >= m.debut && todayISO <= m.fin; })[0];
@@ -13950,9 +14080,11 @@
     if(pom) pom.textContent = !bp.total ? '' : (bp.sans
       ? '🍅 ' + bp.sans + ' bloc' + (bp.sans > 1 ? 's' : '') + ' sur ' + bp.total + ' sans Pomodoro aujourd\'hui : ' + bp.noms.slice(0, 3).join(', ') + (bp.noms.length > 3 ? '…' : '') + '.'
       : '🍅 Tous les blocs de la journée (' + bp.total + ') ont eu leur Pomodoro.');
+    try{ majMeteoSeance(); }catch(e){}
     var rv = document.getElementById('cl-revue'), dimanche = weekday === 0;
     rv.hidden = !dimanche;
     if(dimanche){
+      try{ remplirChiffresSemaine(); }catch(e){}
       document.getElementById('cl-constats').innerHTML = constatsSemaine().map(function(c){ return '<li><span>' + escapeHtml(c) + '</span></li>'; }).join('');
       ['cl-rv-marche','cl-rv-coince','cl-rv-ajust','cl-es-errores','cl-es-oral','cl-es-drill','cl-anki-revues','cl-anki-creees'].forEach(function(id){ var el = document.getElementById(id); if(el) el.value = ''; });
       var esBox = document.getElementById('cl-espanol');
