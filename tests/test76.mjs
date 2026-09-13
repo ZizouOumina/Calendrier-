@@ -25,17 +25,21 @@ for (const [d, attendu, moitie] of [['2026-09-14',2,true],['2026-09-21',2,true],
      d+' : tractions '+n+' tours (attendu '+attendu+')' + (/tours × ½/.test(t)?' · bandeau ½ présent':' · pas de bandeau, volume complet'));
   await ctx.close();
 }
-/* Depuis le 12 septembre, le DIMANCHE est le jour d'entretien : la pesee et la seance photo
-   y tombent toutes les semaines. La coupe de cheveux est le seul cycle de trois semaines,
-   ancre au 4 octobre — d'ou sa presence dans le tableau. */
-console.log('\n== habitudes : pesee et photos chaque dimanche, coupe une semaine sur trois ==');
+/* Depuis le 12 septembre, le DIMANCHE est le jour d'entretien. La pesee y tombe une semaine
+   sur deux, ancree au 13 septembre ; la seance photo une semaine sur quatre, meme ancre. La
+   coupe de cheveux est le samedi (le coiffeur est ferme le dimanche), une semaine sur trois,
+   ancree au 3 octobre — elle ne tombe donc sur aucun dimanche, et c'est ce que verifie la
+   colonne « coupe ». */
+console.log('\n== habitudes : pesee un dimanche sur deux, photos un sur quatre, coupe le samedi ==');
 for (const [d, jour_, pesee, coupe] of [
   ['2026-09-14','lundi 14',false,false],
-  ['2026-09-20','dimanche 20',true,false],
+  ['2026-09-13','dimanche 13',true,false],
+  ['2026-09-20','dimanche 20',false,false],
   ['2026-09-27','dimanche 27',true,false],
-  ['2026-10-04','dimanche 4 oct',true,true],
+  ['2026-10-04','dimanche 4 oct',false,false],
   ['2026-10-11','dimanche 11 oct',true,false],
-  ['2026-10-25','dimanche 25 oct',true,true],
+  ['2026-10-25','dimanche 25 oct',true,false],
+  ['2026-10-03','samedi 3 oct',false,true],
   ['2026-09-15','mardi 15',false,false]]) {
   const {ctx, fr} = await jour(d+'T09:00:00+02:00');
   const h = await fr.evaluate(()=>{
@@ -43,8 +47,9 @@ for (const [d, jour_, pesee, coupe] of [
     return {pesee: l.some(t=>/Pesée/.test(t)), photos: l.some(t=>/Photos/.test(t)),
             cheveux: l.some(t=>/Coupe de cheveux/.test(t)), n:l.length};
   });
-  /* les photos suivent la pesee : chaque dimanche. Seule la coupe est sur trois semaines. */
-  ok(h.pesee===pesee && h.photos===pesee && h.cheveux===coupe,
+  /* une seance photo ne peut exister qu'un dimanche de pesee : l'inverse serait un bug
+     d'ancrage. Le detail des dates de photo est verifie dans test90. */
+  ok(h.pesee===pesee && (!h.photos || h.pesee) && h.cheveux===coupe,
      jour_+' : pesée '+h.pesee+' · photos '+h.photos+' · coupe '+h.cheveux+' ('+h.n+' habitudes)');
   await ctx.close();
 }

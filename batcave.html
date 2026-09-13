@@ -5470,16 +5470,23 @@
   /* Le lot du 12 septembre au soir : le DIMANCHE devient le jour d'entretien du corps et
      de la maison. Une seule journee porte tout ce qui n'est ni quotidien ni scolaire, plutot
      que neuf micro-rituels eparpilles sur la semaine.
-     PESEE et PHOTOS quittent le lundi et la quinzaine pour le dimanche. Les anciennes
-     versions (core-pesee, core-photos) sont retirees plus bas : un objet deja enregistre chez
-     l'utilisateur ne change pas de forme tout seul, il faut le remplacer, pas le modifier.
-     Les PHOTOS fusionnent les deux suivis -- peau (acne) et evolution du corps -- en une seule
-     seance, meme lumiere, meme endroit. TOUTES LES SEMAINES a sa demande, a partir du dimanche
-     13 septembre : les echeances du protocole peau (4 et 25 octobre, 15 novembre, 6 decembre,
-     verdict le 13) restent les dates ou l'on COMPARE et ou l'on tranche, pas les seules ou
-     l'on photographie.
-     La COUPE DE CHEVEUX est le seul cycle de trois semaines : coupee le 13 septembre, donc due
-     le 4 octobre.
+     PESEE et PHOTOS quittent le lundi et l'ancienne quinzaine calee sur le programme. Les
+     versions d'origine (core-pesee, core-photos) sont retirees plus bas : un objet deja
+     enregistre chez l'utilisateur ne change pas de forme tout seul, il faut le remplacer, pas
+     le modifier.
+     La PESEE tombe une semaine sur DEUX, ancree au 13 septembre : 13 et 27 septembre, 11 et
+     25 octobre, et ainsi de suite.
+     Les PHOTOS tombent toutes les QUATRE semaines, meme ancre -- 13 septembre, 11 octobre,
+     8 novembre, 6 decembre -- donc toujours un dimanche de pesee, jamais l'inverse : une
+     matinee sur deux ne porte qu'un chiffre, une sur quatre porte tout.
+     Quatre semaines, et pas deux, parce que la seance sert A DEUX SUIVIS QUI N'ONT PAS LE MEME
+     TEMPO : l'acne se juge sur douze semaines, et un corps qui prend un kilo par mois ne se
+     voit pas a quinze jours. A deux semaines il aurait eu six photos identiques et en aurait
+     conclu que rien ne marche. Quatre semaines depuis le 13 septembre donne exactement les
+     quatre reperes du protocole peau -- J0, semaine 4, semaine 8, semaine 12 -- et le
+     6 decembre tombe pile a douze semaines.
+     La COUPE DE CHEVEUX est le SAMEDI : le coiffeur est ferme le dimanche. Trois semaines,
+     ancre au 3 octobre, soit trois semaines apres la coupe du 12 septembre.
      La BROSSE A DENTS : douze semaines, soit trois mois, la recommandation dentaire standard.
      Ancre au 13 septembre, la premiere fois etant demain. Elle se remplace aussi apres une
      maladie, ce que la Batcave ne peut pas savoir.
@@ -5490,9 +5497,9 @@
      aussi « taie d'oreiller une fois par semaine ». Pour la serviette de corps il ne dit rien :
      une fois par semaine est le choix par defaut, et il se change d'un menu. */
   var HABIT_SEED_V6 = [
-    {id:'core-pesee-dim', label:'Pesée du dimanche, à jeun', icon:'⚖️', jours:[0]},
-    {id:'core-photos-dim', label:'Photos — peau et corps', icon:'📸', jours:[0]},
-    {id:'core-cheveux', label:'Coupe de cheveux', icon:'💈', jours:[0], cycleSemaines:3, ancre:'2026-10-04'},
+    {id:'core-pesee-dim', label:'Pesée, à jeun', icon:'⚖️', jours:[0], cycleSemaines:2, ancre:'2026-09-13'},
+    {id:'core-photos-dim', label:'Photos — peau et corps', icon:'📸', jours:[0], cycleSemaines:4, ancre:'2026-09-13'},
+    {id:'core-cheveux', label:'Coupe de cheveux', icon:'💈', jours:[6], cycleSemaines:3, ancre:'2026-10-03'},
     {id:'core-rasage', label:'Rasage — aisselles et parties intimes', icon:'🪒', jours:[0]},
     {id:'core-brosse-dents', label:'Brosse à dents changée', icon:'🪥', jours:[0], cycleSemaines:12, ancre:'2026-09-13'},
     {id:'core-shampoing', label:'Shampoing', icon:'🧴', jours:[1,2,4,6]},
@@ -6542,22 +6549,28 @@
     targets.ajustement = ajust;
     return {totals:totals, targets:targets};
   }
-  /* ===== Tendance de poids, à raison d'une pesée par dimanche matin =====
-     Le protocole a changé : une seule pesée par semaine, le dimanche matin à jeun. L'ancien
-     calcul comparait la moyenne des 7 derniers jours à celle des 7 précédents et exigeait
-     TROIS pesées dans chacune des deux semaines — avec une pesée hebdomadaire, il n'aurait
-     jamais rien conclu, pas une seule fois en six mois.
-     On mesure donc la PENTE : une droite des moindres carrés sur les pesées des huit
-     dernières semaines, dont on lit le gain par semaine. Ça marche avec une pesée par
-     semaine comme avec une par jour, chaque point pèse pareil, et huit points suffisent à
-     noyer le bruit d'un matin (un dîner salé, une nuit courte, la balance sur un tapis).
+  /* ===== Tendance de poids, à raison d'une pesée un dimanche sur deux =====
+     Le protocole a changé deux fois. D'abord une seule pesée par semaine au lieu d'une par
+     jour : l'ancien calcul comparait la moyenne des 7 derniers jours à celle des 7 précédents
+     et exigeait TROIS pesées dans chacune des deux semaines — avec une pesée hebdomadaire, il
+     n'aurait jamais rien conclu, pas une seule fois en six mois. Puis une pesée UN DIMANCHE
+     SUR DEUX, à sa demande.
+     On mesure donc la PENTE : une droite des moindres carrés sur les pesées de la fenêtre,
+     dont on lit le gain par semaine. Ça marche avec une pesée tous les quinze jours comme
+     avec une par jour, chaque point pèse pareil, et il en faut assez pour noyer le bruit d'un
+     matin (un dîner salé, une nuit courte, la balance sur un tapis).
+     LA FENETRE EST PASSEE DE 8 A 12 SEMAINES le 13 septembre, et c'est une conséquence
+     directe du rythme : à huit semaines, une pesée tous les quinze jours ne donnait que
+     QUATRE points, soit exactement le minimum — une seule pesée sautée, et la recommandation
+     se taisait jusqu'au mois suivant. Douze semaines en donnent six, ce qui laisse de la
+     marge sans rendre la pente paresseuse.
      Il faut au moins 4 pesées étalées sur 12 jours : en deçà, deux points voisins donnent
      une pente qui ne veut rien dire.
      Reste le garde-fou : on rejoue la régression en retirant CHAQUE pesée, une par une. Si
      la recommandation change en enlevant une seule d'entre elles, elle tient à ce point-là
      et pas à une tendance — on ne recommande rien, et on dit laquelle. Le lundi suivant
      tranchera. */
-  var KCAL_FENETRE_J = 56, KCAL_MIN_PESEES = 4, KCAL_MIN_ETALEMENT_J = 12;
+  var KCAL_FENETRE_J = 84, KCAL_MIN_PESEES = 4, KCAL_MIN_ETALEMENT_J = 12;
   /* pente d'une droite des moindres carrés, en kg par jour ; null si les x sont tous égaux */
   function penteParJour(pts){
     var n = pts.length;
@@ -6586,7 +6599,7 @@
     if(pts.length < KCAL_MIN_PESEES || etalement < KCAL_MIN_ETALEMENT_J){
       out.motif = 'Il faut au moins ' + KCAL_MIN_PESEES + ' pesées étalées sur ' + KCAL_MIN_ETALEMENT_J +
                   ' jours pour lire une pente — ' + pts.length + ' pesée' + (pts.length > 1 ? 's' : '') +
-                  ' sur ' + etalement + ' jour' + (etalement > 1 ? 's' : '') + ' pour l\'instant. Une pesée par dimanche matin, à jeun : au bout de quatre dimanches, la Batcave sait.';
+                  ' sur ' + etalement + ' jour' + (etalement > 1 ? 's' : '') + ' pour l\'instant. Une pesée un dimanche sur deux, à jeun : au bout de la quatrième, la Batcave sait.';
       return out;
     }
     var parSemaine = function(liste){ var p = penteParJour(liste); return p === null ? null : p * 7; };
@@ -6611,7 +6624,7 @@
       out.fragile = true; out.pivot = pivot; out.reco = 0;
       out.motif = 'Une seule pesée décide de tout : sans celle du ' + fmtDate(pivot.date) + ' (' +
                   pivot.value.toFixed(1).replace('.', ',') + ' kg), la recommandation change. ' +
-                  'On ne touche à rien — la pesée de dimanche prochain tranchera.';
+                  'On ne touche à rien — la prochaine pesée tranchera.';
       return out;
     }
     if(out.reco > 0) out.motif = 'Prise trop lente : ajoute 150 kcal par jour.';

@@ -2,7 +2,7 @@
      · Hors partiels, le lanceur de Pomodoro proposait derniereMatiere() : la matière la
        PLUS travaillée le dernier jour travaillé. Il propose maintenant celle qui en a le
        plus besoin, et dit pourquoi.
-     · Le protocole de pesée est passé à une seule pesée, le dimanche matin. L'ancien calcul
+     · Le protocole de pesée est passé à une pesée un dimanche sur deux. L'ancien calcul
        exigeait trois pesées par semaine sur deux semaines : il n'aurait jamais rien conclu.
        C'est une pente (moindres carrés sur huit semaines) qui décide désormais. */
 import { chromium } from 'playwright';
@@ -123,7 +123,7 @@ const L = lundis('2026-09-28', 8);              /* 8 lundis, du 28 sept. au 16 n
                                       btn: document.getElementById('kcal-appliquer').hidden}));
   ok(/en attente de pesées/.test(k.note) && k.btn, 'trois lundis : rien n’est recommandé, le bouton reste masqué');
   ok(/au moins 4 pesées étalées sur 12 jours/.test(k.txt) && /3 pesées sur 14 jours/.test(k.txt), 'et il dit exactement ce qui manque : ' + (k.txt.match(/Il faut[^.]*\./) || [''])[0]);
-  ok(/une pesée par dimanche matin/i.test(k.txt), 'en rappelant le protocole');
+  ok(/une pesée un dimanche sur deux/i.test(k.txt), 'en rappelant le protocole');
   await ctx.close();
 }
 

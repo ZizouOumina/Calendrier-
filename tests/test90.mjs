@@ -76,17 +76,18 @@ console.log('\n== 303) Un cloud déjà propre ne déclenche aucune réécriture 
   await ctx.close();
 }
 
-console.log('\n== 304) Le cycle de trois semaines tombe aux bonnes dates ==');
-/* Coupe le 13 septembre, donc due le 4 octobre, puis le 25, puis le 15 novembre.
-   Avant l'ancre, elle ne s'affiche pas du tout : rien n'est « en retard » avant d'exister. */
-for (const [d, nom, du] of [['2026-09-20','dim. 20 sept (avant l\'ancre)',false],
-                            ['2026-09-27','dim. 27 sept',false],
-                            ['2026-10-04','dim. 4 oct',true],
-                            ['2026-10-11','dim. 11 oct',false],
-                            ['2026-10-18','dim. 18 oct',false],
-                            ['2026-10-25','dim. 25 oct',true],
-                            ['2026-11-15','dim. 15 nov',true],
-                            ['2026-10-03','sam. 3 oct (pas un dimanche)',false]]) {
+console.log('\n== 304) La coupe de cheveux : le SAMEDI, une semaine sur trois ==');
+/* Le coiffeur est ferme le dimanche. Coupe le samedi 12 septembre, donc due le 3 octobre,
+   puis le 24, puis le 14 novembre. Avant l'ancre, elle ne s'affiche pas du tout : rien n'est
+   « en retard » avant d'exister. */
+for (const [d, nom, du] of [['2026-09-19','sam. 19 sept (avant l\'ancre)',false],
+                            ['2026-09-26','sam. 26 sept',false],
+                            ['2026-10-03','sam. 3 oct',true],
+                            ['2026-10-10','sam. 10 oct',false],
+                            ['2026-10-17','sam. 17 oct',false],
+                            ['2026-10-24','sam. 24 oct',true],
+                            ['2026-11-14','sam. 14 nov',true],
+                            ['2026-10-04','dim. 4 oct (pas un samedi)',false]]) {
   const { ctx, fr } = await jour(d + 'T09:00:00+02:00');
   const l = await duJour(fr);
   ok(l.some(t => /Coupe de cheveux/.test(t)) === du, nom + ' : coupe ' + (du ? 'due' : 'pas due'));
@@ -104,24 +105,34 @@ for (const [d, nom, du] of [['2026-09-13','dim. 13 sept (la première)',true],
   await ctx.close();
 }
 
-console.log('\n== 305b) Photos chaque dimanche, shampoing les jours de sport ==');
-/* Les photos ne suivent PAS le cycle de trois semaines du protocole peau : il les prend
-   toutes les semaines a partir du 13 septembre. Les echeances du protocole restent les
-   dates ou l'on compare, pas les seules ou l'on photographie.
-   Le shampoing tombe les quatre jours de sport : lundi, mardi, jeudi, samedi. */
-for (const [d, nom, photos, shamp] of [['2026-09-13','dim. 13 sept',true,false],
-                                       ['2026-09-20','dim. 20 sept',true,false],
-                                       ['2026-09-27','dim. 27 sept',true,false],
-                                       ['2026-09-14','lun. 14 (sport)',false,true],
-                                       ['2026-09-15','mar. 15 (sport)',false,true],
-                                       ['2026-09-16','mer. 16 (repos)',false,false],
-                                       ['2026-09-17','jeu. 17 (sport)',false,true],
-                                       ['2026-09-18','ven. 18 (repos)',false,false],
-                                       ['2026-09-19','sam. 19 (sport)',false,true]]) {
+console.log('\n== 305b) Pesée un dimanche sur deux, photos une fois sur quatre ==');
+/* Les deux sont ancrees au 13 septembre, donc une seance photo tombe TOUJOURS un dimanche de
+   pesee, jamais l'inverse. Quatre semaines pour les photos parce que la seance sert a deux
+   suivis lents : l'acne se juge sur douze semaines, et un corps qui prend un kilo par mois ne
+   se voit pas a quinze jours d'ecart.
+   Le shampoing, lui, tombe les quatre jours de sport : lundi, mardi, jeudi, samedi. */
+for (const [d, nom, pesee, photos, shamp] of [['2026-09-13','dim. 13 sept',true,true,false],
+                                              ['2026-09-20','dim. 20 sept',false,false,false],
+                                              ['2026-09-27','dim. 27 sept',true,false,false],
+                                              ['2026-10-04','dim. 4 oct',false,false,false],
+                                              ['2026-10-11','dim. 11 oct',true,true,false],
+                                              ['2026-10-25','dim. 25 oct',true,false,false],
+                                              ['2026-11-08','dim. 8 nov',true,true,false],
+                                              ['2026-12-06','dim. 6 déc',true,true,false],
+                                              ['2026-09-14','lun. 14 (sport)',false,false,true],
+                                              ['2026-09-15','mar. 15 (sport)',false,false,true],
+                                              ['2026-09-16','mer. 16 (repos)',false,false,false],
+                                              ['2026-09-17','jeu. 17 (sport)',false,false,true],
+                                              ['2026-09-18','ven. 18 (repos)',false,false,false],
+                                              ['2026-09-19','sam. 19 (sport)',false,false,true]]) {
   const { ctx, fr } = await jour(d + 'T09:00:00+02:00');
   const l = await duJour(fr);
-  const p = l.some(t => /Photos/.test(t)), sh = l.some(t => /Shampoing/.test(t));
-  ok(p === photos && sh === shamp, nom + ' : photos ' + p + ' · shampoing ' + sh);
+  const p = l.some(t => /Photos/.test(t)), pe = l.some(t => /Pesée/.test(t)),
+        sh = l.some(t => /Shampoing/.test(t));
+  ok(pe === pesee && p === photos && sh === shamp,
+     nom + ' : pesée ' + pe + ' · photos ' + p + ' · shampoing ' + sh);
+  /* une photo sans pesee le meme matin serait une erreur d'ancrage */
+  if(p) ok(pe, nom + ' : la séance photo tombe bien un dimanche de pesée');
   await ctx.close();
 }
 
@@ -129,8 +140,8 @@ console.log('\n== 306) Série et taux ne comptent que les jours dus ==');
 {
   /* Deux coupes tenues, le 4 et le 25 octobre. Les dimanches intermediaires ne sont pas des
      echecs : la serie doit valoir 2 et le taux 100 %, pas 2 sur 4. */
-  const log = {'core-cheveux': ['2026-10-04','2026-10-25']};
-  const { ctx, fr } = await jour('2026-10-25T20:00:00+02:00', {'batcave-habitlog': log});
+  const log = {'core-cheveux': ['2026-10-03','2026-10-24']};
+  const { ctx, fr } = await jour('2026-10-24T20:00:00+02:00', {'batcave-habitlog': log});
   const r = await fr.evaluate(() => ({
     serie: window.__bcHabitStreak ? window.__bcHabitStreak('core-cheveux') : null,
     taux: window.__bcHabitRate ? window.__bcHabitRate('core-cheveux', 30) : null
