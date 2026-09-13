@@ -32,8 +32,12 @@ console.log('\n== 320) Chaque matière totalise exactement 100 % ==');
   const faux = d.filter(x => x.total !== 100);
   ok(faux.length === 0, 'aucune pondération fausse' + (faux.length ? ' — ' + faux.map(x => x.court + ':' + x.total).join(', ') : ''));
   const s1 = d.filter(x => x.sem === 1), s2 = d.filter(x => x.sem === 2);
-  ok(s1.length === 6 && s1.reduce((a, x) => a + x.ects, 0) === 30, 'S1 : 6 matières, 30 ECTS');
-  ok(s2.length === 5 && s2.reduce((a, x) => a + x.ects, 0) === 30, 'S2 : 5 matières, 30 ECTS');
+  /* Son emploi du temps place Idioma moderno au S2, pas au S1 : l'annee n'est donc PAS
+     equilibree a 30/30 mais a 24/36. La guia d'Idioma dit « Semester 3 » et porte un
+     calendrier de premier semestre -- elle se contredit ; l'emploi du temps fait foi. */
+  ok(s1.length === 5 && s1.reduce((a, x) => a + x.ects, 0) === 24, 'S1 : 5 matières, 24 ECTS');
+  ok(s2.length === 6 && s2.reduce((a, x) => a + x.ects, 0) === 36, 'S2 : 6 matières, 36 ECTS');
+  ok(d.filter(x => x.court === 'Idioma moderno')[0].sem === 2, 'Idioma moderno est au semestre 2');
   /* Les noms doivent exister dans la liste des matieres de l'application, sinon le
      panneau parle d'une matiere que les examens et le minuteur ne connaissent pas. */
   const inconnues = await fr.evaluate(() => {
@@ -52,7 +56,7 @@ console.log('\n== 321) Le semestre en cours est déplié, l\'autre est plié =='
   ok(/Semestre 1 — en cours/.test(t), 'le 14 septembre : « Semestre 1 — en cours »');
   const plie = await fr.evaluate(() => { const c = document.getElementById('eval-autre-corps'); return c ? c.hidden : null; });
   ok(plie === true, 'le semestre 2 est replié');
-  ok(/Anatomía I/.test(t) && /Idioma moderno/.test(t), 'les matières du S1 sont visibles');
+  ok(/Anatomía I/.test(t) && /Epidemiología/.test(t) && !/Idioma moderno/.test(t), 'les matières du S1 sont visibles, Idioma n\'en fait pas partie');
   const ouvre = await fr.evaluate(() => { const b = document.getElementById('eval-s-autre'); if(!b) return null; b.click(); return document.getElementById('eval-autre-corps').hidden; });
   ok(ouvre === false, 'le bouton déplie le semestre 2');
   await ctx.close();
@@ -63,7 +67,7 @@ console.log('\n== 322) Au semestre 2, c\'est l\'inverse ==');
   const { ctx, fr } = await jour('2027-02-15T09:00:00+02:00');
   const t = await fr.evaluate(() => document.getElementById('matieres-eval-corps').innerText);
   ok(/Semestre 2 — en cours/.test(t), 'le 15 février : « Semestre 2 — en cours »');
-  ok(/Bioquímica/.test(t) && /Psicología/.test(t), 'les matières du S2 sont visibles');
+  ok(/Bioquímica/.test(t) && /Psicología/.test(t) && /Idioma moderno/.test(t), 'les matières du S2 sont visibles, Idioma comprise');
   await ctx.close();
 }
 
@@ -87,11 +91,12 @@ console.log('\n== 324) La part hors examen est calculée, pas devinée ==');
 {
   const { ctx, fr } = await jour('2026-09-14T09:00:00+02:00');
   const note = await fr.evaluate(() => document.getElementById('matieres-eval-note').textContent);
-  /* S1 : Anatomía I 30x6 + Biología 50x6 + Epidemiología 50x6 + Idioma 50x6
-     + Antropología 50x3 + Documentación 50x3 = 1380, / 30 ECTS = 46 %.
-     L'examen ORAL d'Idioma compte comme un examen : c'est un « Knowledge Test »
-     dans la guia, pas du controle continu. Ce test a attrape la confusion. */
-  ok(/46 % de ta note/.test(note), 'S1 : 46 % hors examen (' + note + ')');
+  /* S1 sans Idioma : Anatomía I 30x6 + Biología 50x6 + Epidemiología 50x6
+     + Antropología 50x3 + Documentación 50x3 = 1080, / 24 ECTS = 45 %.
+     L'examen ORAL d'Idioma compte comme un examen -- c'est un « Knowledge Test »
+     dans la guia, pas du controle continu -- et ce test a attrape la confusion
+     quand la couleur et le drapeau « examen » etaient le meme champ. */
+  ok(/45 % de ta note/.test(note), 'S1 : 45 % hors examen (' + note + ')');
   await ctx.close();
 }
 
