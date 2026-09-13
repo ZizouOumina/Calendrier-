@@ -9194,12 +9194,18 @@
         {label:'Œufs', qte:'15', prix:3.3}, {label:'Jambon', qte:'300 g', prix:3.3}, {label:'Fromage', qte:'150 g', prix:1.35},
         {label:'Pain complet', qte:'500 g', prix:1.6},
         {label:'Skyr', qte:'2\u202f200 g', prix:8.8},
-        {label:'Légumes verts surgelés', qte:'2\u202f500 g', prix:5}, {label:'Bananes', qte:'8', prix:1.4}, {label:'Fruits (pommes, poires, oranges…)', qte:'8', prix:2.2}
+        {label:'Bananes', qte:'8', prix:1.4}, {label:'Fruits (pommes, poires, oranges…)', qte:'8', prix:2.2}
       ]},
       {cat:'Réserves — toutes les 4 semaines', semaines:4, ancre:ANCRE_COURSES, items:[
         {label:'Riz', qte:'4\u202f000 g', prix:4.4},
-        {label:'Pâtes', qte:'2\u202f400 g', prix:4},
+        /* Les pates portent l'ajustement de la boucle kcal, multiplie par quatre comme le
+           reste du sac. Il n'y a PAS de ligne hebdomadaire en plus : on n'achete pas un
+           sachet de 280 g de pates, on prend le gros sac une fois par mois. */
+        {label:'Pâtes', qte: g((600 + plus) * 4) + ' g' + (plus ? ' (dont ' + (plus > 0 ? '+' : '') + g(plus * 4) + ' g boucle kcal)' : ''), prix: (600 + plus) * 4 / 1000 * 1.0},
         {label:'Flocons d\'avoine', qte:'2\u202f400 g', prix:3.8},
+        /* Deja surgeles : quatre semaines ne leur font rien. 10 kg, en revanche, demandent
+           de la place -- c'est la seule ligne mensuelle limitee par le congelateur. */
+        {label:'Légumes verts surgelés', qte:'10\u202f000 g', prix:20},
         {label:'Beurre de cacahuète', qte:'1\u202f600 g', prix:8.4},
         {label:'Miel', qte:'800 g', prix:5.2},
         {label:'Huile d\'olive', qte:'1\u202f000 ml', prix:7}
@@ -9222,8 +9228,6 @@
         {label:'Brosse à dents', qte:'1', prix:3.5}
       ]}
     ];
-    /* L'ajustement kcal reste hebdomadaire, et seulement s'il existe. */
-    if(plus) cat[0].items.push({label:'Pâtes — ajustement de la boucle kcal', qte: (plus > 0 ? '+' : '') + g(plus) + ' g', prix: plus / 1000 * 1.0});
     return cat;
   }
   /* Les categories a cycle sont ancrees sur le premier SAMEDI de courses du programme,
