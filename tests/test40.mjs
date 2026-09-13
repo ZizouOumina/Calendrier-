@@ -64,7 +64,7 @@ console.log('\n== 92) Installation neuve : les deux lots sont là ==');
   const { ctx, fr } = await ouvrir(SAMEDI);
   const habs = await lire(fr, 'batcave-habits');
   ok(habs.some(h => h.id === 'core-courses'), 'V3 semée');
-  ok(habs.some(h => h.id === 'core-gratitude'), 'V2 semée');
+  ok(habs.some(h => h.id === 'core-sadaqah'), 'V2 semée');
   ok(await lire(fr, 'batcave-habits-seed-v2') === true, 'drapeau V2 posé');
   ok(await lire(fr, 'batcave-habits-seed-v3') === true, 'drapeau V3 posé');
   await ctx.close();

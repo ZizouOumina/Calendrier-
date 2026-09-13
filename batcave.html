@@ -2076,22 +2076,6 @@
         <ul class="entry-list" id="progression-liste"></ul>
       </div>
 
-      <!-- Mensurations : le cou et les bras ne se mesurent pas en répétitions. Une fois par
-           mois, mètre ruban, toujours dans les mêmes conditions. Sans ce chiffre, rien ne dit
-           si le travail de cou sert à quelque chose. -->
-      <div class="panel sub-panel" id="mesures-panel" style="margin-top:16px;">
-        <div class="sub-head"><h3>📏 Mensurations</h3><span class="sub-note" id="mesures-note">—</span></div>
-        <p class="sub-note" style="line-height:1.65; margin-bottom:12px;">Une fois par mois, le matin, à froid, avant de manger. <b style="color:var(--ink-dim);">Cou</b> : mètre ruban au niveau de la pomme d'Adam, tête droite, sans contracter. <b style="color:var(--ink-dim);">Bras</b> : le bras dominant, contracté, au plus large. <b style="color:var(--ink-dim);">Taille</b> : au nombril, expiration normale. Toujours dans le même ordre et les mêmes conditions, sinon la comparaison ne vaut rien.</p>
-        <div class="add-form" style="margin-bottom:12px;">
-          <div class="f"><label for="ms-cou">Cou (cm)</label><input type="text" id="ms-cou" inputmode="decimal" placeholder="ex : 37,5"></div>
-          <div class="f"><label for="ms-bras">Bras contracté (cm)</label><input type="text" id="ms-bras" inputmode="decimal" placeholder="ex : 31,0"></div>
-          <div class="f"><label for="ms-taille">Taille (cm)</label><input type="text" id="ms-taille" inputmode="decimal" placeholder="ex : 76,0"></div>
-          <button class="btn btn-primary" id="ms-add" type="button">Enregistrer la mesure</button>
-        </div>
-        <div id="mesures-chart" style="margin-bottom:12px;"></div>
-        <ul class="entry-list" id="mesures-liste"></ul>
-      </div>
-
       <div class="two-col" style="margin-top:16px;">
         <div class="panel">
           <h3>Étirements — avant (dynamique)</h3>
@@ -3126,11 +3110,11 @@
      place dans le quota de 5000 documents et embrouille les sauvegardes, sans que rien ne
      la lise jamais. On la signale ; la suppression reste ton geste. */
   var CLES_CONNUES = ['addictions','budget-limits','business','coran','courses','dash-more','duaas','duree-bloc','sport-log','objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','kcal-ajustement','gcal-ecriture','reinit','fc-migration-v1','charge','shopify-boutique','journees','examens-heures','vacances','jours-exclus',
-    'espagnol','examens','cours-suivi','portes','fc-prix-icloud-3','fixed-charges','goals','goals-depart','saisons','insights-hist','last-restore-drill','habitlog','habits','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','objectifs-v5-espanol',
+    'espagnol','examens','cours-suivi','portes','fc-prix-icloud-3','fixed-charges','goals','goals-depart','saisons','insights-hist','last-restore-drill','habitlog','habits','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','objectifs-v5-espanol',
     'horizon','last-auto-backup','last-manual-backup','last-bilan-prompt','last-compaction','last-open','last-rotation','notion-url',
     'pomodial-purge','projets','report','revision','revision-fusionnee','revue','sante','sauvegarde','sessions',
     'shopify-last-order-count','taches','timer','transactions','undo-stack','undo-toast','cloud-reload-at','cloud-toast','notion-cache','anki',
-    'mesures','experiences',
+    'experiences',
     /* Cinq cles que le code ecrit depuis longtemps et que ce registre ne connaissait pas :
        le verificateur de cohabitation les signalait au demarrage comme des cles inconnues,
        une fausse alerte a chaque fois. « jours-sans-cours » et « copie-vierge » sont en plus
@@ -4047,7 +4031,7 @@
      ni synchronisee ni rattrapee) et efface ses copies locales AVANT le rattrapage, sinon
      elles repartiraient vers le cloud. La meme remise a zero peut donc etre decidee depuis
      l'appli ou directement dans le cloud. */
-  var REINIT_GARDER = ['habits','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','objectifs-v5-espanol','fixed-charges','fc-prix-icloud-3','budget-limits','examens','examens-heures','journees','vacances','jours-exclus','jours-sans-cours','portes','notion-url','shopify-boutique',
+  var REINIT_GARDER = ['habits','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','objectifs-v5-espanol','fixed-charges','fc-prix-icloud-3','budget-limits','examens','examens-heures','journees','vacances','jours-exclus','jours-sans-cours','portes','notion-url','shopify-boutique',
                        'objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','horizon','goals-depart','saisons','gcal-ecriture','duree-bloc','dash-more','revision-fusionnee','reinit','copie-vierge'];
   var REINIT_PREFIXES_GARDER = ['pomodial-', 'coherence-ignore-'];
   function reinitGarder(cle){
@@ -5455,8 +5439,7 @@
     {id:'core-sadaqah', label:'Sadaqah du jour', icon:'🤲'},
     {id:'core-revue', label:'Revue de la veille / plan du lendemain', icon:'📝'},
     {id:'core-famille', label:'Nouvelles à la famille', icon:'📞'},
-    {id:'core-marche', label:'Marche / pas', icon:'🚶'},
-    {id:'core-gratitude', label:'3 choses pour lesquelles je suis reconnaissant', icon:'🙏'}
+    {id:'core-marche', label:'Marche / pas', icon:'🚶'}
   ];
   /* Habitudes rattachées à un seul jour (jour : 0=dim … 6=sam). Elles ne s'affichent et
      ne comptent que ce jour-là — sinon elles apparaîtraient ratées six jours sur sept. */
@@ -5478,31 +5461,78 @@
     {id:'core-es-formulas', label:'Les dix formules du jour', icon:'💬'},
     {id:'core-es-lectura', label:'20 pages lues en espagnol', icon:'📖'}
   ];
-  /* Deux rituels de suivi du corps, demandes le 9 septembre. La pesee est HEBDOMADAIRE et
-     non quotidienne : un poids se lit sur une tendance, pas sur une journee, et se peser
-     tous les jours fait prendre des decisions sur du bruit. Toujours le lundi, au reveil,
-     a jeun, apres les toilettes, avant de boire — les memes conditions, sinon la
-     comparaison ne vaut rien. */
-  var HABIT_SEED_V5 = [
-    {id:'core-pesee', label:'Pesée du lundi, à jeun', icon:'⚖️', jours:[1]},
-    {id:'core-photos', label:'Photos du corps (2 min)', icon:'📸', jours:[0], quinzaine:true}
+  /* Deux rituels de suivi du corps, demandes le 9 septembre, remplaces le 12 septembre par
+     leurs versions du DIMANCHE (voir V6) : ils restent ici pour memoire, mais sont dans la
+     liste des retirees. La pesee est HEBDOMADAIRE et non quotidienne : un poids se lit sur
+     une tendance, pas sur une journee, et se peser tous les jours fait prendre des decisions
+     sur du bruit. */
+  var HABIT_SEED_V5 = [];   /* vide : ses deux habitudes sont retirees, V6 les remplace */
+  /* Le lot du 12 septembre au soir : le DIMANCHE devient le jour d'entretien du corps et
+     de la maison. Une seule journee porte tout ce qui n'est ni quotidien ni scolaire, plutot
+     que neuf micro-rituels eparpilles sur la semaine.
+     PESEE et PHOTOS quittent le lundi et la quinzaine pour le dimanche. Les anciennes
+     versions (core-pesee, core-photos) sont retirees plus bas : un objet deja enregistre chez
+     l'utilisateur ne change pas de forme tout seul, il faut le remplacer, pas le modifier.
+     Les PHOTOS fusionnent les deux suivis -- peau (acne) et evolution du corps -- en une seule
+     seance, meme lumiere, meme endroit. TOUTES LES SEMAINES a sa demande, a partir du dimanche
+     13 septembre : les echeances du protocole peau (4 et 25 octobre, 15 novembre, 6 decembre,
+     verdict le 13) restent les dates ou l'on COMPARE et ou l'on tranche, pas les seules ou
+     l'on photographie.
+     La COUPE DE CHEVEUX est le seul cycle de trois semaines : coupee le 13 septembre, donc due
+     le 4 octobre.
+     La BROSSE A DENTS : douze semaines, soit trois mois, la recommandation dentaire standard.
+     Ancre au 13 septembre, la premiere fois etant demain. Elle se remplace aussi apres une
+     maladie, ce que la Batcave ne peut pas savoir.
+     Le SHAMPOING tombe les jours de sport -- lundi, mardi, jeudi, samedi -- parce que ce sont
+     les quatre jours ou le cuir chevelu transpire. Les trois autres, l'eau suffit.
+     Les SERVIETTES viennent du protocole peau. Le document dit « serviette de visage tous les
+     2-3 jours » : lundi, mercredi, vendredi, ce sont des ecarts de 2, 2 et 3 jours. Il dit
+     aussi « taie d'oreiller une fois par semaine ». Pour la serviette de corps il ne dit rien :
+     une fois par semaine est le choix par defaut, et il se change d'un menu. */
+  var HABIT_SEED_V6 = [
+    {id:'core-pesee-dim', label:'Pesée du dimanche, à jeun', icon:'⚖️', jours:[0]},
+    {id:'core-photos-dim', label:'Photos — peau et corps', icon:'📸', jours:[0]},
+    {id:'core-cheveux', label:'Coupe de cheveux', icon:'💈', jours:[0], cycleSemaines:3, ancre:'2026-10-04'},
+    {id:'core-rasage', label:'Rasage — aisselles et parties intimes', icon:'🪒', jours:[0]},
+    {id:'core-brosse-dents', label:'Brosse à dents changée', icon:'🪥', jours:[0], cycleSemaines:12, ancre:'2026-09-13'},
+    {id:'core-shampoing', label:'Shampoing', icon:'🧴', jours:[1,2,4,6]},
+    {id:'core-serviette-visage', label:'Serviette de visage changée', icon:'🧼', jours:[1,3,5]},
+    {id:'core-serviette-corps', label:'Serviette de corps changée', icon:'🛁', jours:[0]},
+    {id:'core-draps', label:'Draps et taies d\u2019oreiller changés', icon:'🧺', jours:[0]},
+    {id:'core-menage', label:'Ménage du dimanche', icon:'🧽', jours:[0]}
   ];
+  /* Retirees a la demande. Ce n'est pas un simple retrait du semis : l'habitude est deja
+     dans le stockage de l'utilisateur, elle survit a la remise a zero (« habits » est garde),
+     et un autre appareil encore sur l'ancienne version la renverrait par la synchro. On la
+     filtre donc a CHAQUE lecture, pas une seule fois. Pour la remettre un jour : vider cette
+     liste. La rajouter a la main depuis l'onglet Habitudes marche aussi -- elle recoit alors
+     un autre identifiant, et n'est pas filtree. */
+  var HABITUDES_RETIREES = ['core-gratitude', 'core-pesee', 'core-photos'];
+  function normaliserHabitudes(liste){
+    return liste.filter(function(x){
+      return x && typeof x === 'object' && x.id && HABITUDES_RETIREES.indexOf(x.id) < 0;
+    });
+  }
   var HABIT_GENERATIONS = [
     {cle: 'batcave-habits-seed-v2', graines: HABIT_SEED_V2},
     {cle: 'batcave-habits-seed-v3', graines: HABIT_SEED_V3},
     {cle: 'batcave-habits-seed-v4', graines: HABIT_SEED_V4},
-    {cle: 'batcave-habits-seed-v5', graines: HABIT_SEED_V5}
+    {cle: 'batcave-habits-seed-v5', graines: HABIT_SEED_V5},
+    {cle: 'batcave-habits-seed-v6', graines: HABIT_SEED_V6}
   ];
   var habitsState = load('batcave-habits', null);
   if(habitsState !== null && !Array.isArray(habitsState)) habitsState = null;
-  if(Array.isArray(habitsState)) habitsState = habitsState.filter(function(x){ return x && typeof x === 'object' && x.id; });
+  if(Array.isArray(habitsState)) habitsState = normaliserHabitudes(habitsState);
   /* Rejouable a volonte : elle relit le stockage a chaque appel plutot que de faire
      confiance a l'etat en memoire, parce que la synchro cloud a pu le remplacer entre
      temps. Elle ne renvoie true que si elle a reellement ajoute quelque chose. */
   function reconcilierHabitudes(){
     var courant = load('batcave-habits', null);
     if(!Array.isArray(courant)) return false;
-    habitsState = courant.filter(function(x){ return x && typeof x === 'object' && x.id; });
+    habitsState = normaliserHabitudes(courant);
+    /* Une habitude retiree presente dans le stockage doit etre REECRITE, sinon elle revient
+       au prochain chargement -- et la synchro la repousserait sur les autres appareils. */
+    var retirees = habitsState.length !== courant.length;
     var existingIds = {}; habitsState.forEach(function(h){ existingIds[h.id] = true; });
     var ajoutees = false;
     HABIT_GENERATIONS.forEach(function(g){
@@ -5513,11 +5543,11 @@
       });
       save(g.cle, true);
     });
-    if(ajoutees) save('batcave-habits', habitsState);
-    return ajoutees;
+    if(ajoutees || retirees) save('batcave-habits', habitsState);
+    return ajoutees || retirees;
   }
   if(habitsState === null){
-    habitsState = HABIT_SEED.concat(HABIT_SEED_V2, HABIT_SEED_V3, HABIT_SEED_V4, HABIT_SEED_V5);
+    habitsState = HABIT_SEED.concat(HABIT_SEED_V2, HABIT_SEED_V3, HABIT_SEED_V4, HABIT_SEED_V5, HABIT_SEED_V6);
     save('batcave-habits', habitsState);
     HABIT_GENERATIONS.forEach(function(g){ save(g.cle, true); });
   } else {
@@ -5532,7 +5562,10 @@
       var courant = load('batcave-habits', null);
       if(!Array.isArray(courant)) return null;
       var ids = {}; courant.forEach(function(h){ if(h && h.id) ids[h.id] = true; });
-      var absentes = g.graines.filter(function(h){ return !ids[h.id]; });
+      /* Une habitude RETIREE n'est pas une habitude manquante : sans ce filtre, retirer
+         une graine d'une generation deja semee levait une fausse alerte a chaque demarrage,
+         et « Reparer » l'aurait reinjectee. */
+      var absentes = g.graines.filter(function(h){ return !ids[h.id] && HABITUDES_RETIREES.indexOf(h.id) < 0; });
       if(!absentes.length) return null;
       return 'Le semis d\'habitudes est marqué fait, mais il manque : ' + absentes.map(function(h){ return (h.icon ? h.icon + ' ' : '') + h.label; }).join(', ') + '.';
     }});
@@ -5548,11 +5581,37 @@
     if(!Array.isArray(courant)) return false;
     var change = false;
     courant.forEach(function(h){ if(h && h.id === 'core-ecran' && h.label === ECRAN_ANCIEN){ h.label = ECRAN_NOUVEAU; change = true; } });
-    if(change){ habitsState = courant.filter(function(x){ return x && typeof x === 'object' && x.id; }); save('batcave-habits', habitsState); }
+    if(change){ habitsState = normaliserHabitudes(courant); save('batcave-habits', habitsState); }
     saveInternal('batcave-habits-ecran-v2', true);
     return change;
   }
   renommerHabitudeEcran();
+  /* Le retrait doit aussi passer APRES la synchro : le cloud peut rapporter la liste d'un
+     appareil encore sur l'ancienne version, avec l'habitude retiree dedans. Sans migration
+     rejouable, elle reapparaissait a chaque retour du cloud. Pas de drapeau « fait une
+     fois » ici : le filtre doit tourner a chaque fois, sinon il ne protege de rien. */
+  function purgerHabitudesRetirees(){
+    var courant = load('batcave-habits', null);
+    if(!Array.isArray(courant)) return false;
+    var garde = normaliserHabitudes(courant);
+    if(garde.length === courant.length) return false;
+    habitsState = garde; save('batcave-habits', habitsState);
+    return true;
+  }
+  purgerHabitudesRetirees();
+  /* Cle propre a cette migration, et surtout PAS « batcave-habits » : reparerMigration
+     commence par supprimer la cle de la migration, ce qui effacerait toute la liste
+     d'habitudes. Cette cle-ci n'est jamais ecrite, elle ne sert qu'a nommer la migration. */
+  MIGRATIONS_DEMARRAGE.push({cle:'batcave-habits-retirees-v1', rejouer: function(){
+    if(!purgerHabitudesRetirees()) return false;
+    renderHabits(); renderDashboard(); return true;
+  }, verifier: function(){
+    var courant = load('batcave-habits', null);
+    if(!Array.isArray(courant)) return null;
+    var revenues = courant.filter(function(h){ return h && HABITUDES_RETIREES.indexOf(h.id) > -1; });
+    return revenues.length ? 'Une habitude retirée est revenue dans la liste : '
+      + revenues.map(function(h){ return h.label; }).join(', ') + '.' : null;
+  }});
   MIGRATIONS_DEMARRAGE.push({cle:'batcave-habits-ecran-v2', rejouer: function(){
     if(!renommerHabitudeEcran()) return false;
     renderHabits(); renderDashboard(); return true;
@@ -5621,23 +5680,31 @@
     var j = habitJour(hb);
     return j === null ? null : [j];
   }
-  /* Une habitude d'une QUINZAINE (hb.quinzaine) ne vaut qu'un jour sur deux semaines : les
-     photos du corps, par exemple. Le rythme se compte depuis le premier jour du programme,
-     donc les dimanches concernes sont le 27 septembre, le 11 octobre, et ainsi de suite —
-     jamais « une semaine sur deux » a partir d'aujourd'hui, ce qui deriverait. Il faut la
-     DATE et pas seulement le jour de la semaine : d'ou le second parametre, optionnel,
-     qui vaut aujourd'hui par defaut pour tous les appels qui n'en ont pas besoin. */
-  function quinzaineActive(iso){
-    var d = iso || todayISO;
-    if(d < PROGRAMME_DEBUT) return false;
-    var j = daysBetween(new Date(PROGRAMME_DEBUT + 'T00:00:00'), new Date(d + 'T00:00:00'));
-    return Math.floor(j / 7) % 2 === 1;   /* semaines 2, 4, 6... du programme */
+  /* Une habitude a CYCLE ne vaut qu'une semaine sur N : les photos du corps une sur deux,
+     la coupe de cheveux une sur trois. Il faut la DATE et pas seulement le jour de la
+     semaine, sinon le rythme derive — d'ou le second parametre, optionnel, qui vaut
+     aujourd'hui par defaut pour tous les appels qui n'en ont pas besoin.
+     DEUX FORMES COEXISTENT, et c'est voulu : les objets deja enregistres chez l'utilisateur
+     ne changent pas de forme tout seuls. L'ancienne, « quinzaine:true », etait calee sur le
+     debut du programme ; la nouvelle, « cycleSemaines:N » + « ancre », se cale sur sa
+     premiere echeance. ANCRE_QUINZAINE reproduit l'ancienne a l'identique : elle valait les
+     semaines 2, 4, 6... du programme, dont les dimanches sont le 27 septembre, le 11 octobre,
+     et ainsi de suite — c'est exactement « tous les 14 jours depuis le 27 septembre ». */
+  var ANCRE_QUINZAINE = '2026-09-27';
+  function cycleDe(hb){ return hb.cycleSemaines > 1 ? hb.cycleSemaines : (hb.quinzaine ? 2 : 0); }
+  function ancreDe(hb){ return hb.ancre || (hb.quinzaine ? ANCRE_QUINZAINE : PROGRAMME_DEBUT); }
+  function cycleActif(hb, iso){
+    var n = cycleDe(hb);
+    if(n < 2) return true;
+    var d = iso || todayISO, a = ancreDe(hb);
+    if(d < a) return false;
+    return Math.floor(daysBetween(new Date(a + 'T00:00:00'), new Date(d + 'T00:00:00')) / 7) % n === 0;
   }
   function habitVautLe(hb, dow, iso){
     var js = habitJours(hb);
     if(hb.archived) return false;
     if(js !== null && js.indexOf(dow) === -1) return false;
-    if(hb.quinzaine && !quinzaineActive(iso)) return false;
+    if(!cycleActif(hb, iso)) return false;
     return true;
   }
   function habitsDuJour(dow, iso){
@@ -5649,21 +5716,46 @@
     return null;
   }
   /* Les occurrences d'une habitude : chaque jour pour une quotidienne, ses jours de la
-     semaine sinon. occurrenceAvant(d) = la derniere occurrence a partir de d (d elle-meme
-     si elle s'applique) ; precedente et suivante avancent d'une occurrence a l'autre. */
+     semaine sinon, et pour une habitude a cycle seulement les semaines ou le cycle tombe.
+     occurrenceAvant(d) = la derniere occurrence a partir de d (d elle-meme si elle
+     s'applique) ; precedente et suivante avancent d'une occurrence a l'autre.
+     Le cycle devait entrer ici, pas seulement dans l'affichage : sans lui, la serie d'une
+     habitude d'une semaine sur trois se cassait aux deux samedis ou elle n'etait pas due,
+     et son taux se divisait par quatre samedis au lieu d'un. */
+  function occurrenceVaut(hb, x){
+    var js = habitJours(hb);
+    if(js !== null && js.indexOf(x.getDay()) === -1) return false;
+    return cycleActif(hb, localISO(x));
+  }
+  /* Filet : avant l'ancre d'un cycle, aucune date ne vaut, et la recherche tournerait sans
+     fin. On borne a 400 jours — un cycle de trois semaines n'en demande que 21 — puis on
+     retombe sur le comportement d'origine, le jour de la semaine seul. */
   function occurrenceAvant(hb, d){
-    var js = habitJours(hb), x = new Date(d);
-    if(js === null) return x;
-    while(js.indexOf(x.getDay()) === -1) x.setDate(x.getDate()-1);
-    return x;
+    var x = new Date(d);
+    if(!hb) return x;
+    for(var i = 0; i < 400; i++){
+      if(occurrenceVaut(hb, x)) return x;
+      x.setDate(x.getDate()-1);
+    }
+    var y = new Date(d), js = habitJours(hb);
+    if(js === null) return y;
+    while(js.indexOf(y.getDay()) === -1) y.setDate(y.getDate()-1);
+    return y;
   }
   function occurrencePrecedente(hb, d){ var x = new Date(d); x.setDate(x.getDate()-1); return occurrenceAvant(hb, x); }
   function occurrenceSuivante(hb, d){
-    var js = habitJours(hb), x = new Date(d);
+    var x = new Date(d);
     x.setDate(x.getDate()+1);
-    if(js === null) return x;
-    while(js.indexOf(x.getDay()) === -1) x.setDate(x.getDate()+1);
-    return x;
+    if(!hb) return x;
+    for(var i = 0; i < 400; i++){
+      if(occurrenceVaut(hb, x)) return x;
+      x.setDate(x.getDate()+1);
+    }
+    var y = new Date(d), js = habitJours(hb);
+    y.setDate(y.getDate()+1);
+    if(js === null) return y;
+    while(js.indexOf(y.getDay()) === -1) y.setDate(y.getDate()+1);
+    return y;
   }
   /* Date à laquelle une coche se rattache : aujourd'hui pour une habitude quotidienne ; pour
      une habitude a jours fixes, la dernière occurrence (aujourd'hui si elle tombe).
@@ -5744,8 +5836,11 @@
     for(var i=0;i<days;i++){
       var d = new Date(now); d.setDate(d.getDate()-i);
       /* on ne divise que par les jours où l'habitude s'applique : sinon une habitude
-         du samedi plafonnerait à 14% même tenue chaque semaine. */
+         du samedi plafonnerait à 14% même tenue chaque semaine. Le cycle compte aussi :
+         une coupe de cheveux d'une semaine sur trois ne doit pas se voir reprocher les
+         deux samedis ou elle n'etait pas due. */
       if(jours !== null && jours.indexOf(d.getDay()) === -1) continue;
+      if(hb && !cycleActif(hb, localISO(d))) continue;
       if(jourExclu(localISO(d))) continue;   /* journée qui ne compte pas */
       applicables++;
       if(doneSet[localISO(d)]) count++;
@@ -5951,9 +6046,18 @@
         var libelleJours = joursCible === null ? '' : (joursCible.length === 1 ? NOMS_JOURS[joursCible[0]]
           : joursCible.map(function(j){ return NOMS_JOURS[j].slice(0, 3); }).join(' · '));
         var jourDerniereOccurrence = NOMS_JOURS[dowDe(dateCibleHabit(hb.id))];
-        var badgeJour = joursCible === null ? '' :
+        /* Le cycle doit se lire sur la carte : « dimanche » tout court laissait croire que la
+           coupe de cheveux etait hebdomadaire, et la prochaine echeance n'etait ecrite nulle
+           part. On dit le rythme ET la date de la prochaine fois. */
+        var nCycle = cycleDe(hb), suiteCycle = '';
+        if(nCycle > 1){
+          var motCycle = nCycle === 2 ? 'une semaine sur deux' : ('toutes les ' + nCycle + ' semaines');
+          var prochain = localISO(occurrenceVaut(hb, new Date(now)) ? new Date(now) : occurrenceSuivante(hb, new Date(now)));
+          suiteCycle = ', ' + motCycle + ' · prochaine fois le ' + fmtDate(prochain);
+        }
+        var badgeJour = joursCible === null && !nCycle ? '' :
           ' <span class="sub-note" style="font-size:10px; color:var(--warn);">· '
-          + libelleJours + (duJour ? '' : ' seulement') + '</span>';
+          + libelleJours + (duJour || nCycle > 1 ? '' : ' seulement') + suiteCycle + '</span>';
         return '<div class="card">'+
           '<div class="card-top"><div class="ctitle"><span class="cicon" style="background:'+(done?'var(--good)':'var(--ink-faint)')+'; box-shadow:0 0 8px '+(done?'var(--good)':'transparent')+';"></span>'+habitLabel(hb)+badgeJour+'</div>'+
             '<span style="display:flex; gap:2px; flex:none;">'+
@@ -6438,8 +6542,8 @@
     targets.ajustement = ajust;
     return {totals:totals, targets:targets};
   }
-  /* ===== Tendance de poids, à raison d'une pesée par lundi matin =====
-     Le protocole a changé : une seule pesée par semaine, le lundi matin à jeun. L'ancien
+  /* ===== Tendance de poids, à raison d'une pesée par dimanche matin =====
+     Le protocole a changé : une seule pesée par semaine, le dimanche matin à jeun. L'ancien
      calcul comparait la moyenne des 7 derniers jours à celle des 7 précédents et exigeait
      TROIS pesées dans chacune des deux semaines — avec une pesée hebdomadaire, il n'aurait
      jamais rien conclu, pas une seule fois en six mois.
@@ -6482,7 +6586,7 @@
     if(pts.length < KCAL_MIN_PESEES || etalement < KCAL_MIN_ETALEMENT_J){
       out.motif = 'Il faut au moins ' + KCAL_MIN_PESEES + ' pesées étalées sur ' + KCAL_MIN_ETALEMENT_J +
                   ' jours pour lire une pente — ' + pts.length + ' pesée' + (pts.length > 1 ? 's' : '') +
-                  ' sur ' + etalement + ' jour' + (etalement > 1 ? 's' : '') + ' pour l\'instant. Une pesée par lundi matin, à jeun : au bout de quatre lundis, la Batcave sait.';
+                  ' sur ' + etalement + ' jour' + (etalement > 1 ? 's' : '') + ' pour l\'instant. Une pesée par dimanche matin, à jeun : au bout de quatre dimanches, la Batcave sait.';
       return out;
     }
     var parSemaine = function(liste){ var p = penteParJour(liste); return p === null ? null : p * 7; };
@@ -6507,7 +6611,7 @@
       out.fragile = true; out.pivot = pivot; out.reco = 0;
       out.motif = 'Une seule pesée décide de tout : sans celle du ' + fmtDate(pivot.date) + ' (' +
                   pivot.value.toFixed(1).replace('.', ',') + ' kg), la recommandation change. ' +
-                  'On ne touche à rien — la pesée de lundi prochain tranchera.';
+                  'On ne touche à rien — la pesée de dimanche prochain tranchera.';
       return out;
     }
     if(out.reco > 0) out.motif = 'Prise trop lente : ajoute 150 kcal par jour.';
@@ -7136,7 +7240,6 @@
     renderChoixSeance();
     renderRepos();
     renderChrono();
-    renderMesures();
     renderProgression();
   }
 
@@ -7354,89 +7457,11 @@
     if(c) c.addEventListener('click', annulerChrono);
   })();
 
-  /* ================= MENSURATIONS =================
-     Le cou et les bras ne se lisent pas dans un journal de séries : ils se mesurent. Une
-     entrée par mois suffit ; deux mesures dans le même mois remplacent la précédente, pour
-     que la courbe garde un point par mois et reste comparable. */
-  var mesuresState = loadList('batcave-mesures');
-  function mesureDuMois(mois){ return mesuresState.filter(function(m){ return m && String(m.date).slice(0, 7) === mois; })[0] || null; }
-  function mesuresTriees(){
-    return mesuresState.filter(function(m){ return m && m.date; })
-      .slice().sort(function(a, b){ return String(a.date).localeCompare(String(b.date)); });
-  }
   /* ===== Seance de reference =====
      Le premier jour du programme, on ne fait pas la seance normale : on mesure le point de
      depart. Sans ce chiffre, la surcharge progressive part du bas de la fourchette et on
      ne saura jamais ce qu'on valait au debut. */
   function seanceReferenceDue(){ return todayISO === PROGRAMME_DEBUT; }
-  function mesureDue(){
-    /* proposée à partir du 1er de chaque mois, tant que le mois n'a pas sa mesure */
-    return !mesureDuMois(moisCourant());
-  }
-  function ajouterMesure(){
-    var lire = function(id){ var e = document.getElementById(id); var v = e ? Number(String(e.value).replace(',', '.')) : NaN; return isNaN(v) || v <= 0 ? null : Math.round(v * 10) / 10; };
-    var cou = lire('ms-cou'), bras = lire('ms-bras'), taille = lire('ms-taille');
-    if(cou === null && bras === null && taille === null){ showToast('Saisis au moins une mesure.'); return; }
-    var mois = todayISO.slice(0, 7), existante = mesureDuMois(mois);
-    if(existante){
-      if(cou !== null) existante.cou = cou;
-      if(bras !== null) existante.bras = bras;
-      if(taille !== null) existante.taille = taille;
-      existante.date = todayISO;
-    } else {
-      mesuresState.push({id:'ms' + Date.now() + Math.random().toString(36).slice(2, 5), date: todayISO, cou: cou, bras: bras, taille: taille});
-    }
-    save('batcave-mesures', mesuresState);
-    ['ms-cou','ms-bras','ms-taille'].forEach(function(id){ var e = document.getElementById(id); if(e) e.value = ''; });
-    renderMesures(); renderDashboard();
-    showToast('📏 Mesure du mois enregistrée.');
-  }
-  function renderMesures(){
-    var liste = document.getElementById('mesures-liste'), note = document.getElementById('mesures-note'), chart = document.getElementById('mesures-chart');
-    if(!liste) return;
-    var m = mesuresTriees();
-    if(note) note.textContent = m.length
-      ? m.length + ' mesure' + (m.length > 1 ? 's' : '') + ' · dernière le ' + fmtDate(m[m.length - 1].date)
-      : 'jamais mesuré';
-    if(chart){
-      var pts = m.filter(function(x){ return Number(x.cou); }).map(function(x){ return {date: x.date, value: Number(x.cou)}; });
-      chart.innerHTML = lineChartSVG(pts, null, 'cm',
-        'Deux mesures suffisent à voir la pente. La première aujourd\u2019hui, la suivante le mois prochain.', 'Tour de cou');
-    }
-    if(!m.length){
-      liste.innerHTML = '<li class="entry-empty">Aucune mesure. Prends la première maintenant : sans point de départ, aucune des suivantes ne veut dire quoi que ce soit.</li>';
-      return;
-    }
-    var lignes = m.slice().reverse().map(function(x, i, arr){
-      var prec = arr[i + 1];
-      var ecart = function(cle, unite){
-        var v = Number(x[cle]);
-        if(!v) return '<span class="ecell small sub-note">—</span>';
-        var d = prec && Number(prec[cle]) ? Math.round((v - Number(prec[cle])) * 10) / 10 : null;
-        var col = d === null ? 'var(--ink-faint)' : (d > 0 ? 'var(--good)' : (d < 0 ? 'var(--warn)' : 'var(--ink-faint)'));
-        return '<span class="ecell small"><b>' + String(v).replace('.', ',') + '</b> ' + unite +
-               (d === null ? '' : ' <span style="color:' + col + ';">' + (d > 0 ? '+' : '') + String(d).replace('.', ',') + '</span>') + '</span>';
-      };
-      return '<li class="entry-row"><span class="ecell">' + fmtDate(x.date) + '</span>' +
-             '<span class="ecell small sub-note">cou</span>' + ecart('cou', 'cm') +
-             '<span class="ecell small sub-note">bras</span>' + ecart('bras', 'cm') +
-             '<span class="ecell small sub-note">taille</span>' + ecart('taille', 'cm') +
-             '<button class="edel" data-delmesure="' + escapeHtml(x.id) + '" aria-label="Supprimer cette mesure" title="Supprimer">×</button></li>';
-    }).join('');
-    liste.innerHTML = lignes;
-    liste.querySelectorAll('[data-delmesure]').forEach(function(b){
-      b.addEventListener('click', function(){
-        mesuresState = mesuresState.filter(function(x){ return x.id !== b.dataset.delmesure; });
-        save('batcave-mesures', mesuresState);
-        renderMesures(); renderDashboard();
-      });
-    });
-  }
-  (function(){
-    var b = document.getElementById('ms-add');
-    if(b) b.addEventListener('click', ajouterMesure);
-  })();
-
   /* ================= JOURNAL ================= */
   var COMPLEMENTS = ['Créatine','Magnésium'];
   var journalKey = 'batcave-journal-' + todayISO;
@@ -9220,7 +9245,6 @@
     /* Le test du mois : trier par sangsues et réécrire les dix pires cartes. */
     if(copieViergeDue()) items.push({pri:0.5, icon:'🌱', text:'Copie vierge à prendre — avant la première saisie, pour pouvoir revenir exactement à aujourd\u2019hui', action:{type:'vierge'}});
     if(seanceReferenceDue()) items.push({pri:0.6, icon:'🧪', text:'Séance de référence — aujourd\u2019hui on mesure le point de départ, on ne suit pas la séance normale', action:{type:'sport'}});
-    if(mesureDue()) items.push({pri:2.7, icon:'📏', text:'Mensurations du mois — cou, bras et taille au mètre ruban' + (mesuresTriees().length ? '' : ' (première mesure : c\u2019est le point de départ)'), action:{type:'mesure'}});
     if(testAnkiDu()) items.push({pri:2.6, icon:'🧪', text:'Test du mois Anki — trie par Lapses et réécris tes dix pires cartes' + (ankiState && ankiState.sangsues ? ' (' + ankiState.sangsues + ' sangsue' + (ankiState.sangsues > 1 ? 's' : '') + ' étiquetée' + (ankiState.sangsues > 1 ? 's' : '') + ')' : ''), action:{type:'test-anki'}});
 
     /* Notion : la matière qui a le plus de cours pas faits, à partir de deux. */
@@ -9337,8 +9361,6 @@
         right = '<button class="btn btn-primary" data-plan-pomodoro="1" style="padding:4px 10px; font-size:11px; flex-shrink:0;">🍅 Pomodoro</button>';
       } else if(it.action && it.action.type === 'anki'){
         right = '<button class="btn btn-primary" data-plan-anki="1" style="padding:4px 10px; font-size:11px; flex-shrink:0;">🍅 Anki</button>';
-      } else if(it.action && it.action.type === 'mesure'){
-        right = '<button class="btn" data-plan-mesure="1" style="padding:4px 10px; font-size:11px; flex-shrink:0;">📏 Mesurer</button>';
       } else if(it.action && it.action.type === 'sport'){
         right = '<button class="btn btn-primary" data-ouvrir="sport" style="padding:4px 10px; font-size:11px; flex-shrink:0;">Ouvrir</button>';
       } else if(it.action && it.action.type === 'rattrapage'){
@@ -9411,14 +9433,6 @@
     });
     el.querySelectorAll('[data-plan-vierge]').forEach(function(btn){
       btn.addEventListener('click', function(){ prendreCopieVierge(); renderDashboard(); });
-    });
-    el.querySelectorAll('[data-plan-mesure]').forEach(function(btn){
-      btn.addEventListener('click', function(){
-        var nav = document.querySelector('.nav-btn[data-page="sport"]');
-        if(nav) nav.click();
-        var cible = document.getElementById('ms-cou');
-        if(cible){ cible.scrollIntoView({block:'center'}); cible.focus(); }
-      });
     });
     el.querySelectorAll('[data-plan-testanki]').forEach(function(btn){
       btn.addEventListener('click', function(){ marquerTestAnki(); });
@@ -10789,7 +10803,8 @@
       ['07:20','Anki 1'],['08:20','Anki 2'],
       ['09:20','Annale complète'],['10:20','Correction + cartes'],
       ['11:20','Projets perso 1'],['12:20','Déjeuner'],['13:10','😴 Micro-sieste'],
-      ['13:30','Projets perso 2'],['14:30','🍲 Batch cooking de la semaine'],['16:30','Repos — après-midi libre'],
+      ['13:30','Projets perso 2'],['14:30','🍲 Batch cooking de la semaine'],
+      ['16:30','🧽 Ménage — sols, salle de bain, poussière'],['17:30','Repos — après-midi libre'],
       ['19:00','Dîner'],
       ['19:30','Temps libre'],['20:30','Collation soir'],
       ['20:45','Douche + brossage de dents'],['21:00','Coucher']

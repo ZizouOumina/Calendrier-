@@ -62,7 +62,7 @@ export function vieFictive(){
   const MATIERES = ['Anatomía I','Biología','Bioquímica','Epidemiología','Antropología','Documentación'];
   const sessions = [], revue = [], coursSuivi = {}, habitlog = {}, txs = [], anki = [];
   const HABITS = ['core-lit','core-etirements','core-fajr','core-dhuhr','core-asr','core-maghrib','core-isha',
-                  'core-ecran','core-sadaqah','core-revue','core-famille','core-marche','core-gratitude',
+                  'core-ecran','core-sadaqah','core-revue','core-famille','core-marche',
                   'core-es-conversacion','core-es-formulas','core-es-lectura','core-courses'];
   HABITS.forEach(h => habitlog[h] = []);
 

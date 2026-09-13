@@ -18,7 +18,7 @@ export function jeu180(){
   const MATIERES = ['Anatomía I','Bioquímica','Microbiología','Psicología','Anatomía II'];
   const sessions = [], revision = [], projets = [], espagnol = [], txs = [], habitlog = {};
   const HABITS = ['core-lit','core-etirements','core-fajr','core-dhuhr','core-asr','core-maghrib','core-isha',
-                  'core-ecran','core-sadaqah','core-revue','core-famille','core-marche','core-gratitude',
+                  'core-ecran','core-sadaqah','core-revue','core-famille','core-marche',
                   'core-es-conversacion','core-es-formulas','core-es-lectura'];
   HABITS.forEach(h => habitlog[h] = []);
   habitlog['core-courses'] = [];

@@ -25,20 +25,27 @@ for (const [d, attendu, moitie] of [['2026-09-14',2,true],['2026-09-21',2,true],
      d+' : tractions '+n+' tours (attendu '+attendu+')' + (/tours × ½/.test(t)?' · bandeau ½ présent':' · pas de bandeau, volume complet'));
   await ctx.close();
 }
-console.log('\n== habitudes : pesee du lundi, photos une quinzaine sur deux ==');
-for (const [d, jour_, pesee, photos] of [
-  ['2026-09-14','lundi 14',true,false],
-  ['2026-09-20','dimanche 20',false,false],
-  ['2026-09-27','dimanche 27',false,true],
-  ['2026-10-04','dimanche 4 oct',false,false],
-  ['2026-10-11','dimanche 11 oct',false,true],
+/* Depuis le 12 septembre, le DIMANCHE est le jour d'entretien : la pesee et la seance photo
+   y tombent toutes les semaines. La coupe de cheveux est le seul cycle de trois semaines,
+   ancre au 4 octobre — d'ou sa presence dans le tableau. */
+console.log('\n== habitudes : pesee et photos chaque dimanche, coupe une semaine sur trois ==');
+for (const [d, jour_, pesee, coupe] of [
+  ['2026-09-14','lundi 14',false,false],
+  ['2026-09-20','dimanche 20',true,false],
+  ['2026-09-27','dimanche 27',true,false],
+  ['2026-10-04','dimanche 4 oct',true,true],
+  ['2026-10-11','dimanche 11 oct',true,false],
+  ['2026-10-25','dimanche 25 oct',true,true],
   ['2026-09-15','mardi 15',false,false]]) {
   const {ctx, fr} = await jour(d+'T09:00:00+02:00');
   const h = await fr.evaluate(()=>{
     const l=[...document.querySelectorAll('#dash-checklist li label')].map(x=>x.textContent);
-    return {pesee: l.some(t=>/Pesée/.test(t)), photos: l.some(t=>/Photos/.test(t)), n:l.length};
+    return {pesee: l.some(t=>/Pesée/.test(t)), photos: l.some(t=>/Photos/.test(t)),
+            cheveux: l.some(t=>/Coupe de cheveux/.test(t)), n:l.length};
   });
-  ok(h.pesee===pesee && h.photos===photos, jour_+' : pesée '+h.pesee+' · photos '+h.photos+' ('+h.n+' habitudes)');
+  /* les photos suivent la pesee : chaque dimanche. Seule la coupe est sur trois semaines. */
+  ok(h.pesee===pesee && h.photos===pesee && h.cheveux===coupe,
+     jour_+' : pesée '+h.pesee+' · photos '+h.photos+' · coupe '+h.cheveux+' ('+h.n+' habitudes)');
   await ctx.close();
 }
 console.log('\n== seance de reference, uniquement le 14 ==');

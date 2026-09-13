@@ -121,31 +121,9 @@ console.log('\n== 294) Le minuteur de repos propose les temps de la séance ==')
   await ctx.close();
 }
 
-console.log('\n== 295) Mensurations : saisie, écart, rappel du mois ==');
-{
-  const { ctx, fr, page } = await ouvrir(LUNDI_SPORT);
-  const rappel = await fr.evaluate(() => document.getElementById('dash-plan').innerText);
-  ok(/Mensurations du mois/.test(rappel), 'le plan du jour réclame la mesure du mois');
-  await aller(fr, page, 'sport');
-  await fr.evaluate(() => { document.getElementById('ms-cou').value = '37,5'; document.getElementById('ms-bras').value = '31,2'; document.getElementById('ms-add').click(); });
-  await page.waitForTimeout(250);
-  const m = await fr.evaluate(() => JSON.parse(localStorage.getItem('batcave-mesures') || '[]'));
-  ok(m.length === 1 && m[0].cou === 37.5 && m[0].bras === 31.2 && m[0].taille === null,
-     'la virgule est acceptée, un champ vide reste vide (' + JSON.stringify(m[0] && [m[0].cou, m[0].bras, m[0].taille]) + ')');
-  await fr.evaluate(() => document.querySelector('.nav-btn[data-page="dashboard"]').click());
-  await page.waitForTimeout(200);
-  ok(!/Mensurations du mois/.test(await fr.evaluate(() => document.getElementById('dash-plan').innerText)), 'le rappel disparaît une fois la mesure prise');
-  await ctx.close();
-  /* le mois suivant, l'écart s'affiche */
-  const avant = [{id:'m1', date:'2026-09-14', cou:36.8, bras:30.5, taille:76}];
-  const b2 = await ouvrir(LUNDI_SPORT, { local: {'batcave-mesures': avant} });
-  await aller(b2.fr, b2.page, 'sport');
-  await b2.fr.evaluate(() => { document.getElementById('ms-cou').value = '37,4'; document.getElementById('ms-add').click(); });
-  await b2.page.waitForTimeout(250);
-  const txt = await b2.fr.evaluate(() => document.getElementById('mesures-liste').innerText.replace(/\s+/g, ' '));
-  ok(/37,4 cm \+0,6/.test(txt), 'l\'écart avec la mesure précédente est affiché (' + txt.slice(0, 70) + ')');
-  await b2.ctx.close();
-}
+/* 295) Mensurations — RETIRE le 12 septembre a sa demande : plus de saisie cou/bras/taille,
+   plus de rappel mensuel, plus de cle « batcave-mesures ». Ce qui suit le corps, ce sont
+   desormais la pesee du dimanche et la seance photo d'une semaine sur trois. */
 
 console.log('\n== 296) L\'expérience de la semaine : déclaration puis verdict ==');
 {
