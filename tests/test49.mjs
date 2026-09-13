@@ -21,6 +21,12 @@ async function ouvrir(quand, local){
 const aller = async (fr, page, p) => { await fr.evaluate(pg => document.querySelector('.nav-btn[data-page="'+pg+'"]').click(), p); await page.waitForTimeout(250); };
 const local = (fr,k) => fr.evaluate(x => JSON.parse(localStorage.getItem(x) || 'null'), k);
 const MERCREDI = '2026-09-02T10:00:00+02:00';
+/* La boucle poids -> calories ecarte les pesees anterieures au 10 octobre : les trois
+   premieres semaines du plan, la balance monte d'un a trois kilos de glycogene, d'eau et
+   de contenu digestif, et une pente tracee a travers ce saut dirait n'importe quoi. Ses
+   scenarios se jouent donc en novembre. Le 4 novembre est un mercredi, comme le 2
+   septembre (neuf semaines pile) : meme rotation, memes macros, 3 135 kcal. */
+const MERCREDI_KCAL = '2026-11-04T10:00:00+02:00';
 
 console.log('\n== 118) La priorité des tâches compte enfin ==');
 {
@@ -64,8 +70,8 @@ console.log('\n== 119) Prévu vs réalisé — Bilan ==');
 console.log('\n== 120) Boucle poids → calories ==');
 {
   const stagne = {};
-  for(let i = 13; i >= 0; i--){ const d = new Date('2026-09-02T00:00:00+02:00'); d.setDate(d.getDate() - i); const iso = d.toISOString().slice(0,10); stagne['batcave-journal-' + iso] = {poids: 64.0, water: 0}; }
-  const { ctx, fr, page } = await ouvrir(MERCREDI, stagne);
+  for(let i = 13; i >= 0; i--){ const d = new Date('2026-11-04T00:00:00+01:00'); d.setDate(d.getDate() - i); const iso = d.toISOString().slice(0,10); stagne['batcave-journal-' + iso] = {poids: 64.0, water: 0}; }
+  const { ctx, fr, page } = await ouvrir(MERCREDI_KCAL, stagne);
   await aller(fr, page, 'repas');
   let k = await fr.evaluate(() => ({ note: document.getElementById('kcal-note').innerText, txt: document.getElementById('kcal-analyse').innerText.replace(/\s+/g,' '), sub: document.getElementById('meal-kcal-sub').innerText, btn: document.getElementById('kcal-appliquer').hidden }));
   ok(/recommandation : \+150 kcal/.test(k.note), 'poids stable deux semaines → +150 kcal recommandé : ' + k.note);
@@ -75,7 +81,7 @@ console.log('\n== 120) Boucle poids → calories ==');
   await fr.evaluate(() => document.getElementById('kcal-appliquer').click());
   await page.waitForTimeout(300);
   const aj = await local(fr, 'batcave-kcal-ajustement');
-  ok(aj && aj.valeur === 150 && aj.depuis === '2026-09-02', 'ajustement enregistré : +150 depuis aujourd\'hui');
+  ok(aj && aj.valeur === 150 && aj.depuis === '2026-11-04', 'ajustement enregistré : +150 depuis aujourd\'hui');
   k = await fr.evaluate(() => ({ sub: document.getElementById('meal-kcal-sub').innerText, txt: document.getElementById('kcal-analyse').innerText.replace(/\s+/g,' ') }));
   /* La boucle demande +150 kcal, les pates s'ajustent par pas de 10 g : elle en ajoute 144.
      C'est cet ecart REEL entre les deux journees qui s'affiche, sinon la soustraction ment. */
@@ -93,20 +99,54 @@ console.log('\n== 120) Boucle poids → calories ==');
   await ctx.close();
 }
 {
-  /* prise trop rapide : 64,0 → 65,0 en une semaine (> 2 × 0,23) → −100 */
+  /* prise trop rapide : 64,0 → 65,0 en une semaine (> 1,5 × 0,23) → −100.
+     Le plafond est passe de 2 × a 1,5 × la cible : a 2 ×, il tolerait 0,46 kg par semaine,
+     soit deux kilos par mois — au-dela des 0,25 a 0,5 % du poids de corps par semaine
+     où la prise reste majoritairement musculaire. */
   const rapide = {};
-  for(let i = 13; i >= 0; i--){ const d = new Date('2026-09-02T00:00:00+02:00'); d.setDate(d.getDate() - i); const iso = d.toISOString().slice(0,10); rapide['batcave-journal-' + iso] = {poids: i >= 7 ? 64.0 : 65.0, water: 0}; }
-  const { ctx, fr, page } = await ouvrir(MERCREDI, rapide);
+  for(let i = 13; i >= 0; i--){ const d = new Date('2026-11-04T00:00:00+01:00'); d.setDate(d.getDate() - i); const iso = d.toISOString().slice(0,10); rapide['batcave-journal-' + iso] = {poids: i >= 7 ? 64.0 : 65.0, water: 0}; }
+  const { ctx, fr, page } = await ouvrir(MERCREDI_KCAL, rapide);
   await aller(fr, page, 'repas');
   const note = await fr.evaluate(() => document.getElementById('kcal-note').innerText);
   ok(/recommandation : -100 kcal/.test(note), 'prise trop rapide → −100 kcal : ' + note);
   await ctx.close();
 }
 {
-  const { ctx, fr, page } = await ouvrir(MERCREDI, { 'batcave-journal-2026-09-01': {poids: 64} });
+  const { ctx, fr, page } = await ouvrir(MERCREDI_KCAL, { 'batcave-journal-2026-11-03': {poids: 64} });
   await aller(fr, page, 'repas');
   const k = await fr.evaluate(() => ({ note: document.getElementById('kcal-note').innerText, txt: document.getElementById('kcal-analyse').innerText, btn: document.getElementById('kcal-appliquer').hidden }));
   ok(/en attente de pesées/.test(k.note) && /au moins 4 pesées/.test(k.txt) && k.btn, 'pas assez de pesées → pas de recommandation, bouton masqué');
+  await ctx.close();
+}
+
+console.log('\n== 120b) Le saut de depart ne doit JAMAIS faire retirer des calories ==');
+/* Avant le 19 septembre Zizou mangeait autour d'un tiers du plan. En passant a 3 130 kcal
+   et 377 g de glucides, la balance monte d'un a trois kilos en deux semaines qui ne sont
+   ni du muscle ni du gras : le glycogene se remplit (chaque gramme retient ~3 g d'eau) et
+   le tube digestif porte 2,5 kg de nourriture au lieu de 400 g. Une droite tracee a
+   travers ce saut lit +0,5 kg par semaine et conclut « trop rapide, retire 100 kcal » :
+   le contresens exact que cette boucle existe pour eviter. */
+{
+  const saut = {};
+  [['2026-09-13',64.0],['2026-09-27',66.4],['2026-10-11',66.8],['2026-10-25',67.0],
+   ['2026-11-08',67.2],['2026-11-22',67.4]].forEach(([d,v]) => { saut['batcave-journal-' + d] = {poids: v}; });
+  const { ctx, fr, page } = await ouvrir('2026-11-22T10:00:00+02:00', saut);
+  await aller(fr, page, 'repas');
+  const k = await fr.evaluate(() => ({ note: document.getElementById('kcal-note').innerText,
+                                       txt: document.getElementById('kcal-analyse').innerText.replace(/\s+/g,' ') }));
+  ok(!/-100 kcal/.test(k.note), 'le saut de depart ne fait pas retirer de calories : ' + k.note);
+  /* La pente lue ne porte que sur les pesees d'apres stabilisation : 66,8 -> 67,4. */
+  ok(/4 pes\u00e9es/.test(k.txt) && /66,8 \u2192 67,4 kg/.test(k.txt),
+     'seules les 4 pes\u00e9es d\'apr\u00e8s le 10 octobre comptent : ' + ((k.txt.match(/Tendance[^.]*/) || [''])[0]));
+  await ctx.close();
+}
+{
+  /* Et tant qu'on est dans les trois premieres semaines, la Batcave DIT pourquoi elle se tait. */
+  const { ctx, fr, page } = await ouvrir('2026-09-27T10:00:00+02:00', {'batcave-journal-2026-09-13': {poids: 64.0}, 'batcave-journal-2026-09-27': {poids: 66.4}});
+  await aller(fr, page, 'repas');
+  const txt = await fr.evaluate(() => document.getElementById('kcal-analyse').innerText.replace(/\s+/g,' '));
+  ok(/rien avant le 10 oct\./.test(txt) && /glyc\u00e8ne|glycog\u00e8ne/.test(txt),
+     'elle explique l\'attente au lieu de rester muette : ' + txt.slice(-190));
   await ctx.close();
 }
 

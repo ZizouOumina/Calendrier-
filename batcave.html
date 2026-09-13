@@ -6827,6 +6827,17 @@
      et pas à une tendance — on ne recommande rien, et on dit laquelle. Le lundi suivant
      tranchera. */
   var KCAL_FENETRE_J = 84, KCAL_MIN_PESEES = 4, KCAL_MIN_ETALEMENT_J = 12;
+  /* ===== On ne lit pas une tendance a cheval sur deux alimentations =====
+     Avant le 19 septembre, Zizou mangeait beaucoup moins -- de l'ordre d'un tiers de ce
+     que le plan prevoit. En passant a 3 130 kcal et 377 g de glucides, la balance monte
+     de UN A TROIS KILOS en deux semaines qui ne sont ni du muscle ni du gras : le
+     glycogene se remplit (chaque gramme retient environ trois grammes d'eau) et le tube
+     digestif porte en permanence 2,5 kg de nourriture au lieu de 400 g.
+     Une droite des moindres carres tracee a travers ce saut voit une prise de 0,5 kg par
+     semaine et conclut « trop rapide, retire 100 kcal » -- exactement le contresens que
+     cette boucle existe pour eviter. Les pesees anterieures a la stabilisation sont donc
+     ecartees : elles decrivent un autre regime. */
+  var KCAL_STABILISATION_J = 21;
   /* pente d'une droite des moindres carrés, en kg par jour ; null si les x sont tous égaux */
   function penteParJour(pts){
     var n = pts.length;
@@ -6838,14 +6849,22 @@
     for(var i = 0; i < n; i++){ sxy += (x[i] - mx) * (pts[i].value - my); sxx += (x[i] - mx) * (x[i] - mx); }
     return sxx > 0 ? sxy / sxx : null;
   }
+  /* La bande est ASYMETRIQUE, et c'est voulu. Prendre trop lentement ne coute que du
+     temps ; prendre trop vite coute du gras qu'il faudra reperdre. Le plafond etait a
+     2 x la cible, soit 0,46 kg par semaine a 64 kg -- deux kilos par mois, bien au-dessus
+     des 0,25 a 0,5 % du poids de corps par semaine au-dela desquels la prise devient
+     surtout grasse. Il descend a 1,5 x (0,35 kg par semaine), qui tombe dans cette bande.
+     Le plancher reste a 0,5 x : on laisse le temps de repondre avant d'ajouter. */
   function recoKcal(delta, rythmeVise){
     if(delta < rythmeVise * 0.5) return 150;
-    if(delta > rythmeVise * 2) return -100;
+    if(delta > rythmeVise * 1.5) return -100;
     return 0;
   }
   function boucleKcal(){
     var pts = weightHistory().filter(function(p){ return p.date <= todayISO; });
     var depuis = isoDecale(todayISO, -(KCAL_FENETRE_J - 1));
+    var utile = isoDecale(ANCRE_COURSES, KCAL_STABILISATION_J);
+    if(utile > depuis) depuis = utile;
     pts = pts.filter(function(p){ return p.date >= depuis; });
     var g = GOALS_NUMERIC.filter(function(x){ return x.id === 'poids'; })[0];
     var semaines = Math.max(1, daysBetween(new Date(horizonState.debut + 'T00:00:00'), new Date(horizonState.fin + 'T00:00:00')) / 7);
@@ -6855,7 +6874,8 @@
     if(pts.length < KCAL_MIN_PESEES || etalement < KCAL_MIN_ETALEMENT_J){
       out.motif = 'Il faut au moins ' + KCAL_MIN_PESEES + ' pesées étalées sur ' + KCAL_MIN_ETALEMENT_J +
                   ' jours pour lire une pente — ' + pts.length + ' pesée' + (pts.length > 1 ? 's' : '') +
-                  ' sur ' + etalement + ' jour' + (etalement > 1 ? 's' : '') + ' pour l\'instant. Une pesée un dimanche sur deux, à jeun : au bout de la quatrième, la Batcave sait.';
+                  ' sur ' + etalement + ' jour' + (etalement > 1 ? 's' : '') + ' pour l\'instant. Une pesée un dimanche sur deux, à jeun : au bout de la quatrième, la Batcave sait.' +
+                  (todayISO < utile ? ' Et rien avant le ' + fmtDate(utile) + ' : les trois premières semaines du plan, la balance monte d\'un à trois kilos de glycogène, d\'eau et de contenu digestif — ce n\'est ni du muscle ni du gras, et une pente tracée à travers ce saut dirait n\'importe quoi.' : '');
       return out;
     }
     var parSemaine = function(liste){ var p = penteParJour(liste); return p === null ? null : p * 7; };

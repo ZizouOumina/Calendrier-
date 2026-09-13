@@ -82,9 +82,11 @@ console.log('\n== 1) Hors partiels : la matière la plus délaissée, et le moti
 }
 
 console.log('\n== 2) La boucle poids marche avec UNE pesée par lundi ==');
-const L = lundis('2026-09-28', 8);              /* 8 lundis, du 28 sept. au 16 nov. */
+/* Les huit lundis demarrent APRES le 10 octobre : avant, la balance porte encore le
+   glycogene et l'eau du changement d'alimentation, et la boucle les ecarte. */
+const L = lundis('2026-10-12', 8);              /* 8 lundis, du 12 oct. au 30 nov. */
 {
-  const {ctx, page, fr} = await ouvrir(pesees(L.map(iso => [iso, 64.0])), '2026-11-16T09:40:00+01:00');
+  const {ctx, page, fr} = await ouvrir(pesees(L.map(iso => [iso, 64.0])), '2026-11-30T09:40:00+01:00');
   await fr.evaluate(() => document.querySelector('.nav-btn[data-page="repas"]').click());
   await page.waitForTimeout(500);
   const k = await fr.evaluate(() => ({note: document.getElementById('kcal-note').innerText,
@@ -95,7 +97,7 @@ const L = lundis('2026-09-28', 8);              /* 8 lundis, du 28 sept. au 16 n
 }
 {
   /* +0,23 kg par semaine, exactement le rythme visé */
-  const {ctx, page, fr} = await ouvrir(pesees(L.map((iso, i) => [iso, Number((64.0 + 0.23*i).toFixed(2))])), '2026-11-16T09:40:00+01:00');
+  const {ctx, page, fr} = await ouvrir(pesees(L.map((iso, i) => [iso, Number((64.0 + 0.23*i).toFixed(2))])), '2026-11-30T09:40:00+01:00');
   await fr.evaluate(() => document.querySelector('.nav-btn[data-page="repas"]').click());
   await page.waitForTimeout(500);
   const k = await fr.evaluate(() => ({note: document.getElementById('kcal-note').innerText,
@@ -106,7 +108,7 @@ const L = lundis('2026-09-28', 8);              /* 8 lundis, du 28 sept. au 16 n
 }
 {
   /* +0,6 kg par semaine : trop vite */
-  const {ctx, page, fr} = await ouvrir(pesees(L.map((iso, i) => [iso, Number((64.0 + 0.6*i).toFixed(2))])), '2026-11-16T09:40:00+01:00');
+  const {ctx, page, fr} = await ouvrir(pesees(L.map((iso, i) => [iso, Number((64.0 + 0.6*i).toFixed(2))])), '2026-11-30T09:40:00+01:00');
   await fr.evaluate(() => document.querySelector('.nav-btn[data-page="repas"]').click());
   await page.waitForTimeout(500);
   const note = await fr.evaluate(() => document.getElementById('kcal-note').innerText);
@@ -115,7 +117,7 @@ const L = lundis('2026-09-28', 8);              /* 8 lundis, du 28 sept. au 16 n
 }
 {
   /* trois lundis seulement : pas de pente, et le message dit quoi faire */
-  const {ctx, page, fr} = await ouvrir(pesees(lundis('2026-11-02', 3).map(iso => [iso, 64.0])), '2026-11-16T09:40:00+01:00');
+  const {ctx, page, fr} = await ouvrir(pesees(lundis('2026-11-02', 3).map(iso => [iso, 64.0])), '2026-11-30T09:40:00+01:00');
   await fr.evaluate(() => document.querySelector('.nav-btn[data-page="repas"]').click());
   await page.waitForTimeout(500);
   const k = await fr.evaluate(() => ({note: document.getElementById('kcal-note').innerText,

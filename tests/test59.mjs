@@ -95,7 +95,9 @@ console.log('\n== 193) Eau, sommeil, poids : Calendrier et Journal → tableau d
   await aller('bilan');
   ok(/Sommeil \/ nuit[\s\S]*?8 h/.test(await txt('#bilan-grid')), 'Bilan : sommeil 8 h');
   await aller('repas');
-  ok(/1 pesée|pesées sur chacune/.test(await txt('#kcal-analyse')), 'Boucle poids → calories : la pesée est prise en compte');
+  /* Le 1er septembre precede de trois semaines la stabilisation : la boucle ECARTE cette
+     pesee -- elle decrit l'ancienne alimentation -- et elle dit pourquoi au lieu de se taire. */
+  ok(/rien avant le 10 oct\./.test(await txt('#kcal-analyse')), 'Boucle poids → calories : la pesée d\'avant le plan est écartée, et la Batcave dit pourquoi');
 }
 
 console.log('\n== 194) Repas cochés → tableau de bord et score ==');

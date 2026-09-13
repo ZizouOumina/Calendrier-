@@ -147,13 +147,19 @@ console.log('\n═══ 6 bis. Blocs Español manqués : reportés dans QUEL co
 console.log('\n═══ 7. Repas : les calories sont proratisées aux cases cochées ═══');
 {
   const {ctx, page, fr} = await ouvrir({['batcave-meals-'+JOUR]: {'0-0':true}});
+  /* Ni la cible ni le petit-dejeuner ne sont ecrits ici : on les redemande a la Batcave,
+     qui les calcule depuis la table de composition. Un audit qui porte ses propres
+     chiffres en dur devient faux des qu'un grammage bouge, et c'est l'audit qu'on
+     corrige au lieu du defaut. */
   const s = await fr.evaluate(()=>{
     document.querySelector('.nav-btn[data-page="repas"]').click();
-    return document.getElementById('meal-kcal-sub').textContent;
+    return {sub: document.getElementById('meal-kcal-sub').textContent,
+            jour: window.__bcMacrosJour().kcal,
+            pdej: window.__bcMacrosRepas({name:'Petit-déjeuner'}).kcal};
   });
-  const m = s.match(/(\d+) \/ (\d+) kcal/);
-  ok(m && Number(m[2]) > 3000 && Number(m[2]) < 3110, 'cible du jour ' + (m?m[2]:'?') + ' kcal (~3 051)');
-  ok(m && Math.abs(Number(m[1]) - 824/5) < 2, '1 item sur 5 du petit-déjeuner (824 kcal) → ' + (m?m[1]:'?') + ' kcal (165 attendu)');
+  const m = s.sub.match(/(\d+) \/ (\d+) kcal/);
+  ok(m && Number(m[2]) === s.jour, 'cible du jour ' + (m?m[2]:'?') + ' kcal = la somme des cinq repas (' + s.jour + ')');
+  ok(m && Math.abs(Number(m[1]) - s.pdej/5) < 2, '1 item sur 5 du petit-déjeuner (' + s.pdej + ' kcal) → ' + (m?m[1]:'?') + ' kcal (' + Math.round(s.pdej/5) + ' attendu)');
   await ctx.close();
 }
 
