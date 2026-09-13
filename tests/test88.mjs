@@ -133,31 +133,32 @@ console.log('\n== 292) L\'agenda Google : ni 🦇 Cours, ni 🦇 Temps libre =='
 
 console.log('\n== 293) Sans dates d\'examen, la Batcave le dit — et se taît dès la première saisie ==');
 {
-  const { ctx, fr } = await ouvrir('2026-10-14T09:00:00+02:00');
+  /* le seuil est PROGRAMME_DEBUT + 31 jours : 15 sept. + 31 = 16 octobre */
+  const { ctx, fr } = await ouvrir('2026-10-15T09:00:00+02:00');
   const a = await fr.evaluate(() => document.getElementById('dash-plan').innerText);
-  ok(!/Aucune date d’examen/.test(a), 'le 14 octobre, un mois après la rentrée, rien encore');
+  ok(!/Aucune date d’examen/.test(a), 'le 15 octobre, la veille du seuil, rien encore');
   await ctx.close();
 }
 {
-  const { ctx, fr } = await ouvrir('2026-10-15T09:00:00+02:00');
+  const { ctx, fr } = await ouvrir('2026-10-16T09:00:00+02:00');
   const v = await fr.evaluate(() => ({
     t: document.getElementById('dash-plan').innerText,
     btn: document.querySelectorAll('#dash-plan [data-ouvrir="etudes"]').length
   }));
-  ok(/Aucune date d’examen saisie/.test(v.t), 'le 15 octobre, la ligne apparaît');
+  ok(/Aucune date d’examen saisie/.test(v.t), 'le 16 octobre, la ligne apparaît');
   ok(/pas de mode partiels/.test(v.t) && /sommeil majoré/.test(v.t), 'et elle dit ce qui reste éteint tant qu\'elles manquent');
   ok(v.btn === 1, 'un bouton qui ouvre l\'onglet Études');
   await ctx.close();
 }
 {
-  /* 26 jours : sous les 30 jours qui font entrer l'examen dans le Plan du jour */
-  const { ctx, fr } = await ouvrir('2026-10-15T09:00:00+02:00', {'batcave-examens':{'Anatomía I':'2026-11-10'}});
+  /* 25 jours : sous les 30 jours qui font entrer l'examen dans le Plan du jour */
+  const { ctx, fr } = await ouvrir('2026-10-16T09:00:00+02:00', {'batcave-examens':{'Anatomía I':'2026-11-10'}});
   const v = await fr.evaluate(() => ({
     t: document.getElementById('dash-plan').innerText,
     btn: document.querySelectorAll('#dash-plan [data-ouvrir="etudes"]').length
   }));
   ok(!/Aucune date d’examen/.test(v.t) && v.btn === 0, 'une seule date saisie suffit à la faire disparaître');
-  ok(/Examen Anatomía I dans 26 jours/.test(v.t), 'et l\'examen prend sa place dans le plan : ' + (v.t.match(/Examen [^\n]+/) || [])[0]);
+  ok(/Examen Anatomía I dans 25 jours/.test(v.t), 'et l\'examen prend sa place dans le plan : ' + (v.t.match(/Examen [^\n]+/) || [])[0]);
   await ctx.close();
 }
 

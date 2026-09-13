@@ -78,11 +78,15 @@ console.log('\n== 200) Depuis l\'appli : tout est effacé ici et dans le cloud, 
   ok(c['batcave-reinit'] && c['batcave-reinit'].id && c['batcave-reinit'].date === '2026-09-08', 'le marqueur de nouveau départ est écrit dans le cloud');
   /* Les objectifs de septembre et du trimestre repartent du 8 : debut deplace, cibles
      recalculees sur la grille des jours restants. Cette grille ne prevoit rien avant le
-     14 septembre, premier jour du programme : les cibles ne comptent donc que du 14 au
-     30 (septembre) et du 14 au 30 novembre (trimestre). */
+     15 septembre, premier jour du programme : les cibles ne comptent donc que du 15 au
+     30 (septembre) et du 15 au 30 novembre (trimestre).
+     Le depart est passe du lundi 14 au mardi 15, et les deux chiffres ci-dessous perdent
+     exactement la revision de ce lundi-la, au prorata du nouveau depart :
+       septembre  65,8 → 61,9 avant prorata, x 23/30  → 50,4 → 47,5
+       trimestre  265 min x 0,89 / 60 = 3,93 h, x 84/91 = 3,6 → 289,9 → 286,3 */
   const objs = c['batcave-objectifs'] && c['batcave-objectifs'].liste || [];
   const revSept = objs.find(o => o.id === 'M2026-09:revision_h'), revT1 = objs.find(o => o.id === 'T1:revision_h'), sommeilSept = objs.find(o => o.id === 'M2026-09:sommeil_moy');
-  ok(!!revSept && revSept.debut === '2026-09-08' && revSept.cible === 50.4, 'Révision de septembre : repart du 8, cible ramenée aux jours réellement programmés → 50,4 h (' + (revSept && revSept.cible) + ')');
+  ok(!!revSept && revSept.debut === '2026-09-08' && revSept.cible === 47.5, 'Révision de septembre : repart du 8, cible ramenée aux jours réellement programmés → 47,5 h (' + (revSept && revSept.cible) + ')');
   /* Deux fois de suite ce chiffre a bouge, et jamais par accident.
      284 → 286,9 : « Projets perso 4, 5 et 6 » basculent en revision ciblee pendant les
      partiels. L'examen seme ici (16 octobre) ouvre une fenetre du 9 au 16 qui contient un
@@ -94,7 +98,7 @@ console.log('\n== 200) Depuis l\'appli : tout est effacé ici et dans le cloud, 
      (320 → 485 min de revision prevue) et le lundi 12 octobre (476 → 531). Les deux sont
      dans la fenetre de partiels, donc la plage de cours liberee devient de l'annale complete,
      sa correction et de la revision ciblee. +220 min nets x 0,89 = 3,26 h, x 84/91 = 3,01 h. */
-  ok(!!revT1 && revT1.debut === '2026-09-08' && revT1.cible === 289.9, 'Révision du trimestre : repart du 8 → 289,9 h (' + (revT1 && revT1.cible) + ')');
+  ok(!!revT1 && revT1.debut === '2026-09-08' && revT1.cible === 286.3, 'Révision du trimestre : repart du 8 → 286,3 h (' + (revT1 && revT1.cible) + ')');
   ok(!!sommeilSept && sommeilSept.debut === '2026-09-08' && sommeilSept.cible === 7.75, 'une moyenne (sommeil, 7,75 h) repart du 8 sans changer de cible');
   await page.waitForTimeout(2200);   /* rechargement automatique */
   await page.frameLocator('#f').locator('#dash-plan').waitFor({ state:'attached', timeout:15000 });

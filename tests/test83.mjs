@@ -166,11 +166,11 @@ console.log('\n== 7) Deuxième porte : moyenne, erreurs ET un examen déjà pass
 
 console.log('\n== 8) La note du jour n\'apparaît que les jours de cours ==');
 {
-  let r = await ouvrir({}, '2026-09-14T21:00:00+02:00');   /* lundi : cours */
+  let r = await ouvrir({}, '2026-09-15T21:00:00+02:00');   /* mardi, premier jour du programme : cours */
   await etudes(r.fr, r.page);
   let v = await r.fr.evaluate(() => ({vis: !document.getElementById('portes-aujourdhui').hidden,
                                       n: document.querySelectorAll('#portes-note-jour [data-note-cours]').length}));
-  ok(v.vis && v.n === 4, 'lundi 14 : la note du jour est proposée, quatre choix');
+  ok(v.vis && v.n === 4, 'mardi 15 : la note du jour est proposée, quatre choix');
   await r.ctx.close();
 
   r = await ouvrir({}, '2026-09-20T21:00:00+02:00');       /* dimanche : pas de cours */
@@ -182,18 +182,18 @@ console.log('\n== 8) La note du jour n\'apparaît que les jours de cours ==');
 
 console.log('\n== 9) Un clic écrit la note, et elle survit au rechargement ==');
 {
-  const { ctx, page, fr } = await ouvrir({}, '2026-09-14T21:00:00+02:00');
+  const { ctx, page, fr } = await ouvrir({}, '2026-09-15T21:00:00+02:00');
   await etudes(fr, page);
   await fr.evaluate(() => document.querySelector('#portes-note-jour [data-note-cours="2"]').click());
   await page.waitForTimeout(200);
   const ecrit = await fr.evaluate(() => JSON.parse(localStorage.getItem('batcave-cours-suivi') || '{}'));
-  ok(ecrit['2026-09-14'] === 2, 'la note 2 est écrite pour le 14 septembre');
+  ok(ecrit['2026-09-15'] === 2, 'la note 2 est écrite pour le 15 septembre');
   const actif = await fr.evaluate(() => !!document.querySelector('#portes-note-jour [data-note-cours="2"].active'));
   ok(actif, 'et le choix reste marqué');
   await fr.evaluate(() => document.querySelector('#portes-note-jour [data-note-cours="2"]').click());
   await page.waitForTimeout(200);
   const efface = await fr.evaluate(() => JSON.parse(localStorage.getItem('batcave-cours-suivi') || '{}'));
-  ok(efface['2026-09-14'] === undefined, 'recliquer la même note l\'efface');
+  ok(efface['2026-09-15'] === undefined, 'recliquer la même note l\'efface');
   await ctx.close();
 }
 

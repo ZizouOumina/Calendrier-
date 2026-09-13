@@ -1,6 +1,6 @@
 /* Lot 31 · point 5 — « rien n'était prévu » ≠ « rien n'a été fait ».
    Dans la grille du mois, une case vide voulait dire deux choses opposées et s'affichait
-   pareil. Les jours que la grille ne prévoyait pas (avant le 14 septembre, vacances, jour
+   pareil. Les jours que la grille ne prévoyait pas (avant le 15 septembre, vacances, jour
    exclu) portent maintenant la classe « hors-plan » : contour pointillé, fond transparent,
    quantième atténué. Les cases pleines qui restent blanches sont les VRAIES journées ratées. */
 import { chromium } from 'playwright';
@@ -9,7 +9,7 @@ const b = await chromium.launch();
 let err = 0;
 const ok = (c, m) => { if(c) console.log('  ok  ' + m); else { err++; console.log('  FAIL ' + m); } };
 
-const JOUR = '2026-09-14';
+const JOUR = '2026-09-15';   /* premier jour du programme, et « aujourd'hui » de ce test */
 async function ouvrir(seed, quand){
   const ctx = await b.newContext({viewport:{width:1440, height:1200}, timezoneId:'Europe/Madrid', locale:'fr-FR'});
   await ctx.addInitScript(s => {
@@ -46,17 +46,17 @@ console.log('\n== 1) Avant le premier jour du programme, rien n’était prévu 
 {
   const {ctx, page, fr} = await ouvrir();
   const cs = await grille(fr, page, 'ag');
-  const avant = cs.filter(c => c.iso >= '2026-09-01' && c.iso <= '2026-09-13');
-  ok(avant.length === 13 && avant.every(c => c.horsPlan), 'les 13 jours du 1er au 13 sept. sont hors plan (' + avant.filter(c=>c.horsPlan).length + '/13)');
+  const avant = cs.filter(c => c.iso >= '2026-09-01' && c.iso <= '2026-09-14');
+  ok(avant.length === 14 && avant.every(c => c.horsPlan), 'les 14 jours du 1er au 14 sept. sont hors plan (' + avant.filter(c=>c.horsPlan).length + '/14)');
   ok(/rien n’était prévu/.test(avant[0].titre), 'et le disent au survol : « ' + avant[0].titre + ' »');
-  const j14 = de(cs, JOUR);
-  ok(j14 && !j14.horsPlan, 'le 14, lui, était prévu — la case reste blanche : c’est une journée ratée, pas un jour vide');
-  ok(/prévu, pas fait/.test(j14.titre), 'et le dit aussi : « ' + j14.titre + ' »');
+  const j15 = de(cs, JOUR);
+  ok(j15 && !j15.horsPlan, 'le 15, lui, était prévu — la case reste blanche : c’est une journée ratée, pas un jour vide');
+  ok(/prévu, pas fait/.test(j15.titre), 'et le dit aussi : « ' + j15.titre + ' »');
   /* trois états, pas deux : un jour à venir n'est ni un trou ni une dette */
   const j21 = de(cs, '2026-09-21');
   ok(j21 && !j21.horsPlan && /à venir/.test(j21.titre), 'le 21, encore à venir, ne passe pas pour une journée ratée : « ' + j21.titre + ' »');
-  const j15 = de(cs, '2026-09-15');
-  ok(j15 && /à venir/.test(j15.titre), 'demain non plus : « ' + j15.titre + ' »');
+  const j16 = de(cs, '2026-09-16');
+  ok(j16 && /à venir/.test(j16.titre), 'demain non plus : « ' + j16.titre + ' »');
   await ctx.close();
 }
 
@@ -97,11 +97,11 @@ console.log('\n== 4) Chaque vue juge sur CE QU’ELLE montre ==');
   const rv = await grille(fr, page, 'rv');
   const pj = await fr.evaluate(() => [...document.querySelectorAll('#pj-grid .cal-day[data-agjour]')].map(c => ({
     iso: c.dataset.agjour, horsPlan: c.classList.contains('hors-plan')})));
-  const lundi = '2026-09-14';
-  ok(!de(rv, lundi).horsPlan, 'vue Révision : le lundi 14 prévoit de la révision');
-  ok(de(rv, '2026-09-13').horsPlan, 'vue Révision : le 13 (avant le programme) reste hors plan');
-  ok(pj.filter(c => c.iso === lundi)[0] && !pj.filter(c => c.iso === lundi)[0].horsPlan,
-     'vue Projets : le 14 prévoit de l’Español, qui s’y affiche — donc pas hors plan');
+  const premier = '2026-09-15';
+  ok(!de(rv, premier).horsPlan, 'vue Révision : le mardi 15 prévoit de la révision');
+  ok(de(rv, '2026-09-14').horsPlan, 'vue Révision : le 14 (avant le programme) reste hors plan');
+  ok(pj.filter(c => c.iso === premier)[0] && !pj.filter(c => c.iso === premier)[0].horsPlan,
+     'vue Projets : le 15 prévoit de l’Español, qui s’y affiche — donc pas hors plan');
   await ctx.close();
 }
 

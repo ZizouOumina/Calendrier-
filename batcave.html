@@ -7203,7 +7203,7 @@
     if(note){
       var w = semaineProgramme(), f = facteurTours();
       note.textContent = w <= 0 ? 'démarre le ' + fmtDate(PROGRAMME_DEBUT)
-        : 'semaine ' + w + (f < 1 ? ' · tours × ' + (f === 0.5 ? '½' : '¾') : ' · tours complets') + ([5,10,15].indexOf(w) > -1 ? ' · lundi : retest tractions et dips' : '');
+        : 'semaine ' + w + (f < 1 ? ' · tours × ' + (f === 0.5 ? '½' : '¾') : ' · tours complets') + ([5,10,15].indexOf(w) > -1 ? ' · ' + ['dimanche','lundi','mardi','mercredi','jeudi','vendredi','samedi'][dowDe(PROGRAMME_DEBUT)] + ' : retest tractions et dips' : '');
     }
   })();
 
@@ -9186,106 +9186,113 @@
      la boucle kcal (+40 g/j = +280 g/semaine). L'huile d'olive se rachète toutes les
      4 semaines : elle reste dans la liste, on ne la coche que quand il en faut. Prix estimés
      Alicante 2026. */
+  /* ====== LISTES DE COURSES ======
+     Les quantites ne sont plus estimees : elles sortent du plan de repas reel (MEALS,
+     FECULENTS, PROTEINES, ROTATION), multipliees par les 7 jours de la semaine puis par
+     le cycle de la categorie. Un besoin hebdomadaire faux se voyait a l'oeil nu avant --
+     l'huile d'olive etait annoncee a 1 000 ml par 4 semaines alors qu'il en faut 1 152 :
+     il serait tombe a sec quatre jours avant chaque rachat, tous les mois.
+     Les produits menagers (nettoyants, eponges, sacs, serpilliere) sont SORTIS de la
+     Batcave a sa demande : il en a en reserve et les rachete au besoin. Restent la
+     nourriture et la sante, les deux seules choses dont une rupture casse une habitude. */
+  var BESOIN_SEMAINE = (function(){
+    var b = {}, add = function(k, v){ b[k] = (b[k] || 0) + v; };
+    for(var dow = 0; dow < 7; dow++){
+      var rot = ROTATION[dow], dej = rot[0], din = rot[1];
+      add('flocons', 80); add('skyr', 305); add('oeufs', 2); add('cacahuete', 55);
+      add('bananes', 1); add('riz', FECULENTS.dej.g); add('pates', FECULENTS.din.g);
+      add('legumes', 350); add('pain', 60); add('jambon', 40); add('fromage', 20);
+      add('miel', 20); add('fruits', 1);
+      add(dej === 'Saumon' ? 'saumon' : (dej === 'Poulet' ? 'poulet' : 'hachee'), PROTEINES[dej].dej.g);
+      add(din === 'Saumon' ? 'saumon' : (din === 'Poulet' ? 'poulet' : 'hachee'), PROTEINES[din].din.g);
+      add('huile', PROTEINES[dej].dej.huile + PROTEINES[din].din.huile);
+    }
+    return b;
+  })();
+  /* La nourriture demarre le samedi 19 -- son jour 1 pour les repas et les courses.
+     L'hygiene, elle, se consomme deja : elle part du 14. */
+  var CONSO_DEBUT_REPAS = '2026-09-19';
+  var CONSO_DEBUT_HYGIENE = '2026-09-14';
   function planCoursesSemaine(ajust){
-    var plus = grammesAjustement(ajust, 3.6) * 7;
-    var g = function(n){ return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '\u202f'); };
-    /* Le sec, l'hygiene et le menage quittent la liste hebdomadaire : rien n'y perime en
-       quatre semaines, et les sortir fait passer le samedi de 16 articles a 11. Ce qui reste
-       chaque semaine est ce qui se gate -- viande, poisson, laitier, pain, frais.
-       Les PATES portent l'ajustement de la boucle kcal. Il reste une ligne HEBDOMADAIRE
-       quand il n'est pas nul : quelques dizaines de grammes par semaine ne se preachetent
-       pas dans un sac de 2,4 kg, et le sac mensuel couvre la base. */
+    var plus = grammesAjustement(ajust, 3.6) * 7;          /* g de pates en plus par semaine */
+    var g = function(n){ return String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ' '); };
+    var B = BESOIN_SEMAINE;
+    var q = function(n, u){ return g(n) + (u || ' g'); };
     var cat = [
       {cat:'Chaque semaine', semaines:1, items:[
-        {label:'Poulet', qte:'800 g', prix:5.2}, {label:'Viande hachée 5 %', qte:'900 g', prix:7.2}, {label:'Saumon', qte:'450 g', prix:5.85},
-        {label:'Œufs', qte:'15', prix:3.3, exception:{date:'2026-09-14', qte:'6 (une boîte)', prix:1.3, pourquoi:'tu en as 12, il t\u2019en faut 15 — 3 d\u2019avance'}}, {label:'Jambon', qte:'300 g', prix:3.3}, {label:'Fromage', qte:'150 g', prix:1.35},
-        {label:'Pain complet', qte:'500 g', prix:1.6},
-        {label:'Skyr', qte:'2\u202f200 g', prix:8.8},
-        {label:'Bananes', qte:'8', prix:1.4}, {label:'Fruits (pommes, poires, oranges…)', qte:'8', prix:2.2}
+        {label:'Poulet',              qte:q(B.poulet),  prix:B.poulet/1000*6.5},
+        {label:'Viande hachée 5 %',   qte:q(B.hachee),  prix:B.hachee/1000*8.0},
+        {label:'Saumon',              qte:q(B.saumon),  prix:B.saumon/1000*13.0},
+        {label:'Skyr',                qte:q(B.skyr),    prix:B.skyr/1000*4.0},
+        /* Ses 12 oeufs partent cette semaine, a la va-vite : il n'en restera pas samedi. */
+        {label:'Œufs',                qte:g(B.oeufs),   prix:B.oeufs*0.22},
+        {label:'Jambon',              qte:q(B.jambon),  prix:B.jambon/1000*11.0},
+        {label:'Fromage',             qte:q(B.fromage), prix:B.fromage/1000*9.0},
+        {label:'Pain complet',        qte:q(B.pain),    prix:B.pain/1000*3.2},
+        {label:'Bananes',             qte:g(B.bananes), prix:B.bananes*0.18},
+        {label:'Fruits (pommes, poires, oranges…)', qte:g(B.fruits), prix:B.fruits*0.28}
       ]},
-      /* Courses faites le 12 septembre : 7 kg de pates, 4 kg de riz, 2,4 kg de flocons.
-         Ces trois lignes ne se rachetent donc pas au premier passage. « des » dit a partir
-         de quelle date l'article revient dans le compte -- calcule sur la consommation du
-         plan : riz et flocons tiennent 4 semaines (1 kg et 600 g par semaine), les pates
-         environ onze (600 g par semaine). L'article reste AFFICHE et a sa place dans la
-         liste, sinon les coches -- indexees par position -- tomberaient sur le voisin. */
-      /* Riz, flocons et huile achetes avant le 13 tiennent 4 semaines pile : epuises le
-         12 octobre, donc rachetes le samedi 10. C'est l'ancre de toute la categorie. */
-      {cat:'Réserves — toutes les 4 semaines', semaines:4, ancre:'2026-10-10', aussi:COURSES_EXCEPTION, items:[
-        {label:'Riz', qte:'4\u202f000 g', prix:4.4, des:'2026-10-10', stock:'4 kg en réserve, 1 kg/semaine'},
-        /* Les pates portent l'ajustement de la boucle kcal, multiplie par quatre comme le
-           reste du sac. Il n'y a PAS de ligne hebdomadaire en plus : on n'achete pas un
-           sachet de 280 g de pates, on prend le gros sac une fois par mois. */
-        {label:'Pâtes', qte: g((600 + plus) * 4) + ' g' + (plus ? ' (dont ' + (plus > 0 ? '+' : '') + g(plus * 4) + ' g boucle kcal)' : ''), prix: (600 + plus) * 4 / 1000 * 1.0,
-         /* 7 kg a 600 g/semaine tiennent jusqu'au 4 decembre ; a 880 g (boucle kcal a fond)
-            jusqu'au 8 novembre. Les deux cas retombent sur le meme samedi utile. */
-         des:'2026-11-07', stock:'7 kg en réserve, jusqu\u2019à début décembre'},
-        {label:'Flocons d\'avoine', qte:'2\u202f400 g', prix:3.8, des:'2026-10-10', stock:'2,4 kg en réserve, 600 g/semaine'},
-        /* Deja surgeles : quatre semaines ne leur font rien. 10 kg, en revanche, demandent
-           de la place -- c'est la seule ligne mensuelle limitee par le congelateur. */
-        {label:'Légumes verts surgelés', qte:'10\u202f000 g', prix:20},
-        {label:'Miel', qte:'800 g', prix:5.2},
-        {label:'Huile d\'olive', qte:'1\u202f000 ml', prix:7, des:'2026-10-10', stock:'de quoi tenir 4 semaines'}
+      /* Cycle de 4 semaines, ancre au samedi 19 septembre : 19/9, 17/10, 14/11, 12/12. */
+      {cat:'Réserves — toutes les 4 semaines', semaines:4, ancre:ANCRE_COURSES, items:[
+        {label:'Riz',                 qte:q(B.riz*4),     prix:B.riz*4/1000*1.1,
+         stockQte:4000, conso:B.riz, debut:CONSO_DEBUT_REPAS, stockTxt:'4 kg', pourquoi:g(B.riz) + ' g par semaine',
+         besoinCycle:B.riz*4, unite:' g', prixUnite:1.1/1000},
+        {label:'Pâtes',               qte:q((B.pates+plus)*4) + (plus ? ' (dont +' + g(plus*4) + ' g boucle kcal)' : ''), prix:(B.pates+plus)*4/1000*1.0,
+         stockQte:7000, conso:B.pates, debut:CONSO_DEBUT_REPAS, stockTxt:'7 kg', pourquoi:g(B.pates) + ' g par semaine',
+         besoinCycle:(B.pates+plus)*4, unite:' g', prixUnite:1.0/1000},
+        {label:'Flocons d\'avoine',   qte:q(B.flocons*4), prix:B.flocons*4/1000*1.6,
+         stockQte:2400, conso:B.flocons, debut:CONSO_DEBUT_REPAS, stockTxt:'2,4 kg', pourquoi:g(B.flocons) + ' g par semaine',
+         besoinCycle:B.flocons*4, unite:' g', prixUnite:1.6/1000},
+        {label:'Légumes verts surgelés', qte:q(B.legumes*4), prix:B.legumes*4/1000*2.0},
+        {label:'Miel',                qte:q(B.miel*4),    prix:B.miel*4/1000*6.5}
       ]},
-      /* Aucune de ces lignes n'existait nulle part : elles se rachetaient donc au coup par
-         coup, c'est-a-dire par un aller-retour en plus le jour ou le flacon est vide. */
-      /* Les taux de consommation sont des ESTIMATIONS, ecrites ici pour etre corrigees :
-         changer « conso » suffit, la date de rachat se recalcule toute seule. Le nettoyant
-         visage, le deodorant et les cotons-tiges n'existaient nulle part -- trois produits
-         qu'il achete forcement et qui ne figuraient sur aucune liste. */
-      {cat:'Maison et hygiène — toutes les 4 semaines', semaines:4, ancre:'2026-10-10', aussi:COURSES_EXCEPTION, items:[
+      /* Cinq semaines : 2 kg de beurre de cacahuete tombent pile (385 x 5 = 1 925), et
+         1,5 L d'huile aussi (288 x 5 = 1 440). A quatre semaines, un litre d'huile
+         manquait de 152 ml -- quatre jours de rupture par cycle. */
+      {cat:'Toutes les 5 semaines', semaines:5, ancre:ANCRE_COURSES, items:[
+        {label:'Beurre de cacahuète', qte:q(B.cacahuete*5), prix:B.cacahuete*5/1000*5.25,
+         stockQte:500, conso:B.cacahuete, debut:CONSO_DEBUT_REPAS, stockTxt:'500 g', pourquoi:g(B.cacahuete) + ' g par semaine',
+         besoinCycle:B.cacahuete*5, unite:' g', prixUnite:5.25/1000},
+        {label:'Huile d\'olive',      qte:q(B.huile*5, ' ml'), prix:B.huile*5/1000*7.0,
+         stockQte:1000, conso:B.huile, debut:CONSO_DEBUT_REPAS, stockTxt:'1 L', pourquoi:g(B.huile) + ' ml par semaine',
+         besoinCycle:B.huile*5, unite:' ml', prixUnite:7.0/1000}
+      ]},
+      /* Sante et hygiene : les taux sont des ESTIMATIONS, ecrites pour etre corrigees.
+         Changer « conso » suffit, la date de rachat se recalcule. */
+      {cat:'Santé et hygiène — toutes les 4 semaines', semaines:4, ancre:ANCRE_COURSES, items:[
         {label:'Shampooing', qte:'400 ml', prix:3.5,
-         stockQte:250, conso:48, stockTxt:'250 ml', pourquoi:'4 lavages/semaine \u00d7 12 ml'},
+         stockQte:250, conso:48, debut:CONSO_DEBUT_HYGIENE, stockTxt:'250 ml', pourquoi:'4 lavages/semaine × 12 ml'},
         {label:'Après-shampooing', qte:'400 ml', prix:3.5,
-         stockQte:500, conso:60, stockTxt:'500 ml', pourquoi:'4 fois/semaine sur les longueurs \u00d7 15 ml'},
+         stockQte:500, conso:60, debut:CONSO_DEBUT_HYGIENE, stockTxt:'500 ml', pourquoi:'4 fois/semaine × 15 ml'},
         {label:'Gel douche', qte:'750 ml', prix:2.8,
-         stockQte:850, conso:120, stockTxt:'850 ml', pourquoi:'8 douches/semaine \u00d7 15 ml'},
+         stockQte:850, conso:120, debut:CONSO_DEBUT_HYGIENE, stockTxt:'850 ml', pourquoi:'8 douches/semaine × 15 ml'},
         {label:'Nettoyant visage', qte:'400 ml', prix:6,
-         stockQte:400, conso:42, stockTxt:'400 ml', pourquoi:'2 fois/jour, protocole peau, \u00d7 3 ml'},
+         stockQte:400, conso:42, debut:CONSO_DEBUT_HYGIENE, stockTxt:'400 ml', pourquoi:'2 fois/jour, protocole peau'},
         {label:'Dentifrice', qte:'2 tubes', prix:4,
-         stockQte:5, conso:0.25, stockTxt:'5 tubes', pourquoi:'1 tube par mois'},
+         stockQte:5, conso:0.25, debut:CONSO_DEBUT_HYGIENE, stockTxt:'5 tubes', pourquoi:'1 tube par mois'},
         {label:'Déodorant', qte:'200 ml', prix:3,
-         stockQte:400, conso:50, stockTxt:'2 \u00d7 200 ml', pourquoi:'un 200 ml tient environ 2 mois'},
+         stockQte:400, conso:50, debut:CONSO_DEBUT_HYGIENE, stockTxt:'2 × 200 ml', pourquoi:'un 200 ml tient 2 mois'},
         {label:'Cotons-tiges', qte:'200', prix:1.5,
-         stockQte:300, conso:14, stockTxt:'300', pourquoi:'2 par jour'},
+         stockQte:300, conso:14, debut:CONSO_DEBUT_HYGIENE, stockTxt:'300', pourquoi:'2 par jour'},
         {label:'Rasoirs jetables', qte:'4', prix:8,
-         stockQte:4, conso:0.25, stockTxt:'4 rasoirs', pourquoi:'1 par mois'},
+         stockQte:4, conso:0.25, debut:CONSO_DEBUT_HYGIENE, stockTxt:'4 rasoirs', pourquoi:'1 par mois'},
         {label:'Fil dentaire', qte:'2', prix:4},
-        {label:'Lessive', qte:'40 doses', prix:8},
-        {label:'Nettoyant sols et salle de bain', qte:'2', prix:4},
-        {label:'Sacs poubelle', qte:'1 rouleau', prix:2.5},
-        {label:'Éponges et papier absorbant', qte:'1 lot', prix:4}
+        {label:'Lessive', qte:'40 doses', prix:8}
       ]},
-      /* Cinq semaines, et pas quatre : a 400 g par semaine, 2 kg tombent PILE sur cinq.
-         Un pot de 1,6 kg tous les mois laissait un fond a chaque fois. Sa propre carte
-         plutot qu'une ligne a part dans les reserves : un rythme cache dans une categorie
-         qui en annonce un autre se lit de travers. */
-      /* 500 g au placard + 1,5 kg achetes le 13 font 2 kg pile, soit cinq semaines a
-         400 g : epuises le 19 octobre, donc rachetes le samedi 17. */
-      {cat:'Toutes les 5 semaines', semaines:5, ancre:'2026-10-17', aussi:COURSES_EXCEPTION, items:[
-        {label:'Beurre de cacahuète', qte:'2\u202f000 g', prix:10.5,
-         exception:{date:'2026-09-14', qte:'1\u202f500 g', prix:7.9, pourquoi:'tu en as déjà 500 g'}}
-      ]},
-      /* Brosse a dents changee le 13 ; la suivante l'est le 6 decembre (habitude a
-         12 semaines), donc elle s'achete le samedi 5. */
-      {cat:'Tous les 3 mois', semaines:12, ancre:'2026-12-05', aussi:COURSES_EXCEPTION, items:[
+      {cat:'Tous les 3 mois', semaines:12, ancre:ANCRE_COURSES, items:[
         {label:'Brosse à dents', qte:'1', prix:3.5,
-         stockQte:2, conso:1/12, stockTxt:'2 brosses', pourquoi:'1 toutes les 12 semaines'}
+         stockQte:2, conso:1/12, debut:CONSO_DEBUT_HYGIENE, stockTxt:'2 brosses', pourquoi:'1 toutes les 12 semaines'}
       ]}
     ];
     return calerSurStock(cat);
   }
   /* Les categories a cycle sont ancrees sur le premier SAMEDI de courses du programme,
      le 19 septembre : elles retombent donc toujours un jour de courses, jamais entre deux. */
+  /* Samedi 19 septembre : son jour 1 pour les repas et les courses. Tous les cycles partent
+     de la, et tombent donc toujours un samedi -- son jour de courses. Plus aucune date
+     d'exception : la semaine du 14 au 18 se mange a la va-vite, hors plan, sur ce qu'il a
+     deja en reserve. */
   var ANCRE_COURSES = '2026-09-19';
-  /* Courses le LUNDI 14 au soir, une fois, avec le batch cooking dans la foulee : les repas
-     du plan commencent donc le mardi 15. Ce jour-la tout est du ; ensuite chaque cycle
-     repart de son propre samedi, calcule sur l'epuisement reel.
-     Verifie : a conso demarrant le 15, riz, flocons, huile, surgeles et miel tombent en
-     rupture le 13 octobre (rachat le samedi 10), le beurre le 20 octobre (samedi 17), les
-     pates le 5 decembre a 600 g/semaine ou le 9 novembre a 880 g (samedi 7 novembre dans
-     les deux cas). Aucune ancre ne bouge. */
-  var COURSES_EXCEPTION = ['2026-09-14'];
   function categorieCoursesDue(c, iso){
     var n = c.semaines || 1;
     if(n < 2) return true;
@@ -9325,7 +9332,7 @@
      les dates suivent. Le taux est affiche a l'ecran, donc verifiable. */
   function dateRuptureStock(it){
     if(!(it.stockQte > 0) || !(it.conso > 0)) return null;
-    return isoDecale(PROGRAMME_DEBUT, Math.floor(it.stockQte / it.conso * 7));
+    return isoDecale(it.debut || PROGRAMME_DEBUT, Math.floor(it.stockQte / it.conso * 7));
   }
   function desDepuisStock(cat, it){
     var rupture = dateRuptureStock(it);
@@ -9335,11 +9342,25 @@
     var d = new Date((cat.ancre || ANCRE_COURSES) + 'T00:00:00'), dernier = null;
     for(var i = 0; i < 60; i++){
       var iso = localISO(d);
-      if(iso >= rupture) break;
+      /* <= et non < : on fait les courses le matin, donc acheter le jour meme ou le stock
+         tombe a zero est juste a temps. Avec « < », un stock qui dure exactement un cycle
+         faisait racheter un cycle entier trop tot. */
+      if(iso > rupture) break;
       dernier = iso;
       d.setDate(d.getDate() + n * 7);
     }
     return dernier;
+  }
+  /* Ce qu'il reste d'un stock a une date donnee. Sert a NE PAS racheter ce qu'on a deja :
+     le jour ou l'article redevient du, on ne prend que « besoin du cycle moins ce qui
+     reste ». Sans ca la Batcave demandait 14 oeufs a quelqu'un qui en avait 12, et
+     1 925 g de beurre de cacahuete a quelqu'un qui en avait 500. */
+  function resteStock(it, iso){
+    if(!(it.stockQte > 0) || !(it.conso > 0)) return 0;
+    var j = daysBetween(new Date((it.debut || PROGRAMME_DEBUT) + 'T00:00:00'),
+                        new Date((iso || todayISO) + 'T00:00:00'));
+    if(j < 0) j = 0;
+    return Math.max(0, it.stockQte - it.conso * j / 7);
   }
   function calerSurStock(liste){
     liste.forEach(function(c){
@@ -9347,7 +9368,17 @@
         if(!(i.stockQte > 0) || !(i.conso > 0)) return;
         var d = desDepuisStock(c, i), r = dateRuptureStock(i);
         if(d) i.des = d;
-        i.stock = 'tu en as ' + i.stockTxt + ' · ' + i.pourquoi + (r ? ' \u2192 fini vers le ' + fmtDate(r) : '');
+        i.stock = 'tu en as ' + i.stockTxt + ' · ' + i.pourquoi + (r ? ' → fini vers le ' + fmtDate(r) : '');
+        var reste = resteStock(i, todayISO);
+        if(reste > 0 && i.besoinCycle > 0 && !articleEnStock(i, todayISO)){
+          var manque = i.besoinCycle - reste;
+          if(manque > 0){
+            var fmt = function(n){ return String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + (i.unite || ''); };
+            i.qte = fmt(manque);
+            if(i.prixUnite) i.prix = i.prixUnite * manque;
+            i.stock = 'il t’en reste ' + fmt(reste) + ' · ' + i.pourquoi + ' → tu complètes seulement';
+          }
+        }
       });
     });
     return liste;
@@ -9754,6 +9785,17 @@
       items.push({pri:2, icon:'📝', text:'Aucune date d\u2019examen saisie — sans elles, pas de mode partiels, pas de révision répartie entre les matières, pas de sommeil majoré', action:{type:'examens'}});
     }
 
+    /* ===== Les deux seuls chiffres que la Batcave ne peut pas deviner =====
+       Les prix de la liste de courses sont des estimations Alicante 2026, et le stock
+       inscrit est une photo du 13 septembre : d'ici le premier samedi il aura fondu.
+       L'un et l'autre se corrigent avec un chiffre reel, et lui seul peut le donner.
+       Le jour des premieres courses, le plan du jour les lui demande -- ce jour-la
+       seulement, et sans rien ecrire dans ses taches. */
+    if(todayISO === ANCRE_COURSES){
+      items.push({pri:0.4, icon:'\ud83d\uded2', text:'Avant de partir : compte ce qui te reste (p\u00e2tes, riz, flocons, \u0153ufs, huile, beurre de cacahu\u00e8te) et envoie-le \u2014 la liste travaille sur un stock dat\u00e9 du 13', action:{type:'courses'}});
+      items.push({pri:2.7, icon:'\ud83e\uddfe', text:'Au retour : rel\u00e8ve le ticket de caisse \u2014 les prix affich\u00e9s sont estim\u00e9s, pas encore les tiens', action:{type:'courses'}});
+    }
+
     var revH = todayRevisionMinutes()/60;
     var target = revisionTarget();
     if(revH < target){
@@ -9832,6 +9874,8 @@
         right = '<span style="display:flex; gap:6px; flex-wrap:wrap; justify-content:flex-end;">' +
           '<button class="btn btn-primary" data-plan-drill="1" style="padding:4px 10px; font-size:11px;">💾 Ouvrir</button>' +
           '<button class="btn" data-plan-drill-ignorer="1" style="padding:4px 8px; font-size:11px;" title="Pas aujourd\'hui">✕</button></span>';
+      } else if(it.action && it.action.type === 'courses'){
+        right = '<button class="btn btn-primary" data-ouvrir="courses" style="padding:4px 10px; font-size:11px; flex-shrink:0;">\ud83d\uded2 Courses</button>';
       } else if(it.action && it.action.type === 'saison'){
         right = '<button class="btn btn-primary" data-plan-saison="1" style="padding:4px 10px; font-size:11px; flex-shrink:0;">🏁 Objectifs</button>';
       } else if(it.action && it.action.type === 'partiels'){

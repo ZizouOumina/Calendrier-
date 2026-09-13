@@ -16,7 +16,12 @@ async function jour(quand){
   return {ctx, page, fr};
 }
 console.log('\n== tours : moitie deux semaines, puis complet ==');
-for (const [d, attendu, moitie] of [['2026-09-14',2,true],['2026-09-21',2,true],['2026-09-28',4,false],['2026-10-12',4,false]]) {
+/* Le programme ouvre le mardi 15 : la semaine de programme court du mardi au lundi.
+   S1 = 15-21 sept., S2 = 22-28 sept. (toutes deux a moitie des tours), S3 des le 29. */
+/* Les tractions ouvrent le Haut lourd du LUNDI : on ne compare que des lundis.
+   La semaine de programme court du mardi au lundi depuis le 15 : lundi 21 ferme S1,
+   lundi 28 ferme S2 (toutes deux a moitie des tours), lundi 5 oct. est en S3. */
+for (const [d, attendu, moitie] of [['2026-09-21',2,true],['2026-09-28',2,true],['2026-10-05',4,false],['2026-10-12',4,false]]) {
   const {ctx, fr} = await jour(d+'T05:35:00+02:00');
   const t = await fr.evaluate(()=>{const c=document.getElementById('dash-sport'); return c?c.innerText.replace(/\s+/g,' '):'';});
   const m = t.match(/Tractions ([\d/]+)/);
@@ -53,8 +58,8 @@ for (const [d, jour_, pesee, coupe] of [
      jour_+' : pesée '+h.pesee+' · photos '+h.photos+' · coupe '+h.cheveux+' ('+h.n+' habitudes)');
   await ctx.close();
 }
-console.log('\n== seance de reference, uniquement le 14 ==');
-for (const [d, attendu] of [['2026-09-14',true],['2026-09-15',false]]) {
+console.log('\n== seance de reference, uniquement le premier jour du programme ==');
+for (const [d, attendu] of [['2026-09-14',false],['2026-09-15',true],['2026-09-16',false]]) {
   const {ctx, fr} = await jour(d+'T05:35:00+02:00');
   const p = await fr.evaluate(()=>document.getElementById('dash-plan').innerText);
   ok(/Séance de référence/.test(p)===attendu, d+' : séance de référence dans le plan = '+/Séance de référence/.test(p));

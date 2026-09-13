@@ -47,14 +47,15 @@ console.log('\n== 311) Le 14 au réveil : aucun objectif en retard des jours d\'
 
 console.log('\n== 312) Le réacteur annonce le jour 1, pas un « 0 % » ==');
 {
-  const { ctx, fr, page } = await ouvrir('2026-09-14T06:45:00+02:00');
+  /* le jour 1 est le mardi 15, premier jour du programme */
+  const { ctx, fr, page } = await ouvrir('2026-09-15T06:45:00+02:00');
   let v = await fr.evaluate(() => ({
     num: document.getElementById('dash-score-num').textContent,
     unite: document.getElementById('dash-score-unit').textContent,
     note: document.getElementById('dash-score-detail').textContent,
     hors: document.getElementById('dash-score-note').textContent
   }));
-  ok(v.num === '1' && v.unite === '/182', 'le premier matin affiche « 1/182 », pas « 0 % » (' + v.num + v.unite + ')');
+  ok(v.num === '1' && v.unite === '/181', 'le premier matin affiche « 1/181 » — 15 sept. → 14 mars, pas « 0 % » (' + v.num + v.unite + ')');
   ok(/Premier jour du programme/.test(v.note) && !/À reprendre/.test(v.note), 'la note dit ce que c\'est : ' + v.note);
   ok(v.hors === v.note, 'la même note existe hors de l\'anneau, pour le téléphone');
 

@@ -26,21 +26,25 @@ console.log('\n== 180) Sans ajustement : plan de base, liste = plan × 7 ==');
   const { ctx, fr } = await ouvrir(MARDI);
   await page_(fr, 'courses');
   const c = await fr.evaluate(() => ({ items: [...document.querySelectorAll('#courses-grid label')].map(l => l.textContent), note: document.getElementById('courses-plan-note').textContent, budget: document.getElementById('courses-budget').textContent, n: document.querySelectorAll('#courses-grid input').length }));
-  /* Le lait demi-écrémé est parti : le petit-déjeuner se fait au skyr, comme la collation
-     du soir. Et la liste tourne desormais a trois rythmes : 10 articles frais chaque
-     semaine, 6 reserves et 13 lignes de maison toutes les 4 semaines, 1 beurre de
-     cacahuete toutes les 5, 1 brosse a dents tous les 3 mois. Le nettoyant visage, le
-     deodorant et les cotons-tiges ont ete ajoutes : il les achete forcement et ils ne
-     figuraient sur aucune liste. */
-  ok(c.n === 31, '31 articles au total, tous rythmes confondus (' + c.n + ')');
-  /* Riz et pates ont quitte la liste hebdomadaire pour la reserve de 4 semaines :
-     on verifie donc le sac mensuel, x4 de la quantite de la semaine. */
-  ok(c.items.some(t => /^Riz — 4\u202f000 g/.test(t)) && c.items.some(t => /^Pâtes — 2\u202f400 g/.test(t)), 'Riz 4 kg et pâtes 2,4 kg en réserve (' + c.items.find(t => /^Pâtes/.test(t)) + ')');
-  ok(c.items.some(t => /^Poulet — 800 g/.test(t)) && c.items.some(t => /^Viande hachée 5 % — 900 g/.test(t)) && c.items.some(t => /^Saumon — 450 g/.test(t)) && !c.items.some(t => /^(Dattes|Cacahuètes)/.test(t)) && c.items.some(t => /^Skyr — 2\u202f200 g/.test(t)) && !c.items.some(t => /^Lait/.test(t)), 'protéines : poulet 800 g, viande hachée 900 g, saumon 450 g ; skyr 2 200 g et plus de lait ; plus de dattes ni de cacahuètes — ' + c.items.filter(t => /^(Poulet|Viande|Saumon)/.test(t)).join(' · '));
-  /* Les legumes surgeles sont passes en reserve : deja congeles, quatre semaines ne leur
-     font rien. Les oeufs restent hebdomadaires, eux se gardent moins bien. */
-  ok(c.items.some(t => /^Œufs — 15/.test(t)) && c.items.some(t => /^Légumes verts surgelés — 10\u202f000 g/.test(t)) && c.items.some(t => /^Huile d'olive — 1\u202f000 ml/.test(t)), 'œufs chaque semaine, surgelés 10 kg et huile en réserve');
-  ok(c.items.some(t => /^Shampooing/.test(t)) && c.items.some(t => /^Lessive/.test(t)) && c.items.some(t => /^Brosse à dents/.test(t)), 'hygiène, ménage et brosse à dents ont enfin une ligne');
+  /* Quatre rythmes : 10 articles frais chaque semaine, 5 reserves et 10 lignes de sante
+     toutes les 4 semaines, 2 articles toutes les 5, 1 brosse a dents tous les 3 mois.
+     Les produits MENAGERS (nettoyant sols, eponges, sacs poubelle) sont sortis de la
+     Batcave a sa demande : il en a en reserve et les rachete au besoin. */
+  ok(c.n === 28, '28 articles au total, tous rythmes confondus (' + c.n + ')');
+  /* Les quantites ne sont plus estimees : elles sortent du plan de repas reel, multiplie
+     par 7 jours puis par le cycle. Riz 135 g/jour -> 945/semaine -> 3 780 sur 4 semaines ;
+     pates 85 g/jour -> 595 -> 2 380. */
+  ok(c.items.some(t => /^Riz — 3\u202f780 g/.test(t)) && c.items.some(t => /^Pâtes — 2\u202f380 g/.test(t)), 'riz 3 780 g et pâtes 2 380 g sur 4 semaines (' + c.items.find(t => /^Pâtes/.test(t)) + ')');
+  /* La rotation donne 5 dejeuners de poulet, 6 diners de viande hachee, 2 dejeuners et
+     1 diner de saumon : 650, 870 et 405 g par semaine. */
+  ok(c.items.some(t => /^Poulet — 650 g/.test(t)) && c.items.some(t => /^Viande hachée 5 % — 870 g/.test(t)) && c.items.some(t => /^Saumon — 405 g/.test(t)) && !c.items.some(t => /^(Dattes|Cacahuètes)/.test(t)) && c.items.some(t => /^Skyr — 2\u202f135 g/.test(t)) && !c.items.some(t => /^Lait/.test(t)), 'protéines de la rotation : 650 / 870 / 405 g, skyr 2 135 g — ' + c.items.filter(t => /^(Poulet|Viande|Saumon)/.test(t)).join(' · '));
+  /* L'HUILE etait la vraie erreur : 288 ml par semaine, donc 1 152 sur 4 semaines alors
+     que la liste disait 1 000 -- quatre jours de rupture par cycle, tous les mois. Elle
+     passe a 5 semaines : 1 440 ml, soit 1,5 L, reste 60 ml. */
+  ok(c.items.some(t => /^Œufs — 14/.test(t)) && c.items.some(t => /^Légumes verts surgelés — 9\u202f800 g/.test(t)) && c.items.some(t => /^Huile d'olive — 1\u202f440 ml/.test(t)), 'œufs 14/semaine, surgelés 9 800 g, huile 1 440 ml sur 5 semaines');
+  ok(c.items.some(t => /^Shampooing/.test(t)) && c.items.some(t => /^Cotons-tiges/.test(t)) && c.items.some(t => /^Brosse à dents/.test(t)), 'santé et hygiène ont leurs lignes');
+  /* Les produits menagers sont sortis a sa demande. */
+  ok(!c.items.some(t => /^(Éponges|Sacs poubelle|Nettoyant sols)/.test(t)), 'plus de produits ménagers dans la Batcave');
   ok(/Aucun ajustement/.test(c.note), 'note : ' + c.note.slice(0, 60));
   /* Le frais baisse (le sec en est sorti) et le bloc de 4 semaines monte : il porte
      desormais les reserves ET l'hygiene, qui n'etait comptee nulle part avant. */
@@ -49,7 +53,9 @@ console.log('\n== 180) Sans ajustement : plan de base, liste = plan × 7 ==');
   if(bud){
     const sem = Number(bud[1].replace(',', '.')), quatre = Number(bud[2].replace(',', '.')), mois = Number(bud[4].replace(',', '.'));
     ok(sem > 35 && sem < 45, 'frais : ' + sem + ' € / semaine');
-    ok(quatre > 85 && quatre < 105, 'réserves + maison : ' + quatre + ' € toutes les 4 semaines');
+    /* Le bloc de 4 semaines a maigri : les produits menagers en sont sortis, et l'huile
+       comme le beurre de cacahuete sont passes sur le cycle de 5 semaines. */
+    ok(quatre > 65 && quatre < 90, 'réserves + santé : ' + quatre + ' € toutes les 4 semaines');
     /* On relit TOUS les cycles annonces plutot que d'en coder trois en dur : le beurre de
        cacahuete en a ajoute un quatrieme, et une somme ecrite a la main aurait menti. */
     const cycles = [...c.budget.matchAll(/~([\d,]+) € toutes les (\d+) semaines/g)]
@@ -82,9 +88,11 @@ console.log('\n== 181) Avec +150 kcal : le dîner et les courses l\'écrivent ==
   const c = await fr.evaluate(() => ({ items: [...document.querySelectorAll('#courses-grid label')].map(l => l.textContent), note: document.getElementById('courses-plan-note').textContent }));
   /* L'ajustement suit le sac : +280 g par semaine font +1 120 g sur quatre semaines.
      Pas de ligne hebdomadaire en plus -- on n'achete pas un sachet de 280 g. */
-  ok(c.items.some(t => /^Pâtes — 3\u202f520 g \(dont \+1\u202f120 g boucle kcal\)/.test(t)), 'Pâtes : (600 + 280) x 4 (' + c.items.find(t => /^Pâtes/.test(t)) + ')');
+  ok(c.items.some(t => /^Pâtes — 3\u202f500 g \(dont \+1\u202f120 g boucle kcal\)/.test(t)), 'Pâtes : (595 + 280) x 4 = 3 500 g (' + c.items.find(t => /^Pâtes/.test(t)) + ')');
   ok(/\+150 kcal\/jour/.test(c.note) && /\+40 g de pâtes crues/.test(c.note) && /\+280 g sur la semaine/.test(c.note), 'note : ' + c.note.slice(0, 120));
-  ok(c.items.filter(t => /^Poulet/.test(t)).length === 1 && /800 g/.test(c.items.find(t => /^Poulet/.test(t))), 'les protéines ne bougent pas');
+  /* La boucle kcal ne touche QUE le feculent du diner : les proteines gardent la quantite
+     de la rotation, 650 g de poulet par semaine. */
+  ok(c.items.filter(t => /^Poulet/.test(t)).length === 1 && /650 g/.test(c.items.find(t => /^Poulet/.test(t))), 'les protéines ne bougent pas');
   await ctx.close();
 }
 
@@ -101,13 +109,13 @@ console.log('\n== 182) Appliquer / revenir depuis la boucle met tout à jour d\'
   await page.waitForTimeout(250);
   const apres = await fr.evaluate(() => ({ diner: [...document.querySelectorAll('.meal-card')].find(c => /Dîner/.test(c.querySelector('.mtitle').textContent)).innerText,
     courses: (document.querySelector('.nav-btn[data-page="courses"]').click(), [...document.querySelectorAll('#courses-grid label')].map(l => l.textContent).find(t => /^Pâtes/.test(t))) }));
-  ok(/Pâtes 125g/.test(apres.diner) && /3\u202f520 g/.test(apres.courses), 'après « Appliquer » : dîner à 125 g de pâtes, courses à 3 520 g');
+  ok(/Pâtes 125g/.test(apres.diner) && /3\u202f500 g/.test(apres.courses), 'après « Appliquer » : dîner à 125 g de pâtes, courses à 3 500 g');
   await page_(fr, 'repas');
   await fr.evaluate(() => document.getElementById('kcal-reset').click());
   await page.waitForTimeout(250);
   const retour = await fr.evaluate(() => ({ diner: [...document.querySelectorAll('.meal-card')].find(c => /Dîner/.test(c.querySelector('.mtitle').textContent)).innerText,
     courses: (document.querySelector('.nav-btn[data-page="courses"]').click(), [...document.querySelectorAll('#courses-grid label')].map(l => l.textContent).find(t => /^Pâtes/.test(t))) }));
-  ok(/Pâtes 85g/.test(retour.diner) && /2\u202f400 g/.test(retour.courses), 'après « Revenir au plan de base » : 85 g et 2 400 g');
+  ok(/Pâtes 85g/.test(retour.diner) && /2\u202f380 g/.test(retour.courses), 'après « Revenir au plan de base » : 85 g et 2 380 g');
   await ctx.close();
 }
 

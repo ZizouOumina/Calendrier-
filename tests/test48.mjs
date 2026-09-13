@@ -22,7 +22,11 @@ const aller = async (fr, page, p) => { await fr.evaluate(pg => document.querySel
 const local = (fr,k) => fr.evaluate(x => JSON.parse(localStorage.getItem(x) || 'null'), k);
 const ligne = (fr, titre) => fr.evaluate(t => { const r = [...document.querySelectorAll('#obj-liste .obj-row')].find(x => x.querySelector('.titre').innerText.startsWith(t)); return r ? { txt: r.innerText.replace(/\s+/g,' '), led: r.querySelector('.obj-led').className } : null; }, titre);
 
-const MI_SEPT = '2026-09-15T10:00:00+02:00';   /* jour 15/30 → 50 % du mois */
+const MI_SEPT = '2026-09-15T10:00:00+02:00';   /* premier jour du programme */
+/* Le 15 est le JOUR 1 : la regle « trop tot pour juger » met tout « dans les clous ».
+   Pour lire de vrais verdicts il faut une periode entamee : mardi 22, une semaine
+   plus tard, ou 46,3 % de la revision de septembre et 44,4 % des seances sont passes. */
+const SEMAINE2 = '2026-09-22T10:00:00+02:00';
 const sessions = [];
 for(let d = 1; d <= 10; d++) sessions.push({id:'s'+d, date:'2026-09-'+String(d).padStart(2,'0'), type:'cours', duree:240, label:'Anatomía I', debut: Date.UTC(2026,8,d,6)+1, fin: Date.UTC(2026,8,d,10)+1});  /* 40 h */
 const journaux = {}; for(let d = 1; d <= 14; d++) journaux['batcave-journal-2026-09-'+String(d).padStart(2,'0')] = {sommeil: 7.5, water: 3000, poids: 64 + d*0.05};
@@ -35,15 +39,18 @@ console.log('\n== 112) Semis : trimestres et mois ==');
   ok(nT === 44 && nM === 96, '44 objectifs trimestriels + 96 mensuels (' + nT + ' / ' + nM + ')');
   ok(await local(fr, 'batcave-objectifs-seed-v1') === true, 'drapeau de semis posé');
   const t1 = o.liste.find(x => x.id === 'T1:revision_h'), m9 = o.liste.find(x => x.id === 'M2026-09:revision_h');
-  /* La grille ne prévoit rien avant le 14 septembre, premier jour du programme : la cible
-     du trimestre part du 14, pas du 1er. Sinon T1 s'ouvrait avec 50 h de révision déjà
-     « prévues » sur des journées où la Batcave ne servait pas encore. */
+  /* La grille ne prévoit rien avant le 15 septembre, premier jour du programme : la cible
+     du trimestre part du 15, pas du 1er. Sinon T1 s'ouvrait avec 50 h de révision déjà
+     « prévues » sur des journées où la Batcave ne servait pas encore.
+     Le départ est passé du lundi 14 au mardi 15 : la grille du lundi 14 prévoyait 265 min
+     de révision, soit 265 × 0,89 / 60 = 3,9 h de cible en moins sur T1 comme sur septembre
+     (298,4 → 294,5 et 65,8 → 61,9). Un seul jour retiré, la même différence aux deux. */
   /* 296,8 → 298,4 h depuis que les jours feries ont un agenda. T1 en contient deux, le
      vendredi 9 et le lundi 12 octobre : chacun perd « Comprendre le cours du jour »
      (55 min) et gagne « Annale complète » et « Correction + cartes » (110 min), soit
      +55 min de revision par jour. Deux jours × 55 min × 0,89 de marge = +1,6 h.
      Septembre ne bouge pas : les deux jours sont en octobre. */
-  ok(t1 && t1.cible === 298.4 && m9 && m9.cible === 65.8, 'T1 révision calculée depuis la grille, à partir du 14 : 298,4 h → septembre 65,8 h (' + (t1 && t1.cible) + ' / ' + (m9 && m9.cible) + ')');
+  ok(t1 && t1.cible === 294.5 && m9 && m9.cible === 61.9, 'T1 révision calculée depuis la grille, à partir du 15 : 294,5 h → septembre 61,9 h (' + (t1 && t1.cible) + ' / ' + (m9 && m9.cible) + ')');
   ok(t1 && t1.auto === true, 'la cible est marquée automatique : elle suivra la grille');
   ok(!o.liste.some(x => x.periode === 'mois' && /exo:|snus/.test(x.metrique)), 'les niveaux (tractions) et la série snus restent au trimestre');
   await ctx.close();
@@ -51,13 +58,23 @@ console.log('\n== 112) Semis : trimestres et mois ==');
 
 console.log('\n== 113) Comparaison sur des données réelles ==');
 {
-  const { ctx, fr, page } = await ouvrir(MI_SEPT, Object.assign({ 'batcave-sessions': sessions }, journaux));
+  /* Jour 1 : aucun verdict, meme avec 40 h deja faites ou zero seance. C'est la regle
+     « trop tot pour juger » (ecoules <= 1), et elle doit rester visible ici. */
+  {
+    const j1 = await ouvrir(MI_SEPT, Object.assign({ 'batcave-sessions': sessions }, journaux));
+    await aller(j1.fr, j1.page, 'objectifs');
+    const r1 = await ligne(j1.fr, 'Révision'), s1 = await ligne(j1.fr, 'Séances');
+    ok(r1 && /attendu 2,0 h/.test(r1.txt), 'le 15 à 10:00, la grille n\'attend que 2,0 h — le lundi 14 ne compte plus (' + (r1 && (r1.txt.match(/attendu [^ ]+ h/) || [''])[0]) + ')');
+    ok(r1 && /clous/.test(r1.txt) && s1 && /clous/.test(s1.txt), 'jour 1 : ni avance ni retard, pas de faux verdict');
+    await j1.ctx.close();
+  }
+  const { ctx, fr, page } = await ouvrir(SEMAINE2, Object.assign({ 'batcave-sessions': sessions }, journaux));
   await aller(fr, page, 'objectifs');
   const rev = await ligne(fr, 'Révision');
   /* 40 h ont bien été travaillées du 1er au 10 : le RÉEL les garde. L'ATTENTE, elle, ne
-     compte que le programme — le 14 en entier plus le 15 jusqu'à 10:00, soit 6 h. Une
-     séance faite avant le départ compte, mais ne crée pas de retard. */
-  ok(rev && /réel 40,0 h/.test(rev.txt) && /attendu 6,0 h/.test(rev.txt) && /avance/.test(rev.led), 'Révision : réel 40,0 h pour 6,0 h attendues au 15 à 10:00 → en avance : ' + (rev && rev.txt.slice(0, 80)));
+     compte que le programme : 61,9 h de cible × 46,3 % de septembre écoulé = 28,7 h.
+     Une séance faite avant le départ compte, mais ne crée pas de retard. */
+  ok(rev && /réel 40,0 h/.test(rev.txt) && /attendu 28,7 h/.test(rev.txt) && /avance/.test(rev.led), 'Révision : réel 40,0 h pour 28,7 h attendues au 22 à 10:00 → en avance : ' + (rev && rev.txt.slice(0, 80)));
   const som = await ligne(fr, 'Sommeil');
   ok(som && /réel 7,50 h/.test(som.txt) && /\bok\b/.test(som.led), 'Sommeil moyen 7,50 h sur 7,75 visées (97 %) → dans les clous');
   const eau = await ligne(fr, 'Eau');
@@ -71,13 +88,13 @@ console.log('\n== 113) Comparaison sur des données réelles ==');
 
 console.log('\n== 114) Éditer une cible, supprimer, ajouter ==');
 {
-  const { ctx, fr, page } = await ouvrir(MI_SEPT, { 'batcave-sessions': sessions });
+  const { ctx, fr, page } = await ouvrir(SEMAINE2, { 'batcave-sessions': sessions });
   await aller(fr, page, 'objectifs');
   await fr.evaluate(() => { const i = document.querySelector('[data-obj-cible="M2026-09:revision_h"]'); i.value = '60'; i.dispatchEvent(new Event('change', {bubbles:true})); });
   await page.waitForTimeout(250);
   const rev = await ligne(fr, 'Révision');
   ok((await local(fr, 'batcave-objectifs')).liste.find(x => x.id === 'M2026-09:revision_h').cible === 60, 'cible enregistrée : 60');
-  ok(rev && /attendu 5,4 h/.test(rev.txt) && /avance/.test(rev.led), 'recalcul immédiat sur une cible de 60 h : attendu 5,4 h, 40 h réelles → en avance (' + (rev && rev.txt.slice(0, 70)) + ')');
+  ok(rev && /attendu 27,8 h/.test(rev.txt) && /avance/.test(rev.led), 'recalcul immédiat sur une cible de 60 h : attendu 27,8 h (60 × 46,3 %), 40 h réelles → en avance (' + (rev && rev.txt.slice(0, 70)) + ')');
   ok((await local(fr, 'batcave-objectifs')).liste.find(x => x.id === 'M2026-09:revision_h').auto === false, 'une cible saisie à la main sort du calcul automatique');
   const avant = (await local(fr, 'batcave-objectifs')).liste.length;
   await fr.evaluate(() => document.querySelector('[data-obj-del="M2026-09:eau_moy"]').click());
@@ -121,7 +138,7 @@ console.log('\n== 116) Tableau de bord : objectifs du mois ==');
   await fr.evaluate(() => { if(document.getElementById('dash-more').hidden) document.getElementById('dash-more-toggle').click(); });
   const d = await fr.evaluate(() => ({ n: document.querySelectorAll('#dash-goals li').length, leds: document.querySelectorAll('#dash-goals .obj-led').length, txt: document.getElementById('dash-goals').innerText.replace(/\s+/g,' '), note: document.getElementById('dash-goals-note').innerText }));
   ok(d.n === 8 && d.leds === 8, '8 objectifs du mois avec leur LED');
-  ok(/Révision 40,0 \/ 65,8 h/.test(d.txt), 'ligne compacte réel / cible : ' + d.txt.slice(0, 60));
+  ok(/Révision 40,0 \/ 61,9 h/.test(d.txt), 'ligne compacte réel / cible : ' + d.txt.slice(0, 60));
   ok(/\/8 dans les clous · Septembre 2026/.test(d.note), 'note : ' + d.note);
   await ctx.close();
 }

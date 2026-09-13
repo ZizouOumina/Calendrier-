@@ -20,11 +20,12 @@ async function ouvrir(quand, local){
   return { ctx, page, fr };
 }
 const local = (fr,k) => fr.evaluate(x => JSON.parse(localStorage.getItem(x) || 'null'), k);
-/* Programme v2 : lundi = Haut lourd (Tractions 4×6-12 en premier). Lundi 12 oct. 2026 = semaine 5,
-   tours complets ; lundi 14 sept. = semaine 1, moitié des tours. */
+/* Programme v2 : lundi = Haut lourd (Tractions 4×6-12 en premier). Le programme demarre le
+   mardi 15 sept. 2026, donc la semaine de programme court du mardi au lundi : lundi 21 sept.
+   tombe encore en semaine 1 (moitie des tours), lundi 12 oct. en semaine 4 (tours complets). */
 const LUNDI = '2026-10-12T06:30:00+02:00';
 const SAMEDI = '2026-10-17T06:30:00+02:00';
-const PREMIER_LUNDI = '2026-09-14T06:30:00+02:00';
+const PREMIER_LUNDI = '2026-09-21T06:30:00+02:00';
 
 console.log('\n== 107) Première séance : cible = tours × bas de fourchette ==');
 {

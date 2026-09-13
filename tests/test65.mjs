@@ -1,4 +1,4 @@
-/* Lot 18 : tout commence le lundi 14 septembre — sport (semaine 1, retest), Pomodoro selon le
+/* Lot 18 : tout commence le mardi 15 septembre — sport (semaine 1, retest), Pomodoro selon le
    bloc (Anki = sans préciser), habitudes à plusieurs jours (linge lun·mer·ven), rotation Drive
    (doublon du même jour), dépendance à départ futur. */
 import { chromium } from 'playwright';
@@ -29,20 +29,21 @@ const HABITS = [
 const seedHab = {'batcave-habits': HABITS, 'batcave-habits-seed-v2': true, 'batcave-habits-seed-v3': true, 'batcave-habits-seed-v4': true, 'batcave-habits-seed-v5': true, 'batcave-habits-seed-v6': true, 'batcave-habits-seed-v7': true, 'batcave-habits-ecran-v2': true, 'batcave-habitlog-hebdo-v1': true};
 const cartes = fr => fr.evaluate(() => [...document.querySelectorAll('#habits-grid .card')].map(c => c.innerText.replace(/\s+/g,' ')));
 
-console.log('\n== 240) Sport : lundi 14 septembre = semaine 1 (moitié des tours), 12 octobre = retest ==');
+console.log('\n== 240) Sport : mardi 15 septembre = semaine 1 (moitié des tours), 13 octobre = retest ==');
 {
-  const { ctx, fr } = await ouvrir('2026-09-14T06:30:00+02:00');
+  const { ctx, fr } = await ouvrir('2026-09-15T06:30:00+02:00');
   const r = await fr.evaluate(() => ({ debut: window.__bcProgrammeDebut, note: document.getElementById('programme-note').textContent }));
-  ok(r.debut === '2026-09-14', 'PROGRAMME_DEBUT = 2026-09-14 (' + r.debut + ')');
+  ok(r.debut === '2026-09-15', 'PROGRAMME_DEBUT = 2026-09-15 (' + r.debut + ')');
   ok(/semaine 1/.test(r.note) && /½/.test(r.note), 'note : semaine 1, tours × ½ (' + r.note + ')');
   await ctx.close();
   const s = await ouvrir('2026-09-10T06:30:00+02:00');
   const n2 = await s.fr.evaluate(() => document.getElementById('programme-note').textContent);
-  ok(/démarre le/.test(n2) && /14/.test(n2), 'avant le 14 : « démarre le 14 sept. » (' + n2 + ')');
+  ok(/démarre le/.test(n2) && /15/.test(n2), 'avant le 15 : « démarre le 15 sept. » (' + n2 + ')');
   await s.ctx.close();
-  const r5 = await ouvrir('2026-10-12T06:30:00+02:00');
+  /* la semaine de programme court du mardi au lundi : le retest tombe le mardi 13, pas le lundi 12 */
+  const r5 = await ouvrir('2026-10-13T06:30:00+02:00');
   const n5 = await r5.fr.evaluate(() => document.getElementById('programme-note').textContent);
-  ok(/semaine 5/.test(n5) && /retest/.test(n5), 'lundi 12 octobre : semaine 5, retest tractions et dips (' + n5 + ')');
+  ok(/semaine 5/.test(n5) && /mardi : retest/.test(n5), 'mardi 13 octobre : semaine 5, retest tractions et dips (' + n5 + ')');
   await r5.ctx.close();
 }
 
