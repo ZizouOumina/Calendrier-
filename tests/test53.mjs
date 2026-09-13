@@ -40,12 +40,20 @@ console.log('\n== 180) Sans ajustement : plan de base, liste = plan × 7 ==');
   ok(c.items.some(t => /^Pâtes — 2,5 kg\b/.test(t) && /le plan en demande 2\u202f380 g/.test(t)), 'pâtes : 2,5 kg achetés pour 2 380 g demandés (' + c.items.find(t => /^Pâtes/.test(t)) + ')');
   /* La rotation donne 5 dejeuners de poulet, 6 diners de viande hachee, 2 dejeuners et
      1 diner de saumon : 650, 870 et 405 g par semaine. */
-  ok(c.items.some(t => /^Poulet — 1 kg\b/.test(t) && /demande 650 g/.test(t))
-  && c.items.some(t => /^Viande hachée 5 % — 1 kg\b/.test(t) && /demande 870 g/.test(t))
-  && c.items.some(t => /^Saumon — 500 g\b/.test(t) && /demande 405 g/.test(t))
-  && c.items.some(t => /^Skyr — 2,5 kg\b/.test(t) && /demande 2\u202f135 g/.test(t))
+  /* La viande et le poisson ne s'arrondissent PAS : le boucher pese le montant exact.
+     Ces trois lignes doivent donc porter le chiffre du plan tel quel, sans surplus. */
+  ok(c.items.some(t => /^Poulet — 650 g .*pesé au comptoir/.test(t) && !/demande/.test(t))
+  && c.items.some(t => /^Viande hachée 5 % — 870 g .*pesée au comptoir/.test(t))
+  && c.items.some(t => /^Saumon — 405 g .*pesé au comptoir/.test(t)),
+     'viande et poisson au gramme près, pesés au comptoir : ' + c.items.filter(t => /^(Poulet|Viande|Saumon)/.test(t)).join(' · '));
+  /* Les fruits se comptent, ils ne se pesent pas. */
+  ok(c.items.some(t => /^Bananes — 7 .*l'unité/.test(t)) && c.items.some(t => /^Fruits[^\n]*— 7 .*l'unité/.test(t)),
+     'bananes et fruits à l\'unité : ' + c.items.filter(t => /^(Bananes|Fruits)/.test(t)).join(' · '));
+  /* Le reste au paquet, avec le plus petit format courant : 5 pots de 450 g laissent
+     115 g de surplus de skyr, la ou 5 pots de 500 en laissaient 365. */
+  ok(c.items.some(t => /^Skyr — 2,25 kg\b/.test(t) && /demande 2\u202f135 g/.test(t))
   && !c.items.some(t => /^(Dattes|Cacahuètes|Lait)/.test(t)),
-     'protéines de la rotation, achat / besoin : 1 kg/650 g, 1 kg/870 g, 500 g/405 g, skyr 2,5 kg/2 135 g — ' + c.items.filter(t => /^(Poulet|Viande|Saumon)/.test(t)).join(' · '));
+     'skyr : 2,25 kg en 5 pots de 450 g pour 2 135 g demandés');
   /* L'HUILE etait la vraie erreur : 288 ml par semaine, donc 1 152 sur 4 semaines alors
      que la liste disait 1 000 -- quatre jours de rupture par cycle, tous les mois. Elle
      passe a 5 semaines : 1 440 ml, soit 1,5 L, reste 60 ml. */
@@ -65,10 +73,10 @@ console.log('\n== 180) Sans ajustement : plan de base, liste = plan × 7 ==');
   ok(!!bud, 'le budget annonce les trois rythmes et un total mensuel : ' + c.budget.slice(0, 110));
   if(bud){
     const sem = Number(bud[1].replace(',', '.')), quatre = Number(bud[2].replace(',', '.')), mois = Number(bud[4].replace(',', '.'));
-    ok(sem > 42 && sem < 52, 'frais : ' + sem + ' € / semaine');
+    ok(sem > 35 && sem < 43, 'frais : ' + sem + ' € / semaine');
     /* Le bloc de 4 semaines a maigri : les produits menagers en sont sortis, et l'huile
        comme le beurre de cacahuete sont passes sur le cycle de 5 semaines. */
-    ok(quatre > 75 && quatre < 95, 'réserves + santé : ' + quatre + ' € toutes les 4 semaines');
+    ok(quatre > 72 && quatre < 90, 'réserves + santé : ' + quatre + ' € toutes les 4 semaines');
     /* On relit TOUS les cycles annonces plutot que d'en coder trois en dur : le beurre de
        cacahuete en a ajoute un quatrieme, et une somme ecrite a la main aurait menti. */
     const cycles = [...c.budget.matchAll(/~([\d,]+) € toutes les (\d+) semaines/g)]
@@ -101,7 +109,8 @@ console.log('\n== 181) Avec +150 kcal : le dîner et les courses l\'écrivent ==
   const c = await fr.evaluate(() => ({ items: [...document.querySelectorAll('#courses-grid label')].map(l => l.textContent), note: document.getElementById('courses-plan-note').textContent }));
   /* L'ajustement suit le sac : +280 g par semaine font +1 120 g sur quatre semaines.
      Pas de ligne hebdomadaire en plus -- on n'achete pas un sachet de 280 g. */
-  ok(c.items.some(t => /^Pâtes — 3,5 kg\b/.test(t) && /demande 3\u202f500 g/.test(t)), 'la boucle kcal remonte le besoin à (595 + 280) × 4 = 3 500 g, et l\'achat suit à 3,5 kg (' + c.items.find(t => /^Pâtes/.test(t)) + ')');
+  /* 3 500 g tombe pile sur 7 paquets de 500 : aucun surplus, donc aucune mention de besoin. */
+  ok(c.items.some(t => /^Pâtes — 3,5 kg\b/.test(t) && !/demande/.test(t)), 'la boucle kcal remonte le besoin à (595 + 280) × 4 = 3 500 g, et l\'achat tombe pile (' + c.items.find(t => /^Pâtes/.test(t)) + ')');
   ok(/\+150 kcal\/jour/.test(c.note) && /\+40 g de pâtes crues/.test(c.note) && /\+280 g sur la semaine/.test(c.note), 'note : ' + c.note.slice(0, 120));
   /* La boucle kcal ne touche QUE le feculent du diner : les proteines gardent la quantite
      de la rotation, 650 g de poulet par semaine. */

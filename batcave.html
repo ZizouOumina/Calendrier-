@@ -9226,45 +9226,51 @@
     var poids = function(n){ return n >= 1000 ? String(n / 1000).replace('.', ',') + ' kg' : sep(n) + ' g'; };
     var vol   = function(n){ return n >= 1000 ? String(n / 1000).replace('.', ',') + ' L'  : sep(n) + ' ml'; };
     var B = BESOIN_SEMAINE;
-    /* Une ligne d'achat : le besoin du cycle, le conditionnement, le prix au kilo (ou a
-       l'unite). Le prix facture est celui de la quantite ARRONDIE -- c'est ce qu'il paie. */
-    function art(label, besoin, pas, prixPas, fmt, pack, besoinTxt){
-      var achat = arrondiPack(besoin, pas), n = Math.round(achat / pas);
-      /* Le BESOIN se lit dans son unite brute -- « 2 135 g », pas « 2,135 kg » : c'est un
-         chiffre du plan, pas une quantite qu'on va chercher en rayon. */
-      return {label: label, qte: fmt(achat), prix: n * prixPas,
-              note: (pack || (n + ' × ' + fmt(pas))) + ' · le plan en demande ' +
-                    (besoinTxt || (sep(besoin) + (fmt === vol ? ' ml' : ' g')))};
+    /* Une ligne d'achat. « pas » est le conditionnement : 450 pour un pot de skyr, 1 pour
+       ce qui se pese au comptoir ou se compte a l'unite. L'achat est le premier multiple
+       de « pas » AU-DESSUS du besoin -- jamais en dessous : une rupture en milieu de cycle
+       coute plus cher qu'un surplus. « prixUnite » est le prix d'UN gramme, d'un
+       millilitre ou d'une piece, et le prix facture est celui de la quantite achetee. */
+    function art(label, besoin, pas, prixUnite, fmt, pack, besoinTxt){
+      var achat = arrondiPack(besoin, pas);
+      return {label: label, qte: fmt(achat), prix: achat * prixUnite,
+              /* Le BESOIN se lit dans son unite brute -- « 2 135 g », pas « 2,135 kg » :
+                 c'est un chiffre du plan, pas une quantite qu'on va chercher en rayon. */
+              note: pack + (achat > besoin ? ' \u00b7 le plan en demande ' +
+                    (besoinTxt || (sep(besoin) + (fmt === vol ? ' ml' : ' g'))) : '')};
     }
     var cat = [
-      /* Le frais, chaque samedi. Tout est arrondi au paquet ou a la barquette. */
+      /* Le frais, chaque samedi.
+         La viande et le poisson ne s'arrondissent PAS : le boucher pese le montant exact.
+         Les fruits se comptent a l'unite. Le reste s'achete au paquet, et « pas » est le
+         plus petit format courant -- un pot de skyr de 450 g plutot que de 500 fait tomber
+         le surplus de 365 a 115 g par semaine, pour le meme nombre de pots. */
       {cat:'Chaque semaine', semaines:1, items:[
-        art('Poulet',            B.poulet,  500, 3.25, poids, '2 barquettes de 500 g'),
-        art('Viande hachée 5 %', B.hachee,  500, 4.00, poids, '2 barquettes de 500 g'),
-        art('Saumon',            B.saumon,  250, 3.25, poids, '2 pavés de 250 g'),
-        art('Skyr',              B.skyr,    500, 2.00, poids, '5 pots de 500 g'),
-        art('Œufs',              B.oeufs,     6, 1.32, sep,   'une boîte de 12 + une de 6', B.oeufs + ' œufs'),
-        art('Jambon',            B.jambon,  200, 2.20, poids, '2 paquets de 200 g'),
-        art('Fromage en tranches', B.fromage, 200, 1.80, poids, '1 paquet de 200 g'),
-        art('Pain complet',      B.pain,    500, 1.60, poids, '1 paquet de 500 g'),
-        /* Bananes et fruits se pesent : 7 pieces font ~840 g, on prend le kilo. */
-        art('Bananes',           B.bananes * 120, 1000, 1.50, poids, '1 kg, soit 7 ou 8', B.bananes + ' bananes'),
-        art('Fruits (pommes, poires, oranges…)', B.fruits * 120, 1000, 2.00, poids, '1 kg, soit 7 ou 8', B.fruits + ' fruits')
+        art('Poulet',            B.poulet,  1, 6.5/1000,  poids, 'pes\u00e9 au comptoir'),
+        art('Viande hach\u00e9e 5 %', B.hachee,  1, 8.0/1000,  poids, 'pes\u00e9e au comptoir'),
+        art('Saumon',            B.saumon,  1, 13.0/1000, poids, 'pes\u00e9 au comptoir'),
+        art('Skyr',              B.skyr,  450, 4.0/1000,  poids, '5 pots de 450 g'),
+        art('\u0152ufs',              B.oeufs,   6, 0.22,      sep,   'une bo\u00eete de 12 + une de 6', B.oeufs + ' \u0153ufs'),
+        art('Jambon',            B.jambon,150, 11.0/1000, poids, '2 paquets de 150 g'),
+        art('Fromage en tranches', B.fromage, 150, 9.0/1000, poids, '1 paquet de 150 g'),
+        art('Pain complet',      B.pain,  450, 3.2/1000,  poids, '1 paquet de 450 g'),
+        art('Bananes',           B.bananes, 1, 0.18,      sep,   '\u00e0 l\'unit\u00e9', B.bananes + ' bananes'),
+        art('Fruits (pommes, poires, oranges\u2026)', B.fruits, 1, 0.28, sep, '\u00e0 l\'unit\u00e9', B.fruits + ' fruits')
       ]},
       /* Cycle de 4 semaines, ancre au samedi 19 septembre : 19/9, 17/10, 14/11, 12/12. */
       {cat:'Réserves — toutes les 4 semaines', semaines:4, ancre:ANCRE_COURSES, items:[
-        art('Riz',               B.riz * 4,            1000, 1.10, poids, '4 paquets de 1 kg'),
-        art('Pâtes',            (B.pates + plus) * 4,  500, 0.50, poids, '5 paquets de 500 g'),
-        art('Flocons d\'avoine',  B.flocons * 4,        1000, 1.60, poids, '3 paquets de 1 kg'),
-        art('Légumes verts surgelés', B.legumes * 4, 1000, 2.00, poids, '10 sachets de 1 kg'),
-        art('Miel',              B.miel * 4,           1000, 6.50, poids, '1 pot de 1 kg')
+        art('Riz',               B.riz * 4,            1000, 1.10/1000, poids, '4 paquets de 1 kg'),
+        art('Pâtes',            (B.pates + plus) * 4,  500, 1.00/1000, poids, '5 paquets de 500 g'),
+        art('Flocons d\'avoine',  B.flocons * 4,         500, 1.60/1000, poids, '5 paquets de 500 g'),
+        art('Légumes verts surgelés', B.legumes * 4, 1000, 2.00/1000, poids, '10 sachets de 1 kg'),
+        art('Miel',              B.miel * 4,            250, 6.50/1000, poids, '3 pots de 250 g')
       ]},
       /* Cinq semaines : 2 kg de beurre de cacahuete tombent presque pile (385 x 5 = 1 925),
          et 1,5 L d'huile aussi (288 x 5 = 1 440). A quatre semaines, un litre d'huile
          manquait de 152 ml -- quatre jours de rupture par cycle. */
       {cat:'Toutes les 5 semaines', semaines:5, ancre:ANCRE_COURSES, items:[
-        art('Beurre de cacahuète', B.cacahuete * 5, 1000, 5.25, poids, '2 pots de 1 kg'),
-        art('Huile d\'olive',        B.huile * 5,      500, 3.50, vol,   '1 bouteille d\'1,5 L')
+        art('Beurre de cacahuète', B.cacahuete * 5, 1000, 5.25/1000, poids, '2 pots de 1 kg'),
+        art('Huile d\'olive',        B.huile * 5,      500, 7.00/1000, vol,   '1 bouteille d\'1,5 L')
       ]},
       /* Sante et hygiene : deja vendus au flacon, rien a arrondir. Les rythmes sont des
          ESTIMATIONS ecrites pour etre corrigees -- il coche ce qu'il a deja. */
