@@ -6912,7 +6912,13 @@
          extenseurs), curl des poignets samedi (flechisseurs, l'epaisseur). Les deux se
          font avec une charge en main : ils passent aussi bien au parc qu'a la maison le
          soir si le creneau du matin deborde -- meme regle que le cou. */
-  var PROGRAMME_DEBUT = '2026-09-14';
+  /* Le programme demarre le MARDI 15, pas le lundi 14 : les courses et le batch cooking
+     se font le lundi soir, apres les cours. Sa premiere seance enregistree est donc le
+     Bas complet du mardi, et la semaine 1 court du 15 au 21.
+     Ce qui ne bouge PAS : le semestre 1 garde le 14 septembre -- c'est l'universite qui
+     fixe la rentree, pas lui -- et les habitudes du dimanche restent ancrees au 13, elles
+     ont vraiment eu lieu ce jour-la. */
+  var PROGRAMME_DEBUT = '2026-09-15';
   /* Le programme va du premier jour de cours au dernier jour de la phase 3 d'espagnol :
      c'est la fenetre que le reacteur annonce le matin du jour 1, quand il n'y a encore
      rien a mesurer. Un « 0 % » geant le 14 au reveil n'est pas une note, c'est une
@@ -9192,7 +9198,7 @@
     var cat = [
       {cat:'Chaque semaine', semaines:1, items:[
         {label:'Poulet', qte:'800 g', prix:5.2}, {label:'Viande hachée 5 %', qte:'900 g', prix:7.2}, {label:'Saumon', qte:'450 g', prix:5.85},
-        {label:'Œufs', qte:'15', prix:3.3, exception:{date:'2026-09-13', qte:'6 (une boîte)', prix:1.3, pourquoi:'tu en as 12, il t\u2019en faut 15 — 3 d\u2019avance'}}, {label:'Jambon', qte:'300 g', prix:3.3}, {label:'Fromage', qte:'150 g', prix:1.35},
+        {label:'Œufs', qte:'15', prix:3.3, exception:{date:'2026-09-14', qte:'6 (une boîte)', prix:1.3, pourquoi:'tu en as 12, il t\u2019en faut 15 — 3 d\u2019avance'}}, {label:'Jambon', qte:'300 g', prix:3.3}, {label:'Fromage', qte:'150 g', prix:1.35},
         {label:'Pain complet', qte:'500 g', prix:1.6},
         {label:'Skyr', qte:'2\u202f200 g', prix:8.8},
         {label:'Bananes', qte:'8', prix:1.4}, {label:'Fruits (pommes, poires, oranges…)', qte:'8', prix:2.2}
@@ -9223,13 +9229,28 @@
       ]},
       /* Aucune de ces lignes n'existait nulle part : elles se rachetaient donc au coup par
          coup, c'est-a-dire par un aller-retour en plus le jour ou le flacon est vide. */
+      /* Les taux de consommation sont des ESTIMATIONS, ecrites ici pour etre corrigees :
+         changer « conso » suffit, la date de rachat se recalcule toute seule. Le nettoyant
+         visage, le deodorant et les cotons-tiges n'existaient nulle part -- trois produits
+         qu'il achete forcement et qui ne figuraient sur aucune liste. */
       {cat:'Maison et hygiène — toutes les 4 semaines', semaines:4, ancre:'2026-10-10', aussi:COURSES_EXCEPTION, items:[
-        {label:'Shampooing', qte:'400 ml', prix:3.5},
-        {label:'Après-shampooing', qte:'400 ml', prix:3.5},
-        {label:'Gel douche', qte:'750 ml', prix:2.8},
-        {label:'Dentifrice', qte:'2 tubes', prix:4},
+        {label:'Shampooing', qte:'400 ml', prix:3.5,
+         stockQte:250, conso:48, stockTxt:'250 ml', pourquoi:'4 lavages/semaine \u00d7 12 ml'},
+        {label:'Après-shampooing', qte:'400 ml', prix:3.5,
+         stockQte:500, conso:60, stockTxt:'500 ml', pourquoi:'4 fois/semaine sur les longueurs \u00d7 15 ml'},
+        {label:'Gel douche', qte:'750 ml', prix:2.8,
+         stockQte:850, conso:120, stockTxt:'850 ml', pourquoi:'8 douches/semaine \u00d7 15 ml'},
+        {label:'Nettoyant visage', qte:'400 ml', prix:6,
+         stockQte:400, conso:42, stockTxt:'400 ml', pourquoi:'2 fois/jour, protocole peau, \u00d7 3 ml'},
+        {label:'Dentifrice', qte:'2 tubes', prix:4,
+         stockQte:5, conso:0.25, stockTxt:'5 tubes', pourquoi:'1 tube par mois'},
+        {label:'Déodorant', qte:'200 ml', prix:3,
+         stockQte:400, conso:50, stockTxt:'2 \u00d7 200 ml', pourquoi:'un 200 ml tient environ 2 mois'},
+        {label:'Cotons-tiges', qte:'200', prix:1.5,
+         stockQte:300, conso:14, stockTxt:'300', pourquoi:'2 par jour'},
+        {label:'Rasoirs jetables', qte:'4', prix:8,
+         stockQte:4, conso:0.25, stockTxt:'4 rasoirs', pourquoi:'1 par mois'},
         {label:'Fil dentaire', qte:'2', prix:4},
-        {label:'Lames de rasoir', qte:'4', prix:8},
         {label:'Lessive', qte:'40 doses', prix:8},
         {label:'Nettoyant sols et salle de bain', qte:'2', prix:4},
         {label:'Sacs poubelle', qte:'1 rouleau', prix:2.5},
@@ -9243,23 +9264,28 @@
          400 g : epuises le 19 octobre, donc rachetes le samedi 17. */
       {cat:'Toutes les 5 semaines', semaines:5, ancre:'2026-10-17', aussi:COURSES_EXCEPTION, items:[
         {label:'Beurre de cacahuète', qte:'2\u202f000 g', prix:10.5,
-         exception:{date:'2026-09-13', qte:'1\u202f500 g', prix:7.9, pourquoi:'tu en as déjà 500 g'}}
+         exception:{date:'2026-09-14', qte:'1\u202f500 g', prix:7.9, pourquoi:'tu en as déjà 500 g'}}
       ]},
       /* Brosse a dents changee le 13 ; la suivante l'est le 6 decembre (habitude a
          12 semaines), donc elle s'achete le samedi 5. */
       {cat:'Tous les 3 mois', semaines:12, ancre:'2026-12-05', aussi:COURSES_EXCEPTION, items:[
-        {label:'Brosse à dents', qte:'1', prix:3.5}
+        {label:'Brosse à dents', qte:'1', prix:3.5,
+         stockQte:2, conso:1/12, stockTxt:'2 brosses', pourquoi:'1 toutes les 12 semaines'}
       ]}
     ];
-    return cat;
+    return calerSurStock(cat);
   }
   /* Les categories a cycle sont ancrees sur le premier SAMEDI de courses du programme,
      le 19 septembre : elles retombent donc toujours un jour de courses, jamais entre deux. */
   var ANCRE_COURSES = '2026-09-19';
-  /* Il a fait ses courses le dimanche 13, une fois, avant que le rythme du samedi demarre.
-     Ce jour-la tout est du ; ensuite chaque cycle repart de son propre samedi, calcule sur
-     l'epuisement reel de ce qu'il a achete. */
-  var COURSES_EXCEPTION = ['2026-09-13'];
+  /* Courses le LUNDI 14 au soir, une fois, avec le batch cooking dans la foulee : les repas
+     du plan commencent donc le mardi 15. Ce jour-la tout est du ; ensuite chaque cycle
+     repart de son propre samedi, calcule sur l'epuisement reel.
+     Verifie : a conso demarrant le 15, riz, flocons, huile, surgeles et miel tombent en
+     rupture le 13 octobre (rachat le samedi 10), le beurre le 20 octobre (samedi 17), les
+     pates le 5 decembre a 600 g/semaine ou le 9 novembre a 880 g (samedi 7 novembre dans
+     les deux cas). Aucune ancre ne bouge. */
+  var COURSES_EXCEPTION = ['2026-09-14'];
   function categorieCoursesDue(c, iso){
     var n = c.semaines || 1;
     if(n < 2) return true;
@@ -9292,6 +9318,39 @@
       });
     });
     return {n: n, prix: prix};
+  }
+  /* Une date de rachat ecrite en dur est invisible et faussable. Ici elle se CALCULE :
+     stock / conso par semaine donne la rupture, et le rachat est la derniere date du cycle
+     strictement AVANT elle. Corriger une estimation = changer un seul nombre, et toutes
+     les dates suivent. Le taux est affiche a l'ecran, donc verifiable. */
+  function dateRuptureStock(it){
+    if(!(it.stockQte > 0) || !(it.conso > 0)) return null;
+    return isoDecale(PROGRAMME_DEBUT, Math.floor(it.stockQte / it.conso * 7));
+  }
+  function desDepuisStock(cat, it){
+    var rupture = dateRuptureStock(it);
+    if(!rupture) return it.des || null;
+    var n = cat.semaines || 1;
+    if(n < 2) return null;                       /* hebdomadaire : il rachete des qu'il manque */
+    var d = new Date((cat.ancre || ANCRE_COURSES) + 'T00:00:00'), dernier = null;
+    for(var i = 0; i < 60; i++){
+      var iso = localISO(d);
+      if(iso >= rupture) break;
+      dernier = iso;
+      d.setDate(d.getDate() + n * 7);
+    }
+    return dernier;
+  }
+  function calerSurStock(liste){
+    liste.forEach(function(c){
+      c.items.forEach(function(i){
+        if(!(i.stockQte > 0) || !(i.conso > 0)) return;
+        var d = desDepuisStock(c, i), r = dateRuptureStock(i);
+        if(d) i.des = d;
+        i.stock = 'tu en as ' + i.stockTxt + ' · ' + i.pourquoi + (r ? ' \u2192 fini vers le ' + fmtDate(r) : '');
+      });
+    });
+    return liste;
   }
   function fmtEuro(x){ var r = Math.round(x * 10) / 10; return '~' + String(r).replace('.', ',') + ' €'; }
   var COURSES = [];

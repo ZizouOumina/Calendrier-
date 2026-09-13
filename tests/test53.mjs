@@ -28,8 +28,11 @@ console.log('\n== 180) Sans ajustement : plan de base, liste = plan × 7 ==');
   const c = await fr.evaluate(() => ({ items: [...document.querySelectorAll('#courses-grid label')].map(l => l.textContent), note: document.getElementById('courses-plan-note').textContent, budget: document.getElementById('courses-budget').textContent, n: document.querySelectorAll('#courses-grid input').length }));
   /* Le lait demi-écrémé est parti : le petit-déjeuner se fait au skyr, comme la collation
      du soir. Et la liste tourne desormais a trois rythmes : 10 articles frais chaque
-     semaine, 7 reserves et 10 lignes de maison toutes les 4 semaines, 1 tous les 3 mois. */
-  ok(c.n === 28, '28 articles au total, tous rythmes confondus (' + c.n + ')');
+     semaine, 6 reserves et 13 lignes de maison toutes les 4 semaines, 1 beurre de
+     cacahuete toutes les 5, 1 brosse a dents tous les 3 mois. Le nettoyant visage, le
+     deodorant et les cotons-tiges ont ete ajoutes : il les achete forcement et ils ne
+     figuraient sur aucune liste. */
+  ok(c.n === 31, '31 articles au total, tous rythmes confondus (' + c.n + ')');
   /* Riz et pates ont quitte la liste hebdomadaire pour la reserve de 4 semaines :
      on verifie donc le sac mensuel, x4 de la quantite de la semaine. */
   ok(c.items.some(t => /^Riz — 4\u202f000 g/.test(t)) && c.items.some(t => /^Pâtes — 2\u202f400 g/.test(t)), 'Riz 4 kg et pâtes 2,4 kg en réserve (' + c.items.find(t => /^Pâtes/.test(t)) + ')');

@@ -45,11 +45,13 @@ console.log('\n== 331) Le 13 septembre, jour de courses exceptionnel, tout est d
    Sans cette exception il aurait fallu ancrer les cycles sur un dimanche, et tous les
    rachats suivants seraient tombes un dimanche. */
 {
-  const { ctx, fr } = await jour('2026-09-13T10:00:00+02:00');
+  const { ctx, fr } = await jour('2026-09-14T10:00:00+02:00');
   const c = await cartes(fr);
-  ok(c.every(x => x.due), 'les 5 catégories sont dues le 13 (exception)');
+  ok(c.every(x => x.due), 'les 5 catégories sont dues le 14 (exception)');
   const somme = await fr.evaluate(() => document.getElementById('courses-summary').textContent);
-  ok(/\/24 articles/.test(somme), '24 articles à prendre le 13 (' + somme + ')');
+  /* 10 frais + 2 reserves (surgeles, miel) + 5 lignes de maison + 1 beurre = 18.
+     Riz, pates, flocons, huile et huit produits d'hygiene sont deja au placard. */
+  ok(/\/18 articles/.test(somme), '18 articles à prendre le 14, son stock enlève le reste (' + somme + ')');
   await ctx.close();
 }
 {
@@ -104,7 +106,7 @@ console.log('\n== 333b) Le beurre de cacahuète tourne sur cinq semaines ==');
    C'est le seul article a ne pas suivre le rythme de sa voisine de rayon. */
 /* 500 g au placard + 1,5 kg achetes le 13 = 2 kg = cinq semaines a 400 g, epuises le
    19 octobre : le rachat tombe donc le samedi 17, et pas avec les reserves du 10. */
-for (const [d, nom, du] of [['2026-09-13','13 sept',true], ['2026-09-19','19 sept',false],
+for (const [d, nom, du] of [['2026-09-14','14 sept',true], ['2026-09-19','19 sept',false],
                             ['2026-10-10','10 oct',false], ['2026-10-17','17 oct',true],
                             ['2026-11-21','21 nov',true]]) {
   const { ctx, fr } = await jour(d + 'T10:00:00+02:00');
@@ -119,7 +121,7 @@ console.log('\n== 334b) Ce qu\'il a déjà en réserve ne se rachète pas ==');
    les coches sont indexees par position, les retirer decalerait tout -- mais grisees,
    datees, et hors du compte. On se place le 13, son vrai jour de courses. */
 {
-  const { ctx, fr } = await jour('2026-09-13T10:00:00+02:00');
+  const { ctx, fr } = await jour('2026-09-14T10:00:00+02:00');
   const t = await fr.evaluate(() => document.getElementById('courses-grid').innerText);
   ok(/Riz[^\n]*à racheter le 10 oct\./.test(t), 'le riz attend le 10 octobre (4 kg, 1 kg par semaine)');
   ok(/Flocons d'avoine[^\n]*à racheter le 10 oct\./.test(t), 'les flocons aussi (2,4 kg, 600 g par semaine)');
@@ -136,7 +138,8 @@ console.log('\n== 334b) Ce qu\'il a déjà en réserve ne se rachète pas ==');
   ok(!/Riz[^\n]*à racheter/.test(t) && !/Huile d'olive[^\n]*à racheter/.test(t), 'le 10 octobre : riz et huile reviennent dans la liste');
   ok(/Pâtes[^\n]*à racheter le 07 nov\./.test(t), 'les pâtes attendent encore');
   const somme = await fr.evaluate(() => document.getElementById('courses-summary').textContent);
-  ok(/\/25 articles/.test(somme), 'le 10 octobre : 25 articles, les pâtes en moins (' + somme + ')');
+  /* 10 frais + 5 reserves (tout sauf les pates) + 7 lignes de maison = 22. */
+  ok(/\/22 articles/.test(somme), 'le 10 octobre : 22 articles (' + somme + ')');
   await ctx.close();
 }
 
@@ -144,7 +147,7 @@ console.log('\n== 334c) Le total du jour est calculé, jamais additionné à la 
 /* J'ai annonce « ~88 EUR » deux fois pour une liste a 118,60 : une addition de tete.
    La ligne « A prendre aujourd'hui » sort donc du code, et ce bloc la recompte
    INDEPENDAMMENT depuis les prix affiches. Si les deux divergent, c'est un echec. */
-for (const [d, nArt] of [['2026-09-13', 24], ['2026-09-19', 10], ['2026-10-10', 25], ['2026-10-17', 11]]) {
+for (const [d, nArt] of [['2026-09-14', 18], ['2026-09-19', 10], ['2026-10-10', 22], ['2026-10-17', 11]]) {
   const { ctx, fr } = await jour(d + 'T10:00:00+02:00');
   const r = await fr.evaluate(() => {
     const ligne = document.getElementById('courses-aujourdhui').innerText;
@@ -168,10 +171,34 @@ for (const [d, nArt] of [['2026-09-13', 24], ['2026-09-19', 10], ['2026-10-10', 
   await ctx.close();
 }
 {
-  const { ctx, fr } = await jour('2026-09-13T10:00:00+02:00');
+  const { ctx, fr } = await jour('2026-09-14T10:00:00+02:00');
   const t = await fr.evaluate(() => document.getElementById('courses-grid').innerText);
   /* « 3 oeufs » ne s'achete pas : ils se vendent par 6, 12 ou 30. */
   ok(/Œufs — 6 \(une boîte\)/.test(t), 'les œufs se prennent par boîte, pas à l\'unité');
+  await ctx.close();
+}
+
+console.log('\n== 334d) Les dates d\'hygiène se calculent, elles ne sont pas écrites en dur ==');
+/* stock / conso par semaine donne la rupture ; le rachat est la derniere date du cycle
+   strictement avant. Corriger une estimation = changer un seul nombre. */
+{
+  const { ctx, fr } = await jour('2026-09-14T10:00:00+02:00');
+  const t = await fr.evaluate(() => document.getElementById('courses-grid').innerText);
+  for (const [prod, fini, achat] of [
+        ['Shampooing', '21 oct.', '10 oct.'],
+        ['Après-shampooing', '12 nov.', '07 nov.'],
+        ['Gel douche', '03 nov.', '10 oct.'],
+        ['Nettoyant visage', '20 nov.', '07 nov.'],
+        ['Déodorant', '10 nov.', '07 nov.'],
+        ['Rasoirs jetables', '05 janv.', '02 janv.'],
+        ['Brosse à dents', '02 mars', '27 févr.']]) {
+    const re = new RegExp(prod.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&') +
+      '[^\n]*fini vers le ' + fini.replace('.', '\\.') + '[^\n]*à racheter le ' + achat.replace('.', '\\.'));
+    ok(re.test(t), prod + ' : fini vers le ' + fini + ', racheté le ' + achat);
+  }
+  /* Les trois produits qui n'existaient nulle part. */
+  ok(/Nettoyant visage/.test(t) && /Déodorant/.test(t) && /Cotons-tiges/.test(t),
+     'nettoyant visage, déodorant et cotons-tiges ont enfin une ligne');
   await ctx.close();
 }
 
