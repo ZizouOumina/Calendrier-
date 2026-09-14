@@ -21,14 +21,20 @@ async function ouvrir(quand, seed){
 }
 const texte = (fr, sel) => fr.evaluate(s => { const e = document.querySelector(s); return e ? e.innerText : ''; }, sel);
 const lire = (fr,k) => fr.evaluate(x => JSON.parse(localStorage.getItem(x) || 'null'), k);
-const bloc = (date, type, min, hhmm) => { const d = new Date(date+'T'+hhmm+':00+02:00').getTime(); return { id:'s'+date+type+hhmm, date, type, duree:min, label:'x', debut:d, fin:d+min*60000 }; };
-const MERCREDI_MIDI = '2026-09-02T12:00:00+02:00';
+const bloc = (date, type, min, hhmm) => { const d = new Date(date+'T'+hhmm+':00+01:00').getTime(); return { id:'s'+date+type+hhmm, date, type, duree:min, label:'x', debut:d, fin:d+min*60000 }; };
+/* Le programme ouvre le mardi 15 : avant lui, aucun bloc n'est du, donc aucun ne peut
+   etre manque. Et la phase 1 remplace les blocs « Projets perso » par de l'espagnol, donc un jour de
+   septembre ne convient pas non plus. Ce fichier se joue apres le 15 mars 2027 : la
+   grille de base revient, identique a celle du 2 septembre. Mercredi 31 mars pour
+   mercredi 2 septembre, dimanche 4 avril pour dimanche 6 -- apres le changement d'heure
+   du 28 mars, pour retrouver le meme decalage horaire qu'en septembre. */
+const MERCREDI_MIDI = '2026-12-02T12:00:00+01:00';
 
 console.log('\n== 108) Deux blocs de révision échus sans session : signalés, avec le déficit ==');
 {
   const { ctx, page, fr } = await ouvrir(MERCREDI_MIDI);
   const t = await texte(fr, '#dash-plan');
-  ok(/Bloc manqué — 4 h 20 de révision non faites \(Anki matinal 05:30, Anki 1 07:20, Anki 2 08:20, Cartes du dernier cours 09:20, Annales 10:20\)/.test(t), 'texte : « 4 h 20 de révision non faites (Anki matinal 05:30, Anki 1 07:20, Anki 2 08:20, Cartes du dernier cours 09:20, Annales 10:20) »');
+  ok(/Bloc manqué — 4 h 20 de révision non faites \(Anki matinal 05:30, Anki 1 07:20, Anki 2 08:20, Cartes du dernier cours 09:20, Annales 10:20\)/.test(t), 'texte : « 4 h 20 de révision non faites » — ' + ((t.match(/Bloc manqué[^\n]*/) || [''])[0]));
   ok(!/créneau libre/.test(t), 'mercredi : aucun créneau libre ≥ 45 min ne reste → pas de suggestion');
   ok(await fr.evaluate(() => !document.querySelector('[data-plan-manque-lancer]')), 'pas de bouton « Maintenant » sans créneau');
   ok(await fr.evaluate(() => !!document.querySelector('[data-plan-manque-demain]')), 'bouton « Demain » présent');
@@ -36,25 +42,27 @@ console.log('\n== 108) Deux blocs de révision échus sans session : signalés, 
   await fr.evaluate(() => document.querySelector('[data-plan-manque-demain]').click());
   await page.waitForTimeout(300);
   const r = await lire(fr, 'batcave-report');
-  ok(r && r.date === '2026-09-03' && r.rev === 120 && r.proj === 0, 'report enregistré pour demain, plafonné à 120 min (obtenu ' + JSON.stringify(r) + ')');
+  ok(r && r.date === '2026-12-03' && r.rev === 120 && r.proj === 0, 'report enregistré pour demain, plafonné à 120 min (obtenu ' + JSON.stringify(r) + ')');
   ok(!/Bloc manqué/.test(await texte(fr, '#dash-plan')), 'l\'item disparaît après le report');
-  ok(await lire(fr, 'batcave-manque-traite-2026-09-02-cours') === true, 'marqué traité pour aujourd\'hui');
+  ok(await lire(fr, 'batcave-manque-traite-2026-12-02-cours') === true, 'marqué traité pour aujourd\'hui');
   await ctx.close();
 }
 
 console.log('\n== 109) Le lendemain, la cible intègre le report ==');
 {
-  const { ctx, fr } = await ouvrir('2026-09-03T10:00:00+02:00', {'batcave-report': {date:'2026-09-03', rev:120, proj:0}});
+  const { ctx, fr } = await ouvrir('2026-12-03T10:00:00+01:00', {'batcave-report': {date:'2026-12-03', rev:120, proj:0}});
   const cells = await fr.evaluate(() => [...document.querySelectorAll('#dash-temps .temps-cell .tv')].map(e => e.innerText.replace(/\s+/g,' ')));
   ok(/\/ 6 h 25/.test(cells[0]) && /\+2 h/.test(cells[0]), 'révision : « / 6 h 25 +2 h ↪ » (jeudi) (obtenu ' + cells[0] + ')');
-  ok(/\/ 2 h 40/.test(cells[1]) && !/\+/.test(cells[1]), 'projets : inchangé (obtenu ' + cells[1] + ')');
+  /* 1 h 45 et non 2 h 40 : en phase 3 un bloc « Projets perso » reste de l'espagnol.
+     Ce qui compte ici, c'est l'absence de « + » : le report ne touche que la revision. */
+  ok(/\/ 1 h 45/.test(cells[1]) && !/\+/.test(cells[1]), 'projets : inchangé, aucun report (obtenu ' + cells[1] + ')');
   const plan = await texte(fr, '#dash-plan');
   ok(/Révision — 0 sur 6 h 25/.test(plan), 'Plan du jour : cible 6 h 25 (4 h 25 + 2 h de report)');
   await ctx.close();
 }
 {
   /* un report daté d'un autre jour ne s'applique pas */
-  const { ctx, fr } = await ouvrir('2026-09-03T10:00:00+02:00', {'batcave-report': {date:'2026-09-02', rev:120, proj:0}});
+  const { ctx, fr } = await ouvrir('2026-12-03T10:00:00+01:00', {'batcave-report': {date:'2026-12-02', rev:120, proj:0}});
   const cells = await fr.evaluate(() => [...document.querySelectorAll('#dash-temps .temps-cell .tv')].map(e => e.innerText.replace(/\s+/g,' ')));
   ok(/\/ 4 h 25/.test(cells[0]) && !/\+/.test(cells[0]), 'report périmé ignoré : « / 4 h 25 »');
   await ctx.close();
@@ -62,38 +70,38 @@ console.log('\n== 109) Le lendemain, la cible intègre le report ==');
 
 console.log('\n== 110) Pas de fausse alerte ==');
 {
-  const s = [bloc('2026-09-02','cours',120,'07:20'), bloc('2026-09-02','cours',120,'09:20')];
+  const s = [bloc('2026-12-02','cours',120,'07:20'), bloc('2026-12-02','cours',120,'09:20')];
   const { ctx, fr } = await ouvrir(MERCREDI_MIDI, {'batcave-sessions': s});
   ok(!/Bloc manqué/.test(await texte(fr, '#dash-plan')), 'blocs recouverts par des sessions : rien');
   await ctx.close();
 }
 {
-  const s = [bloc('2026-09-02','cours',240,'03:00')];   /* 4 h faites, mais à 3 h du matin */
+  const s = [bloc('2026-12-02','cours',240,'03:00')];   /* 4 h faites, mais à 3 h du matin */
   const { ctx, fr } = await ouvrir(MERCREDI_MIDI, {'batcave-sessions': s});
   ok(!/Bloc manqué/.test(await texte(fr, '#dash-plan')), 'temps fait à un autre moment : rien (le total compte, pas l\'horaire)');
   await ctx.close();
 }
 {
-  const { ctx, fr } = await ouvrir('2026-09-02T08:00:00+02:00', {'batcave-sessions': [bloc('2026-09-02','cours',50,'05:30')]});   /* Anki matinal fait ; Anki 1 finit à 08:20 */
+  const { ctx, fr } = await ouvrir('2026-12-02T08:00:00+01:00', {'batcave-sessions': [bloc('2026-12-02','cours',50,'05:30')]});   /* Anki matinal fait ; Anki 1 finit à 08:20 */
   ok(!/Bloc manqué/.test(await texte(fr, '#dash-plan')), '08:00 : le bloc n\'est pas encore échu → rien');
   await ctx.close();
 }
 {
-  const { ctx, fr } = await ouvrir('2026-09-02T08:30:00+02:00', {'batcave-sessions': [bloc('2026-09-02','cours',50,'05:30')]});   /* échu depuis 10 min < 15 de grâce */
+  const { ctx, fr } = await ouvrir('2026-12-02T08:30:00+01:00', {'batcave-sessions': [bloc('2026-12-02','cours',50,'05:30')]});   /* échu depuis 10 min < 15 de grâce */
   ok(!/Bloc manqué/.test(await texte(fr, '#dash-plan')), '08:30 : dans la période de grâce → rien');
   await ctx.close();
 }
 {
-  const s = [bloc('2026-09-02','cours',90,'07:20')];   /* 1 h 30 sur Anki 1 + 2 (100 min de travail) : couverts ; déficit 260 − 90 = 170 min sur Anki matinal, Cartes et Annales */
+  const s = [bloc('2026-12-02','cours',90,'07:20')];   /* 1 h 30 sur Anki 1 + 2 (100 min de travail) : couverts ; déficit 260 − 90 = 170 min sur Anki matinal, Cartes et Annales */
   const { ctx, fr } = await ouvrir(MERCREDI_MIDI, {'batcave-sessions': s});
   const t = await texte(fr, '#dash-plan');
-  ok(/2 h 50 de révision non faites \(Anki matinal 05:30, Cartes du dernier cours 09:20, Annales 10:20\)/.test(t), 'Anki 1 et 2 couverts ; déficit réel 2 h 50 sur Cartes et Annales');
+  ok(/2 h 50 de révision non faites \(Anki matinal 05:30, Cartes du dernier cours 09:20, Annales 10:20\)/.test(t), 'Anki 1 et 2 couverts ; déficit réel 2 h 50 — ' + ((t.match(/Bloc manqué[^\n]*/) || [''])[0]));
   await ctx.close();
 }
 
 console.log('\n== 111) Dimanche : créneau libre proposé, bouton « Maintenant » ==');
 {
-  const { ctx, fr } = await ouvrir('2026-09-06T12:00:00+02:00');
+  const { ctx, fr } = await ouvrir('2026-12-06T12:00:00+01:00');
   const t = await texte(fr, '#dash-plan');
   ok(/créneau libre : Repos — après-midi libre à 17:30 \(1 h 30 min\)/.test(t), 'suggestion : Repos à 17:30 (1 h 30 min)');
   ok(await fr.evaluate(() => !!document.querySelector('[data-plan-manque-lancer]')), 'bouton « Maintenant » présent');
@@ -102,7 +110,7 @@ console.log('\n== 111) Dimanche : créneau libre proposé, bouton « Maintenant 
 
 console.log('\n== 112) Ignorer : ne revient plus aujourd\'hui, mais le report reste possible pour les projets ==');
 {
-  const { ctx, page, fr } = await ouvrir('2026-09-02T15:30:00+02:00');   /* projets bloc 1 (11:35) échu aussi */
+  const { ctx, page, fr } = await ouvrir('2026-12-02T15:30:00+01:00');   /* projets bloc 1 (11:35) échu aussi */
   let t = await texte(fr, '#dash-plan');
   ok(/de révision non faites/.test(t) && /de projets perso non faites/.test(t), 'deux items : révision et projets');
   await fr.evaluate(() => document.querySelector('[data-plan-manque-ignorer="cours"]').click());

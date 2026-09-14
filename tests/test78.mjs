@@ -40,7 +40,10 @@ for(const [d, desc] of [['2026-11-16','phase Español 2, projets perso au progra
 
 console.log('\n== 2) L\'espagnol manqué est une dette d\'espagnol, pas de projets ==');
 {
-  const {ctx, fr} = await ouvrir({}, '2026-09-14T21:00:00+02:00');
+  /* Le programme ouvre le mardi 15 : avant lui aucun bloc n'est du, donc aucun ne peut
+     etre manque. On prend le lundi SUIVANT, 21 septembre -- meme jour de la semaine,
+     toujours en phase 1 Espanol. */
+  const {ctx, fr} = await ouvrir({}, '2026-09-21T21:00:00+02:00');
   const t = await plan(fr);
   const l = t.split('\n').filter(x=>/Bloc manqué/.test(x) && /Español/.test(x))[0] || '';
   ok(/d'espagnol/.test(l), 'libellé : ' + (l.trim() || '(aucun bloc Español manqué)'));
@@ -76,7 +79,10 @@ console.log('\n== 4) Un rendez-vous dans l\'agenda Google n\'est pas un bloc man
 {
   /* On simule la réponse du connecteur : gcalWeekEvents est alimenté par le watch MCP,
      on l'écrit directement pour éprouver la règle sans connecteur. */
-  const {ctx, page, fr} = await ouvrir({}, '2026-09-14T21:00:00+02:00');
+  /* Le programme ouvre le mardi 15 : avant lui aucun bloc n'est du, donc aucun ne peut
+     etre manque. On prend le lundi SUIVANT, 21 septembre -- meme jour de la semaine,
+     toujours en phase 1 Espanol. */
+  const {ctx, page, fr} = await ouvrir({}, '2026-09-21T21:00:00+02:00');
   const avant = (await plan(fr)).split('\n').filter(l=>/Bloc manqué/.test(l)).length;
   await fr.evaluate(()=>{
     /* lundi = 1 ; deux vrais rendez-vous couvrent Anki 1 et Anki 2 */

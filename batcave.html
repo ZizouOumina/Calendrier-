@@ -9761,6 +9761,12 @@
   function blocsManques(nowMin){
     var res = {cours:{blocs:[], deficit:0, occupes:[]}, projet:{blocs:[], deficit:0, occupes:[]},
                es:{blocs:[], deficit:0, occupes:[]}};
+    /* Avant le premier jour du programme, rien n'est du : la grille montre deja a quoi
+       ressemblera un lundi, mais aucun de ses blocs n'a ete promis. Sans ce garde-fou, le
+       matin de la rentree universitaire -- la veille du depart -- le plan du jour ouvrait
+       sur « Bloc manque : 50 min de revision non faites ». Un reproche pour une journee
+       que l'application elle-meme compte comme hors plan. */
+    if(todayISO < PROGRAMME_DEBUT) return res;
     var cle = scheduleKeyForToday();
     var evs = evenementsExterieursDuJour(dowDe(todayISO));
     ['cours','projet','es'].forEach(function(type){

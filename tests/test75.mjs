@@ -142,6 +142,25 @@ console.log('\n== 316) Écran tactile : 44 px sous le doigt ==');
   await ctx.close();
 }
 
+console.log('\n== 312b) Avant le premier jour, aucun bloc n\'est reproche ==');
+/* Le 14 septembre est la rentree universitaire, mais le programme ouvre le 15 : la grille
+   montre deja a quoi ressemble un lundi, et le plan du jour ouvrait sur « Bloc manque :
+   50 min de revision non faites ». Un reproche pour une journee que l'application compte
+   elle-meme comme hors plan -- exactement le faux echec que le jour 1 evite deja. */
+{
+  const { ctx, fr } = await ouvrir('2026-09-14T09:00:00+02:00');
+  const t = await fr.evaluate(() => document.getElementById('dash-plan').innerText);
+  ok(!/Bloc manqu\u00e9/.test(t), 'la veille du départ, aucun bloc manqué n\'est signalé');
+  await ctx.close();
+}
+{
+  /* Et des le 15, la detection reprend : un bloc echu et non fait est bien signale. */
+  const { ctx, fr } = await ouvrir('2026-09-15T12:00:00+02:00');
+  const t = await fr.evaluate(() => document.getElementById('dash-plan').innerText);
+  ok(/Bloc manqu\u00e9/.test(t), 'le 15 à midi, les blocs échus non faits sont de nouveau signalés');
+  await ctx.close();
+}
+
 await browser.close();
 console.log(errs ? '\n' + errs + ' ECHEC(S)' : '\nTOUT VERT');
 process.exit(errs ? 1 : 0);
