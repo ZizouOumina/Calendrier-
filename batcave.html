@@ -279,9 +279,13 @@
      l'historique vivent dans le repli. Le bouton « fait » est pousse en bas de chaque carte
      par margin-top:auto, donc tous les boutons d'une rangee sont sur la meme ligne. */
   #habits-grid > .card{ height:100%; }
-  /* un nom long replie le titre sur deux lignes ; les fleches et l'archivage restent a
-     droite, sur la barre de titre, au lieu de tomber dessous */
+  /* Les fleches d'ordre et l'archivage (▲ ▼ 🗄) ne sont plus sur la barre de titre : sur
+     iPad, trois cartes par rangee, ils ecrasaient le nom (« Étireme / nts / faits »). Ce
+     sont des gestes de reglage, rares : ils vivent dans le repli « Rythme et historique »,
+     avec le rythme, et reviennent sur la barre quand il est ouvert. */
   #habits-grid > .card > .card-top{ flex-wrap:nowrap; }
+  #habits-grid > .card > .card-top > span{ display:none !important; }
+  #habits-grid > .card.ouverte > .card-top > span{ display:flex !important; }
   #habits-grid > .card .card-actions{ margin-top:auto; }
   #habits-grid > .card .card-actions .btn{ width:100%; justify-content:center; }
   #habits-grid > .card .hab-repli{ margin-top:2px; }
@@ -362,7 +366,7 @@
   .bilan-card .bspark .insight-spark{margin-top:0;}
   .bilan-card .bspark-l{font-family:var(--font-mono); font-size:10px; color:var(--ink-faint); margin-top:2px;}
   .bilan-card.b-fidelite .bvalue{font-size:44px;}
-  @media (min-width:781px) and (max-width:1499px){ .bilan-card.b-fidelite{grid-column:span 2;} }
+  @media (min-width:1024px) and (max-width:1499px){ .bilan-card.b-fidelite{grid-column:span 2;} }
 
   /* ---------- streak milestones ---------- */
   .milestone-badge{font-family:var(--font-mono); font-size:10px; color:var(--cyan-bright); background:rgba(53,212,232,0.14); border-radius:20px; padding:3px 9px; white-space:nowrap; margin-left:8px;}
@@ -1032,8 +1036,15 @@
   /* trois compteurs (révision, projets, espagnol) doivent tenir sur UNE ligne dans la
      colonne Suivi : à 120 px de minimum ils passaient à la ligne et coûtaient 90 px de
      hauteur au tableau de bord. */
-  .mon-suivi .temps-grid{ grid-template-columns:repeat(3, minmax(0, 1fr)); gap:8px; }
+  .mon-suivi .temps-grid{ grid-template-columns:repeat(3, minmax(0, 1fr)); gap:8px; container-type:inline-size; }
   .mon-suivi .temps-cell .tv{ font-size:30px; }
+  /* « 1 h 40 » se coupait en deux lignes (« 1 h / 40 ») des que la colonne Suivi se
+     resserrait (iPad portrait, mur a trois ecrans sur grand Mac) : le chiffre suit la
+     largeur de sa colonne, 30 px au plus, et ne se coupe plus. */
+  .mon-suivi .temps-cell .tv{ font-size:min(30px, 11cqw); white-space:nowrap; }
+  /* la cible (« / 4 h 25 ») passe sous le chiffre : a cote, elle debordait dans la colonne
+     voisine des que le chiffre prenait toute la largeur */
+  .mon-suivi .temps-cell .tv small{ display:block; margin-left:0; margin-top:1px; white-space:normal; }
   /* Trois cellules cote a cote dans un panneau etroit : « Projets perso » ne tient pas
      sur une ligne, et sur iPad les trois etaient coupes. On laisse le libelle passer a
      la ligne, avec une hauteur de deux lignes reservee pour que les trois chiffres
@@ -6407,7 +6418,7 @@
           '<div class="streak-display"><span class="streak-num">'+streak+'</span><span class="streak-unit">jour'+(streak>1?'s':'')+' d\'affilée</span>'+streakMilestoneBadge(streak)+'</div>'+
           '<div class="card-row">Record : '+record+' j · 7j '+habitRate(hb.id,7)+'% · 30j '+habitRate(hb.id,30)+'%</div>'+
           '<div class="card-actions"><button class="btn '+(done?'btn-primary':'')+'" data-togglehab="'+hb.id+'">'+(done ? '✓ Fait ' + (duJour ? 'aujourd\'hui' : jourDerniereOccurrence) : 'Marquer fait' + (duJour ? '' : ' (' + jourDerniereOccurrence + ')'))+'</button></div>'+
-          '<button class="heat-toggle" data-showheat="'+hb.id+'">Rythme et historique (35 jours) '+(openHeatmaps['h-'+hb.id]?'▴':'▾')+'</button>'+
+          '<button class="heat-toggle" data-showheat="'+hb.id+'">Rythme et historique (35 jours), ordre et archivage '+(openHeatmaps['h-'+hb.id]?'▴':'▾')+'</button>'+
           '<div class="hab-repli" '+(openHeatmaps['h-'+hb.id]?'':'hidden ')+'id="heat-'+hb.id+'">'+
             '<div class="card-row" style="display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:10px;"><span class="sub-note">Rythme</span>'+
               '<select data-hab-rythme="'+hb.id+'" aria-label="Rythme de l\'habitude" style="flex:1; min-width:120px;">'+
