@@ -21,7 +21,7 @@ async function ouvrir(quand, opts){
   return { ctx, page, fr };
 }
 const MERCREDI_MATIN = '2026-09-16T10:20:00+02:00';
-const MERCREDI_SOIR  = '2026-09-16T21:30:00+02:00';
+const MERCREDI_SOIR  = '2026-09-23T21:30:00+02:00';   /* un mercredi de cours DANS le programme (départ jeudi 17) */
 const DIMANCHE_SOIR  = '2026-09-20T21:30:00+02:00';
 
 console.log('\n== 280) Le bloc en cours et son Pomodoro passent en tête de page ==');

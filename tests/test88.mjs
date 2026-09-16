@@ -54,7 +54,7 @@ console.log('\n== 291) Le 4 juin est le dernier jour de cours ; le 5, l\'été t
      'le vendredi 4 juin a encore cours à 15:30 et n\'est dans aucune période');
   ok(v.sans7 === true && v.p7 === 'ete', 'le lundi 7 juin est dans la période « été » et sans cours');
   ok(!v.g7.some(x => /Cours|Trajet cours|Trajet retour/.test(x)), 'plus de cours ni de trajets');
-  ok(v.g7.includes('15:00 Annale complète') && v.g7.includes('16:00 Correction + cartes') && v.g7.includes('17:00 Projets perso 4'),
+  ok(v.g7.includes('15:00 Simulation dentaire') && v.g7.includes('16:00 Correction + cartes') && v.g7.includes('17:00 Projets perso 4'),
      'la journée est celle d\'un jour sans cours : annale complète, correction, projets');
   ok(v.g7.includes('07:20 Anki 1') && v.g7.includes('08:20 Anki 2'),
      'Anki ne s\'arrête pas : les cartes arrivent à échéance tous les jours, été compris');
@@ -125,7 +125,7 @@ console.log('\n== 292) L\'agenda Google : ni 🦇 Cours, ni 🦇 Temps libre =='
   /* Un jour d'ete ORDINAIRE, lui, pousse la journee entiere : c'est un jour de travail. */
   const { ctx, fr } = await ouvrir('2027-07-01T09:00:00+02:00');
   const r = await fr.evaluate(() => window.__bcRappels('2027-07-01').map(b => b.titre));
-  ok(r.includes('🦇 Anki 1') && r.includes('🦇 Annale complète') && r.length >= 20,
+  ok(r.includes('🦇 Anki 1') && r.includes('🦇 Simulation dentaire') && r.length >= 20,
      'un jour d\'été ordinaire rappelle la journée entière : ' + r.length + ' rappels');
   ok(!r.includes('🦇 Cours'), 'et toujours pas de bloc Cours — il n\'y en a plus');
   await ctx.close();
@@ -133,19 +133,19 @@ console.log('\n== 292) L\'agenda Google : ni 🦇 Cours, ni 🦇 Temps libre =='
 
 console.log('\n== 293) Sans dates d\'examen, la Batcave le dit — et se taît dès la première saisie ==');
 {
-  /* le seuil est PROGRAMME_DEBUT + 31 jours : 15 sept. + 31 = 16 octobre */
-  const { ctx, fr } = await ouvrir('2026-10-15T09:00:00+02:00');
+  /* le seuil est PROGRAMME_DEBUT + 31 jours : 17 sept. + 31 = 18 octobre */
+  const { ctx, fr } = await ouvrir('2026-10-17T09:00:00+02:00');
   const a = await fr.evaluate(() => document.getElementById('dash-plan').innerText);
-  ok(!/Aucune date d’examen/.test(a), 'le 15 octobre, la veille du seuil, rien encore');
+  ok(!/Aucune date d’examen/.test(a), 'le 17 octobre, la veille du seuil, rien encore');
   await ctx.close();
 }
 {
-  const { ctx, fr } = await ouvrir('2026-10-16T09:00:00+02:00');
+  const { ctx, fr } = await ouvrir('2026-10-18T09:00:00+02:00');
   const v = await fr.evaluate(() => ({
     t: document.getElementById('dash-plan').innerText,
     btn: document.querySelectorAll('#dash-plan [data-ouvrir="etudes"]').length
   }));
-  ok(/Aucune date d’examen saisie/.test(v.t), 'le 16 octobre, la ligne apparaît');
+  ok(/Aucune date d’examen saisie/.test(v.t), 'le 18 octobre, la ligne apparaît');
   ok(/pas de mode partiels/.test(v.t) && /sommeil majoré/.test(v.t), 'et elle dit ce qui reste éteint tant qu\'elles manquent');
   ok(v.btn === 1, 'un bouton qui ouvre l\'onglet Études');
   await ctx.close();
@@ -184,7 +184,7 @@ console.log('\n== 294) Le panneau « Jours sans cours » : la saisie fait foi ==
     st: JSON.parse(localStorage.getItem('batcave-jours-sans-cours')),
     note: document.getElementById('sans-cours-note').textContent
   }));
-  ok(ap.sans === true && ap.g.includes('15:00 Annale complète') && ap.g.includes('21:00 Coucher'),
+  ok(ap.sans === true && ap.g.includes('15:00 Simulation dentaire') && ap.g.includes('21:00 Coucher'),
      'le 17 septembre devient un jour sans cours, grille comprise');
   ok(ap.st.ajoutes.length === 1 && ap.st.ajoutes[0] === '2026-09-17' && !ap.st.retires.length,
      'on ne garde que l\'écart à la liste de départ : ' + JSON.stringify(ap.st));

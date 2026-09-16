@@ -30,7 +30,7 @@ console.log('\n== 250) Journée exceptionnelle : TP jeudi 24 sept. 11:00 → 13:
   ok(g.includes('09:30 Préparer · TP · Anatomía I'), 'préparation une heure avant le départ (' + g.filter(x => /Préparer/.test(x)) + ')');
   ok(g.includes('10:30 Trajet · TP · Anatomía I') && g.includes('11:00 TP · Anatomía I') && g.includes('13:00 Trajet retour'), 'trajet, TP, retour');
   ok(g.includes('13:30 Déjeuner') && !g.some(x => /12:20 Déjeuner/.test(x)), 'le déjeuner perdu est replacé après le retour');
-  ok(g.includes('07:20 Anki 1') && g.includes('08:20 Anki 2') && g.includes('09:20 Cartes du dernier cours'), 'Anki 1, Anki 2 et Cartes gardent leur place');
+  ok(g.includes('07:20 Anki 1') && g.includes('08:20 Anki 2') && g.includes('09:20 Préparer un tema'), 'Anki 1, Anki 2 et Cartes gardent leur place');
   ok(!g.some(x => /Annales$/.test(x)) && !g.some(x => /gramática|escribir/.test(x)) && g.includes('14:00 Español · preparar la clase'), 'Annales et les blocs Español du créneau sacrifiés, 14:00 reprend');
   ok(g.includes('15:30 Cours') && g.includes('21:55 Coucher'), 'l\'après-midi et le soir ne bougent pas');
   const veille = await grille(fr, 'wednesday', '2026-09-23');
@@ -45,7 +45,7 @@ console.log('\n== 250) Journée exceptionnelle : TP jeudi 24 sept. 11:00 → 13:
   const tl = await fr.evaluate(() => [...document.querySelectorAll('#cal-timeline .t-label')].map(e => e.textContent));
   ok(tl.includes('TP · Anatomía I') && tl.includes('Préparer · TP · Anatomía I'), 'la timeline du jour montre la journée reconstruite');
   const liste = await fr.evaluate(() => document.getElementById('journees-liste').innerText.replace(/\s+/g, ' '));
-  ok(/TP · Anatomía I/.test(liste) && /Sacrifié ce jour-là : .*Annales/.test(liste) && /aujourd'hui/.test(liste), 'panneau : la journée, ses blocs sacrifiés (' + liste.slice(0, 120) + ')');
+  ok(/TP · Anatomía I/.test(liste) && /Sacrifié ce jour-là : .*Exercices de calcul/.test(liste) && /aujourd'hui/.test(liste), 'panneau : la journée, ses blocs sacrifiés (' + liste.slice(0, 120) + ')');
   await ctx.close();
 }
 
@@ -87,7 +87,7 @@ console.log('\n== 252) Mode partiels : J-7 avant le premier examen, jusqu\'au de
   const p8 = await fr.evaluate(() => window.__bcPeriode('2026-11-08'));
   ok(p8 && p8.id === 'es-2', 'le 8 novembre reste en phase Español 2');
   const g = await grille(fr, 'tuesday', '2026-11-10');
-  ok(g.includes('07:20 Anki 1') && g.includes('08:20 Anki 2') && g.includes('10:20 Annales'), 'Anki 1, Anki 2, Annales intacts');
+  ok(g.includes('07:20 Anki 1') && g.includes('08:20 Anki 2') && g.includes('10:20 Exercices de calcul'), 'Anki 1, Anki 2, Exercices de calcul intacts');
   /* Le mardi, « Comprendre le cours du jour » est a 18:00 (sortie d'amphi a 17:30), et les
      blocs « Projets perso 5 » (19:00) et « 6 » (20:30) doivent eux aussi basculer en revision
      ciblee : sans leur ligne dans RENOMMAGES_PARTIELS ils restaient du dropshipping en
@@ -120,7 +120,7 @@ console.log('\n== 253) Jour d\'examen et veille ==');
   ok(g.includes('09:00 Examen · Anatomía I') && g.includes('08:30 Trajet · Examen · Anatomía I') && g.includes('11:00 Trajet retour'), 'lundi 16 : trajet 08:30, examen 09:00 → 11:00 (' + g.filter(x => /Examen|retour/.test(x)) + ')');
   ok(g.includes('07:20 Anki 1') && !g.some(x => /08:20 Anki 2/.test(x)) && g.includes('07:30 Préparer · Examen · Anatomía I'), 'Anki 1 gardé, Anki 2 sacrifié pour la préparation à 07:30');
   const v = await grille(fr, 'weekend', '2026-11-15');
-  ok(v.includes('19:30 Préparer · Examen · Anatomía I') && v.includes('09:20 Annale complète'), 'dimanche 15 : le temps libre du soir prépare l\'examen, l\'annale du matin reste');
+  ok(v.includes('19:30 Préparer · Examen · Anatomía I') && v.includes('09:20 Simulation dentaire'), 'dimanche 15 : le temps libre du soir prépare l\'examen, l\'annale du matin reste');
   const j = await grille(fr, 'weekday', '2026-11-19');
   ok(j.includes('15:00 Examen · Bioquímica') && j.includes('13:30 Préparer · Examen · Bioquímica') && j.includes('14:30 Trajet · Examen · Bioquímica') && !j.some(x => /Cours$/.test(x)), 'jeudi 19 : préparation 13:30, trajet 14:30, examen 15:00 → 17:00, le cours de 15:30 sacrifié');
   const jour1 = await fr.evaluate(() => ({ p: window.__bcPeriode('2026-11-20'), g: window.__bcGrille('friday', '2026-11-20').map(b => b[1]) }));

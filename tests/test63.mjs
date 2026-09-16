@@ -48,7 +48,7 @@ console.log('\n== 221) Calendrier : bloc couvert par une session coché tout seu
   });
   ok(st.a1.checked && st.a1.auto && /checked/.test(st.a1.cls), 'Anki 1 (53 min sur 60) coché automatiquement avec la marque « auto »');
   ok(!st.a2.checked && !st.a2.auto, 'Anki 2 (25 min sur 60, sous la moitié) reste décoché');
-  ok(!st.cartes.checked, 'Cartes du dernier cours décoché à la main : jamais recoché');
+  ok(!st.cartes.checked, 'Préparer un tema décoché à la main : jamais recoché');
   ok(!st.sport.checked, 'un bloc hors travail (Sport) n\'est pas concerné');
   ok(st.store['07:20'] === 'auto' && st.store['09:20'] === false, 'stockage : 07:20 = "auto", 09:20 = false : ' + JSON.stringify(st.store));
   /* décocher à la main un bloc auto : il reste décoché au rendu suivant */

@@ -9,7 +9,7 @@ const b = await chromium.launch();
 let err = 0;
 const ok = (c, m) => { if(c) console.log('  ok  ' + m); else { err++; console.log('  FAIL ' + m); } };
 
-const JOUR = '2026-09-15';   /* premier jour du programme, et « aujourd'hui » de ce test */
+const JOUR = '2026-09-17';   /* premier jour du programme (jeudi 17, depuis le lot 38), et « aujourd'hui » de ce test */
 async function ouvrir(seed, quand){
   const ctx = await b.newContext({viewport:{width:1440, height:1200}, timezoneId:'Europe/Madrid', locale:'fr-FR'});
   await ctx.addInitScript(s => {
@@ -46,16 +46,16 @@ console.log('\n== 1) Avant le premier jour du programme, rien n’était prévu 
 {
   const {ctx, page, fr} = await ouvrir();
   const cs = await grille(fr, page, 'ag');
-  const avant = cs.filter(c => c.iso >= '2026-09-01' && c.iso <= '2026-09-14');
-  ok(avant.length === 14 && avant.every(c => c.horsPlan), 'les 14 jours du 1er au 14 sept. sont hors plan (' + avant.filter(c=>c.horsPlan).length + '/14)');
+  const avant = cs.filter(c => c.iso >= '2026-09-01' && c.iso <= '2026-09-16');
+  ok(avant.length === 16 && avant.every(c => c.horsPlan), 'les 16 jours du 1er au 16 sept. sont hors plan (' + avant.filter(c=>c.horsPlan).length + '/16)');
   ok(/rien n’était prévu/.test(avant[0].titre), 'et le disent au survol : « ' + avant[0].titre + ' »');
   const j15 = de(cs, JOUR);
-  ok(j15 && !j15.horsPlan, 'le 15, lui, était prévu — la case reste blanche : c’est une journée ratée, pas un jour vide');
+  ok(j15 && !j15.horsPlan, 'le 17, lui, était prévu — la case reste blanche : c’est une journée ratée, pas un jour vide');
   ok(/prévu, pas fait/.test(j15.titre), 'et le dit aussi : « ' + j15.titre + ' »');
   /* trois états, pas deux : un jour à venir n'est ni un trou ni une dette */
   const j21 = de(cs, '2026-09-21');
   ok(j21 && !j21.horsPlan && /à venir/.test(j21.titre), 'le 21, encore à venir, ne passe pas pour une journée ratée : « ' + j21.titre + ' »');
-  const j16 = de(cs, '2026-09-16');
+  const j16 = de(cs, '2026-09-18');
   ok(j16 && /à venir/.test(j16.titre), 'demain non plus : « ' + j16.titre + ' »');
   await ctx.close();
 }
@@ -63,12 +63,12 @@ console.log('\n== 1) Avant le premier jour du programme, rien n’était prévu 
 console.log('\n== 2) Un jour exclu et une semaine de vacances reculent d’un cran ==');
 {
   const {ctx, page, fr} = await ouvrir({
-    'batcave-jours-exclus': ['2026-09-16'],
+    'batcave-jours-exclus': ['2026-09-18'],
     'batcave-vacances': [{id:'v1', debut:'2026-09-21', fin:'2026-09-25', label:'Retour au bled'}]
   });
   const cs = await grille(fr, page, 'ag');
-  ok(de(cs, '2026-09-16').horsPlan, 'le 16, marqué « ne compte pas », est hors plan');
-  ok(!de(cs, '2026-09-15').horsPlan && !de(cs, '2026-09-17').horsPlan, 'la veille et le lendemain, eux, étaient prévus');
+  ok(de(cs, '2026-09-18').horsPlan, 'le 18, marqué « ne compte pas », est hors plan');
+  ok(!de(cs, '2026-09-17').horsPlan && !de(cs, '2026-09-19').horsPlan, 'la veille et le lendemain, eux, étaient prévus');
   const vac = ['2026-09-21','2026-09-22','2026-09-23','2026-09-24','2026-09-25'].map(i => de(cs, i));
   ok(vac.every(c => c && c.horsPlan), 'les cinq jours de vacances sont hors plan (' + vac.filter(c=>c&&c.horsPlan).length + '/5)');
   ok(!de(cs, '2026-09-26').horsPlan, 'et la grille reprend le 26');
@@ -78,14 +78,14 @@ console.log('\n== 2) Un jour exclu et une semaine de vacances reculent d’un cr
 console.log('\n== 3) Une journée travaillée n’est jamais hors plan ==');
 {
   const {ctx, page, fr} = await ouvrir({'batcave-sessions': [
-    sess('cours', 'Anatomie', 110, '2026-09-16'),
+    sess('cours', 'Anatomie', 110, '2026-09-18'),
     /* même un jour exclu : si tu as travaillé, la case porte ses heures */
-    sess('cours', 'Histologie', 55, '2026-09-19')
-  ], 'batcave-jours-exclus': ['2026-09-19']});
+    sess('cours', 'Histologie', 55, '2026-09-21')
+  ], 'batcave-jours-exclus': ['2026-09-21']});
   const cs = await grille(fr, page, 'ag');
-  ok(de(cs, '2026-09-16').heure === '1 h 50' && !de(cs, '2026-09-16').horsPlan, 'le 16 : 1 h 50 affichées, jamais hors plan');
-  const j19 = de(cs, '2026-09-19');
-  ok(j19.heure === '55 min' && !j19.horsPlan, 'le 19, exclu mais travaillé : 55 min affichées, pas de pointillé (' + j19.titre + ')');
+  ok(de(cs, '2026-09-18').heure === '1 h 50' && !de(cs, '2026-09-18').horsPlan, 'le 18 : 1 h 50 affichées, jamais hors plan');
+  const j19 = de(cs, '2026-09-21');
+  ok(j19.heure === '55 min' && !j19.horsPlan, 'le 21, exclu mais travaillé : 55 min affichées, pas de pointillé (' + j19.titre + ')');
   await ctx.close();
 }
 
@@ -97,11 +97,11 @@ console.log('\n== 4) Chaque vue juge sur CE QU’ELLE montre ==');
   const rv = await grille(fr, page, 'rv');
   const pj = await fr.evaluate(() => [...document.querySelectorAll('#pj-grid .cal-day[data-agjour]')].map(c => ({
     iso: c.dataset.agjour, horsPlan: c.classList.contains('hors-plan')})));
-  const premier = '2026-09-15';
-  ok(!de(rv, premier).horsPlan, 'vue Révision : le mardi 15 prévoit de la révision');
-  ok(de(rv, '2026-09-14').horsPlan, 'vue Révision : le 14 (avant le programme) reste hors plan');
+  const premier = '2026-09-17';
+  ok(!de(rv, premier).horsPlan, 'vue Révision : le jeudi 17 prévoit de la révision');
+  ok(de(rv, '2026-09-16').horsPlan, 'vue Révision : le 16 (avant le programme) reste hors plan');
   ok(pj.filter(c => c.iso === premier)[0] && !pj.filter(c => c.iso === premier)[0].horsPlan,
-     'vue Projets : le 15 prévoit de l’Español, qui s’y affiche — donc pas hors plan');
+     'vue Projets : le 17 prévoit de l’Español, qui s’y affiche — donc pas hors plan');
   await ctx.close();
 }
 

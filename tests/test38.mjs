@@ -122,11 +122,11 @@ console.log('\n== 80) La journée du samedi réserve 2 h de courses ==');
     const fin = i < creneaux.length-1 ? creneaux[i+1].debut : min('22:00');
     return acc + (fin - c.debut);
   }, 0);
-  const rev = duree(/Anki|Cartes|Annales/), proj = duree(/Projets perso/);
+  const rev = duree(/Anki|Cartes|Préparer un tema|Question ouverte/), proj = duree(/Projets perso/);
   ok(rev === 300, 'révision samedi = 5 h pile : ' + rev + ' min');
   ok(proj === 180, 'projets perso = 3 h pile : ' + proj + ' min');
   /* contrainte Pomodoro : chaque bloc de travail doit être un multiple d'une heure */
-  const blocs = creneaux.filter(c => /Anki|Cartes|Annales|Projets perso/.test(c.texte)).map((c) => {
+  const blocs = creneaux.filter(c => /Anki|Cartes|Préparer un tema|Question ouverte|Projets perso/.test(c.texte)).map((c) => {
     const i = creneaux.indexOf(c);
     const fin = i < creneaux.length-1 ? creneaux[i+1].debut : min('22:00');
     return { texte: c.texte.trim(), duree: fin - c.debut };

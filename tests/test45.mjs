@@ -34,7 +34,7 @@ console.log('\n== 108) Deux blocs de révision échus sans session : signalés, 
 {
   const { ctx, page, fr } = await ouvrir(MERCREDI_MIDI);
   const t = await texte(fr, '#dash-plan');
-  ok(/Bloc manqué — 4 h 20 de révision non faites \(Anki matinal 05:30, Anki 1 07:20, Anki 2 08:20, Cartes du dernier cours 09:20, Annales 10:20\)/.test(t), 'texte : « 4 h 20 de révision non faites » — ' + ((t.match(/Bloc manqué[^\n]*/) || [''])[0]));
+  ok(/Bloc manqué — 4 h 20 de révision non faites \(Anki matinal 05:30, Anki 1 07:20, Anki 2 08:20, Préparer un tema 09:20, Question ouverte 10:20\)/.test(t), 'texte : « 4 h 20 de révision non faites » — ' + ((t.match(/Bloc manqué[^\n]*/) || [''])[0]));
   ok(!/créneau libre/.test(t), 'mercredi : aucun créneau libre ≥ 45 min ne reste → pas de suggestion');
   ok(await fr.evaluate(() => !document.querySelector('[data-plan-manque-lancer]')), 'pas de bouton « Maintenant » sans créneau');
   ok(await fr.evaluate(() => !!document.querySelector('[data-plan-manque-demain]')), 'bouton « Demain » présent');
@@ -95,7 +95,7 @@ console.log('\n== 110) Pas de fausse alerte ==');
   const s = [bloc('2026-12-02','cours',90,'07:20')];   /* 1 h 30 sur Anki 1 + 2 (100 min de travail) : couverts ; déficit 260 − 90 = 170 min sur Anki matinal, Cartes et Annales */
   const { ctx, fr } = await ouvrir(MERCREDI_MIDI, {'batcave-sessions': s});
   const t = await texte(fr, '#dash-plan');
-  ok(/2 h 50 de révision non faites \(Anki matinal 05:30, Cartes du dernier cours 09:20, Annales 10:20\)/.test(t), 'Anki 1 et 2 couverts ; déficit réel 2 h 50 — ' + ((t.match(/Bloc manqué[^\n]*/) || [''])[0]));
+  ok(/2 h 50 de révision non faites \(Anki matinal 05:30, Préparer un tema 09:20, Question ouverte 10:20\)/.test(t), 'Anki 1 et 2 couverts ; déficit réel 2 h 50 — ' + ((t.match(/Bloc manqué[^\n]*/) || [''])[0]));
   await ctx.close();
 }
 

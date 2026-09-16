@@ -29,21 +29,21 @@ const HABITS = [
 const seedHab = {'batcave-habits': HABITS, 'batcave-habits-seed-v2': true, 'batcave-habits-seed-v3': true, 'batcave-habits-seed-v4': true, 'batcave-habits-seed-v5': true, 'batcave-habits-seed-v6': true, 'batcave-habits-seed-v7': true, 'batcave-habits-ecran-v2': true, 'batcave-habitlog-hebdo-v1': true};
 const cartes = fr => fr.evaluate(() => [...document.querySelectorAll('#habits-grid .card')].map(c => c.innerText.replace(/\s+/g,' ')));
 
-console.log('\n== 240) Sport : mardi 15 septembre = semaine 1 (moitié des tours), 13 octobre = retest ==');
+console.log('\n== 240) Sport : jeudi 17 septembre = semaine 1 (moitié des tours), 15 octobre = retest ==');
 {
-  const { ctx, fr } = await ouvrir('2026-09-15T06:30:00+02:00');
+  const { ctx, fr } = await ouvrir('2026-09-17T06:30:00+02:00');
   const r = await fr.evaluate(() => ({ debut: window.__bcProgrammeDebut, note: document.getElementById('programme-note').textContent }));
-  ok(r.debut === '2026-09-15', 'PROGRAMME_DEBUT = 2026-09-15 (' + r.debut + ')');
+  ok(r.debut === '2026-09-17', 'PROGRAMME_DEBUT = 2026-09-17 (' + r.debut + ')');
   ok(/semaine 1/.test(r.note) && /½/.test(r.note), 'note : semaine 1, tours × ½ (' + r.note + ')');
   await ctx.close();
   const s = await ouvrir('2026-09-10T06:30:00+02:00');
   const n2 = await s.fr.evaluate(() => document.getElementById('programme-note').textContent);
-  ok(/démarre le/.test(n2) && /15/.test(n2), 'avant le 15 : « démarre le 15 sept. » (' + n2 + ')');
+  ok(/démarre le/.test(n2) && /17/.test(n2), 'avant le 17 : « démarre le 17 sept. » (' + n2 + ')');
   await s.ctx.close();
-  /* la semaine de programme court du mardi au lundi : le retest tombe le mardi 13, pas le lundi 12 */
-  const r5 = await ouvrir('2026-10-13T06:30:00+02:00');
+  /* la semaine de programme court du jeudi au mercredi : le retest tombe le jeudi 15, pas le lundi 12 */
+  const r5 = await ouvrir('2026-10-15T06:30:00+02:00');
   const n5 = await r5.fr.evaluate(() => document.getElementById('programme-note').textContent);
-  ok(/semaine 5/.test(n5) && /mardi : retest/.test(n5), 'mardi 13 octobre : semaine 5, retest tractions et dips (' + n5 + ')');
+  ok(/semaine 5/.test(n5) && /jeudi : retest/.test(n5), 'jeudi 15 octobre : semaine 5, retest tractions et dips (' + n5 + ')');
   await r5.ctx.close();
 }
 
@@ -60,7 +60,7 @@ console.log('\n== 241) Pomodoro révision : sur Anki, « Sans préciser » propo
   await c.fr.evaluate(() => document.getElementById('dash-pomodoro').click());
   await c.page.waitForTimeout(150);
   const b = await c.fr.evaluate(() => ({ valeur: document.getElementById('ask-select').value, msg: document.getElementById('ask-msg').textContent }));
-  ok(b.valeur !== 'Sans préciser' && /Cartes du dernier cours/.test(b.msg) && /LA matière/.test(b.msg), 'bloc Cartes : une matière proposée (' + b.valeur + '), message « choisis LA matière »');
+  ok(b.valeur !== 'Sans préciser' && /Préparer un tema/.test(b.msg) && /LA matière/.test(b.msg), 'bloc Cartes : une matière proposée (' + b.valeur + '), message « choisis LA matière »');
   await c.fr.evaluate(() => document.getElementById('ask-cancel').click());
   await c.ctx.close();
 }

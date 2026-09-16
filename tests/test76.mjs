@@ -59,7 +59,7 @@ for (const [d, jour_, pesee, coupe] of [
   await ctx.close();
 }
 console.log('\n== seance de reference, uniquement le premier jour du programme ==');
-for (const [d, attendu] of [['2026-09-14',false],['2026-09-15',true],['2026-09-16',false]]) {
+for (const [d, attendu] of [['2026-09-16',false],['2026-09-17',true],['2026-09-18',false]]) {
   const {ctx, fr} = await jour(d+'T05:35:00+02:00');
   const p = await fr.evaluate(()=>document.getElementById('dash-plan').innerText);
   ok(/Séance de référence/.test(p)===attendu, d+' : séance de référence dans le plan = '+/Séance de référence/.test(p));

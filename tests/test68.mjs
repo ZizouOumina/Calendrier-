@@ -131,7 +131,7 @@ console.log('\n== 268) Rythme d\'une habitude, modifiable sans l\'archiver ==');
 console.log('\n== 269) Pomodoro : le rappel dit quoi lancer, la clôture compte les blocs ==');
 {
   const { ctx, page, fr } = await ouvrir('2026-09-15T20:35:00+02:00');
-  const r = await fr.evaluate(() => window.__bcRappels('2026-09-15').filter(b => /Anki 1|Annales/.test(b.titre)).map(b => ({t:b.titre, d:b.description})));
+  const r = await fr.evaluate(() => window.__bcRappels('2026-09-15').filter(b => /Anki 1|Exercices de calcul/.test(b.titre)).map(b => ({t:b.titre, d:b.description})));
   ok(r.length >= 2 && r.every(x => /^Lance le Pomodoro « /.test(x.d)), 'chaque bloc de travail dit « Lance le Pomodoro « … » » : ' + (r[0] && r[0].d.slice(0, 45)));
   const coucher = await fr.evaluate(() => window.__bcRappels('2026-09-15').filter(b => /Coucher/.test(b.titre))[0]);
   ok(!/Lance le Pomodoro/.test(coucher.description), 'le coucher, lui, ne réclame pas de Pomodoro');

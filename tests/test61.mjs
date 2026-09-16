@@ -72,7 +72,7 @@ console.log('\n== 217) Google Calendar : un titre « 🦇 Bloc · consigne » se
     a: window.__bcTitreBase('🦇 Anki 1 · cartes dues dentaire (25/5)'),
     b: window.__bcTitreBase('🦇 Projets perso 3 · tâche courte · mer : révision Business'),
     c: window.__bcTitreBase('🦇 Repos — après-midi libre'),
-    lun: window.__bcConsigne('Projets perso 2', 1), ven: window.__bcConsigne('Projets perso 2', 5), sam: window.__bcConsigne('Cartes du dernier cours', 6), rien: window.__bcConsigne('Déjeuner', 1)
+    lun: window.__bcConsigne('Projets perso 2', 1), ven: window.__bcConsigne('Projets perso 2', 5), sam: window.__bcConsigne('Préparer un tema', 6), rien: window.__bcConsigne('Déjeuner', 1)
   }));
   ok(r.a === '🦇 Anki 1' && r.b === '🦇 Projets perso 3' && r.c === '🦇 Repos — après-midi libre', 'titre de base : ' + r.a + ' / ' + r.b);
   ok(/construire/.test(r.lun) && /Bilan de la semaine/.test(r.ven) && /tema d'avance/.test(r.sam) && r.rien === '', 'consignes par jour (lundi construire, vendredi bilan, samedi tema d’avance, déjeuner vide)');

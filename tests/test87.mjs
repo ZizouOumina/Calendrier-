@@ -102,7 +102,7 @@ console.log('\n== 287) Un jour sans cours : la plage se libère, sans jamais dou
   const i = await infos(fr, '2026-10-12'), g = await jour(fr, '2026-10-12');
   ok(i.sans === true && i.per === 'es-1', 'le lundi 12 octobre (Fiesta Nacional) est sans cours, et toujours en phase 1');
   ok(!g.some(x => /Cours|Trajet cours|Trajet retour/.test(x)), 'plus de cours, plus de trajets : ' + g.slice(13, 16).join(' | '));
-  ok(g.includes('16:50 Collation entraînement') && g.includes('17:00 Annale complète') && g.includes('18:00 Correction + cartes'),
+  ok(g.includes('16:50 Collation entraînement') && g.includes('17:00 Simulation dentaire') && g.includes('18:00 Correction + cartes'),
      'la plage devient une annale complète puis sa correction');
   ok(g.includes('19:00 Dîner') && g.includes('21:00 Coucher'), 'le soir est celui du week-end : dîner 19:00, coucher 21:00');
   const pp4 = g.filter(x => /Español · hablar/.test(x));
@@ -112,7 +112,7 @@ console.log('\n== 287) Un jour sans cours : la plage se libère, sans jamais dou
 
   /* le jeudi 1er avril 2027 : sans cours, hors phase Español -- les blocs de projet restent des projets */
   const a = await jour(fr, '2027-04-01');
-  ok(a.includes('15:00 Annale complète') && a.includes('17:00 Projets perso 4') && a.includes('18:00 Projets perso 5'),
+  ok(a.includes('15:00 Simulation dentaire') && a.includes('17:00 Projets perso 4') && a.includes('18:00 Projets perso 5'),
      'hors phase, la plage libérée porte les blocs de projet : ' + a.slice(14, 18).join(' | '));
   const doublons = a.filter((x, k) => a.some((y, l) => l !== k && y.slice(6) === x.slice(6) && x.slice(6) !== 'Temps libre'));
   ok(doublons.length === 0, 'aucun libellé en double dans la journée' + (doublons.length ? ' : ' + doublons.join(' / ') : ''));
@@ -136,7 +136,7 @@ console.log('\n== 288) L\'entre-deux des semestres se déduit des dates, il n\'e
   ok(v.j19 === false && v.j20 === true && v.j22 === true && v.j25 === false,
      'le 19 il y a cours, du 20 au 22 non, le 25 le semestre 2 démarre (' + [v.j19, v.j20, v.j22, v.j25].join('/') + ')');
   ok(!v.liste.ajoutes.length && !v.liste.retires.length, 'et rien n\'a été saisi pour cela : c\'est déduit des dates de semestre');
-  ok(v.g.includes('15:00 Annale complète') && v.g.includes('21:00 Coucher'), 'le jeudi 21 janvier a bien l\'agenda d\'un jour sans cours');
+  ok(v.g.includes('15:00 Simulation dentaire') && v.g.includes('21:00 Coucher'), 'le jeudi 21 janvier a bien l\'agenda d\'un jour sans cours');
   await ctx.close();
 }
 
@@ -155,7 +155,7 @@ console.log('\n== 289) Le mode partiels passe devant, même un jour sans cours =
   ok(es.length === 1, 'un seul bloc Español dans la journée, comme le veut le mode partiels (' + es.join(' / ') + ')');
   /* le 28 decembre est un LUNDI du semestre 1 : la collation est a 16:50, donc l'annale
      complete tombe a 17:00 et non a 15:00 comme les autres jours. */
-  ok(v.g.includes('17:00 Annale complète') && v.g.filter(x => /Révision ciblée/.test(x)).length === 3,
+  ok(v.g.includes('17:00 Simulation dentaire') && v.g.filter(x => /Révision ciblée/.test(x)).length === 3,
      'la plage libérée est de la révision ciblée, pas du dropshipping : ' + v.g.filter(x => /Révision ciblée/.test(x)).length + ' blocs, annale à 17:00');
   ok(v.c.proj === 0, 'aucune minute de projet prévue la semaine d\'un examen (' + v.c.proj + ')');
   await ctx.close();

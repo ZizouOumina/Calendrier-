@@ -99,7 +99,7 @@ console.log('\n== 231) Phase 1 (mercredi 16 septembre) : blocs Projets perso ren
      septembre (48,7 -> 44,8). Meme jour retire, meme difference aux deux.
      168 et 49 depuis l'emploi du temps reel : lundi et mardi apportent 3 h 50 de blocs
      de plus, tous renommes Español en phase 1. */
-  ok(Math.abs(objs['T1:espagnol_h'] - 165.9) < 0.2 && Math.abs(objs['M2026-09:espagnol_h'] - 44.8) < 0.2 && objs['M2026-09:projets_h'] === 0 && objs['T1:revision_h'] > 0, 'objectifs Espagnol calculés depuis la grille (T1 ≈ 165,9, septembre ≈ 44,8) ; Projets perso ramené à zéro en septembre, où la phase 1 occupe toute la part programmée du mois : ' + JSON.stringify(objs));
+  ok(Math.abs(objs['T1:espagnol_h'] - 159.5) < 0.2 && Math.abs(objs['M2026-09:espagnol_h'] - 38.4) < 0.2 && objs['M2026-09:projets_h'] === 0 && objs['T1:revision_h'] > 0, 'objectifs Espagnol calculés depuis la grille (T1 ≈ 159,5, septembre ≈ 38,4 — départ du jeudi 17) ; Projets perso ramené à zéro en septembre, où la phase 1 occupe toute la part programmée du mois : ' + JSON.stringify(objs));
 
   /* Pomodoro Español : la tâche par défaut est celle du bloc en cours (gramática à 12:00), le bloc part en projet « Español · gramática » */
   await fr.evaluate(() => document.querySelector('.nav-btn[data-page="dashboard"]').click());
@@ -146,11 +146,11 @@ console.log('\n== 232) Avant le lundi 14 septembre : aucune période, la grille 
   ok(g.cache === true && g.releve === 'grille type', 'relevé GRILLE masqué avant le 14 (« ' + g.releve + ' »)');
   ok(g.p14 === 'es-1', 'le lundi 14 est en phase 1 (obtenu ' + g.p14 + ')');
   /* Le lundi, le cours est a 17:30 et non 15:30 : 15:00 est « Projets perso 4 ». */
-  ok(g.l0720 === 'Anki 1' && g.l0820 === 'Anki 2' && g.l0920 === 'Cartes du dernier cours' && g.l1220 === 'Déjeuner' && g.l1730 === 'Cours',
+  ok(g.l0720 === 'Anki 1' && g.l0820 === 'Anki 2' && g.l0920 === 'Préparer un tema' && g.l1220 === 'Déjeuner' && g.l1730 === 'Cours',
      'le 14 : révision dentaire, déjeuner et cours intacts : ' + [g.l0720, g.l0820, g.l0920, g.l1220, g.l1730].join(' / '));
   ok(g.l1120 === 'Español · gramática' && g.l1300 === 'Español · escribir' && g.l1400 === 'Español · preparar la clase' && g.l1500 === 'Español · hablar',
      'le 14 : seuls les Projets perso deviennent Español, les quatre du lundi : ' + [g.l1120, g.l1300, g.l1400, g.l1500].join(' / '));
-  ok(/démarre le/.test(g.sport) && /15/.test(g.sport), 'sport : avant le 15, « démarre le 15 sept. » (' + g.sport + ')');
+  ok(/démarre le/.test(g.sport) && /17/.test(g.sport), 'sport : avant le 17, « démarre le 17 sept. » (' + g.sport + ')');
   await ctx.close();
 }
 
@@ -178,17 +178,17 @@ console.log('\n== 234) Dimanche 20 septembre, clôture : les chiffres du dimanch
   ok(av.ouvert && av.revue && av.es, 'clôture du dimanche : bloc revue et bloc chiffres Español visibles');
   ok(/Espagnol/.test(av.constats) && /blocs Español/.test(av.constats), 'constat Espagnol de la semaine dans la revue guidée : ' + av.constats.slice(0, 120));
   await fr.evaluate(() => {
-    document.getElementById('cl-es-errores').value = '4.5'; document.getElementById('cl-es-oral').value = '2'; document.getElementById('cl-es-drill').value = '110';
+    document.getElementById('cl-es-errores').value = '4.5'; document.getElementById('cl-es-oral').value = '2';
     document.getElementById('cl-rv-marche').value = 'les formules';
     document.getElementById('cloture-valider').click();
   });
   await page.waitForTimeout(250);
   const rv = await fr.evaluate(() => { const l = JSON.parse(localStorage.getItem('batcave-revue') || '[]'); return l[l.length - 1]; });
-  ok(rv && rv.espanol && rv.espanol.errores === 4.5 && rv.espanol.oral === 2 && rv.espanol.drill === 110, 'revue enregistrée avec les chiffres Español : ' + JSON.stringify(rv && rv.espanol));
+  ok(rv && rv.espanol && rv.espanol.errores === 4.5 && rv.espanol.oral === 2, 'revue enregistrée avec les chiffres Español : ' + JSON.stringify(rv && rv.espanol));
   await fr.evaluate(() => document.querySelector('.nav-btn[data-page="objectifs"]').click());
   await page.waitForTimeout(200);
   const liste = await fr.evaluate(() => document.getElementById('rv-list').textContent);
-  ok(/🇪🇸 4,5 err\. \/ 100 mots · 2,0 min d'oral sans pause · drill 110 s/.test(liste), 'la revue affiche la ligne Español : ' + liste.slice(0, 160));
+  ok(/🇪🇸 4,5 err\. \/ 100 mots · 2,0 min d'oral sans pause/.test(liste), 'la revue affiche la ligne Español : ' + liste.slice(0, 160));
   await ctx.close();
 }
 
