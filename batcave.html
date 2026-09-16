@@ -1822,7 +1822,7 @@
       <!-- Jours sans cours : la plage de cours se libère, la journée reste une journée de travail. -->
       <div class="panel sub-panel" id="sans-cours-panel">
         <div class="sub-head"><h3>📅 Jours sans cours</h3><span class="sub-note" id="sans-cours-note">—</span></div>
-        <p class="sub-note" style="margin-bottom:12px; line-height:1.6;">Un férié, un pont, l'entre-deux des semestres : pas de cours, mais une journée de travail. La plage de cours se libère et devient <b style="color:var(--ink-dim);">une annale complète, sa correction, puis les blocs de projet de la phase en cours</b> — dîner à 19:00, coucher à 21:00, une nuit pleine. La liste de départ vient du calendrier des fériés espagnols, pas du portail de la fac : <b style="color:var(--ink-dim);">c'est ta saisie qui fait foi</b>. Pour de vraies vacances, où rien n'est attendu, c'est le panneau au-dessus.</p>
+        <p class="sub-note" style="margin-bottom:12px; line-height:1.6;">Un férié, un pont, l'entre-deux des semestres : pas de cours, mais une journée de travail. La plage de cours se libère et devient <b style="color:var(--ink-dim);">une simulation complète d'examen, sa correction, puis les blocs de projet de la phase en cours</b> — dîner à 19:00, coucher à 21:00, une nuit pleine. La liste de départ vient du calendrier des fériés espagnols, pas du portail de la fac : <b style="color:var(--ink-dim);">c'est ta saisie qui fait foi</b>. Pour de vraies vacances, où rien n'est attendu, c'est le panneau au-dessus.</p>
         <div class="add-form">
           <div class="f"><label>Date</label><input type="date" id="sc-date"></div>
           <button class="btn btn-primary" id="sc-add" type="button">Pas de cours ce jour-là</button>
@@ -10280,7 +10280,7 @@
     if(!p){
       el.textContent = sans ? 'pas de cours' : 'grille type';
       el.title = sans
-        ? 'Pas de cours aujourd\'hui' + (sem ? ' (' + sem.nom + ')' : ' (hors semestre)') + ' : la plage de cours devient une annale complète, sa correction, puis les blocs de projet. Dîner à 19:00, coucher à 21:00.'
+        ? 'Pas de cours aujourd\'hui' + (sem ? ' (' + sem.nom + ')' : ' (hors semestre)') + ' : la plage de cours devient une simulation complète, sa correction, puis les blocs de projet. Dîner à 19:00, coucher à 21:00.'
         : 'Aucune période en cours : la grille type s\'applique.';
       el.style.color = sans ? 'var(--cyan-bright)' : '';
       return;
@@ -10289,7 +10289,7 @@
     el.textContent = p.nom + ' · J-' + j + (sans ? ' · pas de cours' : '');
     el.style.color = 'var(--cyan-bright)';
     el.title = p.description + ' Jusqu\'au ' + fmtDate(p.fin) + ' ; ensuite : ' + (p.suite || 'grille type') + '.' +
-      (sans ? ' Pas de cours aujourd\'hui : la plage de cours devient une annale complète, sa correction, puis les blocs de projet.' : '');
+      (sans ? ' Pas de cours aujourd\'hui : la plage de cours devient une simulation complète, sa correction, puis les blocs de projet.' : '');
   }
   (function(){
     var r = document.getElementById('bc-grille');
@@ -10775,8 +10775,8 @@
     return {icon:'🎓', title:T, page:P,
             text: pire.m + ' : partiel dans ' + pire.jours + ' jour' + (pire.jours > 1 ? 's' : '') + ', ' + hminTxt(pire.min) + ' sur les 14 derniers jours (' + Math.round(pire.part * 100) + ' % de ta révision).',
             action: pire.part < 0.25
-              ? 'Bascule les blocs Annales (10:20) et Comprendre (20:30) sur ' + pire.m + ' jusqu\'au partiel, et fais l\'annale complète du dimanche dans cette matière.'
-              : 'Rythme cohérent avec l\'échéance : garde une annale complète par semaine dans cette matière et les cartes d\'erreurs du samedi.',
+              ? 'Bascule le bloc de 10:20 et Comprendre (20:30) sur ' + pire.m + ' jusqu\'au partiel, et fais la simulation du dimanche dans cette matière.'
+              : 'Rythme cohérent avec l\'échéance : garde une simulation par semaine dans cette matière et les cartes d\'erreurs du samedi.',
             score: Math.round(pire.u * 100), n: rv.entrees, tendance: tend};
   }
 
