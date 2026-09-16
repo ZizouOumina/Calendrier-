@@ -555,6 +555,8 @@
     #habits-grid > .card > .card-actions{ grid-column:3; grid-row:1; margin:0; }
     #habits-grid > .card > .card-actions .btn{ height:auto; min-height:44px; padding:0 12px; white-space:nowrap; font-size:12px; }
     #habits-grid > .card > .heat-toggle{ grid-column:1 / -1; padding-top:3px; font-size:10.5px; }
+    /* « , ordre et archivage » faisait passer le libelle sur deux lignes a 390 px */
+    #habits-grid > .card > .heat-toggle .ht-plus{ display:none; }
     #habits-grid > .card > .hab-repli{ grid-column:1 / -1; }
     /* repli ouvert : les chiffres et les commandes reviennent, au-dessus du rythme */
     #habits-grid > .card.ouverte > .card-row{ display:flex; grid-column:1 / -1; font-size:11px; margin:0; }
@@ -1396,15 +1398,17 @@
   :root[data-theme="jour"] .panel, :root[data-theme="jour"] .card, :root[data-theme="jour"] .meal-card,
   :root[data-theme="jour"] .sport-card, :root[data-theme="jour"] .goal-card, :root[data-theme="jour"] .bilan-card,
   :root[data-theme="jour"] .cat-card, :root[data-theme="jour"] .stat-tile, :root[data-theme="jour"] .overlay-panel{
-    clip-path:none; border-radius:10px; background:var(--border);
+    clip-path:none; border-radius:10px; background:var(--screen); border:1px solid var(--border);
   }
+  /* de jour, le cadre est une vraie bordure et le fond est celui de l'ecran : le calque
+     ::before qui repeignait l'interieur n'a plus de raison d'etre (et l'audit de contraste
+     lisait le fond du bezel comme s'il etait celui du texte) */
   :root[data-theme="jour"] .panel::before, :root[data-theme="jour"] .card::before, :root[data-theme="jour"] .meal-card::before,
   :root[data-theme="jour"] .sport-card::before, :root[data-theme="jour"] .goal-card::before, :root[data-theme="jour"] .bilan-card::before,
   :root[data-theme="jour"] .cat-card::before, :root[data-theme="jour"] .stat-tile::before, :root[data-theme="jour"] .overlay-panel::before{
-    clip-path:none; border-radius:9px; box-shadow:none;
+    display:none;
   }
   :root[data-theme="jour"] .stat-tile{ border-radius:8px; }
-  :root[data-theme="jour"] .stat-tile::before{ border-radius:7px; }
   /* les barres de titre suivent les coins arrondis ; les en-têtes de repas et de séance
      perdent leur dégradé */
   :root[data-theme="jour"] .panel > h3:first-child, :root[data-theme="jour"] .panel > .sub-head:first-child,
@@ -1427,10 +1431,11 @@
   :root[data-theme="jour"] #shopify-new-order-banner{ color:#ffffff !important; }
   /* la carte de séance du jour et l'écran central gardent leur bezel cyan : sur blanc,
      un dégradé plein cyan écrase le contenu -- on le calme */
-  :root[data-theme="jour"] .sport-card.today, :root[data-theme="jour"] .panel.mon-central,
-  :root[data-theme="jour"] .cal-day.actif, :root[data-theme="jour"] .bilan-card.b-fidelite{
+  :root[data-theme="jour"] .cal-day.actif{
     background:linear-gradient(160deg, var(--cyan), var(--cyan-dim) 45%, var(--cyan-dim) 55%, var(--cyan));
   }
+  :root[data-theme="jour"] .sport-card.today, :root[data-theme="jour"] .panel.mon-central,
+  :root[data-theme="jour"] .bilan-card.b-fidelite{ border-color:var(--cyan-dim); box-shadow:0 0 0 1px var(--cyan-dim); }
   /* les halos : discrets sur fond clair, sinon tout bave */
   :root[data-theme="jour"] .bc-clock{ text-shadow:none; }
   :root[data-theme="jour"] .bc-brand svg{ filter:none; animation:none; }
@@ -6418,7 +6423,7 @@
           '<div class="streak-display"><span class="streak-num">'+streak+'</span><span class="streak-unit">jour'+(streak>1?'s':'')+' d\'affilée</span>'+streakMilestoneBadge(streak)+'</div>'+
           '<div class="card-row">Record : '+record+' j · 7j '+habitRate(hb.id,7)+'% · 30j '+habitRate(hb.id,30)+'%</div>'+
           '<div class="card-actions"><button class="btn '+(done?'btn-primary':'')+'" data-togglehab="'+hb.id+'">'+(done ? '✓ Fait ' + (duJour ? 'aujourd\'hui' : jourDerniereOccurrence) : 'Marquer fait' + (duJour ? '' : ' (' + jourDerniereOccurrence + ')'))+'</button></div>'+
-          '<button class="heat-toggle" data-showheat="'+hb.id+'">Rythme et historique (35 jours), ordre et archivage '+(openHeatmaps['h-'+hb.id]?'▴':'▾')+'</button>'+
+          '<button class="heat-toggle" data-showheat="'+hb.id+'">Rythme et historique (35 jours)<span class="ht-plus">, ordre et archivage</span> '+(openHeatmaps['h-'+hb.id]?'▴':'▾')+'</button>'+
           '<div class="hab-repli" '+(openHeatmaps['h-'+hb.id]?'':'hidden ')+'id="heat-'+hb.id+'">'+
             '<div class="card-row" style="display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:10px;"><span class="sub-note">Rythme</span>'+
               '<select data-hab-rythme="'+hb.id+'" aria-label="Rythme de l\'habitude" style="flex:1; min-width:120px;">'+

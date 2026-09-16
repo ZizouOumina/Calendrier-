@@ -116,7 +116,8 @@ console.log('\n== 225) iPad portrait : écran central compact, sans débordement
   await fr.evaluate(() => { const r = document.getElementById('ritual-dismiss'); if(r) r.click(); });
   await page.waitForTimeout(200);
   const st = await fr.evaluate(() => ({ cols: getComputedStyle(document.querySelector('.panel.mon-central')).gridTemplateColumns, reactor: document.querySelector('.reactor').getBoundingClientRect().width, deb: document.documentElement.scrollWidth <= window.innerWidth + 1 }));
-  ok(/^230px/.test(st.cols) && st.reactor <= 231, 'réacteur à 230 px (' + st.cols + ')');
+  /* lot 39 : 170 px sur iPad portrait (230 avant), la colonne des lectures respire */
+  ok(/^170px/.test(st.cols) && st.reactor <= 171, 'réacteur à 170 px (' + st.cols + ')');
   ok(st.deb, 'pas de défilement horizontal');
   await ctx.close();
 }
