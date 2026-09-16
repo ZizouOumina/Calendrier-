@@ -886,7 +886,14 @@
        sans defiler. Le sous-titre « QG · GOTHAM-ALICANTE » et l'animation du logo partent. */
     .bc-bar{ padding:7px 11px 6px; gap:4px; margin-bottom:10px; }
     .bc-row{ gap:8px 12px; row-gap:3px; }
-    .bc-row-1 > .bc-brand{ margin-right:auto; }
+    /* rangee 1 : la marque, le bouton de theme et l'horloge ; rangee 2 : la salutation et
+       le bouton Essentiel. L'ordre des elements change pour que chaque ligne se remplisse
+       (la salutation, le theme ET le bouton ne tenaient pas sur une meme ligne). */
+    .bc-row-1 > .bc-brand{ margin-right:auto; order:0; }
+    .bc-row-1 > .bc-actions{ order:1; }
+    .bc-row-1 > .bc-clock{ order:2; }
+    .bc-row-1 > .bc-r{ order:3; }
+    .bc-row-1 > .mode-essentiel-toggle{ order:4; }
     .bc-clock{ font-size:20px; }
     .bc-name{ font-size:19px; }
     .bc-name small{ display:none; }
