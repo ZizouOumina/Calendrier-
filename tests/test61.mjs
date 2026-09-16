@@ -75,7 +75,7 @@ console.log('\n== 217) Google Calendar : un titre « 🦇 Bloc · consigne » se
     lun: window.__bcConsigne('Projets perso 2', 1), ven: window.__bcConsigne('Projets perso 2', 5), sam: window.__bcConsigne('Cartes du dernier cours', 6), rien: window.__bcConsigne('Déjeuner', 1)
   }));
   ok(r.a === '🦇 Anki 1' && r.b === '🦇 Projets perso 3' && r.c === '🦇 Repos — après-midi libre', 'titre de base : ' + r.a + ' / ' + r.b);
-  ok(/construire/.test(r.lun) && /Bilan de la semaine/.test(r.ven) && /semaine restés sans cartes/.test(r.sam) && r.rien === '', 'consignes par jour (lundi construire, vendredi bilan, samedi cartes de la semaine, déjeuner vide)');
+  ok(/construire/.test(r.lun) && /Bilan de la semaine/.test(r.ven) && /tema d'avance/.test(r.sam) && r.rien === '', 'consignes par jour (lundi construire, vendredi bilan, samedi tema d’avance, déjeuner vide)');
   await ctx.close();
 }
 await browser.close();
