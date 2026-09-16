@@ -3,7 +3,7 @@
 Copie de référence du plan appliqué dans la Batcave (onglets Repas et Courses), copie du 8 septembre 2026 ; le plan démarre le lundi 14 septembre 2026 avec tout le reste.
 
 ## Le cadre
-- 64 kg · 182 cm · 19 ans · quatre séances de sport par semaine · objectif 70 kg à mars 2027 (environ +1 kg par mois).
+- 64 kg · 182 cm · 20 ans · quatre séances de sport par semaine · objectif 70 kg à mars 2027 (environ +1 kg par mois).
 - **3 051 kcal par jour · protéines 173 g (2,7 g/kg) · glucides 343 g · lipides 108 g.** Tout est pesé cru.
 - Cinq prises par jour. Le féculent est le riz à midi et les pâtes le soir. La protéine du déjeuner et du dîner suit une rotation fixe sur la semaine ; l'huile d'olive va avec.
 - Eau : 3 litres par jour.
