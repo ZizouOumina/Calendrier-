@@ -166,11 +166,11 @@ console.log('\n== 7) Deuxième porte : moyenne, erreurs ET un examen déjà pass
 
 console.log('\n== 8) La note du jour n\'apparaît que les jours de cours ==');
 {
-  let r = await ouvrir({}, '2026-09-17T21:00:00+02:00');   /* jeudi, premier jour du programme : cours */
+  let r = await ouvrir({}, '2026-09-18T21:00:00+02:00');   /* vendredi, premier jour du programme : cours */
   await etudes(r.fr, r.page);
   let v = await r.fr.evaluate(() => ({vis: !document.getElementById('portes-aujourdhui').hidden,
                                       n: document.querySelectorAll('#portes-note-jour [data-note-cours]').length}));
-  ok(v.vis && v.n === 4, 'jeudi 17 : la note du jour est proposée, quatre choix');
+  ok(v.vis && v.n === 4, 'vendredi 18 : la note du jour est proposée, quatre choix');
   await r.ctx.close();
 
   r = await ouvrir({}, '2026-09-20T21:00:00+02:00');       /* dimanche : pas de cours */
@@ -182,18 +182,18 @@ console.log('\n== 8) La note du jour n\'apparaît que les jours de cours ==');
 
 console.log('\n== 9) Un clic écrit la note, et elle survit au rechargement ==');
 {
-  const { ctx, page, fr } = await ouvrir({}, '2026-09-17T21:00:00+02:00');
+  const { ctx, page, fr } = await ouvrir({}, '2026-09-18T21:00:00+02:00');   /* vendredi 18, premier jour du programme */
   await etudes(fr, page);
   await fr.evaluate(() => document.querySelector('#portes-note-jour [data-note-cours="2"]').click());
   await page.waitForTimeout(200);
   const ecrit = await fr.evaluate(() => JSON.parse(localStorage.getItem('batcave-cours-suivi') || '{}'));
-  ok(ecrit['2026-09-17'] === 2, 'la note 2 est écrite pour le 17 septembre');
+  ok(ecrit['2026-09-18'] === 2, 'la note 2 est écrite pour le 18 septembre');
   const actif = await fr.evaluate(() => !!document.querySelector('#portes-note-jour [data-note-cours="2"].active'));
   ok(actif, 'et le choix reste marqué');
   await fr.evaluate(() => document.querySelector('#portes-note-jour [data-note-cours="2"]').click());
   await page.waitForTimeout(200);
   const efface = await fr.evaluate(() => JSON.parse(localStorage.getItem('batcave-cours-suivi') || '{}'));
-  ok(efface['2026-09-17'] === undefined, 'recliquer la même note l\'efface');
+  ok(efface['2026-09-18'] === undefined, 'recliquer la même note l\'efface');
   await ctx.close();
 }
 

@@ -133,14 +133,14 @@ console.log('\n== 292) L\'agenda Google : ni 🦇 Cours, ni 🦇 Temps libre =='
 
 console.log('\n== 293) Sans dates d\'examen, la Batcave le dit — et se taît dès la première saisie ==');
 {
-  /* le seuil est PROGRAMME_DEBUT + 31 jours : 17 sept. + 31 = 18 octobre */
-  const { ctx, fr } = await ouvrir('2026-10-17T09:00:00+02:00');
+  /* le seuil est PROGRAMME_DEBUT + 31 jours : 18 sept. + 31 = 19 octobre */
+  const { ctx, fr } = await ouvrir('2026-10-18T09:00:00+02:00');
   const a = await fr.evaluate(() => document.getElementById('dash-plan').innerText);
-  ok(!/Aucune date d’examen/.test(a), 'le 17 octobre, la veille du seuil, rien encore');
+  ok(!/Aucune date d’examen/.test(a), 'le 18 octobre, la veille du seuil, rien encore');
   await ctx.close();
 }
 {
-  const { ctx, fr } = await ouvrir('2026-10-18T09:00:00+02:00');
+  const { ctx, fr } = await ouvrir('2026-10-19T09:00:00+02:00');
   const v = await fr.evaluate(() => ({
     t: document.getElementById('dash-plan').innerText,
     btn: document.querySelectorAll('#dash-plan [data-ouvrir="etudes"]').length
@@ -176,18 +176,18 @@ console.log('\n== 294) Le panneau « Jours sans cours » : la saisie fait foi ==
   ok(/22 jours à venir/.test(dep.note), 'la liste de départ : « ' + dep.note + ' »');
   ok(dep.st === null, 'et elle ne coûte rien en stockage tant que rien n\'est saisi');
 
-  /* ajouter un jour : le jeudi 17 septembre */
-  await fr.evaluate(() => { document.getElementById('sc-date').value = '2026-09-17'; document.getElementById('sc-add').click(); });
+  /* ajouter un jour : le vendredi 18 septembre, premier jour du programme */
+  await fr.evaluate(() => { document.getElementById('sc-date').value = '2026-09-18'; document.getElementById('sc-add').click(); });
   await page.waitForTimeout(300);
   const ap = await fr.evaluate(() => ({
-    sans: window.__bcSansCours('2026-09-17'),
-    g: window.__bcGrille('weekday', '2026-09-17').map(b => b[0] + ' ' + b[1]),
+    sans: window.__bcSansCours('2026-09-18'),
+    g: window.__bcGrille('friday', '2026-09-18').map(b => b[0] + ' ' + b[1]),
     st: JSON.parse(localStorage.getItem('batcave-jours-sans-cours')),
     note: document.getElementById('sans-cours-note').textContent
   }));
   ok(ap.sans === true && ap.g.includes('15:00 Simulation dentaire') && ap.g.includes('21:00 Coucher'),
-     'le 17 septembre devient un jour sans cours, grille comprise');
-  ok(ap.st.ajoutes.length === 1 && ap.st.ajoutes[0] === '2026-09-17' && !ap.st.retires.length,
+     'le 18 septembre devient un jour sans cours, grille comprise');
+  ok(ap.st.ajoutes.length === 1 && ap.st.ajoutes[0] === '2026-09-18' && !ap.st.retires.length,
      'on ne garde que l\'écart à la liste de départ : ' + JSON.stringify(ap.st));
   ok(/23 jours à venir/.test(ap.note), 'le relevé suit : « ' + ap.note + ' »');
 
