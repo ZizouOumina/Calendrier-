@@ -38,7 +38,7 @@ console.log('\n== 86) La fusion de l\'historique conserve le détail par matièr
   const rep = await fr.evaluate(() => document.getElementById('rev-matieres-7').innerText.replace(/\s+/g,' '));
   ok(/Anatomía I 2 h/.test(rep) && /Bioquímica 1 h/.test(rep) && /Fisiología 1 h 30/.test(rep),
      'la répartition « Par matière » est correcte : ' + rep);
-  ok(!/Sans matière précisée/.test(rep), 'rien ne bascule en « Sans matière précisée »');
+  ok(!/Anki · toutes matières/.test(rep), 'rien ne bascule en « Anki · toutes matières »');
   await ctx.close();
 }
 

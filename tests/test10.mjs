@@ -94,7 +94,7 @@ await page.clock.fastForward('01:00:01'); await page.waitForTimeout(400);
 rev = await ls('batcave-revision');
 ok(rev[0].duree === 240 && !rev[0].matieres['Sans préciser'] && !rev[0].matieres[''], '« Sans préciser » ne crée aucune fausse matière');
 const j7 = await fr.evaluate(() => document.getElementById('rev-matieres-7').innerText);
-ok(/Sans matière précisée/.test(j7) && /1 h/.test(j7), 'part non renseignée isolée : ' + j7.replace(/\n/g,' | '));
+ok(/Anki · toutes matières/.test(j7) && /1 h/.test(j7), 'part non renseignée isolée : ' + j7.replace(/\n/g,' | '));
 await fr.evaluate(() => document.getElementById('timer-discard').click());
 await page.waitForTimeout(150);
 await fr.evaluate(() => document.getElementById('timer-pomodoro').click());

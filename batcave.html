@@ -151,6 +151,10 @@
 
   .sidebar-foot{margin-top:auto; padding:10px 10px 2px; font-family:var(--font-mono); font-size:10.5px; color:var(--ink-faint); line-height:1.6;}
   .sidebar-foot b{color:var(--ink-dim); font-weight:500;}
+  .sb-prochain{ margin-bottom:8px; line-height:1.3; }
+  .sb-prochain .k{ display:block; font-size:9px; letter-spacing:.16em; text-transform:uppercase; color:var(--cyan-dim); margin-bottom:2px; }
+  .sb-prochain b{ display:block; font-family:var(--font-display); font-weight:400; font-size:17px; letter-spacing:.04em; color:var(--cyan-bright); line-height:1.1; overflow-wrap:anywhere; }
+  .sb-prochain .q{ display:block; font-size:10.5px; color:var(--ink-dim); margin-top:2px; }
 
   /* ---------- main ---------- */
   main{padding:44px 48px 80px; max-width:960px;}
@@ -275,6 +279,9 @@
      l'historique vivent dans le repli. Le bouton « fait » est pousse en bas de chaque carte
      par margin-top:auto, donc tous les boutons d'une rangee sont sur la meme ligne. */
   #habits-grid > .card{ height:100%; }
+  /* un nom long replie le titre sur deux lignes ; les fleches et l'archivage restent a
+     droite, sur la barre de titre, au lieu de tomber dessous */
+  #habits-grid > .card > .card-top{ flex-wrap:nowrap; }
   #habits-grid > .card .card-actions{ margin-top:auto; }
   #habits-grid > .card .card-actions .btn{ width:100%; justify-content:center; }
   #habits-grid > .card .hab-repli{ margin-top:2px; }
@@ -341,12 +348,21 @@
   .goal-note{font-size:12px; color:var(--ink-faint); line-height:1.5;}
 
   /* ---------- bilan ---------- */
-  .bilan-grid{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
-  .bilan-card{background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:18px 20px;}
-  .bilan-card .blabel{font-size:13px; color:var(--ink-dim); font-weight:600; display:flex; align-items:center; gap:6px; margin-bottom:10px;}
-  .bilan-card .bvalue{font-family:var(--font-display); font-size:36px; color:var(--cyan-bright); line-height:1;}
-  .bilan-card .bvalue small{font-family:var(--font-mono); font-size:12px; color:var(--ink-faint); margin-left:5px;}
-  .bilan-card .btrend{margin-top:10px; font-size:12.5px; color:var(--ink-faint); font-family:var(--font-mono);}
+  /* Dix chiffres qui se lisent d'un coup d'oeil : des tuiles serrees (196 px de large au
+     moins, autant de colonnes que la page en offre), une mini-courbe des six dernieres
+     semaines sous chaque chiffre, et la fidelite au plan en tete, sur deux colonnes. */
+  .bilan-grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(196px, 1fr)); gap:10px;}
+  .bilan-card{background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:12px 14px 11px; display:flex; flex-direction:column; min-width:0;}
+  .bilan-card .blabel{font-size:12px; color:var(--ink-dim); font-weight:600; display:flex; align-items:center; gap:6px; margin-bottom:6px;}
+  .bilan-card .bvalue{font-family:var(--font-display); font-size:30px; color:var(--cyan-bright); line-height:1;}
+  .bilan-card .bvalue small{font-family:var(--font-mono); font-size:11px; color:var(--ink-faint); margin-left:5px;}
+  .bilan-card .btrend{margin-top:6px; font-size:11px; color:var(--ink-faint); font-family:var(--font-mono); line-height:1.4;}
+  .bilan-card .btrend b{color:var(--ink); font-weight:500;}
+  .bilan-card .bspark{margin-top:auto; padding-top:6px;}
+  .bilan-card .bspark .insight-spark{margin-top:0;}
+  .bilan-card .bspark-l{font-family:var(--font-mono); font-size:10px; color:var(--ink-faint); margin-top:2px;}
+  .bilan-card.b-fidelite .bvalue{font-size:44px;}
+  @media (min-width:781px) and (max-width:1499px){ .bilan-card.b-fidelite{grid-column:span 2;} }
 
   /* ---------- streak milestones ---------- */
   .milestone-badge{font-family:var(--font-mono); font-size:10px; color:var(--cyan-bright); background:rgba(53,212,232,0.14); border-radius:20px; padding:3px 9px; white-space:nowrap; margin-left:8px;}
@@ -504,32 +520,41 @@
     main{padding:24px 18px calc(96px + env(safe-area-inset-bottom));}
     /* minmax(0,1fr) : même piège qu'ailleurs — une colonne "1fr" ne descend pas sous la
        largeur de son contenu, ce qui faisait déborder le dashboard et le calendrier. */
-    .stat-grid, .addiction-grid, .meal-grid, .courses-grid, .goal-grid, .sport-grid, .journal-grid, .field-grid, .two-col, .bilan-grid{grid-template-columns:minmax(0,1fr);}
-    /* ---- téléphone : une habitude tient sur une carte de trois lignes ----
-       Le geste du matin, c'est cocher : le bouton occupe toute la colonne de droite et le
-       reste se lit d'un coup d'œil. Le repli (rythme, historique) ne change pas. */
-    #habits-grid{ gap:9px; }
-    #habits-grid > .card{ display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:center;
-      gap:5px 12px; padding:11px 13px 12px; }
-    /* deux lignes de titre au maximum, dans une boîte de hauteur fixe : une habitude au nom
-       long ne fait plus une carte plus haute que ses voisines. */
-    /* Le bandeau de titre porte une marge negative calee sur le rembourrage NORMAL de la
-       carte (-22 px) ; sur telephone la carte n'a plus que 13 px de rembourrage, et le
-       bandeau depassait de 9 px de chaque cote -- la page entiere partait en travers. */
-    #habits-grid > .card > .card-top{ grid-column:1 / -1; min-height:44px; max-height:44px;
-      overflow:hidden; align-items:center; margin:-11px -13px 8px; padding:9px 13px 7px; }
-    #habits-grid > .card > .card-top .ctitle{ font-size:14.5px; line-height:1.3; }
-    #habits-grid > .card > .streak-display{ grid-column:1; align-items:baseline; }
-    #habits-grid > .card > .streak-display .streak-num{ font-size:30px; }
-    #habits-grid > .card > .streak-display .streak-unit{ font-size:10.5px; letter-spacing:0.05em; }
-    /* « dimanche seulement · Record : … » passe a la ligne la ou « lundi seulement » tient :
-       la carte des photos etait 5 px plus haute que ses voisines. On reserve deux lignes
-       pour toutes, comme pour les cellules de temps du tableau de bord. */
-    #habits-grid > .card > .card-row{ grid-column:1; font-size:11px; margin:0; min-height:24px; }
-    #habits-grid > .card > .card-actions{ grid-column:2; grid-row:2 / span 2; margin:0; align-self:stretch; }
-    #habits-grid > .card > .card-actions .btn{ height:100%; min-height:54px; padding:0 15px; white-space:nowrap; }
-    #habits-grid > .card > .heat-toggle{ grid-column:1 / -1; }
+    .stat-grid, .addiction-grid, .meal-grid, .courses-grid, .goal-grid, .sport-grid, .journal-grid, .field-grid, .two-col{grid-template-columns:minmax(0,1fr);}
+    /* le bilan garde deux colonnes : dix petites tuiles, cinq rangees, un seul ecran */
+    .bilan-grid{grid-template-columns:repeat(2, minmax(0,1fr)); gap:8px;}
+    .bilan-card{padding:10px 11px 9px;}
+    .bilan-card .bvalue{font-size:26px;}
+    .bilan-card.b-fidelite .bvalue{font-size:34px;}
+    /* ---- téléphone : une habitude = UNE ligne ----
+       Le geste du matin, c'est cocher. Chaque habitude tient sur une rangée : le nom, la
+       série (« 3 j »), le bouton. Le record, les taux à 7 et 30 jours, les flèches d'ordre
+       et l'archivage attendent dans le repli « Rythme et historique », avec le rythme et
+       les 35 jours. Dix-huit habitudes tiennent ainsi sur deux écrans au lieu de six. */
+    #habits-grid{ gap:6px; }
+    #habits-grid > .card{ display:grid; grid-template-columns:minmax(0,1fr) auto auto; align-items:center;
+      gap:3px 10px; padding:8px 10px 8px 12px; }
+    #habits-grid > .card > .card-top{ grid-column:1; grid-row:1; min-height:0; margin:0; padding:0;
+      background:none; border:none; align-items:center; }
+    #habits-grid > .card > .card-top .ctitle{ font-size:14px; line-height:1.25; letter-spacing:0.04em; }
+    #habits-grid > .card > .card-top > span{ display:none !important; }
+    /* « · dimanche seulement, toutes les 4 semaines · prochaine fois le 11 oct. » : sur une
+       ligne de 130 px, ce badge faisait quatre lignes. Le bouton dit deja le jour
+       (« Marquer fait (dimanche) ») ; le detail revient quand le repli est ouvert. */
+    #habits-grid > .card > .card-top .ctitle > .sub-note{ display:none; }
+    #habits-grid > .card.ouverte > .card-top .ctitle > .sub-note{ display:inline; }
+    #habits-grid > .card > .streak-display{ grid-column:2; grid-row:1; align-items:baseline; gap:3px; white-space:nowrap; }
+    #habits-grid > .card > .streak-display .streak-num{ font-size:22px; }
+    #habits-grid > .card > .streak-display .streak-num::after{ content:' j'; font-family:var(--font-mono); font-size:10px; color:var(--ink-dim); }
+    #habits-grid > .card > .streak-display .streak-unit{ display:none; }
+    #habits-grid > .card > .card-row{ display:none; }
+    #habits-grid > .card > .card-actions{ grid-column:3; grid-row:1; margin:0; }
+    #habits-grid > .card > .card-actions .btn{ height:auto; min-height:44px; padding:0 12px; white-space:nowrap; font-size:12px; }
+    #habits-grid > .card > .heat-toggle{ grid-column:1 / -1; padding-top:3px; font-size:10.5px; }
     #habits-grid > .card > .hab-repli{ grid-column:1 / -1; }
+    /* repli ouvert : les chiffres et les commandes reviennent, au-dessus du rythme */
+    #habits-grid > .card.ouverte > .card-row{ display:flex; grid-column:1 / -1; font-size:11px; margin:0; }
+    #habits-grid > .card.ouverte > .card-top > span{ display:flex !important; }
     /* les grilles de tuiles à colonnes fixées en ligne (calendrier, études, business) débordaient
        du téléphone : sur un écran étroit, une seule colonne, quoi qu'en dise l'attribut style */
     .stat-grid[style*="grid-template-columns"]{grid-template-columns:minmax(0,1fr) !important;}
@@ -555,8 +580,7 @@
     .nav-btn.active{border-left:none; border-top-color:var(--cyan);}
     .nav-btn svg{width:18px; height:18px;}
     .sidebar-foot{padding:4px 0 0; text-align:center;}
-    .sidebar-foot > div:not(#sb-clock):not(#cloud-status){display:none;}
-    #sb-clock{font-size:15px;}
+    .sidebar-foot > div:not(#cloud-status){display:none;}
     .sidebar-foot .btn{padding:8px 2px; font-size:13px;}
     .sidebar-foot .btn-txt{display:none;}
     main{padding:32px 24px 80px;}
@@ -570,7 +594,8 @@
   @media (min-width:1500px){
     main{max-width:1180px; padding-left:64px; padding-right:64px;}
     .dash-row{grid-template-columns:repeat(4, 1fr);}
-    .bilan-grid{grid-template-columns:repeat(4, 1fr);}
+    /* cinq colonnes : dix tuiles font exactement deux rangees */
+    .bilan-grid{grid-template-columns:repeat(5, minmax(0,1fr));}
   }
   @media (min-width:1900px){
     main{max-width:1360px;}
@@ -756,7 +781,7 @@
     clip-path:polygon(var(--chamfer) 0, calc(100% - var(--chamfer)) 0, 100% var(--chamfer), 100% calc(100% - var(--chamfer)), calc(100% - var(--chamfer)) 100%, var(--chamfer) 100%, 0 calc(100% - var(--chamfer)), 0 var(--chamfer));
   }
   .stat-tile{ --chamfer:8px; }
-  .sport-card.today, .panel.mon-central, .cal-day.actif{ background:linear-gradient(160deg, var(--cyan), var(--cyan-dim) 45%, var(--cyan-dim) 55%, var(--cyan)); }
+  .sport-card.today, .panel.mon-central, .cal-day.actif, .bilan-card.b-fidelite{ background:linear-gradient(160deg, var(--cyan), var(--cyan-dim) 45%, var(--cyan-dim) 55%, var(--cyan)); }
   /* les en-têtes de repas/sport sont déjà des barres : on leur donne la voix Bebas */
   .meal-head, .sport-head{ background:linear-gradient(180deg, var(--surface-raised), var(--surface)); }
   .meal-head .mtitle, .sport-head .stitle{ font-family:var(--font-display); font-weight:400; font-size:17px; letter-spacing:0.12em; color:var(--cyan); }
@@ -775,6 +800,7 @@
   }
   .card > .card-top:first-child .ctitle{ font-family:var(--font-display); font-weight:400; font-size:18px; letter-spacing:0.1em; color:var(--cyan); }
   .goal-card > .goal-top:first-child .gtitle, .bilan-card .blabel{ font-family:var(--font-display); font-weight:400; font-size:17px; letter-spacing:0.1em; color:var(--cyan); }
+  .bilan-card .blabel{ font-size:14px; letter-spacing:0.08em; }
   .cat-card h4{ color:var(--cyan); }
 
   /* ---- angles droits partout : touches, champs, jauges ---- */
@@ -854,7 +880,25 @@
   .bc-actions{ margin-left:auto; display:inline-flex; gap:6px; align-items:center; }
   .bc-actions .btn{ padding:6px 10px; font-size:11.5px; }
   @media (max-width:1180px){ .bc-clock{ font-size:22px; } .bc-bar{ gap:12px; } }
-  @media (max-width:780px){ .bc-actions{ margin-left:0; } .bc-name{ font-size:20px; } }
+  @media (max-width:780px){
+    /* telephone : l'en-tete tient en deux lignes -- la marque et l'horloge, puis la date
+       et les deux boutons -- pour que le bloc en cours et son Pomodoro soient visibles
+       sans defiler. Le sous-titre « QG · GOTHAM-ALICANTE » et l'animation du logo partent. */
+    .bc-bar{ padding:7px 11px 6px; gap:4px; margin-bottom:10px; }
+    .bc-row{ gap:8px 12px; row-gap:3px; }
+    .bc-row-1 > .bc-brand{ margin-right:auto; }
+    .bc-clock{ font-size:20px; }
+    .bc-name{ font-size:19px; }
+    .bc-name small{ display:none; }
+    .bc-brand svg{ width:24px; height:17px; animation:none; }
+    .bc-row-2{ padding-top:4px; gap:5px 10px; }
+    .bc-bar{ font-size:11px; }
+    /* « DATE » devant la salutation : le mot en trop qui faisait passer les boutons a la
+       ligne suivante */
+    .bc-row-1 > .bc-r:not(.bc-alerte) > .k{ display:none; }
+    .bc-actions{ margin-left:0; }
+    .bc-actions .btn, .bc-bar .mode-essentiel-toggle{ padding:5px 9px; font-size:11px; min-height:34px; }
+  }
   .mon-id{ color:var(--ink-dim); font-weight:500; letter-spacing:0.14em; }
   .region-title{ font-family:var(--font-mono); font-size:10px; letter-spacing:0.2em; text-transform:uppercase; color:var(--cyan-dim); margin-bottom:8px; display:flex; gap:10px; align-items:baseline; }
   .region-title .r{ margin-left:auto; text-transform:none; letter-spacing:0.04em; color:var(--ink-faint); }
@@ -898,14 +942,18 @@
        descend à 150 px et ses trois lectures se lisent à côté, en une bande courte. Les
        ~90 px rendus vont au Plan du jour, qui commence plus haut et prend la colonne large.
        Le bloc en cours, lui, vit dans #dash-focus, tout en tête. */
-    .panel.mon-central{ display:grid; grid-template-columns:150px minmax(0,1fr); column-gap:22px; align-items:center; padding-top:14px; padding-bottom:14px; }
+    .panel.mon-central{ display:grid; grid-template-columns:118px minmax(0,1fr); column-gap:20px; align-items:center; padding-top:10px; padding-bottom:10px; }
     .panel.mon-central > .sub-head:first-child{ grid-column:1 / -1; }
-    .panel.mon-central > .reactor{ grid-column:1; grid-row:2; align-self:center; max-width:150px; margin:0; }
+    /* l'anneau descend a 118 px et s'aligne sur les deux rangees de droite : les trois
+       lectures, puis la note du score -- qui n'etait affichee nulle part a cette taille. */
+    .panel.mon-central > .reactor{ grid-column:1; grid-row:2 / span 2; align-self:center; max-width:118px; margin:0; }
     .panel.mon-central > .reactor-legend{ grid-column:2; grid-row:2; justify-content:flex-start;
-      flex-direction:column; align-items:flex-start; gap:7px; margin:0; font-size:12px; }
-    .core-center{ padding:0 12%; }
-    .core-center .streak-num{ font-size:40px; }
-    /* la barre de titre du panneau dit déjà « Score du jour » : dans un anneau de 150 px,
+      flex-direction:column; align-items:flex-start; gap:4px; margin:0; font-size:11.5px; }
+    .panel.mon-central > .reactor-note{ display:block; grid-column:2; grid-row:3; margin:4px 0 0; font-size:11px; line-height:1.4; color:var(--ink-faint); }
+    .core-center{ padding:0 10%; }
+    .core-center .streak-num{ font-size:34px; }
+    .core-center .streak-unit{ font-size:15px; }
+    /* la barre de titre du panneau dit déjà « Score du jour » : dans un anneau de 118 px,
        le rappel écrase le chiffre */
     .core-center .lbl{ display:none; }
     .core-center .sub-note{ display:none; }
@@ -1184,26 +1232,32 @@
   .focus-now > .prochain-bloc{ flex:1 1 320px; border-top:none; padding:0; margin:0; }
   .focus-now .prochain-bloc .what{ font-size:21px; }
   .focus-now .prochain-bloc .row{ margin-top:4px; }
-  /* la consigne tient en deux lignes : au-delà, c'est le bloc lui-même qu'on lit */
-  .focus-now .pb-consigne{ margin-top:5px; display:-webkit-box; -webkit-line-clamp:2;
-    -webkit-box-orient:vertical; overflow:hidden; }
+  /* la consigne se lit EN ENTIER : c'est elle qui dit quoi faire pendant l'heure. Coupee a
+     deux lignes, la fin (« 15-25 cartes… », « puis correction ») etait justement ce qu'on
+     venait chercher. 74ch de large au plus, pour rester lisible. */
+  .focus-now .pb-consigne{ margin-top:6px; max-width:74ch; }
   .focus-now .prochain-bloc .bar2{ margin-top:7px; }
   .focus-now .focus-vide{ flex:1 1 340px; display:flex; flex-direction:column; gap:4px; }
   .focus-now .focus-vide .fv-t{ font-family:var(--font-display); font-size:20px; letter-spacing:0.05em; color:var(--ink-dim); }
   .focus-now .focus-vide .fv-s{ font-size:12.5px; color:var(--ink-faint); line-height:1.5; max-width:60ch; }
-  /* flex:1 1 300px et min-width:0 : la rangée peut rétrécir SOUS sa largeur naturelle,
-     donc ses boutons passent à la ligne au lieu de pousser la page (iPad portrait, iPhone). */
-  .focus-now > .bc-boutons{ display:flex; gap:9px; align-items:center; flex-wrap:wrap;
-    flex:1 1 300px; min-width:0; margin:0; justify-content:flex-end; }
-  .focus-now > .bc-boutons .btn{ min-width:0; }
-  .focus-now .dial-serie{ margin:0; }
-  .focus-now .btn.pomo-suggere{ box-shadow:0 0 0 1px var(--cyan-bright), 0 0 14px var(--cyan-glow); }
-  .focus-now .btn.pomo-second{ opacity:.55; }
+  /* UN bouton pour l'heure en cours. Les trois Pomodoros etaient trois boutons de meme
+     taille empiles a droite : celui du bloc affiche prend maintenant toute la largeur de
+     la colonne, les deux autres deviennent deux petits boutons alignes dessous. Ils
+     restent cliquables (jour off, bloc deplace, envie) ; ils ne rivalisent plus avec le bon.
+     flex:0 1 300px et min-width:0 : la colonne peut retrecir SOUS sa largeur naturelle
+     (iPad portrait, iPhone) au lieu de pousser la page. */
+  .focus-now > .bc-boutons{ display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:7px 8px;
+    align-content:center; flex:0 1 300px; min-width:0; margin:0; }
+  .focus-now > .bc-boutons .btn{ min-width:0; justify-content:center; text-align:center; white-space:normal; line-height:1.25; }
+  .focus-now .dial-serie{ margin:0; grid-column:1 / -1; }
+  .focus-now .btn.pomo-suggere{ grid-column:1 / -1; order:-1; padding:13px 16px 12px; font-size:15px;
+    box-shadow:0 0 0 1px var(--cyan-bright), 0 0 16px var(--cyan-glow); }
+  .focus-now .btn.pomo-second{ padding:6px 8px 5px; font-size:11.5px; opacity:.7; border-bottom-width:2px; }
   .focus-now .btn.pomo-second:hover{ opacity:1; }
   @media (max-width:780px){
     .focus-now{ padding:12px 13px; gap:12px; }
-    .focus-now > .bc-boutons{ width:100%; }
-    .focus-now > .bc-boutons .btn{ flex:1 1 46%; justify-content:center; }
+    .focus-now > .bc-boutons{ width:100%; flex-basis:100%; }
+    .focus-now .btn.pomo-suggere{ min-height:50px; }
     .focus-now .prochain-bloc .what{ font-size:21px; }
   }
 
@@ -1226,12 +1280,25 @@
   .timeline .t-auto{ font-family:var(--font-mono); font-size:9.5px; color:var(--cyan-dim); border:1px solid var(--border); padding:1px 6px; flex:none; }
   /* ---------- iPad portrait : écran central plus compact (après le thème, pour l'emporter) ---------- */
   @media (min-width:781px) and (max-width:1023px){
-    .panel.mon-central{ grid-template-columns:230px minmax(0,1fr); column-gap:16px; }
-    .panel.mon-central > .reactor{ max-width:230px; }
-    .core-center .streak-num{ font-size:52px; }
+    .panel.mon-central{ grid-template-columns:170px minmax(0,1fr); column-gap:16px; }
+    .panel.mon-central > .reactor{ max-width:170px; }
+    .core-center .streak-num{ font-size:44px; }
+    .core-center .streak-unit{ font-size:18px; }
     .core-center .lbl{ font-size:9px; letter-spacing:0.18em; }
     .core-center .sub-note{ display:none; }
+    /* la colonne des Pomodoros passe sous le bloc : elle prend la largeur d'un bouton
+       confortable, pas celle d'un timbre */
+    .focus-now > .bc-boutons{ flex:1 1 100%; max-width:380px; }
   }
+  /* « 1/179 » (le rang du jour, avant la premiere saisie) est deux fois plus large qu'un
+     « 42 % » : quand l'unite est une fraction, le chiffre et sa fraction descendent d'un
+     cran pour tenir dans l'anneau, a chaque taille d'anneau. La classe est posee par
+     renderDashboard en meme temps que le texte. */
+  .core-center.rang .streak-num{ font-size:66px; }
+  .core-center.rang .streak-unit{ font-size:24px; }
+  @media (min-width:781px) and (max-width:1499px){ .core-center.rang .streak-num{ font-size:28px; } .core-center.rang .streak-unit{ font-size:12px; } }
+  @media (min-width:781px) and (max-width:1023px){ .core-center.rang .streak-num{ font-size:34px; } .core-center.rang .streak-unit{ font-size:14px; } }
+  @media (max-width:780px){ .core-center.rang .streak-num{ font-size:26px; } .core-center.rang .streak-unit{ font-size:11px; } }
   /* ---------- téléphone : mode essentiel ---------- */
   .mode-essentiel-toggle{ display:none; }
   @media (max-width:780px){
@@ -1306,17 +1373,29 @@
   /* les widgets natifs suivent color-scheme : sans cette ligne, les cases a cocher et les
      listes deroulantes restaient noires sur la page claire (regle globale plus haut) */
   :root[data-theme="jour"] input, :root[data-theme="jour"] select, :root[data-theme="jour"] textarea{ color-scheme:light; }
-  /* le bezel des écrans : un liseré net plutôt qu'un halo */
+  /* le bezel des écrans : de jour, des cadres calmes -- coins arrondis, un filet uni, plus
+     de coins coupés ni de dégradé métallique. La nuit garde ses écrans biseautés. */
   :root[data-theme="jour"] .panel, :root[data-theme="jour"] .card, :root[data-theme="jour"] .meal-card,
   :root[data-theme="jour"] .sport-card, :root[data-theme="jour"] .goal-card, :root[data-theme="jour"] .bilan-card,
   :root[data-theme="jour"] .cat-card, :root[data-theme="jour"] .stat-tile, :root[data-theme="jour"] .overlay-panel{
-    background:linear-gradient(160deg, rgba(11,124,146,0.55), var(--border) 38%, var(--border) 62%, rgba(11,124,146,0.35));
+    clip-path:none; border-radius:10px; background:var(--border);
   }
   :root[data-theme="jour"] .panel::before, :root[data-theme="jour"] .card::before, :root[data-theme="jour"] .meal-card::before,
   :root[data-theme="jour"] .sport-card::before, :root[data-theme="jour"] .goal-card::before, :root[data-theme="jour"] .bilan-card::before,
   :root[data-theme="jour"] .cat-card::before, :root[data-theme="jour"] .stat-tile::before, :root[data-theme="jour"] .overlay-panel::before{
-    box-shadow:none;
+    clip-path:none; border-radius:9px; box-shadow:none;
   }
+  :root[data-theme="jour"] .stat-tile{ border-radius:8px; }
+  :root[data-theme="jour"] .stat-tile::before{ border-radius:7px; }
+  /* les barres de titre suivent les coins arrondis ; les en-têtes de repas et de séance
+     perdent leur dégradé */
+  :root[data-theme="jour"] .panel > h3:first-child, :root[data-theme="jour"] .panel > .sub-head:first-child,
+  :root[data-theme="jour"] .card > .card-top:first-child{ background:var(--surface-raised); border-radius:9px 9px 0 0; }
+  :root[data-theme="jour"] .meal-head, :root[data-theme="jour"] .sport-head{ background:var(--surface-raised); }
+  :root[data-theme="jour"] .bc-bar, :root[data-theme="jour"] .focus-now{ border-radius:10px; }
+  /* touches et champs : des angles doux, la nuit garde ses angles droits */
+  :root[data-theme="jour"] .btn, :root[data-theme="jour"] .chip, :root[data-theme="jour"] input,
+  :root[data-theme="jour"] select, :root[data-theme="jour"] textarea{ border-radius:7px; }
   /* couleurs écrites en dur pour le fond sombre : elles deviennent illisibles sur blanc */
   :root[data-theme="jour"] .nav-btn.active{ background:var(--surface-hover); }
   :root[data-theme="jour"] .btn-primary{ color:#ffffff; border-bottom-color:#0a6478; }
@@ -1331,7 +1410,7 @@
   /* la carte de séance du jour et l'écran central gardent leur bezel cyan : sur blanc,
      un dégradé plein cyan écrase le contenu -- on le calme */
   :root[data-theme="jour"] .sport-card.today, :root[data-theme="jour"] .panel.mon-central,
-  :root[data-theme="jour"] .cal-day.actif{
+  :root[data-theme="jour"] .cal-day.actif, :root[data-theme="jour"] .bilan-card.b-fidelite{
     background:linear-gradient(160deg, var(--cyan), var(--cyan-dim) 45%, var(--cyan-dim) 55%, var(--cyan));
   }
   /* les halos : discrets sur fond clair, sinon tout bave */
@@ -1473,7 +1552,9 @@
     </nav>
 
     <div class="sidebar-foot">
-      <div id="sb-clock" style="font-family:var(--font-display); font-size:20px; letter-spacing:.03em; color:var(--cyan-bright); margin-bottom:6px;">--:--</div>
+      <!-- L'horloge est deja dans la barre du Batcomputer : ici, le prochain bloc, la seule
+           chose qu'on cherche du coin de l'oeil en travaillant sur un autre onglet. -->
+      <div id="sb-prochain" class="sb-prochain" hidden><span class="k" id="sb-prochain-k">Prochain bloc</span><b id="sb-prochain-quoi"></b><span class="q" id="sb-prochain-quand"></span></div>
       <div><b>Ravitaillement :</b> samedi</div>
       <div><b>Fuseau :</b> Alicante</div>
       <div id="cloud-status" hidden style="margin-top:4px;"></div>
@@ -1508,10 +1589,13 @@
           <button class="btn mode-essentiel-toggle" id="mode-essentiel-toggle" type="button" aria-pressed="false" title="Sur téléphone : ne garder que la barre, le bloc en cours et les habitudes">Essentiel</button>
         </div>
         <div class="bc-row bc-row-2">
-          <span class="bc-r"><span class="k">MÉTÉO</span><span class="v" id="dash-weather">🌡️ météo…</span></span>
+          <!-- Les releves vides (meteo indisponible, rien en lecture, aucune sauvegarde) ne
+               s'affichent pas : un relevé qui ne dit rien n'a pas sa place dans la barre.
+               Leur ligne est cachee au depart et s'allume des qu'elle a quelque chose a dire. -->
+          <span class="bc-r" id="bc-meteo" hidden><span class="k">MÉTÉO</span><span class="v" id="dash-weather">🌡️ météo…</span></span>
           <span class="bc-r" id="bc-sync"><span class="k">SYNC</span><span class="v" style="color:var(--ink-faint);">local</span></span>
-          <span class="bc-r bc-clic" id="bc-spotify" role="button" tabindex="0" title="Lecture Spotify — clic : actualiser tout de suite (sinon toutes les 30 s)"><span class="k">♫</span><span class="v" id="dash-spotify" hidden></span><span class="v bc-spotify-off" style="color:var(--ink-faint);">rien en lecture</span></span>
-          <span class="bc-r"><span class="k">SAUVEGARDE</span><span class="v" id="bc-backup">—</span></span>
+          <span class="bc-r bc-clic" id="bc-spotify" role="button" tabindex="0" hidden title="Lecture Spotify — clic : actualiser tout de suite (sinon toutes les 30 s)"><span class="k">♫</span><span class="v" id="dash-spotify" hidden></span><span class="v bc-spotify-off" style="color:var(--ink-faint);">rien en lecture</span></span>
+          <span class="bc-r" id="bc-sauvegarde" hidden><span class="k">SAUVEGARDE</span><span class="v" id="bc-backup">—</span></span>
           <span class="bc-r bc-clic" id="bc-cloture" role="button" tabindex="0" title="Clôture du jour : sommeil, poids, eau, humeur, habitudes, une note — 60 secondes"><span class="k">CLÔTURE</span><span class="v">—</span></span>
           <span class="bc-r bc-clic" id="bc-objectif" role="button" tabindex="0" title="L'objectif du mois le plus en retard — clic : Objectifs"><span class="k">OBJECTIF</span><span class="v">—</span></span>
           <span class="bc-r bc-clic" id="bc-grille" role="button" tabindex="0" title="La grille en vigueur aujourd'hui — clic : Calendrier"><span class="k">GRILLE</span><span class="v">—</span></span>
@@ -3655,13 +3739,16 @@
   /* Forme REELLE observee (4 et 5 sept. 2026) : { currently_playing_entity: { name, creator,
      creators:[{name}], playback:{status}, entity_type } }. Le connecteur ne renvoie l'entite
      que s'il y a une lecture active ; son absence vaut « rien ne joue ». */
+  /* Un releve de la barre qui n'a rien a dire disparait (meteo, lecture, sauvegarde). */
+  function montrerReleve(id, visible){ var l = document.getElementById(id); if(l) l.hidden = !visible; }
   function majSpotify(p){
     var el = document.getElementById('dash-spotify');
     if(!el) return;
     var ent = p && p.currently_playing_entity;
-    if(!ent || !ent.name){ el.hidden = true; return; }
+    if(!ent || !ent.name){ el.hidden = true; montrerReleve('bc-spotify', false); return; }
     var artists = (ent.creators || []).map(function(a){ return a && a.name; }).filter(Boolean).join(', ') || ent.creator || '';
     el.hidden = false;
+    montrerReleve('bc-spotify', true);
     el.textContent = '🎵 ' + ent.name + (artists ? ' — ' + artists : '');
   }
   var spotifyEnCours = false;
@@ -3699,14 +3786,16 @@
         var el = document.getElementById('dash-weather');
         if(!el) return;
         if(ev.type === 'error'){
-          if(ev.error.code === 'needs_reauth') el.textContent = '🌡️ Météo : reconnecte AccuWeather dans Réglages → Connecteurs.';
-          else if(ev.error.code === 'server_not_connected') el.textContent = '🌡️ Météo : ajoute AccuWeather dans Réglages → Connecteurs.';
-          else el.textContent = '🌡️ Météo indisponible pour le moment.';
+          /* une consigne (reconnecter, ajouter) merite la ligne ; « indisponible » non */
+          if(ev.error.code === 'needs_reauth'){ el.textContent = '🌡️ Météo : reconnecte AccuWeather dans Réglages → Connecteurs.'; montrerReleve('bc-meteo', true); }
+          else if(ev.error.code === 'server_not_connected'){ el.textContent = '🌡️ Météo : ajoute AccuWeather dans Réglages → Connecteurs.'; montrerReleve('bc-meteo', true); }
+          else { el.textContent = '🌡️ Météo indisponible pour le moment.'; montrerReleve('bc-meteo', false); }
           return;
         }
         var p = ev.result.payload;
         var cc = p && p.currentConditions;
-        if(!cc){ el.textContent = '🌡️ Météo indisponible.'; return; }
+        if(!cc){ el.textContent = '🌡️ Météo indisponible.'; montrerReleve('bc-meteo', false); return; }
+        montrerReleve('bc-meteo', true);
         var temp = cc.temperatureValue !== undefined ? Math.round(cc.temperatureValue) : null;
         var uv = cc.extended && cc.extended.uv && cc.extended.uv.value !== undefined ? cc.extended.uv.value : null;
         var loc = p.location && p.location.localizedName ? p.location.localizedName : '';
@@ -4031,7 +4120,7 @@
   /* ================= CLOCK ================= */
   function tickClock(){
     var t = new Date().toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'});
-    ['sb-clock', 'bc-clock'].forEach(function(id){ var el = document.getElementById(id); if(el) el.textContent = t; });
+    ['bc-clock'].forEach(function(id){ var el = document.getElementById(id); if(el) el.textContent = t; });
     /* la page reste ouverte toute la soiree : la cloture doit se proposer d'elle-meme */
     try{ if(typeof journalState !== 'undefined' && journalState){ majReleveCloture(); verifierCloture(); } }catch(e){}
   }
@@ -4078,12 +4167,14 @@
       if(temp === null && uv === null){
         el.textContent = 'indisponible ici';
         el.title = 'La météo fonctionne depuis le fichier .html téléchargé (ou via le connecteur AccuWeather dans la Batcave publiée).';
+        montrerReleve('bc-meteo', false);
         return;
       }
       var parts = [];
       if(temp !== null) parts.push('🌡️ ' + temp + '°C');
       if(uv !== null) parts.push('☀️ UV ' + uv);
       el.textContent = parts.join(' · ');
+      montrerReleve('bc-meteo', true);
     });
   }
   function refreshWeather(){
@@ -5163,7 +5254,7 @@
       .map(function(b){
         return {id:b.id, debut:new Date(b.debut), fin:new Date(b.fin || (b.debut + b.duree*60000)),
                 min:Number(b.duree), type:b.type || 'cours', suivi: typeSuiviSession(b),
-                label:b.label || 'Sans matière précisée'};
+                label:b.label || SANS_MATIERE};
       })
       .sort(function(a,b){ return a.debut - b.debut; });
   }
@@ -5434,7 +5525,9 @@
     x.setDate(x.getDate() - ((x.getDay() + 6) % 7));
     return x;
   }
-  var SANS_MATIERE = 'Sans matière précisée';
+  /* La part sans matiere, c'est Anki : le lanceur ne demande pas de matiere sur les blocs
+     Anki (tout le paquet Dentaire y passe), et c'est de la que viennent ces minutes. */
+  var SANS_MATIERE = 'Anki · toutes matières';
   function matieresSemaine(decalage){
     var debut = lundiDe(now);
     debut.setDate(debut.getDate() + decalage*7);
@@ -6296,7 +6389,7 @@
         var badgeJour = joursCible === null && !nCycle ? '' :
           ' <span class="sub-note" style="font-size:10px; color:var(--warn);">· '
           + libelleJours + (duJour || nCycle > 1 ? '' : ' seulement') + suiteCycle + '</span>';
-        return '<div class="card">'+
+        return '<div class="card'+(openHeatmaps['h-'+hb.id] ? ' ouverte' : '')+'">'+
           '<div class="card-top"><div class="ctitle"><span class="cicon" style="background:'+(done?'var(--good)':'var(--ink-faint)')+'; box-shadow:0 0 8px '+(done?'var(--good)':'transparent')+';"></span>'+habitLabel(hb)+badgeJour+'</div>'+
             '<span style="display:flex; gap:2px; flex:none;">'+
               '<button class="edel" data-moveup="'+hb.id+'" aria-label="Monter" '+(i===0?'disabled style="opacity:.3;"':'')+'>▲</button>'+
@@ -6467,7 +6560,7 @@
        orange, a la place de « puis … » -- la barre du haut reste sur une ligne */
     var sans = null; try{ sans = blocSansPomodoro(); }catch(e){}
     var vide = document.getElementById('dash-focus-vide');
-    if(!courant && !suivant){ box.hidden = true; if(vide) vide.hidden = false; return; }
+    if(!courant && !suivant){ box.hidden = true; if(vide) vide.hidden = false; majRailProchain(null, null, null); return; }
     box.hidden = false;
     if(vide) vide.hidden = true;
     var hm = function(m){ return String(Math.floor(m/60)).padStart(2,'0') + ':' + String(m%60).padStart(2,'0'); };
@@ -6492,6 +6585,17 @@
       dans.textContent = 'dans ' + (suivant.deb - nowMin) + ' min';
     }
     souligerPomodoro(bloc0.label);
+    majRailProchain(courant, suivant, hm);
+  }
+  /* Le pied du rail : le prochain bloc (ou, s'il n'y en a plus, celui en cours et sa fin),
+     lisible depuis n'importe quel onglet. */
+  function majRailProchain(courant, suivant, hm){
+    var el = document.getElementById('sb-prochain'); if(!el) return;
+    var k = document.getElementById('sb-prochain-k'), q = document.getElementById('sb-prochain-quoi'), w = document.getElementById('sb-prochain-quand');
+    if((!courant && !suivant) || !k || !q || !w){ el.hidden = true; return; }
+    el.hidden = false;
+    if(suivant){ k.textContent = 'Prochain bloc'; q.textContent = suivant.label; w.textContent = hm(suivant.deb) + ' → ' + hm(suivant.fin); }
+    else { k.textContent = 'En cours'; q.textContent = courant.label; w.textContent = 'jusqu’à ' + hm(courant.fin); }
   }
   /* Trois boutons Pomodoro, un seul est le bon a cette heure : celui du bloc affiche est
      mis en avant, les deux autres passent en second plan. Ils restent cliquables -- un
@@ -10304,7 +10408,8 @@
     if(!el) return;
     var auto = load('batcave-last-auto-backup', null), manuelle = load('batcave-last-manual-backup', null);
     var iso = [auto, manuelle].filter(function(x){ return typeof x === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(x); }).sort().pop() || null;
-    if(!iso){ el.textContent = 'aucune'; el.title = 'Aucune sauvegarde Drive enregistrée depuis cet appareil (Batcave publiée : automatique à l\'ouverture).'; return; }
+    if(!iso){ el.textContent = 'aucune'; el.title = 'Aucune sauvegarde Drive enregistrée depuis cet appareil (Batcave publiée : automatique à l\'ouverture).'; montrerReleve('bc-sauvegarde', false); return; }
+    montrerReleve('bc-sauvegarde', true);
     var j = daysBetween(new Date(iso + 'T00:00:00'), new Date(todayISO + 'T00:00:00'));
     el.textContent = (iso === manuelle && manuelle >= (auto || '') ? 'manuelle' : 'auto') + ' · ' + (j === 0 ? 'aujourd\'hui' : (j === 1 ? 'hier' : 'il y a ' + j + ' j'));
     el.title = 'Dernière sauvegarde Drive : ' + fmtDate(iso);
@@ -10473,7 +10578,7 @@
     return '<svg class="insight-spark" viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + escapeHtml(legende) + '">' +
            '<path class="sp-area" d="' + area + '"/>' + cible + '<polyline class="sp-line" points="' + pts.join(' ') + '"/>' +
            '<circle class="sp-end" cx="' + x(v.length - 1).toFixed(1) + '" cy="' + y(v[v.length - 1]).toFixed(1) + '" r="2.6"/></svg>' +
-           '<div class="insight-spark-l">' + escapeHtml(legende) + '</div>';
+           (serie.sansLegende ? '' : '<div class="insight-spark-l">' + escapeHtml(legende) + '</div>');
   }
 
   /* 1. Bloc le plus fragile ------------------------------------------------------------ */
@@ -11166,15 +11271,18 @@
     var dayScore = dayScoreFor(todayISO);
     var scoreLabel = dayScore>=85 ? 'Excellent 🔥' : dayScore>=60 ? 'Bien 👍' : dayScore>=35 ? 'Moyen' : 'À reprendre';
     var numEl = document.getElementById('dash-score-num'), uniEl = document.getElementById('dash-score-unit');
+    var coreEl = numEl.closest ? numEl.closest('.core-center') : null;
     var jourN = jourProgramme(todayISO), totalN = joursProgramme(), noteScore;
     if(jourEntame(todayISO) || jourN < 1 || jourN > totalN){
       numEl.textContent = dayScore;
       if(uniEl) uniEl.textContent = '%';
+      if(coreEl) coreEl.classList.remove('rang');
       noteScore = scoreLabel + ' · habitudes, nutrition, sport, eau et sommeil combinés';
     } else {
       /* Rien de saisi aujourd'hui : on annonce le rang du jour, pas une note. */
       numEl.textContent = jourN;
       if(uniEl) uniEl.textContent = '/' + totalN;
+      if(coreEl) coreEl.classList.add('rang');
       noteScore = (jourN === 1 ? 'Premier jour du programme.' : 'Jour ' + jourN + ' sur ' + totalN + '.') +
         ' Le score s’allume à la première case cochée.';
     }
@@ -11371,17 +11479,21 @@
     renderScoreChart();
     var cur = weekStats(weekRange(0));
     var prev = weekStats(weekRange(-1));
+    /* six semaines pour la mini-courbe de chaque tuile : les quatre d'avant, puis la
+       semaine derniere et celle-ci, deja calculees */
+    var six = [-5, -4, -3, -2].map(function(o){ return weekStats(weekRange(o)); }).concat([prev, cur]);
+    /* la fidelite au plan en tete : c'est la seule mesure qui resume les neuf autres */
     var rows = [
-      {icon:'📚', label:'Révision', cur:cur.revH, prev:prev.revH, unit:'h', higher:true},
-      {icon:'💻', label:'Projets perso', cur:cur.projHorsEs, prev:prev.projHorsEs, unit:'h', higher:true},
-      {icon:'🇪🇸', label:'Espagnol', cur:cur.esH, prev:prev.esH, unit:'h', higher:true},
-      {icon:'💶', label:'Dépenses variables', cur:cur.dep, prev:prev.dep, unit:'€', higher:false},
-      {icon:'✅', label:'Habitudes tenues', cur:cur.habitPct, prev:prev.habitPct, unit:'%', higher:true},
-      {icon:'😴', label:'Sommeil / nuit', cur:cur.sleepH, prev:prev.sleepH, unit:'h', higher:true},
-      {icon:'💧', label:'Eau / jour', cur:cur.waterL, prev:prev.waterL, unit:'L', higher:true},
-      {icon:'🍽️', label:'Nutrition / jour', cur:cur.kcalPct, prev:prev.kcalPct, unit:'%', higher:true},
-      {icon:'🏋️', label:'Séances tenues', cur:cur.sportPct, prev:prev.sportPct, unit:'%', higher:true},
-      {icon:'🎯', label:'Fidélité au plan', cur:cur.fidelite, prev:prev.fidelite, unit:'%', higher:true}
+      {icon:'🎯', label:'Fidélité au plan', cle:'fidelite', cur:cur.fidelite, prev:prev.fidelite, unit:'%', higher:true, fid:true},
+      {icon:'📚', label:'Révision', cle:'revH', cur:cur.revH, prev:prev.revH, unit:'h', higher:true},
+      {icon:'💻', label:'Projets perso', cle:'projHorsEs', cur:cur.projHorsEs, prev:prev.projHorsEs, unit:'h', higher:true},
+      {icon:'🇪🇸', label:'Espagnol', cle:'esH', cur:cur.esH, prev:prev.esH, unit:'h', higher:true},
+      {icon:'💶', label:'Dépenses variables', cle:'dep', cur:cur.dep, prev:prev.dep, unit:'€', higher:false},
+      {icon:'✅', label:'Habitudes tenues', cle:'habitPct', cur:cur.habitPct, prev:prev.habitPct, unit:'%', higher:true},
+      {icon:'😴', label:'Sommeil / nuit', cle:'sleepH', cur:cur.sleepH, prev:prev.sleepH, unit:'h', higher:true},
+      {icon:'💧', label:'Eau / jour', cle:'waterL', cur:cur.waterL, prev:prev.waterL, unit:'L', higher:true},
+      {icon:'🍽️', label:'Nutrition / jour', cle:'kcalPct', cur:cur.kcalPct, prev:prev.kcalPct, unit:'%', higher:true},
+      {icon:'🏋️', label:'Séances tenues', cle:'sportPct', cur:cur.sportPct, prev:prev.sportPct, unit:'%', higher:true}
     ];
     renderPrevuRealise(cur);
     grid.innerHTML = rows.map(function(r){
@@ -11395,10 +11507,15 @@
       var fmt = function(v){ return heures ? fmtHeures(v) : (r.unit==='€' || r.unit==='%' ? v.toFixed(0) : v.toFixed(1).replace('.', ',')); };
       var u = heures ? '' : r.unit;
       var diffTxt = (heures ? (diff >= 0 ? '+' : '') + fmtHeures(Math.abs(diff)) : (diff>=0?'+':'') + fmt(diff)) + u;
-      return '<div class="bilan-card">'+
+      var courbe = '';
+      try{ courbe = sparkSvg({v: six.map(function(s){ return Number(s[r.cle]) || 0; }), label:'6 semaines', sansLegende:true}); }catch(e){}
+      var detail = r.fid && cur.planMin ? '<div class="btrend"><b>' + fmtDuree(cur.faitMin) + '</b> faites sur ' + fmtDuree(cur.planMin) + ' prévues, jours passés</div>' : '';
+      return '<div class="bilan-card' + (r.fid ? ' b-fidelite' : '') + '">'+
         '<div class="blabel">'+r.icon+' '+r.label+'</div>'+
         '<div class="bvalue">'+fmt(r.cur)+(u ? '<small>'+u+'</small>' : '')+'</div>'+
+        detail +
         '<div class="btrend">Semaine dernière : '+fmt(r.prev)+u+' · <span style="color:'+color+'">'+arrow+' '+diffTxt+'</span></div>'+
+        (courbe ? '<div class="bspark">' + courbe + '<div class="bspark-l">6 dernières semaines</div></div>' : '') +
         '</div>';
     }).join('');
   }
@@ -11657,17 +11774,21 @@
     (SEMESTRES || []).forEach(function(x){ if(x.debut <= iso) dernier = x; });
     return dernier ? dernier.grilles : null;
   }
-  /* Les jours ouvres OU IL N'Y A PAS COURS : feries nationaux et de la Communaute de Madrid
-     qui tombent en semaine, ponts de la fac, Semana Santa (Paques le 28 mars 2027), Noel et
-     Reyes. Cette liste est un PREMIER JET -- elle vient du calendrier officiel des feries,
-     pas du portail de la fac, et le portail ajoute des ponts que personne ne peut deviner.
+  /* Les jours ouvres OU IL N'Y A PAS COURS : feries nationaux et de la Comunitat Valenciana
+     qui tombent en semaine, Semana Santa (Paques le 28 mars 2027), Noel et Reyes. Le premier
+     semestre a ete VERIFIE le 16 septembre 2026 contre l'emploi du temps du portail (les
+     cours du groupe T11 dans l'agenda Google) : les jours ouvres sans aucun cours sont
+     exactement le 9 et le 12 octobre, le 8 decembre et du 23 decembre au 6 janvier. Le lundi
+     7 decembre a cours (Documentacion, 17:30) : le 6 tombe un dimanche et la Comunitat ne le
+     reporte pas au lundi -- ce « pont » ne figure que dans les calendriers d'entreprise.
+     Le second semestre reste un premier jet tire du calendrier officiel des feries.
      Le panneau « Jours sans cours » de l'onglet Calendrier ajoute et retire des dates : la
      saisie fait foi, jamais cette liste.
      L'entre-deux des semestres (20, 21 et 22 janvier) et tout ce qui suit le 4 juin n'y sont
      PAS : ils se deduisent des dates de semestre, une date qui change au meme endroit. */
   var JOURS_SANS_COURS_LISTE = [
     '2026-10-09','2026-10-12',
-    '2026-12-07','2026-12-08',
+    '2026-12-08',
     '2026-12-23','2026-12-24','2026-12-25','2026-12-28','2026-12-29','2026-12-30','2026-12-31',
     '2027-01-01','2027-01-04','2027-01-05','2027-01-06',
     '2027-03-25','2027-03-26','2027-03-29','2027-03-30','2027-03-31','2027-04-01','2027-04-02','2027-04-05'
@@ -11814,7 +11935,7 @@
     'Español · conversación real': "Une heure avec des Espagnols : intercambio, compañeros, voisins, mosquée, parc. En espagnol uniquement, jamais d'anglais ni de français. Le bloc qui fait le plus avancer.",
     'Español · DELE': "Question ouverte longue : 300 mots en 30 min sur un tema vu, sans dictionnaire, corrigés avec « examen » (contenu, puis langue). Le DELE attend le printemps.",
     'Español · annales': "Une question d'annale en espagnol, chronométrée, corrigée en deux temps : contenu, puis langue avec les codes d'erreur.",
-    'Español · simulación': "Deux questions d'annales en espagnol en 55 min sans dictionnaire, puis « examen » avec Claude : contenu, puis langue.",
+    'Español · simulación': "Deux réponses de type examen en espagnol, sur deux temas vus cette semaine, 55 min sans dictionnaire, puis « examen » avec Claude : le contenu d'abord, la langue ensuite.",
     'Español · simulación de examen': "Deux réponses de type examen en 55 min sans dictionnaire (« Describe la estructura de la membrana celular », « Explica las funciones de la saliva »).",
     'Español · corrección y oral': "Cinq minutes d'oral enregistrées sur l'une des deux réponses, puis correction des trois productions par « examen », erreurs classées par code.",
     'Español · balance de errores': "Toutes les erreurs de la semaine en cartes ; erreurs pour 100 mots comparées au diagnostic de mardi.",
@@ -13614,7 +13735,7 @@
         return '<li><span>' + escapeHtml(x.nom) + '</span><b>' + fmtDuree(x.min) + ' · ' + pct + '%</b></li>';
       });
       if(r.sansNom > 0){
-        lignes.push('<li><span style="color:var(--ink-faint);">Sans matière précisée</span><b>' +
+        lignes.push('<li><span style="color:var(--ink-faint);" title="Les blocs Anki tournent sans matière : tout le paquet Dentaire y passe.">' + SANS_MATIERE + '</span><b>' +
                     fmtDuree(r.sansNom) + '</b></li>');
       }
       el.innerHTML = lignes.join('');

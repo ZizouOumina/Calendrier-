@@ -116,7 +116,7 @@ console.log('\n== 63) Heures par matière : les semaines antérieures au journal
   ok(!/Aucune révision/.test(t.txt), 'la semaine agrégée n\'est plus déclarée vide');
   ok(/Anatomía I/.test(t.txt) && /3 h 30/.test(t.txt), 'Anatomía I : 120 + 90 = 3 h 30 — ' + t.txt.slice(0,90));
   ok(/Bioquímica/.test(t.txt) && /1 h/.test(t.txt), 'Bioquímica : 1 h');
-  ok(/Sans matière précisée/.test(t.txt), 'le reliquat non attribué apparaît honnêtement');
+  ok(/Anki · toutes matières/.test(t.txt), 'le reliquat non attribué apparaît honnêtement');
   ok(/5 h 30 au total sur 3 matières/.test(t.txt), 'total hebdo cohérent (180 + 150 = 5 h 30) : ' + t.txt.slice(-120));
   await ctx.close();
 }

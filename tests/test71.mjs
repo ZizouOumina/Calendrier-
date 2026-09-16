@@ -109,7 +109,9 @@ console.log('\n== 283) Les cartes d\'habitudes ont la même hauteur, et tiennent
     return { hauteurs: [...new Set(cs.map(c => Math.round(c.getBoundingClientRect().height)))], n: cs.length,
              boutonADroite: (() => { const c = cs[0]; const b = c.querySelector('.card-actions').getBoundingClientRect(), s = c.querySelector('.streak-display').getBoundingClientRect(); return b.left > s.right; })() };
   });
-  ok(h.hauteurs.length === 1 && h.hauteurs[0] < 170, 'sur téléphone, toutes les cartes font la même hauteur compacte (' + h.hauteurs.join(',') + ' px)');
+  /* lot 39 : une habitude = une ligne (nom, série, bouton) ; un nom long fait deux lignes,
+     donc les hauteurs varient un peu -- mais aucune carte ne dépasse 110 px (165 avant) */
+  ok(h.hauteurs.every(x => x <= 110) && Math.min(...h.hauteurs) >= 44, 'sur téléphone, chaque habitude tient sur une ligne compacte, 110 px au plus (' + h.hauteurs.join(',') + ' px)');
   ok(h.boutonADroite, 'le bouton « fait » occupe la colonne de droite, à côté de la série');
   await tel.ctx.close();
 }

@@ -20,7 +20,7 @@ Jalons : diagnostic le lundi 14 sept. (13:00, bloc escribir) ; première simulat
 | Vendredi 05:30 | Español · escribir largo | 300 mots chronométrés : « corrige ». |
 | Vendredi et samedi | Español · tutor | Avec un tuteur humain. Si je n'en ai pas ce jour-là : « conversa » puis « cartas ». |
 | Samedi 18:00 | Español · DELE | Une tâche d'expression écrite ou orale DELE B2 : « examen » en mode DELE. |
-| Dimanche 11:20 | Español · simulación | Deux questions d'annales en 55 min : « examen ». |
+| Dimanche 11:20 | Español · simulación | Deux réponses de type examen en 55 min : « examen ». |
 | Dimanche 13:30 | Español · balance de la semana | Les chiffres de la semaine : « balance ». |
 
 Phase 2 : le bloc de 13:00 devient « annales » (une question d'annale en espagnol, chronométrée, corrigée contenu puis langue). Phase 3 : un seul bloc à 13:00, thème du jour (lundi grammaire C1, mardi écrit long, mercredi lecture, jeudi tuteur, vendredi écoute et dictée, samedi DELE C1, dimanche bilan).
