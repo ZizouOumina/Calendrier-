@@ -2798,7 +2798,8 @@
     <p class="sub-note" id="cloture-date" style="margin-bottom:10px;"></p>
     <!-- Deux longueurs pour le meme geste : l'express ne demande que ce qui change les
          chiffres du lendemain (sommeil, eau, humeur, habitudes) ; la complete ajoute le
-         poids, le Coran, les complements et la note. Le dimanche force la complete :
+         poids, le Coran et la note ; les complements (creatine, magnesium) sont dans les
+         deux, parce qu'ils se prennent tous les jours. Le dimanche force la complete :
          la revue de la semaine ne se saute pas. -->
     <div class="cl-modes" id="cl-modes">
       <button type="button" class="chip" data-cl-mode="court">⚡ Express · 20 s</button>
@@ -2822,7 +2823,7 @@
       <div class="field-row"><label for="cl-ak-dus">🃏 Dentaire · cartes à revoir</label><input type="text" id="cl-ak-dus" inputmode="numeric" placeholder="ex : 180"></div>
       <div class="field-row"><label for="cl-ak-revues">🃏 Cartes révisées aujourd'hui</label><input type="text" id="cl-ak-revues" inputmode="numeric" placeholder="ex : 240"></div>
     </div>
-    <div class="field-row" style="margin-bottom:12px;" data-cl-plus><label>Compléments pris</label><div class="chip-group" id="cl-complements"></div></div>
+    <div class="field-row" style="margin-bottom:12px;"><label>Compléments pris</label><div class="chip-group" id="cl-complements"></div></div>
     <div class="field-row" style="margin-bottom:12px;"><label>Habitudes pas encore cochées <span class="sub-note">(touche pour cocher)</span></label><div class="chip-group" id="cl-habitudes"></div></div>
     <p class="sub-note" id="cl-pomodoro" style="margin:-6px 0 12px;"></p>
     <!-- A4 : le temps qu'il fera au parc demain 5 h 30, dit ce soir. Masqué les jours où le
@@ -3169,7 +3170,7 @@
      place dans le quota de 5000 documents et embrouille les sauvegardes, sans que rien ne
      la lise jamais. On la signale ; la suppression reste ton geste. */
   var CLES_CONNUES = ['addictions','budget-limits','business','coran','courses','dash-more','duaas','duree-bloc','sport-log','objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','courses-plan-v3','kcal-ajustement','gcal-ecriture','reinit','fc-migration-v1','charge','shopify-boutique','journees','examens-heures','vacances','jours-exclus',
-    'espagnol','examens','cours-suivi','portes','fc-prix-icloud-3','fixed-charges','goals','goals-depart','saisons','insights-hist','last-restore-drill','habitlog','habits','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','habits-seed-v7','objectifs-v5-espanol',
+    'espagnol','examens','cours-suivi','portes','fc-prix-icloud-3','fixed-charges','goals','goals-depart','saisons','insights-hist','last-restore-drill','habitlog','habits','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','habits-seed-v7','habits-seed-v8','objectifs-v5-espanol',
     'horizon','last-auto-backup','last-manual-backup','last-bilan-prompt','last-compaction','last-open','last-rotation','notion-url',
     'pomodial-purge','projets','report','revision','revision-fusionnee','revue','sante','sauvegarde','sessions',
     'shopify-last-order-count','taches','timer','transactions','undo-stack','undo-toast','cloud-reload-at','cloud-toast','notion-cache','anki',
@@ -3590,6 +3591,10 @@
      Rafraîchissement périodique (30-120s selon le widget), pas un push
      instantané — c'est la limite technique du polling côté connecteur. */
   var mcpHandle = null;
+  /* Etat de la LECTURE de Google Agenda (vue semaine) : attente, ok, erreur, absent.
+     Affiche a cote de « Vue de la semaine » -- avant, une lecture en echec ne disait rien,
+     et la vue restait sur le planning type sans qu'on sache si l'agenda etait lu. */
+  var gcalLecture = {etat:'attente', code:null, quand:null, n:0};
   /* ===== A4 · La pluie de 5 h 30, dite la veille =====
      Forme REELLE observee le 13 septembre 2026 sur widgets-hourly-claude (Alicante,
      locationKey 310681, metric, fr) : { hourlyForecast: [ { date:'2026-09-13T05:00:00+02:00',
@@ -3681,7 +3686,7 @@
   (function(){
     if(!(window.claude && typeof window.claude.use === 'function')) return;
     window.claude.use('mcp').then(function(mcp){
-      if(!mcp) return;
+      if(!mcp){ gcalLecture = {etat:'absent', code:null, quand:new Date(), n:0}; try{ rafraichirAgendas(); }catch(e){} return; }
       mcpHandle = mcp;
       var driveRow = document.getElementById('drive-backup-row');
       if(driveRow) driveRow.hidden = false;
@@ -3868,12 +3873,18 @@
         var monday = new Date(n); monday.setDate(n.getDate() + (dow===0 ? -6 : 1-dow));
         var sunday = new Date(monday); sunday.setDate(monday.getDate()+7);
         function iso(d){ return localISO(d); }
-        mcp.watchTool('Google Calendar', 'list_events', {calendarId:'zizou.oumina@gmail.com', startTime: iso(monday)+'T00:00:00+02:00', endTime: iso(sunday)+'T00:00:00+02:00', timeZone:'Europe/Madrid', orderBy:'startTime',
+        mcp.watchTool('Google Calendar', 'list_events', {calendarId:'zizou.oumina@gmail.com', startTime: iso(monday)+'T00:00:00'+decalageMadrid(iso(monday)), endTime: iso(sunday)+'T00:00:00'+decalageMadrid(iso(sunday)), timeZone:'Europe/Madrid', orderBy:'startTime',
                                                     /* ~19 evenements par jour x 7 = plus que les 100 par defaut :
                                                        sans pageSize, le dimanche manquait a la vue semaine. */
                                                     pageSize: 250}, function(ev){
           if(ev.type === 'error'){
-            if(ev.error.code === 'needs_reauth' || ev.error.code === 'server_not_connected'){ gcalWeekEvents = null; rafraichirAgendas(); }
+            var code = (ev.error && ev.error.code) || 'inconnue';
+            /* Avant, seules deux erreurs etaient traitees et les autres passaient en silence.
+               Toute erreur est maintenant affichee ; les evenements deja lus sont gardes,
+               sauf si le connecteur lui-meme a disparu. */
+            gcalLecture = {etat:'erreur', code: code, quand: new Date(), n: gcalLecture.n};
+            if(code === 'needs_reauth' || code === 'server_not_connected') gcalWeekEvents = null;
+            rafraichirAgendas();
             return;
           }
           var p = ev.result.payload;
@@ -3893,6 +3904,7 @@
             byDay[dkey].push([hhmm(d), e.summary || '—', en ? hhmm(new Date(en)) : null]);
           });
           gcalWeekEvents = byDay;
+          gcalLecture = {etat:'ok', code:null, quand:new Date(), n: events.length};
           rafraichirAgendas();
         }, {refetchInterval: 90000});
       })();
@@ -4164,7 +4176,7 @@
      ni synchronisee ni rattrapee) et efface ses copies locales AVANT le rattrapage, sinon
      elles repartiraient vers le cloud. La meme remise a zero peut donc etre decidee depuis
      l'appli ou directement dans le cloud. */
-  var REINIT_GARDER = ['habits','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','habits-seed-v7','objectifs-v5-espanol','fixed-charges','fc-prix-icloud-3','budget-limits','examens','examens-heures','journees','vacances','jours-exclus','jours-sans-cours','portes','notion-url','shopify-boutique',
+  var REINIT_GARDER = ['habits','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','habits-seed-v7','habits-seed-v8','objectifs-v5-espanol','fixed-charges','fc-prix-icloud-3','budget-limits','examens','examens-heures','journees','vacances','jours-exclus','jours-sans-cours','portes','notion-url','shopify-boutique',
                        'objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','courses-plan-v3','horizon','goals-depart','saisons','gcal-ecriture','duree-bloc','dash-more','revision-fusionnee','reinit','copie-vierge'];
   var REINIT_PREFIXES_GARDER = ['pomodial-', 'coherence-ignore-'];
   function reinitGarder(cle){
@@ -5347,19 +5359,27 @@
        cases se contredisaient (0,0 h annoncé au-dessus d'une grille pleine d'heures,
        ou l'inverse selon que la journée venait du journal ou de l'agrégat).
        Le compteur de blocs, lui, reste bien le journal. */
-    var parType = {cours:0, projet:0};
+    var parType = {cours:0, projet:0, es:0};
     var nbJours = new Date(mDate.getFullYear(), mDate.getMonth() + 1, 0).getDate();
     for(var j=1; j<=nbJours; j++){
       var isoJ = localISO(new Date(mDate.getFullYear(), mDate.getMonth(), j));
       parType.cours += minutesJour(isoJ, 'cours');
       parType.projet += minutesJour(isoJ, 'projet');
+      parType.es += minutesEspanol(isoJ);
     }
     function tuile(label, min){
       return '<div class="stat-tile"><div class="tlabel">' + label + '</div><div class="tnum" style="font-size:30px;">' +
              fmtDuree(min) + '</div></div>';
     }
+    /* L'espagnol est du temps de projet pour le minuteur, mais pas pour l'oeil : en phase 1,
+       24 h d'espagnol par semaine s'affichaient « Projets perso » alors qu'aucun projet
+       n'existe avant le 19 octobre. Une tuile a lui, et la tuile Projets ne reste que s'il
+       y a des projets (ou rien du tout, pour ne pas laisser un mois vide sans repere). */
+    var projSeuls = Math.max(0, parType.projet - parType.es);
     el.innerHTML = tuile('Total du mois', parType.cours + parType.projet) +
-                   tuile('🔵 Révision', parType.cours) + tuile('🟠 Projets perso', parType.projet) +
+                   tuile('🔵 Révision', parType.cours) +
+                   (parType.es ? tuile('🇪🇸 Espagnol', parType.es) : '') +
+                   (projSeuls || !parType.es ? tuile('🟠 Projets perso', projSeuls) : '') +
                    '<div class="stat-tile"><div class="tlabel">Blocs</div><div class="tnum" style="font-size:30px;">' + duMois.length + '</div></div>';
   }
 
@@ -5707,6 +5727,17 @@
   var HABIT_SEED_V7 = [
     {id:'core-ongles', label:'Ongles \u2014 mains ; pieds les dimanches de photo', icon:'\u2702\ufe0f', jours:[0], cycleSemaines:2, ancre:'2026-09-13'}
   ];
+  /* Le lot du 16 septembre : les COMPLEMENTS. Creatine et magnesium n'etaient que des puces
+     du journal, visibles dans la cloture COMPLETE seulement -- la cloture express, celle
+     qu'on fait vraiment le soir, les cachait, et le Plan du jour n'en parlait jamais : rien
+     ne les rappelait, rien ne les comptait. Ce sont des habitudes quotidiennes comme les
+     autres : elles se cochent dans la liste du jour, comptent dans le score, et la cloture
+     les propose en puces dans les DEUX longueurs (voir COMPLEMENT_HABIT). La creatine ne
+     marche que prise tous les jours : c'est exactement ce qu'une habitude sait rappeler. */
+  var HABIT_SEED_V8 = [
+    {id:'core-creatine', label:'Cr\u00e9atine \u2014 5 g', icon:'\ud83e\udd44'},
+    {id:'core-magnesium', label:'Magn\u00e9sium \u2014 le soir', icon:'\ud83d\udc8a'}
+  ];
   /* Retirees a la demande. Ce n'est pas un simple retrait du semis : l'habitude est deja
      dans le stockage de l'utilisateur, elle survit a la remise a zero (« habits » est garde),
      et un autre appareil encore sur l'ancienne version la renverrait par la synchro. On la
@@ -5725,7 +5756,8 @@
     {cle: 'batcave-habits-seed-v4', graines: HABIT_SEED_V4},
     {cle: 'batcave-habits-seed-v5', graines: HABIT_SEED_V5},
     {cle: 'batcave-habits-seed-v6', graines: HABIT_SEED_V6},
-    {cle: 'batcave-habits-seed-v7', graines: HABIT_SEED_V7}
+    {cle: 'batcave-habits-seed-v7', graines: HABIT_SEED_V7},
+    {cle: 'batcave-habits-seed-v8', graines: HABIT_SEED_V8}
   ];
   var habitsState = load('batcave-habits', null);
   if(habitsState !== null && !Array.isArray(habitsState)) habitsState = null;
@@ -5754,7 +5786,7 @@
     return ajoutees || retirees;
   }
   if(habitsState === null){
-    habitsState = HABIT_SEED.concat(HABIT_SEED_V2, HABIT_SEED_V3, HABIT_SEED_V4, HABIT_SEED_V5, HABIT_SEED_V6, HABIT_SEED_V7);
+    habitsState = HABIT_SEED.concat(HABIT_SEED_V2, HABIT_SEED_V3, HABIT_SEED_V4, HABIT_SEED_V5, HABIT_SEED_V6, HABIT_SEED_V7, HABIT_SEED_V8);
     save('batcave-habits', habitsState);
     HABIT_GENERATIONS.forEach(function(g){ save(g.cle, true); });
   } else {
@@ -7771,6 +7803,26 @@
   function seanceReferenceDue(){ return todayISO === PROGRAMME_DEBUT; }
   /* ================= JOURNAL ================= */
   var COMPLEMENTS = ['Créatine','Magnésium'];
+  /* Les puces « Compléments pris » et les habitudes créatine / magnésium disent le MÊME fait :
+     une puce active coche l'habitude du jour, une habitude cochée allume la puce. Deux
+     écritures, un seul état -- sinon la clôture et le Plan du jour se contredisaient. */
+  var COMPLEMENT_HABIT = {'Cr\u00e9atine':'core-creatine', 'Magn\u00e9sium':'core-magnesium'};
+  function estHabitudeComplement(id){ for(var c in COMPLEMENT_HABIT) if(COMPLEMENT_HABIT[c] === id) return true; return false; }
+  function synchroniserComplements(liste){
+    COMPLEMENTS.forEach(function(c){
+      var id = COMPLEMENT_HABIT[c]; if(!id) return;
+      var voulu = liste.indexOf(c) > -1;
+      if(voulu !== habitDoneToday(id)) toggleHabit(id);
+    });
+  }
+  function complementsAvecHabitudes(liste){
+    var out = Array.isArray(liste) ? liste.slice() : [];
+    COMPLEMENTS.forEach(function(c){
+      var id = COMPLEMENT_HABIT[c];
+      if(id && habitDoneToday(id) && out.indexOf(c) < 0) out.push(c);
+    });
+    return out;
+  }
   var journalKey = 'batcave-journal-' + todayISO;
   var journalState = load(journalKey, {
     coran:'', duaa:'', complements:[],
@@ -7810,6 +7862,7 @@
     document.getElementById('jr-water-glasses').innerHTML = glassesHtml;
 
     var compEl = document.getElementById('journal-complements');
+    journalState.complements = complementsAvecHabitudes(journalState.complements);
     compEl.innerHTML = COMPLEMENTS.map(function(c){
       var active = journalState.complements.indexOf(c) > -1;
       return '<button type="button" class="chip'+(active?' active':'')+'" data-comp="'+c+'">'+c+'</button>';
@@ -7819,6 +7872,7 @@
         var c = chip.dataset.comp, idx = journalState.complements.indexOf(c);
         if(idx > -1) journalState.complements.splice(idx,1); else journalState.complements.push(c);
         save(journalKey, journalState);
+        synchroniserComplements(journalState.complements);
         renderJournal();
       });
     });
@@ -11360,7 +11414,10 @@
       var c = cibleJourMinutes(cleJournee(dowDe(d)), d), plan = c.rev + c.proj + (c.es || 0);
       var fait = d <= todayISO ? minutesOn(d) + minutesOnProj(d) : null;
       maxMin = Math.max(maxMin, plan, fait || 0);
-      return {d: d, plan: plan, fait: fait, rev: d <= todayISO ? minutesOn(d) : 0, proj: d <= todayISO ? minutesOnProj(d) : 0, cRev: c.rev, cProj: c.proj + (c.es || 0)};
+      /* trois compteurs, pas deux : en phase Español, tous les blocs « Projets perso » sont de
+         l'espagnol, et les compter comme projets affichait « Projets 0 / 24 h » -- un retard
+         fictif sur des projets qui n'existent pas avant le 19 octobre */
+      return {d: d, plan: plan, fait: fait, rev: d <= todayISO ? minutesOn(d) : 0, proj: d <= todayISO ? minutesOnProjSeuls(d) : 0, es: d <= todayISO ? minutesEspanol(d) : 0, cRev: c.rev, cProj: c.proj, cEs: c.es || 0};
     });
     el.innerHTML = lignes.map(function(l){
       var futur = l.fait === null, pct = Math.round(100 * l.plan / maxMin), pctF = futur ? 0 : Math.round(100 * l.fait / maxMin);
@@ -11375,8 +11432,16 @@
         '</div>';
     }).join('') +
     '<p class="sub-note" style="margin-top:10px; padding-top:10px; border-top:1px solid var(--border-soft); line-height:1.6;">Barre grise : prévu par le planning · barre cyan : réalisé (vert = tenu, orange = moins de 70 %). ' +
-      'Révision <b style="color:var(--ink);">' + hh(lignes.reduce(function(a,l){ return a + l.rev; }, 0)) + ' / ' + hh(lignes.filter(function(l){ return l.fait !== null; }).reduce(function(a,l){ return a + l.cRev; }, 0)) + '</b> · ' +
-      'Projets <b style="color:var(--ink);">' + hh(lignes.reduce(function(a,l){ return a + l.proj; }, 0)) + ' / ' + hh(lignes.filter(function(l){ return l.fait !== null; }).reduce(function(a,l){ return a + l.cProj; }, 0)) + '</b> sur les jours passés.</p>';
+      (function(){
+        var passes = lignes.filter(function(l){ return l.fait !== null; });
+        var somme = function(champ){ return passes.reduce(function(a,l){ return a + l[champ]; }, 0); };
+        var ligne = function(nom, fait, prevu){ return nom + ' <b style="color:var(--ink);">' + hh(fait) + ' / ' + hh(prevu) + '</b>'; };
+        var parts = [ligne('Révision', somme('rev'), somme('cRev'))];
+        if(somme('es') || somme('cEs')) parts.push(ligne('Espagnol', somme('es'), somme('cEs')));
+        /* les projets n'apparaissent que s'il y en a : en phase 1, aucun n'est prévu */
+        if(somme('proj') || somme('cProj')) parts.push(ligne('Projets', somme('proj'), somme('cProj')));
+        return parts.join(' · ') + ' sur les jours passés.</p>';
+      })();
     if(note) note.textContent = texteChargeReduite() + (cur.planMin ? 'fidélité ' + cur.fidelite + ' % · ' + hh(cur.faitMin) + ' faites sur ' + hh(cur.planMin) + ' prévues' : 'aucun bloc prévu pour l\'instant');
   }
 
@@ -12975,7 +13040,18 @@
     }).join('');
     document.getElementById('week-cal').innerHTML = html;
     var srcLabel = document.getElementById('week-cal-source');
-    if(srcLabel){ var pS = periodeGrille(todayISO); srcLabel.textContent = (pS ? pS.nom : 'planning type') + (live ? ' + 📅 Google Agenda' : ''); }
+    if(srcLabel){ var pS = periodeGrille(todayISO); srcLabel.textContent = (pS ? pS.nom : 'planning type') + (live ? ' + 📅 Google Agenda' : '') + etatLectureGcal(); }
+  }
+  /* Ce que la vue semaine dit de l'agenda Google : lu a telle heure, en erreur, ou en attente.
+     Rien du tout hors de la version publiee -- sans connecteur, ce n'est pas une panne. */
+  function etatLectureGcal(){
+    if(!(window.claude && typeof window.claude.use === 'function')) return '';
+    var l = gcalLecture || {etat:'attente'};
+    var h = function(d){ return d ? new Date(d).toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'}) : ''; };
+    if(l.etat === 'ok') return ' · lu à ' + h(l.quand) + ' (' + l.n + ' événement' + (l.n > 1 ? 's' : '') + ')';
+    if(l.etat === 'erreur') return ' · ⚠️ Google Agenda non lu (' + l.code + ')' + (l.quand ? ' à ' + h(l.quand) : '') + ' — vérifie le connecteur dans Réglages → Connecteurs';
+    if(l.etat === 'absent') return ' · ⚠️ connecteurs indisponibles : Google Agenda non lu';
+    return ' · 📅 Google Agenda : connexion…';
   }
   setInterval(renderCalendar, 60000);
   setInterval(renderPlanDuJour, 60000);
@@ -14665,9 +14741,10 @@
     clHumeur = journalState.mood; renderClHumeur();
     document.getElementById('cl-coran').value = journalState.coran || '';
     document.getElementById('cl-duaa').value = journalState.duaa || '';
-    clComplements = Array.isArray(journalState.complements) ? journalState.complements.slice() : [];
+    clComplements = complementsAvecHabitudes(journalState.complements);
     renderClComplements();
-    var restantes = habitsDuJour(weekday).filter(function(h){ return !habitDoneToday(h.id); });
+    /* créatine et magnésium sont déjà là, en puces, juste au-dessus */
+    var restantes = habitsDuJour(weekday).filter(function(h){ return !habitDoneToday(h.id) && !estHabitudeComplement(h.id); });
     var hab = document.getElementById('cl-habitudes');
     hab.innerHTML = restantes.length
       ? restantes.map(function(h){ return '<button type="button" class="chip" data-cl-hab="' + escapeHtml(h.id) + '">' + habitLabel(h) + '</button>'; }).join('')
@@ -14733,6 +14810,7 @@
     save(journalKey, journalState);
     var cochees = [].slice.call(document.querySelectorAll('#cl-habitudes [data-cl-hab].active')).map(function(b){ return b.dataset.clHab; });
     cochees.forEach(function(id){ if(!habitDoneToday(id)) toggleHabit(id); });
+    synchroniserComplements(clComplements);
     /* Clôturer la journée, C'EST faire la revue de la veille et le plan du lendemain :
        l'habitude se coche d'elle-même au lieu d'être réclamée une seconde fois. */
     /* les deux chiffres d'Anki du soir : une saisie vaut lecture */
