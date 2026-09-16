@@ -101,7 +101,9 @@ console.log('\n== 36) Agir en haut, consulter replié ==');
   // (#dash-focus, ~150 px). 1680 → 1600 (lot 23) : le réacteur descend à 150 px et ses trois
   // lectures se lisent à côté, ce qui rend les pixels empruntés. La zone « agir » est donc
   // revenue à ce qu'elle était avant le bandeau, bandeau compris.
-  ok(e.basAgir < 1600, 'la zone « agir » tient en environ un écran et demi (' + e.basAgir + 'px)');
+  // 1600 → 1650 (lot 37) : créatine et magnésium deviennent deux habitudes quotidiennes,
+  // donc deux cases de plus dans la check-list du jour (~40 px).
+  ok(e.basAgir < 1650, 'la zone « agir » tient en environ un écran et demi (' + e.basAgir + 'px)');
   // les panneaux repliés restent alimentés
   const caches = await fr.evaluate(() => document.getElementById('dash-more').innerText.length);
   ok(caches > 50, 'le contenu replié est déjà rendu (' + caches + ' caractères), pas vide');
