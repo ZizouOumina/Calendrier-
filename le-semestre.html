@@ -1,0 +1,919 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Le semestre</title>
+<meta name="description" content="Le premier semestre d'odontologie à Alicante sur une seule page : règles, emploi du temps, chaque matière et ses dates, la journée type et ses recettes, les phases, et une carte par semaine.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=IBM+Plex+Mono:wght@400;600&display=swap">
+<style>
+:root{
+  --ground:#EBEEEF; --card:#F7F9F9; --ink:#0E2A33; --ink-dim:#4A6670; --rule:#CBD5D8;
+  --amber:#B4700F; --amber-soft:#F2E3CB; --red:#A3352F; --red-soft:#F3DBD8;
+  --green:#2C6650; --green-soft:#D9E7E0; --blue:#2A5A78; --blue-soft:#DCE7EE; --violet:#5B4E9C; --violet-soft:#E3E0F2;
+  --shadow:0 1px 2px rgba(14,42,51,.07), 0 6px 18px rgba(14,42,51,.05);
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --ground:#0B1A20; --card:#12262E; --ink:#E4EDEF; --ink-dim:#93AEB7; --rule:#26414B;
+  --amber:#E0A758; --amber-soft:#3A2D18; --red:#E4867E; --red-soft:#3A201E;
+  --green:#7FC2A4; --green-soft:#16332A; --blue:#8FC0DC; --blue-soft:#13303F; --violet:#B4A6E8; --violet-soft:#26213D;
+  --shadow:0 1px 2px rgba(0,0,0,.35), 0 8px 22px rgba(0,0,0,.28);
+}}
+:root[data-theme="dark"]{
+  --ground:#0B1A20; --card:#12262E; --ink:#E4EDEF; --ink-dim:#93AEB7; --rule:#26414B;
+  --amber:#E0A758; --amber-soft:#3A2D18; --red:#E4867E; --red-soft:#3A201E;
+  --green:#7FC2A4; --green-soft:#16332A; --blue:#8FC0DC; --blue-soft:#13303F; --violet:#B4A6E8; --violet-soft:#26213D;
+  --shadow:0 1px 2px rgba(0,0,0,.35), 0 8px 22px rgba(0,0,0,.28);
+}
+*{box-sizing:border-box}
+body{background:var(--ground); color:var(--ink); margin:0;
+  font-family:"Source Serif 4",Georgia,serif; font-size:16.5px; line-height:1.62;}
+.wrap{max-width:900px; margin:0 auto; padding:0 16px; padding-block:40px 72px;}
+h1,h2,h3,h4,.ui{font-family:Archivo,"Helvetica Neue",Arial,sans-serif;}
+h1{font-size:clamp(2.1rem,7vw,3.4rem); font-weight:800; letter-spacing:-.025em;
+   line-height:1.02; margin:.1em 0 .2em; text-wrap:balance;}
+h2{font-size:clamp(1.25rem,3.6vw,1.6rem); font-weight:700; letter-spacing:-.012em;
+   margin:2.8em 0 .7em; text-wrap:balance; padding-bottom:.35em; border-bottom:2px solid var(--ink);}
+h3{font-size:1.05rem; font-weight:700; margin:1.7em 0 .4em; letter-spacing:-.004em; text-wrap:balance}
+h4{font-size:.92rem; font-weight:700; margin:1.2em 0 .3em; color:var(--ink-dim); letter-spacing:.02em; text-transform:uppercase; font-size:.76rem}
+p{margin:0 0 1em} ul,ol{margin:0 0 1em; padding-left:1.15em} li{margin:.3em 0}
+strong{font-weight:600}
+.eyebrow{font-family:"IBM Plex Mono",monospace; font-size:.7rem; font-weight:600;
+  letter-spacing:.16em; text-transform:uppercase; color:var(--ink-dim);}
+.lede{font-size:1.14rem; color:var(--ink-dim); max-width:60ch; margin-bottom:1.6em}
+.toc{font-family:Archivo,sans-serif; font-size:.9rem; columns:3; column-gap:28px; margin:1.2em 0 2em; padding:0; list-style:none}
+.toc li{break-inside:avoid; margin:.2em 0}
+.toc a{color:var(--blue); text-decoration:none}
+.toc a:hover{text-decoration:underline}
+@media (max-width:760px){ .toc{columns:2} }
+@media (max-width:480px){ .toc{columns:1} }
+
+.verdict{background:var(--card); border-left:5px solid var(--amber); border-radius:0 6px 6px 0;
+  padding:22px 24px; box-shadow:var(--shadow); margin:1.6em 0 2.2em;}
+.verdict p:last-child,.verdict ol:last-child{margin-bottom:0}
+.verdict ol{padding-left:1.3em}
+.verdict li{margin:.5em 0}
+
+.kill{background:var(--red-soft); border:1px solid var(--red); border-radius:7px;
+  padding:6px 20px 14px; margin:1.3em 0}
+.kill h3{color:var(--red); margin-top:.8em}
+.kill ul,.kill p{margin-bottom:.3em}
+
+.scroll{overflow-x:auto; margin:1.1em 0; -webkit-overflow-scrolling:touch}
+table{border-collapse:collapse; width:100%; min-width:540px; font-size:.9rem;
+  font-family:Archivo,sans-serif;}
+th,td{text-align:left; padding:8px 12px 8px 0; border-bottom:1px solid var(--rule); vertical-align:top}
+th{font-size:.7rem; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-dim); font-weight:700}
+td.d{font-family:"IBM Plex Mono",monospace; font-size:.8rem; white-space:nowrap; color:var(--ink-dim)}
+td.w{font-family:"IBM Plex Mono",monospace; font-size:.85rem; text-align:right;
+  font-variant-numeric:tabular-nums; white-space:nowrap}
+tr.hi td{background:var(--amber-soft)}
+tr.anki td{background:var(--green-soft); font-weight:600}
+tr.es td{color:var(--ink-dim)}
+table.wide{min-width:820px; font-size:.84rem}
+table.wide td{padding:7px 10px 7px 0}
+table.day{min-width:420px}
+table.day td:first-child{width:56px}
+table.day td:nth-child(2){width:34%}
+.ev{color:var(--amber); font-weight:700}
+.ev2{color:var(--red); font-weight:700}
+.mono{font-family:"IBM Plex Mono",monospace; font-size:.82rem}
+
+.load{display:flex; flex-direction:column; gap:3px; margin:1.2em 0 .6em}
+.row{display:grid; grid-template-columns:76px 1fr 52px; align-items:center; gap:10px}
+.row .wk{font-family:"IBM Plex Mono",monospace; font-size:.76rem; color:var(--ink-dim);
+  font-variant-numeric:tabular-nums; white-space:nowrap}
+.row .val{font-family:"IBM Plex Mono",monospace; font-size:.78rem; text-align:right;
+  font-variant-numeric:tabular-nums; color:var(--ink-dim)}
+.bar{height:22px; background:var(--blue-soft); border-radius:3px; overflow:hidden}
+.bar i{display:block; height:100%; background:var(--blue); border-radius:3px}
+.row.peak .bar i{background:var(--amber)}
+.row.peak .val{color:var(--amber); font-weight:600}
+.caption{font-size:.85rem; color:var(--ink-dim); margin-top:.4em}
+
+.phase{background:var(--card); border-radius:8px; padding:20px 22px; box-shadow:var(--shadow); margin:1em 0}
+.phase .tag{display:inline-block; font-family:"IBM Plex Mono",monospace; font-size:.68rem;
+  letter-spacing:.12em; text-transform:uppercase; padding:3px 9px; border-radius:99px;
+  background:var(--blue-soft); color:var(--blue); font-weight:600; margin-bottom:.6em}
+.phase.now .tag{background:var(--green-soft); color:var(--green)}
+.phase.wall .tag{background:var(--amber-soft); color:var(--amber)}
+.phase h3{margin-top:0}
+.phase p:last-child,.phase ul:last-child,.phase .scroll:last-child{margin-bottom:0}
+.phase .meta{font-family:"IBM Plex Mono",monospace; font-size:.78rem; color:var(--ink-dim); margin:-.2em 0 .8em}
+
+.grid2{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:1em 0}
+@media (max-width:640px){ .grid2{grid-template-columns:1fr} }
+.tile{background:var(--card); border-radius:8px; padding:14px 16px; box-shadow:var(--shadow)}
+.tile .n{font-family:Archivo,sans-serif; font-size:1.8rem; font-weight:800; letter-spacing:-.02em; line-height:1}
+.tile .l{font-size:.82rem; color:var(--ink-dim); margin-top:4px}
+
+.note{font-size:.88rem; color:var(--ink-dim); border-left:2px solid var(--rule); padding-left:14px; margin:1.2em 0}
+.day-head{display:flex; justify-content:space-between; align-items:baseline; gap:10px; flex-wrap:wrap; margin-top:2em}
+.day-head h3{margin:0}
+.day-head .c{font-family:"IBM Plex Mono",monospace; font-size:.78rem; color:var(--ink-dim)}
+footer{margin-top:3.2em; padding-top:1.2em; border-top:1px solid var(--rule);
+  font-size:.82rem; color:var(--ink-dim)}
+
+/* --- les cartes de semaine (ex-Calendrier du semestre) --- */
+.bleed{width:min(1180px,calc(100vw - 32px)); position:relative; left:50%; transform:translateX(-50%);}
+.week{scroll-margin-top:12px}
+.legend{display:flex;flex-wrap:wrap;gap:8px 16px;font-family:Archivo,sans-serif;font-size:.8rem;margin:0 0 1.6em}
+.legend span{display:inline-flex;align-items:center;gap:6px}.legend i{width:12px;height:12px;border-radius:3px;display:inline-block}
+.jump{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 1.4em}
+.jump a{font-family:"IBM Plex Mono",monospace;font-size:.72rem;text-decoration:none;color:var(--ink-dim);border:1px solid var(--rule);border-radius:999px;padding:3px 9px;background:var(--card)}
+.jump a:hover{color:var(--ink);border-color:var(--ink-dim)}
+.week{background:var(--card);border-radius:10px;box-shadow:var(--shadow);margin:0 0 18px;overflow:hidden;scroll-margin-top:12px}
+.week.wall{outline:2px solid var(--amber)}
+.wh{display:grid;grid-template-columns:auto 1fr auto;gap:8px 16px;align-items:baseline;padding:14px 18px 10px;border-bottom:1px solid var(--rule)}
+.wh .n{font-family:Archivo,sans-serif;font-weight:800;font-size:1.25rem;letter-spacing:-.01em}
+.wh .n small{font-family:"IBM Plex Mono",monospace;font-size:.75rem;font-weight:400;color:var(--ink-dim);margin-left:10px}
+.wh .ph{font-family:"IBM Plex Mono",monospace;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--blue);background:var(--blue-soft);padding:3px 9px;border-radius:999px;justify-self:start}
+.wh .pts{font-family:"IBM Plex Mono",monospace;font-size:.78rem;color:var(--ink-dim);white-space:nowrap}
+.wh .pts b{color:var(--amber);font-size:1rem}
+.wh .r{grid-column:1/-1;font-size:.95rem;color:var(--ink-dim);margin-top:2px}
+.jours{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:0}
+.jour{padding:10px 10px 12px;border-right:1px solid var(--rule);min-height:120px}
+.jour:last-child{border-right:0}
+.jour h3{margin:0 0 6px;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-dim);font-weight:700}
+.it{font-family:Archivo,sans-serif;font-size:.78rem;line-height:1.35;padding:5px 7px;border-radius:5px;margin:0 0 5px;border-left:3px solid transparent}
+.it.c{background:transparent;border-left-color:var(--rule);color:var(--ink-dim)}
+.it.e{background:var(--amber-soft);border-left-color:var(--amber);color:var(--ink);font-weight:600}
+.it.p{background:var(--blue-soft);border-left-color:var(--blue)}
+.it.l{background:var(--violet-soft);border-left-color:var(--violet)}
+.it.f{background:var(--red-soft);border-left-color:var(--red);font-weight:600}
+.it.s{background:var(--green-soft);border-left-color:var(--green)}
+.it.a{background:transparent;border-left-color:var(--ink-dim);color:var(--ink-dim);font-style:italic}
+.fixed{padding:10px 18px;border-top:1px solid var(--rule);font-family:Archivo,sans-serif;font-size:.78rem;color:var(--ink-dim)}
+.fixed b{color:var(--ink)}
+@media (max-width:900px){.jours{grid-template-columns:repeat(2,minmax(0,1fr))}.jour{border-bottom:1px solid var(--rule)}.jour:nth-child(2n){border-right:0}}
+@media (max-width:520px){.jours{grid-template-columns:1fr}.jour{border-right:0;min-height:0}.wh{grid-template-columns:1fr}}
+.it a{color:inherit}
+
+/* --- la journée et les recettes (ex-Ma journée) --- */
+.calm{background:var(--card);border-left:5px solid var(--green);border-radius:0 6px 6px 0;padding:18px 22px;box-shadow:var(--shadow);margin:1.4em 0 2em;font-size:1.05rem}
+.calm p:last-child{margin:0}
+.rule3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:1.2em 0}
+.rule3 > div{background:var(--card);border-radius:8px;padding:14px;box-shadow:var(--shadow)}
+.rule3 .n{font-family:Archivo,sans-serif;font-size:2rem;font-weight:800;line-height:1;color:var(--blue)}
+.rule3 .t{font-family:Archivo,sans-serif;font-weight:700;margin:6px 0 4px}
+.rule3 .s{font-size:.85rem;color:var(--ink-dim);line-height:1.4}
+@media (max-width:560px){.rule3{grid-template-columns:1fr}}
+td.h{font-family:"IBM Plex Mono",monospace;font-size:.8rem;white-space:nowrap;color:var(--ink-dim);width:52px}
+td.b{font-weight:700;width:30%}
+td.o{font-size:.82rem;color:var(--ink-dim);width:26%}
+tr.es td.b{color:var(--green)}
+tr.rev td.b{color:var(--blue)}
+tr.cours td{color:var(--ink-dim)}
+.recipe{background:var(--card);border-radius:8px;padding:16px 20px;box-shadow:var(--shadow);margin:1em 0}
+.recipe h3{margin:0 0 .4em}
+.recipe ol{margin:0;padding-left:1.2em}
+.recipe li{margin:.35em 0}
+.recipe .doc{font-family:"IBM Plex Mono",monospace;font-size:.78rem;color:var(--ink-dim);margin-top:.6em}
+.rtag{display:inline-block;font-family:"IBM Plex Mono",monospace;font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;padding:2px 8px;border-radius:999px;margin-right:6px;vertical-align:middle}
+.rtag.rev{background:var(--blue-soft);color:var(--blue)}.rtag.es{background:var(--green-soft);color:var(--green)}
+.toc .part{font-family:"IBM Plex Mono",monospace;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-dim);margin:.6em 0 .2em;break-after:avoid}
+table.jt td.o{width:22%}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+
+<div class="eyebrow">Odontología · 1ᵉʳ curso · T11 · Universidad Europea, Alicante · S1 2026-27</div>
+<h1>Le semestre</h1>
+<p class="lede">Une seule page pour le premier semestre : les règles, l'emploi du temps, chaque matière avec toutes ses dates, la journée type et ses huit recettes, la semaine jour par jour, les phases du 19 octobre et du 30 novembre, et une carte par semaine du 14 septembre au 21 janvier. Établie le 16 septembre à partir des 22 documents de DOC S1 et de l'emploi du temps réel ; elle réunit « Le plan du semestre », « Le calendrier du semestre » et « Ma journée ».</p>
+
+<ul class="toc">
+<li class="part">Les règles du jeu</li>
+<li><a href="#regles">1 · Les trois règles</a></li>
+<li><a href="#horaire">2 · Ton emploi du temps réel</a></li>
+<li><a href="#matieres">3 · Chaque matière, toutes les dates</a></li>
+<li><a href="#calendrier">4 · Le semestre, semaine par semaine</a></li>
+<li><a href="#eliminatoires">5 · Ce qui fait échouer</a></li>
+<li><a href="#tema">6 · Comment un tema devient su</a></li>
+<li class="part">Chaque jour</li>
+<li><a href="#journee">7 · La journée type</a></li>
+<li><a href="#semaine">8 · La semaine, jour par jour</a></li>
+<li><a href="#recettes">9 · Les huit recettes</a></li>
+<li><a href="#phases">10 · Le 19 octobre et le 30 novembre</a></li>
+<li><a href="#espagnol">11 · L'espagnol, revu</a></li>
+<li><a href="#avance">12 · Construire les 3 temas d'avance</a></li>
+<li class="part">Le calendrier</li>
+<li><a href="#cartes">13 · Une carte par semaine</a></li>
+<li><a href="#maintenant">14 · Les dix premiers jours</a></li>
+<li><a href="#dimanche">15 · Le contrôle du dimanche</a></li>
+<li><a href="#manque">16 · Ce qui manque encore</a></li>
+</ul>
+
+<h2 id="regles">1 · Les trois règles</h2>
+<div class="verdict">
+<ol>
+<li><strong>Anki, 07:20 → 09:20, tous les jours.</strong> Toutes les échéances, sans exception. C'est la seule obligation absolue : tout le reste du plan peut glisser d'un jour, ça, jamais. Une file sautée un jour, c'est deux jours de retard.</li>
+<li><strong>Trois temas d'avance dans chaque matière, à l'état « préparé »</strong> : lu, compris point par point, vocabulaire et cartes faites. Le « par cœur » n'est pas un travail à faire d'avance : Anki l'installe tout seul en dix jours, et il est là le jour du questionnaire.</li>
+<li><strong>Rien n'est découvert la veille.</strong> Chaque chose notée a une date dans ce document et une semaine où on la prépare. Les livrables (infografía, MUN, exposé de Biología, activités d'Antropología) se font en octobre, pas en novembre.</li>
+</ol>
+</div>
+
+<div class="grid2">
+<div class="tile"><div class="n">15 h</div><div class="l">d'Anki par semaine dans la grille (2 h par jour + le mercredi 05:30). L'obligation est couverte deux fois.</div></div>
+<div class="tile"><div class="n">≈ 58</div><div class="l">temas sur le semestre dans les quatre matières documentées (13 Ana · 14 Bio · 21 Epi · 10 Antro), soit 4-5 par semaine de cours.</div></div>
+<div class="tile"><div class="n">59 %</div><div class="l">du contrôle continu tombe entre le 2 et le 27 novembre. Octobre sert à le préparer.</div></div>
+<div class="tile"><div class="n">50 %</div><div class="l">de chaque examen de janvier, ce sont des questions ouvertes rédigées en espagnol, avec un plancher éliminatoire à 30 %.</div></div>
+</div>
+
+<h2 id="horaire">2 · Ton emploi du temps réel</h2>
+<p>Lu dans ton Google Agenda (semaine du 21 septembre) et recoupé avec les présentations des matières. Seize heures d'amphi, jamais avant 15:30.</p>
+<div class="scroll"><table>
+<tr><th>Jour</th><th>15:30 → 17:30</th><th>17:30 → 19:30</th></tr>
+<tr><td class="d">Lundi</td><td>—</td><td>Documentación e Introducción a la Metodología · VL08</td></tr>
+<tr><td class="d">Mardi</td><td>Biología celular · VL08 · Amalia Mira</td><td>— (retour 18:00)</td></tr>
+<tr><td class="d">Mercredi</td><td>Biología celular · VL08 · Enola Missonnier</td><td>Anatomía y Fisiología I · VL08 · Bruna de Lara</td></tr>
+<tr><td class="d">Jeudi</td><td>Epidemiología · VL08</td><td>Anatomía y Fisiología I · VL05 · Guadalupe Ferrer</td></tr>
+<tr><td class="d">Vendredi</td><td>Epidemiología · VL07</td><td>Antropología e Historia · VL07 · Ester Moya</td></tr>
+</table></div>
+<p class="note">Cours du 14 septembre au 22 décembre. Fériés : ven 9 oct, lun 12 oct, mar 8 déc (le lundi 7, Documentación a cours : ce n'est pas un pont). Vacances de Noël du 23 déc au 6 janv. <strong>Examens du 7 au 21 janvier, sans semaine de révision entre les deux.</strong> Semestre 2 dès le 25 janvier. Prácticas de Biología au labo VL22 ; celles d'Anatomía en VL21.</p>
+
+<h2 id="matieres">3 · Chaque matière : comment tu es noté, toutes les dates</h2>
+<p>Dans les quatre matières, <strong>chaque bloc d'évaluation doit être ≥ 5/10 séparément</strong> pour que la moyenne compte. La présence aux théoriques doit être ≥ 50 % (Teams ne compte pas), sinon l'examen n'est pas corrigé.</p>
+
+<div class="phase">
+<span class="tag">Anatomía y Fisiología I · 6 ECTS</span>
+<h3>70 % en épreuves présentielles, 20 % de prácticas, 10 % de láminas et talleres</h3>
+<p class="meta">mer + jeu 17:30 · coord. Sara Ferrando · profs Bruna de Lara (mer) et Guadalupe Ferrer (jeu)</p>
+<ul>
+<li><strong>Examen de janvier, 50 %</strong> : 40 QCM + trois blocs de questions ouvertes (anatomía, histología, fisiología). ≥ 30 % dans chaque partie, ≥ 5 au total.</li>
+<li><strong>4 cuestionarios, 5 % chacun (20 %)</strong> : en classe, sur Canvas, à la fin de chaque bloc. <strong>Moyenne des quatre ≥ 5 obligatoire</strong>, indépendamment de l'examen. Absent = 0. IA interdite, soupçon fondé = 0.</li>
+<li><strong>3 prácticas, 6,67 % chacune (20 %)</strong> : présence 100 % obligatoire (une manquée = matière suspendue), cuaderno à rendre, cuestionario Canvas après chaque séance.</li>
+<li><strong>Láminas anatómicas, 2 % × 3</strong> (identifier des structures sur des images — rien à dessiner) ; <strong>taller osteología</strong> 2 % (fiches d'os, squelette assemblé, VR) ; <strong>taller potencial de acción</strong> 2 % (courbe, phases, ions Na⁺/K⁺, question sur le blocage des canaux).</li>
+<li>Trois retards de plus de 15 min = une absence.</li>
+</ul>
+<div class="scroll"><table>
+<tr><th>Quand</th><th>Quoi</th><th>Temas</th><th>Poids</th></tr>
+<tr class="hi"><td class="d">mer 7 ou jeu 8 oct</td><td>Cuestionario 1</td><td>T1 homeostasis · T2 sangre</td><td class="w">5 %</td></tr>
+<tr><td class="d">19-23 oct</td><td>Taller osteología + simulation VR · Láminas 1 (esquelético)</td><td>T5, T6</td><td class="w">2 % + 2 %</td></tr>
+<tr><td class="d">26-30 oct</td><td>Láminas 2 (nervioso)</td><td>T10</td><td class="w">2 %</td></tr>
+<tr class="hi"><td class="d">mer 4 ou jeu 5 nov</td><td>Cuestionario 2</td><td>T3 tejidos · T4 piel · T5 huesos · T6 óseo</td><td class="w">5 %</td></tr>
+<tr class="hi"><td class="d">9-13 nov (T11 : 17:30, VL21)</td><td>Práctica 1 grupos sanguíneos e INR · Taller potencial de acción</td><td>T2, T12</td><td class="w">6,67 % + 2 %</td></tr>
+<tr class="hi"><td class="d">16-20 nov (17:30, VL21)</td><td>Práctica 2 exploración del sistema nervioso</td><td>T10-13</td><td class="w">6,67 %</td></tr>
+<tr class="hi"><td class="d">23-27 nov (17:30, VL21)</td><td>Práctica 3 histología (microscopes virtuels)</td><td>T3, T4, T6, T8, T11</td><td class="w">6,67 %</td></tr>
+<tr class="hi"><td class="d">mer 2 ou jeu 3 déc</td><td>Cuestionario 3 · Láminas 3 (muscular)</td><td>T10 · T11 · T12 · T13</td><td class="w">5 % + 2 %</td></tr>
+<tr class="hi"><td class="d">mer 16 ou jeu 17 déc</td><td>Cuestionario 4</td><td>T7 · T8 · T9</td><td class="w">5 %</td></tr>
+<tr><td class="d">7-21 janv</td><td>Prueba de conocimiento</td><td>tout</td><td class="w">50 %</td></tr>
+</table></div>
+<p class="note">Ordre réel des temas dans l'amphi : 1.1, 1.2 · 2.1 (×2) · 2.2, 2.3, 3.1 · 3.1, 3.2 · 4 (×2) · 5, 6.1, 6.2 · 10.1, 6.3, 10.2 · 11, 12.1 · 12.2 · 13.1 · 13.2 (+ 14-15 mucosa oral) · 7, 8 · 9.1, 9.2. Le prof ne suit pas la numérotation : prépare dans <em>cet</em> ordre.</p>
+</div>
+
+<div class="phase">
+<span class="tag">Biología celular y genética humana · 6 ECTS</span>
+<h3>50 % examen, 20 % prácticas, 15 % exposé oral, 15 % problèmes de génétique — aucun cuestionario</h3>
+<p class="meta">mar + mer 15:30 · coord. Nicla Flacco · profs Amalia Mira (mar) et Enola Missonnier (mer)</p>
+<ul>
+<li><strong>Examen de janvier, 50 %, 90 min</strong> : 40 QCM à une seule bonne réponse (<strong>3 erreurs = −1 bonne</strong>, blanc = 0) + 4 questions ouvertes qui « intègrent théorie, pratique et activités », corrigées sur rubrique. ≥ 30 % dans chaque partie.</li>
+<li><strong>6 prácticas, 3,3 % chacune</strong> : labo VL22, blouse et cuaderno obligatoires (sans cuaderno, entrée refusée), 5 séances sur 6 minimum, cuaderno complet en PDF sur Canvas à la fin. Faute grave (pas de blouse, manger…) notée.</li>
+<li><strong>Exposición oral « Explorando los procesos celulares », 15 %</strong> : groupe ≤ 4, 2-3 min chacun, 10 min max, illustrations faites par vous (BioRender, Servier…), rendu PDF sur Canvas. <strong>Le prof tire l'ordre et attribue les parties le jour même</strong> ; papier ou téléphone = 0 ; moins de 90 s = suspenso ; une question individuelle après. IA autorisée pour la recherche, à citer.</li>
+<li><strong>Problemas de genética, 15 %</strong> : groupe ≤ 4, en classe, réponses courtes justifiées, après un séminaire d'entraînement.</li>
+</ul>
+<div class="scroll"><table>
+<tr><th>Quand</th><th>Quoi</th><th>Poids</th></tr>
+<tr><td class="d">19-23 oct</td><td>Práctica 1 microscope, micropipettes, dilutions</td><td class="w">3,3 %</td></tr>
+<tr><td class="d">26-30 oct</td><td>Práctica 2 coloration et observation cellulaire</td><td class="w">3,3 %</td></tr>
+<tr class="hi"><td class="d">2-6 nov</td><td>Práctica 3 division cellulaire (méristème d'oignon)</td><td class="w">3,3 %</td></tr>
+<tr class="hi"><td class="d">9-13 nov</td><td>Práctica 4 extraction et quantification d'ADN</td><td class="w">3,3 %</td></tr>
+<tr class="hi"><td class="d">16-20 nov</td><td><strong>Exposiciones orales</strong> · Práctica 5 PCR et électrophorèse (Labster)</td><td class="w">15 % + 3,3 %</td></tr>
+<tr class="hi"><td class="d">23-27 nov</td><td>Exposiciones orales (suite) · Práctica 6 cas de génétique humaine</td><td class="w">3,3 %</td></tr>
+<tr><td class="d">30 nov-4 déc</td><td>Séminaire problemas de genética (entraînement)</td><td class="w">—</td></tr>
+<tr class="hi"><td class="d">14-18 déc</td><td><strong>Évaluation problemas de genética</strong> · simulacro de prueba</td><td class="w">15 %</td></tr>
+<tr><td class="d">7-21 janv</td><td>Prueba de conocimiento</td><td class="w">50 %</td></tr>
+</table></div>
+<p class="note">Temas dans l'ordre : T1 · T2 (deux séances) · T3, T4 · T5, T6 · T7, T8 · T9 · T10 · T11 · T12 · exposés · T13 · T14. Le jour exact des prácticas (mardi ou mercredi) n'est pas dans le cronograma : regarde Canvas.</p>
+</div>
+
+<div class="phase">
+<span class="tag">Epidemiología, salud pública y bioestadística · 6 ECTS</span>
+<h3>50 % examen, 30 % cas/problèmes, 20 % rapports — aucun cuestionario sur les temas</h3>
+<p class="meta">jeu + ven 15:30 · coord. María Cuevas · profs Julia Escudero et Pedro Sánchez</p>
+<ul>
+<li><strong>Examen 2ᵉ-3ᵉ semaine de janvier, 50 %</strong> : 40 QCM à 4 options (pénalité sur les erreurs) + <strong>4 questions ouvertes courtes, qui peuvent être des problèmes, des cas cliniques ou des tableaux à compléter</strong>. ≥ 30 % dans chaque partie. Temas 1 à 21.</li>
+<li><strong>Problemas RR/OR, 15 %, individuel</strong> : deux cas réels, six questions chacun (hypothèses, variables, type d'étude, tableau 2×2, mesure d'association et interprétation, 2 avantages + 2 inconvénients). <strong>Apuntes et calculatrice autorisés.</strong> Le tableau 2×2 et le calcul valent 5 points sur 10.</li>
+<li><strong>Simulación MUN, 15 %, groupe de 5-6 formé par le prof</strong> : délégué d'un pays à l'ONU, « acciones de salud pública oral por grupos de edad ». Document d'ouverture + négociations + exposé des accords + résolution. La rubrique récompense le discours répété sans lire les diapos (2 pts) et un contenu en 4 parties (5 pts).</li>
+<li><strong>Infografía salud pública oral, 10 %, individuel</strong> : A4 vertical, logo UE, ton nom, la matière, <strong>logos ODS 3 et 4 (0,5 pt sec)</strong>, 4 parties : pathologie, facteurs de risque, épidémiologie (population, incidence, prévalence, mortalité, létalité), prévention. Sources Vancouver/APA. PDF sur Canvas. <strong>Les instructions sont déjà sur Canvas.</strong></li>
+<li><strong>Uso ético de la IA, 10 %</strong> : lire l'article Vidal-Alaball et al. 2024 (sur Canvas), puis 10 questions en 10 min, en classe.</li>
+</ul>
+<div class="scroll"><table>
+<tr><th>Quand</th><th>Quoi</th><th>Poids</th></tr>
+<tr><td class="d">ven 16 oct</td><td>Infografía et MUN expliqués en classe, groupes formés</td><td class="w">—</td></tr>
+<tr><td class="d">fin octobre (date Canvas)</td><td><strong>Infografía à rendre</strong></td><td class="w">10 %</td></tr>
+<tr class="hi"><td class="d">jeu 5 et ven 6 nov</td><td><strong>Exposiciones MUN</strong></td><td class="w">15 %</td></tr>
+<tr class="hi"><td class="d">ven 13 nov</td><td><strong>Cuestionario IA</strong> en classe (présence obligatoire)</td><td class="w">10 %</td></tr>
+<tr class="hi"><td class="d">jeu 26 nov → ven 27 nov</td><td>Entraînement RR/OR en classe, puis <strong>examen RR/OR</strong> (présence obligatoire)</td><td class="w">15 %</td></tr>
+<tr><td class="d">2ᵉ-3ᵉ sem. janv</td><td>Prueba de conocimiento</td><td class="w">50 %</td></tr>
+</table></div>
+<p class="note">Temas dans l'ordre : T1 · T2, T3 · T4, T5 · T6 (jeu 8 oct, ven 9 férié) · T7 (ven 16) · T8, T9 · T10, T11 · MUN · T13, T12 · T14, T15 · problemas · T16, T17 · T19, T20 · T21. T18 (estilos de vida) n'apparaît pas dans le cronograma.</p>
+</div>
+
+<div class="phase">
+<span class="tag">Antropología e Historia de la Odontología · 3 ECTS</span>
+<h3>50 % examen, 5 % cuestionarios, 45 % en cinq activités</h3>
+<p class="meta">ven 17:30 · coord. Ester Moya · Isabel Molina, Maria Hebenstreit</p>
+<ul>
+<li><strong>Examen de janvier, 50 %</strong> : 25-30 QCM + 1 à 4 questions de réponse libre. Temas 1-10.</li>
+<li><strong>Cuestionarios, 5 % au total</strong> : 30 QCM en classe à la fin de chaque bloc (T1-3, T4-6, T7-10). Peu de poids : ils servent surtout de blanc pour janvier.</li>
+<li><strong>Actividad 1 Antropología dental, 10 %</strong> (restes fossiles, paléopathologies : identifier, interpréter, sources citées) · <strong>Actividad 2 férula antigua, 5 %</strong> (3 photos + 2 questions) · <strong>Actividad 3 casos éticos, 10 %</strong> (avec Documentación, code éthique) · <strong>Actividad 4 Médicos del tiempo, 5 %</strong> (groupe, cas historique) · <strong>Actividad 5 crea tu juego histórico, 15 %</strong> (groupe, ≥ 7 hitos, jouable en 15 min).</li>
+</ul>
+<div class="scroll"><table>
+<tr><th>Quand</th><th>Quoi</th><th>Poids</th></tr>
+<tr class="hi"><td class="d">ven 16 oct</td><td>Tema 4 + <strong>cuestionario T1-3</strong></td><td class="w">≈ 1,7 %</td></tr>
+<tr><td class="d">ven 23 oct (→ 30 nov)</td><td>Tema 4 + <strong>actividad 1</strong> lancée (fenêtre 19 oct → 30 nov)</td><td class="w">10 %</td></tr>
+<tr><td class="d">ven 30 oct</td><td>Tema 5 + <strong>actividad 2</strong> (26-31 oct)</td><td class="w">5 %</td></tr>
+<tr class="hi"><td class="d">ven 6 nov</td><td>Temas 6-7 + <strong>cuestionario T4-6</strong></td><td class="w">≈ 1,7 %</td></tr>
+<tr class="hi"><td class="d">ven 13 nov</td><td>Temas 7-8 + activité en classe</td><td class="w">—</td></tr>
+<tr class="hi"><td class="d">ven 20 nov (16-24)</td><td>Tema 8 + <strong>actividad 4</strong></td><td class="w">5 %</td></tr>
+<tr class="hi"><td class="d">ven 27 nov</td><td>Tema 9 · <strong>actividad 1 à rendre avant le 30</strong></td><td class="w">—</td></tr>
+<tr><td class="d">ven 4 déc</td><td>Tema 10 + <strong>cuestionario T7-10</strong></td><td class="w">≈ 1,7 %</td></tr>
+<tr><td class="d">ven 11 déc (7-15)</td><td><strong>Actividad 5</strong> juego histórico</td><td class="w">15 %</td></tr>
+<tr><td class="d">ven 18 déc</td><td>Trabajo en el aula · <strong>actividad 3 à rendre avant le 18</strong> (fenêtre 6 oct → 18 déc)</td><td class="w">10 %</td></tr>
+<tr><td class="d">janvier</td><td>Prueba de conocimiento</td><td class="w">50 %</td></tr>
+</table></div>
+<p class="note">La guía docente donne d'autres poids (exposés 20 %, exercices 20 %, cas 10 %) que le plan de travail : c'est le plan de travail, plus récent et plus précis, qui est utilisé ici. Confirme avec Ester Moya si tu veux, mais ce n'est plus bloquant.</p>
+</div>
+
+<div class="phase">
+<span class="tag">Documentación e Introducción a la Metodología · 3 ECTS</span>
+<h3>Aucun document encore</h3>
+<p class="meta">lun 17:30 · VL08</p>
+<p>Ni guía, ni plan de travail, ni cronograma dans DOC S1. Ce qu'on sait : l'activité « casos éticos » d'Antropología se fait conjointement avec cette matière. <strong>Action : récupérer l'accès Canvas cette semaine, déposer les trois documents dans DOC S1, et je complète cette section.</strong> En attendant, le lundi soir suit la même boucle que les autres cours.</p>
+</div>
+
+<h2 id="calendrier">4 · Le semestre, semaine par semaine</h2>
+<p>Ce que chaque prof donne chaque semaine, et en <span class="ev">orange</span> tout ce qui est noté ou obligatoire. C'est la table de référence : le reste du plan en découle.</p>
+<div class="scroll"><table class="wide">
+<tr><th>Semaine</th><th>Anatomía (mer · jeu)</th><th>Biología (mar · mer)</th><th>Epidemiología (jeu · ven)</th><th>Antropología (ven)</th><th>Autre</th></tr>
+<tr><td class="d">1 · 14-18 sept</td><td>mer T1.1 intro · jeu T1.2 homeostasis</td><td>presentación · T1</td><td>bienvenida · T1 salud</td><td>presentación</td><td>lun Documentación</td></tr>
+<tr><td class="d">2 · 21-25</td><td>T2.1 sangre I · II</td><td>T2 membrana (×2)</td><td>T2 demografía estática · T3 dinámica</td><td>T1-2</td><td></td></tr>
+<tr><td class="d">3 · 28 sept-2 oct</td><td>T2.2 coagulación · T2.3 grupos · T3.1 intro histología</td><td>T3 citoesqueleto · T4 síntesis</td><td>T4 vigilancia · T5 estadística</td><td>T2-3</td><td></td></tr>
+<tr><td class="d">4 · 5-9 oct</td><td>T3.1 epitelial · <span class="ev">Q1 T1-2</span> · T3.2 conjuntivo</td><td>T5 endomembranas · T6 mitocondria</td><td>jeu T6 asociación · <em>ven 9 férié</em></td><td><em>férié</em></td><td></td></tr>
+<tr><td class="d">5 · 12-16 oct</td><td>T4 piel I · II</td><td>T7 núcleo · T8 mitosis</td><td>T7 descriptiva · <span class="ev">ven 16 : infografía + MUN expliqués, groupes</span></td><td>T4 · <span class="ev">cuestionario T1-3</span></td><td><em>lun 12 férié</em></td></tr>
+<tr><td class="d">6 · 19-23 oct</td><td>T5 · T6.1 · T6.2 · <span class="ev">taller osteología · láminas 1</span></td><td>T9 meiosis · <span class="ev">práctica 1</span></td><td>T8 casos-controles · T9 morbilidad</td><td>T4 · <span class="ev">actividad 1</span></td><td>phase 2 Español</td></tr>
+<tr><td class="d">7 · 26-30 oct</td><td>T10.1 SN I · T6.3 óseo · T10.2 SN II · <span class="ev">láminas 2</span></td><td>T10 genética · <span class="ev">práctica 2</span></td><td>T10 cohortes · T11 ensayos · <span class="ev">infografía à rendre</span></td><td>T5 · <span class="ev">actividad 2</span></td><td></td></tr>
+<tr class="hi"><td class="d">8 · 2-6 nov</td><td>T11 nervioso · <span class="ev2">Q2 T3-6</span> · T12.1 potencial</td><td>T11 · <span class="ev2">práctica 3</span></td><td><span class="ev2">MUN jeu 5 · ven 6</span></td><td>T6-7 · <span class="ev2">cuestionario T4-6</span></td><td></td></tr>
+<tr class="hi"><td class="d">9 · 9-13 nov</td><td>T12.2 sinapsis · <span class="ev2">práctica 1 · taller potencial</span></td><td>T12 · <span class="ev2">práctica 4</span></td><td>T13 · T12 · <span class="ev2">ven 13 cuestionario IA</span></td><td>T7-8 · activité</td><td></td></tr>
+<tr class="hi"><td class="d">10 · 16-20 nov</td><td>T13.1 · <span class="ev2">práctica 2</span></td><td><span class="ev2">exposiciones orales</span> · <span class="ev2">práctica 5</span></td><td>T14 · T15</td><td>T8 · <span class="ev2">actividad 4</span></td><td></td></tr>
+<tr class="hi"><td class="d">11 · 23-27 nov</td><td>T13.2 SNA (+ T14-15) · <span class="ev2">práctica 3</span></td><td><span class="ev2">exposiciones</span> · <span class="ev2">práctica 6</span></td><td>jeu 26 entraînement · <span class="ev2">ven 27 examen RR/OR</span></td><td>T9 · <span class="ev2">act. 1 à rendre</span></td><td></td></tr>
+<tr><td class="d">12 · 30 nov-4 déc</td><td>T7 muscular · <span class="ev">láminas 3</span> · T8 · <span class="ev">Q3 T10-13</span></td><td><span class="ev">seminario problemas</span> · T13</td><td>T16 hepatitis · T17 aérea</td><td>T10 · <span class="ev">cuestionario T7-10</span></td><td>phase 3 Español</td></tr>
+<tr><td class="d">13 · 7-11 déc</td><td>T9.1 · T9.2</td><td>T14</td><td>T19 cáncer · T20 diabetes</td><td><span class="ev">actividad 5</span></td><td><em>mar 8 férié</em></td></tr>
+<tr class="hi"><td class="d">14 · 14-18 déc</td><td>dudas · <span class="ev2">Q4 T7-9</span></td><td><span class="ev2">évaluation problemas</span> · simulacro</td><td>T21 · dudas</td><td>trabajo en el aula · <span class="ev2">act. 3 à rendre</span></td><td></td></tr>
+<tr><td class="d">15 · 21-22 déc</td><td colspan="4">dudas — puis vacances du 23 décembre au 6 janvier</td><td></td></tr>
+<tr class="hi"><td class="d">7-21 janv</td><td colspan="4"><span class="ev2">Pruebas de conocimiento</span> des cinq matières — dates sur Canvas</td><td></td></tr>
+</table></div>
+
+<h3>La charge par semaine</h3>
+<p>Points de ta moyenne générale du S1 (sur 100, matières pondérées par ECTS) qui se jouent chaque semaine, hors Documentación.</p>
+<div class="load">
+  <div class="row"><span class="wk">5 oct</span><span class="bar"><i style="width:13%"></i></span><span class="val">1,3</span></div>
+  <div class="row"><span class="wk">12 oct</span><span class="bar"><i style="width:2%"></i></span><span class="val">0,2</span></div>
+  <div class="row"><span class="wk">19 oct</span><span class="bar"><i style="width:20%"></i></span><span class="val">1,8</span></div>
+  <div class="row"><span class="wk">26 oct</span><span class="bar"><i style="width:48%"></i></span><span class="val">4,5</span></div>
+  <div class="row peak"><span class="wk">2 nov</span><span class="bar"><i style="width:64%"></i></span><span class="val">6,0</span></div>
+  <div class="row peak"><span class="wk">9 nov</span><span class="bar"><i style="width:59%"></i></span><span class="val">5,5</span></div>
+  <div class="row peak"><span class="wk">16 nov</span><span class="bar"><i style="width:53%"></i></span><span class="val">5,0</span></div>
+  <div class="row peak"><span class="wk">23 nov</span><span class="bar"><i style="width:100%"></i></span><span class="val">9,4</span></div>
+  <div class="row"><span class="wk">30 nov</span><span class="bar"><i style="width:21%"></i></span><span class="val">2,0</span></div>
+  <div class="row"><span class="wk">7 déc</span><span class="bar"><i style="width:20%"></i></span><span class="val">1,9</span></div>
+  <div class="row peak"><span class="wk">14 déc</span><span class="bar"><i style="width:67%"></i></span><span class="val">6,3</span></div>
+</div>
+<p class="caption">≈ 44 points se jouent en contrôle continu, 50 aux examens de janvier, ≈ 6 en Documentación (inconnu). La semaine du 23 novembre cumule l'examen RR/OR, l'exposé de Biología, la práctica 3 d'Anatomía et le rendu de l'actividad 1.</p>
+
+<h2 id="eliminatoires">5 · Ce qui fait échouer, quelle que soit ta moyenne</h2>
+<div class="kill">
+<h3>1 · ≥ 5 dans chaque bloc, séparément</h3>
+<p>Un 9 à l'examen ne rattrape pas un 4 aux prácticas. En Anatomía, il faut ≥ 5 à l'examen <strong>et</strong> ≥ 5 à la moyenne des quatre cuestionarios.</p>
+<h3>2 · 50 % de présence aux théoriques</h3>
+<p>En dessous, l'examen n'est pas corrigé. Teams ne compte pas. En Anatomía, trois retards de 15 min = une absence.</p>
+<h3>3 · Les prácticas : Anatomía 100 %, Biología 5 sur 6</h3>
+<p>Blouse, cuaderno original, ponctualité. Justificatif d'absence sous 15 jours à <span class="mono">cuo.departamento@universidadeuropea.es</span>, jamais aux profs.</p>
+<h3>4 · L'exposé de Biología : lire = zéro</h3>
+<p>Le prof attribue les parties le jour même : il faut connaître <em>toute</em> la présentation. Moins de 90 secondes = suspenso.</p>
+<h3>5 · Les QCM pénalisent (Bio, Epi)</h3>
+<p>Trois erreurs annulent une bonne. Ne coche que si tu élimines au moins deux propositions.</p>
+<h3>6 · 30 % minimum dans chaque partie de l'examen</h3>
+<p>Sous 30 % aux questions ouvertes, la note de l'examen devient celle de cette partie. Les questions ouvertes se rédigent en espagnol : c'est là que la langue peut coûter une matière que tu connais.</p>
+</div>
+
+<h2 id="tema">6 · Comment un tema devient su</h2>
+<p>Tu ne fais <strong>pas</strong> comme en PASS. Relire et réciter des pages est la technique la moins rentable qui existe ; l'auto-test espacé est la plus rentable, et c'est exactement ce qu'Anki fait. Anki fait la rétention. Il ne fait pas l'encodage (comprendre, formuler la carte) ni la production (écrire une réponse en espagnol) : ces deux-là restent à toi.</p>
+<div class="scroll"><table>
+<tr><th>État</th><th>Ce que ça veut dire</th><th>Quand</th><th>Temps</th></tr>
+<tr><td><strong>Préparé</strong></td><td>lu en espagnol, chaque point reformulé en une phrase à toi, les « ? » notés, 15-25 termes en cartes Español, <strong>15-25 cartes Dentaire écrites et importées</strong> (40 max en Anatomía)</td><td>≥ 3 temas avant que le prof ne le donne</td><td>≈ 1 h 40 (60 min lire, 40 min cartes)</td></tr>
+<tr><td><strong>Vu</strong></td><td>le cours est passé : « ? » résolus, ce que le prof a souligné ajouté, 20 % des cartes corrigées, 10 lignes en espagnol dans Notion</td><td>le soir même</td><td>30 min par tema</td></tr>
+<tr><td><strong>Su</strong></td><td>deux passages Anki sans faute + blanc de 15 questions ≥ 12/15, ou une question ouverte rédigée en 25 min sans support</td><td>J-3 de l'échéance</td><td>Anki + 1 h</td></tr>
+</table></div>
+<h3>Les règles des cartes</h3>
+<ul>
+<li>Une carte = un fait. La question en espagnol, comme le prof la poserait. Pas de carte sur un point que tu n'as pas compris : elle devient une sangsue.</li>
+<li>Listes → cloze (une carte pour la liste, pas cinq). Figures d'anatomie → occlusion d'image sur l'iPad (c'est l'entraînement exact des láminas).</li>
+<li>Sous-paquets : <span class="mono">Dentaire::Anatomía</span>, <span class="mono">::Biología</span>, <span class="mono">::Epidemiología</span>, <span class="mono">::Antropología</span>, <span class="mono">::Documentación</span>. Nouvelles cartes par jour : 30 en Dentaire, 20 en Español. Révisions illimitées.</li>
+<li>Régime de croisière : ≈ 25 cartes par tema × 4-5 temas par semaine = 30 nouvelles cartes par jour, ≈ 250 révisions par jour, 40-50 min. Le reste des deux heures d'Anki va au paquet Español puis à la fabrication des cartes du tema suivant.</li>
+</ul>
+<h3>Pourquoi les cartes se font avant l'amphi</h3>
+<p>Le dernier tema d'un bloc est donné deux ou trois jours avant le questionnaire (Ana T3.2 le jeudi 8 octobre, Q1 le même jour ; T6.3 le 28 octobre, Q2 le 4). Des cartes faites après le cours n'auraient qu'un passage Anki. Faites une semaine avant, elles en ont cinq. C'est tout l'intérêt de l'avance.</p>
+
+<h2 id="journee">7 · La journée type</h2>
+<p>Ce que tu fais à chaque heure, et le seul document à ouvrir à ce moment-là. Le détail bloc par bloc, jour par jour, est en <a href="#semaine">section 8</a> ; chaque lettre renvoie à une recette de la <a href="#recettes">section 9</a>.</p>
+<div class="calm">
+<p><strong>Où tu en étais au départ, le 16 septembre.</strong> Semaine 1. Les profs ont donné trois demi-temas d'Anatomía, un tema de Biología, un d'Epidemiología, et des présentations. Personne n'a d'avance. Le premier contrôle noté est dans trois semaines (Anatomía, 7-8 octobre, sur ce qui se donne cette semaine et la prochaine). Tu n'es pas en retard : tu commences.</p>
+<p><strong>Le système espagnol, en une phrase :</strong> pas de concours, pas de classement à la fin — des petits contrôles tout le semestre (20 à 50 % de la note) et un examen en janvier. Être major, c'est faire la boucle ci-dessous tous les jours, pas cravacher en décembre.</p>
+</div>
+<div class="rule3">
+<div><div class="n">1</div><div class="t">Anki 07:20 → 09:20</div><div class="s">Tous les jours. La seule chose non négociable.</div></div>
+<div><div class="n">2</div><div class="t">Un tema préparé par jour</div><div class="s">Dans le bloc de 09:20, avec la recette A. C'est ce qui fait l'avance.</div></div>
+<div><div class="n">3</div><div class="t">Le cours du soir, le soir même</div><div class="s">20:30 (18:00 le mardi), recette B. Une heure, pas plus.</div></div>
+</div>
+<h3>La journée type de cours, du lundi au vendredi</h3>
+<p>La même chose chaque jour, seuls les temas changent. Ce qui bouge selon le jour est en dessous.</p>
+<div class="scroll"><table class="jt">
+<tr><th>Heure</th><th>Bloc</th><th>Ce que tu fais</th><th>Recette · document</th></tr>
+<tr class="anki"><td class="h">07:20</td><td class="b">Anki 1 + Anki 2</td><td>Toutes les cartes dues, Dentaire puis Español, puis les dix formules du jour.</td><td class="o">Anki</td></tr>
+<tr class="rev"><td class="h">09:20</td><td class="b">Préparer un tema</td><td>La matière la plus loin de ses 3 temas d'avance. Ordre jusqu'au 11 octobre : Anatomía, puis Antropología, puis Epi et Bio.</td><td class="o">A</td></tr>
+<tr class="rev"><td class="h">10:20</td><td class="b">Lundi : blanc du questionnaire · mardi, jeudi : exercices de calcul · mercredi, samedi : question ouverte</td><td>Jusqu'au 11 octobre, ce bloc sert à préparer un tema de plus (le lundi : premier blanc le 5 octobre).</td><td class="o">F · G · C</td></tr>
+<tr class="es"><td class="h">11:20</td><td class="b">Español · gramática</td><td>Le point de la semaine, dix phrases écrites, dix dites.</td><td class="o">E · Dossier Español § 06-07</td></tr>
+<tr class="es"><td class="h">13:00</td><td class="b">Español · escribir</td><td>Une question ouverte d'examen en espagnol sur un tema vu.</td><td class="o">C · projet Español « examen »</td></tr>
+<tr class="es"><td class="h">14:00</td><td class="b">Español · preparar la clase</td><td>Les mots des cours de ce soir.</td><td class="o">D</td></tr>
+<tr class="cours"><td class="h">15:30</td><td class="b">Cours</td><td>Notes en espagnol, « ? » dans la marge, une question posée.</td><td class="o">—</td></tr>
+<tr class="rev"><td class="h">20:30</td><td class="b">Comprendre le cours du jour</td><td>Les « ? », ce que le prof a souligné, les cartes corrigées, 10 lignes.</td><td class="o">B</td></tr>
+</table></div>
+<div class="note">
+<strong>Lundi</strong> : cours à 17:30 seulement → 15:00 <em>Español · hablar</em> (une heure de conversation, tuteur, ou dictée avec Claude — recette E). <strong>Mardi</strong> : retour à 17:30 → 18:00 Comprendre, 19:00 <em>registro académico</em> = lire le chapitre du manuel du prochain tema (Tortora, Karp) en espagnol, 20:30 une série en VO. <strong>Mercredi</strong> : Anki matinal à 05:30 au lieu du sport. <strong>Vendredi</strong> : 05:30 <em>escribir largo</em> (300 mots chrono), 10:20 gramática, 11:20 tuteur ou conversation, Jumu'ah, cours à 15:30.
+</div>
+
+<h3>Le week-end</h3>
+<div class="scroll"><table>
+<tr><th>Samedi</th><th>Dimanche</th></tr>
+<tr><td>07:20 Anki · 09:20 préparer un tema · 10:20 question ouverte (ou un tema de plus jusqu'au 11 oct) · 11:20 gramática · 13:30 courses · 16:00 cartes d'erreurs de la semaine (recette H) · 17:00 tuteur ou conversation · 18:00 question ouverte longue, 300 mots · 21:00 coucher</td>
+<td>05:30 Anki Español + cartes d'erreurs · 07:20 Anki · 09:20 <strong>simulation</strong> (recette F : blanc du prochain questionnaire, ou 10 QCM + 1 ouverte sur Bio/Epi) · 10:20 correction → cartes · 11:20 <em>simulación</em> en espagnol (dimanche 20 : le diagnostic) · 13:30 le contrôle du dimanche · 14:30 batch cooking · 21:00 coucher</td></tr>
+</table></div>
+
+
+<h2 id="semaine">8 · La semaine, jour par jour</h2>
+<p>Ta grille de la Batcave, bloc par bloc, avec ce qu'on y met. Les lignes vertes sont l'obligation. Les blocs Español sont ceux de la phase 1 (jusqu'au 18 octobre) ; ce qui change ensuite est en <a href="#phases">section 10</a>. Trois blocs Español font <em>aussi</em> le travail dentaire — c'est ce qui rend le plan tenable (<a href="#espagnol">section 11</a>).</p>
+
+<div class="day-head"><h3>Lundi</h3><span class="c">Documentación 17:30-19:30 · sport haut lourd</span></div>
+<div class="scroll"><table class="day">
+<tr><td class="d">05:30</td><td>Sport</td><td>podcast en espagnol sur le trajet et l'échauffement</td></tr>
+<tr><td class="d">06:30</td><td>Douche · 06:45 petit-déj + Coran</td><td></td></tr>
+<tr class="anki"><td class="d">07:20</td><td>Anki 1</td><td>Toutes les échéances Dentaire, 25 + 5 × 2</td></tr>
+<tr class="anki"><td class="d">08:20</td><td>Anki 2</td><td>suite ; paquet Español ; 5 dernières min : les 10 formules du jour</td></tr>
+<tr><td class="d">09:20</td><td>Préparer un tema</td><td>la matière la plus loin de ses 3 d'avance (<a href="#avance">section 12</a>)</td></tr>
+<tr><td class="d">10:20</td><td>Blanc du prochain questionnaire</td><td>15 questions sur le bloc en cours (Ana ou Antro), livre fermé, en espagnol ; erreurs → cartes. <em>Jusqu'au 4 octobre : préparer un tema de plus ; premier blanc le lundi 5 octobre.</em></td></tr>
+<tr class="es"><td class="d">11:20</td><td>Español · gramática</td><td>le point de la semaine (<a href="#espagnol">section 11</a>) : dix phrases écrites, dix dites</td></tr>
+<tr><td class="d">12:20</td><td>Déjeuner + 20 pages en espagnol · 12:40 sieste 20 min</td><td></td></tr>
+<tr class="es"><td class="d">13:00</td><td>Español · escribir = <strong>une question ouverte</strong></td><td>une question d'examen sur un tema vu, 25 min sans dictionnaire, puis « corrige », puis cartes d'erreurs</td></tr>
+<tr class="es"><td class="d">14:00</td><td>Español · preparar la clase = <strong>le tema de ce soir</strong></td><td>slides de Documentación : 15 termes, 2 questions préparées, 50 min</td></tr>
+<tr class="es"><td class="d">15:00</td><td>Español · hablar</td><td>conversation réelle, tuteur, ou dictée avec Claude — une heure de bouche</td></tr>
+<tr><td class="d">16:50</td><td>Collation · 17:00 trajet (podcast, shadowing)</td><td></td></tr>
+<tr><td class="d">17:30</td><td>Documentación</td><td>notes en espagnol, un « ? » par mot inconnu, ta question posée</td></tr>
+<tr><td class="d">19:30</td><td>Trajet retour</td><td>1 min de résumé oral enregistrée, Anki Español dans le tram</td></tr>
+<tr><td class="d">20:00</td><td>Dîner</td><td></td></tr>
+<tr><td class="d">20:30</td><td>Comprendre le cours du jour</td><td>« ? » résolus (projet Dentaire, « explica »), cartes corrigées, 10 lignes en espagnol dans Notion</td></tr>
+<tr><td class="d">21:30</td><td>Collation · 21:45 douche · 21:55 coucher</td><td>clôture : note 0-3 du cours, la ligne du soir en espagnol</td></tr>
+</table></div>
+
+<div class="day-head"><h3>Mardi</h3><span class="c">Biología 15:30-17:30 · sport bas complet</span></div>
+<div class="scroll"><table class="day">
+<tr><td class="d">05:30</td><td>Sport</td><td></td></tr>
+<tr class="anki"><td class="d">07:20</td><td>Anki 1 · 08:20 Anki 2</td><td>comme lundi</td></tr>
+<tr><td class="d">09:20</td><td>Préparer un tema</td><td></td></tr>
+<tr><td class="d">10:20</td><td><strong>Epidemiología : exercices de calcul</strong></td><td>3 exercices à la main : taux et pyramides (T2-3), moyenne/médiane/écart-type (T5), puis tableau 2×2, RR, OR, incidence, prévalence, létalité (T6-11). Correction après. <em>À partir du 30 nov : problemas de genética.</em></td></tr>
+<tr class="es"><td class="d">11:20</td><td>Español · gramática</td><td></td></tr>
+<tr class="es"><td class="d">13:00</td><td>Español · escribir = une question ouverte</td><td></td></tr>
+<tr class="es"><td class="d">14:00</td><td>Español · preparar la clase = le tema de Biología de ce soir</td><td></td></tr>
+<tr><td class="d">14:50</td><td>Collation · 15:00 trajet · 15:30 Biología · 17:30 trajet</td><td></td></tr>
+<tr><td class="d">18:00</td><td>Comprendre le cours du jour (Biología)</td><td>le cours est encore chaud</td></tr>
+<tr class="es"><td class="d">19:00</td><td>Español · registro académico = <strong>le manuel</strong></td><td>le chapitre de Tortora (Ana) ou Karp (Bio) du prochain tema à préparer, en espagnol, notes en espagnol</td></tr>
+<tr><td class="d">20:00</td><td>Dîner</td><td></td></tr>
+<tr class="es"><td class="d">20:30</td><td>Español · série en VO</td><td>sous-titres espagnols au début, puis rien</td></tr>
+<tr><td class="d">21:30</td><td>Collation · 21:55 coucher</td><td></td></tr>
+</table></div>
+
+<div class="day-head"><h3>Mercredi</h3><span class="c">Biología 15:30 · Anatomía 17:30 · jour off de sport</span></div>
+<div class="scroll"><table class="day">
+<tr class="anki"><td class="d">05:30</td><td>Anki matinal</td><td>une heure de cartes Dentaire, 25 + 5 × 2</td></tr>
+<tr class="anki"><td class="d">07:20</td><td>Anki 1 · 08:20 Anki 2</td><td></td></tr>
+<tr><td class="d">09:20</td><td>Préparer un tema</td><td></td></tr>
+<tr><td class="d">10:20</td><td>Question ouverte Bio ou Ana + correction</td><td>rédigée en espagnol, 25 min, puis « examen » avec Claude. <em>Jusqu'au 11 octobre : préparer un tema de plus.</em></td></tr>
+<tr class="es"><td class="d">11:20</td><td>Español · gramática</td><td></td></tr>
+<tr class="es"><td class="d">13:00</td><td>Español · escribir = une question ouverte</td><td></td></tr>
+<tr class="es"><td class="d">14:00</td><td>Español · preparar la clase = les deux temas de ce soir</td><td>Bio + Ana : vocabulaire et questions seulement, 25 min chacun</td></tr>
+<tr><td class="d">14:50</td><td>Collation · 15:00 trajet · 15:30 Biología · 17:30 Anatomía · 19:30 trajet</td><td></td></tr>
+<tr><td class="d">20:30</td><td>Comprendre le cours du jour</td><td>30 min Bio + 30 min Ana : « ? », 10 lignes, cartes corrigées. Les cartes existent déjà (tema préparé) : c'est une correction, pas une création</td></tr>
+<tr><td class="d">21:30</td><td>Collation · 21:55 coucher</td><td></td></tr>
+</table></div>
+
+<div class="day-head"><h3>Jeudi</h3><span class="c">Epidemiología 15:30 · Anatomía 17:30 · sport haut volume</span></div>
+<div class="scroll"><table class="day">
+<tr><td class="d">05:30</td><td>Sport</td><td></td></tr>
+<tr class="anki"><td class="d">07:20</td><td>Anki 1 · 08:20 Anki 2</td><td></td></tr>
+<tr><td class="d">09:20</td><td>Préparer un tema</td><td></td></tr>
+<tr><td class="d">10:20</td><td><strong>Epidemiología : exercices de calcul</strong></td><td>comme mardi</td></tr>
+<tr class="es"><td class="d">11:20</td><td>Español · gramática</td><td></td></tr>
+<tr class="es"><td class="d">13:00</td><td>Español · escribir = une question ouverte</td><td></td></tr>
+<tr class="es"><td class="d">14:00</td><td>Español · preparar la clase = Epi + Ana de ce soir</td><td></td></tr>
+<tr><td class="d">14:50</td><td>Collation · 15:00 trajet · 15:30 Epidemiología · 17:30 Anatomía · 19:30 trajet</td><td></td></tr>
+<tr><td class="d">20:30</td><td>Comprendre le cours du jour</td><td>30 min Epi + 30 min Ana</td></tr>
+<tr><td class="d">21:30</td><td>Collation · 21:55 coucher</td><td></td></tr>
+</table></div>
+
+<div class="day-head"><h3>Vendredi</h3><span class="c">Epidemiología 15:30 · Antropología 17:30 · Jumu'ah</span></div>
+<div class="scroll"><table class="day">
+<tr class="es"><td class="d">05:30</td><td>Español · escribir largo</td><td>300 mots chronométrés sur un sujet d'examen. <em>Dès le 19 oct : Projets perso matinal = livrables.</em></td></tr>
+<tr class="anki"><td class="d">07:20</td><td>Anki 1 · 08:20 Anki 2</td><td></td></tr>
+<tr><td class="d">09:20</td><td>Préparer un tema</td><td></td></tr>
+<tr class="es"><td class="d">10:20</td><td>Español · gramática</td><td><em>Dès le 19 oct : Projets perso 1 = livrables.</em></td></tr>
+<tr class="es"><td class="d">11:20</td><td>Español · tutor</td><td>sans tuteur : un compañero, ou Claude en examinateur oral ; dix cartes d'erreurs après</td></tr>
+<tr><td class="d">12:20</td><td>Déjeuner · 13:15 trajet · 13:30 Jumu'ah (conversation après) · 14:30 sieste</td><td></td></tr>
+<tr><td class="d">14:50</td><td>Collation · 15:00 trajet · 15:30 Epidemiología · 17:30 Antropología · 19:30 trajet</td><td></td></tr>
+<tr><td class="d">20:30</td><td>Comprendre le cours du jour</td><td>30 min Epi + 30 min Antro</td></tr>
+<tr><td class="d">21:30</td><td>Collation · 21:55 coucher</td><td></td></tr>
+</table></div>
+
+<div class="day-head"><h3>Samedi</h3><span class="c">courses · sport bras-épaules-mollets</span></div>
+<div class="scroll"><table class="day">
+<tr><td class="d">05:30</td><td>Sport</td><td></td></tr>
+<tr class="anki"><td class="d">07:20</td><td>Anki 1 · 08:20 Anki 2</td><td></td></tr>
+<tr><td class="d">09:20</td><td>Préparer un tema</td><td></td></tr>
+<tr><td class="d">10:20</td><td>Question ouverte Epi ou Antro + correction</td><td><em>Jusqu'au 11 octobre : préparer un tema de plus.</em></td></tr>
+<tr class="es"><td class="d">11:20</td><td>Español · gramática</td><td><em>Dès le 19 oct : Projets perso 1 = livrables.</em></td></tr>
+<tr><td class="d">12:20</td><td>Déjeuner · 13:10 sieste · 13:30 courses · 15:30 rangement</td><td></td></tr>
+<tr><td class="d">16:00</td><td>Cartes d'erreurs de la semaine</td><td>les cartes ratées, les erreurs des questions ouvertes et des exercices → une carte de correction par cause</td></tr>
+<tr class="es"><td class="d">17:00</td><td>Español · tutor</td><td>ou conversation réelle</td></tr>
+<tr class="es"><td class="d">18:00</td><td>Español · question ouverte longue</td><td>300 mots en 30 min sur un tema vu, corrigés (remplace la tâche DELE)</td></tr>
+<tr><td class="d">19:00</td><td>Dîner · 19:30 sortie, en espagnol · 20:30 collation · 21:00 coucher</td><td></td></tr>
+</table></div>
+
+<div class="day-head"><h3>Dimanche</h3><span class="c">simulation · batch cooking</span></div>
+<div class="scroll"><table class="day">
+<tr class="es"><td class="d">05:30</td><td>Español · Anki y errores</td><td>paquet Español, puis les erreurs de la semaine en cartes à trou</td></tr>
+<tr class="anki"><td class="d">07:20</td><td>Anki 1 · 08:20 Anki 2</td><td></td></tr>
+<tr><td class="d">09:20</td><td><strong>Simulation dentaire</strong></td><td>la semaine avant un questionnaire : son blanc complet (15 questions, 20 min, sans support). Sinon : 10 QCM + 1 question ouverte sur le dernier bloc de 3 temas de Bio ou d'Epi, en alternance. <em>Dimanche 20 septembre : préparer un tema ; première simulation le 27.</em></td></tr>
+<tr><td class="d">10:20</td><td>Correction + cartes</td><td>une carte par erreur</td></tr>
+<tr class="es"><td class="d">11:20</td><td>Español · simulación</td><td>deux réponses d'examen en espagnol, 55 min sans dictionnaire, puis « examen » : contenu, puis langue. <strong>Dimanche 20 : le diagnostic</strong> (<a href="#espagnol">section 11</a>)</td></tr>
+<tr><td class="d">12:20</td><td>Déjeuner · 13:10 sieste</td><td></td></tr>
+<tr class="es"><td class="d">13:30</td><td>Balance de la semana + <strong>contrôle du dimanche</strong></td><td>les trois chiffres d'espagnol, puis la table de la <a href="#dimanche">section 15</a></td></tr>
+<tr><td class="d">14:30</td><td>Batch cooking (radio en espagnol) · 16:30 ménage · 17:30 repos, intercambio</td><td></td></tr>
+<tr><td class="d">19:00</td><td>Dîner · 21:00 coucher</td><td></td></tr>
+</table></div>
+
+<h3>Ce que ça fait par semaine</h3>
+<div class="scroll"><table>
+<tr><th>Poste</th><th>Blocs</th><th>Heures</th></tr>
+<tr class="anki"><td>Anki (l'obligation)</td><td>07:20-09:20 × 7, mer 05:30</td><td class="w">15 h</td></tr>
+<tr><td>Préparer les temas (l'avance)</td><td>09:20 × 6 + 14:00 × 4 (le tema du soir) + mar 19:00 (manuel)</td><td class="w">10 h 20</td></tr>
+<tr><td>Comprendre le cours du jour</td><td>20:30 × 4, mar 18:00</td><td class="w">5 h</td></tr>
+<tr><td>Calculs d'Epidemiología</td><td>mar + jeu 10:20</td><td class="w">2 h</td></tr>
+<tr><td>Questions ouvertes en espagnol</td><td>13:00 × 4, mer + sam 10:20, sam 18:00, dim 11:20</td><td class="w">8 h</td></tr>
+<tr><td>Blanc, simulation, cartes d'erreurs</td><td>lun 10:20, sam 16:00, dim 09:20-11:20</td><td class="w">4 h</td></tr>
+<tr><td>Espagnol pur (grammaire, tuteur, oral, écrit long, série)</td><td>11:20 × 6, lun 15:00, ven 05:30 et 11:20, sam 17:00, mar 20:30, dim 05:30 et 13:30</td><td class="w">≈ 14 h</td></tr>
+<tr><td>Amphi</td><td></td><td class="w">16 h</td></tr>
+</table></div>
+<p class="note">Régime de croisière : 4-5 temas par semaine à 1 h 40 = 7-8 h de préparation, dans les 10 h 20 prévues. Le surplus des premières semaines construit l'avance (<a href="#avance">section 12</a>). Le sport (4 h), le Coran, les repas et le sommeil (7 h 35 en semaine, 8 h 30 le week-end) ne bougent pas.</p>
+
+<h2 id="recettes">9 · Les huit recettes</h2>
+<p>Huit gestes. Tout le semestre tient dedans.</p>
+
+<div class="recipe"><h3><span class="rtag rev">A</span>Préparer un tema — 60 min + les cartes</h3>
+<ol>
+<li>Ouvre les slides du tema (celles du deuxième année, ou Canvas). Lis en espagnol, une diapo à la fois.</li>
+<li>Chaque point : tu le redis en une phrase à toi, à voix basse. Si tu n'y arrives pas → un « ? » dans la marge. Tu ne bloques pas, tu avances.</li>
+<li>Chaque mot inconnu → une carte Español (mot dans sa phrase, définition en espagnol).</li>
+<li>À la fin : écris 15 à 25 cartes Dentaire (40 en Anatomía). Une carte = un fait. Listes → cloze. Figures → occlusion d'image. Pas de carte sur un « ? ».</li>
+<li>Importe dans le sous-paquet de la matière. Pomodoro nommé « Préparer · Ana T2.1 ».</li>
+<li>Note dans le contrôle du dimanche : ce tema est « préparé ».</li>
+</ol>
+<div class="doc">Tu ouvres : les slides · Anki. Rien d'autre.</div></div>
+
+<div class="recipe"><h3><span class="rtag rev">B</span>Comprendre le cours du jour — 30 min par cours</h3>
+<ol>
+<li>Tes « ? » de la marge, un par un : « explica » dans le projet Claude Dentaire (conversation au nom de la matière), en espagnol.</li>
+<li>Ce que le prof a souligné et qui n'était pas dans les slides → 3 à 5 cartes de plus.</li>
+<li>Les cartes déjà faites qui étaient fausses ou floues → corrigées (≈ 20 %).</li>
+<li>Dix lignes en espagnol dans Notion : le tema en dix phrases. La case « Fiché » cochée.</li>
+</ol>
+<div class="doc">Tu ouvres : Claude (projet Dentaire) · Anki · Notion.</div></div>
+
+<div class="recipe"><h3><span class="rtag es">C</span>Une question ouverte en espagnol — 25 min + correction</h3>
+<ol>
+<li>Dans le projet Claude Español : « examen » + le tema. Claude pose une question d'examen.</li>
+<li>Tu réponds en 25 min, sans dictionnaire, sans slides, avec le gabarit : definición · localización · mecanismo · función · cierre.</li>
+<li>Correction en deux temps : le contenu (ce qui manque), puis la langue (erreurs avec leur code).</li>
+<li>Chaque erreur de langue → une carte à trou dans Español::0 Errores. Chaque manque de contenu → une carte Dentaire.</li>
+</ol>
+<div class="doc">Tu ouvres : Claude (projet Español) · Anki. Le gabarit est dans le Dossier Español § 10.</div></div>
+
+<div class="recipe"><h3><span class="rtag es">D</span>Preparar la clase — 25 min par cours</h3>
+<ol>
+<li>Les slides du cours de ce soir : quinze termes que tu ne connais pas → cartes Español, définition en espagnol.</li>
+<li>Deux questions que tu poseras au prof, écrites.</li>
+<li>Si le tema est déjà « préparé » (recette A), ce bloc dure 15 min : tu relis tes dix cartes les plus dures.</li>
+</ol>
+<div class="doc">Tu ouvres : les slides · Anki.</div></div>
+
+<div class="recipe"><h3><span class="rtag es">E</span>Les blocs d'espagnol pur — gramática, hablar, tutor, escribir largo</h3>
+<ol>
+<li><strong>gramática (11:20)</strong> : le point de la semaine dans le Dossier Español § 06 (tableau « Le point de grammaire de chaque semaine »), les règles dans § 07. Chaque règle lue → dix phrases écrites sur tes cours, dix dites à voix haute. Un exercice du livre, corrigé.</li>
+<li><strong>hablar (lundi 15:00)</strong> : une heure de bouche. Tuteur, compañero, ou Claude en dictée sur le tema de la veille. Dix cartes d'erreurs après.</li>
+<li><strong>tutor (ven 11:20, sam 17:00)</strong> : 12 min à expliquer le cours de la veille, 10 min de corrections répétées. Sans tuteur : un compañero, ou Claude « interroga ».</li>
+<li><strong>escribir largo (ven 05:30)</strong> : 300 mots chrono sur un tema, puis « corrige ».</li>
+</ol>
+<div class="doc">Tu ouvres : Dossier Español § 06 → § 07 → § 09 (les commandes). C'est le seul moment où tu l'ouvres.</div></div>
+
+<div class="recipe"><h3><span class="rtag rev">F</span>Le blanc — lundi 10:20 et dimanche 09:20</h3>
+<ol>
+<li>Claude, projet Dentaire : « 15 preguntas tipo test sobre [bloc], como en el cuestionario del profesor ». Ou tes propres questions.</li>
+<li>20 min, livre fermé, en espagnol.</li>
+<li>Score noté dans le contrôle du dimanche. ≥ 12/15 = le bloc est « su ». Sinon : chaque erreur → une carte, et on refait dimanche.</li>
+</ol>
+<div class="doc">Tu ouvres : Claude · Anki.</div></div>
+
+<div class="recipe"><h3><span class="rtag rev">G</span>Les calculs d'Epidemiología — mardi et jeudi 10:20</h3>
+<ol>
+<li>Trois exercices sur le dernier tema chiffré : taux et pyramides (T2-3), moyenne, médiane, écart-type (T5), tableau 2×2, RR, OR, incidence, prévalence, létalité (T6-11).</li>
+<li>À la main, calculatrice autorisée (comme le 27 novembre). Claude te fabrique les énoncés : « tres problemas de [tema], con solución al final ».</li>
+<li>Correction. Une formule ratée → une carte cloze avec la formule.</li>
+</ol>
+<div class="doc">Tu ouvres : Claude · une feuille · Anki.</div></div>
+
+<div class="recipe"><h3><span class="rtag rev">H</span>Les cartes d'erreurs — samedi 16:00</h3>
+<ol>
+<li>Anki, navigateur : les cartes ratées de la semaine (étiquette leech, ou tri par Lapses).</li>
+<li>Chacune réécrite, souvent coupée en deux. Les erreurs des questions ouvertes et des calculs → une carte de correction par cause.</li>
+</ol>
+<div class="doc">Tu ouvres : Anki.</div></div>
+
+
+<h2 id="phases">10 · Ce qui change le 19 octobre et le 30 novembre</h2>
+
+<div class="phase now">
+<span class="tag">Jusqu'au 18 octobre · phase 1</span>
+<h3>Construire l'avance, apprendre à produire en espagnol</h3>
+<p>Tous les blocs Projets perso sont des blocs Español. Les blocs 10:20 du lundi au jeudi et du samedi, et le dimanche 20 à 09:20, servent à préparer des temas tant que les 3 d'avance ne sont pas là partout (objectif : dimanche 11 octobre ; le lundi, premier blanc le 5 octobre). Un seul livrable à lancer : lire les instructions de l'infografía sur Canvas (elles y sont déjà) et choisir ta pathologie.</p>
+</div>
+
+<div class="phase wall">
+<span class="tag">19 octobre → 29 novembre · phase 2</span>
+<h3>Les livrables d'abord, l'e-commerce après</h3>
+<p>Projets perso 1 (11:20 lun-jeu et sam), le vendredi 05:30 et le vendredi 10:20 reviennent aux projets : <strong>≈ 8 h par semaine</strong>. Elles vont d'abord aux choses notées, dans l'ordre de leurs dates — ce sont 40 à 50 % de la note de trois matières :</p>
+<ul>
+<li><strong>Infografía</strong> (10 %) : faite et rendue avant la fin octobre. Deux blocs.</li>
+<li><strong>MUN</strong> (15 %) : document d'ouverture et discours écrit et répété avant le 5 novembre. Trois blocs + le travail de groupe.</li>
+<li><strong>Exposé de Biología</strong> (15 %) : script complet appris par cœur — toute la présentation, pas ta partie — et illustrations, avant le 16 novembre. Quatre blocs.</li>
+<li><strong>Antropología actividad 1</strong> (10 %) avant le 30 novembre, <strong>actividad 3</strong> (10 %) avant le 18 décembre : un bloc chacune.</li>
+<li>Láminas 1, 2, 3 : une heure chacune, la semaine où elles s'ouvrent.</li>
+</ul>
+<p>Le bloc escribir de 13:00 devient « une question d'annale en espagnol, chronométrée ». Le tuteur passe à une séance par semaine. Ce qui reste des 8 h va à l'e-commerce — honnêtement, peu avant décembre. C'est le prix du semestre ; le dossier e-commerce reprend en phase 3.</p>
+</div>
+
+<div class="phase">
+<span class="tag">30 novembre → 22 décembre · phase 3</span>
+<h3>La révision de janvier se fait en décembre</h3>
+<p>Un seul bloc Español par jour (13:00). Les blocs 09:20 et 10:20 deviennent la révision pour janvier : une fiche de synthèse d'une page par tema, deux questions ouvertes rédigées par jour, un examen blanc complet par matière et par semaine (40 QCM + 4 ouvertes, 90 min), le simulacro de Biología traité comme le vrai. Noël : Anki chaque jour et deux blancs par semaine, rien d'autre. Du 7 au 21 janvier : Anki le matin, un blanc la veille de chaque examen.</p>
+</div>
+
+<h2 id="espagnol">11 · L'espagnol, revu</h2>
+<p>Ton point de départ réel : tu comprends le prof en gros, tu ne sais pas produire, et le diagnostic du 14 n'a pas été fait. Le Dossier Español garde sa logique — produire d'abord, tout en espagnol, chaque erreur devient une carte, on mesure le dimanche — mais quatre choses changent.</p>
+<h3>1 · Le diagnostic se fait dimanche 20, à 11:20</h3>
+<p>300 mots en 30 min sans dictionnaire (« Preséntate y explica por qué estudias Odontología en Alicante »), corrigés par « corrige » ; 3 min d'oral enregistrées ; le test Kwiziq. Les trois chiffres se saisissent à la clôture du dimanche. Sans eux, on ne sait pas si le plan marche.</p>
+<h3>2 · Trois blocs Español font aussi le travail dentaire</h3>
+<div class="scroll"><table>
+<tr><th>Bloc</th><th>Avant</th><th>Maintenant</th></tr>
+<tr><td class="d">14:00 preparar la clase</td><td>slides du jour, 15 termes</td><td><strong>préparer le tema de ce soir</strong> : c'est le même geste, en espagnol, avec les cartes</td></tr>
+<tr><td class="d">13:00 escribir</td><td>200 mots sur le cours de la veille</td><td><strong>une question ouverte d'examen</strong> sur un tema vu : c'est exactement ce que janvier note à 50 %</td></tr>
+<tr><td class="d">mar 19:00 registro académico</td><td>apuntes Wuolah, un chapitre</td><td><strong>le chapitre du manuel du prochain tema</strong> (Tortora, Karp, Piédrola) : de l'avance en espagnol de cours</td></tr>
+</table></div>
+<p>Résultat : sur les ≈ 21 h de blocs Español de la phase 1, ≈ 9 h sont aussi de la préparation de temas. Sans cette fusion, les 3 temas d'avance ne rentraient pas dans la semaine.</p>
+<h3>3 · Le DELE sort du semestre</h3>
+<p>Le DELE B2 blanc des 17-18 octobre tombe le week-end du cuestionario d'Antropología et de la semaine de l'infografía, et il ne mesure pas ce qui te note. Ce qui te note : une réponse d'examen en espagnol, en 25 minutes, sans support. C'est ce que tu écris huit fois par semaine. Le DELE C1 reste un projet de printemps, pas d'automne.</p>
+<h3>4 · Ce qui reste, sans changement</h3>
+<ul>
+<li>Un point de grammaire par semaine, traqué partout : ser/estar/hay et l'accord (14 sept) · les trois passés (21) · subjonctif présent (28) · imperfecto de subjuntivo et conditionnelles (5 oct) · registre académique, « se » passif, connecteurs (12 oct). Puis B2 en phase 2, C1 en phase 3.</li>
+<li>Dix formules par jour en cartes, vingt pages lues au déjeuner, la série du mardi soir, le téléphone et Claude en espagnol.</li>
+<li><strong>Trente minutes de conversation réelle par jour</strong> — pauses de cours, compañeros, la mosquée le vendredi, l'intercambio du dimanche. C'est le bloc qui fait le plus avancer, et il n'est pas dans la grille.</li>
+<li>Le temps mort : tram, marche, échauffement, batch cooking en écoute espagnole ; une minute de résumé oral enregistrée après chaque cours.</li>
+<li>Les portes de la Batcave : la note 0-3 de chaque cours à la clôture. Quand la moyenne sur 21 jours passe 2,5 avec moins de 3 erreurs pour 100 mots, un bloc Español revient aux projets — pas avant.</li>
+<li>Les trois chiffres du dimanche : erreurs pour 100 mots, minutes d'oral sans pause, jours de conversation sur sept. Cible pour janvier : moins de 6 erreurs pour 100 mots (B1-B2 de production), suffisant pour ne perdre aucun point sur la forme.</li>
+</ul>
+
+<h2 id="avance">12 · Construire les 3 temas d'avance</h2>
+<p>Tu pars de zéro dans cinq matières avec un prof qui avance de 4-5 temas par semaine. Les 15 temas d'avance se construisent en quatre semaines, avec les blocs 10:20 et du dimanche en renfort. L'ordre suit les échéances : Anatomía d'abord (Q1 le 7-8 octobre), puis Antropología (16 octobre), puis Epidemiología et Biología à égalité. Les slides viennent du deuxième année : compare-les au cronograma de cette année, et si un tema a changé de titre, prends celui de Canvas dès qu'il sort.</p>
+<div class="scroll"><table>
+<tr><th>Au soir du</th><th>Anatomía</th><th>Biología</th><th>Epidemiología</th><th>Antropología</th><th>Documentación</th></tr>
+<tr><td class="d">dim 20 sept</td><td>T1.2, T2.1 (I et II)</td><td>T2</td><td>T2, T3</td><td>T1</td><td>—</td></tr>
+<tr><td class="d">dim 27 sept</td><td>+ T2.2, T2.3, T3.1 intro <em>(3 d'avance)</em></td><td>+ T3, T4</td><td>+ T4, T5</td><td>+ T2, T3, T4 <em>(3 d'avance)</em></td><td>selon Canvas</td></tr>
+<tr><td class="d">dim 4 oct</td><td>+ T3.1 epitelial, T3.2, T4 — <strong>bloc Q1 su</strong></td><td>+ T5, T6, T7 <em>(3 d'avance)</em></td><td>+ T6, T7, T8 <em>(3 d'avance)</em></td><td>+ T5 · <strong>bloc T1-3 en cours de « su »</strong></td><td></td></tr>
+<tr><td class="d">dim 11 oct</td><td>+ T5, T6.1, T6.2</td><td>+ T8, T9</td><td>+ T9, T10</td><td>+ T6 · <strong>blanc T1-3 fait</strong></td><td></td></tr>
+<tr><td class="d">dim 18 oct</td><td>+ T6.3, T10.1, T10.2</td><td>+ T10</td><td>+ T11</td><td>+ T7</td><td>3 d'avance partout</td></tr>
+</table></div>
+<p>À partir du 19 octobre, un tema préparé par jour de cours suffit à tenir l'avance. Elle ne dépasse jamais 3 : au-delà, tu prépares ce que le prof peut réordonner.</p>
+
+<div class="bleed">
+<h2 id="cartes">13 · Une carte par semaine, du 14 septembre au 21 janvier</h2>
+<p class="lede" style="max-width:none">Les cours, tout ce qui est noté, ce que tu prépares chaque jour pour garder trois temas d'avance, les livrables et les blancs. Les blocs fixes ne sont pas répétés : Anki 07:20-09:20 tous les jours, Comprendre le cours du jour à 20:30 (18:00 le mardi), les blocs Español de la phase. Le jour exact des cuestionarios d'Anatomía (mercredi ou jeudi) et des prácticas de Biología (mardi ou mercredi) sera sur Canvas.</p>
+
+<div class="legend"><span><i style="background:var(--rule)"></i> cours</span><span><i style="background:var(--amber)"></i> noté ou obligatoire</span><span><i style="background:var(--blue)"></i> préparer (avance) · exercices · fiches</span><span><i style="background:var(--violet)"></i> livrable</span><span><i style="background:var(--red)"></i> férié · vacances</span><span><i style="background:var(--green)"></i> espagnol</span></div>
+<div class="jump"><a href="#s1">1 · 14 → 20 sept</a><a href="#s2">2 · 21 → 27 sept</a><a href="#s3">3 · 28 sept → 4 oct</a><a href="#s4">4 · 5 → 9 oct</a><a href="#s5">5 · 12 → 18 oct</a><a href="#s6">6 · 19 → 23 oct</a><a href="#s7">7 · 26 → 30 oct</a><a href="#s8">8 · 2 → 6 nov</a><a href="#s9">9 · 9 → 13 nov</a><a href="#s10">10 · 16 → 20 nov</a><a href="#s11">11 · 23 → 27 nov</a><a href="#s12">12 · 30 nov → 4 déc</a><a href="#s13">13 · 7 → 11 déc</a><a href="#s14">14 · 14 → 18 déc</a><a href="#s15">15 · 21 → 22 déc</a><a href="#sJ">J · 7 → 21 janv</a></div>
+<section class="week" id="s1"><div class="wh"><span class="n">Semaine 1<small>14 → 20 sept</small></span><span class="ph">Phase 1 · Español</span><div class="r">Présentations. Ce soir : les cours du deuxième année, Anki réglé. Construire l'avance dès jeudi.</div></div><div class="jours">
+<div class="jour"><h3>Lundi</h3><div class="it c">17:30 Documentación · présentation</div></div>
+<div class="jour"><h3>Mardi</h3><div class="it c">15:30 Biología · présentation</div></div>
+<div class="jour"><h3>Mercredi</h3><div class="it c">15:30 Biología T1</div><div class="it c">17:30 Anatomía T1.1</div><div class="it p">20:30 Ana T1.1 → 10 lignes, 15 cartes</div></div>
+<div class="jour"><h3>Jeudi</h3><div class="it c">15:30 Epidemiología · bienvenida</div><div class="it c">17:30 Anatomía T1.2</div><div class="it p">09:20 préparer Ana T1.2 · 10:20 Epi T2</div></div>
+<div class="jour"><h3>Vendredi</h3><div class="it c">15:30 Epidemiología T1</div><div class="it c">17:30 Antropología · présentation</div><div class="it p">09:20 préparer Antro T1</div></div>
+<div class="jour"><h3>Samedi</h3><div class="it p">09:20 Ana T2.1 I · 10:20 Ana T2.1 II · 18:00 Bio T2</div><div class="it p">16:00 cartes d'erreurs</div></div>
+<div class="jour"><h3>Dimanche</h3><div class="it p">09:20 Epi T3</div><div class="it s">11:20 diagnostic espagnol (300 mots, 3 min d'oral, Kwiziq)</div><div class="it a">13:30 premier contrôle du dimanche</div></div>
+</div></section>
+<section class="week" id="s2"><div class="wh"><span class="n">Semaine 2<small>21 → 27 sept</small></span><span class="ph">Phase 1 · Español</span><div class="r">Objectif dimanche : 3 d'avance en Anatomía et Antropología, 2 en Bio et Epi.</div></div><div class="jours">
+<div class="jour"><h3>Lundi</h3><div class="it c">17:30 Documentación</div><div class="it p">09:20 Bio T3 · 10:20 Epi T4</div></div>
+<div class="jour"><h3>Mardi</h3><div class="it c">15:30 Biología T2</div><div class="it p">09:20 Antro T2 · 10:20 Ana T2.2</div><div class="it s">19:00 manuel : Tortora, la sangre</div></div>
+<div class="jour"><h3>Mercredi</h3><div class="it c">15:30 Biología T2</div><div class="it c">17:30 Anatomía T2.1 sangre I</div><div class="it p">09:20 Bio T4 · 10:20 Antro T3</div></div>
+<div class="jour"><h3>Jeudi</h3><div class="it c">15:30 Epidemiología T2 demografía estática</div><div class="it c">17:30 Anatomía T2.1 sangre II</div><div class="it p">09:20 Ana T2.3 · 10:20 Epi T5</div></div>
+<div class="jour"><h3>Vendredi</h3><div class="it c">15:30 Epidemiología T3 demografía dinámica</div><div class="it c">17:30 Antropología T1-2</div><div class="it p">09:20 Ana T3.1 intro</div></div>
+<div class="jour"><h3>Samedi</h3><div class="it p">09:20 Antro T4 · 10:20 Bio T5</div><div class="it p">16:00 cartes d'erreurs · 18:00 question ouverte longue</div></div>
+<div class="jour"><h3>Dimanche</h3><div class="it p">09:20 Epi T6 · 10:20 correction</div><div class="it s">11:20 simulación : 10 QCM Ana T1-2 en espagnol</div><div class="it a">13:30 contrôle du dimanche</div></div>
+</div></section>
+<section class="week" id="s3"><div class="wh"><span class="n">Semaine 3<small>28 sept → 4 oct</small></span><span class="ph">Phase 1 · Español</span><div class="r">Le bloc Q1 d'Anatomía (T1-2) passe à « su » : blanc dimanche. 3 d'avance en Bio et Epi.</div></div><div class="jours">
+<div class="jour"><h3>Lundi</h3><div class="it c">17:30 Documentación</div><div class="it p">09:20 Ana T3.1 epitelial · 10:20 Bio T6</div></div>
+<div class="jour"><h3>Mardi</h3><div class="it c">15:30 Biología T3 citoesqueleto</div><div class="it p">09:20 Ana T3.2 · 10:20 Epi calculs : taux, pyramides (T2-3)</div></div>
+<div class="jour"><h3>Mercredi</h3><div class="it c">15:30 Biología T4 síntesis</div><div class="it c">17:30 Anatomía T2.2 coagulación</div><div class="it p">09:20 Bio T7 · 10:20 Epi T7</div></div>
+<div class="jour"><h3>Jeudi</h3><div class="it c">15:30 Epidemiología T4 vigilancia</div><div class="it c">17:30 Anatomía T2.3 grupos sanguíneos</div><div class="it p">09:20 Ana T4 · 10:20 Epi calculs</div></div>
+<div class="jour"><h3>Vendredi</h3><div class="it c">15:30 Epidemiología T5 estadística</div><div class="it c">17:30 Antropología T2-3</div><div class="it p">09:20 Epi T8</div></div>
+<div class="jour"><h3>Samedi</h3><div class="it p">09:20 Antro T5 · 10:20 question ouverte Ana T1-2</div><div class="it p">16:00 cartes d'erreurs</div></div>
+<div class="jour"><h3>Dimanche</h3><div class="it e">09:20 BLANC Q1 Anatomía : 15 questions T1-2, 20 min, sans support · 10:20 correction → cartes</div><div class="it s">11:20 simulación</div><div class="it a">13:30 contrôle</div></div>
+</div></section>
+<section class="week" id="s4"><div class="wh"><span class="n">Semaine 4<small>5 → 9 oct</small></span><span class="ph">Phase 1 · Español</span><span class="pts"><b>1,3</b> pts de la moyenne</span><div class="r">Cuestionario 1 d'Anatomía. Vendredi férié : une journée sans cours = une simulation complète + blocs Español.</div></div><div class="jours">
+<div class="jour"><h3>Lundi</h3><div class="it c">17:30 Documentación</div><div class="it e">10:20 dernier blanc Q1</div><div class="it p">09:20 Ana T5</div></div>
+<div class="jour"><h3>Mardi</h3><div class="it c">15:30 Biología T5 endomembranas</div><div class="it p">09:20 Ana T6.1 · 10:20 Epi calculs : moyenne, médiane, écart-type (T5)</div></div>
+<div class="jour"><h3>Mercredi</h3><div class="it c">15:30 Biología T6 mitocondria</div><div class="it c">17:30 Anatomía T3.1 epitelial</div><div class="it p">09:20 Ana T6.2 · 10:20 Bio T8</div></div>
+<div class="jour"><h3>Jeudi</h3><div class="it c">15:30 Epidemiología T6 medidas de asociación</div><div class="it e">17:30 Anatomía — CUESTIONARIO 1 (T1-2) mer 7 ou jeu 8, 5 % · puis T3.2</div><div class="it p">09:20 Bio T9 · 10:20 Epi calculs</div></div>
+<div class="jour"><h3>Vendredi</h3><div class="it f">FÉRIÉ 9 octobre — pas de cours</div><div class="it p">09:20 Epi T9 · simulation complète Antro T1-3 (blanc, 30 QCM)</div></div>
+<div class="jour"><h3>Samedi</h3><div class="it p">09:20 Epi T10 · 10:20 question ouverte</div><div class="it p">16:00 cartes d'erreurs</div></div>
+<div class="jour"><h3>Dimanche</h3><div class="it e">09:20 BLANC Antropología T1-3 (cuestionario vendredi 16)</div><div class="it s">11:20 simulación</div><div class="it a">13:30 contrôle : 3 d'avance partout ?</div></div>
+</div></section>
+<section class="week" id="s5"><div class="wh"><span class="n">Semaine 5<small>12 → 18 oct</small></span><span class="ph">Phase 1 · Español · dernière semaine</span><span class="pts"><b>0,2</b> pts de la moyenne</span><div class="r">Cuestionario Antropología. Vendredi : infografía et MUN expliqués, groupes formés — sois là. Dimanche : fin de la phase 1.</div></div><div class="jours">
+<div class="jour"><h3>Lundi</h3><div class="it f">FÉRIÉ 12 octobre — pas de Documentación</div><div class="it p">09:20 Ana T6.3 · simulation complète</div></div>
+<div class="jour"><h3>Mardi</h3><div class="it c">15:30 Biología T7 núcleo</div><div class="it p">09:20 Ana T10.1 · 10:20 Epi calculs : tableau 2×2, RR, OR (T6)</div></div>
+<div class="jour"><h3>Mercredi</h3><div class="it c">15:30 Biología T8 mitosis</div><div class="it c">17:30 Anatomía T4 piel I</div><div class="it p">09:20 Ana T10.2 · 10:20 question ouverte Bio</div></div>
+<div class="jour"><h3>Jeudi</h3><div class="it c">15:30 Epidemiología T7 descriptiva</div><div class="it c">17:30 Anatomía T4 piel II</div><div class="it p">09:20 Bio T10 · 10:20 Epi calculs</div></div>
+<div class="jour"><h3>Vendredi</h3><div class="it e">15:30 Epidemiología — infografía + MUN expliqués, groupes</div><div class="it e">17:30 Antropología T4 + CUESTIONARIO T1-3</div><div class="it p">09:20 Epi T11</div></div>
+<div class="jour"><h3>Samedi</h3><div class="it p">09:20 Antro T6 · 10:20 question ouverte Epi</div><div class="it l">infografía : lire les instructions Canvas, choisir la pathologie</div></div>
+<div class="jour"><h3>Dimanche</h3><div class="it p">09:20 simulation Bio T1-6 : 10 QCM + 1 ouverte</div><div class="it s">11:20 simulación</div><div class="it a">13:30 contrôle · fin de phase 1</div></div>
+</div></section>
+<section class="week" id="s6"><div class="wh"><span class="n">Semaine 6<small>19 → 23 oct</small></span><span class="ph">Phase 2 · livrables</span><span class="pts"><b>1,8</b> pts de la moyenne</span><div class="r">Les blocs Projets perso 1 et le vendredi matin reviennent : ≈ 8 h → infografía (2 blocs), láminas 1, taller. Un tema d'avance par jour de cours.</div></div><div class="jours">
+<div class="jour"><h3>Lundi</h3><div class="it c">17:30 Documentación</div><div class="it l">11:20 infografía (1/2)</div><div class="it p">09:20 Ana T11</div></div>
+<div class="jour"><h3>Mardi</h3><div class="it c">15:30 Biología T9 meiosis · práctica 1 cette semaine (blouse, cuaderno)</div><div class="it l">11:20 infografía (2/2)</div><div class="it p">09:20 Bio T11 · 10:20 Epi calculs</div></div>
+<div class="jour"><h3>Mercredi</h3><div class="it c">15:30 Biología</div><div class="it c">17:30 Anatomía T5 huesos</div><div class="it p">09:20 Epi T12 · 10:20 question ouverte</div></div>
+<div class="jour"><h3>Jeudi</h3><div class="it c">15:30 Epidemiología T8 casos-controles</div><div class="it e">17:30 Anatomía T6.1-6.2 + TALLER OSTEOLOGÍA (VR, fiches, photo du squelette)</div><div class="it p">09:20 Antro T8</div><div class="it l">11:20 láminas 1 (esquelético)</div></div>
+<div class="jour"><h3>Vendredi</h3><div class="it c">15:30 Epidemiología T9 morbilidad</div><div class="it e">17:30 Antropología T4 + ACTIVIDAD 1 lancée (rendu avant le 30 nov)</div><div class="it l">05:30 + 10:20 projets : MUN, document d'ouverture</div></div>
+<div class="jour"><h3>Samedi</h3><div class="it p">09:20 Ana T12.1 · 10:20 question ouverte</div><div class="it l">11:20 projets</div><div class="it p">16:00 cartes d'erreurs</div></div>
+<div class="jour"><h3>Dimanche</h3><div class="it p">09:20 simulation Epi T1-7</div><div class="it s">11:20 simulación</div><div class="it a">13:30 contrôle</div></div>
+</div></section>
+<section class="week" id="s7"><div class="wh"><span class="n">Semaine 7<small>26 → 30 oct</small></span><span class="ph">Phase 2 · livrables</span><span class="pts"><b>4,5</b> pts de la moyenne</span><div class="r">Infografía à rendre (date Canvas). Láminas 2. MUN : discours écrit. Dimanche : blancs Q2 Anatomía et Antro T4-6.</div></div><div class="jours">
+<div class="jour"><h3>Lundi</h3><div class="it c">17:30 Documentación</div><div class="it l">11:20 infografía : relecture, PDF, dépôt Canvas</div><div class="it p">09:20 Ana T12.2</div></div>
+<div class="jour"><h3>Mardi</h3><div class="it c">15:30 Biología T10 genética · práctica 2 cette semaine</div><div class="it l">11:20 MUN : discours</div><div class="it p">09:20 Bio T12 · 10:20 Epi calculs</div></div>
+<div class="jour"><h3>Mercredi</h3><div class="it c">15:30 Biología</div><div class="it c">17:30 Anatomía T10.1 SN I</div><div class="it p">09:20 Epi T13 · 10:20 question ouverte</div><div class="it l">11:20 láminas 2 (nervioso)</div></div>
+<div class="jour"><h3>Jeudi</h3><div class="it c">15:30 Epidemiología T10 cohortes</div><div class="it c">17:30 Anatomía T6.3 óseo · T10.2 SN II</div><div class="it p">09:20 Antro T9 · 10:20 Epi calculs</div></div>
+<div class="jour"><h3>Vendredi</h3><div class="it c">15:30 Epidemiología T11 ensayos</div><div class="it e">17:30 Antropología T5 + ACTIVIDAD 2 férula (3 photos)</div><div class="it l">05:30 + 10:20 MUN : répéter le discours</div></div>
+<div class="jour"><h3>Samedi</h3><div class="it p">09:20 Ana T13.1 · 10:20 question ouverte</div><div class="it l">11:20 MUN</div><div class="it p">16:00 cartes d'erreurs</div></div>
+<div class="jour"><h3>Dimanche</h3><div class="it e">09:20 BLANC Q2 Anatomía (T3, T4, T5, T6) + BLANC Antro T4-6</div><div class="it s">11:20 simulación</div><div class="it a">13:30 contrôle</div></div>
+</div></section>
+<section class="week wall" id="s8"><div class="wh"><span class="n">Semaine 8<small>2 → 6 nov</small></span><span class="ph">Phase 2 · le mur</span><span class="pts"><b>6,0</b> pts de la moyenne</span><div class="r">MUN jeudi-vendredi, cuestionario 2 d'Anatomía, cuestionario Antro T4-6, práctica 3 de Bio. Rien de nouveau à préparer : on exécute.</div></div><div class="jours">
+<div class="jour"><h3>Lundi</h3><div class="it c">17:30 Documentación</div><div class="it e">10:20 dernier blanc Q2</div><div class="it l">11:20 MUN : répétition, sans lire</div></div>
+<div class="jour"><h3>Mardi</h3><div class="it c">15:30 Biología T11 · práctica 3 cette semaine</div><div class="it e">10:20 dernier blanc Antro T4-6</div><div class="it p">09:20 Ana T13.2</div></div>
+<div class="jour"><h3>Mercredi</h3><div class="it c">15:30 Biología</div><div class="it c">17:30 Anatomía T11 nervioso</div><div class="it p">09:20 Bio T13 · 10:20 question ouverte</div></div>
+<div class="jour"><h3>Jeudi</h3><div class="it e">15:30 Epidemiología — MUN exposiciones</div><div class="it e">17:30 Anatomía — CUESTIONARIO 2 (T3-6) mer 4 ou jeu 5 · T12.1</div><div class="it p">09:20 Epi T14</div></div>
+<div class="jour"><h3>Vendredi</h3><div class="it e">15:30 Epidemiología — MUN exposiciones</div><div class="it e">17:30 Antropología T6-7 + CUESTIONARIO T4-6</div><div class="it l">05:30 + 10:20 exposé Bio : script</div></div>
+<div class="jour"><h3>Samedi</h3><div class="it p">09:20 Epi T15 · 10:20 question ouverte</div><div class="it l">11:20 exposé Bio : illustrations</div><div class="it p">16:00 cartes d'erreurs</div></div>
+<div class="jour"><h3>Dimanche</h3><div class="it p">09:20 simulation Bio T7-12</div><div class="it s">11:20 simulación</div><div class="it a">13:30 contrôle</div></div>
+</div></section>
+<section class="week wall" id="s9"><div class="wh"><span class="n">Semaine 9<small>9 → 13 nov</small></span><span class="ph">Phase 2 · le mur</span><span class="pts"><b>5,5</b> pts de la moyenne</span><div class="r">Práctica 1 et taller potencial de acción d'Anatomía, práctica 4 de Bio, cuestionario IA vendredi (lis l'article avant). Exposé Bio : script appris.</div></div><div class="jours">
+<div class="jour"><h3>Lundi</h3><div class="it c">17:30 Documentación</div><div class="it l">11:20 exposé Bio : apprendre le script entier</div><div class="it p">09:20 Antro T10</div></div>
+<div class="jour"><h3>Mardi</h3><div class="it c">15:30 Biología T12 · práctica 4 cette semaine</div><div class="it p">09:20 Ana T7 · 10:20 Epi calculs : RR/OR (préparation du 27)</div></div>
+<div class="jour"><h3>Mercredi</h3><div class="it c">15:30 Biología</div><div class="it c">17:30 Anatomía T12.2 sinapsis</div><div class="it p">09:20 Ana T8 · 10:20 question ouverte</div><div class="it l">11:20 article IA (Vidal-Alaball 2024) lu, notes</div></div>
+<div class="jour"><h3>Jeudi</h3><div class="it c">15:30 Epidemiología T13</div><div class="it e">17:30 Anatomía — PRÁCTICA 1 grupos sanguíneos + TALLER POTENCIAL DE ACCIÓN (VL21, cuaderno)</div><div class="it p">09:20 Epi T16 · 10:20 Epi calculs</div></div>
+<div class="jour"><h3>Vendredi</h3><div class="it e">15:30 Epidemiología T12 + CUESTIONARIO IA en classe (10 q, 10 min)</div><div class="it c">17:30 Antropología T7-8 + activité</div><div class="it l">05:30 + 10:20 exposé Bio : répétition filmée</div></div>
+<div class="jour"><h3>Samedi</h3><div class="it p">09:20 Epi T17 · 10:20 question ouverte</div><div class="it l">11:20 exposé Bio · cuaderno práctica 1</div><div class="it p">16:00 cartes d'erreurs</div></div>
+<div class="jour"><h3>Dimanche</h3><div class="it p">09:20 simulation Ana T10-12</div><div class="it s">11:20 simulación</div><div class="it a">13:30 contrôle</div></div>
+</div></section>
+<section class="week wall" id="s10"><div class="wh"><span class="n">Semaine 10<small>16 → 20 nov</small></span><span class="ph">Phase 2 · le mur</span><span class="pts"><b>5,0</b> pts de la moyenne</span><div class="r">Exposiciones orales de Bio (le prof attribue les parties le jour même), práctica 5 Labster, práctica 2 d'Anatomía, actividad 4 d'Antro. Actividad 1 à finir.</div></div><div class="jours">
+<div class="jour"><h3>Lundi</h3><div class="it c">17:30 Documentación</div><div class="it l">11:20 exposé Bio : dernière répétition</div><div class="it p">09:20 Ana T9.1</div></div>
+<div class="jour"><h3>Mardi</h3><div class="it e">15:30 Biología — EXPOSICIONES ORALES · práctica 5 Labster</div><div class="it p">09:20 Ana T9.2 · 10:20 Epi calculs RR/OR</div></div>
+<div class="jour"><h3>Mercredi</h3><div class="it e">15:30 Biología — exposiciones</div><div class="it c">17:30 Anatomía T13.1 somatosensorial</div><div class="it p">09:20 Epi T19 · 10:20 question ouverte</div><div class="it l">11:20 Antro actividad 1 (fósiles)</div></div>
+<div class="jour"><h3>Jeudi</h3><div class="it c">15:30 Epidemiología T14 intestinal</div><div class="it e">17:30 Anatomía — PRÁCTICA 2 sistema nervioso (VL21)</div><div class="it p">09:20 Epi T20 · 10:20 Epi calculs</div></div>
+<div class="jour"><h3>Vendredi</h3><div class="it c">15:30 Epidemiología T15 VIH</div><div class="it e">17:30 Antropología T8 + ACTIVIDAD 4 Médicos del tiempo (groupe)</div><div class="it l">05:30 + 10:20 Antro actividad 1</div></div>
+<div class="jour"><h3>Samedi</h3><div class="it p">09:20 Epi T21 · 10:20 question ouverte</div><div class="it l">11:20 cuaderno práctica 2</div><div class="it p">16:00 cartes d'erreurs</div></div>
+<div class="jour"><h3>Dimanche</h3><div class="it p">09:20 simulation RR/OR : deux cas complets, apuntes + calculatrice</div><div class="it s">11:20 simulación</div><div class="it a">13:30 contrôle</div></div>
+</div></section>
+<section class="week wall" id="s11"><div class="wh"><span class="n">Semaine 11<small>23 → 27 nov</small></span><span class="ph">Phase 2 · le mur</span><span class="pts"><b>9,4</b> pts de la moyenne</span><div class="r">La semaine la plus lourde : examen RR/OR vendredi, exposé de Bio, práctica 3 d'Anatomía, práctica 6 de Bio, actividad 1 à rendre avant le 30.</div></div><div class="jours">
+<div class="jour"><h3>Lundi</h3><div class="it c">17:30 Documentación</div><div class="it e">10:20 problèmes RR/OR : un cas complet</div><div class="it l">11:20 Antro actividad 1 : rendu</div></div>
+<div class="jour"><h3>Mardi</h3><div class="it e">15:30 Biología — exposiciones · práctica 6</div><div class="it e">10:20 problèmes RR/OR</div></div>
+<div class="jour"><h3>Mercredi</h3><div class="it e">15:30 Biología — exposiciones</div><div class="it c">17:30 Anatomía T13.2 SNA (+ T14-15)</div><div class="it p">09:20 Ana T14 · 10:20 question ouverte</div></div>
+<div class="jour"><h3>Jeudi</h3><div class="it e">15:30 Epidemiología — ENTRAÎNEMENT RR/OR en classe (obligatoire)</div><div class="it e">17:30 Anatomía — PRÁCTICA 3 histología (VL21)</div><div class="it p">09:20 Ana T15</div></div>
+<div class="jour"><h3>Vendredi</h3><div class="it e">15:30 Epidemiología — EXAMEN RR/OR, 15 % (apuntes + calculatrice)</div><div class="it c">17:30 Antropología T9</div><div class="it l">05:30 cuaderno práctica 3</div></div>
+<div class="jour"><h3>Samedi</h3><div class="it p">10:20 question ouverte</div><div class="it l">11:20 Antro actividad 3 casos éticos (1/2)</div><div class="it p">16:00 cartes d'erreurs</div></div>
+<div class="jour"><h3>Dimanche</h3><div class="it e">09:20 BLANC Q3 Anatomía (T10-13) + BLANC Antro T7-10</div><div class="it s">11:20 simulación</div><div class="it a">13:30 contrôle · fin de phase 2</div></div>
+</div></section>
+<section class="week" id="s12"><div class="wh"><span class="n">Semaine 12<small>30 nov → 4 déc</small></span><span class="ph">Phase 3 · révision</span><span class="pts"><b>2,0</b> pts de la moyenne</span><div class="r">Un seul bloc Español par jour. Cuestionario 3 d'Anatomía, cuestionario Antro T7-10, láminas 3, séminaire de génétique. La révision de janvier commence : une fiche par tema.</div></div><div class="jours">
+<div class="jour"><h3>Lundi</h3><div class="it c">17:30 Documentación</div><div class="it e">10:20 dernier blanc Q3</div><div class="it l">11:20 Antro actividad 3 (2/2)</div></div>
+<div class="jour"><h3>Mardi</h3><div class="it c">15:30 Biología — seminario problemas de genética</div><div class="it p">09:20 fiche Ana T1-2 · 10:20 problemas de genética</div></div>
+<div class="jour"><h3>Mercredi</h3><div class="it c">15:30 Biología T13 polimorfismos</div><div class="it e">17:30 Anatomía T7 muscular + LÁMINAS 3</div><div class="it p">09:20 fiche Bio T1-3 · 10:20 question ouverte</div></div>
+<div class="jour"><h3>Jeudi</h3><div class="it c">15:30 Epidemiología T16 hepatitis</div><div class="it e">17:30 Anatomía T8 + CUESTIONARIO 3 (T10-13) mer 2 ou jeu 3</div><div class="it p">09:20 fiche Epi T1-3 · 10:20 problemas de genética</div></div>
+<div class="jour"><h3>Vendredi</h3><div class="it c">15:30 Epidemiología T17 aérea</div><div class="it e">17:30 Antropología T10 + CUESTIONARIO T7-10</div><div class="it l">05:30 + 10:20 Antro actividad 5 (juego, groupe)</div></div>
+<div class="jour"><h3>Samedi</h3><div class="it p">09:20 fiche Antro T1-3 · 10:20 question ouverte</div><div class="it l">11:20 juego histórico</div><div class="it p">16:00 cartes d'erreurs</div></div>
+<div class="jour"><h3>Dimanche</h3><div class="it p">09:20 EXAMEN BLANC Bio : 40 QCM + 4 ouvertes, 90 min</div><div class="it s">11:20 simulación</div><div class="it a">13:30 contrôle</div></div>
+</div></section>
+<section class="week" id="s13"><div class="wh"><span class="n">Semaine 13<small>7 → 11 déc</small></span><span class="ph">Phase 3 · révision</span><span class="pts"><b>1,9</b> pts de la moyenne</span><div class="r">Mardi férié : une journée sans cours = une simulation complète. Le lundi 7, Documentación a cours. Actividad 5 vendredi.</div></div><div class="jours">
+<div class="jour"><h3>Lundi</h3><div class="it c">17:30 Documentación</div><div class="it p">09:20 fiches · 10:20 problemas de genética</div></div>
+<div class="jour"><h3>Mardi</h3><div class="it f">FÉRIÉ 8 décembre — pas de cours</div><div class="it p">09:20 simulation complète Ana · après-midi : simulation complète Epi (40 QCM + 4 ouvertes)</div></div>
+<div class="jour"><h3>Mercredi</h3><div class="it c">15:30 Biología T14 técnicas</div><div class="it c">17:30 Anatomía T9.1 músculo esquelético</div><div class="it p">09:20 fiches · 10:20 question ouverte</div></div>
+<div class="jour"><h3>Jeudi</h3><div class="it c">15:30 Epidemiología T19 cáncer</div><div class="it c">17:30 Anatomía T9.2 cardíaco y liso</div><div class="it p">09:20 fiches · 10:20 problemas de genética</div></div>
+<div class="jour"><h3>Vendredi</h3><div class="it c">15:30 Epidemiología T20 diabetes</div><div class="it e">17:30 Antropología — ACTIVIDAD 5 juego histórico</div><div class="it l">05:30 + 10:20 juego</div></div>
+<div class="jour"><h3>Samedi</h3><div class="it p">09:20 fiches · 10:20 question ouverte</div><div class="it p">16:00 cartes d'erreurs</div></div>
+<div class="jour"><h3>Dimanche</h3><div class="it e">09:20 BLANC Q4 Anatomía (T7-9)</div><div class="it s">11:20 simulación</div><div class="it a">13:30 contrôle</div></div>
+</div></section>
+<section class="week wall" id="s14"><div class="wh"><span class="n">Semaine 14<small>14 → 18 déc</small></span><span class="ph">Phase 3 · révision</span><span class="pts"><b>6,3</b> pts de la moyenne</span><div class="r">Évaluation des problèmes de génétique, simulacro de Bio (traite-le comme le vrai), cuestionario 4 d'Anatomía, actividad 3 à rendre avant vendredi.</div></div><div class="jours">
+<div class="jour"><h3>Lundi</h3><div class="it c">17:30 Documentación</div><div class="it e">10:20 dernier blanc Q4 · problemas de genética</div><div class="it l">11:20 Antro actividad 3 : rendu</div></div>
+<div class="jour"><h3>Mardi</h3><div class="it e">15:30 Biología — ÉVALUATION PROBLEMAS DE GENÉTICA (groupe, en classe)</div><div class="it p">09:20 fiches</div></div>
+<div class="jour"><h3>Mercredi</h3><div class="it e">15:30 Biología — SIMULACRO DE PRUEBA</div><div class="it c">17:30 Anatomía dudas</div><div class="it p">09:20 fiches · 10:20 question ouverte</div></div>
+<div class="jour"><h3>Jeudi</h3><div class="it c">15:30 Epidemiología T21</div><div class="it e">17:30 Anatomía — CUESTIONARIO 4 (T7-9) mer 16 ou jeu 17</div><div class="it p">09:20 fiches</div></div>
+<div class="jour"><h3>Vendredi</h3><div class="it c">15:30 Epidemiología — dudas</div><div class="it e">17:30 Antropología — trabajo en el aula · ACTIVIDAD 3 rendue</div><div class="it p">questions à poser aux profs : préparées</div></div>
+<div class="jour"><h3>Samedi</h3><div class="it p">09:20 simulation complète Antro (30 QCM + 2 ouvertes)</div><div class="it p">16:00 cartes d'erreurs</div></div>
+<div class="jour"><h3>Dimanche</h3><div class="it p">09:20 simulation complète Epi</div><div class="it s">11:20 simulación</div><div class="it a">13:30 contrôle : où en est chaque matière pour janvier</div></div>
+</div></section>
+<section class="week" id="s15"><div class="wh"><span class="n">Semaine 15<small>21 → 22 déc</small></span><span class="ph">Fin des cours</span><div class="r">Dudas lundi et mardi. Le 23 : vacances. Noël = entretien, pas apprentissage.</div></div><div class="jours">
+<div class="jour"><h3>Lundi</h3><div class="it c">17:30 Documentación — dudas</div></div>
+<div class="jour"><h3>Mardi</h3><div class="it c">15:30 Biología — dudas</div></div>
+<div class="jour"><h3>Mercredi</h3><div class="it f">VACANCES du 23 déc au 6 janv — Anki tous les jours, deux simulations complètes par semaine, rien d'autre</div></div>
+<div class="jour"><h3>Jeudi</h3></div>
+<div class="jour"><h3>Vendredi</h3></div>
+<div class="jour"><h3>Samedi</h3></div>
+<div class="jour"><h3>Dimanche</h3></div>
+</div></section>
+<section class="week wall" id="sJ"><div class="wh"><span class="n">Semaine J<small>7 → 21 janv</small></span><span class="ph">Examens</span><span class="pts"><b>50</b> pts de la moyenne</span><div class="r">Pruebas de conocimiento des cinq matières — dates sur Canvas. Anki le matin, la simulation complète de la matière la veille de chaque examen, coucher 21:55.</div></div><div class="jours">
+<div class="jour"><h3>Lundi</h3><div class="it e">Ana · Bio · Epi · Antro · Doc : 40 QCM + questions ouvertes en espagnol — 30 % minimum dans chaque partie</div></div>
+<div class="jour"><h3>Mardi</h3></div>
+<div class="jour"><h3>Mercredi</h3></div>
+<div class="jour"><h3>Jeudi</h3></div>
+<div class="jour"><h3>Vendredi</h3></div>
+<div class="jour"><h3>Samedi</h3></div>
+<div class="jour"><h3>Dimanche</h3><div class="it a">25 janvier : semestre 2</div></div>
+</div></section>
+</div>
+
+<h2 id="maintenant">14 · Les dix premiers jours, du 16 au 27 septembre</h2>
+<div class="scroll"><table>
+<tr><th>Jour</th><th>À faire</th></tr>
+<tr><td class="d">mer 16</td><td>Ce soir : récupérer les cours du deuxième année, les ranger par matière et par tema. Vérifier Anki : les cinq sous-paquets Dentaire, 30 nouvelles/jour, Español 20. 20:30 : Ana T1.1 (le cours d'aujourd'hui) → 10 lignes, 15 cartes. Demander l'accès Canvas de Documentación.</td></tr>
+<tr><td class="d">jeu 17</td><td>09:20 préparer Ana T1.2 (ce soir 17:30) · 10:20 préparer Epi T2 · 14:00 vocabulaire Epi (présentation, T1) + Ana T1.2 · 20:30 Comprendre Epi + Ana.</td></tr>
+<tr><td class="d">ven 18</td><td>09:20 préparer Antro T1 (cours le 25) · 15:30 Epi T1 · 17:30 Antro présentation : demande à Ester Moya la date de remise des activités 1 et 3 · 20:30 Comprendre.</td></tr>
+<tr><td class="d">sam 19</td><td>09:20 Ana T2.1 I · 10:20 Ana T2.1 II · 16:00 cartes d'erreurs · 18:00 Bio T2.</td></tr>
+<tr><td class="d">dim 20</td><td>09:20-10:20 Epi T3 · <strong>11:20 diagnostic espagnol</strong> · 13:30 premier contrôle du dimanche (<a href="#dimanche">section 15</a>) : tu dois être à l'état de la ligne « dim 20 sept » de la <a href="#avance">section 12</a>.</td></tr>
+<tr><td class="d">lun 21</td><td>09:20 Bio T3 · 10:20 Epi T4 · 14:00 Documentación (slides du jour) · 17:30 Documentación · 20:30 Comprendre.</td></tr>
+<tr><td class="d">mar 22</td><td>09:20 Antro T2 · 10:20 Ana T2.2 · 14:00 Bio T2 (ce soir) · 15:30 Bio · 18:00 Comprendre · 19:00 manuel : Tortora, chapitre sang.</td></tr>
+<tr><td class="d">mer 23</td><td>05:30 Anki matinal · 09:20 Bio T4 · 10:20 Antro T3 · 14:00 Bio T2 + Ana T2.1 · 20:30 Comprendre ×2.</td></tr>
+<tr><td class="d">jeu 24</td><td>09:20 Ana T2.3 · 10:20 Epi T5 · 14:00 Epi T2 + Ana T2.1 II · 20:30 Comprendre ×2.</td></tr>
+<tr><td class="d">ven 25</td><td>09:20 Ana T3.1 intro · 15:30 Epi T3 · 17:30 Antro T1-2 · 20:30 Comprendre ×2.</td></tr>
+<tr><td class="d">sam 26 · dim 27</td><td>Antro T4, Epi T4-T5 si pas faits, Bio T4 · dimanche : première simulation (10 QCM Ana T1-2 en espagnol) · contrôle du dimanche : ligne « dim 27 sept ».</td></tr>
+</table></div>
+
+<h2 id="dimanche">15 · Le contrôle du dimanche</h2>
+<p>À 13:30, une ligne par matière. Cinq minutes. La règle de décision est en bas.</p>
+<div class="scroll"><table>
+<tr><th>Matière</th><th>Dernier tema donné par le prof</th><th>Dernier tema préparé</th><th>Avance</th><th>Prochaine échéance</th><th>Bloc « su » ?</th></tr>
+<tr><td>Anatomía</td><td class="mono">…</td><td class="mono">…</td><td class="mono">… / 3</td><td>Q1 · 7-8 oct</td><td class="mono">blanc : … / 15</td></tr>
+<tr><td>Biología</td><td class="mono">…</td><td class="mono">…</td><td class="mono">… / 3</td><td>práctica 1 · 19-23 oct</td><td class="mono">simulation : …</td></tr>
+<tr><td>Epidemiología</td><td class="mono">…</td><td class="mono">…</td><td class="mono">… / 3</td><td>infografía · fin oct</td><td class="mono">exercices : … / 3 justes</td></tr>
+<tr><td>Antropología</td><td class="mono">…</td><td class="mono">…</td><td class="mono">… / 3</td><td>cuestionario T1-3 · 16 oct</td><td class="mono">blanc : … / 15</td></tr>
+<tr><td>Documentación</td><td class="mono">…</td><td class="mono">…</td><td class="mono">… / 3</td><td>?</td><td class="mono"></td></tr>
+<tr><td>Español</td><td colspan="5" class="mono">erreurs / 100 mots : … · oral sans pause : … min · conversation : … jours sur 7</td></tr>
+</table></div>
+<ul>
+<li>Une matière sous 3 d'avance passe <strong>lundi 09:20</strong> en premier, et prend le 10:20 du mercredi si elle est à 1 ou moins.</li>
+<li>Une échéance à moins de 10 jours dont le bloc n'est pas « su » prend le lundi 10:20 (blanc) et le dimanche 09:20 (simulation).</li>
+<li>Un livrable à moins de 15 jours qui n'a pas commencé prend les blocs Projets perso de la semaine, tous.</li>
+<li>Anki non fait un jour de la semaine : le lendemain, Anki 1 et Anki 2 ne s'arrêtent pas avant zéro échéance, quoi qu'il en coûte au bloc de 09:20.</li>
+</ul>
+
+<h2 id="manque">16 · Ce qui manque encore</h2>
+<ul>
+<li><strong>Documentación</strong> : aucun document. Ce plan la traite comme les autres (préparer, comprendre, cartes) sans savoir comment elle note. Priorité de la semaine.</li>
+<li><strong>Le jour exact des cuestionarios d'Anatomía</strong> (mercredi Bruna ou jeudi Guadalupe) et des prácticas de Biología (mardi ou mercredi) : le cronograma donne la semaine, Canvas donnera le jour.</li>
+<li><strong>La date de remise de l'infografía</strong> : « octobre », instructions sur Canvas. Regarde dès ce soir.</li>
+<li><strong>Les slides du deuxième année</strong> peuvent différer de cette année : Anatomía a changé l'ordre des temas (T10 avant T7), Epidemiología a retiré T18. Le cronograma de cette année fait foi.</li>
+<li><strong>Le tuteur d'espagnol</strong> : les deux blocs du vendredi et du samedi supposent quelqu'un pour te corriger. Sans tuteur, un compañero ou Claude en dictée — mais dis-le, pour que le plan le sache.</li>
+<li><strong>Dans la Batcave</strong>, rien n'est câblé de ce document : les blocs gardent leurs noms, les dates de contrôle continu ne sont pas saisies. À faire ce week-end, avec ton feu vert : les ≈ 25 dates dans Études, Santa Faz, et les renommages.</li>
+</ul>
+
+<footer>
+Établie le 16 septembre 2026 à partir des 22 documents du dossier DOC S1 (guías docentes, plans de travail, cronogramas du groupe T11-12, présentations des matières, calendrier académique 2026-2027 d'Alicante), de l'emploi du temps lu dans Google Agenda et du Dossier Español v2.4. Cette page réunit « Le plan du semestre », « Le calendrier du semestre » et « Ma journée » du même jour, et remplace « Le mur de novembre », dont les dates de Biología et d'Epidemiología étaient fausses. Fixe dans la grille, non répété ici : sport, Coran, repas, Anki, Comprendre le cours du jour, blocs Español.
+</footer>
+
+
+</div>
+</body>
+</html>
