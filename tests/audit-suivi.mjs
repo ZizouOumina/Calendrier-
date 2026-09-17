@@ -48,9 +48,9 @@ console.log('\n═══ 1. La minute de révision : entrée = sortie ═══'
   const t = await plan(fr);
   const m = ligneRev(t);
   ok(m && m.fait === '55 min', '55 min de révision → « ' + (m?m.fait:'?') + ' » affichées (55 min attendu)');
-  ok(m && m.cible === '4 h 25', 'cible du lundi : ' + (m?m.cible:'?') + ' (4 h 25 attendu)');
-  /* 265 − 55 = 210 min : la même phrase ne mélange plus heures décimales et heures-minutes */
-  ok(m && m.reste === '3 h 30', 'reste = cible − fait : ' + (m?m.reste:'?') + ' (3 h 30 attendu)');
+  ok(m && m.cible === '5 h 05', 'cible du lundi : ' + (m?m.cible:'?') + ' (5 h 05 attendu)');
+  /* 305 − 55 = 250 min : la même phrase ne mélange plus heures décimales et heures-minutes */
+  ok(m && m.reste === '4 h 10', 'reste = cible − fait : ' + (m?m.reste:'?') + ' (4 h 10 attendu)');
   await ctx.close();
 }
 
@@ -101,8 +101,8 @@ console.log('\n═══ 5. Le bloc « Cours » de la fac n\'est pas de la révi
   const {ctx, page, fr} = await ouvrir({});
   const t = await plan(fr);
   const cible = (ligneRev(t) || {}).cible || '';
-  /* 4 h de cours magistral en plus feraient 8 h 25 : la cible doit rester à 4 h 25 */
-  ok(cible === '4 h 25', 'cible = 4 h 25, les 15:30–19:30 de fac ne sont pas comptés (' + cible + ')');
+  /* 4 h de cours magistral en plus feraient 9 h 05 : la cible doit rester à 5 h 05 */
+  ok(cible === '5 h 05', 'cible = 5 h 05, les 15:30–19:30 de fac ne sont pas comptés (' + cible + ')');
   await ctx.close();
 }
 

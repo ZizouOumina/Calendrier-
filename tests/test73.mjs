@@ -52,7 +52,7 @@ console.log('\n== 301) Les cibles du jour et de la semaine viennent de la grille
   const p3 = await ouvrir('2026-12-08T18:00:00+02:00');
   const sem3 = await p3.fr.evaluate(() => document.getElementById('dash-semaine').innerText.replace(/\s+/g, ' '));
   const c3 = await cellules(p3.fr);
-  ok(/de projets sur 16 h 06/.test(sem3), 'décembre : les projets perso valent 16 h 06 (' + sem3.slice(0, 130) + ')');
+  ok(/de projets sur 17 h/.test(sem3), 'décembre : les projets perso valent 17 h (' + sem3.slice(0, 130) + ')');
   ok(!/d'espagnol sur/.test(sem3), 'décembre : plus une minute d\'espagnol pur dans la grille');
   ok(!/\/ /.test(c3[2]), 'décembre : la cellule Español n\'a plus de cible du jour (' + c3[2] + ')');
   await p3.ctx.close();

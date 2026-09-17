@@ -50,13 +50,15 @@ console.log('\n== 112) Semis : trimestres et mois ==');
      Lot 40 : le départ passe au vendredi 18 (le jeudi 17 est la journée de mise en place).
      Le jeudi 17 sort du compte : 285,9 → 282,0 et 53,3 → 49,3.
      Lot 41 : le départ passe au samedi 19 (deux jours de mise en place, le sommeil à
-     remettre d'aplomb). Le vendredi 18 sort du compte. Lot 41 : la grille du 18 septembre porte 315,4 h au T1 et 52,3 h en septembre. */
+     remettre d'aplomb). Le vendredi 18 sort du compte. Lot 41 : la grille du 18 septembre porte 315,4 h au T1 et 52,3 h en septembre.
+     Lot 41 bis : le mercredi 05:30 passe aux projets le 19 octobre (−50 min de revision
+     par mercredi d'octobre a decembre), le T1 tombe a 311,0 h ; septembre ne bouge pas. */
   /* 296,8 → 298,4 h depuis que les jours feries ont un agenda. T1 en contient deux, le
      vendredi 9 et le lundi 12 octobre : chacun perd « Clore le cours du jour »
      (55 min) et gagne « Annale complète » et « Correction + cartes » (110 min), soit
      +55 min de revision par jour. Deux jours × 55 min × 0,89 de marge = +1,6 h.
      Septembre ne bouge pas : les deux jours sont en octobre. */
-  ok(t1 && t1.cible === 315.4 && m9 && m9.cible === 52.3, 'T1 révision calculée depuis la grille, à partir du 19 : 315,4 h → septembre 52,3 h (' + (t1 && t1.cible) + ' / ' + (m9 && m9.cible) + ')');
+  ok(t1 && t1.cible === 311 && m9 && m9.cible === 52.3, 'T1 révision calculée depuis la grille, à partir du 19 : 311,0 h → septembre 52,3 h (' + (t1 && t1.cible) + ' / ' + (m9 && m9.cible) + ')');
   ok(t1 && t1.auto === true, 'la cible est marquée automatique : elle suivra la grille');
   ok(!o.liste.some(x => x.periode === 'mois' && /exo:|snus/.test(x.metrique)), 'les niveaux (tractions) et la série snus restent au trimestre');
   await ctx.close();

@@ -581,11 +581,11 @@
   .emb-ds .ds-score .ds-verdict{font-size:12px; color:var(--ink-2);}
   .emb-ds .ds-score .ds-verdict.ds-ok{color:var(--ledger);}
   .emb-ds .ds-score .ds-verdict.ds-ko{color:var(--red);}
-  .emb-ds #ds-maitrise td{padding:6px 8px; text-align:center;}
-  .emb-ds #ds-maitrise td:first-child{text-align:left; white-space:nowrap;}
-  .emb-ds #ds-maitrise select{font-family:var(--mono); font-size:13px; padding:4px 6px; background:var(--sheet); color:var(--ink); border:1px solid var(--line); width:56px;}
-  .emb-ds #ds-maitrise td.ds-low select{border-color:var(--red); background:var(--red-soft);}
-  .emb-ds #ds-maitrise td.ds-hi select{border-color:var(--ledger); background:var(--ledger-soft);}
+  .emb-ds #ds-maitrise-tbl td{padding:6px 8px; text-align:center;}
+  .emb-ds #ds-maitrise-tbl td:first-child{text-align:left; white-space:nowrap;}
+  .emb-ds #ds-maitrise-tbl select{font-family:var(--mono); font-size:13px; padding:4px 6px; background:var(--sheet); color:var(--ink); border:1px solid var(--line); width:56px;}
+  .emb-ds #ds-maitrise-tbl td.ds-low select{border-color:var(--red); background:var(--red-soft);}
+  .emb-ds #ds-maitrise-tbl td.ds-hi select{border-color:var(--ledger); background:var(--ledger-soft);}
   .emb-ds #ds-maitrise-msg{font-size:13.5px; margin-top:8px;}
   .emb-ds .ds-paliers td:first-child{white-space:nowrap; font-weight:600;}
   .emb-ds #ds-glo-table td:first-child{font-weight:600; white-space:normal; min-width:150px;}
@@ -2254,7 +2254,7 @@
 
     <h3 id="ds-maitrise">Le tableau de maîtrise</h3>
     <p>Chaque dimanche, note de 1 à 5 ta maîtrise de chaque pilier (1 : je ne saurais pas l'expliquer ; 3 : je l'explique avec le dossier ouvert ; 5 : je l'explique et je l'applique sur des chiffres réels). Le score de l'auto-test de la semaine se remplit depuis le programme. Tout ce qui reste sous 3 revient dans le bloc du mercredi suivant. Les notes restent dans ce navigateur.</p>
-    <div class="ds-tw"><table id="ds-maitrise"><thead><tr><th>Semaine</th><th>1 · Marge</th><th>2 · Créative</th><th>3 · Tunnel</th><th>4 · Mesure</th><th>5 · Règles</th><th>Auto-test</th></tr></thead><tbody></tbody></table></div>
+    <div class="ds-tw"><table id="ds-maitrise-tbl"><thead><tr><th>Semaine</th><th>1 · Marge</th><th>2 · Créative</th><th>3 · Tunnel</th><th>4 · Mesure</th><th>5 · Règles</th><th>Auto-test</th></tr></thead><tbody></tbody></table></div>
     <div id="ds-maitrise-msg"></div>
 
     <h3>La règle du capital : deux argents qui ne se mélangent jamais</h3>

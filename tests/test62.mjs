@@ -11,8 +11,8 @@ const MOCK = () => {
   window.claude = { use(n){ return Promise.resolve(n === 'mcp' ? mcp : null); } };
 };
 /* Lundi 7 septembre 2026, 12:00. Dix jours de semaine suivis (24 août → 4 septembre) :
-   Anki démarré avec 15 min de retard, tous les blocs tenus sauf Projets perso 2 (14:00),
-   jamais lancé. Sommeil à 6 h sur 7 nuits, Tractions à 8/8/8 sur 4 séances, un partiel
+   Anki démarré avec 15 min de retard, tous les blocs tenus sauf « Projets perso matinal »
+   (05:30, le mercredi et le vendredi), jamais lancé. Sommeil à 6 h sur 7 nuits, Tractions à 8/8/8 sur 4 séances, un partiel
    d'Anatomía dans 18 jours alors que toute la révision étiquetée est en Histología. */
 const seed = (() => {
   const ms = (iso, hm) => new Date(iso + 'T' + hm + ':00+02:00').getTime();
@@ -24,7 +24,10 @@ const seed = (() => {
     if(dow === 5 && (b[0] === '13:00')) return; /* vendredi : pas de PP2 à 13:00 */
     sessions.push({id:'s' + i + '-' + k, date: iso, debut: ms(iso, b[0]), fin: ms(iso, b[1]), duree: Math.round((ms(iso, b[1]) - ms(iso, b[0])) / 60000), type: b[2], label: b[3]});
   }));
-  ['2026-08-17','2026-08-18','2026-08-19','2026-08-20','2026-08-21'].forEach((iso, i) => blocs.forEach((b, k) => {
+  /* le vendredi 14 fait partie de la fenetre « 14 j avant » : sans lui, « Projets perso
+     matinal » n'y apparait que deux fois (mer. 19, ven. 21) et la tendance reste muette,
+     car il en faut trois. */
+  ['2026-08-14','2026-08-17','2026-08-18','2026-08-19','2026-08-20','2026-08-21'].forEach((iso, i) => blocs.forEach((b, k) => {
     const deb = k === 0 ? '07:50' : b[0];
     sessions.push({id:'a' + i + '-' + k, date: iso, debut: ms(iso, deb), fin: ms(iso, b[1]), duree: Math.round((ms(iso, b[1]) - ms(iso, deb)) / 60000), type: b[2], label: b[3]});
   }));
@@ -53,8 +56,8 @@ console.log('\n== 218) Insights v2 : bloc fragile, dérive, dette de sommeil, st
   const ins = await fr.evaluate(() => window.__bcInsights().map(i => ({ title: i.title, text: i.text, action: i.action || '', score: i.score, n: i.n, page: i.page || '', tend: i.tendance ? i.tendance.txt : '', bon: i.tendance ? i.tendance.bon : null, serie: i.serie && i.serie.v ? i.serie.v.length : 0 })));
   const par = t => ins.find(i => i.title === t);
   const bf = par('Bloc le plus fragile');
-  ok(bf && /Projets perso 2 \(14:00\)/.test(bf.text) && /0 fois sur/.test(bf.text) && bf.score === 100, 'bloc fragile = Projets perso 2 à 14:00, jamais tenu, score 100 : ' + (bf && bf.text.slice(0, 80)));
-  ok(bf && /^stable vs 14 j avant$/.test(bf.tend) && bf.page === 'calendrier', 'bloc fragile : tendance « stable » (0/5 avant, 0/8 maintenant), lien Calendrier : ' + (bf && bf.tend));
+  ok(bf && /Projets perso matinal \(05:30\)/.test(bf.text) && /0 fois sur 4/.test(bf.text) && bf.score === 100, 'bloc fragile = Projets perso matinal à 05:30, jamais tenu, score 100 : ' + (bf && bf.text.slice(0, 80)));
+  ok(bf && /^stable vs 14 j avant$/.test(bf.tend) && bf.page === 'calendrier', 'bloc fragile : tendance « stable » (0/3 avant, 0/4 maintenant), lien Calendrier : ' + (bf && bf.tend));
   const dv = par('Dérive du premier bloc');
   ok(dv && /en moyenne 15 min/.test(dv.text) && dv.score === 30, 'dérive = 15 min après 07:20, score 30 : ' + (dv && dv.text.slice(0, 70)));
   ok(dv && dv.tend === '−15 min vs 14 j avant' && dv.bon === true && dv.serie === 10, 'dérive : tendance −15 min (30 min de retard 14 j avant), bonne, série de 10 jours : ' + (dv && dv.tend + ' / ' + dv.serie));

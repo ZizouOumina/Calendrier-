@@ -16,7 +16,7 @@ async function ouvrir(seed){
   }, seed);
   const page = await ctx.newPage();
   page.on('pageerror', e => { errs++; console.log('  PAGEERROR: ' + e.message); });
-  await page.clock.install({ time: new Date('2026-09-02T10:00:00+02:00') });   // mercredi : objectif 5 h 55
+  await page.clock.install({ time: new Date('2026-09-02T10:00:00+02:00') });   // mercredi : objectif 5 h 05
   await page.goto(URL);
   await page.frameLocator('#f').locator('#dash-temps').waitFor({ state:'attached', timeout:15000 });
   const fr = page.frames().find(x => x.url().includes('batcave.html'));
@@ -47,12 +47,12 @@ console.log('\n== 32) Temps du jour sur le tableau de bord ==');
   /* trois compteurs depuis le lot 24 : l'espagnol a sa propre cellule, il ne se cache plus
      dans « Projets perso » */
   ok(d.cells.length === 3, 'trois compteurs — révision, projets perso, espagnol : ' + d.cells.join(' | '));
-ok(/Révision2h30\/5h55/.test(d.cells[0]), 'révision avec objectif du jour : ' + d.cells[0]);
+ok(/Révision2h30\/5h05/.test(d.cells[0]), 'révision avec objectif du jour : ' + d.cells[0]);
 ok(/Projetsperso1h30/.test(d.cells[1]), 'projets perso du jour : ' + d.cells[1]);
   ok(/4 h au total/.test(d.total), 'total = révision + projets, sans espagnol : ' + d.total);
   /* depuis B3, les projets perso ont aussi une cible du jour derivee du planning (3 h en
      semaine) : deux jauges, la premiere toujours a 50 % de 5 h. */
-  ok(d.barres === 2 && d.largeur === '42%', 'deux jauges (révision et projets), révision à 42 % de 5 h 55 (mercredi, Anki matinal) (' + d.largeur + ')');
+  ok(d.barres === 2 && d.largeur === '49%', 'deux jauges (révision et projets), révision à 49 % de 5 h 05 (mercredi, Projets perso matinal) (' + d.largeur + ')');
   await ctx.close();
 }
 {
@@ -64,7 +64,7 @@ ok(/Projetsperso1h30/.test(d.cells[1]), 'projets perso du jour : ' + d.cells[1])
   }));
   ok(/rien encore aujourd'hui/.test(d.total), 'journée vierge : ' + d.total);
   ok(d.vides === 3, 'les trois compteurs sont grisés');
-  ok(/Révision0\/5h55/.test(d.cours), 'objectif tout de même rappelé : ' + d.cours);
+  ok(/Révision0\/5h05/.test(d.cours), 'objectif tout de même rappelé : ' + d.cours);
   await ctx.close();
 }
 {
@@ -82,7 +82,7 @@ ok(/Projetsperso1h30/.test(d.cells[1]), 'projets perso du jour : ' + d.cells[1])
     total: document.getElementById('dash-temps-total').textContent,
     serie: document.getElementById('dash-serie').textContent
   }));
-  ok(/1h\/5h55/.test(d.cours), 'après un bloc de cours : ' + d.cours);
+  ok(/1h\/5h05/.test(d.cours), 'après un bloc de cours : ' + d.cours);
   ok(/1 h au total/.test(d.total), 'total mis à jour : ' + d.total);
   ok(/Série : 1 jour/.test(d.serie), 'série affichée à côté du bouton : ' + d.serie.trim());
   await ctx.close();

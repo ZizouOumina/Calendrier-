@@ -15,7 +15,11 @@ for(const f of pages){
        n'y est jamais joignable, alors que curl la charge. C'est un artefact du bac à
        sable, pas un défaut des pages — on l'écarte pour ne garder que le vrai signal. */
     page.on('console', m => { const t = m.text();
-      if(m.type() === 'error' && !/ERR_CONNECTION_RESET|fonts\.g(oogleapis|static)/.test(t))
+      /* Le proxy du bac a sable presente son propre certificat : le refus arrive tantot
+         en ERR_CONNECTION_RESET, tantot en ERR_CERT_AUTHORITY_INVALID, et ce dernier
+         message ne porte pas l'URL. Ces pages ne chargent rien d'externe hors Google
+         Fonts : ecarter les deux ne masque aucun vrai defaut. */
+      if(m.type() === 'error' && !/ERR_CONNECTION_RESET|ERR_CERT_AUTHORITY_INVALID|fonts\.g(oogleapis|static)/.test(t))
         err.push('console: ' + t.slice(0,80)); });
     page.on('requestfailed', r => { if(!/fonts\.g(oogleapis|static)/.test(r.url())) err.push('requête échouée : ' + r.url().slice(0,60)); });
     /* « load » attend la feuille Google Fonts, que le proxy du bac a sable refuse : chaque

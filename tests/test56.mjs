@@ -104,7 +104,7 @@ console.log('\n== 200) Depuis l\'appli : tout est effacé ici et dans le cloud, 
      (320 → 485 min de revision prevue) et le lundi 12 octobre (476 → 531). Les deux sont
      dans la fenetre de partiels, donc la plage de cours liberee devient de l'annale complete,
      sa correction et de la revision ciblee. +220 min nets x 0,89 = 3,26 h, x 84/91 = 3,01 h. */
-  ok(!!revT1 && revT1.debut === '2026-09-08' && revT1.cible === 299.4, 'Révision du trimestre : repart du 8 → 299,4 h (' + (revT1 && revT1.cible) + ')');
+  ok(!!revT1 && revT1.debut === '2026-09-08' && revT1.cible === 295.4, 'Révision du trimestre : repart du 8 → 295,4 h (' + (revT1 && revT1.cible) + ')');
   ok(!!sommeilSept && sommeilSept.debut === '2026-09-08' && sommeilSept.cible === 7.75, 'une moyenne (sommeil, 7,75 h) repart du 8 sans changer de cible');
   await page.waitForTimeout(2200);   /* rechargement automatique */
   await page.frameLocator('#f').locator('#dash-plan').waitFor({ state:'attached', timeout:15000 });

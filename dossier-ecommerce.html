@@ -131,10 +131,10 @@
   .score input{width:60px; font-family:var(--mono); font-size:14px; padding:5px 8px; border:1px solid var(--line); background:var(--sheet); color:var(--ink);}
   .score .verdict{font-size:12px; color:var(--ink-2);}
   .score .verdict.ok{color:var(--ledger);} .score .verdict.ko{color:var(--red);}
-  #maitrise td{padding:6px 8px; text-align:center;} #maitrise td:first-child{text-align:left; white-space:nowrap;}
-  #maitrise select{font-family:var(--mono); font-size:13px; padding:4px 6px; background:var(--sheet); color:var(--ink); border:1px solid var(--line); width:56px;}
-  #maitrise td.low select{border-color:var(--red); background:var(--red-soft);}
-  #maitrise td.hi select{border-color:var(--ledger); background:var(--ledger-soft);}
+  #maitrise-tbl td{padding:6px 8px; text-align:center;} #maitrise-tbl td:first-child{text-align:left; white-space:nowrap;}
+  #maitrise-tbl select{font-family:var(--mono); font-size:13px; padding:4px 6px; background:var(--sheet); color:var(--ink); border:1px solid var(--line); width:56px;}
+  #maitrise-tbl td.low select{border-color:var(--red); background:var(--red-soft);}
+  #maitrise-tbl td.hi select{border-color:var(--ledger); background:var(--ledger-soft);}
   #maitrise-msg{font-size:13.5px; margin-top:8px;}
   .paliers td:first-child{white-space:nowrap; font-weight:600;}
   #glo-table td:first-child{font-weight:600; white-space:normal; min-width:150px;}
@@ -315,7 +315,7 @@
 
     <h3 id="maitrise">Le tableau de maîtrise</h3>
     <p>Chaque dimanche, note de 1 à 5 ta maîtrise de chaque pilier (1 : je ne saurais pas l'expliquer ; 3 : je l'explique avec le dossier ouvert ; 5 : je l'explique et je l'applique sur des chiffres réels). Le score de l'auto-test de la semaine se remplit depuis le programme. Tout ce qui reste sous 3 revient dans le bloc du mercredi suivant. Les notes restent dans ce navigateur.</p>
-    <div class="tw"><table id="maitrise"><thead><tr><th>Semaine</th><th>1 · Marge</th><th>2 · Créative</th><th>3 · Tunnel</th><th>4 · Mesure</th><th>5 · Règles</th><th>Auto-test</th></tr></thead><tbody></tbody></table></div>
+    <div class="tw"><table id="maitrise-tbl"><thead><tr><th>Semaine</th><th>1 · Marge</th><th>2 · Créative</th><th>3 · Tunnel</th><th>4 · Mesure</th><th>5 · Règles</th><th>Auto-test</th></tr></thead><tbody></tbody></table></div>
     <div id="maitrise-msg"></div>
 
     <h3>La règle du capital : deux argents qui ne se mélangent jamais</h3>
@@ -689,7 +689,7 @@
         <li><input type="checkbox" id="s7-1"><span class="tag a">Apprendre</span><label for="s7-1">Lis les sections 13 et 06 de ce dossier, note tes questions. Puis un rendez-vous (souvent gratuit) avec une gestoría en ligne spécialisée e-commerce : Declarando, Ayuda T Pymes, ou un gestor local à Alicante. Pose tes questions, compare deux devis.</label></li>
         <li><input type="checkbox" id="s7-2"><span class="tag c">Construire</span><label for="s7-2">Certificado digital (FNMT) ou Cl@ve : indispensable pour tout ce qui suit. Si tu n'es pas espagnol, ton NIE et ton empadronamiento à Alicante doivent être en règle.</label></li>
         <li><input type="checkbox" id="s7-3"><span class="tag c">Construire</span><label for="s7-3">Alta autónomo : déclaration censale (modelo 036/037) à l'Agencia Tributaria avec l'épigraphe IAE 665 (commerce de détail par correspondance), puis alta au RETA à la Seguridad Social avec la tarifa plana. Le gestor le fait avec toi en une heure.</label></li>
-        <li><input type="checkbox" id="s7-4"><span class="tag c">Construire</span><label for="s7-3b"><strong>Adhésion au guichet OSS (modelo 035), en même temps que l'alta.</strong> L'inscription est gratuite et volontaire tant que tu es sous 10 000 € de ventes UE hors Espagne : tu peux y adhérer avant d'avoir franchi le seuil. Tu factures alors la bonne TVA dès ta première commande française ou italienne, au lieu de découvrir en plein trimestre que tu as franchi un seuil cumulé européen et de devoir tout refacturer (section 24). Demande-le au gestor le jour du modelo 036.</label></li>
+        <li><input type="checkbox" id="s7-3b"><span class="tag c">Construire</span><label for="s7-3b"><strong>Adhésion au guichet OSS (modelo 035), en même temps que l'alta.</strong> L'inscription est gratuite et volontaire tant que tu es sous 10 000 € de ventes UE hors Espagne : tu peux y adhérer avant d'avoir franchi le seuil. Tu factures alors la bonne TVA dès ta première commande française ou italienne, au lieu de découvrir en plein trimestre que tu as franchi un seuil cumulé européen et de devoir tout refacturer (section 24). Demande-le au gestor le jour du modelo 036.</label></li>
         <li><input type="checkbox" id="s7-4"><span class="tag c">Construire</span><label for="s7-4">Compte bancaire séparé pour l'activité (Qonto, Revolut Business, ou une banque espagnole), carte dédiée aux dépenses pub. Jamais de mélange avec ton compte perso.</label></li>
         <li><input type="checkbox" id="s7-5"><span class="tag c">Construire</span><label for="s7-5">Outil de facturation et compta connecté à Shopify (Holded ou Quipu, ou celui du gestor) : chaque vente génère une facture avec IVA, chaque dépense est archivée.</label></li>
         <li><input type="checkbox" id="s7-6"><span class="tag c">Construire</span><label for="s7-6">Active Shopify Payments et PayPal avec ton NIF et ton compte pro. Complète l'aviso legal avec ton nom, ton NIF et ton adresse (obligatoire, LSSI).</label></li>
@@ -2507,7 +2507,7 @@ exemple :  COUSSIN_douleur_A3_UGC_ES_v2</div>
   try{ etat = JSON.parse(localStorage.getItem(KEY) || '{}') || {}; }catch(e){ etat = {}; }
   function sauve(){ try{ localStorage.setItem(KEY, JSON.stringify(etat)); }catch(e){} }
   var piliers = ['marge','creative','tunnel','mesure','regles'];
-  var tb = document.querySelector('#maitrise tbody'), msg = document.getElementById('maitrise-msg');
+  var tb = document.querySelector('#maitrise-tbl tbody'), msg = document.getElementById('maitrise-msg');
   function verdict(w){
     var v = document.getElementById('verdict-' + w); if(!v) return;
     var s = etat['score' + w];
