@@ -153,7 +153,7 @@
     <p class="lede">Le document unique. Ce qui reste à faire, ce qui est déjà fait, et chaque bascule datée du programme jusqu'au printemps 2027. La liste des quatre jours a été absorbée ici — il n'y a plus qu'une page à ouvrir.</p>
 
     <div class="strip">
-      <div><div class="k">Aujourd'hui</div><div class="v" id="s-jour">—</div><div class="s" id="s-jour-s">avant le premier jour de cours</div></div>
+      <div><div class="k">Aujourd'hui</div><div class="v" id="s-jour">—</div><div class="s" id="s-jour-s">avant le jour 1 de la Batcave</div></div>
       <div><div class="k">Qui bloque</div><div class="v">0</div><div class="s">plus rien. L'emploi du temps est relevé et saisi, le parc est reconnu.</div></div>
       <div><div class="k">Avant lundi</div><div class="v">4</div><div class="s">lignes, dont trois sont placées dans la journée de dimanche. Le reste se rattrape sans conséquence.</div></div>
       <div><div class="k">Prochaine bascule</div><div class="v" id="s-next">—</div><div class="s" id="s-next-s">—</div></div>
@@ -1018,10 +1018,11 @@
     }
   });
 
-  var debut = '2026-09-14', j = jours(auj, debut);
+  /* le jour 1 de la Batcave, samedi 19 septembre : la meme date que PROGRAMME_DEBUT */
+  var debut = '2026-09-19', j = jours(auj, debut);
   var sj = document.getElementById('s-jour'), sjs = document.getElementById('s-jour-s');
   if(sj){
-    if(j > 0){ sj.textContent = 'J\u2212' + j; if(sjs) sjs.textContent = 'avant le premier jour de cours'; }
+    if(j > 0){ sj.textContent = 'J\u2212' + j; if(sjs) sjs.textContent = 'avant le jour 1 de la Batcave'; }
     else if(j === 0){ sj.textContent = 'Jour 1'; if(sjs) sjs.textContent = 'le programme commence aujourd\u2019hui'; }
     else { sj.textContent = 'Jour ' + (1 - j); if(sjs) sjs.textContent = 'semaine ' + (Math.floor((-j) / 7) + 1) + ' du programme'; }
   }
