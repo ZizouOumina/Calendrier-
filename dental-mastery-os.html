@@ -1,0 +1,711 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dental Mastery OS</title>
+<meta name="description" content="Le second cursus d'odontologie, parallèle à la fac : le référentiel de compétences, l'arbre des connaissances, la feuille de route sur cinq ans, l'année 1 en détail, les 90 et 30 premiers jours, et les systèmes qui le font tenir.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root{
+    --bg:#f3f5f7; --paper:#ffffff; --paper-2:#e9eef2; --line:#d3dbe2; --line-soft:#e3e9ee;
+    --ink:#14202b; --ink-2:#4a5b6a; --ink-3:#7b8b98;
+    --accent:#0e7c8c; --accent-ink:#0a5f6c; --accent-soft:#d9f0f3;
+    --core:#b8541c; --core-soft:#fbe9dd; --imp:#0a5f6c; --imp-soft:#d9f0f3; --adv:#5b4e9c; --adv-soft:#e6e2f4; --spe:#5b6b7a; --spe-soft:#e6ebef;
+    --warn:#a6382c; --warn-soft:#f6e1dd; --done:#2f8f5b; --done-soft:#dcede4;
+    --display:'Bebas Neue','Arial Narrow',Impact,sans-serif;
+    --body:'Barlow','Helvetica Neue',Arial,sans-serif;
+    --mono:'IBM Plex Mono','SFMono-Regular',Menlo,monospace;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#0b1219; --paper:#111b25; --paper-2:#172330; --line:#243544; --line-soft:#1c2a37;
+      --ink:#e2ecf2; --ink-2:#a3b4c2; --ink-3:#6f8292;
+      --accent:#3fc7d9; --accent-ink:#7ddbe8; --accent-soft:#12333b;
+      --core:#f0935a; --core-soft:#3a2416; --imp:#7ddbe8; --imp-soft:#12333b; --adv:#b4a6e8; --adv-soft:#26213d; --spe:#93a4b3; --spe-soft:#1d2a36;
+      --warn:#e08a7e; --warn-soft:#39201c; --done:#4fc07f; --done-soft:#123227;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#0b1219; --paper:#111b25; --paper-2:#172330; --line:#243544; --line-soft:#1c2a37;
+    --ink:#e2ecf2; --ink-2:#a3b4c2; --ink-3:#6f8292;
+    --accent:#3fc7d9; --accent-ink:#7ddbe8; --accent-soft:#12333b;
+    --core:#f0935a; --core-soft:#3a2416; --imp:#7ddbe8; --imp-soft:#12333b; --adv:#b4a6e8; --adv-soft:#26213d; --spe:#93a4b3; --spe-soft:#1d2a36;
+    --warn:#e08a7e; --warn-soft:#39201c; --done:#4fc07f; --done-soft:#123227;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; background:var(--bg); color:var(--ink); font-family:var(--body); font-size:15.5px; line-height:1.55; -webkit-font-smoothing:antialiased;}
+  a{color:var(--accent-ink);}
+  h1,h2,h3,h4{font-family:var(--display); font-weight:400; letter-spacing:.03em; margin:0; text-wrap:balance;}
+  p{margin:0 0 10px;}
+  ul,ol{margin:0 0 12px; padding-left:20px;} li{margin:4px 0;}
+  .wrap{display:grid; grid-template-columns:230px minmax(0,1fr); gap:34px; max-width:1180px; margin:0 auto; padding:36px 28px 90px;}
+  .side{position:sticky; top:20px; align-self:start; display:flex; flex-direction:column; gap:14px; max-height:calc(100vh - 40px); overflow-y:auto;}
+  .brand{display:flex; flex-direction:column; gap:2px;}
+  .brand .t{font-family:var(--display); font-size:30px; line-height:1;}
+  .brand .s{font-family:var(--mono); font-size:10.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--accent);}
+  .toc{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:1px;}
+  .toc li.part{font-family:var(--mono); font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-3); margin:10px 0 3px 8px;}
+  .toc a{display:flex; gap:8px; text-decoration:none; color:var(--ink-2); font-size:13px; padding:4px 8px; border-left:2px solid transparent;}
+  .toc a:hover{color:var(--ink); background:var(--paper);}
+  .toc a b{font-family:var(--mono); font-weight:500; font-size:10.5px; color:var(--ink-3); min-width:22px;}
+  header.top{margin-bottom:26px; max-width:70ch;}
+  header.top .eyebrow{font-family:var(--mono); font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:var(--accent); margin-bottom:8px;}
+  header.top h1{font-size:48px; line-height:1;}
+  header.top .lead{color:var(--ink-2); margin-top:12px; font-size:16.5px;}
+  header.top .lead b{color:var(--ink); font-weight:600;}
+  section.grp{margin-bottom:40px; scroll-margin-top:16px;}
+  section.grp h2{font-size:27px; color:var(--ink); display:flex; align-items:baseline; gap:12px; margin-bottom:6px;}
+  section.grp h2 .k{font-family:var(--mono); font-size:12px; color:var(--accent); letter-spacing:.1em;}
+  section.grp .intro{color:var(--ink-2); font-size:14.5px; max-width:72ch; margin-bottom:12px;}
+  section.grp p, section.grp li{max-width:78ch;}
+  h3{font-size:19px; margin:20px 0 6px; color:var(--ink);}
+  h4{font-family:var(--body); font-weight:700; font-size:14px; margin:14px 0 4px; color:var(--ink);}
+  .note{background:var(--paper); border-left:3px solid var(--accent); padding:10px 14px; font-size:14px; color:var(--ink-2); margin:10px 0 14px; max-width:78ch;}
+  .note b{color:var(--ink);}
+  .verdict{background:var(--paper); border-left:4px solid var(--core); padding:14px 18px; margin:12px 0 18px; max-width:78ch;}
+  .verdict b{color:var(--ink);}
+  .warn{background:var(--warn-soft); border-left:3px solid var(--warn); padding:10px 14px; font-size:14px; margin:10px 0 14px; max-width:78ch;}
+  table{border-collapse:collapse; width:100%; font-size:13.5px; margin:8px 0 14px; background:var(--paper);}
+  .tbl{overflow-x:auto; margin-bottom:6px;}
+  th,td{text-align:left; padding:7px 10px; border:1px solid var(--line-soft); vertical-align:top;}
+  th{font-family:var(--mono); font-size:10.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-3); font-weight:500; background:var(--paper-2);}
+  td.h{font-family:var(--mono); font-size:12px; white-space:nowrap; color:var(--accent-ink); font-variant-numeric:tabular-nums;}
+  .tag{display:inline-block; font-family:var(--mono); font-size:10px; letter-spacing:.06em; text-transform:uppercase; padding:2px 6px; white-space:nowrap; margin-right:3px;}
+  .tag.core{color:var(--core); background:var(--core-soft);} .tag.imp{color:var(--imp); background:var(--imp-soft);} .tag.adv{color:var(--adv); background:var(--adv-soft);} .tag.spe{color:var(--spe); background:var(--spe-soft);}
+  .tag.l{color:var(--accent-ink); background:var(--accent-soft);}
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:10px 0 14px;}
+  .grid3{display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin:10px 0 14px;}
+  .card{background:var(--paper); border:1px solid var(--line); padding:12px 14px; font-size:14px; min-width:0;}
+  .card h4{margin:0 0 6px;}
+  .card .k{font-family:var(--mono); font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); display:block; margin-bottom:4px;}
+  .tree{background:var(--paper); border:1px solid var(--line); padding:12px 16px; font-family:var(--mono); font-size:12.5px; line-height:1.7; overflow-x:auto; margin:8px 0 14px; white-space:pre;}
+  .chain{font-family:var(--mono); font-size:12.5px; background:var(--paper-2); padding:8px 12px; margin:8px 0 12px; max-width:78ch; overflow-x:auto;}
+  .comp{background:var(--paper); border:1px solid var(--line); padding:12px 16px; margin:10px 0 14px;}
+  .comp dl{display:grid; grid-template-columns:150px minmax(0,1fr); gap:4px 12px; margin:0; font-size:13.5px;}
+  .comp dt{font-family:var(--mono); font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-3); padding-top:2px;}
+  .comp dd{margin:0; color:var(--ink-2);}
+  .comp dd b{color:var(--ink);}
+  .comp h4{margin:0 0 8px; font-size:15px;}
+  footer{margin-top:40px; padding-top:14px; border-top:1px solid var(--line); font-family:var(--mono); font-size:11.5px; color:var(--ink-3); line-height:1.7;}
+  @media (max-width:900px){
+    .wrap{grid-template-columns:minmax(0,1fr); gap:18px; padding:22px 16px 80px;}
+    .side{position:static; max-height:none; overflow:visible;}
+    .toc{flex-direction:row; flex-wrap:wrap; gap:6px;}
+    .toc li.part{display:none;}
+    .toc a{border:1px solid var(--line); background:var(--paper); border-left-width:1px; padding:4px 9px; font-size:12px; gap:5px;}
+    header.top h1{font-size:38px;}
+    .grid2,.grid3{grid-template-columns:1fr;}
+    .comp dl{grid-template-columns:1fr;} .comp dt{padding-top:6px;}
+    table{min-width:560px;}
+  }
+  @media (prefers-reduced-motion: reduce){ *{transition:none !important;} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <aside class="side">
+    <div class="brand"><span class="t">Dental Mastery OS</span><span class="s">Second cursus · 17 sept. 2026 · v1.0</span></div>
+    <ul class="toc">
+      <li class="part">Avant tout</li>
+      <li><a href="#lecture"><b>00</b>Lecture critique de la commande</a></li>
+      <li><a href="#niveau"><b>01</b>Le niveau exceptionnel, défini</a></li>
+      <li class="part">L'architecture</li>
+      <li><a href="#arbre"><b>02</b>L'arbre des connaissances</a></li>
+      <li><a href="#dependances"><b>03</b>Prérequis et dépendances</a></li>
+      <li><a href="#maitrise"><b>04</b>Niveaux de maîtrise et priorités</a></li>
+      <li class="part">Le programme</li>
+      <li><a href="#roadmap"><b>05</b>La feuille de route, cinq ans</a></li>
+      <li><a href="#annee1"><b>06</b>L'année 1, en détail</a></li>
+      <li><a href="#j90"><b>07</b>Les 90 premiers jours</a></li>
+      <li><a href="#j30"><b>08</b>Les 30 premiers jours</a></li>
+      <li class="part">Les systèmes</li>
+      <li><a href="#hebdo"><b>09</b>Semaine et journées</a></li>
+      <li><a href="#anki"><b>10</b>Anki</a></li>
+      <li><a href="#raisonnement"><b>11</b>Raisonnement clinique</a></li>
+      <li><a href="#cas"><b>12</b>Les cas, sept niveaux</a></li>
+      <li><a href="#mains"><b>13</b>L'arbre des gestes</a></li>
+      <li><a href="#ebd"><b>14</b>Evidence-Based Dentistry</a></li>
+      <li><a href="#langues"><b>15</b>Espagnol, anglais, français</a></li>
+      <li><a href="#biblio"><b>16</b>La bibliothèque</a></li>
+      <li><a href="#evaluation"><b>17</b>Examens personnels</a></li>
+      <li><a href="#tracker"><b>18</b>Le tracker</a></li>
+      <li><a href="#erreurs"><b>19</b>Le registre des erreurs</a></li>
+      <li><a href="#sortie"><b>20</b>Les examens de sortie</a></li>
+    </ul>
+  </aside>
+
+  <main>
+    <header class="top">
+      <div class="eyebrow">Odontología · Universidad Europea, Alicante · 2026 → 2031</div>
+      <h1>Le second cursus</h1>
+      <p class="lead">Un programme personnel d'odontologie, parallèle à la fac, sur cinq ans. <b>Il ne s'ajoute pas à ta grille : il en devient le contenu.</b> La fac est le squelette ; ce document est ce qu'on met dans chaque bloc pour qu'à la sortie tu raisonnes, tu lises la littérature, et tu saches ce que tes mains savent faire. Établi le 17 septembre 2026, deux jours avant le jour 1 de la Batcave. Le principe directeur tient en une ligne : <b>optimiser la compétence, pas l'information.</b></p>
+    </header>
+
+    <section class="grp" id="lecture">
+      <h2><span class="k">00</span>Lecture critique de la commande</h2>
+      <p class="intro">Tu m'as demandé d'être critique avant d'être complaisant. Voici ce qui, dans la commande, est juste, ce qui est mal conçu, et ce que j'ai changé.</p>
+      <div class="verdict">
+        <p><b>1 · Tes heures sont déjà toutes prises, et c'est la contrainte qui décide de tout.</b> La grille de la Batcave contient 29 h 55 de révision et 21 h 36 d'espagnol par semaine en phase 1, plus 16 h d'amphi, avec un coucher à 21:55. Il n'existe aucune heure libre pour un « deuxième cursus » posé à côté du premier. Un programme qui l'ignorerait serait tenu trois semaines. Donc : <b>ce cursus vit à l'intérieur des blocs existants.</b> Il change ce que tu fais dans « Préparer un tema », dans le bloc de 10:20, dans « Comprendre le cours du jour » et dans la simulation du dimanche. Il ne crée qu'une seule chose neuve : quarante minutes de mains par semaine, prises sur du temps libre du week-end. Rien d'autre.</p>
+        <p><b>2 · « Plus profond » a un coût réel, et il se paie en temas d'avance.</b> Ta règle du semestre est trois temas d'avance par matière. Chaque heure de profondeur est une heure de moins pour l'avance. Le programme fait donc un choix daté : jusqu'au 11 octobre, aucune profondeur, on construit l'avance. À partir du <b>samedi 17 octobre</b>, la profondeur prend un bloc par semaine, et elle prend en priorité les sujets à forte valeur de transfert (une liste courte, en section 04), jamais tout.</p>
+        <p><b>3 · La première année est préclinique, et aucun livre ne remplace un fauteuil.</b> Tu n'auras pas de patient avant la clinique de la fac, généralement en troisième ou quatrième année selon le plan de la UEV. Ton programme des années 1 et 2 est donc <b>scientifique et manuel</b>, pas clinique : raisonnement sur des mécanismes et des corrélations anatomo-cliniques, gestes sur cire, miroir et papier. Aucune ligne de ce document ne t'encourage à toucher un patient hors du cadre de la fac. C'est une règle de sécurité, et c'est aussi une règle d'efficacité : un geste appris sans retour d'un enseignant s'apprend faux.</p>
+        <p><b>4 · Dix-huit parties, c'est trop pour un document qu'on relit ; deux niveaux, c'est juste.</b> La commande demande dix-huit livrables. Ils sont tous là, mais avec une hiérarchie voulue : l'architecture (01 → 05) et l'année 1 (06 → 08) sont écrites au détail ; les années 2 à 5 sont une feuille de route, avec leurs critères de sortie, à redétailler chaque juin quand la guía docente de l'année suivante existera. Détailler aujourd'hui la quatrième année serait inventer un emploi du temps qui n'existe pas.</p>
+        <p><b>5 · Les systèmes hebdo et quotidien existent déjà.</b> La Batcave, Le semestre et la Prise en main sont ton système d'exploitation : les modes de journée (cours, sans cours, partiels, week-end, charge réduite) sont dans le code. Ce document ne les recopie pas ; la section 09 dit seulement ce que le second cursus y change.</p>
+        <p><b>6 · Ce que je ne peux pas vérifier d'ici.</b> Le plan d'études année par année de la UEV (Alicante suit le titre de Valencia) n'a pas pu être lu depuis cet environnement. Les matières des années 2 à 5 sont donc celles du cadre espagnol commun (Orden CIN/2314/2008) et du plan de la UEV tel que je le connais, à confirmer contre la guía docente chaque juin. Ce qui est vérifié : tes onze matières de première année, lues dans les guías et dans tes bases Notion.</p>
+      </div>
+      <p class="note"><b>Ce que ce document n'est pas.</b> Pas un planning de plus, pas une liste de trente livres, pas une promesse. C'est une carte et des critères de sortie. Ce qui compte est en section 20 : ce que tu dois être capable de <i>faire</i> chaque mois de juin, testé.</p>
+    </section>
+
+    <section class="grp" id="niveau">
+      <h2><span class="k">01</span>Le niveau exceptionnel, défini</h2>
+      <p class="intro">« Nettement supérieur au cursus standard » ne veut rien dire tant qu'on ne dit pas ce qu'un diplômé standard sait faire. Le référentiel européen le dit : le <i>Graduating European Dentist</i> de l'ADEE (2017, révisé 2024) fixe ce que tout diplômé d'Europe doit maîtriser, en quatre domaines plus un cinquième ajouté en 2024, la recherche. Ton niveau exceptionnel se définit <b>par rapport à lui</b> : le référentiel entier au niveau attendu, plus cinq surcouches mesurables.</p>
+      <div class="tbl"><table>
+        <tr><th>Domaine ADEE</th><th>Ce que le diplômé standard doit savoir faire</th><th>Ta surcouche, observable</th></tr>
+        <tr><td class="h">I · Professionnalisme</td><td>Éthique, réflexivité, limites, apprentissage continu</td><td>Un registre d'erreurs tenu cinq ans, relu chaque mois ; savoir dire « je ne sais pas, voilà comment je vérifie ».</td></tr>
+        <tr><td class="h">II · Pratique sûre et efficace</td><td>Sciences de base appliquées, sécurité, urgences, prescription</td><td>Expliquer le mécanisme derrière chaque geste et chaque médicament que tu prescris ; reconnaître une urgence au fauteuil en moins de 30 secondes sur un cas simulé.</td></tr>
+        <tr><td class="h">III · Soin centré sur le patient</td><td>Diagnostic, plan de traitement, communication, exécution des soins courants</td><td>Diagnostic différentiel écrit et justifié sur un cas de niveau 5 (patient médicalement complexe) en fin de 4ᵉ année ; plan de traitement défendu à l'oral en espagnol.</td></tr>
+        <tr><td class="h">IV · Dentisterie et société</td><td>Santé publique, prévention, système de santé, équipe</td><td>Lire une politique de santé bucco-dentaire avec ses chiffres (prévalence, DMFT, coût-efficacité) et en discuter avec un épidémiologiste sans être perdu.</td></tr>
+        <tr><td class="h">V · Recherche</td><td>Comprendre la littérature, participer à la recherche</td><td>Évaluer un essai clinique ou une revue systématique avec une grille (CASP, GRADE) et en tirer une décision clinique argumentée ; un TFG de qualité publiable.</td></tr>
+      </table></div>
+      <h3>Les sept capacités qui font la différence, testables</h3>
+      <p>Le référentiel dit <i>quoi</i>. Ce qui distingue un excellent étudiant est <i>comment</i> il tient ce savoir. Sept capacités, chacune avec un test possible en fin de cursus.</p>
+      <div class="tbl"><table>
+        <tr><th>Capacité</th><th>Test de sortie (juin 2031)</th></tr>
+        <tr><td>Expliquer un mécanisme par couches (WHAT → WHY → HOW → WHEN NOT)</td><td>Cinq concepts tirés au sort, expliqués à l'oral en espagnol sans notes, 4 min chacun, enregistrés, avec la chaîne complète jusqu'à la conséquence clinique.</td></tr>
+        <tr><td>Construire un diagnostic différentiel</td><td>Un cas de niveau 6 (multidisciplinaire) : au moins trois hypothèses, chacune avec l'argument pour et contre, l'examen complémentaire qui tranche et son coût.</td></tr>
+        <tr><td>Justifier un examen complémentaire</td><td>Sur une radio panoramique et un cas : dire quel cliché supplémentaire, pourquoi, et ce qu'on attend d'y voir, avec la dose.</td></tr>
+        <tr><td>Peser plusieurs options thérapeutiques</td><td>Deux plans de traitement pour la même bouche, avec pronostic, coût, risques, et la phrase qu'on dit au patient.</td></tr>
+        <tr><td>Interpréter une radiographie</td><td>Dix clichés (rétro-alvéolaires, bitewings, panoramique, une coupe CBCT) : lecture systématique, anomalies nommées, aucune structure normale prise pour une lésion.</td></tr>
+        <tr><td>Analyser un article</td><td>Un essai randomisé en 45 min : PICO, biais, taille d'effet, IC, applicabilité à un patient donné, en anglais, résumé en espagnol.</td></tr>
+        <tr><td>Reconnaître ses limites et une urgence</td><td>Cinq scénarios d'urgence (syncope, hypoglycémie, anaphylaxie, angor, crise convulsive) : conduite à tenir en ordre, et quand appeler.</td></tr>
+      </table></div>
+      <p class="note"><b>La mesure sous-jacente à tout : la pyramide de Miller.</b> Savoir (<i>knows</i>) → savoir comment (<i>knows how</i>) → montrer (<i>shows</i>) → faire (<i>does</i>). Anki travaille le premier étage. Les cas et les examens personnels le deuxième. Le typodont et la clinique de la fac les deux derniers. Aucun étage ne se saute, et aucun ne remplace l'étage au-dessus.</p>
+    </section>
+
+    <section class="grp" id="arbre">
+      <h2><span class="k">02</span>L'arbre des connaissances</h2>
+      <p class="intro">Quatre troncs, et la place de chaque branche dans les cinq ans. Le marquage dit le niveau de priorité : <span class="tag core">core</span> indispensable, <span class="tag imp">important</span> très utile, <span class="tag adv">advanced</span> niveau supérieur, <span class="tag spe">specialized</span> seulement quand les bases tiennent. L'année indiquée est celle où la branche entre au programme ; presque toutes restent en révision cumulative ensuite.</p>
+      <h3>Tronc A · Fondations biomédicales</h3>
+<div class="tree">Biologie cellulaire        core   A1 (S1)   Karp · membrane, signalisation, cycle, mort cellulaire
+Génétique humaine          imp    A1 (S1)   Karp · hérédité, problemas de genética, syndromes cranio-faciaux
+Biochimie                  core   A1 (S2)   Lippincott · enzymes, métabolisme, collagène, minéralisation
+Histologie générale        core   A1 (S1)   Tortora · tissus, os, peau ; base de l'histologie orale d'A2
+Embryologie générale       imp    A1        Langman · arcs branchiaux, face, palais (fentes)
+Anatomie générale          core   A1        Tortora + Netter · systèmes ; tête et cou en A2
+Physiologie                core   A1-A2     Tortora puis Guyton · nerf, muscle, sang, cardio, respiration
+Immunologie                imp    A2        Abbas · inflammation, immunité innée/adaptative, allergie
+Microbiologie générale     core   A1 (S2)   Murray (référence) · bactéries, virus, antibiotiques
+Pathologie générale        core   A2-A3     Robbins · inflammation, réparation, néoplasie, hémostase
+Pharmacologie générale     core   A2-A3     Rang &amp; Dale · récepteurs, PK/PD, ANS, analgésiques, ATB
+Épidémiologie et stats     core   A1 (S1)   Piédrola + Greenhalgh · mesures, 2×2, RR/OR, biais</div>
+      <h3>Tronc B · Le système cranio-facial</h3>
+<div class="tree">Anatomie tête et cou       core   A2        Norton (Netter's Head &amp; Neck for Dentistry) · os, muscles, espaces
+Innervation trigéminale    core   A2 → A3   Norton · V2, V3, points d'anesthésie ; Malamed en A3
+Vascularisation            core   A2        carotide externe, hémorragies, voies de diffusion
+Espaces cervico-faciaux    imp    A2 → A4   diffusion des infections odontogènes (Hupp en A4)
+ATM et muscles masticateurs core  A2 → A3   Norton, puis Okeson · occlusion et DTM
+Neuroanatomie utile        imp    A2        nerfs crâniens V, VII, IX, X, XII ; douleur oro-faciale
+Embryologie et dévelop. dentaire core A2    Nanci · odontogenèse, éruption, amélogenèse
+Histologie orale           core   A2        Nanci + Gómez de Ferraris · émail, dentine, pulpe, parodonte, muqueuse
+Salive et milieu buccal    imp    A2        Nanci · composition, fonctions, xérostomie</div>
+      <h3>Tronc C · Sciences dentaires</h3>
+<div class="tree">Anatomie dentaire          core   A1 (S2) → A2  Wheeler's · morphologie, chronologie d'éruption, notation
+Occlusion                  core   A2 → A3   Wheeler's puis Okeson · relation centrée, guidages
+Cariologie                 core   A2 → A3   Fejerskov, Nyvad, Kidd · biofilm, dé/reminéralisation, ICDAS, fluor
+Microbiologie orale        core   A2        Marsh &amp; Martin · biofilm, écologie, caries, parodontites
+Parodontologie             core   A3 → A4   Carranza + classification 2018 + guidelines EFP S3
+Endodontie                 core   A3 → A4   Cohen's Pathways + positions ESE · diagnostic pulpaire, préparation, obturation
+Dentisterie restauratrice  core   A3        Sturdevant · préparation, adhésion, composites, amalgame, indirect
+Matériaux dentaires        core   A2 → A3   Anusavice (Phillips') · polymères, céramiques, ciments, adhésion
+Prothèse fixe              core   A4        Rosenstiel · préparation, empreinte, provisoires, céramique
+Prothèse amovible          core   A4        McCracken (PAP) et Zarb (complète)
+Chirurgie orale            core   A3 → A4   Hupp + Gay Escoda · extractions, dents incluses, infections, biopsies
+Anesthésie locale          core   A3        Malamed · techniques, doses maximales, complications
+Radiologie                 core   A3        White &amp; Pharoah · physique, radioprotection, lecture, CBCT
+Médecine orale             core   A4        Scully + Bagán · lésions muqueuses, cancer oral, dépistage
+Pathologie orale           core   A3 → A4   Neville · kystes, tumeurs, lésions réactionnelles
+Pharmacologie dentaire     core   A3        Yagiela · prescription, interactions, patients à risque
+Patients médicalement complexes core A3 → A5 Little &amp; Falace · le livre qui intègre tout le tronc A
+Urgences médicales au fauteuil core A3      Malamed (Medical Emergencies) · prévention, reconnaissance, conduite
+Orthodontie                imp    A4        Proffit · croissance, diagnostic, appareils simples
+Odontopédiatrie            imp    A4        McDonald &amp; Avery + guidelines AAPD · dentition temporaire, comportement
+Implantologie              spe    A5        Misch · bases seulement, jamais avant la chirurgie et le parodonte
+Gérodontologie             imp    A5        polymédication, dépendance, prothèse chez la personne âgée
+Dentisterie numérique      adv    A4 → A5   scan, CAD/CAM, planification ; après le geste manuel, pas à sa place
+Photographie dentaire      imp    A3        Bengel · documentation, avant/après, cas
+Santé publique orale       imp    A1 (S1) → A4 Epidemiología, Daly · prévention de population, fluoration, ODS</div>
+      <h3>Tronc D · Ce qui relie tout</h3>
+<div class="tree">Raisonnement clinique      core   A1 → A5   section 11 · la chaîne universelle, puis ses variantes par discipline
+Evidence-Based Dentistry   core   A1 → A5   section 14 · PICO → recherche → lecture critique → décision
+Communication              core   A1 (Psicología) → A5  anamnèse, consentement, annonce, patient anxieux, en espagnol
+Éthique et droit           imp    A1 (Antropología, Documentación) → A5  code déontologique espagnol, secret, RGPD
+Ergonomie et prévention du praticien  core  A1 (Clínica odontológica) → A5  posture, vision indirecte, TMS
+Apprendre à apprendre      core   A1 → A5   Anki sélectif, registre d'erreurs, teach-back, révision cumulative</div>
+    </section>
+
+    <section class="grp" id="dependances">
+      <h2><span class="k">03</span>Prérequis et dépendances</h2>
+      <p class="intro">Rien ne s'apprend isolé. Chaque chaîne ci-dessous se lit de haut en bas : on ne monte pas d'un cran tant que le cran du dessous n'est pas au niveau 2 (expliquer le mécanisme). Les six chaînes couvrent l'essentiel de ce qui rend un dentiste sûr.</p>
+      <div class="grid2">
+        <div class="card"><span class="k">Chaîne 1 · l'anesthésie</span>
+<div class="chain">Neurone, potentiel d'action, canaux Na⁺ (A1 · Ana T12)
+  ↓ Innervation trigéminale, V2 et V3, foramens (A2)
+  ↓ Pharmacologie des anesthésiques locaux, vasoconstricteurs (A3)
+  ↓ Techniques d'anesthésie, doses maximales par poids (A3)
+  ↓ Échecs, complications, patient cardiaque ou enceinte (A3-A4)
+  ↓ Urgences : surdosage, syncope, réaction allergique (A3)</div></div>
+        <div class="card"><span class="k">Chaîne 2 · l'infection</span>
+<div class="chain">Bactéries, biofilm, antibiotiques (A1 · Micro S2)
+  ↓ Écologie orale, plaque, immunité de la muqueuse (A2)
+  ↓ Caries et parodontites : deux maladies de biofilm (A2-A3)
+  ↓ Infection odontogène, espaces, cellulite (A3-A4)
+  ↓ Prescription raisonnée d'ATB, résistances, prophylaxie de l'endocardite (A3-A4)
+  ↓ Le patient immunodéprimé, diabétique, sous bisphosphonates (A4-A5)</div></div>
+        <div class="card"><span class="k">Chaîne 3 · le saignement</span>
+<div class="chain">Hémostase, coagulation, groupes sanguins, INR (A1 · Ana T2)
+  ↓ Pharmacologie des anticoagulants et antiagrégants (A2-A3)
+  ↓ Extraction chez le patient anticoagulé : ce qu'on arrête, ce qu'on n'arrête pas (A3-A4)
+  ↓ Hémorragie post-opératoire : conduite à tenir (A4)
+  ↓ Le patient cardiovasculaire au fauteuil, stress, adrénaline (A4)</div></div>
+        <div class="card"><span class="k">Chaîne 4 · la dent et sa restauration</span>
+<div class="chain">Émail, dentine, pulpe : structure et histologie (A2 · Nanci)
+  ↓ Anatomie dentaire et occlusion (A1 S2-A2 · Wheeler's)
+  ↓ Cariologie : lésion, activité, risque, ICDAS (A2-A3)
+  ↓ Matériaux : adhésion, composites, ciments (A2-A3)
+  ↓ Préparation et restauration directe (A3 · préclinique)
+  ↓ Diagnostic pulpaire et endodontie ; restauration indirecte (A3-A4)</div></div>
+        <div class="card"><span class="k">Chaîne 5 · l'image</span>
+<div class="chain">Physique des rayons X, effets biologiques, dose (A3)
+  ↓ Radioprotection, justification (ALARA), législation espagnole (A3)
+  ↓ Anatomie radiologique normale, pièges (A3)
+  ↓ Lecture systématique : caries, parodonte, périapex (A3-A4)
+  ↓ CBCT : indications, lecture de base, limites (A4-A5)</div></div>
+        <div class="card"><span class="k">Chaîne 6 · la preuve</span>
+<div class="chain">Mesures de fréquence et d'association, 2×2, RR, OR (A1 · Epidemiología)
+  ↓ Plans d'étude, biais, hasard, IC, valeur p (A1-A2)
+  ↓ Lecture critique d'un article avec une grille (A2-A3)
+  ↓ Revues systématiques, méta-analyses, GRADE, guidelines (A3-A4)
+  ↓ Décision pour un patient donné : preuve × préférence × contexte (A4-A5)
+  ↓ Produire : le TFG (A5)</div></div>
+      </div>
+      <p class="note"><b>La règle de dépendance, en une phrase.</b> Un sujet d'une année n'entre au programme personnel que si son prérequis est au niveau 2 dans ton tracker (section 18). Sinon le bloc « Approfondir » retourne au prérequis. C'est ce qui évite d'apprendre des informations isolées.</p>
+    </section>
+
+    <section class="grp" id="maitrise">
+      <h2><span class="k">04</span>Niveaux de maîtrise et priorités</h2>
+      <p class="intro">Sept niveaux, de 0 (exposé) à 6 (pensée experte), avec pour chacun le test qui prouve qu'on y est. Puis la formule de priorité, et les dix sujets où la profondeur rapporte le plus.</p>
+      <div class="tbl"><table>
+        <tr><th>Niveau</th><th>Ce que ça veut dire</th><th>Comment on le prouve</th><th>Outil</th></tr>
+        <tr><td class="h">L0 · Exposure</td><td>Je sais que ça existe</td><td>Le tema est « préparé » (recette A)</td><td>slides, manuel</td></tr>
+        <tr><td class="h">L1 · Recall</td><td>Je retiens les faits importants</td><td>Cartes Anki mûres à ≥ 85 % de rétention</td><td>Anki</td></tr>
+        <tr><td class="h">L2 · Understanding</td><td>J'explique le mécanisme</td><td>Teach-back de 4 min enregistré, sans notes, chaîne WHAT→WHY→HOW complète</td><td>bloc Approfondir</td></tr>
+        <tr><td class="h">L3 · Application</td><td>J'applique à un problème</td><td>Exercice ou question ouverte résolue sans support (exercices de calcul, question ouverte)</td><td>bloc de 10:20</td></tr>
+        <tr><td class="h">L4 · Clinical reasoning</td><td>Je l'utilise dans un cas</td><td>Un cas de niveau ≥ 3 résolu avec la chaîne de la section 11</td><td>simulation du dimanche</td></tr>
+        <tr><td class="h">L5 · Integration</td><td>Je relie plusieurs disciplines</td><td>Cas de niveau 5-6 ; examen d'intégration trimestriel</td><td>examens personnels</td></tr>
+        <tr><td class="h">L6 · Expert thinking</td><td>Je discute la littérature, les exceptions, les limites</td><td>Analyse d'article + position argumentée sur une controverse</td><td>journal club, TFG</td></tr>
+      </table></div>
+      <h3>Le niveau cible par tronc, en fin de cursus</h3>
+      <div class="grid3">
+        <div class="card"><h4>L5-L6</h4><p>Anatomie tête et cou, pharmacologie dentaire, patients médicalement complexes, urgences, cariologie, parodontologie, endodontie, restauratrice, radiologie, raisonnement clinique, EBD.</p></div>
+        <div class="card"><h4>L3-L4</h4><p>Biochimie, immunologie, pathologie générale, matériaux, prothèses, chirurgie orale courante, médecine et pathologie orales, orthodontie, odontopédiatrie, communication, santé publique.</p></div>
+        <div class="card"><h4>L1-L2</h4><p>Génétique, embryologie générale, neuroanatomie non dentaire, implantologie, numérique, histoire et anthropologie. Le niveau 6 partout serait de l'accumulation, pas de la maîtrise.</p></div>
+      </div>
+      <h3>La formule de priorité</h3>
+      <p>Pour chaque sujet : <b>importance clinique × importance fondatrice × fréquence × transfert</b>, chacune de 1 à 3, produit de 1 à 81. La complexité ne rentre pas dans la formule : un sujet difficile mais rare n'a pas droit à plus de temps. En pratique, tout ce qui dépasse 27 est « à approfondir », entre 9 et 27 « à comprendre au niveau du cours », sous 9 « exposition et cartes, rien de plus ».</p>
+      <h4>Les dix sujets de première année où approfondir rapporte le plus</h4>
+      <ol>
+        <li><b>Potentiel d'action et canaux ioniques</b> (Ana T12) : c'est toute l'anesthésie locale de la 3ᵉ année.</li>
+        <li><b>Hémostase et coagulation</b> (Ana T2) : chaque extraction chez un patient anticoagulé.</li>
+        <li><b>Tissu osseux et remodelage</b> (Ana T5-T6) : parodonte, implants, bisphosphonates, orthodontie.</li>
+        <li><b>Inflammation</b> (Bio, puis Patología en A2) : pulpite, parodontite, cicatrisation, tout.</li>
+        <li><b>Membrane, transport, signalisation</b> (Bio T2-T4) : pharmacologie et récepteurs.</li>
+        <li><b>Mesures d'association et tableau 2×2</b> (Epi T6) : la porte d'entrée de l'EBD, et 15 % de la note.</li>
+        <li><b>Biais et plans d'étude</b> (Epi T8-T11) : sans eux, on lit un article comme une publicité.</li>
+        <li><b>Métabolisme du calcium et minéralisation</b> (Bioquímica S2) : émail, dentine, caries, fluor.</li>
+        <li><b>Biofilm et antibiotiques</b> (Microbiología S2) : caries, parodontites, prescription.</li>
+        <li><b>Ergonomie et vision indirecte</b> (Clínica odontológica S2) : la seule branche où un an d'avance manuelle se voit encore à la sortie.</li>
+      </ol>
+      <div class="warn"><b>Où aller trop loin serait une perte de temps en A1 :</b> la génétique moléculaire au-delà du cours, l'histoire de l'odontologie au-delà de l'examen, la neuroanatomie des voies non trigéminales, la statistique inférentielle avancée. Elles rapportent des points d'examen, pas de la compétence. Elles restent au niveau du cours, cartes comprises, et rien de plus.</div>
+    </section>
+
+    <section class="grp" id="roadmap">
+      <h2><span class="k">05</span>La feuille de route, cinq ans</h2>
+      <p class="intro">Foundation → Integration → Application → Clinical reasoning → Advanced integration. Chaque année a un verbe, un contenu personnel qui s'ajoute au cursus officiel sans le dupliquer, et un critère de sortie testé en juin (détail en section 20). Les matières universitaires des années 2 à 5 sont celles du plan espagnol et de la UEV, à confirmer chaque juin.</p>
+      <div class="tbl"><table>
+        <tr><th>Année</th><th>Verbe · université (indicatif)</th><th>Le second cursus ajoute</th><th>Mains</th><th>EBD · langues</th><th>Sortie en juin</th></tr>
+        <tr><td class="h">A1<br>2026-27</td><td><b>Fonder.</b> S1 : Anatomía I, Biología, Epidemiología, Antropología, Documentación. S2 : Anatomía II, Bioquímica, Microbiología, Psicología, Idioma moderno, Clínica odontológica.</td><td>Une couche « pourquoi » sur les dix sujets prioritaires ; corrélation clinique d'une ligne sur chaque tema d'anatomie ; Wheeler's en S2 ; premier tour d'EBD sur Epidemiología ; registre d'erreurs ; teach-back mensuel.</td><td>Ergonomie, dessin des dents, sculpture de couronnes en cire, tracé sous miroir. 40 min/semaine.</td><td>PICO, PubMed, Zotero, un article par mois lu avec la grille Greenhalgh. Espagnol B2 en juin, anglais de lecture.</td><td>Cinq mécanismes expliqués par couches ; les 32 dents dessinées et nommées ; un tableau 2×2 et son OR interprétés à froid ; une dent sculptée en cire reconnaissable.</td></tr>
+        <tr><td class="h">A2<br>2027-28</td><td><b>Intégrer.</b> Fisiología, Fisiología del sistema estomatognático, Patología general, Farmacología, Anatomía dental y oclusión, Histología y embriología bucodental, Materiales, Radiología (intro), Odontología preventiva.</td><td>Les six chaînes de la section 03 montées jusqu'au cran A2 ; Nanci et Norton lus en anglais ; Guyton sur les chapitres à transfert (nerf, muscle, sang, cardio) ; cariologie (Fejerskov) avant que la fac ne la donne ; Marsh sur le biofilm.</td><td>Typodont de la fac ; cires de morphologie complète ; préparation de cavités sur dents plastiques sous supervision ; premières sutures sur pad à la maison.</td><td>Plans d'étude, IC, p, biais ; une revue systématique par mois (résumé + tableau des preuves). Espagnol C1 visé ; textbooks dentaires en anglais.</td><td>Un cas de niveau 3 (différentiel) résolu ; une préparation de classe I et II jugée acceptable par un enseignant ; 20 termes de chaque discipline dans les trois langues, sans hésiter.</td></tr>
+        <tr><td class="h">A3<br>2028-29</td><td><b>Appliquer.</b> Patología y terapéutica dental (opératoire, endo), Periodoncia I, Cirugía bucal I, Anestesia, Radiología, Prótesis I, Patología médico-quirúrgica, Medicina bucal (intro). Préclinique intense, premiers patients selon le plan.</td><td>Little &amp; Falace comme fil rouge : chaque maladie générale relue par « et au fauteuil ? » ; Malamed (anesthésie et urgences) au niveau 4 ; lecture radiologique systématique 10 clichés par semaine ; classification parodontale 2018 et EFP S3 ; ESE pour l'endo.</td><td>Préclinique de la fac + photographie dentaire + sutures ; carnet de gestes avec critères (section 13).</td><td>Lecture critique avec CASP, diagnostic accuracy (Se, Sp, LR), GRADE ; journal club mensuel avec deux compañeros. Anglais : un article par semaine.</td><td>Cinq urgences simulées en ordre correct ; 10 radios lues sans faux positif ; un cas de niveau 4 défendu à l'oral ; un article évalué avec grille en 45 min.</td></tr>
+        <tr><td class="h">A4<br>2029-30</td><td><b>Raisonner.</b> Cirugía II, Periodoncia II, Endodoncia, Prótesis II-III, Ortodoncia, Odontopediatría, Medicina bucal, Iniciación a la práctica clínica (adultes, enfants).</td><td>Le raisonnement clinique en clinique réelle : une fiche par patient (section 11) ; cas de niveau 5-6 chaque dimanche ; Proffit et McDonald aux chapitres de diagnostic ; plans de traitement alternatifs écrits.</td><td>Clinique de la fac ; numérique (scan, exocad) après le geste manuel.</td><td>La question clinique de la semaine (issue d'un patient) → recherche → réponse en 300 mots ; guidelines lues en entier (SDCEP, ADA, EFP). Espagnol clinique parfait : anamnèse et consentement.</td><td>Un patient médicalement complexe pris en charge avec plan justifié et validé ; deux plans alternatifs pour une même bouche ; une lésion muqueuse décrite et orientée correctement.</td></tr>
+        <tr><td class="h">A5<br>2030-31</td><td><b>Intégrer et produire.</b> Prácticas tuteladas, Odontología integrada adultes et enfants, Gerodontología, Implantología (intro), TFG.</td><td>Cas de niveau 7 (informations incomplètes) ; relecture cumulative de tout le tronc C par la méthode des cas ; les controverses (section 04, L6) ; préparation de l'après-diplôme : quelle formation, quel premier poste.</td><td>Clinique intégrée ; autonomie sous supervision ; photographie de tous ses cas.</td><td>Le TFG comme mini-revue systématique ou étude, publiable. Anglais : présentation orale d'un cas en anglais.</td><td>L'examen de sortie complet de la section 20 ; un TFG défendu ; un portfolio de 30 cas documentés.</td></tr>
+      </table></div>
+      <p class="note"><b>La révision cumulative, dans la feuille de route.</b> Chaque juin, la semaine après les examens, un « tour de piste » : un examen personnel qui couvre <i>toutes</i> les années précédentes, à partir du registre d'erreurs et des cartes sangsues. C'est ce qui empêche « je l'ai parfaitement su pour l'examen puis oublié ». Anki fait le reste au quotidien.</p>
+    </section>
+
+    <section class="grp" id="annee1">
+      <h2><span class="k">06</span>L'année 1, en détail</h2>
+      <p class="intro">Le cursus officiel de A1 est déjà entièrement organisé dans <b>Le semestre</b> (recettes A à H, trois temas d'avance, contrôle du dimanche). Ce que le second cursus y ajoute tient en <b>quatre gestes</b>, tous placés dans des blocs existants, et il ne les ajoute qu'à partir du 17 octobre, une fois l'avance construite.</p>
+      <h3>Les quatre gestes de l'année 1</h3>
+      <div class="grid2">
+        <div class="card"><span class="k">Geste 1 · la ligne de corrélation clinique</span><h4>Dans « Préparer un tema », +5 min</h4><p>Après les cartes du tema (recette A, étape 4), une seule ligne en bas des notes : <b>« ¿Y en la clínica? »</b> — à quoi ce contenu servira au fauteuil. Exemple : T12 potentiel d'action → « los anestésicos locales bloquean los canales de Na⁺ ; sin canal, no hay potencial, no hay dolor ». Si tu ne sais pas, tu demandes au projet Dentaire « explica · relevancia clínica » et tu écris la réponse en une phrase. Une carte Anki de type <i>trigger</i> par ligne (section 10). Coût : cinq minutes par tema. Ce que ça achète : l'anatomie de première année cesse d'être une liste.</p></div>
+        <div class="card"><span class="k">Geste 2 · le bloc Approfondir</span><h4>Samedi 10:20, dès le 17 octobre</h4><p>Le samedi, le bloc « Question ouverte » de 10:20 devient <b>Approfondir</b> (le mercredi garde la question ouverte). Un seul sujet de la liste des dix (section 04), pris dans l'ordre où la fac les donne. 55 minutes : 25 min de lecture dans la ressource complémentaire (le chapitre de Guyton, d'Abbas, de Greenhalgh), 20 min de <b>teach-back enregistré</b> en espagnol, 4 minutes, sans notes, chaîne WHAT → WHY → HOW → WHEN NOT → conséquence clinique ; 10 min de cartes de mécanisme (cloze en chaîne). L'enregistrement se garde ; on le réécoute au teach-back du mois. Dans la Batcave : Pomodoro « Révision » nommé « Approfondir · sujet ». Le bloc n'est pas renommé dans la grille, la consigne suffit ; si tu veux qu'il le soit, c'est un lot d'une heure.</p></div>
+        <div class="card"><span class="k">Geste 3 · l'EBD dans Epidemiología</span><h4>Mardi et jeudi 10:20, sans coût</h4><p>Les exercices de calcul (recette G) sont déjà de l'EBD. On y ajoute un cadre : chaque exercice est écrit sous forme <b>PICO</b> avant d'être calculé, et l'interprétation finit toujours par une phrase de décision (« si j'étais le dentiste de cette population, je… »). En S1, un article par mois : celui du cuestionario IA (Vidal-Alaball 2024) en octobre, puis un article court de JADA ou Cochrane Oral Health, lu avec la grille de Greenhalgh (section 14). Documentación, dont c'est exactement le programme, fournit PubMed, Zotero et Vancouver : ce cours est ton allié, pas une corvée.</p></div>
+        <div class="card"><span class="k">Geste 4 · les mains</span><h4>Samedi et dimanche 19:30, 20 min chacun</h4><p>Sur le temps libre du week-end, deux fois vingt minutes. Octobre-novembre : ergonomie (posture, prise stylo modifiée, appuis) et <b>tracé sous miroir</b> (un miroir dentaire à 5 €, un gabarit de lignes, chronométré). Décembre-mars : <b>dessin des dents</b> de face, de profil et en occlusal, une dent par semaine dans l'ordre de Wheeler's. Avril-juin : <b>sculpture en cire</b> d'une couronne par semaine (bloc de cire dure et couteau à cire, ~30 €). Critères en section 13. C'est la seule addition au temps de travail : 40 minutes, sur du temps libre.</p></div>
+      </div>
+      <h3>Semestre 1 · septembre → janvier</h3>
+      <div class="tbl"><table>
+        <tr><th>Matière</th><th>Ce que la fac note</th><th>Couche personnelle (dès le 17 octobre)</th><th>Ressource complémentaire</th><th>Niveau cible juin</th></tr>
+        <tr><td class="h">Anatomía I</td><td>Homéostasie, sang, tissus, peau, os, nerveux, muscle (T1-T13)</td><td>Corrélation clinique sur chaque tema ; Approfondir : potentiel d'action (oct.), hémostase (nov.), os et remodelage (déc.)</td><td>Tortora (le manuel de la fac) ; Netter pour les láminas ; Guyton pour les trois sujets approfondis</td><td>L2 sur les trois sujets, L1 partout</td></tr>
+        <tr><td class="h">Biología celular</td><td>Membrane, cytosquelette, synthèse, organites, cycle, génétique (T1-T14)</td><td>Approfondir : membrane et signalisation (oct.) ; inflammation au niveau cellulaire (jan., en préparation de Patología)</td><td>Karp ; Alberts (Essential) seulement pour un « ? » précis</td><td>L2 sur signalisation, L1 ailleurs</td></tr>
+        <tr><td class="h">Epidemiología</td><td>Démographie, stats, mesures, plans d'étude, maladies (T1-T21), RR/OR</td><td>Geste 3 : PICO et décision sur chaque exercice ; un article par mois ; Approfondir : biais (nov.)</td><td>Piédrola (fac) ; Greenhalgh, <i>How to Read a Paper</i>, ch. 1-4 en S1</td><td>L3 sur 2×2/RR/OR, L2 sur les biais</td></tr>
+        <tr><td class="h">Antropología</td><td>Histoire et anthropologie dentaire, éthique (T1-T10)</td><td>Rien de plus que le cours. Une seule chose : l'actividad 3 (casos éticos) faite avec le code déontologique du Consejo General de Dentistas sous les yeux.</td><td>Le code déontologique (PDF officiel)</td><td>L1</td></tr>
+        <tr><td class="h">Documentación</td><td>Sources, PubMed, citation, méthode</td><td>Le socle de l'EBD : compte PubMed/MyNCBI, Zotero installé avec le style Vancouver, une recherche PICO réelle faite en cours</td><td>Le cours lui-même ; tutoriels PubMed de la NLM</td><td>L3 (savoir chercher)</td></tr>
+      </table></div>
+      <h3>Semestre 2 · janvier → juin</h3>
+      <div class="tbl"><table>
+        <tr><th>Matière</th><th>Couche personnelle</th><th>Ressource complémentaire</th><th>Niveau cible juin</th></tr>
+        <tr><td class="h">Anatomía II</td><td>Si le cours couvre tête et cou : Norton en parallèle, chapitre par chapitre, avec la ligne « ¿y en la clínica? » orientée anesthésie et infection. Sinon : corrélation clinique et Approfondir sur cardio-respiratoire (le patient cardiaque au fauteuil, en germe).</td><td>Norton, <i>Netter's Head and Neck Anatomy for Dentistry</i> (en anglais) ; Velayos en espagnol si la fac l'utilise</td><td>L2</td></tr>
+        <tr><td class="h">Bioquímica</td><td>Approfondir : calcium, phosphate, minéralisation, collagène ; vitamine D ; le fluor. C'est la chimie de l'émail et de la carie.</td><td>Lippincott <i>Illustrated Reviews: Biochemistry</i>, chapitres ciblés</td><td>L2 sur minéralisation, L1 ailleurs</td></tr>
+        <tr><td class="h">Microbiología</td><td>Approfondir : biofilm, streptocoques et Porphyromonas, antibiotiques et résistances. Marsh, chapitres 1-5, en avance sur la fac.</td><td>Marsh &amp; Martin, <i>Oral Microbiology</i> ; Murray en référence</td><td>L2</td></tr>
+        <tr><td class="h">Psicología</td><td>Communication : anamnèse, patient anxieux, annonce. Un script d'anamnèse en espagnol écrit et répété avec le tuteur (c'est aussi de l'espagnol).</td><td>Le cours ; un manuel d'entretien clinique si la fac en donne un</td><td>L3 (savoir mener une anamnèse simulée)</td></tr>
+        <tr><td class="h">Idioma moderno</td><td>Anglais scientifique : c'est ton bloc de lecture d'articles. Chaque devoir d'anglais qui le permet porte sur un article dentaire.</td><td>Greenhalgh ; les abstracts de JADA</td><td>L3</td></tr>
+        <tr><td class="h">Clínica odontológica (intro)</td><td>Ergonomie, instruments, notation, asepsie : le point de départ du tronc D. Wheeler's en parallèle pour l'anatomie dentaire, une dent par semaine dessinée (geste 4).</td><td>Wheeler's <i>Dental Anatomy, Physiology and Occlusion</i></td><td>L2 ; les 32 dents dessinées</td></tr>
+      </table></div>
+      <h3>Ce que l'année 1 ne fait pas, exprès</h3>
+      <ul>
+        <li>Pas de textbook dentaire clinique (Carranza, Cohen, Sturdevant) : sans histologie orale ni matériaux, ils ne s'ancrent sur rien. Ils arrivent en A2-A3.</li>
+        <li>Pas de cas cliniques dentaires avant le S2, et seulement de niveau 1-2 : « quelle structure est atteinte, et pourquoi ça fait ça ». Les cas de diagnostic commencent en A2.</li>
+        <li>Pas de geste sur patient, pas de geste invasif sur qui que ce soit, pas d'instrument rotatif à la maison.</li>
+        <li>Pas de deuxième langue de notes : Notion et Anki restent en espagnol (section 15).</li>
+      </ul>
+    </section>
+
+    <section class="grp" id="j90">
+      <h2><span class="k">07</span>Les 90 premiers jours · 19 septembre → 17 décembre</h2>
+      <p class="intro">Trois phases, calées sur celles du semestre. Le principe : <b>d'abord l'avance, ensuite la profondeur, jamais l'inverse.</b></p>
+      <div class="tbl"><table>
+        <tr><th>Fenêtre</th><th>Ce que tu construis</th><th>Second cursus : ce qui s'allume</th><th>Jalon vérifiable</th></tr>
+        <tr><td class="h">19 sept → 11 oct<br>semaines 1-4</td><td>Les trois temas d'avance dans chaque matière (Le semestre §12). Le rythme : Anki, préparer, comprendre.</td><td><b>Rien</b>, sauf : Zotero installé et PubMed ouvert une fois (Documentación, semaine 2) ; le registre d'erreurs créé dans Notion (section 19) ; le miroir dentaire acheté. Geste 4 démarre le samedi 26 : ergonomie et tracé sous miroir, 20 min.</td><td>Dim 11 oct, contrôle : 3 d'avance partout ; registre d'erreurs existe ; tracé sous miroir chronométré une première fois (référence).</td></tr>
+        <tr><td class="h">12 oct → 29 nov<br>semaines 5-11 · phase 2 · le mur</td><td>Les livrables (infografía, MUN, exposé Bio, actividades) et les contrôles. Un tema d'avance par jour de cours.</td><td>Geste 1 sur chaque tema préparé. <b>Sam 17 oct : premier bloc Approfondir</b> — potentiel d'action, teach-back n° 1. Puis un par samedi : 24 oct membrane et signalisation, 31 oct hémostase, 7 nov biais et plans d'étude, 14 nov os et remodelage, 21 nov (semaine RR/OR : Approfondir = un cas complet RR/OR en PICO), 28 nov inflammation. Geste 3 sur chaque exercice de calcul. Un article : Vidal-Alaball (oct.), un abstract JADA (nov.). <b>Dim 1ᵉʳ nov : premier examen personnel</b> (section 17), 40 min.</td><td>Dim 29 nov : 6 teach-backs enregistrés ; 6 cartes-trigger par tema ; examen personnel n° 1 fait et noté ; registre d'erreurs ≥ 15 entrées classées.</td></tr>
+        <tr><td class="h">30 nov → 17 déc<br>semaines 12-14 · phase 3</td><td>La révision de janvier : fiches, blancs complets, simulacro de Bio.</td><td>Approfondir s'arrête (les samedis vont aux blancs). Ce qui reste : le registre d'erreurs relu chaque samedi 16:00 (c'est déjà le bloc cartes d'erreurs), et le <b>teach-back du mois</b> le dim 6 déc : réécouter les six enregistrements, refaire les deux plus faibles. Geste 4 : dessin des dents commence le sam 5 déc (incisive centrale supérieure).</td><td>Jeu 17 déc : bilan des 90 jours, dans Le fil des jours — ce qui a tenu, ce qui a sauté, et la décision pour janvier.</td></tr>
+      </table></div>
+      <p class="note"><b>Noël et janvier</b> (18 déc → 21 janv) : Anki, blancs, examens. Le second cursus se tait, sauf les vingt minutes de dessin du week-end, qui reposent. Il reprend le <b>samedi 30 janvier</b>, avec le S2.</p>
+    </section>
+
+    <section class="grp" id="j30">
+      <h2><span class="k">08</span>Les 30 premiers jours · semaine par semaine</h2>
+      <p class="intro">Ces trente jours sont ceux du semestre, déjà écrits jour par jour dans Le semestre §13-14. Ici, seulement ce que le second cursus y ajoute, et c'est peu, exprès.</p>
+      <div class="tbl"><table>
+        <tr><th>Semaine</th><th>Le semestre dit</th><th>Le second cursus ajoute</th><th>Durée ajoutée</th></tr>
+        <tr><td class="h">S1 · 19 → 25 sept</td><td>Jour 1 samedi 19 : copie vierge, séance de référence, courses. Construire l'avance : Ana T2, Bio T2-T4, Epi T2-T5, Antro T1-T4. Dim 20 : diagnostic espagnol.</td><td>Rien. Lire cette page une fois, en entier, le dimanche 20 après le contrôle (30 min, sur le temps libre). Commander le miroir dentaire (5 €) et un bloc de cire dure avec un couteau à cire (≈ 30 €, pour avril).</td><td>30 min, une fois</td></tr>
+        <tr><td class="h">S2 · 26 sept → 2 oct</td><td>3 d'avance en Ana et Antro ; premier blanc dim 4 oct ; Epi calculs mardi et jeudi.</td><td>Lundi 28, cours de Documentación : demander comment la matière évalue, ouvrir PubMed en cours si possible. Mercredi 30, dans le bloc Comprendre : installer Zotero avec le style Vancouver (10 min, à la place des dix lignes Notion ce soir-là). <b>Sam 26, 19:30 : première séance mains</b> — posture, prise stylo, tracé sous miroir, chrono de référence noté dans le registre.</td><td>20 min sam + 20 min dim</td></tr>
+        <tr><td class="h">S3 · 3 → 9 oct</td><td>Q1 Anatomía (7-8 oct) ; 3 d'avance en Bio et Epi ; vendredi 9 sans cours : simulation complète.</td><td>Créer le registre d'erreurs dans Notion (section 19) le samedi 3 à 16:00, dans le bloc cartes d'erreurs : il remplace le tri à la main, il ne s'y ajoute pas. Après Q1 : les erreurs du cuestionario y entrent, classées. Mains : tracé sous miroir, deux fois.</td><td>0 (remplace)</td></tr>
+        <tr><td class="h">S4 · 10 → 16 oct</td><td>Cuestionario Antro T1-3 ; infografía et MUN expliqués ; lundi 12 sans cours ; dim 18 fin de phase 1.</td><td>Sam 17 oct, 10:20 : <b>premier Approfondir</b> — potentiel d'action et canaux ioniques. 25 min Guyton (chapitre « potentiels de membrane et potentiels d'action »), 20 min de teach-back enregistré en espagnol, 10 min de cartes de mécanisme. Avant : relire la ligne « ¿y en la clínica? » du tema. C'est le jour 1 du second cursus.</td><td>0 (le bloc existe)</td></tr>
+      </table></div>
+      <div class="note"><b>Ce que ces trente jours doivent prouver, et rien d'autre :</b> que l'avance de trois temas tient, que le registre d'erreurs est ouvert, et qu'un premier teach-back existe. Si l'avance ne tient pas le 11 octobre, le bloc Approfondir du 17 <b>n'ouvre pas</b> : il sert à préparer un tema de plus, et on réessaie le 24. La règle de la section 00 passe avant l'ambition.</div>
+    </section>
+
+    <section class="grp" id="hebdo">
+      <h2><span class="k">09</span>Semaine et journées : ce qui change</h2>
+      <p class="intro">Ton système hebdomadaire et tes modes de journée sont dans la Batcave (grille de base, phases, mode partiels, jours sans cours, charge réduite, vacances) et décrits dans Le semestre §7-8. Voici, bloc par bloc, ce que le second cursus y met, puis la règle par mode de journée.</p>
+      <div class="tbl"><table>
+        <tr><th>Bloc existant</th><th>Avant</th><th>Avec le second cursus</th></tr>
+        <tr><td class="h">Anki 1 · 2, 07:20</td><td>Toutes les échéances</td><td>Idem. Plus les cartes de mécanisme et les cartes-trigger, qui vivent dans les mêmes sous-paquets.</td></tr>
+        <tr><td class="h">Préparer un tema, 09:20</td><td>Recette A</td><td>Recette A + la ligne « ¿y en la clínica? » + une carte-trigger (5 min).</td></tr>
+        <tr><td class="h">10:20 lun · mar · jeu · mer</td><td>Blanc · calculs · question ouverte</td><td>Idem. Les calculs en PICO + phrase de décision.</td></tr>
+        <tr><td class="h">10:20 samedi</td><td>Question ouverte</td><td><b>Approfondir</b> dès le 17 oct (hors phase 3 et partiels).</td></tr>
+        <tr><td class="h">Comprendre, 20:30</td><td>Recette B</td><td>Recette B. Une fois par semaine, le « ? » le plus intéressant devient le sujet du prochain Approfondir s'il est dans la liste des dix.</td></tr>
+        <tr><td class="h">Simulation, dim 09:20</td><td>Blanc ou 10 QCM + 1 ouverte</td><td>Idem en A1. Dès A2 : un cas clinique par mois à la place, avec la fiche de raisonnement (section 11).</td></tr>
+        <tr><td class="h">Cartes d'erreurs, sam 16:00</td><td>Recette H</td><td>Recette H, mais depuis le registre d'erreurs (section 19), qui classe la cause.</td></tr>
+        <tr><td class="h">Contrôle du dimanche, 13:30</td><td>La table de Le semestre §15</td><td>+ deux lignes : « teach-back fait ? » et « registre à jour ? ». Une fois par mois, le tracker (section 18).</td></tr>
+        <tr><td class="h">Temps libre sam · dim 19:30</td><td>Libre</td><td>20 min de mains, puis libre. C'est la seule addition.</td></tr>
+      </table></div>
+      <h3>La règle par mode de journée</h3>
+      <div class="grid3">
+        <div class="card"><h4>Jour de cours normal</h4><p>Tout ce qui précède. Aucun Approfondir en semaine : il n'y a pas la place.</p></div>
+        <div class="card"><h4>Jour lourd (TP, livrable, práctica)</h4><p>La Batcave reconstruit déjà la journée. Le second cursus s'efface : ni ligne clinique ni carte-trigger ce jour-là, elles se rattrapent au samedi.</p></div>
+        <div class="card"><h4>Partiels et phase 3</h4><p>Approfondir suspendu, mains suspendues sauf si elles reposent. Reste : Anki, le registre relu, rien d'autre. Le second cursus ne coûte jamais une note.</p></div>
+        <div class="card"><h4>Jour à basse énergie</h4><p>La Batcave a la charge réduite (−20 %). La règle : Anki et Comprendre seulement. Le teach-back peut se faire allongé, à voix basse, 4 minutes ; c'est même le meilleur test.</p></div>
+        <div class="card"><h4>Week-end</h4><p>Samedi : Approfondir 10:20, erreurs 16:00, mains 19:30. Dimanche : simulation, contrôle, mains 19:30. Le dimanche après-midi reste libre : c'est ce qui fait tenir cinq ans.</p></div>
+        <div class="card"><h4>Jour sans cours, vacances</h4><p>La plage de cours devient simulation + correction (déjà dans la grille). Un jour sans cours porte en plus un teach-back du mois s'il en manque un. En vacances (2028 et après) : rien, exprès.</p></div>
+      </div>
+    </section>
+
+    <section class="grp" id="anki">
+      <h2><span class="k">10</span>Anki : la stratégie sélective</h2>
+      <p class="intro">Le principe est déjà le tien : Anki fait la mémoire, pas la compréhension. Les règles de fabrication sont dans le guide Anki et Le semestre §6 (une carte = un fait, cloze pour les listes, occlusion d'image pour les figures, 30 nouvelles par jour). Le second cursus ajoute <b>quatre types de cartes</b> et une règle de refus.</p>
+      <div class="tbl"><table>
+        <tr><th>Type</th><th>Forme</th><th>Exemple (en espagnol, comme toutes tes cartes)</th><th>Quota</th></tr>
+        <tr><td class="h">Trigger clinique</td><td>Un signe, un fait → la première pensée du dentiste</td><td>Recto : « Paciente con INR de 4 antes de una extracción » · Verso : « no extraer sin consultar ; riesgo hemorrágico ; INR objetivo ≤ 3,5-4 según guías »</td><td>1 par tema (geste 1)</td></tr>
+        <tr><td class="h">Mécanisme en chaîne</td><td>Cloze à 3-4 trous sur une chaîne causale</td><td>« El anestésico local {{c1::bloquea los canales de Na⁺}} → {{c2::no se alcanza el umbral}} → {{c3::no hay potencial de acción}} → no hay conducción del dolor »</td><td>2-3 par Approfondir</td></tr>
+        <tr><td class="h">Comparaison</td><td>X vs Y : le trait qui distingue</td><td>« Riesgo relativo vs odds ratio : ¿cuál se calcula en un estudio de casos y controles? » · « OR »</td><td>Quand deux notions se confondent (registre)</td></tr>
+        <tr><td class="h">Seuil ou chiffre clinique</td><td>Un nombre qui change une décision</td><td>« Dosis máxima de lidocaína con vasoconstrictor : {{c1::7 mg/kg}}, máx. {{c2::500 mg}} » (A3)</td><td>Seulement les chiffres qui décident</td></tr>
+      </table></div>
+      <h3>Ce qui ne mérite pas de carte</h3>
+      <ul>
+        <li>Un « ? » non résolu (règle existante : elle devient une sangsue).</li>
+        <li>Un détail sans conséquence clinique ni examen (la date d'une découverte, le nom d'un auteur, une exception rarissime).</li>
+        <li>Une définition qu'on peut reconstruire depuis le mécanisme : la chaîne suffit, la définition est une carte de trop.</li>
+        <li>Une procédure manuelle : elle s'apprend avec les mains (section 13), pas avec des cartes.</li>
+        <li>Une image entière en occlusion à dix zones : dix cartes qui tombent le même jour. Trois à cinq zones, les structures qui comptent.</li>
+      </ul>
+      <p class="note"><b>Les chiffres qui gardent le paquet sain.</b> Rétention des cartes mûres visée : 85 à 90 % (Statistiques Anki › « True retention » ; sous 80 %, on écrit mal les cartes, pas on ne travaille pas assez). Sangsues : le test du mois existe déjà (premier dimanche). Plafond de nouvelles cartes : 30 en A1, jamais plus de 35 même en A3, sinon la file dépasse 300 révisions et Anki 1-2 ne suffisent plus (le seuil de 220 de la Batcave le dira). Le sous-paquet <b>Dentaire::Clínica</b> reçoit les triggers et les mécanismes à partir de A2, pour que la révision cumulative des années précédentes reste lisible.</p>
+    </section>
+
+    <section class="grp" id="raisonnement">
+      <h2><span class="k">11</span>Le système de raisonnement clinique</h2>
+      <p class="intro">Une chaîne universelle, une fiche d'une page, et une variante par discipline. En A1 la chaîne s'exerce sur des problèmes, pas sur des patients : c'est un entraînement de la forme, avant d'avoir le fond.</p>
+      <div class="chain">Paciente → motivo de consulta → historia (médica, dental, social) → factores de riesgo → síntomas
+→ hallazgos clínicos → diagnóstico diferencial (≥ 3 hipótesis) → pruebas complementarias (¿cuál, por qué, qué espero ver?)
+→ diagnóstico → pronóstico → opciones de tratamiento (≥ 2) → elección justificada → ejecución
+→ complicaciones previsibles → prevención → seguimiento → evaluación del resultado</div>
+      <h3>La fiche de raisonnement (une page, en espagnol)</h3>
+      <div class="comp"><dl>
+        <dt>Datos</dt><dd>Ce que je sais (faits), ce que je ne sais pas encore (à demander, à examiner).</dd>
+        <dt>Problema</dt><dd>En une phrase, comme on le dirait à un collègue.</dd>
+        <dt>Hipótesis</dt><dd>Trois minimum. Pour chacune : ce qui la soutient, ce qui la contredit, ce qui la tuerait.</dd>
+        <dt>Prueba</dt><dd>L'examen complémentaire qui départage, avec ce que j'attends d'y voir, et son coût (dose, temps, argent).</dd>
+        <dt>Decisión</dt><dd>Diagnostic retenu, deux options de traitement, celle que je choisis et pourquoi (preuve × patient × contexte).</dd>
+        <dt>Riesgos</dt><dd>Ce qui peut mal tourner, comment je le préviens, à quoi je le reconnais.</dd>
+        <dt>Límites</dt><dd>Ce que je ne sais pas faire, et à qui je l'adresse.</dd>
+        <dt>Después</dt><dd>Après correction : l'erreur, sa classe (section 19), la carte créée.</dd>
+      </dl></div>
+      <h3>Les variantes par discipline (à partir de A2-A3)</h3>
+      <div class="tbl"><table>
+        <tr><th>Discipline</th><th>Ce que la chaîne accentue</th><th>La question qui décide</th></tr>
+        <tr><td class="h">Douleur dentaire</td><td>Diagnostic pulpaire et périapical : tests de sensibilité, percussion, radio</td><td>« ¿Es reversible o irreversible ? » — et donc conserver ou traiter le canal.</td></tr>
+        <tr><td class="h">Parodonte</td><td>Sondage, saignement, perte d'attache, radio ; stade et grade (2018)</td><td>« ¿Qué estadio y grado, y cuál es el factor modificador ? » (tabac, diabète).</td></tr>
+        <tr><td class="h">Chirurgie</td><td>Antécédents, médicaments, anatomie du site, difficulté</td><td>« ¿Puedo, debo, y con qué precauciones ? » — le patient avant la dent.</td></tr>
+        <tr><td class="h">Muqueuse</td><td>Description (site, taille, couleur, surface, durée), facteurs, évolution</td><td>« ¿Es una lesión que puede ser cáncer ? » — deux semaines, puis biopsie ou adressage.</td></tr>
+        <tr><td class="h">Restauratrice</td><td>Activité de la lésion, risque carieux, substance résiduelle, occlusion</td><td>« ¿Necesita restauración, o necesita control del riesgo ? »</td></tr>
+        <tr><td class="h">Prothèse</td><td>Fonction, esthétique, piliers, occlusion, hygiène, budget</td><td>« ¿Qué opción es la más sencilla que resuelve el problema del paciente ? »</td></tr>
+        <tr><td class="h">Patient complexe</td><td>Maladies, médicaments, interactions, stress, urgences possibles</td><td>« ¿Qué puede pasarle en mi sillón, y qué hago si pasa ? »</td></tr>
+        <tr><td class="h">Enfant</td><td>Âge dentaire, comportement, parents, risque carieux, croissance</td><td>« ¿Qué hará esta decisión dentro de cinco años ? »</td></tr>
+      </table></div>
+    </section>
+
+    <section class="grp" id="cas">
+      <h2><span class="k">12</span>Les cas cliniques, sept niveaux</h2>
+      <p class="intro">Le niveau d'un cas est celui de l'incertitude qu'il demande de gérer, pas celui de sa rareté. L'année indique quand chaque niveau entre. La source principale des cas : le projet Claude Dentaire (« caso · nivel N · tema »), puis Odell (<i>Clinical Problem Solving in Dentistry</i>) à partir de A3, puis les patients réels de la clinique à partir de A4.</p>
+      <div class="tbl"><table>
+        <tr><th>Niveau</th><th>Ce qu'il demande</th><th>Exemple</th><th>Entre en</th><th>Rythme</th></tr>
+        <tr><td class="h">1 · Très simple</td><td>Relier un fait à sa conséquence</td><td>« Un paciente no siente el labio inferior tras una extracción del tercer molar : ¿qué nervio ? »</td><td>A1 S2</td><td>2 par mois, dans Comprendre</td></tr>
+        <tr><td class="h">2 · Plusieurs informations</td><td>Trier ce qui compte</td><td>« Sangrado gingival, embarazo de 6 meses, cepillado 1 vez/día » : trois faits, un mécanisme</td><td>A1 S2 → A2</td><td>2 par mois</td></tr>
+        <tr><td class="h">3 · Différentiel</td><td>Trois hypothèses, une preuve</td><td>Douleur au froid sur 36 : caries, sensibilité dentinaire, fêlure ? Quel test ?</td><td>A2</td><td>1 par dimanche (mois pair)</td></tr>
+        <tr><td class="h">4 · Plusieurs pathologies</td><td>Hiérarchiser</td><td>Parodontite + lésion carieuse profonde + douleur ATM chez un fumeur</td><td>A3</td><td>1 par dimanche</td></tr>
+        <tr><td class="h">5 · Patient complexe</td><td>Le médical avant le dentaire</td><td>Extraction chez un diabétique sous anticoagulant, insuffisant rénal</td><td>A3 → A4</td><td>2 par mois</td></tr>
+        <tr><td class="h">6 · Multidisciplinaire</td><td>Un plan global, séquencé</td><td>Réhabilitation d'une bouche : ordre paro → endo → chirurgie → prothèse, et pourquoi</td><td>A4 → A5</td><td>2 par mois</td></tr>
+        <tr><td class="h">7 · Ambigu, incomplet</td><td>Décider sans tout savoir, dire ce qu'on ignore</td><td>Douleur faciale atypique, examens normaux, patient anxieux</td><td>A5</td><td>1 par mois</td></tr>
+      </table></div>
+      <p class="note"><b>Comment un cas se travaille, toujours pareil :</b> la fiche de la section 11 remplie <i>avant</i> de lire la correction ; correction par « examen » dans le projet Dentaire ; chaque écart devient une entrée du registre (classe : raisonnement, diagnostic, connaissance ?) et une carte si c'est une connaissance. Un cas réussi sans avoir écrit ses hypothèses ne compte pas : reconnaître une réponse n'est pas raisonner.</p>
+    </section>
+
+    <section class="grp" id="mains">
+      <h2><span class="k">13</span>L'arbre des gestes</h2>
+      <p class="intro">Les compétences psychomotrices s'apprennent lentement et se perdent vite : peu, souvent, avec un critère. <b>Règle absolue : rien d'invasif, rien sur un patient, rien avec un instrument rotatif hors de la fac.</b> Tout ce qui suit se fait sur papier, cire, plastique ou mousse, chez toi ou au laboratoire préclinique sous supervision. Chaque geste a son critère de réussite : on ne passe au suivant qu'une fois le critère atteint deux semaines de suite.</p>
+      <div class="tbl"><table>
+        <tr><th>Geste</th><th>Année</th><th>Exercice</th><th>Fréquence</th><th>Critère de réussite</th><th>Erreur fréquente</th></tr>
+        <tr><td class="h">Ergonomie</td><td>A1 →</td><td>Position assise 11 h-12 h, dos droit, coudes au corps, appui digital sur une dent voisine (sur modèle en plastique ou sur ta propre main)</td><td>À chaque séance mains</td><td>Une séance de 20 min sans douleur cervicale ni épaule levée, vérifié en vidéo une fois par mois</td><td>Se pencher vers le travail au lieu d'amener le travail</td></tr>
+        <tr><td class="h">Vision indirecte</td><td>A1 · oct-nov</td><td>Tracer un labyrinthe ou un texte en miroir, en regardant seulement le miroir dentaire</td><td>2 × 20 min/semaine</td><td>Un tracé de 10 cm sans sortir d'un couloir de 2 mm, en moins de 60 s ; puis écrire ton prénom lisiblement en miroir</td><td>Regarder directement « juste une seconde »</td></tr>
+        <tr><td class="h">Dessin des dents</td><td>A1 · déc-mars</td><td>Chaque dent de Wheeler's : vue vestibulaire, proximale, occlusale, avec les repères (cuspides, crêtes, sillons)</td><td>1 dent/semaine</td><td>La dent redessinée de mémoire, identifiable par un compañero sans indice, avec ses trois vues</td><td>Dessiner joli au lieu de dessiner juste (proportions couronne/racine)</td></tr>
+        <tr><td class="h">Sculpture en cire</td><td>A1 · avril-juin → A2</td><td>Une couronne par semaine en cire dure, à partir d'un bloc (méthode par soustraction), dans l'ordre : 11, 21, 13, 33, 16, 36, 46</td><td>1 couronne/semaine, 2 × 20 min</td><td>Comparée à la dent de référence (photo ou modèle) : cuspides au bon nombre et à la bonne place, contour proximal convexe, hauteur de contour correcte ; A2 : occlusion avec l'antagoniste sur articulateur simple</td><td>Enlever trop vite ; ne pas marquer les repères avant de tailler</td></tr>
+        <tr><td class="h">Contrôle moteur fin</td><td>A1 →</td><td>Points de 1 mm sur une grille au feutre fin, en appui digital ; puis les mêmes en miroir</td><td>5 min en fin de séance</td><td>50 points dans les cases sans en toucher le bord, en 90 s, puis en miroir en 3 min</td><td>Tenir le stylo trop bas, sans appui</td></tr>
+        <tr><td class="h">Typodont et préparation</td><td>A2 → A3</td><td>Au préclinique de la fac uniquement : cavités classe I, II, V sur dents plastiques ; isolation à la digue</td><td>Selon la fac, plus une répétition à blanc en cire à la maison</td><td>Le critère de l'enseignant (profondeur, parois, angles) ; ton auto-évaluation écrite avant la sienne, et l'écart noté</td><td>Corriger sans avoir compris pourquoi c'était faux</td></tr>
+        <tr><td class="h">Sutures</td><td>A2 → A3</td><td>Pad de suture en silicone, porte-aiguille, fil 4/0 : point simple, matelassier, surjet</td><td>1 × 20 min/semaine dès A2 S2</td><td>10 points simples réguliers, nœuds à trois clés, en moins de 8 min, sans toucher l'aiguille aux doigts</td><td>Serrer trop ; prendre l'aiguille à la pointe</td></tr>
+        <tr><td class="h">Radiologie</td><td>A3</td><td>Positionnement sur fantôme (fac) ; lecture systématique sur 10 clichés par semaine (banques de cas en ligne, White &amp; Pharoah)</td><td>Hebdomadaire</td><td>Lecture en ordre fixe (os, dents, parodonte, périapex, autres), aucun faux positif sur les structures normales</td><td>Aller droit à la lésion évidente et rater la seconde</td></tr>
+        <tr><td class="h">Photographie</td><td>A3</td><td>Les cinq vues standard sur modèle puis sur compañero, avec miroirs et écarteurs ; réglages fixes</td><td>1 séance/mois</td><td>Cinq vues cadrées, nettes, sans reflet, reproductibles à un mois d'écart</td><td>Changer les réglages à chaque séance</td></tr>
+        <tr><td class="h">Numérique</td><td>A4 → A5</td><td>Scan intra-oral (fac), exocad ou 3Shape en version d'essai, planification implantaire sur un cas d'école</td><td>Selon l'accès</td><td>Une couronne dessinée numériquement acceptée par un prothésiste ou un enseignant</td><td>Faire du numérique avant de savoir faire la cire</td></tr>
+      </table></div>
+      <p class="note"><b>Le carnet de gestes.</b> Une page Notion par geste : date, exercice, chrono ou score, une photo, une phrase (« ce qui a coincé »). C'est le seul endroit où la progression manuelle se voit. Le tracker (section 18) en lit une ligne par mois.</p>
+    </section>
+
+    <section class="grp" id="ebd">
+      <h2><span class="k">14</span>Evidence-Based Dentistry, cinq ans</h2>
+      <p class="intro">L'EBD n'est pas une matière, c'est une manière de lire. Elle se construit dans l'ordre où l'on rencontre les articles : d'abord savoir ce qu'un chiffre veut dire, puis ce qu'une étude vaut, puis ce qu'on en fait pour un patient.</p>
+      <div class="tbl"><table>
+        <tr><th>Année</th><th>Compétences</th><th>Pratique</th><th>Ressource</th><th>Critère</th></tr>
+        <tr><td class="h">A1</td><td>PICO ; recherche PubMed avec MeSH ; incidence, prévalence, RR, OR, RRA, NNT ; le tableau 2×2 ; ce qu'est un biais</td><td>Chaque exercice de calcul en PICO ; un article par mois avec la grille Greenhalgh (ch. 1-4) ; Zotero</td><td>Piédrola (fac) ; Greenhalgh, <i>How to Read a Paper</i> ; tutoriels PubMed</td><td>Un OR interprété en une phrase juste ; une recherche PubMed qui ramène l'article voulu en moins de 5 min</td></tr>
+        <tr><td class="h">A2</td><td>Plans d'étude et leur hiérarchie ; hasard vs biais vs confusion ; IC et valeur p, signification statistique vs clinique ; sensibilité, spécificité</td><td>Une revue systématique par mois (Cochrane Oral Health), résumée en tableau des preuves ; les abstracts de JADA en anglais</td><td>Greenhalgh ch. 5-9 ; Cochrane Oral Health ; JADA</td><td>Expliquer à un compañero pourquoi p = 0,03 ne veut pas dire « ça marche »</td></tr>
+        <tr><td class="h">A3</td><td>Lecture critique avec grille (CASP) ; rapports de vraisemblance ; hétérogénéité, biais de publication ; GRADE et niveaux de preuve ; lire une guideline</td><td>Un essai randomisé par mois évalué en 45 min ; journal club mensuel à trois ; les guidelines EFP S3 et ESE lues avec leur niveau de preuve</td><td>CASP checklists ; <i>Users' Guides to the Medical Literature</i> (JAMA) ; EFP, ESE, SDCEP</td><td>Un article évalué en 45 min avec grille, verdict argumenté ; une recommandation de guideline retrouvée avec son grade</td></tr>
+        <tr><td class="h">A4</td><td>De la preuve à la décision : appliquer un résultat à un patient donné ; préférences, coûts, contexte ; savoir dire « la preuve manque »</td><td>La question clinique de la semaine, née d'un patient, répondue en 300 mots avec sources ; guidelines ADA, SDCEP, AAPD au fil des rotations</td><td>ADA Center for EBD ; SDCEP ; AAPD ; NICE</td><td>Dix questions cliniques répondues et archivées, avec le niveau de preuve de chaque réponse</td></tr>
+        <tr><td class="h">A5</td><td>Produire : protocole, recherche exhaustive, extraction, synthèse ; présenter une preuve à des pairs</td><td>Le TFG mené comme une mini-revue systématique ou une étude ; présentation en anglais d'un cas ou d'un article</td><td>PRISMA ; le tuteur de TFG ; JDR, J Clin Periodontol, Int Endod J</td><td>TFG défendu ; un journal club animé en anglais</td></tr>
+      </table></div>
+      <p class="note"><b>La grille de lecture, dès A1, en sept questions</b> (Greenhalgh, simplifiée) : de quoi parle l'article (PICO) ? quel plan d'étude, et est-ce le bon pour la question ? qui a été inclus, qui manque ? le résultat principal, avec son IC ? le biais le plus probable ? est-ce cliniquement important, pas seulement significatif ? s'applique-t-il à mon patient (ou, en A1, à cette population) ? Une page, toujours la même, rangée dans Zotero avec l'article.</p>
+    </section>
+
+    <section class="grp" id="langues">
+      <h2><span class="k">15</span>Espagnol, anglais, français : qui fait quoi</h2>
+      <p class="intro">La décision, tranchée : <b>l'espagnol est la langue de tout ce qui sera dit à un patient ou à un examinateur ; l'anglais est la langue de tout ce qui se lit dans la littérature ; le français ne sert qu'à débloquer, jamais à stocker.</b> Traduire systématiquement doublerait le temps sans doubler la compétence.</p>
+      <div class="tbl"><table>
+        <tr><th>Quoi</th><th>Langue</th><th>Pourquoi</th><th>Évolution</th></tr>
+        <tr><td class="h">Cours, notes Notion, cartes Anki Dentaire</td><td>Espagnol</td><td>La question tombe en espagnol à l'examen ; le mot doit sortir en espagnol au fauteuil</td><td>Jamais de changement</td></tr>
+        <tr><td class="h">Teach-back, cas cliniques, fiches de raisonnement</td><td>Espagnol</td><td>C'est de la production, la compétence la plus lente à venir (le Dossier Español le dit aussi)</td><td>A4-A5 : un cas par mois présenté en anglais, pour l'international</td></tr>
+        <tr><td class="h">Manuels de première année</td><td>Espagnol (Tortora, Karp, Piédrola : les éditions de la fac)</td><td>Le vocabulaire des cours se construit dans les manuels des cours</td><td>Dès A2, les textbooks dentaires en anglais (Nanci, Norton, Wheeler's, puis tous les autres) : les éditions originales sont plus à jour, et c'est la langue de la profession</td></tr>
+        <tr><td class="h">Articles, guidelines, revues systématiques</td><td>Anglais</td><td>90 % de la littérature dentaire est en anglais</td><td>Résumé en espagnol après lecture : un paragraphe, c'est lui qu'on garde</td></tr>
+        <tr><td class="h">Un concept qu'on ne comprend pas</td><td>Français, 10 minutes maximum</td><td>La vitesse de compréhension compte plus que la pureté linguistique</td><td>Puis le concept est ré-expliqué en espagnol (teach-back) et la carte est en espagnol</td></tr>
+        <tr><td class="h">Vocabulaire ES → EN → FR</td><td>Les trois, dans Español::7 Odontología</td><td>Seulement quand le terme <i>diffère</i> ou piège : <i>cordal</i> / third molar / dent de sagesse ; <i>empaste</i> / filling / obturation ; <i>sarro</i> / calculus / tartre ; <i>encía</i> / gingiva / gencive</td><td>Un terme par cours quand il existe ; pas de liste artificielle</td></tr>
+      </table></div>
+      <h3>Comment le vocabulaire se construit sans ralentir</h3>
+      <ul>
+        <li>Le mot inconnu d'un cours entre dans une carte Español avec sa phrase (règle existante). Si c'est un terme clinique, la carte porte aussi le mot anglais : c'est le seul cas de carte à deux langues.</li>
+        <li>Le teach-back enregistré révèle les mots qui manquent à l'oral : ils entrent dans Español::0 Errores le samedi.</li>
+        <li>À partir de A3, l'anamnèse et le consentement se répètent avec le tuteur : le registre du patient (usted, phrases courtes, pas de jargon) est une compétence à part, distincte du registre d'examen.</li>
+        <li>Anglais scientifique : Idioma moderno (S2) fait le socle ; ensuite, la lecture hebdomadaire d'articles suffit, sans cours supplémentaire. Le test : comprendre un abstract de JADA sans dictionnaire en juin 2027.</li>
+      </ul>
+    </section>
+
+    <section class="grp" id="biblio">
+      <h2><span class="k">16</span>La bibliothèque</h2>
+      <p class="intro">Une ressource principale, une complémentaire, une clinique quand ça suffit. Aucune ne se lit de bout en bout : la colonne « quoi lire » dit les chapitres, la colonne « quand » l'année. Les prix sont ceux des éditions courantes en 2026 ; la bibliothèque de la fac en a la plupart, et les éditions antérieures d'occasion valent presque autant pour les fondamentaux.</p>
+      <div class="tbl"><table>
+        <tr><th>Domaine</th><th>Principale</th><th>Complémentaire</th><th>Clinique · guideline</th><th>Quand · quoi lire</th></tr>
+        <tr><td class="h">Anatomie A1</td><td>Tortora, <i>Principios de anatomía y fisiología</i> (fac)</td><td>Netter, <i>Atlas de anatomía humana</i> (ES)</td><td>—</td><td>A1 : les chapitres des temas ; Netter pour les láminas seulement</td></tr>
+        <tr><td class="h">Tête et cou</td><td>Norton, <i>Netter's Head and Neck Anatomy for Dentistry</i></td><td>Velayos, <i>Anatomía de la cabeza para odontólogos</i> (ES)</td><td>Malamed, <i>Handbook of Local Anesthesia</i> (A3)</td><td>A2 : tout Norton, un chapitre par semaine, en anglais</td></tr>
+        <tr><td class="h">Cellule, génétique</td><td>Karp, <i>Biología celular y molecular</i> (fac)</td><td>Alberts, <i>Essential Cell Biology</i> (pour un « ? »)</td><td>—</td><td>A1 : chapitres des temas ; Alberts jamais en entier</td></tr>
+        <tr><td class="h">Biochimie</td><td>Lippincott <i>Illustrated Reviews: Biochemistry</i></td><td>Le manuel de la fac s'il diffère</td><td>—</td><td>A1 S2 : enzymes, métabolisme, calcium, collagène</td></tr>
+        <tr><td class="h">Physiologie</td><td>Guyton &amp; Hall, <i>Tratado de fisiología médica</i></td><td>Costanzo, <i>Physiology</i> (concis)</td><td>—</td><td>A1 : trois chapitres pour Approfondir ; A2 : nerf, muscle, sang, cardio, respiration, rein (patients complexes)</td></tr>
+        <tr><td class="h">Histologie et embryologie orales</td><td>Nanci, <i>Ten Cate's Oral Histology</i></td><td>Gómez de Ferraris &amp; Campos, <i>Histología, embriología e ingeniería tisular bucodental</i> (ES)</td><td>—</td><td>A2 : Nanci en entier, c'est le livre-pivot du tronc B</td></tr>
+        <tr><td class="h">Immunologie</td><td>Abbas, <i>Basic Immunology</i></td><td>—</td><td>—</td><td>A2 : inflammation, immunité innée, hypersensibilité</td></tr>
+        <tr><td class="h">Microbiologie</td><td>Marsh &amp; Martin, <i>Oral Microbiology</i></td><td>Murray, <i>Medical Microbiology</i> (référence)</td><td>—</td><td>A1 S2 : Marsh ch. 1-5 ; A2 : le reste</td></tr>
+        <tr><td class="h">Pathologie générale</td><td>Robbins, <i>Basic Pathology</i></td><td>—</td><td>—</td><td>A2-A3 : inflammation, réparation, hémodynamique, néoplasie</td></tr>
+        <tr><td class="h">Pharmacologie</td><td>Rang &amp; Dale, <i>Pharmacology</i></td><td>Yagiela, <i>Pharmacology and Therapeutics for Dentistry</i></td><td>Fiches de prescription du Consejo General ; SDCEP <i>Drug Prescribing for Dentistry</i></td><td>A2 : récepteurs, PK, ANS, douleur, ATB ; A3 : Yagiela en entier</td></tr>
+        <tr><td class="h">Épidémiologie, EBD</td><td>Piédrola, <i>Medicina preventiva y salud pública</i> (fac)</td><td>Greenhalgh, <i>How to Read a Paper</i></td><td>Cochrane Oral Health ; ADA Center for EBD ; CASP</td><td>A1 : Greenhalgh ch. 1-4 ; A2 : 5-9 ; A3 : <i>Users' Guides</i> (JAMA)</td></tr>
+        <tr><td class="h">Anatomie dentaire, occlusion</td><td>Nelson, <i>Wheeler's Dental Anatomy, Physiology and Occlusion</i></td><td>Okeson, <i>Management of TMD and Occlusion</i> (A3)</td><td>—</td><td>A1 S2 → A2 : une dent par semaine avec le dessin ; Okeson ch. 1-6 en A3</td></tr>
+        <tr><td class="h">Cariologie</td><td>Fejerskov, Nyvad, Kidd, <i>Dental Caries</i></td><td>—</td><td>ICDAS / ICCMS guides ; SDCEP <i>Prevention and Management of Dental Caries in Children</i></td><td>A2 : biofilm, lésion, activité ; A3 : gestion</td></tr>
+        <tr><td class="h">Parodontologie</td><td>Newman &amp; Carranza, <i>Clinical Periodontology</i></td><td>—</td><td>Classification 2018 (Caton et al.) ; EFP S3 (stades I-III, 2020 ; stade IV, 2022) ; SEPA</td><td>A3 : diagnostic, classification, étiologie ; A4 : thérapeutique</td></tr>
+        <tr><td class="h">Endodontie</td><td>Berman &amp; Hargreaves, <i>Cohen's Pathways of the Pulp</i></td><td>—</td><td>Position statements et quality guidelines ESE</td><td>A3 : diagnostic pulpaire, anatomie canalaire ; A4 : préparation, obturation, retraitement</td></tr>
+        <tr><td class="h">Restauratrice</td><td>Ritter, <i>Sturdevant's Art and Science of Operative Dentistry</i></td><td>—</td><td>—</td><td>A3 : préparation, adhésion, composites, amalgame ; A4 : indirect</td></tr>
+        <tr><td class="h">Matériaux</td><td>Anusavice, <i>Phillips' Science of Dental Materials</i></td><td>Sakaguchi, <i>Craig's Restorative Dental Materials</i></td><td>—</td><td>A2 : structure, propriétés, adhésion, composites, céramiques, ciments</td></tr>
+        <tr><td class="h">Prothèse</td><td>Rosenstiel, <i>Contemporary Fixed Prosthodontics</i> ; Carr &amp; Brown, <i>McCracken's Removable Partial</i></td><td>Zarb, <i>Prosthodontic Treatment for Edentulous Patients</i></td><td>—</td><td>A4 : diagnostic et plan avant la technique</td></tr>
+        <tr><td class="h">Chirurgie orale</td><td>Hupp, Ellis, Tucker, <i>Contemporary Oral and Maxillofacial Surgery</i></td><td>Gay Escoda, <i>Cirugía bucal</i> (ES)</td><td>Malamed, <i>Medical Emergencies in the Dental Office</i></td><td>A3 : anesthésie, extraction simple, urgences ; A4 : dents incluses, infections, biopsie</td></tr>
+        <tr><td class="h">Radiologie</td><td>White &amp; Pharoah, <i>Oral Radiology</i></td><td>Whaites, <i>Essentials of Dental Radiography and Radiology</i> (concis)</td><td>Réglementation espagnole de radioprotection (CSN)</td><td>A3 : physique, protection, anatomie radiologique, lecture</td></tr>
+        <tr><td class="h">Médecine et pathologie orales</td><td>Neville, <i>Oral and Maxillofacial Pathology</i></td><td>Scully, <i>Oral and Maxillofacial Medicine</i> ; Bagán (ES)</td><td>Protocoles de dépistage du cancer oral (Consejo General, SEMO)</td><td>A3-A4 : lésions fréquentes d'abord, rares ensuite</td></tr>
+        <tr><td class="h">Patients complexes</td><td>Little &amp; Falace, <i>Dental Management of the Medically Compromised Patient</i></td><td>—</td><td>AHA (prophylaxie de l'endocardite) ; SDCEP (anticoagulants)</td><td>A3 → A5 : un chapitre par maladie rencontrée, c'est le livre d'intégration</td></tr>
+        <tr><td class="h">Orthodontie, pédodontie</td><td>Proffit, <i>Contemporary Orthodontics</i> ; McDonald &amp; Avery (Casamassimo)</td><td>—</td><td>Guidelines AAPD</td><td>A4 : croissance, diagnostic, comportement ; pas de mécanique avant</td></tr>
+        <tr><td class="h">Raisonnement et cas</td><td>Odell, <i>Clinical Problem Solving in Dentistry</i></td><td>Kassirer, <i>Learning Clinical Reasoning</i></td><td>Les cas du projet Dentaire</td><td>A3 → A5 : Odell, un cas par semaine ; Kassirer ch. 1-5 en A2</td></tr>
+        <tr><td class="h">Photographie, numérique</td><td>Bengel, <i>Mastering Digital Dental Photography</i></td><td>—</td><td>—</td><td>A3 ; numérique en A4-A5 selon l'accès</td></tr>
+        <tr><td class="h">Banques de questions</td><td>Examens des années précédentes (Wuolah, compañeros)</td><td>Mosby's Review for the NBDE / INBDE (A3-A5, pour l'intégration)</td><td>—</td><td>A1-A2 : annales de la fac ; A3+ : INBDE pour les cas intégrés, pas pour les faits</td></tr>
+        <tr><td class="h">Vidéo</td><td>Acland's Video Atlas (anatomie) ; Ninja Nerd (physiologie, pharmacologie)</td><td>Les vidéos de la fac</td><td>—</td><td>Pour un mécanisme qui résiste à deux lectures, jamais comme première source</td></tr>
+        <tr><td class="h">Revues</td><td>JADA ; Cochrane Oral Health</td><td>J Dent Res ; J Clin Periodontol ; Int Endod J</td><td>—</td><td>A1-A2 : abstracts ; A3+ : articles entiers</td></tr>
+      </table></div>
+      <p class="note"><b>Achat en A1 :</b> rien en septembre. Le miroir et la cire (≈ 35 €). Greenhalgh en octobre (≈ 30 €, ou la bibliothèque). Wheeler's en janvier (d'occasion, ≈ 40 €). Tout le reste attend A2, et se décide en juin 2027 avec la guía docente sous les yeux.</p>
+    </section>
+
+    <section class="grp" id="evaluation">
+      <h2><span class="k">17</span>Les examens personnels</h2>
+      <p class="intro">Indépendants de la fac, réguliers, courts. Leur seule fonction : vérifier que le savoir est <i>utilisable</i>. Ils se tiennent dans des blocs existants ; le premier est le dimanche 1ᵉʳ novembre.</p>
+      <div class="tbl"><table>
+        <tr><th>Examen</th><th>Rythme</th><th>Forme</th><th>Où</th><th>Noté</th></tr>
+        <tr><td class="h">Knowledge exam</td><td>Mensuel (1ᵉʳ dimanche)</td><td>20 questions de compréhension (pas de rappel pur), générées par le projet Dentaire sur les temas du mois, en espagnol, 30 min sans support</td><td>Simulation du dimanche 09:20 (elle remplace le blanc ce jour-là)</td><td>/20, et le type d'erreur de chaque faute</td></tr>
+        <tr><td class="h">Oral exam · teach-back</td><td>Mensuel (le même dimanche)</td><td>Deux concepts tirés au sort parmi ceux du mois, 4 min chacun, enregistrés, sans notes</td><td>Correction 10:20</td><td>Rubrique 0-3 par concept : mécanisme, chaîne clinique, langue</td></tr>
+        <tr><td class="h">Clinical reasoning exam</td><td>Mensuel dès A1 S2 (niveau 1-2), hebdomadaire dès A3</td><td>Un cas avec la fiche de la section 11</td><td>Simulation du dimanche</td><td>Hypothèses ≥ 3, preuve choisie juste, décision justifiée</td></tr>
+        <tr><td class="h">Integration exam</td><td>Trimestriel (déc., mars, juin)</td><td>Un cas ou un problème qui traverse trois matières du trimestre ; 55 min</td><td>Un jour sans cours, ou la simulation du dimanche</td><td>Rubrique L5 : les liens entre disciplines nommés</td></tr>
+        <tr><td class="h">Evidence exam</td><td>Trimestriel dès A1 S2</td><td>Un article ou un abstract analysé avec la grille en sept questions</td><td>Bloc Approfondir</td><td>Sept réponses justes sur sept, PICO correct</td></tr>
+        <tr><td class="h">Practical checkpoint</td><td>Mensuel</td><td>Le critère du geste en cours (section 13) mesuré et photographié</td><td>Séance mains</td><td>Atteint / pas atteint, chrono ou score</td></tr>
+        <tr><td class="h">Annual exit exam</td><td>Juin</td><td>La liste de la section 20, en une matinée</td><td>La semaine après les examens</td><td>Chaque critère : atteint / non</td></tr>
+      </table></div>
+      <p class="note"><b>Le teach-back au quotidien, en cinq questions</b> (pour chaque concept important, à la fin de Comprendre) : puis-je l'expliquer simplement ? puis-je expliquer le mécanisme ? puis-je l'appliquer ? puis-je le reconnaître en clinique ? puis-je le distinguer de ce qui lui ressemble ? Un « non » à l'une des cinq est une entrée du registre, pas un échec.</p>
+    </section>
+
+    <section class="grp" id="tracker">
+      <h2><span class="k">18</span>Le tracker : dix chiffres, une fois par mois</h2>
+      <p class="intro">La Batcave mesure déjà les heures, la fidélité au plan, le sommeil, l'espagnol. Elle ne mesure pas la compétence, et un tableau de bord de plus la noierait. Le tracker du second cursus est donc <b>une base Notion, dix colonnes, une ligne par mois</b>, remplie le premier dimanche au contrôle de 13:30, en cinq minutes. Rien d'automatique, exprès : le chiffre qu'on écrit à la main est celui qu'on regarde.</p>
+      <div class="tbl"><table>
+        <tr><th>Colonne</th><th>Ce qu'elle mesure</th><th>Source</th><th>Signal d'alerte</th></tr>
+        <tr><td class="h">Knowledge</td><td>Score du knowledge exam /20</td><td>Section 17</td><td>&lt; 14 deux mois de suite : l'encodage (recette A) est trop rapide</td></tr>
+        <tr><td class="h">Teach-back</td><td>Moyenne de la rubrique 0-3</td><td>Enregistrements</td><td>&lt; 2 : on apprend des faits, pas des mécanismes</td></tr>
+        <tr><td class="h">Rétention</td><td>True retention des cartes mûres, %</td><td>Anki › Statistiques</td><td>&lt; 80 % : cartes mal écrites (test du mois) ; &gt; 95 % : trop faciles</td></tr>
+        <tr><td class="h">Cas</td><td>Cas résolus / cas tentés, et niveau max réussi</td><td>Fiches de raisonnement</td><td>Un niveau non franchi trois mois de suite</td></tr>
+        <tr><td class="h">Erreurs</td><td>Entrées du registre, et la classe dominante</td><td>Section 19</td><td>La même classe dominante trois mois de suite : le système d'apprentissage a un trou, pas le contenu</td></tr>
+        <tr><td class="h">Retest</td><td>Part des erreurs du mois précédent réussies au retest</td><td>Registre</td><td>&lt; 70 % : les corrections ne sont pas réapprises</td></tr>
+        <tr><td class="h">Mains</td><td>Critère du geste en cours : atteint / non, chrono</td><td>Carnet de gestes</td><td>Aucune progression sur six semaines : changer l'exercice, pas insister</td></tr>
+        <tr><td class="h">Espagnol</td><td>Erreurs pour 100 mots (déjà mesuré) ; mots manquants au teach-back</td><td>Batcave, registre</td><td>Ceux du Dossier Español</td></tr>
+        <tr><td class="h">Anglais</td><td>Articles lus ; abstract compris sans dictionnaire (oui/non)</td><td>Zotero</td><td>Zéro article un mois : la lecture a sauté</td></tr>
+        <tr><td class="h">Zones faibles</td><td>Trois sujets, écrits en clair</td><td>Tout ce qui précède</td><td>C'est la colonne qu'on relit : elle décide du prochain Approfondir</td></tr>
+      </table></div>
+      <p class="note"><b>Ce qu'on ne mesure pas :</b> les heures (la Batcave le fait), le nombre de cartes créées (la vanité d'Anki), le nombre de pages lues, les vidéos vues. Aucun de ces chiffres ne dit si tu sais faire quelque chose.</p>
+    </section>
+
+    <section class="grp" id="erreurs">
+      <h2><span class="k">19</span>Le registre des erreurs</h2>
+      <p class="intro">Le bloc « Cartes d'erreurs de la semaine » (samedi 16:00) existe déjà ; il devient le moment où le registre se tient. <b>Une base Notion, une ligne par erreur, neuf classes.</b> Le registre est ce qui transforme cinq ans d'erreurs en méthode.</p>
+      <div class="tbl"><table>
+        <tr><th>Colonne</th><th>Contenu</th></tr>
+        <tr><td class="h">Date · matière · source</td><td>Cuestionario, blanc, question ouverte, cas, teach-back, exercice, práctica</td></tr>
+        <tr><td class="h">L'erreur</td><td>En une phrase, avec ce que j'ai répondu et ce qui était juste</td></tr>
+        <tr><td class="h">Classe</td><td>knowledge gap · misunderstanding · memory failure · reasoning failure · diagnostic failure · procedural error · attention error · communication error · decision-making error</td></tr>
+        <tr><td class="h">Pourquoi</td><td>La cause réelle (« je n'avais pas préparé ce tema », « j'ai confondu RR et OR », « j'ai lu trop vite »)</td></tr>
+        <tr><td class="h">Représentation fausse</td><td>Ce que je croyais, écrit noir sur blanc : c'est la ligne la plus utile</td></tr>
+        <tr><td class="h">Correction</td><td>Ce que j'ai fait : relu, carte créée (lien), teach-back refait, geste répété</td></tr>
+        <tr><td class="h">Retest</td><td>Date (J+7 pour la mémoire, J+14 pour la compréhension, J+30 pour le raisonnement) et résultat</td></tr>
+      </table></div>
+      <h3>Ce que chaque classe déclenche</h3>
+      <ul>
+        <li><b>Knowledge gap</b> → le tema n'était pas préparé, ou pas au niveau : recette A refaite sur le point, une carte.</li>
+        <li><b>Misunderstanding</b> → une représentation fausse : « explica » dans le projet Dentaire, puis teach-back de 4 min sur ce point précis. Pas de carte avant.</li>
+        <li><b>Memory failure</b> → une carte existait et a été ratée, ou manquait : carte réécrite ou créée. Si elle a été ratée trois fois, elle est mal écrite (test du mois).</li>
+        <li><b>Reasoning failure</b> → la fiche de la section 11 refaite sur le cas, avec les hypothèses manquantes ; le cas rejoué à J+30.</li>
+        <li><b>Diagnostic failure</b> → une carte de comparaison (X vs Y) et un cas de même famille la semaine suivante.</li>
+        <li><b>Procedural error</b> → une entrée dans le carnet de gestes ; l'exercice répété avec le critère.</li>
+        <li><b>Attention error</b> → aucune carte : c'est un problème de conditions (sommeil, heure, durée). Le tracker de la Batcave (sommeil, dérive du premier bloc) le dit ; on corrige la condition.</li>
+        <li><b>Communication error</b> → une phrase réécrite en espagnol, dite au tuteur ; carte Español::0 Errores.</li>
+        <li><b>Decision-making error</b> → la question « qu'est-ce qui aurait dû me faire hésiter ? », écrite ; un cas de niveau supérieur le mois suivant.</li>
+      </ul>
+      <p class="note"><b>La relecture.</b> Chaque samedi, les erreurs de la semaine sont classées (10 min). Chaque premier dimanche, le registre du mois est relu en entier (10 min) et la classe dominante va dans le tracker. Chaque juin, les erreurs des douze mois deviennent l'examen de révision cumulative. Une erreur qui revient trois fois n'est plus une erreur, c'est un sujet : elle prend le prochain bloc Approfondir.</p>
+    </section>
+
+    <section class="grp" id="sortie">
+      <h2><span class="k">20</span>Les examens de sortie annuels</h2>
+      <p class="intro">Chaque juin, la semaine après les examens de la fac, une matinée. Chaque ligne est atteinte ou non ; il n'y a pas de note. Ce qui n'est pas atteint ouvre l'année suivante. C'est la seule page de ce document qu'on relit en entier chaque année.</p>
+      <div class="comp"><h4>Juin 2027 · fin de A1</h4><dl>
+        <dt>Expliquer</dt><dd>Cinq mécanismes de la liste des dix, tirés au sort, 4 min chacun en espagnol sans notes, chaîne complète jusqu'à la conséquence clinique, rubrique ≥ 2/3 chacun.</dd>
+        <dt>Anatomie dentaire</dt><dd>Les 32 dents dessinées et nommées de mémoire (trois vues), chronologie d'éruption des deux dentitions sans faute.</dd>
+        <dt>Preuve</dt><dd>Un tableau 2×2 construit depuis un énoncé, RR et OR calculés et interprétés en une phrase juste ; une recherche PubMed en PICO qui ramène l'article en moins de 5 min ; un abstract de JADA compris sans dictionnaire.</dd>
+        <dt>Raisonner</dt><dd>Quatre cas de niveau 1-2 résolus avec la fiche, les corrélations anatomo-cliniques justes.</dd>
+        <dt>Mains</dt><dd>Tracé sous miroir dans le critère ; une couronne (11 ou 16) sculptée en cire, reconnaissable par un compañero.</dd>
+        <dt>Système</dt><dd>Le registre tenu neuf mois, dix teach-backs enregistrés, huit knowledge exams, le tracker rempli chaque mois.</dd>
+        <dt>Langues</dt><dd>Espagnol : une question ouverte d'examen à moins de 4 erreurs pour 100 mots ; un cours suivi noté ≥ 2,5/3 en moyenne sur 21 jours.</dd>
+      </dl></div>
+      <div class="comp"><h4>Juin 2028 · fin de A2</h4><dl>
+        <dt>Expliquer</dt><dd>Les six chaînes de la section 03 récitées et expliquées jusqu'à leur cran A2 ; l'odontogenèse et l'histologie de l'émail, de la dentine et du parodonte au niveau 2.</dd>
+        <dt>Tête et cou</dt><dd>Sur un crâne ou un atlas : le trajet de V2 et V3, les foramens, les espaces, les artères ; les six nerfs crâniens utiles avec leur test clinique.</dd>
+        <dt>Pharmacologie</dt><dd>Dix médicaments courants : mécanisme, effet, interaction dentaire principale.</dd>
+        <dt>Raisonner</dt><dd>Un cas de niveau 3 avec différentiel et test choisi juste.</dd>
+        <dt>Preuve</dt><dd>Une revue systématique résumée en tableau des preuves ; expliquer un IC et une valeur p à un compañero.</dd>
+        <dt>Mains</dt><dd>Une préparation de classe I et une de classe II sur typodont acceptées par un enseignant ; dix points de suture dans le critère ; morphologie complète en cire d'un quadrant.</dd>
+        <dt>Langues</dt><dd>Espagnol C1 blanc réussi ; un textbook dentaire lu en anglais (Nanci) avec cartes.</dd>
+      </dl></div>
+      <div class="comp"><h4>Juin 2029 · fin de A3</h4><dl>
+        <dt>Sécurité</dt><dd>Cinq urgences simulées : conduite à tenir en ordre, médicament et dose, quand appeler ; doses maximales des anesthésiques par poids, sans hésiter.</dd>
+        <dt>Image</dt><dd>Dix clichés lus en ordre fixe, sans faux positif ; justification et dose d'un cliché demandé.</dd>
+        <dt>Diagnostic</dt><dd>Diagnostic pulpaire et parodontal (stade, grade) sur cas ; une lésion muqueuse décrite avec la conduite à tenir.</dd>
+        <dt>Raisonner</dt><dd>Un cas de niveau 4 défendu à l'oral en espagnol devant un compañero ou le tuteur.</dd>
+        <dt>Preuve</dt><dd>Un essai randomisé évalué avec grille CASP en 45 min ; une recommandation EFP ou ESE retrouvée avec son niveau de preuve.</dd>
+        <dt>Mains</dt><dd>Le préclinique de la fac validé ; cinq vues photographiques standard reproductibles.</dd>
+      </dl></div>
+      <div class="comp"><h4>Juin 2030 · fin de A4</h4><dl>
+        <dt>Patient</dt><dd>Un patient médicalement complexe pris en charge en clinique avec une fiche de raisonnement validée par l'enseignant ; anamnèse et consentement menés en espagnol sans reprise.</dd>
+        <dt>Plan</dt><dd>Deux plans de traitement alternatifs pour une même bouche, avec pronostic, coût, séquence, et la phrase au patient.</dd>
+        <dt>Raisonner</dt><dd>Un cas de niveau 6 séquencé (paro → endo → chirurgie → prothèse) et justifié.</dd>
+        <dt>Preuve</dt><dd>Dix questions cliniques nées de patients, répondues avec sources et niveau de preuve ; un journal club animé.</dd>
+        <dt>Enfant, ortho</dt><dd>Un cas pédiatrique et un cas orthodontique diagnostiqués et orientés correctement.</dd>
+      </dl></div>
+      <div class="comp"><h4>Juin 2031 · fin de A5 · l'examen de sortie</h4><dl>
+        <dt>Les sept capacités</dt><dd>Les sept tests de la section 01, une matinée, tous atteints.</dd>
+        <dt>Portfolio</dt><dd>Trente cas documentés (photos, fiches, suivi), dont cinq de niveau 5-6 et un de niveau 7.</dd>
+        <dt>TFG</dt><dd>Défendu, de qualité publiable ; une présentation en anglais faite.</dd>
+        <dt>Limites</dt><dd>La liste écrite de ce que tu ne sais pas faire seul le jour du diplôme, et le plan pour chacun : formation, mentor, ou renoncement.</dd>
+        <dt>Après</dt><dd>Le système (Anki, registre, journal club, question clinique de la semaine) qui continue sans la fac : c'est la seule preuve d'autonomie intellectuelle.</dd>
+      </dl></div>
+      <div class="verdict"><p><b>Le critère de réussite final, en une phrase.</b> En juin 2031, tu poses ce document à côté de ton diplôme et tu peux dire, pour chaque ligne des sept capacités : « voilà ce que je suis capable de faire, et voilà la preuve ». Pas « je connais ». <b>Understand → retain → apply → integrate → perform → reflect → improve.</b> Le reste est de l'information.</p></div>
+    </section>
+
+    <footer>
+      Établi le 17 septembre 2026, à J-2 du jour 1 de la Batcave. Sources : le référentiel <i>Graduating European Dentist</i> de l'ADEE (2017, domaine V Recherche ajouté en 2024) ; le cadre espagnol des études de dentiste (Orden CIN/2314/2008) ; les onze guías docentes de première année de la UEV lues le 13 septembre ; Le semestre, la Prise en main, le Dossier Español et le guide Anki. Les matières des années 2 à 5 sont indicatives et se confirment chaque juin. Les prix des livres sont ceux de 2026 et changeront. Aucune ligne de ce document n'autorise un geste sur un patient hors du cadre de la fac.<br>
+      Version 1.0 · relecture prévue le jeudi 17 décembre 2026 (bilan des 90 jours), puis chaque juin.
+    </footer>
+  </main>
+</div>
+</body>
+</html>
