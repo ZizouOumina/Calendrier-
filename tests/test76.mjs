@@ -16,10 +16,10 @@ async function jour(quand){
   return {ctx, page, fr};
 }
 console.log('\n== tours : moitie deux semaines, puis complet ==');
-/* Le programme ouvre le vendredi 18 : la semaine de programme court du vendredi au jeudi.
-   S1 = 18-24 sept., S2 = 25 sept.-1er oct. (toutes deux a moitie des tours), S3 des le 2 oct. */
+/* Le programme ouvre le samedi 19 : la semaine de programme court du samedi au vendredi.
+   S1 = 19-25 sept., S2 = 26 sept.-2 oct. (toutes deux a moitie des tours), S3 des le 3 oct. */
 /* Les tractions ouvrent le Haut lourd du LUNDI : on ne compare que des lundis.
-   La semaine de programme court du vendredi au jeudi depuis le 18 : lundi 21 est en S1,
+   La semaine de programme court du samedi au vendredi depuis le 19 : lundi 21 est en S1,
    lundi 28 en S2 (toutes deux a moitie des tours), lundi 5 oct. est en S3. */
 for (const [d, attendu, moitie] of [['2026-09-21',2,true],['2026-09-28',2,true],['2026-10-05',4,false],['2026-10-12',4,false]]) {
   const {ctx, fr} = await jour(d+'T05:35:00+02:00');
@@ -58,7 +58,7 @@ for (const [d, jour_, pesee, coupe] of [
      jour_+' : pesée '+h.pesee+' · photos '+h.photos+' · coupe '+h.cheveux+' ('+h.n+' habitudes)');
   await ctx.close();
 }
-console.log('\n== seance de reference, uniquement la premiere seance du programme (samedi 19 : le vendredi 18 est off) ==');
+console.log('\n== seance de reference, uniquement la premiere seance du programme (samedi 19, jour 1 ; avant, rien) ==');
 for (const [d, attendu] of [['2026-09-17',false],['2026-09-18',false],['2026-09-19',true],['2026-09-21',false]]) {
   const {ctx, fr} = await jour(d+'T05:35:00+02:00');
   const p = await fr.evaluate(()=>document.getElementById('dash-plan').innerText);

@@ -99,7 +99,7 @@ console.log('\n== 231) Phase 1 (mercredi 16 septembre) : blocs Projets perso ren
      septembre (48,7 -> 44,8). Meme jour retire, meme difference aux deux.
      168 et 49 depuis l'emploi du temps reel : lundi et mardi apportent 3 h 50 de blocs
      de plus, tous renommes Español en phase 1. */
-  ok(Math.abs(objs['T1:espagnol_h'] - 157.2) < 0.2 && Math.abs(objs['M2026-09:espagnol_h'] - 36.1) < 0.2 && objs['M2026-09:projets_h'] === 0 && objs['T1:revision_h'] > 0, 'objectifs Espagnol calculés depuis la grille (T1 ≈ 159,5, septembre ≈ 38,4 — départ du jeudi 17) ; Projets perso ramené à zéro en septembre, où la phase 1 occupe toute la part programmée du mois : ' + JSON.stringify(objs));
+  ok(Math.abs(objs['T1:espagnol_h'] - 154.7) < 0.2 && Math.abs(objs['M2026-09:espagnol_h'] - 33.6) < 0.2 && objs['M2026-09:projets_h'] === 0 && objs['T1:revision_h'] > 0, 'objectifs Espagnol calculés depuis la grille (T1 ≈ 154,7, septembre ≈ 33,6 — départ du samedi 19) ; Projets perso ramené à zéro en septembre, où la phase 1 occupe toute la part programmée du mois : ' + JSON.stringify(objs));
 
   /* Pomodoro Español : la tâche par défaut est celle du bloc en cours (gramática à 12:00), le bloc part en projet « Español · gramática » */
   await fr.evaluate(() => document.querySelector('.nav-btn[data-page="dashboard"]').click());
@@ -150,7 +150,7 @@ console.log('\n== 232) Avant le lundi 14 septembre : aucune période, la grille 
      'le 14 : révision dentaire, déjeuner et cours intacts : ' + [g.l0720, g.l0820, g.l0920, g.l1220, g.l1730].join(' / '));
   ok(g.l1120 === 'Español · gramática' && g.l1300 === 'Español · escribir' && g.l1400 === 'Español · preparar la clase' && g.l1500 === 'Español · hablar',
      'le 14 : seuls les Projets perso deviennent Español, les quatre du lundi : ' + [g.l1120, g.l1300, g.l1400, g.l1500].join(' / '));
-  ok(/démarre le/.test(g.sport) && /18/.test(g.sport), 'sport : avant le 18, « démarre le 18 sept. » (' + g.sport + ')');
+  ok(/démarre le/.test(g.sport) && /19/.test(g.sport), 'sport : avant le 19, « démarre le 19 sept. » (' + g.sport + ')');
   await ctx.close();
 }
 

@@ -138,9 +138,9 @@ console.log('\n== 6) La recherche du journal ==');
 
 console.log('\n== 7) Rattrapage unique après une absence ==');
 {
-  /* lot 40 : le programme ouvre le vendredi 18, donc le 17 n'est pas une journee manquee ;
-     ouvert le 16, revenu le 21 : trois journees sans cloture, 18, 19 et 20 */
-  const {ctx, page, fr} = await ouvrir({'batcave-last-open':'2026-09-16'}, '2026-09-21T10:00:00+02:00');
+  /* lot 41 : le programme ouvre le samedi 19, donc ni le 17 ni le 18 ne sont des journees
+     manquees ; ouvert le 16, revenu le 22 : trois journees sans cloture, 19, 20 et 21 */
+  const {ctx, page, fr} = await ouvrir({'batcave-last-open':'2026-09-16'}, '2026-09-22T10:00:00+02:00');
   const t = await plan(fr);
   const l = t.split('\n').filter(x=>/Absence —/.test(x))[0] || '';
   ok(/3 journées sans clôture/.test(l), 'un seul item pour toute l\'absence : ' + l.trim().slice(0, 90));
@@ -152,7 +152,7 @@ console.log('\n== 7) Rattrapage unique après une absence ==');
   await ctx.close();
 }
 {
-  const {ctx, fr} = await ouvrir({'batcave-last-open':'2026-09-20'}, '2026-09-21T10:00:00+02:00');
+  const {ctx, fr} = await ouvrir({'batcave-last-open':'2026-09-21'}, '2026-09-22T10:00:00+02:00');
   ok(!/Absence —/.test(await plan(fr)), 'ouvert hier : aucun rattrapage');
   await ctx.close();
 }

@@ -87,10 +87,12 @@ console.log('\n== 200) Depuis l\'appli : tout est effacé ici et dans le cloud, 
      Lot 38 : le depart passe au jeudi 17 (mardi 15 et mercredi 16 sortent du compte) :
        septembre 47,5 → 40,9 et trimestre 286,3 → 278,4, au meme prorata.
      Lot 40 : le depart passe au vendredi 18 (le jeudi 17 sort du compte) :
-       septembre 40,9 → 37,8 et trimestre 278,4 → 274,7. */
+       septembre 40,9 → 37,8 et trimestre 278,4 → 274,7.
+     Lot 41 : le depart passe au samedi 19 (le vendredi 18 sort du compte) :
+       septembre 37,8 → 35,4 et trimestre 274,7 → 271,8. */
   const objs = c['batcave-objectifs'] && c['batcave-objectifs'].liste || [];
   const revSept = objs.find(o => o.id === 'M2026-09:revision_h'), revT1 = objs.find(o => o.id === 'T1:revision_h'), sommeilSept = objs.find(o => o.id === 'M2026-09:sommeil_moy');
-  ok(!!revSept && revSept.debut === '2026-09-08' && revSept.cible === 37.8, 'Révision de septembre : repart du 8, cible ramenée aux jours réellement programmés → 37,8 h (' + (revSept && revSept.cible) + ')');
+  ok(!!revSept && revSept.debut === '2026-09-08' && revSept.cible === 35.4, 'Révision de septembre : repart du 8, cible ramenée aux jours réellement programmés → 35,4 h (' + (revSept && revSept.cible) + ')');
   /* Deux fois de suite ce chiffre a bouge, et jamais par accident.
      284 → 286,9 : « Projets perso 4, 5 et 6 » basculent en revision ciblee pendant les
      partiels. L'examen seme ici (16 octobre) ouvre une fenetre du 9 au 16 qui contient un
@@ -102,7 +104,7 @@ console.log('\n== 200) Depuis l\'appli : tout est effacé ici et dans le cloud, 
      (320 → 485 min de revision prevue) et le lundi 12 octobre (476 → 531). Les deux sont
      dans la fenetre de partiels, donc la plage de cours liberee devient de l'annale complete,
      sa correction et de la revision ciblee. +220 min nets x 0,89 = 3,26 h, x 84/91 = 3,01 h. */
-  ok(!!revT1 && revT1.debut === '2026-09-08' && revT1.cible === 274.7, 'Révision du trimestre : repart du 8 → 274,7 h (' + (revT1 && revT1.cible) + ')');
+  ok(!!revT1 && revT1.debut === '2026-09-08' && revT1.cible === 271.8, 'Révision du trimestre : repart du 8 → 271,8 h (' + (revT1 && revT1.cible) + ')');
   ok(!!sommeilSept && sommeilSept.debut === '2026-09-08' && sommeilSept.cible === 7.75, 'une moyenne (sommeil, 7,75 h) repart du 8 sans changer de cible');
   await page.waitForTimeout(2200);   /* rechargement automatique */
   await page.frameLocator('#f').locator('#dash-plan').waitFor({ state:'attached', timeout:15000 });
