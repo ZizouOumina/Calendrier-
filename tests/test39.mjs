@@ -29,15 +29,15 @@ console.log('\n== 83) Les objectifs hebdomadaires se déduisent du planning ==')
     proj: document.getElementById('proj-stats').innerText,
   }));
   /* écrits en dur, ils valaient encore 39 h et 23 h : l'ancien planning. */
-  ok(nb(v.rev) === '29h54', 'objectif révision = 29 h 54 de travail réel (34 h de blocs, pauses exclues, Anki matinal du mercredi) : ' + nb(v.rev));
+  ok(nb(v.rev) === '34h', 'objectif révision = 34 h de travail réel (grille du 18 septembre : Étudier en avance 2 h, Question ouverte ou autre 1 h, Clore 40 min, Approfondir et Réexpliquer le week-end) : ' + nb(v.rev));
   /* 22 h 30 depuis l'emploi du temps reel du S1 : lundi gagne « Projets perso 4 » (1 h 50)
      et mardi « Projets perso 5 » et « 6 » (2 h), soit 3 h 36 de travail net en plus. */
-  ok(nb(v.proj) === '22h30', 'objectif projets perso = 22 h 30 (dimanche 13:30, matins du vendredi et du dimanche, les trois blocs nes de l\'emploi du temps reel) : ' + nb(v.proj));
+  ok(nb(v.proj) === '15h12', 'objectif projets perso = 15 h 12 (13:00 et 14:00 en semaine, lundi 15:00, mardi 20:30, vendredi 05:30 et 11:20, samedi et dimanche) : ' + nb(v.proj));
   await ctx.close();
 }
 
 console.log('\n== 84) L\'objectif du jour colle à la journée planifiée ==');
-for(const [nom, quand, attendu] of [['lundi',LUNDI,'4 h 25'], ['vendredi',VENDREDI,'3 h 30'], ['samedi',SAMEDI,'4 h 25'], ['dimanche',DIMANCHE,'3 h 30']]){
+for(const [nom, quand, attendu] of [['lundi',LUNDI,'5 h 05'], ['vendredi',VENDREDI,'4 h 10'], ['samedi',SAMEDI,'4 h 25'], ['dimanche',DIMANCHE,'3 h 30']]){
   const { ctx, fr } = await ouvrir(quand);
   const t = await fr.evaluate(() => document.getElementById('cal-revision-sub').textContent);
   ok(t.indexOf('sur ' + attendu) > -1, nom + ' : objectif ' + attendu + ' — ' + t);
@@ -45,7 +45,7 @@ for(const [nom, quand, attendu] of [['lundi',LUNDI,'4 h 25'], ['vendredi',VENDRE
 }
 
 console.log('\n== 85) L\'objectif de sommeil suit le coucher de la VEILLE ==');
-for(const [nom, quand, attendu] of [['lundi (veille dim. 21:00, lever 05:30)',LUNDI,'8 h 30'], ['samedi (veille ven. 21:55)',SAMEDI,'7 h 35'], ['dimanche (veille sam. 21:00)',DIMANCHE,'8 h 30']]){
+for(const [nom, quand, attendu] of [['lundi (veille dim. 21:00, lever 05:30)',LUNDI,'8 h 30'], ['samedi (veille ven. 21:55)',SAMEDI,'7 h 35'], ['dimanche (veille sam. 21:00)',DIMANCHE,'9 h 30']]){
   const { ctx, fr } = await ouvrir(quand);
   const t = await fr.evaluate(() => document.getElementById('jr-sleep-sub').textContent);
   ok(t.indexOf('sur ' + attendu) > -1, nom + ' → ' + attendu + ' : ' + t);

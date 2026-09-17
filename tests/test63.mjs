@@ -48,7 +48,7 @@ console.log('\n== 221) Calendrier : bloc couvert par une session coché tout seu
   });
   ok(st.a1.checked && st.a1.auto && /checked/.test(st.a1.cls), 'Anki 1 (53 min sur 60) coché automatiquement avec la marque « auto »');
   ok(!st.a2.checked && !st.a2.auto, 'Anki 2 (25 min sur 60, sous la moitié) reste décoché');
-  ok(!st.cartes.checked, 'Préparer un tema décoché à la main : jamais recoché');
+  ok(!st.cartes.checked, 'Étudier en avance décoché à la main : jamais recoché');
   ok(!st.sport.checked, 'un bloc hors travail (Sport) n\'est pas concerné');
   ok(st.store['07:20'] === 'auto' && st.store['09:20'] === false, 'stockage : 07:20 = "auto", 09:20 = false : ' + JSON.stringify(st.store));
   /* décocher à la main un bloc auto : il reste décoché au rendu suivant */
@@ -68,11 +68,11 @@ console.log('\n== 222) Session enregistrée au minuteur → le calendrier se rec
   await fr.evaluate(() => { const r = document.getElementById('ritual-dismiss'); if(r) r.click(); document.querySelector('.nav-btn[data-page="calendrier"]').click(); });
   await page.waitForTimeout(200);
   const avant = await fr.evaluate(() => document.querySelector('#cal-timeline input[data-cal="11:20"]').checked);
-  /* une session projet 11:20 → 12:00 enregistrée comme le fait le minuteur (logSession) */
-  await fr.evaluate(() => window.__bcLogSession(40, {cible:'projet', projet:'DS', startedAt: new Date('2026-09-07T11:20:00+02:00').getTime()}));
+  /* une session de révision 11:20 → 12:00 enregistrée comme le fait le minuteur (logSession) */
+  await fr.evaluate(() => window.__bcLogSession(40, {cible:"cours", matiere:"Anatomía", startedAt: new Date('2026-09-07T11:20:00+02:00').getTime()}));
   await page.waitForTimeout(250);
   const apres = await fr.evaluate(() => document.querySelector('#cal-timeline input[data-cal="11:20"]').checked);
-  ok(!avant && apres, 'Projets perso 1 non coché avant, coché après une session de 40 min sur 60');
+  ok(!avant && apres, '« Question ouverte ou autre » non coché avant, coché après une session de 40 min sur 60');
   await ctx.close();
 }
 
@@ -210,8 +210,8 @@ console.log('\n== 228) Tous les boutons sans texte ont un libellé ; cases du ca
   }, pages);
   ok(sansLibelle.length === 0, 'aucun bouton sans texte ni libellé (' + sansLibelle.length + ')' + (sansLibelle.length ? ' : ' + sansLibelle.slice(0, 6).join(' | ') : ''));
   await fr.evaluate(() => document.querySelector('.nav-btn[data-page="calendrier"]').click());
-  await page.frameLocator('#f').locator('#cal-timeline input[data-cal="10:20"]').press('Space'); await page.waitForTimeout(150);
-  const coche = await fr.evaluate(() => ({ checked: document.querySelector('#cal-timeline input[data-cal="10:20"]').checked, store: JSON.parse(localStorage.getItem('batcave-cal-2026-09-07'))['10:20'] }));
+  await page.frameLocator('#f').locator('#cal-timeline input[data-cal="11:20"]').press('Space'); await page.waitForTimeout(150);
+  const coche = await fr.evaluate(() => ({ checked: document.querySelector('#cal-timeline input[data-cal="11:20"]').checked, store: JSON.parse(localStorage.getItem('batcave-cal-2026-09-07'))['11:20'] }));
   ok(coche.checked && coche.store === true, 'Espace coche un bloc du calendrier et l\'enregistre');
   await ctx.close();
 }

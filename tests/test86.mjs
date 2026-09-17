@@ -77,8 +77,8 @@ console.log('\n== 282) Les deux portes franchies : deux boutons, et la grille ne
   ok(/2 portes franchies/.test(v.note), 'relevé : « ' + v.note + ' »');
   /* Franchie n'est pas convertie : tant qu'il ne clique pas, la grille est intacte. */
   const g = await grille(fr, '2026-10-13');
-  ok(g.includes('14:00 Español · preparar la clase') && g.includes('19:00 Español · registro académico'),
-     'porte franchie mais non convertie : la grille est inchangée (' + g.filter(x => /14:00|19:00/.test(x)).join(' · ') + ')');
+  ok(g.includes('20:30 Español · serie en VO') && g.includes('13:00 Español · gramática'),
+     'porte franchie mais non convertie : la grille est inchangée (' + g.filter(x => /13:00|20:30/.test(x)).join(' · ') + ')');
   await ctx.close();
 }
 
@@ -91,12 +91,12 @@ console.log('\n== 283) Un clic : le bloc revient aux projets DEMAIN, jamais hier
   await page.waitForTimeout(350);
   /* Un LUNDI deja vecu : le vendredi n'a pas de « Projets perso 3 », il ne prouverait rien. */
   const hier = await grille(fr, '2026-10-05'), aujourdhui = await grille(fr, '2026-10-12'), demain = await grille(fr, '2026-10-13');
-  ok(hier.includes('14:00 Español · preparar la clase'), 'le lundi 5 octobre, déjà vécu, garde sa grille');
-  ok(aujourdhui.includes('14:00 Español · preparar la clase'), 'aujourd\'hui aussi : la conversion prend demain');
-  ok(demain.includes('14:00 Projets perso 3'), 'demain, le bloc de 14:00 est redevenu Projets perso');
-  ok(!demain.some(x => /Español · preparar la clase/.test(x)), 'plus aucun « preparar la clase » demain');
+  ok(hier.includes('13:00 Español · gramática'), 'le lundi 5 octobre, déjà vécu, garde sa grille');
+  ok(aujourdhui.includes('20:30 Español · serie en VO') || aujourdhui.includes('13:00 Español · gramática'), 'aujourd\'hui aussi : la conversion prend demain');
+  ok(demain.includes('20:30 Projets perso 6'), 'demain, le bloc de 20:30 est redevenu Projets perso');
+  ok(!demain.some(x => /Español · serie en VO/.test(x)), 'plus aucune « serie en VO » demain');
   const apres = await fr.evaluate(() => window.__bcPrevu('2026-10-13'));
-  ok(apres.proj === avant.proj + 50 && apres.es === avant.es - 50, 'les cibles suivent : projets ' + avant.proj + ' → ' + apres.proj + ' min, espagnol ' + avant.es + ' → ' + apres.es);
+  ok(apres.proj === avant.proj + 55 && apres.es === avant.es - 55, 'les cibles suivent : projets ' + avant.proj + ' → ' + apres.proj + ' min, espagnol ' + avant.es + ' → ' + apres.es);
   ok(apres.rev === avant.rev, 'la révision ne bouge pas (' + apres.rev + ' min)');
   /* La décision est persistée, pas seulement affichée. */
   const etat = await fr.evaluate(() => JSON.parse(localStorage.getItem('batcave-portes') || '{}'));
@@ -105,8 +105,8 @@ console.log('\n== 283) Un clic : le bloc revient aux projets DEMAIN, jamais hier
   await fr.evaluate(() => document.querySelector('#portes-etat [data-porte-convertir="2"]').click());
   await page.waitForTimeout(350);
   const d2 = await grille(fr, '2026-10-13');
-  ok(d2.includes('19:00 Projets perso 5') && d2.includes('13:00 Español · escribir'),
-     'la porte 2 rend « registro académico » et laisse « escribir » : ' + d2.filter(x => /13:00|19:00/.test(x)).join(' · '));
+  ok(d2.includes('13:00 Projets perso 1') && d2.includes('14:00 Español · escribir'),
+     'la porte 2 rend « gramática » et laisse « escribir » : ' + d2.filter(x => /13:00|14:00/.test(x)).join(' · '));
   const note = await fr.evaluate(() => document.getElementById('portes-note').textContent);
   ok(/2 portes converties/.test(note), 'relevé : « ' + note + ' »');
   await ctx.close();
@@ -118,13 +118,13 @@ console.log('\n== 284) Rendre le bloc à l\'espagnol : le chemin inverse existe 
     Object.assign(SEED(3, 1.2), {'batcave-portes': {p1:true, p2:true, c1:'2026-10-08'}}));
   await allerEtudes(fr, page);
   const g0 = await grille(fr, '2026-10-13');
-  ok(g0.includes('14:00 Projets perso 3'), 'la conversion enregistrée s\'applique au rechargement');
+  ok(g0.includes('20:30 Projets perso 6'), 'la conversion enregistrée s\'applique au rechargement');
   const b = await fr.evaluate(() => { const x = document.querySelector('#portes-etat [data-porte-rendre="1"]'); return x ? x.textContent : null; });
   ok(!!b && /espagnol/.test(b), 'le bouton inverse est là : « ' + b + ' »');
   await fr.evaluate(() => document.querySelector('#portes-etat [data-porte-rendre="1"]').click());
   await page.waitForTimeout(350);
   const g1 = await grille(fr, '2026-10-13');
-  ok(g1.includes('14:00 Español · preparar la clase'), 'le bloc est rendu à l\'espagnol');
+  ok(g1.includes('20:30 Español · serie en VO'), 'le bloc est rendu à l\'espagnol');
   ok(await fr.evaluate(() => !JSON.parse(localStorage.getItem('batcave-portes') || '{}').c1), 'la date de conversion est effacée');
   await ctx.close();
 }
@@ -144,7 +144,7 @@ console.log('\n== 285) Porte refermée : on le dit, on ne reprend rien tout seul
   ok(/s’est refermée|s'est refermée/.test(v.txt), 'le panneau annonce la fermeture : ' + (v.txt.match(/.{0,30}refermée.{0,60}/) || [''])[0]);
   ok(v.rendre === 1, 'le bouton pour rendre le bloc reste proposé');
   const g = await grille(fr, '2026-10-13');
-  ok(g.includes('14:00 Projets perso 3'), 'le bloc reste aux projets tant qu\'il ne le rend pas');
+  ok(g.includes('20:30 Projets perso 6'), 'le bloc reste aux projets tant qu\'il ne le rend pas');
   await ctx.close();
 }
 
@@ -158,8 +158,8 @@ console.log('\n== 286) En partiels, une porte convertie ne rend rien ==');
   const p = await fr.evaluate(() => { const x = window.__bcPeriode('2026-10-13'); return x ? x.id : null; });
   ok(p === 'partiels', 'le 13 octobre est en mode partiels (' + p + ')');
   const g = await grille(fr, '2026-10-13');
-  ok(g.includes('14:00 Español') && !g.includes('14:00 Projets perso 3'), 'le bloc de 14:00 reste le bloc Español du mode partiels : ' + g.filter(x => /14:00|19:00/.test(x)).join(' · '));
-  ok(g.includes('19:00 Révision ciblée'), 'et 19:00 reste de la révision ciblée, pas du projet');
+  ok(!g.includes('20:30 Projets perso 6'), 'le bloc de 20:30 reste celui du mode partiels : ' + g.filter(x => /14:00|20:30/.test(x)).join(' · '));
+  ok(g.includes('13:00 Révision ciblée'), 'et 13:00 reste de la révision ciblée, pas du projet');
   await ctx.close();
 }
 

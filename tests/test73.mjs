@@ -44,17 +44,17 @@ console.log('\n== 301) Les cibles du jour et de la semaine viennent de la grille
   const p1 = await ouvrir('2026-09-15T18:00:00+02:00');
   const c1 = await cellules(p1.fr);
   const sem1 = await p1.fr.evaluate(() => document.getElementById('dash-semaine').innerText.replace(/\s+/g, ' '));
-  ok(/\/ 4 h 30/.test(c1[2]), 'phase 1 : la cellule Español porte une cible du jour (' + c1[2] + ')');
-  ok(/d'espagnol sur 21 h 36/.test(sem1), 'phase 1 : 21 h 36 d\'espagnol prévues dans la semaine (' + sem1.slice(0, 110) + ')');
+  ok(/\/ 2 h 40/.test(c1[2]), 'phase 1 : la cellule Español porte une cible du jour (' + c1[2] + ')');
+  ok(/d'espagnol sur 15 h 12/.test(sem1), 'phase 1 : 15 h 12 d\'espagnol prévues dans la semaine (' + sem1.slice(0, 110) + ')');
   ok(!/de projets sur 0/.test(sem1), 'phase 1 : la ligne « projets » se tait au lieu d\'afficher « sur 0 »');
   await p1.ctx.close();
-  /* phase 3 : un seul bloc Español par jour, les projets reviennent */
+  /* dès le 19 octobre : plus de bloc Español du tout, tout revient aux projets */
   const p3 = await ouvrir('2026-12-08T18:00:00+02:00');
   const sem3 = await p3.fr.evaluate(() => document.getElementById('dash-semaine').innerText.replace(/\s+/g, ' '));
   const c3 = await cellules(p3.fr);
-  ok(/de projets sur 16 h 06/.test(sem3), 'phase 3 : les projets perso reviennent à 16 h 06 (' + sem3.slice(0, 130) + ')');
-  ok(/d'espagnol sur 6 h 24/.test(sem3), 'phase 3 : l\'espagnol descend à 6 h 24');
-  ok(/\/ 55 min/.test(c3[2]), 'phase 3 : la cible du jour tombe à 55 min (' + c3[2] + ')');
+  ok(/de projets sur 16 h 06/.test(sem3), 'décembre : les projets perso valent 16 h 06 (' + sem3.slice(0, 130) + ')');
+  ok(!/d'espagnol sur/.test(sem3), 'décembre : plus une minute d\'espagnol pur dans la grille');
+  ok(!/\/ /.test(c3[2]), 'décembre : la cellule Español n\'a plus de cible du jour (' + c3[2] + ')');
   await p3.ctx.close();
   /* hors phase : plus de bloc Español, la cellule reste mais sans cible */
   const t = await ouvrir('2027-03-16T18:00:00+02:00');
@@ -68,7 +68,7 @@ console.log('\n== 301) Les cibles du jour et de la semaine viennent de la grille
      « Projets perso 4 » du lundi (15:00 → 16:50, 101 min de travail net, le cours du lundi
      ne commence plus a 17:30 mais a 15:30) et les « Projets perso 5 » et « 6 » du mardi soir
      (2 x 55 min, il n'y a plus de mardi soir : le cours va jusqu'a 21:30). 211 min = 3 h 31. */
-  ok(/de projets sur 18 h 54/.test(semt), 'semestre 2, grille type : 18 h 54 de projets prévues (' + semt.slice(0, 100) + ')');
+  ok(/de projets sur 12 h 30/.test(semt), 'semestre 2, grille type : 12 h 30 de projets prévues (' + semt.slice(0, 100) + ')');
   await t.ctx.close();
 }
 
@@ -103,7 +103,7 @@ console.log('\n== 303) L\'espagnol a son panneau dans Études ==');
   }));
   ok(/Aujourd'hui 50 min/.test(p.stats), 'aujourd\'hui : 50 min (' + p.stats.slice(0, 60) + ')');
   ok(/7 derniers jours 1 h 50/.test(p.stats), 'sept jours : 1 h 50');
-  ok(/Blocs prévus 21 h 36/.test(p.stats), 'la cible de la semaine vient de la grille : 21 h 36 (' + p.stats.slice(0, 90) + ')');
+  ok(/Blocs prévus 15 h 11/.test(p.stats), 'la cible de la semaine vient de la grille : 15 h 11 (' + p.stats.slice(0, 90) + ')');
   ok(/phase en cours/.test(p.note), 'le panneau dit qu\'une phase est en cours');
   ok(/gramática/.test(p.taches) && /preparar la clase/.test(p.taches), 'la répartition par tâche est là (' + p.taches.slice(0, 70) + ')');
   ok(/Aujourd'hui\s*1 h/.test(p.projets), 'le panneau Projets perso ne compte plus l\'espagnol (' + p.projets.slice(0, 50) + ')');

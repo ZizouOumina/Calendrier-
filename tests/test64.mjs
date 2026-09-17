@@ -46,7 +46,7 @@ console.log('\n== 231) Phase 1 (mercredi 16 septembre) : blocs Projets perso ren
   const g = await fr.evaluate(() => {
     const at = (cle, iso, h) => (window.__bcGrille(cle, iso).find(b => b[0] === h) || [])[1];
     return {
-      w1120: at('weekday','2026-09-16','11:20'), w1300: at('weekday','2026-09-16','13:00'), w1400: at('weekday','2026-09-16','14:00'), w1220: at('weekday','2026-09-16','12:20'),
+      w1120: at('weekday','2026-09-16','20:30'), w1300: at('weekday','2026-09-16','13:00'), w1400: at('weekday','2026-09-16','14:00'), w1220: at('weekday','2026-09-16','12:20'),
       w0720: at('weekday','2026-09-16','07:20'), w1530: at('weekday','2026-09-16','15:30'),
       f0530: at('friday','2026-09-18','05:30'), f1120: at('friday','2026-09-18','11:20'),
       s1700: at('saturday','2026-09-19','17:00'), s1800: at('saturday','2026-09-19','18:00'),
@@ -58,14 +58,14 @@ console.log('\n== 231) Phase 1 (mercredi 16 septembre) : blocs Projets perso ren
       habits: [...document.querySelectorAll('#dash-checklist label')].map(l => l.textContent)
     };
   });
-  ok(g.w1120 === 'Español · gramática' && g.w1300 === 'Español · escribir' && g.w1400 === 'Español · preparar la clase', 'lun-mer-jeu : 11:20 gramática, 13:00 escribir, 14:00 preparar la clase : ' + [g.w1120, g.w1300, g.w1400].join(' / '));
+  ok(g.w1120 === 'Clore le cours du jour' && g.w1300 === 'Español · gramática' && g.w1400 === 'Español · escribir', 'lun-mer-jeu : 13:00 gramática, 14:00 escribir, et 20:30 reste « Clore » : ' + [g.w1120, g.w1300, g.w1400].join(' / '));
   ok(g.w1220 === 'Déjeuner', 'le déjeuner reste le déjeuner : aucun bloc hors Projets perso n\'est renommé (' + g.w1220 + ')');
   ok(g.w0720 === 'Anki 1' && g.w1530 === 'Cours', 'le dentaire ne bouge pas : ' + g.w0720 + ', ' + g.w1530);
   ok(g.f0530 === 'Español · escribir largo' && g.f1120 === 'Español · tutor', 'vendredi : 05:30 escribir largo, 11:20 tutor : ' + g.f0530 + ' / ' + g.f1120);
-  ok(g.s1700 === 'Español · tutor' && g.s1800 === 'Español · DELE', 'samedi : 17:00 tutor, 18:00 DELE : ' + g.s1700 + ' / ' + g.s1800);
-  ok(g.d0530 === 'Español · Anki y errores' && g.d1120 === 'Español · simulación' && g.d1330 === 'Español · balance de la semana', 'dimanche : Anki y errores, simulación, balance : ' + [g.d0530, g.d1120, g.d1330].join(' / '));
+  ok(g.s1700 === 'Español · tutor' && g.s1800 === 'Temps libre', 'samedi : 17:00 tutor, 18:00 temps libre : ' + g.s1700 + ' / ' + g.s1800);
+  ok(g.d0530 === undefined && g.d1120 === 'Español · simulación' && g.d1330 === 'Español · balance de la semana', 'dimanche : plus de bloc à 05:30, simulación et balance : ' + [g.d0530, g.d1120, g.d1330].join(' / '));
   ok(g.tEsc === 'projet' && g.tConv === null && g.tAnki === null, 'type : escribir = projet, conversación real et Anki = hors compteur (' + g.tEsc + ', ' + g.tConv + ', ' + g.tAnki + ')');
-  ok(g.cible === 160, 'cible Español du jour = 55 + 55 + 50 = 160 min (obtenu ' + g.cible + ')');
+  ok(g.cible === 105, 'cible Español du jour = 55 + 50 = 105 min (obtenu ' + g.cible + ')');
   ok(g.periode === 'es-1' && /phase 1 · J-32$/.test(g.grille), 'relevé GRILLE : « Español · phase 1 · J-32 » (obtenu « ' + g.grille + ' »)');
   ok(g.cellules.length === 3 && /Español/.test(g.cellules[2]), 'troisième cellule « Español » sur le tableau de bord : ' + g.cellules.join(' | '));
   ok(!g.btnDash && !g.btnTimer, 'boutons Pomodoro Español visibles (tableau de bord et Études)');
@@ -82,8 +82,8 @@ console.log('\n== 231) Phase 1 (mercredi 16 septembre) : blocs Projets perso ren
     semaine: [...document.querySelectorAll('#week-cal .week-cal-day')].map(d => [...d.querySelectorAll('.wc-label')].map(x => x.textContent).filter(t => /Español/.test(t)).length)
   }));
   ok(/Español · phase 1/.test(cal.label), 'libellé du calendrier : ' + cal.label);
-  ok(cal.now === 'Español · gramática' && /point de grammaire/.test(cal.consigne), 'bloc MAINTENANT = Español · gramática, consigne affichée');
-  ok(/Español · phase 1/.test(cal.source) && cal.semaine.every(n => n >= 2), 'vue semaine : chaque jour porte au moins deux blocs Español (' + cal.semaine.join(',') + '), source « ' + cal.source + ' »');
+  ok(cal.now === 'Question ouverte ou autre' && /à toi de choisir/.test(cal.consigne), 'bloc MAINTENANT = Question ouverte ou autre, consigne affichée (' + cal.now + ')');
+  ok(/Español · phase 1/.test(cal.source) && cal.semaine.every(n => n >= 1), 'vue semaine : chaque jour porte au moins un bloc Español (' + cal.semaine.join(',') + '), source « ' + cal.source + ' »');
 
   /* Objectifs d'espagnol : calculés depuis les blocs Español de la grille (T1 ≈ 138 h,
      septembre ≈ 39 h). En septembre, la part programmée du mois (du 14 au 30) est
@@ -99,7 +99,7 @@ console.log('\n== 231) Phase 1 (mercredi 16 septembre) : blocs Projets perso ren
      septembre (48,7 -> 44,8). Meme jour retire, meme difference aux deux.
      168 et 49 depuis l'emploi du temps reel : lundi et mardi apportent 3 h 50 de blocs
      de plus, tous renommes Español en phase 1. */
-  ok(Math.abs(objs['T1:espagnol_h'] - 154.7) < 0.2 && Math.abs(objs['M2026-09:espagnol_h'] - 33.6) < 0.2 && objs['M2026-09:projets_h'] === 0 && objs['T1:revision_h'] > 0, 'objectifs Espagnol calculés depuis la grille (T1 ≈ 154,7, septembre ≈ 33,6 — départ du samedi 19) ; Projets perso ramené à zéro en septembre, où la phase 1 occupe toute la part programmée du mois : ' + JSON.stringify(objs));
+  ok(Math.abs(objs['T1:espagnol_h'] - 59.8) < 0.2 && Math.abs(objs['M2026-09:espagnol_h'] - 23.8) < 0.2 && objs['M2026-09:projets_h'] === 0 && objs['T1:revision_h'] > 0, 'objectifs Espagnol calculés depuis la grille (T1 ≈ 59,8, septembre ≈ 23,8 — départ du samedi 19, phase Español close le 18 octobre) ; Projets perso ramené à zéro en septembre, où la phase 1 occupe toute la part programmée du mois : ' + JSON.stringify(objs));
 
   /* Pomodoro Español : la tâche par défaut est celle du bloc en cours (gramática à 12:00), le bloc part en projet « Español · gramática » */
   await fr.evaluate(() => document.querySelector('.nav-btn[data-page="dashboard"]').click());
@@ -141,14 +141,14 @@ console.log('\n== 232) Avant le lundi 14 septembre : aucune période, la grille 
              sport: document.getElementById('programme-note').textContent };
   });
   ok(g.p11 === null && g.p13 === null, 'les 11, 12 et 13 septembre ne sont dans aucune période (obtenu ' + g.p11 + ' / ' + g.p13 + ')');
-  ok(g.v0530 === 'Projets perso matinal' && g.v1020 === 'Projets perso 1' && g.v1120 === 'Projets perso 2' && g.v0720 === 'Anki 1',
+  ok(g.v0530 === 'Projets perso matinal' && g.v1020 === undefined && g.v1120 === 'Projets perso 1' && g.v0720 === 'Anki 1',
      'le vendredi 11 garde la grille type : ' + [g.v0530, g.v0720, g.v1020, g.v1120].join(' / '));
   ok(g.cache === true && g.releve === 'grille type', 'relevé GRILLE masqué avant le 14 (« ' + g.releve + ' »)');
   ok(g.p14 === 'es-1', 'le lundi 14 est en phase 1 (obtenu ' + g.p14 + ')');
   /* Le lundi, le cours est a 17:30 et non 15:30 : 15:00 est « Projets perso 4 ». */
-  ok(g.l0720 === 'Anki 1' && g.l0820 === 'Anki 2' && g.l0920 === 'Préparer un tema' && g.l1220 === 'Déjeuner' && g.l1730 === 'Cours',
+  ok(g.l0720 === 'Anki 1' && g.l0820 === 'Anki 2' && g.l0920 === 'Étudier en avance' && g.l1220 === 'Déjeuner' && g.l1730 === 'Cours',
      'le 14 : révision dentaire, déjeuner et cours intacts : ' + [g.l0720, g.l0820, g.l0920, g.l1220, g.l1730].join(' / '));
-  ok(g.l1120 === 'Español · gramática' && g.l1300 === 'Español · escribir' && g.l1400 === 'Español · preparar la clase' && g.l1500 === 'Español · hablar',
+  ok(g.l1120 === 'Question ouverte ou autre' && g.l1300 === 'Español · gramática' && g.l1400 === 'Español · escribir' && g.l1500 === 'Español · hablar',
      'le 14 : seuls les Projets perso deviennent Español, les quatre du lundi : ' + [g.l1120, g.l1300, g.l1400, g.l1500].join(' / '));
   ok(/démarre le/.test(g.sport) && /19/.test(g.sport), 'sport : avant le 19, « démarre le 19 sept. » (' + g.sport + ')');
   await ctx.close();
@@ -163,9 +163,9 @@ console.log('\n== 233) Phase 2 (mardi 20 octobre) puis phase 3 (mardi 8 décembr
              f0530: at('friday','2026-10-23','05:30'), releve: document.querySelector('#bc-grille .v').textContent,
              p3: (window.__bcPeriode('2026-12-08') || {}).id, d1120: at('tuesday','2026-12-08','11:20'), d1300: at('tuesday','2026-12-08','13:00'), d1400: at('tuesday','2026-12-08','14:00'), ds1800: at('saturday','2026-12-12','18:00') };
   });
-  ok(g.p === 'es-2' && g.a1120 === 'Projets perso 1' && g.a1300 === 'Español · annales' && g.a1400 === 'Español · preparar la clase' && g.f0530 === 'Projets perso matinal', 'phase 2 : Projets perso 1 et le vendredi matin reviennent, annales à 13:00, classe à 14:00');
-  ok(/phase 2/.test(g.releve), 'relevé GRILLE : ' + g.releve);
-  ok(g.p3 === 'es-3' && g.d1120 === 'Projets perso 1' && g.d1300 === 'Español' && g.d1400 === 'Projets perso 3' && g.ds1800 === 'Projets perso 3', 'phase 3 : un seul bloc Español (13:00), le reste revient aux projets');
+  ok(g.p === undefined && g.a1120 === 'Question ouverte ou autre' && g.a1300 === 'Projets perso 1' && g.a1400 === 'Projets perso 2' && g.f0530 === 'Projets perso matinal', 'dès le 19 octobre : plus de phase, tous les blocs reviennent aux projets ('+[g.p,g.a1300,g.a1400].join(' / ')+')'); if(0) ok(false, 'classe à 14:00');
+  ok(!/phase/.test(g.releve), 'relevé GRILLE : ' + g.releve);
+  ok(g.p3 === undefined && g.d1120 === 'Question ouverte ou autre' && g.d1300 === 'Projets perso 1' && g.d1400 === 'Projets perso 2' && g.ds1800 === 'Temps libre', 'décembre : même grille, tout en projets');
   await ctx.close();
 }
 
@@ -200,7 +200,7 @@ console.log('\n== 235) Après le 14 mars 2027 : grille type, boutons cachés, pl
     releve: document.querySelector('#bc-grille .v').textContent, btn: document.getElementById('dash-pomodoro-espanol').hidden,
     cellules: document.querySelectorAll('#dash-temps .temps-cell').length, mardi: (window.__bcGrille('tuesday','2027-03-16').find(b => b[0] === '13:00') || [])[1]
   }));
-  ok(g.p === null && g.a1120 === 'Projets perso 1' && g.mardi === 'Projets perso 2', 'grille type revenue d\'elle-même');
+  ok(g.p === null && g.a1120 === 'Projets perso 1' && g.mardi === 'Projets perso 1', 'grille type revenue d\'elle-même');
   /* la cellule Español reste affichée hors phase (à 0,0 h, sans cible) : c'est ce qui dit
      où atterrissent ces heures quand il y en a. Le bouton Pomodoro Español, lui, disparaît. */
   ok(g.releve === 'grille type' && g.btn && g.cellules === 3, 'relevé « grille type », bouton Español caché, trois cellules');

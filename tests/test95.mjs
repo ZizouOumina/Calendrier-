@@ -13,7 +13,7 @@ let err = 0;
 const ok = (c, m) => { if(c) console.log('  ok  ' + m); else { err++; console.log('  FAIL ' + m); } };
 const EX = {'batcave-examens': {'Anatomía I':'2026-11-16','Biología':'2026-11-19','Epidemiología':'2027-01-18'}};
 const DATES = [
-  ['2026-09-17T07:00:00+02:00', {}, 'jour 1, avant Anki'], ['2026-09-17T09:25:00+02:00', {}, 'jour 1, Préparer un tema'],
+  ['2026-09-17T07:00:00+02:00', {}, 'jour 1, avant Anki'], ['2026-09-17T09:25:00+02:00', {}, 'jour 1, Étudier en avance'],
   ['2026-09-17T10:25:00+02:00', {}, 'jour 1, Exercices de calcul'], ['2026-09-17T20:35:00+02:00', {}, 'jour 1, Comprendre'],
   ['2026-09-19T10:25:00+02:00', {}, 'samedi, Question ouverte'], ['2026-09-20T09:25:00+02:00', {}, 'dimanche, Simulation dentaire'],
   ['2026-09-21T10:25:00+02:00', {}, 'lundi, Blanc du questionnaire'], ['2026-09-23T10:25:00+02:00', {}, 'mercredi, Question ouverte'],

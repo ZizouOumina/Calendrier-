@@ -413,6 +413,27 @@
   .badge.gold{background:rgba(53,212,232,0.14); color:var(--cyan-bright); border-color:transparent;}
 
   .sub-panel + .sub-panel{margin-top:16px;}
+  /* Échéances : une ligne = un compte à rebours. Le chiffre des jours restants d'abord,
+     puis la barre (30 jours pleins → vide le jour J). */
+  .ech-list{list-style:none; margin:0; padding:0;}
+  .ech-row{display:grid; grid-template-columns:72px 1fr auto; gap:6px 14px; align-items:center; padding:12px 0; border-bottom:1px solid var(--border-soft); font-size:13px; color:var(--ink-dim);}
+  .ech-row.passee{opacity:.5;}
+  .ech-row.faite{opacity:.55;}
+  .ech-j{font-family:var(--font-mono); font-size:22px; font-weight:700; color:var(--ink); text-align:center; line-height:1;}
+  .ech-j small{display:block; font-size:9px; font-weight:400; color:var(--ink-faint); text-transform:uppercase; letter-spacing:.06em; margin-top:3px;}
+  .ech-row.urgent .ech-j{color:var(--warn);}
+  .ech-row.proche .ech-j{color:var(--cyan-bright);}
+  .ech-t b{color:var(--ink); font-weight:600;}
+  .ech-t .sub-note{display:block; margin-top:2px;}
+  .ech-act{display:flex; gap:4px; align-items:center;}
+  .ech-bar{grid-column:1 / -1; height:5px; border-radius:3px; background:var(--surface-raised); overflow:hidden;}
+  .ech-bar i{display:block; height:100%; background:var(--cyan); border-radius:3px; transition:width .3s;}
+  .ech-row.urgent .ech-bar i{background:var(--warn);}
+  .ech-row.proche .ech-bar i{background:var(--cyan-bright);}
+  #dash-echeances li{align-items:flex-start;}
+  #dash-echeances .ech-mini{display:block; height:4px; border-radius:2px; background:var(--surface-raised); margin:5px 0 2px; overflow:hidden;}
+  #dash-echeances .ech-mini i{display:block; height:100%; background:var(--cyan);}
+  @media (max-width:640px){ .ech-row{grid-template-columns:60px 1fr auto;} .ech-j{font-size:19px;} }
   .sub-head{display:flex; justify-content:space-between; align-items:baseline; margin-bottom:12px; gap:10px; flex-wrap:wrap;}
   .sub-note{font-size:12px; color:var(--ink-faint);}
 
@@ -1892,13 +1913,31 @@
         <ul class="timeline" id="cal-timeline"></ul>
       </div>
 
+      <!-- Échéances : questionnaires en classe, devoirs a rendre, presentations, TP. Saisies a la
+           main (la fac ne publie rien de lisible d'avance), affichees en jours restants ici et sur
+           le tableau de bord. La veille, le bloc du soir devient « Préparer ». -->
+      <div class="panel sub-panel" id="echeances-panel">
+        <div class="sub-head"><h3>⏳ Échéances</h3><span class="sub-note" id="ech-note">—</span></div>
+        <p class="sub-note" style="margin-bottom:12px; line-height:1.6;">Un questionnaire en classe, un devoir à rendre, une présentation, un TP : la date suffit, le compte à rebours fait le reste. Chaque échéance s'affiche ici et sur le tableau de bord avec ses jours restants ; <b style="color:var(--ink-dim);">la veille, le bloc du soir devient « Préparer »</b>. Coche la ligne quand c'est fait. Les cinq examens de janvier se saisissent dans <b style="color:var(--ink-dim);">Études</b> (ils déclenchent le mode partiels), pas ici.</p>
+        <div class="add-form">
+          <div class="f"><label>Date</label><input type="date" id="ech-date"></div>
+          <div class="f"><label>Heure <span style="text-transform:none;">(optionnel)</span></label><input type="time" id="ech-heure"></div>
+          <div class="f"><label>Type</label><select id="ech-type"><option value="questionnaire">Questionnaire</option><option value="rendu">Devoir à rendre</option><option value="presentation">Présentation</option><option value="tp">TP</option><option value="autre">Autre</option></select></div>
+          <div class="f"><label>Matière</label><input type="text" id="ech-matiere" placeholder="ex : Anatomía" style="width:130px;"></div>
+          <div class="f" style="flex:1; min-width:160px;"><label>Libellé</label><input type="text" id="ech-label" placeholder="ex : Q1 · T1-T2" style="width:100%;"></div>
+          <div class="f"><label title="Une épreuve hors amphi : la journée est reconstruite autour (préparation, trajet, épreuve, retour)">Journée reconstruite</label><input type="checkbox" id="ech-jx" style="width:22px; height:22px;"></div>
+          <button class="btn btn-primary" id="ech-add" type="button">Ajouter</button>
+        </div>
+        <ul class="ech-list" id="ech-liste"></ul>
+      </div>
+
       <!-- Journees exceptionnelles : un TP, un examen, un rendez-vous a heure fixe. La veille,
            le dernier bloc de travail devient « Preparer » ; le jour meme, la grille est
            reconstruite autour de l'evenement (preparation, trajet, evenement, retour), et les
            blocs perdus sont dits. Les examens dates dans Etudes en creent une d'eux-memes. -->
       <div class="panel sub-panel" id="journees-panel">
         <div class="sub-head"><h3>📌 Journées exceptionnelles</h3><span class="sub-note" id="journees-note">—</span></div>
-        <p class="sub-note" style="margin-bottom:12px; line-height:1.6;">Un TP, un examen, un rendez-vous : donne la date et l'horaire. La veille, le bloc « Comprendre le cours du jour » devient « Préparer » ; le jour même, la journée est reconstruite autour de l'événement (une heure de préparation, le trajet, l'événement, le retour) et les blocs sacrifiés sont listés. Les examens datés dans Études créent leur journée tout seuls, et déclenchent le mode partiels de J-7 au dernier examen.</p>
+        <p class="sub-note" style="margin-bottom:12px; line-height:1.6;">Un TP, un examen, un rendez-vous : donne la date et l'horaire. La veille, le bloc « Clore le cours du jour » devient « Préparer » ; le jour même, la journée est reconstruite autour de l'événement (une heure de préparation, le trajet, l'événement, le retour) et les blocs sacrifiés sont listés. Les examens datés dans Études créent leur journée tout seuls, et déclenchent le mode partiels de J-7 au dernier examen.</p>
         <div class="add-form">
           <div class="f"><label>Date</label><input type="date" id="jx-date"></div>
           <div class="f"><label>Début</label><input type="time" id="jx-debut" value="11:00"></div>
@@ -1932,6 +1971,7 @@
         <p class="sub-note" style="margin-bottom:12px; line-height:1.6;">Un férié, un pont, l'entre-deux des semestres : pas de cours, mais une journée de travail. La plage de cours se libère et devient <b style="color:var(--ink-dim);">une simulation complète d'examen, sa correction, puis les blocs de projet de la phase en cours</b> — dîner à 19:00, coucher à 21:00, une nuit pleine. La liste de départ vient du calendrier des fériés espagnols, pas du portail de la fac : <b style="color:var(--ink-dim);">c'est ta saisie qui fait foi</b>. Pour de vraies vacances, où rien n'est attendu, c'est le panneau au-dessus.</p>
         <div class="add-form">
           <div class="f"><label>Date</label><input type="date" id="sc-date"></div>
+          <div class="f"><label title="Pour une période entière (vacances) : chaque jour ouvré entre les deux dates">Jusqu'au <span style="text-transform:none;">(optionnel)</span></label><input type="date" id="sc-fin"></div>
           <button class="btn btn-primary" id="sc-add" type="button">Pas de cours ce jour-là</button>
           <button class="btn" id="sc-cours" type="button">Cours finalement</button>
         </div>
@@ -2387,7 +2427,7 @@
            où elles atterrissent. -->
       <div class="panel sub-panel" id="es-panel">
         <div class="sub-head"><h3>🇪🇸 Espagnol</h3><span class="sub-note" id="es-note">—</span></div>
-        <p class="sub-note" style="margin-bottom:12px; line-height:1.65;">Tout ce que le minuteur enregistre sous <b style="color:var(--ink-dim);">Español</b> : les blocs de la grille pendant les phases (gramática, escribir, preparar la clase, annales…) et les Pomodoros Español lancés à la main. Ces heures <b style="color:var(--ink-dim);">ne comptent pas</b> dans « Projets perso » : elles ont leur propre objectif et leur propre ligne dans le bilan de la semaine.</p>
+        <p class="sub-note" style="margin-bottom:12px; line-height:1.65;">Tout ce que le minuteur enregistre sous <b style="color:var(--ink-dim);">Español</b> : les blocs de la grille pendant la phase Español (gramática, escribir, hablar, tutor, série…) et les Pomodoros Español lancés à la main. Ces heures <b style="color:var(--ink-dim);">ne comptent pas</b> dans « Projets perso » : elles ont leur propre objectif et leur propre ligne dans le bilan de la semaine.</p>
         <div class="stat-grid" style="grid-template-columns:repeat(auto-fit, minmax(150px, 1fr)); margin-bottom:16px;" id="es-stats"></div>
         <p class="sub-note" style="margin-bottom:8px;">Temps d'espagnol — 30 derniers jours</p>
         <div id="es-chart"></div>
@@ -2441,7 +2481,7 @@
           <h3>📅 Échéances d'examens</h3>
           <span class="sub-note" id="examens-note">—</span>
         </div>
-        <p class="sub-note" style="margin-bottom:10px; line-height:1.6;">Une date par matière, et l'horaire si tu le connais (sinon 09:00 → 11:00). De J-7 au dernier examen, la Batcave passe en <b style="color:var(--ink-dim);">mode partiels</b> : Anki intact, Préparer un tema → Annales ciblées, Projets perso → Révision ciblée sur la matière la plus proche, Comprendre → Fiches de synthèse, un seul bloc Español par jour. Le jour de l'examen est une journée exceptionnelle (préparation, trajet, examen, retour).</p>
+        <p class="sub-note" style="margin-bottom:10px; line-height:1.6;">Une date par matière, et l'horaire si tu le connais (sinon 09:00 → 11:00). De J-7 au dernier examen, la Batcave passe en <b style="color:var(--ink-dim);">mode partiels</b> : Anki intact, Étudier en avance → Annales ciblées, Projets perso → Révision ciblée sur la matière la plus proche, Clore → Fiches de synthèse, un seul bloc Español par jour. Le jour de l'examen est une journée exceptionnelle (préparation, trajet, examen, retour).</p>
         <ul class="entry-list" id="examens-liste"></ul>
       </div>
 
@@ -3287,7 +3327,7 @@
        gardees au nouveau depart, donc l'alerte aurait survecu a la remise a zero.
        Un test statique (test89) verifie desormais que ce registre couvre TOUTES les cles
        que le code ecrit : cette categorie de faux signalement ne peut plus revenir. */
-    'jours-sans-cours','copie-vierge','chrono-seance','insights-vu','seance-duree'];
+    'jours-sans-cours','copie-vierge','chrono-seance','insights-vu','seance-duree','echeances'];
   var PREFIXES_CONNUS = ['archive-','cal-','coherence-ignore-','drill-ignore-','test-anki-','fc-logged-','fixed-logged-','gcal-','journal-','manque-traite-',
     'meals-','pomodial-','rattrapage-vu-','sauvegarde-','sport-'];
   function cleConnue(k){
@@ -4289,7 +4329,7 @@
      ni synchronisee ni rattrapee) et efface ses copies locales AVANT le rattrapage, sinon
      elles repartiraient vers le cloud. La meme remise a zero peut donc etre decidee depuis
      l'appli ou directement dans le cloud. */
-  var REINIT_GARDER = ['habits','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','habits-seed-v7','habits-seed-v8','objectifs-v5-espanol','fixed-charges','fc-prix-icloud-3','budget-limits','examens','examens-heures','journees','vacances','jours-exclus','jours-sans-cours','portes','notion-url','shopify-boutique',
+  var REINIT_GARDER = ['habits','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','habits-seed-v7','habits-seed-v8','objectifs-v5-espanol','fixed-charges','fc-prix-icloud-3','budget-limits','examens','examens-heures','journees','echeances','vacances','jours-exclus','jours-sans-cours','portes','notion-url','shopify-boutique',
                        'objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','courses-plan-v3','horizon','goals-depart','saisons','gcal-ecriture','duree-bloc','dash-more','revision-fusionnee','reinit','copie-vierge'];
   var REINIT_PREFIXES_GARDER = ['pomodial-', 'coherence-ignore-'];
   function reinitGarder(cle){
@@ -5199,7 +5239,7 @@
     return x.m + ' — ' + (x.iso ? 'examen le ' + fmtDate(x.iso) + ', J-' + x.jours : 'pas d\u2019examen daté') +
            ' · ' + fmtNombre(x.heures, 1) + ' h faites sur 30 jours';
   }
-  var BLOC_ANKI = /^Anki/, BLOC_MATIERE = /^(Cartes|Annales?\b|Annale complète|Correction|Révision ciblée|Fiches de synthèse|Préparer · |Préparer un tema|Blanc du questionnaire|Exercices de calcul|Question ouverte|Simulation dentaire)/;
+  var BLOC_ANKI = /^Anki/, BLOC_MATIERE = /^(Cartes|Annales?\b|Annale complète|Correction|Révision ciblée|Fiches de synthèse|Préparer · |Étudier en avance|Question ouverte|Simulation dentaire|Réexpliquer|Approfondir|Lire$|Clore)/;
   /* `sansMatiere` : démarrer tout de suite un bloc Anki, sans demander la matière — sur
      Anki 1 et Anki 2 toutes les matières sont mélangées dans le paquet Dentaire, la
      question n'a pas de réponse. Le bouton « 🍅 Anki » du Plan du jour passait jusqu'ici
@@ -5682,7 +5722,7 @@
     var b = blocPlanCourant(), m = b && /^Español · (.+)$/.exec(b[1]);
     if(m && m[1]) return m[1];
     var h = new Date().getHours();
-    return h < 12 ? 'gramática' : (h < 14 ? 'escribir' : 'preparar la clase');
+    return h < 14 ? 'gramática' : (h < 15 ? 'escribir' : 'hablar');
   }
   function lancerPomodoroEspanol(){
     if(timerState && !timerState.finished){
@@ -7217,7 +7257,7 @@
      14 septembre -- c'est l'universite qui fixe la rentree, pas lui -- et les habitudes
      du dimanche restent ancrees au 13, elles ont vraiment eu lieu ce jour-la. */
   var PROGRAMME_DEBUT = '2026-09-19';
-  /* Le programme va du premier jour de cours au dernier jour de la phase 3 d'espagnol :
+  /* Le programme va du premier jour de cours au dernier jour de la saison (14 mars) :
      c'est la fenetre que le reacteur annonce le matin du jour 1, quand il n'y a encore
      rien a mesurer. Un « 0 % » geant le 14 au reveil n'est pas une note, c'est une
      journee qui commence : on affiche le rang du jour tant que rien n'est saisi. */
@@ -8152,6 +8192,93 @@
     return {iso: iso, type:'examen', label: mats.join(' + '), titre: 'Examen · ' + mats.join(' + '), debut: h.debut, fin: h.fin, trajet: 30,
             source:'etudes', heureDefaut: h.defaut, matieres: mats};
   }
+  /* ===== Échéances =====
+     batcave-echeances : [{id, date, heure, type, matiere, label, fait}]. Questionnaires en
+     classe, devoirs a rendre, presentations, TP : ce que la fac annonce au fil des semaines
+     et que personne ne peut ecrire d'avance. Une echeance ne reconstruit PAS la journee
+     (un questionnaire a lieu dans le bloc Cours) ; la veille, le bloc du soir devient
+     « Préparer », comme pour une journee exceptionnelle. Configuration : gardee au nouveau
+     depart. */
+  var TYPES_ECHEANCE = {questionnaire:{ic:'📝', nom:'Questionnaire'}, rendu:{ic:'📤', nom:'À rendre'}, presentation:{ic:'🎤', nom:'Présentation'}, tp:{ic:'🧪', nom:'TP'}, autre:{ic:'📌', nom:'Autre'}};
+  var echeancesState = load('batcave-echeances', []);
+  if(!Array.isArray(echeancesState)) echeancesState = [];
+  echeancesState = echeancesState.filter(function(e){ return e && typeof e === 'object' && /^\d{4}-\d{2}-\d{2}$/.test(String(e.date)); })
+    .map(function(e){ return {id: String(e.id || ('e' + e.date + Math.random().toString(36).slice(2, 6))), date: e.date, heure: /^\d{2}:\d{2}$/.test(String(e.heure || '')) ? e.heure : '',
+                              type: TYPES_ECHEANCE[e.type] ? e.type : 'autre', matiere: String(e.matiere || '').trim(), label: String(e.label || '').trim(), fait: !!e.fait}; });
+  function titreEcheance(e){ return (e.matiere ? e.matiere + ' · ' : '') + (e.label || TYPES_ECHEANCE[e.type].nom); }
+  function echeancesTriees(){
+    return echeancesState.slice().sort(function(a, b){ return a.date === b.date ? (a.heure || '99').localeCompare(b.heure || '99') : a.date.localeCompare(b.date); });
+  }
+  /* la veille d'une echeance : ce qui donne son nom au bloc « Préparer · … » */
+  function echeanceVeilleDe(iso){
+    var du = echeancesTriees().filter(function(e){ return e.date === iso && !e.fait; });
+    if(!du.length) return null;
+    return {iso: iso, titre: du.map(titreEcheance).join(' + '), source:'echeance'};
+  }
+  function joursAvant(iso){ return daysBetween(new Date(todayISO + 'T00:00:00'), new Date(iso + 'T00:00:00')); }
+  function classeEcheance(j){ return j < 0 ? 'passee' : (j <= 3 ? 'urgent' : (j <= 7 ? 'proche' : '')); }
+  function libelleJours(j){ return j < 0 ? 'passée' : (j === 0 ? 'aujourd\u2019hui' : (j === 1 ? 'demain' : 'J-' + j)); }
+  function renderEcheancesPanel(){
+    var ul = document.getElementById('ech-liste'), note = document.getElementById('ech-note');
+    if(!ul) return;
+    var liste = echeancesTriees();
+    var avenir = liste.filter(function(e){ return !e.fait && e.date >= todayISO; });
+    var passees = liste.filter(function(e){ return e.fait || e.date < todayISO; }).reverse();
+    if(note) note.textContent = avenir.length ? avenir.length + ' à venir' + (avenir[0] ? ' · la prochaine ' + libelleJours(joursAvant(avenir[0].date)) : '') : 'aucune à venir';
+    if(!liste.length){ ul.innerHTML = '<li class="entry-empty">Aucune échéance. Ajoute un questionnaire, un devoir, une présentation ou un TP dès que la fac donne sa date.</li>'; return; }
+    var ligne = function(e){
+      var j = joursAvant(e.date), cls = e.fait ? 'faite' : classeEcheance(j), T = TYPES_ECHEANCE[e.type];
+      var pct = e.fait || j < 0 ? 0 : Math.max(3, Math.min(100, Math.round(100 * Math.min(j, 30) / 30)));
+      return '<li class="ech-row ' + cls + '" data-ech="' + escapeHtml(e.id) + '">' +
+        '<div class="ech-j">' + (e.fait ? '✓' : (j === 0 ? 'J' : (j < 0 ? '—' : 'J-' + j))) + '<small>' + (e.fait ? 'fait' : (j === 0 ? 'aujourd\u2019hui' : (j === 1 ? 'demain' : (j < 0 ? 'passée' : 'jours')))) + '</small></div>' +
+        '<div class="ech-t"><b>' + T.ic + ' ' + escapeHtml(titreEcheance(e)) + '</b><span class="sub-note">' + T.nom + ' · ' + escapeHtml(capitaliser(dateLongue(new Date(e.date + 'T00:00:00')))) + (e.heure ? ' à ' + e.heure : '') + '</span></div>' +
+        '<div class="ech-act">' + (e.fait ? '<button class="badge" type="button" title="Remettre à faire" data-echfait="0">à refaire</button>' : '<button class="badge good" type="button" title="C\u2019est fait" data-echfait="1">fait ✓</button>') +
+        '<button class="edel" aria-label="Supprimer" title="Supprimer cette échéance" data-echdel="1">×</button></div>' +
+        '<div class="ech-bar"><i style="width:' + pct + '%"></i></div>' +
+        '</li>';
+    };
+    ul.innerHTML = avenir.map(ligne).join('') + (passees.length ? '<li class="entry-empty" style="padding-top:14px;">Passées ou faites (' + passees.length + ')</li>' + passees.slice(0, 12).map(ligne).join('') : '');
+    ul.querySelectorAll('[data-echfait]').forEach(function(b){
+      b.addEventListener('click', function(){
+        var id = b.closest('[data-ech]').dataset.ech, e = echeancesState.filter(function(x){ return x.id === id; })[0];
+        if(!e) return;
+        e.fait = b.dataset.echfait === '1';
+        save('batcave-echeances', echeancesState);
+        appliquerChangementGrille(e.fait ? '✓ ' + titreEcheance(e) + ' : fait.' : '↩︎ ' + titreEcheance(e) + ' : à refaire.');
+      });
+    });
+    ul.querySelectorAll('[data-echdel]').forEach(function(b){
+      b.addEventListener('click', function(){
+        var id = b.closest('[data-ech]').dataset.ech;
+        echeancesState = echeancesState.filter(function(x){ return x.id !== id; });
+        save('batcave-echeances', echeancesState);
+        appliquerChangementGrille('⏳ Échéance retirée.');
+      });
+    });
+  }
+  (function(){
+    var b = document.getElementById('ech-add'); if(!b) return;
+    b.addEventListener('click', function(){
+      var iso = document.getElementById('ech-date').value, heure = document.getElementById('ech-heure').value || '';
+      var type = document.getElementById('ech-type').value, matiere = document.getElementById('ech-matiere').value.trim(), label = document.getElementById('ech-label').value.trim();
+      var jx = document.getElementById('ech-jx').checked;
+      if(!/^\d{4}-\d{2}-\d{2}$/.test(iso)){ showToast('⚠️ Indique la date.'); return; }
+      if(!matiere && !label){ showToast('⚠️ Une matière ou un libellé, pour savoir de quoi il s\u2019agit.'); return; }
+      if(!TYPES_ECHEANCE[type]) type = 'autre';
+      var e = {id:'e' + Date.now(), date: iso, heure: /^\d{2}:\d{2}$/.test(heure) ? heure : '', type: type, matiere: matiere, label: label, fait:false};
+      echeancesState.push(e);
+      save('batcave-echeances', echeancesState);
+      /* une epreuve hors amphi : la journee exceptionnelle existante fait le reste */
+      if(jx){
+        var deb = e.heure || '11:00', fin = minutesToTime(Math.min(23 * 60 + 30, timeToMinutes(deb) + 120));
+        journeesState[iso] = {type: type === 'tp' ? 'tp' : (type === 'questionnaire' || type === 'presentation' ? 'examen' : 'autre'), label: titreEcheance(e), debut: deb, fin: fin, trajet: 30};
+        save('batcave-journees', journeesState);
+      }
+      document.getElementById('ech-label').value = ''; document.getElementById('ech-jx').checked = false;
+      var j = joursAvant(iso);
+      appliquerChangementGrille('⏳ ' + titreEcheance(e) + ' : ' + (j === 0 ? 'aujourd\u2019hui' : (j === 1 ? 'demain' : 'dans ' + j + ' jours')) + (jx ? ', journée reconstruite.' : '.'));
+    });
+  })();
   /* Une journee reconstruite autour d'un evenement : une heure de preparation, le trajet,
      l'evenement, le retour. Ce que la grille prevoyait dans cette fenetre s'efface ; un bloc
      de travail qui y perd plus de la moitie est dit « sacrifie ». Le dejeuner perdu est
@@ -8193,18 +8320,22 @@
   var PARTIELS_AVANT_J = 7, PARTIELS_ECART_J = 21;
   var RENOMMAGES_PARTIELS = {
     'Projets perso matinal': 'Révision ciblée',
-    'Projets perso 1': 'Révision ciblée',
-    'Projets perso 2': {defaut:'Révision ciblée', friday:'Español', weekend:'Español'},
-    'Projets perso 3': 'Español',
-    /* Les trois blocs nes de l'emploi du temps reel du semestre 1 (lundi 15:00, mardi 19:00
-       et 20:30). Sans ces lignes ils restaient « Projets perso » PENDANT les partiels : trois
+    /* Un seul bloc d'espagnol par jour pendant les partiels : le PREMIER bloc de projet de
+       la journee -- 13:00 en semaine, 11:20 le vendredi et le week-end, si bien qu'aucun jour
+       n'en manque. Lecture, Anki Español ou conversation : rien qui demande de la memoire
+       fraiche. Tous les autres blocs de projet passent en revision ciblee. */
+    'Projets perso 1': 'Español',
+    'Projets perso 2': 'Révision ciblée',
+    /* Les blocs nes de l'emploi du temps reel du semestre 1 (lundi 15:00, mardi 20:30). Sans ces lignes ils restaient « Projets perso » PENDANT les partiels : trois
        heures de dropshipping en semaine d'examen, comptees en projets et non en revision, et
        la regle « un seul bloc Español par jour » sautait aussi, le mardi en portant deux. */
     'Projets perso 4': 'Révision ciblée',
     'Projets perso 5': 'Révision ciblée',
     'Projets perso 6': 'Révision ciblée',
-    'Préparer un tema': 'Annales ciblées',
-    'Comprendre le cours du jour': 'Fiches de synthèse'
+    'Étudier en avance': 'Annales ciblées',
+    'Approfondir': 'Annales ciblées',
+    'Lire': 'Révision ciblée',
+    'Clore le cours du jour': 'Fiches de synthèse'
   };
   function matiereExamenSuivante(iso){
     iso = iso || todayISO;
@@ -8303,7 +8434,7 @@
     if(!x) return null;
     var es = (typeof PERIODES_GRILLE !== 'undefined' && PERIODES_GRILLE || []).filter(function(q){ return iso >= q.debut && iso <= q.fin; })[0];
     return {id:'partiels', nom:'Partiels', partiels:true, debut:x.debut, fin:x.fin, premier:x.premier, n:x.n, suite: es ? es.nom : 'grille type',
-            description:'Mode partiels, de J-7 au dernier examen : Anki intact, Préparer un tema → Annales ciblées, Projets perso → Révision ciblée répartie entre les matières de la session (celle qui en a le plus besoin passe en premier), Comprendre → Fiches de synthèse, un seul bloc Español par jour, sport allégé à deux séances (lundi et jeudi), sommeil visé +30 min.',
+            description:'Mode partiels, de J-7 au dernier examen : Anki intact, Étudier en avance → Annales ciblées, Projets perso → Révision ciblée répartie entre les matières de la session (celle qui en a le plus besoin passe en premier), Clore → Fiches de synthèse, un seul bloc Español par jour, sport allégé à deux séances (lundi et jeudi), sommeil visé +30 min.',
             renommages: RENOMMAGES_PARTIELS, consignes: CONSIGNES_PARTIELS};
   }
   /* Le panneau Journees exceptionnelles (Calendrier) : les journees saisies et celles deduites
@@ -8459,15 +8590,36 @@
       if(!v || !v.value){ showToast('Choisis une date.'); return null; }
       return v.value;
     };
-    if(add) add.addEventListener('click', function(){ var d = lire(); if(d) marquerSansCours(d, true); });
-    if(cours) cours.addEventListener('click', function(){ var d = lire(); if(d) marquerSansCours(d, false); });
+    /* Une plage « du … au » (vacances, entre-deux) : chaque jour ouvré de la plage, en une
+       seule fois -- un seul recalcul, un seul message. */
+    var plage = function(sans){
+      var d = lire(); if(!d) return;
+      var f = document.getElementById('sc-fin'), fin = f && f.value;
+      if(!fin || fin <= d){ marquerSansCours(d, sans); return; }
+      if(daysBetween(new Date(d + 'T00:00:00'), new Date(fin + 'T00:00:00')) > 120){ showToast('⚠️ Une plage de plus de quatre mois : vérifie les dates.'); return; }
+      var A = joursSansCoursState.ajoutes, R = joursSansCoursState.retires, n = 0;
+      for(var iso = d; iso <= fin; iso = isoDecale(iso, 1)){
+        var dow = dowDe(iso); if(dow === 0 || dow === 6) continue;
+        var iA = A.indexOf(iso); if(iA > -1) A.splice(iA, 1);
+        var iR = R.indexOf(iso); if(iR > -1) R.splice(iR, 1);
+        if(sans){ if(JOURS_SANS_COURS_LISTE.indexOf(iso) < 0) A.push(iso); } else R.push(iso);
+        n++;
+      }
+      A.sort(); R.sort();
+      save('batcave-jours-sans-cours', joursSansCoursState);
+      viderCacheSansCours();
+      if(f) f.value = '';
+      appliquerChangementGrille((sans ? '📅 ' : '🎓 ') + n + ' jour' + (n > 1 ? 's' : '') + ' ouvré' + (n > 1 ? 's' : '') + ' du ' + fmtDate(d) + ' au ' + fmtDate(fin) + (sans ? ' : pas de cours, la journée pleine.' : ' : cours comme d\u2019habitude.'));
+    };
+    if(add) add.addEventListener('click', function(){ plage(true); });
+    if(cours) cours.addEventListener('click', function(){ plage(false); });
   })();
   /* Un seul chemin quand la grille change (vacances, jour exclu, journée exceptionnelle,
      date d'examen) : vider le cache des minutes prévues, recaler les cibles, tout redessiner. */
   function appliquerChangementGrille(message){
     viderCachePrevu();
     try{ recalerObjectifsSemaine(); }catch(e){}
-    try{ renderVacances(); renderSansCours(); renderJournees(); rafraichirAgendas(); renderDashboard(); renderBilan(); }catch(e){}
+    try{ renderVacances(); renderSansCours(); renderJournees(); renderEcheancesPanel(); rafraichirAgendas(); renderDashboard(); renderBilan(); }catch(e){}
     if(document.getElementById('obj-liste')) try{ renderObjectifs(); }catch(e){}
     if(message) showToast(message);
   }
@@ -10139,7 +10291,7 @@
     if(annP) items.push({pri:0.8, icon:'📣',
       text:'Mode partiels dans ' + annP.jours + ' jour' + (annP.jours > 1 ? 's' : '') + ' — il s\'enclenche le ' +
            fmtDate(annP.debut) + ' (' + annP.n + ' examen' + (annP.n > 1 ? 's' : '') + ', premier le ' + fmtDate(annP.premier) +
-           ', dernier le ' + fmtDate(annP.fin) + '). Préparer un tema → Annales ciblées, Projets perso → Révision ciblée, Comprendre → Fiches de synthèse, un seul bloc Español par jour, sport allégé à deux séances, coucher +30 min.',
+           ', dernier le ' + fmtDate(annP.fin) + '). Étudier en avance → Annales ciblées, Projets perso → Révision ciblée, Clore → Fiches de synthèse, un seul bloc Español par jour, sport allégé à deux séances, coucher +30 min.',
       action:{type:'partiels'}});
 
     /* Le soir, cloturer la journee est LA prochaine action : elle remonte dans le plan. */
@@ -10495,6 +10647,14 @@
     var el = document.getElementById('dash-echeances');
     if(!el) return;
     var items = [];
+    /* Les echeances saisies (questionnaires, rendus, presentations, TP) : les cinq
+       prochaines, avec leurs jours restants et une barre sur trente jours. */
+    if(typeof echeancesTriees === 'function'){
+      echeancesTriees().filter(function(e){ return !e.fait && e.date >= todayISO; }).slice(0, 5).forEach(function(e){
+        var j = joursAvant(e.date), T = TYPES_ECHEANCE[e.type], pct = Math.max(3, Math.min(100, Math.round(100 * Math.min(j, 30) / 30)));
+        items.push('<li style="flex-direction:column; align-items:stretch; gap:0;"><span style="display:flex; justify-content:space-between; gap:8px;"><span>' + T.ic + ' ' + escapeHtml(titreEcheance(e)) + '</span><b class="badge' + (j <= 3 ? ' warn' : (j <= 7 ? ' gold' : '')) + '">' + libelleJours(j) + ' · ' + fmtDate(e.date) + '</b></span><span class="ech-mini"><i style="width:' + pct + '%"></i></span></li>');
+      });
+    }
     var exams = Object.keys(examensState).map(function(m){ return {m: m, iso: examensState[m]}; })
                       .filter(function(x){ return x.iso >= todayISO; })
                       .sort(function(a, b){ return a.iso.localeCompare(b.iso); }).slice(0, 3);
@@ -11613,19 +11773,19 @@
         projets, qui demandent de la continuité. La dernière pause sert de transition. Il
         n'y a plus de pause longue à 09:20 : ce quart d'heure est passé au soir, pour la
         Collation soir (le plan est à cinq prises, sans collation du matin). La matinée
-        avance donc de 15 min, de Cartes (09:20) au déjeuner (12:20), et Projets perso 3
-        gagne ce quart d'heure (14:00 → 14:50).
+        avance donc de 15 min, d'Étudier en avance (09:20) au déjeuner (12:20), et Projets
+        perso 2 gagne ce quart d'heure (14:00 → 14:50).
      2. Chaque bloc porte le nom de ce qu'on y fait, pas un numéro : le plan du jour dit
-        « Anki 1 » ou « Comprendre le cours du jour », pas « Révision Bloc 3 ». La règle de
+        « Anki 1 » ou « Clore le cours du jour », pas « Révision Bloc 3 ». La règle de
         priorité est fixe : la file Anki d'abord ; si elle déborde, elle prend le bloc
         « Cartes », jamais l'inverse.
      3. La journée de révision suit la science de l'apprentissage : deux Pomodoros de rappel
         espacé (Anki) au pic d'attention du matin, les questions notées la veille au soir
-        transformées en cartes (J+1), une heure d'annales au format réel, et le cours du jour
-        compris le soir même, avant la nuit qui consolide.
+        transformées en cartes (J+1), une heure d'entraînement au format réel, et le cours du
+        jour clos le soir même, avant la nuit qui consolide.
      4. Lever 05:30, coucher 21:55 en semaine et 21:00 le week-end : 7 h 35 au lit en
-        semaine, 8 h 30 le week-end. Choix assumé : « Comprendre le cours du jour » garde
-        son heure pleine, la collation et la douche du soir viennent après. L'heure gagnée le matin vient du Coran lu pendant le
+        semaine, 8 h 30 le week-end. « Clore le cours du jour » tient 40 min (20 par cours),
+        puis du temps libre ; la collation et la douche du soir viennent après. L'heure gagnée le matin vient du Coran lu pendant le
         petit-déjeuner (06:45 → 07:20), pas du travail : le Bloc 1 démarre toujours à 07:20.
      5. Sport 05:30 → 06:30 : dix minutes de trajet, quarante minutes au parc, dix minutes
         de retour. Programme v2 : lundi haut lourd, mardi bas complet, jeudi haut volume,
@@ -11645,27 +11805,42 @@
         15:30 → 17:30 seulement (retour 17:30 → 18:00). La Collation entraînement se prend
         juste avant de partir -- 14:50 les jours normaux, 16:50 le lundi : sans elle, rien
         entre le déjeuner (12:20) et le dîner (20:00), sept heures à jeun pendant les cours.
-        Projets perso 3 s'arrête donc à 14:50 (50 min d'un trait), sauf le lundi ou il tient
+        Projets perso 2 s'arrête donc à 14:50 (50 min d'un trait), sauf le lundi ou il tient
         son heure pleine et cede la place a Projets perso 4 jusqu'a 16:50. Le soir : dîner 20:00 → 20:30, cours du
-        jour compris 20:30 → 21:30 (une heure pleine, non négociable), Collation soir
+        jour clos 20:30 → 21:10 (20 min par cours), temps libre, Collation soir
         21:30 → 21:45 (skyr, miel, beurre de cacahuète), douche et brossage de dents
         21:45 → 21:55, coucher 21:55. Les minutes de trajet sont prises sur le temps libre.
-    10. Le bloc « Comprendre le cours du jour » se fait sur papier : slides imprimées ou
+    10. Le bloc « Clore le cours du jour » se fait sur papier : slides imprimées ou
         cahier, questions écrites à la main. C'est meilleur pour l'auto-explication, et c'est
         ce qui rend possible l'habitude « Téléphone hors de la chambre » un soir de semaine.
     11. Les matins off de sport (mercredi, vendredi, dimanche) gardent le créneau 05:30 → 06:30
         comme bloc de travail : Anki le mercredi (la file de cartes est au plus haut en milieu
         de semaine, et le rappel se fait bien dix minutes après le réveil), projets perso le
-        vendredi et le dimanche (les deux jours les plus pauvres en projets, qui passent à
-        2 h 45). Le bloc projets du réveil est de l'exécution, jamais une décision de design. */
+        vendredi ; le dimanche, le lever est à 06:30, une nuit pleine. Le bloc projets du
+        réveil est de l'exécution, jamais une décision de design. */
   var SCHEDULES = {
+    /* ===== La journee de cours, version du 18 septembre 2026 =====
+       Le matin est le meme tous les jours de cours : Anki 07:20 → 09:20, puis UN SEUL bloc
+       de deux heures, « Étudier en avance » (09:20 → 11:20) : un tema pas encore donne par
+       le prof, lu, mis en cartes, puis approfondi avec le projet Dentaire (« estudia »). A
+       11:20, « Question ouverte ou autre » : une question d'examen redigee en espagnol, des
+       exercices d'Epidemiología, un blanc de questionnaire ou la preparation d'un TP -- c'est
+       lui qui choisit, le bloc ne dit que l'heure. L'apres-midi avant les cours est aux
+       projets (13:00 et 14:00). Le soir, « Clore le cours du jour » : 20 min par cours,
+       parce que le tema a deja ete etudie et approfondi le matin d'avant -- il n'y a plus
+       qu'a ajouter ce que le prof a souligne et les « ? » de l'amphi. Le mardi, sorti a
+       17:30, il clot a 18:00 puis LIT (18:30 → 19:30) le chapitre que la reponse du matin
+       lui a indique. Le samedi, « Approfondir » prend les deux heures du matin ; le dimanche,
+       « Simulation dentaire » puis « Réexpliquer » (les sujets approfondis a J+7, J+30, J+90,
+       redits sans notes). Avant le 19 octobre, la phase Español renomme les blocs Projets
+       perso ; apres, tout est projet. */
     weekday: [
       ['05:30','Sport'],['06:30','Douche + préparation'],['06:45','Petit-déjeuner + Coran (1 page)'],
       ['07:20','Anki 1'],['08:20','Anki 2'],
-      ['09:20','Préparer un tema'],['10:20','Exercices de calcul'],
-      ['11:20','Projets perso 1'],['12:20','Déjeuner'],['12:40','😴 Micro-sieste'],
-      ['13:00','Projets perso 2'],['14:00','Projets perso 3'],['14:50','Collation entraînement'],['15:00','Trajet cours'],['15:30','Cours'],
-      ['19:30','Trajet retour'],['20:00','Dîner'],['20:30','Comprendre le cours du jour'],
+      ['09:20','Étudier en avance'],['11:20','Question ouverte ou autre'],
+      ['12:20','Déjeuner'],['12:40','😴 Micro-sieste'],
+      ['13:00','Projets perso 1'],['14:00','Projets perso 2'],['14:50','Collation entraînement'],['15:00','Trajet cours'],['15:30','Cours'],
+      ['19:30','Trajet retour'],['20:00','Dîner'],['20:30','Clore le cours du jour'],['21:10','Temps libre'],
       ['21:30','Collation soir'],['21:45','Douche + brossage de dents'],['21:55','Coucher']
     ],
     /* Ces horaires sont ceux du SEMESTRE 1, du 14 septembre 2026 au 19 janvier 2027. Le
@@ -11674,30 +11849,30 @@
 
        Lundi : le cours ne commence qu'a 17:30 (et non 15:30). Deux heures se liberent
        l'apres-midi, juste avant de partir : c'est « Projets perso 4 », donc de l'espagnol
-       tant que la periode le renomme ainsi, et du projet des que les portes s'ouvrent.
+       (hablar) tant que la periode le renomme ainsi, et du projet ensuite.
        ATTENTION : ces deux heures sont propres au semestre 1. Au semestre 2 le lundi
        redemarre a 15:30 et elles disparaissent. */
     monday: [
       ['05:30','Sport'],['06:30','Douche + préparation'],['06:45','Petit-déjeuner + Coran (1 page)'],
       ['07:20','Anki 1'],['08:20','Anki 2'],
-      ['09:20','Préparer un tema'],['10:20','Blanc du questionnaire'],
-      ['11:20','Projets perso 1'],['12:20','Déjeuner'],['12:40','😴 Micro-sieste'],
-      ['13:00','Projets perso 2'],['14:00','Projets perso 3'],
+      ['09:20','Étudier en avance'],['11:20','Question ouverte ou autre'],
+      ['12:20','Déjeuner'],['12:40','😴 Micro-sieste'],
+      ['13:00','Projets perso 1'],['14:00','Projets perso 2'],
       ['15:00','Projets perso 4'],['16:50','Collation entraînement'],['17:00','Trajet cours'],['17:30','Cours'],
-      ['19:30','Trajet retour'],['20:00','Dîner'],['20:30','Comprendre le cours du jour'],
+      ['19:30','Trajet retour'],['20:00','Dîner'],['20:30','Clore le cours du jour'],['21:10','Temps libre'],
       ['21:30','Collation soir'],['21:45','Douche + brossage de dents'],['21:55','Coucher']
     ],
-    /* Mardi : le cours s'arrete a 17:30 (et non 19:30). « Comprendre le cours du jour » remonte
-       de 20:30 a 18:00 -- une demi-heure apres etre sorti de l'amphi, le cours est encore chaud.
-       Les deux heures nettes ainsi liberees sont « Projets perso 5 » et « Projets perso 6 » :
-       de l'espagnol tant que la periode les renomme, du projet des que les portes s'ouvrent. */
+    /* Mardi : le cours s'arrete a 17:30 (et non 19:30). « Clore le cours du jour » se fait
+       a 18:00, une demi-heure apres l'amphi ; puis « Lire », une heure sur le chapitre du
+       manuel de reference indique par la reponse du matin. Le soir (20:30) reste un bloc de
+       projet, « Projets perso 6 » : la serie en VO tant que la phase Español le renomme. */
     tuesday: [
       ['05:30','Sport'],['06:30','Douche + préparation'],['06:45','Petit-déjeuner + Coran (1 page)'],
       ['07:20','Anki 1'],['08:20','Anki 2'],
-      ['09:20','Préparer un tema'],['10:20','Exercices de calcul'],
-      ['11:20','Projets perso 1'],['12:20','Déjeuner'],['12:40','😴 Micro-sieste'],
-      ['13:00','Projets perso 2'],['14:00','Projets perso 3'],['14:50','Collation entraînement'],['15:00','Trajet cours'],['15:30','Cours'],
-      ['17:30','Trajet retour'],['18:00','Comprendre le cours du jour'],['19:00','Projets perso 5'],
+      ['09:20','Étudier en avance'],['11:20','Question ouverte ou autre'],
+      ['12:20','Déjeuner'],['12:40','😴 Micro-sieste'],
+      ['13:00','Projets perso 1'],['14:00','Projets perso 2'],['14:50','Collation entraînement'],['15:00','Trajet cours'],['15:30','Cours'],
+      ['17:30','Trajet retour'],['18:00','Clore le cours du jour'],['18:30','Lire'],['19:30','Temps libre'],
       ['20:00','Dîner'],['20:30','Projets perso 6'],
       ['21:30','Collation soir'],['21:45','Douche + brossage de dents'],['21:55','Coucher']
     ],
@@ -11705,25 +11880,29 @@
     wednesday: [
       ['05:30','Anki matinal'],['06:30','Douche + préparation'],['06:45','Petit-déjeuner + Coran (1 page)'],
       ['07:20','Anki 1'],['08:20','Anki 2'],
-      ['09:20','Préparer un tema'],['10:20','Question ouverte'],
-      ['11:20','Projets perso 1'],['12:20','Déjeuner'],['12:40','😴 Micro-sieste'],
-      ['13:00','Projets perso 2'],['14:00','Projets perso 3'],['14:50','Collation entraînement'],['15:00','Trajet cours'],['15:30','Cours'],
-      ['19:30','Trajet retour'],['20:00','Dîner'],['20:30','Comprendre le cours du jour'],
+      ['09:20','Étudier en avance'],['11:20','Question ouverte ou autre'],
+      ['12:20','Déjeuner'],['12:40','😴 Micro-sieste'],
+      ['13:00','Projets perso 1'],['14:00','Projets perso 2'],['14:50','Collation entraînement'],['15:00','Trajet cours'],['15:30','Cours'],
+      ['19:30','Trajet retour'],['20:00','Dîner'],['20:30','Clore le cours du jour'],['21:10','Temps libre'],
       ['21:30','Collation soir'],['21:45','Douche + brossage de dents'],['21:55','Coucher']
     ],
+    /* Vendredi : pas de bloc de 11:20 en revision -- Jumu'ah coupe l'apres-midi, la
+       matinee est aux projets (05:30 et 11:20) ; en phase Español, escribir largo et tutor. */
     friday: [
       ['05:30','Projets perso matinal'],['06:30','Douche + préparation'],['06:45','Petit-déjeuner + Coran (1 page)'],
       ['07:20','Anki 1'],['08:20','Anki 2'],
-      ['09:20','Préparer un tema'],
-      ['10:20','Projets perso 1'],['11:20','Projets perso 2'],['12:20','Déjeuner'],
+      ['09:20','Étudier en avance'],
+      ['11:20','Projets perso 1'],['12:20','Déjeuner'],
       ['13:15','Trajet mosquée'],['13:30',"Jumu'ah (khutba + prière ~14h)"],['14:30','😴 Micro-sieste'],['14:50','Collation entraînement'],['15:00','Trajet cours'],
-      ['15:30','Cours'],['19:30','Trajet retour'],['20:00','Dîner'],['20:30','Comprendre le cours du jour'],
+      ['15:30','Cours'],['19:30','Trajet retour'],['20:00','Dîner'],['20:30','Clore le cours du jour'],['21:10','Temps libre'],
       ['21:30','Collation soir'],['21:45','Douche + brossage de dents'],['21:55','Coucher']
     ],
+    /* Dimanche : plus de bloc a 05:30, le lever est a 06:30. Simulation (le blanc du
+       prochain questionnaire, ou un examen complet en decembre), puis Réexpliquer. */
     weekend: [
-      ['05:30','Projets perso matinal'],['06:30','Douche + préparation'],['06:45','Petit-déjeuner + Coran (1 page)'],
+      ['06:30','Douche + préparation'],['06:45','Petit-déjeuner + Coran (1 page)'],
       ['07:20','Anki 1'],['08:20','Anki 2'],
-      ['09:20','Simulation dentaire'],['10:20','Correction + cartes'],
+      ['09:20','Simulation dentaire'],['10:20','Réexpliquer'],
       ['11:20','Projets perso 1'],['12:20','Déjeuner'],['13:10','😴 Micro-sieste'],
       ['13:30','Projets perso 2'],['14:30','🍲 Batch cooking de la semaine'],
       ['16:30','🧽 Ménage — sols, salle de bain, poussière'],['17:30','Repos — après-midi libre'],
@@ -11731,13 +11910,15 @@
       ['19:30','Temps libre'],['20:30','Collation soir'],
       ['20:45','Douche + brossage de dents'],['21:00','Coucher']
     ],
+    /* Samedi : « Approfondir » sur les deux heures du matin (un sujet de la liste des dix,
+       lecture dans la reference, teach-back enregistre, cartes de mecanisme). */
     saturday: [
       ['05:30','Sport'],['06:30','Douche + préparation'],['06:45','Petit-déjeuner + Coran (1 page)'],
       ['07:20','Anki 1'],['08:20','Anki 2'],
-      ['09:20','Préparer un tema'],['10:20','Question ouverte'],
+      ['09:20','Approfondir'],
       ['11:20','Projets perso 1'],['12:20','Déjeuner'],['13:10','😴 Micro-sieste'],
       ['13:30','🛒 Courses de la semaine'],['15:30','Rangement des courses'],
-      ['16:00',"Cartes d'erreurs de la semaine"],['17:00','Projets perso 2'],['18:00','Projets perso 3'],
+      ['16:00',"Cartes d'erreurs de la semaine"],['17:00','Projets perso 2'],['18:00','Temps libre'],
       ['19:00','Dîner'],['19:30','Temps libre'],['20:30','Collation soir'],
       ['20:45','Douche + brossage de dents'],['21:00','Coucher']
     ]
@@ -11752,9 +11933,9 @@
 
      Le semestre appartient a la GRILLE DE BASE, pas aux periodes, et c'est la seule facon
      de le faire coexister avec les phases Español : periodeGrille ne rend QU'UNE periode
-     par date, et la phase 3 court du 30 novembre au 14 mars -- elle chevauche donc les
+     par date. La phase Español, elle, s'arrete le 18 octobre : elle ne chevauche plus rien,
      sept premieres semaines du semestre 2. Un « semestre 2 » range parmi les periodes
-     aurait masque la phase 3 pendant tout ce chevauchement. La base porte l'emploi du
+     mais la separation reste la bonne. La base porte l'emploi du
      temps, les periodes renomment par-dessus : les deux sont independantes. */
   var SCHEDULES_S2 = {
     /* Lundi : cours 15:30 → 19:30 comme le jeudi, et jour de sport comme le jeudi. La
@@ -11768,9 +11949,9 @@
     tuesday: [
       ['05:30','Sport'],['06:30','Douche + préparation'],['06:45','Petit-déjeuner + Coran (1 page)'],
       ['07:20','Anki 1'],['08:20','Anki 2'],
-      ['09:20','Préparer un tema'],['10:20','Exercices de calcul'],
-      ['11:20','Projets perso 1'],['12:20','Déjeuner'],['12:40','😴 Micro-sieste'],
-      ['13:00','Projets perso 2'],['14:00','Projets perso 3'],['14:50','Collation entraînement'],['15:00','Trajet cours'],['15:30','Cours'],
+      ['09:20','Étudier en avance'],['11:20','Question ouverte ou autre'],
+      ['12:20','Déjeuner'],['12:40','😴 Micro-sieste'],
+      ['13:00','Projets perso 1'],['14:00','Projets perso 2'],['14:50','Collation entraînement'],['15:00','Trajet cours'],['15:30','Cours'],
       ['21:30','Trajet retour'],['22:00','Dîner'],
       ['22:30','Douche + brossage de dents'],['22:40','Coucher']
     ],
@@ -11782,9 +11963,9 @@
     wednesday: [
       ['06:30','Douche + préparation'],['06:45','Petit-déjeuner + Coran (1 page)'],
       ['07:20','Anki 1'],['08:20','Anki 2'],
-      ['09:20','Préparer un tema'],['10:20','Question ouverte'],
-      ['11:20','Projets perso 1'],['12:20','Déjeuner'],['12:40','😴 Micro-sieste'],
-      ['13:00','Projets perso 2'],['14:00','Projets perso 3'],['14:50','Collation entraînement'],['15:00','Trajet cours'],['15:30','Cours'],
+      ['09:20','Étudier en avance'],['11:20','Question ouverte ou autre'],
+      ['12:20','Déjeuner'],['12:40','😴 Micro-sieste'],
+      ['13:00','Projets perso 1'],['14:00','Projets perso 2'],['14:50','Collation entraînement'],['15:00','Trajet cours'],['15:30','Cours'],
       ['21:30','Trajet retour'],['22:00','Dîner'],
       ['22:30','Douche + brossage de dents'],['22:40','Coucher']
     ]
@@ -11869,23 +12050,20 @@
     return !semestreDe(iso);
   }
   /* ===== L'agenda d'un jour sans cours =====
-     La plage de cours se libere : de la collation de 14:50 (16:50 le lundi du semestre 1)
-     jusqu'au coucher, la journee est reecrite. Ce qui la remplace n'invente aucun nom de
-     bloc. « Simulation dentaire » puis « Correction + cartes » sont les deux blocs du
-     dimanche matin -- un sujet en conditions reelles, sans support, puis sa correction
-     carte par carte ; un jour sans cours, la simulation est celle de l'examen complet
-     (40 QCM + 2 questions ouvertes, 55 min). C'est exactement ce qui ne rentre jamais dans
-     une journee a quatre heures d'amphi, et le meilleur usage connu d'une journee libre.
-     Les blocs de projet gardent les noms « Projets perso 4, 5, 6 » : les phases Español et
-     le mode partiels les renomment deja, donc un jour sans cours suit la phase en cours et
-     les partiels sans une seule ligne de configuration de plus.
+     Ferie, pont, vacances de Noel ou de Paques, entre-deux des semestres : UNE SEULE journee
+     pour tous ces cas, la « journee pleine ». Le matin ne bouge pas (Anki, Étudier en
+     avance, Question ouverte ou autre, projets a 13:00 et 14:00) ; la plage de cours se
+     libere et devient deux blocs de projet, puis « Lire » et « Réexpliquer » -- les deux
+     gestes qui n'ont pas leur heure pleine en semaine. Aucun nom de bloc n'est invente :
+     les phases Español et le mode partiels renomment deja « Projets perso 4, 5 », donc un
+     jour sans cours suit la phase en cours sans une ligne de configuration de plus.
      Un bloc deja present plus tot dans la journee n'est pas repose une seconde fois : le
      lundi du semestre 1 garde son « Projets perso 4 » de 15:00, il ne le voit pas revenir.
      Le soir est celui du week-end -- diner 19:00, coucher 21:00. Un jour libre est aussi
      l'occasion d'une nuit pleine, et le semestre 2 le rend indispensable : sans cela, un
      mardi ferie aurait garde le diner a 22:00 et le coucher a 22:40 d'une journee de cours
      qui n'a pas eu lieu. */
-  var REMPLISSAGE_SANS_COURS = ['Simulation dentaire', 'Correction + cartes', 'Projets perso 4', 'Projets perso 5', 'Projets perso 6'];
+  var REMPLISSAGE_SANS_COURS = ['Projets perso 4', 'Projets perso 5', 'Lire', 'Réexpliquer'];
   var SANS_COURS_FIN_TRAVAIL = '19:00';
   var SOIREE_SANS_COURS = [['19:00','Dîner'],['19:30','Temps libre'],['20:30','Collation soir'],
                            ['20:45','Douche + brossage de dents'],['21:00','Coucher']];
@@ -11930,30 +12108,29 @@
     'Projets perso matinal': "Exécution pure d'une tâche déjà décidée la veille : montage, import, rédaction, fiches, code. Jamais une décision.",
     'Anki 1': "Toutes les échéances de dentaire, deux Pomodoros 25 + 5 sans téléphone. File vide avant la fin : cartes du cours suivant à partir des notes.",
     'Anki 2': "Suite des échéances de dentaire. Les 5 dernières minutes : échéances du paquet Business (glossaire dropshipping).",
-    'Préparer un tema': {defaut: "Préparer un tema d'avance (la matière la plus loin de ses 3) : lire les slides en espagnol, reformuler chaque point en une phrase, noter les « ? », 15-25 termes en cartes Español, puis 15-25 cartes Dentaire écrites à la main et importées (40 max en Anatomía). Pomodoro nommé « Préparer · matière Tn ».",
-                         6: "Préparer un tema d'avance, comme en semaine ; s'il n'en manque aucun, la fiche d'une page du dernier bloc vu."},
-    'Blanc du questionnaire': "Blanc du prochain questionnaire : 15 questions sur son bloc de temas, livre fermé, en espagnol, 20 min, puis correction ; chaque erreur → une carte. Jusqu'au 4 octobre : préparer un tema de plus à la place ; premier blanc le lundi 5 octobre (Anatomía, questionnaire des 7-8).",
-    'Exercices de calcul': "Epidemiología, exercices de calcul : trois à la main (taux, moyenne/médiane/écart-type, tableau 2×2, RR, OR, incidence, prévalence), corrigés après avec Claude (« examen »). Dès le 30 novembre : problemas de genética ; au semestre 2, la matière la plus calculatoire. Tant que les 3 temas d'avance manquent (jusqu'au 11 octobre) : préparer un tema de plus à la place.",
-    'Question ouverte': "Une question ouverte d'examen sur un tema vu, rédigée en espagnol, 25 min sans support, puis « examen » avec Claude : le contenu d'abord, la langue ensuite, une carte par erreur. Tant que les 3 temas d'avance manquent (jusqu'au 11 octobre) : préparer un tema de plus à la place.",
-    'Simulation dentaire': {0: "La semaine avant un questionnaire : son blanc complet (15 questions, 20 min, sans support, en espagnol). Sinon : 10 QCM + une question ouverte sur le dernier bloc de trois temas de Biología ou d'Epidemiología, en alternance. Dimanche 20 septembre : préparer un tema, la première simulation est le 27.",
-                            defaut: "Jour sans cours : la simulation complète de la matière la plus proche (40 QCM + 2 questions ouvertes, en espagnol, 55 min sans support), corrigée dans le bloc suivant. Tant que les 3 temas d'avance manquent : deux temas à la place."},
-    'Correction + cartes': "Correction de la simulation avec Claude (« examen ») : une carte par erreur, puis l'état de chaque matière noté pour le contrôle de 13:30.",
-    'Projets perso 1': {defaut: "Dossier dropshipping : la prochaine ligne non cochée de la semaine. Bloc des décisions (produit, fournisseur, pub). Pomodoro nommé « DS S<semaine> · tâche ».",
+    'Étudier en avance': {defaut: "Deux heures, un tema que le prof n'a pas encore donné (la matière la plus loin de ses 3 d'avance). Lire les diapos en espagnol, une phrase à toi par point, « ? » dans la marge, 15-25 cartes Dentaire importées (40 en Anatomía). Puis, dans le projet Claude Dentaire : « estudia · matière Tn · tes ? » — la réponse en sept parties, la chaîne du mécanisme si le tema est dans la liste des dix, tes dix lignes en espagnol dans Notion, les cartes de la réponse importées. Pomodoro nommé « Étudier · matière Tn ». Une base qui manque (« base · notion ») passe devant tout le reste."},
+    'Question ouverte ou autre': "Une heure de révision, à toi de choisir ce qui sert le plus cette semaine : une question ouverte d'examen rédigée en espagnol (25 min sans support, puis « examen » avec Claude : contenu, puis langue), des exercices d'Epidemiología (tableau 2×2, RR, OR, taux), le blanc du prochain questionnaire (15 questions, 20 min, livre fermé), ou la préparation d'un TP. Chaque erreur → une carte.",
+    'Simulation dentaire': {0: "La semaine avant un questionnaire : son blanc complet (15 questions, 20 min, sans support, en espagnol). Sinon : 10 QCM + une question ouverte sur le dernier bloc de trois temas de Biología ou d'Epidemiología, en alternance. En décembre : un examen blanc complet (40 QCM + 4 ouvertes, 90 min), une matière par dimanche. Le premier dimanche du mois : l'examen mensuel de vingt vignettes.",
+                            defaut: "Le blanc de la matière la plus proche de son échéance, en conditions réelles, sans support, corrigé ensuite : une carte par erreur."},
+    'Réexpliquer': "Les sujets approfondis qui reviennent aujourd'hui (J+7, J+30, J+90 : la liste est dans « Le calendrier du S1 »). Chacun : quatre minutes au téléphone, sans notes, la chaîne complète — quoi, pourquoi, comment, quand ce n'est pas vrai, et au fauteuil. Compare à ton premier enregistrement, note-toi 0-3. Sous 2, le sujet repasse samedi prochain en Approfondir.",
+    'Approfondir': "Un seul sujet de la liste des dix (Dental Mastery OS, section 04), dans l'ordre où la fac le donne. 45 min de lecture dans la référence (Guyton, Karp, Greenhalgh, Abbas), 30 min de teach-back enregistré en espagnol, sans notes, 15 min de cartes de mécanisme (cloze en chaîne), 30 min de vignettes (« profundiza · sujet » dans le projet Dentaire). L'enregistrement se garde : Réexpliquer le réécoute. Pomodoro « Approfondir · sujet ».",
+    'Lire': "Le chapitre que la réponse « estudia » du matin a indiqué : un bloc, un livre, en espagnol ou en anglais, une seule question en tête — qu'est-ce que le cours n'a pas expliqué ? Trois cartes au plus à la fin. Rien d'autre d'ouvert.",
+    'Projets perso 1': {defaut: "Un devoir ou une présentation à rendre passe en premier (l'échéance la plus proche, onglet Calendrier). Sinon la boutique : la prochaine ligne non cochée du dossier e-commerce. Bloc des décisions (produit, fournisseur, pub). Pomodoro nommé « DS S<semaine> · tâche ».",
                         1: "Dossier dropshipping : la prochaine ligne non cochée. Dès que des pubs tournent, c'est le rituel du lundi (chiffres, décisions pub, opérations, argent, journal).",
                         6: "Réserve : ce qui a débordé de la semaine dans le dossier ; s'il n'y a rien, la semaine suivante commence.",
                         0: "Réserve : service client et chiffres du week-end quand la boutique tourne ; sinon, débordement du dossier."},
-    'Projets perso 2': {defaut: "Dossier dropshipping : la ligne suivante de type « construire » : feuille, page, brief, fiche, compte. Quelque chose qui existe à la fin du bloc.",
+    'Projets perso 2': {defaut: "Un livrable en cours d'abord (l'échéance la plus proche). Sinon la ligne suivante de type « construire » du dossier e-commerce : feuille, page, brief, fiche, compte. Quelque chose qui existe à la fin du bloc.",
                         5: "Bilan de la semaine : cases cochées, porte passée ou non, trois lignes dans le journal de bord, tâche du samedi et du dimanche matin cadrée par écrit.",
                         6: "Fiscalité F1 (apprendre) : la ligne « Apprendre » de la semaine, section 09 du dossier, à partir de la source officielle. Pomodoro « F1 ».",
                         0: "Fiscalité F3 (réviser) : relecture des fiches, 10 cartes fiscalité, tableau de maîtrise du dossier (les cinq piliers), page « ce que je sais maintenant ». Pomodoro « F3 »."},
-    'Projets perso 3': {defaut: "50 min d'un trait : une tâche courte du dossier, ou l'exercice corrigé de la semaine (correction fermée jusqu'à ta réponse).",
+    'Projets perso 3': {defaut: "50 min d'un trait : une tâche courte du dossier, ou l'exercice corrigé de la semaine (correction fermée jusqu'à ta réponse). Ce bloc ne figure plus dans la grille du 18 septembre ; sa consigne reste pour les journées déjà vécues.",
                         3: "Révision Business (50 min) : cartes du paquet Business, auto-test de la semaine à livre fermé, score noté dans le dossier, puis Claude en examinateur sur tes erreurs.",
                         6: "Fiscalité F2 (construire) : la ligne « Construire » de la semaine, section 09 du dossier : fiche, tableau, exercice chiffré. Pomodoro « F2 »."},
-    'Projets perso 4': "Lundi, 15:00-16:50, juste avant de partir en cours. Même règle que les autres blocs de projet : "
-      + "ce que la période en fait, la période le dit. Hors période Español, c'est la prochaine ligne non cochée du dossier dropshipping.",
-    'Projets perso 5': "Mardi, 19:00-20:00, au retour des cours. Même règle : la période décide, sinon dossier dropshipping.",
-    'Projets perso 6': "Mardi, 20:30-21:30, l'heure qu'a libérée « Comprendre le cours » en remontant à 18:00. Même règle.",
-    'Comprendre le cours du jour': "Le tema est déjà préparé : résous les « ? » de la marge (projet Claude « Dentaire », « explica »), ajoute ce que le prof a souligné, corrige les cartes (≈ 20 %), puis 10 lignes en espagnol dans Notion. Deux cours dans la journée : 30 min chacun.",
+    'Projets perso 4': "Lundi, 15:00-16:50, juste avant de partir en cours (hablar en phase Español). Même règle que les autres blocs de projet : "
+      + "un livrable à rendre d'abord, sinon la prochaine ligne non cochée du dossier e-commerce.",
+    'Projets perso 5': "Un jour sans cours, l'après-midi : même règle, un livrable d'abord, sinon la boutique.",
+    'Projets perso 6': "Mardi, 20:30-21:30 (la série en VO en phase Español). Même règle : un livrable d'abord, sinon la boutique.",
+    'Clore le cours du jour': "Le tema a déjà été étudié et approfondi le matin d'avant : vingt minutes par cours, pas plus. Dans le projet Dentaire : « cierra · matière Tn · tes ? d'amphi ». Ce que le prof a souligné et qui n'était pas dans les diapos → 3 à 5 cartes ; les cartes floues corrigées ; la case « Fiché » cochée et la note 0-3 du cours à la clôture. Deux cours : 20 + 20, fini à 21:10.",
     "Cartes d'erreurs de la semaine": "Les cartes ratées de la semaine, les erreurs des questions ouvertes et des exercices de calcul → une carte de correction par cause, étiquette « erreur » + semaine.",
     'Temps libre': {defaut: "Libre.", 0: "10 minutes pour la revue du dimanche guidée (onglet Études), le reste est libre."},
     'Coucher': "Clôture du jour faite ? Écran off, réveil posé loin du lit."
@@ -11967,7 +12144,7 @@
     'Español · Anki matinal': "Toutes les révisions du paquet Español, puis les cartes d'erreurs de la veille.",
     'Español · Anki y errores': "Révisions Español, puis toutes les erreurs de la semaine en cartes à trou dans Español::0 Errores.",
     'Español · cartas de errores': "Chaque erreur de la veille devient une carte à trou dans Español::0 Errores, code d'erreur en étiquette.",
-    'Español · escribir': "Une question ouverte d'examen sur un tema vu (Claude, « examen ») : 25 min sans dictionnaire, en espagnol, puis correction en deux temps — contenu, puis langue — et une carte par erreur. Dix minutes de réécriture de mémoire du texte de la veille avant, si le temps le permet.",
+    'Español · escribir': "Une question ouverte d'examen sur un tema vu (Claude, « examen ») : 25 min sans dictionnaire, en espagnol, puis correction en deux temps — contenu, puis langue — et une carte par erreur. C'est de la révision qui se fait en espagnol : le Pomodoro Español la compte en espagnol, l'examen de janvier la note à 50 %.",
     'Español · escribir largo': "300 mots chronométrés (30 min) sur un sujet d'examen, sans dictionnaire, puis « corrige » et les cartes d'erreurs.",
     'Español · hablar': "Quinze minutes de shadowing sur un cours d'anatomía, puis 45 min de tuteur, ou de conversation avec un compañero, ou en dictée avec Claude. Technique 4-3-2 pour finir.",
     'Español · tutor': "Séance de tuteur : 3 min de conversation, 12 min à expliquer le cours de la veille, 10 min de corrections répétées, 5 min de jeu de rôle en usted. Dix cartes d'erreurs après.",
@@ -11976,7 +12153,7 @@
     'Español · conversación real': "Une heure avec des Espagnols : intercambio, compañeros, voisins, mosquée, parc. En espagnol uniquement, jamais d'anglais ni de français. Le bloc qui fait le plus avancer.",
     'Español · DELE': "Question ouverte longue : 300 mots en 30 min sur un tema vu, sans dictionnaire, corrigés avec « examen » (contenu, puis langue). Le DELE attend le printemps.",
     'Español · annales': "Une question d'annale en espagnol, chronométrée, corrigée en deux temps : contenu, puis langue avec les codes d'erreur.",
-    'Español · simulación': "Deux réponses de type examen en espagnol, sur deux temas vus cette semaine, 55 min sans dictionnaire, puis « examen » avec Claude : le contenu d'abord, la langue ensuite.",
+    'Español · simulación': "Deux réponses de type examen en espagnol, sur deux temas vus cette semaine, 55 min sans dictionnaire, puis « examen » avec Claude : le contenu d'abord, la langue ensuite. Dimanche 20 septembre : le diagnostic (300 mots, 3 min d'oral, Kwiziq), ses trois chiffres à la clôture.",
     'Español · simulación de examen': "Deux réponses de type examen en 55 min sans dictionnaire (« Describe la estructura de la membrana celular », « Explica las funciones de la saliva »).",
     'Español · corrección y oral': "Cinq minutes d'oral enregistrées sur l'une des deux réponses, puis correction des trois productions par « examen », erreurs classées par code.",
     'Español · balance de errores': "Toutes les erreurs de la semaine en cartes ; erreurs pour 100 mots comparées au diagnostic de mardi.",
@@ -11993,7 +12170,7 @@
   /* Consignes des blocs de base pendant une periode Español (les blocs eux-memes ne bougent pas). */
   var CONSIGNES_PERIODE_ES = {
     'Anki 2': "Suite des échéances de dentaire. Les 5 dernières minutes : les dix formules du jour (paquet Español).",
-    'Comprendre le cours du jour': "Le tema est déjà préparé : les « ? » résolus avec « explica », ce que le prof a souligné ajouté, les cartes corrigées, puis dix lignes en espagnol dans Notion. Deux cours dans la journée : 30 min chacun.",
+    'Clore le cours du jour': "Le tema a déjà été étudié le matin d'avance : vingt minutes par cours, en espagnol. « cierra » dans le projet Dentaire avec tes « ? » d'amphi, ce que le prof a souligné en cartes, la note 0-3 du cours à la clôture.",
     'Trajet cours': "Podcast en marchant, shadowing à mi-voix dans le tram. Arrivé avant 15:30 : conversation avec les compañeros, pas le téléphone.",
     'Trajet retour': "Une minute de résumé oral du cours enregistrée en marchant, puis Anki Español dans le tram et trois minutes de paquet Business.",
     'Cours': "Notes en espagnol, un « ? » dans la marge pour chaque mot inconnu, ta question posée avant la fin. Trente minutes de conversation réelle dans la journée.",
@@ -12024,38 +12201,19 @@
      Le mode partiels (periodePartiels, calcule depuis les dates d'examen) passe avant. */
   var PERIODES_GRILLE = [
     /* Tout commence le lundi 14 septembre 2026, premier jour de cours : avant, la grille type.
-       Dans chaque phase, SEULS les blocs « Projets perso » changent de nom. */
-    {id:'es-1', nom:'Español · phase 1', debut:'2026-09-14', fin:'2026-10-18', suite:'Español · phase 2 (Projets perso 1 revient)',
-     description:'Avec les cours : tous les blocs Projets perso sont des blocs Español — trois les mercredi, jeudi et vendredi, quatre le lundi, cinq le mardi, et davantage un jour sans cours, où la plage de cours se libère.',
+       UNE SEULE phase Español, jusqu'au 18 octobre : elle ne renomme que des blocs
+       « Projets perso ». Le 19 octobre, tous redeviennent des projets -- livrables d'abord,
+       boutique ensuite. Ce qui touche a l'ecole (question ouverte, simulation, Réexpliquer)
+       n'est jamais un bloc Español : c'est de la revision qui se fait en espagnol. */
+    {id:'es-1', nom:'Español · phase 1', debut:'2026-09-14', fin:'2026-10-18', suite:'Projets perso (livrables, puis boutique)',
+     description:'Avec les cours, jusqu\u2019au 18 octobre : les blocs Projets perso sont des blocs Español — gramática à 13:00, escribir à 14:00, hablar le lundi à 15:00, la série en VO le mardi soir, escribir largo et tutor le vendredi, gramática et tutor le samedi, simulación et balance le dimanche. Le 19 octobre, tout revient aux projets.',
      renommages: {
-       'Projets perso 1': {defaut:'Español · gramática', weekend:'Español · simulación'},
-       'Projets perso 2': {defaut:'Español · escribir', friday:'Español · tutor', saturday:'Español · tutor', weekend:'Español · balance de la semana'},
-       'Projets perso 3': {defaut:'Español · preparar la clase', saturday:'Español · DELE'},
-       /* Les trois blocs nes de l'emploi du temps reel. « Projets perso 3 » prepare deja la
-          classe a 14:00 ; a 15:00, juste avant de partir, on parle : une heure de bouche en
-          espagnol et on entre en amphi deja chaud, au lieu d'y arriver muet. */
+       'Projets perso 1': {defaut:'Español · gramática', friday:'Español · tutor', weekend:'Español · simulación'},
+       'Projets perso 2': {defaut:'Español · escribir', saturday:'Español · tutor', weekend:'Español · balance de la semana'},
        'Projets perso 4': {defaut:'Español · hablar'},
-       'Projets perso 5': {defaut:'Español · registro académico'},
-       /* 20:30 le mardi, apres le diner, une heure avant le coucher : la seule intensite
-          tenable a cette heure-la. C'est aussi le seul bloc qui entraine l'espagnol a vitesse
-          reelle et non scolaire -- ce que mesurent justement les portes. En phase 2 il n'est
-          plus renomme : c'est la premiere heure qui revient aux projets. */
+       'Projets perso 5': {defaut:'Español · tutor'},
        'Projets perso 6': {defaut:'Español · serie en VO'},
-       'Projets perso matinal': {friday:'Español · escribir largo', weekend:'Español · Anki y errores'}
-     }, consignes: CONSIGNES_PERIODE_ES},
-    {id:'es-2', nom:'Español · phase 2', debut:'2026-10-19', fin:'2026-11-29', suite:'Español · phase 3 (un bloc par jour)',
-     description:"L'espagnol d'examen : annales en espagnol à 13:00, préparation de la classe à 14:00 ; Projets perso 1 et le vendredi matin reviennent.",
-     renommages: {
-       'Projets perso 2': {defaut:'Español · annales', friday:'Español · tutor', saturday:'Español · tutor', weekend:'Español · balance de la semana'},
-       'Projets perso 3': {defaut:'Español · preparar la clase'},
-       'Projets perso 4': {defaut:'Español · hablar'},
-       'Projets perso 5': {defaut:'Español · registro académico'},
-       'Projets perso matinal': {weekend:'Español · Anki y errores'}
-     }, consignes: CONSIGNES_PERIODE_ES},
-    {id:'es-3', nom:'Español · phase 3', debut:'2026-11-30', fin:'2027-03-14', suite:'grille type',
-     description:'Vers le C1 : un bloc Español par jour à 13:00, le reste revient aux projets.',
-     renommages: {
-       'Projets perso 2': {defaut:'Español', friday:'Español · tutor', saturday:'Español · DELE', weekend:'Español · balance de la semana'}
+       'Projets perso matinal': {friday:'Español · escribir largo'}
      }, consignes: CONSIGNES_PERIODE_ES},
     /* ===== L'ete 2027 =====
        Le dernier cours est le vendredi 4 juin. A partir du 5, sansCoursLe libere deja la
@@ -12116,10 +12274,10 @@
     var ev = journeeDe(iso);
     if(ev) return grilleEvenement(cle, iso, ev, g).grille;
     /* la veille : le dernier bloc de travail du soir prepare le lendemain */
-    var demain = journeeDe(isoDecale(iso, 1));
+    var demain = journeeDe(isoDecale(iso, 1)) || (typeof echeanceVeilleDe === 'function' ? echeanceVeilleDe(isoDecale(iso, 1)) : null);
     if(demain){
       var idx = -1;
-      base.forEach(function(b, i){ if(idx < 0 && b[1] === 'Comprendre le cours du jour') idx = i; });
+      base.forEach(function(b, i){ if(idx < 0 && b[1] === 'Clore le cours du jour') idx = i; });
       if(idx < 0) base.forEach(function(b, i){ if(idx < 0 && b[1] === 'Temps libre') idx = i; });
       if(idx > -1 && g.length === base.length) g = g.map(function(b, i){ return i === idx ? [b[0], 'Préparer · ' + demain.titre] : b; });
     }
@@ -12128,7 +12286,7 @@
   /* Nature d'un bloc du planning. Les blocs de révision portent le nom de l'activité
      (Anki, Cartes, Annales, Comprendre…) : c'est ici, et nulle part ailleurs, qu'on décide
      ce qui compte comme révision et comme projets. */
-  var BLOCS_REVISION = /^(Anki|Cartes|Annales?\b|Annale complète|Correction|Comprendre|Révision ciblée|Fiches de synthèse|Préparer · |Préparer un tema|Blanc du questionnaire|Exercices de calcul|Question ouverte|Simulation dentaire)/;
+  var BLOCS_REVISION = /^(Anki|Cartes|Annales?\b|Annale complète|Correction|Clore|Révision ciblée|Fiches de synthèse|Préparer · |Étudier en avance|Question ouverte|Simulation dentaire|Réexpliquer|Approfondir|Lire$)/;
   function typeBlocPlan(label){
     if(BLOCS_REVISION.test(label)) return 'cours';
     if(/^Projets perso/.test(label)) return 'projet';
@@ -12161,7 +12319,7 @@
   /* Rythme de Pomodoro d'un bloc : 25 min sur Anki (rappel, attention courte), 55 min sur
      tout le reste (annales au format examen, cartes, compréhension, projets : continuité).
      La part de travail d'une heure pleine en découle : 50 min sur 60 en 25 + 5, 55 sur 60
-     en 55 + 5. Un bloc plus court que son rythme (Projets perso 3, 50 min avant la collation)
+     en 55 + 5. Un bloc plus court que son rythme (Projets perso 2, 50 min avant la collation)
      est du travail d'un bout à l'autre : la pause, c'est le trajet. Les cibles du jour et
      de la semaine se lisent en temps de travail réel, pauses exclues. */
   /* ===== Une seule façon d'écrire une durée =====
@@ -12195,7 +12353,7 @@
     return null;
   }
   /* Durée automatique d'un Pomodoro lancé maintenant : celle du bloc de travail en cours,
-     bornée par la longueur du bloc (50 min pour Projets perso 3), 55 min hors bloc (une
+     bornée par la longueur du bloc (50 min pour Projets perso 2), 55 min hors bloc (une
      session hors planning est de la continuité, pas du rappel). */
   function dureeBlocAuto(){
     var b = blocPlanCourant();
@@ -12268,20 +12426,20 @@
 
      Enfin, le troisieme bloc ne s'ouvre jamais ici. La comprehension progresse vite, la
      PRODUCTION non : il se sentira a l'aise en cours bien avant de savoir ecrire une reponse
-     d'examen. Or c'est l'ecrit qui est note. « escribir » reste jusqu'au 14 mars. */
+     d'examen. Or c'est l'ecrit qui est note. « escribir » reste jusqu'au 18 octobre. */
   var PORTES_FENETRE_J = 21;      /* largeur de la fenetre glissante, en jours */
   var PORTES_MIN_JOURS = 12;      /* jours de cours notes en dessous desquels on ne conclut rien */
   /* Chaque porte nomme le bloc qu'elle rend. L'ordre n'est pas arbitraire : les deux portes
      mesurent une seule chose, suivre un cours d'Anatomia en espagnol. Les blocs qui existent
-     POUR rendre le cours comprehensible tombent donc les premiers -- « preparar la clase »
-     (machet les slides avant l'amphi), puis « registro academico » (le vocabulaire du manuel).
-     « escribir » n'est jamais rendu ici : c'est de la PRODUCTION, elle progresse bien plus
-     lentement que la comprehension, et c'est l'ecrit qui est note. Il reste au 14 mars. */
+     POUR la comprehension tombent donc les premiers -- la serie en VO du mardi soir,
+     puis la « gramatica » de 13:00. « escribir » n'est jamais rendu ici : c'est de la PRODUCTION,
+     elle progresse bien plus lentement que la comprehension, et c'est l'ecrit qui est note.
+     De toute facon la phase s'arrete le 18 octobre : les portes ne font qu'avancer la date. */
   var PORTES = [
-    {n:1, ouvre:2.5, ferme:2.2, erreurs:3, examen:false, bloc:'Projets perso 3',
-     titre:'Un bloc Español devient un bloc Projets perso', quoi:'« preparar la clase », 14:00'},
-    {n:2, ouvre:2.8, ferme:2.5, erreurs:2, examen:true, bloc:'Projets perso 5',
-     titre:'Un deuxième bloc Español devient un bloc Projets perso', quoi:'« registro académico », mardi 19:00'}
+    {n:1, ouvre:2.5, ferme:2.2, erreurs:3, examen:false, bloc:'Projets perso 6',
+     titre:'Un bloc Español devient un bloc Projets perso', quoi:'« serie en VO », mardi 20:30'},
+    {n:2, ouvre:2.8, ferme:2.5, erreurs:2, examen:true, bloc:'Projets perso 1',
+     titre:'Un deuxième bloc Español devient un bloc Projets perso', quoi:'« gramática », 13:00'}
   ];
   var coursSuiviState = load('batcave-cours-suivi', {});
   if(!coursSuiviState || typeof coursSuiviState !== 'object' || Array.isArray(coursSuiviState)) coursSuiviState = {};
@@ -14781,6 +14939,7 @@
   renderJournees();
   renderVacances();
   renderSansCours();
+  renderEcheancesPanel();
   majOngletBusiness();
   renderAnki();
   renderNotionCours();

@@ -31,9 +31,9 @@ console.log('\n== 264) Les cibles sortent de la grille, phase par phase ==');
   }));
   /* Le 14/09 et le 19/10 sont des lundis (4 blocs de projet : 11:20, 13:00, 14:00, 15:00),
      le 01/12 un mardi (5 blocs : 11:20, 13:00, 14:00, 19:00, 20:30). Pauses deduites. */
-  ok(p.s14.proj === 0 && p.s14.es === 266, 'phase 1 : aucun projet perso prévu, 266 min d\'espagnol (' + JSON.stringify(p.s14) + ')');
-  ok(p.s19oct.proj === 55 && p.s19oct.es === 211, 'phase 2 : Projets perso 1 revient (55 min), espagnol 211 min (' + JSON.stringify(p.s19oct) + ')');
-  ok(p.s1dec.proj === 215 && p.s1dec.es === 55, 'phase 3 : un seul bloc Español, le reste aux projets (' + JSON.stringify(p.s1dec) + ')');
+  ok(p.s14.proj === 0 && p.s14.es === 211, 'phase 1 : aucun projet perso prévu, 211 min d\'espagnol (' + JSON.stringify(p.s14) + ')');
+  ok(p.s19oct.proj === 211 && p.s19oct.es === 0, 'dès le 19 octobre : tous les blocs reviennent aux projets (211 min), plus d\'espagnol (' + JSON.stringify(p.s19oct) + ')');
+  ok(p.s1dec.proj === 160 && p.s1dec.es === 0, 'décembre : même grille, tout en projets (' + JSON.stringify(p.s1dec) + ')');
   const o = await fr.evaluate(() => { const l = {}; window.__bcObjectifs().forEach(x => l[x.id] = {c:x.cible, a:x.auto}); return l; });
   /* Septembre ne compte qu'à partir du 14, et cette part du mois est entièrement en
      phase 1 : aucun bloc Projets perso, donc cible zéro. Octobre en a un peu (la phase 2
@@ -131,7 +131,7 @@ console.log('\n== 268) Rythme d\'une habitude, modifiable sans l\'archiver ==');
 console.log('\n== 269) Pomodoro : le rappel dit quoi lancer, la clôture compte les blocs ==');
 {
   const { ctx, page, fr } = await ouvrir('2026-09-15T20:35:00+02:00');
-  const r = await fr.evaluate(() => window.__bcRappels('2026-09-15').filter(b => /Anki 1|Exercices de calcul/.test(b.titre)).map(b => ({t:b.titre, d:b.description})));
+  const r = await fr.evaluate(() => window.__bcRappels('2026-09-15').filter(b => /Anki 1|Question ouverte ou autre/.test(b.titre)).map(b => ({t:b.titre, d:b.description})));
   ok(r.length >= 2 && r.every(x => /^Lance le Pomodoro « /.test(x.d)), 'chaque bloc de travail dit « Lance le Pomodoro « … » » : ' + (r[0] && r[0].d.slice(0, 45)));
   const coucher = await fr.evaluate(() => window.__bcRappels('2026-09-15').filter(b => /Coucher/.test(b.titre))[0]);
   ok(!/Lance le Pomodoro/.test(coucher.description), 'le coucher, lui, ne réclame pas de Pomodoro');

@@ -11,7 +11,7 @@ const MOCK = () => {
   window.claude = { use(n){ return Promise.resolve(n === 'mcp' ? mcp : null); } };
 };
 /* Lundi 7 septembre 2026, 12:00. Dix jours de semaine suivis (24 août → 4 septembre) :
-   Anki démarré avec 15 min de retard, tous les blocs tenus sauf Projets perso 3 (14:00),
+   Anki démarré avec 15 min de retard, tous les blocs tenus sauf Projets perso 2 (14:00),
    jamais lancé. Sommeil à 6 h sur 7 nuits, Tractions à 8/8/8 sur 4 séances, un partiel
    d'Anatomía dans 18 jours alors que toute la révision étiquetée est en Histología. */
 const seed = (() => {
@@ -53,7 +53,7 @@ console.log('\n== 218) Insights v2 : bloc fragile, dérive, dette de sommeil, st
   const ins = await fr.evaluate(() => window.__bcInsights().map(i => ({ title: i.title, text: i.text, action: i.action || '', score: i.score, n: i.n, page: i.page || '', tend: i.tendance ? i.tendance.txt : '', bon: i.tendance ? i.tendance.bon : null, serie: i.serie && i.serie.v ? i.serie.v.length : 0 })));
   const par = t => ins.find(i => i.title === t);
   const bf = par('Bloc le plus fragile');
-  ok(bf && /Projets perso 3 \(14:00\)/.test(bf.text) && /0 fois sur/.test(bf.text) && bf.score === 100, 'bloc fragile = Projets perso 3 à 14:00, jamais tenu, score 100 : ' + (bf && bf.text.slice(0, 80)));
+  ok(bf && /Projets perso 2 \(14:00\)/.test(bf.text) && /0 fois sur/.test(bf.text) && bf.score === 100, 'bloc fragile = Projets perso 2 à 14:00, jamais tenu, score 100 : ' + (bf && bf.text.slice(0, 80)));
   ok(bf && /^stable vs 14 j avant$/.test(bf.tend) && bf.page === 'calendrier', 'bloc fragile : tendance « stable » (0/5 avant, 0/8 maintenant), lien Calendrier : ' + (bf && bf.tend));
   const dv = par('Dérive du premier bloc');
   ok(dv && /en moyenne 15 min/.test(dv.text) && dv.score === 30, 'dérive = 15 min après 07:20, score 30 : ' + (dv && dv.text.slice(0, 70)));

@@ -54,21 +54,21 @@ console.log('\n== 291) Le 4 juin est le dernier jour de cours ; le 5, l\'été t
      'le vendredi 4 juin a encore cours à 15:30 et n\'est dans aucune période');
   ok(v.sans7 === true && v.p7 === 'ete', 'le lundi 7 juin est dans la période « été » et sans cours');
   ok(!v.g7.some(x => /Cours|Trajet cours|Trajet retour/.test(x)), 'plus de cours ni de trajets');
-  ok(v.g7.includes('15:00 Simulation dentaire') && v.g7.includes('16:00 Correction + cartes') && v.g7.includes('17:00 Projets perso 4'),
-     'la journée est celle d\'un jour sans cours : annale complète, correction, projets');
+  ok(v.g7.includes('15:00 Projets perso 4') && v.g7.includes('16:00 Projets perso 5') && v.g7.includes('17:00 Lire') && v.g7.includes('18:00 Réexpliquer'),
+     'la journée est celle d\'un jour sans cours : deux blocs de projet, Lire et Réexpliquer');
   ok(v.g7.includes('07:20 Anki 1') && v.g7.includes('08:20 Anki 2'),
      'Anki ne s\'arrête pas : les cartes arrivent à échéance tous les jours, été compris');
   ok(v.g7.some(x => /05:30 Sport/.test(x)) && v.g7.some(x => /Coran/.test(x)) && v.g7.some(x => /19:00 Dîner/.test(x)) && v.g7.some(x => /21:00 Coucher/.test(x)),
      'et le reste de la journée tient : sport, Coran, repas, coucher à 21:00');
   /* La charge d'un jour d'ete est celle d'un jour libre de l'annee scolaire, ni plus ni
-     moins : 5 h 20 de revision et 4 h 30 de projets. Ce n'est PAS zero -- une grille vide
+     moins : 6 h 15 de revision et 3 h 35 de projets. Ce n'est PAS zero -- une grille vide
      n'apprend rien a quelqu'un qui travaille tous les jours -- et ce n'est pas invente non
      plus : c'est exactement la journee sans cours du 12 octobre ou du 21 janvier. */
-  ok(v.c7.rev === 320 && v.c7.proj === 270 && v.c7.es === 0,
+  ok(v.c7.rev === 375 && v.c7.proj === 215 && v.c7.es === 0,
      'la charge est celle d\'un jour libre : ' + JSON.stringify(v.c7));
-  ok(v.prevu7.rev === 320 && v.prevu7.proj === 270 && v.prevu7.sport === 1,
+  ok(v.prevu7.rev === 375 && v.prevu7.proj === 215 && v.prevu7.sport === 1,
      'et elle est bien PRÉVUE, donc comptée dans les objectifs du quatrième trimestre');
-  ok(v.prevu4.rev > 0 && v.cJuin.rev === 265, 'le 1er et le 4 juin restent des jours de cours (' + v.cJuin.rev + ' min de révision)');
+  ok(v.prevu4.rev > 0 && v.cJuin.rev === 305, 'le 1er et le 4 juin restent des jours de cours (' + v.cJuin.rev + ' min de révision)');
   await ctx.close();
 }
 {
@@ -125,7 +125,7 @@ console.log('\n== 292) L\'agenda Google : ni 🦇 Cours, ni 🦇 Temps libre =='
   /* Un jour d'ete ORDINAIRE, lui, pousse la journee entiere : c'est un jour de travail. */
   const { ctx, fr } = await ouvrir('2027-07-01T09:00:00+02:00');
   const r = await fr.evaluate(() => window.__bcRappels('2027-07-01').map(b => b.titre));
-  ok(r.includes('🦇 Anki 1') && r.includes('🦇 Simulation dentaire') && r.length >= 20,
+  ok(r.includes('🦇 Anki 1') && r.includes('🦇 Réexpliquer') && r.length >= 18,
      'un jour d\'été ordinaire rappelle la journée entière : ' + r.length + ' rappels');
   ok(!r.includes('🦇 Cours'), 'et toujours pas de bloc Cours — il n\'y en a plus');
   await ctx.close();
@@ -186,7 +186,7 @@ console.log('\n== 294) Le panneau « Jours sans cours » : la saisie fait foi ==
     st: JSON.parse(localStorage.getItem('batcave-jours-sans-cours')),
     note: document.getElementById('sans-cours-note').textContent
   }));
-  ok(ap.sans === true && ap.g.includes('15:00 Simulation dentaire') && ap.g.includes('21:00 Coucher'),
+  ok(ap.sans === true && ap.g.includes('15:00 Español · hablar') && ap.g.includes('21:00 Coucher'),
      'le 22 septembre devient un jour sans cours, grille comprise');
   ok(ap.st.ajoutes.length === 1 && ap.st.ajoutes[0] === '2026-09-22' && !ap.st.retires.length,
      'on ne garde que l\'écart à la liste de départ : ' + JSON.stringify(ap.st));

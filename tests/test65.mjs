@@ -61,7 +61,7 @@ console.log('\n== 241) Pomodoro révision : sur Anki, « Sans préciser » propo
   await c.fr.evaluate(() => document.getElementById('dash-pomodoro').click());
   await c.page.waitForTimeout(150);
   const b = await c.fr.evaluate(() => ({ valeur: document.getElementById('ask-select').value, msg: document.getElementById('ask-msg').textContent }));
-  ok(b.valeur !== 'Sans préciser' && /Préparer un tema/.test(b.msg) && /LA matière/.test(b.msg), 'bloc Cartes : une matière proposée (' + b.valeur + '), message « choisis LA matière »');
+  ok(b.valeur !== 'Sans préciser' && /Étudier en avance/.test(b.msg) && /LA matière/.test(b.msg), 'bloc Cartes : une matière proposée (' + b.valeur + '), message « choisis LA matière »');
   await c.fr.evaluate(() => document.getElementById('ask-cancel').click());
   await c.ctx.close();
 }

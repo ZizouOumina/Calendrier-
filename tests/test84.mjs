@@ -59,7 +59,7 @@ console.log('\n== 84.4) Les heures liberees entrent dans le pool, pas en dur =='
     const lab = (c, iso, h) => (window.__bcGrille(c, iso).find(b => b[0] === h) || [])[1] || null;
     return {
       es1_lun15: lab('monday',  '2026-09-21', '15:00'),
-      es1_mar19: lab('tuesday', '2026-09-22', '19:00'),
+      es1_mar19: lab('tuesday', '2026-09-22', '20:30'),
       es1_mar20: lab('tuesday', '2026-09-22', '20:30'),
       es1_lun14: lab('monday',  '2026-09-21', '14:00'),
       es2_mar20: lab('tuesday', '2026-10-20', '20:30'),
@@ -70,7 +70,7 @@ console.log('\n== 84.4) Les heures liberees entrent dans le pool, pas en dur =='
   });
   ok(/^Español/.test(r.es1_lun15), 'phase 1 : lundi 15:00 est de l\'espagnol (' + r.es1_lun15 + ')');
   ok(r.es1_lun14 !== r.es1_lun15, 'lundi 14:00 et 15:00 ne sont pas le meme bloc deux fois (' + r.es1_lun14 + ' / ' + r.es1_lun15 + ')');
-  ok(/^Español/.test(r.es1_mar19), 'phase 1 : mardi 19:00 est de l\'espagnol (' + r.es1_mar19 + ')');
+  ok(/^Español/.test(r.es1_mar19), 'phase 1 : mardi 20:30 est de l\'espagnol (' + r.es1_mar19 + ')');
   ok(r.es1_mar20 === 'Español · serie en VO', 'phase 1 : mardi 20:30 est la serie en VO (' + r.es1_mar20 + ')');
   ok(r.type_mar20 === 'projet', 'et elle est COMPTEE comme du travail, pas ignoree (' + r.type_mar20 + ')');
   ok(r.es2_mar20 === 'Projets perso 6', 'phase 2 : mardi 20:30 est la PREMIERE heure qui revient aux projets (' + r.es2_mar20 + ')');
@@ -80,18 +80,18 @@ console.log('\n== 84.4) Les heures liberees entrent dans le pool, pas en dur =='
      trois phases couvrant le semestre entier. Il ne redevient « Projets perso » que par une
      porte franchie et convertie : c'est test86 qui le verifie. Ce qu'on verifie ici, c'est
      que le semestre reprend bien ses deux heures au lieu de les laisser en dur. */
-  ok(r.s2_lun15 === 'Trajet cours' && r.s2_lun14 === 'Projets perso 3',
+  ok(r.s2_lun15 === 'Trajet cours' && r.s2_lun14 === 'Projets perso 2',
      'semestre 2 : le lundi reprend ses deux heures, 15:00 est le trajet et 14:00 le dernier bloc de projet (' + r.s2_lun15 + ' / ' + r.s2_lun14 + ')');
 }
 
-console.log('\n== 84.5) Le mardi, comprendre le cours remonte a 18:00 ==');
+console.log('\n== 84.5) Le mardi, clore le cours remonte a 18:00 ==');
 {
   const m = await fr.evaluate(() => {
     const p = window.__bcGrille('tuesday', '2026-09-22');
-    const i = p.findIndex(b => /^Comprendre/.test(b[1]));
-    return { h: i < 0 ? null : p[i][0], n: p.filter(b => /^Comprendre/.test(b[1])).length };
+    const i = p.findIndex(b => /^Clore/.test(b[1]));
+    return { h: i < 0 ? null : p[i][0], n: p.filter(b => /^Clore/.test(b[1])).length };
   });
-  ok(m.h === '18:00', 'mardi, comprendre le cours a 18:00 (' + m.h + ')');
+  ok(m.h === '18:00', 'mardi, clore le cours a 18:00 (' + m.h + ')');
   ok(m.n === 1, 'une seule fois dans la journee, pas deux (' + m.n + ')');
 }
 
@@ -107,13 +107,13 @@ console.log('\n== 84.6) Cibles hebdo : constantes en revision, croissantes en pr
   const pr = x => Math.round(x * 100) / 100;
   ok(pr(t.rev) === pr(e1.rev) && pr(e1.rev) === pr(e2.rev) && pr(e2.rev) === pr(e3.rev),
      'la revision ne bouge pas d\'une phase a l\'autre : ' + pr(e1.rev) + ' h');
-  ok(pr(e1.rev) === 29.92, 'revision = 29 h 55 de travail reel par semaine (' + pr(e1.rev) + ')');
+  ok(pr(e1.rev) === 34, 'revision = 34 h de travail reel par semaine (' + pr(e1.rev) + ')');
   ok(pr(e1.proj) === 0, 'phase 1 : aucun temps de projet, tout va a l\'espagnol (' + pr(e1.proj) + ')');
-  ok(e1.es > 21.5 && e1.es < 22, 'phase 1 : 21 h 35 d\'espagnol, serie du mardi comprise (' + pr(e1.es) + ')');
-  ok(e1.proj < e2.proj && e2.proj < e3.proj && e3.proj < t.proj,
-     'les projets montent a chaque phase : ' + [pr(e1.proj), pr(e2.proj), pr(e3.proj), pr(t.proj)].join(' -> '));
-  ok(e1.es > e2.es && e2.es > e3.es, 'l\'espagnol descend a chaque phase : ' + [pr(e1.es), pr(e2.es), pr(e3.es)].join(' -> '));
-  ok(pr(t.proj) === 22.52, 'grille type : 22 h 31 de projets par semaine (' + pr(t.proj) + ')');
+  ok(e1.es > 15 && e1.es < 15.5, 'phase 1 : 15 h 11 d\'espagnol, serie du mardi comprise (' + pr(e1.es) + ')');
+  ok(e1.proj === 0 && e2.proj === e3.proj && e3.proj === t.proj,
+     'une seule bascule : zero en phase 1, puis la meme valeur partout : ' + [pr(e1.proj), pr(e2.proj), pr(e3.proj), pr(t.proj)].join(' -> '));
+  ok(e1.es > 0 && e2.es === 0 && e3.es === 0, 'l\'espagnol tombe a zero le 19 octobre : ' + [pr(e1.es), pr(e2.es), pr(e3.es)].join(' -> '));
+  ok(pr(t.proj) === 15.18, 'grille type : 15 h 11 de projets par semaine (' + pr(t.proj) + ')');
 }
 
 await browser.close();

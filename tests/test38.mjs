@@ -122,18 +122,18 @@ console.log('\n== 80) La journée du samedi réserve 2 h de courses ==');
     const fin = i < creneaux.length-1 ? creneaux[i+1].debut : min('22:00');
     return acc + (fin - c.debut);
   }, 0);
-  const rev = duree(/Anki|Cartes|Préparer un tema|Question ouverte/), proj = duree(/Projets perso/);
+  const rev = duree(/Anki|Cartes|Approfondir|Étudier en avance|Question ouverte/), proj = duree(/Projets perso/);
   ok(rev === 300, 'révision samedi = 5 h pile : ' + rev + ' min');
-  ok(proj === 180, 'projets perso = 3 h pile : ' + proj + ' min');
+  ok(proj === 120, 'projets perso = 2 h pile (11:20 et 17:00 ; 18:00 est du temps libre) : ' + proj + ' min');
   /* contrainte Pomodoro : chaque bloc de travail doit être un multiple d'une heure */
-  const blocs = creneaux.filter(c => /Anki|Cartes|Préparer un tema|Question ouverte|Projets perso/.test(c.texte)).map((c) => {
+  const blocs = creneaux.filter(c => /Anki|Cartes|Approfondir|Étudier en avance|Question ouverte|Projets perso/.test(c.texte)).map((c) => {
     const i = creneaux.indexOf(c);
     const fin = i < creneaux.length-1 ? creneaux[i+1].debut : min('22:00');
     return { texte: c.texte.trim(), duree: fin - c.debut };
   });
   ok(blocs.every(b => b.duree % 60 === 0),
      'chaque bloc tombe sur l\'heure pleine : ' + blocs.map(b => b.duree/60 + 'h').join(' + '));
-  ok(Math.abs(rev/proj - 5/3) < 0.01, 'ratio révision/projets = 5:3 : ' + (rev/proj).toFixed(3));
+  ok(Math.abs(rev/proj - 5/2) < 0.01, 'ratio révision/projets = 5:2 : ' + (rev/proj).toFixed(3));
   ok(duree(/Courses de la semaine|Rangement des courses/) === 150, 'courses + rangement = 2 h 30');
 
   const objectif = await fr.evaluate(() => document.getElementById('cal-revision-sub').textContent);

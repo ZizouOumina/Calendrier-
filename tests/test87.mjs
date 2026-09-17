@@ -64,7 +64,7 @@ console.log('\n== 285) Le semestre 2 : 24 h de cours, mardi et mercredi jusqu\'a
   const gm = await jour(fr, '2027-02-02');
   ok(gm.includes('15:30 Cours') && gm.includes('21:30 Trajet retour') && gm.includes('22:00 Dîner') && gm.includes('22:40 Coucher'),
      'mardi : cours 15:30 → 21:30, dîner 22:00, coucher 22:40');
-  ok(!gm.some(x => /Comprendre le cours du jour/.test(x)),
+  ok(!gm.some(x => /Clore le cours du jour/.test(x)),
      'mardi : aucun bloc de travail le soir — il n\'y a plus de soir');
   const gme = await jour(fr, '2027-02-03');
   ok(gme[0] === '06:30 Douche + préparation' && gme.includes('21:30 Trajet retour'),
@@ -75,12 +75,12 @@ console.log('\n== 285) Le semestre 2 : 24 h de cours, mardi et mercredi jusqu\'a
   ok(me.lever === '06:30' && ma.lever === '05:30', 'le lever suit la date aussi : 06:30 le mercredi, 05:30 le mardi');
   ok(ma.sommeil === 7.58 && me.sommeil === 7.83 && je.sommeil === 6.83,
      'la cible de sommeil est celle que l\'emploi du temps permet, pas 8 h : ' + [ma, me, je].map(x => x.sommeil).join(' / ') + ' h');
-  ok(ma.cible.rev === 210 && lu.cible.rev === 265,
-     'mardi perd le bloc « Comprendre » : 210 min de révision contre 265 le lundi');
+  ok(ma.cible.rev === 265 && lu.cible.rev === 305,
+     'mardi perd le bloc « Question ouverte ou autre » du soir : 265 min de révision contre 305 le lundi (' + ma.cible.rev + ' / ' + lu.cible.rev + ')');
   await ctx.close();
 }
 
-console.log('\n== 286) Le chevauchement : la phase 3 tient pendant le semestre 2 ==');
+console.log('\n== 286) Le semestre 2 tourne sans phase Español : tout est en projets ==');
 {
   const { ctx, fr } = await ouvrir('2027-02-02T09:00:00+01:00');
   const v = await fr.evaluate(() => ({
@@ -90,9 +90,9 @@ console.log('\n== 286) Le chevauchement : la phase 3 tient pendant le semestre 2
     es: (window.__bcGrille('tuesday', '2027-02-02').find(b => b[0] === '13:00') || [])[1],
     apres: (window.__bcGrille('tuesday', '2027-03-16').find(b => b[0] === '13:00') || [])[1]
   }));
-  ok(v.p25 === 'es-3' && v.p314 === 'es-3', 'du 25 janvier au 14 mars, la phase 3 s\'applique malgré le semestre 2 (' + v.p25 + ' / ' + v.p314 + ')');
-  ok(v.es === 'Español', 'le bloc de 13:00 est bien Español un mardi du semestre 2');
-  ok(v.p315 === null && v.apres === 'Projets perso 2', 'le 15 mars la phase s\'arrête et le bloc revient aux projets');
+  ok(v.p25 === null && v.p314 === null, 'du 25 janvier au 14 mars, plus aucune phase Español (' + v.p25 + ' / ' + v.p314 + ')');
+  ok(v.es === 'Projets perso 1', 'le bloc de 13:00 est un bloc de projets un mardi du semestre 2 (' + v.es + ')');
+  ok(v.p315 === null && v.apres === 'Projets perso 1', 'le 15 mars ne change rien : le bloc est déjà aux projets');
   await ctx.close();
 }
 
@@ -102,8 +102,8 @@ console.log('\n== 287) Un jour sans cours : la plage se libère, sans jamais dou
   const i = await infos(fr, '2026-10-12'), g = await jour(fr, '2026-10-12');
   ok(i.sans === true && i.per === 'es-1', 'le lundi 12 octobre (Fiesta Nacional) est sans cours, et toujours en phase 1');
   ok(!g.some(x => /Cours|Trajet cours|Trajet retour/.test(x)), 'plus de cours, plus de trajets : ' + g.slice(13, 16).join(' | '));
-  ok(g.includes('16:50 Collation entraînement') && g.includes('17:00 Simulation dentaire') && g.includes('18:00 Correction + cartes'),
-     'la plage devient une annale complète puis sa correction');
+  ok(g.includes('16:50 Collation entraînement') && g.includes('17:00 Español · tutor') && g.includes('18:00 Lire'),
+     'la plage devient un bloc de projet (espagnol en phase 1) puis « Lire »');
   ok(g.includes('19:00 Dîner') && g.includes('21:00 Coucher'), 'le soir est celui du week-end : dîner 19:00, coucher 21:00');
   const pp4 = g.filter(x => /Español · hablar/.test(x));
   ok(pp4.length === 1 && pp4[0] === '15:00 Español · hablar',
@@ -112,15 +112,15 @@ console.log('\n== 287) Un jour sans cours : la plage se libère, sans jamais dou
 
   /* le jeudi 1er avril 2027 : sans cours, hors phase Español -- les blocs de projet restent des projets */
   const a = await jour(fr, '2027-04-01');
-  ok(a.includes('15:00 Simulation dentaire') && a.includes('17:00 Projets perso 4') && a.includes('18:00 Projets perso 5'),
-     'hors phase, la plage libérée porte les blocs de projet : ' + a.slice(14, 18).join(' | '));
+  ok(a.includes('15:00 Projets perso 4') && a.includes('16:00 Projets perso 5') && a.includes('17:00 Lire') && a.includes('18:00 Réexpliquer'),
+     'hors phase, la plage libérée porte deux blocs de projet, Lire et Réexpliquer : ' + a.slice(-9, -5).join(' | '));
   const doublons = a.filter((x, k) => a.some((y, l) => l !== k && y.slice(6) === x.slice(6) && x.slice(6) !== 'Temps libre'));
   ok(doublons.length === 0, 'aucun libellé en double dans la journée' + (doublons.length ? ' : ' + doublons.join(' / ') : ''));
 
-  /* le vendredi 26 mars 2027 (Semana Santa) : la Jumu'ah est intacte, PP2 du matin non redouble */
+  /* le vendredi 26 mars 2027 (Semana Santa) : la Jumu'ah est intacte, PP1 du matin non redouble */
   const f = await jour(fr, '2027-03-26');
-  ok(f.some(x => /Jumu'ah/.test(x)) && f.includes('11:20 Projets perso 2') && f.includes('17:00 Projets perso 4'),
-     'le vendredi garde sa Jumu\'ah, et Projets perso 2 du matin n\'est pas redoublé l\'après-midi');
+  ok(f.some(x => /Jumu'ah/.test(x)) && f.includes('11:20 Projets perso 1') && f.includes('15:00 Projets perso 4') && f.filter(x => /Projets perso 1$/.test(x)).length === 1,
+     'le vendredi garde sa Jumu\'ah, et Projets perso 1 du matin n\'est pas redoublé l\'après-midi');
   await ctx.close();
 }
 
@@ -136,7 +136,7 @@ console.log('\n== 288) L\'entre-deux des semestres se déduit des dates, il n\'e
   ok(v.j19 === false && v.j20 === true && v.j22 === true && v.j25 === false,
      'le 19 il y a cours, du 20 au 22 non, le 25 le semestre 2 démarre (' + [v.j19, v.j20, v.j22, v.j25].join('/') + ')');
   ok(!v.liste.ajoutes.length && !v.liste.retires.length, 'et rien n\'a été saisi pour cela : c\'est déduit des dates de semestre');
-  ok(v.g.includes('15:00 Simulation dentaire') && v.g.includes('21:00 Coucher'), 'le jeudi 21 janvier a bien l\'agenda d\'un jour sans cours');
+  ok(v.g.includes('15:00 Projets perso 4') && v.g.includes('18:00 Réexpliquer') && v.g.includes('21:00 Coucher'), 'le jeudi 21 janvier a bien l\'agenda d\'un jour sans cours');
   await ctx.close();
 }
 
@@ -155,8 +155,8 @@ console.log('\n== 289) Le mode partiels passe devant, même un jour sans cours =
   ok(es.length === 1, 'un seul bloc Español dans la journée, comme le veut le mode partiels (' + es.join(' / ') + ')');
   /* le 28 decembre est un LUNDI du semestre 1 : la collation est a 16:50, donc l'annale
      complete tombe a 17:00 et non a 15:00 comme les autres jours. */
-  ok(v.g.includes('17:00 Simulation dentaire') && v.g.filter(x => /Révision ciblée/.test(x)).length === 3,
-     'la plage libérée est de la révision ciblée, pas du dropshipping : ' + v.g.filter(x => /Révision ciblée/.test(x)).length + ' blocs, annale à 17:00');
+  ok(v.g.includes('17:00 Révision ciblée') && v.g.filter(x => /Révision ciblée/.test(x)).length === 4,
+     'la plage libérée est de la révision ciblée, pas du dropshipping : ' + v.g.filter(x => /Révision ciblée/.test(x)).length + ' blocs, révision ciblée à 17:00');
   ok(v.c.proj === 0, 'aucune minute de projet prévue la semaine d\'un examen (' + v.c.proj + ')');
   await ctx.close();
 }

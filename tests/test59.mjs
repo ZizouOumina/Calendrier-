@@ -33,10 +33,10 @@ console.log('\n== 190) Un Pomodoro de révision se voit sur six pages ==');
   ok(/Anatomía I[\s\S]*?25 min/.test(await txt('#rev-matieres-7')), 'Études : par matière, Anatomía I 25 min');
   await aller('dashboard');
   ok(/Révision[\s\S]*?25 min/.test(await txt('#dash-temps')), 'Tableau de bord : temps du jour 25 min');
-  /* « 4 h 25 » porte deja son unite : pas de « h » en trop derriere (ce test figeait le bug). */
-  ok(/révision 25 min \/ 4 h 25(?! h)/.test(await txt('#leg-rev')), 'Réacteur : légende révision 25 min / 4 h 25, sans unité en double (' + await txt('#leg-rev') + ')');
+  /* « 5 h 50 » porte deja son unite : pas de « h » en trop derriere (ce test figeait le bug). */
+  ok(/révision 25 min \/ 5 h 50(?! h)/.test(await txt('#leg-rev')), 'Réacteur : légende révision 25 min / 5 h 50, sans unité en double (' + await txt('#leg-rev') + ')');
   await aller('calendrier');
-  ok(/25 min sur 4 h 25 visées/.test(await txt('#cal-revision-sub')), 'Calendrier : 25 min sur 4 h 25 visées');
+  ok(/25 min sur 5 h 50 visées/.test(await txt('#cal-revision-sub')), 'Calendrier : 25 min sur 5 h 50 visées');
   await aller('agenda');
   ok(/25 min · 1 bloc/.test(await txt('#ag-jtotal')), 'Agenda Batcave : 25 min · 1 bloc (' + await txt('#ag-jtotal') + ')');
   await aller('bilan');

@@ -52,12 +52,12 @@ console.log('\n== 2) L\'espagnol manqué est une dette d\'espagnol, pas de proje
 }
 {
   /* 2 h reportées en espagnol reviennent bien dans la cible d'espagnol du lendemain.
-     Le mardi 15 prévoit 4 h 30 d'espagnol : avec 2 h de report on attend 6 h 30. */
+     Le mardi 15 prévoit 2 h 40 d'espagnol : avec 2 h de report on attend 4 h 40. */
   const {ctx, fr} = await ouvrir({'batcave-report':{date:'2026-09-15', rev:0, proj:0, es:120}}, '2026-09-15T06:00:00+02:00');
   const t = await temps(fr);
   /* dans le panneau Suivi, la cible passe sous la valeur (.mon-suivi .tv small{display:block}) :
      innerText y met un retour a la ligne, que temps() rend par « | ». Le motif l'admet. */
-  ok(/Español \| 0 (\| )?\/ 6 h 30/.test(t), 'mardi 15 : 4 h 30 au programme + 2 h reportées = 6 h 30 de cible d\'espagnol' + (/Español \| 0 (\| )?\/ 6 h 30/.test(t) ? '' : ' — obtenu : ' + t));
+  ok(/Español \| 0 (\| )?\/ 4 h 40/.test(t), 'mardi 15 : 2 h 40 au programme + 2 h reportées = 4 h 40 de cible d\'espagnol' + (/Español \| 0 (\| )?\/ 4 h 40/.test(t) ? '' : ' — obtenu : ' + t));
   await ctx.close();
 }
 
@@ -108,7 +108,7 @@ console.log('\n== 5) Les durées s\'écrivent en heures et minutes, jamais en di
     duree:55, type:'cours', label:'Anatomie'}]}, '2026-09-14T21:00:00+02:00');
   const t = await plan(fr), c = await temps(fr), l = await legend(fr);
   const ligne = t.split('\n').filter(x=>/Révision —/.test(x))[0] || '';
-  ok(/Révision — 55 min sur 4 h 25 — il reste 3 h 30/.test(ligne), 'plan : ' + ligne.trim());
+  ok(/Révision — 55 min sur 5 h 05 — il reste 4 h 10/.test(ligne), 'plan : ' + ligne.trim());
   ok(!/\d,\dh|\d,\d h/.test(t + c + l), 'plus une seule durée en dixièmes d\'heure sur le tableau de bord');
   ok(/55 min/.test(c), 'cellule : ' + (c.match(/Révision[^|]*\|[^|]*/)||[''])[0].trim());
   await ctx.close();

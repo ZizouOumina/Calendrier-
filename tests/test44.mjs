@@ -32,10 +32,10 @@ console.log('\n== 105) Charge restante : cible hebdo moins le fait depuis lundi 
   ]};
   const { ctx, fr } = await ouvrir('2026-09-02T10:00:00+02:00', seed);   /* mercredi */
   const t = await texte(fr, '#dash-semaine');
-  ok(/21 h 54 de révision restantes sur 29 h 54/.test(t), '29 h 54 − 8 h = 21 h 54 de révision (' + t.slice(0,70) + '…)');
-  ok(/18 h 30 de projets sur 22 h 30/.test(t), '22 h 30 − 4 h = 18 h 30 de projets');
+  ok(/26 h de révision restantes sur 34 h/.test(t), '34 h − 8 h = 26 h de révision (' + t.slice(0,70) + '…)');
+  ok(/11 h 12 de projets sur 15 h 12/.test(t), '15 h 12 − 4 h = 11 h 12 de projets');
   ok(/5 jours/.test(t), 'mercredi → dimanche : 5 jours');
-  ok(/~8 h \d\d\/jour/.test(t), '(21 h 54 + 18 h 30) / 5 jours : ' + (t.match(/~[^)]*/)||[])[0]);
+  ok(/~7 h \d\d\/jour/.test(t), '(26 h + 11 h 12) / 5 jours : ' + (t.match(/~[^)]*/)||[])[0]);
   await ctx.close();
 }
 
@@ -47,16 +47,16 @@ console.log('\n== 106) Dimanche : 1 jour restant ; semaine bouclée : message de
 }
 {
   const s = [];
-  /* 240 min/jour et non 200 : la cible de projets est passee a 22 h 30 avec les trois blocs
-     nes de l'emploi du temps reel, et 6 x 200 min = 20 h ne la couvrait plus. */
-  ['2026-08-31','2026-09-01','2026-09-02','2026-09-03','2026-09-04','2026-09-05'].forEach(d => { s.push(bloc(d,'cours',330,'07')); s.push(bloc(d,'projet',240,'12')); });
+  /* 360 min/jour de revision : la cible hebdo est passee a 34 h avec le bloc « Étudier en
+     avance » de deux heures, et 6 x 330 min = 33 h ne la couvrait plus. */
+  ['2026-08-31','2026-09-01','2026-09-02','2026-09-03','2026-09-04','2026-09-05'].forEach(d => { s.push(bloc(d,'cours',360,'07')); s.push(bloc(d,'projet',240,'12')); });
   const { ctx, fr } = await ouvrir('2026-09-06T10:00:00+02:00', {'batcave-sessions': s});
   ok(/Objectifs de la semaine atteints/.test(await texte(fr, '#dash-semaine')), 'tout fait : « Objectifs de la semaine atteints »');
   await ctx.close();
 }
 
 console.log('\n== 107) Cibles du jour dérivées du planning (plus de 5/4/5/4 à la main) ==');
-for(const [nom, quand, rev, proj] of [['mercredi','2026-09-02T10:00:00+02:00','5 h 15','2 h 40'],['vendredi','2026-09-04T10:00:00+02:00','3 h 30','2 h 45'],['samedi','2026-09-05T10:00:00+02:00','4 h 25','2 h 45'],['dimanche','2026-09-06T10:00:00+02:00','3 h 30','2 h 45']]){
+for(const [nom, quand, rev, proj] of [['mercredi','2026-09-02T10:00:00+02:00','5 h 55','1 h 45'],['vendredi','2026-09-04T10:00:00+02:00','4 h 10','1 h 50'],['samedi','2026-09-05T10:00:00+02:00','4 h 25','1 h 50'],['dimanche','2026-09-06T10:00:00+02:00','3 h 30','1 h 50']]){
   const { ctx, fr } = await ouvrir(quand);
   const cells = await fr.evaluate(() => [...document.querySelectorAll('#dash-temps .temps-cell .tv')].map(e => e.innerText.replace(/\s+/g,' ')));
   ok((cells[0] || '').indexOf('/ ' + rev) > -1, nom + ' : révision / ' + rev + ' (' + cells[0] + ')');
