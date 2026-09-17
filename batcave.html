@@ -11813,11 +11813,12 @@
     10. Le bloc « Clore le cours du jour » se fait sur papier : slides imprimées ou
         cahier, questions écrites à la main. C'est meilleur pour l'auto-explication, et c'est
         ce qui rend possible l'habitude « Téléphone hors de la chambre » un soir de semaine.
-    11. Les matins off de sport (mercredi, vendredi, dimanche) gardent le créneau 05:30 → 06:30
-        comme bloc de travail : Anki le mercredi (la file de cartes est au plus haut en milieu
-        de semaine, et le rappel se fait bien dix minutes après le réveil), projets perso le
-        vendredi ; le dimanche, le lever est à 06:30, une nuit pleine. Le bloc projets du
-        réveil est de l'exécution, jamais une décision de design. */
+    11. Les matins off de sport (mercredi, vendredi, dimanche) : le mercredi et le vendredi
+        gardent le créneau 05:30 → 06:30 comme bloc de PROJET ; le dimanche, le lever est à
+        06:30, une nuit pleine. Pendant la phase Español, le mercredi reste « Anki matinal »
+        (la file de cartes est au plus haut en milieu de semaine, et le rappel se fait bien
+        dix minutes après le réveil) : il passe aux projets le 19 octobre, avec les autres.
+        Le bloc projets du réveil est de l'exécution, jamais une décision de design. */
   var SCHEDULES = {
     /* ===== La journee de cours, version du 18 septembre 2026 =====
        Le matin est le meme tous les jours de cours : Anki 07:20 → 09:20, puis UN SEUL bloc
@@ -11876,9 +11877,12 @@
       ['20:00','Dîner'],['20:30','Projets perso 6'],
       ['21:30','Collation soir'],['21:45','Douche + brossage de dents'],['21:55','Coucher']
     ],
-    /* Mercredi : jour off de sport, le créneau de 05:30 est un bloc Anki (voir règle 11). */
+    /* Mercredi : jour off de sport. Le creneau de 05:30 est un bloc de PROJET depuis le
+       18 septembre (demande du 18 : « les matins de mercredi aussi »). Il reste « Anki
+       matinal » pendant la phase Español, jusqu'au 18 octobre : tant que les projets n'ont
+       pas commence, cette heure sert la file de cartes du milieu de semaine. */
     wednesday: [
-      ['05:30','Anki matinal'],['06:30','Douche + préparation'],['06:45','Petit-déjeuner + Coran (1 page)'],
+      ['05:30','Projets perso matinal'],['06:30','Douche + préparation'],['06:45','Petit-déjeuner + Coran (1 page)'],
       ['07:20','Anki 1'],['08:20','Anki 2'],
       ['09:20','Étudier en avance'],['11:20','Question ouverte ou autre'],
       ['12:20','Déjeuner'],['12:40','😴 Micro-sieste'],
@@ -12104,8 +12108,8 @@
      l'agenda Google (titres « 🦇 Bloc · consigne courte »). */
   var CONSIGNES = {
     'Sport': "1 km en courant jusqu'au parc, allure conversation : c'est l'échauffement. Séance du jour dans l'onglet Sport, surcharge progressive : les charges à faire sont déjà calculées. La fin de séance, dans l'ordre : les abdos lestés, le cou (flexion et extension lundi et jeudi, latéral mardi), puis l'avant-bras (curl inversé lundi, curl des poignets samedi). Ces trois-là ne demandent qu'un poids en main — si le créneau déborde, ils se font à la maison le soir, jamais on ne les saute. Retour en marchant, en trottinant le mardi.",
-    'Anki matinal': "Jour off de sport : une heure de cartes de dentaire, deux Pomodoros 25 + 5. Toutes les échéances, puis les cartes des matières faibles.",
-    'Projets perso matinal': "Exécution pure d'une tâche déjà décidée la veille : montage, import, rédaction, fiches, code. Jamais une décision.",
+    'Anki matinal': "Jour off de sport, jusqu'au 18 octobre : une heure de cartes de dentaire, deux Pomodoros 25 + 5. Toutes les échéances, puis les cartes des matières faibles. Le 19 octobre, ce créneau passe aux projets comme les autres — la file se vide alors dans Anki 1 et Anki 2.",
+    'Projets perso matinal': "05:30, mercredi et vendredi : exécution pure d'une tâche déjà décidée la veille — montage, import, rédaction, fiches, code. Jamais une décision : à cette heure-là on exécute, on n'arbitre pas. Ce que tu feras s'écrit la veille au soir, à la clôture.",
     'Anki 1': "Toutes les échéances de dentaire, deux Pomodoros 25 + 5 sans téléphone. File vide avant la fin : cartes du cours suivant à partir des notes.",
     'Anki 2': "Suite des échéances de dentaire. Les 5 dernières minutes : échéances du paquet Business (glossaire dropshipping).",
     'Étudier en avance': {defaut: "Deux heures, un tema que le prof n'a pas encore donné (la matière la plus loin de ses 3 d'avance). Lire les diapos en espagnol, une phrase à toi par point, « ? » dans la marge, 15-25 cartes Dentaire importées (40 en Anatomía). Puis, dans le projet Claude Dentaire : « estudia · matière Tn · tes ? » — la réponse en sept parties, la chaîne du mécanisme si le tema est dans la liste des dix, tes dix lignes en espagnol dans Notion, les cartes de la réponse importées. Pomodoro nommé « Étudier · matière Tn ». Une base qui manque (« base · notion ») passe devant tout le reste."},
@@ -12213,7 +12217,7 @@
        'Projets perso 4': {defaut:'Español · hablar'},
        'Projets perso 5': {defaut:'Español · tutor'},
        'Projets perso 6': {defaut:'Español · serie en VO'},
-       'Projets perso matinal': {friday:'Español · escribir largo'}
+       'Projets perso matinal': {friday:'Español · escribir largo', wednesday:'Anki matinal'}
      }, consignes: CONSIGNES_PERIODE_ES},
     /* ===== L'ete 2027 =====
        Le dernier cours est le vendredi 4 juin. A partir du 5, sansCoursLe libere deja la
