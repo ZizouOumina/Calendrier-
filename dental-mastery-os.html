@@ -102,12 +102,120 @@
     table{min-width:560px;}
   }
   @media (prefers-reduced-motion: reduce){ *{transition:none !important;} }
+  /* Anki pour le dentaire, page fusionnée le 17 septembre : styles isolés sous .emb-anki */
+  .emb-anki{--bg:#f2f4f5; --paper:#ffffff; --paper-2:#e7ebee; --line:#d0d8dd; --line-soft:#e3e8ec;
+    --ink:#141c23; --ink-2:#465662; --ink-3:#76868f;
+    --accent:#0f6f7d; --accent-ink:#0a5765; --accent-soft:#d6ecef;
+    --good:#2c7a4f; --good-soft:#d9eee0;
+    --bad:#a63a2e; --bad-soft:#f5dcd8;
+    --warn:#a85a12; --warn-soft:#f6e6d4;
+    --display:'Bebas Neue','Arial Narrow',Impact,sans-serif;
+    --body:'Barlow','Helvetica Neue',Arial,sans-serif;
+    --mono:'IBM Plex Mono','SFMono-Regular',Menlo,monospace;}
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]) .emb-anki{--bg:#0b1116; --paper:#111a21; --paper-2:#182229; --line:#25333c; --line-soft:#1c2830;
+      --ink:#e3ecf1; --ink-2:#a5b5be; --ink-3:#71828c;
+      --accent:#3fbccd; --accent-ink:#7fd8e4; --accent-soft:#10313a;
+      --good:#5fc48a; --good-soft:#14311f;
+      --bad:#e2776b; --bad-soft:#391c18;
+      --warn:#e9995a; --warn-soft:#382513;}
+  }
+  :root[data-theme="dark"] .emb-anki{--bg:#0b1116; --paper:#111a21; --paper-2:#182229; --line:#25333c; --line-soft:#1c2830;
+    --ink:#e3ecf1; --ink-2:#a5b5be; --ink-3:#71828c;
+    --accent:#3fbccd; --accent-ink:#7fd8e4; --accent-soft:#10313a;
+    --good:#5fc48a; --good-soft:#14311f;
+    --bad:#e2776b; --bad-soft:#391c18;
+    --warn:#e9995a; --warn-soft:#382513;}
+  .emb-anki *{box-sizing:border-box;}
+  .emb-anki{margin:0; background:var(--bg); color:var(--ink); font-family:var(--body); font-size:15.5px; line-height:1.55; -webkit-font-smoothing:antialiased;}
+  .emb-anki h1, .emb-anki h2, .emb-anki h3, .emb-anki h4{font-family:var(--display); font-weight:400; letter-spacing:.03em; margin:0; text-wrap:balance;}
+  .emb-anki p{margin:0;}
+  .emb-anki code{font-family:var(--mono); font-size:12.8px; background:var(--paper-2); padding:1px 5px;}
+  .emb-anki .anki-wrap{max-width:880px; margin:0 auto; padding:40px 26px 90px;}
+  @media (max-width:640px){
+    .emb-anki .anki-wrap{padding:22px 15px 70px;}
+  }
+  .emb-anki .anki-masthead{border-bottom:2px solid var(--ink); padding-bottom:16px; margin-bottom:26px;}
+  .emb-anki .anki-masthead .anki-kicker{font-family:var(--mono); font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:var(--accent); margin-bottom:8px;}
+  .emb-anki .anki-masthead h1{font-size:56px; line-height:.92;}
+  @media (max-width:640px){
+    .emb-anki .anki-masthead h1{font-size:40px;}
+  }
+  .emb-anki .anki-masthead .anki-sub{color:var(--ink-2); margin-top:12px; max-width:64ch; font-size:16px;}
+  .emb-anki .anki-regle{background:var(--paper); border:2px solid var(--accent); padding:20px 24px; margin:0 0 30px;}
+  .emb-anki .anki-regle .anki-l{font-family:var(--mono); font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--accent); margin-bottom:8px;}
+  .emb-anki .anki-regle h2{font-size:34px; line-height:1.02; margin-bottom:10px;}
+  .emb-anki .anki-regle p{max-width:66ch; color:var(--ink-2);}
+  .emb-anki .anki-regle p b{color:var(--ink);}
+  .emb-anki section{margin-bottom:40px; scroll-margin-top:14px;}
+  .emb-anki section > h2{font-size:29px; display:flex; align-items:baseline; gap:12px; margin-bottom:6px;}
+  .emb-anki section > h2 .anki-n{font-family:var(--mono); font-size:12px; color:var(--accent); letter-spacing:.12em;}
+  .emb-anki section > .anki-lead{color:var(--ink-2); max-width:70ch; margin-bottom:14px;}
+  .emb-anki section h3{font-size:20px; margin:22px 0 7px;}
+  .emb-anki section p{max-width:72ch; margin-bottom:10px;}
+  .emb-anki section ul{margin:0 0 12px; padding-left:20px; max-width:72ch;}
+  .emb-anki section li{margin-bottom:6px;}
+  .emb-anki .anki-duo{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:12px 0 16px;}
+  @media (max-width:640px){
+    .emb-anki .anki-duo{grid-template-columns:1fr;}
+  }
+  .emb-anki .anki-ex{background:var(--paper); border:1px solid var(--line); border-left:3px solid var(--line); padding:12px 14px;}
+  .emb-anki .anki-ex.anki-bad{border-left-color:var(--bad);}
+  .emb-anki .anki-ex.anki-good{border-left-color:var(--good);}
+  .emb-anki .anki-ex .anki-t{font-family:var(--mono); font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; margin-bottom:6px;}
+  .emb-anki .anki-ex.anki-bad .anki-t{color:var(--bad);}
+  .emb-anki .anki-ex.anki-good .anki-t{color:var(--good);}
+  .emb-anki .anki-ex .anki-c{font-family:var(--mono); font-size:13px; line-height:1.5; color:var(--ink);}
+  .emb-anki .anki-ex .anki-why{font-size:13px; color:var(--ink-2); margin-top:8px;}
+  .emb-anki .anki-cards{display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:12px; margin:12px 0 16px;}
+  .emb-anki .anki-fmt{background:var(--paper); border:1px solid var(--line); padding:14px 16px;}
+  .emb-anki .anki-fmt h4{font-size:19px; margin-bottom:4px;}
+  .emb-anki .anki-fmt .anki-use{font-family:var(--mono); font-size:10.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--accent); margin-bottom:8px;}
+  .emb-anki .anki-fmt p{font-size:13.5px; color:var(--ink-2); margin-bottom:8px;}
+  .emb-anki .anki-fmt .anki-c{font-family:var(--mono); font-size:12.5px; background:var(--paper-2); padding:8px 10px; line-height:1.5; display:block;}
+  .emb-anki .anki-passes{list-style:none; padding:0; margin:10px 0 14px;}
+  .emb-anki .anki-passes li{display:grid; grid-template-columns:96px minmax(0,1fr); gap:14px; padding:11px 0; border-bottom:1px solid var(--line-soft);}
+  .emb-anki .anki-passes li .anki-t{font-family:var(--mono); font-size:12.5px; color:var(--accent-ink);}
+  .emb-anki .anki-passes li b{display:block; margin-bottom:2px;}
+  @media (max-width:560px){
+    .emb-anki .anki-passes li{grid-template-columns:minmax(0,1fr); gap:2px;}
+  }
+  .emb-anki .anki-tbl{overflow-x:auto; margin:10px 0 16px;}
+  .emb-anki table{border-collapse:collapse; width:100%; font-size:14px;}
+  .emb-anki th, .emb-anki td{text-align:left; padding:8px 12px 8px 0; border-bottom:1px solid var(--line-soft); vertical-align:top;}
+  .emb-anki th{font-family:var(--mono); font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-3); font-weight:500;}
+  .emb-anki td.anki-k{font-family:var(--mono); font-size:12.5px; white-space:nowrap; color:var(--accent-ink);}
+  .emb-anki td.anki-pct{font-family:var(--mono); font-variant-numeric:tabular-nums; white-space:nowrap;}
+  @media (max-width:640px){
+    .emb-anki table{min-width:520px;}
+  }
+  .emb-anki .anki-err{background:var(--paper); border:1px solid var(--line); padding:14px 16px; margin:10px 0;}
+  .emb-anki .anki-err h4{font-size:18px; margin-bottom:4px; color:var(--bad);}
+  .emb-anki .anki-err p{font-size:14px; color:var(--ink-2); margin-bottom:6px;}
+  .emb-anki .anki-err .anki-fix{font-size:14px; color:var(--ink);}
+  .emb-anki .anki-err .anki-fix b{font-family:var(--mono); font-size:10.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--good); margin-right:6px; font-weight:500;}
+  .emb-anki .anki-note{background:var(--accent-soft); border-left:3px solid var(--accent); padding:11px 15px; margin:14px 0; font-size:14.5px; color:var(--ink-2); max-width:74ch;}
+  .emb-anki .anki-note b{color:var(--ink);}
+  .emb-anki .anki-avert{background:var(--warn-soft); border-left:3px solid var(--warn); padding:11px 15px; margin:14px 0; font-size:14.5px; color:var(--ink-2); max-width:74ch;}
+  .emb-anki .anki-avert b{color:var(--ink);}
+  .emb-anki .anki-grille{list-style:none; padding:0; margin:10px 0 14px;}
+  .emb-anki .anki-grille li{display:grid; grid-template-columns:88px minmax(0,1fr); gap:14px; padding:9px 0; border-bottom:1px solid var(--line-soft);}
+  .emb-anki .anki-grille li .anki-h{font-family:var(--mono); font-size:12.5px; color:var(--accent-ink); font-variant-numeric:tabular-nums;}
+  @media (max-width:560px){
+    .emb-anki .anki-grille li{grid-template-columns:minmax(0,1fr); gap:2px;}
+  }
+  .emb-anki footer{margin-top:44px; padding-top:14px; border-top:1px solid var(--line); font-family:var(--mono); font-size:11.5px; color:var(--ink-3); line-height:1.7;}
+  @media (prefers-reduced-motion: reduce){
+    .emb-anki *{transition:none !important; animation:none !important;}
+  }
+  .emb-anki .anki-wrap{max-width:none;padding:0;margin:0;display:block;}
+  .emb-anki{padding:0;}
 </style>
 </head>
 <body>
 <div class="wrap">
   <aside class="side">
-    <div class="brand"><span class="t">Dental Mastery OS</span><span class="s">Second cursus · 17 sept. 2026 · v1.2</span></div>
+    <div class="brand"><span class="t">Dental Mastery OS</span><span class="s">Second cursus · 17 sept. 2026 · v1.3</span></div>
     <ul class="toc">
       <li class="part">Avant tout</li>
       <li><a href="#lecture"><b>00</b>Lecture critique de la commande</a></li>
@@ -126,6 +234,7 @@
       <li class="part">Les systèmes</li>
       <li><a href="#hebdo"><b>09</b>Semaine et journées</a></li>
       <li><a href="#anki"><b>10</b>Anki</a></li>
+      <li><a href="#guideanki"><b>10b</b>Anki : le guide</a></li>
       <li><a href="#raisonnement"><b>11</b>Raisonnement clinique</a></li>
       <li><a href="#cas"><b>12</b>Les cas, sept niveaux</a></li>
       <li><a href="#mains"><b>13</b>L'arbre des gestes</a></li>
@@ -576,7 +685,7 @@ Apprendre à apprendre      core   A1 → A5   Anki sélectif, registre d'erreur
 
     <section class="grp" id="anki">
       <h2><span class="k">10</span>Anki : la stratégie sélective</h2>
-      <p class="intro">Le principe est déjà le tien : Anki fait la mémoire, pas la compréhension. Les règles de fabrication sont dans le guide Anki et Le semestre §6 (une carte = un fait, cloze pour les listes, occlusion d'image pour les figures, 30 nouvelles par jour). Le second cursus ajoute <b>quatre types de cartes</b> et une règle de refus.</p>
+      <p class="intro">Le principe est déjà le tien : Anki fait la mémoire, pas la compréhension. Les règles de fabrication sont dans le guide Anki (section 10 bis, intégral) et Le semestre §6 (une carte = un fait, cloze pour les listes, occlusion d'image pour les figures, 30 nouvelles par jour). Le second cursus ajoute <b>quatre types de cartes</b> et une règle de refus.</p>
       <div class="tbl"><table>
         <tr><th>Type</th><th>Forme</th><th>Exemple (en espagnol, comme toutes tes cartes)</th><th>Quota</th></tr>
         <tr><td class="h">Trigger clinique</td><td>Un signe, un fait → la première pensée du dentiste</td><td>Recto : « Paciente con INR de 4 antes de una extracción » · Verso : « no extraer sin consultar ; riesgo hemorrágico ; INR objetivo ≤ 3,5-4 según guías »</td><td>1 par tema (geste 1)</td></tr>
@@ -593,6 +702,221 @@ Apprendre à apprendre      core   A1 → A5   Anki sélectif, registre d'erreur
         <li>Une image entière en occlusion à dix zones : dix cartes qui tombent le même jour. Trois à cinq zones, les structures qui comptent.</li>
       </ul>
       <p class="note"><b>Les chiffres qui gardent le paquet sain.</b> Rétention des cartes mûres visée : 85 à 90 % (Statistiques Anki › « True retention » ; sous 80 %, on écrit mal les cartes, pas on ne travaille pas assez). Sangsues : le test du mois existe déjà (premier dimanche). Plafond de nouvelles cartes : 30 en A1, jamais plus de 35 même en A3, sinon la file dépasse 300 révisions et Anki 1-2 ne suffisent plus (le seuil de 220 de la Batcave le dira). En A1, les cartes trigger et mécanisme vivent dans le sous-paquet de la matière, avec les étiquettes <code>trigger</code>, <code>mecanismo</code>, <code>profundizar</code> : un seul paquet, jamais un paquet « avancé » à part (section 06 bis, étape 7). Le sous-paquet <b>Dentaire::Clínica</b> reçoit les triggers et les mécanismes à partir de A2, pour que la révision cumulative des années précédentes reste lisible.</p>
+    </section>
+
+    <section class="grp" id="guideanki">
+      <h2><span class="k">10 bis</span>Anki pour le dentaire : le guide, intégral</h2>
+      <p class="intro">La page « Anki pour le dentaire » (9 septembre) vit ici depuis le 17 septembre, sans une ligne retirée : l'ordre comprendre-carder-pratiquer, les trois formats, la séance de fabrication en trois passes, les quatre boutons, les huit erreurs, l'anatomie dentaire, les réglages, le test du mois, les étiquettes, la lecture par la Batcave et la chaîne complète. La section 10 dit ce que le second cursus y ajoute ; ce guide dit comment on fabrique une carte.</p>
+<div class="emb-anki">
+<div class="anki-wrap">
+<div class="anki-bc-banner" style="background:#F2E3CB;color:#4a2f06;border-left:5px solid #B4700F;padding:14px 18px;margin:18px 0 10px;font:15px/1.55 -apple-system,'Helvetica Neue',Arial,sans-serif;border-radius:0 6px 6px 0;"><b>Mis à jour le 16 septembre 2026.</b> Trois réglages changent avec <a href="https://claude.ai/artifact/PxQxcoMtoSRcg7knJ4f9hp#tema" style="color:#7a4a08;font-weight:600;">Le semestre</a> (section 6) : les cartes s'écrivent <b>à la main, à l'état « préparé », avant l'amphi</b> (15-25 par tema, 40 en Anatomía), pas depuis les dix lignes du lendemain ; le paquet Dentaire passe à <b>30 nouvelles cartes par jour</b>, pas 50 ; cinq sous-paquets, un par matière du S1. Le reste — une carte = une chose, les trois formats, les trois passes, les boutons, les huit erreurs, le test du mois — reste la référence.</div>
+
+  <header class="anki-masthead">
+    <div class="anki-kicker">La Batcave · méthode · 9 septembre 2026 · lecture ≈ 12 min</div>
+    
+    <p class="anki-sub">Comment fabriquer des cartes qui tiennent, combien de temps y passer, et ce qu'il faut refuser de carder. Écrit pour tes onze matières, ta grille de journée et tes trois paquets.</p>
+  </header>
+
+  <div class="anki-regle">
+    <div class="anki-l">La règle qui rend toutes les autres inutiles</div>
+    <h2>Une carte = une chose à récupérer</h2>
+    <p>Le test tient en une phrase : <b>si tu peux te tromper à moitié, la carte est mauvaise.</b> « Cite les branches de l'artère maxillaire » — tu en sors quatre sur six, tu réponds quoi ? Quel que soit le bouton, l'information que reçoit l'algorithme est fausse. Six cartes, une par branche, chacune avec son territoire : chaque réponse est vraie ou fausse, et l'intervalle qui suit est juste. Tout le reste de ce guide découle de cette règle.</p>
+  </div>
+
+  <section id="anki-ordre">
+    <h2><span class="anki-n">01</span>L'ordre : comprendre, carder, pratiquer</h2>
+    <p class="anki-lead">Beaucoup font l'inverse et cardent pour comprendre. C'est ce qui produit des paquets de mille cartes qu'on n'ouvre plus en novembre.</p>
+    <ul class="anki-grille">
+      <li><span class="anki-h">Le cours</span><span><b>Lire et comprendre à fond.</b> Une page, s'arrêter, se poser des questions, essayer de résumer sans regarder. Si tu ne peux pas résumer le mécanisme en trois phrases, tu ne peux pas le carder : tu ne ferais que découper des mots.</span></li>
+      <li><span class="anki-h">20:30</span><span><b>Comprendre le cours du jour.</b> Les notes de l'après-midi dans le projet Claude « Dentaire » : « explique », puis « interroge-moi ». Puis la réécriture du cours en dix lignes. Ces dix lignes sont la matière première de demain.</span></li>
+      <li><span class="anki-h">09:20</span><span><b>Préparer un tema.</b> Un tema d'avance : les slides lues et reformulées, puis quinze à vingt-cinq cartes écrites à la main, une idée par carte, importées dans Anki. C'est la séance de fabrication décrite plus bas.</span></li>
+      <li><span class="anki-h">10:20</span><span><b>Le bloc de 10:20 : blanc du questionnaire le lundi, exercices de calcul le mardi et le jeudi, question ouverte le mercredi et le samedi.</b> Anki entretient ce que tu sais déjà ; le blanc, l'exercice et la question ouverte vérifient que tu sais t'en servir sous contrainte. Les deux ne se remplacent pas.</span></li>
+      <li><span class="anki-h">07:20 · 08:20</span><span><b>Anki 1 et Anki 2, tous les jours.</b> Toutes les échéances, deux Pomodoros de 25 minutes. Zéro jour sans révision, y compris le jour d'un partiel.</span></li>
+    </ul>
+    <div class="anki-note"><b>La règle du tampon.</b> Ne carde jamais un cours que tu n'as pas compris la veille. Une carte fabriquée sur un cours flou est une carte que tu rateras vingt fois : elle te coûtera dix fois le temps que tu crois avoir gagné.</div>
+  </section>
+
+  <section id="anki-formats">
+    <h2><span class="anki-n">02</span>Trois formats couvrent 95 % du dentaire</h2>
+    <p class="anki-lead">Choisis le format avant d'écrire la carte. C'est le choix qui fait la vitesse de fabrication.</p>
+    <div class="anki-cards">
+      <div class="anki-fmt">
+        <h4>Cloze contextualisé</h4>
+        <div class="anki-use">faits liés à un contexte</div>
+        <p>Ne carde pas une question rédigée. Prends la phrase du cours et perce un trou : tu récupères le fait <i>et</i> son contexte, et c'est trois fois plus rapide à fabriquer.</p>
+        <span class="anki-c">En odontopédiatrie, l'anesthésique de choix est la {{c1::mépivacaïne 3 % sans vasoconstricteur}}.</span>
+      </div>
+      <div class="anki-fmt">
+        <h4>Occlusion d'image</h4>
+        <div class="anki-use">tout ce qui est spatial</div>
+        <p>Anatomie, radios, instruments, coupes histologiques. Ton format le plus rentable : une image bien découpée donne six cartes en deux minutes. <b>Six à huit masques par image</b>, pas vingt — au-delà tu réponds par élimination.</p>
+        <span class="anki-c">Photo de la 16 · masques : chaque cuspide, le sillon central, les trois racines</span>
+      </div>
+      <div class="anki-fmt">
+        <h4>Question directe</h4>
+        <div class="anki-use">seuils, chiffres, valeurs</div>
+        <p>Court, sans ambiguïté, une seule réponse possible. C'est le seul cas où la question rédigée bat le cloze.</p>
+        <span class="anki-c">Profondeur de sondage parodontal pathologique ?<br>→ &gt; 3 mm</span>
+      </div>
+    </div>
+    <p>Un quatrième format existe et sert rarement : la <b>carte de comparaison</b>, quand deux entités se confondent (maxillaire contre mandibulaire, gingivite contre parodontite). Une carte par différence, jamais un tableau à quatre colonnes dans une seule carte.</p>
+  </section>
+
+  <section id="anki-fabrication">
+    <h2><span class="anki-n">03</span>La séance de fabrication, en trois passes</h2>
+    <p class="anki-lead">Tu as environ 70 minutes après un cours. Ne relis pas le cours en entier : tu viens de le comprendre.</p>
+    <ul class="anki-passes">
+      <li><span class="anki-t">Passe 1 · 10 min</span><span><b>Marquer, sans carder.</b> Parcours les diapos et marque ce qui mérite une carte. Le filtre : <i>est-ce que je dois pouvoir sortir ça de ma tête devant un patient, ou en examen ?</i> Une transition, un rappel, un « comme vu précédemment » : tu sautes. Compte deux à trois cartes par diapo utile — sur trente diapos, ça fait soixante à quatre-vingt-dix candidates, alors que tu n'en consommes que cinquante par jour tous cours confondus. D'où la passe suivante.</span></li>
+      <li><span class="anki-t">Passe 2 · 50 min</span><span><b>Fabriquer dans l'ordre de rentabilité.</b> 1) les images (occlusion) ; 2) les classifications et les chiffres ; 3) les mécanismes et les définitions. Si le temps manque, ce qui reste en bas de liste attendra : tu auras cardé le plus important, pas le premier venu.</span></li>
+      <li><span class="anki-t">Passe 3 · 10 min</span><span><b>Relire et supprimer.</b> Tu jetteras systématiquement quelques cartes. Une carte supprimée à la fabrication coûte dix secondes ; la même carte gardée coûte trois minutes par mois pendant quatre ans.</span></li>
+    </ul>
+    <div class="anki-note"><b>La règle des vingt secondes.</b> Une carte qui demande plus de vingt secondes de réflexion n'est pas difficile : elle est mal découpée. Coupe-la en deux au lieu de t'acharner.</div>
+  </section>
+
+  <section id="anki-boutons">
+    <h2><span class="anki-n">04</span>Les quatre boutons, honnêtement</h2>
+    <p class="anki-lead">L'algorithme n'a que ça pour t'aider. Un bouton complaisant fausse tous les intervalles suivants.</p>
+    <div class="anki-tbl"><table>
+      <tr><th>Bouton</th><th>Touche</th><th>Quand</th><th>Fréquence</th></tr>
+      <tr><td class="anki-k">Again</td><td class="anki-k">1</td><td>Réponse fausse, ou pas retrouvée. Réponse à moitié juste : sois strict — si ça compte comme un échec devant un patient, c'est un échec ici.</td><td class="anki-pct">5 – 20 %</td></tr>
+      <tr><td class="anki-k">Hard</td><td class="anki-k">2</td><td>Juste, mais avec un doute, ou après un long temps de recherche.</td><td class="anki-pct">rare</td></tr>
+      <tr><td class="anki-k">Good</td><td class="anki-k">3 · espace</td><td>Juste, avec un effort mental normal. C'est le bouton par défaut quand Anki est bien utilisé.</td><td class="anki-pct">80 – 95 %</td></tr>
+      <tr><td class="anki-k">Easy</td><td class="anki-k">4</td><td>Juste, sans aucun effort. Uniquement là : « Easy » par confort fait exploser l'intervalle et tu perdras la carte.</td><td class="anki-pct">rare</td></tr>
+    </table></div>
+    <p>Si tu passes ta session à hésiter entre Hard et Good, le problème n'est pas le bouton : ce sont des cartes trop larges. Reviens à la règle unique.</p>
+  </section>
+
+  <section id="anki-erreurs">
+    <h2><span class="anki-n">05</span>Les huit erreurs qui coûtent le plus</h2>
+    <p class="anki-lead">Les quatre premières viennent de la fabrication, les quatre suivantes de l'usage. Ce sont elles qui font les paquets abandonnés.</p>
+
+    <div class="anki-err">
+      <h4>1 · Le cloze trop fin</h4>
+      <p><code>La carie est une maladie {{c1::infectieuse}} {{c2::multifactorielle}}</code> — deux cartes pour un seul fait, deux occasions de se tromper à moitié.</p>
+      <p class="anki-fix"><b>À faire</b>Un seul cloze : <code>une maladie {{c1::infectieuse multifactorielle}}</code>.</p>
+    </div>
+    <div class="anki-err">
+      <h4>2 · Les cartes bidirectionnelles automatiques</h4>
+      <p>Tu doubles ta charge de révision pour un gain nul : en dentaire, un seul sens suffit presque toujours (tu reconnais une lésion, tu ne pars pas du nom pour dessiner la lésion).</p>
+      <p class="anki-fix"><b>À faire</b>Un seul sens. L'exception : les correspondances numéro de dent ↔ nom de dent, où les deux sens servent vraiment.</p>
+    </div>
+    <div class="anki-err">
+      <h4>3 · La carte qui contient sa réponse</h4>
+      <p><code>L'inflammation gingivale réversible s'appelle une {{c1::gingivite}}</code> — le mot « gingival » est dans la question. Tu retiens le motif, pas le fait.</p>
+      <p class="anki-fix"><b>À faire</b>Reformule la question sans le radical de la réponse, ou change ce qui est masqué.</p>
+    </div>
+    <div class="anki-err">
+      <h4>4 · La diapo entière copiée dans un cloze</h4>
+      <p>Si la carte fait cinq lignes, elle est mal découpée : tu ne sauras jamais quelle partie t'a fait échouer.</p>
+      <p class="anki-fix"><b>À faire</b>Une idée par carte. Une diapo dense donne six cartes, pas une.</p>
+    </div>
+    <div class="anki-err">
+      <h4>5 · Rattraper le lendemain</h4>
+      <p>Sauter un jour crée une file qui grossit plus vite que ta capacité à la vider, et l'algorithme perd sa mesure de ta mémoire. C'est la première cause d'abandon, pas la difficulté des cartes.</p>
+      <p class="anki-fix"><b>À faire</b>Toutes les échéances tous les jours, même le jour d'un examen. Si la file dépasse ce que les deux blocs Anki absorbent, tu baisses les nouvelles cartes — jamais les échéances.</p>
+    </div>
+    <div class="anki-err">
+      <h4>6 · Ajouter des cartes quand la file déborde</h4>
+      <p>Cinquante nouvelles cartes par jour se transforment en cent cinquante à deux cents révisions par jour un mois plus tard. Ajouter davantage pendant que tu es en retard, c'est éteindre un feu à l'essence.</p>
+      <p class="anki-fix"><b>À faire</b>Passe Dentaire à 35 nouvelles pendant deux semaines, laisse la file redescendre, puis remonte. Le paquet t'attendra.</p>
+    </div>
+    <div class="anki-err">
+      <h4>7 · Supprimer une carte ratée au lieu de la réécrire</h4>
+      <p>Une carte que tu rates cinq fois contient une information que tu n'as pas comprise. La supprimer, c'est effacer le symptôme.</p>
+      <p class="anki-fix"><b>À faire</b>Réécris-la — presque toujours en la coupant en deux. Si l'information ne mérite pas d'être sue, alors supprime, mais dis-le explicitement.</p>
+    </div>
+    <div class="anki-err">
+      <h4>8 · Ne carder que ce qui est facile à carder</h4>
+      <p>Les définitions se cardent en trente secondes ; les mécanismes et les enchaînements cliniques demandent de réfléchir. Un paquet fait de définitions donne l'illusion du travail et se casse à l'examen.</p>
+      <p class="anki-fix"><b>À faire</b>Pour chaque mécanisme, une carte « pourquoi » et une carte « et ensuite ». Ce sont celles qui paient en clinique.</p>
+    </div>
+  </section>
+
+  <section id="anki-anatomie">
+    <h2><span class="anki-n">06</span>L'anatomie dentaire : le plus rentable</h2>
+    <p class="anki-lead">C'est la base de tout le pratique — prothèse, conservatrice, endodontie. Sue par cœur, elle rend trois matières faciles ; approximative, elle les rend impossibles.</p>
+    <p>Référence : <b>Wheeler's Dental Anatomy, Physiology, and Occlusion</b>. Une dent à la fois, dans l'ordre du cours, avec des photos sous plusieurs angles (vestibulaire, linguale, occlusale, proximale).</p>
+    <h3>Le jeu de cartes d'une dent</h3>
+    <ul>
+      <li><b>Occlusion d'image</b>, une par angle : cuspides nommées, sillons, crêtes marginales, point de contact.</li>
+      <li><b>Nombre de cuspides</b> et leur hiérarchie de taille — une carte.</li>
+      <li><b>Racines</b> : nombre, orientation, nombre de canaux le plus fréquent, variantes à connaître — une carte chacune.</li>
+      <li><b>Différence maxillaire / mandibulaire</b> pour la même position : une carte par différence, jamais un tableau.</li>
+      <li><b>Repères de reconnaissance</b> : la carte « comment je sais que c'est celle-là et pas sa voisine » — c'est la seule qui te sauve devant une dent isolée sur une paillasse.</li>
+    </ul>
+    <div class="anki-note"><b>Le test qui compte.</b> Une photo de dent isolée, sans légende : tu la nommes, tu dis sa face, tu comptes ses racines. Tant que tu ne le fais pas en trois secondes, l'anatomie n'est pas acquise, quel que soit ton pourcentage dans Anki.</div>
+  </section>
+
+  <section id="anki-reglages">
+    <h2><span class="anki-n">07</span>Tes réglages, et pourquoi</h2>
+    <div class="anki-tbl"><table>
+      <tr><th>Paquet</th><th>Nouvelles / jour</th><th>Révisions</th><th>Raison</th></tr>
+      <tr><td class="anki-k">Dentaire</td><td class="anki-pct">50</td><td class="anki-pct">illimitées</td><td>Quatre heures de cours par jour produisent 20 à 45 cartes. À 20 par jour, la moitié s'empilait sans jamais être vue. Compte 150 à 180 révisions par jour après un mois : une demi-heure, ce que les deux blocs Anki absorbent.</td></tr>
+      <tr><td class="anki-k">Español</td><td class="anki-pct">20</td><td class="anki-pct">illimitées</td><td>485 cartes, sept sous-decks pris dans l'ordre. Donne au sous-deck <code>7 Odontología</code> sa propre limite de dix nouvelles par jour : sinon il n'arrive qu'après quatre cents cartes, soit fin septembre, alors que c'est le vocabulaire de tes cours du 14.</td></tr>
+      <tr><td class="anki-k">Business</td><td class="anki-pct">20</td><td class="anki-pct">illimitées</td><td>À importer le 19 octobre, quand le dossier dropshipping commence. Avant, il dormirait.</td></tr>
+    </table></div>
+    <p>Le preset se pose <b>sur le paquet parent ET sur chaque sous-deck</b> : Anki n'hérite pas. C'est l'erreur de réglage la plus fréquente, et elle est invisible pendant deux semaines.</p>
+    <p>Les sangsues sont réglées sur <b>Tag Only</b> et non <b>Suspend</b> : une carte ratée huit fois est étiquetée, pas cachée. C'est ce qui permet le test du mois ci-dessous. Laisse FSRS faire les intervalles, ne les règle pas à la main.</p>
+  </section>
+
+  <section id="anki-test">
+    <h2><span class="anki-n">08</span>Le test du mois : trier par Lapses</h2>
+    <p class="anki-lead">Un rendez-vous, le premier dimanche de chaque mois, quinze minutes. C'est le meilleur usage de ton temps de fabrication.</p>
+    <ul>
+      <li>Ouvre le navigateur de cartes, active la colonne <b>Lapses</b> (clic droit sur les en-têtes), trie par ordre décroissant.</li>
+      <li>Regarde tes dix pires cartes. <b>Elles seront presque toutes mal écrites, pas difficiles</b> : deux faits dans un cloze, une question qui contient sa réponse, une diapo copiée.</li>
+      <li>Réécris-les au lieu de t'acharner. Une carte réécrite disparaît du haut de cette liste le mois suivant ; c'est le signe que tu as visé juste.</li>
+      <li>Regarde aussi l'étiquette <code>leech</code> : elle liste exactement les mêmes cartes, sans le tri.</li>
+    </ul>
+    <p>Deux fois par an, un second passage : trie par <b>Interval</b> croissant. Les cartes bloquées à un ou deux jours depuis des mois sont des cartes que tu n'as jamais vraiment apprises — souvent parce que le cours derrière n'a pas été compris. Retour au cours, pas à la carte.</p>
+  </section>
+
+  <section id="anki-partiels">
+    <h2><span class="anki-n">09</span>Étiquettes et mode partiel</h2>
+    <p class="anki-lead">Les étiquettes ne servent pas à ranger : elles servent à fabriquer un paquet filtré la semaine d'un examen.</p>
+    <ul>
+      <li><b>Une étiquette par matière</b>, écrite pareil à chaque fois (l'identifiant de la matière, pas son nom complet).</li>
+      <li><b>Une étiquette par semaine</b> : <code>s38</code>, <code>s39</code>. C'est ce qui te permet de retrouver « tout ce que j'ai cardé la semaine où je n'ai rien compris ».</li>
+      <li><b>Une étiquette <code>erreur</code></b> sur les cartes nées d'une faute d'annale ou de clinique. Ce sont statistiquement tes cartes les plus rentables.</li>
+    </ul>
+    <p>À J-7 d'un examen, un paquet filtré : <code>tag:matiere is:due</code>, puis <code>tag:matiere -is:suspended</code> pour un passage complet la veille. <b>Ne reconstruis pas le paquet filtré le matin de l'examen</b> : tu perdrais les échéances normales et tu commencerais l'examen avec une file en retard.</p>
+    <div class="anki-avert"><b>Ce qu'Anki ne fait pas.</b> Il n'apprend pas à ta place, il entretient. Il ne remplace ni la compréhension du cours (bloc de 20:30), ni l'entraînement en conditions (annales de 10:20), ni le geste. Un paquet parfait avec zéro annale faite donne une note moyenne : tu sauras tout, sans savoir répondre.</div>
+  </section>
+
+  <section id="anki-lecture">
+    <h2><span class="anki-n">10</span>La Batcave lit Anki</h2>
+    <p class="anki-lead">Depuis le 9 septembre, tu ne recopies plus rien : la Batcave lit tes paquets et affiche ce qui est dû.</p>
+    <h3>À faire une fois</h3>
+    <ul>
+      <li>Dans Anki : <b>Outils › Modules complémentaires › Obtenir des modules</b>, code <code>2055492159</code> (AnkiConnect), puis relancer Anki.</li>
+      <li><b>Outils › Modules › AnkiConnect › Configuration</b> : ajoute <code>"file://"</code> et l'origine vide (le mot entre guillemets que ton navigateur envoie pour un fichier local) à la liste <code>webCorsOriginList</code>. Relance Anki.</li>
+      <li>Ouvre <b>batcave.html en local</b> sur le Mac, Anki lancé. Le panneau « Anki en direct » apparaît dans Études et se remplit seul.</li>
+    </ul>
+    <h3>Ce que ça change</h3>
+    <ul>
+      <li>Les <b>échéances, nouvelles cartes et sangsues</b> de Dentaire, Español et Business, avec les cartes révisées du jour.</li>
+      <li>Les cartes dues <b>remontent dans le plan du jour</b> tant qu'aucun bloc Anki n'a tourné.</li>
+      <li>Au-delà de <b>220 cartes dues en dentaire</b>, la Batcave te dit d'abaisser les nouvelles à 35 pendant deux semaines. C'est le seuil où les deux blocs du matin ne suffisent plus.</li>
+      <li>Le <b>test du mois</b> arrive dans le plan le premier dimanche, avec le nombre de sangsues étiquetées.</li>
+    </ul>
+    <div class="anki-avert"><b>La page publiée sur claude.ai ne peut pas lire Anki.</b> Un site en https n'a pas le droit de parler à ton ordinateur : c'est une protection du navigateur, pas un réglage. Elle affiche la dernière lecture avec sa date. Pour que le chiffre existe même sans le fichier local, la clôture du dimanche demande deux nombres : cartes révisées dans la semaine et cartes créées, tous deux lisibles en trois secondes dans les statistiques d'Anki.</div>
+  </section>
+
+  <section id="anki-chaine">
+    <h2><span class="anki-n">11</span>La chaîne complète, sans rien recopier</h2>
+    <p class="anki-lead">Chaque outil produit ce que le suivant consomme. Si tu recopies quelque chose à la main, c'est qu'un maillon manque.</p>
+    <ul class="anki-grille">
+      <li><span class="anki-h">Notion</span><span>Le cours et sa réécriture en dix lignes. Trois cases par cours : Fiché, Cartes Anki, Compris. La Batcave les lit et remonte dans le plan du jour la matière qui a le plus de cours pas faits.</span></li>
+      <li><span class="anki-h">Claude</span><span>Projet « Dentaire », commande <code>cartes</code> : il rend le format tabulé prêt à coller, une ligne par carte. Commande <code>erreurs de la semaine</code> : tes cartes ratées regroupées par cause, avec une carte de correction par cause.</span></li>
+      <li><span class="anki-h">Anki</span><span>Import du texte tabulé, étiquettes posées à l'import. Synchronisation AnkiWeb pour réviser dans le tram : c'est là que passent les échéances qui débordent du matin.</span></li>
+      <li><span class="anki-h">Batcave</span><span>Le temps passé (Pomodoro nommé), l'état de tes paquets lu dans Anki, les deux chiffres du dimanche, et les objectifs par matière. Elle mesure ; elle ne fabrique rien et n'écrit jamais dans Anki.</span></li>
+    </ul>
+    <div class="anki-note"><b>Sauvegarde.</b> Un export <code>.apkg</code> de tes trois paquets, une fois par mois, dans le dossier Drive de la Batcave. La synchronisation AnkiWeb n'est pas une sauvegarde : une suppression se synchronise aussi.</div>
+  </section>
+
+  <footer>Guide de méthode · La Batcave · 9 septembre 2026 · fondé sur tes principes de fabrication, complété des réglages posés le 8 et 9 septembre (Dentaire 50 nouvelles/jour, sangsues en Tag Only, sous-decks par asignatura) · Référence anatomie : Wheeler's Dental Anatomy, Physiology, and Occlusion.</footer>
+</div>
+</div>
     </section>
 
     <section class="grp" id="raisonnement">
@@ -846,7 +1170,7 @@ Apprendre à apprendre      core   A1 → A5   Anki sélectif, registre d'erreur
 
     <footer>
       Établi le 17 septembre 2026, à J-2 du jour 1 de la Batcave. Sources : le référentiel <i>Graduating European Dentist</i> de l'ADEE (2017, domaine V Recherche ajouté en 2024) ; le cadre espagnol des études de dentiste (Orden CIN/2314/2008) ; les onze guías docentes de première année de la UEV lues le 13 septembre ; Le semestre, la Prise en main, le Dossier Español et le guide Anki ; pour la section 01 bis : le classement QS 2026 par discipline (Dentistry), les pages « Teaching &amp; Modules » du BDS de King's College London, le plan d'études 2TL19 de Karolinska, le plan du Grado en Odontología de la Complutense, et les articles décrivant les cursus de Hong Kong (Eur J Dent Educ 2013), Harvard (J Dent Educ 2012), Michigan (audit 2015), ACTA et Malmö. Les matières des années 2 à 5 sont indicatives et se confirment chaque juin. Les prix des livres sont ceux de 2026 et changeront. Aucune ligne de ce document n'autorise un geste sur un patient hors du cadre de la fac.<br>
-      Version 1.2 (17 septembre, soir : section 01 bis, les meilleures facultés ; section 06 bis, le mode d'emploi pas à pas, ligne clinique dès le 19 septembre, deuxième source dès le 3 octobre) · relecture prévue le jeudi 17 décembre 2026 (bilan des 90 jours), puis chaque juin.
+      Version 1.3 (17 septembre, soir : section 01 bis, les meilleures facultés ; section 06 bis, le mode d'emploi pas à pas ; section 10 bis, le guide Anki fusionné) · relecture prévue le jeudi 17 décembre 2026 (bilan des 90 jours), puis chaque juin.
     </footer>
   </main>
 </div>
