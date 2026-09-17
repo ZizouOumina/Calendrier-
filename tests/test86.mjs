@@ -159,7 +159,7 @@ console.log('\n== 286) En partiels, une porte convertie ne rend rien ==');
   ok(p === 'partiels', 'le 13 octobre est en mode partiels (' + p + ')');
   const g = await grille(fr, '2026-10-13');
   ok(!g.includes('20:30 Projets perso 6'), 'le bloc de 20:30 reste celui du mode partiels : ' + g.filter(x => /14:00|20:30/.test(x)).join(' · '));
-  ok(g.includes('13:00 Révision ciblée'), 'et 13:00 reste de la révision ciblée, pas du projet');
+  ok(g.includes('13:00 Español'), 'et 13:00 reste le bloc Español du mode partiels, pas du projet');
   await ctx.close();
 }
 
