@@ -35,14 +35,16 @@ console.log('\n== 105) Charge restante : cible hebdo moins le fait depuis lundi 
   ok(/25 h 12 de révision restantes sur 33 h 12/.test(t), '33 h 12 − 8 h = 25 h 12 de révision (' + t.slice(0,70) + '…)');
   ok(/12 h 06 de projets sur 16 h 06/.test(t), '16 h 06 − 4 h = 12 h 06 de projets');
   ok(/5 jours/.test(t), 'mercredi → dimanche : 5 jours');
-  ok(/~7 h \d\d\/jour/.test(t), '(25 h 12 + 12 h 06) / 5 jours : ' + (t.match(/~[^)]*/)||[])[0]);
+  /* Lot 42 : 37 h 18 restantes sur cinq jours dépassent ce que la grille ouvre encore d'ici
+     dimanche. Le rythme moyen n'a plus de sens : on attend l'avertissement, pas un chiffre. */
+  ok(/⚠ .* de trop/.test(t), 'au-delà de la capacité : l\'écart est annoncé, pas un rythme intenable — ' + (t.match(/⚠[^<]*/)||[''])[0]);
   await ctx.close();
 }
 
 console.log('\n== 106) Dimanche : 1 jour restant ; semaine bouclée : message de réussite ==');
 {
   const { ctx, fr } = await ouvrir('2026-09-06T10:00:00+02:00');
-  ok(/1 jour \(/.test(await texte(fr, '#dash-semaine')), 'dimanche : « 1 jour »');
+  ok(/\b1 jour\b/.test(await texte(fr, '#dash-semaine')), 'dimanche : « 1 jour »');
   await ctx.close();
 }
 {

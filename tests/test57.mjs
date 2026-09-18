@@ -87,7 +87,9 @@ console.log('\n== 213) Relevé OBJECTIF dans la barre ==');
 {
   const { ctx, fr } = await ouvrir(MARDI22, {'batcave-sessions': sessionsMoitie()});
   const r = await fr.evaluate(() => ({ txt: document.querySelector('#bc-objectif .v').textContent, titre: document.querySelector('#bc-objectif .v').title }));
-  ok(/^(Révision|Projets perso|Séances de sport tenues|Espagnol|Habitudes tenues|Eau moyenne \/ jour|Sommeil moyen \/ nuit) [−+][\d,]+ /.test(r.txt), 'le pire objectif du mois est affiché : ' + r.txt);
+  /* Lot 42 : le relevé ne montre plus un écart négatif nu (« Révision −90,7 h »), qui ne
+     dit pas quoi faire, mais le réel sur l'attendu du jour. */
+  ok(/^(Révision|Projets perso|Séances de sport tenues|Espagnol|Habitudes tenues|Eau moyenne \/ jour|Sommeil moyen \/ nuit) [\d,]+ \/ [\d,]+ /.test(r.txt), 'le pire objectif du mois est affiché, réel sur attendu : ' + r.txt);
   ok(/de retard sur le mois/.test(r.titre) && /attendu à ce jour/.test(r.titre), 'le détail est dans l\'info-bulle : ' + r.titre.slice(0, 80));
   await fr.evaluate(() => document.getElementById('bc-objectif').click());
   ok(await fr.evaluate(() => document.querySelector('.page[data-page="objectifs"]').classList.contains('active')), 'un clic ouvre la page Objectifs');

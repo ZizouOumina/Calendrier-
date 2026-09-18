@@ -104,7 +104,11 @@ console.log('\n== 36) Agir en haut, consulter replié ==');
   // revenue à ce qu'elle était avant le bandeau, bandeau compris.
   // 1600 → 1650 (lot 37) : créatine et magnésium deviennent deux habitudes quotidiennes,
   // donc deux cases de plus dans la check-list du jour (~40 px).
-  ok(e.basAgir < 1650, 'la zone « agir » tient en environ un écran et demi (' + e.basAgir + 'px)');
+  // 1650 → 1670 (lot 42) : quand ce qui reste à faire dépasse ce que la grille ouvre encore
+  // d'ici dimanche, la ligne « Semaine » ne donne plus un rythme moyen intenable mais dit le
+  // manque et quoi en faire. Ce texte passe à la ligne : mesuré, 1644 → 1662 px, et seulement
+  // dans une semaine en dépassement. Les 18 px sont le prix d'un chiffre qui ne ment pas.
+  ok(e.basAgir < 1670, 'la zone « agir » tient en environ un écran et demi (' + e.basAgir + 'px)');
   // les panneaux repliés restent alimentés
   const caches = await fr.evaluate(() => document.getElementById('dash-more').innerText.length);
   ok(caches > 50, 'le contenu replié est déjà rendu (' + caches + ' caractères), pas vide');

@@ -585,6 +585,16 @@
     /* les grilles de tuiles à colonnes fixées en ligne (calendrier, études, business) débordaient
        du téléphone : sur un écran étroit, une seule colonne, quoi qu'en dise l'attribut style */
     .stat-grid[style*="grid-template-columns"]{grid-template-columns:minmax(0,1fr) !important;}
+    /* Exception : le Calendrier s'ouvrait sur 750 px de cartes avant l'emploi du temps, qui
+       est la raison meme pour laquelle on ouvre l'onglet. Les trois jauges tiennent sur une
+       seule ligne ; l'id l'emporte sur la regle ci-dessus par specificite. */
+    #cal-stats{grid-template-columns:repeat(3, minmax(0,1fr)) !important; gap:8px;}
+    #cal-stats .stat-tile{padding:10px 9px 9px;}
+    #cal-stats .stat-tile .tlabel{font-size:10.5px; line-height:1.25;}
+    #cal-stats .stat-tile .tnum{font-size:23px; margin-top:4px;}
+    #cal-stats .stat-tile .tnum small{font-size:9.5px; margin-left:2px;}
+    #cal-stats .stat-tile .progress-track{margin-top:7px !important;}
+    #cal-stats .stat-tile .sub-note{font-size:10px; margin-top:5px !important;}
     .dash-row, .dash-row2{grid-template-columns:minmax(0,1fr);}
     .panel, .card, .meal-card, .sport-card{min-width:0;}
     .entry-row{flex-wrap:wrap;}
@@ -1159,7 +1169,17 @@
   .obj-row .proj{ font-family:var(--font-mono); font-size:10.5px; color:var(--ink-faint); line-height:1.35; }
   .obj-row .proj b{ color:var(--ink-dim); font-weight:500; }
   .obj-entete{ display:grid; grid-template-columns:14px minmax(110px,1.4fr) repeat(3, minmax(0, 0.8fr)) minmax(0, 1fr) auto; gap:10px; padding:0 0 6px; font-family:var(--font-mono); font-size:9.5px; letter-spacing:0.16em; color:var(--cyan-dim); border-bottom:1px solid var(--border); }
-  @media (max-width:780px){ .obj-row, .obj-entete{ grid-template-columns:14px 1fr 1fr 1fr; } .obj-row .proj, .obj-entete .h-proj, .obj-row .val.attendu, .obj-entete .h-attendu{ display:none; } }
+  /* A 780 px, deux colonnes disparaissent mais la ligne garde CINQ enfants visibles :
+     pastille, titre, reel, cible, bouton. Avec quatre colonnes, le bouton « × » basculait
+     seul sur une deuxieme rangee, contre la marge gauche. Cinq pistes, la derniere etroite
+     et reservee au bouton, remettent chaque chose a sa place. */
+  @media (max-width:780px){
+    .obj-row, .obj-entete{ grid-template-columns:14px minmax(0,1fr) auto auto 26px; gap:8px; }
+    .obj-row .proj, .obj-entete .h-proj, .obj-row .val.attendu, .obj-entete .h-attendu{ display:none; }
+    .obj-row .titre{ font-size:12.5px; line-height:1.3; }
+    .obj-row input.obj-cible{ max-width:62px; }
+    .obj-row .edel{ justify-self:end; }
+  }
   #dash-goals li .obj-led{ margin-right:8px; }
 
   /* ---- surcharge progressive ---- */
@@ -1719,7 +1739,7 @@
               <circle class="arc proj" id="arc-proj" cx="200" cy="200" r="102"/>
             </svg>
             <div class="core-center">
-              <span class="lbl">Score du jour</span>
+              <span class="lbl" id="dash-score-lbl">Score du jour</span>
               <div class="streak-display"><span class="streak-num" id="dash-score-num">0</span><span class="streak-unit" id="dash-score-unit">%</span></div>
               <p class="sub-note" id="dash-score-detail">—</p>
             </div>
@@ -1876,7 +1896,7 @@
         <p class="desc" id="cal-date-label">—</p>
       </div>
 
-      <div class="stat-grid" style="grid-template-columns:repeat(3,1fr); margin-bottom:22px;">
+      <div class="stat-grid" id="cal-stats" style="grid-template-columns:repeat(3,1fr); margin-bottom:10px;">
         <div class="stat-tile">
           <div class="tlabel">Avancement de la journée</div>
           <div class="tnum" id="cal-day-pct">0<small>%</small></div>
@@ -1893,14 +1913,14 @@
           <div class="tlabel">Eau bue</div>
           <div class="tnum" id="cal-water-pct">0<small>%</small></div>
           <div class="progress-track" style="margin-top:10px;"><div class="progress-fill" id="cal-water-fill" style="width:0%"></div></div>
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-top:8px;">
-            <span class="sub-note" id="cal-water-sub">0,0 L / 3,0 L</span>
-            <span style="display:flex; gap:6px;">
-              <button class="btn" id="cal-water-minus" aria-label="Retirer 250ml">−250ml</button>
-              <button class="btn btn-primary" id="cal-water-plus" aria-label="Ajouter 250ml">+250ml</button>
-            </span>
-          </div>
+          <div class="sub-note" id="cal-water-sub" style="margin-top:6px;">0,0 L / 3,0 L</div>
         </div>
+      </div>
+      <!-- Les deux boutons d'eau sont sortis de la tuile : a 390 px la tuile fait 118 px de
+           large et ne peut pas les porter. Dehors, ils gardent leur cible tactile partout. -->
+      <div id="cal-water-actions" style="display:flex; gap:8px; justify-content:flex-end; margin-bottom:22px;">
+        <button class="btn" id="cal-water-minus" aria-label="Retirer 250ml">−250ml</button>
+        <button class="btn btn-primary" id="cal-water-plus" aria-label="Ajouter 250ml">+250ml</button>
       </div>
 
       <div class="panel sub-panel" id="weather-forecast-panel" hidden style="margin-bottom:14px;">
@@ -9566,7 +9586,10 @@
     var finInp = document.getElementById('goal-horizon-fin');
     if(finInp && finInp.value !== horizonState.fin) finInp.value = horizonState.fin;
     var titre = document.getElementById('goal-titre');
-    if(titre) titre.textContent = 'Objectifs — ' + moisEntre(horizonState.debut, horizonState.fin) + ' mois';
+    /* « Objectifs — 6 mois » se coupait apres « Objectifs » et laissait le tiret orphelin
+       en debut de ligne sur telephone. « sur » se coupe proprement, et l'espace insecable
+       garde « 6 mois » d'un seul tenant. */
+    if(titre) titre.textContent = 'Objectifs sur ' + moisEntre(horizonState.debut, horizonState.fin) + '\u00a0mois';
     var periode = document.getElementById('goal-periode');
     if(periode) periode.textContent = fmtDate(horizonState.debut) + ' → ' + fmtDate(horizonState.fin) + '. Mets à jour la valeur actuelle quand tu progresses.';
 
@@ -10550,8 +10573,12 @@
     if(!r || !r.total){ el.textContent = '—'; el.style.color = ''; el.title = ''; return; }
     if(!r.pire){ el.textContent = 'mois dans les clous'; el.style.color = 'var(--good)'; el.title = r.total + ' objectifs du mois, aucun en retard'; return; }
     var u = r.pire.c.unite ? ' ' + r.pire.c.unite : '';
-    el.textContent = r.pire.o.titre + ' ' + (r.pire.c.sens === '<=' ? '+' : '−') + fmtNombre(r.pire.ecart, r.pire.c.dec) + u;
-    el.style.color = 'var(--warn)';
+    /* « Révision −90,7 h » au reveil, un jour ou rien n'a encore ete saisi, ne dit pas ce
+       qu'il faut faire : il faut voir le reel ET l'attendu. Et tant que le mois est a peine
+       entame, un retard arithmetique n'est pas une alerte : la couleur reste neutre. */
+    var jeune = r.pire.c.f < 0.2;
+    el.textContent = r.pire.o.titre + ' ' + fmtNombre(r.pire.c.valeur, r.pire.c.dec) + ' / ' + fmtNombre(r.pire.c.attendu, r.pire.c.dec) + u;
+    el.style.color = jeune ? 'var(--ink-dim)' : 'var(--warn)';
     el.title = r.pire.o.titre + ' : ' + fmtNombre(r.pire.ecart, r.pire.c.dec) + u + ' de retard sur le mois — réel ' + fmtNombre(r.pire.c.valeur, r.pire.c.dec) + u + ' · attendu à ce jour ' + fmtNombre(r.pire.c.attendu, r.pire.c.dec) + u + ' · cible ' + fmtNombre(r.pire.c.cible, r.pire.c.dec) + u;
   }
   (function(){
@@ -11472,18 +11499,23 @@
     var dayScore = dayScoreFor(todayISO);
     var scoreLabel = dayScore>=85 ? 'Excellent 🔥' : dayScore>=60 ? 'Bien 👍' : dayScore>=35 ? 'Moyen' : 'À reprendre';
     var numEl = document.getElementById('dash-score-num'), uniEl = document.getElementById('dash-score-unit');
+    var lblEl = document.getElementById('dash-score-lbl');
     var coreEl = numEl.closest ? numEl.closest('.core-center') : null;
     var jourN = jourProgramme(todayISO), totalN = joursProgramme(), noteScore;
     if(jourEntame(todayISO) || jourN < 1 || jourN > totalN){
       numEl.textContent = dayScore;
       if(uniEl) uniEl.textContent = '%';
       if(coreEl) coreEl.classList.remove('rang');
+      if(lblEl) lblEl.textContent = 'Score du jour';
       noteScore = scoreLabel + ' · habitudes, nutrition, sport, eau et sommeil combinés';
     } else {
       /* Rien de saisi aujourd'hui : on annonce le rang du jour, pas une note. */
       numEl.textContent = jourN;
       if(uniEl) uniEl.textContent = '/' + totalN;
       if(coreEl) coreEl.classList.add('rang');
+      /* Le gros chiffre montre le rang du jour, pas une note : le titre doit dire la meme
+         chose, sinon « Score du jour » au-dessus de « 33/177 » se lit comme 33 sur 177. */
+      if(lblEl) lblEl.textContent = 'Jour';
       noteScore = (jourN === 1 ? 'Premier jour du programme.' : 'Jour ' + jourN + ' sur ' + totalN + '.') +
         ' Le score s’allume à la première case cochée.';
     }
@@ -11535,8 +11567,15 @@
              prévoit aucun projet cette semaine-là, et « sur 0 » ne veut rien dire */
           (ch.proj ? ' · <b>' + hh(sem.proj.restant) + '</b> de projets sur ' + fmtHeures(ch.proj) : '') +
           (ch.es ? ' · <b>' + hh(sem.es.restant) + '</b> d\'espagnol sur ' + fmtHeures(ch.es) : '') +
-          ' · <b>' + sem.jours + '</b> jour' + (sem.jours > 1 ? 's' : '') + ' (soit ~' +
-          hh((sem.rev.restant + sem.proj.restant + sem.es.restant) / sem.jours) + '/jour)';
+          ' · <b>' + sem.jours + '</b> jour' + (sem.jours > 1 ? 's' : '') + ' ' +
+          (function(){
+            var du = sem.rev.restant + sem.proj.restant + sem.es.restant, cap = sem.capacite;
+            /* Quand ce qui reste a faire depasse ce que la grille ouvre encore, le rythme
+               moyen n'a plus de sens : on dit le manque, et on dit ou couper. */
+            if(cap > 0 && du > cap + 5)
+              return '<b style="color:var(--warn);">⚠ ' + hh(du - cap) + ' de trop</b> pour les ' + hh(cap) + ' qui restent — allège.';
+            return '(soit ~' + hh(du / sem.jours) + '/jour)';
+          })();
     }
     majReacteur();
     var totalJourMin = revMin + projMin + minutesEspanol(todayISO);
@@ -12007,7 +12046,12 @@
      exactement le 9 et le 12 octobre, le 8 decembre et du 23 decembre au 6 janvier. Le lundi
      7 decembre a cours (Documentacion, 17:30) : le 6 tombe un dimanche et la Comunitat ne le
      reporte pas au lundi -- ce « pont » ne figure que dans les calendriers d'entreprise.
-     Le second semestre reste un premier jet tire du calendrier officiel des feries.
+     Le second semestre a ete verifie le 18 septembre 2026 contre le calendrier academique
+     officiel du campus d'Alicante (Calendario Academico Grado Presencial 2026-2027) : trois
+     feries y manquaient et ont ete ajoutes -- le vendredi 19 mars (San Jose), et le jeudi 8
+     et le vendredi 9 avril (Santa Faz, ferie local d'Alicante, nomme en toutes lettres sur
+     le calendrier). Les autres feries du calendrier tombent un samedi ou un dimanche et ne
+     changent donc rien a la grille : 1er novembre, 6 decembre, 1er mai.
      Le panneau « Jours sans cours » de l'onglet Calendrier ajoute et retire des dates : la
      saisie fait foi, jamais cette liste.
      L'entre-deux des semestres (20, 21 et 22 janvier) et tout ce qui suit le 4 juin n'y sont
@@ -12017,7 +12061,9 @@
     '2026-12-08',
     '2026-12-23','2026-12-24','2026-12-25','2026-12-28','2026-12-29','2026-12-30','2026-12-31',
     '2027-01-01','2027-01-04','2027-01-05','2027-01-06',
-    '2027-03-25','2027-03-26','2027-03-29','2027-03-30','2027-03-31','2027-04-01','2027-04-02','2027-04-05'
+    '2027-03-19',
+    '2027-03-25','2027-03-26','2027-03-29','2027-03-30','2027-03-31','2027-04-01','2027-04-02','2027-04-05',
+    '2027-04-08','2027-04-09'
   ];
   /* De la configuration, comme les vacances et les dates d'examen : garde au nouveau depart
      (voir REINIT_GARDER). Sans cela, la remise a zero du 14 septembre effacait ses
@@ -12889,6 +12935,34 @@
   /* Charge restante de la semaine (lundi -> dimanche) : cible hebdo moins ce qui est
      deja fait depuis lundi, et le nombre de jours qu'il reste pour l'absorber, aujourd'hui
      compris. C'est la difference entre constater et piloter. */
+  /* Combien de minutes de travail la GRILLE ouvre encore d'ici dimanche : les journees
+     entieres a venir, plus, pour aujourd'hui, les seuls blocs qui n'ont pas encore commence.
+     Sans ce plafond, « il reste tant a faire / tant de jours » pouvait annoncer 9 h 52 par
+     jour alors que la journee la plus chargee de la grille en contient 9 h 30 : un rythme
+     que rien ne permet de tenir, affiche comme un objectif normal. */
+  function capaciteRestanteSemaine(){
+    var total = 0, maintenant = now.getHours() * 60 + now.getMinutes();
+    for(var k = 0; k < 7; k++){
+      var d = new Date(lundiDe(now)); d.setDate(d.getDate() + k);
+      var iso = localISO(d);
+      if(iso < todayISO) continue;
+      var cle = cleJournee(dowDe(iso));
+      if(iso > todayISO){
+        var c = cibleJourMinutes(cle, iso);
+        total += c.rev + c.proj + (c.es || 0);
+        continue;
+      }
+      /* aujourd'hui : seulement ce qui est encore devant */
+      var plan = grilleDe(cle, iso), fin = timeToMinutes(heureCoucher(cle, iso));
+      plan.forEach(function(b, i){
+        var d0 = timeToMinutes(b[0]), d1 = (i < plan.length - 1 ? timeToMinutes(plan[i+1][0]) : fin);
+        if(d1 <= maintenant) return;
+        if(!typeBlocPlan(b[1])) return;
+        total += minutesTravail(b[1], Math.max(0, d1 - Math.max(d0, maintenant)));
+      });
+    }
+    return Math.round(total);
+  }
   function chargeRestanteSemaine(){
     var lundi = lundiDe(now), faitRev = 0, faitProj = 0, faitEs = 0;
     for(var k = 0; k < 7; k++){
@@ -12904,7 +12978,8 @@
       rev:  {fait: faitRev,  cible: ch.rev*60,  restant: Math.max(0, Math.round(ch.rev*60)  - faitRev)},
       proj: {fait: faitProj, cible: ch.proj*60, restant: Math.max(0, Math.round(ch.proj*60) - faitProj)},
       es:   {fait: faitEs,   cible: ch.es*60,   restant: Math.max(0, Math.round((ch.es||0)*60) - faitEs)},
-      jours: joursRestants
+      jours: joursRestants,
+      capacite: capaciteRestanteSemaine()
     };
   }
   /* L'objectif de sommeil était figé à 8 h alors que le coucher varie (21:55 en semaine,
