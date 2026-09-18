@@ -41,8 +41,13 @@ const ctx = await b.newContext({ viewport: { width: 1280, height: 900 } });
 const page = await ctx.newPage();
 const erreurs = [];
 page.on('console', m => { const t = m.text();
-  if (m.type() === 'error' && !/ERR_CONNECTION_RESET|ERR_CERT_AUTHORITY_INVALID|fonts\.g/.test(t)) erreurs.push(t.slice(0, 120)); });
+  if (m.type() === 'error' && !/ERR_CONNECTION_RESET|ERR_CERT_AUTHORITY_INVALID|ERR_TUNNEL_CONNECTION_FAILED|fonts\.g/.test(t)) erreurs.push(t.slice(0, 120)); });
 page.on('pageerror', e => erreurs.push('pageerror: ' + String(e).slice(0, 120)));
+/* Le bac a sable coupe tout appel sortant : ERR_TUNNEL_CONNECTION_FAILED n'est pas un
+   defaut de la page. On note quand meme l'URL visee, pour verifier qu'il s'agit bien d'un
+   connecteur externe et de rien d'autre. */
+const reseau = [];
+page.on('requestfailed', r => reseau.push(r.url().slice(0, 90) + ' · ' + (r.failure() || {}).errorText));
 await page.clock.install({ time: new Date('2026-11-27T18:00:00+01:00') });   /* vendredi */
 await page.addInitScript(s => { for (const k in s) localStorage.setItem(k, JSON.stringify(s[k])); }, seed);
 await page.goto(URL, { waitUntil: 'domcontentloaded' });
@@ -87,6 +92,8 @@ for (const o of onglets) {
 
 console.log('\n== D) Aucune erreur JavaScript sur tout le parcours ==');
 ok(erreurs.length === 0, erreurs.length ? erreurs.length + ' erreur(s) : ' + erreurs.slice(0, 3).join(' | ') : 'aucune erreur console ni pageerror');
+console.log('  --   requetes sortantes coupees par le bac a sable : ' + (reseau.length ? reseau.join('\n       ') : 'aucune'));
+ok(reseau.every(u => !/127\.0\.0\.1|localhost/.test(u)), 'aucune requete LOCALE en echec (celles vers l\'exterieur sont normales ici)');
 
 await b.close();
 console.log(ko ? '\n' + ko + ' ECHEC(S)' : '\nTOUT VERT');
