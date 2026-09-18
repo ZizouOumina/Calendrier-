@@ -82,10 +82,11 @@ console.log('\n== 231) Phase 1 (mercredi 16 septembre) : blocs Projets perso ren
     semaine: [...document.querySelectorAll('#week-cal .week-cal-day')].map(d => [...d.querySelectorAll('.wc-label')].map(x => x.textContent).filter(t => /Español/.test(t)).length)
   }));
   ok(/Español · phase 1/.test(cal.label), 'libellé du calendrier : ' + cal.label);
-  /* Le mercredi, 11:20 est un APPROFONDISSEMENT depuis le 18 septembre. Le 16 septembre
-     précède le plan (première séance le 19) : la consigne annonce un créneau de réserve,
-     avec le protocole d'une séance. */
-  ok(cal.now === 'Approfondir' && /réserve/.test(cal.consigne) && /teach-back/.test(cal.consigne), 'bloc MAINTENANT = Approfondir, consigne affichée (' + cal.now + ')');
+  /* Le mercredi, 11:20 est un APPROFONDISSEMENT depuis le 18 septembre. Le créneau ne dit
+     que l'heure : la consigne rappelle que le sujet est libre, donne le protocole, et exige
+     la saisie à la fin — c'est elle qui déclenche les rappels. */
+  ok(cal.now === 'Approfondir' && /toi qui le choisis/.test(cal.consigne) && /teach-back/.test(cal.consigne)
+     && /Approfondissements/.test(cal.consigne), 'bloc MAINTENANT = Approfondir, consigne affichée (' + cal.now + ')');
   ok(/Español · phase 1/.test(cal.source) && cal.semaine.every(n => n >= 1), 'vue semaine : chaque jour porte au moins un bloc Español (' + cal.semaine.join(',') + '), source « ' + cal.source + ' »');
 
   /* Objectifs d'espagnol : calculés depuis les blocs Español de la grille (T1 ≈ 138 h,

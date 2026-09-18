@@ -398,6 +398,14 @@
   .add-form input[type="date"]{width:132px;}
 
   .entry-list{list-style:none; margin:0; padding:0; display:flex; flex-direction:column;}
+  /* Approfondissements : le sujet est une phrase, pas un nombre — le champ prend la place
+     que .add-form donne par defaut aux petits champs chiffres (120 px). Et les badges de
+     note restent colles au bouton de suppression, sinon la croix part seule a la ligne. */
+  #appro-panel .add-form{margin-bottom:0;}
+  #appro-panel .add-form .f:first-child{flex:1 1 280px;}
+  #appro-panel #appro-sujet{width:100%;}
+  #appro-panel .entry-row{align-items:flex-start;}
+  .appro-fin{display:flex; align-items:center; gap:6px; flex:0 0 auto; margin-left:auto; flex-wrap:nowrap;}
   .entry-row{display:flex; align-items:center; gap:12px; padding:10px 0; border-bottom:1px solid var(--border-soft); font-size:13px; color:var(--ink-dim);}
   .entry-row:last-child{border-bottom:none;}
   .entry-row .ecell{flex:1; min-width:0;}
@@ -8851,9 +8859,9 @@
             '<span class="ecell" style="flex:1 1 200px;"><b>' + escapeHtml(e.sujet) + '</b>' +
             '<span class="sub-note" style="display:block; font-size:11.5px;">approfondi le ' + fmtDate(e.date) + ' · ' + etat +
             (faible ? ' · <b style="color:var(--warn);">à repasser</b>' : '') + '</span></span>' +
-            '<span class="ecell small" style="display:flex; gap:4px; align-items:center; flex-wrap:wrap;">' +
-            notes.map(function(n){ return '<span title="J+' + n.lag + ', le ' + fmtDate(n.d) + '">' + badgeNote(n.n) + '</span>'; }).join('') + '</span>' +
-            '<button class="edel" type="button" data-appro-del="' + e.id + '" aria-label="Retirer ' + escapeHtml(e.sujet) + '">×</button></li>';
+            '<span class="appro-fin">' +
+            notes.map(function(n){ return '<span title="J+' + n.lag + ', le ' + fmtDate(n.d) + '">' + badgeNote(n.n) + '</span>'; }).join('') +
+            '<button class="edel" type="button" data-appro-del="' + e.id + '" aria-label="Retirer ' + escapeHtml(e.sujet) + '">×</button></span></li>';
         }).join('') + '</ul>';
     }
 
