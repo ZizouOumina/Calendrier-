@@ -2476,6 +2476,11 @@
           <div id="appro-dus-liste"></div>
         </div>
 
+        <div id="appro-filtre-ligne" hidden style="margin-top:14px; display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+          <label for="appro-filtre" class="sub-note" style="margin:0;">N'afficher que</label>
+          <select id="appro-filtre"></select>
+        </div>
+
         <div id="appro-liste" style="margin-top:14px;"></div>
       </div>
 
@@ -8854,12 +8859,40 @@
     var c = n >= 2 ? 'gold' : 'warn';
     return '<span class="badge ' + c + '">' + n + '/3</span>';
   }
+  /* Le filtre de la liste. Volontairement NON persiste : c'est une loupe qu'on pose le
+     temps de regarder une matiere, pas un reglage. Retrouver la liste amputee trois jours
+     plus tard sans savoir pourquoi serait pire que de recliquer. */
+  var approFiltre = '';
+  function matieresSaisies(){
+    var vues = {};
+    approState.liste.forEach(function(e){ if(e && e.matiere) vues[e.matiere] = 1; });
+    return Object.keys(vues).sort(function(a, b){ return a.localeCompare(b, 'es'); });
+  }
+  function remplirFiltreAppro(){
+    var ligne = document.getElementById('appro-filtre-ligne'), sel = document.getElementById('appro-filtre');
+    if(!ligne || !sel) return;
+    var mats = matieresSaisies();
+    /* Une seule matiere suivie : filtrer n'apprend rien, la ligne reste cachee. */
+    ligne.hidden = mats.length < 2;
+    if(ligne.hidden){ approFiltre = ''; return; }
+    if(approFiltre && mats.indexOf(approFiltre) === -1) approFiltre = '';
+    sel.innerHTML = '<option value="">toutes les matières (' + approState.liste.length + ')</option>' +
+      mats.map(function(m){
+        var n = approState.liste.filter(function(e){ return e && e.matiere === m; }).length;
+        return '<option value="' + escapeHtml(m) + '">' + escapeHtml(m) + ' (' + n + ')</option>';
+      }).join('');
+    sel.value = approFiltre;
+  }
   function renderAppro(){
     var liste = document.getElementById('appro-liste');
     if(!liste) return;
     remplirMatieresAppro();
+    remplirFiltreAppro();
     var note = document.getElementById('appro-note');
     var dus = approDus(todayISO), frag = approFragiles();
+    var visibles = approFiltre
+      ? approState.liste.filter(function(e){ return e && e.matiere === approFiltre; })
+      : approState.liste;
 
     /* ce qui est du aujourd'hui */
     var bloc = document.getElementById('appro-dus-bloc');
@@ -8881,8 +8914,12 @@
     if(!approState.liste.length){
       liste.innerHTML = '<p class="sub-note" style="line-height:1.6;">Rien d\'enregistré pour l\'instant. Le premier créneau « Approfondir » est un mercredi 11:20 ou un samedi 09:20 — écris le sujet ici en sortant, et les rappels partent tout seuls.</p>';
     } else {
-      liste.innerHTML = '<p class="sub-note" style="margin-bottom:8px; font-weight:600; color:var(--ink-dim);">Tes ' + approState.liste.length + ' sujet' + (approState.liste.length > 1 ? 's' : '') + '</p>' +
-        '<ul style="list-style:none; margin:0; padding:0;">' + approState.liste.map(function(e){
+      var titre = approFiltre
+        ? visibles.length + ' sujet' + (visibles.length > 1 ? 's' : '') + ' en ' + escapeHtml(approFiltre) +
+          ' <span style="font-weight:400;">sur ' + approState.liste.length + ' au total</span>'
+        : 'Tes ' + approState.liste.length + ' sujet' + (approState.liste.length > 1 ? 's' : '');
+      liste.innerHTML = '<p class="sub-note" style="margin-bottom:8px; font-weight:600; color:var(--ink-dim);">' + titre + '</p>' +
+        '<ul style="list-style:none; margin:0; padding:0;">' + visibles.map(function(e){
           var pr = approProchain(e), notes = (e.notes || []);
           var etat = pr
             ? '<span class="sub-note" style="font-size:11.5px;">prochain : J+' + pr.lag + ' le ' + fmtDate(pr.du) + '</span>'
@@ -8898,11 +8935,18 @@
         }).join('') + '</ul>';
     }
 
+    /* Le compteur de la semaine : combien de creneaux ecoules, combien de sujets ecrits.
+       Sans lui, sauter deux mercredis d'affilee ne se voyait nulle part. */
+    var maint = new Date(), bil = bilanApproSemaine(weekRange(0), maint.getHours() * 60 + maint.getMinutes());
+    var semaine = bil.creneaux
+      ? bil.saisis + '/' + bil.creneaux + ' créneau' + (bil.creneaux > 1 ? 'x' : '') + ' cette semaine'
+      : 'aucun créneau écoulé cette semaine';
     if(note) note.textContent = approState.liste.length
       ? approState.liste.length + ' sujet' + (approState.liste.length > 1 ? 's' : '') + ' suivi' + (approState.liste.length > 1 ? 's' : '') +
+        ' · ' + semaine +
         (dus.length ? ' · ' + dus.length + ' à redire aujourd\'hui' : '') +
         (frag.length ? ' · ' + frag.length + ' à repasser' : '')
-      : 'aucun sujet enregistré';
+      : semaine.charAt(0).toUpperCase() + semaine.slice(1) + ' · aucun sujet enregistré';
 
     /* les boutons 0-3 et les suppressions, reposes a chaque rendu */
     liste.parentNode.querySelectorAll('[data-appro-note]').forEach(function(b){
@@ -9013,6 +9057,10 @@
     [tema, nom].forEach(function(c){
       c.addEventListener('keydown', function(e){ if(e.key === 'Enter'){ e.preventDefault(); poser(); } });
     });
+    /* Le filtre est pose UNE fois : renderAppro ne refait que ses options, pas l'element.
+       L'ecouter a chaque rendu empilait un gestionnaire de plus a chaque saisie. */
+    var filtre = document.getElementById('appro-filtre');
+    if(filtre) filtre.addEventListener('change', function(){ approFiltre = filtre.value; renderAppro(); });
   })();
   function renderExamens(){
     var ul = document.getElementById('examens-liste'), note = document.getElementById('examens-note');
@@ -10600,6 +10648,37 @@
       items.push({pri:2.7, icon:'\ud83e\uddfe', text:'Au retour : rel\u00e8ve le ticket de caisse \u2014 les prix affich\u00e9s sont estim\u00e9s, pas encore les tiens', action:{type:'courses'}});
     }
 
+    /* ===== Les approfondissements sur le tableau de bord =====
+       Les rappels ne vivaient que dans l'onglet Études et dans les deux consignes de bloc.
+       Un sujet pouvait donc etre du depuis trois semaines sans que rien ne le dise ici.
+       On ne les remonte pas tous les jours pour autant : le rappel se fait au bloc
+       « Réexpliquer », donc on le dit les jours qui en ont un -- et les autres jours
+       seulement quand ca traine depuis une semaine, pour qu'un oubli ne disparaisse pas. */
+    var aRedire = approDus(todayISO);
+    if(aRedire.length){
+      var jourDeRappel = (agendaDuJour(weekday) || []).some(function(b){ return b[1] === 'Réexpliquer'; });
+      var pire = aRedire.reduce(function(m, x){ return Math.max(m, x.retard || 0); }, 0);
+      if(jourDeRappel || pire >= 7){
+        items.push({pri: jourDeRappel ? 2.1 : 2.6, icon:'🔁',
+          text: aRedire.length + ' sujet' + (aRedire.length > 1 ? 's' : '') + ' à réexpliquer : ' +
+                aRedire.slice(0, 3).map(function(x){ return x.sujet + ' (J+' + x.lag + ')'; }).join(', ') +
+                (aRedire.length > 3 ? '…' : '') +
+                (pire >= 7 ? ' — le plus vieux attend depuis ' + pire + ' jours' : ''),
+          action:{type:'appro'}});
+      }
+    }
+    /* Et les jours ou un creneau « Approfondir » est au programme, on nomme d'avance les
+       sujets notes sous 2 : la consigne du bloc le dit deja, mais a 11:20, pas au reveil. */
+    var fragilesJour = approFragiles();
+    if(fragilesJour.length && creneauxApproDuJour(todayISO).length){
+      items.push({pri:2.4, icon:'🔬',
+        text:'Approfondir aujourd\'hui — reprends d\'abord ' +
+             fragilesJour.slice(0, 2).map(function(e){ return e.sujet; }).join(' et ') +
+             (fragilesJour.length > 2 ? ' (+' + (fragilesJour.length - 2) + ')' : '') +
+             ' : noté' + (fragilesJour.length > 1 ? 's' : '') + ' sous 2 au dernier passage',
+        action:{type:'appro'}});
+    }
+
     var revH = todayRevisionMinutes()/60;
     var target = revisionTarget();
     if(revH < target){
@@ -10672,6 +10751,8 @@
           '<button class="btn" data-plan-testanki-plus-tard="1" style="padding:4px 8px; font-size:11px;" title="Pas aujourd\'hui">✕</button></span>';
       } else if(it.action && it.action.type === 'examens'){
         right = '<button class="btn btn-primary" data-ouvrir="etudes" style="padding:4px 10px; font-size:11px; flex-shrink:0;">📝 Saisir</button>';
+      } else if(it.action && it.action.type === 'appro'){
+        right = '<button class="btn btn-primary" data-ouvrir="etudes" style="padding:4px 10px; font-size:11px; flex-shrink:0;">🔬 Études</button>';
       } else if(it.action && it.action.type === 'notion'){
         right = '<button class="btn" data-plan-notion="1" style="padding:4px 10px; font-size:11px; flex-shrink:0;">→ Études</button>';
       } else if(it.action && it.action.type === 'drill'){
@@ -12455,6 +12536,48 @@
      du reste de l'appli, optionsMatieres), le numero et le nom sont tapes : c'est ce qui
      evite d'ecrire « Anatomia » trois orthographes differentes sur un semestre, tout en
      laissant le tema libre -- la Batcave ne connait pas les intitules de chaque cours. */
+  /* ===== Les creneaux de la semaine =====
+     Trois par semaine aujourd'hui -- mercredi 11:20, samedi 09:20 et 10:20 -- mais on ne
+     les ecrit PAS en dur : on les lit dans la grille du jour. Un ferie, un changement de
+     semestre, une phase qui renomme un bloc se corrigent alors tout seuls, au lieu de
+     laisser un compteur annoncer « 0 sur 3 » une semaine ou il n'y en avait que deux.
+     Un creneau ne compte comme ECOULE qu'une heure apres son debut : a 11:25 un mercredi,
+     la seance de 11:20 est en cours, pas ratee. */
+  function creneauxApproDuJour(iso, nowMin){
+    iso = iso || todayISO;
+    var g = grilleDe(cleJournee(dowDe(iso)), iso) || [];
+    var h = [];
+    g.forEach(function(b, i){
+      if(b[1] !== 'Approfondir') return;
+      /* Une grille ne porte qu'UNE ligne par bloc, et le samedi « Approfondir » va de 09:20
+         a 11:20 : deux seances d'une heure, comme le dit la consigne du bloc. Le nombre de
+         seances se lit donc dans la DUREE, pas dans le nombre de lignes -- sinon le samedi
+         comptait pour un, et la semaine annoncait deux creneaux au lieu de trois. */
+      var deb = timeToMinutes(b[0]);
+      var fin = g[i + 1] ? timeToMinutes(g[i + 1][0]) : deb + 60;
+      var n = Math.max(1, Math.round((fin - deb) / 60));
+      for(var k = 0; k < n; k++) h.push(minutesToTime(deb + k * 60));
+    });
+    if(iso !== todayISO || typeof nowMin !== 'number') return h;
+    return h.filter(function(x){ return timeToMinutes(x) + 60 <= nowMin; });
+  }
+  /* Ce que la semaine a donne : combien de creneaux ecoules, combien de sujets ecrits, et
+     ce que les notes 0-3 posees pendant la semaine disent en moyenne. C'est ce triplet que
+     lisent le compteur du panneau et le constat du dimanche. */
+  function bilanApproSemaine(dates, nowMin){
+    var creneaux = 0, saisis = 0, notes = [];
+    (dates || []).forEach(function(d){
+      if(!d || d > todayISO) return;
+      creneaux += creneauxApproDuJour(d, nowMin).length;
+      approState.liste.forEach(function(e){
+        if(!e) return;
+        if(e.date === d) saisis++;
+        (e.notes || []).forEach(function(n){ if(n && n.d === d) notes.push(Number(n.n) || 0); });
+      });
+    });
+    return { creneaux: creneaux, saisis: saisis, notes: notes.length,
+             moyenne: notes.length ? notes.reduce(function(a, b){ return a + b; }, 0) / notes.length : null };
+  }
   function libelleAppro(c){
     if(typeof c === 'string') return c.trim();
     var m = (c.matiere || '').trim();
@@ -13391,7 +13514,7 @@
            saison: {debut: horizonState.debut, fin: horizonState.fin, jours: joursAvantFinSaison(), closable: saisonClosable()},
            exercice: {dernier: dernierExercice(), du: exerciceDu()}
          };
-       }; window.__bcReinitGarder = reinitGarder; window.__bcDureeSeance = dureeSeanceDe; window.__bcApproState = function(){ return approState; }; window.__bcApproDus = approDus; window.__bcApproFragiles = approFragiles; window.__bcAjouterAppro = ajouterAppro; window.__bcNoterAppro = noterAppro; window.__bcRenderAppro = renderAppro; window.__bcApproProchain = approProchain; window.__bcNumSemestre = numSemestre; window.__bcMatieresDuSemestre = matieresDuSemestre;
+       }; window.__bcReinitGarder = reinitGarder; window.__bcDureeSeance = dureeSeanceDe; window.__bcApproState = function(){ return approState; }; window.__bcApproDus = approDus; window.__bcApproFragiles = approFragiles; window.__bcAjouterAppro = ajouterAppro; window.__bcNoterAppro = noterAppro; window.__bcRenderAppro = renderAppro; window.__bcApproProchain = approProchain; window.__bcNumSemestre = numSemestre; window.__bcCreneauxAppro = creneauxApproDuJour; window.__bcBilanAppro = bilanApproSemaine; window.__bcConstats = constatsSemaine; window.__bcPlanDuJour = buildPlanDuJour; window.__bcMatieresDuSemestre = matieresDuSemestre;
     /* A4/A5 : les tests injectent une charge utile METEO de forme REELLE (relevee le
        13 septembre sur widgets-hourly-claude) et lisent la phrase produite ; ils ne
        simulent jamais le connecteur lui-meme. */
@@ -15179,6 +15302,25 @@
       var dernier = rvState.slice().reverse().filter(function(r){ return r && r.espanol; })[0];
       out.push('🇪🇸 Espagnol : ' + hh(esFait) + ' au minuteur sur ' + hh(esCible) + ' de blocs Español cette semaine.' +
         (dernier && dernier.espanol.errores !== null && dernier.espanol.errores !== undefined ? ' Dernier bilan : ' + fmtNombre(dernier.espanol.errores, 1) + ' erreurs / 100 mots.' : ' Saisis les chiffres du dimanche ci-dessous.'));
+    }
+    /* ===== Approfondir : le seul geste de l'application qui porte sur trois mois =====
+       Les notes 0-3 ne servaient qu'au drapeau « a repasser », a l'interieur du panneau.
+       Elles entrent ici : si la boucle decroche, elle decroche en silence, et ca ne se voit
+       qu'a l'examen de janvier. Le constat dit trois choses -- les creneaux tenus, ce que
+       les notes de la semaine valent, et ce qui attend d'etre repasse. */
+    var bilA = bilanApproSemaine(weekRange(0), (function(){ var d = new Date(); return d.getHours() * 60 + d.getMinutes(); })());
+    if(bilA.creneaux){
+      var manque = bilA.creneaux - bilA.saisis;
+      var pA = '🔬 Approfondir : ' + bilA.saisis + ' sujet' + (bilA.saisis > 1 ? 's' : '') + ' écrit' + (bilA.saisis > 1 ? 's' : '') +
+               ' sur ' + bilA.creneaux + ' créneau' + (bilA.creneaux > 1 ? 'x' : '') + ' écoulé' + (bilA.creneaux > 1 ? 's' : '') + '.';
+      if(manque > 0) pA += ' ' + manque + ' sans trace — séance non faite, ou saisie oubliée ?';
+      pA += bilA.notes
+        ? ' ' + bilA.notes + ' passage' + (bilA.notes > 1 ? 's' : '') + ' noté' + (bilA.notes > 1 ? 's' : '') +
+          ', moyenne ' + fmtNombre(bilA.moyenne, 1) + '/3' + (bilA.moyenne < 2 ? ' — sous 2 : ils reprennent le prochain créneau.' : '.')
+        : ' Aucun 0-3 posé cette semaine.';
+      var fragA = approFragiles();
+      if(fragA.length) pA += ' À repasser : ' + fragA.slice(0, 3).map(function(e){ return e.sujet; }).join(', ') + (fragA.length > 3 ? '…' : '') + '.';
+      out.push(pA);
     }
     var cible = objectifSommeil();
     out.push(cur.sleepH

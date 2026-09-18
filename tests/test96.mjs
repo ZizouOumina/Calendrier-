@@ -1,4 +1,4 @@
-/* ===== 296-302) Les approfondissements : des créneaux, et des rappels qui se déduisent =====
+/* ===== 296-308) Les approfondissements : des créneaux, et des rappels qui se déduisent =====
 
    La grille donne trois CRENEAUX par semaine -- mercredi 11:20, samedi 09:20 et samedi 10:20
    (le bloc du samedi matin dure deux heures, donc deux seances). Elle ne dit pas ce qu'on y
@@ -291,6 +291,164 @@ console.log('\n== 302) La Batcave apprend les temas qu\'on lui donne ==');
   }));
   ok(apres.n === 2, 'repasser sur un tema crée une seconde séance, avec ses propres J+ (' + apres.n + ')');
   ok(/2. passage/.test(apres.toast), 'et le message le dit, pour ne pas croire à un doublon — ' + apres.toast);
+  await ctx.close();
+}
+
+console.log('\n== 303) Trois créneaux par semaine, lus dans la grille ==');
+{
+  /* Le samedi ne porte qu'UNE ligne « Approfondir », de 09:20 à 11:20 : deux séances d'une
+     heure. Compter les lignes donnerait deux créneaux par semaine au lieu de trois — le
+     compte se lit donc dans la durée. */
+  const { ctx, fr } = await ouvrir('2026-09-27T20:00:00+02:00');
+  const v = await fr.evaluate(() => ({
+    mer: window.__bcCreneauxAppro('2026-09-23'),
+    sam: window.__bcCreneauxAppro('2026-09-26'),
+    lun: window.__bcCreneauxAppro('2026-09-21'),
+    dim: window.__bcCreneauxAppro('2026-09-27')
+  }));
+  ok(v.mer.join(',') === '11:20', 'mercredi : une séance à 11:20 (' + v.mer.join(',') + ')');
+  ok(v.sam.join(',') === '09:20,10:20', 'samedi : DEUX séances, 09:20 et 10:20 (' + v.sam.join(',') + ')');
+  ok(!v.lun.length && !v.dim.length, 'ni le lundi ni le dimanche');
+  ok(v.mer.length + v.sam.length === 3, 'trois créneaux dans la semaine, comme annoncé partout');
+  await ctx.close();
+}
+
+console.log('\n== 304) Le compteur de la semaine ==');
+{
+  const seed = {'batcave-appro': {seq:1, liste:[
+    {id:'a1', sujet:'Anatomía I T1 · homéostasie', matiere:'Anatomía I', tema:'1', nom:'homéostasie', date:'2026-09-23', notes:[]}
+  ]}};
+  /* Samedi 26 à 12:00 : le mercredi est passé, les deux séances du samedi aussi. Trois
+     créneaux écoulés, un seul sujet écrit. */
+  const { ctx, fr, page } = await ouvrir('2026-09-26T12:00:00+02:00', seed);
+  await fr.evaluate(() => document.querySelector('.nav-btn[data-page="etudes"]').click());
+  await page.waitForTimeout(250);
+  const v = await fr.evaluate(() => ({
+    note: document.getElementById('appro-note').textContent,
+    bil: window.__bcBilanAppro(['2026-09-21','2026-09-22','2026-09-23','2026-09-24','2026-09-25','2026-09-26','2026-09-27'], 12*60)
+  }));
+  ok(v.bil.creneaux === 3 && v.bil.saisis === 1, 'trois créneaux écoulés, un sujet écrit (' + v.bil.creneaux + '/' + v.bil.saisis + ')');
+  ok(/1\/3 créneaux cette semaine/.test(v.note), 'et le panneau l\'affiche : ' + v.note);
+
+  /* Même samedi à 11:00 : la séance de 09:20 s'est terminée à 10:20, celle de 10:20 court
+     jusqu'à 11:20 — elle est EN COURS, elle ne compte pas encore. Mercredi + une séance. */
+  const onze = await fr.evaluate(() => window.__bcBilanAppro(['2026-09-23','2026-09-26'], 11*60).creneaux);
+  ok(onze === 2, 'à 11:00, la séance en cours ne compte pas encore comme ratée (' + onze + ')');
+  const dix = await fr.evaluate(() => window.__bcBilanAppro(['2026-09-23','2026-09-26'], 10*60).creneaux);
+  ok(dix === 1, 'à 10:00, aucune des deux séances du samedi n\'est finie (' + dix + ')');
+  await ctx.close();
+}
+
+console.log('\n== 305) Le tableau de bord porte les rappels ==');
+{
+  const seed = {'batcave-appro': {seq:1, liste:[
+    {id:'a1', sujet:'Anatomía I T1 · homéostasie', matiere:'Anatomía I', tema:'1', nom:'homéostasie', date:'2026-09-23', notes:[]}
+  ]}};
+  /* J+7 tombe le 30 septembre. Le dimanche 4 octobre a un bloc « Réexpliquer » : le plan
+     du jour doit le dire. */
+  const dim = await ouvrir('2026-10-04T09:00:00+02:00', seed);
+  const a = await dim.fr.evaluate(() => ({
+    plan: window.__bcPlanDuJour().map(i => i.icon + ' ' + i.text),
+    reexp: (window.__bcGrille('weekend', '2026-10-04') || []).some(b => b[1] === 'Réexpliquer'),
+    dom: document.getElementById('dash-plan').innerText.replace(/\s+/g, ' ')
+  }));
+  ok(a.reexp, 'le dimanche a bien un bloc « Réexpliquer »');
+  ok(a.plan.some(t => /🔁/.test(t) && /réexpliquer/i.test(t)), 'le plan du jour le porte : ' + (a.plan.find(t => /🔁/.test(t)) || '—'));
+  ok(/homéostasie/.test(a.dom) && /Études/.test(a.dom), 'et il est rendu, avec le bouton vers Études');
+  await dim.ctx.close();
+
+  /* Le jeudi 1er octobre, le rappel n'est dû que depuis un jour et le jour n'a pas de bloc
+     « Réexpliquer » : on ne l'affiche pas, sinon le plan du jour devient du bruit. */
+  const jeu = await ouvrir('2026-10-01T09:00:00+02:00', seed);
+  const b = await jeu.fr.evaluate(() => ({
+    plan: window.__bcPlanDuJour().map(i => i.icon + ' ' + i.text),
+    dus: window.__bcApproDus('2026-10-01').length
+  }));
+  ok(b.dus === 1, 'le rappel est pourtant bien dû (' + b.dus + ')');
+  ok(!b.plan.some(t => /🔁/.test(t)), 'mais le plan du jour se tait : ce n\'est pas le jour du rappel');
+  await jeu.ctx.close();
+
+  /* Une semaine plus tard, ça traîne : là, il remonte, jour de rappel ou pas. */
+  const tard = await ouvrir('2026-10-08T09:00:00+02:00', seed);
+  const c = await tard.fr.evaluate(() => window.__bcPlanDuJour().map(i => i.icon + ' ' + i.text));
+  ok(c.some(t => /🔁/.test(t) && /attend depuis 8 jours/.test(t)),
+     'après huit jours de retard il remonte quand même : ' + (c.find(t => /🔁/.test(t)) || '—'));
+  await tard.ctx.close();
+}
+
+console.log('\n== 306) Un sujet fragile est annoncé le matin du créneau ==');
+{
+  const seed = {'batcave-appro': {seq:1, liste:[
+    {id:'a1', sujet:'Biología celular T2 · la membrane', matiere:'Biología celular', tema:'2', nom:'la membrane',
+     date:'2026-09-23', notes:[{lag:7, n:1, d:'2026-09-30'}]}
+  ]}};
+  const mer = await ouvrir('2026-10-07T07:30:00+02:00', seed);   /* un mercredi : créneau 11:20 */
+  const a = await mer.fr.evaluate(() => window.__bcPlanDuJour().map(i => i.icon + ' ' + i.text));
+  ok(a.some(t => /🔬/.test(t) && /membrane/.test(t) && /sous 2/.test(t)),
+     'le matin d\'un mercredi, le sujet fragile est nommé : ' + (a.find(t => /🔬/.test(t)) || '—'));
+  await mer.ctx.close();
+
+  const mar = await ouvrir('2026-10-06T07:30:00+02:00', seed);   /* un mardi : aucun créneau */
+  const b = await mar.fr.evaluate(() => window.__bcPlanDuJour().map(i => i.icon + ' ' + i.text));
+  ok(!b.some(t => /🔬/.test(t)), 'un mardi, rien : il n\'y a pas de créneau à préparer');
+  await mar.ctx.close();
+}
+
+console.log('\n== 307) Le filtre par matière ==');
+{
+  const seed = {'batcave-appro': {seq:3, liste:[
+    {id:'a1', sujet:'Anatomía I T1 · homéostasie', matiere:'Anatomía I', tema:'1', nom:'homéostasie', date:'2026-10-05', notes:[]},
+    {id:'a2', sujet:'Anatomía I T4 · le tissu osseux', matiere:'Anatomía I', tema:'4', nom:'le tissu osseux', date:'2026-10-03', notes:[]},
+    {id:'a3', sujet:'Biología celular T2 · la membrane', matiere:'Biología celular', tema:'2', nom:'la membrane', date:'2026-10-01', notes:[]}
+  ]}};
+  const { ctx, fr, page } = await ouvrir('2026-10-07T20:00:00+02:00', seed);
+  await fr.evaluate(() => document.querySelector('.nav-btn[data-page="etudes"]').click());
+  await page.waitForTimeout(250);
+  const avant = await fr.evaluate(() => ({
+    visible: !document.getElementById('appro-filtre-ligne').hidden,
+    opts: [...document.querySelectorAll('#appro-filtre option')].map(o => o.textContent),
+    n: document.querySelectorAll('#appro-liste li').length
+  }));
+  ok(avant.visible, 'deux matières suivies : la ligne de filtre apparaît');
+  ok(avant.opts.join(' | ') === 'toutes les matières (3) | Anatomía I (2) | Biología celular (1)',
+     'chaque matière annonce son compte : ' + avant.opts.join(' | '));
+  ok(avant.n === 3, 'sans filtre, les trois sujets');
+
+  await fr.selectOption('#appro-filtre', 'Anatomía I');
+  await page.waitForTimeout(200);
+  const apres = await fr.evaluate(() => ({
+    n: document.querySelectorAll('#appro-liste li').length,
+    txt: document.getElementById('appro-liste').innerText.replace(/\s+/g, ' ')
+  }));
+  ok(apres.n === 2 && !/membrane/.test(apres.txt), 'filtré : les deux d\'anatomie, et la biologie sort');
+  ok(/2 sujets en Anatomía I sur 3 au total/.test(apres.txt), 'et le titre dit sur quoi on regarde : ' + apres.txt.slice(0, 60));
+
+  /* Une seule matière : le filtre n'apprend rien, il reste caché. */
+  const seul = await ouvrir('2026-10-07T20:00:00+02:00', {'batcave-appro': {seq:1, liste:[seed['batcave-appro'].liste[2]]}});
+  await seul.fr.evaluate(() => document.querySelector('.nav-btn[data-page="etudes"]').click());
+  await seul.page.waitForTimeout(250);
+  ok(await seul.fr.evaluate(() => document.getElementById('appro-filtre-ligne').hidden),
+     'avec une seule matière suivie, la ligne de filtre reste cachée');
+  await seul.ctx.close();
+  await ctx.close();
+}
+
+console.log('\n== 308) Les notes 0-3 entrent dans la revue du dimanche ==');
+{
+  const seed = {'batcave-appro': {seq:2, liste:[
+    {id:'a1', sujet:'Anatomía I T1 · homéostasie', matiere:'Anatomía I', tema:'1', nom:'homéostasie',
+     date:'2026-09-23', notes:[{lag:7, n:1, d:'2026-09-27'}]},
+    {id:'a2', sujet:'Anatomía I T4 · le tissu osseux', matiere:'Anatomía I', tema:'4', nom:'le tissu osseux',
+     date:'2026-09-26', notes:[]}
+  ]}};
+  const { ctx, fr } = await ouvrir('2026-09-27T20:00:00+02:00', seed);
+  const c = await fr.evaluate(() => window.__bcConstats());
+  const ligne = c.find(x => /🔬/.test(x)) || '';
+  ok(ligne, 'la revue du dimanche porte une ligne Approfondir : ' + ligne);
+  ok(/2 sujets écrits sur 3 créneaux/.test(ligne), 'elle compte les créneaux tenus');
+  ok(/1 sans trace/.test(ligne), 'et nomme celui qui n\'a rien laissé');
+  ok(/moyenne 1,0\/3|moyenne 1.0\/3/.test(ligne), 'la moyenne des notes de la semaine y est : ' + ligne);
+  ok(/À repasser : Anatomía I T1/.test(ligne), 'et ce qui doit repasser est nommé');
   await ctx.close();
 }
 
