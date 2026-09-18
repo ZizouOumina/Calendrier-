@@ -13,10 +13,10 @@ let err = 0;
 const ok = (c, m) => { if(c) console.log('  ok  ' + m); else { err++; console.log('  FAIL ' + m); } };
 const EX = {'batcave-examens': {'Anatomía I':'2026-11-16','Biología':'2026-11-19','Epidemiología':'2027-01-18'}};
 const DATES = [
-  ['2026-09-17T07:00:00+02:00', {}, 'jour 1, avant Anki'], ['2026-09-17T09:25:00+02:00', {}, 'jour 1, Étudier en avance'],
-  ['2026-09-17T10:25:00+02:00', {}, 'jour 1, Exercices de calcul'], ['2026-09-17T20:35:00+02:00', {}, 'jour 1, Comprendre'],
-  ['2026-09-19T10:25:00+02:00', {}, 'samedi, Question ouverte'], ['2026-09-20T09:25:00+02:00', {}, 'dimanche, Simulation dentaire'],
-  ['2026-09-21T10:25:00+02:00', {}, 'lundi, Blanc du questionnaire'], ['2026-09-23T10:25:00+02:00', {}, 'mercredi, Question ouverte'],
+  ['2026-09-17T07:00:00+02:00', {}, 'veille du programme, avant Anki'], ['2026-09-17T09:25:00+02:00', {}, 'veille, Étudier en avance'],
+  ['2026-09-17T11:25:00+02:00', {}, 'veille, Question ouverte ou autre'], ['2026-09-19T09:25:00+02:00', {}, 'jour 1, Approfondir (1re séance)'],
+  ['2026-09-19T10:25:00+02:00', {}, 'samedi, Approfondir (2e séance)'], ['2026-09-20T09:25:00+02:00', {}, 'dimanche, Simulation dentaire'],
+  ['2026-09-21T10:25:00+02:00', {}, 'lundi, Étudier en avance'], ['2026-09-23T11:25:00+02:00', {}, 'mercredi, Approfondir'],
   ['2026-10-09T15:05:00+02:00', {}, 'vendredi 9 octobre, sans cours'], ['2026-10-12T15:05:00+02:00', {}, 'lundi 12 octobre, sans cours'],
   ['2026-10-19T11:25:00+02:00', {}, 'phase 2'], ['2026-11-10T09:25:00+01:00', EX, 'partiels'],
   ['2027-01-26T10:25:00+01:00', {}, 'semestre 2'], ['2027-03-16T11:25:00+01:00', {}, 'grille type'], ['2027-06-10T15:05:00+02:00', {}, 'été']

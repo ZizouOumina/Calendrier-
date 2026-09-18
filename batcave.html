@@ -2445,6 +2445,27 @@
       <!-- Espagnol : les heures que le minuteur enregistre sous « Español ». Elles sortent
            de « Projets perso » et ont leur propre objectif ; sans ce panneau, on ne sait pas
            où elles atterrissent. -->
+      <!-- Approfondissements : la grille donne les creneaux, lui donne le sujet, la Batcave
+           s'occupe des rappels. Trois creneaux par semaine : mercredi 11:20, samedi 09:20 et
+           samedi 10:20. -->
+      <div class="panel sub-panel" id="appro-panel">
+        <div class="sub-head"><h3>🔬 Approfondissements</h3><span class="sub-note" id="appro-note">—</span></div>
+        <p class="sub-note" style="margin-bottom:12px; line-height:1.6;">Trois créneaux par semaine : <b>mercredi 11:20</b>, <b>samedi 09:20 et 10:20</b>. Le sujet, c'est toi qui le choisis. Écris-le ici quand la séance est finie : la Batcave le représente à <b>J+7, J+30 et J+90</b> au bloc « Réexpliquer », tu te notes 0-3 à chaque passage, et sous 2 le sujet reprend le prochain créneau.</p>
+
+        <div class="add-form">
+          <div class="f" style="flex:2 1 240px;"><label for="appro-sujet">Le sujet approfondi</label><input type="text" id="appro-sujet" placeholder="ex : Anatomía T2 · hémostase et coagulation"></div>
+          <div class="f"><label for="appro-date">Le jour</label><input type="date" id="appro-date"></div>
+          <button class="btn btn-primary" id="appro-add" type="button">Enregistrer</button>
+        </div>
+
+        <div id="appro-dus-bloc" hidden style="margin-top:14px; padding:12px 14px; background:var(--surface-hover); border-radius:10px; border:1px solid var(--border);">
+          <p class="sub-note" style="margin-bottom:10px; font-weight:600; color:var(--ink);">🔁 À réexpliquer aujourd'hui — <span id="appro-dus-n">0</span></p>
+          <div id="appro-dus-liste"></div>
+        </div>
+
+        <div id="appro-liste" style="margin-top:14px;"></div>
+      </div>
+
       <div class="panel sub-panel" id="es-panel">
         <div class="sub-head"><h3>🇪🇸 Espagnol</h3><span class="sub-note" id="es-note">—</span></div>
         <p class="sub-note" style="margin-bottom:12px; line-height:1.65;">Tout ce que le minuteur enregistre sous <b style="color:var(--ink-dim);">Español</b> : les blocs de la grille pendant la phase Español (gramática, escribir, hablar, tutor, série…) et les Pomodoros Español lancés à la main. Ces heures <b style="color:var(--ink-dim);">ne comptent pas</b> dans « Projets perso » : elles ont leur propre objectif et leur propre ligne dans le bilan de la semaine.</p>
@@ -3048,6 +3069,10 @@
       <button class="edel" id="ritual-close" aria-label="Fermer" style="font-size:22px;">×</button>
     </div>
     <p class="sub-note" id="ritual-date" style="margin-bottom:16px;"></p>
+    <blockquote id="ritual-citation" style="margin:0 0 18px; padding:14px 16px; border-left:3px solid var(--accent); background:var(--surface-hover); border-radius:0 10px 10px 0;">
+      <p id="ritual-citation-texte" style="font-size:15px; line-height:1.5; color:var(--ink); margin:0 0 8px;"></p>
+      <footer id="ritual-citation-source" style="font-size:12px; color:var(--ink-dim);"></footer>
+    </blockquote>
     <div style="margin-bottom:8px;"><b style="color:var(--ink); font-size:14px;">🎯 Plan du jour</b></div>
     <ul class="mini-list" id="ritual-plan" style="margin-bottom:16px;"></ul>
     <div id="ritual-bilan-callout" hidden style="margin-bottom:16px; padding:12px 14px; background:var(--surface-hover); border-radius:10px; border:1px solid var(--border);">
@@ -4349,7 +4374,7 @@
      ni synchronisee ni rattrapee) et efface ses copies locales AVANT le rattrapage, sinon
      elles repartiraient vers le cloud. La meme remise a zero peut donc etre decidee depuis
      l'appli ou directement dans le cloud. */
-  var REINIT_GARDER = ['habits','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','habits-seed-v7','habits-seed-v8','objectifs-v5-espanol','fixed-charges','fc-prix-icloud-3','budget-limits','examens','examens-heures','journees','echeances','vacances','jours-exclus','jours-sans-cours','portes','notion-url','shopify-boutique',
+  var REINIT_GARDER = ['habits','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','habits-seed-v7','habits-seed-v8','objectifs-v5-espanol','fixed-charges','fc-prix-icloud-3','budget-limits','examens','examens-heures','journees','echeances','vacances','jours-exclus','jours-sans-cours','portes','appro','notion-url','shopify-boutique',
                        'objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','courses-plan-v3','horizon','goals-depart','saisons','gcal-ecriture','duree-bloc','dash-more','revision-fusionnee','reinit','copie-vierge'];
   var REINIT_PREFIXES_GARDER = ['pomodial-', 'coherence-ignore-'];
   function reinitGarder(cle){
@@ -8780,6 +8805,94 @@
            (m.livre ? '<p class="sub-note" style="margin-top:6px; line-height:1.55;">📕 ' + m.livre + '</p>' : '') +
            '</div>';
   }
+  /* ===== Le panneau des approfondissements =====
+     Trois choses dans un seul panneau : la saisie d'un sujet, ce qui est du a redire
+     aujourd'hui (avec les quatre boutons 0-3), et la liste de tout ce qui est suivi avec
+     son prochain rappel. Rien d'autre n'a besoin d'exister : les consignes des blocs
+     « Approfondir » et « Réexpliquer » lisent les memes fonctions. */
+  function badgeNote(n){
+    var c = n >= 2 ? 'gold' : 'warn';
+    return '<span class="badge ' + c + '">' + n + '/3</span>';
+  }
+  function renderAppro(){
+    var liste = document.getElementById('appro-liste');
+    if(!liste) return;
+    var note = document.getElementById('appro-note');
+    var dus = approDus(todayISO), frag = approFragiles();
+
+    /* ce qui est du aujourd'hui */
+    var bloc = document.getElementById('appro-dus-bloc');
+    bloc.hidden = !dus.length;
+    document.getElementById('appro-dus-n').textContent = dus.length;
+    document.getElementById('appro-dus-liste').innerHTML = dus.map(function(x){
+      return '<div class="entry-row" style="align-items:center; gap:8px; flex-wrap:wrap;">' +
+        '<span class="ecell" style="flex:1 1 200px;"><b>' + escapeHtml(x.sujet) + '</b>' +
+        '<span class="sub-note" style="display:block; font-size:11.5px;">J+' + x.lag +
+        (x.retard > 0 ? ' · dû depuis ' + x.retard + ' j' : ' · dû aujourd\'hui') + '</span></span>' +
+        '<span class="mood-row" style="gap:5px;">' +
+        [0,1,2,3].map(function(n){
+          return '<button class="btn" type="button" data-appro-note="' + n + '" data-appro-id="' + x.id +
+                 '" data-appro-lag="' + x.lag + '" style="padding:5px 11px; min-width:42px;">' + n + '</button>';
+        }).join('') + '</span></div>';
+    }).join('');
+
+    /* tout ce qui est suivi */
+    if(!approState.liste.length){
+      liste.innerHTML = '<p class="sub-note" style="line-height:1.6;">Rien d\'enregistré pour l\'instant. Le premier créneau « Approfondir » est un mercredi 11:20 ou un samedi 09:20 — écris le sujet ici en sortant, et les rappels partent tout seuls.</p>';
+    } else {
+      liste.innerHTML = '<p class="sub-note" style="margin-bottom:8px; font-weight:600; color:var(--ink-dim);">Tes ' + approState.liste.length + ' sujet' + (approState.liste.length > 1 ? 's' : '') + '</p>' +
+        '<ul style="list-style:none; margin:0; padding:0;">' + approState.liste.map(function(e){
+          var pr = approProchain(e), notes = (e.notes || []);
+          var etat = pr
+            ? '<span class="sub-note" style="font-size:11.5px;">prochain : J+' + pr.lag + ' le ' + fmtDate(pr.du) + '</span>'
+            : '<span class="sub-note" style="font-size:11.5px;">les trois rappels sont faits</span>';
+          var faible = notes.length && notes[notes.length - 1].n < 2;
+          return '<li class="entry-row" style="align-items:flex-start; gap:8px;' + (faible ? ' border-left:3px solid var(--warn); padding-left:8px;' : '') + '">' +
+            '<span class="ecell" style="flex:1 1 200px;"><b>' + escapeHtml(e.sujet) + '</b>' +
+            '<span class="sub-note" style="display:block; font-size:11.5px;">approfondi le ' + fmtDate(e.date) + ' · ' + etat +
+            (faible ? ' · <b style="color:var(--warn);">à repasser</b>' : '') + '</span></span>' +
+            '<span class="ecell small" style="display:flex; gap:4px; align-items:center; flex-wrap:wrap;">' +
+            notes.map(function(n){ return '<span title="J+' + n.lag + ', le ' + fmtDate(n.d) + '">' + badgeNote(n.n) + '</span>'; }).join('') + '</span>' +
+            '<button class="edel" type="button" data-appro-del="' + e.id + '" aria-label="Retirer ' + escapeHtml(e.sujet) + '">×</button></li>';
+        }).join('') + '</ul>';
+    }
+
+    if(note) note.textContent = approState.liste.length
+      ? approState.liste.length + ' sujet' + (approState.liste.length > 1 ? 's' : '') + ' suivi' + (approState.liste.length > 1 ? 's' : '') +
+        (dus.length ? ' · ' + dus.length + ' à redire aujourd\'hui' : '') +
+        (frag.length ? ' · ' + frag.length + ' à repasser' : '')
+      : 'aucun sujet enregistré';
+
+    /* les boutons 0-3 et les suppressions, reposes a chaque rendu */
+    liste.parentNode.querySelectorAll('[data-appro-note]').forEach(function(b){
+      b.addEventListener('click', function(){
+        noterAppro(b.dataset.approId, Number(b.dataset.approLag), Number(b.dataset.approNote), todayISO);
+        renderAppro(); renderDashboard();
+        showToast(Number(b.dataset.approNote) < 2 ? '⚠️ Sous 2 : le sujet reprend le prochain créneau Approfondir.' : '✓ Noté.');
+      });
+    });
+    liste.querySelectorAll('[data-appro-del]').forEach(function(b){
+      b.addEventListener('click', function(){ supprimerAppro(b.dataset.approDel); renderAppro(); renderDashboard(); });
+    });
+  }
+  (function(){
+    var add = document.getElementById('appro-add');
+    if(!add) return;
+    var champ = document.getElementById('appro-sujet'), jour = document.getElementById('appro-date');
+    jour.value = todayISO;
+    var poser = function(){
+      var v = (champ.value || '').trim();
+      if(!v){ showToast('Écris le sujet que tu viens d\'approfondir.'); champ.focus(); return; }
+      var d = jour.value && /^\d{4}-\d{2}-\d{2}$/.test(jour.value) ? jour.value : todayISO;
+      if(d > todayISO){ showToast('⚠️ Un approfondissement se note après, pas avant.'); return; }
+      ajouterAppro(v, d);
+      champ.value = ''; jour.value = todayISO;
+      renderAppro(); renderDashboard();
+      showToast('✓ Enregistré. Rappels à J+7, J+30 et J+90.');
+    };
+    add.addEventListener('click', poser);
+    champ.addEventListener('keydown', function(e){ if(e.key === 'Enter'){ e.preventDefault(); poser(); } });
+  })();
   function renderExamens(){
     var ul = document.getElementById('examens-liste'), note = document.getElementById('examens-note');
     if(!ul) return;
@@ -11916,14 +12029,19 @@
       ['20:00','Dîner'],['20:30','Projets perso 6'],
       ['21:30','Collation soir'],['21:45','Douche + brossage de dents'],['21:55','Coucher']
     ],
-    /* Mercredi : jour off de sport. Le creneau de 05:30 est un bloc de PROJET depuis le
+    /* Mercredi : le 11:20 n'est pas une question ouverte mais un APPROFONDISSEMENT, depuis
+       le 18 septembre. Un seul par semaine (le samedi) ne couvrait qu'un tema sur cinq ; avec
+       celui-ci, trois par semaine, soit 41 creneaux au S1 pour les 33 seances que demandent
+       les 50 temas des trois matieres a 6 credits (11 Anatomia, 8 Biologia, 14 Epidemiologia). Mardi, jeudi et lundi gardent leur question
+       ouverte : trois heures d'entrainement au format d'examen par semaine, c'est le prix.
+       Jour off de sport. Le creneau de 05:30 est un bloc de PROJET depuis le
        18 septembre (demande du 18 : « les matins de mercredi aussi »). Il reste « Anki
        matinal » pendant la phase Español, jusqu'au 18 octobre : tant que les projets n'ont
        pas commence, cette heure sert la file de cartes du milieu de semaine. */
     wednesday: [
       ['05:30','Projets perso matinal'],['06:30','Douche + préparation'],['06:45','Petit-déjeuner + Coran (1 page)'],
       ['07:20','Anki 1'],['08:20','Anki 2'],
-      ['09:20','Étudier en avance'],['11:20','Question ouverte ou autre'],
+      ['09:20','Étudier en avance'],['11:20','Approfondir'],
       ['12:20','Déjeuner'],['12:40','😴 Micro-sieste'],
       ['13:00','Projets perso 1'],['14:00','Projets perso 2'],['14:50','Collation entraînement'],['15:00','Trajet cours'],['15:30','Cours'],
       ['19:30','Trajet retour'],['20:00','Dîner'],['20:30','Clore le cours du jour'],['21:10','Temps libre'],
@@ -11953,8 +12071,9 @@
       ['19:30','Temps libre'],['20:30','Collation soir'],
       ['20:45','Douche + brossage de dents'],['21:00','Coucher']
     ],
-    /* Samedi : « Approfondir » sur les deux heures du matin (un sujet de la liste des dix,
-       lecture dans la reference, teach-back enregistre, cartes de mecanisme). */
+    /* Samedi : « Approfondir » sur les deux heures du matin, soit DEUX seances d'une heure,
+       09:20 et 10:20 : dureeBlocAuto rend min(rythmeBloc, bloc) = 55 min, donc deux sessions
+       tiennent naturellement dans le bloc de deux heures, sans avoir a le decouper. */
     saturday: [
       ['05:30','Sport'],['06:30','Douche + préparation'],['06:45','Petit-déjeuner + Coran (1 page)'],
       ['07:20','Anki 1'],['08:20','Anki 2'],
@@ -12152,18 +12271,108 @@
      description. Une consigne peut varier selon le jour (0 = dimanche … 6 = samedi) : la
      cle du jour, sinon « defaut ». Les memes textes sont dans les series recurrentes de
      l'agenda Google (titres « 🦇 Bloc · consigne courte »). */
+  /* ===== Les approfondissements, et les rappels qu'ils declenchent =====
+     La grille donne des CRENEAUX -- mercredi 11:20, samedi 09:20 et samedi 10:20 (le bloc du
+     samedi matin dure deux heures, donc deux seances) : trois par semaine. Elle ne dit pas ce
+     qu'on y met. C'est lui qui choisit le sujet et qui l'ECRIT une fois la seance finie
+     (Etudes -> Approfondissements). A partir de la, la Batcave fait le reste : elle represente
+     le sujet a J+7, J+30 et J+90 au bloc « Réexpliquer », il se note 0-3 a chaque passage, et
+     un sujet note sous 2 revient au prochain creneau « Approfondir ».
+
+     Un plan de dates ecrit a l'avance a ete essaye puis retire : il obligeait a tenir a jour
+     une copie du cronograma de chaque matiere, et il se trompait des que la fac decalait un
+     cours. La saisie, elle, ne peut pas se tromper : elle enregistre ce qui a eu lieu.
+
+     Rien n'est efface par un nouveau depart (voir REINIT_GARDER) : un semestre
+     d'approfondissements est de la memoire, pas un compteur de la semaine. */
+  var RAPPELS_J = [7, 30, 90];
+  var approState = load('batcave-appro', null);
+  if(!approState || typeof approState !== 'object' || Array.isArray(approState)) approState = {seq: 0, liste: []};
+  if(!Array.isArray(approState.liste)) approState.liste = [];
+  if(typeof approState.seq !== 'number') approState.seq = approState.liste.length;
+
+  /* Les rappels dus AU PLUS TARD aujourd'hui et pas encore notes. Le plus ancien passe en
+     premier : un J+90 oublie est plus fragile qu'un J+7 du jour. */
+  function approDus(iso){
+    iso = iso || todayISO;
+    var out = [];
+    approState.liste.forEach(function(e){
+      if(!e || !e.date) return;
+      RAPPELS_J.forEach(function(lag){
+        var du = isoDecale(e.date, lag);
+        if(du > iso) return;
+        if((e.notes || []).some(function(n){ return n.lag === lag; })) return;
+        out.push({ id: e.id, sujet: e.sujet, lag: lag, du: du,
+                   retard: daysBetween(new Date(du + 'T00:00:00'), new Date(iso + 'T00:00:00')) });
+      });
+    });
+    return out.sort(function(a, b){ return b.lag - a.lag || (a.du < b.du ? -1 : a.du > b.du ? 1 : 0); });
+  }
+  /* Les sujets dont la DERNIERE note est sous 2 : ce sont eux qui reprennent un creneau. */
+  function approFragiles(){
+    return approState.liste.filter(function(e){
+      var n = (e && e.notes) || [];
+      return n.length && n[n.length - 1].n < 2;
+    });
+  }
+  function approProchain(e){
+    for(var i = 0; i < RAPPELS_J.length; i++){
+      var lag = RAPPELS_J[i];
+      if(!(e.notes || []).some(function(n){ return n.lag === lag; })) return { lag: lag, du: isoDecale(e.date, lag) };
+    }
+    return null;
+  }
+  function ajouterAppro(sujet, iso){
+    sujet = (sujet || '').trim();
+    if(!sujet) return null;
+    var e = { id: 'a' + (++approState.seq), sujet: sujet, date: iso || todayISO, notes: [] };
+    approState.liste.push(e);
+    approState.liste.sort(function(a, b){ return a.date < b.date ? 1 : a.date > b.date ? -1 : 0; });
+    save('batcave-appro', approState);
+    return e;
+  }
+  function noterAppro(id, lag, note, iso){
+    var e = approState.liste.filter(function(x){ return x.id === id; })[0];
+    if(!e) return false;
+    if(!Array.isArray(e.notes)) e.notes = [];
+    e.notes = e.notes.filter(function(n){ return n.lag !== lag; });
+    e.notes.push({ lag: lag, n: Math.max(0, Math.min(3, Number(note) || 0)), d: iso || todayISO });
+    e.notes.sort(function(a, b){ return a.lag - b.lag; });
+    save('batcave-appro', approState);
+    return true;
+  }
+  function supprimerAppro(id){
+    approState.liste = approState.liste.filter(function(x){ return x.id !== id; });
+    save('batcave-appro', approState);
+  }
+
   var CONSIGNES = {
     'Sport': "1 km en courant jusqu'au parc, allure conversation : c'est l'échauffement. Séance du jour dans l'onglet Sport, surcharge progressive : les charges à faire sont déjà calculées. La fin de séance, dans l'ordre : les abdos lestés, le cou (flexion et extension lundi et jeudi, latéral mardi), puis l'avant-bras (curl inversé lundi, curl des poignets samedi). Ces trois-là ne demandent qu'un poids en main — si le créneau déborde, ils se font à la maison le soir, jamais on ne les saute. Retour en marchant, en trottinant le mardi.",
     'Anki matinal': "Jour off de sport, jusqu'au 18 octobre : une heure de cartes de dentaire, deux Pomodoros 25 + 5. Toutes les échéances, puis les cartes des matières faibles. Le 19 octobre, ce créneau passe aux projets comme les autres — la file se vide alors dans Anki 1 et Anki 2.",
     'Projets perso matinal': "05:30, mercredi et vendredi : exécution pure d'une tâche déjà décidée la veille — montage, import, rédaction, fiches, code. Jamais une décision : à cette heure-là on exécute, on n'arbitre pas. Ce que tu feras s'écrit la veille au soir, à la clôture.",
     'Anki 1': "Toutes les échéances de dentaire, deux Pomodoros 25 + 5 sans téléphone. File vide avant la fin : cartes du cours suivant à partir des notes.",
     'Anki 2': "Suite des échéances de dentaire. Les 5 dernières minutes : échéances du paquet Business (glossaire dropshipping).",
-    'Étudier en avance': {defaut: "Deux heures, un tema que le prof n'a pas encore donné (la matière la plus loin de ses 3 d'avance). Lire les diapos en espagnol, une phrase à toi par point, « ? » dans la marge, 15-25 cartes Dentaire importées (40 en Anatomía). Puis, dans le projet Claude Dentaire : « estudia · matière Tn · tes ? » — la réponse en sept parties, la chaîne du mécanisme si le tema est dans la liste des dix, tes dix lignes en espagnol dans Notion, les cartes de la réponse importées. Pomodoro nommé « Étudier · matière Tn ». Une base qui manque (« base · notion ») passe devant tout le reste."},
+    'Étudier en avance': {defaut: "Deux heures, un tema que le prof n'a pas encore donné (la matière la plus loin de ses 3 d'avance). Lire les diapos en espagnol, une phrase à toi par point, « ? » dans la marge, 15-25 cartes Dentaire importées (40 en Anatomía). Puis, dans le projet Claude Dentaire : « estudia · matière Tn · tes ? » — la réponse en sept parties, la chaîne du mécanisme pour tout tema d'Anatomía, Biología ou Epidemiología, tes dix lignes en espagnol dans Notion, les cartes de la réponse importées. Pomodoro nommé « Étudier · matière Tn ». Une base qui manque (« base · notion ») passe devant tout le reste."},
     'Question ouverte ou autre': "Une heure de révision, à toi de choisir ce qui sert le plus cette semaine : une question ouverte d'examen rédigée en espagnol (25 min sans support, puis « examen » avec Claude : contenu, puis langue), des exercices d'Epidemiología (tableau 2×2, RR, OR, taux), le blanc du prochain questionnaire (15 questions, 20 min, livre fermé), ou la préparation d'un TP. Chaque erreur → une carte.",
     'Simulation dentaire': {0: "La semaine avant un questionnaire : son blanc complet (15 questions, 20 min, sans support, en espagnol). Sinon : 10 QCM + une question ouverte sur le dernier bloc de trois temas de Biología ou d'Epidemiología, en alternance. En décembre : un examen blanc complet (40 QCM + 4 ouvertes, 90 min), une matière par dimanche. Le premier dimanche du mois : l'examen mensuel de vingt vignettes.",
                             defaut: "Le blanc de la matière la plus proche de son échéance, en conditions réelles, sans support, corrigé ensuite : une carte par erreur."},
-    'Réexpliquer': "Les sujets approfondis qui reviennent aujourd'hui (J+7, J+30, J+90 : la liste est dans « Le calendrier du S1 »). Chacun : quatre minutes au téléphone, sans notes, la chaîne complète — quoi, pourquoi, comment, quand ce n'est pas vrai, et au fauteuil. Compare à ton premier enregistrement, note-toi 0-3. Sous 2, le sujet repasse samedi prochain en Approfondir.",
-    'Approfondir': "Un seul sujet de la liste des dix (Dental Mastery OS, section 04), dans l'ordre où la fac le donne. 45 min de lecture dans la référence (Guyton, Karp, Greenhalgh, Abbas), 30 min de teach-back enregistré en espagnol, sans notes, 15 min de cartes de mécanisme (cloze en chaîne), 30 min de vignettes (« profundiza · sujet » dans le projet Dentaire). L'enregistrement se garde : Réexpliquer le réécoute. Pomodoro « Approfondir · sujet ».",
+    /* Ce qui est du aujourd'hui se deduit de ce qu'il a ENREGISTRE, pas d'un plan ecrit
+       d'avance : J+7, J+30 et J+90 apres chaque approfondissement saisi. */
+    'Réexpliquer': function(dow, iso){
+      var socle = " Chacun : quatre minutes au téléphone, sans notes, la chaîne complète — quoi, pourquoi, comment, quand ce n'est pas vrai, et au fauteuil. Compare à ton premier enregistrement, puis note-toi 0-3 dans Études → Approfondissements. Sous 2, le sujet reprend le prochain créneau « Approfondir ».";
+      var d = approDus(iso);
+      if(!d.length) return "Aucun rappel dû aujourd'hui : soit rien n'est encore enregistré, soit tout est à jour. Reprends le sujet que tu as le moins bien redit, ou avance sur les cartes de mécanisme." + socle;
+      return "À redire aujourd'hui (" + d.length + ") : " + d.map(function(x){ return x.sujet + ' · J+' + x.lag + (x.retard > 3 ? ' (dû depuis ' + x.retard + ' j)' : ''); }).join(' ; ') + '.' + socle;
+    },
+    /* Le créneau ne dit que l'heure : le sujet, c'est lui qui le choisit. La seule chose que
+       la Batcave impose, c'est de l'écrire à la fin — sans ça, aucun rappel ne part. */
+    'Approfondir': function(dow, iso){
+      var socle = " Une heure : 25 min de lecture dans la référence (Guyton, Karp, Greenhalgh, Abbas), 15 min de teach-back enregistré en espagnol sans notes, 10 min de cartes de mécanisme en chaîne, 10 min de vignettes (« profundiza · sujet » dans le projet Dentaire). L'enregistrement se garde : Réexpliquer le réécoute. À la fin, écris le sujet dans Études → Approfondissements — c'est ce qui déclenche J+7, J+30 et J+90.";
+      var deux = dowDe(iso) === 6 ? " Le bloc dure deux heures : DEUX séances, une par heure, 09:20 et 10:20." : "";
+      var frag = approFragiles();
+      if(frag.length) return "À repasser d'abord (noté sous 2 au dernier Réexpliquer) : " + frag.map(function(x){ return x.sujet; }).join(' ; ') + "." + deux + socle;
+      return "Le sujet, c'est toi qui le choisis : le tema que le prof vient de donner, ou celui qui te servira le plus au fauteuil." + deux + socle;
+    },
     'Lire': "Le chapitre que la réponse « estudia » du matin a indiqué : un bloc, un livre, en espagnol ou en anglais, une seule question en tête — qu'est-ce que le cours n'a pas expliqué ? Trois cartes au plus à la fin. Rien d'autre d'ouvert.",
     'Projets perso 1': {defaut: "Un devoir ou une présentation à rendre passe en premier (l'échéance la plus proche, onglet Calendrier). Sinon la boutique : la prochaine ligne non cochée du dossier e-commerce. Bloc des décisions (produit, fournisseur, pub). Pomodoro nommé « DS S<semaine> · tâche ».",
                         1: "Dossier dropshipping : la prochaine ligne non cochée. Dès que des pubs tournent, c'est le rituel du lundi (chiffres, décisions pub, opérations, argent, journal).",
@@ -13049,7 +13258,7 @@
            saison: {debut: horizonState.debut, fin: horizonState.fin, jours: joursAvantFinSaison(), closable: saisonClosable()},
            exercice: {dernier: dernierExercice(), du: exerciceDu()}
          };
-       }; window.__bcReinitGarder = reinitGarder; window.__bcDureeSeance = dureeSeanceDe;
+       }; window.__bcReinitGarder = reinitGarder; window.__bcDureeSeance = dureeSeanceDe; window.__bcApproState = function(){ return approState; }; window.__bcApproDus = approDus; window.__bcApproFragiles = approFragiles; window.__bcAjouterAppro = ajouterAppro; window.__bcNoterAppro = noterAppro; window.__bcRenderAppro = renderAppro; window.__bcApproProchain = approProchain;
     /* A4/A5 : les tests injectent une charge utile METEO de forme REELLE (relevee le
        13 septembre sur widgets-hourly-claude) et lisent la phrase produite ; ils ne
        simulent jamais le connecteur lui-meme. */
@@ -13995,7 +14204,7 @@
     document.getElementById('rev-chart').innerHTML = lineChartSVG(pts, null, 'h');
     renderMatieres();
     renderEspagnol();
-    renderExamens(); renderEvalMatieres(); renderPortes();
+    renderExamens(); renderEvalMatieres(); renderPortes(); renderAppro();
     renderAgendas();
   }
   function renderMatieres(){
@@ -15035,6 +15244,34 @@
        window.__bcManquees = journeesManquees; window.__bcTypeSuivi = typeSuiviBloc;
        window.__bcRenderPlan = renderPlanDuJour; }catch(e){}
 
+  /* ===== Les sept citations du matin =====
+     Une par jour de la semaine (0 = dimanche … 6 = samedi) : elle revient tous les sept
+     jours, ce qui est le but -- au bout d'un trimestre elle est apprise. Choisies pour
+     tenir ensemble : le reveil, la repetition, le courage, le savoir qui devient acte, la
+     duree, l'exigence envers soi, la difficulte.
+
+     Une precision d'exactitude : la phrase qu'on attribue partout a Aristote (« nous sommes
+     ce que nous faisons de maniere repetee... ») est de Will Durant, 1926. C'est la vraie
+     formulation d'Aristote qui est ici, moins frappante mais authentique. */
+  var CITATIONS_MATIN = {
+    1: { t: "Au point du jour, quand il t'en coûte de t'éveiller, aie cette pensée sous la main : c'est pour faire œuvre d'homme que je me réveille.",
+         a: 'Marc Aurèle', s: 'Pensées, V, 1' },
+    2: { t: "Les vertus, nous les acquérons en les ayant d'abord exercées. C'est en pratiquant les actions justes que nous devenons justes, les actions courageuses que nous devenons courageux.",
+         a: 'Aristote', s: 'Éthique à Nicomaque, II, 1' },
+    3: { t: "Ce n'est pas parce que les choses sont difficiles que nous n'osons pas, c'est parce que nous n'osons pas qu'elles sont difficiles.",
+         a: 'Sénèque', s: 'Lettres à Lucilius, 104' },
+    4: { t: "Le savoir sans l'acte est folie, et l'acte sans le savoir ne tient pas.",
+         a: 'Al-Ghazālī', s: 'Ayyuhā l-walad' },
+    5: { t: "L'essentiel, au ciel et sur la terre, semble-t-il, c'est qu'il y ait obéissance longtemps et dans une même direction.",
+         a: 'Nietzsche', s: 'Par-delà bien et mal, §188' },
+    6: { t: "Jusqu'à quand encore vas-tu remettre à plus tard le moment de te juger digne du meilleur ?",
+         a: 'Épictète', s: 'Manuel, §51' },
+    0: { t: "Mais tout ce qui est excellent est aussi difficile que rare.",
+         a: 'Spinoza', s: "Éthique, dernière phrase" }
+  };
+  function citationDuJour(dow){ return CITATIONS_MATIN[(dow === undefined || dow === null) ? new Date(now).getDay() : dow]; }
+  try{ window.__bcCitation = citationDuJour; }catch(e){}
+
   /* ================= RITUEL D'OUVERTURE ================= */
   (function(){
     var overlay = document.getElementById('opening-ritual-overlay');
@@ -15045,6 +15282,14 @@
     var h = now.getHours();
     document.getElementById('ritual-title').textContent = (h<12 ? 'Bonjour' : (h<18 ? 'Bon après-midi' : 'Bonsoir')) + ' 🦇';
     document.getElementById('ritual-date').textContent = dateLongue(now);
+
+    var cit = citationDuJour(weekday);
+    if(cit){
+      document.getElementById('ritual-citation-texte').textContent = '« ' + cit.t + ' »';
+      document.getElementById('ritual-citation-source').textContent = cit.a + ' · ' + cit.s;
+    } else {
+      document.getElementById('ritual-citation').hidden = true;
+    }
 
     var items = buildPlanDuJour();
     document.getElementById('ritual-plan').innerHTML = items.length ? items.slice(0,5).map(function(it){
