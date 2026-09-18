@@ -67,8 +67,11 @@ console.log('\n== 301) Les cibles du jour et de la semaine viennent de la grille
      que l'emploi du temps du semestre 1 liberait et que celui du semestre 2 reprend : le
      « Projets perso 4 » du lundi (15:00 → 16:50, 101 min de travail net, le cours du lundi
      ne commence plus a 17:30 mais a 15:30) et les « Projets perso 5 » et « 6 » du mardi soir
-     (2 x 55 min, il n'y a plus de mardi soir : le cours va jusqu'a 21:30). 211 min = 3 h 31. */
-  ok(/de projets sur 12 h 30/.test(semt), 'semestre 2, grille type : 12 h 30 de projets prévues (' + semt.slice(0, 100) + ')');
+     (2 x 55 min, il n'y a plus de mardi soir : le cours va jusqu'a 21:30). 211 min = 3 h 31.
+     12 h 30 → 14 h 18 (lot 42) : le vendredi 19 mars 2027 est San José, ferie de la Comunitat
+     Valenciana, ajoute a la liste des jours sans cours d'apres le calendrier academique. La
+     semaine du 15 au 21 mars y gagne une journee pleine, donc une plage de cours liberee. */
+  ok(/de projets sur 14 h 18/.test(semt), 'semestre 2 avec le ferie du 19 mars : 14 h 18 de projets prévues (' + semt.slice(0, 100) + ')');
   await t.ctx.close();
 }
 

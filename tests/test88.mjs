@@ -172,8 +172,10 @@ console.log('\n== 294) Le panneau « Jours sans cours » : la saisie fait foi ==
     n: document.querySelectorAll('#sans-cours-liste [data-sccours]').length,
     st: localStorage.getItem('batcave-jours-sans-cours')
   }));
-  /* lot 39 : le 7 décembre est retiré de la liste (cours de Documentación ce jour-là) */
-  ok(/22 jours à venir/.test(dep.note), 'la liste de départ : « ' + dep.note + ' »');
+  /* lot 39 : le 7 décembre est retiré de la liste (cours de Documentación ce jour-là).
+     lot 42 : 22 → 25, trois fériés en semaine que le calendrier académique officiel donne et
+     que la liste n'avait pas — le 19 mars (San José) et les 8 et 9 avril (Santa Faz). */
+  ok(/25 jours à venir/.test(dep.note), 'la liste de départ : « ' + dep.note + ' »');
   ok(dep.st === null, 'et elle ne coûte rien en stockage tant que rien n\'est saisi');
 
   /* ajouter un jour : le mardi 22 septembre, dans le programme (le 18 est avant le depart,
@@ -190,7 +192,7 @@ console.log('\n== 294) Le panneau « Jours sans cours » : la saisie fait foi ==
      'le 22 septembre devient un jour sans cours, grille comprise');
   ok(ap.st.ajoutes.length === 1 && ap.st.ajoutes[0] === '2026-09-22' && !ap.st.retires.length,
      'on ne garde que l\'écart à la liste de départ : ' + JSON.stringify(ap.st));
-  ok(/23 jours à venir/.test(ap.note), 'le relevé suit : « ' + ap.note + ' »');
+  ok(/26 jours à venir/.test(ap.note), 'le relevé suit : « ' + ap.note + ' »');
 
   /* retirer un jour de la liste de depart : le 12 octobre */
   await fr.evaluate(() => { document.getElementById('sc-date').value = '2026-10-12'; document.getElementById('sc-cours').click(); });
