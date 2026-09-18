@@ -82,11 +82,12 @@ console.log('\n== 1) Hors partiels : la matière la plus délaissée, et le moti
 }
 
 console.log('\n== 2) La boucle poids marche avec UNE pesée par lundi ==');
-/* Les huit lundis demarrent APRES le 10 octobre : avant, la balance porte encore le
+/* Les huit lundis demarrent APRES le 17 octobre (stabilisation = ANCRE_COURSES + 3
+   semaines, l'ancre etant passee au samedi 26) : avant, la balance porte encore le
    glycogene et l'eau du changement d'alimentation, et la boucle les ecarte. */
-const L = lundis('2026-10-12', 8);              /* 8 lundis, du 12 oct. au 30 nov. */
+const L = lundis('2026-10-19', 8);              /* 8 lundis, du 19 oct. au 7 dec. */
 {
-  const {ctx, page, fr} = await ouvrir(pesees(L.map(iso => [iso, 64.0])), '2026-11-30T09:40:00+01:00');
+  const {ctx, page, fr} = await ouvrir(pesees(L.map(iso => [iso, 64.0])), '2026-12-07T09:40:00+01:00');
   await fr.evaluate(() => document.querySelector('.nav-btn[data-page="repas"]').click());
   await page.waitForTimeout(500);
   const k = await fr.evaluate(() => ({note: document.getElementById('kcal-note').innerText,

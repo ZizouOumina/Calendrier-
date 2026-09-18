@@ -138,12 +138,12 @@ console.log('\n== 6) La recherche du journal ==');
 
 console.log('\n== 7) Rattrapage unique après une absence ==');
 {
-  /* lot 41 : le programme ouvre le samedi 19, donc ni le 17 ni le 18 ne sont des journees
-     manquees ; ouvert le 16, revenu le 22 : trois journees sans cloture, 19, 20 et 21 */
+  /* lot 43 : le programme ouvre le dimanche 20, donc rien avant n'est une journee
+     manquee ; ouvert le 16, revenu le 22 : deux journees sans cloture, 20 et 21 */
   const {ctx, page, fr} = await ouvrir({'batcave-last-open':'2026-09-16'}, '2026-09-22T10:00:00+02:00');
   const t = await plan(fr);
   const l = t.split('\n').filter(x=>/Absence —/.test(x))[0] || '';
-  ok(/3 journées sans clôture/.test(l), 'un seul item pour toute l\'absence : ' + l.trim().slice(0, 90));
+  ok(/2 journées sans clôture/.test(l), 'un seul item pour toute l\'absence : ' + l.trim().slice(0, 90));
   ok((t.match(/Absence —/g)||[]).length === 1, 'un seul, pas un par jour manqué');
   ok(/Rien n'a été rempli à ta place/.test(l), 'aucune donnée inventée à la place des jours manqués');
   await fr.evaluate(()=>document.querySelector('[data-plan-rattrapage]').click());

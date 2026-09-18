@@ -29,22 +29,23 @@ const HABITS = [
 const seedHab = {'batcave-habits': HABITS, 'batcave-habits-seed-v2': true, 'batcave-habits-seed-v3': true, 'batcave-habits-seed-v4': true, 'batcave-habits-seed-v5': true, 'batcave-habits-seed-v6': true, 'batcave-habits-seed-v7': true, 'batcave-habits-ecran-v2': true, 'batcave-habitlog-hebdo-v1': true};
 const cartes = fr => fr.evaluate(() => [...document.querySelectorAll('#habits-grid .card')].map(c => c.innerText.replace(/\s+/g,' ')));
 
-console.log('\n== 240) Sport : samedi 19 septembre = semaine 1 (moitié des tours), samedi 17 octobre = retest ==');
+console.log('\n== 240) Sport : dimanche 20 septembre = semaine 1 (moitié des tours), lundi 19 octobre = retest ==');
 {
-  const { ctx, fr } = await ouvrir('2026-09-19T06:30:00+02:00');
+  const { ctx, fr } = await ouvrir('2026-09-20T06:30:00+02:00');
   const r = await fr.evaluate(() => ({ debut: window.__bcProgrammeDebut, note: document.getElementById('programme-note').textContent }));
-  ok(r.debut === '2026-09-19', 'PROGRAMME_DEBUT = 2026-09-19 (' + r.debut + ')');
+  ok(r.debut === '2026-09-20', 'PROGRAMME_DEBUT = 2026-09-20 (' + r.debut + ')');
   ok(/semaine 1/.test(r.note) && /½/.test(r.note), 'note : semaine 1, tours × ½ (' + r.note + ')');
   await ctx.close();
   const s = await ouvrir('2026-09-10T06:30:00+02:00');
   const n2 = await s.fr.evaluate(() => document.getElementById('programme-note').textContent);
-  ok(/démarre le/.test(n2) && /19/.test(n2), 'avant le 19 : « démarre le 19 sept. » (' + n2 + ')');
+  ok(/démarre le/.test(n2) && /20/.test(n2), 'avant le 20 : « démarre le 20 sept. » (' + n2 + ')');
   await s.ctx.close();
-  /* la semaine de programme court du samedi au vendredi depuis le 19 : le retest tombe
-     sur la premiere seance de la semaine 5, le samedi 17, pas le lundi 12 */
-  const r5 = await ouvrir('2026-10-17T06:30:00+02:00');
+  /* La semaine de programme court du dimanche au samedi depuis le 20. Le dimanche etant
+     off, premierJourSport() met la seance de reference -- et donc le retest -- au LUNDI :
+     la semaine 5 court du 18 au 24 octobre, son retest tombe le lundi 19. */
+  const r5 = await ouvrir('2026-10-19T06:30:00+02:00');
   const n5 = await r5.fr.evaluate(() => document.getElementById('programme-note').textContent);
-  ok(/semaine 5/.test(n5) && /samedi : retest/.test(n5), 'samedi 17 octobre : semaine 5, retest tractions et dips (' + n5 + ')');
+  ok(/semaine 5/.test(n5) && /lundi : retest/.test(n5), 'lundi 19 octobre : semaine 5, retest tractions et dips (' + n5 + ')');
   await r5.ctx.close();
 }
 
