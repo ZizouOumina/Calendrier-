@@ -16,11 +16,12 @@ async function jour(quand){
   return {ctx, page, fr};
 }
 console.log('\n== tours : moitie deux semaines, puis complet ==');
-/* Le programme ouvre le samedi 19 : la semaine de programme court du samedi au vendredi.
-   S1 = 19-25 sept., S2 = 26 sept.-2 oct. (toutes deux a moitie des tours), S3 des le 3 oct. */
+/* Le programme ouvre le DIMANCHE 20 : la semaine de programme court du dimanche au samedi,
+   donc elle colle a la semaine calendaire. S1 = 20-26 sept., S2 = 27 sept.-3 oct. (toutes
+   deux a moitie des tours), S3 des le 4 oct. */
 /* Les tractions ouvrent le Haut lourd du LUNDI : on ne compare que des lundis.
-   La semaine de programme court du samedi au vendredi depuis le 19 : lundi 21 est en S1,
-   lundi 28 en S2 (toutes deux a moitie des tours), lundi 5 oct. est en S3. */
+   Depuis le depart du dimanche 20 : lundi 21 est en S1, lundi 28 en S2 (toutes deux a
+   moitie des tours), lundi 5 oct. en S3, lundi 12 en S4. */
 for (const [d, attendu, moitie] of [['2026-09-21',2,true],['2026-09-28',2,true],['2026-10-05',4,false],['2026-10-12',4,false]]) {
   const {ctx, fr} = await jour(d+'T05:35:00+02:00');
   const t = await fr.evaluate(()=>{const c=document.getElementById('dash-sport'); return c?c.innerText.replace(/\s+/g,' '):'';});
@@ -58,8 +59,10 @@ for (const [d, jour_, pesee, coupe] of [
      jour_+' : pesée '+h.pesee+' · photos '+h.photos+' · coupe '+h.cheveux+' ('+h.n+' habitudes)');
   await ctx.close();
 }
-console.log('\n== seance de reference, uniquement la premiere seance du programme (samedi 19, jour 1 ; avant, rien) ==');
-for (const [d, attendu] of [['2026-09-17',false],['2026-09-18',false],['2026-09-19',true],['2026-09-21',false]]) {
+/* Le jour 1 est le dimanche 20, qui est un jour off de sport : la seance de reference
+   glisse au lundi 21, premier jour non-Off. Ni le 19 (avant le depart) ni le 20 (off). */
+console.log('\n== seance de reference : le premier jour de SPORT du programme, lundi 21 ==');
+for (const [d, attendu] of [['2026-09-18',false],['2026-09-19',false],['2026-09-20',false],['2026-09-21',true],['2026-09-22',false]]) {
   const {ctx, fr} = await jour(d+'T05:35:00+02:00');
   const p = await fr.evaluate(()=>document.getElementById('dash-plan').innerText);
   ok(/Séance de référence/.test(p)===attendu, d+' : séance de référence dans le plan = '+/Séance de référence/.test(p));

@@ -402,8 +402,10 @@
      que .add-form donne par defaut aux petits champs chiffres (120 px). Et les badges de
      note restent colles au bouton de suppression, sinon la croix part seule a la ligne. */
   #appro-panel .add-form{margin-bottom:0;}
-  #appro-panel .add-form .f:first-child{flex:1 1 280px;}
-  #appro-panel #appro-sujet{width:100%;}
+  #appro-panel #appro-f-nom{flex:1 1 220px;}
+  #appro-panel #appro-nom{width:100%;}
+  #appro-panel #appro-tema{width:64px; text-align:center;}
+  #appro-panel #appro-matiere{min-width:150px;}
   #appro-panel .entry-row{align-items:flex-start;}
   .appro-fin{display:flex; align-items:center; gap:6px; flex:0 0 auto; margin-left:auto; flex-wrap:nowrap;}
   .entry-row{display:flex; align-items:center; gap:12px; padding:10px 0; border-bottom:1px solid var(--border-soft); font-size:13px; color:var(--ink-dim);}
@@ -2461,10 +2463,13 @@
         <p class="sub-note" style="margin-bottom:12px; line-height:1.6;">Trois créneaux par semaine : <b>mercredi 11:20</b>, <b>samedi 09:20 et 10:20</b>. Le sujet, c'est toi qui le choisis. Écris-le ici quand la séance est finie : la Batcave le représente à <b>J+7, J+30 et J+90</b> au bloc « Réexpliquer », tu te notes 0-3 à chaque passage, et sous 2 le sujet reprend le prochain créneau.</p>
 
         <div class="add-form">
-          <div class="f" style="flex:2 1 240px;"><label for="appro-sujet">Le sujet approfondi</label><input type="text" id="appro-sujet" placeholder="ex : Anatomía T2 · hémostase et coagulation"></div>
+          <div class="f" id="appro-f-mat"><label for="appro-matiere">Matière</label><select id="appro-matiere"></select></div>
+          <div class="f" id="appro-f-tema"><label for="appro-tema">Tema n°</label><input type="text" id="appro-tema" inputmode="numeric" placeholder="2"></div>
+          <div class="f" id="appro-f-nom"><label for="appro-nom">Nom du tema</label><input type="text" id="appro-nom" placeholder="ex : hémostase et coagulation"></div>
           <div class="f"><label for="appro-date">Le jour</label><input type="date" id="appro-date"></div>
           <button class="btn btn-primary" id="appro-add" type="button">Enregistrer</button>
         </div>
+        <p class="sub-note" id="appro-hint" style="margin-top:6px; font-size:11.5px;"></p>
 
         <div id="appro-dus-bloc" hidden style="margin-top:14px; padding:12px 14px; background:var(--surface-hover); border-radius:10px; border:1px solid var(--border);">
           <p class="sub-note" style="margin-bottom:10px; font-weight:600; color:var(--ink);">🔁 À réexpliquer aujourd'hui — <span id="appro-dus-n">0</span></p>
@@ -7083,7 +7088,7 @@
      tranchera. */
   var KCAL_FENETRE_J = 84, KCAL_MIN_PESEES = 4, KCAL_MIN_ETALEMENT_J = 12;
   /* ===== On ne lit pas une tendance a cheval sur deux alimentations =====
-     Avant le 19 septembre, Zizou mangeait beaucoup moins -- de l'ordre d'un tiers de ce
+     Avant le 20 septembre, Zizou mangeait beaucoup moins -- de l'ordre d'un tiers de ce
      que le plan prevoit. En passant a 3 130 kcal et 377 g de glucides, la balance monte
      de UN A TROIS KILOS en deux semaines qui ne sont ni du muscle ni du gras : le
      glycogene se remplit (chaque gramme retient environ trois grammes d'eau) et le tube
@@ -7300,20 +7305,23 @@
          extenseurs), curl des poignets samedi (flechisseurs, l'epaisseur). Les deux se
          font avec une charge en main : ils passent aussi bien au parc qu'a la maison le
          soir si le creneau du matin deborde -- meme regle que le cou. */
-  /* Le programme demarre le SAMEDI 19 septembre 2026. Le plan du semestre (un tema
+  /* Le programme demarre le DIMANCHE 20 septembre 2026. Le plan du semestre (un tema
      d'avance par jour, blancs, questions ouvertes, exercices de calcul) a remplace la
-     grille de rentree le 16 au soir ; le jeudi 17 et le vendredi 18 sont ses journees de
+     grille de rentree le 16 au soir ; du jeudi 17 au samedi 19, ce sont ses journees de
      mise en place : appartement, sommeil a remettre d'aplomb, Anki, les pages, sans blocs
-     a tenir. Du 14 au 18, aucun bloc n'est du, aucune journee n'est manquee. La semaine
-     de programme court donc du samedi au vendredi (S1 : 19-25 septembre). Le samedi est
-     un jour de sport : la premiere seance, celle de reference, tombe le jour 1, et les
-     retests des semaines 5, 10 et 15 le samedi -- premierJourSport() le deduit de la
-     date au lieu de l'ecrire en dur. Le jour 1 est aussi le premier samedi de courses
-     (ANCRE_COURSES) : le plan du jour reclame ce matin-la la copie vierge, la seance de
-     reference et l'inventaire du placard. Ce qui ne bouge PAS : le semestre 1 garde le
-     14 septembre -- c'est l'universite qui fixe la rentree, pas lui -- et les habitudes
-     du dimanche restent ancrees au 13, elles ont vraiment eu lieu ce jour-la. */
-  var PROGRAMME_DEBUT = '2026-09-19';
+     a tenir. Du 14 au 19, aucun bloc n'est du, aucune journee n'est manquee.
+
+     Le jour 1 est le DIMANCHE 20 septembre (sa decision du 18 au soir : il commence la
+     Batcave le dimanche). La semaine de programme court donc du dimanche au samedi
+     (S1 : 20-26 septembre), ce qui la fait coincider avec la semaine calendaire. Le
+     dimanche est un jour off de sport : premierJourSport() avance la seance de reference
+     -- et les retests des semaines 5, 10 et 15 -- au lundi 21, premier jour non-Off ; il
+     le deduit de la date, rien n'est ecrit en dur. Le premier samedi de courses est le 26
+     (ANCRE_COURSES) : c'est ce matin-la, et pas le jour 1, que le plan du jour reclame
+     l'inventaire du placard et le ticket de caisse. Ce qui ne bouge PAS : le semestre 1
+     garde le 14 septembre -- c'est l'universite qui fixe la rentree, pas lui -- et les
+     habitudes du dimanche restent ancrees au 13, elles ont vraiment eu lieu ce jour-la. */
+  var PROGRAMME_DEBUT = '2026-09-20';
   /* Le programme va du premier jour de cours au dernier jour de la saison (14 mars) :
      c'est la fenetre que le reacteur annonce le matin du jour 1, quand il n'y a encore
      rien a mesurer. Un « 0 % » geant le 14 au reveil n'est pas une note, c'est une
@@ -7369,9 +7377,10 @@
   }
   function facteurTours(iso){ var w = semaineProgramme(iso); return (w > 0 && w <= 2) ? 0.5 : 1; }
   /* La premiere seance du programme : le premier jour, a partir du depart, dont le type
-     n'est pas Off. Le depart tombe un samedi (Bras) : c'est le jour 1 lui-meme. Si le
-     depart retombait un jour off, la seance de reference et le jour de retest des
-     semaines 5, 10 et 15 glisseraient au premier jour de sport suivant. */
+     n'est pas Off. Le depart tombe un DIMANCHE, qui est off : la seance de reference et le
+     jour de retest des semaines 5, 10 et 15 glissent donc au lundi 21 (Haut lourd), premier
+     jour de sport du programme. Cette bascule est calculee, pas ecrite : si le depart
+     bougeait encore, elle suivrait. */
   function premierJourSport(){
     var d = new Date(PROGRAMME_DEBUT + 'T00:00:00');
     for(var i = 0; i < 7; i++){
@@ -8829,6 +8838,7 @@
   function renderAppro(){
     var liste = document.getElementById('appro-liste');
     if(!liste) return;
+    remplirMatieresAppro();
     var note = document.getElementById('appro-note');
     var dus = approDus(todayISO), frag = approFragiles();
 
@@ -8887,23 +8897,59 @@
       b.addEventListener('click', function(){ supprimerAppro(b.dataset.approDel); renderAppro(); renderDashboard(); });
     });
   }
+  /* Combien de temas compte la matiere choisie : releve dans sa guia docente (EVAL_MATIERES).
+     Affiche sous le formulaire, ca evite de chercher si on en est a T12 ou T21. */
+  function temasDeMatiere(court){
+    var m = EVAL_MATIERES.filter(function(x){ return x.court === court; })[0];
+    return m && m.temas ? m.temas : null;
+  }
+  /* La liste des matieres est celle du reste de l'appli (optionsMatieres) : une matiere
+     ajoutee a la main ailleurs apparait ici aussi, sans rien a maintenir en double.
+
+     Elle se remplit au RENDU, pas au chargement du script : matieresConnues() lit l'etat
+     des sessions, qui est initialise plus bas dans le fichier. L'appeler depuis un IIFE
+     pose a cet endroit levait « Cannot read properties of undefined » et cassait toute la
+     page -- pas seulement ce panneau. */
+  function remplirMatieresAppro(){
+    var sel = document.getElementById('appro-matiere');
+    if(!sel) return;
+    var choix = sel.value;
+    sel.innerHTML = matieresPourExamens().map(function(m){
+      return '<option value="' + escapeHtml(m) + '">' + escapeHtml(m) + '</option>';
+    }).join('');
+    if(choix) sel.value = choix;
+    majHintAppro();
+  }
+  function majHintAppro(){
+    var sel = document.getElementById('appro-matiere'), hint = document.getElementById('appro-hint');
+    if(!sel || !hint) return;
+    var n = temasDeMatiere(sel.value);
+    hint.textContent = n ? sel.value + ' compte ' + n + ' temas au programme (T1 à T' + n + ').'
+                         : 'Le numéro et le nom du tema se tapent à la main : la Batcave ne connaît pas les intitulés de chaque cours.';
+  }
   (function(){
     var add = document.getElementById('appro-add');
     if(!add) return;
-    var champ = document.getElementById('appro-sujet'), jour = document.getElementById('appro-date');
+    var sel = document.getElementById('appro-matiere'), tema = document.getElementById('appro-tema'),
+        nom = document.getElementById('appro-nom'), jour = document.getElementById('appro-date');
+    sel.addEventListener('change', majHintAppro);
     jour.value = todayISO;
     var poser = function(){
-      var v = (champ.value || '').trim();
-      if(!v){ showToast('Écris le sujet que tu viens d\'approfondir.'); champ.focus(); return; }
+      if(!(tema.value || '').trim() && !(nom.value || '').trim()){
+        showToast('Donne au moins le numéro ou le nom du tema.'); tema.focus(); return;
+      }
       var d = jour.value && /^\d{4}-\d{2}-\d{2}$/.test(jour.value) ? jour.value : todayISO;
       if(d > todayISO){ showToast('⚠️ Un approfondissement se note après, pas avant.'); return; }
-      ajouterAppro(v, d);
-      champ.value = ''; jour.value = todayISO;
+      ajouterAppro({matiere: sel.value, tema: tema.value, nom: nom.value}, d);
+      tema.value = ''; nom.value = ''; jour.value = todayISO;
       renderAppro(); renderDashboard();
       showToast('✓ Enregistré. Rappels à J+7, J+30 et J+90.');
+      tema.focus();
     };
     add.addEventListener('click', poser);
-    champ.addEventListener('keydown', function(e){ if(e.key === 'Enter'){ e.preventDefault(); poser(); } });
+    [tema, nom].forEach(function(c){
+      c.addEventListener('keydown', function(e){ if(e.key === 'Enter'){ e.preventDefault(); poser(); } });
+    });
   })();
   function renderExamens(){
     var ul = document.getElementById('examens-liste'), note = document.getElementById('examens-note');
@@ -9955,7 +10001,7 @@
      arrondit donc le besoin AU-DESSUS du conditionnement reel, et affiche les deux : ce
      qu'il prend, et ce que le plan demande. Le surplus se cuit et part en tupperware --
      quelques calories de plus ne changent rien, une rupture en milieu de semaine si.
-     Aucun stock n'est modelise : tout part de zero le samedi 19, et ce qu'il a deja se
+     Aucun stock n'est modelise : tout part de zero le samedi 26, et ce qu'il a deja se
      coche a la main dans la liste. Un fond de placard ne se calcule pas, il se regarde. */
   function arrondiPack(besoin, pas){ return Math.ceil(besoin / pas) * pas; }
   function planCoursesSemaine(ajust){
@@ -10000,7 +10046,7 @@
         art('Bananes',           B.bananes, 1, 0.18,      sep,   '\u00e0 l\'unit\u00e9', B.bananes + ' bananes'),
         art('Fruits (pommes, poires, oranges\u2026)', B.fruits, 1, 0.28, sep, '\u00e0 l\'unit\u00e9', B.fruits + ' fruits')
       ]},
-      /* Cycle de 4 semaines, ancre au samedi 19 septembre : 19/9, 17/10, 14/11, 12/12. */
+      /* Cycle de 4 semaines, ancre au samedi 26 septembre : 26/9, 24/10, 21/11, 19/12. */
       {cat:'Réserves — toutes les 4 semaines', semaines:4, ancre:ANCRE_COURSES, items:[
         art('Riz',               B.riz * 4,            1000, 1.10/1000, poids, 'paquet'),
         art('Pâtes',            (B.pates + plus) * 4,  500, 1.00/1000, poids, 'paquet'),
@@ -10035,13 +10081,15 @@
     ];
     return cat;
   }
-  /* Les categories a cycle sont ancrees sur le premier SAMEDI de courses du programme,
-     le 19 septembre : elles retombent donc toujours un jour de courses, jamais entre deux. */
-  /* Samedi 19 septembre : son jour 1 pour les repas et les courses. Tous les cycles partent
-     de la, et tombent donc toujours un samedi -- son jour de courses. Plus aucune date
-     d'exception : la semaine du 14 au 18 se mange a la va-vite, hors plan, sur ce qu'il a
-     deja en reserve. */
-  var ANCRE_COURSES = '2026-09-19';
+  /* Les categories a cycle (reserves toutes les 4 semaines, hygiene, trimestriel) sont
+     ancrees sur le premier SAMEDI de courses du programme : elles retombent donc toujours
+     un jour de courses, jamais entre deux.
+
+     Ce premier samedi est le 26 septembre, pas le 19 : le programme demarre le dimanche 20
+     (PROGRAMME_DEBUT), donc le samedi 19 tombe avant et n'est pas un jour de courses. Garder
+     le 19 aurait rendu les reserves dues un jour ou il n'achete rien, et repousse les
+     suivantes au 17 octobre. Jusqu'au 26, il mange sur ce qu'il a. */
+  var ANCRE_COURSES = '2026-09-26';
   function categorieCoursesDue(c, iso){
     var n = c.semaines || 1;
     if(n < 2) return true;
@@ -12334,10 +12382,26 @@
     }
     return null;
   }
-  function ajouterAppro(sujet, iso){
-    sujet = (sujet || '').trim();
+  /* Le libelle complet, reconstruit des trois champs. La matiere vient d'une liste (celle
+     du reste de l'appli, optionsMatieres), le numero et le nom sont tapes : c'est ce qui
+     evite d'ecrire « Anatomia » trois orthographes differentes sur un semestre, tout en
+     laissant le tema libre -- la Batcave ne connait pas les intitules de chaque cours. */
+  function libelleAppro(c){
+    if(typeof c === 'string') return c.trim();
+    var m = (c.matiere || '').trim();
+    var t = (c.tema || '').trim().replace(/^[Tt]\s*/, '');
+    var n = (c.nom || '').trim();
+    return [m, t ? 'T' + t : '', n ? '· ' + n : ''].filter(Boolean).join(' ');
+  }
+  function ajouterAppro(champs, iso){
+    var sujet = libelleAppro(champs);
     if(!sujet) return null;
     var e = { id: 'a' + (++approState.seq), sujet: sujet, date: iso || todayISO, notes: [] };
+    if(typeof champs === 'object' && champs){
+      if(champs.matiere) e.matiere = String(champs.matiere).trim();
+      if(champs.tema) e.tema = String(champs.tema).trim().replace(/^[Tt]\s*/, '');
+      if(champs.nom) e.nom = String(champs.nom).trim();
+    }
     approState.liste.push(e);
     approState.liste.sort(function(a, b){ return a.date < b.date ? 1 : a.date > b.date ? -1 : 0; });
     save('batcave-appro', approState);
