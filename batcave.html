@@ -12457,9 +12457,6 @@
                         5: "Bilan de la semaine : cases cochées, porte passée ou non, trois lignes dans le journal de bord, tâche du samedi et du dimanche matin cadrée par écrit.",
                         6: "Fiscalité F1 (apprendre) : la ligne « Apprendre » de la semaine, section 09 du dossier, à partir de la source officielle. Pomodoro « F1 ».",
                         0: "Fiscalité F3 (réviser) : relecture des fiches, 10 cartes fiscalité, tableau de maîtrise du dossier (les cinq piliers), page « ce que je sais maintenant ». Pomodoro « F3 »."},
-    'Projets perso 3': {defaut: "50 min d'un trait : une tâche courte du dossier, ou l'exercice corrigé de la semaine (correction fermée jusqu'à ta réponse). Ce bloc ne figure plus dans la grille du 18 septembre ; sa consigne reste pour les journées déjà vécues.",
-                        3: "Révision Business (50 min) : cartes du paquet Business, auto-test de la semaine à livre fermé, score noté dans le dossier, puis Claude en examinateur sur tes erreurs.",
-                        6: "Fiscalité F2 (construire) : la ligne « Construire » de la semaine, section 09 du dossier : fiche, tableau, exercice chiffré. Pomodoro « F2 »."},
     'Projets perso 4': "Lundi, 15:00-16:50, juste avant de partir en cours (hablar en phase Español). Même règle que les autres blocs de projet : "
       + "un livrable à rendre d'abord, sinon la prochaine ligne non cochée du dossier e-commerce.",
     'Projets perso 5': "Un jour sans cours, l'après-midi : même règle, un livrable d'abord, sinon la boutique.",
@@ -12469,39 +12466,30 @@
     'Temps libre': {defaut: "Libre.", 0: "10 minutes pour la revue du dimanche guidée (onglet Études), le reste est libre."},
     'Coucher': "Clôture du jour faite ? Écran off, réveil posé loin du lit."
   };
-  /* ===== Consignes des blocs Español (Dossier Español, sections 05 et 06) ===== */
+  /* ===== Consignes des blocs Español (Dossier Español, sections 05 et 06) =====
+     Ces consignes sont consultees AVANT CONSIGNES, toute l'annee : une cle qui existe ici
+     masque celle du meme nom plus haut. Elles ne portent donc que les libelles que la phase
+     es-1 cree vraiment -- gramatica, escribir, escribir largo, hablar, tutor, serie en VO,
+     simulacion, balance de la semana -- plus « Español » tout court, que le mode partiels
+     pose a la place de « Projets perso 1 ».
+
+     Dix-huit autres ont ete retirees le 18 septembre : elles venaient des trois paliers de
+     la phase d'espagnol, ramenee a un seul le meme jour. Aucun bloc ne portait plus leur
+     nom, donc aucune ne pouvait s'afficher. Si un palier revient, elles se reecrivent. */
   var CONSIGNES_ES = {
     'Español · gramática': "Le point de grammaire de la semaine (Dossier Español, section 06) : chaque règle lue → dix phrases écrites et dix dites à voix haute sur tes sujets, puis les exercices du livre corrigés à la main. Pomodoro Español « gramática ».",
-    'Español · gramática (repaso)': "Relire les règles de la semaine, refaire les exercices ratés, dix phrases par règle à voix haute.",
-    'Español · conjugación y fórmulas': "Les dix formules du jour en cartes-phrases (Español::3 Fórmulas), chacune dite à voix haute à trois personnes différentes : la conjugaison s'apprend dans les phrases, pas en drill.",
-    'Español · Anki': "Révisions du paquet Español, les cartes d'erreurs de la veille, trente mots du jour en phrase.",
-    'Español · Anki matinal': "Toutes les révisions du paquet Español, puis les cartes d'erreurs de la veille.",
-    'Español · Anki y errores': "Révisions Español, puis toutes les erreurs de la semaine en cartes à trou dans Español::0 Errores.",
-    'Español · cartas de errores': "Chaque erreur de la veille devient une carte à trou dans Español::0 Errores, code d'erreur en étiquette.",
     'Español · escribir': "Une question ouverte d'examen sur un tema vu (Claude, « examen ») : 25 min sans dictionnaire, en espagnol, puis correction en deux temps — contenu, puis langue — et une carte par erreur. C'est de la révision qui se fait en espagnol : le Pomodoro Español la compte en espagnol, l'examen de janvier la note à 50 %.",
     'Español · escribir largo': "300 mots chronométrés (30 min) sur un sujet d'examen, sans dictionnaire, puis « corrige » et les cartes d'erreurs.",
     'Español · hablar': "Quinze minutes de shadowing sur un cours d'anatomía, puis 45 min de tuteur, ou de conversation avec un compañero, ou en dictée avec Claude. Technique 4-3-2 pour finir.",
     'Español · tutor': "Séance de tuteur : 3 min de conversation, 12 min à expliquer le cours de la veille, 10 min de corrections répétées, 5 min de jeu de rôle en usted. Dix cartes d'erreurs après.",
-    'Español · preparar la clase': "Le tema de ce soir, en espagnol : les slides, quinze termes en cartes (définition en espagnol), deux questions préparées par écrit. Deux cours ce soir : 25 min chacun. Tu entres en amphi en connaissant les mots du prof.",
-    'Español · registro académico': "Le chapitre du manuel du prochain tema à préparer (Tortora pour Anatomía, Karp pour Biología, Piédrola pour Epidemiología), lu en espagnol, notes en espagnol : de l'avance dans la langue des cours.",
-    'Español · conversación real': "Une heure avec des Espagnols : intercambio, compañeros, voisins, mosquée, parc. En espagnol uniquement, jamais d'anglais ni de français. Le bloc qui fait le plus avancer.",
-    'Español · DELE': "Question ouverte longue : 300 mots en 30 min sur un tema vu, sans dictionnaire, corrigés avec « examen » (contenu, puis langue). Le DELE attend le printemps.",
-    'Español · annales': "Une question d'annale en espagnol, chronométrée, corrigée en deux temps : contenu, puis langue avec les codes d'erreur.",
     'Español · simulación': "Deux réponses de type examen en espagnol, sur deux temas vus cette semaine, 55 min sans dictionnaire, puis « examen » avec Claude : le contenu d'abord, la langue ensuite. Dimanche 20 septembre : le diagnostic (300 mots, 3 min d'oral, Kwiziq), ses trois chiffres à la clôture.",
-    'Español · simulación de examen': "Deux réponses de type examen en 55 min sans dictionnaire (« Describe la estructura de la membrana celular », « Explica las funciones de la saliva »).",
-    'Español · corrección y oral': "Cinq minutes d'oral enregistrées sur l'une des deux réponses, puis correction des trois productions par « examen », erreurs classées par code.",
-    'Español · balance de errores': "Toutes les erreurs de la semaine en cartes ; erreurs pour 100 mots comparées au diagnostic de mardi.",
     'Español · balance de la semana': "Les quatre chiffres du dimanche : erreurs pour 100 mots, minutes d'oral sans pause, pages lues, minutes de conversation. Le code d'erreur dominant devient le point de grammaire de la semaine. Saisis-les à la clôture du jour.",
-    'Español · preparar la semana 1': "Guía docente de chaque matière (programme, type d'examen, pondération), apuntes et examens des années précédentes sur Wuolah, trente termes par matière en cartes, la question à poser au premier cours écrite dans le journal.",
-    'Español · errores de la semana': "Les erreurs d'annales et les cartes ratées de la semaine → une carte de correction par cause (Dentaire), puis les erreurs d'espagnol de la semaine en cartes.",
     'Español': "Un bloc au choix selon le jour : lundi grammaire C1, mardi écrit long, mercredi lecture avec fiche de vingt mots, jeudi tuteur, vendredi écoute exigeante avec dictée, samedi DELE C1, dimanche bilan.",
-    'Déjeuner + lectura': "Vingt minutes de roman ou de presse en espagnol, livre papier, sans dictionnaire, cinq mots notés après.",
     'Español · serie en VO': "Une série espagnole sans sous-titres français (sous-titres espagnols au début, "
       + "puis plus rien). C'est le seul bloc qui t'entraîne à l'espagnol à vitesse réelle et non scolaire : "
-      + "des gens qui se coupent la parole et avalent les syllabes, comme en amphi. La ligne du journal du soir se fait en espagnol.",
-    'Serie en VO + diario en español': "Une série espagnole sans sous-titres français (sous-titres espagnols au début), puis la ligne du jour à la clôture, en espagnol."
+      + "des gens qui se coupent la parole et avalent les syllabes, comme en amphi. La ligne du journal du soir se fait en espagnol."
   };
-  /* Consignes des blocs de base pendant une periode Español (les blocs eux-memes ne bougent pas). */
+  /* Pendant la phase es-1 seulement : ces quatre-la remplacent la consigne du meme bloc. */
   var CONSIGNES_PERIODE_ES = {
     'Anki 2': "Suite des échéances de dentaire. Les 5 dernières minutes : les dix formules du jour (paquet Español).",
     'Clore le cours du jour': "Le tema a déjà été étudié le matin d'avance : vingt minutes par cours, en espagnol. « cierra » dans le projet Dentaire avec tes « ? » d'amphi, ce que le prof a souligné en cartes, la note 0-3 du cours à la clôture.",
