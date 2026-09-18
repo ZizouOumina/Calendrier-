@@ -3374,6 +3374,10 @@
     'pomodial-purge','projets','report','revision','revision-fusionnee','revue','sante','sauvegarde','sessions',
     'shopify-last-order-count','taches','timer','transactions','undo-stack','undo-toast','cloud-reload-at','cloud-toast','notion-cache','anki',
     'experiences',
+    /* Les approfondissements : ce qu'il a enregistre et les notes 0-3 des rappels.
+       Gardee au nouveau depart (REINIT_GARDER), donc elle doit etre ici aussi, sinon le
+       verificateur de cohabitation la signale comme inconnue a chaque demarrage. */
+    'appro',
     /* Cinq cles que le code ecrit depuis longtemps et que ce registre ne connaissait pas :
        le verificateur de cohabitation les signalait au demarrage comme des cles inconnues,
        une fausse alerte a chaque fois. « jours-sans-cours » et « copie-vierge » sont en plus

@@ -183,9 +183,11 @@ console.log('\n== 279) Le 19 janvier, fin du semestre 1 : la bascule se fait tou
   const src = fs.readFileSync('../batcave.html', 'utf8');
   ok(/SCHEDULES_S2/.test(src) && /2027-01-25/.test(src) && /2027-06-04/.test(src),
      'le code porte la grille du semestre 2 et ses deux bornes');
-  const fil = fs.readFileSync('../fil-des-jours.html', 'utf8');
-  ok(/2027-01-19/.test(fil) && /2027-01-25/.test(fil) && /2027-06-04/.test(fil),
-     'le fil des jours porte les trois jalons : fin du S1, début du S2, dernier cours');
+  /* « Le fil des jours » portait les trois jalons en double ; la page a été supprimée
+     (artefact et dépôt), et c'est la Batcave seule qui les tient désormais. On vérifie donc
+     qu'aucune page du dépôt n'est restée orpheline du calendrier. */
+  const pages = fs.readdirSync('..').filter(f => f.endsWith('.html'));
+  ok(!pages.includes('fil-des-jours.html'), 'le fil des jours ne traîne plus dans le dépôt (' + pages.length + ' pages)');
 }
 
 console.log('\n== 280) Six mois plus tard : la saison se clôture sans rien perdre ==');
