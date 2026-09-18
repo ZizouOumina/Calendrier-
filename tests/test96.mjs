@@ -1,4 +1,4 @@
-/* ===== 296-299) Les approfondissements : des créneaux, et des rappels qui se déduisent =====
+/* ===== 296-302) Les approfondissements : des créneaux, et des rappels qui se déduisent =====
 
    La grille donne trois CRENEAUX par semaine -- mercredi 11:20, samedi 09:20 et samedi 10:20
    (le bloc du samedi matin dure deux heures, donc deux seances). Elle ne dit pas ce qu'on y
@@ -66,15 +66,15 @@ console.log('\n== 297) Saisir un sujet : la Batcave prend le relais ==');
   ok(vide.panneau && /aucun sujet/.test(vide.note) && vide.dus, 'au départ : panneau vide, aucun rappel — ' + vide.note);
   ok(/mercredi 11:20 ou un samedi 09:20/.test(vide.invite), 'et il dit où sont les créneaux');
 
-  /* La matière se choisit dans une liste — celle du reste de l'appli — le numéro et le nom
+  /* La matière se choisit dans une liste — celle du SEMESTRE EN COURS — le numéro et le nom
      du tema se tapent : la Batcave ne connaît pas les intitulés de chaque cours. */
   const form = await fr.evaluate(() => ({
     matieres: [...document.querySelectorAll('#appro-matiere option')].map(o => o.value),
     hint: document.getElementById('appro-hint').textContent
   }));
-  ok(form.matieres.length >= 10 && form.matieres.includes('Anatomía I') && form.matieres.includes('Epidemiología'),
-     'la liste des matières est celle de l\'appli (' + form.matieres.length + ' matières)');
-  ok(/compte \d+ temas/.test(form.hint), 'et elle annonce combien de temas : ' + form.hint);
+  ok(form.matieres.length === 5 && form.matieres.includes('Anatomía I') && form.matieres.includes('Epidemiología'),
+     'en septembre, les cinq matières du S1 et rien d\'autre (' + form.matieres.join(', ') + ')');
+  ok(/temas/.test(form.hint) && /font foi/.test(form.hint), 'et le compte reste un repère, pas une limite : ' + form.hint);
 
   await fr.selectOption('#appro-matiere', 'Anatomía I');
   await fr.fill('#appro-tema', '1');
@@ -194,6 +194,103 @@ console.log('\n== 300) La citation du matin, une par jour de la semaine ==');
   ok(new Set(v.jours.map(c => c.a)).size === 7, 'sept auteurs différents : ' + v.jours.map(c => c.a).join(', '));
   ok(!v.jours.some(c => /maniere repetee|manière répétée/i.test(c.t)), 'la fausse citation d\'Aristote (Will Durant) n\'est pas là');
   ok(v.avant, 'la citation est au-dessus du Plan du jour');
+  await ctx.close();
+}
+
+console.log('\n== 301) La liste des matières suit le semestre ==');
+{
+  /* « au S1 on me laisse choisir parmi seulement les matières du premier semestre, et au S2
+     que les matières du S2 ». La source est EVAL_MATIERES, le seul endroit qui porte le
+     numéro de semestre : 5 matières au S1 (24 ECTS), 6 au S2 (36). */
+  const lire = async (quand) => {
+    const { ctx, fr, page } = await ouvrir(quand);
+    await fr.evaluate(() => document.querySelector('.nav-btn[data-page="etudes"]').click());
+    await page.waitForTimeout(200);
+    const v = await fr.evaluate(() => ({
+      opts: [...document.querySelectorAll('#appro-matiere option')].map(o => o.value),
+      hint: document.getElementById('appro-hint').textContent
+    }));
+    await ctx.close();
+    return v;
+  };
+
+  const s1 = await lire('2026-10-05T10:00:00+02:00');
+  ok(s1.opts.join('|') === 'Anatomía I|Biología celular|Epidemiología|Antropología|Documentación',
+     'octobre : les cinq du S1, 6 ECTS en tête — ' + s1.opts.join(', '));
+  ok(!s1.opts.some(m => /Bioquímica|Microbiología|Psicología|Anatomía II|Clínica|Idioma/.test(m)),
+     'aucune matière du S2 ne traîne dans la liste');
+  ok(/Semestre 1 — 5 matières/.test(s1.hint), 'et le texte sous le champ le dit : ' + s1.hint);
+
+  const s2 = await lire('2027-03-10T10:00:00+01:00');
+  ok(s2.opts.length === 6 && s2.opts.includes('Anatomía II') && s2.opts.includes('Bioquímica') &&
+     s2.opts.includes('Microbiología') && s2.opts.includes('Psicología'),
+     'mars : les six du S2 — ' + s2.opts.join(', '));
+  ok(!s2.opts.includes('Anatomía I') && !s2.opts.includes('Epidemiología') && !s2.opts.includes('Documentación'),
+     'et plus une seule du S1 : le semestre est fini, on n\'y saisit plus rien');
+  ok(/Semestre 2 — 6 matières/.test(s2.hint), 'le texte suit : ' + s2.hint);
+
+  /* Janvier : hors semestre au sens de la grille (le S2 ouvre le 25). C'est le mois des
+     examens du S1 — la liste doit rester celle du S1, pas basculer trop tôt. */
+  const jan = await lire('2027-01-12T10:00:00+01:00');
+  ok(jan.opts.includes('Anatomía I') && !jan.opts.includes('Bioquímica'),
+     'entre les deux semestres, en pleins examens du S1, la liste reste au S1 — ' + jan.opts.join(', '));
+}
+
+console.log('\n== 302) La Batcave apprend les temas qu\'on lui donne ==');
+{
+  /* « tu connais même pas tous les temas que j'ai » — non, et aucune guía ne les donne.
+     Elle les apprend donc de la saisie : le nom déjà tapé pour un numéro revient tout seul,
+     et la liste des numéros déjà approfondis s'affiche sous le champ. */
+  const seed = {'batcave-appro': {seq:2, liste:[
+    {id:'a1', sujet:'Anatomía I T4 · le tissu osseux', matiere:'Anatomía I', tema:'4', nom:'le tissu osseux', date:'2026-10-01', notes:[]},
+    {id:'a2', sujet:'Biología celular T2 · la membrane', matiere:'Biología celular', tema:'2', nom:'la membrane', date:'2026-10-03', notes:[]}
+  ]}};
+  const { ctx, fr, page } = await ouvrir('2026-10-07T10:00:00+02:00', seed);
+  await fr.evaluate(() => document.querySelector('.nav-btn[data-page="etudes"]').click());
+  await page.waitForTimeout(250);
+
+  const anat = await fr.evaluate(() => ({
+    hint: document.getElementById('appro-hint').textContent,
+    dl: [...document.querySelectorAll('#appro-noms option')].map(o => o.value)
+  }));
+  ok(/Déjà approfondis ici : T4/.test(anat.hint), 'Anatomía I : elle sait que le T4 est fait — ' + anat.hint);
+  ok(anat.dl.join('|') === 'le tissu osseux', 'et le champ « Nom du tema » propose ce nom-là, pas celui d\'une autre matière');
+
+  /* Retaper le numéro 4 remplit le nom tout seul. */
+  await fr.fill('#appro-tema', '4');
+  await page.waitForTimeout(120);
+  const rempli = await fr.evaluate(() => document.getElementById('appro-nom').value);
+  ok(rempli === 'le tissu osseux', 'retaper « 4 » remet le nom : ' + rempli);
+
+  /* Mais jamais par-dessus ce qui est déjà écrit. */
+  await fr.fill('#appro-nom', 'autre chose');
+  await fr.fill('#appro-tema', '4');
+  await page.waitForTimeout(120);
+  ok(await fr.evaluate(() => document.getElementById('appro-nom').value) === 'autre chose',
+     'et il n\'écrase jamais un nom déjà tapé');
+
+  /* Changer de matière change ce qu'elle propose. */
+  await fr.selectOption('#appro-matiere', 'Biología celular');
+  await page.waitForTimeout(150);
+  const bio = await fr.evaluate(() => ({
+    hint: document.getElementById('appro-hint').textContent,
+    dl: [...document.querySelectorAll('#appro-noms option')].map(o => o.value)
+  }));
+  ok(/Déjà approfondis ici : T2/.test(bio.hint) && !/T4/.test(bio.hint),
+     'Biología celular : T2, et le T4 d\'anatomie ne déborde pas — ' + bio.hint);
+  ok(bio.dl.join('|') === 'la membrane', 'la datalist suit la matière');
+
+  /* Un deuxième passage s'enregistre bien comme une séance de plus, et se dit. */
+  await fr.fill('#appro-tema', '2');
+  await fr.fill('#appro-nom', 'la membrane');
+  await fr.click('#appro-add');
+  await page.waitForTimeout(250);
+  const apres = await fr.evaluate(() => ({
+    n: window.__bcApproState().liste.filter(e => e.matiere === 'Biología celular' && e.tema === '2').length,
+    toast: (document.querySelector('.toast, #toast') || {}).textContent || ''
+  }));
+  ok(apres.n === 2, 'repasser sur un tema crée une seconde séance, avec ses propres J+ (' + apres.n + ')');
+  ok(/2. passage/.test(apres.toast), 'et le message le dit, pour ne pas croire à un doublon — ' + apres.toast);
   await ctx.close();
 }
 

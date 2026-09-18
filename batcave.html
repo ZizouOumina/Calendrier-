@@ -2465,7 +2465,7 @@
         <div class="add-form">
           <div class="f" id="appro-f-mat"><label for="appro-matiere">Matière</label><select id="appro-matiere"></select></div>
           <div class="f" id="appro-f-tema"><label for="appro-tema">Tema n°</label><input type="text" id="appro-tema" inputmode="numeric" placeholder="2"></div>
-          <div class="f" id="appro-f-nom"><label for="appro-nom">Nom du tema</label><input type="text" id="appro-nom" placeholder="ex : hémostase et coagulation"></div>
+          <div class="f" id="appro-f-nom"><label for="appro-nom">Nom du tema</label><input type="text" id="appro-nom" list="appro-noms" placeholder="ex : hémostase et coagulation"><datalist id="appro-noms"></datalist></div>
           <div class="f"><label for="appro-date">Le jour</label><input type="date" id="appro-date"></div>
           <button class="btn btn-primary" id="appro-add" type="button">Enregistrer</button>
         </div>
@@ -8758,6 +8758,28 @@
   function matieresPourExamens(){
     return optionsMatieres().filter(function(m){ return m !== MATIERE_SANS && m !== MATIERE_AUTRE; });
   }
+  /* Le numero du semestre en cours. SEMESTRES n'expose qu'un id ('s1' / 's2'), et hors
+     semestre -- l'entre-deux de janvier, l'ete -- semestreDe rend null : on retombe alors
+     sur le 2 des que le 25 janvier est passe, sur le 1 avant. Janvier reste donc au S1,
+     ce qui est exactement ce qu'il faut : c'est le mois ou on revise le S1. */
+  function numSemestre(iso){
+    iso = iso || todayISO;
+    var sem = semestreDe(iso);
+    if(sem) return sem.id === 's2' ? 2 : 1;
+    return iso >= (SEMESTRES[1] ? SEMESTRES[1].debut : '2027-01-25') ? 2 : 1;
+  }
+  /* Les matieres du semestre en cours, et elles seules : un tema de Bioquimica n'a rien a
+     faire dans la liste en octobre, un tema d'Anatomia I n'a plus a y etre en mars.
+     EVAL_MATIERES est le seul endroit qui porte le numero de semestre (releve dans les
+     onze guias docentes). Ordre : les 6 ECTS d'abord, alphabetique a l'interieur -- ce
+     sont eux qu'on approfondit, ils doivent etre en haut de la liste deroulante. */
+  function matieresDuSemestre(iso){
+    var n = numSemestre(iso);
+    return EVAL_MATIERES.filter(function(m){ return m.sem === n; })
+      .slice()
+      .sort(function(a, b){ return (b.ects - a.ects) || a.court.localeCompare(b.court, 'es'); })
+      .map(function(m){ return m.court; });
+  }
   /* Le panneau des ponderations. Le semestre en cours passe en premier et en entier ;
      l'autre est plie derriere un bouton -- il ne sert qu'a preparer, pas a travailler. */
   function renderEvalMatieres(){
@@ -8766,9 +8788,7 @@
     /* SEMESTRES n'expose pas de numero, seulement un id ('s1' / 's2'). Et hors semestre
        -- l'entre-deux de janvier, l'ete -- semestreDe rend null : on retombe alors sur le
        semestre 2 des que le 25 janvier est passe, sur le 1 avant. */
-    var sem = semestreDe(todayISO), numCourant;
-    if(sem) numCourant = sem.id === 's2' ? 2 : 1;
-    else numCourant = todayISO >= (SEMESTRES[1] ? SEMESTRES[1].debut : '2027-01-25') ? 2 : 1;
+    var numCourant = numSemestre(todayISO);
     var groupes = [numCourant, numCourant === 1 ? 2 : 1];
     var html = '';
     groupes.forEach(function(n, idx){
@@ -8902,47 +8922,91 @@
     var m = EVAL_MATIERES.filter(function(x){ return x.court === court; })[0];
     return m && m.temas ? m.temas : null;
   }
-  /* La liste des matieres est celle du reste de l'appli (optionsMatieres) : une matiere
-     ajoutee a la main ailleurs apparait ici aussi, sans rien a maintenir en double.
+  /* Ce que la Batcave sait des temas, elle le tient de toi et de rien d'autre : aucune
+     guia ne donne les intitules. Chaque saisie les lui apprend. On rend ici, pour une
+     matiere, le numero -> dernier nom saisi, du plus recent au plus ancien : ca remplit la
+     datalist du champ « Nom du tema » et ca reremplit le nom tout seul quand tu retapes un
+     numero deja vu. Le deuxieme passage sur un tema ne se retape donc pas. */
+  function temasSaisis(matiere){
+    var vus = {}, ordre = [];
+    approState.liste.slice().sort(function(a, b){ return a.date < b.date ? -1 : a.date > b.date ? 1 : 0; })
+      .forEach(function(e){
+        if(!e || (matiere && e.matiere !== matiere)) return;
+        var t = (e.tema || '').trim(), n = (e.nom || '').trim();
+        if(!t) return;
+        if(!vus[t]) ordre.push(t);
+        vus[t] = n || vus[t] || '';
+      });
+    return { noms: vus, numeros: ordre.sort(function(a, b){ return (Number(a) || 0) - (Number(b) || 0); }) };
+  }
+  /* La liste ne propose que les matieres du SEMESTRE EN COURS (matieresDuSemestre) : en
+     octobre les cinq du S1, a partir du 25 janvier les six du S2. Les anciennes fiches
+     gardent leur matiere et restent lisibles plus bas -- c'est la SAISIE qui se restreint,
+     pas l'historique.
 
-     Elle se remplit au RENDU, pas au chargement du script : matieresConnues() lit l'etat
-     des sessions, qui est initialise plus bas dans le fichier. L'appeler depuis un IIFE
-     pose a cet endroit levait « Cannot read properties of undefined » et cassait toute la
-     page -- pas seulement ce panneau. */
+     Elle se remplit au RENDU, pas au chargement du script : semestreDe() et EVAL_MATIERES
+     sont declares plus bas dans le fichier. L'appeler depuis un IIFE pose a cet endroit
+     levait « Cannot read properties of undefined » et cassait toute la page -- pas
+     seulement ce panneau. */
   function remplirMatieresAppro(){
     var sel = document.getElementById('appro-matiere');
     if(!sel) return;
-    var choix = sel.value;
-    sel.innerHTML = matieresPourExamens().map(function(m){
+    var choix = sel.value, liste = matieresDuSemestre(todayISO);
+    sel.innerHTML = liste.map(function(m){
       return '<option value="' + escapeHtml(m) + '">' + escapeHtml(m) + '</option>';
     }).join('');
-    if(choix) sel.value = choix;
+    if(choix && liste.indexOf(choix) !== -1) sel.value = choix;
     majHintAppro();
   }
   function majHintAppro(){
     var sel = document.getElementById('appro-matiere'), hint = document.getElementById('appro-hint');
     if(!sel || !hint) return;
-    var n = temasDeMatiere(sel.value);
-    hint.textContent = n ? sel.value + ' compte ' + n + ' temas au programme (T1 à T' + n + ').'
-                         : 'Le numéro et le nom du tema se tapent à la main : la Batcave ne connaît pas les intitulés de chaque cours.';
+    /* Le compte vient de la guia docente, pas de ce que le prof a reellement donne : c'est
+       un repere, jamais une limite. Le texte le dit, sinon un « 15 temas » affiche a cote
+       d'un champ libre se lit comme une contrainte. */
+    var n = temasDeMatiere(sel.value), su = temasSaisis(sel.value);
+    var dl = document.getElementById('appro-noms');
+    if(dl) dl.innerHTML = su.numeros.filter(function(t){ return su.noms[t]; })
+      .map(function(t){ return '<option value="' + escapeHtml(su.noms[t]) + '"></option>'; }).join('');
+    hint.textContent = 'Semestre ' + numSemestre(todayISO) + ' — ' + matieresDuSemestre(todayISO).length +
+      ' matières proposées. ' +
+      (su.numeros.length ? 'Déjà approfondis ici : T' + su.numeros.join(', T') + '. ' : '') +
+      (n ? 'La guía docente ' + (/^[aeiouáéíóúAEIOU]/.test(sel.value) ? 'd\'' : 'de ') + sel.value +
+           ' annonce ' + n + ' temas ; ' : '') +
+      'le numéro et le nom, c\'est toi qui les tapes — ce sont ceux de ton cours qui font foi.';
   }
   (function(){
     var add = document.getElementById('appro-add');
     if(!add) return;
     var sel = document.getElementById('appro-matiere'), tema = document.getElementById('appro-tema'),
         nom = document.getElementById('appro-nom'), jour = document.getElementById('appro-date');
-    sel.addEventListener('change', majHintAppro);
+    sel.addEventListener('change', function(){ majHintAppro(); prefillNom(); });
     jour.value = todayISO;
+    /* Retaper « 4 » dans une matiere ou le tema 4 a deja ete approfondi remet son nom. On
+       n'ecrase jamais ce qui est deja tape : le champ ne se remplit que s'il est vide. */
+    function prefillNom(){
+      if((nom.value || '').trim()) return;
+      var t = (tema.value || '').trim().replace(/^[Tt]\s*/, '');
+      var connu = temasSaisis(sel.value).noms[t];
+      if(connu) nom.value = connu;
+    }
+    tema.addEventListener('input', prefillNom);
     var poser = function(){
       if(!(tema.value || '').trim() && !(nom.value || '').trim()){
         showToast('Donne au moins le numéro ou le nom du tema.'); tema.focus(); return;
       }
       var d = jour.value && /^\d{4}-\d{2}-\d{2}$/.test(jour.value) ? jour.value : todayISO;
       if(d > todayISO){ showToast('⚠️ Un approfondissement se note après, pas avant.'); return; }
+      var tNum = (tema.value || '').trim().replace(/^[Tt]\s*/, '');
+      var repasse = !!(tNum && temasSaisis(sel.value).noms.hasOwnProperty(tNum));
       ajouterAppro({matiere: sel.value, tema: tema.value, nom: nom.value}, d);
       tema.value = ''; nom.value = ''; jour.value = todayISO;
       renderAppro(); renderDashboard();
-      showToast('✓ Enregistré. Rappels à J+7, J+30 et J+90.');
+      /* Repasser sur un tema est legitime -- c'est meme le but quand il est revenu sous 2.
+         On l'enregistre donc comme une nouvelle seance, avec ses propres J+, mais on le dit :
+         sinon deux lignes identiques dans la liste ressemblent a un doublon accidentel. */
+      showToast(repasse ? '✓ 2ᵉ passage sur ce tema — nouveaux rappels J+7, J+30, J+90.'
+                        : '✓ Enregistré. Rappels à J+7, J+30 et J+90.');
       tema.focus();
     };
     add.addEventListener('click', poser);
@@ -13321,7 +13385,7 @@
            saison: {debut: horizonState.debut, fin: horizonState.fin, jours: joursAvantFinSaison(), closable: saisonClosable()},
            exercice: {dernier: dernierExercice(), du: exerciceDu()}
          };
-       }; window.__bcReinitGarder = reinitGarder; window.__bcDureeSeance = dureeSeanceDe; window.__bcApproState = function(){ return approState; }; window.__bcApproDus = approDus; window.__bcApproFragiles = approFragiles; window.__bcAjouterAppro = ajouterAppro; window.__bcNoterAppro = noterAppro; window.__bcRenderAppro = renderAppro; window.__bcApproProchain = approProchain;
+       }; window.__bcReinitGarder = reinitGarder; window.__bcDureeSeance = dureeSeanceDe; window.__bcApproState = function(){ return approState; }; window.__bcApproDus = approDus; window.__bcApproFragiles = approFragiles; window.__bcAjouterAppro = ajouterAppro; window.__bcNoterAppro = noterAppro; window.__bcRenderAppro = renderAppro; window.__bcApproProchain = approProchain; window.__bcNumSemestre = numSemestre; window.__bcMatieresDuSemestre = matieresDuSemestre;
     /* A4/A5 : les tests injectent une charge utile METEO de forme REELLE (relevee le
        13 septembre sur widgets-hourly-claude) et lisent la phrase produite ; ils ne
        simulent jamais le connecteur lui-meme. */
