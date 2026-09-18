@@ -144,12 +144,14 @@ console.log('\n== 334b) Aucun stock n\'est supposé : il coche ce qu\'il a ==');
 
 console.log('\n== 334c) Le total du jour est calculé, jamais additionné à la main ==');
 /* J'ai annonce « ~88 EUR » deux fois pour une liste a 118,60 : une addition de tete.
-   La ligne « A prendre aujourd'hui » sort donc du code, et ce bloc la recompte
-   INDEPENDAMMENT depuis les prix affiches. Si les deux divergent, c'est un echec. */
+   Le total sort donc du code, et ce bloc le recompte INDEPENDAMMENT depuis les prix
+   affiches. Si les deux divergent, c'est un echec. Il est dans la barre du haut : la
+   ligne « A prendre aujourd'hui » a ete retiree le 18 septembre, elle etait fausse six
+   jours sur sept puisqu'il fait ses courses le samedi. */
 for (const d of ['2026-09-19', '2026-09-26', '2026-10-17', '2026-11-14']) {
   const { ctx, fr } = await jour(d + 'T10:00:00+02:00');
   const r = await fr.evaluate(() => {
-    const ligne = document.getElementById('courses-aujourdhui').innerText;
+    const ligne = document.getElementById('courses-summary').innerText;
     let n = 0, som = 0;
     document.querySelectorAll('#courses-grid .cat-card').forEach(c => {
       if(/pas cette semaine/.test(c.innerText)) return;
@@ -160,7 +162,7 @@ for (const d of ['2026-09-19', '2026-09-26', '2026-10-17', '2026-11-14']) {
         n++; som += m ? Number(m[1].replace(',', '.')) : 0;
       });
     });
-    const mn = ligne.match(/(\d+) article/), mp = ligne.match(/~([\d,]+) €/);
+    const mn = ligne.match(/(\d+) à prendre/), mp = ligne.match(/~([\d,]+) €/);
     return {n, som, annonceN: mn ? Number(mn[1]) : -1, annonceP: mp ? Number(mp[1].replace(',', '.')) : -1};
   });
   ok(r.annonceN === r.n && r.n > 0, d + ' : ' + r.n + ' articles, annoncés et comptés pareil (' + r.annonceN + ')');

@@ -2860,7 +2860,6 @@
       </div>
 
       <p class="sub-note" id="courses-plan-note" style="margin-bottom:12px; line-height:1.7;"></p>
-      <p id="courses-aujourdhui" style="margin-bottom:12px; font-size:14px; color:var(--ink);"></p>
       <div class="courses-grid" id="courses-grid"></div>
 
       <p class="sub-note" id="courses-budget" style="margin-top:16px; line-height:1.7;"></p>
@@ -10193,12 +10192,6 @@
     if(!grid) return;
     var plan = construireCourses(), ajust = ajustementKcalPour(todayISO), b = budgetCourses(plan);
     var note = document.getElementById('courses-plan-note'), budget = document.getElementById('courses-budget');
-    var auj = document.getElementById('courses-aujourdhui');
-    if(auj){
-      var a = coursesDuJour(plan);
-      auj.innerHTML = '🛒 <b>À prendre aujourd\'hui : ' + a.n + ' article' + (a.n > 1 ? 's' : '') +
-                      '</b> · <b style="color:var(--ink-dim);">' + fmtEuro(a.prix) + '</b>';
-    }
     if(note) note.innerHTML = 'Quantités arrondies au conditionnement du magasin, jamais en dessous du besoin : chaque ligne dit ce que tu prends et ce que le plan demande. Le surplus se cuit et part en tupperware. Coche ce que tu as déjà — aucun stock n\'est supposé. ' + (ajust
       ? 'Boucle poids → calories en vigueur : <b style="color:var(--ink-dim);">' + (ajust > 0 ? '+' : '') + ajust + ' kcal/jour</b>, soit ' + (grammesAjustement(ajust, 3.6) > 0 ? '+' : '') + grammesAjustement(ajust, 3.6) + ' g de pâtes crues au dîner (' + (grammesAjustement(ajust, 3.6) * 7 > 0 ? '+' : '') + grammesAjustement(ajust, 3.6) * 7 + ' g sur la semaine) — déjà compté ci-dessous.'
       : 'Aucun ajustement calorique en cours : quantités du plan de base.');
@@ -10238,9 +10231,15 @@
       });
     });
   }
+  /* La barre du haut porte le total de la liste : ce que la course va couter, calcule et
+     jamais additionne de tete -- j'ai annonce « ~88 € » deux fois pour une liste a 118,60.
+     Il etait affiche plus bas sous le titre « À prendre aujourd'hui », qui etait faux six
+     jours sur sept : il fait ses courses le SAMEDI, pas le jour ou il ouvre la page. La
+     barre, elle, ne promet aucune date. */
   function renderCoursesSummary(){
-    var t = coursesTotals();
-    document.getElementById('courses-summary').textContent = t.checked + '/' + t.total + ' articles cochés';
+    var t = coursesTotals(), a = coursesDuJour(construireCourses());
+    document.getElementById('courses-summary').textContent =
+      t.checked + '/' + t.total + ' articles cochés · ' + a.n + ' à prendre, ' + fmtEuro(a.prix);
   }
   document.getElementById('courses-reset').addEventListener('click', function(){
     coursesState = {};
