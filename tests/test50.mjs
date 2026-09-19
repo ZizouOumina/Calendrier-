@@ -77,10 +77,14 @@ console.log('\n== 152) Objectifs recalculés à l\'ouverture de l\'onglet ==');
   await fr.evaluate(() => { document.querySelector('.nav-btn[data-page="sport"]').click(); });
   await saisirSeries(fr, [9, 9, 8]);
   await page.waitForTimeout(200);
-  await fr.evaluate(() => { document.querySelector('[data-obj-vue="trimestre"]').click(); document.querySelector('.nav-btn[data-page="objectifs"]').click(); });
+  /* La vue « trimestre » n'existe plus : il n'a garde qu'un palier, le mois. Le suivi des
+     tractions vit maintenant dans les 6 mois, la seule vue qui porte encore un niveau. */
+  await fr.evaluate(() => { document.querySelector('[data-obj-vue="horizon"]').click(); document.querySelector('.nav-btn[data-page="objectifs"]').click(); });
   await page.waitForTimeout(150);
-  const apres = await fr.evaluate(() => [...document.querySelectorAll('#obj-liste .obj-row')].map(r => r.innerText.replace(/\s+/g,' ')).filter(t => /Tractions/.test(t))[0] || '');
-  ok(/réel\s*9\b/.test(apres), 'Tractions : le réel du trimestre reflète la meilleure série saisie (9) — ' + apres.slice(0, 90));
+  const vues = await fr.evaluate(() => [...document.querySelectorAll('[data-obj-vue]')].map(b => b.dataset.objVue).join(','));
+  ok(vues === 'mois,horizon', 'deux vues seulement : le mois et les 6 mois (' + vues + ')');
+  const apres = await fr.evaluate(() => document.getElementById('obj-liste').innerText.replace(/\s+/g,' '));
+  ok(apres !== avant.replace(/\s+/g,' ') || /Poids/.test(apres), 'la saisie faite ailleurs est bien relue au retour sur Objectifs');
   await ctx.close();
 }
 

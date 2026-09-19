@@ -30,11 +30,11 @@ console.log('\n== 180) Sans ajustement : plan de base, liste = plan × 7 ==');
   const { ctx, fr } = await ouvrir(MARDI);
   await page_(fr, 'courses');
   const c = await fr.evaluate(() => ({ items: [...document.querySelectorAll('#courses-grid label')].map(l => l.textContent), note: document.getElementById('courses-plan-note').textContent, budget: document.getElementById('courses-budget').textContent, n: document.querySelectorAll('#courses-grid input').length }));
-  /* Quatre rythmes : 10 articles frais chaque semaine, 5 reserves et 10 lignes de sante
-     toutes les 4 semaines, 2 articles toutes les 5, 1 brosse a dents tous les 3 mois.
-     Les produits MENAGERS (nettoyant sols, eponges, sacs poubelle) sont sortis de la
-     Batcave a sa demande : il en a en reserve et les rachete au besoin. */
-  ok(c.n === 28, '28 articles au total, tous rythmes confondus (' + c.n + ')');
+  /* Sept rythmes : 10 articles frais chaque semaine ; 5 reserves, 16 lignes de sante et
+     6 de maison toutes les 4 semaines ; 2 articles toutes les 5 ; 5 de menage toutes les
+     8 ; 1 brosse a dents tous les 3 mois. Les produits MENAGERS avaient ete sortis a sa
+     demande, puis redemandes le 19 septembre. */
+  ok(c.n === 45, '45 articles au total, tous rythmes confondus (' + c.n + ')');
   /* Deux chiffres par ligne, et il faut les deux : ce qu'on ACHETE (un multiple du
      conditionnement) et ce que le PLAN demande (la somme des 7 jours de repas). Riz
      135 g/jour -> 945/semaine -> 3 780 sur 4 semaines, donc 4 paquets de 1 kg ;
@@ -68,26 +68,19 @@ console.log('\n== 180) Sans ajustement : plan de base, liste = plan × 7 ==');
   /* Aucun stock n'est suppose : rien ne dit « tu en as », rien n'est repousse a plus tard. */
   ok(!c.items.some(t => /tu en as|il t’en reste|à racheter le/.test(t)), 'aucune ligne ne suppose un stock : tout part de zéro, il coche ce qu\'il a');
   ok(c.items.some(t => /^Shampooing/.test(t)) && c.items.some(t => /^Cotons-tiges/.test(t)) && c.items.some(t => /^Brosse à dents/.test(t)), 'santé et hygiène ont leurs lignes');
-  /* Les produits menagers sont sortis a sa demande. */
-  ok(!c.items.some(t => /^(Éponges|Sacs poubelle|Nettoyant sols)/.test(t)), 'plus de produits ménagers dans la Batcave');
+  /* Les produits menagers avaient ete sortis a sa demande, puis redemandes le
+     19 septembre : ils reviennent en « Maison » (4 semaines) et « Ménage » (8). */
+  ok(c.items.some(t => /^Éponges \+ grattoirs/.test(t)) && c.items.some(t => /^Sacs poubelle 30 L/.test(t)) && c.items.some(t => /^Nettoyant sol/.test(t)),
+     'les produits ménagers sont de retour dans la Batcave');
   ok(/Aucun ajustement/.test(c.note), 'note : ' + c.note.slice(0, 60));
-  /* Le frais baisse (le sec en est sorti) et le bloc de 4 semaines monte : il porte
-     desormais les reserves ET l'hygiene, qui n'etait comptee nulle part avant. */
-  const bud = c.budget.match(/~(\d+(?:,\d)?) € \/ semaine.*?plus ~(\d+(?:,\d)?) € toutes les 4 semaines.*?plus ~(\d+(?:,\d)?) € toutes les 12 semaines.*?~(\d+(?:,\d)?) € \/ mois/);
-  ok(!!bud, 'le budget annonce les trois rythmes et un total mensuel : ' + c.budget.slice(0, 110));
-  if(bud){
-    const sem = Number(bud[1].replace(',', '.')), quatre = Number(bud[2].replace(',', '.')), mois = Number(bud[4].replace(',', '.'));
-    ok(sem > 29 && sem < 36, 'frais : ' + sem + ' € / semaine');
-    /* Le bloc de 4 semaines a maigri : les produits menagers en sont sortis, et l'huile
-       comme le beurre de cacahuete sont passes sur le cycle de 5 semaines. */
-    ok(quatre > 76 && quatre < 94, 'réserves + santé : ' + quatre + ' € toutes les 4 semaines');
-    /* On relit TOUS les cycles annonces plutot que d'en coder trois en dur : le beurre de
-       cacahuete en a ajoute un quatrieme, et une somme ecrite a la main aurait menti. */
-    const cycles = [...c.budget.matchAll(/~([\d,]+) € toutes les (\d+) semaines/g)]
-      .map(m => Number(m[1].replace(',', '.')) * 52 / 12 / Number(m[2]));
-    const attendu = sem * 52 / 12 + cycles.reduce((a, x) => a + x, 0);
-    ok(Math.abs(mois - attendu) < 1, 'le total mensuel est la somme de tous les cycles annoncés (' + mois + ' € vs ' + Math.round(attendu * 10) / 10 + ')');
-  }
+  /* Le budget estime a ete RETIRE le 19 septembre. Il annoncait un cout par semaine, par
+     cycle et par mois a partir de prix Alicante 2026 inventes -- trois chiffres faux lus
+     comme des vrais. A la place, le panneau dit ou vivent les montants reels : ses tickets,
+     saisis dans Budget. Ce bloc garde la porte fermee : aucun prix ne doit revenir. */
+  ok(!/€/.test(c.budget), 'aucun montant dans le panneau : ' + c.budget.slice(0, 70));
+  ok(/tickets/.test(c.budget) && /Budget/.test(c.budget), 'et il renvoie vers Budget, où le chiffre est vrai');
+  ok(!c.items.some(t => /€/.test(t)), 'aucune ligne d\'article ne porte de prix');
+
   await page_(fr, 'repas');
   const r = await fr.evaluate(() => ({ diner: [...document.querySelectorAll('.meal-card')].find(c => /Dîner/.test(c.querySelector('.mtitle').textContent)) }) && [...document.querySelectorAll('.meal-card')].find(c => /Dîner/.test(c.querySelector('.mtitle').textContent)).innerText);
   ok(/Pâtes 105g/.test(r) && /~752 kcal/.test(r) && /Viande hachée 5 % 90g/.test(r) && /Huile d'olive \(15ml\)/.test(r), 'dîner de base du mardi : pâtes 105 g, viande hachée 90 g, huile 15 ml, ~752 kcal');

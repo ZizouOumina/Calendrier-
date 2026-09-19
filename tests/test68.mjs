@@ -39,7 +39,10 @@ console.log('\n== 264) Les cibles sortent de la grille, phase par phase ==');
      phase 1 : aucun bloc Projets perso, donc cible zéro. Octobre en a un peu (la phase 2
      commence le 19), décembre beaucoup plus (phase 3). */
   ok(o['M2026-09:projets_h'].c === 0 && o['M2026-10:projets_h'].c > 0 && o['M2026-10:projets_h'].c < o['M2026-12:projets_h'].c, 'la cible « Projets perso » suit les phases : sept. 0 h (phase 1) · oct. ' + o['M2026-10:projets_h'].c + ' h < déc. ' + o['M2026-12:projets_h'].c + ' h');
-  ok(o['T1:espagnol_h'].a === true && o['T1:revision_h'].a === true, 'ces cibles sont marquées « auto » : elles suivront tout changement de grille');
+  /* Les cibles de TRIMESTRE ont disparu avec le passage a un seul palier : c'est sur le
+     mois que le drapeau « auto » doit desormais se verifier. */
+  ok(o['T1:espagnol_h'] === undefined, 'plus aucune cible de trimestre');
+  ok(o['M2026-09:espagnol_h'].a === true && o['M2026-09:revision_h'].a === true, 'ces cibles sont marquées « auto » : elles suivront tout changement de grille');
   await ctx.close();
 }
 

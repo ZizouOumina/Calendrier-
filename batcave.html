@@ -1565,10 +1565,6 @@
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l2 2 4-4"/><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
         Tâches
       </button>
-      <button class="nav-btn" data-page="journal" data-dom="corps" hidden>
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2h9l3 3v17H6z"/><path d="M9 8h6M9 12h6M9 16h4"/></svg>
-        Journal
-      </button>
       <span class="nav-label">Le travail</span>
       <button class="nav-btn" data-page="etudes" data-dom="etudes" data-pages="etudes agenda">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 9l10-5 10 5-10 5-10-5z"/><path d="M6 11.5V17c0 1.5 3 3 6 3s6-1.5 6-3v-5.5"/></svg>
@@ -1906,6 +1902,22 @@
         </div>
       </div>
       <button class="btn" id="bilan-export-btn" type="button" style="margin-top:16px;">🖨️ Exporter le bilan (PDF)</button>
+      <!-- L'historique du journal, avec sa recherche plein texte. Il etait ecrit dans la
+           page « Journal », devenue inatteignable quand la cloture du soir a absorbe ses
+           champs ; un appendChild le deplacait ici au demarrage. La page est supprimee
+           (19 septembre), le panneau est donc ecrit a sa vraie place. -->
+      <div class="panel sub-panel" id="journal-hist-panel" style="margin-top:14px;">
+        <div class="sub-head"><h3>Journées précédentes</h3><span class="sub-note" id="journal-hist-count"></span></div>
+        <p class="sub-note" style="margin-bottom:10px;">Tes notes, ton humeur, ton sommeil et ton poids, jour par jour — les plus récentes en premier.</p>
+        <!-- Recherche plein texte : six mois de journal ne valent que si on peut y revenir.
+             « qu'est-ce qui coinçait en novembre ? » se répond en tapant un mot. -->
+        <div class="field-row" style="margin-bottom:12px;">
+          <label for="journal-recherche" class="sr-only">Chercher dans le journal</label>
+          <input type="search" id="journal-recherche" placeholder="Chercher dans tout le journal — un mot, un prénom, « novembre »…" autocomplete="off">
+          <button class="btn" id="journal-recherche-vider" type="button" hidden>Effacer</button>
+        </div>
+        <div id="journal-hist"></div>
+      </div>
     </section>
 
     <!-- ================= INSIGHTS ================= -->
@@ -2055,84 +2067,6 @@
     <!-- ================= AGENDA BATCAVE ================= -->
 
     <!-- ================= JOURNAL ================= -->
-    <section class="page" data-page="journal" data-dom="corps">
-      <div class="page-head">
-        <span class="eyebrow">Dossier N° 02</span>
-        <h1>Journal quotidien</h1>
-        <p class="desc">Spirituel, hydratation et mesures du jour. La routine et les prières se trackent maintenant depuis l'onglet <b style="color:var(--ink-dim)">Habitudes</b>, au même endroit que le reste.</p>
-      </div>
-
-      <div class="journal-grid">
-        <div class="panel">
-          <h3>Hydratation</h3>
-          <div class="progress-row">
-            <span class="plabel">Eau bue</span>
-            <div class="progress-track"><div class="progress-fill" id="jr-water-fill" style="width:0%"></div></div>
-            <span class="progress-count" id="jr-water-pct">0%</span>
-          </div>
-          <div id="jr-water-glasses" style="display:flex; flex-wrap:wrap; gap:5px; margin-bottom:12px; font-size:18px; line-height:1;"></div>
-          <div style="display:flex; justify-content:space-between; align-items:center;">
-            <span style="font-size:13px; color:var(--ink-dim);">💧 <span id="jr-water-sub">0,0 / 3,0 L</span></span>
-            <span style="display:flex; gap:6px;">
-              <button class="btn" id="jr-water-minus">−250ml</button>
-              <button class="btn btn-primary" id="jr-water-plus">+250ml</button>
-            </span>
-          </div>
-        </div>
-        <div class="panel">
-          <h3>Spirituel</h3>
-          <div style="display:flex; flex-direction:column; gap:12px;">
-            <div class="field-row">
-              <label for="j-coran">Page de Coran</label>
-              <input type="number" id="j-coran" min="0" placeholder="n°">
-            </div>
-            <div class="field-row">
-              <label for="j-duaa">Duaa apprise</label>
-              <input type="text" id="j-duaa" placeholder="ex : duaa du voyage">
-            </div>
-          </div>
-        </div>
-        <div class="panel">
-          <h3>Compléments pris</h3>
-          <div class="chip-group" id="journal-complements"></div>
-        </div>
-        <div class="panel span2">
-          <h3>Mesures &amp; humeur</h3>
-          <div class="field-grid">
-            <div class="field-row"><label for="j-sommeil">Sommeil (h)</label><input type="number" id="j-sommeil" min="0" step="0.5"></div>
-            <div class="field-row"><label for="j-poids">Poids matin (kg)</label><input type="number" id="j-poids" min="0" step="0.1"></div>
-          </div>
-          <div class="progress-row" style="margin-top:6px;">
-            <span class="plabel">Sommeil</span>
-            <div class="progress-track"><div class="progress-fill" id="jr-sleep-fill" style="width:0%"></div></div>
-            <span class="progress-count" id="jr-sleep-pct">0%</span>
-          </div>
-          <p class="sub-note" id="jr-sleep-sub" style="margin:-6px 0 14px 112px;">—</p>
-          <p class="sub-note" style="margin:0 0 14px;">Temps de révision → onglet <b style="color:var(--ink-dim)">Études</b>. Temps projets perso → onglet <b style="color:var(--ink-dim)">Business</b>.</p>
-          <div class="field-row" style="margin-bottom:14px;">
-            <label>Humeur / énergie (1-5)</label>
-            <div class="mood-row" id="journal-mood"></div>
-          </div>
-          <div class="field-row">
-            <label for="j-notes">Notes</label>
-            <textarea id="j-notes" placeholder="ce qui a marché, ce qui a coincé…"></textarea>
-          </div>
-        </div>
-      </div>
-
-      <div class="panel sub-panel" id="journal-hist-panel" style="margin-top:14px;">
-        <div class="sub-head"><h3>Journées précédentes</h3><span class="sub-note" id="journal-hist-count"></span></div>
-        <p class="sub-note" style="margin-bottom:10px;">Tes notes, ton humeur, ton sommeil et ton poids, jour par jour — les plus récentes en premier.</p>
-        <!-- Recherche plein texte : six mois de journal ne valent que si on peut y revenir.
-             « qu'est-ce qui coinçait en novembre ? » se répond en tapant un mot. -->
-        <div class="field-row" style="margin-bottom:12px;">
-          <label for="journal-recherche" class="sr-only">Chercher dans le journal</label>
-          <input type="search" id="journal-recherche" placeholder="Chercher dans tout le journal — un mot, un prénom, « novembre »…" autocomplete="off">
-          <button class="btn" id="journal-recherche-vider" type="button" hidden>Effacer</button>
-        </div>
-        <div id="journal-hist"></div>
-      </div>
-    </section>
 
     <!-- ================= HABITUDES ================= -->
     <section class="page" data-page="habitudes" data-dom="corps">
@@ -4217,7 +4151,7 @@
   (function(){
     var sem = document.querySelector('.page[data-page="bilan"]');
     if(!sem) return;
-    ['revue-panel', 'journal-hist-panel'].forEach(function(id){
+    ['revue-panel'].forEach(function(id){
       var el = document.getElementById(id);
       if(el) sem.appendChild(el);
     });
@@ -8289,78 +8223,19 @@
   function adjustWater(delta){
     journalState.water = Math.max(0, (Number(journalState.water)||0) + delta);
     save(journalKey, journalState);
-    renderJournal(); renderCalendar(); renderDashboard();
+    renderJournalHistorique(); renderCalendar(); renderDashboard();
   }
-  document.getElementById('jr-water-minus').addEventListener('click', function(){ adjustWater(-250); });
-  document.getElementById('jr-water-plus').addEventListener('click', function(){ adjustWater(250); });
   document.getElementById('cal-water-minus').addEventListener('click', function(){ adjustWater(-250); });
   document.getElementById('cal-water-plus').addEventListener('click', function(){ adjustWater(250); });
 
-  function renderJournal(){
-    renderJournalHistorique();
-    var waterMl = Number(journalState.water)||0;
-    var waterL = waterMl/1000;
-    var waterPct = pctEau(waterMl);
-    document.getElementById('jr-water-sub').textContent = waterL.toFixed(1).replace('.', ',') + ' / ' + OBJECTIF_EAU_L.toFixed(1).replace('.', ',') + ' L';
-    document.getElementById('jr-water-fill').style.width = waterPct + '%';
-    document.getElementById('jr-water-pct').textContent = waterPct + '%';
-    var totalGlasses = Math.round(OBJECTIF_EAU_L * 1000 / 250); /* 3,0 L / 250 ml = 12 verres */
-    var filledGlasses = Math.min(totalGlasses, Math.round(waterMl/250));
-    var glassesHtml = '';
-    for(var gi=0; gi<totalGlasses; gi++){ glassesHtml += gi<filledGlasses ? '💧' : '<span style="opacity:.25;">💧</span>'; }
-    if(waterMl > totalGlasses*250) glassesHtml += ' <span class="sub-note" style="font-size:11px;">+'+(Math.round(waterMl/250)-totalGlasses)+'</span>';
-    document.getElementById('jr-water-glasses').innerHTML = glassesHtml;
-
-    var compEl = document.getElementById('journal-complements');
-    journalState.complements = complementsAvecHabitudes(journalState.complements);
-    compEl.innerHTML = COMPLEMENTS.map(function(c){
-      var active = journalState.complements.indexOf(c) > -1;
-      return '<button type="button" class="chip'+(active?' active':'')+'" data-comp="'+c+'">'+c+'</button>';
-    }).join('');
-    compEl.querySelectorAll('.chip').forEach(function(chip){
-      chip.addEventListener('click', function(){
-        var c = chip.dataset.comp, idx = journalState.complements.indexOf(c);
-        if(idx > -1) journalState.complements.splice(idx,1); else journalState.complements.push(c);
-        save(journalKey, journalState);
-        synchroniserComplements(journalState.complements);
-        renderJournal();
-      });
-    });
-
-    var moodEl = document.getElementById('journal-mood');
-    moodEl.innerHTML = [1,2,3,4,5].map(function(n){
-      return '<button type="button" class="chip'+(journalState.mood===n?' active':'')+'" data-mood="'+n+'">'+n+'</button>';
-    }).join('');
-    moodEl.querySelectorAll('.chip').forEach(function(chip){
-      chip.addEventListener('click', function(){
-        journalState.mood = journalState.mood === Number(chip.dataset.mood) ? null : Number(chip.dataset.mood);
-        save(journalKey, journalState);
-        renderJournal();
-      });
-    });
-
-    document.getElementById('j-coran').value = journalState.coran;
-    document.getElementById('j-duaa').value = journalState.duaa;
-    document.getElementById('j-sommeil').value = journalState.sommeil;
-    document.getElementById('j-poids').value = journalState.poids;
-    document.getElementById('j-notes').value = journalState.notes;
-
-    var sleepH = Number(journalState.sommeil) || 0;
-    var sleepPct = pctSommeil(sleepH);
-    document.getElementById('jr-sleep-fill').style.width = sleepPct + '%';
-    document.getElementById('jr-sleep-pct').textContent = sleepPct + '%';
-    var cibleS = objectifSommeil();
-    document.getElementById('jr-sleep-sub').textContent = fmtHeures(sleepH) + ' sur ' + fmtHeures(cibleS);
-  }
-
-  [['j-coran','coran'],['j-duaa','duaa'],['j-sommeil','sommeil'],['j-poids','poids'],['j-notes','notes']].forEach(function(pair){
-    document.getElementById(pair[0]).addEventListener('change', function(e){
-      journalState[pair[1]] = e.target.value;
-      save(journalKey, journalState);
-      if(pair[1] === 'poids'){ renderDashboard(); renderWeightChart(); renderKcalBoucle(); if(document.getElementById('obj-liste')) renderObjectifs(); }
-      else if(pair[1] === 'sommeil'){ renderJournal(); renderDashboard(); }
-    });
-  });
+  /* La page « Journal » est supprimee (19 septembre). Ses champs -- Coran, duaas, sommeil,
+     poids, notes, eau, humeur, complements -- avaient tous ete repris par la cloture du
+     soir, qui les demande dans l'ordre ou il les remplit vraiment ; la page n'etait plus
+     atteignable depuis des semaines et ne servait qu'a se perimer. renderJournal() ne
+     peignait qu'elle : il ne reste que son historique, qui lui vit dans l'onglet Semaine,
+     et qui s'appelle desormais par son nom.
+     La normalisation des complements (complementsAvecHabitudes) n'est pas perdue : la
+     cloture la fait aussi, sur le meme etat. */
 
   /* ================= OBJECTIFS ================= */
   /* Une seule definition de l'objectif Shopify. Il etait ecrit « 5000 » a huit endroits
@@ -16070,7 +15945,7 @@
   renderAddictions();
   renderMeals(); renderMealBar();
   renderWeekStrip(); renderSport();
-  renderJournal();
+  renderJournalHistorique();
   renderCalendar();
   recalerObjectifsSemaine();   /* la grille est lue : les cibles de temps suivent la semaine type */
   renderGoals();
@@ -16353,7 +16228,7 @@
       try{ renderExperience(); }catch(e2){}
       if(fini) showToast('🧪 Expérience close : ' + VERDICT_TEXTE[fini.verdict || 'inconnu'] + '.');
     }
-    renderJournal(); renderWeightChart(); renderKcalBoucle(); renderCalendar(); renderDashboard(); renderBilan();
+    renderJournalHistorique(); renderWeightChart(); renderKcalBoucle(); renderCalendar(); renderDashboard(); renderBilan();
     if(document.getElementById('obj-liste')) renderObjectifs();
     fermerCloture();
     showToast('🌙 Journée clôturée' + (cochees.length ? ' · ' + cochees.length + ' habitude' + (cochees.length > 1 ? 's' : '') + ' cochée' + (cochees.length > 1 ? 's' : '') : '') + ' — bonne nuit.');

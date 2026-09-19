@@ -166,16 +166,24 @@ console.log('\n═══ 7. Repas : les calories sont proratisées aux cases coc
 console.log('\n═══ 8. Sommeil et eau : lus dans le journal du jour ═══');
 {
   const {ctx, page, fr} = await ouvrir({['batcave-journal-'+JOUR]: {sommeil: 7, water: 2500}});
+  console.log('       journal : 7 h de sommeil, 2 500 ml d\'eau');
+  /* Le sommeil reste un objectif du mois, donc il se relit dans Objectifs. */
   const o = await objectifs(fr, page);
   const s = o.match(/Sommeil[\s\S]{0,140}?([\d,]+)\s*h/);
-  const e = o.match(/Eau[\s\S]{0,140}?([\d,]+)\s*L/);
-  console.log('       journal : 7 h de sommeil, 2 500 ml d\'eau');
-  ok(s && s[1].replace(',','.') === '7' || s && Math.abs(Number(s[1].replace(',','.'))-7) < 0.1, 'sommeil relu : ' + (s?s[1]:'?') + ' h');
-  ok(e && Math.abs(Number(e[1].replace(',','.')) - 2.5) < 0.06, 'eau relue : ' + (e?e[1]:'?') + ' L (2,5 attendu)');
+  ok(s && Math.abs(Number(s[1].replace(',','.'))-7) < 0.1, 'sommeil relu : ' + (s?s[1]:'?') + ' h');
+  /* L'EAU, elle, n'est plus un objectif : eau_moy est sortie des metriques semees le
+     19 septembre, quand il a ramene les objectifs a un seul palier et aux six mesures qui
+     se pilotent. Elle est toujours SUIVIE -- il la saisit et elle compte dans son score --
+     donc on continue de verifier qu'elle est relue, mais la ou elle vit desormais : le
+     journal du jour, sur le tableau de bord. */
+  const e = await fr.evaluate(()=>{ document.querySelector('.nav-btn[data-page="dashboard"]').click();
+                                    return document.getElementById('dash-journal').innerText; });
+  const me = e.match(/Eau[\s\S]{0,60}?([\d,]+)\s*\/\s*[\d,]+\s*L/);
+  ok(me && Math.abs(Number(me[1].replace(',','.')) - 2.5) < 0.06, 'eau relue sur le tableau de bord : ' + (me?me[1]:'?') + ' L (2,5 attendu)');
   await ctx.close();
 }
 
-console.log('\n═══ 9. Budget : seules les dépenses variables entrent dans l\'objectif ═══');
+console.log('\n═══ 9. Budget : la dépense variable est distinguée de la charge fixe ═══');
 {
   const tx = [
     {id:'t1', date:JOUR, type:'Dépense', montant:100, fixed:false, categorie:'Courses'},
@@ -183,10 +191,16 @@ console.log('\n═══ 9. Budget : seules les dépenses variables entrent dans
     {id:'t3', date:JOUR, type:'Revenu',  montant:900, fixed:false, categorie:'Bourse'}
   ];
   const {ctx, page, fr} = await ouvrir({'batcave-transactions': tx});
-  const o = await objectifs(fr, page);
-  const m = o.match(/Dépenses variables[\s\S]{0,160}?([\d\s ]+)\s*€/);
-  const v = m ? Number(m[1].replace(/[\s ]/g,'')) : null;
-  ok(v === 100, 'dépense variable 100 € + charge fixe 500 € + revenu 900 € → ' + v + ' € (100 attendu)');
+  /* « Dépenses variables » etait un objectif ; depuis le 19 septembre il ne l'est plus
+     (un seul palier, six metriques). La distinction variable / fixe reste le coeur du
+     suivi budgetaire, alors on la verifie la ou elle vit : l'onglet Budget. */
+  const o = await fr.evaluate(()=>{ document.querySelector('.nav-btn[data-page="budget"]').click();
+                                    return document.querySelector('section.page[data-page="budget"]').innerText; });
+  await page.waitForTimeout(300);
+  ok(/100/.test(o), 'la dépense variable de 100 € apparaît dans Budget');
+  ok(/500/.test(o), 'et la charge fixe de 500 € aussi, distinctement');
+  const objs = await fr.evaluate(()=>window.__bcObjectifs().map(x=>x.metrique));
+  ok(objs.indexOf('depenses_var') === -1, 'mais « Dépenses variables » n\'est plus un objectif semé');
   await ctx.close();
 }
 
