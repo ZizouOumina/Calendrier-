@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Le tajwid, méthode</title>
+<meta name="description" content="Comment travailler son tajwid quand on part de zéro : le professeur d'abord, les lettres avant les règles, la boucle d'enregistrement, et un plan sur six mois.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@500&family=Amiri:wght@400;700&display=swap">
+<style>
+
+/* Meme systeme que les autres pages du depot. Seul l'accent change : la Batcave donne
+   une couleur par domaine, et le Coran y porte le violet (--dom-foi). Cette page la
+   reprend, pour qu'on sache de quel rayon elle vient avant d'avoir lu le titre. */
+:root{
+  --paper:#F2F4F6; --card:#FFFFFF; --ink:#1A1F26; --ink2:#4B5563; --line:#D5DAE0;
+  --accent:#6B3FA0; --accent-ink:#FFFFFF; --tagbg:#EDE6F7;
+  --warn:#8A4B12; --warnbg:#FAEFE3; --good:#0F6B5A; --goodbg:#E2F1EC;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --paper:#11161C; --card:#1A2129; --ink:#E7EBEF; --ink2:#A6AFBA; --line:#2C3640;
+  --accent:#C4A2F5; --accent-ink:#1A0F2B; --tagbg:#241933;
+  --warn:#F0B37A; --warnbg:#2A1E12; --good:#7FD1B8; --goodbg:#12302A;
+}}
+:root[data-theme="dark"]{
+  --paper:#11161C; --card:#1A2129; --ink:#E7EBEF; --ink2:#A6AFBA; --line:#2C3640;
+  --accent:#C4A2F5; --accent-ink:#1A0F2B; --tagbg:#241933;
+  --warn:#F0B37A; --warnbg:#2A1E12; --good:#7FD1B8; --goodbg:#12302A;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:"Source Sans 3",system-ui,sans-serif;font-size:16px;line-height:1.5}
+.wrap{max-width:1080px;margin:0 auto;padding:0 16px 80px}
+header.top{padding:40px 0 22px;border-bottom:1px solid var(--line)}
+h1{font-family:"Bricolage Grotesque",sans-serif;font-weight:700;font-size:clamp(34px,6vw,56px);line-height:1;margin:0 0 10px;text-wrap:balance;letter-spacing:-.01em}
+h2{font-family:"Bricolage Grotesque",sans-serif;font-weight:700;font-size:26px;margin:44px 0 12px;line-height:1.15;text-wrap:balance}
+h3{font-family:"Bricolage Grotesque",sans-serif;font-weight:700;font-size:19px;margin:24px 0 8px}
+h4{font-family:"Bricolage Grotesque",sans-serif;font-weight:700;font-size:14px;margin:0 0 6px;letter-spacing:.01em}
+.sub{color:var(--ink2);max-width:72ch;margin:0}
+p{max-width:72ch;margin:10px 0}
+.brand{font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:14px}
+nav.pills{position:sticky;top:0;z-index:5;background:var(--paper);padding:10px 0;display:flex;gap:8px;overflow-x:auto;border-bottom:1px solid var(--line)}
+nav.pills a{flex:0 0 auto;font-family:"JetBrains Mono",monospace;font-size:12px;padding:6px 10px;border:1px solid var(--line);border-radius:999px;color:var(--ink);text-decoration:none;background:var(--card)}
+nav.pills a:hover{border-color:var(--accent);color:var(--accent)}
+nav.pills a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.box{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:18px 20px;margin:14px 0}
+.box h3:first-child,.box h4:first-child{margin-top:0}
+.box p:last-child{margin-bottom:0}
+ol,ul{padding-left:20px;max-width:72ch} li{margin:7px 0}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}
+.tbl{overflow-x:auto;margin:14px 0}
+table.list{width:100%;border-collapse:collapse;font-size:14.5px}
+table.list td,table.list th{padding:9px 10px;border-top:1px solid var(--line);vertical-align:top;text-align:left}
+table.list th{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink2);border-top:none;white-space:nowrap}
+table.list tr:hover td{background:var(--tagbg)}
+.tag{display:inline-block;font-family:"JetBrains Mono",monospace;font-size:10.5px;padding:2px 8px;border-radius:999px;background:var(--tagbg);color:var(--accent);white-space:nowrap}
+/* L'arabe : une vraie fonte naskh, plus grande que le texte latin (le corps 16 rend une
+   naskh illisible), et toujours marque lang/dir pour que le navigateur et les lecteurs
+   d'ecran sachent a quoi ils ont affaire. */
+.ar{font-family:"Amiri",serif;font-size:1.45em;line-height:1.9;direction:rtl;unicode-bidi:isolate}
+td .ar,th .ar{font-size:1.6em;white-space:nowrap}
+.ayah{font-family:"Amiri",serif;font-size:1.7em;line-height:2;direction:rtl;unicode-bidi:isolate;text-align:right;margin:8px 0}
+.lettres{font-family:"Amiri",serif;font-size:1.9em;line-height:1.7;direction:rtl;unicode-bidi:isolate;letter-spacing:.08em;color:var(--accent)}
+.note{border-left:3px solid var(--accent);padding:2px 0 2px 14px;margin:16px 0;color:var(--ink2);max-width:72ch}
+.note b{color:var(--ink)}
+.attention{background:var(--warnbg);border:1px solid var(--warn);border-radius:10px;padding:14px 18px;margin:16px 0;max-width:72ch}
+.attention h4{color:var(--warn);margin-top:0}
+.attention p:last-child{margin-bottom:0}
+.rail{list-style:none;margin:10px 0 0;padding:0;max-width:none}
+.rail li{display:grid;grid-template-columns:150px 1fr;gap:14px;padding:11px 0;border-top:1px solid var(--line);margin:0}
+.rail li:first-child{border-top:none}
+.rail .d{font-family:"JetBrains Mono",monospace;font-size:12.5px;color:var(--accent);font-variant-numeric:tabular-nums;font-weight:500}
+.rail .w{color:var(--ink2);font-size:14.5px;margin-top:3px}
+.rail b{color:var(--ink)}
+ol.steps{list-style:none;padding-left:0;counter-reset:st;max-width:72ch}
+ol.steps li{counter-increment:st;display:grid;grid-template-columns:30px 1fr;gap:12px;padding:11px 0;border-top:1px solid var(--line);margin:0}
+ol.steps li:first-child{border-top:none}
+ol.steps li::before{content:counter(st);font-family:"JetBrains Mono",monospace;font-size:13px;color:var(--accent-ink);background:var(--accent);width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:500}
+ol.steps b{display:block}
+ol.steps span{display:block;color:var(--ink2);font-size:14.5px;margin-top:2px}
+footer{margin-top:60px;color:var(--ink2);font-size:14px;border-top:1px solid var(--line);padding-top:16px;max-width:72ch}
+a{color:var(--accent)}
+@media (max-width:700px){ .two{grid-template-columns:1fr} .rail li{grid-template-columns:1fr;gap:2px} }
+@media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} }
+
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="top">
+  <div class="brand">Batcave · dossier · v1.0 · 19 septembre 2026</div>
+  <h1>Le tajwid, méthode</h1>
+  <p class="sub">Tu lis une page par jour à 06:45. Cette page ne te demande pas plus de temps : elle change ce que tu fais de ce temps-là. Elle part du principe que tu commences, et elle va jusqu'à un plan de six mois.</p>
+  <div class="note" style="margin-top:20px">
+    <b>Ce guide n'est pas une fatwa et je ne suis pas un cheikh.</b> Il organise une méthode de travail et rappelle des règles enseignées partout de la même façon. Pour tout ce qui relève du jugement — ta <span class="ar">riwāya</span>, une divergence entre deux professeurs, une question de validité — c'est ton imam ou ton professeur qui tranche, pas cette page.
+  </div>
+</header>
+
+<nav class="pills">
+  <a href="#regle">La règle</a>
+  <a href="#riwaya">Hafs ou Warsh</a>
+  <a href="#lettres">Les lettres</a>
+  <a href="#regles">Les règles</a>
+  <a href="#tuhfa">Touhfat al-Atfal</a>
+  <a href="#boucle">La boucle</a>
+  <a href="#recitateurs">Récitateurs</a>
+  <a href="#plan">Six mois</a>
+  <a href="#fautes">Quelles fautes comptent</a>
+  <a href="#batcave">Dans la Batcave</a>
+</nav>
+
+<h2 id="regle">1 · La règle qui commande tout le reste</h2>
+
+<p><b>Le tajwid ne s'apprend pas dans un livre.</b> Il se transmet de bouche à oreille — <span class="ar">تلقّي</span> <i>talaqqī</i>, <span class="ar">مشافهة</span> <i>mushāfaha</i>. Quelqu'un récite, tu imites, il corrige ce que tu n'entends pas toi-même. C'est ainsi depuis quatorze siècles, et ce n'est pas une tradition sentimentale : c'est la seule façon connue de corriger une articulation. Personne n'a jamais appris à prononcer <span class="ar">ع</span> en lisant la description de son point d'articulation.</p>
+
+<p>Tout ce qui suit — les tableaux, le texte à mémoriser, la boucle d'enregistrement — sert à <b>rentabiliser</b> le temps passé avec un professeur. Rien ne le remplace.</p>
+
+<div class="two">
+  <div class="box">
+    <h4>À ta mosquée</h4>
+    <p>Celle où tu vas pour le Jumu'ah. La question à poser vendredi prochain, à l'imam ou à quelqu'un du bureau :</p>
+    <p class="note" style="margin:10px 0 0"><i>« Y a-t-il une halaqa de tajwid ici, ou quelqu'un qui donne des cours ? Je pars de zéro. »</i></p>
+    <p style="margin-top:10px">Beaucoup de mosquées en ont une, souvent après le maghrib, souvent gratuite. C'est la piste la moins chère et la plus solide : le professeur est sur place, il t'entend en vrai, et tu croises les mêmes gens chaque semaine.</p>
+  </div>
+  <div class="box">
+    <h4>En ligne, si la mosquée n'a rien</h4>
+    <p>Il existe beaucoup de plateformes qui mettent en relation avec des professeurs titulaires d'une <span class="ar">إجازة</span> <i>ijāza</i> — une chaîne de transmission certifiée jusqu'au Prophète ﷺ. Ce que tu demandes :</p>
+    <ul style="margin-top:8px">
+      <li><b>Deux séances de 30 minutes</b> par semaine, pas une heure d'un coup : la correction fatigue vite.</li>
+      <li>Un professeur, pas une professeure — c'est la norme et ça se demande sans gêne.</li>
+      <li>Qu'il commence par les <b>makhārij</b>, pas par les règles.</li>
+    </ul>
+    <p style="margin-top:10px">Compte quelques euros la séance chez la plupart des plateformes égyptiennes.</p>
+  </div>
+</div>
+
+<h3>À quoi ressemble une bonne première leçon</h3>
+<p>Il te fait lire trois lignes. Il t'arrête souvent. Il ne te parle probablement d'<i>aucune</i> règle ce jour-là — il écoute tes lettres et note lesquelles ne sortent pas. Si ta première leçon porte sur l'<i>ikhfā'</i> alors que ton <span class="ar">ع</span> sonne comme un <span class="ar">أ</span>, change de professeur.</p>
+
+<h2 id="riwaya">2 · Une question à régler tout de suite : Hafs ou Warsh</h2>
+
+<p>Le Coran se récite selon plusieurs lectures canoniques. Deux dominent dans le monde francophone et hispanophone, et <b>elles n'ont pas les mêmes règles de tajwid</b> — longueurs de <i>madd</i> différentes, traitement différent de certaines lettres.</p>
+
+<div class="tbl"><table class="list">
+<tr><th>Lecture</th><th>Où elle domine</th><th>Ce que ça change pour toi</th></tr>
+<tr><td><b>Hafs <span class="ar">عن</span> 'Āsim</b></td><td>Égypte, Golfe, Turquie, Asie, et la majorité des Corans imprimés dans le monde</td><td>C'est celle de presque toutes les récitations que tu trouveras en ligne, et de presque tous les manuels.</td></tr>
+<tr><td><b>Warsh <span class="ar">عن</span> Nāfi'</b></td><td>Maroc, Algérie, Afrique de l'Ouest — donc beaucoup de mosquées en France et en Espagne</td><td>Si c'est celle de ta famille et de ta mosquée, il te faut un professeur qui l'enseigne, et des enregistrements en Warsh.</td></tr>
+</table></div>
+
+<div class="attention">
+  <h4>Ne mélange pas les deux</h4>
+  <p>Travailler ses <i>madd</i> avec un cheikh égyptien en Hafs pendant que la mosquée récite en Warsh, c'est apprendre deux choses à moitié. <b>Regarde d'abord quel Coran tu as en main</b> — c'est écrit sur la page de garde — et demande à ton imam ce qui se récite chez vous. Puis choisis, et tiens-toi à une seule lecture jusqu'à ce que tu la maîtrises.</p>
+</div>
+
+<h2 id="lettres">3 · Les lettres avant les règles</h2>
+
+<p>L'erreur classique du non-arabophone : attaquer par les règles alors que les <b>lettres</b> ne sortent pas du bon endroit. Si ton <span class="ar">ح</span> et ton <span class="ar">ه</span> se confondent, appliquer parfaitement l'<i>ikhfā'</i> ne sauve rien — tu récites proprement un mot qui n'est pas le bon.</p>
+
+<h3>Les cinq zones</h3>
+<p>Dix-sept points d'articulation, répartis en cinq zones. Tu n'as pas à les mémoriser maintenant ; tu dois savoir qu'elles existent, parce que c'est le vocabulaire que ton professeur emploiera.</p>
+
+<div class="tbl"><table class="list">
+<tr><th>Zone</th><th>Arabe</th><th>Ce qui s'y forme</th></tr>
+<tr><td>La cavité</td><td class="ar">الجوف</td><td>Les trois voyelles longues <span class="ar">ا و ي</span></td></tr>
+<tr><td>La gorge</td><td class="ar">الحلق</td><td>Six lettres, trois profondeurs — <b>c'est là que tout se joue pour toi</b></td></tr>
+<tr><td>La langue</td><td class="ar">اللسان</td><td>Dix-huit lettres, dix points</td></tr>
+<tr><td>Les lèvres</td><td class="ar">الشفتان</td><td><span class="ar">ف ب م و</span></td></tr>
+<tr><td>Le nez</td><td class="ar">الخيشوم</td><td>La <i>ghunna</i> — la résonance nasale</td></tr>
+</table></div>
+
+<h3>La gorge, en trois étages</h3>
+<p>Six lettres, par paires, du plus profond au plus proche de la bouche. La plupart des francophones les réduisent à deux ou trois sons. C'est le premier chantier.</p>
+
+<div class="tbl"><table class="list">
+<tr><th>Étage</th><th>Paire</th><th>Comment la sentir</th></tr>
+<tr><td>Le plus profond<br><span class="tag">أقصى الحلق</span></td><td><span class="ar">ء&nbsp;&nbsp;ه</span></td><td><span class="ar">ء</span> est un coup de glotte net, l'arrêt entre deux voyelles. <span class="ar">ه</span> est le même endroit mais ouvert, un souffle qui passe.</td></tr>
+<tr><td>Le milieu<br><span class="tag">وسط الحلق</span></td><td><span class="ar">ع&nbsp;&nbsp;ح</span></td><td>La paire qui résiste le plus. <span class="ar">ح</span> est un souffle chaud, comme quand on embue une vitre, mais serré depuis le milieu de la gorge. <span class="ar">ع</span> est au même endroit, voisé : pose deux doigts sur ta gorge, elle doit vibrer sur <span class="ar">ع</span> et pas sur <span class="ar">ح</span>.</td></tr>
+<tr><td>Le plus haut<br><span class="tag">أدنى الحلق</span></td><td><span class="ar">غ&nbsp;&nbsp;خ</span></td><td><span class="ar">غ</span> est proche du « r » français grasseyé. <span class="ar">خ</span> est son pendant sourd, la jota espagnole — celle-là, tu l'as déjà par l'espagnol.</td></tr>
+</table></div>
+
+<div class="note"><b>Le test des deux doigts.</b> Sur chaque paire ci-dessus, la différence est souvent le voisement. Doigts sur la pomme d'Adam : <span class="ar">ع غ</span> font vibrer, <span class="ar">ح خ ه</span> ne font pas. Si les deux vibrent ou si aucune ne vibre, tu prononces la même lettre deux fois.</div>
+
+<h3>Les emphatiques, et leurs jumelles légères</h3>
+<p>Quatre lettres se prononcent avec le dos de la langue relevé vers le palais — on appelle ça <span class="ar">الإطباق</span> <i>al-iṭbāq</i>. Chacune a une jumelle légère avec laquelle on la confond.</p>
+
+<div class="tbl"><table class="list">
+<tr><th>Lourde</th><th>Légère</th><th>Ce qui change</th></tr>
+<tr><td><span class="ar">ص</span></td><td><span class="ar">س</span></td><td>Même sifflante, mais <span class="ar">ص</span> creuse la bouche : le son devient sombre, la voyelle qui suit s'assombrit avec lui.</td></tr>
+<tr><td><span class="ar">ض</span></td><td><span class="ar">د</span></td><td><span class="ar">ض</span> n'existe dans aucune langue européenne. Le côté de la langue pousse contre les molaires supérieures. On appelle l'arabe « la langue du <span class="ar">ض</span> » — c'est dire.</td></tr>
+<tr><td><span class="ar">ط</span></td><td><span class="ar">ت</span></td><td><span class="ar">ط</span> est un « t » sombre et explosif, sans souffle derrière.</td></tr>
+<tr><td><span class="ar">ظ</span></td><td><span class="ar">ذ</span> et <span class="ar">ز</span></td><td>Langue entre les dents comme <span class="ar">ذ</span>, mais emphatique. Confondre <span class="ar">ظ</span> et <span class="ar">ز</span> change des mots entiers.</td></tr>
+</table></div>
+
+<h3>Et la paire qu'on oublie</h3>
+<p><span class="ar">ق</span> contre <span class="ar">ك</span>. <span class="ar">ك</span> se forme là où le français fait son « k ». <span class="ar">ق</span> se forme nettement plus en arrière, sur la luette, et c'est une lettre lourde. Beaucoup de dialectes escamotent le <span class="ar">ق</span> — en récitation, jamais.</p>
+
+<div class="attention">
+  <h4>Ce que ton dialecte te donne, et ce qu'il te coûte</h4>
+  <p>Si tu as grandi avec de l'arabe parlé à la maison, plusieurs de ces lettres te viennent gratuitement — c'est une avance réelle. Mais <b>un dialecte n'est pas une récitation</b> : il simplifie souvent <span class="ar">ق</span>, <span class="ar">ض</span> et <span class="ar">ظ</span>, et il ne connaît pas les longueurs. Ne prends pas « je comprends » pour « je récite bien ». C'est précisément le piège des gens d'origine arabophone, et c'est pour ça qu'ils progressent parfois moins vite que les convertis, qui eux n'ont aucune illusion.</p>
+</div>
+
+<h2 id="regles">4 · Les règles, dans l'ordre où on les apprend</h2>
+
+<p>À lire une fois maintenant, pour savoir où tu vas. À travailler avec ton professeur, dans cet ordre. Les longueurs ci-dessous sont celles de <b>Hafs</b>.</p>
+
+<h3>Le noun sakinah et le tanwin — quatre cas</h3>
+<p>C'est la première règle qu'on enseigne, et de loin la plus fréquente : un <span class="ar">نْ</span> sans voyelle, ou un tanwin, suivi d'une lettre. Selon la lettre, quatre comportements.</p>
+
+<div class="tbl"><table class="list">
+<tr><th>Règle</th><th>Lettres déclencheuses</th><th>Ce que tu fais</th></tr>
+<tr><td><b>Izhār</b> <span class="ar">إظهار</span><br><span class="tag">clair</span></td><td class="lettres" style="font-size:1.5em">ء ه ع ح غ خ</td><td>Les six lettres de gorge. Tu prononces le <i>noun</i> nettement, sans le prolonger et sans nasillement.</td></tr>
+<tr><td><b>Idghām</b> <span class="ar">إدغام</span><br><span class="tag">fusion</span></td><td class="lettres" style="font-size:1.5em">ي ن م و ل ر</td><td>Le <i>noun</i> disparaît dans la lettre suivante. Avec <i>ghunna</i> (2 temps de nasale) pour <span class="ar">ي ن م و</span> ; <b>sans</b> <i>ghunna</i> pour <span class="ar">ل ر</span>.</td></tr>
+<tr><td><b>Iqlāb</b> <span class="ar">إقلاب</span><br><span class="tag">bascule</span></td><td class="lettres" style="font-size:1.5em">ب</td><td>Une seule lettre. Le <i>noun</i> devient un <span class="ar">م</span>, avec <i>ghunna</i>, lèvres à peine jointes.</td></tr>
+<tr><td><b>Ikhfā'</b> <span class="ar">إخفاء</span><br><span class="tag">dissimulé</span></td><td>Les <b>quinze</b> autres</td><td>Ni tout à fait prononcé, ni fondu : un état intermédiaire, nasalisé sur 2 temps, la langue déjà prête pour la lettre suivante.</td></tr>
+</table></div>
+
+<div class="note">Les six premières se retiennent par une phrase mnémotechnique, et les six de l'<i>idghām</i> par le mot <span class="ar">يَرْمَلُونَ</span> <i>yarmalūn</i>. C'est exactement ce que Touhfat al-Atfal versifie — et c'est pourquoi on l'apprend par cœur plutôt que de refaire le tableau.</div>
+
+<h3>Le mim sakinah — trois cas</h3>
+<div class="tbl"><table class="list">
+<tr><th>Règle</th><th>Devant</th><th>Ce que tu fais</th></tr>
+<tr><td><b>Ikhfā' shafawī</b></td><td class="lettres" style="font-size:1.5em">ب</td><td>Lèvres jointes sans presser, <i>ghunna</i> sur 2 temps.</td></tr>
+<tr><td><b>Idghām shafawī</b></td><td class="lettres" style="font-size:1.5em">م</td><td>Les deux <i>mim</i> n'en font qu'un, avec <i>ghunna</i>.</td></tr>
+<tr><td><b>Izhār shafawī</b></td><td>Tout le reste</td><td><i>Mim</i> net, et surtout <b>pas</b> de nasale traînante. Le piège est sur <span class="ar">ف</span> et <span class="ar">و</span>, où la bouche est déjà presque en place.</td></tr>
+</table></div>
+
+<h3>Les madd — les longueurs</h3>
+<p>Une syllabe tenue trop court ou trop long, c'est la faute la plus audible pour une oreille arabe, et la plus facile à corriger. On compte en <i>ḥarakāt</i> — des temps, réguliers comme un métronome ; l'important n'est pas leur durée absolue mais qu'elle soit <b>la même du début à la fin de ta récitation</b>.</p>
+
+<div class="tbl"><table class="list">
+<tr><th>Madd</th><th>Temps</th><th>Quand</th></tr>
+<tr><td><b>Ṭabī'ī</b> — naturel</td><td>2</td><td>Le cas de base : <span class="ar">ا و ي</span> sans rien derrière. Tout le reste s'en déduit.</td></tr>
+<tr><td><b>Muttaṣil</b> — attaché</td><td>4 à 5</td><td>Une <i>hamza</i> suit, dans le même mot. Obligatoire.</td></tr>
+<tr><td><b>Munfaṣil</b> — détaché</td><td>4 à 5</td><td>La <i>hamza</i> est au début du mot suivant.</td></tr>
+<tr><td><b>'Āriḍ li-s-sukūn</b></td><td>2, 4 ou 6</td><td>Tu t'arrêtes en fin de verset sur une longue. Choisis une durée et tiens-la sur toute la récitation.</td></tr>
+<tr><td><b>Lāzim</b> — nécessaire</td><td>6</td><td>Rare, mais aucune liberté : six temps, toujours. C'est le plus long.</td></tr>
+</table></div>
+
+<h3>La qalqala</h3>
+<p>Cinq lettres, quand elles portent un <i>sukūn</i>, « rebondissent » — un écho sec, sans ajouter de voyelle. Elles se retiennent par <span class="ar">قُطْبُ جَدٍّ</span> :</p>
+<p class="lettres">ق ط ب ج د</p>
+<p>Le rebond est léger au milieu d'un mot, plus marqué quand on s'arrête dessus. L'erreur de débutant est d'ajouter un petit « e » derrière — c'est un rebond, pas une syllabe.</p>
+
+<h3>Lourd ou léger : le lam de <span class="ar">الله</span>, et le ra</h3>
+<div class="two">
+  <div class="box">
+    <h4>Le lam du nom d'Allah</h4>
+    <p>Lourd après <i>fatha</i> ou <i>damma</i> — <span class="ar">قَالَ اللهُ</span>. Léger après <i>kasra</i> — <span class="ar">بِسْمِ اللهِ</span>. Une seule règle, et elle revient des centaines de fois par jour.</p>
+  </div>
+  <div class="box">
+    <h4>Le ra</h4>
+    <p>Lourd avec <i>fatha</i> ou <i>damma</i>. Léger avec <i>kasra</i>. Quand il est <i>sākin</i>, c'est la voyelle d'avant qui décide, avec quelques exceptions — la partie la plus technique du programme de base. Laisse-la venir en dernier.</p>
+  </div>
+</div>
+
+<h2 id="tuhfa">5 · Touhfat al-Atfal</h2>
+
+<p class="ayah">تُحْفَةُ الأَطْفَالِ</p>
+
+<p>Un poème de <b>61 vers</b>, écrit par al-Jamzūrī, qui contient exactement ce qu'il y a dans la section 4 ci-dessus. On ne le lit pas : on l'<b>apprend par cœur</b>. C'est le passage obligé de tout élève, partout, depuis deux siècles.</p>
+
+<p>Pourquoi le mémoriser plutôt que retenir les tableaux ? Parce qu'en récitant, tu n'as pas le temps de consulter un tableau. Le vers, lui, revient tout seul au moment où la règle se présente. C'est de la mémoire procédurale, pas de la culture générale.</p>
+
+<div class="box">
+  <h4>Comment l'apprendre sans que ça devienne un chantier</h4>
+  <ol class="steps">
+    <li><b>Deux vers par séance avec ton professeur</b><span>Il te les fait lire, il corrige la prononciation, il explique la règle qu'ils contiennent. Trente séances et c'est fini.</span></li>
+    <li><b>Les mêmes deux vers dans Anki le lendemain</b><span>Tu as déjà deux blocs Anki par jour. Un paquet « Tajwid » de plus ne coûte rien : le vers en arabe d'un côté, la règle en français de l'autre.</span></li>
+    <li><b>Chaque règle apprise se cherche dans ta page du jour</b><span>C'est le geste qui fait la différence. Tu viens d'apprendre l'<i>iqlāb</i> ? Tu passes ta page de 06:45 à repérer les <span class="ar">ب</span> après un <i>noun</i>. La règle cesse d'être une leçon et devient un réflexe.</span></li>
+  </ol>
+  <p style="margin-top:14px">Ensuite, et seulement ensuite : <b>al-Muqaddima al-Jazariyya</b> d'Ibn al-Jazarī, plus longue et plus complète. Ce n'est pas pour cette année.</p>
+</div>
+
+<h2 id="boucle">6 · La boucle d'enregistrement</h2>
+
+<p>C'est le levier le plus sous-estimé, et il ne coûte rien. <b>Tu n'entends pas ta propre récitation pendant que tu récites.</b> La conduction osseuse et l'attention prise par la lecture font que tu es sourd à tes propres fautes — c'est physiologique, pas un manque de sérieux. L'enregistrement supprime ce problème d'un coup.</p>
+
+<div class="box">
+<ol class="steps">
+  <li><b>Un seul verset</b><span>Pas une page. Un verset, parfois une moitié de verset s'il est long.</span></li>
+  <li><b>Écoute-le trois fois dans une récitation lente</b><span>Les yeux sur le texte. Tu ne récites pas encore, tu écoutes où le cheikh s'arrête, où il tient, où il nasalise.</span></li>
+  <li><b>Récite par-dessus, puis seul</b><span>D'abord en même temps que lui, ensuite sans lui.</span></li>
+  <li><b>Enregistre-toi avec ton téléphone</b><span>Le mémo vocal, rien de plus.</span></li>
+  <li><b>Réécoute en suivant la version du cheikh</b><span>Note une seule chose à corriger. Une. Pas cinq.</span></li>
+  <li><b>Refais le verset en visant cette seule chose</b><span>Puis tu passes à autre chose. La séance fait cinq minutes.</span></li>
+</ol>
+</div>
+
+<div class="note">Les premiers jours sont désagréables — on se trouve toujours mauvais au premier enregistrement. C'est justement le signe que l'outil marche : ces fautes-là existaient avant, tu ne les entendais simplement pas. <b>Garde tes enregistrements.</b> Réécouter celui du premier jour dans trois mois est la meilleure récompense que ce travail puisse donner.</div>
+
+<h2 id="recitateurs">7 · Qui écouter, et pour quoi</h2>
+
+<p>Tout le monde n'est pas bon à imiter. Les récitations les plus émouvantes sont souvent les plus ornées, donc les plus mauvaises pour apprendre. Ce qu'il te faut, c'est du <b>murattal</b> : lent, dépouillé, chaque règle audible.</p>
+
+<div class="tbl"><table class="list">
+<tr><th>Récitateur</th><th>À utiliser pour</th></tr>
+<tr><td><b>Maḥmūd Khalīl al-Ḥuṣarī</b> — murattal</td><td>La référence pour apprendre. Lent, régulier, sans ornement. Chaque <i>madd</i> se compte à l'oreille. C'est celui qu'on met dans les mains d'un débutant.</td></tr>
+<tr><td><b>al-Ḥuṣarī</b> — version <i>mu'allim</i></td><td>Enregistrée pour l'enseignement : il récite, puis <b>laisse un silence</b> pour que tu répètes. C'est la boucle de la section 6, faite pour toi. Commence par là.</td></tr>
+<tr><td><b>Muḥammad Ṣiddīq al-Minshāwī</b> — mu'allim</td><td>Même principe, voix différente. Si tu accroches mieux à celle-là, prends-la : ce qui compte est que tu écoutes tous les jours.</td></tr>
+<tr><td><b>'Abd al-Bāsiṭ</b> — murattal</td><td>Excellent, un peu plus rapide. Pour plus tard, quand les bases tiennent.</td></tr>
+</table></div>
+
+<div class="attention">
+  <h4>Ce qu'il ne faut pas imiter au début</h4>
+  <p>Les récitations <i>mujawwad</i> — celles des grandes voix, avec les longues tenues et les variations mélodiques. Elles sont magnifiques et elles sont un piège : tu copieras la mélodie en croyant copier les règles. Écoute-les pour le plaisir, travaille sur du murattal.</p>
+</div>
+
+<h2 id="plan">8 · Six mois, semaine par semaine</h2>
+
+<p>Deux séances de 30 minutes avec ton professeur, cinq minutes d'enregistrement par jour, et ta page de 06:45. Rien d'autre.</p>
+
+<ul class="rail">
+  <li><span class="d">Semaine 1</span><span><b>Trouver le professeur, trancher la riwāya</b><span class="w">La question à la mosquée vendredi. Regarder la page de garde de ton Coran. Tant que ce n'est pas réglé, tout le reste attend.</span></span></li>
+  <li><span class="d">Semaines 1 à 4</span><span><b>Les makhārij, rien d'autre</b><span class="w">Les six lettres de gorge, les quatre emphatiques, le <span class="ar">ق</span>. Ton professeur te fait répéter des syllabes isolées — c'est ingrat et c'est la fondation. La boucle d'enregistrement démarre dès le premier jour.</span></span></li>
+  <li><span class="d">Semaines 5 à 10</span><span><b>Noun sakinah, tanwin, mim sakinah</b><span class="w">Les sept règles les plus fréquentes du Coran. En parallèle, les premiers vers de Touhfat al-Atfal et le paquet Anki. Chaque règle vue se chasse dans la page du matin.</span></span></li>
+  <li><span class="d">Semaines 11 à 18</span><span><b>Les madd et la qalqala</b><span class="w">Le moment où ta récitation commence à <i>sonner</i> juste, parce que le rythme se met en place. Tu fixes ta durée pour le <i>'āriḍ li-s-sukūn</i> et tu ne la changes plus.</span></span></li>
+  <li><span class="d">Semaines 19 à 24</span><span><b>Lourd et léger : le lam, le ra</b><span class="w">La partie la plus technique. Touhfat al-Atfal se termine. À ce stade tu récites une page proprement, lentement, et tu sais dire pourquoi tu fais ce que tu fais.</span></span></li>
+  <li><span class="d">Après</span><span><b>La vitesse, puis al-Jazariyya</b><span class="w">Pas avant. Réciter vite avant que les règles soient automatiques, c'est fixer les fautes. Et c'est le moment de réécouter l'enregistrement de la semaine 1.</span></span></li>
+</ul>
+
+<h2 id="fautes">9 · Quelles fautes comptent vraiment</h2>
+
+<p>La tradition sépare deux sortes d'erreurs, et la distinction est utile — elle évite à la fois la négligence et le scrupule excessif.</p>
+
+<div class="two">
+  <div class="box" style="border-color:var(--warn)">
+    <h4 style="color:var(--warn)">Laḥn jalī <span class="ar">لحن جلي</span> — la faute manifeste</h4>
+    <p>Elle change une lettre ou une voyelle, donc elle change le sens. Dire <span class="ar">س</span> au lieu de <span class="ar">ص</span>, se tromper de voyelle de fin de mot.</p>
+    <p><b>Celle-là se corrige, et c'est urgent.</b> C'est exactement pour l'éviter que le tajwid existe, et c'est pour ça qu'il faut quelqu'un qui t'écoute : tu ne peux pas la détecter seul.</p>
+  </div>
+  <div class="box">
+    <h4>Laḥn khafī <span class="ar">لحن خفي</span> — la faute discrète</h4>
+    <p>Elle n'altère pas le sens : un <i>madd</i> tenu 3 temps au lieu de 4, une <i>ghunna</i> un peu courte, une <i>qalqala</i> molle.</p>
+    <p><b>Elle se corrige avec le temps, sans angoisse.</b> C'est le travail normal d'un élève, et c'est ce que la boucle d'enregistrement polit tout seul, mois après mois.</p>
+  </div>
+</div>
+
+<div class="note"><b>Et en attendant ?</b> Tu continues de lire ta page tous les jours. Personne n'a jamais attendu de maîtriser le tajwid pour ouvrir le Coran — on apprend <i>en</i> récitant, pas avant. La constance vaut mieux que la perfection différée, et celui qui peine sur sa lecture n'est pas mal vu pour autant : la tradition lui promet au contraire une double récompense.</div>
+
+<h2 id="batcave">10 · Ce que ça change dans ta journée</h2>
+
+<p><b>Aucun créneau nouveau.</b> Tu as déjà ce qu'il faut ; il s'agit de l'employer autrement.</p>
+
+<div class="tbl"><table class="list">
+<tr><th>Ce que tu as déjà</th><th>Ce que ça devient</th></tr>
+<tr><td><b>Coran, 06:45</b><br><span class="tag">tous les jours</span></td><td>Trois jours par semaine : une <b>demi-page</b> au lieu d'une page, avec la boucle d'enregistrement. Les autres jours, ta page normale — en chassant la règle de la semaine. La quantité baisse un peu, la qualité monte beaucoup, et sur un an c'est la qualité qui reste.</td></tr>
+<tr><td><b>Anki, 07:20 et 08:20</b></td><td>Un paquet <b>Tajwid</b> à côté de Dentaire et Business. Les vers de Touhfat al-Atfal, et une carte par règle. Quelques cartes par jour, pas plus.</td></tr>
+<tr><td><b>Jumu'ah, vendredi</b></td><td>C'est là que tu poses la question de la halaqa, et là que tu croiseras ton professeur si tu le trouves sur place.</td></tr>
+<tr><td><b>Les deux séances hebdomadaires</b></td><td>À caler sur tes créneaux de temps libre du soir, comme l'espagnol. Trente minutes, deux fois.</td></tr>
+</table></div>
+
+<div class="note"><b>Le même mécanisme que ton espagnol.</b> Tu apprends déjà une langue par correction orale avec un tuteur, avec une phase d'oral et un bilan chaque semaine. Le tajwid fonctionne exactement pareil : quelqu'un t'écoute, te reprend, et tu répètes. Tu connais déjà la méthode — il ne te manque que la personne qui écoute.</div>
+
+<footer>
+  <p><b>Le tajwid, méthode</b> · v1.0 · dossier de la Batcave, 19 septembre 2026.</p>
+  <p>Les règles citées sont celles enseignées dans le cursus classique, selon <b>Hafs 'an 'Āsim</b> sauf mention contraire. Cette page organise une méthode de travail ; elle ne remplace ni un professeur ni un avis religieux. Pour toute question de jugement, réfère-toi à ton imam.</p>
+</footer>
+
+</div>
+</body>
+</html>

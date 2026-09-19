@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>L'ordre de marche</title>
+<meta name="description" content="Par quoi commencer : demain heure par heure, le jour 1, et dans quel ordre lire les dix dossiers sans se noyer.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+
+:root{
+  --paper:#F2F4F6; --card:#FFFFFF; --ink:#1A1F26; --ink2:#4B5563; --line:#D5DAE0;
+  --accent:#0F6B5A; --accent-ink:#FFFFFF; --tagbg:#E2F1EC;
+  --now:#B5651D; --nowbg:#FAEFE3;
+  --c-jour:#0F6B5A; --c-mode:#5B4BC4; --c-etudes:#1F5FA8; --c-projet:#B5651D; --c-long:#8A4B7C; --c-foi:#6B3FA0;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --paper:#11161C; --card:#1A2129; --ink:#E7EBEF; --ink2:#A6AFBA; --line:#2C3640;
+  --accent:#5FC2A8; --accent-ink:#0B1A16; --tagbg:#12302A;
+  --now:#F0B37A; --nowbg:#2A1E12;
+  --c-jour:#7FD1B8; --c-mode:#B3A7F5; --c-etudes:#8DB8F0; --c-projet:#F0B37A; --c-long:#E8A6D2; --c-foi:#C4A2F5;
+}}
+:root[data-theme="dark"]{
+  --paper:#11161C; --card:#1A2129; --ink:#E7EBEF; --ink2:#A6AFBA; --line:#2C3640;
+  --accent:#5FC2A8; --accent-ink:#0B1A16; --tagbg:#12302A;
+  --now:#F0B37A; --nowbg:#2A1E12;
+  --c-jour:#7FD1B8; --c-mode:#B3A7F5; --c-etudes:#8DB8F0; --c-projet:#F0B37A; --c-long:#E8A6D2; --c-foi:#C4A2F5;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:"Source Sans 3",system-ui,sans-serif;font-size:16px;line-height:1.5}
+.wrap{max-width:1080px;margin:0 auto;padding:0 16px 80px}
+header.top{padding:40px 0 22px;border-bottom:1px solid var(--line)}
+h1{font-family:"Bricolage Grotesque",sans-serif;font-weight:700;font-size:clamp(34px,6vw,56px);line-height:1;margin:0 0 10px;text-wrap:balance;letter-spacing:-.01em}
+h2{font-family:"Bricolage Grotesque",sans-serif;font-weight:700;font-size:26px;margin:44px 0 12px;line-height:1.15;text-wrap:balance}
+h3{font-family:"Bricolage Grotesque",sans-serif;font-weight:700;font-size:19px;margin:24px 0 8px}
+h4{font-family:"Bricolage Grotesque",sans-serif;font-weight:700;font-size:14px;margin:0 0 6px}
+.sub{color:var(--ink2);max-width:72ch;margin:0}
+p{max-width:72ch;margin:10px 0}
+.brand{font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:14px}
+nav.pills{position:sticky;top:0;z-index:5;background:var(--paper);padding:10px 0;display:flex;gap:8px;overflow-x:auto;border-bottom:1px solid var(--line)}
+nav.pills a{flex:0 0 auto;font-family:"JetBrains Mono",monospace;font-size:12px;padding:6px 10px;border:1px solid var(--line);border-radius:999px;color:var(--ink);text-decoration:none;background:var(--card)}
+nav.pills a:hover{border-color:var(--accent);color:var(--accent)}
+nav.pills a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.box{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:18px 20px;margin:14px 0}
+.box h3:first-child,.box h4:first-child{margin-top:0}
+.box p:last-child{margin-bottom:0}
+ol,ul{padding-left:20px;max-width:72ch} li{margin:7px 0}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}
+.tbl{overflow-x:auto;margin:14px 0}
+table.list{width:100%;border-collapse:collapse;font-size:14.5px}
+table.list td,table.list th{padding:9px 10px;border-top:1px solid var(--line);vertical-align:top;text-align:left}
+table.list th{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink2);border-top:none;white-space:nowrap}
+.tag{display:inline-block;font-family:"JetBrains Mono",monospace;font-size:10.5px;padding:2px 8px;border-radius:999px;background:var(--tagbg);color:var(--accent);white-space:nowrap}
+.note{border-left:3px solid var(--accent);padding:2px 0 2px 14px;margin:16px 0;color:var(--ink2);max-width:72ch}
+.note b{color:var(--ink)}
+.gros{background:var(--nowbg);border:1px solid var(--now);border-radius:10px;padding:16px 20px;margin:18px 0;max-width:72ch}
+.gros h4{color:var(--now);margin-top:0;font-size:15px}
+.gros p:last-child{margin-bottom:0}
+a{color:var(--accent)}
+
+/* ---- la journee heure par heure ---- */
+ul.heures{list-style:none;margin:10px 0 0;padding:0;max-width:none}
+ul.heures li{display:grid;grid-template-columns:64px 1fr;gap:14px;padding:9px 0;border-top:1px solid var(--line);margin:0;align-items:baseline}
+ul.heures li:first-child{border-top:none}
+ul.heures .h{font-family:"JetBrains Mono",monospace;font-size:13px;color:var(--ink2);font-variant-numeric:tabular-nums}
+ul.heures li.clef{background:var(--tagbg);margin:0 -10px;padding-left:10px;padding-right:10px;border-radius:6px}
+ul.heures li.clef .h{color:var(--accent);font-weight:500}
+ul.heures li.clef b{color:var(--accent)}
+ul.heures .w{display:block;color:var(--ink2);font-size:14px;margin-top:2px;max-width:66ch}
+ul.heures li.off{opacity:.5}
+
+/* ---- les dossiers ---- */
+.dossiers{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;margin:16px 0}
+.dos{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--k,var(--accent));border-radius:10px;padding:16px 18px;min-width:0}
+.dos .n{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--k,var(--accent));margin-bottom:5px}
+.dos h4{font-size:17px;margin-bottom:6px}
+.dos h4 a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--k,var(--accent))}
+.dos h4 a:hover{color:var(--k,var(--accent))}
+.dos p{font-size:14.5px;color:var(--ink2);margin:0 0 8px;max-width:none}
+.dos .q{font-size:13px;color:var(--ink2);border-top:1px solid var(--line);padding-top:8px;margin-top:10px}
+.dos .q b{color:var(--ink);font-weight:600}
+.k-jour{--k:var(--c-jour)} .k-mode{--k:var(--c-mode)} .k-etudes{--k:var(--c-etudes)}
+.k-projet{--k:var(--c-projet)} .k-long{--k:var(--c-long)} .k-foi{--k:var(--c-foi)}
+
+footer{margin-top:60px;color:var(--ink2);font-size:14px;border-top:1px solid var(--line);padding-top:16px;max-width:72ch}
+@media (max-width:700px){ .two{grid-template-columns:1fr} ul.heures li{grid-template-columns:56px 1fr;gap:10px} }
+@media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} }
+
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="top">
+  <div class="brand">Batcave · v1.0 · 19 septembre 2026, au soir</div>
+  <h1>L'ordre de marche</h1>
+  <p class="sub">Dix dossiers, et une seule question : par quoi je commence ? Cette page y répond en trois temps — demain heure par heure, le jour 1, puis l'ordre dans lequel lire le reste sans jamais y passer plus de vingt minutes d'affilée.</p>
+</header>
+
+<nav class="pills">
+  <a href="#or">La règle d'or</a>
+  <a href="#demain">Demain</a>
+  <a href="#jour1">Lundi, jour 1</a>
+  <a href="#dossiers">Les dix dossiers</a>
+  <a href="#quand">Quand les lire</a>
+  <a href="#six">Six dimanches</a>
+  <a href="#jamais">Ce qu'il ne faut pas faire</a>
+</nav>
+
+<h2 id="or">La règle d'or</h2>
+
+<div class="gros">
+  <h4>Tu n'ouvres qu'une seule chose chaque matin : la Batcave.</h4>
+  <p>Les neuf autres dossiers ne sont <b>pas</b> des devoirs. Ce sont des références — on les consulte quand une question se pose, et on en lit un par semaine, le dimanche. Si tu te réveilles demain avec l'idée de « tout lire », tu auras perdu ta journée et tu n'en retiendras rien.</p>
+  <p style="margin-top:10px">La Batcave te dit quoi faire à chaque heure. C'est tout ce dont tu as besoin pour démarrer.</p>
+</div>
+
+<h2 id="demain">Demain — dimanche 20 septembre</h2>
+
+<p><b>Demain ne compte pas.</b> Le programme démarre lundi : rien de ce que tu fais dimanche n'entre dans les scores, les séries d'habitudes ou les objectifs. C'est voulu. Demain est une journée de mise en place, et elle a six gestes qui comptent — les voici dans l'ordre.</p>
+
+<ul class="heures">
+  <li class="clef"><span class="h">Au réveil</span><span><b>Ouvrir la Batcave et prendre une copie vierge</b><span class="w">💾 → « Copie vierge ». C'est le geste qui met les compteurs à zéro avant le jour 1. À faire AVANT toute saisie — après, il efface ce que tu viens d'écrire.</span></span></li>
+  <li class="clef"><span class="h">À jeun</span><span><b>Se peser</b><span class="w">Avant de boire, après les toilettes. C'est la référence de tout le suivi de poids : sans elle, la boucle poids → calories n'a pas de point de départ. La saisie se fait dans la clôture du soir.</span></span></li>
+  <li><span class="h">06:30</span><span>Douche, préparation</span></li>
+  <li><span class="h">06:45</span><span>Petit-déjeuner et la page de Coran</span></li>
+  <li><span class="h">07:20</span><span>Anki 1 · 08:20 Anki 2<span class="w">Tes paquets sont vides tant que tu n'as pas importé. Si c'est le cas, prends ces deux heures pour créer tes premières cartes à partir des cours de la semaine.</span></span></li>
+  <li class="clef"><span class="h">Matin</span><span><b>Les courses — 46 articles, tout est dû</b><span class="w">C'est la semaine d'ancre : toutes les catégories tombent en même temps, c'est la seule fois. Chaque ligne porte une pastille qui dit où l'acheter au moins cher. <b>Compte d'abord ce qui te reste dans le placard</b> : si tu as déjà l'article, tu coches sans acheter.</span></span></li>
+  <li class="clef"><span class="h">Au retour</span><span><b>Garder le ticket de caisse et me l'envoyer</b><span class="w">La liste n'affiche aucun prix — ceux d'avant étaient des estimations. Les vrais montants se saisissent dans Budget → Nourriture à partir de tes tickets.</span></span></li>
+  <li><span class="h">12:20</span><span>Déjeuner, puis micro-sieste</span></li>
+  <li class="clef"><span class="h">14:30</span><span><b>Batch cooking — les repas de la semaine</b><span class="w">Deux heures pleines. Repas → Préparation de la semaine te donne l'ordre des opérations et le contenu de chaque boîte. Riz à midi, pâtes le soir, la protéine de la rotation.</span></span></li>
+  <li><span class="h">16:30</span><span>Ménage — sols, salle de bain, poussière</span></li>
+  <li><span class="h">17:30</span><span>🏃 Course à pied — 30 min<span class="w">La première. Allure où tu peux encore parler par phrases courtes. Si tu es vidé par les courses et le batch cooking, saute-la : elle ne compte pas non plus cette semaine.</span></span></li>
+  <li><span class="h">19:00</span><span>Dîner, puis temps libre</span></li>
+  <li class="clef"><span class="h">Le soir</span><span><b>Deux vérifications, dix minutes en tout</b><span class="w"><b>1.</b> L'essai de restauration : 💾 → « ♻️ Restaurer depuis Drive », celle du 19. Vérifier ensuite que tes 32 habitudes et tes 4 dépendances sont revenues. C'est le seul maillon de la chaîne de sauvegarde jamais éprouvé.<br><b>2.</b> La synchro : la Batcave ouverte sur l'iPhone ET sur l'ordi, coche une habitude sur l'un, recharge l'autre.</span></span></li>
+  <li><span class="h">21:00</span><span>Coucher<span class="w">Une nuit pleine avant le jour 1. C'est la variable la plus rentable de toute la semaine.</span></span></li>
+</ul>
+
+<div class="note"><b>Et si tu ne fais que trois choses demain ?</b> La copie vierge, les courses, le batch cooking. Le reste peut attendre lundi soir sans conséquence.</div>
+
+<h2 id="jour1">Lundi 21 — jour 1</h2>
+
+<p>Là, tout compte. Les compteurs démarrent, les séries d'habitudes commencent à 1, les 176 jours du programme s'ouvrent.</p>
+
+<ul class="heures">
+  <li class="clef"><span class="h">05:30</span><span><b>Sport — Haut lourd, et c'est une séance de référence</b><span class="w">On ne fait pas la séance normale : on mesure le point de départ. Après l'échauffement, une seule série à l'échec sur tractions, dips, pompes, dead hang, notée dans l'onglet Sport. Puis on s'arrête pour le haut du corps. Sans ce point de départ, la surcharge progressive part du bas de la fourchette toute l'année.<br><b>Le téléphone doit sonner à 05:25.</b> S'il ne sonne pas, dis-le-moi : c'est que l'agenda n'a pas reçu les rappels.</span></span></li>
+  <li><span class="h">06:45</span><span>Coran, et la citation du matin<span class="w">Lundi, c'est la première des sept. Elle est dans la carte d'ouverture du tableau de bord.</span></span></li>
+  <li><span class="h">07:20</span><span>Anki 1 et 2</span></li>
+  <li><span class="h">09:20</span><span>Étudier en avance — 2 h<span class="w">Un tema que tu n'as pas encore vu en cours. C'est le cœur du système : tu arrives en amphi en ayant déjà lu.</span></span></li>
+  <li><span class="h">11:20</span><span>Question ouverte ou autre</span></li>
+  <li><span class="h">13:00</span><span>Español — gramática, escribir, hablar<span class="w">Jusqu'au 18 octobre, tous les blocs de projet sont de l'espagnol. Zéro heure de boutique, et c'est volontaire : la langue dans laquelle tu passes tes examens rapporte plus, ces cinq semaines-là, que n'importe quel test de produit.</span></span></li>
+  <li><span class="h">17:00</span><span>Trajet, puis cours de 17:30 à 19:30</span></li>
+  <li><span class="h">20:30</span><span>Clore le cours du jour — 20 min par cours<span class="w">Pas une reprise complète : ce que le prof a souligné et qui n'était pas dans les diapos, en 3 à 5 cartes.</span></span></li>
+  <li class="clef"><span class="h">21:10</span><span><b>La clôture du soir</b><span class="w">Soixante secondes. C'est là que tu saisis ton poids de départ, ton sommeil, et que tu coches ce qui a été fait. Si tu sautes la clôture, la Batcave ne sait rien de ta journée — et tout le suivi repose dessus.</span></span></li>
+</ul>
+
+<h2 id="dossiers">Les dix dossiers, et à quoi chacun sert</h2>
+
+<p>Un seul se consulte tous les jours. Trois se lisent une fois cette semaine. Les six autres attendent leur moment — et ce moment est écrit dans le tableau plus bas.</p>
+
+<div class="dossiers">
+
+  <div class="dos k-jour">
+    <div class="n">Tous les jours · 01</div>
+    <h4><a href="https://claude.ai/artifact/WiRhLTtgsRHFcKX7rxdJwo">La Batcave</a></h4>
+    <p>L'application. Elle te sert le plan du jour, lance les Pomodoros, tient les habitudes, les repas, les courses, le sport, le budget, les objectifs, et pousse tes blocs dans Google Agenda.</p>
+    <div class="q"><b>Quand :</b> au réveil, et à la clôture du soir. Épinglée sur l'écran d'accueil de ton iPhone.</div>
+  </div>
+
+  <div class="dos k-mode">
+    <div class="n">Cette semaine · 02</div>
+    <h4><a href="https://claude.ai/artifact/QS76Jnd5Rj8ZtfxD74j5d6">Prise en main de la Batcave</a></h4>
+    <p>Le mode d'emploi. Ce que fait chaque onglet, dans quel ordre s'en servir, et les gestes du jour 1. Si tu ne dois en lire qu'un seul en plus de l'application, c'est celui-là.</p>
+    <div class="q"><b>Quand :</b> demain soir, ou lundi dans le temps libre de 21:10. Vingt minutes.</div>
+  </div>
+
+  <div class="dos k-mode">
+    <div class="n">Cette semaine · 03</div>
+    <h4><a href="https://claude.ai/artifact/BdUn7c8D3ssBDzs2w7MaPZ">Ce qu'il reste à faire</a></h4>
+    <p>La liste des gestes que personne ne peut faire à ta place : les dates d'examen à saisir, les échéances Canvas, les paquets Anki. Avec des cases à cocher qui se gardent.</p>
+    <div class="q"><b>Quand :</b> lundi soir. Coche ce qui est fait, garde le reste sous les yeux.</div>
+  </div>
+
+  <div class="dos k-etudes">
+    <div class="n">Référence d'études · 04</div>
+    <h4><a href="https://claude.ai/artifact/PxQxcoMtoSRcg7knJ4f9hp">Le semestre</a></h4>
+    <p>Le premier semestre sur une page : l'emploi du temps réel, chaque matière avec toutes ses dates et ses coefficients, la charge semaine par semaine, ce qui fait échouer.</p>
+    <div class="q"><b>Quand :</b> dimanche prochain. C'est la page à rouvrir chaque fois qu'une date ou un coefficient te manque.</div>
+  </div>
+
+  <div class="dos k-etudes">
+    <div class="n">Référence d'études · 05</div>
+    <h4><a href="https://claude.ai/artifact/Lnfrnk76FhegstaPMNHV4c">Le calendrier du S1</a></h4>
+    <p>Le détail bloc par bloc : les périodes, les journées types, ce que devient chaque créneau avant et après le 19 octobre.</p>
+    <div class="q"><b>Quand :</b> à consulter, pas à lire. Quand tu te demandes « pourquoi ce bloc à cette heure ».</div>
+  </div>
+
+  <div class="dos k-etudes">
+    <div class="n">Méthode · 06</div>
+    <h4><a href="https://claude.ai/artifact/Xx6jKFznJVVR4nacv5nGKm">Dental Mastery OS</a></h4>
+    <p>La méthode de travail elle-même : comment un tema devient su, l'approfondissement, le réexpliquer à J+7, J+30, J+90, les cartes d'erreurs.</p>
+    <div class="q"><b>Quand :</b> le dimanche de la semaine 2. Pas avant : il faut avoir vécu une semaine pour que ça parle.</div>
+  </div>
+
+  <div class="dos k-projet">
+    <div class="n">Projet en cours · 07</div>
+    <h4><a href="https://claude.ai/artifact/CJHkfLFePN88EpyHbp1WYX">Dossier Español</a></h4>
+    <p>Du zéro au C1 : les phases, la grille, la grammaire A1→C1 en check-list, les lexiques, les examens. <b>C'est ton projet des cinq prochaines semaines</b>, tous les blocs de projet y passent jusqu'au 18 octobre.</p>
+    <div class="q"><b>Quand :</b> lundi, dans le premier bloc Español de 13:00. C'est lui qui te dit quoi faire pendant ces blocs.</div>
+  </div>
+
+  <div class="dos k-projet">
+    <div class="n">Projet à venir · 08</div>
+    <h4><a href="https://claude.ai/artifact/U1CMZNXrMdQogtsPaNfTAX">Dossier E-commerce</a></h4>
+    <p>Le programme dropshipping ligne par ligne, plus la piste fiscalité du week-end.</p>
+    <div class="q"><b>Quand :</b> <b>pas avant le 19 octobre.</b> Jusque-là tu as zéro heure de boutique. L'ouvrir maintenant ne ferait que t'éparpiller.</div>
+  </div>
+
+  <div class="dos k-long">
+    <div class="n">Long terme · 09</div>
+    <h4><a href="https://claude.ai/artifact/GdqkbJZEP9cUmFQ4NVEy4W">Ton empire dentaire</a></h4>
+    <p>La vision à dix ans : le métier, le cabinet, la marque, ce que les autres ont fait avant toi.</p>
+    <div class="q"><b>Quand :</b> un dimanche où tu es fatigué et où tu te demandes pourquoi tu fais tout ça. C'est sa fonction.</div>
+  </div>
+
+  <div class="dos k-foi">
+    <div class="n">Nouveau · 10</div>
+    <h4><a href="#">Le tajwid, méthode</a></h4>
+    <p>Comment travailler ta récitation : le professeur d'abord, les lettres avant les règles, la boucle d'enregistrement, et un plan sur six mois.</p>
+    <div class="q"><b>Quand :</b> vendredi, avant le Jumu'ah — la page te dit quelle question poser à l'imam.</div>
+  </div>
+
+</div>
+
+<h2 id="quand">Quand lire un dossier — et quand ne pas le lire</h2>
+
+<div class="gros">
+  <h4>Jamais pendant un bloc d'étude.</h4>
+  <p>Lire un dossier n'est pas du travail : c'est du réglage. Si tu passes « Étudier en avance » à lire <i>Le semestre</i>, tu as perdu deux heures de révision et la Batcave comptera un bloc manqué — à juste titre. Ces pages se lisent sur du <b>temps libre</b>, et sur rien d'autre.</p>
+</div>
+
+<h3>Les trois créneaux qui s'y prêtent</h3>
+<div class="tbl"><table class="list">
+<tr><th>Créneau</th><th>Durée</th><th>Ce qui s'y lit</th></tr>
+<tr><td><b>Dimanche 18:00 — repos</b></td><td>1 h</td><td>Le créneau principal. Un dossier par dimanche, dans l'ordre du tableau plus bas.</td></tr>
+<tr><td><b>Samedi 18:30 — temps libre</b></td><td>30 min</td><td>Pour finir un dossier commencé, ou relire une section.</td></tr>
+<tr><td><b>Le soir, 21:10</b></td><td>20 min</td><td>Uniquement après la clôture, et uniquement pour une question précise : « c'est quand le prochain questionnaire ? ». Pas pour lire une page entière — tu te couches à 21:55.</td></tr>
+</table></div>
+
+<h3>Comment lire une page de cent pages</h3>
+<ol class="steps" style="list-style:decimal;padding-left:22px">
+  <li><b>Le sommaire d'abord.</b> Chaque dossier a une barre de pastilles en haut. Lis-la en entier avant de lire une ligne du corps — tu sauras ce que la page contient, et c'est déjà 80 % de son utilité.</li>
+  <li><b>Une section, pas la page.</b> Vingt minutes sur une section, c'est mieux qu'une heure en diagonale sur tout.</li>
+  <li><b>Une action en sortant.</b> Si une lecture ne produit pas un geste — une date saisie, une case cochée, une décision — elle n'a servi à rien. Note-le avant de fermer l'onglet.</li>
+</ol>
+
+<h2 id="six">Six dimanches, six dossiers</h2>
+
+<p>Une heure par semaine, sur le créneau de repos. Au bout de six semaines tu as tout lu, sans jamais y avoir passé une journée.</p>
+
+<div class="tbl"><table class="list">
+<tr><th>Dimanche</th><th>Dossier</th><th>Ce que tu en sors</th></tr>
+<tr><td><b>20 sept.</b> <span class="tag">demain</span></td><td>Rien à lire</td><td>Courses, batch cooking, et les deux vérifications du soir. C'est assez.</td></tr>
+<tr><td><b>27 sept.</b></td><td>Prise en main + Ce qu'il reste à faire</td><td>Tu sais te servir de chaque onglet, et ta liste de gestes est à jour. Première épreuve du dimanche ce jour-là.</td></tr>
+<tr><td><b>4 oct.</b></td><td>Le semestre</td><td>Toutes les dates d'évaluation saisies dans Calendrier → Échéances. C'est le dimanche le plus rentable des six.</td></tr>
+<tr><td><b>11 oct.</b></td><td>Dental Mastery OS</td><td>Tu as trois semaines de pratique derrière toi : la méthode devient lisible. Tu ajustes ce qui n'a pas marché.</td></tr>
+<tr><td><b>18 oct.</b></td><td>Dossier E-commerce</td><td>Veille de bascule : l'espagnol s'arrête, la boutique commence le 19. Tu lis le programme la veille de le commencer, pas cinq semaines avant.</td></tr>
+<tr><td><b>25 oct.</b></td><td>Ton empire dentaire</td><td>Un mois de fait. Le bon moment pour relever la tête et regarder loin.</td></tr>
+</table></div>
+
+<div class="note"><b>Le tajwid et le Dossier Español ne sont pas dans ce tableau</b>, et c'est normal : ils ne se lisent pas le dimanche. L'Español se consulte pendant tes blocs Español, qui sont déjà dans ta grille. Le tajwid se lit un vendredi, avant la mosquée.</div>
+
+<h2 id="jamais">Ce qu'il ne faut pas faire</h2>
+
+<div class="two">
+  <div class="box">
+    <h4>Tout lire ce week-end</h4>
+    <p>Mille pages en deux jours, dont tu ne retiendras rien, et une journée de courses et de batch cooking sacrifiée. C'est la façon la plus sûre de commencer lundi épuisé et de ne rien tenir.</p>
+  </div>
+  <div class="box">
+    <h4>Ouvrir le Dossier E-commerce maintenant</h4>
+    <p>Tu n'as aucune heure de boutique avant le 19 octobre. Le lire aujourd'hui, c'est se donner l'impression d'avancer là où il n'y a rien à faire — et prendre du retard là où il y en a.</p>
+  </div>
+  <div class="box">
+    <h4>Réorganiser la Batcave avant de l'avoir utilisée</h4>
+    <p>Tout se règle et tout se change. Mais rien ne dit encore ce qu'il faut changer : il faut deux semaines d'usage réel pour le savoir. Utilise-la telle quelle, note ce qui te gêne, on corrige après.</p>
+  </div>
+  <div class="box">
+    <h4>Sauter la clôture du soir</h4>
+    <p>Soixante secondes. C'est la seule saisie obligatoire de la journée, et tout le suivi en dépend : sans elle, les scores, les séries, les objectifs et les insights n'ont aucune donnée à lire.</p>
+  </div>
+</div>
+
+<footer>
+  <p><b>L'ordre de marche</b> · v1.0 · 19 septembre 2026, au soir.</p>
+  <p>Les horaires de demain et de lundi sont lus directement dans la grille de la Batcave — si elle change, cette page devient fausse et il faudra la refaire. Les liens pointent vers les artefacts publiés.</p>
+</footer>
+
+</div>
+</body>
+</html>
