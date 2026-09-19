@@ -126,9 +126,13 @@ Shrugs suspendus le jeudi et le samedi pour les faisceaux supérieurs (suspendu 
 Après échauffement : tractions max, dips max (ou maintien bras tendus, en secondes), pompes max, split squats max par jambe. Saisis-les comme séries de la première séance : les cibles en découlent. Sans calibration, la Batcave part du bas de chaque fourchette.
 
 ## Montée en charge du premier mois
-- Semaines 1 et 2 (14 au 27 septembre) : la moitié des tours.
-- Semaines 3 et 4 (28 septembre au 11 octobre) : les trois quarts.
-- À partir de la semaine 5 (12 octobre) : programme complet.
+- Semaines 1 et 2 (21 septembre au 4 octobre) : la moitié des tours.
+- À partir de la semaine 3 (5 octobre) : programme complet.
+
+Il n'y a **pas** de palier intermédiaire à trois quarts : c'est sa décision du
+9 septembre, il voulait le volume entier au bout de deux semaines. Le passage double donc
+le volume d'un coup — si les courbatures font sauter une séance cette semaine-là, c'est
+le moment d'utiliser la réduction de charge du Bilan, pas de serrer les dents.
 La Batcave applique ce facteur toute seule aux cibles de la séance du jour.
 
 ## La double progression
