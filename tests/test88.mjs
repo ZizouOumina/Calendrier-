@@ -382,41 +382,6 @@ console.log('\n== 310 bis) Un jour de séance : seuls ses exercices restent ouve
   await ctx.close();
 }
 
-console.log('\n== 311) Les blocs-repères : affichés, mais plus à cocher ==');
-{
-  /* Une journée compte dix-huit à vingt-trois blocs, et la timeline posait une case devant
-     chacun — « Coucher », « Trajet retour », « Douche ». On les fait de toute façon : savoir
-     qu'on s'est douché n'apprend rien. Ils restent affichés (ils donnent sa forme à la
-     journée) mais ne se cochent plus. Rien n'est retiré de la grille. */
-  const { ctx, page, fr } = await ouvrir('2026-09-22T19:00:00+02:00');   /* mardi, 23 blocs */
-  await fr.evaluate(() => document.querySelector('.nav-btn[data-page="calendrier"]').click());
-  await page.waitForTimeout(350);
-  const v = await fr.evaluate(() => ({
-    total: document.querySelectorAll('#cal-timeline li').length,
-    cases: document.querySelectorAll('#cal-timeline input[type=checkbox]').length,
-    reperes: [...document.querySelectorAll('#cal-timeline li.repere .t-label')].map(x => x.textContent),
-    coches: [...document.querySelectorAll('#cal-timeline li:not(.repere) .t-label')].map(x => x.textContent),
-    orphelins: [...document.querySelectorAll('#cal-timeline label[for]')].filter(l => !document.getElementById(l.getAttribute('for'))).length,
-    grille: window.__bcGrille('tuesday', '2026-09-22').length
-  }));
-  ok(v.total === 23 && v.grille === 23, 'la grille du mardi garde ses 23 blocs (' + v.grille + ')');
-  ok(v.cases === 15, 'mais 15 cases à cocher au lieu de 23 (' + v.cases + ')');
-  ok(v.reperes.length === 8, 'huit repères : ' + v.reperes.join(', '));
-  ok(v.reperes.some(x => /Coucher/.test(x)) && v.reperes.some(x => /Trajet retour/.test(x)) && v.reperes.some(x => /^Dîner/.test(x)),
-     'coucher, trajets et repas-horaires en font partie');
-  ok(!v.coches.some(x => /Coucher|Trajet|Douche/.test(x)), 'et aucun d\'eux ne garde de case');
-  ok(v.coches.some(x => /Anki 1/.test(x)) && v.coches.some(x => /Cours/.test(x)) && v.coches.some(x => /Collation soir/.test(x)),
-     'ce qui demande un effort ou produit une donnée garde la sienne : Anki, Cours, les collations');
-  ok(v.orphelins === 0, 'aucun label ne pointe vers une case qui n\'existe pas');
-
-  /* Le plan du jour ne propose plus « Trajet retour » et « Dîner » comme prochaines choses
-     à faire : deux lignes sur trois ne demandaient rien. */
-  const suite = await fr.evaluate(() => window.__bcPlanDuJour().filter(i => /⏱️/.test(i.icon)).map(i => i.text));
-  ok(suite.length > 0 && !suite.some(t => /Trajet|Dîner|Coucher|Temps libre/.test(t)),
-     '« à suivre » ne nomme que ce qui demande quelque chose : ' + suite.join(' / '));
-  await ctx.close();
-}
-
 await browser.close();
 console.log(errs ? '\n' + errs + ' ECHEC(S)' : '\nTOUT VERT');
 process.exit(errs ? 1 : 0);

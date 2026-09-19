@@ -477,13 +477,6 @@
   .timeline li.checked .t-label{text-decoration:line-through; color:var(--ink-faint);}
   .timeline .t-now-badge{font-family:var(--font-mono); font-size:9.5px; color:#04151a; background:var(--cyan-bright); border-radius:10px; padding:2px 8px; flex:none;}
   .timeline input[type="checkbox"]{accent-color:var(--cyan); width:15px; height:15px; flex:none; cursor:pointer;}
-  /* Les blocs-reperes : une puce a la place de la case, et un texte plus discret. Ils
-     donnent sa forme a la journee sans demander qu'on y reponde. La puce occupe la meme
-     largeur que la case pour que les libelles restent alignes. */
-  .timeline .t-puce{width:15px; height:15px; flex:none; display:inline-flex; align-items:center; justify-content:center;}
-  .timeline .t-puce::after{content:''; width:5px; height:5px; border-radius:50%; background:var(--ink-faint); opacity:.65;}
-  .timeline li.repere .t-label{color:var(--ink-faint); font-size:13px;}
-  .timeline li.repere.now .t-label{color:var(--ink-dim); font-weight:600;}
 
   /* ---------- toast ---------- */
   .toast{position:fixed; bottom:90px; left:50%; transform:translateX(-50%); background:var(--surface-raised); border:1px solid var(--cyan-dim); color:var(--ink); padding:10px 20px; border-radius:24px; font-size:13px; z-index:60; box-shadow:0 10px 30px rgba(0,0,0,0.45); white-space:nowrap;}
@@ -10873,13 +10866,7 @@
 
     var pkey = scheduleKeyForToday();
     var pblocks = agendaDuJour(weekday);
-    /* « A suivre » proposait les trois blocs suivants quels qu'ils soient : a 19h, le plan
-       du jour annoncait « Trajet retour », « Dîner », « Clore le cours du jour ». Deux
-       lignes sur trois ne demandaient rien. On saute les reperes -- sauf s'il ne reste
-       qu'eux, auquel cas la fin de journee a le droit d'etre annoncee. */
-    var suite = pblocks.filter(function(b){ return timeToMinutes(b[0]) >= nowMin; });
-    var utiles = suite.filter(function(b){ return !estRepere(b[1]); });
-    var upcomingBlocks = (utiles.length ? utiles : suite).slice(0,3);
+    var upcomingBlocks = pblocks.filter(function(b){ return timeToMinutes(b[0]) >= nowMin; }).slice(0,3);
     upcomingBlocks.forEach(function(b, i){
       items.push({pri: i===0 ? 1.5 : 4, icon:'⏱️', text: b[0]+' — '+b[1], meta: i===0 ? 'à suivre' : ''});
     });
@@ -12977,21 +12964,6 @@
      (Anki, Cartes, Annales, Comprendre…) : c'est ici, et nulle part ailleurs, qu'on décide
      ce qui compte comme révision et comme projets. */
   var BLOCS_REVISION = /^(Anki|Cartes|Annales?\b|Annale complète|Correction|Clore|Révision ciblée|Fiches de synthèse|Préparer · |Étudier en avance|Question ouverte|Simulation dentaire|Réexpliquer|Approfondir|Lire$)/;
-  /* ===== Les blocs-reperes =====
-     Une journee compte dix-huit a vingt-trois blocs, et la timeline posait une case a
-     cocher devant chacun -- y compris « Coucher », « Trajet retour » et « Douche ». Ces
-     blocs-la ne sont pas des taches : on les fait de toute facon, et savoir qu'on s'est
-     douche n'apprend rien a personne. Ils restent AFFICHES, parce qu'ils donnent sa forme
-     a la journee et qu'on lit l'heure dessus, mais ils ne se cochent plus.
-     Onze libelles, cinquante-six cases par semaine : le mardi passe de vingt-trois cases a
-     quinze. Rien n'est retire de la grille -- les durees, les cibles et l'agenda Google ne
-     bougent pas d'une minute. C'est la LISTE A COCHER qui maigrit, pas la journee.
-     Ce qui demande un effort ou produit une donnee garde sa case : Anki, les blocs d'etude
-     et d'espagnol, le sport, les collations (la nutrition les compte), le Coran, la
-     micro-sieste (c'est une habitude qu'on tient ou pas), les courses, le batch cooking,
-     le menage. */
-  var BLOCS_REPERE = /^(Douche \+ préparation|Douche \+ brossage de dents|Coucher|Déjeuner|Dîner|Trajet |Temps libre|Repos — après-midi libre|Rangement des courses)/;
-  function estRepere(label){ return BLOCS_REPERE.test(String(label || '')); }
   function typeBlocPlan(label){
     if(BLOCS_REVISION.test(label)) return 'cours';
     if(/^Projets perso/.test(label)) return 'projet';
@@ -14054,11 +14026,9 @@
          décalait toutes les positions et faisait sauter les cases déjà cochées. */
       var checked = !!calState[b[0]], auto = calState[b[0]] === 'auto';
       var cls = (isPast?'past ':'') + (isNow?'now ':'') + (checked?'checked ':'');
-      var repere = estRepere(b[1]) && b[3] !== 'google';
-      if(repere) cls += 'repere ';
       return '<li class="'+cls.trim()+'">'+
         '<span class="t-time">'+b[0]+'</span>'+
-        '<span class="t-body">'+(repere ? '<span class="t-puce" aria-hidden="true"></span>' : '<input type="checkbox" id="cal-'+i+'" data-cal="'+b[0]+'" '+(checked?'checked':'')+'>')+(repere ? '<span class="t-label"' : '<label class="t-label" for="cal-'+i+'"')+(consigneBloc(b[1], weekday, todayISO, b[0]) ? ' title="'+escapeHtml(consigneBloc(b[1], weekday, todayISO, b[0]))+'"' : '')+'>'+(b[3]==='google'?'📅 ':'')+escapeHtml(b[1])+(repere ? '</span>' : '</label>')+(auto?'<span class="t-auto" title="Coché automatiquement : une session au minuteur a couvert ce bloc">auto</span>':'')+(isNow?'<span class="t-now-badge">MAINTENANT</span>':'')+(isNow && consigneBloc(b[1], weekday, todayISO, b[0]) ? '<span class="t-consigne">'+escapeHtml(consigneBloc(b[1], weekday, todayISO, b[0]))+'</span>' : '')+'</span>'+
+        '<span class="t-body"><input type="checkbox" id="cal-'+i+'" data-cal="'+b[0]+'" '+(checked?'checked':'')+'><label class="t-label" for="cal-'+i+'"'+(consigneBloc(b[1], weekday, todayISO, b[0]) ? ' title="'+escapeHtml(consigneBloc(b[1], weekday, todayISO, b[0]))+'"' : '')+'>'+(b[3]==='google'?'📅 ':'')+escapeHtml(b[1])+'</label>'+(auto?'<span class="t-auto" title="Coché automatiquement : une session au minuteur a couvert ce bloc">auto</span>':'')+(isNow?'<span class="t-now-badge">MAINTENANT</span>':'')+(isNow && consigneBloc(b[1], weekday, todayISO, b[0]) ? '<span class="t-consigne">'+escapeHtml(consigneBloc(b[1], weekday, todayISO, b[0]))+'</span>' : '')+'</span>'+
         '</li>';
     }).join('');
     tl.querySelectorAll('input[type="checkbox"]').forEach(function(cb){
