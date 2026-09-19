@@ -64,7 +64,8 @@ feu vert explicite :
 | 🦠 Biología celular | `Prof` (noms d'une autre fac), `Nombre de tours`, et le statut s'appelle `État 1` au lieu de `État` |
 | ➗ Epidemiología | `Prof`, `Texte`, `Notes`, `Vu en classe` |
 
-Et deux bases du SEMESTRE 2 portent les noms des matières du S1 tout en contenant le
-contenu d'un autre cursus (« Estimation - intervalle de confiance » sous Biología,
-« Cariologie » et « Odontogénese » sous Epidemiología). À reprendre quand le calendrier du
-S2 arrivera — c'est le moment où on appliquera ce modèle pour de bon.
+**Le SEMESTRE 2 n'est pas construit.** Ce qui s'y trouve aujourd'hui est un reste : des
+bases qui portent les noms des matières du S1 et contiennent le contenu d'un autre cursus
+(« Estimation - intervalle de confiance », « Cariologie », « Odontogénese »). Il n'y a rien
+à y corriger et rien à y sauver — on partira de la page blanche, avec ce modèle, le jour où
+le calendrier du S2 arrivera. Même chose pour chaque année suivante.
