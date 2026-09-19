@@ -382,6 +382,69 @@ console.log('\n== 310 bis) Un jour de séance : seuls ses exercices restent ouve
   await ctx.close();
 }
 
+console.log('\n== 311) Neuf onglets, et rien qui devient inatteignable ==');
+{
+  const { ctx, page, fr } = await ouvrir('2026-09-23T09:00:00+02:00');
+  const v = await fr.evaluate(() => ({
+    visibles: [...document.querySelectorAll('.nav-btn[data-page]')].filter(b => !b.hidden).map(b => b.dataset.page),
+    toutes: [...document.querySelectorAll('.nav-btn[data-page]')].map(b => b.dataset.page),
+    groupes: [...document.querySelectorAll('.nav-label')].map(l => l.textContent),
+    rangees: document.querySelectorAll('.sous-nav').length,
+    pastilles: document.querySelectorAll('.sous-onglet').length
+  }));
+  ok(v.visibles.length === 9, 'neuf boutons dans la barre : ' + v.visibles.join(' '));
+  ok(v.toutes.length === 19, 'mais les dix-neuf boutons restent dans le DOM (' + v.toutes.length + ') — rien n\'a été supprimé');
+  ok(v.groupes.join(' | ') === 'Aujourd’hui | Le travail | Le corps',
+     'et les trois intertitres veulent dire quelque chose : ' + v.groupes.join(' | '));
+  ok(v.rangees === 7 && v.pastilles === 17, 'sept pages groupées, dix-sept pastilles (' + v.rangees + '/' + v.pastilles + ')');
+
+  /* Chaque page reste atteignable par son bouton caché : c'est ce qui fait que les liens
+     internes, les raccourcis et tout le reste continuent de marcher. Et c'est le bouton de
+     TÊTE qui s'allume dans la barre, sinon on croit n'avoir pas changé de page. */
+  for (const [pg, tete] of [['coran','habitudes'], ['prep','repas'], ['courses','repas'], ['objectifs','bilan']]) {
+    const r = await fr.evaluate(x => {
+      document.querySelector('.nav-btn[data-page="' + x + '"]').click();
+      return { seule: [...document.querySelectorAll('.page.active')].map(s => s.dataset.page),
+               allume: [...document.querySelectorAll('.nav-btn[data-page].active')].filter(b => !b.hidden).map(b => b.dataset.page),
+               pastille: [...document.querySelectorAll('.page.active .sous-onglet.on')].map(b => b.dataset.sousnav) };
+    }, pg);
+    ok(r.seule.join('+') === pg, pg + ' s\'ouvre seule, sans rien empiler (' + r.seule.join('+') + ')');
+    ok(r.allume.join(',') === tete, 'et c\'est « ' + tete + ' » qui s\'allume dans la barre');
+    ok(r.pastille.join(',') === pg, 'avec la bonne pastille sélectionnée');
+  }
+
+  /* Les compositions data-pages sont un AUTRE mécanisme : elles empilent, et elles sont
+     voulues. Le regroupement ne doit pas y toucher. */
+  const emp = await fr.evaluate(() => {
+    const lire = x => { document.querySelector('.nav-btn[data-page="' + x + '"]').click();
+                        return [...document.querySelectorAll('.page.active')].map(s => s.dataset.page).join('+'); };
+    return { dash: lire('dashboard'), bilan: lire('bilan'), corps: lire('addictions'), etudes: lire('etudes') };
+  });
+  ok(emp.dash === 'dashboard+taches', 'le tableau de bord porte toujours les Tâches (' + emp.dash + ')');
+  ok(emp.bilan === 'bilan+insights', 'Semaine porte toujours les Insights (' + emp.bilan + ')');
+  ok(emp.corps === 'addictions+vie', 'Corps porte toujours Santé (' + emp.corps + ')');
+  ok(emp.etudes === 'etudes+agenda', 'Études porte toujours l\'Agenda (' + emp.etudes + ')');
+
+  /* La pastille navigue vraiment, et passe par le bouton de nav : tous les recalculs
+     d'ouverture restent au même endroit. */
+  const past = await fr.evaluate(() => {
+    document.querySelector('.nav-btn[data-page="repas"]').click();
+    document.querySelector('.page[data-page="repas"] .sous-onglet[data-sousnav="courses"]').click();
+    return { pages: [...document.querySelectorAll('.page.active')].map(s => s.dataset.page).join('+'),
+             tete: [...document.querySelectorAll('.nav-btn[data-page].active')].filter(b => !b.hidden).map(b => b.dataset.page).join(',') };
+  });
+  ok(past.pages === 'courses' && past.tete === 'repas', 'la pastille « Courses » ouvre Courses et garde Table allumé');
+
+  /* Neuf onglets visibles : les chiffres 1 à 9 couvrent enfin toute la barre. */
+  const clav = await fr.evaluate(() => {
+    const t = k => { document.dispatchEvent(new KeyboardEvent('keydown', {key:k, bubbles:true}));
+                     return [...document.querySelectorAll('.page.active')].map(s => s.dataset.page)[0]; };
+    return [t('1'), t('9')];
+  });
+  ok(clav[0] === 'dashboard' && clav[1] === 'repas', 'les touches 1 et 9 vont du premier au dernier onglet : ' + clav.join(' → '));
+  await ctx.close();
+}
+
 await browser.close();
 console.log(errs ? '\n' + errs + ' ECHEC(S)' : '\nTOUT VERT');
 process.exit(errs ? 1 : 0);

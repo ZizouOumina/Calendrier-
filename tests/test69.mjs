@@ -112,30 +112,34 @@ console.log('\n== 279) Le test du mois ==');
   await b.ctx.close();
 }
 
-console.log('\n== 280) Treize onglets : Business ne compte pas sans boutique ==');
+console.log('\n== 280) Neuf onglets : Business ne compte pas sans boutique ==');
 {
   const { ctx, fr } = await ouvrir('2026-09-15T09:00:00+02:00', {'batcave-business': [{id:'b1', moisISO:'2026-09', mois:'Sept. 2026', ca:100, couts:50, benef:50}]});
   const nav = await fr.evaluate(() => [...document.querySelectorAll('.nav-btn[data-page]')].filter(b => !b.hidden).map(b => b.dataset.page));
-  ok(nav.length === 13, 'treize onglets même avec des chiffres de business : ' + nav.join(' '));
+  /* Neuf onglets depuis le regroupement du 19 septembre : quatre pages sont devenues des
+     sous-onglets — Coran sous Habitudes, Meal prep et Courses sous Table, Objectifs sous
+     Semaine. Leurs boutons restent dans le DOM, cachés, donc tout ce qui les visait par
+     leur nom continue de fonctionner. */
+  ok(nav.length === 9, 'neuf onglets même avec des chiffres de business : ' + nav.join(' '));
   await ctx.close();
   const b = await ouvrir('2026-09-15T09:00:00+02:00', {'batcave-shopify-boutique': {domain:'ma-boutique.myshopify.com', name:'Ma boutique', currency:'EUR', plan:'basic'}});
   const nav2 = await b.fr.evaluate(() => [...document.querySelectorAll('.nav-btn[data-page]')].filter(x => !x.hidden).map(x => x.dataset.page));
-  ok(nav2.length === 14 && nav2.indexOf('business') > -1, 'Business apparaît quand une boutique payante est branchée');
+  ok(nav2.length === 10 && nav2.indexOf('business') > -1, 'Business apparaît quand une boutique payante est branchée — dixième onglet');
   await b.ctx.close();
   /* une boutique d'essai, ou une fiche sans plan connu, sans une seule vente : pas d'onglet */
   const inc = await ouvrir('2026-09-15T09:00:00+02:00', {'batcave-shopify-boutique': {domain:'ancienne.myshopify.com', name:'Fiche ancienne', currency:'EUR'}});
   const navInc = await inc.fr.evaluate(() => [...document.querySelectorAll('.nav-btn[data-page]')].filter(x => !x.hidden).map(x => x.dataset.page));
-  ok(navInc.length === 13, 'fiche écrite avant le lot 22 (plan inconnu) : treize onglets tant qu\'il n\'y a pas de vente');
+  ok(navInc.length === 9, 'fiche écrite avant le lot 22 (plan inconnu) : neuf onglets tant qu\'il n\'y a pas de vente');
   await inc.ctx.close();
   const e = await ouvrir('2026-09-15T09:00:00+02:00', {'batcave-shopify-boutique': {domain:'essai.myshopify.com', name:'Ma boutique 3', currency:'EUR', plan:'trial'}});
   const nav3 = await e.fr.evaluate(() => [...document.querySelectorAll('.nav-btn[data-page]')].filter(x => !x.hidden).map(x => x.dataset.page));
-  ok(nav3.length === 13 && nav3.indexOf('business') < 0, 'boutique en essai sans vente : toujours treize onglets (' + nav3.length + ')');
+  ok(nav3.length === 9 && nav3.indexOf('business') < 0, 'boutique en essai sans vente : toujours neuf onglets (' + nav3.length + ')');
   await e.ctx.close();
   /* la même boutique d'essai, mais avec un mois de ventes : l'onglet sort */
   const v = await ouvrir('2026-09-15T09:00:00+02:00', {'batcave-shopify-boutique': {domain:'essai.myshopify.com', name:'Ma boutique 3', currency:'EUR', plan:'trial'},
                                                        'batcave-business': [{id:'b2', moisISO:'2026-09', mois:'Sept. 2026', ca:240, couts:120, benef:120}]});
   const nav4 = await v.fr.evaluate(() => [...document.querySelectorAll('.nav-btn[data-page]')].filter(x => !x.hidden).map(x => x.dataset.page));
-  ok(nav4.length === 14 && nav4.indexOf('business') > -1, 'essai + premières ventes : l\'onglet Business apparaît');
+  ok(nav4.length === 10 && nav4.indexOf('business') > -1, 'essai + premières ventes : l\'onglet Business apparaît — dixième onglet');
   await v.ctx.close();
 }
 

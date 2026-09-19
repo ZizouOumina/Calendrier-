@@ -403,6 +403,18 @@
      note restent colles au bouton de suppression, sinon la croix part seule a la ligne. */
   /* Les trois exceptions du calendrier, devenues des sections d'un seul panneau : un filet
      les separe, elles n'ont plus chacune leur cadre. */
+  /* La rangee de sous-onglets, en tete des pages groupees. Elle reprend la forme des
+     boutons de la barre -- meme hauteur de cible tactile, meme accent -- pour qu'on
+     comprenne tout de suite que c'est de la navigation, pas un filtre. */
+  .sous-nav{display:flex; gap:6px; flex-wrap:wrap; margin:0 0 18px;}
+  .sous-onglet{font-family:var(--font-mono); font-size:11.5px; letter-spacing:.04em;
+    padding:9px 14px; min-height:36px; border:1px solid var(--border); border-radius:999px;
+    background:var(--surface-raised); color:var(--ink-dim); cursor:pointer; white-space:nowrap;}
+  .sous-onglet:hover{color:var(--ink); border-color:var(--ink-faint);}
+  .sous-onglet:focus-visible{outline:2px solid var(--cyan); outline-offset:2px;}
+  .sous-onglet.on{background:var(--cyan); border-color:var(--cyan); color:#04151a; font-weight:600;}
+  @media (max-width:560px){ .sous-onglet{padding:11px 14px; min-height:44px;} }
+  @media print{ .sous-nav{display:none;} }
   .exc-section{border-top:1px solid var(--border); padding-top:16px; margin-top:16px;}
   #exceptions-corps > .exc-section:first-child{border-top:none; padding-top:0; margin-top:0;}
   #exceptions-panel .sub-head{margin-bottom:6px;}
@@ -1537,10 +1549,31 @@
     </div>
 
     <nav aria-label="Navigation">
-      <span class="nav-label">Quotidien</span>
+      <span class="nav-label">Aujourd’hui</span>
       <button class="nav-btn active" data-page="dashboard" data-dom="etudes" data-pages="dashboard taches" aria-current="page">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>
         Tableau de bord
+      </button>
+      <button class="nav-btn" data-page="calendrier" data-dom="etudes">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/><path d="M12 13v4l3 2"/></svg>
+        Calendrier
+      </button>
+      <button class="nav-btn" data-page="taches" data-dom="etudes" hidden>
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l2 2 4-4"/><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
+        Tâches
+      </button>
+      <button class="nav-btn" data-page="journal" data-dom="corps" hidden>
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2h9l3 3v17H6z"/><path d="M9 8h6M9 12h6M9 16h4"/></svg>
+        Journal
+      </button>
+      <span class="nav-label">Le travail</span>
+      <button class="nav-btn" data-page="etudes" data-dom="etudes" data-pages="etudes agenda">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 9l10-5 10 5-10 5-10-5z"/><path d="M6 11.5V17c0 1.5 3 3 6 3s6-1.5 6-3v-5.5"/></svg>
+        Études
+      </button>
+      <button class="nav-btn" data-page="agenda" data-dom="etudes" hidden>
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/><circle cx="8.5" cy="14" r="1.4" fill="currentColor" stroke="none"/><circle cx="12" cy="14" r="1.4" fill="currentColor" stroke="none"/><circle cx="15.5" cy="14" r="1.4" fill="currentColor" stroke="none"/></svg>
+        Agenda Batcave
       </button>
       <button class="nav-btn" data-page="bilan" data-dom="suivi" data-pages="bilan insights">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 15l4-5 3 3 5-7"/></svg>
@@ -1550,73 +1583,48 @@
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7c.6.4 1 1.1 1 1.8v.5h6v-.5c0-.7.4-1.4 1-1.8A7 7 0 0 0 12 2z"/></svg>
         Insights
       </button>
-      <button class="nav-btn" data-page="calendrier" data-dom="etudes">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/><path d="M12 13v4l3 2"/></svg>
-        Calendrier
-      </button>
-      <button class="nav-btn" data-page="agenda" data-dom="etudes" hidden>
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/><circle cx="8.5" cy="14" r="1.4" fill="currentColor" stroke="none"/><circle cx="12" cy="14" r="1.4" fill="currentColor" stroke="none"/><circle cx="15.5" cy="14" r="1.4" fill="currentColor" stroke="none"/></svg>
-        Agenda Batcave
-      </button>
-      <button class="nav-btn" data-page="journal" data-dom="corps" hidden>
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2h9l3 3v17H6z"/><path d="M9 8h6M9 12h6M9 16h4"/></svg>
-        Journal
-      </button>
-      <button class="nav-btn" data-page="habitudes" data-dom="corps">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l2.5 6.5L21 11l-6.5 2.5L12 20l-2.5-6.5L3 11l6.5-2.5z"/></svg>
-        Habitudes
-      </button>
-      <button class="nav-btn" data-page="addictions" data-dom="corps" data-pages="addictions vie">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
-        Corps
-      </button>
-      <button class="nav-btn" data-page="repas" data-dom="table">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3v7a3 3 0 0 0 3 3v8"/><path d="M6 3v6M9 3v6"/><path d="M17 3c-2 0-3 2-3 5s1 5 3 5v8"/></svg>
-        Repas
-      </button>
-      <button class="nav-btn" data-page="prep" data-dom="table">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="8" width="18" height="12" rx="2"/><path d="M3 12h18"/><path d="M8 8V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
-        Meal prep
-      </button>
-      <button class="nav-btn" data-page="sport" data-dom="corps">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6.5 6.5l11 11"/><path d="M3 3l4 4M17 17l4 4"/><path d="M14.5 3.5l6 6M3.5 14.5l6 6"/><rect x="1.5" y="8.5" width="4" height="7" rx="1" transform="rotate(-45 3.5 12)"/><rect x="18.5" y="8.5" width="4" height="7" rx="1" transform="rotate(-45 20.5 12)"/></svg>
-        Sport
-      </button>
-
-      <span class="nav-label">Suivi</span>
-      <button class="nav-btn" data-page="coran" data-dom="foi">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v17H6.5A2.5 2.5 0 0 0 4 21.5v-17z"/><path d="M4 4.5V19a2.5 2.5 0 0 0 2.5 2.5H20"/></svg>
-        Coran &amp; Duaas
-      </button>
-      <button class="nav-btn" data-page="taches" data-dom="etudes" hidden>
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l2 2 4-4"/><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
-        Tâches
+      <button class="nav-btn" data-page="objectifs" hidden data-dom="suivi">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg>
+        Objectifs
       </button>
       <button class="nav-btn" data-page="budget" data-dom="argent">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="13" rx="2"/><path d="M2 10h20"/><path d="M6 15h4"/></svg>
         Budget
       </button>
-
-      <span class="nav-label">Projets</span>
-      <button class="nav-btn" data-page="etudes" data-dom="etudes" data-pages="etudes agenda">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 9l10-5 10 5-10 5-10-5z"/><path d="M6 11.5V17c0 1.5 3 3 6 3s6-1.5 6-3v-5.5"/></svg>
-        Études
-      </button>
       <button class="nav-btn" data-page="business" data-dom="argent" id="nav-business" hidden>
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21V9l9-6 9 6v12"/><path d="M9 21v-6h6v6"/></svg>
         Business
       </button>
-      <button class="nav-btn" data-page="objectifs" data-dom="suivi">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg>
-        Objectifs
+      <span class="nav-label">Le corps</span>
+      <button class="nav-btn" data-page="habitudes" data-dom="corps">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l2.5 6.5L21 11l-6.5 2.5L12 20l-2.5-6.5L3 11l6.5-2.5z"/></svg>
+        Habitudes
       </button>
-
-      <span class="nav-label">Logistique</span>
+      <button class="nav-btn" data-page="coran" hidden data-dom="foi">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v17H6.5A2.5 2.5 0 0 0 4 21.5v-17z"/><path d="M4 4.5V19a2.5 2.5 0 0 0 2.5 2.5H20"/></svg>
+        Coran &amp; Duaas
+      </button>
+      <button class="nav-btn" data-page="sport" data-dom="corps">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6.5 6.5l11 11"/><path d="M3 3l4 4M17 17l4 4"/><path d="M14.5 3.5l6 6M3.5 14.5l6 6"/><rect x="1.5" y="8.5" width="4" height="7" rx="1" transform="rotate(-45 3.5 12)"/><rect x="18.5" y="8.5" width="4" height="7" rx="1" transform="rotate(-45 20.5 12)"/></svg>
+        Sport
+      </button>
+      <button class="nav-btn" data-page="addictions" data-dom="corps" data-pages="addictions vie">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+        Corps
+      </button>
       <button class="nav-btn" data-page="vie" data-dom="corps" hidden>
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 1 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>
         Santé
       </button>
-      <button class="nav-btn" data-page="courses" data-dom="table">
+      <button class="nav-btn" data-page="repas" data-dom="table">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3v7a3 3 0 0 0 3 3v8"/><path d="M6 3v6M9 3v6"/><path d="M17 3c-2 0-3 2-3 5s1 5 3 5v8"/></svg>
+        Table
+      </button>
+      <button class="nav-btn" data-page="prep" hidden data-dom="table">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="8" width="18" height="12" rx="2"/><path d="M3 12h18"/><path d="M8 8V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+        Meal prep
+      </button>
+      <button class="nav-btn" data-page="courses" hidden data-dom="table">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 4h2l2.4 12.4a2 2 0 0 0 2 1.6h7.6a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="9" cy="21" r="1"/><circle cx="18" cy="21" r="1"/></svg>
         Courses
       </button>
@@ -4192,6 +4200,56 @@
      laissant l'écran vide sur iPad/mobile. Ils gardent leurs propres gestionnaires. */
   var navBtns = document.querySelectorAll('.nav-btn[data-page]');
   var pages = document.querySelectorAll('.page');
+  /* ===== Les groupes d'onglets =====
+     Treize boutons dans la barre, c'etait trop : sur telephone six tiennent a l'ecran et
+     les sept autres se cherchent. On en garde NEUF, et quatre pages deviennent des
+     sous-onglets -- une rangee de pastilles en haut de la page, une seule page affichee a
+     la fois. Aucune page ne s'allonge.
+
+     C'est un mecanisme DIFFERENT de data-pages, qui lui EMPILE : c'est ainsi que le tableau
+     de bord porte les Taches, « Semaine » porte les Insights, « Corps » porte Sante et
+     « Études » porte l'Agenda. Ces compositions sont voulues, on n'y touche pas.
+
+     Les boutons des membres restent dans le DOM, caches : un clic direct sur le bouton
+     d'une page (raccourci, lien interne, test) continue de fonctionner, et selectionne la
+     bonne pastille en remettant l'etat actif sur le bouton de tete. */
+  var GROUPES_NAV = [
+    {tete:'habitudes', membres:[['habitudes','Habitudes'], ['coran','Coran & Duaas']]},
+    {tete:'repas',     membres:[['repas','Repas'], ['prep','Meal prep'], ['courses','Courses']]},
+    {tete:'bilan',     membres:[['bilan','La semaine'], ['objectifs','Objectifs']]}
+  ];
+  function groupeDe(page){
+    for(var i = 0; i < GROUPES_NAV.length; i++){
+      for(var j = 0; j < GROUPES_NAV[i].membres.length; j++){
+        if(GROUPES_NAV[i].membres[j][0] === page) return GROUPES_NAV[i];
+      }
+    }
+    return null;
+  }
+  /* La rangee est posee en tete de CHAQUE page du groupe, identique partout : on reste au
+     meme endroit quelle que soit la pastille choisie. */
+  function construireSousNav(){
+    GROUPES_NAV.forEach(function(g){
+      g.membres.forEach(function(m){
+        var sec = document.querySelector('.page[data-page="' + m[0] + '"]');
+        if(!sec || sec.querySelector(':scope > .sous-nav')) return;
+        var row = document.createElement('nav');
+        row.className = 'sous-nav';
+        row.setAttribute('aria-label', 'Sous-onglets');
+        row.innerHTML = g.membres.map(function(x){
+          return '<button type="button" class="sous-onglet" data-sousnav="' + x[0] + '">' + escapeHtml(x[1]) + '</button>';
+        }).join('');
+        sec.insertBefore(row, sec.firstChild);
+      });
+    });
+  }
+  function majSousNav(page){
+    document.querySelectorAll('.sous-onglet').forEach(function(b){
+      var on = b.dataset.sousnav === page;
+      b.classList.toggle('on', on);
+      if(on) b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current');
+    });
+  }
   /* Un bouton peut porter PLUSIEURS pages (data-pages) : « Semaine » ouvre Bilan et
      Insights, « Corps » ouvre Dépendances et Santé, « Études » ouvre Études et l'Agenda,
      le tableau de bord porte les Tâches. Les pages regroupées gardent leur section et
@@ -4219,7 +4277,20 @@
       if(btn.dataset.page === 'dashboard'){ rafraichirSpotify(); }
       /* le meal prep depend du jour (la semaine en cours) : on le redessine a l'ouverture */
       if(btn.dataset.page === 'prep'){ try{ renderPrep(); }catch(e){} }
-      centrerOnglet(btn);
+      /* Une page de groupe ouverte par son bouton cache : c'est le bouton de TETE qui doit
+         porter l'etat actif dans la barre, sinon rien n'y bouge et on croit n'avoir pas
+         change de page. */
+      var g = groupeDe(btn.dataset.page), aCentrer = btn;
+      if(g && g.tete !== btn.dataset.page){
+        var tete = document.querySelector('.nav-btn[data-page="' + g.tete + '"]');
+        if(tete){
+          btn.classList.remove('active'); btn.removeAttribute('aria-current');
+          tete.classList.add('active'); tete.setAttribute('aria-current', 'page');
+          aCentrer = tete;
+        }
+      }
+      majSousNav(btn.dataset.page);
+      centrerOnglet(aCentrer);
     });
   });
   /* Sur telephone la barre du bas est un rail qui defile : quatorze onglets, six visibles.
@@ -4242,6 +4313,15 @@
     var btn = document.querySelector('.nav-btn[data-page="' + b.dataset.ouvrir + '"]');
     if(btn) btn.click();
   });
+  /* Une pastille delegue au bouton de nav correspondant : tout ce qu'il declenche --
+     recalculs a l'ouverture, centrage du rail, etat actif -- reste au meme endroit. */
+  document.addEventListener('click', function(e){
+    var t = e.target && e.target.closest ? e.target.closest('[data-sousnav]') : null;
+    if(!t) return;
+    var btn = document.querySelector('.nav-btn[data-page="' + t.dataset.sousnav + '"]');
+    if(btn) btn.click();
+  });
+  construireSousNav();
   document.addEventListener('keydown', function(e){
     if(e.metaKey || e.ctrlKey || e.altKey) return;
     var tag = document.activeElement && document.activeElement.tagName;

@@ -85,8 +85,11 @@ console.log('\n== 263) iPhone : rien ne déborde, tout est lisible ==');
 {
   const { ctx, page, fr, pe } = await ouvrir({viewport:{width:390,height:844}, hasTouch:true, isMobile:true, deviceScaleFactor:3});
   const pages = await fr.evaluate(() => [...document.querySelectorAll('.nav-btn[data-page]')].filter(b => !b.hidden).map(b => b.dataset.page));
-  /* treize onglets depuis Meal prep : Business n'apparaît qu'avec une boutique branchée, pas avec des chiffres */
-  ok(pages.length === 13 && pages.indexOf('business') < 0, 'treize onglets sur iPhone : ' + pages.join(' '));
+  /* Neuf onglets depuis le regroupement du 19 septembre : quatre pages sont devenues des
+     sous-onglets — Coran sous Habitudes, Meal prep et Courses sous Table, Objectifs sous
+     Semaine. Leurs boutons restent dans le DOM, cachés, donc tout ce qui les visait par
+     leur nom continue de fonctionner. */
+  ok(pages.length === 9 && pages.indexOf('business') < 0, 'neuf onglets sur iPhone : ' + pages.join(' '));
   let deborde = [];
   for(const p of pages){
     await fr.evaluate(x => document.querySelector('.nav-btn[data-page="' + x + '"]').click(), p);
@@ -94,7 +97,7 @@ console.log('\n== 263) iPhone : rien ne déborde, tout est lisible ==');
     const ov = await fr.evaluate(() => ({sw: document.documentElement.scrollWidth, cw: document.documentElement.clientWidth}));
     if(ov.sw > ov.cw + 1) deborde.push(p + ':+' + (ov.sw - ov.cw) + 'px');
   }
-  ok(deborde.length === 0, 'aucun débordement horizontal sur les treize onglets : ' + (deborde.join(' ') || 'RAS'));
+  ok(deborde.length === 0, 'aucun débordement horizontal sur les neuf onglets : ' + (deborde.join(' ') || 'RAS'));
   ok(pe.length === 0, 'aucune erreur JS sur iPhone : ' + (pe[0] || 'RAS'));
   await ctx.close();
 }
