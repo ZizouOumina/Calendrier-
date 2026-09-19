@@ -9,7 +9,7 @@ const b = await chromium.launch();
 let err = 0;
 const ok = (c, m) => { if(c) console.log('  ok  ' + m); else { err++; console.log('  FAIL ' + m); } };
 
-const JOUR = '2026-09-20';   /* premier jour du programme (dimanche 20, depuis le lot 43), et « aujourd'hui » de ce test */
+const JOUR = '2026-09-21';   /* premier jour du programme (lundi 21, sa decision du 19), et « aujourd'hui » de ce test */
 async function ouvrir(seed, quand){
   const ctx = await b.newContext({viewport:{width:1440, height:1200}, timezoneId:'Europe/Madrid', locale:'fr-FR'});
   await ctx.addInitScript(s => {
@@ -46,34 +46,34 @@ console.log('\n== 1) Avant le premier jour du programme, rien n’était prévu 
 {
   const {ctx, page, fr} = await ouvrir();
   const cs = await grille(fr, page, 'ag');
-  const avant = cs.filter(c => c.iso >= '2026-09-01' && c.iso <= '2026-09-19');
-  ok(avant.length === 19 && avant.every(c => c.horsPlan), 'les 19 jours du 1er au 19 sept. sont hors plan (' + avant.filter(c=>c.horsPlan).length + '/19)');
+  const avant = cs.filter(c => c.iso >= '2026-09-01' && c.iso <= '2026-09-20');
+  ok(avant.length === 20 && avant.every(c => c.horsPlan), 'les 20 jours du 1er au 20 sept. sont hors plan (' + avant.filter(c=>c.horsPlan).length + '/20)');
   ok(/rien n’était prévu/.test(avant[0].titre), 'et le disent au survol : « ' + avant[0].titre + ' »');
   const j15 = de(cs, JOUR);
-  ok(j15 && !j15.horsPlan, 'le 20, lui, était prévu — la case reste blanche : c’est une journée ratée, pas un jour vide');
+  ok(j15 && !j15.horsPlan, 'le 21, lui, était prévu — la case reste blanche : c’est une journée ratée, pas un jour vide');
   ok(/prévu, pas fait/.test(j15.titre), 'et le dit aussi : « ' + j15.titre + ' »');
   /* trois états, pas deux : un jour à venir n'est ni un trou ni une dette */
   const j22 = de(cs, '2026-09-22');
   ok(j22 && !j22.horsPlan && /à venir/.test(j22.titre), 'le 22, encore à venir, ne passe pas pour une journée ratée : « ' + j22.titre + ' »');
-  const j21 = de(cs, '2026-09-21');
-  ok(j21 && /à venir/.test(j21.titre), 'demain non plus : « ' + j21.titre + ' »');
+  const j23 = de(cs, '2026-09-23');
+  ok(j23 && /à venir/.test(j23.titre), 'après-demain non plus : « ' + j23.titre + ' »');
   await ctx.close();
 }
 
 console.log('\n== 2) Un jour exclu sort du plan ; des vacances, non ==');
 {
   const {ctx, page, fr} = await ouvrir({
-    'batcave-jours-exclus': ['2026-09-21'],
+    'batcave-jours-exclus': ['2026-09-22'],
     'batcave-vacances': [{id:'v1', debut:'2026-09-23', fin:'2026-09-27', label:'Retour au bled'}]
   });
   const cs = await grille(fr, page, 'ag');
-  ok(de(cs, '2026-09-21').horsPlan, 'le 21, marqué « ne compte pas », est hors plan');
-  ok(!de(cs, '2026-09-20').horsPlan && !de(cs, '2026-09-22').horsPlan, 'la veille et le lendemain, eux, étaient prévus');
+  ok(de(cs, '2026-09-22').horsPlan, 'le 22, marqué « ne compte pas », est hors plan');
+  ok(!de(cs, '2026-09-21').horsPlan && !de(cs, '2026-09-23').horsPlan, 'la veille et le lendemain, eux, étaient prévus');
   /* Depuis le 19 septembre, des vacances sont une journée SANS COURS et non une journée
      vide : la plage de cours se libère, le reste de la journée de travail tient. Ces cinq
      jours restent donc dans le plan — et c'est la conséquence à connaître : ne rien faire
      pendant des vacances déclarées crée bien une dette. La vraie coupure, c'est
-     « Aujourd'hui ne compte pas », jour par jour, comme le 21 ci-dessus. */
+     « Aujourd'hui ne compte pas », jour par jour, comme le 22 ci-dessus. */
   const vac = ['2026-09-23','2026-09-24','2026-09-25','2026-09-26','2026-09-27'].map(i => de(cs, i));
   ok(vac.every(c => c && !c.horsPlan), 'les cinq jours de vacances restent dans le plan (' + vac.filter(c=>c&&!c.horsPlan).length + '/5)');
   ok(!de(cs, '2026-09-28').horsPlan, 'et le 28 aussi, évidemment');
@@ -83,12 +83,12 @@ console.log('\n== 2) Un jour exclu sort du plan ; des vacances, non ==');
 console.log('\n== 3) Une journée travaillée n’est jamais hors plan ==');
 {
   const {ctx, page, fr} = await ouvrir({'batcave-sessions': [
-    sess('cours', 'Anatomie', 110, '2026-09-20'),
+    sess('cours', 'Anatomie', 110, '2026-09-21'),
     /* même un jour exclu : si tu as travaillé, la case porte ses heures */
     sess('cours', 'Histologie', 55, '2026-09-22')
   ], 'batcave-jours-exclus': ['2026-09-22']});
   const cs = await grille(fr, page, 'ag');
-  ok(de(cs, '2026-09-20').heure === '1 h 50' && !de(cs, '2026-09-20').horsPlan, 'le 20 : 1 h 50 affichées, jamais hors plan');
+  ok(de(cs, '2026-09-21').heure === '1 h 50' && !de(cs, '2026-09-21').horsPlan, 'le 21 : 1 h 50 affichées, jamais hors plan');
   const j22 = de(cs, '2026-09-22');
   ok(j22.heure === '55 min' && !j22.horsPlan, 'le 22, exclu mais travaillé : 55 min affichées, pas de pointillé (' + j22.titre + ')');
   await ctx.close();
@@ -102,11 +102,11 @@ console.log('\n== 4) Chaque vue juge sur CE QU’ELLE montre ==');
   const rv = await grille(fr, page, 'rv');
   const pj = await fr.evaluate(() => [...document.querySelectorAll('#pj-grid .cal-day[data-agjour]')].map(c => ({
     iso: c.dataset.agjour, horsPlan: c.classList.contains('hors-plan')})));
-  const premier = '2026-09-20';
-  ok(!de(rv, premier).horsPlan, 'vue Révision : le dimanche 20 prévoit de la révision');
-  ok(de(rv, '2026-09-19').horsPlan, 'vue Révision : le 19 (avant le programme) reste hors plan');
+  const premier = '2026-09-21';
+  ok(!de(rv, premier).horsPlan, 'vue Révision : le lundi 21 prévoit de la révision');
+  ok(de(rv, '2026-09-20').horsPlan, 'vue Révision : le 20 (avant le programme) reste hors plan');
   ok(pj.filter(c => c.iso === premier)[0] && !pj.filter(c => c.iso === premier)[0].horsPlan,
-     'vue Projets : le 20 prévoit de l’Español, qui s’y affiche — donc pas hors plan');
+     'vue Projets : le 21 prévoit de l’Español, qui s’y affiche — donc pas hors plan');
   await ctx.close();
 }
 
