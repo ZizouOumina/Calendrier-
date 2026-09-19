@@ -21,7 +21,10 @@ Il dit ce qui est fait, ce qui reste, et ce qui attend une décision de toi.
       cacahuète. La liste travaille sur une photo du 13 septembre.
 
 ### Dimanche 20
-- [ ] **Les courses** — 45 articles, tout est dû (semaine d'ancre). Le matin.
+- [ ] **Les courses** — 46 articles, tout est dû (semaine d'ancre). Le matin.
+      Chaque ligne porte maintenant une **pastille** qui dit où l'acheter au moins cher :
+      boucher (halal), Lidl (sec, surgelé, volume), Alcampo (skyr, bidon d'huile 5 L),
+      Mercadona (hygiène, ménage), mercadillo (fruits).
 - [ ] **Le ticket de caisse** → me l'envoyer, je saisis les vrais montants dans
       Budget → Nourriture.
 - [ ] **Le batch cooking** — bloc de 14:30, déjà dans l'agenda Google.
@@ -67,6 +70,8 @@ Il dit ce qui est fait, ce qui reste, et ce qui attend une décision de toi.
 | Les produits d'entretien de retour | Maison (4 sem.) + Ménage (8 sem.) + 6 lignes d'hygiène |
 | Supprimer la page Journal | faite, son historique sauvé |
 | Un seul paquet Anki Business | 305 cartes, aucune perdue |
+| Plus de magnésium | retiré partout, et il ne peut pas revenir par la synchro |
+| Où acheter quoi, dans la Batcave et brièvement | une pastille par ligne de courses |
 
 ## Les quatre défauts réels trouvés aujourd'hui, et comment
 

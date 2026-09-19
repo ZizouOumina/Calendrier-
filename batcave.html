@@ -382,6 +382,13 @@
   .cat-card input{accent-color:var(--cyan); width:15px; height:15px; flex:none; cursor:pointer;}
   .cat-card li.checked label{color:var(--ink-faint); text-decoration:line-through;}
   .cat-card label{cursor:pointer; flex:1;}
+  /* Ou acheter : une pastille sur la ligne meme, pas un panneau a part. Elle ne doit
+     jamais passer devant le nom de l'article -- d'ou la casse et le poids reduits. */
+  .ou-tag{ display:inline-block; font-family:var(--font-mono); font-size:9.5px;
+    letter-spacing:.06em; text-transform:uppercase; color:var(--dom-table);
+    border:1px solid var(--dom-table); border-radius:20px; padding:1px 7px;
+    margin-left:6px; vertical-align:2px; white-space:nowrap; opacity:.85; }
+  .cat-card li.checked .ou-tag{ opacity:.35; }
 
   /* ---------- journal ---------- */
   .journal-grid{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
@@ -2862,7 +2869,7 @@
       <div class="page-head">
         <span class="eyebrow">Dossier N° 14</span>
         <h1>Courses</h1>
-        <p class="desc">Panier de ravitaillement hebdomadaire — passage tous les samedis. Les quantités sortent du plan alimentation ; les prix, eux, ne sont plus affichés. L'huile d'olive se rachète toutes les 4 semaines.</p>
+        <p class="desc">Panier de ravitaillement hebdomadaire — passage tous les samedis. Les quantités sortent du plan alimentation ; les prix, eux, ne sont plus affichés. <b style="color:var(--dom-table);">La pastille de chaque ligne dit où l'acheter au moins cher</b> — boucher pour le halal, Lidl pour le sec et le surgelé, Alcampo pour le skyr et le bidon d'huile, Mercadona pour l'hygiène et le ménage, mercadillo pour les fruits de saison.</p>
       </div>
 
       <div class="courses-toolbar">
@@ -10600,6 +10607,36 @@
     });
     return {n: n};
   }
+  /* ===== Ou acheter quoi =====
+     Il a les quatre a cote : son boucher, Lidl, Mercadona, Alcampo. Et il a tranche --
+     plusieurs trajets valent mieux que payer plus cher. L'etiquette est donc posee sur
+     CHAQUE article plutot que dans un panneau a part : elle se lit au moment ou il coche,
+     et elle ne prend pas une ligne de hauteur.
+     Les regles, une fois pour toutes :
+     - le boucher est OBLIGATOIRE pour la viande et le jambon, qui doivent etre halal ;
+     - le skyr n'existe pas dans son Mercadona, d'ou Alcampo -- qui prend aussi l'huile,
+       parce que le bidon de 5 L est la plus grosse economie unitaire de la liste ;
+     - Lidl prend le sec, le surgele et le volume : c'est la que l'ecart se creuse ;
+     - Mercadona garde l'hygiene et le menage, ou ses marques propres sont dures a battre ;
+     - les fruits vont au mercadillo, jamais en supermarche : 30 a 40 % d'ecart. */
+  var OU_DEFAUT = {
+    'Santé et hygiène — toutes les 4 semaines': 'Mercadona',
+    'Maison — toutes les 4 semaines': 'Lidl',
+    'Ménage — toutes les 8 semaines': 'Mercadona',
+    'Tous les 3 mois': 'Mercadona'
+  };
+  var OU_ARTICLE = {
+    'Poulet': 'Boucher', 'Viande hach\u00e9e 5 %': 'Boucher', 'Jambon': 'Boucher',
+    'Skyr': 'Alcampo', 'Huile d\'olive': 'Alcampo · bidon 5 L',
+    'Saumon': 'Lidl · surgel\u00e9', '\u0152ufs': 'Lidl', 'Pain complet': 'Lidl',
+    'Fromage en tranches': 'Lidl · cuajo vegetal',
+    'Riz': 'Lidl', 'P\u00e2tes': 'Lidl', 'Flocons d\'avoine': 'Lidl',
+    'L\u00e9gumes verts surgel\u00e9s': 'Lidl', 'Miel': 'Lidl', 'Beurre de cacahu\u00e8te': 'Lidl',
+    'Bananes': 'Mercadillo', 'Fruits (pommes, poires, oranges\u2026)': 'Mercadillo · de saison',
+    'Cr\u00e9atine monohydrate': 'En ligne'
+  };
+  function ouAcheter(label, cat){ return OU_ARTICLE[label] || OU_DEFAUT[cat] || ''; }
+
   var COURSES = [];
   function construireCourses(){
     var plan = planCoursesSemaine(ajustementKcalPour(todayISO));
@@ -10607,10 +10644,7 @@
        le plan et l'affichage, et le 13 septembre ne montrait que le frais. */
     COURSES = plan.map(function(c){ return {cat: c.cat, semaines: c.semaines || 1, ancre: c.ancre, aussi: c.aussi,
       items: c.items.map(function(i){
-        /* Un fond de placard ne se modelise pas : il vaut pour UNE course et jamais plus.
-           « exception » remplace donc la quantite ce jour-la seulement, en disant pourquoi. */
-        var ex = i.exception && i.exception.date === todayISO ? i.exception : null;
-        return {texte: i.label + ' \u2014 ' + i.qte,
+        return {texte: i.label + ' \u2014 ' + i.qte, ou: ouAcheter(i.label, c.cat),
                 note: i.note};
       })}; });
     return plan;
@@ -10671,6 +10705,7 @@
         return '<li class="'+(checked?'checked':'')+'">' +
                '<input type="checkbox" id="c-'+key+'" data-course="'+key+'" '+(checked?'checked':'')+'>' +
                '<label for="c-'+key+'">'+it.texte +
+               (it.ou ? ' <span class="ou-tag">' + escapeHtml(it.ou) + '</span>' : '') +
                (it.note ? ' <span class="sub-note">— ' + escapeHtml(it.note) + '</span>' : '') +
                '</label></li>';
       }).join('');
