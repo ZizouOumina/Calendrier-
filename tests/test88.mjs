@@ -234,6 +234,58 @@ console.log('\n== 295) La remise à zéro du 14 garde les décisions de calendri
   await ctx.close();
 }
 
+console.log('\n== 309) L\'onglet Calendrier désencombré ==');
+{
+  /* Quatre panneaux sur six étaient de la CONFIGURATION — réglée trois fois par an — et
+     occupaient 48 % de l'onglet sur écran, 56 % sur téléphone, entre les deux seules
+     choses qu'on y regarde tous les jours. Mesuré avant : 4 524 px / 5 472 px. */
+  const { ctx, page, fr } = await ouvrir('2026-09-23T09:00:00+02:00');
+  await fr.evaluate(() => document.querySelector('.nav-btn[data-page="calendrier"]').click());
+  await page.waitForTimeout(300);
+  const v = await fr.evaluate(() => {
+    const sec = document.querySelector('section.page[data-page="calendrier"]');
+    return {
+      hauteur: Math.round(sec.getBoundingClientRect().height),
+      ordre: [...sec.querySelectorAll(':scope > .panel')].map(d => ((d.querySelector('h3')||{}).textContent||'').trim().split('—')[0].trim()),
+      excPlie: document.getElementById('exceptions-corps').hidden,
+      formPlie: document.getElementById('ech-form').hidden,
+      note: document.getElementById('exceptions-note').textContent,
+      lignes: [...document.querySelectorAll('#sans-cours-liste li')].map(l => l.innerText.replace(/\s+/g,' ').trim())
+    };
+  });
+  ok(v.hauteur < 3200, 'l\'onglet tient en ' + v.hauteur + ' px (4 524 avant)');
+  ok(v.ordre[1] === 'Emploi du temps' && v.ordre[2] === 'Vue de la semaine',
+     'les deux choses qu\'on regarde tous les jours se touchent : ' + v.ordre.join(' | '));
+  ok(/Exceptions du calendrier/.test(v.ordre[4]) && v.excPlie, 'les exceptions sont en bas, et pliées');
+  ok(v.formPlie, 'le formulaire des échéances aussi');
+  ok(/25 jours sans cours à venir/.test(v.note), 'mais l\'en-tête dit ce qu\'il y a dedans : « ' + v.note + ' »');
+
+  /* Par période, pas par date : Noël tenait onze lignes pour une seule chose. */
+  ok(v.lignes.length === 6, 'six lignes au lieu de vingt-quatre (' + v.lignes.length + ')');
+  ok(/23 déc.*→.*06 janv.*11 jours ouvrés/.test(v.lignes[2]), 'Noël sur une ligne : ' + v.lignes[2]);
+  ok(/^08 déc/.test(v.lignes[1]) && !/→/.test(v.lignes[1]), 'un jour seul n\'invente pas de plage : ' + v.lignes[1]);
+
+  /* La croix d'une plage rend la période entière, en une écriture. */
+  await fr.evaluate(() => { document.getElementById('exceptions-toggle').click(); });
+  await page.waitForTimeout(150);
+  const ouvert = await fr.evaluate(() => ({
+    hidden: document.getElementById('exceptions-corps').hidden,
+    aria: document.getElementById('exceptions-toggle').getAttribute('aria-expanded')
+  }));
+  ok(!ouvert.hidden && ouvert.aria === 'true', 'le bouton ouvre, et l\'annonce aux lecteurs d\'écran');
+
+  await fr.evaluate(() => document.querySelector('#sans-cours-liste [data-sccours*="2026-12-23"]').click());
+  await page.waitForTimeout(350);
+  const apres = await fr.evaluate(() => ({
+    st: JSON.parse(localStorage.getItem('batcave-jours-sans-cours')),
+    noel: window.__bcSansCours('2026-12-24'),
+    autre: window.__bcSansCours('2026-12-08')
+  }));
+  ok(apres.st.retires.length === 11 && !apres.noel, 'la croix rend les onze jours d\'un coup, en une seule écriture');
+  ok(apres.autre === true, 'et ne touche pas aux autres périodes');
+  await ctx.close();
+}
+
 await browser.close();
 console.log(errs ? '\n' + errs + ' ECHEC(S)' : '\nTOUT VERT');
 process.exit(errs ? 1 : 0);

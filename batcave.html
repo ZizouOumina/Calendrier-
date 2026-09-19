@@ -401,6 +401,11 @@
   /* Approfondissements : le sujet est une phrase, pas un nombre — le champ prend la place
      que .add-form donne par defaut aux petits champs chiffres (120 px). Et les badges de
      note restent colles au bouton de suppression, sinon la croix part seule a la ligne. */
+  /* Les trois exceptions du calendrier, devenues des sections d'un seul panneau : un filet
+     les separe, elles n'ont plus chacune leur cadre. */
+  .exc-section{border-top:1px solid var(--border); padding-top:16px; margin-top:16px;}
+  #exceptions-corps > .exc-section:first-child{border-top:none; padding-top:0; margin-top:0;}
+  #exceptions-panel .sub-head{margin-bottom:6px;}
   #appro-panel .add-form{margin-bottom:0;}
   #appro-panel #appro-f-nom{flex:1 1 220px;}
   #appro-panel #appro-nom{width:100%;}
@@ -1946,9 +1951,17 @@
       <!-- Échéances : questionnaires en classe, devoirs a rendre, presentations, TP. Saisies a la
            main (la fac ne publie rien de lisible d'avance), affichees en jours restants ici et sur
            le tableau de bord. La veille, le bloc du soir devient « Préparer ». -->
+      <div class="panel sub-panel">
+        <div class="sub-head"><h3>Vue de la semaine</h3><span class="sub-note" id="week-cal-source">planning type</span></div>
+        <div class="week-cal-wrap">
+          <div class="week-cal" id="week-cal"></div>
+        </div>
+      </div>
       <div class="panel sub-panel" id="echeances-panel">
         <div class="sub-head"><h3>⏳ Échéances</h3><span class="sub-note" id="ech-note">—</span></div>
         <p class="sub-note" style="margin-bottom:12px; line-height:1.6;">Un questionnaire en classe, un devoir à rendre, une présentation, un TP : la date suffit, le compte à rebours fait le reste. Chaque échéance s'affiche ici et sur le tableau de bord avec ses jours restants ; <b style="color:var(--ink-dim);">la veille, le bloc du soir devient « Préparer »</b>. Coche la ligne quand c'est fait. Les cinq examens de janvier se saisissent dans <b style="color:var(--ink-dim);">Études</b> (ils déclenchent le mode partiels), pas ici.</p>
+        <button class="btn" id="ech-plus" type="button" aria-expanded="false" aria-controls="ech-form" style="margin-bottom:10px;">+ Ajouter une échéance</button>
+        <div id="ech-form" hidden>
         <div class="add-form">
           <div class="f"><label>Date</label><input type="date" id="ech-date"></div>
           <div class="f"><label>Heure <span style="text-transform:none;">(optionnel)</span></label><input type="time" id="ech-heure"></div>
@@ -1958,14 +1971,25 @@
           <div class="f"><label title="Une épreuve hors amphi : la journée est reconstruite autour (préparation, trajet, épreuve, retour)">Journée reconstruite</label><input type="checkbox" id="ech-jx" style="width:22px; height:22px;"></div>
           <button class="btn btn-primary" id="ech-add" type="button">Ajouter</button>
         </div>
+        </div>
         <ul class="ech-list" id="ech-liste"></ul>
       </div>
 
+      <!-- Les exceptions du calendrier : journees exceptionnelles, vacances, jours sans cours.
+           Trois panneaux pleine hauteur pour de la CONFIGURATION qu'on regle trois fois par an :
+           ils occupaient a eux seuls plus de la moitie de l'onglet sur telephone, entre les deux
+           seules choses qu'on y regarde tous les jours. Un seul panneau, ferme par defaut, dont
+           l'en-tete dit ce qu'il contient. Rien n'est retire : tout est a un clic. -->
+      <div class="panel sub-panel" id="exceptions-panel">
+        <div class="sub-head"><h3>⚙️ Exceptions du calendrier</h3><span class="sub-note" id="exceptions-note">—</span></div>
+        <p class="sub-note" style="margin-bottom:10px; line-height:1.6;">Une journée exceptionnelle, des vacances, un jour sans cours : trois façons de contredire la grille. On les règle rarement, alors elles restent pliées.</p>
+        <button class="btn" id="exceptions-toggle" type="button" aria-expanded="false" aria-controls="exceptions-corps">Ouvrir</button>
+        <div id="exceptions-corps" hidden style="margin-top:14px;">
       <!-- Journees exceptionnelles : un TP, un examen, un rendez-vous a heure fixe. La veille,
            le dernier bloc de travail devient « Preparer » ; le jour meme, la grille est
            reconstruite autour de l'evenement (preparation, trajet, evenement, retour), et les
            blocs perdus sont dits. Les examens dates dans Etudes en creent une d'eux-memes. -->
-      <div class="panel sub-panel" id="journees-panel">
+      <div class="exc-section" id="journees-panel">
         <div class="sub-head"><h3>📌 Journées exceptionnelles</h3><span class="sub-note" id="journees-note">—</span></div>
         <p class="sub-note" style="margin-bottom:12px; line-height:1.6;">Un TP, un examen, un rendez-vous : donne la date et l'horaire. La veille, le bloc « Clore le cours du jour » devient « Préparer » ; le jour même, la journée est reconstruite autour de l'événement (une heure de préparation, le trajet, l'événement, le retour) et les blocs sacrifiés sont listés. Les examens datés dans Études créent leur journée tout seuls, et déclenchent le mode partiels de J-7 au dernier examen.</p>
         <div class="add-form">
@@ -1982,7 +2006,7 @@
       </div>
 
       <!-- Vacances et jours qui ne comptent pas : la grille et les objectifs suivent. -->
-      <div class="panel sub-panel" id="vacances-panel">
+      <div class="exc-section" id="vacances-panel">
         <div class="sub-head"><h3>🏝️ Vacances &amp; jours qui ne comptent pas</h3><span class="sub-note" id="vacances-note">—</span></div>
         <p class="sub-note" style="margin-bottom:12px; line-height:1.6;">Pendant des vacances, tous les blocs de travail deviennent du <b style="color:var(--ink-dim);">temps libre</b> : les cibles du jour, de la semaine et des objectifs tombent d'elles-mêmes — rien ne passe en retard, et rien n'est effacé. « Aujourd'hui ne compte pas » sort une seule journée du score, des séries d'habitudes, des taux et des objectifs.</p>
         <div class="add-form">
@@ -1996,7 +2020,7 @@
       </div>
 
       <!-- Jours sans cours : la plage de cours se libère, la journée reste une journée de travail. -->
-      <div class="panel sub-panel" id="sans-cours-panel">
+      <div class="exc-section" id="sans-cours-panel">
         <div class="sub-head"><h3>📅 Jours sans cours</h3><span class="sub-note" id="sans-cours-note">—</span></div>
         <p class="sub-note" style="margin-bottom:12px; line-height:1.6;">Un férié, un pont, l'entre-deux des semestres : pas de cours, mais une journée de travail. La plage de cours se libère et devient <b style="color:var(--ink-dim);">une simulation complète d'examen, sa correction, puis les blocs de projet de la phase en cours</b> — dîner à 19:00, coucher à 21:00, une nuit pleine. La liste de départ vient du calendrier des fériés espagnols, pas du portail de la fac : <b style="color:var(--ink-dim);">c'est ta saisie qui fait foi</b>. Pour de vraies vacances, où rien n'est attendu, c'est le panneau au-dessus.</p>
         <div class="add-form">
@@ -2008,10 +2032,6 @@
         <ul class="entry-list" id="sans-cours-liste"></ul>
       </div>
 
-      <div class="panel sub-panel">
-        <div class="sub-head"><h3>Vue de la semaine</h3><span class="sub-note" id="week-cal-source">planning type</span></div>
-        <div class="week-cal-wrap">
-          <div class="week-cal" id="week-cal"></div>
         </div>
       </div>
     </section>
@@ -8512,6 +8532,7 @@
   function renderJournees(){
     var ul = document.getElementById('journees-liste'), note = document.getElementById('journees-note');
     if(!ul) return;
+    majNoteExceptions();
     var dates = {};
     Object.keys(journeesState).forEach(function(k){ dates[k] = true; });
     Object.keys(examensState).forEach(function(m){ dates[examensState[m]] = true; });
@@ -8574,6 +8595,7 @@
   function renderVacances(){
     var ul = document.getElementById('vacances-liste'), note = document.getElementById('vacances-note');
     if(!ul) return;
+    majNoteExceptions();
     var bt = document.getElementById('vac-exclu');
     if(bt){
       var ex = jourExclu(todayISO);
@@ -8613,9 +8635,43 @@
   }
   /* Les jours sans cours a venir, liste de depart et saisies melangees, plus les dates ou
      il a dit qu'il y avait cours finalement -- pour pouvoir revenir sur les deux. */
+  /* Le releve de l'en-tete plie : il doit suffire a savoir s'il y a quelque chose a
+     regarder dedans. Sans lui, un panneau ferme cache aussi l'information qu'il contient
+     quelque chose -- et on ne l'ouvre jamais. */
+  function majNoteExceptions(){
+    var el = document.getElementById('exceptions-note');
+    if(!el) return;
+    var set = joursSansCoursSet();
+    var sc = Object.keys(set).filter(function(d){ return set[d] !== 'cours' && d >= todayISO; }).length;
+    var jx = Object.keys(journeesState || {}).filter(function(d){ return d >= todayISO; }).length;
+    var vac = (vacancesState || []).filter(function(v){ return v && v.fin >= todayISO; }).length;
+    el.textContent = [
+      sc ? sc + ' jour' + (sc > 1 ? 's' : '') + ' sans cours' : 'aucun jour sans cours',
+      jx ? jx + ' journée' + (jx > 1 ? 's' : '') + ' exceptionnelle' + (jx > 1 ? 's' : '') : null,
+      vac ? vac + ' période' + (vac > 1 ? 's' : '') + ' de vacances' : null
+    ].filter(Boolean).join(' · ') + ' à venir';
+  }
+  (function(){
+    /* Deux depliages, meme geste : le bouton porte aria-expanded, le corps porte hidden.
+       Rien n'est persiste -- on repart plie a chaque ouverture de l'application, sinon un
+       panneau laisse ouvert un soir reencombre l'onglet pour des semaines. */
+    function plier(idBouton, idCorps, ouvre, ferme){
+      var b = document.getElementById(idBouton), c = document.getElementById(idCorps);
+      if(!b || !c) return;
+      b.addEventListener('click', function(){
+        var ouvert = c.hidden;
+        c.hidden = !ouvert;
+        b.setAttribute('aria-expanded', ouvert ? 'true' : 'false');
+        b.textContent = ouvert ? ferme : ouvre;
+      });
+    }
+    plier('exceptions-toggle', 'exceptions-corps', 'Ouvrir', 'Fermer');
+    plier('ech-plus', 'ech-form', '+ Ajouter une échéance', 'Annuler');
+  })();
   function renderSansCours(){
     var ul = document.getElementById('sans-cours-liste'), note = document.getElementById('sans-cours-note');
     if(!ul) return;
+    majNoteExceptions();
     var set = joursSansCoursSet();
     var dates = Object.keys(set).filter(function(d){ return set[d] !== 'cours'; }).sort();
     var avenir = dates.filter(function(d){ return d >= todayISO; });
@@ -8623,35 +8679,78 @@
     var repris = joursSansCoursState.retires.filter(function(d){ return d >= todayISO; }).sort();
     if(note) note.textContent = (avenir.length ? avenir.length + ' jour' + (avenir.length > 1 ? 's' : '') + ' à venir' : 'aucun jour à venir') +
       (passes ? ' · ' + passes + ' passé' + (passes > 1 ? 's' : '') : '') + (repris.length ? ' · ' + repris.length + ' repris' : '');
-    var lignes = avenir.slice(0, 24).map(function(iso){
-      var dow = dowDe(iso), ouvre = dow >= 1 && dow <= 5;
-      return '<li class="entry-row"><span class="ecell small"><b>' + escapeHtml(fmtDate(iso)) + '</b></span>' +
-        '<span class="ecell">' + (ouvre ? '📅 Pas de cours' : '— week-end, la grille ne change pas') + '</span>' +
-        '<span class="ecell small">' + (set[iso] === 'saisi' ? '<span class="badge gold">saisi</span>' : '<span class="badge">liste</span>') + '</span>' +
-        '<button class="edel" aria-label="Il y a cours" title="Il y a cours finalement ce jour-là" data-sccours="' + iso + '">×</button></li>';
+    /* Par PERIODE, pas par date. Noel sortait onze lignes pour une seule chose, et ce
+       panneau etait a lui seul le plus gros de l'onglet. Deux dates appartiennent a la meme
+       periode quand tout ce qui les separe est du week-end : « 23 déc → 6 janv » tient
+       alors sur une ligne, et sa croix rend la periode entiere. */
+    var lignes = groupesSansCours(avenir).slice(0, 12).map(function(g){
+      var ouvres = g.dates.filter(function(d){ var w = dowDe(d); return w >= 1 && w <= 5; }).length;
+      var titre = g.debut === g.fin ? fmtDate(g.debut) : fmtDate(g.debut) + ' → ' + fmtDate(g.fin);
+      var quoi = ouvres
+        ? '📅 Pas de cours' + (g.dates.length > 1 ? ' · ' + ouvres + ' jour' + (ouvres > 1 ? 's' : '') + ' ouvré' + (ouvres > 1 ? 's' : '') : '')
+        : '— week-end, la grille ne change pas';
+      var saisi = g.dates.some(function(d){ return set[d] === 'saisi'; });
+      return '<li class="entry-row"><span class="ecell small"><b>' + escapeHtml(titre) + '</b></span>' +
+        '<span class="ecell">' + quoi + '</span>' +
+        '<span class="ecell small">' + (saisi ? '<span class="badge gold">saisi</span>' : '<span class="badge">liste</span>') + '</span>' +
+        '<button class="edel" aria-label="Il y a cours" title="' +
+        (g.dates.length > 1 ? 'Il y a cours sur toute la période' : 'Il y a cours finalement ce jour-là') +
+        '" data-sccours="' + g.dates.join(',') + '">×</button></li>';
     }).concat(repris.slice(0, 12).map(function(iso){
       return '<li class="entry-row"><span class="ecell small"><b>' + escapeHtml(fmtDate(iso)) + '</b></span>' +
         '<span class="ecell">🎓 Cours ce jour-là</span><span class="ecell small"><span class="badge gold">saisi</span></span>' +
         '<button class="edel" aria-label="Remettre sans cours" title="Remettre ce jour sans cours" data-scsans="' + iso + '">×</button></li>';
     }));
     ul.innerHTML = lignes.length ? lignes.join('') : '<li class="entry-empty">Aucun jour sans cours à venir.</li>';
-    ul.querySelectorAll('[data-sccours]').forEach(function(b){ b.addEventListener('click', function(){ marquerSansCours(b.dataset.sccours, false); }); });
+    ul.querySelectorAll('[data-sccours]').forEach(function(b){
+      b.addEventListener('click', function(){ marquerSansCours(b.dataset.sccours.split(','), false); });
+    });
     ul.querySelectorAll('[data-scsans]').forEach(function(b){ b.addEventListener('click', function(){ marquerSansCours(b.dataset.scsans, true); }); });
   }
   /* On ne garde qu'un ECART a la liste de depart : « pas de cours » sur une date deja dans
      la liste ne s'ecrit nulle part, et effacer la liste un jour n'effacerait pas ses choix. */
+  /* Deux dates appartiennent a la meme periode quand tout ce qui les separe est du
+     week-end. C'est ce qui fait tenir « 23 déc → 6 janv » sur une ligne au lieu de onze. */
+  function memePeriode(a, b){
+    var d = new Date(a + 'T00:00:00'), fin = new Date(b + 'T00:00:00');
+    if(!(fin > d)) return false;
+    d.setDate(d.getDate() + 1);
+    while(d < fin){
+      var w = d.getDay();
+      if(w !== 0 && w !== 6) return false;
+      d.setDate(d.getDate() + 1);
+    }
+    return true;
+  }
+  function groupesSansCours(dates){
+    var out = [];
+    (dates || []).forEach(function(iso){
+      var g = out[out.length - 1];
+      if(g && memePeriode(g.fin, iso)){ g.fin = iso; g.dates.push(iso); }
+      else out.push({debut: iso, fin: iso, dates: [iso]});
+    });
+    return out;
+  }
+  /* Accepte une date ou une LISTE de dates : rendre une periode entiere doit etre une seule
+     ecriture et un seul recalcul de grille, pas onze. */
   function marquerSansCours(iso, sans){
-    if(!/^\d{4}-\d{2}-\d{2}$/.test(String(iso))) return;
+    var liste = (Array.isArray(iso) ? iso : [iso]).filter(function(d){ return /^\d{4}-\d{2}-\d{2}$/.test(String(d)); });
+    if(!liste.length) return;
     var A = joursSansCoursState.ajoutes, R = joursSansCoursState.retires;
-    var iA = A.indexOf(iso); if(iA > -1) A.splice(iA, 1);
-    var iR = R.indexOf(iso); if(iR > -1) R.splice(iR, 1);
-    if(sans){ if(JOURS_SANS_COURS_LISTE.indexOf(iso) < 0) A.push(iso); }
-    else R.push(iso);
+    liste.forEach(function(d){
+      var iA = A.indexOf(d); if(iA > -1) A.splice(iA, 1);
+      var iR = R.indexOf(d); if(iR > -1) R.splice(iR, 1);
+      if(sans){ if(JOURS_SANS_COURS_LISTE.indexOf(d) < 0) A.push(d); }
+      else R.push(d);
+    });
     A.sort(); R.sort();
     save('batcave-jours-sans-cours', joursSansCoursState);
     viderCacheSansCours();
-    appliquerChangementGrille(sans ? '📅 Le ' + fmtDate(iso) + ' : pas de cours, la plage se libère.'
-                                   : '🎓 Le ' + fmtDate(iso) + ' : cours comme d\u2019habitude.');
+    var quoi = liste.length > 1
+      ? 'du ' + fmtDate(liste[0]) + ' au ' + fmtDate(liste[liste.length - 1])
+      : 'Le ' + fmtDate(liste[0]);
+    appliquerChangementGrille(sans ? '📅 ' + quoi + ' : pas de cours, la plage se libère.'
+                                   : '🎓 ' + quoi + ' : cours comme d\u2019habitude.');
   }
   (function(){
     var add = document.getElementById('sc-add'), cours = document.getElementById('sc-cours');
@@ -13519,7 +13618,7 @@
            saison: {debut: horizonState.debut, fin: horizonState.fin, jours: joursAvantFinSaison(), closable: saisonClosable()},
            exercice: {dernier: dernierExercice(), du: exerciceDu()}
          };
-       }; window.__bcReinitGarder = reinitGarder; window.__bcDureeSeance = dureeSeanceDe; window.__bcApproState = function(){ return approState; }; window.__bcApproDus = approDus; window.__bcApproFragiles = approFragiles; window.__bcAjouterAppro = ajouterAppro; window.__bcNoterAppro = noterAppro; window.__bcRenderAppro = renderAppro; window.__bcApproProchain = approProchain; window.__bcNumSemestre = numSemestre; window.__bcCreneauxAppro = creneauxApproDuJour; window.__bcBilanAppro = bilanApproSemaine; window.__bcConstats = constatsSemaine; window.__bcPlanDuJour = buildPlanDuJour; window.__bcMatieresDuSemestre = matieresDuSemestre;
+       }; window.__bcReinitGarder = reinitGarder; window.__bcDureeSeance = dureeSeanceDe; window.__bcApproState = function(){ return approState; }; window.__bcApproDus = approDus; window.__bcApproFragiles = approFragiles; window.__bcAjouterAppro = ajouterAppro; window.__bcNoterAppro = noterAppro; window.__bcRenderAppro = renderAppro; window.__bcApproProchain = approProchain; window.__bcNumSemestre = numSemestre; window.__bcCreneauxAppro = creneauxApproDuJour; window.__bcGroupesSansCours = groupesSansCours; window.__bcBilanAppro = bilanApproSemaine; window.__bcConstats = constatsSemaine; window.__bcPlanDuJour = buildPlanDuJour; window.__bcMatieresDuSemestre = matieresDuSemestre;
     /* A4/A5 : les tests injectent une charge utile METEO de forme REELLE (relevee le
        13 septembre sur widgets-hourly-claude) et lisent la phrase produite ; ils ne
        simulent jamais le connecteur lui-meme. */
