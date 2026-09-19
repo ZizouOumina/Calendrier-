@@ -124,6 +124,42 @@ console.log('\n== 334) Le rythme reste le bon après le 20 ==');
   await ctx.close();
 }
 
+console.log('\n== 335) La marche a enfin une cible ==');
+{
+  /* « Marche / pas » n'etait defini nulle part : une seule occurrence dans tout le projet,
+     sa propre declaration. Ni combien, ni pourquoi. Meme defaut que les etirements. */
+  const { ctx, fr } = await ouvrir('2026-09-21T08:00:00+02:00');
+  const l = await fr.evaluate(() => (JSON.parse(localStorage.getItem('batcave-habits')) || [])
+    .filter(h => h.id === 'core-marche').map(h => h.label)[0]);
+  ok(/8\u202f000 pas|8 000 pas/.test(l || ''), 'le libellé porte la cible : « ' + l + ' »');
+  await ctx.close();
+}
+{
+  /* Et une Batcave deja enregistree avec l'ancien libelle est migree. */
+  const vieux = {'batcave-habits': [{id:'core-marche', label:'Marche / pas', icon:'\ud83d\udeb6'}],
+    'batcave-habits-seed-v2':true,'batcave-habits-seed-v3':true,'batcave-habits-seed-v4':true,
+    'batcave-habits-seed-v5':true,'batcave-habits-seed-v6':true,'batcave-habits-seed-v7':true,
+    'batcave-habits-seed-v8':true};
+  const { ctx, fr } = await ouvrir('2026-09-21T08:00:00+02:00', vieux);
+  const l = await fr.evaluate(() => (JSON.parse(localStorage.getItem('batcave-habits')) || [])
+    .filter(h => h.id === 'core-marche').map(h => h.label)[0]);
+  ok(/8 000 pas/.test(l || ''), 'l\'ancien libellé est réécrit au chargement (« ' + l + ' »)');
+  await ctx.close();
+}
+{
+  /* Mais un libelle qu'il a personnalise lui-meme ne doit PAS etre ecrase. */
+  const sien = {'batcave-habits': [{id:'core-marche', label:'Marche — 12 000 pas', icon:'\ud83d\udeb6'}],
+    'batcave-marche-cible-v1': true,
+    'batcave-habits-seed-v2':true,'batcave-habits-seed-v3':true,'batcave-habits-seed-v4':true,
+    'batcave-habits-seed-v5':true,'batcave-habits-seed-v6':true,'batcave-habits-seed-v7':true,
+    'batcave-habits-seed-v8':true};
+  const { ctx, fr } = await ouvrir('2026-09-21T08:00:00+02:00', sien);
+  const l = await fr.evaluate(() => (JSON.parse(localStorage.getItem('batcave-habits')) || [])
+    .filter(h => h.id === 'core-marche').map(h => h.label)[0]);
+  ok(l === 'Marche — 12 000 pas', 'son propre libellé n\'est jamais écrasé (« ' + l + ' »)');
+  await ctx.close();
+}
+
 await b.close();
 console.log(err ? '\n' + err + ' ECHEC(S)' : '\nTOUT EST VERT');
 process.exit(err ? 1 : 0);

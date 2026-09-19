@@ -2184,8 +2184,8 @@
     <section class="page" data-page="sport" data-dom="corps">
       <div class="page-head">
         <span class="eyebrow">Dossier N° 06</span>
-        <h1>Sport — Programme v2</h1>
-        <p class="desc">Quatre séances au parc, paires antagonistes en supersets : lundi haut lourd, mardi bas complet, jeudi haut volume, samedi bras, épaules et mollets. Chaque séance finit par des abdos lestés ; le cou en flexion et extension lundi et jeudi, en inclinaison latérale mardi ; les trapèzes jeudi et samedi. La séance du jour est surlignée automatiquement, et un jour de repos tu peux en choisir une quand même.</p>
+        <h1>Sport — Programme v3</h1>
+        <p class="desc">Quatre séances au parc, paires antagonistes en supersets : lundi haut lourd, mardi bas complet, jeudi haut volume, samedi bras, épaules et mollets. Chaque séance finit par des abdos lestés ; le cou en flexion et extension lundi et jeudi, en inclinaison latérale mardi ; les trapèzes jeudi et samedi. La séance du jour est surlignée automatiquement, et un jour de repos tu peux en choisir une quand même. <b style="color:var(--ink-dim);">Le cardio est à part</b> : deux sorties de 30 min, samedi 18:00 et dimanche 17:30, avec leur propre compteur plus bas.
       </div>
 
       <div class="week-strip" id="week-strip"></div>
@@ -2218,6 +2218,18 @@
       <div class="sport-grid" id="sport-grid"></div>
 
       <!-- Programme v2 (14 sept. 2026) : les regles qui ne tiennent pas dans une case. -->
+      <!-- Cardio. Il vit A COTE des seances, pas dedans : l'onglet Sport tient UN type de
+           seance par jour, et le samedi est deja pris par la muscu. Surtout, les cibles
+           trimestrielles de seances (41, 46, 48) ont ete calculees sur quatre seances par
+           semaine : compter les sorties dedans les rendrait atteignables sans effort.
+           Le cardio a donc son propre compteur, sa propre ligne de bilan, sa propre serie. -->
+      <div class="panel sub-panel" id="cardio-panel" style="margin-top:16px;">
+        <div class="sub-head"><h3>🏃 Cardio</h3><span class="sub-note" id="cardio-note">—</span></div>
+        <p class="sub-note" style="margin-bottom:12px; line-height:1.6;">Les quatre séances sont en résistance pure : sans ces sorties, aucun travail aérobie de la semaine. Trente minutes à allure de conversation, pas de fractionné. <b style="color:var(--ink-dim);">Elles ne comptent pas dans « Séances tenues »</b> — ce compteur reste celui de la muscu, et le cardio a le sien.</p>
+        <ul class="check-list" id="cardio-liste"></ul>
+        <div id="cardio-resume" class="sub-note" style="margin-top:12px; line-height:1.7;"></div>
+      </div>
+
       <div class="panel sub-panel" id="programme-panel" style="margin-top:16px;">
         <div class="sub-head"><h3>📋 Le programme</h3><span class="sub-note" id="programme-note">—</span></div>
         <p class="sub-note" style="line-height:1.65; margin-bottom:8px;">Mercredi, vendredi et dimanche sont off : rien à cocher, le créneau de 05:30 sert à Anki ou aux projets. Si la semaine dérape, tu sacrifies samedi, puis jeudi. Jamais lundi ni mardi. Huit semaines sans y toucher, en notant tout.</p>
@@ -3398,7 +3410,7 @@
      vestige : une fonctionnalite retiree (batcave-matieres) ou un essai. Elle prend de la
      place dans le quota de 5000 documents et embrouille les sauvegardes, sans que rien ne
      la lise jamais. On la signale ; la suppression reste ton geste. */
-  var CLES_CONNUES = ['addictions','budget-limits','business','coran','courses','dash-more','duaas','duree-bloc','sport-log','objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','courses-plan-v3','courses-plan-v4','ancre-dimanche-v1','shampoing-dim-v1','kcal-ajustement','gcal-ecriture','reinit','fc-migration-v1','charge','shopify-boutique','journees','examens-heures','vacances','jours-exclus',
+  var CLES_CONNUES = ['addictions','budget-limits','business','coran','courses','dash-more','duaas','duree-bloc','sport-log','objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','courses-plan-v3','courses-plan-v4','ancre-dimanche-v1','shampoing-dim-v1','marche-cible-v1','cardio','kcal-ajustement','gcal-ecriture','reinit','fc-migration-v1','charge','shopify-boutique','journees','examens-heures','vacances','jours-exclus',
     'espagnol','examens','cours-suivi','portes','periodes-closes','fc-prix-icloud-3','fixed-charges','goals','goals-depart','saisons','insights-hist','last-restore-drill','habitlog','habits','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','habits-seed-v7','habits-seed-v8','objectifs-v5-espanol',
     'horizon','last-auto-backup','last-manual-backup','last-bilan-prompt','last-compaction','last-open','last-rotation','notion-url',
     'pomodial-purge','projets','report','revision','revision-fusionnee','revue','sante','sauvegarde','sessions',
@@ -4489,7 +4501,7 @@
      elles repartiraient vers le cloud. La meme remise a zero peut donc etre decidee depuis
      l'appli ou directement dans le cloud. */
   var REINIT_GARDER = ['habits','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','habits-seed-v7','habits-seed-v8','objectifs-v5-espanol','fixed-charges','fc-prix-icloud-3','budget-limits','examens','examens-heures','journees','echeances','vacances','jours-exclus','jours-sans-cours','portes','appro','notion-url','shopify-boutique',
-                       'objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','courses-plan-v3','courses-plan-v4','ancre-dimanche-v1','shampoing-dim-v1','horizon','goals-depart','saisons','periodes-closes','gcal-ecriture','duree-bloc','dash-more','revision-fusionnee','reinit','copie-vierge'];
+                       'objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','courses-plan-v3','courses-plan-v4','ancre-dimanche-v1','shampoing-dim-v1','marche-cible-v1','horizon','goals-depart','saisons','periodes-closes','gcal-ecriture','duree-bloc','dash-more','revision-fusionnee','reinit','copie-vierge'];
   var REINIT_PREFIXES_GARDER = ['pomodial-', 'coherence-ignore-'];
   function reinitGarder(cle){
     var c = cle.indexOf('batcave-') === 0 ? cle.slice(8) : cle;
@@ -5958,7 +5970,13 @@
     {id:'core-sadaqah', label:'Sadaqah du jour', icon:'🤲'},
     {id:'core-revue', label:'Revue de la veille / plan du lendemain', icon:'📝'},
     {id:'core-famille', label:'Nouvelles à la famille', icon:'📞'},
-    {id:'core-marche', label:'Marche / pas', icon:'🚶'}
+    /* « Marche / pas » ne disait rien : ni combien, ni pourquoi, et le mot n'existait nulle
+       part ailleurs dans le projet. Une case a cocher sur du vide.
+       8 000 pas, et pas 10 000 : les 10 000 viennent d'un podometre japonais des annees 60,
+       pas d'une etude. Le benefice s'accumule jusque vers 7 a 8 000 et plafonne apres.
+       Et c'est distinct du cardio : deux sorties de 30 min ne rachetent pas huit heures
+       assis. Le telephone les compte tout seul, la case ne coute donc rien a verifier. */
+    {id:'core-marche', label:'Marche \u2014 8 000 pas', icon:'🚶'}
   ];
   /* Habitudes rattachées à un seul jour (jour : 0=dim … 6=sam). Elles ne s'affichent et
      ne comptent que ce jour-là — sinon elles apparaîtraient ratées six jours sur sept. */
@@ -6124,6 +6142,13 @@
      ne touche pas une habitude deja enregistree, il faut donc reecrire ses jours une fois.
      On ne le fait que si les jours sont EXACTEMENT les quatre d'avant : s'il les a
      personnalises entre-temps, on ne touche a rien. */
+  /* Le libelle de la marche gagne sa cible. On ne reecrit que l'ancien libelle exact :
+     s'il l'a renomme lui-meme, on n'y touche pas. */
+  if(!load('batcave-marche-cible-v1', false)){
+    var ma = (habitsState || []).filter(function(h){ return h && h.id === 'core-marche'; })[0];
+    if(ma && ma.label === 'Marche / pas'){ ma.label = 'Marche \u2014 8 000 pas'; save('batcave-habits', habitsState); }
+    saveInternal('batcave-marche-cible-v1', true);
+  }
   if(!load('batcave-shampoing-dim-v1', false)){
     var sh = (habitsState || []).filter(function(h){ return h && h.id === 'core-shampoing'; })[0];
     if(sh && Array.isArray(sh.jours) && sh.jours.slice().sort().join(',') === '1,2,4,6'){
@@ -7805,6 +7830,100 @@
     }
   })();
 
+  /* ===== Le cardio =====
+     Deux sorties par semaine, samedi 18:00 et dimanche 17:30. Elles vivent dans la GRILLE
+     (donc dans son agenda Google), et ici seulement pour etre comptees.
+     Les jours ne sont pas ecrits en dur : on les LIT dans la grille. Si la course change
+     d'horaire ou de jour un jour, ce panneau suit tout seul -- c'est exactement le genre
+     de desynchronisation qui a fait que la course existait dans l'agenda et nulle part
+     ailleurs. */
+  var CARDIO_LABEL = '\ud83c\udfc3 Course \u00e0 pied';
+  var CARDIO_CIBLE_MIN = 30;
+  var cardioState = load('batcave-cardio', {});
+  if(!cardioState || typeof cardioState !== 'object' || Array.isArray(cardioState)) cardioState = {};
+
+  /* Les sorties prevues d'une semaine, lues dans la grille de chaque jour. */
+  function sortiesCardio(lundiISO){
+    var out = [];
+    for(var i = 0; i < 7; i++){
+      var iso = isoDecale(lundiISO, i);
+      if(iso < PROGRAMME_DEBUT || iso > PROGRAMME_FIN) continue;
+      var g = grilleDe(cleJournee(dowDe(iso)), iso);
+      g.forEach(function(b){
+        if(b[1] === CARDIO_LABEL) out.push({iso: iso, heure: b[0]});
+      });
+    }
+    return out;
+  }
+  function cardioFait(iso){ var e = cardioState[iso]; return !!(e && Number(e.min) > 0); }
+  function cardioMinutes(iso){ var e = cardioState[iso]; return e ? Number(e.min) || 0 : 0; }
+  /* Minutes de cardio sur une liste de jours : ce que la ligne du Bilan affiche. */
+  function cardioMinutesSur(jours){
+    return jours.reduce(function(t, d){ return t + cardioMinutes(d); }, 0);
+  }
+  function noterCardio(iso, min){
+    min = Number(min) || 0;
+    if(min > 0) cardioState[iso] = {min: Math.min(min, 300)};
+    else delete cardioState[iso];
+    save('batcave-cardio', cardioState);
+    try{ renderCardio(); renderBilan(); }catch(e){}
+  }
+  /* La serie : combien de semaines d'affilee les DEUX sorties ont ete faites. On ne compte
+     que les semaines ECOULEES, sinon la semaine en cours casserait la serie tous les lundis. */
+  function serieCardio(){
+    var n = 0;
+    for(var o = -1; o > -60; o--){
+      var jours = weekRange(o), prev = sortiesCardio(jours[0]);
+      if(!prev.length) break;
+      if(!prev.every(function(x){ return cardioFait(x.iso); })) break;
+      n++;
+    }
+    return n;
+  }
+  function renderCardio(){
+    var ul = document.getElementById('cardio-liste'); if(!ul) return;
+    var jours = weekRange(0), prevues = sortiesCardio(jours[0]);
+    if(!prevues.length){
+      ul.innerHTML = '<li class="entry-empty">Aucune sortie prévue cette semaine.</li>';
+      var vide = document.getElementById('cardio-note'); if(vide) vide.textContent = '—';
+      var r0 = document.getElementById('cardio-resume'); if(r0) r0.innerHTML = '';
+      return;
+    }
+    ul.innerHTML = prevues.map(function(x){
+      var fait = cardioFait(x.iso), min = cardioMinutes(x.iso), passe = x.iso < todayISO;
+      var jour = DAY_NAMES[dowDe(x.iso)] + '. ' + fmtDate(x.iso);
+      return '<li class="' + (fait ? 'checked' : '') + '">' +
+        '<input type="checkbox" id="cardio-' + x.iso + '" data-cardio="' + x.iso + '"' + (fait ? ' checked' : '') + '>' +
+        '<label for="cardio-' + x.iso + '">' + jour + ' \u00b7 ' + x.heure +
+          (fait ? ' <b style="color:var(--good);">' + min + ' min</b>'
+                : (passe ? ' <span class="sub-note">\u2014 pas faite</span>' : '')) + '</label>' +
+        '<span class="pas"><button type="button" data-cardio-moins="' + x.iso + '" aria-label="moins 5 minutes">\u2212</button>' +
+        '<span class="v">' + (min || CARDIO_CIBLE_MIN) + '</span>' +
+        '<button type="button" data-cardio-plus="' + x.iso + '" aria-label="plus 5 minutes">+</button></span>' +
+      '</li>';
+    }).join('');
+    var faites = prevues.filter(function(x){ return cardioFait(x.iso); }).length;
+    var note = document.getElementById('cardio-note');
+    if(note) note.textContent = faites + '/' + prevues.length + ' cette semaine \u00b7 ' + cardioMinutesSur(jours) + ' min';
+    var serie = serieCardio();
+    var six = [-5, -4, -3, -2, -1, 0].map(function(o){ return cardioMinutesSur(weekRange(o)); });
+    var r = document.getElementById('cardio-resume');
+    if(r) r.innerHTML =
+      '<b style="color:var(--ink);">' + (serie ? serie + ' semaine' + (serie > 1 ? 's' : '') + ' compl\u00e8te' + (serie > 1 ? 's' : '') + ' d\u2019affil\u00e9e' : 'Aucune semaine compl\u00e8te pour l\u2019instant') + '</b>' +
+      ' \u00b7 six derni\u00e8res semaines : ' + six.join(' \u00b7 ') + ' min';
+  }
+  document.addEventListener('click', function(e){
+    var plus = e.target.closest && e.target.closest('[data-cardio-plus]');
+    var moins = e.target.closest && e.target.closest('[data-cardio-moins]');
+    if(plus){ var i1 = plus.dataset.cardioPlus; noterCardio(i1, (cardioMinutes(i1) || CARDIO_CIBLE_MIN) + 5); return; }
+    if(moins){ var i2 = moins.dataset.cardioMoins; noterCardio(i2, Math.max(0, (cardioMinutes(i2) || CARDIO_CIBLE_MIN) - 5)); return; }
+  });
+  document.addEventListener('change', function(e){
+    var c = e.target && e.target.dataset && e.target.dataset.cardio;
+    if(!c) return;
+    noterCardio(c, e.target.checked ? CARDIO_CIBLE_MIN : 0);
+  });
+
   function renderWeekStrip(){
     var strip = document.getElementById('week-strip');
     strip.innerHTML = '';
@@ -7948,6 +8067,7 @@
   }
 
   function renderSport(){
+    try{ renderCardio(); }catch(e){}
     var grid = document.getElementById('sport-grid');
     grid.innerHTML = '';
     SESSIONS.forEach(function(session){
@@ -12460,7 +12580,8 @@
       sleepH: sleepDays ? sleepSum/sleepDays : 0,
       waterL: waterSum/n,
       kcalPct: Math.round(kcalPctSum/n),
-      sportPct: sportDays ? Math.round(sportPctSum/sportDays) : 0
+      sportPct: sportDays ? Math.round(sportPctSum/sportDays) : 0,
+      cardioMin: cardioMinutesSur(days)
     };
   }
   function renderBilan(){
@@ -12484,7 +12605,11 @@
       {icon:'😴', label:'Sommeil / nuit', cle:'sleepH', cur:cur.sleepH, prev:prev.sleepH, unit:'h', higher:true},
       {icon:'💧', label:'Eau / jour', cle:'waterL', cur:cur.waterL, prev:prev.waterL, unit:'L', higher:true},
       {icon:'🍽️', label:'Nutrition / jour', cle:'kcalPct', cur:cur.kcalPct, prev:prev.kcalPct, unit:'%', higher:true},
-      {icon:'🏋️', label:'Séances tenues', cle:'sportPct', cur:cur.sportPct, prev:prev.sportPct, unit:'%', higher:true}
+      {icon:'🏋️', label:'Séances tenues', cle:'sportPct', cur:cur.sportPct, prev:prev.sportPct, unit:'%', higher:true},
+      /* Le cardio a SA ligne, en minutes : le melanger aux seances rendrait les deux
+         illisibles, et les cibles trimestrielles de seances n'ont jamais compte les
+         sorties de course. */
+      {icon:'🏃', label:'Cardio', cle:'cardioMin', cur:cur.cardioMin, prev:prev.cardioMin, unit:'min', higher:true}
     ];
     renderPrevuRealise(cur);
     grid.innerHTML = rows.map(function(r){
@@ -14046,7 +14171,7 @@
      dues dentaire ») : un evenement se reconnait a la partie avant le separateur. */
   function titreBaseGcal(s){ return String(s || '').split(' · ')[0].trim(); }
   try{ window.__bcTitreBase = titreBaseGcal; window.__bcConsigne = consigneBloc; window.__bcInsights = buildInsights; window.__bcBlocs = blocsDuPlanning; window.__bcCle = cleJournee; window.__bcJours = joursSuivis; window.__bcInsightsVu = function(){ return insightsVu; }; window.__bcLogSession = logSession; window.__bcPeriode = periodeGrille; window.__bcGrille = grilleDe; window.__bcMinutesEspanol = minutesEspanol; window.__bcCibleEspanol = cibleEspanolJour; window.__bcTypeBloc = typeBlocPlan; window.__bcPlanRotation = planRotation; window.__bcHabitJours = habitJours; window.__bcProgrammeDebut = PROGRAMME_DEBUT; window.__bcJournees = function(){ return journeesState; }; window.__bcJourneeDe = journeeDe; window.__bcPartiels = periodePartiels; window.__bcSessionsPartiels = sessionsPartiels; window.__bcBlocSansPomodoro = blocSansPomodoro; window.__bcRappels = blocsARappeler; window.__bcJoursGcal = joursAPousser; window.__bcExamens = function(){ return examensState; }; window.__bcPrevu = minutesPrevuesJour; window.__bcCibleGrille = cibleDepuisGrille; window.__bcPartEcoulee = partEcoulee; window.__bcVacances = function(){ return vacancesState; }; window.__bcJourExclu = jourExclu; window.__bcObjectifs = function(){ return objectifsState.liste; }; window.__bcComparer = comparerObjectif; window.__bcAcquise = habitAcquise; window.__bcAcquises = habitsAcquises; window.__bcSansPomodoro = blocsSansPomodoroDuJour; window.__bcTonPriorite = tonPriorite; window.__bcPrioHist = function(){ return insightsHist; }; window.__bcCloturerSaison = cloturerSaison; window.__bcPeriodesCloses = function(){ return periodesClosesState; }; window.__bcCloturerPeriodes = cloturerPeriodesEchues; window.__bcPeriodesObj = periodesObjectifs; window.__bcSaisons = function(){ return saisonsState; }; window.__bcTrimestres = function(){ return TRIMESTRES; }; window.__bcMois = moisListe; window.__bcAnki = function(){ return ankiState; }; window.__bcLireAnki = lireAnki; window.__bcBesoins = besoinsPartiels; window.__bcMatiereBloc = matierePourBloc; window.__bcPortes = etatPortes; window.__bcEpreuve = epreuvePassages; window.__bcEpreuveProj = epreuveProjection; window.__bcPortesEtat = function(){ return portesEtat; }; window.__bcConvertirPorte = convertirPorte; window.__bcNoterCours = noterCours; window.__bcGrilleBase = grilleBase; window.__bcSemestre = semestreDe; window.__bcSansCours = sansCoursLe; window.__bcCoucher = heureCoucher; window.__bcLever = heureLever; window.__bcSommeilCible = objectifSommeilPour; window.__bcMarquerSansCours = marquerSansCours; window.__bcJoursSansCours = function(){ return joursSansCoursState; }; window.__bcSeuilRevision = seuilUrgenceRevision; window.__bcCibleJour = cibleJourMinutes; window.__bcReinitGarder = reinitGarder;
-       window.__bcTypeSport = typeSportDe; window.__bcSommeilCible = objectifSommeilPour; window.__bcTestAnki = testAnkiDu; window.__bcRapport = function(){
+       window.__bcTypeSport = typeSportDe; window.__bcCardio = function(){ return cardioState; }; window.__bcSortiesCardio = sortiesCardio; window.__bcNoterCardio = noterCardio; window.__bcCardioMinutes = cardioMinutesSur; window.__bcSerieCardio = serieCardio; window.__bcSommeilCible = objectifSommeilPour; window.__bcTestAnki = testAnkiDu; window.__bcRapport = function(){
          var mois = moisListe().filter(function(m){ return todayISO >= m.debut && todayISO <= m.fin; })[0];
          var objs = mois ? objectifsState.liste.filter(function(o){ return o.periode === 'mois' && o.pid === mois.id; }) : [];
          var p = periodeGrille(todayISO), hist = {};
