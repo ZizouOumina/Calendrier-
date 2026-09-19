@@ -19,6 +19,12 @@ async function jour(quand){
   await fr.evaluate(() => { document.querySelectorAll('.overlay').forEach(o => o.hidden = true);
                             document.querySelector('.nav-btn[data-page="etudes"]').click(); });
   await page.waitForTimeout(500);
+  /* Le panneau des pondérations est un panneau de RÉFÉRENCE : il est plié par défaut
+     depuis le désencombrement du 19 septembre. innerText d'un contenu caché rend la chaîne
+     vide, pas le texte — donc on l'ouvre, comme le ferait quelqu'un qui vient le lire. */
+  await fr.evaluate(() => { const b = document.getElementById('eval-toggle');
+                            if(b && document.getElementById('eval-fold').hidden) b.click(); });
+  await page.waitForTimeout(250);
   return { ctx, page, fr };
 }
 
