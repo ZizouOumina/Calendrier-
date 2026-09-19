@@ -407,7 +407,7 @@ console.log('\n== 311) Neuf onglets, et rien qui devient inatteignable ==');
     pastilles: document.querySelectorAll('.sous-onglet').length
   }));
   ok(v.visibles.length === 9, 'neuf boutons dans la barre : ' + v.visibles.join(' '));
-  ok(v.toutes.length === 19, 'mais les dix-neuf boutons restent dans le DOM (' + v.toutes.length + ') — rien n\'a été supprimé');
+  ok(v.toutes.length === 18, 'mais les dix-huit boutons restent dans le DOM (' + v.toutes.length + ') — rien n\'a été supprimé');
   ok(v.groupes.join(' | ') === 'Aujourd’hui | Le travail | Le corps',
      'et les trois intertitres veulent dire quelque chose : ' + v.groupes.join(' | '));
   ok(v.rangees === 7 && v.pastilles === 17, 'sept pages groupées, dix-sept pastilles (' + v.rangees + '/' + v.pastilles + ')');

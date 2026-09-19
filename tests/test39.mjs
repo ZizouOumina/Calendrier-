@@ -47,8 +47,14 @@ for(const [nom, quand, attendu] of [['lundi',LUNDI,'5 h 05'], ['vendredi',VENDRE
 console.log('\n== 85) L\'objectif de sommeil suit le coucher de la VEILLE ==');
 for(const [nom, quand, attendu] of [['lundi (veille dim. 21:00, lever 05:30)',LUNDI,'8 h 30'], ['samedi (veille ven. 21:55)',SAMEDI,'7 h 35'], ['dimanche (veille sam. 21:00)',DIMANCHE,'9 h 30']]){
   const { ctx, fr } = await ouvrir(quand);
-  const t = await fr.evaluate(() => document.getElementById('jr-sleep-sub').textContent);
-  ok(t.indexOf('sur ' + attendu) > -1, nom + ' → ' + attendu + ' : ' + t);
+  /* La page Journal est supprimee, et sa barre de sommeil avec : la cible se lit
+     desormais a la source, la fonction que le tableau de bord et la cloture appellent. */
+  const t = await fr.evaluate(() => {
+    const h = window.__bcSommeilCible(new Date().toISOString().slice(0, 10));
+    const hh = Math.floor(h), mm = Math.round((h - hh) * 60);
+    return mm ? hh + ' h ' + String(mm).padStart(2, '0') : hh + ' h';
+  });
+  ok(t === attendu, nom + ' → ' + attendu + ' : ' + t);
   await ctx.close();
 }
 {

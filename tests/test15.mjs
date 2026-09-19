@@ -119,7 +119,7 @@ console.log('\n== Spotify : un clic sur ♫ actualise tout de suite ==');
   const sp = await fr.evaluate(() => ({ txt: document.getElementById('dash-spotify').textContent, hidden: document.getElementById('dash-spotify').hidden, call: (window.__calls || []).filter(c => c.tool === 'get_currently_playing').pop() }));
   ok(sp.hidden === false && sp.txt === '🎵 Sicko Mode — Travis Scott', 'le titre en lecture apparaît sans attendre le sondage : ' + sp.txt);
   ok(!!sp.call && sp.call.opts && sp.call.opts.cache && sp.call.opts.cache.refresh === true, 'la lecture force le cache (refresh) au lieu de resservir l\'ancienne valeur');
-  await fr.evaluate(() => { window.__spotify = {}; document.querySelector('.nav-btn[data-page="journal"]').click(); document.querySelector('.nav-btn[data-page="dashboard"]').click(); });
+  await fr.evaluate(() => { window.__spotify = {}; document.querySelector('.nav-btn[data-page="habitudes"]').click(); document.querySelector('.nav-btn[data-page="dashboard"]').click(); });
   await page.waitForTimeout(200);
   ok(await fr.evaluate(() => document.getElementById('dash-spotify').hidden) === true, 'revenir sur le tableau de bord relit aussi : plus rien en lecture → masqué');
 }
