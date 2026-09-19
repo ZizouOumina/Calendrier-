@@ -114,12 +114,18 @@ console.log('\n== 323) La pastille n\'a rien cassé ==');
   await ctx.close();
 }
 
-console.log('\n== 324) Sur iPhone, aucune pastille ne déborde ==');
-{
-  const ctx = await b.newContext({viewport:{width:390,height:844}, timezoneId:'Europe/Madrid', locale:'fr-FR'});
+console.log('\n== 324) Sur écran étroit, la pastille ne pousse pas la page ==');
+/* Le vrai piege, et il s'est referme : « 1fr » vaut « minmax(auto,1fr) », donc une colonne
+   de grille ne descend jamais sous la largeur min-content de son contenu. Une pastille en
+   white-space:nowrap (« Mercadillo · de saison ») imposait cette largeur a la colonne
+   entiere : en iPad portrait, les trois colonnes reclamaient 631 px pour 540 disponibles,
+   et c'est la PAGE qui partait en defilement horizontal -- pas seulement la carte.
+   On verifie donc les deux echelles, et le defilement de la page, pas juste la pastille. */
+for(const ecran of [{n:'iPhone', w:390, h:844}, {n:'iPad portrait', w:820, h:1180}]){
+  const ctx = await b.newContext({viewport:{width:ecran.w,height:ecran.h}, timezoneId:'Europe/Madrid', locale:'fr-FR'});
   await ctx.addInitScript(() => { window.claude = undefined; });
   const page = await ctx.newPage();
-  page.on('pageerror', e => { err++; console.log('  PAGEERROR iPhone : ' + e.message); });
+  page.on('pageerror', e => { err++; console.log('  PAGEERROR ' + ecran.n + ' : ' + e.message); });
   await page.clock.install({ time: new Date('2026-09-19T10:00:00+02:00') });
   await page.goto('http://127.0.0.1:8199/host.html');
   await page.frameLocator('#f').locator('#dash-focus').waitFor({state:'attached', timeout:20000});
@@ -127,18 +133,22 @@ console.log('\n== 324) Sur iPhone, aucune pastille ne déborde ==');
   await fr.evaluate(() => { document.querySelectorAll('.overlay').forEach(o => o.hidden = true);
                             document.querySelector('.nav-btn[data-page="courses"]').click(); });
   await page.waitForTimeout(400);
-  const debords = await fr.evaluate(() => {
-    const out = [];
+  const m = await fr.evaluate(() => {
+    const out = {debords: [], doc: document.documentElement.scrollWidth, vue: document.documentElement.clientWidth};
+    const g = document.getElementById('courses-grid');
+    out.grille = g.scrollWidth; out.grilleVue = Math.round(g.getBoundingClientRect().width);
     document.querySelectorAll('#courses-grid .cat-card').forEach(c => {
       const bc = c.getBoundingClientRect();
       c.querySelectorAll('.ou-tag').forEach(t => {
         const bt = t.getBoundingClientRect();
-        if(bt.right > bc.right + 1 || bt.left < bc.left - 1) out.push(t.textContent.trim());
+        if(bt.right > bc.right + 1 || bt.left < bc.left - 1) out.debords.push(t.textContent.trim());
       });
     });
     return out;
   });
-  ok(!debords.length, 'aucune pastille ne sort de sa carte en 390 px (' + (debords.join(', ') || 'aucune') + ')');
+  ok(!m.debords.length, ecran.n + ' : aucune pastille ne sort de sa carte (' + (m.debords.join(', ') || 'aucune') + ')');
+  ok(m.grille <= m.grilleVue + 1, ecran.n + ' : la grille des courses tient dans sa largeur (' + m.grille + ' ≤ ' + m.grilleVue + ')');
+  ok(m.doc <= m.vue + 1, ecran.n + ' : et la page ne défile pas horizontalement (' + m.doc + ' ≤ ' + m.vue + ')');
   await ctx.close();
 }
 

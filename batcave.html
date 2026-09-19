@@ -374,7 +374,11 @@
   /* ---------- courses ---------- */
   .courses-toolbar{display:flex; justify-content:space-between; align-items:center; margin-bottom:18px;}
   .courses-toolbar .ctext{font-family:var(--font-mono); font-size:12.5px; color:var(--ink-faint);}
-  .courses-grid{display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px;}
+  /* minmax(0,1fr) et non 1fr : une colonne de grille vaut au moins la largeur
+     min-content de son contenu. La pastille « où acheter » a fait grossir ce
+     min-content, et les trois colonnes reclamaient 631 px pour 540 disponibles en
+     iPad portrait -- toute la PAGE partait en defilement horizontal. */
+  .courses-grid{display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:14px;}
   .cat-card{background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:16px 18px;}
   .cat-card h4{font-family:var(--font-mono); font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:var(--cyan-dim); margin-bottom:10px;}
   .cat-card ul{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:8px;}
@@ -387,7 +391,11 @@
   .ou-tag{ display:inline-block; font-family:var(--font-mono); font-size:9.5px;
     letter-spacing:.06em; text-transform:uppercase; color:var(--dom-table);
     border:1px solid var(--dom-table); border-radius:20px; padding:1px 7px;
-    margin-left:6px; vertical-align:2px; white-space:nowrap; opacity:.85; }
+    margin-left:6px; vertical-align:2px; max-width:100%; opacity:.85; }
+  /* Pas de white-space:nowrap : « Mercadillo · de saison » d'un seul tenant imposait sa
+     largeur a la colonne entiere. La pastille passe sur deux lignes plutot que de pousser
+     la page. Et le libelle doit pouvoir retrecir, sinon min-width:auto le rattrape. */
+  .cat-card label{ min-width:0; overflow-wrap:anywhere; }
   .cat-card li.checked .ou-tag{ opacity:.35; }
 
   /* ---------- journal ---------- */
