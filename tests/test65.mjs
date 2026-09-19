@@ -77,9 +77,11 @@ console.log('\n== 242) Habitudes à plusieurs jours : le linge lundi, mercredi, 
   });
   const cards = await cartes(fr);
   ok(JSON.stringify(r.jours) === '[1,3,5]', 'habitJours trie et dédoublonne : ' + JSON.stringify(r.jours));
-  /* depuis le 16 septembre, créatine et magnésium sont des habitudes quotidiennes semées
+  /* depuis le 16 septembre, la créatine est une habitude quotidienne semée
      chez tout le monde (génération v8) : elles s'ajoutent à Lit fait et Linge */
-  ok(r.dash.length === 4 && r.dash.some(t => /Linge/.test(t)) && r.dash.some(t => /Créatine/.test(t)) && r.dash.some(t => /Magnésium/.test(t)) && !r.dash.some(t => /balai|Courses/.test(t)) && r.count === '0/4', 'console du mercredi : Lit fait + Linge + créatine + magnésium, ni balai ni courses (' + r.count + ')');
+  /* Le magnésium a été retiré le 19 septembre — il n'en prend pas. Il ne reste que la
+     créatine, donc trois cartes au lieu de quatre. */
+  ok(r.dash.length === 3 && r.dash.some(t => /Linge/.test(t)) && r.dash.some(t => /Créatine/.test(t)) && !r.dash.some(t => /Magnésium/.test(t)) && !r.dash.some(t => /balai|Courses/.test(t)) && r.count === '0/3', 'console du mercredi : Lit fait + Linge + créatine, ni magnésium ni balai ni courses (' + r.count + ')');
   const linge = cards.find(t => /Linge/.test(t)) || '';
   ok(/lun · mer · ven/.test(linge) && !/seulement/.test(linge), 'carte Linge un mercredi : « lun · mer · ven », sans « seulement » (' + linge.slice(0, 40) + ')');
   ok(/2 jours? d'affilée/i.test(linge), 'série : ven 11 + lun 14 = 2 d\'affilée, le mercredi pas encore coché ne casse rien (' + (linge.match(/\d+ jours? d'affilée/i) || [''])[0] + ')');

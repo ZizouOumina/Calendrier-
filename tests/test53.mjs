@@ -32,9 +32,11 @@ console.log('\n== 180) Sans ajustement : plan de base, liste = plan × 7 ==');
   const c = await fr.evaluate(() => ({ items: [...document.querySelectorAll('#courses-grid label')].map(l => l.textContent), note: document.getElementById('courses-plan-note').textContent, budget: document.getElementById('courses-budget').textContent, n: document.querySelectorAll('#courses-grid input').length }));
   /* Sept rythmes : 10 articles frais chaque semaine ; 5 reserves, 16 lignes de sante et
      6 de maison toutes les 4 semaines ; 2 articles toutes les 5 ; 5 de menage toutes les
-     8 ; 1 brosse a dents tous les 3 mois. Les produits MENAGERS avaient ete sortis a sa
-     demande, puis redemandes le 19 septembre. */
-  ok(c.n === 45, '45 articles au total, tous rythmes confondus (' + c.n + ')');
+     8 ; 1 brosse a dents et 1 pot de creatine tous les 3 mois. Les produits MENAGERS
+     avaient ete sortis a sa demande, puis redemandes le 19 septembre ; la creatine a
+     rejoint la liste le meme jour, parce qu'il la coche tous les soirs et que rien ne la
+     rachetait. */
+  ok(c.n === 46, '46 articles au total, tous rythmes confondus (' + c.n + ')');
   /* Deux chiffres par ligne, et il faut les deux : ce qu'on ACHETE (un multiple du
      conditionnement) et ce que le PLAN demande (la somme des 7 jours de repas). Riz
      135 g/jour -> 945/semaine -> 3 780 sur 4 semaines, donc 4 paquets de 1 kg ;
