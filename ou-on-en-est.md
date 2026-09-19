@@ -31,6 +31,33 @@ les sept jours de la phase Español, et contre « Le calendrier du S1 ».
 | Semestre et ECTS vides sur les 11 fiches | remplis — 5 matières au S1 (24 ECTS), 6 au S2 (36) |
 | Boutique : « 19 h par semaine » | **0 h** pendant la phase Español, ≈ 17 h après, et un rendu passe avant |
 
+## La chose importante que j'ai trouvée en republiant
+
+**Le jour 1 n'était pas le même dans le code et dans les pages.** Ta décision du
+18 au soir — commencer la Batcave le dimanche — était bien passée dans le code
+(`PROGRAMME_DEBUT = 2026-09-20`) mais dans **aucune page** : toutes annonçaient
+« samedi 19, jour 1 ». Un jour d'écart sur le premier jour compté, et on était
+justement le 19.
+
+Vérifié dans l'application, pas déduit : `__bcProgrammeDebut` rend bien
+2026-09-20, le dimanche 20 est « Off » au sport, le lundi 21 est « Haut lourd ».
+Donc :
+
+- **jour 1 = dimanche 20 septembre** (copie vierge, simulation 09:20, Réexpliquer
+  10:20, diagnostic d'espagnol 11:20, contrôle du dimanche 13:30) ;
+- **samedi 19 = dernière journée de préparation** (guías docentes, Wuolah, trente
+  termes par matière) — la grille tourne, mais rien n'est compté ;
+- **séance de référence = lundi 21 à 05:30**, pas le 19 ;
+- **retests = lundis 19 octobre, 23 novembre, 28 décembre**, pas les samedis.
+
+La Batcave calculait déjà tout ça correctement — mais son propre panneau Sport
+écrivait encore « le samedi, jour 1 du programme ». Corrigé.
+
+Corrigé aussi dans Le semestre, qui gardait la grille d'avant le 18 septembre :
+le § 14 (« Les dix premiers jours ») donnait deux créneaux d'une heure le matin,
+« 14:00 slides du jour » et « 20:30 Comprendre » ; les recettes B, D et E
+nommaient des blocs qui n'existent plus. Réécrits.
+
 **Deux correctifs dans la Batcave :**
 - Le panneau des portes disait « le bloc escribir reste jusqu'au 14 mars » :
   vestige des trois phases. Il tient jusqu'au **18 octobre**.
@@ -45,9 +72,11 @@ les sept jours de la phase Español, et contre « Le calendrier du S1 ».
 
 1. **Le résultat de la campagne** — elle tournait quand tu es parti. Si elle
    est rouge, c'est la première chose.
-2. **Republier les six artefacts.** Ils sont tous en retard sur le dépôt :
-   Batcave, calendrier-s1, Dental Mastery OS, Le semestre, Prise en main, et
-   **reste-a-faire.html, qui n'a jamais été publié**.
+2. **Republier les deux derniers artefacts** : Prise en main
+   (`QS76Jnd5Rj8ZtfxD74j5d6`) et Dental Mastery OS (`Xx6jKFznJVVR4nacv5nGKm`).
+   Déjà republiés cette nuit : la Batcave (v77), Le calendrier du S1 (v6),
+   Le semestre (v12), et **« Ce qu'il reste à faire », publié pour la première
+   fois** → https://claude.ai/artifact/BdUn7c8D3ssBDzs2w7MaPZ
 3. **Ta question sur les objectifs à la fin des périodes** — j'ai la réponse,
    je ne te l'ai pas encore donnée. En deux lignes : rien n'est supprimé, le
    verdict se fige, la période suivante existe déjà, et `recalerObjectifsSemaine()`
