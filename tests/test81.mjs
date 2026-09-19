@@ -60,7 +60,7 @@ console.log('\n== 1) Avant le premier jour du programme, rien n’était prévu 
   await ctx.close();
 }
 
-console.log('\n== 2) Un jour exclu et une semaine de vacances reculent d’un cran ==');
+console.log('\n== 2) Un jour exclu sort du plan ; des vacances, non ==');
 {
   const {ctx, page, fr} = await ouvrir({
     'batcave-jours-exclus': ['2026-09-21'],
@@ -69,9 +69,14 @@ console.log('\n== 2) Un jour exclu et une semaine de vacances reculent d’un cr
   const cs = await grille(fr, page, 'ag');
   ok(de(cs, '2026-09-21').horsPlan, 'le 21, marqué « ne compte pas », est hors plan');
   ok(!de(cs, '2026-09-20').horsPlan && !de(cs, '2026-09-22').horsPlan, 'la veille et le lendemain, eux, étaient prévus');
+  /* Depuis le 19 septembre, des vacances sont une journée SANS COURS et non une journée
+     vide : la plage de cours se libère, le reste de la journée de travail tient. Ces cinq
+     jours restent donc dans le plan — et c'est la conséquence à connaître : ne rien faire
+     pendant des vacances déclarées crée bien une dette. La vraie coupure, c'est
+     « Aujourd'hui ne compte pas », jour par jour, comme le 21 ci-dessus. */
   const vac = ['2026-09-23','2026-09-24','2026-09-25','2026-09-26','2026-09-27'].map(i => de(cs, i));
-  ok(vac.every(c => c && c.horsPlan), 'les cinq jours de vacances sont hors plan (' + vac.filter(c=>c&&c.horsPlan).length + '/5)');
-  ok(!de(cs, '2026-09-28').horsPlan, 'et la grille reprend le 28');
+  ok(vac.every(c => c && !c.horsPlan), 'les cinq jours de vacances restent dans le plan (' + vac.filter(c=>c&&!c.horsPlan).length + '/5)');
+  ok(!de(cs, '2026-09-28').horsPlan, 'et le 28 aussi, évidemment');
   await ctx.close();
 }
 

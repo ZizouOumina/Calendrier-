@@ -142,7 +142,7 @@ console.log('\n== 277) L\'espagnol progresse : les portes s\'ouvrent, et pas tro
   console.log('     décembre : « ' + dec[1].note + ' »');
 }
 
-console.log('\n== 278) Vacances de Noël : du temps libre, et aucune dette fabriquée ==');
+console.log('\n== 278) Vacances de Noël : une journée sans cours, pas du temps libre ==');
 {
   const { ctx, fr } = await ouvrir('2026-12-28');
   const v = await fr.evaluate(() => {
@@ -152,9 +152,12 @@ console.log('\n== 278) Vacances de Noël : du temps libre, et aucune dette fabri
              prevu: window.__bcPrevu('2026-12-28'),
              semaine: document.getElementById('dash-semaine').innerText.replace(/\s+/g, ' ') };
   });
-  ok(v.travail === 0, 'aucun bloc de travail le 28 décembre (obtenu ' + v.travail + ')');
-  ok(v.libre > 0, v.libre + ' blocs « Temps libre »');
-  ok(v.prevu.rev === 0 && v.prevu.proj === 0 && v.prevu.es === 0, 'rien n\'est attendu ce jour-là : ' + JSON.stringify(v.prevu));
+  /* Depuis le 19 septembre, des vacances sont une JOURNÉE SANS COURS, exactement : la plage
+     de cours se libère, le reste de la journée de travail tient. Deux façons différentes de ne
+     pas avoir cours pour un seul geste, ça n'avait pas lieu d'être. Une vraie coupure se
+     déclare jour par jour avec « Aujourd'hui ne compte pas », qui sort le jour des moyennes. */
+  ok(v.travail > 0, 'le 28 décembre reste une journée de travail (' + v.travail + ' blocs)');
+  ok(v.prevu.rev > 0, 'et elle prévoit quelque chose : ' + JSON.stringify(v.prevu));
   ok(!/undefined|NaN/.test(v.semaine), 'la charge de la semaine reste lisible : ' + v.semaine.slice(0, 90));
   await ctx.close();
 }

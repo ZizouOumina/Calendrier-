@@ -5310,44 +5310,44 @@
      sur le Campus Virtual : la note minimale par activite (sauf Idioma et Psicologia,
      les deux seules a l'ecrire) et les dates de rendu (sauf Idioma). */
   var EVAL_MATIERES = [
-    {court:'Anatomía I', sem:1, ects:6, coord:'Sara Ferrando Colomer', temas:15,
+    {court:'Anatomía I', sem:1, ects:6, temas:15,
      eval:[['Examen', 70, 'examen', true], ['Informes y escritos', 10, 'ecrit', false], ['Cuaderno de prácticas', 20, 'pratique', false]],
      livre:'Tortora & Derrickson, Principios de Anatomía y Fisiología, 15ᵉ · Netter, Atlas de anatomía humana'},
-    {court:'Biología celular', sem:1, ects:6, coord:'Nicla Flacco', temas:14,
+    {court:'Biología celular', sem:1, ects:6, temas:14,
      eval:[['Examen', 50, 'examen', true], ['Exposiciones orales', 15, 'oral', false], ['Caso / problema', 15, 'ecrit', false], ['Cuaderno de prácticas', 20, 'pratique', false]],
      livre:'Karp, Biología celular y molecular, 7ᵉ · Klug, Conceptos de Genética, 10ᵉ'},
-    {court:'Epidemiología', sem:1, ects:6, coord:'Maria Cuevas Tena', temas:21,
+    {court:'Epidemiología', sem:1, ects:6, temas:21,
      eval:[['Examen', 50, 'examen', true], ['Informes y escritos', 20, 'ecrit', false], ['Caso / problema', 30, 'ecrit', false]],
      livre:'Hernández-Aguado & Lumbreras, Manual de Epidemiología y Salud Pública para Grados, 3ᵉ'},
-    {court:'Idioma moderno', sem:2, ects:6, coord:'Ibrahim Casanova',
+    {court:'Idioma moderno', sem:2, ects:6,
      eval:[['Examen écrit', 30, 'examen', true], ['Examen oral', 20, 'oral', true], ['Projects', 40, 'ecrit', false], ['Debates · participation', 10, 'oral', false]],
      alerte:'La seule matière qui écrit ses conditions. <b>70 % de présence minimum</b> : en dessous tu peux passer les examens, mais <b>ils ne sont pas corrigés</b> — note NP. Les séances d’examen ne comptent pas comme présence. Et il faut <b>5/10 à l’écrit ET 5/10 à l’oral, séparément</b> : un 8 à l’écrit ne rattrape pas un 4 à l’oral.',
      dates:'La guía donne un calendrier — projets aux 2ᵉ semaine d’octobre, 2ᵉ de novembre, 1ʳᵉ de décembre ; examens 2ᵉ semaine de décembre puis le 7 janvier — <b>mais ce sont des dates de premier semestre</b>, incompatibles avec un S2 qui court de fin janvier à juin. Son tableau vient visiblement d’une version antérieure. À faire confirmer au premier cours ; ne les inscris pas dans Études tant qu’elles ne sont pas reconfirmées.',
      langue:'tout en anglais · 100 % présentiel',
      doute:'<b>Elle est au S2</b> — c’est ton emploi du temps qui tranche, et il fait foi. Sa guía écrit « Semester 3 » et son calendrier est celui d’un premier semestre : le document se contredit lui-même. Conséquence à connaître : ton année n’est pas équilibrée à 30/30 mais à <b>24 ECTS au S1 et 36 au S2</b>. Le second semestre sera plus lourd d’une matière entière.',
      livre:'McCullagh & Wright, <b>Good Practice Student’s Book</b> — ISBN 9780521755900 · <b>obligatoire</b>'},
-    {court:'Antropología', sem:1, ects:3, coord:'Ester Moya Soriano', temas:10,
+    {court:'Antropología', sem:1, ects:3, temas:10,
      eval:[['Examen', 50, 'examen', true], ['Exposiciones orales', 20, 'oral', false], ['Ejercicios prácticos', 20, 'pratique', false], ['Análisis de casos', 10, 'ecrit', false]],
      livre:'Ring, Historia ilustrada de la Odontología · Harris, Introducción a la Antropología General'},
-    {court:'Documentación', sem:1, ects:3, coord:'Daniel López Malo', temas:8,
+    {court:'Documentación', sem:1, ects:3, temas:8,
      eval:[['Examen', 50, 'examen', true], ['Informes y escritos', 20, 'ecrit', false], ['Caso / problema', 30, 'ecrit', false]],
      livre:'Greenhalgh, How to read a paper, 6ᵉ'},
-    {court:'Anatomía II', sem:2, ects:6, coord:'Sara Ferrando Colomer', temas:6,
+    {court:'Anatomía II', sem:2, ects:6, temas:6,
      eval:[['Examen', 70, 'examen', true], ['Informes y escritos', 10, 'ecrit', false], ['Cuaderno de prácticas', 20, 'pratique', false]],
      note:'La guía exige d’avoir suivi Anatomía I avant.',
      livre:'Tortora & Derrickson, 15ᵉ · Netter, Atlas, 8ᵉ'},
-    {court:'Bioquímica', sem:2, ects:6, coord:'Javier Roig Arcos',
+    {court:'Bioquímica', sem:2, ects:6,
      eval:[['Examen', 60, 'examen', true], ['Exposiciones orales', 10, 'oral', false], ['Portfolio', 15, 'ecrit', false], ['Cuaderno de prácticas', 15, 'pratique', false]],
      note:'2,5 points sur les 15 du portfolio viennent des questionnaires LABSTER.',
      livre:'Nelson & Cox, Principios de bioquímica (Lehninger), 7ᵉ'},
-    {court:'Microbiología', sem:2, ects:6, coord:'Antonio Pellín Carcelén', temas:12,
+    {court:'Microbiología', sem:2, ects:6, temas:12,
      eval:[['Examen', 50, 'examen', true], ['Caso / problema', 30, 'ecrit', false], ['Cuaderno de prácticas', 20, 'pratique', false]],
      livre:'Brock, Biología de los microorganismos, 14ᵉ · Abbas, Inmunología básica, 5ᵉ'},
-    {court:'Clínica odontológica', sem:2, ects:6, coord:'Mª Jesús Escrivá Morant',
+    {court:'Clínica odontológica', sem:2, ects:6,
      eval:[['Examen', 30, 'examen', true], ['Exposiciones orales', 15, 'oral', false], ['Informes y escritos', 10, 'ecrit', false], ['Cuaderno de prácticas', 45, 'pratique', false]],
      alerte:'<b>La seule des onze où l’examen ne décide pas</b> : 45 % se jouent sur le cuaderno de prácticas, 30 % seulement sur l’examen. Elle se gagne en TP, semaine après semaine.',
      livre:'Camps Alemany & Pascual Moscardó, Cuaderno de Biomateriales · Nelson, Wheeler, 11ᵉ'},
-    {court:'Psicología', sem:2, ects:6, coord:'José Vicente Viguer Ballester',
+    {court:'Psicología', sem:2, ects:6,
      eval:[['Examen', 50, 'examen', true], ['Informes y escritos', 30, 'ecrit', false], ['Portfolio', 20, 'ecrit', false]],
      alerte:'Il faut <b>≥ 5/10 dans CHAQUE système d’évaluation, séparément</b> — aucune compensation entre eux. Et <b>50 % de présence minimum</b> pour que l’examen soit corrigé.',
      livre:'Morris & Maisto, Introducción a la psicología, 12ᵉ'}
@@ -8364,15 +8364,21 @@
     return null;
   }
   function jourExclu(iso){ return joursExclusState.indexOf(iso || todayISO) > -1; }
-  /* Une periode de grille comme les autres : elle remplace les blocs de travail par du
-     temps libre, quel que soit leur nom (Anki, Cartes, Annales, Projets perso, Español). */
+  /* Une periode de grille comme les autres. Elle ne TRANSFORME plus rien : un jour de
+     vacances est desormais une journee sans cours, exactement -- la plage de cours se
+     libere, le reste de la journee de travail tient. C'est sansCoursLe qui s'en charge.
+
+     Avant le 19 septembre, les vacances remplacaient tous les blocs de travail par du temps
+     libre et mettaient les cibles a zero. Deux facons differentes de ne pas avoir cours,
+     pour un seul et meme geste : on n'en garde qu'une. Une vraie coupure se declare jour
+     par jour avec « Aujourd'hui ne compte pas » (jourExclu), qui, lui, sort le jour des
+     moyennes et des series. */
   function periodeVacances(iso){
     var v = enVacances(iso);
     if(!v) return null;
     return {id:'vacances', nom:'Vacances' + (v.label ? ' · ' + v.label : ''), vacances:true, debut: v.debut, fin: v.fin,
-            suite:'la grille reprend le ' + fmtDate(isoDecale(v.fin, 1)),
-            description:'Les blocs de travail deviennent du temps libre : aucune cible, aucun retard.',
-            transformer: function(b){ return typeBlocPlan(b[1]) ? [b[0], 'Temps libre'] : b; }};
+            suite:'les cours reprennent le ' + fmtDate(isoDecale(v.fin, 1)),
+            description:'Pas de cours : la plage de l\'apres-midi se libere et la journee de travail tient. Pour une vraie coupure, « Aujourd\'hui ne compte pas ».'};
   }
   function basculerJourExclu(iso){
     iso = iso || todayISO;
@@ -9073,7 +9079,7 @@
              '<span style="flex:1; color:var(--ink-dim);">' + escapeHtml(e[0]) + '</span>' +
              '<b style="font-variant-numeric:tabular-nums; color:var(--ink);">' + e[1] + ' %</b></li>';
     }).join('');
-    var sousTitre = [m.ects + ' ECTS', m.coord].concat(m.temas ? [m.temas + ' temas'] : []).concat(m.langue ? [m.langue] : []).join(' · ');
+    var sousTitre = [m.ects + ' ECTS'].concat(m.temas ? [m.temas + ' temas'] : []).concat(m.langue ? [m.langue] : []).join(' · ');
     return '<div style="padding:10px 0; border-top:1px solid var(--border-soft);">' +
            '<div style="display:flex; flex-wrap:wrap; align-items:baseline; gap:8px; margin-bottom:6px;">' +
            '<b style="color:var(--ink); font-size:14px;">' + escapeHtml(m.court) + '</b>' +
@@ -12663,6 +12669,8 @@
     var v = joursSansCoursSet()[iso];
     if(v === 'cours') return false;
     if(v) return true;
+    /* Des vacances declarees sont des jours sans cours : meme journee, meme grille. */
+    if(enVacances(iso)) return true;
     return !semestreDe(iso);
   }
   /* ===== L'agenda d'un jour sans cours =====

@@ -66,9 +66,16 @@ console.log('\n== 266) Vacances et « aujourd\'hui ne compte pas » ==');
 {
   const { ctx, page, fr } = await ouvrir('2026-12-24T10:00:00+01:00', {'batcave-vacances': [{id:'v1', debut:'2026-12-20', fin:'2026-12-31', label:'Noël'}]});
   const g = await fr.evaluate(() => window.__bcGrille('weekday', '2026-12-24').map(b => b[0] + ' ' + b[1]));
-  ok(!g.some(x => /Anki|Annales|Español|Projets/.test(x)) && g.filter(x => /Temps libre/.test(x)).length >= 5, 'pendant les vacances, les blocs de travail deviennent du temps libre');
+  /* Depuis le 19 septembre, des vacances sont une JOURNÉE SANS COURS, exactement : la plage
+     de cours se libère, le reste de la journée de travail tient. Deux façons différentes de ne
+     pas avoir cours pour un seul geste, ça n'avait pas lieu d'être. Une vraie coupure se
+     déclare jour par jour avec « Aujourd'hui ne compte pas », qui sort le jour des moyennes. */
+  ok(!g.some(x => /15:30 Cours/.test(x)) && g.some(x => /Lire/.test(x)) && g.some(x => /Réexpliquer/.test(x)),
+     'pendant les vacances, la plage de cours se libère : Lire et Réexpliquer prennent sa place');
+  ok(g.some(x => /Anki 1/.test(x)) && g.some(x => /Projets perso/.test(x)),
+     'et le reste de la journée de travail tient — ce n\'est pas du temps libre');
   const prevu = await fr.evaluate(() => window.__bcPrevu('2026-12-24'));
-  ok(prevu.rev === 0 && prevu.proj === 0 && prevu.es === 0, 'la grille ne prévoit plus rien : aucune cible, aucun retard');
+  ok(prevu.rev > 0 && prevu.proj > 0, 'la grille prévoit donc bien quelque chose : ' + JSON.stringify(prevu));
   const lab = await fr.evaluate(() => document.getElementById('cal-schedule-label').textContent);
   ok(/Vacances · Noël/.test(lab), 'l\'emploi du temps le dit : ' + lab);
   await fr.evaluate(() => { document.querySelector('.nav-btn[data-page="calendrier"]').click(); document.getElementById('vac-exclu').click(); });
