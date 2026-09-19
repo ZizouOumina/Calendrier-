@@ -2559,6 +2559,23 @@
         </div>
       </div>
 
+      <div class="panel sub-panel" id="epreuve-es-panel" style="margin-bottom:18px;">
+        <div class="sub-head"><h3>🇪🇸 L'épreuve du dimanche</h3><span class="sub-note" id="ep-resume">—</span></div>
+        <p class="sub-note" style="margin-bottom:10px; line-height:1.65;">L'espagnol s'arrête d'être une matière le <b style="color:var(--ink-dim);">19 octobre</b>. Avant cette date, tu as <b style="color:var(--ink-dim);">quatre dimanches</b> pour savoir où tu en es — pas au feeling, en conditions. Toujours la même épreuve, pour que les quatre scores se comparent. Elle tient dans le bloc <b style="color:var(--ink-dim);">Español · simulación</b> du dimanche, 11:20.</p>
+        <div id="ep-protocole" style="border:1px solid var(--border-soft); border-radius:9px; padding:12px 14px; margin-bottom:12px;">
+          <p class="sub-note" style="font-weight:600; color:var(--ink-dim); margin-bottom:8px;">Le protocole — 45 minutes, dans cet ordre</p>
+          <ol style="margin:0; padding-left:20px; font-size:13.5px; color:var(--ink-dim); line-height:1.7;">
+            <li><b style="color:var(--ink);">25 min — écrire.</b> Une question ouverte d'examen sur un tema vu cette semaine, 200 mots, <b>sans dictionnaire et sans tes slides</b>. Puis « corrige » dans le projet Español : il te rend le nombre d'<b>erreurs pour 100 mots</b>.</li>
+            <li><b style="color:var(--ink);">5 min — parler.</b> Le même tema, à voix haute, enregistré au téléphone. Tu comptes les <b>minutes avant ta première pause de trois secondes</b>. Tu ne recommences pas.</li>
+            <li><b style="color:var(--ink);">5 min — conjuguer.</b> Dix verbes × trois temps, à voix haute, chronomètre en main. Tu notes les <b>secondes</b>.</li>
+            <li><b style="color:var(--ink);">10 min — corriger.</b> Chaque erreur devient une carte dans <code>Español::0 Errores</code>. C'est la partie qui fait progresser le score suivant.</li>
+          </ol>
+          <p class="sub-note" style="margin-top:9px;">Les trois chiffres se saisissent le soir, à la clôture du dimanche. Tu ne les tapes qu'une fois : ce panneau les relit.</p>
+        </div>
+        <div id="ep-passages"></div>
+        <div id="ep-verdict" style="margin-top:12px;"></div>
+      </div>
+
       <div class="panel sub-panel" id="anki-panel" hidden>
         <div class="sub-head"><h3>🃏 Anki</h3><span class="sub-note" id="anki-maj">—</span></div>
         <p class="sub-note" style="margin-bottom:10px; line-height:1.6;" id="anki-explique">—</p>
@@ -2807,9 +2824,8 @@
         <div class="sub-head"><h3>📊 Objectifs vs réalité</h3><span class="sub-note" id="obj-resume">—</span></div>
         <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-bottom:12px;">
           <div class="chip-group" id="obj-onglets">
-            <button type="button" class="chip active" data-obj-vue="mois">Mois</button>
-            <button type="button" class="chip" data-obj-vue="trimestre">Trimestre</button>
-            <button type="button" class="chip" data-obj-vue="horizon">6 mois</button>
+            <button type="button" class="chip active" data-obj-vue="mois">Le mois</button>
+            <button type="button" class="chip" data-obj-vue="horizon">Les 6 mois</button>
           </div>
           <span style="display:flex; gap:6px; align-items:center; margin-left:auto;">
             <button class="btn" id="obj-prev" type="button" aria-label="Période précédente">◀</button>
@@ -2817,7 +2833,7 @@
             <button class="btn" id="obj-next" type="button" aria-label="Période suivante">▶</button>
           </span>
         </div>
-        <p class="sub-note" style="margin-bottom:10px;" id="obj-legende">● atteint · ● en avance · ● dans les clous · ● en retard · ○ pas encore de données — « attendu » = où tu devrais en être aujourd'hui au rythme prévu.</p>
+        <p class="sub-note" style="margin-bottom:10px;" id="obj-legende">● atteint · ● en avance · ● dans les clous · ● en retard · ○ pas encore de données — « attendu » = où tu devrais en être aujourd'hui au rythme prévu.<br><b style="color:var(--ink-dim);">Un seul palier de période : le mois.</b> Six chiffres, ceux qui décident. Les six mois ne portent que ce qui ne se découpe pas en mois — le poids, le Coran, les duaas. L'eau est une habitude du soir, les dépenses ont leurs plafonds dans Budget.</p>
         <ul class="entry-list" id="obj-liste"></ul>
         <div class="add-form" id="obj-form" style="margin-top:14px; margin-bottom:0;">
           <div class="f" style="flex:1; min-width:180px;"><label>Nouvel objectif</label><input type="text" id="obj-titre" placeholder="ex : 40 h d'espagnol" style="width:100%;"></div>
@@ -7450,10 +7466,17 @@
      -- et les retests des semaines 5, 10 et 15 -- au lundi 21, premier jour non-Off ; il
      le deduit de la date, rien n'est ecrit en dur. Le premier samedi de courses est le 26
      (ANCRE_COURSES) : c'est ce matin-la, et pas le jour 1, que le plan du jour reclame
-     l'inventaire du placard et le ticket de caisse. Ce qui ne bouge PAS : le semestre 1
+     l'inventaire du placard et le ticket de caisse.
+
+     19 septembre, sa decision : le jour 1 passe du dimanche 20 au LUNDI 21, parce que son
+     sommeil n'est pas encore cale et qu'ouvrir la Batcave sur une nuit ratee la fait
+     mentir des le premier chiffre. Le lundi n'est pas off au sport : premierJourSport()
+     rend donc le 21 lui-meme, et la seance de reference est celle du jour 1. Les retests
+     des semaines 5, 10 et 15 ne bougent pas (lundis 19 octobre, 23 novembre, 28 decembre)
+     : la semaine a glisse d'un jour, mais son premier jour de sport reste le lundi. Ce qui ne bouge PAS : le semestre 1
      garde le 14 septembre -- c'est l'universite qui fixe la rentree, pas lui -- et les
      habitudes du dimanche restent ancrees au 13, elles ont vraiment eu lieu ce jour-la. */
-  var PROGRAMME_DEBUT = '2026-09-20';
+  var PROGRAMME_DEBUT = '2026-09-21';
   /* Le programme va du premier jour de cours au dernier jour de la saison (14 mars) :
      c'est la fenetre que le reacteur annonce le matin du jour 1, quand il n'y a encore
      rien a mesurer. Un « 0 % » geant le 14 au reveil n'est pas une note, c'est une
@@ -9518,26 +9541,53 @@
     var cles = Object.keys(CIBLES_TRIMESTRE).sort();
     return CIBLES_TRIMESTRE[cles[cles.length - 1]] || null;
   }
+  /* ===== Un seul palier : le mois =====
+     Le 19 septembre, il comptait 140 objectifs : huit metriques x douze mois, plus les
+     memes huit x cinq trimestres. Deux niveaux qui disent la meme chose -- un trimestre
+     de revision EST la somme de ses trois mois --, et huit chiffres la ou trois decident.
+
+     Ce qui reste : le MOIS, et six chiffres. Le mois est le bon grain -- assez long pour
+     absorber une mauvaise semaine, assez court pour se corriger. Le trimestre est retire :
+     il ne disait rien de plus, et la tendance d'un trimestre se lit maintenant dans les
+     periodes closes, qui gardent chaque mois fige.
+
+     Les deux metriques retirees ne sont pas perdues, elles vivent ou elles servent :
+       - l'eau est une habitude quotidienne, cochee le soir ;
+       - les depenses variables ont leurs plafonds par categorie dans l'onglet Budget.
+     Les compteurs de NIVEAU (poids, Coran, duaas) restent sur l'horizon de six mois :
+     un poids ne se decoupe pas en mois, il monte ou il ne monte pas. */
+  var METRIQUES_MOIS = ['revision_h', 'projets_h', 'espagnol_h', 'sport_seances', 'sommeil_moy', 'habitudes_pct'];
   function objectifsSemes(){
     var out = [];
-    TRIMESTRES.forEach(function(t){
-      var c = ciblesDuTrimestre(t.id); if(!c) return;
-      Object.keys(c).forEach(function(cle){
-        out.push(avecSemaine({id: t.id + ':' + cle, periode:'trimestre', pid: t.id, debut: t.debut, fin: t.fin, metrique: cle, cible: c[cle], titre: libelleMetrique(cle)}));
-      });
-    });
     moisListe().forEach(function(m){
       var t = trimestreDe(m.debut), c = t && ciblesDuTrimestre(t.id); if(!c) return;
-      /* un mois = le tiers d'un cumul trimestriel, la meme moyenne, pas de niveau (le
-         trimestre les porte : une serie de tractions ne se decoupe pas en mois) */
-      Object.keys(c).forEach(function(cle){
-        var m2 = METRIQUES[metriqueDe(cle)]; if(!m2 || m2.mode === 'niveau' || cle === 'snus_jours') return;
+      METRIQUES_MOIS.forEach(function(cle){
+        if(c[cle] === undefined) return;
+        var m2 = METRIQUES[metriqueDe(cle)]; if(!m2 || m2.mode === 'niveau') return;
+        /* un mois = le tiers d'un cumul trimestriel, la meme moyenne */
         var cible = m2.mode === 'cumul' ? Math.round(c[cle] / 3) : c[cle];
         if(cle === 'espagnol_h' && MOIS_ESPANOL[m.id]) cible = MOIS_ESPANOL[m.id];
         out.push(avecSemaine({id: m.id + ':' + cle, periode:'mois', pid: m.id, debut: m.debut, fin: m.fin, metrique: cle, cible: cible, titre: libelleMetrique(cle)}));
       });
     });
     return out;
+  }
+  /* Le menage des installations existantes : les objectifs de trimestre et les deux
+     metriques retirees s'en vont. Une cible qu'il a modifiee a la main (auto === false ou
+     fixe) est GARDEE, meme sur un trimestre : c'est une decision, pas un semis. */
+  function elaguerObjectifs(){
+    if(!objectifsState || !Array.isArray(objectifsState.liste)) return false;
+    var avant = objectifsState.liste.length;
+    objectifsState.liste = objectifsState.liste.filter(function(o){
+      if(!o) return false;
+      if(o.auto === false || o.fixe) return true;            /* sa decision : on n'y touche pas */
+      if(o.periode === 'trimestre') return false;
+      if(o.periode === 'mois' && METRIQUES_MOIS.indexOf(metriqueDe(o.metrique)) === -1) return false;
+      return true;
+    });
+    if(objectifsState.liste.length === avant) return false;
+    save('batcave-objectifs', objectifsState);
+    return true;
   }
   var objectifsState = load('batcave-objectifs', null);
   if(!objectifsState || typeof objectifsState !== 'object' || !Array.isArray(objectifsState.liste)) objectifsState = {liste: []};
@@ -9558,6 +9608,7 @@
     return ajout;
   }
   semerObjectifs();
+  elaguerObjectifs();
   /* Dossier Español (8 sept. 2026) : les cibles d'espagnol semees (35 h au T1, 12 h par mois)
      passent aux valeurs du plan. Seule une cible restee a sa valeur semee est touchee : une
      cible modifiee a la main est gardee. Une fois, rejouable apres hydratation. */
@@ -9742,6 +9793,11 @@
     try{ renderObjectifs(); renderDashboard(); }catch(e){}
     return true;
   }, verifier: function(){ return null; }});
+  MIGRATIONS_DEMARRAGE.push({cle:'batcave-objectifs-un-palier', rejouer: function(){
+    if(!elaguerObjectifs()) return false;
+    try{ renderObjectifs(); renderDashboard(); }catch(e){}
+    return true;
+  }, verifier: function(){ return null; }});
   MIGRATIONS_DEMARRAGE.push({cle:'batcave-objectifs-seed-v1', rejouer: function(){
     if(!semerObjectifs()) return false;
     try{ renderObjectifs(); renderDashboard(); }catch(e){}
@@ -9908,7 +9964,7 @@
   var objVue = 'mois', objDecalage = 0;
   function periodeCourante(){
     if(objVue === 'horizon') return {id:'H', debut: horizonState.debut, fin: horizonState.fin, nom: fmtDate(horizonState.debut) + ' → ' + fmtDate(horizonState.fin)};
-    var liste = objVue === 'mois' ? moisListe() : TRIMESTRES;
+    var liste = moisListe();   /* un seul palier de periode : le mois */
     var idx = -1;
     liste.forEach(function(p, i){ if(todayISO >= p.debut && todayISO <= p.fin) idx = i; });
     if(idx < 0) idx = todayISO < liste[0].debut ? 0 : liste.length - 1;
@@ -13546,6 +13602,104 @@
     if(m >= 0.8) return 'tu perds le fil souvent — c\u2019est la langue, pas la matière.';
     return 'tu ne suis pas encore. Le bloc « Clore le cours du jour » est ta rattrapée.';
   }
+  /* ===== L'epreuve du dimanche =====
+     Il a demande « un moyen de me tester avant le 19 octobre ». Les portes essayaient d'y
+     repondre par un portillon ; ce qu'il veut est plus simple et plus utile : une epreuve
+     qu'il PASSE, toujours la meme, dont les scores se comparent.
+
+     Aucune saisie nouvelle. Les trois chiffres existent deja -- la cloture du dimanche les
+     demande (erreurs pour 100 mots, minutes d'oral sans pause, secondes de drill) et les
+     range dans rvState. Ce panneau les RELIT, les met en face de leur cible, et projette
+     ou il sera le 18 octobre au rythme constate. Doubler la saisie aurait garanti que les
+     deux series divergent. */
+  var EPREUVE_FIN = '2026-10-18';
+  var EPREUVE_CIBLES = {errores: 3, oral: 3, drill: 90};   /* < 3 err/100 mots · >= 3 min · <= 90 s */
+  /* Les dimanches de la phase Español, du premier apres le jour 1 jusqu'au 18 octobre. */
+  function epreuveDimanches(){
+    var out = [], d = new Date(PROGRAMME_DEBUT + 'T00:00:00');
+    while(d.getDay() !== 0) d.setDate(d.getDate() + 1);      /* le premier dimanche a partir du jour 1 */
+    for(var i = 0; i < 12; i++){
+      var iso = localISO(d);
+      if(iso > EPREUVE_FIN) break;
+      out.push(iso);
+      d.setDate(d.getDate() + 7);
+    }
+    return out;
+  }
+  /* Les chiffres saisis pour un dimanche donne, s'ils existent. */
+  function epreuveChiffres(iso){
+    if(typeof rvState === 'undefined' || !Array.isArray(rvState)) return null;
+    var r = rvState.filter(function(x){ return x && x.date === iso && x.espanol; })[0];
+    if(!r) return null;
+    var e = r.espanol, n = function(v){ return (v === null || v === undefined || v === '' || isNaN(Number(v))) ? null : Number(v); };
+    return {errores: n(e.errores), oral: n(e.oral), drill: n(e.drill)};
+  }
+  function epreuvePassages(){
+    return epreuveDimanches().map(function(iso, i){
+      return {n: i + 1, date: iso, c: epreuveChiffres(iso), passe: iso <= todayISO};
+    });
+  }
+  /* La projection : la pente entre le premier et le dernier passage saisi, prolongee au
+     18 octobre. Deux passages au minimum -- une droite sur un point n'est pas une droite. */
+  function epreuveProjection(cle){
+    var pts = epreuvePassages().filter(function(p){ return p.c && p.c[cle] !== null; });
+    if(pts.length < 2) return null;
+    var a = pts[0], b = pts[pts.length - 1];
+    var jours = daysBetween(new Date(a.date + 'T00:00:00'), new Date(b.date + 'T00:00:00'));
+    if(jours <= 0) return null;
+    var pente = (b.c[cle] - a.c[cle]) / jours;
+    var reste = daysBetween(new Date(b.date + 'T00:00:00'), new Date(EPREUVE_FIN + 'T00:00:00'));
+    return {valeur: b.c[cle] + pente * Math.max(0, reste), pente: pente, dernier: b};
+  }
+  function epreuveVerdictLigne(cle, nom, unite, dec, sens){
+    var cible = EPREUVE_CIBLES[cle], pr = epreuveProjection(cle);
+    var pts = epreuvePassages().filter(function(p){ return p.c && p.c[cle] !== null; });
+    if(!pts.length) return '<li><span>' + nom + '</span><b>—</b></li>';
+    var dernier = pts[pts.length - 1].c[cle];
+    var atteint = sens === '<=' ? dernier <= cible : dernier >= cible;
+    var txt = fmtNombre(dernier, dec) + ' ' + unite + ' · cible ' + (sens === '<=' ? '≤ ' : '≥ ') + fmtNombre(cible, dec) + ' ' + unite;
+    if(pr){
+      var ok2 = sens === '<=' ? pr.valeur <= cible : pr.valeur >= cible;
+      txt += ' — au 18 oct. : <b style="color:' + (ok2 ? 'var(--good)' : 'var(--warn)') + ';">' + fmtNombre(pr.valeur, dec) + '</b>';
+    }
+    return '<li><span>' + nom + '</span><b style="color:' + (atteint ? 'var(--good)' : 'var(--ink)') + ';">' + txt + '</b></li>';
+  }
+  function renderEpreuveES(){
+    var zone = document.getElementById('ep-passages'), vz = document.getElementById('ep-verdict'),
+        res = document.getElementById('ep-resume');
+    if(!zone) return;
+    var P = epreuvePassages(), faits = P.filter(function(p){ return p.c && p.c.errores !== null; }).length;
+    if(res) res.textContent = faits + ' / ' + P.length + ' passage' + (P.length > 1 ? 's' : '') + ' fait' + (faits > 1 ? 's' : '');
+    zone.innerHTML = '<ul class="entry-list" style="margin:0;">' + P.map(function(p){
+      var c = p.c, dit;
+      if(c && c.errores !== null){
+        dit = '<b style="color:var(--ink);">' + fmtNombre(c.errores, 1) + '</b> err./100 mots'
+            + (c.oral !== null ? ' · <b style="color:var(--ink);">' + fmtNombre(c.oral, 1) + '</b> min d\'oral' : '')
+            + (c.drill !== null ? ' · <b style="color:var(--ink);">' + fmtNombre(c.drill, 0) + '</b> s de drill' : '');
+      } else if(p.passe){
+        dit = '<span style="color:var(--warn);">passé, non saisi</span>';
+      } else {
+        dit = '<span class="sub-note">à venir</span>';
+      }
+      return '<div class="entry-row" style="padding:8px 0;">'
+           + '<span class="ecell small" style="font-family:var(--font-mono); font-size:12px; min-width:118px;">Passage ' + p.n + ' · ' + fmtDate(p.date) + '</span>'
+           + '<span class="ecell" style="font-size:13px;">' + dit + '</span></div>';
+    }).join('') + '</ul>';
+    if(!vz) return;
+    if(!faits){
+      vz.innerHTML = '<p class="sub-note" style="line-height:1.6;">Rien à lire tant qu\'un passage n\'est pas fait. Le premier tombe le <b style="color:var(--ink-dim);">' + fmtDate(P[0] ? P[0].date : EPREUVE_FIN) + '</b> — c\'est ta ligne de départ, le diagnostic.</p>';
+      return;
+    }
+    var lignes = epreuveVerdictLigne('errores', 'Erreurs pour 100 mots', '', 1, '<=')
+               + epreuveVerdictLigne('oral', 'Oral sans pause', 'min', 1, '>=')
+               + epreuveVerdictLigne('drill', 'Drill de conjugaison', 's', 0, '<=');
+    var mot = faits < 2
+      ? 'Un seul passage : c\'est ta ligne de départ, pas une tendance. La projection apparaît au deuxième.'
+      : 'La projection prolonge la pente entre ton premier et ton dernier passage jusqu\'au 18 octobre. Elle n\'est pas une promesse — elle dit seulement où tu vas si rien ne change.';
+    vz.innerHTML = '<p class="sub-note" style="font-weight:600; color:var(--ink-dim); margin-bottom:6px;">Où tu en es</p>'
+      + '<ul class="mini-list">' + lignes + '</ul>'
+      + '<p class="sub-note" style="margin-top:8px; line-height:1.6;">' + mot + '</p>';
+  }
   function renderPortes(){
     var zone = document.getElementById('portes-etat');
     if(!zone) return;
@@ -13570,7 +13724,7 @@
   function apresConversionPorte(){
     try{
       recalerObjectifsSemaine();
-      renderPortes(); rafraichirAgendas(); renderObjectifs(); renderDashboard();
+      renderPortes(); renderEpreuveES(); rafraichirAgendas(); renderObjectifs(); renderDashboard();
       if(document.getElementById('cal-timeline')) renderCalendar();
     }catch(err){}
   }
@@ -13872,7 +14026,7 @@
   /* Les series recurrentes de l'agenda portent une consigne apres « · » (« 🦇 Anki 1 · cartes
      dues dentaire ») : un evenement se reconnait a la partie avant le separateur. */
   function titreBaseGcal(s){ return String(s || '').split(' · ')[0].trim(); }
-  try{ window.__bcTitreBase = titreBaseGcal; window.__bcConsigne = consigneBloc; window.__bcInsights = buildInsights; window.__bcBlocs = blocsDuPlanning; window.__bcCle = cleJournee; window.__bcJours = joursSuivis; window.__bcInsightsVu = function(){ return insightsVu; }; window.__bcLogSession = logSession; window.__bcPeriode = periodeGrille; window.__bcGrille = grilleDe; window.__bcMinutesEspanol = minutesEspanol; window.__bcCibleEspanol = cibleEspanolJour; window.__bcTypeBloc = typeBlocPlan; window.__bcPlanRotation = planRotation; window.__bcHabitJours = habitJours; window.__bcProgrammeDebut = PROGRAMME_DEBUT; window.__bcJournees = function(){ return journeesState; }; window.__bcJourneeDe = journeeDe; window.__bcPartiels = periodePartiels; window.__bcSessionsPartiels = sessionsPartiels; window.__bcBlocSansPomodoro = blocSansPomodoro; window.__bcRappels = blocsARappeler; window.__bcExamens = function(){ return examensState; }; window.__bcPrevu = minutesPrevuesJour; window.__bcCibleGrille = cibleDepuisGrille; window.__bcPartEcoulee = partEcoulee; window.__bcVacances = function(){ return vacancesState; }; window.__bcJourExclu = jourExclu; window.__bcObjectifs = function(){ return objectifsState.liste; }; window.__bcComparer = comparerObjectif; window.__bcAcquise = habitAcquise; window.__bcAcquises = habitsAcquises; window.__bcSansPomodoro = blocsSansPomodoroDuJour; window.__bcTonPriorite = tonPriorite; window.__bcPrioHist = function(){ return insightsHist; }; window.__bcCloturerSaison = cloturerSaison; window.__bcPeriodesCloses = function(){ return periodesClosesState; }; window.__bcCloturerPeriodes = cloturerPeriodesEchues; window.__bcPeriodesObj = periodesObjectifs; window.__bcSaisons = function(){ return saisonsState; }; window.__bcTrimestres = function(){ return TRIMESTRES; }; window.__bcMois = moisListe; window.__bcAnki = function(){ return ankiState; }; window.__bcLireAnki = lireAnki; window.__bcBesoins = besoinsPartiels; window.__bcMatiereBloc = matierePourBloc; window.__bcPortes = etatPortes; window.__bcPortesEtat = function(){ return portesEtat; }; window.__bcConvertirPorte = convertirPorte; window.__bcNoterCours = noterCours; window.__bcGrilleBase = grilleBase; window.__bcSemestre = semestreDe; window.__bcSansCours = sansCoursLe; window.__bcCoucher = heureCoucher; window.__bcLever = heureLever; window.__bcSommeilCible = objectifSommeilPour; window.__bcMarquerSansCours = marquerSansCours; window.__bcJoursSansCours = function(){ return joursSansCoursState; }; window.__bcSeuilRevision = seuilUrgenceRevision; window.__bcCibleJour = cibleJourMinutes; window.__bcReinitGarder = reinitGarder;
+  try{ window.__bcTitreBase = titreBaseGcal; window.__bcConsigne = consigneBloc; window.__bcInsights = buildInsights; window.__bcBlocs = blocsDuPlanning; window.__bcCle = cleJournee; window.__bcJours = joursSuivis; window.__bcInsightsVu = function(){ return insightsVu; }; window.__bcLogSession = logSession; window.__bcPeriode = periodeGrille; window.__bcGrille = grilleDe; window.__bcMinutesEspanol = minutesEspanol; window.__bcCibleEspanol = cibleEspanolJour; window.__bcTypeBloc = typeBlocPlan; window.__bcPlanRotation = planRotation; window.__bcHabitJours = habitJours; window.__bcProgrammeDebut = PROGRAMME_DEBUT; window.__bcJournees = function(){ return journeesState; }; window.__bcJourneeDe = journeeDe; window.__bcPartiels = periodePartiels; window.__bcSessionsPartiels = sessionsPartiels; window.__bcBlocSansPomodoro = blocSansPomodoro; window.__bcRappels = blocsARappeler; window.__bcExamens = function(){ return examensState; }; window.__bcPrevu = minutesPrevuesJour; window.__bcCibleGrille = cibleDepuisGrille; window.__bcPartEcoulee = partEcoulee; window.__bcVacances = function(){ return vacancesState; }; window.__bcJourExclu = jourExclu; window.__bcObjectifs = function(){ return objectifsState.liste; }; window.__bcComparer = comparerObjectif; window.__bcAcquise = habitAcquise; window.__bcAcquises = habitsAcquises; window.__bcSansPomodoro = blocsSansPomodoroDuJour; window.__bcTonPriorite = tonPriorite; window.__bcPrioHist = function(){ return insightsHist; }; window.__bcCloturerSaison = cloturerSaison; window.__bcPeriodesCloses = function(){ return periodesClosesState; }; window.__bcCloturerPeriodes = cloturerPeriodesEchues; window.__bcPeriodesObj = periodesObjectifs; window.__bcSaisons = function(){ return saisonsState; }; window.__bcTrimestres = function(){ return TRIMESTRES; }; window.__bcMois = moisListe; window.__bcAnki = function(){ return ankiState; }; window.__bcLireAnki = lireAnki; window.__bcBesoins = besoinsPartiels; window.__bcMatiereBloc = matierePourBloc; window.__bcPortes = etatPortes; window.__bcEpreuve = epreuvePassages; window.__bcEpreuveProj = epreuveProjection; window.__bcPortesEtat = function(){ return portesEtat; }; window.__bcConvertirPorte = convertirPorte; window.__bcNoterCours = noterCours; window.__bcGrilleBase = grilleBase; window.__bcSemestre = semestreDe; window.__bcSansCours = sansCoursLe; window.__bcCoucher = heureCoucher; window.__bcLever = heureLever; window.__bcSommeilCible = objectifSommeilPour; window.__bcMarquerSansCours = marquerSansCours; window.__bcJoursSansCours = function(){ return joursSansCoursState; }; window.__bcSeuilRevision = seuilUrgenceRevision; window.__bcCibleJour = cibleJourMinutes; window.__bcReinitGarder = reinitGarder;
        window.__bcTypeSport = typeSportDe; window.__bcSommeilCible = objectifSommeilPour; window.__bcTestAnki = testAnkiDu; window.__bcRapport = function(){
          var mois = moisListe().filter(function(m){ return todayISO >= m.debut && todayISO <= m.fin; })[0];
          var objs = mois ? objectifsState.liste.filter(function(o){ return o.periode === 'mois' && o.pid === mois.id; }) : [];
@@ -14840,7 +14994,7 @@
     document.getElementById('rev-chart').innerHTML = lineChartSVG(pts, null, 'h');
     renderMatieres();
     renderEspagnol();
-    renderExamens(); renderEvalMatieres(); renderPortes(); renderAppro();
+    renderExamens(); renderEvalMatieres(); renderPortes(); renderEpreuveES(); renderAppro();
     renderAgendas();
   }
   function renderMatieres(){
