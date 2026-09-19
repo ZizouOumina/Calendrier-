@@ -59,8 +59,9 @@ console.log('\n== 331) Samedi 19 septembre : l\'ancre, tout est dû ==');
   const somme = await fr.evaluate(() => document.getElementById('courses-summary').textContent);
   /* Aucun stock n'est suppose : le 19, TOUTES les categories sont dues et toutes leurs
      lignes comptent. 10 frais + 5 reserves + 2 (cycle de 5 semaines) + 16 sante
-     + 6 maison + 5 menage + 1 brosse a dents = 45. Ce qu'il a deja, il le coche. */
-  ok(/\/46 articles/.test(somme), '46 articles le 19 : tout part de zéro (' + somme + ')');
+     + 6 maison + 5 menage + 3 trimestriels (brosse a dents, creatine, arome de vanille)
+     = 47. Ce qu'il a deja, il le coche quand meme. */
+  ok(/\/47 articles/.test(somme), '47 articles le 19 : tout part de zéro (' + somme + ')');
   await ctx.close();
 }
 {
