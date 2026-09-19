@@ -105,24 +105,38 @@ console.log('\n== 292) L\'agenda Google : ni 🦇 Cours, ni 🦇 Temps libre =='
   await ctx.close();
 }
 {
-  /* Une journee VRAIMENT vide -- des vacances saisies a la main -- ne pousse plus rien : le
-     mecanisme existe toujours, meme s'il ne compte pas s'en servir avant 2028. */
-  const { ctx, fr } = await ouvrir('2027-07-01T09:00:00+02:00',
+  /* Depuis le 19 septembre, des vacances saisies sont une JOURNEE SANS COURS, exactement.
+     La propriete qui compte est donc celle-ci : un jour de vacances et un jour ordinaire
+     sans cours produisent la MEME grille et les MEMES rappels. Deux facons de ne pas avoir
+     cours pour un seul geste, ca n'avait pas lieu d'etre.
+     Avant, des vacances remplacaient tout par du temps libre et mettaient les cibles a
+     zero ; une vraie coupure se declare maintenant jour par jour avec « Aujourd'hui ne
+     compte pas », qui sort le jour des moyennes sans toucher a la grille. */
+  const a = await ouvrir('2027-07-01T09:00:00+02:00',
     {'batcave-vacances': [{id:'v1', debut:'2027-07-01', fin:'2027-07-01', label:'test'}]});
-  const v = await fr.evaluate(() => ({
+  const v = await a.fr.evaluate(() => ({
     r: window.__bcRappels('2027-07-01').map(b => b.titre),
     g: window.__bcGrille('weekday', '2027-07-01').map(b => b[1]),
     c: window.__bcCibleJour('weekday', '2027-07-01')
   }));
-  ok(!v.g.some(x => /Anki|Annale|Cartes|Projets perso|Comprendre|Correction/.test(x)) && v.c.rev === 0 && v.c.proj === 0,
-     'des vacances saisies vident bien la journée et mettent les cibles à zéro (' + JSON.stringify(v.c) + ')');
-  ok(!v.r.some(x => /Temps libre/.test(x)) && v.r.length <= 12,
-     'et une journée sans un seul bloc de travail ne pousse plus douze « temps libre » dans le téléphone : ' + v.r.length + ' rappels');
-  ok(v.r.includes('🦇 Sport') && v.r.includes('🦇 Dîner'), 'restent les ancres : sport et repas');
-  await ctx.close();
+  await a.ctx.close();
+  const b2 = await ouvrir('2027-07-01T09:00:00+02:00');
+  const o = await b2.fr.evaluate(() => ({
+    r: window.__bcRappels('2027-07-01').map(b => b.titre),
+    g: window.__bcGrille('weekday', '2027-07-01').map(b => b[1]),
+    c: window.__bcCibleJour('weekday', '2027-07-01')
+  }));
+  await b2.ctx.close();
+  ok(v.g.join('|') === o.g.join('|'), 'vacances et jour sans cours : la même grille, bloc pour bloc (' + v.g.length + ')');
+  ok(v.r.join('|') === o.r.join('|'), 'et les mêmes rappels dans le téléphone (' + v.r.length + ')');
+  ok(JSON.stringify(v.c) === JSON.stringify(o.c) && v.c.rev > 0,
+     'et les mêmes cibles, qui ne sont pas nulles : ' + JSON.stringify(v.c));
+  ok(v.g.some(x => /Anki 1/.test(x)) && v.g.some(x => /Projets perso/.test(x)),
+     'la journée de travail tient — ce n\'est pas du temps libre');
+  ok(v.r.includes('🦇 Sport') && v.r.includes('🦇 Dîner'), 'et les ancres sont là : sport et repas');
 }
 {
-  /* Un jour d'ete ORDINAIRE, lui, pousse la journee entiere : c'est un jour de travail. */
+  /* Un jour d'ete ordinaire pousse la journee entiere : c'est un jour de travail. */
   const { ctx, fr } = await ouvrir('2027-07-01T09:00:00+02:00');
   const r = await fr.evaluate(() => window.__bcRappels('2027-07-01').map(b => b.titre));
   ok(r.includes('🦇 Anki 1') && r.includes('🦇 Réexpliquer') && r.length >= 18,
