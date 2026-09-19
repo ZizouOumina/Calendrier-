@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cinq minutes d'étirements</title>
+<meta name="description" content="La routine derrière la case « Étirements faits » : dix positions choisies pour ce que ton programme fabrique comme raideurs, et pour le dos d'un futur dentiste.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+
+/* Meme systeme que les autres pages du depot. L'accent reprend le vert que la Batcave
+   donne au domaine « corps » (--dom-corps) : habitudes, sante, sport. */
+:root{
+  --paper:#F2F4F6; --card:#FFFFFF; --ink:#1A1F26; --ink2:#4B5563; --line:#D5DAE0;
+  --accent:#226E4A; --accent-ink:#FFFFFF; --tagbg:#E3F1E9;
+  --warn:#8A4B12; --warnbg:#FAEFE3;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --paper:#11161C; --card:#1A2129; --ink:#E7EBEF; --ink2:#A6AFBA; --line:#2C3640;
+  --accent:#6FD19B; --accent-ink:#08241a; --tagbg:#12301F;
+  --warn:#F0B37A; --warnbg:#2A1E12;
+}}
+:root[data-theme="dark"]{
+  --paper:#11161C; --card:#1A2129; --ink:#E7EBEF; --ink2:#A6AFBA; --line:#2C3640;
+  --accent:#6FD19B; --accent-ink:#08241a; --tagbg:#12301F;
+  --warn:#F0B37A; --warnbg:#2A1E12;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:"Source Sans 3",system-ui,sans-serif;font-size:16px;line-height:1.5}
+.wrap{max-width:1080px;margin:0 auto;padding:0 16px 80px}
+header.top{padding:40px 0 22px;border-bottom:1px solid var(--line)}
+h1{font-family:"Bricolage Grotesque",sans-serif;font-weight:700;font-size:clamp(34px,6vw,56px);line-height:1;margin:0 0 10px;text-wrap:balance;letter-spacing:-.01em}
+h2{font-family:"Bricolage Grotesque",sans-serif;font-weight:700;font-size:26px;margin:44px 0 12px;line-height:1.15;text-wrap:balance}
+h3{font-family:"Bricolage Grotesque",sans-serif;font-weight:700;font-size:19px;margin:24px 0 8px}
+h4{font-family:"Bricolage Grotesque",sans-serif;font-weight:700;font-size:14px;margin:0 0 6px}
+.sub{color:var(--ink2);max-width:72ch;margin:0}
+p{max-width:72ch;margin:10px 0}
+.brand{font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:14px}
+nav.pills{position:sticky;top:0;z-index:5;background:var(--paper);padding:10px 0;display:flex;gap:8px;overflow-x:auto;border-bottom:1px solid var(--line)}
+nav.pills a{flex:0 0 auto;font-family:"JetBrains Mono",monospace;font-size:12px;padding:6px 10px;border:1px solid var(--line);border-radius:999px;color:var(--ink);text-decoration:none;background:var(--card)}
+nav.pills a:hover{border-color:var(--accent);color:var(--accent)}
+nav.pills a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.box{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:18px 20px;margin:14px 0}
+.box h3:first-child,.box h4:first-child{margin-top:0}
+.box p:last-child{margin-bottom:0}
+ol,ul{padding-left:20px;max-width:72ch} li{margin:7px 0}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}
+.tbl{overflow-x:auto;margin:14px 0}
+table.list{width:100%;border-collapse:collapse;font-size:14.5px}
+table.list td,table.list th{padding:9px 10px;border-top:1px solid var(--line);vertical-align:top;text-align:left}
+table.list th{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink2);border-top:none;white-space:nowrap}
+.tag{display:inline-block;font-family:"JetBrains Mono",monospace;font-size:10.5px;padding:2px 8px;border-radius:999px;background:var(--tagbg);color:var(--accent);white-space:nowrap}
+.note{border-left:3px solid var(--accent);padding:2px 0 2px 14px;margin:16px 0;color:var(--ink2);max-width:72ch}
+.note b{color:var(--ink)}
+.attention{background:var(--warnbg);border:1px solid var(--warn);border-radius:10px;padding:14px 18px;margin:16px 0;max-width:72ch}
+.attention h4{color:var(--warn);margin-top:0}
+.attention p:last-child{margin-bottom:0}
+a{color:var(--accent)}
+
+/* ---- une position ---- */
+.pos{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 18px;margin:12px 0;max-width:72ch}
+.pos .tete{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:8px}
+.pos .num{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--accent-ink);background:var(--accent);border-radius:999px;padding:2px 9px;flex:0 0 auto}
+.pos h4{font-size:17px;margin:0;flex:1 1 auto;min-width:0}
+.pos .duree{font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--ink2);flex:0 0 auto;white-space:nowrap}
+.pos .comment{margin:0 0 10px;max-width:none}
+.pos .meta{display:grid;grid-template-columns:auto 1fr;gap:4px 10px;font-size:13.5px;border-top:1px solid var(--line);padding-top:9px;margin-top:2px}
+.pos .meta dt{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink2);padding-top:2px;white-space:nowrap}
+.pos .meta dd{margin:0;color:var(--ink2)}
+.pos .meta dd b{color:var(--ink);font-weight:600}
+.pos.cle{border-left:4px solid var(--accent)}
+
+/* ---- les trois formats ---- */
+.formats{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin:16px 0}
+.fmt{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 18px;min-width:0;display:flex;flex-direction:column}
+.fmt .d{font-family:"Bricolage Grotesque",sans-serif;font-weight:700;font-size:30px;color:var(--accent);line-height:1}
+.fmt .q{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink2);margin:4px 0 10px}
+.fmt ol{font-size:14px;padding-left:18px;margin:0}
+.fmt li{margin:4px 0;color:var(--ink2)}
+.fmt .w{font-size:13.5px;color:var(--ink2);margin-top:auto;padding-top:10px;border-top:1px solid var(--line)}
+
+footer{margin-top:60px;color:var(--ink2);font-size:14px;border-top:1px solid var(--line);padding-top:16px;max-width:72ch}
+@media (max-width:700px){ .two{grid-template-columns:1fr} }
+@media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} }
+
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="top">
+  <div class="brand">Batcave · dossier · v1.0 · 19 septembre 2026</div>
+  <h1>Cinq minutes d'étirements</h1>
+  <p class="sub">La case « Étirements faits » existe dans tes habitudes depuis le début, et il n'y avait rien derrière. Voilà ce qu'il y a derrière : dix positions, choisies pour ce que <i>ton</i> programme fabrique comme raideurs — et pour le dos d'un homme qui va passer quarante ans penché sur un fauteuil.</p>
+</header>
+
+<nav class="pills">
+  <a href="#quand">Quand</a>
+  <a href="#formats">Trois formats</a>
+  <a href="#haut">Le haut</a>
+  <a href="#hanche">La hanche</a>
+  <a href="#jambes">Les jambes</a>
+  <a href="#dentiste">Le futur dentiste</a>
+  <a href="#verite">Ce que ça fait vraiment</a>
+</nav>
+
+<h2 id="quand">Quand — n'importe quand, sauf deux moments</h2>
+
+<p>C'est le point de départ que tu as demandé : <b>ça se fait quand tu as un moment</b>, pas à une heure imposée. Un étirement ne demande ni matériel, ni chaussures, ni d'être au parc. Le sol de ta chambre suffit, et cinq minutes aussi.</p>
+
+<div class="two">
+  <div class="box">
+    <h4>Les bons moments</h4>
+    <ul style="margin-bottom:0">
+      <li><b>Entre deux blocs d'étude.</b> Le meilleur : tu viens de passer deux heures assis, le corps demande exactement ça, et ça ne coûte aucun temps de travail.</li>
+      <li><b>Après la séance</b>, à 06:30, pendant que tu es encore chaud. C'est là que la case tombe déjà.</li>
+      <li><b>Le soir, 21:10</b>, sur le temps libre avant la collation.</li>
+      <li><b>Après une course</b>, samedi ou dimanche.</li>
+    </ul>
+  </div>
+  <div class="attention" style="margin:0">
+    <h4>Les deux moments à éviter</h4>
+    <p><b>Juste avant de tirer.</b> Un étirement statique tenu longtemps avant une série fait perdre de la force pendant une dizaine de minutes. À 05:25 tu t'échauffes, tu ne t'étires pas — l'échauffement du programme de sport est fait pour ça.</p>
+    <p style="margin-top:8px"><b>Au saut du lit, à froid et en forçant.</b> Pas dangereux, mais inutile : tu tireras moins loin et tu le sentiras mal. Marche deux minutes d'abord, ou fais-le plus tard.</p>
+  </div>
+</div>
+
+<h2 id="formats">Trois formats, selon le temps que tu as</h2>
+
+<div class="formats">
+  <div class="fmt">
+    <div class="d">60 s</div>
+    <div class="q">entre deux blocs</div>
+    <ol>
+      <li>Ouverture de poitrine au chambranle — 30 s par bras</li>
+      <li>Extension sur le dossier de chaise — 30 s</li>
+    </ol>
+    <p class="w">Le minimum qui compte. Deux positions, debout, sans quitter ton bureau. C'est la version que tu feras le plus souvent, et c'est très bien.</p>
+  </div>
+  <div class="fmt">
+    <div class="d">5 min</div>
+    <div class="q">la routine de référence</div>
+    <ol>
+      <li>Ouverture de poitrine</li>
+      <li>Extension thoracique</li>
+      <li>Fente basse — psoas</li>
+      <li>Ischios assis</li>
+      <li>Mollets au mur</li>
+    </ol>
+    <p class="w">Une minute par position, les cinq qui couvrent le plus. C'est celle-là qui valide la case.</p>
+  </div>
+  <div class="fmt">
+    <div class="d">10 min</div>
+    <div class="q">un dimanche, ou un jour off</div>
+    <ol>
+      <li>Les cinq ci-contre</li>
+      <li>Grand dorsal suspendu</li>
+      <li>Fessier assis — figure 4</li>
+      <li>Nuque, trois directions</li>
+      <li>Poignets, deux sens</li>
+      <li>Adducteurs</li>
+    </ol>
+    <p class="w">La version complète. Mercredi, vendredi ou dimanche — les jours sans muscu.</p>
+  </div>
+</div>
+
+<div class="note"><b>La règle de durée :</b> <b>30 à 60 secondes</b> par position, et on respire. Ce qui compte n'est pas la séance mais le <b>total de la semaine</b> sur un muscle : cinq minutes hebdomadaires par région donnent l'essentiel du gain. Trois fois cinq minutes dans la semaine valent mieux qu'un quart d'heure héroïque le dimanche.</div>
+
+<h2 id="haut">Le haut du corps — ce que tes tractions et tes dips serrent</h2>
+
+<div class="pos cle">
+  <div class="tete"><span class="num">01</span><h4>Ouverture de poitrine au chambranle</h4><span class="duree">30 s / bras</span></div>
+  <p class="comment">Avant-bras à plat contre le montant d'une porte, coude à hauteur d'épaule, puis tu avances le buste et tu tournes doucement le torse vers l'extérieur. Ça doit tirer devant l'épaule et dans le pectoral, jamais dans l'articulation.</p>
+  <dl class="meta">
+    <dt>Pourquoi toi</dt><dd>Dips et pompes déclinées quatre fois par semaine, plus huit heures assis penché en avant. C'est <b>la raideur numéro un</b> de ton programme, et celle qui referme les épaules.</dd>
+    <dt>L'erreur</dt><dd>Monter le coude trop haut. Hauteur d'épaule, pas au-dessus.</dd>
+  </dl>
+</div>
+
+<div class="pos cle">
+  <div class="tete"><span class="num">02</span><h4>Extension thoracique sur le dossier</h4><span class="duree">45 s</span></div>
+  <p class="comment">Assis sur ta chaise, mains croisées derrière la nuque, tu cales le haut du dos sur le dossier et tu passes en arrière par-dessus, en ouvrant la cage. Le bas du dos ne bouge pas — c'est le milieu du dos qui s'ouvre. Respire fort dans la position.</p>
+  <dl class="meta">
+    <dt>Pourquoi toi</dt><dd>Le dos rond de l'étudiant, et dans dix ans celui du praticien. <b>Si tu n'en fais qu'une, fais celle-là.</b></dd>
+    <dt>L'erreur</dt><dd>Cambrer les lombaires au lieu d'ouvrir le thorax. Si ça tire en bas du dos, tu es descendu trop bas sur le dossier.</dd>
+  </dl>
+</div>
+
+<div class="pos">
+  <div class="tete"><span class="num">03</span><h4>Grand dorsal — suspendu, ou à genoux</h4><span class="duree">40 s</span></div>
+  <p class="comment">Au parc : suspendu à la barre, bras tendus, épaules relâchées, on laisse descendre — c'est le dead hang, et il étire en même temps qu'il travaille la poigne. À la maison : à genoux, mains sur le bord du lit ou d'une table, tu recules les hanches et tu laisses la poitrine descendre entre les bras.</p>
+  <dl class="meta">
+    <dt>Pourquoi toi</dt><dd>Quatre séances de tractions par semaine. Un dorsal court tire l'épaule en rotation interne et t'empêche de lever les bras droit au-dessus de la tête.</dd>
+    <dt>Le test</dt><dd>Dos au mur, lombaires plaquées : tes poignets touchent-ils le mur bras tendus au-dessus de la tête ? Sinon, c'est ici que ça coince.</dd>
+  </dl>
+</div>
+
+<h2 id="hanche">La hanche — huit heures assis, et des split squats</h2>
+
+<div class="pos cle">
+  <div class="tete"><span class="num">04</span><h4>Fente basse — les fléchisseurs de hanche</h4><span class="duree">45 s / côté</span></div>
+  <p class="comment">Genou arrière au sol, pied avant bien devant. <b>Avant d'avancer le bassin</b>, rentre le coccyx sous toi et serre la fesse du côté arrière : c'est ce geste qui met la tension dans le psoas plutôt que dans le bas du dos. Puis pousse doucement le bassin vers l'avant. Buste droit.</p>
+  <dl class="meta">
+    <dt>Pourquoi toi</dt><dd>Tu passes six à huit heures par jour assis, hanche fermée, et tes split squats et fentes marchées travaillent dans la même position. <b>C'est la deuxième raideur de ton programme</b>, et celle qui tire le bassin en avant.</dd>
+    <dt>L'erreur</dt><dd>Avancer le bassin sans rentrer le coccyx : tu cambres, tu sens le bas du dos, et le psoas ne s'étire pas.</dd>
+  </dl>
+</div>
+
+<div class="pos">
+  <div class="tete"><span class="num">05</span><h4>Fessier assis — figure 4</h4><span class="duree">40 s / côté</span></div>
+  <p class="comment">Sur ta chaise : cheville sur le genou opposé, genou ouvert sur le côté, et tu penches le buste en avant en gardant le dos droit. Ça tire dans la fesse.</p>
+  <dl class="meta">
+    <dt>Pourquoi toi</dt><dd>Hip thrust et fentes. Et elle se fait sur ta chaise de bureau, sans te lever — c'est la plus facile à caser entre deux blocs.</dd>
+  </dl>
+</div>
+
+<div class="pos">
+  <div class="tete"><span class="num">06</span><h4>Adducteurs — assis, plante contre plante</h4><span class="duree">40 s</span></div>
+  <p class="comment">Au sol, plantes de pieds l'une contre l'autre, talons ramenés vers toi, et tu penches le buste en avant depuis les hanches. Les coudes peuvent appuyer doucement sur l'intérieur des genoux.</p>
+  <dl class="meta">
+    <dt>Pourquoi toi</dt><dd>Les split squats bulgares et les fentes chargent l'intérieur de cuisse sans jamais l'étirer.</dd>
+  </dl>
+</div>
+
+<h2 id="jambes">Les jambes — la chaîne arrière</h2>
+
+<div class="pos cle">
+  <div class="tete"><span class="num">07</span><h4>Ischio-jambiers — assis, une jambe tendue</h4><span class="duree">40 s / jambe</span></div>
+  <p class="comment">Assis au bord de ta chaise, une jambe tendue devant, talon au sol, orteils vers toi. Dos <b>droit</b>, et tu penches depuis la hanche, pas en enroulant les épaules. Tu dois sentir l'arrière de la cuisse, pas le bas du dos.</p>
+  <dl class="meta">
+    <dt>Pourquoi toi</dt><dd>Soulevé de terre roumain une jambe et hip thrust, deux mouvements qui raccourcissent la chaîne arrière. Et la position assise toute la journée.</dd>
+    <dt>L'erreur</dt><dd>Arrondir le dos pour aller chercher l'orteil. Tu étires alors tes lombaires, pas tes ischios.</dd>
+  </dl>
+</div>
+
+<div class="pos">
+  <div class="tete"><span class="num">08</span><h4>Mollets au mur</h4><span class="duree">30 s / jambe</span></div>
+  <p class="comment">Mains au mur, une jambe loin derrière, talon au sol, jambe tendue. Puis refais-la <b>genou légèrement fléchi</b> : la première version prend le gastrocnémien, la seconde le soléaire, plus profond. Vingt secondes chacune suffisent.</p>
+  <dl class="meta">
+    <dt>Pourquoi toi</dt><dd>Mollets une jambe le samedi, le kilomètre couru jusqu'au parc, et maintenant deux sorties de trente minutes. Un mollet raide limite la cheville, et une cheville raide abîme le genou en split squat.</dd>
+  </dl>
+</div>
+
+<h2 id="dentiste">Les deux que tu feras encore dans vingt ans</h2>
+
+<p>Celles-ci ne viennent pas de ton programme de sport. Elles viennent du métier que tu as choisi. Les troubles musculo-squelettiques du cou, des épaules et des poignets sont la première cause d'arrêt et de reconversion chez les dentistes — pas les mains qui tremblent, le dos qui lâche. Commencer à vingt ans coûte cinq minutes ; commencer à quarante coûte un kinésithérapeute.</p>
+
+<div class="pos cle">
+  <div class="tete"><span class="num">09</span><h4>Nuque — trois directions</h4><span class="duree">20 s × 3</span></div>
+  <p class="comment">Assis, une main sous la fesse pour bloquer l'épaule. <b>Côté</b> : oreille vers l'épaule opposée. <b>Diagonale</b> : nez vers l'aisselle opposée, ça prend l'arrière du cou. <b>Avant</b> : menton vers la poitrine, main légère sur l'arrière du crâne. Jamais de rotation forcée, jamais de à-coups.</p>
+  <dl class="meta">
+    <dt>Pourquoi toi</dt><dd>Tu travailles déjà le cou en flexion, extension et inclinaison dans trois séances sur quatre — c'est du muscle qu'on ajoute à une région déjà sollicitée par la lecture penchée. Il faut lui rendre de l'amplitude.</dd>
+    <dt>L'erreur</dt><dd>Tirer fort avec la main. Le poids du bras suffit.</dd>
+  </dl>
+</div>
+
+<div class="pos cle">
+  <div class="tete"><span class="num">10</span><h4>Poignets — les deux sens</h4><span class="duree">20 s × 2</span></div>
+  <p class="comment">À quatre pattes, paumes au sol, doigts vers les genoux : tu recules doucement le bassin, ça étire l'intérieur de l'avant-bras. Puis retourne les mains, <b>dos des mains au sol</b>, doigts vers les genoux, et appuie très légèrement : l'extérieur. Cette deuxième version est intense, vas-y doucement.</p>
+  <dl class="meta">
+    <dt>Pourquoi toi</dt><dd>Curl des poignets, curl inversé, dead hang — et dans quelques années une turbine tenue en pince huit heures par jour. Les tendinopathies du poignet et le canal carpien sont la plaie du métier.</dd>
+  </dl>
+</div>
+
+<h2 id="verite">Ce que ça fait vraiment — et ce que ça ne fait pas</h2>
+
+<p>Autant être honnête, tu tiendras mieux une habitude dont tu connais le vrai bénéfice.</p>
+
+<div class="tbl"><table class="list">
+<tr><th></th><th>Ce qu'on en sait</th></tr>
+<tr><td><b>Gagner de l'amplitude</b></td><td><span class="tag">ça marche</span> C'est l'effet principal et il est bien établi. Une pratique régulière augmente nettement le mouvement disponible — d'abord parce que tu tolères mieux la sensation, puis, à force de mois, parce que le tissu change.</td></tr>
+<tr><td><b>Se sentir moins raide, moins comprimé</b></td><td><span class="tag">ça marche</span> Immédiat, et c'est la vraie raison de le faire entre deux blocs d'étude. Ce n'est pas rien : c'est ce qui te fera te rasseoir sans traîner.</td></tr>
+<tr><td><b>Tenir une meilleure position de travail</b></td><td><span class="tag">ça aide</span> Pas magique. L'amplitude rend la bonne posture <i>possible</i> ; c'est le renforcement du haut du dos — tes face pulls et tes shrugs — qui la rend <i>tenable</i>. Les deux ensemble, pas l'un sans l'autre.</td></tr>
+<tr><td><b>Supprimer les courbatures</b></td><td><span class="tag" style="background:var(--warnbg);color:var(--warn)">non</span> L'effet est mesurable mais minuscule. Ne compte pas dessus après une séance de jambes.</td></tr>
+<tr><td><b>Éviter les blessures</b></td><td><span class="tag" style="background:var(--warnbg);color:var(--warn)">non</span> S'étirer ne protège pas d'une blessure de musculation. Ce qui protège, c'est l'échauffement, une progression raisonnable et du sommeil.</td></tr>
+</table></div>
+
+<div class="note"><b>Donc :</b> tu t'étires pour bouger mieux et pour te sentir mieux assis, pas pour éviter les courbatures ou les blessures. Sur ces deux premiers points, ça marche vraiment — et cinq minutes suffisent.</div>
+
+<h3>Comment ça se coche</h3>
+<p>La case <b>« Étirements faits » 🤸</b> est dans le Check express du tableau de bord et dans l'onglet Habitudes, tous les jours. <b>Soixante secondes comptent.</b> Une habitude qu'on coche à 100 % en version courte bat une habitude parfaite abandonnée au bout de dix jours — et la série, elle, ne fait pas la différence entre les deux.</p>
+
+<footer>
+  <p><b>Cinq minutes d'étirements</b> · v1.0 · dossier de la Batcave, 19 septembre 2026.</p>
+  <p>Les positions sont choisies à partir de ton programme de sport (quatre séances de résistance, deux sorties de course) et de ta journée d'étude. Si une position réveille une douleur vive, une irradiation dans la jambe ou le bras, ou un fourmillement : arrête celle-là et parle-en à un professionnel. Une sensation d'étirement franc est normale ; une douleur, non.</p>
+</footer>
+
+</div>
+</body>
+</html>

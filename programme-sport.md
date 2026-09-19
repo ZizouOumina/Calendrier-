@@ -118,6 +118,16 @@ Sans roue abdominale : rollout aux avant-bras sur une serviette qui glisse, ou a
 
 Shrugs suspendus le jeudi et le samedi pour les faisceaux supérieurs (suspendu à la barre, on monte les épaules vers les oreilles, deux secondes en haut) ; face pulls le jeudi et le samedi pour les moyens et les inférieurs. C'est ce couple, et non les tractions seules, qui tient l'épaule et redresse la posture.
 
+## Les étirements
+L'habitude quotidienne « Étirements faits » a désormais son contenu : `guide-etirements.html`.
+Dix positions, trois formats (60 s entre deux blocs, 5 min de référence, 10 min un jour off),
+choisies pour ce que ce programme serre — pectoraux et deltoïde antérieur (dips, pompes
+déclinées), grand dorsal (tractions), fléchisseurs de hanche (split squats et position assise),
+ischios (soulevé de terre roumain, hip thrust), mollets (mollets une jambe, course) — plus la
+nuque et les poignets, qui relèvent du métier et non du programme. Se fait quand il y a un
+moment, jamais juste avant une série : un étirement statique tenu avant de tirer fait perdre
+de la force pendant une dizaine de minutes.
+
 ## Les échauffements (5 min chacun, à connaître par cœur)
 - **Haut** : suspension 20 s + 10 tirages d'omoplates · 15 rotations d'épaules bras tendus · 15 face pulls à l'élastique · 10 pompes lentes · 2 séries légères du premier exercice, un cran en dessous (moitié du lest quand tu lestes).
 - **Bas** : 20 mollets debout · 10 fentes marchées · 10 charnières de hanche · 5 squats sautés · 8 split squats à vide par jambe.
