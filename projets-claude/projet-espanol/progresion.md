@@ -1,7 +1,7 @@
 # Progression (à compléter chaque dimanche, puis remplacer le fichier dans le projet)
 
 ## Niveau de départ
-- Diagnostic du lundi 14 septembre 2026 (13:00, bloc escribir) : erreurs / 100 mots = … ; oral sans pause = … min ; test Kwiziq = … ; pauses à l'oral = …
+- Diagnostic du **dimanche 20 septembre 2026, 11:20** (à la place de la simulación) : erreurs / 100 mots = … ; oral sans pause = … min ; test Kwiziq = … ; pauses à l'oral = …
 - Niveau de production estimé : … (A2 / B1 / B2)
 
 ## Le point de grammaire de la semaine
@@ -18,11 +18,11 @@
 ## Chiffres du dimanche
 | Dimanche | Err. / 100 mots | Oral sans pause (min) | Drill (s) | Pages lues | Conversation (min/j) | Code dominant |
 |---|---|---|---|---|---|---|
-| 20 sept. | | | | | | |
+| 20 sept. (diagnostic) | | | | | | |
 | 27 sept. | | | | | | |
 | 4 oct. | | | | | | |
 | 11 oct. | | | | | | |
-| 18 oct. (DELE B2 blanc) | | | | | | |
+| 18 oct. (fin de la phase Español) | | | | | | |
 
 ## Ce qui est acquis (à ne plus corriger en priorité)
 - …

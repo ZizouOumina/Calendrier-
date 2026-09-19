@@ -1,38 +1,76 @@
 # Le plan et la grille (référence pour le professeur)
 
 ## Les phases
-| Phase | Dates | Niveau visé | Temps |
-|---|---|---|---|
-| 1 · Production | 14 sept. 2026 → 18 oct. | B1 → B2 : écrit correct, oral fluide, notes en espagnol | ≈ 18 h/sem + 20 h de cours |
-| 2 · Espagnol d'examen | 19 oct. → partiels (nov.) | B2 opérationnel en examen | ≈ 11 h/sem |
-| 3 · Vers le C1 | déc. 2026 → mars 2027 | C1 ; DELE C1 blanc le 14 février | ≈ 6 h/sem |
 
-Jalons : diagnostic le lundi 14 sept. (13:00, bloc escribir) ; première simulation le dimanche 20 ; notes de cours en espagnol le 27 sept. ; trois minutes d'oral sans pause le 4 oct. ; DELE B2 blanc les 17-18 oct. ; partiels en novembre ; DELE C1 blanc le 14 fév. 2027 ; inscription DELE C1 en mars.
+Il n'y a **qu'une seule phase Español dans la grille**, et elle est courte.
 
-## Mes blocs Español (phase 1, lundi → vendredi)
-| Heure | Bloc | Ce que je fais avec toi |
+| Phase | Dates | Ce que la grille donne |
 |---|---|---|
-| 11:20 | Español · gramática | Le point de la semaine : chaque règle → dix phrases écrites, dix dites. Je te colle mes phrases : « corrige ». Question non comprise : « explica ». |
-| 13:00 | Español · escribir | Dix minutes de réécriture de mémoire du texte de la veille, puis 200 mots sur le cours de la veille en 25 min : « corrige », puis « cartas ». |
-| 14:00 | Español · preparar la clase | Quinze termes des slides en cartes (définition en espagnol), deux questions préparées. Tu vérifies mes définitions si je te les colle. |
-| 20:30 | Comprendre le cours du jour | Dans le projet Dentaire, en espagnol. Pas ici. |
-| Trajet | Anki Español, résumé oral d'une minute | Si je te colle la transcription du résumé : « corrige ». |
-| Vendredi 05:30 | Español · escribir largo | 300 mots chronométrés : « corrige ». |
-| Vendredi et samedi | Español · tutor | Avec un tuteur humain. Si je n'en ai pas ce jour-là : « conversa » puis « cartas ». |
-| Samedi 18:00 | Español · DELE | Une tâche d'expression écrite ou orale DELE B2 : « examen » en mode DELE. |
-| Dimanche 11:20 | Español · simulación | Deux réponses de type examen en 55 min : « examen ». |
-| Dimanche 13:30 | Español · balance de la semana | Les chiffres de la semaine : « balance ». |
+| 1 · Production | samedi 19 sept. 2026 → dimanche 18 oct. | Les onze blocs « Projets perso » deviennent des blocs Español : ≈ 11 h/semaine, en plus des vingt heures d'amphi en espagnol |
+| Après | dès le lundi 19 oct. | **Plus un seul bloc Español.** Les onze blocs redeviennent des projets (livrable à rendre d'abord, sinon la boutique) |
 
-Phase 2 : le bloc de 13:00 devient « annales » (une question d'annale en espagnol, chronométrée, corrigée contenu puis langue). Phase 3 : un seul bloc à 13:00, thème du jour (lundi grammaire C1, mardi écrit long, mercredi lecture, jeudi tuteur, vendredi écoute et dictée, samedi DELE C1, dimanche bilan).
+Ce n'est pas un renoncement : à partir du 19 octobre, l'espagnol n'est plus un
+sujet d'étude, c'est la langue dans laquelle tout le reste se fait — les vingt
+heures de cours, le bloc « Étudier en avance », la question ouverte du 11:20, la
+simulation du dimanche, les cartes Anki. Ce qui reste explicitement à toi après
+le 18 octobre :
+
+- **« corrige »** sur ce qu'il écrit pour les cours (question ouverte, simulation,
+  rendus) — c'est là que la production continue de se corriger ;
+- les **trois habitudes quotidiennes** de la Batcave : 30 min avec un natif, les
+  dix formules du jour, 20 pages lues en espagnol ;
+- Anki `Español::0 Errores`, alimenté par les erreurs de ces corrections.
+
+Objectif de langue inchangé (B2 de production au 18 oct., C1 en mars 2027), mais
+après le 18 octobre il est porté par l'usage et par ces corrections, pas par des
+heures dédiées dans la grille.
+
+Jalons : **diagnostic le dimanche 20 septembre à 11:20**, à la place de la
+simulación (300 mots en 30 min passés dans « corrige », trois minutes d'oral
+enregistrées, test Kwiziq — les trois chiffres se saisissent à la clôture du
+dimanche) ; première vraie simulación le dimanche 27 ; notes de cours en espagnol
+le 27 sept. ; trois minutes d'oral sans pause le 4 oct. ; bascule aux projets le
+19 oct. ; partiels en janvier. **Il n'y a plus de DELE B2 blanc les 17-18
+octobre** : ce week-end-là porte le cuestionario d'Antropología et l'infografía.
+DELE C1 blanc le 14 février 2027, inscription au DELE C1 en mars.
+
+## Mes blocs Español (phase 1 seulement, 19 sept. → 18 oct.)
+
+Ces horaires sont ceux de la grille réelle de la Batcave. Ils ont changé : ne te
+fie pas à une version plus ancienne.
+
+| Jour | Heure | Bloc | Ce que je fais avec toi |
+|---|---|---|---|
+| Lundi → jeudi | 13:00 | Español · gramática | Le point de la semaine : chaque règle → dix phrases écrites, dix dites. Je te colle mes phrases : « corrige ». Question non comprise : « explica ». |
+| Lundi → jeudi | 14:00 | Español · escribir | Dix minutes de réécriture de mémoire du texte de la veille, puis 200 mots sur le cours de la veille : « corrige », puis « cartas ». |
+| Lundi | 15:00 | Español · hablar | Je parle seul ou avec toi à l'écrit : résumé oral, technique 4-3-2, shadowing. Transcription collée → « corrige ». |
+| Mardi | 20:30 | Español · serie en VO | Une série espagnole sans sous-titres français. Pas de travail avec toi, sauf « formulas » sur ce que j'ai entendu. |
+| Vendredi | 05:30 | Español · escribir largo | 300 mots chronométrés : « corrige ». |
+| Vendredi | 11:20 | Español · tutor | Avec un tuteur humain. Si je n'en ai pas ce jour-là : « conversa » puis « cartas ». |
+| Samedi | 11:20 | Español · gramática | Reprise du point de la semaine sur mes erreurs des cinq jours. |
+| Samedi | 17:00 | Español · tutor | Idem vendredi. |
+| Dimanche | 11:20 | Español · simulación | Deux réponses de type examen en 55 min : « examen ». **Le 20 septembre : le diagnostic.** |
+| Dimanche | 13:30 | Español · balance de la semana | Les chiffres de la semaine : « balance ». |
+
+Ce qui **n'existe plus** et qu'il ne faut plus me proposer : le bloc « preparar la
+clase » de 14:00, le bloc « Español · DELE » du samedi 18:00, et les phases 2
+(annales) et 3 (vers le C1) — la grille ne les porte pas.
+
+Ce qui se fait en espagnol mais **n'est pas un bloc Español** (c'est le projet
+« Dentaire », pas toi) : « Étudier en avance » à 09:20, « Question ouverte ou
+autre » à 11:20 en semaine, « Approfondir » (mercredi 11:20, samedi 09:20),
+« Lire » (mardi 18:30), « Clore le cours du jour » (20:30, 18:00 le mardi),
+« Simulation dentaire » et « Réexpliquer » le dimanche matin.
 
 ## Le point de grammaire de chaque semaine (phase 1)
+
 | Semaine | Point traqué partout |
 |---|---|
-| 1 · 14 sept. | Ser / estar / hay avec adjectifs et participes ; concordance genre-nombre |
-| 2 · 21 sept. | Les trois passés dans un récit ; pluscuamperfecto |
-| 3 · 28 sept. | Subjonctif présent : tous les déclencheurs ; relatives au subjonctif |
-| 4 · 5 oct. | Imperfecto de subjuntivo, conditionnelles irréelles, concordance des temps |
-| 5 · 12 oct. | Registre académique : « se » passif, nominalisation, connecteurs argumentatifs, périphrases |
+| 20 → 27 sept. | Ser / estar / hay avec adjectifs et participes ; concordance genre-nombre |
+| 28 sept. → 4 oct. | Les trois passés dans un récit ; pluscuamperfecto |
+| 5 → 11 oct. | Subjonctif présent : tous les déclencheurs ; relatives au subjonctif |
+| 12 → 18 oct. | Imperfecto de subjuntivo, conditionnelles irréelles, concordance des temps |
+| Après le 19 oct. | Registre académique : « se » passif, nominalisation, connecteurs argumentatifs, périphrases — traqué dans tout ce que j'écris pour les cours |
 
 Ensuite, c'est le code d'erreur dominant du dimanche qui décide (« balance »).
 

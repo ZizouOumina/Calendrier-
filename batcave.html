@@ -1490,6 +1490,9 @@
   :root[data-theme="jour"] .nav-btn.active{ background:var(--surface-hover); }
   :root[data-theme="jour"] .btn-primary{ color:#ffffff; border-bottom-color:#0a6478; }
   :root[data-theme="jour"] .chip.active{ color:#ffffff; border-bottom-color:#0a6478; }
+  /* la pastille de sous-onglet allumee : sur fond clair, l'encre sombre sur le cyan
+     plein ne donnait que 3,83:1 -- meme remede que les boutons primaires. */
+  :root[data-theme="jour"] .sous-onglet.on{ background:var(--cyan-dim); border-color:var(--cyan-dim); color:#ffffff; }
   :root[data-theme="jour"] .skip-link{ color:#ffffff; }
   :root[data-theme="jour"] .timeline .t-now-badge{ color:#ffffff; }
   :root[data-theme="jour"] #dash-checklist li.checked{ border-bottom-color:#0a6478; }
@@ -2547,7 +2550,7 @@
         <div id="portes-fold" hidden style="margin-top:12px;">
         <p class="sub-note" style="margin-bottom:10px; line-height:1.6;">Le seul test qui compte est gratuit : tu es évalué vingt heures par semaine en amphi. Chaque jour de cours, une note de 0 à 3 à la clôture. La moyenne des <b>21 derniers jours</b> — jours de cours notés seulement — décide si un bloc Español peut devenir un bloc Projets perso. Jamais sur la note seule : il faut aussi les erreurs pour 100 mots du dimanche, et pour la deuxième porte un examen réellement passé en espagnol.</p>
         <div id="portes-etat"></div>
-        <p class="sub-note" style="margin-top:10px; line-height:1.6;">Le troisième bloc — <b>escribir</b> — reste jusqu'au 14 mars, quelle que soit la moyenne. La compréhension progresse vite, la production non : tu seras à l'aise en cours bien avant de savoir écrire une réponse d'examen, et c'est l'écrit qui est noté.</p>
+        <p class="sub-note" style="margin-top:10px; line-height:1.6;">Le troisième bloc — <b>escribir</b> — ne se convertit jamais : il tient jusqu'au <b>18 octobre</b>, fin de la phase Español, quelle que soit la moyenne. La compréhension progresse vite, la production non : tu seras à l'aise en cours bien avant de savoir écrire une réponse d'examen, et c'est l'écrit qui est noté. Le 19 octobre, les onze blocs redeviennent des projets de toute façon : les portes ne servent qu'à gagner du temps <i>avant</i> cette date.</p>
         </div>
       </div>
 
