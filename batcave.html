@@ -3009,7 +3009,7 @@
     <p class="sub-note" id="cloture-date" style="margin-bottom:10px;"></p>
     <!-- Deux longueurs pour le meme geste : l'express ne demande que ce qui change les
          chiffres du lendemain (sommeil, eau, humeur, habitudes) ; la complete ajoute le
-         poids, le Coran et la note ; les complements (creatine, magnesium) sont dans les
+         poids, le Coran et la note ; le complement (creatine) est dans les
          deux, parce qu'ils se prennent tous les jours. Le dimanche force la complete :
          la revue de la semaine ne se saute pas. -->
     <div class="cl-modes" id="cl-modes">
@@ -6032,10 +6032,10 @@
      ne les rappelait, rien ne les comptait. Ce sont des habitudes quotidiennes comme les
      autres : elles se cochent dans la liste du jour, comptent dans le score, et la cloture
      les propose en puces dans les DEUX longueurs (voir COMPLEMENT_HABIT). La creatine ne
-     marche que prise tous les jours : c'est exactement ce qu'une habitude sait rappeler. */
+     marche que prise tous les jours : c'est exactement ce qu'une habitude sait rappeler.
+     19 septembre : le MAGNESIUM est retire, il n'en prend pas. Il ne reste que la creatine. */
   var HABIT_SEED_V8 = [
-    {id:'core-creatine', label:'Cr\u00e9atine \u2014 5 g', icon:'\ud83e\udd44'},
-    {id:'core-magnesium', label:'Magn\u00e9sium \u2014 le soir', icon:'\ud83d\udc8a'}
+    {id:'core-creatine', label:'Cr\u00e9atine \u2014 5 g', icon:'\ud83e\udd44'}
   ];
   /* Retirees a la demande. Ce n'est pas un simple retrait du semis : l'habitude est deja
      dans le stockage de l'utilisateur, elle survit a la remise a zero (« habits » est garde),
@@ -6043,7 +6043,7 @@
      filtre donc a CHAQUE lecture, pas une seule fois. Pour la remettre un jour : vider cette
      liste. La rajouter a la main depuis l'onglet Habitudes marche aussi -- elle recoit alors
      un autre identifiant, et n'est pas filtree. */
-  var HABITUDES_RETIREES = ['core-gratitude', 'core-pesee', 'core-photos'];
+  var HABITUDES_RETIREES = ['core-gratitude', 'core-pesee', 'core-photos', 'core-magnesium'];
   function normaliserHabitudes(liste){
     return liste.filter(function(x){
       return x && typeof x === 'object' && x.id && HABITUDES_RETIREES.indexOf(x.id) < 0;
@@ -8186,11 +8186,11 @@
      ne saura jamais ce qu'on valait au debut. */
   function seanceReferenceDue(){ return todayISO === premierJourSport(); }
   /* ================= JOURNAL ================= */
-  var COMPLEMENTS = ['Créatine','Magnésium'];
-  /* Les puces « Compléments pris » et les habitudes créatine / magnésium disent le MÊME fait :
+  var COMPLEMENTS = ['Créatine'];
+  /* La puce « Compléments pris » et l'habitude créatine disent le MÊME fait :
      une puce active coche l'habitude du jour, une habitude cochée allume la puce. Deux
      écritures, un seul état -- sinon la clôture et le Plan du jour se contredisaient. */
-  var COMPLEMENT_HABIT = {'Cr\u00e9atine':'core-creatine', 'Magn\u00e9sium':'core-magnesium'};
+  var COMPLEMENT_HABIT = {'Cr\u00e9atine':'core-creatine'};
   function estHabitudeComplement(id){ for(var c in COMPLEMENT_HABIT) if(COMPLEMENT_HABIT[c] === id) return true; return false; }
   function synchroniserComplements(liste){
     COMPLEMENTS.forEach(function(c){
@@ -10547,7 +10547,10 @@
         {label:'Gants de ménage',  qte:'1 paire'}
       ]},
       {cat:'Tous les 3 mois', semaines:12, ancre:ANCRE_COURSES, items:[
-        {label:'Brosse à dents', qte:'1', note:'une toutes les 12 semaines'}
+        {label:'Brosse à dents', qte:'1', note:'une toutes les 12 semaines'},
+        /* Elle se coche tous les soirs dans les habitudes et n'etait rachetee nulle part :
+           500 g a 5 g par jour tiennent une centaine de jours, soit ce rythme exactement. */
+        {label:'Créatine monohydrate', qte:'1 pot de 500 g', note:'5 g par jour — le pot tient un trimestre'}
       ]}
     ];
     return cat;
@@ -16170,7 +16173,7 @@
     document.getElementById('cl-duaa').value = journalState.duaa || '';
     clComplements = complementsAvecHabitudes(journalState.complements);
     renderClComplements();
-    /* créatine et magnésium sont déjà là, en puces, juste au-dessus */
+    /* la créatine est déjà là, en puce, juste au-dessus */
     var restantes = habitsDuJour(weekday).filter(function(h){ return !habitDoneToday(h.id) && !estHabitudeComplement(h.id); });
     var hab = document.getElementById('cl-habitudes');
     hab.innerHTML = restantes.length
