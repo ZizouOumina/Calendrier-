@@ -32,19 +32,23 @@ for (const [d, attendu, moitie] of [['2026-09-21',2,true],['2026-09-28',2,true],
   await ctx.close();
 }
 /* Depuis le 12 septembre, le DIMANCHE est le jour d'entretien. La pesee y tombe une semaine
-   sur deux, ancree au 13 septembre ; la seance photo une semaine sur quatre, meme ancre. La
-   coupe de cheveux est le samedi (le coiffeur est ferme le dimanche), une semaine sur trois,
-   ancree au 3 octobre — elle ne tombe donc sur aucun dimanche, et c'est ce que verifie la
-   colonne « coupe ». */
+   sur deux, la seance photo une semaine sur quatre, et les deux partent de la MEME ancre.
+   Cette ancre etait au 13 septembre, une semaine avant le jour 1 : sa premiere photo serait
+   tombee le 11 octobre, trois semaines apres le depart, et l'image du point de depart
+   n'aurait jamais existe. Elle est au 20 septembre depuis sa decision du 19.
+   La coupe de cheveux est le samedi (le coiffeur est ferme le dimanche), une semaine sur
+   trois, ancree au 3 octobre — elle ne tombe donc sur aucun dimanche, et c'est ce que
+   verifie la colonne « coupe ». */
 console.log('\n== habitudes : pesee un dimanche sur deux, photos un sur quatre, coupe le samedi ==');
 for (const [d, jour_, pesee, coupe] of [
   ['2026-09-14','lundi 14',false,false],
-  ['2026-09-13','dimanche 13',true,false],
-  ['2026-09-20','dimanche 20',false,false],
-  ['2026-09-27','dimanche 27',true,false],
-  ['2026-10-04','dimanche 4 oct',false,false],
-  ['2026-10-11','dimanche 11 oct',true,false],
-  ['2026-10-25','dimanche 25 oct',true,false],
+  ['2026-09-13','dimanche 13 (avant l\'ancre)',false,false],
+  ['2026-09-20','dimanche 20 (l\'ancre)',true,false],
+  ['2026-09-27','dimanche 27',false,false],
+  ['2026-10-04','dimanche 4 oct',true,false],
+  ['2026-10-11','dimanche 11 oct',false,false],
+  ['2026-10-18','dimanche 18 oct',true,false],
+  ['2026-10-25','dimanche 25 oct',false,false],
   ['2026-10-03','samedi 3 oct',false,true],
   ['2026-09-15','mardi 15',false,false]]) {
   const {ctx, fr} = await jour(d+'T09:00:00+02:00');

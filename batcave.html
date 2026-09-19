@@ -3398,7 +3398,7 @@
      vestige : une fonctionnalite retiree (batcave-matieres) ou un essai. Elle prend de la
      place dans le quota de 5000 documents et embrouille les sauvegardes, sans que rien ne
      la lise jamais. On la signale ; la suppression reste ton geste. */
-  var CLES_CONNUES = ['addictions','budget-limits','business','coran','courses','dash-more','duaas','duree-bloc','sport-log','objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','courses-plan-v3','courses-plan-v4','kcal-ajustement','gcal-ecriture','reinit','fc-migration-v1','charge','shopify-boutique','journees','examens-heures','vacances','jours-exclus',
+  var CLES_CONNUES = ['addictions','budget-limits','business','coran','courses','dash-more','duaas','duree-bloc','sport-log','objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','courses-plan-v3','courses-plan-v4','ancre-dimanche-v1','shampoing-dim-v1','kcal-ajustement','gcal-ecriture','reinit','fc-migration-v1','charge','shopify-boutique','journees','examens-heures','vacances','jours-exclus',
     'espagnol','examens','cours-suivi','portes','periodes-closes','fc-prix-icloud-3','fixed-charges','goals','goals-depart','saisons','insights-hist','last-restore-drill','habitlog','habits','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','habits-seed-v7','habits-seed-v8','objectifs-v5-espanol',
     'horizon','last-auto-backup','last-manual-backup','last-bilan-prompt','last-compaction','last-open','last-rotation','notion-url',
     'pomodial-purge','projets','report','revision','revision-fusionnee','revue','sante','sauvegarde','sessions',
@@ -4489,7 +4489,7 @@
      elles repartiraient vers le cloud. La meme remise a zero peut donc etre decidee depuis
      l'appli ou directement dans le cloud. */
   var REINIT_GARDER = ['habits','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','habits-seed-v7','habits-seed-v8','objectifs-v5-espanol','fixed-charges','fc-prix-icloud-3','budget-limits','examens','examens-heures','journees','echeances','vacances','jours-exclus','jours-sans-cours','portes','appro','notion-url','shopify-boutique',
-                       'objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','courses-plan-v3','courses-plan-v4','horizon','goals-depart','saisons','periodes-closes','gcal-ecriture','duree-bloc','dash-more','revision-fusionnee','reinit','copie-vierge'];
+                       'objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','courses-plan-v3','courses-plan-v4','ancre-dimanche-v1','shampoing-dim-v1','horizon','goals-depart','saisons','periodes-closes','gcal-ecriture','duree-bloc','dash-more','revision-fusionnee','reinit','copie-vierge'];
   var REINIT_PREFIXES_GARDER = ['pomodial-', 'coherence-ignore-'];
   function reinitGarder(cle){
     var c = cle.indexOf('batcave-') === 0 ? cle.slice(8) : cle;
@@ -6015,13 +6015,24 @@
      2-3 jours » : lundi, mercredi, vendredi, ce sont des ecarts de 2, 2 et 3 jours. Il dit
      aussi « taie d'oreiller une fois par semaine ». Pour la serviette de corps il ne dit rien :
      une fois par semaine est le choix par defaut, et il se change d'un menu. */
+  /* ===== L'ancre du cycle du dimanche =====
+     Elle etait au 13 septembre, une semaine AVANT le jour 1 du programme. Consequence :
+     la premiere seance photo tombait le 11 octobre, trois semaines apres le depart, et
+     l'image du point de depart -- la seule a laquelle on compare tout le reste de l'annee --
+     n'aurait jamais existe. Sa decision du 19 septembre : ancrer au 20, son dernier
+     dimanche avant le programme. Pesee, photos, ongles et brosse a dents partent de la. */
+  var ANCRE_DIMANCHE = '2026-09-20';
   var HABIT_SEED_V6 = [
-    {id:'core-pesee-dim', label:'Pesée, à jeun', icon:'⚖️', jours:[0], cycleSemaines:2, ancre:'2026-09-13'},
-    {id:'core-photos-dim', label:'Photos — peau et corps', icon:'📸', jours:[0], cycleSemaines:4, ancre:'2026-09-13'},
+    {id:'core-pesee-dim', label:'Pesée, à jeun', icon:'⚖️', jours:[0], cycleSemaines:2, ancre:ANCRE_DIMANCHE},
+    {id:'core-photos-dim', label:'Photos — peau et corps', icon:'📸', jours:[0], cycleSemaines:4, ancre:ANCRE_DIMANCHE},
     {id:'core-cheveux', label:'Coupe de cheveux', icon:'💈', jours:[6], cycleSemaines:3, ancre:'2026-10-03'},
     {id:'core-rasage', label:'Rasage — aisselles et parties intimes', icon:'🪒', jours:[0]},
-    {id:'core-brosse-dents', label:'Brosse à dents changée', icon:'🪥', jours:[0], cycleSemaines:12, ancre:'2026-09-13'},
-    {id:'core-shampoing', label:'Shampoing', icon:'🧴', jours:[1,2,4,6]},
+    {id:'core-brosse-dents', label:'Brosse à dents changée', icon:'🪥', jours:[0], cycleSemaines:12, ancre:ANCRE_DIMANCHE},
+    /* Les quatre jours de muscu, PLUS le dimanche : depuis le 19 septembre il court le
+       samedi et le dimanche, et le dimanche n'etait couvert par rien. C'est lui qui l'a
+       vu — ajouter le cardio sans toucher a l'hygiene laissait un jour de sueur sans
+       shampooing. Samedi etait deja la pour la muscu. */
+    {id:'core-shampoing', label:'Shampoing', icon:'🧴', jours:[0,1,2,4,6]},
     {id:'core-serviette-visage', label:'Serviette de visage changée', icon:'🧼', jours:[1,3,5]},
     {id:'core-serviette-corps', label:'Serviette de corps changée', icon:'🛁', jours:[0]},
     {id:'core-draps', label:'Draps et taies d\u2019oreiller changés', icon:'🧺', jours:[0]},
@@ -6039,7 +6050,7 @@
      Il lui suffit de voir la carte photo dans la liste du jour pour savoir que les pieds y
      passent aussi : la regle est lisible sur l'ecran, sans deuxieme habitude a cocher. */
   var HABIT_SEED_V7 = [
-    {id:'core-ongles', label:'Ongles \u2014 mains ; pieds les dimanches de photo', icon:'\u2702\ufe0f', jours:[0], cycleSemaines:2, ancre:'2026-09-13'}
+    {id:'core-ongles', label:'Ongles \u2014 mains ; pieds les dimanches de photo', icon:'\u2702\ufe0f', jours:[0], cycleSemaines:2, ancre:ANCRE_DIMANCHE}
   ];
   /* Le lot du 16 septembre : les COMPLEMENTS. Creatine et magnesium n'etaient que des puces
      du journal, visibles dans la cloture COMPLETE seulement -- la cloture express, celle
@@ -6105,6 +6116,29 @@
     HABIT_GENERATIONS.forEach(function(g){ save(g.cle, true); });
   } else {
     reconcilierHabitudes();
+  }
+  /* Le semis n'ajoute que les habitudes ABSENTES : changer l'ancre d'une graine ne touche
+     pas celles qui sont deja enregistrees chez lui. On la reecrit donc une fois, et le
+     drapeau empeche que ca recommence s'il rechange l'ancre a la main plus tard. */
+  /* Le shampooing gagne le dimanche (la course). Meme mecanique que l'ancre : le semis
+     ne touche pas une habitude deja enregistree, il faut donc reecrire ses jours une fois.
+     On ne le fait que si les jours sont EXACTEMENT les quatre d'avant : s'il les a
+     personnalises entre-temps, on ne touche a rien. */
+  if(!load('batcave-shampoing-dim-v1', false)){
+    var sh = (habitsState || []).filter(function(h){ return h && h.id === 'core-shampoing'; })[0];
+    if(sh && Array.isArray(sh.jours) && sh.jours.slice().sort().join(',') === '1,2,4,6'){
+      sh.jours = [0, 1, 2, 4, 6];
+      save('batcave-habits', habitsState);
+    }
+    saveInternal('batcave-shampoing-dim-v1', true);
+  }
+  if(!load('batcave-ancre-dimanche-v1', false)){
+    var ancreBougee = false;
+    (habitsState || []).forEach(function(h){
+      if(h && h.ancre === '2026-09-13'){ h.ancre = ANCRE_DIMANCHE; ancreBougee = true; }
+    });
+    if(ancreBougee) save('batcave-habits', habitsState);
+    saveInternal('batcave-ancre-dimanche-v1', true);
   }
   HABIT_GENERATIONS.forEach(function(g){
     MIGRATIONS_DEMARRAGE.push({cle: g.cle, rejouer: function(){

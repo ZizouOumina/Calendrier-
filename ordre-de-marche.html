@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>L'ordre de marche</title>
-<meta name="description" content="Par quoi commencer : demain heure par heure, le jour 1, et dans quel ordre lire les dix dossiers sans se noyer.">
+<meta name="description" content="Par quoi commencer : demain heure par heure, le jour 1, et dans quel ordre lire les onze dossiers sans se noyer.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@500&display=swap">
 <style>
@@ -14,18 +14,21 @@
   --accent:#0F6B5A; --accent-ink:#FFFFFF; --tagbg:#E2F1EC;
   --now:#B5651D; --nowbg:#FAEFE3;
   --c-jour:#0F6B5A; --c-mode:#5B4BC4; --c-etudes:#1F5FA8; --c-projet:#B5651D; --c-long:#8A4B7C; --c-foi:#6B3FA0;
+  --c-corps:#226E4A;
 }
 @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
   --paper:#11161C; --card:#1A2129; --ink:#E7EBEF; --ink2:#A6AFBA; --line:#2C3640;
   --accent:#5FC2A8; --accent-ink:#0B1A16; --tagbg:#12302A;
   --now:#F0B37A; --nowbg:#2A1E12;
   --c-jour:#7FD1B8; --c-mode:#B3A7F5; --c-etudes:#8DB8F0; --c-projet:#F0B37A; --c-long:#E8A6D2; --c-foi:#C4A2F5;
+  --c-corps:#6FD19B;
 }}
 :root[data-theme="dark"]{
   --paper:#11161C; --card:#1A2129; --ink:#E7EBEF; --ink2:#A6AFBA; --line:#2C3640;
   --accent:#5FC2A8; --accent-ink:#0B1A16; --tagbg:#12302A;
   --now:#F0B37A; --nowbg:#2A1E12;
   --c-jour:#7FD1B8; --c-mode:#B3A7F5; --c-etudes:#8DB8F0; --c-projet:#F0B37A; --c-long:#E8A6D2; --c-foi:#C4A2F5;
+  --c-corps:#6FD19B;
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -83,6 +86,7 @@ ul.heures li.off{opacity:.5}
 .dos .q b{color:var(--ink);font-weight:600}
 .k-jour{--k:var(--c-jour)} .k-mode{--k:var(--c-mode)} .k-etudes{--k:var(--c-etudes)}
 .k-projet{--k:var(--c-projet)} .k-long{--k:var(--c-long)} .k-foi{--k:var(--c-foi)}
+.k-corps{--k:var(--c-corps)}
 
 footer{margin-top:60px;color:var(--ink2);font-size:14px;border-top:1px solid var(--line);padding-top:16px;max-width:72ch}
 @media (max-width:700px){ .two{grid-template-columns:1fr} ul.heures li{grid-template-columns:56px 1fr;gap:10px} }
@@ -96,14 +100,14 @@ footer{margin-top:60px;color:var(--ink2);font-size:14px;border-top:1px solid var
 <header class="top">
   <div class="brand">Batcave · v1.0 · 19 septembre 2026, au soir</div>
   <h1>L'ordre de marche</h1>
-  <p class="sub">Dix dossiers, et une seule question : par quoi je commence ? Cette page y répond en trois temps — demain heure par heure, le jour 1, puis l'ordre dans lequel lire le reste sans jamais y passer plus de vingt minutes d'affilée.</p>
+  <p class="sub">Onze dossiers, et une seule question : par quoi je commence ? Cette page y répond en trois temps — demain heure par heure, le jour 1, puis l'ordre dans lequel lire le reste sans jamais y passer plus de vingt minutes d'affilée.</p>
 </header>
 
 <nav class="pills">
   <a href="#or">La règle d'or</a>
   <a href="#demain">Demain</a>
   <a href="#jour1">Lundi, jour 1</a>
-  <a href="#dossiers">Les dix dossiers</a>
+  <a href="#dossiers">Les dossiers</a>
   <a href="#quand">Quand les lire</a>
   <a href="#six">Six dimanches</a>
   <a href="#jamais">Ce qu'il ne faut pas faire</a>
@@ -113,7 +117,7 @@ footer{margin-top:60px;color:var(--ink2);font-size:14px;border-top:1px solid var
 
 <div class="gros">
   <h4>Tu n'ouvres qu'une seule chose chaque matin : la Batcave.</h4>
-  <p>Les neuf autres dossiers ne sont <b>pas</b> des devoirs. Ce sont des références — on les consulte quand une question se pose, et on en lit un par semaine, le dimanche. Si tu te réveilles demain avec l'idée de « tout lire », tu auras perdu ta journée et tu n'en retiendras rien.</p>
+  <p>Les dix autres dossiers ne sont <b>pas</b> des devoirs. Ce sont des références — on les consulte quand une question se pose, et on en lit un par semaine, le dimanche. Si tu te réveilles demain avec l'idée de « tout lire », tu auras perdu ta journée et tu n'en retiendras rien.</p>
   <p style="margin-top:10px">La Batcave te dit quoi faire à chaque heure. C'est tout ce dont tu as besoin pour démarrer.</p>
 </div>
 
@@ -156,9 +160,9 @@ footer{margin-top:60px;color:var(--ink2);font-size:14px;border-top:1px solid var
   <li class="clef"><span class="h">21:10</span><span><b>La clôture du soir</b><span class="w">Soixante secondes. C'est là que tu saisis ton poids de départ, ton sommeil, et que tu coches ce qui a été fait. Si tu sautes la clôture, la Batcave ne sait rien de ta journée — et tout le suivi repose dessus.</span></span></li>
 </ul>
 
-<h2 id="dossiers">Les dix dossiers, et à quoi chacun sert</h2>
+<h2 id="dossiers">Les onze dossiers, et à quoi chacun sert</h2>
 
-<p>Un seul se consulte tous les jours. Trois se lisent une fois cette semaine. Les six autres attendent leur moment — et ce moment est écrit dans le tableau plus bas.</p>
+<p>Un seul se consulte tous les jours. Trois se lisent une fois cette semaine. Les sept autres attendent leur moment — et ce moment est écrit dans le tableau plus bas.</p>
 
 <div class="dossiers">
 
@@ -225,8 +229,15 @@ footer{margin-top:60px;color:var(--ink2);font-size:14px;border-top:1px solid var
     <div class="q"><b>Quand :</b> un dimanche où tu es fatigué et où tu te demandes pourquoi tu fais tout ça. C'est sa fonction.</div>
   </div>
 
-  <div class="dos k-foi">
+  <div class="dos k-corps">
     <div class="n">Nouveau · 10</div>
+    <h4><a href="https://claude.ai/artifact/PHJRsB1yY5ZZps4aTJc8tu">Cinq minutes d'étirements</a></h4>
+    <p>Le contenu derrière la case « Étirements faits », qui était vide. Trois formats — 60 s entre deux blocs, 5 min, 10 min — et dix positions choisies pour ce que ton programme serre.</p>
+    <div class="q"><b>Quand :</b> ce n'est pas une lecture, c'est un geste. Ouvre-la la première fois, retiens les cinq positions, et tu n'auras plus besoin d'y revenir.</div>
+  </div>
+
+  <div class="dos k-foi">
+    <div class="n">Nouveau · 11</div>
     <h4><a href="https://claude.ai/artifact/2NH4rrXsqpb7RL8XpV46qC">Le tajwid, méthode</a></h4>
     <p>Comment travailler ta récitation : le professeur d'abord, les lettres avant les règles, la boucle d'enregistrement, et un plan sur six mois.</p>
     <div class="q"><b>Quand :</b> vendredi, avant le Jumu'ah — la page te dit quelle question poser à l'imam.</div>
@@ -270,7 +281,7 @@ footer{margin-top:60px;color:var(--ink2);font-size:14px;border-top:1px solid var
 <tr><td><b>25 oct.</b></td><td>Ton empire dentaire</td><td>Un mois de fait. Le bon moment pour relever la tête et regarder loin.</td></tr>
 </table></div>
 
-<div class="note"><b>Le tajwid et le Dossier Español ne sont pas dans ce tableau</b>, et c'est normal : ils ne se lisent pas le dimanche. L'Español se consulte pendant tes blocs Español, qui sont déjà dans ta grille. Le tajwid se lit un vendredi, avant la mosquée.</div>
+<div class="note"><b>Trois dossiers ne sont pas dans ce tableau</b>, et c'est normal : ils ne se lisent pas le dimanche. L'<b>Español</b> se consulte pendant tes blocs Español, qui sont déjà dans ta grille. Le <b>tajwid</b> se lit un vendredi, avant la mosquée. Les <b>étirements</b> ne se lisent pas du tout — on les fait, une fois la page parcourue.</div>
 
 <h2 id="jamais">Ce qu'il ne faut pas faire</h2>
 
