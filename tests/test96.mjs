@@ -339,6 +339,23 @@ console.log('\n== 304) Le compteur de la semaine ==');
   await ctx.close();
 }
 
+console.log('\n== 304 bis) Le jour 1 sans faux échec ==');
+{
+  /* Le dimanche 20 septembre, la semaine écoulée contient le mercredi 16 et le samedi 19 :
+     trois créneaux, mais AVANT le programme. Sans garde, la toute première revue du
+     dimanche aurait ouvert sur « 0 sujet écrit sur 3 créneaux, 3 sans trace ». */
+  const { ctx, fr } = await ouvrir('2026-09-20T20:30:00+02:00');
+  const v = await fr.evaluate(() => ({
+    bil: window.__bcBilanAppro(['2026-09-14','2026-09-15','2026-09-16','2026-09-17','2026-09-18','2026-09-19','2026-09-20'], 20*60),
+    grilleMer: window.__bcCreneauxAppro('2026-09-16').length,
+    constats: window.__bcConstats()
+  }));
+  ok(v.grilleMer === 1, 'la grille du 16 porte pourtant bien un créneau (' + v.grilleMer + ')');
+  ok(v.bil.creneaux === 0, 'mais rien avant le jour 1 n\'est compté (' + v.bil.creneaux + ')');
+  ok(!v.constats.some(c => /Approfondir/.test(c)), 'et la revue du dimanche 20 ne parle pas d\'approfondissements manqués');
+  await ctx.close();
+}
+
 console.log('\n== 305) Le tableau de bord porte les rappels ==');
 {
   const seed = {'batcave-appro': {seq:1, liste:[

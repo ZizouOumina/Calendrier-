@@ -12568,6 +12568,11 @@
     var creneaux = 0, saisis = 0, notes = [];
     (dates || []).forEach(function(d){
       if(!d || d > todayISO) return;
+      /* Rien avant le jour 1. Le dimanche 20 septembre, la semaine ecoulee contient un
+         mercredi et un samedi qui precedent le programme : sans cette garde, la premiere
+         revue du dimanche aurait accuse « 0 sujet ecrit sur 3 creneaux, 3 sans trace »
+         pour des seances qui n'avaient pas lieu d'exister. */
+      if(d < PROGRAMME_DEBUT) return;
       creneaux += creneauxApproDuJour(d, nowMin).length;
       approState.liste.forEach(function(e){
         if(!e) return;

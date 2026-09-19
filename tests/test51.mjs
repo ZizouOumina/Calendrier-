@@ -107,7 +107,12 @@ console.log('\n== 163) Dimanche soir : la revue de la semaine dans la clôture =
   ok(await visible(fr, 'cloture-overlay') === true, 'clôture proposée dimanche 20:30 (coucher 21:00 − 90 min)');
   ok(await visible(fr, 'cl-revue') === true, 'la revue de la semaine est dedans');
   const constats = await fr.evaluate(() => [...document.querySelectorAll('#cl-constats li')].map(l => l.innerText));
-  ok(constats.length === 3 && /objectif/i.test(constats[0]) && /Fidélité|bloc/.test(constats[1]) && /Sommeil/.test(constats[2]), '3 constats calculés : ' + constats.map(c => c.slice(0, 40)).join(' | '));
+  /* On verifie les FAMILLES presentes, pas leur nombre : la revue en a gagne une le
+     18 septembre (Approfondir) et en gagnera d'autres. Un compte fige transformait chaque
+     ajout legitime en echec, sans rien dire de ce qui manquait vraiment. */
+  ok(/objectif/i.test(constats[0]) && /Fidélité|bloc/.test(constats[1]) && constats.some(c => /Sommeil/.test(c)),
+     constats.length + ' constats calculés, objectifs puis fidélité puis sommeil : ' + constats.map(c => c.slice(0, 40)).join(' | '));
+  ok(constats.some(c => /Approfondir/.test(c)), 'et la ligne Approfondir en fait partie');
   await fr.evaluate(() => {
     document.getElementById('cl-rv-marche').value = 'Les blocs du matin';
     document.getElementById('cl-rv-coince').value = 'Le soir après les cours';
@@ -116,7 +121,7 @@ console.log('\n== 163) Dimanche soir : la revue de la semaine dans la clôture =
   });
   await page.waitForTimeout(200);
   const rv = await local(fr, 'batcave-revue');
-  ok(Array.isArray(rv) && rv.length === 1 && rv[0].date === '2026-08-31' && rv[0].marche === 'Les blocs du matin' && Array.isArray(rv[0].constats) && rv[0].constats.length === 3, 'revue enregistrée pour la semaine du 7 sept. avec ses 3 constats');
+  ok(Array.isArray(rv) && rv.length === 1 && rv[0].date === '2026-08-31' && rv[0].marche === 'Les blocs du matin' && Array.isArray(rv[0].constats) && rv[0].constats.length === constats.length, 'revue enregistrée pour la semaine du 7 sept. avec ses ' + constats.length + ' constats');
   const bilan = await fr.evaluate(() => { document.querySelector('.nav-btn[data-page="bilan"]').click(); return document.getElementById('rv-list').innerText; });
   ok(/Les blocs du matin/.test(bilan) && /Fidélité|bloc/.test(bilan), 'la page Bilan la montre avec ses constats');
   const prompt = await local(fr, 'batcave-last-bilan-prompt');
@@ -128,8 +133,14 @@ console.log('\n== 164) En semaine, pas de revue dans la clôture ; Bilan garde s
 {
   const { ctx, fr } = await ouvrir('2026-09-02T20:30:00+02:00', {'batcave-last-open':'2026-09-02'});
   ok(await visible(fr, 'cl-revue') === false, 'mercredi : pas de bloc revue');
-  const n = await fr.evaluate(() => { document.querySelector('.nav-btn[data-page="bilan"]').click(); return document.querySelectorAll('#rv-constats li').length; });
-  ok(n === 3, 'la page Bilan affiche les 3 constats du moment');
+  /* Le Bilan doit montrer EXACTEMENT ce que constatsSemaine() calcule a cet instant : c'est
+     la propriete qui compte, pas un nombre fige que chaque nouvelle ligne ferait mentir. */
+  const v = await fr.evaluate(() => {
+    document.querySelector('.nav-btn[data-page="bilan"]').click();
+    return { rendus: document.querySelectorAll('#rv-constats li').length, calcules: window.__bcConstats().length };
+  });
+  ok(v.rendus >= 3 && v.rendus === v.calcules,
+     'la page Bilan affiche tous les constats du moment, ni plus ni moins (' + v.rendus + '/' + v.calcules + ')');
   const d = await fr.evaluate(() => document.getElementById('rv-date').value);
   ok(d === '2026-08-31', 'la date de revue est prérèglée au lundi de la semaine (' + d + ')');
   await ctx.close();
