@@ -3046,6 +3046,10 @@
     <div class="field-grid" style="margin-bottom:12px;">
       <div class="field-row"><label for="cl-sommeil">Sommeil de la nuit dernière (h)</label><input type="number" id="cl-sommeil" min="0" max="16" step="0.5" inputmode="decimal" placeholder="ex : 7,5"></div>
       <div class="field-row" data-cl-plus><label for="cl-poids">Poids ce matin (kg)</label><input type="number" id="cl-poids" min="30" max="200" step="0.1" inputmode="decimal" placeholder="ex : 64,2"></div>
+      <!-- Les pas se lisent dans l'appli Santé du telephone, qui les compte toute seule.
+           Le chiffre coche l'habitude « Marche » a partir de la cible : une seule saisie,
+           pas deux gestes qui disent la meme chose. -->
+      <div class="field-row" data-cl-plus><label for="cl-pas">Pas du jour <span class="sub-note">(appli Santé)</span></label><input type="number" id="cl-pas" min="0" max="80000" step="100" inputmode="numeric" placeholder="ex : 8 400"></div>
     </div>
     <div class="field-row" style="margin-bottom:12px;"><label>Eau bue aujourd'hui</label>
       <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;"><button class="btn" type="button" id="cl-eau-moins">−250 ml</button><b id="cl-eau" style="min-width:64px; text-align:center; color:var(--cyan-bright); font-family:var(--font-display); font-size:22px;">0,0 L</b><button class="btn" type="button" id="cl-eau-plus">+250 ml</button><span class="sub-note" id="cl-eau-note"></span></div></div>
@@ -6375,6 +6379,21 @@
      taux ne regardent que les samedis, une date de dimanche y serait invisible. */
   function dateCibleHabit(id){
     return localISO(occurrenceAvant(habitParId(id), new Date(now)));
+  }
+  /* ===== Les pas decident de la coche =====
+     PAS_CIBLE est la meme valeur que celle ecrite dans le libelle de l'habitude : on la lit
+     dans le libelle plutot que de l'ecrire deux fois, pour que changer la cible d'un cote
+     ne laisse pas l'autre en arriere -- c'est exactement le genre de demi-cablage qu'on
+     passe la soiree a traquer. */
+  var PAS_CIBLE_DEFAUT = 8000;
+  function pasCible(){
+    var h = (habitsState || []).filter(function(x){ return x && x.id === 'core-marche'; })[0];
+    var m = h && String(h.label).replace(/[\s\u202f\u00a0]/g, '').match(/(\d{3,6})pas/);
+    return m ? Number(m[1]) : PAS_CIBLE_DEFAUT;
+  }
+  function accorderHabitMarche(pas){
+    var fait = habitDoneToday('core-marche'), doitEtre = Number(pas) >= pasCible();
+    if(fait !== doitEtre) toggleHabit('core-marche');
   }
   function habitDoneToday(id){ return (habitLog[id]||[]).indexOf(dateCibleHabit(id)) > -1; }
   var HABIT_COURSES = 'core-courses';
@@ -12581,7 +12600,15 @@
       waterL: waterSum/n,
       kcalPct: Math.round(kcalPctSum/n),
       sportPct: sportDays ? Math.round(sportPctSum/sportDays) : 0,
-      cardioMin: cardioMinutesSur(days)
+      cardioMin: cardioMinutesSur(days),
+      pasMoy: (function(){
+        var t = 0, n = 0;
+        validDays.forEach(function(d){
+          var j = load('batcave-journal-' + d, null), p = j && Number(j.pas);
+          if(p > 0){ t += p; n++; }
+        });
+        return n ? Math.round(t / n) : 0;
+      })()
     };
   }
   function renderBilan(){
@@ -12609,7 +12636,10 @@
       /* Le cardio a SA ligne, en minutes : le melanger aux seances rendrait les deux
          illisibles, et les cibles trimestrielles de seances n'ont jamais compte les
          sorties de course. */
-      {icon:'🏃', label:'Cardio', cle:'cardioMin', cur:cur.cardioMin, prev:prev.cardioMin, unit:'min', higher:true}
+      {icon:'🏃', label:'Cardio', cle:'cardioMin', cur:cur.cardioMin, prev:prev.cardioMin, unit:'min', higher:true},
+      /* Les pas sont la mesure de ce qu'il bouge HORS entrainement : deux sorties de
+         30 min ne rachetent pas huit heures assis, et c'est la seule ligne qui le dit. */
+      {icon:'🚶', label:'Pas / jour', cle:'pasMoy', cur:cur.pasMoy, prev:prev.pasMoy, unit:'', higher:true}
     ];
     renderPrevuRealise(cur);
     grid.innerHTML = rows.map(function(r){
@@ -12620,7 +12650,15 @@
       /* Les heures s'écrivent « 5 h 30 » (l'unité est dans le texte) ; le reste garde son
          unité à part, en notation française. */
       var heures = r.unit === 'h';
-      var fmt = function(v){ return heures ? fmtHeures(v) : (r.unit==='€' || r.unit==='%' ? v.toFixed(0) : v.toFixed(1).replace('.', ',')); };
+      /* Les pas et les minutes sont des ENTIERS : « 8000,0 min » et « 8000,0 pas » se
+         lisent comme une erreur de calcul. Les pas prennent en plus l'espace des
+         milliers, sinon le chiffre est illisible d'un coup d'oeil. */
+      var fmt = function(v){
+        if(heures) return fmtHeures(v);
+        if(r.cle === 'pasMoy') return Math.round(v).toLocaleString('fr-FR');
+        if(r.unit === '€' || r.unit === '%' || r.unit === 'min') return v.toFixed(0);
+        return v.toFixed(1).replace('.', ',');
+      };
       var u = heures ? '' : r.unit;
       var diffTxt = (heures ? (diff >= 0 ? '+' : '') + fmtHeures(Math.abs(diff)) : (diff>=0?'+':'') + fmt(diff)) + u;
       var courbe = '';
@@ -14171,7 +14209,7 @@
      dues dentaire ») : un evenement se reconnait a la partie avant le separateur. */
   function titreBaseGcal(s){ return String(s || '').split(' · ')[0].trim(); }
   try{ window.__bcTitreBase = titreBaseGcal; window.__bcConsigne = consigneBloc; window.__bcInsights = buildInsights; window.__bcBlocs = blocsDuPlanning; window.__bcCle = cleJournee; window.__bcJours = joursSuivis; window.__bcInsightsVu = function(){ return insightsVu; }; window.__bcLogSession = logSession; window.__bcPeriode = periodeGrille; window.__bcGrille = grilleDe; window.__bcMinutesEspanol = minutesEspanol; window.__bcCibleEspanol = cibleEspanolJour; window.__bcTypeBloc = typeBlocPlan; window.__bcPlanRotation = planRotation; window.__bcHabitJours = habitJours; window.__bcProgrammeDebut = PROGRAMME_DEBUT; window.__bcJournees = function(){ return journeesState; }; window.__bcJourneeDe = journeeDe; window.__bcPartiels = periodePartiels; window.__bcSessionsPartiels = sessionsPartiels; window.__bcBlocSansPomodoro = blocSansPomodoro; window.__bcRappels = blocsARappeler; window.__bcJoursGcal = joursAPousser; window.__bcExamens = function(){ return examensState; }; window.__bcPrevu = minutesPrevuesJour; window.__bcCibleGrille = cibleDepuisGrille; window.__bcPartEcoulee = partEcoulee; window.__bcVacances = function(){ return vacancesState; }; window.__bcJourExclu = jourExclu; window.__bcObjectifs = function(){ return objectifsState.liste; }; window.__bcComparer = comparerObjectif; window.__bcAcquise = habitAcquise; window.__bcAcquises = habitsAcquises; window.__bcSansPomodoro = blocsSansPomodoroDuJour; window.__bcTonPriorite = tonPriorite; window.__bcPrioHist = function(){ return insightsHist; }; window.__bcCloturerSaison = cloturerSaison; window.__bcPeriodesCloses = function(){ return periodesClosesState; }; window.__bcCloturerPeriodes = cloturerPeriodesEchues; window.__bcPeriodesObj = periodesObjectifs; window.__bcSaisons = function(){ return saisonsState; }; window.__bcTrimestres = function(){ return TRIMESTRES; }; window.__bcMois = moisListe; window.__bcAnki = function(){ return ankiState; }; window.__bcLireAnki = lireAnki; window.__bcBesoins = besoinsPartiels; window.__bcMatiereBloc = matierePourBloc; window.__bcPortes = etatPortes; window.__bcEpreuve = epreuvePassages; window.__bcEpreuveProj = epreuveProjection; window.__bcPortesEtat = function(){ return portesEtat; }; window.__bcConvertirPorte = convertirPorte; window.__bcNoterCours = noterCours; window.__bcGrilleBase = grilleBase; window.__bcSemestre = semestreDe; window.__bcSansCours = sansCoursLe; window.__bcCoucher = heureCoucher; window.__bcLever = heureLever; window.__bcSommeilCible = objectifSommeilPour; window.__bcMarquerSansCours = marquerSansCours; window.__bcJoursSansCours = function(){ return joursSansCoursState; }; window.__bcSeuilRevision = seuilUrgenceRevision; window.__bcCibleJour = cibleJourMinutes; window.__bcReinitGarder = reinitGarder;
-       window.__bcTypeSport = typeSportDe; window.__bcCardio = function(){ return cardioState; }; window.__bcSortiesCardio = sortiesCardio; window.__bcNoterCardio = noterCardio; window.__bcCardioMinutes = cardioMinutesSur; window.__bcSerieCardio = serieCardio; window.__bcSommeilCible = objectifSommeilPour; window.__bcTestAnki = testAnkiDu; window.__bcRapport = function(){
+       window.__bcTypeSport = typeSportDe; window.__bcCardio = function(){ return cardioState; }; window.__bcPasCible = pasCible; window.__bcAccorderMarche = accorderHabitMarche; window.__bcSortiesCardio = sortiesCardio; window.__bcNoterCardio = noterCardio; window.__bcCardioMinutes = cardioMinutesSur; window.__bcSerieCardio = serieCardio; window.__bcSommeilCible = objectifSommeilPour; window.__bcTestAnki = testAnkiDu; window.__bcRapport = function(){
          var mois = moisListe().filter(function(m){ return todayISO >= m.debut && todayISO <= m.fin; })[0];
          var objs = mois ? objectifsState.liste.filter(function(o){ return o.periode === 'mois' && o.pid === mois.id; }) : [];
          var p = periodeGrille(todayISO), hist = {};
@@ -16377,6 +16415,7 @@
     document.getElementById('cloture-date').textContent = dateLongue(new Date()) + (journalState.cloture ? ' · déjà clôturée à ' + journalState.cloture + ' — tu peux compléter.' : ' · tout est facultatif, le bouton suffit.');
     document.getElementById('cl-sommeil').value = journalState.sommeil || '';
     document.getElementById('cl-poids').value = journalState.poids || '';
+    var chPas = document.getElementById('cl-pas'); if(chPas) chPas.value = journalState.pas || '';
     clEau = Number(journalState.water) || 0; majClEau();
     clHumeur = journalState.mood; renderClHumeur();
     document.getElementById('cl-coran').value = journalState.coran || '';
@@ -16435,6 +16474,14 @@
     var som = document.getElementById('cl-sommeil').value, poids = document.getElementById('cl-poids').value;
     if(som !== '') journalState.sommeil = som;
     if(poids !== '') journalState.poids = poids;
+    /* Les pas : un seul geste. Le chiffre est enregistre ET il coche l'habitude « Marche »
+       s'il atteint la cible -- sinon il la decoche. Sans ca, il saisirait 9 000 pas et
+       verrait quand meme sa case grise : deux ecrans qui se contredisent. */
+    var chPas2 = document.getElementById('cl-pas'), pas = chPas2 ? chPas2.value : '';
+    if(pas !== ''){
+      journalState.pas = Number(pas) || 0;
+      accorderHabitMarche(journalState.pas);
+    }
     journalState.water = clEau;
     journalState.mood = clHumeur;
     var cor = document.getElementById('cl-coran').value, du = document.getElementById('cl-duaa').value.trim();

@@ -160,6 +160,63 @@ console.log('\n== 335) La marche a enfin une cible ==');
   await ctx.close();
 }
 
+console.log('\n== 336) Les pas se saisissent, et ils cochent la case ==');
+{
+  /* Sa demande : « je mettrai mes pas de la journee selon mon appli sante ». Donc un
+     CHIFFRE, pas une case. Et le chiffre doit decider de la case, sinon il saisit 9 200
+     pas et voit quand meme sa case grise -- deux ecrans qui se contredisent. */
+  const { ctx, page, fr } = await ouvrir('2026-09-23T21:20:00+02:00');
+  ok(await fr.evaluate(() => !!document.getElementById('cl-pas')),
+     'la clôture du soir porte un champ « Pas du jour »');
+  const cible = await fr.evaluate(() => window.__bcPasCible());
+  ok(cible === 8000, 'la cible est lue DANS le libellé de l\'habitude, pas écrite deux fois (' + cible + ')');
+
+  const coche = () => fr.evaluate(() => ((JSON.parse(localStorage.getItem('batcave-habitlog')) || {})['core-marche'] || []).indexOf('2026-09-23') > -1);
+  ok(!(await coche()), 'au départ la case Marche n\'est pas cochée');
+  await fr.evaluate(() => window.__bcAccorderMarche(9200));
+  await page.waitForTimeout(200);
+  ok(await coche(), '9 200 pas → la case se coche toute seule');
+  await fr.evaluate(() => window.__bcAccorderMarche(4000));
+  await page.waitForTimeout(200);
+  ok(!(await coche()), 'corrigé à 4 000 → elle se décoche : le chiffre fait foi');
+  /* Et elle ne doit pas basculer deux fois si on resaisit la meme valeur. */
+  await fr.evaluate(() => { window.__bcAccorderMarche(9000); window.__bcAccorderMarche(9000); });
+  await page.waitForTimeout(200);
+  ok(await coche(), 'saisir deux fois la même valeur ne fait pas rebasculer la case');
+  await ctx.close();
+}
+{
+  /* La cible suit le libelle : s'il la passe a 12 000, le seuil suit. C'est ce qui evite
+     qu'un chiffre vive a deux endroits. */
+  const sien = {'batcave-habits': [{id:'core-marche', label:'Marche — 12 000 pas', icon:'\ud83d\udeb6'}],
+    'batcave-marche-cible-v1': true,
+    'batcave-habits-seed-v2':true,'batcave-habits-seed-v3':true,'batcave-habits-seed-v4':true,
+    'batcave-habits-seed-v5':true,'batcave-habits-seed-v6':true,'batcave-habits-seed-v7':true,
+    'batcave-habits-seed-v8':true};
+  const { ctx, fr } = await ouvrir('2026-09-23T21:20:00+02:00', sien);
+  const c = await fr.evaluate(() => window.__bcPasCible());
+  ok(c === 12000, 'libellé à 12 000 → le seuil vaut 12 000 (' + c + ')');
+  await ctx.close();
+}
+{
+  /* La ligne du Bilan : une moyenne par jour, sur les jours qui portent un chiffre. */
+  const seed = {
+    'batcave-journal-2026-09-21': {pas: 9000}, 'batcave-journal-2026-09-22': {pas: 7000},
+    'batcave-journal-2026-09-23': {pas: 8000}
+  };
+  const { ctx, page, fr } = await ouvrir('2026-09-23T21:20:00+02:00', seed);
+  await fr.evaluate(() => { document.querySelectorAll('.overlay').forEach(o => o.hidden = true);
+                            document.querySelector('.nav-btn[data-page="bilan"]').click(); });
+  await page.waitForTimeout(500);
+  const t = await fr.evaluate(() => document.getElementById('bilan-grid').innerText);
+  ok(/Pas \/ jour/.test(t), 'le Bilan porte une ligne « Pas / jour »');
+  const ligne = (t.match(/Pas \/ jour[^]{0,40}/) || [''])[0].replace(/\n/g, ' ');
+  ok(/8[\s\u202f\u00a0]000/.test(ligne), 'avec la moyenne des trois jours saisis, 8 000 (' + ligne + ')');
+  /* Un nombre de pas n'a pas de decimale : « 8000,0 » se lit comme une erreur de calcul. */
+  ok(!/8000,0/.test(ligne), 'et sans décimale — un nombre de pas est un entier');
+  await ctx.close();
+}
+
 await b.close();
 console.log(err ? '\n' + err + ' ECHEC(S)' : '\nTOUT EST VERT');
 process.exit(err ? 1 : 0);
