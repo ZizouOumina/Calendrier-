@@ -3014,7 +3014,7 @@
          chose casse en novembre, on veut revenir au jour 1, pas a un etat intermediaire. -->
     <div style="margin-top:18px; padding-top:14px; border-top:1px solid var(--border-soft);">
       <p style="font-weight:600; color:var(--ink); font-size:13.5px; margin-bottom:6px;">🌱 Copie vierge</p>
-      <p class="sub-note" style="line-height:1.6; margin-bottom:10px;">L'état exact du premier jour, gardé de côté : configuration, objectifs calés sur le jour 1, habitudes d'origine. À prendre le matin du jour 1 (samedi 19 septembre), <b>avant la première saisie</b>. « Remettre à zéro » garde la configuration mais pas ce point de départ ; ici, tu reviens au jour 1 exactement.</p>
+      <p class="sub-note" style="line-height:1.6; margin-bottom:10px;">L'état exact du premier jour, gardé de côté : configuration, objectifs calés sur le jour 1, habitudes d'origine. À prendre le matin du jour 1 (lundi 21 septembre), <b>avant la première saisie</b>. « Remettre à zéro » garde la configuration mais pas ce point de départ ; ici, tu reviens au jour 1 exactement.</p>
       <p class="sub-note" id="vierge-etat" style="margin-bottom:10px;">—</p>
       <div class="card-actions">
         <button class="btn" id="vierge-prendre" type="button">Prendre la copie vierge maintenant</button>
@@ -3449,7 +3449,7 @@
      vestige : une fonctionnalite retiree (batcave-matieres) ou un essai. Elle prend de la
      place dans le quota de 5000 documents et embrouille les sauvegardes, sans que rien ne
      la lise jamais. On la signale ; la suppression reste ton geste. */
-  var CLES_CONNUES = ['addictions','budget-limits','business','coran','courses','dash-more','duaas','duree-bloc','sport-log','objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','courses-plan-v3','kcal-ajustement','gcal-ecriture','reinit','fc-migration-v1','charge','shopify-boutique','journees','examens-heures','vacances','jours-exclus',
+  var CLES_CONNUES = ['addictions','budget-limits','business','coran','courses','dash-more','duaas','duree-bloc','sport-log','objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','courses-plan-v3','courses-plan-v4','kcal-ajustement','gcal-ecriture','reinit','fc-migration-v1','charge','shopify-boutique','journees','examens-heures','vacances','jours-exclus',
     'espagnol','examens','cours-suivi','portes','periodes-closes','fc-prix-icloud-3','fixed-charges','goals','goals-depart','saisons','insights-hist','last-restore-drill','habitlog','habits','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','habits-seed-v7','habits-seed-v8','objectifs-v5-espanol',
     'horizon','last-auto-backup','last-manual-backup','last-bilan-prompt','last-compaction','last-open','last-rotation','notion-url',
     'pomodial-purge','projets','report','revision','revision-fusionnee','revue','sante','sauvegarde','sessions',
@@ -4540,7 +4540,7 @@
      elles repartiraient vers le cloud. La meme remise a zero peut donc etre decidee depuis
      l'appli ou directement dans le cloud. */
   var REINIT_GARDER = ['habits','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','habits-seed-v7','habits-seed-v8','objectifs-v5-espanol','fixed-charges','fc-prix-icloud-3','budget-limits','examens','examens-heures','journees','echeances','vacances','jours-exclus','jours-sans-cours','portes','appro','notion-url','shopify-boutique',
-                       'objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','courses-plan-v3','horizon','goals-depart','saisons','periodes-closes','gcal-ecriture','duree-bloc','dash-more','revision-fusionnee','reinit','copie-vierge'];
+                       'objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','courses-plan-v3','courses-plan-v4','horizon','goals-depart','saisons','periodes-closes','gcal-ecriture','duree-bloc','dash-more','revision-fusionnee','reinit','copie-vierge'];
   var REINIT_PREFIXES_GARDER = ['pomodial-', 'coherence-ignore-'];
   function reinitGarder(cle){
     var c = cle.indexOf('batcave-') === 0 ? cle.slice(8) : cle;
@@ -7285,7 +7285,10 @@
   function boucleKcal(){
     var pts = weightHistory().filter(function(p){ return p.date <= todayISO; });
     var depuis = isoDecale(todayISO, -(KCAL_FENETRE_J - 1));
-    var utile = isoDecale(ANCRE_COURSES, KCAL_STABILISATION_J);
+    /* Les trois semaines de stabilisation courent depuis le jour ou il a VRAIMENT de quoi
+       manger le plan, c'est-a-dire ses premieres courses -- pas depuis le battement du
+       rythme hebdomadaire, qui n'est qu'une date de calendrier. */
+    var utile = isoDecale(PREMIER_JOUR_COURSES, KCAL_STABILISATION_J);
     if(utile > depuis) depuis = utile;
     pts = pts.filter(function(p){ return p.date >= depuis; });
     var g = GOALS_NUMERIC.filter(function(x){ return x.id === 'poids'; })[0];
@@ -7467,29 +7470,28 @@
          extenseurs), curl des poignets samedi (flechisseurs, l'epaisseur). Les deux se
          font avec une charge en main : ils passent aussi bien au parc qu'a la maison le
          soir si le creneau du matin deborde -- meme regle que le cou. */
-  /* Le programme demarre le DIMANCHE 20 septembre 2026. Le plan du semestre (un tema
-     d'avance par jour, blancs, questions ouvertes, exercices de calcul) a remplace la
-     grille de rentree le 16 au soir ; du jeudi 17 au samedi 19, ce sont ses journees de
-     mise en place : appartement, sommeil a remettre d'aplomb, Anki, les pages, sans blocs
-     a tenir. Du 14 au 19, aucun bloc n'est du, aucune journee n'est manquee.
+  /* Le programme demarre le LUNDI 21 septembre 2026. Le plan du semestre (un tema d'avance
+     par jour, blancs, questions ouvertes, exercices de calcul) a remplace la grille de
+     rentree le 16 au soir ; du jeudi 17 au dimanche 20, ce sont ses journees de mise en
+     place : appartement, sommeil a remettre d'aplomb, Anki, les pages, sans blocs a tenir.
+     Du 14 au 20, aucun bloc n'est du, aucune journee n'est manquee.
 
-     Le jour 1 est le DIMANCHE 20 septembre (sa decision du 18 au soir : il commence la
-     Batcave le dimanche). La semaine de programme court donc du dimanche au samedi
-     (S1 : 20-26 septembre), ce qui la fait coincider avec la semaine calendaire. Le
-     dimanche est un jour off de sport : premierJourSport() avance la seance de reference
-     -- et les retests des semaines 5, 10 et 15 -- au lundi 21, premier jour non-Off ; il
-     le deduit de la date, rien n'est ecrit en dur. Le premier samedi de courses est le 19
-     (ANCRE_COURSES) : c'est ce matin-la, et pas le jour 1, que le plan du jour reclame
-     l'inventaire du placard et le ticket de caisse.
+     Le jour 1 a bouge deux fois. Le 18 au soir il avait choisi le dimanche 20 ; le 19 il
+     l'a repousse au LUNDI 21, parce que son sommeil n'est pas encore cale et qu'ouvrir la
+     Batcave sur une nuit ratee la fait mentir des le premier chiffre. La semaine de
+     programme court donc du lundi au dimanche (S1 : 21-27 septembre). Le lundi n'est pas
+     off au sport : premierJourSport() rend le 21 lui-meme, et la seance de reference est
+     celle du jour 1 ; les retests des semaines 5, 10 et 15 tombent les lundis 19 octobre,
+     23 novembre et 28 decembre. Rien n'est ecrit en dur, tout se deduit de la date.
 
-     19 septembre, sa decision : le jour 1 passe du dimanche 20 au LUNDI 21, parce que son
-     sommeil n'est pas encore cale et qu'ouvrir la Batcave sur une nuit ratee la fait
-     mentir des le premier chiffre. Le lundi n'est pas off au sport : premierJourSport()
-     rend donc le 21 lui-meme, et la seance de reference est celle du jour 1. Les retests
-     des semaines 5, 10 et 15 ne bougent pas (lundis 19 octobre, 23 novembre, 28 decembre)
-     : la semaine a glisse d'un jour, mais son premier jour de sport reste le lundi. Ce qui ne bouge PAS : le semestre 1
-     garde le 14 septembre -- c'est l'universite qui fixe la rentree, pas lui -- et les
-     habitudes du dimanche restent ancrees au 13, elles ont vraiment eu lieu ce jour-la. */
+     Les courses ne dependent PAS de ce jour 1. ANCRE_COURSES est au samedi 19 -- c'est le
+     battement du rythme, et il doit rester un samedi -- tandis que PREMIER_JOUR_COURSES,
+     le jour ou il y va vraiment, est le dimanche 20 : c'est ce matin-la que le plan du jour
+     reclame l'inventaire du placard et le ticket de caisse.
+
+     Ce qui ne bouge PAS : le semestre 1 garde le 14 septembre -- c'est l'universite qui
+     fixe la rentree, pas lui -- et les habitudes du dimanche restent ancrees au 13, elles
+     ont vraiment eu lieu ce jour-la. */
   var PROGRAMME_DEBUT = '2026-09-21';
   /* Le programme va du premier jour de cours au dernier jour de la saison (14 mars) :
      c'est la fenetre que le reacteur annonce le matin du jour 1, quand il n'y a encore
@@ -9725,10 +9727,14 @@
     return null;
   }
   /* Toutes les periodes d'objectifs connues, mois et trimestres, dans un seul format. */
+  /* Les periodes qui peuvent se clore. Le TRIMESTRE en faisait partie quand les objectifs
+     avaient trois paliers ; depuis le 19 septembre il n'y en a plus qu'un, le mois, et
+     aucun objectif de trimestre n'est seme ni creable a la main. Le garder ici aurait
+     laisse un type de periode qui ne se ferme jamais -- une branche qu'aucun test ne peut
+     eprouver et que personne ne verrait pourrir. */
   function periodesObjectifs(){
     var out = [];
     try{ (moisListe() || []).forEach(function(m){ out.push({id:m.id, type:'mois', nom:m.nom, debut:m.debut, fin:m.fin}); }); }catch(e){}
-    try{ (TRIMESTRES || []).forEach(function(t){ out.push({id:t.id, type:'trimestre', nom:t.nom, debut:t.debut, fin:t.fin}); }); }catch(e){}
     return out;
   }
   function cloturerPeriodesEchues(){
@@ -10531,14 +10537,14 @@
      le cycle de la categorie. Un besoin hebdomadaire faux se voyait a l'oeil nu avant --
      l'huile d'olive etait annoncee a 1 000 ml par 4 semaines alors qu'il en faut 1 152 :
      il serait tombe a sec quatre jours avant chaque rachat, tous les mois.
-     Les produits menagers (nettoyants, eponges, sacs, serpilliere) sont SORTIS de la
-     Batcave a sa demande : il en a en reserve et les rachete au besoin. Restent la
-     nourriture et la sante, les deux seules choses dont une rupture casse une habitude. */
+     Les produits menagers avaient ete SORTIS a sa demande (il en avait en reserve) ; le
+     19 septembre il les a redemandes, et ils reviennent en deux categories, « Maison » a
+     quatre semaines et « Ménage » a huit. */
   /* Le besoin d'une semaine sort de la MEME source que les macros : compoRepas, aliment
      par aliment, sur les sept jours. Il etait recopie a la main juste en dessous du plan
      de repas -- deux listes de grammages a tenir en phase, et la liste de courses pouvait
      donc demander autre chose que ce que le plan fait manger. Ici, changer un grammage
-     change les deux. Semaine de reference : dimanche 20 -> samedi 26 septembre 2026, qui
+     change les deux. Semaine de reference : lundi 21 -> dimanche 27 septembre 2026, qui
      couvre les sept jours de la rotation ; « brut » ecarte la boucle poids -> calories,
      que la liste ajoute elle-meme une seule fois. */
   var BESOIN_SEMAINE = (function(){
@@ -10634,7 +10640,36 @@
         {label:'Cotons-tiges',     qte:'1 boîte de 200', note:'2 par jour'},
         {label:'Rasoirs jetables', qte:'1 paquet de 4',   note:'1 par mois'},
         {label:'Fil dentaire',     qte:'2',},
-        {label:'Lessive',          qte:'1 bidon de 40 doses',  note:'une lessive par samedi'}
+        {label:'Lessive',          qte:'1 bidon de 40 doses',  note:'une lessive par samedi'},
+        {label:'Détachant',        qte:'1 flacon', note:'six séances par semaine : la lessive seule ne suffit pas'},
+        {label:'Bain de bouche',   qte:'1 flacon de 500 ml'},
+        {label:'Brossettes interdentaires', qte:'1 boîte', note:'plus efficaces que le fil sur les espaces larges'},
+        {label:'Crème hydratante', qte:'1 tube', note:'la seconde moitié du protocole peau'},
+        {label:'Crème solaire',    qte:'1 tube SPF 50', note:'Alicante, toute l\u2019année — pas seulement l\u2019été'},
+        {label:'Mouchoirs',        qte:'1 pack de 6'}
+      ]},
+      /* ===== Maison et menage, remis le 19 septembre =====
+         Ils avaient ete SORTIS de la Batcave a sa demande (« j'en ai en reserve, je rachete
+         au besoin »), puis il les a redemandes. Sa regle rend le rythme inoffensif : s'il
+         voit qu'il lui en reste, il n'achete pas mais il coche quand meme -- la coche dit
+         « j'en ai », pas « j'ai achete ». Un rythme trop frequent ne coute donc rien. */
+      {cat:'Maison — toutes les 4 semaines', semaines:4, ancre:ANCRE_COURSES, items:[
+        {label:'Papier toilette',  qte:'1 lot de 12'},
+        {label:'Sacs poubelle 30 L', qte:'1 rouleau'},
+        {label:'Sacs poubelle salle de bain', qte:'1 rouleau'},
+        {label:'Liquide vaisselle', qte:'1 flacon de 750 ml', note:'sept portions à laver chaque dimanche'},
+        {label:'Éponges + grattoirs', qte:'1 lot de 6'},
+        {label:'Essuie-tout',      qte:'1 lot de 6'}
+      ]},
+      /* Huit semaines et non quatre : un bidon de fregasuelos ou un spray tiennent des mois
+         a une personne. Le bloc « 🧽 Ménage » du dimanche nomme trois surfaces -- sols, salle
+         de bain, poussiere -- et cette liste porte exactement de quoi les faire, pas plus. */
+      {cat:'Ménage — toutes les 8 semaines', semaines:8, ancre:ANCRE_COURSES, items:[
+        {label:'Nettoyant sol (fregasuelos)', qte:'1 bidon de 1,5 L'},
+        {label:'Anticalcaire salle de bain', qte:'1 spray', note:'l\u2019eau d\u2019Alicante est très calcaire : c\u2019est le produit qui sert le plus'},
+        {label:'Multi-usage dégraissant', qte:'1 spray', note:'cuisine et plans de travail'},
+        {label:'Nettoyant WC',     qte:'1 flacon'},
+        {label:'Gants de ménage',  qte:'1 paire'}
       ]},
       {cat:'Tous les 3 mois', semaines:12, ancre:ANCRE_COURSES, items:[
         {label:'Brosse à dents', qte:'1', note:'une toutes les 12 semaines'}
@@ -10646,10 +10681,7 @@
      ancrees sur le premier SAMEDI de courses du programme : elles retombent donc toujours
      un jour de courses, jamais entre deux.
 
-     Ce premier samedi est le 26 septembre, pas le 19 : le programme demarre le dimanche 20
-     (PROGRAMME_DEBUT), donc le samedi 19 tombe avant et n'est pas un jour de courses. Garder
-     le 19 aurait rendu les reserves dues un jour ou il n'achete rien, et repousse les
-     suivantes au 17 octobre. Jusqu'au 26, il mange sur ce qu'il a. */
+     L'ancre a d'abord ete posee au 26 septembre, premier samedi APRES le jour 1. */
   /* 19 septembre, sa decision : il fait ses courses AUJOURD'HUI. L'ancre passe donc au
      samedi 19, avant meme le jour 1 du programme (lundi 21) -- ce qui est normal, les
      courses ne dependent pas de la Batcave. Les cycles de 4, 5 et 12 semaines repartent
@@ -10720,6 +10752,13 @@
   if(!load('batcave-courses-plan-v3', false)){
     if(Object.keys(coursesState).length){ coursesState = {}; save('batcave-courses', coursesState); }
     saveInternal('batcave-courses-plan-v3', true);
+  }
+  /* v4 : « Maison » et « Ménage » s'inserent AVANT « Tous les 3 mois », qui passe donc de
+     l'index 4 a l'index 6. Les coches etant indexees par position, celles d'avant
+     tomberaient sur d'autres articles -- on repart d'une liste vierge, une fois. */
+  if(!load('batcave-courses-plan-v4', false)){
+    if(Object.keys(coursesState).length){ coursesState = {}; save('batcave-courses', coursesState); }
+    saveInternal('batcave-courses-plan-v4', true);
   }
 
   /* Seules les categories DUES cette semaine comptent. Sans ce filtre, l'habitude
@@ -13036,10 +13075,11 @@
     var creneaux = 0, saisis = 0, notes = [];
     (dates || []).forEach(function(d){
       if(!d || d > todayISO) return;
-      /* Rien avant le jour 1. Le dimanche 20 septembre, la semaine ecoulee contient un
-         mercredi et un samedi qui precedent le programme : sans cette garde, la premiere
-         revue du dimanche aurait accuse « 0 sujet ecrit sur 3 creneaux, 3 sans trace »
-         pour des seances qui n'avaient pas lieu d'exister. */
+      /* Rien avant le jour 1. La premiere revue du dimanche tombe le 27 septembre et sa
+         semaine ecoulee demarre le lundi 21 : tout y est dans le programme. Mais la garde
+         reste indispensable des qu'une revue regarde en arriere -- sans elle, elle
+         accuserait « 0 sujet ecrit sur 3 creneaux, 3 sans trace » pour des seances qui
+         n'avaient pas lieu d'exister. */
       if(d < PROGRAMME_DEBUT) return;
       creneaux += creneauxApproDuJour(d, nowMin).length;
       approState.liste.forEach(function(e){

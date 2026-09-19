@@ -148,7 +148,7 @@ console.log('\n== 195) Études (date d\'examen), Business, Objectifs, Santé, Co
   ok((await local('batcave-business')).length === 1, 'mois Shopify ajouté');
   ok(await go('objectifs'), 'Objectifs s\'affiche');
   const nObj = await fr.evaluate(() => document.querySelectorAll('#obj-liste .obj-row').length);
-  ok(nObj >= 8, nObj + ' objectifs du mois, comparés au réel');
+  ok(nObj === 6, nObj + ' objectifs du mois, comparés au réel — un seul palier depuis le 19 septembre');
   ok(await go('vie'), 'Santé s\'affiche');
   await setVal('sa-date', '2026-09-20'); await click('#sa-add'); await page.waitForTimeout(100);
   ok((await local('batcave-sante')).length === 1, 'rendez-vous santé ajouté');

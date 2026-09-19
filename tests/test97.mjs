@@ -99,16 +99,22 @@ console.log('\n== 315) « J\'ai vu » éteint la carte, l\'archive reste ==');
   await ctx.close();
 }
 
-console.log('\n== 315 bis) Le trimestre T1 se clôt le 1er décembre, pas avant ==');
+console.log('\n== 315 bis) Seul le mois se clôt : le trimestre n\'existe plus ==');
 {
+  /* Ce test verifiait la cloture du trimestre T1. Le 19 septembre, il a ramene les
+     objectifs a UN SEUL palier -- le mois -- et periodesObjectifs() ne propose donc plus
+     que des mois a clore. Un « T1 » clos serait desormais un bug, pas un succes. */
   const a = await ouvrir('2026-11-30T20:00:00+01:00');
   const av = await a.fr.evaluate(() => window.__bcPeriodesCloses().map(p => p.id));
-  ok(av.indexOf('T1') === -1, 'le 30 novembre, T1 n\'est pas encore clos');
+  ok(av.indexOf('M2026-11') === -1, 'le 30 novembre, novembre n\'est pas encore clos');
+  ok(av.indexOf('M2026-10') > -1, 'mais octobre, lui, l\'est (' + av.join(', ') + ')');
   await a.ctx.close();
   const b2 = await ouvrir('2026-12-01T09:00:00+01:00');
-  const ap = await b2.fr.evaluate(() => window.__bcPeriodesCloses().map(p => p.id));
-  ok(ap.indexOf('T1') > -1, 'le 1er décembre, T1 est clos (' + ap.join(', ') + ')');
-  ok(ap.indexOf('M2026-11') > -1, 'et novembre aussi');
+  const ap = await b2.fr.evaluate(() => window.__bcPeriodesCloses());
+  const ids = ap.map(p => p.id);
+  ok(ids.indexOf('M2026-11') > -1, 'le 1er décembre, novembre est clos (' + ids.join(', ') + ')');
+  ok(!ids.some(i => /^T\d/.test(i)), 'et aucun trimestre n\'a été clos : il n\'y en a plus');
+  ok(ap.every(p => p.type === 'mois'), 'toute période close est un mois');
   await b2.ctx.close();
 }
 

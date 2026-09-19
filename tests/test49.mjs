@@ -21,8 +21,9 @@ async function ouvrir(quand, local){
 const aller = async (fr, page, p) => { await fr.evaluate(pg => document.querySelector('.nav-btn[data-page="'+pg+'"]').click(), p); await page.waitForTimeout(250); };
 const local = (fr,k) => fr.evaluate(x => JSON.parse(localStorage.getItem(x) || 'null'), k);
 const MERCREDI = '2026-09-02T10:00:00+02:00';
-/* La boucle poids -> calories ecarte les pesees anterieures au 17 octobre (trois semaines
-   apres ANCRE_COURSES, passee au samedi 26 avec le depart du dimanche 20) : ces trois
+/* La boucle poids -> calories ecarte les pesees anterieures au 11 octobre (trois semaines
+   apres PREMIER_JOUR_COURSES, le dimanche 20 septembre -- c'est le jour ou il a vraiment
+   de quoi manger le plan, pas le battement du rythme hebdomadaire) : ces trois
    premieres semaines du plan, la balance monte d'un a trois kilos de glycogene, d'eau et
    de contenu digestif, et une pente tracee a travers ce saut dirait n'importe quoi. Ses
    scenarios se jouent donc en novembre. Le 4 novembre est un mercredi, comme le 2
@@ -129,8 +130,8 @@ console.log('\n== 120b) Le saut de depart ne doit JAMAIS faire retirer des calor
    le contresens exact que cette boucle existe pour eviter. */
 {
   const saut = {};
-  /* Decale d'une semaine avec la stabilisation (10 → 17 octobre) : il faut toujours
-     quatre pesees APRES la coupure pour que la pente se lise. */
+  /* La coupure de stabilisation a bouge plusieurs fois (10, puis 17, puis 11 octobre) :
+     il faut toujours quatre pesees APRES elle pour que la pente se lise. */
   [['2026-09-20',64.0],['2026-10-04',66.4],['2026-10-18',66.8],['2026-11-01',67.0],
    ['2026-11-15',67.2],['2026-11-29',67.4]].forEach(([d,v]) => { saut['batcave-journal-' + d] = {poids: v}; });
   const { ctx, fr, page } = await ouvrir('2026-11-29T10:00:00+02:00', saut);
@@ -140,7 +141,7 @@ console.log('\n== 120b) Le saut de depart ne doit JAMAIS faire retirer des calor
   ok(!/-100 kcal/.test(k.note), 'le saut de depart ne fait pas retirer de calories : ' + k.note);
   /* La pente lue ne porte que sur les pesees d'apres stabilisation : 66,8 -> 67,4. */
   ok(/4 pes\u00e9es/.test(k.txt) && /66,8 \u2192 67,4 kg/.test(k.txt),
-     'seules les 4 pes\u00e9es d\'apr\u00e8s le 17 octobre comptent : ' + ((k.txt.match(/Tendance[^.]*/) || [''])[0]));
+     'seules les 4 pes\u00e9es d\'apr\u00e8s le 11 octobre comptent : ' + ((k.txt.match(/Tendance[^.]*/) || [''])[0]));
   await ctx.close();
 }
 {
@@ -148,7 +149,7 @@ console.log('\n== 120b) Le saut de depart ne doit JAMAIS faire retirer des calor
   const { ctx, fr, page } = await ouvrir('2026-10-04T10:00:00+02:00', {'batcave-journal-2026-09-20': {poids: 64.0}, 'batcave-journal-2026-10-04': {poids: 66.4}});
   await aller(fr, page, 'repas');
   const txt = await fr.evaluate(() => document.getElementById('kcal-analyse').innerText.replace(/\s+/g,' '));
-  ok(/rien avant le 17 oct\./.test(txt) && /glyc\u00e8ne|glycog\u00e8ne/.test(txt),
+  ok(/rien avant le 11 oct\./.test(txt) && /glyc\u00e8ne|glycog\u00e8ne/.test(txt),
      'elle explique l\'attente au lieu de rester muette : ' + txt.slice(-190));
   await ctx.close();
 }

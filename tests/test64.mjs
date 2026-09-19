@@ -98,12 +98,15 @@ console.log('\n== 231) Phase 1 (mercredi 16 septembre) : blocs Projets perso ren
   const objs = await fr.evaluate(() => JSON.parse(localStorage.getItem('batcave-objectifs')).liste
     .filter(o => /^(T1|M2026-09|M2026-12):(espagnol_h|projets_h|revision_h)$/.test(o.id))
     .reduce((a, o) => { a[o.id] = o.cible; return a; }, {}));
-  /* Le programme demarre le mardi 15 : le lundi 14 sort du compte, et avec lui 266 min
-     d'espagnol, soit 266 x 0,89 / 60 = 3,9 h en moins sur T1 (169,8 -> 165,9) comme sur
-     septembre (48,7 -> 44,8). Meme jour retire, meme difference aux deux.
-     168 et 49 depuis l'emploi du temps reel : lundi et mardi apportent 3 h 50 de blocs
-     de plus, tous renommes Español en phase 1. */
-  ok(Math.abs(objs['T1:espagnol_h'] - 58.1) < 0.2 && Math.abs(objs['M2026-09:espagnol_h'] - 22.2) < 0.2 && objs['M2026-09:projets_h'] === 0 && objs['T1:revision_h'] > 0, 'objectifs Espagnol calculés depuis la grille (T1 ≈ 59,8, septembre ≈ 23,8 — départ du samedi 19, phase Español close le 18 octobre) ; Projets perso ramené à zéro en septembre, où la phase 1 occupe toute la part programmée du mois : ' + JSON.stringify(objs));
+  /* Deux choses ont change depuis l'ecriture de ce test, et toutes les deux a sa demande.
+     Le jour 1 est passe au LUNDI 21 : septembre ne porte donc plus que dix jours de
+     programme, et la cible d'espagnol du mois tombe de 22,2 a 20,6 h. Et les objectifs
+     de TRIMESTRE n'existent plus -- il n'a voulu qu'un seul palier, le mois -- donc
+     T1:espagnol_h et T1:revision_h ne sont plus semes du tout. */
+  ok(objs['T1:espagnol_h'] === undefined && objs['T1:revision_h'] === undefined,
+     'plus aucun objectif de trimestre : un seul palier, le mois (' + JSON.stringify(objs) + ')');
+  ok(Math.abs(objs['M2026-09:espagnol_h'] - 20.6) < 0.2 && objs['M2026-09:projets_h'] === 0,
+     'objectifs Espagnol calcules depuis la grille (septembre ≈ 20,6 h, depart du lundi 21, phase Español close le 18 octobre) ; Projets perso ramene a zero en septembre, ou la phase 1 occupe toute la part programmee du mois : ' + JSON.stringify(objs));
 
   /* Pomodoro Español : la tâche par défaut est celle du bloc en cours (gramática à 12:00), le bloc part en projet « Español · gramática » */
   await fr.evaluate(() => document.querySelector('.nav-btn[data-page="dashboard"]').click());
@@ -154,7 +157,7 @@ console.log('\n== 232) Avant le lundi 14 septembre : aucune période, la grille 
      'le 14 : révision dentaire, déjeuner et cours intacts : ' + [g.l0720, g.l0820, g.l0920, g.l1220, g.l1730].join(' / '));
   ok(g.l1120 === 'Question ouverte ou autre' && g.l1300 === 'Español · gramática' && g.l1400 === 'Español · escribir' && g.l1500 === 'Español · hablar',
      'le 14 : seuls les Projets perso deviennent Español, les quatre du lundi : ' + [g.l1120, g.l1300, g.l1400, g.l1500].join(' / '));
-  ok(/démarre le/.test(g.sport) && /20/.test(g.sport), 'sport : avant le 20, « démarre le 20 sept. » (' + g.sport + ')');
+  ok(/démarre le/.test(g.sport) && /21/.test(g.sport), 'sport : avant le 21, « démarre le 21 sept. » (' + g.sport + ')');
   await ctx.close();
 }
 

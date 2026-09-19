@@ -96,8 +96,9 @@ console.log('\n== 193) Eau, sommeil, poids : Calendrier et Journal → tableau d
   ok(/Sommeil \/ nuit[\s\S]*?8 h/.test(await txt('#bilan-grid')), 'Bilan : sommeil 8 h');
   await aller('repas');
   /* Le 1er septembre precede la stabilisation (17 octobre) : la boucle ECARTE cette
-     pesee -- elle decrit l'ancienne alimentation -- et elle dit pourquoi au lieu de se taire. */
-  ok(/rien avant le 17 oct\./.test(await txt('#kcal-analyse')), 'Boucle poids → calories : la pesée d\'avant le plan est écartée, et la Batcave dit pourquoi');
+     pesee -- elle decrit l'ancienne alimentation -- et elle dit pourquoi au lieu de se taire.
+     Les trois semaines partent de ses PREMIERES courses (20 sept.), donc du 11 octobre. */
+  ok(/rien avant le 11 oct\./.test(await txt('#kcal-analyse')), 'Boucle poids → calories : la pesée d\'avant le plan est écartée, et la Batcave dit pourquoi');
 }
 
 console.log('\n== 194) Repas cochés → tableau de bord et score ==');
