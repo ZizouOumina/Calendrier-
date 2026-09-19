@@ -1,12 +1,103 @@
-# Où on en est — nuit du 19 au 20 septembre 2026
+# Où on en est — samedi 19 septembre 2026, au soir
 
 Ce fichier existe pour une seule raison : que rien ne dépende de ma mémoire.
 Il dit ce qui est fait, ce qui reste, et ce qui attend une décision de toi.
 
-> **Vérification finale, sur la version que tu vas ouvrir :**
-> 89 tests · 0 échec · 0 assertion FAIL · 0 erreur de page.
-> `audit.mjs` aucun défaut · `audit-suivi.mjs` aucune erreur de calcul ·
-> `contraste.mjs` AA tenu sur les deux thèmes · `verif-pages.mjs` toutes saines.
+> **Vérification finale, sur la version publiée :**
+> 90 tests · 0 échec · 0 assertion FAIL · 0 erreur de page.
+> `audit.mjs` aucun défaut sur les 4 gabarits · `audit-suivi.mjs` aucune erreur de calcul ·
+> `contraste.mjs` AA tenu sur les deux thèmes · `verif-pages.mjs` toutes les pages saines.
+> La Batcave est en **v78**.
+
+## CE QU'IL RESTE À FAIRE — la seule liste qui compte
+
+### Ce soir
+- [ ] **L'essai de restauration** : 💾 → `♻️ Restaurer depuis Drive` → celle du 19.
+      Vérifier ensuite que les 32 habitudes et les 4 dépendances sont là.
+      *C'est le seul maillon de la chaîne de sauvegarde jamais éprouvé.*
+- [ ] **La synchro** : Batcave ouverte sur l'iPhone ET sur l'ordi, cocher une habitude
+      sur l'un, recharger l'autre.
+- [ ] **Le relevé du placard** : pâtes, riz, flocons, œufs, huile d'olive, beurre de
+      cacahuète. La liste travaille sur une photo du 13 septembre.
+
+### Dimanche 20
+- [ ] **Les courses** — 45 articles, tout est dû (semaine d'ancre). Le matin.
+- [ ] **Le ticket de caisse** → me l'envoyer, je saisis les vrais montants dans
+      Budget → Nourriture.
+- [ ] **Le batch cooking** — bloc de 14:30, déjà dans l'agenda Google.
+
+### Avant lundi — les trois magasins vides, vérifiés dans sa vraie sauvegarde
+- [ ] **Les 5 dates d'examen de janvier** (+ horaires). Sans elles, le **mode partiels**
+      ne s'enclenche jamais, et la matière proposée au minuteur ne peut pas se calculer
+      par « examen le plus proche ».
+- [ ] **Les échéances du semestre** — date, type, matière, libellé. Sans elles, le
+      compte à rebours J-N, le bloc du soir « Préparer · … » et les cinq lignes du
+      tableau de bord restent éteints. Il y a au moins l'infografía de Documentación.
+- [ ] **Les paquets Anki** — noms et cartes dues.
+
+### Lundi 21, jour 1
+- [ ] **La copie vierge**, au réveil, AVANT toute saisie.
+- [ ] **Le poids de départ**, à jeun, dans la clôture du soir. *(Pas de mensurations :
+      la fonctionnalité a été retirée, il me l'a rappelé.)*
+- [ ] **05:30** : le téléphone sonne, ou pas. Me le dire.
+
+### Hors Batcave, sans urgence
+- [ ] **Notion** : les trois bases du S1 portent encore ses cours de PASS à Lille.
+      Il s'en charge lui-même (« touches pas au notion »).
+- [ ] **Le paquet Anki Business** — 305 cartes, à importer le **19 octobre**, pas avant.
+
+### RAYÉ — ne pas rouvrir
+- Les jours fériés et les vacances : **déjà dans le code** (`JOURS_SANS_COURS_LISTE`),
+  relus le 18 septembre dans le calendrier académique officiel.
+- Les mensurations au mètre ruban : fonctionnalité retirée, zéro occurrence dans le code.
+  J'avais sondé une clé qui n'a jamais existé et lu son absence comme un trou.
+- Le papier imprimante et l'encre dans les courses : sa décision, c'est non.
+
+## Ses décisions du 19 septembre, toutes honorées
+
+| Décision | État |
+|---|---|
+| Ne pas toucher à Notion | respecté |
+| Un seul palier d'objectifs (le mois) | fait — 140 objectifs → 72 |
+| Un moyen de se tester avant le 19 octobre | l'épreuve du dimanche : 27 sept., 4, 11, 18 oct. |
+| Commencer lundi, pas samedi | jour 1 = lundi 21 septembre |
+| Courses le dimanche matin | ancre au samedi 19, premier passage le 20 |
+| Plus d'estimation de budget | retirée de bout en bout |
+| Cocher même sans acheter | c'était déjà le comportement |
+| Les produits d'entretien de retour | Maison (4 sem.) + Ménage (8 sem.) + 6 lignes d'hygiène |
+| Supprimer la page Journal | faite, son historique sauvé |
+| Un seul paquet Anki Business | 305 cartes, aucune perdue |
+
+## Les quatre défauts réels trouvés aujourd'hui, et comment
+
+Aucun ne venait d'une relecture de code. Tous sont sortis parce qu'il a changé d'avis
+ou posé une question — c'est la leçon à garder pour la suite.
+
+1. **`ANCRE_COURSES` faisait double emploi.** Elle est le battement du rythme (elle doit
+   rester un samedi) mais servait aussi de jour des premières courses. Les deux rappels
+   du premier jour tombaient donc le 19, un jour où il n'y allait pas, et ne revenaient
+   jamais. D'où `PREMIER_JOUR_COURSES = 2026-09-20`.
+2. **La stabilisation poids → calories partait du mauvais jour.** Elle comptait depuis
+   l'ancre du rythme au lieu du jour où il a vraiment de quoi manger le plan. La coupure
+   passe du 17 au 11 octobre.
+3. **Le jour 1 était faux dans quatre documents**, révélé par « je commence lundi ».
+4. **Deux textes renvoyaient à la page Journal supprimée** — la tuile Sommeil du tableau
+   de bord et la courbe de poids vide. Trouvés par la campagne, pas à l'œil.
+
+## Ce que j'ai vérifié sur son compte, et qui marche déjà
+
+- **Google Agenda** : lundi 21 porte 22 blocs 🦇, heures justes, consignes en description,
+  rappel à 5 min, fuseau Europe/Madrid.
+- **Drive** : quatre sauvegardes automatiques (16 au 19 sept.) dans `01 · Sauvegardes`.
+  La dernière fait 80 Ko, se décode, parse, et contient 65 clés — dont ses 32 habitudes,
+  4 dépendances, 9 transactions, 9 charges fixes.
+- **La rotation** garde tout à ≤ 7 jours, une par semaine jusqu'à 60 jours, une par mois
+  ensuite. Celle du 16 partira seule le 23. **Ne pas les supprimer à la main.**
+
+## Réserve à connaître
+
+La Batcave déclare cinq connecteurs jamais éprouvés en session : AccuWeather (×2),
+Spotify, Shopify, Notion. Seuls Google Agenda et Google Drive ont été vérifiés en vrai.
 
 ---
 
