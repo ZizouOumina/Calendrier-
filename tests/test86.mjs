@@ -1,10 +1,11 @@
-/* ===== 281) Les portes convertissent vraiment un bloc =====
+/* Lot 34, revu le 19 septembre 2026 — la preuve que les portes sont bien parties.
 
-   Jusqu'ici le panneau annoncait « tu peux convertir ce bloc » et rien ne le faisait :
-   portesEtat n'etait lu nulle part par la grille. Il l'est desormais sous la forme d'une
-   DATE de conversion. Ce test verifie les quatre choses qui comptent : le bouton
-   n'apparait que quand la porte est franchie, la conversion ne reecrit pas le passe, la
-   grille ET les cibles suivent, et la porte refermee ne reprend rien toute seule. */
+   Ce fichier eprouvait la CONVERSION : une porte franchie rendait un bloc Español aux
+   projets, a partir de demain, jamais retroactivement. Les portes ont ete retirees le
+   19 septembre (voir test83 pour la raison). Ce qui doit etre protege maintenant, c'est
+   la propriete inverse et elle est plus importante : rien ne peut plus toucher a la
+   grille par ce chemin -- y compris une conversion qui trainerait dans le stockage d'un
+   ancien appareil. */
 import { chromium } from 'playwright';
 const URL = 'http://127.0.0.1:8199/host.html';
 let errs = 0;
@@ -48,118 +49,62 @@ async function ouvrir(quand, seed){
 const grille = (fr, iso) => fr.evaluate(i => window.__bcGrille(window.__bcCle(new Date(i+'T12:00:00').getDay()), i).map(b => b[0] + ' ' + b[1]), iso);
 const allerEtudes = async (fr, page) => { await fr.evaluate(() => document.querySelector('.nav-btn[data-page="etudes"]').click()); await page.waitForTimeout(300); };
 
-console.log('\n== 281) Aucune porte franchie : aucun bouton de conversion ==');
+
+console.log('\n== 281) Aucun bouton de conversion, quelle que soit la note ==');
 {
-  const { ctx, fr, page } = await ouvrir('2026-10-12T12:00:00+02:00', SEED(2, 5.0));
+  const { ctx, fr, page } = await ouvrir('2026-10-12T12:00:00+02:00', SEED(3, 1.0));
   await allerEtudes(fr, page);
   const v = await fr.evaluate(() => ({
-    conv: document.querySelectorAll('#portes-etat [data-porte-convertir]').length,
+    convertir: document.querySelectorAll('#portes-etat [data-porte-convertir]').length,
     rendre: document.querySelectorAll('#portes-etat [data-porte-rendre]').length,
-    note: document.getElementById('portes-note').textContent,
-    txt: document.getElementById('portes-etat').innerText.replace(/\s+/g, ' ').slice(0, 130)
+    portes: (window.__bcPortes('2026-10-12') || {}).portes.length,
+    txt: (document.getElementById('portes-etat') || {}).innerText || ''
   }));
-  ok(v.conv === 0 && v.rendre === 0, 'aucun bouton tant que rien n\'est franchi (' + v.conv + ' / ' + v.rendre + ')');
-  ok(/aucune porte franchie/.test(v.note), 'le relevé le dit : « ' + v.note + ' »');
-  ok(/2,00|il faut 2,5/.test(v.txt), 'le panneau dit ce qui manque : ' + v.txt);
+  ok(v.convertir === 0 && v.rendre === 0, 'aucun bouton de conversion ni de retour (' + v.convertir + ' / ' + v.rendre + ')');
+  ok(v.portes === 0, 'et aucune porte dans le modèle (' + v.portes + ')');
+  ok(/suivi tes cours|Aucun jour de cours noté/.test(v.txt), 'le panneau montre la mesure, pas un portillon');
   await ctx.close();
 }
 
-console.log('\n== 282) Les deux portes franchies : deux boutons, et la grille ne bouge pas encore ==');
+console.log('\n== 282) Une conversion qui traîne dans le stockage ne convertit plus rien ==');
 {
-  const { ctx, fr, page } = await ouvrir('2026-10-12T12:00:00+02:00', SEED(3, 1.2));
-  await allerEtudes(fr, page);
-  const v = await fr.evaluate(() => ({
-    conv: [...document.querySelectorAll('#portes-etat [data-porte-convertir]')].map(b => b.textContent),
-    note: document.getElementById('portes-note').textContent
-  }));
-  ok(v.conv.length === 2, 'les deux portes sont franchies : ' + v.conv.length + ' bouton(s)');
-  ok(/13 oct\./.test(v.conv[0] || ''), 'le bouton annonce la date : « ' + (v.conv[0] || '') + ' »');
-  ok(/2 portes franchies/.test(v.note), 'relevé : « ' + v.note + ' »');
-  /* Franchie n'est pas convertie : tant qu'il ne clique pas, la grille est intacte. */
+  /* Le cas qui compte : un ancien appareil, ou une sauvegarde d'avant le 19 septembre,
+     rapporte « c1 : converti depuis le 8 octobre ». La grille ne doit pas y obéir. */
+  const { ctx, fr } = await ouvrir('2026-10-12T12:00:00+02:00',
+    Object.assign(SEED(3, 1.0), {'batcave-portes': {p1:true, p2:true, c1:'2026-10-08', c2:'2026-10-08'}}));
   const g = await grille(fr, '2026-10-13');
-  ok(g.includes('20:30 Español · serie en VO') && g.includes('13:00 Español · gramática'),
-     'porte franchie mais non convertie : la grille est inchangée (' + g.filter(x => /13:00|20:30/.test(x)).join(' · ') + ')');
+  ok(g.includes('20:30 Español · serie en VO'),
+     'le mardi soir reste de l\'espagnol : ' + (g.filter(x => /20:30/.test(x))[0] || '—'));
+  ok(g.some(x => /13:00 Español · gramática/.test(x)),
+     'et 13:00 aussi : ' + (g.filter(x => /^13:00/.test(x))[0] || '—'));
   await ctx.close();
 }
 
-console.log('\n== 283) Un clic : le bloc revient aux projets DEMAIN, jamais hier ==');
+console.log('\n== 283) La note du jour se pose toujours, et se retire ==');
 {
-  const { ctx, fr, page } = await ouvrir('2026-10-12T12:00:00+02:00', SEED(3, 1.2));
+  /* La mesure survit aux portes : c'est tout l'intérêt de ne pas avoir supprimé la note. */
+  const { ctx, fr, page } = await ouvrir('2026-10-13T21:00:00+02:00', SEED(2, 2.0));
   await allerEtudes(fr, page);
-  const avant = await fr.evaluate(() => window.__bcPrevu('2026-10-13'));
-  await fr.evaluate(() => document.querySelector('#portes-etat [data-porte-convertir="1"]').click());
-  await page.waitForTimeout(350);
-  /* Un LUNDI deja vecu : le vendredi n'a pas de « Projets perso 3 », il ne prouverait rien. */
-  const hier = await grille(fr, '2026-10-05'), aujourdhui = await grille(fr, '2026-10-12'), demain = await grille(fr, '2026-10-13');
-  ok(hier.includes('13:00 Español · gramática'), 'le lundi 5 octobre, déjà vécu, garde sa grille');
-  ok(aujourdhui.includes('20:30 Español · serie en VO') || aujourdhui.includes('13:00 Español · gramática'), 'aujourd\'hui aussi : la conversion prend demain');
-  ok(demain.includes('20:30 Projets perso 6'), 'demain, le bloc de 20:30 est redevenu Projets perso');
-  ok(!demain.some(x => /Español · serie en VO/.test(x)), 'plus aucune « serie en VO » demain');
-  const apres = await fr.evaluate(() => window.__bcPrevu('2026-10-13'));
-  ok(apres.proj === avant.proj + 55 && apres.es === avant.es - 55, 'les cibles suivent : projets ' + avant.proj + ' → ' + apres.proj + ' min, espagnol ' + avant.es + ' → ' + apres.es);
-  ok(apres.rev === avant.rev, 'la révision ne bouge pas (' + apres.rev + ' min)');
-  /* La décision est persistée, pas seulement affichée. */
-  const etat = await fr.evaluate(() => JSON.parse(localStorage.getItem('batcave-portes') || '{}'));
-  ok(etat.c1 === '2026-10-13', 'la décision est enregistrée avec sa date : ' + JSON.stringify(etat.c1));
-  /* La deuxième porte prend le deuxième bloc, pas le même. */
-  await fr.evaluate(() => document.querySelector('#portes-etat [data-porte-convertir="2"]').click());
-  await page.waitForTimeout(350);
-  const d2 = await grille(fr, '2026-10-13');
-  ok(d2.includes('13:00 Projets perso 1') && d2.includes('14:00 Español · escribir'),
-     'la porte 2 rend « gramática » et laisse « escribir » : ' + d2.filter(x => /13:00|14:00/.test(x)).join(' · '));
-  const note = await fr.evaluate(() => document.getElementById('portes-note').textContent);
-  ok(/2 portes converties/.test(note), 'relevé : « ' + note + ' »');
+  const v = await fr.evaluate(() => {
+    window.__bcNoterCours('2026-10-13', 3);
+    const a = window.__bcNoterCours && JSON.parse(localStorage.getItem('batcave-cours-suivi') || '{}')['2026-10-13'];
+    window.__bcNoterCours('2026-10-13', null);
+    const b = JSON.parse(localStorage.getItem('batcave-cours-suivi') || '{}')['2026-10-13'];
+    return { pose: a, retire: b };
+  });
+  ok(v.pose === 3, 'la note se pose (3)');
+  ok(v.retire === undefined, 'et se retire');
   await ctx.close();
 }
 
-console.log('\n== 284) Rendre le bloc à l\'espagnol : le chemin inverse existe ==');
+console.log('\n== 284) Le mode partiels n\'est pas touché par la suppression ==');
 {
-  const { ctx, fr, page } = await ouvrir('2026-10-12T12:00:00+02:00',
-    Object.assign(SEED(3, 1.2), {'batcave-portes': {p1:true, p2:true, c1:'2026-10-08'}}));
-  await allerEtudes(fr, page);
-  const g0 = await grille(fr, '2026-10-13');
-  ok(g0.includes('20:30 Projets perso 6'), 'la conversion enregistrée s\'applique au rechargement');
-  const b = await fr.evaluate(() => { const x = document.querySelector('#portes-etat [data-porte-rendre="1"]'); return x ? x.textContent : null; });
-  ok(!!b && /espagnol/.test(b), 'le bouton inverse est là : « ' + b + ' »');
-  await fr.evaluate(() => document.querySelector('#portes-etat [data-porte-rendre="1"]').click());
-  await page.waitForTimeout(350);
-  const g1 = await grille(fr, '2026-10-13');
-  ok(g1.includes('20:30 Español · serie en VO'), 'le bloc est rendu à l\'espagnol');
-  ok(await fr.evaluate(() => !JSON.parse(localStorage.getItem('batcave-portes') || '{}').c1), 'la date de conversion est effacée');
-  await ctx.close();
-}
-
-console.log('\n== 285) Porte refermée : on le dit, on ne reprend rien tout seul ==');
-{
-  /* Notes retombées à 2 : la porte se referme (hystérésis sous 2,2), mais le bloc déjà
-     converti reste aux projets — un planning qui bougerait sans qu'il l'ait demandé serait
-     pire que le problème. */
-  const { ctx, fr, page } = await ouvrir('2026-10-12T12:00:00+02:00',
-    Object.assign(SEED(2, 5.0), {'batcave-portes': {p1:true, c1:'2026-10-08'}}));
-  await allerEtudes(fr, page);
-  const v = await fr.evaluate(() => ({
-    txt: document.getElementById('portes-etat').innerText.replace(/\s+/g, ' '),
-    rendre: document.querySelectorAll('#portes-etat [data-porte-rendre]').length
-  }));
-  ok(/s’est refermée|s'est refermée/.test(v.txt), 'le panneau annonce la fermeture : ' + (v.txt.match(/.{0,30}refermée.{0,60}/) || [''])[0]);
-  ok(v.rendre === 1, 'le bouton pour rendre le bloc reste proposé');
-  const g = await grille(fr, '2026-10-13');
-  ok(g.includes('20:30 Projets perso 6'), 'le bloc reste aux projets tant qu\'il ne le rend pas');
-  await ctx.close();
-}
-
-console.log('\n== 286) En partiels, une porte convertie ne rend rien ==');
-{
-  /* La révision passe avant : une porte ne rend pas trois heures au dropshipping la
-     semaine d'un examen. L'examen du 16 octobre ouvre les partiels du 9 au 16. */
-  const { ctx, fr, page } = await ouvrir('2026-10-12T12:00:00+02:00',
-    Object.assign(SEED(3, 1.2), {'batcave-examens': {'Anatomía I':'2026-10-16'}, 'batcave-portes': {p1:true, p2:true, c1:'2026-10-08', c2:'2026-10-08'}}));
-  await allerEtudes(fr, page);
+  const { ctx, fr } = await ouvrir('2026-10-12T12:00:00+02:00',
+    Object.assign(SEED(3, 1.2), {'batcave-examens': {'Anatomía I':'2026-10-16'}}));
   const p = await fr.evaluate(() => { const x = window.__bcPeriode('2026-10-13'); return x ? x.id : null; });
-  ok(p === 'partiels', 'le 13 octobre est en mode partiels (' + p + ')');
+  ok(p === 'partiels', 'le 13 octobre est toujours en mode partiels (' + p + ')');
   const g = await grille(fr, '2026-10-13');
-  ok(!g.includes('20:30 Projets perso 6'), 'le bloc de 20:30 reste celui du mode partiels : ' + g.filter(x => /14:00|20:30/.test(x)).join(' · '));
-  ok(g.includes('13:00 Español'), 'et 13:00 reste le bloc Español du mode partiels, pas du projet');
+  ok(g.some(x => /13:00 Español/.test(x)), 'et 13:00 reste le bloc Español du mode partiels');
   await ctx.close();
 }
 

@@ -1,11 +1,15 @@
-/* Lot 33 — les portes d'espagnol.
-     Le Dossier Español mesure dix choses le dimanche ; aucune ne répond à la question qui
-     décide de l'emploi du temps : « est-ce que je suis un cours en espagnol assez bien pour
-     arrêter d'y consacrer trois blocs par jour ? » La note quotidienne de suivi du cours y
-     répond, lue en MOYENNE GLISSANTE sur 21 jours, croisée avec un critère objectif.
-     Éprouvé ici : la fenêtre et son plancher de 12 jours, le seuil d'ouverture, l'hystérésis
-     (ouverte à 2,5, ne se referme qu'en dessous de 2,2), le critère « erreurs pour 100 mots »,
-     et la deuxième porte qui exige un examen réellement passé. */
+/* Lot 33, revu le 19 septembre 2026 — la note de suivi des cours, sans les portes.
+
+   Les trois « portes » ont ete retirees : elles rendaient un bloc Español aux projets quand
+   la moyenne tenait, mais il faut 12 jours de cours notes sur une fenetre de 21 et la phase
+   Español ne dure que quatre semaines -- la premiere ne pouvait s'ouvrir qu'a quelques jours
+   de la bascule automatique du 19 octobre, et la seconde exigeait un examen deja passe en
+   espagnol. Elles ne gagnaient qu'une heure.
+
+   Ce qui reste, et que ce fichier protege : la NOTE QUOTIDIENNE (0-3) et sa moyenne
+   glissante sur 21 jours, lues pour elles-memes. Eprouve ici : la fenetre et son plancher
+   de 12 jours, la moyenne, la tendance contre les 21 jours precedents, le mot juste selon
+   le niveau -- et surtout, que la GRILLE NE BOUGE PAS quelle que soit la note. */
 import { chromium } from 'playwright';
 const URL = 'http://127.0.0.1:8199/host.html';
 const b = await chromium.launch();
@@ -50,167 +54,93 @@ function notes(fin, jours, valeur){
 }
 const revue = (date, errores) => [{id:'rv1', date, marche:'', coince:'', ajust:'', espanol:{errores, oral:null, drill:null}}];
 
-console.log('\n== 1) Sans assez de jours notés, aucune porte ne s\'ouvre ==');
+
+console.log('\n== 1) Sans un seul jour noté, le panneau le dit et ne calcule rien ==');
+{
+  const { ctx, page, fr } = await ouvrir({}, '2026-10-05T21:00:00+02:00');
+  await etudes(fr, page);
+  await fr.evaluate(() => { const t = document.getElementById('portes-toggle'); if(t) t.click(); });
+  await page.waitForTimeout(300);
+  const c = await carte(fr);
+  ok(/Aucun jour de cours noté/.test(c.etat), 'le panneau annonce l\'absence de données');
+  ok(!/NaN|undefined|null/.test(c.etat), 'et n\'affiche aucun chiffre bancal : ' + c.etat.slice(0, 90));
+  await ctx.close();
+}
+
+console.log('\n== 2) Sous 12 jours notés, le chiffre est donné mais annoncé comme indicatif ==');
 {
   const fin = '2026-10-05';
-  const { ctx, page, fr } = await ouvrir({
-    'batcave-cours-suivi': notes(fin, 8, 3),
-    'batcave-revue': revue('2026-10-04', 1.0)
-  }, '2026-10-05T21:00:00+02:00');
+  const { ctx, page, fr } = await ouvrir({'batcave-cours-suivi': notes(fin, 8, 3)}, '2026-10-05T21:00:00+02:00');
   await etudes(fr, page);
+  await fr.evaluate(() => { const t = document.getElementById('portes-toggle'); if(t) t.click(); });
+  await page.waitForTimeout(300);
   const c = await carte(fr);
-  ok(/8\/12 jours notés/.test(c.note), 'le relevé annonce 8/12 jours notés (obtenu : ' + c.note + ')');
-  ok(/la fenêtre ne conclut rien/.test(c.etat), 'la fenêtre refuse de conclure sous 12 jours');
-  ok(!/✅/.test(c.etat), 'aucune porte franchie malgré des 3 partout');
+  ok(/3,00 \/ 3/.test(c.etat), 'la moyenne de huit 3 vaut 3,00 / 3 : ' + (c.etat.match(/\d,\d\d \/ 3/) || [''])[0]);
+  ok(/8 jours de cours notés/.test(c.etat), 'le nombre de jours est dit');
+  ok(/indicatif/.test(c.etat), 'et le chiffre est annoncé comme indicatif sous le plancher de 12');
   await ctx.close();
 }
 
-console.log('\n== 2) 12 jours à 3, erreurs à 1,0 : la première porte s\'ouvre, pas la seconde ==');
+console.log('\n== 3) Au-dessus de 12 jours, la moyenne est ferme et le mot suit le niveau ==');
 {
-  const fin = '2026-10-09';
-  const { ctx, page, fr } = await ouvrir({
-    'batcave-cours-suivi': notes(fin, 13, 3),
-    'batcave-revue': revue('2026-10-04', 1.0)
-  }, '2026-10-09T21:00:00+02:00');
+  const fin = '2026-10-16';
+  const { ctx, page, fr } = await ouvrir({'batcave-cours-suivi': notes(fin, 14, 3)}, '2026-10-16T21:00:00+02:00');
   await etudes(fr, page);
+  await fr.evaluate(() => { const t = document.getElementById('portes-toggle'); if(t) t.click(); });
+  await page.waitForTimeout(300);
   const c = await carte(fr);
-  ok(/✅ Porte 1 franchie — Un bloc Español devient un bloc Projets perso/.test(c.etat), 'porte 1 franchie, avec son intitulé');
-  ok(/🔒 Porte 2/.test(c.etat), 'porte 2 fermée');
-  ok(/aucun examen encore passé en espagnol/.test(c.etat), 'et c\'est l\'examen qui lui manque');
-  ok(/1 porte franchie/.test(c.note), 'le relevé dit « 1 porte franchie » (obtenu : ' + c.note + ')');
+  ok(/3,00 \/ 3/.test(c.etat), 'quatorze 3 donnent 3,00 / 3');
+  ok(!/indicatif/.test(c.etat), 'au-dessus de 12 jours, plus de réserve');
+  ok(/tu suis le fil/.test(c.etat), 'et le mot juste pour 3,00 : « tu suis le fil »');
   await ctx.close();
 }
 
-console.log('\n== 3) La moyenne suffit mais les erreurs sont trop hautes : porte fermée ==');
+console.log('\n== 4) Une note basse est dite sans détour, et renvoie à la langue ==');
 {
-  const fin = '2026-10-09';
-  const { ctx, page, fr } = await ouvrir({
-    'batcave-cours-suivi': notes(fin, 13, 3),
-    'batcave-revue': revue('2026-10-04', 4.5)
-  }, '2026-10-09T21:00:00+02:00');
+  const fin = '2026-10-16';
+  const { ctx, page, fr } = await ouvrir({'batcave-cours-suivi': notes(fin, 14, 1)}, '2026-10-16T21:00:00+02:00');
   await etudes(fr, page);
+  await fr.evaluate(() => { const t = document.getElementById('portes-toggle'); if(t) t.click(); });
+  await page.waitForTimeout(300);
   const c = await carte(fr);
-  ok(!/✅/.test(c.etat), 'aucune porte : le critère objectif n\'est pas tenu');
-  ok(/erreurs pour 100 mots : 4,5 — il en faut moins de 3/.test(c.etat), 'et la carte dit précisément lequel');
+  ok(/1,00 \/ 3/.test(c.etat), 'quatorze 1 donnent 1,00 / 3');
+  ok(/perds le fil souvent/.test(c.etat), 'le mot ne ménage pas : « tu perds le fil souvent »');
+  ok(/c’est la langue, pas la matière|c'est la langue, pas la matière/.test(c.etat),
+     'et il nomme la cause probable plutôt que de laisser croire à un problème de matière');
   await ctx.close();
 }
 
-console.log('\n== 4) On ne libère jamais une heure sur la note qu\'on s\'est donnée seul ==');
+console.log('\n== 5) La tendance compare aux 21 jours précédents ==');
 {
-  const fin = '2026-10-09';
-  const { ctx, page, fr } = await ouvrir({
-    'batcave-cours-suivi': notes(fin, 13, 3)   /* aucun bilan du dimanche */
-  }, '2026-10-09T21:00:00+02:00');
+  /* 1 pendant la première quinzaine, 3 ensuite : la fenêtre récente doit être en hausse. */
+  const vieux = notes('2026-10-26', 30, i => (i < 12 ? 3 : 1));
+  const { ctx, page, fr } = await ouvrir({'batcave-cours-suivi': vieux}, '2026-10-26T21:00:00+02:00');
   await etudes(fr, page);
+  await fr.evaluate(() => { const t = document.getElementById('portes-toggle'); if(t) t.click(); });
+  await page.waitForTimeout(300);
   const c = await carte(fr);
-  ok(!/✅/.test(c.etat), 'sans relevé d\'erreurs, la porte reste fermée');
-  ok(/aucun relevé d’erreurs pour 100 mots/.test(c.etat), 'et le motif est nommé');
+  ok(/▲/.test(c.etat), 'la flèche dit la hausse : ' + (c.etat.match(/.{0,14}[▲▼].{0,12}/) || [''])[0]);
   await ctx.close();
 }
 
-console.log('\n== 5) L\'hystérésis : ouverte à 2,5, elle tient jusqu\'à 2,2 ==');
+console.log('\n== 6) Quelle que soit la note, la grille ne bouge pas ==');
 {
-  const fin = '2026-10-09';
-  /* moyenne ≈ 2,31 : sous 2,5 (n'ouvrirait pas) mais au-dessus de 2,2 (ne se referme pas) */
-  const suivi = notes(fin, 13, i => (i % 13 < 4) ? 2 : (i % 13 < 8 ? 2 : 3));
-  const vals = Object.values(suivi), moy = vals.reduce((a, x) => a + x, 0) / vals.length;
-  ok(moy > 2.2 && moy < 2.5, 'le jeu de données vise bien la zone morte (moyenne ' + moy.toFixed(2) + ')');
-
-  const seedFerme = {'batcave-cours-suivi': suivi, 'batcave-revue': revue('2026-10-04', 1.0)};
-  let r = await ouvrir(seedFerme, '2026-10-09T21:00:00+02:00');
-  await etudes(r.fr, r.page);
-  let c = await carte(r.fr);
-  ok(!/✅/.test(c.etat), 'porte fermée : dans la zone morte, on n\'ouvre pas');
-  ok(/il faut 2,5 pour l’ouvrir/.test(c.etat), 'et le seuil annoncé est celui d\'ouverture');
-  await r.ctx.close();
-
-  const seedOuvert = Object.assign({}, seedFerme, {'batcave-portes': {p1:true, p2:false, maj:'2026-10-08'}});
-  r = await ouvrir(seedOuvert, '2026-10-09T21:00:00+02:00');
-  await etudes(r.fr, r.page);
-  c = await carte(r.fr);
-  ok(/✅ Porte 1/.test(c.etat), 'déjà ouverte, la même moyenne la garde ouverte');
-  ok(/ne se refermera qu’en dessous de 2,2/.test(c.etat), 'et la carte annonce le seuil de fermeture');
-  await r.ctx.close();
+  /* C'est le point de la suppression des portes : la mesure informe, elle ne décide plus. */
+  const fin = '2026-10-16';
+  const bloc = async (notesArg) => {
+    const { ctx, fr } = await ouvrir({'batcave-cours-suivi': notesArg}, '2026-10-16T21:00:00+02:00');
+    const g = await fr.evaluate(() => window.__bcGrille('tuesday', '2026-10-13').map(x => x.join(' ')));
+    const portes = await fr.evaluate(() => (window.__bcPortes('2026-10-13') || {}).portes || []);
+    await ctx.close();
+    return { g, portes };
+  };
+  const bas = await bloc(notes(fin, 14, 0));
+  const haut = await bloc(notes(fin, 14, 3));
+  ok(bas.portes.length === 0 && haut.portes.length === 0, 'il n\'y a plus aucune porte (' + haut.portes.length + ')');
+  ok(bas.g.join('|') === haut.g.join('|'), 'le mardi 13 octobre est identique avec 0/3 et avec 3/3');
+  ok(haut.g.some(x => /20:30 Español · serie en VO/.test(x)),
+     'et le bloc que la porte 1 rendait reste de l\'espagnol : ' + (haut.g.filter(x => /20:30/.test(x))[0] || '—'));
+  await b.close();
+  console.log(err ? '\n' + err + ' ECHEC(S)' : '\nTOUT VERT');
+  process.exit(err ? 1 : 0);
 }
-
-console.log('\n== 6) Sous 2,2, une porte ouverte se referme ==');
-{
-  const fin = '2026-10-09';
-  const { ctx, page, fr } = await ouvrir({
-    'batcave-cours-suivi': notes(fin, 13, 2),
-    'batcave-revue': revue('2026-10-04', 1.0),
-    'batcave-portes': {p1:true, p2:false, maj:'2026-10-08'}
-  }, '2026-10-09T21:00:00+02:00');
-  await etudes(fr, page);
-  const c = await carte(fr);
-  ok(!/✅/.test(c.etat), 'la porte se referme à 2,00');
-  ok(/il faut 2,2 pour la garder/.test(c.etat), 'et la carte dit ce qu\'il aurait fallu tenir');
-  await ctx.close();
-}
-
-console.log('\n== 7) Deuxième porte : moyenne, erreurs ET un examen déjà passé ==');
-{
-  const fin = '2026-12-04';
-  const { ctx, page, fr } = await ouvrir({
-    'batcave-cours-suivi': notes(fin, 13, 3),
-    'batcave-revue': revue('2026-11-29', 1.2),
-    'batcave-examens': {'Bioquímica': '2026-11-20'}
-  }, '2026-12-04T21:00:00+02:00');
-  await etudes(fr, page);
-  const c = await carte(fr);
-  ok(/✅ Porte 1/.test(c.etat), 'porte 1 franchie');
-  ok(/✅ Porte 2/.test(c.etat), 'porte 2 franchie : l\'examen du 20 novembre est passé');
-  ok(/2 portes franchies/.test(c.note), 'le relevé dit « 2 portes franchies » (obtenu : ' + c.note + ')');
-  await ctx.close();
-}
-
-console.log('\n== 8) La note du jour n\'apparaît que les jours de cours ==');
-{
-  let r = await ouvrir({}, '2026-09-21T21:00:00+02:00');   /* lundi 21, premier jour de cours du programme (le samedi 19, jour 1, n'a pas cours) */
-  await etudes(r.fr, r.page);
-  let v = await r.fr.evaluate(() => ({vis: !document.getElementById('portes-aujourdhui').hidden,
-                                      n: document.querySelectorAll('#portes-note-jour [data-note-cours]').length}));
-  ok(v.vis && v.n === 4, 'lundi 21 : la note du jour est proposée, quatre choix');
-  await r.ctx.close();
-
-  r = await ouvrir({}, '2026-09-20T21:00:00+02:00');       /* dimanche : pas de cours */
-  await etudes(r.fr, r.page);
-  v = await r.fr.evaluate(() => !document.getElementById('portes-aujourdhui').hidden);
-  ok(v === false, 'dimanche 20 : aucune note demandée');
-  await r.ctx.close();
-}
-
-console.log('\n== 9) Un clic écrit la note, et elle survit au rechargement ==');
-{
-  const { ctx, page, fr } = await ouvrir({}, '2026-09-21T21:00:00+02:00');   /* lundi 21, premier jour de cours du programme */
-  await etudes(fr, page);
-  await fr.evaluate(() => document.querySelector('#portes-note-jour [data-note-cours="2"]').click());
-  await page.waitForTimeout(200);
-  const ecrit = await fr.evaluate(() => JSON.parse(localStorage.getItem('batcave-cours-suivi') || '{}'));
-  ok(ecrit['2026-09-21'] === 2, 'la note 2 est écrite pour le 21 septembre');
-  const actif = await fr.evaluate(() => !!document.querySelector('#portes-note-jour [data-note-cours="2"].active'));
-  ok(actif, 'et le choix reste marqué');
-  await fr.evaluate(() => document.querySelector('#portes-note-jour [data-note-cours="2"]').click());
-  await page.waitForTimeout(200);
-  const efface = await fr.evaluate(() => JSON.parse(localStorage.getItem('batcave-cours-suivi') || '{}'));
-  ok(efface['2026-09-21'] === undefined, 'recliquer la même note l\'efface');
-  await ctx.close();
-}
-
-console.log('\n== 10) Les jours hors fenêtre ne comptent plus ==');
-{
-  /* 13 jours à 3, mais tous vieux de plus de 21 jours : la fenêtre est vide */
-  const { ctx, page, fr } = await ouvrir({
-    'batcave-cours-suivi': notes('2026-09-30', 13, 3),
-    'batcave-revue': revue('2026-11-01', 1.0)
-  }, '2026-11-02T21:00:00+02:00');
-  await etudes(fr, page);
-  const c = await carte(fr);
-  ok(/Aucun jour de cours noté sur les 21 derniers jours/.test(c.etat), 'la fenêtre glissante a laissé sortir les vieux jours');
-  ok(!/✅/.test(c.etat), 'et aucune porte ne s\'ouvre sur un passé lointain');
-  await ctx.close();
-}
-
-await b.close();
-console.log(err ? '\n' + err + ' ÉCHEC(S)' : '\nTOUT EST VERT');
-process.exit(err ? 1 : 0);

@@ -52,17 +52,44 @@ par se contredire.
 Rien d'autre. Pas de vue par prof, pas de calendrier, pas de relation entre bases : chaque
 ajout de structure est une chose de plus à tenir à jour toute l'année.
 
-## L'état au 19 septembre 2026
+## L'état réel au 19 septembre 2026 — vérifié ligne par ligne
+
+`Approfondi` est posée dans les trois bases du SEMESTRE 1, et `Date`, `ccb`, `Notes ACC`
+ont été retirées. **Mais les écarts au modèle n'étaient pas le vrai problème.**
+
+### Les trois bases du SEMESTRE 1 ne contiennent pas le programme d'Alicante
+
+Vérifié en lisant leurs lignes, le 19 septembre :
+
+| Base | Ce que son titre annonce | Ce qu'elle contient vraiment |
+|---|---|---|
+| 💀 **Anatomía I** | 15 temas d'anatomie et physiologie | 14 cours de **biologie cellulaire en français** : « Communication cellulaire », « Cycle cellulaire 1-3 », « Trafic intra 1-4 », « Lame basale », « Mort cellulaire », « Transports membranaires ». La colonne `Pages` porte de vrais nombres de pages (13 lignes sur 14). |
+| 🦠 **Biología celular** | 14 temas de biologie et génétique | 12 cours de **biostatistique en français** : « Probabilités », « Tests du Khi2 », « Survie », « Corrélation - Régression », « Estimation - intervalle de confiance ». Profs : CHAZARD, LEMDANI. |
+| ➗ **Epidemiología** | 21 temas d'épidémiologie et santé publique | 11 cours d'**odontologie française** : « Odontogénese », « Amélogénèse », « Cariologie », « Tissus parodontaux », « Microbiote oral ». Profs : OLEJNIK, SAVIGNAT, AGOSSA, COLARD, DUBAR, DE BROUCKER. |
+
+Ce sont ses tables de PASS/L1 à Lille, renommées avec les titres espagnols mais jamais
+vidées. **C'est exactement le même constat que pour le SEMESTRE 2** : le contenu appartient
+à un autre cursus.
+
+### Ce que ça change
+
+Aligner les colonnes (`Pages`, `Prof`, `Nombre de tours`, `État 1` → `État`, `Texte`,
+`Notes`, `Vu en classe`) aurait été **polir les mauvaises tables**, et aurait effacé
+treize nombres de pages réels au passage. Rien n'a donc été supprimé.
+
+Ce qu'il faut faire à la place : **repartir de la page blanche**, pour le S1 comme pour le
+S2, avec le modèle de ce fichier et les temas des guías docentes —
+Anatomía I 15, Biología celular 14, Epidemiología 21, Antropología 10, Documentación 8.
+
+**Une décision lui appartient** : ces tables françaises sont son archive de PASS. Les
+vider est irréversible. Trois options — les garder telles quelles sous une page
+« Archive · PASS Lille », les vider, ou créer les nouvelles bases à côté et décider plus
+tard.
+
 
 `Approfondi` posée dans les trois bases du SEMESTRE 1, et `Date`, `ccb`, `Notes ACC`
 retirées. Il reste ces écarts au modèle, qui effacent des données et attendent donc un
 feu vert explicite :
-
-| Base | Écart |
-|---|---|
-| 💀 Anatomía I | `Pages` en trop |
-| 🦠 Biología celular | `Prof` (noms d'une autre fac), `Nombre de tours`, et le statut s'appelle `État 1` au lieu de `État` |
-| ➗ Epidemiología | `Prof`, `Texte`, `Notes`, `Vu en classe` |
 
 **Le SEMESTRE 2 n'est pas construit.** Ce qui s'y trouve aujourd'hui est un reste : des
 bases qui portent les noms des matières du S1 et contiennent le contenu d'un autre cursus

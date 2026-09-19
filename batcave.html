@@ -1730,6 +1730,11 @@
            tuiles, vivent dans l'écran central autour du réacteur : trois arcs (habitudes,
            révision, projets) et le score au cœur. Aucun identifiant n'a changé. -->
       <div class="dash-wall">
+        <div class="panel" id="periode-close-carte" hidden style="border-left:3px solid var(--accent); margin-bottom:14px;">
+          <div class="sub-head"><h3 id="pcc-titre">—</h3><span class="sub-note" id="pcc-score">—</span></div>
+          <div id="pcc-corps"></div>
+          <div class="card-actions" style="margin-top:10px;"><button class="btn btn-primary" id="pcc-vu" type="button">J'ai vu</button></div>
+        </div>
         <div class="panel mon-plan">
           <div class="sub-head"><h3>🎯 Plan du jour</h3><span class="sub-note">priorisé automatiquement · <b class="mon-id">MON-01</b></span></div>
           <ul class="mini-list" id="dash-plan"></ul>
@@ -2546,11 +2551,11 @@
           <p class="sub-note" style="margin-bottom:8px; font-weight:600; color:var(--ink);">Aujourd'hui, tu as suivi le cours…</p>
           <div class="mood-row" id="portes-note-jour"></div>
         </div>
-        <button class="btn" id="portes-toggle" type="button" aria-expanded="false" aria-controls="portes-fold">Voir l'état des trois portes ▾</button>
+        <button class="btn" id="portes-toggle" type="button" aria-expanded="false" aria-controls="portes-fold">Voir où en est ton suivi des cours ▾</button>
         <div id="portes-fold" hidden style="margin-top:12px;">
-        <p class="sub-note" style="margin-bottom:10px; line-height:1.6;">Le seul test qui compte est gratuit : tu es évalué vingt heures par semaine en amphi. Chaque jour de cours, une note de 0 à 3 à la clôture. La moyenne des <b>21 derniers jours</b> — jours de cours notés seulement — décide si un bloc Español peut devenir un bloc Projets perso. Jamais sur la note seule : il faut aussi les erreurs pour 100 mots du dimanche, et pour la deuxième porte un examen réellement passé en espagnol.</p>
+        <p class="sub-note" style="margin-bottom:10px; line-height:1.6;">Le seul test qui compte est gratuit : tu es évalué vingt heures par semaine en amphi. Chaque jour de cours, une note de 0 à 3 à la clôture — <b style="color:var(--ink-dim);">est-ce que tu as suivi le fil ?</b> La moyenne des 21 derniers jours te dit si l'espagnol d'amphi rentre. Elle ne décide de rien : ta grille ne bouge pas parce qu'elle monte.</p>
         <div id="portes-etat"></div>
-        <p class="sub-note" style="margin-top:10px; line-height:1.6;">Le troisième bloc — <b>escribir</b> — ne se convertit jamais : il tient jusqu'au <b>18 octobre</b>, fin de la phase Español, quelle que soit la moyenne. La compréhension progresse vite, la production non : tu seras à l'aise en cours bien avant de savoir écrire une réponse d'examen, et c'est l'écrit qui est noté. Le 19 octobre, les onze blocs redeviennent des projets de toute façon : les portes ne servent qu'à gagner du temps <i>avant</i> cette date.</p>
+        <p class="sub-note" style="margin-top:10px; line-height:1.6;"><b style="color:var(--ink-dim);">Les trois « portes » ont été retirées le 19 septembre.</b> Elles auraient rendu un bloc d'espagnol aux projets quand la note tenait — mais il faut douze jours de cours notés sur vingt-et-un, et la phase Español ne dure que quatre semaines : la première ne pouvait s'ouvrir qu'à quelques jours de la bascule automatique du 19 octobre. Elles ne gagnaient qu'une heure. La note, elle, reste : c'est la mesure, pas le portillon, qui valait quelque chose.</p>
         </div>
       </div>
 
@@ -2820,6 +2825,12 @@
           <div class="f"><label>Cible</label><input type="number" id="obj-cible" step="0.1" min="0"></div>
           <button class="btn btn-primary" id="obj-add" type="button">Ajouter à cette période</button>
         </div>
+      </div>
+
+      <div class="panel sub-panel" id="periodes-closes-panel" style="margin-bottom:18px;" hidden>
+        <div class="sub-head"><h3>🏁 Périodes closes</h3><span class="sub-note" id="pc-resume">—</span></div>
+        <p class="sub-note" style="margin-bottom:10px; line-height:1.6;">Une période finie ne bouge plus. À minuit du dernier jour, la Batcave fige ce que tu as fait et l'archive ici : c'est le seul endroit où le passé est une note, pas une barre qui avance encore. Rien n'est supprimé — les objectifs restent dans la vue par période.</p>
+        <div id="pc-liste"></div>
       </div>
 
       <div class="goal-grid" id="goal-grid"></div>
@@ -3423,7 +3434,7 @@
      place dans le quota de 5000 documents et embrouille les sauvegardes, sans que rien ne
      la lise jamais. On la signale ; la suppression reste ton geste. */
   var CLES_CONNUES = ['addictions','budget-limits','business','coran','courses','dash-more','duaas','duree-bloc','sport-log','objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','courses-plan-v3','kcal-ajustement','gcal-ecriture','reinit','fc-migration-v1','charge','shopify-boutique','journees','examens-heures','vacances','jours-exclus',
-    'espagnol','examens','cours-suivi','portes','fc-prix-icloud-3','fixed-charges','goals','goals-depart','saisons','insights-hist','last-restore-drill','habitlog','habits','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','habits-seed-v7','habits-seed-v8','objectifs-v5-espanol',
+    'espagnol','examens','cours-suivi','portes','periodes-closes','fc-prix-icloud-3','fixed-charges','goals','goals-depart','saisons','insights-hist','last-restore-drill','habitlog','habits','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','habits-seed-v7','habits-seed-v8','objectifs-v5-espanol',
     'horizon','last-auto-backup','last-manual-backup','last-bilan-prompt','last-compaction','last-open','last-rotation','notion-url',
     'pomodial-purge','projets','report','revision','revision-fusionnee','revue','sante','sauvegarde','sessions',
     'shopify-last-order-count','taches','timer','transactions','undo-stack','undo-toast','cloud-reload-at','cloud-toast','notion-cache','anki',
@@ -4513,7 +4524,7 @@
      elles repartiraient vers le cloud. La meme remise a zero peut donc etre decidee depuis
      l'appli ou directement dans le cloud. */
   var REINIT_GARDER = ['habits','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','habits-seed-v7','habits-seed-v8','objectifs-v5-espanol','fixed-charges','fc-prix-icloud-3','budget-limits','examens','examens-heures','journees','echeances','vacances','jours-exclus','jours-sans-cours','portes','appro','notion-url','shopify-boutique',
-                       'objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','courses-plan-v3','horizon','goals-depart','saisons','gcal-ecriture','duree-bloc','dash-more','revision-fusionnee','reinit','copie-vierge'];
+                       'objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','courses-plan-v3','horizon','goals-depart','saisons','periodes-closes','gcal-ecriture','duree-bloc','dash-more','revision-fusionnee','reinit','copie-vierge'];
   var REINIT_PREFIXES_GARDER = ['pomodial-', 'coherence-ignore-'];
   function reinitGarder(cle){
     var c = cle.indexOf('batcave-') === 0 ? cle.slice(8) : cle;
@@ -9628,6 +9639,104 @@
     if(change) save('batcave-objectifs', objectifsState);
     return change;
   }
+  /* ===== La cloture d'une periode =====
+     Une periode d'objectifs (un mois, un trimestre) se terminait sans rien dire. La barre
+     s'arretait d'avancer, le verdict se figeait de lui-meme -- comparerObjectif borne
+     ecoules a total --, mais personne ne lui annoncait rien. Un mois passait, puis un
+     autre, et il n'avait jamais le moment ou l'on dit : voila ce que tu as fait.
+
+     Ce que fait la cloture : au premier demarrage APRES le dernier jour d'une periode,
+     elle releve chaque objectif de cette periode, ecrit le chiffre atteint et son verdict
+     dans une archive, et pose une carte a voir une fois. Elle ne supprime rien et ne
+     modifie aucun objectif : l'archive est une photo, pas un deplacement.
+
+     Trois garde-fous. Une periode entierement anterieure au programme n'est pas cloturee
+     (rien ne s'y est joue). Une periode sans un seul objectif non plus. Et la cloture est
+     idempotente : son id est celui de la periode, on ne l'ecrit qu'une fois. */
+  var periodesClosesState = load('batcave-periodes-closes', []);
+  if(!Array.isArray(periodesClosesState)) periodesClosesState = [];
+  function periodeCloseDe(id){
+    for(var i = 0; i < periodesClosesState.length; i++){ if(periodesClosesState[i] && periodesClosesState[i].id === id) return periodesClosesState[i]; }
+    return null;
+  }
+  /* Toutes les periodes d'objectifs connues, mois et trimestres, dans un seul format. */
+  function periodesObjectifs(){
+    var out = [];
+    try{ (moisListe() || []).forEach(function(m){ out.push({id:m.id, type:'mois', nom:m.nom, debut:m.debut, fin:m.fin}); }); }catch(e){}
+    try{ (TRIMESTRES || []).forEach(function(t){ out.push({id:t.id, type:'trimestre', nom:t.nom, debut:t.debut, fin:t.fin}); }); }catch(e){}
+    return out;
+  }
+  function cloturerPeriodesEchues(){
+    if(typeof comparerObjectif !== 'function' || !objectifsState || !Array.isArray(objectifsState.liste)) return false;
+    var change = false;
+    periodesObjectifs().forEach(function(p){
+      if(!p.fin || p.fin >= todayISO) return;              /* pas encore finie */
+      if(p.fin < PROGRAMME_DEBUT) return;                  /* entierement avant le programme */
+      if(periodeCloseDe(p.id)) return;                     /* deja close */
+      var objs = objectifsState.liste.filter(function(o){ return o && o.debut === p.debut && o.fin === p.fin; });
+      if(!objs.length) return;
+      var lignes = objs.map(function(o){
+        var c = comparerObjectif(o);
+        return {metrique: o.metrique, label: o.titre || libelleMetrique(o.metrique),
+                cible: Number(o.cible) || 0, valeur: (c.valeur === null || c.valeur === undefined || isNaN(c.valeur)) ? null : Number(c.valeur),
+                unite: c.unite || '', dec: c.dec || 0, sens: c.sens || '>=', statut: c.statut};
+      });
+      var tenus = lignes.filter(function(l){ return l.statut === 'atteint' || l.statut === 'avance'; }).length;
+      periodesClosesState.push({id:p.id, type:p.type, nom:p.nom, debut:p.debut, fin:p.fin,
+                                cloturee: todayISO, lignes: lignes, tenus: tenus, total: lignes.length, vu: false});
+      change = true;
+    });
+    if(change){
+      periodesClosesState.sort(function(a, b){ return b.fin.localeCompare(a.fin); });
+      if(periodesClosesState.length > 40) periodesClosesState = periodesClosesState.slice(0, 40);
+      save('batcave-periodes-closes', periodesClosesState);
+    }
+    return change;
+  }
+  /* La periode close que l'on n'a pas encore montree : la plus recente non vue. */
+  function periodeCloseAVoir(){
+    for(var i = 0; i < periodesClosesState.length; i++){ if(periodesClosesState[i] && !periodesClosesState[i].vu) return periodesClosesState[i]; }
+    return null;
+  }
+  function marquerPeriodeVue(id){
+    var p = periodeCloseDe(id);
+    if(!p || p.vu) return;
+    p.vu = true;
+    save('batcave-periodes-closes', periodesClosesState);
+    try{ renderPeriodesCloses(); renderDashboard(); }catch(e){}
+  }
+  function ligneClosePuce(st){
+    return st === 'atteint' ? '<span class="badge good">atteint</span>'
+         : st === 'avance'  ? '<span class="badge good">dépassé</span>'
+         : st === 'retard'  ? '<span class="badge warn">manqué</span>'
+         : st === 'vide'    ? '<span class="badge">rien de saisi</span>'
+         : '<span class="badge">tout juste</span>';
+  }
+  function texteUnePeriodeClose(p){
+    var lignes = (p.lignes || []).map(function(l){
+      var v = l.valeur === null ? '—' : fmtNombre(l.valeur, l.dec);
+      return '<div class="entry-row" style="padding:7px 0;">'
+           + '<span class="ecell"><b>' + escapeHtml(l.label) + '</b></span>'
+           + '<span class="ecell small" style="font-family:var(--font-mono); font-size:12px;">' + v + ' / ' + fmtNombre(l.cible, l.dec) + ' ' + escapeHtml(l.unite) + '</span>'
+           + '<span class="ecell small">' + ligneClosePuce(l.statut) + '</span>'
+           + '</div>';
+    }).join('');
+    return lignes || '<p class="entry-empty">Aucun objectif sur cette période.</p>';
+  }
+  function renderPeriodesCloses(){
+    var panneau = document.getElementById('periodes-closes-panel'),
+        liste = document.getElementById('pc-liste'), resume = document.getElementById('pc-resume');
+    if(!panneau || !liste) return;
+    if(!periodesClosesState.length){ panneau.hidden = true; return; }
+    panneau.hidden = false;
+    if(resume) resume.textContent = periodesClosesState.length + ' période' + (periodesClosesState.length > 1 ? 's' : '') + ' close' + (periodesClosesState.length > 1 ? 's' : '');
+    liste.innerHTML = periodesClosesState.map(function(p){
+      return '<div style="border:1px solid var(--border-soft); border-radius:9px; padding:12px 14px; margin-bottom:10px;">'
+           + '<div class="sub-head" style="margin-bottom:8px;"><h4 style="font-size:16px; margin:0;">' + escapeHtml(p.nom) + '</h4>'
+           + '<span class="sub-note">' + p.tenus + ' / ' + p.total + ' tenus · close le ' + fmtDate(p.cloturee) + '</span></div>'
+           + texteUnePeriodeClose(p) + '</div>';
+    }).join('');
+  }
   MIGRATIONS_DEMARRAGE.push({cle:'batcave-objectifs-recalage', rejouer: function(){
     if(!recalerObjectifsSemaine()) return false;
     try{ renderObjectifs(); renderDashboard(); }catch(e){}
@@ -9836,9 +9945,32 @@
       (o.fixe ? '<span></span>' : '<button class="edel" aria-label="Supprimer" title="Supprimer cet objectif" data-obj-del="' + escapeHtml(o.id) + '">×</button>') +
       '</div>';
   }
+  /* La carte du tableau de bord : une seule fois, la periode la plus recemment close. */
+  function renderPeriodeCloseCarte(){
+    var carte = document.getElementById('periode-close-carte');
+    if(!carte) return;
+    var p = periodeCloseAVoir();
+    if(!p){ carte.hidden = true; return; }
+    carte.hidden = false;
+    carte.dataset.pc = p.id;
+    var t = document.getElementById('pcc-titre'), sc = document.getElementById('pcc-score'), c = document.getElementById('pcc-corps');
+    if(t) t.textContent = '🏁 ' + p.nom + ' est fini';
+    if(sc) sc.textContent = p.tenus + ' / ' + p.total + ' objectifs tenus';
+    if(c) c.innerHTML = texteUnePeriodeClose(p)
+        + '<p class="sub-note" style="margin-top:9px; line-height:1.6;">Ces chiffres ne bougeront plus. Ils restent dans Objectifs → Périodes closes.</p>';
+  }
+  (function(){
+    var b = document.getElementById('pcc-vu');
+    if(b) b.addEventListener('click', function(){
+      var carte = document.getElementById('periode-close-carte');
+      if(carte && carte.dataset.pc) marquerPeriodeVue(carte.dataset.pc);
+      renderPeriodeCloseCarte();
+    });
+  })();
   function renderObjectifs(){
     var liste = document.getElementById('obj-liste'), lab = document.getElementById('obj-periode'), resume = document.getElementById('obj-resume');
     if(!liste || !lab) return;
+    try{ renderPeriodesCloses(); }catch(e){}
     var p = periodeCourante();
     lab.textContent = p.nom;
     document.querySelectorAll('[data-obj-vue]').forEach(function(b){ b.classList.toggle('active', b.dataset.objVue === objVue); });
@@ -11988,6 +12120,11 @@
   }
 
   function renderDashboard(){
+    /* La cloture des periodes echues vit ici, pas dans une migration : une periode se
+       ferme tous les mois, alors qu'une migration ne se rejoue pas a chaque demarrage.
+       cloturerPeriodesEchues() est idempotente et n'ecrit que le jour ou une periode
+       vient vraiment de finir -- au plus douze ecritures par an. */
+    try{ cloturerPeriodesEchues(); renderPeriodeCloseCarte(); }catch(e){}
     var h = now.getHours();
     var greet = h<12 ? 'Bonjour' : (h<18 ? 'Bon après-midi' : 'Bonsoir');
     document.getElementById('dash-greeting').textContent = greet + ' — ' + dateLongue(now) + '.';
@@ -13214,12 +13351,27 @@
      puis la « gramatica » de 13:00. « escribir » n'est jamais rendu ici : c'est de la PRODUCTION,
      elle progresse bien plus lentement que la comprehension, et c'est l'ecrit qui est note.
      De toute facon la phase s'arrete le 18 octobre : les portes ne font qu'avancer la date. */
-  var PORTES = [
-    {n:1, ouvre:2.5, ferme:2.2, erreurs:3, examen:false, bloc:'Projets perso 6',
-     titre:'Un bloc Español devient un bloc Projets perso', quoi:'« serie en VO », mardi 20:30'},
-    {n:2, ouvre:2.8, ferme:2.5, erreurs:2, examen:true, bloc:'Projets perso 1',
-     titre:'Un deuxième bloc Español devient un bloc Projets perso', quoi:'« gramática », 13:00'}
-  ];
+  /* ===== Les portes sont retirees (19 septembre 2026) =====
+     Elles laissaient un bloc Español redevenir un bloc de projet quand la note de suivi
+     des cours tenait sur 21 jours. Le calcul etait juste ; l'arithmetique du calendrier
+     ne l'etait pas. Il faut 12 jours de cours notes dans une fenetre de 21, et la phase
+     Español ne dure que quatre semaines : la premiere porte ne pouvait s'ouvrir que vers
+     le 8-12 octobre, a quelques jours de la bascule automatique du 19, et la seconde
+     exigeait un examen deja passe en espagnol, ce qui n'arrive pas avant janvier. Le
+     gain maximal etait d'environ une heure, pour un panneau, un etat et deux chemins de
+     grille.
+
+     Ce qui reste, et qui valait mieux que la porte : la NOTE QUOTIDIENNE de suivi des
+     cours (0-3 a la cloture) et sa moyenne glissante. C'est la mesure qui dit si
+     l'espagnol d'amphi progresse, et elle est maintenant lue pour elle-meme, dans le
+     panneau, au lieu de n'etre que le carburant d'un portillon.
+
+     La liste est videe plutot que le code supprime : blocsRendusParLesPortes() parcourt
+     PORTES et rend donc toujours null, le moteur de grille garde son chemin intact, et
+     rien ne peut plus convertir un bloc. Consequence a dire clairement : une conversion
+     qui aurait ete decidee avant aujourd'hui (portesEtat.cN) n'est PLUS honoree -- le bloc
+     redevient de l'espagnol. Il n'y en avait aucune, le programme n'ayant pas commence. */
+  var PORTES = [];
   var coursSuiviState = load('batcave-cours-suivi', {});
   if(!coursSuiviState || typeof coursSuiviState !== 'object' || Array.isArray(coursSuiviState)) coursSuiviState = {};
   Object.keys(coursSuiviState).forEach(function(k){
@@ -13379,6 +13531,21 @@
       });
     });
   }
+  /* La lecture du suivi des cours : la moyenne glissante sur 21 jours, ce qu'elle vaut,
+     et sa tendance contre les 21 jours precedents. Pas de seuil, pas de decision : un
+     chiffre qu'il regarde monter. */
+  function lireSuiviCours(iso){
+    var f = fenetrePortes(iso), prec = fenetrePortes(isoDecale(iso || todayISO, -PORTES_FENETRE_J));
+    return {f: f, prec: prec,
+            delta: (f.moyenne !== null && prec.moyenne !== null) ? f.moyenne - prec.moyenne : null};
+  }
+  function motSuiviCours(m){
+    if(m === null) return '';
+    if(m >= 2.6) return 'tu suis le fil.';
+    if(m >= 1.8) return 'tu suis, avec des trous que tu rattrapes.';
+    if(m >= 0.8) return 'tu perds le fil souvent — c\u2019est la langue, pas la matière.';
+    return 'tu ne suis pas encore. Le bloc « Clore le cours du jour » est ta rattrapée.';
+  }
   function renderPortes(){
     var zone = document.getElementById('portes-etat');
     if(!zone) return;
@@ -13387,69 +13554,18 @@
       jour.hidden = !jourDeCours(todayISO);
       if(!jour.hidden) renderNoteCoursDu('portes-note-jour', todayISO, renderPortes);
     }
-    var e = etatPortes(todayISO);
-    memoriserPortes(e);
-    var f = e.fenetre, blocs = [];
-    var entete = f.moyenne === null
-      ? 'Aucun jour de cours noté sur les 21 derniers jours.'
-      : 'Suivi en cours : <b style="color:var(--ink);">' + fmtNombre(f.moyenne, 2) + ' / 3</b> sur <b style="color:var(--ink);">' + f.n + '</b> jour' + (f.n > 1 ? 's' : '') + ' de cours noté' + (f.n > 1 ? 's' : '') + ', du ' + fmtDate(f.debut) + ' au ' + fmtDate(f.fin) + '.';
-    blocs.push('<p class="sub-note" style="line-height:1.6;">' + entete +
-      (e.erreurs === null ? ' Aucun relevé d’erreurs pour 100 mots dans la fenêtre.' : ' Erreurs pour 100 mots : <b style="color:var(--ink);">' + fmtNombre(e.erreurs, 1) + '</b>.') +
-      (e.examen ? ' Premier examen passé : ' + e.examen.matiere + ', le ' + fmtDate(e.examen.date) + '.' : '') + '</p>');
-    var demain = isoDecale(todayISO, 1);
-    e.portes.forEach(function(p){
-      var P = PORTES.filter(function(x){ return x.n === p.n; })[0] || {};
-      var depuis = porteConvertieLe(p.n), actif = depuis && todayISO >= depuis;
-      var couleur = depuis ? 'var(--accent)' : (p.ouverte ? 'var(--good)' : 'var(--ink-dim)');
-      var corps;
-      if(depuis){
-        /* Convertie. Si la porte s'est refermee depuis, on le dit -- mais on ne reprend
-           rien tout seul : c'est a lui de decider s'il rend le bloc a l'espagnol. */
-        corps = '<p class="sub-note" style="margin-top:4px;">' +
-          (actif ? P.quoi + ' est un bloc Projets perso depuis le ' + fmtDate(depuis) + '.'
-                 : P.quoi + ' redeviendra un bloc Projets perso le ' + fmtDate(depuis) + '.') +
-          (p.ouverte ? '' : ' <b style="color:var(--warn);">La porte s’est refermée</b> — ' + p.manque[0] + '. Le bloc reste aux projets tant que tu ne le rends pas.') +
-          '</p><button type="button" class="btn" data-porte-rendre="' + p.n + '" style="margin-top:8px;">Rendre ce bloc à l’espagnol</button>';
-      } else if(p.ouverte){
-        corps = '<p class="sub-note" style="margin-top:4px;">Tu peux convertir ' + P.quoi + ' dès demain. ' +
-          'Elle ne se refermera qu’en dessous de ' + fmtNombre(p.ferme, 1) + ' de moyenne — la zone entre ' +
-          fmtNombre(p.ferme, 1) + ' et ' + fmtNombre(p.ouvre, 1) + ' ne change rien.</p>' +
-          '<button type="button" class="btn btn-primary" data-porte-convertir="' + p.n + '" style="margin-top:8px;">Convertir ce bloc à partir du ' + fmtDate(demain) + '</button>';
-      } else {
-        corps = '<ul class="mini-list" style="margin-top:4px;">' + p.manque.map(function(m){ return '<li>' + m + '</li>'; }).join('') + '</ul>';
-      }
-      blocs.push('<div style="margin-top:12px; padding:10px 12px; border-left:3px solid ' + couleur + '; background:var(--surface-hover);">' +
-        '<p style="font-weight:600; color:var(--ink); font-size:13.5px;">' +
-        (depuis ? '🔓 Porte ' + p.n + ' convertie' : (p.ouverte ? '✅ Porte ' + p.n + ' franchie' : '🔒 Porte ' + p.n)) + ' — ' + p.titre + '</p>' +
-        corps + '</div>');
-    });
-    zone.innerHTML = blocs.join('');
-    /* La conversion touche la grille : tout ce qui la lit doit etre redessine, et le cache
-       de prevuSurPeriode vide, sinon les cibles resteraient sur l'ancienne repartition. */
-    zone.querySelectorAll('[data-porte-convertir]').forEach(function(b){
-      b.addEventListener('click', function(){
-        var n = Number(b.dataset.porteConvertir);
-        convertirPorte(n, isoDecale(todayISO, 1));
-        showToast('🔓 Porte ' + n + ' convertie — le bloc revient aux projets à partir de demain.');
-        apresConversionPorte();
-      });
-    });
-    zone.querySelectorAll('[data-porte-rendre]').forEach(function(b){
-      b.addEventListener('click', function(){
-        var n = Number(b.dataset.porteRendre);
-        convertirPorte(n, null);
-        showToast('↩️ Bloc rendu à l’espagnol.');
-        apresConversionPorte();
-      });
-    });
-    var note = document.getElementById('portes-note');
-    if(note){
-      var converties = e.portes.filter(function(p){ return porteConvertieLe(p.n); }).length;
-      var ouvertes = e.portes.filter(function(p){ return p.ouverte; }).length;
-      note.textContent = converties ? converties + ' porte' + (converties > 1 ? 's' : '') + ' convertie' + (converties > 1 ? 's' : '')
-                       : (!f.assez ? (f.n + '/' + PORTES_MIN_JOURS + ' jours notés')
-                       : (ouvertes ? ouvertes + ' porte' + (ouvertes > 1 ? 's' : '') + ' franchie' + (ouvertes > 1 ? 's' : '') : 'aucune porte franchie'));
+    var L = lireSuiviCours(todayISO), f = L.f, blocs = [];
+    if(f.moyenne === null){
+      blocs.push('<p class="sub-note" style="line-height:1.6;">Aucun jour de cours noté sur les 21 derniers jours. La note se pose à la clôture du soir, les jours où tu as eu cours.</p>');
+    } else {
+      var fleche = L.delta === null ? '' : (L.delta >= 0.15 ? ' <b style="color:var(--good);">▲ +' + fmtNombre(L.delta, 2) + '</b>' : (L.delta <= -0.15 ? ' <b style="color:var(--warn);">▼ ' + fmtNombre(L.delta, 2) + '</b>' : ' <span class="sub-note">stable</span>'));
+      blocs.push('<p style="font-size:15px; line-height:1.6; color:var(--ink-dim);">Sur les 21 derniers jours, tu as suivi tes cours à <b style="font-family:var(--font-mono); font-size:19px; color:var(--cyan-bright);">' +
+        fmtNombre(f.moyenne, 2) + ' / 3</b>' + fleche + '<br><span style="font-size:13.5px;">' + escapeHtml(motSuiviCours(f.moyenne)) + '</span></p>');
+      blocs.push('<p class="sub-note" style="margin-top:8px;">' + f.n + ' jour' + (f.n > 1 ? 's' : '') + ' de cours noté' + (f.n > 1 ? 's' : '') +
+        ' depuis le ' + fmtDate(f.debut) + (f.n < PORTES_MIN_JOURS ? ' — en dessous de ' + PORTES_MIN_JOURS + ', le chiffre est indicatif : une bonne semaine de Documentación ne dit rien de Bioquímica.' : '') + '</p>');
     }
+    blocs.push('<p class="sub-note" style="margin-top:10px; line-height:1.6;">Ce chiffre ne décide de rien : ta grille ne change pas parce qu\u2019il monte. Il répond à une seule question, et c\u2019est la bonne — <b style="color:var(--ink-dim);">est-ce que l\u2019espagnol d\u2019amphi rentre ?</b> S\u2019il stagne sous 2 après trois semaines, ce n\u2019est pas la matière, c\u2019est la langue : mets le bloc de 14:00 (escribir) sur le cours de la veille plutôt que sur un sujet libre.</p>');
+    zone.innerHTML = blocs.join('');
   }
   function apresConversionPorte(){
     try{
@@ -13756,7 +13872,7 @@
   /* Les series recurrentes de l'agenda portent une consigne apres « · » (« 🦇 Anki 1 · cartes
      dues dentaire ») : un evenement se reconnait a la partie avant le separateur. */
   function titreBaseGcal(s){ return String(s || '').split(' · ')[0].trim(); }
-  try{ window.__bcTitreBase = titreBaseGcal; window.__bcConsigne = consigneBloc; window.__bcInsights = buildInsights; window.__bcBlocs = blocsDuPlanning; window.__bcCle = cleJournee; window.__bcJours = joursSuivis; window.__bcInsightsVu = function(){ return insightsVu; }; window.__bcLogSession = logSession; window.__bcPeriode = periodeGrille; window.__bcGrille = grilleDe; window.__bcMinutesEspanol = minutesEspanol; window.__bcCibleEspanol = cibleEspanolJour; window.__bcTypeBloc = typeBlocPlan; window.__bcPlanRotation = planRotation; window.__bcHabitJours = habitJours; window.__bcProgrammeDebut = PROGRAMME_DEBUT; window.__bcJournees = function(){ return journeesState; }; window.__bcJourneeDe = journeeDe; window.__bcPartiels = periodePartiels; window.__bcSessionsPartiels = sessionsPartiels; window.__bcBlocSansPomodoro = blocSansPomodoro; window.__bcRappels = blocsARappeler; window.__bcExamens = function(){ return examensState; }; window.__bcPrevu = minutesPrevuesJour; window.__bcCibleGrille = cibleDepuisGrille; window.__bcPartEcoulee = partEcoulee; window.__bcVacances = function(){ return vacancesState; }; window.__bcJourExclu = jourExclu; window.__bcObjectifs = function(){ return objectifsState.liste; }; window.__bcComparer = comparerObjectif; window.__bcAcquise = habitAcquise; window.__bcAcquises = habitsAcquises; window.__bcSansPomodoro = blocsSansPomodoroDuJour; window.__bcTonPriorite = tonPriorite; window.__bcPrioHist = function(){ return insightsHist; }; window.__bcCloturerSaison = cloturerSaison; window.__bcSaisons = function(){ return saisonsState; }; window.__bcTrimestres = function(){ return TRIMESTRES; }; window.__bcMois = moisListe; window.__bcAnki = function(){ return ankiState; }; window.__bcLireAnki = lireAnki; window.__bcBesoins = besoinsPartiels; window.__bcMatiereBloc = matierePourBloc; window.__bcPortes = etatPortes; window.__bcPortesEtat = function(){ return portesEtat; }; window.__bcConvertirPorte = convertirPorte; window.__bcNoterCours = noterCours; window.__bcGrilleBase = grilleBase; window.__bcSemestre = semestreDe; window.__bcSansCours = sansCoursLe; window.__bcCoucher = heureCoucher; window.__bcLever = heureLever; window.__bcSommeilCible = objectifSommeilPour; window.__bcMarquerSansCours = marquerSansCours; window.__bcJoursSansCours = function(){ return joursSansCoursState; }; window.__bcSeuilRevision = seuilUrgenceRevision; window.__bcCibleJour = cibleJourMinutes; window.__bcReinitGarder = reinitGarder;
+  try{ window.__bcTitreBase = titreBaseGcal; window.__bcConsigne = consigneBloc; window.__bcInsights = buildInsights; window.__bcBlocs = blocsDuPlanning; window.__bcCle = cleJournee; window.__bcJours = joursSuivis; window.__bcInsightsVu = function(){ return insightsVu; }; window.__bcLogSession = logSession; window.__bcPeriode = periodeGrille; window.__bcGrille = grilleDe; window.__bcMinutesEspanol = minutesEspanol; window.__bcCibleEspanol = cibleEspanolJour; window.__bcTypeBloc = typeBlocPlan; window.__bcPlanRotation = planRotation; window.__bcHabitJours = habitJours; window.__bcProgrammeDebut = PROGRAMME_DEBUT; window.__bcJournees = function(){ return journeesState; }; window.__bcJourneeDe = journeeDe; window.__bcPartiels = periodePartiels; window.__bcSessionsPartiels = sessionsPartiels; window.__bcBlocSansPomodoro = blocSansPomodoro; window.__bcRappels = blocsARappeler; window.__bcExamens = function(){ return examensState; }; window.__bcPrevu = minutesPrevuesJour; window.__bcCibleGrille = cibleDepuisGrille; window.__bcPartEcoulee = partEcoulee; window.__bcVacances = function(){ return vacancesState; }; window.__bcJourExclu = jourExclu; window.__bcObjectifs = function(){ return objectifsState.liste; }; window.__bcComparer = comparerObjectif; window.__bcAcquise = habitAcquise; window.__bcAcquises = habitsAcquises; window.__bcSansPomodoro = blocsSansPomodoroDuJour; window.__bcTonPriorite = tonPriorite; window.__bcPrioHist = function(){ return insightsHist; }; window.__bcCloturerSaison = cloturerSaison; window.__bcPeriodesCloses = function(){ return periodesClosesState; }; window.__bcCloturerPeriodes = cloturerPeriodesEchues; window.__bcPeriodesObj = periodesObjectifs; window.__bcSaisons = function(){ return saisonsState; }; window.__bcTrimestres = function(){ return TRIMESTRES; }; window.__bcMois = moisListe; window.__bcAnki = function(){ return ankiState; }; window.__bcLireAnki = lireAnki; window.__bcBesoins = besoinsPartiels; window.__bcMatiereBloc = matierePourBloc; window.__bcPortes = etatPortes; window.__bcPortesEtat = function(){ return portesEtat; }; window.__bcConvertirPorte = convertirPorte; window.__bcNoterCours = noterCours; window.__bcGrilleBase = grilleBase; window.__bcSemestre = semestreDe; window.__bcSansCours = sansCoursLe; window.__bcCoucher = heureCoucher; window.__bcLever = heureLever; window.__bcSommeilCible = objectifSommeilPour; window.__bcMarquerSansCours = marquerSansCours; window.__bcJoursSansCours = function(){ return joursSansCoursState; }; window.__bcSeuilRevision = seuilUrgenceRevision; window.__bcCibleJour = cibleJourMinutes; window.__bcReinitGarder = reinitGarder;
        window.__bcTypeSport = typeSportDe; window.__bcSommeilCible = objectifSommeilPour; window.__bcTestAnki = testAnkiDu; window.__bcRapport = function(){
          var mois = moisListe().filter(function(m){ return todayISO >= m.debut && todayISO <= m.fin; })[0];
          var objs = mois ? objectifsState.liste.filter(function(o){ return o.periode === 'mois' && o.pid === mois.id; }) : [];

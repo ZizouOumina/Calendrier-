@@ -135,10 +135,11 @@ console.log('\n== 277) L\'espagnol progresse : les portes s\'ouvrent, et pas tro
     await ctx.close();
   }
   const [oct, dec, mars] = etats;
-  ok(/aucune porte franchie|jours notés/.test(oct[1].note), 'en octobre, aucune porte franchie (« ' + oct[1].note + ' »)');
-  ok(/porte/.test(mars[1].note), 'en mars, le panneau conclut : « ' + mars[1].note + ' »');
-  ok(mars[1].txt.length > 40 && !/undefined|NaN/.test(mars[1].txt), 'le panneau des portes reste lisible en mars : ' + mars[1].txt.slice(0, 110));
-  ok(/Porte 1/.test(mars[1].txt) && /Porte 2/.test(mars[1].txt), 'les deux portes sont décrites, franchie ou non');
+  ok(!/NaN|undefined/.test(oct[1].note), 'en octobre, le résumé du suivi des cours reste propre (« ' + oct[1].note + ' »)');
+  ok(!/NaN|undefined/.test(mars[1].note), 'en mars aussi : « ' + mars[1].note + ' »');
+  ok(mars[1].txt.length > 40 && !/undefined|NaN/.test(mars[1].txt), 'le panneau du suivi des cours reste lisible en mars : ' + mars[1].txt.slice(0, 110));
+  ok(!/Porte 1|Porte 2|porte franchie/.test(mars[1].txt),
+     'et il ne parle plus de portes : elles sont retirées depuis le 19 septembre');
   console.log('     décembre : « ' + dec[1].note + ' »');
 }
 
