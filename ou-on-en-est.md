@@ -3,6 +3,11 @@
 Ce fichier existe pour une seule raison : que rien ne dépende de ma mémoire.
 Il dit ce qui est fait, ce qui reste, et ce qui attend une décision de toi.
 
+> **Vérification finale, sur la version que tu vas ouvrir :**
+> 89 tests · 0 échec · 0 assertion FAIL · 0 erreur de page.
+> `audit.mjs` aucun défaut · `audit-suivi.mjs` aucune erreur de calcul ·
+> `contraste.mjs` AA tenu sur les deux thèmes · `verif-pages.mjs` toutes saines.
+
 ---
 
 ## Fait cette nuit, commité et poussé (`5b0bcd6`)
