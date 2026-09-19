@@ -1,7 +1,7 @@
 # Progression (à compléter chaque dimanche, puis remplacer le fichier dans le projet)
 
 ## Niveau de départ
-- Diagnostic du **dimanche 20 septembre 2026, 11:20** (à la place de la simulación) : erreurs / 100 mots = … ; oral sans pause = … min ; test Kwiziq = … ; pauses à l'oral = …
+- Diagnostic du **dimanche 27 septembre 2026, 11:20** (à la place de la simulación) : erreurs / 100 mots = … ; oral sans pause = … min ; test Kwiziq = … ; pauses à l'oral = …
 - Niveau de production estimé : … (A2 / B1 / B2)
 
 ## Le point de grammaire de la semaine

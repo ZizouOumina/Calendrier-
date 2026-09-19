@@ -25,8 +25,8 @@ les sept jours de la phase Español, et contre « Le calendrier du S1 ».
 | tutor « vendredi et samedi » | vendredi **11:20**, samedi **17:00** |
 | — | **hablar** lundi 15:00 : manquait |
 | — | **serie en VO** mardi 20:30 : manquait |
-| 3 phases jusqu'en mars | **une seule**, 19 sept. → 18 oct. |
-| diagnostic lundi 14 sept. 13:00 | **dimanche 20 sept. 11:20** |
+| 3 phases jusqu'en mars | **une seule**, 21 sept. → 18 oct. |
+| diagnostic lundi 14 sept. 13:00 | **dimanche 27 sept. 11:20**, premier passage de l'épreuve du dimanche |
 | DELE B2 blanc 17-18 oct. | **retiré** |
 | « Cartes du dernier cours » 09:20 | **Étudier en avance**, 09:20-11:20, un tema *non encore vu* |
 | « Annales » 10:20 | **Question ouverte ou autre**, 11:20 |
@@ -38,22 +38,26 @@ les sept jours de la phase Español, et contre « Le calendrier du S1 ».
 
 ## La chose importante que j'ai trouvée en republiant
 
-**Le jour 1 n'était pas le même dans le code et dans les pages.** Ta décision du
-18 au soir — commencer la Batcave le dimanche — était bien passée dans le code
-(`PROGRAMME_DEBUT = 2026-09-20`) mais dans **aucune page** : toutes annonçaient
-« samedi 19, jour 1 ». Un jour d'écart sur le premier jour compté, et on était
-justement le 19.
+**Le jour 1 n'était pas le même dans le code et dans les pages**, puis tu l'as
+déplacé une dernière fois. Ta décision du 18 au soir — commencer le dimanche —
+était passée dans le code (`PROGRAMME_DEBUT = 2026-09-20`) mais dans **aucune
+page** : toutes annonçaient « samedi 19, jour 1 ». Corrigé partout, puis tu as
+tranché le 19 : **tu commences le lundi**, le temps de régler ton sommeil.
 
-Vérifié dans l'application, pas déduit : `__bcProgrammeDebut` rend bien
-2026-09-20, le dimanche 20 est « Off » au sport, le lundi 21 est « Haut lourd ».
-Donc :
+État final, vérifié dans l'application et pas déduit — `__bcProgrammeDebut` rend
+2026-09-21, le lundi 21 est « Haut lourd » :
 
-- **jour 1 = dimanche 20 septembre** (copie vierge, simulation 09:20, Réexpliquer
-  10:20, diagnostic d'espagnol 11:20, contrôle du dimanche 13:30) ;
-- **samedi 19 = dernière journée de préparation** (guías docentes, Wuolah, trente
-  termes par matière) — la grille tourne, mais rien n'est compté ;
-- **séance de référence = lundi 21 à 05:30**, pas le 19 ;
-- **retests = lundis 19 octobre, 23 novembre, 28 décembre**, pas les samedis.
+- **jour 1 = lundi 21 septembre** (copie vierge à prendre ce matin-là, avant la
+  première saisie) ;
+- **du 19 au 20 = les deux dernières journées de préparation** (guías docentes,
+  Wuolah, trente termes par matière) — la grille tourne, mais rien n'est compté ;
+- **premier jour de courses = samedi 19** (`ANCRE_COURSES`), aujourd'hui, avant
+  même le jour 1 : les courses n'attendent pas le programme ;
+- **séance de référence = lundi 21 à 05:30** — le jour 1 est lui-même un jour de
+  sport, donc pas de décalage ;
+- **retests = lundis 19 octobre, 23 novembre, 28 décembre** ;
+- **épreuve du dimanche = 27 sept., 4, 11 et 18 octobre** — le 27 est la ligne de
+  départ, le 18 la fin de la période d'espagnol.
 
 La Batcave calculait déjà tout ça correctement — mais son propre panneau Sport
 écrivait encore « le samedi, jour 1 du programme ». Corrigé.
@@ -78,7 +82,7 @@ nommaient des blocs qui n'existent plus. Réécrits.
 | Page | Version | Ce qui a changé |
 |---|---|---|
 | La Batcave | v77 | Contraste des sous-onglets ; le texte des portes |
-| Le calendrier du S1 | v0.7 | Jour 1 au dimanche 20, dates de démarrage d'Approfondir, Lire, Réexpliquer |
+| Le calendrier du S1 | v0.8 | Jour 1 au lundi 21, dates de démarrage d'Approfondir, Lire, Réexpliquer |
 | Le semestre | v12 | § 14 réécrit, recettes B, D, E, § 11 |
 | Prise en main | v47 | Jour 1, séance de référence, retests, intercambio |
 | Dossier Español | v2.6 | **§ 05 et § 06 entièrement réécrits**, § 04, § 12, § 13, § 14 |

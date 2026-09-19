@@ -6,7 +6,7 @@ Il n'y a **qu'une seule phase Español dans la grille**, et elle est courte.
 
 | Phase | Dates | Ce que la grille donne |
 |---|---|---|
-| 1 · Production | samedi 19 sept. 2026 → dimanche 18 oct. | Les onze blocs « Projets perso » deviennent des blocs Español : ≈ 11 h/semaine, en plus des vingt heures d'amphi en espagnol |
+| 1 · Production | lundi 21 sept. 2026 → dimanche 18 oct. | Les onze blocs « Projets perso » deviennent des blocs Español : ≈ 11 h/semaine, en plus des vingt heures d'amphi en espagnol |
 | Après | dès le lundi 19 oct. | **Plus un seul bloc Español.** Les onze blocs redeviennent des projets (livrable à rendre d'abord, sinon la boutique) |
 
 Ce n'est pas un renoncement : à partir du 19 octobre, l'espagnol n'est plus un
@@ -25,10 +25,11 @@ Objectif de langue inchangé (B2 de production au 18 oct., C1 en mars 2027), mai
 après le 18 octobre il est porté par l'usage et par ces corrections, pas par des
 heures dédiées dans la grille.
 
-Jalons : **diagnostic le dimanche 20 septembre à 11:20**, à la place de la
-simulación (300 mots en 30 min passés dans « corrige », trois minutes d'oral
-enregistrées, test Kwiziq — les trois chiffres se saisissent à la clôture du
-dimanche) ; première vraie simulación le dimanche 27 ; notes de cours en espagnol
+Jalons : **le premier passage de l'épreuve du dimanche, le 27 septembre à 11:20**,
+à la place de la simulación — c'est la ligne de départ, le diagnostic (300 mots en
+30 min passés dans « corrige », trois minutes d'oral enregistrées, test Kwiziq :
+les trois chiffres se saisissent à la clôture du dimanche). Trois passages
+suivent, les 4, 11 et 18 octobre, et la Batcave projette la pente jusqu'au 18 ; notes de cours en espagnol
 le 27 sept. ; trois minutes d'oral sans pause le 4 oct. ; bascule aux projets le
 19 oct. ; partiels en janvier. **Il n'y a plus de DELE B2 blanc les 17-18
 octobre** : ce week-end-là porte le cuestionario d'Antropología et l'infografía.
