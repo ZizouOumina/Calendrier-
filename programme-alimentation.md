@@ -1,6 +1,6 @@
 # Programme d'alimentation — La Batcave
 
-Copie de référence du plan appliqué dans la Batcave (onglets Repas et Courses), copie du 8 septembre 2026 ; le plan démarre le lundi 14 septembre 2026 avec tout le reste.
+Copie de référence du plan appliqué dans la Batcave (onglets Repas et Courses), copie du 8 septembre 2026 ; le plan démarre le lundi 21 septembre 2026 avec tout le reste (jour 1 du programme ; les cours, eux, ont repris le 14).
 
 ## Le cadre
 - 64 kg · 182 cm · 20 ans · quatre séances de sport par semaine · objectif 70 kg à mars 2027 (environ +1 kg par mois).

@@ -103,7 +103,12 @@ console.log('\n== 111) Dimanche : créneau libre proposé, bouton « Maintenant 
 {
   const { ctx, fr } = await ouvrir('2026-12-06T12:00:00+01:00');
   const t = await texte(fr, '#dash-plan');
-  ok(/créneau libre : Repos — après-midi libre à 17:30 \(1 h 30 min\)/.test(t), 'suggestion : Repos à 17:30 (1 h 30 min)');
+  /* Le repos du dimanche commence maintenant a 18:00 : la course a pied prend 17:30-18:00,
+     et elle n'est PAS un creneau de rattrapage -- c'etait tout l'enjeu. Le creneau propose
+     est donc l'heure de repos qui la suit, pas la demi-heure de course. */
+  ok(/créneau libre : Repos — après-midi libre à 18:00 \(1 h\)/.test(t), 'suggestion : Repos à 18:00 (1 h) — la course n\'est pas proposée en rattrapage');
+  ok(!/\d h \)/.test(t), 'la durée d\'un créneau rond s\'écrit « 1 h », sans espace avant la parenthèse');
+  ok(!/Course à pied/.test(t), 'et la course à pied n\'apparaît nulle part comme créneau libre');
   ok(await fr.evaluate(() => !!document.querySelector('[data-plan-manque-lancer]')), 'bouton « Maintenant » présent');
   await ctx.close();
 }

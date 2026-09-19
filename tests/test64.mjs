@@ -50,6 +50,7 @@ console.log('\n== 231) Phase 1 (mercredi 16 septembre) : blocs Projets perso ren
       w0720: at('weekday','2026-09-16','07:20'), w1530: at('weekday','2026-09-16','15:30'),
       f0530: at('friday','2026-09-18','05:30'), f1120: at('friday','2026-09-18','11:20'),
       s1700: at('saturday','2026-09-19','17:00'), s1800: at('saturday','2026-09-19','18:00'),
+      s1830: at('saturday','2026-09-19','18:30'),
       d1120: at('weekend','2026-09-20','11:20'), d1330: at('weekend','2026-09-20','13:30'), d0530: at('weekend','2026-09-20','05:30'),
       tEsc: window.__bcTypeBloc('Español · escribir'), tConv: window.__bcTypeBloc('Español · conversación real'), tAnki: window.__bcTypeBloc('Español · Anki'),
       cible: window.__bcCibleEspanol('2026-09-16'), periode: (window.__bcPeriode('2026-09-16') || {}).id,
@@ -62,7 +63,10 @@ console.log('\n== 231) Phase 1 (mercredi 16 septembre) : blocs Projets perso ren
   ok(g.w1220 === 'Déjeuner', 'le déjeuner reste le déjeuner : aucun bloc hors Projets perso n\'est renommé (' + g.w1220 + ')');
   ok(g.w0720 === 'Anki 1' && g.w1530 === 'Cours', 'le dentaire ne bouge pas : ' + g.w0720 + ', ' + g.w1530);
   ok(g.f0530 === 'Español · escribir largo' && g.f1120 === 'Español · tutor', 'vendredi : 05:30 escribir largo, 11:20 tutor : ' + g.f0530 + ' / ' + g.f1120);
-  ok(g.s1700 === 'Español · tutor' && g.s1800 === 'Temps libre', 'samedi : 17:00 tutor, 18:00 temps libre : ' + g.s1700 + ' / ' + g.s1800);
+  /* 18:00 n'est plus du temps libre : c'est la course a pied, qui lui prend sa premiere
+     demi-heure. Le temps libre reprend a 18:30. La phase Español ne touche ni l'un ni l'autre. */
+  ok(g.s1700 === 'Español · tutor' && /Course à pied/.test(g.s1800) && g.s1830 === 'Temps libre',
+     'samedi : 17:00 tutor, 18:00 course à pied, 18:30 temps libre : ' + g.s1700 + ' / ' + g.s1800 + ' / ' + g.s1830);
   ok(g.d0530 === undefined && g.d1120 === 'Español · simulación' && g.d1330 === 'Español · balance de la semana', 'dimanche : plus de bloc à 05:30, simulación et balance : ' + [g.d0530, g.d1120, g.d1330].join(' / '));
   ok(g.tEsc === 'projet' && g.tConv === null && g.tAnki === null, 'type : escribir = projet, conversación real et Anki = hors compteur (' + g.tEsc + ', ' + g.tConv + ', ' + g.tAnki + ')');
   ok(g.cible === 105, 'cible Español du jour = 55 + 50 = 105 min (obtenu ' + g.cible + ')');
@@ -168,11 +172,11 @@ console.log('\n== 233) Phase 2 (mardi 20 octobre) puis phase 3 (mardi 8 décembr
     const at = (cle, iso, h) => (window.__bcGrille(cle, iso).find(b => b[0] === h) || [])[1];
     return { p: (window.__bcPeriode('2026-10-20') || {}).id, a1120: at('tuesday','2026-10-20','11:20'), a1300: at('tuesday','2026-10-20','13:00'), a1400: at('tuesday','2026-10-20','14:00'),
              f0530: at('friday','2026-10-23','05:30'), releve: document.querySelector('#bc-grille .v').textContent,
-             p3: (window.__bcPeriode('2026-12-08') || {}).id, d1120: at('tuesday','2026-12-08','11:20'), d1300: at('tuesday','2026-12-08','13:00'), d1400: at('tuesday','2026-12-08','14:00'), ds1800: at('saturday','2026-12-12','18:00') };
+             p3: (window.__bcPeriode('2026-12-08') || {}).id, d1120: at('tuesday','2026-12-08','11:20'), d1300: at('tuesday','2026-12-08','13:00'), d1400: at('tuesday','2026-12-08','14:00'), ds1800: at('saturday','2026-12-12','18:30') };
   });
   ok(g.p === undefined && g.a1120 === 'Question ouverte ou autre' && g.a1300 === 'Projets perso 1' && g.a1400 === 'Projets perso 2' && g.f0530 === 'Projets perso matinal', 'dès le 19 octobre : plus de phase, tous les blocs reviennent aux projets ('+[g.p,g.a1300,g.a1400].join(' / ')+')'); if(0) ok(false, 'classe à 14:00');
   ok(!/phase/.test(g.releve), 'relevé GRILLE : ' + g.releve);
-  ok(g.p3 === undefined && g.d1120 === 'Question ouverte ou autre' && g.d1300 === 'Projets perso 1' && g.d1400 === 'Projets perso 2' && g.ds1800 === 'Temps libre', 'décembre : même grille, tout en projets');
+  ok(g.p3 === undefined && g.d1120 === 'Question ouverte ou autre' && g.d1300 === 'Projets perso 1' && g.d1400 === 'Projets perso 2' && g.ds1800 === 'Temps libre', 'décembre : même grille, tout en projets (temps libre du samedi à 18:30, après la course)');
   await ctx.close();
 }
 

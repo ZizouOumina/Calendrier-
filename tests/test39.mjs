@@ -99,7 +99,11 @@ console.log('\n== 88) Dimanche : repos puis 2 h de batch cooking ==');
   const { ctx, fr } = await ouvrir(DIMANCHE);
   const l = await fr.evaluate(() => [...document.querySelectorAll('#cal-timeline li')]
     .map(x => x.querySelector('.t-time').textContent + ' ' + x.querySelector('label').textContent.trim()));
-  ok(l.some(x => x.startsWith('17:30 Repos')), 'repos à partir de 17:30 (après le ménage), d\'un seul tenant jusqu\'au dîner');
+  /* Le repos du dimanche ne part plus de 17:30 : la course a pied lui prend sa premiere
+     demi-heure, a sa demande (2 x 30 min de cardio dans les creneaux libres). L'ordre
+     attendu est donc menage 16:30, course 17:30, repos 18:00, diner 19:00. */
+  ok(l.some(x => x.startsWith('17:30 🏃 Course à pied')), 'la course à pied ouvre le créneau à 17:30');
+  ok(l.some(x => x.startsWith('18:00 Repos')), 'puis le repos, de 18:00 jusqu\'au dîner');
   const bc = l.findIndex(x => /Batch cooking/.test(x));
   ok(bc > -1 && l[bc].startsWith('14:30'), 'batch cooking à 14:30, juste après Projets perso 2 : ' + (l[bc] || 'absent'));
   ok(bc > -1 && l[bc+1] && l[bc+1].startsWith('16:30'), 'il dure 2 h pleines — suivant : ' + (l[bc+1] || '—'));

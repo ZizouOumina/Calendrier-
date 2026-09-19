@@ -10944,7 +10944,9 @@
       var de = /^[aeiou\u00e9\u00e8\u00eah]/i.test(nomType) ? "d'" : 'de ';
       var noms = m.blocs.map(function(b){ return b.label + ' ' + minutesToTime(b.debut); }).join(', ');
       var texte = 'Bloc manqué — ' + fmtDuree(m.deficit) + ' ' + de + nomType + ' non faites (' + noms + ')' + phraseOccupes(pris);
-      if(libres.length) texte += ' · créneau libre : ' + libres[0].label + ' à ' + libres[0].heure + ' (' + Math.floor(libres[0].minutes/60) + ' h ' + (libres[0].minutes%60 ? (libres[0].minutes%60) + ' min' : '') + ')';
+      /* Duree ecrite a la main ici, et mal : sur un creneau rond elle rendait « 1 h  »,
+       avec l'espace de trop avant la parenthese. fmtDuree sait deja le faire. */
+      if(libres.length) texte += ' · créneau libre : ' + libres[0].label + ' à ' + libres[0].heure + ' (' + fmtDuree(libres[0].minutes) + ')';
       items.push({pri:1, icon:'⏰', text:texte, action:{type:'manque', typeTravail:type, minutes:m.deficit, libre:!!libres.length}});
     });
 
