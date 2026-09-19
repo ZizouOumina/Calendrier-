@@ -32,7 +32,7 @@ async function tranches(page, fr, p, prefix, depuis){
   }
   return k;
 }
-const longues = ['dashboard','bilan','insights','calendrier','agenda','journal','habitudes','repas','sport','budget','etudes','business','objectifs','courses'];
+const longues = ['dashboard','bilan','insights','calendrier','agenda','habitudes','repas','sport','budget','etudes','business','objectifs','courses'];
 {
   const { ctx, page, fr } = await ouvrir('2026-09-07T12:00:00+02:00');
   for(const p of longues) console.log(p, await tranches(page, fr, p, 'b', 850));

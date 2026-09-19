@@ -194,7 +194,7 @@ console.log('\n== 228) Tous les boutons sans texte ont un libellé ; cases du ca
 {
   const { ctx, page, fr } = await ouvrir({width:1440, height:900});
   await fr.evaluate(() => { const r = document.getElementById('ritual-dismiss'); if(r) r.click(); });
-  const pages = ['dashboard','bilan','insights','calendrier','agenda','journal','habitudes','addictions','repas','sport','coran','taches','budget','etudes','business','objectifs','vie','courses'];
+  const pages = ['dashboard','bilan','insights','calendrier','agenda','habitudes','addictions','repas','sport','coran','taches','budget','etudes','business','objectifs','vie','courses'];
   const sansLibelle = await fr.evaluate(ps => {
     const out = [];
     ps.forEach(p => {

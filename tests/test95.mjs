@@ -21,7 +21,7 @@ const DATES = [
   ['2026-10-19T11:25:00+02:00', {}, 'phase 2'], ['2026-11-10T09:25:00+01:00', EX, 'partiels'],
   ['2027-01-26T10:25:00+01:00', {}, 'semestre 2'], ['2027-03-16T11:25:00+01:00', {}, 'grille type'], ['2027-06-10T15:05:00+02:00', {}, 'été']
 ];
-const PAGES = ['dashboard','bilan','calendrier','habitudes','addictions','repas','prep','sport','coran','budget','etudes','objectifs','courses','insights','journal','taches','vie','agenda','business'];
+const PAGES = ['dashboard','bilan','calendrier','habitudes','addictions','repas','prep','sport','coran','budget','etudes','objectifs','courses','insights','taches','vie','agenda','business'];
 for(const [quand, seed, nom] of DATES){
   console.log('\n== ' + nom + ' · ' + quand.slice(0, 16) + ' ==');
   const ctx = await b.newContext({viewport:{width:1440,height:1000}, timezoneId:'Europe/Madrid', locale:'fr-FR'});

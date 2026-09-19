@@ -83,9 +83,17 @@ console.log('\n== 193) Eau, sommeil, poids : Calendrier et Journal → tableau d
   await aller('calendrier');
   await click('#cal-water-plus'); await click('#cal-water-plus');
   ok(/0,5 L \/ 3,0 L/.test(await txt('#cal-water-sub')), 'Calendrier : 0,5 L');
-  await aller('journal');
-  ok(/0,5 \/ 3,0 L/.test(await txt('#jr-water-sub')), 'Journal : 0,5 / 3,0 L');
-  await setVal('j-sommeil', '8'); await setVal('j-poids', '64.5');
+  /* La page « Journal » est supprimee : sommeil et poids se saisissent dans la cloture
+     du soir, et l'eau garde son compteur sur le Calendrier, verifie juste au-dessus. */
+  await fr.evaluate(() => document.body.dispatchEvent(new KeyboardEvent('keydown', {key:'c', bubbles:true})));
+  await page.waitForTimeout(250);
+  await fr.evaluate(() => {
+    const s = document.getElementById('cl-sommeil'), p = document.getElementById('cl-poids');
+    s.value = '8'; s.dispatchEvent(new Event('change', {bubbles:true}));
+    p.value = '64.5'; p.dispatchEvent(new Event('change', {bubbles:true}));
+    document.getElementById('cloture-valider').click();
+  });
+  await page.waitForTimeout(300);
   await aller('dashboard');
   const rel = await txt('#dash-releves');
   ok(/Sommeil[\s\S]*?8 h/.test(rel) && /Poids[\s\S]*?64,5/.test(rel), 'Relevés : sommeil 8 h, poids 64,5 kg');
@@ -155,7 +163,9 @@ console.log('\n== 197) Rechargement : tout est écrit, rien n\'était seulement 
   await page.waitForTimeout(300);
   const d = await fr.evaluate(() => ({ temps: document.getElementById('dash-temps').innerText, total: document.getElementById('dash-temps-total').innerText, compte: document.getElementById('dash-check-count').textContent, releves: document.getElementById('dash-releves').innerText, meals: document.getElementById('dash-meals').innerText, taches: document.getElementById('dash-taches').innerText, coran: document.getElementById('dash-coran').innerText }));
   ok(/Révision[\s\S]*?25 min/.test(d.temps) && /Projets perso[\s\S]*?25 min/.test(d.temps) && /50 min au total/.test(d.total), 'temps du jour conservé (25 + 25 min)');
-  ok(/^1\//.test(d.compte), 'habitude conservée');
+  /* Deux, et non une : la cloture validee en §193 coche elle-meme son habitude du soir.
+     C'est le comportement voulu -- clore sa journee EST une habitude tenue. */
+  ok(/^2\//.test(d.compte), 'habitude conservée, plus celle de la clôture (' + d.compte + ')');
   ok(/64,5/.test(d.releves) && /8 h/.test(d.releves) && /Coran[\s\S]*?3/.test(d.releves), 'poids, sommeil et Coran conservés');
   ok(/Petit-déjeuner[\s\S]*?5\/5/.test(d.meals) && /Réviser anatomie/.test(d.taches) && /3 \/ 180/.test(d.coran), 'repas, tâche et Coran conservés');
   const bannière = await fr.evaluate(() => document.getElementById('coherence-banner').hidden);

@@ -65,15 +65,30 @@ console.log('\n== 191) Bilan, Insights, Calendrier, Agenda ==');
   ok(/Bioquímica|Révision|Anatomía|Cours|Shopify|10 min|0,2/.test(await texte('#ag-jour')) || (await texte('#ag-jtotal')).length > 0, 'la vue du jour se remplit : ' + (await texte('#ag-jtotal')));
 }
 
-console.log('\n== 192) Journal, Habitudes, Dépendances ==');
+console.log('\n== 192) Journal (par la clôture), Habitudes, Dépendances ==');
 {
-  ok(await go('journal'), 'Journal s\'affiche');
-  await setVal('j-sommeil', '7');
-  await setVal('j-poids', '64.5');
-  await click('#jr-water-plus');
+  /* La page « Journal » est supprimee : la cloture du soir a repris ses champs, et
+     l'eau se regle aussi depuis le Calendrier. Meme etat ecrit, autre porte d'entree. */
+  const restes = await fr.evaluate(() => ({
+    section: !!document.querySelector('section.page[data-page="journal"]'),
+    nav: !!document.querySelector('.nav-btn[data-page="journal"]')
+  }));
+  ok(!restes.section && !restes.nav, 'la page Journal n\'existe plus, ni sa section ni son bouton');
+  ok(await go('calendrier'), 'Calendrier s\'affiche');
+  await click('#cal-water-plus');
   await page.waitForTimeout(100);
+  /* « c » ouvre la cloture du soir : c'est elle qui porte desormais sommeil et poids. */
+  await fr.evaluate(() => document.body.dispatchEvent(new KeyboardEvent('keydown', {key:'c', bubbles:true})));
+  await page.waitForTimeout(250);
+  await fr.evaluate(() => {
+    const s = document.getElementById('cl-sommeil'), p = document.getElementById('cl-poids');
+    s.value = '7'; s.dispatchEvent(new Event('change', {bubbles:true}));
+    p.value = '64.5'; p.dispatchEvent(new Event('change', {bubbles:true}));
+  });
+  await fr.evaluate(() => document.getElementById('cloture-valider').click());
+  await page.waitForTimeout(300);
   const j = await local('batcave-journal-2026-09-08');
-  ok(j && j.sommeil === '7' && j.poids === '64.5' && j.water === 250, 'journal : sommeil 7, poids 64,5, eau 250 ml');
+  ok(j && String(j.sommeil) === '7' && String(j.poids) === '64.5' && j.water === 250, 'journal : sommeil 7, poids 64,5, eau 250 ml (' + JSON.stringify(j) + ')');
   ok(await go('habitudes'), 'Habitudes s\'affiche');
   const avant = (await local('batcave-habits')).length;
   await setVal('hab-text', 'Lire 10 pages');

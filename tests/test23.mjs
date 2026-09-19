@@ -82,7 +82,7 @@ const score = await fr.evaluate(() => {
 ok(Number(score) > 0, 'le score du jour bouge après une habitude cochée : ' + score);
 
 console.log('\n== F) Zéro erreur console sur toutes les pages ==');
-const pages = ['dashboard','bilan','insights','calendrier','agenda','journal','habitudes','addictions','repas','sport',
+const pages = ['dashboard','bilan','insights','calendrier','agenda','habitudes','addictions','repas','sport',
                'coran','taches','budget','etudes','business','objectifs','vie','courses'];
 for(const p of pages){
   await fr.evaluate(pg => document.querySelector('.nav-btn[data-page="'+pg+'"]').click(), p);

@@ -75,7 +75,7 @@ const configs = [
   ['iPad mini port.',744,  1133, true]
 ];
 const pages = ['dashboard','etudes','budget','business','habitudes','bilan','insights','calendrier','agenda',
-               'addictions','coran','courses','journal','objectifs','repas','sport','taches','vie'];
+               'addictions','coran','courses','objectifs','repas','sport','taches','vie'];
 for(const [nom,w,h,touch] of configs){
   const ctx = await browser.newContext({ viewport:{width:w,height:h}, hasTouch:touch, isMobile:false, timezoneId:'Europe/Madrid', locale:'fr-FR' });
   const page = await ctx.newPage();

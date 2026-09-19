@@ -45,7 +45,7 @@ async function contexte(vp){
   const fr = page.frames().find(x => x.url().includes('batcave.html'));
   return { ctx, page, fr };
 }
-const pages = ['dashboard','bilan','insights','calendrier','agenda','journal','habitudes','addictions','repas','sport','coran','taches','budget','etudes','business','objectifs','vie','courses'];
+const pages = ['dashboard','bilan','insights','calendrier','agenda','habitudes','addictions','repas','sport','coran','taches','budget','etudes','business','objectifs','vie','courses'];
 {
   const { ctx, page, fr } = await contexte({width:1440, height:900});
   await page.waitForTimeout(600);

@@ -21,7 +21,7 @@ console.log('\n== H) Fichier .html autonome (double-clic, hors artefact) ==');
   ok(masques === 0, 'tous les éléments "hidden" sont réellement masqués : ' + masques + ' visible(s) à tort');
 
   // navigation complète sans erreur
-  const pages = ['dashboard','bilan','insights','calendrier','agenda','journal','habitudes','addictions','repas','sport',
+  const pages = ['dashboard','bilan','insights','calendrier','agenda','habitudes','addictions','repas','sport',
                  'coran','taches','budget','etudes','business','objectifs','vie','courses'];
   let bad = [];
   for(const p of pages){
