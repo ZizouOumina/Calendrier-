@@ -37,13 +37,13 @@ const lignes = fr => fr.evaluate(() => [...document.querySelectorAll('#courses-g
   return { nom: lab.textContent.trim(), ou: tag ? tag.textContent.trim() : null };
 }));
 
-console.log('\n== 320) Les 47 articles portent tous une adresse ==');
+console.log('\n== 320) Les 46 articles portent tous une adresse ==');
 {
   /* Le 19 septembre, l'ancre : toutes les categories sont dues, donc la liste entiere
-     est affichee d'un coup. C'est le seul jour ou ce test voit les 47 lignes. */
+     est affichee d'un coup. C'est le seul jour ou ce test voit les 46 lignes. */
   const { ctx, fr } = await courses('2026-09-19T10:00:00+02:00');
   const l = await lignes(fr);
-  ok(l.length === 47, '47 articles affichés le 19 (' + l.length + ')');
+  ok(l.length === 46, '46 articles affichés le 19 (' + l.length + ')');
   const muets = l.filter(x => !x.ou);
   ok(!muets.length, 'aucun article sans adresse (' + (muets.map(x => x.nom).join(', ') || 'aucun') + ')');
   /* Cinq destinations, pas une de plus : une faute de frappe dans OU_ARTICLE passerait
@@ -90,10 +90,6 @@ console.log('\n== 322) Les trajets qui font gagner de l\'argent ==');
   ok(chez('Papier toilette') === 'Lidl' && chez('Sacs poubelle 30 L') === 'Lidl',
      'le consommable de maison hérite de Lidl, moins cher au volume (' + chez('Papier toilette') + ')');
   ok(chez('Créatine monohydrate') === 'En ligne', 'la créatine se commande en ligne (' + chez('Créatine monohydrate') + ')');
-  /* Son Alcampo ne fait le skyr qu'en nature et fraise : l'arome remplace le pot vanille,
-     et il doit pointer sur le MEME magasin que le skyr, sinon il cree un trajet pour rien. */
-  ok(chez('Arôme de vanille') === 'Alcampo' && chez('Arôme de vanille') === chez('Skyr'),
-     'l\'arôme de vanille part avec le skyr, même magasin (' + chez('Arôme de vanille') + ')');
   await ctx.close();
 }
 
@@ -109,7 +105,7 @@ console.log('\n== 323) La pastille n\'a rien cassé ==');
     coche: document.querySelector('#courses-grid .cat-card li').classList.contains('checked')
   }));
   ok(apres.coche, 'cliquer la pastille coche bien l\'article — elle est dans le label');
-  ok(avant !== apres.txt && /1\/47/.test(apres.txt), 'le compteur suit : ' + apres.txt.trim());
+  ok(avant !== apres.txt && /1\/46/.test(apres.txt), 'le compteur suit : ' + apres.txt.trim());
   /* Coche = « j'ai deja ce qu'il faut » aussi bien que « achete ». L'adresse doit rester
      lisible-mais-en-retrait, jamais disparaitre : il peut decocher. */
   const opac = await fr.evaluate(() => getComputedStyle(document.querySelector('#courses-grid .cat-card li .ou-tag')).opacity);
