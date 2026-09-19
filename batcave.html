@@ -6965,7 +6965,21 @@
     {id:'sucreries', label:'Boissons sucrées'}
   ];
   var addictionState = load('batcave-addictions', {});
-  ADDICTIONS.forEach(function(a){ if(!addictionState[a.id]) addictionState[a.id] = {start:null, record:0, log:[]}; });
+  /* On NORMALISE, on ne se contente pas de combler l'absence. Un enregistrement present
+     mais incomplet -- une synchro cloud interrompue, une sauvegarde editee a la main, un
+     format d'avant -- passait le test « if(!addictionState[a.id]) » et faisait planter
+     a.log.slice() dans renderAddictions. Et ce n'est pas le panneau qui tombait : c'est
+     toute la chaine de rendu, donc la page entiere. Ce qui est valide est garde, ce qui
+     est bancal est repare, rien n'est jete en silence. */
+  ADDICTIONS.forEach(function(a){
+    var v = addictionState[a.id];
+    if(!v || typeof v !== 'object' || Array.isArray(v)) v = {};
+    addictionState[a.id] = {
+      start:  (typeof v.start === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(v.start)) ? v.start : null,
+      record: (Number(v.record) > 0) ? Number(v.record) : 0,
+      log:    Array.isArray(v.log) ? v.log.filter(function(e){ return e && typeof e === 'object' && e.date; }) : []
+    };
+  });
 
   function currentStreak(a){
     if(!a.start) return null;
@@ -7464,7 +7478,7 @@
      (S1 : 20-26 septembre), ce qui la fait coincider avec la semaine calendaire. Le
      dimanche est un jour off de sport : premierJourSport() avance la seance de reference
      -- et les retests des semaines 5, 10 et 15 -- au lundi 21, premier jour non-Off ; il
-     le deduit de la date, rien n'est ecrit en dur. Le premier samedi de courses est le 26
+     le deduit de la date, rien n'est ecrit en dur. Le premier samedi de courses est le 19
      (ANCRE_COURSES) : c'est ce matin-la, et pas le jour 1, que le plan du jour reclame
      l'inventaire du placard et le ticket de caisse.
 
@@ -10634,7 +10648,11 @@
      (PROGRAMME_DEBUT), donc le samedi 19 tombe avant et n'est pas un jour de courses. Garder
      le 19 aurait rendu les reserves dues un jour ou il n'achete rien, et repousse les
      suivantes au 17 octobre. Jusqu'au 26, il mange sur ce qu'il a. */
-  var ANCRE_COURSES = '2026-09-26';
+  /* 19 septembre, sa decision : il fait ses courses AUJOURD'HUI. L'ancre passe donc au
+     samedi 19, avant meme le jour 1 du programme (lundi 21) -- ce qui est normal, les
+     courses ne dependent pas de la Batcave. Les cycles de 4, 5 et 12 semaines repartent
+     de la : 19/9, 17/10, 14/11, 12/12 pour les reserves de 4 semaines. */
+  var ANCRE_COURSES = '2026-09-19';
   function categorieCoursesDue(c, iso){
     var n = c.semaines || 1;
     if(n < 2) return true;
@@ -12952,6 +12970,23 @@
   if(!approState || typeof approState !== 'object' || Array.isArray(approState)) approState = {seq: 0, liste: []};
   if(!Array.isArray(approState.liste)) approState.liste = [];
   if(typeof approState.seq !== 'number') approState.seq = approState.liste.length;
+  /* Meme regle que les dependances : on NORMALISE chaque entree. « notes » est attendue
+     comme un tableau de {lag, n} ; une sauvegarde d'un autre format (un objet date -> note,
+     par exemple) passait les gardes ci-dessus et faisait planter (e.notes || []).some()
+     dans approProchain -- donc la page entiere, pas seulement le panneau. */
+  approState.liste = approState.liste.filter(function(e){ return e && typeof e === 'object' && e.date; }).map(function(e){
+    var notes = e.notes;
+    if(Array.isArray(notes)) notes = notes.filter(function(n){ return n && typeof n === 'object' && typeof n.lag === 'number'; });
+    else if(notes && typeof notes === 'object'){
+      /* ancien format « date -> note » : on le convertit au lieu de le perdre */
+      notes = Object.keys(notes).map(function(d){
+        var lag = /^\d{4}-\d{2}-\d{2}$/.test(d) ? daysBetween(new Date(e.date + 'T00:00:00'), new Date(d + 'T00:00:00')) : null;
+        return (lag === null || isNaN(lag)) ? null : {lag: lag, n: Number(notes[d]), date: d};
+      }).filter(Boolean);
+    } else notes = [];
+    e.notes = notes;
+    return e;
+  });
 
   /* Les rappels dus AU PLUS TARD aujourd'hui et pas encore notes. Le plus ancien passe en
      premier : un J+90 oublie est plus fragile qu'un J+7 du jour. */
@@ -15390,7 +15425,11 @@
   var ANKI_PAQUETS = ['Dentaire', 'Español', 'Business'];
   var ANKI_SEUIL_CHARGE = 220;   /* au-delà, Anki 1 et Anki 2 ne suffisent plus */
   var ankiState = load('batcave-anki', null);
+  /* Troisieme cas de la meme famille : un objet present mais sans « paquets », et
+     ankiState.paquets[p] plantait la page. Un etat sans paquets ne vaut rien : on le
+     ramene a null, ce que le rendu sait deja traiter (« jamais renseigne »). */
   if(!ankiState || typeof ankiState !== 'object' || Array.isArray(ankiState)) ankiState = null;
+  else if(!ankiState.paquets || typeof ankiState.paquets !== 'object' || Array.isArray(ankiState.paquets)) ankiState = null;
   var ankiEnCours = false;
   function ankiAppel(action, params){
     var ctrl = (typeof AbortController !== 'undefined') ? new AbortController() : null;
