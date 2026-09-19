@@ -112,7 +112,11 @@ console.log('\n== 163) Dimanche soir : la revue de la semaine dans la clôture =
      ajout legitime en echec, sans rien dire de ce qui manquait vraiment. */
   ok(/objectif/i.test(constats[0]) && /Fidélité|bloc/.test(constats[1]) && constats.some(c => /Sommeil/.test(c)),
      constats.length + ' constats calculés, objectifs puis fidélité puis sommeil : ' + constats.map(c => c.slice(0, 40)).join(' | '));
-  ok(constats.some(c => /Approfondir/.test(c)), 'et la ligne Approfondir en fait partie');
+  /* Pas de ligne Approfondir ici, et c'est voulu : la semaine du 31 août précède le
+     programme, donc aucun créneau n'y est compté. La revue n'accuse pas d'un manquement
+     des séances qui n'avaient pas lieu d'exister (même garde qu'au jour 1, test96 § 304 bis). */
+  ok(!constats.some(c => /Approfondir/.test(c)),
+     'avant le programme, aucune ligne Approfondir : rien à compter');
   await fr.evaluate(() => {
     document.getElementById('cl-rv-marche').value = 'Les blocs du matin';
     document.getElementById('cl-rv-coince').value = 'Le soir après les cours';

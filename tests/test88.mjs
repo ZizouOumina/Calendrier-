@@ -286,6 +286,102 @@ console.log('\n== 309) L\'onglet Calendrier désencombré ==');
   await ctx.close();
 }
 
+console.log('\n== 310) Sport, Études et Préparation : la référence se plie, le travail reste ==');
+{
+  const { ctx, page, fr } = await ouvrir('2026-09-23T09:00:00+02:00');
+  const aller = async (pg) => { await fr.evaluate(x => document.querySelector('.nav-btn[data-page="'+x+'"]').click(), pg); await page.waitForTimeout(320); };
+  const haut = (pg) => fr.evaluate(x => Math.round(document.querySelector('section.page[data-page="'+x+'"]').getBoundingClientRect().height), pg);
+
+  /* SPORT — « Progression » déroulait les vingt-sept exercices progressifs du programme,
+     1 863 px sur téléphone, 76 % de l'onglet. Le mercredi 23 est un JOUR DE REPOS : rien
+     à ouvrir, et le bouton doit le dire autrement. */
+  await aller('sport');
+  const sp = await fr.evaluate(() => ({
+    entete: document.getElementById('progression-jour').textContent,
+    duJour: document.querySelectorAll('#progression-liste li').length,
+    autres: document.querySelectorAll('#progression-autres li').length,
+    plie: document.getElementById('progression-autres').hidden,
+    bouton: document.getElementById('progression-autres-toggle').textContent.trim()
+  }));
+  const hSport = await haut('sport');
+  ok(hSport < 2600, 'l\'onglet Sport tient en ' + hSport + ' px (3 312 avant, à 1440 px de large)');
+  ok(!sp.duJour && /Jour de repos/.test(sp.entete), 'mercredi est un jour de repos, et il le dit : ' + sp.entete);
+  ok(sp.plie && sp.autres > 0, 'les ' + sp.autres + ' exercices restent pliés, pas perdus');
+  ok(/^Les \d+ exercices du programme ▾$/.test(sp.bouton), 'et le bouton se nomme pour un jour sans séance : « ' + sp.bouton + ' »');
+  await fr.evaluate(() => document.getElementById('progression-autres-toggle').click());
+  await page.waitForTimeout(200);
+  const spo = await fr.evaluate(() => ({
+    ouvert: !document.getElementById('progression-autres').hidden,
+    bouton: document.getElementById('progression-autres-toggle').textContent.trim(),
+    aria: document.getElementById('progression-autres-toggle').getAttribute('aria-expanded')
+  }));
+  ok(spo.ouvert && /▴$/.test(spo.bouton) && spo.aria === 'true', 'et le bouton les rend : « ' + spo.bouton + ' »');
+
+  /* ÉTUDES — trois panneaux de référence pliés, et les portes d'espagnol remontées
+     contre l'espagnol : deux panneaux sur le même sujet étaient séparés par trois autres. */
+  await aller('etudes');
+  const et = await fr.evaluate(() => {
+    const sec = document.querySelector('section.page[data-page="etudes"]');
+    return {
+      ordre: [...sec.querySelectorAll('.panel h3')].map(h => h.textContent.trim().slice(0, 30)),
+      plis: ['eval-fold','portes-fold','agenda-rev-fold'].map(i => document.getElementById(i).hidden),
+      jourVisible: !!document.getElementById('portes-aujourdhui')
+    };
+  });
+  const iEs = et.ordre.findIndex(t => /Espagnol/.test(t) && !/portes/i.test(t));
+  ok(await haut('etudes') < 5200, 'l\'onglet Études tient en ' + (await haut('etudes')) + ' px (6 988 avant)');
+  ok(/portes/i.test(et.ordre[iEs + 1] || ''), 'les portes d\'espagnol suivent l\'espagnol : ' + et.ordre.slice(iEs, iEs + 2).join(' puis '));
+  ok(et.plis.every(Boolean), 'les trois panneaux de référence sont pliés');
+  ok(et.jourVisible, 'mais la note du cours du jour, elle, reste hors du pli');
+  await fr.evaluate(() => document.getElementById('agenda-rev-toggle').click());
+  await page.waitForTimeout(250);
+  const cal = await fr.evaluate(() => ({
+    ouvert: !document.getElementById('agenda-rev-fold').hidden,
+    cases: document.querySelectorAll('#rv-grid > *').length,
+    mois: document.getElementById('rv-mois').textContent
+  }));
+  ok(cal.ouvert && cal.cases >= 28 && /2026/.test(cal.mois),
+     'le calendrier se redessine à l\'ouverture (' + cal.cases + ' cases, ' + cal.mois + ') — une grille cachée mesure zéro');
+
+  /* PRÉPARATION — les quatorze boîtes et les huit règles, de la lecture du dimanche. */
+  await aller('prep');
+  const pr = await fr.evaluate(() => ({
+    boites: document.getElementById('prep-boites').hidden,
+    regles: document.getElementById('prep-regles').hidden,
+    ordre: document.querySelectorAll('#prep-ordre li').length
+  }));
+  ok(await haut('prep') < 2200, 'l\'onglet Préparation tient en ' + (await haut('prep')) + ' px (4 167 avant)');
+  ok(pr.boites && pr.regles, 'boîtes et règles pliées');
+  ok(pr.ordre > 0, 'mais « L\'ordre, minuté » reste ouvert : c\'est la procédure, pas de la référence');
+  await fr.evaluate(() => document.getElementById('prep-boites-toggle').click());
+  await page.waitForTimeout(200);
+  const nb = await fr.evaluate(() => document.querySelectorAll('#prep-boites .prep-boite').length);
+  ok(nb === 7, 'et les sept boîtes de la semaine sont là quand on les ouvre (' + nb + ')');
+  await ctx.close();
+}
+
+console.log('\n== 310 bis) Un jour de séance : seuls ses exercices restent ouverts ==');
+{
+  /* Lundi 21 septembre, premier jour de sport du programme. C'est la branche qui compte :
+     la liste ouverte doit être celle de la séance du jour, et elle seule. */
+  const { ctx, page, fr } = await ouvrir('2026-09-21T09:00:00+02:00');
+  await fr.evaluate(() => document.querySelector('.nav-btn[data-page="sport"]').click());
+  await page.waitForTimeout(350);
+  const v = await fr.evaluate(() => ({
+    entete: document.getElementById('progression-jour').textContent,
+    duJour: [...document.querySelectorAll('#progression-liste li b')].map(b => b.textContent),
+    autres: document.querySelectorAll('#progression-autres li').length,
+    plie: document.getElementById('progression-autres').hidden,
+    bouton: document.getElementById('progression-autres-toggle').textContent.trim()
+  }));
+  ok(v.duJour.length > 0 && /séance du jour/.test(v.entete), 'la séance du jour est ouverte : ' + v.entete);
+  ok(v.plie && v.autres > v.duJour.length, 'les ' + v.autres + ' autres sont pliés derrière un bouton');
+  ok(/^Les \d+ autres exercices ▾$/.test(v.bouton), 'qui dit combien : « ' + v.bouton + ' »');
+  ok(v.duJour.length + v.autres === (await fr.evaluate(() => document.querySelectorAll('#progression-liste li, #progression-autres li').length)),
+     'et rien n\'est perdu entre les deux listes (' + v.duJour.length + ' + ' + v.autres + ')');
+  await ctx.close();
+}
+
 await browser.close();
 console.log(errs ? '\n' + errs + ' ECHEC(S)' : '\nTOUT VERT');
 process.exit(errs ? 1 : 0);

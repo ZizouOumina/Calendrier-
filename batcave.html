@@ -2286,7 +2286,10 @@
           <span class="sub-note" id="progression-exo-note"></span>
         </div>
         <div id="progression-chart" style="margin-bottom:14px;"></div>
+        <p class="sub-note" id="progression-jour" style="margin-bottom:6px; font-weight:600; color:var(--ink-dim);"></p>
         <ul class="entry-list" id="progression-liste"></ul>
+        <button class="btn" id="progression-autres-toggle" type="button" hidden aria-expanded="false" aria-controls="progression-autres" style="margin-top:10px;">—</button>
+        <ul class="entry-list" id="progression-autres" hidden style="margin-top:10px;"></ul>
       </div>
 
       <div class="two-col" style="margin-top:16px;">
@@ -2523,6 +2526,23 @@
       </div>
 
       <!-- Anki : saisi à la main depuis la page publiée, lu tout seul depuis le fichier local. -->
+      <div class="panel sub-panel" id="portes-panel">
+        <div class="sub-head">
+          <h3>🚪 Les portes d'espagnol</h3>
+          <span class="sub-note" id="portes-note">—</span>
+        </div>
+        <div id="portes-aujourdhui" hidden style="margin-bottom:12px; padding:11px 13px; background:var(--surface-hover); border:1px solid var(--border);">
+          <p class="sub-note" style="margin-bottom:8px; font-weight:600; color:var(--ink);">Aujourd'hui, tu as suivi le cours…</p>
+          <div class="mood-row" id="portes-note-jour"></div>
+        </div>
+        <button class="btn" id="portes-toggle" type="button" aria-expanded="false" aria-controls="portes-fold">Voir l'état des trois portes ▾</button>
+        <div id="portes-fold" hidden style="margin-top:12px;">
+        <p class="sub-note" style="margin-bottom:10px; line-height:1.6;">Le seul test qui compte est gratuit : tu es évalué vingt heures par semaine en amphi. Chaque jour de cours, une note de 0 à 3 à la clôture. La moyenne des <b>21 derniers jours</b> — jours de cours notés seulement — décide si un bloc Español peut devenir un bloc Projets perso. Jamais sur la note seule : il faut aussi les erreurs pour 100 mots du dimanche, et pour la deuxième porte un examen réellement passé en espagnol.</p>
+        <div id="portes-etat"></div>
+        <p class="sub-note" style="margin-top:10px; line-height:1.6;">Le troisième bloc — <b>escribir</b> — reste jusqu'au 14 mars, quelle que soit la moyenne. La compréhension progresse vite, la production non : tu seras à l'aise en cours bien avant de savoir écrire une réponse d'examen, et c'est l'écrit qui est noté.</p>
+        </div>
+      </div>
+
       <div class="panel sub-panel" id="anki-panel" hidden>
         <div class="sub-head"><h3>🃏 Anki</h3><span class="sub-note" id="anki-maj">—</span></div>
         <p class="sub-note" style="margin-bottom:10px; line-height:1.6;" id="anki-explique">—</p>
@@ -2569,22 +2589,11 @@
           <h3>⚖️ Comment chaque matière est notée</h3>
           <span class="sub-note" id="matieres-eval-note">—</span>
         </div>
+        <button class="btn" id="eval-toggle" type="button" aria-expanded="false" aria-controls="eval-fold">Voir les onze matières ▾</button>
+        <div id="eval-fold" hidden style="margin-top:12px;">
         <p class="sub-note" style="margin-bottom:10px; line-height:1.6;">Relevé dans les onze <i>guías docentes</i> 2026-27. <b style="color:var(--ink-dim);">Ce qui n'y est pas :</b> la note minimale par activité et les dates de rendu — elles sont sur le Campus Virtual, matière par matière, et ce sont les deux premières choses à y chercher.<br><b style="color:var(--ink-dim);">Le règlement de l'université :</b> 70 % de présence à justifier sur les cursus présentiels, et 90 % pour les séances que le professeur déclare obligatoires — absence justifiée ou non. Sans justificatif, il a le droit de te noter échoué en convocatoria ordinaria. Et une matière ratée en ordinaria <i>et</i> en extraordinaria se refait <b>en entier</b> : aucune note partielle n'est reportée.</p>
         <div id="matieres-eval-corps"></div>
-      </div>
-
-      <div class="panel sub-panel" id="portes-panel">
-        <div class="sub-head">
-          <h3>🚪 Les portes d'espagnol</h3>
-          <span class="sub-note" id="portes-note">—</span>
         </div>
-        <p class="sub-note" style="margin-bottom:10px; line-height:1.6;">Le seul test qui compte est gratuit : tu es évalué vingt heures par semaine en amphi. Chaque jour de cours, une note de 0 à 3 à la clôture. La moyenne des <b>21 derniers jours</b> — jours de cours notés seulement — décide si un bloc Español peut devenir un bloc Projets perso. Jamais sur la note seule : il faut aussi les erreurs pour 100 mots du dimanche, et pour la deuxième porte un examen réellement passé en espagnol.</p>
-        <div id="portes-aujourdhui" hidden style="margin-bottom:12px; padding:11px 13px; background:var(--surface-hover); border:1px solid var(--border);">
-          <p class="sub-note" style="margin-bottom:8px; font-weight:600; color:var(--ink);">Aujourd'hui, tu as suivi le cours…</p>
-          <div class="mood-row" id="portes-note-jour"></div>
-        </div>
-        <div id="portes-etat"></div>
-        <p class="sub-note" style="margin-top:10px; line-height:1.6;">Le troisième bloc — <b>escribir</b> — reste jusqu'au 14 mars, quelle que soit la moyenne. La compréhension progresse vite, la production non : tu seras à l'aise en cours bien avant de savoir écrire une réponse d'examen, et c'est l'écrit qui est noté.</p>
       </div>
 
       <div class="panel sub-panel">
@@ -2600,15 +2609,17 @@
         <div id="sem-matieres"></div>
       </div>
 
-      <div class="panel sub-panel">
+      <div class="panel sub-panel" id="agenda-rev-panel">
         <div class="sub-head">
           <h3>Agenda des révisions</h3>
+        </div>
+        <button class="btn" id="agenda-rev-toggle" type="button" aria-expanded="false" aria-controls="agenda-rev-fold">Ouvrir le calendrier ▾</button>
+        <div id="agenda-rev-fold" hidden style="margin-top:12px;">
           <span style="display:flex; gap:6px; align-items:center;">
             <button class="btn" id="rv-prev" type="button" aria-label="Mois précédent">◀</button>
             <span class="sub-note" id="rv-mois" style="min-width:130px; text-align:center;">—</span>
             <button class="btn" id="rv-next" type="button" aria-label="Mois suivant">▶</button>
           </span>
-        </div>
         <p class="sub-note" style="margin-bottom:10px;">Uniquement tes séances de révision. Clique un jour pour voir sa grille horaire. <span style="white-space:nowrap;">· <span style="display:inline-block; width:9px; height:9px; border:1px dashed var(--border-soft); vertical-align:-1px; margin-right:2px;"></span> rien n’était prévu ce jour-là</span></p>
         <div class="cal-head" id="rv-head"></div>
         <div class="cal-grid" id="rv-grid"></div>
@@ -2620,6 +2631,7 @@
           <span class="sub-note" id="rv-jtotal" style="margin-left:auto;"></span>
         </div>
         <div id="rv-jour"></div>
+        </div>
       </div>
     </section>
 
@@ -2864,11 +2876,13 @@
       <div class="panel" style="margin-bottom:14px;">
         <h3 style="margin-bottom:4px;">Les boîtes</h3>
         <p class="sub-note" style="margin:0 0 10px;" id="prep-boites-note">—</p>
-        <div id="prep-boites" class="prep-boites"></div>
+        <button class="btn" id="prep-boites-toggle" type="button" aria-expanded="false" aria-controls="prep-boites">Voir les quatorze boîtes ▾</button>
+        <div id="prep-boites" class="prep-boites" hidden style="margin-top:12px;"></div>
       </div>
       <div class="panel">
         <h3 style="margin-bottom:4px;">Ce qui ne se prépare pas, et les règles qui comptent</h3>
-        <div id="prep-regles" class="mini-list"></div>
+        <button class="btn" id="prep-regles-toggle" type="button" aria-expanded="false" aria-controls="prep-regles" style="margin-top:6px;">Voir les huit règles ▾</button>
+        <div id="prep-regles" class="mini-list" hidden style="margin-top:12px;"></div>
       </div>
     </section>
 
@@ -7618,7 +7632,11 @@
                                    'Volume par séance');
     var note = document.getElementById('progression-exo-note');
     if(note) note.textContent = logs.length ? logs.length + ' séance' + (logs.length > 1 ? 's' : '') + ' · volume = somme des séries' : '';
-    liste.innerHTML = exos.map(function(ex){
+    /* La liste sortait les VINGT exercices progressifs du programme, tous jours confondus :
+       1 863 px a elle seule, soit 76 % de l'onglet Sport sur telephone. Ce qu'on regarde en
+       arrivant, c'est la seance du jour. Le reste passe derriere un bouton -- rien n'est
+       retire, et le compte est dit. */
+    function ligneExo(ex){
       var l = logsExo(ex.name), dernier = l.length ? l[l.length - 1] : null, avant = l.length > 1 ? l[l.length - 2] : null;
       var c = cibleProchaine(ex), fu = c.f.unite === 's' ? ' s' : '';
       var tendance = '';
@@ -7633,11 +7651,34 @@
              '<span class="ecell small badge ' + (c.monter ? 'warn' : 'gold') + '">cible ' + fmtSeries(c.series) + fu + (c.charge ? ' @' + fmtCharge(c.charge) + ' kg' : '') + (c.monter ? ' · monter' : '') + '</span>' +
              (record ? '<span class="ecell small sub-note">record ' + record + fu + '</span>' : '') +
              '</li>';
-    }).join('');
+    }
+    var sess = SESSIONS.filter(function(x){ return x.type === todayType; })[0];
+    var nomsDuJour = sess ? sess.exercises.map(function(e){ return e.name; }) : [];
+    var duJourExos = exos.filter(function(ex){ return nomsDuJour.indexOf(ex.name) > -1; });
+    var autres = exos.filter(function(ex){ return nomsDuJour.indexOf(ex.name) < 0; });
+    var entete = document.getElementById('progression-jour');
+    var bouton = document.getElementById('progression-autres-toggle');
+    var ulAutres = document.getElementById('progression-autres');
+    if(entete) entete.textContent = duJourExos.length
+      ? 'La séance du jour — ' + duJourExos.length + ' exercice' + (duJourExos.length > 1 ? 's' : '') + ' à faire progresser'
+      : 'Jour de repos : aucun exercice au programme aujourd\'hui.';
+    liste.innerHTML = duJourExos.map(ligneExo).join('');
+    liste.hidden = !duJourExos.length;
+    if(ulAutres) ulAutres.innerHTML = autres.map(ligneExo).join('');
+    if(bouton){
+      bouton.hidden = !autres.length;
+      /* Le libelle porte le compte ET l'etat : sans le compte, on ne sait pas si ca vaut
+         le clic ; sans la fleche, on ne sait pas que c'est ouvert. */
+      var quoi = duJourExos.length ? 'autres exercices' : 'exercices du programme';
+      bouton.textContent = 'Les ' + autres.length + ' ' + quoi + ' ' + (ulAutres && ulAutres.hidden ? '▾' : '▴');
+      bouton.setAttribute('aria-expanded', ulAutres && ulAutres.hidden ? 'false' : 'true');
+    }
   }
   (function(){
     var sel = document.getElementById('progression-exo');
     if(sel) sel.addEventListener('change', function(){ progressionExoChoisi = sel.value; renderProgression(); });
+    var ba = document.getElementById('progression-autres-toggle'), ua = document.getElementById('progression-autres');
+    if(ba && ua) ba.addEventListener('click', function(){ ua.hidden = !ua.hidden; renderProgression(); });
     var t = document.getElementById('programme-toggle'), d = document.getElementById('programme-details');
     if(t && d) t.addEventListener('click', function(){ d.hidden = !d.hidden; t.textContent = 'Échauffements, calibration, progression, lest, retests ' + (d.hidden ? '▾' : '▴'); });
     var note = document.getElementById('programme-note');
@@ -8651,22 +8692,39 @@
       vac ? vac + ' période' + (vac > 1 ? 's' : '') + ' de vacances' : null
     ].filter(Boolean).join(' · ') + ' à venir';
   }
+  /* Un seul mecanisme de pliage pour toute l'application : le bouton porte aria-expanded,
+     le corps porte hidden, et le libelle dit l'etat. Rien n'est persiste -- on repart plie
+     a chaque ouverture, sinon un panneau laisse ouvert un soir reencombre l'onglet pour
+     des semaines. `apres` sert aux panneaux qui dessinent : un contenu cache mesure zero,
+     donc on le redessine a l'ouverture plutot que de le laisser faux. */
+  function plierBloc(idBouton, idCorps, ouvre, ferme, apres){
+    var b = document.getElementById(idBouton), c = document.getElementById(idCorps);
+    if(!b || !c) return;
+    b.addEventListener('click', function(){
+      var ouvert = c.hidden;
+      c.hidden = !ouvert;
+      b.setAttribute('aria-expanded', ouvert ? 'true' : 'false');
+      b.textContent = ouvert ? ferme : ouvre;
+      if(ouvert && typeof apres === 'function'){ try{ apres(); }catch(e){} }
+    });
+  }
   (function(){
-    /* Deux depliages, meme geste : le bouton porte aria-expanded, le corps porte hidden.
-       Rien n'est persiste -- on repart plie a chaque ouverture de l'application, sinon un
-       panneau laisse ouvert un soir reencombre l'onglet pour des semaines. */
-    function plier(idBouton, idCorps, ouvre, ferme){
-      var b = document.getElementById(idBouton), c = document.getElementById(idCorps);
-      if(!b || !c) return;
-      b.addEventListener('click', function(){
-        var ouvert = c.hidden;
-        c.hidden = !ouvert;
-        b.setAttribute('aria-expanded', ouvert ? 'true' : 'false');
-        b.textContent = ouvert ? ferme : ouvre;
-      });
-    }
-    plier('exceptions-toggle', 'exceptions-corps', 'Ouvrir', 'Fermer');
-    plier('ech-plus', 'ech-form', '+ Ajouter une échéance', 'Annuler');
+    plierBloc('exceptions-toggle', 'exceptions-corps', 'Ouvrir', 'Fermer');
+    plierBloc('ech-plus', 'ech-form', '+ Ajouter une échéance', 'Annuler');
+    /* Les trois panneaux de REFERENCE de l'onglet Études : on les consulte, on ne les
+       manipule pas. A eux trois ils faisaient 2 774 px, 40 % de l'onglet sur telephone.
+       Ceux qui dessinent se redessinent a l'ouverture : un contenu cache mesure zero, et
+       une grille calculee sur des mesures nulles n'a aucune chance d'etre juste. */
+    plierBloc('eval-toggle', 'eval-fold', 'Voir les onze matières ▾', 'Masquer les onze matières ▴');
+    /* Préparation : les quatorze boîtes font 2 048 px, la moitié de l'onglet. On ne les lit
+       que le dimanche, pendant la préparation — une fois ouvertes elles le restent pour la
+       séance. Les huit règles, elles, sont de la référence pure. */
+    plierBloc('prep-boites-toggle', 'prep-boites', 'Voir les quatorze boîtes ▾', 'Masquer les boîtes ▴');
+    plierBloc('prep-regles-toggle', 'prep-regles', 'Voir les huit règles ▾', 'Masquer les règles ▴');
+    plierBloc('portes-toggle', 'portes-fold', 'Voir l\'état des trois portes ▾', 'Masquer l\'état des portes ▴',
+              function(){ if(typeof renderPortes === 'function') renderPortes(); });
+    plierBloc('agenda-rev-toggle', 'agenda-rev-fold', 'Ouvrir le calendrier ▾', 'Fermer le calendrier ▴',
+              function(){ if(typeof renderAgendaMois === 'function'){ renderAgendaMois('rv'); renderVueJour('rv'); } });
   })();
   function renderSansCours(){
     var ul = document.getElementById('sans-cours-liste'), note = document.getElementById('sans-cours-note');
