@@ -13957,7 +13957,7 @@
   /* Les series recurrentes de l'agenda portent une consigne apres « · » (« 🦇 Anki 1 · cartes
      dues dentaire ») : un evenement se reconnait a la partie avant le separateur. */
   function titreBaseGcal(s){ return String(s || '').split(' · ')[0].trim(); }
-  try{ window.__bcTitreBase = titreBaseGcal; window.__bcConsigne = consigneBloc; window.__bcInsights = buildInsights; window.__bcBlocs = blocsDuPlanning; window.__bcCle = cleJournee; window.__bcJours = joursSuivis; window.__bcInsightsVu = function(){ return insightsVu; }; window.__bcLogSession = logSession; window.__bcPeriode = periodeGrille; window.__bcGrille = grilleDe; window.__bcMinutesEspanol = minutesEspanol; window.__bcCibleEspanol = cibleEspanolJour; window.__bcTypeBloc = typeBlocPlan; window.__bcPlanRotation = planRotation; window.__bcHabitJours = habitJours; window.__bcProgrammeDebut = PROGRAMME_DEBUT; window.__bcJournees = function(){ return journeesState; }; window.__bcJourneeDe = journeeDe; window.__bcPartiels = periodePartiels; window.__bcSessionsPartiels = sessionsPartiels; window.__bcBlocSansPomodoro = blocSansPomodoro; window.__bcRappels = blocsARappeler; window.__bcExamens = function(){ return examensState; }; window.__bcPrevu = minutesPrevuesJour; window.__bcCibleGrille = cibleDepuisGrille; window.__bcPartEcoulee = partEcoulee; window.__bcVacances = function(){ return vacancesState; }; window.__bcJourExclu = jourExclu; window.__bcObjectifs = function(){ return objectifsState.liste; }; window.__bcComparer = comparerObjectif; window.__bcAcquise = habitAcquise; window.__bcAcquises = habitsAcquises; window.__bcSansPomodoro = blocsSansPomodoroDuJour; window.__bcTonPriorite = tonPriorite; window.__bcPrioHist = function(){ return insightsHist; }; window.__bcCloturerSaison = cloturerSaison; window.__bcPeriodesCloses = function(){ return periodesClosesState; }; window.__bcCloturerPeriodes = cloturerPeriodesEchues; window.__bcPeriodesObj = periodesObjectifs; window.__bcSaisons = function(){ return saisonsState; }; window.__bcTrimestres = function(){ return TRIMESTRES; }; window.__bcMois = moisListe; window.__bcAnki = function(){ return ankiState; }; window.__bcLireAnki = lireAnki; window.__bcBesoins = besoinsPartiels; window.__bcMatiereBloc = matierePourBloc; window.__bcPortes = etatPortes; window.__bcEpreuve = epreuvePassages; window.__bcEpreuveProj = epreuveProjection; window.__bcPortesEtat = function(){ return portesEtat; }; window.__bcConvertirPorte = convertirPorte; window.__bcNoterCours = noterCours; window.__bcGrilleBase = grilleBase; window.__bcSemestre = semestreDe; window.__bcSansCours = sansCoursLe; window.__bcCoucher = heureCoucher; window.__bcLever = heureLever; window.__bcSommeilCible = objectifSommeilPour; window.__bcMarquerSansCours = marquerSansCours; window.__bcJoursSansCours = function(){ return joursSansCoursState; }; window.__bcSeuilRevision = seuilUrgenceRevision; window.__bcCibleJour = cibleJourMinutes; window.__bcReinitGarder = reinitGarder;
+  try{ window.__bcTitreBase = titreBaseGcal; window.__bcConsigne = consigneBloc; window.__bcInsights = buildInsights; window.__bcBlocs = blocsDuPlanning; window.__bcCle = cleJournee; window.__bcJours = joursSuivis; window.__bcInsightsVu = function(){ return insightsVu; }; window.__bcLogSession = logSession; window.__bcPeriode = periodeGrille; window.__bcGrille = grilleDe; window.__bcMinutesEspanol = minutesEspanol; window.__bcCibleEspanol = cibleEspanolJour; window.__bcTypeBloc = typeBlocPlan; window.__bcPlanRotation = planRotation; window.__bcHabitJours = habitJours; window.__bcProgrammeDebut = PROGRAMME_DEBUT; window.__bcJournees = function(){ return journeesState; }; window.__bcJourneeDe = journeeDe; window.__bcPartiels = periodePartiels; window.__bcSessionsPartiels = sessionsPartiels; window.__bcBlocSansPomodoro = blocSansPomodoro; window.__bcRappels = blocsARappeler; window.__bcJoursGcal = joursAPousser; window.__bcExamens = function(){ return examensState; }; window.__bcPrevu = minutesPrevuesJour; window.__bcCibleGrille = cibleDepuisGrille; window.__bcPartEcoulee = partEcoulee; window.__bcVacances = function(){ return vacancesState; }; window.__bcJourExclu = jourExclu; window.__bcObjectifs = function(){ return objectifsState.liste; }; window.__bcComparer = comparerObjectif; window.__bcAcquise = habitAcquise; window.__bcAcquises = habitsAcquises; window.__bcSansPomodoro = blocsSansPomodoroDuJour; window.__bcTonPriorite = tonPriorite; window.__bcPrioHist = function(){ return insightsHist; }; window.__bcCloturerSaison = cloturerSaison; window.__bcPeriodesCloses = function(){ return periodesClosesState; }; window.__bcCloturerPeriodes = cloturerPeriodesEchues; window.__bcPeriodesObj = periodesObjectifs; window.__bcSaisons = function(){ return saisonsState; }; window.__bcTrimestres = function(){ return TRIMESTRES; }; window.__bcMois = moisListe; window.__bcAnki = function(){ return ankiState; }; window.__bcLireAnki = lireAnki; window.__bcBesoins = besoinsPartiels; window.__bcMatiereBloc = matierePourBloc; window.__bcPortes = etatPortes; window.__bcEpreuve = epreuvePassages; window.__bcEpreuveProj = epreuveProjection; window.__bcPortesEtat = function(){ return portesEtat; }; window.__bcConvertirPorte = convertirPorte; window.__bcNoterCours = noterCours; window.__bcGrilleBase = grilleBase; window.__bcSemestre = semestreDe; window.__bcSansCours = sansCoursLe; window.__bcCoucher = heureCoucher; window.__bcLever = heureLever; window.__bcSommeilCible = objectifSommeilPour; window.__bcMarquerSansCours = marquerSansCours; window.__bcJoursSansCours = function(){ return joursSansCoursState; }; window.__bcSeuilRevision = seuilUrgenceRevision; window.__bcCibleJour = cibleJourMinutes; window.__bcReinitGarder = reinitGarder;
        window.__bcTypeSport = typeSportDe; window.__bcSommeilCible = objectifSommeilPour; window.__bcTestAnki = testAnkiDu; window.__bcRapport = function(){
          var mois = moisListe().filter(function(m){ return todayISO >= m.debut && todayISO <= m.fin; })[0];
          var objs = mois ? objectifsState.liste.filter(function(o){ return o.periode === 'mois' && o.pid === mois.id; }) : [];
@@ -13998,6 +13998,26 @@
          })};
        }; }catch(e){}
   function cleGcalJour(iso){ return 'batcave-gcal-' + iso; }
+  /* ===== Quels jours partent dans l'agenda =====
+     Aujourd'hui et demain, comme avant -- au-dela, les series recurrentes 🦇 disent deja
+     la bonne chose, puisque la grille type ne change pas.
+     SAUF les JOURS SANS COURS. Ceux-la, la plage de cours se libere et la soiree remonte
+     d'une heure : la serie recurrente y annonce « Trajet cours », « Trajet retour »,
+     « Clore le cours du jour » et un coucher a 21:55, pour une journee ou il ne va nulle
+     part. Verifie le 19 septembre sur le vendredi 9 octobre, jour de la Comunitat
+     Valenciana : l'agenda portait les trois blocs de trajet et de cloture.
+     Ils ne se corrigeaient que la VEILLE, quand le jour entrait dans la fenetre. On les
+     pousse donc d'avance -- ils sont rares (25 sur les six mois), le surcout est nul. */
+  var GCAL_HORIZON_SANS_COURS_J = 75;
+  function joursAPousser(){
+    var out = [todayISO, isoDecale(todayISO, 1)];
+    for(var i = 2; i <= GCAL_HORIZON_SANS_COURS_J; i++){
+      var d = isoDecale(todayISO, i);
+      if(d > PROGRAMME_FIN) break;
+      if(sansCoursLe(d) && out.indexOf(d) === -1) out.push(d);
+    }
+    return out;
+  }
   /* Tous les blocs du planning : un rappel 5 min avant chacun, 30 min avant le coucher
      (le temps d'eteindre l'ecran). « Temps libre » et le coucher n'occupent pas l'agenda. */
   /* La grille DU JOUR (phase Español, partiels, journee exceptionnelle), pas la grille type :
@@ -14139,11 +14159,15 @@
     gcalEnCours = true;
     var statut = document.getElementById('gcal-statut');
     if(statut) statut.textContent = 'envoi en cours…';
-    var demain = localISO(new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1));
-    return pousserRappelsJour(mcp, todayISO).then(function(a){
-      return pousserRappelsJour(mcp, demain).then(function(b){ return [a, b]; });
-    }).then(function(r){
-      var t = {}; ['crees','majs','adoptes','retires','deja','passes'].forEach(function(k){ t[k] = r[0][k] + r[1][k]; });
+    var jours = joursAPousser();
+    return jours.reduce(function(chaine, iso){
+      return chaine.then(function(acc){
+        return pousserRappelsJour(mcp, iso).then(function(x){ acc.push(x); return acc; });
+      });
+    }, Promise.resolve([])).then(function(r){
+      var t = {}; ['crees','majs','adoptes','retires','deja','passes'].forEach(function(k){
+        t[k] = r.reduce(function(a, x){ return a + x[k]; }, 0);
+      });
       gcalEcriture.dernier = new Date().toISOString(); gcalEcriture.bilan = t; delete gcalEcriture.erreur;
       save('batcave-gcal-ecriture', gcalEcriture);
       gcalEnCours = false; renderGcalPanel();
@@ -14158,8 +14182,18 @@
   /* Desactiver retire les rappels deja envoyes (aujourd'hui et demain) : l'agenda ne garde
      pas de traces d'une option eteinte. */
   function retirerRappels(mcp){
-    var demain = localISO(new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1)), chaine = Promise.resolve(), n = 0;
-    [todayISO, demain].forEach(function(iso){
+    /* On balaie TOUS les releves poses, pas seulement aujourd'hui et demain : depuis que
+       les jours sans cours partent d'avance, un releve peut porter sur une date lointaine.
+       Ne retirer que deux jours y aurait laisse des evenements orphelins, qu'aucune
+       desactivation ne serait plus jamais venue chercher. */
+    var chaine = Promise.resolve(), n = 0, jours = [];
+    try{
+      for(var i = 0; i < localStorage.length; i++){
+        var k = localStorage.key(i);
+        if(k && /^batcave-gcal-\d{4}-\d{2}-\d{2}$/.test(k)) jours.push(k.slice('batcave-gcal-'.length));
+      }
+    }catch(e){ jours = [todayISO, isoDecale(todayISO, 1)]; }
+    jours.forEach(function(iso){
       var releve = load(cleGcalJour(iso), null);
       if(!releve || typeof releve !== 'object') return;
       Object.keys(releve).forEach(function(k){
