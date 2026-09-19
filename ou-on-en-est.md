@@ -68,16 +68,21 @@ nommaient des blocs qui n'existent plus. Réécrits.
 
 ---
 
+## Les sept documents republiés cette nuit
+
+| Page | Version | Ce qui a changé |
+|---|---|---|
+| La Batcave | v77 | Contraste des sous-onglets ; le texte des portes |
+| Le calendrier du S1 | v0.7 | Jour 1 au dimanche 20, dates de démarrage d'Approfondir, Lire, Réexpliquer |
+| Le semestre | v12 | § 14 réécrit, recettes B, D, E, § 11 |
+| Prise en main | v47 | Jour 1, séance de référence, retests, intercambio |
+| Dossier Español | v2.6 | **§ 05 et § 06 entièrement réécrits**, § 04, § 12, § 13, § 14 |
+| Dental Mastery OS | v2.1 | Bloc du soir, semaine 1, colophon |
+| **Ce qu'il reste à faire** | v1, **publié pour la première fois** | https://claude.ai/artifact/BdUn7c8D3ssBDzs2w7MaPZ |
+
 ## À reprendre au réveil, dans l'ordre
 
-1. **Le résultat de la campagne** — elle tournait quand tu es parti. Si elle
-   est rouge, c'est la première chose.
-2. **Republier les deux derniers artefacts** : Prise en main
-   (`QS76Jnd5Rj8ZtfxD74j5d6`) et Dental Mastery OS (`Xx6jKFznJVVR4nacv5nGKm`).
-   Déjà republiés cette nuit : la Batcave (v77), Le calendrier du S1 (v6),
-   Le semestre (v12), et **« Ce qu'il reste à faire », publié pour la première
-   fois** → https://claude.ai/artifact/BdUn7c8D3ssBDzs2w7MaPZ
-3. **Ta question sur les objectifs à la fin des périodes** — j'ai la réponse,
+1. **Ta question sur les objectifs à la fin des périodes** — j'ai la réponse,
    je ne te l'ai pas encore donnée. En deux lignes : rien n'est supprimé, le
    verdict se fige, la période suivante existe déjà, et `recalerObjectifsSemaine()`
    recalcule les cibles « auto » depuis la vraie grille à chaque démarrage —
@@ -87,6 +92,16 @@ nommaient des blocs qui n'existent plus. Réécrits.
    ce que tu as fait ». C'est une des cinq décisions ci-dessous.
 
 ---
+
+
+## Une chose que j'ai tranchée et que tu peux défaire
+
+Le bandeau du Dossier Español, écrit le 17 septembre, disait que **le drill de
+conjugaison de cinq minutes était retiré**. Mais l'accélérateur 4, la section 09,
+la section 12 et la section 13 le décrivent tous comme actif, et les cinq chiffres
+du dimanche le comptent. J'ai gardé le drill et réécrit le bandeau : une page ne
+peut pas se contredire quatre fois. Si tu voulais vraiment le supprimer, c'est
+une ligne à enlever dans quatre sections — dis-le et je le fais.
 
 ## Ce qui attend une décision de toi
 
