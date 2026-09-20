@@ -129,6 +129,29 @@ console.log('\n== 340) La saisie survit et se range ==');
   await ctx.close();
 }
 
+console.log('\n== 341) La toute premiere semaine : le dimanche 20 septembre ==');
+{
+  /* Le defaut qu'il a vu lui-meme, le 20 au soir : « cest ecrit qu'il ya aucune seance
+     cette semaine alors que j'en ai une tout a lh'uere ». Le panneau bornait les sorties a
+     PROGRAMME_DEBUT (21/09), donc la semaine du 14 au 20 n'en portait aucune -- alors que
+     la grille du dimanche porte bien la course de 17:30 et que la serie de l'agenda Google
+     est ancree sur ce 20 septembre. Et pas de sortie inventee le samedi 19 : la serie du
+     samedi ne demarre que le 26. */
+  const { ctx, fr } = await ouvrir('2026-09-20T14:00:00+02:00');
+  const s = await fr.evaluate(() => window.__bcSortiesCardio('2026-09-14'));
+  ok(s.length === 1, 'une seule sortie dans la semaine du 14 septembre (' + s.length + ')');
+  ok(s.length === 1 && s[0].iso === '2026-09-20' && s[0].heure === '17:30',
+     'et c’est le dimanche 20 à 17:30 (' + s.map(x => x.iso + ' ' + x.heure).join(', ') + ')');
+  ok(!s.some(x => x.iso === '2026-09-19'), 'aucune sortie inventée le samedi 19 (série du samedi à partir du 26)');
+  const t = await fr.evaluate(() => (document.getElementById('cardio-panel') || {}).innerText || '');
+  ok(!/Aucune sortie pr[ée]vue cette semaine/.test(t), 'le panneau n’annonce plus « aucune sortie prévue cette semaine »');
+  ok(/17:30/.test(t), 'et il affiche bien l’horaire de la sortie du jour');
+  /* La semaine d'avant, elle, n'a vraiment rien : la borne basse existe toujours. */
+  const avant = await fr.evaluate(() => window.__bcSortiesCardio('2026-09-07'));
+  ok(avant.length === 0, 'la semaine du 7 septembre reste vide (' + avant.length + ')');
+  await ctx.close();
+}
+
 await b.close();
 console.log(err ? '\n' + err + ' ECHEC(S)' : '\nTOUT EST VERT');
 process.exit(err ? 1 : 0);

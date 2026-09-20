@@ -7858,6 +7858,12 @@
      ailleurs. */
   var CARDIO_LABEL = '\ud83c\udfc3 Course \u00e0 pied';
   var CARDIO_CIBLE_MIN = 30;
+  /* Le cardio commence le dimanche 20 septembre, PAS le 21 avec le reste du programme : la
+     premiere sortie est celle de ce dimanche-la, et les series de l'agenda Google sont
+     ancrees dessus (dimanche 20/09, samedi 26/09). Borner a PROGRAMME_DEBUT faisait dire au
+     panneau « aucune sortie prevue cette semaine » le jour meme de la premiere course.
+     Borner a rien du tout aurait invente une sortie le samedi 19, qui n'existe nulle part. */
+  var CARDIO_DEBUT = ANCRE_DIMANCHE;
   var cardioState = load('batcave-cardio', {});
   if(!cardioState || typeof cardioState !== 'object' || Array.isArray(cardioState)) cardioState = {};
 
@@ -7866,7 +7872,7 @@
     var out = [];
     for(var i = 0; i < 7; i++){
       var iso = isoDecale(lundiISO, i);
-      if(iso < PROGRAMME_DEBUT || iso > PROGRAMME_FIN) continue;
+      if(iso < CARDIO_DEBUT || iso > PROGRAMME_FIN) continue;
       var g = grilleDe(cleJournee(dowDe(iso)), iso);
       g.forEach(function(b){
         if(b[1] === CARDIO_LABEL) out.push({iso: iso, heure: b[0]});
