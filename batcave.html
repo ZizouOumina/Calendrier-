@@ -10999,11 +10999,15 @@
         var resume = plusTard.map(function(x){
           var d = courseSuivanteCat(x.c);
           return (d ? fmtDate(d) : '—') + ' · ' + x.c.cat.replace(/ — .*/, '');
-        }).join(' &nbsp;·&nbsp; ');
+        }).join(' · ');
         var n = plusTard.reduce(function(t, x){ return t + x.c.items.length; }, 0);
-        hors.innerHTML = '<details><summary class="sous-onglet" style="display:inline-block; cursor:pointer;">Pas aujourd\'hui — ' +
-          plusTard.length + ' catégorie' + (plusTard.length > 1 ? 's' : '') + ', ' + n + ' articles ▾</summary>' +
-          '<p class="sub-note" style="margin:10px 0 12px; line-height:1.8;">' + resume + '</p>' +
+        /* .sous-onglet porte white-space:nowrap -- fait pour une rangee de pastilles courtes.
+           Une etiquette de quarante-cinq signes debordait donc de 8 px sur iPhone 390. On
+           l'autorise a revenir a la ligne, on la borne au conteneur, et on raccourcit :
+           le nombre d'articles est deja dans la ligne du dessous. */
+        hors.innerHTML = '<details><summary class="sous-onglet" style="display:inline-block; max-width:100%; white-space:normal; cursor:pointer;">Pas aujourd\'hui — ' +
+          plusTard.length + ' catégorie' + (plusTard.length > 1 ? 's' : '') + ' ▾</summary>' +
+          '<p class="sub-note" style="margin:10px 0 12px; line-height:1.8;">' + n + ' articles · ' + resume + '</p>' +
           '<div class="courses-grid" id="courses-grid-plus"></div></details>';
         var g2 = document.getElementById('courses-grid-plus');
         plusTard.forEach(function(x){ g2.appendChild(carteCategorie(x.c, x.ci, false)); });
@@ -11017,7 +11021,7 @@
         ? '<b style="color:var(--ink-dim);">Tes prochains passages</b> — ' + pp.map(function(x){
             return fmtDate(x.date) + ' : ' + x.n + ' article' + (x.n > 1 ? 's' : '') + ' (' +
                    x.cats.map(function(t){ return t.replace(/ — .*/, '').toLowerCase(); }).join(', ') + ')';
-          }).join(' &nbsp;·&nbsp; ')
+          }).join(' · ')
         : '';
     }
     /* Les cases sont maintenant dans deux grilles -- celle du jour et le repli « pas

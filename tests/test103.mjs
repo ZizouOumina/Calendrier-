@@ -58,7 +58,7 @@ console.log('\n== 343) Un samedi ordinaire : la grille ne montre que le frais ==
   const v = await vue(fr);
   ok(v.jour.length === 1 && /Chaque semaine/.test(v.jour[0]), 'une seule catégorie dans la grille du jour (' + v.jour.join(', ') + ')');
   ok(/0\/10 .*10 à prendre/.test(v.resume), 'le résumé dit 10, pas 46 (' + v.resume + ')');
-  ok(/7 catégories, 36 articles/.test(v.repli), 'les 36 autres sont dans le repli (' + v.repli + ')');
+  ok(/7 catégories/.test(v.repli), 'les sept autres catégories sont dans le repli (' + v.repli + ')');
   ok(v.tard.length === 7, 'et le repli les contient toutes, rachetables en avance (' + v.tard.length + ')');
   await ctx.close();
 }
