@@ -3416,7 +3416,7 @@
      vestige : une fonctionnalite retiree (batcave-matieres) ou un essai. Elle prend de la
      place dans le quota de 5000 documents et embrouille les sauvegardes, sans que rien ne
      la lise jamais. On la signale ; la suppression reste ton geste. */
-  var CLES_CONNUES = ['addictions','budget-limits','business','coran','courses','dash-more','duaas','duree-bloc','sport-log','objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','courses-plan-v3','courses-plan-v4','courses-plan-v5','courses-plan-v6','ancre-dimanche-v1','shampoing-dim-v1','marche-cible-v1','cardio','kcal-ajustement','gcal-ecriture','reinit','fc-migration-v1','charge','shopify-boutique','journees','examens-heures','vacances','jours-exclus',
+  var CLES_CONNUES = ['addictions','budget-limits','business','coran','courses','dash-more','duaas','duree-bloc','sport-log','objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','courses-plan-v3','courses-plan-v4','courses-plan-v5','courses-plan-v6','courses-plan-v7','ancre-dimanche-v1','shampoing-dim-v1','marche-cible-v1','cardio','kcal-ajustement','gcal-ecriture','reinit','fc-migration-v1','charge','shopify-boutique','journees','examens-heures','vacances','jours-exclus',
     'espagnol','examens','cours-suivi','portes','periodes-closes','fc-prix-icloud-3','fixed-charges','goals','goals-depart','saisons','insights-hist','last-restore-drill','habitlog','habits','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','habits-seed-v7','habits-seed-v8','habits-seed-v9','objectifs-v5-espanol',
     'horizon','last-auto-backup','last-manual-backup','last-bilan-prompt','last-compaction','last-open','last-rotation','notion-url',
     'pomodial-purge','projets','report','revision','revision-fusionnee','revue','sante','sauvegarde','sessions',
@@ -4507,7 +4507,7 @@
      elles repartiraient vers le cloud. La meme remise a zero peut donc etre decidee depuis
      l'appli ou directement dans le cloud. */
   var REINIT_GARDER = ['habits','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','habits-seed-v7','habits-seed-v8','habits-seed-v9','objectifs-v5-espanol','fixed-charges','fc-prix-icloud-3','budget-limits','examens','examens-heures','journees','echeances','vacances','jours-exclus','jours-sans-cours','portes','appro','notion-url','shopify-boutique',
-                       'objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','courses-plan-v3','courses-plan-v4','courses-plan-v5','courses-plan-v6','ancre-dimanche-v1','shampoing-dim-v1','marche-cible-v1','horizon','goals-depart','saisons','periodes-closes','gcal-ecriture','duree-bloc','dash-more','revision-fusionnee','reinit','copie-vierge'];
+                       'objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','courses-plan-v3','courses-plan-v4','courses-plan-v5','courses-plan-v6','courses-plan-v7','ancre-dimanche-v1','shampoing-dim-v1','marche-cible-v1','horizon','goals-depart','saisons','periodes-closes','gcal-ecriture','duree-bloc','dash-more','revision-fusionnee','reinit','copie-vierge'];
   var REINIT_PREFIXES_GARDER = ['pomodial-', 'coherence-ignore-'];
   function reinitGarder(cle){
     var c = cle.indexOf('batcave-') === 0 ? cle.slice(8) : cle;
@@ -10713,48 +10713,84 @@
         art('Beurre de cacahuète', B.cacahuete * 5, 1000, poids, 'pot'),
         art('Huile d\'olive',        B.huile * 5,      750, vol,   'bouteille')
       ]},
-      /* Sante et hygiene : deja vendus au flacon, rien a arrondir. Les rythmes sont des
-         ESTIMATIONS ecrites pour etre corrigees -- il coche ce qu'il a deja. */
-      {cat:'Santé et hygiène — toutes les 4 semaines', semaines:4, ancre:ANCRE_COURSES, items:[
-        {label:'Shampooing',       qte:'1 flacon de 400 ml', note:'4 lavages par semaine'},
-        {label:'Après-shampooing', qte:'1 flacon de 400 ml', note:'4 fois par semaine'},
-        {label:'Gel douche',       qte:'1 flacon de 750 ml', note:'8 douches par semaine'},
-        {label:'Nettoyant visage', qte:'1 flacon de 400 ml',   note:'2 fois par jour, protocole peau'},
-        {label:'Dentifrice',       qte:'2 tubes',   note:'1 tube par mois'},
-        {label:'Déodorant',        qte:'1 de 200 ml',   note:'un 200 ml tient 2 mois'},
-        {label:'Cotons-tiges',     qte:'1 boîte de 200', note:'2 par jour'},
-        {label:'Rasoirs jetables', qte:'1 paquet de 4',   note:'1 par mois'},
-        {label:'Fil dentaire',     qte:'2',},
-        {label:'Lessive',          qte:'1 bidon de 40 doses',  note:'une lessive par samedi'},
-        {label:'Détachant',        qte:'1 flacon', note:'six séances par semaine : la lessive seule ne suffit pas'},
-        {label:'Bain de bouche',   qte:'1 flacon de 500 ml'},
-        {label:'Brossettes interdentaires', qte:'1 boîte', note:'plus efficaces que le fil sur les espaces larges'},
-        {label:'Crème hydratante', qte:'1 tube', note:'la seconde moitié du protocole peau'},
-        {label:'Crème solaire',    qte:'1 tube SPF 50', note:'Alicante, toute l\u2019année — pas seulement l\u2019été'},
-        {label:'Mouchoirs',        qte:'1 pack de 6'}
+      /* ===== Le rythme vit sur l'ARTICLE, pas sur la categorie =====
+         20 septembre, sa remarque : « ya des trucs que j'ai pas besoin de racheter toutes
+         les 4 semaines, cest excessif ». Il avait raison, et pas qu'un peu : un bidon de
+         40 doses de lessive, a une lessive par samedi, tient QUARANTE semaines. La liste
+         lui en faisait racheter un tous les mois -- dix fois trop.
+         Les rythmes etaient des estimations posees en bloc, une par categorie. Ils sont
+         maintenant calcules un par un -- contenance divisee par consommation reelle -- et
+         portes par l'article lui-meme. La categorie ne garde que sa NATURE : ou on achete.
+         Elle est due des qu'UN de ses articles l'est, et n'affiche alors que ceux-la.
+         Les usages qui servent de base sont ceux deja ecrits ailleurs dans la Batcave :
+         4 lavages de cheveux et 8 douches par semaine, nettoyant visage 2 fois par jour
+         (protocole peau), 6 seances de sport, une lessive le samedi, 14 boites a laver le
+         dimanche. Chaque note porte son calcul : s'il constate autre chose, il corrige le
+         chiffre et la ligne suit. Les articles sont ranges du plus frequent au plus rare. */
+      {cat:'Santé et hygiène', semaines:4, ancre:ANCRE_COURSES, items:[
+        {label:'Bain de bouche',   qte:'1 flacon de 500 ml', semaines:4,
+         note:'15 ml par jour, soit 105 ml par semaine : le flacon tient 4 semaines'},
+        {label:'Dentifrice',       qte:'1 tube', semaines:4,
+         note:'un tube de 75 ml \u00e0 trois brossages par jour tient un mois \u2014 1 tube, pas 2'},
+        {label:'Gel douche',       qte:'1 flacon de 750 ml', semaines:8,
+         note:'8 douches par semaine \u00e0 10 ml, soit 80 ml : 9 semaines de flacon'},
+        {label:'D\u00e9odorant',        qte:'1 de 200 ml', semaines:8,
+         note:'un 200 ml tient 2 mois'},
+        {label:'Brossettes interdentaires', qte:'1 bo\u00eete', semaines:8,
+         note:'une brossette par semaine, la bo\u00eete en compte 8'},
+        {label:'Cr\u00e8me hydratante', qte:'1 tube', semaines:8,
+         note:'2 fois par jour, 1 ml : un tube de 100 ml tient 7 semaines'},
+        {label:'Cr\u00e8me solaire',    qte:'1 tube SPF 50', semaines:8,
+         note:'Alicante, toute l\u2019ann\u00e9e \u2014 1 ml de visage par jour, 50 ml tiennent 7 semaines'},
+        {label:'Shampooing',       qte:'1 flacon de 400 ml', semaines:12,
+         note:'4 lavages par semaine \u00e0 8 ml, soit 32 ml : le flacon tient 12 semaines'},
+        {label:'Apr\u00e8s-shampooing', qte:'1 flacon de 400 ml', semaines:12,
+         note:'m\u00eame rythme que le shampooing'},
+        {label:'Nettoyant visage', qte:'1 flacon de 400 ml', semaines:12,
+         note:'2 fois par jour, 2 ml, soit 28 ml par semaine : 14 semaines de flacon'},
+        {label:'Cotons-tiges',     qte:'1 bo\u00eete de 200', semaines:12,
+         note:'2 par jour, soit 14 par semaine : la bo\u00eete tient 14 semaines'},
+        {label:'Mouchoirs',        qte:'1 pack de 6', semaines:12,
+         note:'un paquet toutes les deux semaines'},
+        {label:'Rasoirs jetables', qte:'1 paquet de 4', semaines:16,
+         note:'1 rasoir par mois : le paquet tient quatre mois'},
+        {label:'Fil dentaire',     qte:'1', semaines:16,
+         note:'40 cm par jour, soit 2,8 m par semaine : 50 m tiennent 18 semaines \u2014 1, pas 2'},
+        {label:'D\u00e9tachant',        qte:'1 flacon', semaines:16,
+         note:'six s\u00e9ances par semaine : la lessive seule ne suffit pas, mais 10 ml par traitement durent'},
+        {label:'Lessive',          qte:'1 bidon de 40 doses', semaines:36,
+         note:'une lessive par samedi : 40 doses font 40 semaines. C\u2019\u00e9tait la plus grosse erreur de la liste'}
       ]},
-      /* ===== Maison et menage, remis le 19 septembre =====
-         Ils avaient ete SORTIS de la Batcave a sa demande (« j'en ai en reserve, je rachete
-         au besoin »), puis il les a redemandes. Sa regle rend le rythme inoffensif : s'il
-         voit qu'il lui en reste, il n'achete pas mais il coche quand meme -- la coche dit
-         « j'en ai », pas « j'ai achete ». Un rythme trop frequent ne coute donc rien. */
-      {cat:'Maison — toutes les 4 semaines', semaines:4, ancre:ANCRE_COURSES, items:[
-        {label:'Papier toilette',  qte:'1 lot de 12'},
-        {label:'Sacs poubelle 30 L', qte:'1 rouleau'},
-        {label:'Sacs poubelle salle de bain', qte:'1 rouleau'},
-        {label:'Liquide vaisselle', qte:'1 flacon de 750 ml', note:'sept portions à laver chaque dimanche'},
-        {label:'Éponges + grattoirs', qte:'1 lot de 6'},
-        {label:'Essuie-tout',      qte:'1 lot de 6'}
+      /* Maison : meme traitement. Un lot de 12 rouleaux de papier toilette, a une
+         personne, ne se rachete pas tous les mois, et un lot de 6 eponges encore moins. */
+      {cat:'Maison', semaines:8, ancre:ANCRE_COURSES, items:[
+        {label:'Sacs poubelle 30 L', qte:'1 rouleau', semaines:8,
+         note:'2 sacs par semaine, le rouleau en compte 20'},
+        {label:'Liquide vaisselle', qte:'1 flacon de 750 ml', semaines:8,
+         note:'14 bo\u00eetes le dimanche plus le quotidien, environ 85 ml par semaine : 9 semaines'},
+        {label:'Papier toilette',  qte:'1 lot de 12', semaines:12,
+         note:'un rouleau par semaine : le lot tient 12 semaines'},
+        {label:'Essuie-tout',      qte:'1 lot de 6', semaines:16,
+         note:'un rouleau toutes les trois semaines'},
+        {label:'Sacs poubelle salle de bain', qte:'1 rouleau', semaines:24,
+         note:'un sac par semaine, le rouleau en compte 30'},
+        {label:'\u00c9ponges + grattoirs', qte:'1 lot de 6', semaines:24,
+         note:'une \u00e9ponge par mois : le lot tient six mois'}
       ]},
-      /* Huit semaines et non quatre : un bidon de fregasuelos ou un spray tiennent des mois
-         a une personne. Le bloc « 🧽 Ménage » du dimanche nomme trois surfaces -- sols, salle
-         de bain, poussiere -- et cette liste porte exactement de quoi les faire, pas plus. */
-      {cat:'Ménage — toutes les 8 semaines', semaines:8, ancre:ANCRE_COURSES, items:[
-        {label:'Nettoyant sol (fregasuelos)', qte:'1 bidon de 1,5 L'},
-        {label:'Anticalcaire salle de bain', qte:'1 spray', note:'l\u2019eau d\u2019Alicante est très calcaire : c\u2019est le produit qui sert le plus'},
-        {label:'Multi-usage dégraissant', qte:'1 spray', note:'cuisine et plans de travail'},
-        {label:'Nettoyant WC',     qte:'1 flacon'},
-        {label:'Gants de ménage',  qte:'1 paire'}
+      /* Le bloc « Ménage » du dimanche nomme trois surfaces -- sols, salle de bain,
+         poussiere. Un spray de 750 ml a un passage par semaine tient un trimestre, pas
+         huit semaines ; un bidon de fregasuelos de 1,5 L tient presque un an. */
+      {cat:'M\u00e9nage', semaines:12, ancre:ANCRE_COURSES, items:[
+        {label:'Multi-usage d\u00e9graissant', qte:'1 spray', semaines:12,
+         note:'cuisine et plans de travail, 2 fois par semaine \u00e0 30 ml : 12 semaines'},
+        {label:'Nettoyant WC',     qte:'1 flacon', semaines:12,
+         note:'un passage par semaine \u00e0 50 ml : 15 semaines de flacon'},
+        {label:'Anticalcaire salle de bain', qte:'1 spray', semaines:16,
+         note:'l\u2019eau d\u2019Alicante est tr\u00e8s calcaire, c\u2019est le produit qui sert le plus : 40 ml par semaine'},
+        {label:'Nettoyant sol (fregasuelos)', qte:'1 bidon de 1,5 L', semaines:24,
+         note:'30 ml par lavage, un lavage par semaine : le bidon tient presque un an'},
+        {label:'Gants de m\u00e9nage',  qte:'1 paire', semaines:24,
+         note:'une paire par semestre'}
       ]},
       {cat:'Tous les 3 mois', semaines:12, ancre:ANCRE_COURSES, items:[
         {label:'Brosse à dents', qte:'1', note:'une toutes les 12 semaines'},
@@ -10781,19 +10817,35 @@
      matin. Les deux etaient confondus, et les deux rappels du premier jour (relever le
      placard, garder le ticket) seraient donc tombes le 19, un jour ou il n'y allait pas. */
   var PREMIER_JOUR_COURSES = '2026-09-20';
-  function categorieCoursesDue(c, iso){
-    var n = c.semaines || 1;
+  /* ===== Le cycle appartient a l'ARTICLE ===== (20 septembre)
+     Il tenait a la categorie : tout le rayon hygiene se rachetait toutes les 4 semaines,
+     lessive comprise -- un bidon de 40 doses pour une lessive par samedi, soit dix fois
+     trop souvent. Chaque article porte donc maintenant son propre cycle, et la categorie
+     ne sert plus qu'a dire OU on achete. Elle retombe a son ancre comme avant : sans
+     « semaines » sur l'article, c'est celui de la categorie qui s'applique. */
+  function cycleArticle(c, it){ return Number(it && it.semaines) || Number(c.semaines) || 1; }
+  function estDuCycle(n, ancre, aussi, iso){
     if(n < 2) return true;
     var d = iso || todayISO;
     /* « aussi » : les jours de courses exceptionnels, hors rythme. Le 13 septembre en est
        un -- il fait ses courses un dimanche, une fois, avant que le rythme du samedi
        commence. Sans ca il faudrait ancrer les cycles sur un dimanche, et TOUS les
        rachats suivants tomberaient un dimanche. */
-    if(c.aussi && c.aussi.indexOf(d) > -1) return true;
-    var a = c.ancre || ANCRE_COURSES;
+    if(aussi && aussi.indexOf(d) > -1) return true;
+    var a = ancre || ANCRE_COURSES;
     if(d < a) return false;
     return Math.floor(daysBetween(new Date(a + 'T00:00:00'), new Date(d + 'T00:00:00')) / 7) % n === 0;
   }
+  function articleDu(c, it, iso){ return estDuCycle(cycleArticle(c, it), c.ancre, c.aussi, iso); }
+  function indicesDus(c, iso){
+    var out = [];
+    c.items.forEach(function(it, ii){ if(articleDu(c, it, iso)) out.push(ii); });
+    return out;
+  }
+  function tousIndices(c){ return c.items.map(function(_, ii){ return ii; }); }
+  /* Une categorie est due des qu'UN de ses articles l'est -- et elle n'affichera que
+     ceux-la. Le reste de la categorie descend dans le repli avec sa propre date. */
+  function categorieCoursesDue(c, iso){ return indicesDus(c, iso).length > 0; }
   function prochaineCourseCat(c, iso){
     var d = new Date((iso || todayISO) + 'T00:00:00');
     for(var i = 0; i < 400; i++){ if(categorieCoursesDue(c, localISO(d))) return localISO(d); d.setDate(d.getDate() + 1); }
@@ -10809,20 +10861,32 @@
      annoncait « puis le 21 septembre » un dimanche : le lendemain, c'est-a-dire une date
      a laquelle il ne fait jamais de courses. */
   var JOUR_COURSES = 6;
-  function courseSuivanteCat(c, iso){
+  /* 500 jours et non 400 : la lessive tourne sur 36 semaines, soit 252 jours, et le repli
+     doit pouvoir annoncer sa date depuis n'importe quel point du cycle. */
+  function courseSuivanteIdx(c, idx, iso){
     var d = new Date(isoDecale(iso || todayISO, 1) + 'T00:00:00');
-    for(var i = 0; i < 400; i++){
+    for(var i = 0; i < 500; i++){
       var j = localISO(d);
-      if(dowDe(j) === JOUR_COURSES && categorieCoursesDue(c, j)) return j;
+      if(dowDe(j) === JOUR_COURSES){
+        for(var k = 0; k < idx.length; k++){ if(articleDu(c, c.items[idx[k]], j)) return j; }
+      }
       d.setDate(d.getDate() + 1);
     }
     return null;
   }
-  /* Le rythme d'une categorie en clair, sans avoir a le lire dans son titre. */
-  function rythmeCourseCat(c){
-    var n = c.semaines || 1;
-    return n < 2 ? 'chaque samedi' : 'toutes les ' + n + ' semaines';
+  function courseSuivanteCat(c, iso){ return courseSuivanteIdx(c, tousIndices(c), iso); }
+  /* Le rythme en clair, sans avoir a le lire dans un titre. Une categorie dont les
+     articles ne partagent plus un seul cycle ne peut plus en annoncer un : elle renvoie
+     a ses lignes, qui portent chacune le leur. */
+  function rythmeCycle(n){ return n < 2 ? 'chaque samedi' : 'toutes les ' + n + ' semaines'; }
+  function rythmeCourt(n){ return n < 2 ? '' : n + ' sem.'; }
+  function rythmeCourseIdx(c, idx){
+    var vus = {};
+    idx.forEach(function(ii){ vus[cycleArticle(c, c.items[ii])] = true; });
+    var k = Object.keys(vus);
+    return k.length === 1 ? rythmeCycle(Number(k[0])) : 'un rythme par article';
   }
+  function rythmeCourseCat(c){ return rythmeCourseIdx(c, tousIndices(c)); }
   /* Les prochains passages, groupes par date : « sam. 26 sept. — le frais seul ».
      C'est la reponse a « je n'ai aucune idee des dates ou je dois acheter les trucs ». */
   function prochainsPassagesCourses(iso, n){
@@ -10832,7 +10896,7 @@
       if(dowDe(jour) !== JOUR_COURSES) continue;
       var dues = plan.filter(function(c){ return categorieCoursesDue(c, jour); });
       if(dues.length) out.push({date: jour, cats: dues.map(function(c){ return c.cat; }),
-                                n: dues.reduce(function(t, c){ return t + c.items.length; }, 0)});
+                                n: dues.reduce(function(t, c){ return t + indicesDus(c, jour).length; }, 0)});
     }
     return out;
   }
@@ -10841,10 +10905,7 @@
      de partir vaut moins que pas de total du tout. */
   function coursesDuJour(plan, iso){
     var n = 0;
-    plan.forEach(function(c){
-      if(!categorieCoursesDue(c, iso)) return;
-      n += c.items.length;
-    });
+    plan.forEach(function(c){ n += indicesDus(c, iso).length; });
     return {n: n};
   }
   /* ===== Ou acheter quoi =====
@@ -10860,9 +10921,9 @@
      - Mercadona garde l'hygiene et le menage, ou ses marques propres sont dures a battre ;
      - les fruits vont au mercadillo, jamais en supermarche : 30 a 40 % d'ecart. */
   var OU_DEFAUT = {
-    'Santé et hygiène — toutes les 4 semaines': 'Mercadona',
-    'Maison — toutes les 4 semaines': 'Lidl',
-    'Ménage — toutes les 8 semaines': 'Mercadona',
+    'Santé et hygiène': 'Mercadona',
+    'Maison': 'Lidl',
+    'Ménage': 'Mercadona',
     'Tous les 3 mois': 'Mercadona'
   };
   var OU_ARTICLE = {
@@ -10884,8 +10945,11 @@
        le plan et l'affichage, et le 13 septembre ne montrait que le frais. */
     COURSES = plan.map(function(c){ return {cat: c.cat, semaines: c.semaines || 1, ancre: c.ancre, aussi: c.aussi,
       items: c.items.map(function(i){
+        /* « semaines » doit voyager jusqu'ici, comme « aussi » plus haut : sans lui le
+           cycle propre de l'article se perdait entre le plan et l'affichage, et tout le
+           rayon retombait sur celui de la categorie. */
         return {texte: i.label + ' \u2014 ' + i.qte, ou: ouAcheter(i.label, c.cat),
-                note: i.note};
+                note: i.note, semaines: i.semaines};
       })}; });
     return plan;
   }
@@ -10940,6 +11004,39 @@
     if(change){ coursesState = bouge; save('batcave-courses', coursesState); }
     saveInternal('batcave-courses-plan-v6', true);
   }
+  /* v7 : les cycles descendent de la categorie a l'article (20 septembre, sa remarque
+     « ya des trucs que j'ai pas besoin de racheter toutes les 4 semaines »). Les trois
+     rayons concernes sont desormais ranges du plus frequent au plus rare, donc leurs
+     positions ont bouge -- et les coches sont indexees par position.
+     On NE VIDE PAS, pour la meme raison qu'en v6 : ses coches du 20 septembre valent
+     quelque chose. On les REMAPPE, ancien rang -> nouveau rang, ce qui laisse chaque
+     article exactement dans l'etat ou il etait. Aucun article n'est retire ni ajoute :
+     les trois tables sont des permutations completes, donc rien ne se perd.
+     Categories concernees : 4 = Sante et hygiene, 5 = Maison, 6 = Menage. Les autres
+     (frais, surgeles, reserves, 5 semaines, trimestriel) n'ont pas bouge d'un cran. */
+  if(!load('batcave-courses-plan-v7', false)){
+    var RANGS_V7 = {
+      /* Shampooing, Apres-shampooing, Gel douche, Nettoyant visage, Dentifrice, Deodorant,
+         Cotons-tiges, Rasoirs, Fil dentaire, Lessive, Detachant, Bain de bouche,
+         Brossettes, Creme hydratante, Creme solaire, Mouchoirs */
+      4: [7, 8, 2, 9, 1, 3, 10, 12, 13, 15, 14, 0, 4, 5, 6, 11],
+      /* Papier toilette, Sacs 30 L, Sacs salle de bain, Liquide vaisselle, Eponges, Essuie-tout */
+      5: [2, 0, 4, 1, 5, 3],
+      /* Nettoyant sol, Anticalcaire, Multi-usage, Nettoyant WC, Gants */
+      6: [3, 2, 0, 1, 4]
+    };
+    var remap = {}, bougeV7 = false;
+    Object.keys(coursesState).forEach(function(k){
+      var m = /^(\d+)-(\d+)$/.exec(k);
+      if(!m){ remap[k] = coursesState[k]; return; }
+      var table = RANGS_V7[Number(m[1])], ancien = Number(m[2]);
+      if(!table || table[ancien] === undefined){ remap[k] = coursesState[k]; return; }
+      remap[m[1] + '-' + table[ancien]] = coursesState[k];
+      if(table[ancien] !== ancien) bougeV7 = true;
+    });
+    if(bougeV7){ coursesState = remap; save('batcave-courses', coursesState); }
+    saveInternal('batcave-courses-plan-v7', true);
+  }
 
   /* Seules les categories DUES cette semaine comptent. Sans ce filtre, l'habitude
      « Courses faites » -- qui ne se coche que lorsque tout est coche -- ne se validerait
@@ -10947,8 +11044,7 @@
   function coursesTotals(iso){
     var total=0, checked=0;
     COURSES.forEach(function(c,ci){
-      if(!categorieCoursesDue(c, iso)) return;
-      c.items.forEach(function(it,ii){ total++; if(coursesState[ci+'-'+ii]) checked++; });
+      indicesDus(c, iso).forEach(function(ii){ total++; if(coursesState[ci+'-'+ii]) checked++; });
     });
     return {total:total, checked:checked};
   }
@@ -10970,31 +11066,44 @@
        20 septembre : « je dois tout recocher alors qu'il y a des trucs que je dois pas
        acheter avant plusieurs semaines ». Les autres descendent dans un repli, avec
        leur date. */
-    function carteCategorie(c, ci, due){
+    /* La carte ne porte plus TOUTE la categorie mais la tranche d'articles qu'on lui
+       passe : ceux qui sont dus aujourd'hui dans la grille du jour, les autres dans le
+       repli. Une categorie aux rythmes melanges apparait donc dans les deux, ce qui est
+       exactement ce qu'il faut -- le bain de bouche est du ce samedi, la lessive non.
+       « ii » reste l'index REEL de l'article dans la categorie : les coches sont indexees
+       par position, et une position calculee sur la tranche les ferait toutes glisser. */
+    function carteCategorie(c, ci, indices, due){
       var card = document.createElement('div');
       card.className = 'cat-card';
-      var itemsHtml = c.items.map(function(it, ii){
-        var key = ci+'-'+ii, checked = !!coursesState[key];
+      var itemsHtml = indices.map(function(ii){
+        var it = c.items[ii], key = ci+'-'+ii, checked = !!coursesState[key];
+        var court = rythmeCourt(cycleArticle(c, it));
         return '<li class="'+(checked?'checked':'')+'">' +
                '<input type="checkbox" id="c-'+key+'" data-course="'+key+'" '+(checked?'checked':'')+'>' +
                '<label for="c-'+key+'">'+it.texte +
                (it.ou ? ' <span class="ou-tag">' + escapeHtml(it.ou) + '</span>' : '') +
+               (court ? ' <span class="ou-tag">' + court + '</span>' : '') +
                (it.note ? ' <span class="sub-note">— ' + escapeHtml(it.note) + '</span>' : '') +
                '</label></li>';
       }).join('');
       /* La date est ecrite DANS LES DEUX CAS. Une categorie due qui ne disait rien laissait
          la page sans aucune date le jour ou tout tombait ensemble. */
-      var suiv = courseSuivanteCat(c), quand = due
-        ? '<b style="color:var(--good);">aujourd\'hui</b> · ' + rythmeCourseCat(c) + (suiv ? ', puis le <b style="color:var(--ink-dim);">' + fmtDate(suiv) + '</b>' : '')
-        : 'prochaine fois le <b style="color:var(--ink-dim);">' + (suiv ? fmtDate(suiv) : '—') + '</b> · ' + rythmeCourseCat(c);
+      /* La date se calcule sur la TRANCHE affichee : le repli d'une categorie a moitie
+         due annoncerait sinon « aujourd'hui », alors que ses lignes ne reviennent que
+         dans huit semaines. */
+      var suiv = courseSuivanteIdx(c, indices), rythme = rythmeCourseIdx(c, indices), quand = due
+        ? '<b style="color:var(--good);">aujourd\'hui</b> · ' + rythme + (suiv ? ', puis le <b style="color:var(--ink-dim);">' + fmtDate(suiv) + '</b>' : '')
+        : 'prochaine fois le <b style="color:var(--ink-dim);">' + (suiv ? fmtDate(suiv) : '—') + '</b> · ' + rythme;
       if(!due) card.style.opacity = '0.62';
       card.innerHTML = '<h4>' + c.cat + '</h4><p class="sub-note" style="margin:0 0 6px;">' + quand + '</p><ul>' + itemsHtml + '</ul>';
       return card;
     }
     var plusTard = [];
     COURSES.forEach(function(c, ci){
-      if(categorieCoursesDue(c)) grid.appendChild(carteCategorie(c, ci, true));
-      else plusTard.push({c: c, ci: ci});
+      var dus = [], tard = [];
+      c.items.forEach(function(it, ii){ (articleDu(c, it) ? dus : tard).push(ii); });
+      if(dus.length) grid.appendChild(carteCategorie(c, ci, dus, true));
+      if(tard.length) plusTard.push({c: c, ci: ci, idx: tard});
     });
     if(!grid.children.length){
       grid.innerHTML = '<p class="entry-empty" style="grid-column:1/-1;">Rien à prendre aujourd\'hui — ton jour de courses est le samedi.</p>';
@@ -11007,14 +11116,14 @@
       else {
         hors.hidden = false;
         plusTard.sort(function(a, b){
-          var da = courseSuivanteCat(a.c) || '9999', db = courseSuivanteCat(b.c) || '9999';
+          var da = courseSuivanteIdx(a.c, a.idx) || '9999', db = courseSuivanteIdx(b.c, b.idx) || '9999';
           return da < db ? -1 : da > db ? 1 : 0;
         });
         var resume = plusTard.map(function(x){
-          var d = courseSuivanteCat(x.c);
+          var d = courseSuivanteIdx(x.c, x.idx);
           return (d ? fmtDate(d) : '—') + ' · ' + x.c.cat.replace(/ — .*/, '');
         }).join(' · ');
-        var n = plusTard.reduce(function(t, x){ return t + x.c.items.length; }, 0);
+        var n = plusTard.reduce(function(t, x){ return t + x.idx.length; }, 0);
         /* .sous-onglet porte white-space:nowrap -- fait pour une rangee de pastilles courtes.
            Une etiquette de quarante-cinq signes debordait donc de 8 px sur iPhone 390. On
            l'autorise a revenir a la ligne, on la borne au conteneur, et on raccourcit :
@@ -11024,7 +11133,7 @@
           '<p class="sub-note" style="margin:10px 0 12px; line-height:1.8;">' + n + ' articles · ' + resume + '</p>' +
           '<div class="courses-grid" id="courses-grid-plus"></div></details>';
         var g2 = document.getElementById('courses-grid-plus');
-        plusTard.forEach(function(x){ g2.appendChild(carteCategorie(x.c, x.ci, false)); });
+        plusTard.forEach(function(x){ g2.appendChild(carteCategorie(x.c, x.ci, x.idx, false)); });
       }
     }
     /* Les prochains passages, en clair, sous la liste. */
@@ -11067,10 +11176,10 @@
   document.getElementById('courses-reset').addEventListener('click', function(){
     var garde = {};
     COURSES.forEach(function(c, ci){
-      if(categorieCoursesDue(c)) return;
       c.items.forEach(function(it, ii){
+        if(articleDu(c, it)) return;          /* du aujourd'hui : la coche a servi, elle tombe */
         var k = ci + '-' + ii;
-        if(coursesState[k]) garde[k] = true;
+        if(coursesState[k]) garde[k] = true;  /* pas du : rachete en avance, elle tient */
       });
     });
     coursesState = garde;

@@ -192,21 +192,40 @@ for (const d of ['2026-09-19', '2026-09-26', '2026-10-17', '2026-11-21']) {
 console.log('\n== 334d) L\'hygiène s\'achète au flacon entier ==');
 /* Ces lignes-la n'ont pas besoin d'etre arrondies : un shampooing se vend au flacon. Ce
    qui compte, c'est que chacune affiche SON rythme, pour qu'une estimation fausse se
-   corrige en un seul endroit visible. */
+   corrige en un seul endroit visible.
+   20 septembre au soir : « ya des trucs que j'ai pas besoin de racheter toutes les
+   4 semaines, cest excessif ». C'etait vrai, et cette porte-la etait justement faite pour
+   ca. Le cycle est descendu de la categorie a l'ARTICLE, calcule sur la contenance et
+   l'usage reel. Chaque ligne porte donc quatre choses -- le produit, ce qu'on achete,
+   son rythme, et le calcul qui le justifie -- et les quatre sont tenues ici. */
 {
   const { ctx, fr } = await jour('2026-09-19T10:00:00+02:00');
   const t = await fr.evaluate(() => document.querySelector('.page[data-page="courses"]').textContent);
   const esc = x => x.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
-  for (const [prod, qte, pourquoi] of [
-        ['Shampooing', '1 flacon de 400 ml', '4 lavages par semaine'],
-        ['Gel douche', '1 flacon de 750 ml', '8 douches par semaine'],
-        ['Dentifrice', '2 tubes', '1 tube par mois'],
-        ['Cotons-tiges', '1 boîte de 200', '2 par jour'],
-        ['Rasoirs jetables', '1 paquet de 4', '1 par mois'],
-        ['Brosse à dents', '1', 'une toutes les 12 semaines']]) {
-    const re = new RegExp(esc(prod) + ' — ' + esc(qte) + '[^\n]*' + esc(pourquoi));
-    ok(re.test(t), prod + ' : ' + qte + ' · ' + pourquoi);
+  for (const [prod, qte, rythme, pourquoi] of [
+        ['Shampooing', '1 flacon de 400 ml', '12 sem.', '4 lavages par semaine'],
+        ['Gel douche', '1 flacon de 750 ml', '8 sem.', '8 douches par semaine'],
+        ['Dentifrice', '1 tube', '4 sem.', 'tient un mois'],
+        ['Cotons-tiges', '1 boîte de 200', '12 sem.', '2 par jour'],
+        ['Rasoirs jetables', '1 paquet de 4', '16 sem.', 'le paquet tient quatre mois'],
+        ['Brosse à dents', '1', '12 sem.', 'une toutes les 12 semaines']]) {
+    const re = new RegExp(esc(prod) + ' — ' + esc(qte) + '[^\n]*' + esc(rythme) + '[^\n]*' + esc(pourquoi));
+    ok(re.test(t), prod + ' : ' + qte + ' · ' + rythme + ' · ' + pourquoi);
   }
+  /* L'emblematique : un bidon de 40 doses, a une lessive par samedi, tient 40 semaines.
+     Il etait rachete toutes les QUATRE. C'est la ligne qui a declenche tout le reste, et
+     elle ne doit jamais repasser sous un rythme mensuel. */
+  /* Sur la LIGNE seule, pas sur le textContent de la page : celui-ci n'a aucun retour a
+     la ligne, donc [^\n]* y balaye tout l'onglet et le « pas 4 semaines » passerait au
+     vert quel que soit le rythme reel de la lessive. */
+  const lessive = await fr.evaluate(() => {
+    const l = [...document.querySelectorAll('#courses-grid label, #courses-grid-plus label')]
+                .find(x => /^Lessive/.test(x.textContent));
+    return l ? l.textContent : '';
+  });
+  ok(/^Lessive — 1 bidon de 40 doses/.test(lessive) && /36 sem\./.test(lessive),
+     'la lessive : 36 semaines, pas 4 (' + lessive.slice(0, 60) + '…)');
+  ok(!/\b(4|8|12) sem\./.test(lessive), 'et sa ligne ne porte aucun rythme mensuel ou trimestriel');
   ok(/Nettoyant visage/.test(t) && /Déodorant/.test(t) && /Cotons-tiges/.test(t),
      'nettoyant visage, déodorant et cotons-tiges ont chacun leur ligne');
   await ctx.close();
