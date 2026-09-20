@@ -63,10 +63,13 @@ console.log('\n== 180) Sans ajustement : plan de base, liste = plan × 7 ==');
   /* L'HUILE etait la vraie erreur : 288 ml par semaine, donc 1 152 sur 4 semaines alors
      que la liste disait 1 000 -- quatre jours de rupture par cycle, tous les mois. Elle
      passe a 5 semaines : 1 440 ml, soit 1,5 L, reste 60 ml. */
+  /* Les legumes surgeles sont passes a DEUX semaines le 20 septembre : 10 kg par passage
+     ne rentraient pas dans son congelateur. La consommation n'a pas bouge (2 450 g par
+     semaine), c'est le rythme de rachat qui a change -- 5 kg tous les quinze jours. */
   ok(c.items.some(t => /^Œufs — 18\b/.test(t) && /demande 14 œufs/.test(t))
-  && c.items.some(t => /^Légumes verts surgelés — 10 kg\b/.test(t) && /demande 9\u202f800 g/.test(t))
+  && c.items.some(t => /^Légumes verts surgelés — 5 kg\b/.test(t) && /demande 4\u202f900 g/.test(t))
   && c.items.some(t => /^Huile d'olive — 1,5 L\b/.test(t) && /demande 1\u202f440 ml/.test(t)),
-     'œufs 18 pour 14, surgelés 10 kg pour 9 800 g, huile 1,5 L pour 1 440 ml sur 5 semaines');
+     'œufs 18 pour 14, surgelés 5 kg pour 4 900 g sur deux semaines, huile 1,5 L pour 1 440 ml sur cinq');
   /* Aucun stock n'est suppose : rien ne dit « tu en as », rien n'est repousse a plus tard. */
   ok(!c.items.some(t => /tu en as|il t’en reste|à racheter le/.test(t)), 'aucune ligne ne suppose un stock : tout part de zéro, il coche ce qu\'il a');
   ok(c.items.some(t => /^Shampooing/.test(t)) && c.items.some(t => /^Cotons-tiges/.test(t)) && c.items.some(t => /^Brosse à dents/.test(t)), 'santé et hygiène ont leurs lignes');
