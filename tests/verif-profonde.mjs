@@ -102,7 +102,7 @@ console.log('\n== D) Les habitudes : intégrité ==');
   ok(!r.joursInvalides.length, 'aucun jour de semaine invalide (' + (r.joursInvalides.join(', ') || 'aucun') + ')');
 }
 
-console.log('\n== E) Les 45 articles et les 33 approfondissements répondent ==');
+console.log('\n== E) Les 17 articles et les 33 approfondissements répondent ==');
 {
   const r = await fr.evaluate(() => ({
     appro: (window.__bcApproProchain ? 'ok' : 'sonde absente'),
