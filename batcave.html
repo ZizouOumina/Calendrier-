@@ -3415,7 +3415,7 @@
      place dans le quota de 5000 documents et embrouille les sauvegardes, sans que rien ne
      la lise jamais. On la signale ; la suppression reste ton geste. */
   var CLES_CONNUES = ['addictions','budget-limits','business','coran','courses','dash-more','duaas','duree-bloc','sport-log','objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','courses-plan-v3','courses-plan-v4','ancre-dimanche-v1','shampoing-dim-v1','marche-cible-v1','cardio','kcal-ajustement','gcal-ecriture','reinit','fc-migration-v1','charge','shopify-boutique','journees','examens-heures','vacances','jours-exclus',
-    'espagnol','examens','cours-suivi','portes','periodes-closes','fc-prix-icloud-3','fixed-charges','goals','goals-depart','saisons','insights-hist','last-restore-drill','habitlog','habits','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','habits-seed-v7','habits-seed-v8','objectifs-v5-espanol',
+    'espagnol','examens','cours-suivi','portes','periodes-closes','fc-prix-icloud-3','fixed-charges','goals','goals-depart','saisons','insights-hist','last-restore-drill','habitlog','habits','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','habits-seed-v7','habits-seed-v8','habits-seed-v9','objectifs-v5-espanol',
     'horizon','last-auto-backup','last-manual-backup','last-bilan-prompt','last-compaction','last-open','last-rotation','notion-url',
     'pomodial-purge','projets','report','revision','revision-fusionnee','revue','sante','sauvegarde','sessions',
     'shopify-last-order-count','taches','timer','transactions','undo-stack','undo-toast','cloud-reload-at','cloud-toast','notion-cache','anki',
@@ -4504,7 +4504,7 @@
      ni synchronisee ni rattrapee) et efface ses copies locales AVANT le rattrapage, sinon
      elles repartiraient vers le cloud. La meme remise a zero peut donc etre decidee depuis
      l'appli ou directement dans le cloud. */
-  var REINIT_GARDER = ['habits','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','habits-seed-v7','habits-seed-v8','objectifs-v5-espanol','fixed-charges','fc-prix-icloud-3','budget-limits','examens','examens-heures','journees','echeances','vacances','jours-exclus','jours-sans-cours','portes','appro','notion-url','shopify-boutique',
+  var REINIT_GARDER = ['habits','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','habits-seed-v7','habits-seed-v8','habits-seed-v9','objectifs-v5-espanol','fixed-charges','fc-prix-icloud-3','budget-limits','examens','examens-heures','journees','echeances','vacances','jours-exclus','jours-sans-cours','portes','appro','notion-url','shopify-boutique',
                        'objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','courses-plan-v3','courses-plan-v4','ancre-dimanche-v1','shampoing-dim-v1','marche-cible-v1','horizon','goals-depart','saisons','periodes-closes','gcal-ecriture','duree-bloc','dash-more','revision-fusionnee','reinit','copie-vierge'];
   var REINIT_PREFIXES_GARDER = ['pomodial-', 'coherence-ignore-'];
   function reinitGarder(cle){
@@ -6085,6 +6085,17 @@
   var HABIT_SEED_V8 = [
     {id:'core-creatine', label:'Cr\u00e9atine \u2014 5 g', icon:'\ud83e\udd44'}
   ];
+  /* Le lot du 20 septembre : la TAIE D'OREILLER du mercredi. Elle est deja changee le
+     dimanche avec les draps -- mais une seule surface propre par semaine, c'est six nuits
+     de sebum qui reviennent sur la joue, et il a de l'acne sur le visage et sur le dos.
+     C'est lui qui l'a vu, en demandant si ne pas se laver les cheveux le soir salissait
+     son oreiller. La reponse est non pour les cheveux (les laver le soir serait pire :
+     on se couche mouille) mais oui pour la taie, et la regle du protocole peau le disait
+     deja a demi-mot -- serviette de visage tous les 2-3 jours, taie une fois par semaine.
+     Le mercredi coupe la semaine en deux : dimanche et mercredi, deux taies propres. */
+  var HABIT_SEED_V9 = [
+    {id:'core-taie-merc', label:'Taie d\u2019oreiller chang\u00e9e', icon:'\ud83d\udecc', jours:[3]}
+  ];
   /* Retirees a la demande. Ce n'est pas un simple retrait du semis : l'habitude est deja
      dans le stockage de l'utilisateur, elle survit a la remise a zero (« habits » est garde),
      et un autre appareil encore sur l'ancienne version la renverrait par la synchro. On la
@@ -6104,7 +6115,8 @@
     {cle: 'batcave-habits-seed-v5', graines: HABIT_SEED_V5},
     {cle: 'batcave-habits-seed-v6', graines: HABIT_SEED_V6},
     {cle: 'batcave-habits-seed-v7', graines: HABIT_SEED_V7},
-    {cle: 'batcave-habits-seed-v8', graines: HABIT_SEED_V8}
+    {cle: 'batcave-habits-seed-v8', graines: HABIT_SEED_V8},
+    {cle: 'batcave-habits-seed-v9', graines: HABIT_SEED_V9}
   ];
   var habitsState = load('batcave-habits', null);
   if(habitsState !== null && !Array.isArray(habitsState)) habitsState = null;
@@ -6133,7 +6145,7 @@
     return ajoutees || retirees;
   }
   if(habitsState === null){
-    habitsState = HABIT_SEED.concat(HABIT_SEED_V2, HABIT_SEED_V3, HABIT_SEED_V4, HABIT_SEED_V5, HABIT_SEED_V6, HABIT_SEED_V7, HABIT_SEED_V8);
+    habitsState = HABIT_SEED.concat(HABIT_SEED_V2, HABIT_SEED_V3, HABIT_SEED_V4, HABIT_SEED_V5, HABIT_SEED_V6, HABIT_SEED_V7, HABIT_SEED_V8, HABIT_SEED_V9);
     save('batcave-habits', habitsState);
     HABIT_GENERATIONS.forEach(function(g){ save(g.cle, true); });
   } else {

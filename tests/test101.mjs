@@ -217,6 +217,56 @@ console.log('\n== 336) Les pas se saisissent, et ils cochent la case ==');
   await ctx.close();
 }
 
+console.log('\n== 337) La taie d\u2019oreiller du mercredi ==');
+{
+  /* Sa question du 20 septembre : « le soir si je lave pas mes cheveux je vais salir mes
+     tetes de coussin non ? ». Les cheveux, non -- les laver le soir serait pire, on se
+     couche mouille. Mais la TAIE, oui : changee une seule fois par semaine (le dimanche,
+     avec les draps), elle rend six nuits de sebum a une peau qui fait de l'acne. D'ou une
+     seconde taie propre, le mercredi. */
+  const { ctx, fr } = await ouvrir('2026-09-23T09:00:00+02:00');   /* un mercredi */
+  const c = await cartes(fr);
+  ok(c.some(x => /Taie d.oreiller chang/i.test(x)), 'la carte existe dans l\u2019onglet Habitudes (' + c.length + ' cartes)');
+  const h = await fr.evaluate(() => (JSON.parse(localStorage.getItem('batcave-habits')) || [])
+    .filter(x => x && x.id === 'core-taie-merc'));
+  ok(h.length === 1, 'une seule occurrence de core-taie-merc dans le stockage (' + h.length + ')');
+  ok(h.length === 1 && JSON.stringify(h[0].jours) === '[3]', 'et elle ne vaut que le mercredi (' + JSON.stringify(h[0] && h[0].jours) + ')');
+  /* L'onglet Habitudes liste TOUTES les habitudes actives -- c'est voulu, on doit pouvoir
+     les gerer. Ce qui dit « due aujourd'hui », c'est le bouton : « Marquer fait » tout court
+     le jour ou elle vaut, « Marquer fait (mercredi) » les autres jours. */
+  const btn = i => fr.evaluate(() => {
+    const c = [...document.querySelectorAll('#habits-grid .card')]
+      .find(x => /Taie d.oreiller chang/i.test(x.querySelector('.ctitle').textContent));
+    return c ? c.querySelector('[data-togglehab]').textContent.trim() : '(absente)';
+  });
+  ok(/^Marquer fait$/.test(await btn()), 'le mercredi, le bouton ne renvoie a aucun autre jour (' + (await btn()) + ')');
+  await ctx.close();
+}
+{
+  const { ctx, fr } = await ouvrir('2026-09-24T09:00:00+02:00');   /* un jeudi */
+  const t = await fr.evaluate(() => {
+    const c = [...document.querySelectorAll('#habits-grid .card')]
+      .find(x => /Taie d.oreiller chang/i.test(x.querySelector('.ctitle').textContent));
+    return c ? c.querySelector('[data-togglehab]').textContent.trim() : '(absente)';
+  });
+  ok(/mercredi/.test(t), 'le jeudi, le bouton renvoie au mercredi (' + t + ')');
+  await ctx.close();
+}
+{
+  /* Le semis n'ajoute que les habitudes ABSENTES : une Batcave deja remplie la recoit
+     sans rien perdre, et la banniere « cle inconnue » ne se leve pas sur la graine v9. */
+  const { ctx, fr } = await ouvrir('2026-09-23T09:00:00+02:00', {'batcave-habits': [
+    {id:'core-lit', label:'Lit fait', icon:'\ud83d\udecf\ufe0f'},
+    {id:'core-draps', label:'Draps et taies d\u2019oreiller chang\u00e9s', icon:'\ud83e\uddfa', jours:[0]}
+  ]});
+  const ids = await fr.evaluate(() => (JSON.parse(localStorage.getItem('batcave-habits')) || []).map(h => h.id));
+  ok(ids.indexOf('core-taie-merc') > -1, 'ajoutee a une Batcave existante');
+  ok(ids.indexOf('core-lit') > -1 && ids.indexOf('core-draps') > -1, 'sans toucher a celles deja la');
+  const banniere = await fr.evaluate(() => /Cl\u00e9 inconnue du code/i.test(document.body.innerText));
+  ok(!banniere, 'aucune banniere « cle inconnue » : la graine v9 est au registre');
+  await ctx.close();
+}
+
 await b.close();
 console.log(err ? '\n' + err + ' ECHEC(S)' : '\nTOUT EST VERT');
 process.exit(err ? 1 : 0);

@@ -112,8 +112,13 @@ console.log('\n== 96) Jamais le drapeau seul (l\'état corrompu observé en prod
 
 console.log('\n== 97) Un cloud déjà à jour ne déclenche aucune réécriture ==');
 {
-  const aJour = {'batcave-habits': HABITS_17.concat([{id:'core-courses', label:'Courses faites', icon:'🛒', jour:6}]),
-                 'batcave-habits-seed-v2': true, 'batcave-habits-seed-v3': true, 'batcave-habits-seed-v4': true, 'batcave-habits-seed-v5': true, 'batcave-habits-seed-v6': true, 'batcave-habits-seed-v7': true, 'batcave-habits-seed-v8': true, 'batcave-objectifs-v5-espanol': true};
+  /* « Deja a jour » veut dire TOUTES les generations semees, la derniere comprise : sinon
+     ce n'est pas un cloud a jour, c'est un cloud en retard d'une generation, et la
+     reecriture qu'il declenche est justement celle qu'on veut. A chaque nouvelle graine,
+     ce jeu d'essai se complete -- v9 (la taie d'oreiller du mercredi) le 20 septembre. */
+  const aJour = {'batcave-habits': HABITS_17.concat([{id:'core-courses', label:'Courses faites', icon:'🛒', jour:6},
+                                                     {id:'core-taie-merc', label:'Taie d’oreiller changée', icon:'🛌', jours:[3]}]),
+                 'batcave-habits-seed-v2': true, 'batcave-habits-seed-v3': true, 'batcave-habits-seed-v4': true, 'batcave-habits-seed-v5': true, 'batcave-habits-seed-v6': true, 'batcave-habits-seed-v7': true, 'batcave-habits-seed-v8': true, 'batcave-habits-seed-v9': true, 'batcave-objectifs-v5-espanol': true};
   const { ctx, fr } = await ouvrir(aJour, aJour, SAMEDI);
   const ecrits = await fr.evaluate(() => window.__w.filter(k => k === 'batcave-habits'));
   ok(ecrits.length === 0, 'aucune réécriture inutile de batcave-habits');

@@ -13,7 +13,7 @@ Il dit ce qui est fait, ce qui reste, et ce qui attend une décision de toi.
 
 ### Ce soir
 - [ ] **L'essai de restauration** : 💾 → `♻️ Restaurer depuis Drive` → celle du 19.
-      Vérifier ensuite que les 32 habitudes et les 4 dépendances sont là.
+      Vérifier ensuite que la liste d’habitudes et les 4 dépendances sont là.
       *C'est le seul maillon de la chaîne de sauvegarde jamais éprouvé.*
 - [ ] **La synchro** : Batcave ouverte sur l'iPhone ET sur l'ordi, cocher une habitude
       sur l'un, recharger l'autre.

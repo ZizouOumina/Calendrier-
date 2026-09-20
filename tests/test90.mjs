@@ -66,11 +66,15 @@ console.log('\n== 302) Une liste venue du cloud avec les retirees est nettoyée,
 
 console.log('\n== 303) Un cloud déjà propre ne déclenche aucune réécriture ==');
 {
+  /* « Propre » suppose que toutes les generations de semis sont deja passees, la derniere
+     comprise : un drapeau manquant n'est pas un cloud propre, c'est un cloud a completer,
+     et l'ecriture qui suit est la bonne. v9 = la taie d'oreiller du mercredi (20 septembre). */
   const propre = [{id:'core-lit', label:'Lit fait', icon:'🛏️'},
-                  {id:'core-pesee-dim', label:'Pesée du dimanche, à jeun', icon:'⚖️', jours:[0]}];
+                  {id:'core-pesee-dim', label:'Pesée du dimanche, à jeun', icon:'⚖️', jours:[0]},
+                  {id:'core-taie-merc', label:'Taie d’oreiller changée', icon:'🛌', jours:[3]}];
   const { ctx, fr } = await jour('2026-09-21T09:00:00+02:00', {
     'batcave-habits': propre, 'batcave-habits-seed-v2': true, 'batcave-habits-seed-v3': true,
-    'batcave-habits-seed-v4': true, 'batcave-habits-seed-v5': true, 'batcave-habits-seed-v6': true, 'batcave-habits-seed-v7': true, 'batcave-habits-seed-v8': true });
+    'batcave-habits-seed-v4': true, 'batcave-habits-seed-v5': true, 'batcave-habits-seed-v6': true, 'batcave-habits-seed-v7': true, 'batcave-habits-seed-v8': true, 'batcave-habits-seed-v9': true });
   const n = await fr.evaluate(() => window.__w.filter(k => k === 'batcave-habits').length);
   ok(n === 0, 'aucune écriture (' + n + ')');
   await ctx.close();
