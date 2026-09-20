@@ -21,10 +21,16 @@ async function jour(quand){
   await page.waitForTimeout(400);
   return { ctx, page, fr };
 }
-const cartes = fr => fr.evaluate(() => [...document.querySelectorAll('#courses-grid .cat-card')].map(c => ({
-  titre: c.querySelector('h4').textContent,
-  due: !/pas cette semaine/.test(c.innerText),
-  n: c.querySelectorAll('li').length
+/* 20 septembre : les categories non dues ont quitte #courses-grid pour le repli
+   #courses-grid-plus. On lit donc les deux, et « due » se lit desormais a la GRILLE qui
+   porte la carte -- plus robuste qu'une phrase, et c'est exactement le nouveau contrat. */
+const cartes = fr => fr.evaluate(() => [
+  ...[...document.querySelectorAll('#courses-grid .cat-card')].map(c => ({c: c, due: true})),
+  ...[...document.querySelectorAll('#courses-grid-plus .cat-card')].map(c => ({c: c, due: false}))
+].map(x => ({
+  titre: x.c.querySelector('h4').textContent,
+  due: x.due,
+  n: x.c.querySelectorAll('li').length
 })));
 
 console.log('\n== 330) Sept catégories, et le frais seul reste hebdomadaire ==');
@@ -34,10 +40,10 @@ console.log('\n== 330) Sept catégories, et le frais seul reste hebdomadaire =='
   /* 19 septembre : les produits menagers, sortis a sa demande, reviennent en deux
      categories -- « Maison » a quatre semaines et « Ménage » a huit. On passe donc de
      cinq rythmes a sept. */
-  ok(c.length === 7, '7 catégories — maison et ménage sont revenus (' + c.length + ')');
+  ok(c.length === 8, '8 catégories — maison, ménage, et les surgelés à deux semaines depuis le 20 sept. (' + c.length + ')');
   const hebdo = c[0];
   ok(/Chaque semaine/.test(hebdo.titre) && hebdo.n === 10, 'la liste hebdomadaire fait 10 articles frais (' + hebdo.n + ')');
-  const t = await fr.evaluate(() => document.getElementById('courses-grid').innerText);
+  const t = await fr.evaluate(() => document.querySelector('.page[data-page="courses"]').textContent);
   ok(!/Riz/.test(hebdo.titre + '') && /Riz — 5 kg/.test(t) && /demande 4\u202f340 g/.test(t), 'le riz est en réserve : 5 kg achetés pour 4 340 g demandés');
   ok(/Shampooing/.test(t) && /Cotons-tiges/.test(t) && /Nettoyant visage/.test(t) && /Brosse à dents/.test(t), 'santé et hygiène : shampooing, cotons-tiges, nettoyant visage, brosse à dents');
   ok(/Éponges \+ grattoirs/.test(t) && /Sacs poubelle 30 L/.test(t) && /Nettoyant sol \(fregasuelos\)/.test(t) && /Papier toilette/.test(t),
@@ -55,7 +61,7 @@ console.log('\n== 331) Samedi 19 septembre : l\'ancre, tout est dû ==');
 {
   const { ctx, fr } = await jour('2026-09-19T10:00:00+02:00');
   const c = await cartes(fr);
-  ok(c.every(x => x.due), 'les 7 catégories sont dues le 19 (ancre commune)');
+  ok(c.every(x => x.due), 'les 8 catégories sont dues le 19 (ancre commune)');
   const somme = await fr.evaluate(() => document.getElementById('courses-summary').textContent);
   /* Aucun stock n'est suppose : le 19, TOUTES les categories sont dues et toutes leurs
      lignes comptent. 10 frais + 5 reserves + 2 (cycle de 5 semaines) + 16 sante
@@ -82,7 +88,7 @@ console.log('\n== 332) Une semaine plus tard, seul le frais est dû ==');
   const { ctx, fr } = await jour('2026-09-26T10:00:00+02:00');
   const c = await cartes(fr);
   ok(c[0].due && c.slice(1).every(x => !x.due), 'le 26 septembre : frais seulement');
-  const t = await fr.evaluate(() => document.getElementById('courses-grid').innerText);
+  const t = await fr.evaluate(() => document.querySelector('.page[data-page="courses"]').textContent);
   ok(/prochaine fois le 17 oct\./.test(t), 'les réserves annoncent le 17 octobre');
   ok(/prochaine fois le 12 déc\./.test(t), 'la brosse à dents annonce le 12 décembre');
   ok(/prochaine fois le 14 nov\./.test(t), 'le ménage, à huit semaines, annonce le 14 novembre');
@@ -138,7 +144,7 @@ console.log('\n== 334b) Aucun stock n\'est supposé : il coche ce qu\'il a ==');
    case cochee dit « je l'ai deja ». Rien ne doit donc rester d'un calcul de stock. */
 {
   const { ctx, fr } = await jour('2026-09-19T10:00:00+02:00');
-  const t = await fr.evaluate(() => document.getElementById('courses-grid').innerText);
+  const t = await fr.evaluate(() => document.querySelector('.page[data-page="courses"]').textContent);
   ok(!/tu en as|il t’en reste|à racheter le/.test(t), 'aucune ligne ne parle de stock ni de date de rachat');
   ok(/Beurre de cacahuète — 2 kg/.test(t) && /demande 1\u202f925 g/.test(t), 'beurre de cacahuète : 2 kg pleins, pour 1 925 g demandés');
   ok(/Huile d'olive — 1,5 L/.test(t) && /demande 1\u202f440 ml/.test(t), 'huile : la bouteille d\'1,5 L entière, pour 1 440 ml demandés');
@@ -147,7 +153,7 @@ console.log('\n== 334b) Aucun stock n\'est supposé : il coche ce qu\'il a ==');
 {
   /* Le 17 octobre les reserves reviennent, aux memes quantites : aucun report. */
   const { ctx, fr } = await jour('2026-10-17T10:00:00+02:00');
-  const t = await fr.evaluate(() => document.getElementById('courses-grid').innerText);
+  const t = await fr.evaluate(() => document.querySelector('.page[data-page="courses"]').textContent);
   ok(/Riz — 5 kg/.test(t) && /Pâtes — 3 kg/.test(t), 'le 17 octobre, riz et pâtes reviennent aux mêmes quantités');
   await ctx.close();
 }
@@ -176,7 +182,7 @@ for (const d of ['2026-09-19', '2026-09-26', '2026-10-17', '2026-11-21']) {
 }
 {
   const { ctx, fr } = await jour('2026-09-19T10:00:00+02:00');
-  const t = await fr.evaluate(() => document.getElementById('courses-grid').innerText);
+  const t = await fr.evaluate(() => document.querySelector('.page[data-page="courses"]').textContent);
   /* 14 par semaine : 2 par jour au petit-dejeuner, tire du plan de repas. Mais on
      n'achete pas 14 oeufs : une boite de 12 plus une de 6 font 18. */
   ok(/Œufs — 18/.test(t) && /demande 14 œufs/.test(t), 'les œufs : 18 achetés pour les 14 du plan');
@@ -189,7 +195,7 @@ console.log('\n== 334d) L\'hygiène s\'achète au flacon entier ==');
    corrige en un seul endroit visible. */
 {
   const { ctx, fr } = await jour('2026-09-19T10:00:00+02:00');
-  const t = await fr.evaluate(() => document.getElementById('courses-grid').innerText);
+  const t = await fr.evaluate(() => document.querySelector('.page[data-page="courses"]').textContent);
   const esc = x => x.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
   for (const [prod, qte, pourquoi] of [
         ['Shampooing', '1 flacon de 400 ml', '4 lavages par semaine'],

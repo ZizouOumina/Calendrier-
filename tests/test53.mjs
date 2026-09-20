@@ -1,4 +1,7 @@
 /* Repas → courses : la liste vient du plan × 7 jours, l'ajustement kcal se lit dans le féculent du dîner et dans les courses. */
+/* 20 septembre : l'onglet Courses ne met plus dans #courses-grid que les categories DUES
+   du jour ; les autres descendent dans le repli « pas aujourd'hui » (#courses-grid-plus).
+   Ce fichier verifie le PLAN, pas l'affichage du jour : il lit donc les deux grilles. */
 import { chromium } from 'playwright';
 const URL = 'http://127.0.0.1:8199/host.html';
 let errs = 0;
@@ -29,7 +32,7 @@ console.log('\n== 180) Sans ajustement : plan de base, liste = plan × 7 ==');
 {
   const { ctx, fr } = await ouvrir(MARDI);
   await page_(fr, 'courses');
-  const c = await fr.evaluate(() => ({ items: [...document.querySelectorAll('#courses-grid label')].map(l => l.textContent), note: document.getElementById('courses-plan-note').textContent, budget: document.getElementById('courses-budget').textContent, n: document.querySelectorAll('#courses-grid input').length }));
+  const c = await fr.evaluate(() => ({ items: [...document.querySelectorAll('#courses-grid label, #courses-grid-plus label')].map(l => l.textContent), note: document.getElementById('courses-plan-note').textContent, budget: document.getElementById('courses-budget').textContent, n: document.querySelectorAll('#courses-grid input, #courses-grid-plus input').length }));
   /* Sept rythmes : 10 articles frais chaque semaine ; 5 reserves, 16 lignes de sante et
      6 de maison toutes les 4 semaines ; 2 articles toutes les 5 ; 5 de menage toutes les
      8 ; 1 brosse a dents et 1 pot de creatine tous les 3 mois. Les produits MENAGERS
@@ -111,7 +114,7 @@ console.log('\n== 181) Avec +150 kcal : le dîner et les courses l\'écrivent ==
   const sub2 = await fr.evaluate(() => document.getElementById('meal-kcal-sub').textContent);
   ok(/^896 \/ 3275 kcal/.test(sub2), 'dîner coché : ' + sub2);
   await page_(fr, 'courses');
-  const c = await fr.evaluate(() => ({ items: [...document.querySelectorAll('#courses-grid label')].map(l => l.textContent), note: document.getElementById('courses-plan-note').textContent }));
+  const c = await fr.evaluate(() => ({ items: [...document.querySelectorAll('#courses-grid label, #courses-grid-plus label')].map(l => l.textContent), note: document.getElementById('courses-plan-note').textContent }));
   /* L'ajustement suit le sac : +280 g par semaine font +1 120 g sur quatre semaines.
      Pas de ligne hebdomadaire en plus -- on n'achete pas un sachet de 280 g. */
   ok(c.items.some(t => /^Pâtes — 4,5 kg\b/.test(t) && /demande 4\u202f060 g/.test(t)), 'la boucle kcal remonte le besoin à (735 + 280) × 4 = 4 060 g, et l\'achat suit à 4,5 kg (' + c.items.find(t => /^Pâtes/.test(t)) + ')');
@@ -134,13 +137,13 @@ console.log('\n== 182) Appliquer / revenir depuis la boucle met tout à jour d\'
   await fr.evaluate(() => document.getElementById('kcal-appliquer').click());
   await page.waitForTimeout(250);
   const apres = await fr.evaluate(() => ({ diner: [...document.querySelectorAll('.meal-card')].find(c => /Dîner/.test(c.querySelector('.mtitle').textContent)).innerText,
-    courses: (document.querySelector('.nav-btn[data-page="courses"]').click(), [...document.querySelectorAll('#courses-grid label')].map(l => l.textContent).find(t => /^Pâtes/.test(t))) }));
+    courses: (document.querySelector('.nav-btn[data-page="courses"]').click(), [...document.querySelectorAll('#courses-grid label, #courses-grid-plus label')].map(l => l.textContent).find(t => /^Pâtes/.test(t))) }));
   ok(/Pâtes 145g/.test(apres.diner) && /4,5 kg/.test(apres.courses), 'après « Appliquer » : dîner à 145 g de pâtes, courses à 4,5 kg');
   await page_(fr, 'repas');
   await fr.evaluate(() => document.getElementById('kcal-reset').click());
   await page.waitForTimeout(250);
   const retour = await fr.evaluate(() => ({ diner: [...document.querySelectorAll('.meal-card')].find(c => /Dîner/.test(c.querySelector('.mtitle').textContent)).innerText,
-    courses: (document.querySelector('.nav-btn[data-page="courses"]').click(), [...document.querySelectorAll('#courses-grid label')].map(l => l.textContent).find(t => /^Pâtes/.test(t))) }));
+    courses: (document.querySelector('.nav-btn[data-page="courses"]').click(), [...document.querySelectorAll('#courses-grid label, #courses-grid-plus label')].map(l => l.textContent).find(t => /^Pâtes/.test(t))) }));
   ok(/Pâtes 105g/.test(retour.diner) && /3 kg/.test(retour.courses), 'après « Revenir au plan de base » : 105 g au dîner et 3 kg de pâtes');
   await ctx.close();
 }
