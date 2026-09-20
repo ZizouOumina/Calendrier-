@@ -33,13 +33,14 @@ console.log('\n== 180) Sans ajustement : plan de base, liste = plan × 7 ==');
   const { ctx, fr } = await ouvrir(MARDI);
   await page_(fr, 'courses');
   const c = await fr.evaluate(() => ({ items: [...document.querySelectorAll('#courses-grid label, #courses-grid-plus label')].map(l => l.textContent), note: document.getElementById('courses-plan-note').textContent, budget: document.getElementById('courses-budget').textContent, n: document.querySelectorAll('#courses-grid input, #courses-grid-plus input').length }));
-  /* Huit rythmes : 9 articles frais chaque semaine ; 4 reserves, 16 lignes de sante et
-     6 de maison toutes les 4 semaines ; 2 articles toutes les 5 ; 5 de menage toutes les
-     8 ; 1 brosse a dents et 1 pot de creatine tous les 3 mois. Les produits MENAGERS
-     avaient ete sortis a sa demande, puis redemandes le 19 septembre ; la creatine a
-     rejoint la liste le meme jour, parce qu'il la coche tous les soirs et que rien ne la
-     rachetait. */
-  ok(c.n === 45, '45 articles au total, tous rythmes confondus (' + c.n + ')');
+  /* 20 septembre, sa derniere decision sur cette liste : « dans l'onglet courses tu vas
+     juste laisser les aliments et la bouffe cest tout ». Les trois rayons non alimentaires
+     sont sortis -- Sante et hygiene (16 lignes), Maison (6), Menage (5) -- et la brosse a
+     dents avec eux. Restent CINQ rythmes, tous alimentaires : 9 articles frais chaque
+     semaine, 1 surgele toutes les 2, 4 reserves toutes les 4, 2 toutes les 5, et le pot de
+     creatine tous les 3 mois -- la seule ligne qui ne sorte pas du plan de repas, parce
+     qu'elle s'avale tous les soirs et que rien d'autre ne la rachete. */
+  ok(c.n === 17, '17 articles au total, tous rythmes confondus (' + c.n + ')');
   /* Deux chiffres par ligne, et il faut les deux : ce qu'on ACHETE (un multiple du
      conditionnement) et ce que le PLAN demande (la somme des 7 jours de repas). Riz
      135 g/jour -> 945/semaine -> 3 780 sur 4 semaines, donc 4 paquets de 1 kg ;
@@ -77,11 +78,14 @@ console.log('\n== 180) Sans ajustement : plan de base, liste = plan × 7 ==');
      'œufs 18 pour 14, surgelés 5 kg pour 4 900 g sur deux semaines, huile 2,25 L pour 1 575 ml sur cinq');
   /* Aucun stock n'est suppose : rien ne dit « tu en as », rien n'est repousse a plus tard. */
   ok(!c.items.some(t => /tu en as|il t’en reste|à racheter le/.test(t)), 'aucune ligne ne suppose un stock : tout part de zéro, il coche ce qu\'il a');
-  ok(c.items.some(t => /^Shampooing/.test(t)) && c.items.some(t => /^Cotons-tiges/.test(t)) && c.items.some(t => /^Brosse à dents/.test(t)), 'santé et hygiène ont leurs lignes');
-  /* Les produits menagers avaient ete sortis a sa demande, puis redemandes le
-     19 septembre : ils reviennent en « Maison » (4 semaines) et « Ménage » (8). */
-  ok(c.items.some(t => /^Éponges \+ grattoirs/.test(t)) && c.items.some(t => /^Sacs poubelle 30 L/.test(t)) && c.items.some(t => /^Nettoyant sol/.test(t)),
-     'les produits ménagers sont de retour dans la Batcave');
+  /* Le contraire de ce que ce fichier tenait jusqu'au 20 septembre : ces lignes ne
+     doivent PLUS exister. Elles etaient revenues le 19, puis leurs rythmes avaient ete
+     recalcules le 20 -- mais ces rythmes restaient des estimations posees sur des volumes
+     d'usage supposes, et il n'en veut pas. Cette porte garde la liste alimentaire. */
+  const intrus = c.items.filter(t => /^(Shampooing|Après-shampooing|Gel douche|Nettoyant visage|Dentifrice|Déodorant|Cotons-tiges|Rasoirs|Fil dentaire|Lessive|Détachant|Bain de bouche|Brossettes|Crème|Mouchoirs|Papier toilette|Sacs poubelle|Liquide vaisselle|Éponges|Essuie-tout|Nettoyant sol|Anticalcaire|Multi-usage|Nettoyant WC|Gants de ménage|Brosse à dents)/.test(t));
+  ok(intrus.length === 0, 'plus rien de non alimentaire dans la liste' + (intrus.length ? ' — reste : ' + intrus.join(' · ') : ''));
+  /* La creatine, elle, reste : elle s'avale, et aucune autre page ne la rachete. */
+  ok(c.items.some(t => /^Créatine monohydrate — 1 pot de 500 g/.test(t)), 'la créatine reste — elle s\'avale, et rien d\'autre ne la rachète');
   ok(/Aucun ajustement/.test(c.note), 'note : ' + c.note.slice(0, 60));
   /* Le budget estime a ete RETIRE le 19 septembre. Il annoncait un cout par semaine, par
      cycle et par mois a partir de prix Alicante 2026 inventes -- trois chiffres faux lus

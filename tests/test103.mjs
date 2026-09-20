@@ -4,7 +4,8 @@
    des dates ou je dois acheter les trucs ».
    Trois defauts reels, et ce fichier les tient fermes :
    1. la grille du jour montrait les SEPT categories, les non dues seulement grisees a
-      55 % -- un samedi ordinaire affichait 46 lignes pour 10 a prendre ;
+      55 % -- un samedi ordinaire affichait 46 lignes pour 10 a prendre. Et depuis le
+      20 septembre au soir, la liste ne porte plus que de la nourriture : 17 lignes ;
    2. aucune date n'apparaissait le jour ou toutes les categories tombaient ensemble,
       puisque seule une categorie NON due en portait une ;
    3. « Reinitialiser » vidait TOUT, y compris une reserve rachetee en avance, qu'il
@@ -42,8 +43,8 @@ console.log('\n== 342) Le jour du premier ravitaillement : tout est dû, et tout
 {
   const { ctx, fr } = await ouvrir('2026-09-20T16:00:00+02:00');
   const v = await vue(fr);
-  ok(v.jour.length === 8, 'les huit catégories sont dans la grille du jour (' + v.jour.length + ')');
-  ok(/45 à prendre/.test(v.resume), 'et le résumé annonce 45 articles (' + v.resume + ')');
+  ok(v.jour.length === 5, 'les cinq catégories sont dans la grille du jour (' + v.jour.length + ')');
+  ok(/17 à prendre/.test(v.resume), 'et le résumé annonce 17 articles (' + v.resume + ')');
   ok(v.dates.every(t => /aujourd/i.test(t)), 'chacune dit « aujourd’hui »');
   ok(v.dates.every(t => /puis le/.test(t)), 'ET chacune dit sa fois suivante — c’est ce qui manquait');
   ok(/26 sept/.test(v.dates[0]) && /03 oct/.test(v.dates[1]) && /17 oct/.test(v.dates[2]),
@@ -57,9 +58,9 @@ console.log('\n== 343) Un samedi ordinaire : la grille ne montre que le frais ==
   const { ctx, fr } = await ouvrir('2026-09-26T13:30:00+02:00');
   const v = await vue(fr);
   ok(v.jour.length === 1 && /Chaque semaine/.test(v.jour[0]), 'une seule catégorie dans la grille du jour (' + v.jour.join(', ') + ')');
-  ok(/0\/9 .*9 à prendre/.test(v.resume), 'le résumé dit 9, pas 45 (' + v.resume + ')');
-  ok(/7 catégories/.test(v.repli), 'les sept autres catégories sont dans le repli (' + v.repli + ')');
-  ok(v.tard.length === 7, 'et le repli les contient toutes, rachetables en avance (' + v.tard.length + ')');
+  ok(/0\/9 .*9 à prendre/.test(v.resume), 'le résumé dit 9, pas 17 (' + v.resume + ')');
+  ok(/4 catégories/.test(v.repli), 'les quatre autres catégories sont dans le repli (' + v.repli + ')');
+  ok(v.tard.length === 4, 'et le repli les contient toutes, rachetables en avance (' + v.tard.length + ')');
   await ctx.close();
 }
 
@@ -71,7 +72,7 @@ console.log('\n== 344) Les dates annoncées sont des SAMEDIS ==');
   const { ctx, fr } = await ouvrir('2026-09-20T16:00:00+02:00');
   const v = await vue(fr);
   const dates = v.dates.map(t => (t.split('puis le ')[1] || '').trim()).filter(Boolean);
-  ok(dates.length === 8, 'huit dates annoncées (' + dates.length + ')');
+  ok(dates.length === 5, 'cinq dates annoncées (' + dates.length + ')');
   ok(!/21 sept|22 sept|23 sept/.test(v.dates.join(' ')), 'aucune date en pleine semaine');
   const jours = await fr.evaluate(() => window.__bcPassagesCourses ? window.__bcPassagesCourses('2026-09-20', 6).map(x => x.date) : []);
   ok(jours.length === 6 && jours.every(d => new Date(d + 'T00:00:00').getDay() === 6),

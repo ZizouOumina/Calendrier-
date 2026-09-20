@@ -33,23 +33,23 @@ const cartes = fr => fr.evaluate(() => [
   n: x.c.querySelectorAll('li').length
 })));
 
-console.log('\n== 330) Sept catégories, et le frais seul reste hebdomadaire ==');
+console.log('\n== 330) Cinq catégories, toutes alimentaires, et le frais seul est hebdomadaire ==');
 {
   const { ctx, fr } = await jour('2026-09-19T10:00:00+02:00');
   const c = await cartes(fr);
-  /* 19 septembre : les produits menagers, sortis a sa demande, reviennent en deux
-     categories -- « Maison » a quatre semaines et « Ménage » a huit. On passe donc de
-     cinq rythmes a sept. */
-  ok(c.length === 8, '8 catégories — maison, ménage, et les surgelés à deux semaines depuis le 20 sept. (' + c.length + ')');
+  /* 20 septembre au soir, sa decision : la liste ne porte plus que de la nourriture.
+     Les produits menagers, revenus le 19, ressortent avec l'hygiene et la brosse a dents.
+     Cinq categories restent : frais, surgeles, reserves, cinq semaines, trimestriel. */
+  ok(c.length === 5, '5 catégories, toutes alimentaires (' + c.length + ')');
   const hebdo = c[0];
   ok(/Chaque semaine/.test(hebdo.titre) && hebdo.n === 9, 'la liste hebdomadaire fait 9 articles frais depuis le retrait du poisson (' + hebdo.n + ')');
   const t = await fr.evaluate(() => document.querySelector('.page[data-page="courses"]').textContent);
   ok(!/Riz/.test(hebdo.titre + '') && /Riz — 5 kg/.test(t) && /demande 4\u202f340 g/.test(t), 'le riz est en réserve : 5 kg achetés pour 4 340 g demandés');
-  ok(/Shampooing/.test(t) && /Cotons-tiges/.test(t) && /Nettoyant visage/.test(t) && /Brosse à dents/.test(t), 'santé et hygiène : shampooing, cotons-tiges, nettoyant visage, brosse à dents');
-  ok(/Éponges \+ grattoirs/.test(t) && /Sacs poubelle 30 L/.test(t) && /Nettoyant sol \(fregasuelos\)/.test(t) && /Papier toilette/.test(t),
-     'les produits ménagers sont revenus : éponges, sacs, fregasuelos, papier toilette');
-  ok(/Bain de bouche/.test(t) && /Brossettes interdentaires/.test(t) && /Crème solaire/.test(t),
-     'et les ajouts d\'hygiène : bain de bouche, brossettes, crème solaire');
+  ok(!/Shampooing|Cotons-tiges|Nettoyant visage|Brosse à dents|Bain de bouche|Brossettes|Crème solaire|Lessive|Dentifrice/.test(t),
+     'plus une seule ligne de santé et hygiène');
+  ok(!/Éponges|Sacs poubelle|Nettoyant sol|Papier toilette|Essuie-tout|Liquide vaisselle|Anticalcaire|Nettoyant WC|Gants de ménage/.test(t),
+     'plus une seule ligne de maison ni de ménage');
+  ok(/Créatine monohydrate/.test(t), 'la créatine reste — elle s\'avale');
   await ctx.close();
 }
 
@@ -61,13 +61,12 @@ console.log('\n== 331) Samedi 19 septembre : l\'ancre, tout est dû ==');
 {
   const { ctx, fr } = await jour('2026-09-19T10:00:00+02:00');
   const c = await cartes(fr);
-  ok(c.every(x => x.due), 'les 8 catégories sont dues le 19 (ancre commune)');
+  ok(c.every(x => x.due), 'les 5 catégories sont dues le 19 (ancre commune)');
   const somme = await fr.evaluate(() => document.getElementById('courses-summary').textContent);
   /* Aucun stock n'est suppose : le 19, TOUTES les categories sont dues et toutes leurs
-     lignes comptent. 9 frais + 1 surgele + 4 reserves + 2 (cycle de 5 semaines) + 16 sante
-     + 6 maison + 5 menage + 2 trimestriels (brosse a dents, creatine) = 45.
-     Ce qu'il a deja, il le coche quand meme. */
-  ok(/\/45 articles/.test(somme), '45 articles le 19 : tout part de zéro (' + somme + ')');
+     lignes comptent. 9 frais + 1 surgele + 4 reserves + 2 (cycle de 5 semaines) + 1 pot de
+     creatine = 17. Ce qu'il a deja, il le coche quand meme. */
+  ok(/\/17 articles/.test(somme), '17 articles le 19 : tout part de zéro (' + somme + ')');
   await ctx.close();
 }
 {
@@ -89,9 +88,10 @@ console.log('\n== 332) Une semaine plus tard, seul le frais est dû ==');
   const c = await cartes(fr);
   ok(c[0].due && c.slice(1).every(x => !x.due), 'le 26 septembre : frais seulement');
   const t = await fr.evaluate(() => document.querySelector('.page[data-page="courses"]').textContent);
+  ok(/prochaine fois le 03 oct\./.test(t), 'les surgelés, à deux semaines, annoncent le 3 octobre');
   ok(/prochaine fois le 17 oct\./.test(t), 'les réserves annoncent le 17 octobre');
-  ok(/prochaine fois le 12 déc\./.test(t), 'la brosse à dents annonce le 12 décembre');
-  ok(/prochaine fois le 14 nov\./.test(t), 'le ménage, à huit semaines, annonce le 14 novembre');
+  ok(/prochaine fois le 24 oct\./.test(t), 'l\'huile et le beurre de cacahuète, à cinq semaines, annoncent le 24 octobre');
+  ok(/prochaine fois le 12 déc\./.test(t), 'la créatine, au trimestre, annonce le 12 décembre');
   await ctx.close();
 }
 
@@ -189,45 +189,49 @@ for (const d of ['2026-09-19', '2026-09-26', '2026-10-17', '2026-11-21']) {
   await ctx.close();
 }
 
-console.log('\n== 334d) L\'hygiène s\'achète au flacon entier ==');
-/* Ces lignes-la n'ont pas besoin d'etre arrondies : un shampooing se vend au flacon. Ce
-   qui compte, c'est que chacune affiche SON rythme, pour qu'une estimation fausse se
-   corrige en un seul endroit visible.
-   20 septembre au soir : « ya des trucs que j'ai pas besoin de racheter toutes les
-   4 semaines, cest excessif ». C'etait vrai, et cette porte-la etait justement faite pour
-   ca. Le cycle est descendu de la categorie a l'ARTICLE, calcule sur la contenance et
-   l'usage reel. Chaque ligne porte donc quatre choses -- le produit, ce qu'on achete,
-   son rythme, et le calcul qui le justifie -- et les quatre sont tenues ici. */
+console.log('\n== 334d) La liste ne porte QUE de la nourriture ==');
+/* Ce bloc testait l'inverse : que chaque flacon d'hygiene affiche son rythme et le calcul
+   qui le justifie. Le 20 septembre il a tranche autrement -- « tu traques trop mal, dans
+   l'onglet courses tu vas juste laisser les aliments et la bouffe cest tout ».
+   Il a raison sur le fond : ces rythmes etaient calcules sur des volumes d'usage SUPPOSES
+   (8 ml de shampooing par lavage, 10 ml de gel douche par douche). Rien dans la Batcave ne
+   mesure ca, et un chiffre qu'on ne sait pas mesurer n'a rien a faire dans une liste qui
+   se veut exacte. Ce qui reste sort du plan de repas, au gramme pres, et se verifie.
+   La porte tient donc maintenant dans l'autre sens : aucune ligne non alimentaire, et
+   chaque ligne restante adossee au plan -- sauf la creatine, qui s'avale. */
 {
   const { ctx, fr } = await jour('2026-09-19T10:00:00+02:00');
-  const t = await fr.evaluate(() => document.querySelector('.page[data-page="courses"]').textContent);
-  const esc = x => x.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
-  for (const [prod, qte, rythme, pourquoi] of [
-        ['Shampooing', '1 flacon de 400 ml', '12 sem.', '4 lavages par semaine'],
-        ['Gel douche', '1 flacon de 750 ml', '8 sem.', '8 douches par semaine'],
-        ['Dentifrice', '1 tube', '4 sem.', 'tient un mois'],
-        ['Cotons-tiges', '1 boîte de 200', '12 sem.', '2 par jour'],
-        ['Rasoirs jetables', '1 paquet de 4', '16 sem.', 'le paquet tient quatre mois'],
-        ['Brosse à dents', '1', '12 sem.', 'une toutes les 12 semaines']]) {
-    const re = new RegExp(esc(prod) + ' — ' + esc(qte) + '[^\n]*' + esc(rythme) + '[^\n]*' + esc(pourquoi));
-    ok(re.test(t), prod + ' : ' + qte + ' · ' + rythme + ' · ' + pourquoi);
-  }
-  /* L'emblematique : un bidon de 40 doses, a une lessive par samedi, tient 40 semaines.
-     Il etait rachete toutes les QUATRE. C'est la ligne qui a declenche tout le reste, et
-     elle ne doit jamais repasser sous un rythme mensuel. */
-  /* Sur la LIGNE seule, pas sur le textContent de la page : celui-ci n'a aucun retour a
-     la ligne, donc [^\n]* y balaye tout l'onglet et le « pas 4 semaines » passerait au
-     vert quel que soit le rythme reel de la lessive. */
-  const lessive = await fr.evaluate(() => {
-    const l = [...document.querySelectorAll('#courses-grid label, #courses-grid-plus label')]
-                .find(x => /^Lessive/.test(x.textContent));
-    return l ? l.textContent : '';
+  const lignes = await fr.evaluate(() =>
+    [...document.querySelectorAll('#courses-grid label, #courses-grid-plus label')]
+      .map(l => l.textContent.split(' \u2014 ')[0].trim()));
+  const ATTENDU = ['Poulet', 'Viande hachée 5 %', 'Skyr', 'Œufs', 'Jambon', 'Fromage en tranches',
+                   'Pain complet', 'Bananes', 'Fruits (pommes, poires, oranges…)',
+                   'Légumes verts surgelés', 'Riz', 'Pâtes', 'Flocons d\'avoine', 'Miel',
+                   'Beurre de cacahuète', 'Huile d\'olive', 'Créatine monohydrate'];
+  ok(lignes.length === 17, '17 lignes, pas une de plus (' + lignes.length + ')');
+  ok(JSON.stringify(lignes) === JSON.stringify(ATTENDU),
+     'et ce sont exactement les dix-sept attendues' +
+     (JSON.stringify(lignes) === JSON.stringify(ATTENDU) ? '' : ' — reçu : ' + lignes.join(' · ')));
+  /* Nommement, les rayons qui sont sortis : hygiene, maison, menage, brosse a dents. */
+  const SORTIS = ['Shampooing', 'Après-shampooing', 'Gel douche', 'Nettoyant visage', 'Dentifrice',
+                  'Déodorant', 'Cotons-tiges', 'Rasoirs jetables', 'Fil dentaire', 'Lessive',
+                  'Détachant', 'Bain de bouche', 'Brossettes interdentaires', 'Crème hydratante',
+                  'Crème solaire', 'Mouchoirs', 'Papier toilette', 'Sacs poubelle 30 L',
+                  'Sacs poubelle salle de bain', 'Liquide vaisselle', 'Éponges + grattoirs',
+                  'Essuie-tout', 'Nettoyant sol (fregasuelos)', 'Anticalcaire salle de bain',
+                  'Multi-usage dégraissant', 'Nettoyant WC', 'Gants de ménage', 'Brosse à dents'];
+  const restes = SORTIS.filter(x => lignes.indexOf(x) > -1);
+  ok(restes.length === 0, 'les 28 lignes non alimentaires ont toutes disparu' +
+     (restes.length ? ' — reste : ' + restes.join(' · ') : ''));
+  /* La brosse a dents n'est pas perdue pour autant : son habitude du dimanche la suit,
+     une semaine sur douze. On le verifie sur la carte elle-meme, dans l'onglet Habitudes --
+     une sonde absente rendrait l'assertion toujours vraie, donc inutile. */
+  const brosse = await fr.evaluate(() => {
+    document.querySelectorAll('.page').forEach(p => { p.hidden = p.dataset.page !== 'habitudes'; });
+    return document.querySelector('.page[data-page="habitudes"]').textContent;
   });
-  ok(/^Lessive — 1 bidon de 40 doses/.test(lessive) && /36 sem\./.test(lessive),
-     'la lessive : 36 semaines, pas 4 (' + lessive.slice(0, 60) + '…)');
-  ok(!/\b(4|8|12) sem\./.test(lessive), 'et sa ligne ne porte aucun rythme mensuel ou trimestriel');
-  ok(/Nettoyant visage/.test(t) && /Déodorant/.test(t) && /Cotons-tiges/.test(t),
-     'nettoyant visage, déodorant et cotons-tiges ont chacun leur ligne');
+  ok(/Brosse à dents changée/.test(brosse),
+     'la brosse à dents reste suivie par son habitude du dimanche, hors des courses');
   await ctx.close();
 }
 
