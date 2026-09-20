@@ -2899,6 +2899,8 @@
 
       <p class="sub-note" id="courses-plan-note" style="margin-bottom:12px; line-height:1.7;"></p>
       <div class="courses-grid" id="courses-grid"></div>
+      <p class="sub-note" id="courses-calendrier" style="margin-top:14px; line-height:1.8;"></p>
+      <div id="courses-plus-tard" style="margin-top:16px;" hidden></div>
 
       <p class="sub-note" id="courses-budget" style="margin-top:16px; line-height:1.7;"></p>
     </section>
@@ -10801,6 +10803,43 @@
     for(var i = 0; i < 400; i++){ if(categorieCoursesDue(c, localISO(d))) return localISO(d); d.setDate(d.getDate() + 1); }
     return null;
   }
+  /* La MEME fonction, mais a partir de DEMAIN : une categorie due aujourd'hui doit pouvoir
+     annoncer sa fois SUIVANTE, sinon elle repond « aujourd'hui » et il reste sans date --
+     exactement sa remarque du 20 septembre, un jour ou les sept categories tombaient
+     ensemble et ou la page n'affichait donc aucune date nulle part. */
+  /* Et elle ne regarde que les SAMEDIS. Une categorie est « due » tous les jours de la
+     semaine ou son cycle tombe -- c'est voulu, il peut racheter un mardi s'il passe
+     devant --, mais son jour de courses est le samedi 13:30. Sans ce filtre, la page
+     annoncait « puis le 21 septembre » un dimanche : le lendemain, c'est-a-dire une date
+     a laquelle il ne fait jamais de courses. */
+  var JOUR_COURSES = 6;
+  function courseSuivanteCat(c, iso){
+    var d = new Date(isoDecale(iso || todayISO, 1) + 'T00:00:00');
+    for(var i = 0; i < 400; i++){
+      var j = localISO(d);
+      if(dowDe(j) === JOUR_COURSES && categorieCoursesDue(c, j)) return j;
+      d.setDate(d.getDate() + 1);
+    }
+    return null;
+  }
+  /* Le rythme d'une categorie en clair, sans avoir a le lire dans son titre. */
+  function rythmeCourseCat(c){
+    var n = c.semaines || 1;
+    return n < 2 ? 'chaque samedi' : 'toutes les ' + n + ' semaines';
+  }
+  /* Les prochains passages, groupes par date : « sam. 26 sept. — le frais seul ».
+     C'est la reponse a « je n'ai aucune idee des dates ou je dois acheter les trucs ». */
+  function prochainsPassagesCourses(iso, n){
+    var out = [], d = isoDecale(iso || todayISO, 1), plan = construireCourses();
+    for(var i = 0; i < 400 && out.length < (n || 4); i++){
+      var jour = isoDecale(d, i);
+      if(dowDe(jour) !== JOUR_COURSES) continue;
+      var dues = plan.filter(function(c){ return categorieCoursesDue(c, jour); });
+      if(dues.length) out.push({date: jour, cats: dues.map(function(c){ return c.cat; }),
+                                n: dues.reduce(function(t, c){ return t + c.items.length; }, 0)});
+    }
+    return out;
+  }
   /* Combien d'articles la course du jour demande : ceux des categories DUES. Le montant,
      lui, n'est plus calcule -- il etait estime, donc faux, et un faux total lu au moment
      de partir vaut moins que pas de total du tout. */
@@ -10911,10 +10950,15 @@
        Le seul chiffre vrai est celui de ses tickets, saisi dans Budget. */
     if(budget) budget.innerHTML = 'Aucun prix affiché : ceux d\'avant étaient estimés. Garde tes tickets — les montants réels se saisissent dans <b style="color:var(--ink-dim);">Budget → Nourriture</b>, et ce sont eux qui comptent dans tes dépenses du mois.';
     grid.innerHTML = '';
-    COURSES.forEach(function(c, ci){
+    /* Ce qui est DU aujourd'hui, et rien d'autre, dans la grille principale. Avant, les
+       sept categories s'affichaient ensemble -- les non dues seulement grisees a 55 % --
+       et un samedi ordinaire montrait 46 lignes pour 10 a prendre. Sa remarque du
+       20 septembre : « je dois tout recocher alors qu'il y a des trucs que je dois pas
+       acheter avant plusieurs semaines ». Les autres descendent dans un repli, avec
+       leur date. */
+    function carteCategorie(c, ci, due){
       var card = document.createElement('div');
       card.className = 'cat-card';
-      var due = categorieCoursesDue(c);
       var itemsHtml = c.items.map(function(it, ii){
         var key = ci+'-'+ii, checked = !!coursesState[key];
         return '<li class="'+(checked?'checked':'')+'">' +
@@ -10924,18 +10968,61 @@
                (it.note ? ' <span class="sub-note">— ' + escapeHtml(it.note) + '</span>' : '') +
                '</label></li>';
       }).join('');
-      /* Une categorie non due reste VISIBLE mais grisee et hors du compte : il peut toujours
-         racheter en avance s'il passe devant, sans que ca lui reproche une liste incomplete. */
-      var suite = '';
-      if(!due){
-        var pro = prochaineCourseCat(c);
-        suite = '<p class="sub-note" style="margin:0 0 6px;">pas cette semaine — prochaine fois le <b style="color:var(--ink-dim);">' + (pro ? fmtDate(pro) : '—') + '</b></p>';
-        card.style.opacity = '0.55';
-      }
-      card.innerHTML = '<h4>'+c.cat+'</h4>'+suite+'<ul>'+itemsHtml+'</ul>';
-      grid.appendChild(card);
+      /* La date est ecrite DANS LES DEUX CAS. Une categorie due qui ne disait rien laissait
+         la page sans aucune date le jour ou tout tombait ensemble. */
+      var suiv = courseSuivanteCat(c), quand = due
+        ? '<b style="color:var(--good);">aujourd\'hui</b> · ' + rythmeCourseCat(c) + (suiv ? ', puis le <b style="color:var(--ink-dim);">' + fmtDate(suiv) + '</b>' : '')
+        : 'prochaine fois le <b style="color:var(--ink-dim);">' + (suiv ? fmtDate(suiv) : '—') + '</b> · ' + rythmeCourseCat(c);
+      if(!due) card.style.opacity = '0.62';
+      card.innerHTML = '<h4>' + c.cat + '</h4><p class="sub-note" style="margin:0 0 6px;">' + quand + '</p><ul>' + itemsHtml + '</ul>';
+      return card;
+    }
+    var plusTard = [];
+    COURSES.forEach(function(c, ci){
+      if(categorieCoursesDue(c)) grid.appendChild(carteCategorie(c, ci, true));
+      else plusTard.push({c: c, ci: ci});
     });
-    grid.querySelectorAll('input[type="checkbox"]').forEach(function(cb){
+    if(!grid.children.length){
+      grid.innerHTML = '<p class="entry-empty" style="grid-column:1/-1;">Rien à prendre aujourd\'hui — ton jour de courses est le samedi.</p>';
+    }
+    /* Le repli : ce qui n'est pas du, range par date, et racheteable en avance s'il passe
+       devant le magasin. On ne le supprime pas de la page, on le sort du chemin. */
+    var hors = document.getElementById('courses-plus-tard');
+    if(hors){
+      if(!plusTard.length){ hors.innerHTML = ''; hors.hidden = true; }
+      else {
+        hors.hidden = false;
+        plusTard.sort(function(a, b){
+          var da = courseSuivanteCat(a.c) || '9999', db = courseSuivanteCat(b.c) || '9999';
+          return da < db ? -1 : da > db ? 1 : 0;
+        });
+        var resume = plusTard.map(function(x){
+          var d = courseSuivanteCat(x.c);
+          return (d ? fmtDate(d) : '—') + ' · ' + x.c.cat.replace(/ — .*/, '');
+        }).join(' &nbsp;·&nbsp; ');
+        var n = plusTard.reduce(function(t, x){ return t + x.c.items.length; }, 0);
+        hors.innerHTML = '<details><summary class="sous-onglet" style="display:inline-block; cursor:pointer;">Pas aujourd\'hui — ' +
+          plusTard.length + ' catégorie' + (plusTard.length > 1 ? 's' : '') + ', ' + n + ' articles ▾</summary>' +
+          '<p class="sub-note" style="margin:10px 0 12px; line-height:1.8;">' + resume + '</p>' +
+          '<div class="courses-grid" id="courses-grid-plus"></div></details>';
+        var g2 = document.getElementById('courses-grid-plus');
+        plusTard.forEach(function(x){ g2.appendChild(carteCategorie(x.c, x.ci, false)); });
+      }
+    }
+    /* Les prochains passages, en clair, sous la liste. */
+    var cal = document.getElementById('courses-calendrier');
+    if(cal){
+      var pp = prochainsPassagesCourses(todayISO, 4);
+      cal.innerHTML = pp.length
+        ? '<b style="color:var(--ink-dim);">Tes prochains passages</b> — ' + pp.map(function(x){
+            return fmtDate(x.date) + ' : ' + x.n + ' article' + (x.n > 1 ? 's' : '') + ' (' +
+                   x.cats.map(function(t){ return t.replace(/ — .*/, '').toLowerCase(); }).join(', ') + ')';
+          }).join(' &nbsp;·&nbsp; ')
+        : '';
+    }
+    /* Les cases sont maintenant dans deux grilles -- celle du jour et le repli « pas
+       aujourd'hui ». Ecouter la seule premiere aurait rendu le repli inerte. */
+    document.querySelectorAll('#courses-grid input[type="checkbox"], #courses-grid-plus input[type="checkbox"]').forEach(function(cb){
       cb.addEventListener('change', function(){
         coursesState[cb.dataset.course] = cb.checked;
         save('batcave-courses', coursesState);
@@ -10954,10 +11041,23 @@
     document.getElementById('courses-summary').textContent =
       t.checked + '/' + t.total + ' articles cochés · ' + a.n + ' à prendre';
   }
+  /* « Reinitialiser pour samedi prochain » ne vide que les categories qui etaient DUES.
+     Avant, elle vidait tout -- y compris une reserve rachetee en avance, qu'il fallait
+     donc recocher alors qu'elle n'etait pas due avant des semaines. C'est litteralement
+     sa remarque du 20 septembre. Ce qui n'etait pas du garde ses coches jusqu'a son
+     propre passage, ou la remise a zero de ce jour-la les videra. */
   document.getElementById('courses-reset').addEventListener('click', function(){
-    coursesState = {};
+    var garde = {};
+    COURSES.forEach(function(c, ci){
+      if(categorieCoursesDue(c)) return;
+      c.items.forEach(function(it, ii){
+        var k = ci + '-' + ii;
+        if(coursesState[k]) garde[k] = true;
+      });
+    });
+    coursesState = garde;
     save('batcave-courses', coursesState);
-    renderCourses(); renderCoursesSummary(); renderDashboard();
+    renderCourses(); renderCoursesSummary(); renderDashboard(); renderHabits();
   });
 
   /* ================= DASHBOARD ================= */
@@ -14242,7 +14342,7 @@
   /* Les series recurrentes de l'agenda portent une consigne apres « · » (« 🦇 Anki 1 · cartes
      dues dentaire ») : un evenement se reconnait a la partie avant le separateur. */
   function titreBaseGcal(s){ return String(s || '').split(' · ')[0].trim(); }
-  try{ window.__bcTitreBase = titreBaseGcal; window.__bcConsigne = consigneBloc; window.__bcInsights = buildInsights; window.__bcBlocs = blocsDuPlanning; window.__bcCle = cleJournee; window.__bcJours = joursSuivis; window.__bcInsightsVu = function(){ return insightsVu; }; window.__bcLogSession = logSession; window.__bcPeriode = periodeGrille; window.__bcGrille = grilleDe; window.__bcMinutesEspanol = minutesEspanol; window.__bcCibleEspanol = cibleEspanolJour; window.__bcTypeBloc = typeBlocPlan; window.__bcPlanRotation = planRotation; window.__bcHabitJours = habitJours; window.__bcProgrammeDebut = PROGRAMME_DEBUT; window.__bcJournees = function(){ return journeesState; }; window.__bcJourneeDe = journeeDe; window.__bcPartiels = periodePartiels; window.__bcSessionsPartiels = sessionsPartiels; window.__bcBlocSansPomodoro = blocSansPomodoro; window.__bcRappels = blocsARappeler; window.__bcJoursGcal = joursAPousser; window.__bcExamens = function(){ return examensState; }; window.__bcPrevu = minutesPrevuesJour; window.__bcCibleGrille = cibleDepuisGrille; window.__bcPartEcoulee = partEcoulee; window.__bcVacances = function(){ return vacancesState; }; window.__bcJourExclu = jourExclu; window.__bcObjectifs = function(){ return objectifsState.liste; }; window.__bcComparer = comparerObjectif; window.__bcAcquise = habitAcquise; window.__bcAcquises = habitsAcquises; window.__bcSansPomodoro = blocsSansPomodoroDuJour; window.__bcTonPriorite = tonPriorite; window.__bcPrioHist = function(){ return insightsHist; }; window.__bcCloturerSaison = cloturerSaison; window.__bcPeriodesCloses = function(){ return periodesClosesState; }; window.__bcCloturerPeriodes = cloturerPeriodesEchues; window.__bcPeriodesObj = periodesObjectifs; window.__bcSaisons = function(){ return saisonsState; }; window.__bcTrimestres = function(){ return TRIMESTRES; }; window.__bcMois = moisListe; window.__bcAnki = function(){ return ankiState; }; window.__bcLireAnki = lireAnki; window.__bcBesoins = besoinsPartiels; window.__bcMatiereBloc = matierePourBloc; window.__bcPortes = etatPortes; window.__bcEpreuve = epreuvePassages; window.__bcEpreuveProj = epreuveProjection; window.__bcPortesEtat = function(){ return portesEtat; }; window.__bcConvertirPorte = convertirPorte; window.__bcNoterCours = noterCours; window.__bcGrilleBase = grilleBase; window.__bcSemestre = semestreDe; window.__bcSansCours = sansCoursLe; window.__bcCoucher = heureCoucher; window.__bcLever = heureLever; window.__bcSommeilCible = objectifSommeilPour; window.__bcMarquerSansCours = marquerSansCours; window.__bcJoursSansCours = function(){ return joursSansCoursState; }; window.__bcSeuilRevision = seuilUrgenceRevision; window.__bcCibleJour = cibleJourMinutes; window.__bcReinitGarder = reinitGarder;
+  try{ window.__bcTitreBase = titreBaseGcal; window.__bcConsigne = consigneBloc; window.__bcInsights = buildInsights; window.__bcBlocs = blocsDuPlanning; window.__bcCle = cleJournee; window.__bcJours = joursSuivis; window.__bcInsightsVu = function(){ return insightsVu; }; window.__bcLogSession = logSession; window.__bcPeriode = periodeGrille; window.__bcGrille = grilleDe; window.__bcMinutesEspanol = minutesEspanol; window.__bcCibleEspanol = cibleEspanolJour; window.__bcTypeBloc = typeBlocPlan; window.__bcPlanRotation = planRotation; window.__bcHabitJours = habitJours; window.__bcProgrammeDebut = PROGRAMME_DEBUT; window.__bcJournees = function(){ return journeesState; }; window.__bcJourneeDe = journeeDe; window.__bcPartiels = periodePartiels; window.__bcSessionsPartiels = sessionsPartiels; window.__bcBlocSansPomodoro = blocSansPomodoro; window.__bcRappels = blocsARappeler; window.__bcJoursGcal = joursAPousser; window.__bcExamens = function(){ return examensState; }; window.__bcPrevu = minutesPrevuesJour; window.__bcCibleGrille = cibleDepuisGrille; window.__bcPartEcoulee = partEcoulee; window.__bcVacances = function(){ return vacancesState; }; window.__bcJourExclu = jourExclu; window.__bcObjectifs = function(){ return objectifsState.liste; }; window.__bcComparer = comparerObjectif; window.__bcAcquise = habitAcquise; window.__bcAcquises = habitsAcquises; window.__bcSansPomodoro = blocsSansPomodoroDuJour; window.__bcTonPriorite = tonPriorite; window.__bcPrioHist = function(){ return insightsHist; }; window.__bcCloturerSaison = cloturerSaison; window.__bcPeriodesCloses = function(){ return periodesClosesState; }; window.__bcCloturerPeriodes = cloturerPeriodesEchues; window.__bcPeriodesObj = periodesObjectifs; window.__bcSaisons = function(){ return saisonsState; }; window.__bcTrimestres = function(){ return TRIMESTRES; }; window.__bcMois = moisListe; window.__bcAnki = function(){ return ankiState; }; window.__bcLireAnki = lireAnki; window.__bcBesoins = besoinsPartiels; window.__bcMatiereBloc = matierePourBloc; window.__bcPortes = etatPortes; window.__bcEpreuve = epreuvePassages; window.__bcEpreuveProj = epreuveProjection; window.__bcPortesEtat = function(){ return portesEtat; }; window.__bcConvertirPorte = convertirPorte; window.__bcNoterCours = noterCours; window.__bcGrilleBase = grilleBase; window.__bcSemestre = semestreDe; window.__bcSansCours = sansCoursLe; window.__bcCoucher = heureCoucher; window.__bcLever = heureLever; window.__bcSommeilCible = objectifSommeilPour; window.__bcMarquerSansCours = marquerSansCours; window.__bcJoursSansCours = function(){ return joursSansCoursState; }; window.__bcSeuilRevision = seuilUrgenceRevision; window.__bcCibleJour = cibleJourMinutes; window.__bcReinitGarder = reinitGarder; window.__bcPassagesCourses = prochainsPassagesCourses;
        window.__bcTypeSport = typeSportDe; window.__bcCardio = function(){ return cardioState; }; window.__bcPasCible = pasCible; window.__bcAccorderMarche = accorderHabitMarche; window.__bcSortiesCardio = sortiesCardio; window.__bcNoterCardio = noterCardio; window.__bcCardioMinutes = cardioMinutesSur; window.__bcSerieCardio = serieCardio; window.__bcSommeilCible = objectifSommeilPour; window.__bcTestAnki = testAnkiDu; window.__bcRapport = function(){
          var mois = moisListe().filter(function(m){ return todayISO >= m.debut && todayISO <= m.fin; })[0];
          var objs = mois ? objectifsState.liste.filter(function(o){ return o.periode === 'mois' && o.pid === mois.id; }) : [];
