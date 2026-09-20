@@ -33,13 +33,13 @@ console.log('\n== 180) Sans ajustement : plan de base, liste = plan × 7 ==');
   const { ctx, fr } = await ouvrir(MARDI);
   await page_(fr, 'courses');
   const c = await fr.evaluate(() => ({ items: [...document.querySelectorAll('#courses-grid label, #courses-grid-plus label')].map(l => l.textContent), note: document.getElementById('courses-plan-note').textContent, budget: document.getElementById('courses-budget').textContent, n: document.querySelectorAll('#courses-grid input, #courses-grid-plus input').length }));
-  /* Sept rythmes : 10 articles frais chaque semaine ; 5 reserves, 16 lignes de sante et
+  /* Huit rythmes : 9 articles frais chaque semaine ; 4 reserves, 16 lignes de sante et
      6 de maison toutes les 4 semaines ; 2 articles toutes les 5 ; 5 de menage toutes les
      8 ; 1 brosse a dents et 1 pot de creatine tous les 3 mois. Les produits MENAGERS
      avaient ete sortis a sa demande, puis redemandes le 19 septembre ; la creatine a
      rejoint la liste le meme jour, parce qu'il la coche tous les soirs et que rien ne la
      rachetait. */
-  ok(c.n === 46, '46 articles au total, tous rythmes confondus (' + c.n + ')');
+  ok(c.n === 45, '45 articles au total, tous rythmes confondus (' + c.n + ')');
   /* Deux chiffres par ligne, et il faut les deux : ce qu'on ACHETE (un multiple du
      conditionnement) et ce que le PLAN demande (la somme des 7 jours de repas). Riz
      135 g/jour -> 945/semaine -> 3 780 sur 4 semaines, donc 4 paquets de 1 kg ;
@@ -47,14 +47,14 @@ console.log('\n== 180) Sans ajustement : plan de base, liste = plan × 7 ==');
      serait une rupture en milieu de cycle : l'arrondi va toujours VERS LE HAUT. */
   ok(c.items.some(t => /^Riz — 5 kg\b/.test(t) && /le plan en demande 4\u202f340 g/.test(t)), 'riz : 5 kg achetés pour 4 340 g demandés (' + c.items.find(t => /^Riz/.test(t)) + ')');
   ok(c.items.some(t => /^Pâtes — 3 kg\b/.test(t) && /le plan en demande 2\u202f940 g/.test(t)), 'pâtes : 3 kg achetés pour 2 940 g demandés (' + c.items.find(t => /^Pâtes/.test(t)) + ')');
-  /* La rotation donne 5 dejeuners de poulet, 6 diners de viande hachee, 2 dejeuners et
-     1 diner de saumon : 650, 870 et 405 g par semaine. */
-  /* La viande et le poisson ne s'arrondissent PAS : le boucher pese le montant exact.
-     Ces trois lignes doivent donc porter le chiffre du plan tel quel, sans surplus. */
-  ok(c.items.some(t => /^Poulet — 400 g .*pesé au comptoir/.test(t) && !/demande/.test(t))
-  && c.items.some(t => /^Viande hachée 5 % — 540 g .*pesée au comptoir/.test(t))
-  && c.items.some(t => /^Saumon — 255 g .*pesé au comptoir/.test(t)),
-     'viande et poisson au gramme près, pesés au comptoir : ' + c.items.filter(t => /^(Poulet|Viande|Saumon)/.test(t)).join(' · '));
+  /* Depuis le 20 septembre la rotation est la meme tous les jours : poulet a midi
+     (80 g x 7 = 560), viande hachee le soir (90 g x 7 = 630). Le poisson est sorti.
+     La viande ne s'arrondit PAS : le boucher pese le montant exact, donc ces deux
+     lignes portent le chiffre du plan tel quel, sans surplus. */
+  ok(c.items.some(t => /^Poulet — 560 g .*pesé au comptoir/.test(t) && !/demande/.test(t))
+  && c.items.some(t => /^Viande hachée 5 % — 630 g .*pesée au comptoir/.test(t))
+  && !c.items.some(t => /^Saumon/.test(t)),
+     'viande au gramme près, pesée au comptoir, et plus de poisson : ' + c.items.filter(t => /^(Poulet|Viande|Saumon)/.test(t)).join(' · '));
   /* Les fruits se comptent, ils ne se pesent pas. */
   ok(c.items.some(t => /^Bananes — 7 .*l'unité/.test(t)) && c.items.some(t => /^Fruits[^\n]*— 7 .*l'unité/.test(t)),
      'bananes et fruits à l\'unité : ' + c.items.filter(t => /^(Bananes|Fruits)/.test(t)).join(' · '));
@@ -64,15 +64,17 @@ console.log('\n== 180) Sans ajustement : plan de base, liste = plan × 7 ==');
   && !c.items.some(t => /^(Dattes|Cacahuètes|Lait)/.test(t)),
      'skyr : 2,25 kg en 5 pots de 450 g pour 2 135 g demandés');
   /* L'HUILE etait la vraie erreur : 288 ml par semaine, donc 1 152 sur 4 semaines alors
-     que la liste disait 1 000 -- quatre jours de rupture par cycle, tous les mois. Elle
-     passe a 5 semaines : 1 440 ml, soit 1,5 L, reste 60 ml. */
+     que la liste disait 1 000 -- quatre jours de rupture par cycle, tous les mois. Elle est
+     passee a 5 semaines. Depuis le retrait du poisson elle monte a 315 ml par semaine
+     (30 ml a midi avec le poulet, 15 le soir avec la viande hachee, les sept jours) :
+     1 575 ml par cycle, donc trois bouteilles de 750 ml. */
   /* Les legumes surgeles sont passes a DEUX semaines le 20 septembre : 10 kg par passage
      ne rentraient pas dans son congelateur. La consommation n'a pas bouge (2 450 g par
      semaine), c'est le rythme de rachat qui a change -- 5 kg tous les quinze jours. */
   ok(c.items.some(t => /^Œufs — 18\b/.test(t) && /demande 14 œufs/.test(t))
   && c.items.some(t => /^Légumes verts surgelés — 5 kg\b/.test(t) && /demande 4\u202f900 g/.test(t))
-  && c.items.some(t => /^Huile d'olive — 1,5 L\b/.test(t) && /demande 1\u202f440 ml/.test(t)),
-     'œufs 18 pour 14, surgelés 5 kg pour 4 900 g sur deux semaines, huile 1,5 L pour 1 440 ml sur cinq');
+  && c.items.some(t => /^Huile d'olive — 2,25 L\b/.test(t) && /demande 1\u202f575 ml/.test(t)),
+     'œufs 18 pour 14, surgelés 5 kg pour 4 900 g sur deux semaines, huile 2,25 L pour 1 575 ml sur cinq');
   /* Aucun stock n'est suppose : rien ne dit « tu en as », rien n'est repousse a plus tard. */
   ok(!c.items.some(t => /tu en as|il t’en reste|à racheter le/.test(t)), 'aucune ligne ne suppose un stock : tout part de zéro, il coche ce qu\'il a');
   ok(c.items.some(t => /^Shampooing/.test(t)) && c.items.some(t => /^Cotons-tiges/.test(t)) && c.items.some(t => /^Brosse à dents/.test(t)), 'santé et hygiène ont leurs lignes');
@@ -120,8 +122,8 @@ console.log('\n== 181) Avec +150 kcal : le dîner et les courses l\'écrivent ==
   ok(c.items.some(t => /^Pâtes — 4,5 kg\b/.test(t) && /demande 4\u202f060 g/.test(t)), 'la boucle kcal remonte le besoin à (735 + 280) × 4 = 4 060 g, et l\'achat suit à 4,5 kg (' + c.items.find(t => /^Pâtes/.test(t)) + ')');
   ok(/\+150 kcal\/jour/.test(c.note) && /\+40 g de pâtes crues/.test(c.note) && /\+280 g sur la semaine/.test(c.note), 'note : ' + c.note.slice(0, 120));
   /* La boucle kcal ne touche QUE le feculent du diner : les proteines gardent la quantite
-     de la rotation, 650 g de poulet par semaine. */
-  ok(c.items.filter(t => /^Poulet/.test(t)).length === 1 && /400 g/.test(c.items.find(t => /^Poulet/.test(t))), 'les protéines ne bougent pas');
+     de la rotation, 560 g de poulet par semaine. */
+  ok(c.items.filter(t => /^Poulet/.test(t)).length === 1 && /560 g/.test(c.items.find(t => /^Poulet/.test(t))), 'les protéines ne bougent pas');
   await ctx.close();
 }
 
@@ -216,8 +218,8 @@ console.log('\n== 183) La liste de courses sort du MEME plan que les repas ==');
   });
   const cles = Object.keys(r.recompte).sort();
   const faux = cles.filter(k => Math.abs(r.recompte[k] - r.lu[k]) > 0.001);
-  ok(faux.length === 0 && cles.length === 17,
-     'les 17 besoins de la semaine sont exactement la somme des repas' + (faux.length ? ' — ' + faux.map(k => k + ' : ' + r.lu[k] + ' vs ' + r.recompte[k]).join(', ') : ' (' + cles.length + ')'));
+  ok(faux.length === 0 && cles.length === 16,
+     'les 16 besoins de la semaine sont exactement la somme des repas' + (faux.length ? ' — ' + faux.map(k => k + ' : ' + r.lu[k] + ' vs ' + r.recompte[k]).join(', ') : ' (' + cles.length + ')'));
   /* Et aucun aliment du plan ne manque a la liste de courses. */
   const manquants = await fr.evaluate(() => {
     const noms = ['Petit-déjeuner','Déjeuner','Collation entraînement','Dîner','Collation soir'];

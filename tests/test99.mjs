@@ -37,13 +37,13 @@ const lignes = fr => fr.evaluate(() => [...document.querySelectorAll('#courses-g
   return { nom: lab.textContent.trim(), ou: tag ? tag.textContent.trim() : null };
 }));
 
-console.log('\n== 320) Les 46 articles portent tous une adresse ==');
+console.log('\n== 320) Les 45 articles portent tous une adresse ==');
 {
   /* Le 19 septembre, l'ancre : toutes les categories sont dues, donc la liste entiere
      est affichee d'un coup. C'est le seul jour ou ce test voit les 46 lignes. */
   const { ctx, fr } = await courses('2026-09-19T10:00:00+02:00');
   const l = await lignes(fr);
-  ok(l.length === 46, '46 articles affichés le 19 (' + l.length + ')');
+  ok(l.length === 45, '45 articles affichés le 19 (' + l.length + ')');
   const muets = l.filter(x => !x.ou);
   ok(!muets.length, 'aucun article sans adresse (' + (muets.map(x => x.nom).join(', ') || 'aucun') + ')');
   /* Cinq destinations, pas une de plus : une faute de frappe dans OU_ARTICLE passerait
@@ -80,8 +80,12 @@ console.log('\n== 322) Les trajets qui font gagner de l\'argent ==');
      'les fruits vont au mercadillo, jamais en supermarché (' + chez('Bananes') + ' / ' + chez('Fruits') + ')');
   ok(chez('Riz') === 'Lidl' && chez('Pâtes') === 'Lidl' && chez('Flocons d\'avoine') === 'Lidl',
      'le sec va chez Lidl : riz, pâtes, flocons');
-  ok(/^Lidl/.test(chez('Saumon') || '') && chez('Légumes verts surgelés') === 'Lidl',
-     'le surgelé aussi : saumon et légumes verts (' + chez('Saumon') + ')');
+  ok(chez('Légumes verts surgelés') === 'Lidl',
+     'le surgelé aussi : les légumes verts (' + chez('Légumes verts surgelés') + ')');
+  /* La viande est halal, donc elle ne vient QUE de la boucherie -- aucune des trois
+     lignes ne doit jamais glisser vers un supermarche. */
+  ok(chez('Poulet') === 'Boucher' && chez('Viande hachée') === 'Boucher' && chez('Jambon') === 'Boucher',
+     'la viande halal vient du boucher, les trois lignes (' + chez('Poulet') + ')');
   /* L'hygiene et le menage n'ont pas d'etiquette article par article : ils heritent de
      leur categorie. Si OU_DEFAUT sautait, ils seraient muets -- deja couvert en 320 --
      mais il faut aussi qu'ils heritent de la BONNE adresse. */
@@ -105,7 +109,7 @@ console.log('\n== 323) La pastille n\'a rien cassé ==');
     coche: document.querySelector('#courses-grid .cat-card li').classList.contains('checked')
   }));
   ok(apres.coche, 'cliquer la pastille coche bien l\'article — elle est dans le label');
-  ok(avant !== apres.txt && /1\/46/.test(apres.txt), 'le compteur suit : ' + apres.txt.trim());
+  ok(avant !== apres.txt && /1\/45/.test(apres.txt), 'le compteur suit : ' + apres.txt.trim());
   /* Coche = « j'ai deja ce qu'il faut » aussi bien que « achete ». L'adresse doit rester
      lisible-mais-en-retrait, jamais disparaitre : il peut decocher. */
   const opac = await fr.evaluate(() => getComputedStyle(document.querySelector('#courses-grid .cat-card li .ou-tag')).opacity);

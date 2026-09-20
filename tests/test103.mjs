@@ -43,7 +43,7 @@ console.log('\n== 342) Le jour du premier ravitaillement : tout est dû, et tout
   const { ctx, fr } = await ouvrir('2026-09-20T16:00:00+02:00');
   const v = await vue(fr);
   ok(v.jour.length === 8, 'les huit catégories sont dans la grille du jour (' + v.jour.length + ')');
-  ok(/46 à prendre/.test(v.resume), 'et le résumé annonce 46 articles (' + v.resume + ')');
+  ok(/45 à prendre/.test(v.resume), 'et le résumé annonce 45 articles (' + v.resume + ')');
   ok(v.dates.every(t => /aujourd/i.test(t)), 'chacune dit « aujourd’hui »');
   ok(v.dates.every(t => /puis le/.test(t)), 'ET chacune dit sa fois suivante — c’est ce qui manquait');
   ok(/26 sept/.test(v.dates[0]) && /03 oct/.test(v.dates[1]) && /17 oct/.test(v.dates[2]),
@@ -57,7 +57,7 @@ console.log('\n== 343) Un samedi ordinaire : la grille ne montre que le frais ==
   const { ctx, fr } = await ouvrir('2026-09-26T13:30:00+02:00');
   const v = await vue(fr);
   ok(v.jour.length === 1 && /Chaque semaine/.test(v.jour[0]), 'une seule catégorie dans la grille du jour (' + v.jour.join(', ') + ')');
-  ok(/0\/10 .*10 à prendre/.test(v.resume), 'le résumé dit 10, pas 46 (' + v.resume + ')');
+  ok(/0\/9 .*9 à prendre/.test(v.resume), 'le résumé dit 9, pas 45 (' + v.resume + ')');
   ok(/7 catégories/.test(v.repli), 'les sept autres catégories sont dans le repli (' + v.repli + ')');
   ok(v.tard.length === 7, 'et le repli les contient toutes, rachetables en avance (' + v.tard.length + ')');
   await ctx.close();

@@ -3416,7 +3416,7 @@
      vestige : une fonctionnalite retiree (batcave-matieres) ou un essai. Elle prend de la
      place dans le quota de 5000 documents et embrouille les sauvegardes, sans que rien ne
      la lise jamais. On la signale ; la suppression reste ton geste. */
-  var CLES_CONNUES = ['addictions','budget-limits','business','coran','courses','dash-more','duaas','duree-bloc','sport-log','objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','courses-plan-v3','courses-plan-v4','courses-plan-v5','ancre-dimanche-v1','shampoing-dim-v1','marche-cible-v1','cardio','kcal-ajustement','gcal-ecriture','reinit','fc-migration-v1','charge','shopify-boutique','journees','examens-heures','vacances','jours-exclus',
+  var CLES_CONNUES = ['addictions','budget-limits','business','coran','courses','dash-more','duaas','duree-bloc','sport-log','objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','courses-plan-v3','courses-plan-v4','courses-plan-v5','courses-plan-v6','ancre-dimanche-v1','shampoing-dim-v1','marche-cible-v1','cardio','kcal-ajustement','gcal-ecriture','reinit','fc-migration-v1','charge','shopify-boutique','journees','examens-heures','vacances','jours-exclus',
     'espagnol','examens','cours-suivi','portes','periodes-closes','fc-prix-icloud-3','fixed-charges','goals','goals-depart','saisons','insights-hist','last-restore-drill','habitlog','habits','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','habits-seed-v7','habits-seed-v8','habits-seed-v9','objectifs-v5-espanol',
     'horizon','last-auto-backup','last-manual-backup','last-bilan-prompt','last-compaction','last-open','last-rotation','notion-url',
     'pomodial-purge','projets','report','revision','revision-fusionnee','revue','sante','sauvegarde','sessions',
@@ -4507,7 +4507,7 @@
      elles repartiraient vers le cloud. La meme remise a zero peut donc etre decidee depuis
      l'appli ou directement dans le cloud. */
   var REINIT_GARDER = ['habits','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','habits-seed-v7','habits-seed-v8','habits-seed-v9','objectifs-v5-espanol','fixed-charges','fc-prix-icloud-3','budget-limits','examens','examens-heures','journees','echeances','vacances','jours-exclus','jours-sans-cours','portes','appro','notion-url','shopify-boutique',
-                       'objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','courses-plan-v3','courses-plan-v4','courses-plan-v5','ancre-dimanche-v1','shampoing-dim-v1','marche-cible-v1','horizon','goals-depart','saisons','periodes-closes','gcal-ecriture','duree-bloc','dash-more','revision-fusionnee','reinit','copie-vierge'];
+                       'objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','courses-plan-v3','courses-plan-v4','courses-plan-v5','courses-plan-v6','ancre-dimanche-v1','shampoing-dim-v1','marche-cible-v1','horizon','goals-depart','saisons','periodes-closes','gcal-ecriture','duree-bloc','dash-more','revision-fusionnee','reinit','copie-vierge'];
   var REINIT_PREFIXES_GARDER = ['pomodial-', 'coherence-ignore-'];
   function reinitGarder(cle){
     var c = cle.indexOf('batcave-') === 0 ? cle.slice(8) : cle;
@@ -7143,10 +7143,9 @@
     fruit:     {kcal:55,  p:0.5,  g:12.0, l:0.2,  piece:120},
     poulet:    {kcal:106, p:23.0, g:0.0,  l:1.2},
     hachee:    {kcal:137, p:21.5, g:0.0,  l:5.0},
-    saumon:    {kcal:208, p:20.0, g:0.0,  l:13.0},
     huile:     {kcal:884, p:0.0,  g:0.0,  l:100.0}
   };
-  var CLE_PROTEINE = {'Poulet':'poulet', 'Viande hachée 5 %':'hachee', 'Saumon':'saumon'};
+  var CLE_PROTEINE = {'Poulet':'poulet', 'Viande hachée 5 %':'hachee'};
   /* Ce que contient chaque repas, dans l'ordre des items affiches. « brut » ignore la
      boucle poids -> calories : la liste de courses l'ajoute elle-meme, une seule fois. */
   function compoRepas(nom, iso, brut){
@@ -7188,17 +7187,19 @@
     dej: {nom:'Riz',   g:155, kcalG:3.6, prixKg:1.1},
     din: {nom:'Pâtes', g:105, kcalG:3.6, prixKg:1.0}
   };
-  /* La rotation ne met que poulet ou saumon à midi, viande hachée ou saumon le soir : les
-     autres cases (poulet le soir, viande hachée à midi) gardent des valeurs de repli. */
+  /* Poulet a midi, viande hachee le soir, les sept jours. Le poisson a ete retire le
+     20 septembre -- sa decision, et elle est economique : a 13 EUR le kilo il coutait plus
+     du double du poulet pour la meme place dans l'assiette. Les cases que la rotation
+     n'appelle plus (poulet le soir, viande hachee a midi) gardent des valeurs de repli :
+     compoRepas les lirait si la rotation changeait. */
   var PROTEINES = {
     'Poulet':            {dej:{g:80, huile:30}, din:{g:80, huile:15}, prixKg:6.5},
-    'Viande hachée 5 %': {dej:{g:75, huile:20}, din:{g:90, huile:15}, prixKg:8.0},
-    'Saumon':            {dej:{g:85, huile:20}, din:{g:85, huile:8},  prixKg:13.0}
+    'Viande hachée 5 %': {dej:{g:75, huile:20}, din:{g:90, huile:15}, prixKg:8.0}
   };
   /* [déjeuner, dîner] par jour de la semaine (0 = dimanche) */
   var ROTATION = {
-    1:['Poulet','Viande hachée 5 %'], 2:['Poulet','Viande hachée 5 %'], 3:['Saumon','Viande hachée 5 %'],
-    4:['Poulet','Viande hachée 5 %'], 5:['Poulet','Saumon'], 6:['Poulet','Viande hachée 5 %'], 0:['Saumon','Viande hachée 5 %']
+    1:['Poulet','Viande hachée 5 %'], 2:['Poulet','Viande hachée 5 %'], 3:['Poulet','Viande hachée 5 %'],
+    4:['Poulet','Viande hachée 5 %'], 5:['Poulet','Viande hachée 5 %'], 6:['Poulet','Viande hachée 5 %'], 0:['Poulet','Viande hachée 5 %']
   };
   function proteineDuJour(repas, iso){
     var dow = new Date((iso || todayISO) + 'T00:00:00').getDay();
@@ -10508,9 +10509,9 @@
      celui du repas de ce jour-la. Changer un grammage dans le plan change la session.
      Rendement a la cuisson : ce que 100 g crus pesent une fois cuits. Sert UNIQUEMENT a
      choisir la taille des boites -- le plan, lui, se pese cru. */
-  var RENDEMENT = {riz:2.6, pates:2.4, poulet:0.72, hachee:0.75, saumon:0.78, legumes:0.9};
+  var RENDEMENT = {riz:2.6, pates:2.4, poulet:0.72, hachee:0.75, legumes:0.9};
   var NOM_ALIMENT = {riz:'Riz', pates:'Pâtes', poulet:'Poulet', hachee:'Viande hachée 5 %',
-                     saumon:'Saumon', legumes:'Légumes verts surgelés', huile:'Huile d\'olive',
+                     legumes:'Légumes verts surgelés', huile:'Huile d\'olive',
                      oeufs:'Œufs', flocons:'Flocons d\'avoine', skyr:'Skyr', cacahuete:'Beurre de cacahuète',
                      banane:'Banane', pain:'Pain complet', jambon:'Jambon', fromage:'Fromage', miel:'Miel', fruit:'Fruit'};
   var NOMS_SEMAINE = ['dimanche','lundi','mardi','mercredi','jeudi','vendredi','samedi'];
@@ -10547,7 +10548,7 @@
       'Une session le dimanche à 14:30, deux heures, pour les sept repas de midi et les sept du soir. ' +
       'Quatorze boîtes : quatre jours au frigo, trois au congélateur. Le petit-déjeuner et les deux collations ne se préparent pas — ils s’assemblent en cinq minutes.';
     /* Ce qu'il y a a cuire : chaque poste, cru, et ce qu'il pesera cuit. */
-    var postes = ['riz','pates','poulet','hachee','saumon','legumes'];
+    var postes = ['riz','pates','poulet','hachee','legumes'];
     host.innerHTML = postes.filter(function(c){ return T[c] > 0; }).map(function(c){
       var cuit = RENDEMENT[c] ? ' <span class="sub-note">→ ~' + poids(T[c] * RENDEMENT[c]) + ' cuits</span>' : '';
       return '<li><span>' + escapeHtml(NOM_ALIMENT[c] || c) + '</span><span><b>' + poids(T[c]) + '</b> crus' + cuit + '</span></li>';
@@ -10557,10 +10558,9 @@
     /* L'ordre. Les durees sont celles des quantites ci-dessus ; les postes longs et
        autonomes (riz, four) partent en premier, le reste se glisse pendant. */
     var etapes = [
-      [0,  'Le <b>riz</b> à l\'eau — ' + poids(T.riz) + ' crus, 2,5 fois leur volume d\'eau, 12 min à petits bouillons. Et le <b>four à 200 °C</b>.'],
-      [3,  'Le <b>saumon</b> au four — ' + poids(T.saumon) + ', en papillote, 15 min. Il cuit tout seul, on ne le regarde pas.'],
-      [5,  'Le <b>poulet</b> à la poêle — ' + poids(T.poulet) + ', feu vif, 4 min par face puis 3 min à couvert.'],
-      [18, 'Sortir le saumon et le poulet. <b>Égoutter le riz</b> et l\'étaler sur une plaque : à plat il refroidit en 15 min, en tas il met une heure.'],
+      [0,  'Le <b>riz</b> à l\'eau — ' + poids(T.riz) + ' crus, 2,5 fois leur volume d\'eau, 12 min à petits bouillons.'],
+      [3,  'Le <b>poulet</b> à la poêle — ' + poids(T.poulet) + ', feu vif, 4 min par face puis 3 min à couvert.'],
+      [18, 'Sortir le poulet. <b>Égoutter le riz</b> et l\'étaler sur une plaque : à plat il refroidit en 15 min, en tas il met une heure.'],
       [22, 'La <b>viande hachée</b> — ' + poids(T.hachee) + ', en deux fournées pour qu\'elle grille au lieu de bouillir. 10 min.'],
       [34, 'Les <b>pâtes</b> — ' + poids(T.pates) + ' crues, <b>deux minutes de moins</b> que le paquet : elles finiront de cuire au réchauffage.'],
       [46, 'Les <b>légumes surgelés</b> — ' + poids(T.legumes) + ', à la poêle en trois fournées ou à la vapeur, 7 min. Sans les décongeler avant.'],
@@ -10608,12 +10608,6 @@
      autres items). Le feculent du diner porte l'ajustement kcal en vigueur : +150 kcal =
      +40 g de pâtes crues par jour, +280 g sur la semaine. Meme ordre, meme nombre d'articles
      qu'avant : les cases cochees (batcave-courses, indexees) restent valables. */
-  /* La liste d'achat du plan à 5 prises (6 sept. 2026) : quantités arrondies au
-     conditionnement, pas les grammes exacts du plan. Plus de skyr du matin, plus de dattes ni
-     de cacahuètes ; riz doublé, poulet et saumon en hausse. Les pâtes portent l'ajustement de
-     la boucle kcal (+40 g/j = +280 g/semaine). L'huile d'olive se rachète toutes les
-     4 semaines : elle reste dans la liste, on ne la coche que quand il en faut. Prix estimés
-     Alicante 2026. */
   /* ====== LISTES DE COURSES ======
      Les quantites ne sont plus estimees : elles sortent du plan de repas reel (MEALS,
      FECULENTS, PROTEINES, ROTATION), multipliees par les 7 jours de la semaine puis par
@@ -10644,8 +10638,8 @@
     return b;
   })();
   /* ===== Des quantites qu'on peut vraiment acheter =====
-     Le plan de repas donne un besoin exact -- 650 g de poulet, 2 135 g de skyr, 405 g de
-     saumon. Le magasin, lui, vend des barquettes, des pots et des paquets. Chaque ligne
+     Le plan de repas donne un besoin exact -- 560 g de poulet, 630 g de viande hachee,
+     2 135 g de skyr. Le magasin, lui, vend des barquettes, des pots et des paquets. Chaque ligne
      arrondit donc le besoin AU-DESSUS du conditionnement reel, et affiche les deux : ce
      qu'il prend, et ce que le plan demande. Le surplus se cuit et part en tupperware --
      quelques calories de plus ne changent rien, une rupture en milieu de semaine si.
@@ -10680,14 +10674,13 @@
     }
     var cat = [
       /* Le frais, chaque samedi.
-         La viande et le poisson ne s'arrondissent PAS : le boucher pese le montant exact.
+         La viande ne s'arrondit PAS : le boucher pese le montant exact.
          Les fruits se comptent a l'unite. Le reste s'achete au paquet, et « pas » est le
          plus petit format courant -- un pot de skyr de 450 g plutot que de 500 fait tomber
          le surplus de 365 a 115 g par semaine, pour le meme nombre de pots. */
       {cat:'Chaque semaine', semaines:1, items:[
         art('Poulet',            B.poulet,  1,  poids, 'pes\u00e9 au comptoir'),
         art('Viande hach\u00e9e 5 %', B.hachee,  1,  poids, 'pes\u00e9e au comptoir'),
-        art('Saumon',            B.saumon,  1, poids, 'pes\u00e9 au comptoir'),
         art('Skyr',              B.skyr,  450,  poids, 'pot'),
         art('\u0152ufs',              B.oeufs,   6,      sep,   'bo\u00eete', B.oeufs + ' \u0153ufs'),
         art('Jambon',            B.jambon,150, poids, 'paquet'),
@@ -10710,9 +10703,12 @@
         art('Flocons d\'avoine',  B.flocons * 4,         500, poids, 'paquet'),
         art('Miel',              B.miel * 4,            250, poids, 'pot')
       ]},
-      /* Cinq semaines : 2 kg de beurre de cacahuete tombent presque pile (385 x 5 = 1 925),
-         et 1,5 L d'huile aussi (288 x 5 = 1 440). A quatre semaines, un litre d'huile
-         manquait de 152 ml -- quatre jours de rupture par cycle. */
+      /* Cinq semaines : 2 kg de beurre de cacahuete tombent presque pile (385 x 5 = 1 925).
+         L'huile a change le 20 septembre : le poisson sorti, chaque midi porte les 30 ml du
+         poulet et chaque soir les 15 ml de la viande hachee, soit 315 ml par semaine au lieu
+         de 288 -- donc 1 575 ml par cycle, et trois bouteilles de 750 ml. Le reste (675 ml)
+         n'est pas perdu : rien n'est modelise en stock ici, il coche la ligne sans acheter
+         tant qu'il lui en reste. */
       {cat:'Toutes les 5 semaines', semaines:5, ancre:ANCRE_COURSES, items:[
         art('Beurre de cacahuète', B.cacahuete * 5, 1000, poids, 'pot'),
         art('Huile d\'olive',        B.huile * 5,      750, vol,   'bouteille')
@@ -10872,7 +10868,7 @@
   var OU_ARTICLE = {
     'Poulet': 'Boucher', 'Viande hach\u00e9e 5 %': 'Boucher', 'Jambon': 'Boucher',
     'Skyr': 'Alcampo', 'Huile d\'olive': 'Alcampo · bidon 5 L',
-    'Saumon': 'Lidl · surgel\u00e9', '\u0152ufs': 'Lidl', 'Pain complet': 'Lidl',
+    '\u0152ufs': 'Lidl', 'Pain complet': 'Lidl',
     'Fromage en tranches': 'Lidl · cuajo vegetal',
     'Riz': 'Lidl', 'P\u00e2tes': 'Lidl', 'Flocons d\'avoine': 'Lidl',
     'L\u00e9gumes verts surgel\u00e9s': 'Lidl', 'Miel': 'Lidl', 'Beurre de cacahu\u00e8te': 'Lidl',
@@ -10925,6 +10921,24 @@
   if(!load('batcave-courses-plan-v5', false)){
     if(Object.keys(coursesState).length){ coursesState = {}; save('batcave-courses', coursesState); }
     saveInternal('batcave-courses-plan-v5', true);
+  }
+  /* v6 : le poisson sort du plan (20 septembre, sa decision). Il etait le 3e article de
+     « Chaque semaine » -- tout ce qui le suivait dans CETTE categorie remonte d'un cran.
+     Ici on NE VIDE PAS : il venait de faire ses courses, ses coches valent quelque chose.
+     On les DECALE, ce qui laisse chaque article conserve exactement dans l'etat ou il
+     etait, et on jette la seule coche qui n'a plus d'article -- la troisieme. */
+  if(!load('batcave-courses-plan-v6', false)){
+    var iSorti = 2, nAvant = 11, bouge = {}, change = false;
+    Object.keys(coursesState).forEach(function(k){
+      var m = /^0-(\d+)$/.exec(k);
+      if(!m){ bouge[k] = coursesState[k]; return; }
+      var ii = Number(m[1]);
+      if(ii === iSorti){ change = true; return; }          /* l'article retire : sa coche disparait */
+      if(ii > iSorti && ii < nAvant){ bouge['0-' + (ii - 1)] = coursesState[k]; change = true; }
+      else bouge[k] = coursesState[k];
+    });
+    if(change){ coursesState = bouge; save('batcave-courses', coursesState); }
+    saveInternal('batcave-courses-plan-v6', true);
   }
 
   /* Seules les categories DUES cette semaine comptent. Sans ce filtre, l'habitude

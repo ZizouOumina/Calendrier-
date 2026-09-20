@@ -42,7 +42,7 @@ console.log('\n== 330) Sept catégories, et le frais seul reste hebdomadaire =='
      cinq rythmes a sept. */
   ok(c.length === 8, '8 catégories — maison, ménage, et les surgelés à deux semaines depuis le 20 sept. (' + c.length + ')');
   const hebdo = c[0];
-  ok(/Chaque semaine/.test(hebdo.titre) && hebdo.n === 10, 'la liste hebdomadaire fait 10 articles frais (' + hebdo.n + ')');
+  ok(/Chaque semaine/.test(hebdo.titre) && hebdo.n === 9, 'la liste hebdomadaire fait 9 articles frais depuis le retrait du poisson (' + hebdo.n + ')');
   const t = await fr.evaluate(() => document.querySelector('.page[data-page="courses"]').textContent);
   ok(!/Riz/.test(hebdo.titre + '') && /Riz — 5 kg/.test(t) && /demande 4\u202f340 g/.test(t), 'le riz est en réserve : 5 kg achetés pour 4 340 g demandés');
   ok(/Shampooing/.test(t) && /Cotons-tiges/.test(t) && /Nettoyant visage/.test(t) && /Brosse à dents/.test(t), 'santé et hygiène : shampooing, cotons-tiges, nettoyant visage, brosse à dents');
@@ -64,10 +64,10 @@ console.log('\n== 331) Samedi 19 septembre : l\'ancre, tout est dû ==');
   ok(c.every(x => x.due), 'les 8 catégories sont dues le 19 (ancre commune)');
   const somme = await fr.evaluate(() => document.getElementById('courses-summary').textContent);
   /* Aucun stock n'est suppose : le 19, TOUTES les categories sont dues et toutes leurs
-     lignes comptent. 10 frais + 5 reserves + 2 (cycle de 5 semaines) + 16 sante
-     + 6 maison + 5 menage + 2 trimestriels (brosse a dents, creatine) = 46.
+     lignes comptent. 9 frais + 1 surgele + 4 reserves + 2 (cycle de 5 semaines) + 16 sante
+     + 6 maison + 5 menage + 2 trimestriels (brosse a dents, creatine) = 45.
      Ce qu'il a deja, il le coche quand meme. */
-  ok(/\/46 articles/.test(somme), '46 articles le 19 : tout part de zéro (' + somme + ')');
+  ok(/\/45 articles/.test(somme), '45 articles le 19 : tout part de zéro (' + somme + ')');
   await ctx.close();
 }
 {
@@ -115,7 +115,7 @@ console.log('\n== 333) L\'habitude « Courses faites » reste validable ==');
     await new Promise(r => setTimeout(r, 120));
   }
   const somme = await fr.evaluate(() => document.getElementById('courses-summary').textContent);
-  ok(/^10\/10/.test(somme), 'cocher le frais suffit : ' + somme + ' (' + avant + ' cases)');
+  ok(/^9\/9/.test(somme), 'cocher le frais suffit : ' + somme + ' (' + avant + ' cases)');
   const coche = await fr.evaluate(() => {
     const l = [...document.querySelectorAll('#dash-checklist li label')].map(x => x.textContent);
     return l.some(x => /Courses/.test(x));
@@ -147,7 +147,7 @@ console.log('\n== 334b) Aucun stock n\'est supposé : il coche ce qu\'il a ==');
   const t = await fr.evaluate(() => document.querySelector('.page[data-page="courses"]').textContent);
   ok(!/tu en as|il t’en reste|à racheter le/.test(t), 'aucune ligne ne parle de stock ni de date de rachat');
   ok(/Beurre de cacahuète — 2 kg/.test(t) && /demande 1\u202f925 g/.test(t), 'beurre de cacahuète : 2 kg pleins, pour 1 925 g demandés');
-  ok(/Huile d'olive — 1,5 L/.test(t) && /demande 1\u202f440 ml/.test(t), 'huile : la bouteille d\'1,5 L entière, pour 1 440 ml demandés');
+  ok(/Huile d'olive — 2,25 L/.test(t) && /demande 1\u202f575 ml/.test(t), 'huile : trois bouteilles de 750 ml, pour 1 575 ml demandés');
   await ctx.close();
 }
 {

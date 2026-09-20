@@ -79,7 +79,7 @@ console.log('\n== 120) Boucle poids → calories ==');
   ok(/recommandation : \+150 kcal/.test(k.note), 'poids stable deux semaines → +150 kcal recommandé : ' + k.note);
   ok(/Rythme visé : \+0,23 kg \/ semaine/.test(k.txt), 'rythme visé dérivé de l\'objectif poids (64 → 70 sur l\'horizon) : ' + (k.txt.match(/Rythme visé[^.]*/) || [''])[0]);
   ok(/Tendance : \+0,00 kg/.test(k.txt) && !k.btn, 'tendance +0,00 kg, bouton « Appliquer » visible');
-  ok(/\/ 3135 kcal$/.test(k.sub), 'cible de base 3135 kcal : ' + k.sub);
+  ok(/\/ 3131 kcal$/.test(k.sub), 'cible de base 3131 kcal : ' + k.sub);
   await fr.evaluate(() => document.getElementById('kcal-appliquer').click());
   await page.waitForTimeout(300);
   const aj = await local(fr, 'batcave-kcal-ajustement');
@@ -87,8 +87,8 @@ console.log('\n== 120) Boucle poids → calories ==');
   k = await fr.evaluate(() => ({ sub: document.getElementById('meal-kcal-sub').innerText, txt: document.getElementById('kcal-analyse').innerText.replace(/\s+/g,' ') }));
   /* La boucle demande +150 kcal, les pates s'ajustent par pas de 10 g : elle en ajoute 144.
      C'est cet ecart REEL entre les deux journees qui s'affiche, sinon la soustraction ment. */
-  ok(/\/ 3279 kcal \(plan 3135 \+ 144\)/.test(k.sub), 'la barre Repas vise 3279 kcal : ' + k.sub);
-  ok(/Cible calorique actuelle : 3279 kcal/.test(k.txt), 'l\'analyse affiche la cible ajustée (' + ((k.txt.match(/Cible calorique actuelle : [^\n]*/) || [])[0] || '?') + ')');
+  ok(/\/ 3275 kcal \(plan 3131 \+ 144\)/.test(k.sub), 'la barre Repas vise 3275 kcal : ' + k.sub);
+  ok(/Cible calorique actuelle : 3275 kcal/.test(k.txt), 'l\'analyse affiche la cible ajustée (' + ((k.txt.match(/Cible calorique actuelle : [^\n]*/) || [])[0] || '?') + ')');
   /* tout coché aujourd'hui → 3237/3237 = 100 % : l'ajustement vit dans le dîner, l'apport le suit */
   /* un clic redessine la grille : on re-cherche la premiere case non cochee a chaque tour */
   await fr.evaluate(() => { for(let i = 0; i < 60; i++){ const cb = document.querySelector('#meal-grid input[type="checkbox"]:not(:checked)'); if(!cb) break; cb.click(); } });
