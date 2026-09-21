@@ -7512,19 +7512,25 @@
          extenseurs), curl des poignets samedi (flechisseurs, l'epaisseur). Les deux se
          font avec une charge en main : ils passent aussi bien au parc qu'a la maison le
          soir si le creneau du matin deborde -- meme regle que le cou. */
-  /* Le programme demarre le LUNDI 21 septembre 2026. Le plan du semestre (un tema d'avance
+  /* Le programme demarre le MARDI 22 septembre 2026. Le plan du semestre (un tema d'avance
      par jour, blancs, questions ouvertes, exercices de calcul) a remplace la grille de
-     rentree le 16 au soir ; du jeudi 17 au dimanche 20, ce sont ses journees de mise en
+     rentree le 16 au soir ; du jeudi 17 au lundi 21, ce sont ses journees de mise en
      place : appartement, sommeil a remettre d'aplomb, Anki, les pages, sans blocs a tenir.
-     Du 14 au 20, aucun bloc n'est du, aucune journee n'est manquee.
+     Du 14 au 21, aucun bloc n'est du, aucune journee n'est manquee.
 
-     Le jour 1 a bouge deux fois. Le 18 au soir il avait choisi le dimanche 20 ; le 19 il
-     l'a repousse au LUNDI 21, parce que son sommeil n'est pas encore cale et qu'ouvrir la
-     Batcave sur une nuit ratee la fait mentir des le premier chiffre. La semaine de
-     programme court donc du lundi au dimanche (S1 : 21-27 septembre). Le lundi n'est pas
-     off au sport : premierJourSport() rend le 21 lui-meme, et la seance de reference est
-     celle du jour 1 ; les retests des semaines 5, 10 et 15 tombent les lundis 19 octobre,
-     23 novembre et 28 decembre. Rien n'est ecrit en dur, tout se deduit de la date.
+     Le jour 1 a bouge trois fois. Le 18 au soir il avait choisi le dimanche 20 ; le 19 il
+     l'a repousse au lundi 21, parce que son sommeil n'est pas encore cale et qu'ouvrir la
+     Batcave sur une nuit ratee la fait mentir des le premier chiffre. Dans la nuit du 20
+     au 21, a 2 h du matin -- la nuit exactement dont il parlait --, il l'a repousse au
+     MARDI 22. La semaine de programme court donc du mardi au lundi (S1 : 22-28 septembre).
+
+     Le mardi n'est pas off au sport : premierJourSport() rend le 22 lui-meme. La seance de
+     reference tombe donc sur un BAS COMPLET, et non plus sur le haut lourd du lundi : les
+     maximums de tractions et de dips se mesurent au premier jour de haut, le jeudi 24.
+     Les retests des semaines 5, 10 et 15 suivent la meme regle -- premier jour de sport de
+     la semaine. Rien n'est ecrit en dur, tout se deduit de la date : c'est la troisieme
+     fois que ce depart bouge, et la troisieme fois que rien n'a eu besoin d'etre recalcule
+     a la main.
 
      Les courses ne dependent PAS de ce jour 1. ANCRE_COURSES est au samedi 19 -- c'est le
      battement du rythme, et il doit rester un samedi -- tandis que PREMIER_JOUR_COURSES,
@@ -7534,7 +7540,7 @@
      Ce qui ne bouge PAS : le semestre 1 garde le 14 septembre -- c'est l'universite qui
      fixe la rentree, pas lui -- et les habitudes du dimanche restent ancrees au 13, elles
      ont vraiment eu lieu ce jour-la. */
-  var PROGRAMME_DEBUT = '2026-09-21';
+  var PROGRAMME_DEBUT = '2026-09-22';
   /* Le programme va du premier jour de cours au dernier jour de la saison (14 mars) :
      c'est la fenetre que le reacteur annonce le matin du jour 1, quand il n'y a encore
      rien a mesurer. Un « 0 % » geant le 14 au reveil n'est pas une note, c'est une
@@ -13567,12 +13573,21 @@
      Le mode partiels (periodePartiels, calcule depuis les dates d'examen) passe avant. */
   var PERIODES_GRILLE = [
     /* Tout commence le lundi 14 septembre 2026, premier jour de cours : avant, la grille type.
-       UNE SEULE phase Español, jusqu'au 18 octobre : elle ne renomme que des blocs
-       « Projets perso ». Le 19 octobre, tous redeviennent des projets -- livrables d'abord,
+       UNE SEULE phase Español, jusqu'au 22 octobre : elle ne renomme que des blocs
+       « Projets perso ». Le 23 octobre, tous redeviennent des projets -- livrables d'abord,
        boutique ensuite. Ce qui touche a l'ecole (question ouverte, simulation, Réexpliquer)
-       n'est jamais un bloc Español : c'est de la revision qui se fait en espagnol. */
-    {id:'es-1', nom:'Español · phase 1', debut:'2026-09-14', fin:'2026-10-18', suite:'Projets perso (livrables, puis boutique)',
-     description:'Avec les cours, jusqu\u2019au 18 octobre : les blocs Projets perso sont des blocs Español — gramática à 13:00, escribir à 14:00, hablar le lundi à 15:00, la série en VO le mardi soir, escribir largo et tutor le vendredi, gramática et tutor le samedi, simulación et balance le dimanche. Le 19 octobre, tout revient aux projets.',
+       n'est jamais un bloc Español : c'est de la revision qui se fait en espagnol.
+
+       La fin a bouge dans la nuit du 20 au 21 septembre, en meme temps que le jour 1 :
+       « on va decaler la phase 1 [...] pour dans pile 1 mois du mardi ». Le mardi, c'est le
+       jour 1 -- le 22 septembre ; pile un mois plus tard, le 22 octobre. La phase gagne donc
+       quatre jours (18 -> 22 octobre) et les projets perso demarrent le 23.
+
+       L'epreuve du dimanche, elle, ne bouge pas : ses quatre passages tombent les 27
+       septembre, 4, 11 et 18 octobre, et le 18 reste le dernier dimanche de la phase --
+       il n'y a aucun dimanche entre le 19 et le 22. */
+    {id:'es-1', nom:'Español · phase 1', debut:'2026-09-14', fin:'2026-10-22', suite:'Projets perso (livrables, puis boutique)',
+     description:'Avec les cours, jusqu\u2019au 22 octobre : les blocs Projets perso sont des blocs Español — gramática à 13:00, escribir à 14:00, hablar le lundi à 15:00, la série en VO le mardi soir, escribir largo et tutor le vendredi, gramática et tutor le samedi, simulación et balance le dimanche. Le 19 octobre, tout revient aux projets.',
      renommages: {
        'Projets perso 1': {defaut:'Español · gramática', friday:'Español · tutor', weekend:'Español · simulación'},
        'Projets perso 2': {defaut:'Español · escribir', saturday:'Español · tutor', weekend:'Español · balance de la semana'},

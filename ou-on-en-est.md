@@ -64,7 +64,8 @@ Il dit ce qui est fait, ce qui reste, et ce qui attend une décision de toi.
 | Ne pas toucher à Notion | respecté |
 | Un seul palier d'objectifs (le mois) | fait — 140 objectifs → 72 |
 | Un moyen de se tester avant le 19 octobre | l'épreuve du dimanche : 27 sept., 4, 11, 18 oct. |
-| Commencer lundi, pas samedi | jour 1 = lundi 21 septembre |
+| Commencer lundi, pas samedi | jour 1 = **mardi 22 septembre** (repoussé du 21 dans la nuit du 20 au 21 : « on a dit qu'on commence mardi la Batcave ») |
+| La phase Español « pile un mois du mardi » | elle se **termine le 22 octobre** au lieu du 18 ; les projets perso démarrent le 23 |
 | Courses le dimanche matin | ancre au samedi 19, premier passage le 20 |
 | Plus d'estimation de budget | retirée de bout en bout |
 | Cocher même sans acheter | c'était déjà le comportement |

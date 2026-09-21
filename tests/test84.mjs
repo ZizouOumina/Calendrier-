@@ -62,7 +62,8 @@ console.log('\n== 84.4) Les heures liberees entrent dans le pool, pas en dur =='
       es1_mar19: lab('tuesday', '2026-09-22', '20:30'),
       es1_mar20: lab('tuesday', '2026-09-22', '20:30'),
       es1_lun14: lab('monday',  '2026-09-21', '14:00'),
-      es2_mar20: lab('tuesday', '2026-10-20', '20:30'),
+      /* La phase Español se ferme le 22 octobre : le premier mardi d'apres est le 27. */
+      es2_mar20: lab('tuesday', '2026-10-27', '20:30'),
       s2_lun15: lab('monday', '2027-03-22', '15:00'),
       s2_lun14: lab('monday', '2027-03-22', '14:00'),
       type_mar20: window.__bcTypeBloc(lab('tuesday', '2026-09-22', '20:30'))
@@ -73,7 +74,7 @@ console.log('\n== 84.4) Les heures liberees entrent dans le pool, pas en dur =='
   ok(/^Español/.test(r.es1_mar19), 'phase 1 : mardi 20:30 est de l\'espagnol (' + r.es1_mar19 + ')');
   ok(r.es1_mar20 === 'Español · serie en VO', 'phase 1 : mardi 20:30 est la serie en VO (' + r.es1_mar20 + ')');
   ok(r.type_mar20 === 'projet', 'et elle est COMPTEE comme du travail, pas ignoree (' + r.type_mar20 + ')');
-  ok(r.es2_mar20 === 'Projets perso 6', 'phase 2 : mardi 20:30 est la PREMIERE heure qui revient aux projets (' + r.es2_mar20 + ')');
+  ok(r.es2_mar20 === 'Projets perso 6', 'après la phase : le mardi 20:30 est revenu aux projets (' + r.es2_mar20 + ')');
   /* Le 22 mars 2027 est un lundi du SEMESTRE 2 : le cours ne commence plus a 17:30 mais a
      15:30, et les deux heures liberees du lundi apres-midi n'existent plus. « Projets perso 4 »
      est donc un bloc PROPRE AU SEMESTRE 1 -- ou une phase Español le renomme toujours, les

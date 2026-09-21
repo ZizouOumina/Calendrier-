@@ -85,7 +85,11 @@ console.log('\n== 212) La réduction se termine toute seule ==');
 
 console.log('\n== 213) Relevé OBJECTIF dans la barre ==');
 {
-  const { ctx, fr } = await ouvrir(MARDI22, {'batcave-sessions': sessionsMoitie()});
+  /* Le 22 septembre est devenu le JOUR 1 (nuit du 20 au 21) : a 10 h du matin, la grille
+     n'a presque rien attendu encore, et les quinze jours de sessions d'avant le programme
+     mettent tout « en avance ». Pour voir un retard il faut une date ou le mois en cours
+     a deja tourne sans lui : le 6 octobre, ou les sessions se sont arretees le 21. */
+  const { ctx, fr } = await ouvrir('2026-10-06T10:00:00+02:00', {'batcave-sessions': sessionsMoitie()});
   const r = await fr.evaluate(() => ({ txt: document.querySelector('#bc-objectif .v').textContent, titre: document.querySelector('#bc-objectif .v').title }));
   /* Lot 42 : le relevé ne montre plus un écart négatif nu (« Révision −90,7 h »), qui ne
      dit pas quoi faire, mais le réel sur l'attendu du jour. */

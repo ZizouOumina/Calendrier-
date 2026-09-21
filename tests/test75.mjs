@@ -48,14 +48,14 @@ console.log('\n== 311) Le 14 au réveil : aucun objectif en retard des jours d\'
 console.log('\n== 312) Le réacteur annonce le jour 1, pas un « 0 % » ==');
 {
   /* le jour 1 est le lundi 21, premier jour du programme */
-  const { ctx, fr, page } = await ouvrir('2026-09-21T06:45:00+02:00');
+  const { ctx, fr, page } = await ouvrir('2026-09-22T06:45:00+02:00');
   let v = await fr.evaluate(() => ({
     num: document.getElementById('dash-score-num').textContent,
     unite: document.getElementById('dash-score-unit').textContent,
     note: document.getElementById('dash-score-detail').textContent,
     hors: document.getElementById('dash-score-note').textContent
   }));
-  ok(v.num === '1' && v.unite === '/175', 'le premier matin affiche « 1/175 » — 21 sept. → 14 mars, pas « 0 % » (' + v.num + v.unite + ')');
+  ok(v.num === '1' && v.unite === '/174', 'le premier matin affiche « 1/174 » — 22 sept. → 14 mars, pas « 0 % » (' + v.num + v.unite + ')');
   ok(/Premier jour du programme/.test(v.note) && !/À reprendre/.test(v.note), 'la note dit ce que c\'est : ' + v.note);
   ok(v.hors === v.note, 'la même note existe hors de l\'anneau, pour le téléphone');
 
@@ -155,9 +155,9 @@ console.log('\n== 312b) Avant le premier jour, aucun bloc n\'est reproche ==');
 }
 {
   /* Et des le jour 1, la detection reprend : un bloc echu et non fait est bien signale. */
-  const { ctx, fr } = await ouvrir('2026-09-21T12:00:00+02:00');
+  const { ctx, fr } = await ouvrir('2026-09-22T12:00:00+02:00');
   const t = await fr.evaluate(() => document.getElementById('dash-plan').innerText);
-  ok(/Bloc manqu\u00e9/.test(t), 'le 21 à midi, les blocs échus non faits sont de nouveau signalés');
+  ok(/Bloc manqu\u00e9/.test(t), 'le 22 à midi, les blocs échus non faits sont de nouveau signalés');
   await ctx.close();
 }
 

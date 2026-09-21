@@ -22,11 +22,11 @@ const aller = async (fr, page, p) => { await fr.evaluate(pg => document.querySel
 const local = (fr,k) => fr.evaluate(x => JSON.parse(localStorage.getItem(x) || 'null'), k);
 const ligne = (fr, titre) => fr.evaluate(t => { const r = [...document.querySelectorAll('#obj-liste .obj-row')].find(x => x.querySelector('.titre').innerText.startsWith(t)); return r ? { txt: r.innerText.replace(/\s+/g,' '), led: r.querySelector('.obj-led').className } : null; }, titre);
 
-const MI_SEPT = '2026-09-21T10:00:00+02:00';   /* premier jour du programme (lundi 21, sa decision du 19) */
+const MI_SEPT = '2026-09-22T10:00:00+02:00';   /* premier jour du programme (mardi 22, nuit du 20 au 21) */
 /* Le 15 est le JOUR 1 : la regle « trop tot pour juger » met tout « dans les clous ».
    Pour lire de vrais verdicts il faut une periode entamee : mardi 22, une semaine
    plus tard, ou 46,3 % de la revision de septembre et 44,4 % des seances sont passes. */
-const SEMAINE2 = '2026-09-22T10:00:00+02:00';
+const SEMAINE2 = '2026-09-25T10:00:00+02:00';
 const sessions = [];
 for(let d = 1; d <= 10; d++) sessions.push({id:'s'+d, date:'2026-09-'+String(d).padStart(2,'0'), type:'cours', duree:240, label:'Anatomía I', debut: Date.UTC(2026,8,d,6)+1, fin: Date.UTC(2026,8,d,10)+1});  /* 40 h */
 const journaux = {}; for(let d = 1; d <= 14; d++) journaux['batcave-journal-2026-09-'+String(d).padStart(2,'0')] = {sommeil: 7.5, water: 3000, poids: 64 + d*0.05};
@@ -50,10 +50,12 @@ console.log('\n== 112) Semis : un seul palier, le mois ==');
   ok(await local(fr, 'batcave-objectifs-seed-v1') === true, 'drapeau de semis posé');
   const m9 = o.liste.find(x => x.id === 'M2026-09:revision_h');
   /* La grille ne prevoit rien avant le jour 1 : la cible de septembre part de la, pas du
-     1er. Le jour 1 a bouge plusieurs fois (15, 17, 18, 19, 20) et il l'a finalement pose
-     au LUNDI 21 -- son sommeil n'etait pas cale. Septembre ne porte donc plus que dix
-     jours de programme, et sa cible de revision tombe a 45,2 h. */
-  ok(m9 && m9.cible === 45.2, 'révision de septembre calculée depuis la grille, à partir du 21 : 45,2 h (' + (m9 && m9.cible) + ')');
+     1er. Le jour 1 a bouge plusieurs fois (15, 17, 18, 19, 20, 21) et il l'a finalement
+     pose au MARDI 22, dans la nuit du 20 au 21 -- son sommeil n'etait toujours pas cale.
+     Septembre ne porte donc plus que neuf jours de programme, et sa cible de revision
+     tombe a 40,7 h. Elle n'est jamais ecrite a la main : c'est ce que la grille contient
+     sur le mois, a 89 %. */
+  ok(m9 && m9.cible === 40.7, 'révision de septembre calculée depuis la grille, à partir du 22 : 40,7 h (' + (m9 && m9.cible) + ')');
   ok(m9 && m9.auto === true, 'la cible est marquée automatique : elle suivra la grille');
   ok(!o.liste.some(x => /exo:|snus|eau_moy|depenses_var/.test(x.metrique)),
      'ni niveaux, ni snus, ni eau, ni dépenses : ils ne sont plus semés du tout');
@@ -76,10 +78,10 @@ console.log('\n== 113) Comparaison sur des données réelles ==');
   await aller(fr, page, 'objectifs');
   const rev = await ligne(fr, 'Révision');
   /* 40 h ont bien été travaillées du 1er au 10 : le RÉEL les garde. L'ATTENTE, elle, ne
-     compte que le programme : 45,2 h de cible × la part de septembre écoulée = 6,5 h
-     (le programme court du 21 au 30, et le 22 à 10:00 n'en a consommé qu'une fraction).
+     compte que le programme : 40,7 h de cible × la part de septembre écoulée = 17,0 h
+     (le programme court du 22 au 30, et le 25 à 10:00 en a consommé une bonne part).
      Une séance faite avant le départ compte, mais ne crée pas de retard. */
-  ok(rev && /réel 40,0 h/.test(rev.txt) && /attendu 6,5 h/.test(rev.txt) && /avance/.test(rev.led), 'Révision : réel 40,0 h pour 6,5 h attendues au 22 à 10:00 → en avance : ' + (rev && rev.txt.slice(0, 80)));
+  ok(rev && /réel 40,0 h/.test(rev.txt) && /attendu 17,0 h/.test(rev.txt) && /avance/.test(rev.led), 'Révision : réel 40,0 h pour 17,0 h attendues au 25 à 10:00 → en avance : ' + (rev && rev.txt.slice(0, 80)));
   const som = await ligne(fr, 'Sommeil');
   ok(som && /réel 7,50 h/.test(som.txt) && /\bok\b/.test(som.led), 'Sommeil moyen 7,50 h sur 7,75 visées (97 %) → dans les clous');
   /* Plus de ligne « Eau » : eau_moy est sortie des metriques semees le 19 septembre,
@@ -100,7 +102,7 @@ console.log('\n== 114) Éditer une cible, supprimer, ajouter ==');
   await page.waitForTimeout(250);
   const rev = await ligne(fr, 'Révision');
   ok((await local(fr, 'batcave-objectifs')).liste.find(x => x.id === 'M2026-09:revision_h').cible === 60, 'cible enregistrée : 60');
-  ok(rev && /attendu 8,7 h/.test(rev.txt) && /avance/.test(rev.led), 'recalcul immédiat sur une cible de 60 h : attendu 8,7 h, 40 h réelles → en avance (' + (rev && rev.txt.slice(0, 70)) + ')');
+  ok(rev && /attendu 25,1 h/.test(rev.txt) && /avance/.test(rev.led), 'recalcul immédiat sur une cible de 60 h : attendu 25,1 h, 40 h réelles → en avance (' + (rev && rev.txt.slice(0, 70)) + ')');
   ok((await local(fr, 'batcave-objectifs')).liste.find(x => x.id === 'M2026-09:revision_h').auto === false, 'une cible saisie à la main sort du calcul automatique');
   const avant = (await local(fr, 'batcave-objectifs')).liste.length;
   await fr.evaluate(() => document.querySelector('[data-obj-del="M2026-09:sommeil_moy"]').click());
@@ -145,7 +147,7 @@ console.log('\n== 116) Tableau de bord : objectifs du mois ==');
   await fr.evaluate(() => { if(document.getElementById('dash-more').hidden) document.getElementById('dash-more-toggle').click(); });
   const d = await fr.evaluate(() => ({ n: document.querySelectorAll('#dash-goals li').length, leds: document.querySelectorAll('#dash-goals .obj-led').length, txt: document.getElementById('dash-goals').innerText.replace(/\s+/g,' '), note: document.getElementById('dash-goals-note').innerText }));
   ok(d.n === 6 && d.leds === 6, '6 objectifs du mois avec leur LED — un seul palier depuis le 19 septembre');
-  ok(/Révision 40,0 \/ 45,2 h/.test(d.txt), 'ligne compacte réel / cible : ' + d.txt.slice(0, 60));
+  ok(/Révision 40,0 \/ 40,7 h/.test(d.txt), 'ligne compacte réel / cible : ' + d.txt.slice(0, 60));
   ok(/\/6 dans les clous · Septembre 2026/.test(d.note), 'note : ' + d.note);
   await ctx.close();
 }

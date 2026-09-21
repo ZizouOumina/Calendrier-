@@ -145,14 +145,14 @@ console.log('\n== 307) Une journée exceptionnelle qui revient chaque semaine ==
 
 console.log('\n== 308) La copie vierge : revenir exactement au 20, premier jour du programme ==');
 {
-  const { ctx, fr, page } = await ouvrir('2026-09-21T07:00:00+02:00');
+  const { ctx, fr, page } = await ouvrir('2026-09-22T07:00:00+02:00');
   const item = await fr.evaluate(() => [...document.querySelectorAll('#dash-plan li')].map(l => l.innerText).join(' | '));
-  ok(/Copie vierge à prendre/.test(item), 'le 21, le plan du jour la réclame avant la première saisie');
+  ok(/Copie vierge à prendre/.test(item), 'le 22, le plan du jour la réclame avant la première saisie');
 
   await fr.evaluate(() => document.querySelector('[data-plan-vierge]').click());
   await page.waitForTimeout(400);
   const v = await local(fr, 'batcave-copie-vierge');
-  ok(v && v.date === '2026-09-21' && v.n > 0, 'copie prise : ' + (v && v.n) + ' entrées, état du ' + (v && v.date));
+  ok(v && v.date === '2026-09-22' && v.n > 0, 'copie prise : ' + (v && v.n) + ' entrées, état du ' + (v && v.date));
   ok(v && !v.data['batcave-copie-vierge'], 'la copie ne se contient jamais elle-même');
   const item2 = await fr.evaluate(() => [...document.querySelectorAll('#dash-plan li')].map(l => l.innerText).join(' | '));
   ok(!/Copie vierge à prendre/.test(item2), 'une fois prise, le rappel disparaît du plan');
@@ -162,11 +162,11 @@ console.log('\n== 308) La copie vierge : revenir exactement au 20, premier jour 
 console.log('\n== 309) La copie vierge survit à un nouveau départ ==');
 {
   const { ctx, fr } = await ouvrir('2026-11-02T09:00:00+02:00',
-    {'batcave-copie-vierge': {date:'2026-09-21', pris:'2026-09-21T07:00:00.000Z', n: 3, data:{'batcave-poids':[{date:'2026-09-21', valeur:64}]}}});
+    {'batcave-copie-vierge': {date:'2026-09-22', pris:'2026-09-22T07:00:00.000Z', n: 3, data:{'batcave-poids':[{date:'2026-09-22', valeur:64}]}}});
   const garde = await fr.evaluate(() => window.__bcReinitGarder ? window.__bcReinitGarder('batcave-copie-vierge') : null);
   ok(garde === true, '« Remettre à zéro » ne l\'efface pas — sinon elle ne protège de rien');
   const etat = await fr.evaluate(() => { document.querySelector('.backup-trigger').click(); return document.getElementById('vierge-etat').textContent; });
-  ok(/21 sept/.test(etat) && /état du premier jour/.test(etat), 'le panneau reconnaît une copie prise le premier jour (' + etat.slice(0, 80) + ')');
+  ok(/22 sept/.test(etat) && /état du premier jour/.test(etat), 'le panneau reconnaît une copie prise le premier jour (' + etat.slice(0, 80) + ')');
   const boutons = await fr.evaluate(() => ({ restaurer: !document.getElementById('vierge-restaurer').hidden,
                                              prendre: document.getElementById('vierge-prendre').textContent }));
   ok(boutons.restaurer && /Remplacer/.test(boutons.prendre), 'le retour est proposé, et reprendre une copie dit clairement qu\'on remplace');
@@ -186,7 +186,7 @@ console.log('\n== 310) Les rappels d\'agenda n\'écrivent rien avant le 15 ==');
   await av.ctx.close();
 
   /* le 21, premier jour du programme, ils partent */
-  const ap = await ouvrir('2026-09-21T04:30:00+02:00', {'batcave-gcal-ecriture': {actif:true, depuis:'2026-09-09'}}, true);
+  const ap = await ouvrir('2026-09-22T04:30:00+02:00', {'batcave-gcal-ecriture': {actif:true, depuis:'2026-09-09'}}, true);
   await ap.page.clock.runFor(7000);
   await ap.page.waitForTimeout(700);
   const creesApres = await ap.fr.evaluate(() => window.__appels.filter(a => a.tool === 'create_event').length);

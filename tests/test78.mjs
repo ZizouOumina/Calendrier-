@@ -40,10 +40,10 @@ for(const [d, desc] of [['2026-11-16','phase Español 2, projets perso au progra
 
 console.log('\n== 2) L\'espagnol manqué est une dette d\'espagnol, pas de projets ==');
 {
-  /* Le programme ouvre le mardi 15 : avant lui aucun bloc n'est du, donc aucun ne peut
-     etre manque. On prend le lundi SUIVANT, 21 septembre -- meme jour de la semaine,
-     toujours en phase 1 Espanol. */
-  const {ctx, fr} = await ouvrir({}, '2026-09-21T21:00:00+02:00');
+  /* Le programme ouvre le MARDI 22 septembre : avant lui aucun bloc n'est du, donc aucun
+     ne peut etre manque. On prend le lundi SUIVANT, 28 septembre -- un lundi, toujours en
+     phase 1 Espanol, et bien a l'interieur du programme. */
+  const {ctx, fr} = await ouvrir({}, '2026-09-28T21:00:00+02:00');
   const t = await plan(fr);
   const l = t.split('\n').filter(x=>/Bloc manqué/.test(x) && /Español/.test(x))[0] || '';
   ok(/d'espagnol/.test(l), 'libellé : ' + (l.trim() || '(aucun bloc Español manqué)'));
@@ -65,15 +65,15 @@ console.log('\n== 3) Un compteur pas encore au programme le dit, avec la vraie d
 {
   const {ctx, fr} = await ouvrir({}, '2026-09-14T09:00:00+02:00');
   const t = await temps(fr), l = await legend(fr);
-  ok(/pas au programme avant le 19 oct/.test(t), 'cellule : ' + (t.match(/pas au programme[^|]*/)||['(absent)'])[0]);
-  ok(/pas au programme avant le 19 oct/.test(l), 'réacteur : ' + (l.match(/projets[^‖]*/)||['(absent)'])[0].trim());
+  ok(/pas au programme avant le 23 oct/.test(t), 'cellule : ' + (t.match(/pas au programme[^|]*/)||['(absent)'])[0]);
+  ok(/pas au programme avant le 23 oct/.test(l), 'réacteur : ' + (l.match(/projets[^‖]*/)||['(absent)'])[0].trim());
   await ctx.close();
 }
 {
-  const {ctx, fr} = await ouvrir({}, '2026-10-19T09:00:00+02:00');
+  const {ctx, fr} = await ouvrir({}, '2026-10-23T09:00:00+02:00');
   const t = await temps(fr);
   ok(!/pas au programme/.test(t) && /Projets perso \| 0 (\| )?\/ /.test(t),
-     'le 19 octobre, la mention disparaît et la cible apparaît : ' + (t.match(/Projets perso[^|]*\|[^|]*\|[^|]*/)||[''])[0].trim());
+     'le 23 octobre, la mention disparaît et la cible apparaît : ' + (t.match(/Projets perso[^|]*\|[^|]*\|[^|]*/)||[''])[0].trim());
   await ctx.close();
 }
 
@@ -81,10 +81,10 @@ console.log('\n== 4) Un rendez-vous dans l\'agenda Google n\'est pas un bloc man
 {
   /* On simule la réponse du connecteur : gcalWeekEvents est alimenté par le watch MCP,
      on l'écrit directement pour éprouver la règle sans connecteur. */
-  /* Le programme ouvre le mardi 15 : avant lui aucun bloc n'est du, donc aucun ne peut
-     etre manque. On prend le lundi SUIVANT, 21 septembre -- meme jour de la semaine,
-     toujours en phase 1 Espanol. */
-  const {ctx, page, fr} = await ouvrir({}, '2026-09-21T21:00:00+02:00');
+  /* Le programme ouvre le MARDI 22 septembre : avant lui aucun bloc n'est du, donc aucun
+     ne peut etre manque. On prend le lundi SUIVANT, 28 septembre -- un lundi, toujours en
+     phase 1 Espanol, et bien a l'interieur du programme. */
+  const {ctx, page, fr} = await ouvrir({}, '2026-09-28T21:00:00+02:00');
   const avant = (await plan(fr)).split('\n').filter(l=>/Bloc manqué/.test(l)).length;
   await fr.evaluate(()=>{
     /* lundi = 1 ; deux vrais rendez-vous couvrent Anki 1 et Anki 2 */
@@ -138,10 +138,10 @@ console.log('\n== 6) La recherche du journal ==');
 
 console.log('\n== 7) Rattrapage unique après une absence ==');
 {
-  /* Le programme ouvre le LUNDI 21, donc rien avant n'est une journee manquee ; ouvert
-     le 16, revenu le 23 : deux journees sans cloture, le 21 et le 22. C'est bien deux
+  /* Le programme ouvre le MARDI 22, donc rien avant n'est une journee manquee ; ouvert
+     le 16, revenu le 24 : deux journees sans cloture, le 22 et le 23. C'est bien deux
      qu'il faut ici -- tout l'objet du test est qu'une absence ne fasse qu'UN item. */
-  const {ctx, page, fr} = await ouvrir({'batcave-last-open':'2026-09-16'}, '2026-09-23T10:00:00+02:00');
+  const {ctx, page, fr} = await ouvrir({'batcave-last-open':'2026-09-16'}, '2026-09-24T10:00:00+02:00');
   const t = await plan(fr);
   const l = t.split('\n').filter(x=>/Absence —/.test(x))[0] || '';
   ok(/2 journées sans clôture/.test(l), 'un seul item pour toute l\'absence : ' + l.trim().slice(0, 90));
@@ -153,7 +153,7 @@ console.log('\n== 7) Rattrapage unique après une absence ==');
   await ctx.close();
 }
 {
-  const {ctx, fr} = await ouvrir({'batcave-last-open':'2026-09-21'}, '2026-09-22T10:00:00+02:00');
+  const {ctx, fr} = await ouvrir({'batcave-last-open':'2026-09-24'}, '2026-09-25T10:00:00+02:00');
   ok(!/Absence —/.test(await plan(fr)), 'ouvert hier : aucun rattrapage');
   await ctx.close();
 }

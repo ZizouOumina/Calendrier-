@@ -70,7 +70,7 @@ console.log('\n== 231) Phase 1 (mercredi 16 septembre) : blocs Projets perso ren
   ok(g.d0530 === undefined && g.d1120 === 'Español · simulación' && g.d1330 === 'Español · balance de la semana', 'dimanche : plus de bloc à 05:30, simulación et balance : ' + [g.d0530, g.d1120, g.d1330].join(' / '));
   ok(g.tEsc === 'projet' && g.tConv === null && g.tAnki === null, 'type : escribir = projet, conversación real et Anki = hors compteur (' + g.tEsc + ', ' + g.tConv + ', ' + g.tAnki + ')');
   ok(g.cible === 105, 'cible Español du jour = 55 + 50 = 105 min (obtenu ' + g.cible + ')');
-  ok(g.periode === 'es-1' && /phase 1 · J-32$/.test(g.grille), 'relevé GRILLE : « Español · phase 1 · J-32 » (obtenu « ' + g.grille + ' »)');
+  ok(g.periode === 'es-1' && /phase 1 · J-36$/.test(g.grille), 'relevé GRILLE : « Español · phase 1 · J-36 » (obtenu « ' + g.grille + ' »)');
   ok(g.cellules.length === 3 && /Español/.test(g.cellules[2]), 'troisième cellule « Español » sur le tableau de bord : ' + g.cellules.join(' | '));
   ok(!g.btnDash && !g.btnTimer, 'boutons Pomodoro Español visibles (tableau de bord et Études)');
   ok(g.habits.some(h => /formules du jour/.test(h)) && g.habits.some(h => /natif/.test(h)) && g.habits.some(h => /20 pages/.test(h)), 'les trois habitudes du plan sont dans la console du jour');
@@ -109,8 +109,11 @@ console.log('\n== 231) Phase 1 (mercredi 16 septembre) : blocs Projets perso ren
      T1:espagnol_h et T1:revision_h ne sont plus semes du tout. */
   ok(objs['T1:espagnol_h'] === undefined && objs['T1:revision_h'] === undefined,
      'plus aucun objectif de trimestre : un seul palier, le mois (' + JSON.stringify(objs) + ')');
-  ok(Math.abs(objs['M2026-09:espagnol_h'] - 20.6) < 0.2 && objs['M2026-09:projets_h'] === 0,
-     'objectifs Espagnol calcules depuis la grille (septembre ≈ 20,6 h, depart du lundi 21, phase Español close le 18 octobre) ; Projets perso ramene a zero en septembre, ou la phase 1 occupe toute la part programmee du mois : ' + JSON.stringify(objs));
+  /* Le depart est passe au MARDI 22 dans la nuit du 20 au 21 : septembre perd un jour de
+     programme, et la cible Español descend de 20,6 a 17,4 h. Elle n'est pas ecrite : elle
+     est ce que la grille contient sur le mois, a 89 %. */
+  ok(Math.abs(objs['M2026-09:espagnol_h'] - 17.4) < 0.2 && objs['M2026-09:projets_h'] === 0,
+     'objectifs Espagnol calcules depuis la grille (septembre ≈ 17,4 h, depart du mardi 22, phase Español close le 22 octobre) ; Projets perso ramene a zero en septembre, ou la phase 1 occupe toute la part programmee du mois : ' + JSON.stringify(objs));
 
   /* Pomodoro Español : la tâche par défaut est celle du bloc en cours (gramática à 12:00), le bloc part en projet « Español · gramática » */
   await fr.evaluate(() => document.querySelector('.nav-btn[data-page="dashboard"]').click());
@@ -161,20 +164,24 @@ console.log('\n== 232) Avant le lundi 14 septembre : aucune période, la grille 
      'le 14 : révision dentaire, déjeuner et cours intacts : ' + [g.l0720, g.l0820, g.l0920, g.l1220, g.l1730].join(' / '));
   ok(g.l1120 === 'Question ouverte ou autre' && g.l1300 === 'Español · gramática' && g.l1400 === 'Español · escribir' && g.l1500 === 'Español · hablar',
      'le 14 : seuls les Projets perso deviennent Español, les quatre du lundi : ' + [g.l1120, g.l1300, g.l1400, g.l1500].join(' / '));
-  ok(/démarre le/.test(g.sport) && /21/.test(g.sport), 'sport : avant le 21, « démarre le 21 sept. » (' + g.sport + ')');
+  ok(/démarre le/.test(g.sport) && /22/.test(g.sport), 'sport : avant le 22, « démarre le 22 sept. » (' + g.sport + ')');
   await ctx.close();
 }
 
-console.log('\n== 233) Phase 2 (mardi 20 octobre) puis phase 3 (mardi 8 décembre) : les projets reviennent par paliers ==');
+/* La phase Español se ferme le 22 octobre depuis la nuit du 20 au 21 septembre : le
+   premier jour sans phase est donc le VENDREDI 23, plus le lundi 19. */
+console.log('\n== 233) Fin de phase (vendredi 23 octobre) puis décembre : les projets reviennent ==');
 {
-  const { ctx, fr } = await ouvrir('2026-10-20T12:00:00+02:00');
+  const { ctx, fr } = await ouvrir('2026-10-23T12:00:00+02:00');
   const g = await fr.evaluate(() => {
     const at = (cle, iso, h) => (window.__bcGrille(cle, iso).find(b => b[0] === h) || [])[1];
-    return { p: (window.__bcPeriode('2026-10-20') || {}).id, a1120: at('tuesday','2026-10-20','11:20'), a1300: at('tuesday','2026-10-20','13:00'), a1400: at('tuesday','2026-10-20','14:00'),
+    /* Le vendredi n'a pas de bloc a 11:20 (Jumu'ah) : les trois creneaux se lisent donc sur
+       le premier MARDI d'apres la phase, le 27 octobre. Le 23, lui, sert au bloc matinal. */
+    return { p: (window.__bcPeriode('2026-10-23') || {}).id, a1120: at('tuesday','2026-10-27','11:20'), a1300: at('tuesday','2026-10-27','13:00'), a1400: at('tuesday','2026-10-27','14:00'),
              f0530: at('friday','2026-10-23','05:30'), releve: document.querySelector('#bc-grille .v').textContent,
              p3: (window.__bcPeriode('2026-12-08') || {}).id, d1120: at('tuesday','2026-12-08','11:20'), d1300: at('tuesday','2026-12-08','13:00'), d1400: at('tuesday','2026-12-08','14:00'), ds1800: at('saturday','2026-12-12','18:30') };
   });
-  ok(g.p === undefined && g.a1120 === 'Question ouverte ou autre' && g.a1300 === 'Projets perso 1' && g.a1400 === 'Projets perso 2' && g.f0530 === 'Projets perso matinal', 'dès le 19 octobre : plus de phase, tous les blocs reviennent aux projets ('+[g.p,g.a1300,g.a1400].join(' / ')+')'); if(0) ok(false, 'classe à 14:00');
+  ok(g.p === undefined && g.a1120 === 'Question ouverte ou autre' && g.a1300 === 'Projets perso 1' && g.a1400 === 'Projets perso 2' && g.f0530 === 'Projets perso matinal', 'dès le 23 octobre : plus de phase, tous les blocs reviennent aux projets ('+[g.p,g.a1300,g.a1400].join(' / ')+')'); if(0) ok(false, 'classe à 14:00');
   ok(!/phase/.test(g.releve), 'relevé GRILLE : ' + g.releve);
   ok(g.p3 === undefined && g.d1120 === 'Question ouverte ou autre' && g.d1300 === 'Projets perso 1' && g.d1400 === 'Projets perso 2' && g.ds1800 === 'Temps libre', 'décembre : même grille, tout en projets (temps libre du samedi à 18:30, après la course)');
   await ctx.close();

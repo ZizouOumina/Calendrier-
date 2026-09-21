@@ -21,11 +21,13 @@ async function ouvrir(quand, local){
 }
 const local = (fr,k) => fr.evaluate(x => JSON.parse(localStorage.getItem(x) || 'null'), k);
 /* Programme v2 : lundi = Haut lourd (Tractions 4×6-12 en premier). Le programme demarre le
-   mardi 15 sept. 2026, donc la semaine de programme court du mardi au lundi : lundi 21 sept.
-   tombe encore en semaine 1 (moitie des tours), lundi 12 oct. en semaine 4 (tours complets). */
+   MARDI 22 sept. 2026, donc la semaine de programme court du mardi au lundi : la semaine 1
+   va du 22 au 28 septembre, et son seul lundi -- le 28 -- est le premier Haut lourd qu'on
+   puisse observer a demi-charge. Le 21 septembre, lui, est passe AVANT le programme depuis
+   la nuit du 20 au 21 : il n'a plus ni semaine ni facteur de tours. */
 const LUNDI = '2026-10-12T06:30:00+02:00';
 const SAMEDI = '2026-10-17T06:30:00+02:00';
-const PREMIER_LUNDI = '2026-09-21T06:30:00+02:00';
+const PREMIER_LUNDI = '2026-09-28T06:30:00+02:00';   /* semaine 1 : 22 -> 28 septembre */
 
 console.log('\n== 107) Première séance : cible = tours × bas de fourchette ==');
 {

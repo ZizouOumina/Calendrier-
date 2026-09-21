@@ -1,13 +1,13 @@
 # Programme de sport — La Batcave · Programme v3
 
-Copie de référence du programme appliqué dans la Batcave (onglet Sport), commencé le lundi 21 septembre 2026 (jour 1 du programme ; les cours, eux, ont repris le 14).
+Copie de référence du programme appliqué dans la Batcave (onglet Sport), commencé le mardi 22 septembre 2026 (jour 1 du programme ; les cours, eux, ont repris le 14).
 
 ## Le cadre
 - Quatre séances de 47 à 53 minutes au parc, à 05:30 : lundi haut lourd, mardi bas complet, jeudi haut volume, samedi bras, épaules et mollets. Mercredi, vendredi et dimanche off pour la muscu.
 - **Shampooing les jours de sueur** : les quatre jours de muscu (lundi, mardi, jeudi, samedi) **et le dimanche**, jour de course. Mercredi et vendredi restent secs.
 - **Le cardio : deux sorties de 30 minutes, samedi 18:00 et dimanche 17:30.** Allure où l'on peut encore parler par phrases courtes, pas de fractionné. Les quatre séances ci-dessus sont en résistance pure ; le kilomètre couru jusqu'au parc est un échauffement, pas un entraînement aérobie. Ces deux sorties sont donc le seul travail d'endurance de la semaine. Elles tiennent dans des créneaux déjà libres et ne déplacent aucun bloc de travail. Elles ne comptent pas dans les minutes de sport du Bilan : ce compteur reste calé sur les quatre séances. Chaque séance finit par des abdos lestés ; le cou travaille en flexion et extension le lundi et le jeudi, en inclinaison latérale le mardi ; les trapèzes le jeudi et le samedi ; les avant-bras le lundi (curl inversé) et le samedi (curl des poignets).
-- **Montée en charge : deux semaines à la moitié des tours, puis le volume complet.** La Batcave affiche directement le bon nombre de tours, il n'y a rien à calculer. Semaines 1 et 2 (21 septembre → 4 octobre) : moitié. À partir de la semaine 3 (5 octobre) : programme entier. Le passage double le volume d'un coup — si les courbatures font sauter une séance cette semaine-là, c'est le moment d'utiliser la réduction de charge, pas de serrer les dents.
-- **La première séance, le lundi 21, est une séance de référence.** On ne suit pas la séance normale : on mesure le point de départ. Après l'échauffement, une seule série à l'échec sur quatre mouvements — tractions, dips, pompes, dead hang — notée dans l'onglet Sport. Puis on s'arrête là pour le haut du corps ; le cou et les avant-bras se font en douceur. Sans ce point de départ, la surcharge progressive part du bas de la fourchette et on ne saura jamais ce qu'on valait au début.
+- **Montée en charge : deux semaines à la moitié des tours, puis le volume complet.** La Batcave affiche directement le bon nombre de tours, il n'y a rien à calculer. Semaines 1 et 2 (22 septembre → 5 octobre) : moitié. À partir de la semaine 3 (6 octobre) : programme entier. Le passage double le volume d'un coup — si les courbatures font sauter une séance cette semaine-là, c'est le moment d'utiliser la réduction de charge, pas de serrer les dents.
+- **La première séance, le mardi 22, est une séance de référence.** On ne suit pas la séance normale : on mesure le point de départ. Le jour 1 est passé au mardi dans la nuit du 20 au 21 septembre : la séance de référence tombe donc sur un **bas complet**, et les maximums de tractions et de dips se prennent au premier jour de haut, le **jeudi 24**. Après l'échauffement, une seule série à l'échec sur quatre mouvements — tractions, dips, pompes, dead hang — notée dans l'onglet Sport. Puis on s'arrête là pour le haut du corps ; le cou et les avant-bras se font en douceur. Sans ce point de départ, la surcharge progressive part du bas de la fourchette et on ne saura jamais ce qu'on valait au début.
 - **Pesée le dimanche, à jeun, une semaine sur deux** (20 septembre, 4 et 18 octobre, et ainsi de suite) : au réveil, après les toilettes, avant de boire. Pas tous les jours : un poids se lit sur une tendance, et se peser quotidiennement fait prendre des décisions sur du bruit. La Batcave la rappelle en habitude du dimanche.
 - **Photos — peau et corps, un dimanche toutes les quatre semaines** (20 septembre, 18 octobre, 15 novembre, et ainsi de suite) : face, profil, dos, mêmes lieu, même lumière, mêmes poses, deux minutes. C'est la seule mesure de forme du programme — il n'y a pas de mensurations au mètre ruban, la fonctionnalité a été retirée. Quand la balance ne bouge pas, c'est la photo qu'on croit.
 - Paires antagonistes en supersets : exercice A puis exercice B, repos court entre A et B, repos plus long avant la paire suivante.
@@ -137,8 +137,8 @@ de la force pendant une dizaine de minutes.
 Après échauffement : tractions max, dips max (ou maintien bras tendus, en secondes), pompes max, split squats max par jambe. Saisis-les comme séries de la première séance : les cibles en découlent. Sans calibration, la Batcave part du bas de chaque fourchette.
 
 ## Montée en charge du premier mois
-- Semaines 1 et 2 (21 septembre au 4 octobre) : la moitié des tours.
-- À partir de la semaine 3 (5 octobre) : programme complet.
+- Semaines 1 et 2 (22 septembre au 5 octobre) : la moitié des tours.
+- À partir de la semaine 3 (6 octobre) : programme complet.
 
 Il n'y a **pas** de palier intermédiaire à trois quarts : c'est sa décision du
 9 septembre, il voulait le volume entier au bout de deux semaines. Le passage double donc
