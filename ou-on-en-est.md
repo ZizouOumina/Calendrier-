@@ -3,6 +3,27 @@
 Ce fichier existe pour une seule raison : que rien ne dépende de ma mémoire.
 Il dit ce qui est fait, ce qui reste, et ce qui attend une décision de toi.
 
+> ### ⚠️ Ce qui a changé depuis — lundi 21 septembre
+> Le corps de ce fichier est un instantané du **19 septembre au soir** : il n'est pas
+> réécrit, pour que le compte rendu reste vrai à sa date. Quatre choses ont bougé depuis,
+> et ce sont elles qui font foi :
+>
+> - **Le jour 1 est le mardi 22 septembre**, pas le lundi 21 (repoussé dans la nuit du 20
+>   au 21, à 2 h du matin). `PROGRAMME_DEBUT = '2026-09-22'`. La semaine de programme court
+>   donc du **mardi au lundi**.
+> - **La séance de référence tombe sur un Bas complet**, puisque le mardi en est un :
+>   `premierJourSport()` rend le 22 lui-même. Les **maximums de tractions et de dips se
+>   prennent le jeudi 24**, au premier jour de haut. Les retests des semaines 5, 10 et 15
+>   suivent la même règle : **mardis 20 octobre, 24 novembre, 29 décembre**.
+> - **La phase Español va jusqu'au 22 octobre** (au lieu du 18) : « pile 1 mois du mardi ».
+>   Les onze blocs reviennent aux projets le **23 octobre**. En revanche **l'épreuve du
+>   dimanche garde ses quatre passages — 27 sept., 4, 11 et 18 octobre** (`EPREUVE_FIN`) :
+>   c'est une série de mesures, pas la phase.
+> - **L'onglet Courses ne porte plus que de la nourriture** : 17 articles, 5 catégories.
+>   Les 28 lignes d'hygiène et d'entretien ont été retirées (migration `courses-plan-v8`,
+>   les coches conservées). « Le fil des jours » a été supprimé : son successeur est
+>   **Ce qu'il reste à faire**.
+
 > **Vérification finale, sur la version publiée :**
 > 90 tests · 0 échec · 0 assertion FAIL · 0 erreur de page.
 > `audit.mjs` aucun défaut sur les 4 gabarits · `audit-suivi.mjs` aucune erreur de calcul ·

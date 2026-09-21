@@ -47,7 +47,7 @@ console.log('\n== 311) Le 14 au réveil : aucun objectif en retard des jours d\'
 
 console.log('\n== 312) Le réacteur annonce le jour 1, pas un « 0 % » ==');
 {
-  /* le jour 1 est le lundi 21, premier jour du programme */
+  /* le jour 1 est le mardi 22, premier jour du programme */
   const { ctx, fr, page } = await ouvrir('2026-09-22T06:45:00+02:00');
   let v = await fr.evaluate(() => ({
     num: document.getElementById('dash-score-num').textContent,

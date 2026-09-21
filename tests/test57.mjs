@@ -1,5 +1,5 @@
 /* lot 30 : durées en heures et minutes. La cible « projets perso » n'est plus
-   affichée en septembre : la grille n'en prévoit aucune minute avant le 19 octobre. */
+   affichée en septembre : la grille n'en prévoit aucune minute avant le 23 octobre. */
 /* Charge réaliste (deux semaines sous 70 % → cible réduite temporaire) et relevé OBJECTIF dans la barre. */
 import { chromium } from 'playwright';
 const URL = 'http://127.0.0.1:8199/host.html';

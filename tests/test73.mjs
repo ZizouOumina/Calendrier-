@@ -48,7 +48,7 @@ console.log('\n== 301) Les cibles du jour et de la semaine viennent de la grille
   ok(/d'espagnol sur 15 h 12/.test(sem1), 'phase 1 : 15 h 12 d\'espagnol prévues dans la semaine (' + sem1.slice(0, 110) + ')');
   ok(!/de projets sur 0/.test(sem1), 'phase 1 : la ligne « projets » se tait au lieu d\'afficher « sur 0 »');
   await p1.ctx.close();
-  /* dès le 19 octobre : plus de bloc Español du tout, tout revient aux projets */
+  /* dès le 23 octobre : plus de bloc Español du tout, tout revient aux projets */
   const p3 = await ouvrir('2026-12-08T18:00:00+02:00');
   const sem3 = await p3.fr.evaluate(() => document.getElementById('dash-semaine').innerText.replace(/\s+/g, ' '));
   const c3 = await cellules(p3.fr);

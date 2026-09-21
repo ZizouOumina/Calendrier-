@@ -3,7 +3,7 @@
    Les trois « portes » ont ete retirees : elles rendaient un bloc Español aux projets quand
    la moyenne tenait, mais il faut 12 jours de cours notes sur une fenetre de 21 et la phase
    Español ne dure que quatre semaines -- la premiere ne pouvait s'ouvrir qu'a quelques jours
-   de la bascule automatique du 19 octobre, et la seconde exigeait un examen deja passe en
+   de la bascule automatique du 23 octobre, et la seconde exigeait un examen deja passe en
    espagnol. Elles ne gagnaient qu'une heure.
 
    Ce qui reste, et que ce fichier protege : la NOTE QUOTIDIENNE (0-3) et sa moyenne

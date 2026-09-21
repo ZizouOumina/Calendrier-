@@ -107,16 +107,16 @@ console.log('\n== 84.6) Cibles hebdo : constantes en revision, croissantes en pr
   const t = await sem('2026-09-07'), e1 = await sem('2026-09-21'), e2 = await sem('2026-10-26'), e3 = await sem('2026-12-14');
   const pr = x => Math.round(x * 100) / 100;
   ok(pr(t.rev) === pr(e2.rev) && pr(e2.rev) === pr(e3.rev),
-     'la revision ne bouge plus apres le 19 octobre : ' + [pr(t.rev), pr(e2.rev), pr(e3.rev)].join(' -> '));
+     'la revision ne bouge plus apres le 23 octobre : ' + [pr(t.rev), pr(e2.rev), pr(e3.rev)].join(' -> '));
   ok(pr(e2.rev) === 33.17, 'revision = 33 h 12 de travail reel par semaine (' + pr(e2.rev) + ')');
   /* seule exception : en phase Español le mercredi 05:30 reste « Anki matinal », donc la
-     phase 1 porte 50 min de revision de plus. Le 19 octobre, ce bloc passe aux projets. */
+     phase 1 porte 50 min de revision de plus. Le 23 octobre, ce bloc passe aux projets. */
   ok(pr(e1.rev) === 34, 'phase 1 : 34 h, le mercredi matin est encore de l\'Anki (' + pr(e1.rev) + ')');
   ok(pr(e1.proj) === 0, 'phase 1 : aucun temps de projet, tout va a l\'espagnol (' + pr(e1.proj) + ')');
   ok(e1.es > 15 && e1.es < 15.5, 'phase 1 : 15 h 11 d\'espagnol, serie du mardi comprise (' + pr(e1.es) + ')');
   ok(e1.proj === 0 && e2.proj === e3.proj && e3.proj === t.proj,
      'une seule bascule : zero en phase 1, puis la meme valeur partout : ' + [pr(e1.proj), pr(e2.proj), pr(e3.proj), pr(t.proj)].join(' -> '));
-  ok(e1.es > 0 && e2.es === 0 && e3.es === 0, 'l\'espagnol tombe a zero le 19 octobre : ' + [pr(e1.es), pr(e2.es), pr(e3.es)].join(' -> '));
+  ok(e1.es > 0 && e2.es === 0 && e3.es === 0, 'l\'espagnol tombe a zero le 23 octobre : ' + [pr(e1.es), pr(e2.es), pr(e3.es)].join(' -> '));
   ok(pr(t.proj) === 16.1, 'grille type : 16 h 06 de projets par semaine (' + pr(t.proj) + ')');
 }
 

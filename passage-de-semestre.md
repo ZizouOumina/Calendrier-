@@ -50,7 +50,7 @@ ne touche à rien :
 
 ### Une décision à prendre
 
-Le programme des 176 jours finit le **14 mars 2027**, au milieu du S2. Rien ne s'arrête ce
+Le programme des 174 jours finit le **14 mars 2027**, au milieu du S2. Rien ne s'arrête ce
 jour-là dans le code — le compteur continue simplement de compter. Il faudra trancher :
 un nouveau programme jusqu'en juin, ou celui-ci qui continue sans date de fin.
 

@@ -44,7 +44,7 @@ console.log('\n== 82) Vue mois : totaux, pastilles par type, navigation ==');
   ok(/Septembre 2026/.test(v.mois), 'mois affiché : ' + v.mois);
   ok(/Totaldumois5h/.test(v.tuiles[0]), 'total du mois = 4h le 3 + 1h le 1er = 5h : ' + v.tuiles[0]);
   /* L'espagnol a sa tuile depuis le 16 septembre : en phase 1, 24 h d'espagnol par semaine
-     s'affichaient « Projets perso » alors qu'aucun projet n'existe avant le 19 octobre.
+     s'affichaient « Projets perso » alors qu'aucun projet n'existe avant le 23 octobre.
      La session de type « espagnol » du fixture est du VIEUX format : normalisée en session
      de projet « Español · … » (30 min), elle sort des projets (90 min restent) et de la
      révision (60 + 60 + 60 = 180 min). Les trois pastilles du 3 gardent leurs trois couleurs. */

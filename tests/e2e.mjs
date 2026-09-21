@@ -3,7 +3,7 @@ const URL = 'http://127.0.0.1:8199/host.html';
 let ko = 0;
 const ok = (c, m) => { if (c) console.log('  ok   ' + m); else { ko++; console.log('  FAIL ' + m); } };
 
-/* Une semaine plausible : lun 24 nov -> dim 30 nov 2026, apres la bascule du 19 octobre.
+/* Une semaine plausible : lun 24 nov -> dim 30 nov 2026, apres la bascule du 23 octobre.
    Du travail fait, des habitudes, du sport, des pesees, des echeances, un examen. */
 const ms = (iso, hm) => new Date(iso + 'T' + hm + ':00+01:00').getTime();
 const S = [];
