@@ -3416,7 +3416,7 @@
      vestige : une fonctionnalite retiree (batcave-matieres) ou un essai. Elle prend de la
      place dans le quota de 5000 documents et embrouille les sauvegardes, sans que rien ne
      la lise jamais. On la signale ; la suppression reste ton geste. */
-  var CLES_CONNUES = ['addictions','budget-limits','business','coran','courses','dash-more','duaas','duree-bloc','sport-log','objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','courses-plan-v3','courses-plan-v4','courses-plan-v5','courses-plan-v6','courses-plan-v7','courses-plan-v8','ancre-dimanche-v1','shampoing-dim-v1','marche-cible-v1','cardio','kcal-ajustement','gcal-ecriture','reinit','fc-migration-v1','charge','shopify-boutique','journees','examens-heures','vacances','jours-exclus',
+  var CLES_CONNUES = ['addictions','budget-limits','business','coran','courses','dash-more','duaas','duree-bloc','sport-log','objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','courses-plan-v3','courses-plan-v4','courses-plan-v5','courses-plan-v6','courses-plan-v7','courses-plan-v8','charges-v2','ancre-dimanche-v1','shampoing-dim-v1','marche-cible-v1','cardio','kcal-ajustement','gcal-ecriture','reinit','fc-migration-v1','charge','shopify-boutique','journees','examens-heures','vacances','jours-exclus',
     'espagnol','examens','cours-suivi','portes','periodes-closes','fc-prix-icloud-3','fixed-charges','goals','goals-depart','saisons','insights-hist','last-restore-drill','habitlog','habits','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','habits-seed-v7','habits-seed-v8','habits-seed-v9','objectifs-v5-espanol',
     'horizon','last-auto-backup','last-manual-backup','last-bilan-prompt','last-compaction','last-open','last-rotation','notion-url',
     'pomodial-purge','projets','report','revision','revision-fusionnee','revue','sante','sauvegarde','sessions',
@@ -4507,7 +4507,7 @@
      elles repartiraient vers le cloud. La meme remise a zero peut donc etre decidee depuis
      l'appli ou directement dans le cloud. */
   var REINIT_GARDER = ['habits','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','habits-seed-v7','habits-seed-v8','habits-seed-v9','objectifs-v5-espanol','fixed-charges','fc-prix-icloud-3','budget-limits','examens','examens-heures','journees','echeances','vacances','jours-exclus','jours-sans-cours','portes','appro','notion-url','shopify-boutique',
-                       'objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','courses-plan-v3','courses-plan-v4','courses-plan-v5','courses-plan-v6','courses-plan-v7','courses-plan-v8','ancre-dimanche-v1','shampoing-dim-v1','marche-cible-v1','horizon','goals-depart','saisons','periodes-closes','gcal-ecriture','duree-bloc','dash-more','revision-fusionnee','reinit','copie-vierge'];
+                       'objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','courses-plan-v3','courses-plan-v4','courses-plan-v5','courses-plan-v6','courses-plan-v7','courses-plan-v8','charges-v2','ancre-dimanche-v1','shampoing-dim-v1','marche-cible-v1','horizon','goals-depart','saisons','periodes-closes','gcal-ecriture','duree-bloc','dash-more','revision-fusionnee','reinit','copie-vierge'];
   var REINIT_PREFIXES_GARDER = ['pomodial-', 'coherence-ignore-'];
   function reinitGarder(cle){
     var c = cle.indexOf('batcave-') === 0 ? cle.slice(8) : cle;
@@ -10653,6 +10653,70 @@
      Aucun stock n'est modelise : tout part de zero le samedi 26, et ce qu'il a deja se
      coche a la main dans la liste. Un fond de placard ne se calcule pas, il se regarde. */
   function arrondiPack(besoin, pas){ return Math.ceil(besoin / pas) * pas; }
+  /* ===== Les prix REELS ===== (21 septembre)
+     Le 19, la liste avait perdu tous ses prix : ils etaient inventes (« Alicante 2026 »)
+     et donc faux au centime pres. Sa regle etait nette -- « enleve l'estimation de budget,
+     des que j'acheterai je t'enverrai les factures ». Il a fait ses releves les 20 et 21
+     en magasin : ces prix-la ne sont pas des estimations, chacun porte son magasin et sa
+     date, et c'est ce qui les autorise a revenir ici.
+     L'unite est le KILO, le LITRE, ou la PIECE pour ce qui se compte. Une entree a null
+     est un prix qu'on n'a pas : la ligne s'affiche « prix a relever » et sort du total,
+     plutot que d'etre comblee par une estimation -- ce serait rouvrir exactement ce qu'il
+     a fait fermer. */
+  var PRIX = {
+    poulet:   {eur:7.50,  par:'kg',    ou:'Boucherie', quand:'20 sept.'},
+    hachee:   {eur:12.00, par:'kg',    ou:'Boucherie', quand:'20 sept.'},
+    jambon:   {eur:9.00,  par:'kg',    ou:'Boucherie', quand:'20 sept.', detail:'charcuterie de poulet'},
+    skyr:     {eur:5.00,  par:'kg',    ou:'Lidl',      quand:'21 sept.', detail:'0,75 \u20ac la bo\u00eete de 150 g'},
+    oeufs:    {eur:1.69/6, par:'pi\u00e8ce', ou:'Lidl', quand:'21 sept.', detail:'1,69 \u20ac la bo\u00eete de 6 \u2014 celle de 12 \u00e0 2,84 \u20ac revient moins cher \u00e0 l\'unit\u00e9'},
+    fromage:  {eur:6.375, par:'kg',    ou:'Lidl',      quand:'21 sept.', detail:'2,55 \u20ac les 400 g d\'\u00e9dam'},
+    pain:     {eur:1.05/0.45, par:'kg',ou:'Lidl',      quand:'21 sept.', detail:'1,05 \u20ac les 450 g, 16 tranches'},
+    bananes:  {eur:1.48*0.12, par:'pi\u00e8ce', ou:'Lidl', quand:'21 sept.', detail:'1,48 \u20ac/kg, 120 g la banane'},
+    fruits:   {eur:2.00*0.12, par:'pi\u00e8ce', ou:'Fruter\u00eda', quand:'21 sept.', detail:'\u2248 2 \u20ac/kg, 120 g le fruit'},
+    legumes:  {eur:1.25,  par:'kg',    ou:'Lidl',      quand:'21 sept.'},
+    riz:      {eur:1.09,  par:'kg',    ou:'Lidl',      quand:'21 sept.'},
+    pates:    {eur:1.09,  par:'kg',    ou:'Lidl',      quand:'21 sept.'},
+    flocons:  {eur:1.50,  par:'kg',    ou:'Lidl',      quand:'21 sept.', detail:'0,75 \u20ac les 500 g'},
+    miel:     {eur:10.00, par:'kg',    ou:'Lidl',      quand:'21 sept.'},
+    huile:    {eur:5.945, par:'L',     ou:'Lidl',      quand:'21 sept.', detail:'11,89 \u20ac les 2 L'},
+    cacahuete:null  /* Alcampo : le pot est choisi, le prix pas encore releve. */
+  };
+  /* La cle du besoin par libelle : c'est elle qui relie une ligne de courses a son prix. */
+  var CLE_PRIX = {
+    'Poulet':'poulet', 'Viande hach\u00e9e 5 %':'hachee', 'Skyr':'skyr', '\u0152ufs':'oeufs',
+    'Jambon':'jambon', 'Fromage en tranches':'fromage', 'Pain complet':'pain',
+    'Bananes':'bananes', 'Fruits (pommes, poires, oranges\u2026)':'fruits',
+    'L\u00e9gumes verts surgel\u00e9s':'legumes', 'Riz':'riz', 'P\u00e2tes':'pates',
+    'Flocons d\'avoine':'flocons', 'Miel':'miel', 'Beurre de cacahu\u00e8te':'cacahuete',
+    'Huile d\'olive':'huile'
+  };
+  function eur(n){ return (Math.round(n * 100) / 100).toFixed(2).replace('.', ',') + ' \u20ac'; }
+  /* Le cout d'une semaine se calcule sur le BESOIN, pas sur l'achat : un pot de 2 L d'huile
+     dure cinq semaines, et l'imputer entier a la semaine ou il s'achete ferait un budget en
+     dents de scie. Sur un mois, les cycles s'amortissent -- c'est la consommation qui compte. */
+  function coutSemaine(){
+    var total = 0, lignes = [], manque = [];
+    Object.keys(CLE_PRIX).forEach(function(label){
+      var cle = CLE_PRIX[label], p = PRIX[cle], b = BESOIN_SEMAINE[cle];
+      if(!b && b !== 0) return;
+      if(!p){ manque.push(label); return; }
+      /* Les pieces se comptent, le reste se pese : le besoin est en g ou en ml. */
+      var c = p.par === 'pi\u00e8ce' ? b * p.eur : (b / 1000) * p.eur;
+      total += c;
+      lignes.push({label: label, cle: cle, cout: c, prix: p});
+    });
+    return {total: total, mois: total * 52 / 12, lignes: lignes, manque: manque};
+  }
+  /* Le prix d'une ligne, tel qu'il s'ecrit sous l'article. */
+  function prixLigne(label){
+    var cle = CLE_PRIX[label];
+    if(!cle) return '';
+    var p = PRIX[cle];
+    if(!p) return 'prix \u00e0 relever';
+    /* Le magasin est deja sur la pastille d'a cote : le repeter ici faisait
+       « Lidl · 5 €/kg   5,00 €/kg · Lidl » sur la meme ligne. */
+    return eur(p.eur) + '/' + p.par;
+  }
   function planCoursesSemaine(ajust){
     var plus = grammesAjustement(ajust, 3.6) * 7;          /* g de pates en plus par semaine */
     /* espace fine insecable (U+202F) : « 3 780 g », comme partout ailleurs dans la Batcave */
@@ -10668,12 +10732,12 @@
        Plus de prix ici : ils etaient estimes (Alicante 2026) et donc faux au centime pres.
        19 septembre, sa decision : la liste ne chiffre plus rien, il envoie ses tickets et
        les montants reels sont saisis dans Budget, ou ils comptent vraiment. */
-    function art(label, besoin, pas, fmt, pack, besoinTxt){
+    function art(label, besoin, pas, fmt, pack, besoinTxt, semaines){
       var achat = arrondiPack(besoin, pas), n = Math.round(achat / pas);
       /* Le conditionnement s'ECRIT depuis le compte : « 5 paquets de 1 kg » etait fige a
          « 4 paquets » et mentait des que le besoin changeait d'un gramme. */
       if(pas > 1) pack = n + ' ' + pack + (n > 1 ? 's' : '') + ' de ' + fmt(pas);
-      return {label: label, qte: fmt(achat),
+      return {label: label, qte: fmt(achat), semaines: semaines,
               /* Le BESOIN se lit dans son unite brute -- « 2 135 g », pas « 2,135 kg » :
                  c'est un chiffre du plan, pas une quantite qu'on va chercher en rayon. */
               note: pack + (achat > besoin ? ' \u00b7 le plan en demande ' +
@@ -10688,10 +10752,10 @@
       {cat:'Chaque semaine', semaines:1, items:[
         art('Poulet',            B.poulet,  1,  poids, 'pes\u00e9 au comptoir'),
         art('Viande hach\u00e9e 5 %', B.hachee,  1,  poids, 'pes\u00e9e au comptoir'),
-        art('Skyr',              B.skyr,  450,  poids, 'pot'),
+        art('Skyr',              B.skyr,  150,  poids, 'boîte'),
         art('\u0152ufs',              B.oeufs,   6,      sep,   'bo\u00eete', B.oeufs + ' \u0153ufs'),
-        art('Jambon',            B.jambon,150, poids, 'paquet'),
-        art('Fromage en tranches', B.fromage, 150, poids, 'paquet'),
+        art('Jambon',            B.jambon,  1,  poids, 'pesé au comptoir'),
+        art('Fromage en tranches', B.fromage * 2, 400, poids, 'paquet', null, 2),
         art('Pain complet',      B.pain,  450,  poids, 'paquet'),
         art('Bananes',           B.bananes, 1,      sep,   '\u00e0 l\'unit\u00e9', B.bananes + ' bananes'),
         art('Fruits (pommes, poires, oranges\u2026)', B.fruits, 1, sep, '\u00e0 l\'unit\u00e9', B.fruits + ' fruits')
@@ -10706,9 +10770,9 @@
       /* Cycle de 4 semaines, ancre au samedi 26 septembre : 26/9, 24/10, 21/11, 19/12. */
       {cat:'Réserves — toutes les 4 semaines', semaines:4, ancre:ANCRE_COURSES, items:[
         art('Riz',               B.riz * 4,            1000, poids, 'paquet'),
-        art('Pâtes',            (B.pates + plus) * 4,  500, poids, 'paquet'),
+        art('Pâtes',            (B.pates + plus) * 4, 1000, poids, 'paquet'),
         art('Flocons d\'avoine',  B.flocons * 4,         500, poids, 'paquet'),
-        art('Miel',              B.miel * 4,            250, poids, 'pot')
+        art('Miel',              B.miel * 4,           1000, poids, 'pot')
       ]},
       /* Cinq semaines : 2 kg de beurre de cacahuete tombent presque pile (385 x 5 = 1 925).
          L'huile a change le 20 septembre : le poisson sorti, chaque midi porte les 30 ml du
@@ -10717,8 +10781,8 @@
          n'est pas perdu : rien n'est modelise en stock ici, il coche la ligne sans acheter
          tant qu'il lui en reste. */
       {cat:'Toutes les 5 semaines', semaines:5, ancre:ANCRE_COURSES, items:[
-        art('Beurre de cacahuète', B.cacahuete * 5, 1000, poids, 'pot'),
-        art('Huile d\'olive',        B.huile * 5,      750, vol,   'bouteille')
+        art('Beurre de cacahuète', B.cacahuete * 5,  500, poids, 'pot'),
+        art('Huile d\'olive',        B.huile * 5,     2000, vol,   'bouteille')
       ]},
       /* ===== 20 septembre : la liste ne porte plus que de la nourriture =====
          Sa decision, et elle est nette : « dans l'onglet courses tu vas juste laisser les
@@ -10862,13 +10926,13 @@
     'Tous les 3 mois': 'Mercadona'
   };
   var OU_ARTICLE = {
-    'Poulet': 'Boucher', 'Viande hach\u00e9e 5 %': 'Boucher', 'Jambon': 'Boucher',
-    'Skyr': 'Alcampo', 'Huile d\'olive': 'Alcampo · bidon 5 L',
+    'Poulet': 'Boucherie', 'Viande hach\u00e9e 5 %': 'Boucherie', 'Jambon': 'Boucherie',
+    'Skyr': 'Lidl', 'Huile d\'olive': 'Lidl',
     '\u0152ufs': 'Lidl', 'Pain complet': 'Lidl',
     'Fromage en tranches': 'Lidl · cuajo vegetal',
     'Riz': 'Lidl', 'P\u00e2tes': 'Lidl', 'Flocons d\'avoine': 'Lidl',
-    'L\u00e9gumes verts surgel\u00e9s': 'Lidl', 'Miel': 'Lidl', 'Beurre de cacahu\u00e8te': 'Lidl',
-    'Bananes': 'Mercadillo', 'Fruits (pommes, poires, oranges\u2026)': 'Mercadillo · de saison',
+    'L\u00e9gumes verts surgel\u00e9s': 'Lidl', 'Miel': 'Lidl', 'Beurre de cacahu\u00e8te': 'Alcampo',
+    'Bananes': 'Lidl', 'Fruits (pommes, poires, oranges\u2026)': 'Frutería · de saison',
     'Cr\u00e9atine monohydrate': 'En ligne'
   };
   function ouAcheter(label, cat){ return OU_ARTICLE[label] || OU_DEFAUT[cat] || ''; }
@@ -10884,7 +10948,7 @@
            cycle propre de l'article se perdait entre le plan et l'affichage, et tout le
            rayon retombait sur celui de la categorie. */
         return {texte: i.label + ' \u2014 ' + i.qte, ou: ouAcheter(i.label, c.cat),
-                note: i.note, semaines: i.semaines};
+                note: i.note, semaines: i.semaines, prix: prixLigne(i.label)};
       })}; });
     return plan;
   }
@@ -11013,9 +11077,19 @@
     if(note) note.innerHTML = 'Quantités arrondies au conditionnement du magasin, jamais en dessous du besoin : chaque ligne dit ce que tu prends et ce que le plan demande. Le surplus se cuit et part en tupperware. Coche ce que tu as déjà — aucun stock n\'est supposé. ' + (ajust
       ? 'Boucle poids → calories en vigueur : <b style="color:var(--ink-dim);">' + (ajust > 0 ? '+' : '') + ajust + ' kcal/jour</b>, soit ' + (grammesAjustement(ajust, 3.6) > 0 ? '+' : '') + grammesAjustement(ajust, 3.6) + ' g de pâtes crues au dîner (' + (grammesAjustement(ajust, 3.6) * 7 > 0 ? '+' : '') + grammesAjustement(ajust, 3.6) * 7 + ' g sur la semaine) — déjà compté ci-dessous.'
       : 'Aucun ajustement calorique en cours : quantités du plan de base.');
-    /* Plus d'estimation de budget ici : elle annoncait des prix Alicante 2026 inventes.
-       Le seul chiffre vrai est celui de ses tickets, saisi dans Budget. */
-    if(budget) budget.innerHTML = 'Aucun prix affiché : ceux d\'avant étaient estimés. Garde tes tickets — les montants réels se saisissent dans <b style="color:var(--ink-dim);">Budget → Nourriture</b>, et ce sont eux qui comptent dans tes dépenses du mois.';
+    /* 19 septembre : les prix estimes etaient partis. 21 septembre : ils reviennent,
+       mais ce sont les SIENS, releves en magasin, chacun avec sa boutique et sa date.
+       Le cout se calcule sur le besoin hebdomadaire -- ce qu'il mange -- et non sur
+       l'achat du jour : un bidon d'huile de 2 L dure cinq semaines, l'imputer entier a
+       la semaine ou il l'achete ferait un budget en dents de scie.
+       Les lignes sans prix (le beurre de cacahuete) sortent du total et se disent. */
+    if(budget){
+      var cs = coutSemaine();
+      budget.innerHTML = '<b style="color:var(--ink);">' + eur(cs.mois) + ' par mois</b> \u00b7 ' +
+        eur(cs.total) + ' par semaine, calcul\u00e9 sur <b style="color:var(--ink-dim);">tes</b> prix relev\u00e9s en magasin les 20 et 21 septembre, ligne par ligne.' +
+        (cs.manque.length ? ' <b style="color:var(--warn);">' + cs.manque.join(', ') + '</b> : prix pas encore relev\u00e9, donc hors total \u2014 le chiffre montera quand il y sera.' : '') +
+        ' Ce montant est le <b style="color:var(--ink-dim);">plan</b> ; ce que tu as vraiment pay\u00e9 se saisit dans <b style="color:var(--ink-dim);">Budget \u2192 Nourriture</b>, et c\'est lui qui compte dans tes d\u00e9penses du mois.';
+    }
     grid.innerHTML = '';
     /* Ce qui est DU aujourd'hui, et rien d'autre, dans la grille principale. Avant, les
        sept categories s'affichaient ensemble -- les non dues seulement grisees a 55 % --
@@ -11041,6 +11115,7 @@
                '<input type="checkbox" id="c-'+key+'" data-course="'+key+'" '+(checked?'checked':'')+'>' +
                '<label for="c-'+key+'">'+it.texte +
                (it.ou ? ' <span class="ou-tag">' + escapeHtml(it.ou) + '</span>' : '') +
+               (it.prix ? ' <span class="ou-tag">' + escapeHtml(it.prix) + '</span>' : '') +
                (it.note ? ' <span class="sub-note">— ' + escapeHtml(it.note) + '</span>' : '') +
                '</label></li>';
       }).join('');
@@ -14971,11 +15046,19 @@
 
   /* Charges fixes mensuelles — remplace l'ancien onglet Abonnements, comptabilisées automatiquement
      chaque mois (1 fois par charge) dans les catégories de dépenses au lieu d'être re-saisies à la main. */
+  /* ===== 21 septembre : la ligne « Courses » sort des charges fixes =====
+     Elle postait 300 EUR le 1er de chaque mois dans Nourriture. Or sa regle du 19 est
+     nette : « des que j'acheterai je t'enverrai les factures et tu me deduiras le prix ».
+     Les deux ensemble comptaient la nourriture DEUX fois -- une charge forfaitaire plus
+     les tickets reels. Et les 300 EUR etaient faux : ses prix releves en magasin donnent
+     environ 183 EUR par mois sur quinze lignes sur seize (PRIX, plus haut).
+     Ce qui remplace la charge : un PLAFOND sur la categorie Nourriture, pose a la valeur
+     calculee. Un plafond ne cree aucune depense -- il compare ce qui est vraiment saisi
+     a ce que le plan prevoit, ce qui est exactement ce qu'il voulait. */
   var FIXED_CHARGES_SEED = [
     {id:'fc1', label:'Loyer', montant:700, cat:'Logement'},
     {id:'fc2', label:'Wifi', montant:11, cat:'Abonnements'},
     {id:'fc3', label:'Téléphone portable', montant:11, cat:'Abonnements'},
-    {id:'fc4', label:'Courses', montant:300, cat:'Nourriture'},
     {id:'fc5', label:'Eau + Électricité', montant:70, cat:'Eau & Électricité'},
     {id:'fc6', label:'Transports', montant:40, cat:'Transport (TAM)'},
     {id:'fc7', label:'Coiffeur', montant:30, cat:'Autres'}
@@ -14989,6 +15072,32 @@
   function montantMensuel(c){
     return (Number(c.montant)||0) / PERIODES[periodeDe(c)].diviseur;
   }
+  /* La graine ne touche que les installations neuves : la sienne porte deja les 300 EUR
+     en memoire. On les retire une fois, et seulement si la ligne est restee telle quelle --
+     s'il l'a modifiee lui-meme, c'est sa decision et on n'y touche pas. Les transactions
+     deja postees par cette charge partent avec elle : les garder laisserait le doublon
+     dans le mois en cours. */
+  function migrerChargeCourses(){
+    /* Le plafond se pose dans TOUS les cas -- y compris sur une installation neuve, ou
+       il n'y a aucune charge « Courses » a retirer puisqu'elle ne figure plus dans la
+       graine. Le retrait, lui, ne concerne que les Batcave qui l'ont encore en memoire. */
+    if(!budgetLimits['Nourriture']){
+      budgetLimits['Nourriture'] = Math.round(coutSemaine().mois);
+      save('batcave-budget-limits', budgetLimits);
+    }
+    var liste = load('batcave-fixed-charges', null);
+    if(!Array.isArray(liste)) return;
+    var i = -1;
+    liste.forEach(function(c, k){ if(c && c.id === 'fc4' && c.label === 'Courses' && Number(c.montant) === 300) i = k; });
+    if(i < 0) return;
+    liste.splice(i, 1);
+    save('batcave-fixed-charges', liste);
+    var tx = txState.filter(function(t){
+      return !(t && t.fixed && t.categorie === 'Nourriture' && /^Courses/.test(String(t.label || '')));
+    });
+    if(tx.length !== txState.length){ txState = tx; save('batcave-transactions', txState); }
+  }
+  if(!load('batcave-charges-v2', false)){ migrerChargeCourses(); saveInternal('batcave-charges-v2', true); }
   var fixedCharges = load('batcave-fixed-charges', null);
   if(fixedCharges === null){ fixedCharges = FIXED_CHARGES_SEED.slice(); save('batcave-fixed-charges', fixedCharges); }
   if(!Array.isArray(fixedCharges)) fixedCharges = FIXED_CHARGES_SEED.slice();
