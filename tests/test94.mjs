@@ -270,8 +270,11 @@ console.log('\n== 334) Ses prix a lui, releves en magasin -- et rien d\'invente 
   /* Les prix sur les lignes elles-memes. La creatine est hors plan de repas -- elle
      n'a ni besoin hebdomadaire ni prix releve -- donc elle n'affiche rien, et c'est
      juste : un chiffre pose la serait invente. */
+  /* textContent, PAS innerText : les pastilles sont mises en capitales par le CSS, et
+     innerText rend le texte TRANSFORMÉ — « ALCAMPO PRIX À RELEVER », « 7,50 €/KG ».
+     Les assertions ci-dessous cherchent ce que le code ÉCRIT, pas ce que le CSS affiche. */
   const lignes = await fr.evaluate(() =>
-    [...document.querySelectorAll('#courses-grid .cat-card li')].map(l => l.innerText));
+    [...document.querySelectorAll('#courses-grid .cat-card li')].map(l => l.textContent));
   const muettes = lignes.filter(l => !/€|à relever|Créatine/.test(l));
   ok(lignes.length > 0 && muettes.length === 0,
      'les ' + lignes.length + ' lignes du jour portent leur prix ou disent qu\'il manque' +

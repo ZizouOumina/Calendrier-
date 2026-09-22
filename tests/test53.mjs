@@ -46,7 +46,8 @@ console.log('\n== 180) Sans ajustement : plan de base, liste = plan × 7 ==');
   /* Deux chiffres par ligne, et il faut les deux : ce qu'on ACHETE (un multiple du
      conditionnement) et ce que le PLAN demande (la somme des 7 jours de repas). Riz
      135 g/jour -> 945/semaine -> 3 780 sur 4 semaines, donc 4 paquets de 1 kg ;
-     pates 85 -> 595 -> 2 380, donc 5 paquets de 500 g. Acheter en dessous du besoin
+     pates 105 -> 735 -> 2 940, donc 3 paquets de 1 kg -- le format dont il a donne le
+     prix lui-meme (1,09 EUR/kg). Acheter en dessous du besoin
      serait une rupture en milieu de cycle : l'arrondi va toujours VERS LE HAUT. */
   ok(c.items.some(t => /^Riz — 5 kg\b/.test(t) && /le plan en demande 4\u202f340 g/.test(t)), 'riz : 5 kg achetés pour 4 340 g demandés (' + c.items.find(t => /^Riz/.test(t)) + ')');
   ok(c.items.some(t => /^Pâtes — 3 kg\b/.test(t) && /le plan en demande 2\u202f940 g/.test(t)), 'pâtes : 3 kg achetés pour 2 940 g demandés (' + c.items.find(t => /^Pâtes/.test(t)) + ')');
@@ -141,7 +142,11 @@ console.log('\n== 181) Avec +150 kcal : le dîner et les courses l\'écrivent ==
   const c = await fr.evaluate(() => ({ items: [...document.querySelectorAll('#courses-grid label, #courses-grid-plus label')].map(l => l.textContent), note: document.getElementById('courses-plan-note').textContent }));
   /* L'ajustement suit le sac : +280 g par semaine font +1 120 g sur quatre semaines.
      Pas de ligne hebdomadaire en plus -- on n'achete pas un sachet de 280 g. */
-  ok(c.items.some(t => /^Pâtes — 4,5 kg\b/.test(t) && /demande 4\u202f060 g/.test(t)), 'la boucle kcal remonte le besoin à (735 + 280) × 4 = 4 060 g, et l\'achat suit à 4,5 kg (' + c.items.find(t => /^Pâtes/.test(t)) + ')');
+  /* 5 kg et non 4,5 : le conditionnement des pâtes est passé au paquet de 1 kg, celui
+     dont il a donné le prix. L'arrondi va toujours AU-DESSUS du besoin, donc 4 060 g
+     demandés font cinq paquets — 940 g de surplus, qui se cuisent et partent en
+     tupperware comme le reste. */
+  ok(c.items.some(t => /^Pâtes — 5 kg\b/.test(t) && /demande 4\u202f060 g/.test(t)), 'la boucle kcal remonte le besoin à (735 + 280) × 4 = 4 060 g, et l\'achat suit à 5 kg (' + c.items.find(t => /^Pâtes/.test(t)) + ')');
   ok(/\+150 kcal\/jour/.test(c.note) && /\+40 g de pâtes crues/.test(c.note) && /\+280 g sur la semaine/.test(c.note), 'note : ' + c.note.slice(0, 120));
   /* La boucle kcal ne touche QUE le feculent du diner : les proteines gardent la quantite
      de la rotation, 560 g de poulet par semaine. */
@@ -162,7 +167,7 @@ console.log('\n== 182) Appliquer / revenir depuis la boucle met tout à jour d\'
   await page.waitForTimeout(250);
   const apres = await fr.evaluate(() => ({ diner: [...document.querySelectorAll('.meal-card')].find(c => /Dîner/.test(c.querySelector('.mtitle').textContent)).innerText,
     courses: (document.querySelector('.nav-btn[data-page="courses"]').click(), [...document.querySelectorAll('#courses-grid label, #courses-grid-plus label')].map(l => l.textContent).find(t => /^Pâtes/.test(t))) }));
-  ok(/Pâtes 145g/.test(apres.diner) && /4,5 kg/.test(apres.courses), 'après « Appliquer » : dîner à 145 g de pâtes, courses à 4,5 kg');
+  ok(/Pâtes 145g/.test(apres.diner) && /Pâtes — 5 kg/.test(apres.courses), 'après « Appliquer » : dîner à 145 g de pâtes, courses à 5 kg');
   await page_(fr, 'repas');
   await fr.evaluate(() => document.getElementById('kcal-reset').click());
   await page.waitForTimeout(250);

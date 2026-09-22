@@ -82,14 +82,18 @@ console.log('\n== 55) Charges fixes : total et suppression restent cohérents ==
   await fr.evaluate(() => document.querySelector('.nav-btn[data-page="budget"]').click());
   await page.waitForTimeout(200);
   const total0 = await fr.evaluate(() => document.getElementById('fixed-charges-total').textContent);
-  ok(/1\s*187\s*€/.test(total0.replace(/ /g,' ')), 'total de départ 1187 €/mois : ' + total0);
+  /* 887 et non 1 187 : la charge fixe « Courses » de 300 €/mois est sortie le
+     21 septembre. Elle comptait la nourriture deux fois -- une fois en forfait, une fois
+     en tickets réels -- et un plafond sur la catégorie Nourriture l'a remplacée. Un
+     plafond ne crée aucune dépense, donc il ne compte pas dans ce total. */
+  ok(/887\s*€/.test(total0.replace(/ /g,' ')), 'total de départ 887 €/mois : ' + total0);
   // supprime la première charge (loyer, 700€) et vérifie que le total baisse exactement du bon montant
   await fr.evaluate(() => document.querySelector('#fixed-charges-list [data-delfc]').click());
   await page.waitForTimeout(200);
   const total1 = await fr.evaluate(() => document.getElementById('fixed-charges-total').textContent);
-  ok(/487\s*€/.test(total1.replace(/ /g,' ')), 'après suppression du loyer (700€) : 487 €/mois (obtenu : ' + total1 + ')');
+  ok(/187\s*€/.test(total1.replace(/ /g,' ')), 'après suppression du loyer (700€) : 187 €/mois (obtenu : ' + total1 + ')');
   const statTile = await fr.evaluate(() => document.getElementById('budget-stats').innerText.replace(/\s+/g,' '));
-  ok(/487/.test(statTile), 'la tuile "Charges fixes" du budget suit aussi : ' + statTile.slice(0,120));
+  ok(/187\s*€\/mois/.test(statTile), 'la tuile "Charges fixes" du budget suit aussi : ' + statTile.slice(0,120));
   await ctx.close();
 }
 
