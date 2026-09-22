@@ -147,19 +147,20 @@ console.log('\n== 292) L\'agenda Google : ni 🦇 Cours, ni 🦇 Temps libre =='
 
 console.log('\n== 293) Sans dates d\'examen, la Batcave le dit — et se taît dès la première saisie ==');
 {
-  /* le seuil est PROGRAMME_DEBUT + 31 jours : 22 sept. + 31 = 23 octobre */
-  const { ctx, fr } = await ouvrir('2026-10-22T09:00:00+02:00');
+  /* Le seuil est PROGRAMME_DEBUT + 31 jours. Il suit donc le depart : 22 sept. + 31
+     donnait le 23 octobre ; depuis que le jour 1 est au 23 septembre, c'est le 24. */
+  const { ctx, fr } = await ouvrir('2026-10-23T09:00:00+02:00');
   const a = await fr.evaluate(() => document.getElementById('dash-plan').innerText);
-  ok(!/Aucune date d’examen/.test(a), 'le 22 octobre, la veille du seuil, rien encore');
+  ok(!/Aucune date d’examen/.test(a), 'le 23 octobre, la veille du seuil, rien encore');
   await ctx.close();
 }
 {
-  const { ctx, fr } = await ouvrir('2026-10-23T09:00:00+02:00');
+  const { ctx, fr } = await ouvrir('2026-10-24T09:00:00+02:00');
   const v = await fr.evaluate(() => ({
     t: document.getElementById('dash-plan').innerText,
     btn: document.querySelectorAll('#dash-plan [data-ouvrir="etudes"]').length
   }));
-  ok(/Aucune date d’examen saisie/.test(v.t), 'le 23 octobre, la ligne apparaît');
+  ok(/Aucune date d’examen saisie/.test(v.t), 'le 24 octobre, la ligne apparaît');
   ok(/pas de mode partiels/.test(v.t) && /sommeil majoré/.test(v.t), 'et elle dit ce qui reste éteint tant qu\'elles manquent');
   ok(v.btn === 1, 'un bouton qui ouvre l\'onglet Études');
   await ctx.close();
@@ -192,19 +193,20 @@ console.log('\n== 294) Le panneau « Jours sans cours » : la saisie fait foi ==
   ok(/25 jours à venir/.test(dep.note), 'la liste de départ : « ' + dep.note + ' »');
   ok(dep.st === null, 'et elle ne coûte rien en stockage tant que rien n\'est saisi');
 
-  /* ajouter un jour : le mardi 22 septembre, dans le programme (le 18 est avant le depart,
-     et sansCoursLe n'y libere rien) */
-  await fr.evaluate(() => { document.getElementById('sc-date').value = '2026-09-22'; document.getElementById('sc-add').click(); });
+  /* ajouter un jour : le mardi 29 septembre, dans le programme. C'etait le 22, qui est
+     passe AVANT le depart quand le jour 1 a glisse au mercredi 23 -- et sansCoursLe ne
+     libere rien avant le depart. Le 29 est le mardi suivant : meme grille, meme phase. */
+  await fr.evaluate(() => { document.getElementById('sc-date').value = '2026-09-29'; document.getElementById('sc-add').click(); });
   await page.waitForTimeout(300);
   const ap = await fr.evaluate(() => ({
-    sans: window.__bcSansCours('2026-09-22'),
-    g: window.__bcGrille('tuesday', '2026-09-22').map(b => b[0] + ' ' + b[1]),
+    sans: window.__bcSansCours('2026-09-29'),
+    g: window.__bcGrille('tuesday', '2026-09-29').map(b => b[0] + ' ' + b[1]),
     st: JSON.parse(localStorage.getItem('batcave-jours-sans-cours')),
     note: document.getElementById('sans-cours-note').textContent
   }));
   ok(ap.sans === true && ap.g.includes('15:00 Español · hablar') && ap.g.includes('21:00 Coucher'),
-     'le 22 septembre devient un jour sans cours, grille comprise');
-  ok(ap.st.ajoutes.length === 1 && ap.st.ajoutes[0] === '2026-09-22' && !ap.st.retires.length,
+     'le 29 septembre devient un jour sans cours, grille comprise');
+  ok(ap.st.ajoutes.length === 1 && ap.st.ajoutes[0] === '2026-09-29' && !ap.st.retires.length,
      'on ne garde que l\'écart à la liste de départ : ' + JSON.stringify(ap.st));
   ok(/26 jours à venir/.test(ap.note), 'le relevé suit : « ' + ap.note + ' »');
 

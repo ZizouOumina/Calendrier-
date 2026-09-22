@@ -109,11 +109,14 @@ console.log('\n== 231) Phase 1 (mercredi 16 septembre) : blocs Projets perso ren
      T1:espagnol_h et T1:revision_h ne sont plus semes du tout. */
   ok(objs['T1:espagnol_h'] === undefined && objs['T1:revision_h'] === undefined,
      'plus aucun objectif de trimestre : un seul palier, le mois (' + JSON.stringify(objs) + ')');
-  /* Le depart est passe au MARDI 22 dans la nuit du 20 au 21 : septembre perd un jour de
-     programme, et la cible Español descend de 20,6 a 17,4 h. Elle n'est pas ecrite : elle
-     est ce que la grille contient sur le mois, a 89 %. */
-  ok(Math.abs(objs['M2026-09:espagnol_h'] - 17.4) < 0.2 && objs['M2026-09:projets_h'] === 0,
-     'objectifs Espagnol calcules depuis la grille (septembre ≈ 17,4 h, depart du mardi 22, phase Español close le 22 octobre) ; Projets perso ramene a zero en septembre, ou la phase 1 occupe toute la part programmee du mois : ' + JSON.stringify(objs));
+  /* Le depart a glisse deux fois : au MARDI 22 dans la nuit du 20 au 21, puis au
+     MERCREDI 23 le soir du 22 -- une nuit blanche et un cours manque. Septembre perd donc
+     un jour de programme a chaque fois, et la cible Español descend de 20,6 a 17,4 puis a
+     15,1 h. Elle n'est jamais ecrite : elle est ce que la grille contient sur le mois, a
+     89 %. C'est bien la preuve que rien n'est fige -- deplacer une seule constante a
+     recalcule l'objectif du mois tout seul. */
+  ok(Math.abs(objs['M2026-09:espagnol_h'] - 15.1) < 0.2 && objs['M2026-09:projets_h'] === 0,
+     'objectifs Espagnol calcules depuis la grille (septembre ≈ 15,1 h, depart du mercredi 23, phase Español close le 22 octobre) ; Projets perso ramene a zero en septembre, ou la phase 1 occupe toute la part programmee du mois : ' + JSON.stringify(objs));
 
   /* Pomodoro Español : la tâche par défaut est celle du bloc en cours (gramática à 12:00), le bloc part en projet « Español · gramática » */
   await fr.evaluate(() => document.querySelector('.nav-btn[data-page="dashboard"]').click());
@@ -164,7 +167,7 @@ console.log('\n== 232) Avant le lundi 14 septembre : aucune période, la grille 
      'le 14 : révision dentaire, déjeuner et cours intacts : ' + [g.l0720, g.l0820, g.l0920, g.l1220, g.l1730].join(' / '));
   ok(g.l1120 === 'Question ouverte ou autre' && g.l1300 === 'Español · gramática' && g.l1400 === 'Español · escribir' && g.l1500 === 'Español · hablar',
      'le 14 : seuls les Projets perso deviennent Español, les quatre du lundi : ' + [g.l1120, g.l1300, g.l1400, g.l1500].join(' / '));
-  ok(/démarre le/.test(g.sport) && /22/.test(g.sport), 'sport : avant le 22, « démarre le 22 sept. » (' + g.sport + ')');
+  ok(/démarre le/.test(g.sport) && /23/.test(g.sport), 'sport : avant le 23, « démarre le 23 sept. » (' + g.sport + ')');
   await ctx.close();
 }
 

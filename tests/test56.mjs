@@ -95,11 +95,13 @@ console.log('\n== 200) Depuis l\'appli : tout est effacé ici et dans le cloud, 
        retires -- il n'a voulu qu'un seul palier. Septembre tombe a 34,7 h, et il n'y a
        plus de cible de trimestre a verifier.
        Nuit du 20 au 21 : le depart passe au MARDI 22, le lundi 21 sort du compte
-       -> 34,7 tombe a 31,2 h. Le chiffre n'est jamais ecrit a la main : il est ce que la
-       grille contient sur le mois, a 89 %. */
+       -> 34,7 tombe a 31,2 h.
+       Soir du 22 : le depart passe au MERCREDI 23 apres une nuit blanche et un cours
+       manque, le mardi 22 sort du compte -> 31,2 tombe a 27,2 h. Le chiffre n'est jamais
+       ecrit a la main : il est ce que la grille contient sur le mois, a 89 %. */
   const objs = c['batcave-objectifs'] && c['batcave-objectifs'].liste || [];
   const revSept = objs.find(o => o.id === 'M2026-09:revision_h'), revT1 = objs.find(o => o.id === 'T1:revision_h'), sommeilSept = objs.find(o => o.id === 'M2026-09:sommeil_moy');
-  ok(!!revSept && revSept.debut === '2026-09-08' && revSept.cible === 31.2, 'Révision de septembre : repart du 8, cible ramenée aux jours réellement programmés → 31,2 h (' + (revSept && revSept.cible) + ')');
+  ok(!!revSept && revSept.debut === '2026-09-08' && revSept.cible === 27.2, 'Révision de septembre : repart du 8, cible ramenée aux jours réellement programmés → 27,2 h (' + (revSept && revSept.cible) + ')');
   /* Deux fois de suite ce chiffre a bouge, et jamais par accident.
      284 → 286,9 : « Projets perso 4, 5 et 6 » basculent en revision ciblee pendant les
      partiels. L'examen seme ici (16 octobre) ouvre une fenetre du 9 au 16 qui contient un

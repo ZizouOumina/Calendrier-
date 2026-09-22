@@ -16,9 +16,9 @@ async function jour(quand){
   return {ctx, page, fr};
 }
 console.log('\n== tours : moitie deux semaines, puis complet ==');
-/* Le programme ouvre le MARDI 22 septembre : la semaine de programme court du mardi au
-   lundi. S1 = 22-28 sept., S2 = 29 sept.-5 oct. (toutes deux a moitie des tours),
-   S3 des le 6 oct. */
+/* Le programme ouvre le MERCREDI 23 septembre : la semaine de programme court du mercredi
+   au mardi. S1 = 23-29 sept., S2 = 30 sept.-6 oct. (toutes deux a moitie des tours),
+   S3 des le 7 oct. */
 /* Les tractions ouvrent le Haut lourd du LUNDI : on ne compare que des lundis.
    Depuis le depart du mardi 22 : lundi 28 sept. ferme S1, lundi 5 oct. ferme S2 (toutes
    deux a moitie des tours), lundi 12 oct. est en S3, lundi 19 en S4. Le lundi 21 sept.,
@@ -64,12 +64,13 @@ for (const [d, jour_, pesee, coupe] of [
      jour_+' : pesée '+h.pesee+' · photos '+h.photos+' · coupe '+h.cheveux+' ('+h.n+' habitudes)');
   await ctx.close();
 }
-/* Le jour 1 est le MARDI 22, et le mardi n'est pas off au sport : premierJourSport() rend
-   le 22 lui-meme, et la seance de reference tombe ce jour-la. Elle porte donc desormais sur
-   un BAS COMPLET, pas sur le haut lourd du lundi -- les maximums de tractions et de dips se
-   prennent au premier jour de haut, le jeudi 24. Rien avant le 22, rien apres. */
-console.log('\n== seance de reference : le premier jour de SPORT du programme, mardi 22 ==');
-for (const [d, attendu] of [['2026-09-19',false],['2026-09-20',false],['2026-09-21',false],['2026-09-22',true],['2026-09-23',false]]) {
+/* Le jour 1 est le MERCREDI 23, et le mercredi EST off au sport : premierJourSport()
+   avance donc au JEUDI 24, un haut volume. La seance de reference y mesure les maximums
+   de tractions et de dips -- le meme haut du corps que la seance -- et ceux du bas
+   attendent le premier bas complet, le mardi 29. Rien avant le 24, rien apres : le 23,
+   jour 1, n'a PAS de seance de reference, et c'est ce que la ligne du 23 verifie. */
+console.log('\n== seance de reference : le premier jour de SPORT du programme, jeudi 24 ==');
+for (const [d, attendu] of [['2026-09-21',false],['2026-09-22',false],['2026-09-23',false],['2026-09-24',true],['2026-09-25',false]]) {
   const {ctx, fr} = await jour(d+'T05:35:00+02:00');
   const p = await fr.evaluate(()=>document.getElementById('dash-plan').innerText);
   ok(/Séance de référence/.test(p)===attendu, d+' : séance de référence dans le plan = '+/Séance de référence/.test(p));
