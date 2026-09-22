@@ -65,6 +65,38 @@ ok(total === 887, 'total des charges fixes = 887 €/mois, les 300 € de « Cou
 ok(!r.charges.some(c => c.id === 'fc4'), 'la charge fixe « Courses » de 300 € a été retirée');
 ok(r.moisPlan > 0 && r.limits['Nourriture'] === r.moisPlan,
    'et un plafond Nourriture la remplace, à la valeur calculée sur ses relevés : ' + r.limits['Nourriture'] + ' € (' + r.moisPlan + ' attendu)');
+/* Le profil d'un utilisateur de la v89 : le plafond y avait été posé à 186 €, calculé
+   sur quinze prix sur seize (le beurre de cacahuète comptait pour zéro). Avec ses
+   5,30 €/kg le plan monte, et la migration plafond-nourriture-v2 doit corriger — mais
+   UNIQUEMENT si le plafond vaut encore 186, c'est-à-dire s'il est de la Batcave et non
+   de lui. Les deux moitiés se vérifient : celle qui corrige, et celle qui s'abstient. */
+{
+  const bump = async (plafond) => {
+    const c = await browser.newContext({ viewport:{width:1440,height:900}, timezoneId:'Europe/Madrid', locale:'fr-FR' });
+    await c.addInitScript(([lim]) => {
+      localStorage.setItem('batcave-fixed-charges', JSON.stringify([{id:'fc1', label:'Loyer', montant:700, cat:'Logement'}]));
+      localStorage.setItem('batcave-budget-limits', JSON.stringify({'Nourriture': lim}));
+      localStorage.setItem('batcave-charges-v2', 'true');
+    }, [plafond]);
+    const pg = await c.newPage();
+    await pg.clock.install({ time: new Date('2026-09-22T10:00:00+02:00') });
+    pg.on('pageerror', e => { errs++; console.log('  PAGEERROR: ' + e.message); });
+    await pg.goto(URL);
+    await pg.frameLocator('#f').locator('#timer-pomodoro').waitFor({ state:'attached', timeout:15000 });
+    const f = pg.frames().find(x => x.url().includes('batcave.html'));
+    const out = await f.evaluate(() => ({
+      plafond: JSON.parse(localStorage.getItem('batcave-budget-limits'))['Nourriture'],
+      attendu: Math.round(window.__bcCoutSemaine().mois)
+    }));
+    await c.close();
+    return out;
+  };
+  const corrige = await bump(186);
+  ok(corrige.plafond === corrige.attendu && corrige.attendu > 186,
+     'plafond de la v89 (186 €) corrigé à ' + corrige.plafond + ' € (' + corrige.attendu + ' attendu)');
+  const sien = await bump(250);
+  ok(sien.plafond === 250, 'un plafond réglé à la main (250 €) n\'est PAS écrasé (' + sien.plafond + ' €)');
+}
 
 // pas de double application au rechargement
 const ctx2 = await browser.newContext({ viewport:{width:1440,height:900}, timezoneId:'Europe/Madrid', locale:'fr-FR' });

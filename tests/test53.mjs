@@ -106,13 +106,17 @@ console.log('\n== 180) Sans ajustement : plan de base, liste = plan × 7 ==');
      'il chiffre le mois sur ses propres relevés');
   ok(/Budget/.test(c.budget) && /Nourriture/.test(c.budget),
      'et il renvoie vers Budget → Nourriture, où le montant payé est vrai');
-  /* Les lignes portent maintenant le prix au kilo, au litre ou a la piece. La seule
-     exception est le beurre de cacahuete, dont le pot est choisi mais le prix pas
-     encore releve : il dit « prix a relever » plutot que de porter un chiffre pose la. */
+  /* Les lignes portent le prix au kilo, au litre ou a la piece, et les SEIZE l'ont.
+     Le beurre de cacahuete a dit « prix a relever » pendant une journee, faute d'avoir
+     lu la fiche Alcampo qu'il m'avait envoyee le 21 a 15:39 -- ses 5,30 EUR/kg y
+     etaient. Seule la creatine n'affiche rien, et c'est juste : elle ne sort pas du plan
+     de repas, donc elle n'a ni besoin hebdomadaire ni prix releve. */
   ok(c.items.some(t => /^Poulet/.test(t) && /7,50 €\/kg/.test(t)),
      'le poulet porte le prix de sa boucherie (' + c.items.find(t => /^Poulet/.test(t)) + ')');
-  ok(c.items.some(t => /^Beurre de cacahuète/.test(t) && /prix à relever/.test(t)),
-     'et le beurre de cacahuète dit « prix à relever », pas un prix inventé');
+  ok(c.items.some(t => /^Beurre de cacahuète/.test(t) && /5,30 €\/kg/.test(t)),
+     'le beurre de cacahuète porte les 5,30 €/kg de sa fiche (' + c.items.find(t => /^Beurre/.test(t)) + ')');
+  ok(!c.items.some(t => /prix à relever/.test(t)),
+     'et plus une seule ligne ne dit « prix à relever »');
 
   await page_(fr, 'repas');
   const r = await fr.evaluate(() => ({ diner: [...document.querySelectorAll('.meal-card')].find(c => /Dîner/.test(c.querySelector('.mtitle').textContent)) }) && [...document.querySelectorAll('.meal-card')].find(c => /Dîner/.test(c.querySelector('.mtitle').textContent)).innerText);

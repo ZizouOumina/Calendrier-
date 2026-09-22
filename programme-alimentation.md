@@ -56,17 +56,16 @@ Les quantités ne sont pas recopiées : elles sortent du plan de repas × 7 jour
 la catégorie, puis s'arrondissent **au-dessus** du conditionnement réel. La viande ne
 s'arrondit pas — le boucher pèse le montant exact. Les fruits se comptent à l'unité.
 
-**Les prix sont les siens**, relevés en magasin les 20 et 21 septembre — quinze lignes
-sur seize, chacune avec sa boutique et sa date. Le 19 il avait fait sauter les estimations
-(« enlève l'estimation de budget, dès que j'achèterai je t'enverrai les factures ») ; ce
-qui est écrit ici n'est donc plus une estimation mais un relevé. La seule ligne sans prix
-est le beurre de cacahuète : le pot est choisi, le prix pas encore noté, et il est donc
-**hors total** plutôt que deviné. Ce que ça donne : **42,85 € par semaine, 185,70 € par
-mois**, calculés sur ce qu'il mange (le besoin hebdomadaire) et non sur l'achat du jour —
-un bidon d'huile de 2 L dure cinq semaines. Ce montant est le *plan* ; ce qu'il a vraiment
-payé se saisit dans Budget → Nourriture à partir de ses tickets, et c'est ce dernier qui
-compte dans ses dépenses du mois. Un **plafond** Nourriture y est posé à 186 €, à la place
-de l'ancienne charge fixe « Courses » de 300 €/mois, qui comptait la nourriture deux fois.
+**Les prix sont les siens**, relevés les 20 et 21 septembre — **les seize lignes**, chacune
+avec sa boutique et sa date, aucune estimation, aucun trou. Le 19 il avait fait sauter les
+estimations (« enlève l'estimation de budget, dès que j'achèterai je t'enverrai les
+factures ») ; ce qui est écrit ici n'est donc plus une estimation mais un relevé. Ce que ça
+donne : **44,89 € par semaine, 194,54 € par mois**, calculés sur ce qu'il mange (le besoin
+hebdomadaire) et non sur l'achat du jour — un bidon d'huile de 2 L dure cinq semaines. Ce
+montant est le *plan* ; ce qu'il a vraiment payé se saisit dans Budget → Nourriture à partir
+de ses tickets, et c'est ce dernier qui compte dans ses dépenses du mois. Un **plafond**
+Nourriture y est posé à 195 €, à la place de l'ancienne charge fixe « Courses » de
+300 €/mois, qui comptait la nourriture deux fois.
 
 **Chaque semaine** — 8 articles
 
@@ -97,7 +96,8 @@ de 6 restent le compte exact des 18, mais une de 12 plus une de 6 coûtent moins
 boucle kcal s'il y en a une, 1,09 €/kg) · flocons d'avoine 2,5 kg (2 240 g, 1,50 €/kg,
 0,75 € les 500 g) · miel 1 kg (560 g, 10,00 €/kg). Tout chez Lidl.
 
-**Toutes les 5 semaines** — beurre de cacahuète 2 kg (1 925 g), Alcampo, *prix à relever* ·
+**Toutes les 5 semaines** — beurre de cacahuète 2 kg (1 925 g), Alcampo, 5,30 €/kg —
+2,65 € le pot de 500 g de crème 100 % cacahuète moulue à la meule (tarif en ligne) ·
 huile d'olive **2 L, un bidon** (1 575 ml demandés), Lidl, 11,89 € les 2 L. L'huile est
 montée à 315 ml par semaine depuis le retrait du poisson : 30 ml à midi avec le poulet,
 15 ml le soir avec la viande hachée, les sept jours. Le bidon de 2 L couvre donc le cycle

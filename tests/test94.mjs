@@ -253,7 +253,9 @@ console.log('\n== 334) Ses prix a lui, releves en magasin -- et rien d\'invente 
    ce n'est plus « aucun prix », c'est « aucun prix INVENTE ». Ce qui doit tenir :
      - le panneau chiffre le mois et la semaine, et dit que le calcul vient de SES releves ;
      - le mot « estim » n'apparait nulle part ;
-     - la seule ligne sans prix (le beurre de cacahuete) est nommee, et dite hors total ;
+     - AUCUNE ligne n'est sans prix. Le beurre de cacahuete l'a ete une journee, faute
+       d'avoir lu la fiche Alcampo qu'il avait envoyee le 21 a 15:39 ; ses 5,30 EUR/kg y
+       etaient. Le panneau ne doit donc plus annoncer de ligne hors total ;
      - le panneau continue de renvoyer vers Budget, ou vivent les montants vraiment payes ;
      - chaque ligne alimentaire porte son prix, ou dit qu'il manque -- jamais un chiffre
        pose a la place. */
@@ -263,8 +265,11 @@ console.log('\n== 334) Ses prix a lui, releves en magasin -- et rien d\'invente 
   ok(!/estim/i.test(t), 'le mot « estimation » a disparu du panneau (' + t.slice(0, 60) + ')');
   ok(/€ par mois/.test(t) && /€ par semaine/.test(t) && /relevés en magasin/.test(t),
      'un montant par mois et par semaine, calculé sur ses relevés : ' + t.slice(0, 80));
-  ok(/Beurre de cacahuète/.test(t) && /pas encore relevé/.test(t) && /hors total/.test(t),
-     'et la ligne sans prix est nommée, hors total');
+  /* Le pendant exact de l'assertion d'avant : plus aucune ligne hors total, parce que
+     les seize sont chiffrees. Si un prix disparaissait de PRIX, le panneau se remettrait
+     a l'annoncer -- et ce test le dirait. */
+  ok(!/pas encore relevé/.test(t) && !/hors total/.test(t),
+     'aucune ligne hors total : les seize sont chiffrées (' + t.slice(0, 70) + ')');
   ok(/Budget/.test(t) && /Nourriture/.test(t),
      'et il dit toujours où vivent les montants payés : Budget → Nourriture');
   /* Les prix sur les lignes elles-memes. La creatine est hors plan de repas -- elle
@@ -275,12 +280,14 @@ console.log('\n== 334) Ses prix a lui, releves en magasin -- et rien d\'invente 
      Les assertions ci-dessous cherchent ce que le code ÉCRIT, pas ce que le CSS affiche. */
   const lignes = await fr.evaluate(() =>
     [...document.querySelectorAll('#courses-grid .cat-card li')].map(l => l.textContent));
-  const muettes = lignes.filter(l => !/€|à relever|Créatine/.test(l));
+  const muettes = lignes.filter(l => !/€|Créatine/.test(l));
   ok(lignes.length > 0 && muettes.length === 0,
-     'les ' + lignes.length + ' lignes du jour portent leur prix ou disent qu\'il manque' +
+     'les ' + lignes.length + ' lignes du jour portent toutes leur prix' +
      (muettes.length ? ' — muettes : ' + muettes.join(' · ') : ''));
-  ok(lignes.some(l => /Beurre de cacahuète/.test(l) && /prix à relever/.test(l)),
-     'le beurre de cacahuète dit « prix à relever », pas un prix inventé');
+  ok(!lignes.some(l => /prix à relever/.test(l)),
+     'plus une seule ligne ne dit « prix à relever »');
+  ok(lignes.some(l => /Beurre de cacahuète/.test(l) && /5,30 €\/kg/.test(l)),
+     'le beurre de cacahuète porte les 5,30 €/kg de sa fiche Alcampo');
   ok(lignes.some(l => /Poulet/.test(l) && /7,50 €\/kg/.test(l)),
      'le poulet porte le prix de sa boucherie : 7,50 €/kg');
   await ctx.close();

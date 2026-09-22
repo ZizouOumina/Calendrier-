@@ -49,7 +49,8 @@ Il dit ce qui est fait, ce qui reste, et ce qui attend une décision de toi.
       relevés en rayon : boucherie (halal, obligatoire), **Lidl pour presque tout le reste**
       — dont le skyr (0,75 € la boîte de 150 g) et l'huile (11,89 € le bidon de 2 L), qui
       étaient à Alcampo —, frutería (fruits de saison), Alcampo (le beurre de cacahuète
-      seul), en ligne (créatine). Mercadona ne figure plus nulle part.
+      seul, 5,30 €/kg), en ligne (créatine). Mercadona ne figure plus nulle part. Les
+      **seize** lignes portent un prix relevé : 44,89 € la semaine, 194,54 € le mois.
 - [ ] **Le ticket de caisse** → me l'envoyer, je saisis les vrais montants dans
       Budget → Nourriture.
 - [ ] **Le batch cooking** — bloc de 14:30, déjà dans l'agenda Google.

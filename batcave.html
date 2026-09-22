@@ -3416,7 +3416,7 @@
      vestige : une fonctionnalite retiree (batcave-matieres) ou un essai. Elle prend de la
      place dans le quota de 5000 documents et embrouille les sauvegardes, sans que rien ne
      la lise jamais. On la signale ; la suppression reste ton geste. */
-  var CLES_CONNUES = ['addictions','budget-limits','business','coran','courses','dash-more','duaas','duree-bloc','sport-log','objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','courses-plan-v3','courses-plan-v4','courses-plan-v5','courses-plan-v6','courses-plan-v7','courses-plan-v8','courses-plan-v9','charges-v2','ancre-dimanche-v1','shampoing-dim-v1','marche-cible-v1','cardio','kcal-ajustement','gcal-ecriture','reinit','fc-migration-v1','charge','shopify-boutique','journees','examens-heures','vacances','jours-exclus',
+  var CLES_CONNUES = ['addictions','budget-limits','business','coran','courses','dash-more','duaas','duree-bloc','sport-log','objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','courses-plan-v3','courses-plan-v4','courses-plan-v5','courses-plan-v6','courses-plan-v7','courses-plan-v8','courses-plan-v9','charges-v2','plafond-nourriture-v2','ancre-dimanche-v1','shampoing-dim-v1','marche-cible-v1','cardio','kcal-ajustement','gcal-ecriture','reinit','fc-migration-v1','charge','shopify-boutique','journees','examens-heures','vacances','jours-exclus',
     'espagnol','examens','cours-suivi','portes','periodes-closes','fc-prix-icloud-3','fixed-charges','goals','goals-depart','saisons','insights-hist','last-restore-drill','habitlog','habits','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','habits-seed-v7','habits-seed-v8','habits-seed-v9','objectifs-v5-espanol',
     'horizon','last-auto-backup','last-manual-backup','last-bilan-prompt','last-compaction','last-open','last-rotation','notion-url',
     'pomodial-purge','projets','report','revision','revision-fusionnee','revue','sante','sauvegarde','sessions',
@@ -4507,7 +4507,7 @@
      elles repartiraient vers le cloud. La meme remise a zero peut donc etre decidee depuis
      l'appli ou directement dans le cloud. */
   var REINIT_GARDER = ['habits','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','habits-seed-v7','habits-seed-v8','habits-seed-v9','objectifs-v5-espanol','fixed-charges','fc-prix-icloud-3','budget-limits','examens','examens-heures','journees','echeances','vacances','jours-exclus','jours-sans-cours','portes','appro','notion-url','shopify-boutique',
-                       'objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','courses-plan-v3','courses-plan-v4','courses-plan-v5','courses-plan-v6','courses-plan-v7','courses-plan-v8','courses-plan-v9','charges-v2','ancre-dimanche-v1','shampoing-dim-v1','marche-cible-v1','horizon','goals-depart','saisons','periodes-closes','gcal-ecriture','duree-bloc','dash-more','revision-fusionnee','reinit','copie-vierge'];
+                       'objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','courses-plan-v3','courses-plan-v4','courses-plan-v5','courses-plan-v6','courses-plan-v7','courses-plan-v8','courses-plan-v9','charges-v2','plafond-nourriture-v2','ancre-dimanche-v1','shampoing-dim-v1','marche-cible-v1','horizon','goals-depart','saisons','periodes-closes','gcal-ecriture','duree-bloc','dash-more','revision-fusionnee','reinit','copie-vierge'];
   var REINIT_PREFIXES_GARDER = ['pomodial-', 'coherence-ignore-'];
   function reinitGarder(cle){
     var c = cle.indexOf('batcave-') === 0 ? cle.slice(8) : cle;
@@ -10679,7 +10679,13 @@
     flocons:  {eur:1.50,  par:'kg',    ou:'Lidl',      quand:'21 sept.', detail:'0,75 \u20ac les 500 g'},
     miel:     {eur:10.00, par:'kg',    ou:'Lidl',      quand:'21 sept.'},
     huile:    {eur:5.945, par:'L',     ou:'Lidl',      quand:'21 sept.', detail:'11,89 \u20ac les 2 L'},
-    cacahuete:null  /* Alcampo : le pot est choisi, le prix pas encore releve. */
+    /* 5,30 EUR/kg : le prix etait sur la fiche Alcampo qu'il m'a envoyee le 21 septembre
+       a 15:39 (« Tiens je vais prendre celle la »), et je ne l'avais pas lu -- la ligne a
+       donc porte « prix a relever » pendant une journee alors que le chiffre etait la.
+       Reserve : c'est le prix de compraonline.alcampo.es, code postal 28029, donc le
+       tarif en ligne et non le prix affiche en rayon a Alicante. C'est quand meme SON
+       releve sur LE pot qu'il a choisi, et c'est ce qui compte ici. */
+    cacahuete:{eur:5.30, par:'kg', ou:'Alcampo', quand:'21 sept.', detail:'2,65 € le pot de 500 g \u2014 tarif en ligne'}
   };
   /* La cle du besoin par libelle : c'est elle qui relie une ligne de courses a son prix. */
   var CLE_PRIX = {
@@ -15136,6 +15142,21 @@
     if(tx.length !== txState.length){ txState = tx; save('batcave-transactions', txState); }
   }
   if(!load('batcave-charges-v2', false)){ migrerChargeCourses(); saveInternal('batcave-charges-v2', true); }
+  /* Le plafond Nourriture, une deuxieme fois. La v89 l'a pose a 186 EUR : c'etait le cout
+     calcule sur QUINZE prix sur seize, le beurre de cacahuete etant compte pour zero
+     faute d'avoir lu la fiche qu'il m'avait envoyee. Avec ses 5,30 EUR/kg le plan monte a
+     195. Un plafond 9 EUR trop bas l'aurait montre en depassement sur Nourriture tous les
+     mois -- exactement le faux signal qu'il ne veut pas.
+     On ne l'ecrase QUE s'il vaut encore 186, c'est-a-dire s'il est de moi et non de lui :
+     un plafond qu'il a regle a la main est une decision, et elle tient. Et une seule fois,
+     sinon chaque ouverture de page effacerait son reglage. */
+  if(!load('batcave-plafond-nourriture-v2', false)){
+    if(Number(budgetLimits['Nourriture']) === 186){
+      budgetLimits['Nourriture'] = Math.round(coutSemaine().mois);
+      save('batcave-budget-limits', budgetLimits);
+    }
+    saveInternal('batcave-plafond-nourriture-v2', true);
+  }
   var fixedCharges = load('batcave-fixed-charges', null);
   if(fixedCharges === null){ fixedCharges = FIXED_CHARGES_SEED.slice(); save('batcave-fixed-charges', fixedCharges); }
   if(!Array.isArray(fixedCharges)) fixedCharges = FIXED_CHARGES_SEED.slice();
