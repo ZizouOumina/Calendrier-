@@ -193,6 +193,51 @@ console.log('\n== 256) Course jusqu\'au parc ==');
   await ctx.close();
 }
 
+console.log('\n== 254) Saisir un horaire d\'examen : deux champs, donc deux temps ==');
+/* 22 septembre, son signalement : « c'est ecrit qu'il faut un debut et une fin mais
+   j'arrive meme pas a mettre ni le debut ni la fin ». Il avait raison, et c'etait
+   IMPOSSIBLE. Un horaire se saisit forcement en deux temps -- on tape le debut, puis la
+   fin -- mais entre les deux la paire est incomplete. L'ancien code traitait cet etat
+   transitoire comme une erreur : il supprimait l'entree, affichait l'avertissement, et
+   surtout redessinait la ligne depuis le stockage vide. Le champ tout juste rempli
+   disparaissait donc avant qu'on puisse remplir l'autre. Les deux s'effacaient
+   mutuellement, en boucle, sans issue.
+   Ce bloc rejoue sa sequence exacte, plus les trois autres cas qui doivent tenir. */
+{
+  const { ctx, page, fr } = await ouvrir('2026-11-10T08:00:00+02:00', EXAMENS);
+  const poser = async (sel, v) => {
+    await fr.evaluate(([s, val]) => { const e = document.querySelector(s); e.value = val; e.dispatchEvent(new Event('change', {bubbles:true})); }, [sel, v]);
+    await page.waitForTimeout(250);
+  };
+  const vu = () => fr.evaluate(() => {
+    const q = t => document.querySelector('[data-examen-h="' + t + '"][data-mat="Anatomía I"]');
+    return { debut: q('debut').value, fin: q('fin').value,
+             stock: JSON.parse(localStorage.getItem('batcave-examens-heures') || '{}')['Anatomía I'] || null };
+  });
+  /* 1. Le debut seul. C'est ICI que tout cassait : le champ se vidait tout seul. */
+  await poser('[data-examen-h="debut"][data-mat="Anatomía I"]', '09:00');
+  let e = await vu();
+  ok(e.debut === '09:00', 'le début saisi RESTE à l\'écran tant que la fin manque (' + JSON.stringify(e.debut) + ')');
+  ok(e.stock === null, 'et rien n\'est encore enregistré : la paire est incomplète');
+  /* 2. La fin. Les deux sont la : c'est maintenant que ca s'enregistre. */
+  await poser('[data-examen-h="fin"][data-mat="Anatomía I"]', '11:30');
+  e = await vu();
+  ok(e.debut === '09:00' && e.fin === '11:30', 'les deux champs tiennent ensemble');
+  ok(e.stock && e.stock.debut === '09:00' && e.stock.fin === '11:30', 'et l\'horaire est enregistré (' + JSON.stringify(e.stock) + ')');
+  /* 3. Une fin AVANT le debut est une vraie erreur -- mais sa saisie doit rester a
+     l'ecran pour qu'il puisse la corriger, et l'horaire valide d'avant est conserve. */
+  await poser('[data-examen-h="fin"][data-mat="Anatomía I"]', '08:00');
+  e = await vu();
+  ok(e.fin === '08:00', 'une fin avant le début reste affichée : il peut la corriger');
+  ok(e.stock && e.stock.fin === '11:30', 'et l\'horaire valide précédent est conservé, pas effacé');
+  /* 4. Vider les DEUX champs : la, il retire volontairement l'horaire. */
+  await poser('[data-examen-h="debut"][data-mat="Anatomía I"]', '');
+  await poser('[data-examen-h="fin"][data-mat="Anatomía I"]', '');
+  e = await vu();
+  ok(e.stock === null, 'vider les deux champs retire l\'horaire : retour au 09:00 → 11:00 par défaut');
+  await ctx.close();
+}
+
 await browser.close();
 console.log(errs ? '\nECHECS: ' + errs : '\nTOUT OK');
 process.exit(errs ? 1 : 0);

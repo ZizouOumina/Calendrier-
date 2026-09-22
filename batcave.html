@@ -9483,14 +9483,35 @@
         if(document.getElementById('obj-liste')) renderObjectifs();
       });
     });
-    /* l'horaire n'est retenu que complet et coherent ; sinon la journee garde 09:00 → 11:00 */
+    /* L'horaire n'est retenu que complet et coherent ; sinon la journee garde 09:00 → 11:00.
+       22 septembre, bug signale par lui : « j'arrive meme pas a mettre ni le debut ni la
+       fin ». Il avait raison, et c'etait IMPOSSIBLE. Un horaire se saisit forcement en
+       DEUX temps -- on tape le debut, puis la fin -- mais entre les deux la paire est
+       incomplete. L'ancien code traitait cet etat transitoire comme une erreur : il
+       effacait l'entree, affichait l'avertissement, et surtout appelait renderExamens(),
+       qui redessine la ligne depuis le stockage vide. Le champ tout juste rempli
+       disparaissait donc avant qu'on puisse remplir l'autre, et l'inverse ensuite. Les
+       deux champs s'effacaient mutuellement, en boucle, sans issue.
+       Un champ a moitie rempli n'est pas une faute, c'est une saisie EN COURS : on ne
+       fait rien du tout et on attend l'autre. Seuls trois cas agissent. */
     ul.querySelectorAll('[data-examen-h]').forEach(function(inp){
       inp.addEventListener('change', function(){
         var m = inp.dataset.mat;
         var d = ul.querySelector('[data-examen-h="debut"][data-mat="' + m.replace(/"/g, '\\"') + '"]'), f = ul.querySelector('[data-examen-h="fin"][data-mat="' + m.replace(/"/g, '\\"') + '"]');
         var vd = d ? d.value : '', vf = f ? f.value : '';
-        if(/^\d{2}:\d{2}$/.test(vd) && /^\d{2}:\d{2}$/.test(vf) && timeToMinutes(vf) > timeToMinutes(vd)) examensHeures[m] = {debut: vd, fin: vf};
-        else { delete examensHeures[m]; if(vd || vf) showToast('⚠️ Il faut un début et une fin, la fin après le début.'); }
+        var plein = /^\d{2}:\d{2}$/.test(vd) && /^\d{2}:\d{2}$/.test(vf);
+        if(plein){
+          /* La fin avant le debut est une VRAIE erreur : on le dit, mais on ne redessine
+             pas -- sa saisie doit rester a l'ecran pour qu'il puisse la corriger. Et on
+             garde l'horaire valide precedent s'il y en avait un. */
+          if(timeToMinutes(vf) <= timeToMinutes(vd)){ showToast('⚠️ La fin doit être après le début.'); return; }
+          examensHeures[m] = {debut: vd, fin: vf};
+        } else if(!vd && !vf){
+          if(!examensHeures[m]) return;      /* rien a effacer : on ne redessine pas pour rien */
+          delete examensHeures[m];           /* il vide les deux champs : retour a 09:00 → 11:00 */
+        } else {
+          return;                            /* un seul des deux : saisie en cours, on attend */
+        }
         save('batcave-examens-heures', examensHeures);
         viderCachePrevu(); recalerObjectifsSemaine();
         renderExamens(); rafraichirAgendas(); renderJournees(); renderDashboard();
