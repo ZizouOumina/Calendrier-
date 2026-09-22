@@ -138,10 +138,12 @@ console.log('\n== 6) La recherche du journal ==');
 
 console.log('\n== 7) Rattrapage unique après une absence ==');
 {
-  /* Le programme ouvre le MARDI 22, donc rien avant n'est une journee manquee ; ouvert
-     le 16, revenu le 24 : deux journees sans cloture, le 22 et le 23. C'est bien deux
-     qu'il faut ici -- tout l'objet du test est qu'une absence ne fasse qu'UN item. */
-  const {ctx, page, fr} = await ouvrir({'batcave-last-open':'2026-09-16'}, '2026-09-24T10:00:00+02:00');
+  /* Le programme ouvre le MERCREDI 23, donc rien avant n'est une journee manquee ; ouvert
+     le 16, revenu le 25 : deux journees sans cloture, le 23 et le 24. C'est bien DEUX
+     qu'il faut ici -- tout l'objet du test est qu'une absence ne fasse qu'UN item, et
+     une seule journee ne le prouverait pas. Le retour etait au 24 quand le depart etait
+     au 22 ; il glisse avec lui. */
+  const {ctx, page, fr} = await ouvrir({'batcave-last-open':'2026-09-16'}, '2026-09-25T10:00:00+02:00');
   const t = await plan(fr);
   const l = t.split('\n').filter(x=>/Absence —/.test(x))[0] || '';
   ok(/2 journées sans clôture/.test(l), 'un seul item pour toute l\'absence : ' + l.trim().slice(0, 90));
