@@ -62,7 +62,7 @@ console.log('\n== 218) Insights v2 : bloc fragile, dérive, dette de sommeil, st
   ok(dv && /en moyenne 15 min/.test(dv.text) && dv.score === 30, 'dérive = 15 min après 07:20, score 30 : ' + (dv && dv.text.slice(0, 70)));
   ok(dv && dv.tend === '−15 min vs 14 j avant' && dv.bon === true && dv.serie === 10, 'dérive : tendance −15 min (30 min de retard 14 j avant), bonne, série de 10 jours : ' + (dv && dv.tend + ' / ' + dv.serie));
   const ds = par('Sommeil');
-  ok(ds && /^Dette de sommeil : \d+ h/.test(ds.text) && /7 nuits/.test(ds.text) && /21:55/.test(ds.action), 'sommeil : dette sur 7 nuits avec action coucher : ' + (ds && ds.text.slice(0, 70)));
+  ok(ds && /^Dette de sommeil : \d+ h/.test(ds.text) && /7 nuits/.test(ds.text) && /21:35/.test(ds.action), 'sommeil : dette sur 7 nuits avec action coucher : ' + (ds && ds.text.slice(0, 70)));
   ok(ds && /^−.*\/nuit de dette vs 7 nuits avant$/.test(ds.tend) && ds.bon === true && ds.serie === 11 && ds.page === 'bilan', 'sommeil : dette en baisse vs les 7 nuits d\'avant (5,5 h), série de 11 nuits, lien Semaine : ' + (ds && ds.tend + ' / ' + ds.serie));
   ok(ds && /ne dépend pas de ta nuit sur 10 nuits/.test(ds.text), 'sommeil : la corrélation nuit → révision est intégrée à la même carte');
   const st = par('Sport');

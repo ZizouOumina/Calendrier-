@@ -32,7 +32,7 @@ console.log('\n== 250) Journée exceptionnelle : TP jeudi 24 sept. 11:00 → 13:
   ok(g.includes('13:30 Déjeuner') && !g.some(x => /12:20 Déjeuner/.test(x)), 'le déjeuner perdu est replacé après le retour');
   ok(g.includes('07:20 Anki 1') && g.includes('08:20 Anki 2') && g.includes('09:20 Étudier en avance'), 'Anki 1, Anki 2 et Cartes gardent leur place');
   ok(!g.some(x => /Annales$/.test(x)) && !g.some(x => /Question ouverte ou autre/.test(x)) && g.includes('14:00 Español · escribir'), 'le créneau sacrifié emporte « Question ouverte ou autre », 14:00 reprend (' + g.filter(x => /1[34]:00/.test(x)).join(' · ') + ')');
-  ok(g.includes('15:30 Cours') && g.includes('21:55 Coucher'), 'l\'après-midi et le soir ne bougent pas');
+  ok(g.includes('15:30 Cours') && g.includes('21:35 Coucher'), 'l\'après-midi et le soir ne bougent pas');
   const veille = await grille(fr, 'wednesday', '2026-09-23');
   ok(veille.includes('20:30 Préparer · TP · Anatomía I') && veille.includes('07:20 Anki 1'), 'la veille (mercredi 23) : 20:30 devient « Préparer », le reste ne bouge pas');
   const lundi = await grille(fr, 'monday', '2026-09-21');

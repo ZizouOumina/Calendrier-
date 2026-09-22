@@ -45,7 +45,7 @@ for(const [nom, quand, attendu] of [['lundi',LUNDI,'5 h 05'], ['vendredi',VENDRE
 }
 
 console.log('\n== 85) L\'objectif de sommeil suit le coucher de la VEILLE ==');
-for(const [nom, quand, attendu] of [['lundi (veille dim. 21:00, lever 05:30)',LUNDI,'8 h 30'], ['samedi (veille ven. 21:55)',SAMEDI,'7 h 35'], ['dimanche (veille sam. 21:00)',DIMANCHE,'9 h 30']]){
+for(const [nom, quand, attendu] of [['lundi (veille dim. 21:00, lever 05:30)',LUNDI,'8 h 30'], ['samedi (veille ven. 21:35)',SAMEDI,'7 h 55'], ['dimanche (veille sam. 21:00)',DIMANCHE,'9 h 30']]){
   const { ctx, fr } = await ouvrir(quand);
   /* La page Journal est supprimee, et sa barre de sommeil avec : la cible se lit
      desormais a la source, la fonction que le tableau de bord et la cloture appellent. */

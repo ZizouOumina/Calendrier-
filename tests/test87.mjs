@@ -70,10 +70,12 @@ console.log('\n== 285) Le semestre 2 : 24 h de cours, mardi et mercredi jusqu\'a
   ok(gme[0] === '06:30 Douche + préparation' && gme.includes('21:30 Trajet retour'),
      'mercredi : lever à 06:30 (le créneau Anki de 05:30 saute après une nuit courte) et cours jusqu\'à 21:30');
 
-  ok(ma.coucher === '22:40' && me.coucher === '22:40' && lu.coucher === '21:55' && je.coucher === '21:55',
-     'le coucher suit la DATE : 22:40 mardi et mercredi, 21:55 lundi et jeudi (' + [lu, ma, me, je].map(x => x.coucher).join('/') + ')');
+  ok(ma.coucher === '22:40' && me.coucher === '22:40' && lu.coucher === '21:35' && je.coucher === '21:35',
+     'le coucher suit la DATE : 22:40 mardi et mercredi, 21:35 lundi et jeudi (' + [lu, ma, me, je].map(x => x.coucher).join('/') + ')');
   ok(me.lever === '06:30' && ma.lever === '05:30', 'le lever suit la date aussi : 06:30 le mercredi, 05:30 le mardi');
-  ok(ma.sommeil === 7.58 && me.sommeil === 7.83 && je.sommeil === 6.83,
+  /* 7,92 h le mardi depuis le 22 septembre : la cible se lit sur le coucher de la VEILLE,
+     et le lundi est passe de 21:55 a 21:35. 21:35 -> 05:30 = 7 h 55 = 7,92 h. */
+  ok(ma.sommeil === 7.92 && me.sommeil === 7.83 && je.sommeil === 6.83,
      'la cible de sommeil est celle que l\'emploi du temps permet, pas 8 h : ' + [ma, me, je].map(x => x.sommeil).join(' / ') + ' h');
   ok(ma.cible.rev === 265 && lu.cible.rev === 305,
      'mardi perd le bloc « Question ouverte ou autre » du soir : 265 min de révision contre 305 le lundi (' + ma.cible.rev + ' / ' + lu.cible.rev + ')');
