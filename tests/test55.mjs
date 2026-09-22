@@ -144,8 +144,13 @@ console.log('\n== 194) Tâches (ajout, suppression, annulation ⌘Z), Budget =='
   ok(await go('budget'), 'Budget s\'affiche');
   await setVal('tx-montant', '12.5'); await click('#tx-add'); await page.waitForTimeout(100);
   const tx = await local('batcave-transactions');
-  /* les charges fixes de septembre sont déjà journalisées automatiquement : on cherche la nôtre */
-  ok(tx.some(t => t.montant === 12.5 && !t.fixed) && tx.filter(t => t.fixed).length >= 9, 'dépense de 12,50 € ajoutée à côté des ' + tx.filter(t => t.fixed).length + ' charges fixes journalisées');
+  /* les charges fixes de septembre sont déjà journalisées automatiquement : on cherche la nôtre.
+     HUIT, et le compte est exact, pas un plancher : la graine en porte six (loyer, wifi,
+     téléphone, eau + électricité, transports, coiffeur) et la migration en ajoute deux
+     (iCloud, Claude Pro). La neuvième — « Courses », 300 €/mois — est sortie le 21 septembre :
+     elle comptait la nourriture deux fois, une fois en forfait et une fois en tickets réels.
+     Un compte exact est ce qui rattrape son retour, là où un >= 8 le laisserait passer. */
+  ok(tx.some(t => t.montant === 12.5 && !t.fixed) && tx.filter(t => t.fixed).length === 8, 'dépense de 12,50 € ajoutée à côté des ' + tx.filter(t => t.fixed).length + ' charges fixes journalisées (8 attendues)');
   await setVal('fc-label', 'Salle de sport'); await setVal('fc-montant', '25'); await click('#fc-add'); await page.waitForTimeout(100);
   const fc = await local('batcave-fixed-charges');
   ok(fc.some(c => c.label === 'Salle de sport'), 'charge fixe ajoutée');

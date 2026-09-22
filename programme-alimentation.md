@@ -34,12 +34,15 @@ la boucle poids → calories (voir plus bas).
 > dimanche. Les macros ne bougent pas : les quantités de poulet et de viande hachée ont été
 > reprises pour tenir les mêmes 3 131 kcal et les mêmes 161 g de protéines.
 
-> **Pourquoi le skyr et pas le yaourt grec.** Le skyr d'Alcampo ne contient que deux
-> ingrédients — lait écrémé pasteurisé et ferments — donc le lactosérum a été égoutté. Les
-> yaourts grecs « alto en proteínas » du même rayon ajoutent de la *proteína de leche*, qui en
-> rapporte. Le lactosérum est la fraction laitière la plus associée à l'acné, et le protocole
-> peau rend son verdict le 13 décembre : on ne change rien avant. Prix constaté : 3,09 € les
-> 480 g.
+> **Pourquoi le skyr et pas le yaourt grec.** Le skyr ne contient que deux ingrédients —
+> lait écrémé pasteurisé et ferments — donc le lactosérum a été égoutté. Les yaourts grecs
+> « alto en proteínas » du même rayon ajoutent de la *proteína de leche*, qui en rapporte.
+> Le lactosérum est la fraction laitière la plus associée à l'acné, et le protocole peau
+> rend son verdict le 13 décembre : on ne change rien avant. L'étiquette est donc à relire
+> en rayon quelle que soit l'enseigne : c'est la liste d'ingrédients qui décide, pas la
+> marque. Il l'achetait à Alcampo ; depuis son relevé du 21 septembre c'est **Lidl**, à
+> 0,75 € la boîte de 150 g, soit 5,00 €/kg — contre 6,44 €/kg pour les 480 g à 3,09 €
+> d'Alcampo.
 
 ## La boucle poids → calories
 - Pesée **un dimanche sur deux**, à jeun, après les toilettes, avant de boire, toujours dans les mêmes conditions. Saisie dans le Journal ou à la clôture du soir.
@@ -53,32 +56,55 @@ Les quantités ne sont pas recopiées : elles sortent du plan de repas × 7 jour
 la catégorie, puis s'arrondissent **au-dessus** du conditionnement réel. La viande ne
 s'arrondit pas — le boucher pèse le montant exact. Les fruits se comptent à l'unité.
 
-**Aucun prix n'est écrit ici** : c'est sa décision du 19 septembre. Les montants réels se
-saisissent dans Budget → Nourriture à partir de ses tickets de caisse.
+**Les prix sont les siens**, relevés en magasin les 20 et 21 septembre — quinze lignes
+sur seize, chacune avec sa boutique et sa date. Le 19 il avait fait sauter les estimations
+(« enlève l'estimation de budget, dès que j'achèterai je t'enverrai les factures ») ; ce
+qui est écrit ici n'est donc plus une estimation mais un relevé. La seule ligne sans prix
+est le beurre de cacahuète : le pot est choisi, le prix pas encore noté, et il est donc
+**hors total** plutôt que deviné. Ce que ça donne : **42,85 € par semaine, 185,70 € par
+mois**, calculés sur ce qu'il mange (le besoin hebdomadaire) et non sur l'achat du jour —
+un bidon d'huile de 2 L dure cinq semaines. Ce montant est le *plan* ; ce qu'il a vraiment
+payé se saisit dans Budget → Nourriture à partir de ses tickets, et c'est ce dernier qui
+compte dans ses dépenses du mois. Un **plafond** Nourriture y est posé à 186 €, à la place
+de l'ancienne charge fixe « Courses » de 300 €/mois, qui comptait la nourriture deux fois.
 
-**Chaque semaine** — 9 articles
+**Chaque semaine** — 8 articles
 
-| Article | À prendre | Le plan demande | Où |
-|---|---|---|---|
-| Poulet | 560 g | 560 g | Boucher |
-| Viande hachée 5 % | 630 g | 630 g | Boucher |
-| Skyr | 2,25 kg (5 pots de 450 g) | 2 135 g | Alcampo |
-| Œufs | 18 (3 boîtes de 6) | 14 | Lidl |
-| Jambon | 300 g (2 paquets de 150 g) | 280 g | Boucher |
-| Fromage en tranches | 150 g | 140 g | Lidl (cuajo vegetal) |
-| Pain complet | 450 g | 420 g | Lidl |
-| Bananes | 7 | 7 | Mercadillo |
-| Fruits (pommes, poires, oranges…) | 7 | 7 | Mercadillo, de saison |
+| Article | À prendre | Le plan demande | Où | Prix relevé |
+|---|---|---|---|---|
+| Poulet | 560 g (pesé au comptoir) | 560 g | Boucherie | 7,50 €/kg |
+| Viande hachée 5 % | 630 g (pesée au comptoir) | 630 g | Boucherie | 12,00 €/kg |
+| Skyr | 2,25 kg (15 boîtes de 150 g) | 2 135 g | Lidl | 5,00 €/kg — 0,75 € la boîte |
+| Œufs | 18 (3 boîtes de 6) | 14 | Lidl | 1,69 € la boîte de 6 |
+| Jambon | 280 g (pesé au comptoir) | 280 g | Boucherie | 9,00 €/kg — charcuterie de poulet |
+| Pain complet | 450 g (1 paquet) | 420 g | Lidl | 1,05 € les 450 g, 16 tranches |
+| Bananes | 7 | 7 | Lidl | 1,48 €/kg |
+| Fruits (pommes, poires, oranges…) | 7 | 7 | Frutería, de saison | ≈ 2 €/kg |
 
-**Toutes les 2 semaines** — légumes verts surgelés **5 kg** (le plan en demande 4 900 g).
-Deux semaines et pas quatre : 10 kg de surgelés ne rentrent pas dans son congélateur.
+La boîte d'œufs de 12 est à 2,84 €, soit moins cher à l'unité que celle de 6 : trois boîtes
+de 6 restent le compte exact des 18, mais une de 12 plus une de 6 coûtent moins.
 
-**Toutes les 4 semaines** — riz 5 kg (4 340 g) · pâtes 3 kg (2 940 g, plus la boucle kcal
-s'il y en a une) · flocons d'avoine 2,5 kg (2 240 g) · miel 750 g (560 g).
+**Toutes les 2 semaines** — deux articles.
+- **Légumes verts surgelés 5 kg** (le plan en demande 4 900 g), Lidl, 1,25 €/kg. Deux
+  semaines et pas quatre : 10 kg de surgelés ne rentrent pas dans son congélateur.
+- **Fromage en tranches 400 g**, un paquet d'édam (le plan en demande 280 g sur deux
+  semaines), Lidl, 2,55 € les 400 g — et **cuajo vegetal** sur l'étiquette, à vérifier en
+  rayon. Il était dans « Chaque semaine » jusqu'au 22 septembre alors qu'il portait déjà un
+  cycle de deux semaines : 140 g par semaine contre un conditionnement de 400, un paquet
+  couvre presque trois semaines. Il est maintenant rangé là où son cycle est écrit.
 
-**Toutes les 5 semaines** — beurre de cacahuète 2 kg (1 925 g) · huile d'olive 2,25 L
-(1 575 ml). L'huile est montée à 315 ml par semaine depuis le retrait du poisson : 30 ml à
-midi avec le poulet, 15 ml le soir avec la viande hachée, les sept jours.
+**Toutes les 4 semaines** — riz 5 kg (4 340 g, 1,09 €/kg) · pâtes 3 kg (2 940 g, plus la
+boucle kcal s'il y en a une, 1,09 €/kg) · flocons d'avoine 2,5 kg (2 240 g, 1,50 €/kg,
+0,75 € les 500 g) · miel 1 kg (560 g, 10,00 €/kg). Tout chez Lidl.
+
+**Toutes les 5 semaines** — beurre de cacahuète 2 kg (1 925 g), Alcampo, *prix à relever* ·
+huile d'olive **2 L, un bidon** (1 575 ml demandés), Lidl, 11,89 € les 2 L. L'huile est
+montée à 315 ml par semaine depuis le retrait du poisson : 30 ml à midi avec le poulet,
+15 ml le soir avec la viande hachée, les sept jours. Le bidon de 2 L couvre donc le cycle
+à lui seul, et il reste 425 ml — qui ne sont pas perdus : il coche la ligne sans acheter
+tant qu'il lui en reste.
+
+**Tous les 3 mois** — créatine monohydrate, 1 pot de 500 g, en ligne. 5 g par jour.
 
 **Aucun stock n'est supposé** : la liste part de zéro à chaque passage. Ce qu'il a déjà, il le
 coche sans l'acheter.

@@ -36,10 +36,12 @@ console.log('\n== 180) Sans ajustement : plan de base, liste = plan × 7 ==');
   /* 20 septembre, sa derniere decision sur cette liste : « dans l'onglet courses tu vas
      juste laisser les aliments et la bouffe cest tout ». Les trois rayons non alimentaires
      sont sortis -- Sante et hygiene (16 lignes), Maison (6), Menage (5) -- et la brosse a
-     dents avec eux. Restent CINQ rythmes, tous alimentaires : 9 articles frais chaque
-     semaine, 1 surgele toutes les 2, 4 reserves toutes les 4, 2 toutes les 5, et le pot de
-     creatine tous les 3 mois -- la seule ligne qui ne sorte pas du plan de repas, parce
-     qu'elle s'avale tous les soirs et que rien d'autre ne la rachete. */
+     dents avec eux. Restent CINQ rythmes, tous alimentaires : 8 articles frais chaque
+     semaine, 2 toutes les 2 semaines (les surgeles et le fromage), 4 reserves toutes les 4,
+     2 toutes les 5, et le pot de creatine tous les 3 mois -- la seule ligne qui ne sorte
+     pas du plan de repas, parce qu'elle s'avale tous les soirs et que rien d'autre ne la
+     rachete. Le fromage a rejoint les surgeles le 22 septembre : c'est le cycle qu'il
+     portait deja, et « Chaque semaine » redevient vrai pour ses huit lignes. */
   ok(c.n === 17, '17 articles au total, tous rythmes confondus (' + c.n + ')');
   /* Deux chiffres par ligne, et il faut les deux : ce qu'on ACHETE (un multiple du
      conditionnement) et ce que le PLAN demande (la somme des 7 jours de repas). Riz
@@ -60,22 +62,27 @@ console.log('\n== 180) Sans ajustement : plan de base, liste = plan × 7 ==');
   ok(c.items.some(t => /^Bananes — 7 .*l'unité/.test(t)) && c.items.some(t => /^Fruits[^\n]*— 7 .*l'unité/.test(t)),
      'bananes et fruits à l\'unité : ' + c.items.filter(t => /^(Bananes|Fruits)/.test(t)).join(' · '));
   /* Le reste au paquet, avec le plus petit format courant : 5 pots de 450 g laissent
-     115 g de surplus de skyr, la ou 5 pots de 500 en laissaient 365. */
-  ok(c.items.some(t => /^Skyr — 2,25 kg\b/.test(t) && /demande 2\u202f135 g/.test(t) && /5 pots de 450 g/.test(t))
+     115 g de surplus de skyr, la ou 5 pots de 500 en laissaient 365. Le 21 septembre, en
+     rayon : le format qu'il achete est la BOITE DE 150 g a 0,75 €. Meme quantite achetee
+     (2,25 kg) et meme surplus (115 g), mais quinze boites au lieu de cinq pots. */
+  ok(c.items.some(t => /^Skyr — 2,25 kg\b/.test(t) && /demande 2\u202f135 g/.test(t) && /15 boîtes de 150 g/.test(t))
   && !c.items.some(t => /^(Dattes|Cacahuètes|Lait)/.test(t)),
      'skyr : 2,25 kg en 5 pots de 450 g pour 2 135 g demandés');
   /* L'HUILE etait la vraie erreur : 288 ml par semaine, donc 1 152 sur 4 semaines alors
      que la liste disait 1 000 -- quatre jours de rupture par cycle, tous les mois. Elle est
      passee a 5 semaines. Depuis le retrait du poisson elle monte a 315 ml par semaine
      (30 ml a midi avec le poulet, 15 le soir avec la viande hachee, les sept jours) :
-     1 575 ml par cycle, donc trois bouteilles de 750 ml. */
+     1 575 ml par cycle. Le 21 septembre, en rayon : le format qu'il achete est le BIDON
+     DE 2 L a 11,89 €. Un seul suffit donc pour le cycle, et il reste 425 ml -- qui ne sont
+     pas perdus, rien n'est modelise en stock ici : il coche la ligne sans acheter tant
+     qu'il lui en reste. */
   /* Les legumes surgeles sont passes a DEUX semaines le 20 septembre : 10 kg par passage
      ne rentraient pas dans son congelateur. La consommation n'a pas bouge (2 450 g par
      semaine), c'est le rythme de rachat qui a change -- 5 kg tous les quinze jours. */
   ok(c.items.some(t => /^Œufs — 18\b/.test(t) && /demande 14 œufs/.test(t))
   && c.items.some(t => /^Légumes verts surgelés — 5 kg\b/.test(t) && /demande 4\u202f900 g/.test(t))
-  && c.items.some(t => /^Huile d'olive — 2,25 L\b/.test(t) && /demande 1\u202f575 ml/.test(t)),
-     'œufs 18 pour 14, surgelés 5 kg pour 4 900 g sur deux semaines, huile 2,25 L pour 1 575 ml sur cinq');
+  && c.items.some(t => /^Huile d'olive — 2 L\b/.test(t) && /1 bouteille de 2 L/.test(t) && /demande 1\u202f575 ml/.test(t)),
+     'œufs 18 pour 14, surgelés 5 kg pour 4 900 g sur deux semaines, huile 2 L pour 1 575 ml sur cinq');
   /* Aucun stock n'est suppose : rien ne dit « tu en as », rien n'est repousse a plus tard. */
   ok(!c.items.some(t => /tu en as|il t’en reste|à racheter le/.test(t)), 'aucune ligne ne suppose un stock : tout part de zéro, il coche ce qu\'il a');
   /* Le contraire de ce que ce fichier tenait jusqu'au 20 septembre : ces lignes ne
@@ -87,13 +94,24 @@ console.log('\n== 180) Sans ajustement : plan de base, liste = plan × 7 ==');
   /* La creatine, elle, reste : elle s'avale, et aucune autre page ne la rachete. */
   ok(c.items.some(t => /^Créatine monohydrate — 1 pot de 500 g/.test(t)), 'la créatine reste — elle s\'avale, et rien d\'autre ne la rachète');
   ok(/Aucun ajustement/.test(c.note), 'note : ' + c.note.slice(0, 60));
-  /* Le budget estime a ete RETIRE le 19 septembre. Il annoncait un cout par semaine, par
+  /* Le budget ESTIME a ete retire le 19 septembre : il annoncait un cout par semaine, par
      cycle et par mois a partir de prix Alicante 2026 inventes -- trois chiffres faux lus
-     comme des vrais. A la place, le panneau dit ou vivent les montants reels : ses tickets,
-     saisis dans Budget. Ce bloc garde la porte fermee : aucun prix ne doit revenir. */
-  ok(!/€/.test(c.budget), 'aucun montant dans le panneau : ' + c.budget.slice(0, 70));
-  ok(/tickets/.test(c.budget) && /Budget/.test(c.budget), 'et il renvoie vers Budget, où le chiffre est vrai');
-  ok(!c.items.some(t => /€/.test(t)), 'aucune ligne d\'article ne porte de prix');
+     comme des vrais. Les 20 et 21, il est alle en magasin et a releve quinze prix sur
+     seize, chacun avec sa boutique et sa date. Les montants sont donc revenus, mais ce
+     sont les SIENS : ce bloc ne garde plus « aucun prix », il garde « aucun prix
+     invente ». Le mot « estim » ne doit reapparaitre nulle part. */
+  ok(!/estim/i.test(c.budget), 'aucune estimation dans le panneau : ' + c.budget.slice(0, 70));
+  ok(/relevés en magasin/.test(c.budget) && /par mois/.test(c.budget),
+     'il chiffre le mois sur ses propres relevés');
+  ok(/Budget/.test(c.budget) && /Nourriture/.test(c.budget),
+     'et il renvoie vers Budget → Nourriture, où le montant payé est vrai');
+  /* Les lignes portent maintenant le prix au kilo, au litre ou a la piece. La seule
+     exception est le beurre de cacahuete, dont le pot est choisi mais le prix pas
+     encore releve : il dit « prix a relever » plutot que de porter un chiffre pose la. */
+  ok(c.items.some(t => /^Poulet/.test(t) && /7,50 €\/kg/.test(t)),
+     'le poulet porte le prix de sa boucherie (' + c.items.find(t => /^Poulet/.test(t)) + ')');
+  ok(c.items.some(t => /^Beurre de cacahuète/.test(t) && /prix à relever/.test(t)),
+     'et le beurre de cacahuète dit « prix à relever », pas un prix inventé');
 
   await page_(fr, 'repas');
   const r = await fr.evaluate(() => ({ diner: [...document.querySelectorAll('.meal-card')].find(c => /Dîner/.test(c.querySelector('.mtitle').textContent)) }) && [...document.querySelectorAll('.meal-card')].find(c => /Dîner/.test(c.querySelector('.mtitle').textContent)).innerText);

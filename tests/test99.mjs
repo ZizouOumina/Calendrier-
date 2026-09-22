@@ -1,13 +1,19 @@
-/* Ou acheter quoi. Il a quatre adresses a cote de chez lui -- son boucher, Lidl,
-   Mercadona, Alcampo -- et le mercadillo pour les fruits, et il a tranche : plusieurs
-   trajets valent mieux que payer plus cher. L'etiquette vit donc sur la ligne de
-   l'article, pas dans un panneau a part.
-   Deux choses comptent vraiment ici, et rien d'autre ne les garde :
-   1. la viande et le jambon disent BOUCHER. Ils doivent etre halal, et le supermarche
-      n'en vend pas. Une etiquette « Mercadona » sur le poulet serait une faute, pas une
+/* Ou acheter quoi. L'etiquette vit sur la ligne de l'article, pas dans un panneau a part.
+   Les adresses ont ete RELEVEES, pas supposees : les 20 et 21 septembre il a fait le
+   tour, prix en main. Ce qui a change ce jour-la, et que ce test garde desormais :
+     - la boucherie s'appelle « Boucherie », pas « Boucher » ;
+     - le skyr n'est plus a Alcampo mais chez LIDL, ou la boite de 150 g est a 0,75 € ;
+     - l'huile non plus : le bidon de 2 L de Lidl a 11,89 € remplace celui de 5 L ;
+     - les bananes passent chez Lidl (1,48 €/kg) et les fruits a la FRUTERIA, pas au
+       mercadillo ;
+     - Mercadona ne figure plus nulle part : ce qu'il y prenait -- hygiene et menage --
+       est sorti de la liste le 20 septembre, et son skyr n'y existait pas.
+   Deux choses comptent plus que les autres, et rien d'autre ne les garde :
+   1. la viande et le jambon disent BOUCHERIE. Ils doivent etre halal, et le supermarche
+      n'en vend pas. Une etiquette « Lidl » sur le poulet serait une faute, pas une
       approximation ;
-   2. le skyr dit ALCAMPO. Son Mercadona n'en a pas : l'envoyer la, c'est un trajet pour
-      rien.
+   2. le fromage porte « cuajo vegetal ». Sa presure doit l'etre, et ca ne se voit qu'en
+      lisant l'etiquette en rayon.
    Le reste verifie qu'aucun article ne part sans adresse, qu'aucune adresse inventee ne
    se glisse dans la liste, et que la pastille n'a pas casse la case a cocher. */
 import { chromium } from 'playwright';
@@ -47,21 +53,23 @@ console.log('\n== 320) Les 17 articles portent tous une adresse ==');
   const muets = l.filter(x => !x.ou);
   ok(!muets.length, 'aucun article sans adresse (' + (muets.map(x => x.nom).join(', ') || 'aucun') + ')');
   /* Cinq destinations, pas une de plus : une faute de frappe dans OU_ARTICLE passerait
-     silencieusement en pastille, et l'enverrait dans un magasin qui n'existe pas. */
-  const connues = ['Boucher', 'Lidl', 'Mercadona', 'Alcampo', 'Mercadillo', 'En ligne'];
+     silencieusement en pastille, et l'enverrait dans un magasin qui n'existe pas.
+     « Mercadona » et « Mercadillo » sont sortis de cette liste le 21 septembre -- les
+     garder tolerees aurait laisse revenir en silence deux adresses ou il ne va plus. */
+  const connues = ['Boucherie', 'Lidl', 'Alcampo', 'Frutería', 'En ligne'];
   const inconnues = [...new Set(l.map(x => x.ou.split(' · ')[0]))].filter(x => connues.indexOf(x) === -1);
   ok(!inconnues.length, 'aucune adresse inventée (' + (inconnues.join(', ') || 'aucune') + ')');
   await ctx.close();
 }
 
-console.log('\n== 321) Le halal : viande et jambon vont chez le boucher ==');
+console.log('\n== 321) Le halal : viande et jambon vont a la boucherie ==');
 {
   const { ctx, fr } = await courses('2026-09-19T10:00:00+02:00');
   const l = await lignes(fr);
   const chez = n => (l.find(x => x.nom.indexOf(n) === 0) || {}).ou;
-  ok(chez('Poulet') === 'Boucher', 'Poulet → Boucher (' + chez('Poulet') + ')');
-  ok(chez('Viande hachée 5 %') === 'Boucher', 'Viande hachée → Boucher (' + chez('Viande hachée 5 %') + ')');
-  ok(chez('Jambon') === 'Boucher', 'Jambon → Boucher : le halal ne se vend qu\'à la boucherie (' + chez('Jambon') + ')');
+  ok(chez('Poulet') === 'Boucherie', 'Poulet → Boucherie (' + chez('Poulet') + ')');
+  ok(chez('Viande hachée 5 %') === 'Boucherie', 'Viande hachée → Boucherie (' + chez('Viande hachée 5 %') + ')');
+  ok(chez('Jambon') === 'Boucherie', 'Jambon → Boucherie : le halal ne se vend qu\'à la boucherie (' + chez('Jambon') + ')');
   /* Le fromage n'est pas de la viande, mais sa presure l'est : la pastille doit porter
      la mention qui lui evite de prendre le premier paquet venu. */
   ok(/cuajo vegetal/.test(chez('Fromage en tranches') || ''), 'Fromage en tranches → la pastille rappelle « cuajo vegetal » (' + chez('Fromage en tranches') + ')');
@@ -73,25 +81,28 @@ console.log('\n== 322) Les trajets qui font gagner de l\'argent ==');
   const { ctx, fr } = await courses('2026-09-19T10:00:00+02:00');
   const l = await lignes(fr);
   const chez = n => (l.find(x => x.nom.indexOf(n) === 0) || {}).ou;
-  ok(chez('Skyr') === 'Alcampo', 'Skyr → Alcampo : son Mercadona n\'en vend pas (' + chez('Skyr') + ')');
-  ok(/^Alcampo/.test(chez('Huile d\'olive') || '') && /5 L/.test(chez('Huile d\'olive') || ''),
-     'Huile d\'olive → Alcampo, et la pastille dit le bidon de 5 L (' + chez('Huile d\'olive') + ')');
-  ok(/^Mercadillo/.test(chez('Bananes') || '') && /^Mercadillo/.test(chez('Fruits') || ''),
-     'les fruits vont au mercadillo, jamais en supermarché (' + chez('Bananes') + ' / ' + chez('Fruits') + ')');
+  /* 21 septembre, en rayon : Lidl a le skyr (0,75 € la boite de 150 g) ET l'huile
+     (11,89 € le bidon de 2 L). Les deux trajets vers Alcampo tombent donc, et il ne
+     reste a Alcampo que le beurre de cacahuete -- le pot qu'il a choisi. */
+  ok(chez('Skyr') === 'Lidl', 'Skyr → Lidl : la boîte de 150 g à 0,75 € (' + chez('Skyr') + ')');
+  ok(chez('Huile d\'olive') === 'Lidl', 'Huile d\'olive → Lidl : le bidon de 2 L à 11,89 € (' + chez('Huile d\'olive') + ')');
+  ok(chez('Beurre de cacahuète') === 'Alcampo',
+     'le beurre de cacahuète reste le seul article d\'Alcampo (' + chez('Beurre de cacahuète') + ')');
+  ok(chez('Bananes') === 'Lidl' && /^Frutería/.test(chez('Fruits') || ''),
+     'bananes chez Lidl à 1,48 €/kg, fruits à la frutería (' + chez('Bananes') + ' / ' + chez('Fruits') + ')');
   ok(chez('Riz') === 'Lidl' && chez('Pâtes') === 'Lidl' && chez('Flocons d\'avoine') === 'Lidl',
      'le sec va chez Lidl : riz, pâtes, flocons');
   ok(chez('Légumes verts surgelés') === 'Lidl',
      'le surgelé aussi : les légumes verts (' + chez('Légumes verts surgelés') + ')');
   /* La viande est halal, donc elle ne vient QUE de la boucherie -- aucune des trois
      lignes ne doit jamais glisser vers un supermarche. */
-  ok(chez('Poulet') === 'Boucher' && chez('Viande hachée') === 'Boucher' && chez('Jambon') === 'Boucher',
-     'la viande halal vient du boucher, les trois lignes (' + chez('Poulet') + ')');
-  /* Les deux adresses qui ne sont pas des supermarches, et qui sont des DECISIONS :
-     le skyr n'existe pas dans son Mercadona, et les fruits vont au mercadillo -- 30 a
-     40 % d'ecart. Si OU_ARTICLE sautait, ces deux-la basculeraient en silence. */
-  ok(chez('Skyr') === 'Alcampo', 'le skyr vient d\'Alcampo, son Mercadona n\'en a pas (' + chez('Skyr') + ')');
-  ok(/Mercadillo/.test(chez('Bananes')) && /Mercadillo/.test(chez('Fruits')),
-     'les fruits vont au mercadillo, jamais en supermarché (' + chez('Bananes') + ')');
+  ok(chez('Poulet') === 'Boucherie' && chez('Viande hachée') === 'Boucherie' && chez('Jambon') === 'Boucherie',
+     'la viande halal vient de la boucherie, les trois lignes (' + chez('Poulet') + ')');
+  /* Mercadona n'a plus aucune ligne. Ce n'est pas un oubli : ce qu'il y prenait etait
+     l'hygiene et le menage, sortis de la liste le 20 septembre, et son skyr n'y existait
+     pas. Une pastille « Mercadona » qui reapparaitrait serait donc un trajet pour rien. */
+  ok(!l.some(x => /Mercadona|Mercadillo/.test(x.ou || '')),
+     'plus aucune ligne n\'envoie à Mercadona ni au mercadillo');
   ok(chez('Créatine monohydrate') === 'En ligne', 'la créatine se commande en ligne (' + chez('Créatine monohydrate') + ')');
   await ctx.close();
 }
@@ -160,9 +171,15 @@ console.log('\n== 325) La page Courses annonce les adresses ==');
   const { ctx, fr } = await courses('2026-09-19T10:00:00+02:00');
   const d = await fr.evaluate(() => document.querySelector('.page[data-page="courses"] .page-head .desc').textContent);
   ok(/pastille/.test(d) && /moins cher/.test(d), 'la description explique à quoi sert la pastille');
-  ok(/boucher/i.test(d) && /Lidl/.test(d) && /Alcampo/.test(d) && /Mercadona/.test(d) && /mercadillo/i.test(d),
-     'et elle nomme les cinq adresses');
-  ok(!/€/.test(d) && !/prix.{0,20}estim/i.test(d), 'toujours aucun prix affiché sur la page Courses');
+  ok(/boucherie/i.test(d) && /Lidl/.test(d) && /fruter/i.test(d) && /Alcampo/.test(d) && /en ligne/i.test(d),
+     'et elle nomme les cinq adresses réellement utilisées');
+  /* La description annonçait « les prix, eux, ne sont plus affichés ». C'était vrai du
+     19 au 20 septembre, et faux depuis le 21 : il a relevé quinze prix sur seize. Une
+     description qui contredit la page est un mensonge de plus, pas un détail. */
+  ok(!/ne sont plus affich/.test(d) && /relev/.test(d) && /20 et 21 septembre/.test(d),
+     'et elle dit que les prix affichés sont les SIENS, relevés en magasin');
+  ok(!/estim/i.test(d) && !/Mercadona/.test(d) && !/mercadillo/i.test(d),
+     'aucune estimation annoncée, et plus aucune adresse périmée');
   await ctx.close();
 }
 

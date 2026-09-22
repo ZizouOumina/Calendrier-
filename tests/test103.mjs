@@ -58,7 +58,11 @@ console.log('\n== 343) Un samedi ordinaire : la grille ne montre que le frais ==
   const { ctx, fr } = await ouvrir('2026-09-26T13:30:00+02:00');
   const v = await vue(fr);
   ok(v.jour.length === 1 && /Chaque semaine/.test(v.jour[0]), 'une seule catégorie dans la grille du jour (' + v.jour.join(', ') + ')');
-  ok(/0\/9 .*9 à prendre/.test(v.resume), 'le résumé dit 9, pas 17 (' + v.resume + ')');
+  /* HUIT, pas neuf : le fromage a quitté « Chaque semaine » le 22 septembre pour la
+     catégorie de deux semaines, dont il portait déjà le cycle. Tant qu'il y restait,
+     « Chaque semaine » apparaissait dans la grille du jour ET dans le repli — une même
+     catégorie coupée en deux, et un repli qui annonçait cinq catégories pour quatre. */
+  ok(/0\/8 .*8 à prendre/.test(v.resume), 'le résumé dit 8, pas 17 (' + v.resume + ')');
   ok(/4 catégories/.test(v.repli), 'les quatre autres catégories sont dans le repli (' + v.repli + ')');
   ok(v.tard.length === 4, 'et le repli les contient toutes, rachetables en avance (' + v.tard.length + ')');
   await ctx.close();

@@ -2889,7 +2889,7 @@
       <div class="page-head">
         <span class="eyebrow">Dossier N° 14</span>
         <h1>Courses</h1>
-        <p class="desc">Panier de ravitaillement hebdomadaire — passage tous les samedis. Les quantités sortent du plan alimentation ; les prix, eux, ne sont plus affichés. <b style="color:var(--dom-table);">La pastille de chaque ligne dit où l'acheter au moins cher</b> — boucher pour le halal, Lidl pour le sec et le surgelé, Alcampo pour le skyr et le bidon d'huile, Mercadona pour l'hygiène et le ménage, mercadillo pour les fruits de saison.</p>
+        <p class="desc">Panier de ravitaillement hebdomadaire — passage tous les samedis. Les quantités sortent du plan alimentation, et chaque ligne porte le prix qu'il a relevé <b style="color:var(--dom-table);">lui-même</b> en magasin les 20 et 21 septembre. <b style="color:var(--dom-table);">La pastille de chaque ligne dit où l'acheter au moins cher</b> — la boucherie pour le halal, Lidl pour presque tout le reste, la frutería pour les fruits de saison, Alcampo pour le beurre de cacahuète, en ligne pour la créatine.</p>
       </div>
 
       <div class="courses-toolbar">
@@ -3416,7 +3416,7 @@
      vestige : une fonctionnalite retiree (batcave-matieres) ou un essai. Elle prend de la
      place dans le quota de 5000 documents et embrouille les sauvegardes, sans que rien ne
      la lise jamais. On la signale ; la suppression reste ton geste. */
-  var CLES_CONNUES = ['addictions','budget-limits','business','coran','courses','dash-more','duaas','duree-bloc','sport-log','objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','courses-plan-v3','courses-plan-v4','courses-plan-v5','courses-plan-v6','courses-plan-v7','courses-plan-v8','charges-v2','ancre-dimanche-v1','shampoing-dim-v1','marche-cible-v1','cardio','kcal-ajustement','gcal-ecriture','reinit','fc-migration-v1','charge','shopify-boutique','journees','examens-heures','vacances','jours-exclus',
+  var CLES_CONNUES = ['addictions','budget-limits','business','coran','courses','dash-more','duaas','duree-bloc','sport-log','objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','courses-plan-v3','courses-plan-v4','courses-plan-v5','courses-plan-v6','courses-plan-v7','courses-plan-v8','courses-plan-v9','charges-v2','ancre-dimanche-v1','shampoing-dim-v1','marche-cible-v1','cardio','kcal-ajustement','gcal-ecriture','reinit','fc-migration-v1','charge','shopify-boutique','journees','examens-heures','vacances','jours-exclus',
     'espagnol','examens','cours-suivi','portes','periodes-closes','fc-prix-icloud-3','fixed-charges','goals','goals-depart','saisons','insights-hist','last-restore-drill','habitlog','habits','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','habits-seed-v7','habits-seed-v8','habits-seed-v9','objectifs-v5-espanol',
     'horizon','last-auto-backup','last-manual-backup','last-bilan-prompt','last-compaction','last-open','last-rotation','notion-url',
     'pomodial-purge','projets','report','revision','revision-fusionnee','revue','sante','sauvegarde','sessions',
@@ -4507,7 +4507,7 @@
      elles repartiraient vers le cloud. La meme remise a zero peut donc etre decidee depuis
      l'appli ou directement dans le cloud. */
   var REINIT_GARDER = ['habits','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','habits-seed-v7','habits-seed-v8','habits-seed-v9','objectifs-v5-espanol','fixed-charges','fc-prix-icloud-3','budget-limits','examens','examens-heures','journees','echeances','vacances','jours-exclus','jours-sans-cours','portes','appro','notion-url','shopify-boutique',
-                       'objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','courses-plan-v3','courses-plan-v4','courses-plan-v5','courses-plan-v6','courses-plan-v7','courses-plan-v8','charges-v2','ancre-dimanche-v1','shampoing-dim-v1','marche-cible-v1','horizon','goals-depart','saisons','periodes-closes','gcal-ecriture','duree-bloc','dash-more','revision-fusionnee','reinit','copie-vierge'];
+                       'objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','courses-plan-v3','courses-plan-v4','courses-plan-v5','courses-plan-v6','courses-plan-v7','courses-plan-v8','courses-plan-v9','charges-v2','ancre-dimanche-v1','shampoing-dim-v1','marche-cible-v1','horizon','goals-depart','saisons','periodes-closes','gcal-ecriture','duree-bloc','dash-more','revision-fusionnee','reinit','copie-vierge'];
   var REINIT_PREFIXES_GARDER = ['pomodial-', 'coherence-ignore-'];
   function reinitGarder(cle){
     var c = cle.indexOf('batcave-') === 0 ? cle.slice(8) : cle;
@@ -10747,15 +10747,14 @@
       /* Le frais, chaque samedi.
          La viande ne s'arrondit PAS : le boucher pese le montant exact.
          Les fruits se comptent a l'unite. Le reste s'achete au paquet, et « pas » est le
-         plus petit format courant -- un pot de skyr de 450 g plutot que de 500 fait tomber
-         le surplus de 365 a 115 g par semaine, pour le meme nombre de pots. */
+         format qu'il a releve en rayon le 21 septembre -- la boite de skyr de 150 g a
+         0,75 €, qui laisse 115 g de surplus par semaine au lieu de 365 avec du 500 g. */
       {cat:'Chaque semaine', semaines:1, items:[
         art('Poulet',            B.poulet,  1,  poids, 'pes\u00e9 au comptoir'),
         art('Viande hach\u00e9e 5 %', B.hachee,  1,  poids, 'pes\u00e9e au comptoir'),
         art('Skyr',              B.skyr,  150,  poids, 'boîte'),
         art('\u0152ufs',              B.oeufs,   6,      sep,   'bo\u00eete', B.oeufs + ' \u0153ufs'),
         art('Jambon',            B.jambon,  1,  poids, 'pesé au comptoir'),
-        art('Fromage en tranches', B.fromage * 2, 400, poids, 'paquet', null, 2),
         art('Pain complet',      B.pain,  450,  poids, 'paquet'),
         art('Bananes',           B.bananes, 1,      sep,   '\u00e0 l\'unit\u00e9', B.bananes + ' bananes'),
         art('Fruits (pommes, poires, oranges\u2026)', B.fruits, 1, sep, '\u00e0 l\'unit\u00e9', B.fruits + ' fruits')
@@ -10763,9 +10762,16 @@
       /* Les legumes surgeles ont leur propre cycle, plus court que les autres reserves :
          DEUX semaines. Sa contrainte du 20 septembre, et elle est physique -- 10 kg de
          surgeles ne rentrent pas dans son congelateur. A deux semaines ce sont 5 kg par
-         passage, ce qui tient, et la consommation reste la meme (2 450 g par semaine). */
+         passage, ce qui tient, et la consommation reste la meme (2 450 g par semaine).
+         Le fromage les rejoint le 22 septembre. Il ne consomme que 140 g par semaine et
+         l'edam se vend par paquets de 400 : un paquet couvre pres de trois semaines, donc
+         un achat hebdomadaire entassait du surplus. Il avait d'abord recu un cycle propre
+         (semaines:2) tout en restant dans « Chaque semaine » -- une categorie qui annoncait
+         alors un rythme que l'un de ses articles ne suivait pas. Il est range ou son cycle
+         est ecrit, et « Chaque semaine » redevient vrai pour ses huit lignes. */
       {cat:'Toutes les 2 semaines', semaines:2, ancre:ANCRE_COURSES, items:[
-        art('Légumes verts surgelés', B.legumes * 2, 1000, poids, 'sachet')
+        art('Légumes verts surgelés', B.legumes * 2, 1000, poids, 'sachet'),
+        art('Fromage en tranches', B.fromage * 2, 400, poids, 'paquet')
       ]},
       /* Cycle de 4 semaines, ancre au samedi 26 septembre : 26/9, 24/10, 21/11, 19/12. */
       {cat:'Réserves — toutes les 4 semaines', semaines:4, ancre:ANCRE_COURSES, items:[
@@ -10775,11 +10781,12 @@
         art('Miel',              B.miel * 4,           1000, poids, 'pot')
       ]},
       /* Cinq semaines : 2 kg de beurre de cacahuete tombent presque pile (385 x 5 = 1 925).
-         L'huile a change le 20 septembre : le poisson sorti, chaque midi porte les 30 ml du
-         poulet et chaque soir les 15 ml de la viande hachee, soit 315 ml par semaine au lieu
-         de 288 -- donc 1 575 ml par cycle, et trois bouteilles de 750 ml. Le reste (675 ml)
-         n'est pas perdu : rien n'est modelise en stock ici, il coche la ligne sans acheter
-         tant qu'il lui en reste. */
+         L'huile a change deux fois. Le 20 septembre, le poisson sorti, chaque midi porte les
+         30 ml du poulet et chaque soir les 15 ml de la viande hachee, soit 315 ml par semaine
+         au lieu de 288 -- donc 1 575 ml par cycle. Puis le 21, en rayon : le format qu'il
+         achete est le bidon de 2 L a 11,89 €, pas la bouteille de 750 ml. Une bouteille
+         suffit donc, et il reste 425 ml. Ce reste n'est pas perdu : rien n'est modelise en
+         stock ici, il coche la ligne sans acheter tant qu'il lui en reste. */
       {cat:'Toutes les 5 semaines', semaines:5, ancre:ANCRE_COURSES, items:[
         art('Beurre de cacahuète', B.cacahuete * 5,  500, poids, 'pot'),
         art('Huile d\'olive',        B.huile * 5,     2000, vol,   'bouteille')
@@ -10911,20 +10918,30 @@
     return {n: n};
   }
   /* ===== Ou acheter quoi =====
-     Il a les quatre a cote : son boucher, Lidl, Mercadona, Alcampo. Et il a tranche --
-     plusieurs trajets valent mieux que payer plus cher. L'etiquette est donc posee sur
-     CHAQUE article plutot que dans un panneau a part : elle se lit au moment ou il coche,
-     et elle ne prend pas une ligne de hauteur.
-     Les regles, une fois pour toutes :
-     - le boucher est OBLIGATOIRE pour la viande et le jambon, qui doivent etre halal ;
-     - le skyr n'existe pas dans son Mercadona, d'ou Alcampo -- qui prend aussi l'huile,
-       parce que le bidon de 5 L est la plus grosse economie unitaire de la liste ;
-     - Lidl prend le sec, le surgele et le volume : c'est la que l'ecart se creuse ;
-     - Mercadona garde l'hygiene et le menage, ou ses marques propres sont dures a battre ;
-     - les fruits vont au mercadillo, jamais en supermarche : 30 a 40 % d'ecart. */
-  var OU_DEFAUT = {
-    'Tous les 3 mois': 'Mercadona'
-  };
+     Il a tranche -- plusieurs trajets valent mieux que payer plus cher. L'etiquette est
+     donc posee sur CHAQUE article plutot que dans un panneau a part : elle se lit au
+     moment ou il coche, et elle ne prend pas une ligne de hauteur.
+     Ces adresses ont ete RELEVEES les 20 et 21 septembre, prix en main, et elles ont
+     change ce jour-la. Les regles telles qu'elles sont maintenant :
+     - la BOUCHERIE est obligatoire pour la viande et le jambon, qui doivent etre halal.
+       Le supermarche n'en vend pas : ce n'est pas une preference, c'est une contrainte ;
+     - LIDL prend presque tout le reste. Le skyr y est (0,75 € la boite de 150 g) et
+       l'huile aussi (11,89 € le bidon de 2 L) : les deux etaient a Alcampo avant le 21,
+       et ces deux trajets tombent. Le sec, le surgele, les oeufs, le pain, le miel, le
+       fromage et les bananes (1,48 €/kg) y sont egalement ;
+     - la FRUTERIA prend les fruits de saison, jamais le supermarche : 30 a 40 % d'ecart ;
+     - ALCAMPO ne garde qu'une ligne, le beurre de cacahuete -- le pot qu'il a choisi ;
+     - la creatine se commande EN LIGNE.
+     MERCADONA a disparu de la liste. Ce n'est pas un oubli : ce qu'il y prenait etait
+     l'hygiene et le menage, sortis de la liste le 20 septembre a sa demande, et son
+     Mercadona n'a pas de skyr. */
+  /* Aucun defaut par categorie. Il y en avait un -- « Tous les 3 mois » -> Mercadona --
+     et il ne servait plus rien : la creatine, seule ligne de cette categorie, porte sa
+     propre adresse. Un defaut qui survit a la disparition de son magasin est pire qu'un
+     vide : un futur article sans entree dans OU_ARTICLE serait envoye en silence dans une
+     boutique ou il ne va plus. Sans defaut, il n'affiche aucune adresse -- et test99, qui
+     verifie qu'aucun article n'en manque, le dit tout de suite. */
+  var OU_DEFAUT = {};
   var OU_ARTICLE = {
     'Poulet': 'Boucherie', 'Viande hach\u00e9e 5 %': 'Boucherie', 'Jambon': 'Boucherie',
     'Skyr': 'Lidl', 'Huile d\'olive': 'Lidl',
@@ -11057,6 +11074,27 @@
     });
     if(bougeV8){ coursesState = gardeV8; save('batcave-courses', coursesState); }
     saveInternal('batcave-courses-plan-v8', true);
+  }
+  /* v9 : le fromage quitte « Chaque semaine » pour « Toutes les 2 semaines », dont il
+     portait deja le cycle. Il etait le 6e article du frais (rang 5) ; il devient le 2e
+     de la categorie des surgeles (rang 1). Tout ce qui le suivait dans le frais -- pain,
+     bananes, fruits -- remonte d'un cran.
+     On NE VIDE PAS : ses coches valent quelque chose. La coche du fromage SUIT l'article
+     jusqu'a son nouveau rang, ce qui est le seul deplacement qui ne lui mente pas : s'il
+     avait pris son paquet d'edam, la case cochee doit rester celle de l'edam. */
+  if(!load('batcave-courses-plan-v9', false)){
+    var vers = {}, bougeV9 = false;
+    Object.keys(coursesState).forEach(function(k){
+      var m = /^(\d+)-(\d+)$/.exec(k);
+      if(!m){ vers[k] = coursesState[k]; return; }
+      var ci = Number(m[1]), ii = Number(m[2]);
+      if(ci !== 0){ vers[k] = coursesState[k]; return; }
+      if(ii === 5){ vers['1-1'] = coursesState[k]; bougeV9 = true; return; }
+      if(ii > 5 && ii < 9){ vers['0-' + (ii - 1)] = coursesState[k]; bougeV9 = true; return; }
+      vers[k] = coursesState[k];
+    });
+    if(bougeV9){ coursesState = vers; save('batcave-courses', coursesState); }
+    saveInternal('batcave-courses-plan-v9', true);
   }
 
   /* Seules les categories DUES cette semaine comptent. Sans ce filtre, l'habitude
@@ -14540,7 +14578,7 @@
     window.__bcMeteoInjecter = function(liste){ meteoHeures = liste; try{ majMeteoSeance(); }catch(e){} };
     window.__bcMeteoSeance = texteMeteoSeance;
     window.__bcSeanceDehors = seanceExterieureLe;
-    window.__bcChiffresSemaine = chiffresSemaine; window.__bcMacrosJour = macrosJour; window.__bcPrepSemaine = prepSemaine; window.__bcPrepTotaux = prepTotaux; window.__bcMacrosRepas = macrosRepas; window.__bcCompoRepas = compoRepas; window.__bcAliments = ALIMENTS; window.__bcBesoinSemaine = BESOIN_SEMAINE; window.__bcEvalMatieres = EVAL_MATIERES; window.__bcCopieVierge = copieVierge; window.__bcNotion = absorberNotion; window.__bcNotionRetards = notionRetards; window.__bcCoursPasFait = coursPasFait; window.__bcExercice = exerciceDu; window.__bcChiffrer = chiffrerTexte; window.__bcDechiffrer = dechiffrerEnveloppe;
+    window.__bcChiffresSemaine = chiffresSemaine; window.__bcMacrosJour = macrosJour; window.__bcPrepSemaine = prepSemaine; window.__bcPrepTotaux = prepTotaux; window.__bcMacrosRepas = macrosRepas; window.__bcCompoRepas = compoRepas; window.__bcAliments = ALIMENTS; window.__bcBesoinSemaine = BESOIN_SEMAINE; window.__bcCoutSemaine = coutSemaine; window.__bcPrix = PRIX; window.__bcEvalMatieres = EVAL_MATIERES; window.__bcCopieVierge = copieVierge; window.__bcNotion = absorberNotion; window.__bcNotionRetards = notionRetards; window.__bcCoursPasFait = coursPasFait; window.__bcExercice = exerciceDu; window.__bcChiffrer = chiffrerTexte; window.__bcDechiffrer = dechiffrerEnveloppe;
        /* rapport hebdomadaire (tests/rapport-hebdo.mjs) : la semaine à un décalage donné, ses
           statistiques de bilan et le prévu/réalisé de chaque jour */
        window.__bcSemaine = function(off){

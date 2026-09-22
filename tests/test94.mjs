@@ -42,7 +42,12 @@ console.log('\n== 330) Cinq catégories, toutes alimentaires, et le frais seul e
      Cinq categories restent : frais, surgeles, reserves, cinq semaines, trimestriel. */
   ok(c.length === 5, '5 catégories, toutes alimentaires (' + c.length + ')');
   const hebdo = c[0];
-  ok(/Chaque semaine/.test(hebdo.titre) && hebdo.n === 9, 'la liste hebdomadaire fait 9 articles frais depuis le retrait du poisson (' + hebdo.n + ')');
+  /* HUIT depuis le 22 septembre : le fromage est parti dans « Toutes les 2 semaines ».
+     Il n'en consomme que 140 g par semaine et l'édam se vend par paquets de 400 — un
+     paquet couvre presque trois semaines. Il portait déjà ce cycle-là tout en restant
+     rangé dans le frais, et la catégorie annonçait donc un rythme qu'un de ses articles
+     ne suivait pas. */
+  ok(/Chaque semaine/.test(hebdo.titre) && hebdo.n === 8, 'la liste hebdomadaire fait 8 articles frais (' + hebdo.n + ')');
   const t = await fr.evaluate(() => document.querySelector('.page[data-page="courses"]').textContent);
   ok(!/Riz/.test(hebdo.titre + '') && /Riz — 5 kg/.test(t) && /demande 4\u202f340 g/.test(t), 'le riz est en réserve : 5 kg achetés pour 4 340 g demandés');
   ok(!/Shampooing|Cotons-tiges|Nettoyant visage|Brosse à dents|Bain de bouche|Brossettes|Crème solaire|Lessive|Dentifrice/.test(t),
@@ -115,7 +120,7 @@ console.log('\n== 333) L\'habitude « Courses faites » reste validable ==');
     await new Promise(r => setTimeout(r, 120));
   }
   const somme = await fr.evaluate(() => document.getElementById('courses-summary').textContent);
-  ok(/^9\/9/.test(somme), 'cocher le frais suffit : ' + somme + ' (' + avant + ' cases)');
+  ok(/^8\/8/.test(somme), 'cocher le frais suffit : ' + somme + ' (' + avant + ' cases)');
   const coche = await fr.evaluate(() => {
     const l = [...document.querySelectorAll('#dash-checklist li label')].map(x => x.textContent);
     return l.some(x => /Courses/.test(x));
@@ -147,7 +152,7 @@ console.log('\n== 334b) Aucun stock n\'est supposé : il coche ce qu\'il a ==');
   const t = await fr.evaluate(() => document.querySelector('.page[data-page="courses"]').textContent);
   ok(!/tu en as|il t’en reste|à racheter le/.test(t), 'aucune ligne ne parle de stock ni de date de rachat');
   ok(/Beurre de cacahuète — 2 kg/.test(t) && /demande 1\u202f925 g/.test(t), 'beurre de cacahuète : 2 kg pleins, pour 1 925 g demandés');
-  ok(/Huile d'olive — 2,25 L/.test(t) && /demande 1\u202f575 ml/.test(t), 'huile : trois bouteilles de 750 ml, pour 1 575 ml demandés');
+  ok(/Huile d'olive — 2 L/.test(t) && /demande 1\u202f575 ml/.test(t), 'huile : un bidon de 2 L, pour 1 575 ml demandés');
   await ctx.close();
 }
 {
@@ -204,9 +209,13 @@ console.log('\n== 334d) La liste ne porte QUE de la nourriture ==');
   const lignes = await fr.evaluate(() =>
     [...document.querySelectorAll('#courses-grid label, #courses-grid-plus label')]
       .map(l => l.textContent.split(' \u2014 ')[0].trim()));
-  const ATTENDU = ['Poulet', 'Viande hachée 5 %', 'Skyr', 'Œufs', 'Jambon', 'Fromage en tranches',
+  /* Le fromage n'est plus la 6e ligne du frais : depuis le 22 septembre il est range
+     dans « Toutes les 2 semaines », derriere les surgeles, parce que c'est le cycle
+     qu'il portait deja. L'ordre attendu suit donc le DOM, categorie par categorie. */
+  const ATTENDU = ['Poulet', 'Viande hachée 5 %', 'Skyr', 'Œufs', 'Jambon',
                    'Pain complet', 'Bananes', 'Fruits (pommes, poires, oranges…)',
-                   'Légumes verts surgelés', 'Riz', 'Pâtes', 'Flocons d\'avoine', 'Miel',
+                   'Légumes verts surgelés', 'Fromage en tranches',
+                   'Riz', 'Pâtes', 'Flocons d\'avoine', 'Miel',
                    'Beurre de cacahuète', 'Huile d\'olive', 'Créatine monohydrate'];
   ok(lignes.length === 17, '17 lignes, pas une de plus (' + lignes.length + ')');
   ok(JSON.stringify(lignes) === JSON.stringify(ATTENDU),
@@ -235,18 +244,42 @@ console.log('\n== 334d) La liste ne porte QUE de la nourriture ==');
   await ctx.close();
 }
 
-console.log('\n== 334) Plus d\'estimation de budget : ses tickets, et rien d\'autre ==');
-/* Le panneau annoncait « Budget estimé : ~X € / semaine … ~Y € / mois environ (prix
-   estimés Alicante 2026) ». Trois chiffres inventes, lus comme des vrais. Le 19 septembre
-   il a tranche : plus de prix du tout, il envoie ses tickets et les montants reels vont
-   dans Budget. Le panneau doit donc DIRE ou vivent les vrais chiffres, pas se taire. */
+console.log('\n== 334) Ses prix a lui, releves en magasin -- et rien d\'invente ==');
+/* Le panneau annoncait d'abord « Budget estimé : ~X € / semaine … (prix estimés Alicante
+   2026) » : trois chiffres inventes, lus comme des vrais. Le 19 septembre il a fait sauter
+   tout ca -- « enleve l'estimation de budget, des que j'acheterai je t'enverrai les
+   factures ». Le 20 et le 21 il est alle au magasin et a releve QUINZE prix sur seize, avec
+   la boutique et la date. Ils sont donc revenus, et la regle testee ici a change de sens :
+   ce n'est plus « aucun prix », c'est « aucun prix INVENTE ». Ce qui doit tenir :
+     - le panneau chiffre le mois et la semaine, et dit que le calcul vient de SES releves ;
+     - le mot « estim » n'apparait nulle part ;
+     - la seule ligne sans prix (le beurre de cacahuete) est nommee, et dite hors total ;
+     - le panneau continue de renvoyer vers Budget, ou vivent les montants vraiment payes ;
+     - chaque ligne alimentaire porte son prix, ou dit qu'il manque -- jamais un chiffre
+       pose a la place. */
 {
   const { ctx, fr } = await jour('2026-09-19T10:00:00+02:00');
   const t = await fr.evaluate(() => document.getElementById('courses-budget').innerText);
-  ok(!/€/.test(t) && !/Budget estimé/.test(t), 'aucun montant, aucune estimation (' + t.slice(0, 60) + ')');
-  ok(/tickets/.test(t) && /Budget/.test(t), 'et il dit où vivent les vrais chiffres : ' + t.slice(0, 90));
-  const grille = await fr.evaluate(() => document.getElementById('courses-grid').innerText);
-  ok(!/€/.test(grille), 'aucune ligne d\'article ne porte de prix non plus');
+  ok(!/estim/i.test(t), 'le mot « estimation » a disparu du panneau (' + t.slice(0, 60) + ')');
+  ok(/€ par mois/.test(t) && /€ par semaine/.test(t) && /relevés en magasin/.test(t),
+     'un montant par mois et par semaine, calculé sur ses relevés : ' + t.slice(0, 80));
+  ok(/Beurre de cacahuète/.test(t) && /pas encore relevé/.test(t) && /hors total/.test(t),
+     'et la ligne sans prix est nommée, hors total');
+  ok(/Budget/.test(t) && /Nourriture/.test(t),
+     'et il dit toujours où vivent les montants payés : Budget → Nourriture');
+  /* Les prix sur les lignes elles-memes. La creatine est hors plan de repas -- elle
+     n'a ni besoin hebdomadaire ni prix releve -- donc elle n'affiche rien, et c'est
+     juste : un chiffre pose la serait invente. */
+  const lignes = await fr.evaluate(() =>
+    [...document.querySelectorAll('#courses-grid .cat-card li')].map(l => l.innerText));
+  const muettes = lignes.filter(l => !/€|à relever|Créatine/.test(l));
+  ok(lignes.length > 0 && muettes.length === 0,
+     'les ' + lignes.length + ' lignes du jour portent leur prix ou disent qu\'il manque' +
+     (muettes.length ? ' — muettes : ' + muettes.join(' · ') : ''));
+  ok(lignes.some(l => /Beurre de cacahuète/.test(l) && /prix à relever/.test(l)),
+     'le beurre de cacahuète dit « prix à relever », pas un prix inventé');
+  ok(lignes.some(l => /Poulet/.test(l) && /7,50 €\/kg/.test(l)),
+     'le poulet porte le prix de sa boucherie : 7,50 €/kg');
   await ctx.close();
 }
 

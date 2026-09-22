@@ -4,6 +4,12 @@ let errs = 0;
 const ok = (c,m) => { if(c) console.log('  ok  '+m); else { errs++; console.log('  FAIL '+m); } };
 const browser = await chromium.launch();
 
+/* Cette graine est un profil D'AVANT le 21 septembre : elle porte encore la charge fixe
+   « Courses » de 300 €/mois. C'est volontaire -- c'est ce qui fait passer la migration
+   charges-v2, qui la retire. Elle comptait la nourriture deux fois, une fois en forfait
+   et une fois en tickets réels, et ses 300 € étaient faux : les prix qu'il a relevés en
+   magasin les 20 et 21 septembre donnent nettement moins. Ce qui la remplace n'est pas
+   une dépense mais un PLAFOND sur la catégorie Nourriture, calculé sur ces relevés. */
 const SEED = [
   {id:'fc1', label:'Loyer', montant:700, cat:'Logement'},
   {id:'fc2', label:'Wifi', montant:11, cat:'Abonnements'},
@@ -37,7 +43,10 @@ async function scenario(nom, icloudMontant, limiteAbo, txMontant){
   const out = await fr.evaluate(() => ({
     charges: JSON.parse(localStorage.getItem('batcave-fixed-charges')),
     limits: JSON.parse(localStorage.getItem('batcave-budget-limits')),
-    tx: JSON.parse(localStorage.getItem('batcave-transactions') || '[]')
+    tx: JSON.parse(localStorage.getItem('batcave-transactions') || '[]'),
+    /* Le plafond attendu est calculé par la page elle-même : l'écrire à la main ici
+       le figerait, et il bougera dès qu'il enverra le prix du beurre de cacahuète. */
+    moisPlan: window.__bcCoutSemaine ? Math.round(window.__bcCoutSemaine().mois) : null
   }));
   await ctx.close();
   return out;
@@ -51,7 +60,11 @@ ok(r.limits['Abonnements'] === 47, 'budget Abonnements 45 → 47 € (obtenu: ' 
 const txIc = r.tx.filter(t => t.label === 'iCloud');
 ok(txIc.length === 1 && txIc[0].montant === 3, 'la dépense de septembre est corrigée à 3 € (obtenu: ' + JSON.stringify(txIc.map(t=>t.montant)) + ')');
 const total = r.charges.reduce((s,c) => s + c.montant, 0);
-ok(total === 1187, 'total des charges fixes = 1187 €/mois (obtenu: ' + total + ')');
+ok(total === 887, 'total des charges fixes = 887 €/mois, les 300 € de « Courses » sortis (obtenu: ' + total + ')');
+/* La migration, vérifiée des deux côtés : la charge part, et le plafond arrive. */
+ok(!r.charges.some(c => c.id === 'fc4'), 'la charge fixe « Courses » de 300 € a été retirée');
+ok(r.moisPlan > 0 && r.limits['Nourriture'] === r.moisPlan,
+   'et un plafond Nourriture la remplace, à la valeur calculée sur ses relevés : ' + r.limits['Nourriture'] + ' € (' + r.moisPlan + ' attendu)');
 
 // pas de double application au rechargement
 const ctx2 = await browser.newContext({ viewport:{width:1440,height:900}, timezoneId:'Europe/Madrid', locale:'fr-FR' });
@@ -87,12 +100,13 @@ await p4.frameLocator('#f').locator('#timer-pomodoro').waitFor({ state:'attached
 const fr4 = p4.frames().find(x => x.url().includes('batcave.html'));
 const r4 = await fr4.evaluate(() => JSON.parse(localStorage.getItem('batcave-fixed-charges')));
 ok(r4.filter(c=>c.id==='fc8')[0].montant === 3, 'installation neuve : iCloud seedé à 3 €');
-ok(r4.reduce((s,c)=>s+c.montant,0) === 1187, 'installation neuve : total 1187 €');
+ok(r4.reduce((s,c)=>s+c.montant,0) === 887, 'installation neuve : total 887 €');
+ok(!r4.some(c => c.label === 'Courses'), 'installation neuve : aucune charge « Courses » dans la graine');
 // affichage
 await fr4.evaluate(() => document.querySelector('.nav-btn[data-page="budget"]').click());
 await p4.waitForTimeout(300);
 const txt = await fr4.evaluate(() => document.body.innerText);
-ok(/1\s*187/.test(txt.replace(/ | /g,' ')), 'le total 1 187 € s\'affiche dans Budget');
+ok(/887/.test(txt.replace(/ | /g,' ')), 'le total 887 € s\'affiche dans Budget');
 await ctx4.close();
 
 console.log('\nERREURS: ' + errs);
