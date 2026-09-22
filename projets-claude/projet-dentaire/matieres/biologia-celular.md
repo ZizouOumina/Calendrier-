@@ -7,6 +7,13 @@
 - Partiel : date … · format (test, desarrollo, pratique, oral) : … · poids dans la note finale : …
 - Évaluation continue : … · Manuel de référence indiqué : …
 
+## Approfondissement
+**Verdict : oui.**
+
+- **Pourquoi** : mécanisme pur, et 30 % de la note (exposiciones orales 15 + caso 15) se joue sur ta capacité à **expliquer**, pas à restituer. C'est exactement ce que le teach-back produit. Tout le S2 (Bioquímica, Microbiología) repose là-dessus.
+- **La forme, ici** : la **voie complète** — membrane → voie de sécrétion → division — puis **ce qui la casse**. Une pathologie par voie : ça ancre le mécanisme et ça donne le caso clínico.
+- **Référence de lecture** : Karp, 7ᵉ ; Klug, 10ᵉ pour la génétique.
+
 ## Programme officiel (temario)
 Colle ici la liste des thèmes dans l'ordre du cours, depuis la guía docente. Le tuteur s'en sert pour
 situer chaque cours et annoncer ce qui suit.

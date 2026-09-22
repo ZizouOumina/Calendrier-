@@ -18,12 +18,33 @@ n'existent plus sous ce nom.
 | Réexpliquer | dimanche 10:20 (et 18:00 les jours sans cours) | Les sujets que la Batcave me renvoie (J+7, J+30, J+90) : 4 min chacun, sans notes, note 0-3. Tu écoutes ma version et tu dis ce qui manque. |
 | Cartes d'erreurs de la semaine | samedi 16:00 | Je colle mes cartes ratées de la semaine. Tu regroupes par cause et tu proposes une carte de correction par cause. |
 
-Du 19 septembre au 18 octobre 2026, les blocs de 13:00 à 16:50 sont des blocs
-d'espagnol (projet « Español »), pas les tiens. À partir du 19 octobre ce sont
+Du **23 septembre au 22 octobre 2026**, les blocs de 13:00 à 16:50 sont des blocs
+d'espagnol (projet « Español »), pas les tiens. **À partir du 23 octobre** ce sont
 des blocs de projet. Dans les deux cas, rien de scolaire ne s'y fait.
 
+## Approfondir : le budget, et où il va
+
+Trois créneaux par semaine — mercredi 11:20, samedi 09:20 et 10:20 — soit ~41 h par
+semestre. Ça ne couvre pas onze matières : ça en couvre trois ou quatre. Une heure
+d'approfondissement paie sur une matière **à mécanisme** et **à examen lourd** ; elle
+ne paie pas sur une matière qui se gagne en présence, en production écrite ou avec
+les mains.
+
+| Semestre | Les 3 créneaux vont à | Zéro créneau |
+|---|---|---|
+| S1 | Anatomía I, Biología celular, et Epidemiología une semaine sur deux (temas de raisonnement seulement) | Antropología, Documentación |
+| S2 | Bioquímica, Anatomía II, Microbiología (en rotation) | Clínica odontológica, Psicología, Idioma moderno |
+
+Si je te propose un sujet d'approfondissement dans une matière marquée « zéro
+créneau », **dis-le-moi** et rappelle-moi où cette matière se gagne vraiment. Le
+détail — le verdict, le pourquoi, et la **forme** que doit prendre l'heure — est en
+tête de chaque fiche de `matieres/`, section « Approfondissement ». La forme n'est pas
+la même partout : chaîne de mécanisme en Anatomía, Bioquímica et Microbiología ;
+la voie complète et ce qui la casse en Biología celular ; un exemple chiffré travaillé
+puis la critique d'un vrai article en Epidemiología.
+
 ## Règles Anki
-- Paquet Dentaire : 50 nouvelles cartes par jour, révisions illimitées (9999), le même preset posé sur chaque sous-deck (Anki n'hérite pas). Après un mois, 150 à 180 révisions par jour : une demi-heure, dans Anki 1 et Anki 2.
+- Paquet Dentaire : **30 nouvelles cartes par jour** (recalé le 16 septembre avec Le semestre §6 ; le 50 d'origine était trop haut), révisions illimitées (9999), le même preset posé sur chaque sous-deck (Anki n'hérite pas). Español : 20 nouvelles. Après un mois, 200 à 250 révisions par jour : ça tient dans Anki 1 et Anki 2.
 - Paquets par matière, étiquettes en minuscules (anatomia, histologia, bioquimica, fisiologia, ...).
 - Une carte = une idée ; jamais une carte « liste les 7 ... » sans cloze.
 - Les cartes d'erreurs portent l'étiquette supplémentaire `erreur` et la semaine (`s03`).

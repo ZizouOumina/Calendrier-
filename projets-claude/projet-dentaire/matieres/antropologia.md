@@ -7,6 +7,11 @@
 - Partiel : date … · format (test, desarrollo, pratique, oral) : … · poids dans la note finale : …
 - Évaluation continue : … · Manuel de référence indiqué : …
 
+## Approfondissement
+**Verdict : non.**
+
+3 ECTS, contenu historique et culturel, et 40 % de la note en oral + pratique. Ça se gagne en cartes et en exposés préparés, pas en profondeur de mécanisme — il n'y a pas de chaîne causale à construire. Un créneau dépensé ici est un créneau volé à Anatomía I.
+
 ## Programme officiel (temario)
 Colle ici la liste des thèmes dans l'ordre du cours, depuis la guía docente. Le tuteur s'en sert pour
 situer chaque cours et annoncer ce qui suit.

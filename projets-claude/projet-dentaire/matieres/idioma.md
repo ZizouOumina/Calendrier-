@@ -7,6 +7,13 @@
 - Partiel : date … · format (test, desarrollo, pratique, oral) : … · poids dans la note finale : …
 - Évaluation continue : … · Manuel de référence indiqué : …
 
+## Approfondissement
+**Verdict : non.**
+
+- **Pourquoi** : **70 % de présence minimum** (en dessous, les examens ne sont pas corrigés — note NP), **5/10 à l'écrit ET à l'oral séparément**, et 40 % de la note en projects. C'est une matière de **pratique**, pas de compréhension.
+- **Ce qui remplace** : la pratique elle-même. Et si c'est l'anglais, c'est le créneau qui entretient ton anglais sans rien ajouter à la semaine.
+- **Attention aux dates** : la guía donne un calendrier de **premier** semestre, incompatible avec un S2 qui court de fin janvier à juin. À faire reconfirmer au premier cours — ne les inscris pas dans Études avant.
+
 ## Programme officiel (temario)
 Colle ici la liste des thèmes dans l'ordre du cours, depuis la guía docente. Le tuteur s'en sert pour
 situer chaque cours et annoncer ce qui suit.

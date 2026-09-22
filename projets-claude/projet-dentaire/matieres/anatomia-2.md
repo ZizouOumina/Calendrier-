@@ -7,6 +7,13 @@
 - Partiel : date … · format (test, desarrollo, pratique, oral) : … · poids dans la note finale : …
 - Évaluation continue : … · Manuel de référence indiqué : …
 
+## Approfondissement
+**Verdict : oui.**
+
+- **Pourquoi** : 70 % sur l'examen, comme Anatomía I. Et surtout **6 temas pour 6 ECTS** — chaque tema est énorme, donc chaque heure d'approfondissement couvre une fraction bien plus grande du programme qu'ailleurs. La guía exige d'avoir suivi Anatomía I : les chaînes construites au S1 se rebranchent directement.
+- **La forme, ici** : même chose qu'en Anatomía I — la chaîne du mécanisme à la conséquence clinique. Avec un réflexe en plus : **relier explicitement au tema d'Anatomía I correspondant**, à voix haute, pendant le teach-back.
+- **Référence de lecture** : Tortora & Derrickson, 15ᵉ ; Netter, 8ᵉ.
+
 ## Programme officiel (temario)
 Colle ici la liste des thèmes dans l'ordre du cours, depuis la guía docente. Le tuteur s'en sert pour
 situer chaque cours et annoncer ce qui suit.
