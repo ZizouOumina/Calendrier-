@@ -4,7 +4,11 @@
    plage de cours se libere et la soiree remonte d'une heure. Verifie le 19 septembre sur
    le vendredi 9 octobre (Comunitat Valenciana) : l'agenda y portait « Trajet cours »,
    « Trajet retour », « Clore le cours du jour » et un coucher a 21:55, pour une journee ou
-   il ne va nulle part. Ils ne se corrigeaient que la veille. */
+   il ne va nulle part. Ils ne se corrigeaient que la veille.
+   22 septembre : le coucher de semaine est passe de 21:55 a 21:35, donc l'ecart entre un
+   jour sans cours (21:00) et un jour de cours n'est plus d'une heure mais de 35 minutes.
+   Ce qui est teste ne change pas -- la soiree d'un jour sans cours remonte bien -- seul
+   le chiffre de reference bouge. */
 import { chromium } from 'playwright';
 const URL = 'http://127.0.0.1:8199/host.html';
 let errs = 0;
@@ -57,7 +61,7 @@ console.log('\n== 318) Ce qui part vraiment un jour sans cours ==');
   ok(t.some(x => /Lire/.test(x)) && t.some(x => /Réexpliquer/.test(x)),
      'la plage liberee porte Lire et Réexpliquer');
   const coucher = await fr.evaluate(() => { const r = window.__bcRappels('2026-10-09').filter(x => /Coucher/.test(x.titre))[0]; return r ? r.debut : -1; });
-  ok(coucher === 21*60, 'le coucher remonte a 21:00, une heure plus tot qu\'un vendredi de cours (' + coucher + ' min)');
+  ok(coucher === 21*60, 'le coucher remonte a 21:00, 35 min plus tot qu\'un vendredi de cours (' + coucher + ' min)');
   await ctx.close();
 }
 
@@ -68,7 +72,7 @@ console.log('\n== 319) Un jour de cours ordinaire n\'a pas change ==');
   ok(t.some(x => /Trajet cours/.test(x)) && t.some(x => /Clore le cours/.test(x)),
      'le vendredi 16 octobre garde son trajet et sa cloture');
   const coucher = await fr.evaluate(() => { const r = window.__bcRappels('2026-10-16').filter(x => /Coucher/.test(x.titre))[0]; return r ? r.debut : -1; });
-  ok(coucher === 21*60 + 55, 'et son coucher a 21:55 (' + coucher + ' min)');
+  ok(coucher === 21*60 + 35, 'et son coucher a 21:35 (' + coucher + ' min)');
   await ctx.close();
 }
 
