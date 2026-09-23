@@ -1,0 +1,1345 @@
+{
+  "events": [
+    {
+      "id": "uo1vrkihrcgqvqr520cnip3tng_20260925T033000Z",
+      "summary": "🦇 Projets perso matinal · exécution pure, cadrée la veille",
+      "recurringEventId": "uo1vrkihrcgqvqr520cnip3tng",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-25T05:30:00+02:00"
+      }
+    },
+    {
+      "id": "8e3air71v52t4md83tkc8p3rt0_20260925T043000Z",
+      "summary": "🦇 Douche + préparation",
+      "recurringEventId": "8e3air71v52t4md83tkc8p3rt0",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-25T06:30:00+02:00"
+      }
+    },
+    {
+      "id": "v6q7p3r2lc4cr7g8pprpbmfn94_20260925T044500Z",
+      "summary": "🦇 Petit-déjeuner + Coran (1 page)",
+      "recurringEventId": "v6q7p3r2lc4cr7g8pprpbmfn94",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-25T06:45:00+02:00"
+      }
+    },
+    {
+      "id": "fj9i4pbht89mcocaduio7ukc4k_20260925T052000Z",
+      "summary": "🦇 Anki 1 · cartes dues dentaire (25/5)",
+      "recurringEventId": "fj9i4pbht89mcocaduio7ukc4k",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-25T07:20:00+02:00"
+      }
+    },
+    {
+      "id": "mum03opuef283vr30hbh5kngas_20260925T062000Z",
+      "summary": "🦇 Anki 2 · suite + 5 min paquet Business",
+      "recurringEventId": "mum03opuef283vr30hbh5kngas",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-25T08:20:00+02:00"
+      }
+    },
+    {
+      "id": "9vf9sh5r4a89vhaok01cpoc6e4_20260925T072000Z",
+      "summary": "🦇 Étudier en avance · le tema d'avance, slides puis cartes",
+      "recurringEventId": "9vf9sh5r4a89vhaok01cpoc6e4",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-25T09:20:00+02:00"
+      }
+    },
+    {
+      "id": "6ukf3crkcmbss9fjdcb669ckas_20260925T092000Z",
+      "summary": "🦇 Projets perso 1 · la ligne suivante du dossier",
+      "recurringEventId": "6ukf3crkcmbss9fjdcb669ckas",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-25T11:20:00+02:00"
+      }
+    },
+    {
+      "id": "a3bkfsaonfd6ubpe4o6f6ls5go_20260925T102000Z",
+      "summary": "🦇 Déjeuner",
+      "recurringEventId": "a3bkfsaonfd6ubpe4o6f6ls5go",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-25T12:20:00+02:00"
+      }
+    },
+    {
+      "id": "ptcsjilidno2ciib44ie5qltgo_20260925T111500Z",
+      "summary": "🦇 Trajet mosquée",
+      "recurringEventId": "ptcsjilidno2ciib44ie5qltgo",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-25T13:15:00+02:00"
+      }
+    },
+    {
+      "id": "sdamt7jujimd9o0125mveb7r44_20260925T113000Z",
+      "summary": "🦇 Jumu'ah (khutba + prière ~14h)",
+      "recurringEventId": "sdamt7jujimd9o0125mveb7r44",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-25T13:30:00+02:00"
+      }
+    },
+    {
+      "id": "dt6uilu0ub86frst4qnujs44po_20260925T123000Z",
+      "summary": "🦇 😴 Micro-sieste",
+      "recurringEventId": "dt6uilu0ub86frst4qnujs44po",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-25T14:30:00+02:00"
+      }
+    },
+    {
+      "id": "133ore3ndh6h0tcs0el6jm9tpg_20260925T125000Z",
+      "summary": "🦇 Collation entraînement",
+      "recurringEventId": "133ore3ndh6h0tcs0el6jm9tpg",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-25T14:50:00+02:00"
+      }
+    },
+    {
+      "id": "rj7ktv5mfvr5gf2dl6s290dveo_20260925T130000Z",
+      "summary": "🦇 Trajet cours",
+      "recurringEventId": "rj7ktv5mfvr5gf2dl6s290dveo",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-25T15:00:00+02:00"
+      }
+    },
+    {
+      "id": "8890utio7h7tu3tl0smjg2e3o0_20260925T133000Z",
+      "summary": "Epidemiología, Salud Pública y Bioestadística Aplicada",
+      "recurringEventId": "8890utio7h7tu3tl0smjg2e3o0",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-25T15:30:00+02:00"
+      }
+    },
+    {
+      "id": "p1jd8p5k9qd5523jejsprop12c_20260925T153000Z",
+      "summary": "Antropología e Historia de la Odontología",
+      "recurringEventId": "p1jd8p5k9qd5523jejsprop12c",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-25T17:30:00+02:00"
+      }
+    },
+    {
+      "id": "k7nko2kjpbitll8r84bv52amkc_20260925T173000Z",
+      "summary": "🦇 Trajet retour",
+      "recurringEventId": "k7nko2kjpbitll8r84bv52amkc",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-25T19:30:00+02:00"
+      }
+    },
+    {
+      "id": "qgq7a0h23dtcgh9ngukk5ik4d8_20260925T180000Z",
+      "summary": "🦇 Dîner",
+      "recurringEventId": "qgq7a0h23dtcgh9ngukk5ik4d8",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-25T20:00:00+02:00"
+      }
+    },
+    {
+      "id": "10kieg2goe6njalr5dg8i1bf04_20260925T183000Z",
+      "summary": "🦇 Clore le cours du jour · projet Dentaire « explique »",
+      "recurringEventId": "10kieg2goe6njalr5dg8i1bf04",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-25T20:30:00+02:00"
+      }
+    },
+    {
+      "id": "fevd2i0dmvu6hq2spmpvq4rpp4_20260925T191000Z",
+      "summary": "🦇 Temps libre",
+      "recurringEventId": "fevd2i0dmvu6hq2spmpvq4rpp4",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-25T21:10:00+02:00"
+      }
+    },
+    {
+      "id": "37g5qrn3i5dt73s9l324j7orgk_20260925T193000Z",
+      "summary": "🦇 Collation soir",
+      "recurringEventId": "37g5qrn3i5dt73s9l324j7orgk",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-25T21:30:00+02:00"
+      }
+    },
+    {
+      "id": "8hkcjv4tehuu7aii7qjvm0is5k_20260925T194500Z",
+      "summary": "🦇 Douche + brossage de dents",
+      "recurringEventId": "8hkcjv4tehuu7aii7qjvm0is5k",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-25T21:45:00+02:00"
+      }
+    },
+    {
+      "id": "cifrm47t3cobmr1ml47efq6rfo_20260925T195500Z",
+      "summary": "🦇 Coucher",
+      "recurringEventId": "cifrm47t3cobmr1ml47efq6rfo",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-25T21:55:00+02:00"
+      }
+    },
+    {
+      "id": "8e3air71v52t4md83tkc8p3rt0_20260926T043000Z",
+      "summary": "🦇 Douche + préparation",
+      "recurringEventId": "8e3air71v52t4md83tkc8p3rt0",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-26T06:30:00+02:00"
+      }
+    },
+    {
+      "id": "v6q7p3r2lc4cr7g8pprpbmfn94_20260926T044500Z",
+      "summary": "🦇 Petit-déjeuner + Coran (1 page)",
+      "recurringEventId": "v6q7p3r2lc4cr7g8pprpbmfn94",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-26T06:45:00+02:00"
+      }
+    },
+    {
+      "id": "fj9i4pbht89mcocaduio7ukc4k_20260926T052000Z",
+      "summary": "🦇 Anki 1 · cartes dues dentaire (25/5)",
+      "recurringEventId": "fj9i4pbht89mcocaduio7ukc4k",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-26T07:20:00+02:00"
+      }
+    },
+    {
+      "id": "mum03opuef283vr30hbh5kngas_20260926T062000Z",
+      "summary": "🦇 Anki 2 · suite + 5 min paquet Business",
+      "recurringEventId": "mum03opuef283vr30hbh5kngas",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-26T08:20:00+02:00"
+      }
+    },
+    {
+      "id": "f8d2hcvj6t5p9f3rl1h1cd93uk_20260926T072000Z",
+      "summary": "🦇 Approfondir · deux sujets, 09:20 et 10:20",
+      "recurringEventId": "f8d2hcvj6t5p9f3rl1h1cd93uk",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-26T09:20:00+02:00"
+      }
+    },
+    {
+      "id": "6ukf3crkcmbss9fjdcb669ckas_20260926T092000Z",
+      "summary": "🦇 Projets perso 1 · la ligne suivante du dossier",
+      "recurringEventId": "6ukf3crkcmbss9fjdcb669ckas",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-26T11:20:00+02:00"
+      }
+    },
+    {
+      "id": "sua003b1u7cnlnoacp3qe9nfag_20260926T102000Z",
+      "summary": "🦇 Déjeuner",
+      "recurringEventId": "sua003b1u7cnlnoacp3qe9nfag",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-26T12:20:00+02:00"
+      }
+    },
+    {
+      "id": "u6tdsj0t1igvo65ngitn5e6v1k_20260926T111000Z",
+      "summary": "🦇 😴 Micro-sieste",
+      "recurringEventId": "u6tdsj0t1igvo65ngitn5e6v1k",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-26T13:10:00+02:00"
+      }
+    },
+    {
+      "id": "qq4grc7nnet231m6unl0vp8n8c_20260926T113000Z",
+      "summary": "🦇 🛒 Courses de la semaine",
+      "recurringEventId": "qq4grc7nnet231m6unl0vp8n8c",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-26T13:30:00+02:00"
+      }
+    },
+    {
+      "id": "kv478nj1svmo0ckekl2vc0s0us_20260926T133000Z",
+      "summary": "🦇 Rangement des courses",
+      "recurringEventId": "kv478nj1svmo0ckekl2vc0s0us",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-26T15:30:00+02:00"
+      }
+    },
+    {
+      "id": "ul5idomk0onjmpnnbpb32k02dk_20260926T140000Z",
+      "summary": "🦇 Cartes d'erreurs de la semaine",
+      "recurringEventId": "ul5idomk0onjmpnnbpb32k02dk",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-26T16:00:00+02:00"
+      }
+    },
+    {
+      "id": "u31kosmf36e7fbv83tvr8fkqa8_20260926T150000Z",
+      "summary": "🦇 Projets perso 2 · exécution du samedi",
+      "recurringEventId": "u31kosmf36e7fbv83tvr8fkqa8",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-26T17:00:00+02:00"
+      }
+    },
+    {
+      "id": "fubcaavk21ps2tcglm9kcqc5bo_20260926T160000Z",
+      "summary": "🦇 🏃 Course à pied · 30 min, allure conversation",
+      "recurringEventId": "fubcaavk21ps2tcglm9kcqc5bo",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-26T18:00:00+02:00"
+      }
+    },
+    {
+      "id": "qh4btul5pj8ans0lel3u3f5hpc_20260926T163000Z",
+      "summary": "🦇 Sport",
+      "recurringEventId": "qh4btul5pj8ans0lel3u3f5hpc",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-26T18:30:00+02:00"
+      }
+    },
+    {
+      "id": "67ll51m494j2gsb32t78hke5kk_20260926T173000Z",
+      "summary": "🦇 Dîner",
+      "recurringEventId": "67ll51m494j2gsb32t78hke5kk",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-26T19:30:00+02:00"
+      }
+    },
+    {
+      "id": "dc9h2jhu7e6qt0n586tbja7f48_20260926T180000Z",
+      "summary": "🦇 Temps libre",
+      "recurringEventId": "dc9h2jhu7e6qt0n586tbja7f48",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-26T20:00:00+02:00"
+      }
+    },
+    {
+      "id": "70adgom77o8omvr61uv9b0u0gc_20260926T183000Z",
+      "summary": "🦇 Collation soir",
+      "recurringEventId": "70adgom77o8omvr61uv9b0u0gc",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-26T20:30:00+02:00"
+      }
+    },
+    {
+      "id": "sbec7nfui5g6gg9dur03sbl170_20260926T184500Z",
+      "summary": "🦇 Douche + brossage de dents",
+      "recurringEventId": "sbec7nfui5g6gg9dur03sbl170",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-26T20:45:00+02:00"
+      }
+    },
+    {
+      "id": "bktbr9po3vqmhjm8f7ojcqg53s_20260926T190000Z",
+      "summary": "🦇 Coucher",
+      "recurringEventId": "bktbr9po3vqmhjm8f7ojcqg53s",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-26T21:00:00+02:00"
+      }
+    },
+    {
+      "id": "8e3air71v52t4md83tkc8p3rt0_20260927T043000Z",
+      "summary": "🦇 Douche + préparation",
+      "recurringEventId": "8e3air71v52t4md83tkc8p3rt0",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-27T06:30:00+02:00"
+      }
+    },
+    {
+      "id": "v6q7p3r2lc4cr7g8pprpbmfn94_20260927T044500Z",
+      "summary": "🦇 Petit-déjeuner + Coran (1 page)",
+      "recurringEventId": "v6q7p3r2lc4cr7g8pprpbmfn94",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-27T06:45:00+02:00"
+      }
+    },
+    {
+      "id": "fj9i4pbht89mcocaduio7ukc4k_20260927T052000Z",
+      "summary": "🦇 Anki 1 · cartes dues dentaire (25/5)",
+      "recurringEventId": "fj9i4pbht89mcocaduio7ukc4k",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-27T07:20:00+02:00"
+      }
+    },
+    {
+      "id": "mum03opuef283vr30hbh5kngas_20260927T062000Z",
+      "summary": "🦇 Anki 2 · suite + 5 min paquet Business",
+      "recurringEventId": "mum03opuef283vr30hbh5kngas",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-27T08:20:00+02:00"
+      }
+    },
+    {
+      "id": "23udhrljl56ad42aq9i7uml378_20260927T072000Z",
+      "summary": "🦇 Simulation dentaire · blanc du questionnaire, ou 10 QCM + 1 question ouverte",
+      "recurringEventId": "23udhrljl56ad42aq9i7uml378",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-27T09:20:00+02:00"
+      }
+    },
+    {
+      "id": "uvgmnk8vuj7thc2fnjivnj3ukk_20260927T082000Z",
+      "summary": "🦇 Réexpliquer · ce qui a été approfondi, à J+7, J+30, J+90",
+      "recurringEventId": "uvgmnk8vuj7thc2fnjivnj3ukk",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-27T10:20:00+02:00"
+      }
+    },
+    {
+      "id": "6ukf3crkcmbss9fjdcb669ckas_20260927T092000Z",
+      "summary": "🦇 Projets perso 1 · la ligne suivante du dossier",
+      "recurringEventId": "6ukf3crkcmbss9fjdcb669ckas",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-27T11:20:00+02:00"
+      }
+    },
+    {
+      "id": "sua003b1u7cnlnoacp3qe9nfag_20260927T102000Z",
+      "summary": "🦇 Déjeuner",
+      "recurringEventId": "sua003b1u7cnlnoacp3qe9nfag",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-27T12:20:00+02:00"
+      }
+    },
+    {
+      "id": "u6tdsj0t1igvo65ngitn5e6v1k_20260927T111000Z",
+      "summary": "🦇 😴 Micro-sieste",
+      "recurringEventId": "u6tdsj0t1igvo65ngitn5e6v1k",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-27T13:10:00+02:00"
+      }
+    },
+    {
+      "id": "l6oube0avnrtju9dn5ndkbtq9c_20260927T113000Z",
+      "summary": "🦇 Projets perso 2 · bilan du dimanche",
+      "recurringEventId": "l6oube0avnrtju9dn5ndkbtq9c",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-27T13:30:00+02:00"
+      }
+    },
+    {
+      "id": "8rjepp3t3t6dmqdm4el1bl9tdg_20260927T123000Z",
+      "summary": "🦇 🍲 Batch cooking de la semaine",
+      "recurringEventId": "8rjepp3t3t6dmqdm4el1bl9tdg",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-27T14:30:00+02:00"
+      }
+    },
+    {
+      "id": "5uipil9nckb39khsk8iv2dscj0_20260927T143000Z",
+      "summary": "🦇 🧽 Ménage — sols, salle de bain, poussière",
+      "recurringEventId": "5uipil9nckb39khsk8iv2dscj0",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-27T16:30:00+02:00"
+      }
+    },
+    {
+      "id": "v1otenttopd2inrflaq91u546o_20260927T153000Z",
+      "summary": "🦇 🏃 Course à pied · 30 min, allure conversation",
+      "recurringEventId": "v1otenttopd2inrflaq91u546o",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-27T17:30:00+02:00"
+      }
+    },
+    {
+      "id": "v4m7c15681dkdl26slnvumrep0_20260927T160000Z",
+      "summary": "🦇 Repos — après-midi libre",
+      "recurringEventId": "v4m7c15681dkdl26slnvumrep0",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-27T18:00:00+02:00"
+      }
+    },
+    {
+      "id": "2v06tnti743cugeokj9pe7udjs_20260927T170000Z",
+      "summary": "🦇 Dîner",
+      "recurringEventId": "2v06tnti743cugeokj9pe7udjs",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-27T19:00:00+02:00"
+      }
+    },
+    {
+      "id": "24p0atq87k9muakk4g1299vnjo_20260927T173000Z",
+      "summary": "🦇 Temps libre",
+      "recurringEventId": "24p0atq87k9muakk4g1299vnjo",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-27T19:30:00+02:00"
+      }
+    },
+    {
+      "id": "70adgom77o8omvr61uv9b0u0gc_20260927T183000Z",
+      "summary": "🦇 Collation soir",
+      "recurringEventId": "70adgom77o8omvr61uv9b0u0gc",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-27T20:30:00+02:00"
+      }
+    },
+    {
+      "id": "sbec7nfui5g6gg9dur03sbl170_20260927T184500Z",
+      "summary": "🦇 Douche + brossage de dents",
+      "recurringEventId": "sbec7nfui5g6gg9dur03sbl170",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-27T20:45:00+02:00"
+      }
+    },
+    {
+      "id": "bktbr9po3vqmhjm8f7ojcqg53s_20260927T190000Z",
+      "summary": "🦇 Coucher",
+      "recurringEventId": "bktbr9po3vqmhjm8f7ojcqg53s",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-27T21:00:00+02:00"
+      }
+    },
+    {
+      "id": "rmgt4049s45cg32li9t6acjj3k_20260928T033000Z",
+      "summary": "🦇 Sport",
+      "recurringEventId": "rmgt4049s45cg32li9t6acjj3k",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-28T05:30:00+02:00"
+      }
+    },
+    {
+      "id": "8e3air71v52t4md83tkc8p3rt0_20260928T043000Z",
+      "summary": "🦇 Douche + préparation",
+      "recurringEventId": "8e3air71v52t4md83tkc8p3rt0",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-28T06:30:00+02:00"
+      }
+    },
+    {
+      "id": "v6q7p3r2lc4cr7g8pprpbmfn94_20260928T044500Z",
+      "summary": "🦇 Petit-déjeuner + Coran (1 page)",
+      "recurringEventId": "v6q7p3r2lc4cr7g8pprpbmfn94",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-28T06:45:00+02:00"
+      }
+    },
+    {
+      "id": "fj9i4pbht89mcocaduio7ukc4k_20260928T052000Z",
+      "summary": "🦇 Anki 1 · cartes dues dentaire (25/5)",
+      "recurringEventId": "fj9i4pbht89mcocaduio7ukc4k",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-28T07:20:00+02:00"
+      }
+    },
+    {
+      "id": "mum03opuef283vr30hbh5kngas_20260928T062000Z",
+      "summary": "🦇 Anki 2 · suite + 5 min paquet Business",
+      "recurringEventId": "mum03opuef283vr30hbh5kngas",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-28T08:20:00+02:00"
+      }
+    },
+    {
+      "id": "9vf9sh5r4a89vhaok01cpoc6e4_20260928T072000Z",
+      "summary": "🦇 Étudier en avance · le tema d'avance, slides puis cartes",
+      "recurringEventId": "9vf9sh5r4a89vhaok01cpoc6e4",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-28T09:20:00+02:00"
+      }
+    },
+    {
+      "id": "ob9ee8bfd33ki3fsol6p7egofc_20260928T092000Z",
+      "summary": "🦇 Question ouverte ou autre · TP, exos d'Epi, ou examen blanc",
+      "recurringEventId": "ob9ee8bfd33ki3fsol6p7egofc",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-28T11:20:00+02:00"
+      }
+    },
+    {
+      "id": "4lg06h6se9q7fpgr04fsc5uf68_20260928T102000Z",
+      "summary": "🦇 Déjeuner",
+      "recurringEventId": "4lg06h6se9q7fpgr04fsc5uf68",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-28T12:20:00+02:00"
+      }
+    },
+    {
+      "id": "gkh2ejgc3b05rhjen1gb08k63k_20260928T104000Z",
+      "summary": "🦇 😴 Micro-sieste",
+      "recurringEventId": "gkh2ejgc3b05rhjen1gb08k63k",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-28T12:40:00+02:00"
+      }
+    },
+    {
+      "id": "nnmme5ac6m60mrr60h3don2ap8_20260928T110000Z",
+      "summary": "🦇 Projets perso 1 · la ligne suivante du dossier",
+      "recurringEventId": "nnmme5ac6m60mrr60h3don2ap8",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-28T13:00:00+02:00"
+      }
+    },
+    {
+      "id": "nnp179fnt0r3uj990qo8alk060_20260928T120000Z",
+      "summary": "🦇 Projets perso 2 · exécution, 50 min d'un trait",
+      "recurringEventId": "nnp179fnt0r3uj990qo8alk060",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-28T14:00:00+02:00"
+      }
+    },
+    {
+      "id": "7vvs1t4klq6mb999nppphvaqfo_20260928T130000Z",
+      "summary": "🦇 Projets perso 4 · les deux heures que libère le lundi",
+      "recurringEventId": "7vvs1t4klq6mb999nppphvaqfo",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-28T15:00:00+02:00"
+      }
+    },
+    {
+      "id": "3vjuik6e8fb1rqqdilik5ifeh0_20260928T145000Z",
+      "summary": "🦇 Collation entraînement",
+      "recurringEventId": "3vjuik6e8fb1rqqdilik5ifeh0",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-28T16:50:00+02:00"
+      }
+    },
+    {
+      "id": "5i15oh1jle57lcfdu46datv6k8_20260928T150000Z",
+      "summary": "🦇 Trajet cours",
+      "recurringEventId": "5i15oh1jle57lcfdu46datv6k8",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-28T17:00:00+02:00"
+      }
+    },
+    {
+      "id": "bkfh4k4cutnjkfodoreu9en5r4_20260928T153000Z",
+      "summary": "Documentación e Introducción a la Metodología de la Investigación en Odontología",
+      "recurringEventId": "bkfh4k4cutnjkfodoreu9en5r4",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-28T17:30:00+02:00"
+      }
+    },
+    {
+      "id": "k7nko2kjpbitll8r84bv52amkc_20260928T173000Z",
+      "summary": "🦇 Trajet retour",
+      "recurringEventId": "k7nko2kjpbitll8r84bv52amkc",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-28T19:30:00+02:00"
+      }
+    },
+    {
+      "id": "qgq7a0h23dtcgh9ngukk5ik4d8_20260928T180000Z",
+      "summary": "🦇 Dîner",
+      "recurringEventId": "qgq7a0h23dtcgh9ngukk5ik4d8",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-28T20:00:00+02:00"
+      }
+    },
+    {
+      "id": "10kieg2goe6njalr5dg8i1bf04_20260928T183000Z",
+      "summary": "🦇 Clore le cours du jour · projet Dentaire « explique »",
+      "recurringEventId": "10kieg2goe6njalr5dg8i1bf04",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-28T20:30:00+02:00"
+      }
+    },
+    {
+      "id": "fevd2i0dmvu6hq2spmpvq4rpp4_20260928T191000Z",
+      "summary": "🦇 Temps libre",
+      "recurringEventId": "fevd2i0dmvu6hq2spmpvq4rpp4",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-28T21:10:00+02:00"
+      }
+    },
+    {
+      "id": "37g5qrn3i5dt73s9l324j7orgk_20260928T193000Z",
+      "summary": "🦇 Collation soir",
+      "recurringEventId": "37g5qrn3i5dt73s9l324j7orgk",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-28T21:30:00+02:00"
+      }
+    },
+    {
+      "id": "8hkcjv4tehuu7aii7qjvm0is5k_20260928T194500Z",
+      "summary": "🦇 Douche + brossage de dents",
+      "recurringEventId": "8hkcjv4tehuu7aii7qjvm0is5k",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-28T21:45:00+02:00"
+      }
+    },
+    {
+      "id": "cifrm47t3cobmr1ml47efq6rfo_20260928T195500Z",
+      "summary": "🦇 Coucher",
+      "recurringEventId": "cifrm47t3cobmr1ml47efq6rfo",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-28T21:55:00+02:00"
+      }
+    },
+    {
+      "id": "rmgt4049s45cg32li9t6acjj3k_20260929T033000Z",
+      "summary": "🦇 Sport",
+      "recurringEventId": "rmgt4049s45cg32li9t6acjj3k",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-29T05:30:00+02:00"
+      }
+    },
+    {
+      "id": "8e3air71v52t4md83tkc8p3rt0_20260929T043000Z",
+      "summary": "🦇 Douche + préparation",
+      "recurringEventId": "8e3air71v52t4md83tkc8p3rt0",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-29T06:30:00+02:00"
+      }
+    },
+    {
+      "id": "v6q7p3r2lc4cr7g8pprpbmfn94_20260929T044500Z",
+      "summary": "🦇 Petit-déjeuner + Coran (1 page)",
+      "recurringEventId": "v6q7p3r2lc4cr7g8pprpbmfn94",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-29T06:45:00+02:00"
+      }
+    },
+    {
+      "id": "fj9i4pbht89mcocaduio7ukc4k_20260929T052000Z",
+      "summary": "🦇 Anki 1 · cartes dues dentaire (25/5)",
+      "recurringEventId": "fj9i4pbht89mcocaduio7ukc4k",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-29T07:20:00+02:00"
+      }
+    },
+    {
+      "id": "mum03opuef283vr30hbh5kngas_20260929T062000Z",
+      "summary": "🦇 Anki 2 · suite + 5 min paquet Business",
+      "recurringEventId": "mum03opuef283vr30hbh5kngas",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-29T08:20:00+02:00"
+      }
+    },
+    {
+      "id": "9vf9sh5r4a89vhaok01cpoc6e4_20260929T072000Z",
+      "summary": "🦇 Étudier en avance · le tema d'avance, slides puis cartes",
+      "recurringEventId": "9vf9sh5r4a89vhaok01cpoc6e4",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-29T09:20:00+02:00"
+      }
+    },
+    {
+      "id": "ob9ee8bfd33ki3fsol6p7egofc_20260929T092000Z",
+      "summary": "🦇 Question ouverte ou autre · TP, exos d'Epi, ou examen blanc",
+      "recurringEventId": "ob9ee8bfd33ki3fsol6p7egofc",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-29T11:20:00+02:00"
+      }
+    },
+    {
+      "id": "4lg06h6se9q7fpgr04fsc5uf68_20260929T102000Z",
+      "summary": "🦇 Déjeuner",
+      "recurringEventId": "4lg06h6se9q7fpgr04fsc5uf68",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-29T12:20:00+02:00"
+      }
+    },
+    {
+      "id": "gkh2ejgc3b05rhjen1gb08k63k_20260929T104000Z",
+      "summary": "🦇 😴 Micro-sieste",
+      "recurringEventId": "gkh2ejgc3b05rhjen1gb08k63k",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-29T12:40:00+02:00"
+      }
+    },
+    {
+      "id": "nnmme5ac6m60mrr60h3don2ap8_20260929T110000Z",
+      "summary": "🦇 Projets perso 1 · la ligne suivante du dossier",
+      "recurringEventId": "nnmme5ac6m60mrr60h3don2ap8",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-29T13:00:00+02:00"
+      }
+    },
+    {
+      "id": "nnp179fnt0r3uj990qo8alk060_20260929T120000Z",
+      "summary": "🦇 Projets perso 2 · exécution, 50 min d'un trait",
+      "recurringEventId": "nnp179fnt0r3uj990qo8alk060",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-29T14:00:00+02:00"
+      }
+    },
+    {
+      "id": "133ore3ndh6h0tcs0el6jm9tpg_20260929T125000Z",
+      "summary": "🦇 Collation entraînement",
+      "recurringEventId": "133ore3ndh6h0tcs0el6jm9tpg",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-29T14:50:00+02:00"
+      }
+    },
+    {
+      "id": "rj7ktv5mfvr5gf2dl6s290dveo_20260929T130000Z",
+      "summary": "🦇 Trajet cours",
+      "recurringEventId": "rj7ktv5mfvr5gf2dl6s290dveo",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-29T15:00:00+02:00"
+      }
+    },
+    {
+      "id": "aki62ntn4fb8c96dsi43vle1u4_20260929T133000Z",
+      "summary": "Biología Celular y Genética Humana",
+      "recurringEventId": "aki62ntn4fb8c96dsi43vle1u4",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-29T15:30:00+02:00"
+      }
+    },
+    {
+      "id": "uo2efpcl0fbflj01n5q5amdmvs_20260929T153000Z",
+      "summary": "🦇 Trajet retour",
+      "recurringEventId": "uo2efpcl0fbflj01n5q5amdmvs",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-29T17:30:00+02:00"
+      }
+    },
+    {
+      "id": "jnmd68hv4nfq07ssncc8hkism4_20260929T160000Z",
+      "summary": "🦇 Clore le cours du jour · projet Dentaire « cierra »",
+      "recurringEventId": "jnmd68hv4nfq07ssncc8hkism4",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-29T18:00:00+02:00"
+      }
+    },
+    {
+      "id": "6iem49rq6chuiq5e1kc5ie9o1g_20260929T163000Z",
+      "summary": "🦇 Lire · une heure, sur papier, sans écran",
+      "recurringEventId": "6iem49rq6chuiq5e1kc5ie9o1g",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-29T18:30:00+02:00"
+      }
+    },
+    {
+      "id": "m8lbtgbibjcob5q2pqds6ss2h0_20260929T173000Z",
+      "summary": "🦇 Temps libre",
+      "recurringEventId": "m8lbtgbibjcob5q2pqds6ss2h0",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-29T19:30:00+02:00"
+      }
+    },
+    {
+      "id": "qgq7a0h23dtcgh9ngukk5ik4d8_20260929T180000Z",
+      "summary": "🦇 Dîner",
+      "recurringEventId": "qgq7a0h23dtcgh9ngukk5ik4d8",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-29T20:00:00+02:00"
+      }
+    },
+    {
+      "id": "onb59c7a7548kkr2h3bjljlhn8_20260929T183000Z",
+      "summary": "🦇 Projets perso 6 · le bloc du soir, mardi",
+      "recurringEventId": "onb59c7a7548kkr2h3bjljlhn8",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-29T20:30:00+02:00"
+      }
+    },
+    {
+      "id": "37g5qrn3i5dt73s9l324j7orgk_20260929T193000Z",
+      "summary": "🦇 Collation soir",
+      "recurringEventId": "37g5qrn3i5dt73s9l324j7orgk",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-29T21:30:00+02:00"
+      }
+    },
+    {
+      "id": "8hkcjv4tehuu7aii7qjvm0is5k_20260929T194500Z",
+      "summary": "🦇 Douche + brossage de dents",
+      "recurringEventId": "8hkcjv4tehuu7aii7qjvm0is5k",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-29T21:45:00+02:00"
+      }
+    },
+    {
+      "id": "cifrm47t3cobmr1ml47efq6rfo_20260929T195500Z",
+      "summary": "🦇 Coucher",
+      "recurringEventId": "cifrm47t3cobmr1ml47efq6rfo",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-29T21:55:00+02:00"
+      }
+    },
+    {
+      "id": "uo1vrkihrcgqvqr520cnip3tng_20260930T033000Z",
+      "summary": "🦇 Projets perso matinal · exécution pure, cadrée la veille",
+      "recurringEventId": "uo1vrkihrcgqvqr520cnip3tng",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-30T05:30:00+02:00"
+      }
+    },
+    {
+      "id": "8e3air71v52t4md83tkc8p3rt0_20260930T043000Z",
+      "summary": "🦇 Douche + préparation",
+      "recurringEventId": "8e3air71v52t4md83tkc8p3rt0",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-30T06:30:00+02:00"
+      }
+    },
+    {
+      "id": "v6q7p3r2lc4cr7g8pprpbmfn94_20260930T044500Z",
+      "summary": "🦇 Petit-déjeuner + Coran (1 page)",
+      "recurringEventId": "v6q7p3r2lc4cr7g8pprpbmfn94",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-30T06:45:00+02:00"
+      }
+    },
+    {
+      "id": "fj9i4pbht89mcocaduio7ukc4k_20260930T052000Z",
+      "summary": "🦇 Anki 1 · cartes dues dentaire (25/5)",
+      "recurringEventId": "fj9i4pbht89mcocaduio7ukc4k",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-30T07:20:00+02:00"
+      }
+    },
+    {
+      "id": "mum03opuef283vr30hbh5kngas_20260930T062000Z",
+      "summary": "🦇 Anki 2 · suite + 5 min paquet Business",
+      "recurringEventId": "mum03opuef283vr30hbh5kngas",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-30T08:20:00+02:00"
+      }
+    },
+    {
+      "id": "9vf9sh5r4a89vhaok01cpoc6e4_20260930T072000Z",
+      "summary": "🦇 Étudier en avance · le tema d'avance, slides puis cartes",
+      "recurringEventId": "9vf9sh5r4a89vhaok01cpoc6e4",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-30T09:20:00+02:00"
+      }
+    },
+    {
+      "id": "m358hchehcdr5u87eehjufvcjk_20260930T092000Z",
+      "summary": "🦇 Approfondir · un sujet, une heure",
+      "recurringEventId": "m358hchehcdr5u87eehjufvcjk",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-30T11:20:00+02:00"
+      }
+    },
+    {
+      "id": "4lg06h6se9q7fpgr04fsc5uf68_20260930T102000Z",
+      "summary": "🦇 Déjeuner",
+      "recurringEventId": "4lg06h6se9q7fpgr04fsc5uf68",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-30T12:20:00+02:00"
+      }
+    },
+    {
+      "id": "gkh2ejgc3b05rhjen1gb08k63k_20260930T104000Z",
+      "summary": "🦇 😴 Micro-sieste",
+      "recurringEventId": "gkh2ejgc3b05rhjen1gb08k63k",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-30T12:40:00+02:00"
+      }
+    },
+    {
+      "id": "nnmme5ac6m60mrr60h3don2ap8_20260930T110000Z",
+      "summary": "🦇 Projets perso 1 · la ligne suivante du dossier",
+      "recurringEventId": "nnmme5ac6m60mrr60h3don2ap8",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-30T13:00:00+02:00"
+      }
+    },
+    {
+      "id": "nnp179fnt0r3uj990qo8alk060_20260930T120000Z",
+      "summary": "🦇 Projets perso 2 · exécution, 50 min d'un trait",
+      "recurringEventId": "nnp179fnt0r3uj990qo8alk060",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-30T14:00:00+02:00"
+      }
+    },
+    {
+      "id": "133ore3ndh6h0tcs0el6jm9tpg_20260930T125000Z",
+      "summary": "🦇 Collation entraînement",
+      "recurringEventId": "133ore3ndh6h0tcs0el6jm9tpg",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-30T14:50:00+02:00"
+      }
+    },
+    {
+      "id": "rj7ktv5mfvr5gf2dl6s290dveo_20260930T130000Z",
+      "summary": "🦇 Trajet cours",
+      "recurringEventId": "rj7ktv5mfvr5gf2dl6s290dveo",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-30T15:00:00+02:00"
+      }
+    },
+    {
+      "id": "gtdkngmidg2ki3890ss5r60m2g_20260930T133000Z",
+      "summary": "Biología Celular y Genética Humana",
+      "recurringEventId": "gtdkngmidg2ki3890ss5r60m2g",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-30T15:30:00+02:00"
+      }
+    },
+    {
+      "id": "irqdc7b8rmm5781sshmb91usrk_20260930T153000Z",
+      "summary": "Anatomía y Fisiología del Cuerpo Humano I",
+      "recurringEventId": "irqdc7b8rmm5781sshmb91usrk",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-30T17:30:00+02:00"
+      }
+    },
+    {
+      "id": "k7nko2kjpbitll8r84bv52amkc_20260930T173000Z",
+      "summary": "🦇 Trajet retour",
+      "recurringEventId": "k7nko2kjpbitll8r84bv52amkc",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-30T19:30:00+02:00"
+      }
+    },
+    {
+      "id": "qgq7a0h23dtcgh9ngukk5ik4d8_20260930T180000Z",
+      "summary": "🦇 Dîner",
+      "recurringEventId": "qgq7a0h23dtcgh9ngukk5ik4d8",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-30T20:00:00+02:00"
+      }
+    },
+    {
+      "id": "10kieg2goe6njalr5dg8i1bf04_20260930T183000Z",
+      "summary": "🦇 Clore le cours du jour · projet Dentaire « explique »",
+      "recurringEventId": "10kieg2goe6njalr5dg8i1bf04",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-30T20:30:00+02:00"
+      }
+    },
+    {
+      "id": "fevd2i0dmvu6hq2spmpvq4rpp4_20260930T191000Z",
+      "summary": "🦇 Temps libre",
+      "recurringEventId": "fevd2i0dmvu6hq2spmpvq4rpp4",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-30T21:10:00+02:00"
+      }
+    },
+    {
+      "id": "37g5qrn3i5dt73s9l324j7orgk_20260930T193000Z",
+      "summary": "🦇 Collation soir",
+      "recurringEventId": "37g5qrn3i5dt73s9l324j7orgk",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-30T21:30:00+02:00"
+      }
+    },
+    {
+      "id": "8hkcjv4tehuu7aii7qjvm0is5k_20260930T194500Z",
+      "summary": "🦇 Douche + brossage de dents",
+      "recurringEventId": "8hkcjv4tehuu7aii7qjvm0is5k",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-30T21:45:00+02:00"
+      }
+    },
+    {
+      "id": "cifrm47t3cobmr1ml47efq6rfo_20260930T195500Z",
+      "summary": "🦇 Coucher",
+      "recurringEventId": "cifrm47t3cobmr1ml47efq6rfo",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-09-30T21:55:00+02:00"
+      }
+    },
+    {
+      "id": "rmgt4049s45cg32li9t6acjj3k_20261001T033000Z",
+      "summary": "🦇 Sport",
+      "recurringEventId": "rmgt4049s45cg32li9t6acjj3k",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-10-01T05:30:00+02:00"
+      }
+    },
+    {
+      "id": "8e3air71v52t4md83tkc8p3rt0_20261001T043000Z",
+      "summary": "🦇 Douche + préparation",
+      "recurringEventId": "8e3air71v52t4md83tkc8p3rt0",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-10-01T06:30:00+02:00"
+      }
+    },
+    {
+      "id": "v6q7p3r2lc4cr7g8pprpbmfn94_20261001T044500Z",
+      "summary": "🦇 Petit-déjeuner + Coran (1 page)",
+      "recurringEventId": "v6q7p3r2lc4cr7g8pprpbmfn94",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-10-01T06:45:00+02:00"
+      }
+    },
+    {
+      "id": "fj9i4pbht89mcocaduio7ukc4k_20261001T052000Z",
+      "summary": "🦇 Anki 1 · cartes dues dentaire (25/5)",
+      "recurringEventId": "fj9i4pbht89mcocaduio7ukc4k",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-10-01T07:20:00+02:00"
+      }
+    },
+    {
+      "id": "mum03opuef283vr30hbh5kngas_20261001T062000Z",
+      "summary": "🦇 Anki 2 · suite + 5 min paquet Business",
+      "recurringEventId": "mum03opuef283vr30hbh5kngas",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-10-01T08:20:00+02:00"
+      }
+    },
+    {
+      "id": "9vf9sh5r4a89vhaok01cpoc6e4_20261001T072000Z",
+      "summary": "🦇 Étudier en avance · le tema d'avance, slides puis cartes",
+      "recurringEventId": "9vf9sh5r4a89vhaok01cpoc6e4",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-10-01T09:20:00+02:00"
+      }
+    },
+    {
+      "id": "ob9ee8bfd33ki3fsol6p7egofc_20261001T092000Z",
+      "summary": "🦇 Question ouverte ou autre · TP, exos d'Epi, ou examen blanc",
+      "recurringEventId": "ob9ee8bfd33ki3fsol6p7egofc",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-10-01T11:20:00+02:00"
+      }
+    },
+    {
+      "id": "4lg06h6se9q7fpgr04fsc5uf68_20261001T102000Z",
+      "summary": "🦇 Déjeuner",
+      "recurringEventId": "4lg06h6se9q7fpgr04fsc5uf68",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-10-01T12:20:00+02:00"
+      }
+    },
+    {
+      "id": "gkh2ejgc3b05rhjen1gb08k63k_20261001T104000Z",
+      "summary": "🦇 😴 Micro-sieste",
+      "recurringEventId": "gkh2ejgc3b05rhjen1gb08k63k",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-10-01T12:40:00+02:00"
+      }
+    },
+    {
+      "id": "nnmme5ac6m60mrr60h3don2ap8_20261001T110000Z",
+      "summary": "🦇 Projets perso 1 · la ligne suivante du dossier",
+      "recurringEventId": "nnmme5ac6m60mrr60h3don2ap8",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-10-01T13:00:00+02:00"
+      }
+    },
+    {
+      "id": "nnp179fnt0r3uj990qo8alk060_20261001T120000Z",
+      "summary": "🦇 Projets perso 2 · exécution, 50 min d'un trait",
+      "recurringEventId": "nnp179fnt0r3uj990qo8alk060",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-10-01T14:00:00+02:00"
+      }
+    },
+    {
+      "id": "133ore3ndh6h0tcs0el6jm9tpg_20261001T125000Z",
+      "summary": "🦇 Collation entraînement",
+      "recurringEventId": "133ore3ndh6h0tcs0el6jm9tpg",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-10-01T14:50:00+02:00"
+      }
+    },
+    {
+      "id": "rj7ktv5mfvr5gf2dl6s290dveo_20261001T130000Z",
+      "summary": "🦇 Trajet cours",
+      "recurringEventId": "rj7ktv5mfvr5gf2dl6s290dveo",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-10-01T15:00:00+02:00"
+      }
+    },
+    {
+      "id": "uh2adtqgcvn69d4jkhostb8vt8_20261001T133000Z",
+      "summary": "Epidemiología, Salud Pública y Bioestadística Aplicada",
+      "recurringEventId": "uh2adtqgcvn69d4jkhostb8vt8",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-10-01T15:30:00+02:00"
+      }
+    },
+    {
+      "id": "k3rl2hmbjvcurt3n03sb5shdsg_20261001T153000Z",
+      "summary": "Anatomía y Fisiología del Cuerpo Humano I",
+      "recurringEventId": "k3rl2hmbjvcurt3n03sb5shdsg",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-10-01T17:30:00+02:00"
+      }
+    },
+    {
+      "id": "k7nko2kjpbitll8r84bv52amkc_20261001T173000Z",
+      "summary": "🦇 Trajet retour",
+      "recurringEventId": "k7nko2kjpbitll8r84bv52amkc",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-10-01T19:30:00+02:00"
+      }
+    },
+    {
+      "id": "qgq7a0h23dtcgh9ngukk5ik4d8_20261001T180000Z",
+      "summary": "🦇 Dîner",
+      "recurringEventId": "qgq7a0h23dtcgh9ngukk5ik4d8",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-10-01T20:00:00+02:00"
+      }
+    },
+    {
+      "id": "10kieg2goe6njalr5dg8i1bf04_20261001T183000Z",
+      "summary": "🦇 Clore le cours du jour · projet Dentaire « explique »",
+      "recurringEventId": "10kieg2goe6njalr5dg8i1bf04",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-10-01T20:30:00+02:00"
+      }
+    },
+    {
+      "id": "fevd2i0dmvu6hq2spmpvq4rpp4_20261001T191000Z",
+      "summary": "🦇 Temps libre",
+      "recurringEventId": "fevd2i0dmvu6hq2spmpvq4rpp4",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-10-01T21:10:00+02:00"
+      }
+    },
+    {
+      "id": "37g5qrn3i5dt73s9l324j7orgk_20261001T193000Z",
+      "summary": "🦇 Collation soir",
+      "recurringEventId": "37g5qrn3i5dt73s9l324j7orgk",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-10-01T21:30:00+02:00"
+      }
+    },
+    {
+      "id": "8hkcjv4tehuu7aii7qjvm0is5k_20261001T194500Z",
+      "summary": "🦇 Douche + brossage de dents",
+      "recurringEventId": "8hkcjv4tehuu7aii7qjvm0is5k",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-10-01T21:45:00+02:00"
+      }
+    },
+    {
+      "id": "cifrm47t3cobmr1ml47efq6rfo_20261001T195500Z",
+      "summary": "🦇 Coucher",
+      "recurringEventId": "cifrm47t3cobmr1ml47efq6rfo",
+      "status": "confirmed",
+      "start": {
+        "dateTime": "2026-10-01T21:55:00+02:00"
+      }
+    }
+  ]
+}

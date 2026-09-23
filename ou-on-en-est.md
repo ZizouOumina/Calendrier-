@@ -3,7 +3,16 @@
 Ce fichier existe pour une seule raison : que rien ne dépende de ma mémoire.
 Il dit ce qui est fait, ce qui reste, et ce qui attend une décision de toi.
 
-> ### ⚠️ Ce qui a changé depuis — lundi 21 septembre
+> ### ⚠️ Dernier changement — mercredi 23 septembre au matin
+> Encore une nuit blanche : « on décale tout à demain, le début etc., et on décale la période
+> d'espagnol aussi ». **Le jour 1 est le jeudi 24 septembre** (`PROGRAMME_DEBUT = '2026-09-24'`,
+> 172 jours jusqu'au 14 mars), la séance de référence est le jour 1 lui-même (haut volume), les
+> retests restent les jeudis 22 octobre, 26 novembre et 31 décembre. **La phase Español finit le
+> vendredi 23 octobre**, les projets démarrent le samedi 24 ; les quatre routines ont été
+> réalignées sur ces dates (elles disaient encore 18/19 octobre). Les notes ci-dessous sur le
+> jour 1 et la fin de phase sont antérieures.
+>
+> ### Ce qui avait changé — lundi 21 septembre
 > Le corps de ce fichier est un instantané du **19 septembre au soir** : il n'est pas
 > réécrit, pour que le compte rendu reste vrai à sa date. Quatre choses ont bougé depuis,
 > et ce sont elles qui font foi :
