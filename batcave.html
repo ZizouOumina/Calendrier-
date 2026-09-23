@@ -2977,7 +2977,7 @@
          chose casse en novembre, on veut revenir au jour 1, pas a un etat intermediaire. -->
     <div style="margin-top:18px; padding-top:14px; border-top:1px solid var(--border-soft);">
       <p style="font-weight:600; color:var(--ink); font-size:13.5px; margin-bottom:6px;">🌱 Copie vierge</p>
-      <p class="sub-note" style="line-height:1.6; margin-bottom:10px;">L'état exact du premier jour, gardé de côté : configuration, objectifs calés sur le jour 1, habitudes d'origine. À prendre le matin du jour 1 (mardi 22 septembre), <b>avant la première saisie</b>. « Remettre à zéro » garde la configuration mais pas ce point de départ ; ici, tu reviens au jour 1 exactement.</p>
+      <p class="sub-note" style="line-height:1.6; margin-bottom:10px;">L'état exact du premier jour, gardé de côté : configuration, objectifs calés sur le jour 1, habitudes d'origine. À prendre le matin du jour 1 (<b id="vierge-jour1">—</b>), <b>avant la première saisie</b>. « Remettre à zéro » garde la configuration mais pas ce point de départ ; ici, tu reviens au jour 1 exactement.</p>
       <p class="sub-note" id="vierge-etat" style="margin-bottom:10px;">—</p>
       <div class="card-actions">
         <button class="btn" id="vierge-prendre" type="button">Prendre la copie vierge maintenant</button>
@@ -4618,6 +4618,9 @@
   function renderCopieVierge(){
     var et = document.getElementById('vierge-etat'), pr = document.getElementById('vierge-prendre'), re = document.getElementById('vierge-restaurer');
     if(!et) return;
+    /* le jour 1 se lit dans PROGRAMME_DEBUT : ecrit en dur, il annoncait encore le 22 */
+    var j1 = document.getElementById('vierge-jour1');
+    if(j1) j1.textContent = fmtDate(PROGRAMME_DEBUT);
     var v = copieVierge();
     if(v){
       et.textContent = 'Copie du ' + fmtDate(v.date) + ' · ' + (v.n || 0) + ' entrées' +
