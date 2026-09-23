@@ -2002,13 +2002,13 @@
       </div>
       <div class="panel sub-panel" id="echeances-panel">
         <div class="sub-head"><h3>⏳ Échéances</h3><span class="sub-note" id="ech-note">—</span></div>
-        <p class="sub-note" style="margin-bottom:12px; line-height:1.6;">Un questionnaire en classe, un devoir à rendre, une présentation, un TP : la date suffit, le compte à rebours fait le reste. Chaque échéance s'affiche ici et sur le tableau de bord avec ses jours restants ; <b style="color:var(--ink-dim);">la veille, le bloc du soir devient « Préparer »</b>. Coche la ligne quand c'est fait. Les cinq examens de janvier se saisissent dans <b style="color:var(--ink-dim);">Études</b> (ils déclenchent le mode partiels), pas ici.</p>
+        <p class="sub-note" style="margin-bottom:12px; line-height:1.6;">Un questionnaire en classe, une activité en classe notée, un devoir à rendre, une présentation, un TP : la date suffit, le compte à rebours fait le reste. Chaque échéance s'affiche ici et sur le tableau de bord avec ses jours restants ; <b style="color:var(--ink-dim);">la veille, le bloc du soir devient « Préparer »</b>. Coche la ligne quand c'est fait. Les cinq examens de janvier se saisissent dans <b style="color:var(--ink-dim);">Études</b> (ils déclenchent le mode partiels), pas ici.</p>
         <button class="btn" id="ech-plus" type="button" aria-expanded="false" aria-controls="ech-form" style="margin-bottom:10px;">+ Ajouter une échéance</button>
         <div id="ech-form" hidden>
         <div class="add-form">
           <div class="f"><label>Date</label><input type="date" id="ech-date"></div>
           <div class="f"><label>Heure <span style="text-transform:none;">(optionnel)</span></label><input type="time" id="ech-heure"></div>
-          <div class="f"><label>Type</label><select id="ech-type"><option value="questionnaire">Questionnaire</option><option value="rendu">Devoir à rendre</option><option value="presentation">Présentation</option><option value="tp">TP</option><option value="autre">Autre</option></select></div>
+          <div class="f"><label>Type</label><select id="ech-type"><option value="questionnaire">Questionnaire</option><option value="activite">Activité en classe</option><option value="rendu">Devoir à rendre</option><option value="presentation">Présentation</option><option value="tp">TP</option><option value="autre">Autre</option></select></div>
           <div class="f"><label>Matière</label><input type="text" id="ech-matiere" placeholder="ex : Anatomía" style="width:130px;"></div>
           <div class="f" style="flex:1; min-width:160px;"><label>Libellé</label><input type="text" id="ech-label" placeholder="ex : Q1 · T1-T2" style="width:100%;"></div>
           <div class="f"><label title="Une épreuve hors amphi : la journée est reconstruite autour (préparation, trajet, épreuve, retour)">Journée reconstruite</label><input type="checkbox" id="ech-jx" style="width:22px; height:22px;"></div>
@@ -8572,7 +8572,7 @@
      (un questionnaire a lieu dans le bloc Cours) ; la veille, le bloc du soir devient
      « Préparer », comme pour une journee exceptionnelle. Configuration : gardee au nouveau
      depart. */
-  var TYPES_ECHEANCE = {questionnaire:{ic:'📝', nom:'Questionnaire'}, rendu:{ic:'📤', nom:'À rendre'}, presentation:{ic:'🎤', nom:'Présentation'}, tp:{ic:'🧪', nom:'TP'}, autre:{ic:'📌', nom:'Autre'}};
+  var TYPES_ECHEANCE = {questionnaire:{ic:'📝', nom:'Questionnaire'}, activite:{ic:'👥', nom:'Activité en classe'}, rendu:{ic:'📤', nom:'À rendre'}, presentation:{ic:'🎤', nom:'Présentation'}, tp:{ic:'🧪', nom:'TP'}, autre:{ic:'📌', nom:'Autre'}};
   var echeancesState = load('batcave-echeances', []);
   if(!Array.isArray(echeancesState)) echeancesState = [];
   echeancesState = echeancesState.filter(function(e){ return e && typeof e === 'object' && /^\d{4}-\d{2}-\d{2}$/.test(String(e.date)); })
@@ -14633,7 +14633,7 @@
     window.__bcMeteoInjecter = function(liste){ meteoHeures = liste; try{ majMeteoSeance(); }catch(e){} };
     window.__bcMeteoSeance = texteMeteoSeance;
     window.__bcSeanceDehors = seanceExterieureLe;
-    window.__bcChiffresSemaine = chiffresSemaine; window.__bcMacrosJour = macrosJour; window.__bcPrepSemaine = prepSemaine; window.__bcPrepTotaux = prepTotaux; window.__bcMacrosRepas = macrosRepas; window.__bcCompoRepas = compoRepas; window.__bcAliments = ALIMENTS; window.__bcBesoinSemaine = BESOIN_SEMAINE; window.__bcCoutSemaine = coutSemaine; window.__bcPrix = PRIX; window.__bcEvalMatieres = EVAL_MATIERES; window.__bcCopieVierge = copieVierge; window.__bcNotion = absorberNotion; window.__bcNotionRetards = notionRetards; window.__bcCoursPasFait = coursPasFait; window.__bcExercice = exerciceDu; window.__bcChiffrer = chiffrerTexte; window.__bcDechiffrer = dechiffrerEnveloppe;
+    window.__bcChiffresSemaine = chiffresSemaine; window.__bcMacrosJour = macrosJour; window.__bcPrepSemaine = prepSemaine; window.__bcPrepTotaux = prepTotaux; window.__bcMacrosRepas = macrosRepas; window.__bcCompoRepas = compoRepas; window.__bcAliments = ALIMENTS; window.__bcBesoinSemaine = BESOIN_SEMAINE; window.__bcCoutSemaine = coutSemaine; window.__bcPrix = PRIX; window.__bcEvalMatieres = EVAL_MATIERES; window.__bcTypesEcheance = TYPES_ECHEANCE; window.__bcCopieVierge = copieVierge; window.__bcNotion = absorberNotion; window.__bcNotionRetards = notionRetards; window.__bcCoursPasFait = coursPasFait; window.__bcExercice = exerciceDu; window.__bcChiffrer = chiffrerTexte; window.__bcDechiffrer = dechiffrerEnveloppe;
        /* rapport hebdomadaire (tests/rapport-hebdo.mjs) : la semaine à un décalage donné, ses
           statistiques de bilan et le prévu/réalisé de chaque jour */
        window.__bcSemaine = function(off){
