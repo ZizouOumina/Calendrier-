@@ -316,25 +316,26 @@ console.log('\n== 303) Trois créneaux par semaine, lus dans la grille ==');
 console.log('\n== 304) Le compteur de la semaine ==');
 {
   const seed = {'batcave-appro': {seq:1, liste:[
-    {id:'a1', sujet:'Anatomía I T1 · homéostasie', matiere:'Anatomía I', tema:'1', nom:'homéostasie', date:'2026-09-23', notes:[]}
+    {id:'a1', sujet:'Anatomía I T1 · homéostasie', matiere:'Anatomía I', tema:'1', nom:'homéostasie', date:'2026-09-30', notes:[]}
   ]}};
-  /* Samedi 26 à 12:00 : le mercredi est passé, les deux séances du samedi aussi. Trois
-     créneaux écoulés, un seul sujet écrit. */
-  const { ctx, fr, page } = await ouvrir('2026-09-26T12:00:00+02:00', seed);
+  /* Samedi 3 octobre à 12:00 : le mercredi 30 est passé, les deux séances du samedi
+     aussi. Trois créneaux écoulés, un seul sujet écrit. (La semaine du 21 n'en a plus que
+     deux dans le programme : le mercredi 23 tombe avant le jour 1 du jeudi 24.) */
+  const { ctx, fr, page } = await ouvrir('2026-10-03T12:00:00+02:00', seed);
   await fr.evaluate(() => document.querySelector('.nav-btn[data-page="etudes"]').click());
   await page.waitForTimeout(250);
   const v = await fr.evaluate(() => ({
     note: document.getElementById('appro-note').textContent,
-    bil: window.__bcBilanAppro(['2026-09-21','2026-09-22','2026-09-23','2026-09-24','2026-09-25','2026-09-26','2026-09-27'], 12*60)
+    bil: window.__bcBilanAppro(['2026-09-28','2026-09-29','2026-09-30','2026-10-01','2026-10-02','2026-10-03','2026-10-04'], 12*60)
   }));
   ok(v.bil.creneaux === 3 && v.bil.saisis === 1, 'trois créneaux écoulés, un sujet écrit (' + v.bil.creneaux + '/' + v.bil.saisis + ')');
   ok(/1\/3 créneaux cette semaine/.test(v.note), 'et le panneau l\'affiche : ' + v.note);
 
   /* Même samedi à 11:00 : la séance de 09:20 s'est terminée à 10:20, celle de 10:20 court
      jusqu'à 11:20 — elle est EN COURS, elle ne compte pas encore. Mercredi + une séance. */
-  const onze = await fr.evaluate(() => window.__bcBilanAppro(['2026-09-23','2026-09-26'], 11*60).creneaux);
+  const onze = await fr.evaluate(() => window.__bcBilanAppro(['2026-09-30','2026-10-03'], 11*60).creneaux);
   ok(onze === 2, 'à 11:00, la séance en cours ne compte pas encore comme ratée (' + onze + ')');
-  const dix = await fr.evaluate(() => window.__bcBilanAppro(['2026-09-23','2026-09-26'], 10*60).creneaux);
+  const dix = await fr.evaluate(() => window.__bcBilanAppro(['2026-09-30','2026-10-03'], 10*60).creneaux);
   ok(dix === 1, 'à 10:00, aucune des deux séances du samedi n\'est finie (' + dix + ')');
   await ctx.close();
 }
@@ -452,13 +453,15 @@ console.log('\n== 307) Le filtre par matière ==');
 
 console.log('\n== 308) Les notes 0-3 entrent dans la revue du dimanche ==');
 {
+  /* La semaine du 28 septembre : celle du 21 n'a plus que deux créneaux dans le programme
+     (le mercredi 23 tombe avant le jour 1 du jeudi 24). */
   const seed = {'batcave-appro': {seq:2, liste:[
     {id:'a1', sujet:'Anatomía I T1 · homéostasie', matiere:'Anatomía I', tema:'1', nom:'homéostasie',
-     date:'2026-09-23', notes:[{lag:7, n:1, d:'2026-09-27'}]},
+     date:'2026-09-30', notes:[{lag:7, n:1, d:'2026-10-04'}]},
     {id:'a2', sujet:'Anatomía I T4 · le tissu osseux', matiere:'Anatomía I', tema:'4', nom:'le tissu osseux',
-     date:'2026-09-26', notes:[]}
+     date:'2026-10-03', notes:[]}
   ]}};
-  const { ctx, fr } = await ouvrir('2026-09-27T20:00:00+02:00', seed);
+  const { ctx, fr } = await ouvrir('2026-10-04T20:00:00+02:00', seed);
   const c = await fr.evaluate(() => window.__bcConstats());
   const ligne = c.find(x => /🔬/.test(x)) || '';
   ok(ligne, 'la revue du dimanche porte une ligne Approfondir : ' + ligne);

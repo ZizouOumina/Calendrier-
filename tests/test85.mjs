@@ -47,7 +47,8 @@ const CHARNIERES = [
   ['le premier jour',           '2026-09-14', 'es-1'],
   ['au milieu de la phase 1',   '2026-10-02', 'es-1'],
   ['dernier jour de la phase 1','2026-10-18', 'es-1'],
-  ['premier jour sans phase',   '2026-10-23', null],
+  ['dernier jour de la phase',  '2026-10-23', 'es-1'],
+  ['premier jour sans phase',   '2026-10-24', null],
   ['fin novembre, sans phase',  '2026-11-29', null],
   ['debut decembre, sans phase','2026-11-30', null],
   ['pendant les vacances',      '2026-12-28', 'vacances'],
@@ -111,9 +112,10 @@ console.log('\n== 276) Les 182 jours, un par un : la grille ne trébuche jamais 
   ok(bilan.vides.length === 0, 'aucune grille vide ni bloc sans nom' + (bilan.vides.length ? ' — ' + bilan.vides.slice(0,3).join(', ') : ''));
   /* Les vacances de Noel remplacent le travail par du temps libre : 15 jours a zero. */
   ok(bilan.phases['vacances'] === 15, 'les 15 jours de vacances de Noël sont bien une période (obtenu ' + bilan.phases['vacances'] + ')');
-  /* 14 septembre -> 22 octobre inclus = 39 jours. La fin est passee du 18 au 22 octobre
-     dans la nuit du 20 au 21 septembre : « pile un mois » apres le jour 1 du 22. */
-  ok(bilan.phases['es-1'] === 39 && bilan.phases['es-2'] === undefined, 'une seule phase Español, sur 39 jours (obtenu ' + bilan.phases['es-1'] + ' / ' + bilan.phases['es-2'] + ')');
+  /* 14 septembre -> 23 octobre inclus = 40 jours. La fin est passee du 18 au 22 octobre
+     dans la nuit du 20 au 21 septembre (« pile un mois » apres le jour 1 du 22), puis au
+     23 le matin du 23 septembre, avec le jour 1 decale d'un jour. */
+  ok(bilan.phases['es-1'] === 40 && bilan.phases['es-2'] === undefined, 'une seule phase Español, sur 40 jours (obtenu ' + bilan.phases['es-1'] + ' / ' + bilan.phases['es-2'] + ')');
   ok(bilan.phases['partiels'] > 0, 'le mode partiels occupe ' + bilan.phases['partiels'] + ' jours de janvier');
   /* La revision est la seule constante du programme : elle ne depend pas de la phase.
      Sur 182 jours moins les 15 de vacances et le regime de partiels, elle reste massive. */

@@ -97,11 +97,13 @@ console.log('\n== 200) Depuis l\'appli : tout est effacé ici et dans le cloud, 
        Nuit du 20 au 21 : le depart passe au MARDI 22, le lundi 21 sort du compte
        -> 34,7 tombe a 31,2 h.
        Soir du 22 : le depart passe au MERCREDI 23 apres une nuit blanche et un cours
-       manque, le mardi 22 sort du compte -> 31,2 tombe a 27,2 h. Le chiffre n'est jamais
+       manque, le mardi 22 sort du compte -> 31,2 tombe a 27,2 h.
+       Matin du 23 : encore une nuit blanche, le depart passe au JEUDI 24, le mercredi 23
+       sort du compte -> 27,2 tombe a 23,2 h. Le chiffre n'est jamais
        ecrit a la main : il est ce que la grille contient sur le mois, a 89 %. */
   const objs = c['batcave-objectifs'] && c['batcave-objectifs'].liste || [];
   const revSept = objs.find(o => o.id === 'M2026-09:revision_h'), revT1 = objs.find(o => o.id === 'T1:revision_h'), sommeilSept = objs.find(o => o.id === 'M2026-09:sommeil_moy');
-  ok(!!revSept && revSept.debut === '2026-09-08' && revSept.cible === 27.2, 'Révision de septembre : repart du 8, cible ramenée aux jours réellement programmés → 27,2 h (' + (revSept && revSept.cible) + ')');
+  ok(!!revSept && revSept.debut === '2026-09-08' && revSept.cible === 23.2, 'Révision de septembre : repart du 8, cible ramenée aux jours réellement programmés → 23,2 h (' + (revSept && revSept.cible) + ')');
   /* Deux fois de suite ce chiffre a bouge, et jamais par accident.
      284 → 286,9 : « Projets perso 4, 5 et 6 » basculent en revision ciblee pendant les
      partiels. L'examen seme ici (16 octobre) ouvre une fenetre du 9 au 16 qui contient un
@@ -114,7 +116,9 @@ console.log('\n== 200) Depuis l\'appli : tout est effacé ici et dans le cloud, 
      dans la fenetre de partiels, donc la plage de cours liberee devient de l'annale complete,
      sa correction et de la revision ciblee. +220 min nets x 0,89 = 3,26 h, x 84/91 = 3,01 h. */
   ok(revT1 === undefined, 'plus d\'objectif de trimestre a recaler : il n\'y en a plus qu\'un palier, le mois');
-  ok(!!sommeilSept && sommeilSept.debut === '2026-09-08' && sommeilSept.cible === 7.75, 'une moyenne (sommeil, 7,75 h) repart du 8 sans changer de cible');
+  /* La cible semee de sommeil (7,75 h de temps au lit) est realignee sur le sommeil REEL
+     vise depuis le 23 septembre : elle repart du 8 avec cette cible-la, entre 6,5 et 7,75 h. */
+  ok(!!sommeilSept && sommeilSept.debut === '2026-09-08' && sommeilSept.cible > 6.5 && sommeilSept.cible < 7.75, 'une moyenne (sommeil) repart du 8 avec la cible de sommeil réel (' + (sommeilSept && sommeilSept.cible) + ' h)');
   await page.waitForTimeout(2200);   /* rechargement automatique */
   await page.frameLocator('#f').locator('#dash-plan').waitFor({ state:'attached', timeout:15000 });
   const fr2 = page.frames().find(x => x.url().includes('batcave.html'));

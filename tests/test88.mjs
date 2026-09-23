@@ -148,19 +148,20 @@ console.log('\n== 292) L\'agenda Google : ni 🦇 Cours, ni 🦇 Temps libre =='
 console.log('\n== 293) Sans dates d\'examen, la Batcave le dit — et se taît dès la première saisie ==');
 {
   /* Le seuil est PROGRAMME_DEBUT + 31 jours. Il suit donc le depart : 22 sept. + 31
-     donnait le 23 octobre ; depuis que le jour 1 est au 23 septembre, c'est le 24. */
-  const { ctx, fr } = await ouvrir('2026-10-23T09:00:00+02:00');
+     donnait le 23 octobre, 23 sept. + 31 le 24 ; depuis que le jour 1 est au 24 septembre,
+     c'est le 25. */
+  const { ctx, fr } = await ouvrir('2026-10-24T09:00:00+02:00');
   const a = await fr.evaluate(() => document.getElementById('dash-plan').innerText);
-  ok(!/Aucune date d’examen/.test(a), 'le 23 octobre, la veille du seuil, rien encore');
+  ok(!/Aucune date d’examen/.test(a), 'le 24 octobre, la veille du seuil, rien encore');
   await ctx.close();
 }
 {
-  const { ctx, fr } = await ouvrir('2026-10-24T09:00:00+02:00');
+  const { ctx, fr } = await ouvrir('2026-10-25T09:00:00+02:00');
   const v = await fr.evaluate(() => ({
     t: document.getElementById('dash-plan').innerText,
     btn: document.querySelectorAll('#dash-plan [data-ouvrir="etudes"]').length
   }));
-  ok(/Aucune date d’examen saisie/.test(v.t), 'le 24 octobre, la ligne apparaît');
+  ok(/Aucune date d’examen saisie/.test(v.t), 'le 25 octobre, la ligne apparaît');
   ok(/pas de mode partiels/.test(v.t) && /sommeil majoré/.test(v.t), 'et elle dit ce qui reste éteint tant qu\'elles manquent');
   ok(v.btn === 1, 'un bouton qui ouvre l\'onglet Études');
   await ctx.close();

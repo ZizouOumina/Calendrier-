@@ -22,7 +22,7 @@ const aller = async (fr, page, p) => { await fr.evaluate(pg => document.querySel
 const local = (fr,k) => fr.evaluate(x => JSON.parse(localStorage.getItem(x) || 'null'), k);
 const ligne = (fr, titre) => fr.evaluate(t => { const r = [...document.querySelectorAll('#obj-liste .obj-row')].find(x => x.querySelector('.titre').innerText.startsWith(t)); return r ? { txt: r.innerText.replace(/\s+/g,' '), led: r.querySelector('.obj-led').className } : null; }, titre);
 
-const MI_SEPT = '2026-09-23T10:00:00+02:00';   /* premier jour du programme (mercredi 23, decale le soir du 22) */
+const MI_SEPT = '2026-09-24T10:00:00+02:00';   /* premier jour du programme (jeudi 24, decale le matin du 23) */
 /* Le 15 est le JOUR 1 : la regle « trop tot pour juger » met tout « dans les clous ».
    Pour lire de vrais verdicts il faut une periode entamee : mardi 22, une semaine
    plus tard, ou 46,3 % de la revision de septembre et 44,4 % des seances sont passes. */
@@ -55,7 +55,9 @@ console.log('\n== 112) Semis : un seul palier, le mois ==');
      porte donc plus que huit jours de programme, et sa cible de revision tombe de 40,7 a
      35,5 h. Elle n'est jamais ecrite a la main : c'est ce que la grille contient sur le
      mois, a 89 %. */
-  ok(m9 && m9.cible === 35.5, 'révision de septembre calculée depuis la grille, à partir du 23 : 35,5 h (' + (m9 && m9.cible) + ')');
+  /* Et au JEUDI 24 le matin du 23, apres une deuxieme nuit blanche : sept jours de
+     programme en septembre, la cible passe a 30,3 h. */
+  ok(m9 && m9.cible === 30.3, 'révision de septembre calculée depuis la grille, à partir du 24 : 30,3 h (' + (m9 && m9.cible) + ')');
   ok(m9 && m9.auto === true, 'la cible est marquée automatique : elle suivra la grille');
   ok(!o.liste.some(x => /exo:|snus|eau_moy|depenses_var/.test(x.metrique)),
      'ni niveaux, ni snus, ni eau, ni dépenses : ils ne sont plus semés du tout');
@@ -70,7 +72,7 @@ console.log('\n== 113) Comparaison sur des données réelles ==');
     const j1 = await ouvrir(MI_SEPT, Object.assign({ 'batcave-sessions': sessions }, journaux));
     await aller(j1.fr, j1.page, 'objectifs');
     const r1 = await ligne(j1.fr, 'Révision'), s1 = await ligne(j1.fr, 'Séances');
-    ok(r1 && /attendu 2,8 h/.test(r1.txt), 'au matin du jour 1, la grille n\'attend que 2,8 h — les jours d\'avant ne comptent plus (' + (r1 && (r1.txt.match(/attendu [^ ]+ h/) || [''])[0]) + ')');
+    ok(r1 && /attendu 2,0 h/.test(r1.txt), 'au matin du jour 1, la grille n\'attend que 2,0 h — les jours d\'avant ne comptent plus (' + (r1 && (r1.txt.match(/attendu [^ ]+ h/) || [''])[0]) + ')');
     /* Ce que ce bloc garde, c'est qu'AUCUN objectif n'est en RETARD au matin du jour 1 :
        c'est le bug d'origine, « Projets perso −29,9 h » des la premiere ouverture. La
        Revision y lit desormais « atteint » et non « dans les clous », et c'est exact, pas
@@ -84,12 +86,15 @@ console.log('\n== 113) Comparaison sur des données réelles ==');
   await aller(fr, page, 'objectifs');
   const rev = await ligne(fr, 'Révision');
   /* 40 h ont bien été travaillées du 1er au 10 : le RÉEL les garde. L'ATTENTE, elle, ne
-     compte que le programme : 35,5 h de cible × la part de septembre écoulée = 11,8 h
-     (le programme court du 23 au 30, et le 25 à 10:00 en a consommé une bonne part).
+     compte que le programme : 30,3 h de cible × la part de septembre écoulée = 6,6 h
+     (le programme court du 24 au 30, et le 25 à 10:00 en a consommé un jour et un matin).
      Une séance faite avant le départ compte, mais ne crée pas de retard. */
-  ok(rev && /réel 40,0 h/.test(rev.txt) && /attendu 11,8 h/.test(rev.txt) && /avance|atteint/.test(rev.led), 'Révision : réel 40,0 h pour 11,8 h attendues au 25 à 10:00 → en avance : ' + (rev && rev.txt.slice(0, 80)));
+  ok(rev && /réel 40,0 h/.test(rev.txt) && /attendu 6,6 h/.test(rev.txt) && /avance|atteint/.test(rev.led), 'Révision : réel 40,0 h pour 6,6 h attendues au 25 à 10:00 → en avance : ' + (rev && rev.txt.slice(0, 80)));
   const som = await ligne(fr, 'Sommeil');
-  ok(som && /réel 7,50 h/.test(som.txt) && /\bok\b/.test(som.led), 'Sommeil moyen 7,50 h sur 7,75 visées (97 %) → dans les clous');
+    /* 23 septembre : la cible de sommeil est du sommeil REEL (Bevel), le temps au lit × 0,88.
+     L'objectif seme a 7,75 h -- une moyenne de temps au lit -- passe a la moyenne reelle
+     visee sur une semaine de la grille (7,33 h) : 7,50 h de vrai sommeil l'atteignent. */
+  ok(som && /réel 7,50 h/.test(som.txt) && /attendu 7,33 h/.test(som.txt) && /atteint|\bok\b/.test(som.led), 'Sommeil moyen 7,50 h réelles sur 7,33 visées → atteint : ' + (som && som.txt.slice(0, 60)));
   /* Plus de ligne « Eau » : eau_moy est sortie des metriques semees le 19 septembre,
      quand il a ramene les objectifs a un seul palier et aux six mesures qui se pilotent. */
   ok(!(await ligne(fr, 'Eau')), 'plus d\'objectif d\'eau : il ne reste que les six métriques du mois');
@@ -108,7 +113,7 @@ console.log('\n== 114) Éditer une cible, supprimer, ajouter ==');
   await page.waitForTimeout(250);
   const rev = await ligne(fr, 'Révision');
   ok((await local(fr, 'batcave-objectifs')).liste.find(x => x.id === 'M2026-09:revision_h').cible === 60, 'cible enregistrée : 60');
-  ok(rev && /attendu 20,0 h/.test(rev.txt) && /avance/.test(rev.led), 'recalcul immédiat sur une cible de 60 h : attendu 20,0 h, 40 h réelles → en avance (' + (rev && rev.txt.slice(0, 70)) + ')');
+  ok(rev && /attendu 13,0 h/.test(rev.txt) && /avance/.test(rev.led), 'recalcul immédiat sur une cible de 60 h : attendu 13,0 h, 40 h réelles → en avance (' + (rev && rev.txt.slice(0, 70)) + ')');
   ok((await local(fr, 'batcave-objectifs')).liste.find(x => x.id === 'M2026-09:revision_h').auto === false, 'une cible saisie à la main sort du calcul automatique');
   const avant = (await local(fr, 'batcave-objectifs')).liste.length;
   await fr.evaluate(() => document.querySelector('[data-obj-del="M2026-09:sommeil_moy"]').click());
@@ -153,7 +158,7 @@ console.log('\n== 116) Tableau de bord : objectifs du mois ==');
   await fr.evaluate(() => { if(document.getElementById('dash-more').hidden) document.getElementById('dash-more-toggle').click(); });
   const d = await fr.evaluate(() => ({ n: document.querySelectorAll('#dash-goals li').length, leds: document.querySelectorAll('#dash-goals .obj-led').length, txt: document.getElementById('dash-goals').innerText.replace(/\s+/g,' '), note: document.getElementById('dash-goals-note').innerText }));
   ok(d.n === 6 && d.leds === 6, '6 objectifs du mois avec leur LED — un seul palier depuis le 19 septembre');
-  ok(/Révision 40,0 \/ 35,5 h/.test(d.txt), 'ligne compacte réel / cible : ' + d.txt.slice(0, 60));
+  ok(/Révision 40,0 \/ 30,3 h/.test(d.txt), 'ligne compacte réel / cible : ' + d.txt.slice(0, 60));
   ok(/\/6 dans les clous · Septembre 2026/.test(d.note), 'note : ' + d.note);
   await ctx.close();
 }
