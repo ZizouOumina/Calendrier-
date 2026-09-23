@@ -5438,7 +5438,7 @@
        jusqu'ici l'examen le plus proche, et proposait donc parfois une autre matière que
        celle écrite deux lignes plus haut dans le planning. */
     var conseil = surAnki ? null
-                : ((pPartiels && bloc ? matierePourBloc(todayISO, bloc[0]) : null) || matiereConseillee(todayISO));
+                : ((pPartiels ? matierePourBloc(todayISO) : null) || matiereConseillee(todayISO));
     var defaut = surAnki ? MATIERE_SANS : ((conseil && conseil.m) || derniereMatiere() || MATIERES_SEED[0].court);
     /* #ask-msg est rempli en textContent : la phrase reste du texte, sans balise. */
     var motif = conseil ? ' Proposé : ' + motifMatiere(conseil) + '.' : '';
@@ -7627,21 +7627,19 @@
   }
   function toursDuJour(f){ return Math.max(1, Math.round(f.series * facteurTours())); }
   var DAY_NAMES = {1:'Lun',2:'Mar',3:'Mer',4:'Jeu',5:'Ven',6:'Sam',0:'Dim'};
-  /* ===== Sport pendant les partiels =====
-     Deux séances au lieu de quatre : lundi (haut lourd) et jeudi (haut volume). Le mardi et
-     le samedi passent en jour off. Le corps entretient, il ne progresse pas cette semaine ;
-     c'est le sommeil et la révision qui comptent. Tout ce qui lit le type d'un jour passe
-     par ici : la bande de la semaine, le score, les taux, la cible du mois. */
-  var SPORT_PARTIELS_JOURS = [1, 4];
+  /* ===== Le sport ne s'allege plus pendant les partiels ===== (23 septembre)
+     Il y avait ici deux seances au lieu de quatre en semaine d'examen -- lundi et jeudi
+     seulement, mardi et samedi en off. Sa decision : « pendant les partiels les seances
+     restent les memes ». Et le fond lui donne raison : une journee d'examen n'est pas plus
+     chargee que les autres, elle l'est MOINS (pas de cours, pas de trajet, quatre heures
+     rendues). Couper le sport la ou il y a le plus de temps libre etait un reflexe, pas un
+     calcul -- et casser une serie d'entrainement au milieu d'un semestre coute plus cher
+     que les quarante minutes qu'elle rend. */
   /* Le PLAN : ce que la grille prevoit ce jour-la, partiels compris. C'est lui qui compte
      dans « prevu » (minutesPrevuesJour) : une seance faite un jour off est un bonus, elle
      ne doit pas gonfler la cible du mois. */
   function typeSportGrille(iso){
-    iso = iso || todayISO;
-    var t = TYPE_BY_DAY[dowDe(iso)];
-    if(!t || t === 'Off') return t;
-    if(typeof periodePartiels === 'function' && periodePartiels(iso) && SPORT_PARTIELS_JOURS.indexOf(dowDe(iso)) < 0) return 'Off';
-    return t;
+    return TYPE_BY_DAY[dowDe(iso || todayISO)];
   }
   /* ===== Seance choisie a la main =====
      Un jour off ou un echange de seance (« aujourd'hui je fais le bas, je decale le haut »)
@@ -7660,7 +7658,6 @@
     if(c && seanceValide(c)) return c;
     return typeSportGrille(iso);
   }
-  function sportAllege(iso){ return typeof periodePartiels === 'function' && !!periodePartiels(iso || todayISO); }
   var todayType = typeSportDe(todayISO);
   /* Choisir (ou annuler) la seance du jour. Les cases deja cochees appartiennent a l'ancienne
      seance : on les garde telles quelles, elles ne concernent pas les exercices de la nouvelle. */
@@ -8694,25 +8691,6 @@
      annales ciblees, les blocs Projets perso de la revision ciblee sur la matiere la plus
      proche, Comprendre des fiches de synthese, et l'espagnol garde un bloc par jour. */
   var PARTIELS_AVANT_J = 7, PARTIELS_ECART_J = 21;
-  var RENOMMAGES_PARTIELS = {
-    'Projets perso matinal': 'Révision ciblée',
-    /* Un seul bloc d'espagnol par jour pendant les partiels : le PREMIER bloc de projet de
-       la journee -- 13:00 en semaine, 11:20 le vendredi et le week-end, si bien qu'aucun jour
-       n'en manque. Lecture, Anki Español ou conversation : rien qui demande de la memoire
-       fraiche. Tous les autres blocs de projet passent en revision ciblee. */
-    'Projets perso 1': 'Español',
-    'Projets perso 2': 'Révision ciblée',
-    /* Les blocs nes de l'emploi du temps reel du semestre 1 (lundi 15:00, mardi 20:30). Sans ces lignes ils restaient « Projets perso » PENDANT les partiels : trois
-       heures de dropshipping en semaine d'examen, comptees en projets et non en revision, et
-       la regle « un seul bloc Español par jour » sautait aussi, le mardi en portant deux. */
-    'Projets perso 4': 'Révision ciblée',
-    'Projets perso 5': 'Révision ciblée',
-    'Projets perso 6': 'Révision ciblée',
-    'Étudier en avance': 'Annales ciblées',
-    'Approfondir': 'Annales ciblées',
-    'Lire': 'Révision ciblée',
-    'Clore le cours du jour': 'Fiches de synthèse'
-  };
   function matiereExamenSuivante(iso){
     iso = iso || todayISO;
     var meilleur = null;
@@ -8753,34 +8731,16 @@
     });
     return mats.sort(function(a, b){ return b.besoin - a.besoin || a.iso.localeCompare(b.iso) || a.m.localeCompare(b.m); });
   }
-  /* Les blocs ciblés du jour, dans l'ordre de la grille : chacun reçoit sa matière. */
-  function blocsCiblesDuJour(iso){
-    iso = iso || todayISO;
-    var g = grilleDe(cleJournee(dowDe(iso)), iso), out = [];
-    g.forEach(function(b){ if(/^(Révision ciblée|Annales ciblées|Fiches de synthèse)/.test(b[1])) out.push(b[0]); });
-    return out;
-  }
-  function matierePourBloc(iso, heure){
+  /* La matiere a reviser maintenant : celle de la session dont le besoin est le plus fort
+     (ce qu'il reste a faire divise par les jours qui restent avant SON examen), pas celle
+     dont l'examen est le plus proche. Elle nommait autrefois chaque « bloc cible » de la
+     grille d'examen ; cette grille n'existe plus -- les journees de partiels sont des
+     journees sans cours ordinaires -- mais le calcul, lui, reste juste et sert au lanceur
+     de Pomodoro, qui propose la matiere du bloc en cours. */
+  function matierePourBloc(iso){
     var ordre = besoinsPartiels(iso);
-    if(!ordre.length) return null;
-    var blocs = blocsCiblesDuJour(iso), i = blocs.indexOf(heure);
-    if(i < 0) i = 0;
-    return ordre[i % ordre.length];
+    return ordre.length ? ordre[0] : null;
   }
-  /* La consigne nomme la matière de CE bloc-là (répartition ci-dessus), pas la plus proche. */
-  function consigneCiblee(iso, heure, avant, apres){
-    var x = matierePourBloc(iso, heure) || matiereExamenSuivante(iso);
-    if(!x) return avant + apres;
-    return avant + x.m + ' (examen le ' + fmtDate(x.iso) + ', J-' + x.jours + (x.heures !== undefined ? ' · ' + fmtNombre(x.heures, 1) + ' h faites sur 30 jours' : '') + ')' + apres;
-  }
-  var CONSIGNES_PARTIELS = {
-    'Révision ciblée': function(dow, iso, heure){ return consigneCiblee(iso, heure, 'Révision ciblée : ', '. Annales de cette matière en conditions, puis les cartes ratées ; jamais de relecture passive. La matière est choisie par ce qu\'il te reste à faire divisé par les jours qui restent, pas par la date la plus proche.'); },
-    'Annales ciblées': function(dow, iso, heure){ return consigneCiblee(iso, heure, 'Une annale complète de ', ' en conditions, 55 min sans support, puis correction et barème dans le projet « Dentaire », commande « annales ».'); },
-    'Fiches de synthèse': function(dow, iso, heure){ return consigneCiblee(iso, heure, 'Une page recto par chapitre de ', ' : ce qui doit être su par cœur, écrit de mémoire d\'abord, vérifié ensuite. Coucher à l\'heure : la nuit consolide.'); },
-    'Anki 1': "Toutes les échéances, même pendant les partiels : c'est ce qui rend la révision intensive inutile. File vide avant la fin : les cartes ratées de la matière la plus proche.",
-    'Español': "Un seul bloc d'espagnol par jour pendant les partiels : lecture, Anki Español ou conversation, rien qui demande de la mémoire fraîche.",
-    'Sport': "Mode partiels : séance allégée, deux séances par semaine (lundi et jeudi). Le corps entretient, il ne progresse pas cette semaine — c'est le sommeil qui compte."
-  };
   function sessionsPartiels(){
     if(typeof examensState === 'undefined') return [];
     var dates = Object.keys(examensState).map(function(m){ return examensState[m]; }).sort();
@@ -8809,9 +8769,11 @@
     var x = sessionsPartiels().filter(function(y){ return iso >= y.debut && iso <= y.fin; })[0];
     if(!x) return null;
     var es = (typeof PERIODES_GRILLE !== 'undefined' && PERIODES_GRILLE || []).filter(function(q){ return iso >= q.debut && iso <= q.fin; })[0];
+    /* Plus de renommages ni de consignes propres : une journee de partiels est une journee
+       SANS COURS (voir sansCoursLe), et rien d'autre. La periode ne garde que son NOM, pour
+       que la barre annonce « Partiels · J-N » et que le Plan du jour sache quoi rappeler. */
     return {id:'partiels', nom:'Partiels', partiels:true, debut:x.debut, fin:x.fin, premier:x.premier, n:x.n, suite: es ? es.nom : 'grille type',
-            description:'Mode partiels, de J-7 au dernier examen : Anki intact, Étudier en avance → Annales ciblées, Projets perso → Révision ciblée répartie entre les matières de la session (celle qui en a le plus besoin passe en premier), Clore → Fiches de synthèse, un seul bloc Español par jour, sport allégé à deux séances (lundi et jeudi), sommeil visé +30 min.',
-            renommages: RENOMMAGES_PARTIELS, consignes: CONSIGNES_PARTIELS};
+            description:'De J-7 au dernier examen : tes journées ne changent pas, tu n\'as simplement plus cours. La plage de l\'après-midi se libère (projets, Lire, Réexpliquer), le dîner passe à 19:00 et le coucher à 21:00 — comme un jour férié. Le sport, lui, ne bouge pas : les quatre séances restent.'};
   }
   /* Le panneau Journees exceptionnelles (Calendrier) : les journees saisies et celles deduites
      des examens, avec les blocs que chacune sacrifie. */
@@ -12745,7 +12707,7 @@
     var st = sportTotals(todayType);
     document.getElementById('dash-sport').innerHTML =
       (todayType === 'Off'
-        ? '<p style="font-size:12px; color:var(--ink-faint);">Jour off — pas de séance, rien à cocher.' + (sportAllege() ? ' <b style="color:var(--warn);">Mode partiels : deux séances par semaine, lundi et jeudi.</b>' : ' Prochaine séance : <b style="color:var(--ink-dim)">' + typeSportDe(isoDecale(todayISO, 1)) + (typeSportDe(isoDecale(todayISO, 1)) === 'Off' ? ' non, ' + typeSportDe(isoDecale(todayISO, 2)) : '') + '</b>.') + ' <button type="button" class="lien-page" data-ouvrir="sport">Je m’entraîne quand même →</button></p>'
+        ? '<p style="font-size:12px; color:var(--ink-faint);">Jour off — pas de séance, rien à cocher.' + (' Prochaine séance : <b style="color:var(--ink-dim)">' + typeSportDe(isoDecale(todayISO, 1)) + (typeSportDe(isoDecale(todayISO, 1)) === 'Off' ? ' non, ' + typeSportDe(isoDecale(todayISO, 2)) : '') + '</b>.') + ' <button type="button" class="lien-page" data-ouvrir="sport">Je m’entraîne quand même →</button></p>'
         : '<div class="progress-row" style="margin-bottom:8px;"><span class="plabel">'+todayType+'</span><div class="progress-track"><div class="progress-fill" style="width:'+(st.total?Math.round(100*st.checked/st.total):0)+'%"></div></div><span class="progress-count">'+st.checked+'/'+st.total+'</span></div>'+
           '<p style="font-size:12px; color:var(--ink-faint);">Séance du jour : <b style="color:var(--ink-dim)">'+todayType+'</b>' + (facteurTours() < 1 ? ' · semaine ' + semaineProgramme() + ' du programme, tours × ' + (facteurTours() === 0.5 ? '½' : '¾') : '') + '</p>') +
       (function(){
@@ -13428,6 +13390,13 @@
     if(v) return true;
     /* Des vacances declarees sont des jours sans cours : meme journee, meme grille. */
     if(enVacances(iso)) return true;
+    /* Et les PARTIELS aussi, depuis le 23 septembre. Sa phrase : « mes journees ne changent
+       pas, juste je n'ai pas cours ». C'est exactement la definition d'une journee sans
+       cours -- la plage de l'apres-midi se libere, le reste de la journee de travail tient,
+       diner 19:00 et coucher 21:00. Une seule journee de remplacement dans toute
+       l'application, celle qui sert deja aux feries, a Noel et a l'entre-deux des semestres,
+       au lieu d'une grille d'examen qui lui etait propre. */
+    if(typeof periodePartiels === 'function' && periodePartiels(iso)) return true;
     return !semestreDe(iso);
   }
   /* ===== L'agenda d'un jour sans cours =====
@@ -14573,15 +14542,16 @@
     var plan = grilleBase(cle || scheduleKeyForToday(), iso);
     return plan.length ? plan[0][0] : '05:00';
   }
-  /* Pendant les partiels, la cible de sommeil monte d'une demi-heure : c'est la nuit qui
-     consolide ce qui a été révisé, et c'est la première chose qu'on sacrifie à tort. */
-  var SOMMEIL_PARTIELS_BONUS = 0.5;
+  /* Il y avait ici un bonus de sommeil de 30 min pendant les partiels. Il est parti avec la
+     grille d'examen : une journee de partiels est desormais une journee SANS COURS, qui
+     couche a 21:00 au lieu de 21:35 et leve a la meme heure. La cible monte donc deja de
+     35 minutes, lue dans la grille. Ajouter le bonus par-dessus l'aurait comptee deux fois. */
   function objectifSommeilPour(iso){
     var d = new Date(iso + 'T00:00:00');
     var hier = (d.getDay() + 6) % 7;
     var couche = timeToMinutes(heureCoucher(cleJournee(hier), isoDecale(iso, -1)));
     var base = (24*60 - couche + timeToMinutes(heureLever(cleJournee(d.getDay()), iso))) / 60;
-    return base + (typeof periodePartiels === 'function' && periodePartiels(iso) ? SOMMEIL_PARTIELS_BONUS : 0);
+    return base;
   }
   function objectifSommeil(){ return objectifSommeilPour(todayISO); }
   function scheduleKeyForToday(){ return cleJournee(weekday); }
