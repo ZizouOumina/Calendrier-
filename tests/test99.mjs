@@ -43,13 +43,13 @@ const lignes = fr => fr.evaluate(() => [...document.querySelectorAll('#courses-g
   return { nom: lab.textContent.trim(), ou: tag ? tag.textContent.trim() : null };
 }));
 
-console.log('\n== 320) Les 17 articles portent tous une adresse ==');
+console.log('\n== 320) Les 16 articles portent tous une adresse ==');
 {
   /* Le 19 septembre, l'ancre : toutes les categories sont dues, donc la liste entiere
      est affichee d'un coup. C'est le seul jour ou ce test voit les 46 lignes. */
   const { ctx, fr } = await courses('2026-09-19T10:00:00+02:00');
   const l = await lignes(fr);
-  ok(l.length === 17, '17 articles affichés le 19 (' + l.length + ')');
+  ok(l.length === 16, '16 articles affichés le 19 — le jambon est sorti le 23 septembre (' + l.length + ')');
   const muets = l.filter(x => !x.ou);
   ok(!muets.length, 'aucun article sans adresse (' + (muets.map(x => x.nom).join(', ') || 'aucun') + ')');
   /* Cinq destinations, pas une de plus : une faute de frappe dans OU_ARTICLE passerait
@@ -69,7 +69,7 @@ console.log('\n== 321) Le halal : viande et jambon vont a la boucherie ==');
   const chez = n => (l.find(x => x.nom.indexOf(n) === 0) || {}).ou;
   ok(chez('Poulet') === 'Boucherie', 'Poulet → Boucherie (' + chez('Poulet') + ')');
   ok(chez('Viande hachée 5 %') === 'Boucherie', 'Viande hachée → Boucherie (' + chez('Viande hachée 5 %') + ')');
-  ok(chez('Jambon') === 'Boucherie', 'Jambon → Boucherie : le halal ne se vend qu\'à la boucherie (' + chez('Jambon') + ')');
+  ok(chez('Jambon') === undefined, 'plus de jambon dans la liste : deux œufs à la collation depuis le 23 septembre');
   /* Le fromage n'est pas de la viande, mais sa presure l'est : la pastille doit porter
      la mention qui lui evite de prendre le premier paquet venu. */
   ok(/cuajo vegetal/.test(chez('Fromage en tranches') || ''), 'Fromage en tranches → la pastille rappelle « cuajo vegetal » (' + chez('Fromage en tranches') + ')');
@@ -96,8 +96,8 @@ console.log('\n== 322) Les trajets qui font gagner de l\'argent ==');
      'le surgelé aussi : les légumes verts (' + chez('Légumes verts surgelés') + ')');
   /* La viande est halal, donc elle ne vient QUE de la boucherie -- aucune des trois
      lignes ne doit jamais glisser vers un supermarche. */
-  ok(chez('Poulet') === 'Boucherie' && chez('Viande hachée') === 'Boucherie' && chez('Jambon') === 'Boucherie',
-     'la viande halal vient de la boucherie, les trois lignes (' + chez('Poulet') + ')');
+  ok(chez('Poulet') === 'Boucherie' && chez('Viande hachée') === 'Boucherie',
+     'la viande halal vient de la boucherie, les deux lignes ('  + chez('Poulet') + ')');
   /* Mercadona n'a plus aucune ligne. Ce n'est pas un oubli : ce qu'il y prenait etait
      l'hygiene et le menage, sortis de la liste le 20 septembre, et son skyr n'y existait
      pas. Une pastille « Mercadona » qui reapparaitrait serait donc un trajet pour rien. */
@@ -119,7 +119,7 @@ console.log('\n== 323) La pastille n\'a rien cassé ==');
     coche: document.querySelector('#courses-grid .cat-card li').classList.contains('checked')
   }));
   ok(apres.coche, 'cliquer la pastille coche bien l\'article — elle est dans le label');
-  ok(avant !== apres.txt && /1\/17/.test(apres.txt), 'le compteur suit : ' + apres.txt.trim());
+  ok(avant !== apres.txt && /1\/16/.test(apres.txt), 'le compteur suit : ' + apres.txt.trim());
   /* Coche = « j'ai deja ce qu'il faut » aussi bien que « achete ». L'adresse doit rester
      lisible-mais-en-retrait, jamais disparaitre : il peut decocher. */
   const opac = await fr.evaluate(() => getComputedStyle(document.querySelector('#courses-grid .cat-card li .ou-tag')).opacity);

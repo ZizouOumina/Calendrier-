@@ -41,8 +41,10 @@ console.log('\n== 180) Sans ajustement : plan de base, liste = plan × 7 ==');
      2 toutes les 5, et le pot de creatine tous les 3 mois -- la seule ligne qui ne sorte
      pas du plan de repas, parce qu'elle s'avale tous les soirs et que rien d'autre ne la
      rachete. Le fromage a rejoint les surgeles le 22 septembre : c'est le cycle qu'il
-     portait deja, et « Chaque semaine » redevient vrai pour ses huit lignes. */
-  ok(c.n === 17, '17 articles au total, tous rythmes confondus (' + c.n + ')');
+     portait deja, et « Chaque semaine » redevient vrai pour ses huit lignes.
+     Le 23 septembre, le jambon sort (deux oeufs a la collation) : sept lignes chaque
+     semaine, seize en tout. */
+  ok(c.n === 16, '16 articles au total, tous rythmes confondus (' + c.n + ')');
   /* Deux chiffres par ligne, et il faut les deux : ce qu'on ACHETE (un multiple du
      conditionnement) et ce que le PLAN demande (la somme des 7 jours de repas). Riz
      135 g/jour -> 945/semaine -> 3 780 sur 4 semaines, donc 4 paquets de 1 kg ;
@@ -80,10 +82,10 @@ console.log('\n== 180) Sans ajustement : plan de base, liste = plan × 7 ==');
   /* Les legumes surgeles sont passes a DEUX semaines le 20 septembre : 10 kg par passage
      ne rentraient pas dans son congelateur. La consommation n'a pas bouge (2 450 g par
      semaine), c'est le rythme de rachat qui a change -- 5 kg tous les quinze jours. */
-  ok(c.items.some(t => /^Œufs — 18\b/.test(t) && /demande 14 œufs/.test(t))
+  ok(c.items.some(t => /^Œufs — 30\b/.test(t) && /demande 28 œufs/.test(t))
   && c.items.some(t => /^Légumes verts surgelés — 5 kg\b/.test(t) && /demande 4\u202f900 g/.test(t))
   && c.items.some(t => /^Huile d'olive — 2 L\b/.test(t) && /1 bouteille de 2 L/.test(t) && /demande 1\u202f575 ml/.test(t)),
-     'œufs 18 pour 14, surgelés 5 kg pour 4 900 g sur deux semaines, huile 2 L pour 1 575 ml sur cinq');
+     'œufs 30 pour 28, surgelés 5 kg pour 4 900 g sur deux semaines, huile 2 L pour 1 575 ml sur cinq');
   /* Aucun stock n'est suppose : rien ne dit « tu en as », rien n'est repousse a plus tard. */
   ok(!c.items.some(t => /tu en as|il t’en reste|à racheter le/.test(t)), 'aucune ligne ne suppose un stock : tout part de zéro, il coche ce qu\'il a');
   /* Le contraire de ce que ce fichier tenait jusqu'au 20 septembre : ces lignes ne
@@ -135,13 +137,13 @@ console.log('\n== 181) Avec +150 kcal : le dîner et les courses l\'écrivent ==
   /* 3 131 + 144 : la boucle demande +150 kcal, mais les pates s'ajustent par pas de 10 g,
      donc elle en ajoute 144. On annonce l'ecart REEL entre les deux journees, pas la
      consigne -- sinon la soustraction affichee ne tombe pas juste. */
-  ok(/\/ 3275 kcal \(plan 3131 \+ 144\)/.test(sub), 'cible du jour : ' + sub);
+  ok(/\/ 3374 kcal \(plan 3230 \+ 144\)/.test(sub), 'cible du jour : ' + sub);
   /* cocher tout le dîner : l\'apport consommé porte les 150 kcal */
   /* un clic redessine la grille : on re-cherche la première case non cochée du dîner à chaque tour */
   await fr.evaluate(() => { for(let i = 0; i < 10; i++){ const card = [...document.querySelectorAll('.meal-card')].find(c => /Dîner/.test(c.querySelector('.mtitle').textContent)); const cb = card && card.querySelector('input:not(:checked)'); if(!cb) break; cb.click(); } });
   await page.waitForTimeout(200);
   const sub2 = await fr.evaluate(() => document.getElementById('meal-kcal-sub').textContent);
-  ok(/^896 \/ 3275 kcal/.test(sub2), 'dîner coché : ' + sub2);
+  ok(/^896 \/ 3374 kcal/.test(sub2), 'dîner coché : ' + sub2);
   await page_(fr, 'courses');
   const c = await fr.evaluate(() => ({ items: [...document.querySelectorAll('#courses-grid label, #courses-grid-plus label')].map(l => l.textContent), note: document.getElementById('courses-plan-note').textContent }));
   /* L'ajustement suit le sac : +280 g par semaine font +1 120 g sur quatre semaines.
@@ -217,9 +219,10 @@ for (const jour of ['2026-09-20','2026-09-21','2026-09-22','2026-09-23','2026-09
      (faux.length ? ' — ' + faux.map(x => x.nom + ' lu « ' + x.lu +' » vs recompté « ' + x.attendu + ' »').join(' ; ') : ''));
   const cible = Number((r.sub.match(/\/ (\d+) kcal/) || [])[1]);
   ok(cible === r.jourRecompte.kcal, jour + ' : la cible du jour (' + cible + ') est la somme des cinq repas (' + r.jourRecompte.kcal + ')');
-  /* La prise de masse : besoin estime 3 084 kcal (Mifflin-St Jeor 1 688 x PAL 1,65, plus
-     300 de surplus). On exige que chaque journee de la rotation reste dans +/- 100. */
-  ok(Math.abs(r.jourRecompte.kcal - 3084) <= 100, jour + ' : ' + r.jourRecompte.kcal + ' kcal, dans les clous de la prise de masse (3 084 ± 100)');
+  /* La prise de masse : besoin estime 3 184 kcal (Mifflin-St Jeor 1 688 x PAL 1,65, plus
+     400 de surplus depuis le 23 septembre -- l'objectif passe a 72 kg, 0,31 kg par semaine
+     au lieu de 0,23). On exige que chaque journee de la rotation reste dans +/- 100. */
+  ok(Math.abs(r.jourRecompte.kcal - 3184) <= 100, jour + ' : ' + r.jourRecompte.kcal + ' kcal, dans les clous de la prise de masse (3 184 ± 100)');
   /* Proteines entre 2,0 et 2,6 g/kg a 64 kg : au-dela de 2,2 le gain s'arrete, en dessous
      de 1,6 la prise de muscle souffre. On garde une fourchette qui laisse respirer. */
   ok(r.jourRecompte.p >= 128 && r.jourRecompte.p <= 166, jour + ' : P ' + r.jourRecompte.p + ' g (' + (r.jourRecompte.p / 64).toFixed(2) + ' g/kg)');
@@ -249,8 +252,8 @@ console.log('\n== 183) La liste de courses sort du MEME plan que les repas ==');
   });
   const cles = Object.keys(r.recompte).sort();
   const faux = cles.filter(k => Math.abs(r.recompte[k] - r.lu[k]) > 0.001);
-  ok(faux.length === 0 && cles.length === 16,
-     'les 16 besoins de la semaine sont exactement la somme des repas' + (faux.length ? ' — ' + faux.map(k => k + ' : ' + r.lu[k] + ' vs ' + r.recompte[k]).join(', ') : ' (' + cles.length + ')'));
+  ok(faux.length === 0 && cles.length === 15,
+     'les 15 besoins de la semaine sont exactement la somme des repas' + (faux.length ? ' — ' + faux.map(k => k + ' : ' + r.lu[k] + ' vs ' + r.recompte[k]).join(', ') : ' (' + cles.length + ')'));
   /* Et aucun aliment du plan ne manque a la liste de courses. */
   const manquants = await fr.evaluate(() => {
     const noms = ['Petit-déjeuner','Déjeuner','Collation entraînement','Dîner','Collation soir'];

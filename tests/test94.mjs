@@ -47,7 +47,7 @@ console.log('\n== 330) Cinq catégories, toutes alimentaires, et le frais seul e
      paquet couvre presque trois semaines. Il portait déjà ce cycle-là tout en restant
      rangé dans le frais, et la catégorie annonçait donc un rythme qu'un de ses articles
      ne suivait pas. */
-  ok(/Chaque semaine/.test(hebdo.titre) && hebdo.n === 8, 'la liste hebdomadaire fait 8 articles frais (' + hebdo.n + ')');
+  ok(/Chaque semaine/.test(hebdo.titre) && hebdo.n === 7, 'la liste hebdomadaire fait 7 articles frais — le jambon est sorti le 23 septembre (' + hebdo.n + ')');
   const t = await fr.evaluate(() => document.querySelector('.page[data-page="courses"]').textContent);
   ok(!/Riz/.test(hebdo.titre + '') && /Riz — 5 kg/.test(t) && /demande 4\u202f340 g/.test(t), 'le riz est en réserve : 5 kg achetés pour 4 340 g demandés');
   ok(!/Shampooing|Cotons-tiges|Nettoyant visage|Brosse à dents|Bain de bouche|Brossettes|Crème solaire|Lessive|Dentifrice/.test(t),
@@ -71,7 +71,7 @@ console.log('\n== 331) Samedi 19 septembre : l\'ancre, tout est dû ==');
   /* Aucun stock n'est suppose : le 19, TOUTES les categories sont dues et toutes leurs
      lignes comptent. 9 frais + 1 surgele + 4 reserves + 2 (cycle de 5 semaines) + 1 pot de
      creatine = 17. Ce qu'il a deja, il le coche quand meme. */
-  ok(/\/17 articles/.test(somme), '17 articles le 19 : tout part de zéro (' + somme + ')');
+  ok(/\/16 articles/.test(somme), '16 articles le 19 : tout part de zéro (' + somme + ')');
   await ctx.close();
 }
 {
@@ -120,7 +120,7 @@ console.log('\n== 333) L\'habitude « Courses faites » reste validable ==');
     await new Promise(r => setTimeout(r, 120));
   }
   const somme = await fr.evaluate(() => document.getElementById('courses-summary').textContent);
-  ok(/^8\/8/.test(somme), 'cocher le frais suffit : ' + somme + ' (' + avant + ' cases)');
+  ok(/^7\/7/.test(somme), 'cocher le frais suffit : ' + somme + ' (' + avant + ' cases)');
   const coche = await fr.evaluate(() => {
     const l = [...document.querySelectorAll('#dash-checklist li label')].map(x => x.textContent);
     return l.some(x => /Courses/.test(x));
@@ -190,7 +190,7 @@ for (const d of ['2026-09-19', '2026-09-26', '2026-10-17', '2026-11-21']) {
   const t = await fr.evaluate(() => document.querySelector('.page[data-page="courses"]').textContent);
   /* 14 par semaine : 2 par jour au petit-dejeuner, tire du plan de repas. Mais on
      n'achete pas 14 oeufs : une boite de 12 plus une de 6 font 18. */
-  ok(/Œufs — 18/.test(t) && /demande 14 œufs/.test(t), 'les œufs : 18 achetés pour les 14 du plan');
+  ok(/Œufs — 30/.test(t) && /demande 28 œufs/.test(t), 'les œufs : 30 achetés pour les 28 du plan (deux au petit-déjeuner, deux à la collation)');
   await ctx.close();
 }
 
@@ -212,14 +212,14 @@ console.log('\n== 334d) La liste ne porte QUE de la nourriture ==');
   /* Le fromage n'est plus la 6e ligne du frais : depuis le 22 septembre il est range
      dans « Toutes les 2 semaines », derriere les surgeles, parce que c'est le cycle
      qu'il portait deja. L'ordre attendu suit donc le DOM, categorie par categorie. */
-  const ATTENDU = ['Poulet', 'Viande hachée 5 %', 'Skyr', 'Œufs', 'Jambon',
+  const ATTENDU = ['Poulet', 'Viande hachée 5 %', 'Skyr', 'Œufs',
                    'Pain complet', 'Bananes', 'Fruits (pommes, poires, oranges…)',
                    'Légumes verts surgelés', 'Fromage en tranches',
                    'Riz', 'Pâtes', 'Flocons d\'avoine', 'Miel',
                    'Beurre de cacahuète', 'Huile d\'olive', 'Créatine monohydrate'];
-  ok(lignes.length === 17, '17 lignes, pas une de plus (' + lignes.length + ')');
+  ok(lignes.length === 16, '16 lignes, pas une de plus (' + lignes.length + ')');
   ok(JSON.stringify(lignes) === JSON.stringify(ATTENDU),
-     'et ce sont exactement les dix-sept attendues' +
+     'et ce sont exactement les seize attendues' +
      (JSON.stringify(lignes) === JSON.stringify(ATTENDU) ? '' : ' — reçu : ' + lignes.join(' · ')));
   /* Nommement, les rayons qui sont sortis : hygiene, maison, menage, brosse a dents. */
   const SORTIS = ['Shampooing', 'Après-shampooing', 'Gel douche', 'Nettoyant visage', 'Dentifrice',

@@ -59,8 +59,8 @@ console.log('\n== 326) Deux sorties par semaine, dans le temps libre ==');
   /* Et apres le 22 octobre, quand la phase Español rend « Projets perso 2 » a lui-meme :
      la course ne doit pas l'avoir mange en chemin. */
   const samApres = await grille(fr, '2026-10-24', 'saturday');
-  ok(samApres.some(x => x[1] === 'Projets perso 2') && /Course à pied/.test(samApres[i(samApres,'18:00')][1]),
-     'après la phase Español, Projets perso 2 revient et la course reste à 18:00');
+  ok(samApres.some(x => x[1] === 'Projets perso 2') && /Sprints en côte/.test(samApres[i(samApres,'18:00')][1]),
+     'après la phase Español, Projets perso 2 revient et le cardio reste à 18:00 — des sprints en côte depuis le 10 octobre');
   ok(dim.some(x => x[1] === 'Réexpliquer') && dim.some(x => /Batch cooking/.test(x[1])),
      'ceux du dimanche aussi');
   await ctx.close();
@@ -136,11 +136,11 @@ console.log('\n== 330) Le semestre 2 la garde ==');
   const { ctx, fr } = await jour('2027-02-01T08:00:00+02:00');
   const r = await fr.evaluate(() => ({
     sem: (window.__bcSemestre('2027-02-06') || {}).id,
-    sam: window.__bcRappels('2027-02-06').filter(x => /Course à pied/.test(x.titre)).length,
+    sam: window.__bcRappels('2027-02-06').filter(x => /Sprints en côte/.test(x.titre)).length,
     dim: window.__bcRappels('2027-02-07').filter(x => /Course à pied/.test(x.titre)).length
   }));
   ok(r.sem === 's2', 'on est bien au semestre 2 (' + r.sem + ')');
-  ok(r.sam === 1 && r.dim === 1, 'les deux sorties y sont toujours (' + r.sam + ' / ' + r.dim + ')');
+  ok(r.sam === 1 && r.dim === 1, 'les deux sorties y sont toujours, sprints le samedi et course le dimanche (' + r.sam + ' / ' + r.dim + ')');
   await ctx.close();
 }
 
