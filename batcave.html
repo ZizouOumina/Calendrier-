@@ -4023,7 +4023,7 @@
       }, {refetchInterval: 30000});
 
       /* Notion — cours « pas fait » par matière (lecture seule, une heure de fraîcheur) */
-      NOTION_BASES.forEach(function(b){
+      basesNotionDuSemestre().forEach(function(b){
         mcp.watchTool('Notion', 'notion-query-data-sources', {data:{mode:'rows', data_source_url: b.ds, limit:100}}, function(ev){
           if(ev.type === 'error') return;
           absorberNotion(b.m, ev.result && ev.result.payload);
@@ -14636,7 +14636,7 @@
     window.__bcMeteoInjecter = function(liste){ meteoHeures = liste; try{ majMeteoSeance(); }catch(e){} };
     window.__bcMeteoSeance = texteMeteoSeance;
     window.__bcSeanceDehors = seanceExterieureLe;
-    window.__bcChiffresSemaine = chiffresSemaine; window.__bcMacrosJour = macrosJour; window.__bcPrepSemaine = prepSemaine; window.__bcPrepTotaux = prepTotaux; window.__bcMacrosRepas = macrosRepas; window.__bcCompoRepas = compoRepas; window.__bcAliments = ALIMENTS; window.__bcBesoinSemaine = BESOIN_SEMAINE; window.__bcCoutSemaine = coutSemaine; window.__bcPrix = PRIX; window.__bcEvalMatieres = EVAL_MATIERES; window.__bcTypesEcheance = TYPES_ECHEANCE; window.__bcCopieVierge = copieVierge; window.__bcNotion = absorberNotion; window.__bcNotionRetards = notionRetards; window.__bcCoursPasFait = coursPasFait; window.__bcExercice = exerciceDu; window.__bcChiffrer = chiffrerTexte; window.__bcDechiffrer = dechiffrerEnveloppe;
+    window.__bcChiffresSemaine = chiffresSemaine; window.__bcMacrosJour = macrosJour; window.__bcPrepSemaine = prepSemaine; window.__bcPrepTotaux = prepTotaux; window.__bcMacrosRepas = macrosRepas; window.__bcCompoRepas = compoRepas; window.__bcAliments = ALIMENTS; window.__bcBesoinSemaine = BESOIN_SEMAINE; window.__bcCoutSemaine = coutSemaine; window.__bcPrix = PRIX; window.__bcEvalMatieres = EVAL_MATIERES; window.__bcTypesEcheance = TYPES_ECHEANCE; window.__bcCopieVierge = copieVierge; window.__bcNotion = absorberNotion; window.__bcNotionBases = function(){ return NOTION_BASES; }; window.__bcNotionBasesDu = basesNotionDuSemestre; window.__bcNotionRetards = notionRetards; window.__bcCoursPasFait = coursPasFait; window.__bcExercice = exerciceDu; window.__bcChiffrer = chiffrerTexte; window.__bcDechiffrer = dechiffrerEnveloppe;
        /* rapport hebdomadaire (tests/rapport-hebdo.mjs) : la semaine à un décalage donné, ses
           statistiques de bilan et le prévu/réalisé de chaque jour */
        window.__bcSemaine = function(off){
@@ -15990,18 +15990,37 @@
      des bases qui ne sont sur AUCUNE page : la Batcave lisait des cours fantomes de PASS et
      les remontait dans le Plan du jour. Anatomia I pointait en plus sur une base orpheline
      (54fe...) au lieu de celle du SEMESTRE 1.
-     La vraie arborescence : 🦷 P1 → 1️⃣ SEMESTRE 1 (ces cinq bases) et 2️⃣ SEMESTRE 2, qui
-     duplique aujourd'hui les memes cinq matieres et qu'il doit refaire avec les six vraies
-     (Anatomia II, Bioquimica, Microbiologia, Clinica, Psicologia, Idioma moderno).
-     Tant que ce n'est pas fait, on ne liste QUE ce qui existe : une base fantome ne vaut pas
-     mieux qu'une base absente, elle est pire -- elle repond. */
+     La vraie arborescence : 🦷 P1 → 1️⃣ SEMESTRE 1 (cinq bases) et 2️⃣ SEMESTRE 2 (six).
+     Le SEMESTRE 2 a ete refait le 23 septembre au soir : ses six matieres reelles existent,
+     Idioma moderno a ete creee, et les onze bases partagent desormais le meme socle de
+     colonnes (Cours, Tema, Date, Etat, CM, Fiche, Compris, Cartes Anki, Note annale,
+     Note questionnaire, Remarques -- plus Approfondi sur les six qui le meritent).
+
+     CHAQUE ENTREE PORTE SON SEMESTRE, et on ne surveille que celui en cours. C'est la
+     difference entre une base qui EXISTE et une base qui doit PARLER : les six du S2 sont
+     branchees, mais elles se taisent jusqu'au 25 janvier. Sans ce filtre, un tema de
+     Bioquimica non coche remonterait dans le Plan du jour en octobre -- exactement le bruit
+     que les bases fantomes faisaient, avec de vraies bases cette fois. numSemestre() decide,
+     et c'est la meme fonction qui choisit deja les matieres du panneau Approfondissements :
+     une seule bascule pour toute l'application, le 25 janvier. */
   var NOTION_BASES = [
-    {m:'Anatomía I',            ds:'collection://11becda1-d27b-8326-aa5f-8798d4219150'},
-    {m:'Antropología',          ds:'collection://251ecda1-d27b-82ea-92e3-079802a72b29'},
-    {m:'Biología celular',      ds:'collection://320ecda1-d27b-82ad-a7d7-87207a49f394'},
-    {m:'Documentación',         ds:'collection://97cecda1-d27b-82d6-9dfe-873590a4ea32'},
-    {m:'Epidemiología',         ds:'collection://024ecda1-d27b-830e-818b-87005cb8ed7f'}
+    {m:'Anatomía I',            sem:1, ds:'collection://11becda1-d27b-8326-aa5f-8798d4219150'},
+    {m:'Antropología',          sem:1, ds:'collection://251ecda1-d27b-82ea-92e3-079802a72b29'},
+    {m:'Biología celular',      sem:1, ds:'collection://320ecda1-d27b-82ad-a7d7-87207a49f394'},
+    {m:'Documentación',         sem:1, ds:'collection://97cecda1-d27b-82d6-9dfe-873590a4ea32'},
+    {m:'Epidemiología',         sem:1, ds:'collection://024ecda1-d27b-830e-818b-87005cb8ed7f'},
+    {m:'Anatomía II',           sem:2, ds:'collection://d36ecda1-d27b-82ac-bf01-0793277f96e3'},
+    {m:'Bioquímica',            sem:2, ds:'collection://2f0ecda1-d27b-834c-a0ab-87e97c339195'},
+    {m:'Microbiología',         sem:2, ds:'collection://ae1ecda1-d27b-8385-8c7e-071506d411fc'},
+    {m:'Psicología',            sem:2, ds:'collection://393ecda1-d27b-8235-8a93-07b751bd24d4'},
+    {m:'Clínica odontológica', sem:2, ds:'collection://acaecda1-d27b-8247-a3be-07bc9d4ce54c'},
+    {m:'Idioma moderno',        sem:2, ds:'collection://1a561dfe-e8d5-40b7-b89a-974eb12bafd3'}
   ];
+  /* Les bases a surveiller aujourd'hui : celles du semestre en cours, et elles seules. */
+  function basesNotionDuSemestre(iso){
+    var n = (typeof numSemestre === 'function') ? numSemestre(iso || todayISO) : 1;
+    return NOTION_BASES.filter(function(b){ return b.sem === n; });
+  }
   var notionCache = load('batcave-notion-cache', {});
   if(!notionCache || typeof notionCache !== 'object' || Array.isArray(notionCache)) notionCache = {};
   /* Une ligne est « pas faite » si sa colonne d'état le dit ; sans colonne d'état, si

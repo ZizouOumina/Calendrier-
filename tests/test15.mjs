@@ -62,11 +62,12 @@ attendues.forEach(function(a){
   ok(w.indexOf(a) > -1, a);
 });
 const notion = w.filter(x => x === 'Notion/notion-query-data-sources').length;
-/* Cinq, pas onze : la liste a ete relevee en ouvrant le Notion le 23 septembre. Six des onze
-   entrees pointaient sur des bases absentes de toute page (des restes de PASS) et la Batcave
-   remontait leurs cours dans le Plan du jour. On ne surveille que le SEMESTRE 1 reel ; le
-   SEMESTRE 2 sera ajoute quand ses six vraies matieres existeront dans Notion. */
-ok(notion === 5, 'une lecture Notion par base réelle du S1 (' + notion + '/5)');
+/* Cinq, pas onze -- et ce n'est plus la meme raison qu'a midi. Les ONZE bases existent
+   maintenant (le SEMESTRE 2 a ete refait le 23 au soir, Idioma moderno comprise), mais
+   NOTION_BASES porte le semestre de chacune et basesNotionDuSemestre() ne rend que celui
+   en cours. Le test tourne au 2 septembre, donc S1 : cinq lectures. Le 25 janvier il y en
+   aura six, celles du S2 -- voir test105, qui eprouve la bascule des deux cotes. */
+ok(notion === 5, 'une lecture Notion par base du semestre en cours (' + notion + '/5)');
 ok(w.length === attendues.length + 4 && w.filter(x => x === 'Shopify/run-analytics-query').length === 2, 'aucune surveillance en trop ni en moins (' + w.length + '/' + (attendues.length + 4) + ', dont 2 requêtes de ventes Shopify et 5 bases Notion)');
 
 console.log('\n== 39) La météo s\'affiche dans la ligne de statut ==');
