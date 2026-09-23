@@ -2225,14 +2225,14 @@
            Le cardio a donc son propre compteur, sa propre ligne de bilan, sa propre serie. -->
       <div class="panel sub-panel" id="cardio-panel" style="margin-top:16px;">
         <div class="sub-head"><h3>🏃 Cardio</h3><span class="sub-note" id="cardio-note">—</span></div>
-        <p class="sub-note" style="margin-bottom:12px; line-height:1.6;">Les quatre séances sont en résistance pure : sans ces sorties, aucun travail aérobie de la semaine. Trente minutes à allure de conversation, pas de fractionné. <b style="color:var(--ink-dim);">Elles ne comptent pas dans « Séances tenues »</b> — ce compteur reste celui de la muscu, et le cardio a le sien.</p>
+        <p class="sub-note" style="margin-bottom:12px; line-height:1.6;">Les quatre séances sont en résistance pure : ces deux sorties sont tout le cardio de la semaine. Le dimanche, la course facile — 30 minutes, puis 5 de plus chaque semaine dès le 11 octobre, jusqu'à 45 : c'est elle qui fait baisser la fréquence cardiaque de repos. Le samedi, 30 minutes faciles jusqu'au 3 octobre, puis des <b style="color:var(--ink-dim);">sprints en côte</b> dès le 10 (6 à 8 × 10-15 s, ~15 min). <b style="color:var(--ink-dim);">Elles ne comptent pas dans « Séances tenues »</b> — ce compteur reste celui de la muscu, et le cardio a le sien.</p>
         <ul class="check-list" id="cardio-liste"></ul>
         <div id="cardio-resume" class="sub-note" style="margin-top:12px; line-height:1.7;"></div>
       </div>
 
       <div class="panel sub-panel" id="programme-panel" style="margin-top:16px;">
         <div class="sub-head"><h3>📋 Le programme</h3><span class="sub-note" id="programme-note">—</span></div>
-        <p class="sub-note" style="line-height:1.65; margin-bottom:8px;">Mercredi, vendredi et dimanche sont off : rien à cocher. Le créneau de 05:30 sert à Anki ou aux projets le mercredi et le vendredi ; le samedi et le dimanche, on dort jusqu'à 06:30 — la séance du samedi est le soir, à 18:30, après la course. Si la semaine dérape, tu sacrifies samedi, puis jeudi. Jamais lundi ni mardi. Huit semaines sans y toucher, en notant tout.</p>
+        <p class="sub-note" style="line-height:1.65; margin-bottom:8px;">Mercredi, vendredi et dimanche sont off : rien à cocher. Le créneau de 05:30 sert à Anki ou aux projets le mercredi et le vendredi ; le samedi et le dimanche, on dort jusqu'à 06:30 — la séance du samedi est le soir, à 18:30, après la course (les sprints en côte dès le 10 octobre). Si la semaine dérape, tu sacrifies samedi, puis jeudi. Jamais lundi ni mardi. Huit semaines sans y toucher, en notant tout.</p>
         <button type="button" class="heat-toggle" id="programme-toggle" style="padding:0;">Échauffements, calibration, progression, lest, retests ▾</button>
         <div id="programme-details" hidden style="margin-top:10px; font-size:12.5px; color:var(--ink-dim); line-height:1.7; display:flex; flex-direction:column; gap:8px;">
           <p><b style="color:var(--ink);">Échauffement haut (5 min)</b> — suspension 20 s + 10 tirages d'omoplates · 15 rotations d'épaules bras tendus · 15 face pulls élastique · 10 pompes lentes · 2 séries légères du premier exercice, un cran en dessous (moitié du lest quand tu lestes).</p>
@@ -7134,6 +7134,7 @@
   /* ===== Plan alimentation révisé (6 sept. 2026) — 5 prises =====
      64 kg · 182 cm · 20 ans · 4 séances par semaine · tout pesé cru.
      3 123 à 3 135 kcal selon la rotation · P 158-161 g (2,5 g/kg) · G 377 g · L 105-106 g.
+     Depuis le 23 septembre : 3 230 kcal · P 166 g · G 377 g · L 115 g (deux œufs a la place du jambon).
      Cinq prises : la collation du matin
      a disparu, le déjeuner porte ses calories (riz 155 g, légumes 200 g). La protéine du
      déjeuner et du dîner suit une ROTATION fixe sur la semaine (l'huile d'olive va avec) ;
@@ -7148,7 +7149,12 @@
   var MEALS = [
     {name:'Petit-déjeuner', items:['Flocons d\'avoine (80g)','Skyr (180g)','2 œufs (100g)','Beurre de cacahuète (25g)','Banane (120g)']},
     {name:'Déjeuner', items:['Féculent cru — Riz 155g','Protéine crue — rotation du jour','Légumes verts (200g)','Huile d\'olive — selon la protéine']},
-    {name:'Collation entraînement', items:['Pain complet (60g)','Jambon (40g)','Fromage (20g)']},
+    /* 23 septembre : le jambon (charcuterie, 40 g par jour) cede la place a deux oeufs durs,
+       cuits le dimanche avec ceux du petit-dejeuner. La viande transformee etait le seul
+       aliment du plan classe cancerogene ; deux oeufs apportent plus de proteines (12,6 g
+       contre 7,2) et environ 100 kcal de plus -- qui vont avec le rythme de prise releve
+       le meme jour (objectif poids 72 kg). */
+    {name:'Collation entraînement', items:['Pain complet (60g)','2 œufs durs (100g)','Fromage (20g)']},
     {name:'Dîner', items:['Féculent cru — Pâtes 105g','Protéine crue — rotation du jour','Légumes verts (150g)','Huile d\'olive — selon la protéine','1 fruit (~120g)']},
     {name:'Collation soir', items:['Skyr (125g)','Miel (20g)','Beurre de cacahuète (30g)']}
   ];
@@ -7169,7 +7175,6 @@
     pates:     {kcal:360, p:12.0, g:71.0, l:1.5},
     legumes:   {kcal:35,  p:2.8,  g:5.0,  l:0.4},
     pain:      {kcal:250, p:9.0,  g:43.0, l:3.0},
-    jambon:    {kcal:110, p:18.0, g:1.5,  l:3.0},
     fromage:   {kcal:350, p:25.0, g:1.0,  l:27.0},
     miel:      {kcal:304, p:0.3,  g:82.0, l:0.0},
     fruit:     {kcal:55,  p:0.5,  g:12.0, l:0.2,  piece:120},
@@ -7182,7 +7187,7 @@
      boucle poids -> calories : la liste de courses l'ajoute elle-meme, une seule fois. */
   function compoRepas(nom, iso, brut){
     if(nom === 'Petit-déjeuner') return [{c:'flocons', q:80}, {c:'skyr', q:180}, {c:'oeufs', q:100}, {c:'cacahuete', q:25}, {c:'banane', q:120}];
-    if(nom === 'Collation entraînement') return [{c:'pain', q:60}, {c:'jambon', q:40}, {c:'fromage', q:20}];
+    if(nom === 'Collation entraînement') return [{c:'pain', q:60}, {c:'oeufs', q:100}, {c:'fromage', q:20}];
     if(nom === 'Collation soir') return [{c:'skyr', q:125}, {c:'miel', q:20}, {c:'cacahuete', q:30}];
     if(nom === 'Déjeuner'){
       var nd = proteineDuJour('dej', iso), pd = PROTEINES[nd].dej;
@@ -7949,6 +7954,35 @@
      ailleurs. */
   var CARDIO_LABEL = '\ud83c\udfc3 Course \u00e0 pied';
   var CARDIO_CIBLE_MIN = 30;
+  /* ===== Le cardio change le 10 octobre ===== (23 septembre, sa decision)
+     Il voulait « du HIIT tous les jours » pour faire descendre sa frequence cardiaque de
+     repos. Tous les jours aurait mange la recuperation d'une prise de masse ; supprimer les
+     deux courses aurait supprime ce qui fait baisser la FC de repos (le volume facile). On
+     garde les deux, chacune avec un role :
+       - le SAMEDI 18:00 devient des SPRINTS EN COTE : 6 a 8 x 10-15 s a 90 %, retour en
+         marchant, ~15 minutes en tout, puis la seance de 18:30 -- puissance et fibres
+         rapides, presque rien a recuperer. En cote plutot qu'a plat : les ischio-jambiers
+         d'un debutant ne cassent pas en montee ;
+       - le DIMANCHE 17:30 reste la course facile, allongee de 5 minutes par semaine a
+         partir du 11 octobre jusqu'a 45 minutes (35, 40, puis 45 des le 25).
+     Pas avant le 10 : les deux premieres semaines sont a mi-volume, et le premier samedi
+     porte deja une seance nouvelle. Le libelle du samedi est renomme dans grilleDe, pas
+     dans la grille de base : la serie « Course a pied » de l'agenda reste reconnue, et
+     l'instance du jour prend le nom des sprints. */
+  var SPRINT_LABEL = '\u26a1 Sprints en c\u00f4te';
+  var CARDIO_SPRINTS_DEBUT = '2026-10-10';
+  var CARDIO_LONG_DEBUT = '2026-10-11', CARDIO_LONG_MAX_MIN = 45;
+  function estCardio(label){ return label === CARDIO_LABEL || label === SPRINT_LABEL; }
+  function cibleCardio(iso){
+    iso = iso || todayISO;
+    var d = dowDe(iso);
+    if(d === 6 && iso >= CARDIO_SPRINTS_DEBUT) return 15;
+    if(d === 0 && iso >= CARDIO_LONG_DEBUT){
+      var semaines = Math.floor(daysBetween(new Date(CARDIO_LONG_DEBUT + 'T00:00:00'), new Date(iso + 'T00:00:00')) / 7);
+      return Math.min(CARDIO_LONG_MAX_MIN, CARDIO_CIBLE_MIN + 5 * (semaines + 1));
+    }
+    return CARDIO_CIBLE_MIN;
+  }
   /* Le cardio commence le dimanche 20 septembre, PAS le 21 avec le reste du programme : la
      premiere sortie est celle de ce dimanche-la, et les series de l'agenda Google sont
      ancrees dessus (dimanche 20/09, samedi 26/09). Borner a PROGRAMME_DEBUT faisait dire au
@@ -7966,7 +8000,7 @@
       if(iso < CARDIO_DEBUT || iso > PROGRAMME_FIN) continue;
       var g = grilleDe(cleJournee(dowDe(iso)), iso);
       g.forEach(function(b){
-        if(b[1] === CARDIO_LABEL) out.push({iso: iso, heure: b[0]});
+        if(estCardio(b[1])) out.push({iso: iso, heure: b[0], sprints: b[1] === SPRINT_LABEL});
       });
     }
     return out;
@@ -8010,11 +8044,11 @@
       var jour = DAY_NAMES[dowDe(x.iso)] + '. ' + fmtDate(x.iso);
       return '<li class="' + (fait ? 'checked' : '') + '">' +
         '<input type="checkbox" id="cardio-' + x.iso + '" data-cardio="' + x.iso + '"' + (fait ? ' checked' : '') + '>' +
-        '<label for="cardio-' + x.iso + '">' + jour + ' \u00b7 ' + x.heure +
+        '<label for="cardio-' + x.iso + '">' + jour + ' \u00b7 ' + x.heure + (x.sprints ? ' \u00b7 sprints en c\u00f4te' : ' \u00b7 ' + cibleCardio(x.iso) + ' min faciles') +
           (fait ? ' <b style="color:var(--good);">' + min + ' min</b>'
                 : (passe ? ' <span class="sub-note">\u2014 pas faite</span>' : '')) + '</label>' +
         '<span class="pas"><button type="button" data-cardio-moins="' + x.iso + '" aria-label="moins 5 minutes">\u2212</button>' +
-        '<span class="v">' + (min || CARDIO_CIBLE_MIN) + '</span>' +
+        '<span class="v">' + (min || cibleCardio(x.iso)) + '</span>' +
         '<button type="button" data-cardio-plus="' + x.iso + '" aria-label="plus 5 minutes">+</button></span>' +
       '</li>';
     }).join('');
@@ -8031,13 +8065,13 @@
   document.addEventListener('click', function(e){
     var plus = e.target.closest && e.target.closest('[data-cardio-plus]');
     var moins = e.target.closest && e.target.closest('[data-cardio-moins]');
-    if(plus){ var i1 = plus.dataset.cardioPlus; noterCardio(i1, (cardioMinutes(i1) || CARDIO_CIBLE_MIN) + 5); return; }
-    if(moins){ var i2 = moins.dataset.cardioMoins; noterCardio(i2, Math.max(0, (cardioMinutes(i2) || CARDIO_CIBLE_MIN) - 5)); return; }
+    if(plus){ var i1 = plus.dataset.cardioPlus; noterCardio(i1, (cardioMinutes(i1) || cibleCardio(i1)) + 5); return; }
+    if(moins){ var i2 = moins.dataset.cardioMoins; noterCardio(i2, Math.max(0, (cardioMinutes(i2) || cibleCardio(i2)) - 5)); return; }
   });
   document.addEventListener('change', function(e){
     var c = e.target && e.target.dataset && e.target.dataset.cardio;
     if(!c) return;
-    noterCardio(c, e.target.checked ? CARDIO_CIBLE_MIN : 0);
+    noterCardio(c, e.target.checked ? cibleCardio(c) : 0);
   });
 
   function renderWeekStrip(){
@@ -9566,7 +9600,12 @@
       (sess ? ' · mode partiels du ' + fmtDate(sess.debut) + ' au ' + fmtDate(sess.fin) : '');
   }
   var GOALS_NUMERIC = [
-    {id:'poids', label:'🏋️ Poids', unit:'kg', start:64, target:70, step:0.1, note:'Rythme visé : ~1 kg/mois (surplus + programme v2), soit 70 kg à la fin de l\'horizon.'},
+    /* 23 septembre, sa demande : « devenir un monstre le plus vite possible ». La cible passe
+       de 70 a 72 kg sur la meme saison (14 sept. -> 14 mars), soit 0,31 kg par semaine au
+       lieu de 0,23 -- environ 1,3 kg par mois, le haut de ce qu'un debutant de 20 ans a
+       64 kg pour 1,82 m convertit encore surtout en muscle. La boucle poids -> calories lit
+       ce rythme ici : elle ajoutera des calories si la balance reste sous la moitie. */
+    {id:'poids', label:'🏋️ Poids', unit:'kg', start:64, target:72, step:0.1, note:'Rythme visé : ~1,3 kg/mois (surplus + programme v2), soit 72 kg à la fin de l\'horizon.'},
     {id:'coran', label:'📖 Coran', unit:'pages', start:0, target:180, step:1, note:'~9 juz sur 6 mois — 1 page/jour.'},
     {id:'duaas', label:'🤲 Duaas', unit:'duaas', start:0, target:180, step:1, note:'Avec révision espacée des précédentes.'}
   ];
@@ -10585,7 +10624,7 @@
   var NOM_ALIMENT = {riz:'Riz', pates:'Pâtes', poulet:'Poulet', hachee:'Viande hachée 5 %',
                      legumes:'Légumes verts surgelés', huile:'Huile d\'olive',
                      oeufs:'Œufs', flocons:'Flocons d\'avoine', skyr:'Skyr', cacahuete:'Beurre de cacahuète',
-                     banane:'Banane', pain:'Pain complet', jambon:'Jambon', fromage:'Fromage', miel:'Miel', fruit:'Fruit'};
+                     banane:'Banane', pain:'Pain complet', fromage:'Fromage', miel:'Miel', fruit:'Fruit'};
   var NOMS_SEMAINE = ['dimanche','lundi','mardi','mercredi','jeudi','vendredi','samedi'];
   /* Les sept jours de la semaine qui commence le dimanche contenant « iso ». La session a
      lieu ce dimanche-la : elle couvre donc la semaine entiere, dimanche compris. */
@@ -10636,7 +10675,7 @@
       [22, 'La <b>viande hachée</b> — ' + poids(T.hachee) + ', en deux fournées pour qu\'elle grille au lieu de bouillir. 10 min.'],
       [34, 'Les <b>pâtes</b> — ' + poids(T.pates) + ' crues, <b>deux minutes de moins</b> que le paquet : elles finiront de cuire au réchauffage.'],
       [46, 'Les <b>légumes surgelés</b> — ' + poids(T.legumes) + ', à la poêle en trois fournées ou à la vapeur, 7 min. Sans les décongeler avant.'],
-      [60, 'Les <b>14 œufs durs</b> — 10 min dans l\'eau bouillante, puis eau froide. On les garde en coquille.'],
+      [60, 'Les <b>' + Math.round(BESOIN_SEMAINE.oeufs || 0) + ' œufs durs</b> (le matin et la collation) — deux casseroles, 10 min dans l\'eau bouillante, puis eau froide. On les garde en coquille : une semaine au frigo.'],
       [75, '<b>Tout refroidir à découvert, 20 min.</b> Un tupperware fermé sur du chaud fabrique de la condensation, et la condensation fabrique des bactéries.'],
       [95, 'Remplir les <b>14 boîtes</b> dans l\'ordre du tableau ci-dessous, et écrire le jour dessus.'],
       [110,'<b>8 au frigo</b> (dimanche à mercredi), <b>6 au congélateur</b> (jeudi à samedi). Sortir chaque boîte congelée la veille au soir, au frigo.']
@@ -10665,7 +10704,7 @@
     }).join('');
     document.getElementById('prep-regles').innerHTML = [
       ['Le petit-déjeuner', 'flocons, skyr, 2 œufs, beurre de cacahuète, banane — cinq minutes, rien à cuire sauf les œufs, déjà durs'],
-      ['La collation d\'entraînement', 'pain, jambon, fromage — elle s\'assemble au moment de partir, elle ne se prépare pas la veille'],
+      ['La collation d\'entraînement', 'pain, 2 œufs durs, fromage — les œufs sont cuits le dimanche avec ceux du matin ; le reste s\'assemble au moment de partir'],
       ['La collation du soir', 'skyr, miel, beurre de cacahuète — trois cuillères, aucun intérêt à l\'avancer'],
       ['Le fruit du dîner', 'entier, jamais dans la boîte : coupé le dimanche il rend de l\'eau et noircit'],
       ['Refroidir vite', 'deux heures maximum entre la casserole et le frigo. Étaler plutôt qu\'entasser'],
@@ -10731,7 +10770,6 @@
   var PRIX = {
     poulet:   {eur:7.50,  par:'kg',    ou:'Boucherie', quand:'20 sept.'},
     hachee:   {eur:12.00, par:'kg',    ou:'Boucherie', quand:'20 sept.'},
-    jambon:   {eur:9.00,  par:'kg',    ou:'Boucherie', quand:'20 sept.', detail:'charcuterie de poulet'},
     skyr:     {eur:5.00,  par:'kg',    ou:'Lidl',      quand:'21 sept.', detail:'0,75 \u20ac la bo\u00eete de 150 g'},
     oeufs:    {eur:1.69/6, par:'pi\u00e8ce', ou:'Lidl', quand:'21 sept.', detail:'1,69 \u20ac la bo\u00eete de 6 \u2014 celle de 12 \u00e0 2,84 \u20ac revient moins cher \u00e0 l\'unit\u00e9'},
     fromage:  {eur:6.375, par:'kg',    ou:'Lidl',      quand:'21 sept.', detail:'2,55 \u20ac les 400 g d\'\u00e9dam'},
@@ -10755,7 +10793,7 @@
   /* La cle du besoin par libelle : c'est elle qui relie une ligne de courses a son prix. */
   var CLE_PRIX = {
     'Poulet':'poulet', 'Viande hach\u00e9e 5 %':'hachee', 'Skyr':'skyr', '\u0152ufs':'oeufs',
-    'Jambon':'jambon', 'Fromage en tranches':'fromage', 'Pain complet':'pain',
+    'Fromage en tranches':'fromage', 'Pain complet':'pain',
     'Bananes':'bananes', 'Fruits (pommes, poires, oranges\u2026)':'fruits',
     'L\u00e9gumes verts surgel\u00e9s':'legumes', 'Riz':'riz', 'P\u00e2tes':'pates',
     'Flocons d\'avoine':'flocons', 'Miel':'miel', 'Beurre de cacahu\u00e8te':'cacahuete',
@@ -10825,7 +10863,6 @@
         art('Viande hach\u00e9e 5 %', B.hachee,  1,  poids, 'pes\u00e9e au comptoir'),
         art('Skyr',              B.skyr,  150,  poids, 'boîte'),
         art('\u0152ufs',              B.oeufs,   6,      sep,   'bo\u00eete', B.oeufs + ' \u0153ufs'),
-        art('Jambon',            B.jambon,  1,  poids, 'pesé au comptoir'),
         art('Pain complet',      B.pain,  450,  poids, 'paquet'),
         art('Bananes',           B.bananes, 1,      sep,   '\u00e0 l\'unit\u00e9', B.bananes + ' bananes'),
         art('Fruits (pommes, poires, oranges\u2026)', B.fruits, 1, sep, '\u00e0 l\'unit\u00e9', B.fruits + ' fruits')
@@ -10994,7 +11031,8 @@
      moment ou il coche, et elle ne prend pas une ligne de hauteur.
      Ces adresses ont ete RELEVEES les 20 et 21 septembre, prix en main, et elles ont
      change ce jour-la. Les regles telles qu'elles sont maintenant :
-     - la BOUCHERIE est obligatoire pour la viande et le jambon, qui doivent etre halal.
+     - la BOUCHERIE est obligatoire pour la viande, qui doit etre halal (le jambon, qui y
+       etait aussi, est sorti du plan le 23 septembre -- deux oeufs a la place).
        Le supermarche n'en vend pas : ce n'est pas une preference, c'est une contrainte ;
      - LIDL prend presque tout le reste. Le skyr y est (0,75 € la boite de 150 g) et
        l'huile aussi (11,89 € le bidon de 2 L) : les deux etaient a Alcampo avant le 21,
@@ -11014,7 +11052,7 @@
      verifie qu'aucun article n'en manque, le dit tout de suite. */
   var OU_DEFAUT = {};
   var OU_ARTICLE = {
-    'Poulet': 'Boucherie', 'Viande hach\u00e9e 5 %': 'Boucherie', 'Jambon': 'Boucherie',
+    'Poulet': 'Boucherie', 'Viande hach\u00e9e 5 %': 'Boucherie',
     'Skyr': 'Lidl', 'Huile d\'olive': 'Lidl',
     '\u0152ufs': 'Lidl', 'Pain complet': 'Lidl',
     'Fromage en tranches': 'Lidl · cuajo vegetal',
@@ -13746,7 +13784,12 @@
     /* Le seul cardio de la semaine. Les quatre seances de muscu sont en resistance pure :
        sans ces deux sorties, il n'a aucun travail aerobie. Trente minutes a allure de
        conversation, pas de fractionne -- c'est l'endothelium qu'on entraine, pas le chrono. */
-    '🏃 Course à pied': "Trente minutes, allure où tu peux encore parler par phrases courtes. Pas de sprint, pas de fractionné : c'est la seule séance de cardio de ta semaine, et c'est l'endurance de base qu'elle construit. Tôt ou après 19 h tant qu'il fait chaud. Douche ensuite, sur le temps libre qui suit.",
+    '🏃 Course à pied': function(d, iso){
+      var min = cibleCardio(iso);
+      if(d === 6) return "Trente minutes faciles jusqu'au parc, allure où tu peux encore parler par phrases courtes : c'est aussi ton échauffement, la séance suit à 18:30. À partir du 10 octobre, ce créneau devient des sprints en côte.";
+      return (min > 30 ? min + " minutes cette semaine" : "Trente minutes") + ", allure où tu peux encore parler par phrases courtes. Pas de sprint : c'est la course qui fait baisser ta fréquence cardiaque de repos, et elle s'allonge de 5 minutes par semaine à partir du 11 octobre, jusqu'à 45. Douche ensuite, sur le temps libre qui suit.";
+    },
+    '⚡ Sprints en côte': "Trottine jusqu'à la côte (5 min, c'est l'échauffement), puis 6 à 8 sprints de 10 à 15 secondes en montée, à 90 % — rapide, pas à fond. Redescends en marchant, 1 min 30 à 2 min entre chaque. Arrête dès que la vitesse baisse. Environ 15 minutes en tout, puis la séance de 18:30.",
     'Temps libre': {defaut: "Libre.", 0: "10 minutes pour la revue du dimanche guidée (onglet Études), le reste est libre."},
     'Coucher': "Clôture du jour faite ? Écran off, réveil posé loin du lit."
   };
@@ -13782,8 +13825,8 @@
     'Cours': "Notes en espagnol, un « ? » dans la marge pour chaque mot inconnu, ta question posée avant la fin. Trente minutes de conversation réelle dans la journée.",
     /* Le samedi, la seance est le soir : la course de 18:00 (trente minutes) fait l'aller et
        l'echauffement. Le texte du matin -- « le kilometre jusqu'au parc » -- y etait faux. */
-    'Sport': function(d){
-      if(d === 6) return "La course de 18:00 t'a amené au parc et échauffé : la séance enchaîne, bras, épaules, mollets, dans l'onglet Sport. Élévations latérales dans le bloc épaules, deux bouteilles remplies au même trait. Retour en marchant ; douche et shampoing en rentrant, dîner 19:30.";
+    'Sport': function(d, iso){
+      if(d === 6) return (String(iso || '') >= CARDIO_SPRINTS_DEBUT ? "Les sprints en côte t'ont échauffé" : "La course de 18:00 t'a amené au parc et échauffé") + " : la séance enchaîne, bras, épaules, mollets, dans l'onglet Sport. Élévations latérales dans le bloc épaules, deux bouteilles remplies au même trait. Retour en marchant ; douche et shampoing en rentrant, dîner 19:30.";
       return "Podcast espagnol sur le kilomètre de course jusqu'au parc et pendant l'échauffement, puis la séance du jour dans l'onglet Sport. Retour en marchant, en trottinant le mardi.";
     },
     'Coucher': "Clôture du jour faite, la ligne en espagnol ? Écran off, réveil posé loin du lit."
@@ -13906,6 +13949,8 @@
         });
       }
     }
+    /* le samedi, la course devient des sprints en cote a partir du 10 octobre (voir le cardio) */
+    if(dowDe(iso) === 6 && iso >= CARDIO_SPRINTS_DEBUT) g = g.map(function(b){ return b[1] === CARDIO_LABEL ? [b[0], SPRINT_LABEL] : b; });
     if(sansJournee || typeof journeesState === 'undefined') return g;
     var ev = journeeDe(iso);
     if(ev) return grilleEvenement(cle, iso, ev, g).grille;
@@ -14713,7 +14758,7 @@
      dues dentaire ») : un evenement se reconnait a la partie avant le separateur. */
   function titreBaseGcal(s){ return String(s || '').split(' · ')[0].trim(); }
   try{ window.__bcTitreBase = titreBaseGcal; window.__bcConsigne = consigneBloc; window.__bcInsights = buildInsights; window.__bcBlocs = blocsDuPlanning; window.__bcCle = cleJournee; window.__bcJours = joursSuivis; window.__bcInsightsVu = function(){ return insightsVu; }; window.__bcLogSession = logSession; window.__bcPeriode = periodeGrille; window.__bcPhaseEspanol = phaseEspanol; window.__bcGrille = grilleDe; window.__bcMinutesEspanol = minutesEspanol; window.__bcCibleEspanol = cibleEspanolJour; window.__bcTypeBloc = typeBlocPlan; window.__bcPlanRotation = planRotation; window.__bcHabitJours = habitJours; window.__bcProgrammeDebut = PROGRAMME_DEBUT; window.__bcJournees = function(){ return journeesState; }; window.__bcJourneeDe = journeeDe; window.__bcPartiels = periodePartiels; window.__bcSessionsPartiels = sessionsPartiels; window.__bcBlocSansPomodoro = blocSansPomodoro; window.__bcRappels = blocsARappeler; window.__bcJoursGcal = joursAPousser; window.__bcExamens = function(){ return examensState; }; window.__bcPrevu = minutesPrevuesJour; window.__bcCibleGrille = cibleDepuisGrille; window.__bcPartEcoulee = partEcoulee; window.__bcVacances = function(){ return vacancesState; }; window.__bcJourExclu = jourExclu; window.__bcObjectifs = function(){ return objectifsState.liste; }; window.__bcComparer = comparerObjectif; window.__bcAcquise = habitAcquise; window.__bcAcquises = habitsAcquises; window.__bcSansPomodoro = blocsSansPomodoroDuJour; window.__bcTonPriorite = tonPriorite; window.__bcPrioHist = function(){ return insightsHist; }; window.__bcCloturerSaison = cloturerSaison; window.__bcPeriodesCloses = function(){ return periodesClosesState; }; window.__bcCloturerPeriodes = cloturerPeriodesEchues; window.__bcPeriodesObj = periodesObjectifs; window.__bcSaisons = function(){ return saisonsState; }; window.__bcTrimestres = function(){ return TRIMESTRES; }; window.__bcMois = moisListe; window.__bcAnki = function(){ return ankiState; }; window.__bcLireAnki = lireAnki; window.__bcBesoins = besoinsPartiels; window.__bcMatiereBloc = matierePourBloc; window.__bcPortes = etatPortes; window.__bcEpreuve = epreuvePassages; window.__bcEpreuveProj = epreuveProjection; window.__bcPortesEtat = function(){ return portesEtat; }; window.__bcConvertirPorte = convertirPorte; window.__bcNoterCours = noterCours; window.__bcGrilleBase = grilleBase; window.__bcSemestre = semestreDe; window.__bcSansCours = sansCoursLe; window.__bcCoucher = heureCoucher; window.__bcLever = heureLever; window.__bcSommeilCible = objectifSommeilPour; window.__bcSommeilReel = sommeilReelVise; window.__bcMarquerSansCours = marquerSansCours; window.__bcJoursSansCours = function(){ return joursSansCoursState; }; window.__bcSeuilRevision = seuilUrgenceRevision; window.__bcCibleJour = cibleJourMinutes; window.__bcReinitGarder = reinitGarder; window.__bcPassagesCourses = prochainsPassagesCourses;
-       window.__bcTypeSport = typeSportDe; window.__bcCibleProchaine = cibleProchaine; window.__bcSessionsSport = function(){ return SESSIONS; }; window.__bcPasCharge = pasChargeDe; window.__bcCardio = function(){ return cardioState; }; window.__bcPasCible = pasCible; window.__bcAccorderMarche = accorderHabitMarche; window.__bcSortiesCardio = sortiesCardio; window.__bcNoterCardio = noterCardio; window.__bcCardioMinutes = cardioMinutesSur; window.__bcSerieCardio = serieCardio; window.__bcSommeilCible = objectifSommeilPour; window.__bcTestAnki = testAnkiDu; window.__bcRapport = function(){
+       window.__bcTypeSport = typeSportDe; window.__bcCibleProchaine = cibleProchaine; window.__bcSessionsSport = function(){ return SESSIONS; }; window.__bcPasCharge = pasChargeDe; window.__bcCardio = function(){ return cardioState; }; window.__bcPasCible = pasCible; window.__bcAccorderMarche = accorderHabitMarche; window.__bcSortiesCardio = sortiesCardio; window.__bcCibleCardio = cibleCardio; window.__bcNoterCardio = noterCardio; window.__bcCardioMinutes = cardioMinutesSur; window.__bcSerieCardio = serieCardio; window.__bcSommeilCible = objectifSommeilPour; window.__bcTestAnki = testAnkiDu; window.__bcRapport = function(){
          var mois = moisListe().filter(function(m){ return todayISO >= m.debut && todayISO <= m.fin; })[0];
          var objs = mois ? objectifsState.liste.filter(function(o){ return o.periode === 'mois' && o.pid === mois.id; }) : [];
          var p = periodeGrille(todayISO), hist = {};
@@ -15449,6 +15494,17 @@
       save('batcave-budget-limits', budgetLimits);
     }
     saveInternal('batcave-plafond-nourriture-v2', true);
+  }
+  /* Troisieme fois, le 23 septembre : le jambon sort, deux oeufs entrent a la collation
+     (+14 oeufs, -280 g de jambon par semaine). Le plan passe de 44,89 a 46,32 EUR par
+     semaine, soit ~201 par mois. Meme regle : on ne remplace que la valeur posee par moi
+     (195), jamais un plafond qu'il aurait regle. */
+  if(!load('batcave-plafond-nourriture-v3', false)){
+    if(Number(budgetLimits['Nourriture']) === 195){
+      budgetLimits['Nourriture'] = Math.round(coutSemaine().mois);
+      save('batcave-budget-limits', budgetLimits);
+    }
+    saveInternal('batcave-plafond-nourriture-v3', true);
   }
   var fixedCharges = load('batcave-fixed-charges', null);
   if(fixedCharges === null){ fixedCharges = FIXED_CHARGES_SEED.slice(); save('batcave-fixed-charges', fixedCharges); }

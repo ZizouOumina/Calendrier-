@@ -10,11 +10,11 @@ Copie du **20 septembre 2026**, après le retrait du poisson. Le plan démarre l
 > recopiées à la main.
 
 ## Le cadre
-- 64 kg · 182 cm · 20 ans · quatre séances de sport par semaine · objectif 70 kg à mars 2027 (environ +1 kg par mois).
-- **3 131 kcal par jour · protéines 161 g (2,5 g/kg) · glucides 377 g · lipides 106 g.** Tout est pesé cru.
+- 64 kg · 182 cm · 20 ans · quatre séances de sport par semaine · objectif **72 kg** à mars 2027 (environ +1,3 kg par mois, 0,31 kg par semaine — relevé de 70 à 72 kg le 23 septembre).
+- **3 230 kcal par jour · protéines 166 g (2,6 g/kg) · glucides 377 g · lipides 115 g.** Tout est pesé cru. (3 131 kcal avant le 23 septembre : le jambon de la collation est remplacé par deux œufs durs.)
 - Cinq prises par jour. Riz à midi, pâtes le soir. Depuis le 20 septembre, **poulet tous les midis et viande hachée 5 % tous les soirs** : la rotation ne change plus d'un jour à l'autre.
 - Eau : 3 litres par jour.
-- Viande et jambon **halal, achetés à la boucherie** — pas en supermarché, aucune exception.
+- Viande **halal, achetée à la boucherie** — pas en supermarché, aucune exception. (Le jambon, qui y était aussi, est sorti du plan le 23 septembre.)
 
 ## Les cinq prises
 
@@ -22,7 +22,7 @@ Copie du **20 septembre 2026**, après le retrait du poisson. Le plan démarre l
 |---|---|---|---|
 | 06:45 | Petit-déjeuner | Flocons d'avoine 80 g · skyr 180 g · 2 œufs (100 g) · beurre de cacahuète 25 g · banane 120 g | 821 kcal · P 50 · G 93 · L 28 |
 | 12:20 | Déjeuner | Riz 155 g cru · poulet 80 g · légumes verts 200 g · huile d'olive 30 ml | 978 kcal · P 35 · G 134 · L 33 |
-| 14:50 | Collation entraînement | Pain complet 60 g · jambon 40 g · fromage 20 g | 264 kcal · P 18 · G 27 · L 8 |
+| 14:50 | Collation entraînement | Pain complet 60 g · 2 œufs durs (100 g) · fromage 20 g | 363 kcal · P 23 · G 27 · L 17 |
 | 20:00 (19:00 le week-end) | Dîner | Pâtes 105 g crues · viande hachée 5 % 90 g · légumes verts 150 g · huile d'olive 15 ml · 1 fruit (≈ 120 g) | 752 kcal · P 37 · G 96 · L 22 |
 | 21:30 (20:30 le week-end) | Collation soir | Skyr 125 g · miel 20 g · beurre de cacahuète 30 g | 316 kcal · P 21 · G 27 · L 15 |
 
@@ -60,28 +60,27 @@ s'arrondit pas — le boucher pèse le montant exact. Les fruits se comptent à 
 avec sa boutique et sa date, aucune estimation, aucun trou. Le 19 il avait fait sauter les
 estimations (« enlève l'estimation de budget, dès que j'achèterai je t'enverrai les
 factures ») ; ce qui est écrit ici n'est donc plus une estimation mais un relevé. Ce que ça
-donne : **44,89 € par semaine, 194,54 € par mois**, calculés sur ce qu'il mange (le besoin
+donne : **46,32 € par semaine, 200,71 € par mois** (44,89 et 194,54 avant le 23 septembre : deux œufs remplacent le jambon), calculés sur ce qu'il mange (le besoin
 hebdomadaire) et non sur l'achat du jour — un bidon d'huile de 2 L dure cinq semaines. Ce
 montant est le *plan* ; ce qu'il a vraiment payé se saisit dans Budget → Nourriture à partir
 de ses tickets, et c'est ce dernier qui compte dans ses dépenses du mois. Un **plafond**
-Nourriture y est posé à 195 €, à la place de l'ancienne charge fixe « Courses » de
+Nourriture y est posé à 201 € (195 avant le 23 septembre), à la place de l'ancienne charge fixe « Courses » de
 300 €/mois, qui comptait la nourriture deux fois.
 
-**Chaque semaine** — 8 articles
+**Chaque semaine** — 7 articles
 
 | Article | À prendre | Le plan demande | Où | Prix relevé |
 |---|---|---|---|---|
 | Poulet | 560 g (pesé au comptoir) | 560 g | Boucherie | 7,50 €/kg |
 | Viande hachée 5 % | 630 g (pesée au comptoir) | 630 g | Boucherie | 12,00 €/kg |
 | Skyr | 2,25 kg (15 boîtes de 150 g) | 2 135 g | Lidl | 5,00 €/kg — 0,75 € la boîte |
-| Œufs | 18 (3 boîtes de 6) | 14 | Lidl | 1,69 € la boîte de 6 |
-| Jambon | 280 g (pesé au comptoir) | 280 g | Boucherie | 9,00 €/kg — charcuterie de poulet |
+| Œufs | 30 (5 boîtes de 6) | 28 | Lidl | 1,69 € la boîte de 6 |
 | Pain complet | 450 g (1 paquet) | 420 g | Lidl | 1,05 € les 450 g, 16 tranches |
 | Bananes | 7 | 7 | Lidl | 1,48 €/kg |
 | Fruits (pommes, poires, oranges…) | 7 | 7 | Frutería, de saison | ≈ 2 €/kg |
 
 La boîte d'œufs de 12 est à 2,84 €, soit moins cher à l'unité que celle de 6 : trois boîtes
-de 6 restent le compte exact des 18, mais une de 12 plus une de 6 coûtent moins.
+de 6 font les 30, mais deux de 12 plus une de 6 coûtent moins.
 
 **Toutes les 2 semaines** — deux articles.
 - **Légumes verts surgelés 5 kg** (le plan en demande 4 900 g), Lidl, 1,25 €/kg. Deux
@@ -115,7 +114,7 @@ Préparation écrit tout depuis le plan — ce qu'il y a à cuire, l'ordre minut
 exact de chaque boîte.
 
 À cuire pour la semaine : riz 1 085 g crus · pâtes 735 g · poulet 560 g · viande hachée 630 g
-· légumes 2 450 g · 315 ml d'huile · 14 œufs durs.
+· légumes 2 450 g · 315 ml d'huile · 28 œufs durs (le matin et la collation).
 
 - **Quatre jours au frigo, trois au congélateur** : de la viande cuite tient quatre jours à 4 °C, pas sept.
 - Refroidir à découvert avant de fermer ; deux heures maximum entre la casserole et le frigo.
@@ -125,4 +124,4 @@ exact de chaque boîte.
 ## Ce qui est suivi dans la Batcave
 - Les cinq cases de l'onglet Repas se réinitialisent à minuit ; la barre du jour prorate les calories aux cases cochées.
 - L'onglet Courses n'affiche que les catégories dues ce samedi-là et annonce la date du prochain passage de chacune. Cocher tous les articles dus coche l'habitude « Courses faites ».
-- Objectif à six mois : 70 kg, lu automatiquement dans les pesées du Journal.
+- Objectif à six mois : 72 kg, lu automatiquement dans les pesées du Journal.
