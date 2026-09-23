@@ -320,7 +320,8 @@ console.log('\n== 310) Sport, Études et Préparation : la référence se plie, 
     bouton: document.getElementById('progression-autres-toggle').textContent.trim()
   }));
   const hSport = await haut('sport');
-  ok(hSport < 2600, 'l\'onglet Sport tient en ' + hSport + ' px (3 312 avant, à 1440 px de large)');
+  /* 2 600 avant les élévations latérales (deux exercices de plus, lundi et samedi) */
+  ok(hSport < 2750, 'l\'onglet Sport tient en ' + hSport + ' px (3 312 avant, à 1440 px de large)');
   ok(!sp.duJour && /Jour de repos/.test(sp.entete), 'mercredi est un jour de repos, et il le dit : ' + sp.entete);
   ok(sp.plie && sp.autres > 0, 'les ' + sp.autres + ' exercices restent pliés, pas perdus');
   ok(/^Les \d+ exercices du programme ▾$/.test(sp.bouton), 'et le bouton se nomme pour un jour sans séance : « ' + sp.bouton + ' »');

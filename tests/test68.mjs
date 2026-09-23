@@ -58,11 +58,21 @@ console.log('\n== 265) Un jour de TP et les partiels ne créent aucun retard =='
   const prevuTP = await b.fr.evaluate(() => window.__bcPrevu('2026-09-24'));
   ok(prevuTP.rev < 265, 'le jour du TP, la grille prévoit moins de révision (' + prevuTP.rev + ' min)');
   await b.ctx.close();
-  /* partiels : les blocs Projets perso deviennent de la révision ciblée → rien à faire côté projets */
+  /* Partiels : depuis le 23 septembre, un jour de partiels est un jour SANS COURS. La cible
+     ne tombe donc plus a zero cote projets ; elle suit la grille liberee -- la plage du
+     cours rendue a la revision et aux projets. Ce qu'on verifie ici reste la meme idee :
+     la cible sort de la grille REELLE du jour, jamais de celle d'un jour de cours, sinon
+     les heures de cours absentes deviendraient un faux retard. Reference : le meme
+     vendredi, sans examen saisi, avec cours. */
   const c = await ouvrir('2027-01-15T09:00:00+01:00', {'batcave-examens': {'Anatomía I':'2027-01-20'}});
-  const pj = await c.fr.evaluate(() => window.__bcPrevu('2027-01-15'));
-  ok(pj.proj === 0, 'en mode partiels, aucun projet perso n\'est prévu : pas de retard possible (' + JSON.stringify(pj) + ')');
+  const pj = await c.fr.evaluate(() => ({ p: window.__bcPrevu('2027-01-15'), sans: window.__bcSansCours('2027-01-15') }));
   await c.ctx.close();
+  const d = await ouvrir('2027-01-15T09:00:00+01:00');
+  const normal = await d.fr.evaluate(() => window.__bcPrevu('2027-01-15'));
+  await d.ctx.close();
+  ok(pj.sans === true, 'le 15 janvier, en partiels, est un jour sans cours');
+  ok(pj.p.rev > normal.rev && pj.p.proj > normal.proj,
+     'la cible suit la grille libérée : plus de révision et de projets qu\'un vendredi de cours (' + JSON.stringify(pj.p) + ' contre ' + JSON.stringify(normal) + ')');
 }
 
 console.log('\n== 266) Vacances et « aujourd\'hui ne compte pas » ==');

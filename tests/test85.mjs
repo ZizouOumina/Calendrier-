@@ -15,10 +15,11 @@ const ok = (c,m) => { if(c) console.log('  ok  '+m); else { errs++; console.log(
 const browser = await chromium.launch();
 const SEED = vieFictive();
 
-async function ouvrir(quand){
+async function ouvrir(quand, sansExamens){
   const ctx = await browser.newContext({viewport:{width:1440,height:900}, timezoneId:'Europe/Madrid', locale:'fr-FR'});
   await ctx.addInitScript(() => { window.claude = undefined; });
   await ctx.addInitScript(x => { Object.keys(x).forEach(k => localStorage.setItem(k, JSON.stringify(x[k]))); }, SEED);
+  if(sansExamens) await ctx.addInitScript(() => { localStorage.removeItem('batcave-examens'); });
   const page = await ctx.newPage();
   const pe = [];
   page.on('pageerror', e => pe.push(e.message));
@@ -169,8 +170,11 @@ console.log('\n== 279) Le 19 janvier, fin du semestre 1 : la bascule se fait tou
 {
   /* Ce test demandait un AVERTISSEMENT date dans le code (« SEMESTRE 1 UNIQUEMENT ») parce
      que rien ne savait ce qu'etait le semestre 2. Il est desormais dans la grille : ce qu'on
-     verifie, c'est la bascule elle-meme, aux quatre dates qui la bornent. */
-  const { ctx, fr } = await ouvrir('2027-01-19');
+     verifie, c'est la bascule elle-meme, aux quatre dates qui la bornent.
+     SANS les examens de la vie fictive : ils tombent du 18 au 29 janvier, et depuis le 23
+     septembre un jour de partiels est un jour sans cours -- le 19 et le 26 n'auraient plus
+     de cours du tout, et la bascule des grilles serait invisible. */
+  const { ctx, fr } = await ouvrir('2027-01-19', true);
   const v = await fr.evaluate(() => ({
     ma19: window.__bcGrille('tuesday', '2027-01-19').map(b => b[0] + ' ' + b[1]),
     s19: (window.__bcSemestre('2027-01-19') || {}).id || null,

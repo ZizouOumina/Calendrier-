@@ -145,7 +145,9 @@ console.log('\n== 288) L\'entre-deux des semestres se déduit des dates, il n\'e
 console.log('\n== 289) Le mode partiels passe devant, même un jour sans cours ==');
 {
   /* un examen le 4 janvier 2027 ouvre les partiels du 28 decembre au 4 janvier : le
-     28 decembre est un lundi sans cours ET en mode partiels. La revision doit gagner. */
+     28 decembre est un lundi de vacances de Noel ET en mode partiels. Les partiels passent
+     devant les vacances : la semaine d'un examen, on travaille. Depuis le 23 septembre, ce
+     travail est simplement la journee sans cours -- plus de grille « ciblée ». */
   const { ctx, fr } = await ouvrir('2026-12-28T09:00:00+01:00', {'batcave-examens':{'Anatomía I':'2027-01-04'}});
   const v = await fr.evaluate(() => ({
     p: (window.__bcPeriode('2026-12-28') || {}).id || null, sans: window.__bcSansCours('2026-12-28'),
@@ -153,13 +155,12 @@ console.log('\n== 289) Le mode partiels passe devant, même un jour sans cours =
     c: window.__bcCibleJour('monday', '2026-12-28')
   }));
   ok(v.p === 'partiels' && v.sans === true, 'le 28 décembre : sans cours ET en mode partiels');
-  const es = v.g.filter(x => /Español/.test(x));
-  ok(es.length === 1, 'un seul bloc Español dans la journée, comme le veut le mode partiels (' + es.join(' / ') + ')');
-  /* le 28 decembre est un LUNDI du semestre 1 : la collation est a 16:50, donc l'annale
-     complete tombe a 17:00 et non a 15:00 comme les autres jours. */
-  ok(v.g.includes('17:00 Révision ciblée') && v.g.filter(x => /Révision ciblée/.test(x)).length === 4,
-     'la plage libérée est de la révision ciblée, pas du dropshipping : ' + v.g.filter(x => /Révision ciblée/.test(x)).length + ' blocs, révision ciblée à 17:00');
-  ok(v.c.proj === 0, 'aucune minute de projet prévue la semaine d\'un examen (' + v.c.proj + ')');
+  ok(v.g.includes('07:20 Anki 1') && v.g.includes('09:20 Étudier en avance') && v.g.includes('11:20 Question ouverte ou autre'),
+     'les vacances ne gagnent pas : la matinée de travail est là (' + v.g.filter(x => /07:20|09:20|11:20/.test(x)).join(' · ') + ')');
+  ok(v.g.includes('05:30 Sport') && v.g.includes('17:00 Projets perso 5') && v.g.includes('21:00 Coucher'),
+     'c\'est la journée sans cours d\'un lundi : sport 05:30, projets l\'après-midi, coucher 21:00');
+  ok(!v.g.some(x => /ciblée|Fiches de synthèse|Español/.test(x)), 'ni bloc « ciblé », ni bloc Español (la phase est finie depuis le 22 octobre)');
+  ok(v.c.proj > 0 && v.c.rev > 0, 'la cible du jour suit cette grille : révision ' + v.c.rev + ' min, projets ' + v.c.proj + ' min');
   await ctx.close();
 }
 

@@ -40,7 +40,8 @@ const jours = (debut, n) => { const out = []; const d = new Date(debut + 'T00:00
 
 console.log('\n== 1) Une séance à moitié faite vaut une demi-séance ==');
 {
-  for(const [n, attendu, desc] of [[0,'0,0','aucune case'], [3,'0,3','3 sur 10'], [5,'0,5','5 sur 10, la moitié'], [10,'1,0','les 10']]){
+  /* Haut lourd compte 11 exercices depuis l'ajout des élévations latérales. */
+  for(const [n, attendu, desc] of [[0,'0,0','aucune case'], [3,'0,3','3 sur 11'], [5,'0,5','5 sur 11, pas loin de la moitié'], [11,'1,0','les 11']]){
     const st = {}; for(let i = 0; i < n; i++) st['Haut lourd-' + i] = true;
     const {ctx, page, fr} = await ouvrir({['batcave-sport-' + JOUR]: st});
     await aller(fr, page, 'objectifs');
@@ -104,7 +105,7 @@ console.log('\n== 3) Le mode partiels s’annonce une semaine avant ==');
   ok(/Mode partiels dans 3 jours/.test(ligne), 'annoncé à 3 jours : ' + ligne.slice(0, 90));
   ok(/s'enclenche le 17 sept/.test(ligne), 'avec la date d’enclenchement : ' + (ligne.match(/enclenche[^(]*/) || [''])[0]);
   ok(/2 examens/.test(ligne) && /dernier le 26 sept/.test(ligne), 'et la session qu’il couvre : ' + (ligne.match(/\(2 examens[^)]*\)/) || [''])[0]);
-  ok(/Annales ciblées/.test(ligne) && /un seul bloc Español/.test(ligne) && /sport allégé/.test(ligne), 'et ce qui change, en toutes lettres');
+  ok(/ne changent pas/.test(ligne) && /plus cours/.test(ligne) && /sport ne bougent pas/.test(ligne), 'et ce qui change — seulement les cours —, en toutes lettres');
   await ctx.close();
 }
 {

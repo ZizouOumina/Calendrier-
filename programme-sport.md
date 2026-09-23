@@ -3,9 +3,9 @@
 Copie de référence du programme appliqué dans la Batcave (onglet Sport), commencé le mercredi 23 septembre 2026 (jour 1 du programme ; les cours, eux, ont repris le 14).
 
 ## Le cadre
-- Quatre séances de 47 à 53 minutes au parc, à 05:30 : lundi haut lourd, mardi bas complet, jeudi haut volume, samedi bras, épaules et mollets. Mercredi, vendredi et dimanche off pour la muscu.
+- Quatre séances de 47 à 57 minutes au parc : lundi haut lourd, mardi bas complet et jeudi haut volume **à 05:30** ; samedi bras, épaules et mollets **à 18:30**, juste après la course de 18:00 — le samedi, tu dors jusqu'à 06:30. Mercredi, vendredi et dimanche off pour la muscu.
 - **Shampooing les jours de sueur** : les quatre jours de muscu (lundi, mardi, jeudi, samedi) **et le dimanche**, jour de course. Mercredi et vendredi restent secs.
-- **Le cardio : deux sorties de 30 minutes, samedi 18:00 et dimanche 17:30.** Allure où l'on peut encore parler par phrases courtes, pas de fractionné. Les quatre séances ci-dessus sont en résistance pure ; le kilomètre couru jusqu'au parc est un échauffement, pas un entraînement aérobie. Ces deux sorties sont donc le seul travail d'endurance de la semaine. Elles tiennent dans des créneaux déjà libres et ne déplacent aucun bloc de travail. Elles ne comptent pas dans les minutes de sport du Bilan : ce compteur reste calé sur les quatre séances. Chaque séance finit par des abdos lestés ; le cou travaille en flexion et extension le lundi et le jeudi, en inclinaison latérale le mardi ; les trapèzes le jeudi et le samedi ; les avant-bras le lundi (curl inversé) et le samedi (curl des poignets).
+- **Le cardio : deux sorties de 30 minutes, samedi 18:00 et dimanche 17:30.** Allure où l'on peut encore parler par phrases courtes, pas de fractionné. Les quatre séances ci-dessus sont en résistance pure ; le kilomètre couru jusqu'au parc est un échauffement, pas un entraînement aérobie. Ces deux sorties sont donc le seul travail d'endurance de la semaine. Le samedi, la sortie sert aussi d'échauffement et de trajet : la séance suit à 18:30. Elles tiennent dans des créneaux déjà libres et ne déplacent aucun bloc de travail. Elles ne comptent pas dans les minutes de sport du Bilan : ce compteur reste calé sur les quatre séances. Chaque séance finit par des abdos lestés ; le cou travaille en flexion et extension le lundi et le jeudi, en inclinaison latérale le mardi ; les trapèzes le jeudi et le samedi ; le deltoïde latéral (élévations) le lundi et le samedi ; les avant-bras le lundi (curl inversé) et le samedi (curl des poignets).
 - **Montée en charge : deux semaines à la moitié des tours, puis le volume complet.** La Batcave affiche directement le bon nombre de tours, il n'y a rien à calculer. Semaines 1 et 2 (23 septembre → 6 octobre) : moitié. À partir de la semaine 3 (7 octobre) : programme entier. Le passage double le volume d'un coup — si les courbatures font sauter une séance cette semaine-là, c'est le moment d'utiliser la réduction de charge, pas de serrer les dents.
 - **La première séance, le jeudi 24, est une séance de référence.** On ne suit pas la séance normale : on mesure le point de départ. Le jour 1 est passé au **mercredi 23** le soir du 22 (nuit blanche, cours manqué) ; le mercredi étant off, la première séance du programme est le **jeudi 24, un haut volume** — les maximums de tractions et de dips s'y mesurent donc sur le même haut du corps que la séance. Les maximums du bas (split squat, soulevé de terre roumain, hip thrust) se prennent au premier **bas complet, le mardi 29**. Après l'échauffement, une seule série à l'échec sur quatre mouvements — tractions, dips, pompes, dead hang — notée dans l'onglet Sport. Puis on s'arrête là pour le haut du corps ; le cou et les avant-bras se font en douceur. Sans ce point de départ, la surcharge progressive part du bas de la fourchette et on ne saura jamais ce qu'on valait au début.
 - **Pesée le dimanche, à jeun, une semaine sur deux** (20 septembre, 4 et 18 octobre, et ainsi de suite) : au réveil, après les toilettes, avant de boire. Pas tous les jours : un poids se lit sur une tendance, et se peser quotidiennement fait prendre des décisions sur du bruit. La Batcave la rappelle en habitude du dimanche.
@@ -17,7 +17,7 @@ Copie de référence du programme appliqué dans la Batcave (onglet Sport), comm
 
 ## Les quatre séances
 
-### Lundi · Haut lourd (53 min)
+### Lundi · Haut lourd (57 min)
 Repos par paire : 45 s entre A et B, puis 90 s · 45 s / 75 s · 30 s / 60 s.
 
 | Paire | Exercice | Tours × fourchette |
@@ -30,8 +30,9 @@ Repos par paire : 45 s entre A et B, puis 90 s · 45 s / 75 s · 30 s / 60 s.
 | 3 B | Extension triceps barre basse | 2 × 10-15 |
 | 4 A | Relevés de jambes suspendus | 4 × 8-15 |
 | 4 B | Curl inversé lesté | 3 × 12-20 |
-| 5 A | Flexion du cou | 3 × 12-20 |
-| 5 B | Extension du cou | 3 × 12-20 |
+| 5 A | Élévations latérales | 3 × 12-20 |
+| 5 B | Flexion du cou | 3 × 12-20 |
+| 6 A | Extension du cou | 3 × 12-20 |
 
 ### Mardi · Bas complet (47 min)
 
@@ -41,7 +42,7 @@ Repos par paire : 45 s entre A et B, puis 90 s · 45 s / 75 s · 30 s / 60 s.
 | 1 B | Soulevé de terre roumain une jambe | 4 × 10-12 par jambe |
 | 2 A | Fentes marchées | 3 × 10-12 par jambe |
 | 2 B | Hip thrust une jambe | 3 × 12-20 par jambe |
-| 3 A | Roue abdominale | 3 × 8-15 |
+| 3 A | Crunch lesté | 3 × 12-20 |
 | 3 B | Inclinaisons latérales du cou | 3 × 12-20 par côté |
 
 ### Jeudi · Haut volume (50 min)
@@ -58,7 +59,7 @@ Repos par paire : 45 s entre A et B, puis 90 s · 45 s / 75 s · 30 s / 60 s.
 | 4 B | Flexion du cou | 3 × 12-20 |
 | 5 A | Extension du cou | 3 × 12-20 |
 
-### Samedi · Bras, épaules, mollets (49 min)
+### Samedi · Bras, épaules, mollets (53 min, à 18:30)
 
 | Paire | Exercice | Tours × fourchette |
 |---|---|---|
@@ -68,12 +69,13 @@ Repos par paire : 45 s entre A et B, puis 90 s · 45 s / 75 s · 30 s / 60 s.
 | 2 B | Extension triceps barre basse | 3 × 10-15 |
 | 3 A | Face pulls | 3 × 15-20 |
 | 3 B | Shrugs suspendus | 3 × 12-15 |
-| 4 A | Mollets une jambe | 3 × 15-20 par jambe |
-| 4 B | Dragon flag négatif | 3 × 5-8 |
-| 5 A | Curl des poignets lesté | 3 × 15-25 |
-| 5 B | Dead hang | 3 × 30-45 s |
+| 4 A | Élévations latérales | 3 × 12-20 |
+| 4 B | Mollets une jambe | 3 × 15-20 par jambe |
+| 5 A | Dragon flag négatif | 3 × 5-8 |
+| 5 B | Curl des poignets lesté | 3 × 15-25 |
+| 6 A | Dead hang | 3 × 30-45 s |
 
-Tractions et dips reviennent lundi et jeudi avec des fourchettes différentes ; leur cible se déduit du dernier journal, quel que soit le jour. Le samedi, jamais de lest sur le haut du corps.
+Tractions et dips reviennent lundi et jeudi avec des fourchettes différentes ; leur cible se déduit du dernier journal, quel que soit le jour. Le samedi, jamais de sac lesté sur le haut du corps (les élévations latérales se font avec les bouteilles en main, pas avec le sac).
 
 ## Les avant-bras — deux groupes, pas un
 
@@ -98,7 +100,7 @@ Le cou grossit comme un mollet : par la charge et par la fréquence. Deux séanc
 
 - 3 séries de 12 à 20 répétitions, trois secondes pour descendre, une seconde de tenue en haut, jamais d'à-coup.
 - Les deux premières semaines : sans poids. C'est l'amplitude et le contrôle qui se construisent d'abord.
-- Ensuite : +1,25 kg dès que les trois séries sortent 20 répétitions propres. La progression se lit en kilos, pas en secondes.
+- Ensuite : premier palier à 1,25 kg dès que les trois séries sortent 20 répétitions propres, puis un trait de 250 g à chaque fois (la bouteille graduée). La progression se lit en kilos, pas en secondes.
 - Si le créneau du parc est trop court, le cou se fait à la maison le soir : une serviette et un poids suffisent. C'est la seule partie du programme qui n'a pas besoin du parc.
 - Interdits : les ponts de cou (lutte), les rotations sous charge, tout mouvement rapide. La zone paie cher les heures de clinique tête baissée, elle ne pardonne pas l'à-peu-près.
 
@@ -109,15 +111,43 @@ Les gainages statiques ont disparu du programme : ils entretiennent, ils ne font
 | Mouvement | Jour | Exécution | Progression |
 |---|---|---|---|
 | Relevés de jambes suspendus | lundi | Jambes tendues si possible, bassin qui s'enroule en fin de course | Haltère entre les pieds, ou chevillères, dès 15 répétitions |
-| Roue abdominale | mardi | À genoux, dos en légère flexion, on ne creuse jamais | On avance les pieds, puis on passe debout |
+| Crunch lesté | mardi | Allongé, genoux pliés, la bouteille de sable (≈ 3 kg) tenue sur la poitrine ; on enroule le buste en décollant les omoplates, trois secondes pour redescendre. Le seul des quatre qui part du haut (les côtes vers le bassin) | +250 g dès que 20 reps propres sur les trois séries |
 | Relevés de genoux latéraux suspendus | jeudi | Genoux qui montent en diagonale, pour les obliques | Répétitions, puis jambes tendues |
 | Dragon flag négatif | samedi | Corps gainé d'un bloc, descente en 5 secondes, remontée libre | Amplitude, puis tempo, puis version complète |
 
-Sans roue abdominale : rollout aux avant-bras sur une serviette qui glisse, ou ab-slide sur deux chiffons. La double progression est la même que pour le reste du programme : haut de fourchette sur toutes les séries, puis un cran de plus.
+Le crunch lesté remplace la roue abdominale, que tu n'as pas. La double progression est la même que pour le reste du programme : haut de fourchette sur toutes les séries, puis un cran de plus.
 
 ## Les trapèzes
 
 Shrugs suspendus le jeudi et le samedi pour les faisceaux supérieurs (suspendu à la barre, on monte les épaules vers les oreilles, deux secondes en haut) ; face pulls le jeudi et le samedi pour les moyens et les inférieurs. C'est ce couple, et non les tractions seules, qui tient l'épaule et redresse la posture.
+
+## Les épaules — la largeur
+
+L'épaule, c'est trois faisceaux, et le programme ne les servait pas également :
+
+| Faisceau | Ce qui le travaille | Fréquence |
+|---|---|---|
+| Antérieur (devant) | dips, pompes déclinées, pike push-ups, pompes archer ou diamant | 3 séances sur 4 |
+| Postérieur (derrière) | rows, face pulls, tractions | 3 séances sur 4 |
+| **Latéral (côté)** | pike push-ups du jeudi, et désormais **élévations latérales lundi et samedi** | 3 séances sur 4 |
+
+Le latéral est celui qui élargit la silhouette et dessine le V avec la taille : c'est le muscle au meilleur rapport visuel/effort du haut du corps. Avant le 23 septembre, seuls les pike push-ups le touchaient.
+
+**Élévations latérales, 3 × 12-20.** Une bouteille graduée dans chaque main, remplies au même trait : départ à 1 L (1 kg par main). Debout, buste très légèrement penché en avant, coudes à peine fléchis ; montée jusqu'à l'horizontale, pas plus haut, les coudes mènent ; deux secondes pour redescendre. Aucun élan : si le buste balance, c'est trop lourd. Progression : un trait de 250 g par main dès que 20 reps propres sortent sur les trois séries. Deux bouteilles pleines (2 kg) ne suffisent plus → une bouteille de sable dans chaque main.
+
+## Les crans de charge
+
+La double progression monte d'un cran quand toutes les séries touchent le haut de la fourchette. Le cran dépend de ce que tu charges :
+
+| Exercices | Cran | Premier palier depuis le poids du corps |
+|---|---|---|
+| Tractions, dips, jambes (sac lesté) | 2,5 kg | 2,5 kg |
+| Cou (flexion, extension, inclinaisons) | 250 g | 1,25 kg |
+| Élévations latérales | 250 g par main | 1 kg par main |
+| Crunch lesté | 250 g | 3 kg (la bouteille de sable) |
+| Curl inversé, curl des poignets | 1 kg | 1 kg |
+
+La Batcave applique ces crans d'elle-même dans la séance du jour, et les boutons + / − de la charge avancent du même pas.
 
 ## Les étirements
 L'habitude quotidienne « Étirements faits » a désormais son contenu : `guide-etirements.html`.

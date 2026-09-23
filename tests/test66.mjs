@@ -87,21 +87,29 @@ console.log('\n== 252) Mode partiels : J-7 avant le premier examen, jusqu\'au de
   const p8 = await fr.evaluate(() => window.__bcPeriode('2026-11-08'));
   ok(p8 === null, 'le 8 novembre n\'est plus dans aucune phase Español');
   const g = await grille(fr, 'tuesday', '2026-11-10');
-  ok(g.includes('07:20 Anki 1') && g.includes('08:20 Anki 2') && g.includes('11:20 Question ouverte ou autre'), 'Anki 1, Anki 2, Question ouverte ou autre intacts');
-  /* Le mardi, « Clore le cours du jour » est a 18:00 (sortie d'amphi a 17:30), et les
-     blocs « Projets perso 5 » (19:00) et « 6 » (20:30) doivent eux aussi basculer en revision
-     ciblee : sans leur ligne dans RENOMMAGES_PARTIELS ils restaient du dropshipping en
-     semaine d'examen, et le mardi portait deux blocs Español au lieu d'un. */
-  ok(g.includes('09:20 Annales ciblées') && g.includes('11:20 Question ouverte ou autre') && g.includes('13:00 Español') && g.includes('14:00 Révision ciblée') && g.includes('18:00 Fiches de synthèse') && g.includes('18:30 Révision ciblée') && g.includes('20:30 Révision ciblée'), 'Étudier → Annales ciblées, Projets perso → Révision ciblée, un seul bloc Español, Clore → Fiches (' + g.filter(x => /ciblée|Español|Fiches|Question/.test(x)).join(',') + ')');
-  ok(g.filter(x => /Español/.test(x)).length === 1, 'mardi en partiels : un seul bloc Español (' + g.filter(x => /Español/.test(x)) + ')');
+  /* Depuis le 23 septembre, une journee de partiels est une journee SANS COURS, et rien
+     d'autre : « pendant les partiels les seances restent les memes. mes journees ne
+     changent pas. juste je n'ai pas cours ». La grille d'examen (Annales ciblées, Révision
+     ciblée, Fiches de synthèse, un seul bloc Español) a disparu : ce bloc verifiait
+     autrefois qu'elle s'appliquait, il verifie maintenant qu'elle ne revient pas. */
+  ok(g.includes('07:20 Anki 1') && g.includes('08:20 Anki 2') && g.includes('09:20 Étudier en avance') && g.includes('11:20 Question ouverte ou autre'),
+     'la matinée ne change pas : Anki 1, Anki 2, Étudier en avance, Question ouverte ou autre');
+  ok(!g.some(x => /Cours$|Trajet cours|Clore le cours/.test(x)), 'mardi en partiels : ni cours, ni trajet, ni « Clore le cours du jour »');
+  ok(g.includes('05:30 Sport'), 'le sport du mardi reste à 05:30 : les séances ne bougent pas');
+  ok(g.includes('13:00 Projets perso 1') && g.includes('17:00 Lire') && g.includes('18:00 Réexpliquer') && g.includes('19:00 Dîner') && g.includes('21:00 Coucher'),
+     'l\'après-midi libérée comme un jour sans cours : projets, Lire, Réexpliquer, dîner 19:00, coucher 21:00 (' + g.filter(x => /^1[3-9]|^2/.test(x)).join(' · ') + ')');
+  ok(!g.some(x => /ciblée|Fiches de synthèse/.test(x)), 'aucun bloc « ciblé » : la grille de partiels n\'existe plus');
   const gl = await grille(fr, 'monday', '2026-11-09');
-  ok(gl.includes('15:00 Révision ciblée') && gl.filter(x => /Español/.test(x)).length === 1 && gl.includes('20:30 Fiches de synthèse'), 'lundi en partiels : 15:00 en révision ciblée, un seul Español (' + gl.filter(x => /ciblée|Español|Fiches/.test(x)) + ')');
+  ok(gl.includes('05:30 Sport') && gl.includes('15:00 Projets perso 4') && !gl.some(x => /Cours$/.test(x)), 'lundi en partiels : sport à 05:30, 15:00 en projets, pas de cours (' + gl.filter(x => /05:30|15:00/.test(x)).join(' · ') + ')');
   const gv = await grille(fr, 'friday', '2026-11-13');
-  ok(gv.includes('05:30 Révision ciblée') && gv.includes('11:20 Español'), 'vendredi : le matinal en révision ciblée, le bloc de 11:20 en Español (' + gv.filter(x => /05:30|11:20/.test(x)).join(' · ') + ')');
-  const c = await fr.evaluate(() => [window.__bcConsigne('Révision ciblée', 2, '2026-11-10'), window.__bcConsigne('Annales ciblées', 2, '2026-11-17'), window.__bcTypeBloc('Révision ciblée'), window.__bcTypeBloc('Fiches de synthèse')]);
-  ok(/Anatomía I/.test(c[0]) && /J-6/.test(c[0]), 'consigne : la matière la plus proche, Anatomía I à J-6 (' + c[0].slice(0, 60) + ')');
-  ok(/Bioquímica/.test(c[1]), 'le 17, Anatomía passée : Bioquímica');
-  ok(c[2] === 'cours' && c[3] === 'cours', 'révision ciblée et fiches comptent en révision');
+  ok(gv.includes('05:30 Projets perso matinal') && gv.includes('11:20 Projets perso 1') && gv.some(x => /^13:30 Jumu'ah/.test(x)) && gv.includes('15:00 Projets perso 4'),
+     'vendredi : le matinal et 11:20 inchangés, Jumu\'ah, puis l\'après-midi libre (' + gv.filter(x => /05:30|11:20|15:00/.test(x)).join(' · ') + ')');
+  /* La matiere, elle, reste calculee : le lanceur de Pomodoro propose celle dont le besoin
+     est le plus fort dans la session (ce qu'il reste a faire / jours avant SON examen). */
+  const c = await fr.evaluate(() => [window.__bcMatiereBloc('2026-11-10'), window.__bcMatiereBloc('2026-11-17'), window.__bcTypeBloc('Révision ciblée')]);
+  ok(c[0] && c[0].m === 'Anatomía I' && c[0].jours === 6, 'le 10, la matière proposée est Anatomía I, à J-6 (' + JSON.stringify(c[0]) + ')');
+  ok(c[1] && c[1].m === 'Bioquímica', 'le 17, Anatomía passée : Bioquímica (' + (c[1] && c[1].m) + ')');
+  ok(c[2] === null, '« Révision ciblée » n\'est plus un libellé reconnu comme révision (' + c[2] + ')');
   const bar = await fr.evaluate(() => ({ grille: document.querySelector('#bc-grille .v').textContent, note: document.getElementById('examens-note').textContent, cal: document.getElementById('cal-schedule-label').textContent }));
   ok(/Partiels · J-9/.test(bar.grille), 'barre : Partiels · J-9 (' + bar.grille + ')');
   ok(/mode partiels du 09 nov\. au 19 nov\./.test(bar.note), 'note Études (' + bar.note + ')');

@@ -104,7 +104,11 @@ console.log('\n== 284) Le mode partiels n\'est pas touché par la suppression ==
   const p = await fr.evaluate(() => { const x = window.__bcPeriode('2026-10-13'); return x ? x.id : null; });
   ok(p === 'partiels', 'le 13 octobre est toujours en mode partiels (' + p + ')');
   const g = await grille(fr, '2026-10-13');
-  ok(g.some(x => /13:00 Español/.test(x)), 'et 13:00 reste le bloc Español du mode partiels');
+  /* Garde-fou du 23 septembre : les partiels ne remplacent plus rien, donc ils n'effacent
+     plus la phase Español en dessous -- ils lui empruntent ses renommages. Sans ca, une
+     semaine d'examen en octobre rendait tous les blocs Español au dropshipping. */
+  ok(g.some(x => /13:00 Español/.test(x)), 'et 13:00 reste le bloc Español de la phase : les partiels ne l\'effacent pas (' + g.filter(x => /^13:00/.test(x)) + ')');
+  ok(!g.some(x => /Cours$/.test(x)), 'le 13 octobre en partiels : pas de cours');
   await ctx.close();
 }
 

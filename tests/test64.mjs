@@ -63,10 +63,11 @@ console.log('\n== 231) Phase 1 (mercredi 16 septembre) : blocs Projets perso ren
   ok(g.w1220 === 'Déjeuner', 'le déjeuner reste le déjeuner : aucun bloc hors Projets perso n\'est renommé (' + g.w1220 + ')');
   ok(g.w0720 === 'Anki 1' && g.w1530 === 'Cours', 'le dentaire ne bouge pas : ' + g.w0720 + ', ' + g.w1530);
   ok(g.f0530 === 'Español · escribir largo' && g.f1120 === 'Español · tutor', 'vendredi : 05:30 escribir largo, 11:20 tutor : ' + g.f0530 + ' / ' + g.f1120);
-  /* 18:00 n'est plus du temps libre : c'est la course a pied, qui lui prend sa premiere
-     demi-heure. Le temps libre reprend a 18:30. La phase Español ne touche ni l'un ni l'autre. */
-  ok(g.s1700 === 'Español · tutor' && /Course à pied/.test(g.s1800) && g.s1830 === 'Temps libre',
-     'samedi : 17:00 tutor, 18:00 course à pied, 18:30 temps libre : ' + g.s1700 + ' / ' + g.s1800 + ' / ' + g.s1830);
+  /* 18:00 est la course a pied ; depuis le 23 septembre, la seance de muscu du samedi la
+     suit a 18:30 (elle a quitte le 05:30 pour rendre une heure de sommeil). La phase
+     Español ne touche ni l'une ni l'autre. */
+  ok(g.s1700 === 'Español · tutor' && /Course à pied/.test(g.s1800) && g.s1830 === 'Sport',
+     'samedi : 17:00 tutor, 18:00 course à pied, 18:30 sport : ' + g.s1700 + ' / ' + g.s1800 + ' / ' + g.s1830);
   ok(g.d0530 === undefined && g.d1120 === 'Español · simulación' && g.d1330 === 'Español · balance de la semana', 'dimanche : plus de bloc à 05:30, simulación et balance : ' + [g.d0530, g.d1120, g.d1330].join(' / '));
   ok(g.tEsc === 'projet' && g.tConv === null && g.tAnki === null, 'type : escribir = projet, conversación real et Anki = hors compteur (' + g.tEsc + ', ' + g.tConv + ', ' + g.tAnki + ')');
   ok(g.cible === 105, 'cible Español du jour = 55 + 50 = 105 min (obtenu ' + g.cible + ')');
@@ -186,7 +187,7 @@ console.log('\n== 233) Fin de phase (vendredi 23 octobre) puis décembre : les p
   });
   ok(g.p === undefined && g.a1120 === 'Question ouverte ou autre' && g.a1300 === 'Projets perso 1' && g.a1400 === 'Projets perso 2' && g.f0530 === 'Projets perso matinal', 'dès le 23 octobre : plus de phase, tous les blocs reviennent aux projets ('+[g.p,g.a1300,g.a1400].join(' / ')+')'); if(0) ok(false, 'classe à 14:00');
   ok(!/phase/.test(g.releve), 'relevé GRILLE : ' + g.releve);
-  ok(g.p3 === undefined && g.d1120 === 'Question ouverte ou autre' && g.d1300 === 'Projets perso 1' && g.d1400 === 'Projets perso 2' && g.ds1800 === 'Temps libre', 'décembre : même grille, tout en projets (temps libre du samedi à 18:30, après la course)');
+  ok(g.p3 === undefined && g.d1120 === 'Question ouverte ou autre' && g.d1300 === 'Projets perso 1' && g.d1400 === 'Projets perso 2' && g.ds1800 === 'Sport', 'décembre : même grille, tout en projets (le sport du samedi à 18:30, après la course)');
   await ctx.close();
 }
 

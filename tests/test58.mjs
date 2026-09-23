@@ -10,7 +10,7 @@ const browser = await chromium.launch();
    du jour au lieu de la porter en dur : c'est la seule facon qu'elle reste vraie aux deux
    semestres (le mardi finit a 21:30 au semestre 2) et les jours sans cours. Le vendredi
    garde sa mention Jumu'ah devant la plage, le samedi ses courses, le dimanche rien. */
-const JOURS = [['lundi','2026-08-31','Sport','lundi (cours 17:30 \u2192 19:30)'],['mardi','2026-09-01','Sport','mardi (cours 15:30 \u2192 17:30)'],['mercredi','2026-09-02','Projets perso matinal','mercredi (cours 15:30 \u2192 19:30)'],['jeudi','2026-09-03','Sport','jeudi (cours 15:30 \u2192 19:30)'],['vendredi','2026-09-04','Projets perso matinal',"vendredi (Jumu'ah \u00b7 cours 15:30 \u2192 19:30)"],['samedi','2026-09-05','Sport','samedi (courses)'],['dimanche','2026-09-06','__06:30 Douche + préparation','dimanche']];
+const JOURS = [['lundi','2026-08-31','Sport','lundi (cours 17:30 \u2192 19:30)'],['mardi','2026-09-01','Sport','mardi (cours 15:30 \u2192 17:30)'],['mercredi','2026-09-02','Projets perso matinal','mercredi (cours 15:30 \u2192 19:30)'],['jeudi','2026-09-03','Sport','jeudi (cours 15:30 \u2192 19:30)'],['vendredi','2026-09-04','Projets perso matinal',"vendredi (Jumu'ah \u00b7 cours 15:30 \u2192 19:30)"],['samedi','2026-09-05','__06:30 Douche + préparation','samedi (courses)'],['dimanche','2026-09-06','__06:30 Douche + préparation','dimanche']];
 for(const [nom, iso, premier, libelle] of JOURS){
   const ctx = await browser.newContext({ viewport:{width:1440,height:900}, timezoneId:'Europe/Madrid', locale:'fr-FR' });
   await ctx.addInitScript(() => { window.claude = undefined; });
@@ -34,7 +34,7 @@ for(const [nom, iso, premier, libelle] of JOURS){
   ok(r.libelle === libelle, nom + ' : emploi du temps « ' + r.libelle + ' »');
   /* le dimanche n'a plus de bloc a 05:30 : le lever est a 06:30, une nuit pleine. */
   ok(r.premier === (premier.indexOf('__') === 0 ? premier.slice(2) : '05:30 ' + premier), nom + ' : premier bloc « ' + r.premier + ' »');
-  ok(JSON.stringify(r.semaine) === JSON.stringify(['Sport','Sport','Projets perso matinal','Sport','Projets perso matinal','Sport','Douche + préparation']), nom + ' : vue de la semaine, 05:30 de lundi à dimanche = ' + r.semaine.join(' · '));
+  ok(JSON.stringify(r.semaine) === JSON.stringify(['Sport','Sport','Projets perso matinal','Sport','Projets perso matinal','Douche + préparation','Douche + préparation']), nom + ' : vue de la semaine, 05:30 de lundi à dimanche = ' + r.semaine.join(' · '));
   await ctx.close();
 }
 await browser.close();

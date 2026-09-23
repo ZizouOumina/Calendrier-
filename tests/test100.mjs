@@ -41,14 +41,18 @@ console.log('\n== 326) Deux sorties par semaine, dans le temps libre ==');
   const i = (g, h) => g.findIndex(b => b[0] === h);
   ok(sam[i(sam,'18:00')] && /Course à pied/.test(sam[i(sam,'18:00')][1]),
      'samedi 18:00 : course à pied (' + (sam[i(sam,'18:00')] || ['—','—'])[1] + ')');
-  ok(sam[i(sam,'18:30')] && sam[i(sam,'18:30')][1] === 'Temps libre',
-     'et le temps libre reprend à 18:30 — la course en prend 30 min, pas l\'heure entière');
+  /* Depuis le 23 septembre, la seance de muscu du samedi suit la course : le 05:30 du
+     samedi est rendu au sommeil, et la course de 18:00 sert d'echauffement et de trajet. */
+  ok(sam[i(sam,'18:30')] && sam[i(sam,'18:30')][1] === 'Sport',
+     'et la séance de muscu suit à 18:30 — la course dure 30 min, pas l\'heure entière');
   ok(dim[i(dim,'17:30')] && /Course à pied/.test(dim[i(dim,'17:30')][1]),
      'dimanche 17:30 : course à pied (' + (dim[i(dim,'17:30')] || ['—','—'])[1] + ')');
   ok(dim[i(dim,'18:00')] && /Repos/.test(dim[i(dim,'18:00')][1]),
      'et le repos reprend à 18:00 (' + (dim[i(dim,'18:00')] || ['—','—'])[1] + ')');
-  /* Les quatre seances de muscu sont a 05:30 : la course ne doit en deplacer aucune. */
-  ok(sam[0][0] === '05:30' && sam[0][1] === 'Sport', 'la séance de muscu du samedi n\'a pas bougé (05:30)');
+  /* Trois seances de muscu a 05:30, celle du samedi a 18:30 : une seule par jour, et le
+     samedi commence a 06:30 comme le dimanche. */
+  ok(sam[0][0] === '06:30' && sam.filter(x => x[1] === 'Sport').length === 1,
+     'le samedi commence à 06:30, et sa seule séance de muscu est celle de 18:30 (' + sam[0].join(' ') + ')');
   /* Et aucun bloc de travail n'a ete mange. */
   ok(sam.some(x => x[1] === 'Approfondir') && sam.some(x => /Cartes d'erreurs/.test(x[1])),
      'les blocs de travail du samedi sont intacts');
@@ -97,11 +101,10 @@ console.log('\n== 328) Elle part dans l\'agenda Google ==');
   });
   ok(r.sam === 1 && r.dim === 1, 'un rappel le samedi, un le dimanche (' + r.sam + ' / ' + r.dim + ')');
   ok(r.debut === 18*60 && r.fin === 18*60 + 30, 'samedi de 18:00 à 18:30 (' + r.debut + ' → ' + r.fin + ')');
-  /* Elle est un evenement A ELLE : le temps libre reprend juste apres, en evenement
-     distinct. Si la course avait garde le libelle « Temps libre », les deux auraient
-     fusionne et son telephone n'aurait sonne pour rien. */
-  ok(r.suivant && r.suivant.titre === '🦇 Temps libre',
-     'et le temps libre reprend derrière, en événement séparé (' + (r.suivant ? r.suivant.titre : '—') + ')');
+  /* Elle est un evenement A ELLE : ce qui suit a 18:30 est un evenement distinct -- la
+     seance de muscu du samedi depuis le 23 septembre. Deux rappels, deux sonneries. */
+  ok(r.suivant && r.suivant.titre === '🦇 Sport',
+     'et la séance de muscu suit à 18:30, en événement séparé (' + (r.suivant ? r.suivant.titre : '—') + ')');
   await ctx.close();
 }
 

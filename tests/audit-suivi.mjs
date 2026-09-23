@@ -108,9 +108,9 @@ console.log('\n═══ 5. Le bloc « Cours » de la fac n\'est pas de la révi
 
 console.log('\n═══ 6. Sport : une séance vaut la part de ses cases cochées ═══');
 {
-  /* lundi = « Haut lourd », 10 exercices ; les clés sont « <type>-<index> » */
-  const TYPE = 'Haut lourd', N = 10;
-  for(const n of [0, 3, 4, 5, 7, 10]){
+  /* lundi = « Haut lourd », 11 exercices depuis les élévations latérales ; les clés sont « <type>-<index> » */
+  const TYPE = 'Haut lourd', N = 11;
+  for(const n of [0, 3, 4, 5, 7, N]){
     const st = {}; for(let i=0;i<n;i++) st[TYPE+'-'+i] = true;
     const {ctx, page, fr} = await ouvrir({['batcave-sport-'+JOUR]: st});
     const o = await objectifs(fr, page);

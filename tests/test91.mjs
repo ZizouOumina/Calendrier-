@@ -41,8 +41,11 @@ console.log('\n== 310) Le bloc de 05:30 : dehors les jours de sport, dedans les 
   const { ctx, fr } = await jour('2026-09-13T21:40:00+02:00');
   const r = await fr.evaluate(() => ['2026-09-14','2026-09-15','2026-09-16','2026-09-17','2026-09-18','2026-09-19','2026-09-20']
     .map(d => window.__bcSeanceDehors(d)));
-  ok(JSON.stringify(r) === JSON.stringify([true, true, false, true, false, true, false]),
-     'lundi, mardi, jeudi, samedi dehors ; mercredi, vendredi, dimanche non (' + r.join(', ') + ')');
+  /* Depuis le 23 septembre, le samedi n'a plus de seance a 05:30 : la muscu du samedi est a
+     18:30, apres la course. Elle est bien dehors, mais hors d'atteinte de cette ligne -- lue
+     a la cloture du vendredi soir, la prevision s'arrete douze heures plus loin, vers 10 h. */
+  ok(JSON.stringify(r) === JSON.stringify([true, true, false, true, false, false, false]),
+     'lundi, mardi, jeudi dehors à 05:30 ; mercredi, vendredi, samedi (séance à 18:30), dimanche non (' + r.join(', ') + ')');
   await ctx.close();
 }
 

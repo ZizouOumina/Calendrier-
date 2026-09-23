@@ -1,5 +1,7 @@
 /* Lot 21 : Anki lu par AnkiConnect (et saisi le dimanche), répartition de la révision entre
-   les matières d'une session de partiels, sport allégé et sommeil +30 min, test du mois. */
+   les matières d'une session de partiels, test du mois. Le « sport allégé » et le « sommeil
+   +30 min » des partiels ont disparu le 23 septembre : une journée de partiels est une
+   journée sans cours, et le bloc 276 vérifie désormais que rien d'autre ne bouge. */
 import { chromium } from 'playwright';
 const URL = 'http://127.0.0.1:8199/host.html';
 let errs = 0;
@@ -33,36 +35,38 @@ console.log('\n== 275) Partiels : la révision se répartit entre les matières 
   const b = await fr.evaluate(() => window.__bcBesoins('2027-01-15').map(x => ({m:x.m, h:x.heures, j:x.jours})));
   ok(b.length === 2, 'les deux matières de la session sont vues : ' + b.map(x => x.m).join(', '));
   ok(b[0].m === 'Bioquímica', 'Bioquímica passe devant : 0 h faites contre 15 h en anatomie (' + JSON.stringify(b) + ')');
-  const blocs = await fr.evaluate(() => window.__bcGrille('weekday', '2027-01-15').filter(x => /ciblée|Fiches/.test(x[1])).map(x => x[0] + ' ' + x[1]));
-  ok(blocs.length >= 2, blocs.length + ' blocs ciblés dans la journée : ' + blocs.join(' · '));
-  const mats = await fr.evaluate(() => window.__bcGrille('weekday', '2027-01-15').filter(x => /ciblée|Fiches/.test(x[1])).map(x => (window.__bcMatiereBloc('2027-01-15', x[0]) || {}).m));
-  ok(new Set(mats).size >= 2, 'les blocs ciblés du jour couvrent plusieurs matières : ' + mats.join(' · '));
-  const cs = await fr.evaluate(() => { const g = window.__bcGrille('weekday', '2027-01-15').filter(x => /ciblée|Fiches/.test(x[1])); return g.map(x => window.__bcConsigne(x[1], 4, '2027-01-15', x[0])); });
-  ok(cs.some(c => /Bioquímica/.test(c)) && cs.some(c => /Anatomía I/.test(c)), 'chaque consigne nomme SA matière');
-  ok(/h faites sur 30 jours/.test(cs[0]), 'la consigne dit ce qui a déjà été fait : ' + cs[0].slice(0, 90));
+  /* Les « blocs ciblés » qui recevaient chacun une matière ont disparu avec la grille de
+     partiels. Le calcul du besoin, lui, sert toujours : c'est lui qui choisit la matière que
+     le lanceur de Pomodoro propose sur un bloc de révision. */
+  const m = await fr.evaluate(() => [window.__bcMatiereBloc('2027-01-15'), window.__bcBesoins('2027-01-21').map(x => x.m)]);
+  ok(m[0] && m[0].m === 'Bioquímica', 'le lanceur propose la matière au plus fort besoin : ' + (m[0] && m[0].m));
+  ok(m[1].length === 1 && m[1][0] === 'Bioquímica', 'le 21, Anatomía passée : il ne reste que Bioquímica (' + m[1].join(', ') + ')');
+  const g = await fr.evaluate(() => window.__bcGrille('friday', '2027-01-15').map(x => x[1]));
+  ok(!g.some(x => /ciblée|Fiches de synthèse/.test(x)), 'aucun bloc « ciblé » dans la grille du jour');
   await ctx.close();
 }
 
-console.log('\n== 276) Partiels : sport allégé et sommeil +30 min ==');
+console.log('\n== 276) Partiels : le sport et le sommeil ne bougent pas ==');
 {
+  /* « pendant les partiels les séances restent les mêmes. mes journées ne changent pas.
+     juste je n'ai pas cours. » Plus de mardi ni de samedi off, plus de bonus de sommeil :
+     la cible suit la grille sans cours (coucher 21:00 la veille), et rien d'autre. */
   const { ctx, fr } = await ouvrir('2027-01-15T09:00:00+01:00', EX);
   const sport = await fr.evaluate(() => ({
     lun: window.__bcTypeSport('2027-01-18'), mar: window.__bcTypeSport('2027-01-19'),
     jeu: window.__bcTypeSport('2027-01-21'), sam: window.__bcTypeSport('2027-01-16'),
-    horsPartiels: window.__bcTypeSport('2026-12-08')
+    horsMar: window.__bcTypeSport('2026-12-08'), horsSam: window.__bcTypeSport('2026-12-12')
   }));
-  ok(sport.lun !== 'Off' && sport.jeu !== 'Off', 'lundi et jeudi gardent leur séance (' + sport.lun + ' · ' + sport.jeu + ')');
-  ok(sport.mar === 'Off' && sport.sam === 'Off', 'mardi et samedi passent en jour off pendant les partiels');
-  ok(sport.horsPartiels === 'Bas complet', 'hors partiels, le mardi reste Bas complet');
-  /* La reference hors partiels doit etre un VENDREDI comme le 15 janvier, et un vendredi
-     avec cours : le 8 decembre (Inmaculada) est desormais un jour sans cours, ou l'on se
-     couche a 21:00 -- comparer 21:00 a 21:55 ne mesurait plus le bonus de sommeil des
-     partiels mais l'ecart entre deux soirees differentes. Le vendredi 11 decembre est hors
-     de la fenetre de partiels (qui court du 13 au 23 janvier) et a cours normalement. */
-  const som = await fr.evaluate(() => ({ pendant: window.__bcSommeilCible('2027-01-15'), hors: window.__bcSommeilCible('2026-12-11') }));
-  ok(Math.abs(som.pendant - som.hors - 0.5) < 0.01, 'la cible de sommeil monte de 30 min pendant les partiels (' + som.hors.toFixed(2) + ' → ' + som.pendant.toFixed(2) + ' h)');
+  ok(sport.lun === 'Haut lourd' && sport.jeu === 'Haut volume', 'lundi et jeudi gardent leur séance (' + sport.lun + ' · ' + sport.jeu + ')');
+  ok(sport.mar === sport.horsMar && sport.mar === 'Bas complet', 'le mardi reste Bas complet pendant les partiels (' + sport.mar + ')');
+  ok(sport.sam === sport.horsSam && sport.sam === 'Bras · épaules · mollets', 'le samedi reste Bras · épaules · mollets (' + sport.sam + ')');
+  const som = await fr.evaluate(() => ({ cible: window.__bcSommeilCible('2027-01-15'), coucher: window.__bcCoucher(window.__bcCle(4), '2027-01-14'), lever: window.__bcLever(window.__bcCle(5), '2027-01-15') }));
+  const [hc, mc] = som.coucher.split(':').map(Number), [hl, ml] = som.lever.split(':').map(Number);
+  const attendu = (24 * 60 - (hc * 60 + mc) + hl * 60 + ml) / 60;
+  ok(som.coucher === '21:00', 'la veille, jour sans cours, on se couche à 21:00 (' + som.coucher + ')');
+  ok(Math.abs(som.cible - attendu) < 0.01, 'la cible de sommeil est celle de la grille, sans bonus (' + som.cible.toFixed(2) + ' h = ' + som.coucher + ' → ' + som.lever + ')');
   const prevu = await fr.evaluate(() => window.__bcPrevu('2027-01-19'));
-  ok(prevu.sport === 0, 'un mardi de partiels ne compte plus de séance prévue : la cible du mois baisse d\'elle-même');
+  ok(prevu.sport === 1, 'un mardi de partiels compte toujours sa séance prévue (' + prevu.sport + ')');
   await ctx.close();
 }
 
