@@ -89,8 +89,9 @@ console.log('\n== E) Le cardio, bout en bout ==');
 {
   const r = await fr.evaluate(() => {
     const sorties = window.__bcSortiesCardio('2026-11-02');
-    const grille = window.__bcGrille('saturday', '2026-11-07').some(b => /Course à pied/.test(b[1]));
-    const agenda = window.__bcRappels('2026-11-07').some(x => /Course à pied/.test(x.titre));
+    /* depuis le 10 octobre, le samedi porte des sprints en cote et le dimanche la course */
+    const grille = window.__bcGrille('saturday', '2026-11-07').some(b => /Sprints en côte/.test(b[1])) && window.__bcGrille('weekend', '2026-11-08').some(b => /Course à pied/.test(b[1]));
+    const agenda = window.__bcRappels('2026-11-07').some(x => /Sprints en côte/.test(x.titre)) && window.__bcRappels('2026-11-08').some(x => /Course à pied/.test(x.titre));
     const panneau = !!document.getElementById('cardio-panel');
     return {sorties: sorties.length, grille, agenda, panneau};
   });

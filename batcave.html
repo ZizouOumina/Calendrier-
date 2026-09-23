@@ -2243,7 +2243,7 @@
           <p><b style="color:var(--ink);">Lest</b> — tractions à 12 reps propres sur toutes les séries, dips à 15, jambes dès que tu dépasses proprement le haut de la fourchette : +2,5 kg, une seule fois ; tu retombes à 5-8 reps, tu remontes vers 12, tu rajoutes 2,5 kg. Samedi : jamais lesté sur le haut.</p>
           <p><b style="color:var(--ink);">Sans traction ni dip</b> — tractions : rows australiens pieds surélevés 10-15, puis négatives 5 s (5-8). Dips : maintien bras tendus 20-40 s, puis négatives 5 s (5-8), puis dips pieds au sol 8-15. Version complète dès 3 reps propres.</p>
           <p><b style="color:var(--ink);">Arrêter une série</b> — quand la vitesse d'une rep chute nettement, ou quand tu compenses (coup de reins, dos creusé) ; une rep sale ne compte pas. Sur la dernière série de chaque paire, va vraiment jusqu'à ce que ce soit dur.</p>
-          <p><b style="color:var(--ink);">Montée en charge</b> — semaines 1-2 : moitié des tours · semaines 3-4 : trois quarts · à partir de la 5 : complet. Les cibles de la séance du jour appliquent ce facteur toutes seules.</p>
+          <p><b style="color:var(--ink);">Montée en charge</b> — semaines 1-2 : moitié des tours · à partir de la 3 : complet, sans palier à trois quarts. Les cibles de la séance du jour appliquent ce facteur toutes seules.</p>
           <p><b style="color:var(--ink);">Retest</b> — la première séance des semaines 5, 10 et 15 — le <b style="color:var(--ink);">jeudi</b>, premier jour de sport du programme, le départ du jeudi 24 (22 octobre, 26 novembre, 31 décembre) : c'est un <b style="color:var(--ink);">Haut volume</b>, donc tractions max et dips max <i>avant</i> la séance — le même haut du corps qu'elle — 3 min de repos entre les deux, puis séance normale. Décharge seulement si tu stagnes deux séances de suite sur tout : une semaine à 2 tours par paire, sans aller près de l'échec.</p>
           <p><b style="color:var(--ink);">Sans banc au parc</b> — pied arrière sur la barre basse ou un rebord à hauteur de genou ; step-ups → fentes marchées lestées ; hip thrust → épaules sur un muret ou un rebord, à défaut glute bridge une jambe au sol avec le sac sur les hanches, compensé par le tempo.</p>
           <p><b style="color:var(--ink);">Cou — faire grossir, pas entretenir</b> — trois mouvements, jamais de pont sur la tête : <i>flexion</i> allongé sur le dos en travers d'un banc ou d'un rebord, tête dans le vide, une serviette pliée sur le front et un poids par-dessus, tenu à deux mains ; <i>extension</i> à plat ventre, même serviette derrière la tête ; <i>inclinaison latérale</i> couché sur le côté, poids sur la tempe. 3 × 12-20, 3 secondes pour descendre, une seconde en haut, jamais de à-coup. Sans poids les deux premières semaines : c'est l'amplitude et le contrôle qui se construisent d'abord. Dès que 20 reps propres sortent sur les trois séries, premier palier à 1,25 kg, puis un trait de 250 g à chaque fois — c'est ce que la séance du jour te propose. <b>Ton poids, c'est une bouteille de 2 L.</b> Remplie de sable elle fait 2,8 à 3,2 kg — trop pour démarrer le cou, et surtout impossible à régler. Alors garde une bouteille <b>à l'eau</b> pour le cou et trace les niveaux au marqueur : l'eau pèse exactement 1 kg le litre, donc chaque trait de 250 ml vaut 250 g, et tu ajustes en trente secondes. 1,25 L = 1,25 kg, le premier palier. Quand la bouteille pleine (2 kg) ne suffit plus, tu passes à celle de sable. Le cou grossit comme un mollet : par la charge et la fréquence, deux fois par semaine minimum. Si le créneau du parc est trop court, ça se fait le soir à la maison — il ne faut qu'une serviette et un poids.</p>
@@ -3252,7 +3252,7 @@
   var OBJECTIF_EAU_L = 3;
   var OBJECTIF_SOMMEIL_H = 8;
   /* ===== Le sommeil reel, pas le temps au lit ===== (23 septembre)
-     La grille donne un temps AU LIT (du coucher au lever : 7 h 35 en semaine). Le chiffre
+     La grille donne un temps AU LIT (du coucher au lever : 7 h 55 en semaine, 7 h 35 la nuit du mardi). Le chiffre
      saisi, lui, vient de Bevel : c'est le temps ENDORMI. On ne dort jamais 100 % du temps
      passe au lit -- l'efficacite d'une bonne nuit tourne autour de 85 a 90 %, le reste est
      l'endormissement et les micro-reveils. Comparer l'un a l'autre comptait chaque nuit
@@ -10665,7 +10665,7 @@
       return '<li><span>' + escapeHtml(NOM_ALIMENT[c] || c) + '</span><span><b>' + poids(T[c]) + '</b> crus' + cuit + '</span></li>';
     }).join('') +
       '<li><span>Huile d\'olive</span><span><b>' + Math.round(T.huile) + ' ml</b> <span class="sub-note">— un tiers à la cuisson, le reste versé froid à l\'assiette</span></span></li>' +
-      '<li><span>Œufs durs <span class="sub-note">(pour les petits-déjeuners)</span></span><span><b>14</b> <span class="sub-note">— ils tiennent 7 jours en coquille</span></span></li>';
+      '<li><span>Œufs durs <span class="sub-note">(le matin et la collation)</span></span><span><b>' + Math.round(BESOIN_SEMAINE.oeufs || 0) + '</b> <span class="sub-note">— ils tiennent 7 jours en coquille</span></span></li>';
     /* L'ordre. Les durees sont celles des quantites ci-dessus ; les postes longs et
        autonomes (riz, four) partent en premier, le reste se glisse pendant. */
     var etapes = [
@@ -14714,8 +14714,8 @@
   }
   function objectifSommeil(){ return objectifSommeilPour(todayISO); }
   /* L'objectif « Sommeil moyen / nuit » etait seme a 7,75 h -- une moyenne de temps AU LIT.
-     Compare a du sommeil reel (Bevel), il etait hors d'atteinte par construction : 7 h 35 au
-     lit en semaine donnent environ 6 h 40 endormi. Les objectifs encore a la valeur semee
+     Compare a du sommeil reel (Bevel), il etait hors d'atteinte par construction : 7 h 55 au
+     lit en semaine donnent environ 7 h endormi. Les objectifs encore a la valeur semee
      (7,75 exactement : il ne l'a pas retouchee) passent a la moyenne de sommeil reel visee
      sur une semaine de la grille. Une cible qu'il a changee a la main n'est pas touchee. */
   function sommeilReelMoyenSemaine(){
