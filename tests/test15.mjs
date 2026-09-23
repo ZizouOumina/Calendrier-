@@ -55,15 +55,19 @@ const attendues = [
   'Shopify/run-analytics-query',
   'Google Calendar/list_events',
   'Shopify/run-analytics-query',   /* deux fois : ventes 30 j (Business en direct) et ventes mensuelles (12 mois) */
-  'Notion/notion-query-data-sources'   /* onze fois : une base de cours par matière */
+  'Notion/notion-query-data-sources'   /* cinq fois : les cinq bases reelles du SEMESTRE 1 */
 ];
 const w = await fr.evaluate(() => window.__watches);
 attendues.forEach(function(a){
   ok(w.indexOf(a) > -1, a);
 });
 const notion = w.filter(x => x === 'Notion/notion-query-data-sources').length;
-ok(notion === 11, 'une lecture Notion par matière (' + notion + '/11)');
-ok(w.length === attendues.length + 10 && w.filter(x => x === 'Shopify/run-analytics-query').length === 2, 'aucune surveillance en trop ni en moins (' + w.length + '/' + (attendues.length + 10) + ', dont 2 requêtes de ventes Shopify et 11 bases Notion)');
+/* Cinq, pas onze : la liste a ete relevee en ouvrant le Notion le 23 septembre. Six des onze
+   entrees pointaient sur des bases absentes de toute page (des restes de PASS) et la Batcave
+   remontait leurs cours dans le Plan du jour. On ne surveille que le SEMESTRE 1 reel ; le
+   SEMESTRE 2 sera ajoute quand ses six vraies matieres existeront dans Notion. */
+ok(notion === 5, 'une lecture Notion par base réelle du S1 (' + notion + '/5)');
+ok(w.length === attendues.length + 4 && w.filter(x => x === 'Shopify/run-analytics-query').length === 2, 'aucune surveillance en trop ni en moins (' + w.length + '/' + (attendues.length + 4) + ', dont 2 requêtes de ventes Shopify et 5 bases Notion)');
 
 console.log('\n== 39) La météo s\'affiche dans la ligne de statut ==');
 const m = await fr.evaluate(() => ({

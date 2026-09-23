@@ -15982,18 +15982,22 @@
      Le résultat est mis en cache (batcave-notion-cache) : la Batcave sait quoi afficher
      même hors connecteur, et le plan du jour remonte la matière la plus en retard.
      Rien n'est écrit dans Notion : lecture seule. */
+  /* Releve le 23 septembre EN OUVRANT le Notion, page par page -- la liste d'avant avait ete
+     ecrite ici sans jamais verifier l'arborescence, et six de ses onze entrees pointaient sur
+     des bases qui ne sont sur AUCUNE page : la Batcave lisait des cours fantomes de PASS et
+     les remontait dans le Plan du jour. Anatomia I pointait en plus sur une base orpheline
+     (54fe...) au lieu de celle du SEMESTRE 1.
+     La vraie arborescence : 🦷 P1 → 1️⃣ SEMESTRE 1 (ces cinq bases) et 2️⃣ SEMESTRE 2, qui
+     duplique aujourd'hui les memes cinq matieres et qu'il doit refaire avec les six vraies
+     (Anatomia II, Bioquimica, Microbiologia, Clinica, Psicologia, Idioma moderno).
+     Tant que ce n'est pas fait, on ne liste QUE ce qui existe : une base fantome ne vaut pas
+     mieux qu'une base absente, elle est pire -- elle repond. */
   var NOTION_BASES = [
-    {m:'Anatomía I',            ds:'collection://54fecda1-d27b-826e-a172-076e1c212d80'},
-    {m:'Anatomía II',           ds:'collection://11becda1-d27b-8326-aa5f-8798d4219150'},
+    {m:'Anatomía I',            ds:'collection://11becda1-d27b-8326-aa5f-8798d4219150'},
     {m:'Antropología',          ds:'collection://251ecda1-d27b-82ea-92e3-079802a72b29'},
     {m:'Biología celular',      ds:'collection://320ecda1-d27b-82ad-a7d7-87207a49f394'},
-    {m:'Bioquímica',            ds:'collection://7e3ecda1-d27b-82bf-8370-0740b68f04ae'},
     {m:'Documentación',         ds:'collection://97cecda1-d27b-82d6-9dfe-873590a4ea32'},
-    {m:'Epidemiología',         ds:'collection://024ecda1-d27b-830e-818b-87005cb8ed7f'},
-    {m:'Idioma moderno',        ds:'collection://63eecda1-d27b-822f-afdd-87b10a135f3d'},
-    {m:'Clínica odontológica',  ds:'collection://383ecda1-d27b-8299-822a-07032a68a51b'},
-    {m:'Microbiología',         ds:'collection://37eecda1-d27b-8245-956b-074681f10f7c'},
-    {m:'Psicología',            ds:'collection://fd6ecda1-d27b-8307-8843-07baf78eb321'}
+    {m:'Epidemiología',         ds:'collection://024ecda1-d27b-830e-818b-87005cb8ed7f'}
   ];
   var notionCache = load('batcave-notion-cache', {});
   if(!notionCache || typeof notionCache !== 'object' || Array.isArray(notionCache)) notionCache = {};
