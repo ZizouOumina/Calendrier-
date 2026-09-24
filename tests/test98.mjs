@@ -61,7 +61,7 @@ console.log('\n== 318) Ce qui part vraiment un jour sans cours ==');
   ok(t.some(x => /Lire/.test(x)) && t.some(x => /Réexpliquer/.test(x)),
      'la plage liberee porte Lire et Réexpliquer');
   const coucher = await fr.evaluate(() => { const r = window.__bcRappels('2026-10-09').filter(x => /Coucher/.test(x.titre))[0]; return r ? r.debut : -1; });
-  ok(coucher === 21*60, 'le coucher remonte a 21:00, 35 min plus tot qu\'un vendredi de cours (' + coucher + ' min)');
+  ok(coucher === 21*60 + 35, 'le coucher reste a 21:35 : la meme heure tous les jours au regime combat (' + coucher + ' min)');
   await ctx.close();
 }
 

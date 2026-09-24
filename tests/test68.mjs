@@ -32,13 +32,14 @@ console.log('\n== 264) Les cibles sortent de la grille, phase par phase ==');
   /* Le 14/09 et le 19/10 sont des lundis (4 blocs de projet : 11:20, 13:00, 14:00, 15:00),
      le 01/12 un mardi (5 blocs : 11:20, 13:00, 14:00, 19:00, 20:30). Pauses deduites. */
   ok(p.s14.proj === 0 && p.s14.es === 211, 'phase 1 : aucun projet perso prévu, 211 min d\'espagnol (' + JSON.stringify(p.s14) + ')');
-  ok(p.s19oct.proj === 211 && p.s19oct.es === 0, 'le lundi 26 oct., après la phase : tous les blocs reviennent aux projets (211 min), plus d\'espagnol (' + JSON.stringify(p.s19oct) + ')');
-  ok(p.s1dec.proj === 160 && p.s1dec.es === 0, 'décembre : même grille, tout en projets (' + JSON.stringify(p.s1dec) + ')');
+  /* 25 septembre : les projets n'ont plus de minuteur, donc plus rien de PREVU pour eux. */
+  ok(p.s19oct.proj === 0 && p.s19oct.es === 0, 'le lundi 26 oct., après la phase : plus d\'espagnol, et les projets ne sont plus prévus (sans minuteur) (' + JSON.stringify(p.s19oct) + ')');
+  ok(p.s1dec.proj === 0 && p.s1dec.es === 0, 'décembre : même grille, rien de prévu en projets (' + JSON.stringify(p.s1dec) + ')');
   const o = await fr.evaluate(() => { const l = {}; window.__bcObjectifs().forEach(x => l[x.id] = {c:x.cible, a:x.auto}); return l; });
   /* Septembre ne compte qu'à partir du 14, et cette part du mois est entièrement en
      phase 1 : aucun bloc Projets perso, donc cible zéro. Octobre en a un peu (la phase 2
      commence le 19), décembre beaucoup plus (phase 3). */
-  ok(o['M2026-09:projets_h'].c === 0 && o['M2026-10:projets_h'].c > 0 && o['M2026-10:projets_h'].c < o['M2026-12:projets_h'].c, 'la cible « Projets perso » suit les phases : sept. 0 h (phase 1) · oct. ' + o['M2026-10:projets_h'].c + ' h < déc. ' + o['M2026-12:projets_h'].c + ' h');
+  ok(o['M2026-09:projets_h'] === undefined && o['M2026-10:projets_h'] === undefined && o['M2026-12:projets_h'] === undefined, 'plus aucune cible « Projets perso » : sans minuteur depuis le 25 septembre');
   /* Les cibles de TRIMESTRE ont disparu avec le passage a un seul palier : c'est sur le
      mois que le drapeau « auto » doit desormais se verifier. */
   ok(o['T1:espagnol_h'] === undefined, 'plus aucune cible de trimestre');
@@ -71,8 +72,8 @@ console.log('\n== 265) Un jour de TP et les partiels ne créent aucun retard =='
   const normal = await d.fr.evaluate(() => window.__bcPrevu('2027-01-15'));
   await d.ctx.close();
   ok(pj.sans === true, 'le 15 janvier, en partiels, est un jour sans cours');
-  ok(pj.p.rev > normal.rev && pj.p.proj > normal.proj,
-     'la cible suit la grille libérée : plus de révision et de projets qu\'un vendredi de cours (' + JSON.stringify(pj.p) + ' contre ' + JSON.stringify(normal) + ')');
+  ok(pj.p.rev > normal.rev && pj.p.proj === 0 && normal.proj === 0,
+     'la cible suit la grille libérée : plus de révision qu\'un vendredi de cours, et les projets n\'ont plus de cible (' + JSON.stringify(pj.p) + ' contre ' + JSON.stringify(normal) + ')');
 }
 
 console.log('\n== 266) Vacances et « aujourd\'hui ne compte pas » ==');
@@ -88,7 +89,7 @@ console.log('\n== 266) Vacances et « aujourd\'hui ne compte pas » ==');
   ok(g.some(x => /Anki 1/.test(x)) && g.some(x => /Projets perso/.test(x)),
      'et le reste de la journée de travail tient — ce n\'est pas du temps libre');
   const prevu = await fr.evaluate(() => window.__bcPrevu('2026-12-24'));
-  ok(prevu.rev > 0 && prevu.proj > 0, 'la grille prévoit donc bien quelque chose : ' + JSON.stringify(prevu));
+  ok(prevu.rev > 0 && prevu.proj === 0, 'la grille prévoit donc bien de la révision (les projets, eux, n\'ont plus de cible) : ' + JSON.stringify(prevu));
   const lab = await fr.evaluate(() => document.getElementById('cal-schedule-label').textContent);
   ok(/Vacances · Noël/.test(lab), 'l\'emploi du temps le dit : ' + lab);
   await fr.evaluate(() => { document.querySelector('.nav-btn[data-page="calendrier"]').click(); document.getElementById('vac-exclu').click(); });

@@ -153,7 +153,7 @@ console.log('\n== 334b) Aucun stock n\'est supposé : il coche ce qu\'il a ==');
   const t = await fr.evaluate(() => document.querySelector('.page[data-page="courses"]').textContent);
   ok(!/tu en as|il t’en reste|à racheter le/.test(t), 'aucune ligne ne parle de stock ni de date de rachat');
   ok(!/Beurre de cacahuète/.test(t), 'le beurre de cacahuète est sorti de la liste (24 septembre)');
-  ok(/Amandes ou noix nature — 400 g/.test(t) && /demande 385 g/.test(t), 'amandes : 2 sachets de 200 g, pour 385 g demandés');
+  ok(/Amandes ou noix nature — 600 g/.test(t) && /demande 445 g/.test(t), 'amandes : 3 sachets de 200 g, pour 445 g demandés (collation combat comprise)');
   ok(/Huile d'olive — 2 L/.test(t) && /demande 1\u202f575 ml/.test(t), 'huile : un bidon de 2 L, pour 1 575 ml demandés');
   await ctx.close();
 }

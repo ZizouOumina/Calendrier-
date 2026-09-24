@@ -156,8 +156,9 @@ console.log('\n== 285) Clôture express : le minimum, et jamais le dimanche ==')
      d'espagnol ; l'express garde « ce qui change les chiffres du lendemain ». Depuis le
      16 septembre, les compléments (créatine, magnésium) y sont aussi : ils se prennent
      tous les jours, et la clôture express est celle qu'on fait vraiment. */
-  ok(champs.length === 6, 'en express un jour de cours : les quatre champs de base, la note du cours et les compléments (' + champs.length + ')');
-  ok(/Sommeil/.test(champs[0]) && /Eau/.test(champs[1]) && /Humeur/.test(champs[2]) && /suivi le cours/.test(champs[3]) && /Compléments/.test(champs[4]) && /Habitudes/.test(champs[5]), 'sommeil, eau, humeur, cours, compléments, habitudes : ' + champs.join(' | ').slice(0, 130));
+  /* 25 septembre : « Au lit » entre dans l'express -- c'est lui qui mesure l'efficacite de sommeil. */
+  ok(champs.length === 7, 'en express un jour de cours : sommeil, au lit, eau, humeur, la note du cours et les compléments (' + champs.length + ')');
+  ok(/Sommeil/.test(champs[0]) && /Au lit/.test(champs[1]) && /Eau/.test(champs[2]) && /Humeur/.test(champs[3]) && /suivi le cours/.test(champs[4]) && /Compléments/.test(champs[5]) && /Habitudes/.test(champs[6]), 'sommeil, au lit, eau, humeur, cours, compléments, habitudes : ' + champs.join(' | ').slice(0, 130));
   ok(await fr.evaluate(() => localStorage.getItem('bc-cloture-mode')) === 'court', 'le choix est mémorisé sur l\'appareil');
   /* et il n'est pas dans la sauvegarde : c'est un réglage d'appareil */
   const dansSauvegarde = await fr.evaluate(() => { try{ return JSON.stringify(window.__bcSauvegarde ? window.__bcSauvegarde() : {}).indexOf('bc-cloture-mode') > -1; }catch(e){ return false; } });

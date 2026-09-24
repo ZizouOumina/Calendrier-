@@ -62,7 +62,7 @@ console.log('\n== 180) Sans ajustement : plan de base, liste = plan × 7 ==');
   && !c.items.some(t => /^Saumon/.test(t)),
      'viande au gramme près, pesée au comptoir, et plus de poisson : ' + c.items.filter(t => /^(Poulet|Viande|Saumon)/.test(t)).join(' · '));
   /* Les fruits se comptent, ils ne se pesent pas. */
-  ok(c.items.some(t => /^Bananes — 7 .*l'unité/.test(t)) && c.items.some(t => /^Fruits[^\n]*— 7 .*l'unité/.test(t)),
+  ok(c.items.some(t => /^Bananes — 11 .*l'unité/.test(t)) && c.items.some(t => /^Fruits[^\n]*— 7 .*l'unité/.test(t)),
      'bananes et fruits à l\'unité : ' + c.items.filter(t => /^(Bananes|Fruits)/.test(t)).join(' · '));
   /* Le reste au paquet, avec le plus petit format courant : 5 pots de 450 g laissent
      115 g de surplus de skyr, la ou 5 pots de 500 en laissaient 365. Le 21 septembre, en
@@ -243,10 +243,14 @@ console.log('\n== 183) La liste de courses sort du MEME plan que les repas ==');
   const { ctx, fr } = await ouvrir('2026-09-22T10:00:00+02:00');
   const r = await fr.evaluate(() => {
     const A = window.__bcAliments, alias = {banane:'bananes', fruit:'fruits'};
+    /* Semaine de reference du 28 septembre au 4 octobre : la collation combat n'existe
+       que les jours de combat (lundi, mardi, mercredi, vendredi). */
     const noms = ['Petit-déjeuner','Déjeuner','Collation entraînement','Dîner'];
     const b = {};
-    for(let j = 20; j <= 26; j++){
-      noms.forEach(n => window.__bcCompoRepas(n, '2026-09-' + j, true).forEach(x => {
+    for(let j = 0; j < 7; j++){
+      const d = new Date(2026, 8, 28 + j), iso = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+      const duJour = [1, 2, 3, 5].indexOf(d.getDay()) > -1 ? noms.concat(['Collation combat']) : noms;
+      duJour.forEach(n => window.__bcCompoRepas(n, iso, true).forEach(x => {
         const a = A[x.c], k = alias[x.c] || x.c;
         b[k] = (b[k] || 0) + (a && a.piece ? x.q / a.piece : x.q);
       }));
@@ -259,9 +263,9 @@ console.log('\n== 183) La liste de courses sort du MEME plan que les repas ==');
      'les 15 besoins de la semaine sont exactement la somme des repas' + (faux.length ? ' — ' + faux.map(k => k + ' : ' + r.lu[k] + ' vs ' + r.recompte[k]).join(', ') : ' (' + cles.length + ')'));
   /* Et aucun aliment du plan ne manque a la liste de courses. */
   const manquants = await fr.evaluate(() => {
-    const noms = ['Petit-déjeuner','Déjeuner','Collation entraînement','Dîner'];
+    const noms = ['Petit-déjeuner','Déjeuner','Collation entraînement','Dîner','Collation combat'];
     const dans = {};
-    for(let j = 20; j <= 26; j++) noms.forEach(n => window.__bcCompoRepas(n, '2026-09-' + j, true).forEach(x => { dans[x.c] = true; }));
+    for(let j = 28; j <= 30; j++) noms.forEach(n => window.__bcCompoRepas(n, '2026-09-' + j, true).forEach(x => { dans[x.c] = true; }));
     const alias = {banane:'bananes', fruit:'fruits'};
     return Object.keys(dans).filter(c => !((alias[c] || c) in window.__bcBesoinSemaine));
   });

@@ -78,7 +78,7 @@ console.log('\n== 262) Bilan, objectifs et courbes sur six mois ==');
     const l = [...document.querySelectorAll('#obj-liste .obj-row')].map(r => r.innerText.replace(/\s+/g, ' '));
     return { n: l.length, retard: l.filter(x => /en retard/.test(x)).length, saison: !document.getElementById('saison-cloturer').hidden };
   });
-  ok(o.n >= 6, o.n + ' objectifs du mois affichés');
+  ok(o.n >= 5, o.n + ' objectifs du mois affichés (cinq métriques depuis le 25 septembre)');
   ok(o.saison, 'à quatre jours de la fin de l\'horizon, le bouton « Clôturer la saison » est là');
   await ctx.close();
 }

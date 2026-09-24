@@ -106,11 +106,11 @@ console.log('\n== 287) Un jour sans cours : la plage se libère, sans jamais dou
   ok(!g.some(x => /Cours|Trajet cours|Trajet retour/.test(x)), 'plus de cours, plus de trajets : ' + g.slice(13, 16).join(' | '));
   ok(g.includes('16:50 Collation entraînement') && g.includes('17:00 Español · tutor') && g.includes('18:00 Lire'),
      'la plage devient un bloc de projet (espagnol en phase 1) puis « Lire »');
-  ok(g.includes('19:00 Dîner') && g.includes('21:00 Coucher'), 'le soir est celui du week-end : dîner 19:00, coucher 21:00');
+  ok(g.includes('19:00 Dîner') && g.includes('21:35 Coucher'), 'le soir : dîner 19:00, coucher 21:35 (la même heure tous les jours au régime combat)');
   const pp4 = g.filter(x => /Español · hablar/.test(x));
   ok(pp4.length === 1 && pp4[0] === '15:00 Español · hablar',
      'le bloc que le lundi du semestre 1 portait déjà à 15:00 n\'est pas reposé une seconde fois (' + pp4.join(' / ') + ')');
-  ok(i.coucher === '21:00' && i.sommeil === 8.5, 'coucher 21:00 et 8 h 30 de sommeil visées — un jour libre est une nuit pleine');
+  ok(i.coucher === '21:35' && Math.abs(i.sommeil - 7.9167) < 0.01, 'coucher 21:35 et 7 h 55 au lit visées — la même nuit que les autres (' + i.coucher + ', ' + i.sommeil + ')');
 
   /* le jeudi 1er avril 2027 : sans cours, hors phase Español -- les blocs de projet restent des projets */
   const a = await jour(fr, '2027-04-01');
@@ -155,12 +155,12 @@ console.log('\n== 289) Le mode partiels passe devant, même un jour sans cours =
     c: window.__bcCibleJour('monday', '2026-12-28')
   }));
   ok(v.p === 'partiels' && v.sans === true, 'le 28 décembre : sans cours ET en mode partiels');
-  ok(v.g.includes('07:20 Anki 1') && v.g.includes('09:20 Étudier en avance') && v.g.includes('11:20 Question ouverte ou autre'),
-     'les vacances ne gagnent pas : la matinée de travail est là (' + v.g.filter(x => /07:20|09:20|11:20/.test(x)).join(' · ') + ')');
-  ok(v.g.includes('05:30 Sport') && v.g.includes('17:00 Projets perso 5') && v.g.includes('21:00 Coucher'),
-     'c\'est la journée sans cours d\'un lundi : sport 05:30, projets l\'après-midi, coucher 21:00');
+  ok(v.g.includes('07:20 Anki 1') && v.g.includes('08:20 Étudier en avance') && v.g.includes('13:00 Question ouverte ou autre'),
+     'les vacances ne gagnent pas : la matinée de travail est là, avec le JJB du lundi (' + v.g.filter(x => /07:20|09:20|11:20/.test(x)).join(' · ') + ')');
+  ok(v.g.includes('05:30 Sport') && v.g.includes('17:00 Projets perso 5') && v.g.includes('21:35 Coucher'),
+     'c\'est la journée sans cours d\'un lundi : sport 05:30, projets l\'après-midi, coucher 21:35');
   ok(!v.g.some(x => /ciblée|Fiches de synthèse|Español/.test(x)), 'ni bloc « ciblé », ni bloc Español (la phase est finie depuis le 22 octobre)');
-  ok(v.c.proj > 0 && v.c.rev > 0, 'la cible du jour suit cette grille : révision ' + v.c.rev + ' min, projets ' + v.c.proj + ' min');
+  ok(v.c.proj === 0 && v.c.rev > 0, 'la cible du jour suit cette grille : révision ' + v.c.rev + ' min, projets sans cible (' + v.c.proj + ')');
   await ctx.close();
 }
 

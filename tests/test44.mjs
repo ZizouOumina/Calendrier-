@@ -33,7 +33,8 @@ console.log('\n== 105) Charge restante : cible hebdo moins le fait depuis lundi 
   const { ctx, fr } = await ouvrir('2026-09-02T10:00:00+02:00', seed);   /* mercredi */
   const t = await texte(fr, '#dash-semaine');
   ok(/25 h 12 de révision restantes sur 33 h 12/.test(t), '33 h 12 − 8 h = 25 h 12 de révision (' + t.slice(0,70) + '…)');
-  ok(/12 h 06 de projets sur 16 h 06/.test(t), '16 h 06 − 4 h = 12 h 06 de projets');
+  /* 25 septembre : les projets n'ont plus de cible, la phrase ne les mentionne plus */
+  ok(!/de projets sur/.test(t), 'plus de charge de projets annoncée (sans minuteur depuis le 25 septembre)');
   ok(/5 jours/.test(t), 'mercredi → dimanche : 5 jours');
   /* Lot 42 : 37 h 18 restantes sur cinq jours dépassent ce que la grille ouvre encore d'ici
      dimanche. Le rythme moyen n'a plus de sens : on attend l'avertissement, pas un chiffre. */
@@ -60,9 +61,9 @@ console.log('\n== 106) Dimanche : 1 jour restant ; semaine bouclée : message de
 console.log('\n== 107) Cibles du jour dérivées du planning (plus de 5/4/5/4 à la main) ==');
 for(const [nom, quand, rev, proj] of [['mercredi','2026-09-02T10:00:00+02:00','5 h 05','2 h 40'],['vendredi','2026-09-04T10:00:00+02:00','4 h 10','1 h 50'],['samedi','2026-09-05T10:00:00+02:00','4 h 25','1 h 50'],['dimanche','2026-09-06T10:00:00+02:00','3 h 30','1 h 50']]){
   const { ctx, fr } = await ouvrir(quand);
-  const cells = await fr.evaluate(() => [...document.querySelectorAll('#dash-temps .temps-cell .tv')].map(e => e.innerText.replace(/\s+/g,' ')));
+  const cells = await fr.evaluate(() => [...document.querySelectorAll('#dash-temps .temps-cell')].map(e => e.innerText.replace(/\s+/g,' ')));
   ok((cells[0] || '').indexOf('/ ' + rev) > -1, nom + ' : révision / ' + rev + ' (' + cells[0] + ')');
-  ok((cells[1] || '').indexOf('/ ' + proj) > -1, nom + ' : projets / ' + proj + ' (' + cells[1] + ')');
+  ok(/sans minuteur/.test(cells[1] || ''), nom + ' : projets sans cible ni minuteur (' + cells[1] + ')');
   await ctx.close();
 }
 

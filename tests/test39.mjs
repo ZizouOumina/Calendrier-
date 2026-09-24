@@ -32,7 +32,8 @@ console.log('\n== 83) Les objectifs hebdomadaires se déduisent du planning ==')
   ok(nb(v.rev) === '33h12', 'objectif révision = 33 h 12 de travail réel (grille du 18 septembre : Étudier en avance 2 h, Question ouverte ou autre 1 h, Clore 40 min, Approfondir et Réexpliquer le week-end) : ' + nb(v.rev));
   /* 22 h 30 depuis l'emploi du temps reel du S1 : lundi gagne « Projets perso 4 » (1 h 50)
      et mardi « Projets perso 5 » et « 6 » (2 h), soit 3 h 36 de travail net en plus. */
-  ok(nb(v.proj) === '16h06', 'objectif projets perso = 16 h 06 (13:00 et 14:00 en semaine, lundi 15:00, mardi 20:30, vendredi 05:30 et 11:20, samedi et dimanche) : ' + nb(v.proj));
+  /* 25 septembre : plus de minuteur sur les projets perso, donc plus d'objectif en heures */
+  ok(nb(v.proj) === '0', 'objectif projets perso = 0 (plus de minuteur depuis le 25 septembre) : ' + nb(v.proj));
   await ctx.close();
 }
 

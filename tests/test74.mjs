@@ -46,7 +46,8 @@ console.log('\n== 305) Chronomètre de séance : la durée réelle, pas celle du
                                      stop: !document.getElementById('chrono-stop').hidden,
                                      aide: document.getElementById('chrono-aide').textContent }));
   ok(v.barre && v.start && !v.stop, 'la barre est là un jour de séance, prête à démarrer');
-  ok(/57 min/.test(v.aide), 'elle rappelle la durée annoncée par le programme (' + v.aide.slice(0, 60) + ')');
+  /* 25 septembre : la seance lourde perd deux exercices, elle est annoncee a 50 min. */
+  ok(/50 min/.test(v.aide), 'elle rappelle la durée annoncée par le programme (' + v.aide.slice(0, 60) + ')');
 
   await fr.evaluate(() => document.getElementById('chrono-start').click());
   await page.waitForTimeout(200);
@@ -65,7 +66,7 @@ console.log('\n== 305) Chronomètre de séance : la durée réelle, pas celle du
   ok(durees && durees.length === 1 && durees[0].minutes === 44 && durees[0].date === '2026-09-14', 'séance de 44 min enregistrée (' + (durees && durees[0] && durees[0].minutes) + ')');
   ok((await local(fr, 'batcave-chrono-seance')) === null, 'le chrono en cours est effacé une fois la séance close');
   const aide2 = await fr.evaluate(() => document.getElementById('chrono-aide').textContent);
-  ok(/44 min/.test(aide2) && /57 min/.test(aide2), 'la barre compare le réel aux 57 min annoncées (' + aide2.slice(0, 70) + ')');
+  ok(/44 min/.test(aide2) && /50 min/.test(aide2), 'la barre compare le réel aux 50 min annoncées (' + aide2.slice(0, 70) + ')');
   const boutons = await fr.evaluate(() => ({start: !document.getElementById('chrono-start').hidden, stop: !document.getElementById('chrono-stop').hidden}));
   ok(!boutons.start && !boutons.stop, 'une fois la séance faite, plus rien à lancer aujourd\'hui');
   await ctx.close();

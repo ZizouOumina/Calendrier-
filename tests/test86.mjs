@@ -73,10 +73,10 @@ console.log('\n== 282) Une conversion qui traîne dans le stockage ne convertit 
   const { ctx, fr } = await ouvrir('2026-10-12T12:00:00+02:00',
     Object.assign(SEED(3, 1.0), {'batcave-portes': {p1:true, p2:true, c1:'2026-10-08', c2:'2026-10-08'}}));
   const g = await grille(fr, '2026-10-13');
-  ok(g.includes('20:30 Español · serie en VO'),
-     'le mardi soir reste de l\'espagnol : ' + (g.filter(x => /20:30/.test(x))[0] || '—'));
-  ok(g.some(x => /13:00 Español · gramática/.test(x)),
-     'et 13:00 aussi : ' + (g.filter(x => /^13:00/.test(x))[0] || '—'));
+  ok(!g.some(x => /20:30/.test(x)) && g.some(x => /Muay Thai/.test(x)),
+     'le mardi soir est à la Muay Thai (régime combat) : ' + (g.filter(x => /19:30/.test(x))[0] || '—'));
+  ok(g.some(x => /14:00 Español · escribir/.test(x)),
+     'et 14:00 reste de l\'espagnol (13:00 est « Lire » le mardi) : ' + (g.filter(x => /^14:00/.test(x))[0] || '—'));
   await ctx.close();
 }
 
@@ -107,7 +107,7 @@ console.log('\n== 284) Le mode partiels n\'est pas touché par la suppression ==
   /* Garde-fou du 23 septembre : les partiels ne remplacent plus rien, donc ils n'effacent
      plus la phase Español en dessous -- ils lui empruntent ses renommages. Sans ca, une
      semaine d'examen en octobre rendait tous les blocs Español au dropshipping. */
-  ok(g.some(x => /13:00 Español/.test(x)), 'et 13:00 reste le bloc Español de la phase : les partiels ne l\'effacent pas (' + g.filter(x => /^13:00/.test(x)) + ')');
+  ok(g.some(x => /14:00 Español/.test(x)), 'et 14:00 reste le bloc Español de la phase : les partiels ne l\'effacent pas (' + g.filter(x => /^14:00/.test(x)) + ')');
   ok(!g.some(x => /Cours$/.test(x)), 'le 13 octobre en partiels : pas de cours');
   await ctx.close();
 }

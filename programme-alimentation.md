@@ -1,7 +1,7 @@
 # Programme d'alimentation — La Batcave
 
 Copie de référence du plan appliqué dans la Batcave (onglets Repas, Préparation et Courses).
-Copie du **24 septembre 2026**, après le retrait de la collation du soir (le poisson était sorti le 20). Le plan démarre le **lundi
+Copie du **25 septembre 2026**, avec la collation combat du régime combat (la collation du soir est sortie le 24, le poisson le 20). Le plan démarre le **lundi
 21 septembre 2026** avec le reste du programme (jour 1 ; les cours, eux, ont repris le 14).
 
 > Ce fichier ne calcule rien : il recopie ce que la Batcave applique. Si un chiffre diverge,
@@ -10,23 +10,30 @@ Copie du **24 septembre 2026**, après le retrait de la collation du soir (le po
 > recopiées à la main.
 
 ## Le cadre
-- 64 kg · 182 cm · 20 ans · quatre séances de sport par semaine · objectif **72 kg** à mars 2027 (environ +1,3 kg par mois, 0,31 kg par semaine — relevé de 70 à 72 kg le 23 septembre).
-- **3 226 kcal par jour · protéines 163 g (2,5 g/kg) · glucides 379 g · lipides 115 g.** Tout est pesé cru. (3 230 kcal le 23 septembre, 3 131 avant : le jambon de la collation avait été remplacé par deux œufs durs.)
+- 64 kg · 182 cm · 20 ans · trois séances de muscu et quatre de combat par semaine (depuis le 28 septembre) · objectif **72 kg** à mars 2027 (environ +1,3 kg par mois, 0,31 kg par semaine — relevé de 70 à 72 kg le 23 septembre).
+- **3 226 kcal par jour · protéines 163 g (2,5 g/kg) · glucides 379 g · lipides 115 g**, et **3 614 kcal les quatre jours de combat** (lundi, mardi, mercredi, vendredi) avec la collation combat. Tout est pesé cru. (3 230 kcal le 23 septembre, 3 131 avant : le jambon de la collation avait été remplacé par deux œufs durs.)
 - **Quatre prises par jour depuis le 24 septembre.** La collation du soir est sortie : elle lui donnait mal au ventre, une heure après le dîner et juste avant de s'allonger. Rien de ce qu'elle contenait n'est perdu — le skyr devient une sauce au déjeuner et au dîner, le miel passe dans les flocons. Le beurre de cacahuète, qu'il n'aime pas, est remplacé par des **amandes ou des noix nature** (mêmes calories et mêmes lipides à 2 % près, 55 g par jour ; moitié noix si possible, pour les oméga-3 que le poisson apportait). Le riz de midi reste à **155 g crus** : descendu à 125 g la même nuit, il est remis à 155 une heure après, à sa demande. Riz à midi, pâtes le soir. Depuis le 20 septembre, **poulet tous les midis et viande hachée 5 % tous les soirs** : la rotation ne change plus d'un jour à l'autre.
-- Eau : 3 litres par jour.
+- Eau : 3 litres par jour, **3,5 à 4 litres les jours de combat** (la Batcave compte 3,5 L ces jours-là).
 - Viande **halal, achetée à la boucherie** — pas en supermarché, aucune exception. (Le jambon, qui y était aussi, est sorti du plan le 23 septembre.)
 
-## Les quatre prises
+## Les quatre prises, et la cinquième les jours de combat
 
 | Heure | Prise | Contenu | Apport |
 |---|---|---|---|
 | 06:45 | Petit-déjeuner | Flocons d'avoine 80 g avec miel 20 g · skyr 180 g · 2 œufs (100 g) · amandes ou noix 30 g · banane 120 g | 909 kcal · P 50 · G 111 · L 31 |
+| 10:05 (mardi : 14:50) | **Collation combat** — lundi, mardi, mercredi, vendredi seulement | Banane 120 g · flocons d'avoine 50 g · amandes ou noix 15 g | 388 kcal · P 11 · G 64 · L 11 |
 | 12:20 | Déjeuner | Riz 155 g cru (≈ 400 g cuit) · poulet 80 g · légumes verts 200 g · huile d'olive 30 ml (dont 10 dans la sauce) · sauce au skyr 65 g | 1 019 kcal · P 42 · G 137 · L 33 |
 | 14:50 | Collation entraînement | Pain complet 60 g · 2 œufs durs (100 g) · fromage 20 g · amandes ou noix 25 g | 508 kcal · P 28 · G 32 · L 29 |
 | 20:00 (19:30 le week-end) | Dîner | Pâtes 105 g crues · viande hachée 5 % 90 g · légumes verts 150 g · huile d'olive 15 ml (dont 5 dans la sauce) · sauce au skyr 60 g · 1 fruit (≈ 120 g) · créatine 5 g | 790 kcal · P 43 · G 99 · L 22 |
 
 Après le dîner, plus rien jusqu'au lendemain. La créatine, qui se prenait avec la collation
 du soir, passe au dîner.
+
+**La collation combat** (25 septembre) : du glucide qui passe vite, 25 minutes avant le JJB
+de 10:30 ; le mardi, la Muay Thai est à 19:30 et le dîner à 18:00, donc elle se prend avec
+la collation de 14:50. Elle n'apparaît dans l'onglet Repas que les jours de combat, et la
+liste de courses la compte : 4 bananes, 200 g de flocons et 60 g d'amandes de plus par
+semaine.
 
 **La sauce au skyr.** Une minute, à froid : le skyr, l'huile prévue dans le repas, sel, et un
 parfum — ail-citron-menthe (tzatziki), curry doux ou harissa-citron pour le riz et le
@@ -72,7 +79,7 @@ date, aucune estimation. **Une ligne n'a pas encore de prix : les amandes** (dep
 septembre) ; elle dit « prix à relever » et reste hors du total jusqu'à ce qu'il l'envoie. Le 19 il avait fait sauter les
 estimations (« enlève l'estimation de budget, dès que j'achèterai je t'enverrai les
 factures ») ; ce qui est écrit ici n'est donc plus une estimation mais un relevé. Ce que ça
-donne : **44,28 € par semaine, 191,86 € par mois hors amandes** (46,32 et 200,71 le 23 septembre avec le beurre de cacahuète ; 44,89 et 194,54 avant), calculés sur ce qu'il mange (le besoin
+donne : **45,29 € par semaine, 196,24 € par mois hors amandes** depuis la collation combat (44,28 et 191,86 le 24 septembre ; 46,32 et 200,71 le 23 avec le beurre de cacahuète), calculés sur ce qu'il mange (le besoin
 hebdomadaire) et non sur l'achat du jour — un bidon d'huile de 2 L dure cinq semaines. Ce
 montant est le *plan* ; ce qu'il a vraiment payé se saisit dans Budget → Nourriture à partir
 de ses tickets, et c'est ce dernier qui compte dans ses dépenses du mois. Un **plafond**
@@ -88,9 +95,9 @@ Nourriture y est posé à 201 € (195 avant le 23 septembre) — il n'est pas r
 | Skyr | 2,25 kg (15 boîtes de 150 g) | 2 135 g | Lidl | 5,00 €/kg — 0,75 € la boîte |
 | Œufs | 30 (5 boîtes de 6) | 28 | Lidl | 1,69 € la boîte de 6 |
 | Pain complet | 450 g (1 paquet) | 420 g | Lidl | 1,05 € les 450 g, 16 tranches |
-| Bananes | 7 | 7 | Lidl | 1,48 €/kg |
+| Bananes | 11 | 11 | Lidl | 1,48 €/kg |
 | Fruits (pommes, poires, oranges…) | 7 | 7 | Frutería, de saison | ≈ 2 €/kg |
-| Amandes ou noix nature | 400 g (2 sachets de 200 g) | 385 g | Lidl | à relever |
+| Amandes ou noix nature | 600 g (3 sachets de 200 g) | 445 g | Lidl | à relever |
 
 La boîte d'œufs de 12 est à 2,84 €, soit moins cher à l'unité que celle de 6 : trois boîtes
 de 6 font les 30, mais deux de 12 plus une de 6 coûtent moins.
@@ -105,8 +112,8 @@ de 6 font les 30, mais deux de 12 plus une de 6 coûtent moins.
   couvre presque trois semaines. Il est maintenant rangé là où son cycle est écrit.
 
 **Toutes les 4 semaines** — riz 5 kg (4 340 g, 1,09 €/kg) · pâtes 3 kg (2 940 g, plus la
-boucle kcal s'il y en a une, 1,09 €/kg) · flocons d'avoine 2,5 kg (2 240 g, 1,50 €/kg,
-0,75 € les 500 g) · miel 1 kg (560 g, 10,00 €/kg). Tout chez Lidl.
+boucle kcal s'il y en a une, 1,09 €/kg) · flocons d'avoine 3,5 kg (3 040 g avec la collation
+combat, 1,50 €/kg, 0,75 € les 500 g) · miel 1 kg (560 g, 10,00 €/kg). Tout chez Lidl.
 
 **Toutes les 5 semaines** — huile d'olive **2 L, un bidon** (1 575 ml demandés), Lidl, 11,89 € les 2 L. L'huile est
 montée à 315 ml par semaine depuis le retrait du poisson : 30 ml à midi avec le poulet,
@@ -133,6 +140,6 @@ exact de chaque boîte.
 - Le petit-déjeuner et la collation ne se préparent pas : ils s'assemblent en cinq minutes.
 
 ## Ce qui est suivi dans la Batcave
-- Les quatre repas de l'onglet Repas se réinitialisent à minuit ; la barre du jour prorate les calories aux cases cochées.
+- Les quatre repas de l'onglet Repas (cinq les jours de combat) se réinitialisent à minuit ; la barre du jour prorate les calories aux cases cochées.
 - L'onglet Courses n'affiche que les catégories dues ce samedi-là et annonce la date du prochain passage de chacune. Cocher tous les articles dus coche l'habitude « Courses faites ».
 - Objectif à six mois : 72 kg, lu automatiquement dans les pesées du Journal.

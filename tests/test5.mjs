@@ -56,11 +56,12 @@ console.log('\n== 9) iCloud 1 € -> 3 € ==');
 let r = await scenario('normal', 1, 45, 1);
 let fc8 = r.charges.filter(c => c.id === 'fc8')[0];
 ok(fc8 && fc8.montant === 3, 'charge iCloud passée à 3 € (obtenu: ' + (fc8 ? fc8.montant : 'absente') + ')');
-ok(r.limits['Abonnements'] === 47, 'budget Abonnements 45 → 47 € (obtenu: ' + r.limits['Abonnements'] + ')');
+/* 25 septembre : la migration v2 ajoute le club (fc10, 90 EUR) et releve le plafond Abonnements d'autant */
+ok(r.limits['Abonnements'] === 137, 'budget Abonnements 45 → 47 → 137 € avec le club (obtenu: ' + r.limits['Abonnements'] + ')');
 const txIc = r.tx.filter(t => t.label === 'iCloud');
 ok(txIc.length === 1 && txIc[0].montant === 3, 'la dépense de septembre est corrigée à 3 € (obtenu: ' + JSON.stringify(txIc.map(t=>t.montant)) + ')');
 const total = r.charges.reduce((s,c) => s + c.montant, 0);
-ok(total === 887, 'total des charges fixes = 887 €/mois, les 300 € de « Courses » sortis (obtenu: ' + total + ')');
+ok(total === 977, 'total des charges fixes = 977 €/mois (887 + le club 90), les 300 € de « Courses » sortis (obtenu: ' + total + ')');
 /* La migration, vérifiée des deux côtés : la charge part, et le plafond arrive. */
 ok(!r.charges.some(c => c.id === 'fc4'), 'la charge fixe « Courses » de 300 € a été retirée');
 ok(r.moisPlan > 0 && r.limits['Nourriture'] === r.moisPlan,
@@ -115,7 +116,7 @@ await p2.reload();
 await p2.frameLocator('#f').locator('#timer-pomodoro').waitFor({ state:'attached', timeout:15000 });
 const fr2 = p2.frames().find(x => x.url().includes('batcave.html'));
 const r2 = await fr2.evaluate(() => ({ c: JSON.parse(localStorage.getItem('batcave-fixed-charges')), l: JSON.parse(localStorage.getItem('batcave-budget-limits')) }));
-ok(r2.c.filter(c=>c.id==='fc8')[0].montant === 3 && r2.l['Abonnements'] === 47, 'rechargement : pas de seconde augmentation (3 € / budget 47 €)');
+ok(r2.c.filter(c=>c.id==='fc8')[0].montant === 3 && r2.l['Abonnements'] === 137, 'rechargement : pas de seconde augmentation (3 € / budget 137 €)');
 await ctx2.close();
 
 // montant déjà personnalisé -> respecté
@@ -132,13 +133,13 @@ await p4.frameLocator('#f').locator('#timer-pomodoro').waitFor({ state:'attached
 const fr4 = p4.frames().find(x => x.url().includes('batcave.html'));
 const r4 = await fr4.evaluate(() => JSON.parse(localStorage.getItem('batcave-fixed-charges')));
 ok(r4.filter(c=>c.id==='fc8')[0].montant === 3, 'installation neuve : iCloud seedé à 3 €');
-ok(r4.reduce((s,c)=>s+c.montant,0) === 887, 'installation neuve : total 887 €');
+ok(r4.reduce((s,c)=>s+c.montant,0) === 977, 'installation neuve : total 977 €');
 ok(!r4.some(c => c.label === 'Courses'), 'installation neuve : aucune charge « Courses » dans la graine');
 // affichage
 await fr4.evaluate(() => document.querySelector('.nav-btn[data-page="budget"]').click());
 await p4.waitForTimeout(300);
 const txt = await fr4.evaluate(() => document.body.innerText);
-ok(/887/.test(txt.replace(/ | /g,' ')), 'le total 887 € s\'affiche dans Budget');
+ok(/977/.test(txt.replace(/ | /g,' ')), 'le total 977 € s\'affiche dans Budget');
 await ctx4.close();
 
 console.log('\nERREURS: ' + errs);

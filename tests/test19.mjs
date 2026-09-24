@@ -57,7 +57,7 @@ console.log('\n== 57) Supprimer une ligne agrégée « Projet perso » nettoie t
   ok(!/1h/.test(await caseMois(fr, 'ag', '2026-09-02')), 'agenda Batcave à jour SANS action supplémentaire');
   ok(!/1h/.test(await caseMois(fr, 'pj', '2026-09-02')), 'agenda Projets perso à jour SANS action supplémentaire');
   const cell = await fr.evaluate(() => { document.querySelector('.nav-btn[data-page="dashboard"]').click(); return document.querySelectorAll('#dash-temps .temps-cell')[1].innerText.replace(/\s+/g,''); });
-  ok(/Projetsperso0\//.test(cell), 'le tableau de bord aussi : ' + cell);
+  ok(/Projetsperso0[^\/]*sansminuteur/.test(cell), 'le tableau de bord aussi (projets sans minuteur) : ' + cell);
   const sessions = await ls(fr, 'batcave-sessions');
   ok(!sessions.some(s => s.type === 'projet' && s.date === '2026-09-02'), 'aucun bloc "fantôme" dans le journal');
   await ctx.close();

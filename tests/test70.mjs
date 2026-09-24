@@ -23,7 +23,7 @@ async function ouvrir(quand, local){
 }
 const local = (fr,k) => fr.evaluate(x => JSON.parse(localStorage.getItem(x) || 'null'), k);
 const MERCREDI = '2026-10-14T09:00:00+02:00';   /* semaine 5 : tours complets, jour off */
-const LUNDI    = '2026-10-12T09:00:00+02:00';
+const LUNDI    = '2026-10-15T09:00:00+02:00';   /* jeudi : la seance lourde depuis le regime combat */
 
 console.log('\n== 270) Un jour off, le bandeau propose de choisir une séance ==');
 {
@@ -80,7 +80,7 @@ console.log('\n== 273) Saisie au pas : séries, répétitions, lest ==');
   ok(log.length === 1 && JSON.stringify(log[0].series) === '[9,8,7,7]' && log[0].charge === 2.5,
      'journal : 9/8/7/7 @2,5 kg (' + JSON.stringify(log[0] && [log[0].series, log[0].charge]) + ')');
   ok(await fr.evaluate(() => document.querySelector('.sport-card.today .saisie [data-valider]').textContent.trim()) === '✓ enregistré', 'le bouton passe à « enregistré »');
-  ok((await local(fr, 'batcave-sport-2026-10-12'))['Haut lourd-0'] === true, 'l\'exercice est coché tout seul');
+  ok((await local(fr, 'batcave-sport-2026-10-15'))['Haut lourd-0'] === true, 'l\'exercice est coché tout seul');
   await ctx.close();
 }
 
@@ -109,7 +109,7 @@ console.log('\n== 275) « Effacer » retire la séance du jour ==');
   await effacerSaisie(fr);
   await page.waitForTimeout(200);
   ok((await local(fr, 'batcave-sport-log')).length === 0, 'effacer vide le journal du jour');
-  ok((await local(fr, 'batcave-sport-2026-10-12'))['Haut lourd-0'] === false, 'et décoche l\'exercice');
+  ok((await local(fr, 'batcave-sport-2026-10-15'))['Haut lourd-0'] === false, 'et décoche l\'exercice');
   ok(await valeursSaisie(fr) === '6/6/6/6', 'le bloc repart de la cible');
   await ctx.close();
 }
@@ -131,7 +131,7 @@ console.log('\n== 277) Échanger la séance d\'un jour d\'entraînement ==');
   const { ctx, fr, page } = await ouvrir(LUNDI);
   await fr.evaluate(() => document.querySelector('[data-seance="Bas complet"]').click());
   await page.waitForTimeout(250);
-  ok(await fr.evaluate(() => (document.querySelector('.sport-card.today .stitle') || {}).textContent) === 'Bas complet', 'lundi peut porter le bas du corps');
+  ok(await fr.evaluate(() => (document.querySelector('.sport-card.today .stitle') || {}).textContent) === 'Bas complet', 'le jour lourd peut porter le bas du corps');
   ok(/le plan disait Haut lourd/.test(await fr.evaluate(() => document.getElementById('seance-choix').innerText)), 'le bandeau rappelle ce que le plan prévoyait');
   await ctx.close();
 }

@@ -1199,6 +1199,7 @@
   .obj-led.ok{ background:var(--cyan-dim); }
   .obj-led.retard{ background:var(--warn); box-shadow:0 0 8px rgba(217,130,43,0.7); }
   .obj-led.vide{ background:transparent; border:1px solid var(--ink-faint); }
+  .obj-led.lent{ background:transparent; border:1px dashed var(--ink-dim); }
   .obj-row{ display:grid; grid-template-columns:14px minmax(110px,1.4fr) repeat(3, minmax(0, 0.8fr)) minmax(0, 1fr) auto; gap:10px; align-items:center; padding:9px 0; border-bottom:1px solid var(--border-soft); font-size:13px; color:var(--ink-dim); }
   .obj-row > *{ min-width:0; overflow-wrap:anywhere; }
   .obj-row:last-child{ border-bottom:none; }
@@ -1852,7 +1853,7 @@
             <div id="dash-sport"></div>
           </div>
           <div class="panel">
-            <div class="sub-head"><h3>Objectifs du mois</h3><span class="sub-note" id="dash-goals-note"></span></div>
+            <div class="sub-head"><h3>Les 5 qui comptent</h3><span class="sub-note" id="dash-goals-note"></span></div>
             <ul id="dash-goals" class="mini-list"></ul>
           </div>
         </div>
@@ -2185,7 +2186,7 @@
       <div class="page-head">
         <span class="eyebrow">Dossier N° 06</span>
         <h1>Sport — Programme v3</h1>
-        <p class="desc">Quatre séances au parc, paires antagonistes en supersets : lundi haut lourd, mardi bas complet, jeudi haut volume, samedi bras, épaules et mollets. Chaque séance finit par des abdos lestés ; le cou en flexion et extension lundi et jeudi, en inclinaison latérale mardi ; les trapèzes jeudi et samedi ; la largeur d'épaules (élévations latérales) lundi et samedi. La séance du jour est surlignée automatiquement, et un jour de repos tu peux en choisir une quand même. <b style="color:var(--ink-dim);">Le cardio est à part</b> : deux sorties de 30 min, samedi 18:00 et dimanche 17:30, avec leur propre compteur plus bas.
+        <p class="desc">Depuis le lundi 28 septembre : <b style="color:var(--ink-dim);">trois séances de muscu</b> au parc à 05:30, paires antagonistes en supersets — lundi haut volume (le plus léger, avant le JJB), mardi bas complet, jeudi haut lourd (le seul jour sans combat) — <b style="color:var(--ink-dim);">et quatre de combat</b> : JJB lundi, mercredi et vendredi à 10:30, Muay Thai mardi à 19:30. Le cou en flexion et extension lundi et jeudi, en inclinaison latérale mardi ; les trapèzes le lundi ; la largeur d'épaules (élévations latérales) lundi et jeudi ; les mollets le mardi. La séance du jour est surlignée automatiquement, et un jour de repos tu peux en choisir une quand même. <b style="color:var(--ink-dim);">Le combat a son propre compteur</b>, plus bas.
       </div>
 
       <div class="week-strip" id="week-strip"></div>
@@ -2224,31 +2225,31 @@
            semaine : compter les sorties dedans les rendrait atteignables sans effort.
            Le cardio a donc son propre compteur, sa propre ligne de bilan, sa propre serie. -->
       <div class="panel sub-panel" id="cardio-panel" style="margin-top:16px;">
-        <div class="sub-head"><h3>🏃 Cardio</h3><span class="sub-note" id="cardio-note">—</span></div>
-        <p class="sub-note" style="margin-bottom:12px; line-height:1.6;">Les quatre séances sont en résistance pure : ces deux sorties sont tout le cardio de la semaine. Le dimanche, la course facile — 30 minutes, puis 5 de plus chaque semaine dès le 11 octobre, jusqu'à 45 : c'est elle qui fait baisser la fréquence cardiaque de repos. Le samedi, 30 minutes faciles jusqu'au 3 octobre, puis des <b style="color:var(--ink-dim);">sprints en côte</b> dès le 10 (6 à 8 × 10-15 s, ~15 min). <b style="color:var(--ink-dim);">Elles ne comptent pas dans « Séances tenues »</b> — ce compteur reste celui de la muscu, et le cardio a le sien.</p>
+        <div class="sub-head"><h3>🥋 Cardio &amp; combat</h3><span class="sub-note" id="cardio-note">—</span></div>
+        <p class="sub-note" style="margin-bottom:12px; line-height:1.6;">Depuis le lundi 28 septembre, <b style="color:var(--ink-dim);">le combat remplace la course et les sprints</b> : JJB le lundi, le mercredi et le vendredi à 10:30, Muay Thai le mardi à 19:30, 1 h 30 chacun. C'est ton cardio, et c'est lui qui fait baisser la fréquence cardiaque de repos. Coche chaque séance faite. <b style="color:var(--ink-dim);">Elles ne comptent pas dans « Séances tenues »</b> — ce compteur reste celui de la muscu, et le combat a le sien, ici.</p>
         <ul class="check-list" id="cardio-liste"></ul>
         <div id="cardio-resume" class="sub-note" style="margin-top:12px; line-height:1.7;"></div>
       </div>
 
       <div class="panel sub-panel" id="programme-panel" style="margin-top:16px;">
         <div class="sub-head"><h3>📋 Le programme</h3><span class="sub-note" id="programme-note">—</span></div>
-        <p class="sub-note" style="line-height:1.65; margin-bottom:8px;">Mercredi, vendredi et dimanche sont off : rien à cocher. Le créneau de 05:30 sert à Anki ou aux projets le mercredi et le vendredi ; le samedi et le dimanche, on dort jusqu'à 06:30 — la séance du samedi est le soir, à 18:30, après la course (les sprints en côte dès le 10 octobre). Si la semaine dérape, tu sacrifies samedi, puis jeudi. Jamais lundi ni mardi. Huit semaines sans y toucher, en notant tout.</p>
+        <p class="sub-note" style="line-height:1.65; margin-bottom:8px;">Mercredi, vendredi, samedi et dimanche sont off côté muscu : rien à cocher ici. Le créneau de 05:30 de ces jours-là sert aux projets (à Anki le mercredi pendant la phase espagnol) — lever à 05:30 tous les jours. La séance du samedi et la course sont sorties le 28 septembre : le combat est ton cardio. Si la semaine dérape, tu sautes une séance de combat, jamais la muscu ni le sommeil. Huit semaines sans y toucher, en notant tout.</p>
         <button type="button" class="heat-toggle" id="programme-toggle" style="padding:0;">Échauffements, calibration, progression, lest, retests ▾</button>
         <div id="programme-details" hidden style="margin-top:10px; font-size:12.5px; color:var(--ink-dim); line-height:1.7; display:flex; flex-direction:column; gap:8px;">
           <p><b style="color:var(--ink);">Échauffement haut (5 min)</b> — suspension 20 s + 10 tirages d'omoplates · 15 rotations d'épaules bras tendus · 15 face pulls élastique · 10 pompes lentes · 2 séries légères du premier exercice, un cran en dessous (moitié du lest quand tu lestes).</p>
           <p><b style="color:var(--ink);">Échauffement bas (5 min)</b> — 20 mollets debout · 10 fentes marchées · 10 charnières de hanche · 5 squats sautés · 8 split squats à vide par jambe.</p>
-          <p><b style="color:var(--ink);">Trajet en courant</b> — le parc est à 1 km : l'aller se fait en courant, allure conversation (5 à 6 min), c'est l'échauffement général ; l'échauffement haut se réduit alors à la mobilité des épaules et aux séries légères, l'échauffement bas garde ses mouvements. Retour en marchant les jours haut du corps (lundi, jeudi, samedi), en trottinant le mardi. Jamais plus vite qu'une allure où tu peux parler : les tractions du lundi ne doivent rien perdre.</p>
+          <p><b style="color:var(--ink);">Trajet en courant</b> — le parc est à 1 km : l'aller se fait en courant, allure conversation (5 à 6 min), c'est l'échauffement général ; l'échauffement haut se réduit alors à la mobilité des épaules et aux séries légères, l'échauffement bas garde ses mouvements. Retour en marchant les jours haut du corps (lundi, jeudi), en trottinant le mardi. Jamais plus vite qu'une allure où tu peux parler : les tractions ne doivent rien perdre.</p>
           <p><b style="color:var(--ink);">Calibration (une fois, 20 min)</b> — après échauffement : tractions max, dips max (ou maintien bras tendus, en secondes), pompes max, split squats max par jambe. Saisis-les comme séries de la première séance : les cibles en découlent.</p>
           <p><b style="color:var(--ink);">Progression</b> — quand toutes les séries touchent le haut de la fourchette, un cran de plus, jamais deux ; tu retombes dans le bas, c'est voulu. Poussée horizontale : pompes inclinées barre haute → barre basse → au sol → déclinées → diamant → archer. Poussée verticale : pike pieds au sol → sur barre basse → sur banc → contre un poteau. Jambes : poids du corps → pied arrière surélevé → + sac → + pied avant surélevé 10 cm → tempo 3 s → pause 2 s en bas → shrimp squat → pistol.</p>
-          <p><b style="color:var(--ink);">Lest</b> — tractions à 12 reps propres sur toutes les séries, dips à 15, jambes dès que tu dépasses proprement le haut de la fourchette : +2,5 kg, une seule fois ; tu retombes à 5-8 reps, tu remontes vers 12, tu rajoutes 2,5 kg. Samedi : jamais lesté sur le haut.</p>
+          <p><b style="color:var(--ink);">Lest</b> — tractions à 12 reps propres sur toutes les séries, dips à 15, jambes dès que tu dépasses proprement le haut de la fourchette : +2,5 kg, une seule fois ; tu retombes à 5-8 reps, tu remontes vers 12, tu rajoutes 2,5 kg.</p>
           <p><b style="color:var(--ink);">Sans traction ni dip</b> — tractions : rows australiens pieds surélevés 10-15, puis négatives 5 s (5-8). Dips : maintien bras tendus 20-40 s, puis négatives 5 s (5-8), puis dips pieds au sol 8-15. Version complète dès 3 reps propres.</p>
           <p><b style="color:var(--ink);">Arrêter une série</b> — quand la vitesse d'une rep chute nettement, ou quand tu compenses (coup de reins, dos creusé) ; une rep sale ne compte pas. Sur la dernière série de chaque paire, va vraiment jusqu'à ce que ce soit dur.</p>
           <p><b style="color:var(--ink);">Montée en charge</b> — semaines 1-2 : moitié des tours · à partir de la 3 : complet, sans palier à trois quarts. Les cibles de la séance du jour appliquent ce facteur toutes seules.</p>
-          <p><b style="color:var(--ink);">Retest</b> — la première séance des semaines 5, 10 et 15 — le <b style="color:var(--ink);">jeudi</b>, premier jour de sport du programme, le départ du jeudi 24 (22 octobre, 26 novembre, 31 décembre) : c'est un <b style="color:var(--ink);">Haut volume</b>, donc tractions max et dips max <i>avant</i> la séance — le même haut du corps qu'elle — 3 min de repos entre les deux, puis séance normale. Décharge seulement si tu stagnes deux séances de suite sur tout : une semaine à 2 tours par paire, sans aller près de l'échec.</p>
+          <p><b style="color:var(--ink);">Retest</b> — la première séance des semaines 5, 10 et 15 — le <b style="color:var(--ink);">jeudi</b>, premier jour de sport du programme, le départ du jeudi 24 (22 octobre, 26 novembre, 31 décembre) : depuis le 28 septembre, c'est la séance <b style="color:var(--ink);">Haut lourd</b>, donc tractions max et dips max <i>avant</i> la séance — le même haut du corps qu'elle — 3 min de repos entre les deux, puis séance normale. Décharge seulement si tu stagnes deux séances de suite sur tout : une semaine à 2 tours par paire, sans aller près de l'échec.</p>
           <p><b style="color:var(--ink);">Sans banc au parc</b> — pied arrière sur la barre basse ou un rebord à hauteur de genou ; step-ups → fentes marchées lestées ; hip thrust → épaules sur un muret ou un rebord, à défaut glute bridge une jambe au sol avec le sac sur les hanches, compensé par le tempo.</p>
           <p><b style="color:var(--ink);">Cou — faire grossir, pas entretenir</b> — trois mouvements, jamais de pont sur la tête : <i>flexion</i> allongé sur le dos en travers d'un banc ou d'un rebord, tête dans le vide, une serviette pliée sur le front et un poids par-dessus, tenu à deux mains ; <i>extension</i> à plat ventre, même serviette derrière la tête ; <i>inclinaison latérale</i> couché sur le côté, poids sur la tempe. 3 × 12-20, 3 secondes pour descendre, une seconde en haut, jamais de à-coup. Sans poids les deux premières semaines : c'est l'amplitude et le contrôle qui se construisent d'abord. Dès que 20 reps propres sortent sur les trois séries, premier palier à 1,25 kg, puis un trait de 250 g à chaque fois — c'est ce que la séance du jour te propose. <b>Ton poids, c'est une bouteille de 2 L.</b> Remplie de sable elle fait 2,8 à 3,2 kg — trop pour démarrer le cou, et surtout impossible à régler. Alors garde une bouteille <b>à l'eau</b> pour le cou et trace les niveaux au marqueur : l'eau pèse exactement 1 kg le litre, donc chaque trait de 250 ml vaut 250 g, et tu ajustes en trente secondes. 1,25 L = 1,25 kg, le premier palier. Quand la bouteille pleine (2 kg) ne suffit plus, tu passes à celle de sable. Le cou grossit comme un mollet : par la charge et la fréquence, deux fois par semaine minimum. Si le créneau du parc est trop court, ça se fait le soir à la maison — il ne faut qu'une serviette et un poids.</p>
-          <p><b style="color:var(--ink);">Abdos — quatre fois par semaine, lestés</b> — <i>relevés de jambes suspendus</i> (lundi) : jambes tendues si possible, bassin qui s'enroule en fin de course, un haltère entre les pieds ou des chevillères dès 15 reps ; <i>crunch lesté</i> (mardi) : allongé au sol, genoux pliés, <b>le poids du cou tenu sur la poitrine</b>, on enroule le buste en décollant les omoplates, trois secondes pour redescendre. Il remplace la roue abdominale, que tu n'as pas et qui n'apporterait rien de plus ici. C'est le seul des quatre qui travaille les abdos <b>par le haut</b> — les côtes vers le bassin — quand les trois autres partent des jambes : c'est pour ça qu'il a sa place et qu'il ne fait pas doublon. Trois minutes en fin de séance. <b>Ici, la bouteille de sable pleine (≈ 3 kg) est un bon point de départ</b> — sur la poitrine, la forme n'a aucune importance et la charge est vite trop légère. Progression : +250 g à +1,25 kg dès que 20 reps propres sortent sur les trois séries. Jamais les mains derrière la nuque à tirer sur la tête ; <i>relevés de genoux latéraux suspendus</i> (jeudi) pour les obliques ; <i>dragon flag négatif</i> (samedi) : corps gainé d'un bloc, on descend en 5 secondes, on remonte comme on peut. Les gainages statiques ont disparu du programme : ils entretiennent, ils ne font pas grossir. La progression est la même que le reste : haut de fourchette sur toutes les séries, puis un cran de plus.</p>
-          <p><b style="color:var(--ink);">Épaules — la largeur</b> — l'épaule, c'est trois faisceaux. L'avant travaille à chaque poussée (dips, pompes, pike push-ups), l'arrière à chaque tirage (rows, face pulls, tractions). Le <b>latéral</b>, celui qui élargit la silhouette, n'avait que les pike push-ups du jeudi : d'où les <i>élévations latérales</i>, lundi et samedi, 3 × 12-20. Une bouteille graduée dans chaque main, <b>remplies au même trait</b> — départ à 1 L (1 kg par main). Debout, buste très légèrement penché en avant, coudes à peine fléchis ; on monte jusqu'à l'horizontale, pas plus haut, les coudes menant le mouvement ; deux secondes pour redescendre. Aucun élan : si le buste balance, c'est trop lourd. Progression : un trait de 250 g par main dès que 20 reps propres sortent sur les trois séries. Quand deux bouteilles de 2 L pleines (2 kg par main) ne suffisent plus, une bouteille de sable dans chaque main.</p>
+          <p><b style="color:var(--ink);">Abdos — le crunch lesté, et le tatami</b> — depuis le 28 septembre, le JJB (garde, ponts, sorties de hanche) et la Muay Thai (gainage, coups de genou) font travailler la sangle quatre fois par semaine : les relevés de jambes, les relevés de genoux et le dragon flag sont sortis. Il reste le <i>crunch lesté</i> (mardi) : allongé au sol, genoux pliés, <b>le poids du cou tenu sur la poitrine</b>, on enroule le buste en décollant les omoplates, trois secondes pour redescendre. Il remplace la roue abdominale, que tu n'as pas et qui n'apporterait rien de plus ici. C'est le seul des quatre qui travaille les abdos <b>par le haut</b> — les côtes vers le bassin — quand les trois autres partent des jambes : c'est pour ça qu'il a sa place et qu'il ne fait pas doublon. Trois minutes en fin de séance. <b>Ici, la bouteille de sable pleine (≈ 3 kg) est un bon point de départ</b> — sur la poitrine, la forme n'a aucune importance et la charge est vite trop légère. Progression : +250 g à +1,25 kg dès que 20 reps propres sortent sur les trois séries. Jamais les mains derrière la nuque à tirer sur la tête. Les gainages statiques ont disparu du programme : ils entretiennent, ils ne font pas grossir. La progression est la même que le reste : haut de fourchette sur toutes les séries, puis un cran de plus.</p>
+          <p><b style="color:var(--ink);">Épaules — la largeur</b> — l'épaule, c'est trois faisceaux. L'avant travaille à chaque poussée (dips, pompes, pike push-ups), l'arrière à chaque tirage (rows, face pulls, tractions). Le <b>latéral</b>, celui qui élargit la silhouette, n'avait que les pike push-ups : d'où les <i>élévations latérales</i>, lundi et jeudi, 3 × 12-20. Une bouteille graduée dans chaque main, <b>remplies au même trait</b> — départ à 1 L (1 kg par main). Debout, buste très légèrement penché en avant, coudes à peine fléchis ; on monte jusqu'à l'horizontale, pas plus haut, les coudes menant le mouvement ; deux secondes pour redescendre. Aucun élan : si le buste balance, c'est trop lourd. Progression : un trait de 250 g par main dès que 20 reps propres sortent sur les trois séries. Quand deux bouteilles de 2 L pleines (2 kg par main) ne suffisent plus, une bouteille de sable dans chaque main.</p>
           <p><b style="color:var(--ink);">Le carnet</b> — date, exercice, cran ou charge, reps de chaque série : la seule ligne non négociable. C'est la saisie dans la séance du jour, juste au-dessus.</p>
         </div>
       </div>
@@ -2788,6 +2789,12 @@
       <!-- Objectifs par periode : ce que tu saisis (journal, minuteur, sport, budget…) compare
            a la cible de la periode -- valeur reelle, valeur attendue a ce jour au rythme prevu,
            ecart, projection. Les trimestres et les mois sont semes une fois ; tout est editable. -->
+      <div class="panel sub-panel" id="cinq-panel" style="margin-bottom:18px;">
+        <div class="sub-head"><h3>🎯 Les 5 qui comptent</h3><span class="sub-note">depuis le 25 septembre</span></div>
+        <p class="sub-note" style="margin-bottom:10px; line-height:1.6;">Sommeil, fac, corps, deen, argent : <b style="color:var(--ink-dim);">ce sont les seuls objectifs qui peuvent passer « en retard »</b>. Les autres restent dans la liste plus bas avec leur chiffre, mais sans alerte. Les projets perso n'ont plus d'heures à tenir : le dimanche, à la clôture, tu coches si le livrable de la semaine est fait.</p>
+        <ul class="mini-list" id="obj-cinq"></ul>
+      </div>
+
       <div class="panel sub-panel" id="objectifs-panel" style="margin-bottom:18px;">
         <div class="sub-head"><h3>📊 Objectifs vs réalité</h3><span class="sub-note" id="obj-resume">—</span></div>
         <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-bottom:12px;">
@@ -2801,7 +2808,7 @@
             <button class="btn" id="obj-next" type="button" aria-label="Période suivante">▶</button>
           </span>
         </div>
-        <p class="sub-note" style="margin-bottom:10px;" id="obj-legende">● atteint · ● en avance · ● dans les clous · ● en retard · ○ pas encore de données — « attendu » = où tu devrais en être aujourd'hui au rythme prévu.<br><b style="color:var(--ink-dim);">Un seul palier de période : le mois.</b> Six chiffres, ceux qui décident. Les six mois ne portent que ce qui ne se découpe pas en mois — le poids, le Coran, les duaas. L'eau est une habitude du soir, les dépenses ont leurs plafonds dans Budget.</p>
+        <p class="sub-note" style="margin-bottom:10px;" id="obj-legende">● atteint · ● en avance · ● dans les clous · ● en retard · ◌ sous le rythme, sans alerte · ○ pas encore de données — « attendu » = où tu devrais en être aujourd'hui au rythme prévu.<br><b style="color:var(--ink-dim);">Un seul palier de période : le mois.</b> Cinq chiffres ; seuls la révision, les séances et le sommeil peuvent passer en retard. Les six mois ne portent que ce qui ne se découpe pas en mois — le poids, le Coran, les duaas. L'eau est une habitude du soir, les dépenses ont leurs plafonds dans Budget.</p>
         <ul class="entry-list" id="obj-liste"></ul>
         <div class="add-form" id="obj-form" style="margin-top:14px; margin-bottom:0;">
           <div class="f" style="flex:1; min-width:180px;"><label>Nouvel objectif</label><input type="text" id="obj-titre" placeholder="ex : 40 h d'espagnol" style="width:100%;"></div>
@@ -3057,7 +3064,7 @@
            est ramenee a la meme echelle (voir sommeilReelVise). Le temps au lit, facultatif,
            donne l'efficacite de la nuit. -->
       <div class="field-row"><label for="cl-sommeil">Sommeil réel de la nuit (h) <span class="sub-note">(endormi, Bevel)</span></label><input type="number" id="cl-sommeil" min="0" max="16" step="any" inputmode="decimal" placeholder="ex : 6,7"></div>
-      <div class="field-row" data-cl-plus><label for="cl-aulit">Au lit (h) <span class="sub-note">(facultatif)</span></label><input type="number" id="cl-aulit" min="0" max="18" step="any" inputmode="decimal" placeholder="ex : 7,6"></div>
+      <div class="field-row"><label for="cl-aulit">Au lit (h) <span class="sub-note">(mesure ton efficacité)</span></label><input type="number" id="cl-aulit" min="0" max="18" step="any" inputmode="decimal" placeholder="ex : 7,6"></div>
       <div class="field-row" data-cl-plus><label for="cl-poids">Poids ce matin (kg)</label><input type="number" id="cl-poids" min="30" max="200" step="0.1" inputmode="decimal" placeholder="ex : 64,2"></div>
       <!-- Les pas se lisent dans l'appli Santé du telephone, qui les compte toute seule.
            Le chiffre coche l'habitude « Marche » a partir de la cible : une seule saisie,
@@ -3091,6 +3098,9 @@
            Semaine, donc derrière un clic que personne ne fait le dimanche soir. -->
       <div id="cl-semaine" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(112px,1fr)); gap:7px; margin-bottom:12px;"></div>
       <ul class="mini-list" id="cl-constats" style="margin-bottom:12px;"></ul>
+      <!-- 25 septembre : les projets perso n'ont plus de minuteur ni d'heures a tenir. Ce qui
+           juge la semaine, c'est ce qui existe a la fin : une case, cochee ici. -->
+      <label style="display:flex; gap:9px; align-items:center; margin-bottom:12px; font-size:13.5px; color:var(--ink); cursor:pointer;"><input type="checkbox" id="cl-livrable"> 📦 Le livrable de la semaine est fait</label>
       <div class="field-grid">
         <div class="field-row"><label for="cl-rv-marche">Ce qui a bien marché</label><input type="text" id="cl-rv-marche"></div>
         <div class="field-row"><label for="cl-rv-coince">Ce qui a coincé</label><input type="text" id="cl-rv-coince"></div>
@@ -3249,7 +3259,28 @@
      dans la cloture, le Calendrier, le Dashboard, le score et le Bilan : la moindre
      évolution d'objectif devait être répercutée partout, et c'est ainsi que le score du
      jour s'était retrouvé désynchronisé. Désormais une seule définition fait foi. */
-  var OBJECTIF_EAU_L = 3;
+  /* ===== Le regime combat ===== (25 septembre, sa decision ; en vigueur le lundi 28)
+     JJB le lundi, le mercredi et le vendredi a 10:30 (1 h 30, club a dix minutes), Muay
+     Thai le mardi a 19:30. Declare ICI, tout en haut : l'eau du jour, la collation combat
+     et le besoin de la semaine des courses (BESOIN_SEMAINE, calcule au chargement) en
+     dependent, et ils sont lus bien avant la grille. Le semestre 1 seulement, partiels de
+     janvier compris (jusqu'au 24, veille du S2) : au semestre 2 le mardi finit a 21:30 et
+     la Muay Thai n'y tient plus -- a revoir en janvier.
+     La regle est une DATE et un jour de semaine, pas la grille du jour : la grille n'existe
+     pas encore quand le besoin des courses se calcule. Un jour sans cours garde son combat
+     (voir libere), et les partiels aussi -- sa decision du 23 : le sport ne s'allege pas. */
+  var COMBAT_DEBUT = '2026-09-28', COMBAT_FIN = '2027-01-24';
+  var JOURS_COMBAT = [1, 2, 3, 5];
+  var JJB_LABEL = '\ud83e\udd4b JJB', MT_LABEL = '\ud83e\udd4a Muay Thai';
+  function regimeCombat(iso){ iso = iso || todayISO; return iso >= COMBAT_DEBUT && iso <= COMBAT_FIN; }
+  function jourDeCombat(iso){
+    iso = iso || todayISO;
+    return regimeCombat(iso) && JOURS_COMBAT.indexOf(new Date(iso + 'T00:00:00').getDay()) > -1;
+  }
+  /* L'eau : 3 L, et 3,5 L les jours de combat (1 h 30 de tatami ou de ring, il en ressort
+     trempe). 3,5 est le plancher qu'on compte ; la consigne dit « 3,5 a 4 L ». */
+  var OBJECTIF_EAU_L = 3, OBJECTIF_EAU_COMBAT_L = 3.5;
+  function objectifEauL(iso){ return jourDeCombat(iso || todayISO) ? OBJECTIF_EAU_COMBAT_L : OBJECTIF_EAU_L; }
   var OBJECTIF_SOMMEIL_H = 8;
   /* ===== Le sommeil reel, pas le temps au lit ===== (23 septembre)
      La grille donne un temps AU LIT (du coucher au lever : 7 h 55 en semaine, 7 h 35 la nuit du mardi). Le chiffre
@@ -3260,15 +3291,40 @@
      La cible de sommeil REEL est donc le temps au lit × 0,88 ; le temps au lit reste affiche
      a cote, puisque c'est lui qu'on tient (l'heure du coucher). */
   var EFFICACITE_SOMMEIL = 0.88;
+  /* ===== L'efficacite MESUREE ===== (25 septembre)
+     Ses mots : « je pense que tu abuses un peu quand tu dis que mon sommeil reel sera bcp
+     plus bas ». Il a raison de demander la preuve : 88 % est une estimation prudente, un
+     jeune adulte aux horaires reguliers dort plutot 90 a 95 % du temps passe au lit. Des
+     qu'il y a 7 nuits ou il a saisi LES DEUX chiffres (sommeil Bevel et temps au lit), la
+     cible passe a SA moyenne sur les 14 dernieres nuits. Une nuit ou le sommeil depasse le
+     temps au lit de plus de 5 % est une faute de saisie : elle ne compte pas. Les montres
+     surestiment un peu le sommeil : la mesure est bornee a 97 %. */
+  var EFFICACITE_MIN_NUITS = 7, EFFICACITE_FENETRE_J = 14;
+  var _effCache = null;
+  function efficaciteMesuree(){
+    var jour = typeof todayISO === 'string' ? todayISO : '';
+    if(_effCache && _effCache.jour === jour) return _effCache.r;
+    var n = 0, t = 0;
+    for(var k = 0; k < EFFICACITE_FENETRE_J; k++){
+      var j = load('batcave-journal-' + isoDecale(jour, -k), null);
+      var so = j && Number(String(j.sommeil).replace(',', '.')), li = j && Number(String(j.auLit).replace(',', '.'));
+      if(so > 0 && li > 0 && so <= li * 1.05){ t += Math.min(1, so / li); n++; }
+    }
+    var r = n >= EFFICACITE_MIN_NUITS ? {v: clamp(t / n, 0.6, 0.97), n: n} : null;
+    _effCache = {jour: jour, r: r};
+    return r;
+  }
+  function efficaciteSommeil(){ var r = efficaciteMesuree(); return r ? r.v : EFFICACITE_SOMMEIL; }
+  function oublierEfficacite(){ _effCache = null; }
   function sommeilReelVise(iso){
-    return Math.round(objectifSommeilPour(iso || todayISO) * EFFICACITE_SOMMEIL * 12) / 12;   /* a 5 min pres */
+    return Math.round(objectifSommeilPour(iso || todayISO) * efficaciteSommeil() * 12) / 12;   /* a 5 min pres */
   }
   function litres(ml){ return (Number(ml)||0)/1000; }
-  function pctEau(ml){ return clamp(Math.round(100*litres(ml)/OBJECTIF_EAU_L), 0, 100); }
+  function pctEau(ml, iso){ return clamp(Math.round(100*litres(ml)/objectifEauL(iso)), 0, 100); }
   /* Le pourcentage se mesure contre l'objectif DE CETTE NUIT-LÀ : sans la date, une nuit
      de semaine (7 h 30 prévues) était notée sur 8 h et plafonnait à 94% même parfaite. */
   function pctSommeil(h, iso){
-    var cible = OBJECTIF_SOMMEIL_H * EFFICACITE_SOMMEIL;
+    var cible = OBJECTIF_SOMMEIL_H * EFFICACITE_SOMMEIL;   /* repli si la grille n'est pas encore lue */
     try{ cible = sommeilReelVise(iso || todayISO); }catch(e){}
     return clamp(Math.round(100*(Number(h)||0)/(cible || OBJECTIF_SOMMEIL_H)), 0, 100);
   }
@@ -3439,7 +3495,7 @@
      vestige : une fonctionnalite retiree (batcave-matieres) ou un essai. Elle prend de la
      place dans le quota de 5000 documents et embrouille les sauvegardes, sans que rien ne
      la lise jamais. On la signale ; la suppression reste ton geste. */
-  var CLES_CONNUES = ['addictions','budget-limits','business','coran','courses','dash-more','duaas','duree-bloc','sport-log','objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','courses-plan-v3','courses-plan-v4','courses-plan-v5','courses-plan-v6','courses-plan-v7','courses-plan-v8','courses-plan-v9','courses-plan-v10','charges-v2','plafond-nourriture-v2','plafond-nourriture-v3','gcal-controle','ancre-dimanche-v1','shampoing-dim-v1','marche-cible-v1','cardio','kcal-ajustement','gcal-ecriture','reinit','fc-migration-v1','charge','shopify-boutique','journees','examens-heures','vacances','jours-exclus',
+  var CLES_CONNUES = ['addictions','budget-limits','business','coran','courses','dash-more','duaas','duree-bloc','sport-log','objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','courses-plan-v3','courses-plan-v4','courses-plan-v5','courses-plan-v6','courses-plan-v7','courses-plan-v8','courses-plan-v9','courses-plan-v10','charges-v2','plafond-nourriture-v2','plafond-nourriture-v3','gcal-controle','ancre-dimanche-v1','shampoing-dim-v1','marche-cible-v1','cardio','kcal-ajustement','gcal-ecriture','reinit','fc-migration-v1','fc-migration-v2','livrables','shampoing-combat-v1','charge','shopify-boutique','journees','examens-heures','vacances','jours-exclus',
     'espagnol','examens','cours-suivi','portes','periodes-closes','fc-prix-icloud-3','fixed-charges','goals','goals-depart','saisons','insights-hist','last-restore-drill','habitlog','habits','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','habits-seed-v7','habits-seed-v8','habits-seed-v9','objectifs-v5-espanol',
     'horizon','last-auto-backup','last-manual-backup','last-bilan-prompt','last-compaction','last-open','last-rotation','notion-url',
     'pomodial-purge','projets','report','revision','revision-fusionnee','revue','sante','sauvegarde','sessions',
@@ -4532,7 +4588,7 @@
      elles repartiraient vers le cloud. La meme remise a zero peut donc etre decidee depuis
      l'appli ou directement dans le cloud. */
   var REINIT_GARDER = ['habits','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','habits-seed-v7','habits-seed-v8','habits-seed-v9','objectifs-v5-espanol','fixed-charges','fc-prix-icloud-3','budget-limits','examens','examens-heures','journees','echeances','vacances','jours-exclus','jours-sans-cours','portes','appro','notion-url','shopify-boutique',
-                       'objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','courses-plan-v3','courses-plan-v4','courses-plan-v5','courses-plan-v6','courses-plan-v7','courses-plan-v8','courses-plan-v9','courses-plan-v10','charges-v2','plafond-nourriture-v2','plafond-nourriture-v3','ancre-dimanche-v1','shampoing-dim-v1','marche-cible-v1','horizon','goals-depart','saisons','periodes-closes','gcal-ecriture','duree-bloc','dash-more','revision-fusionnee','reinit','copie-vierge'];
+                       'objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','courses-plan-v3','courses-plan-v4','courses-plan-v5','courses-plan-v6','courses-plan-v7','courses-plan-v8','courses-plan-v9','courses-plan-v10','charges-v2','plafond-nourriture-v2','plafond-nourriture-v3','ancre-dimanche-v1','shampoing-dim-v1','shampoing-combat-v1','marche-cible-v1','horizon','goals-depart','saisons','periodes-closes','gcal-ecriture','duree-bloc','dash-more','revision-fusionnee','reinit','copie-vierge'];
   var REINIT_PREFIXES_GARDER = ['pomodial-', 'coherence-ignore-'];
   function reinitGarder(cle){
     var c = cle.indexOf('batcave-') === 0 ? cle.slice(8) : cle;
@@ -6207,6 +6263,18 @@
     }
     saveInternal('batcave-shampoing-dim-v1', true);
   }
+  /* 25 septembre : le shampoing suivait la muscu et la course (lundi, mardi, jeudi, samedi,
+     dimanche). Au regime combat, les jours de sueur sont du lundi au vendredi -- muscu,
+     JJB, Muay Thai -- et le week-end n'en a plus. La bascule attend le lundi 28 : avant,
+     le samedi et le dimanche courent encore. Seule la valeur d'origine est touchee. */
+  if(!load('batcave-shampoing-combat-v1', false) && todayISO >= COMBAT_DEBUT){
+    var shC = (habitsState || []).filter(function(h){ return h && h.id === 'core-shampoing'; })[0];
+    if(shC && Array.isArray(shC.jours) && shC.jours.slice().sort().join(',') === '0,1,2,4,6'){
+      shC.jours = [1, 2, 3, 4, 5];
+      save('batcave-habits', habitsState);
+    }
+    saveInternal('batcave-shampoing-combat-v1', true);
+  }
   if(!load('batcave-ancre-dimanche-v1', false)){
     var ancreBougee = false;
     (habitsState || []).forEach(function(h){
@@ -7006,10 +7074,11 @@
     var lh = document.getElementById('leg-hab'), lr = document.getElementById('leg-rev'), lp = document.getElementById('leg-proj');
     if(lh) lh.textContent = 'habitudes ' + reacteurHabits.fait + '/' + reacteurHabits.total;
     if(lr) lr.textContent = 'révision ' + fmtDuree(revMin) + ' / ' + fmtDuree(cibleRev);
-    /* Phase sans projets perso (jusqu'au 23 octobre, la grille n'en prévoit aucune minute) :
-       l'arc ne veut rien dire, la légende le dit au lieu d'afficher « 0,0/0,0 ». */
+    /* Les projets perso n'ont plus de cible depuis le 25 septembre (sans minuteur, juges au
+       livrable du dimanche) : l'arc ne veut rien dire, la legende le dit au lieu d'afficher
+       « 0,0/0,0 ». Garde par cibleProj au cas ou une periode leur en redonnerait une. */
     if(lp) lp.textContent = cibleProj ? ('projets ' + fmtDuree(projMin) + ' / ' + fmtDuree(cibleProj))
-                                      : ('projets — ' + phraseSansProjets());
+                                      : 'projets — sans minuteur';
   }
   function renderDashHabits(){
     var el = document.getElementById('dash-checklist');
@@ -7170,8 +7239,17 @@
        contre 7,2) et environ 100 kcal de plus -- qui vont avec le rythme de prise releve
        le meme jour (objectif poids 72 kg). */
     {name:'Collation entraînement', items:['Pain complet (60g)','2 œufs durs (100g)','Fromage (20g)','Amandes ou noix nature (25g)']},
-    {name:'Dîner', items:['Féculent cru — Pâtes 105g','Protéine crue — rotation du jour','Légumes verts (150g)','Huile d\'olive — selon la protéine, dont 5 ml dans la sauce','Sauce skyr (60g) — mélangée à froid, au moment de manger','1 fruit (~120g)','Créatine — 5 g']}
+    {name:'Dîner', items:['Féculent cru — Pâtes 105g','Protéine crue — rotation du jour','Légumes verts (150g)','Huile d\'olive — selon la protéine, dont 5 ml dans la sauce','Sauce skyr (60g) — mélangée à froid, au moment de manger','1 fruit (~120g)','Créatine — 5 g']},
+    /* 25 septembre, le regime combat : une cinquieme prise, les QUATRE jours de combat
+       seulement (jourDeCombat). A 10:05 avant le JJB ; le mardi, avec la collation de 14:50
+       (la Muay Thai est a 19:30, le diner a 18:00). Rangee EN DERNIER dans la liste pour que
+       les cases des quatre autres repas gardent leur numero (« 0-0 » a « 3-6 ») : l'ordre
+       affiche, lui, la place apres le petit-dejeuner (ORDRE_REPAS). */
+    {name:'Collation combat', combat:true, items:['Banane (120g)','Flocons d\'avoine (50g)','Amandes ou noix nature (15g)']}
   ];
+  function repasActif(m, iso){ return !m.combat || jourDeCombat(iso || todayISO); }
+  function repasDuJour(iso){ return MEALS.filter(function(m){ return repasActif(m, iso); }); }
+  var ORDRE_REPAS = {'Petit-déjeuner':0, 'Collation combat':1, 'Déjeuner':2, 'Collation entraînement':3, 'Dîner':4};
   /* ===== Table de composition (pour 100 g ou 100 ml, cru) =====
      Une seule source pour TOUT ce qui est nutritionnel : les macros de chaque repas, le
      total du jour et la liste de courses en sortent. Les chiffres « ~931 kcal · P44 G110
@@ -7204,6 +7282,7 @@
   function compoRepas(nom, iso, brut){
     if(nom === 'Petit-déjeuner') return [{c:'flocons', q:80}, {c:'miel', q:20}, {c:'skyr', q:180}, {c:'oeufs', q:100}, {c:'amandes', q:30}, {c:'banane', q:120}];
     if(nom === 'Collation entraînement') return [{c:'pain', q:60}, {c:'oeufs', q:100}, {c:'fromage', q:20}, {c:'amandes', q:25}];
+    if(nom === 'Collation combat') return [{c:'banane', q:120}, {c:'flocons', q:50}, {c:'amandes', q:15}];
     if(nom === 'Déjeuner'){
       var nd = proteineDuJour('dej', iso), pd = PROTEINES[nd].dej;
       return [{c:'riz', q:FECULENTS.dej.g}, {c:CLE_PROTEINE[nd], q:pd.g}, {c:'legumes', q:200}, {c:'huile', q:pd.huile}, {c:'skyr', q:SAUCE_SKYR.dej}];
@@ -7225,7 +7304,7 @@
   }
   function macrosJour(iso){
     var t = {kcal:0, p:0, g:0, l:0};
-    MEALS.forEach(function(m){ var x = macrosRepas(m, iso); t.kcal += x.kcal; t.p += x.p; t.g += x.g; t.l += x.l; });
+    repasDuJour(iso).forEach(function(m){ var x = macrosRepas(m, iso); t.kcal += x.kcal; t.p += x.p; t.g += x.g; t.l += x.l; });
     return t;
   }
   var mealKey = 'batcave-meals-' + todayISO;
@@ -7281,7 +7360,7 @@
 
   function mealTotals(){
     var total=0, checked=0;
-    MEALS.forEach(function(m, mi){ m.items.forEach(function(it, ii){ total++; if(mealState[mi+'-'+ii]) checked++; }); });
+    MEALS.forEach(function(m, mi){ if(!repasActif(m)) return; m.items.forEach(function(it, ii){ total++; if(mealState[mi+'-'+ii]) checked++; }); });
     return {total:total, checked:checked};
   }
 
@@ -7302,6 +7381,7 @@
     var targets = {kcal:0, p:0, g:0, l:0};
     var ajust = ajustementKcalPour(iso || todayISO), plan = 0;
     MEALS.forEach(function(m, mi){
+      if(!repasActif(m, iso)) return;
       /* l'ajustement de la boucle poids est deja DANS les grammes de pates du diner
          (compoRepas), donc dans ces macros : la cible et l'apport consomme le suivent
          ensemble, sans qu'on ait a le rajouter apres coup. */
@@ -7473,14 +7553,19 @@
   function renderMeals(){
     var grid = document.getElementById('meal-grid');
     grid.innerHTML = '';
-    MEALS.forEach(function(m, mi){
+    MEALS.map(function(m, mi){ return {m: m, mi: mi}; })
+      .filter(function(x){ return repasActif(x.m); })
+      .sort(function(a, b){ return (ORDRE_REPAS[a.m.name] || 0) - (ORDRE_REPAS[b.m.name] || 0); })
+      .forEach(function(x){
+      var m = x.m, mi = x.mi;
       var card = document.createElement('div');
       card.className = 'meal-card';
       var itemsHtml = m.items.map(function(it, ii){
         var key = mi+'-'+ii, checked = !!mealState[key];
         return '<li class="'+(checked?'checked':'')+'"><input type="checkbox" id="m-'+key+'" data-meal="'+key+'" '+(checked?'checked':'')+'><label for="m-'+key+'">'+texteItemRepas(m, it, ii)+'</label></li>';
       }).join('');
-      card.innerHTML = '<div class="meal-head"><span class="mtitle">'+m.name+'</span><span class="mkcal">'+texteKcalRepas(m)+'</span></div><ul class="meal-items">'+itemsHtml+'</ul>';
+      var quand = m.combat ? (dowDe(todayISO) === 2 ? ' · à 14:50, avec la collation' : ' · 10:05, avant le JJB') : '';
+      card.innerHTML = '<div class="meal-head"><span class="mtitle">'+m.name+quand+'</span><span class="mkcal">'+texteKcalRepas(m)+'</span></div><ul class="meal-items">'+itemsHtml+'</ul>';
       grid.appendChild(card);
     });
     grid.querySelectorAll('input[type="checkbox"]').forEach(function(cb){
@@ -7510,7 +7595,7 @@
       /* La description de l'onglet portait « 3 053 kcal, P 162 g... » en dur : trois
          chiffres de plus a tenir a jour a la main. Elle se calcule. */
       var dsc = document.getElementById('repas-desc');
-      if(dsc) dsc.textContent = 'Programme du jour, ' + MEALS.length + ' prises : ' + Math.round(n.targets.kcal) + ' kcal, P ' +
+      if(dsc) dsc.textContent = 'Programme du jour, ' + repasDuJour().length + ' prises' + (jourDeCombat() ? ' (jour de combat)' : '') + ' : ' + Math.round(n.targets.kcal) + ' kcal, P ' +
         Math.round(n.targets.p) + ' g, G ' + Math.round(n.targets.g) + ' g, L ' + Math.round(n.targets.l) +
         ' g, tout pesé cru. Riz à midi (' + FECULENTS.dej.g + ' g), pâtes le soir (' + FECULENTS.din.g +
         ' g) ; la protéine suit la rotation de la semaine. Les cases se réinitialisent à minuit.';
@@ -7630,27 +7715,39 @@
   function joursProgramme(){
     return daysBetween(new Date(PROGRAMME_DEBUT + 'T00:00:00'), new Date(PROGRAMME_FIN + 'T00:00:00')) + 1;
   }
+  /* ===== Le regime combat (lundi 28 septembre) =====
+     Trois seances de muscu et quatre de combat. Ce qui change, sa decision du 25 :
+       - LUNDI ET JEUDI S'INVERSENT : la seance lourde passe le jeudi, seul jour sans
+         combat, avec une recuperation complete ; le lundi, avant le JJB de 10:30, c'est le
+         volume, plus leger. typeSportGrille fait l'echange a partir du 28 ; avant, les
+         journaux gardent leur jour d'origine.
+       - La seance du samedi saute (le samedi 18:00 devient des projets) : ses exercices
+         cles passent ailleurs -- mollets le mardi, elevations laterales et superset
+         curl/triceps 3 x 10-15 le lundi (volume).
+       - Sortent ce que le tatami travaille deja : relevés de jambes et curl inversé (seance
+         lourde), relevés de genoux (volume) ; et les fentes du mardi, pour garder des jambes
+         pour la Muay Thai du soir.
+     Les noms des exercices ne changent pas : le journal et la progression les lisent. */
   var SESSIONS = [
-    {type:'Haut lourd', days:[1], duree:'57 min', repos:['45 s / 90 s', '45 s / 75 s', '30 s / 60 s'], exercises:[
+    {type:'Haut lourd', days:[4], duree:'50 min', repos:['45 s / 90 s', '45 s / 75 s', '30 s / 60 s'], exercises:[
       {name:'Tractions', reps:'4×6-12'},{name:'Dips', reps:'4×8-15'},
       {name:'Rows australiens pieds surélevés', reps:'3×10-15'},{name:'Pompes déclinées', reps:'3×8-12'},
       {name:'Curl barre basse', reps:'2×10-15'},{name:'Extension triceps barre basse', reps:'2×10-15'},
-      {name:'Relevés de jambes suspendus', reps:'4×8-15'},
-      {name:'Curl inversé lesté', reps:'3×12-20', pas:1},
       {name:'Élévations latérales', reps:'3×12-20', pas:0.25, depart:1},
       {name:'Flexion du cou', reps:'3×12-20', pas:0.25, depart:1.25},{name:'Extension du cou', reps:'3×12-20', pas:0.25, depart:1.25}
     ]},
     {type:'Bas complet', days:[2], duree:'47 min', exercises:[
       {name:'Split squat bulgare', reps:'4×8-12/jambe'},{name:'Soulevé de terre roumain une jambe', reps:'4×10-12/jambe'},
-      {name:'Fentes marchées', reps:'3×10-12/jambe'},{name:'Hip thrust une jambe', reps:'3×12-20/jambe'},
+      {name:'Hip thrust une jambe', reps:'3×12-20/jambe'},{name:'Mollets une jambe', reps:'3×15-20/jambe'},
       {name:'Crunch lesté', reps:'3×12-20', pas:0.25, depart:3},
       {name:'Inclinaisons latérales du cou', reps:'3×12-20/côté', pas:0.25, depart:1.25}
     ]},
-    {type:'Haut volume', days:[4], duree:'50 min', exercises:[
+    {type:'Haut volume', days:[1], duree:'55 min', exercises:[
       {name:'Tractions', reps:'4×8-15'},{name:'Dips', reps:'4×10-20'},
       {name:'Rows prise large coudes hauts', reps:'3×12-15'},{name:'Pike push-ups', reps:'3×6-10'},
+      {name:'Élévations latérales', reps:'3×12-20', pas:0.25, depart:1},
+      {name:'Curl barre basse', reps:'3×10-15'},{name:'Extension triceps barre basse', reps:'3×10-15'},
       {name:'Face pulls', reps:'2×15-20'},{name:'Shrugs suspendus', reps:'3×12-15'},
-      {name:'Relevés de genoux latéraux suspendus', reps:'3×10-15/côté'},
       {name:'Flexion du cou', reps:'3×12-20', pas:0.25, depart:1.25},{name:'Extension du cou', reps:'3×12-20', pas:0.25, depart:1.25}
     ]},
     {type:'Bras · épaules · mollets', days:[6], duree:'53 min', exercises:[
@@ -7704,8 +7801,10 @@
   /* Le PLAN : ce que la grille prevoit ce jour-la, partiels compris. C'est lui qui compte
      dans « prevu » (minutesPrevuesJour) : une seance faite un jour off est un bonus, elle
      ne doit pas gonfler la cible du mois. */
+  var TYPE_BY_DAY_COMBAT = {1:'Haut volume',2:'Bas complet',3:'Off',4:'Haut lourd',5:'Off',6:'Off',0:'Off'};
   function typeSportGrille(iso){
-    return TYPE_BY_DAY[dowDe(iso || todayISO)];
+    iso = iso || todayISO;
+    return (regimeCombat(iso) ? TYPE_BY_DAY_COMBAT : TYPE_BY_DAY)[dowDe(iso)];
   }
   /* ===== Seance choisie a la main =====
      Un jour off ou un echange de seance (« aujourd'hui je fais le bas, je decale le haut »)
@@ -7987,9 +8086,20 @@
   var SPRINT_LABEL = '\u26a1 Sprints en c\u00f4te';
   var CARDIO_SPRINTS_DEBUT = '2026-10-10';
   var CARDIO_LONG_DEBUT = '2026-10-11', CARDIO_LONG_MAX_MIN = 45;
-  function estCardio(label){ return label === CARDIO_LABEL || label === SPRINT_LABEL; }
+  /* 25 septembre : le combat remplace la course et les sprints a partir du lundi 28. Le
+     panneau le suit comme il suivait la course : une ligne par seance, a cocher, avec ses
+     minutes. JJB_LABEL et MT_LABEL sont declares en tete, avec le regime combat. */
+  function estCombat(label){ return label === JJB_LABEL || label === MT_LABEL; }
+  function estCardio(label){ return label === CARDIO_LABEL || label === SPRINT_LABEL || estCombat(label); }
+  var COMBAT_MIN = 90;
+  function combatDuJour(iso){
+    var g = grilleDe(cleJournee(dowDe(iso)), iso, true), c = null;
+    g.forEach(function(b){ if(!c && estCombat(b[1])) c = b[1]; });
+    return c;
+  }
   function cibleCardio(iso){
     iso = iso || todayISO;
+    if(combatDuJour(iso)) return COMBAT_MIN;
     var d = dowDe(iso);
     if(d === 6 && iso >= CARDIO_SPRINTS_DEBUT) return 15;
     if(d === 0 && iso >= CARDIO_LONG_DEBUT){
@@ -8015,7 +8125,7 @@
       if(iso < CARDIO_DEBUT || iso > PROGRAMME_FIN) continue;
       var g = grilleDe(cleJournee(dowDe(iso)), iso);
       g.forEach(function(b){
-        if(estCardio(b[1])) out.push({iso: iso, heure: b[0], sprints: b[1] === SPRINT_LABEL});
+        if(estCardio(b[1])) out.push({iso: iso, heure: b[0], sprints: b[1] === SPRINT_LABEL, combat: estCombat(b[1]) ? b[1].replace(/^\S+\s/, '') : null});
       });
     }
     return out;
@@ -8049,7 +8159,7 @@
     var ul = document.getElementById('cardio-liste'); if(!ul) return;
     var jours = weekRange(0), prevues = sortiesCardio(jours[0]);
     if(!prevues.length){
-      ul.innerHTML = '<li class="entry-empty">Aucune sortie prévue cette semaine.</li>';
+      ul.innerHTML = '<li class="entry-empty">Aucune séance prévue cette semaine.</li>';
       var vide = document.getElementById('cardio-note'); if(vide) vide.textContent = '—';
       var r0 = document.getElementById('cardio-resume'); if(r0) r0.innerHTML = '';
       return;
@@ -8059,7 +8169,7 @@
       var jour = DAY_NAMES[dowDe(x.iso)] + '. ' + fmtDate(x.iso);
       return '<li class="' + (fait ? 'checked' : '') + '">' +
         '<input type="checkbox" id="cardio-' + x.iso + '" data-cardio="' + x.iso + '"' + (fait ? ' checked' : '') + '>' +
-        '<label for="cardio-' + x.iso + '">' + jour + ' \u00b7 ' + x.heure + (x.sprints ? ' \u00b7 sprints en c\u00f4te' : ' \u00b7 ' + cibleCardio(x.iso) + ' min faciles') +
+        '<label for="cardio-' + x.iso + '">' + jour + ' \u00b7 ' + x.heure + (x.combat ? ' \u00b7 ' + x.combat + ' \u00b7 ' + COMBAT_MIN + ' min' : (x.sprints ? ' \u00b7 sprints en c\u00f4te' : ' \u00b7 ' + cibleCardio(x.iso) + ' min faciles')) +
           (fait ? ' <b style="color:var(--good);">' + min + ' min</b>'
                 : (passe ? ' <span class="sub-note">\u2014 pas faite</span>' : '')) + '</label>' +
         '<span class="pas"><button type="button" data-cardio-moins="' + x.iso + '" aria-label="moins 5 minutes">\u2212</button>' +
@@ -8771,7 +8881,7 @@
     var gel = avecPrep ? prep : depart;     /* a partir de la, la grille type s'efface */
     var out = [], sacrifies = [], dejeunerPerdu = false, coursPerdu = false;
     /* un bloc « sacrifie » : du travail, le cours ou le sport -- ce qu'on veut savoir la veille */
-    var notable = function(l){ return !!typeBlocPlan(l) || /^(Cours|Sport)$/.test(l); };
+    var notable = function(l){ return !!typeBlocPlan(l) || /^Projets perso/.test(l) || /^(Cours|Sport)$/.test(l); };
     base.forEach(function(b, i){
       var d0 = timeToMinutes(b[0]), d1 = i < base.length - 1 ? timeToMinutes(base[i+1][0]) : finJ, travail = notable(b[1]);
       if(d1 <= gel){ out.push(b); return; }
@@ -9782,7 +9892,10 @@
        - les depenses variables ont leurs plafonds par categorie dans l'onglet Budget.
      Les compteurs de NIVEAU (poids, Coran, duaas) restent sur l'horizon de six mois :
      un poids ne se decoupe pas en mois, il monte ou il ne monte pas. */
-  var METRIQUES_MOIS = ['revision_h', 'projets_h', 'espagnol_h', 'sport_seances', 'sommeil_moy', 'habitudes_pct'];
+  /* 25 septembre : « projets_h » sort -- plus de minuteur sur les projets, donc plus rien
+     a compter (voir PROJETS_LIBRES). elaguerObjectifs retire les objectifs semes ; une
+     cible qu'il aurait saisie a la main reste. */
+  var METRIQUES_MOIS = ['revision_h', 'espagnol_h', 'sport_seances', 'sommeil_moy', 'habitudes_pct'];
   function objectifsSemes(){
     var out = [];
     moisListe().forEach(function(m){
@@ -10136,6 +10249,15 @@
     return 0;
   }
   /* Le coeur : reel, attendu, cible, statut, projection. */
+  /* ===== Les cinq qui comptent ===== (25 septembre, sa decision)
+     « j'ai trop d'objectifs ». Cinq comptent : le SOMMEIL (lever fixe), la FAC (revisions,
+     puis les notes), le CORPS (seances et poids vers 72 kg), le DEEN (cinq prieres et une
+     page de Coran), l'ARGENT (un premier revenu). Seuls leurs objectifs chiffres peuvent
+     passer « en retard » -- la barre, le tableau de bord, la revue du dimanche n'alertent
+     que sur eux. Les autres (espagnol, habitudes, duaas, Shopify) restent affiches avec
+     leur chiffre, mais un retard y devient « sous le rythme, sans alerte » (statut lent). */
+  var METRIQUES_PRIORITAIRES = ['revision_h', 'sport_seances', 'sommeil_moy', 'poids', 'coran'];
+  function objectifPrioritaire(o){ return METRIQUES_PRIORITAIRES.indexOf(metriqueDe(o && o.metrique)) > -1; }
   function comparerObjectif(o){
     var m = METRIQUES[metriqueDe(o.metrique)] || {mode:'cumul', unite:'', dec:0};
     var sens = o.sens || m.sens || '>=';
@@ -10177,7 +10299,7 @@
       else if(f <= 0.05 || ecoules <= 1) statut = 'ok';   /* le premier jour (et le premier jour et demi d'une longue periode) : trop tot pour juger */
       else if(ratio >= 1.05) statut = 'avance';
       else if(ratio >= 0.9) statut = 'ok';
-      else statut = 'retard';
+      else statut = objectifPrioritaire(o) ? 'retard' : 'lent';
       if(f >= 0.05){
         if(m.mode === 'cumul') projection = valeur / f;
         else if(m.mode === 'niveau') projection = depart + (valeur - depart) / f;
@@ -10188,7 +10310,7 @@
             unite: o.unite || m.unite, dec: m.dec, mode: m.mode, sens: sens, ecoules: ecoules, total: total};
   }
   function fmtNombre(v, dec){ if(v === null || v === undefined || isNaN(v)) return '—'; return Number(v).toFixed(dec || 0).replace('.', ','); }
-  function libelleStatut(st){ return {atteint:'atteint', avance:'en avance', ok:'dans les clous', retard:'en retard', vide:'pas encore de données'}[st] || st; }
+  function libelleStatut(st){ return {atteint:'atteint', avance:'en avance', ok:'dans les clous', retard:'en retard', lent:'sous le rythme · sans alerte', vide:'pas encore de données'}[st] || st; }
 
   /* ----- vues : mois / trimestre / 6 mois ----- */
   var objVue = 'mois', objDecalage = 0;
@@ -10264,10 +10386,11 @@
     if(prev) prev.disabled = objVue === 'horizon'; if(next) next.disabled = objVue === 'horizon';
     var objs = objectifsDePeriode(p);
     var comps = objs.map(function(o){ return {o: o, c: comparerObjectif(o)}; });
-    var compte = {atteint:0, avance:0, ok:0, retard:0, vide:0};
+    var compte = {atteint:0, avance:0, ok:0, retard:0, lent:0, vide:0};
     comps.forEach(function(x){ compte[x.c.statut] = (compte[x.c.statut] || 0) + 1; });
+    try{ renderCinq(); }catch(e){}
     if(resume) resume.textContent = objs.length
-      ? (compte.atteint + compte.avance + compte.ok) + '/' + objs.length + ' dans les clous ou mieux · ' + compte.retard + ' en retard' + (compte.vide ? ' · ' + compte.vide + ' sans données' : '') + ' · ' + Math.round(100 * (comps[0] ? comps[0].c.f : 0)) + ' % de la période écoulée'
+      ? (compte.atteint + compte.avance + compte.ok) + '/' + objs.length + ' dans les clous ou mieux · ' + compte.retard + ' en retard' + (compte.lent ? ' · ' + compte.lent + ' sous le rythme, sans alerte' : '') + (compte.vide ? ' · ' + compte.vide + ' sans données' : '') + ' · ' + Math.round(100 * (comps[0] ? comps[0].c.f : 0)) + ' % de la période écoulée'
       : 'aucun objectif sur cette période';
     liste.innerHTML = objs.length
       ? '<div class="obj-entete"><span></span><span>Objectif</span><span>Réel</span><span class="h-attendu">Attendu</span><span>Cible</span><span class="h-proj">Écart · projection</span><span></span></div>' +
@@ -10298,18 +10421,78 @@
       });
     });
   }
+  /* Les cinq, une ligne chacun : un voyant, un nom, ce qui se mesure. Le voyant d'une
+     ligne qui melange deux mesures (seances et poids ; prieres et Coran) prend la pire. */
+  var ORDRE_STATUT = {retard:0, lent:1, ok:2, avance:3, atteint:4, vide:5};
+  function pireStatut(liste){
+    var v = liste.filter(function(x){ return x && x !== 'vide'; });
+    if(!v.length) return 'vide';
+    return v.sort(function(a, b){ return ORDRE_STATUT[a] - ORDRE_STATUT[b]; })[0];
+  }
+  var PRIERES = ['core-fajr', 'core-dhuhr', 'core-asr', 'core-maghrib', 'core-isha'];
+  function cinqQuiComptent(){
+    var mois = moisListe().filter(function(m){ return todayISO >= m.debut && todayISO <= m.fin; })[0];
+    var duMois = function(cle){
+      if(!mois) return null;
+      var o = objectifsState.liste.filter(function(x){ return x.periode === 'mois' && x.pid === mois.id && metriqueDe(x.metrique) === cle; })[0];
+      return o ? {o: o, c: comparerObjectif(o)} : null;
+    };
+    var surHorizon = function(id){
+      var g = GOALS_NUMERIC.filter(function(x){ return x.id === id; })[0]; if(!g) return null;
+      var o = {id:'H:' + id, periode:'horizon', debut: horizonState.debut, fin: horizonState.fin, metrique: id, cible: g.target, depart: departGoal(g), titre: g.label, fixe: true};
+      return {o: o, c: comparerObjectif(o)};
+    };
+    var n = function(x, dec){ return x && x.c.valeur !== null ? fmtNombre(x.c.valeur, dec === undefined ? x.c.dec : dec) : '—'; };
+    var out = [];
+    /* 1. Sommeil : le lever fixe, et la moyenne de sommeil reel du mois */
+    var so = duMois('sommeil_moy'), eff = efficaciteMesuree();
+    out.push({icon:'😴', nom:'Sommeil', statut: so ? so.c.statut : 'vide',
+      texte: 'lever 05:30 tous les jours · ' + (so && so.c.valeur !== null ? fmtHeures(so.c.valeur) + ' / nuit sur ' + fmtHeures(so.c.cible) + ' visées' : 'sommeil à saisir à la clôture') +
+             ' · efficacité ' + (eff ? Math.round(eff.v * 100) + ' % mesurée sur ' + eff.n + ' nuits' : 'estimée à ' + Math.round(EFFICACITE_SOMMEIL * 100) + ' % (mesurée dès 7 nuits avec « au lit »)')});
+    /* 2. Fac : les revisions du mois ; les notes arrivent avec les examens */
+    var re = duMois('revision_h');
+    out.push({icon:'📚', nom:'Fac', statut: re ? re.c.statut : 'vide',
+      texte: re ? 'révisions ' + n(re) + ' h / ' + fmtNombre(re.c.attendu, 1) + ' h attendues à ce jour (cible ' + fmtNombre(re.c.cible, 0) + ' h)' : 'révisions : aucun objectif ce mois-ci'});
+    /* 3. Corps : seances de muscu du mois, combat de la semaine, poids */
+    var sp = duMois('sport_seances'), po = surHorizon('poids');
+    var combats = sortiesCardio(weekRange(0)[0]).filter(function(x){ return x.combat; });
+    var combatsFaits = combats.filter(function(x){ return cardioFait(x.iso); }).length;
+    out.push({icon:'🏋️', nom:'Corps', statut: pireStatut([sp && sp.c.statut, po && po.c.statut]),
+      texte: (sp ? 'muscu ' + n(sp, 0) + ' / ' + fmtNombre(sp.c.cible, 0) + ' séances du mois' : 'muscu') +
+             (combats.length ? ' · combat ' + combatsFaits + '/' + combats.length + ' cette semaine' : '') +
+             ' · poids ' + (po && po.c.valeur !== null ? fmtNombre(po.c.valeur, 1) : '—') + ' → ' + (po ? fmtNombre(po.c.cible, 0) : '72') + ' kg'});
+    /* 4. Deen : les cinq prieres sur les sept jours ECOULES (aujourd'hui n'est pas fini :
+       a 10:00, quatre prieres sur cinq ne sont pas encore dues), et le Coran */
+    var jours = [], k;
+    for(k = 7; k >= 1; k--){ var d = isoDecale(todayISO, -k); if(d >= PROGRAMME_DEBUT) jours.push(d); }
+    var faites = 0, dues = 0;
+    jours.forEach(function(d){ PRIERES.forEach(function(id){ if(!habitParId(id)) return; dues++; if((habitLog[id] || []).indexOf(d) > -1) faites++; }); });
+    var stPr = dues < 10 ? 'vide' : (faites / dues >= 0.9 ? (faites === dues ? 'atteint' : 'ok') : 'retard');
+    var co = surHorizon('coran');
+    out.push({icon:'🕌', nom:'Deen', statut: pireStatut([stPr, co && co.c.statut]),
+      texte: (jours.length ? 'prières ' + faites + '/' + dues + ' sur les ' + jours.length + ' dernier' + (jours.length > 1 ? 's' : '') + ' jour' + (jours.length > 1 ? 's' : '') : 'prières : comptées dès demain') + ' · Coran ' + (co ? n(co, 0) + ' / ' + fmtNombre(co.c.cible, 0) + ' pages' : '—')});
+    /* 5. Argent : le premier euro gagne par lui-meme (Shopify, cours, autre), depuis le jour 1.
+       Pas de cible en euros : c'est un cap, il est atteint ou il ne l'est pas encore. */
+    var gagne = txState.filter(function(t){ return t && t.type === 'Entrée' && t.date >= PROGRAMME_DEBUT && (t.categorie === 'Shopify' || t.categorie === 'Autre'); })
+                       .reduce(function(a, t){ return a + (Number(t.montant) || 0); }, 0);
+    out.push({icon:'💶', nom:'Argent', statut: gagne > 0 ? 'atteint' : 'vide',
+      texte: gagne > 0 ? 'premier revenu atteint : ' + fmtNombre(gagne, 0) + ' € gagnés depuis le ' + fmtDate(PROGRAMME_DEBUT) : 'premier revenu : pas encore — une entrée « Shopify » ou « Autre » dans Budget le coche'});
+    return out;
+  }
+  function ligneCinq(x){
+    return '<li><span><span class="obj-led ' + x.statut + '" title="' + libelleStatut(x.statut) + '"></span>' + x.icon + ' ' + x.nom + '</span><b style="font-weight:500; text-align:right;">' + escapeHtml(x.texte) + '</b></li>';
+  }
+  function renderCinq(){
+    var el = document.getElementById('obj-cinq'); if(!el) return;
+    el.innerHTML = cinqQuiComptent().map(ligneCinq).join('');
+  }
   function renderObjectifsDash(){
     var el = document.getElementById('dash-goals'), note = document.getElementById('dash-goals-note');
     if(!el) return;
-    var mois = moisListe().filter(function(m){ return todayISO >= m.debut && todayISO <= m.fin; })[0];
-    var objs = mois ? objectifsState.liste.filter(function(o){ return o.periode === 'mois' && o.pid === mois.id; }) : [];
-    if(!objs.length){ el.innerHTML = '<li><span style="font-style:italic; color:var(--ink-faint);">Aucun objectif ce mois-ci.</span></li>'; if(note) note.textContent = ''; return; }
-    var comps = objs.map(function(o){ return {o: o, c: comparerObjectif(o)}; });
-    var ordre = {retard:0, ok:1, avance:2, atteint:3, vide:4};
-    comps.sort(function(a, b){ return ordre[a.c.statut] - ordre[b.c.statut]; });
-    el.innerHTML = comps.map(function(x){ return ligneObjectif(x.o, x.c, true); }).join('');
-    var r = resumeObjectifsMois();
-    if(note && r) note.textContent = r.bons + '/' + r.total + ' dans les clous · ' + mois.nom;
+    var cinq = cinqQuiComptent();
+    el.innerHTML = cinq.map(ligneCinq).join('');
+    var retard = cinq.filter(function(x){ return x.statut === 'retard'; }).length;
+    if(note) note.textContent = retard ? retard + ' en retard' : 'aucun en retard';
   }
   (function(){
     document.querySelectorAll('[data-obj-vue]').forEach(function(b){
@@ -10320,7 +10503,7 @@
     if(next) next.addEventListener('click', function(){ objDecalage++; renderObjectifs(); });
     var sel = document.getElementById('obj-metrique');
     if(sel){
-      var opts = ['revision_h','projets_h','sport_seances','espagnol_h','depenses_var','sommeil_moy','habitudes_pct','eau_moy','snus_jours'];
+      var opts = ['revision_h','sport_seances','espagnol_h','depenses_var','sommeil_moy','habitudes_pct','eau_moy','snus_jours'];
       tousExercices().forEach(function(ex){ if(parseFourchette(ex.reps).progressif) opts.push('exo:' + ex.name); });
       sel.innerHTML = opts.map(function(k){ return '<option value="' + escapeHtml(k) + '">' + escapeHtml(libelleMetrique(k)) + ' (' + (METRIQUES[metriqueDe(k)].unite) + ')</option>'; }).join('');
     }
@@ -10751,14 +10934,16 @@
      par aliment, sur les sept jours. Il etait recopie a la main juste en dessous du plan
      de repas -- deux listes de grammages a tenir en phase, et la liste de courses pouvait
      donc demander autre chose que ce que le plan fait manger. Ici, changer un grammage
-     change les deux. Semaine de reference : dimanche 20 -> samedi 26 septembre 2026 (la boucle
-     ci-dessous), qui couvre les sept jours de la rotation ; « brut » ecarte la boucle poids -> calories,
-     que la liste ajoute elle-meme une seule fois. */
+     change les deux. Semaine de reference : lundi 28 septembre -> dimanche 4 octobre 2026 (la
+     boucle ci-dessous), qui couvre les sept jours de la rotation ET les quatre jours de
+     combat -- la collation combat (4 bananes, 200 g de flocons, 60 g d'amandes par semaine)
+     entre dans la liste. « brut » ecarte la boucle poids -> calories, que la liste ajoute
+     elle-meme une seule fois. */
   var BESOIN_SEMAINE = (function(){
     var b = {}, alias = {banane:'bananes', fruit:'fruits'};
-    for(var j = 20; j <= 26; j++){
-      var iso = '2026-09-' + j;
-      MEALS.forEach(function(m){
+    for(var j = 0; j < 7; j++){
+      var iso = localISO(new Date(2026, 8, 28 + j));
+      repasDuJour(iso).forEach(function(m){
         compoRepas(m.name, iso, true).forEach(function(x){
           var a = ALIMENTS[x.c], k = alias[x.c] || x.c;
           b[k] = (b[k] || 0) + (a && a.piece ? x.q / a.piece : x.q);
@@ -10882,7 +11067,8 @@
         art('Pain complet',      B.pain,  450,  poids, 'paquet'),
         art('Bananes',           B.bananes, 1,      sep,   '\u00e0 l\'unit\u00e9', B.bananes + ' bananes'),
         art('Fruits (pommes, poires, oranges\u2026)', B.fruits, 1, sep, '\u00e0 l\'unit\u00e9', B.fruits + ' fruits'),
-        /* 24 septembre : 55 g par jour, 385 g par semaine. Le sachet de 200 g est le format
+        /* 24 septembre : 55 g par jour, 385 g par semaine -- plus 15 g par jour de combat
+           depuis le 28 (collation combat), soit 445 g. Le sachet de 200 g est le format
            courant du rayon ; nature, non salees. Moitie noix si possible : le poisson est
            sorti du plan, et les noix sont la seule source d'omega-3 qui reste. */
         art('Amandes ou noix nature', B.amandes, 200, poids, 'sachet')
@@ -12038,7 +12224,7 @@
     var objs = objectifsState.liste.filter(function(o){ return o.periode === 'mois' && o.pid === mois.id; });
     if(!objs.length) return {mois: mois, total: 0, bons: 0, retard: 0};
     var bons = 0, retard = 0;
-    objs.forEach(function(o){ var st = comparerObjectif(o).statut; if(st === 'retard') retard++; else if(st !== 'vide') bons++; });
+    objs.forEach(function(o){ var st = comparerObjectif(o).statut; if(st === 'retard') retard++; else if(st !== 'vide' && st !== 'lent') bons++; });
     return {mois: mois, total: objs.length, bons: bons, retard: retard};
   }
   function renderEcheances(){
@@ -12750,7 +12936,7 @@
     }
     var j = (iso === todayISO) ? journalState : load('batcave-journal-'+iso, null);
     if(j){
-      parts.push(pctEau(j.water));
+      parts.push(pctEau(j.water, iso));
       if(j.sommeil !== '' && j.sommeil != null) parts.push(pctSommeil(j.sommeil, iso));
     }
     return parts.length ? Math.round(parts.reduce(function(a,b){return a+b;},0)/parts.length) : 0;
@@ -12830,6 +13016,7 @@
     var mealList = document.getElementById('dash-meals');
     mealList.innerHTML = '';
     MEALS.forEach(function(m, mi){
+      if(!repasActif(m)) return;
       var doneCount = m.items.filter(function(it,ii){ return mealState[mi+'-'+ii]; }).length;
       var li = document.createElement('li');
       li.innerHTML = '<span>'+m.name+'</span><b>'+doneCount+'/'+m.items.length+'</b>';
@@ -12845,7 +13032,7 @@
     var sleepHDash = Number(journalState.sommeil) || 0;
     journalList.innerHTML =
       '<li><span>Coran</span><b>'+(journalState.coran ? 'page '+journalState.coran : '—')+'</b></li>'+
-      '<li><span>Eau</span><b>'+litres(journalState.water).toFixed(1).replace('.',',')+' / '+OBJECTIF_EAU_L.toFixed(1).replace('.',',')+' L · '+pctEau(journalState.water)+'%</b></li>'+
+      '<li><span>Eau</span><b>'+litres(journalState.water).toFixed(1).replace('.',',')+' / '+objectifEauL().toFixed(1).replace('.',',')+' L · '+pctEau(journalState.water)+'%</b></li>'+
       '<li><span>Sommeil</span><b>'+(journalState.sommeil ? fmtHeures(sleepHDash)+' · '+pctSommeil(sleepHDash)+'%' : '—')+'</b></li>'+
       '<li><span>Humeur</span><b>'+(journalState.mood ? journalState.mood+'/5' : '—')+'</b></li>';
 
@@ -12921,7 +13108,7 @@
     document.getElementById('dash-temps').innerHTML =
       celluleTemps('📚 Révision', revMin, cibleRev, rep.rev, 'rev') +
       celluleTemps('💻 Projets perso', projMin, projetsTarget()*60 || null, rep.proj, 'proj',
-                   projetsTarget() ? '' : phraseSansProjets()) +
+                   projetsTarget() ? '' : noteProjetsJour()) +
       /* La cellule Español ne se cache plus quand la journée n'a pas de bloc : sinon on ne
          sait pas où atterrissent ces heures, et on croit qu'elles ne sont pas comptées.
          Elle affiche 0,0 h sans cible les jours où la grille n'en prévoit pas. */
@@ -13074,9 +13261,11 @@
     var planMin = 0, faitMin = 0;
     validDays.forEach(function(d){
       var c = cibleJourMinutes(cleJournee(dowDe(d)), d);
-      /* tout le travail prévu, espagnol compris : le réalisé (minutesOnProj) l'inclut */
+      /* tout le travail prévu et MESURE, espagnol compris -- les projets perso n'ont plus de
+         minuteur depuis le 25 septembre : ni prevus ici, ni comptes, ils ne font pas baisser
+         la fidelite. */
       planMin += c.rev + c.proj + (c.es || 0);
-      faitMin += minutesOn(d) + minutesOnProj(d);
+      faitMin += minutesOn(d) + minutesEspanol(d);
     });
     var n = validDays.length || 1;
     return {
@@ -13592,7 +13781,18 @@
   var SANS_COURS_FIN_TRAVAIL = '19:00';
   var SOIREE_SANS_COURS = [['19:00','Dîner'],['19:30','Temps libre'],
                            ['20:45','Douche + brossage de dents'],['21:00','Coucher']];
-  function libere(base){
+  /* Au regime combat, le soir d'un jour sans cours garde les heures de tous les jours --
+     sa regle : « se reveiller a la meme heure et dormir a la meme heure tout les jours ».
+     Le diner reste a 19:00, le coucher passe a 21:35. Et un mardi sans cours garde sa Muay
+     Thai : le travail s'arrete a 18:00, diner, puis le club comme un mardi de cours. Les
+     partiels sont des jours sans cours : le combat y tient, comme la muscu (sa decision du
+     23 : « pendant les partiels les seances restent les memes »). */
+  var SOIREE_SANS_COURS_COMBAT = [['19:00','Dîner'],['19:30','Temps libre'],
+                                  ['21:25','Douche + brossage de dents'],['21:35','Coucher']];
+  var SOIREE_SANS_COURS_MT = [['18:00','Dîner'],['18:30','Temps libre'],
+                              ['19:10','Trajet club'],['19:30', MT_LABEL],['21:00','Retour du club'],
+                              ['21:15','Douche + brossage de dents'],['21:25','Temps libre'],['22:00','Coucher']];
+  function libere(base, iso){
     var iC = -1;
     base.forEach(function(b, i){ if(iC < 0 && (b[1] === 'Collation entraînement' || b[1] === 'Trajet cours')) iC = i; });
     if(iC < 0) return base;                  /* samedi et dimanche : il n'y a rien a liberer */
@@ -13601,14 +13801,119 @@
     var t = timeToMinutes(base[iC][0]);
     out.push([minutesToTime(t), 'Collation entraînement']);
     t += 10;                                 /* toutes les collations sont a :50 : on retombe sur l'heure pleine */
-    var fin = timeToMinutes(SANS_COURS_FIN_TRAVAIL);
+    var fin = timeToMinutes(SANS_COURS_FIN_TRAVAIL), soiree = SOIREE_SANS_COURS;
+    if(regimeCombat(iso)){
+      soiree = SOIREE_SANS_COURS_COMBAT;
+      if(base.slice(iC).some(function(b){ return b[1] === MT_LABEL; })){ soiree = SOIREE_SANS_COURS_MT; fin = timeToMinutes('18:00'); }
+    }
     REMPLISSAGE_SANS_COURS.forEach(function(l){
       if(pris[l] || t + 60 > fin) return;
       out.push([minutesToTime(t), l]); pris[l] = true; t += 60;
     });
     if(t < fin) out.push([minutesToTime(t), 'Temps libre']);
-    return out.concat(SOIREE_SANS_COURS);
+    return out.concat(soiree);
   }
+  /* ===== Les grilles du regime combat ===== (25 septembre ; du lundi 28 a la fin du S1)
+     Ses mots : « le jjb c'est le lundi, mercredi et vendredi, tous a 10h30 », « muay thai
+     a 19h30 » le mardi, 1 h 30 chaque fois, club a dix minutes. Ce qu'il a arbitre ensuite,
+     une ligne a la fois :
+       - LEVER 05:30 TOUS LES JOURS, week-end compris, et COUCHER 21:35 (22:00 le mardi,
+         retour de Muay Thai a 21:15). Une heure fixe tous les jours est ce qui recale une
+         horloge interne ; le samedi et le dimanche a 06:30 cassaient la regle deux fois par
+         semaine. Les deux heures gagnees le week-end sont des blocs de projet a 05:30.
+       - Les matins de JJB (lundi, mercredi, vendredi) : Anki 1 a 07:20 puis « Étudier en
+         avance » de 08:20 a 10:05 -- Anki 2 saute, le tema garde 1 h 45. Collation combat a
+         10:05, depart a 10:20, JJB 10:30 → 12:00, retour, dejeuner 12:20.
+       - Ce que le JJB deplace : le lundi, la question ouverte passe a 13:00 et les projets
+         tiennent de 14:00 a 16:50 ; le mercredi, Approfondir passe a 13:00 (il reste un des
+         trois creneaux de la semaine) et les projets tiennent de 14:00 a 14:50 ; le vendredi
+         perd son bloc projets de 11:20.
+       - Le mardi : la muscu du bas a 05:30 et le matin intact ; « Lire » remonte a 13:00, les
+         projets de 14:00 tiennent, la collation combat se prend avec celle de 14:50 ; apres
+         la fac, diner 18:00, cours clos a 18:30, depart 19:10, Muay Thai 19:30 → 21:00.
+       - Le jeudi, seul jour sans combat : la question ouverte de 11:20 devient un bloc
+         PROJETS (« Projets perso 3 »).
+       - Le samedi 18:00 → 19:30 (la course et la seance) et le dimanche 17:30 → 19:00 (la
+         course et le repos) deviennent des projets ; plus de course ni de sprints, le combat
+         est le cardio.
+     Les nouveaux blocs de projet portent des noms que la phase Español ne renomme pas
+     (« Projets perso 3 », et « Projets perso matinal » le week-end, que la phase ne renomme
+     que le mercredi et le vendredi) : ils sont des projets des le premier jour, comme il
+     l'a demande -- « les nouveaux blocs sont des projets des maintenant ».
+     Au semestre 2 (25 janvier) le mardi finit a 21:30 : SCHEDULES_S2 reprend la main, et la
+     place de la Muay Thai sera a revoir en janvier. */
+  var SCHEDULES_COMBAT = {
+    monday: [
+      ['05:30','Sport'],['06:30','Douche + préparation'],['06:45','Petit-déjeuner + Coran (1 page)'],
+      ['07:20','Anki 1'],['08:20','Étudier en avance'],
+      ['10:05','Collation combat'],['10:20','Trajet club'],['10:30', JJB_LABEL],['12:00','Retour du club'],
+      ['12:20','Déjeuner'],['12:40','😴 Micro-sieste'],
+      ['13:00','Question ouverte ou autre'],['14:00','Projets perso 1'],
+      ['15:00','Projets perso 4'],['16:50','Collation entraînement'],['17:00','Trajet cours'],['17:30','Cours'],
+      ['19:30','Trajet retour'],['20:00','Dîner'],['20:30','Clore le cours du jour'],['21:10','Temps libre'],
+      ['21:25','Douche + brossage de dents'],['21:35','Coucher']
+    ],
+    tuesday: [
+      ['05:30','Sport'],['06:30','Douche + préparation'],['06:45','Petit-déjeuner + Coran (1 page)'],
+      ['07:20','Anki 1'],['08:20','Anki 2'],
+      ['09:20','Étudier en avance'],['11:20','Question ouverte ou autre'],
+      ['12:20','Déjeuner'],['12:40','😴 Micro-sieste'],
+      ['13:00','Lire'],['14:00','Projets perso 2'],['14:50','Collation entraînement'],['15:00','Trajet cours'],['15:30','Cours'],
+      ['17:30','Trajet retour'],['18:00','Dîner'],['18:30','Clore le cours du jour'],
+      ['19:10','Trajet club'],['19:30', MT_LABEL],['21:00','Retour du club'],
+      ['21:15','Douche + brossage de dents'],['21:25','Temps libre'],['22:00','Coucher']
+    ],
+    wednesday: [
+      ['05:30','Projets perso matinal'],['06:30','Douche + préparation'],['06:45','Petit-déjeuner + Coran (1 page)'],
+      ['07:20','Anki 1'],['08:20','Étudier en avance'],
+      ['10:05','Collation combat'],['10:20','Trajet club'],['10:30', JJB_LABEL],['12:00','Retour du club'],
+      ['12:20','Déjeuner'],['12:40','😴 Micro-sieste'],
+      ['13:00','Approfondir'],['14:00','Projets perso 1'],['14:50','Collation entraînement'],['15:00','Trajet cours'],['15:30','Cours'],
+      ['19:30','Trajet retour'],['20:00','Dîner'],['20:30','Clore le cours du jour'],['21:10','Temps libre'],
+      ['21:25','Douche + brossage de dents'],['21:35','Coucher']
+    ],
+    weekday: [
+      ['05:30','Sport'],['06:30','Douche + préparation'],['06:45','Petit-déjeuner + Coran (1 page)'],
+      ['07:20','Anki 1'],['08:20','Anki 2'],
+      ['09:20','Étudier en avance'],['11:20','Projets perso 3'],
+      ['12:20','Déjeuner'],['12:40','😴 Micro-sieste'],
+      ['13:00','Projets perso 1'],['14:00','Projets perso 2'],['14:50','Collation entraînement'],['15:00','Trajet cours'],['15:30','Cours'],
+      ['19:30','Trajet retour'],['20:00','Dîner'],['20:30','Clore le cours du jour'],['21:10','Temps libre'],
+      ['21:25','Douche + brossage de dents'],['21:35','Coucher']
+    ],
+    friday: [
+      ['05:30','Projets perso matinal'],['06:30','Douche + préparation'],['06:45','Petit-déjeuner + Coran (1 page)'],
+      ['07:20','Anki 1'],['08:20','Étudier en avance'],
+      ['10:05','Collation combat'],['10:20','Trajet club'],['10:30', JJB_LABEL],['12:00','Retour du club'],
+      ['12:20','Déjeuner'],
+      ['13:15','Trajet mosquée'],['13:30',"Jumu'ah (khutba + prière ~14h)"],['14:30','😴 Micro-sieste'],['14:50','Collation entraînement'],['15:00','Trajet cours'],
+      ['15:30','Cours'],['19:30','Trajet retour'],['20:00','Dîner'],['20:30','Clore le cours du jour'],['21:10','Temps libre'],
+      ['21:25','Douche + brossage de dents'],['21:35','Coucher']
+    ],
+    saturday: [
+      ['05:30','Projets perso matinal'],['06:30','Douche + préparation'],['06:45','Petit-déjeuner + Coran (1 page)'],
+      ['07:20','Anki 1'],['08:20','Anki 2'],
+      ['09:20','Approfondir'],
+      ['11:20','Projets perso 1'],['12:20','Déjeuner'],['13:10','😴 Micro-sieste'],
+      ['13:30','🛒 Courses de la semaine'],['15:30','Rangement des courses'],
+      ['16:00',"Cartes d'erreurs de la semaine"],['17:00','Projets perso 2'],
+      ['18:00','Projets perso 3'],
+      ['19:30','Dîner'],['20:00','Temps libre'],
+      ['21:25','Douche + brossage de dents'],['21:35','Coucher']
+    ],
+    weekend: [
+      ['05:30','Projets perso matinal'],['06:30','Douche + préparation'],['06:45','Petit-déjeuner + Coran (1 page)'],
+      ['07:20','Anki 1'],['08:20','Anki 2'],
+      ['09:20','Simulation dentaire'],['10:20','Réexpliquer'],
+      ['11:20','Projets perso 1'],['12:20','Déjeuner'],['13:10','😴 Micro-sieste'],
+      ['13:30','Projets perso 2'],['14:30','🍲 Batch cooking de la semaine'],
+      ['16:30','🧽 Ménage — sols, salle de bain, poussière'],
+      ['17:30','Projets perso 3'],
+      ['19:00','Dîner'],
+      ['19:30','Temps libre'],
+      ['21:25','Douche + brossage de dents'],['21:35','Coucher']
+    ]
+  };
   /* La grille de base d'un jour A UNE DATE : le semestre d'abord, la liberation ensuite.
      Tout ce qui lisait SCHEDULES[cle] directement passe par ici -- y compris l'heure du
      coucher et celle du lever, qui ne sont plus les memes d'un semestre a l'autre ni d'un
@@ -13617,8 +13922,8 @@
     if(typeof SCHEDULES === 'undefined' || !SCHEDULES) return [];
     iso = iso || todayISO;
     var g = grillesDuJour(iso);
-    var base = (g && g[cle]) || SCHEDULES[cle] || [];
-    return sansCoursLe(iso) ? libere(base) : base;
+    var base = (g && g[cle]) || (regimeCombat(iso) && SCHEDULES_COMBAT[cle]) || SCHEDULES[cle] || [];
+    return sansCoursLe(iso) ? libere(base, iso) : base;
   }
   /* ===== Consignes des blocs =====
      Ce qu'il faut faire pendant un bloc, dans les mots de la grille, pour ne plus avoir a
@@ -13784,9 +14089,9 @@
   }
 
   var CONSIGNES = {
-    'Sport': "1 km en courant jusqu'au parc, allure conversation : c'est l'échauffement. Séance du jour dans l'onglet Sport, surcharge progressive : les charges à faire sont déjà calculées. La fin de séance, dans l'ordre : les abdos lestés, le cou (flexion et extension lundi et jeudi, latéral mardi), puis l'avant-bras (curl inversé lundi, curl des poignets samedi). Ces trois-là ne demandent qu'un poids en main — si le créneau déborde, ils se font à la maison le soir, jamais on ne les saute. Retour en marchant, en trottinant le mardi.",
+    'Sport': "1 km en courant jusqu'au parc, allure conversation : c'est l'échauffement. Séance du jour dans l'onglet Sport, surcharge progressive : les charges à faire sont déjà calculées. La fin de séance : le crunch lesté le mardi, puis le cou (flexion et extension lundi et jeudi, latéral mardi). Il ne faut qu'un poids en main — si le créneau déborde, ça se fait à la maison le soir, jamais on ne le saute. Retour en marchant, en trottinant le mardi. Le lundi, JJB à 10:30 : ne va pas à l'échec, garde de l'énergie pour le tatami.",
     'Anki matinal': "Jour off de sport, jusqu'au 23 octobre : une heure de cartes de dentaire, deux Pomodoros 25 + 5. Toutes les échéances, puis les cartes des matières faibles. Le 24 octobre, ce créneau passe aux projets comme les autres — la file se vide alors dans Anki 1 et Anki 2.",
-    'Projets perso matinal': "05:30, mercredi et vendredi : exécution pure d'une tâche déjà décidée la veille — montage, import, rédaction, fiches, code. Jamais une décision : à cette heure-là on exécute, on n'arbitre pas. Ce que tu feras s'écrit la veille au soir, à la clôture.",
+    'Projets perso matinal': "05:30 : exécution pure d'une tâche déjà décidée la veille — montage, import, rédaction, fiches, code. Jamais une décision : à cette heure-là on exécute, on n'arbitre pas. Ce que tu feras s'écrit la veille au soir, à la clôture. Pas de minuteur : tu travailles jusqu'à la douche de 06:30.",
     'Anki 1': "Toutes les échéances de dentaire, deux Pomodoros 25 + 5 sans téléphone. File vide avant la fin : cartes du cours suivant à partir des notes.",
     'Anki 2': "Suite des échéances de dentaire. Les 5 dernières minutes : échéances du paquet Business (glossaire dropshipping).",
     'Étudier en avance': {defaut: "Deux heures, un tema que le prof n'a pas encore donné (la matière la plus loin de ses 3 d'avance). Lire les diapos en espagnol, une phrase à toi par point, « ? » dans la marge, 15-25 cartes Dentaire importées (40 en Anatomía). Puis, dans le projet Claude Dentaire : « estudia · matière Tn · tes ? » — la réponse en sept parties, la chaîne du mécanisme pour tout tema d'Anatomía, Biología ou Epidemiología, tes dix lignes en espagnol dans Notion, les cartes de la réponse importées. Pomodoro nommé « Étudier · matière Tn ». Une base qui manque (« base · notion ») passe devant tout le reste."},
@@ -13811,14 +14116,17 @@
       return "Le sujet, c'est toi qui le choisis : le tema que le prof vient de donner, ou celui qui te servira le plus au fauteuil." + deux + socle;
     },
     'Lire': "Le chapitre que la réponse « estudia » du matin a indiqué : un bloc, un livre, en espagnol ou en anglais, une seule question en tête — qu'est-ce que le cours n'a pas expliqué ? Trois cartes au plus à la fin. Rien d'autre d'ouvert.",
-    'Projets perso 1': {defaut: "Un devoir ou une présentation à rendre passe en premier (l'échéance la plus proche, onglet Calendrier). Sinon la boutique : la prochaine ligne non cochée du dossier e-commerce. Bloc des décisions (produit, fournisseur, pub). Pomodoro nommé « DS S<semaine> · tâche ».",
+    'Projets perso 1': {defaut: "Un devoir ou une présentation à rendre passe en premier (l'échéance la plus proche, onglet Calendrier). Sinon la boutique : la prochaine ligne non cochée du dossier e-commerce. Bloc des décisions (produit, fournisseur, pub). Sans minuteur : tu travailles jusqu'au bloc suivant.",
                         1: "Dossier dropshipping : la prochaine ligne non cochée. Dès que des pubs tournent, c'est le rituel du lundi (chiffres, décisions pub, opérations, argent, journal).",
                         6: "Réserve : ce qui a débordé de la semaine dans le dossier ; s'il n'y a rien, la semaine suivante commence.",
                         0: "Réserve : service client et chiffres du week-end quand la boutique tourne ; sinon, débordement du dossier."},
     'Projets perso 2': {defaut: "Un livrable en cours d'abord (l'échéance la plus proche). Sinon la ligne suivante de type « construire » du dossier e-commerce : feuille, page, brief, fiche, compte. Quelque chose qui existe à la fin du bloc.",
                         5: "Bilan de la semaine : cases cochées, porte passée ou non, trois lignes dans le journal de bord, tâche du samedi et du dimanche matin cadrée par écrit.",
-                        6: "Fiscalité F1 (apprendre) : la ligne « Apprendre » de la semaine, section 09 du dossier, à partir de la source officielle. Pomodoro « F1 ».",
-                        0: "Fiscalité F3 (réviser) : relecture des fiches, 10 cartes fiscalité, tableau de maîtrise du dossier (les cinq piliers), page « ce que je sais maintenant ». Pomodoro « F3 »."},
+                        6: "Fiscalité F1 (apprendre) : la ligne « Apprendre » de la semaine, section 09 du dossier, à partir de la source officielle.",
+                        0: "Fiscalité F3 (réviser) : relecture des fiches, 10 cartes fiscalité, tableau de maîtrise du dossier (les cinq piliers), page « ce que je sais maintenant »."},
+    'Projets perso 3': {defaut: "Un bloc de projet de plus depuis le 28 septembre, sans minuteur : le livrable de la semaine d'abord (celui que tu cocheras dimanche), sinon la prochaine ligne non cochée du dossier e-commerce.",
+                        6: "Samedi 18:00-19:30, une heure et demie d'un trait, sans minuteur : le livrable de la semaine d'abord (celui que tu cocheras dimanche), sinon la prochaine ligne non cochée du dossier e-commerce.",
+                        0: "Dimanche 17:30-19:00 : finir le livrable de la semaine — c'est lui que la revue du dimanche te demande de cocher. S'il est fait, prépare celui de la semaine suivante."},
     'Projets perso 4': "Lundi, 15:00-16:50, juste avant de partir en cours (hablar en phase Español). Même règle que les autres blocs de projet : "
       + "un livrable à rendre d'abord, sinon la prochaine ligne non cochée du dossier e-commerce.",
     'Projets perso 5': "Un jour sans cours, l'après-midi : même règle, un livrable d'abord, sinon la boutique.",
@@ -13847,8 +14155,17 @@
       return "La boîte du jour : pâtes " + g('pates') + " g crues, viande hachée " + g('hachee') + " g, légumes, à la poêle. Hors du feu, " + SAUCE_SKYR.din + " g de skyr à l'ail sur les pâtes et la viande, façon manti, et 5 ml d'huile au paprika par-dessus (ou moutarde-persil). Un fruit. La créatine, 5 g, avec le repas. Ensuite plus rien jusqu'au lendemain.";
     },
     'Temps libre': {defaut: "Libre.", 0: "10 minutes pour la revue du dimanche guidée (onglet Études), le reste est libre."},
-    'Coucher': "Clôture du jour faite ? Écran off, réveil posé loin du lit."
+    'Coucher': "Clôture du jour faite ? Écran off, réveil posé loin du lit.",
+    /* Le regime combat (lundi 28 septembre) : les blocs qu'il ajoute. L'eau monte a 3,5-4 L
+       ces jours-la (objectifEauL), et la collation combat se prend 25 min avant le tatami. */
+    'Collation combat': function(d){
+      return "Banane, 50 g de flocons, 15 g d'amandes : du glucide qui passe vite, 25 minutes avant le tatami. Remplis la gourde. Aujourd'hui, l'eau monte à 3,5 à 4 L.";
+    },
+    'Trajet club': "Dix minutes à pied. Dans le sac : kimono ou short, protège-dents, gourde pleine, serviette. Ongles des mains et des pieds courts.",
+    'Retour du club': "Douche dès que possible, kimono ou tenue à laver le jour même. Bois 500 ml en rentrant."
   };
+  CONSIGNES[JJB_LABEL] = "1 h 30 de JJB. Protège-dents. Tape tôt sur une clé ou un étranglement : un débutant qui attend se blesse. Bois entre les rounds — aujourd'hui, 3,5 à 4 L d'eau sur la journée. Pose des questions en espagnol : c'est aussi de l'immersion.";
+  CONSIGNES[MT_LABEL] = "1 h 30 de Muay Thai. Bandes, protège-dents, gants. Au sparring, touche léger : tu apprends, tu ne gagnes pas. Bois entre les rounds — aujourd'hui, 3,5 à 4 L d'eau sur la journée. Retour 21:00, douche, et au lit à 22:00.";
   /* ===== Consignes des blocs Español (Dossier Español, sections 05 et 06) =====
      Ces consignes sont consultees AVANT CONSIGNES, toute l'annee : une cle qui existe ici
      masque celle du meme nom plus haut. Elles ne portent donc que les libelles que la phase
@@ -14024,9 +14341,17 @@
      (Anki, Cartes, Annales, Comprendre…) : c'est ici, et nulle part ailleurs, qu'on décide
      ce qui compte comme révision et comme projets. */
   var BLOCS_REVISION = /^(Anki|Cartes|Annales?\b|Annale complète|Correction|Clore|Préparer · |Étudier en avance|Question ouverte|Simulation dentaire|Réexpliquer|Approfondir|Lire$)/;
+  /* ===== Les projets perso sans minuteur ===== (25 septembre, sa decision)
+     « je vais pas faire de pomodoro pour les projets perso ». Un bloc « Projets perso »
+     reste dans la grille, dans l'agenda Google et dans le plan du jour, avec sa consigne --
+     mais il n'est plus MESURE : ni cible du jour, ni fidelite au plan, ni bloc manque, ni
+     rappel de Pomodoro, ni objectif en heures. Ce qui juge une semaine de projets, c'est le
+     livrable, coche le dimanche a la cloture (batcave-livrables). Les blocs Español, eux,
+     gardent leur Pomodoro jusqu'a la fin de la phase : ils ont leur propre objectif. */
+  var PROJETS_LIBRES = /^Projets perso/;
   function typeBlocPlan(label){
     if(BLOCS_REVISION.test(label)) return 'cours';
-    if(/^Projets perso/.test(label)) return 'projet';
+    if(/^Projets perso/.test(label)) return null;   /* PROJETS_LIBRES, en litteral : appelee avant sa declaration */
     /* les blocs Español sont du temps de projet (la grille et le minuteur les comptent ainsi),
        sauf la conversation reelle et les revisions Anki, qui se cochent en habitudes */
     if(/^Español · (conversación|Anki|cartas)/.test(label)) return null;
@@ -15246,31 +15571,21 @@
   function projetsTarget(){
     return (cibleJourMinutes(scheduleKeyForToday()).proj + reportDuJour().proj) / 60;
   }
-  /* ===== Un compteur qui n'est pas encore au programme le dit =====
-     Jusqu'au 23 octobre, la phase Español 1 remplace les trois blocs « Projets perso » : la
-     grille ne prévoit donc AUCUNE minute de projets perso, et afficher « 0,0 / 0,0 h » donne
-     l'impression d'un compteur cassé. On cherche le premier jour où la grille en reprévoit —
-     lu dans la grille, jamais écrit en dur, pour que ça reste vrai si les phases bougent. */
-  var _repriseProjets;
-  function repriseProjets(){
-    if(_repriseProjets !== undefined) return _repriseProjets;
-    _repriseProjets = null;
-    var d = new Date(todayISO + 'T00:00:00');
-    for(var i = 0; i < 220; i++){
-      var iso = localISO(d);
-      if(cibleJourMinutes(cleJournee(dowDe(iso)), iso).proj > 0){ _repriseProjets = iso; break; }
-      d.setDate(d.getDate() + 1);
-    }
-    return _repriseProjets;
+  /* Depuis le 25 septembre, les projets n'ont plus de cible (PROJETS_LIBRES) : la cellule
+     dit ce que la grille leur donne aujourd'hui, et ou en est le livrable de la semaine. */
+  function livrablesEtat(){ var s = load('batcave-livrables', {}); return (s && typeof s === 'object' && !Array.isArray(s)) ? s : {}; }
+  function livrableFait(lundi){ return !!livrablesEtat()[lundi || weekRange(0)[0]]; }
+  function noteProjetsJour(){
+    var g = grilleDe(scheduleKeyForToday(), todayISO), fin = timeToMinutes(heureCoucher()), min = 0;
+    g.forEach(function(b, i){
+      if(!/^Projets perso/.test(b[1])) return;
+      min += (i < g.length - 1 ? timeToMinutes(g[i + 1][0]) : fin) - timeToMinutes(b[0]);
+    });
+    var p = (!min && typeof phaseEspanol === 'function') ? phaseEspanol(todayISO) : null;
+    return (min ? fmtDuree(min) + ' au planning, sans minuteur'
+                : (p ? 'Español à leur place jusqu\u2019au ' + fmtDate(p.fin) : 'pas de bloc aujourd\u2019hui'))
+           + ' · livrable ' + (livrableFait() ? 'fait ✅' : 'à cocher dimanche');
   }
-  function phraseSansProjets(){
-    var r = repriseProjets();
-    if(!r) return 'pas au programme';
-    var p = (typeof periodeGrille === 'function') ? periodeGrille(r) : null;
-    /* la phase n'apporte rien ici : c'est la DATE qu'on veut, et la cellule est étroite */
-    return 'pas au programme avant le ' + fmtDate(r);
-  }
-
   /* remplacée par fmtDuree / fmtHeures : une seule façon d'écrire une durée dans toute
      l'application. Gardée en alias le temps que plus rien ne l'appelle. */
   function minutesToTime(m){ m = ((Math.round(m) % 1440) + 1440) % 1440; return (Math.floor(m/60)+'').padStart(2,'0') + ':' + ((m%60)+'').padStart(2,'0'); }
@@ -15308,7 +15623,7 @@
     var waterPct = pctEau(journalState.water);
     document.getElementById('cal-water-pct').innerHTML = waterPct + '<small>%</small>';
     document.getElementById('cal-water-fill').style.width = waterPct + '%';
-    document.getElementById('cal-water-sub').textContent = waterL.toFixed(1).replace('.', ',') + ' L / ' + OBJECTIF_EAU_L.toFixed(1).replace('.', ',') + ' L';
+    document.getElementById('cal-water-sub').textContent = waterL.toFixed(1).replace('.', ',') + ' L / ' + objectifEauL().toFixed(1).replace('.', ',') + ' L' + (jourDeCombat() ? ' (jour de combat : 3,5 à 4 L)' : '');
 
     var key = scheduleKeyForToday();
     /* L'en-tete annoncait la plage de cours EN DUR, une entree par cle de grille : « mardi
@@ -15599,6 +15914,35 @@
   migrerChargesFixes();
   MIGRATIONS_DEMARRAGE.push({cle:'batcave-fc-migration-v1', rejouer: function(){
     if(!migrerChargesFixes()) return false;
+    try{ renderBudget(); renderDashboard(); }catch(e){}
+    return true;
+  }});
+  /* v2 (25 septembre) : l'abonnement du club -- JJB et Muay Thai, 90 EUR par mois, son
+     chiffre. Range dans « Abonnements », dont le plafond suit s'il vaut encore la somme
+     des charges (donc s'il n'y a pas touche) -- la meme regle qu'en v1. */
+  function migrerChargesFixesV2(){
+    if(load('batcave-fc-migration-v2', false)) return false;
+    var fc = load('batcave-fixed-charges', null);
+    if(Array.isArray(fc)) fixedCharges = fc.filter(function(x){ return x && typeof x === 'object' && !Array.isArray(x); });
+    var bl = load('batcave-budget-limits', null);
+    if(bl && typeof bl === 'object' && !Array.isArray(bl)) budgetLimits = bl;
+    var added = false;
+    if(!fixedCharges.some(function(c){ return c.id === 'fc10'; })){
+      var avant = fixedCharges.filter(function(c){ return c.cat === 'Abonnements'; }).reduce(function(t, c){ return t + montantMensuel(c); }, 0);
+      fixedCharges.push({id:'fc10', label:'Club JJB / Muay Thai', montant:90, cat:'Abonnements'});
+      added = true;
+      save('batcave-fixed-charges', fixedCharges);
+      if(Number(budgetLimits['Abonnements']) === avant){
+        budgetLimits['Abonnements'] = avant + 90;
+        save('batcave-budget-limits', budgetLimits);
+      }
+    }
+    saveInternal('batcave-fc-migration-v2', true);
+    return added;
+  }
+  migrerChargesFixesV2();
+  MIGRATIONS_DEMARRAGE.push({cle:'batcave-fc-migration-v2', rejouer: function(){
+    if(!migrerChargesFixesV2()) return false;
     try{ renderBudget(); renderDashboard(); }catch(e){}
     return true;
   }});
@@ -17200,8 +17544,8 @@
   function majClEau(){
     var el = document.getElementById('cl-eau'), n = document.getElementById('cl-eau-note');
     if(el) el.textContent = fmtLitres(clEau);
-    var cibleMl = OBJECTIF_EAU_L * 1000;
-    if(n) n.textContent = clEau >= cibleMl ? 'objectif ' + OBJECTIF_EAU_L + ' L atteint ✅' : ('objectif ' + OBJECTIF_EAU_L + ' L · reste ' + fmtLitres(cibleMl - clEau));
+    var cibleL = objectifEauL(), cibleMl = cibleL * 1000, txtL = String(cibleL).replace('.', ',');
+    if(n) n.textContent = clEau >= cibleMl ? 'objectif ' + txtL + ' L atteint ✅' : ('objectif ' + txtL + ' L' + (jourDeCombat() ? ' (combat)' : '') + ' · reste ' + fmtLitres(cibleMl - clEau));
   }
   function renderClHumeur(){
     var el = document.getElementById('cl-humeur');
@@ -17267,6 +17611,7 @@
       try{ remplirChiffresSemaine(); }catch(e){}
       document.getElementById('cl-constats').innerHTML = constatsSemaine().map(function(c){ return '<li><span>' + escapeHtml(c) + '</span></li>'; }).join('');
       ['cl-rv-marche','cl-rv-coince','cl-rv-ajust','cl-es-errores','cl-es-oral','cl-anki-revues','cl-anki-creees'].forEach(function(id){ var el = document.getElementById(id); if(el) el.value = ''; });
+      var liv = document.getElementById('cl-livrable'); if(liv) liv.checked = livrableFait();
       var esBox = document.getElementById('cl-espanol');
       if(esBox) esBox.hidden = !phaseEspanol(todayISO);
       /* l'expérience : le verdict de celle qui s'achève, puis la déclaration de la suivante */
@@ -17300,6 +17645,7 @@
     if(som !== '') journalState.sommeil = som;
     var auLit = (document.getElementById('cl-aulit') || {}).value || '';
     if(auLit !== '') journalState.auLit = auLit;
+    oublierEfficacite();   /* une nuit de plus : l'efficacite mesuree se recalcule */
     if(poids !== '') journalState.poids = poids;
     /* Les pas : un seul geste. Le chiffre est enregistre ET il coche l'habitude « Marche »
        s'il atteint la cible -- sinon il la decoche. Sans ca, il saisirait 9 000 pas et
@@ -17342,6 +17688,8 @@
       var ank = {revues: lire('cl-anki-revues'), creees: lire('cl-anki-creees')};
       if(ank.revues === null && ank.creees === null) ank = null;
       if(m || c || a || es || ank) enregistrerRevue(weekRange(0)[0], m, c, a, es, ank);
+      var livEl = document.getElementById('cl-livrable');
+      if(livEl){ var livs = livrablesEtat(); livs[weekRange(0)[0]] = !!livEl.checked; save('batcave-livrables', livs); }
       /* on clôt l'expérience de la semaine écoulée, puis on déclare celle de la suivante */
       var fini = cloreExperience();
       var qEl = document.getElementById('cl-exp-quoi'), sEl = document.getElementById('cl-exp-mesure');

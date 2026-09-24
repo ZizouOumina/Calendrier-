@@ -57,13 +57,13 @@ console.log('\n== 276) Partiels : le sport et le sommeil ne bougent pas ==');
     jeu: window.__bcTypeSport('2027-01-21'), sam: window.__bcTypeSport('2027-01-16'),
     horsMar: window.__bcTypeSport('2026-12-08'), horsSam: window.__bcTypeSport('2026-12-12')
   }));
-  ok(sport.lun === 'Haut lourd' && sport.jeu === 'Haut volume', 'lundi et jeudi gardent leur séance (' + sport.lun + ' · ' + sport.jeu + ')');
+  ok(sport.lun === 'Haut volume' && sport.jeu === 'Haut lourd', 'lundi et jeudi gardent leur séance (volume le lundi, lourd le jeudi depuis le régime combat) (' + sport.lun + ' · ' + sport.jeu + ')');
   ok(sport.mar === sport.horsMar && sport.mar === 'Bas complet', 'le mardi reste Bas complet pendant les partiels (' + sport.mar + ')');
-  ok(sport.sam === sport.horsSam && sport.sam === 'Bras · épaules · mollets', 'le samedi reste Bras · épaules · mollets (' + sport.sam + ')');
+  ok(sport.sam === sport.horsSam && sport.sam === 'Off', 'le samedi reste Off (la séance du samedi est sortie avec le régime combat) (' + sport.sam + ')');
   const som = await fr.evaluate(() => ({ cible: window.__bcSommeilCible('2027-01-15'), coucher: window.__bcCoucher(window.__bcCle(4), '2027-01-14'), lever: window.__bcLever(window.__bcCle(5), '2027-01-15') }));
   const [hc, mc] = som.coucher.split(':').map(Number), [hl, ml] = som.lever.split(':').map(Number);
   const attendu = (24 * 60 - (hc * 60 + mc) + hl * 60 + ml) / 60;
-  ok(som.coucher === '21:00', 'la veille, jour sans cours, on se couche à 21:00 (' + som.coucher + ')');
+  ok(som.coucher === '21:35', 'la veille, jour sans cours, on se couche à 21:35 — la même heure tous les jours au régime combat (' + som.coucher + ')');
   ok(Math.abs(som.cible - attendu) < 0.01, 'la cible de sommeil est celle de la grille, sans bonus (' + som.cible.toFixed(2) + ' h = ' + som.coucher + ' → ' + som.lever + ')');
   const prevu = await fr.evaluate(() => window.__bcPrevu('2027-01-19'));
   ok(prevu.sport === 1, 'un mardi de partiels compte toujours sa séance prévue (' + prevu.sport + ')');

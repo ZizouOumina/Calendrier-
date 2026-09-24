@@ -39,7 +39,7 @@ const dash = await fr.evaluate(() => {
 });
 ok(/1h/.test(dash[0]), 'Cours : ' + dash[0]);
 /* trois cellules depuis le lot 24 : l'espagnol ne se cache plus dans « Projets perso » */
-ok(dash.length === 3 && /Projetsperso0\//.test(dash[1]) && /Español0$/.test(dash[2]), 'Projets perso et espagnol à zéro (séparation respectée) : ' + dash[1] + ' | ' + dash[2]);
+ok(dash.length === 3 && /Projetsperso0[^\/]*sansminuteur/.test(dash[1]) && /Español0$/.test(dash[2]), 'Projets perso et espagnol à zéro (séparation respectée) : ' + dash[1] + ' | ' + dash[2]);
 
 console.log('\n== C) Agenda des révisions + journal des blocs ==');
 const cal = await fr.evaluate(() => {
@@ -68,7 +68,7 @@ const pie = await fr.evaluate(() => ({
   solde: document.querySelectorAll('#budget-stats .stat-tile')[2].innerText.replace(/\s+/g,''),
 }));
 ok(pie.parts === 1 && /Shopify 1200/.test(pie.txt), 'camembert Entrées à 100% Shopify : ' + pie.txt);
-ok(/13/.test(pie.solde), 'le solde se recalcule : ' + pie.solde);
+ok(/223/.test(pie.solde), 'le solde se recalcule : 1200 − 977 de charges (club compris) = 223 (' + pie.solde + ')');
 
 console.log('\n== E) Habitude cochée → score + bilan ==');
 await fr.evaluate(() => document.querySelector('.nav-btn[data-page="habitudes"]').click());

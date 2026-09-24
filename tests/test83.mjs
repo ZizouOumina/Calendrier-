@@ -138,8 +138,8 @@ console.log('\n== 6) Quelle que soit la note, la grille ne bouge pas ==');
   const haut = await bloc(notes(fin, 14, 3));
   ok(bas.portes.length === 0 && haut.portes.length === 0, 'il n\'y a plus aucune porte (' + haut.portes.length + ')');
   ok(bas.g.join('|') === haut.g.join('|'), 'le mardi 13 octobre est identique avec 0/3 et avec 3/3');
-  ok(haut.g.some(x => /20:30 Español · serie en VO/.test(x)),
-     'et le bloc que la porte 1 rendait reste de l\'espagnol : ' + (haut.g.filter(x => /20:30/.test(x))[0] || '—'));
+  ok(!haut.g.some(x => /20:30/.test(x)) && haut.g.some(x => /Muay Thai/.test(x)),
+     'le mardi soir est à la Muay Thai depuis le 28 septembre : plus de bloc à 20:30 à rendre (' + (haut.g.filter(x => /19:30/.test(x))[0] || '—') + ')');
   await b.close();
   console.log(err ? '\n' + err + ' ECHEC(S)' : '\nTOUT VERT');
   process.exit(err ? 1 : 0);

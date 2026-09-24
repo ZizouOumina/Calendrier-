@@ -56,8 +56,11 @@ console.log('\n== 218) Insights v2 : bloc fragile, dérive, dette de sommeil, st
   const ins = await fr.evaluate(() => window.__bcInsights().map(i => ({ title: i.title, text: i.text, action: i.action || '', score: i.score, n: i.n, page: i.page || '', tend: i.tendance ? i.tendance.txt : '', bon: i.tendance ? i.tendance.bon : null, serie: i.serie && i.serie.v ? i.serie.v.length : 0 })));
   const par = t => ins.find(i => i.title === t);
   const bf = par('Bloc le plus fragile');
-  ok(bf && /Projets perso matinal \(05:30\)/.test(bf.text) && /0 fois sur 4/.test(bf.text) && bf.score === 100, 'bloc fragile = Projets perso matinal à 05:30, jamais tenu, score 100 : ' + (bf && bf.text.slice(0, 80)));
-  ok(bf && /^stable vs 14 j avant$/.test(bf.tend) && bf.page === 'calendrier', 'bloc fragile : tendance « stable » (0/3 avant, 0/4 maintenant), lien Calendrier : ' + (bf && bf.tend));
+  /* 25 septembre : les blocs de projets n'ont plus de minuteur, donc ne sont plus suivis -- le
+     « Projets perso matinal » jamais tenu ne peut plus etre le bloc fragile. Aucun bloc de
+     revision ne saute plus de 30 % du temps : la carte se tait, score 5. */
+  ok(bf && /Aucun bloc ne saute/.test(bf.text) && bf.score === 5, 'bloc fragile : aucun (les projets ne sont plus suivis), score 5 : ' + (bf && bf.text.slice(0, 80)));
+  ok(bf && bf.page === 'calendrier', 'bloc fragile : lien Calendrier');
   const dv = par('Dérive du premier bloc');
   ok(dv && /en moyenne 15 min/.test(dv.text) && dv.score === 30, 'dérive = 15 min après 07:20, score 30 : ' + (dv && dv.text.slice(0, 70)));
   ok(dv && dv.tend === '−15 min vs 14 j avant' && dv.bon === true && dv.serie === 10, 'dérive : tendance −15 min (30 min de retard 14 j avant), bonne, série de 10 jours : ' + (dv && dv.tend + ' / ' + dv.serie));
@@ -76,7 +79,7 @@ console.log('\n== 218) Insights v2 : bloc fragile, dérive, dette de sommeil, st
   ok(cr && /que tu abats le plus de travail/.test(cr.text) && /Ton meilleur jour est/.test(cr.text) && cr.action, 'créneau + meilleur jour fusionnés, avec action');
   const fi = par('Fidélité au plan');
   ok(fi && /^Semaine dernière : \d+ % du plan/.test(fi.text) && fi.serie === 3 && fi.page === 'bilan', 'fidélité de la semaine dernière mesurée, série de 3 semaines : ' + (fi && fi.text.slice(0, 80)));
-  ok(ins.length === 9 && ins[0].title === 'Bloc le plus fragile' && ins.every((it, i) => i === 0 || it.score <= ins[i-1].score), '9 cartes triées par score, bloc fragile en tête (' + ins.length + ')');
+  ok(ins.length === 9 && ins[0].title === 'Sommeil' && ins.every((it, i) => i === 0 || it.score <= ins[i-1].score), '9 cartes triées par score, le sommeil (dette, 100) en tête, puis la matière (61) et le sport (60) (' + ins.length + ')');
   ok(ins.every(i => i.page), 'chaque carte a un onglet où agir');
   const sans = ins.filter(i => /Balance énergétique/.test(i.title))[0];
   ok(sans && sans.score === 0 && /7 jours de repas complets/.test(sans.text) && /partiels ignorés/.test(sans.text), 'balance énergétique : pas assez de données, jours partiels annoncés');
@@ -85,7 +88,7 @@ console.log('\n== 218) Insights v2 : bloc fragile, dérive, dette de sommeil, st
 console.log('\n== 219) Page Insights : bandeau des priorités et action par carte ; tableau de bord : ligne priorité ==');
 {
   const dash = await fr.evaluate(() => { const p = document.getElementById('dash-priorite'); return { hidden: p.hidden, txt: p.textContent }; });
-  ok(!dash.hidden && /Bloc le plus fragile/.test(dash.txt) && /Pomodoro/.test(dash.txt), 'tableau de bord : priorité n° 1 affichée avec son action');
+  ok(!dash.hidden && /Sommeil/.test(dash.txt), 'tableau de bord : priorité n° 1 (Sommeil) affichée avec son action');
   await fr.evaluate(() => document.querySelector('.nav-btn[data-page="insights"]').click());
   await page.waitForTimeout(300);
   const r = await fr.evaluate(() => ({
@@ -97,7 +100,7 @@ console.log('\n== 219) Page Insights : bandeau des priorités et action par cart
     liensBandeau: document.querySelectorAll('#insights-priorites [data-aller]').length
   }));
   ok(!r.bandeau && r.items === 3 && r.vus === 3 && r.liensBandeau === 3, 'bandeau « Priorités de la semaine » : 3 actions, chacune avec « Vu » et son lien (' + r.items + ')');
-  ok(r.cartes === 9 && r.actions >= 7 && r.premier === 'Bloc le plus fragile', r.cartes + ' cartes, ' + r.actions + ' actions, première = ' + r.premier);
+  ok(r.cartes === 9 && r.actions >= 6 && r.premier === 'Sommeil', r.cartes + ' cartes, ' + r.actions + ' actions, première = ' + r.premier);
   ok(r.n === 9 && r.liens === 9, 'points de données et lien vers l\'onglet sur les 9 cartes (' + r.n + ', ' + r.liens + ')');
   ok(r.tend >= 3 && r.spark === 3, 'tendances (' + r.tend + ') et mini-courbes (' + r.spark + ' : dérive, sommeil, fidélité)');
   await fr.evaluate(() => document.querySelector('#insights-grid .panel[data-titre="Matière et partiel"] [data-aller]').click());
@@ -110,24 +113,24 @@ console.log('\n== 219) Page Insights : bandeau des priorités et action par cart
 
 console.log('\n== 219a) « Vu » : la priorité se met en pause 7 jours, le bandeau et le tableau de bord suivent, « Réactiver » la remet ==');
 {
-  await fr.evaluate(() => document.querySelector('#insights-priorites [data-vu="Bloc le plus fragile"]').click());
+  await fr.evaluate(() => document.querySelector('#insights-priorites [data-vu="Sommeil"]').click());
   await page.waitForTimeout(300);
   const r = await fr.evaluate(() => ({
     premier: document.querySelector('#insights-priorites li b').textContent, items: document.querySelectorAll('#insights-priorites li').length,
     vu: JSON.parse(localStorage.getItem('batcave-insights-vu') || '{}'),
-    pause: !!document.querySelector('#insights-grid .panel[data-titre="Bloc le plus fragile"].en-pause'),
-    reactiver: !!document.querySelector('#insights-grid [data-reactiver="Bloc le plus fragile"]'),
+    pause: !!document.querySelector('#insights-grid .panel[data-titre="Sommeil"].en-pause'),
+    reactiver: !!document.querySelector('#insights-grid [data-reactiver="Sommeil"]'),
     dash: document.getElementById('dash-priorite').textContent, toast: (document.querySelector('.toast') || {}).textContent || ''
   }));
-  ok(r.premier === 'Sommeil' && r.items === 3, 'bandeau : Sommeil passe en tête, toujours 3 priorités (' + r.premier + ')');
-  ok(r.vu['Bloc le plus fragile'] === '2026-09-14', 'pause enregistrée jusqu\'au 14/09 dans batcave-insights-vu : ' + JSON.stringify(r.vu));
+  ok(r.premier === 'Matière et partiel' && r.items === 3, 'bandeau : la matière passe en tête, toujours 3 priorités (' + r.premier + ')');
+  ok(r.vu['Sommeil'] === '2026-09-14', 'pause enregistrée jusqu\'au 14/09 dans batcave-insights-vu : ' + JSON.stringify(r.vu));
   ok(r.pause && r.reactiver, 'la carte reste, marquée en pause, avec « Réactiver »');
-  ok(/Sommeil/.test(r.dash) && !/Bloc le plus fragile/.test(r.dash), 'tableau de bord : la ligne priorité bascule sur Sommeil');
+  ok(/Matière et partiel/.test(r.dash) && !/Sommeil/.test(r.dash), 'tableau de bord : la ligne priorité bascule sur la matière');
   ok(/en pause 7 jours/.test(r.toast), 'toast de confirmation : ' + r.toast);
-  await fr.evaluate(() => document.querySelector('#insights-grid [data-reactiver="Bloc le plus fragile"]').click());
+  await fr.evaluate(() => document.querySelector('#insights-grid [data-reactiver="Sommeil"]').click());
   await page.waitForTimeout(300);
   const r2 = await fr.evaluate(() => ({ premier: document.querySelector('#insights-priorites li b').textContent, vu: JSON.parse(localStorage.getItem('batcave-insights-vu') || '{}'), dash: document.getElementById('dash-priorite').textContent }));
-  ok(r2.premier === 'Bloc le plus fragile' && !r2.vu['Bloc le plus fragile'] && /Bloc le plus fragile/.test(r2.dash), '« Réactiver » : le bloc fragile revient en tête, clé effacée, tableau de bord à jour');
+  ok(r2.premier === 'Sommeil' && !r2.vu['Sommeil'] && /Sommeil/.test(r2.dash), '« Réactiver » : le sommeil revient en tête, clé effacée, tableau de bord à jour');
 }
 
 console.log('\n== 219b) Tableau de bord : la ligne priorité se tronque, porte l\'explication complète et mène aux Insights ==');

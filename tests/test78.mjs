@@ -26,15 +26,17 @@ const legend = fr => fr.evaluate(()=>[...document.querySelectorAll('#leg-rev,#le
 const es = (date, min, h='11:20') => ({id:'e'+min, date, debut:Date.parse(date+'T'+h+':00+02:00'),
   fin:Date.parse(date+'T'+h+':00+02:00')+min*60000, duree:min, type:'projet', label:'Español · gramática'});
 
-console.log('\n== 1) Le réacteur et la cellule comptent la même chose ==');
-for(const [d, desc] of [['2026-11-16','phase Español 2, projets perso au programme'],
-                        ['2027-02-15','phase Español 3']]){
+console.log('\n== 1) Le réacteur et la cellule disent la même chose : projets sans minuteur ==');
+/* Depuis le 25 septembre les projets perso n'ont plus de cible ni de minuteur : le reacteur
+   ne leur dessine plus d'arc (« projets — sans minuteur »), la cellule dit ce que la grille
+   leur donne dans la journee, et 1 h d'espagnol enregistree ne les remplit toujours pas. */
+for(const [d, desc] of [['2026-11-16','regime combat, projets perso au programme'],
+                        ['2027-02-15','semestre 2']]){
   const {ctx, fr} = await ouvrir({'batcave-sessions':[es(d,60)]}, d+'T21:00:00+02:00');
   const l = await legend(fr), t = await temps(fr);
-  const arc = (l.match(/projets ([^/‖]+)\//)||[])[1];
-  const cel = (t.match(/Projets perso \| ([^|/]+)/)||[])[1];
-  ok(arc && cel && arc.trim() === cel.trim(),
-     d + ' : réacteur « ' + (arc||'?').trim() + ' » = cellule « ' + (cel||'?').trim() + ' » — 1 h d\'espagnol ne remplit pas les projets');
+  const cel = (t.match(/Projets perso \| 0 \| ([^|]+)/)||[])[1] || '';
+  ok(/projets — sans minuteur/.test(l) && /au planning, sans minuteur/.test(cel) && !/Español/.test(cel),
+     d + ' (' + desc + ') : réacteur « ' + ((l.match(/projets[^‖]*/)||['?'])[0]).trim() + ' », cellule « ' + cel.trim() + ' » — 1 h d\'espagnol ne remplit pas les projets');
   await ctx.close();
 }
 
@@ -61,19 +63,19 @@ console.log('\n== 2) L\'espagnol manqué est une dette d\'espagnol, pas de proje
   await ctx.close();
 }
 
-console.log('\n== 3) Un compteur pas encore au programme le dit, avec la vraie date ==');
+console.log('\n== 3) Sans bloc de projets dans la journée, la cellule dit pourquoi, avec la vraie date ==');
 {
   const {ctx, fr} = await ouvrir({}, '2026-09-14T09:00:00+02:00');
   const t = await temps(fr), l = await legend(fr);
-  ok(/pas au programme avant le 24 oct/.test(t), 'cellule : ' + (t.match(/pas au programme[^|]*/)||['(absent)'])[0]);
-  ok(/pas au programme avant le 24 oct/.test(l), 'réacteur : ' + (l.match(/projets[^‖]*/)||['(absent)'])[0].trim());
+  ok(/Español à leur place jusqu’au 23 oct/.test(t), 'cellule : ' + (t.match(/Español à leur place[^|]*/)||['(absent)'])[0]);
+  ok(/projets — sans minuteur/.test(l), 'réacteur : ' + (l.match(/projets[^‖]*/)||['(absent)'])[0].trim());
   await ctx.close();
 }
 {
   const {ctx, fr} = await ouvrir({}, '2026-10-24T09:00:00+02:00');
   const t = await temps(fr);
-  ok(!/pas au programme/.test(t) && /Projets perso \| 0 (\| )?\/ /.test(t),
-     'le 24 octobre, la mention disparaît et la cible apparaît : ' + (t.match(/Projets perso[^|]*\|[^|]*\|[^|]*/)||[''])[0].trim());
+  ok(!/Español à leur place/.test(t) && /Projets perso \| 0 \| \d+ h( \d+)? au planning, sans minuteur/.test(t),
+     'le 24 octobre, la mention disparaît et la grille redonne des blocs de projets, toujours sans minuteur : ' + (t.match(/Projets perso[^|]*\|[^|]*\|[^|]*/)||[''])[0].trim());
   await ctx.close();
 }
 
@@ -95,8 +97,11 @@ console.log('\n== 4) Un rendez-vous dans l\'agenda Google n\'est pas un bloc man
   ok(/pris par ton agenda|Agenda —/.test(apres), 'la Batcave dit pourquoi ces blocs ne comptent pas : ' +
      ((apres.match(/[^\n]*(?:pris par ton agenda|📅 Agenda —)[^\n]*/)||['(absent)'])[0]).trim());
   const manqueRev = (apres.match(/Bloc manqué — ([^ ]+ ?[^ ]*) de révision/)||[])[1];
-  ok(manqueRev !== undefined ? !/Anki 1/.test(apres.split('\n').filter(l=>/Bloc manqué/.test(l) && /révision/.test(l))[0]||'') : true,
-     'Anki 1 et Anki 2 ne sont plus comptés comme manqués (dette révision : ' + (manqueRev||'aucune') + ')');
+  /* la liste entre parentheses est celle des blocs NON FAITS ; Anki 1 et Étudier en avance,
+     couverts par le rendez-vous, sont cites a part (« pris par ton agenda ») et n'y sont pas */
+  const nonFaits = (apres.match(/de révision non faites \(([^)]*)\)/)||[])[1] || '';
+  ok(manqueRev !== undefined ? !/Anki 1|Étudier en avance/.test(nonFaits) : true,
+     'Anki 1 et Étudier en avance ne sont plus comptés comme manqués (non faits : ' + (nonFaits||'aucun') + ' ; dette révision : ' + (manqueRev||'aucune') + ')');
   ok(avant >= 1, 'sans agenda, la dette existait bien (' + avant + ' item(s))');
   await ctx.close();
 }

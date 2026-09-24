@@ -114,11 +114,12 @@ console.log('\n== 231) Phase 1 (mercredi 16 septembre) : blocs Projets perso ren
      MERCREDI 23 le soir du 22 -- une nuit blanche et un cours manque. Septembre perd donc
      un jour de programme a chaque fois, et la cible Español descend de 20,6 a 17,4 puis a
      15,1 h -- puis a 13,5 h quand il est passe au JEUDI 24 le matin du 23, apres une
-     deuxieme nuit blanche. Elle n'est jamais ecrite : elle est ce que la grille contient sur le mois, a
+     deuxieme nuit blanche ; puis a 10,2 h avec le regime combat du 28 (le lundi garde
+     gramática et hablar, le mardi et le mercredi n'ont plus qu'un bloc de 50 min). Elle n'est jamais ecrite : elle est ce que la grille contient sur le mois, a
      89 %. C'est bien la preuve que rien n'est fige -- deplacer une seule constante a
      recalcule l'objectif du mois tout seul. */
-  ok(Math.abs(objs['M2026-09:espagnol_h'] - 13.5) < 0.2 && objs['M2026-09:projets_h'] === 0,
-     'objectifs Espagnol calcules depuis la grille (septembre ≈ 13,5 h, depart du jeudi 24, phase Español close le 23 octobre) ; Projets perso ramene a zero en septembre, ou la phase 1 occupe toute la part programmee du mois : ' + JSON.stringify(objs));
+  ok(Math.abs(objs['M2026-09:espagnol_h'] - 10.2) < 0.2 && objs['M2026-09:projets_h'] === undefined,
+     'objectifs Espagnol calcules depuis la grille (septembre ≈ 10,2 h, depart du jeudi 24, regime combat des le 28, phase Español close le 23 octobre) ; Projets perso ramene a zero en septembre, ou la phase 1 occupe toute la part programmee du mois : ' + JSON.stringify(objs));
 
   /* Pomodoro Español : la tâche par défaut est celle du bloc en cours (gramática à 12:00), le bloc part en projet « Español · gramática » */
   await fr.evaluate(() => document.querySelector('.nav-btn[data-page="dashboard"]').click());
@@ -140,7 +141,7 @@ console.log('\n== 231) Phase 1 (mercredi 16 septembre) : blocs Projets perso ren
     reelEs: (document.querySelector('.obj-row[data-obj-id="M2026-09:espagnol_h"] .val b') || {}).textContent,
     reelProj: (document.querySelector('.obj-row[data-obj-id="M2026-09:projets_h"] .val b') || {}).textContent
   }));
-  ok(mesure.es === 40 && mesure.reelEs === '0,7' && mesure.reelProj === '0,0', 'objectifs : Espagnol réel 0,7 h, Projets perso réel 0,0 h (obtenu ' + mesure.reelEs + ' / ' + mesure.reelProj + ')');
+  ok(mesure.es === 40 && mesure.reelEs === '0,7' && mesure.reelProj === undefined, 'objectifs : Espagnol réel 0,7 h, plus d\'objectif Projets perso (sans minuteur) (obtenu ' + mesure.reelEs + ' / ' + mesure.reelProj + ')');
   await ctx.close();
 }
 
@@ -185,11 +186,12 @@ console.log('\n== 233) Fin de phase (samedi 24 octobre) puis décembre : les pro
        le premier MARDI d'apres la phase, le 27 octobre ; le bloc matinal, sur le vendredi 30. */
     return { p: (window.__bcPeriode('2026-10-24') || {}).id, a1120: at('tuesday','2026-10-27','11:20'), a1300: at('tuesday','2026-10-27','13:00'), a1400: at('tuesday','2026-10-27','14:00'),
              f0530: at('friday','2026-10-30','05:30'), releve: document.querySelector('#bc-grille .v').textContent,
-             p3: (window.__bcPeriode('2026-12-08') || {}).id, d1120: at('tuesday','2026-12-08','11:20'), d1300: at('tuesday','2026-12-08','13:00'), d1400: at('tuesday','2026-12-08','14:00'), ds1800: at('saturday','2026-12-12','18:30') };
+             p3: (window.__bcPeriode('2026-12-08') || {}).id, d1120: at('tuesday','2026-12-08','11:20'), d1300: at('tuesday','2026-12-08','13:00'), d1400: at('tuesday','2026-12-08','14:00'), ds1800: at('saturday','2026-12-12','18:00') };
   });
-  ok(g.p === undefined && g.a1120 === 'Question ouverte ou autre' && g.a1300 === 'Projets perso 1' && g.a1400 === 'Projets perso 2' && g.f0530 === 'Projets perso matinal', 'dès le 24 octobre : plus de phase, tous les blocs reviennent aux projets ('+[g.p,g.a1300,g.a1400].join(' / ')+')'); if(0) ok(false, 'classe à 14:00');
+  /* Regime combat : le mardi, 13:00 est « Lire » et les projets sont a 14:00. */
+  ok(g.p === undefined && g.a1120 === 'Question ouverte ou autre' && g.a1300 === 'Lire' && g.a1400 === 'Projets perso 2' && g.f0530 === 'Projets perso matinal', 'dès le 24 octobre : plus de phase, les blocs reviennent aux projets ('+[g.p,g.a1300,g.a1400].join(' / ')+')'); if(0) ok(false, 'classe à 14:00');
   ok(!/phase/.test(g.releve), 'relevé GRILLE : ' + g.releve);
-  ok(g.p3 === undefined && g.d1120 === 'Question ouverte ou autre' && g.d1300 === 'Projets perso 1' && g.d1400 === 'Projets perso 2' && g.ds1800 === 'Sport', 'décembre : même grille, tout en projets (le sport du samedi à 18:30, après la course)');
+  ok(g.p3 === undefined && g.d1120 === 'Question ouverte ou autre' && g.d1300 === 'Lire' && g.d1400 === 'Projets perso 2' && g.ds1800 === 'Projets perso 3', 'décembre : même grille, tout en projets (le samedi 18:00 est un bloc de projets depuis le régime combat)');
   await ctx.close();
 }
 

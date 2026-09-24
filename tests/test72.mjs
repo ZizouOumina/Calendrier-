@@ -22,7 +22,7 @@ async function ouvrir(quand, opts){
 }
 const aller = async (fr, page, p) => { await fr.evaluate(x => document.querySelector('.nav-btn[data-page="' + x + '"]').click(), p); await page.waitForTimeout(180); };
 const MERCREDI = '2026-09-16T10:20:00+02:00';
-const LUNDI_SPORT = '2026-10-12T09:00:00+02:00';
+const LUNDI_SPORT = '2026-10-15T09:00:00+02:00';   /* jeudi : la seance lourde, avec ses repos, depuis le regime combat */
 const DIMANCHE = '2026-09-20T21:00:00+02:00';
 
 console.log('\n== 290) Chaque famille de pages a sa couleur, et elle est tenue ==');
@@ -108,7 +108,7 @@ console.log('\n== 294) Le minuteur de repos propose les temps de la séance ==')
   await aller(fr, page, 'sport');
   const secs = await fr.evaluate(() => [...document.querySelectorAll('[data-repos]')].map(x => Number(x.dataset.repos)));
   ok(secs.indexOf(45) > -1 && secs.indexOf(90) > -1 && secs.indexOf(75) > -1 && secs.indexOf(30) > -1,
-     'les repos du lundi (30, 45, 60, 75, 90 s) sont proposés : ' + secs.join(', '));
+     'les repos du jeudi (30, 45, 60, 75, 90 s) sont proposés : ' + secs.join(', '));
   ok(secs.length <= 7 && secs.every((v, i, a) => i === 0 || v > a[i-1]), 'sept boutons au plus, triés');
   await fr.evaluate(() => document.querySelector('[data-repos="90"]').click());
   await page.waitForTimeout(200);

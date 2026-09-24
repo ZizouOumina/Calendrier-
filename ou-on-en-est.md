@@ -3,7 +3,37 @@
 Ce fichier existe pour une seule raison : que rien ne dépende de ma mémoire.
 Il dit ce qui est fait, ce qui reste, et ce qui attend une décision de toi.
 
-> ### ⚠️ Dernier changement — nuit du jeudi 24 septembre
+> ### ⚠️ Dernier changement — nuit du vendredi 25 septembre : le régime combat (lot 49)
+> **Du lundi 28 septembre au 24 janvier (veille du S2, partiels compris)**, `SCHEDULES_COMBAT` remplace la grille du
+> semestre 1 (`grilleBase`, `regimeCombat`). JJB lundi, mercredi et vendredi 10:30 (Anki 1,
+> Étudier en avance 08:20 → 10:05, collation combat, trajet, JJB, retour, déjeuner 12:20),
+> Muay Thai mardi 19:30 (dîner 18:00, Clore 18:30, coucher 22:00). **Lever 05:30 tous les
+> jours, coucher 21:35** ; le week-end a un bloc projets à 05:30, le samedi 18:00 → 19:30 et
+> le dimanche 17:30 → 19:00 sont des projets (« Projets perso 3 »), le jeudi 11:20 aussi.
+> Jours sans cours : mêmes heures (`SOIREE_SANS_COURS_COMBAT`, `SOIREE_SANS_COURS_MT`).
+> **Sport** : lundi et jeudi inversés (`TYPE_BY_DAY_COMBAT` : lundi volume, jeudi lourd),
+> samedi off, plus de course ni de sprints ; relevés de jambes, curl inversé, relevés de
+> genoux, fentes sortis ; mollets le mardi, élévations latérales et superset curl/triceps le
+> lundi. Le panneau Cardio devient « Cardio & combat » (`estCombat`, `combatDuJour`,
+> `COMBAT_MIN = 90`), ses quatre séances se cochent. **Repas** : cinquième prise « Collation
+> combat » (banane 120, flocons 50, amandes 15 = 388 kcal) les quatre jours de combat
+> seulement (`repasActif`, `jourDeCombat`, `ORDRE_REPAS`) ; `BESOIN_SEMAINE` sur la semaine
+> du 28 (bananes 11, flocons 760, amandes 445 g). **Eau** : 3,5 L les jours de combat
+> (`objectifEauL`). **Budget** : fc10 « Club JJB / Muay Thai » 90 €, Abonnements
+> (`migrerChargesFixesV2`). **Projets sans Pomodoro** : `typeBlocPlan` rend null pour
+> « Projets perso » (plus de cible, de fidélité, de bloc manqué, d'objectif projets_h) ; case
+> « livrable de la semaine fait » à la clôture du dimanche (`batcave-livrables`). **Les cinq
+> qui comptent** (`METRIQUES_PRIORITAIRES`, statut `lent` pour les autres, panneau
+> « Les 5 qui comptent » sur le tableau de bord et dans Objectifs). **Efficacité de sommeil
+> mesurée** (`efficaciteMesuree` : sommeil ÷ au lit sur 14 nuits, dès 7 nuits, remplace 0,88).
+> Shampoing lundi → vendredi dès le 28 (`shampoing-combat-v1`). **Google Agenda** : 21 anciennes
+> séries supprimées, 31 créées, 16 copies ponctuelles pour le week-end du 25-27 ;
+> sauvegardes `gcal-semaine-28sep-AVANT-combat.json`, `gcal-25-27sep-AVANT-combat.json`,
+> plan `combat/exec-gcal.json` (scratchpad). Améliorations acceptées : 1 (inversion lundi/jeudi)
+> et 6 (eau) ; refusées : dimanche repos, semaine allégée, combat = espagnol, Anki trajets,
+> joker samedi, Superprof.
+>
+> ### Changement précédent — nuit du jeudi 24 septembre
 > **L'alimentation passe à quatre prises.** La collation du soir sort (mal au ventre) ; son
 > skyr devient une sauce au déjeuner et au dîner, son miel va dans les flocons. Le beurre de
 > cacahuète est remplacé par des **amandes ou noix** (55 g par jour : 30 le matin, 25 à 14:50).

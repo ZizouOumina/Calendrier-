@@ -122,12 +122,12 @@ console.log('\n== 305b) Pesée un dimanche sur deux, photos une fois sur quatre 
    l'hygiene laissait un jour de sueur sans shampooing. Mercredi et vendredi restent secs. */
 for (const [d, nom, pesee, photos, shamp] of [['2026-09-20','dim. 20 sept (l\'ancre)',true,true,true],
                                               ['2026-09-27','dim. 27 sept',false,false,true],
-                                              ['2026-10-04','dim. 4 oct',true,false,true],
-                                              ['2026-10-11','dim. 11 oct',false,false,true],
-                                              ['2026-10-18','dim. 18 oct',true,true,true],
-                                              ['2026-11-01','dim. 1er nov',true,false,true],
-                                              ['2026-11-15','dim. 15 nov',true,true,true],
-                                              ['2026-12-13','dim. 13 déc',true,true,true],
+                                              ['2026-10-04','dim. 4 oct',true,false,false],
+                                              ['2026-10-11','dim. 11 oct',false,false,false],
+                                              ['2026-10-18','dim. 18 oct',true,true,false],
+                                              ['2026-11-01','dim. 1er nov',true,false,false],
+                                              ['2026-11-15','dim. 15 nov',true,true,false],
+                                              ['2026-12-13','dim. 13 déc',true,true,false],
                                               ['2026-09-14','lun. 14 (muscu)',false,false,true],
                                               ['2026-09-15','mar. 15 (muscu)',false,false,true],
                                               ['2026-09-16','mer. 16 (repos)',false,false,false],
@@ -258,7 +258,7 @@ console.log('\n== 308) Le ménage du dimanche : dans la grille, donc dans l\'age
   ok(r.heure === '16:30', 'le ménage est à 16:30 (' + r.heure + ')');
   /* Ce n'est plus le repos qui suit le menage : la course a pied lui prend sa premiere
      demi-heure depuis le 19 septembre. Le repos reprend a 18:00. */
-  ok(/^17:30 🏃 Course à pied/.test(r.suivant || ''), 'la course à pied suit à 17:30 (' + r.suivant + ')');
+  ok(/^17:30 Projets perso 3/.test(r.suivant || ''), 'un bloc de projets suit à 17:30 (la course est sortie avec le régime combat) (' + r.suivant + ')');
   await ctx.close();
 }
 

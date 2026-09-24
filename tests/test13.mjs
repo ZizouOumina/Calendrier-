@@ -52,7 +52,8 @@ ok(/Projetsperso1h30/.test(d.cells[1]), 'projets perso du jour : ' + d.cells[1])
   ok(/4 h au total/.test(d.total), 'total = révision + projets, sans espagnol : ' + d.total);
   /* depuis B3, les projets perso ont aussi une cible du jour derivee du planning (3 h en
      semaine) : deux jauges, la premiere toujours a 50 % de 5 h. */
-  ok(d.barres === 2 && d.largeur === '49%', 'deux jauges (révision et projets), révision à 49 % de 5 h 05 (mercredi, Projets perso matinal) (' + d.largeur + ')');
+  /* 25 septembre : les projets n'ont plus de cible (pas de minuteur), donc une seule jauge */
+  ok(d.barres === 1 && d.largeur === '49%', 'une jauge (révision seule, les projets n\'ont plus de cible), révision à 49 % de 5 h 05 (mercredi) (' + d.largeur + ')');
   await ctx.close();
 }
 {

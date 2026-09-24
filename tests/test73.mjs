@@ -52,7 +52,7 @@ console.log('\n== 301) Les cibles du jour et de la semaine viennent de la grille
   const p3 = await ouvrir('2026-12-08T18:00:00+02:00');
   const sem3 = await p3.fr.evaluate(() => document.getElementById('dash-semaine').innerText.replace(/\s+/g, ' '));
   const c3 = await cellules(p3.fr);
-  ok(/de projets sur 17 h/.test(sem3), 'décembre : les projets perso valent 17 h (' + sem3.slice(0, 130) + ')');
+  ok(!/de projets sur/.test(sem3), 'décembre : plus de charge de projets annoncée (sans minuteur depuis le 25 septembre) (' + sem3.slice(0, 130) + ')');
   ok(!/d'espagnol sur/.test(sem3), 'décembre : plus une minute d\'espagnol pur dans la grille');
   ok(!/\/ /.test(c3[2]), 'décembre : la cellule Español n\'a plus de cible du jour (' + c3[2] + ')');
   await p3.ctx.close();
@@ -71,7 +71,7 @@ console.log('\n== 301) Les cibles du jour et de la semaine viennent de la grille
      12 h 30 → 14 h 18 (lot 42) : le vendredi 19 mars 2027 est San José, ferie de la Comunitat
      Valenciana, ajoute a la liste des jours sans cours d'apres le calendrier academique. La
      semaine du 15 au 21 mars y gagne une journee pleine, donc une plage de cours liberee. */
-  ok(/de projets sur 14 h 18/.test(semt), 'semestre 2 avec le ferie du 19 mars : 14 h 18 de projets prévues (' + semt.slice(0, 100) + ')');
+  ok(!/de projets sur/.test(semt), 'semestre 2 : aucune charge de projets annoncée non plus (' + semt.slice(0, 100) + ')');
   await t.ctx.close();
 }
 

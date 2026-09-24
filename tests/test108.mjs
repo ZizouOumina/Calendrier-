@@ -34,7 +34,8 @@ console.log('\n== 269) Deux oeufs a la place du jambon ==');
     plafond: JSON.parse(localStorage.getItem('batcave-budget-limits') || '{}').Nourriture
   }));
   ok(r.col.kcal === 508 && r.col.p === 28, 'la collation : pain, 2 œufs, fromage, 25 g d\'amandes = 508 kcal, 28 g de protéines (' + r.col.kcal + ' / ' + r.col.p + ')');
-  ok(r.jour.kcal === 3226 && r.jour.p === 163, 'la journée : 3 226 kcal, 163 g de protéines, quatre prises (24 septembre) (' + r.jour.kcal + ' / ' + r.jour.p + ')');
+  /* Le lundi 28 est un jour de combat : la collation combat ajoute 388 kcal. */
+  ok(r.jour.kcal === 3614 && r.jour.p === 174, 'un jour de combat : 3 614 kcal, 174 g de protéines, cinq prises (' + r.jour.kcal + ' / ' + r.jour.p + ')');
   ok(r.oeufs === 28 && r.jambon === undefined, 'les courses : 28 œufs par semaine, plus de jambon (' + r.oeufs + ' / ' + r.jambon + ')');
   ok(!r.cout.lignes.some(l => /Jambon/.test(l.label)) && r.cout.manque.join() === 'Amandes ou noix nature', 'le coût ne compte plus de jambon ; seul le prix des amandes manque (' + r.cout.manque.join() + ')');
   ok(r.plafond === Math.round(r.cout.mois), 'le plafond Nourriture posé par la Batcave suit le nouveau coût : ' + r.plafond + ' €');
@@ -70,23 +71,24 @@ console.log('\n== 271) Le cardio : sprints le samedi, course longue le dimanche 
     base10: (window.__bcGrilleBase('saturday','2026-10-10').find(b => b[0] === '18:00') || [])[1],
     cibles: ['2026-10-03','2026-10-04','2026-10-10','2026-10-11','2026-10-18','2026-10-25','2026-11-08'].map(d => window.__bcCibleCardio(d)),
     sorties: window.__bcSortiesCardio('2026-10-05'),
-    rappel: window.__bcRappels('2026-10-10').find(b => /Sprints/.test(b.titre)),
+    rappel: window.__bcRappels('2026-10-09').find(b => /JJB/.test(b.titre)),
     consigneSam: window.__bcConsigne('⚡ Sprints en côte', 6, '2026-10-10', '18:00'),
     consigneDim: window.__bcConsigne('🏃 Course à pied', 0, '2026-10-18', '17:30'),
     sport: window.__bcConsigne('Sport', 6, '2026-10-10', '18:30')
   }));
-  ok(r.s3 === '🏃 Course à pied' && r.s10 === '⚡ Sprints en côte', 'samedi 3 : course ; samedi 10 : sprints en côte (' + r.s3 + ' / ' + r.s10 + ')');
-  ok(r.base10 === '🏃 Course à pied', 'la grille de base garde la course : la série de l\'agenda reste reconnue');
+  /* 25 septembre : le combat remplace la course et les sprints des le 28. Le samedi 18:00 est un bloc de projets. */
+  ok(r.s3 === 'Projets perso 3' && r.s10 === 'Projets perso 3', 'samedi 3 et samedi 10 : un bloc de projets à 18:00, plus de course ni de sprints (' + r.s3 + ' / ' + r.s10 + ')');
+  ok(r.base10 === 'Projets perso 3', 'la grille de base du samedi porte le bloc de projets');
   ok(JSON.stringify(r.cibles) === JSON.stringify([30,30,15,35,40,45,45]), 'minutes visées : 30, 30, puis sprints 15, dimanche 35 → 40 → 45 (' + r.cibles.join(', ') + ')');
-  ok(r.sorties.length === 2 && r.sorties.some(x => x.sprints), 'la semaine du 5 octobre compte toujours deux sorties, dont les sprints du samedi');
-  ok(r.rappel && r.rappel.titreBase === '🦇 🏃 Course à pied', 'le rappel du 10 s\'appelle « Sprints » mais se rattache à la série de base');
+  ok(r.sorties.length === 4 && r.sorties.every(x => x.combat), 'la semaine du 5 octobre compte quatre séances de combat');
+  ok(r.rappel && r.rappel.titreBase === '🦇 🥋 JJB' && r.rappel.debut === 630, 'le rappel du vendredi 9 : JJB à 10:30');
   ok(/6 à 8 sprints/.test(r.consigneSam) && /en montée/.test(r.consigneSam), 'la consigne des sprints : ' + r.consigneSam.slice(0, 70));
   ok(/^40 minutes/.test(r.consigneDim), 'le dimanche 18 : « 40 minutes cette semaine » (' + r.consigneDim.slice(0, 40) + ')');
   ok(/sprints en côte/.test(r.sport), 'la séance du samedi soir sait qu\'elle suit les sprints');
   await fr.evaluate(() => document.querySelector('.nav-btn[data-page="sport"]').click());
   await page.waitForTimeout(300);
   const liste = await fr.evaluate(() => document.getElementById('cardio-liste').innerText);
-  ok(/sprints en côte/.test(liste) && /35 min faciles/.test(liste), 'le panneau Cardio les nomme : ' + liste.replace(/\s+/g, ' ').slice(0, 120));
+  ok(/JJB · 90 min/.test(liste) && /Muay Thai · 90 min/.test(liste), 'le panneau Cardio & combat les nomme : ' + liste.replace(/\s+/g, ' ').slice(0, 120));
   await ctx.close();
 }
 

@@ -150,7 +150,7 @@ console.log('\n== 194) Tâches (ajout, suppression, annulation ⌘Z), Budget =='
      (iCloud, Claude Pro). La neuvième — « Courses », 300 €/mois — est sortie le 21 septembre :
      elle comptait la nourriture deux fois, une fois en forfait et une fois en tickets réels.
      Un compte exact est ce qui rattrape son retour, là où un >= 8 le laisserait passer. */
-  ok(tx.some(t => t.montant === 12.5 && !t.fixed) && tx.filter(t => t.fixed).length === 8, 'dépense de 12,50 € ajoutée à côté des ' + tx.filter(t => t.fixed).length + ' charges fixes journalisées (8 attendues)');
+  ok(tx.some(t => t.montant === 12.5 && !t.fixed) && tx.filter(t => t.fixed).length === 9, 'dépense de 12,50 € ajoutée à côté des ' + tx.filter(t => t.fixed).length + ' charges fixes journalisées (9 attendues, club compris)');
   await setVal('fc-label', 'Salle de sport'); await setVal('fc-montant', '25'); await click('#fc-add'); await page.waitForTimeout(100);
   const fc = await local('batcave-fixed-charges');
   ok(fc.some(c => c.label === 'Salle de sport'), 'charge fixe ajoutée');
@@ -168,7 +168,7 @@ console.log('\n== 195) Études (date d\'examen), Business, Objectifs, Santé, Co
   ok((await local('batcave-business')).length === 1, 'mois Shopify ajouté');
   ok(await go('objectifs'), 'Objectifs s\'affiche');
   const nObj = await fr.evaluate(() => document.querySelectorAll('#obj-liste .obj-row').length);
-  ok(nObj === 6, nObj + ' objectifs du mois, comparés au réel — un seul palier depuis le 19 septembre');
+  ok(nObj === 5, nObj + ' objectifs du mois, comparés au réel — un seul palier depuis le 19 septembre, sans les heures de projets depuis le 25');
   ok(await go('vie'), 'Santé s\'affiche');
   await setVal('sa-date', '2026-09-20'); await click('#sa-add'); await page.waitForTimeout(100);
   ok((await local('batcave-sante')).length === 1, 'rendez-vous santé ajouté');

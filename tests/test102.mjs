@@ -70,11 +70,11 @@ console.log('\n== 337) Le panneau dit ce qu\'il faut ==');
 {
   const { ctx, page, fr } = await ouvrir('2026-09-28T10:00:00+02:00');
   const vide = await fr.evaluate(() => document.getElementById('cardio-note').textContent);
-  ok(/0\/2/.test(vide), 'semaine neuve : 0/2 (' + vide + ')');
-  await fr.evaluate(() => window.__bcNoterCardio('2026-10-03', 35));
+  ok(/0\/4/.test(vide), 'semaine neuve : 0/4 (quatre séances de combat) (' + vide + ')');
+  await fr.evaluate(() => window.__bcNoterCardio('2026-09-28', 35));   /* le lundi : JJB */
   await page.waitForTimeout(300);
   const t = await fr.evaluate(() => document.getElementById('cardio-note').textContent);
-  ok(/1\/2/.test(t) && /35 min/.test(t), 'une sortie de 35 min : 1/2 · 35 min (' + t + ')');
+  ok(/1\/4/.test(t) && /35 min/.test(t), 'une séance de 35 min le lundi (JJB) : 1/4 · 35 min (' + t + ')');
   const p = await fr.evaluate(() => document.getElementById('cardio-panel').innerText);
   ok(/ne comptent pas dans/.test(p), 'le panneau dit explicitement qu\'il ne compte pas dans les séances');
   ok(/six derni/.test(p), 'et il montre les six dernières semaines');
@@ -87,7 +87,7 @@ console.log('\n== 338) La série ne compte que les semaines écoulées ==');
      semaine en cours n'a evidemment pas encore ses deux sorties. */
   const seed = {'batcave-cardio': {
     '2026-09-26': {min:30}, '2026-09-27': {min:30},
-    '2026-10-03': {min:30}, '2026-10-04': {min:30}
+    '2026-09-28': {min:90}, '2026-09-29': {min:90}, '2026-09-30': {min:90}, '2026-10-02': {min:90}
   }};
   const { ctx, fr } = await ouvrir('2026-10-05T08:00:00+02:00', seed);
   const n = await fr.evaluate(() => window.__bcSerieCardio());

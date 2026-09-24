@@ -120,7 +120,7 @@ console.log('\n== 276) Les 182 jours, un par un : la grille ne trébuche jamais 
   /* La revision est la seule constante du programme : elle ne depend pas de la phase.
      Sur 182 jours moins les 15 de vacances et le regime de partiels, elle reste massive. */
   ok(bilan.sommes.rev > 40000 && bilan.sommes.rev < 60000, 'révision prévue sur six mois : ' + Math.round(bilan.sommes.rev / 60) + ' h');
-  ok(bilan.sommes.es > 0 && bilan.sommes.proj > 0, 'espagnol ' + Math.round(bilan.sommes.es / 60) + ' h et projets ' + Math.round(bilan.sommes.proj / 60) + ' h, tous deux non nuls');
+  ok(bilan.sommes.es > 0 && bilan.sommes.proj === 0, 'espagnol ' + Math.round(bilan.sommes.es / 60) + ' h ; projets ' + Math.round(bilan.sommes.proj / 60) + ' h — plus rien de prévu, sans minuteur');
   await ctx.close();
 }
 

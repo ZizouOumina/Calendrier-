@@ -28,7 +28,8 @@ const MERCREDI = '2026-09-02T10:00:00+02:00';
    de contenu digestif, et une pente tracee a travers ce saut dirait n'importe quoi. Ses
    scenarios se jouent donc en novembre. Le 4 novembre est un mercredi, comme le 2
    septembre (neuf semaines pile) : meme rotation, memes macros, 3 135 kcal. */
-const MERCREDI_KCAL = '2026-11-04T10:00:00+02:00';
+/* Un JEUDI : le seul jour de semaine sans combat, donc sans collation combat (3 226 kcal). */
+const MERCREDI_KCAL = '2026-11-05T10:00:00+02:00';
 
 console.log('\n== 118) La priorité des tâches compte enfin ==');
 {
@@ -58,21 +59,22 @@ console.log('\n== 119) Prévu vs réalisé — Bilan ==');
   const { ctx, fr, page } = await ouvrir(MERCREDI, { 'batcave-sessions': [S('a','2026-08-31','cours',300,'07'), S('b','2026-08-31','projet',180,'13'), S('c','2026-09-01','cours',240,'07')] });
   await aller(fr, page, 'bilan');
   const fid = await fr.evaluate(() => [...document.querySelectorAll('#bilan-grid .bilan-card')].map(c => c.innerText.replace(/\s+/g,' ')).find(t => /Fidélité/.test(t)));
-  ok(fid && /48%/.test(fid), 'carte « Fidélité au plan » : 48 % (12 h faites / 24 h 51 de travail réel prévues lun-mer) : ' + (fid || '').slice(0, 60));
+  /* 25 septembre : les projets n'entrent plus dans la fidelite (pas de minuteur) : 9 h de revision sur 16 h prevues lun-mer. */
+  ok(fid && /56%/.test(fid), 'carte « Fidélité au plan » : 56 % (9 h de révision faites / 16 h prévues lun-mer, les projets ne comptent plus) : ' + (fid || '').slice(0, 60));
   const p = await fr.evaluate(() => ({ txt: document.getElementById('bilan-plan').innerText.replace(/\s+/g,' '), note: document.getElementById('bilan-plan-note').innerText }));
   /* lundi et mardi ont leur propre grille depuis l'emploi du temps reel. Lot 41 : la grille
      du 18 septembre donne 8 h 36 le lundi, 8 h 30 le mardi, 7 h 45 le mercredi. */
-  ok(/Lun 8 h \/ 8 h 36/.test(p.txt) && /Mar 4 h \/ 8 h 30/.test(p.txt) && /Mer 0 \/ 7 h 45/.test(p.txt), 'jour par jour : ' + (p.txt.match(/Lun[^M]*Mar[^M]*Mer[^J]*/)||[])[0]);
-  ok(/Jeu prévu 6 h 50/.test(p.txt) && /Dim prévu 5 h/.test(p.txt), 'les jours à venir montrent le prévu (jeu 6 h 50, dim 5 h) : ' + (p.txt.match(/Jeu[^D]*Dim prévu [^ ]+ ?[^ ]*/)||[])[0]);
-  ok(/Révision 9 h \/ 16 h/.test(p.txt) && /Projets 3 h \/ 8 h 51/.test(p.txt), 'totaux par type sur les jours passés : ' + (p.txt.match(/Révision[^·]*·[^·]*/)||[])[0]);
-  ok(/fidélité 48 %/.test(p.note), 'note : ' + p.note);
+  ok(/Lun 8 h \/ 5 h 05/.test(p.txt) && /Mar 4 h \/ 5 h 50/.test(p.txt) && /Mer 0 \/ 5 h 05/.test(p.txt), 'jour par jour (révision seule) : ' + (p.txt.match(/Lun[^M]*Mar[^M]*Mer[^J]*/)||[])[0]);
+  ok(/Jeu prévu 5 h 05/.test(p.txt) && /Dim prévu 3 h/.test(p.txt), 'les jours à venir montrent le prévu (jeu 5 h 05, dim 3 h) : ' + (p.txt.match(/Jeu[^D]*Dim prévu [^ ]+ ?[^ ]*/)||[])[0]);
+  ok(/Révision 9 h \/ 16 h/.test(p.txt) && /Projets 3 h \/ 0/.test(p.txt), 'totaux par type sur les jours passés (projets faits, jamais prévus) : ' + (p.txt.match(/Révision[^·]*·[^·]*/)||[])[0]);
+  ok(/fidélité 56 %/.test(p.note), 'note : ' + p.note);
   await ctx.close();
 }
 
 console.log('\n== 120) Boucle poids → calories ==');
 {
   const stagne = {};
-  for(let i = 13; i >= 0; i--){ const d = new Date('2026-11-04T00:00:00+01:00'); d.setDate(d.getDate() - i); const iso = d.toISOString().slice(0,10); stagne['batcave-journal-' + iso] = {poids: 64.0, water: 0}; }
+  for(let i = 13; i >= 0; i--){ const d = new Date('2026-11-05T00:00:00+01:00'); d.setDate(d.getDate() - i); const iso = d.toISOString().slice(0,10); stagne['batcave-journal-' + iso] = {poids: 64.0, water: 0}; }
   const { ctx, fr, page } = await ouvrir(MERCREDI_KCAL, stagne);
   await aller(fr, page, 'repas');
   let k = await fr.evaluate(() => ({ note: document.getElementById('kcal-note').innerText, txt: document.getElementById('kcal-analyse').innerText.replace(/\s+/g,' '), sub: document.getElementById('meal-kcal-sub').innerText, btn: document.getElementById('kcal-appliquer').hidden }));
@@ -83,7 +85,7 @@ console.log('\n== 120) Boucle poids → calories ==');
   await fr.evaluate(() => document.getElementById('kcal-appliquer').click());
   await page.waitForTimeout(300);
   const aj = await local(fr, 'batcave-kcal-ajustement');
-  ok(aj && aj.valeur === 150 && aj.depuis === '2026-11-04', 'ajustement enregistré : +150 depuis aujourd\'hui');
+  ok(aj && aj.valeur === 150 && aj.depuis === '2026-11-05', 'ajustement enregistré : +150 depuis aujourd\'hui');
   k = await fr.evaluate(() => ({ sub: document.getElementById('meal-kcal-sub').innerText, txt: document.getElementById('kcal-analyse').innerText.replace(/\s+/g,' ') }));
   /* La boucle demande +150 kcal, les pates s'ajustent par pas de 10 g : elle en ajoute 144.
      C'est cet ecart REEL entre les deux journees qui s'affiche, sinon la soustraction ment. */
@@ -106,7 +108,7 @@ console.log('\n== 120) Boucle poids → calories ==');
      soit deux kilos par mois — au-dela des 0,25 a 0,5 % du poids de corps par semaine
      où la prise reste majoritairement musculaire. */
   const rapide = {};
-  for(let i = 13; i >= 0; i--){ const d = new Date('2026-11-04T00:00:00+01:00'); d.setDate(d.getDate() - i); const iso = d.toISOString().slice(0,10); rapide['batcave-journal-' + iso] = {poids: i >= 7 ? 64.0 : 65.0, water: 0}; }
+  for(let i = 13; i >= 0; i--){ const d = new Date('2026-11-05T00:00:00+01:00'); d.setDate(d.getDate() - i); const iso = d.toISOString().slice(0,10); rapide['batcave-journal-' + iso] = {poids: i >= 7 ? 64.0 : 65.0, water: 0}; }
   const { ctx, fr, page } = await ouvrir(MERCREDI_KCAL, rapide);
   await aller(fr, page, 'repas');
   const note = await fr.evaluate(() => document.getElementById('kcal-note').innerText);
@@ -114,7 +116,7 @@ console.log('\n== 120) Boucle poids → calories ==');
   await ctx.close();
 }
 {
-  const { ctx, fr, page } = await ouvrir(MERCREDI_KCAL, { 'batcave-journal-2026-11-03': {poids: 64} });
+  const { ctx, fr, page } = await ouvrir(MERCREDI_KCAL, { 'batcave-journal-2026-11-04': {poids: 64} });
   await aller(fr, page, 'repas');
   const k = await fr.evaluate(() => ({ note: document.getElementById('kcal-note').innerText, txt: document.getElementById('kcal-analyse').innerText, btn: document.getElementById('kcal-appliquer').hidden }));
   ok(/en attente de pesées/.test(k.note) && /au moins 4 pesées/.test(k.txt) && k.btn, 'pas assez de pesées → pas de recommandation, bouton masqué');

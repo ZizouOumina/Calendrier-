@@ -96,7 +96,7 @@ console.log('\n== 91) Compteurs du tableau de bord séparés + 2 boutons Pomodor
   }));
   ok(v.cellules.length === 3, '3 compteurs : révision, projets, espagnol (' + v.cellules.length + ')');
   ok(/Révision2h\//.test(v.cellules[0]), 'le compteur révision ne compte QUE la révision : ' + v.cellules[0]);
-  ok(/Projetsperso2h\//.test(v.cellules[1]), 'le compteur projets ne compte QUE les projets : ' + v.cellules[1]);
+  ok(/Projetsperso2h[^\/]*sansminuteur/.test(v.cellules[1]), 'le compteur projets ne compte QUE les projets (sans cible depuis le 25 septembre) : ' + v.cellules[1]);
   ok(/4 h au total/.test(v.total), 'total = 4 h, les 3 h d\'espagnol ne comptent plus : ' + v.total);
   ok(v.boutons.length === 2 && /Révision/.test(v.boutons[0]) && /Projet perso/.test(v.boutons[1]),
      'deux boutons Pomodoro : ' + v.boutons.join(' | '));

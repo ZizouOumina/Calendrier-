@@ -74,7 +74,7 @@ console.log('\n== 84.4) Les heures liberees entrent dans le pool, pas en dur =='
   ok(/^Español/.test(r.es1_mar19), 'phase 1 : mardi 20:30 est de l\'espagnol (' + r.es1_mar19 + ')');
   ok(r.es1_mar20 === 'Español · serie en VO', 'phase 1 : mardi 20:30 est la serie en VO (' + r.es1_mar20 + ')');
   ok(r.type_mar20 === 'projet', 'et elle est COMPTEE comme du travail, pas ignoree (' + r.type_mar20 + ')');
-  ok(r.es2_mar20 === 'Projets perso 6', 'après la phase : le mardi 20:30 est revenu aux projets (' + r.es2_mar20 + ')');
+  ok(r.es2_mar20 == null, 'après la phase : le mardi 20:30 n\'existe plus (Muay Thai depuis le 28 septembre) (' + r.es2_mar20 + ')');
   /* Le 22 mars 2027 est un lundi du SEMESTRE 2 : le cours ne commence plus a 17:30 mais a
      15:30, et les deux heures liberees du lundi apres-midi n'existent plus. « Projets perso 4 »
      est donc un bloc PROPRE AU SEMESTRE 1 -- ou une phase Español le renomme toujours, les
@@ -106,18 +106,19 @@ console.log('\n== 84.6) Cibles hebdo : constantes en revision, croissantes en pr
   }, L);
   const t = await sem('2026-09-07'), e1 = await sem('2026-09-21'), e2 = await sem('2026-10-26'), e3 = await sem('2026-12-14');
   const pr = x => Math.round(x * 100) / 100;
-  ok(pr(t.rev) === pr(e2.rev) && pr(e2.rev) === pr(e3.rev),
+  /* Regime combat : 29 h 13 de revision par semaine des le 28 septembre (33 h 12 sur la grille type d'avant). */
+  ok(pr(e2.rev) === pr(e3.rev),
      'la revision ne bouge plus apres le 23 octobre : ' + [pr(t.rev), pr(e2.rev), pr(e3.rev)].join(' -> '));
-  ok(pr(e2.rev) === 33.17, 'revision = 33 h 12 de travail reel par semaine (' + pr(e2.rev) + ')');
+  ok(pr(e2.rev) === 29.22 && pr(t.rev) === 33.17, 'revision = 29 h 13 de travail reel par semaine au regime combat, 33 h 12 avant (' + pr(e2.rev) + ' / ' + pr(t.rev) + ')');
   /* seule exception : en phase Español le mercredi 05:30 reste « Anki matinal », donc la
      phase 1 porte 50 min de revision de plus. Le 23 octobre, ce bloc passe aux projets. */
-  ok(pr(e1.rev) === 34, 'phase 1 : 34 h, le mercredi matin est encore de l\'Anki (' + pr(e1.rev) + ')');
+  ok(pr(e1.rev) === 34, 'phase 1 avant le 28 : 34 h, le mercredi matin est encore de l\'Anki (' + pr(e1.rev) + ')');
   ok(pr(e1.proj) === 0, 'phase 1 : aucun temps de projet, tout va a l\'espagnol (' + pr(e1.proj) + ')');
   ok(e1.es > 15 && e1.es < 15.5, 'phase 1 : 15 h 11 d\'espagnol, serie du mardi comprise (' + pr(e1.es) + ')');
   ok(e1.proj === 0 && e2.proj === e3.proj && e3.proj === t.proj,
      'une seule bascule : zero en phase 1, puis la meme valeur partout : ' + [pr(e1.proj), pr(e2.proj), pr(e3.proj), pr(t.proj)].join(' -> '));
   ok(e1.es > 0 && e2.es === 0 && e3.es === 0, 'l\'espagnol tombe a zero le 23 octobre : ' + [pr(e1.es), pr(e2.es), pr(e3.es)].join(' -> '));
-  ok(pr(t.proj) === 16.1, 'grille type : 16 h 06 de projets par semaine (' + pr(t.proj) + ')');
+  ok(pr(t.proj) === 0, 'grille type : plus aucun projet prevu, sans minuteur depuis le 25 septembre (' + pr(t.proj) + ')');
 }
 
 await browser.close();
