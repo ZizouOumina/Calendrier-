@@ -22,6 +22,8 @@ const MOCK = () => {
   window.__creations = [];
   const mcp = {
     callTool(server, tool, input){
+      /* le plan de secours en texte (lot 50, plan-batcave-*.txt) n'est pas une sauvegarde : on l'ignore */
+      if(/\.txt$/.test((input && input.title) || '')) return Promise.resolve({content:[], payload:{}});
       window.__creations.push({server: server, tool: tool, title: input && input.title, parentId: input && input.parentId});
       return Promise.resolve({content:[], payload:{}});
     },
@@ -122,7 +124,8 @@ console.log('\n== 68) Sauvegarde Drive automatique : quotidienne, une seule par 
   const { ctx, fr } = await ouvrir('2026-09-02T09:30:00+02:00', {'batcave-last-auto-backup': '2026-09-01'});
   /* depuis A4, la rotation suit la sauvegarde d'un search_files : on ne compte que les creations */
   const tous = await fr.evaluate(() => window.__creations || []);
-  const c = tous.filter(x => x.tool === 'create_file');
+  /* le plan de secours en texte (lot 50, plan-batcave-*.txt) part aussi par create_file : on ne compte que les sauvegardes */
+  const c = tous.filter(x => x.tool === 'create_file' && !/\.txt$/.test(x.title || ''));
   ok(c.length === 1, 'nouveau jour → une seule sauvegarde créée : ' + JSON.stringify(c));
   ok(tous.some(x => x.tool === 'search_files'), 'suivie de la rotation (search_files)');
   ok(c.length === 1 && /2026-09-02/.test(c[0].title || ''),

@@ -508,6 +508,8 @@
   /* ---------- toast ---------- */
   .toast{position:fixed; bottom:90px; left:50%; transform:translateX(-50%); background:var(--surface-raised); border:1px solid var(--cyan-dim); color:var(--ink); padding:10px 20px; border-radius:24px; font-size:13px; z-index:60; box-shadow:0 10px 30px rgba(0,0,0,0.45); white-space:nowrap;}
   .toast[hidden]{display:none;}
+  .toast-annuler{margin-left:12px; background:none; border:1px solid var(--cyan-dim); color:var(--cyan-bright); border-radius:14px; padding:3px 10px; font:inherit; font-weight:600; cursor:pointer; min-height:28px;}
+  .toast-annuler:hover{background:var(--surface-hover);}
   @media (max-width:780px){ .toast{bottom:76px;} }
 
   /* ---------- backup overlay ---------- */
@@ -1698,6 +1700,7 @@
           <span class="bc-r" id="bc-sync"><span class="k">SYNC</span><span class="v" style="color:var(--ink-faint);">local</span></span>
           <span class="bc-r bc-clic" id="bc-spotify" role="button" tabindex="0" hidden title="Lecture Spotify — clic : actualiser tout de suite (sinon toutes les 30 s)"><span class="k">♫</span><span class="v" id="dash-spotify" hidden></span><span class="v bc-spotify-off" style="color:var(--ink-faint);">rien en lecture</span></span>
           <span class="bc-r" id="bc-sauvegarde" hidden><span class="k">SAUVEGARDE</span><span class="v" id="bc-backup">—</span></span>
+          <span class="bc-r bc-clic backup-trigger" id="bc-sante" role="button" tabindex="0" hidden title="Santé de la Batcave : sauvegarde, données, cohérence, exercice, clôture, schéma — clic : le détail"><span class="k">SANTÉ</span><span class="v" style="color:var(--warn);">—</span></span>
           <span class="bc-r bc-clic" id="bc-cloture" role="button" tabindex="0" title="Clôture du jour : sommeil, poids, eau, humeur, habitudes, une note — 60 secondes"><span class="k">CLÔTURE</span><span class="v">—</span></span>
           <span class="bc-r bc-clic" id="bc-objectif" role="button" tabindex="0" title="L'objectif du mois le plus en retard — clic : Objectifs"><span class="k">OBJECTIF</span><span class="v">—</span></span>
           <span class="bc-r bc-clic" id="bc-grille" role="button" tabindex="0" title="La grille en vigueur aujourd'hui — clic : Calendrier"><span class="k">GRILLE</span><span class="v">—</span></span>
@@ -1710,6 +1713,12 @@
       <div id="coherence-banner" hidden style="background:rgba(217,130,43,0.12); border:1px solid var(--warn); border-radius:10px; padding:12px 16px; margin-bottom:14px;">
         <p style="font-weight:600; color:var(--warn); font-size:13px; margin-bottom:8px;">⚠️ Incohérence détectée dans tes données</p>
         <ul class="mini-list" id="coherence-liste"></ul>
+      </div>
+      <!-- Nouvel appareil : la Batcave est vide et Drive est la. Un seul bouton, ici,
+           sans passer par la sauvegarde ; la banniere disparait des qu'une donnee existe. -->
+      <div id="reprise-banner" hidden style="background:rgba(53,212,232,0.08); border:1px solid var(--cyan-dim); border-radius:10px; padding:12px 16px; margin-bottom:14px;">
+        <p style="font-weight:600; color:var(--ink); font-size:13px; margin-bottom:8px;">🆕 Cet appareil est vide. Si tu as déjà une Batcave, reprends tes données d'abord.</p>
+        <div class="card-actions"><button class="btn btn-primary" id="reprise-drive" type="button">♻️ Reprendre depuis Drive</button><span class="sub-note" id="reprise-status"></span></div>
       </div>
 
       <!-- ---------- EN TÊTE : ce qu'on fait MAINTENANT ----------
@@ -2931,6 +2940,13 @@
       <h3>💾 Sauvegarde des données</h3>
       <button class="edel" id="backup-close" aria-label="Fermer" style="font-size:22px;">×</button>
     </div>
+    <!-- Sante : six controles, une LED chacun. Ce qui peut faire perdre des donnees ou
+         fausser la suite se lit ici, et le releve SANTÉ de la barre ne s'allume qu'en cas
+         de defaut. -->
+    <div style="margin-bottom:14px; padding:12px 14px; background:var(--surface-hover); border-radius:10px; border:1px solid var(--border);">
+      <p style="font-weight:600; color:var(--ink); font-size:13.5px; margin-bottom:8px;">🩺 Santé de la Batcave <span class="sub-note" id="sante-resume"></span></p>
+      <ul class="mini-list" id="sante-liste"></ul>
+    </div>
     <p class="sub-note" style="margin-bottom:14px; line-height:1.6;">Tout est stocké uniquement dans ce navigateur. Copie ce texte quelque part (note, email) pour ne rien perdre — et recolle-le ici pour restaurer sur un autre appareil.</p>
     <div class="field-row" style="margin-bottom:14px;">
       <label>Export — sélectionne tout (Ctrl/Cmd+A) et copie</label>
@@ -3353,6 +3369,17 @@
   function persistUndoStack(){ try{ sessionStorage.setItem('batcave-undo-stack', JSON.stringify(undoStack)); }catch(e){} }
   var undoStack = loadUndoStack();
   var saveFailed = false;
+  /* ===== Un geste, une annulation =====
+     La cloture ecrit le journal, les habitudes, le livrable, l'agenda : cinq cles. Annuler
+     « la derniere modification » n'en defaisait qu'une. Un geste regroupe ses ecritures
+     sous un meme identifiant, et undoLast() defait le groupe entier. Le bouton « Annuler »
+     du toast (showToast(msg, {annuler:true})) rend l'annulation possible sans clavier. */
+  var gesteCourant = null;
+  function geste(fn){
+    var mien = !gesteCourant;
+    if(mien) gesteCourant = 'g' + Date.now() + Math.random().toString(36).slice(2, 6);
+    try{ return fn(); } finally { if(mien) gesteCourant = null; }
+  }
   /* Écriture de bookkeeping interne (drapeaux, horodatages) : identique à save() mais SANS
      entrée dans l'historique d'annulation. Sinon ⌘Z annule un drapeau invisible au lieu de
      la dernière action réelle de l'utilisateur, et donne l'impression de ne rien faire. */
@@ -3403,6 +3430,24 @@
      rejouer ces migrations une fois les donnees du cloud appliquees -- voir le commentaire
      detaille dans onSnapshot. Rempli plus bas, quand reconcilierHabitudes() existe. */
   var MIGRATIONS_DEMARRAGE = [];
+  /* ===== Un seul numero de schema =====
+     Chaque migration ponctuelle pose un drapeau (« batcave-courses-plan-v10 », « batcave-
+     habits-seed-v9 »...). Trente drapeaux, et trois listes qui devaient chacune les
+     connaitre : le registre des cles, ce que garde la remise a zero, ce que verifie le
+     demarrage. Un oubli dans l'une d'elles et un drapeau ressuscitait, ou etait signale
+     comme inconnu. DRAPEAUX_MIGRATION est desormais LA liste ; les autres la reprennent.
+     SCHEMA_VERSION est ecrit dans « batcave-schema » quand toutes ont tourne : le panneau
+     Sante compare, et une sauvegarde plus ancienne se reconnait a ce seul chiffre. */
+  var SCHEMA_VERSION = 50;
+  var DRAPEAUX_MIGRATION = ['objectifs-seed-v1','objectifs-v2-55','objectifs-v5-espanol',
+    'habits-ecran-v2','habitlog-hebdo-v1','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','habits-seed-v7','habits-seed-v8','habits-seed-v9',
+    'courses-plan-v2','courses-plan-v3','courses-plan-v4','courses-plan-v5','courses-plan-v6','courses-plan-v7','courses-plan-v8','courses-plan-v9','courses-plan-v10',
+    'charges-v2','plafond-nourriture-v2','plafond-nourriture-v3','ancre-dimanche-v1','shampoing-dim-v1','shampoing-combat-v1','marche-cible-v1','fc-migration-v1','fc-migration-v2','revision-fusionnee'];
+  /* Drapeaux que rien ne pose plus (migrations retirees) ou poses seulement quand il y a
+     eu quelque chose a migrer : connus et gardes, jamais exiges. */
+  var DRAPEAUX_ANCIENS = ['objectifs-v3-trajet','objectifs-v4-dimanche','habits-retirees-v1'];
+  function drapeauxManquants(){ return DRAPEAUX_MIGRATION.filter(function(d){ return !load('batcave-' + d, false); }); }
+  function schemaEnregistre(){ return Number(load('batcave-schema', 0)) || 0; }
   /* ===== Compaction mensuelle du cloud =====
      La base cree 4 documents par jour (journal, repas, sport, agenda) plus les charges
      mensuelles : ~1 600 par an, pour un plafond de 5 000 documents par base. Sans
@@ -3511,7 +3556,9 @@
        gardees au nouveau depart, donc l'alerte aurait survecu a la remise a zero.
        Un test statique (test89) verifie desormais que ce registre couvre TOUTES les cles
        que le code ecrit : cette categorie de faux signalement ne peut plus revenir. */
-    'jours-sans-cours','copie-vierge','chrono-seance','insights-vu','seance-duree','echeances'];
+    'jours-sans-cours','copie-vierge','chrono-seance','insights-vu','seance-duree','echeances',
+    /* le schema et le plan de secours en texte (lot 50) */
+    'schema','last-plan-texte'].concat(DRAPEAUX_MIGRATION, DRAPEAUX_ANCIENS);
   var PREFIXES_CONNUS = ['archive-','cal-','coherence-ignore-','drill-ignore-','test-anki-','fc-logged-','fixed-logged-','gcal-','journal-','manque-traite-',
     'meals-','pomodial-','rattrapage-vu-','sauvegarde-','sport-'];
   function cleConnue(k){
@@ -3613,7 +3660,7 @@
   function nomLisible(k){ return String(k).replace(/^batcave-/, ''); }
   function save(key, val, internal){
     if(!internal) alerterSiRetrecit(key, val);
-    if(!internal){ try{ undoStack.push({key:key, prev: localStorage.getItem(key)}); if(undoStack.length>50) undoStack.shift(); persistUndoStack(); }catch(e){} }
+    if(!internal){ try{ undoStack.push({key:key, prev: localStorage.getItem(key), groupe: gesteCourant}); if(undoStack.length>60) undoStack.shift(); persistUndoStack(); }catch(e){} }
     try{
       localStorage.setItem(key, JSON.stringify(val));
       saveFailed = false;
@@ -3673,14 +3720,18 @@
   }
   function undoLast(){
     if(!undoStack.length){ showToast('Rien à annuler.'); return; }
-    var entry = undoStack.pop();
+    var entry = undoStack.pop(), lot = [entry];
+    /* un geste groupe : on defait toutes ses ecritures, de la derniere a la premiere */
+    while(entry.groupe && undoStack.length && undoStack[undoStack.length - 1].groupe === entry.groupe) lot.push(undoStack.pop());
     persistUndoStack();
-    try{ if(entry.prev === null) localStorage.removeItem(entry.key); else localStorage.setItem(entry.key, entry.prev); }catch(e){}
-    /* L'annulation doit repartir vers le cloud. Sans ça, on annulait en local puis le
-       premier instantané au rechargement réécrasait avec la valeur NON annulée :
-       Cmd+Z semblait fonctionner une seconde, puis le changement revenait. */
-    if(entry.prev === null) supprimerDuCloud(entry.key);
-    else if(dbHandle) pousserVersCloud(entry.key, safeParse(entry.prev));
+    lot.forEach(function(e){
+      try{ if(e.prev === null) localStorage.removeItem(e.key); else localStorage.setItem(e.key, e.prev); }catch(x){}
+      /* L'annulation doit repartir vers le cloud. Sans ça, on annulait en local puis le
+         premier instantané au rechargement réécrasait avec la valeur NON annulée :
+         Cmd+Z semblait fonctionner une seconde, puis le changement revenait. */
+      if(e.prev === null) supprimerDuCloud(e.key);
+      else if(dbHandle) pousserVersCloud(e.key, safeParse(e.prev));
+    });
     try{ sessionStorage.setItem('batcave-undo-toast', '1'); }catch(e){}
     setTimeout(function(){ location.reload(); }, dbHandle ? 700 : 0);
   }
@@ -3732,13 +3783,20 @@
     askDialog({titre:'Modifier', message:message, saisie:true, valeur:valeur, liste:liste, libelleOk:'Enregistrer'},
       function(v){ if(v !== null) onOk(v); });
   }
-  function showToast(msg){
+  function showToast(msg, opts){
     var t = document.getElementById('toast');
     if(!t) return;
     t.textContent = msg;
+    /* « Annuler » dans le toast : sur telephone il n'y a pas de Cmd+Z */
+    if(opts && opts.annuler){
+      var b = document.createElement('button');
+      b.type = 'button'; b.className = 'toast-annuler'; b.textContent = 'Annuler';
+      b.addEventListener('click', function(){ t.hidden = true; undoLast(); });
+      t.appendChild(b);
+    }
     t.hidden = false;
     clearTimeout(showToast._t);
-    showToast._t = setTimeout(function(){ t.hidden = true; }, 2800);
+    showToast._t = setTimeout(function(){ t.hidden = true; }, opts && opts.annuler ? 6000 : 2800);
   }
   (function(){
     var flag; try{ flag = sessionStorage.getItem('batcave-undo-toast'); }catch(e){}
@@ -4021,6 +4079,7 @@
     window.claude.use('mcp').then(function(mcp){
       if(!mcp){ gcalLecture = {etat:'absent', code:null, quand:new Date(), n:0}; try{ rafraichirAgendas(); }catch(e){} return; }
       mcpHandle = mcp;
+      try{ majBanniereReprise(); }catch(e){}
       var driveRow = document.getElementById('drive-backup-row');
       if(driveRow) driveRow.hidden = false;
       /* rappels Google Calendar : le panneau apparait, et si l'option est active les blocs
@@ -4202,6 +4261,16 @@
           return tournerSauvegardes(mcp);
         }).catch(function(){ /* échec silencieux : on retentera à la prochaine ouverture */ });
       })();
+      /* Le plan de secours en texte : une fois par semaine, la semaine en cours ; le
+         dimanche, la suivante (c'est le soir de la revue). */
+      (function(){
+        var lundi = weekRange(weekday === 0 ? 1 : 0)[0];
+        if(load('batcave-last-plan-texte', null) === lundi) return;
+        var contenu; try{ contenu = planTexteSemaine(lundi); }catch(e){ return; }
+        sauverSurDrive(mcp, 'plan-batcave-' + lundi + '.txt', contenu, 'text/plain')
+          .then(function(){ saveInternal('batcave-last-plan-texte', lundi); })
+          .catch(function(){});
+      })();
 
       /* Google Calendar — vue semaine (alimente #week-cal, remplace le planning type) */
       (function(){
@@ -4334,6 +4403,7 @@
      leur bouton (masqué) : tout ce qui les visait par leur nom continue de fonctionner. */
   navBtns.forEach(function(btn){
     btn.addEventListener('click', function(){
+      if(typeof finirInit === 'function') finirInit();   /* un onglet ouvert avant la fin de l'initialisation est construit d'abord */
       var noms = (btn.dataset.pages || btn.dataset.page).split(/\s+/).filter(Boolean);
       var cibles = noms.map(function(n){ return document.querySelector('.page[data-page="' + n + '"]'); }).filter(Boolean);
       if(!cibles.length) return;
@@ -4544,6 +4614,7 @@
     btn.addEventListener('click', function(){
       document.getElementById('backup-export').value = JSON.stringify(allBatcaveData(), null, 2);
       renderCopieVierge();
+      try{ renderSante(); }catch(e){}
       document.getElementById('backup-overlay').hidden = false;
     });
   });
@@ -4588,7 +4659,7 @@
      elles repartiraient vers le cloud. La meme remise a zero peut donc etre decidee depuis
      l'appli ou directement dans le cloud. */
   var REINIT_GARDER = ['habits','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','habits-seed-v7','habits-seed-v8','habits-seed-v9','objectifs-v5-espanol','fixed-charges','fc-prix-icloud-3','budget-limits','examens','examens-heures','journees','echeances','vacances','jours-exclus','jours-sans-cours','portes','appro','notion-url','shopify-boutique',
-                       'objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','courses-plan-v3','courses-plan-v4','courses-plan-v5','courses-plan-v6','courses-plan-v7','courses-plan-v8','courses-plan-v9','courses-plan-v10','charges-v2','plafond-nourriture-v2','plafond-nourriture-v3','ancre-dimanche-v1','shampoing-dim-v1','shampoing-combat-v1','marche-cible-v1','horizon','goals-depart','saisons','periodes-closes','gcal-ecriture','duree-bloc','dash-more','revision-fusionnee','reinit','copie-vierge'];
+                       'objectifs','horizon','goals-depart','saisons','periodes-closes','gcal-ecriture','duree-bloc','dash-more','reinit','copie-vierge','schema'].concat(DRAPEAUX_MIGRATION, DRAPEAUX_ANCIENS);
   var REINIT_PREFIXES_GARDER = ['pomodial-', 'coherence-ignore-'];
   function reinitGarder(cle){
     var c = cle.indexOf('batcave-') === 0 ? cle.slice(8) : cle;
@@ -4869,9 +4940,8 @@
     /* décodage UTF-8 explicite : « Électricité » ressortait en mojibake avec atob seul */
     return new TextDecoder('utf-8').decode(octets);
   }
-  document.getElementById('drive-restore-btn').addEventListener('click', function(){
-    if(!mcpHandle) return;
-    var statusEl = document.getElementById('drive-backup-status');
+  function restaurerDepuisDrive(statusEl){
+    if(!mcpHandle || !statusEl) return;
     statusEl.textContent = 'Recherche de tes sauvegardes…';
     mcpHandle.callTool('Google Drive', 'search_files', {
       query: "title contains 'batcave-sauvegarde' and owner = 'me'", pageSize: 50, excludeContentSnippets: true
@@ -4894,7 +4964,20 @@
     }).catch(function(err){
       statusEl.textContent = 'Échec (' + ((err && err.code) || 'erreur') + ').';
     });
-  });
+  }
+  document.getElementById('drive-restore-btn').addEventListener('click', function(){ restaurerDepuisDrive(document.getElementById('drive-backup-status')); });
+  document.getElementById('reprise-drive').addEventListener('click', function(){ restaurerDepuisDrive(document.getElementById('reprise-status')); });
+  /* Vide : aucun bloc, aucune seance, aucune cloture, aucune depense -- l'etat d'un
+     appareil neuf, pas celui d'un jour creux. */
+  function appVide(){
+    var l = function(k){ var v = load(k, null); return Array.isArray(v) ? v : []; };
+    /* les charges fixes s'ecrivent seules a l'ouverture (fixed:true) : elles ne comptent pas */
+    return !l('batcave-sessions').length && !l('batcave-sport-log').length && !l('batcave-transactions').some(function(t){ return t && !t.fixed; }) && !derniereCloture();
+  }
+  function majBanniereReprise(){
+    var b = document.getElementById('reprise-banner');
+    if(b) b.hidden = !(appVide() && mcpHandle);
+  }
   document.getElementById('drive-backup-btn').addEventListener('click', function(){
     if(!mcpHandle) return;
     var statusEl = document.getElementById('drive-backup-status');
@@ -4985,8 +5068,30 @@
       });
     }).catch(function(){ return 0; });   /* la recherche a echoue : on retentera demain, rien n'est marque fait */
   }
-  function sauverSurDrive(mcpApi, filename, content){
-    var base = {title: filename, textContent: content, contentMimeType: 'application/json', disableConversionToGoogleType: true};
+  /* ===== Le plan de secours en texte =====
+     Si claude.ai est injoignable un lundi matin, la grille de la semaine et les cinq qui
+     comptent sont dans Drive, en texte brut : « plan-batcave-AAAA-MM-JJ.txt », un par
+     semaine, ecrit a la premiere ouverture de la semaine (le dimanche, celui de la suivante). */
+  function planTexteSemaine(lundi){
+    var jours = [], d = new Date(lundi + 'T00:00:00');
+    for(var i = 0; i < 7; i++){ jours.push(localISO(d)); d.setDate(d.getDate() + 1); }
+    var l = ['LA BATCAVE — plan de la semaine du ' + fmtDate(lundi) + ' au ' + fmtDate(jours[6]),
+             'Écrit le ' + fmtDate(todayISO) + ' · plan de secours si la Batcave est injoignable.', ''];
+    jours.forEach(function(iso){
+      var dow = dowDe(iso), cle = cleJournee(dow), g = grilleDe(cle, iso);
+      l.push(DOW_NAMES_LONG[dow].toUpperCase() + ' ' + fmtDate(iso) + (sansCoursLe(iso) ? ' — sans cours' : '') + (jourDeCombat(iso) ? ' — combat' : ''));
+      g.forEach(function(b){ l.push('  ' + b[0] + '  ' + b[1]); });
+      l.push('');
+    });
+    try{
+      var c = cinqQuiComptent();
+      if(c && c.length){ l.push('LES 5 QUI COMPTENT'); c.forEach(function(x){ l.push('  ' + x.nom + ' : ' + x.texte); }); l.push(''); }
+    }catch(e){}
+    l.push('Lever ' + heureLever(cleJournee(1), jours[0]) + ' · coucher ' + heureCoucher(cleJournee(1), jours[0]) + ' · eau ' + String(OBJECTIF_EAU_COMBAT_L).replace('.', ',') + ' L les jours de combat, ' + OBJECTIF_EAU_L + ' L sinon.');
+    return l.join('\n');
+  }
+  function sauverSurDrive(mcpApi, filename, content, mime){
+    var base = {title: filename, textContent: content, contentMimeType: mime || 'application/json', disableConversionToGoogleType: true};
     var avecDossier = Object.keys(base).reduce(function(a,k){ a[k] = base[k]; return a; }, {parentId: DRIVE_DOSSIER});
     return mcpApi.callTool('Google Drive', 'create_file', avecDossier)
       .catch(function(){ return mcpApi.callTool('Google Drive', 'create_file', base); });
@@ -6516,10 +6621,12 @@
     var idx = arr.indexOf(cible);
     var coche = idx < 0;
     if(idx>-1) arr.splice(idx,1); else arr.push(cible);
-    save('batcave-habitlog', habitLog);
-    /* Cocher « Courses faites » remplit la liste de ravitaillement, et la décocher la vide :
-       les deux disaient la même chose et pouvaient se contredire à l'écran. */
-    if(id === HABIT_COURSES) marquerToutesCourses(coche);
+    geste(function(){
+      save('batcave-habitlog', habitLog);
+      /* Cocher « Courses faites » remplit la liste de ravitaillement, et la décocher la vide :
+         les deux disaient la même chose et pouvaient se contredire à l'écran. */
+      if(id === HABIT_COURSES) marquerToutesCourses(coche);
+    });
     renderHabits(); renderDashboard(); renderBilan();
   }
   /* défini plus bas (section Courses) ; déclaré ici pour la lisibilité de toggleHabit */
@@ -7923,6 +8030,15 @@
   function enregistrerSeries(type, ei, ex, seriesTxt, chargeTxt, silencieux){
     var series = parseSeries(seriesTxt), charge = Number(String(chargeTxt || '').replace(',', '.')) || 0;
     var f = parseFourchette(ex.reps);
+    /* bornes : 200 reps ou 600 s par serie, 200 kg de lest -- au-dela c'est une faute de frappe */
+    var faux = series.filter(function(x){ return x > (f.unite === 's' ? 600 : 200); });
+    if(faux.length || charge < 0 || charge > 200){
+      showToast('⚠️ Saisie impossible (' + (faux.length ? faux[0] + ' ' + (f.unite || 'reps') : charge + ' kg') + ') : vérifie les chiffres.');
+      return false;
+    }
+    return geste(function(){ return enregistrerSeriesGeste(type, ei, ex, series, charge, f, silencieux); });
+  }
+  function enregistrerSeriesGeste(type, ei, ex, series, charge, f, silencieux){
     sportLog = sportLog.filter(function(l){ return !(l && l.date === todayISO && l.exo === ex.name); });
     var key = type + '-' + ei;
     if(series.length){
@@ -7940,6 +8056,8 @@
     if(silencieux) majLigneSport(type, ei); else renderSport();
     renderDashboard(); renderBilan();
     if(document.getElementById('obj-liste')) renderObjectifs();
+    if(!silencieux && series.length) showToast('🏋️ ' + ex.name + ' : ' + series.join('/') + (f.unite === 's' ? ' s' : '') + (charge ? ' @' + charge + ' kg' : '') + ' enregistré.', {annuler: true});
+    return true;
   }
   function majLigneSport(type, ei){
     var key = type + '-' + ei, coche = !!sportState[key];
@@ -12191,7 +12309,74 @@
     el.textContent = (iso === manuelle && manuelle >= (auto || '') ? 'manuelle' : 'auto') + ' · ' + (j === 0 ? 'aujourd\'hui' : (j === 1 ? 'hier' : 'il y a ' + j + ' j'));
     el.title = 'Dernière sauvegarde Drive : ' + fmtDate(iso);
     el.style.color = j > 3 ? 'var(--warn)' : '';
+    try{ renderSante(); }catch(e){}
   }
+  /* ===== Sante de la Batcave =====
+     Six controles, chacun avec ce qu'il faut faire s'il est rouge : la sauvegarde Drive
+     (3 j en ligne, 14 j a la main), le poids des donnees (5 Mo de stockage), la
+     coherence (ecarts et cles inconnues), l'exercice de restauration (90 j), la derniere
+     cloture (hier au plus tard), le schema (toutes les migrations en place). */
+  var SANTE_BACKUP_MAX_J = 3, SANTE_BACKUP_MANUEL_MAX_J = 14, SANTE_DONNEES_MAX = 4 * 1024 * 1024;
+  function tailleDonnees(){
+    var n = 0, c = 0;
+    for(var i = 0; i < localStorage.length; i++){
+      var k = localStorage.key(i);
+      if(k && k.indexOf('batcave-') === 0){ c++; n += (localStorage.getItem(k) || '').length + k.length; }
+    }
+    return {octets: n * 2, cles: c};   /* UTF-16 : deux octets par caractere */
+  }
+  function derniereCloture(){
+    for(var i = 0; i < 14; i++){
+      var iso = isoDecale(todayISO, -i);
+      var j = (iso === todayISO && typeof journalState !== 'undefined') ? journalState : load('batcave-journal-' + iso, null);
+      if(j && j.cloture) return iso;
+    }
+    return null;
+  }
+  function santeBatcave(){
+    var out = [], age = function(iso){ return iso ? daysBetween(new Date(iso + 'T00:00:00'), new Date(todayISO + 'T00:00:00')) : null; };
+    /* une appli neuve (rien de saisi) n'a encore rien a sauvegarder ni a cloturer */
+    var neuve = appVide();
+    var auto = load('batcave-last-auto-backup', null), man = load('batcave-last-manual-backup', null);
+    var iso = [auto, man].filter(function(x){ return /^\d{4}-\d{2}-\d{2}$/.test(String(x)); }).sort().pop() || null;
+    var a = age(iso), enLigne = !!window.claude, max = enLigne ? SANTE_BACKUP_MAX_J : SANTE_BACKUP_MANUEL_MAX_J;
+    out.push({id:'sauvegarde', ok: neuve || (a !== null && a <= max),
+      texte: iso ? 'Dernière sauvegarde ' + (iso === man && man >= (auto || '') ? 'manuelle' : 'auto') + ' : ' + fmtDate(iso) + (a ? ' (il y a ' + a + ' j)' : ' (aujourd\u2019hui)') : 'Aucune sauvegarde enregistrée',
+      action: enLigne ? 'La sauvegarde auto part à l\u2019ouverture depuis le lien Batcave ; si elle n\u2019est pas partie, vérifie le connecteur Google Drive.' : 'Hors ligne : sauvegarde à la main (💾) au moins tous les 14 jours.'});
+    var t = tailleDonnees(), mo = t.octets / 1024 / 1024;
+    out.push({id:'donnees', ok: t.octets < SANTE_DONNEES_MAX,
+      texte: t.cles + ' clés · ' + (mo >= 1 ? mo.toFixed(1).replace('.', ',') + ' Mo' : Math.round(t.octets / 1024) + ' Ko') + ' sur ~5 Mo',
+      action: 'Au-delà de 4 Mo : une sauvegarde, puis la compaction mensuelle du cloud.'});
+    var ec = ecartsDeCoherence().length + clesInconnues().length;
+    out.push({id:'coherence', ok: !ec, texte: ec ? ec + ' écart' + (ec > 1 ? 's' : '') + ' signalé' + (ec > 1 ? 's' : '') + ' sur le tableau de bord' : 'Données cohérentes',
+      action: 'Répare ou ignore chaque écart dans le bandeau du tableau de bord.'});
+    var dr = dernierExercice();
+    out.push({id:'exercice', ok: neuve || !exerciceDu(), texte: dr ? 'Dernier exercice de restauration : ' + fmtDate(dr) : 'Aucun exercice de restauration',
+      action: 'Relis une sauvegarde pour de vrai, puis note-le ci-dessous (tous les ' + JOURS_EXERCICE + ' jours).'});
+    var dc = derniereCloture(), ac = age(dc), due = todayISO >= PROGRAMME_DEBUT && !neuve;
+    out.push({id:'cloture', ok: !due || (ac !== null && ac <= 1),
+      texte: dc ? 'Dernière clôture : ' + (ac === 0 ? 'aujourd\u2019hui' : (ac === 1 ? 'hier' : fmtDate(dc))) : (due ? 'Aucune clôture' : 'Programme pas encore commencé'),
+      action: 'La clôture du soir, 60 secondes : c\u2019est elle qui nourrit tout le reste.'});
+    var mq = drapeauxManquants(), sch = schemaEnregistre();
+    out.push({id:'schema', ok: sch === SCHEMA_VERSION && !mq.length,
+      texte: 'Schéma ' + sch + (sch === SCHEMA_VERSION ? '' : ' (attendu ' + SCHEMA_VERSION + ')') + ' · ' + (DRAPEAUX_MIGRATION.length - mq.length) + '/' + DRAPEAUX_MIGRATION.length + ' migrations en place',
+      action: mq.length ? 'Manque : ' + mq.join(', ') + ' — recharge la page, les migrations se rejouent au démarrage.' : 'Recharge la page : le schéma s\u2019écrit après les migrations.'});
+    return out;
+  }
+  function renderSante(){
+    var etat = santeBatcave(), defauts = etat.filter(function(c){ return !c.ok; });
+    var ul = document.getElementById('sante-liste'), res = document.getElementById('sante-resume');
+    if(ul) ul.innerHTML = etat.map(function(c){
+      return '<li style="align-items:flex-start; gap:10px;"><span class="obj-led ' + (c.ok ? 'atteint' : 'retard') + '" style="margin-top:5px;"></span>' +
+             '<span><b style="color:var(--ink);">' + escapeHtml(c.texte) + '</b>' + (c.ok ? '' : '<br><span class="sub-note">' + escapeHtml(c.action) + '</span>') + '</span></li>';
+    }).join('');
+    if(res) res.textContent = defauts.length ? defauts.length + ' défaut' + (defauts.length > 1 ? 's' : '') : 'tout est en ordre';
+    var v = document.querySelector('#bc-sante .v');
+    if(v) v.textContent = defauts.length ? defauts.length + ' défaut' + (defauts.length > 1 ? 's' : '') : 'ok';
+    montrerReleve('bc-sante', !!defauts.length);
+    return etat;
+  }
+  try{ window.__bcSante = santeBatcave; window.__bcPlanTexte = planTexteSemaine; window.__bcAppVide = appVide; window.__bcDrapeaux = drapeauxManquants; window.__bcSchema = function(){ return {attendu: SCHEMA_VERSION, enregistre: schemaEnregistre()}; }; window.__bcDecalage = decalageMadrid; window.__bcEnregistrerSeries = enregistrerSeries; }catch(e){}
   /* Semaine en barres (MON-03) : par jour, revision et projets realises ; les jours a venir
      montrent le prevu en pointille. Meme source que la charge restante (planning + minuteur). */
   function renderSemaineBarres(){
@@ -14193,7 +14378,7 @@
   var CONSIGNES_PERIODE_ES = {
     'Anki 2': "Suite des échéances de dentaire. Les 5 dernières minutes : les dix formules du jour (paquet Español).",
     'Clore le cours du jour': "Le tema a déjà été étudié le matin d'avance : vingt minutes par cours, en espagnol. « cierra » dans le projet Dentaire avec tes « ? » d'amphi, ce que le prof a souligné en cartes, la note 0-3 du cours à la clôture.",
-    'Trajet cours': "Podcast en marchant, shadowing à mi-voix dans le tram. Arrivé avant 15:30 : conversation avec les compañeros, pas le téléphone.",
+    'Trajet cours': "Tapis enlevés du sol ? L’aspirateur passe à 15:45 et à 18:15 et il se bloque dessus. Puis podcast en marchant, shadowing à mi-voix dans le tram. Arrivé avant 15:30 : conversation avec les compañeros, pas le téléphone.",
     'Trajet retour': "Une minute de résumé oral du cours enregistrée en marchant, puis Anki Español dans le tram et trois minutes de paquet Business.",
     'Cours': "Notes en espagnol, un « ? » dans la marge pour chaque mot inconnu, ta question posée avant la fin. Trente minutes de conversation réelle dans la journée.",
     /* Le samedi, la seance est le soir : la course de 18:00 (trente minutes) fait l'aller et
@@ -15230,7 +15415,25 @@
                 libre: coucher || libre,
                 description: (typeBlocPlan(l) ? 'Lance le Pomodoro « ' + l + ' ». ' : '') + (consigneBloc(l, dowDe(iso), iso, b[0]) ? consigneBloc(l, dowDe(iso), iso, b[0]) + ' ' : '') + (coucher ? 'Écran off 30 min avant. Bloc du planning Batcave.' : 'Bloc du planning Batcave.')});
     });
+    /* La cloture du soir : un rappel a l'heure ou elle s'ouvre (coucher - 1 h 30), pour
+       les jours qui travaillent et une fois le programme commence. Faite avant l'heure,
+       l'evenement du jour est retire (retirerRappelCloture) ; faite apres, il a sonne. */
+    if(aDuTravail && iso >= PROGRAMME_DEBUT){
+      var jr = (iso === todayISO && typeof journalState !== 'undefined') ? journalState : load('batcave-journal-' + iso, null);
+      if(!(jr && jr.cloture)){
+        var hc = timeToMinutes(heureCoucher(cle, iso)) - 90;
+        out.push({cle:'cloture', type:'cloture', titre:'🦇 Clôture du jour', titreBase:'🦇 Clôture du jour', debut: hc, fin: hc + 5, rappel: 0, libre: true,
+                  description:'Sommeil, poids, eau, humeur, habitudes, une note : 60 secondes dans la Batcave. Bloc du planning Batcave.'});
+      }
+    }
     return out;
+  }
+  function retirerRappelCloture(){
+    var releve = load(cleGcalJour(todayISO), null), r = releve && releve.cloture;
+    if(!r || !r.id || !r.cree || !mcpHandle || !gcalActif()) return;
+    mcpHandle.callTool('Google Calendar', 'delete_event', {calendarId: GCAL_CALENDRIER, eventId: r.id, notificationLevel:'NONE'})
+      .catch(function(){})
+      .then(function(){ delete releve.cloture; saveInternal(cleGcalJour(todayISO), releve); });
   }
   /* decalage horaire de Madrid pour une date (heure d'ete ou d'hiver) */
   function decalageMadrid(iso){
@@ -17392,43 +17595,39 @@
     ['rv-marche','rv-coince','rv-ajust'].forEach(function(id){ document.getElementById(id).value=''; });
   });
 
-  /* ================= INIT ================= */
+  /* ================= INIT =================
+     En deux temps. D'abord ce que l'ecran montre a l'ouverture -- le tableau de bord, la
+     barre, le minuteur -- et les operations sur les donnees (migrations, recalage,
+     coherence). Puis, a l'image suivante, les douze autres onglets : sur un iPhone, ils
+     coutaient 300 ms avant le premier affichage pour des ecrans que personne ne regarde
+     encore. Un clic sur un onglet finit l'initialisation sur-le-champ (finirInit), donc
+     rien ne peut s'afficher a moitie construit. */
   consignerAcquises();
-  renderHabits();
-  renderAddictions();
-  renderMeals(); renderMealBar();
-  renderWeekStrip(); renderSport();
-  renderJournalHistorique();
-  renderCalendar();
   recalerObjectifsSemaine();   /* la grille est lue : les cibles de temps suivent la semaine type */
-  renderGoals();
-  renderCourses(); renderCoursesSummary(); renderPrep();
-  renderTaches();
-  renderBudget();
-  renderCoranDuaa();
-  renderRevision();
-  renderBusiness();
-  renderProjets();
-  renderAgendas();
-  renderVie();
-  renderRevue();
+  nettoyerVestiges();
+  renderMealBar();
+  renderWeekStrip();
   renderDashboard();
   renderDureesBloc();   /* la puce « auto » lit la grille, déclarée après le minuteur */
-  nettoyerVestiges();
   verifierCoherence();
-  renderBilan();
-  renderInsights();
   majSerie();
   renderTimer();
-  majBoutonsEspanol();
-  renderJournees();
-  renderVacances();
-  renderSansCours();
-  renderEcheancesPanel();
-  majOngletBusiness();
-  renderAnki();
-  renderNotionCours();
   renderExercice();
+  if(schemaEnregistre() !== SCHEMA_VERSION) saveInternal('batcave-schema', SCHEMA_VERSION);
+  try{ renderSante(); majBanniereReprise(); }catch(e){}
+  var initDiffere = [renderHabits, renderAddictions, renderMeals, renderSport, renderJournalHistorique, renderCalendar, renderGoals,
+                     renderCourses, renderCoursesSummary, renderPrep, renderTaches, renderBudget, renderCoranDuaa, renderRevision,
+                     renderBusiness, renderProjets, renderAgendas, renderVie, renderRevue, renderBilan, renderInsights, majBoutonsEspanol,
+                     renderJournees, renderVacances, renderSansCours, renderEcheancesPanel, majOngletBusiness, renderAnki, renderNotionCours];
+  function finirInit(){
+    while(initDiffere.length){
+      var f = initDiffere.shift();
+      try{ f(); }catch(e){ setTimeout(function(){ throw e; }, 0); }   /* l'erreur reste visible, sans bloquer la suite */
+    }
+    window.__bcInitFini = true;
+  }
+  (window.requestAnimationFrame || window.setTimeout)(finirInit);
+  try{ window.__bcFinirInit = finirInit; }catch(e){}
   try{ proposerPomodoroBloc(); }catch(e){}   /* Pomodoro ferme : un bloc de travail vient de commencer ? */
 
   var bilanExportBtn = document.getElementById('bilan-export-btn');
@@ -17640,7 +17839,34 @@
     if(premier && !premier.value) premier.focus();
   }
   function fermerCloture(){ var ov = document.getElementById('cloture-overlay'); if(ov) ov.hidden = true; }
+  /* ===== Les bornes de saisie =====
+     Une faute de frappe (25 h de sommeil, 700 kg) fausserait la moyenne du mois, la dette
+     de sommeil, la courbe de poids. La cloture refuse la valeur et pose le curseur dessus. */
+  var BORNES_SAISIE = {'cl-sommeil':[0, 14, 'h de sommeil'], 'cl-aulit':[0, 16, 'h au lit'], 'cl-poids':[40, 150, 'kg'], 'cl-pas':[0, 60000, 'pas'], 'cl-coran':[0, 604, 'pour une page de Coran']};
+  function controlerSaisieCloture(){
+    var ids = Object.keys(BORNES_SAISIE), num = function(v){ return Number(String(v).replace(',', '.')); };
+    for(var i = 0; i < ids.length; i++){
+      var el = document.getElementById(ids[i]);
+      if(!el || el.value === '') continue;
+      var v = num(el.value), b = BORNES_SAISIE[ids[i]];
+      if(isNaN(v) || v < b[0] || v > b[1]) return {id: ids[i], msg: 'Valeur impossible : ' + el.value + ' ' + b[2] + ' (attendu entre ' + b[0] + ' et ' + b[1] + ').'};
+    }
+    var s = document.getElementById('cl-sommeil'), a = document.getElementById('cl-aulit');
+    if(s && a && s.value !== '' && a.value !== '' && num(a.value) < num(s.value)) return {id:'cl-aulit', msg:'Le temps au lit ne peut pas être plus court que le sommeil réel.'};
+    if(clEau > 8000) return {id:'cl-eau', msg:'Plus de 8 L d\u2019eau dans la journée : vérifie la saisie.'};
+    return null;
+  }
   function validerCloture(){
+    var probleme = controlerSaisieCloture();
+    if(probleme){
+      showToast('⚠️ ' + probleme.msg);
+      var champ = document.getElementById(probleme.id);
+      if(champ && champ.focus){ try{ champ.focus(); champ.select && champ.select(); }catch(e){} }
+      return false;
+    }
+    return geste(validerClotureGeste);
+  }
+  function validerClotureGeste(){
     var som = document.getElementById('cl-sommeil').value, poids = document.getElementById('cl-poids').value;
     if(som !== '') journalState.sommeil = som;
     var auLit = (document.getElementById('cl-aulit') || {}).value || '';
@@ -17700,7 +17926,10 @@
     renderJournalHistorique(); renderWeightChart(); renderKcalBoucle(); renderCalendar(); renderDashboard(); renderBilan();
     if(document.getElementById('obj-liste')) renderObjectifs();
     fermerCloture();
-    showToast('🌙 Journée clôturée' + (cochees.length ? ' · ' + cochees.length + ' habitude' + (cochees.length > 1 ? 's' : '') + ' cochée' + (cochees.length > 1 ? 's' : '') : '') + ' — bonne nuit.');
+    try{ retirerRappelCloture(); }catch(e){}
+    try{ renderSante(); }catch(e){}
+    showToast('🌙 Journée clôturée' + (cochees.length ? ' · ' + cochees.length + ' habitude' + (cochees.length > 1 ? 's' : '') + ' cochée' + (cochees.length > 1 ? 's' : '') : '') + ' — bonne nuit.', {annuler: true});
+    return true;
   }
   function repousserCloture(){
     journalState.clotureRepoussee = true;
