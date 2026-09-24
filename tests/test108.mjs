@@ -33,8 +33,8 @@ console.log('\n== 269) Deux oeufs a la place du jambon ==');
     cout: window.__bcCoutSemaine(),
     plafond: JSON.parse(localStorage.getItem('batcave-budget-limits') || '{}').Nourriture
   }));
-  ok(r.col.kcal === 566 && r.col.p === 30, 'la collation : pain, 2 œufs, fromage, 35 g d\'amandes = 566 kcal, 30 g de protéines (' + r.col.kcal + ' / ' + r.col.p + ')');
-  ok(r.jour.kcal === 3234 && r.jour.p === 165, 'la journée : 3 234 kcal, 165 g de protéines, quatre prises (24 septembre) (' + r.jour.kcal + ' / ' + r.jour.p + ')');
+  ok(r.col.kcal === 508 && r.col.p === 28, 'la collation : pain, 2 œufs, fromage, 25 g d\'amandes = 508 kcal, 28 g de protéines (' + r.col.kcal + ' / ' + r.col.p + ')');
+  ok(r.jour.kcal === 3226 && r.jour.p === 163, 'la journée : 3 226 kcal, 163 g de protéines, quatre prises (24 septembre) (' + r.jour.kcal + ' / ' + r.jour.p + ')');
   ok(r.oeufs === 28 && r.jambon === undefined, 'les courses : 28 œufs par semaine, plus de jambon (' + r.oeufs + ' / ' + r.jambon + ')');
   ok(!r.cout.lignes.some(l => /Jambon/.test(l.label)) && r.cout.manque.join() === 'Amandes ou noix nature', 'le coût ne compte plus de jambon ; seul le prix des amandes manque (' + r.cout.manque.join() + ')');
   ok(r.plafond === Math.round(r.cout.mois), 'le plafond Nourriture posé par la Batcave suit le nouveau coût : ' + r.plafond + ' €');

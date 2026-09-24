@@ -76,7 +76,7 @@ console.log('\n== 217) Google Calendar : un titre « 🦇 Bloc · consigne » se
   }));
   ok(r.a === '🦇 Anki 1' && r.b === '🦇 Projets perso 3' && r.c === '🦇 Repos — après-midi libre', 'titre de base : ' + r.a + ' / ' + r.b);
   ok(/construire/.test(r.lun) && /Bilan de la semaine/.test(r.ven) && /3 d’avance|3 d'avance/.test(r.sam) && r.rien === '', 'consignes par jour (lundi construire, vendredi bilan, samedi 3 d’avance, micro-sieste vide)');
-  ok(/sauce/.test(r.dej) && /jamais le skyr sur le feu/i.test(r.dej) && /riz 125 g/.test(r.dej), 'le déjeuner a une consigne depuis le 24 septembre : la sauce au skyr, hors du feu (' + (r.dej || '').slice(0, 60) + '…)');
+  ok(/sauce/.test(r.dej) && /jamais le skyr sur le feu/i.test(r.dej) && /riz 155 g/.test(r.dej), 'le déjeuner a une consigne depuis le 24 septembre : la sauce au skyr, hors du feu (' + (r.dej || '').slice(0, 60) + '…)');
   await ctx.close();
 }
 await browser.close();

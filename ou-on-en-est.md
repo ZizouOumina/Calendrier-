@@ -6,9 +6,9 @@ Il dit ce qui est fait, ce qui reste, et ce qui attend une décision de toi.
 > ### ⚠️ Dernier changement — nuit du jeudi 24 septembre
 > **L'alimentation passe à quatre prises.** La collation du soir sort (mal au ventre) ; son
 > skyr devient une sauce au déjeuner et au dîner, son miel va dans les flocons. Le beurre de
-> cacahuète est remplacé par des **amandes ou noix** (75 g par jour : 40 le matin, 35 à 14:50),
-> le riz de midi descend à **125 g crus**, le poulet reste à 80 g. Plan : **3 234 kcal, 165 g
-> de protéines**. La créatine passe au dîner. Les amandes n'ont **pas encore de prix** : la
+> cacahuète est remplacé par des **amandes ou noix** (55 g par jour : 30 le matin, 25 à 14:50).
+> Le riz reste à 155 g crus (descendu à 125 puis remis, sa décision), le poulet à 80 g. Plan :
+> **3 226 kcal, 163 g de protéines**. La créatine passe au dîner. Les amandes n'ont **pas encore de prix** : la
 > ligne dit « prix à relever » et le plafond Nourriture (201 €) n'est pas recalculé tant qu'il
 > manque. **Google Agenda** : séries « Collation soir » supprimées (semaine et week-end), douche
 > et coucher de semaine refaits à 21:25 et 21:35 (mardi 21:45 / 21:55, temps libre 21:30).

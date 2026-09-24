@@ -49,7 +49,7 @@ console.log('\n== 330) Cinq catégories, toutes alimentaires, et le frais seul e
      ne suivait pas. */
   ok(/Chaque semaine/.test(hebdo.titre) && hebdo.n === 8, 'la liste hebdomadaire fait 8 articles — les amandes entrent le 24 septembre, à la place du beurre de cacahuète (' + hebdo.n + ')');
   const t = await fr.evaluate(() => document.querySelector('.page[data-page="courses"]').textContent);
-  ok(!/Riz/.test(hebdo.titre + '') && /Riz — 4 kg/.test(t) && /demande 3\u202f500 g/.test(t), 'le riz est en réserve : 4 kg achetés pour 3 500 g demandés (125 g à midi depuis le 24 septembre)');
+  ok(!/Riz/.test(hebdo.titre + '') && /Riz — 5 kg/.test(t) && /demande 4\u202f340 g/.test(t), 'le riz est en réserve : 5 kg achetés pour 4 340 g demandés');
   ok(!/Shampooing|Cotons-tiges|Nettoyant visage|Brosse à dents|Bain de bouche|Brossettes|Crème solaire|Lessive|Dentifrice/.test(t),
      'plus une seule ligne de santé et hygiène');
   ok(!/Éponges|Sacs poubelle|Nettoyant sol|Papier toilette|Essuie-tout|Liquide vaisselle|Anticalcaire|Nettoyant WC|Gants de ménage/.test(t),
@@ -153,7 +153,7 @@ console.log('\n== 334b) Aucun stock n\'est supposé : il coche ce qu\'il a ==');
   const t = await fr.evaluate(() => document.querySelector('.page[data-page="courses"]').textContent);
   ok(!/tu en as|il t’en reste|à racheter le/.test(t), 'aucune ligne ne parle de stock ni de date de rachat');
   ok(!/Beurre de cacahuète/.test(t), 'le beurre de cacahuète est sorti de la liste (24 septembre)');
-  ok(/Amandes ou noix nature — 600 g/.test(t) && /demande 525 g/.test(t), 'amandes : 3 sachets de 200 g, pour 525 g demandés');
+  ok(/Amandes ou noix nature — 400 g/.test(t) && /demande 385 g/.test(t), 'amandes : 2 sachets de 200 g, pour 385 g demandés');
   ok(/Huile d'olive — 2 L/.test(t) && /demande 1\u202f575 ml/.test(t), 'huile : un bidon de 2 L, pour 1 575 ml demandés');
   await ctx.close();
 }
@@ -161,7 +161,7 @@ console.log('\n== 334b) Aucun stock n\'est supposé : il coche ce qu\'il a ==');
   /* Le 17 octobre les reserves reviennent, aux memes quantites : aucun report. */
   const { ctx, fr } = await jour('2026-10-17T10:00:00+02:00');
   const t = await fr.evaluate(() => document.querySelector('.page[data-page="courses"]').textContent);
-  ok(/Riz — 4 kg/.test(t) && /Pâtes — 3 kg/.test(t), 'le 17 octobre, riz et pâtes reviennent aux mêmes quantités');
+  ok(/Riz — 5 kg/.test(t) && /Pâtes — 3 kg/.test(t), 'le 17 octobre, riz et pâtes reviennent aux mêmes quantités');
   await ctx.close();
 }
 

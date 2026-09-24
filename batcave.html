@@ -7135,7 +7135,7 @@
      64 kg · 182 cm · 20 ans · 4 séances par semaine · tout pesé cru.
      3 123 à 3 135 kcal selon la rotation · P 158-161 g (2,5 g/kg) · G 377 g · L 105-106 g.
      Depuis le 23 septembre : 3 230 kcal · P 166 g · G 377 g · L 115 g (deux œufs a la place du jambon).
-     Depuis le 24 septembre : 3 234 kcal · P 165 g · G 359 g · L 125 g, QUATRE prises (voir plus bas).
+     Depuis le 24 septembre : 3 226 kcal · P 163 g · G 379 g · L 115 g, QUATRE prises (voir plus bas).
      Cinq prises : la collation du matin
      a disparu, le déjeuner porte ses calories (riz 155 g, légumes 200 g). La protéine du
      déjeuner et du dîner suit une ROTATION fixe sur la semaine (l'huile d'olive va avec) ;
@@ -7156,20 +7156,20 @@
      - le miel (20 g) passe dans les flocons du matin ;
      - le beurre de cacahuete sort du plan : il ne l'aime pas. Amandes (ou noix) nature a
        la place, memes calories et memes lipides a 2 % pres.
-     Le meme soir, le riz de midi descend de 155 a 125 g crus (~400 -> ~325 g cuits) : il
-     n'avait jamais cuit cette quantite et elle lui faisait peur. Le poulet ne bouge pas --
-     sa decision, explicite. Les 108 kcal du riz reviennent en amandes (+20 g) : 75 g par
-     jour, 40 le matin et 35 a la collation de 14:50.
+     Le riz de midi a ete descendu a 125 g crus la meme nuit, puis remis a 155 g une heure
+     plus tard -- sa decision : « le riz reste comme avant ». Les amandes reviennent donc
+     a la quantite du beurre de cacahuete qu'elles remplacent, 55 g par jour : 30 le matin,
+     25 a la collation de 14:50.
      La creatine suivait la collation du soir : elle passe au diner. */
   var MEALS = [
-    {name:'Petit-déjeuner', items:['Flocons d\'avoine (80g)','Miel (20g) — dans les flocons','Skyr (180g)','2 œufs (100g)','Amandes ou noix nature (40g)','Banane (120g)']},
-    {name:'Déjeuner', items:['Féculent cru — Riz 125g','Protéine crue — rotation du jour','Légumes verts (200g)','Huile d\'olive — selon la protéine, dont 10 ml dans la sauce','Sauce skyr (65g) — mélangée à froid, au moment de manger']},
+    {name:'Petit-déjeuner', items:['Flocons d\'avoine (80g)','Miel (20g) — dans les flocons','Skyr (180g)','2 œufs (100g)','Amandes ou noix nature (30g)','Banane (120g)']},
+    {name:'Déjeuner', items:['Féculent cru — Riz 155g','Protéine crue — rotation du jour','Légumes verts (200g)','Huile d\'olive — selon la protéine, dont 10 ml dans la sauce','Sauce skyr (65g) — mélangée à froid, au moment de manger']},
     /* 23 septembre : le jambon (charcuterie, 40 g par jour) cede la place a deux oeufs durs,
        cuits le dimanche avec ceux du petit-dejeuner. La viande transformee etait le seul
        aliment du plan classe cancerogene ; deux oeufs apportent plus de proteines (12,6 g
        contre 7,2) et environ 100 kcal de plus -- qui vont avec le rythme de prise releve
        le meme jour (objectif poids 72 kg). */
-    {name:'Collation entraînement', items:['Pain complet (60g)','2 œufs durs (100g)','Fromage (20g)','Amandes ou noix nature (35g)']},
+    {name:'Collation entraînement', items:['Pain complet (60g)','2 œufs durs (100g)','Fromage (20g)','Amandes ou noix nature (25g)']},
     {name:'Dîner', items:['Féculent cru — Pâtes 105g','Protéine crue — rotation du jour','Légumes verts (150g)','Huile d\'olive — selon la protéine, dont 5 ml dans la sauce','Sauce skyr (60g) — mélangée à froid, au moment de manger','1 fruit (~120g)','Créatine — 5 g']}
   ];
   /* ===== Table de composition (pour 100 g ou 100 ml, cru) =====
@@ -7202,8 +7202,8 @@
   /* Ce que contient chaque repas, dans l'ordre des items affiches. « brut » ignore la
      boucle poids -> calories : la liste de courses l'ajoute elle-meme, une seule fois. */
   function compoRepas(nom, iso, brut){
-    if(nom === 'Petit-déjeuner') return [{c:'flocons', q:80}, {c:'miel', q:20}, {c:'skyr', q:180}, {c:'oeufs', q:100}, {c:'amandes', q:40}, {c:'banane', q:120}];
-    if(nom === 'Collation entraînement') return [{c:'pain', q:60}, {c:'oeufs', q:100}, {c:'fromage', q:20}, {c:'amandes', q:35}];
+    if(nom === 'Petit-déjeuner') return [{c:'flocons', q:80}, {c:'miel', q:20}, {c:'skyr', q:180}, {c:'oeufs', q:100}, {c:'amandes', q:30}, {c:'banane', q:120}];
+    if(nom === 'Collation entraînement') return [{c:'pain', q:60}, {c:'oeufs', q:100}, {c:'fromage', q:20}, {c:'amandes', q:25}];
     if(nom === 'Déjeuner'){
       var nd = proteineDuJour('dej', iso), pd = PROTEINES[nd].dej;
       return [{c:'riz', q:FECULENTS.dej.g}, {c:CLE_PROTEINE[nd], q:pd.g}, {c:'legumes', q:200}, {c:'huile', q:pd.huile}, {c:'skyr', q:SAUCE_SKYR.dej}];
@@ -7236,7 +7236,7 @@
      poids → calories se lit dans le féculent du DÎNER : +150 kcal = +40 g de pâtes crues,
      écrit dans le plan. */
   var FECULENTS = {
-    dej: {nom:'Riz',   g:125, kcalG:3.6, prixKg:1.1},
+    dej: {nom:'Riz',   g:155, kcalG:3.6, prixKg:1.1},
     din: {nom:'Pâtes', g:105, kcalG:3.6, prixKg:1.0}
   };
   /* Poulet a midi, viande hachee le soir, les sept jours. Le poisson a ete retire le
@@ -10882,7 +10882,7 @@
         art('Pain complet',      B.pain,  450,  poids, 'paquet'),
         art('Bananes',           B.bananes, 1,      sep,   '\u00e0 l\'unit\u00e9', B.bananes + ' bananes'),
         art('Fruits (pommes, poires, oranges\u2026)', B.fruits, 1, sep, '\u00e0 l\'unit\u00e9', B.fruits + ' fruits'),
-        /* 24 septembre : 75 g par jour, 525 g par semaine. Le sachet de 200 g est le format
+        /* 24 septembre : 55 g par jour, 385 g par semaine. Le sachet de 200 g est le format
            courant du rayon ; nature, non salees. Moitie noix si possible : le poisson est
            sorti du plan, et les noix sont la seule source d'omega-3 qui reste. */
         art('Amandes ou noix nature', B.amandes, 200, poids, 'sachet')

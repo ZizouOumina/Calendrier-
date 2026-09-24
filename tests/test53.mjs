@@ -51,9 +51,7 @@ console.log('\n== 180) Sans ajustement : plan de base, liste = plan × 7 ==');
      pates 105 -> 735 -> 2 940, donc 3 paquets de 1 kg -- le format dont il a donne le
      prix lui-meme (1,09 EUR/kg). Acheter en dessous du besoin
      serait une rupture en milieu de cycle : l'arrondi va toujours VERS LE HAUT. */
-  /* 24 septembre : le riz de midi passe de 155 a 125 g crus -- 875 g par semaine, 3 500 g
-     sur le cycle de quatre semaines, donc 4 paquets de 1 kg. */
-  ok(c.items.some(t => /^Riz — 4 kg\b/.test(t) && /le plan en demande 3\u202f500 g/.test(t)), 'riz : 4 kg achetés pour 3 500 g demandés (' + c.items.find(t => /^Riz/.test(t)) + ')');
+  ok(c.items.some(t => /^Riz — 5 kg\b/.test(t) && /le plan en demande 4\u202f340 g/.test(t)), 'riz : 5 kg achetés pour 4 340 g demandés (' + c.items.find(t => /^Riz/.test(t)) + ')');
   ok(c.items.some(t => /^Pâtes — 3 kg\b/.test(t) && /le plan en demande 2\u202f940 g/.test(t)), 'pâtes : 3 kg achetés pour 2 940 g demandés (' + c.items.find(t => /^Pâtes/.test(t)) + ')');
   /* Depuis le 20 septembre la rotation est la meme tous les jours : poulet a midi
      (80 g x 7 = 560), viande hachee le soir (90 g x 7 = 630). Le poisson est sorti.
@@ -142,13 +140,13 @@ console.log('\n== 181) Avec +150 kcal : le dîner et les courses l\'écrivent ==
   /* 3 131 + 144 : la boucle demande +150 kcal, mais les pates s'ajustent par pas de 10 g,
      donc elle en ajoute 144. On annonce l'ecart REEL entre les deux journees, pas la
      consigne -- sinon la soustraction affichee ne tombe pas juste. */
-  ok(/\/ 3378 kcal \(plan 3234 \+ 144\)/.test(sub), 'cible du jour : ' + sub);
+  ok(/\/ 3370 kcal \(plan 3226 \+ 144\)/.test(sub), 'cible du jour : ' + sub);
   /* cocher tout le dîner : l\'apport consommé porte les 150 kcal */
   /* un clic redessine la grille : on re-cherche la première case non cochée du dîner à chaque tour */
   await fr.evaluate(() => { for(let i = 0; i < 10; i++){ const card = [...document.querySelectorAll('.meal-card')].find(c => /Dîner/.test(c.querySelector('.mtitle').textContent)); const cb = card && card.querySelector('input:not(:checked)'); if(!cb) break; cb.click(); } });
   await page.waitForTimeout(200);
   const sub2 = await fr.evaluate(() => document.getElementById('meal-kcal-sub').textContent);
-  ok(/^934 \/ 3378 kcal/.test(sub2), 'dîner coché : ' + sub2);
+  ok(/^934 \/ 3370 kcal/.test(sub2), 'dîner coché : ' + sub2);
   await page_(fr, 'courses');
   const c = await fr.evaluate(() => ({ items: [...document.querySelectorAll('#courses-grid label, #courses-grid-plus label')].map(l => l.textContent), note: document.getElementById('courses-plan-note').textContent }));
   /* L'ajustement suit le sac : +280 g par semaine font +1 120 g sur quatre semaines.
