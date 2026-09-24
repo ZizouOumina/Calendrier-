@@ -108,8 +108,9 @@ console.log('\n═══ 5. Le bloc « Cours » de la fac n\'est pas de la révi
 
 console.log('\n═══ 6. Sport : une séance vaut la part de ses cases cochées ═══');
 {
-  /* lundi = « Haut lourd », 11 exercices depuis les élévations latérales ; les clés sont « <type>-<index> » */
-  const TYPE = 'Haut lourd', N = 11;
+  /* le 14 septembre, lundi = « Haut lourd » : 9 exercices depuis le régime combat (plus de
+     relevés de jambes ni de curl inversé) ; les clés sont « <type>-<index> » */
+  const TYPE = 'Haut lourd', N = 9;
   for(const n of [0, 3, 4, 5, 7, N]){
     const st = {}; for(let i=0;i<n;i++) st[TYPE+'-'+i] = true;
     const {ctx, page, fr} = await ouvrir({['batcave-sport-'+JOUR]: st});
@@ -219,10 +220,13 @@ console.log('\n═══ 10. Jour 1 : aucun objectif en déficit ═══');
   await ctx.close();
 }
 
-console.log('\n═══ 11. Le réacteur et les cellules comptent-ils la même chose ? ═══');
+console.log('\n═══ 11. Le réacteur et les cellules disent-ils la même chose ? ═══');
 {
-  /* Un jour où la grille prévoit À LA FOIS des blocs « Projets perso » et des blocs Español :
-     à partir du 16 novembre. On fait 1 h d'espagnol et rien d'autre. */
+  /* Depuis le 25 septembre les projets perso n'ont ni cible ni minuteur : le réacteur ne
+     leur dessine plus d'arc et le dit, la cellule dit ce que la grille leur donne dans la
+     journée, et 1 h d'espagnol enregistrée ne les remplit toujours pas. Deux jours où la
+     grille prévoit des blocs « Projets perso » : le 16 novembre (régime combat) et le
+     15 février (semestre 2). On fait 1 h d'espagnol et rien d'autre. */
   for(const d of ['2026-11-16','2027-02-15']){
     const {ctx, page, fr} = await ouvrir({'batcave-sessions':[
       {id:'sa', date:d, debut:Date.parse(d+'T11:20:00+02:00'), fin:Date.parse(d+'T12:20:00+02:00'),
@@ -231,9 +235,9 @@ console.log('\n═══ 11. Le réacteur et les cellules comptent-ils la même 
       reacteur: (document.getElementById('leg-proj')||{}).textContent || '',
       cellules: document.getElementById('dash-temps').innerText.replace(/\n/g,' ')
     }));
-    const arc = (r.reacteur.match(/projets (\S[^/]*?) *\//)||[])[1];
-    const cel = (r.cellules.match(/Projets perso (\S[^/]*?) *\//)||[])[1];
-    ok(arc !== undefined && arc === cel, d + ' : réacteur « ' + r.reacteur.trim() + ' » vs cellule « Projets perso ' + cel + ' » — les deux doivent dire la même chose');
+    const cel = (r.cellules.match(/Projets perso 0 ([^·]+)/)||[])[1] || '';
+    ok(/^projets — sans minuteur$/.test(r.reacteur.trim()) && /au planning, sans minuteur/.test(cel) && !/Español/.test(cel),
+       d + ' : réacteur « ' + r.reacteur.trim() + ' », cellule « Projets perso 0 ' + cel.trim() + ' » — sans minuteur des deux côtés, l\'espagnol n\'y entre pas');
     await ctx.close();
   }
 }

@@ -30,9 +30,12 @@ console.log('\n== A) Chaque bloc de la grille a-t-il une destination ? ==');
     [[1,'monday'],[2,'tuesday'],[3,'wednesday'],[4,'weekday'],[5,'friday'],[6,'saturday'],[0,'weekend']]
       .forEach(([dow, cle]) => window.__bcGrille(cle, '2026-11-02').forEach(b => { vus[b[1]] = true; }));
     /* Un bloc « a une destination » s'il est : du travail chronometre (typeBlocPlan),
-       une seance de sport, du cardio, un repas, ou un bloc de vie sans suivi assume
-       (douche, trajet, coucher, temps libre...). On liste ce qui n'entre nulle part. */
-    const vie = /Douche|Trajet|Coucher|Temps libre|Repos|Micro-sieste|Collation|Déjeuner|Dîner|Petit-déjeuner|Sport|Course à pied|Jumu|Ménage|Batch cooking|Courses|Rangement|Cours$/;
+       une seance de sport, du cardio (JJB et Muay Thai se notent dans « Cardio & combat »),
+       un repas, un bloc de projets perso (sans minuteur depuis le 25 septembre : sa
+       destination est le livrable coche le dimanche), ou un bloc de vie sans suivi assume
+       (douche, trajet, retour du club, coucher, temps libre...). On liste ce qui n'entre
+       nulle part. */
+    const vie = /Douche|Trajet|Retour du club|Coucher|Temps libre|Repos|Micro-sieste|Collation|Déjeuner|Dîner|Petit-déjeuner|Sport|Course à pied|JJB|Muay Thai|^Projets perso|Jumu|Ménage|Batch cooking|Courses|Rangement|Cours$/;
     Object.keys(vus).forEach(l => {
       if(window.__bcTypeBloc(l)) return;
       if(vie.test(l)) return;
@@ -89,15 +92,18 @@ console.log('\n== E) Le cardio, bout en bout ==');
 {
   const r = await fr.evaluate(() => {
     const sorties = window.__bcSortiesCardio('2026-11-02');
-    /* depuis le 10 octobre, le samedi porte des sprints en cote et le dimanche la course */
-    const grille = window.__bcGrille('saturday', '2026-11-07').some(b => /Sprints en côte/.test(b[1])) && window.__bcGrille('weekend', '2026-11-08').some(b => /Course à pied/.test(b[1]));
-    const agenda = window.__bcRappels('2026-11-07').some(x => /Sprints en côte/.test(x.titre)) && window.__bcRappels('2026-11-08').some(x => /Course à pied/.test(x.titre));
+    /* regime combat (28 septembre -> 24 janvier) : le cardio, c'est le club -- JJB lundi,
+       mercredi et vendredi a 10:30, Muay Thai mardi a 19:30 ; plus de course ni de sprints */
+    const jjb = [['monday','2026-11-02'],['wednesday','2026-11-04'],['friday','2026-11-06']]
+      .every(([c, iso]) => window.__bcGrille(c, iso).some(b => b[0] === '10:30' && /JJB/.test(b[1])));
+    const grille = jjb && window.__bcGrille('tuesday', '2026-11-03').some(b => b[0] === '19:30' && /Muay Thai/.test(b[1]));
+    const agenda = window.__bcRappels('2026-11-02').some(x => /JJB/.test(x.titre)) && window.__bcRappels('2026-11-03').some(x => /Muay Thai/.test(x.titre));
     const panneau = !!document.getElementById('cardio-panel');
     return {sorties: sorties.length, grille, agenda, panneau};
   });
-  pt(r.grille, 'dans la grille');
+  pt(r.grille, 'dans la grille (JJB lundi, mercredi et vendredi 10:30 ; Muay Thai mardi 19:30)');
   pt(r.agenda, 'dans ce qui part vers l\'agenda Google');
-  pt(r.panneau && r.sorties === 2, 'dans l\'onglet Sport, avec ses 2 sorties (' + r.sorties + ')');
+  pt(r.panneau && r.sorties === 4, 'dans l\'onglet Sport, avec ses 4 séances de combat (' + r.sorties + ')');
 }
 
 await ctx.close(); await b.close();
