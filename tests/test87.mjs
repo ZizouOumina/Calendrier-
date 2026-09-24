@@ -138,7 +138,8 @@ console.log('\n== 288) L\'entre-deux des semestres se déduit des dates, il n\'e
   ok(v.j19 === false && v.j20 === true && v.j22 === true && v.j25 === false,
      'le 19 il y a cours, du 20 au 22 non, le 25 le semestre 2 démarre (' + [v.j19, v.j20, v.j22, v.j25].join('/') + ')');
   ok(!v.liste.ajoutes.length && !v.liste.retires.length, 'et rien n\'a été saisi pour cela : c\'est déduit des dates de semestre');
-  ok(v.g.includes('15:00 Projets perso 4') && v.g.includes('18:00 Réexpliquer') && v.g.includes('21:00 Coucher'), 'le jeudi 21 janvier a bien l\'agenda d\'un jour sans cours');
+  /* le regime combat court jusqu'au 24 janvier, veille du S2 : coucher 21:35, pas 21:00 */
+  ok(v.g.includes('15:00 Projets perso 4') && v.g.includes('18:00 Réexpliquer') && v.g.includes('21:35 Coucher'), 'le jeudi 21 janvier a bien l\'agenda d\'un jour sans cours du régime combat (coucher 21:35)');
   await ctx.close();
 }
 
