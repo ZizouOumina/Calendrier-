@@ -86,8 +86,10 @@ console.log('\n== 322) Les trajets qui font gagner de l\'argent ==');
      reste a Alcampo que le beurre de cacahuete -- le pot qu'il a choisi. */
   ok(chez('Skyr') === 'Lidl', 'Skyr → Lidl : la boîte de 150 g à 0,75 € (' + chez('Skyr') + ')');
   ok(chez('Huile d\'olive') === 'Lidl', 'Huile d\'olive → Lidl : le bidon de 2 L à 11,89 € (' + chez('Huile d\'olive') + ')');
-  ok(chez('Beurre de cacahuète') === 'Alcampo',
-     'le beurre de cacahuète reste le seul article d\'Alcampo (' + chez('Beurre de cacahuète') + ')');
+  /* 24 septembre : le beurre de cacahuete sort du plan, et avec lui le dernier article
+     d'Alcampo. Les amandes qui le remplacent vont chez Lidl, comme le reste du sec. */
+  ok(chez('Beurre de cacahuète') === undefined && chez('Amandes ou noix nature') === 'Lidl',
+     'plus d\'article chez Alcampo : les amandes vont chez Lidl (' + chez('Amandes ou noix nature') + ')');
   ok(chez('Bananes') === 'Lidl' && /^Frutería/.test(chez('Fruits') || ''),
      'bananes chez Lidl à 1,48 €/kg, fruits à la frutería (' + chez('Bananes') + ' / ' + chez('Fruits') + ')');
   ok(chez('Riz') === 'Lidl' && chez('Pâtes') === 'Lidl' && chez('Flocons d\'avoine') === 'Lidl',
@@ -171,8 +173,8 @@ console.log('\n== 325) La page Courses annonce les adresses ==');
   const { ctx, fr } = await courses('2026-09-19T10:00:00+02:00');
   const d = await fr.evaluate(() => document.querySelector('.page[data-page="courses"] .page-head .desc').textContent);
   ok(/pastille/.test(d) && /moins cher/.test(d), 'la description explique à quoi sert la pastille');
-  ok(/boucherie/i.test(d) && /Lidl/.test(d) && /fruter/i.test(d) && /Alcampo/.test(d) && /en ligne/i.test(d),
-     'et elle nomme les cinq adresses réellement utilisées');
+  ok(/boucherie/i.test(d) && /Lidl/.test(d) && /fruter/i.test(d) && !/Alcampo/.test(d) && /en ligne/i.test(d),
+     'et elle nomme les quatre adresses réellement utilisées — plus Alcampo depuis le 24 septembre');
   /* La description annonçait « les prix, eux, ne sont plus affichés ». C'était vrai du
      19 au 20 septembre, et faux depuis le 21 : il a relevé quinze prix sur seize. Une
      description qui contredit la page est un mensonge de plus, pas un détail. */

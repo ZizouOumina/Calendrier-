@@ -1,7 +1,7 @@
 # Programme d'alimentation — La Batcave
 
 Copie de référence du plan appliqué dans la Batcave (onglets Repas, Préparation et Courses).
-Copie du **20 septembre 2026**, après le retrait du poisson. Le plan démarre le **lundi
+Copie du **24 septembre 2026**, après le retrait de la collation du soir (le poisson était sorti le 20). Le plan démarre le **lundi
 21 septembre 2026** avec le reste du programme (jour 1 ; les cours, eux, ont repris le 14).
 
 > Ce fichier ne calcule rien : il recopie ce que la Batcave applique. Si un chiffre diverge,
@@ -11,20 +11,31 @@ Copie du **20 septembre 2026**, après le retrait du poisson. Le plan démarre l
 
 ## Le cadre
 - 64 kg · 182 cm · 20 ans · quatre séances de sport par semaine · objectif **72 kg** à mars 2027 (environ +1,3 kg par mois, 0,31 kg par semaine — relevé de 70 à 72 kg le 23 septembre).
-- **3 230 kcal par jour · protéines 166 g (2,6 g/kg) · glucides 377 g · lipides 115 g.** Tout est pesé cru. (3 131 kcal avant le 23 septembre : le jambon de la collation est remplacé par deux œufs durs.)
-- Cinq prises par jour. Riz à midi, pâtes le soir. Depuis le 20 septembre, **poulet tous les midis et viande hachée 5 % tous les soirs** : la rotation ne change plus d'un jour à l'autre.
+- **3 234 kcal par jour · protéines 165 g (2,6 g/kg) · glucides 359 g · lipides 125 g.** Tout est pesé cru. (3 230 kcal le 23 septembre, 3 131 avant : le jambon de la collation avait été remplacé par deux œufs durs.)
+- **Quatre prises par jour depuis le 24 septembre.** La collation du soir est sortie : elle lui donnait mal au ventre, une heure après le dîner et juste avant de s'allonger. Rien de ce qu'elle contenait n'est perdu — le skyr devient une sauce au déjeuner et au dîner, le miel passe dans les flocons. Le beurre de cacahuète, qu'il n'aime pas, est remplacé par des **amandes ou des noix nature** (mêmes calories et mêmes lipides à 2 % près ; moitié noix si possible, pour les oméga-3 que le poisson apportait). Le riz de midi descend de 155 à **125 g crus** — il n'avait jamais cuit cette quantité ; le poulet ne bouge pas (sa décision), et les 108 kcal reviennent en amandes (+20 g). Riz à midi, pâtes le soir. Depuis le 20 septembre, **poulet tous les midis et viande hachée 5 % tous les soirs** : la rotation ne change plus d'un jour à l'autre.
 - Eau : 3 litres par jour.
 - Viande **halal, achetée à la boucherie** — pas en supermarché, aucune exception. (Le jambon, qui y était aussi, est sorti du plan le 23 septembre.)
 
-## Les cinq prises
+## Les quatre prises
 
 | Heure | Prise | Contenu | Apport |
 |---|---|---|---|
-| 06:45 | Petit-déjeuner | Flocons d'avoine 80 g · skyr 180 g · 2 œufs (100 g) · beurre de cacahuète 25 g · banane 120 g | 821 kcal · P 50 · G 93 · L 28 |
-| 12:20 | Déjeuner | Riz 155 g cru · poulet 80 g · légumes verts 200 g · huile d'olive 30 ml | 978 kcal · P 35 · G 134 · L 33 |
-| 14:50 | Collation entraînement | Pain complet 60 g · 2 œufs durs (100 g) · fromage 20 g | 363 kcal · P 23 · G 27 · L 17 |
-| 20:00 (19:00 le week-end) | Dîner | Pâtes 105 g crues · viande hachée 5 % 90 g · légumes verts 150 g · huile d'olive 15 ml · 1 fruit (≈ 120 g) | 752 kcal · P 37 · G 96 · L 22 |
-| 21:30 (20:30 le week-end) | Collation soir | Skyr 125 g · miel 20 g · beurre de cacahuète 30 g | 316 kcal · P 21 · G 27 · L 15 |
+| 06:45 | Petit-déjeuner | Flocons d'avoine 80 g avec miel 20 g · skyr 180 g · 2 œufs (100 g) · amandes ou noix 40 g · banane 120 g | 967 kcal · P 52 · G 113 · L 36 |
+| 12:20 | Déjeuner | Riz 125 g cru (≈ 325 g cuit) · poulet 80 g · légumes verts 200 g · huile d'olive 30 ml (dont 10 dans la sauce) · sauce au skyr 65 g | 911 kcal · P 40 · G 113 · L 33 |
+| 14:50 | Collation entraînement | Pain complet 60 g · 2 œufs durs (100 g) · fromage 20 g · amandes ou noix 35 g | 566 kcal · P 30 · G 34 · L 34 |
+| 20:00 (19:30 le week-end) | Dîner | Pâtes 105 g crues · viande hachée 5 % 90 g · légumes verts 150 g · huile d'olive 15 ml (dont 5 dans la sauce) · sauce au skyr 60 g · 1 fruit (≈ 120 g) · créatine 5 g | 790 kcal · P 43 · G 99 · L 22 |
+
+Après le dîner, plus rien jusqu'au lendemain. La créatine, qui se prenait avec la collation
+du soir, passe au dîner.
+
+**La sauce au skyr.** Une minute, à froid : le skyr, l'huile prévue dans le repas, sel, et un
+parfum — ail-citron-menthe (tzatziki), curry doux ou harissa-citron pour le riz et le
+poulet ; à la turque (skyr à l'ail, filet d'huile au paprika) ou moutarde-persil pour les
+pâtes et la viande. **Jamais sur le feu** : le skyr tranche. La boîte se réchauffe d'abord
+à la poêle (2 à 3 cuillères d'eau, couvercle, 4 à 5 min, brûlante jusqu'au cœur ; pas
+l'air fryer, qui dessèche), puis la sauce se mélange hors du feu. Cuisiné et mangé tout
+de suite, le skyr peut aller dans la viande en fin de cuisson, poêle retirée du feu, ou
+stabilisé d'une cuillère à café de maïzena. Jamais dans les boîtes du dimanche.
 
 Les grammes de pâtes du dîner sont les seuls à bouger : c'est là que s'écrit l'ajustement de
 la boucle poids → calories (voir plus bas).
@@ -32,7 +43,7 @@ la boucle poids → calories (voir plus bas).
 > **Pourquoi le poisson est sorti (20 septembre).** À 13 € le kilo il coûtait plus du double
 > du poulet pour la même place dans l'assiette, et il imposait deux cuissons de plus le
 > dimanche. Les macros ne bougent pas : les quantités de poulet et de viande hachée ont été
-> reprises pour tenir les mêmes 3 131 kcal et les mêmes 161 g de protéines.
+> reprises pour tenir les mêmes 3 131 kcal et les mêmes 161 g de protéines (chiffres de ce jour-là).
 
 > **Pourquoi le skyr et pas le yaourt grec.** Le skyr ne contient que deux ingrédients —
 > lait écrémé pasteurisé et ferments — donc le lactosérum a été égoutté. Les yaourts grecs
@@ -56,18 +67,19 @@ Les quantités ne sont pas recopiées : elles sortent du plan de repas × 7 jour
 la catégorie, puis s'arrondissent **au-dessus** du conditionnement réel. La viande ne
 s'arrondit pas — le boucher pèse le montant exact. Les fruits se comptent à l'unité.
 
-**Les prix sont les siens**, relevés les 20 et 21 septembre — **les seize lignes**, chacune
-avec sa boutique et sa date, aucune estimation, aucun trou. Le 19 il avait fait sauter les
+**Les prix sont les siens**, relevés les 20 et 21 septembre, chacun avec sa boutique et sa
+date, aucune estimation. **Une ligne n'a pas encore de prix : les amandes** (depuis le 24
+septembre) ; elle dit « prix à relever » et reste hors du total jusqu'à ce qu'il l'envoie. Le 19 il avait fait sauter les
 estimations (« enlève l'estimation de budget, dès que j'achèterai je t'enverrai les
 factures ») ; ce qui est écrit ici n'est donc plus une estimation mais un relevé. Ce que ça
-donne : **46,32 € par semaine, 200,71 € par mois** (44,89 et 194,54 avant le 23 septembre : deux œufs remplacent le jambon), calculés sur ce qu'il mange (le besoin
+donne : **44,05 € par semaine, 190,87 € par mois hors amandes** (46,32 et 200,71 le 23 septembre avec le beurre de cacahuète ; 44,89 et 194,54 avant), calculés sur ce qu'il mange (le besoin
 hebdomadaire) et non sur l'achat du jour — un bidon d'huile de 2 L dure cinq semaines. Ce
 montant est le *plan* ; ce qu'il a vraiment payé se saisit dans Budget → Nourriture à partir
 de ses tickets, et c'est ce dernier qui compte dans ses dépenses du mois. Un **plafond**
-Nourriture y est posé à 201 € (195 avant le 23 septembre), à la place de l'ancienne charge fixe « Courses » de
+Nourriture y est posé à 201 € (195 avant le 23 septembre) — il n'est pas retouché le 24 : sans le prix des amandes, le recalculer le ferait descendre à tort. Il remplace de l'ancienne charge fixe « Courses » de
 300 €/mois, qui comptait la nourriture deux fois.
 
-**Chaque semaine** — 7 articles
+**Chaque semaine** — 8 articles
 
 | Article | À prendre | Le plan demande | Où | Prix relevé |
 |---|---|---|---|---|
@@ -78,6 +90,7 @@ Nourriture y est posé à 201 € (195 avant le 23 septembre), à la place de l'
 | Pain complet | 450 g (1 paquet) | 420 g | Lidl | 1,05 € les 450 g, 16 tranches |
 | Bananes | 7 | 7 | Lidl | 1,48 €/kg |
 | Fruits (pommes, poires, oranges…) | 7 | 7 | Frutería, de saison | ≈ 2 €/kg |
+| Amandes ou noix nature | 600 g (3 sachets de 200 g) | 525 g | Lidl | à relever |
 
 La boîte d'œufs de 12 est à 2,84 €, soit moins cher à l'unité que celle de 6 : trois boîtes
 de 6 font les 30, mais deux de 12 plus une de 6 coûtent moins.
@@ -91,13 +104,11 @@ de 6 font les 30, mais deux de 12 plus une de 6 coûtent moins.
   cycle de deux semaines : 140 g par semaine contre un conditionnement de 400, un paquet
   couvre presque trois semaines. Il est maintenant rangé là où son cycle est écrit.
 
-**Toutes les 4 semaines** — riz 5 kg (4 340 g, 1,09 €/kg) · pâtes 3 kg (2 940 g, plus la
+**Toutes les 4 semaines** — riz 4 kg (3 500 g depuis le 24 septembre, 1,09 €/kg) · pâtes 3 kg (2 940 g, plus la
 boucle kcal s'il y en a une, 1,09 €/kg) · flocons d'avoine 2,5 kg (2 240 g, 1,50 €/kg,
 0,75 € les 500 g) · miel 1 kg (560 g, 10,00 €/kg). Tout chez Lidl.
 
-**Toutes les 5 semaines** — beurre de cacahuète 2 kg (1 925 g), Alcampo, 5,30 €/kg —
-2,65 € le pot de 500 g de crème 100 % cacahuète moulue à la meule (tarif en ligne) ·
-huile d'olive **2 L, un bidon** (1 575 ml demandés), Lidl, 11,89 € les 2 L. L'huile est
+**Toutes les 5 semaines** — huile d'olive **2 L, un bidon** (1 575 ml demandés), Lidl, 11,89 € les 2 L. L'huile est
 montée à 315 ml par semaine depuis le retrait du poisson : 30 ml à midi avec le poulet,
 15 ml le soir avec la viande hachée, les sept jours. Le bidon de 2 L couvre donc le cycle
 à lui seul, et il reste 425 ml — qui ne sont pas perdus : il coche la ligne sans acheter
@@ -113,15 +124,15 @@ Une session, **quatorze boîtes** : les sept repas de midi et les sept du soir. 
 Préparation écrit tout depuis le plan — ce qu'il y a à cuire, l'ordre minuté, et le contenu
 exact de chaque boîte.
 
-À cuire pour la semaine : riz 1 085 g crus · pâtes 735 g · poulet 560 g · viande hachée 630 g
+À cuire pour la semaine : riz 875 g crus (≈ 2,3 kg cuits — comme des pâtes, dans une grande casserole d'eau salée, 12 à 15 min, puis égoutté) · pâtes 735 g · poulet 560 g · viande hachée 630 g
 · légumes 2 450 g · 315 ml d'huile · 28 œufs durs (le matin et la collation).
 
 - **Quatre jours au frigo, trois au congélateur** : de la viande cuite tient quatre jours à 4 °C, pas sept.
 - Refroidir à découvert avant de fermer ; deux heures maximum entre la casserole et le frigo.
-- Ne jamais réchauffer deux fois. Le fruit reste entier, jamais dans la boîte.
-- Le petit-déjeuner et les deux collations ne se préparent pas : ils s'assemblent en cinq minutes.
+- Ne jamais réchauffer deux fois. Le fruit reste entier, jamais dans la boîte, et la sauce au skyr non plus.
+- Le petit-déjeuner et la collation ne se préparent pas : ils s'assemblent en cinq minutes.
 
 ## Ce qui est suivi dans la Batcave
-- Les cinq cases de l'onglet Repas se réinitialisent à minuit ; la barre du jour prorate les calories aux cases cochées.
+- Les quatre repas de l'onglet Repas se réinitialisent à minuit ; la barre du jour prorate les calories aux cases cochées.
 - L'onglet Courses n'affiche que les catégories dues ce samedi-là et annonce la date du prochain passage de chacune. Cocher tous les articles dus coche l'habitude « Courses faites ».
 - Objectif à six mois : 72 kg, lu automatiquement dans les pesées du Journal.

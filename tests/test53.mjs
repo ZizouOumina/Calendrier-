@@ -51,7 +51,9 @@ console.log('\n== 180) Sans ajustement : plan de base, liste = plan × 7 ==');
      pates 105 -> 735 -> 2 940, donc 3 paquets de 1 kg -- le format dont il a donne le
      prix lui-meme (1,09 EUR/kg). Acheter en dessous du besoin
      serait une rupture en milieu de cycle : l'arrondi va toujours VERS LE HAUT. */
-  ok(c.items.some(t => /^Riz — 5 kg\b/.test(t) && /le plan en demande 4\u202f340 g/.test(t)), 'riz : 5 kg achetés pour 4 340 g demandés (' + c.items.find(t => /^Riz/.test(t)) + ')');
+  /* 24 septembre : le riz de midi passe de 155 a 125 g crus -- 875 g par semaine, 3 500 g
+     sur le cycle de quatre semaines, donc 4 paquets de 1 kg. */
+  ok(c.items.some(t => /^Riz — 4 kg\b/.test(t) && /le plan en demande 3\u202f500 g/.test(t)), 'riz : 4 kg achetés pour 3 500 g demandés (' + c.items.find(t => /^Riz/.test(t)) + ')');
   ok(c.items.some(t => /^Pâtes — 3 kg\b/.test(t) && /le plan en demande 2\u202f940 g/.test(t)), 'pâtes : 3 kg achetés pour 2 940 g demandés (' + c.items.find(t => /^Pâtes/.test(t)) + ')');
   /* Depuis le 20 septembre la rotation est la meme tous les jours : poulet a midi
      (80 g x 7 = 560), viande hachee le soir (90 g x 7 = 630). Le poisson est sorti.
@@ -115,14 +117,17 @@ console.log('\n== 180) Sans ajustement : plan de base, liste = plan × 7 ==');
      de repas, donc elle n'a ni besoin hebdomadaire ni prix releve. */
   ok(c.items.some(t => /^Poulet/.test(t) && /7,50 €\/kg/.test(t)),
      'le poulet porte le prix de sa boucherie (' + c.items.find(t => /^Poulet/.test(t)) + ')');
-  ok(c.items.some(t => /^Beurre de cacahuète/.test(t) && /5,30 €\/kg/.test(t)),
-     'le beurre de cacahuète porte les 5,30 €/kg de sa fiche (' + c.items.find(t => /^Beurre/.test(t)) + ')');
-  ok(!c.items.some(t => /prix à relever/.test(t)),
-     'et plus une seule ligne ne dit « prix à relever »');
+  /* 24 septembre : le beurre de cacahuete sort du plan, les amandes le remplacent -- et
+     elles n'ont PAS de prix releve. La ligne le dit, elle seule, et sort du total : pas
+     d'estimation pour combler le trou. */
+  ok(!c.items.some(t => /^Beurre de cacahuète/.test(t)), 'le beurre de cacahuète est sorti de la liste');
+  ok(c.items.filter(t => /prix à relever/.test(t)).length === 1 && c.items.some(t => /^Amandes ou noix nature/.test(t) && /prix à relever/.test(t)),
+     'une seule ligne dit « prix à relever » : les amandes (' + c.items.find(t => /^Amandes/.test(t)) + ')');
+  ok(/Amandes ou noix nature : prix pas encore relev/.test(c.budget), 'et le budget le dit, hors total');
 
   await page_(fr, 'repas');
   const r = await fr.evaluate(() => ({ diner: [...document.querySelectorAll('.meal-card')].find(c => /Dîner/.test(c.querySelector('.mtitle').textContent)) }) && [...document.querySelectorAll('.meal-card')].find(c => /Dîner/.test(c.querySelector('.mtitle').textContent)).innerText);
-  ok(/Pâtes 105g/.test(r) && /~752 kcal/.test(r) && /Viande hachée 5 % 90g/.test(r) && /Huile d'olive \(15ml\)/.test(r), 'dîner de base du mardi : pâtes 105 g, viande hachée 90 g, huile 15 ml, ~752 kcal');
+  ok(/Pâtes 105g/.test(r) && /~790 kcal/.test(r) && /Viande hachée 5 % 90g/.test(r) && /Sauce skyr/.test(r), 'dîner de base du mardi : pâtes 105 g, viande hachée 90 g, sauce au skyr, ~790 kcal');
   await ctx.close();
 }
 
@@ -132,18 +137,18 @@ console.log('\n== 181) Avec +150 kcal : le dîner et les courses l\'écrivent ==
   await page_(fr, 'repas');
   const r = await fr.evaluate(() => [...document.querySelectorAll('.meal-card')].find(c => /Dîner/.test(c.querySelector('.mtitle').textContent)).innerText);
   ok(/Pâtes 145g/.test(r), 'féculent du dîner : pâtes 145 g (+40)');
-  ok(/boucle kcal \+150 kcal/.test(r) && /~896 kcal/.test(r), 'le dîner annonce ~896 kcal et la boucle');
+  ok(/boucle kcal \+150 kcal/.test(r) && /~934 kcal/.test(r), 'le dîner annonce ~934 kcal et la boucle');
   const sub = await fr.evaluate(() => document.getElementById('meal-kcal-sub').textContent);
   /* 3 131 + 144 : la boucle demande +150 kcal, mais les pates s'ajustent par pas de 10 g,
      donc elle en ajoute 144. On annonce l'ecart REEL entre les deux journees, pas la
      consigne -- sinon la soustraction affichee ne tombe pas juste. */
-  ok(/\/ 3374 kcal \(plan 3230 \+ 144\)/.test(sub), 'cible du jour : ' + sub);
+  ok(/\/ 3378 kcal \(plan 3234 \+ 144\)/.test(sub), 'cible du jour : ' + sub);
   /* cocher tout le dîner : l\'apport consommé porte les 150 kcal */
   /* un clic redessine la grille : on re-cherche la première case non cochée du dîner à chaque tour */
   await fr.evaluate(() => { for(let i = 0; i < 10; i++){ const card = [...document.querySelectorAll('.meal-card')].find(c => /Dîner/.test(c.querySelector('.mtitle').textContent)); const cb = card && card.querySelector('input:not(:checked)'); if(!cb) break; cb.click(); } });
   await page.waitForTimeout(200);
   const sub2 = await fr.evaluate(() => document.getElementById('meal-kcal-sub').textContent);
-  ok(/^896 \/ 3374 kcal/.test(sub2), 'dîner coché : ' + sub2);
+  ok(/^934 \/ 3378 kcal/.test(sub2), 'dîner coché : ' + sub2);
   await page_(fr, 'courses');
   const c = await fr.evaluate(() => ({ items: [...document.querySelectorAll('#courses-grid label, #courses-grid-plus label')].map(l => l.textContent), note: document.getElementById('courses-plan-note').textContent }));
   /* L'ajustement suit le sac : +280 g par semaine font +1 120 g sur quatre semaines.
@@ -193,7 +198,7 @@ for (const jour of ['2026-09-20','2026-09-21','2026-09-22','2026-09-23','2026-09
   const { ctx, fr, page } = await ouvrir(jour + 'T10:00:00+02:00');
   await page_(fr, 'repas');
   const r = await fr.evaluate(iso => {
-    const A = window.__bcAliments, noms = ['Petit-déjeuner','Déjeuner','Collation entraînement','Dîner','Collation soir'];
+    const A = window.__bcAliments, noms = ['Petit-déjeuner','Déjeuner','Collation entraînement','Dîner'];
     const recompte = n => {
       const t = {kcal:0, p:0, g:0, l:0};
       window.__bcCompoRepas(n, iso, false).forEach(x => {
@@ -215,7 +220,7 @@ for (const jour of ['2026-09-20','2026-09-21','2026-09-22','2026-09-23','2026-09
     return {lignes, jourRecompte, sub: document.getElementById('meal-kcal-sub').textContent};
   }, jour);
   const faux = r.lignes.filter(x => x.attendu !== x.lu);
-  ok(faux.length === 0, jour + ' : les 5 repas affichent ce que la table de composition donne' +
+  ok(faux.length === 0, jour + ' : les 4 repas affichent ce que la table de composition donne' +
      (faux.length ? ' — ' + faux.map(x => x.nom + ' lu « ' + x.lu +' » vs recompté « ' + x.attendu + ' »').join(' ; ') : ''));
   const cible = Number((r.sub.match(/\/ (\d+) kcal/) || [])[1]);
   ok(cible === r.jourRecompte.kcal, jour + ' : la cible du jour (' + cible + ') est la somme des cinq repas (' + r.jourRecompte.kcal + ')');
@@ -240,7 +245,7 @@ console.log('\n== 183) La liste de courses sort du MEME plan que les repas ==');
   const { ctx, fr } = await ouvrir('2026-09-22T10:00:00+02:00');
   const r = await fr.evaluate(() => {
     const A = window.__bcAliments, alias = {banane:'bananes', fruit:'fruits'};
-    const noms = ['Petit-déjeuner','Déjeuner','Collation entraînement','Dîner','Collation soir'];
+    const noms = ['Petit-déjeuner','Déjeuner','Collation entraînement','Dîner'];
     const b = {};
     for(let j = 20; j <= 26; j++){
       noms.forEach(n => window.__bcCompoRepas(n, '2026-09-' + j, true).forEach(x => {
@@ -256,7 +261,7 @@ console.log('\n== 183) La liste de courses sort du MEME plan que les repas ==');
      'les 15 besoins de la semaine sont exactement la somme des repas' + (faux.length ? ' — ' + faux.map(k => k + ' : ' + r.lu[k] + ' vs ' + r.recompte[k]).join(', ') : ' (' + cles.length + ')'));
   /* Et aucun aliment du plan ne manque a la liste de courses. */
   const manquants = await fr.evaluate(() => {
-    const noms = ['Petit-déjeuner','Déjeuner','Collation entraînement','Dîner','Collation soir'];
+    const noms = ['Petit-déjeuner','Déjeuner','Collation entraînement','Dîner'];
     const dans = {};
     for(let j = 20; j <= 26; j++) noms.forEach(n => window.__bcCompoRepas(n, '2026-09-' + j, true).forEach(x => { dans[x.c] = true; }));
     const alias = {banane:'bananes', fruit:'fruits'};

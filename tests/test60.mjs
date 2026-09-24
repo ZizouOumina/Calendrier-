@@ -38,7 +38,7 @@ console.log('\n== 199) Liste de courses finie le dimanche → coche du samedi 5,
     if(!encore) break;
     await page.waitForTimeout(30);
   }
-  ok(/^7\/7 articles/.test(await txt('#courses-summary')), 'Courses : 7/7 articles, le jambon sorti le 23 septembre (' + await txt('#courses-summary') + ')');
+  ok(/^8\/8 articles/.test(await txt('#courses-summary')), 'Courses : 8/8 articles, les amandes entrées le 24 septembre (' + await txt('#courses-summary') + ')');
   const log = await fr.evaluate(() => JSON.parse(localStorage.getItem('batcave-habitlog'))['core-courses']);
   ok(log.indexOf('2026-09-05') > -1 && log.indexOf('2026-09-06') < 0, 'journal : samedi 5 septembre, pas dimanche 6 — ' + JSON.stringify(log));
   await aller('habitudes');
@@ -67,7 +67,7 @@ console.log('\n== 200) Samedi : « Fait aujourd\'hui », le tableau de bord la l
   const log = await fr.evaluate(() => JSON.parse(localStorage.getItem('batcave-habitlog'))['core-courses']);
   ok(log.indexOf('2026-09-12') > -1, 'journal : samedi 12 — ' + JSON.stringify(log));
   await aller('courses');
-  ok(/^7\/7 articles/.test(await txt('#courses-summary')), 'Courses : cocher l\'habitude remplit la liste');
+  ok(/^8\/8 articles/.test(await txt('#courses-summary')), 'Courses : cocher l\'habitude remplit la liste');
   await aller('habitudes');
   ok(/Fait aujourd'hui/.test(await carte()), 'Habitudes : « Fait aujourd\'hui » le samedi');
 }

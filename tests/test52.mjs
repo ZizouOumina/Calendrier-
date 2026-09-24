@@ -95,9 +95,11 @@ console.log('\n== 171) Activer : un événement par bloc, aujourd\'hui (restants
      depart du programme, ou rien n'est ecrit). La fenetre de 75 jours glisse donc d'une
      semaine et contient un JOUR SANS COURS de plus, le 8 decembre. Cinq jours au lieu de
      quatre. La composition, a recalculer si une grille bouge :
-       22 (mardi 29, dont 1 deja commence) + 19 (mercredi 30) + 21 (9 oct.) + 20 (12 oct.)
-       + 21 (8 dec.) = 103 blocs, moins le bloc deja commence = 102 crees. */
-  ok(crees.length === 102, '102 événements créés : mardi et mercredi, plus les 9 oct., 12 oct. et 8 déc. (' + crees.length + ')');
+       22 (mardi 29, dont 1 deja commence) + 19 (mercredi 30) + 20 (9 oct.) + 19 (12 oct.)
+       + 20 (8 dec.) = 100 blocs, moins le bloc deja commence = 99 crees. Les jours sans cours
+       ont perdu un bloc le 24 septembre : la Collation soir est sortie du plan (le mardi et
+       le mercredi, elle est devenue du Temps libre -- meme nombre de blocs). */
+  ok(crees.length === 99, '99 événements créés : mardi et mercredi, plus les 9 oct., 12 oct. et 8 déc. (' + crees.length + ')');
   const rev1 = crees.find(c => c.input.summary === '🦇 Anki 1' && c.input.startTime.startsWith('2026-09-29'));
   ok(!!rev1 && rev1.input.startTime === '2026-09-29T07:20:00+02:00' && rev1.input.endTime === '2026-09-29T08:20:00+02:00', 'Anki 1 : 07:20 → 08:20 heure de Madrid (' + (rev1 && rev1.input.startTime) + ')');
   ok(!!rev1 && rev1.input.overrideReminders[0].minutes === 5 && rev1.input.timeZone === 'Europe/Madrid' && rev1.input.calendarId === 'zizou.oumina@gmail.com', 'rappel 5 min avant, fuseau et agenda précisés');
@@ -108,23 +110,23 @@ console.log('\n== 171) Activer : un événement par bloc, aujourd\'hui (restants
   const r8 = await local(fr, 'batcave-gcal-2026-09-29'), r9 = await local(fr, 'batcave-gcal-2026-09-30');
   ok(r8 && Object.keys(r8).length === 21 && r9 && Object.keys(r9).length === 19 && Object.values(r8).every(x => x.id && x.empreinte && x.cree === true), 'relevés locaux : 21 + 19 blocs avec id, empreinte et marque « créé par la Batcave »');
   const opt = await local(fr, 'batcave-gcal-ecriture');
-  ok(opt && opt.actif === true && opt.bilan && opt.bilan.crees === 102 && opt.bilan.passes === 1, 'option active, bilan : 102 créés, 1 déjà commencé non envoyé');
+  ok(opt && opt.actif === true && opt.bilan && opt.bilan.crees === 99 && opt.bilan.passes === 1, 'option active, bilan : 99 créés, 1 déjà commencé non envoyé');
   const lus = await appels(fr, 'list_events');
   ok(lus.length === 5, 'chaque journée poussée est relue dans Google avant l\'envoi (' + lus.length + ' lectures pour 5 jours)');
   /* second envoi : rien à créer */
   await fr.evaluate(() => document.getElementById('gcal-pousser').click());
   await page.waitForTimeout(400);
   const crees2 = await appels(fr, 'create_event');
-  ok(crees2.length === 102, '« Pousser maintenant » ne recrée rien (' + crees2.length + ')');
+  ok(crees2.length === 99, '« Pousser maintenant » ne recrée rien (' + crees2.length + ')');
   const det = await fr.evaluate(() => document.getElementById('gcal-detail').textContent);
-  ok(/102 inchangés/.test(det), 'détail : ' + det.slice(0, 90));
+  ok(/99 inchangés/.test(det), 'détail : ' + det.slice(0, 90));
   /* relevé local perdu (autre appareil) : les événements présents sont adoptés, pas doublés */
   await fr.evaluate(() => localStorage.removeItem('batcave-gcal-2026-09-30'));
   await fr.evaluate(() => document.getElementById('gcal-pousser').click());
   await page.waitForTimeout(400);
   const crees3 = await appels(fr, 'create_event');
   const r9b = await local(fr, 'batcave-gcal-2026-09-30');
-  ok(crees3.length === 102 && r9b && Object.keys(r9b).length === 19 && Object.values(r9b).every(x => x.cree === false), 'sans relevé local, les 19 événements de demain sont reconnus et adoptés (marqués « pas créés par la Batcave »), aucun doublon');
+  ok(crees3.length === 99 && r9b && Object.keys(r9b).length === 19 && Object.values(r9b).every(x => x.cree === false), 'sans relevé local, les 19 événements de demain sont reconnus et adoptés (marqués « pas créés par la Batcave »), aucun doublon');
   const opt2 = await local(fr, 'batcave-gcal-ecriture');
   ok(opt2.bilan.adoptes === 19, 'bilan : 19 adoptés');
   /* désactiver retire les rappels envoyés */
@@ -133,9 +135,9 @@ console.log('\n== 171) Activer : un événement par bloc, aujourd\'hui (restants
   const sup = await appels(fr, 'delete_event');
   /* Le retrait balaie TOUS les releves poses, pas seulement aujourd'hui et demain : depuis
      que les jours sans cours partent d'avance, un releve peut porter sur une date lointaine.
-     21 (mardi 29) + 21 (9 oct.) + 20 (12 oct.) + 21 (8 dec.) = 83. Ceux du mercredi,
+     21 (mardi 29) + 20 (9 oct.) + 19 (12 oct.) + 20 (8 dec.) = 80. Ceux du mercredi,
      adoptes au tour precedent donc marques « pas crees par la Batcave », restent. */
-  ok(sup.length === 83, 'désactiver ne retire que ce que la Batcave a créé, sur TOUS les jours poussés — ' + sup.length);
+  ok(sup.length === 80, 'désactiver ne retire que ce que la Batcave a créé, sur TOUS les jours poussés — ' + sup.length);
   const r8c = await local(fr, 'batcave-gcal-2026-09-29');
   ok(r8c === null && (await local(fr, 'batcave-gcal-ecriture')).actif === false, 'relevés effacés, option éteinte');
   await ctx.close();
@@ -150,7 +152,7 @@ console.log('\n== 172) Option active au démarrage : envoi automatique ; bloc d�
   const maj = await appels(fr, 'update_event');
   ok(maj.length === 1 && maj[0].input.eventId === 'ancien1' && maj[0].input.startTime === '2026-09-29T07:20:00+02:00', 'le bloc dont l\'heure a changé est mis à jour, pas recréé');
   const crees = await appels(fr, 'create_event');
-  ok(crees.length === 101, 'les 101 autres sont créés au démarrage (' + crees.length + ')');
+  ok(crees.length === 98, 'les 98 autres sont créés au démarrage (' + crees.length + ')');
   const st = await fr.evaluate(() => document.getElementById('gcal-statut').textContent);
   ok(/actif · dernier envoi/.test(st), 'statut : ' + st);
   await ctx.close();
@@ -181,14 +183,14 @@ console.log('\n== 172b) Ton agenda porte déjà le planning en événements réc
   ok(!crees.some(c => c.input.summary === '🦇 Anki 1' && c.input.startTime.startsWith('2026-09-29')), 'Anki 1 de mardi, déjà là à la bonne heure : adopté, pas recréé');
   ok(!crees.some(c => c.input.summary === '🦇 Coucher' && c.input.startTime.startsWith('2026-09-29')) && maj.some(m => m.input.eventId === 'rec2_20260908' && m.input.startTime === '2026-09-29T21:55:00+02:00'), 'Coucher déjà là à 21:00 : l\'instance est alignée sur le planning (21:55), pas doublée');
   ok(maj.some(m => m.input.eventId === 'rec1' && m.input.overrideReminders && m.input.overrideReminders[0].minutes === 5) && maj.some(m => m.input.eventId === 'rec2' && m.input.overrideReminders[0].minutes === 30), 'les rappels manquants sont posés sur la SÉRIE récurrente : 5 min (révision), 30 min (coucher)');
-  ok(crees.length === 99, '99 créations seulement (102 − 3 adoptés)');
+  ok(crees.length === 96, '96 créations seulement (99 − 3 adoptés)');
   const r8 = await local(fr, 'batcave-gcal-2026-09-29');
   ok(r8 && r8['p3'] && r8['p3'].id === 'rec1_20260908' && r8['p3'].cree === false, 'le relevé pointe sur l\'instance récurrente adoptée, marquée « pas créée par la Batcave »');
   /* désactiver : les 3 événements adoptés (les tiens) restent, seuls les 38 créés partent */
   await fr.evaluate(() => document.getElementById('gcal-toggle').click());
   await page.waitForTimeout(700);
   const sup = await appels(fr, 'delete_event');
-  ok(sup.length === 99 && !sup.some(d => /^rec/.test(d.input.eventId)), 'désactiver retire les 99 créés et jamais tes événements adoptés (' + sup.length + ')');
+  ok(sup.length === 96 && !sup.some(d => /^rec/.test(d.input.eventId)), 'désactiver retire les 96 créés et jamais tes événements adoptés (' + sup.length + ')');
   await ctx.close();
 }
 

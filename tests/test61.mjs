@@ -59,9 +59,9 @@ console.log('\n== 216) Timeline du calendrier : consigne sous MAINTENANT, infobu
   ok(r.nb === 1, 'une seule consigne dépliée dans la timeline (' + r.nb + ')');
   ok(/échéances/.test(r.titre || ''), 'infobulle sur Anki 1 : ' + (r.titre || '').slice(0, 50) + '…');
   await ctx.close();
-  const o2 = await ouvrir('2026-08-31T12:25:00+02:00');
+  const o2 = await ouvrir('2026-08-31T12:45:00+02:00');
   const r2 = await o2.fr.evaluate(() => ({ quoi: document.getElementById('pb-quoi').textContent, hidden: document.getElementById('pb-consigne').hidden, titre: document.getElementById('pb-titre').textContent }));
-  ok(r2.quoi === 'Déjeuner' && r2.hidden === true, 'bloc sans consigne (Déjeuner) : la ligne est masquée');
+  ok(r2.quoi === '😴 Micro-sieste' && r2.hidden === true, 'bloc sans consigne (Micro-sieste) : la ligne est masquée (' + r2.quoi + ')');
   await o2.ctx.close();
 }
 
@@ -72,10 +72,11 @@ console.log('\n== 217) Google Calendar : un titre « 🦇 Bloc · consigne » se
     a: window.__bcTitreBase('🦇 Anki 1 · cartes dues dentaire (25/5)'),
     b: window.__bcTitreBase('🦇 Projets perso 3 · tâche courte · mer : révision Business'),
     c: window.__bcTitreBase('🦇 Repos — après-midi libre'),
-    lun: window.__bcConsigne('Projets perso 2', 1), ven: window.__bcConsigne('Projets perso 2', 5), sam: window.__bcConsigne('Étudier en avance', 6), rien: window.__bcConsigne('Déjeuner', 1)
+    lun: window.__bcConsigne('Projets perso 2', 1), ven: window.__bcConsigne('Projets perso 2', 5), sam: window.__bcConsigne('Étudier en avance', 6), rien: window.__bcConsigne('😴 Micro-sieste', 1), dej: window.__bcConsigne('Déjeuner', 1, '2026-09-28')
   }));
   ok(r.a === '🦇 Anki 1' && r.b === '🦇 Projets perso 3' && r.c === '🦇 Repos — après-midi libre', 'titre de base : ' + r.a + ' / ' + r.b);
-  ok(/construire/.test(r.lun) && /Bilan de la semaine/.test(r.ven) && /3 d’avance|3 d'avance/.test(r.sam) && r.rien === '', 'consignes par jour (lundi construire, vendredi bilan, samedi 3 d’avance, déjeuner vide)');
+  ok(/construire/.test(r.lun) && /Bilan de la semaine/.test(r.ven) && /3 d’avance|3 d'avance/.test(r.sam) && r.rien === '', 'consignes par jour (lundi construire, vendredi bilan, samedi 3 d’avance, micro-sieste vide)');
+  ok(/sauce/.test(r.dej) && /jamais le skyr sur le feu/i.test(r.dej) && /riz 125 g/.test(r.dej), 'le déjeuner a une consigne depuis le 24 septembre : la sauce au skyr, hors du feu (' + (r.dej || '').slice(0, 60) + '…)');
   await ctx.close();
 }
 await browser.close();

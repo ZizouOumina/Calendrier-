@@ -47,9 +47,9 @@ console.log('\n== 330) Cinq catégories, toutes alimentaires, et le frais seul e
      paquet couvre presque trois semaines. Il portait déjà ce cycle-là tout en restant
      rangé dans le frais, et la catégorie annonçait donc un rythme qu'un de ses articles
      ne suivait pas. */
-  ok(/Chaque semaine/.test(hebdo.titre) && hebdo.n === 7, 'la liste hebdomadaire fait 7 articles frais — le jambon est sorti le 23 septembre (' + hebdo.n + ')');
+  ok(/Chaque semaine/.test(hebdo.titre) && hebdo.n === 8, 'la liste hebdomadaire fait 8 articles — les amandes entrent le 24 septembre, à la place du beurre de cacahuète (' + hebdo.n + ')');
   const t = await fr.evaluate(() => document.querySelector('.page[data-page="courses"]').textContent);
-  ok(!/Riz/.test(hebdo.titre + '') && /Riz — 5 kg/.test(t) && /demande 4\u202f340 g/.test(t), 'le riz est en réserve : 5 kg achetés pour 4 340 g demandés');
+  ok(!/Riz/.test(hebdo.titre + '') && /Riz — 4 kg/.test(t) && /demande 3\u202f500 g/.test(t), 'le riz est en réserve : 4 kg achetés pour 3 500 g demandés (125 g à midi depuis le 24 septembre)');
   ok(!/Shampooing|Cotons-tiges|Nettoyant visage|Brosse à dents|Bain de bouche|Brossettes|Crème solaire|Lessive|Dentifrice/.test(t),
      'plus une seule ligne de santé et hygiène');
   ok(!/Éponges|Sacs poubelle|Nettoyant sol|Papier toilette|Essuie-tout|Liquide vaisselle|Anticalcaire|Nettoyant WC|Gants de ménage/.test(t),
@@ -95,7 +95,7 @@ console.log('\n== 332) Une semaine plus tard, seul le frais est dû ==');
   const t = await fr.evaluate(() => document.querySelector('.page[data-page="courses"]').textContent);
   ok(/prochaine fois le 03 oct\./.test(t), 'les surgelés, à deux semaines, annoncent le 3 octobre');
   ok(/prochaine fois le 17 oct\./.test(t), 'les réserves annoncent le 17 octobre');
-  ok(/prochaine fois le 24 oct\./.test(t), 'l\'huile et le beurre de cacahuète, à cinq semaines, annoncent le 24 octobre');
+  ok(/prochaine fois le 24 oct\./.test(t), 'l\'huile, à cinq semaines, annonce le 24 octobre');
   ok(/prochaine fois le 12 déc\./.test(t), 'la créatine, au trimestre, annonce le 12 décembre');
   await ctx.close();
 }
@@ -120,7 +120,7 @@ console.log('\n== 333) L\'habitude « Courses faites » reste validable ==');
     await new Promise(r => setTimeout(r, 120));
   }
   const somme = await fr.evaluate(() => document.getElementById('courses-summary').textContent);
-  ok(/^7\/7/.test(somme), 'cocher le frais suffit : ' + somme + ' (' + avant + ' cases)');
+  ok(/^8\/8/.test(somme), 'cocher le frais suffit : ' + somme + ' (' + avant + ' cases)');
   const coche = await fr.evaluate(() => {
     const l = [...document.querySelectorAll('#dash-checklist li label')].map(x => x.textContent);
     return l.some(x => /Courses/.test(x));
@@ -129,9 +129,10 @@ console.log('\n== 333) L\'habitude « Courses faites » reste validable ==');
   await ctx.close();
 }
 
-console.log('\n== 333b) Le beurre de cacahuète tourne sur cinq semaines ==');
-/* 400 g par semaine : 2 kg tombent pile sur cinq semaines, sans fond de pot qui traine.
-   C'est le seul article a ne pas suivre le rythme de sa voisine de rayon. */
+console.log('\n== 333b) L\'huile tourne sur cinq semaines ==');
+/* Le cycle de cinq semaines venait du beurre de cacahuete (2 kg tombaient pile) ; il est
+   sorti du plan le 24 septembre et l'huile y reste seule -- le bidon de 2 L couvre les
+   1 575 ml du cycle. */
 /* Depuis l'ancre du samedi 19 septembre, les semaines 0, 5, 10 et 15 sont dues :
    19 sept., 24 oct., 28 nov., 2 janv. Toutes les autres ne le sont pas. */
 for (const [d, nom, du] of [['2026-09-19','19 sept',true], ['2026-09-26','26 sept',false],
@@ -139,7 +140,7 @@ for (const [d, nom, du] of [['2026-09-19','19 sept',true], ['2026-09-26','26 sep
                             ['2026-11-28','28 nov',true]]) {
   const { ctx, fr } = await jour(d + 'T10:00:00+02:00');
   const c = (await cartes(fr)).filter(x => /5 semaines/.test(x.titre))[0];
-  ok(!!c && c.due === du, nom + ' : beurre de cacahuète dû ' + (c ? c.due : '?') + ' (' + du + ' attendu)');
+  ok(!!c && c.due === du, nom + ' : l\'huile due ' + (c ? c.due : '?') + ' (' + du + ' attendu)');
   await ctx.close();
 }
 
@@ -151,7 +152,8 @@ console.log('\n== 334b) Aucun stock n\'est supposé : il coche ce qu\'il a ==');
   const { ctx, fr } = await jour('2026-09-19T10:00:00+02:00');
   const t = await fr.evaluate(() => document.querySelector('.page[data-page="courses"]').textContent);
   ok(!/tu en as|il t’en reste|à racheter le/.test(t), 'aucune ligne ne parle de stock ni de date de rachat');
-  ok(/Beurre de cacahuète — 2 kg/.test(t) && /demande 1\u202f925 g/.test(t), 'beurre de cacahuète : 2 kg pleins, pour 1 925 g demandés');
+  ok(!/Beurre de cacahuète/.test(t), 'le beurre de cacahuète est sorti de la liste (24 septembre)');
+  ok(/Amandes ou noix nature — 600 g/.test(t) && /demande 525 g/.test(t), 'amandes : 3 sachets de 200 g, pour 525 g demandés');
   ok(/Huile d'olive — 2 L/.test(t) && /demande 1\u202f575 ml/.test(t), 'huile : un bidon de 2 L, pour 1 575 ml demandés');
   await ctx.close();
 }
@@ -159,7 +161,7 @@ console.log('\n== 334b) Aucun stock n\'est supposé : il coche ce qu\'il a ==');
   /* Le 17 octobre les reserves reviennent, aux memes quantites : aucun report. */
   const { ctx, fr } = await jour('2026-10-17T10:00:00+02:00');
   const t = await fr.evaluate(() => document.querySelector('.page[data-page="courses"]').textContent);
-  ok(/Riz — 5 kg/.test(t) && /Pâtes — 3 kg/.test(t), 'le 17 octobre, riz et pâtes reviennent aux mêmes quantités');
+  ok(/Riz — 4 kg/.test(t) && /Pâtes — 3 kg/.test(t), 'le 17 octobre, riz et pâtes reviennent aux mêmes quantités');
   await ctx.close();
 }
 
@@ -214,9 +216,10 @@ console.log('\n== 334d) La liste ne porte QUE de la nourriture ==');
      qu'il portait deja. L'ordre attendu suit donc le DOM, categorie par categorie. */
   const ATTENDU = ['Poulet', 'Viande hachée 5 %', 'Skyr', 'Œufs',
                    'Pain complet', 'Bananes', 'Fruits (pommes, poires, oranges…)',
+                   'Amandes ou noix nature',
                    'Légumes verts surgelés', 'Fromage en tranches',
                    'Riz', 'Pâtes', 'Flocons d\'avoine', 'Miel',
-                   'Beurre de cacahuète', 'Huile d\'olive', 'Créatine monohydrate'];
+                   'Huile d\'olive', 'Créatine monohydrate'];
   ok(lignes.length === 16, '16 lignes, pas une de plus (' + lignes.length + ')');
   ok(JSON.stringify(lignes) === JSON.stringify(ATTENDU),
      'et ce sont exactement les seize attendues' +
@@ -268,8 +271,11 @@ console.log('\n== 334) Ses prix a lui, releves en magasin -- et rien d\'invente 
   /* Le pendant exact de l'assertion d'avant : plus aucune ligne hors total, parce que
      les seize sont chiffrees. Si un prix disparaissait de PRIX, le panneau se remettrait
      a l'annoncer -- et ce test le dirait. */
-  ok(!/pas encore relevé/.test(t) && !/hors total/.test(t),
-     'aucune ligne hors total : les seize sont chiffrées (' + t.slice(0, 70) + ')');
+  /* 24 septembre : une ligne n'a plus de prix -- les amandes, qu'il n'a pas encore
+     relevees. Le panneau le DIT, la nomme, et la sort du total : c'est le trou qu'on
+     montre, jamais un chiffre invente pour le boucher. */
+  ok(/Amandes ou noix nature : prix pas encore relevé/.test(t) && /hors total/.test(t),
+     'une seule ligne hors total, nommée : les amandes (' + t.slice(0, 70) + ')');
   ok(/Budget/.test(t) && /Nourriture/.test(t),
      'et il dit toujours où vivent les montants payés : Budget → Nourriture');
   /* Les prix sur les lignes elles-memes. La creatine est hors plan de repas -- elle
@@ -280,14 +286,13 @@ console.log('\n== 334) Ses prix a lui, releves en magasin -- et rien d\'invente 
      Les assertions ci-dessous cherchent ce que le code ÉCRIT, pas ce que le CSS affiche. */
   const lignes = await fr.evaluate(() =>
     [...document.querySelectorAll('#courses-grid .cat-card li')].map(l => l.textContent));
-  const muettes = lignes.filter(l => !/€|Créatine/.test(l));
+  const muettes = lignes.filter(l => !/€|Créatine|^Amandes/.test(l));
   ok(lignes.length > 0 && muettes.length === 0,
      'les ' + lignes.length + ' lignes du jour portent toutes leur prix' +
      (muettes.length ? ' — muettes : ' + muettes.join(' · ') : ''));
-  ok(!lignes.some(l => /prix à relever/.test(l)),
-     'plus une seule ligne ne dit « prix à relever »');
-  ok(lignes.some(l => /Beurre de cacahuète/.test(l) && /5,30 €\/kg/.test(l)),
-     'le beurre de cacahuète porte les 5,30 €/kg de sa fiche Alcampo');
+  ok(lignes.filter(l => /prix à relever/.test(l)).length === 1 && lignes.some(l => /^Amandes/.test(l) && /prix à relever/.test(l)),
+     'une seule ligne dit « prix à relever » : les amandes');
+  ok(!lignes.some(l => /Beurre de cacahuète/.test(l)), 'plus de beurre de cacahuète');
   ok(lignes.some(l => /Poulet/.test(l) && /7,50 €\/kg/.test(l)),
      'le poulet porte le prix de sa boucherie : 7,50 €/kg');
   await ctx.close();

@@ -2896,7 +2896,7 @@
       <div class="page-head">
         <span class="eyebrow">Dossier N° 14</span>
         <h1>Courses</h1>
-        <p class="desc">Panier de ravitaillement hebdomadaire — passage tous les samedis. Les quantités sortent du plan alimentation, et chaque ligne porte le prix qu'il a relevé <b style="color:var(--dom-table);">lui-même</b> en magasin les 20 et 21 septembre. <b style="color:var(--dom-table);">La pastille de chaque ligne dit où l'acheter au moins cher</b> — la boucherie pour le halal, Lidl pour presque tout le reste, la frutería pour les fruits de saison, Alcampo pour le beurre de cacahuète, en ligne pour la créatine.</p>
+        <p class="desc">Panier de ravitaillement hebdomadaire — passage tous les samedis. Les quantités sortent du plan alimentation, et chaque ligne porte le prix qu'il a relevé <b style="color:var(--dom-table);">lui-même</b> en magasin les 20 et 21 septembre. <b style="color:var(--dom-table);">La pastille de chaque ligne dit où l'acheter au moins cher</b> — la boucherie pour le halal, Lidl pour presque tout le reste, la frutería pour les fruits de saison, en ligne pour la créatine. Une ligne sans prix relevé le dit (« prix à relever ») et reste hors du total.</p>
       </div>
 
       <div class="courses-toolbar">
@@ -3439,7 +3439,7 @@
      vestige : une fonctionnalite retiree (batcave-matieres) ou un essai. Elle prend de la
      place dans le quota de 5000 documents et embrouille les sauvegardes, sans que rien ne
      la lise jamais. On la signale ; la suppression reste ton geste. */
-  var CLES_CONNUES = ['addictions','budget-limits','business','coran','courses','dash-more','duaas','duree-bloc','sport-log','objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','courses-plan-v3','courses-plan-v4','courses-plan-v5','courses-plan-v6','courses-plan-v7','courses-plan-v8','courses-plan-v9','charges-v2','plafond-nourriture-v2','plafond-nourriture-v3','gcal-controle','ancre-dimanche-v1','shampoing-dim-v1','marche-cible-v1','cardio','kcal-ajustement','gcal-ecriture','reinit','fc-migration-v1','charge','shopify-boutique','journees','examens-heures','vacances','jours-exclus',
+  var CLES_CONNUES = ['addictions','budget-limits','business','coran','courses','dash-more','duaas','duree-bloc','sport-log','objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','courses-plan-v3','courses-plan-v4','courses-plan-v5','courses-plan-v6','courses-plan-v7','courses-plan-v8','courses-plan-v9','courses-plan-v10','charges-v2','plafond-nourriture-v2','plafond-nourriture-v3','gcal-controle','ancre-dimanche-v1','shampoing-dim-v1','marche-cible-v1','cardio','kcal-ajustement','gcal-ecriture','reinit','fc-migration-v1','charge','shopify-boutique','journees','examens-heures','vacances','jours-exclus',
     'espagnol','examens','cours-suivi','portes','periodes-closes','fc-prix-icloud-3','fixed-charges','goals','goals-depart','saisons','insights-hist','last-restore-drill','habitlog','habits','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','habits-seed-v7','habits-seed-v8','habits-seed-v9','objectifs-v5-espanol',
     'horizon','last-auto-backup','last-manual-backup','last-bilan-prompt','last-compaction','last-open','last-rotation','notion-url',
     'pomodial-purge','projets','report','revision','revision-fusionnee','revue','sante','sauvegarde','sessions',
@@ -4532,7 +4532,7 @@
      elles repartiraient vers le cloud. La meme remise a zero peut donc etre decidee depuis
      l'appli ou directement dans le cloud. */
   var REINIT_GARDER = ['habits','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','habits-seed-v7','habits-seed-v8','habits-seed-v9','objectifs-v5-espanol','fixed-charges','fc-prix-icloud-3','budget-limits','examens','examens-heures','journees','echeances','vacances','jours-exclus','jours-sans-cours','portes','appro','notion-url','shopify-boutique',
-                       'objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','courses-plan-v3','courses-plan-v4','courses-plan-v5','courses-plan-v6','courses-plan-v7','courses-plan-v8','courses-plan-v9','charges-v2','plafond-nourriture-v2','plafond-nourriture-v3','ancre-dimanche-v1','shampoing-dim-v1','marche-cible-v1','horizon','goals-depart','saisons','periodes-closes','gcal-ecriture','duree-bloc','dash-more','revision-fusionnee','reinit','copie-vierge'];
+                       'objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','courses-plan-v3','courses-plan-v4','courses-plan-v5','courses-plan-v6','courses-plan-v7','courses-plan-v8','courses-plan-v9','courses-plan-v10','charges-v2','plafond-nourriture-v2','plafond-nourriture-v3','ancre-dimanche-v1','shampoing-dim-v1','marche-cible-v1','horizon','goals-depart','saisons','periodes-closes','gcal-ecriture','duree-bloc','dash-more','revision-fusionnee','reinit','copie-vierge'];
   var REINIT_PREFIXES_GARDER = ['pomodial-', 'coherence-ignore-'];
   function reinitGarder(cle){
     var c = cle.indexOf('batcave-') === 0 ? cle.slice(8) : cle;
@@ -7131,10 +7131,11 @@
   }
 
   /* ================= REPAS ================= */
-  /* ===== Plan alimentation révisé (6 sept. 2026) — 5 prises =====
+  /* ===== Plan alimentation révisé (6 sept. 2026) — 4 prises depuis le 24 septembre =====
      64 kg · 182 cm · 20 ans · 4 séances par semaine · tout pesé cru.
      3 123 à 3 135 kcal selon la rotation · P 158-161 g (2,5 g/kg) · G 377 g · L 105-106 g.
      Depuis le 23 septembre : 3 230 kcal · P 166 g · G 377 g · L 115 g (deux œufs a la place du jambon).
+     Depuis le 24 septembre : 3 234 kcal · P 165 g · G 359 g · L 125 g, QUATRE prises (voir plus bas).
      Cinq prises : la collation du matin
      a disparu, le déjeuner porte ses calories (riz 155 g, légumes 200 g). La protéine du
      déjeuner et du dîner suit une ROTATION fixe sur la semaine (l'huile d'olive va avec) ;
@@ -7146,17 +7147,30 @@
      que la prise de masse ne bouge pas d'un gramme : 3 135 avant, 3 132 apres.
      Les macros de chaque repas NE SONT PLUS ECRITES : elles se calculent depuis ALIMENTS et
      les grammages du jour. Un chiffre du plan ne peut donc plus mentir sur son contenu. */
+  /* ===== 24 septembre, la nuit : quatre prises au lieu de cinq =====
+     Ses mots : la collation du soir (skyr, miel, beurre de cacahuete a 21:10) lui faisait
+     trop mal au ventre -- 300 kcal denses une heure apres le diner, juste avant de
+     s'allonger. Elle disparait, et RIEN de ce qu'elle contenait n'est perdu :
+     - le skyr (125 g) devient une SAUCE, 65 g au dejeuner et 60 g au diner, melangee a
+       froid au moment de manger (jamais dans les boites : il tranche au rechauffage) ;
+     - le miel (20 g) passe dans les flocons du matin ;
+     - le beurre de cacahuete sort du plan : il ne l'aime pas. Amandes (ou noix) nature a
+       la place, memes calories et memes lipides a 2 % pres.
+     Le meme soir, le riz de midi descend de 155 a 125 g crus (~400 -> ~325 g cuits) : il
+     n'avait jamais cuit cette quantite et elle lui faisait peur. Le poulet ne bouge pas --
+     sa decision, explicite. Les 108 kcal du riz reviennent en amandes (+20 g) : 75 g par
+     jour, 40 le matin et 35 a la collation de 14:50.
+     La creatine suivait la collation du soir : elle passe au diner. */
   var MEALS = [
-    {name:'Petit-déjeuner', items:['Flocons d\'avoine (80g)','Skyr (180g)','2 œufs (100g)','Beurre de cacahuète (25g)','Banane (120g)']},
-    {name:'Déjeuner', items:['Féculent cru — Riz 155g','Protéine crue — rotation du jour','Légumes verts (200g)','Huile d\'olive — selon la protéine']},
+    {name:'Petit-déjeuner', items:['Flocons d\'avoine (80g)','Miel (20g) — dans les flocons','Skyr (180g)','2 œufs (100g)','Amandes ou noix nature (40g)','Banane (120g)']},
+    {name:'Déjeuner', items:['Féculent cru — Riz 125g','Protéine crue — rotation du jour','Légumes verts (200g)','Huile d\'olive — selon la protéine, dont 10 ml dans la sauce','Sauce skyr (65g) — mélangée à froid, au moment de manger']},
     /* 23 septembre : le jambon (charcuterie, 40 g par jour) cede la place a deux oeufs durs,
        cuits le dimanche avec ceux du petit-dejeuner. La viande transformee etait le seul
        aliment du plan classe cancerogene ; deux oeufs apportent plus de proteines (12,6 g
        contre 7,2) et environ 100 kcal de plus -- qui vont avec le rythme de prise releve
        le meme jour (objectif poids 72 kg). */
-    {name:'Collation entraînement', items:['Pain complet (60g)','2 œufs durs (100g)','Fromage (20g)']},
-    {name:'Dîner', items:['Féculent cru — Pâtes 105g','Protéine crue — rotation du jour','Légumes verts (150g)','Huile d\'olive — selon la protéine','1 fruit (~120g)']},
-    {name:'Collation soir', items:['Skyr (125g)','Miel (20g)','Beurre de cacahuète (30g)']}
+    {name:'Collation entraînement', items:['Pain complet (60g)','2 œufs durs (100g)','Fromage (20g)','Amandes ou noix nature (35g)']},
+    {name:'Dîner', items:['Féculent cru — Pâtes 105g','Protéine crue — rotation du jour','Légumes verts (150g)','Huile d\'olive — selon la protéine, dont 5 ml dans la sauce','Sauce skyr (60g) — mélangée à froid, au moment de manger','1 fruit (~120g)','Créatine — 5 g']}
   ];
   /* ===== Table de composition (pour 100 g ou 100 ml, cru) =====
      Une seule source pour TOUT ce qui est nutritionnel : les macros de chaque repas, le
@@ -7169,7 +7183,7 @@
     flocons:   {kcal:389, p:13.2, g:66.0, l:6.9},
     skyr:      {kcal:63,  p:10.5, g:4.0,  l:0.2},
     oeufs:     {kcal:143, p:12.6, g:0.7,  l:9.5,  piece:50},
-    cacahuete: {kcal:588, p:25.0, g:20.0, l:50.0},
+    amandes:   {kcal:579, p:21.2, g:21.6, l:49.9},
     banane:    {kcal:89,  p:1.1,  g:22.8, l:0.3,  piece:120},
     riz:       {kcal:360, p:7.4,  g:80.0, l:0.9},
     pates:     {kcal:360, p:12.0, g:71.0, l:1.5},
@@ -7183,20 +7197,21 @@
     huile:     {kcal:884, p:0.0,  g:0.0,  l:100.0}
   };
   var CLE_PROTEINE = {'Poulet':'poulet', 'Viande hachée 5 %':'hachee'};
+  /* La sauce au skyr, en grammes : c'est l'ancienne collation du soir (125 g) repartie. */
+  var SAUCE_SKYR = {dej:65, din:60};
   /* Ce que contient chaque repas, dans l'ordre des items affiches. « brut » ignore la
      boucle poids -> calories : la liste de courses l'ajoute elle-meme, une seule fois. */
   function compoRepas(nom, iso, brut){
-    if(nom === 'Petit-déjeuner') return [{c:'flocons', q:80}, {c:'skyr', q:180}, {c:'oeufs', q:100}, {c:'cacahuete', q:25}, {c:'banane', q:120}];
-    if(nom === 'Collation entraînement') return [{c:'pain', q:60}, {c:'oeufs', q:100}, {c:'fromage', q:20}];
-    if(nom === 'Collation soir') return [{c:'skyr', q:125}, {c:'miel', q:20}, {c:'cacahuete', q:30}];
+    if(nom === 'Petit-déjeuner') return [{c:'flocons', q:80}, {c:'miel', q:20}, {c:'skyr', q:180}, {c:'oeufs', q:100}, {c:'amandes', q:40}, {c:'banane', q:120}];
+    if(nom === 'Collation entraînement') return [{c:'pain', q:60}, {c:'oeufs', q:100}, {c:'fromage', q:20}, {c:'amandes', q:35}];
     if(nom === 'Déjeuner'){
       var nd = proteineDuJour('dej', iso), pd = PROTEINES[nd].dej;
-      return [{c:'riz', q:FECULENTS.dej.g}, {c:CLE_PROTEINE[nd], q:pd.g}, {c:'legumes', q:200}, {c:'huile', q:pd.huile}];
+      return [{c:'riz', q:FECULENTS.dej.g}, {c:CLE_PROTEINE[nd], q:pd.g}, {c:'legumes', q:200}, {c:'huile', q:pd.huile}, {c:'skyr', q:SAUCE_SKYR.dej}];
     }
     if(nom === 'Dîner'){
       var nn = PROTEINES[proteineDuJour('din', iso)].din;
       var pates = FECULENTS.din.g + (brut ? 0 : grammesAjustement(ajustementKcalPour(iso || todayISO), FECULENTS.din.kcalG));
-      return [{c:'pates', q:pates}, {c:CLE_PROTEINE[proteineDuJour('din', iso)], q:nn.g}, {c:'legumes', q:150}, {c:'huile', q:nn.huile}, {c:'fruit', q:120}];
+      return [{c:'pates', q:pates}, {c:CLE_PROTEINE[proteineDuJour('din', iso)], q:nn.g}, {c:'legumes', q:150}, {c:'huile', q:nn.huile}, {c:'skyr', q:SAUCE_SKYR.din}, {c:'fruit', q:120}];
     }
     return [];
   }
@@ -7221,7 +7236,7 @@
      poids → calories se lit dans le féculent du DÎNER : +150 kcal = +40 g de pâtes crues,
      écrit dans le plan. */
   var FECULENTS = {
-    dej: {nom:'Riz',   g:155, kcalG:3.6, prixKg:1.1},
+    dej: {nom:'Riz',   g:125, kcalG:3.6, prixKg:1.1},
     din: {nom:'Pâtes', g:105, kcalG:3.6, prixKg:1.0}
   };
   /* Poulet a midi, viande hachee le soir, les sept jours. Le poisson a ete retire le
@@ -7495,7 +7510,7 @@
       /* La description de l'onglet portait « 3 053 kcal, P 162 g... » en dur : trois
          chiffres de plus a tenir a jour a la main. Elle se calcule. */
       var dsc = document.getElementById('repas-desc');
-      if(dsc) dsc.textContent = 'Programme du jour, 5 prises : ' + Math.round(n.targets.kcal) + ' kcal, P ' +
+      if(dsc) dsc.textContent = 'Programme du jour, ' + MEALS.length + ' prises : ' + Math.round(n.targets.kcal) + ' kcal, P ' +
         Math.round(n.targets.p) + ' g, G ' + Math.round(n.targets.g) + ' g, L ' + Math.round(n.targets.l) +
         ' g, tout pesé cru. Riz à midi (' + FECULENTS.dej.g + ' g), pâtes le soir (' + FECULENTS.din.g +
         ' g) ; la protéine suit la rotation de la semaine. Les cases se réinitialisent à minuit.';
@@ -10623,7 +10638,7 @@
   var RENDEMENT = {riz:2.6, pates:2.4, poulet:0.72, hachee:0.75, legumes:0.9};
   var NOM_ALIMENT = {riz:'Riz', pates:'Pâtes', poulet:'Poulet', hachee:'Viande hachée 5 %',
                      legumes:'Légumes verts surgelés', huile:'Huile d\'olive',
-                     oeufs:'Œufs', flocons:'Flocons d\'avoine', skyr:'Skyr', cacahuete:'Beurre de cacahuète',
+                     oeufs:'Œufs', flocons:'Flocons d\'avoine', skyr:'Skyr', amandes:'Amandes ou noix',
                      banane:'Banane', pain:'Pain complet', fromage:'Fromage', miel:'Miel', fruit:'Fruit'};
   var NOMS_SEMAINE = ['dimanche','lundi','mardi','mercredi','jeudi','vendredi','samedi'];
   /* Les sept jours de la semaine qui commence le dimanche contenant « iso ». La session a
@@ -10657,7 +10672,7 @@
     var dim = jours[0].iso;
     document.getElementById('prep-desc').textContent =
       'Une session le dimanche à 14:30, deux heures, pour les sept repas de midi et les sept du soir. ' +
-      'Quatorze boîtes : quatre jours au frigo, trois au congélateur. Le petit-déjeuner et les deux collations ne se préparent pas — ils s’assemblent en cinq minutes.';
+      'Quatorze boîtes : quatre jours au frigo, trois au congélateur. Le petit-déjeuner et la collation ne se préparent pas — ils s’assemblent en cinq minutes. La sauce au skyr non plus : elle ne va jamais dans les boîtes.';
     /* Ce qu'il y a a cuire : chaque poste, cru, et ce qu'il pesera cuit. */
     var postes = ['riz','pates','poulet','hachee','legumes'];
     host.innerHTML = postes.filter(function(c){ return T[c] > 0; }).map(function(c){
@@ -10669,7 +10684,7 @@
     /* L'ordre. Les durees sont celles des quantites ci-dessus ; les postes longs et
        autonomes (riz, four) partent en premier, le reste se glisse pendant. */
     var etapes = [
-      [0,  'Le <b>riz</b> à l\'eau — ' + poids(T.riz) + ' crus, 2,5 fois leur volume d\'eau, 12 min à petits bouillons.'],
+      [0,  'Le <b>riz</b> comme des pâtes — ' + poids(T.riz) + ' crus, rincés, dans une grande casserole d\'eau salée à gros bouillons, 12 à 15 min à découvert (goûter à 12). Pas de proportion d\'eau à respecter.'],
       [3,  'Le <b>poulet</b> à la poêle — ' + poids(T.poulet) + ', feu vif, 4 min par face puis 3 min à couvert.'],
       [18, 'Sortir le poulet. <b>Égoutter le riz</b> et l\'étaler sur une plaque : à plat il refroidit en 15 min, en tas il met une heure.'],
       [22, 'La <b>viande hachée</b> — ' + poids(T.hachee) + ', en deux fournées pour qu\'elle grille au lieu de bouillir. 10 min.'],
@@ -10691,6 +10706,9 @@
       'Quatorze boîtes, écrites depuis le plan du jour — pas depuis une recette. Les quatre premiers jours vont au frigo, les trois derniers au congélateur.';
     document.getElementById('prep-boites').innerHTML = jours.map(function(j, i){
       var ou = i < 4 ? 'frigo' : 'congélateur';
+      /* Ce qui ne va PAS dans la boite : le fruit (entier, a cote) et la sauce au skyr (faite au
+         moment de manger -- cuite puis rechauffee, elle tranche ; congelee, elle rend de l'eau). */
+      var dansBoite = function(x){ return x.c !== 'fruit' && x.c !== 'skyr'; };
       var ligne = function(x){
         var n = NOM_ALIMENT[x.c] || x.c;
         return '<li>' + escapeHtml(n) + ' — ' + (x.c === 'huile' ? Math.round(x.q) + ' ml' : poids(x.q)) + '</li>';
@@ -10698,14 +10716,15 @@
       return '<div class="prep-boite"><h5>' + escapeHtml(j.nom.charAt(0).toUpperCase() + j.nom.slice(1)) +
              ' <span class="ou">' + ou + '</span></h5>' +
              '<ul><li style="list-style:none; margin-left:-16px; color:var(--ink-faint); font-size:11px; letter-spacing:.03em; text-transform:uppercase;">Midi</li>' +
-             j.dej.map(ligne).join('') +
+             j.dej.filter(dansBoite).map(ligne).join('') +
              '<li style="list-style:none; margin-left:-16px; color:var(--ink-faint); font-size:11px; letter-spacing:.03em; text-transform:uppercase; padding-top:4px;">Soir</li>' +
-             j.din.map(ligne).join('') + '</ul></div>';
+             j.din.filter(dansBoite).map(ligne).join('') + '</ul></div>';
     }).join('');
     document.getElementById('prep-regles').innerHTML = [
-      ['Le petit-déjeuner', 'flocons, skyr, 2 œufs, beurre de cacahuète, banane — cinq minutes, rien à cuire sauf les œufs, déjà durs'],
-      ['La collation d\'entraînement', 'pain, 2 œufs durs, fromage — les œufs sont cuits le dimanche avec ceux du matin ; le reste s\'assemble au moment de partir'],
-      ['La collation du soir', 'skyr, miel, beurre de cacahuète — trois cuillères, aucun intérêt à l\'avancer'],
+      ['Le petit-déjeuner', 'flocons et miel, skyr, 2 œufs, amandes ou noix, banane — cinq minutes, rien à cuire sauf les œufs, déjà durs'],
+      ['La collation d\'entraînement', 'pain, 2 œufs durs, fromage, une poignée d\'amandes — les œufs sont cuits le dimanche avec ceux du matin ; le reste s\'assemble au moment de partir'],
+      ['La sauce au skyr', 'jamais dans la boîte : réchauffer la boîte d\'abord, puis mélanger le skyr hors du feu (65 g à midi, 60 g le soir). Un bocal de base (skyr, ail, citron, sel) tient trois jours au frigo'],
+      ['Réchauffer à la poêle', 'la boîte vidée dans la poêle avec 2 à 3 cuillères d\'eau, couvercle, feu moyen, 4 à 5 min, puis 1 min à découvert. Brûlant jusqu\'au cœur. Pas l\'air fryer : il dessèche le riz et les pâtes'],
       ['Le fruit du dîner', 'entier, jamais dans la boîte : coupé le dimanche il rend de l\'eau et noircit'],
       ['Refroidir vite', 'deux heures maximum entre la casserole et le frigo. Étaler plutôt qu\'entasser'],
       ['Quatre jours au frigo', 'de la viande cuite tient quatre jours à 4 °C, pas sept. Au-delà, c\'est le congélateur'],
@@ -10781,14 +10800,11 @@
     pates:    {eur:1.09,  par:'kg',    ou:'Lidl',      quand:'21 sept.'},
     flocons:  {eur:1.50,  par:'kg',    ou:'Lidl',      quand:'21 sept.', detail:'0,75 \u20ac les 500 g'},
     miel:     {eur:10.00, par:'kg',    ou:'Lidl',      quand:'21 sept.'},
-    huile:    {eur:5.945, par:'L',     ou:'Lidl',      quand:'21 sept.', detail:'11,89 \u20ac les 2 L'},
-    /* 5,30 EUR/kg : le prix etait sur la fiche Alcampo qu'il m'a envoyee le 21 septembre
-       a 15:39 (« Tiens je vais prendre celle la »), et je ne l'avais pas lu -- la ligne a
-       donc porte « prix a relever » pendant une journee alors que le chiffre etait la.
-       Reserve : c'est le prix de compraonline.alcampo.es, code postal 28029, donc le
-       tarif en ligne et non le prix affiche en rayon a Alicante. C'est quand meme SON
-       releve sur LE pot qu'il a choisi, et c'est ce qui compte ici. */
-    cacahuete:{eur:5.30, par:'kg', ou:'Alcampo', quand:'21 sept.', detail:'2,65 € le pot de 500 g \u2014 tarif en ligne'}
+    huile:    {eur:5.945, par:'L',     ou:'Lidl',      quand:'21 sept.', detail:'11,89 \u20ac les 2 L'}
+    /* 24 septembre : le beurre de cacahuete sort du plan (il ne l'aime pas), et avec lui le
+       seul prix Alcampo (5,30 EUR/kg). Les amandes qui le remplacent n'ont PAS de prix : il
+       ne l'a pas encore releve. Pas d'entree ici, donc -- la ligne dit « prix a relever »
+       et sort du total, plutot que d'etre comblee par une estimation. */
   };
   /* La cle du besoin par libelle : c'est elle qui relie une ligne de courses a son prix. */
   var CLE_PRIX = {
@@ -10796,7 +10812,7 @@
     'Fromage en tranches':'fromage', 'Pain complet':'pain',
     'Bananes':'bananes', 'Fruits (pommes, poires, oranges\u2026)':'fruits',
     'L\u00e9gumes verts surgel\u00e9s':'legumes', 'Riz':'riz', 'P\u00e2tes':'pates',
-    'Flocons d\'avoine':'flocons', 'Miel':'miel', 'Beurre de cacahu\u00e8te':'cacahuete',
+    'Flocons d\'avoine':'flocons', 'Miel':'miel', 'Amandes ou noix nature':'amandes',
     'Huile d\'olive':'huile'
   };
   function eur(n){ return (Math.round(n * 100) / 100).toFixed(2).replace('.', ',') + ' \u20ac'; }
@@ -10865,7 +10881,11 @@
         art('\u0152ufs',              B.oeufs,   6,      sep,   'bo\u00eete', B.oeufs + ' \u0153ufs'),
         art('Pain complet',      B.pain,  450,  poids, 'paquet'),
         art('Bananes',           B.bananes, 1,      sep,   '\u00e0 l\'unit\u00e9', B.bananes + ' bananes'),
-        art('Fruits (pommes, poires, oranges\u2026)', B.fruits, 1, sep, '\u00e0 l\'unit\u00e9', B.fruits + ' fruits')
+        art('Fruits (pommes, poires, oranges\u2026)', B.fruits, 1, sep, '\u00e0 l\'unit\u00e9', B.fruits + ' fruits'),
+        /* 24 septembre : 75 g par jour, 525 g par semaine. Le sachet de 200 g est le format
+           courant du rayon ; nature, non salees. Moitie noix si possible : le poisson est
+           sorti du plan, et les noix sont la seule source d'omega-3 qui reste. */
+        art('Amandes ou noix nature', B.amandes, 200, poids, 'sachet')
       ]},
       /* Les legumes surgeles ont leur propre cycle, plus court que les autres reserves :
          DEUX semaines. Sa contrainte du 20 septembre, et elle est physique -- 10 kg de
@@ -10888,7 +10908,8 @@
         art('Flocons d\'avoine',  B.flocons * 4,         500, poids, 'paquet'),
         art('Miel',              B.miel * 4,           1000, poids, 'pot')
       ]},
-      /* Cinq semaines : 2 kg de beurre de cacahuete tombent presque pile (385 x 5 = 1 925).
+      /* Cinq semaines : le cycle venait du beurre de cacahuete (2 kg tombaient presque pile,
+         385 x 5 = 1 925) ; il est sorti du plan le 24 septembre et l'huile reste seule.
          L'huile a change deux fois. Le 20 septembre, le poisson sorti, chaque midi porte les
          30 ml du poulet et chaque soir les 15 ml de la viande hachee, soit 315 ml par semaine
          au lieu de 288 -- donc 1 575 ml par cycle. Puis le 21, en rayon : le format qu'il
@@ -10896,7 +10917,6 @@
          suffit donc, et il reste 425 ml. Ce reste n'est pas perdu : rien n'est modelise en
          stock ici, il coche la ligne sans acheter tant qu'il lui en reste. */
       {cat:'Toutes les 5 semaines', semaines:5, ancre:ANCRE_COURSES, items:[
-        art('Beurre de cacahuète', B.cacahuete * 5,  500, poids, 'pot'),
         art('Huile d\'olive',        B.huile * 5,     2000, vol,   'bouteille')
       ]},
       /* ===== 20 septembre : la liste ne porte plus que de la nourriture =====
@@ -11039,7 +11059,9 @@
        et ces deux trajets tombent. Le sec, le surgele, les oeufs, le pain, le miel, le
        fromage et les bananes (1,48 €/kg) y sont egalement ;
      - la FRUTERIA prend les fruits de saison, jamais le supermarche : 30 a 40 % d'ecart ;
-     - ALCAMPO ne garde qu'une ligne, le beurre de cacahuete -- le pot qu'il a choisi ;
+     - ALCAMPO n'avait plus qu'une ligne, le beurre de cacahuete : elle sort du plan le 24
+       septembre, et Alcampo avec. Les amandes qui le remplacent vont chez Lidl, comme le
+       reste du sec -- a corriger s'il les prend ailleurs ;
      - la creatine se commande EN LIGNE.
      MERCADONA a disparu de la liste. Ce n'est pas un oubli : ce qu'il y prenait etait
      l'hygiene et le menage, sortis de la liste le 20 septembre a sa demande, et son
@@ -11057,7 +11079,7 @@
     '\u0152ufs': 'Lidl', 'Pain complet': 'Lidl',
     'Fromage en tranches': 'Lidl · cuajo vegetal',
     'Riz': 'Lidl', 'P\u00e2tes': 'Lidl', 'Flocons d\'avoine': 'Lidl',
-    'L\u00e9gumes verts surgel\u00e9s': 'Lidl', 'Miel': 'Lidl', 'Beurre de cacahu\u00e8te': 'Alcampo',
+    'L\u00e9gumes verts surgel\u00e9s': 'Lidl', 'Miel': 'Lidl', 'Amandes ou noix nature': 'Lidl',
     'Bananes': 'Lidl', 'Fruits (pommes, poires, oranges\u2026)': 'Frutería · de saison',
     'Cr\u00e9atine monohydrate': 'En ligne'
   };
@@ -11205,6 +11227,23 @@
     if(bougeV9){ coursesState = vers; save('batcave-courses', coursesState); }
     saveInternal('batcave-courses-plan-v9', true);
   }
+  /* v10 (24 septembre) : le beurre de cacahuete sort des « 5 semaines » (categorie 3, rang
+     0) ; l'huile, qui le suivait, remonte au rang 0. Les amandes s'AJOUTENT en fin du frais
+     (categorie 0, rang 7) : rien n'y bouge. On ne vide pas -- la coche de l'huile suit
+     l'huile, celle du beurre de cacahuete part avec lui. */
+  if(!load('batcave-courses-plan-v10', false)){
+    var versV10 = {}, bougeV10 = false;
+    Object.keys(coursesState).forEach(function(k){
+      var m = /^(\d+)-(\d+)$/.exec(k);
+      if(!m || Number(m[1]) !== 3){ versV10[k] = coursesState[k]; return; }
+      var ii = Number(m[2]);
+      bougeV10 = true;
+      if(ii === 0) return;
+      versV10['3-' + (ii - 1)] = coursesState[k];
+    });
+    if(bougeV10){ coursesState = versV10; save('batcave-courses', coursesState); }
+    saveInternal('batcave-courses-plan-v10', true);
+  }
 
   /* Seules les categories DUES cette semaine comptent. Sans ce filtre, l'habitude
      « Courses faites » -- qui ne se coche que lorsque tout est coche -- ne se validerait
@@ -11229,7 +11268,7 @@
        Le cout se calcule sur le besoin hebdomadaire -- ce qu'il mange -- et non sur
        l'achat du jour : un bidon d'huile de 2 L dure cinq semaines, l'imputer entier a
        la semaine ou il l'achete ferait un budget en dents de scie.
-       Les lignes sans prix (le beurre de cacahuete) sortent du total et se disent. */
+       Les lignes sans prix (les amandes, depuis le 24 septembre) sortent du total et se disent. */
     if(budget){
       var cs = coutSemaine();
       budget.innerHTML = '<b style="color:var(--ink);">' + eur(cs.mois) + ' par mois</b> \u00b7 ' +
@@ -11657,7 +11696,7 @@
        ticket. Le jour de ses PREMIERES courses -- ce jour-la seulement, et sans rien ecrire
        dans ses taches -- le plan du jour lui demande les deux. */
     if(todayISO === PREMIER_JOUR_COURSES){
-      items.push({pri:0.4, icon:'\ud83d\uded2', text:'Avant de partir : compte ce qui te reste (p\u00e2tes, riz, flocons, \u0153ufs, huile, beurre de cacahu\u00e8te) et envoie-le \u2014 la liste travaille sur un stock dat\u00e9 du 13', action:{type:'courses'}});
+      items.push({pri:0.4, icon:'\ud83d\uded2', text:'Avant de partir : compte ce qui te reste (p\u00e2tes, riz, flocons, \u0153ufs, huile, amandes) et envoie-le \u2014 la liste travaille sur un stock dat\u00e9 du 13', action:{type:'courses'}});
       items.push({pri:2.7, icon:'\ud83e\uddfe', text:'Au retour : garde le ticket de caisse et envoie-le \u2014 la liste n\u2019affiche aucun prix, tes montants r\u00e9els se saisissent dans Budget', action:{type:'courses'}});
     }
 
@@ -13172,7 +13211,9 @@
         pause : on s'entraîne au format réel), les cartes, la compréhension du cours et les
         projets, qui demandent de la continuité. La dernière pause sert de transition. Il
         n'y a plus de pause longue à 09:20 : ce quart d'heure est passé au soir, pour la
-        Collation soir (le plan est à cinq prises, sans collation du matin). La matinée
+        Collation soir (le plan était alors à cinq prises, sans collation du matin ; la
+        collation du soir est sortie à son tour le 24 septembre, et son quart d'heure est
+        redevenu du temps libre). La matinée
         avance donc de 15 min, d'Étudier en avance (09:20) au déjeuner (12:20), et Projets
         perso 2 gagne ce quart d'heure (14:00 → 14:50).
      2. Chaque bloc porte le nom de ce qu'on y fait, pas un numéro : le plan du jour dit
@@ -13185,7 +13226,7 @@
         jour clos le soir même, avant la nuit qui consolide.
      4. Lever 05:30, coucher 21:35 (21:55 le mardi) et 21:00 le week-end : 7 h 55 au lit en
         semaine, 8 h 30 le week-end. « Clore le cours du jour » tient 40 min (20 par cours),
-        puis du temps libre ; la collation et la douche du soir viennent après. L'heure gagnée le matin vient du Coran lu pendant le
+        puis du temps libre et la douche du soir. L'heure gagnée le matin vient du Coran lu pendant le
         petit-déjeuner (06:45 → 07:20), pas du travail : le Bloc 1 démarre toujours à 07:20.
      5. Sport 05:30 → 06:30 du lundi au jeudi : dix minutes de trajet, quarante minutes au
         parc, dix minutes de retour. Programme v2 : lundi haut lourd, mardi bas complet,
@@ -13211,9 +13252,12 @@
         entre le déjeuner (12:20) et le dîner (20:00), sept heures à jeun pendant les cours.
         Projets perso 2 s'arrête donc à 14:50 (50 min d'un trait), sauf le lundi ou il tient
         son heure pleine et cede la place a Projets perso 4 jusqu'a 16:50. Le soir : dîner 20:00 → 20:30, cours du
-        jour clos 20:30 → 21:10 (20 min par cours), temps libre, Collation soir
-        21:30 → 21:45 (skyr, miel, beurre de cacahuète), douche et brossage de dents
-        21:25 → 21:35, coucher 21:35.
+        jour clos 20:30 → 21:10 (20 min par cours), temps libre 21:10 → 21:25, douche et
+        brossage de dents 21:25 → 21:35, coucher 21:35.
+        24 septembre : la Collation soir (21:10 → 21:25) sort du plan -- elle lui donnait mal
+        au ventre, a peine une heure apres le diner et juste avant de s'allonger. Son contenu
+        est reparti dans les repas (voir MEALS) et son quart d'heure redevient du temps
+        libre. Le coucher ne bouge pas : c'est son heure, decidee le 22.
         22 septembre : le coucher descend de 21:55 a 21:35 -- sa demande, apres le calcul
         suivant. 7 h 35 AU LIT ne font que 6 h 30 a 6 h 50 de sommeil reel (l'efficacite du
         sommeil tourne autour de 85-90 %), donc il dormait SOUS la fourchette de 7 a 9 h
@@ -13261,7 +13305,7 @@
       ['09:20','Étudier en avance'],['11:20','Question ouverte ou autre'],
       ['12:20','Déjeuner'],['12:40','😴 Micro-sieste'],
       ['13:00','Projets perso 1'],['14:00','Projets perso 2'],['14:50','Collation entraînement'],['15:00','Trajet cours'],['15:30','Cours'],
-      ['19:30','Trajet retour'],['20:00','Dîner'],['20:30','Clore le cours du jour'],['21:10','Collation soir'],
+      ['19:30','Trajet retour'],['20:00','Dîner'],['20:30','Clore le cours du jour'],['21:10','Temps libre'],
       ['21:25','Douche + brossage de dents'],['21:35','Coucher']
     ],
     /* Ces horaires sont ceux du SEMESTRE 1, du 14 septembre 2026 au 19 janvier 2027. Le
@@ -13280,7 +13324,7 @@
       ['12:20','Déjeuner'],['12:40','😴 Micro-sieste'],
       ['13:00','Projets perso 1'],['14:00','Projets perso 2'],
       ['15:00','Projets perso 4'],['16:50','Collation entraînement'],['17:00','Trajet cours'],['17:30','Cours'],
-      ['19:30','Trajet retour'],['20:00','Dîner'],['20:30','Clore le cours du jour'],['21:10','Collation soir'],
+      ['19:30','Trajet retour'],['20:00','Dîner'],['20:30','Clore le cours du jour'],['21:10','Temps libre'],
       ['21:25','Douche + brossage de dents'],['21:35','Coucher']
     ],
     /* Mardi : le cours s'arrete a 17:30 (et non 19:30). « Clore le cours du jour » se fait
@@ -13295,7 +13339,7 @@
       ['13:00','Projets perso 1'],['14:00','Projets perso 2'],['14:50','Collation entraînement'],['15:00','Trajet cours'],['15:30','Cours'],
       ['17:30','Trajet retour'],['18:00','Clore le cours du jour'],['18:30','Lire'],['19:30','Temps libre'],
       ['20:00','Dîner'],['20:30','Projets perso 6'],
-      ['21:30','Collation soir'],['21:45','Douche + brossage de dents'],['21:55','Coucher']
+      ['21:30','Temps libre'],['21:45','Douche + brossage de dents'],['21:55','Coucher']
     ],
     /* Mercredi : le 11:20 n'est pas une question ouverte mais un APPROFONDISSEMENT, depuis
        le 18 septembre. Un seul par semaine (le samedi) ne couvrait qu'un tema sur cinq ; avec
@@ -13312,7 +13356,7 @@
       ['09:20','Étudier en avance'],['11:20','Approfondir'],
       ['12:20','Déjeuner'],['12:40','😴 Micro-sieste'],
       ['13:00','Projets perso 1'],['14:00','Projets perso 2'],['14:50','Collation entraînement'],['15:00','Trajet cours'],['15:30','Cours'],
-      ['19:30','Trajet retour'],['20:00','Dîner'],['20:30','Clore le cours du jour'],['21:10','Collation soir'],
+      ['19:30','Trajet retour'],['20:00','Dîner'],['20:30','Clore le cours du jour'],['21:10','Temps libre'],
       ['21:25','Douche + brossage de dents'],['21:35','Coucher']
     ],
     /* Vendredi : pas de bloc de 11:20 en revision -- Jumu'ah coupe l'apres-midi, la
@@ -13323,7 +13367,7 @@
       ['09:20','Étudier en avance'],
       ['11:20','Projets perso 1'],['12:20','Déjeuner'],
       ['13:15','Trajet mosquée'],['13:30',"Jumu'ah (khutba + prière ~14h)"],['14:30','😴 Micro-sieste'],['14:50','Collation entraînement'],['15:00','Trajet cours'],
-      ['15:30','Cours'],['19:30','Trajet retour'],['20:00','Dîner'],['20:30','Clore le cours du jour'],['21:10','Collation soir'],
+      ['15:30','Cours'],['19:30','Trajet retour'],['20:00','Dîner'],['20:30','Clore le cours du jour'],['21:10','Temps libre'],
       ['21:25','Douche + brossage de dents'],['21:35','Coucher']
     ],
     /* Dimanche : plus de bloc a 05:30, le lever est a 06:30. Simulation (le blanc du
@@ -13337,7 +13381,7 @@
       ['16:30','🧽 Ménage — sols, salle de bain, poussière'],
       ['17:30','🏃 Course à pied'],['18:00','Repos — après-midi libre'],
       ['19:00','Dîner'],
-      ['19:30','Temps libre'],['20:30','Collation soir'],
+      ['19:30','Temps libre'],
       ['20:45','Douche + brossage de dents'],['21:00','Coucher']
     ],
     /* Samedi : « Approfondir » sur les deux heures du matin, soit DEUX seances d'une heure,
@@ -13367,7 +13411,7 @@
       ['13:30','🛒 Courses de la semaine'],['15:30','Rangement des courses'],
       ['16:00',"Cartes d'erreurs de la semaine"],['17:00','Projets perso 2'],
       ['18:00','🏃 Course à pied'],['18:30','Sport'],
-      ['19:30','Dîner'],['20:00','Temps libre'],['20:30','Collation soir'],
+      ['19:30','Dîner'],['20:00','Temps libre'],
       ['20:45','Douche + brossage de dents'],['21:00','Coucher']
     ]
   };
@@ -13546,7 +13590,7 @@
      qui n'a pas eu lieu. */
   var REMPLISSAGE_SANS_COURS = ['Projets perso 4', 'Projets perso 5', 'Lire', 'Réexpliquer'];
   var SANS_COURS_FIN_TRAVAIL = '19:00';
-  var SOIREE_SANS_COURS = [['19:00','Dîner'],['19:30','Temps libre'],['20:30','Collation soir'],
+  var SOIREE_SANS_COURS = [['19:00','Dîner'],['19:30','Temps libre'],
                            ['20:45','Douche + brossage de dents'],['21:00','Coucher']];
   function libere(base){
     var iC = -1;
@@ -13790,6 +13834,18 @@
       return (min > 30 ? min + " minutes cette semaine" : "Trente minutes") + ", allure où tu peux encore parler par phrases courtes. Pas de sprint : c'est la course qui fait baisser ta fréquence cardiaque de repos, et elle s'allonge de 5 minutes par semaine à partir du 11 octobre, jusqu'à 45. Douche ensuite, sur le temps libre qui suit.";
     },
     '⚡ Sprints en côte': "Trottine jusqu'à la côte (5 min, c'est l'échauffement), puis 6 à 8 sprints de 10 à 15 secondes en montée, à 90 % — rapide, pas à fond. Redescends en marchant, 1 min 30 à 2 min entre chaque. Arrête dès que la vitesse baisse. Environ 15 minutes en tout, puis la séance de 18:30.",
+    /* 24 septembre : les repas ont une consigne, parce que la sauce au skyr a une regle qui
+       ne se devine pas (jamais sur le feu) et que la creatine a quitte la collation du soir.
+       Les grammes se lisent dans le plan du jour, pas ici : un grammage qui change dans
+       MEALS change la consigne. */
+    'Déjeuner': function(d, iso){
+      var c = compoRepas('Déjeuner', iso, false), g = function(k){ var x = c.filter(function(y){ return y.c === k; })[0]; return x ? Math.round(x.q) : 0; };
+      return "La boîte du jour : riz " + g('riz') + " g crus, poulet " + g('poulet') + " g, légumes. Réchauffée à la poêle avec 2 à 3 cuillères d'eau, couvercle, 4 à 5 min, brûlante jusqu'au cœur. Puis, hors du feu, la sauce : " + SAUCE_SKYR.dej + " g de skyr, 10 ml d'huile, sel, et un parfum (ail-citron-menthe, curry doux, harissa-citron). Jamais le skyr sur le feu : il tranche.";
+    },
+    'Dîner': function(d, iso){
+      var c = compoRepas('Dîner', iso, false), g = function(k){ var x = c.filter(function(y){ return y.c === k; })[0]; return x ? Math.round(x.q) : 0; };
+      return "La boîte du jour : pâtes " + g('pates') + " g crues, viande hachée " + g('hachee') + " g, légumes, à la poêle. Hors du feu, " + SAUCE_SKYR.din + " g de skyr à l'ail sur les pâtes et la viande, façon manti, et 5 ml d'huile au paprika par-dessus (ou moutarde-persil). Un fruit. La créatine, 5 g, avec le repas. Ensuite plus rien jusqu'au lendemain.";
+    },
     'Temps libre': {defaut: "Libre.", 0: "10 minutes pour la revue du dimanche guidée (onglet Études), le reste est libre."},
     'Coucher': "Clôture du jour faite ? Écran off, réveil posé loin du lit."
   };

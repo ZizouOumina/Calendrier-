@@ -155,11 +155,15 @@ console.log('\n═══ 7. Repas : les calories sont proratisées aux cases coc
     document.querySelector('.nav-btn[data-page="repas"]').click();
     return {sub: document.getElementById('meal-kcal-sub').textContent,
             jour: window.__bcMacrosJour().kcal,
-            pdej: window.__bcMacrosRepas({name:'Petit-déjeuner'}).kcal};
+            pdej: window.__bcMacrosRepas({name:'Petit-déjeuner'}).kcal,
+            /* le nombre d'aliments se lit sur la carte, pas ici : 5 jusqu'au 23 septembre,
+               6 depuis que le miel et les amandes y sont entres */
+            nPdej: ([...document.querySelectorAll('.meal-card')].find(c => /Petit-déjeuner/.test(c.querySelector('.mtitle').textContent)) || document).querySelectorAll('input[type=checkbox]').length,
+            nRepas: document.querySelectorAll('.meal-card').length};
   });
   const m = s.sub.match(/(\d+) \/ (\d+) kcal/);
-  ok(m && Number(m[2]) === s.jour, 'cible du jour ' + (m?m[2]:'?') + ' kcal = la somme des cinq repas (' + s.jour + ')');
-  ok(m && Math.abs(Number(m[1]) - s.pdej/5) < 2, '1 item sur 5 du petit-déjeuner (' + s.pdej + ' kcal) → ' + (m?m[1]:'?') + ' kcal (' + Math.round(s.pdej/5) + ' attendu)');
+  ok(m && Number(m[2]) === s.jour, 'cible du jour ' + (m?m[2]:'?') + ' kcal = la somme des ' + s.nRepas + ' repas (' + s.jour + ')');
+  ok(s.nPdej > 0 && m && Math.abs(Number(m[1]) - s.pdej/s.nPdej) < 2, '1 item sur ' + s.nPdej + ' du petit-déjeuner (' + s.pdej + ' kcal) → ' + (m?m[1]:'?') + ' kcal (' + Math.round(s.pdej/s.nPdej) + ' attendu)');
   await ctx.close();
 }
 
