@@ -27,7 +27,9 @@ Il dit ce qui est fait, ce qui reste, et ce qui attend une décision de toi.
 > (`finProgramme()`). Correctifs trouvés par les simulations : objectifs ajoutés effacés au
 > rechargement, archive de saison quadratique, revues plafonnées à 260, barre et notification qui
 > débordaient sur iPhone, montants et cibles absurdes, échéances du Système toujours à 0, record sous
-> la série, restauration qui ajoutait, archives cloud qui survivaient au nouveau départ.
+> la série, restauration qui ajoutait, archives cloud qui survivaient au nouveau départ, archive de
+> saison compacte (une ligne par objectif du mois ou de la saison, ~5 Ko), et le repli rejoué après
+> synchronisation relit l'état depuis le stockage (sinon la série perdait un jour par jour).
 > Simulations : `simulation-5ans.mjs` (jour par jour, faux cloud aux vraies limites),
 > `simulation-chaos.mjs`, `simulation-issues.mjs`, `simulation-longue.mjs`. Les tests lisent les
 > listes par `window.__bcLire`.
