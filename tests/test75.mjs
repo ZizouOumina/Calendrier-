@@ -110,15 +110,16 @@ console.log('\n== 315) iPhone : la barre du bas ramène l\'onglet actif sous les
 {
   const { ctx, fr, page } = await ouvrir('2026-09-14T06:45:00+02:00', null, {width:390,height:844});
   const rail = await fr.evaluate(() => { const s = document.querySelector('.sidebar'); return {sw:s.scrollWidth, cw:s.clientWidth, x:s.scrollLeft}; });
-  ok(rail.sw > rail.cw + 40, 'la barre défile vraiment (' + rail.sw + ' px de contenu pour ' + rail.cw + ' visibles)');
+  /* lot 51 : six entrées (+ Sauvegarde) tiennent sur 390 px, la barre ne défile plus */
+  ok(rail.sw <= rail.cw + 1, 'la barre tient sans défiler (' + rail.sw + ' px de contenu pour ' + rail.cw + ' visibles)');
   await fr.evaluate(() => document.querySelector('.nav-btn[data-page="courses"]').click());
   await page.waitForTimeout(700);
   const apres = await fr.evaluate(() => {
-    const s = document.querySelector('.sidebar'), b = document.querySelector('.nav-btn[data-page="courses"]');
+    const s = document.querySelector('.sidebar'), b = document.querySelector('.nav-btn.active');
     const rs = s.getBoundingClientRect(), rb = b.getBoundingClientRect();
     return {defile: Math.round(s.scrollLeft), dedans: rb.left >= rs.left - 1 && rb.right <= rs.right + 1};
   });
-  ok(apres.defile > 0 && apres.dedans, 'après un saut vers Courses, l\'onglet actif est dans le champ de vision (défilement ' + apres.defile + ' px)');
+  ok(apres.dedans, 'après un saut vers Courses, l\'entrée Table allumée est dans le champ de vision (défilement ' + apres.defile + ' px)');
   await ctx.close();
 }
 

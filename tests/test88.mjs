@@ -406,20 +406,22 @@ console.log('\n== 311) Neuf onglets, et rien qui devient inatteignable ==');
   const v = await fr.evaluate(() => ({
     visibles: [...document.querySelectorAll('.nav-btn[data-page]')].filter(b => !b.hidden).map(b => b.dataset.page),
     toutes: [...document.querySelectorAll('.nav-btn[data-page]')].map(b => b.dataset.page),
-    groupes: [...document.querySelectorAll('.nav-label')].map(l => l.textContent),
+    groupes: [...document.querySelectorAll('.nav-label')].filter(l => getComputedStyle(l).display !== 'none').map(l => l.textContent),
     rangees: document.querySelectorAll('.sous-nav').length,
     pastilles: document.querySelectorAll('.sous-onglet').length
   }));
-  ok(v.visibles.length === 9, 'neuf boutons dans la barre : ' + v.visibles.join(' '));
-  ok(v.toutes.length === 18, 'mais les dix-huit boutons restent dans le DOM (' + v.toutes.length + ') — rien n\'a été supprimé');
-  ok(v.groupes.join(' | ') === 'Aujourd’hui | Le travail | Le corps',
-     'et les trois intertitres veulent dire quelque chose : ' + v.groupes.join(' | '));
-  ok(v.rangees === 7 && v.pastilles === 17, 'sept pages groupées, dix-sept pastilles (' + v.rangees + '/' + v.pastilles + ')');
+  /* lot 51 : six entrées ; Calendrier, Sport, Corps & santé, Coran, Objectifs, Meal prep,
+     Courses, Boutique et Système sont des sous-onglets. Plus d'intertitres : six entrées
+     n'ont rien à séparer. Cinq groupes : 2 + 3 + 3 + 2 + 4 pages = 14 rangées, 42 pastilles. */
+  ok(v.visibles.join(' ') === 'dashboard etudes bilan budget habitudes repas', 'six entrées dans la barre : ' + v.visibles.join(' '));
+  ok(v.toutes.length === 19, 'mais les dix-neuf boutons restent dans le DOM (' + v.toutes.length + ') — rien n\'a été supprimé');
+  ok(v.groupes.length === 0, 'plus d\'intertitre visible (' + (v.groupes.join(' | ') || 'aucun') + ')');
+  ok(v.rangees === 14 && v.pastilles === 42, 'quatorze pages groupées, quarante-deux pastilles (' + v.rangees + '/' + v.pastilles + ')');
 
   /* Chaque page reste atteignable par son bouton caché : c'est ce qui fait que les liens
      internes, les raccourcis et tout le reste continuent de marcher. Et c'est le bouton de
      TÊTE qui s'allume dans la barre, sinon on croit n'avoir pas changé de page. */
-  for (const [pg, tete] of [['coran','habitudes'], ['prep','repas'], ['courses','repas'], ['objectifs','bilan']]) {
+  for (const [pg, tete] of [['coran','bilan'], ['prep','repas'], ['courses','repas'], ['objectifs','bilan'], ['sport','habitudes'], ['calendrier','dashboard']]) {
     const r = await fr.evaluate(x => {
       document.querySelector('.nav-btn[data-page="' + x + '"]').click();
       return { seule: [...document.querySelectorAll('.page.active')].map(s => s.dataset.page),

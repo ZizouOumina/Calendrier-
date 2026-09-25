@@ -432,6 +432,10 @@
   .sous-onglet:hover{color:var(--ink); border-color:var(--ink-faint);}
   .sous-onglet:focus-visible{outline:2px solid var(--cyan); outline-offset:2px;}
   .sous-onglet.on{background:var(--cyan); border-color:var(--cyan); color:#04151a; font-weight:600;}
+  /* grand ecran : les pastilles montent dans la marge haute de la page (44 px vides), pour
+     ne pas pousser le tableau de bord d'une ligne (test14 : la zone « agir » en 1,5 ecran) */
+  @media (min-width:781px){ .sous-nav{margin:-30px 0 10px;} .sous-onglet{padding:6px 13px; min-height:30px;} }
+  .btn-pilote{min-width:44px; padding-left:0; padding-right:0; font-size:17px;}
   @media (max-width:560px){ .sous-onglet{padding:11px 14px; min-height:44px;} }
   @media print{ .sous-nav{display:none;} }
   .exc-section{border-top:1px solid var(--border); padding-top:16px; margin-top:16px;}
@@ -1788,7 +1792,7 @@
           <button class="btn btn-primary" id="dash-pomodoro">🍅 Pomodoro — Révision</button>
           <button class="btn btn-primary" id="dash-pomodoro-projet">🍅 Pomodoro — Projet perso</button>
           <button class="btn btn-primary" id="dash-pomodoro-espanol" hidden>🇪🇸 Pomodoro — Español</button>
-          <button class="btn" id="dash-pilote" type="button" title="Plein écran : l’heure, le bloc en cours, le temps qui reste, un bouton (M)">⛶ Maintenant</button>
+          <button class="btn btn-pilote" id="dash-pilote" type="button" aria-label="Maintenant, en plein écran" title="Maintenant, en plein écran : l’heure, le bloc en cours, le temps qui reste, un bouton (M)">⛶</button>
           <p class="dial-serie" id="dash-serie" hidden></p>
         </div>
         <p class="focus-kb"><b>P</b> lance le Pomodoro du bloc · <b>C</b> ouvre la clôture · <b>H</b> coche l’habitude suivante · <b>M</b> plein écran · <b>1-6</b> changent d’onglet</p>
@@ -14550,7 +14554,7 @@
   var CONSIGNES_PERIODE_ES = {
     'Anki 2': "Suite des échéances de dentaire. Les 5 dernières minutes : les dix formules du jour (paquet Español).",
     'Clore le cours du jour': "Le tema a déjà été étudié le matin d'avance : vingt minutes par cours, en espagnol. « cierra » dans le projet Dentaire avec tes « ? » d'amphi, ce que le prof a souligné en cartes, la note 0-3 du cours à la clôture.",
-    'Trajet cours': "Tapis enlevés du sol ? L’aspirateur passe à 15:45 et à 18:15 et il se bloque dessus. Puis podcast en marchant, shadowing à mi-voix dans le tram. Arrivé avant 15:30 : conversation avec les compañeros, pas le téléphone.",
+    'Trajet cours': "Tapis enlevés du sol (rappel de 14:45) ? L’aspirateur passe à 15:45 et à 18:15. Puis podcast en marchant, shadowing à mi-voix dans le tram. Arrivé avant 15:30 : conversation avec les compañeros, pas le téléphone.",
     'Trajet retour': "Une minute de résumé oral du cours enregistrée en marchant, puis Anki Español dans le tram et trois minutes de paquet Business.",
     'Cours': "Notes en espagnol, un « ? » dans la marge pour chaque mot inconnu, ta question posée avant la fin. Trente minutes de conversation réelle dans la journée.",
     /* Le samedi, la seance est le soir : la course de 18:00 (trente minutes) fait l'aller et

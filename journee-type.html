@@ -1,0 +1,450 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>La journée type</title>
+<meta name="description" content="Chaque jour de la semaine, heure par heure, avec tous les petits détails : douches, shampoing, peau, dents, repas, eau, prières, sac, linge, tapis.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root{
+    --bg:#f3f5f7; --paper:#ffffff; --paper-2:#e9eef2; --line:#d3dbe2; --line-soft:#e3e9ee;
+    --ink:#14202b; --ink-2:#4a5b6a; --ink-3:#6f808e;
+    --accent:#0e7c8c; --accent-ink:#0a5f6c; --accent-soft:#d9f0f3;
+    --c-sommeil:#5a63c9; --c-hygiene:#1f8fa0; --c-repas:#b8741c; --c-travail:#0e7c8c; --c-fac:#6b7a88;
+    --c-sport:#2f8f5b; --c-combat:#c0483f; --c-deen:#8a5cc7; --c-maison:#7a6a55; --c-espagnol:#d0582f;
+    --display:'Bebas Neue','Arial Narrow',Impact,sans-serif;
+    --body:'Barlow','Helvetica Neue',Arial,sans-serif;
+    --mono:'IBM Plex Mono','SFMono-Regular',Menlo,monospace;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#0b1219; --paper:#111b25; --paper-2:#172330; --line:#243544; --line-soft:#1c2a37;
+      --ink:#e2ecf2; --ink-2:#a9b9c6; --ink-3:#7f93a3;
+      --accent:#3fc7d9; --accent-ink:#7ddbe8; --accent-soft:#12333b;
+      --c-sommeil:#8f97f0; --c-hygiene:#4cc3d3; --c-repas:#e8a34f; --c-travail:#3fc7d9; --c-fac:#9aabb9;
+      --c-sport:#4fc07f; --c-combat:#ee7a70; --c-deen:#b690ee; --c-maison:#c2ad8f; --c-espagnol:#f08a62;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#0b1219; --paper:#111b25; --paper-2:#172330; --line:#243544; --line-soft:#1c2a37;
+    --ink:#e2ecf2; --ink-2:#a9b9c6; --ink-3:#7f93a3;
+    --accent:#3fc7d9; --accent-ink:#7ddbe8; --accent-soft:#12333b;
+    --c-sommeil:#8f97f0; --c-hygiene:#4cc3d3; --c-repas:#e8a34f; --c-travail:#3fc7d9; --c-fac:#9aabb9;
+    --c-sport:#4fc07f; --c-combat:#ee7a70; --c-deen:#b690ee; --c-maison:#c2ad8f; --c-espagnol:#f08a62;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; background:var(--bg); color:var(--ink); font-family:var(--body); font-size:15.5px; line-height:1.5; -webkit-font-smoothing:antialiased;}
+  h1,h2,h3{font-family:var(--display); font-weight:400; letter-spacing:.03em; margin:0; text-wrap:balance;}
+  p{margin:0;}
+  .wrap{max-width:880px; margin:0 auto; padding:28px 16px 90px;}
+  header.top{margin-bottom:18px;}
+  .eyebrow{font-family:var(--mono); font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--accent);}
+  header.top h1{font-size:48px; line-height:1; margin:4px 0 8px;}
+  header.top p{color:var(--ink-2); max-width:62ch;}
+
+  /* les sept jours */
+  .jours{position:sticky; top:0; z-index:5; background:var(--bg); padding:10px 0; display:grid; grid-template-columns:repeat(7, minmax(0,1fr)); gap:6px; border-bottom:1px solid var(--line);}
+  .jours button{font-family:var(--body); font-weight:600; font-size:14px; border:1px solid var(--line); background:var(--paper); color:var(--ink-2); padding:9px 0 7px; min-height:48px; cursor:pointer; display:flex; flex-direction:column; align-items:center; gap:1px; border-radius:8px;}
+  .jours button small{font-family:var(--mono); font-size:9.5px; font-weight:500; letter-spacing:.06em; color:var(--ink-3);}
+  .jours button[aria-pressed="true"]{background:var(--accent); border-color:var(--accent); color:#fff;}
+  .jours button[aria-pressed="true"] small{color:rgba(255,255,255,.8);}
+  .jours button:focus-visible{outline:2px solid var(--accent); outline-offset:2px;}
+
+  .resume{display:flex; flex-wrap:wrap; gap:6px 14px; margin:16px 0 6px; font-size:13.5px; color:var(--ink-2);}
+  .resume b{color:var(--ink);}
+  .jour-titre{display:flex; align-items:baseline; gap:12px; flex-wrap:wrap; margin-top:12px;}
+  .jour-titre h2{font-size:34px; line-height:1;}
+  .jour-titre span{font-family:var(--mono); font-size:12px; color:var(--ink-3);}
+
+  /* la frise */
+  ol.frise{list-style:none; margin:14px 0 0; padding:0; display:flex; flex-direction:column; gap:0;}
+  .pas{display:grid; grid-template-columns:58px minmax(0,1fr); gap:12px; position:relative; padding:0 0 14px;}
+  .pas::before{content:''; position:absolute; left:70px; top:6px; bottom:0; width:2px; background:var(--line-soft);}
+  .pas:last-child::before{display:none;}
+  .pas .h{font-family:var(--mono); font-size:13.5px; font-weight:500; color:var(--ink); padding-top:1px; font-variant-numeric:tabular-nums; text-align:right;}
+  .pas .c{position:relative; padding-left:18px;}
+  .pas .c::before{content:''; position:absolute; left:-5px; top:5px; width:12px; height:12px; border-radius:50%; background:var(--paper); border:3px solid var(--cat, var(--accent));}
+  .pas .t{font-weight:700; font-size:15.5px; line-height:1.3;}
+  .pas .t .tag{font-family:var(--mono); font-weight:500; font-size:9.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--cat); margin-left:6px; white-space:nowrap;}
+  .pas ul{margin:5px 0 0; padding-left:17px; color:var(--ink-2); font-size:14.5px;}
+  .pas li{margin:2px 0;}
+  .pas li b{color:var(--ink); font-weight:600;}
+  .pas .rappel{display:inline-block; margin-top:4px; font-family:var(--mono); font-size:11px; color:var(--accent-ink); background:var(--accent-soft); padding:2px 7px; border-radius:4px;}
+  .cat-sommeil{--cat:var(--c-sommeil);} .cat-hygiene{--cat:var(--c-hygiene);} .cat-repas{--cat:var(--c-repas);}
+  .cat-travail{--cat:var(--c-travail);} .cat-fac{--cat:var(--c-fac);} .cat-sport{--cat:var(--c-sport);}
+  .cat-combat{--cat:var(--c-combat);} .cat-deen{--cat:var(--c-deen);} .cat-maison{--cat:var(--c-maison);} .cat-espagnol{--cat:var(--c-espagnol);}
+
+  /* les règles fixes */
+  section.regles{margin-top:40px;}
+  section.regles > h2{font-size:32px; margin-bottom:4px;}
+  section.regles > p.intro{color:var(--ink-2); margin-bottom:14px; max-width:64ch;}
+  .bloc{background:var(--paper); border:1px solid var(--line); border-radius:10px; padding:16px 16px 14px; margin-bottom:12px;}
+  .bloc h3{font-size:22px; margin-bottom:8px; color:var(--cat, var(--ink));}
+  .bloc p, .bloc li{font-size:14.5px; color:var(--ink-2);}
+  .bloc ul{margin:6px 0 0; padding-left:18px;}
+  .bloc li{margin:3px 0;}
+  .bloc b{color:var(--ink);}
+  .tab-wrap{overflow-x:auto; margin-top:6px;}
+  table{border-collapse:collapse; width:100%; font-size:13.5px; min-width:520px;}
+  th, td{text-align:left; padding:7px 8px; border-bottom:1px solid var(--line-soft); vertical-align:top;}
+  th{font-family:var(--mono); font-size:10.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-3); font-weight:500;}
+  td:first-child{font-weight:600; color:var(--ink); white-space:nowrap;}
+  td{color:var(--ink-2); font-variant-numeric:tabular-nums;}
+  .note{font-size:13px; color:var(--ink-3); margin-top:8px;}
+  footer{margin-top:36px; font-size:12.5px; color:var(--ink-3); line-height:1.6;}
+  @media (max-width:560px){
+    header.top h1{font-size:40px;}
+    .pas{grid-template-columns:46px minmax(0,1fr); gap:10px;}
+    .pas::before{left:56px;}
+    .pas .h{font-size:12.5px;}
+    .jours button{font-size:13px;}
+  }
+  @media print{ .jours{position:static;} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <span class="eyebrow">La Batcave · régime combat, du 28 septembre au 24 janvier</span>
+    <h1>La journée type</h1>
+    <p>Chaque jour, heure par heure, avec les petits détails : combien de douches, quand le shampoing, la peau, les dents, ce que tu manges, l'eau, les prières, ce qu'il y a dans le sac, le linge, les tapis. Rien ici ne sonne : seuls les blocs de ton agenda et les tapis te notifient. Lis le jour du jour pendant deux semaines, puis ça roule tout seul.</p>
+  </header>
+
+  <nav class="jours" aria-label="Jour de la semaine" id="jours"></nav>
+
+  <div id="jour"></div>
+
+  <section class="regles" aria-labelledby="regles-titre">
+    <h2 id="regles-titre">Les règles qui ne bougent pas</h2>
+    <p class="intro">Ce qui est vrai tous les jours, au même endroit. Le détail de chaque jour, au-dessus, l'applique.</p>
+
+    <div class="bloc cat-hygiene"><h3>Douches et shampoing</h3>
+      <div class="tab-wrap"><table>
+        <thead><tr><th>Jour</th><th>Douches</th><th>Shampoing</th><th>Pourquoi</th></tr></thead>
+        <tbody>
+          <tr><td>Lundi</td><td>3 · 06:30 · 12:10 · 21:25</td><td>à 12:10, après le JJB</td><td>muscu à 05:30, puis tatami à 10:30</td></tr>
+          <tr><td>Mardi</td><td>2 · 06:30 · 21:15</td><td>à 06:30, après la muscu</td><td>la Muay Thai du soir se rince à la douche de 21:15</td></tr>
+          <tr><td>Mercredi</td><td>3 · 06:30 · 12:10 · 21:25</td><td>à 12:10, après le JJB</td><td>pas de muscu, tatami à 10:30</td></tr>
+          <tr><td>Jeudi</td><td>2 · 06:30 · 21:25</td><td>à 06:30, après la muscu</td><td>seul jour de sport sans combat</td></tr>
+          <tr><td>Vendredi</td><td>3 · 06:30 · 12:10 · 21:25</td><td>à 12:10, après le JJB</td><td>celle de 12:10 vaut ghusl pour Jumu'ah</td></tr>
+          <tr><td>Samedi</td><td>2 · 06:30 · 21:25</td><td>aucun</td><td>pas de sueur</td></tr>
+          <tr><td>Dimanche</td><td>2 · 06:30 · 21:25</td><td>aucun</td><td>pas de sueur</td></tr>
+        </tbody>
+      </table></div>
+      <ul>
+        <li><b>La douche de 06:30 est la seule complète</b> : nettoyant Avène sur le visage à la main, gel au peroxyde de benzoyle 5 % sur le dos (posé 1 à 2 min, puis rincé), gel normal sur le reste. Eau tiède, jamais chaude.</li>
+        <li><b>La douche de 12:10 (jours de JJB) est un rinçage</b>, 10 min : eau, gel doux sur les zones de contact (cou, mains, avant-bras, aisselles, aine, pieds), le shampoing du jour. Pas de peroxyde, pas de Skinoren. Le visage à l'eau.</li>
+        <li><b>La douche du soir</b>, 5 min : Avène sur le visage, eau seule sur le corps et le dos, gel doux aux aisselles, à l'aine et aux pieds, cheveux à l'eau.</li>
+        <li><b>Un shampoing par jour au plus.</b> Jamais le soir : on se coucherait les cheveux mouillés. Après-shampoing rincé penché en avant, pour qu'il ne coule pas sur le dos.</li>
+      </ul>
+    </div>
+
+    <div class="bloc cat-hygiene"><h3>La peau (protocole jusqu'au 13 décembre)</h3>
+      <ul>
+        <li><b>Matin, après la douche</b> : tamponner sans frotter → Skinoren en fine couche sur tout le visage et tout le dos (pas en touches sur les boutons) → SPF 50 sur le visage.</li>
+        <li><b>Soir, après la douche</b> : tamponner → <b>5 minutes de séchage</b> (c'est là que tu te brosses les dents) → Skinoren en fine couche visage et dos.</li>
+        <li>L'applicateur à manche pour le milieu du dos. Pas de loofah, pas de gommage, ne perce rien, ne touche pas ton visage en cours ou en révision.</li>
+        <li>Aucun nouveau produit avant le 13 décembre. Photos du suivi : les dimanches 18 octobre, 15 novembre, 13 décembre.</li>
+      </ul>
+    </div>
+
+    <div class="bloc cat-hygiene"><h3>Les dents</h3>
+      <ul>
+        <li><b>07:10</b> : brosse 2 minutes, après le petit-déjeuner.</li>
+        <li><b>Le soir</b>, pendant les 5 minutes de séchage de la peau : brosse 2 minutes, <b>fil dentaire</b>, on crache sans rincer (le fluor reste).</li>
+        <li>Brosse à dents changée tous les trois mois : prochaine fois le dimanche 13 décembre (la Batcave te le dit).</li>
+      </ul>
+    </div>
+
+    <div class="bloc cat-repas"><h3>Manger et boire</h3>
+      <div class="tab-wrap"><table>
+        <thead><tr><th>Repas</th><th>Heure</th><th>Dans l'assiette</th></tr></thead>
+        <tbody>
+          <tr><td>Petit-déjeuner</td><td>06:45</td><td>flocons d'avoine 80 g + miel 20 g, skyr 180 g, 2 œufs, amandes 30 g, 1 banane</td></tr>
+          <tr><td>Collation combat</td><td>10:05 (L, Me, V) · 14:50 (Ma)</td><td>banane 120 g, flocons 50 g, amandes 15 g — les jours de combat seulement</td></tr>
+          <tr><td>Déjeuner</td><td>12:20</td><td>la boîte : riz 155 g crus, poulet 80 g, légumes 200 g ; sauce skyr 65 g + 10 ml d'huile, hors du feu</td></tr>
+          <tr><td>Collation entraînement</td><td>14:50 (16:50 le lundi)</td><td>pain complet 60 g, 2 œufs durs, fromage 20 g, amandes 25 g</td></tr>
+          <tr><td>Dîner</td><td>20:00 (18:00 Ma · 19:30 Sa · 19:00 Di)</td><td>la boîte : pâtes 105 g crues, viande hachée 90 g, légumes 150 g ; skyr à l'ail 60 g, 5 ml d'huile au paprika ; 1 fruit ; <b>créatine 5 g</b>. Puis plus rien.</td></tr>
+        </tbody>
+      </table></div>
+      <ul>
+        <li><b>Eau : 3,5 L les jours de combat</b> (lundi, mardi, mercredi, vendredi), <b>3 L</b> les autres. Au réveil 500 ml, une gourde de 1 L remplie à 07:10 et à 12:20, 500 ml en rentrant du club, le reste l'après-midi. Rien de gros après 20:30, sinon tu te lèves la nuit.</li>
+        <li>La viande et le jambon halal : à la boucherie seulement.</li>
+      </ul>
+    </div>
+
+    <div class="bloc cat-deen"><h3>Les prières (≈ Alicante)</h3>
+      <div class="tab-wrap"><table>
+        <thead><tr><th>Prière</th><th>28 sept.</th><th>12 oct.</th><th>Dès le 26 oct. (heure d'hiver)</th><th>Où elle tombe</th></tr></thead>
+        <tbody>
+          <tr><td>Fajr</td><td>06:25</td><td>06:39</td><td>05:52</td><td>juste après la douche de 06:30 (avant 07:54, le lever du soleil)</td></tr>
+          <tr><td>Dhuhr</td><td>13:55</td><td>13:51</td><td>12:49</td><td>fin du bloc de 13:00, avant 14:00 · le vendredi, Jumu'ah</td></tr>
+          <tr><td>Asr</td><td>17:16</td><td>17:00</td><td>15:46</td><td>pause du cours ou au retour · l'hiver, avant de partir à 15:00 n'est pas encore l'heure : à la pause</td></tr>
+          <tr><td>Maghrib</td><td>19:51</td><td>19:30</td><td>18:11</td><td>en rentrant de la fac, avant le dîner</td></tr>
+          <tr><td>Isha</td><td>21:14</td><td>20:53</td><td>19:34</td><td>avant la douche du soir</td></tr>
+        </tbody>
+      </table></div>
+      <p class="note">Calcul approché (angle 18°, Asr shâfi'î). Vérifie chaque jour dans ton appli de prière : les heures bougent d'environ une minute par jour, et tout recule d'une heure le dimanche 25 octobre. <b>Le mardi jusqu'au 24 octobre, Maghrib tombe pendant la Muay Thai</b> : prie-le au club dès la fin, à 21:00, avant de rentrer — et demande à ton imam si tu peux le regrouper avec Isha ces soirs-là. Dès le 27 octobre, il tombe avant ton départ de 19:10.</p>
+    </div>
+
+    <div class="bloc cat-maison"><h3>La maison</h3>
+      <ul>
+        <li><b>Les tapis</b> : rappel sur ton téléphone à <b>14:45 tous les jours</b> — l'aspirateur passe à 15:45 et à 18:15 et se bloque dessus. Tu les remets le soir, après 18:30.</li>
+        <li><b>Le linge du club</b> : kimono et rashguard en machine le jour même, à 30 °C, séchés à l'air — jamais remis deux fois. Bandes de Muay Thai lavées après chaque séance ; les gants ouverts à l'air, pas fermés dans le sac. Idéalement deux kimonos : un qui sèche, un dans le sac.</li>
+        <li><b>Au club</b> : tongs dans les vestiaires, jamais de chaussures sur le tatami, ongles courts. Une plaque rouge ronde qui gratte sur la peau (teigne) : pas de tatami, pharmacie.</li>
+        <li><b>Serviettes</b> : visage changée lundi, mercredi, vendredi ; corps le dimanche. <b>Taie d'oreiller</b> : mercredi et dimanche. <b>Draps</b> : dimanche.</li>
+      </ul>
+    </div>
+
+    <div class="bloc cat-maison"><h3>Ce qui ne revient pas chaque semaine</h3>
+      <div class="tab-wrap"><table>
+        <thead><tr><th>Quoi</th><th>Quand</th><th>Prochaines dates</th></tr></thead>
+        <tbody>
+          <tr><td>Pesée à jeun</td><td>un dimanche sur deux, au réveil, après les toilettes, avant de boire</td><td>4 oct. · 18 oct. · 1er nov. · 15 nov.</td></tr>
+          <tr><td>Ongles des mains</td><td>un dimanche sur deux (les mêmes)</td><td>4 oct. · 18 oct. · 1er nov.</td></tr>
+          <tr><td>Photos peau + corps, ongles des pieds</td><td>un dimanche sur quatre, même lumière, même endroit</td><td>18 oct. · 15 nov. · 13 déc.</td></tr>
+          <tr><td>Coupe de cheveux</td><td>un samedi sur trois (le coiffeur est fermé le dimanche)</td><td>3 oct. · 24 oct. · 14 nov.</td></tr>
+          <tr><td>Rasage (aisselles, intimes)</td><td>chaque dimanche, à la douche du soir</td><td>—</td></tr>
+          <tr><td>Brosse à dents neuve</td><td>tous les trois mois</td><td>13 déc.</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <div class="bloc cat-sommeil"><h3>Dormir</h3>
+      <ul>
+        <li><b>Lever 05:30 tous les jours</b>, week-end compris. Réveil posé loin du lit.</li>
+        <li><b>Coucher 21:35</b> (22:00 le mardi) : 7 h 55 au lit (7 h 30 la nuit du mardi). Le rappel du coucher sonne 30 min avant : les écrans se rangent.</li>
+        <li>Micro-sieste de 20 min au plus, alarme mise : 12:40 en semaine, 14:30 le vendredi, 13:10 le week-end.</li>
+        <li>À la clôture du soir (le rappel sonne 1 h 30 avant le coucher), écris ce que tu feras à 05:30 : le matin, on exécute, on ne décide pas.</li>
+      </ul>
+    </div>
+  </section>
+
+  <footer>La journée type · 25 septembre 2026 · lue dans la grille de la Batcave (régime combat, phase Español jusqu'au 23 octobre). Le 24 octobre, les blocs « Español · … » redeviennent des blocs de projets ; les heures ne bougent pas. Le 26 octobre, heure d'hiver : seules les prières changent.</footer>
+</div>
+
+<script>
+(function(){
+  /* Les pièces qui reviennent. Chaque pas : [heure, titre, catégorie, [détails], rappel?] */
+  var LEVER = ['05:30', 'Lever', 'sommeil', ['Debout tout de suite, réveil loin du lit. <b>500 ml d\'eau</b>, toilettes.']];
+  function sport05(nom, duree, exos){
+    return ['05:30', 'Muscu · ' + nom + ' (' + duree + ')', 'sport', [
+      '1 km en courant jusqu\'au parc, podcast espagnol : c\'est l\'échauffement.',
+      exos,
+      'Les charges et les répétitions à faire sont dans l\'onglet Sport, déjà calculées. Retour en marchant.'
+    ], true];
+  }
+  function douche06(shampoing){
+    return ['06:30', 'Douche du matin (la complète)', 'hygiene', [
+      'Avène sur le visage à la main · <b>peroxyde 5 % sur le dos, posé 1 à 2 min</b> puis rincé · gel normal sur le reste · eau tiède.',
+      shampoing,
+      'Tamponner → <b>Skinoren</b> fine couche visage + dos → <b>SPF 50</b> sur le visage → déo, habillé.'
+    ], true];
+  }
+  var FAJR = ['06:40', 'Fajr', 'deen', ['≈ 06:25 le 28 sept., jusqu\'au lever du soleil vers 07:54. Vérifie l\'heure du jour.']];
+  function petitDej(){
+    return ['06:45', 'Petit-déjeuner + une page de Coran', 'repas', [
+      'Un grand verre d\'eau d\'abord.',
+      'Flocons d\'avoine 80 g + miel 20 g, skyr 180 g, 2 œufs, amandes 30 g, 1 banane.',
+      'Une page de Coran en mangeant (tu la notes à la clôture).'
+    ], true];
+  }
+  function dents0710(sac){
+    return ['07:10', 'Dents, gourde, sac', 'hygiene', [
+      'Brosse à dents 2 min.',
+      'Gourde de 1 L remplie.',
+      sac
+    ]];
+  }
+  var SAC_JJB = 'Sac du club pour 10:20 : <b>kimono propre</b>, rashguard, short, protège-dents, tongs, serviette, gourde. Ongles courts.';
+  var SAC_MT = 'Sac du club pour ce soir : short, t-shirt, <b>bandes propres</b>, gants, protège-dents, tongs, serviette.';
+  var SAC_FAC = 'Sac de la journée : ordinateur, chargeur, cahier, gourde (tu vas peut-être à la BU).';
+  var ANKI1 = ['07:20', 'Anki 1', 'travail', ['Toutes les échéances de dentaire, deux Pomodoros 25 + 5, téléphone ailleurs. À la maison ou à la BU.'], true];
+  var ANKI2 = ['08:20', 'Anki 2', 'travail', ['La suite des échéances. Les 5 dernières minutes : les dix formules du jour (paquet Español).'], true];
+  function etudier(h, fin){
+    return [h, 'Étudier en avance (jusqu\'à ' + fin + ')', 'travail', [
+      'Un tema que le prof n\'a pas encore donné : diapos lues en espagnol, une phrase à toi par point, « ? » dans la marge, 15 à 25 cartes Anki.',
+      'Puis le projet Claude Dentaire : « estudia · matière Tn · tes ? ».'
+    ], true];
+  }
+  var COLL_COMBAT = ['10:05', 'Collation combat', 'repas', ['Banane 120 g, flocons 50 g, amandes 15 g — 25 min avant le tatami.', 'Gourde remplie.'], true];
+  var TRAJET_CLUB = ['10:20', 'Trajet club', 'combat', ['Dix minutes à pied.'], true];
+  var JJB = ['10:30', '🥋 JJB (1 h 30)', 'combat', ['Protège-dents. Tape tôt sur une clé ou un étranglement. Bois entre les rounds. Questions en espagnol.'], true];
+  function retourJJB(ghusl){
+    return ['12:00', 'Retour du club → douche rapide à 12:10', 'hygiene', [
+      'Rinçage de 10 min : eau tiède, gel doux sur cou, mains, avant-bras, aisselles, aine, pieds.',
+      '<b>Le shampoing du jour</b> (les cheveux ont frotté le tatami). Pas de peroxyde, pas de Skinoren, visage à l\'eau.',
+      '<b>Kimono et rashguard en machine, 30 °C</b>, séchage à l\'air. Bois 500 ml.' + (ghusl ? ' <b>Cette douche vaut ghusl pour Jumu\'ah.</b>' : '')
+    ], true];
+  }
+  function dejeuner(h){
+    return [h || '12:20', 'Déjeuner', 'repas', [
+      'La boîte du batch : riz 155 g crus, poulet 80 g, légumes 200 g. Poêle avec 2-3 cuillères d\'eau, couvercle, 4-5 min, brûlant au cœur.',
+      'Hors du feu : sauce skyr 65 g + 10 ml d\'huile, sel, un parfum. Gourde re-remplie.'
+    ], true];
+  }
+  function sieste(h){ return [h, 'Micro-sieste', 'sommeil', ['20 minutes au plus, alarme mise.'], true]; }
+  var DHUHR = ['13:55', 'Dhuhr', 'deen', ['≈ 13:55 le 28 sept., à la fin du bloc de 13:00.']];
+  var TAPIS = ['14:45', 'Tapis enlevés du sol', 'maison', ['L\'aspirateur passe à 15:45 et à 18:15.'], 'tapis'];
+  function collEntr(h, plusCombat){
+    return [h, 'Collation entraînement' + (plusCombat ? ' + collation combat' : ''), 'repas',
+      ['Pain complet 60 g, 2 œufs durs, fromage 20 g, amandes 25 g.'].concat(plusCombat ? ['Plus la collation combat : banane 120 g, flocons 50 g, amandes 15 g (pour la Muay Thai de 19:30).'] : []), true];
+  }
+  function trajetCours(h){ return [h, 'Trajet vers la fac', 'fac', ['Podcast en marchant, shadowing à mi-voix dans le tram. Arrivé en avance : conversation avec les compañeros.'], true]; }
+  function cours(h, fin, asr){ return [h, 'Cours (jusqu\'à ' + fin + ')', 'fac', ['Notes en espagnol, un « ? » par mot inconnu, ta question posée avant la fin.', asr], false]; }
+  function trajetRetour(h){ return [h, 'Trajet retour', 'fac', ['Une minute de résumé oral du cours en marchant, Anki Español dans le tram.'], true]; }
+  var MAGHRIB = ['19:55', 'Maghrib, puis tapis remis', 'deen', ['≈ 19:51 le 28 sept. — en rentrant, avant le dîner. Les tapis reprennent leur place.']];
+  function diner(h){
+    return [h, 'Dîner', 'repas', [
+      'La boîte : pâtes 105 g crues, viande hachée 90 g, légumes 150 g, à la poêle.',
+      'Hors du feu : skyr à l\'ail 60 g, 5 ml d\'huile au paprika. Un fruit.',
+      '<b>Créatine 5 g</b>, avec le repas. Ensuite plus rien jusqu\'au lendemain.'
+    ], true];
+  }
+  function clore(h){ return [h, 'Clore le cours du jour', 'travail', ['20 min par cours : « cierra » dans le projet Dentaire, les « ? » d\'amphi, ce que le prof a souligné en cartes.', 'Puis la <b>clôture du jour</b> dans la Batcave (le rappel a sonné) : sommeil, poids, eau, humeur, la page de Coran, et ce que tu feras demain à 05:30.'], true]; }
+  var LIBRE = ['21:10', 'Isha, puis temps libre', 'deen', ['Isha ≈ 21:14 le 28 sept. (plus tôt chaque jour).', 'Le rappel du coucher sonne vers 21:05 : on range les écrans.']];
+  function doucheSoir(h, extra){
+    return [h, 'Douche du soir', 'hygiene', [
+      'Avène sur le visage, eau seule sur le corps et le dos, gel doux aux aisselles, à l\'aine et aux pieds. Cheveux à l\'eau.',
+      'Tamponner, puis <b>5 minutes de séchage</b> : dents 2 min + <b>fil dentaire</b>, cracher sans rincer.',
+      'Puis <b>Skinoren</b> fine couche visage + dos.'
+    ].concat(extra ? [extra] : []), true];
+  }
+  function coucher(h, nuit){ return [h, 'Coucher', 'sommeil', ['Réveil posé loin du lit, écran off. ' + nuit], true]; }
+  var ASR_PAUSE = 'Asr (≈ 17:16) à la pause du cours.';
+
+  var HAUT_VOLUME = 'Tractions 4×8-15 · dips 4×10-20 · rows prise large 3×12-15 · pike push-ups 3×6-10 · élévations latérales 3×12-20 · curl 3×10-15 · extension triceps 3×10-15 · face pulls 2×15-20 · shrugs 3×12-15 · cou (flexion, extension) 3×12-20. Pas à l\'échec : JJB à 10:30.';
+  var BAS = 'Split squat bulgare 4×8-12/jambe · soulevé de terre roumain une jambe 4×10-12 · hip thrust une jambe 3×12-20 · mollets une jambe 3×15-20 · crunch lesté 3×12-20 · cou latéral 3×12-20/côté.';
+  var HAUT_LOURD = 'Tractions 4×6-12 · dips 4×8-15 · rows australiens pieds surélevés 3×10-15 · pompes déclinées 3×8-12 · curl 2×10-15 · extension triceps 2×10-15 · élévations latérales 3×12-20 · cou (flexion, extension) 3×12-20.';
+
+  var JOURS = [
+    {cle:'lun', nom:'Lundi', court:'Lun', resume:'Muscu haut volume · JJB 10:30 · fac 17:30-19:30 (Documentación) · 3 douches · shampoing 12:10 · eau 3,5 L · serviette de visage', pas:[
+      LEVER, sport05('haut volume', '55 min', HAUT_VOLUME), douche06('Cheveux <b>à l\'eau seulement</b> : le shampoing est pour après le JJB.'), FAJR, petitDej(), dents0710(SAC_JJB),
+      ANKI1, etudier('08:20', '10:05'), COLL_COMBAT, TRAJET_CLUB, JJB, retourJJB(false), dejeuner(), sieste('12:40'),
+      ['13:00', 'Question ouverte ou autre', 'travail', ['Une heure de révision au choix : question ouverte d\'examen en espagnol, exercices d\'Epidemiología, blanc du prochain questionnaire, préparation de TP.'], true],
+      DHUHR,
+      ['14:00', 'Español · gramática', 'espagnol', ['Le point de grammaire de la semaine : dix phrases écrites, dix dites à voix haute, exercices corrigés. Dès le 24 oct. : projets perso.'], true],
+      TAPIS,
+      ['15:00', 'Español · hablar (jusqu\'à 16:50)', 'espagnol', ['15 min de shadowing, puis 45 min de tuteur, de conversation ou de dictée avec Claude. Dès le 24 oct. : projets perso.'], true],
+      collEntr('16:50'), trajetCours('17:00'),
+      ['17:20', 'Asr', 'deen', ['≈ 17:16 le 28 sept. — à la fac, juste avant le cours.']],
+      cours('17:30', '19:30', 'Documentación.'), trajetRetour('19:30'), MAGHRIB, diner('20:00'), clore('20:30'), LIBRE,
+      doucheSoir('21:25', 'Serviette de visage propre ce soir.'), coucher('21:35', '7 h 55 au lit.')
+    ]},
+    {cle:'mar', nom:'Mardi', court:'Mar', resume:'Muscu bas complet · fac 15:30-17:30 · Muay Thai 19:30 · 2 douches · shampoing 06:30 · eau 3,5 L · coucher 22:00', pas:[
+      LEVER, sport05('bas complet', '47 min', BAS), douche06('<b>Shampoing maintenant</b> (la séance du matin).'), FAJR, petitDej(), dents0710(SAC_MT + ' ' + SAC_FAC),
+      ANKI1, ANKI2, etudier('09:20', '11:20'),
+      ['11:20', 'Question ouverte ou autre', 'travail', ['Une heure de révision au choix : question ouverte en espagnol, exercices, blanc, préparation de TP.'], true],
+      dejeuner(), sieste('12:40'),
+      ['13:00', 'Lire', 'travail', ['Le chapitre que la réponse « estudia » du matin a indiqué, une seule question en tête. Trois cartes au plus.'], true],
+      DHUHR,
+      ['14:00', 'Español · escribir', 'espagnol', ['Une question ouverte d\'examen en espagnol, 25 min sans dictionnaire, puis la correction : contenu, puis langue. Dès le 24 oct. : projets perso.'], true],
+      TAPIS, collEntr('14:50', true), trajetCours('15:00'), cours('15:30', '17:30', 'Asr (≈ 17:16) à la sortie, avant de repartir.'), trajetRetour('17:30'),
+      diner('18:00'), clore('18:30'),
+      ['19:00', 'Tapis remis, sac vérifié', 'maison', ['Le second passage de l\'aspirateur (18:15) est fait : tapis au sol.', 'Bandes, gants, protège-dents, gourde pleine.']],
+      ['19:10', 'Trajet club', 'combat', ['Dix minutes à pied.'], true],
+      ['19:30', '🥊 Muay Thai (1 h 30)', 'combat', ['Bandes, protège-dents, gants. Au sparring, touche léger. Bois entre les rounds.', 'Maghrib (≈ 19:51) tombe pendant le cours jusqu\'au 24 octobre : prie-le au club dès 21:00, avant de rentrer.'], true],
+      ['21:00', 'Retour du club', 'combat', ['Bandes et tenue au linge sale, gants ouverts à l\'air. Bois 500 ml.'], true],
+      doucheSoir('21:15', 'Ce soir, elle rince aussi la Muay Thai : gel doux sur le cou, les mains et les avant-bras en plus. Toujours pas de shampoing (déjà fait ce matin).'),
+      ['21:25', 'Isha, puis temps libre', 'deen', ['Isha ≈ 21:14 le 28 sept.']],
+      coucher('22:00', '7 h 30 au lit ce soir : c\'est la nuit la plus courte de la semaine.')
+    ]},
+    {cle:'mer', nom:'Mercredi', court:'Mer', resume:'Pas de muscu · JJB 10:30 · fac 15:30-19:30 · 3 douches · shampoing 12:10 · eau 3,5 L · serviette de visage + taie d\'oreiller', pas:[
+      LEVER,
+      ['05:30', 'Anki matinal (jusqu\'au 23 oct.)', 'travail', ['Une heure de cartes de dentaire, deux Pomodoros 25 + 5 : les échéances, puis les matières faibles. Dès le 24 oct. : projets perso.'], true],
+      douche06('Cheveux <b>à l\'eau seulement</b> : le shampoing est pour après le JJB.'), FAJR, petitDej(), dents0710(SAC_JJB + ' ' + SAC_FAC),
+      ANKI1, etudier('08:20', '10:05'), COLL_COMBAT, TRAJET_CLUB, JJB, retourJJB(false), dejeuner(), sieste('12:40'),
+      ['13:00', 'Approfondir', 'travail', ['Le tema que tu choisis : 25 min dans la référence (Guyton, Karp…), 15 min de teach-back enregistré en espagnol, 10 min de cartes en chaîne.'], true],
+      DHUHR,
+      ['14:00', 'Español · gramática', 'espagnol', ['Dix phrases écrites, dix dites, exercices corrigés. Dès le 24 oct. : projets perso.'], true],
+      TAPIS, collEntr('14:50'), trajetCours('15:00'), cours('15:30', '19:30', ASR_PAUSE), trajetRetour('19:30'), MAGHRIB, diner('20:00'), clore('20:30'), LIBRE,
+      doucheSoir('21:25', '<b>Taie d\'oreiller changée</b> et <b>serviette de visage propre</b> ce soir.'), coucher('21:35', '7 h 55 au lit.')
+    ]},
+    {cle:'jeu', nom:'Jeudi', court:'Jeu', resume:'Muscu haut lourd · pas de combat · fac 15:30-19:30 · 2 douches · shampoing 06:30 · eau 3 L', pas:[
+      LEVER, sport05('haut lourd', '50 min', HAUT_LOURD), douche06('<b>Shampoing maintenant</b> (la séance du matin).'), FAJR, petitDej(), dents0710(SAC_FAC),
+      ANKI1, ANKI2, etudier('09:20', '11:20'),
+      ['11:20', 'Projets perso 3 (sans minuteur)', 'travail', ['Le livrable de la semaine d\'abord (celui que tu coches dimanche), sinon la prochaine ligne du dossier e-commerce.'], true],
+      dejeuner(), sieste('12:40'),
+      ['13:00', 'Español · gramática', 'espagnol', ['Dès le 24 oct. : projets perso.'], true],
+      DHUHR,
+      ['14:00', 'Español · escribir', 'espagnol', ['Une question ouverte en espagnol, 25 min, puis la correction. Dès le 24 oct. : projets perso.'], true],
+      TAPIS, collEntr('14:50'), trajetCours('15:00'), cours('15:30', '19:30', ASR_PAUSE), trajetRetour('19:30'), MAGHRIB, diner('20:00'), clore('20:30'), LIBRE,
+      doucheSoir('21:25'), coucher('21:35', '7 h 55 au lit.')
+    ]},
+    {cle:'ven', nom:'Vendredi', court:'Ven', resume:'Pas de muscu · JJB 10:30 · Jumu\'ah 13:30 · fac 15:30-19:30 · 3 douches · shampoing 12:10 (ghusl) · eau 3,5 L · serviette de visage', pas:[
+      LEVER,
+      ['05:30', 'Español · escribir largo (jusqu\'au 23 oct.)', 'espagnol', ['300 mots chronométrés (30 min) sur un sujet d\'examen, sans dictionnaire, puis « corrige » et les cartes d\'erreurs. Dès le 24 oct. : projets perso.'], true],
+      douche06('Cheveux <b>à l\'eau seulement</b> : le shampoing est pour après le JJB.'), FAJR, petitDej(), dents0710(SAC_JJB + ' Tenue propre pour la mosquée.'),
+      ANKI1, etudier('08:20', '10:05'), COLL_COMBAT, TRAJET_CLUB, JJB, retourJJB(true), dejeuner(),
+      ['13:15', 'Trajet mosquée', 'deen', ['Tenue propre, parfum si tu en mets.']],
+      ['13:30', 'Jumu\'ah', 'deen', ['La khutba, puis la prière vers 14:00. Elle remplace Dhuhr.']],
+      sieste('14:30'), TAPIS, collEntr('14:50'), trajetCours('15:00'), cours('15:30', '19:30', ASR_PAUSE), trajetRetour('19:30'), MAGHRIB, diner('20:00'), clore('20:30'), LIBRE,
+      doucheSoir('21:25', 'Serviette de visage propre ce soir.'), coucher('21:35', '7 h 55 au lit.')
+    ]},
+    {cle:'sam', nom:'Samedi', court:'Sam', resume:'Pas de sport · courses 13:30 · projets le soir · 2 douches · pas de shampoing · eau 3 L · coiffeur un samedi sur trois', pas:[
+      LEVER,
+      ['05:30', 'Projets perso matinal', 'travail', ['La tâche décidée hier soir à la clôture : on exécute, on ne décide pas. Sans minuteur.'], true],
+      douche06('Pas de shampoing aujourd\'hui : cheveux à l\'eau.'), FAJR, petitDej(), dents0710('Liste de courses ouverte dans la Batcave (onglet Table → Courses).'),
+      ANKI1, ANKI2,
+      ['09:20', 'Approfondir (deux séances, jusqu\'à 11:20)', 'travail', ['Deux sujets d\'une heure : lecture, teach-back enregistré en espagnol, cartes en chaîne.'], true],
+      ['11:20', 'Español · gramática', 'espagnol', ['Dès le 24 oct. : projets perso.'], true],
+      dejeuner(), sieste('13:10'),
+      ['13:30', 'Courses de la semaine', 'maison', ['La liste de la Batcave. <b>Viande et jambon halal à la boucherie.</b> Coche ce que tu as encore, même si tu ne l\'achètes pas.', '<b>Tapis enlevés avant de partir</b> : le rappel de 14:45 sonnera pendant que tu es dehors.', 'Un samedi sur trois (3 oct., 24 oct., 14 nov.) : <b>coiffeur</b> pendant la sortie.', 'Dhuhr (≈ 13:55) en route ou au retour.'], true],
+      TAPIS,
+      ['15:30', 'Rangement des courses', 'maison', ['Frigo, placards. Envoie-moi les tickets : je déduis les vrais prix.'], true],
+      ['16:00', 'Cartes d\'erreurs de la semaine', 'travail', ['Les cartes ratées, les erreurs des questions ouvertes → une carte de correction par cause.'], true],
+      ['17:00', 'Español · tutor', 'espagnol', ['Asr (≈ 17:16) juste avant.', 'Conversation, le cours de la veille expliqué, corrections, jeu de rôle en usted. Dix cartes d\'erreurs après. Dès le 24 oct. : projets perso.'], true],
+      ['18:00', 'Projets perso 3 (jusqu\'à 19:30)', 'travail', ['Une heure et demie d\'un trait, sans minuteur : le livrable de la semaine d\'abord.'], true],
+      diner('19:30'),
+      ['19:55', 'Maghrib, tapis remis', 'deen', ['≈ 19:51 le 28 sept.']],
+      ['20:00', 'Temps libre', 'sommeil', ['Isha vers 21:10. La clôture du jour quand le rappel sonne.']],
+      doucheSoir('21:25'), coucher('21:35', '7 h 55 au lit.')
+    ]},
+    {cle:'dim', nom:'Dimanche', court:'Dim', resume:'Pas de sport · batch cooking 14:30 · ménage 16:30 · livrable · revue · 2 douches · pas de shampoing · eau 3 L · draps, taie, serviette de corps', pas:[
+      ['05:30', 'Lever (et pesée, un dimanche sur deux)', 'sommeil', ['Les dimanches de pesée (4 oct., 18 oct., 1er nov.) : toilettes, <b>pesée à jeun</b>, avant de boire. Puis 500 ml d\'eau.', 'Les dimanches de photo (18 oct., 15 nov., 13 déc.) : photos peau + corps, même lumière, même endroit.']],
+      ['05:35', 'Projets perso matinal', 'travail', ['La tâche décidée hier soir. Sans minuteur.'], true],
+      douche06('Pas de shampoing aujourd\'hui : cheveux à l\'eau.'), FAJR, petitDej(), dents0710('Journée à la maison : pas de sac.'),
+      ANKI1, ANKI2,
+      ['09:20', 'Simulation dentaire', 'travail', ['La semaine d\'un questionnaire : son blanc complet (20 min, sans support, en espagnol). Sinon 10 QCM + une question ouverte.'], true],
+      ['10:20', 'Réexpliquer', 'travail', ['Les rappels J+7, J+30, J+90 : quatre minutes au téléphone, sans notes, la chaîne complète.'], true],
+      ['11:20', 'Español · simulación', 'espagnol', ['Deux réponses d\'examen en espagnol, 55 min, puis « examen » avec Claude. Dès le 24 oct. : projets perso.'], true],
+      dejeuner(), sieste('13:10'),
+      ['13:30', 'Español · balance de la semana', 'espagnol', ['Les quatre chiffres du dimanche (erreurs / 100 mots, oral sans pause, pages lues, minutes de conversation), saisis à la clôture. Dhuhr (≈ 13:55) au milieu.'], true],
+      ['14:30', 'Batch cooking de la semaine (2 h)', 'repas', ['Riz, poulet, pâtes, viande hachée, légumes : les boîtes du déjeuner et du dîner.', 'Les <b>œufs durs de la semaine</b> (petit-déjeuner et collation).'], true],
+      TAPIS,
+      ['16:30', 'Ménage (1 h)', 'maison', ['Sols, salle de bain, poussière.', '<b>Draps et taies changés, serviette de corps propre.</b>', 'Asr (≈ 17:16) à la fin.'], true],
+      ['17:30', 'Projets perso 3 : le livrable (jusqu\'à 19:00)', 'travail', ['Finir le livrable de la semaine ; s\'il est fait, préparer celui de la suivante.'], true],
+      diner('19:00'),
+      ['19:30', 'Revue du dimanche, puis temps libre', 'travail', ['10 minutes : la revue guidée (onglet Fac). Maghrib (≈ 19:51).', 'À la clôture : les chiffres du dimanche et la case « livrable fait ».']],
+      doucheSoir('21:25', '<b>Rasage</b> (aisselles, intimes). Un dimanche sur deux, les <b>ongles des mains</b> ; les dimanches de photo, ceux des pieds aussi.'),
+      coucher('21:35', '7 h 55 au lit.')
+    ]}
+  ];
+  var TAGS = {sommeil:'sommeil', hygiene:'hygiène', repas:'repas', travail:'travail', fac:'fac', sport:'sport', combat:'combat', deen:'deen', maison:'maison', espagnol:'español'};
+
+  function afficher(i){
+    var j = JOURS[i];
+    document.querySelectorAll('#jours button').forEach(function(b, k){ b.setAttribute('aria-pressed', k === i ? 'true' : 'false'); });
+    var html = '<div class="jour-titre"><h2>' + j.nom + '</h2><span>' + j.pas.length + ' étapes</span></div>' +
+      '<p class="resume">' + j.resume.split(' · ').map(function(x){ return '<span>' + x + '</span>'; }).join('') + '</p><ol class="frise">';
+    j.pas.forEach(function(p){
+      var rappel = p[4] === 'tapis' ? '<span class="rappel">🔔 rappel sur ton téléphone</span>' : (p[4] === true ? '<span class="rappel">📅 dans ton agenda</span>' : '');
+      html += '<li class="pas cat-' + p[2] + '"><span class="h">' + p[0] + '</span><div class="c"><div class="t">' + p[1] + '<span class="tag">' + TAGS[p[2]] + '</span></div>' +
+        '<ul>' + p[3].map(function(d){ return '<li>' + d + '</li>'; }).join('') + '</ul>' + rappel + '</div></li>';
+    });
+    document.getElementById('jour').innerHTML = html + '</ol>';
+    try{ localStorage.setItem('jt-jour', String(i)); }catch(e){}
+  }
+  var nav = document.getElementById('jours');
+  nav.innerHTML = JOURS.map(function(j, i){ return '<button type="button" data-i="' + i + '" aria-pressed="false">' + j.court + '<small>' + j.pas.length + '</small></button>'; }).join('');
+  nav.addEventListener('click', function(e){ var b = e.target.closest('button'); if(b){ afficher(Number(b.dataset.i)); window.scrollTo({top: 0}); } });
+  /* le jour du jour (lundi = 0) ; avant le lundi 28 septembre, le lundi */
+  var d = new Date(), idx = (d.getDay() + 6) % 7;
+  if(d < new Date('2026-09-28T00:00:00')) idx = 0;
+  afficher(idx);
+})();
+</script>
+</body>
+</html>

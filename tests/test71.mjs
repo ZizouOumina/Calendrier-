@@ -66,12 +66,13 @@ console.log('\n== 282) Thème : clair le jour, sombre le soir, et bascule manuel
   ok(await jour.fr.evaluate(() => document.querySelector('meta[name="theme-color"]').content) === '#e8eef2', 'la couleur de barre système suit le thème');
   /* trois clics = un tour complet */
   const suite = [];
-  for(let i = 0; i < 3; i++){
+  /* lot 51 : un quatrième cran, pur noir, entre sombre et automatique */
+  for(let i = 0; i < 4; i++){
     await jour.fr.evaluate(() => document.getElementById('theme-toggle').click());
     await jour.page.waitForTimeout(120);
     suite.push(await jour.fr.evaluate(() => document.documentElement.getAttribute('data-theme') + ':' + localStorage.getItem('bc-theme')));
   }
-  ok(suite.join(' → ') === 'jour:jour → nuit:nuit → jour:auto', 'le bouton fait auto → clair → sombre → auto (' + suite.join(' → ') + ')');
+  ok(suite.join(' → ') === 'jour:jour → nuit:nuit → noir:noir → jour:auto', 'le bouton fait auto → clair → sombre → pur noir → auto (' + suite.join(' → ') + ')');
   await jour.ctx.close();
   const soir = await ouvrir(MERCREDI_SOIR);
   ok(await soir.fr.evaluate(() => document.documentElement.getAttribute('data-theme')) === 'nuit', 'à 21 h 30 : thème sombre');

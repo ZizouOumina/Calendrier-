@@ -255,7 +255,7 @@ console.log('\n== 274) Neuf onglets, et rien de perdu ==');
      sous-onglets — Coran sous Habitudes, Meal prep et Courses sous Table, Objectifs sous
      Semaine. Leurs boutons restent dans le DOM, cachés, donc tout ce qui les visait par
      leur nom continue de fonctionner. */
-  ok(nav.length === 9, 'neuf onglets visibles : ' + nav.join(' '));
+  ok(nav.length === 6, 'six entrées visibles : ' + nav.join(' '));
   ok(nav.indexOf('business') < 0, 'Business reste caché tant qu\'aucune boutique n\'est branchée');
   const sem = await fr.evaluate(() => { document.querySelector('.nav-btn[data-page="bilan"]').click();
     return {actives: [...document.querySelectorAll('.page.active')].map(p => p.dataset.page),

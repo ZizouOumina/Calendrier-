@@ -124,26 +124,26 @@ console.log('\n== 280) Neuf onglets : Business ne compte pas sans boutique ==');
      sous-onglets — Coran sous Habitudes, Meal prep et Courses sous Table, Objectifs sous
      Semaine. Leurs boutons restent dans le DOM, cachés, donc tout ce qui les visait par
      leur nom continue de fonctionner. */
-  ok(nav.length === 9, 'neuf onglets même avec des chiffres de business : ' + nav.join(' '));
+  ok(nav.length === 6, 'six entrées même avec des chiffres de business : ' + nav.join(' '));
   await ctx.close();
   const b = await ouvrir('2026-09-15T09:00:00+02:00', {'batcave-shopify-boutique': {domain:'ma-boutique.myshopify.com', name:'Ma boutique', currency:'EUR', plan:'basic'}});
-  const nav2 = await b.fr.evaluate(() => [...document.querySelectorAll('.nav-btn[data-page]')].filter(x => !x.hidden).map(x => x.dataset.page));
-  ok(nav2.length === 10 && nav2.indexOf('business') > -1, 'Business apparaît quand une boutique payante est branchée — dixième onglet');
+  const nav2 = await b.fr.evaluate(() => [...document.querySelectorAll('.sous-onglet[data-sousnav="business"]')].some(p => !p.hidden));
+  ok(nav2 === true, 'la pastille Boutique apparaît sous Argent quand une boutique payante est branchée');
   await b.ctx.close();
   /* une boutique d'essai, ou une fiche sans plan connu, sans une seule vente : pas d'onglet */
   const inc = await ouvrir('2026-09-15T09:00:00+02:00', {'batcave-shopify-boutique': {domain:'ancienne.myshopify.com', name:'Fiche ancienne', currency:'EUR'}});
   const navInc = await inc.fr.evaluate(() => [...document.querySelectorAll('.nav-btn[data-page]')].filter(x => !x.hidden).map(x => x.dataset.page));
-  ok(navInc.length === 9, 'fiche écrite avant le lot 22 (plan inconnu) : neuf onglets tant qu\'il n\'y a pas de vente');
+  ok(navInc.length === 6 && !(await inc.fr.evaluate(() => [...document.querySelectorAll('.sous-onglet[data-sousnav="business"]')].some(p => !p.hidden))), 'fiche écrite avant le lot 22 (plan inconnu) : pas de pastille Boutique tant qu\'il n\'y a pas de vente');
   await inc.ctx.close();
   const e = await ouvrir('2026-09-15T09:00:00+02:00', {'batcave-shopify-boutique': {domain:'essai.myshopify.com', name:'Ma boutique 3', currency:'EUR', plan:'trial'}});
   const nav3 = await e.fr.evaluate(() => [...document.querySelectorAll('.nav-btn[data-page]')].filter(x => !x.hidden).map(x => x.dataset.page));
-  ok(nav3.length === 9 && nav3.indexOf('business') < 0, 'boutique en essai sans vente : toujours neuf onglets (' + nav3.length + ')');
+  ok(nav3.length === 6 && !(await e.fr.evaluate(() => [...document.querySelectorAll('.sous-onglet[data-sousnav="business"]')].some(p => !p.hidden))), 'boutique en essai sans vente : pas de pastille Boutique (' + nav3.length + ' entrées)');
   await e.ctx.close();
   /* la même boutique d'essai, mais avec un mois de ventes : l'onglet sort */
   const v = await ouvrir('2026-09-15T09:00:00+02:00', {'batcave-shopify-boutique': {domain:'essai.myshopify.com', name:'Ma boutique 3', currency:'EUR', plan:'trial'},
                                                        'batcave-business': [{id:'b2', moisISO:'2026-09', mois:'Sept. 2026', ca:240, couts:120, benef:120}]});
-  const nav4 = await v.fr.evaluate(() => [...document.querySelectorAll('.nav-btn[data-page]')].filter(x => !x.hidden).map(x => x.dataset.page));
-  ok(nav4.length === 10 && nav4.indexOf('business') > -1, 'essai + premières ventes : l\'onglet Business apparaît — dixième onglet');
+  const nav4 = await v.fr.evaluate(() => [...document.querySelectorAll('.sous-onglet[data-sousnav="business"]')].some(p => !p.hidden));
+  ok(nav4 === true, 'essai + premières ventes : la pastille Boutique apparaît');
   await v.ctx.close();
 }
 
