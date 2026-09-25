@@ -108,7 +108,10 @@ console.log('\n== 36) Agir en haut, consulter replié ==');
   // d'ici dimanche, la ligne « Semaine » ne donne plus un rythme moyen intenable mais dit le
   // manque et quoi en faire. Ce texte passe à la ligne : mesuré, 1644 → 1662 px, et seulement
   // dans une semaine en dépassement. Les 18 px sont le prix d'un chiffre qui ne ment pas.
-  ok(e.basAgir < 1670, 'la zone « agir » tient en environ un écran et demi (' + e.basAgir + 'px)');
+  // 1670 → 1690 (lot 51) : une liste vide le dit désormais (« — rien pour l'instant » sous
+  // « À venir » quand rien n'est prévu) : mesuré, 1662 → 1678 px. Les pastilles du groupe
+  // Aujourd'hui, elles, sont logées dans la marge haute et ne coûtent rien.
+  ok(e.basAgir < 1690, 'la zone « agir » tient en environ un écran et demi (' + e.basAgir + 'px)');
   // les panneaux repliés restent alimentés
   const caches = await fr.evaluate(() => document.getElementById('dash-more').innerText.length);
   ok(caches > 50, 'le contenu replié est déjà rendu (' + caches + ' caractères), pas vide');

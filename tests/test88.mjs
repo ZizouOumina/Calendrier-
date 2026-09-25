@@ -455,13 +455,13 @@ console.log('\n== 311) Neuf onglets, et rien qui devient inatteignable ==');
   });
   ok(past.pages === 'courses' && past.tete === 'repas', 'la pastille « Courses » ouvre Courses et garde Table allumé');
 
-  /* Neuf onglets visibles : les chiffres 1 à 9 couvrent enfin toute la barre. */
+  /* Six entrées visibles (lot 51) : les chiffres 1 à 6 couvrent toute la barre. */
   const clav = await fr.evaluate(() => {
     const t = k => { document.dispatchEvent(new KeyboardEvent('keydown', {key:k, bubbles:true}));
                      return [...document.querySelectorAll('.page.active')].map(s => s.dataset.page)[0]; };
-    return [t('1'), t('9')];
+    return [t('1'), t('6')];
   });
-  ok(clav[0] === 'dashboard' && clav[1] === 'repas', 'les touches 1 et 9 vont du premier au dernier onglet : ' + clav.join(' → '));
+  ok(clav[0] === 'dashboard' && clav[1] === 'repas', 'les touches 1 et 6 vont du premier au dernier onglet : ' + clav.join(' → '));
   await ctx.close();
 }
 
