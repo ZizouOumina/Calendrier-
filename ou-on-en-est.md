@@ -374,6 +374,12 @@ une ligne à enlever dans quatre sections — dis-le et je le fais.
   plafond Nourriture 201 → 219 si c'est encore le mien (`plafond-nourriture-v4`). Agenda 💶 : 28 sept. 12:35 (virement, une fois), le 25 (virement et
   cagnotte, `68n5dpque190a6p9bm5lnp2ft4`), le 28 (club, `i0hja7ddt7f6m193du4cno1rgk`), le 1er
   (propriétaire), le 24 (le reste, `ournj3sp5574qef64r8s80muk4`).
+- **Phase Español : un mois pile à partir du samedi 26 septembre** (sa demande du 25 au soir,
+  « j'ai pas encore commencé ») : `PERIODES_GRILLE` es-1 finit le **dimanche 25 octobre** inclus,
+  les projets reviennent le **lundi 26**. `EPREUVE_FIN` = 25 octobre : cinq passages (27 sept., 4,
+  11, 18, 25 oct.). Textes de la Batcave, 11 séries 🦇 de l'agenda (« Jusqu'au 25 octobre »), pages
+  (journée type, calendrier S1 v1.3, le semestre, prise en main, dossiers Español et E-commerce,
+  Dental Mastery OS) et tests 64, 78, 85, 100, 107 recalibrés.
 - Branche : `claude/notion-addictions-nutrition-tracker-pf3lmg`. Tout est poussé.
 - Serveur de tests : `python3 -m http.server 8199 --bind 127.0.0.1` depuis `tests/`.
 - Campagne : `bash tests/runall.sh`, résultat dans `/tmp/reg10.log`, finit par `ALL_DONE`.

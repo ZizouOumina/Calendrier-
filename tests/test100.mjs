@@ -56,9 +56,9 @@ console.log('\n== 326) Deux sorties par semaine, dans le temps libre ==');
   /* Et aucun bloc de travail n'a ete mange. */
   ok(sam.some(x => x[1] === 'Approfondir') && sam.some(x => /Cartes d'erreurs/.test(x[1])),
      'les blocs de travail du samedi sont intacts');
-  /* Et apres le 22 octobre, quand la phase Español rend « Projets perso 2 » a lui-meme :
+  /* Et apres le 25 octobre (samedi suivant : 31), quand la phase Español rend « Projets perso 2 » a lui-meme :
      la course ne doit pas l'avoir mange en chemin. */
-  const samApres = await grille(fr, '2026-10-24', 'saturday');
+  const samApres = await grille(fr, '2026-10-31', 'saturday');
   ok(samApres.some(x => x[1] === 'Projets perso 2') && /Projets perso 3/.test(samApres[i(samApres,'18:00')][1]),
      'après la phase Español, Projets perso 2 revient et 18:00 est un bloc de projets (le combat a remplacé la course le 28 septembre)');
   ok(dim.some(x => x[1] === 'Réexpliquer') && dim.some(x => /Batch cooking/.test(x[1])),

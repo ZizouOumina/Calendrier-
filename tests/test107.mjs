@@ -30,11 +30,11 @@ console.log('\n== 265) Le jour 1 au jeudi 24, la phase Español au 23 octobre ==
   const { ctx, fr } = await ouvrir('2026-09-23T10:00:00+02:00');
   const r = await fr.evaluate(() => ({
     debut: window.__bcProgrammeDebut,
-    es23: !!window.__bcPhaseEspanol('2026-10-23'), es24: !!window.__bcPhaseEspanol('2026-10-24'),
+    es23: !!window.__bcPhaseEspanol('2026-10-25'), es24: !!window.__bcPhaseEspanol('2026-10-26'),
     nom23: (window.__bcPeriode('2026-10-23') || {}).id || null
   }));
   ok(r.debut === '2026-09-24', 'PROGRAMME_DEBUT = ' + r.debut);
-  ok(r.es23 && !r.es24, 'phase Español le 23 octobre, plus le 24 (' + r.es23 + ' / ' + r.es24 + ')');
+  ok(r.es23 && !r.es24, 'phase Español jusqu\'au 25 octobre (un mois pile depuis le 26 septembre), plus le 26 (' + r.es23 + ' / ' + r.es24 + ')');
   await ctx.close();
 }
 

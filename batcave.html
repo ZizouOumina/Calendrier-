@@ -2642,13 +2642,13 @@
         <div id="portes-fold" hidden style="margin-top:12px;">
         <p class="sub-note" style="margin-bottom:10px; line-height:1.6;">Le seul test qui compte est gratuit : tu es évalué vingt heures par semaine en amphi. Chaque jour de cours, une note de 0 à 3 à la clôture — <b style="color:var(--ink-dim);">est-ce que tu as suivi le fil ?</b> La moyenne des 21 derniers jours te dit si l'espagnol d'amphi rentre. Elle ne décide de rien : ta grille ne bouge pas parce qu'elle monte.</p>
         <div id="portes-etat"></div>
-        <p class="sub-note" style="margin-top:10px; line-height:1.6;"><b style="color:var(--ink-dim);">Les trois « portes » ont été retirées le 19 septembre.</b> Elles auraient rendu un bloc d'espagnol aux projets quand la note tenait — mais il faut douze jours de cours notés sur vingt-et-un, et la phase Español ne dure que quatre semaines : la première ne pouvait s'ouvrir qu'à quelques jours de la bascule automatique du 23 octobre. Elles ne gagnaient qu'une heure. La note, elle, reste : c'est la mesure, pas le portillon, qui valait quelque chose.</p>
+        <p class="sub-note" style="margin-top:10px; line-height:1.6;"><b style="color:var(--ink-dim);">Les trois « portes » ont été retirées le 19 septembre.</b> Elles auraient rendu un bloc d'espagnol aux projets quand la note tenait — mais il faut douze jours de cours notés sur vingt-et-un, et la phase Español ne dure que quatre semaines : la première ne pouvait s'ouvrir qu'à quelques jours de la bascule automatique du 26 octobre. Elles ne gagnaient qu'une heure. La note, elle, reste : c'est la mesure, pas le portillon, qui valait quelque chose.</p>
         </div>
       </div>
 
       <div class="panel sub-panel" id="epreuve-es-panel" style="margin-bottom:18px;">
         <div class="sub-head"><h3>🇪🇸 L'épreuve du dimanche</h3><span class="sub-note" id="ep-resume">—</span></div>
-        <p class="sub-note" style="margin-bottom:10px; line-height:1.65;">L'espagnol s'arrête d'être une matière le <b style="color:var(--ink-dim);">24 octobre</b>. Avant cette date, tu as <b style="color:var(--ink-dim);">quatre dimanches</b> pour savoir où tu en es — pas au feeling, en conditions. Toujours la même épreuve, pour que les quatre scores se comparent. Elle tient dans le bloc <b style="color:var(--ink-dim);">Español · simulación</b> du dimanche, 11:20.</p>
+        <p class="sub-note" style="margin-bottom:10px; line-height:1.65;">L'espagnol s'arrête d'être une matière le <b style="color:var(--ink-dim);">26 octobre</b>. Avant cette date, tu as <b style="color:var(--ink-dim);">cinq dimanches</b> pour savoir où tu en es — pas au feeling, en conditions. Toujours la même épreuve, pour que les cinq scores se comparent. Elle tient dans le bloc <b style="color:var(--ink-dim);">Español · simulación</b> du dimanche, 11:20.</p>
         <div id="ep-protocole" style="border:1px solid var(--border-soft); border-radius:9px; padding:12px 14px; margin-bottom:12px;">
           <p class="sub-note" style="font-weight:600; color:var(--ink-dim); margin-bottom:8px;">Le protocole — 45 minutes, dans cet ordre</p>
           <ol style="margin:0; padding-left:20px; font-size:13.5px; color:var(--ink-dim); line-height:1.7;">
@@ -6603,7 +6603,7 @@
     }
     /* L'espagnol est du temps de projet pour le minuteur, mais pas pour l'oeil : en phase 1,
        24 h d'espagnol par semaine s'affichaient « Projets perso » alors qu'aucun projet
-       n'existe avant le 24 octobre. Une tuile a lui, et la tuile Projets ne reste que s'il
+       n'existe avant le 26 octobre. Une tuile a lui, et la tuile Projets ne reste que s'il
        y a des projets (ou rien du tout, pour ne pas laisser un mois vide sans repere). */
     var projSeuls = Math.max(0, parType.projet - parType.es);
     el.innerHTML = tuile('Total du mois', parType.cours + parType.projet) +
@@ -8577,7 +8577,7 @@
      premier jour de sport du programme est donc le jour 1 lui-meme, toujours un Haut
      volume, et les retests restent les jeudis 22 octobre, 26 novembre et 31 decembre
      (semaines 5, 10 et 15, qui commencent chacune un jeudi). La semaine de programme court
-     desormais du jeudi au mercredi. La phase Español finit le 23 octobre (PERIODES_GRILLE). */
+     desormais du jeudi au mercredi. La phase Español finit le 25 octobre (PERIODES_GRILLE). */
   var PROGRAMME_DEBUT = '2026-09-24';
   /* La fin ne bouge PAS avec le depart : le 14 mars est le dernier jour de la SAISON,
      un point d'arrivee choisi, pas une duree de 174 jours a reporter. Le decalage du
@@ -14384,7 +14384,7 @@
       maxMin = Math.max(maxMin, plan, fait || 0);
       /* trois compteurs, pas deux : en phase Español, tous les blocs « Projets perso » sont de
          l'espagnol, et les compter comme projets affichait « Projets 0 / 24 h » -- un retard
-         fictif sur des projets qui n'existent pas avant le 24 octobre */
+         fictif sur des projets qui n'existent pas avant le 26 octobre */
       return {d: d, plan: plan, fait: fait, rev: d <= todayISO ? minutesOn(d) : 0, proj: d <= todayISO ? minutesOnProjSeuls(d) : 0, es: d <= todayISO ? minutesEspanol(d) : 0, cRev: c.rev, cProj: c.proj, cEs: c.es || 0};
     });
     el.innerHTML = lignes.map(function(l){
@@ -14491,7 +14491,7 @@
         gardent le créneau 05:30 → 06:30 comme bloc de PROJET ; le dimanche, le lever est à
         06:30, une nuit pleine. Pendant la phase Español, le mercredi reste « Anki matinal »
         (la file de cartes est au plus haut en milieu de semaine, et le rappel se fait bien
-        dix minutes après le réveil) : il passe aux projets le 24 octobre, avec les autres.
+        dix minutes après le réveil) : il passe aux projets le 26 octobre, avec les autres.
         Le bloc projets du réveil est de l'exécution, jamais une décision de design. */
   var SCHEDULES = {
     /* ===== La journee de cours, version du 18 septembre 2026 =====
@@ -14507,7 +14507,7 @@
        17:30, il clot a 18:00 puis LIT (18:30 → 19:30) le chapitre que la reponse du matin
        lui a indique. Le samedi, « Approfondir » prend les deux heures du matin ; le dimanche,
        « Simulation dentaire » puis « Réexpliquer » (les sujets approfondis a J+7, J+30, J+90,
-       redits sans notes). Avant le 24 octobre, la phase Español renomme les blocs Projets
+       redits sans notes). Avant le 26 octobre, la phase Español renomme les blocs Projets
        perso ; apres, tout est projet. */
     weekday: [
       ['05:30','Sport'],['06:30','Douche + préparation'],['06:45','Petit-déjeuner + Coran (1 page)'],
@@ -14558,7 +14558,7 @@
        ouverte : trois heures d'entrainement au format d'examen par semaine, c'est le prix.
        Jour off de sport. Le creneau de 05:30 est un bloc de PROJET depuis le
        18 septembre (demande du 18 : « les matins de mercredi aussi »). Il reste « Anki
-       matinal » pendant la phase Español, jusqu'au 23 octobre : tant que les projets n'ont
+       matinal » pendant la phase Español, jusqu'au 25 octobre : tant que les projets n'ont
        pas commence, cette heure sert la file de cartes du milieu de semaine. */
     wednesday: [
       ['05:30','Projets perso matinal'],['06:30','Douche + préparation'],['06:45','Petit-déjeuner + Coran (1 page)'],
@@ -14635,7 +14635,7 @@
 
      Le semestre appartient a la GRILLE DE BASE, pas aux periodes, et c'est la seule facon
      de le faire coexister avec les phases Español : periodeGrille ne rend QU'UNE periode
-     par date. La phase Español, elle, s'arrete le 23 octobre : elle ne chevauche plus rien,
+     par date. La phase Español, elle, s'arrete le 25 octobre : elle ne chevauche plus rien,
      sept premieres semaines du semestre 2. Un « semestre 2 » range parmi les periodes
      mais la separation reste la bonne. La base porte l'emploi du
      temps, les periodes renomment par-dessus : les deux sont independantes. */
@@ -15111,7 +15111,7 @@
 
   var CONSIGNES = {
     'Sport': "1 km en courant jusqu'au parc, allure conversation : c'est l'échauffement. Séance du jour dans l'onglet Sport, surcharge progressive : les charges à faire sont déjà calculées. La fin de séance : le crunch lesté le mardi, puis le cou (flexion et extension lundi et jeudi, latéral mardi). Il ne faut qu'un poids en main — si le créneau déborde, ça se fait à la maison le soir, jamais on ne le saute. Retour en marchant, en trottinant le mardi. Le lundi, JJB à 10:30 : ne va pas à l'échec, garde de l'énergie pour le tatami.",
-    'Anki matinal': "Jour off de sport, jusqu'au 23 octobre : une heure de cartes de dentaire, deux Pomodoros 25 + 5. Toutes les échéances, puis les cartes des matières faibles. Le 24 octobre, ce créneau passe aux projets comme les autres — la file se vide alors dans Anki 1 et Anki 2.",
+    'Anki matinal': "Jour off de sport, jusqu'au 25 octobre : une heure de cartes de dentaire, deux Pomodoros 25 + 5. Toutes les échéances, puis les cartes des matières faibles. Le 26 octobre, ce créneau passe aux projets comme les autres — la file se vide alors dans Anki 1 et Anki 2.",
     'Projets perso matinal': "05:30 : exécution pure d'une tâche déjà décidée la veille — montage, import, rédaction, fiches, code. Jamais une décision : à cette heure-là on exécute, on n'arbitre pas. Ce que tu feras s'écrit la veille au soir, à la clôture. Pas de minuteur : tu travailles jusqu'à la douche de 06:30.",
     'Anki 1': "Toutes les échéances de dentaire, deux Pomodoros 25 + 5 sans téléphone. File vide avant la fin : cartes du cours suivant à partir des notes.",
     'Anki 2': "Suite des échéances de dentaire. Les 5 dernières minutes : échéances du paquet Business (glossaire dropshipping).",
@@ -15242,15 +15242,15 @@
      Entre deux dates, une periode remplace des blocs de la grille type : par libelle
      (renommages, avec une variante par journee) ou par journee entiere (grille). Le dentaire
      ne bouge jamais : seuls les blocs listes changent. La date fait foi, pas un reglage : le
-     24 octobre la grille passe d'elle-meme a la phase suivante, et le 15 mars a la grille type.
+     26 octobre la grille passe d'elle-meme a la phase suivante, et le 15 mars a la grille type.
      Les rappels Google Calendar suivent la grille du jour : un evenement recurrent « 🦇 Projets
      perso 1 » deja dans l'agenda est reconnu a son titre de base et son instance du jour
      prend le nom du bloc de la phase (« 🦇 Español · gramática »), sans doublon.
      Le mode partiels (periodePartiels, calcule depuis les dates d'examen) passe avant. */
   var PERIODES_GRILLE = [
     /* Tout commence le lundi 14 septembre 2026, premier jour de cours : avant, la grille type.
-       UNE SEULE phase Español, jusqu'au 23 octobre : elle ne renomme que des blocs
-       « Projets perso ». Le 24 octobre, tous redeviennent des projets -- livrables d'abord,
+       UNE SEULE phase Español, jusqu'au 25 octobre (voir plus bas) : elle ne renomme que des blocs
+       « Projets perso ». Le 26 octobre, tous redeviennent des projets -- livrables d'abord,
        boutique ensuite. Ce qui touche a l'ecole (question ouverte, simulation, Réexpliquer)
        n'est jamais un bloc Español : c'est de la revision qui se fait en espagnol.
 
@@ -15266,9 +15266,18 @@
 
        L'epreuve du dimanche, elle, ne bouge pas : ses quatre passages tombent les 27
        septembre, 4, 11 et 18 octobre, et le 18 reste le dernier dimanche de la phase --
-       il n'y a aucun dimanche entre le 19 et le 23. */
-    {id:'es-1', nom:'Español · phase 1', debut:'2026-09-14', fin:'2026-10-23', suite:'Projets perso (livrables, puis boutique)',
-     description:'Avec les cours, jusqu\u2019au 23 octobre : les blocs Projets perso sont des blocs Español — gramática à 13:00, escribir à 14:00, hablar le lundi à 15:00, la série en VO le mardi soir, escribir largo et tutor le vendredi, gramática et tutor le samedi, simulación et balance le dimanche. Le 24 octobre, tout revient aux projets.',
+       il n'y a aucun dimanche entre le 19 et le 23.
+
+       Troisieme deplacement, le 25 septembre au soir : « decale la periode d'espagnol a
+       dans un mois pile pour demain, parce que j'ai pas encore commence ». Elle commence
+       donc pour de vrai le samedi 26 septembre et dure un mois : jusqu'au dimanche 25
+       octobre inclus, le dernier jour avant le 26, meme quantieme un mois plus tard. Les
+       projets reviennent le lundi 26 octobre -- un debut de semaine, le jour meme ou
+       l'heure d'hiver est passee. L'epreuve gagne un cinquieme dimanche : 27 septembre,
+       4, 11, 18 et 25 octobre (EPREUVE_FIN). Le debut de la periode reste au 14 septembre :
+       les jours d'avant sont passes, et rien ne se calcule plus sur eux. */
+    {id:'es-1', nom:'Español · phase 1', debut:'2026-09-14', fin:'2026-10-25', suite:'Projets perso (livrables, puis boutique)',
+     description:'Avec les cours, jusqu\u2019au 25 octobre : les blocs Projets perso sont des blocs Español — gramática à 13:00, escribir à 14:00, hablar le lundi à 15:00, la série en VO le mardi soir, escribir largo et tutor le vendredi, gramática et tutor le samedi, simulación et balance le dimanche. Le 26 octobre, tout revient aux projets.',
      renommages: {
        'Projets perso 1': {defaut:'Español · gramática', friday:'Español · tutor', weekend:'Español · simulación'},
        'Projets perso 2': {defaut:'Español · escribir', saturday:'Español · tutor', weekend:'Español · balance de la semana'},
@@ -15509,7 +15518,7 @@
 
      Enfin, le troisieme bloc ne s'ouvre jamais ici. La comprehension progresse vite, la
      PRODUCTION non : il se sentira a l'aise en cours bien avant de savoir ecrire une reponse
-     d'examen. Or c'est l'ecrit qui est note. « escribir » reste jusqu'au 23 octobre. */
+     d'examen. Or c'est l'ecrit qui est note. « escribir » reste jusqu'au 25 octobre. */
   var PORTES_FENETRE_J = 21;      /* largeur de la fenetre glissante, en jours */
   var PORTES_MIN_JOURS = 12;      /* jours de cours notes en dessous desquels on ne conclut rien */
   /* Chaque porte nomme le bloc qu'elle rend. L'ordre n'est pas arbitraire : les deux portes
@@ -15517,7 +15526,7 @@
      POUR la comprehension tombent donc les premiers -- la serie en VO du mardi soir,
      puis la « gramatica » de 13:00. « escribir » n'est jamais rendu ici : c'est de la PRODUCTION,
      elle progresse bien plus lentement que la comprehension, et c'est l'ecrit qui est note.
-     De toute facon la phase s'arrete le 23 octobre : les portes ne font qu'avancer la date. */
+     De toute facon la phase s'arrete le 25 octobre : les portes ne font qu'avancer la date. */
   /* ===== Les portes sont retirees (19 septembre 2026) =====
      Elles laissaient un bloc Español redevenir un bloc de projet quand la note de suivi
      des cours tenait sur 21 jours. Le calcul etait juste ; l'arithmetique du calendrier
@@ -15721,11 +15730,11 @@
      Aucune saisie nouvelle. Les trois chiffres existent deja -- la cloture du dimanche les
      demande (erreurs pour 100 mots, minutes d'oral sans pause, secondes de drill) et les
      range dans rvState. Ce panneau les RELIT, les met en face de leur cible, et projette
-     ou il sera le 18 octobre au rythme constate. Doubler la saisie aurait garanti que les
+     ou il sera le 25 octobre au rythme constate. Doubler la saisie aurait garanti que les
      deux series divergent. */
-  var EPREUVE_FIN = '2026-10-18';
+  var EPREUVE_FIN = '2026-10-25';
   var EPREUVE_CIBLES = {errores: 3, oral: 3, drill: 90};   /* < 3 err/100 mots · >= 3 min · <= 90 s */
-  /* Les dimanches de la phase Español, du premier apres le jour 1 jusqu'au 18 octobre. */
+  /* Les dimanches de la phase Español, du premier apres le jour 1 jusqu'au 25 octobre. */
   function epreuveDimanches(){
     var out = [], d = new Date(PROGRAMME_DEBUT + 'T00:00:00');
     while(d.getDay() !== 0) d.setDate(d.getDate() + 1);      /* le premier dimanche a partir du jour 1 */
@@ -15751,7 +15760,7 @@
     });
   }
   /* La projection : la pente entre le premier et le dernier passage saisi, prolongee au
-     18 octobre. Deux passages au minimum -- une droite sur un point n'est pas une droite. */
+     25 octobre. Deux passages au minimum -- une droite sur un point n'est pas une droite. */
   function epreuveProjection(cle){
     var pts = epreuvePassages().filter(function(p){ return p.c && p.c[cle] !== null; });
     if(pts.length < 2) return null;
@@ -15806,7 +15815,7 @@
                + epreuveVerdictLigne('drill', 'Drill de conjugaison', 's', 0, '<=');
     var mot = faits < 2
       ? 'Un seul passage : c\'est ta ligne de départ, pas une tendance. La projection apparaît au deuxième.'
-      : 'La projection prolonge la pente entre ton premier et ton dernier passage jusqu\'au 18 octobre. Elle n\'est pas une promesse — elle dit seulement où tu vas si rien ne change.';
+      : 'La projection prolonge la pente entre ton premier et ton dernier passage jusqu\'au 25 octobre. Elle n\'est pas une promesse — elle dit seulement où tu vas si rien ne change.';
     vz.innerHTML = '<p class="sub-note" style="font-weight:600; color:var(--ink-dim); margin-bottom:6px;">Où tu en es</p>'
       + '<ul class="mini-list">' + lignes + '</ul>'
       + '<p class="sub-note" style="margin-top:8px; line-height:1.6;">' + mot + '</p>';
@@ -18190,8 +18199,8 @@
      Une boutique d'essai ouverte pour regarder à quoi ça ressemble n'est pas une activité :
      elle ferait treize onglets pour une page vide. L'onglet ne sort donc que si la boutique
      est SORTIE de l'essai (plan payant) ou si elle a déjà des ventes enregistrées. Avant le
-     24 octobre, la Batcave garde ses douze onglets. La page reste atteignable par son bouton
-     (masqué) et par le rappel du 23 octobre. */
+     26 octobre, la Batcave garde ses douze onglets. La page reste atteignable par son bouton
+     (masqué) et par le rappel du 25 octobre. */
   function boutiqueActive(){
     if(!boutiqueShopify || !boutiqueShopify.domain) return false;
     var plan = String(boutiqueShopify.plan || '').toLowerCase();

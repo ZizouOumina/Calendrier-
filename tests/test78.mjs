@@ -67,15 +67,15 @@ console.log('\n== 3) Sans bloc de projets dans la journée, la cellule dit pourq
 {
   const {ctx, fr} = await ouvrir({}, '2026-09-14T09:00:00+02:00');
   const t = await temps(fr), l = await legend(fr);
-  ok(/Español à leur place jusqu’au 23 oct/.test(t), 'cellule : ' + (t.match(/Español à leur place[^|]*/)||['(absent)'])[0]);
+  ok(/Español à leur place jusqu’au 25 oct/.test(t), 'cellule : ' + (t.match(/Español à leur place[^|]*/)||['(absent)'])[0]);
   ok(/projets — sans minuteur/.test(l), 'réacteur : ' + (l.match(/projets[^‖]*/)||['(absent)'])[0].trim());
   await ctx.close();
 }
 {
-  const {ctx, fr} = await ouvrir({}, '2026-10-24T09:00:00+02:00');
+  const {ctx, fr} = await ouvrir({}, '2026-10-26T09:00:00+02:00');
   const t = await temps(fr);
   ok(!/Español à leur place/.test(t) && /Projets perso \| 0 \| \d+ h( \d+)? au planning, sans minuteur/.test(t),
-     'le 24 octobre, la mention disparaît et la grille redonne des blocs de projets, toujours sans minuteur : ' + (t.match(/Projets perso[^|]*\|[^|]*\|[^|]*/)||[''])[0].trim());
+     'le 26 octobre, la mention disparaît et la grille redonne des blocs de projets, toujours sans minuteur : ' + (t.match(/Projets perso[^|]*\|[^|]*\|[^|]*/)||[''])[0].trim());
   await ctx.close();
 }
 
