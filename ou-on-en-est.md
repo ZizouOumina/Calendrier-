@@ -45,6 +45,13 @@ Il dit ce qui est fait, ce qui reste, et ce qui attend une décision de toi.
 > restaurations vident la file. La revue du dimanche rejoint les listes découpées par mois
 > (`batcave-revue-AAAA-MM`). Test : `tests/test113.mjs` (Mac + iPhone, coupures, cache partiel,
 > erreur passagère, fusion, nouveau départ).
+> **Résultats sur la version publiée (v106)** : campagne 105/105, six audits verts, simulations
+> issues 58, longue 400, chaos 897, deux semaines 88, deux appareils 33, et cinq ans jour par jour
+> (26 sept. 2026 → 25 sept. 2031) : 6 031 vérifications, 0 défaut, série de 1 826 jours intacte.
+> Au bout de cinq ans : ~1,9 M caractères en local (~74 % des 5 Mo de Safari ; sport-log 641 K,
+> journal 397 K, revue 148 K, transactions 127 K), 837 documents au cloud, plus gros 58 Kio
+> (`saisons`). Si la marge devient juste : replier davantage le journal du sport.
+> Rapport : `rapport-cinq-ans.html` (artefact « Cinq ans simulés »).
 > Hors Batcave : « 🦇 Enlever les tapis » dans Google Agenda (mar-ven 14:45, lun 16:45 —
 > l'aspirateur passe à 15:45 et 18:15), et la consigne du trajet le rappelle.
 >

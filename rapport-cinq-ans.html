@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cinq ans simulés</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&family=Barlow:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+  :root{
+    --bg:#f3f0e9; --surface:#fbfaf6; --ink:#1f1d19; --dim:#5a564e; --faint:#6e695f; --line:#ddd7cb;
+    --laiton:#8a5f12; --laiton-bg:#f3e8d2; --good:#2f7a45; --good-bg:#e3f0e5; --warn:#9a5709; --danger:#a5372f; --danger-bg:#f7e3e0;
+  }
+  @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+    --bg:#191b1e; --surface:#212428; --ink:#ede7da; --dim:#aca597; --faint:#a8a192; --line:#3a4048;
+    --laiton:#d9a84e; --laiton-bg:#2e2a22; --good:#6fb87c; --good-bg:#1f2a22; --warn:#e08a3c; --danger:#e26b5e; --danger-bg:#33221f; } }
+  :root[data-theme="dark"]{
+    --bg:#191b1e; --surface:#212428; --ink:#ede7da; --dim:#aca597; --faint:#a8a192; --line:#3a4048;
+    --laiton:#d9a84e; --laiton-bg:#2e2a22; --good:#6fb87c; --good-bg:#1f2a22; --warn:#e08a3c; --danger:#e26b5e; --danger-bg:#33221f; }
+  *{box-sizing:border-box}
+  body{margin:0; background:var(--bg); color:var(--ink); font:16px/1.6 Barlow, system-ui, sans-serif; -webkit-font-smoothing:antialiased;}
+  main{max-width:860px; margin:0 auto; padding:32px 16px 64px;}
+  .eyebrow{font:500 12px 'IBM Plex Mono', monospace; letter-spacing:.12em; text-transform:uppercase; color:var(--laiton);}
+  h1{font:700 40px/1.05 Rajdhani, sans-serif; letter-spacing:.01em; margin:6px 0 10px; text-wrap:balance;}
+  h2{font:700 25px/1.15 Rajdhani, sans-serif; margin:44px 0 10px; padding-top:18px; border-top:1px solid var(--line); text-wrap:balance;}
+  h3{font:600 17px/1.3 Barlow, sans-serif; margin:22px 0 6px;}
+  p{margin:0 0 12px; max-width:68ch;}
+  .chapo{font-size:18px; color:var(--dim); max-width:62ch;}
+  .verdict{margin:22px 0 8px; padding:16px 18px; background:var(--good-bg); border-left:4px solid var(--good); border-radius:4px;}
+  .verdict b{color:var(--good);}
+  .chiffres{display:grid; grid-template-columns:repeat(auto-fit, minmax(170px, 1fr)); gap:10px; margin:18px 0 6px;}
+  .chiffre{background:var(--surface); border:1px solid var(--line); border-radius:6px; padding:12px 14px;}
+  .chiffre .n{font:700 30px/1 Rajdhani, sans-serif; color:var(--laiton); font-variant-numeric:tabular-nums;}
+  .chiffre .l{font-size:13px; color:var(--dim); margin-top:4px; line-height:1.35;}
+  .tableau{overflow-x:auto; margin:10px 0 14px;}
+  table{border-collapse:collapse; width:100%; font-size:15px; min-width:520px;}
+  th{text-align:left; font:500 12px 'IBM Plex Mono', monospace; letter-spacing:.06em; text-transform:uppercase; color:var(--faint); padding:8px 10px; border-bottom:1px solid var(--line);}
+  td{padding:9px 10px; border-bottom:1px solid var(--line); vertical-align:top;}
+  td.num{font-variant-numeric:tabular-nums; white-space:nowrap;}
+  .defaut{display:grid; grid-template-columns:auto 1fr; gap:4px 12px; padding:12px 0; border-bottom:1px solid var(--line);}
+  .defaut:last-child{border-bottom:none;}
+  .grav{font:500 11px 'IBM Plex Mono', monospace; letter-spacing:.06em; text-transform:uppercase; padding:3px 7px; border-radius:3px; height:fit-content; white-space:nowrap;}
+  .grav.critique{background:var(--danger-bg); color:var(--danger);}
+  .grav.serieux{background:var(--laiton-bg); color:var(--warn);}
+  .grav.visible{background:var(--surface); color:var(--dim); border:1px solid var(--line);}
+  .defaut b{display:block;}
+  .defaut span.c{color:var(--dim); font-size:15px;}
+  ul, ol{margin:6px 0 14px; padding-left:22px;} li{margin:5px 0; max-width:68ch;}
+  .piste{background:var(--surface); border:1px solid var(--line); border-radius:6px; padding:14px 16px; margin:12px 0;}
+  .piste h3{margin-top:0;}
+  .piste .meta{font:500 12px 'IBM Plex Mono', monospace; color:var(--laiton); letter-spacing:.04em; margin-bottom:6px;}
+  .reco{border-left:4px solid var(--laiton); padding:12px 16px; background:var(--laiton-bg); border-radius:4px; margin:16px 0;}
+  .sources{font-size:13px; color:var(--faint);}
+  .sources a{color:var(--laiton);}
+  a{color:var(--laiton);}
+  @media (max-width:520px){ h1{font-size:32px;} .defaut{grid-template-columns:1fr;} }
+  @media (max-width:560px){
+    table{min-width:0;} thead{display:none;}
+    tr{display:grid; grid-template-columns:1fr auto; gap:4px 12px; padding:12px 0; border-bottom:1px solid var(--line);}
+    td{display:block; padding:0; border:0;}
+    td:first-child{font-weight:600; grid-column:1;} td.num{grid-column:2; grid-row:1; color:var(--laiton); text-align:right;}
+    td:nth-child(2){grid-column:1 / -1; color:var(--dim); font-size:14.5px;}
+  }
+</style>
+</head>
+<body>
+<main>
+  <div class="eyebrow">La Batcave · nuit du 24 au 25 septembre 2026</div>
+  <h1>Cinq ans simulés</h1>
+  <p class="chapo">Tu m'as demandé de tout simuler pour que la Batcave tienne cinq ans sans défaut. Voici ce qui a tourné cette nuit, ce qui cassait, ce que j'ai corrigé, ce qui me gêne encore, et comment tu pourrais la proposer à d'autres étudiants.</p>
+
+  <div class="verdict"><b>Verdict :</b> la Batcave publiée ce matin (version 106) a vécu cinq ans jour par jour sans un défaut. Au 25 septembre 2031, elle occupe environ 74 % du stockage de l'iPhone, son plus gros document cloud pèse 58 Kio sur 256, et le cloud compte 837 documents sur 5 000. La campagne complète, les six audits et les cinq simulations sont verts sur cette version.</div>
+
+  <div class="chiffres">
+    <div class="chiffre"><div class="n">1 826</div><div class="l">journées vécues jour par jour, du 26 septembre 2026 au 25 septembre 2031</div></div>
+    <div class="chiffre"><div class="n">782</div><div class="l">clics du test du chaos, chaque bouton et chaque champ, valeurs limites comprises</div></div>
+    <div class="chiffre"><div class="n">20</div><div class="l">défauts trouvés et corrigés, dont 6 qui auraient perdu des données ou bloqué la synchronisation</div></div>
+    <div class="chiffre"><div class="n">105</div><div class="l">tests de la campagne complète, plus 6 audits</div></div>
+  </div>
+
+  <h2>Ce qui a été simulé</h2>
+  <div class="tableau"><table>
+    <thead><tr><th>Simulation</th><th>Ce qu'elle fait</th><th>Résultat</th></tr></thead>
+    <tbody>
+      <tr><td>Cinq ans, jour par jour</td><td>Chaque jour, la Batcave est rouverte puis remplie par ses propres écrans : habitudes, repas, six blocs de travail, sport, combat, clôture du soir. Le dimanche, la revue et l'expérience de la semaine. Chaque mois, des dépenses, des échéances, des objectifs modifiés, ajoutés ou supprimés, et la saison clôturée quand elle est proposée. Un faux cloud applique les vraies limites : 256 Kio par document, 5 000 documents.</td><td class="num">6 031 vérifications, 0 défaut</td></tr>
+      <tr><td>Six mois, dix dates</td><td>Six mois de données, puis la Batcave ouverte à dix dates clés jusqu'en 2031 : partiels, semestre 2, fin de saison, été, deuxième année, 29 février, jour de l'an.</td><td class="num">400 vérifications, 0 défaut</td></tr>
+      <tr><td>Deux appareils, sans réseau</td><td>Un Mac et un iPhone partagent le même cloud. L'un est coupé du réseau pendant que l'autre écrit, puis tout se rouvre. Aussi : une première réponse du cloud partielle, une erreur passagère, un « Nouveau départ » lancé depuis l'autre appareil. L'ancienne version perdait les 30 minutes notées hors ligne.</td><td class="num">33 vérifications, 0 défaut</td></tr>
+      <tr><td>Le chaos</td><td>Quatre moments, sur Mac et sur iPhone. Chaque champ reçoit une valeur limite (vide, zéro, négatif, énorme, texte piégé, date de 1999 ou 2099), chaque sorte de bouton est cliquée, les confirmations acceptées une fois sur deux. Après chaque onglet, la Batcave redémarre.</td><td class="num">897 vérifications, 0 défaut</td></tr>
+      <tr><td>Les issues</td><td>Chaque geste avec toutes ses issues : valide, refusé avec un message, confirmé puis annulé, relu après rechargement. Objectifs, horizon, saison, passage d'année, replis, budget, clôture, échéances, restauration.</td><td class="num">58 vérifications, 0 défaut</td></tr>
+      <tr><td>Deux semaines fictives</td><td>Chaque onglet à quatre moments de la journée, sur deux écrans, avec les gestes du quotidien.</td><td class="num">88 vérifications, 0 défaut</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2>Ce qui cassait, et ce que j'ai corrigé</h2>
+  <p>Classés du plus grave au plus visible. Aucun n'a touché tes données à ma connaissance : le premier ne frappait qu'en cas de coupure réseau, les suivants à partir du printemps 2027.</p>
+
+  <div class="defaut"><span class="grav critique">Dès maintenant</span><div><b>Une saisie faite sans réseau pouvait disparaître.</b><span class="c">Si le cloud refusait une écriture, par exemple un Pomodoro noté dans un couloir sans réseau, elle n'était jamais renvoyée. À la réouverture, l'ancienne version du cloud écrasait la tienne. Chaque écriture reste maintenant en attente jusqu'à ce que le cloud la confirme. Si le Mac a écrit entre-temps, les deux versions sont fusionnées : les blocs des deux côtés sont gardés et les minutes s'additionnent.</span></div></div>
+  <div class="defaut"><span class="grav critique">Mars 2027</span><div><b>La synchronisation des sessions aurait cassé.</b><span class="c">Le cloud refuse tout document de plus de 256 Kio. Toutes tes sessions tenaient dans un seul document, qui grossit d'environ 1,3 Ko par jour plein. Les autres appareils n'auraient plus rien reçu. Désormais, chaque liste s'écrit en un document par mois.</span></div></div>
+  <div class="defaut"><span class="grav critique">3ᵉ année</span><div><b>Le stockage de l'iPhone se serait rempli.</b><span class="c">Il laisse environ 5 Mo à la page. Au rythme réel, plus une copie locale des archives du cloud qui doublait chaque vieux mois, le message « Stockage plein, données non enregistrées » serait apparu vers la troisième année. Le vieux détail se replie maintenant tout seul, et les archives restent dans le cloud.</span></div></div>
+  <div class="defaut"><span class="grav critique">Fin 2027</span><div><b>Les minutes des vieilles journées auraient été effacées.</b><span class="c">Au-delà de 3 000 blocs, environ 16 mois, les plus anciens étaient supprimés sans être résumés : séries, records et bilans auraient perdu ces jours. Le détail de plus de quatre mois se replie désormais dans les totaux du jour, sans perdre une minute.</span></div></div>
+  <div class="defaut"><span class="grav critique">2029-2030</span><div><b>Deux documents auraient dépassé la limite du cloud.</b><span class="c">L'archive des saisons recopiait à chaque clôture les objectifs de toutes les saisons précédentes : elle ne garde plus que ceux de la saison qui se clôt. La revue du dimanche tenait en un seul document : avec des réponses un peu plus longues que celles de la simulation, elle dépassait 256 Kio vers la troisième année. Elle s'écrit maintenant en un document par mois.</span></div></div>
+
+  <div class="defaut"><span class="grav serieux">Dès maintenant</span><div><b>Un objectif ajouté disparaissait à la réouverture.</b><span class="c">Selon la mesure choisie, le ménage du chargement effaçait l'objectif que tu venais d'ajouter. 27 sur 32 disparaissaient dans le test. Tout objectif que tu ajoutes est maintenant marqué comme le tien.</span></div></div>
+  <div class="defaut"><span class="grav serieux">14 mars 2027</span><div><b>La fin du programme était figée.</b><span class="c">Après le 14 mars, même avec une saison clôturée, le cardio n'était plus compté, les jours sans cours ne partaient plus à l'agenda, et le réacteur affichait « 0 % · À reprendre » chaque matin. La fin suit maintenant la saison.</span></div></div>
+  <div class="defaut"><span class="grav serieux">Sept. 2027</span><div><b>Rien ne signalait la nouvelle année universitaire.</b><span class="c">Sans grille configurée, la Batcave serait restée en « pas de cours » sans rien dire. À partir de mi-août, le Plan du jour te demande ton nouvel emploi du temps.</span></div></div>
+  <div class="defaut"><span class="grav serieux">Chaque Pomodoro</span><div><b>Sur iPhone, la page glissait de côté pendant une séance.</b><span class="c">La ligne « ⏱️ Révision en cours — … » de la barre élargissait toute la page. Elle se coupe maintenant avec des points de suspension.</span></div></div>
+  <div class="defaut"><span class="grav visible">Visible</span><div><b>Quatre défauts d'affichage sur iPhone.</b><span class="c">Une notification longue sortait de l'écran et sautait à droite pendant son animation. Le bouton « Annuler » du minuteur en pause était hors écran. Un lien ou un mot très long collé dans une note élargissait la page. Tout est corrigé.</span></div></div>
+  <div class="defaut"><span class="grav visible">Saisie</span><div><b>Des saisies absurdes passaient en silence.</b><span class="c">Une dépense de 1 000 000 € était acceptée, un montant vide refusé sans message, et une cible d'objectif vidée valait 0. Tout est maintenant refusé avec un message clair.</span></div></div>
+  <div class="defaut"><span class="grav visible">Justesse</span><div><b>Trois chiffres faux.</b><span class="c">La carte du Système comptait toujours 0 échéance à venir. Le record de série pouvait être inférieur à la série en cours. Une restauration ajoutait la sauvegarde à l'existant au lieu de le remplacer.</span></div></div>
+
+  <h3>Quatre erreurs de ma part, prises avant publication</h3>
+  <p>Les simulations ont aussi attrapé quatre défauts dans mes propres corrections de la nuit. Aucun n'a été publié.</p>
+  <ul>
+    <li><b>Le repli était défait par la synchronisation.</b> Il se faisait à l'ouverture, avant la réponse du cloud, qui remettait ensuite l'ancien contenu. Il se rejoue maintenant après chaque synchronisation.</li>
+    <li><b>La série perdait un jour par jour.</b> Le repli rejoué travaillait sur un état en mémoire périmé : la série serait restée bloquée à 401 jours. Il relit maintenant l'état depuis le stockage.</li>
+    <li><b>Une écriture hors ligne restait bloquée si tu rouvrais vite.</b> La correction de la synchronisation prenait une écriture de moins de cinq secondes pour un envoi encore en cours, même après un rechargement. Elle ne regarde plus que les envois de la page ouverte.</li>
+    <li><b>Les archives auraient survécu au « Nouveau départ ».</b> Elles ne vivent plus qu'au cloud, et d'anciennes journées seraient revenues après une remise à zéro. Elles sont maintenant effacées aussi.</li>
+  </ul>
+
+  <h2>Ce que ça change pour toi</h2>
+  <p>Presque rien : tout se fait seul. Trois gestes restent à ta charge.</p>
+  <ol>
+    <li><b>Une sauvegarde Drive de temps en temps.</b> Le voyant SANTÉ te le rappelle. C'est ta seule assurance si tu effaces les données de l'app Claude ou de Safari.</li>
+    <li><b>En mars 2027, « Clôturer la saison ».</b> Le bouton apparaît dans Objectifs sept jours avant la fin et relance six mois.</li>
+    <li><b>Chaque rentrée, ton emploi du temps.</b> Envoie-le-moi et je construis la grille. Le Plan du jour te le rappellera à partir de mi-août 2027.</li>
+  </ol>
+
+  <p><b>Ce matin, un contrôle de 30 secondes.</b> Ouvre la Batcave sur le Mac puis sur l'iPhone. Coche une habitude sur l'un, rouvre l'autre : elle doit y être. C'est la seule chose que je n'ai pas pu vérifier moi-même.</p>
+
+  <h2>Ce qui me gêne encore</h2>
+  <p>Tu m'as demandé d'être franc. Voici ce que je changerais si c'était ma Batcave.</p>
+  <ul>
+    <li><b>Elle est très dense.</b> Neuf onglets, une centaine de boutons, 32 mesures d'objectifs, une soixantaine d'objectifs semés par mois. Le risque n'est pas un bug, c'est que tu ne l'ouvres plus. Les deux premières semaines, n'utilise que trois choses : le Plan du jour, le Pomodoro et la clôture.</li>
+    <li><b>Elle dépend de moi pour chaque semestre.</b> Les grilles de cours sont écrites dans le code. Un import de l'emploi du temps depuis Google Agenda te rendrait autonome ; c'est la première amélioration que je ferais.</li>
+    <li><b>C'est un seul fichier de 18 000 lignes.</b> Chaque changement passe par 105 tests pour cette raison. Pendant les partiels, je te conseille de ne rien changer du tout.</li>
+    <li><b>La marge de stockage de l'iPhone est correcte, pas large.</b> Après cinq ans simulés, la Batcave occupe environ 74 % des quelque 5 Mo que Safari lui laisse. Le journal du sport et le journal du jour sont les deux postes qui grossissent. Si le voyant SANTÉ parle de stockage, dis-le-moi : le journal du sport peut se replier davantage.</li>
+    <li><b>Je n'ai pas pu éprouver le vrai cloud cette nuit.</b> Toutes les simulations passent par un faux cloud qui reproduit ses limites et son comportement documenté. D'où le contrôle de 30 secondes ci-dessus, à faire ce matin.</li>
+    <li><b>Tes données vivent dans le navigateur et le cloud de l'artefact.</b> C'est solide, mais pas indestructible. La sauvegarde Drive n'est pas une option.</li>
+    <li><b>Le rythme est serré.</b> Lever 05:30, coucher 21:35, quatre séances de combat par semaine et une nuit blanche cette nuit. La Batcave mesure ton sommeil réel : si la moyenne passe sous 6 h 30 deux semaines de suite, c'est le programme qu'il faut alléger, pas toi qu'il faut pousser.</li>
+  </ul>
+
+  <h3>Les améliorations que je ferais ensuite, dans l'ordre</h3>
+  <ol>
+    <li><b>Import de l'emploi du temps</b> depuis ton agenda de la fac, pour ne plus dépendre de moi chaque semestre.</li>
+    <li><b>Journal de combat</b> : une ligne par séance de JJB ou de Muay Thai (technique vue, sparring, ressenti).</li>
+    <li><b>Minuteur de rounds</b> (3 min / 1 min avec sonnerie) pour le cardio combat à la maison.</li>
+    <li><b>Recherche globale</b> sur la touche « / » : une matière, une échéance, une note de journal.</li>
+    <li><b>Mode partiels allégé</b> : trois onglets seulement pendant les examens.</li>
+  </ol>
+
+  <h2>La proposer à d'autres étudiants</h2>
+  <p>Ta niche est précise, et c'est une force : les étudiants français en santé partis étudier à l'étranger, en Espagne, au Portugal, en Belgique ou en Roumanie. Ils vivent la même chose que toi : langue étrangère, examens au rythme local, beaucoup d'autonomie, personne pour les organiser.</p>
+
+  <div class="piste"><div class="meta">Effort faible · dès ce mois-ci</div><h3>1. Montrer avant de vendre</h3><p>Des vidéos courtes du type « une journée d'étudiant en dentaire en Espagne », où la Batcave apparaît à l'écran : le Plan du jour à 05:30, le Pomodoro, la clôture du soir. Une page d'attente (Carrd ou Notion) pour recueillir des e-mails. Tu apprends ce que les gens veulent avant d'y passer du temps.</p></div>
+  <div class="piste"><div class="meta">Effort moyen · après 3-4 semaines de vidéos</div><h3>2. La mise en place sur mesure</h3><p>Un entretien d'une heure, puis une Batcave construite pour l'étudiant, avec sa fac, ses matières, son sport et sa langue. Tu la construis avec Claude comme on l'a fait ensemble. Un prix entre 49 et 149 € est plausible pour commencer ; teste-le sur tes cinq premiers clients. C'est ce qui rapporte le plus vite, et chaque client t'apprend ce qu'il faut rendre générique.</p></div>
+  <div class="piste"><div class="meta">Effort moyen · une fois 10 clients passés</div><h3>3. Le modèle à configurer</h3><p>Une version générique qu'on remplit soi-même (fac, matières, grille, sport), vendue une fois entre 19 et 39 € sur Gumroad ou Lemon Squeezy. Point technique important : chaque étudiant doit avoir <b>sa propre copie</b>. Si tu partageais ton lien, ils écriraient tous dans ta base de données. Le plus simple est un fichier HTML autonome qui garde les données dans le navigateur de l'étudiant.</p></div>
+  <div class="piste"><div class="meta">Effort très élevé · pas maintenant</div><h3>4. Une vraie application</h3><p>Comptes, serveur, applis mobiles. Le poids et le sommeil sont des données de santé au sens du RGPD : les héberger pour d'autres demande un consentement explicite, une sécurité sérieuse et, en France, parfois un hébergeur certifié HDS. À n'envisager qu'au-delà d'une centaine de clients payants.</p></div>
+
+  <div class="reco"><b>Ma recommandation :</b> les pistes 1 et 2 cette année, dans ton créneau « projets » du samedi et du dimanche, jamais plus de deux heures par semaine pendant le semestre. La piste 3 quand tu auras dix clients. Deux vérifications avant le premier euro : ton statut en Espagne, où l'autónomo coûte environ 80 € par mois la première année puis 217 à 796 € selon les revenus, et la facturation depuis l'Espagne vers des clients français.</div>
+
+  <p class="sources">Sources : <a href="https://www.infoautonomos.com/seguridad-social/tarifa-plana-autonomos/">Infoautónomos, tarifa plana 2026</a> · <a href="https://www.wolterskluwer.com/es-es/expert-insights/cuotas-autonomos-2026">Wolters Kluwer, cuotas autónomos 2026</a> · <a href="https://www.donneespersonnelles.fr/article-9-rgpd">RGPD article 9</a> · <a href="https://www.village-justice.com/articles/hebergement-donnee-sante-rgpd,30355.html">Village de la Justice, hébergement de données de santé</a></p>
+</main>
+</body>
+</html>
