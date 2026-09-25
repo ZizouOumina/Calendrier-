@@ -71,7 +71,7 @@ Il dit ce qui est fait, ce qui reste, et ce qui attend une décision de toi.
 > combat » (banane 120, flocons 50, amandes 15 = 388 kcal) les quatre jours de combat
 > seulement (`repasActif`, `jourDeCombat`, `ORDRE_REPAS`) ; `BESOIN_SEMAINE` sur la semaine
 > du 28 (bananes 11, flocons 760, amandes 445 g). **Eau** : 3,5 L les jours de combat
-> (`objectifEauL`). **Budget** : fc10 « Club JJB / Muay Thai » 90 €, Abonnements
+> (`objectifEauL`). **Budget** : fc10 « Club JJB / Muay Thai » 100 € (90 € jusqu'au soir du 25, ajustement `fc-prix-club-100`), Abonnements
 > (`migrerChargesFixesV2`). **Projets sans Pomodoro** : `typeBlocPlan` rend null pour
 > « Projets perso » (plus de cible, de fidélité, de bloc manqué, d'objectif projets_h) ; case
 > « livrable de la semaine fait » à la clôture du dimanche (`batcave-livrables`). **Les cinq

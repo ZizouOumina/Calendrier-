@@ -68,7 +68,7 @@ const pie = await fr.evaluate(() => ({
   solde: document.querySelectorAll('#budget-stats .stat-tile')[2].innerText.replace(/\s+/g,''),
 }));
 ok(pie.parts === 1 && /Shopify 1200/.test(pie.txt), 'camembert Entrées à 100% Shopify : ' + pie.txt);
-ok(/223/.test(pie.solde), 'le solde se recalcule : 1200 − 977 de charges (club compris) = 223 (' + pie.solde + ')');
+ok(/213/.test(pie.solde), 'le solde se recalcule : 1200 − 987 de charges (club à 100 € compris) = 213 (' + pie.solde + ')');
 
 console.log('\n== E) Habitude cochée → score + bilan ==');
 await fr.evaluate(() => document.querySelector('.nav-btn[data-page="habitudes"]').click());

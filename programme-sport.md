@@ -3,7 +3,7 @@
 Copie de référence du programme appliqué dans la Batcave (onglet Sport), commencé le jeudi 24 septembre 2026 (jour 1 du programme ; les cours, eux, ont repris le 14). **Depuis le lundi 28 septembre, le régime combat** : trois séances de muscu et quatre de combat par semaine.
 
 ## Le régime combat (décision du 25 septembre)
-- **JJB le lundi, le mercredi et le vendredi à 10:30 ; Muay Thai le mardi à 19:30.** 1 h 30 par séance, club à dix minutes à pied, 90 € par mois (charge fixe « Club JJB / Muay Thai », catégorie Abonnements). La lutte (mardi et jeudi) et le MMA (mardi 18:30) attendent novembre.
+- **JJB le lundi, le mercredi et le vendredi à 10:30 ; Muay Thai le mardi à 19:30.** 1 h 30 par séance, club à dix minutes à pied, 100 € par mois (charge fixe « Club JJB / Muay Thai », catégorie Abonnements). La lutte (mardi et jeudi) et le MMA (mardi 18:30) attendent novembre.
 - **Le combat est le cardio.** La course du dimanche et les sprints du samedi sont sortis ; le panneau « Cardio & combat » de l'onglet Sport liste les quatre séances de la semaine, à cocher, 90 minutes chacune. Elles ne comptent pas dans « Séances tenues », qui reste le compteur de la muscu.
 - **Lundi et jeudi s'inversent.** La séance lourde passe le **jeudi**, le seul jour sans combat, avec une récupération complète ; le **lundi**, avant le JJB de 10:30, c'est le volume, plus léger. Le lundi, on ne va pas à l'échec : il faut de l'énergie pour le tatami.
 - **La séance du samedi saute** pendant le mois d'adaptation : ses exercices clés passent ailleurs — mollets le mardi, élévations latérales et superset curl/triceps le lundi. Elle peut revenir en novembre si le sommeil tient et que le poids monte.
