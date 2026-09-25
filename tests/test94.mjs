@@ -274,8 +274,9 @@ console.log('\n== 334) Ses prix a lui, releves en magasin -- et rien d\'invente 
   /* 24 septembre : une ligne n'a plus de prix -- les amandes, qu'il n'a pas encore
      relevees. Le panneau le DIT, la nomme, et la sort du total : c'est le trou qu'on
      montre, jamais un chiffre invente pour le boucher. */
-  ok(/Amandes ou noix nature : prix pas encore relevé/.test(t) && /hors total/.test(t),
-     'une seule ligne hors total, nommée : les amandes (' + t.slice(0, 70) + ')');
+  /* 25 septembre au soir : leur prix est releve (12 EUR/kg) -- plus de ligne hors total. */
+  ok(!/prix pas encore relevé/.test(t) && !/hors total/.test(t),
+     'plus aucune ligne hors total : les amandes ont leur prix (' + t.slice(0, 70) + ')');
   ok(/Budget/.test(t) && /Nourriture/.test(t),
      'et il dit toujours où vivent les montants payés : Budget → Nourriture');
   /* Les prix sur les lignes elles-memes. La creatine est hors plan de repas -- elle
@@ -286,12 +287,12 @@ console.log('\n== 334) Ses prix a lui, releves en magasin -- et rien d\'invente 
      Les assertions ci-dessous cherchent ce que le code ÉCRIT, pas ce que le CSS affiche. */
   const lignes = await fr.evaluate(() =>
     [...document.querySelectorAll('#courses-grid .cat-card li')].map(l => l.textContent));
-  const muettes = lignes.filter(l => !/€|Créatine|^Amandes/.test(l));
+  const muettes = lignes.filter(l => !/€|Créatine/.test(l));
   ok(lignes.length > 0 && muettes.length === 0,
      'les ' + lignes.length + ' lignes du jour portent toutes leur prix' +
      (muettes.length ? ' — muettes : ' + muettes.join(' · ') : ''));
-  ok(lignes.filter(l => /prix à relever/.test(l)).length === 1 && lignes.some(l => /^Amandes/.test(l) && /prix à relever/.test(l)),
-     'une seule ligne dit « prix à relever » : les amandes');
+  ok(!lignes.some(l => /prix à relever/.test(l)) && lignes.some(l => /^Amandes/.test(l) && /12,00 €\/kg/.test(l)),
+     'plus aucune ligne ne dit « prix à relever » : les amandes à 12 €/kg');
   ok(!lignes.some(l => /Beurre de cacahuète/.test(l)), 'plus de beurre de cacahuète');
   ok(lignes.some(l => /Poulet/.test(l) && /7,50 €\/kg/.test(l)),
      'le poulet porte le prix de sa boucherie : 7,50 €/kg');

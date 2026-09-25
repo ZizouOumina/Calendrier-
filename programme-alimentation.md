@@ -74,16 +74,16 @@ Les quantités ne sont pas recopiées : elles sortent du plan de repas × 7 jour
 la catégorie, puis s'arrondissent **au-dessus** du conditionnement réel. La viande ne
 s'arrondit pas — le boucher pèse le montant exact. Les fruits se comptent à l'unité.
 
-**Les prix sont les siens**, relevés les 20 et 21 septembre, chacun avec sa boutique et sa
-date, aucune estimation. **Une ligne n'a pas encore de prix : les amandes** (depuis le 24
-septembre) ; elle dit « prix à relever » et reste hors du total jusqu'à ce qu'il l'envoie. Le 19 il avait fait sauter les
+**Les prix sont les siens**, relevés les 20, 21 et 25 septembre, chacun avec sa date, aucune estimation. **Les amandes**
+(dans le plan depuis le 24 septembre) sont restées un jour « prix à relever », hors total ;
+son relevé du 25 au soir : **12 € le kilo**. Le 19 il avait fait sauter les
 estimations (« enlève l'estimation de budget, dès que j'achèterai je t'enverrai les
 factures ») ; ce qui est écrit ici n'est donc plus une estimation mais un relevé. Ce que ça
-donne : **45,29 € par semaine, 196,24 € par mois hors amandes** depuis la collation combat (44,28 et 191,86 le 24 septembre ; 46,32 et 200,71 le 23 avec le beurre de cacahuète), calculés sur ce qu'il mange (le besoin
+donne : **50,63 € par semaine, 219,38 € par mois**, amandes comprises (45,29 et 196,24 sans elles ; 46,32 et 200,71 le 23 avec le beurre de cacahuète), calculés sur ce qu'il mange (le besoin
 hebdomadaire) et non sur l'achat du jour — un bidon d'huile de 2 L dure cinq semaines. Ce
 montant est le *plan* ; ce qu'il a vraiment payé se saisit dans Budget → Nourriture à partir
 de ses tickets, et c'est ce dernier qui compte dans ses dépenses du mois. Un **plafond**
-Nourriture y est posé à 201 € (195 avant le 23 septembre) — il n'est pas retouché le 24 : sans le prix des amandes, le recalculer le ferait descendre à tort. Il remplace de l'ancienne charge fixe « Courses » de
+Nourriture y est posé à 219 € depuis le prix des amandes (201 avant, 195 avant le 23 septembre) ; un plafond réglé à la main n'est jamais touché. Il remplace de l'ancienne charge fixe « Courses » de
 300 €/mois, qui comptait la nourriture deux fois.
 
 **Chaque semaine** — 8 articles
@@ -97,7 +97,7 @@ Nourriture y est posé à 201 € (195 avant le 23 septembre) — il n'est pas r
 | Pain complet | 450 g (1 paquet) | 420 g | Lidl | 1,05 € les 450 g, 16 tranches |
 | Bananes | 11 | 11 | Lidl | 1,48 €/kg |
 | Fruits (pommes, poires, oranges…) | 7 | 7 | Frutería, de saison | ≈ 2 €/kg |
-| Amandes ou noix nature | 600 g (3 sachets de 200 g) | 445 g | Lidl | à relever |
+| Amandes ou noix nature | 600 g (3 sachets de 200 g) | 445 g | Lidl | 12,00 €/kg |
 
 La boîte d'œufs de 12 est à 2,84 €, soit moins cher à l'unité que celle de 6 : trois boîtes
 de 6 font les 30, mais deux de 12 plus une de 6 coûtent moins.

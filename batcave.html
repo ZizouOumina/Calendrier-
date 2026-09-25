@@ -3614,7 +3614,7 @@
   var DRAPEAUX_MIGRATION = ['objectifs-seed-v1','objectifs-v2-55','objectifs-v5-espanol',
     'habits-ecran-v2','habitlog-hebdo-v1','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','habits-seed-v7','habits-seed-v8','habits-seed-v9',
     'courses-plan-v2','courses-plan-v3','courses-plan-v4','courses-plan-v5','courses-plan-v6','courses-plan-v7','courses-plan-v8','courses-plan-v9','courses-plan-v10',
-    'charges-v2','plafond-nourriture-v2','plafond-nourriture-v3','ancre-dimanche-v1','shampoing-dim-v1','marche-cible-v1','fc-migration-v1','fc-migration-v2','revision-fusionnee'];
+    'charges-v2','plafond-nourriture-v2','plafond-nourriture-v3','plafond-nourriture-v4','ancre-dimanche-v1','shampoing-dim-v1','marche-cible-v1','fc-migration-v1','fc-migration-v2','revision-fusionnee'];
   /* Drapeaux que rien ne pose plus (migrations retirees) ou poses seulement quand il y a
      eu quelque chose a migrer : connus et gardes, jamais exiges. */
   var DRAPEAUX_ANCIENS = ['objectifs-v3-trajet','objectifs-v4-dimanche','habits-retirees-v1','shampoing-combat-v1'];   /* le dernier n'ecrit qu'a partir du 28 septembre */
@@ -3731,7 +3731,7 @@
      vestige : une fonctionnalite retiree (batcave-matieres) ou un essai. Elle prend de la
      place dans le quota de 5000 documents et embrouille les sauvegardes, sans que rien ne
      la lise jamais. On la signale ; la suppression reste ton geste. */
-  var CLES_CONNUES = ['addictions','budget-limits','business','coran','courses','dash-more','duaas','duree-bloc','sport-log','objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','courses-plan-v3','courses-plan-v4','courses-plan-v5','courses-plan-v6','courses-plan-v7','courses-plan-v8','courses-plan-v9','courses-plan-v10','charges-v2','plafond-nourriture-v2','plafond-nourriture-v3','gcal-controle','ancre-dimanche-v1','shampoing-dim-v1','marche-cible-v1','cardio','kcal-ajustement','gcal-ecriture','reinit','fc-migration-v1','fc-migration-v2','livrables','shampoing-combat-v1','charge','shopify-boutique','journees','examens-heures','vacances','jours-exclus',
+  var CLES_CONNUES = ['addictions','budget-limits','business','coran','courses','dash-more','duaas','duree-bloc','sport-log','objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','courses-plan-v3','courses-plan-v4','courses-plan-v5','courses-plan-v6','courses-plan-v7','courses-plan-v8','courses-plan-v9','courses-plan-v10','charges-v2','plafond-nourriture-v2','plafond-nourriture-v3','plafond-nourriture-v4','gcal-controle','ancre-dimanche-v1','shampoing-dim-v1','marche-cible-v1','cardio','kcal-ajustement','gcal-ecriture','reinit','fc-migration-v1','fc-migration-v2','livrables','shampoing-combat-v1','charge','shopify-boutique','journees','examens-heures','vacances','jours-exclus',
     'espagnol','examens','cours-suivi','portes','periodes-closes','fc-prix-icloud-3','fc-prix-club-100','fixed-charges','goals','goals-depart','saisons','insights-hist','last-restore-drill','habitlog','habits','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','habits-seed-v7','habits-seed-v8','habits-seed-v9','objectifs-v5-espanol',
     'horizon','last-auto-backup','last-manual-backup','last-bilan-prompt','last-compaction','last-open','last-rotation','notion-url',
     'pomodial-purge','projets','report','revision','revision-fusionnee','revue','sante','sauvegarde','sessions',
@@ -11919,11 +11919,12 @@
     pates:    {eur:1.09,  par:'kg',    ou:'Lidl',      quand:'21 sept.'},
     flocons:  {eur:1.50,  par:'kg',    ou:'Lidl',      quand:'21 sept.', detail:'0,75 \u20ac les 500 g'},
     miel:     {eur:10.00, par:'kg',    ou:'Lidl',      quand:'21 sept.'},
-    huile:    {eur:5.945, par:'L',     ou:'Lidl',      quand:'21 sept.', detail:'11,89 \u20ac les 2 L'}
+    huile:    {eur:5.945, par:'L',     ou:'Lidl',      quand:'21 sept.', detail:'11,89 \u20ac les 2 L'},
     /* 24 septembre : le beurre de cacahuete sort du plan (il ne l'aime pas), et avec lui le
-       seul prix Alcampo (5,30 EUR/kg). Les amandes qui le remplacent n'ont PAS de prix : il
-       ne l'a pas encore releve. Pas d'entree ici, donc -- la ligne dit « prix a relever »
-       et sort du total, plutot que d'etre comblee par une estimation. */
+       seul prix Alcampo (5,30 EUR/kg). Les amandes qui le remplacent sont restees un jour
+       sans prix -- « prix a relever », hors total. 25 septembre au soir : son releve,
+       12 EUR le kilo. */
+    amandes:  {eur:12.00, par:'kg',    quand:'25 sept.'}
   };
   /* La cle du besoin par libelle : c'est elle qui relie une ligne de courses a son prix. */
   var CLE_PRIX = {
@@ -12392,7 +12393,7 @@
     if(budget){
       var cs = coutSemaine();
       budget.innerHTML = '<b style="color:var(--ink);">' + eur(cs.mois) + ' par mois</b> \u00b7 ' +
-        eur(cs.total) + ' par semaine, calcul\u00e9 sur <b style="color:var(--ink-dim);">tes</b> prix relev\u00e9s en magasin les 20 et 21 septembre, ligne par ligne.' +
+        eur(cs.total) + ' par semaine, calcul\u00e9 sur <b style="color:var(--ink-dim);">tes</b> prix relev\u00e9s en magasin les 20, 21 et 25 septembre, ligne par ligne.' +
         (cs.manque.length ? ' <b style="color:var(--warn);">' + cs.manque.join(', ') + '</b> : prix pas encore relev\u00e9, donc hors total \u2014 le chiffre montera quand il y sera.' : '') +
         ' Ce montant est le <b style="color:var(--ink-dim);">plan</b> ; ce que tu as vraiment pay\u00e9 se saisit dans <b style="color:var(--ink-dim);">Budget \u2192 Nourriture</b>, et c\'est lui qui compte dans tes d\u00e9penses du mois.';
     }
@@ -16916,6 +16917,17 @@
     }
     saveInternal('batcave-plafond-nourriture-v3', true);
   }
+  /* Quatrieme fois, le 25 septembre au soir : les amandes ont leur prix (12 EUR/kg), la
+     collation combat est au plan, le beurre de cacahuete en est sorti. Le plan vaut
+     ~50,63 EUR par semaine, soit ~219 par mois. Meme regle : on ne remplace que la valeur
+     posee par moi (201), jamais un plafond qu'il aurait regle. */
+  if(!load('batcave-plafond-nourriture-v4', false)){
+    if(Number(budgetLimits['Nourriture']) === 201){
+      budgetLimits['Nourriture'] = Math.round(coutSemaine().mois);
+      save('batcave-budget-limits', budgetLimits);
+    }
+    saveInternal('batcave-plafond-nourriture-v4', true);
+  }
   var fixedCharges = load('batcave-fixed-charges', null);
   if(fixedCharges === null){ fixedCharges = FIXED_CHARGES_SEED.slice(); save('batcave-fixed-charges', fixedCharges); }
   if(!Array.isArray(fixedCharges)) fixedCharges = FIXED_CHARGES_SEED.slice();
@@ -17199,10 +17211,11 @@
      au 24 octobre, les suivantes du 25 au 24. Aucune des deux dates ne change l'epargne :
      toute periode de 28 a 31 jours compte 4 ou 5 samedis. */
   var REVENU_MOIS = {montant:1400, jour:25, depuis:'2026-09-28'};
-  /* Les amandes n'ont pas de prix releve (PRIX, plus haut) : la liste de courses le dit et
-     les sort de son total. Un plan d'epargne sans elles serait optimiste d'environ 25 EUR par
-     mois -- on les compte ici a 13 EUR/kg, affiche comme estimation, jusqu'a son releve. */
-  var PRIX_ESTIMES = {amandes:{eur:13, par:'kg'}};
+  /* Une ligne de courses sans prix releve sort du total de la liste ; ici, un plan d'epargne
+     sans elle serait trop optimiste. Elle se compte alors a un prix estime, dit comme tel.
+     Vide depuis le 25 septembre au soir : les amandes, estimees a 13 EUR/kg une soiree,
+     ont leur prix releve (12 EUR/kg, PRIX). */
+  var PRIX_ESTIMES = {};
   /* Quand et comment part chaque charge. Les trois du proprietaire partent en UN virement :
      le contrat d'eau, d'electricite et de wifi est a son nom. */
   var ECHEANCES_ARGENT = [
@@ -17328,7 +17341,7 @@
       (a.estimes.length ? '<li><b>Les amandes : rel\u00e8ve leur prix samedi</b> et envoie-le-moi. En attendant, elles comptent \u00e0 ' + a.estimes[0].prix.eur + ' \u20ac/' + a.estimes[0].prix.par + '.</li>' : '') +
       '<li><b>Tes rappels \ud83d\udcb6 dans l\u2019agenda :</b> le ' + REVENU_MOIS.jour + ' (virement et cagnotte), le 28 (club), le 1er (propri\u00e9taire), le ' + (REVENU_MOIS.jour - 1) + ' (le reste dans la cagnotte).</li>' +
       '</ul>';
-    h += '<p class="ma-pied">Courses : ' + eurMille(a.semaine) + ' par semaine d\u2019apr\u00e8s tes relev\u00e9s des 20 et 21 septembre' +
+    h += '<p class="ma-pied">Courses : ' + eurMille(a.semaine) + ' par semaine d\u2019apr\u00e8s tes relev\u00e9s des 20, 21 et 25 septembre' +
       (a.estimes.length ? ', dont ' + a.estimes.map(function(e){ return e.label.toLowerCase() + ' estim\u00e9es \u00e0 ' + e.prix.eur + ' \u20ac/' + e.prix.par + ' (prix \u00e0 relever)'; }).join(', ') : '') +
       '. Eau et \u00e9lectricit\u00e9 : 70 \u20ac estim\u00e9s, le vrai montant n\u2019est pas encore connu. Charges fixes : ' + eurMille(a.fixes) + ' par mois.</p>';
     el.innerHTML = h;

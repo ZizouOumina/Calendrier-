@@ -359,18 +359,19 @@ une ligne à enlever dans quatre sections — dis-le et je le fais.
 ## Ce qu'il faut savoir pour reprendre
 
 - **Le mois de l'argent** (Budget, 25 septembre au soir) : panneau `budget-mois-panel`,
-  `moisArgent(iso)` / `renderMoisArgent()`, test `test114`. 192 € n'est qu'une **moyenne**
-  (191,69 €) : une période d'un virement au suivant compte 4 ou 5 samedis de courses, et avec 5
+  `moisArgent(iso)` / `renderMoisArgent()`, test `test114`. 192 € n'était qu'une **moyenne**
+  (193,62 € depuis le prix des amandes) : une période d'un virement au suivant compte 4 ou 5 samedis de courses, et avec 5
   il ne reste qu'environ 158 €. D'où **150 € le jour du virement** (ce que laisse même une période
   à 5 samedis, arrondi à la dizaine en dessous) et **le reste la veille du suivant**
-  (≈ 58,71 € avec 4 samedis, ≈ 7,64 € avec 5). **Le virement passe au 25** (sa décision, le 25 au
+  (≈ 60,49 € avec 4 samedis, ≈ 9,87 € avec 5). **Le virement passe au 25** (sa décision, le 25 au
   soir) : le 28 laissait trop peu de marge avant le loyer quand il tombe un week-end (28 nov.
   samedi, 28 févr. 2027 dimanche). Le premier virement arrive encore le 28 septembre
   (`REVENU_MOIS.depuis`) : première période du 28 sept. au 24 oct., puis du 25 au 24. Le club
   garde le 28. Consignes « À mettre en place une fois » dans le panneau (virement permanent de
   sa mère, Jar Wise « Épargne et business », Apple et Bouygues faits, facture d'eau et
-  d'électricité, prix des amandes). Amandes estimées à 13 €/kg dans ce plan seulement
-  (`PRIX_ESTIMES`). Agenda 💶 : 28 sept. 12:35 (virement, une fois), le 25 (virement et
+  d'électricité). **Amandes : 12 €/kg** (son relevé du 25 au soir, `PRIX.amandes`) — plus aucune
+  ligne « prix à relever », `PRIX_ESTIMES` vide ; courses 50,63 €/semaine, 219,38 €/mois ;
+  plafond Nourriture 201 → 219 si c'est encore le mien (`plafond-nourriture-v4`). Agenda 💶 : 28 sept. 12:35 (virement, une fois), le 25 (virement et
   cagnotte, `68n5dpque190a6p9bm5lnp2ft4`), le 28 (club, `i0hja7ddt7f6m193du4cno1rgk`), le 1er
   (propriétaire), le 24 (le reste, `ournj3sp5574qef64r8s80muk4`).
 - Branche : `claude/notion-addictions-nutrition-tracker-pf3lmg`. Tout est poussé.

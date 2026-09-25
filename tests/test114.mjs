@@ -36,15 +36,15 @@ console.log('— vendredi 25 septembre : la premiere periode, 28 sept. -> 24 oct
   const a = await fr.evaluate(() => window.__bcMoisArgent('2026-09-25'));
   ok(a.revenu === 1400, 'revenu : 1 400 EUR');
   ok(a.fixes === 987, 'charges fixes : 987 EUR (' + a.fixes + ')');
-  ok(pres(a.semaine, 51.07), 'courses : 51,07 EUR par semaine, amandes estimees comprises (' + a.semaine.toFixed(2) + ')');
-  ok(a.estimes.length === 1 && /Amandes/.test(a.estimes[0].label) && a.estimes[0].prix.eur === 13, 'une seule estimation : les amandes a 13 EUR/kg');
+  ok(pres(a.semaine, 50.63), 'courses : 50,63 EUR par semaine, amandes a 12 EUR/kg comprises (' + a.semaine.toFixed(2) + ')');
+  ok(a.estimes.length === 0, 'plus aucune estimation : les amandes ont leur prix releve');
   ok(a.cagnotte === 150, 'jour du virement : 150 EUR dans la cagnotte (' + a.cagnotte + ')');
   ok(a.periode.debut === '2026-09-28' && a.periode.fin === '2026-10-24', 'premiere periode du 28 sept. (dernier virement a l\'ancienne date) au 24 oct.');
   ok(a.periode.samedis === 4, '4 samedis de courses');
-  ok(pres(a.periode.balayage, 58.71), 'le 24 : environ 58,71 EUR a balayer (' + a.periode.balayage.toFixed(2) + ')');
-  ok(pres(a.moyenne, 191.69), 'epargne moyenne : 191,69 EUR par mois (' + a.moyenne.toFixed(2) + ')');
+  ok(pres(a.periode.balayage, 60.49), 'le 24 : environ 60,49 EUR a balayer (' + a.periode.balayage.toFixed(2) + ')');
+  ok(pres(a.moyenne, 193.62), 'epargne moyenne : 193,62 EUR par mois (' + a.moyenne.toFixed(2) + ')');
   ok(a.prochaine5 && a.prochaine5.debut === '2026-12-25' && a.prochaine5.fin === '2027-01-24' && a.prochaine5.samedis === 5, 'prochaine periode a 5 samedis : 25 dec. -> 24 janv.');
-  ok(pres(a.prochaine5.balayage, 7.64), 'avec 5 samedis, il reste encore 7,64 EUR le 24');
+  ok(pres(a.prochaine5.balayage, 9.87), 'avec 5 samedis, il reste encore 9,87 EUR le 24');
   const L = a.lignes;
   ok(L[0].montant === 1400 && L[0].plus && L[0].quand === 'le 28', 'le fil commence par le virement, le 28 pour cette premiere periode');
   ok(L[1].montant === 150 && L[1].cagnotte && L[1].quand === 'le 28', 'puis la cagnotte, le meme jour');
@@ -67,10 +67,10 @@ console.log('— vendredi 25 septembre : la premiere periode, 28 sept. -> 24 oct
   ok(/Jar/.test(txt) && /\u00c9pargne et business/.test(txt), 'consigne : la cagnotte Wise');
   const faits = await fr.evaluate(() => [...document.querySelectorAll('.ma-setup li')].filter(li => li.querySelector('.badge.good')).map(li => li.querySelector('b').textContent));
   ok(faits.length === 2 && /iCloud/.test(faits[0]) && /Bouygues/.test(faits[1]), 'deux consignes marquees faites : Apple et Bouygues ' + JSON.stringify(faits));
-  ok(/vrai montant de l.eau/.test(txt) && /rel\u00e8ve leur prix/.test(txt), 'consignes : facture d\'eau et d\'electricite, prix des amandes');
+  ok(/vrai montant de l.eau/.test(txt) && !/rel\u00e8ve leur prix/.test(txt), 'consigne : facture d\'eau et d\'electricite ; plus de consigne pour les amandes');
   ok(/le 25 \(virement et cagnotte\), le 28 \(club\), le 1er \(propri\u00e9taire\), le 24/.test(txt), 'les quatre rappels de l\'agenda sont nommes');
   ok(/Si le 25 tombe un week-end/.test(txt), 'regle : un 25 de week-end, c\'est prevu');
-  ok(/70 € estim/.test(txt) && /prix à relever/.test(txt), 'les deux estimations sont dites (eau/electricite, amandes)');
+  ok(/70 € estim/.test(txt) && !/prix à relever/.test(txt) && !/amandes/i.test(txt), 'une seule estimation dite : l\'eau et l\'electricite (les amandes ont leur prix)');
   const ordre = await fr.evaluate(() => { const p = document.getElementById('budget-mois-panel'); return p.previousElementSibling && p.previousElementSibling.id; });
   ok(ordre === 'budget-stats', 'place juste sous les chiffres du mois');
   await ctx.close();
@@ -151,6 +151,24 @@ console.log('— des charges au-dessus du virement : le fil le dit, sans solde n
   const txt = await fr.evaluate(() => document.getElementById('budget-mois-panel').innerText);
   ok(!/−-|\+-/.test(txt), 'aucun montant a double signe dans le panneau');
   await ctx.close();
+}
+
+console.log('— le plafond Nourriture suit le prix des amandes');
+{
+  for(const [avant, attendu, nom] of [[201, 219, 'pose par la Batcave (201) : releve a 219'], [180, 180, 'regle a la main (180) : ne bouge pas']]){
+    const ctx = await browser.newContext({ viewport:{width:1440, height:900}, timezoneId:'Europe/Madrid', locale:'fr-FR' });
+    await ctx.addInitScript(v => { window.claude = undefined; localStorage.setItem('batcave-budget-limits', JSON.stringify({Nourriture: v})); }, avant);
+    const page = await ctx.newPage();
+    page.on('pageerror', e => { errs++; console.log('  PAGEERROR: ' + e.message); });
+    await page.clock.install({ time: new Date('2026-09-25T21:00:00+02:00') });
+    await page.goto(URL);
+    await page.frameLocator('#f').locator('#dash-plan').waitFor({ state:'attached', timeout:20000 });
+    const fr = page.frames().find(x => x.url().includes('batcave.html'));
+    await fr.waitForFunction(() => window.__bcInitFini === true, null, {timeout:20000});
+    const p = await fr.evaluate(() => JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-budget-limits') || '{}').Nourriture);
+    ok(p === attendu, 'plafond ' + nom + ' (' + p + ')');
+    await ctx.close();
+  }
 }
 
 console.log('— iPhone, theme jour');

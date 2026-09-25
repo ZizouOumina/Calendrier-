@@ -115,13 +115,13 @@ console.log('\n== 180) Sans ajustement : plan de base, liste = plan × 7 ==');
      de repas, donc elle n'a ni besoin hebdomadaire ni prix releve. */
   ok(c.items.some(t => /^Poulet/.test(t) && /7,50 €\/kg/.test(t)),
      'le poulet porte le prix de sa boucherie (' + c.items.find(t => /^Poulet/.test(t)) + ')');
-  /* 24 septembre : le beurre de cacahuete sort du plan, les amandes le remplacent -- et
-     elles n'ont PAS de prix releve. La ligne le dit, elle seule, et sort du total : pas
-     d'estimation pour combler le trou. */
+  /* 24 septembre : le beurre de cacahuete sort du plan, les amandes le remplacent. Elles
+     sont restees un jour sans prix (« prix a relever », hors total) ; le 25 au soir, son
+     releve : 12 EUR le kilo. Plus aucune ligne ne dit « prix a relever ». */
   ok(!c.items.some(t => /^Beurre de cacahuète/.test(t)), 'le beurre de cacahuète est sorti de la liste');
-  ok(c.items.filter(t => /prix à relever/.test(t)).length === 1 && c.items.some(t => /^Amandes ou noix nature/.test(t) && /prix à relever/.test(t)),
-     'une seule ligne dit « prix à relever » : les amandes (' + c.items.find(t => /^Amandes/.test(t)) + ')');
-  ok(/Amandes ou noix nature : prix pas encore relev/.test(c.budget), 'et le budget le dit, hors total');
+  ok(!c.items.some(t => /prix à relever/.test(t)) && c.items.some(t => /^Amandes ou noix nature/.test(t) && /12,00 €\/kg/.test(t)),
+     'les amandes portent leur prix, 12 €/kg (' + c.items.find(t => /^Amandes/.test(t)) + ')');
+  ok(!/prix pas encore relev/.test(c.budget), 'et le budget n\'annonce plus de ligne hors total');
 
   await page_(fr, 'repas');
   const r = await fr.evaluate(() => ({ diner: [...document.querySelectorAll('.meal-card')].find(c => /Dîner/.test(c.querySelector('.mtitle').textContent)) }) && [...document.querySelectorAll('.meal-card')].find(c => /Dîner/.test(c.querySelector('.mtitle').textContent)).innerText);

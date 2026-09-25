@@ -37,7 +37,7 @@ console.log('\n== 269) Deux oeufs a la place du jambon ==');
   /* Le lundi 28 est un jour de combat : la collation combat ajoute 388 kcal. */
   ok(r.jour.kcal === 3614 && r.jour.p === 174, 'un jour de combat : 3 614 kcal, 174 g de protéines, cinq prises (' + r.jour.kcal + ' / ' + r.jour.p + ')');
   ok(r.oeufs === 28 && r.jambon === undefined, 'les courses : 28 œufs par semaine, plus de jambon (' + r.oeufs + ' / ' + r.jambon + ')');
-  ok(!r.cout.lignes.some(l => /Jambon/.test(l.label)) && r.cout.manque.join() === 'Amandes ou noix nature', 'le coût ne compte plus de jambon ; seul le prix des amandes manque (' + r.cout.manque.join() + ')');
+  ok(!r.cout.lignes.some(l => /Jambon/.test(l.label)) && r.cout.manque.length === 0, 'le coût ne compte plus de jambon ; aucun prix ne manque depuis le relevé des amandes du 25 ('  + r.cout.manque.join() + ')');
   ok(r.plafond === Math.round(r.cout.mois), 'le plafond Nourriture posé par la Batcave suit le nouveau coût : ' + r.plafond + ' €');
   await fr.evaluate(() => document.querySelector('.nav-btn[data-page="repas"]') && document.querySelector('.nav-btn[data-page="repas"]').click());
   await page.waitForTimeout(300);
