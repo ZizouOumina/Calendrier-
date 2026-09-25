@@ -3,6 +3,17 @@
 Ce fichier existe pour une seule raison : que rien ne dépende de ma mémoire.
 Il dit ce qui est fait, ce qui reste, et ce qui attend une décision de toi.
 
+> ### Lots 50 à 52 — vendredi 25 septembre, au matin
+> **50 · À 100 %** : un seul numéro de schéma (`SCHEMA_VERSION`, `DRAPEAUX_MIGRATION`), panneau
+> Santé + relevé `SANTÉ` (allumé seulement en défaut), plan de secours texte hebdo dans Drive,
+> « Reprendre depuis Drive » sur appareil vide, bornes de saisie, annulation par geste (bouton
+> Annuler dans le toast), rappel « Clôture du jour » dans l'agenda, démarrage en deux temps.
+> **51 · Interface** : six entrées (Aujourd'hui, Fac, Suivi, Argent, Corps, Table) + sous-onglets,
+> mode pilote plein écran (⛶ Maintenant, touche M), feuilles qui montent du bas sur iPhone,
+> thème pur noir. **52 · Système** : carte orbitale (Suivi → Système), canvas 2D.
+> Hors Batcave : « 🦇 Enlever les tapis » dans Google Agenda (mar-ven 14:45, lun 16:45 —
+> l'aspirateur passe à 15:45 et 18:15), et la consigne du trajet le rappelle.
+>
 > ### ⚠️ Dernier changement — nuit du vendredi 25 septembre : le régime combat (lot 49)
 > **Du lundi 28 septembre au 24 janvier (veille du S2, partiels compris)**, `SCHEDULES_COMBAT` remplace la grille du
 > semestre 1 (`grilleBase`, `regimeCombat`). JJB lundi, mercredi et vendredi 10:30 (Anki 1,

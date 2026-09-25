@@ -133,6 +133,8 @@
   .brand-text .sub{font-family:var(--font-mono); font-size:9.5px; letter-spacing:0.14em; color:var(--cyan-dim); text-transform:uppercase; margin-top:3px;}
 
   nav{display:flex; flex-direction:column; gap:2px;}
+  /* six entrees depuis le lot 51 : les intitules de section n'ont plus rien a separer */
+  nav > .nav-label{display:none;}
   .nav-label{font-family:var(--font-mono); font-size:10px; letter-spacing:0.15em; color:var(--ink-faint); text-transform:uppercase; padding:0 10px; margin-bottom:8px;}
   .nav-btn{
     display:flex; align-items:center; gap:10px;
@@ -421,7 +423,9 @@
   /* La rangee de sous-onglets, en tete des pages groupees. Elle reprend la forme des
      boutons de la barre -- meme hauteur de cible tactile, meme accent -- pour qu'on
      comprenne tout de suite que c'est de la navigation, pas un filtre. */
-  .sous-nav{display:flex; gap:6px; flex-wrap:wrap; margin:0 0 18px;}
+  /* flex-direction:row explicite : la regle generique « nav » (barre laterale) empilait les
+     pastilles en colonne sur grand ecran */
+  .sous-nav{display:flex; flex-direction:row; align-items:center; gap:6px; flex-wrap:wrap; margin:0 0 18px;}
   .sous-onglet{font-family:var(--font-mono); font-size:11.5px; letter-spacing:.04em;
     padding:9px 14px; min-height:36px; border:1px solid var(--border); border-radius:999px;
     background:var(--surface-raised); color:var(--ink-dim); cursor:pointer; white-space:nowrap;}
@@ -510,6 +514,50 @@
   .toast[hidden]{display:none;}
   .toast-annuler{margin-left:12px; background:none; border:1px solid var(--cyan-dim); color:var(--cyan-bright); border-radius:14px; padding:3px 10px; font:inherit; font-weight:600; cursor:pointer; min-height:28px;}
   .toast-annuler:hover{background:var(--surface-hover);}
+
+  /* ===== Lot 51 : les reflexes d'une application ===== */
+  /* pur noir : les pixels eteints d'un ecran OLED, pour lire au lit sans halo */
+  :root[data-theme="noir"]{ --bg:#000000; --surface:#000000; --surface-raised:#07090d; --surface-hover:#0f131a; --border:#1a2431; --border-soft:#111820; }
+  /* retour « haptique » : ce qui vient d'etre coche pulse une fois */
+  @keyframes pop{ 0%{ transform:scale(1); } 40%{ transform:scale(1.08); } 100%{ transform:scale(1); } }
+  #dash-checklist li.checked, .toast:not([hidden]){ animation:pop .22s ease; }
+  /* un etat vide dit qu'il est vide, au lieu d'un trou */
+  .mini-list:empty::after{ content:'— rien pour l’instant'; display:block; font-size:12px; font-style:italic; color:var(--ink-faint); padding:4px 0; }
+  /* mode pilote */
+  .overlay.pilote{ background:var(--bg); padding:0; align-items:stretch; backdrop-filter:none; }
+  .pilote-ecran{ position:relative; width:100%; min-height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; padding:32px 24px calc(32px + env(safe-area-inset-bottom)); text-align:center; }
+  .pilote-fermer{ position:absolute; top:calc(14px + env(safe-area-inset-top)); right:18px; font-size:26px; }
+  .pilote-heure{ font-family:var(--font-display); font-size:clamp(72px, 18vw, 120px); line-height:1; letter-spacing:.04em; color:var(--cyan-bright); font-variant-numeric:tabular-nums; }
+  .pilote-date{ font-family:var(--font-mono); font-size:12px; letter-spacing:.16em; text-transform:uppercase; color:var(--ink-faint); }
+  .pilote-etat{ margin-top:22px; font-family:var(--font-mono); font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:var(--accent); }
+  .pilote-bloc{ font-family:var(--font-display); font-size:clamp(34px, 9vw, 56px); line-height:1.05; letter-spacing:.03em; color:var(--ink); max-width:14ch; text-wrap:balance; }
+  .pilote-quand{ font-family:var(--font-mono); font-size:13px; color:var(--ink-dim); font-variant-numeric:tabular-nums; }
+  .pilote-barre{ width:min(360px, 78vw); height:6px; background:var(--border-soft); border-radius:3px; overflow:hidden; margin-top:6px; }
+  .pilote-barre i{ display:block; height:100%; width:0; background:var(--accent); box-shadow:0 0 10px var(--cyan-glow); transition:width .6s ease; }
+  .pilote-consigne{ max-width:46ch; font-size:14px; line-height:1.55; color:var(--ink-dim); margin-top:8px; }
+  .pilote-consigne[hidden]{ display:none; }
+  .pilote-suivant{ font-family:var(--font-mono); font-size:12px; color:var(--ink-faint); min-height:1.4em; }
+  .pilote-actions{ margin-top:22px; }
+  .pilote-actions .btn{ min-height:52px; padding:0 26px; font-size:15px; }
+  .pilote-actions .btn[hidden]{ display:none; }
+  /* feuilles de saisie sur telephone */
+  .sheet-poignee{ display:none; }
+  @keyframes feuille-monte{ from{ transform:translateY(28px); opacity:.5; } to{ transform:none; opacity:1; } }
+  @media (max-width:780px){
+    .overlay:not(.pilote){ align-items:flex-end; padding:0; }
+    .overlay:not(.pilote) .overlay-panel{ max-width:none; border-radius:18px 18px 0 0; border-bottom:none; max-height:92vh; padding:10px 18px calc(22px + env(safe-area-inset-bottom)); animation:feuille-monte .28s cubic-bezier(.2,.8,.2,1) both; }
+    .sheet-poignee{ display:block; width:40px; height:4px; border-radius:2px; background:var(--ink-faint); opacity:.55; margin:0 auto 12px; }
+  }
+  @media (prefers-reduced-motion: reduce){ .overlay-panel, #dash-checklist li.checked, .toast{ animation:none !important; } }
+  /* ===== Lot 52 : la carte du systeme ===== */
+  .systeme-scene{ position:relative; width:100%; aspect-ratio:16 / 10; min-height:320px; max-height:72vh; border-radius:10px; overflow:hidden; background:#02050a; border:1px solid var(--border); }
+  @media (max-width:780px){ .systeme-scene{ aspect-ratio:1 / 1.15; min-height:360px; } }
+  #systeme-canvas{ display:block; width:100%; height:100%; touch-action:manipulation; cursor:crosshair; }
+  .systeme-detail{ margin-top:12px; padding:12px 14px; border:1px solid var(--border); border-radius:10px; background:var(--surface-hover); }
+  .systeme-detail .sd-head{ display:flex; justify-content:space-between; gap:10px; align-items:baseline; margin-bottom:6px; }
+  .systeme-detail .sd-head b{ font-family:var(--font-display); font-size:20px; letter-spacing:.04em; color:var(--ink); }
+  .systeme-detail .mini-list{ margin:8px 0 10px; }
+  .systeme-legende{ margin-top:10px; line-height:1.6; }
   @media (max-width:780px){ .toast{bottom:76px;} }
 
   /* ---------- backup overlay ---------- */
@@ -1570,12 +1618,11 @@
     </div>
 
     <nav aria-label="Navigation">
-      <span class="nav-label">Aujourd’hui</span>
       <button class="nav-btn active" data-page="dashboard" data-dom="etudes" data-pages="dashboard taches" aria-current="page">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>
-        Tableau de bord
+        Aujourd’hui
       </button>
-      <button class="nav-btn" data-page="calendrier" data-dom="etudes">
+      <button class="nav-btn" data-page="calendrier" data-dom="etudes" hidden>
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/><path d="M12 13v4l3 2"/></svg>
         Calendrier
       </button>
@@ -1586,7 +1633,7 @@
       <span class="nav-label">Le travail</span>
       <button class="nav-btn" data-page="etudes" data-dom="etudes" data-pages="etudes agenda">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 9l10-5 10 5-10 5-10-5z"/><path d="M6 11.5V17c0 1.5 3 3 6 3s6-1.5 6-3v-5.5"/></svg>
-        Études
+        Fac
       </button>
       <button class="nav-btn" data-page="agenda" data-dom="etudes" hidden>
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/><circle cx="8.5" cy="14" r="1.4" fill="currentColor" stroke="none"/><circle cx="12" cy="14" r="1.4" fill="currentColor" stroke="none"/><circle cx="15.5" cy="14" r="1.4" fill="currentColor" stroke="none"/></svg>
@@ -1594,11 +1641,15 @@
       </button>
       <button class="nav-btn" data-page="bilan" data-dom="suivi" data-pages="bilan insights">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 15l4-5 3 3 5-7"/></svg>
-        Semaine
+        Suivi
       </button>
       <button class="nav-btn" data-page="insights" data-dom="suivi" hidden>
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7c.6.4 1 1.1 1 1.8v.5h6v-.5c0-.7.4-1.4 1-1.8A7 7 0 0 0 12 2z"/></svg>
         Insights
+      </button>
+      <button class="nav-btn" data-page="systeme" hidden data-dom="suivi">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><ellipse cx="12" cy="12" rx="10" ry="4.5"/><circle cx="21" cy="10" r="1.6" fill="currentColor" stroke="none"/></svg>
+        Système
       </button>
       <button class="nav-btn" data-page="objectifs" hidden data-dom="suivi">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg>
@@ -1606,7 +1657,7 @@
       </button>
       <button class="nav-btn" data-page="budget" data-dom="argent">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="13" rx="2"/><path d="M2 10h20"/><path d="M6 15h4"/></svg>
-        Budget
+        Argent
       </button>
       <button class="nav-btn" data-page="business" data-dom="argent" id="nav-business" hidden>
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21V9l9-6 9 6v12"/><path d="M9 21v-6h6v6"/></svg>
@@ -1615,19 +1666,19 @@
       <span class="nav-label">Le corps</span>
       <button class="nav-btn" data-page="habitudes" data-dom="corps">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l2.5 6.5L21 11l-6.5 2.5L12 20l-2.5-6.5L3 11l6.5-2.5z"/></svg>
-        Habitudes
+        Corps
       </button>
       <button class="nav-btn" data-page="coran" hidden data-dom="foi">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v17H6.5A2.5 2.5 0 0 0 4 21.5v-17z"/><path d="M4 4.5V19a2.5 2.5 0 0 0 2.5 2.5H20"/></svg>
         Coran &amp; Duaas
       </button>
-      <button class="nav-btn" data-page="sport" data-dom="corps">
+      <button class="nav-btn" data-page="sport" data-dom="corps" hidden>
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6.5 6.5l11 11"/><path d="M3 3l4 4M17 17l4 4"/><path d="M14.5 3.5l6 6M3.5 14.5l6 6"/><rect x="1.5" y="8.5" width="4" height="7" rx="1" transform="rotate(-45 3.5 12)"/><rect x="18.5" y="8.5" width="4" height="7" rx="1" transform="rotate(-45 20.5 12)"/></svg>
         Sport
       </button>
-      <button class="nav-btn" data-page="addictions" data-dom="corps" data-pages="addictions vie">
+      <button class="nav-btn" data-page="addictions" data-dom="corps" data-pages="addictions vie" hidden>
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
-        Corps
+        Corps & santé
       </button>
       <button class="nav-btn" data-page="vie" data-dom="corps" hidden>
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 1 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>
@@ -1648,10 +1699,6 @@
       <button class="nav-btn nav-btn-mobile-only backup-trigger" type="button">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/></svg>
         Sauvegarde
-      </button>
-      <button class="nav-btn nav-btn-mobile-only undo-trigger" type="button">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 10h10a5 5 0 0 1 0 10H8"/><path d="M7 5 2 10l5 5"/></svg>
-        Annuler
       </button>
     </nav>
 
@@ -1741,9 +1788,10 @@
           <button class="btn btn-primary" id="dash-pomodoro">🍅 Pomodoro — Révision</button>
           <button class="btn btn-primary" id="dash-pomodoro-projet">🍅 Pomodoro — Projet perso</button>
           <button class="btn btn-primary" id="dash-pomodoro-espanol" hidden>🇪🇸 Pomodoro — Español</button>
+          <button class="btn" id="dash-pilote" type="button" title="Plein écran : l’heure, le bloc en cours, le temps qui reste, un bouton (M)">⛶ Maintenant</button>
           <p class="dial-serie" id="dash-serie" hidden></p>
         </div>
-        <p class="focus-kb"><b>P</b> lance le Pomodoro du bloc · <b>C</b> ouvre la clôture · <b>H</b> coche l’habitude suivante · <b>1-9</b> changent d’onglet</p>
+        <p class="focus-kb"><b>P</b> lance le Pomodoro du bloc · <b>C</b> ouvre la clôture · <b>H</b> coche l’habitude suivante · <b>M</b> plein écran · <b>1-6</b> changent d’onglet</p>
       </div>
 
       <!-- ---------- MUR D'ÉCRANS : plan | réacteur | habitudes ----------
@@ -2928,6 +2976,30 @@
       <p class="sub-note" id="courses-budget" style="margin-top:16px; line-height:1.7;"></p>
     </section>
 
+    <!-- ---------- SYSTÈME : la carte orbitale ----------
+         La Batcave au centre, les six domaines en orbite (les cinq qui comptent, et la
+         table), leurs compteurs en sous-satellites, des fils entre ce qui se tient. Tout
+         est lu dans les donnees du jour ; toucher un noeud dit son chiffre et ouvre son
+         onglet. Un canvas, pas de bibliotheque. -->
+    <section class="page" data-page="systeme" data-dom="suivi">
+      <div class="page-head">
+        <span class="eyebrow">Dossier N° 14</span>
+        <h1>Système</h1>
+        <p class="desc">La Batcave vue de haut : chaque domaine est un satellite, chaque compteur gravite autour du sien, et les fils relient ce qui se tient. Touche un nœud.</p>
+      </div>
+      <div class="panel systeme-panel">
+        <div class="sub-head"><h3>🛰 Carte du système</h3><span class="sub-note" id="systeme-note">—</span></div>
+        <div class="systeme-scene"><canvas id="systeme-canvas" role="img" aria-label="Carte orbitale de la Batcave"></canvas></div>
+        <div class="systeme-detail" id="systeme-detail" hidden>
+          <div class="sd-head"><b id="sd-nom">—</b><span class="sub-note" id="sd-statut"></span></div>
+          <p id="sd-texte" class="sub-note"></p>
+          <ul class="mini-list" id="sd-sous"></ul>
+          <div class="card-actions"><button class="btn btn-primary" id="sd-ouvrir" type="button">Ouvrir</button><button class="btn" id="sd-fermer" type="button">Fermer</button></div>
+        </div>
+        <p class="sub-note systeme-legende">● vert : atteint ou dans les clous · ● cyan : en avance · ● orange : lent · ● rouge : en retard · ○ : rien encore. La taille d'un satellite, c'est son poids dans ta semaine ; un fil s'épaissit quand les Insights trouvent un lien.</p>
+      </div>
+    </section>
+
     <footer class="page-foot">La Batcave · suivi personnel · données sur cet appareil, synchronisées avec ton cloud Batcave quand la page est ouverte depuis son lien</footer>
   </main>
 </div>
@@ -3155,6 +3227,22 @@
   </div>
 </div>
 
+<!-- Mode pilote : l'heure, le bloc, le temps qui reste, un bouton. Rien d'autre. -->
+<div class="overlay pilote" id="pilote-overlay" hidden>
+  <div class="pilote-ecran" role="dialog" aria-label="Maintenant">
+    <button class="edel pilote-fermer" id="pilote-fermer" aria-label="Fermer" type="button">×</button>
+    <div class="pilote-heure" id="pilote-heure">--:--</div>
+    <div class="pilote-date" id="pilote-date"></div>
+    <div class="pilote-etat" id="pilote-etat">En cours</div>
+    <div class="pilote-bloc" id="pilote-bloc">—</div>
+    <div class="pilote-quand" id="pilote-quand"></div>
+    <div class="pilote-barre"><i id="pilote-barre"></i></div>
+    <p class="pilote-consigne" id="pilote-consigne"></p>
+    <div class="pilote-suivant" id="pilote-suivant"></div>
+    <div class="pilote-actions"><button class="btn btn-primary" id="pilote-action" type="button">🍅 Pomodoro</button></div>
+  </div>
+</div>
+
 <div class="overlay" id="opening-ritual-overlay" hidden>
   <div class="overlay-panel">
     <div class="overlay-head">
@@ -3193,7 +3281,7 @@
      force le clair ou le sombre en un clic, et le réglage vit sur l'appareil, jamais dans la
      sauvegarde : l'iPhone au soleil et le Mac dans le noir n'ont pas le même besoin. */
   function themeChoisi(){
-    try{ var v = localStorage.getItem('bc-theme'); return (v === 'jour' || v === 'nuit') ? v : 'auto'; }
+    try{ var v = localStorage.getItem('bc-theme'); return (v === 'jour' || v === 'nuit' || v === 'noir') ? v : 'auto'; }
     catch(e){ return 'auto'; }
   }
   function themeEffectif(){
@@ -3208,22 +3296,22 @@
     if(t !== themePose){
       document.documentElement.setAttribute('data-theme', t);
       var meta = document.querySelector('meta[name="theme-color"]');
-      if(meta) meta.setAttribute('content', t === 'jour' ? '#e8eef2' : '#060a10');
+      if(meta) meta.setAttribute('content', t === 'jour' ? '#e8eef2' : (t === 'noir' ? '#000000' : '#060a10'));
       themePose = t;
     }
     var b = document.getElementById('theme-toggle');
     if(b){
       /* une seule icône : la première rangée de la barre doit tenir sur UNE ligne */
-      b.textContent = c === 'auto' ? '🌗' : (c === 'jour' ? '☀️' : '🌙');
-      var dit = c === 'auto' ? 'automatique, actuellement ' + (t === 'jour' ? 'clair' : 'sombre') : (c === 'jour' ? 'clair (forcé)' : 'sombre (forcé)');
+      b.textContent = c === 'auto' ? '🌗' : (c === 'jour' ? '☀️' : (c === 'noir' ? '⚫' : '🌙'));
+      var dit = c === 'auto' ? 'automatique, actuellement ' + (t === 'jour' ? 'clair' : 'sombre') : (c === 'jour' ? 'clair (forcé)' : (c === 'noir' ? 'pur noir, pour le lit (forcé)' : 'sombre (forcé)'));
       b.setAttribute('aria-label', 'Thème : ' + dit + '. Cliquer pour changer.');
-      b.title = 'Thème : ' + dit + ' — clic : automatique (clair de 7 h à 19 h) → clair → sombre.';
+      b.title = 'Thème : ' + dit + ' — clic : automatique (clair de 7 h à 19 h) → clair → sombre → pur noir.';
     }
   }
   appliquerTheme();
   function basculerTheme(){
-    /* automatique (défaut) → clair → sombre → automatique */
-    var suite = {auto:'jour', jour:'nuit', nuit:'auto'};
+    /* automatique (défaut) → clair → sombre → pur noir (écran OLED, au lit) → automatique */
+    var suite = {auto:'jour', jour:'nuit', nuit:'noir', noir:'auto'};
     try{ localStorage.setItem('bc-theme', suite[themeChoisi()]); }catch(e){}
     appliquerTheme();
     try{ showToast(themeChoisi() === 'auto' ? '🌗 Thème automatique : clair de 7 h à 19 h.' : (themeChoisi() === 'jour' ? '☀️ Thème clair.' : '🌙 Thème sombre.')); }catch(e){}
@@ -4327,6 +4415,29 @@
     undoLast();
   });
   document.querySelectorAll('.undo-trigger').forEach(function(btn){ btn.addEventListener('click', undoLast); });
+  /* ===== Feuilles de saisie ===== (lot 51)
+     Sur telephone, chaque ecran (cloture, sauvegarde, rituel...) monte du bas comme une
+     feuille, avec sa poignee ; un balayage vers le bas, depuis le haut de la feuille, la
+     ferme comme le ferait son bouton ×. Sur grand ecran rien ne change. */
+  document.querySelectorAll('.overlay-panel').forEach(function(p){
+    var h = document.createElement('div'); h.className = 'sheet-poignee'; h.setAttribute('aria-hidden', 'true');
+    p.insertBefore(h, p.firstChild);
+  });
+  (function(){
+    var y0 = null, cible = null;
+    document.addEventListener('touchstart', function(e){
+      var p = e.target.closest && e.target.closest('.overlay-panel');
+      if(!p || p.scrollTop > 0 || window.innerWidth > 780){ y0 = null; return; }
+      y0 = e.touches[0].clientY; cible = p;
+    }, {passive:true});
+    document.addEventListener('touchend', function(e){
+      if(y0 === null || !cible) return;
+      var dy = e.changedTouches[0].clientY - y0; y0 = null;
+      if(dy < 70) return;
+      var x = cible.querySelector('.overlay-head .edel');
+      if(x) x.click();
+    }, {passive:true});
+  })();
 
   /* Regroupement des pages : la revue de la semaine et l'historique du journal rejoignent
      la page « Semaine » (Bilan), là où on regarde en arrière. Un simple déplacement dans
@@ -4360,10 +4471,15 @@
      Les boutons des membres restent dans le DOM, caches : un clic direct sur le bouton
      d'une page (raccourci, lien interne, test) continue de fonctionner, et selectionne la
      bonne pastille en remettant l'etat actif sur le bouton de tete. */
+  /* Lot 51 : SIX entrees, comme une application -- Aujourd'hui, Fac, Suivi, Argent, Corps,
+     Table -- et tout le reste en sous-onglets. Sur telephone les six tiennent a l'ecran
+     sans defiler. */
   var GROUPES_NAV = [
-    {tete:'habitudes', membres:[['habitudes','Habitudes'], ['coran','Coran & Duaas']]},
+    {tete:'dashboard', membres:[['dashboard','Aujourd\u2019hui'], ['calendrier','Calendrier']]},
+    {tete:'habitudes', membres:[['habitudes','Habitudes'], ['sport','Sport'], ['addictions','Corps & santé']]},
     {tete:'repas',     membres:[['repas','Repas'], ['prep','Meal prep'], ['courses','Courses']]},
-    {tete:'bilan',     membres:[['bilan','La semaine'], ['objectifs','Objectifs']]}
+    {tete:'budget',    membres:[['budget','Budget'], ['business','Boutique']]},
+    {tete:'bilan',     membres:[['bilan','La semaine'], ['objectifs','Objectifs'], ['coran','Coran & Duaas'], ['systeme','Système']]}
   ];
   function groupeDe(page){
     for(var i = 0; i < GROUPES_NAV.length; i++){
@@ -4414,6 +4530,7 @@
       btn.setAttribute('aria-current','page');
       cibles.forEach(function(p){ p.classList.add('active'); });
       if(noms.indexOf('insights') > -1 && btn.dataset.page !== 'insights') try{ renderInsights(); }catch(e){}
+      if(noms.indexOf('systeme') > -1) setTimeout(function(){ try{ renderSysteme(); }catch(e){} }, 0);
       if(noms.indexOf('agenda') > -1 && btn.dataset.page !== 'agenda') try{ renderAgendas(); }catch(e){}
       /* l'agenda Batcave se recalcule à l'ouverture de l'onglet : les blocs ont pu
          changer ailleurs (minuteur, suppression sur Études/Business) pendant ce temps */
@@ -4487,9 +4604,11 @@
        clôture du jour, H coche la première habitude du jour qui ne l'est pas encore. Rien
        ne se déclenche par-dessus un écran déjà ouvert (sauf C, qui EST un écran). */
     var lettre = (e.key || '').toLowerCase();
-    if(lettre !== 'p' && lettre !== 'c' && lettre !== 'h') return;
+    if(lettre !== 'p' && lettre !== 'c' && lettre !== 'h' && lettre !== 'm') return;
     var ouverts = [].slice.call(document.querySelectorAll('.overlay')).some(function(o){ return !o.hidden; });
     if(lettre === 'c'){ e.preventDefault(); if(!ouverts) try{ ouvrirCloture(); }catch(err){} return; }
+    /* M : le mode pilote s'ouvre, ou se ferme s'il est deja la */
+    if(lettre === 'm'){ e.preventDefault(); var pv = document.getElementById('pilote-overlay'); if(pv && !pv.hidden) fermerPilote(); else if(!ouverts) ouvrirPilote(); return; }
     if(ouverts) return;
     if(lettre === 'p'){
       e.preventDefault();
@@ -7066,8 +7185,9 @@
   /* Bloc en cours et bloc suivant, lus dans agendaDuJour -- la meme source que la vue
      semaine et l'emploi du temps. La fin d'un bloc est sa fin explicite (Google) ou le
      debut du suivant, et le coucher ferme la journee. */
-  function renderProchainBloc(){
-    var box = document.getElementById('dash-prochain'); if(!box) return;
+  /* Le bloc en cours et le suivant, a cette minute : l'en-tete du tableau de bord, le rail
+     et le mode pilote lisent la meme chose. */
+  function etatBlocs(){
     var n = new Date(), nowMin = n.getHours()*60 + n.getMinutes();
     var blocs = agendaDuJour(weekday), finJournee = timeToMinutes(heureCoucher());
     var courant = null, suivant = null;
@@ -7077,6 +7197,11 @@
       if(deb <= nowMin && nowMin < fin && !courant) courant = {label: blocs[i][1], deb: deb, fin: fin};
       if(deb > nowMin && !suivant) suivant = {label: blocs[i][1], deb: deb, fin: fin};
     }
+    return {courant: courant, suivant: suivant, nowMin: nowMin};
+  }
+  function renderProchainBloc(){
+    var box = document.getElementById('dash-prochain'); if(!box) return;
+    var e = etatBlocs(), courant = e.courant, suivant = e.suivant, nowMin = e.nowMin;
     /* rappel du Pomodoro ferme : un bloc de travail en cours sans minuteur se lit ici, en
        orange, a la place de « puis … » -- la barre du haut reste sur une ligne */
     var sans = null; try{ sans = blocSansPomodoro(); }catch(e){}
@@ -7132,6 +7257,53 @@
     });
   }
   setInterval(function(){ try{ renderProchainBloc(); }catch(e){} }, 30000);
+  /* ===== Mode pilote ===== (lot 51)
+     Plein ecran : l'heure, le bloc en cours, le temps qui reste, la consigne, le suivant,
+     et UN bouton -- le Pomodoro du bloc, ou la cloture quand c'est l'heure. Le telephone
+     pose sur le bureau devient l'ordinateur de bord. Se rafraichit toutes les 15 s. */
+  var piloteTimer = null;
+  function renderPilote(){
+    var ov = document.getElementById('pilote-overlay'); if(!ov || ov.hidden) return;
+    var e = etatBlocs(), n = new Date();
+    var hm = function(m){ return String(Math.floor(m/60)).padStart(2,'0') + ':' + String(m%60).padStart(2,'0'); };
+    var b = e.courant || e.suivant, el = function(id){ return document.getElementById(id); };
+    el('pilote-heure').textContent = hm(n.getHours()*60 + n.getMinutes());
+    el('pilote-date').textContent = dateLongue(n);
+    el('pilote-etat').textContent = e.courant ? 'En cours' : (b ? 'Prochain bloc' : 'Journée terminée');
+    el('pilote-bloc').textContent = b ? b.label : 'Rien de prévu à cette heure';
+    el('pilote-quand').textContent = b ? hm(b.deb) + ' → ' + hm(b.fin) + (e.courant ? ' · reste ' + (b.fin - e.nowMin) + ' min' : ' · dans ' + (b.deb - e.nowMin) + ' min') : '';
+    el('pilote-barre').style.width = e.courant ? Math.round(100 * (e.nowMin - b.deb) / Math.max(1, b.fin - b.deb)) + '%' : '0%';
+    var c = b ? consigneBloc(b.label, weekday, todayISO, hm(b.deb)) : '';
+    el('pilote-consigne').textContent = c || ''; el('pilote-consigne').hidden = !c;
+    el('pilote-suivant').textContent = (e.courant && e.suivant) ? 'puis ' + e.suivant.label + ' à ' + hm(e.suivant.deb) : '';
+    var action = el('pilote-action'), es = b && /^Español/.test(b.label), t = b ? (es ? 'es' : typeBlocPlan(b.label)) : null;
+    var minuteur = typeof timerState !== 'undefined' && timerState && !timerState.pausedAt;
+    if(t && !minuteur){ action.hidden = false; action.textContent = '🍅 Pomodoro — ' + b.label; action.dataset.piloteAction = 'pomodoro'; }
+    else if(minuteur){ action.hidden = false; action.textContent = '⏱ Minuteur en cours · voir Fac'; action.dataset.piloteAction = 'etudes'; }
+    else if(e.nowMin >= heureDeCloture() && !(journalState && journalState.cloture)){ action.hidden = false; action.textContent = '🌙 Clôturer la journée'; action.dataset.piloteAction = 'cloture'; }
+    else { action.hidden = true; action.dataset.piloteAction = ''; }
+  }
+  function ouvrirPilote(){
+    var ov = document.getElementById('pilote-overlay'); if(!ov) return;
+    ov.hidden = false; renderPilote();
+    clearInterval(piloteTimer); piloteTimer = setInterval(function(){ try{ renderPilote(); }catch(e){} }, 15000);
+  }
+  function fermerPilote(){
+    var ov = document.getElementById('pilote-overlay'); if(!ov) return;
+    ov.hidden = true; clearInterval(piloteTimer); piloteTimer = null;
+  }
+  (function(){
+    var b = document.getElementById('dash-pilote'), x = document.getElementById('pilote-fermer'), a = document.getElementById('pilote-action');
+    if(b) b.addEventListener('click', ouvrirPilote);
+    if(x) x.addEventListener('click', fermerPilote);
+    if(a) a.addEventListener('click', function(){
+      var quoi = a.dataset.piloteAction;
+      if(quoi === 'pomodoro'){ fermerPilote(); var p = document.querySelector('#dash-focus .btn.pomo-suggere:not([hidden])') || document.getElementById('dash-pomodoro'); if(p) p.click(); }
+      else if(quoi === 'cloture'){ fermerPilote(); try{ ouvrirCloture(); }catch(e){} }
+      else if(quoi === 'etudes'){ fermerPilote(); var n = document.querySelector('.nav-btn[data-page="etudes"]'); if(n) n.click(); }
+    });
+    try{ window.__bcPilote = {ouvrir: ouvrirPilote, fermer: fermerPilote, render: renderPilote, etat: etatBlocs}; }catch(e){}
+  })();
   /* ===== Pomodoro ferme =====
      Chaque bloc de travail doit tourner au minuteur. Dans les dix premieres minutes d'un bloc
      de travail, sans minuteur et sans session deja enregistree dessus, le lanceur s'ouvre de
@@ -17172,8 +17344,9 @@
     return true;
   }
   function majOngletBusiness(){
-    var b = document.getElementById('nav-business');
-    if(b) b.hidden = !boutiqueActive();
+    /* la Boutique est un sous-onglet d'Argent : sa pastille n'apparait qu'avec une boutique */
+    var on = boutiqueActive();
+    document.querySelectorAll('.sous-onglet[data-sousnav="business"]').forEach(function(p){ p.hidden = !on; });
   }
   function retenirBoutique(p){
     if(!p || !p.domain) return;
@@ -17594,6 +17767,200 @@
     enregistrerRevue(date, marche, coince, ajust);
     ['rv-marche','rv-coince','rv-ajust'].forEach(function(id){ document.getElementById(id).value=''; });
   });
+
+  /* ================= SYSTÈME : la carte orbitale ================= (lot 52)
+     Les donnees d'abord (systemeDonnees), le dessin ensuite. Le dessin ne tourne que quand
+     l'onglet est ouvert : une boucle requestAnimationFrame qui s'arrete d'elle-meme des
+     que la page perd sa classe active. Sans preference de mouvement reduit, les
+     satellites avancent lentement ; avec, la carte est fixe. */
+  var SYSTEME_COULEURS = {atteint:'#3fae72', ok:'#3fae72', avance:'#7ceaf7', lent:'#d9822b', retard:'#c0483f', vide:null};
+  function systemeDonnees(){
+    var cinq = []; try{ cinq = cinqQuiComptent(); }catch(e){}
+    var parNom = {}; cinq.forEach(function(x){ parNom[x.nom] = x; });
+    var hier = isoDecale(todayISO, -1), jHier = load('batcave-journal-' + hier, null) || {};
+    var jours = weekRange(0), semaine = jours.filter(function(d){ return d <= todayISO; });
+    var minSem = semaine.reduce(function(a, d){ return a + minutesOn(d); }, 0);
+    var esSem = semaine.reduce(function(a, d){ return a + minutesEspanol(d); }, 0);
+    var typeJour = typeSportDe(todayISO), muscu = (typeJour && typeJour !== 'Off') ? sportTotals(typeJour) : {checked:0, total:0};
+    var combatFaits = 0, combatPrevus = 0;
+    try{ var so = sortiesCardio(todayISO); combatPrevus = so.length; combatFaits = so.filter(function(x){ return cardioFait(x.iso); }).length; }catch(e){}
+    var prieresJour = PRIERES.filter(function(id){ return habitParId(id) && habitDoneToday(id); }).length;
+    var prieresDues = PRIERES.filter(function(id){ return !!habitParId(id); }).length;
+    var mois = todayISO.slice(0, 7);
+    var dep = txState.filter(function(t){ return t && t.type === 'Dépense' && String(t.date || '').indexOf(mois) === 0; }).reduce(function(a, t){ return a + (Number(t.montant) || 0); }, 0);
+    var ent = txState.filter(function(t){ return t && t.type === 'Entrée' && String(t.date || '').indexOf(mois) === 0; }).reduce(function(a, t){ return a + (Number(t.montant) || 0); }, 0);
+    var kcal = 0; try{ kcal = macrosJour(todayISO).kcal; }catch(e){}
+    var repasCoches = 0; try{ repasCoches = Object.keys(mealState || {}).filter(function(k){ return mealState[k]; }).length; }catch(e){}
+    var cs = (typeof coursesState !== 'undefined' && coursesState) ? coursesState : {}, csK = Object.keys(cs), csFait = csK.filter(function(k){ return cs[k]; }).length;
+    var eff = null; try{ eff = efficaciteMesuree(); }catch(e){}
+    var appro = 0; try{ appro = approDus(todayISO).length; }catch(e){}
+    var ech = 0; try{ ech = (typeof echeancesState !== 'undefined' && echeancesState && echeancesState.liste ? echeancesState.liste : []).filter(function(x){ return x && x.date >= todayISO; }).length; }catch(e){}
+    var s = function(nom, repli){ var x = parNom[nom]; return x ? x.statut : repli; };
+    var t = function(nom, repli){ var x = parNom[nom]; return x ? x.texte : repli; };
+    var sats = [
+      {id:'sommeil', nom:'Sommeil', icon:'😴', statut: s('Sommeil', 'vide'), texte: t('Sommeil', ''), page:'bilan', poids: 1.0, sous:[
+        {nom:'Nuit dernière', val: jHier.sommeil ? fmtHeures(Number(jHier.sommeil)) : '—'},
+        {nom:'Au lit', val: jHier.auLit ? fmtHeures(Number(jHier.auLit)) : '—'},
+        {nom:'Efficacité', val: eff ? Math.round(eff.v * 100) + ' %' : '88 % (est.)'}]},
+      {id:'fac', nom:'Fac', icon:'📚', statut: s('Fac', 'vide'), texte: t('Fac', ''), page:'etudes', poids: 1.35, sous:[
+        {nom:'Révision · semaine', val: fmtDuree(minSem)},
+        {nom:'Español · semaine', val: fmtDuree(esSem)},
+        {nom:'Approfondir dus', val: String(appro)},
+        {nom:'Échéances à venir', val: String(ech)}]},
+      {id:'corps', nom:'Corps', icon:'🏋️', statut: s('Corps', 'vide'), texte: t('Corps', ''), page:'sport', poids: 1.1, sous:[
+        {nom:'Muscu du jour', val: muscu.total ? muscu.checked + '/' + muscu.total : 'off'},
+        {nom:'Combat · semaine', val: combatPrevus ? combatFaits + '/' + combatPrevus : '—'},
+        {nom:'Poids', val: journalState.poids ? journalState.poids + ' kg' : (jHier.poids ? jHier.poids + ' kg' : '—')},
+        {nom:'Eau', val: fmtLitres(journalState.water || 0) + ' / ' + String(objectifEauL(todayISO)).replace('.', ',') + ' L'}]},
+      {id:'deen', nom:'Deen', icon:'🕌', statut: s('Deen', 'vide'), texte: t('Deen', ''), page:'coran', poids: 0.95, sous:[
+        {nom:'Prières du jour', val: prieresDues ? prieresJour + '/' + prieresDues : '—'},
+        {nom:'Coran', val: journalState.coran ? 'page ' + journalState.coran : '—'}]},
+      {id:'argent', nom:'Argent', icon:'💶', statut: s('Argent', 'vide'), texte: t('Argent', ''), page:'budget', poids: 0.9, sous:[
+        {nom:'Dépenses du mois', val: fmtNombre(dep, 0) + ' €'},
+        {nom:'Entrées du mois', val: fmtNombre(ent, 0) + ' €'}]},
+      {id:'table', nom:'Table', icon:'🍽️', statut: repasCoches ? 'ok' : 'vide', texte: repasCoches ? repasCoches + ' repas coché' + (repasCoches > 1 ? 's' : '') + ' · ' + fmtNombre(kcal, 0) + ' kcal au plan du jour' : 'aucun repas coché aujourd\u2019hui (' + fmtNombre(kcal, 0) + ' kcal au plan)', page:'repas', poids: 0.8, sous:[
+        {nom:'Repas cochés', val: String(repasCoches)},
+        {nom:'Kcal au plan', val: fmtNombre(kcal, 0)},
+        {nom:'Courses', val: csK.length ? Math.round(100 * csFait / csK.length) + ' %' : '—'}]}
+    ];
+    /* les fils : ce que les Insights savent, et la force qu'ils y mettent */
+    var scores = {}; try{ buildInsights().forEach(function(i){ scores[i.title] = i.score || 0; }); }catch(e){}
+    var fils = [
+      {a:'sommeil', b:'fac', force: (scores['Sommeil'] || 0) / 100, quoi:'nuit → révision'},
+      {a:'corps', b:'table', force: (scores['Balance énergétique'] || 0) / 100, quoi:'assiette → séance'},
+      {a:'table', b:'argent', force: 0.4, quoi:'courses → budget'},
+      {a:'fac', b:'centre', force: (scores['Fidélité au plan'] || 0) / 100, quoi:'plan → fidélité'},
+      {a:'corps', b:'sommeil', force: 0.3, quoi:'séance → nuit'}
+    ];
+    var e = null; try{ e = etatBlocs(); }catch(x){}
+    var bloc = e ? (e.courant || e.suivant) : null;
+    return {centre: {nom:'Batcave', sous: bloc ? ((e.courant ? 'en cours : ' : 'à venir : ') + bloc.label) : 'journée terminée'}, satellites: sats, fils: fils};
+  }
+  var systemeAnim = null, systemeT0 = Date.now(), systemeDonneesCache = null, systemeNoeuds = [], systemeChoisi = null;
+  function systemeCouleur(statut){ return SYSTEME_COULEURS[statut] || null; }
+  function dessinerSysteme(){
+    var cv = document.getElementById('systeme-canvas'); if(!cv) return;
+    var sc = cv.parentNode, W = sc.clientWidth, H = sc.clientHeight; if(!W || !H) return;
+    var dpr = Math.min(2, window.devicePixelRatio || 1);
+    if(cv.width !== Math.round(W * dpr) || cv.height !== Math.round(H * dpr)){ cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); }
+    var g = cv.getContext('2d'); g.setTransform(dpr, 0, 0, dpr, 0, 0);
+    var d = systemeDonneesCache || (systemeDonneesCache = systemeDonnees());
+    var reduit = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var t = reduit ? 0 : (Date.now() - systemeT0) / 1000;
+    var cx = W / 2, cy = H / 2, R = Math.min(W, H) * 0.36, portrait = H > W;
+    /* fond : degrade, grille fine, lignes de balayage */
+    var grad = g.createRadialGradient(cx, cy, 10, cx, cy, Math.max(W, H) * 0.7);
+    grad.addColorStop(0, '#071421'); grad.addColorStop(1, '#02050a');
+    g.fillStyle = grad; g.fillRect(0, 0, W, H);
+    g.strokeStyle = 'rgba(53,212,232,0.06)'; g.lineWidth = 1;
+    for(var x = 0; x < W; x += 40){ g.beginPath(); g.moveTo(x, 0); g.lineTo(x, H); g.stroke(); }
+    for(var y = 0; y < H; y += 40){ g.beginPath(); g.moveTo(0, y); g.lineTo(W, y); g.stroke(); }
+    g.fillStyle = 'rgba(0,0,0,0.12)';
+    for(var yy = 0; yy < H; yy += 4) g.fillRect(0, yy, W, 1);
+    /* orbite principale */
+    g.setLineDash([3, 6]); g.strokeStyle = 'rgba(53,212,232,0.22)'; g.lineWidth = 1;
+    g.beginPath(); g.ellipse(cx, cy, R * (portrait ? 0.92 : 1.18), R, 0, 0, Math.PI * 2); g.stroke();
+    g.setLineDash([]);
+    /* positions des satellites */
+    var n = d.satellites.length, noeuds = [];
+    d.satellites.forEach(function(sat, i){
+      var a = -Math.PI / 2 + i * (Math.PI * 2 / n) + t * 0.05;
+      var px = cx + Math.cos(a) * R * (portrait ? 0.92 : 1.18), py = cy + Math.sin(a) * R;
+      var r = 14 + 12 * sat.poids;
+      noeuds.push({id: sat.id, x: px, y: py, r: r, sat: sat, a: a});
+    });
+    var parId = {centre: {x: cx, y: cy, r: 30}}; noeuds.forEach(function(nd){ parId[nd.id] = nd; });
+    /* fils */
+    d.fils.forEach(function(f){
+      var A = parId[f.a], B = parId[f.b]; if(!A || !B) return;
+      var force = Math.max(0.12, Math.min(1, f.force));
+      g.strokeStyle = 'rgba(53,212,232,' + (0.15 + 0.55 * force).toFixed(2) + ')'; g.lineWidth = 0.6 + 2.4 * force;
+      g.beginPath(); g.moveTo(A.x, A.y); g.quadraticCurveTo(cx + (A.x + B.x - 2 * cx) * 0.25, cy + (A.y + B.y - 2 * cy) * 0.25, B.x, B.y); g.stroke();
+    });
+    /* la planete */
+    var pg = g.createRadialGradient(cx - 8, cy - 8, 4, cx, cy, 34);
+    pg.addColorStop(0, '#1d5f74'); pg.addColorStop(1, '#0a1e2b');
+    g.fillStyle = pg; g.beginPath(); g.arc(cx, cy, 30, 0, Math.PI * 2); g.fill();
+    g.strokeStyle = '#7ceaf7'; g.lineWidth = 1.5; g.stroke();
+    g.shadowColor = 'rgba(53,212,232,0.7)'; g.shadowBlur = 18; g.stroke(); g.shadowBlur = 0;
+    g.fillStyle = '#dceef4'; g.textAlign = 'center'; g.textBaseline = 'middle';
+    g.font = '600 12px "IBM Plex Mono", monospace'; g.fillText('BATCAVE', cx, cy - 2);
+    g.font = '10px "IBM Plex Mono", monospace'; g.fillStyle = '#7fa0b3';
+    var hmNow = new Date(); g.fillText(String(hmNow.getHours()).padStart(2, '0') + ':' + String(hmNow.getMinutes()).padStart(2, '0'), cx, cy + 12);
+    g.fillStyle = '#688d9e'; g.font = '10px "IBM Plex Mono", monospace';
+    g.fillText(d.centre.sous.length > 34 ? d.centre.sous.slice(0, 33) + '…' : d.centre.sous, cx, cy + 46);
+    /* satellites et sous-satellites */
+    noeuds.forEach(function(nd, i){
+      var col = systemeCouleur(nd.sat.statut), choisi = systemeChoisi === nd.id;
+      var rs = nd.r + 22;
+      g.setLineDash([2, 5]); g.strokeStyle = 'rgba(127,160,179,0.25)'; g.lineWidth = 1;
+      g.beginPath(); g.arc(nd.x, nd.y, rs, 0, Math.PI * 2); g.stroke(); g.setLineDash([]);
+      nd.sat.sous.forEach(function(ss, k){
+        var a2 = nd.a * 2 + k * (Math.PI * 2 / nd.sat.sous.length) + t * 0.35;
+        var sx = nd.x + Math.cos(a2) * rs, sy = nd.y + Math.sin(a2) * rs;
+        g.fillStyle = col || '#688d9e'; g.beginPath(); g.arc(sx, sy, 3.2, 0, Math.PI * 2); g.fill();
+        ss._x = sx; ss._y = sy;
+      });
+      g.beginPath(); g.arc(nd.x, nd.y, nd.r, 0, Math.PI * 2);
+      g.fillStyle = col ? col : 'rgba(6,10,16,0.9)'; g.globalAlpha = col ? 0.22 : 1; g.fill(); g.globalAlpha = 1;
+      g.strokeStyle = col || '#688d9e'; g.lineWidth = choisi ? 3 : 1.6;
+      if(col){ g.shadowColor = col; g.shadowBlur = choisi ? 22 : 10; }
+      g.stroke(); g.shadowBlur = 0;
+      g.fillStyle = '#dceef4'; g.font = (nd.r > 24 ? 18 : 15) + 'px sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle';
+      g.fillText(nd.sat.icon, nd.x, nd.y + 1);
+      g.font = '600 11px "IBM Plex Mono", monospace'; g.fillStyle = choisi ? '#7ceaf7' : '#dceef4';
+      g.fillText(nd.sat.nom.toUpperCase(), nd.x, nd.y + nd.r + 34);
+    });
+    /* le reticule sur le noeud choisi */
+    if(systemeChoisi && parId[systemeChoisi]){
+      var C = parId[systemeChoisi]; g.strokeStyle = 'rgba(124,234,247,0.8)'; g.lineWidth = 1;
+      [[-1, 0], [1, 0], [0, -1], [0, 1]].forEach(function(v){ g.beginPath(); g.moveTo(C.x + v[0] * (C.r + 6), C.y + v[1] * (C.r + 6)); g.lineTo(C.x + v[0] * (C.r + 16), C.y + v[1] * (C.r + 16)); g.stroke(); });
+    }
+    systemeNoeuds = noeuds;
+    var note = document.getElementById('systeme-note');
+    if(note){ var enOrdre = d.satellites.filter(function(x){ return x.statut === 'atteint' || x.statut === 'ok' || x.statut === 'avance'; }).length; note.textContent = enOrdre + '/' + d.satellites.length + ' domaines dans les clous · ' + d.fils.length + ' fils'; }
+  }
+  function systemeActif(){ var p = document.querySelector('.page[data-page="systeme"]'); return !!(p && p.classList.contains('active')); }
+  function boucleSysteme(){
+    systemeAnim = null;
+    if(!systemeActif()) return;
+    try{ dessinerSysteme(); }catch(e){}
+    var reduit = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(!reduit) systemeAnim = requestAnimationFrame(boucleSysteme);
+  }
+  function renderSysteme(){
+    systemeDonneesCache = null;
+    if(!systemeActif()){ return; }
+    if(!systemeAnim) boucleSysteme();
+  }
+  function choisirNoeudSysteme(id){
+    systemeChoisi = id;
+    var det = document.getElementById('systeme-detail'); if(!det) return;
+    var d = systemeDonneesCache || systemeDonnees(), sat = d.satellites.filter(function(x){ return x.id === id; })[0];
+    if(!sat){ det.hidden = true; return; }
+    det.hidden = false;
+    document.getElementById('sd-nom').textContent = sat.icon + ' ' + sat.nom;
+    document.getElementById('sd-statut').textContent = {atteint:'atteint', ok:'dans les clous', avance:'en avance', lent:'lent', retard:'en retard', vide:'rien encore'}[sat.statut] || sat.statut;
+    document.getElementById('sd-texte').textContent = sat.texte || '';
+    document.getElementById('sd-sous').innerHTML = sat.sous.map(function(ss){ return '<li><span>' + escapeHtml(ss.nom) + '</span><b>' + escapeHtml(ss.val) + '</b></li>'; }).join('');
+    var b = document.getElementById('sd-ouvrir'); if(b) b.dataset.page = sat.page;
+    try{ dessinerSysteme(); }catch(e){}
+  }
+  (function(){
+    var cv = document.getElementById('systeme-canvas'); if(!cv) return;
+    var toucher = function(ev){
+      var r = cv.getBoundingClientRect(), p = ev.changedTouches ? ev.changedTouches[0] : ev;
+      var x = p.clientX - r.left, y = p.clientY - r.top, trouve = null;
+      systemeNoeuds.forEach(function(nd){ if(Math.hypot(nd.x - x, nd.y - y) <= nd.r + 24) trouve = nd.id; });
+      if(trouve) choisirNoeudSysteme(trouve);
+    };
+    cv.addEventListener('click', toucher);
+    var f = document.getElementById('sd-fermer'), o = document.getElementById('sd-ouvrir');
+    if(f) f.addEventListener('click', function(){ systemeChoisi = null; document.getElementById('systeme-detail').hidden = true; try{ dessinerSysteme(); }catch(e){} });
+    if(o) o.addEventListener('click', function(){ var b = document.querySelector('.nav-btn[data-page="' + (o.dataset.page || 'bilan') + '"]'); if(b) b.click(); });
+    window.addEventListener('resize', function(){ if(systemeActif()) try{ dessinerSysteme(); }catch(e){} });
+    try{ window.__bcSysteme = {donnees: systemeDonnees, dessiner: dessinerSysteme, choisir: choisirNoeudSysteme, noeuds: function(){ return systemeNoeuds; }}; }catch(e){}
+  })();
 
   /* ================= INIT =================
      En deux temps. D'abord ce que l'ecran montre a l'ouverture -- le tableau de bord, la

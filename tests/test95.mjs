@@ -45,7 +45,8 @@ for(const [quand, seed, nom] of DATES){
   }, iso);
   ok(!errs.length, 'aucune erreur JS à l\'ouverture' + (errs.length ? ' — ' + errs.join(' | ') : ''));
   ok(info.focus.length > 40, 'le bloc en cours est affiché avec sa consigne (' + info.focus.slice(0, 70) + '…)');
-  const horsGrille = info.rappels.filter(r => { const bb = r.base.replace('🦇 ', ''); return !info.base.includes(bb) && !info.plan.includes(bb); });
+  /* « Clôture du jour » (lot 50) est le seul rappel qui n'est pas un bloc : il marque l'heure de la clôture du soir */
+  const horsGrille = info.rappels.filter(r => { const bb = r.base.replace('🦇 ', ''); return bb !== 'Clôture du jour' && !info.base.includes(bb) && !info.plan.includes(bb); });
   ok(!horsGrille.length, 'chaque rappel se rattache à un bloc de la grille (' + info.rappels.length + ' rappels)' + (horsGrille.length ? ' — ' + horsGrille.map(r => r.base).join(', ') : ''));
   const types = await fr.evaluate(labs => labs.map(l => window.__bcTypeBloc(l)), info.rappels.map(r => r.lab));
   const sansPomodoro = info.rappels.filter((r, i) => types[i] && !/^Lance le Pomodoro « /.test(r.d));
