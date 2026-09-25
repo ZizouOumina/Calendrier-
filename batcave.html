@@ -15780,7 +15780,7 @@
     var txt = fmtNombre(dernier, dec) + ' ' + unite + ' · cible ' + (sens === '<=' ? '≤ ' : '≥ ') + fmtNombre(cible, dec) + ' ' + unite;
     if(pr){
       var ok2 = sens === '<=' ? pr.valeur <= cible : pr.valeur >= cible;
-      txt += ' — au 18 oct. : <b style="color:' + (ok2 ? 'var(--good)' : 'var(--warn)') + ';">' + fmtNombre(pr.valeur, dec) + '</b>';
+      txt += ' — au ' + fmtDate(EPREUVE_FIN) + ' : <b style="color:' + (ok2 ? 'var(--good)' : 'var(--warn)') + ';">' + fmtNombre(pr.valeur, dec) + '</b>';
     }
     return '<li><span>' + nom + '</span><b style="color:' + (atteint ? 'var(--good)' : 'var(--ink)') + ';">' + txt + '</b></li>';
   }
