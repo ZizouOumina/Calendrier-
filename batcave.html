@@ -553,24 +553,6 @@
     .sheet-poignee{ display:block; width:40px; height:4px; border-radius:2px; background:var(--ink-faint); opacity:.55; margin:0 auto 12px; }
   }
   @media (prefers-reduced-motion: reduce){ .overlay-panel, #dash-checklist li.checked, .toast{ animation:none !important; } }
-  /* ===== Lot 53 : Alfred ===== */
-  .alfred-panel{ max-width:600px; display:flex; flex-direction:column; }
-  .alfred-fil{ list-style:none; margin:6px 0 10px; padding:0; display:flex; flex-direction:column; gap:8px; max-height:44vh; overflow-y:auto; }
-  .alfred-fil li{ max-width:88%; padding:9px 12px; border-radius:14px; font-size:14px; line-height:1.45; white-space:pre-wrap; }
-  .alfred-fil li.moi{ align-self:flex-end; background:var(--cyan-dim); color:#04151a; border-bottom-right-radius:4px; }
-  .alfred-fil li.alfred{ align-self:flex-start; background:var(--surface-hover); border:1px solid var(--border); color:var(--ink); border-bottom-left-radius:4px; }
-  .alfred-fil li.alfred.pense{ color:var(--ink-dim); font-style:italic; }
-  .alfred-chips{ display:flex; flex-wrap:wrap; gap:6px; margin-bottom:10px; }
-  .alfred-saisie{ display:flex; gap:8px; align-items:stretch; }
-  .alfred-saisie input{ flex:1; min-width:0; min-height:44px; padding:0 12px; border:1px solid var(--border); border-radius:10px; background:var(--surface); color:var(--ink); font-size:15px; }
-  .alfred-saisie input:focus-visible{ outline:2px solid var(--cyan); outline-offset:1px; }
-  .alfred-micro{ min-width:44px; padding-left:0; padding-right:0; font-size:18px; }
-  .alfred-micro.ecoute{ background:var(--danger); border-color:var(--danger); color:#fff; animation:pop .6s ease infinite alternate; }
-  .alfred-pied{ display:flex; flex-wrap:wrap; gap:8px 18px; margin-top:12px; align-items:center; }
-  .alfred-opt{ display:inline-flex; align-items:center; gap:7px; font-size:12.5px; color:var(--ink-dim); cursor:pointer; min-height:28px; }
-  .alfred-opt input{ width:16px; height:16px; }
-  .bc-alfred-btn{ white-space:nowrap; padding-left:9px; padding-right:9px; font-size:15px; }
-
   /* ===== Lot 52 : la carte du systeme ===== */
   .systeme-scene{ position:relative; width:100%; aspect-ratio:16 / 10; min-height:320px; max-height:72vh; border-radius:10px; overflow:hidden; background:#02050a; border:1px solid var(--border); }
   @media (max-width:780px){ .systeme-scene{ aspect-ratio:1 / 1.15; min-height:360px; } }
@@ -1029,7 +1011,7 @@
   .bc-r.bc-clic:focus-visible{ outline:2px solid var(--cyan); outline-offset:2px; }
   #dash-spotify:not([hidden]) + .bc-spotify-off{ display:none; }
   .bc-actions{ margin-left:auto; display:inline-flex; gap:6px; align-items:center; flex:none; }
-  /* la salutation cede la place aux boutons (Notion, theme, Alfred) plutot que de les
+  /* la salutation cede la place aux boutons (Notion, theme) plutot que de les
      envoyer a la ligne : elle se tronque a 1440 px si elle est trop longue */
   @media (min-width:781px){ .bc-row-1{ flex-wrap:nowrap; } }
   .bc-row-1 > .bc-r:not(.bc-alerte){ flex:0 1 auto; min-width:0; overflow:hidden; }
@@ -1763,7 +1745,6 @@
             <a class="btn" id="dash-notion-btn" href="#" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; text-decoration:none; line-height:normal;">📓 Notion</a>
             <button class="btn" id="dash-notion-edit" title="Changer le lien" aria-label="Changer le lien Notion" style="padding:8px 10px;">✎</button>
             <button class="btn bc-theme-btn" id="theme-toggle" type="button" title="Thème : automatique (clair de 7 h à 19 h, sombre le soir), clair, sombre">🌗</button>
-            <button class="btn bc-alfred-btn" id="alfred-btn" type="button" aria-label="Alfred" title="Alfred : dis-lui quoi faire, à l’écrit ou à la voix (A)">🎩</button>
           </span>
           <button class="btn mode-essentiel-toggle" id="mode-essentiel-toggle" type="button" aria-pressed="false" title="Sur téléphone : ne garder que la barre, le bloc en cours et les habitudes">Essentiel</button>
         </div>
@@ -1819,7 +1800,7 @@
           <button class="btn btn-pilote" id="dash-pilote" type="button" aria-label="Maintenant, en plein écran" title="Maintenant, en plein écran : l’heure, le bloc en cours, le temps qui reste, un bouton (M)">⛶</button>
           <p class="dial-serie" id="dash-serie" hidden></p>
         </div>
-        <p class="focus-kb"><b>P</b> lance le Pomodoro du bloc · <b>C</b> ouvre la clôture · <b>H</b> coche l’habitude suivante · <b>M</b> plein écran · <b>A</b> Alfred · <b>1-6</b> changent d’onglet</p>
+        <p class="focus-kb"><b>P</b> lance le Pomodoro du bloc · <b>C</b> ouvre la clôture · <b>H</b> coche l’habitude suivante · <b>M</b> plein écran · <b>1-6</b> changent d’onglet</p>
       </div>
 
       <!-- ---------- MUR D'ÉCRANS : plan | réacteur | habitudes ----------
@@ -3255,40 +3236,6 @@
   </div>
 </div>
 
-<!-- Alfred : le majordome. Adapte de JARVIS (imranshiundu/Jarvis) : un analyseur
-     d'intentions par motifs, une voix, une ecoute, un briefing, des rappels proactifs --
-     mais dans la page, en francais, et branche sur les vraies donnees de la Batcave.
-     Ce qu'il ne sait pas faire, il le demande a Claude dans la page (capacite sample). -->
-<div class="overlay" id="alfred-overlay" hidden>
-  <div class="overlay-panel alfred-panel" role="dialog" aria-label="Alfred">
-    <div class="overlay-head">
-      <h3>🎩 Alfred</h3>
-      <span class="sub-note" id="alfred-etat">à votre service</span>
-      <button class="edel" id="alfred-close" aria-label="Fermer" style="font-size:22px;">×</button>
-    </div>
-    <ul class="alfred-fil" id="alfred-fil" aria-live="polite"></ul>
-    <div class="alfred-chips" id="alfred-chips">
-      <button type="button" class="chip" data-alfred="briefing">Briefing</button>
-      <button type="button" class="chip" data-alfred="prochain bloc">Prochain bloc</button>
-      <button type="button" class="chip" data-alfred="j'ai bu 250 ml">+250 ml</button>
-      <button type="button" class="chip" data-alfred="séance du jour">Séance</button>
-      <button type="button" class="chip" data-alfred="qu'est-ce que je mange">Repas</button>
-      <button type="button" class="chip" data-alfred="santé">Santé</button>
-      <button type="button" class="chip" data-alfred="aide">Aide</button>
-    </div>
-    <form class="alfred-saisie" id="alfred-form">
-      <button type="button" class="btn alfred-micro" id="alfred-micro" aria-label="Parler à Alfred" title="Parler (maintiens, ou un appui pour une phrase)" hidden>🎙️</button>
-      <input type="text" id="alfred-texte" autocomplete="off" placeholder="Dis-moi… (ex. « j’ai bu 500 ml », « coche fajr », « ouvre sport »)" aria-label="Message à Alfred">
-      <button type="submit" class="btn btn-primary" id="alfred-envoyer">Envoyer</button>
-    </form>
-    <div class="alfred-pied">
-      <label class="alfred-opt"><input type="checkbox" id="alfred-voix"> Alfred parle (voix)</label>
-      <label class="alfred-opt" id="alfred-veille-opt" hidden><input type="checkbox" id="alfred-veille"> Écoute « Alfred, … » en continu</label>
-      <span class="sub-note" id="alfred-claude" hidden>Ce qu’il ne sait pas faire, il le demande à Claude (sur ton compte).</span>
-    </div>
-  </div>
-</div>
-
 <!-- Mode pilote : l'heure, le bloc, le temps qui reste, un bouton. Rien d'autre. -->
 <div class="overlay pilote" id="pilote-overlay" hidden>
   <div class="pilote-ecran" role="dialog" aria-label="Maintenant">
@@ -4666,12 +4613,11 @@
        clôture du jour, H coche la première habitude du jour qui ne l'est pas encore. Rien
        ne se déclenche par-dessus un écran déjà ouvert (sauf C, qui EST un écran). */
     var lettre = (e.key || '').toLowerCase();
-    if(lettre !== 'p' && lettre !== 'c' && lettre !== 'h' && lettre !== 'm' && lettre !== 'a') return;
+    if(lettre !== 'p' && lettre !== 'c' && lettre !== 'h' && lettre !== 'm') return;
     var ouverts = [].slice.call(document.querySelectorAll('.overlay')).some(function(o){ return !o.hidden; });
     if(lettre === 'c'){ e.preventDefault(); if(!ouverts) try{ ouvrirCloture(); }catch(err){} return; }
     /* M : le mode pilote s'ouvre, ou se ferme s'il est deja la */
     if(lettre === 'm'){ e.preventDefault(); var pv = document.getElementById('pilote-overlay'); if(pv && !pv.hidden) fermerPilote(); else if(!ouverts) ouvrirPilote(); return; }
-    if(lettre === 'a'){ e.preventDefault(); var av = document.getElementById('alfred-overlay'); if(av && !av.hidden) fermerAlfred(); else if(!ouverts) ouvrirAlfred(); return; }
     if(ouverts) return;
     if(lettre === 'p'){
       e.preventDefault();
@@ -17831,205 +17777,6 @@
     ['rv-marche','rv-coince','rv-ajust'].forEach(function(id){ document.getElementById(id).value=''; });
   });
 
-  /* ================= ALFRED ================= (lot 53)
-     Adapte de JARVIS (imranshiundu/Jarvis, Python) : son IntentParser a motifs, sa voix,
-     son ecoute au mot de reveil, son briefing du matin, son moteur d'autonomie qui
-     previent. Ici tout vit dans la page : les intentions sont des expressions regulieres
-     en francais qui appellent les VRAIES fonctions de la Batcave (eau, poids, habitudes,
-     Pomodoro, cloture, onglets, sante, seance, repas...), la voix est celle du navigateur
-     (speechSynthesis, fr-FR), l'ecoute celle du navigateur (SpeechRecognition, la ou elle
-     existe -- Safari iPhone et Chrome), et ce qu'Alfred ne sait pas, il le demande a Claude
-     dans la page (capacite sample, sur le compte du lecteur, avec le contexte du jour).
-     Rien n'est proactif sans la voix activee : sans elle, Alfred attend qu'on lui parle. */
-  var alfredHistorique = [], alfredSample = null, alfredReco = null, alfredEcouteContinue = false, alfredDernierBloc = null, alfredTours = [];
-  function alfredVoixActive(){ try{ return localStorage.getItem('bc-alfred-voix') === '1'; }catch(e){ return false; } }
-  function alfredVeilleActive(){ try{ return localStorage.getItem('bc-alfred-veille') === '1'; }catch(e){ return false; } }
-  function alfredVoixFr(){
-    if(!window.speechSynthesis) return null;
-    var v = speechSynthesis.getVoices().filter(function(x){ return /^fr/i.test(x.lang); });
-    return v.filter(function(x){ return /fr-FR/i.test(x.lang) && /Thomas|Google|Premium|Enhanced/i.test(x.name); })[0] || v.filter(function(x){ return /fr-FR/i.test(x.lang); })[0] || v[0] || null;
-  }
-  function alfredDire(texte){
-    if(!alfredVoixActive() || !window.speechSynthesis || !texte) return;
-    try{
-      speechSynthesis.cancel();
-      var u = new SpeechSynthesisUtterance(String(texte).replace(/[*_#`]/g, ''));
-      u.lang = 'fr-FR'; u.rate = 1.02; u.pitch = 0.95;
-      var v = alfredVoixFr(); if(v) u.voice = v;
-      speechSynthesis.speak(u);
-    }catch(e){}
-  }
-  function alfredLigne(qui, texte, pense){
-    var ul = document.getElementById('alfred-fil'); if(!ul) return null;
-    var li = document.createElement('li'); li.className = qui + (pense ? ' pense' : ''); li.textContent = texte;
-    ul.appendChild(li); ul.scrollTop = ul.scrollHeight;
-    if(!pense) alfredHistorique.push({qui: qui, texte: texte});
-    return li;
-  }
-  var hmA = function(m){ return String(Math.floor(m/60)).padStart(2,'0') + ':' + String(m%60).padStart(2,'0'); };
-  function alfredOuvrirOnglet(nom){
-    var cartes = {'aujourd': 'dashboard', 'tableau': 'dashboard', 'accueil': 'dashboard', 'calendrier': 'calendrier', 'fac': 'etudes', 'étude': 'etudes', 'etude': 'etudes', 'agenda': 'agenda',
-                  'suivi': 'bilan', 'semaine': 'bilan', 'bilan': 'bilan', 'insight': 'insights', 'objectif': 'objectifs', 'système': 'systeme', 'systeme': 'systeme', 'carte': 'systeme',
-                  'argent': 'budget', 'budget': 'budget', 'boutique': 'business', 'business': 'business', 'corps': 'habitudes', 'habitude': 'habitudes', 'sport': 'sport', 'muscu': 'sport',
-                  'santé': 'addictions', 'sante': 'addictions', 'dépendance': 'addictions', 'coran': 'coran', 'duaa': 'coran', 'deen': 'coran', 'table': 'repas', 'repas': 'repas', 'prep': 'prep', 'course': 'courses'};
-    var n = nom.toLowerCase(), page = null;
-    Object.keys(cartes).forEach(function(k){ if(!page && n.indexOf(k) > -1) page = cartes[k]; });
-    if(!page) return null;
-    var b = document.querySelector('.nav-btn[data-page="' + page + '"]'); if(!b) return null;
-    b.click(); return page;
-  }
-  function alfredBriefing(){
-    var e = etatBlocs(), b = e.courant || e.suivant, l = [];
-    l.push(dateLongue(new Date()) + '.');
-    var meteo = (document.getElementById('dash-weather') || {}).textContent || '';
-    if(meteo && /\d/.test(meteo) && !/indisponible|reconnecte|ajoute/i.test(meteo)) l.push(meteo.replace(/^🌡️\s*/, '').trim() + '.');
-    if(b) l.push((e.courant ? 'En cours : ' : 'Prochain bloc : ') + b.label + ', ' + hmA(b.deb) + ' → ' + hmA(b.fin) + '.'); else l.push('Plus rien de prévu aujourd\u2019hui.');
-    if(jourDeCombat(todayISO)) l.push('Jour de combat : ' + (dowDe(todayISO) === 2 ? 'Muay Thai à 19:30' : 'JJB à 10:30') + ', eau 3,5 L, collation combat.');
-    var t = typeSportDe(todayISO); if(t && t !== 'Off') l.push('Muscu : ' + t.toLowerCase() + '.');
-    try{ var c = cinqQuiComptent(); var mal = c.filter(function(x){ return x.statut === 'retard' || x.statut === 'lent'; }); if(mal.length) l.push('À surveiller : ' + mal.map(function(x){ return x.nom; }).join(', ') + '.'); else l.push('Les cinq qui comptent sont dans les clous.'); }catch(x){}
-    try{ var d = santeBatcave().filter(function(x){ return !x.ok; }); if(d.length) l.push('Santé de la Batcave : ' + d.map(function(x){ return x.texte; }).join(' ; ') + '.'); }catch(x){}
-    l.push('Tapis enlevés à 14:45, l\u2019aspirateur passe à 15:45.');
-    return l.join(' ');
-  }
-  function alfredHabitude(nomDemande){
-    var n = nomDemande.toLowerCase().replace(/[’']/g, ' ').trim();
-    var liste = habitsDuJour(weekday), trouve = null;
-    liste.forEach(function(h){ var lab = String(h.label || '').toLowerCase(); if(!trouve && (lab.indexOf(n) > -1 || n.indexOf(lab.split(' ')[0]) > -1)) trouve = h; });
-    if(!trouve) return 'Je ne trouve pas d\u2019habitude « ' + nomDemande + ' » aujourd\u2019hui. Celles du jour : ' + liste.map(function(h){ return h.label; }).join(', ') + '.';
-    if(habitDoneToday(trouve.id)) return '« ' + trouve.label + ' » est déjà cochée.';
-    toggleHabit(trouve.id);
-    return 'Coché : ' + trouve.label + '.';
-  }
-  var ALFRED_INTENTS = [
-    {re: /^(salut|bonjour|bonsoir|hello|yo|coucou)\b/i, f: function(){ var h = new Date().getHours(); return (h < 12 ? 'Bonjour' : (h < 18 ? 'Bon après-midi' : 'Bonsoir')) + ', Monsieur. ' + (function(){ var e = etatBlocs(), b = e.courant || e.suivant; return b ? ((e.courant ? 'Vous êtes sur « ' : 'Prochain bloc : « ') + b.label + ' », jusqu\u2019à ' + hmA(b.fin) + '.') : 'Rien de prévu à cette heure.'; })(); }},
-    {re: /briefing|résum|resum|ma journée|ma journee|programme du jour|quoi aujourd/i, f: function(){ return alfredBriefing(); }},
-    {re: /quelle heure|il est quelle/i, f: function(){ var n = new Date(); return 'Il est ' + hmA(n.getHours()*60 + n.getMinutes()) + '.'; }},
-    {re: /(prochain|suivant|en cours|maintenant|je fais quoi|que dois-je faire)/i, f: function(){ var e = etatBlocs(); if(!e.courant && !e.suivant) return 'Plus rien de prévu aujourd\u2019hui, Monsieur.'; var out = []; if(e.courant) out.push('En cours : ' + e.courant.label + ', jusqu\u2019à ' + hmA(e.courant.fin) + ' (reste ' + (e.courant.fin - e.nowMin) + ' min).'); if(e.suivant) out.push('Ensuite : ' + e.suivant.label + ' à ' + hmA(e.suivant.deb) + '.'); var c = e.courant && consigneBloc(e.courant.label, weekday, todayISO, hmA(e.courant.deb)); if(c) out.push(c); return out.join(' '); }},
-    {re: /(lance|démarre|demarre|start).*(pomodoro|minuteur|timer)|^pomodoro/i, f: function(){ var b = document.querySelector('#dash-focus .btn.pomo-suggere:not([hidden])') || document.getElementById('dash-pomodoro'); if(b){ fermerAlfred(); b.click(); return 'Pomodoro lancé.'; } return 'Je ne trouve pas le bouton Pomodoro.'; }},
-    {re: /(clôtur|clotur|ferme(r)? la journée|bilan du soir)/i, f: function(){ fermerAlfred(); try{ ouvrirCloture(); }catch(e){} return 'La clôture du jour est ouverte : 60 secondes.'; }},
-    {re: /(bu|boire|eau|verre|gourde).*?(\d+(?:[.,]\d+)?)\s*(ml|cl|l\b|litre)|(\d+(?:[.,]\d+)?)\s*(ml|cl|l\b|litre).*?(bu|eau)/i, f: function(m){ var q = Number(String(m[2] || m[4]).replace(',', '.')), u = (m[3] || m[5] || 'ml').toLowerCase(); var ml = /^l/.test(u) ? q * 1000 : (u === 'cl' ? q * 10 : q); if(!(ml > 0)) return 'Combien, Monsieur ?'; adjustWater(Math.round(ml)); return 'Noté : +' + Math.round(ml) + ' ml. Aujourd\u2019hui ' + fmtLitres(journalState.water) + ' sur ' + String(objectifEauL(todayISO)).replace('.', ',') + ' L.'; }},
-    {re: /(combien|où j.en suis|ou j.en suis).*(eau|bu)/i, f: function(){ return fmtLitres(journalState.water || 0) + ' bus sur ' + String(objectifEauL(todayISO)).replace('.', ',') + ' L visés aujourd\u2019hui.'; }},
-    {re: /(je pèse|je pese|poids)\D*(\d{2,3}(?:[.,]\d)?)/i, f: function(m){ var p = Number(String(m[2]).replace(',', '.')); if(!(p >= 40 && p <= 150)) return p + ' kg ? Je n\u2019y crois pas, Monsieur.'; journalState.poids = String(p); save(journalKey, journalState); try{ renderDashboard(); renderJournalHistorique(); renderWeightChart(); }catch(e){} return 'Poids noté : ' + String(p).replace('.', ',') + ' kg.'; }},
-    {re: /(coche|cocher|j.ai fait|fait[e]?\s*:|valide|marque)\s+(.+)/i, f: function(m){ return alfredHabitude(m[2].replace(/^(l[ae]s?|mon|ma|mes)\s+/i, '')); }},
-    {re: /(ouvre|ouvrir|va (sur|dans|à)|montre|affiche)\s+(l[ea]s?\s+|l[’']|mon\s+|mes\s+)?(.+)/i, f: function(m){ var p = alfredOuvrirOnglet(m[4]); if(p === 'dashboard' || p) { fermerAlfred(); return 'Voilà ' + m[4] + '.'; } return 'Je ne connais pas d\u2019onglet « ' + m[4] + ' ». Les six : Aujourd\u2019hui, Fac, Suivi, Argent, Corps, Table.'; }},
-    {re: /(santé|sante|état|etat) (de la )?batcave|^santé$|^sante$|^état$/i, f: function(){ var d = santeBatcave(), ko = d.filter(function(x){ return !x.ok; }); return ko.length ? ko.length + ' défaut' + (ko.length > 1 ? 's' : '') + ' : ' + ko.map(function(x){ return x.texte + ' — ' + x.action; }).join(' ') : 'Tout est en ordre : sauvegarde, données, cohérence, exercice, clôture, schéma.'; }},
-    {re: /(séance|seance|muscu|sport|entra[iî]nement)/i, f: function(){ var t = typeSportDe(todayISO); if(!t || t === 'Off') return 'Pas de muscu aujourd\u2019hui' + (jourDeCombat(todayISO) ? ', mais ' + (dowDe(todayISO) === 2 ? 'Muay Thai à 19:30' : 'JJB à 10:30') + '.' : '.'); var s = SESSIONS.filter(function(x){ return x.type === t; })[0], tot = sportTotals(t); return t + ' (' + (s ? s.duree : '') + '), ' + tot.checked + '/' + tot.total + ' exercices faits : ' + (s ? s.exercises.map(function(x){ return x.name + ' ' + x.reps; }).join(' · ') : '') + '.'; }},
-    {re: /(combat|jjb|muay|club|tatami)/i, f: function(){ if(!jourDeCombat(todayISO)) return 'Pas de combat aujourd\u2019hui. Prochains : lundi, mercredi, vendredi JJB à 10:30 ; mardi Muay Thai à 19:30.'; return dowDe(todayISO) === 2 ? 'Muay Thai à 19:30, trajet 19:10. Bandes, protège-dents, gants. Coucher 22:00.' : 'JJB à 10:30, collation combat à 10:05, trajet 10:20. Kimono, protège-dents, gourde. Douche et shampoing au retour.'; }},
-    {re: /(mange|manger|repas|déjeuner|dejeuner|dîner|diner|petit-déj|collation|bouffe)/i, f: function(){ var n = new Date(), nowMin = n.getHours()*60 + n.getMinutes(); var heures = {'Petit-déjeuner': 405, 'Collation combat': (dowDe(todayISO) === 2 ? 890 : 605), 'Déjeuner': 740, 'Collation entraînement': (dowDe(todayISO) === 1 ? 1010 : 890), 'Dîner': (dowDe(todayISO) === 2 ? 1080 : (dowDe(todayISO) === 6 ? 1170 : (dowDe(todayISO) === 0 ? 1140 : 1200)))}; var liste = repasDuJour(todayISO).slice().sort(function(a, b){ return (ORDRE_REPAS[a.name] || 0) - (ORDRE_REPAS[b.name] || 0); }); var prochain = liste.filter(function(m){ return (heures[m.name] || 0) >= nowMin - 30; })[0] || liste[liste.length - 1]; return 'Prochain repas : ' + prochain.name + ' à ' + hmA(heures[prochain.name] || 0) + ' — ' + prochain.items.join(', ') + '.'; }},
-    {re: /tapis|aspirateur/i, f: function(){ return 'Le rappel des tapis sonne tous les jours à 14:45 ; l\u2019aspirateur passe à 15:45 et à 18:15. Tu les remets après 18:30.'; }},
-    {re: /(plein écran|plein ecran|pilote|mode maintenant)/i, f: function(){ fermerAlfred(); ouvrirPilote(); return 'Mode pilote.'; }},
-    {re: /(thème|theme|sombre|clair|noir)/i, f: function(){ basculerTheme(); return 'Thème changé.'; }},
-    {re: /^(annule|annuler|défais|defais|undo)/i, f: function(){ fermerAlfred(); undoLast(); return 'J\u2019annule la dernière modification.'; }},
-    {re: /(aide|help|que sais-tu|tu sais faire|commandes)/i, f: function(){ return 'Je comprends : « briefing », « prochain bloc », « lance le pomodoro », « clôture », « j\u2019ai bu 500 ml », « je pèse 71,8 », « coche fajr », « ouvre sport », « santé », « séance », « repas », « combat », « tapis », « plein écran », « thème », « annule ». Le reste, je le demande à Claude' + (alfredSample ? '.' : ' — quand la page est ouverte depuis son lien.'); }},
-    {re: /(merci|parfait|nickel|top)/i, f: function(){ return 'À votre service, Monsieur.'; }}
-  ];
-  function alfredContexte(){
-    var e = etatBlocs(), b = e.courant || e.suivant, c = [];
-    c.push('Date : ' + dateLongue(new Date()) + ', il est ' + hmA(e.nowMin) + '.');
-    if(b) c.push((e.courant ? 'Bloc en cours : ' : 'Prochain bloc : ') + b.label + ' (' + hmA(b.deb) + '-' + hmA(b.fin) + ').');
-    try{ c.push('Grille du jour : ' + agendaDuJour(weekday).map(function(x){ return x[0] + ' ' + x[1]; }).join(' | ') + '.'); }catch(x){}
-    try{ c.push('Les cinq qui comptent : ' + cinqQuiComptent().map(function(x){ return x.nom + ' (' + x.statut + ') : ' + x.texte; }).join(' ; ') + '.'); }catch(x){}
-    try{ c.push('Eau : ' + fmtLitres(journalState.water || 0) + ' / ' + objectifEauL(todayISO) + ' L. Poids : ' + (journalState.poids || '—') + '.'); }catch(x){}
-    return c.join('\n');
-  }
-  function alfredDemanderClaude(question){
-    var li = alfredLigne('alfred', 'Alfred réfléchit…', true);
-    var el = document.getElementById('alfred-etat'); if(el) el.textContent = 'demande à Claude…';
-    var regles = 'Tu es Alfred, le majordome de la Batcave (le tableau de bord de Zizou, étudiant en dentisterie à Alicante, régime combat : JJB lundi/mercredi/vendredi 10:30, Muay Thai mardi 19:30, muscu lundi/mardi/jeudi 05:30, lever 05:30, coucher 21:35). Réponds en français, en deux ou trois phrases, concret, sans flatterie. Ne propose jamais de changer le programme : il est décidé. Contexte du jour :\n' + alfredContexte();
-    alfredTours.push({role:'user', content: question});
-    var tours = [{role:'user', content: regles}].concat(alfredTours.slice(-6));
-    return alfredSample(tours, {cache: false, modelTier: 'quick', onText: function(r){ if(li){ li.textContent = r.text; li.classList.remove('pense'); } }})
-      .then(function(r){ if(li){ li.textContent = r.text; li.classList.remove('pense'); } alfredHistorique.push({qui:'alfred', texte: r.text}); alfredTours.push({role:'assistant', content: r.text}); alfredDire(r.text); if(el) el.textContent = 'à votre service'; })
-      .catch(function(err){
-        var code = err && err.code, txt = code === 'not_granted' ? 'Vous n\u2019avez pas autorisé Claude ici : je m\u2019en tiens à ce que je sais faire (« aide »).' : (code === 'rate_limited' ? 'Trop de questions d\u2019un coup : réessayez dans un instant.' : (code === 'cancelled' ? 'Annulé.' : 'Claude n\u2019a pas répondu (' + (code || 'erreur') + ').'));
-        if(code === 'not_granted') alfredSample = null;
-        if(li){ li.textContent = txt; li.classList.remove('pense'); }
-        alfredTours.pop();
-        if(el) el.textContent = 'à votre service';
-      });
-  }
-  function alfredTraiter(texte){
-    texte = String(texte || '').trim();
-    if(!texte) return null;
-    alfredLigne('moi', texte);
-    var reponse = null;
-    for(var i = 0; i < ALFRED_INTENTS.length && reponse === null; i++){
-      var m = texte.match(ALFRED_INTENTS[i].re);
-      if(m){ try{ reponse = ALFRED_INTENTS[i].f(m, texte); }catch(e){ reponse = 'Quelque chose a cassé en route (' + (e && e.message) + ').'; } }
-    }
-    if(reponse === null){
-      if(alfredSample){ alfredDemanderClaude(texte); return ''; }
-      reponse = 'Je ne sais pas faire ça (encore). Dites « aide » pour ce que je comprends' + (window.claude ? ', ou attendez que Claude soit prêt.' : ' — ouvrez la Batcave depuis son lien pour que je puisse demander à Claude.');
-    }
-    alfredLigne('alfred', reponse);
-    alfredDire(reponse);
-    return reponse;
-  }
-  function ouvrirAlfred(){
-    var ov = document.getElementById('alfred-overlay'); if(!ov) return;
-    ov.hidden = false;
-    if(!alfredHistorique.length) alfredLigne('alfred', 'À votre service, Monsieur. Dites-moi, ou tapez « aide ».');
-    var inp = document.getElementById('alfred-texte'); if(inp && window.innerWidth > 780) inp.focus();
-  }
-  function fermerAlfred(){
-    var ov = document.getElementById('alfred-overlay'); if(ov) ov.hidden = true;
-    try{ var inp = document.getElementById('alfred-texte'); if(inp && document.activeElement === inp) inp.blur(); }catch(e){}   /* sinon la touche A, tapée « dans » le champ caché, serait ignorée */
-    try{ if(alfredReco && !alfredEcouteContinue) alfredReco.stop(); }catch(e){}
-  }
-  /* ===== L'ecoute ===== Une phrase par appui sur le micro ; ou, en continu, tout ce qui
-     commence par « Alfred » (le mot de reveil de JARVIS). Le navigateur decide de ce qui
-     existe : sans SpeechRecognition, le micro reste cache. */
-  function alfredRecoDispo(){ return !!(window.SpeechRecognition || window.webkitSpeechRecognition); }
-  function alfredEcouter(continu){
-    if(!alfredRecoDispo()) return;
-    var R = window.SpeechRecognition || window.webkitSpeechRecognition, micro = document.getElementById('alfred-micro');
-    try{ if(alfredReco) alfredReco.stop(); }catch(e){}
-    var r = new R(); r.lang = 'fr-FR'; r.continuous = !!continu; r.interimResults = false;
-    alfredEcouteContinue = !!continu; alfredReco = r;
-    if(micro) micro.classList.add('ecoute');
-    r.onresult = function(ev){
-      var t = ''; for(var i = ev.resultIndex; i < ev.results.length; i++){ if(ev.results[i].isFinal) t += ev.results[i][0].transcript + ' '; }
-      t = t.trim(); if(!t) return;
-      if(continu){ var m = /\balfred\b[,\s]*(.*)$/i.exec(t); if(!m || !m[1].trim()) return; t = m[1].trim(); ouvrirAlfred(); }
-      alfredTraiter(t);
-    };
-    r.onerror = function(){ if(micro) micro.classList.remove('ecoute'); };
-    r.onend = function(){ if(micro) micro.classList.remove('ecoute'); if(alfredEcouteContinue && alfredVeilleActive()){ try{ r.start(); if(micro) micro.classList.add('ecoute'); }catch(e){} } };
-    try{ r.start(); }catch(e){ if(micro) micro.classList.remove('ecoute'); }
-  }
-  /* ===== Le cote proactif ===== (le moteur d'autonomie de JARVIS, reduit a l'essentiel)
-     Avec la voix activee seulement : Alfred annonce le bloc qui commence. */
-  function alfredVeilleBlocs(){
-    if(!alfredVoixActive() || document.hidden) return;
-    var e; try{ e = etatBlocs(); }catch(x){ return; }
-    var label = e.courant ? e.courant.label : null;
-    if(alfredDernierBloc === null){ alfredDernierBloc = label; return; }
-    if(label && label !== alfredDernierBloc){ alfredDernierBloc = label; alfredDire('Nouveau bloc : ' + label + ', jusqu\u2019à ' + hmA(e.courant.fin) + '.'); }
-    else if(!label) alfredDernierBloc = null;
-  }
-  (function(){
-    var btn = document.getElementById('alfred-btn'), x = document.getElementById('alfred-close'), form = document.getElementById('alfred-form'), inp = document.getElementById('alfred-texte');
-    var voix = document.getElementById('alfred-voix'), veille = document.getElementById('alfred-veille'), veilleOpt = document.getElementById('alfred-veille-opt'), micro = document.getElementById('alfred-micro');
-    if(!btn || !form) return;
-    btn.addEventListener('click', ouvrirAlfred);
-    if(x) x.addEventListener('click', fermerAlfred);
-    form.addEventListener('submit', function(e){ e.preventDefault(); var t = inp.value; inp.value = ''; alfredTraiter(t); });
-    document.querySelectorAll('#alfred-chips [data-alfred]').forEach(function(c){ c.addEventListener('click', function(){ alfredTraiter(c.dataset.alfred); }); });
-    if(voix){ voix.checked = alfredVoixActive(); voix.addEventListener('change', function(){ try{ localStorage.setItem('bc-alfred-voix', voix.checked ? '1' : '0'); }catch(e){} if(voix.checked) alfredDire('Voix activée, Monsieur.'); else if(window.speechSynthesis) speechSynthesis.cancel(); }); }
-    if(alfredRecoDispo()){
-      if(micro){ micro.hidden = false; micro.addEventListener('click', function(){ if(alfredReco && micro.classList.contains('ecoute') && !alfredEcouteContinue){ try{ alfredReco.stop(); }catch(e){} } else alfredEcouter(false); }); }
-      if(veilleOpt) veilleOpt.hidden = false;
-      if(veille){ veille.checked = alfredVeilleActive(); veille.addEventListener('change', function(){ try{ localStorage.setItem('bc-alfred-veille', veille.checked ? '1' : '0'); }catch(e){} if(veille.checked) alfredEcouter(true); else { alfredEcouteContinue = false; try{ if(alfredReco) alfredReco.stop(); }catch(e){} } }); if(veille.checked) setTimeout(function(){ alfredEcouter(true); }, 1500); }
-    }
-    if(window.speechSynthesis && speechSynthesis.onvoiceschanged !== undefined) speechSynthesis.onvoiceschanged = function(){};
-    /* Claude dans la page : la fonction arrive apres le chargement ; sans lien Batcave, jamais */
-    if(window.claude && typeof window.claude.use === 'function'){
-      try{ window.claude.use('sample').then(function(f){ if(typeof f === 'function'){ alfredSample = f; var n = document.getElementById('alfred-claude'); if(n) n.hidden = false; } }).catch(function(){}); }catch(e){}
-    }
-    setInterval(function(){ try{ alfredVeilleBlocs(); }catch(e){} }, 30000);
-    try{ window.__bcAlfred = {traiter: alfredTraiter, briefing: alfredBriefing, historique: function(){ return alfredHistorique; }, ouvrir: ouvrirAlfred, fermer: fermerAlfred, intents: ALFRED_INTENTS.length, contexte: alfredContexte, claude: function(){ return !!alfredSample; }}; }catch(e){}
-  })();
-
   /* ================= SYSTÈME : la carte orbitale ================= (lot 52)
      Les donnees d'abord (systemeDonnees), le dessin ensuite. Le dessin ne tourne que quand
      l'onglet est ouvert : une boucle requestAnimationFrame qui s'arrete d'elle-meme des
@@ -18655,7 +18402,6 @@
       {id:'cloture-overlay', fermer:'cloture-close'},
       {id:'backup-overlay', fermer:'backup-close'},
       {id:'opening-ritual-overlay', fermer:'ritual-close'},
-      {id:'alfred-overlay', fermer:'alfred-close'},
       {id:'pilote-overlay', fermer:'pilote-fermer'},
       {id:'focus-overlay', fermer:null}
     ];

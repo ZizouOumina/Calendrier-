@@ -8,10 +8,6 @@ Il dit ce qui est fait, ce qui reste, et ce qui attend une décision de toi.
 > Santé + relevé `SANTÉ` (allumé seulement en défaut), plan de secours texte hebdo dans Drive,
 > « Reprendre depuis Drive » sur appareil vide, bornes de saisie, annulation par geste (bouton
 > Annuler dans le toast), rappel « Clôture du jour » dans l'agenda, démarrage en deux temps.
-> **53 · Alfred** : le majordome (bouton 🎩, touche A) — intentions en français par motifs
-> (`ALFRED_INTENTS`), voix `speechSynthesis`, écoute `SpeechRecognition` (micro, mot de
-> réveil), briefing, annonce des blocs si la voix est active, repli sur Claude dans la page
-> (`claude.use('sample')`, capacité à déclarer à la publication). Adapté de imranshiundu/Jarvis.
 > **51 · Interface** : six entrées (Aujourd'hui, Fac, Suivi, Argent, Corps, Table) + sous-onglets,
 > mode pilote plein écran (⛶ Maintenant, touche M), feuilles qui montent du bas sur iPhone,
 > thème pur noir. **52 · Système** : carte orbitale (Suivi → Système), canvas 2D.
