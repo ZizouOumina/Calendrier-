@@ -467,6 +467,36 @@
   .badge.gold{background:rgba(217,168,78,0.14); color:var(--cyan-bright); border-color:transparent;}
 
   .sub-panel + .sub-panel{margin-top:16px;}
+  /* Le mois de l'argent : trois chiffres, puis le fil du 28 au 27 -- une ligne par geste,
+     le montant, et ce qui reste sur le compte apres. */
+  .ma-chiffres{display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:12px; margin-bottom:16px;}
+  .ma-chiffre{padding:12px 14px; border-radius:8px; background:var(--surface-raised); border:1px solid var(--border-soft);}
+  .ma-chiffre.cle{border-color:var(--dom-argent);}
+  .ma-chiffre .ml{font-size:12px; color:var(--ink-dim); font-weight:600;}
+  .ma-chiffre .mv{font-family:var(--font-display); font-size:26px; line-height:1.1; color:var(--cyan-bright); font-variant-numeric:tabular-nums; margin-top:4px;}
+  .ma-chiffre.cle .mv{color:var(--dom-argent);}
+  .ma-chiffre .mn{font-size:11.5px; color:var(--ink-faint); margin-top:4px; line-height:1.35;}
+  .ma-fil{list-style:none; margin:0; padding:0;}
+  .ma-fil li{display:grid; grid-template-columns:92px minmax(0,1fr) auto 84px; gap:12px; align-items:baseline; padding:9px 0; border-bottom:1px solid var(--border-soft); font-size:13px; color:var(--ink-dim);}
+  .ma-fil li:last-child{border-bottom:none;}
+  .ma-fil .mq{font-family:var(--font-mono); font-size:11.5px; color:var(--ink-faint);}
+  .ma-fil b{color:var(--ink); font-weight:600;}
+  .ma-fil .md{display:block; font-size:12px; color:var(--ink-faint); margin-top:2px; line-height:1.4;}
+  .ma-fil .mm, .ma-fil .ms{font-family:var(--font-mono); font-size:12.5px; text-align:right; font-variant-numeric:tabular-nums; white-space:nowrap;}
+  .ma-fil .mm.plus{color:var(--good);}
+  .ma-fil .ms{color:var(--ink);}
+  .ma-fil li.cagnotte .mm{color:var(--dom-argent);}
+  .ma-fil .badge{margin-left:6px; cursor:default; vertical-align:1px;}
+  .ma-regles{margin:16px 0 0; padding:12px 14px 12px 32px; border-radius:8px; background:var(--surface-raised); font-size:13px; color:var(--ink-dim); line-height:1.5;}
+  .ma-regles li + li{margin-top:5px;}
+  .ma-regles b{color:var(--ink);}
+  .ma-pied{margin-top:12px; font-size:11.5px; color:var(--ink-faint); line-height:1.5;}
+  @media (max-width:640px){
+    .ma-chiffres{grid-template-columns:minmax(0,1fr);}
+    .ma-fil li{grid-template-columns:minmax(0,1fr) auto; gap:2px 10px;}
+    .ma-fil .mq{grid-column:1 / -1;}
+    .ma-fil .ms{grid-column:2;}
+  }
   /* Échéances : une ligne = un compte à rebours. Le chiffre des jours restants d'abord,
      puis la barre (30 jours pleins → vide le jour J). */
   .ech-list{list-style:none; margin:0; padding:0;}
@@ -2417,6 +2447,11 @@
       </div>
 
       <div class="stat-grid" id="budget-stats"></div>
+
+      <div class="panel sub-panel" id="budget-mois-panel">
+        <div class="sub-head"><h3>Le mois de l'argent</h3><span class="sub-note" id="ma-periode"></span></div>
+        <div id="mois-argent"></div>
+      </div>
 
       <div class="panel sub-panel">
         <div class="sub-head"><h3>Répartition du mois</h3><span class="sub-note">entrées et sorties par catégorie</span></div>
@@ -16147,7 +16182,7 @@
     window.__bcMeteoInjecter = function(liste){ meteoHeures = liste; try{ majMeteoSeance(); }catch(e){} };
     window.__bcMeteoSeance = texteMeteoSeance;
     window.__bcSeanceDehors = seanceExterieureLe;
-    window.__bcChiffresSemaine = chiffresSemaine; window.__bcMacrosJour = macrosJour; window.__bcPrepSemaine = prepSemaine; window.__bcPrepTotaux = prepTotaux; window.__bcMacrosRepas = macrosRepas; window.__bcCompoRepas = compoRepas; window.__bcAliments = ALIMENTS; window.__bcBesoinSemaine = BESOIN_SEMAINE; window.__bcCoutSemaine = coutSemaine; window.__bcPrix = PRIX; window.__bcEvalMatieres = EVAL_MATIERES; window.__bcTypesEcheance = TYPES_ECHEANCE; window.__bcCopieVierge = copieVierge; window.__bcNotion = absorberNotion; window.__bcNotionBases = function(){ return NOTION_BASES; }; window.__bcNotionBasesDu = basesNotionDuSemestre; window.__bcNotionRetards = notionRetards; window.__bcCoursPasFait = coursPasFait; window.__bcExercice = exerciceDu; window.__bcChiffrer = chiffrerTexte; window.__bcDechiffrer = dechiffrerEnveloppe;
+    window.__bcChiffresSemaine = chiffresSemaine; window.__bcMacrosJour = macrosJour; window.__bcPrepSemaine = prepSemaine; window.__bcPrepTotaux = prepTotaux; window.__bcMacrosRepas = macrosRepas; window.__bcCompoRepas = compoRepas; window.__bcAliments = ALIMENTS; window.__bcBesoinSemaine = BESOIN_SEMAINE; window.__bcCoutSemaine = coutSemaine; window.__bcMoisArgent = moisArgent; window.__bcPrix = PRIX; window.__bcEvalMatieres = EVAL_MATIERES; window.__bcTypesEcheance = TYPES_ECHEANCE; window.__bcCopieVierge = copieVierge; window.__bcNotion = absorberNotion; window.__bcNotionBases = function(){ return NOTION_BASES; }; window.__bcNotionBasesDu = basesNotionDuSemestre; window.__bcNotionRetards = notionRetards; window.__bcCoursPasFait = coursPasFait; window.__bcExercice = exerciceDu; window.__bcChiffrer = chiffrerTexte; window.__bcDechiffrer = dechiffrerEnveloppe;
        /* rapport hebdomadaire (tests/rapport-hebdo.mjs) : la semaine à un décalage donné, ses
           statistiques de bilan et le prévu/réalisé de chaque jour */
        window.__bcSemaine = function(off){
@@ -17141,6 +17176,130 @@
 
     renderFixedCharges();
     renderBudgetHistory();
+    renderMoisArgent();
+  }
+  /* ===== Le mois de l'argent (25 septembre) =====
+     Sa mere vire 1 400 EUR le 28 sur Wise : son mois va du 28 au 27, pas du 1er au 30.
+     Le chiffre qu'on lui avait donne -- 192 EUR a mettre de cote le 28 -- etait une MOYENNE :
+     les courses se font le samedi, et 52 samedis / 12 = 4,33 par mois. Une periode du 28
+     au 27 en compte 4 ou 5 ; avec 5 (28 nov. -> 27 dec. 2026), il ne reste qu'environ
+     158 EUR. Poser 192 EUR le 28 aurait donc laisse le compte court avant le 27.
+     D'ou deux gestes : le 28, un montant SUR -- ce que meme une periode a 5 samedis laisse,
+     arrondi a la dizaine en dessous ; le 27, le reste, quand le mois est fini et qu'on sait
+     ce qu'il a vraiment coute. Tout se recalcule depuis les charges fixes et les prix
+     releves : si une charge change, le plan suit. */
+  var REVENU_MOIS = {montant:1400, jour:28, depuis:'2026-09-28'};
+  /* Les amandes n'ont pas de prix releve (PRIX, plus haut) : la liste de courses le dit et
+     les sort de son total. Un plan d'epargne sans elles serait optimiste d'environ 25 EUR par
+     mois -- on les compte ici a 13 EUR/kg, affiche comme estimation, jusqu'a son releve. */
+  var PRIX_ESTIMES = {amandes:{eur:13, par:'kg'}};
+  /* Quand et comment part chaque charge. Les trois du proprietaire partent en UN virement :
+     le contrat d'eau, d'electricite et de wifi est a son nom. */
+  var ECHEANCES_ARGENT = [
+    {ids:['fc10'], quand:'le 28', action:'Paie le club par carte', detail:'Au club, \u00e0 la s\u00e9ance du jour \u2014 \u00e0 la suivante s\u2019il est ferm\u00e9.', faire:true},
+    {cagnotte:true},
+    {ids:['fc1','fc5','fc2'], quand:'le 1er', action:'Un seul virement au propri\u00e9taire', faire:true, proprio:true},
+    {ids:['fc8'], quand:'le 2', action:'iCloud', detail:'Pr\u00e9lev\u00e9 par Apple sur la carte Wise.'},
+    {ids:['fc9'], quand:'le 4', action:'Claude Pro', detail:'Pr\u00e9lev\u00e9 par Apple sur la carte Wise.'},
+    {ids:['fc3'], quand:'le 5', action:'Bouygues', detail:'Pr\u00e9l\u00e8vement sur Wise.'},
+    {ids:['fc6'], quand:'quand vide', action:'Recharge les transports', detail:'Le jour o\u00f9 la carte est vide.', faire:true},
+    {ids:['fc7'], quand:'1 fois', action:'Coiffeur', detail:'Un samedi dans le mois.', faire:true},
+    {courses:true},
+    {balayage:true}
+  ];
+  function moisArgent(iso){
+    var parId = {}; fixedCharges.forEach(function(c){ parId[c.id] = c; });
+    var cs = coutSemaine(), sem = cs.total, estimes = [];
+    cs.manque.forEach(function(label){
+      var cle = CLE_PRIX[label], p = PRIX_ESTIMES[cle], b = BESOIN_SEMAINE[cle];
+      if(p && b){ sem += (b / 1000) * p.eur; estimes.push({label: label, prix: p, besoin: b}); }
+    });
+    var fixes = fixedChargesTotal();
+    var libre = REVENU_MOIS.montant - fixes;                 /* ce qui reste pour les courses et la cagnotte */
+    var cagnotte = Math.max(0, Math.floor((libre - 5 * sem) / 10) * 10);
+    /* La periode : du dernier 28 passe (jamais avant le premier virement) au 27 suivant. */
+    var periode = function(debut){
+      var d = new Date(debut + 'T00:00:00');
+      var fin = localISO(new Date(d.getFullYear(), d.getMonth() + 1, REVENU_MOIS.jour - 1));
+      var n = 0;
+      for(var x = debut; x <= fin; x = isoDecale(x, 1)) if(dowDe(x) === 6) n++;
+      return {debut: debut, fin: fin, samedis: n, balayage: libre - n * sem - cagnotte};
+    };
+    var j = new Date(iso + 'T00:00:00');
+    var debut = localISO(new Date(j.getFullYear(), j.getMonth() - (j.getDate() < REVENU_MOIS.jour ? 1 : 0), REVENU_MOIS.jour));
+    if(debut < REVENU_MOIS.depuis) debut = REVENU_MOIS.depuis;
+    var cette = periode(debut), prochaine5 = null, x = debut;
+    for(var k = 0; k < 13 && !prochaine5; k++){
+      var pk = periode(x);
+      if(pk.samedis === 5) prochaine5 = pk;
+      x = isoDecale(pk.fin, 1);
+    }
+    /* Le fil du mois, avec le solde apres chaque geste. */
+    var solde = REVENU_MOIS.montant, lignes = [{quand:'le 28', action:'Virement de ta m\u00e8re sur Wise', detail:'V\u00e9rifie qu\u2019il est arriv\u00e9 avant tout le reste.', montant: REVENU_MOIS.montant, solde: solde, plus:true, faire:true}];
+    var vus = {};
+    ECHEANCES_ARGENT.forEach(function(e){
+      var l;
+      if(e.cagnotte) l = {quand:'le 28', action:'Mets de c\u00f4t\u00e9 dans la cagnotte', detail:'Le montant s\u00fbr, m\u00eame les mois \u00e0 5 samedis.', montant: cagnotte, cagnotte:true, faire:true};
+      else if(e.courses) l = {quand:'le samedi', action:'Courses \u00d7 ' + cette.samedis, detail:'\u2248 ' + eur(sem) + ' par samedi.', montant: cette.samedis * sem, faire:true};
+      else if(e.balayage) l = cette.balayage >= 0
+        ? {quand:'le 27', action:'Balaye le reste vers la cagnotte', detail:'Ce qui reste sur le compte la veille du virement.', montant: cette.balayage, cagnotte:true, faire:true}
+        /* Des charges qui depassent le virement : le fil le dit au lieu d'afficher un solde
+           negatif, et le trou se comble depuis la cagnotte. */
+        : {quand:'le 27', action:'Il manque de quoi finir la p\u00e9riode', detail:'Les charges d\u00e9passent le virement : comble depuis la cagnotte.', montant: cette.balayage, cagnotte:true, plus:true, faire:true};
+      else {
+        var cs2 = e.ids.map(function(id){ vus[id] = true; return parId[id]; }).filter(Boolean);
+        if(!cs2.length) return;
+        var m = cs2.reduce(function(t, c){ return t + montantMensuel(c); }, 0);
+        var detail = e.detail || '';
+        if(e.proprio) detail = cs2.map(function(c){ return c.label + ' ' + Math.round(montantMensuel(c) * 100) / 100 + ' \u20ac'; }).join(' + ') + '.';
+        else if(!e.detail) detail = cs2.map(function(c){ return c.label; }).join(', ');
+        l = {quand: e.quand, action: e.action, detail: detail, montant: m, faire: !!e.faire};
+      }
+      solde -= l.montant; l.solde = solde;
+      lignes.push(l);
+    });
+    /* Une charge qu'il ajoutera lui-meme n'a pas de date connue : elle passe quand meme
+       dans le fil, juste avant les courses, pour que le solde reste juste. */
+    var autres = fixedCharges.filter(function(c){ return !vus[c.id]; });
+    if(autres.length){
+      var ma = autres.reduce(function(t, c){ return t + montantMensuel(c); }, 0);
+      var pos = lignes.length - 2;
+      lignes.splice(pos, 0, {quand:'\u00e0 sa date', action: autres.map(function(c){ return c.label; }).join(', '), detail:'Charge fixe sans date dans ce plan.', montant: ma, faire:false});
+      solde = REVENU_MOIS.montant;
+      lignes.forEach(function(l, i){ if(i){ solde -= l.montant; } l.solde = solde; });
+    }
+    return {revenu: REVENU_MOIS.montant, fixes: fixes, semaine: sem, estimes: estimes, cagnotte: cagnotte,
+      moyenne: libre - sem * 52 / 12, periode: cette, prochaine5: prochaine5, lignes: lignes};
+  }
+  /* 1 400 et pas 1400 : l'espace fine des milliers, comme partout ailleurs dans la Batcave. */
+  function eurMille(n){ return eur(n).replace(/\B(?=(\d{3})+(?!\d))/g, '\u202f'); }
+  function renderMoisArgent(){
+    var el = document.getElementById('mois-argent');
+    if(!el) return;
+    var a = moisArgent(todayISO), P = a.periode;
+    var jm = function(iso){ return fmtDate(iso); };
+    document.getElementById('ma-periode').textContent = 'du ' + jm(P.debut) + ' au ' + jm(P.fin) + ' \u00b7 ' + P.samedis + ' samedis de courses';
+    var h = '<div class="ma-chiffres">' +
+      '<div class="ma-chiffre cle"><div class="ml">Le 28, dans la cagnotte</div><div class="mv">' + eurMille(a.cagnotte) + '</div><div class="mn">Fixe, chaque mois.</div></div>' +
+      '<div class="ma-chiffre cle"><div class="ml">Le 27, en plus</div><div class="mv">\u2248 ' + eurMille(Math.max(0, P.balayage)) + '</div><div class="mn">Cette p\u00e9riode, ' + P.samedis + ' samedis.' +
+        (a.prochaine5 && a.prochaine5.debut !== P.debut ? ' Du ' + jm(a.prochaine5.debut) + ' au ' + jm(a.prochaine5.fin) + ' (5 samedis) : \u2248 ' + eurMille(Math.max(0, a.prochaine5.balayage)) + '.' : '') + '</div></div>' +
+      '<div class="ma-chiffre"><div class="ml">\u00c9pargne moyenne</div><div class="mv">' + eurMille(a.moyenne) + '</div><div class="mn">Par mois sur l\u2019ann\u00e9e : ' + eurMille(a.moyenne * 12).replace(',00', '') + ' en douze mois.</div></div>' +
+      '</div>';
+    h += '<ol class="ma-fil">' + a.lignes.map(function(l){
+      return '<li' + (l.cagnotte ? ' class="cagnotte"' : '') + '><span class="mq">' + escapeHtml(l.quand) + '</span>' +
+        '<span><b>' + escapeHtml(l.action) + '</b>' + (l.faire ? '' : '<span class="badge">auto</span>') + (l.detail ? '<span class="md">' + escapeHtml(l.detail) + '</span>' : '') + '</span>' +
+        '<span class="mm' + (l.plus ? ' plus' : '') + '">' + (l.plus ? '+' : '\u2212') + eurMille(Math.abs(l.montant)) + '</span>' +
+        '<span class="ms" title="Reste sur le compte">' + eurMille(Math.round(l.solde * 100) / 100 === 0 ? 0 : l.solde) + '</span></li>';
+    }).join('') + '</ol>';
+    h += '<ul class="ma-regles">' +
+      '<li><b>Pas de virement, pas de d\u00e9pense.</b> Tant que les 1 400 \u20ac ne sont pas sur Wise, ni club ni cagnotte.</li>' +
+      '<li><b>La cagnotte ne paie jamais le quotidien.</b> Elle sert au business, et aux impr\u00e9vus.</li>' +
+      '<li><b>Si l\u2019eau et l\u2019\u00e9lectricit\u00e9 d\u00e9passent 70 \u20ac,</b> la diff\u00e9rence sort de la cagnotte, pas des courses. En dessous, le surplus y part le 27.</li>' +
+      '</ul>';
+    h += '<p class="ma-pied">Courses : ' + eurMille(a.semaine) + ' par semaine d\u2019apr\u00e8s tes relev\u00e9s des 20 et 21 septembre' +
+      (a.estimes.length ? ', dont ' + a.estimes.map(function(e){ return e.label.toLowerCase() + ' estim\u00e9es \u00e0 ' + e.prix.eur + ' \u20ac/' + e.prix.par + ' (prix \u00e0 relever)'; }).join(', ') : '') +
+      '. Eau et \u00e9lectricit\u00e9 : 70 \u20ac estim\u00e9s, le vrai montant n\u2019est pas encore connu. Charges fixes : ' + eurMille(a.fixes) + ' par mois.</p>';
+    el.innerHTML = h;
   }
   document.getElementById('tx-add').addEventListener('click', function(){
     var montant = Number(document.getElementById('tx-montant').value);

@@ -38,8 +38,8 @@ console.log('\n== 60) Camemberts Entrées / Dépenses sur la page Budget ==');
     depenses: document.getElementById('budget-pie-depenses').innerText.replace(/\s+/g,' '),
   }));
   ok(/Aucune entrée/.test(empty.entrees), 'camembert Entrées vide → message clair : ' + empty.entrees);
-  /* 25 = iCloud 3 + Claude Pro 22 ; +90 de club depuis le 25 septembre */
-  ok(/Abonnements 115 € · 100%/.test(empty.depenses), 'camembert Dépenses part de la base "Abonnements" (charges fixes par défaut, 115 €) : ' + empty.depenses);
+  /* 25 = iCloud 3 + Claude Pro 22 ; +100 de club depuis le 25 septembre (90 jusqu'au soir) */
+  ok(/Abonnements 125 € · 100%/.test(empty.depenses), 'camembert Dépenses part de la base "Abonnements" (charges fixes par défaut, 125 €) : ' + empty.depenses);
 
   // on ajoute des transactions des deux types, plusieurs catégories
   async function ajouterTx(type, cat, montant){
@@ -69,7 +69,7 @@ console.log('\n== 60) Camemberts Entrées / Dépenses sur la page Budget ==');
   // 4 = Logement/Nourriture/Loisirs ajoutés + la base "Abonnements" (25 €) déjà présente
   ok(after.depensesSlices === 4, '4 parts dans le camembert Dépenses (Logement/Nourriture/Loisirs + base Abonnements) : ' + after.depensesSlices);
   ok(/Shopify/.test(after.entreesTxt) && /800/.test(after.entreesTxt) && /80%/.test(after.entreesTxt), 'légende Entrées correcte (montant + %) : ' + after.entreesTxt);
-  ok(/Logement/.test(after.depensesTxt) && /400/.test(after.depensesTxt) && /56%/.test(after.depensesTxt), 'légende Dépenses correcte (montant + %, triée par montant décroissant) : ' + after.depensesTxt);
+  ok(/Logement/.test(after.depensesTxt) && /400/.test(after.depensesTxt) && /55%/.test(after.depensesTxt), 'légende Dépenses correcte (montant + %, triée par montant décroissant) : ' + after.depensesTxt);
 
   // suppression d'une transaction (Loisirs, la plus récente ajoutée) : le camembert Dépenses
   // doit se recalculer tout seul, sans rester figé sur l'ancien total.
