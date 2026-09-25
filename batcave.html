@@ -17941,6 +17941,17 @@
      repondu, le repli n'est ecrit qu'en local, et le premier instantane remettait le mois entier
      par-dessus -- le detail ne se repliait jamais (vu dans la simulation de cinq ans). */
   MIGRATIONS_DEMARRAGE.push({cle:'batcave-last-entretien', rejouer: function(){
+    /* L'hydratation vient de reecrire le stockage avec l'etat du cloud (mois de sessions, totaux,
+       resumes) : l'etat en memoire date d'avant. Replier depuis la memoire retirait les lignes
+       du jour qui franchissait la limite sans les inscrire au resume -- la serie perdait un jour
+       par jour (vu dans la simulation de cinq ans). On relit donc tout depuis le stockage. */
+    try{
+      sessionsState = chargerFractionne('batcave-sessions');
+      revisionState = chargerFractionne('batcave-revision');
+      projetsState = chargerFractionne('batcave-projets');
+      sportLog = chargerFractionne('batcave-sport-log');
+      resumesState = chargerResumes();
+    }catch(e){}
     var n = 0;
     try{ n = replierVieillesSessions(); }catch(e){}
     try{ n += replierVieuxTotaux(); }catch(e){}

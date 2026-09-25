@@ -12,7 +12,7 @@ import { chromium } from 'playwright';
 import { decalage } from './donnees-fictives.mjs';
 const URL = 'http://127.0.0.1:8199/host.html';
 const FIN = process.argv[2] || '2031-09-25';
-const DEBUT = '2026-09-26';
+const DEBUT = process.env.DEBUT_SIM || '2026-09-26';
 const browser = await chromium.launch();
 const ctx = await browser.newContext({ viewport: {width: 1440, height: 900}, timezoneId: 'Europe/Madrid', locale: 'fr-FR' });
 const page = await ctx.newPage();
@@ -41,6 +41,11 @@ await ctx.addInitScript(() => {
   };
   window.claude = { use: (n) => Promise.resolve(n === 'db' ? db : null) };
 });
+if(process.env.GRAINE){
+  const g = JSON.parse((await import('fs')).readFileSync(process.env.GRAINE, 'utf8'));
+  Object.keys(g).forEach(k => cloud.set(k, {v: g[k], d: 'autre', t: 1}));
+  await ctx.addInitScript(x => { if(!localStorage.getItem('graine-posee')){ localStorage.setItem('graine-posee', '1'); Object.keys(x).forEach(k => localStorage.setItem(k, JSON.stringify(x[k]))); } }, g);
+}
 const erreurs = [];
 page.on('pageerror', e => erreurs.push(e.message));
 page.on('dialog', d => d.dismiss().catch(() => {}));
@@ -166,6 +171,10 @@ async function controle(iso, k){
   console.log('── ' + iso + ' (jour ' + k + ') · local ' + km + ' Kcar · ' + e.cles + ' clés · cloud ' + cloud.size + ' docs (plus gros ' + plusGros.id.replace('batcave-', '') + ' ' + Math.round(plusGros.o / 1024) + ' Kio) · contrôle ' + Math.round((Date.now() - avant) / 1000) + ' s');
   console.log('     plus grosses clés : ' + e.gros);
   console.log('     score « ' + e.score + ' » · ' + e.serie);
+  /* la serie ne perd jamais de jours : la simulation travaille chaque jour */
+  const serie = Number(((e.serie || '').match(/Série\s*(\d+)/) || [])[1]);
+  if(!isNaN(serie) && controle.prec){ const attendu = controle.prec.serie + (k - controle.prec.k) - 1; ok(serie >= attendu, iso + ' : la série ne perd aucun jour (' + controle.prec.serie + ' → ' + serie + ', au moins ' + attendu + ')'); }
+  if(!isNaN(serie)) controle.prec = {serie, k};
   ok(e.car < 2.1 * 1024 * 1024, iso + ' : stockage local sous le seuil d’alerte iPhone (' + km + ' Kcar)');
   ok(!e.defauts.length || e.defauts.every(d => /^exercice|^sauvegarde/.test(d)), iso + ' : santé ' + (e.defauts.join(' · ') || 'verte'));
   ok(!viol.length, iso + ' : aucune limite du cloud franchie' + (viol.length ? ' · ' + viol.slice(-3).join(' | ') : ''));
@@ -178,7 +187,7 @@ let k = 0;
 for(let iso = DEBUT; iso <= FIN; iso = plusJ(iso, 1), k++){
   try{ await journee(iso, k); }
   catch(e){ ok(false, iso + ' : journée interrompue — ' + e.message.slice(0, 200)); }
-  if(k % 30 === 0 || ['2027-01-12', '2027-01-25', '2027-03-15', '2027-06-10', '2028-02-29', '2029-01-01'].indexOf(iso) > -1){
+  if(process.env.CHAQUE_JOUR || k % 30 === 0 || ['2027-01-12', '2027-01-25', '2027-03-15', '2027-06-10', '2028-02-29', '2029-01-01'].indexOf(iso) > -1){
     try{ await controle(iso, k); }catch(e){ ok(false, iso + ' : contrôle interrompu — ' + e.message.slice(0, 200)); }
   }
   if(k % 100 === 0) console.log('   … ' + iso + ' · ' + Math.round((Date.now() - t0) / 60000) + ' min écoulées');
