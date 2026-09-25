@@ -73,7 +73,7 @@ console.log('\n═══ 3. Le type « espagnol » hérité d\'anciennes session
   const t = await plan(fr);
   const rev = faitDe(t, 'Révision');
   ok(rev === '0', 'une session au vieux type « espagnol » n\'entre PAS dans la révision (révision = ' + rev + ')');
-  const lignes = await fr.evaluate(()=>JSON.parse(localStorage.getItem('batcave-sessions')||'[]'));
+  const lignes = await fr.evaluate(()=>JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-sessions')||'[]'));
   ok(lignes.length === 1 && lignes[0].type === 'projet' && /^Español/.test(lignes[0].label || ''),
      'et elle a été réécrite au format actuel : ' + lignes.map(x=>x.type + ' / ' + x.label).join(', '));
   await ctx.close();
