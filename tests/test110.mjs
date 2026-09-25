@@ -22,35 +22,33 @@ async function ouvrir(quand, seed, vp){
 const pageActive = fr => fr.evaluate(() => [...document.querySelectorAll('.page.active')].map(p => p.dataset.page).join(','));
 const teteActive = fr => fr.evaluate(() => (document.querySelector('.nav-btn.active') || {dataset:{}}).dataset.page);
 
-console.log('\n== 410) Six entrées, le reste en sous-onglets ==');
+console.log('\n== 410) Neuf onglets, Système en pastille sous Semaine ==');
 {
+  /* Les six entrées du lot 51 ont été essayées puis retirées (25 septembre) : la barre
+     d'avant reste, seule la carte du Système s'ajoute, en pastille sous Semaine. */
   const { ctx, page, fr } = await ouvrir('2026-09-28T10:00:00+02:00');
   const r = await fr.evaluate(() => ({
     visibles: [...document.querySelectorAll('.nav-btn[data-page]')].filter(b => !b.hidden).map(b => b.textContent.trim()),
-    labels: [...document.querySelectorAll('nav > .nav-label')].filter(l => getComputedStyle(l).display !== 'none').length,
-    boutique: [...document.querySelectorAll('.sous-onglet[data-sousnav="business"]')].every(b => b.hidden)
+    labels: [...document.querySelectorAll('nav > .nav-label')].filter(l => getComputedStyle(l).display !== 'none').length
   }));
-  ok(r.visibles.join(' · ') === 'Aujourd’hui · Fac · Suivi · Argent · Corps · Table', 'la barre : ' + r.visibles.join(' · '));
-  ok(r.labels === 0, 'plus d\'intitulé de section orphelin dans la barre latérale');
-  ok(r.boutique, 'sans boutique Shopify, la pastille Boutique reste cachée');
+  ok(r.visibles.join(' · ') === 'Tableau de bord · Calendrier · Études · Semaine · Budget · Habitudes · Sport · Corps · Table', 'la barre : ' + r.visibles.join(' · '));
+  ok(r.labels === 3, 'les trois intertitres sont là');
   for(const [bouton, page2, tete, pastilles] of [
-    ['sport', 'sport', 'habitudes', 'Habitudes|Sport|Corps & santé'],
-    ['calendrier', 'calendrier', 'dashboard', 'Aujourd’hui|Calendrier'],
-    ['coran', 'coran', 'bilan', 'La semaine|Objectifs|Coran & Duaas|Système'],
-    ['courses', 'courses', 'repas', 'Repas|Meal prep|Courses']
+    ['coran', 'coran', 'habitudes', 'Habitudes|Coran & Duaas'],
+    ['courses', 'courses', 'repas', 'Repas|Meal prep|Courses'],
+    ['systeme', 'systeme', 'bilan', 'La semaine|Objectifs|Système']
   ]){
     await fr.evaluate(b => document.querySelector('.nav-btn[data-page="' + b + '"]').click(), bouton);
     await page.waitForTimeout(150);
     const p = await pageActive(fr), t = await teteActive(fr);
     const sn = await fr.evaluate(pg => [...document.querySelectorAll('.page[data-page="' + pg + '"] > .sous-nav .sous-onglet')].filter(b => !b.hidden).map(b => b.textContent + (b.classList.contains('on') ? '*' : '')).join('|'), page2);
-    ok(p.split(',').indexOf(page2) > -1 && t === tete && sn.replace('*', '') === pastilles && sn.indexOf(bouton === 'coran' ? 'Coran & Duaas*' : '') > -1,
-       bouton + ' : page ' + p + ', entrée « ' + t + ' » allumée, pastilles ' + sn);
+    ok(p.split(',').indexOf(page2) > -1 && t === tete && sn.replace('*', '') === pastilles && /\*/.test(sn),
+       bouton + ' : page ' + p + ', onglet « ' + t + ' » allumé, pastilles ' + sn);
   }
   const dir = await fr.evaluate(() => getComputedStyle(document.querySelector('.page.active > .sous-nav')).flexDirection);
   ok(dir === 'row', 'sur grand écran, les pastilles sont en ligne (' + dir + ')');
-  /* 2 au clavier : la deuxième entrée visible, Fac */
   await page.keyboard.press('2'); await page.waitForTimeout(150);
-  ok((await pageActive(fr)).split(',')[0] === 'etudes', 'la touche 2 ouvre Fac (' + await pageActive(fr) + ')');
+  ok((await pageActive(fr)).split(',')[0] === 'calendrier', 'la touche 2 ouvre le Calendrier (' + await pageActive(fr) + ')');
   await ctx.close();
 }
 
@@ -132,7 +130,7 @@ console.log('\n== 420) La carte du système ==');
       w: cv.width, h: cv.height, noeuds: window.__bcSysteme.noeuds().length, px: [px[0], px[1], px[2]], note: document.getElementById('systeme-note').textContent,
       sommeil: d.satellites[0].sous.map(x => x.val).join(' / ') };
   });
-  ok(r.actif && r.tete === 'bilan', 'l\'onglet Système s\'ouvre sous Suivi');
+  ok(r.actif && r.tete === 'bilan', 'l\'onglet Système s\'ouvre sous Semaine');
   ok(r.sats.join(',') === 'sommeil,fac,corps,deen,argent,table', 'six satellites : ' + r.sats.join(', '));
   ok(r.sous.join(',') === '3,4,4,2,2,3' && r.fils === 5, 'sous-satellites ' + r.sous.join('/') + ', ' + r.fils + ' fils');
   ok(r.centre === 'en cours : Étudier en avance', 'la planète dit le bloc en cours : ' + r.centre);

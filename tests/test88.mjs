@@ -406,22 +406,21 @@ console.log('\n== 311) Neuf onglets, et rien qui devient inatteignable ==');
   const v = await fr.evaluate(() => ({
     visibles: [...document.querySelectorAll('.nav-btn[data-page]')].filter(b => !b.hidden).map(b => b.dataset.page),
     toutes: [...document.querySelectorAll('.nav-btn[data-page]')].map(b => b.dataset.page),
-    groupes: [...document.querySelectorAll('.nav-label')].filter(l => getComputedStyle(l).display !== 'none').map(l => l.textContent),
+    groupes: [...document.querySelectorAll('.nav-label')].map(l => l.textContent),
     rangees: document.querySelectorAll('.sous-nav').length,
     pastilles: document.querySelectorAll('.sous-onglet').length
   }));
-  /* lot 51 : six entrées ; Calendrier, Sport, Corps & santé, Coran, Objectifs, Meal prep,
-     Courses, Boutique et Système sont des sous-onglets. Plus d'intertitres : six entrées
-     n'ont rien à séparer. Cinq groupes : 2 + 3 + 3 + 2 + 4 pages = 14 rangées, 42 pastilles. */
-  ok(v.visibles.join(' ') === 'dashboard etudes bilan budget habitudes repas', 'six entrées dans la barre : ' + v.visibles.join(' '));
-  ok(v.toutes.length === 19, 'mais les dix-neuf boutons restent dans le DOM (' + v.toutes.length + ') — rien n\'a été supprimé');
-  ok(v.groupes.length === 0, 'plus d\'intertitre visible (' + (v.groupes.join(' | ') || 'aucun') + ')');
-  ok(v.rangees === 14 && v.pastilles === 42, 'quatorze pages groupées, quarante-deux pastilles (' + v.rangees + '/' + v.pastilles + ')');
+  ok(v.visibles.length === 9, 'neuf boutons dans la barre : ' + v.visibles.join(' '));
+  ok(v.toutes.length === 19, 'mais les dix-neuf boutons restent dans le DOM (' + v.toutes.length + ', Système compris) — rien n\'a été supprimé');
+  ok(v.groupes.join(' | ') === 'Aujourd’hui | Le travail | Le corps',
+     'et les trois intertitres veulent dire quelque chose : ' + v.groupes.join(' | '));
+  /* lot 52 : la carte du Système en pastille sous Semaine — huit pages groupées, 2+2+3+3+3+3+3+3 = 22 pastilles */
+  ok(v.rangees === 8 && v.pastilles === 22, 'huit pages groupées, vingt-deux pastilles (' + v.rangees + '/' + v.pastilles + ')');
 
   /* Chaque page reste atteignable par son bouton caché : c'est ce qui fait que les liens
      internes, les raccourcis et tout le reste continuent de marcher. Et c'est le bouton de
      TÊTE qui s'allume dans la barre, sinon on croit n'avoir pas changé de page. */
-  for (const [pg, tete] of [['coran','bilan'], ['prep','repas'], ['courses','repas'], ['objectifs','bilan'], ['sport','habitudes'], ['calendrier','dashboard']]) {
+  for (const [pg, tete] of [['coran','habitudes'], ['prep','repas'], ['courses','repas'], ['objectifs','bilan'], ['systeme','bilan']]) {
     const r = await fr.evaluate(x => {
       document.querySelector('.nav-btn[data-page="' + x + '"]').click();
       return { seule: [...document.querySelectorAll('.page.active')].map(s => s.dataset.page),
@@ -455,13 +454,13 @@ console.log('\n== 311) Neuf onglets, et rien qui devient inatteignable ==');
   });
   ok(past.pages === 'courses' && past.tete === 'repas', 'la pastille « Courses » ouvre Courses et garde Table allumé');
 
-  /* Six entrées visibles (lot 51) : les chiffres 1 à 6 couvrent toute la barre. */
+  /* Neuf onglets visibles : les chiffres 1 à 9 couvrent enfin toute la barre. */
   const clav = await fr.evaluate(() => {
     const t = k => { document.dispatchEvent(new KeyboardEvent('keydown', {key:k, bubbles:true}));
                      return [...document.querySelectorAll('.page.active')].map(s => s.dataset.page)[0]; };
-    return [t('1'), t('6')];
+    return [t('1'), t('9')];
   });
-  ok(clav[0] === 'dashboard' && clav[1] === 'repas', 'les touches 1 et 6 vont du premier au dernier onglet : ' + clav.join(' → '));
+  ok(clav[0] === 'dashboard' && clav[1] === 'repas', 'les touches 1 et 9 vont du premier au dernier onglet : ' + clav.join(' → '));
   await ctx.close();
 }
 

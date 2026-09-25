@@ -133,8 +133,6 @@
   .brand-text .sub{font-family:var(--font-mono); font-size:9.5px; letter-spacing:0.14em; color:var(--cyan-dim); text-transform:uppercase; margin-top:3px;}
 
   nav{display:flex; flex-direction:column; gap:2px;}
-  /* six entrees depuis le lot 51 : les intitules de section n'ont plus rien a separer */
-  nav > .nav-label{display:none;}
   .nav-label{font-family:var(--font-mono); font-size:10px; letter-spacing:0.15em; color:var(--ink-faint); text-transform:uppercase; padding:0 10px; margin-bottom:8px;}
   .nav-btn{
     display:flex; align-items:center; gap:10px;
@@ -434,7 +432,7 @@
   .sous-onglet.on{background:var(--cyan); border-color:var(--cyan); color:#04151a; font-weight:600;}
   /* grand ecran : les pastilles montent dans la marge haute de la page (44 px vides), pour
      ne pas pousser le tableau de bord d'une ligne (test14 : la zone « agir » en 1,5 ecran) */
-  @media (min-width:781px){ .sous-nav{margin:-30px 0 10px;} .sous-onglet{padding:6px 13px; min-height:30px;} .page[data-page="dashboard"] > .sous-nav{margin:-38px 0 8px;} }
+  @media (min-width:781px){ .sous-nav{margin:-30px 0 10px;} .sous-onglet{padding:6px 13px; min-height:30px;} }
   .btn-pilote{min-width:44px; padding-left:0; padding-right:0; font-size:17px;}
   @media (max-width:560px){ .sous-onglet{padding:11px 14px; min-height:44px;} }
   @media print{ .sous-nav{display:none;} }
@@ -1622,11 +1620,12 @@
     </div>
 
     <nav aria-label="Navigation">
+      <span class="nav-label">Aujourd’hui</span>
       <button class="nav-btn active" data-page="dashboard" data-dom="etudes" data-pages="dashboard taches" aria-current="page">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>
-        Aujourd’hui
+        Tableau de bord
       </button>
-      <button class="nav-btn" data-page="calendrier" data-dom="etudes" hidden>
+      <button class="nav-btn" data-page="calendrier" data-dom="etudes">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/><path d="M12 13v4l3 2"/></svg>
         Calendrier
       </button>
@@ -1637,7 +1636,7 @@
       <span class="nav-label">Le travail</span>
       <button class="nav-btn" data-page="etudes" data-dom="etudes" data-pages="etudes agenda">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 9l10-5 10 5-10 5-10-5z"/><path d="M6 11.5V17c0 1.5 3 3 6 3s6-1.5 6-3v-5.5"/></svg>
-        Fac
+        Études
       </button>
       <button class="nav-btn" data-page="agenda" data-dom="etudes" hidden>
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/><circle cx="8.5" cy="14" r="1.4" fill="currentColor" stroke="none"/><circle cx="12" cy="14" r="1.4" fill="currentColor" stroke="none"/><circle cx="15.5" cy="14" r="1.4" fill="currentColor" stroke="none"/></svg>
@@ -1645,7 +1644,7 @@
       </button>
       <button class="nav-btn" data-page="bilan" data-dom="suivi" data-pages="bilan insights">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 15l4-5 3 3 5-7"/></svg>
-        Suivi
+        Semaine
       </button>
       <button class="nav-btn" data-page="insights" data-dom="suivi" hidden>
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7c.6.4 1 1.1 1 1.8v.5h6v-.5c0-.7.4-1.4 1-1.8A7 7 0 0 0 12 2z"/></svg>
@@ -1661,7 +1660,7 @@
       </button>
       <button class="nav-btn" data-page="budget" data-dom="argent">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="13" rx="2"/><path d="M2 10h20"/><path d="M6 15h4"/></svg>
-        Argent
+        Budget
       </button>
       <button class="nav-btn" data-page="business" data-dom="argent" id="nav-business" hidden>
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21V9l9-6 9 6v12"/><path d="M9 21v-6h6v6"/></svg>
@@ -1670,19 +1669,19 @@
       <span class="nav-label">Le corps</span>
       <button class="nav-btn" data-page="habitudes" data-dom="corps">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l2.5 6.5L21 11l-6.5 2.5L12 20l-2.5-6.5L3 11l6.5-2.5z"/></svg>
-        Corps
+        Habitudes
       </button>
       <button class="nav-btn" data-page="coran" hidden data-dom="foi">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v17H6.5A2.5 2.5 0 0 0 4 21.5v-17z"/><path d="M4 4.5V19a2.5 2.5 0 0 0 2.5 2.5H20"/></svg>
         Coran &amp; Duaas
       </button>
-      <button class="nav-btn" data-page="sport" data-dom="corps" hidden>
+      <button class="nav-btn" data-page="sport" data-dom="corps">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6.5 6.5l11 11"/><path d="M3 3l4 4M17 17l4 4"/><path d="M14.5 3.5l6 6M3.5 14.5l6 6"/><rect x="1.5" y="8.5" width="4" height="7" rx="1" transform="rotate(-45 3.5 12)"/><rect x="18.5" y="8.5" width="4" height="7" rx="1" transform="rotate(-45 20.5 12)"/></svg>
         Sport
       </button>
-      <button class="nav-btn" data-page="addictions" data-dom="corps" data-pages="addictions vie" hidden>
+      <button class="nav-btn" data-page="addictions" data-dom="corps" data-pages="addictions vie">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
-        Corps & santé
+        Corps
       </button>
       <button class="nav-btn" data-page="vie" data-dom="corps" hidden>
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 1 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>
@@ -1795,7 +1794,7 @@
           <button class="btn btn-pilote" id="dash-pilote" type="button" aria-label="Maintenant, en plein écran" title="Maintenant, en plein écran : l’heure, le bloc en cours, le temps qui reste, un bouton (M)">⛶</button>
           <p class="dial-serie" id="dash-serie" hidden></p>
         </div>
-        <p class="focus-kb"><b>P</b> lance le Pomodoro du bloc · <b>C</b> ouvre la clôture · <b>H</b> coche l’habitude suivante · <b>M</b> plein écran · <b>1-6</b> changent d’onglet</p>
+        <p class="focus-kb"><b>P</b> lance le Pomodoro du bloc · <b>C</b> ouvre la clôture · <b>H</b> coche l’habitude suivante · <b>M</b> plein écran · <b>1-9</b> changent d’onglet</p>
       </div>
 
       <!-- ---------- MUR D'ÉCRANS : plan | réacteur | habitudes ----------
@@ -4475,15 +4474,13 @@
      Les boutons des membres restent dans le DOM, caches : un clic direct sur le bouton
      d'une page (raccourci, lien interne, test) continue de fonctionner, et selectionne la
      bonne pastille en remettant l'etat actif sur le bouton de tete. */
-  /* Lot 51 : SIX entrees, comme une application -- Aujourd'hui, Fac, Suivi, Argent, Corps,
-     Table -- et tout le reste en sous-onglets. Sur telephone les six tiennent a l'ecran
-     sans defiler. */
+  /* Lot 51 (les six entrees) a ete essaye puis retire le 25 septembre : « trop simplifie,
+     j'aimais bien le layout d'avant ». Neuf onglets, trois groupes, comme depuis le 19
+     septembre ; seule la carte du Systeme (lot 52) s'ajoute, en pastille sous Semaine. */
   var GROUPES_NAV = [
-    {tete:'dashboard', membres:[['dashboard','Aujourd\u2019hui'], ['calendrier','Calendrier']]},
-    {tete:'habitudes', membres:[['habitudes','Habitudes'], ['sport','Sport'], ['addictions','Corps & santé']]},
+    {tete:'habitudes', membres:[['habitudes','Habitudes'], ['coran','Coran & Duaas']]},
     {tete:'repas',     membres:[['repas','Repas'], ['prep','Meal prep'], ['courses','Courses']]},
-    {tete:'budget',    membres:[['budget','Budget'], ['business','Boutique']]},
-    {tete:'bilan',     membres:[['bilan','La semaine'], ['objectifs','Objectifs'], ['coran','Coran & Duaas'], ['systeme','Système']]}
+    {tete:'bilan',     membres:[['bilan','La semaine'], ['objectifs','Objectifs'], ['systeme','Système']]}
   ];
   function groupeDe(page){
     for(var i = 0; i < GROUPES_NAV.length; i++){
@@ -17348,9 +17345,8 @@
     return true;
   }
   function majOngletBusiness(){
-    /* la Boutique est un sous-onglet d'Argent : sa pastille n'apparait qu'avec une boutique */
-    var on = boutiqueActive();
-    document.querySelectorAll('.sous-onglet[data-sousnav="business"]').forEach(function(p){ p.hidden = !on; });
+    var b = document.getElementById('nav-business');
+    if(b) b.hidden = !boutiqueActive();
   }
   function retenirBoutique(p){
     if(!p || !p.domain) return;
