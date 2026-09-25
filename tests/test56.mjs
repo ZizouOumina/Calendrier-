@@ -59,7 +59,8 @@ const DONNEES = {
 
 console.log('\n== 200) Depuis l\'appli : tout est effacé ici et dans le cloud, la configuration reste ==');
 {
-  const { ctx, fr, page } = await ouvrir(MARDI, { local: DONNEES, mock: { cloud: Object.assign({}, DONNEES) } });
+  /* lot 55 : une archive mensuelle ne vit qu'au cloud ; le nouveau depart doit l'effacer aussi */
+  const { ctx, fr, page } = await ouvrir(MARDI, { local: DONNEES, mock: { cloud: Object.assign({}, DONNEES, {'batcave-archive-2026-06': {'batcave-journal-2026-06-10': {sommeil: '7', notes: 'vieille journée'}}}) } });
   ok((await local(fr, 'batcave-taches')).length === 1, 'les données de test sont là avant');
   await fr.evaluate(() => { document.querySelector('.backup-trigger').click(); });
   await page.waitForTimeout(100);
@@ -76,6 +77,7 @@ console.log('\n== 200) Depuis l\'appli : tout est effacé ici et dans le cloud, 
   const gardes = ['batcave-habits','batcave-fixed-charges','batcave-examens','batcave-pomodial-importees'];
   ok(gardes.every(k => c[k]), 'habitudes, charges fixes, examens et suivi PomoDial gardés dans le cloud' + (gardes.filter(k => !c[k]).length ? ' — manque ' + gardes.filter(k => !c[k]).join(', ') + ' · clés cloud : ' + Object.keys(c).join(' ') : ''));
   ok(c['batcave-reinit'] && c['batcave-reinit'].id && c['batcave-reinit'].date === '2026-09-08', 'le marqueur de nouveau départ est écrit dans le cloud');
+  ok(!c['batcave-archive-2026-06'], 'l\'archive mensuelle, qui ne vit qu\'au cloud, est effacée elle aussi (sinon d\'anciennes journées revenaient)');
   /* Les objectifs de septembre et du trimestre repartent du 8 : debut deplace, cibles
      recalculees sur la grille des jours restants. Cette grille ne prevoit rien avant le
      15 septembre, premier jour du programme : les cibles ne comptent donc que du 15 au

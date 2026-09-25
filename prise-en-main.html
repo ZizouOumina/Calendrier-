@@ -1,32 +1,32 @@
 <title>Prise en main de la Batcave</title>
 <meta name="description" content="Tout ce avec quoi se familiariser : la Batcave onglet par onglet, le sport, la nutrition, Anki, les projets Claude, les dossiers, les routines et les connecteurs, avec le moment où chaque chose sert.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@700&family=Barlow:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Epilogue:wght@600;700;800&family=Karla:ital,wght@0,400;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
   :root{
-    --bg:#f3f5f7; --paper:#ffffff; --paper-2:#e9eef2; --line:#d3dbe2; --line-soft:#e3e9ee;
-    --ink:#14202b; --ink-2:#4a5b6a; --ink-3:#7b8b98;
-    --accent:#0e7c8c; --accent-ink:#0a5f6c; --accent-soft:#d9f0f3;
+    --bg:#f1eee7; --paper:#fbfaf6; --paper-2:#efebe2; --line:#d9d3c6; --line-soft:#e7e2d8;
+    --ink:#1f1d19; --ink-2:#57534b; --ink-3:#6a655b;
+    --accent:#8a5f12; --accent-ink:#6b4a0e; --accent-soft:#f3e8d2;
     --now:#b8541c; --now-soft:#fbe9dd; --later:#5b6b7a; --later-soft:#e6ebef;
     --done:#2f8f5b;
-    --display:'Bebas Neue','Arial Narrow',Impact,sans-serif;
+    --display:'Rajdhani','Arial Narrow',sans-serif;
     --body:'Barlow','Helvetica Neue',Arial,sans-serif;
     --mono:'IBM Plex Mono','SFMono-Regular',Menlo,monospace;
   }
   @media (prefers-color-scheme: dark){
     :root:not([data-theme="light"]){
-      --bg:#0b1219; --paper:#111b25; --paper-2:#172330; --line:#243544; --line-soft:#1c2a37;
-      --ink:#e2ecf2; --ink-2:#a3b4c2; --ink-3:#6f8292;
-      --accent:#3fc7d9; --accent-ink:#7ddbe8; --accent-soft:#12333b;
+      --bg:#191b1e; --paper:#212428; --paper-2:#2a2e33; --line:#3a4048; --line-soft:#2d3137;
+      --ink:#ede7da; --ink-2:#aca597; --ink-3:#a8a192;
+      --accent:#d9a84e; --accent-ink:#ecc57a; --accent-soft:#2e2a22;
       --now:#f0935a; --now-soft:#3a2416; --later:#93a4b3; --later-soft:#1d2a36;
       --done:#4fc07f;
     }
   }
   :root[data-theme="dark"]{
-    --bg:#0b1219; --paper:#111b25; --paper-2:#172330; --line:#243544; --line-soft:#1c2a37;
-    --ink:#e2ecf2; --ink-2:#a3b4c2; --ink-3:#6f8292;
-    --accent:#3fc7d9; --accent-ink:#7ddbe8; --accent-soft:#12333b;
+    --bg:#191b1e; --paper:#212428; --paper-2:#2a2e33; --line:#3a4048; --line-soft:#2d3137;
+    --ink:#ede7da; --ink-2:#aca597; --ink-3:#a8a192;
+    --accent:#d9a84e; --accent-ink:#ecc57a; --accent-soft:#2e2a22;
     --now:#f0935a; --now-soft:#3a2416; --later:#93a4b3; --later-soft:#1d2a36;
     --done:#4fc07f;
   }
@@ -204,7 +204,7 @@
 
 <div class="wrap">
   <aside class="side">
-    <div class="brand"><span class="t">Prise en main</span><span class="s">La Batcave · 25 sept. 2026 · v6.6</span></div>
+    <div class="brand"><span class="t">Prise en main</span><span class="s">La Batcave · 25 sept. 2026 · v6.7</span></div>
     <div class="progress"><div class="n"><span id="p-done">0</span><small>/ <span id="p-total">0</span> vus</small></div><div class="bar"><i id="p-bar"></i></div></div>
     <div class="filters" role="group" aria-label="Filtrer par moment">
       <button type="button" data-f="all" aria-pressed="true">Tout</button>
@@ -319,6 +319,7 @@
         <div class="item" data-w="now"><input type="checkbox" id="c-bc-42"><label class="ti" for="c-bc-42">La santé de la Batcave</label><p class="tx">Un relevé <code>SANTÉ</code> s'allume dans la barre seulement en cas de défaut : sauvegarde de plus de 3 jours, données trop lourdes, incohérence, exercice de restauration dû, clôture oubliée, migration manquante. Un clic : le détail, avec quoi faire. Sur un appareil vide, « Reprendre depuis Drive » en un geste ; et chaque semaine un <b>plan de secours en texte</b> (plan-batcave-AAAA-MM-JJ.txt) part dans Drive, au cas où.</p><span class="tag now">Aujourd'hui</span></div>
         <div class="item" data-w="now"><input type="checkbox" id="c-bc-43"><label class="ti" for="c-bc-43">Annuler, et les saisies impossibles</label><p class="tx">Après une clôture, une série ou une coche, le toast porte un bouton <b>Annuler</b> qui défait tout le geste d'un coup. Une valeur absurde (25 h de sommeil, 700 kg, 250 reps) est refusée, le curseur revient sur le champ. Sur iPhone, chaque écran monte du bas ; un balayage vers le bas le ferme. Le bouton de thème a un quatrième cran : ⚫ pur noir, pour le lit.</p><span class="tag now">Aujourd'hui</span></div>
         <div class="item" data-w="now"><input type="checkbox" id="c-bc-44"><label class="ti" for="c-bc-44">« Demain » : le plan du lendemain à la clôture</label><p class="tx">Quand tu valides la clôture, l'écran suivant montre <b>demain</b> : la grille heure par heure (le sport et le combat en gras), si c'est une journée de combat, sans cours ou saisie à la main, puis lever, coucher, eau à boire et les échéances du jour. Aussi par le bouton <b>Demain →</b> du Plan du jour, ou la touche <b>D</b>. Rien à saisir : tu te couches en sachant à quelle heure tu te lèves.</p><span class="tag now">Aujourd'hui</span></div>
+        <div class="item" data-w="now"><input type="checkbox" id="c-bc-45"><label class="ti" for="c-bc-45">Cinq ans sans y penser</label><p class="tx">La Batcave range seule son vieux détail : les blocs de plus de quatre mois se résument dans les totaux du jour, les séries de sport et les totaux de plus de 13 mois en une ligne par mois ou par jour, les habitudes des années passées en une ligne compacte. Rien ne disparaît des chiffres. Trois gestes restent à toi : une <b>sauvegarde Drive</b> de temps en temps (le voyant SANTÉ te le rappelle), <b>« Clôturer la saison »</b> en mars (le bouton apparaît dans Objectifs), et <b>ton emploi du temps à chaque rentrée</b> (le Plan du jour te le demande à partir de mi-août).</p><span class="tag now">Aujourd'hui</span></div>
         <div class="item" data-w="later"><input type="checkbox" id="c-bc-31"><label class="ti" for="c-bc-31">Clôture de saison, le 14 mars</label><p class="tx">Sept jours avant la fin de l'horizon, un bouton apparaît dans Objectifs. Il archive les objectifs et les trois cartes, avance l'horizon de six mois, fait repartir poids, Coran et duaas de la valeur atteinte, et sème les objectifs des nouvelles périodes depuis la grille. Rien à ressaisir. Une routine te le rappellera ce soir-là.</p><span class="tag later">Plus tard</span></div>
         <div class="item" data-w="later"><input type="checkbox" id="c-bc-26"><label class="ti" for="c-bc-26">Business (Shopify)</label><p class="tx">La boutique en direct (commandes, ventes) via le connecteur Shopify, une boutique à la fois ; le bénéfice net mensuel et son objectif. <b>L'onglet n'apparaît que lorsqu'une boutique est connue</b> : il sortira de lui-même après le 24 octobre.</p><span class="tag later">Plus tard</span></div>
       </div>

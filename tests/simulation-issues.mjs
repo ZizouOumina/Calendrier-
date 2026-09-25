@@ -95,6 +95,8 @@ console.log('\n== 3) Horizon et saison : la fin du programme suit la saison ==')
   const apres = await s.fr.evaluate(() => ({h: JSON.parse(localStorage.getItem('batcave-horizon')), saisons: JSON.parse(window.__bcLire('batcave-saisons') || '[]').length, cardio: window.__bcSortiesCardio('2027-03-22').length, obj: JSON.parse(localStorage.getItem('batcave-objectifs')).liste.filter(o => o.debut >= '2027-03-14').length}));
   ok(apres.h.fin === '2027-09-14' && apres.saisons === 1, 'saison close : horizon jusqu’au 14 septembre 2027, une saison archivée');
   ok(apres.obj > 0, 'les objectifs des nouvelles périodes sont semés (' + apres.obj + ')');
+  const arc = await s.fr.evaluate(() => { const sa = JSON.parse(localStorage.getItem('batcave-saisons'))[0]; return {n: sa.objectifs.length, semaine: sa.objectifs.filter(o => o.periode === 'semaine').length, sept: sa.objectifs.some(o => o.pid && /2026-09/.test(o.pid)), statut: sa.objectifs.filter(o => o.statut).length, ko: Math.round(JSON.stringify(sa).length / 1024)}; });
+  ok(arc.n > 0 && arc.semaine === 0 && arc.sept && arc.statut === arc.n && arc.ko < 15, 'l’archive de saison : ' + arc.n + ' objectifs du mois et de la saison (septembre compris), chacun avec son verdict, ' + arc.ko + ' Ko');
   ok(apres.cardio > 0, 'après le 14 mars, les sorties cardio de la semaine se comptent encore (' + apres.cardio + ')');
   await s.ctx.close();
   const t = await ouvrir('2027-03-20', '08:00', seed('2027-03-20'));

@@ -18,6 +18,19 @@ Il dit ce qui est fait, ce qui reste, et ce qui attend une décision de toi.
 > la Batcave »). Graphite chaud, encre ivoire, accent laiton ; thème jour sable ; trame d'écran
 > retirée ; titres en Rajdhani 700 (Bebas parti). Les jetons `--cyan*` gardent leur nom mais
 > valent laiton. Contraste AA tenu sur les deux thèmes (contraste.mjs).
+> **55 · Longévité (nuit du 25)** : listes datées en un document par mois (`batcave-sessions-2027-03`…,
+> relues d'un seul tenant par `chargerFractionne`), habitudes des années passées en bits
+> (`batcave-habitlog-2026`), sessions de plus de 120 jours repliées dans les totaux, totaux et séries
+> de sport de plus de 400 jours repliés (`batcave-resume-AAAA`, une meilleure série par exercice et
+> par mois), archives mensuelles au cloud seulement, relevés d'agenda et rattrapages purgés après
+> 14 jours. Replis rejoués après chaque hydratation. Fin de programme = fin de saison
+> (`finProgramme()`). Correctifs trouvés par les simulations : objectifs ajoutés effacés au
+> rechargement, archive de saison quadratique, revues plafonnées à 260, barre et notification qui
+> débordaient sur iPhone, montants et cibles absurdes, échéances du Système toujours à 0, record sous
+> la série, restauration qui ajoutait, archives cloud qui survivaient au nouveau départ.
+> Simulations : `simulation-5ans.mjs` (jour par jour, faux cloud aux vraies limites),
+> `simulation-chaos.mjs`, `simulation-issues.mjs`, `simulation-longue.mjs`. Les tests lisent les
+> listes par `window.__bcLire`.
 > Hors Batcave : « 🦇 Enlever les tapis » dans Google Agenda (mar-ven 14:45, lun 16:45 —
 > l'aspirateur passe à 15:45 et 18:15), et la consigne du trajet le rappelle.
 >

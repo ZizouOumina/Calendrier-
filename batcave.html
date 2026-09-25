@@ -5066,6 +5066,14 @@
     askConfirm('Effacer ' + n + ' entrée(s) — journal, sessions, repas, sport, dépendances, budget, tâches, Coran, revues, objectifs 6 mois — ici, dans le cloud et sur tes autres appareils ? La configuration (habitudes, charges fixes, plafonds, examens, objectifs par période, options) est gardée. Irréversible : pense à copier l\'export ci-dessus avant.', function(){
       var cles = clesAEffacerPourReinit();
       cles.forEach(function(k){ try{ localStorage.removeItem(k); }catch(e){} supprimerDuCloud(k); });
+      /* Les archives mensuelles ne vivent qu'au cloud (lot 55) : elles ne sont dans aucune cle
+         locale, il faut les effacer a part -- sinon la synchro suivante redepliait d'anciennes
+         journees dans la Batcave remise a zero. */
+      var archives = {};
+      Object.keys(archivesCloud).forEach(function(k){ archives[k] = true; });
+      Object.keys(cloudConnu).forEach(function(k){ if(estArchive(k)) archives[k] = true; });
+      Object.keys(archives).forEach(function(k){ supprimerDuCloud(k); delete cloudConnu[k]; });
+      archivesCloud = {};
       ajusterObjectifsAuDepart(todayISO);
       var marqueur = {id: 'r' + Date.now() + Math.random().toString(36).slice(2, 6), date: todayISO};
       marquerReinitAppliquee(marqueur.id);
@@ -11115,15 +11123,31 @@
      repartent de la valeur atteinte, et les objectifs des nouvelles périodes sont semés
      puis calculés depuis la grille. Rien à ressaisir. */
   var saisonsState = loadList('batcave-saisons');
-  /* Une archive ecrite avant la correction porte les objectifs de toutes les saisons
-     precedentes : on ne garde que ceux de son horizon. */
+  /* Ce qu'une saison archive : ses objectifs du mois et de la saison (les hebdomadaires sont du
+     pilotage, pas de la memoire), chacun en une ligne -- cible, valeur atteinte, verdict. Une
+     saison pesait ~20 Ko et l'archive aurait depasse 256 Kio vers la dixieme ; elle pese ~5 Ko.
+     Un objectif appartient a la saison s'il finit dans son horizon (apres son debut, au plus
+     tard a sa fin) : celui de septembre, commence avant le 14, en fait partie. */
+  function objectifDeSaison(o, h){ return !!(o && h && o.fin <= h.fin && o.fin > h.debut && o.periode !== 'semaine'); }
+  function resumeObjectifSaison(o){
+    var c = null; try{ c = comparerObjectif(o); }catch(e){}
+    var r = {titre: o.titre, metrique: o.metrique, periode: o.periode, pid: o.pid, debut: o.debut, fin: o.fin, cible: o.cible};
+    if(c){ r.valeur = c.valeur; r.statut = c.statut; } else { if(o.valeur !== undefined) r.valeur = o.valeur; if(o.statut !== undefined) r.statut = o.statut; }
+    return r;
+  }
+  /* Les archives ecrites avant cette correction recopiaient les objectifs de toutes les saisons
+     precedentes, en entier : on ne garde que les leurs, resumes. */
   (function(){
     var change = false;
     saisonsState.forEach(function(sa){
       if(!sa || !sa.horizon || !Array.isArray(sa.objectifs)) return;
-      var n = sa.objectifs.length;
-      sa.objectifs = sa.objectifs.filter(function(o){ return o && o.fin <= sa.horizon.fin && o.debut >= sa.horizon.debut; });
-      if(sa.objectifs.length !== n) change = true;
+      var avant = JSON.stringify(sa.objectifs);
+      sa.objectifs = sa.objectifs.filter(function(o){ return objectifDeSaison(o, sa.horizon); }).map(function(o){
+        var r = {titre: o.titre, metrique: o.metrique, periode: o.periode, pid: o.pid, debut: o.debut, fin: o.fin, cible: o.cible};
+        if(o.valeur !== undefined) r.valeur = o.valeur; if(o.statut !== undefined) r.statut = o.statut;
+        return r;
+      });
+      if(JSON.stringify(sa.objectifs) !== avant) change = true;
     });
     if(change) save('batcave-saisons', saisonsState, true);
   })();
@@ -11148,7 +11172,7 @@
        quadratique et depassait la limite de 256 Kio d'un document cloud vers la sixieme
        saison (vu dans la simulation de cinq ans). */
     saisonsState.push({id:'sa' + Date.now(), cloturee: todayISO, horizon: ancien, goals: bilan,
-                       objectifs: objectifsState.liste.filter(function(o){ return o.fin <= ancien.fin && o.debut >= ancien.debut; })});
+                       objectifs: objectifsState.liste.filter(function(o){ return objectifDeSaison(o, ancien); }).map(resumeObjectifSaison)});
     if(saisonsState.length > 20) saisonsState = saisonsState.slice(-20);
     save('batcave-saisons', saisonsState);
     bilan.forEach(function(b){ goalsDepart[b.id] = b.atteint; });
