@@ -52,7 +52,7 @@ Il dit ce qui est fait, ce qui reste, et ce qui attend une décision de toi.
 > journal 397 K, revue 148 K, transactions 127 K), 837 documents au cloud, plus gros 58 Kio
 > (`saisons`). Si la marge devient juste : replier davantage le journal du sport.
 > Rapport : `rapport-cinq-ans.html` (artefact « Cinq ans simulés »).
-> Hors Batcave : « 🦇 Enlever les tapis » dans Google Agenda (mar-ven 14:45, lun 16:45 —
+> Hors Batcave : « 🦇 Enlever les tapis » dans Google Agenda (tous les jours à 14:52, après la micro-sieste —
 > l'aspirateur passe à 15:45 et 18:15), et la consigne du trajet le rappelle.
 >
 > ### ⚠️ Dernier changement — nuit du vendredi 25 septembre : le régime combat (lot 49)

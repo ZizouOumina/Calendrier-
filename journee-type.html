@@ -191,7 +191,7 @@
 
     <div class="bloc cat-maison"><h3>La maison</h3>
       <ul>
-        <li><b>Les tapis</b> : rappel sur ton téléphone à <b>14:45 tous les jours</b> — l'aspirateur passe à 15:45 et à 18:15 et se bloque dessus. Tu les remets le soir, après 18:30.</li>
+        <li><b>Les tapis</b> : rappel sur ton téléphone à <b>14:52 tous les jours</b>, après la micro-sieste — l'aspirateur passe à 15:45 et à 18:15 et se bloque dessus. Tu les remets le soir, après 18:30.</li>
         <li><b>Le linge du club</b> : kimono et rashguard en machine le jour même, à 30 °C, séchés à l'air — jamais remis deux fois. Bandes de Muay Thai lavées après chaque séance ; les gants ouverts à l'air, pas fermés dans le sac. Idéalement deux kimonos : un qui sèche, un dans le sac.</li>
         <li><b>Au club</b> : tongs dans les vestiaires, jamais de chaussures sur le tatami, ongles courts. Une plaque rouge ronde qui gratte sur la peau (teigne) : pas de tatami, pharmacie.</li>
         <li><b>Serviettes</b> : visage changée lundi, mercredi, vendredi ; corps le dimanche. <b>Taie d'oreiller</b> : mercredi et dimanche. <b>Draps</b> : dimanche.</li>
@@ -287,7 +287,7 @@
   }
   function sieste(h){ return [h, 'Micro-sieste', 'sommeil', ['20 minutes au plus, alarme mise.'], true]; }
   var DHUHR = ['13:55', 'Dhuhr', 'deen', ['≈ 13:55 le 28 sept., à la fin du bloc de 13:00.']];
-  var TAPIS = ['14:45', 'Tapis enlevés du sol', 'maison', ['L\'aspirateur passe à 15:45 et à 18:15.'], 'tapis'];
+  var TAPIS = ['14:52', 'Tapis enlevés du sol', 'maison', ['L\'aspirateur passe à 15:45 et à 18:15.'], 'tapis'];
   function collEntr(h, plusCombat){
     return [h, 'Collation entraînement' + (plusCombat ? ' + collation combat' : ''), 'repas',
       ['Pain complet 60 g, 2 œufs durs, fromage 20 g, amandes 25 g.'].concat(plusCombat ? ['Plus la collation combat : banane 120 g, flocons 50 g, amandes 15 g (pour la Muay Thai de 19:30).'] : []), true];
@@ -341,7 +341,7 @@
       ['13:00', 'Lire', 'travail', ['Le chapitre que la réponse « estudia » du matin a indiqué, une seule question en tête. Trois cartes au plus.'], true],
       DHUHR,
       ['14:00', 'Español · escribir', 'espagnol', ['Une question ouverte d\'examen en espagnol, 25 min sans dictionnaire, puis la correction : contenu, puis langue. Dès le 24 oct. : projets perso.'], true],
-      TAPIS, collEntr('14:50', true), trajetCours('15:00'), cours('15:30', '17:30', 'Asr (≈ 17:16) à la sortie, avant de repartir.'), trajetRetour('17:30'),
+      collEntr('14:50', true), TAPIS, trajetCours('15:00'), cours('15:30', '17:30', 'Asr (≈ 17:16) à la sortie, avant de repartir.'), trajetRetour('17:30'),
       diner('18:00'), clore('18:30'),
       ['19:00', 'Tapis remis, sac vérifié', 'maison', ['Le second passage de l\'aspirateur (18:15) est fait : tapis au sol.', 'Bandes, gants, protège-dents, gourde pleine.']],
       ['19:10', 'Trajet club', 'combat', ['Dix minutes à pied.'], true],
@@ -359,7 +359,7 @@
       ['13:00', 'Approfondir', 'travail', ['Le tema que tu choisis : 25 min dans la référence (Guyton, Karp…), 15 min de teach-back enregistré en espagnol, 10 min de cartes en chaîne.'], true],
       DHUHR,
       ['14:00', 'Español · gramática', 'espagnol', ['Dix phrases écrites, dix dites, exercices corrigés. Dès le 24 oct. : projets perso.'], true],
-      TAPIS, collEntr('14:50'), trajetCours('15:00'), cours('15:30', '19:30', ASR_PAUSE), trajetRetour('19:30'), MAGHRIB, diner('20:00'), clore('20:30'), LIBRE,
+      collEntr('14:50'), TAPIS, trajetCours('15:00'), cours('15:30', '19:30', ASR_PAUSE), trajetRetour('19:30'), MAGHRIB, diner('20:00'), clore('20:30'), LIBRE,
       doucheSoir('21:25', '<b>Taie d\'oreiller changée</b> et <b>serviette de visage propre</b> ce soir.'), coucher('21:35', '7 h 55 au lit.')
     ]},
     {cle:'jeu', nom:'Jeudi', court:'Jeu', resume:'Muscu haut lourd · pas de combat · fac 15:30-19:30 · 2 douches · shampoing 06:30 · eau 3 L', pas:[
@@ -370,7 +370,7 @@
       ['13:00', 'Español · gramática', 'espagnol', ['Dès le 24 oct. : projets perso.'], true],
       DHUHR,
       ['14:00', 'Español · escribir', 'espagnol', ['Une question ouverte en espagnol, 25 min, puis la correction. Dès le 24 oct. : projets perso.'], true],
-      TAPIS, collEntr('14:50'), trajetCours('15:00'), cours('15:30', '19:30', ASR_PAUSE), trajetRetour('19:30'), MAGHRIB, diner('20:00'), clore('20:30'), LIBRE,
+      collEntr('14:50'), TAPIS, trajetCours('15:00'), cours('15:30', '19:30', ASR_PAUSE), trajetRetour('19:30'), MAGHRIB, diner('20:00'), clore('20:30'), LIBRE,
       doucheSoir('21:25'), coucher('21:35', '7 h 55 au lit.')
     ]},
     {cle:'ven', nom:'Vendredi', court:'Ven', resume:'Pas de muscu · JJB 10:30 · Jumu\'ah 13:30 · fac 15:30-19:30 · 3 douches · shampoing 12:10 (ghusl) · eau 3,5 L · serviette de visage', pas:[
@@ -380,7 +380,7 @@
       ANKI1, etudier('08:20', '10:05'), COLL_COMBAT, TRAJET_CLUB, JJB, retourJJB(true), dejeuner(),
       ['13:15', 'Trajet mosquée', 'deen', ['Tenue propre, parfum si tu en mets.']],
       ['13:30', 'Jumu\'ah', 'deen', ['La khutba, puis la prière vers 14:00. Elle remplace Dhuhr.']],
-      sieste('14:30'), TAPIS, collEntr('14:50'), trajetCours('15:00'), cours('15:30', '19:30', ASR_PAUSE), trajetRetour('19:30'), MAGHRIB, diner('20:00'), clore('20:30'), LIBRE,
+      sieste('14:30'), collEntr('14:50'), TAPIS, trajetCours('15:00'), cours('15:30', '19:30', ASR_PAUSE), trajetRetour('19:30'), MAGHRIB, diner('20:00'), clore('20:30'), LIBRE,
       doucheSoir('21:25', 'Serviette de visage propre ce soir.'), coucher('21:35', '7 h 55 au lit.')
     ]},
     {cle:'sam', nom:'Samedi', court:'Sam', resume:'Pas de sport · courses 13:30 · projets le soir · 2 douches · pas de shampoing · eau 3 L · coiffeur un samedi sur trois', pas:[
@@ -391,7 +391,7 @@
       ['09:20', 'Approfondir (deux séances, jusqu\'à 11:20)', 'travail', ['Deux sujets d\'une heure : lecture, teach-back enregistré en espagnol, cartes en chaîne.'], true],
       ['11:20', 'Español · gramática', 'espagnol', ['Dès le 24 oct. : projets perso.'], true],
       dejeuner(), sieste('13:10'),
-      ['13:30', 'Courses de la semaine', 'maison', ['La liste de la Batcave. <b>Viande et jambon halal à la boucherie.</b> Coche ce que tu as encore, même si tu ne l\'achètes pas.', '<b>Tapis enlevés avant de partir</b> : le rappel de 14:45 sonnera pendant que tu es dehors.', 'Un samedi sur trois (3 oct., 24 oct., 14 nov.) : <b>coiffeur</b> pendant la sortie.', 'Dhuhr (≈ 13:55) en route ou au retour.'], true],
+      ['13:30', 'Courses de la semaine', 'maison', ['La liste de la Batcave. <b>Viande et jambon halal à la boucherie.</b> Coche ce que tu as encore, même si tu ne l\'achètes pas.', '<b>Tapis enlevés avant de partir</b> : le rappel de 14:52 sonnera pendant que tu es dehors.', 'Un samedi sur trois (3 oct., 24 oct., 14 nov.) : <b>coiffeur</b> pendant la sortie.', 'Dhuhr (≈ 13:55) en route ou au retour.'], true],
       TAPIS,
       ['15:30', 'Rangement des courses', 'maison', ['Frigo, placards. Envoie-moi les tickets : je déduis les vrais prix.'], true],
       ['16:00', 'Cartes d\'erreurs de la semaine', 'travail', ['Les cartes ratées, les erreurs des questions ouvertes → une carte de correction par cause.'], true],
