@@ -3812,7 +3812,10 @@
   function nomLisible(k){ return String(k).replace(/^batcave-/, ''); }
   function save(key, val, internal, sansAlarme){
     if(!internal && !sansAlarme) alerterSiRetrecit(key, val);
-    if(!internal){ try{ undoStack.push({key:key, prev: localStorage.getItem(key), groupe: gesteCourant}); if(undoStack.length>60) undoStack.shift(); persistUndoStack(); }catch(e){} }
+    /* la valeur d'avant sert a l'annulation et, quand le cloud est la, de base commune */
+    var avantRaw = null;
+    if(!internal || dbHandle){ try{ avantRaw = localStorage.getItem(key); }catch(e){} }
+    if(!internal){ try{ undoStack.push({key:key, prev: avantRaw, groupe: gesteCourant}); if(undoStack.length>60) undoStack.shift(); persistUndoStack(); }catch(e){} }
     try{
       localStorage.setItem(key, JSON.stringify(val));
       saveFailed = false;
@@ -3834,7 +3837,7 @@
       }
     }
     ecrituresLocales[key] = Date.now();
-    if(dbHandle) pousserVersCloud(key, val);
+    if(dbHandle) pousserVersCloud(key, val, avantRaw);
   }
   /* Les écritures cloud étaient enveloppées dans un try/catch vide : toute erreur
      (quota atteint, permission, réseau) disparaissait sans un mot pendant que l'appli
@@ -3863,12 +3866,206 @@
         : '⚠️ Synchronisation cloud en échec (' + code + '). Tes données restent dans ce navigateur — fais une sauvegarde Drive.');
     }catch(e){}
   }
-  function pousserVersCloud(key, val){
+  /* ===== Lot 56 · Les ecritures qui n'atteignent pas le cloud (25 septembre 2026) =====
+     Une ecriture refusee par le cloud (reseau coupe a la fac, incident passager) n'etait
+     jamais retentee. Pire : a la reouverture, l'hydratation remplacait la copie locale par
+     la version du cloud, plus ancienne. Deux Pomodoro notes dans un couloir sans reseau
+     disparaissaient sans un mot. Desormais :
+       - chaque ecriture reste « en attente » sur l'appareil tant que le cloud ne l'a pas
+         confirmee, avec la valeur d'avant (la base commune aux deux appareils) ;
+       - un echec passager est retente une fois, comme le prescrit le cloud ;
+       - a chaque instantane, une cle en attente n'est jamais ecrasee : si aucun autre
+         appareil n'a ecrit depuis, la version locale repart ; sinon les deux versions sont
+         fusionnees a partir de la base (lignes ajoutees des deux cotes gardees, minutes
+         additionnees, suppressions respectees) ;
+       - l'hydratation attend un instantane definitif du serveur, pas une copie en cache
+         (peut-etre partielle), qui aurait fait repartir de vieilles copies locales.
+     Les deux registres commencent par « bc- » : propres a l'appareil, jamais synchronises. */
+  var ATTENTE_CLE = 'bc-cloud-attente', ATTENTE_BASE = 'bc-cloud-base';
+  var ATTENTE_EN_VOL_MS = 5000;
+  function lireObjetLocal(k){
+    try{ var o = JSON.parse(localStorage.getItem(k) || '{}'); return (o && typeof o === 'object' && !Array.isArray(o)) ? o : {}; }catch(e){ return {}; }
+  }
+  function ecrireObjetLocal(k, o){
+    try{ if(Object.keys(o).length) localStorage.setItem(k, JSON.stringify(o)); else localStorage.removeItem(k); }catch(e){}
+  }
+  var attenteCloud = lireObjetLocal(ATTENTE_CLE);
+  /* La base commune reste en memoire : elle n'est ecrite sur l'appareil qu'apres un echec,
+     une fusion, ou quand la page passe en arriere-plan (l'iPhone peut alors la tuer). En
+     ligne, une ecriture confirmee ne coute donc presque rien de plus. */
+  var basesAttente = (function(){
+    var o = lireObjetLocal(ATTENTE_BASE), out = {};
+    Object.keys(o).forEach(function(k){ if(k in attenteCloud && o[k] && typeof o[k] === 'object') out[k] = {raw: o[k].raw, inconnue: !!o[k].inconnue, garde: true}; });
+    return out;
+  })();
+  var attenteSale = false, basesSales = false, persistancePrevue = false, minuterieAttente = null;
+  function persisterAttente(){
+    persistancePrevue = false;
+    if(minuterieAttente){ clearTimeout(minuterieAttente); minuterieAttente = null; }
+    if(attenteSale){ attenteSale = false; ecrireObjetLocal(ATTENTE_CLE, attenteCloud); }
+    if(basesSales){
+      basesSales = false;
+      var o = {};
+      Object.keys(basesAttente).forEach(function(k){
+        var b = basesAttente[k];
+        if(b.garde && (k in attenteCloud)) o[k] = b.inconnue ? {inconnue: true} : {raw: b.raw};
+      });
+      ecrireObjetLocal(ATTENTE_BASE, o);
+    }
+  }
+  /* un ajout s'ecrit a la fin de la tache en cours ; un retrait peut attendre un peu */
+  function planifierAttente(urgent){
+    if(urgent){
+      if(!persistancePrevue){ persistancePrevue = true; Promise.resolve().then(persisterAttente); }
+    } else if(!minuterieAttente && !persistancePrevue){
+      minuterieAttente = setTimeout(persisterAttente, 400);
+    }
+  }
+  function garderBases(){
+    Object.keys(basesAttente).forEach(function(k){ if(!basesAttente[k].garde && (k in attenteCloud)){ basesAttente[k].garde = true; basesSales = true; } });
+    persisterAttente();
+  }
+  try{
+    document.addEventListener('visibilitychange', function(){ if(document.visibilityState === 'hidden') garderBases(); });
+    window.addEventListener('pagehide', garderBases);
+  }catch(e){}
+  function marquerAttente(key, stamp, avantRaw){
+    if(!(key in attenteCloud)) basesAttente[key] = (avantRaw === undefined) ? {inconnue: true, garde: false} : {raw: avantRaw, garde: false};
+    attenteCloud[key] = stamp;
+    attenteSale = true;
+    planifierAttente(true);
+  }
+  function garderBase(key){
+    if(basesAttente[key] && !basesAttente[key].garde){ basesAttente[key].garde = true; basesSales = true; planifierAttente(true); }
+  }
+  function fixerBaseAttente(key, raw){
+    if(!(key in attenteCloud)) return;
+    basesAttente[key] = {raw: raw, garde: true};
+    basesSales = true;
+    planifierAttente(true);
+  }
+  function leverAttente(key, stamp){
+    if(!(key in attenteCloud)) return;
+    if(stamp !== undefined && attenteCloud[key] !== stamp) return;
+    delete attenteCloud[key];
+    attenteSale = true;
+    if(basesAttente[key]){ if(basesAttente[key].garde) basesSales = true; delete basesAttente[key]; }
+    planifierAttente(false);
+  }
+  function viderAttente(){
+    attenteCloud = {}; basesAttente = {};
+    attenteSale = false; basesSales = false;
+    try{ localStorage.removeItem(ATTENTE_CLE); localStorage.removeItem(ATTENTE_BASE); }catch(e){}
+  }
+  /* « en vol » : envoye par CETTE page il y a moins de 5 s, sa reponse peut encore arriver.
+     Une attente heritee d'une page precedente n'est jamais en vol : sa reponse est perdue. */
+  var envoisDeLaPage = {};
+  function enVol(key){ return (key in attenteCloud) && envoisDeLaPage[key] === attenteCloud[key] && Date.now() - attenteCloud[key] < ATTENTE_EN_VOL_MS; }
+  function baseAttente(key){
+    var b = basesAttente[key];
+    if(!b || b.inconnue) return {inconnue: true};
+    return {valeur: b.raw === null ? undefined : safeParse(b.raw)};
+  }
+  /* ----- Fusion a trois voies : base commune, version d'ici, version du cloud ----- */
+  function egalJSON(a, b){ return canonicalJSON(a) === canonicalJSON(b); }
+  function estObjetSimple(v){ return !!v && typeof v === 'object' && !Array.isArray(v); }
+  function identLigne(x){
+    return (x && typeof x === 'object' && x.id !== undefined && x.id !== null && x.id !== '') ? 'i:' + x.id : 'j:' + canonicalJSON(x);
+  }
+  function fusion3(base, local, cloud, additif, ctx){
+    if(egalJSON(local, cloud)) return cloud;
+    if(egalJSON(local, base)) return cloud;
+    if(egalJSON(cloud, base)) return local;
+    if(Array.isArray(local) && Array.isArray(cloud)) return fusionListes3(Array.isArray(base) ? base : [], local, cloud, additif, ctx);
+    if(estObjetSimple(local) && estObjetSimple(cloud)){
+      var b = estObjetSimple(base) ? base : {}, out = {}, cles = {};
+      Object.keys(cloud).forEach(function(k){ cles[k] = true; });
+      Object.keys(local).forEach(function(k){ cles[k] = true; });
+      Object.keys(cles).forEach(function(k){
+        var v = fusion3(b[k], local[k], cloud[k], additif, ctx);
+        if(v !== undefined) out[k] = v;
+      });
+      return out;
+    }
+    /* minutes d'une meme journee ajoutees des deux cotes : on additionne les deux apports */
+    if(additif && typeof local === 'number' && typeof cloud === 'number' && (base === undefined || typeof base === 'number')){
+      return Math.round((cloud + local - (Number(base) || 0)) * 100) / 100;
+    }
+    ctx.conflit = true;
+    return cloud;
+  }
+  function fusionListes3(base, local, cloud, additif, ctx){
+    var mb = {}, ml = {}, vus = {}, out = [];
+    base.forEach(function(x){ mb[identLigne(x)] = x; });
+    local.forEach(function(x){ ml[identLigne(x)] = x; });
+    cloud.forEach(function(x){
+      var k = identLigne(x); if(vus[k]) return; vus[k] = true;
+      var dansBase = k in mb, ici = k in ml;
+      if(dansBase && !ici){
+        /* supprimee ici : on respecte la suppression, sauf si l'autre appareil l'a modifiee */
+        if(egalJSON(x, mb[k])) return;
+        ctx.conflit = true; out.push(x); return;
+      }
+      if(ici){ out.push(dansBase ? fusion3(mb[k], ml[k], x, additif, ctx) : fusion3(undefined, ml[k], x, false, ctx)); return; }
+      out.push(x);
+    });
+    local.forEach(function(x){
+      var k = identLigne(x); if(vus[k]) return; vus[k] = true;
+      if(k in mb){
+        /* supprimee sur l'autre appareil : idem, sauf modification ici */
+        if(egalJSON(x, mb[k])) return;
+        ctx.conflit = true; out.push(x); return;
+      }
+      out.push(x);   /* ajoutee ici pendant que le cloud ne repondait pas */
+    });
+    if(out.length && out.every(function(x){ return x && typeof x === 'object' && typeof x.date === 'string'; })){
+      out = out.map(function(x, i){ return [x, i]; }).sort(function(a, b){
+        return a[0].date < b[0].date ? -1 : a[0].date > b[0].date ? 1 : a[1] - b[1];
+      }).map(function(p){ return p[0]; });
+    }
+    return out;
+  }
+  function fusionnerAvecCloud(key, local, cloud){
+    var b = baseAttente(key), ctx = {conflit: false};
+    var base = b.inconnue ? undefined : b.valeur;
+    var fraction = baseDeFraction(key) || key;
+    var additif = fraction === 'batcave-revision' || fraction === 'batcave-projets';
+    var valeur = fusion3(base, local, cloud, additif, ctx);
+    return {valeur: valeur, conflit: ctx.conflit};
+  }
+  function pousserVersCloud(key, val, avantRaw, deuxiemeEssai){
     if(!dbHandle) return;
+    var suivie = !estArchive(key);
+    var stamp = Date.now();
+    if(suivie){
+      /* deux ecritures dans la meme milliseconde : l'horodatage reste unique et croissant */
+      if(attenteCloud[key] !== undefined && attenteCloud[key] >= stamp) stamp = attenteCloud[key] + 1;
+      marquerAttente(key, stamp, avantRaw);
+      envoisDeLaPage[key] = stamp;
+    }
+    var echec = function(err){
+      var code = String((err && (err.code || err.message)) || '');
+      if(suivie) garderBase(key);
+      if(!deuxiemeEssai && /unavailable/.test(code) && (!suivie || attenteCloud[key] === stamp)){
+        setTimeout(function(){
+          if(!suivie || attenteCloud[key] === stamp) pousserVersCloud(key, val, undefined, true);
+        }, 800 + Math.floor(Math.random() * 1700));
+        return;
+      }
+      signalerEchecCloud(err);
+    };
+    var confirme = function(){
+      if(!suivie) return;
+      if(attenteCloud[key] === stamp) leverAttente(key, stamp);
+      /* une ecriture plus recente est encore en route : le cloud tient au moins celle-ci,
+         qui devient la base commune */
+      else { try{ fixerBaseAttente(key, JSON.stringify(val)); }catch(e){} }
+    };
     try{
-      var r = dbHandle.doc('state/'+key).set({v: val, d: APPAREIL_ID, t: Date.now()});
-      if(r && typeof r.catch === 'function') r.catch(signalerEchecCloud);
-    }catch(e){ signalerEchecCloud(e); }
+      var r = dbHandle.doc('state/'+key).set({v: val, d: APPAREIL_ID, t: stamp});
+      if(r && typeof r.then === 'function') r.then(confirme, echec);
+      else confirme();
+    }catch(e){ echec(e); }
   }
   /* ===== Lot 55 · Longevite (25 septembre 2026) =====
      Deux plafonds que cinq ans d'usage auraient crevés :
@@ -3917,8 +4114,10 @@
     });
     return n;
   }
-  var LISTES_FRACTIONNEES = ['batcave-sessions', 'batcave-sport-log', 'batcave-transactions', 'batcave-revision', 'batcave-projets'];
-  function baseDeFraction(key){ var m = /^(batcave-(?:sessions|sport-log|transactions|revision|projets))-\d{4}-\d{2}$/.exec(String(key || '')); return m ? m[1] : null; }
+  /* la revue du dimanche s'y ajoute : avec des reponses un peu longues, ses 260 revues
+     depassaient 256 Kio en un seul document vers la troisieme annee */
+  var LISTES_FRACTIONNEES = ['batcave-sessions', 'batcave-sport-log', 'batcave-transactions', 'batcave-revision', 'batcave-projets', 'batcave-revue'];
+  function baseDeFraction(key){ var m = /^(batcave-(?:sessions|sport-log|transactions|revision|projets|revue))-\d{4}-\d{2}$/.exec(String(key || '')); return m ? m[1] : null; }
   function estFraction(key){ return !!baseDeFraction(key); }
   function estFractionHabitudes(key){ return /^batcave-habitlog-\d{4}$/.test(String(key || '')); }
   function clesFractions(base){
@@ -4053,12 +4252,14 @@
     while(entry.groupe && undoStack.length && undoStack[undoStack.length - 1].groupe === entry.groupe) lot.push(undoStack.pop());
     persistUndoStack();
     lot.forEach(function(e){
+      var avantAnnulation = null;
+      try{ avantAnnulation = localStorage.getItem(e.key); }catch(x){}
       try{ if(e.prev === null) localStorage.removeItem(e.key); else localStorage.setItem(e.key, e.prev); }catch(x){}
       /* L'annulation doit repartir vers le cloud. Sans ça, on annulait en local puis le
          premier instantané au rechargement réécrasait avec la valeur NON annulée :
          Cmd+Z semblait fonctionner une seconde, puis le changement revenait. */
       if(e.prev === null) supprimerDuCloud(e.key);
-      else if(dbHandle) pousserVersCloud(e.key, safeParse(e.prev));
+      else if(dbHandle) pousserVersCloud(e.key, safeParse(e.prev), avantAnnulation);
     });
     try{ sessionStorage.setItem('batcave-undo-toast', '1'); }catch(e){}
     setTimeout(function(){ location.reload(); }, dbHandle ? 700 : 0);
@@ -4163,9 +4364,26 @@
         el.innerHTML = '☁️ <button type="button" id="cloud-refresh-btn" style="background:none; border:none; color:var(--cyan-bright); cursor:pointer; font-family:var(--font-mono); font-size:10.5px; text-decoration:underline; padding:0;">Nouvelles données — rafraîchir</button>';
         document.getElementById('cloud-refresh-btn').addEventListener('click', function(){ location.reload(); });
       }
+      /* Lot 56 : le premier instantane peut n'etre qu'une copie en cache, peut-etre partielle
+         (premieres pages d'un abonnement). L'hydratation et le rattrapage attendent la version
+         definitive du serveur ; si elle tarde plus de 20 s, on se contente du cache. */
+      var dernierCache = null, minuterieCache = null;
       db.collection('state').onSnapshot(function(snap){
+        var enCache = !!(snap && snap.metadata && snap.metadata.fromCache);
+        if(!firstSnapshotDone && enCache){
+          dernierCache = snap;
+          if(!minuterieCache) minuterieCache = setTimeout(function(){ if(!firstSnapshotDone && dernierCache) surInstantane(dernierCache); }, 20000);
+          return;
+        }
+        if(minuterieCache){ clearTimeout(minuterieCache); minuterieCache = null; }
+        dernierCache = null;
+        surInstantane(snap);
+      }, function(){ /* erreur transitoire ou droit révoqué : reste en local, pas de reload forcé */ });
+      function surInstantane(snap){
         var premierInstantane = !firstSnapshotDone;
-        var conflits = [];
+        var conflits = [], fusions = [], fusionConflit = false, aRepousser = {}, vusCloud = {};
+        /* une ecriture n'est confirmee que par un instantane definitif sans ecriture locale en vol */
+        var definitif = !(snap.metadata && (snap.metadata.fromCache || snap.metadata.hasPendingWrites));
         if(!firstSnapshotDone){
           firstSnapshotDone = true;
           /* Téléversement de rattrapage : on pousse vers le cloud TOUTE clé locale qui
@@ -4216,16 +4434,39 @@
         var changed = false;
         snap.docs.forEach(function(d){
           var body = d.data();
+          vusCloud[d.id] = true;
           if(!body || body.v === undefined) return;
           /* une archive reste au cloud : on en garde le contenu en memoire et on n'en deplie que
              les journees absentes ici et encore utiles */
           if(estArchive(d.id)){ archivesCloud[d.id] = body.v; if(deplierArchive(body.v)) changed = true; return; }
           var newRaw = JSON.stringify(body.v);
           var oldRaw = localStorage.getItem(d.id);
+          var identique = oldRaw === newRaw || canonicalJSON(safeParse(oldRaw)) === canonicalJSON(body.v);
+          /* Lot 56 : une cle ecrite ici et pas encore confirmee par le cloud n'est jamais
+             ecrasee. Aucun autre appareil n'a ecrit depuis : la version d'ici repart. Un autre
+             appareil a ecrit : fusion a partir de la base commune. */
+          if(d.id in attenteCloud){
+            if(oldRaw === null){ leverAttente(d.id); }
+            else if(identique){ if(definitif) leverAttente(d.id); return; }
+            else {
+              var autre = body.d && body.d !== APPAREIL_ID && (Number(body.t) || 0) > attenteCloud[d.id];
+              if(!autre){ if(!enVol(d.id)) aRepousser[d.id] = true; return; }
+              var f = fusionnerAvecCloud(d.id, safeParse(oldRaw), body.v);
+              try{ localStorage.setItem(d.id, JSON.stringify(f.valeur)); }catch(e){}
+              /* la version du cloud devient la base commune : une fusion suivante n'additionnera
+                 pas deux fois les memes minutes */
+              fixerBaseAttente(d.id, newRaw);
+              aRepousser[d.id] = true;
+              fusions.push(nomLisible(d.id));
+              if(f.conflit) fusionConflit = true;
+              changed = true;
+              return;
+            }
+          }
           /* Comparaison canonique (clés triées) : le stockage distant peut renvoyer les
              mêmes données avec un ordre de clés différent. Comparer les chaînes brutes
              ferait croire à un changement à chaque snapshot → rechargement en boucle. */
-          if(oldRaw !== newRaw && canonicalJSON(safeParse(oldRaw)) !== canonicalJSON(body.v)){
+          if(!identique){
             /* Pas au premier instantane : la, c'est l'hydratation normale qui remplace
                l'etat local (et les migrations la rejouent). Ensuite seulement, une cle
                ecrite ici il y a moins de 90 s et ecrasee par un AUTRE appareil est un vrai
@@ -4236,6 +4477,19 @@
             localStorage.setItem(d.id, newRaw);
             changed = true;
           }
+        });
+        /* Cles en attente absentes du cloud : creees ici pendant une coupure, elles repartent
+           (au premier instantane, le rattrapage ci-dessus vient de s'en charger : elles sont
+           « en vol ») ; disparues d'ici entre-temps, il n'y a plus rien a envoyer. */
+        Object.keys(attenteCloud).forEach(function(k){
+          if(vusCloud[k] || estArchive(k)) return;
+          if(localStorage.getItem(k) === null){ leverAttente(k); return; }
+          if(!enVol(k)) aRepousser[k] = true;
+        });
+        Object.keys(aRepousser).forEach(function(k){
+          var raw = localStorage.getItem(k);
+          if(raw === null){ leverAttente(k); return; }
+          pousserVersCloud(k, safeParse(raw));
         });
         /* Les donnees du cloud viennent d'etre appliquees : c'est le seul moment ou une
            migration peut travailler sur l'etat reel. On la rejoue ici, et on redessine
@@ -4252,6 +4506,12 @@
           purgerClesPerimees();
           if(compactes && statusEl) statusEl.innerHTML = '☁️ <span style="color:var(--good)">Synchronisé</span> · ' + compactes + ' journées archivées';
         }catch(e){}
+        if(fusions.length){
+          var msgFusion = '☁️ Écrit ici pendant une coupure et sur un autre appareil : « ' + fusions.join(' », « ') + ' » — les deux versions ont été fusionnées' +
+            (fusionConflit ? ' ; là où les deux avaient changé la même chose, celle de l\'autre appareil a été gardée.' : '.');
+          try{ sessionStorage.setItem('bc-fusion', msgFusion); }catch(e){}
+          try{ showToast(msgFusion); }catch(e){}
+        }
         if(conflits.length){
           var msgConflit = '⚠️ Un autre appareil a écrit « ' + conflits.join(' », « ') + ' » en même temps que toi ; sa version a été gardée. Vérifie la page concernée.';
           try{ sessionStorage.setItem('bc-conflit', msgConflit); }catch(e){}
@@ -4288,7 +4548,7 @@
         }
         try{ sessionStorage.setItem('batcave-cloud-toast', '1'); }catch(e){}
         location.reload();
-      }, function(){ /* erreur transitoire ou droit révoqué : reste en local, pas de reload forcé */ });
+      }
     }).catch(function(){});
   })();
 
@@ -5036,6 +5296,7 @@
     return out;
   }
   function effacerLocalPourReinit(){
+    viderAttente();
     var cles = clesAEffacerPourReinit();
     cles.forEach(function(k){ try{ localStorage.removeItem(k); }catch(e){} });
     return cles.length;
@@ -5065,6 +5326,7 @@
     var n = clesAEffacerPourReinit().length;
     askConfirm('Effacer ' + n + ' entrée(s) — journal, sessions, repas, sport, dépendances, budget, tâches, Coran, revues, objectifs 6 mois — ici, dans le cloud et sur tes autres appareils ? La configuration (habitudes, charges fixes, plafonds, examens, objectifs par période, options) est gardée. Irréversible : pense à copier l\'export ci-dessus avant.', function(){
       var cles = clesAEffacerPourReinit();
+      viderAttente();
       cles.forEach(function(k){ try{ localStorage.removeItem(k); }catch(e){} supprimerDuCloud(k); });
       /* Les archives mensuelles ne vivent qu'au cloud (lot 55) : elles ne sont dans aucune cle
          locale, il faut les effacer a part -- sinon la synchro suivante redepliait d'anciennes
@@ -5123,6 +5385,7 @@
          garderait des saisies posterieures a l'etat qu'on restaure. La copie vierge
          elle-meme survit : on doit pouvoir y revenir deux fois. */
       var actuelles = Object.keys(donneesSansCopie());
+      viderAttente();
       actuelles.forEach(function(k){
         if(cles.indexOf(k) !== -1) return;
         try{ localStorage.removeItem(k); }catch(e){}
@@ -5267,6 +5530,7 @@
          habitudes) : une liste que la sauvegarde contient REMPLACE la liste locale. Sans ca,
          les mois locaux absents de la sauvegarde survivaient a la restauration. */
       var bases = {};
+      viderAttente();
       keys.forEach(function(k){
         var b = baseDeFraction(k) || (LISTES_FRACTIONNEES.indexOf(k) > -1 ? k : null);
         if(b) bases[b] = true;
@@ -7451,6 +7715,7 @@
   /* un croisement d'ecritures detecte juste avant un rechargement : le toast survit ici */
   (function(){
     try{ var m = sessionStorage.getItem('bc-conflit'); if(m){ sessionStorage.removeItem('bc-conflit'); showToast(m); } }catch(e){}
+    try{ var fu = sessionStorage.getItem('bc-fusion'); if(fu){ sessionStorage.removeItem('bc-fusion'); showToast(fu); } }catch(e){}
     try{ var r = sessionStorage.getItem('bc-reinit-info'); if(r){ sessionStorage.removeItem('bc-reinit-info'); showToast(r); } }catch(e){}
   })();
   var reacteurPret = false;
@@ -16284,6 +16549,7 @@
     if(b) b.addEventListener('click', function(){ if(mcpHandle) controlerSeriesGcal(mcpHandle).then(function(c){ if(c) showToast(c.ecarts.length ? '📲 ' + groupesDerive(c.ecarts).length + ' écart(s) entre l’agenda et la grille' : '📲 Toutes les séries suivent la grille.'); }); });
     try{ renderGcalControle(); }catch(e){}
   })();
+  try{ window.__bcFusion3 = fusion3; window.__bcAttente = function(){ return JSON.parse(JSON.stringify(attenteCloud)); }; }catch(e){}
   try{ window.__bcComparerSeries = comparerSeriesJour; window.__bcControlerSeries = controlerSeriesGcal; window.__bcJoursAControler = joursAControler; window.__bcGroupesDerive = groupesDerive; window.__bcResumeDerive = resumeDeriveGcal; }catch(e){}
   /* Cible du jour = ce que le planning prevoit + ce qui a ete reporte de la veille. Le
      report est plafonne (2 h par type) : un bloc manque se rattrape, une semaine manquee
@@ -18051,7 +18317,7 @@
   });
 
   /* ================= REVUE HEBDOMADAIRE ================= */
-  var rvState = loadList('batcave-revue');
+  var rvState = chargerFractionne('batcave-revue');
   /* ===== Revue guidee =====
      Trois constats calcules par le moteur sur la semaine en cours -- objectifs du mois en
      retard, fidelite au plan, sommeil -- puis les trois questions. Les constats sont
@@ -18151,9 +18417,10 @@
       }
     }
     rvState.push(entree);
-    /* 260 revues = cinq ans de dimanches : au-dela, un seul document cloud approchait 256 Kio */
+    /* 260 revues = cinq ans de dimanches. Le cloud n'est plus en cause (un document par mois) :
+       la borne garde le stockage de l'iPhone tenable. */
     if(rvState.length > 260) rvState = rvState.slice(-260);
-    save('batcave-revue', rvState);
+    sauverFractionne('batcave-revue', rvState);
     saveInternal('batcave-last-bilan-prompt', weekRange(0)[0]);
     renderRevue();
   }
@@ -18268,7 +18535,7 @@
       return '<li class="entry-row" style="align-items:flex-start; flex-wrap:wrap;"><span class="ecell small"><b>'+fmtDate(r.date)+'</b></span><span class="ecell">✅ '+escapeHtml(r.marche||'—')+'</span><span class="ecell">⚠️ '+escapeHtml(r.coince||'—')+'</span><span class="ecell">→ '+escapeHtml(r.ajust||'—')+'</span><button class="edel" aria-label="Supprimer" title="Supprimer" data-delrv="'+r.id+'">×</button>' + c + '</li>';
     }).join('');
     list.querySelectorAll('[data-delrv]').forEach(function(el){
-      el.addEventListener('click', function(){ rvState = rvState.filter(function(x){return x.id!==el.dataset.delrv;}); save('batcave-revue', rvState); renderRevue(); });
+      el.addEventListener('click', function(){ rvState = rvState.filter(function(x){return x.id!==el.dataset.delrv;}); sauverFractionne('batcave-revue', rvState); renderRevue(); });
     });
   }
   document.getElementById('rv-add').addEventListener('click', function(){

@@ -164,10 +164,13 @@ async function controle(iso, k){
     for(let i = 0; i < localStorage.length; i++){ const key = localStorage.key(i); const l = (localStorage.getItem(key) || '').length + key.length; n += l; tailles.push([l, key]); }
     tailles.sort((a, b) => b[0] - a[0]);
     const cinq = window.__bcInsights().map(x => x.title + ':' + x.score).slice(0, 4).join(' / ');
-    return {defauts: sante.filter(x => !x.ok).map(x => x.id + ' (' + x.texte + ')'), car: n, cles: localStorage.length, gros: tailles.slice(0, 5).map(t => t[1].replace('batcave-', '') + ' ' + Math.round(t[0] / 1024) + 'K').join(', '),
+    const pref = {}; for(let i = 0; i < localStorage.length; i++){ const key = localStorage.key(i); const p = key.replace(/\d{4}-\d{2}(-\d{2})?/g, '*'); pref[p] = pref[p] || [0, 0]; pref[p][0]++; pref[p][1] += (localStorage.getItem(key) || '').length + key.length; }
+    const prefixes = Object.entries(pref).sort((a, b) => b[1][1] - a[1][1]).slice(0, 14).map(([p, v]) => p.replace('batcave-', '') + ' ' + v[0] + '×=' + Math.round(v[1] / 1024) + 'K').join(', ');
+    return {prefixes, defauts: sante.filter(x => !x.ok).map(x => x.id + ' (' + x.texte + ')'), car: n, cles: localStorage.length, gros: tailles.slice(0, 5).map(t => t[1].replace('batcave-', '') + ' ' + Math.round(t[0] / 1024) + 'K').join(', '),
       score: (document.getElementById('dash-score-note') || {}).textContent, serie: (document.getElementById('rev-stats') || {innerText: ''}).innerText.split('\n').slice(0, 3).join(' '), cinq};
   });
   const km = Math.round(e.car / 1024);
+  if(process.env.PREFIXES) console.log('     par famille : ' + e.prefixes);
   console.log('── ' + iso + ' (jour ' + k + ') · local ' + km + ' Kcar · ' + e.cles + ' clés · cloud ' + cloud.size + ' docs (plus gros ' + plusGros.id.replace('batcave-', '') + ' ' + Math.round(plusGros.o / 1024) + ' Kio) · contrôle ' + Math.round((Date.now() - avant) / 1000) + ' s');
   console.log('     plus grosses clés : ' + e.gros);
   console.log('     score « ' + e.score + ' » · ' + e.serie);

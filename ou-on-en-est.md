@@ -33,6 +33,18 @@ Il dit ce qui est fait, ce qui reste, et ce qui attend une décision de toi.
 > Simulations : `simulation-5ans.mjs` (jour par jour, faux cloud aux vraies limites),
 > `simulation-chaos.mjs`, `simulation-issues.mjs`, `simulation-longue.mjs`. Les tests lisent les
 > listes par `window.__bcLire`.
+> **56 · Écritures hors ligne (matin du 25)** : une écriture refusée par le cloud n'était jamais
+> renvoyée, et la réouverture la remplaçait par l'ancienne version du cloud (vérifié : l'ancienne
+> version perdait les 30 min notées sur l'iPhone hors ligne). Maintenant : registre `bc-cloud-attente`
+> (propre à l'appareil) tenu jusqu'à confirmation, un nouvel essai sur `unavailable`, et à chaque
+> instantané une clé en attente n'est jamais écrasée — la version locale repart si aucun autre
+> appareil n'a écrit, sinon fusion à trois voies depuis la base commune (`bc-cloud-base`, gardée en
+> mémoire et écrite seulement après un échec, une fusion ou le passage en arrière-plan) : lignes par
+> `id`, suppressions respectées, minutes de révision et de projets additionnées. L'hydratation attend
+> un instantané définitif (`metadata.fromCache` faux), 20 s au plus. Le nouveau départ et les
+> restaurations vident la file. La revue du dimanche rejoint les listes découpées par mois
+> (`batcave-revue-AAAA-MM`). Test : `tests/test113.mjs` (Mac + iPhone, coupures, cache partiel,
+> erreur passagère, fusion, nouveau départ).
 > Hors Batcave : « 🦇 Enlever les tapis » dans Google Agenda (mar-ven 14:45, lun 16:45 —
 > l'aspirateur passe à 15:45 et 18:15), et la consigne du trajet le rappelle.
 >

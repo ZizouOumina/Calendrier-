@@ -141,6 +141,9 @@ console.log('\n== 194) Tâches (ajout, suppression, annulation ⌘Z), Budget =='
   await page.waitForTimeout(150);
   tk = await local('batcave-taches');
   ok(tk.length === 1, '⌘Z la restaure');
+  /* l'annulation recharge la page : on attend la fin du demarrage avant de naviguer */
+  await fr.waitForFunction(() => window.__bcInitFini === true, null, {timeout: 15000});
+  await page.waitForTimeout(150);
   ok(await go('budget'), 'Budget s\'affiche');
   await setVal('tx-montant', '12.5'); await click('#tx-add'); await page.waitForTimeout(100);
   const tx = await local('batcave-transactions');
