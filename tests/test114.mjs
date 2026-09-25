@@ -51,6 +51,7 @@ console.log('— vendredi 25 septembre : la premiere periode, 28 sept. -> 24 oct
   ok(L[2].montant === 100 && /club/.test(L[2].action) && L[2].quand === 'le 28', 'puis le club, 100 EUR, le 28');
   const proprio = L.find(l => /propri/.test(l.action));
   ok(proprio && proprio.montant === 781 && proprio.quand === 'le 1er', 'un seul virement au proprietaire : 781 EUR le 1er');
+  ok(proprio && /\u00e0 la main/.test(proprio.action) && /lui qui te le donne/.test(proprio.detail), 'le virement du proprietaire : a la main, au montant qu\'il donne');
   ok(proprio && /Loyer 700/.test(proprio.detail) && /70/.test(proprio.detail) && /Wifi 11/.test(proprio.detail), 'le detail du virement : loyer + eau/electricite + wifi');
   ok(['iCloud', 'Claude Pro', 'Bouygues'].every(n => L.some(l => l.action === n && !l.faire)), 'iCloud, Claude Pro et Bouygues partent seuls (auto)');
   ok(Math.abs(L[L.length - 1].solde) < 0.001 && L[L.length - 1].quand === 'le 24', 'le 24, le compte est a zero apres le balayage');
@@ -66,8 +67,9 @@ console.log('— vendredi 25 septembre : la premiere periode, 28 sept. -> 24 oct
   ok(/virement permanent de 1\u202f400 \u20ac le 25/.test(txt), 'consigne : le virement permanent de ta mere, le 25');
   ok(/Jar/.test(txt) && /\u00c9pargne et business/.test(txt), 'consigne : la cagnotte Wise');
   const faits = await fr.evaluate(() => [...document.querySelectorAll('.ma-setup li')].filter(li => li.querySelector('.badge.good')).map(li => li.querySelector('b').textContent));
-  ok(faits.length === 2 && /iCloud/.test(faits[0]) && /Bouygues/.test(faits[1]), 'deux consignes marquees faites : Apple et Bouygues ' + JSON.stringify(faits));
-  ok(/vrai montant de l.eau/.test(txt) && !/rel\u00e8ve leur prix/.test(txt), 'consigne : facture d\'eau et d\'electricite ; plus de consigne pour les amandes');
+  ok(faits.length === 3 && /Jar/.test(faits[0]) && /iCloud/.test(faits[1]) && /Bouygues/.test(faits[2]), 'trois consignes marquees faites : le Jar, Apple et Bouygues ' + JSON.stringify(faits));
+  ok(/virement du 1er se fait \u00e0 la main, jamais programm\u00e9/.test(txt) && /il te dit combien payer/.test(txt) && !/rel\u00e8ve leur prix/.test(txt), 'consigne : le proprietaire donne le montant, virement a la main ; plus de consigne pour les amandes');
+  ok(/le vrai montant suit ta conso/.test(txt) && !/pas encore connu/.test(txt), 'le pied dit : eau et electricite suivent la conso');
   ok(/le 25 \(virement et cagnotte\), le 28 \(club\), le 1er \(propri\u00e9taire\), le 24/.test(txt), 'les quatre rappels de l\'agenda sont nommes');
   ok(/Si le 25 tombe un week-end/.test(txt), 'regle : un 25 de week-end, c\'est prevu');
   ok(/70 € estim/.test(txt) && !/prix à relever/.test(txt) && !/amandes/i.test(txt), 'une seule estimation dite : l\'eau et l\'electricite (les amandes ont leur prix)');

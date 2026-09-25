@@ -17231,7 +17231,9 @@
     {cagnotte:true},
     /* le club garde sa date : l'abonnement a demarre le lundi 28 septembre */
     {ids:['fc10'], quand:'le 28', action:'Paie le club par carte', detail:'Carte Wise, au club \u2014 \u00e0 la s\u00e9ance suivante s\u2019il est ferm\u00e9.', faire:true},
-    {ids:['fc1','fc5','fc2'], quand:'le 1er', action:'Un seul virement au propri\u00e9taire', faire:true, proprio:true},
+    /* A la main, jamais programme : le contrat d'eau et d'electricite est au nom du proprietaire,
+       qui annonce chaque mois le montant du -- il suit la conso (25 septembre au soir). */
+    {ids:['fc1','fc5','fc2'], quand:'le 1er', action:'Un seul virement au propri\u00e9taire, \u00e0 la main', faire:true, proprio:true},
     {ids:['fc8'], quand:'le 2', action:'iCloud', detail:'Pr\u00e9lev\u00e9 par Apple sur la carte Wise.'},
     {ids:['fc9'], quand:'le 4', action:'Claude Pro', detail:'Pr\u00e9lev\u00e9 par Apple sur la carte Wise.'},
     {ids:['fc3'], quand:'le 5', action:'Bouygues', detail:'Pr\u00e9l\u00e8vement sur Wise.'},
@@ -17286,7 +17288,7 @@
         if(!cs2.length) return;
         var m = cs2.reduce(function(t, c){ return t + montantMensuel(c); }, 0);
         var detail = e.detail || '';
-        if(e.proprio) detail = cs2.map(function(c){ return c.label + ' ' + Math.round(montantMensuel(c) * 100) / 100 + ' \u20ac'; }).join(' + ') + '.';
+        if(e.proprio) detail = cs2.map(function(c){ return c.label + ' ' + Math.round(montantMensuel(c) * 100) / 100 + ' \u20ac'; }).join(' + ') + '. Le montant exact, c\u2019est lui qui te le donne : l\u2019eau et l\u2019\u00e9lectricit\u00e9 suivent ta conso.';
         else if(!e.detail) detail = cs2.map(function(c){ return c.label; }).join(', ');
         l = {quand: e.quand, action: e.action, detail: detail, montant: m, faire: !!e.faire};
       }
@@ -17342,17 +17344,17 @@
     h += '<div class="sub-head ma-une-fois"><h3>\u00c0 mettre en place une fois</h3><span class="sub-note">puis tout tourne seul</span></div>' +
       '<ul class="ma-setup">' +
       '<li><b>Ta m\u00e8re : un virement permanent de 1\u202f400 \u20ac le ' + REVENU_MOIS.jour + ' de chaque mois,</b> vers ton IBAN belge Wise. Ce mois-ci, il arrive encore le 28 ; le premier ' + REVENU_MOIS.jour + ', c\u2019est le ' + REVENU_MOIS.jour + ' octobre. Si elle pr\u00e9f\u00e8re le faire \u00e0 la main, un virement instantan\u00e9 arrive en quelques secondes, m\u00eame le week-end.</li>' +
-      '<li><b>Wise : une cagnotte (Jar) \u00ab\u00a0\u00c9pargne et business\u00a0\u00bb,</b> s\u00e9par\u00e9e du solde courant. C\u2019est l\u00e0 que vont les ' + eurMille(a.cagnotte).replace(',00', '') + ' du ' + REVENU_MOIS.jour + ' et le reste du ' + (REVENU_MOIS.jour - 1) + '.</li>' +
+      '<li><b>Wise : une cagnotte (Jar) \u00ab\u00a0\u00c9pargne et business\u00a0\u00bb,</b> s\u00e9par\u00e9e du solde courant. C\u2019est l\u00e0 que vont les ' + eurMille(a.cagnotte).replace(',00', '') + ' du ' + REVENU_MOIS.jour + ' et le reste du ' + (REVENU_MOIS.jour - 1) + '.' + faite + '</li>' +
       '<li><b>iCloud et Claude Pro sur la carte Wise,</b> via Apple.' + faite + '</li>' +
       '<li><b>Bouygues pr\u00e9lev\u00e9 sur Wise.</b>' + faite + '</li>' +
       '<li><b>Le club : la carte Wise,</b> chaque 28, \u00e0 la main \u2014 il ne pr\u00e9l\u00e8ve pas.</li>' +
-      '<li><b>Le propri\u00e9taire : demande-lui le vrai montant de l\u2019eau et de l\u2019\u00e9lectricit\u00e9.</b> Envoie-le-moi et le plan se recalcule \u2014 les 70 \u20ac ne sont qu\u2019une estimation.</li>' +
+      '<li><b>Le propri\u00e9taire : le virement du 1er se fait \u00e0 la main, jamais programm\u00e9.</b> Le contrat d\u2019eau et d\u2019\u00e9lectricit\u00e9 est \u00e0 son nom et suit ta conso : chaque mois, il te dit combien payer, et tu vires ce montant-l\u00e0. Note-le dans les d\u00e9penses (Eau &amp; \u00c9lectricit\u00e9) \u2014 apr\u00e8s trois mois, envoie-moi les trois montants et la provision de 70 \u20ac se recale sur tes vrais chiffres.</li>' +
       (a.estimes.length ? '<li><b>Les amandes : rel\u00e8ve leur prix samedi</b> et envoie-le-moi. En attendant, elles comptent \u00e0 ' + a.estimes[0].prix.eur + ' \u20ac/' + a.estimes[0].prix.par + '.</li>' : '') +
       '<li><b>Tes rappels \ud83d\udcb6 dans l\u2019agenda :</b> le ' + REVENU_MOIS.jour + ' (virement et cagnotte), le 28 (club), le 1er (propri\u00e9taire), le ' + (REVENU_MOIS.jour - 1) + ' (le reste dans la cagnotte).</li>' +
       '</ul>';
     h += '<p class="ma-pied">Courses : ' + eurMille(a.semaine) + ' par semaine d\u2019apr\u00e8s tes relev\u00e9s des 20, 21 et 25 septembre' +
       (a.estimes.length ? ', dont ' + a.estimes.map(function(e){ return e.label.toLowerCase() + ' estim\u00e9es \u00e0 ' + e.prix.eur + ' \u20ac/' + e.prix.par + ' (prix \u00e0 relever)'; }).join(', ') : '') +
-      '. Eau et \u00e9lectricit\u00e9 : 70 \u20ac estim\u00e9s, le vrai montant n\u2019est pas encore connu. Charges fixes : ' + eurMille(a.fixes) + ' par mois.</p>';
+      '. Eau et \u00e9lectricit\u00e9 : 70 \u20ac estim\u00e9s par mois, une provision \u2014 le vrai montant suit ta conso, le propri\u00e9taire te le donne chaque mois. Charges fixes : ' + eurMille(a.fixes) + ' par mois.</p>';
     el.innerHTML = h;
   }
   document.getElementById('tx-add').addEventListener('click', function(){
