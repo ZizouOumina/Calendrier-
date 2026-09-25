@@ -14,7 +14,10 @@ Il dit ce qui est fait, ce qui reste, et ce qui attend une décision de toi.
 > **53 · Demain** : la clôture validée enchaîne sur le plan du lendemain (grille, combat /
 > sans cours / journée saisie, lever, coucher, eau, échéances) ; aussi bouton « Demain → » du
 > Plan du jour et touche D. `tests/simulation.mjs` : deux semaines fictives, 88 vérifications.
-> Palettes proposées (page « Trois palettes pour la Batcave ») : aucune choisie encore.
+> **54 · Ardoise et laiton** : palette choisie par Zizou parmi huit (page « Trois palettes pour
+> la Batcave »). Graphite chaud, encre ivoire, accent laiton ; thème jour sable ; trame d'écran
+> retirée ; titres en Rajdhani 700 (Bebas parti). Les jetons `--cyan*` gardent leur nom mais
+> valent laiton. Contraste AA tenu sur les deux thèmes (contraste.mjs).
 > Hors Batcave : « 🦇 Enlever les tapis » dans Google Agenda (mar-ven 14:45, lun 16:45 —
 > l'aspirateur passe à 15:45 et 18:15), et la consigne du trajet le rappelle.
 >
