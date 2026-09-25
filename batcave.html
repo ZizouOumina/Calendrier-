@@ -567,6 +567,13 @@
   .overlay[hidden]{display:none;}
   .overlay-panel{background:var(--surface-raised); border:1px solid var(--border); border-radius:14px; padding:24px 26px; width:100%; max-width:520px; max-height:88vh; overflow-y:auto; box-shadow:0 20px 60px rgba(0,0,0,0.5);}
   .overlay-head{display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;}
+  /* Demain : 23 blocs doivent tenir sans ascenseur sur un Mac, d'ou deux colonnes ; une seule sur le telephone */
+  #demain-overlay .overlay-panel{ max-width:660px; }
+  #demain-liste{ gap:0; }
+  #demain-liste li{ padding:5px 0; border-bottom:1px dashed var(--border-soft); }
+  #demain-liste li:last-child{ border-bottom:1px dashed var(--border-soft); }
+  /* deux colonnes qui se lisent de haut en bas (matin a gauche, soir a droite), pas en zigzag */
+  @media (min-width:700px){ #demain-liste{ display:block; columns:2; column-gap:22px; } #demain-liste li{ break-inside:avoid; } }
   .overlay-head h3{font-size:20px; color:var(--ink);}
 
   /* ---------- week calendar ---------- */
@@ -1808,7 +1815,7 @@
           <div class="card-actions" style="margin-top:10px;"><button class="btn btn-primary" id="pcc-vu" type="button">J'ai vu</button></div>
         </div>
         <div class="panel mon-plan">
-          <div class="sub-head"><h3>🎯 Plan du jour</h3><span class="sub-note">priorisé automatiquement · <b class="mon-id">MON-01</b></span></div>
+          <div class="sub-head"><h3>🎯 Plan du jour</h3><span class="sub-note" style="display:flex; gap:8px; align-items:center;">priorisé automatiquement · <b class="mon-id">MON-01</b><button class="btn" id="dash-demain" type="button" style="padding:3px 9px; font-size:11px; min-height:0;" title="Le plan de demain (touche D)">Demain →</button></span></div>
           <ul class="mini-list" id="dash-plan"></ul>
           <!-- "Prochainement" répondait à la même question que le Plan, un cran plus loin :
                les deux vivent maintenant dans le même panneau. -->
@@ -3230,6 +3237,23 @@
   </div>
 </div>
 
+<!-- Demain : le plan du lendemain, lu le soir a la cloture (ou depuis le Plan du jour, touche D).
+     Une liste, la nuit qui vient, rien a saisir. -->
+<div class="overlay" id="demain-overlay" hidden>
+  <div class="overlay-panel">
+    <div class="overlay-head">
+      <h3 id="demain-titre">🌅 Demain</h3>
+      <button class="edel" id="demain-fermer" aria-label="Fermer" style="font-size:22px;">×</button>
+    </div>
+    <p class="sub-note" id="demain-date" style="margin-bottom:10px;"></p>
+    <ul class="mini-list" id="demain-liste"></ul>
+    <p class="sub-note" id="demain-pied" style="margin-top:10px;"></p>
+    <div class="card-actions" style="margin-top:12px;">
+      <button class="btn btn-primary" id="demain-ok" type="button" style="flex:1;">Bonne nuit 🦇</button>
+    </div>
+  </div>
+</div>
+
 <!-- Mode pilote : l'heure, le bloc, le temps qui reste, un bouton. Rien d'autre. -->
 <div class="overlay pilote" id="pilote-overlay" hidden>
   <div class="pilote-ecran" role="dialog" aria-label="Maintenant">
@@ -4602,14 +4626,17 @@
     }
     /* ===== Trois gestes au clavier =====
        P lance le Pomodoro du bloc en cours (celui que l'en-tête met en avant), C ouvre la
-       clôture du jour, H coche la première habitude du jour qui ne l'est pas encore. Rien
+       clôture du jour, D le plan de demain, M le mode pilote, H coche la première habitude
+       du jour qui ne l'est pas encore. Rien
        ne se déclenche par-dessus un écran déjà ouvert (sauf C, qui EST un écran). */
     var lettre = (e.key || '').toLowerCase();
-    if(lettre !== 'p' && lettre !== 'c' && lettre !== 'h' && lettre !== 'm') return;
+    if(lettre !== 'p' && lettre !== 'c' && lettre !== 'h' && lettre !== 'm' && lettre !== 'd') return;
     var ouverts = [].slice.call(document.querySelectorAll('.overlay')).some(function(o){ return !o.hidden; });
     if(lettre === 'c'){ e.preventDefault(); if(!ouverts) try{ ouvrirCloture(); }catch(err){} return; }
     /* M : le mode pilote s'ouvre, ou se ferme s'il est deja la */
     if(lettre === 'm'){ e.preventDefault(); var pv = document.getElementById('pilote-overlay'); if(pv && !pv.hidden) fermerPilote(); else if(!ouverts) ouvrirPilote(); return; }
+    /* D : le plan de demain, ou il se referme s'il est deja la */
+    if(lettre === 'd'){ e.preventDefault(); var dv = document.getElementById('demain-overlay'); if(dv && !dv.hidden) fermerDemain(); else if(!ouverts) ouvrirDemain(); return; }
     if(ouverts) return;
     if(lettre === 'p'){
       e.preventDefault();
@@ -18206,6 +18233,65 @@
     if(premier && !premier.value) premier.focus();
   }
   function fermerCloture(){ var ov = document.getElementById('cloture-overlay'); if(ov) ov.hidden = true; }
+  /* ===== Demain =====
+     La cloture enregistre la journee ; l'ecran qui suit montre la suivante. Sans ca, il
+     fallait aller cliquer le lendemain dans le Calendrier pour savoir a quelle heure on se
+     leve et s'il y a combat. La grille est celle du Calendrier (grilleDe), donc un jour
+     sans cours, un examen ou une journee saisie a la main s'y lisent pareil. */
+  function demainDonnees(iso){
+    iso = iso || isoDecale(todayISO, 1);
+    var dow = dowDe(iso), cle = cleJournee(dow), grille = [];
+    try{ grille = grilleDe(cle, iso) || []; }catch(e){ grille = []; }
+    var ev = null; try{ ev = journeeDe(iso); }catch(e2){}
+    var ech = (typeof echeancesState !== 'undefined' ? echeancesState : []).filter(function(e){ return e.date === iso && !e.fait; });
+    var combat = false, sansCours = false, lever = '', coucher = '';
+    try{ combat = jourDeCombat(iso); }catch(e3){}
+    try{ sansCours = sansCoursLe(iso); }catch(e4){}
+    try{ lever = heureLever(cle, iso); coucher = heureCoucher(cle, iso); }catch(e5){}
+    var eau = combat ? String(OBJECTIF_EAU_COMBAT_L).replace('.', ',') : String(OBJECTIF_EAU_L).replace('.', ',');
+    return {iso: iso, dow: dow, cle: cle, grille: grille, journee: ev, echeances: ech, combat: combat, sansCours: sansCours, lever: lever, coucher: coucher, eau: eau};
+  }
+  function renderDemain(iso){
+    var d = demainDonnees(iso);
+    var titre = document.getElementById('demain-titre'), date = document.getElementById('demain-date'), liste = document.getElementById('demain-liste'), pied = document.getElementById('demain-pied');
+    if(!liste) return d;
+    var apresDemain = d.iso !== isoDecale(todayISO, 1);
+    titre.textContent = (apresDemain ? '📅 ' : '🌅 Demain · ') + DOW_NAMES_LONG[d.dow] + ' ' + fmtDate(d.iso);
+    var tags = [];
+    if(d.journee) tags.push(d.journee.titre);
+    if(d.combat) tags.push('journée de combat');
+    if(d.sansCours && !d.journee) tags.push('sans cours');
+    date.textContent = tags.length ? tags.join(' · ') : 'journée normale';
+    liste.innerHTML = d.grille.length ? d.grille.map(function(b){
+      var label = String(b[1]), fort = label === JJB_LABEL || label === MT_LABEL || /^Sport|^🦇/.test(label) || /^Préparer/.test(label);
+      return '<li><span><b style="font-family:var(--font-mono); font-weight:500; color:var(--ink-dim); margin-right:8px;">' + escapeHtml(String(b[0])) + '</b>' + (fort ? '<b style="color:var(--ink);">' + escapeHtml(label) + '</b>' : escapeHtml(label)) + '</span></li>';
+    }).join('') : '<li><span style="font-style:italic; color:var(--ink-faint);">Rien de planifié — journée libre.</span></li>';
+    var bouts = [];
+    if(d.lever) bouts.push('Lever ' + d.lever);
+    if(d.coucher) bouts.push('coucher ' + d.coucher);
+    bouts.push('eau ' + d.eau + ' L');
+    if(d.echeances.length) bouts.push('échéance' + (d.echeances.length > 1 ? 's' : '') + ' : ' + d.echeances.filter(function(e){ return !e.fait; }).map(function(e){ return (TYPES_ECHEANCE[e.type] || {}).ic + ' ' + titreEcheance(e); }).join(', '));
+    pied.textContent = bouts.join(' · ') + '.';
+    return d;
+  }
+  function ouvrirDemain(iso){
+    var ov = document.getElementById('demain-overlay');
+    if(!ov) return;
+    renderDemain(iso);
+    ov.hidden = false;
+    var panneau = ov.querySelector('.overlay-panel'); if(panneau) panneau.scrollTop = 0;
+    /* le focus va sur le bouton SANS faire defiler : le titre doit rester visible */
+    var b = document.getElementById('demain-ok'); if(b) try{ b.focus({preventScroll: true}); }catch(e){}
+  }
+  function fermerDemain(){ var ov = document.getElementById('demain-overlay'); if(ov) ov.hidden = true; }
+  (function(){
+    var ok = document.getElementById('demain-ok'), x = document.getElementById('demain-fermer'), ov = document.getElementById('demain-overlay'), d = document.getElementById('dash-demain');
+    if(ok) ok.addEventListener('click', fermerDemain);
+    if(x) x.addEventListener('click', fermerDemain);
+    if(ov) ov.addEventListener('click', function(e){ if(e.target.id === 'demain-overlay') fermerDemain(); });
+    if(d) d.addEventListener('click', function(){ ouvrirDemain(); });
+    try{ window.__bcDemain = {ouvrir: ouvrirDemain, fermer: fermerDemain, donnees: demainDonnees}; }catch(e){}
+  })();
   /* ===== Les bornes de saisie =====
      Une faute de frappe (25 h de sommeil, 700 kg) fausserait la moyenne du mois, la dette
      de sommeil, la courbe de poids. La cloture refuse la valeur et pose le curseur dessus. */
@@ -18296,6 +18382,8 @@
     try{ retirerRappelCloture(); }catch(e){}
     try{ renderSante(); }catch(e){}
     showToast('🌙 Journée clôturée' + (cochees.length ? ' · ' + cochees.length + ' habitude' + (cochees.length > 1 ? 's' : '') + ' cochée' + (cochees.length > 1 ? 's' : '') : '') + ' — bonne nuit.', {annuler: true});
+    /* et tout de suite le lendemain, pour se coucher en sachant a quelle heure on se leve */
+    try{ ouvrirDemain(); }catch(e){}
     return true;
   }
   function repousserCloture(){
@@ -18394,6 +18482,7 @@
       {id:'backup-overlay', fermer:'backup-close'},
       {id:'opening-ritual-overlay', fermer:'ritual-close'},
       {id:'pilote-overlay', fermer:'pilote-fermer'},
+      {id:'demain-overlay', fermer:'demain-fermer'},
       {id:'focus-overlay', fermer:null}
     ];
     var FOCUSABLE = 'a[href], button:not([disabled]), input:not([type="hidden"]):not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';

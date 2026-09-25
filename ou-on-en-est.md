@@ -10,7 +10,11 @@ Il dit ce qui est fait, ce qui reste, et ce qui attend une décision de toi.
 > Annuler dans le toast), rappel « Clôture du jour » dans l'agenda, démarrage en deux temps.
 > **51 · Interface** : les six entrées ont été essayées puis retirées (« j'aimais bien le
 > layout d'avant ») — la barre reste à neuf onglets ; gardés : mode pilote plein écran (⛶ Maintenant, touche M), feuilles qui montent du bas sur iPhone,
-> thème pur noir. **52 · Système** : carte orbitale (Suivi → Système), canvas 2D.
+> thème pur noir. **52 · Système** : carte orbitale (Semaine → Système), canvas 2D.
+> **53 · Demain** : la clôture validée enchaîne sur le plan du lendemain (grille, combat /
+> sans cours / journée saisie, lever, coucher, eau, échéances) ; aussi bouton « Demain → » du
+> Plan du jour et touche D. `tests/simulation.mjs` : deux semaines fictives, 88 vérifications.
+> Palettes proposées (page « Trois palettes pour la Batcave ») : aucune choisie encore.
 > Hors Batcave : « 🦇 Enlever les tapis » dans Google Agenda (mar-ven 14:45, lun 16:45 —
 > l'aspirateur passe à 15:45 et 18:15), et la consigne du trajet le rappelle.
 >
