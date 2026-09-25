@@ -8,7 +8,7 @@ async function ouvrir(seed){
   const ctx = await browser.newContext({ viewport:{width:1440,height:900}, timezoneId:'Europe/Madrid', locale:'fr-FR' });
   await ctx.addInitScript(() => { try{ localStorage.setItem('batcave-duree-bloc', '60'); }catch(e){} });   /* sessions d'1 h : la durée est accessoire ici */
   if(seed) await ctx.addInitScript(s => {
-    if(localStorage.getItem('__seed')) return;
+    if((window.__bcLire || ((k) => localStorage.getItem(k)))('__seed')) return;
     localStorage.setItem('__seed','1');
     Object.keys(s).forEach(k => localStorage.setItem(k, JSON.stringify(s[k])));
   }, seed);
@@ -23,7 +23,7 @@ async function ouvrir(seed){
   await page.waitForTimeout(200);
   return { ctx, page, fr };
 }
-const ls = async (fr, k) => await fr.evaluate(k => { try { return JSON.parse(localStorage.getItem(k)); } catch(e){ return null; } }, k);
+const ls = async (fr, k) => await fr.evaluate(k => { try { return JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))(k)); } catch(e){ return null; } }, k);
 // contenu d'une case de mois, agenda par agenda ('ag' = Batcave, 'rv' = révision, 'pj' = projets)
 const caseMois = async (fr, pre, iso) => await fr.evaluate(function(a){
   const c = document.querySelector('#' + a.pre + '-grid [data-agjour="' + a.iso + '"]');

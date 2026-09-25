@@ -111,7 +111,7 @@ console.log('\n== 412) Feuilles de saisie et thème pur noir ==');
 }
 {
   const { ctx, fr } = await ouvrir('2026-09-28T10:00:00+02:00');
-  const cycle = await fr.evaluate(() => { const b = document.getElementById('theme-toggle'), out = []; for(let i = 0; i < 4; i++){ b.click(); out.push(localStorage.getItem('bc-theme') || 'auto'); } return out.join(' → '); });
+  const cycle = await fr.evaluate(() => { const b = document.getElementById('theme-toggle'), out = []; for(let i = 0; i < 4; i++){ b.click(); out.push((window.__bcLire || ((k) => localStorage.getItem(k)))('bc-theme') || 'auto'); } return out.join(' → '); });
   ok(cycle === 'jour → nuit → noir → auto', 'le bouton de thème fait le tour : ' + cycle);
   await ctx.close();
 }

@@ -221,7 +221,7 @@ console.log('\n== 254) Saisir un horaire d\'examen : deux champs, donc deux temp
   const vu = () => fr.evaluate(() => {
     const q = t => document.querySelector('[data-examen-h="' + t + '"][data-mat="Anatomía I"]');
     return { debut: q('debut').value, fin: q('fin').value,
-             stock: JSON.parse(localStorage.getItem('batcave-examens-heures') || '{}')['Anatomía I'] || null };
+             stock: JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-examens-heures') || '{}')['Anatomía I'] || null };
   });
   /* 1. Le debut seul. C'est ICI que tout cassait : le champ se vidait tout seul. */
   await poser('[data-examen-h="debut"][data-mat="Anatomía I"]', '09:00');

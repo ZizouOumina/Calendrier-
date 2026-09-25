@@ -20,7 +20,7 @@ async function ouvrir(quand, local, garderClaude){
   await page.waitForTimeout(400);
   return { ctx, page, fr };
 }
-const local = (fr,k) => fr.evaluate(x => JSON.parse(localStorage.getItem(x) || 'null'), k);
+const local = (fr,k) => fr.evaluate(x => JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))(x) || 'null'), k);
 const MARDI = '2026-09-08T06:30:00+02:00';   /* Bas complet : Split squat bulgare en premier */
 const LUNDI = '2026-09-07T06:30:00+02:00';   /* Haut lourd : Tractions en premier */
 

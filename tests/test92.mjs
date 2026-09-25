@@ -23,7 +23,7 @@ await fr.evaluate(() => {
   localStorage.setItem('bc-phrase', JSON.stringify('secret'));
 });
 
-const avant = await fr.evaluate(() => JSON.parse(localStorage.getItem('batcave-habits')||'[]').map(h=>h.id));
+const avant = await fr.evaluate(() => JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-habits')||'[]').map(h=>h.id));
 ok(avant.includes('core-ongles'), 'avant la remise à zéro : core-ongles est là (' + avant.length + ' habitudes)');
 
 /* La remise a zero, par la fonction reelle de l'application. */
@@ -51,15 +51,15 @@ await page.frameLocator('#f').locator('#dash-focus').waitFor({state:'attached', 
 const fr2 = page.frames().find(x => x.url().includes('batcave.html'));
 await fr2.evaluate(() => { document.querySelectorAll('.overlay').forEach(o => o.hidden = true); });
 await page.waitForTimeout(600);
-const apres = await fr2.evaluate(() => JSON.parse(localStorage.getItem('batcave-habits')||'[]').map(h=>h.id));
+const apres = await fr2.evaluate(() => JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-habits')||'[]').map(h=>h.id));
 ok(apres.includes('core-ongles'), 'après la remise à zéro et rechargement : core-ongles survit');
 ok(apres.length === avant.length, 'aucune habitude perdue ni dupliquée (' + avant.length + ' → ' + apres.length + ')');
 ok(new Set(apres).size === apres.length, 'aucun doublon d\'identifiant');
 /* batcave-journees est volontairement GARDEE (il rentre le poids du 13 lundi) :
    on verifie donc l'inverse -- qu'elle a bien survecu. */
-const journees = await fr2.evaluate(() => localStorage.getItem('batcave-journees'));
+const journees = await fr2.evaluate(() => (window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-journees'));
 ok(/64\.2/.test(journees || ''), 'le journal des journées survit, comme prévu (poids du 13 conservé)');
-const hl = await fr2.evaluate(() => localStorage.getItem('batcave-habitlog'));
+const hl = await fr2.evaluate(() => (window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-habitlog'));
 ok(!hl || hl === 'null' || hl === '{}', 'les coches d\'habitudes repartent de zéro (' + hl + ')');
 
 /* Et la banniere d'incoherence doit rester eteinte. */

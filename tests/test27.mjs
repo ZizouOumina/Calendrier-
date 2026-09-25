@@ -5,7 +5,7 @@ const ok = (c,m) => { if(c) console.log('  ok  '+m); else { errs++; console.log(
 const browser = await chromium.launch();
 async function ouvrir(seed){
   const ctx = await browser.newContext({ viewport:{width:1440,height:900}, timezoneId:'Europe/Madrid', locale:'fr-FR' });
-  if(seed) await ctx.addInitScript(x => { if(localStorage.getItem('__s')) return; localStorage.setItem('__s','1');
+  if(seed) await ctx.addInitScript(x => { if((window.__bcLire || ((k) => localStorage.getItem(k)))('__s')) return; localStorage.setItem('__s','1');
     Object.keys(x).forEach(k => localStorage.setItem(k, JSON.stringify(x[k]))); }, seed);
   const page = await ctx.newPage();
   page.on('pageerror', e => { errs++; console.log('  PAGEERROR: '+e.message); });
@@ -49,7 +49,7 @@ console.log('\n== 63) Charges annuelles et trimestrielles, lissées au mois ==')
   const tuile = await fr.evaluate(() => document.querySelectorAll('#budget-stats .stat-tile')[4].innerText.replace(/\s+/g,''));
   ok(/865/.test(tuile), 'la tuile "Charges fixes" affiche le même total lissé : ' + tuile);
 
-  const tx = await fr.evaluate(() => JSON.parse(localStorage.getItem('batcave-transactions')||'[]').filter(t=>t.fixed));
+  const tx = await fr.evaluate(() => JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-transactions')||'[]').filter(t=>t.fixed));
   const assurance = tx.find(t => /Assurance/.test(t.label||''));
   ok(assurance && assurance.montant === 20, 'la transaction du mois pour l\'assurance est de 20 € (pas 240) : ' + (assurance&&assurance.montant));
   ok(assurance && /lissé/.test(assurance.label), 'son libellé indique le lissage : ' + (assurance&&assurance.label));

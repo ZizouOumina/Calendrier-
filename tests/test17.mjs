@@ -27,7 +27,7 @@ async function ecouleSansTic(page, minutes){
   await page.frameLocator('#f').locator('#timer-idle,#timer-done,#timer-running').first().waitFor({ state:'attached', timeout:15000 });
   await page.waitForTimeout(200);
 }
-const ls = async (fr, k) => await fr.evaluate(k => { try { return JSON.parse(localStorage.getItem(k)); } catch(e){ return null; } }, k);
+const ls = async (fr, k) => await fr.evaluate(k => { try { return JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))(k)); } catch(e){ return null; } }, k);
 
 console.log('\n== 47) Un bloc de travail expiré hors ligne : la pause repart quand même ==');
 {

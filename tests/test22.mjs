@@ -7,7 +7,7 @@ const browser = await chromium.launch();
 async function ouvrir(seed){
   const ctx = await browser.newContext({ viewport:{width:1440,height:900}, timezoneId:'Europe/Madrid', locale:'fr-FR' });
   if(seed) await ctx.addInitScript(s => {
-    if(localStorage.getItem('__seed')) return;
+    if((window.__bcLire || ((k) => localStorage.getItem(k)))('__seed')) return;
     localStorage.setItem('__seed','1');
     Object.keys(s).forEach(k => localStorage.setItem(k, JSON.stringify(s[k])));
   }, seed);

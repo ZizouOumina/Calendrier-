@@ -60,17 +60,17 @@ console.log('\n== 282) Thème : clair le jour, sombre le soir, et bascule manuel
   const jour = await ouvrir(MERCREDI_MATIN);
   ok(await jour.fr.evaluate(() => document.documentElement.getAttribute('data-theme')) === 'jour', 'à 10 h : thème clair');
   const fond = await jour.fr.evaluate(() => getComputedStyle(document.body).backgroundColor);
-  ok(/232, 238, 242/.test(fond), 'le fond de page est clair (' + fond + ')');
+  ok(/236, 233, 226/.test(fond), 'le fond de page est clair (' + fond + ')');
   const encre = await jour.fr.evaluate(() => getComputedStyle(document.querySelector('.bc-name')).color);
-  ok(/11, 26, 34/.test(encre), 'le texte est sombre sur fond clair (' + encre + ')');
-  ok(await jour.fr.evaluate(() => document.querySelector('meta[name="theme-color"]').content) === '#e8eef2', 'la couleur de barre système suit le thème');
+  ok(/31, 29, 25/.test(encre), 'le texte est sombre sur fond clair (' + encre + ')');
+  ok(await jour.fr.evaluate(() => document.querySelector('meta[name="theme-color"]').content) === '#ece9e2', 'la couleur de barre système suit le thème');
   /* trois clics = un tour complet */
   const suite = [];
   /* lot 51 : un quatrième cran, pur noir, entre sombre et automatique */
   for(let i = 0; i < 4; i++){
     await jour.fr.evaluate(() => document.getElementById('theme-toggle').click());
     await jour.page.waitForTimeout(120);
-    suite.push(await jour.fr.evaluate(() => document.documentElement.getAttribute('data-theme') + ':' + localStorage.getItem('bc-theme')));
+    suite.push(await jour.fr.evaluate(() => document.documentElement.getAttribute('data-theme') + ':' + (window.__bcLire || ((k) => localStorage.getItem(k)))('bc-theme')));
   }
   ok(suite.join(' → ') === 'jour:jour → nuit:nuit → noir:noir → jour:auto', 'le bouton fait auto → clair → sombre → pur noir → auto (' + suite.join(' → ') + ')');
   await jour.ctx.close();
@@ -160,7 +160,7 @@ console.log('\n== 285) Clôture express : le minimum, et jamais le dimanche ==')
   /* 25 septembre : « Au lit » entre dans l'express -- c'est lui qui mesure l'efficacite de sommeil. */
   ok(champs.length === 7, 'en express un jour de cours : sommeil, au lit, eau, humeur, la note du cours et les compléments (' + champs.length + ')');
   ok(/Sommeil/.test(champs[0]) && /Au lit/.test(champs[1]) && /Eau/.test(champs[2]) && /Humeur/.test(champs[3]) && /suivi le cours/.test(champs[4]) && /Compléments/.test(champs[5]) && /Habitudes/.test(champs[6]), 'sommeil, au lit, eau, humeur, cours, compléments, habitudes : ' + champs.join(' | ').slice(0, 130));
-  ok(await fr.evaluate(() => localStorage.getItem('bc-cloture-mode')) === 'court', 'le choix est mémorisé sur l\'appareil');
+  ok(await fr.evaluate(() => (window.__bcLire || ((k) => localStorage.getItem(k)))('bc-cloture-mode')) === 'court', 'le choix est mémorisé sur l\'appareil');
   /* et il n'est pas dans la sauvegarde : c'est un réglage d'appareil */
   const dansSauvegarde = await fr.evaluate(() => { try{ return JSON.stringify(window.__bcSauvegarde ? window.__bcSauvegarde() : {}).indexOf('bc-cloture-mode') > -1; }catch(e){ return false; } });
   ok(dansSauvegarde === false, 'le mode de clôture ne part pas dans la sauvegarde');

@@ -22,9 +22,9 @@ const carte = () => fr.evaluate(() => ([...document.querySelectorAll('#habits-gr
 
 console.log('\n== 198) Migration : la date du dimanche 30 août est rattachée au samedi 29 ==');
 {
-  const log = await fr.evaluate(() => JSON.parse(localStorage.getItem('batcave-habitlog')));
+  const log = await fr.evaluate(() => JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-habitlog')));
   ok(JSON.stringify(log['core-courses']) === '["2026-08-29"]', 'journal : ' + JSON.stringify(log['core-courses']));
-  ok(await fr.evaluate(() => localStorage.getItem('batcave-habitlog-hebdo-v1') === 'true'), 'drapeau batcave-habitlog-hebdo-v1 posé');
+  ok(await fr.evaluate(() => (window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-habitlog-hebdo-v1') === 'true'), 'drapeau batcave-habitlog-hebdo-v1 posé');
   await aller('habitudes');
   const c = await carte();
   ok(/1\s*jour/i.test(c) && /Marquer fait \(samedi\)/.test(c), 'Habitudes : série 1 jour, bouton « Marquer fait (samedi) » — ' + JSON.stringify(c).slice(0, 120));
@@ -39,7 +39,7 @@ console.log('\n== 199) Liste de courses finie le dimanche → coche du samedi 5,
     await page.waitForTimeout(30);
   }
   ok(/^8\/8 articles/.test(await txt('#courses-summary')), 'Courses : 8/8 articles, les amandes entrées le 24 septembre (' + await txt('#courses-summary') + ')');
-  const log = await fr.evaluate(() => JSON.parse(localStorage.getItem('batcave-habitlog'))['core-courses']);
+  const log = await fr.evaluate(() => JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-habitlog'))['core-courses']);
   ok(log.indexOf('2026-09-05') > -1 && log.indexOf('2026-09-06') < 0, 'journal : samedi 5 septembre, pas dimanche 6 — ' + JSON.stringify(log));
   await aller('habitudes');
   const c = await carte();
@@ -64,7 +64,7 @@ console.log('\n== 200) Samedi : « Fait aujourd\'hui », le tableau de bord la l
   ok(await fr.evaluate(() => !!document.querySelector('#dash-checklist [data-togglehab="core-courses"]')), 'tableau de bord : l\'habitude Courses est listée le samedi');
   await fr.evaluate(() => document.querySelector('#dash-checklist [data-togglehab="core-courses"]').click());
   await page.waitForTimeout(150);
-  const log = await fr.evaluate(() => JSON.parse(localStorage.getItem('batcave-habitlog'))['core-courses']);
+  const log = await fr.evaluate(() => JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-habitlog'))['core-courses']);
   ok(log.indexOf('2026-09-12') > -1, 'journal : samedi 12 — ' + JSON.stringify(log));
   await aller('courses');
   ok(/^8\/8 articles/.test(await txt('#courses-summary')), 'Courses : cocher l\'habitude remplit la liste');

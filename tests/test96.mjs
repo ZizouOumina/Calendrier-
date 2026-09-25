@@ -131,7 +131,7 @@ console.log('\n== 298) J+7, la note 0-3, et le sujet qui reprend un créneau =='
     consigneAppro: window.__bcConsigne('Approfondir', 3, '2026-09-30', '11:20'),
     cache: document.getElementById('appro-dus-bloc').hidden,
     notes: window.__bcApproState().liste[0].notes,
-    persiste: JSON.parse(localStorage.getItem('batcave-appro')).liste[0].notes.length
+    persiste: JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-appro')).liste[0].notes.length
   }));
   ok(apres.dus === 0 && apres.cache, 'noté : le rappel quitte la liste du jour');
   ok(JSON.stringify(apres.notes) === '[{"lag":7,"n":1,"d":"2026-09-28"}]', 'la note est stockée avec son écart et sa date');

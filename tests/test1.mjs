@@ -37,7 +37,7 @@ await f.locator('#timer-pomodoro').waitFor({ state:'attached', timeout:15000 });
 const fr = page.frames().find(x => x.url().includes('batcave.html'));
 ok(!!fr, 'iframe chargée');
 
-const ls = async (k) => await fr.evaluate(k => { try { return JSON.parse(localStorage.getItem(k)); } catch(e){ return localStorage.getItem(k); } }, k);
+const ls = async (k) => await fr.evaluate(k => { try { return JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))(k)); } catch(e){ return (window.__bcLire || ((k) => localStorage.getItem(k)))(k); } }, k);
 
 // fermer le rituel d'ouverture s'il s'affiche
 await fr.evaluate(() => { document.querySelectorAll('.overlay:not([hidden])').forEach(o => { const b = o.querySelector('[id$="-close"], .btn'); if(b) b.click(); }); });
@@ -96,7 +96,7 @@ ok(t2 !== vis.time, 'le décompte se met à jour en plein écran (' + vis.time +
 // pause depuis le plein écran
 await fr.evaluate(() => document.getElementById('focus-pause').click());
 await page.waitForTimeout(200);
-let p = await fr.evaluate(() => ({ lbl:document.getElementById('focus-pause').textContent, paused: !!(JSON.parse(localStorage.getItem('batcave-timer')||'null')||{}).pausedAt }));
+let p = await fr.evaluate(() => ({ lbl:document.getElementById('focus-pause').textContent, paused: !!(JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-timer')||'null')||{}).pausedAt }));
 ok(p.paused === true && p.lbl.includes('Reprendre'), 'pause depuis le plein écran (' + p.lbl.trim() + ')');
 await fr.evaluate(() => document.getElementById('focus-pause').click());
 await page.waitForTimeout(200);

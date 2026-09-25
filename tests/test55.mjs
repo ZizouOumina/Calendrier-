@@ -15,7 +15,7 @@ await page.frameLocator('#f').locator('#dash-temps').waitFor({ state:'attached',
 const fr = page.frames().find(x => x.url().includes('batcave.html'));
 await fr.evaluate(() => { const r = document.getElementById('ritual-dismiss'); if(r) r.click(); });
 await page.waitForTimeout(300);
-const local = (k) => fr.evaluate(x => JSON.parse(localStorage.getItem(x) || 'null'), k);
+const local = (k) => fr.evaluate(x => JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))(x) || 'null'), k);
 const go = async (p) => { await fr.evaluate(x => document.querySelector('.nav-btn[data-page="' + x + '"]').click(), p); await page.waitForTimeout(120); return fr.evaluate(x => document.querySelector('.page[data-page="' + x + '"]').classList.contains('active') && document.querySelector('.page[data-page="' + x + '"]').innerText.length > 50, p); };
 const setVal = (id, v) => fr.evaluate(([i, val]) => { const e = document.getElementById(i); e.value = val; e.dispatchEvent(new Event('input', {bubbles:true})); e.dispatchEvent(new Event('change', {bubbles:true})); }, [id, v]);
 const click = (sel) => fr.evaluate(s => { const e = document.querySelector(s); if(!e) return false; e.click(); return true; }, sel);

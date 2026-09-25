@@ -23,7 +23,7 @@ async function ouvrir(quand, seed){
   await page.waitForTimeout(450);
   return { ctx, page, fr };
 }
-const lire = (fr,k) => fr.evaluate(x => JSON.parse(localStorage.getItem(x) || 'null'), k);
+const lire = (fr,k) => fr.evaluate(x => JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))(x) || 'null'), k);
 
 const SAMEDI = '2026-09-05T10:00:00+02:00';
 /* l'état réel du compte avant le correctif : les habitudes historiques, le drapeau V2 posé,

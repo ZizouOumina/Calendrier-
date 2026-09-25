@@ -26,7 +26,7 @@ console.log('\n== 4) Migration de l\'historique existant ==');
 {
   const ctx = await browser.newContext({ viewport:{width:1440,height:900}, timezoneId:'Europe/Madrid', locale:'fr-FR' });
   await ctx.addInitScript(() => {
-    if(localStorage.getItem('__seeded')) return;   // le rechargement ne doit pas re-semer l'historique
+    if((window.__bcLire || ((k) => localStorage.getItem(k)))('__seeded')) return;   // le rechargement ne doit pas re-semer l'historique
     localStorage.setItem('__seeded', '1');
     localStorage.setItem('batcave-revision', JSON.stringify([
       {id:'r1', date:'2026-08-30', duree:60},
@@ -43,7 +43,7 @@ console.log('\n== 4) Migration de l\'historique existant ==');
   await page.goto(URL);
   await page.frameLocator('#f').locator('#timer-pomodoro').waitFor({ state:'attached', timeout:15000 });
   const fr = page.frames().find(x => x.url().includes('batcave.html'));
-  const ls = async (k) => await fr.evaluate(k => { try { return JSON.parse(localStorage.getItem(k)); } catch(e){ return null; } }, k);
+  const ls = async (k) => await fr.evaluate(k => { try { return JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))(k)); } catch(e){ return null; } }, k);
   const rev = await ls('batcave-revision');
   ok(rev.length === 3, '6 entrées -> 3 journées (obtenu: ' + rev.length + ')');
   const byDate = {}; rev.forEach(r => byDate[r.date] = r.duree);
@@ -57,7 +57,7 @@ console.log('\n== 4) Migration de l\'historique existant ==');
   await page.reload();
   await page.frameLocator('#f').locator('#timer-pomodoro').waitFor({ state:'attached', timeout:15000 });
   const fr2 = page.frames().find(x => x.url().includes('batcave.html'));
-  const rev2 = await fr2.evaluate(() => JSON.parse(localStorage.getItem('batcave-revision')));
+  const rev2 = await fr2.evaluate(() => JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-revision')));
   ok(rev2.length === 3 && rev2.reduce((s,r)=>s+r.duree,0) === 280, 'rechargement : toujours 3 lignes / 280 min');
   await ctx.close();
 }

@@ -97,11 +97,11 @@ console.log('\n== 345) Réinitialiser ne vide que ce qui était dû ==');
     if(b){ b.checked = true; b.dispatchEvent(new Event('change', {bubbles:true})); }
   });
   await page.waitForTimeout(250);
-  const avant = await fr.evaluate(() => Object.keys(JSON.parse(localStorage.getItem('batcave-courses') || '{}')).length);
+  const avant = await fr.evaluate(() => Object.keys(JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-courses') || '{}')).length);
   ok(avant === 2, 'deux coches posées, une due et une en avance (' + avant + ')');
   await fr.evaluate(() => document.getElementById('courses-reset').click());
   await page.waitForTimeout(250);
-  const apres = await fr.evaluate(() => JSON.parse(localStorage.getItem('batcave-courses') || '{}'));
+  const apres = await fr.evaluate(() => JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-courses') || '{}'));
   const cles = Object.keys(apres);
   ok(cles.length === 1, 'la remise à zéro n’en efface qu’une (' + cles.length + ' restante)');
   ok(cles.length === 1 && !cles[0].startsWith('0-'), 'celle qui reste est la réserve non due, pas l’hebdomadaire (' + cles.join(', ') + ')');

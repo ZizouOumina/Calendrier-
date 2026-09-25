@@ -28,7 +28,7 @@ console.log('\n== 61) Durée de bloc au choix (25 / 45 / 60) ==');
   await fr.evaluate(() => document.querySelector('#timer-durees [data-duree="25"]').click());
   await page.waitForTimeout(150);
   const memorise = await fr.evaluate(() => ({
-    pref: JSON.parse(localStorage.getItem('batcave-duree-bloc')),
+    pref: JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-duree-bloc')),
     actif: document.querySelector('#timer-durees [data-duree="25"]').classList.contains('active'),
   }));
   ok(memorise.pref === 25 && memorise.actif, 'le choix 25 min est mémorisé : ' + memorise.pref);
@@ -37,19 +37,19 @@ console.log('\n== 61) Durée de bloc au choix (25 / 45 / 60) ==');
   await page.waitForTimeout(150);
   await fr.evaluate(() => { const s=document.getElementById('ask-select'); s.value=[...s.options][0].value; document.getElementById('ask-ok').click(); });
   await page.waitForTimeout(250);
-  const lance = await fr.evaluate(() => JSON.parse(localStorage.getItem('batcave-timer')||'null'));
+  const lance = await fr.evaluate(() => JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-timer')||'null'));
   ok(lance && lance.durationMin === 25, 'le bloc démarre bien à 25 min : ' + (lance && lance.durationMin));
   ok(lance && lance.dureeTravail === 25, 'la durée est mémorisée dans l\'état du minuteur');
 
   // fin du bloc → pause de 5 min, puis bloc suivant à 25 min lui aussi
   await page.clock.fastForward('00:25:01'); await page.waitForTimeout(400);
-  const pause = await fr.evaluate(() => JSON.parse(localStorage.getItem('batcave-timer')||'null'));
+  const pause = await fr.evaluate(() => JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-timer')||'null'));
   ok(pause && pause.mode === 'pause' && pause.durationMin === 5, 'pause de 5 min enchaînée : ' + (pause && pause.durationMin));
-  const rev1 = await fr.evaluate(() => JSON.parse(localStorage.getItem('batcave-revision')||'[]').reduce((a,r)=>a+Number(r.duree||0),0));
+  const rev1 = await fr.evaluate(() => JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-revision')||'[]').reduce((a,r)=>a+Number(r.duree||0),0));
   ok(rev1 === 25, '25 min comptabilisées (pas 60) : ' + rev1);
 
   await page.clock.fastForward('00:05:01'); await page.waitForTimeout(400);
-  const suivant = await fr.evaluate(() => JSON.parse(localStorage.getItem('batcave-timer')||'null'));
+  const suivant = await fr.evaluate(() => JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-timer')||'null'));
   ok(suivant && suivant.mode === 'travail' && suivant.durationMin === 25, 'le bloc suivant reprend à 25 min : ' + (suivant && suivant.durationMin));
   await ctx.close();
 }
@@ -68,9 +68,9 @@ console.log('\n== 62) Changer la préférence ne casse pas une série en cours =
   await page.waitForTimeout(150);
   await page.clock.fastForward('00:45:01'); await page.waitForTimeout(400);
   await page.clock.fastForward('00:05:01'); await page.waitForTimeout(400);
-  const suivant = await fr.evaluate(() => JSON.parse(localStorage.getItem('batcave-timer')||'null'));
+  const suivant = await fr.evaluate(() => JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-timer')||'null'));
   ok(suivant && suivant.durationMin === 45, 'la série en cours reste à 45 min malgré le changement : ' + (suivant && suivant.durationMin));
-  const rev = await fr.evaluate(() => JSON.parse(localStorage.getItem('batcave-revision')||'[]').reduce((a,r)=>a+Number(r.duree||0),0));
+  const rev = await fr.evaluate(() => JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-revision')||'[]').reduce((a,r)=>a+Number(r.duree||0),0));
   ok(rev === 45, '45 min enregistrées : ' + rev);
   await ctx.close();
 }

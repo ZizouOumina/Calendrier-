@@ -19,7 +19,7 @@ async function ouvrir(quand, local){
   await page.waitForTimeout(500);
   return { ctx, page, fr };
 }
-const local = (fr,k) => fr.evaluate(x => JSON.parse(localStorage.getItem(x) || 'null'), k);
+const local = (fr,k) => fr.evaluate(x => JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))(x) || 'null'), k);
 /* Programme v2 : lundi = Haut lourd (Tractions 4×6-12 en premier). Le programme demarre le
    MARDI 22 sept. 2026, donc la semaine de programme court du mardi au lundi : la semaine 1
    va du 22 au 28 septembre, et son seul lundi -- le 28 -- est le premier Haut lourd qu'on

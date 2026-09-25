@@ -133,7 +133,7 @@ console.log('\n== 296) L\'expérience de la semaine : déclaration puis verdict 
   ok(await fr.evaluate(() => document.querySelectorAll('#cl-exp-mesure option').length) === 9, 'neuf mesures proposées');
   await fr.evaluate(() => { document.getElementById('cl-exp-quoi').value = 'Coucher à 21:30'; document.getElementById('cl-exp-mesure').value = 'sleepH'; document.getElementById('cloture-valider').click(); });
   await page.waitForTimeout(350);
-  const x = await fr.evaluate(() => JSON.parse(localStorage.getItem('batcave-experiences') || '[]'));
+  const x = await fr.evaluate(() => JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-experiences') || '[]'));
   ok(x.length === 1 && x[0].lundi === '2026-09-21' && x[0].mesure === 'sleepH',
      'l\'expérience porte sur la semaine qui commence lundi (' + (x[0] && x[0].lundi) + ')');
   ok(x[0].avant !== null && x[0].avant !== undefined, 'la valeur de départ est figée à la déclaration');
@@ -153,7 +153,7 @@ console.log('\n== 297) Le verdict est calculé, pas ressenti ==');
   ok(/6,8 h → 8,1 h/.test(aperçu) && /ça a marché/.test(aperçu), 'l\'aperçu montre départ, arrivée et verdict : ' + aperçu.slice(0, 90));
   await fr.evaluate(() => document.getElementById('cloture-valider').click());
   await page.waitForTimeout(350);
-  const x = await fr.evaluate(() => JSON.parse(localStorage.getItem('batcave-experiences') || '[]'));
+  const x = await fr.evaluate(() => JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-experiences') || '[]'));
   ok(x[0].verdict === 'marche' && x[0].apres === 8.1 && x[0].clos === '2026-09-27', 'le verdict est enregistré (' + JSON.stringify([x[0].verdict, x[0].apres]) + ')');
   await fr.evaluate(() => document.querySelector('.nav-btn[data-page="bilan"]').click());
   await page.waitForTimeout(250);
@@ -167,7 +167,7 @@ console.log('\n== 297) Le verdict est calculé, pas ressenti ==');
   const n = await ouvrir('2026-09-27T21:00:00+02:00', { local: Object.assign({'batcave-experiences': exp2}, petit) });
   await n.fr.evaluate(() => { document.getElementById('bc-cloture').click(); document.getElementById('cloture-valider').click(); });
   await n.page.waitForTimeout(350);
-  const y = await n.fr.evaluate(() => JSON.parse(localStorage.getItem('batcave-experiences') || '[]'));
+  const y = await n.fr.evaluate(() => JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-experiences') || '[]'));
   ok(y[0].verdict === 'neutre', '+0,1 h de sommeil : « pas d\'effet mesurable » (' + y[0].verdict + ')');
   await n.ctx.close();
 }
@@ -207,7 +207,7 @@ console.log('\n== 299) La clôture du soir prend aussi les chiffres d\'Anki ==')
                             document.getElementById('cl-ak-dus').value = '150'; document.getElementById('cl-ak-revues').value = '260';
                             document.getElementById('cloture-valider').click(); });
   await page.waitForTimeout(350);
-  const a = await fr.evaluate(() => JSON.parse(localStorage.getItem('batcave-anki') || 'null'));
+  const a = await fr.evaluate(() => JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-anki') || 'null'));
   ok(a && a.source === 'saisie' && a.paquets.Dentaire.dus === 150 && a.revues === 260,
      'la clôture écrit les chiffres (' + JSON.stringify(a && [a.paquets.Dentaire.dus, a.revues]) + ')');
   await ctx.close();

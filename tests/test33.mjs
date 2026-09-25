@@ -6,7 +6,7 @@ const browser = await chromium.launch();
 async function ouvrir(seed){
   const ctx = await browser.newContext({ viewport:{width:1440,height:900}, timezoneId:'Europe/Madrid', locale:'fr-FR' });
   await ctx.addInitScript(() => { try{ localStorage.setItem('batcave-duree-bloc', '60'); }catch(e){} });   /* sessions d'1 h : la durée est accessoire ici */
-  await ctx.addInitScript(x => { if(localStorage.getItem('__s')) return; localStorage.setItem('__s','1');
+  await ctx.addInitScript(x => { if((window.__bcLire || ((k) => localStorage.getItem(k)))('__s')) return; localStorage.setItem('__s','1');
     Object.keys(x).forEach(k => localStorage.setItem(k, JSON.stringify(x[k]))); }, seed);
   const page = await ctx.newPage();
   page.on('pageerror', e => { errs++; console.log('  PAGEERROR: '+e.message); });
@@ -28,7 +28,7 @@ console.log('\n== 86) La fusion de l\'historique conserve le détail par matièr
     {id:'r2', date:'2026-09-02', duree:120, matieres:{'Anatomía I':60, 'Bioquímica':60}},
     {id:'r3', date:'2026-09-01', duree:90,  matieres:{'Fisiología':90}},
   ]});
-  const st = await fr.evaluate(() => JSON.parse(localStorage.getItem('batcave-revision')||'[]'));
+  const st = await fr.evaluate(() => JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-revision')||'[]'));
   const j2 = st.find(r => r.date === '2026-09-02');
   ok(st.length === 2, 'les 2 entrées du 02/09 sont fusionnées en une : ' + st.length + ' journées');
   ok(j2 && j2.duree === 180, 'durées additionnées : ' + (j2 && j2.duree) + ' min');

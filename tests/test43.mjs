@@ -22,7 +22,7 @@ async function ouvrir(quand, seed){
 }
 const aller = async (fr,page,p) => { await fr.evaluate(pg => document.querySelector('.nav-btn[data-page="'+pg+'"]').click(), p); await page.waitForTimeout(300); };
 const texte = (fr, sel) => fr.evaluate(s => { const e = document.querySelector(s); return e ? e.innerText : ''; }, sel);
-const lire = (fr,k) => fr.evaluate(x => JSON.parse(localStorage.getItem(x) || 'null'), k);
+const lire = (fr,k) => fr.evaluate(x => JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))(x) || 'null'), k);
 const VENDREDI = '2026-09-04T10:00:00+02:00';
 
 console.log('\n== 101) Horizon des objectifs : dérivé du stockage, éditable ==');

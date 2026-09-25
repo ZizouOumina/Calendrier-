@@ -186,7 +186,7 @@ console.log('\n== 294) Le panneau « Jours sans cours » : la saisie fait foi ==
   const dep = await fr.evaluate(() => ({
     note: document.getElementById('sans-cours-note').textContent,
     n: document.querySelectorAll('#sans-cours-liste [data-sccours]').length,
-    st: localStorage.getItem('batcave-jours-sans-cours')
+    st: (window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-jours-sans-cours')
   }));
   /* lot 39 : le 7 décembre est retiré de la liste (cours de Documentación ce jour-là).
      lot 42 : 22 → 25, trois fériés en semaine que le calendrier académique officiel donne et
@@ -202,7 +202,7 @@ console.log('\n== 294) Le panneau « Jours sans cours » : la saisie fait foi ==
   const ap = await fr.evaluate(() => ({
     sans: window.__bcSansCours('2026-09-29'),
     g: window.__bcGrille('tuesday', '2026-09-29').map(b => b[0] + ' ' + b[1]),
-    st: JSON.parse(localStorage.getItem('batcave-jours-sans-cours')),
+    st: JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-jours-sans-cours')),
     note: document.getElementById('sans-cours-note').textContent
   }));
   ok(ap.sans === true && ap.g.includes('15:00 Español · hablar') && ap.g.includes('22:00 Coucher'),
@@ -217,7 +217,7 @@ console.log('\n== 294) Le panneau « Jours sans cours » : la saisie fait foi ==
   const re = await fr.evaluate(() => ({
     sans: window.__bcSansCours('2026-10-12'),
     g: window.__bcGrille('monday', '2026-10-12').map(b => b[1]),
-    st: JSON.parse(localStorage.getItem('batcave-jours-sans-cours')),
+    st: JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-jours-sans-cours')),
     repris: document.querySelectorAll('#sans-cours-liste [data-scsans]').length
   }));
   ok(re.sans === false && re.g.includes('Cours'), 'le 12 octobre retrouve son cours');
@@ -294,7 +294,7 @@ console.log('\n== 309) L\'onglet Calendrier désencombré ==');
   await fr.evaluate(() => document.querySelector('#sans-cours-liste [data-sccours*="2026-12-23"]').click());
   await page.waitForTimeout(350);
   const apres = await fr.evaluate(() => ({
-    st: JSON.parse(localStorage.getItem('batcave-jours-sans-cours')),
+    st: JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-jours-sans-cours')),
     noel: window.__bcSansCours('2026-12-24'),
     autre: window.__bcSansCours('2026-12-08')
   }));

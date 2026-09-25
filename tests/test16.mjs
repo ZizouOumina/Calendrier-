@@ -7,7 +7,7 @@ const browser = await chromium.launch();
 async function ouvrir(seed){
   const ctx = await browser.newContext({ viewport:{width:1440,height:900}, timezoneId:'Europe/Madrid', locale:'fr-FR' });
   if(seed) await ctx.addInitScript(s => {
-    if(localStorage.getItem('__seed')) return;
+    if((window.__bcLire || ((k) => localStorage.getItem(k)))('__seed')) return;
     localStorage.setItem('__seed','1');
     Object.keys(s).forEach(k => localStorage.setItem(k, JSON.stringify(s[k])));
   }, seed);
@@ -67,7 +67,7 @@ console.log('\n== 46) Aucune régression du minuteur avec matière ==');
   ok(dOpts.length === 13, 'le sélecteur de matière fonctionne toujours (' + dOpts.length + ' choix)');
   await fr.evaluate(() => { document.getElementById('ask-select').value = 'Anatomía I'; document.getElementById('ask-ok').click(); });
   await page.waitForTimeout(200);
-  const st = await fr.evaluate(() => JSON.parse(localStorage.getItem('batcave-timer')));
+  const st = await fr.evaluate(() => JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-timer')));
   ok(st && st.pomodoro === true && st.matiere === 'Anatomía I', 'session lancée en mode Pomodoro avec matière (' + JSON.stringify({p:st.pomodoro, m:st.matiere}) + ')');
   await ctx.close();
 }

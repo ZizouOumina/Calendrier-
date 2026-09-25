@@ -46,8 +46,8 @@ await page.frameLocator('#f').locator('#timer-pomodoro').waitFor({ state:'attach
 fr = page.frames().find(x => x.url().includes('batcave.html'));
 await page.waitForTimeout(400);
 const restaure = await fr.evaluate(() => ({
-  rev: JSON.parse(localStorage.getItem('batcave-revision')||'[]'),
-  goals: JSON.parse(localStorage.getItem('batcave-goals')||'{}'),
+  rev: JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-revision')||'[]'),
+  goals: JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-goals')||'{}'),
 }));
 ok(restaure.rev.length===1 && restaure.rev[0].duree===999, 'les données restaurées ont remplacé les anciennes : ' + JSON.stringify(restaure.rev));
 ok(Number(restaure.goals.poids)===70, 'les objectifs sont restaurés aussi : poids=' + restaure.goals.poids);

@@ -55,7 +55,7 @@ async function ouvrir(quand, local){
   await page.waitForTimeout(400);
   return { ctx, page, fr };
 }
-const local = (fr,k) => fr.evaluate(x => JSON.parse(localStorage.getItem(x) || 'null'), k);
+const local = (fr,k) => fr.evaluate(x => JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))(x) || 'null'), k);
 const appels = (fr, tool) => fr.evaluate(t => window.__appels.filter(a => a.tool === t), tool);
 /* mardi 15 sept 06:30 : Sport 05:30 déjà commencé (la Douche démarre à 06:30 pile) ; il reste 19 blocs sur 20 ; mercredi : 20 */
 /* Un MARDI a l'interieur du programme, et son lendemain mercredi. C'etait le 22

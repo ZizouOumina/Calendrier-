@@ -41,9 +41,9 @@ async function scenario(nom, icloudMontant, limiteAbo, txMontant){
   await page.frameLocator('#f').locator('#timer-pomodoro').waitFor({ state:'attached', timeout:15000 });
   const fr = page.frames().find(x => x.url().includes('batcave.html'));
   const out = await fr.evaluate(() => ({
-    charges: JSON.parse(localStorage.getItem('batcave-fixed-charges')),
-    limits: JSON.parse(localStorage.getItem('batcave-budget-limits')),
-    tx: JSON.parse(localStorage.getItem('batcave-transactions') || '[]'),
+    charges: JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-fixed-charges')),
+    limits: JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-budget-limits')),
+    tx: JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-transactions') || '[]'),
     /* Le plafond attendu est calculé par la page elle-même : l'écrire à la main ici
        le figerait, et il bougera dès qu'il enverra le prix du beurre de cacahuète. */
     moisPlan: window.__bcCoutSemaine ? Math.round(window.__bcCoutSemaine().mois) : null
@@ -86,7 +86,7 @@ ok(r.moisPlan > 0 && r.limits['Nourriture'] === r.moisPlan,
     await pg.frameLocator('#f').locator('#timer-pomodoro').waitFor({ state:'attached', timeout:15000 });
     const f = pg.frames().find(x => x.url().includes('batcave.html'));
     const out = await f.evaluate(() => ({
-      plafond: JSON.parse(localStorage.getItem('batcave-budget-limits'))['Nourriture'],
+      plafond: JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-budget-limits'))['Nourriture'],
       attendu: Math.round(window.__bcCoutSemaine().mois)
     }));
     await c.close();
@@ -102,7 +102,7 @@ ok(r.moisPlan > 0 && r.limits['Nourriture'] === r.moisPlan,
 // pas de double application au rechargement
 const ctx2 = await browser.newContext({ viewport:{width:1440,height:900}, timezoneId:'Europe/Madrid', locale:'fr-FR' });
 await ctx2.addInitScript(([ch]) => {
-  if(localStorage.getItem('__seeded')) return;   // sinon le rechargement re-sème l'ancien prix
+  if((window.__bcLire || ((k) => localStorage.getItem(k)))('__seeded')) return;   // sinon le rechargement re-sème l'ancien prix
   localStorage.setItem('__seeded', '1');
   localStorage.setItem('batcave-fixed-charges', JSON.stringify(ch));
   localStorage.setItem('batcave-budget-limits', JSON.stringify({'Abonnements': 45}));
@@ -115,7 +115,7 @@ await p2.frameLocator('#f').locator('#timer-pomodoro').waitFor({ state:'attached
 await p2.reload();
 await p2.frameLocator('#f').locator('#timer-pomodoro').waitFor({ state:'attached', timeout:15000 });
 const fr2 = p2.frames().find(x => x.url().includes('batcave.html'));
-const r2 = await fr2.evaluate(() => ({ c: JSON.parse(localStorage.getItem('batcave-fixed-charges')), l: JSON.parse(localStorage.getItem('batcave-budget-limits')) }));
+const r2 = await fr2.evaluate(() => ({ c: JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-fixed-charges')), l: JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-budget-limits')) }));
 ok(r2.c.filter(c=>c.id==='fc8')[0].montant === 3 && r2.l['Abonnements'] === 137, 'rechargement : pas de seconde augmentation (3 € / budget 137 €)');
 await ctx2.close();
 
@@ -131,7 +131,7 @@ p4.on('pageerror', e => { errs++; console.log('  PAGEERROR: ' + e.message); });
 await p4.goto(URL);
 await p4.frameLocator('#f').locator('#timer-pomodoro').waitFor({ state:'attached', timeout:15000 });
 const fr4 = p4.frames().find(x => x.url().includes('batcave.html'));
-const r4 = await fr4.evaluate(() => JSON.parse(localStorage.getItem('batcave-fixed-charges')));
+const r4 = await fr4.evaluate(() => JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-fixed-charges')));
 ok(r4.filter(c=>c.id==='fc8')[0].montant === 3, 'installation neuve : iCloud seedé à 3 €');
 ok(r4.reduce((s,c)=>s+c.montant,0) === 977, 'installation neuve : total 977 €');
 ok(!r4.some(c => c.label === 'Courses'), 'installation neuve : aucune charge « Courses » dans la graine');

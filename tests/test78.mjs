@@ -184,7 +184,7 @@ console.log('\n== 8) Une sauvegarde du vieux format : l\'espagnol ne gonfle plus
   ok(/^\s*0/.test(cel('Projets perso')), 'et pas dans les projets perso : ' + cel('Projets perso').trim());
 
   /* la normalisation a réécrit les lignes au format actuel, une fois pour toutes */
-  const apres = await fr.evaluate(()=>JSON.parse(localStorage.getItem('batcave-sessions')||'[]'));
+  const apres = await fr.evaluate(()=>JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-sessions')||'[]'));
   ok(apres.length === 3 && apres.every(x => x.type === 'projet'), 'les trois lignes sont passées en « projet » : ' + apres.map(x=>x.type).join(', '));
   ok(apres.every(x => /^Español/.test(x.label)), 'et leur libellé commence par « Español » : ' + apres.map(x=>x.label).join(' · '));
   ok(apres.filter(x => x.label === 'Español · annales').length === 1, 'un libellé déjà correct n\'est pas préfixé deux fois');
@@ -196,7 +196,7 @@ console.log('\n== 8) Une sauvegarde du vieux format : l\'espagnol ne gonfle plus
   ok(/Conversation/.test(parTache) && /annales/.test(parTache), 'le panneau Español les répartit par tâche : ' + parTache.slice(0, 80));
 
   /* le vérificateur de cohérence ne doit rien signaler une fois normalisé */
-  const reste = await fr.evaluate(()=>JSON.parse(localStorage.getItem('batcave-sessions')||'[]').filter(x=>x.type==='espagnol').length);
+  const reste = await fr.evaluate(()=>JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-sessions')||'[]').filter(x=>x.type==='espagnol').length);
   ok(reste === 0, 'plus aucune ligne au vieux format (' + reste + ')');
   await ctx.close();
 }

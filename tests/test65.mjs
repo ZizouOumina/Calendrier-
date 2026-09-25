@@ -97,7 +97,7 @@ console.log('\n== 242) Habitudes à plusieurs jours : le linge lundi, mercredi, 
   await fr.evaluate(() => { [...document.querySelectorAll('#habits-grid [data-togglehab]')].find(x => x.dataset.togglehab === 'hab-linge').click(); });
   await page.waitForTimeout(200);
   const linge2 = (await cartes(fr)).find(t => /Linge/.test(t)) || '';
-  const log2 = await fr.evaluate(() => JSON.parse(localStorage.getItem('batcave-habitlog'))['hab-linge']);
+  const log2 = await fr.evaluate(() => JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-habitlog'))['hab-linge']);
   ok(log2.indexOf('2026-09-16') > -1 && /3 jours? d'affilée/i.test(linge2) && /7j 100%/.test(linge2) && /Record : 3 j/.test(linge2), 'coché : rattaché au 16, série 3, record 3, 7 jours 100 % (' + (linge2.match(/Record[^%]*%/) || [''])[0] + ')');
   await ctx.close();
   const j = await ouvrir('2026-09-17T20:00:00+02:00', Object.assign({'batcave-habitlog': {'hab-linge': ['2026-09-14','2026-09-16']}}, seedHab));   /* jeudi */

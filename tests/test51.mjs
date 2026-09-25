@@ -17,7 +17,7 @@ async function ouvrir(quand, local){
   await page.waitForTimeout(300);
   return { ctx, page, fr };
 }
-const local = (fr,k) => fr.evaluate(x => JSON.parse(localStorage.getItem(x) || 'null'), k);
+const local = (fr,k) => fr.evaluate(x => JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))(x) || 'null'), k);
 const visible = (fr, id) => fr.evaluate(i => { const e = document.getElementById(i); return !!e && !e.hidden; }, id);
 
 console.log('\n== 160) Le matin : pas de clôture, relevé « ce soir dès 20:25 » ==');

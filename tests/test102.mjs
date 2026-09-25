@@ -116,11 +116,11 @@ console.log('\n== 340) La saisie survit et se range ==');
   const { ctx, page, fr } = await ouvrir('2026-09-28T10:00:00+02:00');
   await fr.evaluate(() => window.__bcNoterCardio('2026-10-03', 45));
   await page.waitForTimeout(200);
-  const stocke = await fr.evaluate(() => localStorage.getItem('batcave-cardio'));
+  const stocke = await fr.evaluate(() => (window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-cardio'));
   ok(/"2026-10-03"/.test(stocke) && /45/.test(stocke), 'la sortie est enregistrée (' + stocke + ')');
   await fr.evaluate(() => window.__bcNoterCardio('2026-10-03', 0));
   await page.waitForTimeout(200);
-  const apres = await fr.evaluate(() => localStorage.getItem('batcave-cardio'));
+  const apres = await fr.evaluate(() => (window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-cardio'));
   ok(!/2026-10-03/.test(apres), 'décochée, elle disparaît au lieu de rester à zéro (' + apres + ')');
   /* La cle doit etre connue du code, sinon le verificateur de coherence l'affiche comme
      inconnue a chaque demarrage, et la remise a zero de lundi l'emporterait. */

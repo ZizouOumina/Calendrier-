@@ -21,7 +21,7 @@ async function ouvrir(quand, seed){
   await page.waitForTimeout(400);
   return { ctx, page, fr };
 }
-const lire = (fr, k) => fr.evaluate(k => JSON.parse(localStorage.getItem(k) || 'null'), k);
+const lire = (fr, k) => fr.evaluate(k => JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))(k) || 'null'), k);
 
 console.log('\n== 400) Un seul numéro de schéma ==');
 {
@@ -108,7 +108,7 @@ console.log('\n== 403) Les bornes de saisie et l\'annulation d\'un geste ==');
   await fr.evaluate(() => document.querySelector('#toast .toast-annuler').click());
   await page.waitForTimeout(1200);
   const fr2 = page.frames().find(x => x.url().includes('batcave.html'));
-  const j2 = await fr2.evaluate(() => JSON.parse(localStorage.getItem('batcave-journal-2026-09-28') || 'null'));
+  const j2 = await fr2.evaluate(() => JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-journal-2026-09-28') || 'null'));
   ok(!j2 || !j2.cloture, 'après « Annuler », la journée n\'est plus clôturée (' + JSON.stringify(j2) + ')');
   ok(/annulée/.test(await fr2.evaluate(() => document.getElementById('toast').textContent)), 'et la Batcave le dit : ' + (await fr2.evaluate(() => document.getElementById('toast').textContent)));
   await ctx.close();
@@ -119,7 +119,7 @@ console.log('\n== 403) Les bornes de saisie et l\'annulation d\'un geste ==');
   await fr.evaluate(() => { document.querySelector('.nav-btn[data-page="sport"]').click(); });
   await page.waitForTimeout(300);
   const r = await fr.evaluate(() => {
-    const avant = (JSON.parse(localStorage.getItem('batcave-sport-log') || '[]')).length;
+    const avant = (JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-sport-log') || '[]')).length;
     const ok1 = window.__bcLogSession ? true : true;
     return { avant };
   });
@@ -132,7 +132,7 @@ console.log('\n== 403) Les bornes de saisie et l\'annulation d\'un geste ==');
     const toastB = document.getElementById('toast').textContent;
     const c = window.__bcEnregistrerSeries('Haut lourd', 0, ex, '8/8/8', '5');
     const toastC = document.getElementById('toast').textContent;
-    return { a, toastA, b, toastB, c, toastC, n: JSON.parse(localStorage.getItem('batcave-sport-log') || '[]').length, bouton: !!document.querySelector('#toast .toast-annuler') };
+    return { a, toastA, b, toastB, c, toastC, n: JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-sport-log') || '[]').length, bouton: !!document.querySelector('#toast .toast-annuler') };
   });
   ok(res.a === false && /Saisie impossible \(250 reps\)/.test(res.toastA), '250 reps : refusé — ' + res.toastA);
   ok(res.b === false && /Saisie impossible \(300 kg\)/.test(res.toastB), '300 kg : refusé — ' + res.toastB);

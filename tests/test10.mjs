@@ -14,7 +14,7 @@ await page.clock.install({ time: new Date('2026-09-02T08:00:00+02:00') });
 await page.goto(URL);
 await page.frameLocator('#f').locator('#timer-pomodoro').waitFor({ state:'attached', timeout:15000 });
 const fr = page.frames().find(x => x.url().includes('batcave.html'));
-const ls = async (k) => await fr.evaluate(k => { try { return JSON.parse(localStorage.getItem(k)); } catch(e){ return null; } }, k);
+const ls = async (k) => await fr.evaluate(k => { try { return JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))(k)); } catch(e){ return null; } }, k);
 const dlg = async () => await fr.evaluate(() => ({
   ouvert: !document.getElementById('ask-overlay').hidden,
   msg: document.getElementById('ask-msg').textContent,

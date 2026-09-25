@@ -34,7 +34,7 @@ async function ouvrir(quand, seed){
 const cartes = fr => fr.evaluate(() => [...document.querySelectorAll('#habits-grid .card .ctitle')].map(x => x.textContent.trim()));
 const ancres = fr => fr.evaluate(() => {
   const o = {};
-  (JSON.parse(localStorage.getItem('batcave-habits')) || []).forEach(h => { if(h && h.ancre) o[h.id] = h.ancre; });
+  (JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-habits')) || []).forEach(h => { if(h && h.ancre) o[h.id] = h.ancre; });
   return o;
 });
 /* Une Batcave d'avant la decision : les quatre habitudes du dimanche y portent le 13. */
@@ -101,7 +101,7 @@ console.log('\n== 333) La migration ne tourne qu\'une fois ==');
 }
 {
   const { ctx, fr } = await ouvrir('2026-09-20T08:00:00+02:00', AVANT);
-  const pose = await fr.evaluate(() => localStorage.getItem('batcave-ancre-dimanche-v1'));
+  const pose = await fr.evaluate(() => (window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-ancre-dimanche-v1'));
   ok(pose === 'true', 'et la première migration pose bien le drapeau (' + pose + ')');
   await ctx.close();
 }
@@ -129,7 +129,7 @@ console.log('\n== 335) La marche a enfin une cible ==');
   /* « Marche / pas » n'etait defini nulle part : une seule occurrence dans tout le projet,
      sa propre declaration. Ni combien, ni pourquoi. Meme defaut que les etirements. */
   const { ctx, fr } = await ouvrir('2026-09-21T08:00:00+02:00');
-  const l = await fr.evaluate(() => (JSON.parse(localStorage.getItem('batcave-habits')) || [])
+  const l = await fr.evaluate(() => (JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-habits')) || [])
     .filter(h => h.id === 'core-marche').map(h => h.label)[0]);
   ok(/8\u202f000 pas|8 000 pas/.test(l || ''), 'le libellé porte la cible : « ' + l + ' »');
   await ctx.close();
@@ -141,7 +141,7 @@ console.log('\n== 335) La marche a enfin une cible ==');
     'batcave-habits-seed-v5':true,'batcave-habits-seed-v6':true,'batcave-habits-seed-v7':true,
     'batcave-habits-seed-v8':true};
   const { ctx, fr } = await ouvrir('2026-09-21T08:00:00+02:00', vieux);
-  const l = await fr.evaluate(() => (JSON.parse(localStorage.getItem('batcave-habits')) || [])
+  const l = await fr.evaluate(() => (JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-habits')) || [])
     .filter(h => h.id === 'core-marche').map(h => h.label)[0]);
   ok(/8 000 pas/.test(l || ''), 'l\'ancien libellé est réécrit au chargement (« ' + l + ' »)');
   await ctx.close();
@@ -154,7 +154,7 @@ console.log('\n== 335) La marche a enfin une cible ==');
     'batcave-habits-seed-v5':true,'batcave-habits-seed-v6':true,'batcave-habits-seed-v7':true,
     'batcave-habits-seed-v8':true};
   const { ctx, fr } = await ouvrir('2026-09-21T08:00:00+02:00', sien);
-  const l = await fr.evaluate(() => (JSON.parse(localStorage.getItem('batcave-habits')) || [])
+  const l = await fr.evaluate(() => (JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-habits')) || [])
     .filter(h => h.id === 'core-marche').map(h => h.label)[0]);
   ok(l === 'Marche — 12 000 pas', 'son propre libellé n\'est jamais écrasé (« ' + l + ' »)');
   await ctx.close();
@@ -171,7 +171,7 @@ console.log('\n== 336) Les pas se saisissent, et ils cochent la case ==');
   const cible = await fr.evaluate(() => window.__bcPasCible());
   ok(cible === 8000, 'la cible est lue DANS le libellé de l\'habitude, pas écrite deux fois (' + cible + ')');
 
-  const coche = () => fr.evaluate(() => ((JSON.parse(localStorage.getItem('batcave-habitlog')) || {})['core-marche'] || []).indexOf('2026-09-23') > -1);
+  const coche = () => fr.evaluate(() => ((JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-habitlog')) || {})['core-marche'] || []).indexOf('2026-09-23') > -1);
   ok(!(await coche()), 'au départ la case Marche n\'est pas cochée');
   await fr.evaluate(() => window.__bcAccorderMarche(9200));
   await page.waitForTimeout(200);
@@ -227,7 +227,7 @@ console.log('\n== 337) La taie d\u2019oreiller du mercredi ==');
   const { ctx, fr } = await ouvrir('2026-09-23T09:00:00+02:00');   /* un mercredi */
   const c = await cartes(fr);
   ok(c.some(x => /Taie d.oreiller chang/i.test(x)), 'la carte existe dans l\u2019onglet Habitudes (' + c.length + ' cartes)');
-  const h = await fr.evaluate(() => (JSON.parse(localStorage.getItem('batcave-habits')) || [])
+  const h = await fr.evaluate(() => (JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-habits')) || [])
     .filter(x => x && x.id === 'core-taie-merc'));
   ok(h.length === 1, 'une seule occurrence de core-taie-merc dans le stockage (' + h.length + ')');
   ok(h.length === 1 && JSON.stringify(h[0].jours) === '[3]', 'et elle ne vaut que le mercredi (' + JSON.stringify(h[0] && h[0].jours) + ')');
@@ -259,7 +259,7 @@ console.log('\n== 337) La taie d\u2019oreiller du mercredi ==');
     {id:'core-lit', label:'Lit fait', icon:'\ud83d\udecf\ufe0f'},
     {id:'core-draps', label:'Draps et taies d\u2019oreiller chang\u00e9s', icon:'\ud83e\uddfa', jours:[0]}
   ]});
-  const ids = await fr.evaluate(() => (JSON.parse(localStorage.getItem('batcave-habits')) || []).map(h => h.id));
+  const ids = await fr.evaluate(() => (JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-habits')) || []).map(h => h.id));
   ok(ids.indexOf('core-taie-merc') > -1, 'ajoutee a une Batcave existante');
   ok(ids.indexOf('core-lit') > -1 && ids.indexOf('core-draps') > -1, 'sans toucher a celles deja la');
   const banniere = await fr.evaluate(() => /Cl\u00e9 inconnue du code/i.test(document.body.innerText));

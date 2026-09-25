@@ -5,7 +5,7 @@ const browser = await chromium.launch();
 console.log('\n== 81) Dates françaises : « 1ᵉʳ » et majuscule au seul premier mot ==');
 {
   const ctx = await browser.newContext({ viewport:{width:1440,height:900}, timezoneId:'Europe/Madrid', locale:'fr-FR' });
-  await ctx.addInitScript(x => { if(localStorage.getItem('__s')) return; localStorage.setItem('__s','1');
+  await ctx.addInitScript(x => { if((window.__bcLire || ((k) => localStorage.getItem(k)))('__s')) return; localStorage.setItem('__s','1');
     Object.keys(x).forEach(k => localStorage.setItem(k, JSON.stringify(x[k]))); },
     {'batcave-revision': [{id:'a', date:'2026-09-01', duree:120, matieres:{'Anatomía I':120}}]});
   const page = await ctx.newPage();

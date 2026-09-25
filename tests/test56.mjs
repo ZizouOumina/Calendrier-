@@ -41,7 +41,7 @@ async function ouvrir(quand, opts){
   await page.waitForTimeout(700);
   return { ctx, page, fr };
 }
-const local = (fr,k) => fr.evaluate(x => JSON.parse(localStorage.getItem(x) || 'null'), k);
+const local = (fr,k) => fr.evaluate(x => JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))(x) || 'null'), k);
 const cloud = (fr) => fr.evaluate(() => Object.assign({}, window.__cloud));
 const MARDI = '2026-09-08T07:00:00+02:00';
 const DONNEES = {
@@ -127,7 +127,7 @@ console.log('\n== 200) Depuis l\'appli : tout est effacé ici et dans le cloud, 
   ok(await local(fr2, 'batcave-taches') === null && await local(fr2, 'batcave-journal-2026-09-01') === null, 'après rechargement : plus de tâches ni de journal');
   const habits = await local(fr2, 'batcave-habits');
   ok(Array.isArray(habits) && habits.some(h => h.id === 'habX'), 'ma propre habitude est toujours là');
-  const applied = await fr2.evaluate(() => localStorage.getItem('bc-reinit-appliquee'));
+  const applied = await fr2.evaluate(() => (window.__bcLire || ((k) => localStorage.getItem(k)))('bc-reinit-appliquee'));
   const c2 = await cloud(fr2);
   ok(applied === c2['batcave-reinit'].id, 'cet appareil a noté le nouveau départ comme appliqué');
   ok(!c2['batcave-taches'] && !c2['batcave-sessions'], 'le rattrapage n\'a rien renvoyé dans le cloud');
@@ -144,7 +144,7 @@ console.log('\n== 201) Décidé ailleurs (cloud) : l\'autre appareil s\'efface �
   ok(!sets.includes('batcave-taches') && !sets.includes('batcave-sessions') && !sets.includes('batcave-journal-2026-09-01'), 'aucune vieille copie locale renvoyée vers le cloud');
   ok(await local(fr, 'batcave-taches') === null && await local(fr, 'batcave-addictions') === null, 'tâches et dépendances effacées localement');
   ok(await local(fr, 'batcave-examens') !== null && (await local(fr, 'batcave-habits')).some(h => h.id === 'habX'), 'configuration gardée');
-  ok(await fr.evaluate(() => localStorage.getItem('bc-reinit-appliquee')) === 'r-distant-1', 'marqué appliqué sur cet appareil');
+  ok(await fr.evaluate(() => (window.__bcLire || ((k) => localStorage.getItem(k)))('bc-reinit-appliquee')) === 'r-distant-1', 'marqué appliqué sur cet appareil');
   /* on saisit une nouvelle donnée, puis on rouvre : le même marqueur ne doit PAS ré-effacer */
   await fr.evaluate(() => { document.querySelector('.nav-btn[data-page="taches"]').click(); document.getElementById('tk-text').value = 'Nouvelle tâche du 8'; document.getElementById('tk-add').click(); });
   await page.waitForTimeout(150);

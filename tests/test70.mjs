@@ -21,7 +21,7 @@ async function ouvrir(quand, local){
   await page.waitForTimeout(400);
   return { ctx, page, fr };
 }
-const local = (fr,k) => fr.evaluate(x => JSON.parse(localStorage.getItem(x) || 'null'), k);
+const local = (fr,k) => fr.evaluate(x => JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))(x) || 'null'), k);
 const MERCREDI = '2026-10-14T09:00:00+02:00';   /* semaine 5 : tours complets, jour off */
 const LUNDI    = '2026-10-15T09:00:00+02:00';   /* jeudi : la seance lourde depuis le regime combat */
 

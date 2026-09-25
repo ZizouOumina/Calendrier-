@@ -7,7 +7,7 @@ const bl = (jour,h,min,type,label) => { const d=new Date(Date.UTC(2026,8,jour,h-
   return {id:'s'+jour+h+type, date:`2026-09-0${jour}`, debut:d.getTime(), fin:d.getTime()+min*60000, duree:min, type, label}; };
 async function ouvrir(seed){
   const ctx = await browser.newContext({ viewport:{width:1440,height:900}, timezoneId:'Europe/Madrid', locale:'fr-FR' });
-  await ctx.addInitScript(x => { if(localStorage.getItem('__s')) return; localStorage.setItem('__s','1');
+  await ctx.addInitScript(x => { if((window.__bcLire || ((k) => localStorage.getItem(k)))('__s')) return; localStorage.setItem('__s','1');
     Object.keys(x).forEach(k => localStorage.setItem(k, JSON.stringify(x[k]))); }, seed);
   const page = await ctx.newPage();
   page.on('pageerror', e => { errs++; console.log('  PAGEERROR: '+e.message); });
@@ -106,7 +106,7 @@ console.log('\n== 91) Compteurs du tableau de bord séparés + 2 boutons Pomodor
   await page.waitForTimeout(200);
   await fr.evaluate(() => { document.getElementById('ask-input').value = 'Boutique Shopify'; document.getElementById('ask-ok').click(); });
   await page.waitForTimeout(300);
-  const t = await fr.evaluate(() => JSON.parse(localStorage.getItem('batcave-timer')||'null'));
+  const t = await fr.evaluate(() => JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-timer')||'null'));
   ok(t && t.cible === 'projet' && t.projet === 'Boutique Shopify', 'le bouton lance un Pomodoro projet : ' + JSON.stringify(t && {cible:t.cible, projet:t.projet}));
   await ctx.close();
 }

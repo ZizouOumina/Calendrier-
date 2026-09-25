@@ -45,7 +45,7 @@ console.log('\n== 255) Saisir une activite en classe : elle est enregistree sous
     document.getElementById('ech-add').click();
   });
   await page.waitForTimeout(300);
-  const e = await fr.evaluate(() => (JSON.parse(localStorage.getItem('batcave-echeances') || '[]') || []).slice(-1)[0]);
+  const e = await fr.evaluate(() => (JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-echeances') || '[]') || []).slice(-1)[0]);
   ok(e && e.type === 'activite', 'enregistree avec type « activite », pas « autre » (obtenu : ' + (e && e.type) + ')');
   ok(e && e.date === '2026-10-06' && e.matiere === 'Antropología', 'date et matiere conservees');
   const txt = await fr.evaluate(() => document.getElementById('ech-liste').textContent.replace(/\s+/g,' '));

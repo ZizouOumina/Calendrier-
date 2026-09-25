@@ -313,7 +313,7 @@ console.log('\n== 334e) Les deux choses que la Batcave ne peut pas deviner sont 
     const r = await fr.evaluate(() => ({
       txt: document.getElementById('dash-plan').innerText,
       btn: document.querySelectorAll('#dash-plan [data-ouvrir="courses"]').length,
-      taches: JSON.parse(localStorage.getItem('batcave-taches') || 'null')
+      taches: JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-taches') || 'null')
     }));
     await ctx.close();
     return r;

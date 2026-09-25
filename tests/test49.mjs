@@ -19,7 +19,7 @@ async function ouvrir(quand, local){
   return { ctx, page, fr };
 }
 const aller = async (fr, page, p) => { await fr.evaluate(pg => document.querySelector('.nav-btn[data-page="'+pg+'"]').click(), p); await page.waitForTimeout(250); };
-const local = (fr,k) => fr.evaluate(x => JSON.parse(localStorage.getItem(x) || 'null'), k);
+const local = (fr,k) => fr.evaluate(x => JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))(x) || 'null'), k);
 const MERCREDI = '2026-09-02T10:00:00+02:00';
 /* La boucle poids -> calories ecarte les pesees anterieures au 11 octobre (trois semaines
    apres PREMIER_JOUR_COURSES, le dimanche 20 septembre -- c'est le jour ou il a vraiment

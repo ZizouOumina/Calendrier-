@@ -518,7 +518,10 @@
   .timeline input[type="checkbox"]{accent-color:var(--cyan); width:15px; height:15px; flex:none; cursor:pointer;}
 
   /* ---------- toast ---------- */
-  .toast{position:fixed; bottom:90px; left:50%; transform:translateX(-50%); background:var(--surface-raised); border:1px solid var(--cyan-dim); color:var(--ink); padding:10px 20px; border-radius:24px; font-size:13px; z-index:60; box-shadow:0 10px 30px rgba(0,0,0,0.45); white-space:nowrap;}
+  .toast{position:fixed; bottom:90px; left:50%; transform:translateX(-50%); background:var(--surface-raised); border:1px solid var(--cyan-dim); color:var(--ink); padding:10px 20px; border-radius:24px; font-size:13px; z-index:60; box-shadow:0 10px 30px rgba(0,0,0,0.45); white-space:normal; width:max-content; max-width:min(560px, calc(100vw - 32px)); text-align:center; line-height:1.4;}
+  /* un message long revenait pas a la ligne et sortait de l'ecran de l'iPhone ; et le rebond
+     (transform: scale) ecrasait le centrage (translateX) : la notification sautait a droite */
+  @keyframes pop-toast{ 0%{ transform:translateX(-50%) scale(1); } 40%{ transform:translateX(-50%) scale(1.04); } 100%{ transform:translateX(-50%) scale(1); } }
   .toast[hidden]{display:none;}
   .toast-annuler{margin-left:12px; background:none; border:1px solid var(--cyan-dim); color:var(--cyan-bright); border-radius:14px; padding:3px 10px; font:inherit; font-weight:600; cursor:pointer; min-height:28px;}
   .toast-annuler:hover{background:var(--surface-hover);}
@@ -528,7 +531,8 @@
   :root[data-theme="noir"]{ --bg:#000000; --surface:#000000; --surface-raised:#0b0b0c; --surface-hover:#151617; --border:#2a2c30; --border-soft:#1b1c1f; }
   /* retour « haptique » : ce qui vient d'etre coche pulse une fois */
   @keyframes pop{ 0%{ transform:scale(1); } 40%{ transform:scale(1.08); } 100%{ transform:scale(1); } }
-  #dash-checklist li.checked, .toast:not([hidden]){ animation:pop .22s ease; }
+  #dash-checklist li.checked{ animation:pop .22s ease; }
+  .toast:not([hidden]){ animation:pop-toast .22s ease; }
   /* un etat vide dit qu'il est vide, au lieu d'un trou */
   .mini-list:empty::after{ content:'— rien pour l’instant'; display:block; font-size:12px; font-style:italic; color:var(--ink-faint); padding:4px 0; }
   /* mode pilote */
@@ -573,6 +577,11 @@
   .overlay[hidden]{display:none;}
   .overlay-panel{background:var(--surface-raised); border:1px solid var(--border); border-radius:14px; padding:24px 26px; width:100%; max-width:520px; max-height:88vh; overflow-y:auto; box-shadow:0 20px 60px rgba(0,0,0,0.5);}
   .overlay-head{display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;}
+  /* Ce que tu saisis toi-meme (un lien colle dans une note, un code, un mot sans espace) se coupe
+     au lieu d'elargir la page : sur iPhone, toute la Batcave glissait de cote. Les boutons et
+     les pastilles gardent leur mot entier. */
+  .page li, .page .ecell, .page .jr-b, .page td, .page .entry-list > *, .page .sub-note, .overlay-panel li{ overflow-wrap:anywhere; }
+  .page li button, .page li .btn, .page li .badge, .page li .chip, .page li .tag, .page li input, .page li select{ overflow-wrap:normal; }
   /* Demain : 23 blocs doivent tenir sans ascenseur sur un Mac, d'ou deux colonnes ; une seule sur le telephone */
   #demain-overlay .overlay-panel{ max-width:660px; }
   #demain-liste{ gap:0; }
@@ -985,6 +994,10 @@
   .bc-r .k{ color:var(--ink-faint); letter-spacing:0.12em; font-size:10px; }
   .bc-r .v{ color:var(--ink); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:46ch; }
   .bc-r.bc-alerte{ color:var(--cyan-bright); }
+  /* Les lignes d'alerte de la barre (minuteur en cours, tendance, priorite) tiennent dans la
+     largeur : pendant un Pomodoro sur iPhone, « ⏱️ Révision en cours — 54:23 · Anatomía y
+     Fisiología… » elargissait toute la page, qui glissait de cote (vu par le test du chaos). */
+  .bc-row-1 > .bc-r.bc-alerte{ max-width:100%; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
   .bc-r.bc-priorite{ color:var(--warn); flex-basis:100%; display:block; overflow:hidden; text-overflow:ellipsis; cursor:pointer; }
   .bc-r.bc-priorite b{ color:var(--warn); font-weight:600; }
   .bc-r.bc-priorite:hover{ color:var(--cyan-bright); }
@@ -2490,7 +2503,7 @@
           </div>
           <p class="dial-serie" id="timer-serie" hidden></p>
           <p class="sub-note" id="timer-sub" style="margin-top:6px;">session de 25 min</p>
-          <div class="card-actions" style="justify-content:center; margin-top:12px;">
+          <div class="card-actions" style="justify-content:center; margin-top:12px; flex-wrap:wrap;">
             <button class="btn" id="timer-focus">⛶ Plein écran</button>
             <button class="btn" id="timer-pause">⏸ Pause</button>
             <button class="btn btn-primary" id="timer-stop">✓ Terminer et enregistrer</button>
@@ -3598,7 +3611,7 @@
     if(!contenu || typeof contenu !== 'object' || Array.isArray(contenu)) return false;
     var ecrit = false;
     Object.keys(contenu).forEach(function(k){
-      if(!moisArchivable(k) || localStorage.getItem(k) !== null) return;
+      if(!moisArchivable(k) || localStorage.getItem(k) !== null || clePerimee(k)) return;
       try{ localStorage.setItem(k, JSON.stringify(contenu[k])); ecrit = true; }catch(e){}
     });
     return ecrit;
@@ -3613,8 +3626,8 @@
     }
     var nb = 0;
     Object.keys(parMois).forEach(function(mois){
-      var archive = load(cleArchive(mois), null);
-      if(!archive || typeof archive !== 'object' || Array.isArray(archive)) archive = {};
+      var archive = archivesCloud[cleArchive(mois)];
+      archive = (archive && typeof archive === 'object' && !Array.isArray(archive)) ? JSON.parse(JSON.stringify(archive)) : {};
       var change = false;
       parMois[mois].forEach(function(k){
         var v = load(k, undefined);
@@ -3623,7 +3636,9 @@
         if(cloudConnu[k]){ supprimerDuCloud(k); delete cloudConnu[k]; nb++; }
       });
       if(change || !cloudConnu[cleArchive(mois)]){
-        saveInternal(cleArchive(mois), archive);   /* ecrit local + pousse vers le cloud */
+        /* le cloud seulement : la copie locale doublait chaque vieux mois sur l'appareil */
+        pousserVersCloud(cleArchive(mois), archive);
+        archivesCloud[cleArchive(mois)] = archive;
         cloudConnu[cleArchive(mois)] = true;
       }
     });
@@ -3633,6 +3648,23 @@
   /* Les identifiants presents dans le cloud au dernier instantane : la compaction ne
      supprime que ce qui y existe vraiment, et ne re-pousse pas une archive deja la. */
   var cloudConnu = {};
+  /* Le contenu des archives tel que le cloud le tient (dernier instantane) : la compaction y
+     ajoute les journees locales au lieu de repartir d'une copie locale, et la sauvegarde Drive
+     les emporte. */
+  var archivesCloud = {};
+  /* Les copies locales d'archives laissees par les versions precedentes : on en deplie ce qui
+     manque encore (et reste utile ici), puis on les retire de l'appareil -- le cloud garde les
+     siennes. */
+  function migrerArchivesLocales(){
+    var cles = [];
+    for(var i = 0; i < localStorage.length; i++){ var k = localStorage.key(i); if(k && estArchive(k)) cles.push(k); }
+    cles.forEach(function(k){
+      var v = load(k, null);
+      if(v && typeof v === 'object' && !Array.isArray(v)){ archivesCloud[k] = v; deplierArchive(v); }
+      try{ localStorage.removeItem(k); }catch(e){}
+    });
+    return cles.length;
+  }
   /* ===== Verificateur de coherence =====
      Chaque migration peut fournir verifier() : null si tout est coherent, sinon une phrase
      decrivant l'ecart entre le drapeau (« fait ») et l'effet attendu. On ne repare jamais
@@ -3664,7 +3696,7 @@
     'horizon','last-auto-backup','last-manual-backup','last-bilan-prompt','last-compaction','last-open','last-rotation','notion-url',
     'pomodial-purge','projets','report','revision','revision-fusionnee','revue','sante','sauvegarde','sessions',
     'shopify-last-order-count','taches','timer','transactions','undo-stack','undo-toast','cloud-reload-at','cloud-toast','notion-cache','anki',
-    'experiences',
+    'experiences','last-entretien',
     /* Les approfondissements : ce qu'il a enregistre et les notes 0-3 des rappels.
        Gardee au nouveau depart (REINIT_GARDER), donc elle doit etre ici aussi, sinon le
        verificateur de cohabitation la signale comme inconnue a chaque demarrage. */
@@ -3679,10 +3711,11 @@
     /* le schema et le plan de secours en texte (lot 50) */
     'schema','last-plan-texte'].concat(DRAPEAUX_MIGRATION, DRAPEAUX_ANCIENS);
   var PREFIXES_CONNUS = ['archive-','cal-','coherence-ignore-','drill-ignore-','test-anki-','fc-logged-','fixed-logged-','gcal-','journal-','manque-traite-',
-    'meals-','pomodial-','rattrapage-vu-','sauvegarde-','sport-'];
+    'meals-','pomodial-','rattrapage-vu-','sauvegarde-','sport-','habitlog-','resume-'];
   function cleConnue(k){
     var court = k.replace(/^batcave-/, '');
     if(CLES_CONNUES.indexOf(court) !== -1) return true;
+    if(estFraction(k) || estFractionHabitudes(k) || estResume(k)) return true;
     return PREFIXES_CONNUS.some(function(p){ return court.indexOf(p) === 0; });
   }
   /* Vestiges de fonctions retirees : « batcave-matieres » (onglet matieres, remplace par
@@ -3777,8 +3810,8 @@
   })();
   var ecrituresLocales = {};
   function nomLisible(k){ return String(k).replace(/^batcave-/, ''); }
-  function save(key, val, internal){
-    if(!internal) alerterSiRetrecit(key, val);
+  function save(key, val, internal, sansAlarme){
+    if(!internal && !sansAlarme) alerterSiRetrecit(key, val);
     if(!internal){ try{ undoStack.push({key:key, prev: localStorage.getItem(key), groupe: gesteCourant}); if(undoStack.length>60) undoStack.shift(); persistUndoStack(); }catch(e){} }
     try{
       localStorage.setItem(key, JSON.stringify(val));
@@ -3836,6 +3869,182 @@
       var r = dbHandle.doc('state/'+key).set({v: val, d: APPAREIL_ID, t: Date.now()});
       if(r && typeof r.catch === 'function') r.catch(signalerEchecCloud);
     }catch(e){ signalerEchecCloud(e); }
+  }
+  /* ===== Lot 55 · Longevite (25 septembre 2026) =====
+     Deux plafonds que cinq ans d'usage auraient crevés :
+       - le cloud refuse tout document de plus de 256 Kio. Les sessions (un bloc par
+         Pomodoro, 1 a 1,5 Ko par jour plein) tenaient dans UN document : il aurait
+         depasse la limite au printemps 2027, et a partir de la chaque ecriture echouait
+         cote cloud -- les autres appareils ne voyaient plus rien. Le journal du sport,
+         les habitudes et les transactions suivaient un ou deux ans plus tard ;
+       - un iPhone donne environ 5 Mo de stockage local a la page. Plein usage : 800 Ko
+         par an, sans compter la copie locale des archives du cloud, qui doublait les vieux
+         mois. Plein vers la troisieme annee : « Stockage plein — données NON enregistrées ».
+     Ce qui change, sans qu'aucun ecran ne lise autrement :
+       1. les listes datees s'ecrivent en un document par mois (« batcave-sessions-2027-03 »),
+          et se relisent d'un seul tenant en memoire ;
+       2. les habitudes des annees passees s'ecrivent en une ligne de 0 et de 1 par habitude ;
+       3. le detail des sessions de plus de quatre mois se replie dans les totaux du jour, qui
+          existent deja et que tous les calculs lisent quand le detail manque ;
+       4. les archives mensuelles vivent dans le cloud seulement, et les coches du jour (repas,
+          sport, calendrier) de plus de 13 mois ne quittent l'appareil que si le cloud en tient
+          la copie. Les releves d'agenda et de rattrapage passes, eux, ne servent plus a rien. */
+  var FENETRE_SESSIONS_J = 120;     /* detail bloc par bloc garde ; au-dela, les totaux du jour */
+  var RETENTION_LOCALE_J = 400;     /* coches du jour (repas, sport, calendrier) gardees sur l'appareil */
+  var RETENTION_EPHEMERE_J = 14;    /* releves d'agenda et rattrapages : ils ne servent que quelques jours */
+  function cleJourDatee(k){
+    var m = /^batcave-(meals|sport|cal|sport-jour|gcal)-(\d{4}-\d{2}-\d{2})$/.exec(String(k || '')) || /^batcave-(manque-traite)-(\d{4}-\d{2}-\d{2})-[a-z]+$/.exec(String(k || ''));
+    return m ? {type: m[1], iso: m[2], ephemere: m[1] === 'gcal' || m[1] === 'manque-traite'} : null;
+  }
+  function clePerimee(k){
+    var a = cleJourDatee(k); if(!a) return false;
+    return a.iso < isoDecale(todayISO, -(a.ephemere ? RETENTION_EPHEMERE_J : RETENTION_LOCALE_J));
+  }
+  /* Une coche de plus de 13 mois ne quitte l'appareil que si le cloud en tient la copie dans
+     son archive du mois : jamais de suppression d'une donnee unique. */
+  function purgerClesPerimees(){
+    var cles = [], n = 0;
+    for(var i = 0; i < localStorage.length; i++){ var k = localStorage.key(i); if(k && clePerimee(k)) cles.push(k); }
+    cles.forEach(function(k){
+      var a = cleJourDatee(k);
+      if(!a.ephemere){
+        var arc = archivesCloud[cleArchive(a.iso.slice(0, 7))];
+        if(!dbHandle || !arc || !(k in arc)) return;
+      }
+      try{ localStorage.removeItem(k); }catch(e){}
+      if(a.ephemere && dbHandle && cloudConnu[k]){ supprimerDuCloud(k); delete cloudConnu[k]; }
+      n++;
+    });
+    return n;
+  }
+  var LISTES_FRACTIONNEES = ['batcave-sessions', 'batcave-sport-log', 'batcave-transactions', 'batcave-revision', 'batcave-projets'];
+  function baseDeFraction(key){ var m = /^(batcave-(?:sessions|sport-log|transactions|revision|projets))-\d{4}-\d{2}$/.exec(String(key || '')); return m ? m[1] : null; }
+  function estFraction(key){ return !!baseDeFraction(key); }
+  function estFractionHabitudes(key){ return /^batcave-habitlog-\d{4}$/.test(String(key || '')); }
+  function clesFractions(base){
+    var out = [];
+    for(var i = 0; i < localStorage.length; i++){ var k = localStorage.key(i); if(k && baseDeFraction(k) === base) out.push(k); }
+    return out.sort();
+  }
+  function moisDeLigne(x){ var m = x && /^(\d{4}-\d{2})-\d{2}/.exec(String(x.date || '')); return m ? m[1] : null; }
+  /* Relit une liste entiere : les mois dans l'ordre, puis la cle de base (ce qui n'a pas de
+     date, ou une vieille sauvegarde qui tient toute la liste). Sans doublon : par id, sinon
+     par contenu. */
+  function chargerFractionne(base, lectureSeule){
+    var out = [], vusId = {}, vusJson = {};
+    var ajouter = function(x){
+      if(!x || typeof x !== 'object') return;
+      if(x.id !== undefined && x.id !== null && x.id !== ''){ if(vusId[x.id]) return; vusId[x.id] = true; }
+      else { var j = JSON.stringify(x); if(vusJson[j]) return; vusJson[j] = true; }
+      out.push(x);
+    };
+    clesFractions(base).forEach(function(k){ loadList(k).forEach(ajouter); });
+    loadList(base).forEach(ajouter);
+    if(!lectureSeule) longueursListes[base] = out.length;
+    return out;
+  }
+  /* Lecture fusionnee pour les tests (et la console) : une liste fractionnee ou le journal des
+     habitudes se lit d'un seul tenant, comme avant le lot 55 ; toute autre cle, telle quelle.
+     null si rien n'existe, comme localStorage. */
+  try{ window.__bcLire = function(k){
+    if(LISTES_FRACTIONNEES.indexOf(k) > -1){ if(localStorage.getItem(k) === null && !clesFractions(k).length) return null; return JSON.stringify(chargerFractionne(k, true)); }
+    if(k === 'batcave-habitlog'){ var y = false; for(var i = 0; i < localStorage.length; i++){ if(estFractionHabitudes(localStorage.key(i))) y = true; } if(localStorage.getItem(k) === null && !y) return null; return JSON.stringify(chargerHabitLog()); }
+    return localStorage.getItem(k);
+  }; }catch(e){}
+  var longueursListes = {};
+  /* L'alarme « supprimées d'un coup » portait sur une cle : elle porte maintenant sur la
+     liste entiere, quel que soit le nombre de mois touches. */
+  function alerterSiListeRetrecit(base, n){
+    var nom = LISTES_SURVEILLEES[base], avant = longueursListes[base];
+    if(!nom || !(avant >= 5)) return;
+    var perdues = avant - n;
+    if(perdues < 3 || n > avant / 2) return;
+    try{ showToast('⚠️ ' + perdues + ' ' + nom + ' supprimées d\'un coup (' + avant + ' → ' + n + '). ⌘Z pour annuler.'); }catch(e){}
+  }
+  /* N'ecrit que les mois qui ont change : un Pomodoro touche un document de 30 Ko, pas la
+     liste de cinq ans. Un mois vide garde un document vide (il peut revenir par ⌘Z). */
+  function sauverFractionne(base, liste, internal){
+    var parCle = {}; parCle[base] = [];
+    (liste || []).forEach(function(x){ var m = moisDeLigne(x); var k = m ? base + '-' + m : base; (parCle[k] = parCle[k] || []).push(x); });
+    clesFractions(base).forEach(function(k){ if(!parCle[k]) parCle[k] = []; });
+    if(!internal) alerterSiListeRetrecit(base, (liste || []).length);
+    longueursListes[base] = (liste || []).length;
+    Object.keys(parCle).sort().forEach(function(k){
+      var json = JSON.stringify(parCle[k]), avant = localStorage.getItem(k);
+      if(avant === json) return;
+      if(avant === null && !parCle[k].length && k !== base) return;
+      save(k, parCle[k], internal, true);
+    });
+  }
+  /* Une seule fois, au chargement : une liste encore entiere sous sa cle de base (appareil
+     pas encore passe au lot 55, sauvegarde restauree, cloud hydrate par un vieil onglet)
+     part dans ses mois. Interne : ni annulation, ni alarme. */
+  function fractionnerListes(){
+    var n = 0;
+    LISTES_FRACTIONNEES.forEach(function(base){
+      var brut = loadList(base);
+      if(!brut.some(function(x){ return !!moisDeLigne(x); })) return;
+      /* Une liste entiere sous la cle de base fait foi, comme toute valeur venue du cloud avant
+         le lot 55 : elle REMPLACE les mois au lieu de s'y ajouter. Fusionner aurait ressuscite
+         une ligne qu'une migration venait de fondre (deux lignes du meme jour) ou que tu venais
+         de supprimer. */
+      var vusId = {}, vusJson = {}, liste = brut.filter(function(x){
+        if(!x || typeof x !== 'object') return false;
+        if(x.id !== undefined && x.id !== null && x.id !== ''){ if(vusId[x.id]) return false; vusId[x.id] = true; return true; }
+        var j = JSON.stringify(x); if(vusJson[j]) return false; vusJson[j] = true; return true;
+      });
+      sauverFractionne(base, liste, true);
+      n++;
+    });
+    return n;
+  }
+  /* ----- Les habitudes : l'annee en cours en clair, les annees passees en bits ----- */
+  function joursDansAnnee(an){ return (new Date(an, 1, 29).getMonth() === 1) ? 366 : 365; }
+  function chargerHabitLog(){
+    var base = load('batcave-habitlog', {});
+    if(!base || typeof base !== 'object' || Array.isArray(base)) base = {};
+    var out = {}, vus = {};
+    var ajouter = function(id, d){ var cle = id + '|' + d; if(vus[cle]) return; vus[cle] = true; (out[id] = out[id] || []).push(d); };
+    var cles = [];
+    for(var i = 0; i < localStorage.length; i++){ var k = localStorage.key(i); if(estFractionHabitudes(k)) cles.push(k); }
+    cles.sort().forEach(function(k){
+      var an = Number(k.slice(-4)), v = load(k, null);
+      if(!v || typeof v !== 'object' || !v.bits || typeof v.bits !== 'object') return;
+      Object.keys(v.bits).forEach(function(id){
+        var bits = String(v.bits[id] || '');
+        for(var j = 0; j < bits.length; j++){ if(bits.charAt(j) === '1') ajouter(id, localISO(new Date(an, 0, 1 + j))); }
+        if(!out[id]) out[id] = [];
+      });
+    });
+    Object.keys(base).forEach(function(id){
+      if(!out[id]) out[id] = [];
+      (Array.isArray(base[id]) ? base[id] : []).forEach(function(d){ if(typeof d === 'string') ajouter(id, d); });
+    });
+    return out;
+  }
+  function sauverHabitLog(internal){
+    var anCourant = Number(String(todayISO).slice(0, 4)), base = {}, parAn = {};
+    Object.keys(habitLog).forEach(function(id){
+      base[id] = [];
+      (habitLog[id] || []).forEach(function(d){
+        var an = /^\d{4}-\d{2}-\d{2}$/.test(d) ? Number(d.slice(0, 4)) : null;
+        if(an !== null && an < anCourant){ var pa = parAn[an] = parAn[an] || {}; (pa[id] = pa[id] || []).push(d); }
+        else base[id].push(d);
+      });
+    });
+    for(var i = 0; i < localStorage.length; i++){ var k = localStorage.key(i); if(estFractionHabitudes(k)){ var a = Number(k.slice(-4)); if(!parAn[a]) parAn[a] = {}; } }
+    var ecrire = function(k, v){ if(localStorage.getItem(k) !== JSON.stringify(v)) save(k, v, internal); };
+    ecrire('batcave-habitlog', base);
+    Object.keys(parAn).forEach(function(an){
+      an = Number(an);
+      var bits = {}, n = joursDansAnnee(an), t0 = new Date(an, 0, 1).getTime();
+      Object.keys(parAn[an]).forEach(function(id){
+        var arr = []; for(var j = 0; j < n; j++) arr.push('0');
+        parAn[an][id].forEach(function(d){ var x = Math.round((new Date(d + 'T00:00:00').getTime() - t0) / 864e5); if(x >= 0 && x < n) arr[x] = '1'; });
+        bits[id] = arr.join('').replace(/0+$/, '');
+      });
+      ecrire('batcave-habitlog-' + an, {v: 1, bits: bits});
+    });
   }
   function undoLast(){
     if(!undoStack.length){ showToast('Rien à annuler.'); return; }
@@ -4008,6 +4217,9 @@
         snap.docs.forEach(function(d){
           var body = d.data();
           if(!body || body.v === undefined) return;
+          /* une archive reste au cloud : on en garde le contenu en memoire et on n'en deplie que
+             les journees absentes ici et encore utiles */
+          if(estArchive(d.id)){ archivesCloud[d.id] = body.v; if(deplierArchive(body.v)) changed = true; return; }
           var newRaw = JSON.stringify(body.v);
           var oldRaw = localStorage.getItem(d.id);
           /* Comparaison canonique (clés triées) : le stockage distant peut renvoyer les
@@ -4024,7 +4236,6 @@
             localStorage.setItem(d.id, newRaw);
             changed = true;
           }
-          if(estArchive(d.id) && deplierArchive(body.v)) changed = true;
         });
         /* Les donnees du cloud viennent d'etre appliquees : c'est le seul moment ou une
            migration peut travailler sur l'etat reel. On la rejoue ici, et on redessine
@@ -4038,6 +4249,7 @@
         /* Compaction : une fois par jour, apres hydratation, donc sur l'etat complet. */
         try{
           var compactes = compacterCloud();
+          purgerClesPerimees();
           if(compactes && statusEl) statusEl.innerHTML = '☁️ <span style="color:var(--good)">Synchronisé</span> · ' + compactes + ' journées archivées';
         }catch(e){}
         if(conflits.length){
@@ -4753,6 +4965,8 @@
   /* ================= BACKUP ================= */
   function allBatcaveData(){
     var data = {};
+    /* les vieux mois ne vivent plus que dans les archives du cloud : la sauvegarde les emporte */
+    Object.keys(archivesCloud).forEach(function(k){ if(archivesCloud[k] && typeof archivesCloud[k] === 'object') data[k] = archivesCloud[k]; });
     for(var i=0;i<localStorage.length;i++){
       var k = localStorage.key(i);
       if(k.indexOf('batcave-') === 0){
@@ -5041,6 +5255,25 @@
     if(!keys.length){ showToast('⚠️ Aucune donnée Batcave trouvée dans ce texte.'); return; }
     /* écrasement irréversible : confirmation explicite */
     askConfirm('Restaurer ' + keys.length + ' entrée(s) ? Tes données actuelles seront écrasées — action irréversible.', function(){
+      /* Les listes vivent en plusieurs documents (un par mois, un par annee pour les
+         habitudes) : une liste que la sauvegarde contient REMPLACE la liste locale. Sans ca,
+         les mois locaux absents de la sauvegarde survivaient a la restauration. */
+      var bases = {};
+      keys.forEach(function(k){
+        var b = baseDeFraction(k) || (LISTES_FRACTIONNEES.indexOf(k) > -1 ? k : null);
+        if(b) bases[b] = true;
+        if(k === 'batcave-habitlog' || estFractionHabitudes(k)) bases['batcave-habitlog'] = true;
+        if(estResume(k) || b === 'batcave-revision' || b === 'batcave-projets') bases['resume'] = true;
+      });
+      Object.keys(bases).forEach(function(b){
+        var locales = [];
+        for(var i = 0; i < localStorage.length; i++){
+          var k = localStorage.key(i);
+          if(!k) continue;
+          if(b === 'resume' ? estResume(k) : (b === 'batcave-habitlog' ? (k === b || estFractionHabitudes(k)) : (k === b || baseDeFraction(k) === b))) locales.push(k);
+        }
+        locales.forEach(function(k){ if(keys.indexOf(k) > -1) return; try{ localStorage.removeItem(k); }catch(e){} supprimerDuCloud(k); });
+      });
       keys.forEach(function(k){
         try{ localStorage.setItem(k, JSON.stringify(obj[k])); }catch(e){}
         /* IMPÉRATIF : pousser aussi vers le cloud. Sans ça, la restauration ne tenait pas —
@@ -5121,7 +5354,7 @@
   /* Vide : aucun bloc, aucune seance, aucune cloture, aucune depense -- l'etat d'un
      appareil neuf, pas celui d'un jour creux. */
   function appVide(){
-    var l = function(k){ var v = load(k, null); return Array.isArray(v) ? v : []; };
+    var l = function(k){ return chargerFractionne(k); };
     /* les charges fixes s'ecrivent seules a l'ouverture (fixed:true) : elles ne comptent pas */
     return !l('batcave-sessions').length && !l('batcave-sport-log').length && !l('batcave-transactions').some(function(t){ return t && !t.fixed; }) && !derniereCloture();
   }
@@ -5327,6 +5560,9 @@
     revisionState.forEach(function(r){ if(r && r.date && (Number(r.duree)||0) > 0) set[r.date] = true; });
     projetsState.forEach(function(x){ if(x && x.date && (Number(x.duree)||0) > 0) set[x.date] = true; });
     esState.forEach(function(e){ if(e && e.date && (Number(e.duree)||0) > 0) set[e.date] = true; });
+    /* le journal bloc par bloc compte aussi : c'est lui que lit la serie en cours */
+    sessionsState.forEach(function(b){ if(b && b.date && (Number(b.duree)||0) > 0) set[b.date] = true; });
+    Object.keys(resumesState.j).forEach(function(d){ var r = resumesState.j[d]; if(Array.isArray(r) && ((Number(r[0])||0) + (Number(r[1])||0) + (Number(r[2])||0)) > 0) set[d] = true; });
     return Object.keys(set).sort();
   }
   function recordSerie(){
@@ -5336,7 +5572,8 @@
       if(cur > best) best = cur;
       prev = iso;
     });
-    return best;
+    /* le record ne peut jamais etre sous la serie en cours */
+    return Math.max(best, serieRevision());
   }
   function majSerie(){
     var n = serieRevision(), record = recordSerie();
@@ -5370,12 +5607,18 @@
   /* Journal des blocs, en plus des totaux. La consolidation par jour reste la source des
      courbes et du score ; ce journal garde en mémoire CHAQUE bloc (heure, durée, sujet)
      pour pouvoir relire une journée bloc par bloc. */
-  var sessionsState = loadList('batcave-sessions');
+  fractionnerListes();
+  /* Rejouee apres l'hydratation du cloud : un appareil qui n'a pas encore la version fractionnee
+     renvoie la liste entiere sous la cle de base ; on la redecoupe tout de suite, cette fois
+     avec le cloud branche, pour que le cloud recoive la base videe et les mois. Sans ca, chaque
+     ouverture redecoupait en local et chaque instantane remettait la liste entiere. */
+  MIGRATIONS_DEMARRAGE.push({cle:'batcave-sessions', rejouer: function(){ return fractionnerListes() > 0; }});
+  var sessionsState = chargerFractionne('batcave-sessions');
   /* Normalisation des sessions du vieux format. Elle tourne au chargement, et de nouveau
      après l'hydratation du cloud ou une restauration : c'est justement une vieille
      sauvegarde restaurée qui peut en ramener. Idempotente. */
   function normaliserSessionsEspagnol(){
-    var courant = loadList('batcave-sessions');
+    var courant = chargerFractionne('batcave-sessions');
     if(courant.length) sessionsState = courant;
     var n = 0;
     sessionsState.forEach(function(b){
@@ -5385,7 +5628,7 @@
       b.label = /^Español/.test(l) ? l : ('Español · ' + (l || 'Conversación'));
       n++;
     });
-    if(n) save('batcave-sessions', sessionsState);
+    if(n) sauverFractionne('batcave-sessions', sessionsState);
     return n;
   }
   normaliserSessionsEspagnol();
@@ -5394,7 +5637,7 @@
     try{ renderDashboard(); renderRevision(); renderAgendas(); }catch(e){}
     return true;
   }, verifier: function(){
-    var n = loadList('batcave-sessions').filter(function(b){ return b && b.type === 'espagnol'; }).length;
+    var n = chargerFractionne('batcave-sessions').filter(function(b){ return b && b.type === 'espagnol'; }).length;
     return n ? (n + ' session' + (n > 1 ? 's' : '') + ' d\'espagnol au vieux format n\'ont pas été normalisées : elles compteraient en révision.') : null;
   }});
   /* Une session d'espagnol est une session de PROJET dont le libellé commence par
@@ -5417,9 +5660,10 @@
     sessionsState.push({id:'s'+fin+Math.random().toString(36).slice(2,6),
                         date: dateISO || todayISO, debut: debut, fin: fin,
                         duree: mins, type: typeCible(st), label: labelCible(st)});
-    /* garde-fou : on ne laisse pas le journal grossir sans fin */
-    if(sessionsState.length > 3000) sessionsState = sessionsState.slice(-3000);
-    save('batcave-sessions', sessionsState);
+    /* Plus de plafond a 3 000 : il effacait les plus vieux blocs SANS les resumer. Le journal
+       ne grossit plus sans fin parce que le detail de plus de quatre mois se replie dans les
+       totaux du jour (replierVieillesSessions), et s'ecrit mois par mois. */
+    sauverFractionne('batcave-sessions', sessionsState);
     /* le calendrier du jour se recoche tout seul dès qu'une session est enregistrée */
     try{ rafraichirAgendas(); }catch(e){}
   }
@@ -5977,7 +6221,7 @@
         var bloc = sessionsState.filter(function(x){ return x.id === btn.dataset.delsession; })[0];
         if(!bloc) return;
         sessionsState = sessionsState.filter(function(x){ return x.id !== bloc.id; });
-        save('batcave-sessions', sessionsState);
+        sauverFractionne('batcave-sessions', sessionsState);
         retirerDesTotaux(bloc);
         renderRevision(); renderProjets(); renderDashboard(); renderBilan(); renderAgendas();
       });
@@ -6136,7 +6380,10 @@
       var nommees = 0;
       Object.keys(m).forEach(function(k){ var v = Number(m[k]) || 0; nommees += v; ajoute(k, v); });
       ajoute(SANS_MATIERE, duree - nommees);
+      journalises[r.date] = true;
     });
+    /* une semaine de plus de 13 mois : le total du jour, sans le detail par matiere */
+    for(var dj = new Date(debut); localISO(dj) <= isoF; dj.setDate(dj.getDate() + 1)){ var isoJ = localISO(dj); if(journalises[isoJ]) continue; var rs = resumeJour(isoJ); if(rs) ajoute(SANS_MATIERE, Number(rs[0]) || 0); }
     return {debut: debut, fin: fin, total: total,
             liste: Object.keys(total).map(function(k){ return {nom:k, min:total[k]}; })
                          .sort(function(a,b){ return b.min - a.min; })};
@@ -6267,8 +6514,17 @@
   }
   /* minutes d'espagnol d'une journee (sessions de projet dont le libelle commence par « Español ») */
   function minutesEspanol(iso){
-    var t = 0;
-    sessionsState.forEach(function(b){ if(b && b.date === iso && Number(b.duree) > 0 && estEspanolSession(b)) t += Number(b.duree); });
+    var t = 0, journal = false;
+    sessionsState.forEach(function(b){
+      if(!b || b.date !== iso || !(Number(b.duree) > 0)) return;
+      if(paquetSession(b) === 'projet') journal = true;
+      if(estEspanolSession(b)) t += Number(b.duree);
+    });
+    /* une journee dont le detail a ete replie (plus de quatre mois) : les totaux de projets
+       gardent le nom de chaque bloc, donc l'espagnol s'y lit encore */
+    var agreg = false;
+    if(!journal && typeof projetsState !== 'undefined') projetsState.forEach(function(p){ if(p && p.date === iso){ agreg = true; if(/^Español/.test(String(p.projet || ''))) t += Number(p.duree) || 0; } });
+    if(!journal && !agreg && typeof resumesState !== 'undefined'){ var rs = resumeJour(iso); if(rs) t += Number(rs[2]) || 0; }
     return t;
   }
   function cibleEspanolJour(iso){
@@ -6602,8 +6858,7 @@
     if(!renommerHabitudeEcran()) return false;
     renderHabits(); renderDashboard(); return true;
   }, verifier: function(){ return null; }});
-  var habitLog = load('batcave-habitlog', {});
-  if(!habitLog || typeof habitLog !== 'object' || Array.isArray(habitLog)) habitLog = {};
+  var habitLog = chargerHabitLog();
   /* Avant dateCibleHabit, une liste de courses finie un dimanche écrivait la date du dimanche
      dans le journal de l'habitude du samedi : invisible pour la série et les taux. On
      rattache ces dates au samedi qui précède, une fois, sans doublon. */
@@ -6625,7 +6880,7 @@
       if(nouveau.length !== arr.length) change = true;
       habitLog[hb.id] = nouveau;
     });
-    if(change) save('batcave-habitlog', habitLog);
+    if(change) sauverHabitLog();
     saveInternal('batcave-habitlog-hebdo-v1', true);
     return change;
   }
@@ -6773,7 +7028,7 @@
     var coche = idx < 0;
     if(idx>-1) arr.splice(idx,1); else arr.push(cible);
     geste(function(){
-      save('batcave-habitlog', habitLog);
+      sauverHabitLog();
       /* Cocher « Courses faites » remplit la liste de ravitaillement, et la décocher la vide :
          les deux disaient la même chose et pouvaient se contredire à l'écran. */
       if(id === HABIT_COURSES) marquerToutesCourses(coche);
@@ -6802,7 +7057,7 @@
     if(complet && idx < 0) arr.push(cible);
     else if(!complet && idx > -1) arr.splice(idx, 1);
     else return;
-    save('batcave-habitlog', habitLog);
+    sauverHabitLog();
   }
   function habitStreak(id){
     var set = {}; (habitLog[id]||[]).forEach(function(d){ set[d]=true; });
@@ -6879,7 +7134,7 @@
       var arr = habitLog[hb.id] || (habitLog[hb.id] = []), cible = dateCibleHabit(hb.id);
       if(arr.indexOf(cible) < 0){ arr.push(cible); change = true; }
     });
-    if(change) save('batcave-habitlog', habitLog, true);
+    if(change) sauverHabitLog(true);
     return change;
   }
   function raterAcquise(id){
@@ -6887,7 +7142,7 @@
     var arr = habitLog[id] || [], cible = dateCibleHabit(id), i = arr.indexOf(cible);
     if(i > -1) arr.splice(i, 1);
     hb.reprise = todayISO;
-    save('batcave-habitlog', habitLog); save('batcave-habits', habitsState);
+    sauverHabitLog(); save('batcave-habits', habitsState);
     renderHabits(); renderDashboard(); renderBilan();
     showToast('↩︎ « ' + hb.label +' » revient dans la liste du jour.');
   }
@@ -6942,7 +7197,7 @@
   function deleteHabitForever(id){
     habitsState = habitsState.filter(function(x){ return x.id !== id; });
     delete habitLog[id];
-    save('batcave-habits', habitsState); save('batcave-habitlog', habitLog);
+    save('batcave-habits', habitsState); sauverHabitLog();
     renderHabits(); renderDashboard(); renderBilan();
   }
 
@@ -8023,8 +8278,12 @@
   function jourProgramme(iso){
     return daysBetween(new Date(PROGRAMME_DEBUT + 'T00:00:00'), new Date((iso || todayISO) + 'T00:00:00')) + 1;
   }
+  /* La fin suit l'horizon : une saison cloturee repousse l'horizon de six mois, et tout ce
+     qui s'arretait au 14 mars (sorties cardio comptees, jours sans cours pousses dans
+     l'agenda, controle de l'agenda, rang du jour) doit repartir avec elle. */
+  function finProgramme(){ return (typeof horizonState !== 'undefined' && horizonState && horizonState.fin > PROGRAMME_FIN) ? horizonState.fin : PROGRAMME_FIN; }
   function joursProgramme(){
-    return daysBetween(new Date(PROGRAMME_DEBUT + 'T00:00:00'), new Date(PROGRAMME_FIN + 'T00:00:00')) + 1;
+    return daysBetween(new Date(PROGRAMME_DEBUT + 'T00:00:00'), new Date(finProgramme() + 'T00:00:00')) + 1;
   }
   /* ===== Le regime combat (lundi 28 septembre) =====
      Trois seances de muscu et quatre de combat. Ce qui change, sa decision du 25 :
@@ -8160,7 +8419,7 @@
          +2,5 kg de lest (ou variante plus dure), et on repart du bas de fourchette ;
        - sinon : chaque serie vise la derniere + 1 (+5 s en secondes), plafonnee au haut.
      Les exercices a duree fixe (« 15-20 min ») n'ont pas de progression : cible = bas. */
-  var sportLog = loadList('batcave-sport-log');
+  var sportLog = chargerFractionne('batcave-sport-log');
   var CHARGE_PAS_KG = 2.5;
   /* Le cran de 2,5 kg est celui du SAC LESTE : tractions, dips, jambes. Il s'appliquait
      jusqu'ici a TOUS les exercices -- la Batcave proposait donc +2,5 kg d'un coup sur le
@@ -8253,7 +8512,7 @@
     } else {
       sportState[key] = false;
     }
-    save('batcave-sport-log', sportLog);
+    sauverFractionne('batcave-sport-log', sportLog);
     save(sportKey, sportState);
     /* silencieux : la saisie au pas est en cours, on ne refait pas tout le tableau sous les
        doigts de l'utilisateur -- on met a jour la case, le compteur de la carte et le bloc. */
@@ -8444,7 +8703,7 @@
     var out = [];
     for(var i = 0; i < 7; i++){
       var iso = isoDecale(lundiISO, i);
-      if(iso < CARDIO_DEBUT || iso > PROGRAMME_FIN) continue;
+      if(iso < CARDIO_DEBUT || iso > finProgramme()) continue;
       var g = grilleDe(cleJournee(dowDe(iso)), iso);
       g.forEach(function(b){
         if(estCardio(b[1])) out.push({iso: iso, heure: b[0], sprints: b[1] === SPRINT_LABEL, combat: estCombat(b[1]) ? b[1].replace(/^\S+\s/, '') : null});
@@ -8598,7 +8857,7 @@
     delete brouillonSeries[key];
     sportLog = sportLog.filter(function(l){ return !(l && l.date === todayISO && l.exo === d.ex.name); });
     sportState[key] = false;
-    save('batcave-sport-log', sportLog);
+    sauverFractionne('batcave-sport-log', sportLog);
     save(sportKey, sportState);
     renderSport(); renderDashboard(); renderBilan();
     if(document.getElementById('obj-liste')) renderObjectifs();
@@ -8705,7 +8964,7 @@
           ex = ex && ex.exercises[p.ei];
           if(ex && sportLog.some(function(l){ return l && l.date === todayISO && l.exo === ex.name; })){
             sportLog = sportLog.filter(function(l){ return !(l && l.date === todayISO && l.exo === ex.name); });
-            save('batcave-sport-log', sportLog);
+            sauverFractionne('batcave-sport-log', sportLog);
           }
           delete brouillonSeries[key];
         }
@@ -10493,6 +10752,7 @@
     var agreg = {};
     revisionState.forEach(function(r){ if(r && r.date){ agreg[r.date] = agreg[r.date] || {}; agreg[r.date].cours = (agreg[r.date].cours || 0) + (Number(r.duree) || 0); } });
     projetsState.forEach(function(p){ if(p && p.date){ agreg[p.date] = agreg[p.date] || {}; agreg[p.date].projet = (agreg[p.date].projet || 0) + (Number(p.duree) || 0); } });
+    Object.keys(resumesState.j).forEach(function(d){ if(agreg[d]) return; var r = resumesState.j[d]; if(Array.isArray(r)) agreg[d] = {cours: Number(r[0]) || 0, projet: Number(r[1]) || 0}; });
     Object.keys(journal).concat(Object.keys(agreg)).forEach(function(iso){
       if(out[iso]) return;
       var j = journal[iso] || {}, a = agreg[iso] || {};
@@ -10723,8 +10983,9 @@
     liste.querySelectorAll('[data-obj-cible]').forEach(function(inp){
       inp.addEventListener('change', function(){
         var o = objectifsState.liste.filter(function(x){ return x.id === inp.dataset.objCible; })[0];
-        var v = Number(String(inp.value).replace(',', '.'));
-        if(!o || isNaN(v) || v < 0){ renderObjectifs(); return; }
+        var brut = String(inp.value).trim(), v = Number(brut.replace(',', '.'));
+        /* un champ vide valait 0 : l'objectif devenait « atteint » d'un effacement par megarde */
+        if(!o || brut === '' || isNaN(v) || v < 0 || v > 100000){ if(o && brut !== '') showToast('⚠️ Cible impossible : ' + brut + '.'); renderObjectifs(); return; }
         o.cible = v;
         o.auto = false;   /* saisie à la main : la grille ne la recalcule plus */
         save('batcave-objectifs', objectifsState);
@@ -10837,7 +11098,10 @@
       if(!cle || isNaN(cible) || cible <= 0){ showToast('⚠️ Indique une cible.'); return; }
       var p = periodeCourante();
       var nouvel = {id: p.id + ':' + cle + ':' + Date.now(), periode: objVue, pid: p.id, debut: p.debut, fin: p.fin, metrique: cle, cible: cible, titre: titre || libelleMetrique(cle)};
-      if(CHAMP_PREVU[metriqueDe(cle)]) nouvel.auto = false;   /* cible saisie : la grille ne l'écrase pas */
+      /* Toujours une decision a lui : la grille ne l'ecrase pas, et le menage du chargement
+         (elaguerObjectifs) le garde. Avant, seules les mesures « prevues » etaient marquees :
+         un objectif mensuel de Coran ou de pas s'affichait, puis disparaissait a la reouverture. */
+      nouvel.auto = false;
       objectifsState.liste.push(nouvel);
       save('batcave-objectifs', objectifsState);
       document.getElementById('obj-titre').value = ''; document.getElementById('obj-cible').value = '';
@@ -10851,6 +11115,18 @@
      repartent de la valeur atteinte, et les objectifs des nouvelles périodes sont semés
      puis calculés depuis la grille. Rien à ressaisir. */
   var saisonsState = loadList('batcave-saisons');
+  /* Une archive ecrite avant la correction porte les objectifs de toutes les saisons
+     precedentes : on ne garde que ceux de son horizon. */
+  (function(){
+    var change = false;
+    saisonsState.forEach(function(sa){
+      if(!sa || !sa.horizon || !Array.isArray(sa.objectifs)) return;
+      var n = sa.objectifs.length;
+      sa.objectifs = sa.objectifs.filter(function(o){ return o && o.fin <= sa.horizon.fin && o.debut >= sa.horizon.debut; });
+      if(sa.objectifs.length !== n) change = true;
+    });
+    if(change) save('batcave-saisons', saisonsState, true);
+  })();
   function joursAvantFinSaison(){ return daysBetween(new Date(todayISO + 'T00:00:00'), new Date(horizonState.fin + 'T00:00:00')); }
   function saisonClosable(){ return joursAvantFinSaison() <= 7; }
   function semerPeriodesManquantes(){
@@ -10867,8 +11143,12 @@
       var v = valeurAutoObjectif(g.id);
       return {id: g.id, label: g.label, depart: departGoal(g), atteint: v !== null ? Number(v) : (Number(goalState[g.id]) || 0), cible: g.target};
     });
+    /* Les objectifs de CETTE saison seulement : la liste active garde ceux des saisons
+       precedentes, et chaque archive les recopiait tous -- l'archive grossissait de facon
+       quadratique et depassait la limite de 256 Kio d'un document cloud vers la sixieme
+       saison (vu dans la simulation de cinq ans). */
     saisonsState.push({id:'sa' + Date.now(), cloturee: todayISO, horizon: ancien, goals: bilan,
-                       objectifs: objectifsState.liste.filter(function(o){ return o.fin <= ancien.fin; })});
+                       objectifs: objectifsState.liste.filter(function(o){ return o.fin <= ancien.fin && o.debut >= ancien.debut; })});
     if(saisonsState.length > 20) saisonsState = saisonsState.slice(-20);
     save('batcave-saisons', saisonsState);
     bilan.forEach(function(b){ goalsDepart[b.id] = b.atteint; });
@@ -12149,6 +12429,17 @@
 
     /* Fin de saison : à J-7, clôturer et repartir devient une action du plan. */
     if(saisonClosable()) items.push({pri:0.6, icon:'🏁', text:'Fin de saison le ' + fmtDate(horizonState.fin) + ' — clôturer et repartir six mois', action:{type:'saison'}});
+    /* Une nouvelle annee universitaire approche et aucun semestre n'est configure au-dela du
+       dernier connu : sans ce rappel, la Batcave resterait en « pas de cours » sans rien dire.
+       La grille d'un semestre (heures de cours par jour) se construit avec Claude, sur
+       l'emploi du temps du portail. */
+    (function(){
+      var der = (typeof SEMESTRES !== 'undefined' && SEMESTRES.length) ? SEMESTRES[SEMESTRES.length - 1] : null;
+      if(!der || todayISO <= der.fin) return;
+      var an = Number(todayISO.slice(0, 4)), rentree = (todayISO.slice(5) >= '08-15') ? an : an - 1;
+      if(todayISO.slice(5) < '08-15' && todayISO.slice(5) > '06-30') return;   /* l'ete, avant mi-aout : rien a construire encore */
+      items.push({pri:0.55, icon:'🎓', text:'Année ' + rentree + '-' + (rentree + 1) + ' : envoie ton emploi du temps à Claude — la grille des cours se construit dessus (sinon la Batcave reste en « pas de cours »)', action:null});
+    })();
 
     /* Agenda Google : des series 🦇 qui ne suivent plus la grille (controle du jour). */
     var derive = resumeDeriveGcal();
@@ -12550,7 +12841,7 @@
     var t = tailleDonnees(), mo = t.octets / 1024 / 1024;
     out.push({id:'donnees', ok: t.octets < SANTE_DONNEES_MAX,
       texte: t.cles + ' clés · ' + (mo >= 1 ? mo.toFixed(1).replace('.', ',') + ' Mo' : Math.round(t.octets / 1024) + ' Ko') + ' sur ~5 Mo',
-      action: 'Au-delà de 4 Mo : une sauvegarde, puis la compaction mensuelle du cloud.'});
+      action: 'La Batcave replie seule le vieux détail (sessions de plus de 4 mois, habitudes des années passées, coches de plus de 13 mois gardées au cloud). Si ce voyant reste allumé : une sauvegarde Drive, puis écris à Claude.'});
     var ec = ecartsDeCoherence().length + clesInconnues().length;
     out.push({id:'coherence', ok: !ec, texte: ec ? ec + ' écart' + (ec > 1 ? 's' : '') + ' signalé' + (ec > 1 ? 's' : '') + ' sur le tableau de bord' : 'Données cohérentes',
       action: 'Répare ou ignore chaque écart dans le bandeau du tableau de bord.'});
@@ -13454,7 +13745,15 @@
     var lblEl = document.getElementById('dash-score-lbl');
     var coreEl = numEl.closest ? numEl.closest('.core-center') : null;
     var jourN = jourProgramme(todayISO), totalN = joursProgramme(), noteScore;
-    if(jourEntame(todayISO) || jourN < 1 || jourN > totalN){
+    if(!jourEntame(todayISO) && jourN > totalN){
+      /* Saison finie et pas encore cloturee, rien de saisi aujourd'hui : un « 0 % » au reveil
+         serait une fausse note. On dit ce qu'il y a a faire. */
+      numEl.textContent = '—';
+      if(uniEl) uniEl.textContent = '';
+      if(coreEl) coreEl.classList.add('rang');
+      if(lblEl) lblEl.textContent = 'Score du jour';
+      noteScore = 'Saison terminée le ' + fmtDate(finProgramme()) + ' — clôture-la dans Objectifs pour repartir six mois. Le score s’allume à la première case cochée.';
+    } else if(jourEntame(todayISO) || jourN < 1 || jourN > totalN){
       numEl.textContent = dayScore;
       if(uniEl) uniEl.textContent = '%';
       if(coreEl) coreEl.classList.remove('rang');
@@ -15527,7 +15826,7 @@
   /* Les series recurrentes de l'agenda portent une consigne apres « · » (« 🦇 Anki 1 · cartes
      dues dentaire ») : un evenement se reconnait a la partie avant le separateur. */
   function titreBaseGcal(s){ return String(s || '').split(' · ')[0].trim(); }
-  try{ window.__bcTitreBase = titreBaseGcal; window.__bcConsigne = consigneBloc; window.__bcInsights = buildInsights; window.__bcBlocs = blocsDuPlanning; window.__bcCle = cleJournee; window.__bcJours = joursSuivis; window.__bcInsightsVu = function(){ return insightsVu; }; window.__bcLogSession = logSession; window.__bcPeriode = periodeGrille; window.__bcPhaseEspanol = phaseEspanol; window.__bcGrille = grilleDe; window.__bcMinutesEspanol = minutesEspanol; window.__bcCibleEspanol = cibleEspanolJour; window.__bcTypeBloc = typeBlocPlan; window.__bcPlanRotation = planRotation; window.__bcHabitJours = habitJours; window.__bcProgrammeDebut = PROGRAMME_DEBUT; window.__bcJournees = function(){ return journeesState; }; window.__bcJourneeDe = journeeDe; window.__bcPartiels = periodePartiels; window.__bcSessionsPartiels = sessionsPartiels; window.__bcBlocSansPomodoro = blocSansPomodoro; window.__bcRappels = blocsARappeler; window.__bcJoursGcal = joursAPousser; window.__bcExamens = function(){ return examensState; }; window.__bcPrevu = minutesPrevuesJour; window.__bcCibleGrille = cibleDepuisGrille; window.__bcPartEcoulee = partEcoulee; window.__bcVacances = function(){ return vacancesState; }; window.__bcJourExclu = jourExclu; window.__bcObjectifs = function(){ return objectifsState.liste; }; window.__bcComparer = comparerObjectif; window.__bcAcquise = habitAcquise; window.__bcAcquises = habitsAcquises; window.__bcSansPomodoro = blocsSansPomodoroDuJour; window.__bcTonPriorite = tonPriorite; window.__bcPrioHist = function(){ return insightsHist; }; window.__bcCloturerSaison = cloturerSaison; window.__bcPeriodesCloses = function(){ return periodesClosesState; }; window.__bcCloturerPeriodes = cloturerPeriodesEchues; window.__bcPeriodesObj = periodesObjectifs; window.__bcSaisons = function(){ return saisonsState; }; window.__bcTrimestres = function(){ return TRIMESTRES; }; window.__bcMois = moisListe; window.__bcAnki = function(){ return ankiState; }; window.__bcLireAnki = lireAnki; window.__bcBesoins = besoinsPartiels; window.__bcMatiereBloc = matierePourBloc; window.__bcPortes = etatPortes; window.__bcEpreuve = epreuvePassages; window.__bcEpreuveProj = epreuveProjection; window.__bcPortesEtat = function(){ return portesEtat; }; window.__bcConvertirPorte = convertirPorte; window.__bcNoterCours = noterCours; window.__bcGrilleBase = grilleBase; window.__bcSemestre = semestreDe; window.__bcSansCours = sansCoursLe; window.__bcCoucher = heureCoucher; window.__bcLever = heureLever; window.__bcSommeilCible = objectifSommeilPour; window.__bcSommeilReel = sommeilReelVise; window.__bcMarquerSansCours = marquerSansCours; window.__bcJoursSansCours = function(){ return joursSansCoursState; }; window.__bcSeuilRevision = seuilUrgenceRevision; window.__bcCibleJour = cibleJourMinutes; window.__bcReinitGarder = reinitGarder; window.__bcPassagesCourses = prochainsPassagesCourses;
+  try{ window.__bcTitreBase = titreBaseGcal; window.__bcConsigne = consigneBloc; window.__bcInsights = buildInsights; window.__bcBlocs = blocsDuPlanning; window.__bcCle = cleJournee; window.__bcJours = joursSuivis; window.__bcInsightsVu = function(){ return insightsVu; }; window.__bcLogSession = logSession; window.__bcReporterTemps = reporterTemps; window.__bcPeriode = periodeGrille; window.__bcPhaseEspanol = phaseEspanol; window.__bcGrille = grilleDe; window.__bcMinutesEspanol = minutesEspanol; window.__bcCibleEspanol = cibleEspanolJour; window.__bcTypeBloc = typeBlocPlan; window.__bcPlanRotation = planRotation; window.__bcHabitJours = habitJours; window.__bcProgrammeDebut = PROGRAMME_DEBUT; window.__bcJournees = function(){ return journeesState; }; window.__bcJourneeDe = journeeDe; window.__bcPartiels = periodePartiels; window.__bcSessionsPartiels = sessionsPartiels; window.__bcBlocSansPomodoro = blocSansPomodoro; window.__bcRappels = blocsARappeler; window.__bcJoursGcal = joursAPousser; window.__bcExamens = function(){ return examensState; }; window.__bcPrevu = minutesPrevuesJour; window.__bcCibleGrille = cibleDepuisGrille; window.__bcPartEcoulee = partEcoulee; window.__bcVacances = function(){ return vacancesState; }; window.__bcJourExclu = jourExclu; window.__bcObjectifs = function(){ return objectifsState.liste; }; window.__bcComparer = comparerObjectif; window.__bcAcquise = habitAcquise; window.__bcAcquises = habitsAcquises; window.__bcSansPomodoro = blocsSansPomodoroDuJour; window.__bcTonPriorite = tonPriorite; window.__bcPrioHist = function(){ return insightsHist; }; window.__bcCloturerSaison = cloturerSaison; window.__bcPeriodesCloses = function(){ return periodesClosesState; }; window.__bcCloturerPeriodes = cloturerPeriodesEchues; window.__bcPeriodesObj = periodesObjectifs; window.__bcSaisons = function(){ return saisonsState; }; window.__bcTrimestres = function(){ return TRIMESTRES; }; window.__bcMois = moisListe; window.__bcAnki = function(){ return ankiState; }; window.__bcLireAnki = lireAnki; window.__bcBesoins = besoinsPartiels; window.__bcMatiereBloc = matierePourBloc; window.__bcPortes = etatPortes; window.__bcEpreuve = epreuvePassages; window.__bcEpreuveProj = epreuveProjection; window.__bcPortesEtat = function(){ return portesEtat; }; window.__bcConvertirPorte = convertirPorte; window.__bcNoterCours = noterCours; window.__bcGrilleBase = grilleBase; window.__bcSemestre = semestreDe; window.__bcSansCours = sansCoursLe; window.__bcCoucher = heureCoucher; window.__bcLever = heureLever; window.__bcSommeilCible = objectifSommeilPour; window.__bcSommeilReel = sommeilReelVise; window.__bcMarquerSansCours = marquerSansCours; window.__bcJoursSansCours = function(){ return joursSansCoursState; }; window.__bcSeuilRevision = seuilUrgenceRevision; window.__bcCibleJour = cibleJourMinutes; window.__bcReinitGarder = reinitGarder; window.__bcPassagesCourses = prochainsPassagesCourses;
        window.__bcTypeSport = typeSportDe; window.__bcCibleProchaine = cibleProchaine; window.__bcSessionsSport = function(){ return SESSIONS; }; window.__bcPasCharge = pasChargeDe; window.__bcCardio = function(){ return cardioState; }; window.__bcPasCible = pasCible; window.__bcAccorderMarche = accorderHabitMarche; window.__bcSortiesCardio = sortiesCardio; window.__bcCibleCardio = cibleCardio; window.__bcNoterCardio = noterCardio; window.__bcCardioMinutes = cardioMinutesSur; window.__bcSerieCardio = serieCardio; window.__bcSommeilCible = objectifSommeilPour; window.__bcTestAnki = testAnkiDu; window.__bcRapport = function(){
          var mois = moisListe().filter(function(m){ return todayISO >= m.debut && todayISO <= m.fin; })[0];
          var objs = mois ? objectifsState.liste.filter(function(o){ return o.periode === 'mois' && o.pid === mois.id; }) : [];
@@ -15583,7 +15882,7 @@
     var out = [todayISO, isoDecale(todayISO, 1)];
     for(var i = 2; i <= GCAL_HORIZON_SANS_COURS_J; i++){
       var d = isoDecale(todayISO, i);
-      if(d > PROGRAMME_FIN) break;
+      if(d > finProgramme()) break;
       if(sansCoursLe(d) && out.indexOf(d) === -1) out.push(d);
     }
     return out;
@@ -15851,7 +16150,7 @@
     var out = [];
     for(var i = 2; i <= 8; i++){
       var d = isoDecale(todayISO, i);
-      if(d > PROGRAMME_FIN) break;
+      if(d > finProgramme()) break;
       if(sansCoursLe(d) || journeeDe(d) || jourExclu(d)) continue;
       out.push(d);
     }
@@ -16201,7 +16500,7 @@
   /* ================= BUDGET ================= */
   var CATS_DEPENSE = ['Logement','Eau & Électricité','Transport (TAM)','Nourriture','Santé','Éducation','Business Shopify','Spirituel (sadaqah)','Abonnements','Loisirs','Autres'];
   var CATS_ENTREE = ['Shopify','Aide familiale','Bourse/aide étudiante','Autre'];
-  var txState = loadList('batcave-transactions');
+  var txState = chargerFractionne('batcave-transactions');
   var budgetLimits = load('batcave-budget-limits', {});
 
   /* Charges fixes mensuelles — remplace l'ancien onglet Abonnements, comptabilisées automatiquement
@@ -16255,7 +16554,7 @@
     var tx = txState.filter(function(t){
       return !(t && t.fixed && t.categorie === 'Nourriture' && /^Courses/.test(String(t.label || '')));
     });
-    if(tx.length !== txState.length){ txState = tx; save('batcave-transactions', txState); }
+    if(tx.length !== txState.length){ txState = tx; sauverFractionne('batcave-transactions', txState); }
   }
   if(!load('batcave-charges-v2', false)){ migrerChargeCourses(); saveInternal('batcave-charges-v2', true); }
   /* Le plafond Nourriture, une deuxieme fois. La v89 l'a pose a 186 EUR : c'etait le cout
@@ -16369,7 +16668,7 @@
       if(Array.isArray(fc)) fixedCharges = fc.filter(function(x){ return x && typeof x === 'object' && !Array.isArray(x); });
       var bl = load('batcave-budget-limits', null);
       if(bl && typeof bl === 'object' && !Array.isArray(bl)) budgetLimits = bl;
-      txState = loadList('batcave-transactions');
+      txState = chargerFractionne('batcave-transactions');
       AJUSTEMENTS.forEach(function(a){
         if(load(a.cle, false)) return;
         saveInternal(a.cle, true);
@@ -16388,7 +16687,7 @@
             t.montant = a.nouveau; maj = true;
           }
         });
-        if(maj) save('batcave-transactions', txState);
+        if(maj) sauverFractionne('batcave-transactions', txState);
       });
       return change;
     }
@@ -16434,7 +16733,7 @@
       saveInternal(flagKey, true);
       changed = true;
     });
-    if(changed) save('batcave-transactions', txState);
+    if(changed) sauverFractionne('batcave-transactions', txState);
   }
   ensureFixedChargesLoggedThisMonth();
 
@@ -16542,7 +16841,7 @@
         return '<li class="entry-row"><span class="ecell small">'+fmtDate(t.date)+'</span><span class="ecell"><b>'+escapeHtml(t.categorie)+'</b></span><span class="ecell small" style="color:'+(t.type==='Entrée'?'var(--good)':'var(--danger)')+'">'+(t.type==='Entrée'?'+':'-')+Number(t.montant).toFixed(2).replace('.', ',')+' €</span><span class="ecell small">'+escapeHtml(t.methode)+'</span><button class="edel" aria-label="Supprimer" title="Supprimer" data-deltx="'+t.id+'">×</button></li>';
       }).join('');
       txList.querySelectorAll('[data-deltx]').forEach(function(el){
-        el.addEventListener('click', function(){ txState = txState.filter(function(x){ return x.id !== el.dataset.deltx; }); save('batcave-transactions', txState); renderBudget(); renderDashboard(); renderBilan(); });
+        el.addEventListener('click', function(){ txState = txState.filter(function(x){ return x.id !== el.dataset.deltx; }); sauverFractionne('batcave-transactions', txState); renderBudget(); renderDashboard(); renderBilan(); });
       });
     }
 
@@ -16551,9 +16850,10 @@
   }
   document.getElementById('tx-add').addEventListener('click', function(){
     var montant = Number(document.getElementById('tx-montant').value);
-    if(!montant || montant < 0) return;
+    /* refus dit, et borne : un zero de trop (1 000 000 €) faussait tous les bilans du mois */
+    if(!montant || montant < 0 || montant > 20000){ showToast(montant > 20000 ? '⚠️ Montant impossible : ' + montant + ' € (plus de 20 000 €). Vérifie la saisie.' : '⚠️ Indique un montant.'); return; }
     txState.push({id:'tx'+Date.now(), date:document.getElementById('tx-date').value || todayISO, type:document.getElementById('tx-type').value, categorie:document.getElementById('tx-cat').value, montant:montant, methode:document.getElementById('tx-methode').value});
-    save('batcave-transactions', txState);
+    sauverFractionne('batcave-transactions', txState);
     document.getElementById('tx-montant').value='';
     renderBudget(); renderDashboard(); renderBilan();
   });
@@ -16595,7 +16895,7 @@
     var label = document.getElementById('fc-label').value.trim();
     var montant = Number(document.getElementById('fc-montant').value)||0;
     var cat = document.getElementById('fc-cat').value;
-    if(!label || !montant || montant < 0) return;
+    if(!label || !montant || montant < 0 || montant > 20000){ showToast(!label ? '⚠️ Donne un nom à la charge.' : (montant > 20000 ? '⚠️ Montant impossible : ' + montant + ' €.' : '⚠️ Indique un montant.')); return; }
     var periode = document.getElementById('fc-periode').value;
     fixedCharges.push({id:'fc'+Date.now(), label:label, montant:montant, cat:cat, periode:periode});
     save('batcave-fixed-charges', fixedCharges);
@@ -16681,7 +16981,29 @@
   });
 
   /* ================= RÉVISION ================= */
-  var revisionState = loadList('batcave-revision');
+  /* ===== Resumes annuels (lot 55) =====
+     Au-dela de 13 mois, les totaux du jour (revision, projets) se replient en une ligne par
+     jour -- [revision, projets, espagnol] en minutes -- et des totaux par matiere et par projet
+     pour chaque mois : « batcave-resume-2027 ». Les series, la carte des minutes, la vue
+     semaine et les totaux par projet les lisent ; rien ne change a l'ecran. */
+  function estResume(k){ return /^batcave-resume-\d{4}$/.test(String(k || '')); }
+  function chargerResumes(){
+    var out = {j: {}, m: {}, p: {}};
+    for(var i = 0; i < localStorage.length; i++){
+      var k = localStorage.key(i); if(!estResume(k)) continue;
+      var v = load(k, null); if(!v || typeof v !== 'object') continue;
+      ['j', 'm', 'p'].forEach(function(c){ var src = v[c]; if(src && typeof src === 'object') Object.keys(src).forEach(function(x){ out[c][x] = src[x]; }); });
+    }
+    return out;
+  }
+  var resumesState = chargerResumes();
+  function resumeJour(iso){ var r = resumesState && resumesState.j[iso]; return Array.isArray(r) ? r : null; }
+  function sauverResumes(){
+    var parAn = {};
+    ['j', 'm', 'p'].forEach(function(c){ Object.keys(resumesState[c]).forEach(function(x){ var an = x.slice(0, 4); var d = parAn[an] = parAn[an] || {v: 1, j: {}, m: {}, p: {}}; d[c][x] = resumesState[c][x]; }); });
+    Object.keys(parAn).forEach(function(an){ var k = 'batcave-resume-' + an; if(localStorage.getItem(k) !== JSON.stringify(parAn[an])) save(k, parAn[an], true); });
+  }
+  var revisionState = chargerFractionne('batcave-revision');
   /* Consolidation unique de l'historique : les entrées multiples d'une même journée
      (héritées des saisies manuelles et des blocs séparés) sont fusionnées une bonne fois. */
   /* Rejouable apres hydratation du cloud, comme le semis d'habitudes : cette fusion tourne
@@ -16691,7 +17013,7 @@
   function fusionnerHistoriqueRevision(){
     if(load('batcave-revision-fusionnee', false)) return false;
     var parJour = {}, fusion = [];
-    revisionState = loadList('batcave-revision');
+    revisionState = chargerFractionne('batcave-revision');
     revisionState.forEach(function(r){
       if(!r || !r.date) return;
       /* le détail par matière doit survivre à la fusion : sans ça toute la répartition
@@ -16717,7 +17039,7 @@
        changement -- donc un redessin -- que si des lignes ont reellement disparu. */
     var change = fusion.length !== revisionState.length;
     revisionState = fusion;
-    save('batcave-revision', revisionState);
+    sauverFractionne('batcave-revision', revisionState);
     saveInternal('batcave-revision-fusionnee', true);
     return change;
   }
@@ -16728,13 +17050,17 @@
   }, verifier: function(){
     if(!load('batcave-revision-fusionnee', false)) return null;
     var vus = {}, doublons = 0;
-    loadList('batcave-revision').forEach(function(r){ if(!r || !r.date) return; if(vus[r.date]) doublons++; vus[r.date] = true; });
+    chargerFractionne('batcave-revision').forEach(function(r){ if(!r || !r.date) return; if(vus[r.date]) doublons++; vus[r.date] = true; });
     if(!doublons) return null;
     return 'La fusion de l\'historique de révision est marquée faite, mais ' + doublons + ' journée' + (doublons > 1 ? 's sont' : ' est') + ' encore en double.';
   }});
   /* Lecteurs BRUTS des agrégats : n'appeler que depuis minutesJour, qui décide
      entre journal et agrégat. Partout ailleurs, passer par minutesOn/minutesOnProj. */
-  function agregatRevision(iso){ return revisionState.filter(function(r){ return r.date===iso; }).reduce(function(s,r){ return s+Number(r.duree||0); }, 0); }
+  function agregatRevision(iso){
+    var e = revisionState.filter(function(r){ return r.date===iso; });
+    if(!e.length){ var rs = resumeJour(iso); return rs ? (Number(rs[0]) || 0) : 0; }   /* jour replie (plus de 13 mois) */
+    return e.reduce(function(s,r){ return s+Number(r.duree||0); }, 0);
+  }
   function minutesOn(iso){ return minutesJour(iso, 'cours'); }
   function todayRevisionMinutes(){ return minutesOn(todayISO); }
   function SERIE_TUILE(){
@@ -16881,7 +17207,7 @@
         if(!r.matieres[s.label]) delete r.matieres[s.label];
       }
       if(!r.duree) revisionState = revisionState.filter(function(x){ return x.id !== r.id; });
-      save('batcave-revision', revisionState);
+      sauverFractionne('batcave-revision', revisionState);
     } else if(s.type === 'espagnol'){
       var e = esState.filter(function(x){ return x.date === s.date && x.activite === s.label && (Number(x.duree)||0) > 0; })[0];
       if(!e) return;
@@ -16893,7 +17219,7 @@
       if(!p) return;
       p.duree = Math.max(0, (Number(p.duree)||0) - s.duree);
       if(!p.duree) projetsState = projetsState.filter(function(x){ return x.id !== p.id; });
-      save('batcave-projets', projetsState);
+      sauverFractionne('batcave-projets', projetsState);
     }
   }
   /* Supprimer une ligne agrégée (es-list, historique projets) doit aussi purger les blocs
@@ -16904,7 +17230,7 @@
     sessionsState = sessionsState.filter(function(x){
       return !(x.type === type && x.date === date && x.label === label);
     });
-    if(sessionsState.length !== avant) save('batcave-sessions', sessionsState);
+    if(sessionsState.length !== avant) sauverFractionne('batcave-sessions', sessionsState);
   }
   function heureDe(ts){
     var d = new Date(ts);
@@ -16994,7 +17320,7 @@
       if(!existante.matieres || typeof existante.matieres !== 'object') existante.matieres = {};
       existante.matieres[nom] = (Number(existante.matieres[nom])||0) + duree;
     }
-    save('batcave-revision', revisionState);
+    sauverFractionne('batcave-revision', revisionState);
     renderRevision(); renderCalendar(); renderDashboard(); renderBilan();
   }
   /* Minutes par matière sur les N derniers jours, la part non renseignée mise à part. */
@@ -17032,6 +17358,7 @@
   }
   function matieresConnues(){
     var vues = {};
+    Object.keys(resumesState.m).forEach(function(mo){ var x = resumesState.m[mo] || {}; Object.keys(x).forEach(function(k){ vues[k] = (vues[k]||0) + (Number(x[k])||0); }); });
     revisionState.forEach(function(r){
       var m = (r && r.matieres && typeof r.matieres === 'object') ? r.matieres : {};
       Object.keys(m).forEach(function(k){ vues[k] = (vues[k]||0) + (Number(m[k])||0); });
@@ -17067,7 +17394,7 @@
     var existante = projetsState.filter(function(x){ return x.date === d && x.projet === projet; })[0];
     if(existante) existante.duree = (Number(existante.duree)||0) + duree;
     else projetsState.push({id:'proj'+Date.now(), date:d, projet:projet, duree:duree});
-    save('batcave-projets', projetsState);
+    sauverFractionne('batcave-projets', projetsState);
     renderProjets(); renderDashboard(); renderBilan(); renderAgendas();
   }
   /* Plus aucune saisie manuelle de temps de révision : le minuteur Pomodoro est la seule
@@ -17482,8 +17809,126 @@
   });
 
   /* ================= PROJETS PERSO ================= */
-  var projetsState = loadList('batcave-projets');
-  function agregatProjets(iso){ return projetsState.filter(function(p){ return p.date===iso; }).reduce(function(s,p){ return s+Number(p.duree||0); }, 0); }
+  var projetsState = chargerFractionne('batcave-projets');
+  /* Le detail bloc par bloc de plus de FENETRE_SESSIONS_J jours se replie dans les totaux du
+     jour. Tous les calculs lisent deja « le journal s'il couvre la journee, sinon le total » :
+     rien ne change a l'ecran, sauf que le journal cesse de grossir. Avant de retirer le
+     detail d'une journee, on s'assure que ses totaux le couvrent (matieres comprises). */
+  function replierVieillesSessions(){
+    var limite = isoDecale(todayISO, -FENETRE_SESSIONS_J);
+    var vieilles = sessionsState.filter(function(b){ return b && b.date && b.date < limite; });
+    if(!vieilles.length) return 0;
+    var parJour = {}, revChange = false, projChange = false;
+    vieilles.forEach(function(b){ (parJour[b.date] = parJour[b.date] || []).push(b); });
+    Object.keys(parJour).forEach(function(d){
+      var cours = 0, mats = {}, proj = {};
+      parJour[d].forEach(function(b){
+        var m = Number(b.duree) || 0; if(m <= 0) return;
+        if(paquetSession(b) === 'projet'){ var nom = String(b.label || 'Projet perso').trim() || 'Projet perso'; proj[nom] = (proj[nom] || 0) + m; }
+        else { cours += m; var l = String(b.label || '').trim(); if(l && l !== SANS_MATIERE) mats[l] = (mats[l] || 0) + m; }
+      });
+      if(cours > 0){
+        var r = revisionState.filter(function(x){ return x && x.date === d; })[0];
+        if(!r){ r = {id: 'rev-pli-' + d, date: d, duree: 0, matieres: {}}; revisionState.push(r); revChange = true; }
+        if((Number(r.duree) || 0) < cours){ r.duree = cours; revChange = true; }
+        if(!r.matieres || typeof r.matieres !== 'object') r.matieres = {};
+        Object.keys(mats).forEach(function(k){ if(!((Number(r.matieres[k]) || 0) >= mats[k])){ r.matieres[k] = mats[k]; revChange = true; } });
+      }
+      var totProj = Object.keys(proj).reduce(function(a, k){ return a + proj[k]; }, 0);
+      if(totProj > 0 && agregatProjets(d) < totProj){
+        Object.keys(proj).forEach(function(nom, i){
+          var x = projetsState.filter(function(p){ return p && p.date === d && p.projet === nom; })[0];
+          if(!x){ projetsState.push({id: 'proj-pli-' + d + '-' + i, date: d, projet: nom, duree: proj[nom]}); projChange = true; }
+          else if((Number(x.duree) || 0) < proj[nom]){ x.duree = proj[nom]; projChange = true; }
+        });
+      }
+    });
+    if(revChange) sauverFractionne('batcave-revision', revisionState, true);
+    if(projChange) sauverFractionne('batcave-projets', projetsState, true);
+    sessionsState = sessionsState.filter(function(b){ return !(b && b.date && b.date < limite); });
+    sauverFractionne('batcave-sessions', sessionsState, true);
+    return vieilles.length;
+  }
+  /* Apres le chargement complet (les durees de retention sont definies) : les copies locales
+     d'archives laissees par les versions precedentes. */
+  try{ migrerArchivesLocales(); }catch(e){}
+  /* Totaux du jour de plus de 13 mois : dans le resume de leur annee. Un jour deja resume ne
+     se recompte jamais (une restauration ou un vieil appareil peut en ramener les lignes). */
+  function replierVieuxTotaux(){
+    var limite = isoDecale(todayISO, -RETENTION_LOCALE_J), jours = {};
+    revisionState.forEach(function(r){ if(r && r.date && r.date < limite) (jours[r.date] = jours[r.date] || {rev: [], proj: []}).rev.push(r); });
+    projetsState.forEach(function(p){ if(p && p.date && p.date < limite) (jours[p.date] = jours[p.date] || {rev: [], proj: []}).proj.push(p); });
+    var dates = Object.keys(jours);
+    if(!dates.length) return 0;
+    dates.forEach(function(d){
+      if(resumeJour(d)) return;
+      var mo = d.slice(0, 7), c = 0, pr = 0, es = 0;
+      jours[d].rev.forEach(function(r){
+        c += Number(r.duree) || 0;
+        var m = (r.matieres && typeof r.matieres === 'object') ? r.matieres : {};
+        Object.keys(m).forEach(function(k){ var x = resumesState.m[mo] = resumesState.m[mo] || {}; x[k] = (Number(x[k]) || 0) + (Number(m[k]) || 0); });
+      });
+      jours[d].proj.forEach(function(p){
+        var v = Number(p.duree) || 0; pr += v; if(/^Español/.test(String(p.projet || ''))) es += v;
+        var x = resumesState.p[mo] = resumesState.p[mo] || {}; var nom = String(p.projet || 'Projet perso'); x[nom] = (Number(x[nom]) || 0) + v;
+      });
+      resumesState.j[d] = [c, pr, es];
+    });
+    sauverResumes();
+    revisionState = revisionState.filter(function(r){ return !(r && r.date && r.date < limite); });
+    projetsState = projetsState.filter(function(p){ return !(p && p.date && p.date < limite); });
+    sauverFractionne('batcave-revision', revisionState, true);
+    sauverFractionne('batcave-projets', projetsState, true);
+    return dates.length;
+  }
+  /* Series de sport de plus de 13 mois : une par exercice et par mois, la meilleure (volume),
+     avec la charge maximale du mois et le nombre de seances. La courbe de chaque exercice
+     garde un point par mois, et les records ne se perdent pas. */
+  function replierVieuxSport(){
+    var limite = isoDecale(todayISO, -RETENTION_LOCALE_J), groupes = {}, garder = [];
+    var vol = function(l){ return (l.series || []).reduce(function(a, x){ return a + (Number(x) || 0); }, 0); };
+    sportLog.forEach(function(l){
+      if(!l || !l.date || l.date >= limite || l.pli){ garder.push(l); return; }
+      var cle = l.date.slice(0, 7) + '|' + l.exo; (groupes[cle] = groupes[cle] || []).push(l);
+    });
+    var cles = Object.keys(groupes);
+    if(!cles.length) return 0;
+    cles.forEach(function(cle, i){
+      var g = groupes[cle], best = g[0];
+      g.forEach(function(l){ if(vol(l) > vol(best)) best = l; });
+      var charge = g.reduce(function(a, l){ return Math.max(a, Number(l.charge) || 0); }, 0);
+      garder.push({id: 'sl-pli-' + cle.replace(/[^A-Za-z0-9-]/g, '') + '-' + i, date: best.date, type: best.type, exo: best.exo, series: best.series, charge: charge, unite: best.unite, pli: true, n: g.length});
+    });
+    garder.sort(function(a, b){ return String(a && a.date).localeCompare(String(b && b.date)); });
+    sportLog = garder;
+    sauverFractionne('batcave-sport-log', sportLog, true);
+    return cles.length;
+  }
+  /* Entretien de longue duree, une fois par jour a l'ouverture. */
+  (function(){
+    if(load('batcave-last-entretien', null) === todayISO) return;
+    try{ replierVieillesSessions(); }catch(e){}
+    try{ replierVieuxTotaux(); }catch(e){}
+    try{ replierVieuxSport(); }catch(e){}
+    try{ purgerClesPerimees(); }catch(e){}
+    saveInternal('batcave-last-entretien', todayISO);
+  })();
+  /* ...et de nouveau apres chaque hydratation du cloud : a l'ouverture, le cloud n'a pas encore
+     repondu, le repli n'est ecrit qu'en local, et le premier instantane remettait le mois entier
+     par-dessus -- le detail ne se repliait jamais (vu dans la simulation de cinq ans). */
+  MIGRATIONS_DEMARRAGE.push({cle:'batcave-last-entretien', rejouer: function(){
+    var n = 0;
+    try{ n = replierVieillesSessions(); }catch(e){}
+    try{ n += replierVieuxTotaux(); }catch(e){}
+    try{ n += replierVieuxSport(); }catch(e){}
+    if(n){ try{ renderDashboard(); }catch(e){} }
+    return n > 0;
+  }});
+  function agregatProjets(iso){
+    var e = projetsState.filter(function(p){ return p.date===iso; });
+    if(!e.length){ var rs = resumeJour(iso); return rs ? (Number(rs[1]) || 0) : 0; }
+    return e.reduce(function(s,p){ return s+Number(p.duree||0); }, 0);
+  }
   function minutesOnProj(iso){ return minutesJour(iso, 'projet'); }
   /* Les projets perso SANS l'espagnol : c'est ce chiffre-là qu'on compare à la cible
      « Projets perso », partout où les deux sont affichés côte à côte. */
@@ -17505,6 +17950,7 @@
 
     var byName = {};
     projetsState.forEach(function(p){ byName[p.projet] = (byName[p.projet]||0) + Number(p.duree||0); });
+    Object.keys(resumesState.p).forEach(function(mo){ var x = resumesState.p[mo] || {}; Object.keys(x).forEach(function(k){ byName[k] = (byName[k]||0) + (Number(x[k])||0); }); });
     var nameEntries = Object.keys(byName).map(function(k){ return [k, byName[k]]; }).sort(function(a,b){ return b[1]-a[1]; });
     document.getElementById('proj-by-name').innerHTML = nameEntries.length ? nameEntries.map(function(e){
       return '<li><span>'+escapeHtml(e[0])+'</span><b>'+fmtDuree(e[1]) + '</b></li>';
@@ -17534,7 +17980,7 @@
       el.addEventListener('click', function(){
         var p = projetsState.filter(function(x){ return x.id === el.dataset.delproj; })[0];
         projetsState = projetsState.filter(function(x){ return x.id !== el.dataset.delproj; });
-        save('batcave-projets', projetsState);
+        sauverFractionne('batcave-projets', projetsState);
         if(p) purgerSessionsPour('projet', p.date, p.projet);
         renderProjets(); renderBilan(); renderDashboard(); renderAgendas();
       });
@@ -17670,7 +18116,8 @@
       }
     }
     rvState.push(entree);
-    if(rvState.length > 400) rvState = rvState.slice(-400);
+    /* 260 revues = cinq ans de dimanches : au-dela, un seul document cloud approchait 256 Kio */
+    if(rvState.length > 260) rvState = rvState.slice(-260);
     save('batcave-revue', rvState);
     saveInternal('batcave-last-bilan-prompt', weekRange(0)[0]);
     renderRevue();
@@ -17825,7 +18272,7 @@
     var cs = (typeof coursesState !== 'undefined' && coursesState) ? coursesState : {}, csK = Object.keys(cs), csFait = csK.filter(function(k){ return cs[k]; }).length;
     var eff = null; try{ eff = efficaciteMesuree(); }catch(e){}
     var appro = 0; try{ appro = approDus(todayISO).length; }catch(e){}
-    var ech = 0; try{ ech = (typeof echeancesState !== 'undefined' && echeancesState && echeancesState.liste ? echeancesState.liste : []).filter(function(x){ return x && x.date >= todayISO; }).length; }catch(e){}
+    var ech = 0; try{ ech = (typeof echeancesState !== 'undefined' && Array.isArray(echeancesState) ? echeancesState : []).filter(function(x){ return x && x.date >= todayISO && !x.fait; }).length; }catch(e){}
     var s = function(nom, repli){ var x = parNom[nom]; return x ? x.statut : repli; };
     var t = function(nom, repli){ var x = parNom[nom]; return x ? x.texte : repli; };
     var sats = [

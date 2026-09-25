@@ -100,7 +100,7 @@ console.log('\n== 231) Phase 1 (mercredi 16 septembre) : blocs Projets perso ren
      la cible « Projets perso » de septembre vaut donc zéro, et c'est exact. Les jours
      d'avant le 14 ne comptent plus — c'est ce qui affichait « Projets perso −29,9 h »
      au matin du premier jour. */
-  const objs = await fr.evaluate(() => JSON.parse(localStorage.getItem('batcave-objectifs')).liste
+  const objs = await fr.evaluate(() => JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-objectifs')).liste
     .filter(o => /^(T1|M2026-09|M2026-12):(espagnol_h|projets_h|revision_h)$/.test(o.id))
     .reduce((a, o) => { a[o.id] = o.cible; return a; }, {}));
   /* Deux choses ont change depuis l'ecriture de ce test, et toutes les deux a sa demande.
@@ -129,9 +129,9 @@ console.log('\n== 231) Phase 1 (mercredi 16 septembre) : blocs Projets perso ren
   ok(ask.visible && /Español/.test(ask.titre) && ask.valeur === 'gramática', 'dialogue Español, tâche par défaut = gramática (bloc en cours) : ' + JSON.stringify(ask));
   await fr.evaluate(() => document.getElementById('ask-ok').click());
   await page.waitForTimeout(250);
-  const timer = await fr.evaluate(() => ({ sub: document.getElementById('timer-sub').textContent, tag: document.getElementById('timer-dial-tag').textContent, page: document.querySelector('.page.active').dataset.page, st: JSON.parse(localStorage.getItem('batcave-timer')) }));
+  const timer = await fr.evaluate(() => ({ sub: document.getElementById('timer-sub').textContent, tag: document.getElementById('timer-dial-tag').textContent, page: document.querySelector('.page.active').dataset.page, st: JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-timer')) }));
   ok(/Español · gramática/.test(timer.sub) && timer.page === 'etudes' && timer.st.cible === 'projet' && timer.st.projet === 'Español · gramática', 'minuteur lancé en projet « Español · gramática », page Études : ' + timer.sub);
-  await fr.evaluate(() => { const st = JSON.parse(localStorage.getItem('batcave-timer')); localStorage.setItem('batcave-timer', 'null'); });
+  await fr.evaluate(() => { const st = JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-timer')); localStorage.setItem('batcave-timer', 'null'); });
   /* une session Español enregistrée compte dans la cellule, dans l'objectif Espagnol, pas dans Projets perso */
   await fr.evaluate(t => { window.__bcLogSession(40, {cible:'projet', projet:'Español · escribir', startedAt: t}); }, ms('2026-09-16','13:02'));
   await fr.evaluate(() => document.querySelector('.nav-btn[data-page="objectifs"]').click());
@@ -209,7 +209,7 @@ console.log('\n== 234) Dimanche 20 septembre, clôture : les chiffres du dimanch
     document.getElementById('cloture-valider').click();
   });
   await page.waitForTimeout(250);
-  const rv = await fr.evaluate(() => { const l = JSON.parse(localStorage.getItem('batcave-revue') || '[]'); return l[l.length - 1]; });
+  const rv = await fr.evaluate(() => { const l = JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-revue') || '[]'); return l[l.length - 1]; });
   ok(rv && rv.espanol && rv.espanol.errores === 4.5 && rv.espanol.oral === 2, 'revue enregistrée avec les chiffres Español : ' + JSON.stringify(rv && rv.espanol));
   await fr.evaluate(() => document.querySelector('.nav-btn[data-page="objectifs"]').click());
   await page.waitForTimeout(200);

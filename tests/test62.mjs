@@ -117,7 +117,7 @@ console.log('\n== 219a) « Vu » : la priorité se met en pause 7 jours, le band
   await page.waitForTimeout(300);
   const r = await fr.evaluate(() => ({
     premier: document.querySelector('#insights-priorites li b').textContent, items: document.querySelectorAll('#insights-priorites li').length,
-    vu: JSON.parse(localStorage.getItem('batcave-insights-vu') || '{}'),
+    vu: JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-insights-vu') || '{}'),
     pause: !!document.querySelector('#insights-grid .panel[data-titre="Sommeil"].en-pause'),
     reactiver: !!document.querySelector('#insights-grid [data-reactiver="Sommeil"]'),
     dash: document.getElementById('dash-priorite').textContent, toast: (document.querySelector('.toast') || {}).textContent || ''
@@ -129,7 +129,7 @@ console.log('\n== 219a) « Vu » : la priorité se met en pause 7 jours, le band
   ok(/en pause 7 jours/.test(r.toast), 'toast de confirmation : ' + r.toast);
   await fr.evaluate(() => document.querySelector('#insights-grid [data-reactiver="Sommeil"]').click());
   await page.waitForTimeout(300);
-  const r2 = await fr.evaluate(() => ({ premier: document.querySelector('#insights-priorites li b').textContent, vu: JSON.parse(localStorage.getItem('batcave-insights-vu') || '{}'), dash: document.getElementById('dash-priorite').textContent }));
+  const r2 = await fr.evaluate(() => ({ premier: document.querySelector('#insights-priorites li b').textContent, vu: JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-insights-vu') || '{}'), dash: document.getElementById('dash-priorite').textContent }));
   ok(r2.premier === 'Sommeil' && !r2.vu['Sommeil'] && /Sommeil/.test(r2.dash), '« Réactiver » : le sommeil revient en tête, clé effacée, tableau de bord à jour');
 }
 

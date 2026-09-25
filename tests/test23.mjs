@@ -25,8 +25,8 @@ await fr.evaluate(() => { const s=document.getElementById('ask-select'); s.value
 await page.waitForTimeout(200);
 await page.clock.fastForward('01:00:01'); await page.waitForTimeout(400);
 const apresBloc = await fr.evaluate(() => {
-  const t = JSON.parse(localStorage.getItem('batcave-timer')||'null');
-  const rev = JSON.parse(localStorage.getItem('batcave-revision')||'[]');
+  const t = JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-timer')||'null');
+  const rev = JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-revision')||'[]');
   return { mode: t && t.mode, revMin: rev.reduce((a,r)=>a+Number(r.duree||0),0) };
 });
 ok(apresBloc.mode === 'pause', 'la pause de 5 min démarre toute seule après le bloc : ' + apresBloc.mode);
@@ -48,7 +48,7 @@ const cal = await fr.evaluate(() => {
   return c ? c.innerText.replace(/\s+/g,'') : '(absent)';
 });
 ok(/1h/.test(cal), 'la journée du 3 sept. affiche 1 h : ' + cal);
-const blocs = await fr.evaluate(() => JSON.parse(localStorage.getItem('batcave-sessions')||'[]').length);
+const blocs = await fr.evaluate(() => JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-sessions')||'[]').length);
 ok(blocs === 1, 'exactement 1 bloc journalisé (pas de doublon) : ' + blocs);
 
 console.log('\n== D) Budget : transaction + camemberts ==');
@@ -99,8 +99,8 @@ const apresReload = await fr2.evaluate(() => {
   document.querySelector('.nav-btn[data-page="dashboard"]').click();
   return {
     temps: document.querySelectorAll('#dash-temps .temps-cell')[0].innerText.replace(/\s+/g,''),
-    rev: JSON.parse(localStorage.getItem('batcave-revision')||'[]').reduce((a,r)=>a+Number(r.duree||0),0),
-    tx: JSON.parse(localStorage.getItem('batcave-transactions')||'[]').length,
+    rev: JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-revision')||'[]').reduce((a,r)=>a+Number(r.duree||0),0),
+    tx: JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-transactions')||'[]').length,
   };
 });
 ok(/1h/.test(apresReload.temps) && apresReload.rev === 60, 'révision conservée après rechargement : ' + apresReload.temps);

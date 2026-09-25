@@ -85,12 +85,12 @@ console.log('\n== 79) Compléter la liste coche l\'habitude (et l\'inverse) ==')
     const b = document.querySelector('#dash-checklist [data-togglehab="core-courses"]');
     return b ? b.closest('label, li, div').innerText.replace(/\s+/g,' ') : null;
   });
-  const log = await fr.evaluate(() => JSON.parse(localStorage.getItem('batcave-habitlog')||'{}')['core-courses']||[]);
+  const log = await fr.evaluate(() => JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-habitlog')||'{}')['core-courses']||[]);
   ok(log.indexOf('2026-09-05') > -1, 'liste complète → habitude cochée : ' + JSON.stringify(log));
   await aller(fr, page, 'courses');
   await fr.evaluate(() => { const cb = document.querySelector('#courses-grid input[type=checkbox]'); if(cb) cb.click(); });
   await page.waitForTimeout(400);
-  const log2 = await fr.evaluate(() => JSON.parse(localStorage.getItem('batcave-habitlog')||'{}')['core-courses']||[]);
+  const log2 = await fr.evaluate(() => JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-habitlog')||'{}')['core-courses']||[]);
   ok(log2.indexOf('2026-09-05') === -1, 'on décoche un article → habitude décochée : ' + JSON.stringify(log2));
   await ctx.close();
 }

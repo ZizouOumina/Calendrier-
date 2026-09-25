@@ -73,7 +73,7 @@ async function attendreTexte(page, sel, re, delai){
   return false;
 }
 const dansCloud = fr => fr.evaluate(() => window.__cloud);
-const local = (fr,k) => fr.evaluate(x => JSON.parse(localStorage.getItem(x) || 'null'), k);
+const local = (fr,k) => fr.evaluate(x => JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))(x) || 'null'), k);
 
 const SAMEDI = '2026-09-05T10:00:00+02:00';
 /* l'état exact du compte : le cloud fait autorité sur les habitudes, il ignore le lot V3 */
@@ -140,7 +140,7 @@ console.log('\n== 98) Sans cloud, le semis local fonctionne toujours ==');
   await page.frameLocator('#f').locator('#dash-checklist').waitFor({ state:'attached', timeout:15000 });
   const fr = page.frames().find(x => x.url().includes('batcave.html'));
   await page.waitForTimeout(1200);
-  const loc = await fr.evaluate(() => JSON.parse(localStorage.getItem('batcave-habits')));
+  const loc = await fr.evaluate(() => JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-habits')));
   ok(loc.some(h => h.id === 'core-courses'), 'fichier .html hors ligne : l\'habitude est semée');
   await ctx.close();
 }
@@ -158,7 +158,8 @@ console.log('\n== 99) La fusion de l\'historique de révision survit à l\'hydra
                'batcave-habits-seed-v2': true, 'batcave-habits-seed-v3': true, 'batcave-habits-seed-v4': true, 'batcave-habits-seed-v5': true, 'batcave-habits-seed-v6': true, 'batcave-habits-seed-v7': true, 'batcave-habits-seed-v8': true, 'batcave-objectifs-v5-espanol': true};
   const { ctx, fr } = await ouvrir(cl0, cl0, SAMEDI);
   const cl = await dansCloud(fr);
-  const rev = cl['batcave-revision'] || [];
+  /* lot 55 : la liste vit en un document par mois ; on la relit d'un seul tenant */
+  const rev = Object.keys(cl).filter(k => /^batcave-revision(-\d{4}-\d{2})?$/.test(k)).sort().reduce((a, k) => a.concat(cl[k] || []), []);
   ok(rev.length === 2, 'le cloud reçoit l\'historique fusionné (2 lignes, pas 3) — reçu ' + rev.length);
   ok(cl['batcave-revision-fusionnee'] === true, 'le drapeau de fusion est posé');
   const jour = rev.filter(r => r.date === '2026-08-31')[0];

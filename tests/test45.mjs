@@ -20,7 +20,7 @@ async function ouvrir(quand, seed){
   return { ctx, page, fr };
 }
 const texte = (fr, sel) => fr.evaluate(s => { const e = document.querySelector(s); return e ? e.innerText : ''; }, sel);
-const lire = (fr,k) => fr.evaluate(x => JSON.parse(localStorage.getItem(x) || 'null'), k);
+const lire = (fr,k) => fr.evaluate(x => JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))(x) || 'null'), k);
 const bloc = (date, type, min, hhmm) => { const d = new Date(date+'T'+hhmm+':00+01:00').getTime(); return { id:'s'+date+type+hhmm, date, type, duree:min, label:'x', debut:d, fin:d+min*60000 }; };
 /* Le programme ouvre le mardi 15 : avant lui, aucun bloc n'est du, donc aucun ne peut
    etre manque. Et la phase 1 remplace les blocs « Projets perso » par de l'espagnol, donc un jour de

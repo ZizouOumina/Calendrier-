@@ -105,7 +105,7 @@ console.log('\n== 103) Clés inconnues du code signalées, clés connues laissé
   ok(!/fixed-logged|examens/.test(t || ''), 'les clés connues (préfixe daté, examens) ne le sont pas');
   await fr.evaluate(() => document.querySelector('[data-cle-ignorer]').click());
   await page.waitForTimeout(200);
-  ok(await fr.evaluate(() => JSON.parse(localStorage.getItem('batcave-coherence-ignore-cle-batcave-ancienne-cle'))) === true, 'Ignorer pose le drapeau');
+  ok(await fr.evaluate(() => JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-coherence-ignore-cle-batcave-ancienne-cle'))) === true, 'Ignorer pose le drapeau');
   ok(!/batcave-ancienne-cle/.test((await txt(fr, '#coherence-liste')) || ''), 'et la ligne disparaît');
   await ctx.close();
 }

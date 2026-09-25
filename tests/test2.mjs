@@ -30,7 +30,7 @@ await page.clock.install({ time: new Date('2026-09-02T09:00:00+02:00') });
 await page.goto(URL);
 await page.frameLocator('#f').locator('#biz-pomodoro-projet').waitFor({ state:'attached', timeout:15000 });
 const fr = page.frames().find(x => x.url().includes('batcave.html'));
-const ls = async (k) => await fr.evaluate(k => { try { return JSON.parse(localStorage.getItem(k)); } catch(e){ return localStorage.getItem(k); } }, k);
+const ls = async (k) => await fr.evaluate(k => { try { return JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))(k)); } catch(e){ return (window.__bcLire || ((k) => localStorage.getItem(k)))(k); } }, k);
 await fr.evaluate(() => { document.querySelectorAll('.overlay:not([hidden])').forEach(o => { const b = o.querySelector('.btn'); if(b) b.click(); }); });
 await page.waitForTimeout(200);
 await fr.evaluate(() => { const n = document.querySelector('.nav-btn[data-page="etudes"]'); if(n) n.click(); });

@@ -21,7 +21,7 @@ async function ouvrir(quand, extra){
   await page.waitForTimeout(350);
   return { ctx, page, fr };
 }
-const local = (fr, k) => fr.evaluate(x => JSON.parse(localStorage.getItem(x) || 'null'), k);
+const local = (fr, k) => fr.evaluate(x => JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))(x) || 'null'), k);
 
 console.log('\n== 264) Les cibles sortent de la grille, phase par phase ==');
 {
@@ -109,7 +109,7 @@ console.log('\n== 267) Habitudes : acquises comptées mais rangées, revue coch�
   const { ctx, page, fr } = await ouvrir('2026-11-30T20:40:00+01:00', {'batcave-habitlog': log});
   const a = await fr.evaluate(() => ({ acquises: window.__bcAcquises().map(h => h.id),
                                        liste: [...document.querySelectorAll('#dash-checklist li')].map(l => l.innerText),
-                                       cochee: (JSON.parse(localStorage.getItem('batcave-habitlog') || '{}')['core-lit'] || []).indexOf('2026-11-30') > -1 }));
+                                       cochee: (JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-habitlog') || '{}')['core-lit'] || []).indexOf('2026-11-30') > -1 }));
   ok(a.acquises.indexOf('core-lit') > -1 && a.acquises.indexOf('core-marche') < 0, '« Lit fait » est acquise, « Marche » non (' + a.acquises.join(', ') + ')');
   ok(!a.liste.some(x => /Lit fait/.test(x)), 'elle ne prend plus de place dans la check-list du jour');
   ok(a.cochee, 'elle est cochée d\'elle-même : elle continue de compter');

@@ -173,8 +173,8 @@ console.log('\n== 75) Restaurer depuis un FICHIER, sans aucun connecteur ==');
   await fr.evaluate(() => document.getElementById('ask-ok').click());
   await page.waitForTimeout(500);
   const restaure = await fr.evaluate(() => ({
-    charges: JSON.parse(localStorage.getItem('batcave-fixed-charges') || 'null'),
-    poids: JSON.parse(localStorage.getItem('batcave-goals') || '{}').poids,
+    charges: JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-fixed-charges') || 'null'),
+    poids: JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-goals') || '{}').poids,
   }));
   ok(restaure.charges && restaure.charges.length === 2, 'les charges fixes sont restaurées : ' + JSON.stringify(restaure.charges && restaure.charges.map(c=>c.label)));
   ok(restaure.charges && restaure.charges[1].label === 'Eau + Électricité', 'accents intacts depuis le fichier : ' + (restaure.charges && restaure.charges[1].label));

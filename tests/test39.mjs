@@ -62,7 +62,7 @@ for(const [nom, quand, attendu] of [['lundi (veille dim. 21:00, lever 05:30)',LU
   /* une nuit conforme au planning doit valoir 100%, pas 94% */
   const { ctx, fr } = await ouvrir(LUNDI, {'batcave-journal-2026-08-30': {sommeil:'8', water:0}});
   const pct = await fr.evaluate(() => {
-    const j = JSON.parse(localStorage.getItem('batcave-journal-2026-08-30'));
+    const j = JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-journal-2026-08-30'));
     return { veille: j.sommeil };
   });
   ok(pct.veille === '8', 'la nuit de dimanche est bien lue : ' + pct.veille + ' h');

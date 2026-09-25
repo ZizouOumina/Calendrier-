@@ -7,7 +7,7 @@ const browser = await chromium.launch();
 async function ouvrir(seed, taille){
   const ctx = await browser.newContext({ viewport: taille || {width:1440,height:900}, timezoneId:'Europe/Madrid', locale:'fr-FR' });
   if(seed) await ctx.addInitScript(s => {
-    if(localStorage.getItem('__seed')) return;
+    if((window.__bcLire || ((k) => localStorage.getItem(k)))('__seed')) return;
     localStorage.setItem('__seed','1');
     Object.keys(s).forEach(k => localStorage.setItem(k, JSON.stringify(s[k])));
   }, seed);
@@ -120,7 +120,7 @@ console.log('\n== 36) Agir en haut, consulter replié ==');
   e = await fr.evaluate(() => ({
     ouvert: !document.getElementById('dash-more').hidden,
     libelle: document.getElementById('dash-more-toggle').textContent,
-    memo: JSON.parse(localStorage.getItem('batcave-dash-more'))
+    memo: JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-dash-more'))
   }));
   ok(e.ouvert && /Masquer le reste/.test(e.libelle), 'un clic déplie : ' + e.libelle.trim());
   ok(e.memo === true, 'le choix est mémorisé');

@@ -20,7 +20,7 @@ async function ouvrir(quand, local){
   await page.waitForTimeout(300);
   return { ctx, page, fr };
 }
-const local = (fr,k) => fr.evaluate(x => JSON.parse(localStorage.getItem(x) || 'null'), k);
+const local = (fr,k) => fr.evaluate(x => JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))(x) || 'null'), k);
 const texte = (fr, sel) => fr.evaluate(s => (document.querySelector(s) || {innerText:''}).innerText.replace(/\s+/g,' ').trim(), sel);
 /* mardi 22 sept 2026 10:00 ; les semaines du 7 et du 14 ont eu des sessions, mais ~50 % du plan */
 /* Un MARDI a l'interieur du programme. C'etait le 22 septembre, jour 1 a l'epoque ; le

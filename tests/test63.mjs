@@ -44,7 +44,7 @@ console.log('\n== 221) Calendrier : bloc couvert par une session coché tout seu
   await page.waitForTimeout(300);
   const st = await fr.evaluate(() => {
     const li = h => { const cb = document.querySelector('#cal-timeline input[data-cal="' + h + '"]'); const l = cb.closest('li'); return { checked: cb.checked, auto: !!l.querySelector('.t-auto'), cls: l.className }; };
-    return { a1: li('07:20'), a2: li('08:20'), cartes: li('09:20'), sport: li('05:30'), store: JSON.parse(localStorage.getItem('batcave-cal-2026-09-07')) };
+    return { a1: li('07:20'), a2: li('08:20'), cartes: li('09:20'), sport: li('05:30'), store: JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-cal-2026-09-07')) };
   });
   ok(st.a1.checked && st.a1.auto && /checked/.test(st.a1.cls), 'Anki 1 (53 min sur 60) coché automatiquement avec la marque « auto »');
   ok(!st.a2.checked && !st.a2.auto, 'Anki 2 (25 min sur 60, sous la moitié) reste décoché');
@@ -57,7 +57,7 @@ console.log('\n== 221) Calendrier : bloc couvert par une session coché tout seu
   await fr.evaluate(() => document.querySelector('.nav-btn[data-page="dashboard"]').click());
   await fr.evaluate(() => document.querySelector('.nav-btn[data-page="calendrier"]').click());
   await page.waitForTimeout(200);
-  const apres = await fr.evaluate(() => ({ checked: document.querySelector('#cal-timeline input[data-cal="07:20"]').checked, store: JSON.parse(localStorage.getItem('batcave-cal-2026-09-07'))['07:20'] }));
+  const apres = await fr.evaluate(() => ({ checked: document.querySelector('#cal-timeline input[data-cal="07:20"]').checked, store: JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-cal-2026-09-07'))['07:20'] }));
   ok(!apres.checked && apres.store === false, 'décoché à la main → reste décoché après un nouveau rendu (' + apres.store + ')');
   await ctx.close();
 }
@@ -94,7 +94,7 @@ console.log('\n== 223) Téléphone : mode essentiel actif par défaut, bascule �
   ok(st.reactor > 100 && st.reactor <= 130, 'réacteur réduit à ' + Math.round(st.reactor) + ' px, en bande à côté de ses lectures');
   await fr.evaluate(() => document.getElementById('mode-essentiel-toggle').click());
   await page.waitForTimeout(150);
-  const st2 = await fr.evaluate(() => ({ mode: window.__bcModeEssentiel(), plan: getComputedStyle(document.querySelector('.dash-wall > .mon-plan')).display !== 'none', pref: localStorage.getItem('bc-mode-essentiel'), btn: document.getElementById('mode-essentiel-toggle').textContent }));
+  const st2 = await fr.evaluate(() => ({ mode: window.__bcModeEssentiel(), plan: getComputedStyle(document.querySelector('.dash-wall > .mon-plan')).display !== 'none', pref: (window.__bcLire || ((k) => localStorage.getItem(k)))('bc-mode-essentiel'), btn: document.getElementById('mode-essentiel-toggle').textContent }));
   ok(!st2.mode && st2.plan && st2.pref === '0' && st2.btn === 'Essentiel', '« Tout afficher » : le suivi revient, préférence 0 mémorisée localement');
   const deb = await fr.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1);
   ok(deb, 'aucun débordement horizontal en mode complet à 390 px');
@@ -211,7 +211,7 @@ console.log('\n== 228) Tous les boutons sans texte ont un libellé ; cases du ca
   ok(sansLibelle.length === 0, 'aucun bouton sans texte ni libellé (' + sansLibelle.length + ')' + (sansLibelle.length ? ' : ' + sansLibelle.slice(0, 6).join(' | ') : ''));
   await fr.evaluate(() => document.querySelector('.nav-btn[data-page="calendrier"]').click());
   await page.frameLocator('#f').locator('#cal-timeline input[data-cal="11:20"]').press('Space'); await page.waitForTimeout(150);
-  const coche = await fr.evaluate(() => ({ checked: document.querySelector('#cal-timeline input[data-cal="11:20"]').checked, store: JSON.parse(localStorage.getItem('batcave-cal-2026-09-07'))['11:20'] }));
+  const coche = await fr.evaluate(() => ({ checked: document.querySelector('#cal-timeline input[data-cal="11:20"]').checked, store: JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-cal-2026-09-07'))['11:20'] }));
   ok(coche.checked && coche.store === true, 'Espace coche un bloc du calendrier et l\'enregistre');
   await ctx.close();
 }

@@ -87,9 +87,9 @@ console.log('\n== 283) La note du jour se pose toujours, et se retire ==');
   await allerEtudes(fr, page);
   const v = await fr.evaluate(() => {
     window.__bcNoterCours('2026-10-13', 3);
-    const a = window.__bcNoterCours && JSON.parse(localStorage.getItem('batcave-cours-suivi') || '{}')['2026-10-13'];
+    const a = window.__bcNoterCours && JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-cours-suivi') || '{}')['2026-10-13'];
     window.__bcNoterCours('2026-10-13', null);
-    const b = JSON.parse(localStorage.getItem('batcave-cours-suivi') || '{}')['2026-10-13'];
+    const b = JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-cours-suivi') || '{}')['2026-10-13'];
     return { pose: a, retire: b };
   });
   ok(v.pose === 3, 'la note se pose (3)');

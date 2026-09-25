@@ -31,7 +31,7 @@ console.log('\n== 269) Deux oeufs a la place du jambon ==');
     col: window.__bcMacrosRepas({name:'Collation entraînement'}, '2026-09-28'),
     oeufs: window.__bcBesoinSemaine.oeufs, jambon: window.__bcBesoinSemaine.jambon,
     cout: window.__bcCoutSemaine(),
-    plafond: JSON.parse(localStorage.getItem('batcave-budget-limits') || '{}').Nourriture
+    plafond: JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-budget-limits') || '{}').Nourriture
   }));
   ok(r.col.kcal === 508 && r.col.p === 28, 'la collation : pain, 2 œufs, fromage, 25 g d\'amandes = 508 kcal, 28 g de protéines (' + r.col.kcal + ' / ' + r.col.p + ')');
   /* Le lundi 28 est un jour de combat : la collation combat ajoute 388 kcal. */
@@ -47,7 +47,7 @@ console.log('\n== 269) Deux oeufs a la place du jambon ==');
 }
 {
   const { ctx, fr } = await ouvrir('2026-09-28T10:00:00+02:00', {'batcave-budget-limits': {Nourriture: 180}});
-  const p = await fr.evaluate(() => JSON.parse(localStorage.getItem('batcave-budget-limits') || '{}').Nourriture);
+  const p = await fr.evaluate(() => JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-budget-limits') || '{}').Nourriture);
   ok(p === 180, 'un plafond réglé à la main ne bouge pas (' + p + ')');
   await ctx.close();
 }

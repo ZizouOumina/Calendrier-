@@ -31,7 +31,7 @@ async function jour(quand, local){
   await page.waitForTimeout(400);
   return { ctx, page, fr };
 }
-const ids = fr => fr.evaluate(() => JSON.parse(localStorage.getItem('batcave-habits') || '[]').map(h => h.id));
+const ids = fr => fr.evaluate(() => JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-habits') || '[]').map(h => h.id));
 const duJour = fr => fr.evaluate(() => [...document.querySelectorAll('#dash-checklist li label')].map(x => x.textContent));
 
 console.log('\n== 301) Installation neuve : les retirees ne sont jamais semees ==');

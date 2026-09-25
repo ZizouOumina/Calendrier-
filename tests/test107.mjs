@@ -50,7 +50,7 @@ console.log('\n== 266) Le controle des series, sur la vraie semaine ==');
              statut: document.getElementById('gcal-controle-statut').textContent,
              lignes: [...document.querySelectorAll('#gcal-controle-liste li')].map(l => l.textContent),
              plan: document.getElementById('dash-plan').innerText,
-             sauve: JSON.parse(localStorage.getItem('batcave-gcal-controle') || 'null') };
+             sauve: JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-gcal-controle') || 'null') };
   }, SEMAINE);
   ok(r.appel && r.appel.tool === 'list_events' && /^2026-09-25T00:00:00\+02:00$/.test(r.appel.args.startTime) && /^2026-10-02T00:00:00\+02:00$/.test(r.appel.args.endTime),
      'un seul list_events, du 25 septembre au 2 octobre (' + (r.appel && r.appel.args.startTime) + ' → ' + (r.appel && r.appel.args.endTime) + ')');
