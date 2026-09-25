@@ -1010,12 +1010,7 @@
   .bc-r.bc-clic{ cursor:pointer; } .bc-r.bc-clic:hover .v{ color:var(--cyan-bright); text-decoration:underline; }
   .bc-r.bc-clic:focus-visible{ outline:2px solid var(--cyan); outline-offset:2px; }
   #dash-spotify:not([hidden]) + .bc-spotify-off{ display:none; }
-  .bc-actions{ margin-left:auto; display:inline-flex; gap:6px; align-items:center; flex:none; }
-  /* la salutation cede la place aux boutons (Notion, theme) plutot que de les
-     envoyer a la ligne : elle se tronque a 1440 px si elle est trop longue */
-  @media (min-width:781px){ .bc-row-1{ flex-wrap:nowrap; } }
-  .bc-row-1 > .bc-r:not(.bc-alerte){ flex:0 1 auto; min-width:0; overflow:hidden; }
-  .bc-row-1 > .bc-r:not(.bc-alerte) > .v{ overflow:hidden; text-overflow:ellipsis; }
+  .bc-actions{ margin-left:auto; display:inline-flex; gap:6px; align-items:center; }
   .bc-actions .btn{ padding:6px 10px; font-size:11.5px; }
   @media (max-width:1180px){ .bc-clock{ font-size:22px; } .bc-bar{ gap:12px; } }
   @media (max-width:780px){
