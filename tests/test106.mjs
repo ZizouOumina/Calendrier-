@@ -70,7 +70,7 @@ console.log('\n== 262) Les élévations latérales, lundi et samedi ==');
   const hl = s['Haut lourd'].noms, sa = s['Bras · épaules · mollets'].noms;
   ok(hl.indexOf('Élévations latérales') < hl.indexOf('Flexion du cou'), 'lundi : avant le cou, qui reste le finisseur');
   ok(sa.indexOf('Élévations latérales') === sa.indexOf('Shrugs suspendus') + 1, 'samedi : dans le bloc épaules, juste après les shrugs');
-  ok(s['Haut lourd'].duree === '50 min' && s['Haut volume'].duree === '55 min', 'durées annoncées : 50 min (lourd) et 55 min (volume)');
+  ok(s['Haut lourd'].duree === '55 min' && s['Haut volume'].duree === '55 min', 'durées annoncées : 55 min (lourd) et 55 min (volume)');
   await ctx.close();
 }
 

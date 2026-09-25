@@ -40,8 +40,8 @@ const jours = (debut, n) => { const out = []; const d = new Date(debut + 'T00:00
 
 console.log('\n== 1) Une séance à moitié faite vaut une demi-séance ==');
 {
-  /* Haut lourd compte 9 exercices depuis le regime combat (releves de jambes et curl inverse sortis). */
-  for(const [n, attendu, desc] of [[0,'0,0','aucune case'], [3,'0,3','3 sur 9'], [5,'0,6','5 sur 9, un peu plus de la moitié'], [9,'1,0','les 9']]){
+  /* Haut lourd compte 10 exercices depuis le 25 septembre (curl inverse sorti, releves de jambes suspendus revenus en fin de seance). */
+  for(const [n, attendu, desc] of [[0,'0,0','aucune case'], [3,'0,3','3 sur 10'], [5,'0,5','5 sur 10, la moitié'], [10,'1,0','les 10']]){
     const st = {}; for(let i = 0; i < n; i++) st['Haut lourd-' + i] = true;
     const {ctx, page, fr} = await ouvrir({['batcave-sport-' + JOUR]: st});
     await aller(fr, page, 'objectifs');

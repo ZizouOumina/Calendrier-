@@ -7,7 +7,7 @@ Copie de référence du programme appliqué dans la Batcave (onglet Sport), comm
 - **Le combat est le cardio.** La course du dimanche et les sprints du samedi sont sortis ; le panneau « Cardio & combat » de l'onglet Sport liste les quatre séances de la semaine, à cocher, 90 minutes chacune. Elles ne comptent pas dans « Séances tenues », qui reste le compteur de la muscu.
 - **Lundi et jeudi s'inversent.** La séance lourde passe le **jeudi**, le seul jour sans combat, avec une récupération complète ; le **lundi**, avant le JJB de 10:30, c'est le volume, plus léger. Le lundi, on ne va pas à l'échec : il faut de l'énergie pour le tatami.
 - **La séance du samedi saute** pendant le mois d'adaptation : ses exercices clés passent ailleurs — mollets le mardi, élévations latérales et superset curl/triceps le lundi. Elle peut revenir en novembre si le sommeil tient et que le poids monte.
-- **Sortent ce que le tatami travaille déjà** : relevés de jambes et curl inversé (séance lourde), relevés de genoux (volume), et les fentes du mardi — pour garder des jambes pour la Muay Thai du soir. Les avant-bras sont chargés quatre fois par semaine par les prises de kimono, la sangle par la garde, les ponts et les sorties de hanche.
+- **Sortent ce que le tatami travaille déjà** : curl inversé (séance lourde), relevés de genoux (volume), et les fentes du mardi — pour garder des jambes pour la Muay Thai du soir. Les avant-bras sont chargés quatre fois par semaine par les prises de kimono, la sangle par la garde, les ponts et les sorties de hanche. Les relevés de jambes suspendus, sortis le même jour, sont revenus le jeudi le 25 septembre.
 - **Lever 05:30 tous les jours, coucher 21:35** (22:00 le mardi, retour du club à 21:15). Le samedi et le dimanche dormaient jusqu'à 06:30 : une heure fixe tous les jours est ce qui recale une horloge interne.
 - **Eau : 3,5 à 4 L les jours de combat** (3 L les autres). **Collation combat** à 10:05 avant le JJB (14:50 le mardi, avec la collation d'entraînement) : banane, 50 g de flocons, 15 g d'amandes, ≈ 390 kcal.
 - **Shampooing les jours de sueur** : du lundi au vendredi (muscu, JJB, Muay Thai). Le week-end reste sec.
@@ -55,7 +55,7 @@ Le soir, Muay Thai : les fentes sont sorties pour garder des jambes.
 | 3 A | Crunch lesté | 3 × 12-20 |
 | 3 B | Inclinaisons latérales du cou | 3 × 12-20 par côté |
 
-### Jeudi · Haut lourd (50 min)
+### Jeudi · Haut lourd (55 min)
 Repos par paire : 45 s entre A et B, puis 90 s · 45 s / 75 s · 30 s / 60 s. Le seul jour sans combat : c'est ici que la force se construit.
 
 | Paire | Exercice | Tours × fourchette |
@@ -69,6 +69,7 @@ Repos par paire : 45 s entre A et B, puis 90 s · 45 s / 75 s · 30 s / 60 s. Le
 | 4 A | Élévations latérales | 3 × 12-20 |
 | 4 B | Flexion du cou | 3 × 12-20 |
 | 5 A | Extension du cou | 3 × 12-20 |
+| 5 B | Relevés de jambes suspendus | 3 × 8-15 |
 
 Tractions et dips reviennent lundi et jeudi avec des fourchettes différentes ; leur cible se déduit du dernier journal, quel que soit le jour.
 
@@ -105,10 +106,11 @@ Le cou grossit comme un mollet : par la charge et par la fréquence. Deux séanc
 
 ## Les abdos — le crunch lesté, et le tatami
 
-Les gainages statiques ont disparu du programme : ils entretiennent, ils ne font pas grossir. Depuis le 28 septembre, le JJB (garde, ponts, sorties de hanche) et la Muay Thai (gainage sous les coups, genoux) font travailler la sangle quatre fois par semaine : les relevés de jambes, les relevés de genoux latéraux et le dragon flag sont sortis. Il reste un mouvement chargé, le seul qui part du haut (les côtes vers le bassin) :
+Les gainages statiques ont disparu du programme : ils entretiennent, ils ne font pas grossir. Depuis le 28 septembre, le JJB (garde, ponts, sorties de hanche) et la Muay Thai (gainage sous les coups, genoux) font travailler la sangle quatre fois par semaine : les relevés de genoux latéraux et le dragon flag sont sortis. Le tatami entraîne l'endurance du ventre, pas sa taille : il reste donc deux mouvements chargés. Les relevés de jambes suspendus sont revenus le 25 septembre, à sa demande, le jeudi seulement (le seul jour sans combat : ils fatiguent aussi la poigne et les fléchisseurs de hanche dont le JJB a besoin).
 
 | Mouvement | Jour | Exécution | Progression |
 |---|---|---|---|
+| Relevés de jambes suspendus | jeudi | Suspendu à la barre, jambes tendues montées jusqu'à l'horizontale ou plus haut, sans balancer ; trois secondes pour redescendre ; une ou deux reps avant l'échec | Lest dès 15 reps sur les trois séries : une bouteille d'un litre coincée entre les pieds, puis +500 g |
 | Crunch lesté | mardi | Allongé, genoux pliés, la bouteille de sable (≈ 3 kg) tenue sur la poitrine ; on enroule le buste en décollant les omoplates, trois secondes pour redescendre | +250 g dès que 20 reps propres sur les trois séries |
 
 Le crunch lesté remplace la roue abdominale, que tu n'as pas. Jamais les mains derrière la nuque à tirer sur la tête.
