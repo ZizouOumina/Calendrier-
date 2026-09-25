@@ -359,14 +359,20 @@ une ligne à enlever dans quatre sections — dis-le et je le fais.
 ## Ce qu'il faut savoir pour reprendre
 
 - **Le mois de l'argent** (Budget, 25 septembre au soir) : panneau `budget-mois-panel`,
-  `moisArgent(iso)` / `renderMoisArgent()`, test `test114`. Le virement de 1 400 € arrive le 28,
-  donc le mois va du 28 au 27. 192 € n'est qu'une **moyenne** (191,69 €) : une période compte
-  4 ou 5 samedis de courses, et avec 5 il ne reste qu'environ 158 €. D'où **150 € le 28**
-  (ce que laisse même une période à 5 samedis, arrondi à la dizaine en dessous) et **le reste
-  le 27** (≈ 58,71 € avec 4 samedis, ≈ 7,64 € avec 5). Changer la date du virement n'y
-  changerait rien : toute période de 28 à 31 jours compte 4 ou 5 samedis. Amandes estimées
-  à 13 €/kg dans ce plan seulement (`PRIX_ESTIMES`), la liste de courses dit toujours « prix à
-  relever ». Agenda : 💶 du 28 passé à 150 €, 💶 du 27 créé (`k8hqobo0fc29tabgudb6ufae1o`).
+  `moisArgent(iso)` / `renderMoisArgent()`, test `test114`. 192 € n'est qu'une **moyenne**
+  (191,69 €) : une période d'un virement au suivant compte 4 ou 5 samedis de courses, et avec 5
+  il ne reste qu'environ 158 €. D'où **150 € le jour du virement** (ce que laisse même une période
+  à 5 samedis, arrondi à la dizaine en dessous) et **le reste la veille du suivant**
+  (≈ 58,71 € avec 4 samedis, ≈ 7,64 € avec 5). **Le virement passe au 25** (sa décision, le 25 au
+  soir) : le 28 laissait trop peu de marge avant le loyer quand il tombe un week-end (28 nov.
+  samedi, 28 févr. 2027 dimanche). Le premier virement arrive encore le 28 septembre
+  (`REVENU_MOIS.depuis`) : première période du 28 sept. au 24 oct., puis du 25 au 24. Le club
+  garde le 28. Consignes « À mettre en place une fois » dans le panneau (virement permanent de
+  sa mère, Jar Wise « Épargne et business », Apple et Bouygues faits, facture d'eau et
+  d'électricité, prix des amandes). Amandes estimées à 13 €/kg dans ce plan seulement
+  (`PRIX_ESTIMES`). Agenda 💶 : 28 sept. 12:35 (virement, une fois), le 25 (virement et
+  cagnotte, `68n5dpque190a6p9bm5lnp2ft4`), le 28 (club, `i0hja7ddt7f6m193du4cno1rgk`), le 1er
+  (propriétaire), le 24 (le reste, `ournj3sp5574qef64r8s80muk4`).
 - Branche : `claude/notion-addictions-nutrition-tracker-pf3lmg`. Tout est poussé.
 - Serveur de tests : `python3 -m http.server 8199 --bind 127.0.0.1` depuis `tests/`.
 - Campagne : `bash tests/runall.sh`, résultat dans `/tmp/reg10.log`, finit par `ALL_DONE`.

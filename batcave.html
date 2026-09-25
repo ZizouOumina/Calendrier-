@@ -491,6 +491,11 @@
   .ma-regles li + li{margin-top:5px;}
   .ma-regles b{color:var(--ink);}
   .ma-pied{margin-top:12px; font-size:11.5px; color:var(--ink-faint); line-height:1.5;}
+  .ma-une-fois{margin-top:22px; padding-top:16px; border-top:1px solid var(--border-soft);}
+  .ma-setup{margin:0; padding:0 0 0 18px; font-size:13px; color:var(--ink-dim); line-height:1.5;}
+  .ma-setup li + li{margin-top:7px;}
+  .ma-setup b{color:var(--ink); font-weight:600;}
+  .ma-setup .badge{margin-left:8px; cursor:default; vertical-align:1px;}
   @media (max-width:640px){
     .ma-chiffres{grid-template-columns:minmax(0,1fr);}
     .ma-fil li{grid-template-columns:minmax(0,1fr) auto; gap:2px 10px;}
@@ -17179,16 +17184,21 @@
     renderMoisArgent();
   }
   /* ===== Le mois de l'argent (25 septembre) =====
-     Sa mere vire 1 400 EUR le 28 sur Wise : son mois va du 28 au 27, pas du 1er au 30.
-     Le chiffre qu'on lui avait donne -- 192 EUR a mettre de cote le 28 -- etait une MOYENNE :
-     les courses se font le samedi, et 52 samedis / 12 = 4,33 par mois. Une periode du 28
-     au 27 en compte 4 ou 5 ; avec 5 (28 nov. -> 27 dec. 2026), il ne reste qu'environ
-     158 EUR. Poser 192 EUR le 28 aurait donc laisse le compte court avant le 27.
-     D'ou deux gestes : le 28, un montant SUR -- ce que meme une periode a 5 samedis laisse,
-     arrondi a la dizaine en dessous ; le 27, le reste, quand le mois est fini et qu'on sait
-     ce qu'il a vraiment coute. Tout se recalcule depuis les charges fixes et les prix
-     releves : si une charge change, le plan suit. */
-  var REVENU_MOIS = {montant:1400, jour:28, depuis:'2026-09-28'};
+     Sa mere vire 1 400 EUR par mois sur Wise. Le chiffre qu'on lui avait donne -- 192 EUR a
+     mettre de cote le jour du virement -- etait une MOYENNE : les courses se font le samedi,
+     et 52 samedis / 12 = 4,33 par mois. Une periode d'un virement au suivant en compte 4 ou
+     5 ; avec 5, il ne reste qu'environ 158 EUR. Poser 192 EUR d'un coup aurait donc laisse
+     le compte court avant la fin. D'ou deux gestes : le jour du virement, un montant SUR --
+     ce que meme une periode a 5 samedis laisse, arrondi a la dizaine en dessous ; la veille
+     du suivant, le reste, quand le mois est fini et qu'on sait ce qu'il a coute. Tout se
+     recalcule depuis les charges fixes et les prix releves : si une charge change, le plan suit.
+     La date : le 25, sa decision du 25 au soir. Le 28 laissait trop peu de marge avant le
+     loyer du 1er les mois ou il tombe un week-end -- 28 nov. 2026 un samedi, 28 fevr. 2027 un
+     dimanche, soit un virement execute le lundi 1er mars, le jour meme du loyer. Le premier
+     virement, lui, arrive encore le 28 septembre (« depuis ») : la premiere periode va du 28
+     au 24 octobre, les suivantes du 25 au 24. Aucune des deux dates ne change l'epargne :
+     toute periode de 28 a 31 jours compte 4 ou 5 samedis. */
+  var REVENU_MOIS = {montant:1400, jour:25, depuis:'2026-09-28'};
   /* Les amandes n'ont pas de prix releve (PRIX, plus haut) : la liste de courses le dit et
      les sort de son total. Un plan d'epargne sans elles serait optimiste d'environ 25 EUR par
      mois -- on les compte ici a 13 EUR/kg, affiche comme estimation, jusqu'a son releve. */
@@ -17196,8 +17206,9 @@
   /* Quand et comment part chaque charge. Les trois du proprietaire partent en UN virement :
      le contrat d'eau, d'electricite et de wifi est a son nom. */
   var ECHEANCES_ARGENT = [
-    {ids:['fc10'], quand:'le 28', action:'Paie le club par carte', detail:'Au club, \u00e0 la s\u00e9ance du jour \u2014 \u00e0 la suivante s\u2019il est ferm\u00e9.', faire:true},
     {cagnotte:true},
+    /* le club garde sa date : l'abonnement a demarre le lundi 28 septembre */
+    {ids:['fc10'], quand:'le 28', action:'Paie le club par carte', detail:'Carte Wise, au club \u2014 \u00e0 la s\u00e9ance suivante s\u2019il est ferm\u00e9.', faire:true},
     {ids:['fc1','fc5','fc2'], quand:'le 1er', action:'Un seul virement au propri\u00e9taire', faire:true, proprio:true},
     {ids:['fc8'], quand:'le 2', action:'iCloud', detail:'Pr\u00e9lev\u00e9 par Apple sur la carte Wise.'},
     {ids:['fc9'], quand:'le 4', action:'Claude Pro', detail:'Pr\u00e9lev\u00e9 par Apple sur la carte Wise.'},
@@ -17217,7 +17228,7 @@
     var fixes = fixedChargesTotal();
     var libre = REVENU_MOIS.montant - fixes;                 /* ce qui reste pour les courses et la cagnotte */
     var cagnotte = Math.max(0, Math.floor((libre - 5 * sem) / 10) * 10);
-    /* La periode : du dernier 28 passe (jamais avant le premier virement) au 27 suivant. */
+    /* La periode : du dernier 25 passe (jamais avant le premier virement) au 24 suivant. */
     var periode = function(debut){
       var d = new Date(debut + 'T00:00:00');
       var fin = localISO(new Date(d.getFullYear(), d.getMonth() + 1, REVENU_MOIS.jour - 1));
@@ -17234,18 +17245,20 @@
       if(pk.samedis === 5) prochaine5 = pk;
       x = isoDecale(pk.fin, 1);
     }
-    /* Le fil du mois, avec le solde apres chaque geste. */
-    var solde = REVENU_MOIS.montant, lignes = [{quand:'le 28', action:'Virement de ta m\u00e8re sur Wise', detail:'V\u00e9rifie qu\u2019il est arriv\u00e9 avant tout le reste.', montant: REVENU_MOIS.montant, solde: solde, plus:true, faire:true}];
+    /* Le fil du mois, avec le solde apres chaque geste. Le jour du virement et celui du
+       balayage se lisent sur la periode : le 28 pour la premiere, le 25 ensuite. */
+    var le = function(iso){ var n = Number(iso.slice(8)); return 'le ' + n + (n === 1 ? 'er' : ''); };
+    var solde = REVENU_MOIS.montant, lignes = [{quand: le(cette.debut), action:'Virement de ta m\u00e8re sur Wise', detail:'V\u00e9rifie qu\u2019il est arriv\u00e9 avant tout le reste.', montant: REVENU_MOIS.montant, solde: solde, plus:true, faire:true}];
     var vus = {};
     ECHEANCES_ARGENT.forEach(function(e){
       var l;
-      if(e.cagnotte) l = {quand:'le 28', action:'Mets de c\u00f4t\u00e9 dans la cagnotte', detail:'Le montant s\u00fbr, m\u00eame les mois \u00e0 5 samedis.', montant: cagnotte, cagnotte:true, faire:true};
+      if(e.cagnotte) l = {quand: le(cette.debut), action:'Mets de c\u00f4t\u00e9 dans la cagnotte', detail:'Le montant s\u00fbr, m\u00eame les mois \u00e0 5 samedis.', montant: cagnotte, cagnotte:true, faire:true};
       else if(e.courses) l = {quand:'le samedi', action:'Courses \u00d7 ' + cette.samedis, detail:'\u2248 ' + eur(sem) + ' par samedi.', montant: cette.samedis * sem, faire:true};
       else if(e.balayage) l = cette.balayage >= 0
-        ? {quand:'le 27', action:'Balaye le reste vers la cagnotte', detail:'Ce qui reste sur le compte la veille du virement.', montant: cette.balayage, cagnotte:true, faire:true}
+        ? {quand: le(cette.fin), action:'Balaye le reste vers la cagnotte', detail:'Ce qui reste sur le compte la veille du virement.', montant: cette.balayage, cagnotte:true, faire:true}
         /* Des charges qui depassent le virement : le fil le dit au lieu d'afficher un solde
            negatif, et le trou se comble depuis la cagnotte. */
-        : {quand:'le 27', action:'Il manque de quoi finir la p\u00e9riode', detail:'Les charges d\u00e9passent le virement : comble depuis la cagnotte.', montant: cette.balayage, cagnotte:true, plus:true, faire:true};
+        : {quand: le(cette.fin), action:'Il manque de quoi finir la p\u00e9riode', detail:'Les charges d\u00e9passent le virement : comble depuis la cagnotte.', montant: cette.balayage, cagnotte:true, plus:true, faire:true};
       else {
         var cs2 = e.ids.map(function(id){ vus[id] = true; return parId[id]; }).filter(Boolean);
         if(!cs2.length) return;
@@ -17279,9 +17292,12 @@
     var a = moisArgent(todayISO), P = a.periode;
     var jm = function(iso){ return fmtDate(iso); };
     document.getElementById('ma-periode').textContent = 'du ' + jm(P.debut) + ' au ' + jm(P.fin) + ' \u00b7 ' + P.samedis + ' samedis de courses';
+    var J = function(iso){ var n = Number(iso.slice(8)); return n + (n === 1 ? 'er' : ''); };
+    var premier = Number(P.debut.slice(8)) !== REVENU_MOIS.jour;
     var h = '<div class="ma-chiffres">' +
-      '<div class="ma-chiffre cle"><div class="ml">Le 28, dans la cagnotte</div><div class="mv">' + eurMille(a.cagnotte) + '</div><div class="mn">Fixe, chaque mois.</div></div>' +
-      '<div class="ma-chiffre cle"><div class="ml">Le 27, en plus</div><div class="mv">\u2248 ' + eurMille(Math.max(0, P.balayage)) + '</div><div class="mn">Cette p\u00e9riode, ' + P.samedis + ' samedis.' +
+      '<div class="ma-chiffre cle"><div class="ml">Le ' + J(P.debut) + ', dans la cagnotte</div><div class="mv">' + eurMille(a.cagnotte) + '</div><div class="mn">' +
+        (premier ? 'Ce mois-ci le ' + J(P.debut) + ', puis chaque ' + REVENU_MOIS.jour + ', le m\u00eame montant.' : 'Fixe, chaque mois.') + '</div></div>' +
+      '<div class="ma-chiffre cle"><div class="ml">Le ' + J(P.fin) + ', en plus</div><div class="mv">\u2248 ' + eurMille(Math.max(0, P.balayage)) + '</div><div class="mn">Cette p\u00e9riode, ' + P.samedis + ' samedis.' +
         (a.prochaine5 && a.prochaine5.debut !== P.debut ? ' Du ' + jm(a.prochaine5.debut) + ' au ' + jm(a.prochaine5.fin) + ' (5 samedis) : \u2248 ' + eurMille(Math.max(0, a.prochaine5.balayage)) + '.' : '') + '</div></div>' +
       '<div class="ma-chiffre"><div class="ml">\u00c9pargne moyenne</div><div class="mv">' + eurMille(a.moyenne) + '</div><div class="mn">Par mois sur l\u2019ann\u00e9e : ' + eurMille(a.moyenne * 12).replace(',00', '') + ' en douze mois.</div></div>' +
       '</div>';
@@ -17294,7 +17310,23 @@
     h += '<ul class="ma-regles">' +
       '<li><b>Pas de virement, pas de d\u00e9pense.</b> Tant que les 1 400 \u20ac ne sont pas sur Wise, ni club ni cagnotte.</li>' +
       '<li><b>La cagnotte ne paie jamais le quotidien.</b> Elle sert au business, et aux impr\u00e9vus.</li>' +
-      '<li><b>Si l\u2019eau et l\u2019\u00e9lectricit\u00e9 d\u00e9passent 70 \u20ac,</b> la diff\u00e9rence sort de la cagnotte, pas des courses. En dessous, le surplus y part le 27.</li>' +
+      '<li><b>Si l\u2019eau et l\u2019\u00e9lectricit\u00e9 d\u00e9passent 70 \u20ac,</b> la diff\u00e9rence sort de la cagnotte, pas des courses. En dessous, le surplus y part le ' + (REVENU_MOIS.jour - 1) + '.</li>' +
+      '<li><b>Si le ' + REVENU_MOIS.jour + ' tombe un week-end,</b> le virement arrive le lundi. C\u2019est pr\u00e9vu : le loyer n\u2019est que le 1er.</li>' +
+      '</ul>';
+    /* Ce qui se regle une fois. Deux lignes sont faites (les abonnements Apple, Bouygues) :
+       elles le disent. Les autres restent des consignes -- rien ne sait ici si elles sont
+       faites, et une case cochee a la main mentirait le jour ou il changerait de banque. */
+    var faite = '<span class="badge good">fait</span>';
+    h += '<div class="sub-head ma-une-fois"><h3>\u00c0 mettre en place une fois</h3><span class="sub-note">puis tout tourne seul</span></div>' +
+      '<ul class="ma-setup">' +
+      '<li><b>Ta m\u00e8re : un virement permanent de 1\u202f400 \u20ac le ' + REVENU_MOIS.jour + ' de chaque mois,</b> vers ton IBAN belge Wise. Ce mois-ci, il arrive encore le 28 ; le premier ' + REVENU_MOIS.jour + ', c\u2019est le ' + REVENU_MOIS.jour + ' octobre. Si elle pr\u00e9f\u00e8re le faire \u00e0 la main, un virement instantan\u00e9 arrive en quelques secondes, m\u00eame le week-end.</li>' +
+      '<li><b>Wise : une cagnotte (Jar) \u00ab\u00a0\u00c9pargne et business\u00a0\u00bb,</b> s\u00e9par\u00e9e du solde courant. C\u2019est l\u00e0 que vont les ' + eurMille(a.cagnotte).replace(',00', '') + ' du ' + REVENU_MOIS.jour + ' et le reste du ' + (REVENU_MOIS.jour - 1) + '.</li>' +
+      '<li><b>iCloud et Claude Pro sur la carte Wise,</b> via Apple.' + faite + '</li>' +
+      '<li><b>Bouygues pr\u00e9lev\u00e9 sur Wise.</b>' + faite + '</li>' +
+      '<li><b>Le club : la carte Wise,</b> chaque 28, \u00e0 la main \u2014 il ne pr\u00e9l\u00e8ve pas.</li>' +
+      '<li><b>Le propri\u00e9taire : demande-lui le vrai montant de l\u2019eau et de l\u2019\u00e9lectricit\u00e9.</b> Envoie-le-moi et le plan se recalcule \u2014 les 70 \u20ac ne sont qu\u2019une estimation.</li>' +
+      (a.estimes.length ? '<li><b>Les amandes : rel\u00e8ve leur prix samedi</b> et envoie-le-moi. En attendant, elles comptent \u00e0 ' + a.estimes[0].prix.eur + ' \u20ac/' + a.estimes[0].prix.par + '.</li>' : '') +
+      '<li><b>Tes rappels \ud83d\udcb6 dans l\u2019agenda :</b> le ' + REVENU_MOIS.jour + ' (virement et cagnotte), le 28 (club), le 1er (propri\u00e9taire), le ' + (REVENU_MOIS.jour - 1) + ' (le reste dans la cagnotte).</li>' +
       '</ul>';
     h += '<p class="ma-pied">Courses : ' + eurMille(a.semaine) + ' par semaine d\u2019apr\u00e8s tes relev\u00e9s des 20 et 21 septembre' +
       (a.estimes.length ? ', dont ' + a.estimes.map(function(e){ return e.label.toLowerCase() + ' estim\u00e9es \u00e0 ' + e.prix.eur + ' \u20ac/' + e.prix.par + ' (prix \u00e0 relever)'; }).join(', ') : '') +
