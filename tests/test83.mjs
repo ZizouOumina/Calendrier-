@@ -69,14 +69,16 @@ console.log('\n== 1) Sans un seul jour noté, le panneau le dit et ne calcule ri
 
 console.log('\n== 2) Sous 12 jours notés, le chiffre est donné mais annoncé comme indicatif ==');
 {
-  const fin = '2026-10-05';
-  const { ctx, page, fr } = await ouvrir({'batcave-cours-suivi': notes(fin, 8, 3)}, '2026-10-05T21:00:00+02:00');
+  /* Fin au 8 octobre (le 9 est sans cours) : les huit jours de cours notés tombent tous apres le jour 1 (lundi 28) --
+     un jour d'avant le programme n'est pas un jour de cours pour la Batcave. */
+  const fin = '2026-10-08';
+  const { ctx, page, fr } = await ouvrir({'batcave-cours-suivi': notes(fin, 8, 3)}, '2026-10-08T21:00:00+02:00');
   await etudes(fr, page);
   await fr.evaluate(() => { const t = document.getElementById('portes-toggle'); if(t) t.click(); });
   await page.waitForTimeout(300);
   const c = await carte(fr);
   ok(/3,00 \/ 3/.test(c.etat), 'la moyenne de huit 3 vaut 3,00 / 3 : ' + (c.etat.match(/\d,\d\d \/ 3/) || [''])[0]);
-  ok(/8 jours de cours notés/.test(c.etat), 'le nombre de jours est dit');
+  ok(/8 jours de cours notés/.test(c.etat), 'le nombre de jours est dit : ' + c.etat.slice(0, 160));
   ok(/indicatif/.test(c.etat), 'et le chiffre est annoncé comme indicatif sous le plancher de 12');
   await ctx.close();
 }

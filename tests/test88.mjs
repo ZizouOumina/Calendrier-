@@ -149,19 +149,19 @@ console.log('\n== 293) Sans dates d\'examen, la Batcave le dit — et se taît d
 {
   /* Le seuil est PROGRAMME_DEBUT + 31 jours. Il suit donc le depart : 22 sept. + 31
      donnait le 23 octobre, 23 sept. + 31 le 24 ; depuis que le jour 1 est au 24 septembre,
-     c'est le 25. */
-  const { ctx, fr } = await ouvrir('2026-10-24T09:00:00+02:00');
+     c'etait le 25 ; depuis le lundi 28 (26 septembre), c'est le 29 octobre. */
+  const { ctx, fr } = await ouvrir('2026-10-28T09:00:00+02:00');
   const a = await fr.evaluate(() => document.getElementById('dash-plan').innerText);
-  ok(!/Aucune date d’examen/.test(a), 'le 24 octobre, la veille du seuil, rien encore');
+  ok(!/Aucune date d’examen/.test(a), 'le 28 octobre, la veille du seuil, rien encore');
   await ctx.close();
 }
 {
-  const { ctx, fr } = await ouvrir('2026-10-25T09:00:00+02:00');
+  const { ctx, fr } = await ouvrir('2026-10-29T09:00:00+02:00');
   const v = await fr.evaluate(() => ({
     t: document.getElementById('dash-plan').innerText,
     btn: document.querySelectorAll('#dash-plan [data-ouvrir="etudes"]').length
   }));
-  ok(/Aucune date d’examen saisie/.test(v.t), 'le 25 octobre, la ligne apparaît');
+  ok(/Aucune date d’examen saisie/.test(v.t), 'le 29 octobre, la ligne apparaît');
   ok(/pas de mode partiels/.test(v.t) && /sommeil majoré/.test(v.t), 'et elle dit ce qui reste éteint tant qu\'elles manquent');
   ok(v.btn === 1, 'un bouton qui ouvre l\'onglet Études');
   await ctx.close();
@@ -408,7 +408,9 @@ console.log('\n== 311) Neuf onglets, et rien qui devient inatteignable ==');
     toutes: [...document.querySelectorAll('.nav-btn[data-page]')].map(b => b.dataset.page),
     groupes: [...document.querySelectorAll('.nav-label')].map(l => l.textContent),
     rangees: document.querySelectorAll('.sous-nav').length,
-    pastilles: document.querySelectorAll('.sous-onglet').length
+    /* dans les rangees seulement : le repli « Pas aujourd'hui » des courses emprunte le style
+       .sous-onglet, et il apparait les jours ou une categorie n'est pas due. */
+    pastilles: document.querySelectorAll('.sous-nav .sous-onglet').length
   }));
   ok(v.visibles.length === 9, 'neuf boutons dans la barre : ' + v.visibles.join(' '));
   ok(v.toutes.length === 19, 'mais les dix-neuf boutons restent dans le DOM (' + v.toutes.length + ', Système compris) — rien n\'a été supprimé');
