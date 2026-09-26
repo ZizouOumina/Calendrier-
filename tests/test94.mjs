@@ -35,7 +35,7 @@ const cartes = fr => fr.evaluate(() => [
 
 console.log('\n== 330) Cinq catégories, toutes alimentaires, et le frais seul est hebdomadaire ==');
 {
-  const { ctx, fr } = await jour('2026-09-19T10:00:00+02:00');
+  const { ctx, fr } = await jour('2026-09-26T10:00:00+02:00');
   const c = await cartes(fr);
   /* 20 septembre au soir, sa decision : la liste ne porte plus que de la nourriture.
      Les produits menagers, revenus le 19, ressortent avec l'hygiene et la brosse a dents.
@@ -58,45 +58,48 @@ console.log('\n== 330) Cinq catégories, toutes alimentaires, et le frais seul e
   await ctx.close();
 }
 
-console.log('\n== 331) Samedi 19 septembre : l\'ancre, tout est dû ==');
+console.log('\n== 331) Samedi 26 septembre : l\'ancre, tout est dû ==');
+/* 26 septembre : l'ancre passe du samedi 19 au samedi 26, ses vraies premieres courses du
+   programme (« on va dire que ajd c'est le premier jour de courses »). Tout le fichier
+   a glisse d'une semaine avec elle. */
 /* Samedi 19 = le battement du rythme. Tous les cycles partent de la, donc tombent
    toujours un samedi. Une categorie est due toute la SEMAINE qui s'ouvre a l'ancre,
    pas seulement ce jour-la : c'est ce qui permet a ses premieres courses du dimanche 20
    de porter la liste entiere. */
 {
-  const { ctx, fr } = await jour('2026-09-19T10:00:00+02:00');
+  const { ctx, fr } = await jour('2026-09-26T10:00:00+02:00');
   const c = await cartes(fr);
-  ok(c.every(x => x.due), 'les 5 catégories sont dues le 19 (ancre commune)');
+  ok(c.every(x => x.due), 'les 5 catégories sont dues le 26 (ancre commune)');
   const somme = await fr.evaluate(() => document.getElementById('courses-summary').textContent);
   /* Aucun stock n'est suppose : le 19, TOUTES les categories sont dues et toutes leurs
      lignes comptent. 9 frais + 1 surgele + 4 reserves + 2 (cycle de 5 semaines) + 1 pot de
      creatine = 17. Ce qu'il a deja, il le coche quand meme. */
-  ok(/\/16 articles/.test(somme), '16 articles le 19 : tout part de zéro (' + somme + ')');
+  ok(/\/16 articles/.test(somme), '16 articles le 26 : tout part de zéro (' + somme + ')');
   await ctx.close();
 }
 {
-  const { ctx, fr } = await jour('2026-09-20T10:00:00+02:00');
+  const { ctx, fr } = await jour('2026-09-27T10:00:00+02:00');
   const c = await cartes(fr);
-  ok(c.every(x => x.due), 'et le dimanche 20, jour de ses vraies premières courses, tout est encore dû');
+  ok(c.every(x => x.due), 'et le dimanche 27, le lendemain de ses premières courses, tout est encore dû');
   await ctx.close();
 }
 {
-  const { ctx, fr } = await jour('2026-09-26T10:00:00+02:00');
+  const { ctx, fr } = await jour('2026-10-03T10:00:00+02:00');
   const c = await cartes(fr);
-  ok(c[0].due && c.slice(1).every(x => !x.due), 'le samedi 26 septembre : le frais seulement, tout le reste vient d\'être acheté');
+  ok(c[0].due && c.slice(1).every(x => !x.due), 'le samedi 3 octobre : le frais seulement, tout le reste vient d\'être acheté');
   await ctx.close();
 }
 
 console.log('\n== 332) Une semaine plus tard, seul le frais est dû ==');
 {
-  const { ctx, fr } = await jour('2026-09-26T10:00:00+02:00');
+  const { ctx, fr } = await jour('2026-10-03T10:00:00+02:00');
   const c = await cartes(fr);
-  ok(c[0].due && c.slice(1).every(x => !x.due), 'le 26 septembre : frais seulement');
+  ok(c[0].due && c.slice(1).every(x => !x.due), 'le 3 octobre : frais seulement');
   const t = await fr.evaluate(() => document.querySelector('.page[data-page="courses"]').textContent);
-  ok(/prochaine fois le 03 oct\./.test(t), 'les surgelés, à deux semaines, annoncent le 3 octobre');
-  ok(/prochaine fois le 17 oct\./.test(t), 'les réserves annoncent le 17 octobre');
-  ok(/prochaine fois le 24 oct\./.test(t), 'l\'huile, à cinq semaines, annonce le 24 octobre');
-  ok(/prochaine fois le 12 déc\./.test(t), 'la créatine, au trimestre, annonce le 12 décembre');
+  ok(/prochaine fois le 10 oct\./.test(t), 'les surgelés, à deux semaines, annoncent le 10 octobre');
+  ok(/prochaine fois le 24 oct\./.test(t), 'les réserves annoncent le 24 octobre');
+  ok(/prochaine fois le 31 oct\./.test(t), 'l\'huile, à cinq semaines, annonce le 31 octobre');
+  ok(/prochaine fois le 19 déc\./.test(t), 'la créatine, au trimestre, annonce le 19 décembre');
   await ctx.close();
 }
 
@@ -104,7 +107,7 @@ console.log('\n== 333) L\'habitude « Courses faites » reste validable ==');
 /* Le piege : si le compte incluait les categories non dues, cocher toute la liste
    d'un samedi ordinaire ne suffirait plus jamais, et l'habitude serait morte. */
 {
-  const { ctx, fr } = await jour('2026-09-26T10:00:00+02:00');
+  const { ctx, fr } = await jour('2026-10-03T10:00:00+02:00');
   /* Chaque clic relance renderCourses, qui REMPLACE les noeuds : une liste de cases
      collectee d'avance devient obsolete des le premier clic. On reinterroge le DOM a
      chaque tour, sinon le test ne coche qu'une seule case et ment. */
@@ -135,9 +138,9 @@ console.log('\n== 333b) L\'huile tourne sur cinq semaines ==');
    1 575 ml du cycle. */
 /* Depuis l'ancre du samedi 19 septembre, les semaines 0, 5, 10 et 15 sont dues :
    19 sept., 24 oct., 28 nov., 2 janv. Toutes les autres ne le sont pas. */
-for (const [d, nom, du] of [['2026-09-19','19 sept',true], ['2026-09-26','26 sept',false],
-                            ['2026-10-24','24 oct',true],  ['2026-10-31','31 oct',false],
-                            ['2026-11-28','28 nov',true]]) {
+for (const [d, nom, du] of [['2026-09-26','26 sept',true], ['2026-10-03','3 oct',false],
+                            ['2026-10-31','31 oct',true],  ['2026-11-07','7 nov',false],
+                            ['2026-12-05','5 déc',true]]) {
   const { ctx, fr } = await jour(d + 'T10:00:00+02:00');
   const c = (await cartes(fr)).filter(x => /5 semaines/.test(x.titre))[0];
   ok(!!c && c.due === du, nom + ' : l\'huile due ' + (c ? c.due : '?') + ' (' + du + ' attendu)');
@@ -149,7 +152,7 @@ console.log('\n== 334b) Aucun stock n\'est supposé : il coche ce qu\'il a ==');
    et la liste mentait des qu'il mangeait autre chose. Tout part de zero le 19, et une
    case cochee dit « je l'ai deja ». Rien ne doit donc rester d'un calcul de stock. */
 {
-  const { ctx, fr } = await jour('2026-09-19T10:00:00+02:00');
+  const { ctx, fr } = await jour('2026-09-26T10:00:00+02:00');
   const t = await fr.evaluate(() => document.querySelector('.page[data-page="courses"]').textContent);
   ok(!/tu en as|il t’en reste|à racheter le/.test(t), 'aucune ligne ne parle de stock ni de date de rachat');
   ok(!/Beurre de cacahuète/.test(t), 'le beurre de cacahuète est sorti de la liste (24 septembre)');
@@ -159,9 +162,9 @@ console.log('\n== 334b) Aucun stock n\'est supposé : il coche ce qu\'il a ==');
 }
 {
   /* Le 17 octobre les reserves reviennent, aux memes quantites : aucun report. */
-  const { ctx, fr } = await jour('2026-10-17T10:00:00+02:00');
+  const { ctx, fr } = await jour('2026-10-24T10:00:00+02:00');
   const t = await fr.evaluate(() => document.querySelector('.page[data-page="courses"]').textContent);
-  ok(/Riz — 5 kg/.test(t) && /Pâtes — 3 kg/.test(t), 'le 17 octobre, riz et pâtes reviennent aux mêmes quantités');
+  ok(/Riz — 5 kg/.test(t) && /Pâtes — 3 kg/.test(t), 'le 24 octobre, riz et pâtes reviennent aux mêmes quantités');
   await ctx.close();
 }
 
@@ -171,7 +174,7 @@ console.log('\n== 334c) Le nombre d\'articles du jour est calculé, jamais compt
    article et additionnees par semaine, par cycle et par mois -- une precision que la donnee
    n'avait pas. Reste le nombre d'articles, qui lui est vrai, et qu'on recompte ici
    INDEPENDAMMENT depuis les cartes affichees. */
-for (const d of ['2026-09-19', '2026-09-26', '2026-10-17', '2026-11-21']) {
+for (const d of ['2026-09-26', '2026-10-03', '2026-10-24', '2026-11-28']) {
   const { ctx, fr } = await jour(d + 'T10:00:00+02:00');
   const r = await fr.evaluate(() => {
     const ligne = document.getElementById('courses-summary').innerText;
@@ -188,7 +191,7 @@ for (const d of ['2026-09-19', '2026-09-26', '2026-10-17', '2026-11-21']) {
   await ctx.close();
 }
 {
-  const { ctx, fr } = await jour('2026-09-19T10:00:00+02:00');
+  const { ctx, fr } = await jour('2026-09-26T10:00:00+02:00');
   const t = await fr.evaluate(() => document.querySelector('.page[data-page="courses"]').textContent);
   /* 14 par semaine : 2 par jour au petit-dejeuner, tire du plan de repas. Mais on
      n'achete pas 14 oeufs : une boite de 12 plus une de 6 font 18. */
@@ -207,7 +210,7 @@ console.log('\n== 334d) La liste ne porte QUE de la nourriture ==');
    La porte tient donc maintenant dans l'autre sens : aucune ligne non alimentaire, et
    chaque ligne restante adossee au plan -- sauf la creatine, qui s'avale. */
 {
-  const { ctx, fr } = await jour('2026-09-19T10:00:00+02:00');
+  const { ctx, fr } = await jour('2026-09-26T10:00:00+02:00');
   const lignes = await fr.evaluate(() =>
     [...document.querySelectorAll('#courses-grid label, #courses-grid-plus label')]
       .map(l => l.textContent.split(' \u2014 ')[0].trim()));
@@ -263,7 +266,7 @@ console.log('\n== 334) Ses prix a lui, releves en magasin -- et rien d\'invente 
      - chaque ligne alimentaire porte son prix, ou dit qu'il manque -- jamais un chiffre
        pose a la place. */
 {
-  const { ctx, fr } = await jour('2026-09-19T10:00:00+02:00');
+  const { ctx, fr } = await jour('2026-09-26T10:00:00+02:00');
   const t = await fr.evaluate(() => document.getElementById('courses-budget').innerText);
   ok(!/estim/i.test(t), 'le mot « estimation » a disparu du panneau (' + t.slice(0, 60) + ')');
   ok(/€ par mois/.test(t) && /€ par semaine/.test(t) && /relevés en magasin/.test(t),
