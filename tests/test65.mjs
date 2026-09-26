@@ -29,23 +29,23 @@ const HABITS = [
 const seedHab = {'batcave-habits': HABITS, 'batcave-habits-seed-v2': true, 'batcave-habits-seed-v3': true, 'batcave-habits-seed-v4': true, 'batcave-habits-seed-v5': true, 'batcave-habits-seed-v6': true, 'batcave-habits-seed-v7': true, 'batcave-habits-ecran-v2': true, 'batcave-habitlog-hebdo-v1': true};
 const cartes = fr => fr.evaluate(() => [...document.querySelectorAll('#habits-grid .card')].map(c => c.innerText.replace(/\s+/g,' ')));
 
-console.log('\n== 240) Sport : jeudi 24 septembre = semaine 1 (moitié des tours), jeudi 22 octobre = retest ==');
+console.log('\n== 240) Sport : lundi 28 septembre = semaine 1 (moitié des tours), lundi 26 octobre = retest ==');
 {
-  const { ctx, fr } = await ouvrir('2026-09-24T06:30:00+02:00');
+  const { ctx, fr } = await ouvrir('2026-09-28T06:30:00+02:00');
   const r = await fr.evaluate(() => ({ debut: window.__bcProgrammeDebut, note: document.getElementById('programme-note').textContent }));
-  ok(r.debut === '2026-09-24', 'PROGRAMME_DEBUT = 2026-09-24 (' + r.debut + ')');
+  ok(r.debut === '2026-09-28', 'PROGRAMME_DEBUT = 2026-09-28 (' + r.debut + ')');
   ok(/semaine 1/.test(r.note) && /½/.test(r.note), 'note : semaine 1, tours × ½ (' + r.note + ')');
   await ctx.close();
   const s = await ouvrir('2026-09-10T06:30:00+02:00');
   const n2 = await s.fr.evaluate(() => document.getElementById('programme-note').textContent);
-  ok(/démarre le/.test(n2) && /24/.test(n2), 'avant le 24 : « démarre le 24 sept. » (' + n2 + ')');
+  ok(/démarre le/.test(n2) && /28/.test(n2), 'avant le 28 : « démarre le 28 sept. » (' + n2 + ')');
   await s.ctx.close();
-  /* La semaine de programme court du jeudi au mercredi depuis le 24. Le jeudi est un jour
-     de sport : premierJourSport() rend le 24 lui-meme, et le retest tombe au meme jour de
-     semaine -- la semaine 5 court du 22 au 28 octobre, son retest tombe le jeudi 22. */
-  const r5 = await ouvrir('2026-10-22T06:30:00+02:00');
+  /* 26 septembre : le jour 1 passe au LUNDI 28. La semaine de programme court du lundi au
+     dimanche ; le lundi est un jour de sport (haut volume), premierJourSport() rend le 28
+     lui-meme, et la semaine 5 court du 26 octobre au 1er novembre -- retest le lundi 26. */
+  const r5 = await ouvrir('2026-10-26T06:30:00+02:00');
   const n5 = await r5.fr.evaluate(() => document.getElementById('programme-note').textContent);
-  ok(/semaine 5/.test(n5) && /jeudi : retest/.test(n5), 'jeudi 22 octobre : semaine 5, retest (' + n5 + ')');
+  ok(/semaine 5/.test(n5) && /lundi : retest/.test(n5), 'lundi 26 octobre : semaine 5, retest (' + n5 + ')');
   await r5.ctx.close();
 }
 

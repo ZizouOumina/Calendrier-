@@ -118,8 +118,10 @@ console.log('\n== 231) Phase 1 (mercredi 16 septembre) : blocs Projets perso ren
      gramática et hablar, le mardi et le mercredi n'ont plus qu'un bloc de 50 min). Elle n'est jamais ecrite : elle est ce que la grille contient sur le mois, a
      89 %. C'est bien la preuve que rien n'est fige -- deplacer une seule constante a
      recalcule l'objectif du mois tout seul. */
-  ok(Math.abs(objs['M2026-09:espagnol_h'] - 10.2) < 0.2 && objs['M2026-09:projets_h'] === undefined,
-     'objectifs Espagnol calcules depuis la grille (septembre ≈ 10,2 h, depart du jeudi 24, regime combat des le 28, phase Español close le 23 octobre) ; Projets perso ramene a zero en septembre, ou la phase 1 occupe toute la part programmee du mois : ' + JSON.stringify(objs));
+  /* Puis a 3,8 h le 26 septembre : le jour 1 passe au LUNDI 28, septembre ne garde que
+     trois jours de programme, tous en regime combat. */
+  ok(Math.abs(objs['M2026-09:espagnol_h'] - 3.8) < 0.2 && objs['M2026-09:projets_h'] === undefined,
+     'objectifs Espagnol calcules depuis la grille (septembre ≈ 3,8 h, depart du lundi 28, regime combat, phase Español close le 25 octobre) ; Projets perso ramene a zero en septembre, ou la phase 1 occupe toute la part programmee du mois : ' + JSON.stringify(objs));
 
   /* Pomodoro Español : la tâche par défaut est celle du bloc en cours (gramática à 12:00), le bloc part en projet « Español · gramática » */
   await fr.evaluate(() => document.querySelector('.nav-btn[data-page="dashboard"]').click());
@@ -170,7 +172,7 @@ console.log('\n== 232) Avant le lundi 14 septembre : aucune période, la grille 
      'le 14 : révision dentaire, déjeuner et cours intacts : ' + [g.l0720, g.l0820, g.l0920, g.l1220, g.l1730].join(' / '));
   ok(g.l1120 === 'Question ouverte ou autre' && g.l1300 === 'Español · gramática' && g.l1400 === 'Español · escribir' && g.l1500 === 'Español · hablar',
      'le 14 : seuls les Projets perso deviennent Español, les quatre du lundi : ' + [g.l1120, g.l1300, g.l1400, g.l1500].join(' / '));
-  ok(/démarre le/.test(g.sport) && /24/.test(g.sport), 'sport : avant le 24, « démarre le 24 sept. » (' + g.sport + ')');
+  ok(/démarre le/.test(g.sport) && /28/.test(g.sport), 'sport : avant le 28, « démarre le 28 sept. » (' + g.sport + ')');
   await ctx.close();
 }
 

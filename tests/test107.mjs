@@ -33,7 +33,8 @@ console.log('\n== 265) Le jour 1 au jeudi 24, la phase Español au 23 octobre ==
     es23: !!window.__bcPhaseEspanol('2026-10-25'), es24: !!window.__bcPhaseEspanol('2026-10-26'),
     nom23: (window.__bcPeriode('2026-10-23') || {}).id || null
   }));
-  ok(r.debut === '2026-09-24', 'PROGRAMME_DEBUT = ' + r.debut);
+  /* 26 septembre : le jour 1 est reparti au lundi 28 ; la phase garde sa fin au 25 octobre. */
+  ok(r.debut === '2026-09-28', 'PROGRAMME_DEBUT = ' + r.debut);
   ok(r.es23 && !r.es24, 'phase Español jusqu\'au 25 octobre (un mois pile depuis le 26 septembre), plus le 26 (' + r.es23 + ' / ' + r.es24 + ')');
   await ctx.close();
 }
