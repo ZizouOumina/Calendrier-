@@ -40,22 +40,24 @@ const vue = fr => fr.evaluate(() => ({
 }));
 
 console.log('\n== 342) Le jour du premier ravitaillement : tout est dû, et tout annonce sa suite ==');
+/* 26 septembre : l'ancre des courses passe au samedi 26 -- le premier ravitaillement du
+   programme. Le dimanche 27 porte encore toute la semaine de l'ancre. */
 {
-  const { ctx, fr } = await ouvrir('2026-09-20T16:00:00+02:00');
+  const { ctx, fr } = await ouvrir('2026-09-27T16:00:00+02:00');
   const v = await vue(fr);
   ok(v.jour.length === 5, 'les cinq catégories sont dans la grille du jour (' + v.jour.length + ')');
   ok(/16 à prendre/.test(v.resume), 'et le résumé annonce 16 articles (' + v.resume + ')');
   ok(v.dates.every(t => /aujourd/i.test(t)), 'chacune dit « aujourd’hui »');
   ok(v.dates.every(t => /puis le/.test(t)), 'ET chacune dit sa fois suivante — c’est ce qui manquait');
-  ok(/26 sept/.test(v.dates[0]) && /03 oct/.test(v.dates[1]) && /17 oct/.test(v.dates[2]),
-     'hebdo → 26 sept., surgelés → 3 oct., réserves → 17 oct. (' + v.dates.slice(0,3).map(t => t.split('puis le ')[1]).join(' · ') + ')');
+  ok(/03 oct/.test(v.dates[0]) && /10 oct/.test(v.dates[1]) && /24 oct/.test(v.dates[2]),
+     'hebdo → 3 oct., surgelés → 10 oct., réserves → 24 oct. (' + v.dates.slice(0,3).map(t => t.split('puis le ')[1]).join(' · ') + ')');
   ok(!v.repli, 'aucun repli : rien n’est reporté ce jour-là');
   await ctx.close();
 }
 
 console.log('\n== 343) Un samedi ordinaire : la grille ne montre que le frais ==');
 {
-  const { ctx, fr } = await ouvrir('2026-09-26T13:30:00+02:00');
+  const { ctx, fr } = await ouvrir('2026-10-03T13:30:00+02:00');
   const v = await vue(fr);
   ok(v.jour.length === 1 && /Chaque semaine/.test(v.jour[0]), 'une seule catégorie dans la grille du jour (' + v.jour.join(', ') + ')');
   /* HUIT, pas neuf : le fromage a quitté « Chaque semaine » le 22 septembre pour la
@@ -73,22 +75,22 @@ console.log('\n== 344) Les dates annoncées sont des SAMEDIS ==');
   /* Une categorie est « due » tous les jours de la semaine ou son cycle tombe. Sans filtre,
      la page annoncait « puis le 21 septembre » un dimanche -- le lendemain, un jour ou il
      ne fait jamais de courses. Son jour de courses est le samedi 13:30. */
-  const { ctx, fr } = await ouvrir('2026-09-20T16:00:00+02:00');
+  const { ctx, fr } = await ouvrir('2026-09-27T16:00:00+02:00');
   const v = await vue(fr);
   const dates = v.dates.map(t => (t.split('puis le ')[1] || '').trim()).filter(Boolean);
   ok(dates.length === 5, 'cinq dates annoncées (' + dates.length + ')');
-  ok(!/21 sept|22 sept|23 sept/.test(v.dates.join(' ')), 'aucune date en pleine semaine');
-  const jours = await fr.evaluate(() => window.__bcPassagesCourses ? window.__bcPassagesCourses('2026-09-20', 6).map(x => x.date) : []);
+  ok(!/28 sept|29 sept|30 sept/.test(v.dates.join(' ')), 'aucune date en pleine semaine');
+  const jours = await fr.evaluate(() => window.__bcPassagesCourses ? window.__bcPassagesCourses('2026-09-27', 6).map(x => x.date) : []);
   ok(jours.length === 6 && jours.every(d => new Date(d + 'T00:00:00').getDay() === 6),
      'les six prochains passages tombent tous un samedi (' + jours.join(', ') + ')');
-  ok(/26 sept/.test(v.cal) && /03 oct/.test(v.cal) && /17 oct/.test(v.cal),
+  ok(/03 oct/.test(v.cal) && /10 oct/.test(v.cal) && /24 oct/.test(v.cal),
      'le calendrier sous la liste les nomme (' + v.cal.slice(0, 120) + '…)');
   await ctx.close();
 }
 
 console.log('\n== 345) Réinitialiser ne vide que ce qui était dû ==');
 {
-  const { ctx, page, fr } = await ouvrir('2026-09-26T13:30:00+02:00');
+  const { ctx, page, fr } = await ouvrir('2026-10-03T13:30:00+02:00');
   /* Il coche une ligne de la semaine (due) et une reserve rachetee en avance (non due). */
   await fr.evaluate(() => {
     const a = document.querySelector('#courses-grid input[type="checkbox"]');

@@ -69,8 +69,10 @@ for (const [d, jour_, pesee, coupe] of [
    de tractions et de dips -- le meme haut du corps que la seance -- et ceux du bas
    attendent le premier bas complet, le mardi 29. Rien avant le 24, rien apres : le 23,
    jour 1, n'a PAS de seance de reference, et c'est ce que la ligne du 23 verifie. */
-console.log('\n== seance de reference : le premier jour de SPORT du programme, jeudi 24 ==');
-for (const [d, attendu] of [['2026-09-21',false],['2026-09-22',false],['2026-09-23',false],['2026-09-24',true],['2026-09-25',false]]) {
+/* 26 septembre : le jour 1 passe au LUNDI 28, un jour de sport (haut volume) -- la seance de
+   reference est le jour 1 lui-meme. Rien du 25 au 27, rien le 29. */
+console.log('\n== seance de reference : le premier jour de SPORT du programme, lundi 28 ==');
+for (const [d, attendu] of [['2026-09-25',false],['2026-09-26',false],['2026-09-27',false],['2026-09-28',true],['2026-09-29',false]]) {
   const {ctx, fr} = await jour(d+'T05:35:00+02:00');
   const p = await fr.evaluate(()=>document.getElementById('dash-plan').innerText);
   ok(/Séance de référence/.test(p)===attendu, d+' : séance de référence dans le plan = '+/Séance de référence/.test(p));

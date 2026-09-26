@@ -47,8 +47,8 @@ console.log('\n== 311) Le 14 au réveil : aucun objectif en retard des jours d\'
 
 console.log('\n== 312) Le réacteur annonce le jour 1, pas un « 0 % » ==');
 {
-  /* le jour 1 est le jeudi 24, premier jour du programme */
-  const { ctx, fr, page } = await ouvrir('2026-09-24T06:45:00+02:00');
+  /* le jour 1 est le lundi 28 (depuis le 26 septembre), premier jour du programme */
+  const { ctx, fr, page } = await ouvrir('2026-09-28T06:45:00+02:00');
   let v = await fr.evaluate(() => ({
     num: document.getElementById('dash-score-num').textContent,
     unite: document.getElementById('dash-score-unit').textContent,
@@ -57,7 +57,8 @@ console.log('\n== 312) Le réacteur annonce le jour 1, pas un « 0 % » ==');
   }));
   /* 172 et non 174 : le depart a glisse au 24 septembre, et le 14 mars ne bouge pas --
      c'est la fin de la saison, pas une duree a reporter. */
-  ok(v.num === '1' && v.unite === '/172', 'le premier matin affiche « 1/172 » — 24 sept. → 14 mars, pas « 0 % » (' + v.num + v.unite + ')');
+  /* 168 depuis le 26 septembre : le depart au lundi 28, le 14 mars toujours fixe. */
+  ok(v.num === '1' && v.unite === '/168', 'le premier matin affiche « 1/168 » — 28 sept. → 14 mars, pas « 0 % » (' + v.num + v.unite + ')');
   ok(/Premier jour du programme/.test(v.note) && !/À reprendre/.test(v.note), 'la note dit ce que c\'est : ' + v.note);
   ok(v.hors === v.note, 'la même note existe hors de l\'anneau, pour le téléphone');
 
@@ -157,9 +158,9 @@ console.log('\n== 312b) Avant le premier jour, aucun bloc n\'est reproche ==');
 }
 {
   /* Et des le jour 1, la detection reprend : un bloc echu et non fait est bien signale. */
-  const { ctx, fr } = await ouvrir('2026-09-24T12:00:00+02:00');
+  const { ctx, fr } = await ouvrir('2026-09-28T12:00:00+02:00');
   const t = await fr.evaluate(() => document.getElementById('dash-plan').innerText);
-  ok(/Bloc manqu\u00e9/.test(t), 'le 24 à midi, les blocs échus non faits sont de nouveau signalés');
+  ok(/Bloc manqu\u00e9/.test(t), 'le 28 à midi, les blocs échus non faits sont de nouveau signalés');
   await ctx.close();
 }
 
