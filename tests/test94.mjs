@@ -319,11 +319,13 @@ console.log('\n== 334e) Les deux choses que la Batcave ne peut pas deviner sont 
     await ctx.close();
     return r;
   };
-  const veille = await lire('2026-09-19'), jourJ = await lire('2026-09-20'), apres = await lire('2026-09-21');
-  ok(/Avant de partir/.test(jourJ.txt) && /stock daté du 13/.test(jourJ.txt), 'le 20, le plan réclame le relevé du stock avant de partir');
-  ok(/ticket de caisse/.test(jourJ.txt) && /aucun prix/.test(jourJ.txt), 'et le ticket au retour, en disant pourquoi');
+  /* 26 septembre : ses premieres vraies courses du programme sont le samedi 26 -- un jour de
+     l'ancre, cette fois. La veille et le lendemain restent muets. */
+  const veille = await lire('2026-09-25'), jourJ = await lire('2026-09-26'), apres = await lire('2026-09-27');
+  ok(/Avant de partir/.test(jourJ.txt) && /aucun stock/.test(jourJ.txt), 'le 26, le plan réclame le relevé du stock avant de partir');
+  ok(/ticket de caisse/.test(jourJ.txt) && /Budget → Nourriture/.test(jourJ.txt), 'et le ticket au retour, en disant où il va');
   ok(jourJ.btn === 2, 'chacun porte un bouton qui ouvre la liste de courses (' + jourJ.btn + ')');
-  ok(!/Avant de partir/.test(veille.txt) && !/ticket de caisse/.test(veille.txt), 'le 19, jour de l\'ancre mais pas de sa sortie, rien n\'est demandé');
+  ok(!/Avant de partir/.test(veille.txt) && !/ticket de caisse/.test(veille.txt), 'le 25, la veille, rien n\'est demandé');
   ok(!/Avant de partir/.test(apres.txt) && !/ticket de caisse/.test(apres.txt), 'le lendemain non plus : la demande ne traîne pas');
   ok(jourJ.taches === null, 'et rien n\'est écrit dans ses tâches — la Batcave demande, elle ne remplit pas sa liste');
 }
