@@ -12036,8 +12036,7 @@
       {cat:'Réserves — toutes les 4 semaines', semaines:4, ancre:ANCRE_COURSES, items:[
         art('Riz',               B.riz * 4,            1000, poids, 'paquet'),
         art('Pâtes',            (B.pates + plus) * 4, 1000, poids, 'paquet'),
-        art('Flocons d\'avoine',  B.flocons * 4,         500, poids, 'paquet'),
-        art('Miel',              B.miel * 4,           1000, poids, 'pot')
+        art('Flocons d\'avoine',  B.flocons * 4,         500, poids, 'paquet')
       ]},
       /* Cinq semaines : le cycle venait du beurre de cacahuete (2 kg tombaient presque pile,
          385 x 5 = 1 925) ; il est sorti du plan le 24 septembre et l'huile reste seule.
@@ -12047,8 +12046,12 @@
          achete est le bidon de 2 L a 11,89 €, pas la bouteille de 750 ml. Une bouteille
          suffit donc, et il reste 425 ml. Ce reste n'est pas perdu : rien n'est modelise en
          stock ici, il coche la ligne sans acheter tant qu'il lui en reste. */
+      /* 26 septembre : le miel rejoint l'huile. Il l'achete en pot de 750 g, pas de 1 kg ; a
+         140 g par semaine (20 g chaque matin), un pot couvre cinq semaines (700 g) -- sur un
+         cycle de quatre il aurait rachete un pot plein tous les mois. */
       {cat:'Toutes les 5 semaines', semaines:5, ancre:ANCRE_COURSES, items:[
-        art('Huile d\'olive',        B.huile * 5,     2000, vol,   'bouteille')
+        art('Huile d\'olive',        B.huile * 5,     2000, vol,   'bouteille'),
+        art('Miel',                  B.miel * 5,       750, poids, 'pot')
       ]},
       /* ===== 20 septembre : la liste ne porte plus que de la nourriture =====
          Sa decision, et elle est nette : « dans l'onglet courses tu vas juste laisser les

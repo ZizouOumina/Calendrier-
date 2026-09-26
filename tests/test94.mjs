@@ -221,8 +221,9 @@ console.log('\n== 334d) La liste ne porte QUE de la nourriture ==');
                    'Pain complet', 'Bananes', 'Fruits (pommes, poires, oranges…)',
                    'Amandes ou noix nature',
                    'Légumes verts surgelés', 'Fromage en tranches',
-                   'Riz', 'Pâtes', 'Flocons d\'avoine', 'Miel',
-                   'Huile d\'olive', 'Créatine monohydrate'];
+                   'Riz', 'Pâtes', 'Flocons d\'avoine',
+                   /* 26 septembre : le miel passe au cycle de cinq semaines, en pot de 750 g */
+                   'Huile d\'olive', 'Miel', 'Créatine monohydrate'];
   ok(lignes.length === 16, '16 lignes, pas une de plus (' + lignes.length + ')');
   ok(JSON.stringify(lignes) === JSON.stringify(ATTENDU),
      'et ce sont exactement les seize attendues' +
