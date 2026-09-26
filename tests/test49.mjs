@@ -132,7 +132,8 @@ console.log('\n== 120b) Le saut de depart ne doit JAMAIS faire retirer des calor
    le contresens exact que cette boucle existe pour eviter. */
 {
   const saut = {};
-  /* La coupure de stabilisation a bouge plusieurs fois (10, puis 17, puis 11 octobre) :
+  /* La coupure de stabilisation a bouge plusieurs fois (10, 17, 11, puis 17 octobre depuis
+     ses premieres courses du 26 septembre) :
      il faut toujours quatre pesees APRES elle pour que la pente se lise. */
   [['2026-09-20',64.0],['2026-10-04',66.4],['2026-10-18',66.8],['2026-11-01',67.0],
    ['2026-11-15',67.2],['2026-11-29',67.4]].forEach(([d,v]) => { saut['batcave-journal-' + d] = {poids: v}; });
@@ -143,7 +144,7 @@ console.log('\n== 120b) Le saut de depart ne doit JAMAIS faire retirer des calor
   ok(!/-100 kcal/.test(k.note), 'le saut de depart ne fait pas retirer de calories : ' + k.note);
   /* La pente lue ne porte que sur les pesees d'apres stabilisation : 66,8 -> 67,4. */
   ok(/4 pes\u00e9es/.test(k.txt) && /66,8 \u2192 67,4 kg/.test(k.txt),
-     'seules les 4 pes\u00e9es d\'apr\u00e8s le 11 octobre comptent : ' + ((k.txt.match(/Tendance[^.]*/) || [''])[0]));
+     'seules les 4 pes\u00e9es d\'apr\u00e8s le 17 octobre comptent : ' + ((k.txt.match(/Tendance[^.]*/) || [''])[0]));
   await ctx.close();
 }
 {
@@ -151,7 +152,7 @@ console.log('\n== 120b) Le saut de depart ne doit JAMAIS faire retirer des calor
   const { ctx, fr, page } = await ouvrir('2026-10-04T10:00:00+02:00', {'batcave-journal-2026-09-20': {poids: 64.0}, 'batcave-journal-2026-10-04': {poids: 66.4}});
   await aller(fr, page, 'repas');
   const txt = await fr.evaluate(() => document.getElementById('kcal-analyse').innerText.replace(/\s+/g,' '));
-  ok(/rien avant le 11 oct\./.test(txt) && /glyc\u00e8ne|glycog\u00e8ne/.test(txt),
+  ok(/rien avant le 17 oct\./.test(txt) && /glyc\u00e8ne|glycog\u00e8ne/.test(txt),
      'elle explique l\'attente au lieu de rester muette : ' + txt.slice(-190));
   await ctx.close();
 }
