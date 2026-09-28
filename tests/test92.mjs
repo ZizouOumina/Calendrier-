@@ -69,8 +69,9 @@ const banniere = await fr2.evaluate(() => {
 });
 ok(!banniere, 'aucune bannière d\'incohérence après la remise à zéro' + (banniere ? ' — ' + banniere : ''));
 
-/* Le dimanche 4 octobre : premier dimanche d'ongles APRES la remise a zero, depuis que
-   l'ancre du cycle est au 20 septembre. */
+/* Le dimanche 4 octobre : premier dimanche d'ongles APRES la remise a zero. Depuis le 28
+   septembre au soir, c'est l'ANCRE du cycle (premier dimanche du programme) : pesee, ongles
+   et photos -- donc mains ET pieds. */
 await page.clock.setFixedTime(new Date('2026-10-04T09:00:00+02:00'));
 await page.reload();
 await page.frameLocator('#f').locator('#dash-focus').waitFor({state:'attached', timeout:20000});
@@ -79,7 +80,7 @@ await fr3.evaluate(() => { document.querySelectorAll('.overlay').forEach(o => o.
 await page.waitForTimeout(600);
 const l27 = await fr3.evaluate(() => [...document.querySelectorAll('#dash-checklist li label')].map(x=>x.textContent));
 ok(l27.some(t=>/Ongles/.test(t)), 'dim. 4 oct : la case ongles est bien là, après la remise à zéro');
-ok(!l27.some(t=>/Photos/.test(t)), 'dim. 4 oct : pas de photos, donc mains seulement');
+ok(l27.some(t=>/Photos/.test(t)), 'dim. 4 oct : l\'ancre, donc photos du point de départ (mains et pieds)');
 
 await ctx.close(); await b.close();
 console.log(err ? '\n' + err + ' ÉCHEC(S)' : '\nTOUT VERT');

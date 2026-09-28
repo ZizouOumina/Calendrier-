@@ -99,10 +99,13 @@ for (const [d, nom, du] of [['2026-09-19','sam. 19 sept (avant l\'ancre)',false]
 }
 
 console.log('\n== 305) La brosse à dents : douze semaines ==');
-for (const [d, nom, du] of [['2026-09-20','dim. 20 sept (la première)',true],
-                            ['2026-09-27','dim. 27 sept',false],
-                            ['2026-12-13','dim. 13 déc',true],
-                            ['2026-12-20','dim. 20 déc',false]]) {
+/* 28 septembre au soir, « tout commence demain » : l'ancre du dimanche passe au 4 octobre,
+   premier dimanche du programme. */
+for (const [d, nom, du] of [['2026-09-20','dim. 20 sept (avant l\'ancre)',false],
+                            ['2026-10-04','dim. 4 oct (la première)',true],
+                            ['2026-10-11','dim. 11 oct',false],
+                            ['2026-12-27','dim. 27 déc',true],
+                            ['2027-01-03','dim. 3 janv',false]]) {
   const { ctx, fr } = await jour(d + 'T09:00:00+02:00');
   const l = await duJour(fr);
   ok(l.some(t => /Brosse à dents/.test(t)) === du, nom + ' : brosse ' + (du ? 'due' : 'pas due'));
@@ -120,14 +123,17 @@ console.log('\n== 305b) Pesée un dimanche sur deux, photos une fois sur quatre 
    Le shampoing tombe les quatre jours de muscu — lundi, mardi, jeudi, samedi — PLUS le
    dimanche depuis qu'il y court. C'est lui qui l'a releve : ajouter le cardio sans toucher a
    l'hygiene laissait un jour de sueur sans shampooing. Mercredi et vendredi restent secs. */
-for (const [d, nom, pesee, photos, shamp] of [['2026-09-20','dim. 20 sept (l\'ancre)',true,true,true],
+/* 28 septembre au soir : l'ancre passe au 4 OCTOBRE, premier dimanche du programme -- la
+   meme raison qu'au 19 : la photo et la pesee du point de depart tombent au depart. */
+for (const [d, nom, pesee, photos, shamp] of [['2026-09-20','dim. 20 sept (avant l\'ancre)',false,false,true],
                                               ['2026-09-27','dim. 27 sept',false,false,true],
-                                              ['2026-10-04','dim. 4 oct',true,false,false],
+                                              ['2026-10-04','dim. 4 oct (l\'ancre)',true,true,false],
                                               ['2026-10-11','dim. 11 oct',false,false,false],
-                                              ['2026-10-18','dim. 18 oct',true,true,false],
-                                              ['2026-11-01','dim. 1er nov',true,false,false],
-                                              ['2026-11-15','dim. 15 nov',true,true,false],
-                                              ['2026-12-13','dim. 13 déc',true,true,false],
+                                              ['2026-10-18','dim. 18 oct',true,false,false],
+                                              ['2026-11-01','dim. 1er nov',true,true,false],
+                                              ['2026-11-15','dim. 15 nov',true,false,false],
+                                              ['2026-11-29','dim. 29 nov',true,true,false],
+                                              ['2026-12-13','dim. 13 déc',true,false,false],
                                               ['2026-09-14','lun. 14 (muscu)',false,false,true],
                                               ['2026-09-15','mar. 15 (muscu)',false,false,true],
                                               ['2026-09-16','mer. 16 (repos)',false,false,false],
@@ -151,7 +157,7 @@ console.log('\n== 305c) Les ongles : un dimanche sur deux, et les pieds les dima
    photo, et comme les photos sont un cycle de quatre semaines sur la meme ancre, un dimanche
    de photo est toujours un dimanche d'ongles. C'est cette implication-la qu'on verrouille
    ici : si quelqu'un deplace une des deux ancres, le libelle devient un mensonge. */
-for (const [d, nom, du] of [['2026-09-20','dim. 20 sept',true],
+for (const [d, nom, du] of [['2026-09-20','dim. 20 sept (avant l\'ancre)',false],
                             ['2026-09-27','dim. 27 sept',false],
                             ['2026-10-04','dim. 4 oct',true],
                             ['2026-10-11','dim. 11 oct',false],
@@ -171,7 +177,7 @@ for (const [d, nom, du] of [['2026-09-20','dim. 20 sept',true],
   await ctx.close();
 }
 {
-  const { ctx, fr } = await jour('2026-09-20T09:00:00+02:00');
+  const { ctx, fr } = await jour('2026-10-04T09:00:00+02:00');
   const t = (await duJour(fr)).find(x => /Ongles/.test(x)) || '';
   ok(/mains/.test(t) && /pieds les dimanches de photo/.test(t),
      'le libellé porte la règle : « ' + t.trim() + ' »');

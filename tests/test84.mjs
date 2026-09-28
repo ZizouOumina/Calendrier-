@@ -104,20 +104,20 @@ console.log('\n== 84.6) Cibles hebdo : constantes en revision, croissantes en pr
       const c = window.__bcPrevu(d.toISOString().slice(0,10)); T.rev += c.rev; T.proj += c.proj; T.es += c.es; }
     return {rev: T.rev/60, proj: T.proj/60, es: T.es/60};
   }, L);
-  const t = await sem('2026-09-07'), e1 = await sem('2026-09-21'), e2 = await sem('2026-10-26'), e3 = await sem('2026-12-14');
+  const t = await sem('2026-09-07'), e1 = await sem('2026-09-21'), e2 = await sem('2026-11-02'), e3 = await sem('2026-12-14');
   const pr = x => Math.round(x * 100) / 100;
   /* Regime combat : 29 h 13 de revision par semaine des le 28 septembre (33 h 12 sur la grille type d'avant). */
   ok(pr(e2.rev) === pr(e3.rev),
-     'la revision ne bouge plus apres le 23 octobre : ' + [pr(t.rev), pr(e2.rev), pr(e3.rev)].join(' -> '));
+     'la revision ne bouge plus apres la phase (finie le 28 octobre) : ' + [pr(t.rev), pr(e2.rev), pr(e3.rev)].join(' -> '));
   ok(pr(e2.rev) === 29.22 && pr(t.rev) === 33.17, 'revision = 29 h 13 de travail reel par semaine au regime combat, 33 h 12 avant (' + pr(e2.rev) + ' / ' + pr(t.rev) + ')');
   /* seule exception : en phase Español le mercredi 05:30 reste « Anki matinal », donc la
-     phase 1 porte 50 min de revision de plus. Le 23 octobre, ce bloc passe aux projets. */
+     phase 1 porte 50 min de revision de plus. Le 29 octobre, ce bloc passe aux projets ; la premiere semaine entiere d'apres est celle du 2 novembre. */
   ok(pr(e1.rev) === 34, 'phase 1 avant le 28 : 34 h, le mercredi matin est encore de l\'Anki (' + pr(e1.rev) + ')');
   ok(pr(e1.proj) === 0, 'phase 1 : aucun temps de projet, tout va a l\'espagnol (' + pr(e1.proj) + ')');
   ok(e1.es > 15 && e1.es < 15.5, 'phase 1 : 15 h 11 d\'espagnol, serie du mardi comprise (' + pr(e1.es) + ')');
   ok(e1.proj === 0 && e2.proj === e3.proj && e3.proj === t.proj,
      'une seule bascule : zero en phase 1, puis la meme valeur partout : ' + [pr(e1.proj), pr(e2.proj), pr(e3.proj), pr(t.proj)].join(' -> '));
-  ok(e1.es > 0 && e2.es === 0 && e3.es === 0, 'l\'espagnol tombe a zero le 23 octobre : ' + [pr(e1.es), pr(e2.es), pr(e3.es)].join(' -> '));
+  ok(e1.es > 0 && e2.es === 0 && e3.es === 0, 'l\'espagnol tombe a zero apres le 28 octobre : ' + [pr(e1.es), pr(e2.es), pr(e3.es)].join(' -> '));
   ok(pr(t.proj) === 0, 'grille type : plus aucun projet prevu, sans minuteur depuis le 25 septembre (' + pr(t.proj) + ')');
 }
 

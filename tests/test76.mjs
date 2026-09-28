@@ -23,7 +23,9 @@ console.log('\n== tours : moitie deux semaines, puis complet ==');
    Depuis le depart du mardi 22 : lundi 28 sept. ferme S1, lundi 5 oct. ferme S2 (toutes
    deux a moitie des tours), lundi 12 oct. est en S3, lundi 19 en S4. Le lundi 21 sept.,
    lui, est passe AVANT le programme et n'a plus de facteur du tout. */
-for (const [d, attendu, moitie] of [['2026-09-28',2,true],['2026-10-05',2,true],['2026-10-12',4,false],['2026-10-19',4,false]]) {
+/* 28 septembre au soir : jour 1 au mardi 29, semaine de reprise sans muscu. Le premier lundi
+   de muscu est le 5 octobre, en S2 (moitie des tours) ; S3 des le lundi 12. */
+for (const [d, attendu, moitie] of [['2026-10-05',2,true],['2026-10-12',4,false],['2026-10-19',4,false]]) {
   const {ctx, fr} = await jour(d+'T05:35:00+02:00');
   const t = await fr.evaluate(()=>{const c=document.getElementById('dash-sport'); return c?c.innerText.replace(/\s+/g,' '):'';});
   const m = t.match(/Tractions ([\d/]+)/);
@@ -44,9 +46,9 @@ console.log('\n== habitudes : pesee un dimanche sur deux, photos un sur quatre, 
 for (const [d, jour_, pesee, coupe] of [
   ['2026-09-14','lundi 14',false,false],
   ['2026-09-13','dimanche 13 (avant l\'ancre)',false,false],
-  ['2026-09-20','dimanche 20 (l\'ancre)',true,false],
+  ['2026-09-20','dimanche 20 (ancienne ancre, avant le jour 1)',false,false],
   ['2026-09-27','dimanche 27',false,false],
-  ['2026-10-04','dimanche 4 oct',true,false],
+  ['2026-10-04','dimanche 4 oct (l\'ancre, premier dimanche du programme)',true,false],
   ['2026-10-11','dimanche 11 oct',false,false],
   ['2026-10-18','dimanche 18 oct',true,false],
   ['2026-10-25','dimanche 25 oct',false,false],
@@ -71,8 +73,10 @@ for (const [d, jour_, pesee, coupe] of [
    jour 1, n'a PAS de seance de reference, et c'est ce que la ligne du 23 verifie. */
 /* 26 septembre : le jour 1 passe au LUNDI 28, un jour de sport (haut volume) -- la seance de
    reference est le jour 1 lui-meme. Rien du 25 au 27, rien le 29. */
-console.log('\n== seance de reference : le premier jour de SPORT du programme, lundi 28 ==');
-for (const [d, attendu] of [['2026-09-25',false],['2026-09-26',false],['2026-09-27',false],['2026-09-28',true],['2026-09-29',false]]) {
+/* 28 septembre au soir : jour 1 au mardi 29, muscu le lundi 5 octobre -- c'est la seance de
+   reference. Rien pendant la semaine de reprise, rien le mardi 6. */
+console.log('\n== seance de reference : la premiere seance de MUSCU du programme, lundi 5 octobre ==');
+for (const [d, attendu] of [['2026-09-28',false],['2026-09-29',false],['2026-10-01',false],['2026-10-04',false],['2026-10-05',true],['2026-10-06',false]]) {
   const {ctx, fr} = await jour(d+'T05:35:00+02:00');
   const p = await fr.evaluate(()=>document.getElementById('dash-plan').innerText);
   ok(/Séance de référence/.test(p)===attendu, d+' : séance de référence dans le plan = '+/Séance de référence/.test(p));

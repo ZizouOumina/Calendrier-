@@ -106,8 +106,9 @@ console.log('\n== 200) Depuis l\'appli : tout est effacé ici et dans le cloud, 
   const objs = c['batcave-objectifs'] && c['batcave-objectifs'].liste || [];
   const revSept = objs.find(o => o.id === 'M2026-09:revision_h'), revT1 = objs.find(o => o.id === 'T1:revision_h'), sommeilSept = objs.find(o => o.id === 'M2026-09:sommeil_moy');
   /* Regime combat des le 28 : les 28-30 septembre portent moins de revision -> 21,9 h. */
-  /* 26 septembre : le jour 1 au lundi 28 -- il ne reste que les 28-30, en regime combat -> 10,1 h. */
-  ok(!!revSept && revSept.debut === '2026-09-08' && revSept.cible === 10.1, 'Révision de septembre : repart du 8, cible ramenée aux jours réellement programmés (28-30, régime combat) → 10,1 h (' + (revSept && revSept.cible) + ')');
+  /* 26 septembre : le jour 1 au lundi 28 -- il ne reste que les 28-30, en regime combat -> 10,1 h.
+     28 septembre au soir : le jour 1 au mardi 29 -- les 29 et 30 -> 7,4 h. */
+  ok(!!revSept && revSept.debut === '2026-09-08' && revSept.cible === 7.4, 'Révision de septembre : repart du 8, cible ramenée aux jours réellement programmés (29-30, régime combat) → 7,4 h (' + (revSept && revSept.cible) + ')');
   /* Deux fois de suite ce chiffre a bouge, et jamais par accident.
      284 → 286,9 : « Projets perso 4, 5 et 6 » basculent en revision ciblee pendant les
      partiels. L'examen seme ici (16 octobre) ouvre une fenetre du 9 au 16 qui contient un

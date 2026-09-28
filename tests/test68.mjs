@@ -27,13 +27,13 @@ console.log('\n== 264) Les cibles sortent de la grille, phase par phase ==');
 {
   const { ctx, fr } = await ouvrir('2026-09-15T09:00:00+02:00');
   const p = await fr.evaluate(() => ({
-    s14: window.__bcPrevu('2026-09-14'), s19oct: window.__bcPrevu('2026-10-26'), s1dec: window.__bcPrevu('2026-12-01')
+    s14: window.__bcPrevu('2026-09-14'), s19oct: window.__bcPrevu('2026-10-29'), s1dec: window.__bcPrevu('2026-12-01')
   }));
   /* Le 14/09 et le 19/10 sont des lundis (4 blocs de projet : 11:20, 13:00, 14:00, 15:00),
      le 01/12 un mardi (5 blocs : 11:20, 13:00, 14:00, 19:00, 20:30). Pauses deduites. */
   ok(p.s14.proj === 0 && p.s14.es === 211, 'phase 1 : aucun projet perso prévu, 211 min d\'espagnol (' + JSON.stringify(p.s14) + ')');
   /* 25 septembre : les projets n'ont plus de minuteur, donc plus rien de PREVU pour eux. */
-  ok(p.s19oct.proj === 0 && p.s19oct.es === 0, 'le lundi 26 oct., après la phase : plus d\'espagnol, et les projets ne sont plus prévus (sans minuteur) (' + JSON.stringify(p.s19oct) + ')');
+  ok(p.s19oct.proj === 0 && p.s19oct.es === 0, 'le jeudi 29 oct., après la phase (finie le 28) : plus d\'espagnol, et les projets ne sont plus prévus (sans minuteur) (' + JSON.stringify(p.s19oct) + ')');
   ok(p.s1dec.proj === 0 && p.s1dec.es === 0, 'décembre : même grille, rien de prévu en projets (' + JSON.stringify(p.s1dec) + ')');
   const o = await fr.evaluate(() => { const l = {}; window.__bcObjectifs().forEach(x => l[x.id] = {c:x.cible, a:x.auto}); return l; });
   /* Septembre ne compte qu'à partir du 14, et cette part du mois est entièrement en

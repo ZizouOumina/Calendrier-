@@ -28,7 +28,9 @@ const local = (fr,k) => fr.evaluate(x => JSON.parse((window.__bcLire || ((k) => 
 /* Regime combat (28 septembre) : la seance LOURDE est le JEUDI, le lundi porte le volume. */
 const LUNDI = '2026-10-15T06:30:00+02:00';   /* jeudi 15 octobre : Haut lourd */
 const SAMEDI = '2027-01-30T06:30:00+01:00';   /* le premier samedi de muscu apres le regime combat (S2) : hors montee en charge, 3 series */
-const PREMIER_LUNDI = '2026-09-28T06:30:00+02:00';   /* semaine 1 : 22 -> 28 septembre */
+/* 28 septembre au soir : jour 1 au mardi 29, semaine de reprise en combat seul, la muscu
+   commence le lundi 5 octobre -- semaine 2 du programme, encore a demi-charge. */
+const PREMIER_LUNDI = '2026-10-05T06:30:00+02:00';
 
 console.log('\n== 107) Première séance : cible = tours × bas de fourchette ==');
 {
@@ -42,13 +44,13 @@ console.log('\n== 107) Première séance : cible = tours × bas de fourchette ==
   await ctx.close();
 }
 
-console.log('\n== 107b) Montée en charge : semaine 1 = moitié des tours ==');
+console.log('\n== 107b) Montée en charge : première semaine de muscu (semaine 2) = moitié des tours ==');
 {
   const { ctx, fr } = await ouvrir(PREMIER_LUNDI);
   const t = await fr.evaluate(() => document.querySelector('.sport-card.today').innerText);
-  ok(/cible 8\/8(?!\/)/.test(t), 'semaine 1, lundi 28 = Haut volume au regime combat : Tractions 4 tours → 2 tours, cible 8/8 : ' + (t.match(/cible [^\n]*/) || [''])[0]);
+  ok(/cible 8\/8(?!\/)/.test(t), 'lundi 5 octobre, première muscu = Haut volume au regime combat : Tractions 4 tours → 2 tours, cible 8/8 : ' + (t.match(/cible [^\n]*/) || [''])[0]);
   const note = await fr.evaluate(() => document.getElementById('programme-note').textContent);
-  ok(/semaine 1/.test(note) && /½/.test(note), 'note du programme : ' + note);
+  ok(/semaine 2/.test(note) && /½/.test(note), 'note du programme : ' + note);
   const off = await fr.evaluate(() => [...document.querySelectorAll('.sport-card')].map(c => c.innerText).filter(t => /Off/.test(t))[0] || '');
   ok(/Jour off/.test(off), 'la carte Off dit « Jour off » et n\'a rien à cocher');
   await ctx.close();

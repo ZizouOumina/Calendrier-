@@ -45,8 +45,9 @@ console.log('\n== 401) Santé de la Batcave : six contrôles, un relevé qui ne 
   await ctx.close();
 }
 {
-  const seed = {'batcave-journal-2026-09-25': {sommeil:'7', cloture:'21:20'}};
-  const { ctx, page, fr } = await ouvrir('2026-09-28T10:00:00+02:00', seed);
+  /* jour 1 au mardi 29 (28 septembre au soir) : la clôture n'est due qu'à partir de lui */
+  const seed = {'batcave-journal-2026-09-28': {sommeil:'7', cloture:'21:20'}};
+  const { ctx, page, fr } = await ouvrir('2026-10-01T10:00:00+02:00', seed);
   const r = await fr.evaluate(() => ({ vide: window.__bcAppVide(), sante: window.__bcSante().filter(c => !c.ok).map(c => c.id), releve: document.getElementById('bc-sante').hidden, txt: document.querySelector('#bc-sante .v').textContent }));
   ok(r.vide === false, 'une clôture suffit : l\'appli n\'est plus neuve');
   ok(r.sante.join(',') === 'sauvegarde,exercice,cloture', 'trois défauts : aucune sauvegarde, aucun exercice, clôture vieille de 3 jours (' + r.sante.join(', ') + ')');
@@ -58,8 +59,8 @@ console.log('\n== 401) Santé de la Batcave : six contrôles, un relevé qui ne 
   await ctx.close();
 }
 {
-  const seed = {'batcave-journal-2026-09-27': {sommeil:'7', cloture:'21:20'}, 'batcave-last-manual-backup': '2026-09-27', 'batcave-last-restore-drill': '2026-09-20'};
-  const { ctx, fr } = await ouvrir('2026-09-28T10:00:00+02:00', seed);
+  const seed = {'batcave-journal-2026-09-30': {sommeil:'7', cloture:'21:20'}, 'batcave-last-manual-backup': '2026-09-30', 'batcave-last-restore-drill': '2026-09-20'};
+  const { ctx, fr } = await ouvrir('2026-10-01T10:00:00+02:00', seed);
   const r = await fr.evaluate(() => window.__bcSante().filter(c => !c.ok).map(c => c.id));
   ok(r.length === 0, 'sauvegarde d\'hier, exercice récent, clôture d\'hier : tout vert (' + (r.join(', ') || 'aucun défaut') + ')');
   await ctx.close();
@@ -142,10 +143,11 @@ console.log('\n== 403) Les bornes de saisie et l\'annulation d\'un geste ==');
 
 console.log('\n== 404) Le rappel de clôture part dans l\'agenda, et disparaît une fois la journée close ==');
 {
-  const { ctx, fr } = await ouvrir('2026-09-28T10:00:00+02:00');
+  /* le lundi 28 est passé avant le jour 1 : on lit le lundi 5 et le mardi 6 */
+  const { ctx, fr } = await ouvrir('2026-10-05T10:00:00+02:00');
   const r = await fr.evaluate(() => ({
-    lun: window.__bcRappels('2026-09-28').filter(b => b.cle === 'cloture')[0],
-    mar: window.__bcRappels('2026-09-29').filter(b => b.cle === 'cloture')[0],
+    lun: window.__bcRappels('2026-10-05').filter(b => b.cle === 'cloture')[0],
+    mar: window.__bcRappels('2026-10-06').filter(b => b.cle === 'cloture')[0],
     avant: window.__bcRappels('2026-09-20').filter(b => b.cle === 'cloture').length,
     ete: window.__bcRappels('2027-07-05').filter(b => b.cle === 'cloture').length
   }));

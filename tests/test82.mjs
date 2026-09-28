@@ -85,9 +85,11 @@ console.log('\n== 2) La boucle poids marche avec UNE pesée par lundi ==');
 /* Les huit lundis demarrent APRES le 17 octobre (stabilisation = ANCRE_COURSES + 3
    semaines, l'ancre etant passee au samedi 26) : avant, la balance porte encore le
    glycogene et l'eau du changement d'alimentation, et la boucle les ecarte. */
-const L = lundis('2026-10-19', 8);              /* 8 lundis, du 19 oct. au 7 dec. */
+/* 28 septembre au soir : jour 1 au mardi 29, stabilisation jusqu'au 20 octobre -- le premier
+   lundi compte est le 26. */
+const L = lundis('2026-10-26', 8);              /* 8 lundis, du 26 oct. au 14 dec. */
 {
-  const {ctx, page, fr} = await ouvrir(pesees(L.map(iso => [iso, 64.0])), '2026-12-07T09:40:00+01:00');
+  const {ctx, page, fr} = await ouvrir(pesees(L.map(iso => [iso, 64.0])), '2026-12-14T09:40:00+01:00');
   await fr.evaluate(() => document.querySelector('.nav-btn[data-page="repas"]').click());
   await page.waitForTimeout(500);
   const k = await fr.evaluate(() => ({note: document.getElementById('kcal-note').innerText,
@@ -98,7 +100,7 @@ const L = lundis('2026-10-19', 8);              /* 8 lundis, du 19 oct. au 7 dec
 }
 {
   /* +0,23 kg par semaine, exactement le rythme visé */
-  const {ctx, page, fr} = await ouvrir(pesees(L.map((iso, i) => [iso, Number((64.0 + 0.23*i).toFixed(2))])), '2026-11-30T09:40:00+01:00');
+  const {ctx, page, fr} = await ouvrir(pesees(L.map((iso, i) => [iso, Number((64.0 + 0.23*i).toFixed(2))])), '2026-12-07T09:40:00+01:00');
   await fr.evaluate(() => document.querySelector('.nav-btn[data-page="repas"]').click());
   await page.waitForTimeout(500);
   const k = await fr.evaluate(() => ({note: document.getElementById('kcal-note').innerText,
@@ -109,7 +111,7 @@ const L = lundis('2026-10-19', 8);              /* 8 lundis, du 19 oct. au 7 dec
 }
 {
   /* +0,6 kg par semaine : trop vite */
-  const {ctx, page, fr} = await ouvrir(pesees(L.map((iso, i) => [iso, Number((64.0 + 0.6*i).toFixed(2))])), '2026-11-30T09:40:00+01:00');
+  const {ctx, page, fr} = await ouvrir(pesees(L.map((iso, i) => [iso, Number((64.0 + 0.6*i).toFixed(2))])), '2026-12-07T09:40:00+01:00');
   await fr.evaluate(() => document.querySelector('.nav-btn[data-page="repas"]').click());
   await page.waitForTimeout(500);
   const note = await fr.evaluate(() => document.getElementById('kcal-note').innerText);
