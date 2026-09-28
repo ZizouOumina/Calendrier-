@@ -8158,7 +8158,26 @@
   var SAUCE_SKYR = {dej:65, din:60};
   /* Ce que contient chaque repas, dans l'ordre des items affiches. « brut » ignore la
      boucle poids -> calories : la liste de courses l'ajoute elle-meme, une seule fois. */
+  /* ===== Les portions de reprise ===== (28 septembre au soir)
+     Plusieurs jours a manger presque rien : l'appetit ne suit pas le plan complet d'un
+     coup. Sa decision : 85 % pendant une semaine, du jour 1 au dimanche 4 octobre, puis le
+     plan entier le lundi 5. Ce qui ne se reduit PAS : l'huile (des calories sans volume,
+     c'est elle qui aide un estomac qui cale), et ce qui se mange a l'unite -- oeufs,
+     banane, fruit. La liste de courses (brut) reste celle du plan complet : elle achete
+     pour la semaine du 5. */
+  var PORTIONS_REPRISE = {fin:'2026-10-04', facteur:0.85};
+  var ENTIERS_REPRISE = {huile:1, oeufs:1, banane:1, fruit:1};
+  function facteurPortions(iso){
+    iso = iso || todayISO;
+    return (iso >= PROGRAMME_DEBUT && iso <= PORTIONS_REPRISE.fin) ? PORTIONS_REPRISE.facteur : 1;
+  }
+  function portionReprise(q, f){ return f < 1 ? Math.round(q * f / 5) * 5 : q; }
   function compoRepas(nom, iso, brut){
+    var liste = compoRepasPlein(nom, iso, brut), f = brut ? 1 : facteurPortions(iso);
+    if(f >= 1) return liste;
+    return liste.map(function(x){ return ENTIERS_REPRISE[x.c] ? x : {c:x.c, q:portionReprise(x.q, f)}; });
+  }
+  function compoRepasPlein(nom, iso, brut){
     if(nom === 'Petit-déjeuner') return [{c:'flocons', q:80}, {c:'miel', q:20}, {c:'skyr', q:180}, {c:'oeufs', q:100}, {c:'amandes', q:30}, {c:'banane', q:120}];
     if(nom === 'Collation entraînement') return [{c:'pain', q:60}, {c:'oeufs', q:100}, {c:'fromage', q:20}, {c:'amandes', q:25}];
     if(nom === 'Collation combat') return [{c:'banane', q:120}, {c:'flocons', q:50}, {c:'amandes', q:15}];
@@ -8217,20 +8236,23 @@
   }
   /* grammes de féculent cru équivalant à un ajustement en kcal, arrondis à 10 g */
   function grammesAjustement(kcal, kcalG){ return Math.round((Number(kcal) || 0) / kcalG / 10) * 10; }
-  function texteFeculent(repas, ajust){
-    var f = FECULENTS[repas], g = f.g + (repas === 'din' ? grammesAjustement(ajust, f.kcalG) : 0);
+  function texteFeculent(repas, ajust, iso){
+    var f = FECULENTS[repas], g = portionReprise(f.g + (repas === 'din' ? grammesAjustement(ajust, f.kcalG) : 0), facteurPortions(iso));
     return 'Féculent cru — ' + f.nom + ' ' + g + 'g' + (repas === 'din' && ajust ? ' (boucle kcal ' + (ajust > 0 ? '+' : '') + ajust + ' kcal)' : '');
   }
   /* Le libellé d'un item : féculent avec l'ajustement du jour (dîner), protéine et huile de
      la rotation du jour (déjeuner et dîner). */
   function texteItemRepas(m, it, ii, iso){
-    var repas = m.name === 'Dîner' ? 'din' : (m.name === 'Déjeuner' ? 'dej' : null);
-    if(!repas) return it;
-    if(ii === 0) return texteFeculent(repas, repas === 'din' ? ajustementKcalPour(iso || todayISO) : 0);
+    var repas = m.name === 'Dîner' ? 'din' : (m.name === 'Déjeuner' ? 'dej' : null), f = facteurPortions(iso);
+    /* semaine de reprise : les grammes ecrits dans le libelle suivent le facteur, sauf ce
+       qui se mange a l'unite (oeufs, banane, fruit) */
+    var reduit = function(t){ return (f >= 1 || /œuf|Banane|fruit/i.test(t)) ? t : t.replace(/\((\d+)g\)/, function(_, n){ return '(' + portionReprise(Number(n), f) + 'g)'; }); };
+    if(!repas) return reduit(it);
+    if(ii === 0) return texteFeculent(repas, repas === 'din' ? ajustementKcalPour(iso || todayISO) : 0, iso);
     var nom = proteineDuJour(repas, iso), p = PROTEINES[nom][repas];
-    if(ii === 1) return 'Protéine crue — ' + nom + ' ' + p.g + 'g';
+    if(ii === 1) return 'Protéine crue — ' + nom + ' ' + portionReprise(p.g, f) + 'g';
     if(ii === 3) return 'Huile d\'olive (' + p.huile + 'ml)';
-    return it;
+    return reduit(it);
   }
   function texteKcalRepas(m, iso){
     var x = macrosRepas(m, iso);
@@ -8432,6 +8454,13 @@
   function renderMeals(){
     var grid = document.getElementById('meal-grid');
     grid.innerHTML = '';
+    if(facteurPortions() < 1){
+      var rep = document.createElement('p');
+      rep.className = 'sub-note';
+      rep.style.cssText = 'grid-column:1/-1; margin:0 0 4px; line-height:1.6;';
+      rep.innerHTML = '<b style="color:var(--ink-dim);">Semaine de reprise : portions à ' + Math.round(PORTIONS_REPRISE.facteur * 100) + ' %</b> jusqu\'au ' + fmtDate(PORTIONS_REPRISE.fin) + ' — l\'huile, les œufs, la banane et le fruit restent entiers. Plan complet le lendemain. Mange aux heures prévues, même sans faim.';
+      grid.appendChild(rep);
+    }
     MEALS.map(function(m, mi){ return {m: m, mi: mi}; })
       .filter(function(x){ return repasActif(x.m); })
       .sort(function(a, b){ return (ORDRE_REPAS[a.m.name] || 0) - (ORDRE_REPAS[b.m.name] || 0); })
@@ -8587,8 +8616,18 @@
      26 octobre, 30 novembre et 4 janvier. Le premier Bas complet reste le mardi 29. Du 24
      au 27, rien n'est du : aucune journee n'y est manquee. La phase Español garde sa fin au
      dimanche 25 octobre -- quatre semaines pile depuis le 28 --, et l'epreuve du dimanche
-     compte quatre passages, les 4, 11, 18 et 25 octobre. */
-  var PROGRAMME_DEBUT = '2026-09-28';
+     compte quatre passages, les 4, 11, 18 et 25 octobre.
+
+     28 septembre au soir : « demain est le premier jour, on considere que c'est le premier
+     jour de suivi pour tout, espagnol etc. ». Le jour 1 passe au MARDI 29. Les SEMAINES du
+     programme, elles, restent calees sur le lundi (semaineProgramme compte depuis le lundi
+     de la semaine du jour 1) : la semaine 1 est courte, du mardi 29 au dimanche 4, et les
+     retests des semaines 5, 10 et 15 restent les lundis 26 octobre, 30 novembre et
+     4 janvier. Cette premiere semaine est une semaine de REPRISE : combat seulement, pas
+     de muscu (MUSCU_DEBUT, lundi 5 octobre), et des portions a 85 % (PORTIONS_REPRISE).
+     L'epreuve du dimanche garde ses quatre passages : le premier dimanche apres le 29 est
+     toujours le 4 octobre. */
+  var PROGRAMME_DEBUT = '2026-09-29';
   /* La fin ne bouge PAS avec le depart : le 14 mars est le dernier jour de la SAISON,
      un point d'arrivee choisi, pas une duree de 174 jours a reporter. Le decalage du
      depart au 24 septembre raccourcit donc le programme a 172 jours, ce qui est la
@@ -8664,8 +8703,11 @@
      coup en semaine 3 — si les courbatures font sauter une séance cette semaine-là, la
      réduction de charge de l'onglet Bilan est là pour ça. */
   function semaineProgramme(iso){
-    var j = daysBetween(new Date(PROGRAMME_DEBUT + 'T00:00:00'), new Date((iso || todayISO) + 'T00:00:00'));
-    return j < 0 ? 0 : Math.floor(j / 7) + 1;
+    iso = iso || todayISO;
+    if(iso < PROGRAMME_DEBUT) return 0;
+    var l = new Date(PROGRAMME_DEBUT + 'T00:00:00');
+    l.setDate(l.getDate() - (l.getDay() + 6) % 7);            /* le lundi de la semaine du jour 1 */
+    return Math.floor(daysBetween(l, new Date(iso + 'T00:00:00')) / 7) + 1;
   }
   function facteurTours(iso){ var w = semaineProgramme(iso); return (w > 0 && w <= 2) ? 0.5 : 1; }
   /* La premiere seance du programme : le premier jour, a partir du depart, dont le type
@@ -8676,7 +8718,7 @@
      complet, le mardi 29. Cette bascule est calculee, pas ecrite : le depart a deja bouge
      cinq fois et elle a suivi a chaque fois. */
   function premierJourSport(){
-    var d = new Date(PROGRAMME_DEBUT + 'T00:00:00');
+    var d = new Date((MUSCU_DEBUT > PROGRAMME_DEBUT ? MUSCU_DEBUT : PROGRAMME_DEBUT) + 'T00:00:00');
     for(var i = 0; i < 7; i++){
       var iso = localISO(d);
       if(TYPE_BY_DAY[dowDe(iso)] !== 'Off') return iso;
@@ -8698,8 +8740,16 @@
      dans « prevu » (minutesPrevuesJour) : une seance faite un jour off est un bonus, elle
      ne doit pas gonfler la cible du mois. */
   var TYPE_BY_DAY_COMBAT = {1:'Haut volume',2:'Bas complet',3:'Off',4:'Haut lourd',5:'Off',6:'Off',0:'Off'};
+  /* ===== La semaine de reprise ===== (28 septembre au soir, sa decision)
+     « pour le sport on a dit que du combat cette semaine et des la semaine prochaine tout
+     ensemble ». Du jour 1 au dimanche 4 : Muay Thai mardi, JJB mercredi et vendredi, et
+     aucune seance de muscu -- le creneau de 05:30 du mardi et du jeudi devient un bloc de
+     projets (grilleBase). La muscu commence le lundi 5, un Haut volume : c'est la seance de
+     reference. Elle garde sa montee en charge (tours × ½ jusqu'au dimanche 11). */
+  var MUSCU_DEBUT = '2026-10-05';
   function typeSportGrille(iso){
     iso = iso || todayISO;
+    if(iso < MUSCU_DEBUT) return 'Off';
     return (regimeCombat(iso) ? TYPE_BY_DAY_COMBAT : TYPE_BY_DAY)[dowDe(iso)];
   }
   /* ===== Seance choisie a la main =====
@@ -14964,6 +15014,9 @@
     iso = iso || todayISO;
     var g = grillesDuJour(iso);
     var base = (g && g[cle]) || (regimeCombat(iso) && SCHEDULES_COMBAT[cle]) || SCHEDULES[cle] || [];
+    /* la semaine de reprise : pas de muscu avant MUSCU_DEBUT, le 05:30 devient des projets */
+    if(typeof MUSCU_DEBUT !== 'undefined' && iso < MUSCU_DEBUT && iso >= PROGRAMME_DEBUT)
+      base = base.map(function(b){ return b[1] === 'Sport' ? [b[0], 'Projets perso matinal'] : b; });
     return sansCoursLe(iso) ? libere(base, iso) : base;
   }
   /* ===== Consignes des blocs =====
@@ -16192,7 +16245,7 @@
      dues dentaire ») : un evenement se reconnait a la partie avant le separateur. */
   function titreBaseGcal(s){ return String(s || '').split(' · ')[0].trim(); }
   try{ window.__bcTitreBase = titreBaseGcal; window.__bcConsigne = consigneBloc; window.__bcInsights = buildInsights; window.__bcBlocs = blocsDuPlanning; window.__bcCle = cleJournee; window.__bcJours = joursSuivis; window.__bcInsightsVu = function(){ return insightsVu; }; window.__bcLogSession = logSession; window.__bcReporterTemps = reporterTemps; window.__bcPeriode = periodeGrille; window.__bcPhaseEspanol = phaseEspanol; window.__bcGrille = grilleDe; window.__bcMinutesEspanol = minutesEspanol; window.__bcCibleEspanol = cibleEspanolJour; window.__bcTypeBloc = typeBlocPlan; window.__bcPlanRotation = planRotation; window.__bcHabitJours = habitJours; window.__bcProgrammeDebut = PROGRAMME_DEBUT; window.__bcJournees = function(){ return journeesState; }; window.__bcJourneeDe = journeeDe; window.__bcPartiels = periodePartiels; window.__bcSessionsPartiels = sessionsPartiels; window.__bcBlocSansPomodoro = blocSansPomodoro; window.__bcRappels = blocsARappeler; window.__bcJoursGcal = joursAPousser; window.__bcExamens = function(){ return examensState; }; window.__bcPrevu = minutesPrevuesJour; window.__bcCibleGrille = cibleDepuisGrille; window.__bcPartEcoulee = partEcoulee; window.__bcVacances = function(){ return vacancesState; }; window.__bcJourExclu = jourExclu; window.__bcObjectifs = function(){ return objectifsState.liste; }; window.__bcComparer = comparerObjectif; window.__bcAcquise = habitAcquise; window.__bcAcquises = habitsAcquises; window.__bcSansPomodoro = blocsSansPomodoroDuJour; window.__bcTonPriorite = tonPriorite; window.__bcPrioHist = function(){ return insightsHist; }; window.__bcCloturerSaison = cloturerSaison; window.__bcPeriodesCloses = function(){ return periodesClosesState; }; window.__bcCloturerPeriodes = cloturerPeriodesEchues; window.__bcPeriodesObj = periodesObjectifs; window.__bcSaisons = function(){ return saisonsState; }; window.__bcTrimestres = function(){ return TRIMESTRES; }; window.__bcMois = moisListe; window.__bcAnki = function(){ return ankiState; }; window.__bcLireAnki = lireAnki; window.__bcBesoins = besoinsPartiels; window.__bcMatiereBloc = matierePourBloc; window.__bcPortes = etatPortes; window.__bcEpreuve = epreuvePassages; window.__bcEpreuveProj = epreuveProjection; window.__bcPortesEtat = function(){ return portesEtat; }; window.__bcConvertirPorte = convertirPorte; window.__bcNoterCours = noterCours; window.__bcGrilleBase = grilleBase; window.__bcSemestre = semestreDe; window.__bcSansCours = sansCoursLe; window.__bcCoucher = heureCoucher; window.__bcLever = heureLever; window.__bcSommeilCible = objectifSommeilPour; window.__bcSommeilReel = sommeilReelVise; window.__bcMarquerSansCours = marquerSansCours; window.__bcJoursSansCours = function(){ return joursSansCoursState; }; window.__bcSeuilRevision = seuilUrgenceRevision; window.__bcCibleJour = cibleJourMinutes; window.__bcReinitGarder = reinitGarder; window.__bcPassagesCourses = prochainsPassagesCourses;
-       window.__bcTypeSport = typeSportDe; window.__bcCibleProchaine = cibleProchaine; window.__bcSessionsSport = function(){ return SESSIONS; }; window.__bcPasCharge = pasChargeDe; window.__bcCardio = function(){ return cardioState; }; window.__bcPasCible = pasCible; window.__bcAccorderMarche = accorderHabitMarche; window.__bcSortiesCardio = sortiesCardio; window.__bcCibleCardio = cibleCardio; window.__bcNoterCardio = noterCardio; window.__bcCardioMinutes = cardioMinutesSur; window.__bcSerieCardio = serieCardio; window.__bcSommeilCible = objectifSommeilPour; window.__bcTestAnki = testAnkiDu; window.__bcRapport = function(){
+       window.__bcTypeSport = typeSportDe; window.__bcPremierJourSport = premierJourSport; window.__bcSemaineProgramme = semaineProgramme; window.__bcFacteurTours = facteurTours; window.__bcFacteurPortions = facteurPortions; window.__bcCibleProchaine = cibleProchaine; window.__bcSessionsSport = function(){ return SESSIONS; }; window.__bcPasCharge = pasChargeDe; window.__bcCardio = function(){ return cardioState; }; window.__bcPasCible = pasCible; window.__bcAccorderMarche = accorderHabitMarche; window.__bcSortiesCardio = sortiesCardio; window.__bcCibleCardio = cibleCardio; window.__bcNoterCardio = noterCardio; window.__bcCardioMinutes = cardioMinutesSur; window.__bcSerieCardio = serieCardio; window.__bcSommeilCible = objectifSommeilPour; window.__bcTestAnki = testAnkiDu; window.__bcRapport = function(){
          var mois = moisListe().filter(function(m){ return todayISO >= m.debut && todayISO <= m.fin; })[0];
          var objs = mois ? objectifsState.liste.filter(function(o){ return o.periode === 'mois' && o.pid === mois.id; }) : [];
          var p = periodeGrille(todayISO), hist = {};
