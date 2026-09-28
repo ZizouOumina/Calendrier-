@@ -1,6 +1,8 @@
 node_modules/
 node_modules
 *.png
+# God's Eye View a besoin de ses icônes PNG (couche ALPR) : elles font partie de l'app.
+!gods-eye-view/**/*.png
 *.log
 tests/batcave.html
 tests/enveloppe-tmp.html

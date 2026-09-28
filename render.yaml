@@ -1,0 +1,16 @@
+# Blueprint Render : déploie God's Eye View (dossier gods-eye-view/) en service web Docker.
+# Mode d'emploi : gods-eye-view/DEPLOIEMENT.md
+services:
+  - type: web
+    name: gods-eye-view
+    runtime: docker
+    plan: free
+    region: frankfurt
+    dockerfilePath: ./gods-eye-view/Dockerfile
+    dockerContext: ./gods-eye-view
+    healthCheckPath: /
+    # Ne reconstruire que quand l'app change, pas à chaque commit de la Batcave.
+    buildFilter:
+      paths:
+        - gods-eye-view/**
+        - render.yaml
