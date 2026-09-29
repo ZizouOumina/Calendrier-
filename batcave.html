@@ -3614,7 +3614,7 @@
   var DRAPEAUX_MIGRATION = ['objectifs-seed-v1','objectifs-v2-55','objectifs-v5-espanol',
     'habits-ecran-v2','habitlog-hebdo-v1','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','habits-seed-v7','habits-seed-v8','habits-seed-v9',
     'courses-plan-v2','courses-plan-v3','courses-plan-v4','courses-plan-v5','courses-plan-v6','courses-plan-v7','courses-plan-v8','courses-plan-v9','courses-plan-v10',
-    'charges-v2','plafond-nourriture-v2','plafond-nourriture-v3','plafond-nourriture-v4','ancre-dimanche-v1','ancre-dimanche-v2','shampoing-dim-v1','marche-cible-v1','fc-migration-v1','fc-migration-v2','revision-fusionnee'];
+    'charges-v2','plafond-nourriture-v2','plafond-nourriture-v3','plafond-nourriture-v4','ancre-dimanche-v1','ancre-dimanche-v2','serviettes-v1','shampoing-dim-v1','marche-cible-v1','fc-migration-v1','fc-migration-v2','revision-fusionnee'];
   /* Drapeaux que rien ne pose plus (migrations retirees) ou poses seulement quand il y a
      eu quelque chose a migrer : connus et gardes, jamais exiges. */
   var DRAPEAUX_ANCIENS = ['objectifs-v3-trajet','objectifs-v4-dimanche','habits-retirees-v1','shampoing-combat-v1'];   /* le dernier n'ecrit qu'a partir du 28 septembre */
@@ -3731,7 +3731,7 @@
      vestige : une fonctionnalite retiree (batcave-matieres) ou un essai. Elle prend de la
      place dans le quota de 5000 documents et embrouille les sauvegardes, sans que rien ne
      la lise jamais. On la signale ; la suppression reste ton geste. */
-  var CLES_CONNUES = ['addictions','budget-limits','business','coran','courses','dash-more','duaas','duree-bloc','sport-log','objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','courses-plan-v3','courses-plan-v4','courses-plan-v5','courses-plan-v6','courses-plan-v7','courses-plan-v8','courses-plan-v9','courses-plan-v10','charges-v2','plafond-nourriture-v2','plafond-nourriture-v3','plafond-nourriture-v4','gcal-controle','ancre-dimanche-v1','ancre-dimanche-v2','shampoing-dim-v1','marche-cible-v1','cardio','kcal-ajustement','gcal-ecriture','reinit','fc-migration-v1','fc-migration-v2','livrables','shampoing-combat-v1','charge','shopify-boutique','journees','examens-heures','vacances','jours-exclus',
+  var CLES_CONNUES = ['addictions','budget-limits','business','coran','courses','dash-more','duaas','duree-bloc','sport-log','objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','courses-plan-v3','courses-plan-v4','courses-plan-v5','courses-plan-v6','courses-plan-v7','courses-plan-v8','courses-plan-v9','courses-plan-v10','charges-v2','plafond-nourriture-v2','plafond-nourriture-v3','plafond-nourriture-v4','gcal-controle','ancre-dimanche-v1','ancre-dimanche-v2','serviettes-v1','shampoing-dim-v1','marche-cible-v1','cardio','kcal-ajustement','gcal-ecriture','reinit','fc-migration-v1','fc-migration-v2','livrables','shampoing-combat-v1','charge','shopify-boutique','journees','examens-heures','vacances','jours-exclus',
     'espagnol','examens','cours-suivi','portes','periodes-closes','fc-prix-icloud-3','fc-prix-club-100','fixed-charges','goals','goals-depart','saisons','insights-hist','last-restore-drill','habitlog','habits','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','habits-seed-v7','habits-seed-v8','habits-seed-v9','objectifs-v5-espanol',
     'horizon','last-auto-backup','last-manual-backup','last-bilan-prompt','last-compaction','last-open','last-rotation','notion-url',
     'pomodial-purge','projets','report','revision','revision-fusionnee','revue','sante','sauvegarde','sessions',
@@ -6973,8 +6973,12 @@
        vu — ajouter le cardio sans toucher a l'hygiene laissait un jour de sueur sans
        shampooing. Samedi etait deja la pour la muscu. */
     {id:'core-shampoing', label:'Shampoing', icon:'🧴', jours:[0,1,2,4,6]},
-    {id:'core-serviette-visage', label:'Serviette de visage changée', icon:'🧼', jours:[1,3,5]},
-    {id:'core-serviette-corps', label:'Serviette de corps changée', icon:'🛁', jours:[0]},
+    /* 29 septembre, sa demande (peau a tendance acneique) : la serviette de visage ne reste
+       jamais plus de deux jours -- dimanche, lundi, mercredi, vendredi ; celle de corps passe
+       a deux fois par semaine (dimanche et mercredi, avec les taies), puisqu'il se douche
+       apres chaque entrainement. Lavage a 60 °C, sans assouplissant. */
+    {id:'core-serviette-visage', label:'Serviette de visage changée', icon:'🧼', jours:[0,1,3,5]},
+    {id:'core-serviette-corps', label:'Serviette de corps changée', icon:'🛁', jours:[0,3]},
     {id:'core-draps', label:'Draps et taies d\u2019oreiller changés', icon:'🧺', jours:[0]},
     {id:'core-menage', label:'Ménage du dimanche', icon:'🧽', jours:[0]}
   ];
@@ -7115,6 +7119,20 @@
      enregistrees portent l'ancre du 20 septembre (ou encore celle du 13) ; elles passent au
      4 octobre, premier dimanche du programme. Seules les quatre habitudes du cycle bougent :
      une ancre posee a la main ailleurs (la coupe de cheveux, un cycle a lui) reste. */
+  /* Les serviettes (29 septembre) : ses habitudes deja enregistrees gardaient l'ancien rythme.
+     On ne touche que celles qui sont encore au rythme d'origine -- un rythme qu'il aurait
+     change lui-meme reste le sien. */
+  if(!load('batcave-serviettes-v1', false)){
+    var servBougee = false;
+    (habitsState || []).forEach(function(h){
+      if(!h || !Array.isArray(h.jours)) return;
+      var j = h.jours.slice().sort().join(',');
+      if(h.id === 'core-serviette-visage' && j === '1,3,5'){ h.jours = [0, 1, 3, 5]; servBougee = true; }
+      if(h.id === 'core-serviette-corps' && j === '0'){ h.jours = [0, 3]; servBougee = true; }
+    });
+    if(servBougee) save('batcave-habits', habitsState);
+    saveInternal('batcave-serviettes-v1', true);
+  }
   if(!load('batcave-ancre-dimanche-v2', false)){
     var ancreBougee2 = false, CYCLE_DIMANCHE = ['core-pesee-dim', 'core-photos-dim', 'core-brosse-dents', 'core-ongles'];
     (habitsState || []).forEach(function(h){
