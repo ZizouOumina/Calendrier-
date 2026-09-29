@@ -47,7 +47,7 @@ console.log('\n== 330) Cinq catégories, toutes alimentaires, et le frais seul e
      paquet couvre presque trois semaines. Il portait déjà ce cycle-là tout en restant
      rangé dans le frais, et la catégorie annonçait donc un rythme qu'un de ses articles
      ne suivait pas. */
-  ok(/Chaque semaine/.test(hebdo.titre) && hebdo.n === 8, 'la liste hebdomadaire fait 8 articles — les amandes entrent le 24 septembre, à la place du beurre de cacahuète (' + hebdo.n + ')');
+  ok(/Chaque semaine/.test(hebdo.titre) && hebdo.n === 9, 'la liste hebdomadaire fait 9 articles — les amandes entrent le 24 septembre à la place du beurre de cacahuète, la boisson de soja du shake le 29 (' + hebdo.n + ')');
   const t = await fr.evaluate(() => document.querySelector('.page[data-page="courses"]').textContent);
   ok(!/Riz/.test(hebdo.titre + '') && /Riz — 5 kg/.test(t) && /demande 4\u202f340 g/.test(t), 'le riz est en réserve : 5 kg achetés pour 4 340 g demandés');
   ok(!/Shampooing|Cotons-tiges|Nettoyant visage|Brosse à dents|Bain de bouche|Brossettes|Crème solaire|Lessive|Dentifrice/.test(t),
@@ -74,7 +74,7 @@ console.log('\n== 331) Samedi 26 septembre : l\'ancre, tout est dû ==');
   /* Aucun stock n'est suppose : le 19, TOUTES les categories sont dues et toutes leurs
      lignes comptent. 9 frais + 1 surgele + 4 reserves + 2 (cycle de 5 semaines) + 1 pot de
      creatine = 17. Ce qu'il a deja, il le coche quand meme. */
-  ok(/\/16 articles/.test(somme), '16 articles le 26 : tout part de zéro (' + somme + ')');
+  ok(/\/17 articles/.test(somme), '17 articles le 26 : tout part de zéro (' + somme + ')');
   await ctx.close();
 }
 {
@@ -123,7 +123,7 @@ console.log('\n== 333) L\'habitude « Courses faites » reste validable ==');
     await new Promise(r => setTimeout(r, 120));
   }
   const somme = await fr.evaluate(() => document.getElementById('courses-summary').textContent);
-  ok(/^8\/8/.test(somme), 'cocher le frais suffit : ' + somme + ' (' + avant + ' cases)');
+  ok(/^9\/9/.test(somme), 'cocher le frais suffit : ' + somme + ' (' + avant + ' cases)');
   const coche = await fr.evaluate(() => {
     const l = [...document.querySelectorAll('#dash-checklist li label')].map(x => x.textContent);
     return l.some(x => /Courses/.test(x));
@@ -195,7 +195,7 @@ for (const d of ['2026-09-26', '2026-10-03', '2026-10-24', '2026-11-28']) {
   const t = await fr.evaluate(() => document.querySelector('.page[data-page="courses"]').textContent);
   /* 14 par semaine : 2 par jour au petit-dejeuner, tire du plan de repas. Mais on
      n'achete pas 14 oeufs : une boite de 12 plus une de 6 font 18. */
-  ok(/Œufs — 30/.test(t) && /demande 28 œufs/.test(t), 'les œufs : 30 achetés pour les 28 du plan (deux au petit-déjeuner, deux à la collation)');
+  ok(/Œufs — 18/.test(t) && /demande 14 œufs/.test(t), 'les œufs : 18 achetés pour les 14 du plan (deux à la collation ; le petit-déjeuner est un shake depuis le 29 septembre)');
   await ctx.close();
 }
 
@@ -220,13 +220,15 @@ console.log('\n== 334d) La liste ne porte QUE de la nourriture ==');
   const ATTENDU = ['Poulet', 'Viande hachée 5 %', 'Skyr', 'Œufs',
                    'Pain complet', 'Bananes', 'Fruits (pommes, poires, oranges…)',
                    'Amandes ou noix nature',
+                   /* 29 septembre : la boisson de soja du shake, en dernier du frais */
+                   'Boisson de soja',
                    'Légumes verts surgelés', 'Fromage en tranches',
                    'Riz', 'Pâtes', 'Flocons d\'avoine',
                    /* 26 septembre : le miel passe au cycle de cinq semaines, en pot de 750 g */
                    'Huile d\'olive', 'Miel', 'Créatine monohydrate'];
-  ok(lignes.length === 16, '16 lignes, pas une de plus (' + lignes.length + ')');
+  ok(lignes.length === 17, '17 lignes, pas une de plus (' + lignes.length + ')');
   ok(JSON.stringify(lignes) === JSON.stringify(ATTENDU),
-     'et ce sont exactement les seize attendues' +
+     'et ce sont exactement les dix-sept attendues' +
      (JSON.stringify(lignes) === JSON.stringify(ATTENDU) ? '' : ' — reçu : ' + lignes.join(' · ')));
   /* Nommement, les rayons qui sont sortis : hygiene, maison, menage, brosse a dents. */
   const SORTIS = ['Shampooing', 'Après-shampooing', 'Gel douche', 'Nettoyant visage', 'Dentifrice',
@@ -279,8 +281,10 @@ console.log('\n== 334) Ses prix a lui, releves en magasin -- et rien d\'invente 
      relevees. Le panneau le DIT, la nomme, et la sort du total : c'est le trou qu'on
      montre, jamais un chiffre invente pour le boucher. */
   /* 25 septembre au soir : leur prix est releve (12 EUR/kg) -- plus de ligne hors total. */
-  ok(!/prix pas encore relevé/.test(t) && !/hors total/.test(t),
-     'plus aucune ligne hors total : les amandes ont leur prix (' + t.slice(0, 70) + ')');
+  /* 29 septembre : la boisson de soja du shake n'a pas encore son prix (il attend son ticket) -- le
+     panneau le nomme, et c'est la seule ligne hors total. */
+  ok(!/Amandes/.test((t.match(/[^.]*hors total[^.]*/) || [''])[0]) && (!/hors total/.test(t) || /soja/i.test(t)),
+     'une seule ligne hors total, la boisson de soja du shake — les amandes ont leur prix (' + t.slice(0, 120) + ')');
   ok(/Budget/.test(t) && /Nourriture/.test(t),
      'et il dit toujours où vivent les montants payés : Budget → Nourriture');
   /* Les prix sur les lignes elles-memes. La creatine est hors plan de repas -- elle
@@ -291,12 +295,12 @@ console.log('\n== 334) Ses prix a lui, releves en magasin -- et rien d\'invente 
      Les assertions ci-dessous cherchent ce que le code ÉCRIT, pas ce que le CSS affiche. */
   const lignes = await fr.evaluate(() =>
     [...document.querySelectorAll('#courses-grid .cat-card li')].map(l => l.textContent));
-  const muettes = lignes.filter(l => !/€|Créatine/.test(l));
+  const muettes = lignes.filter(l => !/€|Créatine|^Boisson de soja/.test(l));
   ok(lignes.length > 0 && muettes.length === 0,
      'les ' + lignes.length + ' lignes du jour portent toutes leur prix' +
      (muettes.length ? ' — muettes : ' + muettes.join(' · ') : ''));
-  ok(!lignes.some(l => /prix à relever/.test(l)) && lignes.some(l => /^Amandes/.test(l) && /12,00 €\/kg/.test(l)),
-     'plus aucune ligne ne dit « prix à relever » : les amandes à 12 €/kg');
+  ok(lignes.filter(l => /prix à relever/.test(l)).every(l => /^Boisson de soja/.test(l)) && lignes.some(l => /^Amandes/.test(l) && /12,00 €\/kg/.test(l)),
+     'seul la boisson de soja du shake dit « prix à relever » ; les amandes à 12 €/kg');
   ok(!lignes.some(l => /Beurre de cacahuète/.test(l)), 'plus de beurre de cacahuète');
   ok(lignes.some(l => /Poulet/.test(l) && /7,50 €\/kg/.test(l)),
      'le poulet porte le prix de sa boucherie : 7,50 €/kg');

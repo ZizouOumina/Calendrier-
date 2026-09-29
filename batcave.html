@@ -8126,7 +8126,17 @@
      25 a la collation de 14:50.
      La creatine suivait la collation du soir : elle passe au diner. */
   var MEALS = [
-    {name:'Petit-déjeuner', items:['Flocons d\'avoine (80g)','Miel (20g) — dans les flocons','Skyr (180g)','2 œufs (100g)','Amandes ou noix nature (30g)','Banane (120g)']},
+    /* 29 septembre, sa demande : « j'ai du mal a manger toutes ces calories, tu peux pas
+       mettre des calories liquides ? ». Le petit-dejeuner devient un SHAKE, a peu pres aux
+       memes calories (≈ 860 kcal au lieu de ≈ 910) mais qui se boit en dix minutes : le
+       liquide rassasie beaucoup moins que la meme chose dans une assiette. La base liquide
+       est une BOISSON DE SOJA, pas du lait : le lait est sorti du plan le 11 septembre, c'est
+       le laitage le plus associe a l'acne, et le « sans lactose » n'y change rien (le lactose
+       n'est pas en cause). Le soja n'a pas ce lien, n'a pas de lactose (son ventre fragile) et
+       porte autant de proteines que le lait. Le skyr, fermente, passe dans le mixeur ; les
+       flocons restent a 80 g pour compenser le soja plus leger ; les deux oeufs du matin
+       sortent (ceux de la collation restent). Il a un mixeur. */
+    {name:'Petit-déjeuner', items:['Boisson de soja (300 ml)','Skyr (150g)','Flocons d\'avoine (80g)','Banane (120g)','Miel (20g)','Amandes ou noix nature (30g)']},
     {name:'Déjeuner', items:['Féculent cru — Riz 155g','Protéine crue — rotation du jour','Légumes verts (200g)','Huile d\'olive — selon la protéine, dont 10 ml dans la sauce','Sauce skyr (65g) — mélangée à froid, au moment de manger']},
     /* 23 septembre : le jambon (charcuterie, 40 g par jour) cede la place a deux oeufs durs,
        cuits le dimanche avec ceux du petit-dejeuner. La viande transformee etait le seul
@@ -8155,6 +8165,7 @@
   var ALIMENTS = {
     flocons:   {kcal:389, p:13.2, g:66.0, l:6.9},
     skyr:      {kcal:63,  p:10.5, g:4.0,  l:0.2},
+    soja:      {kcal:39,  p:3.3,  g:2.5,  l:1.8},   /* boisson de soja nature, pour 100 ml */
     oeufs:     {kcal:143, p:12.6, g:0.7,  l:9.5,  piece:50},
     amandes:   {kcal:579, p:21.2, g:21.6, l:49.9},
     banane:    {kcal:89,  p:1.1,  g:22.8, l:0.3,  piece:120},
@@ -8194,7 +8205,7 @@
     return liste.map(function(x){ return ENTIERS_REPRISE[x.c] ? x : {c:x.c, q:portionReprise(x.q, f)}; });
   }
   function compoRepasPlein(nom, iso, brut){
-    if(nom === 'Petit-déjeuner') return [{c:'flocons', q:80}, {c:'miel', q:20}, {c:'skyr', q:180}, {c:'oeufs', q:100}, {c:'amandes', q:30}, {c:'banane', q:120}];
+    if(nom === 'Petit-déjeuner') return [{c:'soja', q:300}, {c:'skyr', q:150}, {c:'flocons', q:80}, {c:'banane', q:120}, {c:'miel', q:20}, {c:'amandes', q:30}];
     if(nom === 'Collation entraînement') return [{c:'pain', q:60}, {c:'oeufs', q:100}, {c:'fromage', q:20}, {c:'amandes', q:25}];
     if(nom === 'Collation combat') return [{c:'banane', q:120}, {c:'flocons', q:50}, {c:'amandes', q:15}];
     if(nom === 'Déjeuner'){
@@ -8262,7 +8273,7 @@
     var repas = m.name === 'Dîner' ? 'din' : (m.name === 'Déjeuner' ? 'dej' : null), f = facteurPortions(iso);
     /* semaine de reprise : les grammes ecrits dans le libelle suivent le facteur, sauf ce
        qui se mange a l'unite (oeufs, banane, fruit) */
-    var reduit = function(t){ return (f >= 1 || /œuf|Banane|fruit/i.test(t)) ? t : t.replace(/\((\d+)g\)/, function(_, n){ return '(' + portionReprise(Number(n), f) + 'g)'; }); };
+    var reduit = function(t){ return (f >= 1 || /œuf|Banane|fruit/i.test(t)) ? t : t.replace(/\((\d+) ?(g|ml)\)/, function(_, n, u){ return '(' + portionReprise(Number(n), f) + (u === 'ml' ? ' ml' : 'g') + ')'; }); };
     if(!repas) return reduit(it);
     if(ii === 0) return texteFeculent(repas, repas === 'din' ? ajustementKcalPour(iso || todayISO) : 0, iso);
     var nom = proteineDuJour(repas, iso), p = PROTEINES[nom][repas];
@@ -11836,7 +11847,7 @@
   var NOM_ALIMENT = {riz:'Riz', pates:'Pâtes', poulet:'Poulet', hachee:'Viande hachée 5 %',
                      legumes:'Légumes verts surgelés', huile:'Huile d\'olive',
                      oeufs:'Œufs', flocons:'Flocons d\'avoine', skyr:'Skyr', amandes:'Amandes ou noix',
-                     banane:'Banane', pain:'Pain complet', fromage:'Fromage', miel:'Miel', fruit:'Fruit'};
+                     banane:'Banane', pain:'Pain complet', fromage:'Fromage', miel:'Miel', fruit:'Fruit', soja:'Boisson de soja'};
   var NOMS_SEMAINE = ['dimanche','lundi','mardi','mercredi','jeudi','vendredi','samedi'];
   /* Les sept jours de la semaine qui commence le dimanche contenant « iso ». La session a
      lieu ce dimanche-la : elle couvre donc la semaine entiere, dimanche compris. */
@@ -11877,7 +11888,7 @@
       return '<li><span>' + escapeHtml(NOM_ALIMENT[c] || c) + '</span><span><b>' + poids(T[c]) + '</b> crus' + cuit + '</span></li>';
     }).join('') +
       '<li><span>Huile d\'olive</span><span><b>' + Math.round(T.huile) + ' ml</b> <span class="sub-note">— un tiers à la cuisson, le reste versé froid à l\'assiette</span></span></li>' +
-      '<li><span>Œufs durs <span class="sub-note">(le matin et la collation)</span></span><span><b>' + Math.round(BESOIN_SEMAINE.oeufs || 0) + '</b> <span class="sub-note">— ils tiennent 7 jours en coquille</span></span></li>';
+      '<li><span>Œufs durs <span class="sub-note">(la collation)</span></span><span><b>' + Math.round(BESOIN_SEMAINE.oeufs || 0) + '</b> <span class="sub-note">— ils tiennent 7 jours en coquille</span></span></li>';
     /* L'ordre. Les durees sont celles des quantites ci-dessus ; les postes longs et
        autonomes (riz, four) partent en premier, le reste se glisse pendant. */
     var etapes = [
@@ -11887,7 +11898,7 @@
       [22, 'La <b>viande hachée</b> — ' + poids(T.hachee) + ', en deux fournées pour qu\'elle grille au lieu de bouillir. 10 min.'],
       [34, 'Les <b>pâtes</b> — ' + poids(T.pates) + ' crues, <b>deux minutes de moins</b> que le paquet : elles finiront de cuire au réchauffage.'],
       [46, 'Les <b>légumes surgelés</b> — ' + poids(T.legumes) + ', à la poêle en trois fournées ou à la vapeur, 7 min. Sans les décongeler avant.'],
-      [60, 'Les <b>' + Math.round(BESOIN_SEMAINE.oeufs || 0) + ' œufs durs</b> (le matin et la collation) — deux casseroles, 10 min dans l\'eau bouillante, puis eau froide. On les garde en coquille : une semaine au frigo.'],
+      [60, 'Les <b>' + Math.round(BESOIN_SEMAINE.oeufs || 0) + ' œufs durs</b> (la collation) — une casserole, 10 min dans l\'eau bouillante, puis eau froide. On les garde en coquille : une semaine au frigo.'],
       [75, '<b>Tout refroidir à découvert, 20 min.</b> Un tupperware fermé sur du chaud fabrique de la condensation, et la condensation fabrique des bactéries.'],
       [95, 'Remplir les <b>14 boîtes</b> dans l\'ordre du tableau ci-dessous, et écrire le jour dessus.'],
       [110,'<b>8 au frigo</b> (dimanche à mercredi), <b>6 au congélateur</b> (jeudi à samedi). Sortir chaque boîte congelée la veille au soir, au frigo.']
@@ -11918,8 +11929,8 @@
              j.din.filter(dansBoite).map(ligne).join('') + '</ul></div>';
     }).join('');
     document.getElementById('prep-regles').innerHTML = [
-      ['Le petit-déjeuner', 'flocons et miel, skyr, 2 œufs, amandes ou noix, banane — cinq minutes, rien à cuire sauf les œufs, déjà durs'],
-      ['La collation d\'entraînement', 'pain, 2 œufs durs, fromage, une poignée d\'amandes — les œufs sont cuits le dimanche avec ceux du matin ; le reste s\'assemble au moment de partir'],
+      ['Le petit-déjeuner', 'un shake : 300 ml de boisson de soja, 150 g de skyr, 80 g de flocons, une banane, 20 g de miel, 30 g d\'amandes — 40 secondes de mixeur, à boire en dix minutes'],
+      ['La collation d\'entraînement', 'pain, 2 œufs durs, fromage, une poignée d\'amandes — les œufs sont cuits le dimanche ; le reste s\'assemble au moment de partir'],
       ['La sauce au skyr', 'jamais dans la boîte : réchauffer la boîte d\'abord, puis mélanger le skyr hors du feu (65 g à midi, 60 g le soir). Un bocal de base (skyr, ail, citron, sel) tient trois jours au frigo'],
       ['Réchauffer à la poêle', 'la boîte vidée dans la poêle avec 2 à 3 cuillères d\'eau, couvercle, feu moyen, 4 à 5 min, puis 1 min à découvert. Brûlant jusqu\'au cœur. Pas l\'air fryer : il dessèche le riz et les pâtes'],
       ['Le fruit du dîner', 'entier, jamais dans la boîte : coupé le dimanche il rend de l\'eau et noircit'],
@@ -12013,7 +12024,7 @@
     'Bananes':'bananes', 'Fruits (pommes, poires, oranges\u2026)':'fruits',
     'L\u00e9gumes verts surgel\u00e9s':'legumes', 'Riz':'riz', 'P\u00e2tes':'pates',
     'Flocons d\'avoine':'flocons', 'Miel':'miel', 'Amandes ou noix nature':'amandes',
-    'Huile d\'olive':'huile'
+    'Huile d\'olive':'huile', 'Boisson de soja':'soja'
   };
   function eur(n){ return (Math.round(n * 100) / 100).toFixed(2).replace('.', ',') + ' \u20ac'; }
   /* Le cout d'une semaine se calcule sur le BESOIN, pas sur l'achat : un pot de 2 L d'huile
@@ -12086,7 +12097,10 @@
            depuis le 28 (collation combat), soit 445 g. Le sachet de 200 g est le format
            courant du rayon ; nature, non salees. Moitie noix si possible : le poisson est
            sorti du plan, et les noix sont la seule source d'omega-3 qui reste. */
-        art('Amandes ou noix nature', B.amandes, 200, poids, 'sachet')
+        art('Amandes ou noix nature', B.amandes, 200, poids, 'sachet'),
+        /* 29 septembre : le shake du matin, 300 ml par jour. En DERNIER dans la categorie :
+           les coches sont indexees par position, une ligne ajoutee au bout ne decale rien. */
+        art('Boisson de soja', B.soja, 1000, vol, 'brique')
       ]},
       /* Les legumes surgeles ont leur propre cycle, plus court que les autres reserves :
          DEUX semaines. Sa contrainte du 20 septembre, et elle est physique -- 10 kg de
@@ -12291,6 +12305,7 @@
     'Fromage en tranches': 'Lidl · cuajo vegetal',
     'Riz': 'Lidl', 'P\u00e2tes': 'Lidl', 'Flocons d\'avoine': 'Lidl',
     'L\u00e9gumes verts surgel\u00e9s': 'Lidl', 'Miel': 'Lidl', 'Amandes ou noix nature': 'Lidl',
+    'Boisson de soja': 'Lidl',
     'Bananes': 'Lidl', 'Fruits (pommes, poires, oranges\u2026)': 'Frutería · de saison',
     'Cr\u00e9atine monohydrate': 'En ligne'
   };

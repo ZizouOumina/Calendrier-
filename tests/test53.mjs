@@ -44,7 +44,7 @@ console.log('\n== 180) Sans ajustement : plan de base, liste = plan × 7 ==');
      portait deja, et « Chaque semaine » redevient vrai pour ses huit lignes.
      Le 23 septembre, le jambon sort (deux oeufs a la collation) : sept lignes chaque
      semaine, seize en tout. */
-  ok(c.n === 16, '16 articles au total, tous rythmes confondus (' + c.n + ')');
+  ok(c.n === 17, '17 articles au total, tous rythmes confondus — la boisson de soja du shake depuis le 29 septembre (' + c.n + ')');
   /* Deux chiffres par ligne, et il faut les deux : ce qu'on ACHETE (un multiple du
      conditionnement) et ce que le PLAN demande (la somme des 7 jours de repas). Riz
      135 g/jour -> 945/semaine -> 3 780 sur 4 semaines, donc 4 paquets de 1 kg ;
@@ -68,9 +68,13 @@ console.log('\n== 180) Sans ajustement : plan de base, liste = plan × 7 ==');
      115 g de surplus de skyr, la ou 5 pots de 500 en laissaient 365. Le 21 septembre, en
      rayon : le format qu'il achete est la BOITE DE 150 g a 0,75 €. Meme quantite achetee
      (2,25 kg) et meme surplus (115 g), mais quinze boites au lieu de cinq pots. */
-  ok(c.items.some(t => /^Skyr — 2,25 kg\b/.test(t) && /demande 2\u202f135 g/.test(t) && /15 boîtes de 150 g/.test(t))
-  && !c.items.some(t => /^(Dattes|Cacahuètes|Lait)/.test(t)),
-     'skyr : 2,25 kg en 5 pots de 450 g pour 2 135 g demandés');
+  /* 29 septembre, le shake : 150 g de skyr le matin au lieu de 180 -> 1 925 g par semaine,
+     13 boites. */
+  ok(c.items.some(t => /^Skyr — 1,95 kg\b/.test(t) && /demande 1\u202f925 g/.test(t) && /13 boîtes de 150 g/.test(t))
+  && !c.items.some(t => /^(Dattes|Cacahuètes)/.test(t)),
+     'skyr : 1,95 kg en 13 boîtes de 150 g pour 1 925 g demandés');
+  ok(c.items.some(t => /^Boisson de soja — 3 L\b/.test(t) && /3 briques de 1 L/.test(t) && /demande 2\u202f100 ml/.test(t)),
+     'boisson de soja : 3 briques de 1 L pour les 2 100 ml du shake');
   /* L'HUILE etait la vraie erreur : 288 ml par semaine, donc 1 152 sur 4 semaines alors
      que la liste disait 1 000 -- quatre jours de rupture par cycle, tous les mois. Elle est
      passee a 5 semaines. Depuis le retrait du poisson elle monte a 315 ml par semaine
@@ -82,10 +86,10 @@ console.log('\n== 180) Sans ajustement : plan de base, liste = plan × 7 ==');
   /* Les legumes surgeles sont passes a DEUX semaines le 20 septembre : 10 kg par passage
      ne rentraient pas dans son congelateur. La consommation n'a pas bouge (2 450 g par
      semaine), c'est le rythme de rachat qui a change -- 5 kg tous les quinze jours. */
-  ok(c.items.some(t => /^Œufs — 30\b/.test(t) && /demande 28 œufs/.test(t))
+  ok(c.items.some(t => /^Œufs — 18\b/.test(t) && /demande 14 œufs/.test(t))
   && c.items.some(t => /^Légumes verts surgelés — 5 kg\b/.test(t) && /demande 4\u202f900 g/.test(t))
   && c.items.some(t => /^Huile d'olive — 2 L\b/.test(t) && /1 bouteille de 2 L/.test(t) && /demande 1\u202f575 ml/.test(t)),
-     'œufs 30 pour 28, surgelés 5 kg pour 4 900 g sur deux semaines, huile 2 L pour 1 575 ml sur cinq');
+     'œufs 18 pour 14 (la collation seule depuis le shake), surgelés 5 kg pour 4 900 g sur deux semaines, huile 2 L pour 1 575 ml sur cinq');
   /* Aucun stock n'est suppose : rien ne dit « tu en as », rien n'est repousse a plus tard. */
   ok(!c.items.some(t => /tu en as|il t’en reste|à racheter le/.test(t)), 'aucune ligne ne suppose un stock : tout part de zéro, il coche ce qu\'il a');
   /* Le contraire de ce que ce fichier tenait jusqu'au 20 septembre : ces lignes ne
@@ -119,9 +123,9 @@ console.log('\n== 180) Sans ajustement : plan de base, liste = plan × 7 ==');
      sont restees un jour sans prix (« prix a relever », hors total) ; le 25 au soir, son
      releve : 12 EUR le kilo. Plus aucune ligne ne dit « prix a relever ». */
   ok(!c.items.some(t => /^Beurre de cacahuète/.test(t)), 'le beurre de cacahuète est sorti de la liste');
-  ok(!c.items.some(t => /prix à relever/.test(t)) && c.items.some(t => /^Amandes ou noix nature/.test(t) && /12,00 €\/kg/.test(t)),
-     'les amandes portent leur prix, 12 €/kg (' + c.items.find(t => /^Amandes/.test(t)) + ')');
-  ok(!/prix pas encore relev/.test(c.budget), 'et le budget n\'annonce plus de ligne hors total');
+  /* 29 septembre : la boisson de soja du shake attend son prix (son ticket) -- c'est la seule ligne. */
+  ok(c.items.filter(t => /prix à relever/.test(t)).every(t => /^Boisson de soja/.test(t)) && c.items.some(t => /^Amandes ou noix nature/.test(t) && /12,00 €\/kg/.test(t)),
+     'les amandes portent leur prix, 12 €/kg ; seul le lait attend le sien (' + c.items.find(t => /^Amandes/.test(t)) + ')');
 
   await page_(fr, 'repas');
   const r = await fr.evaluate(() => ({ diner: [...document.querySelectorAll('.meal-card')].find(c => /Dîner/.test(c.querySelector('.mtitle').textContent)) }) && [...document.querySelectorAll('.meal-card')].find(c => /Dîner/.test(c.querySelector('.mtitle').textContent)).innerText);
@@ -140,13 +144,13 @@ console.log('\n== 181) Avec +150 kcal : le dîner et les courses l\'écrivent ==
   /* 3 131 + 144 : la boucle demande +150 kcal, mais les pates s'ajustent par pas de 10 g,
      donc elle en ajoute 144. On annonce l'ecart REEL entre les deux journees, pas la
      consigne -- sinon la soustraction affichee ne tombe pas juste. */
-  ok(/\/ 3370 kcal \(plan 3226 \+ 144\)/.test(sub), 'cible du jour : ' + sub);
+  ok(/\/ 3325 kcal \(plan 3181 \+ 144\)/.test(sub), 'cible du jour : ' + sub);
   /* cocher tout le dîner : l\'apport consommé porte les 150 kcal */
   /* un clic redessine la grille : on re-cherche la première case non cochée du dîner à chaque tour */
   await fr.evaluate(() => { for(let i = 0; i < 10; i++){ const card = [...document.querySelectorAll('.meal-card')].find(c => /Dîner/.test(c.querySelector('.mtitle').textContent)); const cb = card && card.querySelector('input:not(:checked)'); if(!cb) break; cb.click(); } });
   await page.waitForTimeout(200);
   const sub2 = await fr.evaluate(() => document.getElementById('meal-kcal-sub').textContent);
-  ok(/^934 \/ 3370 kcal/.test(sub2), 'dîner coché : ' + sub2);
+  ok(/^934 \/ 3325 kcal/.test(sub2), 'dîner coché : ' + sub2);
   await page_(fr, 'courses');
   const c = await fr.evaluate(() => ({ items: [...document.querySelectorAll('#courses-grid label, #courses-grid-plus label')].map(l => l.textContent), note: document.getElementById('courses-plan-note').textContent }));
   /* L'ajustement suit le sac : +280 g par semaine font +1 120 g sur quatre semaines.
@@ -259,8 +263,8 @@ console.log('\n== 183) La liste de courses sort du MEME plan que les repas ==');
   });
   const cles = Object.keys(r.recompte).sort();
   const faux = cles.filter(k => Math.abs(r.recompte[k] - r.lu[k]) > 0.001);
-  ok(faux.length === 0 && cles.length === 15,
-     'les 15 besoins de la semaine sont exactement la somme des repas' + (faux.length ? ' — ' + faux.map(k => k + ' : ' + r.lu[k] + ' vs ' + r.recompte[k]).join(', ') : ' (' + cles.length + ')'));
+  ok(faux.length === 0 && cles.length === 16,
+     'les 16 besoins de la semaine (la boisson de soja du shake depuis le 29 septembre) sont exactement la somme des repas' + (faux.length ? ' — ' + faux.map(k => k + ' : ' + r.lu[k] + ' vs ' + r.recompte[k]).join(', ') : ' (' + cles.length + ')'));
   /* Et aucun aliment du plan ne manque a la liste de courses. */
   const manquants = await fr.evaluate(() => {
     const noms = ['Petit-déjeuner','Déjeuner','Collation entraînement','Dîner','Collation combat'];
