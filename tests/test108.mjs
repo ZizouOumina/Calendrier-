@@ -35,11 +35,11 @@ console.log('\n== 269) Deux oeufs a la place du jambon ==');
   }));
   ok(r.col.kcal === 508 && r.col.p === 28, 'la collation : pain, 2 œufs, fromage, 25 g d\'amandes = 508 kcal, 28 g de protéines (' + r.col.kcal + ' / ' + r.col.p + ')');
   /* Le lundi 28 est un jour de combat : la collation combat ajoute 388 kcal. */
-  /* 29 septembre : le petit-dejeuner devient un shake (boisson de soja, skyr, flocons, banane,
-     miel, amandes) : -45 kcal et -6 g de proteines par jour, les deux oeufs du matin sortent. */
-  ok(r.jour.kcal === 3569 && r.jour.p === 168, 'un jour de combat : 3 569 kcal, 168 g de protéines, cinq prises (' + r.jour.kcal + ' / ' + r.jour.p + ')');
+  /* 29 septembre : le petit-dejeuner devient un shake (boisson d'avoine, skyr, flocons, banane,
+     miel, amandes) : -27 kcal et -13 g de proteines par jour, les deux oeufs du matin sortent. */
+  ok(r.jour.kcal === 3587 && r.jour.p === 161, 'un jour de combat : 3 587 kcal, 161 g de protéines, cinq prises (' + r.jour.kcal + ' / ' + r.jour.p + ')');
   ok(r.oeufs === 14 && r.jambon === undefined, 'les courses : 14 œufs par semaine (la collation seule depuis le shake), plus de jambon (' + r.oeufs + ' / ' + r.jambon + ')');
-  ok(!r.cout.lignes.some(l => /Jambon/.test(l.label)) && r.cout.manque.join() === 'Boisson de soja', 'le coût ne compte plus de jambon ; seul la boisson de soja du shake attend son prix (son ticket) — les amandes ont le leur depuis le 25 ('  + r.cout.manque.join() + ')');
+  ok(!r.cout.lignes.some(l => /Jambon/.test(l.label)) && r.cout.manque.join() === 'Boisson d\'avoine', 'le coût ne compte plus de jambon ; seul la boisson d\'avoine du shake attend son prix (son ticket) — les amandes ont le leur depuis le 25 ('  + r.cout.manque.join() + ')');
   ok(r.plafond === Math.round(r.cout.mois), 'le plafond Nourriture posé par la Batcave suit le nouveau coût : ' + r.plafond + ' €');
   await fr.evaluate(() => document.querySelector('.nav-btn[data-page="repas"]') && document.querySelector('.nav-btn[data-page="repas"]').click());
   await page.waitForTimeout(300);

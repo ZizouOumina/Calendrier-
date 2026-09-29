@@ -49,7 +49,7 @@ console.log('\n== 320) Les 17 articles portent tous une adresse ==');
      est affichee d'un coup. C'est le seul jour ou ce test voit les 46 lignes. */
   const { ctx, fr } = await courses('2026-09-26T10:00:00+02:00');
   const l = await lignes(fr);
-  ok(l.length === 17, '17 articles affichés le 26, jour de l\'ancre — le jambon est sorti le 23 septembre, la boisson de soja du shake est entré le 29 (' + l.length + ')');
+  ok(l.length === 17, '17 articles affichés le 26, jour de l\'ancre — le jambon est sorti le 23 septembre, la boisson d\'avoine du shake est entré le 29 (' + l.length + ')');
   const muets = l.filter(x => !x.ou);
   ok(!muets.length, 'aucun article sans adresse (' + (muets.map(x => x.nom).join(', ') || 'aucun') + ')');
   /* Cinq destinations, pas une de plus : une faute de frappe dans OU_ARTICLE passerait

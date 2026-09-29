@@ -46,7 +46,7 @@ console.log('\n== 342) Le jour du premier ravitaillement : tout est dû, et tout
   const { ctx, fr } = await ouvrir('2026-09-27T16:00:00+02:00');
   const v = await vue(fr);
   ok(v.jour.length === 5, 'les cinq catégories sont dans la grille du jour (' + v.jour.length + ')');
-  ok(/17 à prendre/.test(v.resume), 'et le résumé annonce 17 articles — la boisson de soja du shake entre le 29 septembre (' + v.resume + ')');
+  ok(/17 à prendre/.test(v.resume), 'et le résumé annonce 17 articles — la boisson d\'avoine du shake entre le 29 septembre (' + v.resume + ')');
   ok(v.dates.every(t => /aujourd/i.test(t)), 'chacune dit « aujourd’hui »');
   ok(v.dates.every(t => /puis le/.test(t)), 'ET chacune dit sa fois suivante — c’est ce qui manquait');
   ok(/03 oct/.test(v.dates[0]) && /10 oct/.test(v.dates[1]) && /24 oct/.test(v.dates[2]),

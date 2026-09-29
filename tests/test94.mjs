@@ -47,7 +47,7 @@ console.log('\n== 330) Cinq catégories, toutes alimentaires, et le frais seul e
      paquet couvre presque trois semaines. Il portait déjà ce cycle-là tout en restant
      rangé dans le frais, et la catégorie annonçait donc un rythme qu'un de ses articles
      ne suivait pas. */
-  ok(/Chaque semaine/.test(hebdo.titre) && hebdo.n === 9, 'la liste hebdomadaire fait 9 articles — les amandes entrent le 24 septembre à la place du beurre de cacahuète, la boisson de soja du shake le 29 (' + hebdo.n + ')');
+  ok(/Chaque semaine/.test(hebdo.titre) && hebdo.n === 9, 'la liste hebdomadaire fait 9 articles — les amandes entrent le 24 septembre à la place du beurre de cacahuète, la boisson d\'avoine du shake le 29 (' + hebdo.n + ')');
   const t = await fr.evaluate(() => document.querySelector('.page[data-page="courses"]').textContent);
   ok(!/Riz/.test(hebdo.titre + '') && /Riz — 5 kg/.test(t) && /demande 4\u202f340 g/.test(t), 'le riz est en réserve : 5 kg achetés pour 4 340 g demandés');
   ok(!/Shampooing|Cotons-tiges|Nettoyant visage|Brosse à dents|Bain de bouche|Brossettes|Crème solaire|Lessive|Dentifrice/.test(t),
@@ -220,8 +220,8 @@ console.log('\n== 334d) La liste ne porte QUE de la nourriture ==');
   const ATTENDU = ['Poulet', 'Viande hachée 5 %', 'Skyr', 'Œufs',
                    'Pain complet', 'Bananes', 'Fruits (pommes, poires, oranges…)',
                    'Amandes ou noix nature',
-                   /* 29 septembre : la boisson de soja du shake, en dernier du frais */
-                   'Boisson de soja',
+                   /* 29 septembre : la boisson d\'avoine du shake, en dernier du frais */
+                   'Boisson d\'avoine',
                    'Légumes verts surgelés', 'Fromage en tranches',
                    'Riz', 'Pâtes', 'Flocons d\'avoine',
                    /* 26 septembre : le miel passe au cycle de cinq semaines, en pot de 750 g */
@@ -281,10 +281,10 @@ console.log('\n== 334) Ses prix a lui, releves en magasin -- et rien d\'invente 
      relevees. Le panneau le DIT, la nomme, et la sort du total : c'est le trou qu'on
      montre, jamais un chiffre invente pour le boucher. */
   /* 25 septembre au soir : leur prix est releve (12 EUR/kg) -- plus de ligne hors total. */
-  /* 29 septembre : la boisson de soja du shake n'a pas encore son prix (il attend son ticket) -- le
+  /* 29 septembre : la boisson d\'avoine du shake n'a pas encore son prix (il attend son ticket) -- le
      panneau le nomme, et c'est la seule ligne hors total. */
-  ok(!/Amandes/.test((t.match(/[^.]*hors total[^.]*/) || [''])[0]) && (!/hors total/.test(t) || /soja/i.test(t)),
-     'une seule ligne hors total, la boisson de soja du shake — les amandes ont leur prix (' + t.slice(0, 120) + ')');
+  ok(!/Amandes/.test((t.match(/[^.]*hors total[^.]*/) || [''])[0]) && (!/hors total/.test(t) || /avoine/i.test(t)),
+     'une seule ligne hors total, la boisson d\'avoine du shake — les amandes ont leur prix (' + t.slice(0, 120) + ')');
   ok(/Budget/.test(t) && /Nourriture/.test(t),
      'et il dit toujours où vivent les montants payés : Budget → Nourriture');
   /* Les prix sur les lignes elles-memes. La creatine est hors plan de repas -- elle
@@ -295,12 +295,12 @@ console.log('\n== 334) Ses prix a lui, releves en magasin -- et rien d\'invente 
      Les assertions ci-dessous cherchent ce que le code ÉCRIT, pas ce que le CSS affiche. */
   const lignes = await fr.evaluate(() =>
     [...document.querySelectorAll('#courses-grid .cat-card li')].map(l => l.textContent));
-  const muettes = lignes.filter(l => !/€|Créatine|^Boisson de soja/.test(l));
+  const muettes = lignes.filter(l => !/€|Créatine|^Boisson d\'avoine/.test(l));
   ok(lignes.length > 0 && muettes.length === 0,
      'les ' + lignes.length + ' lignes du jour portent toutes leur prix' +
      (muettes.length ? ' — muettes : ' + muettes.join(' · ') : ''));
-  ok(lignes.filter(l => /prix à relever/.test(l)).every(l => /^Boisson de soja/.test(l)) && lignes.some(l => /^Amandes/.test(l) && /12,00 €\/kg/.test(l)),
-     'seul la boisson de soja du shake dit « prix à relever » ; les amandes à 12 €/kg');
+  ok(lignes.filter(l => /prix à relever/.test(l)).every(l => /^Boisson d\'avoine/.test(l)) && lignes.some(l => /^Amandes/.test(l) && /12,00 €\/kg/.test(l)),
+     'seul la boisson d\'avoine du shake dit « prix à relever » ; les amandes à 12 €/kg');
   ok(!lignes.some(l => /Beurre de cacahuète/.test(l)), 'plus de beurre de cacahuète');
   ok(lignes.some(l => /Poulet/.test(l) && /7,50 €\/kg/.test(l)),
      'le poulet porte le prix de sa boucherie : 7,50 €/kg');
