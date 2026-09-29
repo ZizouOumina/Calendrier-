@@ -56,7 +56,8 @@ console.log('\n== 320) Les 17 articles portent tous une adresse ==');
      silencieusement en pastille, et l'enverrait dans un magasin qui n'existe pas.
      « Mercadona » et « Mercadillo » sont sortis de cette liste le 21 septembre -- les
      garder tolerees aurait laisse revenir en silence deux adresses ou il ne va plus. */
-  const connues = ['Boucherie', 'Lidl', 'Alcampo', 'Frutería', 'En ligne'];
+  /* 29 septembre : Mercadona revient, pour la boisson d'avoine Alitey du shake */
+  const connues = ['Boucherie', 'Lidl', 'Alcampo', 'Mercadona', 'Frutería', 'En ligne'];
   const inconnues = [...new Set(l.map(x => x.ou.split(' · ')[0]))].filter(x => connues.indexOf(x) === -1);
   ok(!inconnues.length, 'aucune adresse inventée (' + (inconnues.join(', ') || 'aucune') + ')');
   await ctx.close();
@@ -103,8 +104,10 @@ console.log('\n== 322) Les trajets qui font gagner de l\'argent ==');
   /* Mercadona n'a plus aucune ligne. Ce n'est pas un oubli : ce qu'il y prenait etait
      l'hygiene et le menage, sortis de la liste le 20 septembre, et son skyr n'y existait
      pas. Une pastille « Mercadona » qui reapparaitrait serait donc un trajet pour rien. */
-  ok(!l.some(x => /Mercadona|Mercadillo/.test(x.ou || '')),
-     'plus aucune ligne n\'envoie à Mercadona ni au mercadillo');
+  /* 29 septembre : une exception, et une seule -- la boisson d'avoine Alitey du shake, que
+     seul Mercadona vend (un pack toutes les deux semaines). */
+  ok(!l.some(x => /Mercadona|Mercadillo/.test(x.ou || '') && !/^Boisson d'avoine/.test(x.nom)),
+     'une seule ligne envoie à Mercadona — la boisson d\'avoine ; aucune au mercadillo');
   ok(chez('Créatine monohydrate') === 'En ligne', 'la créatine se commande en ligne (' + chez('Créatine monohydrate') + ')');
   await ctx.close();
 }

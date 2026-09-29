@@ -73,8 +73,8 @@ console.log('\n== 180) Sans ajustement : plan de base, liste = plan × 7 ==');
   ok(c.items.some(t => /^Skyr — 1,95 kg\b/.test(t) && /demande 1\u202f925 g/.test(t) && /13 boîtes de 150 g/.test(t))
   && !c.items.some(t => /^(Dattes|Cacahuètes)/.test(t)),
      'skyr : 1,95 kg en 13 boîtes de 150 g pour 1 925 g demandés');
-  ok(c.items.some(t => /^Boisson d\'avoine — 3 L\b/.test(t) && /3 briques de 1 L/.test(t) && /demande 2\u202f100 ml/.test(t)),
-     'boisson d\'avoine : 3 briques de 1 L pour les 2 100 ml du shake');
+  ok(c.items.some(t => /^Boisson d\'avoine — 6 L\b/.test(t) && /1 pack de 6 L/.test(t) && /demande 4\u202f200 ml/.test(t) && /0,95 €\/L/.test(t)),
+     'boisson d\'avoine : un pack de 6 L (Mercadona, 0,95 €/L) toutes les deux semaines pour les 4 200 ml du shake');
   /* L'HUILE etait la vraie erreur : 288 ml par semaine, donc 1 152 sur 4 semaines alors
      que la liste disait 1 000 -- quatre jours de rupture par cycle, tous les mois. Elle est
      passee a 5 semaines. Depuis le retrait du poisson elle monte a 315 ml par semaine
@@ -144,13 +144,13 @@ console.log('\n== 181) Avec +150 kcal : le dîner et les courses l\'écrivent ==
   /* 3 131 + 144 : la boucle demande +150 kcal, mais les pates s'ajustent par pas de 10 g,
      donc elle en ajoute 144. On annonce l'ecart REEL entre les deux journees, pas la
      consigne -- sinon la soustraction affichee ne tombe pas juste. */
-  ok(/\/ 3343 kcal \(plan 3199 \+ 144\)/.test(sub), 'cible du jour : ' + sub);
+  ok(/\/ 3349 kcal \(plan 3205 \+ 144\)/.test(sub), 'cible du jour : ' + sub);
   /* cocher tout le dîner : l\'apport consommé porte les 150 kcal */
   /* un clic redessine la grille : on re-cherche la première case non cochée du dîner à chaque tour */
   await fr.evaluate(() => { for(let i = 0; i < 10; i++){ const card = [...document.querySelectorAll('.meal-card')].find(c => /Dîner/.test(c.querySelector('.mtitle').textContent)); const cb = card && card.querySelector('input:not(:checked)'); if(!cb) break; cb.click(); } });
   await page.waitForTimeout(200);
   const sub2 = await fr.evaluate(() => document.getElementById('meal-kcal-sub').textContent);
-  ok(/^934 \/ 3343 kcal/.test(sub2), 'dîner coché : ' + sub2);
+  ok(/^934 \/ 3349 kcal/.test(sub2), 'dîner coché : ' + sub2);
   await page_(fr, 'courses');
   const c = await fr.evaluate(() => ({ items: [...document.querySelectorAll('#courses-grid label, #courses-grid-plus label')].map(l => l.textContent), note: document.getElementById('courses-plan-note').textContent }));
   /* L'ajustement suit le sac : +280 g par semaine font +1 120 g sur quatre semaines.

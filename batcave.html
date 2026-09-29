@@ -8166,7 +8166,7 @@
   var ALIMENTS = {
     flocons:   {kcal:389, p:13.2, g:66.0, l:6.9},
     skyr:      {kcal:63,  p:10.5, g:4.0,  l:0.2},
-    avoine:    {kcal:45,  p:1.0,  g:7.0,  l:1.5},   /* boisson d'avoine nature, pour 100 ml */
+    avoine:    {kcal:47,  p:1.6,  g:8.2,  l:0.7},   /* boisson d'avoine Alitey (Mercadona), son etiquette du 29 septembre, pour 100 ml */
     oeufs:     {kcal:143, p:12.6, g:0.7,  l:9.5,  piece:50},
     amandes:   {kcal:579, p:21.2, g:21.6, l:49.9},
     banane:    {kcal:89,  p:1.1,  g:22.8, l:0.3,  piece:120},
@@ -12016,7 +12016,8 @@
        seul prix Alcampo (5,30 EUR/kg). Les amandes qui le remplacent sont restees un jour
        sans prix -- « prix a relever », hors total. 25 septembre au soir : son releve,
        12 EUR le kilo. */
-    amandes:  {eur:12.00, par:'kg',    quand:'25 sept.'}
+    amandes:  {eur:12.00, par:'kg',    quand:'25 sept.'},
+    avoine:   {eur:0.95,  par:'L',     ou:'Mercadona', quand:'29 sept.', detail:'5,70 \u20ac le pack de 6 briks de 1 L (Alitey)'}
   };
   /* La cle du besoin par libelle : c'est elle qui relie une ligne de courses a son prix. */
   var CLE_PRIX = {
@@ -12098,10 +12099,7 @@
            depuis le 28 (collation combat), soit 445 g. Le sachet de 200 g est le format
            courant du rayon ; nature, non salees. Moitie noix si possible : le poisson est
            sorti du plan, et les noix sont la seule source d'omega-3 qui reste. */
-        art('Amandes ou noix nature', B.amandes, 200, poids, 'sachet'),
-        /* 29 septembre : le shake du matin, 300 ml par jour. En DERNIER dans la categorie :
-           les coches sont indexees par position, une ligne ajoutee au bout ne decale rien. */
-        art('Boisson d\'avoine', B.avoine, 1000, vol, 'brique')
+        art('Amandes ou noix nature', B.amandes, 200, poids, 'sachet')
       ]},
       /* Les legumes surgeles ont leur propre cycle, plus court que les autres reserves :
          DEUX semaines. Sa contrainte du 20 septembre, et elle est physique -- 10 kg de
@@ -12115,7 +12113,12 @@
          est ecrit, et « Chaque semaine » redevient vrai pour ses huit lignes. */
       {cat:'Toutes les 2 semaines', semaines:2, ancre:ANCRE_COURSES, items:[
         art('Légumes verts surgelés', B.legumes * 2, 1000, poids, 'sachet'),
-        art('Fromage en tranches', B.fromage * 2, 400, poids, 'paquet')
+        art('Fromage en tranches', B.fromage * 2, 400, poids, 'paquet'),
+        /* 29 septembre : la boisson d'avoine du shake, 300 ml par jour, 2,1 L par semaine. Il
+           l'achete en PACK DE 6 BRIKS DE 1 L chez Mercadona (Alitey, 5,70 EUR) : un pack couvre
+           deux semaines (4,2 L) avec 1,8 L de marge, d'ou ce cycle. En DERNIER dans la
+           categorie : les coches sont indexees par position, rien ne se decale. */
+        art('Boisson d\'avoine', B.avoine * 2, 6000, vol, 'pack')
       ]},
       /* Cycle de 4 semaines, ancre au samedi 26 septembre : 26/9, 24/10, 21/11, 19/12. */
       {cat:'Réserves — toutes les 4 semaines', semaines:4, ancre:ANCRE_COURSES, items:[
@@ -12306,7 +12309,7 @@
     'Fromage en tranches': 'Lidl · cuajo vegetal',
     'Riz': 'Lidl', 'P\u00e2tes': 'Lidl', 'Flocons d\'avoine': 'Lidl',
     'L\u00e9gumes verts surgel\u00e9s': 'Lidl', 'Miel': 'Lidl', 'Amandes ou noix nature': 'Lidl',
-    'Boisson d\'avoine': 'Lidl',
+    'Boisson d\'avoine': 'Mercadona · Alitey',
     'Bananes': 'Lidl', 'Fruits (pommes, poires, oranges\u2026)': 'Frutería · de saison',
     'Cr\u00e9atine monohydrate': 'En ligne'
   };
@@ -12499,7 +12502,7 @@
     if(budget){
       var cs = coutSemaine();
       budget.innerHTML = '<b style="color:var(--ink);">' + eur(cs.mois) + ' par mois</b> \u00b7 ' +
-        eur(cs.total) + ' par semaine, calcul\u00e9 sur <b style="color:var(--ink-dim);">tes</b> prix relev\u00e9s en magasin les 20, 21 et 25 septembre, ligne par ligne.' +
+        eur(cs.total) + ' par semaine, calcul\u00e9 sur <b style="color:var(--ink-dim);">tes</b> prix relev\u00e9s en magasin les 20, 21, 25 et 29 septembre, ligne par ligne.' +
         (cs.manque.length ? ' <b style="color:var(--warn);">' + cs.manque.join(', ') + '</b> : prix pas encore relev\u00e9, donc hors total \u2014 le chiffre montera quand il y sera.' : '') +
         ' Ce montant est le <b style="color:var(--ink-dim);">plan</b> ; ce que tu as vraiment pay\u00e9 se saisit dans <b style="color:var(--ink-dim);">Budget \u2192 Nourriture</b>, et c\'est lui qui compte dans tes d\u00e9penses du mois.';
     }
