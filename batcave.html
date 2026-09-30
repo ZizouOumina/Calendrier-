@@ -8737,14 +8737,33 @@
        rows chargent deja, et le tatami charge les trapezes et les avant-bras. Restent six
        exercices par seance, trois paires, ~40 minutes : le dos garde 14 series par semaine,
        les pectoraux-triceps 14, les epaules laterales 4 (lundi), et le cou une direction par
-       seance (flexion lundi, laterale mardi, extension jeudi) -- il sert au combat. */
-    {type:'Haut lourd', days:[4], duree:'40 min', repos:['45 s / 90 s', '45 s / 75 s', '30 s / 60 s'], exercises:[
+       seance (flexion lundi, laterale mardi, extension jeudi) -- il sert au combat.
+       Revu le soir meme (bloc suivant) : il ne veut pas d'un programme calibre « debutant ». */
+    /* ===== Le meilleur programme possible, pas un programme « de debutant » ===== (30 septembre, tard)
+       Sa demande : « me considere pas comme un debutant, je veux juste le meilleur programme
+       possible ». La version a six exercices avait le defaut de toutes les precedentes : les
+       jambes et les epaules laterales une seule fois par semaine. A volume egal, deux passages
+       par semaine font au moins aussi bien, et repartissent les series sur des seances plus
+       fraiches. Donc :
+         - le JEUDI (seul jour sans combat) devient haut lourd + jambes : split squat et
+           soulevé de terre roumain y reviennent, 3 series chacun -- les jambes passent a deux
+           seances par semaine ;
+         - les élévations laterales reviennent le jeudi -- deux seances, 7 series ;
+         - le lundi retrouve un curl (3 series de travail direct des biceps) et le cou en entier,
+           flexion et extension en superset ;
+         - restent dehors : extension triceps (dips + pompes + pike = 14 series de poussee),
+           face pulls et shrugs (rows coudes hauts, et le JJB charge les trapezes).
+       Huit exercices le lundi et le jeudi, quatre paires, ~50 minutes ; le mardi ne bouge pas.
+       Volumes par semaine : dos 14, pectoraux-triceps 14, epaules laterales 7, biceps 3 +
+       14 indirects, quadriceps 7, ischios-fessiers 10, cou 9. */
+    {type:'Haut lourd', days:[4], duree:'50 min', repos:['45 s / 90 s', '45 s / 75 s', '45 s / 75 s', '30 s / 60 s'], exercises:[
       {name:'Tractions', reps:'4×6-12'},{name:'Dips', reps:'4×8-15'},
       {name:'Rows australiens pieds surélevés', reps:'3×10-15'},{name:'Pompes déclinées', reps:'3×8-12'},
+      {name:'Split squat bulgare', reps:'3×8-12/jambe'},{name:'Soulevé de terre roumain une jambe', reps:'3×8-12/jambe'},
+      {name:'Élévations latérales', reps:'3×12-20', pas:0.25, depart:1},
       /* 25 septembre, a sa demande : le seul travail du bas des abdos sous charge, le jeudi
          (seul jour sans combat), pas a l'echec. Lest : une bouteille coincee entre les pieds. */
-      {name:'Relevés de jambes suspendus', reps:'3×8-15', pas:0.5, depart:1},
-      {name:'Extension du cou', reps:'3×12-20', pas:0.25, depart:1.25}
+      {name:'Relevés de jambes suspendus', reps:'3×8-15', pas:0.5, depart:1}
     ]},
     {type:'Bas complet', days:[2], duree:'47 min', exercises:[
       {name:'Split squat bulgare', reps:'4×8-12/jambe'},{name:'Soulevé de terre roumain une jambe', reps:'4×10-12/jambe'},
@@ -8752,11 +8771,11 @@
       {name:'Crunch lesté', reps:'3×12-20', pas:0.25, depart:3},
       {name:'Inclinaisons latérales du cou', reps:'3×12-20/côté', pas:0.25, depart:1.25}
     ]},
-    {type:'Haut volume', days:[1], duree:'40 min', exercises:[
+    {type:'Haut volume', days:[1], duree:'50 min', exercises:[
       {name:'Tractions', reps:'4×8-15'},{name:'Dips', reps:'4×10-20'},
       {name:'Rows prise large coudes hauts', reps:'3×12-15'},{name:'Pike push-ups', reps:'3×6-10'},
-      {name:'Élévations latérales', reps:'4×12-20', pas:0.25, depart:1},
-      {name:'Flexion du cou', reps:'3×12-20', pas:0.25, depart:1.25}
+      {name:'Élévations latérales', reps:'4×12-20', pas:0.25, depart:1},{name:'Curl barre basse', reps:'3×10-15'},
+      {name:'Flexion du cou', reps:'3×12-20', pas:0.25, depart:1.25},{name:'Extension du cou', reps:'3×12-20', pas:0.25, depart:1.25}
     ]},
     {type:'Bras · épaules · mollets', days:[6], duree:'53 min', exercises:[
       {name:'Chin-ups prise serrée', reps:'3×6-12'},{name:'Pompes archer ou diamant', reps:'3×8-12'},
@@ -15293,7 +15312,7 @@
   }
 
   var CONSIGNES = {
-    'Sport': "1 km en courant jusqu'au parc, allure conversation : c'est l'échauffement. Séance du jour dans l'onglet Sport, surcharge progressive : les charges à faire sont déjà calculées. Six exercices, trois paires, une quarantaine de minutes. La fin de séance : le cou (flexion le lundi, latéral le mardi après le crunch, extension le jeudi). Il ne faut qu'un poids en main — si le créneau déborde, ça se fait à la maison le soir, jamais on ne le saute. Retour en marchant, en trottinant le mardi. Le lundi, JJB à 10:30 : ne va pas à l'échec, garde de l'énergie pour le tatami.",
+    'Sport': "1 km en courant jusqu'au parc, allure conversation : c'est l'échauffement. Séance du jour dans l'onglet Sport, surcharge progressive : les charges à faire sont déjà calculées. Lundi et jeudi : huit exercices, quatre paires, une cinquantaine de minutes — le jeudi porte aussi les jambes (split squat, soulevé de terre roumain). Le cou : flexion et extension le lundi, latéral le mardi après le crunch. Il ne faut qu'un poids en main — si le créneau déborde, ça se fait à la maison le soir, jamais on ne le saute. Retour en marchant, en trottinant le mardi. Le lundi, JJB à 10:30 : ne va pas à l'échec, garde de l'énergie pour le tatami.",
     'Anki matinal': "Jour off de sport, jusqu'au 31 octobre : une heure de cartes de dentaire, deux Pomodoros 25 + 5. Toutes les échéances, puis les cartes des matières faibles. Le 1er novembre, ce créneau passe aux projets comme les autres — la file se vide alors dans Anki 1 et Anki 2.",
     'Projets perso matinal': "05:30 : exécution pure d'une tâche déjà décidée la veille — montage, import, rédaction, fiches, code. Jamais une décision : à cette heure-là on exécute, on n'arbitre pas. Ce que tu feras s'écrit la veille au soir, à la clôture. Pas de minuteur : tu travailles jusqu'à la douche de 06:30.",
     'Anki 1': "Toutes les échéances de dentaire, deux Pomodoros 25 + 5 sans téléphone. File vide avant la fin : cartes du cours suivant à partir des notes.",

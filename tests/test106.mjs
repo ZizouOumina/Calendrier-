@@ -65,14 +65,17 @@ console.log('\n== 262) Les élévations latérales, lundi et samedi ==');
     const o = {}; window.__bcSessionsSport().forEach(x => { o[x.type] = {duree: x.duree, noms: x.exercises.map(e => e.name)}; });
     return o;
   });
-  /* 30 septembre, six exercices par seance : elles ne restent que le lundi, en 4 series. */
-  ok(s['Haut volume'].noms.includes('Élévations latérales') && !s['Haut lourd'].noms.includes('Élévations latérales'), 'présentes le lundi (volume), plus le jeudi depuis la simplification du 30 septembre');
+  /* 30 septembre au soir : deux passages par semaine -- le lundi (4 series) et le jeudi (3). */
+  ok(s['Haut volume'].noms.includes('Élévations latérales') && s['Haut lourd'].noms.includes('Élévations latérales'), 'présentes le lundi (volume) et le jeudi (lourd) : deux passages par semaine');
   ok(!s['Bas complet'].noms.includes('Élévations latérales'), 'et pas le mardi');
   const hv = s['Haut volume'].noms, sa = s['Bras · épaules · mollets'].noms;
   ok(hv.indexOf('Élévations latérales') < hv.indexOf('Flexion du cou'), 'lundi : avant le cou, qui reste le finisseur');
-  ok(hv.length === 6 && s['Haut lourd'].noms.length === 6 && s['Bas complet'].noms.length === 6, 'six exercices par séance, trois paires (' + [hv.length, s['Haut lourd'].noms.length, s['Bas complet'].noms.length].join(' / ') + ')');
+  const hl = s['Haut lourd'].noms;
+  ok(hv.length === 8 && hl.length === 8 && s['Bas complet'].noms.length === 6, 'huit exercices le lundi et le jeudi, six le mardi (' + [hv.length, hl.length, s['Bas complet'].noms.length].join(' / ') + ')');
+  ok(hl.includes('Split squat bulgare') && hl.includes('Soulevé de terre roumain une jambe'), 'le jeudi porte aussi les jambes : elles passent à deux séances par semaine');
+  ok(hv.includes('Curl barre basse') && hv.includes('Flexion du cou') && hv.includes('Extension du cou') && !hv.includes('Face pulls') && !hv.includes('Shrugs suspendus'), 'lundi : curl et cou complet ; face pulls et shrugs restent dehors');
   ok(sa.indexOf('Élévations latérales') === sa.indexOf('Shrugs suspendus') + 1, 'samedi : dans le bloc épaules, juste après les shrugs');
-  ok(s['Haut lourd'].duree === '40 min' && s['Haut volume'].duree === '40 min', 'durées annoncées : 40 min (lourd) et 40 min (volume)');
+  ok(s['Haut lourd'].duree === '50 min' && s['Haut volume'].duree === '50 min', 'durées annoncées : 50 min (lourd) et 50 min (volume)');
   await ctx.close();
 }
 
