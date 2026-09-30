@@ -1,8 +1,20 @@
 # Le protocole du tema (40 minutes par tema)
 
-Dans le bloc « Étudier en avance ». Pour les 16 temas de retard : deux le jeudi 1er, puis trois
-par jour jusqu'au 7 octobre — le troisième dans le bloc « Español · escribir » de 14:00, résumé
-écrit **en espagnol** (il rattrape le cours et pratique l'écrit à la fois). Un par jour ensuite.
+Dans le bloc « Étudier en avance ». Pour les 16 temas de retard, trois par jour : le troisième
+dans le premier bloc Español du jour, résumé écrit **en espagnol** (il rattrape le cours et
+pratique l'écrit à la fois). Un par jour ensuite.
+
+| Jour | Temas 1 et 2 | Tema 3, en espagnol | Total |
+|---|---|---|---|
+| Jeu. 1 | 09:20 → 11:20 (Étudier en avance) | — (jour 1 : on commence à deux) | 2 |
+| Ven. 2 | 08:20 → 10:20 (Étudier en avance) | 05:30 (Español · escribir largo) | 5 |
+| Sam. 3 | 09:20 → 11:20 (Approfondir, suspendu cette semaine) | 11:20 (Español · gramática) | 8 |
+| Dim. 4 | 05:30 (Projets perso matinal) et 17:30 (Projets perso 3) | — | 10 |
+| Lun. 5 | 08:20 → 10:05 (Étudier en avance) | 14:00 (Español · gramática) | 13 |
+| Mar. 6 | 09:20 → 11:20 (Étudier en avance) | 14:00 (Español · escribir) | **16** |
+
+Mercredi 7 en réserve si un jour a glissé. Si un soir la vérification rate ou les cartes sont
+floues, on redescend à deux le lendemain : un tema appris vaut mieux que trois survolés.
 
 ## 1. Seul — 15 minutes, IA fermée
 Lis le tema. Écris ton résumé **de mémoire**, livre fermé, en dix lignes maximum :

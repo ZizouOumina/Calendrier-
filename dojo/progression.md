@@ -9,7 +9,7 @@ l'IA, vérifiée — et partagée.
 
 | Livrable | Échéance | État |
 |---|---|---|
-| 16 temas rattrapés : 2 le jeudi 1er, puis 3 par jour — le 3e résumé écrit en espagnol dans le bloc « Español · escribir » (sa décision du 30 sept. ; la phase Español ne bouge pas) | mercredi 7 octobre | 0 / 16 |
+| 16 temas rattrapés : 2 le jeudi 1er, puis 3 par jour (2 le dimanche) — le 3e résumé écrit en espagnol dans le premier bloc Español du jour ; détail dans `bibliotheque/protocole-tema.md` (sa décision du 30 sept. ; la phase Español ne bouge pas) | mardi 6 octobre (mercredi 7 en réserve) | 0 / 16 |
 | Lexique dentaire français ↔ espagnol vérifié, partagé à 3 compañeros au moins | samedi 31 octobre | pas commencé |
 | Outil de quiz sur ses temas, construit par lui dans Claude Code | dimanche 29 novembre | novembre |
 | Boutique Shopify en ligne | lundi 30 novembre | novembre |
@@ -18,7 +18,7 @@ l'IA, vérifiée — et partagée.
 ## Les indicateurs (on mesure des résultats, pas des efforts)
 | Indicateur | Cible | Semaine 1 |
 |---|---|---|
-| Temas faits avec le protocole | 3 / jour jusqu'au 7 oct., puis 1 / jour | — |
+| Temas faits avec le protocole | 3 / jour jusqu'au 6 oct., puis 1 / jour | — |
 | Erreurs de l'IA trouvées contre le cours | le chiffre compte, pas la cible | — |
 | Notes aux questionnaires | ≥ 8/10 | — |
 | Choses livrées à quelqu'un d'autre | 1 par module | — |
