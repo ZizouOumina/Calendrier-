@@ -8156,14 +8156,14 @@
        journee reste au-dessus de 150 g. Le skyr, fermente, passe dans le mixeur ; les deux
        oeufs du matin sortent (ceux de la collation restent). Il a un mixeur. */
     {name:'Petit-déjeuner', items:['Boisson d\'avoine (300 ml)','Skyr (150g)','Flocons d\'avoine (80g)','Banane (120g)','Miel (20g)','Amandes ou noix nature (30g)']},
-    {name:'Déjeuner', items:['Féculent cru — Riz 155g','Protéine crue — rotation du jour','Légumes verts (200g)','Huile d\'olive — selon la protéine, dont 10 ml dans la sauce','Sauce skyr (65g) — mélangée à froid, au moment de manger']},
+    {name:'Déjeuner', items:['Féculent cru — Riz 155g','Protéine crue — rotation du jour','Légumes verts (200g)','Huile d\'olive — selon la protéine, dont 10 ml versés froids à l\'assiette']},
     /* 23 septembre : le jambon (charcuterie, 40 g par jour) cede la place a deux oeufs durs,
        cuits le dimanche avec ceux du petit-dejeuner. La viande transformee etait le seul
        aliment du plan classe cancerogene ; deux oeufs apportent plus de proteines (12,6 g
        contre 7,2) et environ 100 kcal de plus -- qui vont avec le rythme de prise releve
        le meme jour (objectif poids 72 kg). */
-    {name:'Collation entraînement', items:['Pain complet (60g)','2 œufs durs (100g)','Fromage (20g)','Amandes ou noix nature (25g)']},
-    {name:'Dîner', items:['Féculent cru — Pâtes 105g','Protéine crue — rotation du jour','Légumes verts (150g)','Huile d\'olive — selon la protéine, dont 5 ml dans la sauce','Sauce skyr (60g) — mélangée à froid, au moment de manger','1 fruit (~120g)','Créatine — 5 g']},
+    {name:'Collation entraînement', items:['Pain complet (60g)','2 œufs durs (100g)','Fromage (20g)','Amandes ou noix nature (40g)']},
+    {name:'Dîner', items:['Féculent cru — Pâtes 105g','Protéine crue — rotation du jour','Légumes verts (150g)','Huile d\'olive — selon la protéine, dont 5 ml versés froids à l\'assiette','1 fruit (~120g)','Créatine — 5 g']},
     /* 25 septembre, le regime combat : une cinquieme prise, les QUATRE jours de combat
        seulement (jourDeCombat). A 10:05 avant le JJB ; le mardi, avec la collation de 14:50
        (la Muay Thai est a 19:30, le diner a 18:00). Rangee EN DERNIER dans la liste pour que
@@ -8200,8 +8200,10 @@
     huile:     {kcal:884, p:0.0,  g:0.0,  l:100.0}
   };
   var CLE_PROTEINE = {'Poulet':'poulet', 'Viande hachée 5 %':'hachee'};
-  /* La sauce au skyr, en grammes : c'est l'ancienne collation du soir (125 g) repartie. */
-  var SAUCE_SKYR = {dej:65, din:60};
+  /* 29 septembre : plus de sauce au skyr (sa decision, il la trouve immangeable). Les
+     ~80 kcal et ~13 g de proteines qu'elle apportait reviennent par +15 g d'amandes dans
+     la collation d'entrainement (25 -> 40 g). Le gout des plats : citron, moutarde,
+     harissa, tomate concassee, epices -- presque zero calorie, donc hors du plan. */
   /* Ce que contient chaque repas, dans l'ordre des items affiches. « brut » ignore la
      boucle poids -> calories : la liste de courses l'ajoute elle-meme, une seule fois. */
   /* ===== Les portions de reprise ===== (28 septembre au soir)
@@ -8225,16 +8227,16 @@
   }
   function compoRepasPlein(nom, iso, brut){
     if(nom === 'Petit-déjeuner') return [{c:'avoine', q:300}, {c:'skyr', q:150}, {c:'flocons', q:80}, {c:'banane', q:120}, {c:'miel', q:20}, {c:'amandes', q:30}];
-    if(nom === 'Collation entraînement') return [{c:'pain', q:60}, {c:'oeufs', q:100}, {c:'fromage', q:20}, {c:'amandes', q:25}];
+    if(nom === 'Collation entraînement') return [{c:'pain', q:60}, {c:'oeufs', q:100}, {c:'fromage', q:20}, {c:'amandes', q:40}];
     if(nom === 'Collation combat') return [{c:'banane', q:120}, {c:'flocons', q:50}, {c:'amandes', q:15}];
     if(nom === 'Déjeuner'){
       var nd = proteineDuJour('dej', iso), pd = PROTEINES[nd].dej;
-      return [{c:'riz', q:FECULENTS.dej.g}, {c:CLE_PROTEINE[nd], q:pd.g}, {c:'legumes', q:200}, {c:'huile', q:pd.huile}, {c:'skyr', q:SAUCE_SKYR.dej}];
+      return [{c:'riz', q:FECULENTS.dej.g}, {c:CLE_PROTEINE[nd], q:pd.g}, {c:'legumes', q:200}, {c:'huile', q:pd.huile}];
     }
     if(nom === 'Dîner'){
       var nn = PROTEINES[proteineDuJour('din', iso)].din;
       var pates = FECULENTS.din.g + (brut ? 0 : grammesAjustement(ajustementKcalPour(iso || todayISO), FECULENTS.din.kcalG));
-      return [{c:'pates', q:pates}, {c:CLE_PROTEINE[proteineDuJour('din', iso)], q:nn.g}, {c:'legumes', q:150}, {c:'huile', q:nn.huile}, {c:'skyr', q:SAUCE_SKYR.din}, {c:'fruit', q:120}];
+      return [{c:'pates', q:pates}, {c:CLE_PROTEINE[proteineDuJour('din', iso)], q:nn.g}, {c:'legumes', q:150}, {c:'huile', q:nn.huile}, {c:'fruit', q:120}];
     }
     return [];
   }
@@ -11899,7 +11901,7 @@
     var dim = jours[0].iso;
     document.getElementById('prep-desc').textContent =
       'Une session le dimanche à 14:30, deux heures, pour les sept repas de midi et les sept du soir. ' +
-      'Quatorze boîtes : quatre jours au frigo, trois au congélateur. Le petit-déjeuner et la collation ne se préparent pas — ils s’assemblent en cinq minutes. La sauce au skyr non plus : elle ne va jamais dans les boîtes.';
+      'Quatorze boîtes : quatre jours au frigo, trois au congélateur. Le petit-déjeuner et la collation ne se préparent pas — ils s’assemblent en cinq minutes.';
     /* Ce qu'il y a a cuire : chaque poste, cru, et ce qu'il pesera cuit. */
     var postes = ['riz','pates','poulet','hachee','legumes'];
     host.innerHTML = postes.filter(function(c){ return T[c] > 0; }).map(function(c){
@@ -11933,9 +11935,8 @@
       'Quatorze boîtes, écrites depuis le plan du jour — pas depuis une recette. Les quatre premiers jours vont au frigo, les trois derniers au congélateur.';
     document.getElementById('prep-boites').innerHTML = jours.map(function(j, i){
       var ou = i < 4 ? 'frigo' : 'congélateur';
-      /* Ce qui ne va PAS dans la boite : le fruit (entier, a cote) et la sauce au skyr (faite au
-         moment de manger -- cuite puis rechauffee, elle tranche ; congelee, elle rend de l'eau). */
-      var dansBoite = function(x){ return x.c !== 'fruit' && x.c !== 'skyr'; };
+      /* Ce qui ne va PAS dans la boite : le fruit (entier, a cote). */
+      var dansBoite = function(x){ return x.c !== 'fruit'; };
       var ligne = function(x){
         var n = NOM_ALIMENT[x.c] || x.c;
         return '<li>' + escapeHtml(n) + ' — ' + (x.c === 'huile' ? Math.round(x.q) + ' ml' : poids(x.q)) + '</li>';
@@ -11949,8 +11950,8 @@
     }).join('');
     document.getElementById('prep-regles').innerHTML = [
       ['Le petit-déjeuner', 'un shake : 300 ml de boisson d\'avoine, 150 g de skyr, 80 g de flocons, une banane, 20 g de miel, 30 g d\'amandes — 40 secondes de mixeur, à boire en dix minutes'],
-      ['La collation d\'entraînement', 'pain, 2 œufs durs, fromage, une poignée d\'amandes — les œufs sont cuits le dimanche ; le reste s\'assemble au moment de partir'],
-      ['La sauce au skyr', 'jamais dans la boîte : réchauffer la boîte d\'abord, puis mélanger le skyr hors du feu (65 g à midi, 60 g le soir). Un bocal de base (skyr, ail, citron, sel) tient trois jours au frigo'],
+      ['La collation d\'entraînement', 'pain, 2 œufs durs, fromage, 40 g d\'amandes — les œufs sont cuits le dimanche ; le reste s\'assemble au moment de partir'],
+      ['Le goût', 'l\'huile d\'olive froide à l\'assiette, puis ce qui ne compte pas : citron, moutarde, harissa, tomate concassée, ail, épices. Sans limite'],
       ['Réchauffer à la poêle', 'la boîte vidée dans la poêle avec 2 à 3 cuillères d\'eau, couvercle, feu moyen, 4 à 5 min, puis 1 min à découvert. Brûlant jusqu\'au cœur. Pas l\'air fryer : il dessèche le riz et les pâtes'],
       ['Le fruit du dîner', 'entier, jamais dans la boîte : coupé le dimanche il rend de l\'eau et noircit'],
       ['Refroidir vite', 'deux heures maximum entre la casserole et le frigo. Étaler plutôt qu\'entasser'],
@@ -15293,17 +15294,17 @@
       return (min > 30 ? min + " minutes cette semaine" : "Trente minutes") + ", allure où tu peux encore parler par phrases courtes. Pas de sprint : c'est la course qui fait baisser ta fréquence cardiaque de repos, et elle s'allonge de 5 minutes par semaine à partir du 11 octobre, jusqu'à 45. Douche ensuite, sur le temps libre qui suit.";
     },
     '⚡ Sprints en côte': "Trottine jusqu'à la côte (5 min, c'est l'échauffement), puis 6 à 8 sprints de 10 à 15 secondes en montée, à 90 % — rapide, pas à fond. Redescends en marchant, 1 min 30 à 2 min entre chaque. Arrête dès que la vitesse baisse. Environ 15 minutes en tout, puis la séance de 18:30.",
-    /* 24 septembre : les repas ont une consigne, parce que la sauce au skyr a une regle qui
-       ne se devine pas (jamais sur le feu) et que la creatine a quitte la collation du soir.
+    /* 24 septembre : les repas ont une consigne (la creatine a quitte la collation du soir ;
+       le 29, la sauce au skyr est sortie du plan).
        Les grammes se lisent dans le plan du jour, pas ici : un grammage qui change dans
        MEALS change la consigne. */
     'Déjeuner': function(d, iso){
       var c = compoRepas('Déjeuner', iso, false), g = function(k){ var x = c.filter(function(y){ return y.c === k; })[0]; return x ? Math.round(x.q) : 0; };
-      return "La boîte du jour : riz " + g('riz') + " g crus, poulet " + g('poulet') + " g, légumes. Réchauffée à la poêle avec 2 à 3 cuillères d'eau, couvercle, 4 à 5 min, brûlante jusqu'au cœur. Puis, hors du feu, la sauce : " + SAUCE_SKYR.dej + " g de skyr, 10 ml d'huile, sel, et un parfum (ail-citron-menthe, curry doux, harissa-citron). Jamais le skyr sur le feu : il tranche.";
+      return "La boîte du jour : riz " + g('riz') + " g crus, poulet " + g('poulet') + " g, légumes. Réchauffée à la poêle avec 2 à 3 cuillères d'eau, couvercle, 4 à 5 min, brûlante jusqu'au cœur. Puis 10 ml d'huile d'olive crue par-dessus, sel, et ce que tu veux qui ne compte pas : citron, harissa, moutarde, épices.";
     },
     'Dîner': function(d, iso){
       var c = compoRepas('Dîner', iso, false), g = function(k){ var x = c.filter(function(y){ return y.c === k; })[0]; return x ? Math.round(x.q) : 0; };
-      return "La boîte du jour : pâtes " + g('pates') + " g crues, viande hachée " + g('hachee') + " g, légumes, à la poêle. Hors du feu, " + SAUCE_SKYR.din + " g de skyr à l'ail sur les pâtes et la viande, façon manti, et 5 ml d'huile au paprika par-dessus (ou moutarde-persil). Un fruit. La créatine, 5 g, avec le repas. Ensuite plus rien jusqu'au lendemain.";
+      return "La boîte du jour : pâtes " + g('pates') + " g crues, viande hachée " + g('hachee') + " g, légumes, à la poêle. Hors du feu, 5 ml d'huile d'olive crue, et de la tomate concassée, de l'ail ou du paprika si tu veux du goût (ça ne compte pas). Un fruit. La créatine, 5 g, avec le repas. Ensuite plus rien jusqu'au lendemain.";
     },
     'Temps libre': {defaut: "Libre.", 0: "10 minutes pour la revue du dimanche guidée (onglet Études), le reste est libre."},
     'Coucher': "Clôture du jour faite ? Écran off, réveil posé loin du lit.",

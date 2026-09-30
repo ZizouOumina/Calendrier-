@@ -119,7 +119,7 @@ console.log('\n== 194) Repas cochés → tableau de bord et score ==');
     await page.waitForTimeout(50);
   }
   await page.waitForTimeout(200);
-  ok(/888 \/ 3205 kcal/.test(await txt('#meal-kcal-sub')), 'Repas : 888 / 3205 kcal, le shake du matin depuis le 29 septembre (' + (await txt('#meal-kcal-sub')) + ')');
+  ok(/888 \/ 3213 kcal/.test(await txt('#meal-kcal-sub')), 'Repas : 888 / 3213 kcal, le shake du matin depuis le 29 septembre, sans sauce au skyr (' + (await txt('#meal-kcal-sub')) + ')');
   await aller('dashboard');
   ok(/Petit-déjeuner[\s\S]*?6\/6/.test(await txt('#dash-meals')), 'Tableau de bord : petit-déjeuner 6/6 (le miel et les amandes y sont depuis le 24 septembre)');
   ok(/28% kcal/.test(await txt('#dash-meals-kcal-pct')), 'Tableau de bord : 28 % des kcal (' + (await txt('#dash-meals-kcal-pct')) + ')');

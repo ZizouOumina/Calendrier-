@@ -33,11 +33,11 @@ console.log('\n== 269) Deux oeufs a la place du jambon ==');
     cout: window.__bcCoutSemaine(),
     plafond: JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-budget-limits') || '{}').Nourriture
   }));
-  ok(r.col.kcal === 508 && r.col.p === 28, 'la collation : pain, 2 œufs, fromage, 25 g d\'amandes = 508 kcal, 28 g de protéines (' + r.col.kcal + ' / ' + r.col.p + ')');
+  ok(r.col.kcal === 595 && r.col.p === 31, 'la collation : pain, 2 œufs, fromage, 40 g d\'amandes (25 jusqu\'au 29 septembre, +15 à la place des sauces au skyr) = 595 kcal, 31 g de protéines (' + r.col.kcal + ' / ' + r.col.p + ')');
   /* Le lundi 28 est un jour de combat : la collation combat ajoute 388 kcal. */
   /* 29 septembre : le petit-dejeuner devient un shake (boisson d'avoine, skyr, flocons, banane,
      miel, amandes) : -21 kcal et -11 g de proteines par jour (etiquette Alitey), les deux oeufs du matin sortent. */
-  ok(r.jour.kcal === 3593 && r.jour.p === 163, 'un jour de combat : 3 593 kcal, 163 g de protéines, cinq prises (' + r.jour.kcal + ' / ' + r.jour.p + ')');
+  ok(r.jour.kcal === 3601 && r.jour.p === 153, 'un jour de combat : 3 601 kcal, 153 g de protéines, cinq prises -- les sauces au skyr sortent, +15 g d\'amandes (' + r.jour.kcal + ' / ' + r.jour.p + ')');
   ok(r.oeufs === 14 && r.jambon === undefined, 'les courses : 14 œufs par semaine (la collation seule depuis le shake), plus de jambon (' + r.oeufs + ' / ' + r.jambon + ')');
   ok(!r.cout.lignes.some(l => /Jambon/.test(l.label)) && r.cout.manque.length === 0, 'le coût ne compte plus de jambon ; aucun prix ne manque — la boisson d\'avoine a le sien depuis le 29 (Mercadona, 0,95 €/L) ('  + r.cout.manque.join() + ')');
   ok(r.plafond === Math.round(r.cout.mois), 'le plafond Nourriture posé par la Batcave suit le nouveau coût : ' + r.plafond + ' €');

@@ -69,10 +69,11 @@ console.log('\n== 180) Sans ajustement : plan de base, liste = plan × 7 ==');
      rayon : le format qu'il achete est la BOITE DE 150 g a 0,75 €. Meme quantite achetee
      (2,25 kg) et meme surplus (115 g), mais quinze boites au lieu de cinq pots. */
   /* 29 septembre, le shake : 150 g de skyr le matin au lieu de 180 -> 1 925 g par semaine,
-     13 boites. */
-  ok(c.items.some(t => /^Skyr — 1,95 kg\b/.test(t) && /demande 1\u202f925 g/.test(t) && /13 boîtes de 150 g/.test(t))
+     13 boites. Le meme soir, les sauces au skyr sortent : il ne reste que le shake,
+     150 g par jour, 1 050 g par semaine -- 7 boites, zero surplus. */
+  ok(c.items.some(t => /^Skyr — 1,05 kg\b/.test(t) && !/demande/.test(t) && /7 boîtes de 150 g/.test(t))
   && !c.items.some(t => /^(Dattes|Cacahuètes)/.test(t)),
-     'skyr : 1,95 kg en 13 boîtes de 150 g pour 1 925 g demandés');
+     'skyr : 1,05 kg en 7 boîtes de 150 g pour 1 050 g demandés (le shake seul)');
   ok(c.items.some(t => /^Boisson d\'avoine — 6 L\b/.test(t) && /1 pack de 6 L/.test(t) && /demande 4\u202f200 ml/.test(t) && /0,95 €\/L/.test(t)),
      'boisson d\'avoine : un pack de 6 L (Mercadona, 0,95 €/L) toutes les deux semaines pour les 4 200 ml du shake');
   /* L'HUILE etait la vraie erreur : 288 ml par semaine, donc 1 152 sur 4 semaines alors
@@ -129,7 +130,7 @@ console.log('\n== 180) Sans ajustement : plan de base, liste = plan × 7 ==');
 
   await page_(fr, 'repas');
   const r = await fr.evaluate(() => ({ diner: [...document.querySelectorAll('.meal-card')].find(c => /Dîner/.test(c.querySelector('.mtitle').textContent)) }) && [...document.querySelectorAll('.meal-card')].find(c => /Dîner/.test(c.querySelector('.mtitle').textContent)).innerText);
-  ok(/Pâtes 105g/.test(r) && /~790 kcal/.test(r) && /Viande hachée 5 % 90g/.test(r) && /Sauce skyr/.test(r), 'dîner de base du mardi : pâtes 105 g, viande hachée 90 g, sauce au skyr, ~790 kcal');
+  ok(/Pâtes 105g/.test(r) && /~752 kcal/.test(r) && /Viande hachée 5 % 90g/.test(r) && !/Sauce skyr/.test(r), 'dîner de base du mardi : pâtes 105 g, viande hachée 90 g, plus de sauce au skyr (29 septembre), ~752 kcal');
   await ctx.close();
 }
 
@@ -139,18 +140,18 @@ console.log('\n== 181) Avec +150 kcal : le dîner et les courses l\'écrivent ==
   await page_(fr, 'repas');
   const r = await fr.evaluate(() => [...document.querySelectorAll('.meal-card')].find(c => /Dîner/.test(c.querySelector('.mtitle').textContent)).innerText);
   ok(/Pâtes 145g/.test(r), 'féculent du dîner : pâtes 145 g (+40)');
-  ok(/boucle kcal \+150 kcal/.test(r) && /~934 kcal/.test(r), 'le dîner annonce ~934 kcal et la boucle');
+  ok(/boucle kcal \+150 kcal/.test(r) && /~896 kcal/.test(r), 'le dîner annonce ~896 kcal et la boucle');
   const sub = await fr.evaluate(() => document.getElementById('meal-kcal-sub').textContent);
   /* 3 131 + 144 : la boucle demande +150 kcal, mais les pates s'ajustent par pas de 10 g,
      donc elle en ajoute 144. On annonce l'ecart REEL entre les deux journees, pas la
      consigne -- sinon la soustraction affichee ne tombe pas juste. */
-  ok(/\/ 3349 kcal \(plan 3205 \+ 144\)/.test(sub), 'cible du jour : ' + sub);
+  ok(/\/ 3357 kcal \(plan 3213 \+ 144\)/.test(sub), 'cible du jour : ' + sub);
   /* cocher tout le dîner : l\'apport consommé porte les 150 kcal */
   /* un clic redessine la grille : on re-cherche la première case non cochée du dîner à chaque tour */
   await fr.evaluate(() => { for(let i = 0; i < 10; i++){ const card = [...document.querySelectorAll('.meal-card')].find(c => /Dîner/.test(c.querySelector('.mtitle').textContent)); const cb = card && card.querySelector('input:not(:checked)'); if(!cb) break; cb.click(); } });
   await page.waitForTimeout(200);
   const sub2 = await fr.evaluate(() => document.getElementById('meal-kcal-sub').textContent);
-  ok(/^934 \/ 3349 kcal/.test(sub2), 'dîner coché : ' + sub2);
+  ok(/^896 \/ 3357 kcal/.test(sub2), 'dîner coché : ' + sub2);
   await page_(fr, 'courses');
   const c = await fr.evaluate(() => ({ items: [...document.querySelectorAll('#courses-grid label, #courses-grid-plus label')].map(l => l.textContent), note: document.getElementById('courses-plan-note').textContent }));
   /* L'ajustement suit le sac : +280 g par semaine font +1 120 g sur quatre semaines.
