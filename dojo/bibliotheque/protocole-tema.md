@@ -13,6 +13,11 @@ pratique l'écrit à la fois). Un par jour ensuite.
 | Lun. 5 | 08:20 → 10:05 (Étudier en avance) | 14:00 (Español · gramática) | 13 |
 | Mar. 6 | 09:20 → 11:20 (Étudier en avance) | 14:00 (Español · escribir) | **16** |
 
+**Si le tema est long** (plus de 10 pages) : l'étape 1 peut monter à 30 minutes, les autres se
+resserrent. Plafond : 60 minutes par tema, soit les 2 heures du bloc pour deux temas. Le but du
+rattrapage est de comprendre l'essentiel ; l'approfondissement viendra dans les blocs
+« Approfondir » et par Anki.
+
 Mercredi 7 en réserve si un jour a glissé. Si un soir la vérification rate ou les cartes sont
 floues, on redescend à deux le lendemain : un tema appris vaut mieux que trois survolés.
 
