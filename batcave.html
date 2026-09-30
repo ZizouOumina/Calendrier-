@@ -3621,7 +3621,7 @@
      Sante compare, et une sauvegarde plus ancienne se reconnait a ce seul chiffre. */
   var SCHEMA_VERSION = 50;
   var DRAPEAUX_MIGRATION = ['objectifs-seed-v1','objectifs-v2-55','objectifs-v5-espanol',
-    'habits-ecran-v2','habitlog-hebdo-v1','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','habits-seed-v7','habits-seed-v8','habits-seed-v9',
+    'habits-ecran-v2','habitlog-hebdo-v1','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','habits-seed-v7','habits-seed-v8','habits-seed-v9','habits-seed-v10',
     'courses-plan-v2','courses-plan-v3','courses-plan-v4','courses-plan-v5','courses-plan-v6','courses-plan-v7','courses-plan-v8','courses-plan-v9','courses-plan-v10',
     'charges-v2','plafond-nourriture-v2','plafond-nourriture-v3','plafond-nourriture-v4','ancre-dimanche-v1','ancre-dimanche-v2','serviettes-v1','shampoing-dim-v1','marche-cible-v1','fc-migration-v1','fc-migration-v2','revision-fusionnee'];
   /* Drapeaux que rien ne pose plus (migrations retirees) ou poses seulement quand il y a
@@ -3741,7 +3741,7 @@
      place dans le quota de 5000 documents et embrouille les sauvegardes, sans que rien ne
      la lise jamais. On la signale ; la suppression reste ton geste. */
   var CLES_CONNUES = ['addictions','budget-limits','business','coran','courses','dash-more','duaas','duree-bloc','sport-log','objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','courses-plan-v3','courses-plan-v4','courses-plan-v5','courses-plan-v6','courses-plan-v7','courses-plan-v8','courses-plan-v9','courses-plan-v10','charges-v2','plafond-nourriture-v2','plafond-nourriture-v3','plafond-nourriture-v4','gcal-controle','ancre-dimanche-v1','ancre-dimanche-v2','serviettes-v1','shampoing-dim-v1','marche-cible-v1','cardio','kcal-ajustement','gcal-ecriture','reinit','fc-migration-v1','fc-migration-v2','livrables','shampoing-combat-v1','charge','shopify-boutique','journees','examens-heures','vacances','jours-exclus',
-    'espagnol','examens','cours-suivi','portes','periodes-closes','fc-prix-icloud-3','fc-prix-club-100','fixed-charges','goals','goals-depart','saisons','insights-hist','last-restore-drill','habitlog','habits','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','habits-seed-v7','habits-seed-v8','habits-seed-v9','objectifs-v5-espanol',
+    'espagnol','examens','cours-suivi','portes','periodes-closes','fc-prix-icloud-3','fc-prix-club-100','fixed-charges','goals','goals-depart','saisons','insights-hist','last-restore-drill','habitlog','habits','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','habits-seed-v7','habits-seed-v8','habits-seed-v9','habits-seed-v10','objectifs-v5-espanol',
     'horizon','last-auto-backup','last-manual-backup','last-bilan-prompt','last-compaction','last-open','last-rotation','notion-url',
     'pomodial-purge','projets','report','revision','revision-fusionnee','revue','sante','sauvegarde','sessions',
     'shopify-last-order-count','taches','timer','transactions','undo-stack','undo-toast','cloud-reload-at','cloud-toast','notion-cache','anki',
@@ -5332,7 +5332,7 @@
      ni synchronisee ni rattrapee) et efface ses copies locales AVANT le rattrapage, sinon
      elles repartiraient vers le cloud. La meme remise a zero peut donc etre decidee depuis
      l'appli ou directement dans le cloud. */
-  var REINIT_GARDER = ['habits','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','habits-seed-v7','habits-seed-v8','habits-seed-v9','objectifs-v5-espanol','fixed-charges','fc-prix-icloud-3','fc-prix-club-100','budget-limits','examens','examens-heures','journees','echeances','vacances','jours-exclus','jours-sans-cours','portes','appro','notion-url','shopify-boutique',
+  var REINIT_GARDER = ['habits','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','habits-seed-v7','habits-seed-v8','habits-seed-v9','habits-seed-v10','objectifs-v5-espanol','fixed-charges','fc-prix-icloud-3','fc-prix-club-100','budget-limits','examens','examens-heures','journees','echeances','vacances','jours-exclus','jours-sans-cours','portes','appro','notion-url','shopify-boutique',
                        'objectifs','horizon','goals-depart','saisons','periodes-closes','gcal-ecriture','duree-bloc','dash-more','reinit','copie-vierge','schema'].concat(DRAPEAUX_MIGRATION, DRAPEAUX_ANCIENS);
   var REINIT_PREFIXES_GARDER = ['pomodial-', 'coherence-ignore-'];
   function reinitGarder(cle){
@@ -7027,6 +7027,13 @@
   var HABIT_SEED_V9 = [
     {id:'core-taie-merc', label:'Taie d\u2019oreiller chang\u00e9e', icon:'\ud83d\udecc', jours:[3]}
   ];
+  /* Le lot du 30 septembre au soir : le COU du jeudi soir. Le programme a huit exercices
+     garde flexion et extension le lundi seulement ; le cou y perdait 6 series par semaine.
+     Sa decision : les rendre le jeudi soir, a la maison -- 3 series de flexion et 3
+     d'extension, une serviette et la bouteille graduee, cinq minutes. */
+  var HABIT_SEED_V10 = [
+    {id:'core-cou-jeudi', label:'Cou — flexion et extension, 3 × 12-20', icon:'🦴', jours:[4]}
+  ];
   /* Retirees a la demande. Ce n'est pas un simple retrait du semis : l'habitude est deja
      dans le stockage de l'utilisateur, elle survit a la remise a zero (« habits » est garde),
      et un autre appareil encore sur l'ancienne version la renverrait par la synchro. On la
@@ -7047,7 +7054,8 @@
     {cle: 'batcave-habits-seed-v6', graines: HABIT_SEED_V6},
     {cle: 'batcave-habits-seed-v7', graines: HABIT_SEED_V7},
     {cle: 'batcave-habits-seed-v8', graines: HABIT_SEED_V8},
-    {cle: 'batcave-habits-seed-v9', graines: HABIT_SEED_V9}
+    {cle: 'batcave-habits-seed-v9', graines: HABIT_SEED_V9},
+    {cle: 'batcave-habits-seed-v10', graines: HABIT_SEED_V10}
   ];
   var habitsState = load('batcave-habits', null);
   if(habitsState !== null && !Array.isArray(habitsState)) habitsState = null;
@@ -7076,7 +7084,7 @@
     return ajoutees || retirees;
   }
   if(habitsState === null){
-    habitsState = HABIT_SEED.concat(HABIT_SEED_V2, HABIT_SEED_V3, HABIT_SEED_V4, HABIT_SEED_V5, HABIT_SEED_V6, HABIT_SEED_V7, HABIT_SEED_V8, HABIT_SEED_V9);
+    habitsState = HABIT_SEED.concat(HABIT_SEED_V2, HABIT_SEED_V3, HABIT_SEED_V4, HABIT_SEED_V5, HABIT_SEED_V6, HABIT_SEED_V7, HABIT_SEED_V8, HABIT_SEED_V9, HABIT_SEED_V10);
     save('batcave-habits', habitsState);
     HABIT_GENERATIONS.forEach(function(g){ save(g.cle, true); });
   } else {

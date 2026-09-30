@@ -9,7 +9,7 @@ Deux révisions le même soir. D'abord « ya pas un peu trop d'exercices ? » �
 - **le lundi** retrouve un curl (3 séries de biceps en direct) et le cou en entier, flexion et extension en superset ;
 - **restent dehors** : l'extension triceps (dips, pompes et pike font déjà 14 séries de poussée), les face pulls et les shrugs (les rows coudes hauts et le JJB couvrent l'arrière d'épaule et les trapèzes).
 
-Lundi et jeudi : huit exercices, quatre paires, ~50 minutes. Le mardi ne change pas. Volumes par semaine : dos 14 séries, pectoraux-triceps 14, épaules latérales 7, biceps 3 directes + 14 indirectes, quadriceps 7, ischios-fessiers 10, cou 9.
+Lundi et jeudi : huit exercices, quatre paires, ~50 minutes. Le mardi ne change pas. Volumes par semaine : dos 14 séries, pectoraux-triceps 14, épaules latérales 7, biceps 3 directes + 14 indirectes, quadriceps 7, ischios-fessiers 10, cou 15 (dont 6 le jeudi soir à la maison).
 
 ## Le régime combat (décision du 25 septembre)
 - **JJB le lundi, le mercredi et le vendredi à 10:30 ; Muay Thai le mardi à 19:30.** 1 h 30 par séance, club à dix minutes à pied, 100 € par mois (charge fixe « Club JJB / Muay Thai », catégorie Abonnements). La lutte (mardi et jeudi) et le MMA (mardi 18:30) attendent novembre.
@@ -94,12 +94,12 @@ Le curl inversé du lundi et le curl des poignets du samedi sont sortis avec le 
 
 ## Le cou — faire grossir, pas entretenir
 
-Le cou grossit comme un mollet : par la charge et par la fréquence. Flexion et extension le lundi, en superset ; inclinaison latérale le mardi. Le JJB le charge en plus trois fois par semaine. Jamais de pont sur la tête. Au combat, un cou solide est aussi ce qui protège des étranglements et des coups : c'est la partie du programme qui sert directement sur le tatami.
+Le cou grossit comme un mollet : par la charge et par la fréquence. Flexion et extension le lundi, en superset, et **de nouveau le jeudi soir à la maison** (3 × 12-20 chacune, cinq minutes, une serviette et la bouteille graduée — une habitude de la Batcave) ; inclinaison latérale le mardi. Le JJB le charge en plus trois fois par semaine. Jamais de pont sur la tête. Au combat, un cou solide est aussi ce qui protège des étranglements et des coups : c'est la partie du programme qui sert directement sur le tatami.
 
 | Mouvement | Jour | Position | Charge |
 |---|---|---|---|
-| Flexion du cou | lundi | Allongé sur le dos en travers d'un banc ou d'un rebord, tête dans le vide | Serviette pliée sur le front, poids par-dessus, tenu à deux mains |
-| Extension du cou | lundi | À plat ventre, même appui, tête dans le vide | Serviette derrière la tête, poids par-dessus |
+| Flexion du cou | lundi, jeudi soir (maison) | Allongé sur le dos en travers d'un banc ou d'un rebord, tête dans le vide | Serviette pliée sur le front, poids par-dessus, tenu à deux mains |
+| Extension du cou | lundi, jeudi soir (maison) | À plat ventre, même appui, tête dans le vide | Serviette derrière la tête, poids par-dessus |
 | Inclinaison latérale | mardi | Couché sur le côté | Poids sur la tempe, serviette entre les deux |
 
 - 3 séries de 12 à 20 répétitions, trois secondes pour descendre, une seconde de tenue en haut, jamais d'à-coup.
