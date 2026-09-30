@@ -68,10 +68,12 @@ console.log('\n== 336) Le cardio ne touche PAS le compteur de séances ==');
 
 console.log('\n== 337) Le panneau dit ce qu\'il faut ==');
 {
-  const { ctx, page, fr } = await ouvrir('2026-09-28T10:00:00+02:00');
+  /* La semaine du 5 octobre : la premiere avec le combat (celle du 28 septembre est sans
+     combat depuis le 30 au soir -- COMBAT_PAUSE). */
+  const { ctx, page, fr } = await ouvrir('2026-10-05T10:00:00+02:00');
   const vide = await fr.evaluate(() => document.getElementById('cardio-note').textContent);
   ok(/0\/4/.test(vide), 'semaine neuve : 0/4 (quatre séances de combat) (' + vide + ')');
-  await fr.evaluate(() => window.__bcNoterCardio('2026-09-28', 35));   /* le lundi : JJB */
+  await fr.evaluate(() => window.__bcNoterCardio('2026-10-05', 35));   /* le lundi : JJB */
   await page.waitForTimeout(300);
   const t = await fr.evaluate(() => document.getElementById('cardio-note').textContent);
   ok(/1\/4/.test(t) && /35 min/.test(t), 'une séance de 35 min le lundi (JJB) : 1/4 · 35 min (' + t + ')');

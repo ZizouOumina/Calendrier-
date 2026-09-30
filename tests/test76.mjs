@@ -75,8 +75,11 @@ for (const [d, jour_, pesee, coupe] of [
    reference est le jour 1 lui-meme. Rien du 25 au 27, rien le 29. */
 /* 28 septembre au soir : jour 1 au mardi 29, muscu le lundi 5 octobre -- c'est la seance de
    reference. Rien pendant la semaine de reprise, rien le mardi 6. */
-console.log('\n== seance de reference : la premiere seance de MUSCU du programme, lundi 5 octobre ==');
-for (const [d, attendu] of [['2026-09-28',false],['2026-09-29',false],['2026-10-01',false],['2026-10-04',false],['2026-10-05',true],['2026-10-06',false]]) {
+/* 30 septembre au soir : jour 1 au jeudi 1er octobre, et la muscu commence le jour meme
+   (street workout seul la premiere semaine) -- la seance de reference est le 1er. Rien
+   avant, rien le samedi 3 (le bas complet ou se prennent les maximums du bas), rien le 5. */
+console.log('\n== seance de reference : la premiere seance de MUSCU du programme, jeudi 1er octobre ==');
+for (const [d, attendu] of [['2026-09-29',false],['2026-09-30',false],['2026-10-01',true],['2026-10-03',false],['2026-10-05',false]]) {
   const {ctx, fr} = await jour(d+'T05:35:00+02:00');
   const p = await fr.evaluate(()=>document.getElementById('dash-plan').innerText);
   ok(/Séance de référence/.test(p)===attendu, d+' : séance de référence dans le plan = '+/Séance de référence/.test(p));

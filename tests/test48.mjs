@@ -22,14 +22,16 @@ const aller = async (fr, page, p) => { await fr.evaluate(pg => document.querySel
 const local = (fr,k) => fr.evaluate(x => JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))(x) || 'null'), k);
 const ligne = (fr, titre) => fr.evaluate(t => { const r = [...document.querySelectorAll('#obj-liste .obj-row')].find(x => x.querySelector('.titre').innerText.startsWith(t)); return r ? { txt: r.innerText.replace(/\s+/g,' '), led: r.querySelector('.obj-led').className } : null; }, titre);
 
-const MI_SEPT = '2026-09-29T10:00:00+02:00';   /* premier jour du programme (mardi 29, decale le 28 au soir) */
+/* 30 septembre au soir : « on decale tout, demain c'est le vrai jour » -- le jour 1 passe au
+   jeudi 1er octobre. Septembre ne porte plus aucun jour de programme : le test lit OCTOBRE. */
+const MI_SEPT = '2026-10-01T10:00:00+02:00';   /* le jour 1 (jeudi 1er octobre) */
 /* Le 15 est le JOUR 1 : la regle « trop tot pour juger » met tout « dans les clous ».
    Pour lire de vrais verdicts il faut une periode entamee : mardi 22, une semaine
    plus tard, ou 46,3 % de la revision de septembre et 44,4 % des seances sont passes. */
-const SEMAINE2 = '2026-09-30T10:00:00+02:00';
+const SEMAINE2 = '2026-10-12T10:00:00+02:00';   /* une periode entamee : le lundi 12, dix jours de programme */
 const sessions = [];
-for(let d = 1; d <= 10; d++) sessions.push({id:'s'+d, date:'2026-09-'+String(d).padStart(2,'0'), type:'cours', duree:240, label:'Anatomía I', debut: Date.UTC(2026,8,d,6)+1, fin: Date.UTC(2026,8,d,10)+1});  /* 40 h */
-const journaux = {}; for(let d = 1; d <= 14; d++) journaux['batcave-journal-2026-09-'+String(d).padStart(2,'0')] = {sommeil: 7.5, water: 3000, poids: 64 + d*0.05};
+for(let d = 1; d <= 10; d++) sessions.push({id:'s'+d, date:'2026-10-'+String(d).padStart(2,'0'), type:'cours', duree:240, label:'Anatomía I', debut: Date.UTC(2026,9,d,6)+1, fin: Date.UTC(2026,9,d,10)+1});  /* 40 h */
+const journaux = {}; for(let d = 1; d <= 14; d++) journaux['batcave-journal-2026-10-'+String(d).padStart(2,'0')] = {sommeil: 7.5, water: 3000, poids: 64 + d*0.05};
 
 console.log('\n== 112) Semis : un seul palier, le mois ==');
 {
@@ -49,7 +51,7 @@ console.log('\n== 112) Semis : un seul palier, le mois ==');
   ok(mets === 'espagnol_h,habitudes_pct,revision_h,sommeil_moy,sport_seances',
      'cinq metriques et pas une de plus (' + mets + ')');
   ok(await local(fr, 'batcave-objectifs-seed-v1') === true, 'drapeau de semis posé');
-  const m9 = o.liste.find(x => x.id === 'M2026-09:revision_h');
+  const m9 = o.liste.find(x => x.id === 'M2026-10:revision_h');
   /* La grille ne prevoit rien avant le jour 1 : la cible de septembre part de la, pas du
      1er. Le jour 1 a bouge plusieurs fois (15, 17, 18, 19, 20, 21, 22) et il l'a pose au
      MERCREDI 23 le soir du 22, apres une nuit blanche et un cours manque. Septembre ne
@@ -62,7 +64,9 @@ console.log('\n== 112) Semis : un seul palier, le mois ==');
   /* Et au LUNDI 28 le 26 septembre (reveil a 16 h, week-end sans revision) : trois jours de
      programme en septembre, tous en regime combat -- 13,2 h. Puis au MARDI 29 le 28 au
      soir : deux jours, le 29 et le 30 -- 9,7 h. */
-  ok(m9 && m9.cible === 9.7, 'révision de septembre calculée depuis la grille, à partir du mardi 29, régime combat : 9,7 h (' + (m9 && m9.cible) + ')');
+  /* Puis au JEUDI 1er octobre le 30 au soir : septembre n'a plus un seul jour de programme,
+     et c'est octobre, entier et en regime combat, qui porte la cible -- 119,7 h. */
+  ok(m9 && m9.cible === 119.7, 'révision d\'octobre calculée depuis la grille, du jeudi 1er au 31, régime combat : 119,7 h (' + (m9 && m9.cible) + ')');
   ok(m9 && m9.auto === true, 'la cible est marquée automatique : elle suivra la grille');
   ok(!o.liste.some(x => /exo:|snus|eau_moy|depenses_var/.test(x.metrique)),
      'ni niveaux, ni snus, ni eau, ni dépenses : ils ne sont plus semés du tout');
@@ -94,19 +98,23 @@ console.log('\n== 113) Comparaison sur des données réelles ==');
      compte que le programme : 30,3 h de cible × la part de septembre écoulée = 6,6 h
      (le programme court du 24 au 30, et le 25 à 10:00 en a consommé un jour et un matin).
      Une séance faite avant le départ compte, mais ne crée pas de retard. */
-  ok(rev && /réel 40,0 h/.test(rev.txt) && /attendu 8,2 h/.test(rev.txt) && /avance|atteint/.test(rev.led), 'Révision : réel 40,0 h pour 8,2 h attendues au 30 à 10:00 → en avance : ' + (rev && rev.txt.slice(0, 80)));
+  /* Octobre (jour 1 le 1er) : 119,7 h de cible, dont 44,4 h attendues le lundi 12 à 10:00.
+     40 h faites : un peu sous le rythme, sans alerte -- « dans les clous ». */
+  ok(rev && /réel 40,0 h/.test(rev.txt) && /attendu 44,4 h/.test(rev.txt) && /ok|clous/.test(rev.led + rev.txt) && !/retard/.test(rev.led), 'Révision : réel 40,0 h pour 44,4 h attendues le 12 à 10:00 → dans les clous : ' + (rev && rev.txt.slice(0, 80)));
   const som = await ligne(fr, 'Sommeil');
     /* 23 septembre : la cible de sommeil est du sommeil REEL (Bevel), le temps au lit × 0,88.
      L'objectif seme a 7,75 h -- une moyenne de temps au lit -- passe a la moyenne reelle
      visee sur une semaine de la grille (7,33 h) : 7,50 h de vrai sommeil l'atteignent. */
-  ok(som && /réel 7,50 h/.test(som.txt) && /attendu 7,01 h/.test(som.txt) && /atteint|\bok\b/.test(som.led), 'Sommeil moyen 7,50 h réelles sur 7,01 visées (trois nuits de semaine combat) → atteint : ' + (som && som.txt.slice(0, 60)));
+  ok(som && /réel 7,50 h/.test(som.txt) && /attendu 6,94 h/.test(som.txt) && /atteint|\bok\b/.test(som.led), 'Sommeil moyen 7,50 h réelles sur 6,94 visées (octobre, régime combat, mardis à 22:00) → atteint : ' + (som && som.txt.slice(0, 60)));
   /* Plus de ligne « Eau » : eau_moy est sortie des metriques semees le 19 septembre,
      quand il a ramene les objectifs a un seul palier et aux six mesures qui se pilotent. */
   ok(!(await ligne(fr, 'Eau')), 'plus d\'objectif d\'eau : il ne reste que les six métriques du mois');
   const sport = await ligne(fr, 'Séances');
   /* Semaine de reprise (28 septembre au soir) : aucune seance de muscu avant le lundi 5 octobre,
      septembre n'en attend donc aucune -- zero seance n'y est pas un retard. */
-  ok(sport && /réel 0,0 séances/.test(sport.txt) && /attendu 0,0 séances/.test(sport.txt) && !/retard/.test(sport.led), 'Séances de sport : aucune muscu prévue en septembre → 0 n\'est pas un retard (' + (sport && sport.led) + ')');
+  /* Depuis le 30 au soir, la muscu commence le jour 1 : le 12, six seances sont passees
+     (jeudi 1er, samedi 3, lundi 5, mardi 6, jeudi 8, lundi 12). Zero faite, c'est un vrai retard. */
+  ok(sport && /réel 0,0 séances/.test(sport.txt) && !/attendu 0,0 séances/.test(sport.txt) && /retard/.test(sport.led), 'Séances de sport : la muscu commence le jour 1, zéro séance le 12 → en retard (' + (sport && sport.txt.slice(0, 70)) + ')');
   const resume = await fr.evaluate(() => document.getElementById('obj-resume').innerText);
   ok(/en retard/.test(resume) && /% de la période/.test(resume), 'résumé : ' + resume);
   await ctx.close();
@@ -116,14 +124,14 @@ console.log('\n== 114) Éditer une cible, supprimer, ajouter ==');
 {
   const { ctx, fr, page } = await ouvrir(SEMAINE2, { 'batcave-sessions': sessions });
   await aller(fr, page, 'objectifs');
-  await fr.evaluate(() => { const i = document.querySelector('[data-obj-cible="M2026-09:revision_h"]'); i.value = '44'; i.dispatchEvent(new Event('change', {bubbles:true})); });
+  await fr.evaluate(() => { const i = document.querySelector('[data-obj-cible="M2026-10:revision_h"]'); i.value = '44'; i.dispatchEvent(new Event('change', {bubbles:true})); });
   await page.waitForTimeout(250);
   const rev = await ligne(fr, 'Révision');
-  ok((await local(fr, 'batcave-objectifs')).liste.find(x => x.id === 'M2026-09:revision_h').cible === 44, 'cible enregistrée : 44');
-  ok(rev && /attendu 37,3 h/.test(rev.txt) && /avance/.test(rev.led), 'recalcul immédiat sur une cible de 44 h : attendu 37,3 h, 40 h réelles → en avance (' + (rev && rev.txt.slice(0, 70)) + ')');
-  ok((await local(fr, 'batcave-objectifs')).liste.find(x => x.id === 'M2026-09:revision_h').auto === false, 'une cible saisie à la main sort du calcul automatique');
+  ok((await local(fr, 'batcave-objectifs')).liste.find(x => x.id === 'M2026-10:revision_h').cible === 44, 'cible enregistrée : 44');
+  ok(rev && /attendu 16,3 h/.test(rev.txt) && /avance/.test(rev.led), 'recalcul immédiat sur une cible de 44 h : attendu 16,3 h, 40 h réelles → en avance (' + (rev && rev.txt.slice(0, 70)) + ')');
+  ok((await local(fr, 'batcave-objectifs')).liste.find(x => x.id === 'M2026-10:revision_h').auto === false, 'une cible saisie à la main sort du calcul automatique');
   const avant = (await local(fr, 'batcave-objectifs')).liste.length;
-  await fr.evaluate(() => document.querySelector('[data-obj-del="M2026-09:sommeil_moy"]').click());
+  await fr.evaluate(() => document.querySelector('[data-obj-del="M2026-10:sommeil_moy"]').click());
   await page.waitForTimeout(150);
   await fr.evaluate(() => document.getElementById('ask-ok').click());
   await page.waitForTimeout(250);
@@ -137,19 +145,19 @@ console.log('\n== 114) Éditer une cible, supprimer, ajouter ==');
 
 console.log('\n== 115) Deux vues seulement : le mois et les 6 mois ==');
 {
-  const { ctx, fr, page } = await ouvrir(MI_SEPT, { 'batcave-sport-log': [{id:'a', date:'2026-08-20', type:'Pull', exo:'Tractions', series:[6,5,5], charge:0, unite:'reps'}, {id:'b', date:'2026-09-10', type:'Pull', exo:'Tractions', series:[8,7,6], charge:0, unite:'reps'}], 'batcave-journal-2026-09-14': {poids: 65.2} });
+  const { ctx, fr, page } = await ouvrir(MI_SEPT, { 'batcave-sport-log': [{id:'a', date:'2026-08-20', type:'Pull', exo:'Tractions', series:[6,5,5], charge:0, unite:'reps'}, {id:'b', date:'2026-09-10', type:'Pull', exo:'Tractions', series:[8,7,6], charge:0, unite:'reps'}], 'batcave-journal-2026-09-30': {poids: 65.2} });
   await aller(fr, page, 'objectifs');
   /* 19 septembre : il ne voulait plus « trop de paliers ». La pastille « Le trimestre » a
      disparu -- il ne reste que le mois, qui se pilote, et les 6 mois, qui ne se pilotent
      pas mais donnent le cap. */
   const vues = await fr.evaluate(() => [...document.querySelectorAll('[data-obj-vue]')].map(b => b.dataset.objVue));
   ok(vues.length === 2 && vues.join(',') === 'mois,horizon', 'deux vues et pas trois : le mois, les 6 mois (' + vues.join(',') + ')');
-  ok((await fr.evaluate(() => document.getElementById('obj-periode').innerText)) === 'Septembre 2026', 'la vue s\'ouvre sur le mois en cours');
+  ok((await fr.evaluate(() => document.getElementById('obj-periode').innerText)) === 'Octobre 2026', 'la vue s\'ouvre sur le mois en cours');
   await fr.evaluate(() => document.getElementById('obj-next').click());
   await page.waitForTimeout(150);
-  ok((await fr.evaluate(() => document.getElementById('obj-periode').innerText)) === 'Octobre 2026', '▶ passe au mois suivant');
+  ok((await fr.evaluate(() => document.getElementById('obj-periode').innerText)) === 'Novembre 2026', '▶ passe au mois suivant');
   const oct = await ligne(fr, 'Révision');
-  ok(oct && /pas encore de données/.test(oct.txt), 'octobre n\'a pas commencé : pas encore de données');
+  ok(oct && /pas encore de données/.test(oct.txt), 'novembre n\'a pas commencé : pas encore de données');
   await fr.evaluate(() => document.querySelector('[data-obj-vue="horizon"]').click());
   await page.waitForTimeout(200);
   const h = await fr.evaluate(() => ({ n: document.querySelectorAll('#obj-liste .obj-row').length, inputs: document.querySelectorAll('#obj-liste input').length, dels: document.querySelectorAll('#obj-liste [data-obj-del]').length, form: document.getElementById('obj-form').hidden }));
@@ -161,7 +169,7 @@ console.log('\n== 115) Deux vues seulement : le mois et les 6 mois ==');
 
 console.log('\n== 116) Tableau de bord : objectifs du mois ==');
 {
-  const { ctx, fr, page } = await ouvrir(MI_SEPT, Object.assign({ 'batcave-sessions': sessions }, journaux));
+  const { ctx, fr, page } = await ouvrir(SEMAINE2, Object.assign({ 'batcave-sessions': sessions }, journaux));
   await fr.evaluate(() => { if(document.getElementById('dash-more').hidden) document.getElementById('dash-more-toggle').click(); });
   const d = await fr.evaluate(() => ({ n: document.querySelectorAll('#dash-goals li').length, leds: document.querySelectorAll('#dash-goals .obj-led').length, txt: document.getElementById('dash-goals').innerText.replace(/\s+/g,' '), note: document.getElementById('dash-goals-note').innerText }));
   /* 25 septembre : le tableau de bord porte « Les 5 qui comptent » -- sommeil, fac, corps, deen, argent. */

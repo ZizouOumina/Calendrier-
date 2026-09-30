@@ -68,12 +68,16 @@ console.log('\n== 401) Santé de la Batcave : six contrôles, un relevé qui ne 
 
 console.log('\n== 402) Le plan de secours en texte ==');
 {
-  const { ctx, fr } = await ouvrir('2026-09-27T20:00:00+02:00');
-  const t = await fr.evaluate(() => window.__bcPlanTexte('2026-09-28'));
-  ok(/^LA BATCAVE — plan de la semaine du 28 sept\. au 04 oct\./.test(t), 'en-tête : ' + t.split('\n')[0]);
-  ok(/LUNDI 28 sept\. — combat\n  05:30  Sport\n/.test(t) && /  10:30  🥋 JJB\n/.test(t), 'lundi : la grille combat, ligne par ligne');
-  ok(/MARDI 29 sept\. — combat[\s\S]*  19:30  🥊 Muay Thai\n[\s\S]*  22:00  Coucher/.test(t), 'mardi : Muay Thai 19:30, coucher 22:00');
-  ok(/DIMANCHE 04 oct\.\n/.test(t) && !/DIMANCHE 04 oct\. — combat/.test(t), 'dimanche : pas de combat');
+  /* La semaine du 5 octobre : la premiere avec le combat (celle du 28 septembre est sans
+     combat depuis le 30 au soir). */
+  const { ctx, fr } = await ouvrir('2026-10-04T20:00:00+02:00');
+  const t = await fr.evaluate(() => window.__bcPlanTexte('2026-10-05'));
+  ok(/^LA BATCAVE — plan de la semaine du 05 oct\. au 11 oct\./.test(t), 'en-tête : ' + t.split('\n')[0]);
+  ok(/LUNDI 05 oct\. — combat\n  05:30  Sport\n/.test(t) && /  10:30  🥋 JJB\n/.test(t), 'lundi : la grille combat, ligne par ligne');
+  ok(/MARDI 06 oct\. — combat[\s\S]*  19:30  🥊 Muay Thai\n[\s\S]*  22:00  Coucher/.test(t), 'mardi : Muay Thai 19:30, coucher 22:00');
+  ok(/DIMANCHE 11 oct\.\n/.test(t) && !/DIMANCHE 11 oct\. — combat/.test(t), 'dimanche : pas de combat');
+  const t0 = await fr.evaluate(() => window.__bcPlanTexte('2026-09-28'));
+  ok(!/MARDI 29 sept\. — combat/.test(t0) && !/Muay Thai/.test(t0.split('MERCREDI')[0].split('MARDI')[1] || ''), 'la semaine du 28 septembre, sans combat depuis le 30 au soir : pas de Muay Thai le mardi 29');
   ok(/LES 5 QUI COMPTENT\n  Sommeil : /.test(t) && /\n  Argent : /.test(t), 'les cinq qui comptent, avec leur chiffre du jour');
   ok(/Lever 05:30 · coucher 21:35 · eau 3,5 L les jours de combat, 3 L sinon\./.test(t), 'pied : lever, coucher, eau — ' + t.split('\n').pop());
   ok(!/undefined|NaN|\[object/.test(t), 'aucune valeur brute dans le texte');

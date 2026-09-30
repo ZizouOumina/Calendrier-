@@ -45,35 +45,42 @@ console.log('\n== 312) Une période en cours n\'est jamais close ==');
   await ctx.close();
 }
 
-console.log('\n== 313) Le 1er octobre, septembre est clos une fois, avec ses lignes ==');
+/* 30 septembre au soir, le jour 1 passe au jeudi 1er octobre : septembre est entierement
+   avant le programme, il ne se clot jamais. Le premier mois clos est octobre, le 1er
+   novembre. */
+console.log('\n== 313) Le 1er novembre, octobre est clos une fois, avec ses lignes ==');
 {
-  const { ctx, fr } = await ouvrir('2026-10-01T09:00:00+02:00');
+  const s1 = await ouvrir('2026-10-01T09:00:00+02:00');
+  const ids1 = await s1.fr.evaluate(() => window.__bcPeriodesCloses().map(x => x.id));
+  ok(ids1.indexOf('M2026-09') === -1, 'le 1er octobre, septembre (tout entier avant le jour 1) n\'est pas clos (' + ids1.join(', ') + ')');
+  await s1.ctx.close();
+  const { ctx, fr } = await ouvrir('2026-11-01T09:00:00+01:00');
   const v = await fr.evaluate(() => {
     const p = window.__bcPeriodesCloses();
     return {
       ids: p.map(x => x.id),
-      sept: p.filter(x => x.id === 'M2026-09')[0] || null,
+      sept: p.filter(x => x.id === 'M2026-10')[0] || null,
       carte: !document.getElementById('periode-close-carte').hidden,
       titre: (document.getElementById('pcc-titre') || {}).textContent || ''
     };
   });
-  ok(v.sept !== null, 'septembre est clos (' + v.ids.join(', ') + ')');
-  ok(v.ids.filter(x => x === 'M2026-09').length === 1, 'et une seule fois');
+  ok(v.sept !== null, 'octobre est clos (' + v.ids.join(', ') + ')');
+  ok(v.ids.filter(x => x === 'M2026-10').length === 1, 'et une seule fois');
   ok(v.sept && v.sept.lignes.length > 0, 'la clôture porte les lignes des objectifs : ' + (v.sept ? v.sept.lignes.length : 0));
   ok(v.sept && v.sept.lignes.every(l => typeof l.cible === 'number' && typeof l.statut === 'string'),
      'chaque ligne a sa cible et son verdict');
   ok(v.sept && v.sept.total === v.sept.lignes.length && v.sept.tenus <= v.sept.total,
      'le score tient : ' + (v.sept ? v.sept.tenus + ' / ' + v.sept.total : '—'));
-  ok(v.carte === true && /Septembre/.test(v.titre), 'la carte l\'annonce : « ' + v.titre + ' »');
+  ok(v.carte === true && /Octobre/.test(v.titre), 'la carte l\'annonce : « ' + v.titre + ' »');
   /* aucune periode anterieure au programme ne doit etre close */
-  ok(v.ids.indexOf('M2026-08') === -1 && v.ids.indexOf('M2026-07') === -1,
+  ok(v.ids.indexOf('M2026-09') === -1 && v.ids.indexOf('M2026-08') === -1,
      'aucun mois antérieur au programme n\'est clos');
   await ctx.close();
 }
 
 console.log('\n== 314) Rejouer le même jour ne crée pas de doublon ==');
 {
-  const { ctx, fr } = await ouvrir('2026-10-01T09:00:00+02:00');
+  const { ctx, fr } = await ouvrir('2026-11-01T09:00:00+01:00');
   const v = await fr.evaluate(() => {
     const avant = window.__bcPeriodesCloses().length;
     window.__bcCloturerPeriodes(); window.__bcCloturerPeriodes(); window.__bcCloturerPeriodes();
@@ -85,7 +92,7 @@ console.log('\n== 314) Rejouer le même jour ne crée pas de doublon ==');
 
 console.log('\n== 315) « J\'ai vu » éteint la carte, l\'archive reste ==');
 {
-  const { ctx, page, fr } = await ouvrir('2026-10-01T09:00:00+02:00');
+  const { ctx, page, fr } = await ouvrir('2026-11-01T09:00:00+01:00');
   await fr.evaluate(() => document.getElementById('pcc-vu').click());
   await page.waitForTimeout(250);
   const v = await fr.evaluate(() => ({

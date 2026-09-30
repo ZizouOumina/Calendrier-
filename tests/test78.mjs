@@ -67,7 +67,7 @@ console.log('\n== 3) Sans bloc de projets dans la journée, la cellule dit pourq
 {
   const {ctx, fr} = await ouvrir({}, '2026-09-14T09:00:00+02:00');
   const t = await temps(fr), l = await legend(fr);
-  ok(/Español à leur place jusqu’au 28 oct/.test(t), 'cellule : ' + (t.match(/Español à leur place[^|]*/)||['(absent)'])[0]);
+  ok(/Español à leur place jusqu’au 31 oct/.test(t), 'cellule : ' + (t.match(/Español à leur place[^|]*/)||['(absent)'])[0]);
   ok(/projets — sans minuteur/.test(l), 'réacteur : ' + (l.match(/projets[^‖]*/)||['(absent)'])[0].trim());
   await ctx.close();
 }
@@ -147,8 +147,9 @@ console.log('\n== 7) Rattrapage unique après une absence ==');
      journee manquee ; ouvert le 16, revenu le 1er octobre : deux journees sans cloture, le 29 et le 30. C'est bien DEUX
      qu'il faut ici -- tout l'objet du test est qu'une absence ne fasse qu'UN item, et
      une seule journee ne le prouverait pas. Le retour etait au 24 quand le depart etait
-     au 22, au 25 quand il etait au 23 ; il glisse avec lui. */
-  const {ctx, page, fr} = await ouvrir({'batcave-last-open':'2026-09-16'}, '2026-10-01T10:00:00+02:00');
+     au 22, au 25 quand il etait au 23 ; il glisse avec lui. Depuis le 30 septembre au soir,
+     le jour 1 est le jeudi 1er octobre : retour le samedi 3, les 1er et 2 sans cloture. */
+  const {ctx, page, fr} = await ouvrir({'batcave-last-open':'2026-09-16'}, '2026-10-03T10:00:00+02:00');
   const t = await plan(fr);
   const l = t.split('\n').filter(x=>/Absence —/.test(x))[0] || '';
   ok(/2 journées sans clôture/.test(l), 'un seul item pour toute l\'absence : ' + l.trim().slice(0, 90));
@@ -160,7 +161,7 @@ console.log('\n== 7) Rattrapage unique après une absence ==');
   await ctx.close();
 }
 {
-  const {ctx, fr} = await ouvrir({'batcave-last-open':'2026-09-29'}, '2026-09-30T10:00:00+02:00');
+  const {ctx, fr} = await ouvrir({'batcave-last-open':'2026-10-01'}, '2026-10-02T10:00:00+02:00');
   ok(!/Absence —/.test(await plan(fr)), 'ouvert hier : aucun rattrapage');
   await ctx.close();
 }

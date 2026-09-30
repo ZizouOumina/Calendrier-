@@ -33,10 +33,10 @@ const log = (exo, type, series, charge) => ({id: 'l-' + exo, date: '2026-10-12',
 console.log('\n== 261) Le cran de charge suit l\'exercice ==');
 {
   const LOG = {'batcave-sport-log': [
-    log('Flexion du cou', 'Haut lourd', [20,20,20], 0),
+    log('Flexion du cou', 'Haut volume', [20,20,20], 0),
     log('Extension du cou', 'Haut lourd', [20,20,20], 1.25),
     log('Tractions', 'Haut lourd', [12,12,12,12], 0),
-    log('Élévations latérales', 'Haut lourd', [20,20,20], 1),
+    log('Élévations latérales', 'Haut volume', [20,20,20,20], 1),   /* 4 × 12-20 depuis le 30 septembre */
     log('Crunch lesté', 'Bas complet', [20,20,20], 0),
     log('Dips', 'Haut lourd', [15,14,13,12], 5)
   ]};
@@ -65,32 +65,39 @@ console.log('\n== 262) Les élévations latérales, lundi et samedi ==');
     const o = {}; window.__bcSessionsSport().forEach(x => { o[x.type] = {duree: x.duree, noms: x.exercises.map(e => e.name)}; });
     return o;
   });
-  ok(s['Haut lourd'].noms.includes('Élévations latérales') && s['Haut volume'].noms.includes('Élévations latérales'), 'présentes le lundi (volume) et le jeudi (lourd) depuis le régime combat');
+  /* 30 septembre, six exercices par seance : elles ne restent que le lundi, en 4 series. */
+  ok(s['Haut volume'].noms.includes('Élévations latérales') && !s['Haut lourd'].noms.includes('Élévations latérales'), 'présentes le lundi (volume), plus le jeudi depuis la simplification du 30 septembre');
   ok(!s['Bas complet'].noms.includes('Élévations latérales'), 'et pas le mardi');
-  const hl = s['Haut lourd'].noms, sa = s['Bras · épaules · mollets'].noms;
-  ok(hl.indexOf('Élévations latérales') < hl.indexOf('Flexion du cou'), 'lundi : avant le cou, qui reste le finisseur');
+  const hv = s['Haut volume'].noms, sa = s['Bras · épaules · mollets'].noms;
+  ok(hv.indexOf('Élévations latérales') < hv.indexOf('Flexion du cou'), 'lundi : avant le cou, qui reste le finisseur');
+  ok(hv.length === 6 && s['Haut lourd'].noms.length === 6 && s['Bas complet'].noms.length === 6, 'six exercices par séance, trois paires (' + [hv.length, s['Haut lourd'].noms.length, s['Bas complet'].noms.length].join(' / ') + ')');
   ok(sa.indexOf('Élévations latérales') === sa.indexOf('Shrugs suspendus') + 1, 'samedi : dans le bloc épaules, juste après les shrugs');
-  ok(s['Haut lourd'].duree === '55 min' && s['Haut volume'].duree === '55 min', 'durées annoncées : 55 min (lourd) et 55 min (volume)');
+  ok(s['Haut lourd'].duree === '40 min' && s['Haut volume'].duree === '40 min', 'durées annoncées : 40 min (lourd) et 40 min (volume)');
   await ctx.close();
 }
 
 console.log('\n== 263) Le samedi du régime combat : lever 05:30, pas de séance, projets le soir ==');
 {
+  /* Le samedi 3 octobre est l'exception de la semaine sans combat (un bas complet a 05:30,
+     SEANCES_REPRISE) : le samedi type se lit le 10. */
   const { ctx, fr } = await ouvrir('2026-09-25T09:00:00+02:00');
   const r = await fr.evaluate(() => ({
-    g: window.__bcGrille('saturday', '2026-10-03').map(b => b[0] + ' ' + b[1]),
-    lever: window.__bcLever('saturday', '2026-10-03'),
-    sport: window.__bcTypeSport('2026-10-03'),
-    som: window.__bcSommeilCible('2026-10-03'),
-    prevu: window.__bcPrevu('2026-10-03')
+    g: window.__bcGrille('saturday', '2026-10-10').map(b => b[0] + ' ' + b[1]),
+    lever: window.__bcLever('saturday', '2026-10-10'),
+    sport: window.__bcTypeSport('2026-10-10'),
+    som: window.__bcSommeilCible('2026-10-10'),
+    prevu: window.__bcPrevu('2026-10-10'),
+    g3: window.__bcGrille('saturday', '2026-10-03').map(b => b[0] + ' ' + b[1]),
+    sport3: window.__bcTypeSport('2026-10-03')
   }));
+  ok(r.sport3 === 'Bas complet' && r.g3[0] === '05:30 Sport', 'le samedi 3 (semaine sans combat) : un bas complet à 05:30 (' + r.sport3 + ' · ' + r.g3[0] + ')');
   ok(r.lever === '05:30' && r.g[0] === '05:30 Projets perso matinal', 'lever 05:30, un bloc de projets d\'abord (' + r.g[0] + ')');
   ok(r.g.includes('18:00 Projets perso 3') && r.g.includes('19:30 Dîner') && !r.g.some(x => /Course à pied/.test(x)), 'projets 18:00 → 19:30, dîner 19:30, plus de course');
   ok(r.g.filter(x => / Sport$/.test(x)).length === 0, 'aucune séance de muscu le samedi : le combat de la semaine est le cardio');
   ok(r.sport === 'Off' && r.prevu.sport === 0, 'le samedi n\'est plus compté comme séance (' + r.sport + ')');
   ok(Math.abs(r.som - (24 - 21 - 35/60 + 5.5)) < 0.01, 'nuit du vendredi : 21:35 → 05:30 = 7 h 55 (' + r.som.toFixed(2) + ' h)');
   ok(r.g.includes('09:20 Approfondir') && r.g.some(x => /^16:00 Cartes d'erreurs/.test(x)), 'aucun bloc de travail n\'a bougé');
-  const c = await fr.evaluate(() => [window.__bcConsigne('Projets perso 3', 6, '2026-10-03'), window.__bcConsigne('Sport', 1, '2026-10-05')]);
+  const c = await fr.evaluate(() => [window.__bcConsigne('Projets perso 3', 6, '2026-10-10'), window.__bcConsigne('Sport', 1, '2026-10-05')]);
   ok(/18:00/.test(c[0]) && /sans minuteur/.test(c[0]), 'la consigne du samedi soir parle du bloc de 18:00, sans minuteur');
   ok(/kilomètre/.test(c[1]), 'celle du lundi garde le kilomètre jusqu\'au parc');
   await ctx.close();

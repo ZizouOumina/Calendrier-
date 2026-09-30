@@ -1,12 +1,15 @@
-# Programme de sport — La Batcave · Programme v3, régime combat
+# Programme de sport — La Batcave · Programme v4, régime combat, six exercices par séance
 
-Copie de référence du programme appliqué dans la Batcave (onglet Sport), commencé le jeudi 24 septembre 2026 (jour 1 du programme ; les cours, eux, ont repris le 14). **Depuis le lundi 28 septembre, le régime combat** : trois séances de muscu et quatre de combat par semaine.
+Copie de référence du programme appliqué dans la Batcave (onglet Sport). **Jour 1 : jeudi 1er octobre 2026** (décidé le 30 septembre au soir : « on décale tout, demain c'est le vrai jour » ; les cours, eux, ont repris le 14 septembre). Régime combat : trois séances de muscu et quatre de combat par semaine — **mais la première semaine (1er → 4 octobre) est sans combat** : muscu seule, le jeudi 1er (haut lourd, séance de référence) et le samedi 3 (bas complet, à 05:30). Le combat commence le **lundi 5 octobre**.
+
+## Six exercices par séance (30 septembre)
+Sa question : « ya pas un peu trop d'exercices ? ». Oui : le haut du corps en portait dix et onze, pour un débutant qui s'entraîne à 05:30 et fait quatre séances de combat par semaine. À ce niveau, les polyarticulaires (tractions, dips, rows, pompes) font l'essentiel du résultat ; le curl, les extensions triceps, les face pulls et les shrugs doublaient ce que tractions, dips et rows chargent déjà, et le tatami charge les trapèzes et les avant-bras. Restent **six exercices, trois paires, ~40 minutes** par séance. Le dos garde 14 séries par semaine, pectoraux-triceps 14, les épaules latérales 4 (lundi), et le cou une direction par séance. Moins d'exercices, c'est aussi une séance qui tient dans le créneau même un matin difficile — et une séance faite vaut mieux qu'une séance parfaite sautée.
 
 ## Le régime combat (décision du 25 septembre)
 - **JJB le lundi, le mercredi et le vendredi à 10:30 ; Muay Thai le mardi à 19:30.** 1 h 30 par séance, club à dix minutes à pied, 100 € par mois (charge fixe « Club JJB / Muay Thai », catégorie Abonnements). La lutte (mardi et jeudi) et le MMA (mardi 18:30) attendent novembre.
 - **Le combat est le cardio.** La course du dimanche et les sprints du samedi sont sortis ; le panneau « Cardio & combat » de l'onglet Sport liste les quatre séances de la semaine, à cocher, 90 minutes chacune. Elles ne comptent pas dans « Séances tenues », qui reste le compteur de la muscu.
 - **Lundi et jeudi s'inversent.** La séance lourde passe le **jeudi**, le seul jour sans combat, avec une récupération complète ; le **lundi**, avant le JJB de 10:30, c'est le volume, plus léger. Le lundi, on ne va pas à l'échec : il faut de l'énergie pour le tatami.
-- **La séance du samedi saute** pendant le mois d'adaptation : ses exercices clés passent ailleurs — mollets le mardi, élévations latérales et superset curl/triceps le lundi. Elle peut revenir en novembre si le sommeil tient et que le poids monte.
+- **La séance du samedi saute** pendant le mois d'adaptation : ses exercices clés passent ailleurs — mollets le mardi, élévations latérales le lundi (le curl et les extensions triceps sont sortis le 30 septembre, avec la simplification). Elle peut revenir en novembre si le sommeil tient et que le poids monte.
 - **Sortent ce que le tatami travaille déjà** : curl inversé (séance lourde), relevés de genoux (volume), et les fentes du mardi — pour garder des jambes pour la Muay Thai du soir. Les avant-bras sont chargés quatre fois par semaine par les prises de kimono, la sangle par la garde, les ponts et les sorties de hanche. Les relevés de jambes suspendus, sortis le même jour, sont revenus le jeudi le 25 septembre.
 - **Lever 05:30 tous les jours, coucher 21:35** (22:00 le mardi, retour du club à 21:15). Le samedi et le dimanche dormaient jusqu'à 06:30 : une heure fixe tous les jours est ce qui recale une horloge interne.
 - **Eau : 3,5 à 4 L les jours de combat** (3 L les autres). **Collation combat** à 10:05 avant le JJB (14:50 le mardi, avec la collation d'entraînement) : banane, 50 g de flocons, 15 g d'amandes, ≈ 390 kcal.
@@ -14,9 +17,9 @@ Copie de référence du programme appliqué dans la Batcave (onglet Sport), comm
 - **Si la semaine dérape** : tu sautes une séance de combat, jamais la muscu ni le sommeil. Pendant les partiels, rien ne s'allège (sa décision du 23) ; seul le jour d'un examen, la séance saute.
 
 ## Le cadre
-- Trois séances de 47 à 55 minutes au parc, **à 05:30** : lundi haut volume, mardi bas complet, jeudi haut lourd. Mercredi, vendredi, samedi et dimanche off pour la muscu.
-- **Montée en charge : deux semaines à la moitié des tours, puis le volume complet.** La Batcave affiche directement le bon nombre de tours, il n'y a rien à calculer. Semaines 1 et 2 (24 septembre → 7 octobre) : moitié. À partir de la semaine 3 (8 octobre) : programme entier. Le passage double le volume d'un coup — si les courbatures font sauter une séance cette semaine-là, c'est le moment d'utiliser la réduction de charge, pas de serrer les dents.
-- **La première séance, le jeudi 24, est une séance de référence.** On ne suit pas la séance normale : on mesure le point de départ. Le jour 1 est passé au **mercredi 23** le soir du 22, puis au **jeudi 24** le matin du 23 (deux nuits blanches) ; le jeudi étant un jour de sport, la première séance du programme est le jour 1 lui-même — les maximums de tractions et de dips s'y mesurent. Les maximums du bas (split squat, soulevé de terre roumain, hip thrust) se prennent au premier **bas complet, le mardi 29**. Après l'échauffement, une seule série à l'échec sur quatre mouvements — tractions, dips, pompes, dead hang — notée dans l'onglet Sport. Sans ce point de départ, la surcharge progressive part du bas de la fourchette et on ne saura jamais ce qu'on valait au début.
+- Trois séances d'environ 40 à 47 minutes au parc, **à 05:30** : lundi haut volume, mardi bas complet, jeudi haut lourd. Mercredi, vendredi, samedi et dimanche off pour la muscu.
+- **Montée en charge : deux semaines à la moitié des tours, puis le volume complet.** La Batcave affiche directement le bon nombre de tours, il n'y a rien à calculer. Semaines 1 et 2 (du lundi 28 septembre au dimanche 11 octobre ; semaine 1 courte, du jeudi 1er au dimanche 4) : moitié. À partir de la semaine 3 (lundi 12 octobre) : programme entier. Le passage double le volume d'un coup — si les courbatures font sauter une séance cette semaine-là, c'est le moment d'utiliser la réduction de charge, pas de serrer les dents.
+- **La première séance, le jeudi 1er octobre, est une séance de référence.** On ne suit pas la séance normale : on mesure le point de départ — les maximums de tractions et de dips. Les maximums du bas (split squat, soulevé de terre roumain, hip thrust) se prennent au premier **bas complet, le samedi 3**. Après l'échauffement, une seule série à l'échec sur quatre mouvements — tractions, dips, pompes, dead hang — notée dans l'onglet Sport. Sans ce point de départ, la surcharge progressive part du bas de la fourchette et on ne saura jamais ce qu'on valait au début.
 - **Pesée le dimanche, à jeun, une semaine sur deux** (20 septembre, 4 et 18 octobre, et ainsi de suite) : au réveil, après les toilettes, avant de boire. Pas tous les jours : un poids se lit sur une tendance, et se peser quotidiennement fait prendre des décisions sur du bruit. La Batcave la rappelle en habitude du dimanche.
 - **Photos — peau et corps, un dimanche toutes les quatre semaines** (20 septembre, 18 octobre, 15 novembre, et ainsi de suite) : face, profil, dos, mêmes lieu, même lumière, mêmes poses, deux minutes. C'est la seule mesure de forme du programme — il n'y a pas de mensurations au mètre ruban, la fonctionnalité a été retirée. Quand la balance ne bouge pas, c'est la photo qu'on croit.
 - Paires antagonistes en supersets : exercice A puis exercice B, repos court entre A et B, repos plus long avant la paire suivante.
@@ -26,7 +29,7 @@ Copie de référence du programme appliqué dans la Batcave (onglet Sport), comm
 
 ## Les trois séances
 
-### Lundi · Haut volume (55 min)
+### Lundi · Haut volume (40 min)
 Avant le JJB de 10:30 : pas d'échec, on garde de l'énergie pour le tatami.
 
 | Paire | Exercice | Tours × fourchette |
@@ -35,13 +38,8 @@ Avant le JJB de 10:30 : pas d'échec, on garde de l'énergie pour le tatami.
 | 1 B | Dips | 4 × 10-20 |
 | 2 A | Rows prise large coudes hauts | 3 × 12-15 |
 | 2 B | Pike push-ups | 3 × 6-10 |
-| 3 A | Élévations latérales | 3 × 12-20 |
-| 3 B | Curl barre basse | 3 × 10-15 |
-| 4 A | Extension triceps barre basse | 3 × 10-15 |
-| 4 B | Face pulls | 2 × 15-20 |
-| 5 A | Shrugs suspendus | 3 × 12-15 |
-| 5 B | Flexion du cou | 3 × 12-20 |
-| 6 A | Extension du cou | 3 × 12-20 |
+| 3 A | Élévations latérales | 4 × 12-20 |
+| 3 B | Flexion du cou | 3 × 12-20 |
 
 ### Mardi · Bas complet (47 min)
 Le soir, Muay Thai : les fentes sont sorties pour garder des jambes.
@@ -55,7 +53,7 @@ Le soir, Muay Thai : les fentes sont sorties pour garder des jambes.
 | 3 A | Crunch lesté | 3 × 12-20 |
 | 3 B | Inclinaisons latérales du cou | 3 × 12-20 par côté |
 
-### Jeudi · Haut lourd (55 min)
+### Jeudi · Haut lourd (40 min)
 Repos par paire : 45 s entre A et B, puis 90 s · 45 s / 75 s · 30 s / 60 s. Le seul jour sans combat : c'est ici que la force se construit.
 
 | Paire | Exercice | Tours × fourchette |
@@ -64,12 +62,8 @@ Repos par paire : 45 s entre A et B, puis 90 s · 45 s / 75 s · 30 s / 60 s. Le
 | 1 B | Dips | 4 × 8-15 |
 | 2 A | Rows australiens pieds surélevés | 3 × 10-15 |
 | 2 B | Pompes déclinées | 3 × 8-12 |
-| 3 A | Curl barre basse | 2 × 10-15 |
-| 3 B | Extension triceps barre basse | 2 × 10-15 |
-| 4 A | Élévations latérales | 3 × 12-20 |
-| 4 B | Flexion du cou | 3 × 12-20 |
-| 5 A | Extension du cou | 3 × 12-20 |
-| 5 B | Relevés de jambes suspendus | 3 × 8-15 |
+| 3 A | Relevés de jambes suspendus | 3 × 8-15 |
+| 3 B | Extension du cou | 3 × 12-20 |
 
 Tractions et dips reviennent lundi et jeudi avec des fourchettes différentes ; leur cible se déduit du dernier journal, quel que soit le jour.
 
@@ -90,12 +84,12 @@ Le curl inversé du lundi et le curl des poignets du samedi sont sortis avec le 
 
 ## Le cou — faire grossir, pas entretenir
 
-Le cou grossit comme un mollet : par la charge et par la fréquence. Deux séances par semaine au minimum, trois mouvements, jamais de pont sur la tête. Au combat, un cou solide est aussi ce qui protège des étranglements et des coups : c'est la partie du programme qui sert directement sur le tatami.
+Le cou grossit comme un mollet : par la charge et par la fréquence. Depuis le 30 septembre, une direction par séance — flexion le lundi, inclinaison latérale le mardi, extension le jeudi — : trois mouvements, trois séances, jamais de pont sur la tête. Le JJB le charge en plus trois fois par semaine. Au combat, un cou solide est aussi ce qui protège des étranglements et des coups : c'est la partie du programme qui sert directement sur le tatami.
 
 | Mouvement | Jour | Position | Charge |
 |---|---|---|---|
-| Flexion du cou | lundi, jeudi | Allongé sur le dos en travers d'un banc ou d'un rebord, tête dans le vide | Serviette pliée sur le front, poids par-dessus, tenu à deux mains |
-| Extension du cou | lundi, jeudi | À plat ventre, même appui, tête dans le vide | Serviette derrière la tête, poids par-dessus |
+| Flexion du cou | lundi | Allongé sur le dos en travers d'un banc ou d'un rebord, tête dans le vide | Serviette pliée sur le front, poids par-dessus, tenu à deux mains |
+| Extension du cou | jeudi | À plat ventre, même appui, tête dans le vide | Serviette derrière la tête, poids par-dessus |
 | Inclinaison latérale | mardi | Couché sur le côté | Poids sur la tempe, serviette entre les deux |
 
 - 3 séries de 12 à 20 répétitions, trois secondes pour descendre, une seconde de tenue en haut, jamais d'à-coup.
@@ -117,7 +111,7 @@ Le crunch lesté remplace la roue abdominale, que tu n'as pas. Jamais les mains 
 
 ## Les trapèzes
 
-Shrugs suspendus le lundi pour les faisceaux supérieurs (suspendu à la barre, on monte les épaules vers les oreilles, deux secondes en haut) ; face pulls le lundi pour les moyens et les inférieurs. C'est ce couple, et non les tractions seules, qui tient l'épaule et redresse la posture.
+Les shrugs et les face pulls sont sortis le 30 septembre. Les rows prise large coudes hauts du lundi et les rows australiens du jeudi travaillent les faisceaux moyens et inférieurs ; le JJB (prises, contrôle, garde) charge les supérieurs trois fois par semaine. Si la posture ou les trapèzes plafonnent en novembre, les face pulls (2 × 15-20, élastique) reviennent le lundi en fin de séance.
 
 ## Les épaules — la largeur
 
@@ -126,12 +120,12 @@ L'épaule, c'est trois faisceaux, et le programme ne les servait pas également 
 | Faisceau | Ce qui le travaille | Fréquence |
 |---|---|---|
 | Antérieur (devant) | dips, pompes déclinées, pike push-ups | 2 séances sur 3 |
-| Postérieur (derrière) | rows, face pulls, tractions | 2 séances sur 3 |
-| **Latéral (côté)** | pike push-ups du lundi, et **élévations latérales lundi et jeudi** | 2 séances sur 3 |
+| Postérieur (derrière) | rows prise large coudes hauts, rows australiens, tractions | 2 séances sur 3 |
+| **Latéral (côté)** | pike push-ups et **élévations latérales (4 séries) le lundi** | 1 séance sur 3 |
 
 Le latéral est celui qui élargit la silhouette et dessine le V avec la taille : c'est le muscle au meilleur rapport visuel/effort du haut du corps. Avant le 23 septembre, seuls les pike push-ups le touchaient.
 
-**Élévations latérales, 3 × 12-20.** Une bouteille graduée dans chaque main, remplies au même trait : départ à 1 L (1 kg par main). Debout, buste très légèrement penché en avant, coudes à peine fléchis ; montée jusqu'à l'horizontale, pas plus haut, les coudes mènent ; deux secondes pour redescendre. Aucun élan : si le buste balance, c'est trop lourd. Progression : un trait de 250 g par main dès que 20 reps propres sortent sur les trois séries. Deux bouteilles pleines (2 kg) ne suffisent plus → une bouteille de sable dans chaque main.
+**Élévations latérales, 4 × 12-20, le lundi.** Une bouteille graduée dans chaque main, remplies au même trait : départ à 1 L (1 kg par main). Debout, buste très légèrement penché en avant, coudes à peine fléchis ; montée jusqu'à l'horizontale, pas plus haut, les coudes mènent ; deux secondes pour redescendre. Aucun élan : si le buste balance, c'est trop lourd. Progression : un trait de 250 g par main dès que 20 reps propres sortent sur les trois séries. Deux bouteilles pleines (2 kg) ne suffisent plus → une bouteille de sable dans chaque main.
 
 ## Les crans de charge
 
@@ -165,8 +159,8 @@ particulièrement besoin.
 Après échauffement : tractions max, dips max (ou maintien bras tendus, en secondes), pompes max, split squats max par jambe. Saisis-les comme séries de la première séance : les cibles en découlent. Sans calibration, la Batcave part du bas de chaque fourchette.
 
 ## Montée en charge du premier mois
-- Semaines 1 et 2 (24 septembre au 7 octobre) : la moitié des tours.
-- À partir de la semaine 3 (8 octobre) : programme complet.
+- Semaines 1 et 2 (jusqu'au dimanche 11 octobre) : la moitié des tours.
+- À partir de la semaine 3 (lundi 12 octobre) : programme complet.
 
 Il n'y a **pas** de palier intermédiaire à trois quarts : c'est sa décision du
 9 septembre, il voulait le volume entier au bout de deux semaines. Le passage double donc
@@ -195,7 +189,7 @@ Tractions à 12 reps propres sur toutes les séries, dips à 15, jambes dès que
 
 ## Règles de séance
 - **Arrêter une série** quand la vitesse d'une rep chute nettement, ou quand tu compenses (coup de reins, dos creusé). Une rep sale ne compte pas. Sur la dernière série de chaque paire, va vraiment jusqu'à ce que ce soit dur — sauf le lundi, où le JJB suit.
-- **Retest** le jeudi des semaines 5, 10 et 15 (22 octobre, 26 novembre, 31 décembre), sur la séance lourde : tractions max, 3 min de repos, dips max, puis séance normale.
+- **Retest** le jeudi des semaines 5, 10 et 15 (29 octobre, 3 décembre, 7 janvier), sur la séance lourde : tractions max, 3 min de repos, dips max, puis séance normale.
 - **Décharge** seulement si tu stagnes deux séances de suite sur tout : une semaine à 2 tours par paire, sans aller près de l'échec.
 - **Sans banc au parc** : pied arrière sur la barre basse ou un rebord à hauteur de genou ; step-ups → fentes marchées lestées ; hip thrust → épaules sur un muret ou un rebord, à défaut glute bridge une jambe au sol avec le sac sur les hanches, compensé par le tempo.
 - **Le carnet** : date, exercice, cran ou charge, reps de chaque série. C'est la seule ligne non négociable. Dans la Batcave, sur la séance du jour : le nombre de séries, les répétitions de chaque série et le lest se règlent aux boutons + et −, puis « Enregistrer ». L'exercice se coche tout seul.

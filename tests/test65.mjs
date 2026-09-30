@@ -29,28 +29,35 @@ const HABITS = [
 const seedHab = {'batcave-habits': HABITS, 'batcave-habits-seed-v2': true, 'batcave-habits-seed-v3': true, 'batcave-habits-seed-v4': true, 'batcave-habits-seed-v5': true, 'batcave-habits-seed-v6': true, 'batcave-habits-seed-v7': true, 'batcave-habits-ecran-v2': true, 'batcave-habitlog-hebdo-v1': true};
 const cartes = fr => fr.evaluate(() => [...document.querySelectorAll('#habits-grid .card')].map(c => c.innerText.replace(/\s+/g,' ')));
 
-console.log('\n== 240) Sport : mardi 29 = jour 1 et semaine de reprise, lundi 5 octobre = première muscu (tours × ½), lundi 26 octobre = retest ==');
+console.log('\n== 240) Sport : jeudi 1er octobre = jour 1 et première muscu (tours × ½), jeudi 29 octobre = retest ==');
 {
-  /* 28 septembre au soir : jour 1 au mardi 29, combat seulement jusqu'au dimanche 4. */
-  const { ctx, fr } = await ouvrir('2026-09-29T06:30:00+02:00');
+  /* 30 septembre au soir : jour 1 au jeudi 1er octobre, muscu des le jour 1 (street workout
+     seul jusqu'au dimanche 4, le combat commence le lundi 5). */
+  const { ctx, fr } = await ouvrir('2026-10-01T06:30:00+02:00');
   const r = await fr.evaluate(() => ({ debut: window.__bcProgrammeDebut, note: document.getElementById('programme-note').textContent }));
-  ok(r.debut === '2026-09-29', 'PROGRAMME_DEBUT = 2026-09-29 (' + r.debut + ')');
-  ok(/semaine 1/.test(r.note) && /combat seulement/.test(r.note) && /05 oct/.test(r.note), 'note : semaine 1 de reprise, muscu le 5 oct. (' + r.note + ')');
+  ok(r.debut === '2026-10-01', 'PROGRAMME_DEBUT = 2026-10-01 (' + r.debut + ')');
+  ok(/semaine 1/.test(r.note) && /½/.test(r.note), 'note : semaine 1, tours × ½ dès le jour 1 (' + r.note + ')');
   await ctx.close();
+  const v = await ouvrir('2026-09-30T20:00:00+02:00');
+  const nv = await v.fr.evaluate(() => document.getElementById('programme-note').textContent);
+  ok(/muscu à partir du/.test(nv) && /01 oct/.test(nv), 'la veille : « muscu à partir du 01 oct. » (' + nv + ')');
+  await v.ctx.close();
   const l5 = await ouvrir('2026-10-05T06:30:00+02:00');
   const n5b = await l5.fr.evaluate(() => document.getElementById('programme-note').textContent);
   ok(/semaine 2/.test(n5b) && /½/.test(n5b), 'lundi 5 octobre : semaine 2, tours × ½ (' + n5b + ')');
   await l5.ctx.close();
   const s = await ouvrir('2026-09-10T06:30:00+02:00');
   const n2 = await s.fr.evaluate(() => document.getElementById('programme-note').textContent);
-  ok(/muscu à partir du/.test(n2) && /05 oct/.test(n2), 'avant le jour 1 : « muscu à partir du 05 oct. » (' + n2 + ')');
+  ok(/muscu à partir du/.test(n2) && /01 oct/.test(n2), 'avant le jour 1 : « muscu à partir du 01 oct. » (' + n2 + ')');
   await s.ctx.close();
   /* 26 septembre : le jour 1 passe au LUNDI 28. La semaine de programme court du lundi au
      dimanche ; le lundi est un jour de sport (haut volume), premierJourSport() rend le 28
      lui-meme, et la semaine 5 court du 26 octobre au 1er novembre -- retest le lundi 26. */
-  const r5 = await ouvrir('2026-10-26T06:30:00+02:00');
+  /* 30 septembre : la premiere seance est le jeudi 1er, les retests tombent donc le jeudi
+     des semaines 5, 10 et 15 -- le 29 octobre pour la semaine 5. */
+  const r5 = await ouvrir('2026-10-29T06:30:00+01:00');
   const n5 = await r5.fr.evaluate(() => document.getElementById('programme-note').textContent);
-  ok(/semaine 5/.test(n5) && /lundi : retest/.test(n5), 'lundi 26 octobre : semaine 5, retest (' + n5 + ')');
+  ok(/semaine 5/.test(n5) && /jeudi : retest/.test(n5), 'jeudi 29 octobre : semaine 5, retest (' + n5 + ')');
   await r5.ctx.close();
 }
 
