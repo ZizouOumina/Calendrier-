@@ -41,7 +41,8 @@ for (const [d, attendu, moitie] of [['2026-10-05',2,true],['2026-10-12',4,false]
    n'aurait jamais existe. Elle est au 20 septembre depuis sa decision du 19.
    La coupe de cheveux est le samedi (le coiffeur est ferme le dimanche), une semaine sur
    trois, ancree au 3 octobre — elle ne tombe donc sur aucun dimanche, et c'est ce que
-   verifie la colonne « coupe ». */
+   verifie la colonne « coupe ». Le 30 septembre au soir, il saute le coiffeur du mois
+   (budget) : l'ancre passe au samedi 31 octobre. */
 console.log('\n== habitudes : pesee un dimanche sur deux, photos un sur quatre, coupe le samedi ==');
 for (const [d, jour_, pesee, coupe] of [
   ['2026-09-14','lundi 14',false,false],
@@ -52,7 +53,8 @@ for (const [d, jour_, pesee, coupe] of [
   ['2026-10-11','dimanche 11 oct',false,false],
   ['2026-10-18','dimanche 18 oct',true,false],
   ['2026-10-25','dimanche 25 oct',false,false],
-  ['2026-10-03','samedi 3 oct',false,true],
+  ['2026-10-03','samedi 3 oct (coiffeur sauté ce mois-ci)',false,false],
+  ['2026-10-31','samedi 31 oct',false,true],
   ['2026-09-15','mardi 15',false,false]]) {
   const {ctx, fr} = await jour(d+'T09:00:00+02:00');
   const h = await fr.evaluate(()=>{

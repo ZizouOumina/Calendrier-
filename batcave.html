@@ -3623,7 +3623,7 @@
   var DRAPEAUX_MIGRATION = ['objectifs-seed-v1','objectifs-v2-55','objectifs-v5-espanol',
     'habits-ecran-v2','habitlog-hebdo-v1','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','habits-seed-v7','habits-seed-v8','habits-seed-v9','habits-seed-v10',
     'courses-plan-v2','courses-plan-v3','courses-plan-v4','courses-plan-v5','courses-plan-v6','courses-plan-v7','courses-plan-v8','courses-plan-v9','courses-plan-v10',
-    'charges-v2','plafond-nourriture-v2','plafond-nourriture-v3','plafond-nourriture-v4','ancre-dimanche-v1','ancre-dimanche-v2','serviettes-v1','shampoing-dim-v1','marche-cible-v1','fc-migration-v1','fc-migration-v2','revision-fusionnee'];
+    'charges-v2','plafond-nourriture-v2','plafond-nourriture-v3','plafond-nourriture-v4','ancre-dimanche-v1','ancre-dimanche-v2','serviettes-v1','coiffeur-v1','shampoing-dim-v1','marche-cible-v1','fc-migration-v1','fc-migration-v2','revision-fusionnee'];
   /* Drapeaux que rien ne pose plus (migrations retirees) ou poses seulement quand il y a
      eu quelque chose a migrer : connus et gardes, jamais exiges. */
   var DRAPEAUX_ANCIENS = ['objectifs-v3-trajet','objectifs-v4-dimanche','habits-retirees-v1','shampoing-combat-v1'];   /* le dernier n'ecrit qu'a partir du 28 septembre */
@@ -3740,7 +3740,7 @@
      vestige : une fonctionnalite retiree (batcave-matieres) ou un essai. Elle prend de la
      place dans le quota de 5000 documents et embrouille les sauvegardes, sans que rien ne
      la lise jamais. On la signale ; la suppression reste ton geste. */
-  var CLES_CONNUES = ['addictions','budget-limits','business','coran','courses','dash-more','duaas','duree-bloc','sport-log','objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','courses-plan-v3','courses-plan-v4','courses-plan-v5','courses-plan-v6','courses-plan-v7','courses-plan-v8','courses-plan-v9','courses-plan-v10','charges-v2','plafond-nourriture-v2','plafond-nourriture-v3','plafond-nourriture-v4','gcal-controle','ancre-dimanche-v1','ancre-dimanche-v2','serviettes-v1','shampoing-dim-v1','marche-cible-v1','cardio','kcal-ajustement','gcal-ecriture','reinit','fc-migration-v1','fc-migration-v2','livrables','shampoing-combat-v1','charge','shopify-boutique','journees','examens-heures','vacances','jours-exclus',
+  var CLES_CONNUES = ['addictions','budget-limits','business','coran','courses','dash-more','duaas','duree-bloc','sport-log','objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','courses-plan-v3','courses-plan-v4','courses-plan-v5','courses-plan-v6','courses-plan-v7','courses-plan-v8','courses-plan-v9','courses-plan-v10','charges-v2','plafond-nourriture-v2','plafond-nourriture-v3','plafond-nourriture-v4','gcal-controle','ancre-dimanche-v1','ancre-dimanche-v2','serviettes-v1','coiffeur-v1','shampoing-dim-v1','marche-cible-v1','cardio','kcal-ajustement','gcal-ecriture','reinit','fc-migration-v1','fc-migration-v2','livrables','shampoing-combat-v1','charge','shopify-boutique','journees','examens-heures','vacances','jours-exclus',
     'espagnol','examens','cours-suivi','portes','periodes-closes','fc-prix-icloud-3','fc-prix-club-100','fixed-charges','goals','goals-depart','saisons','insights-hist','last-restore-drill','habitlog','habits','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','habits-seed-v7','habits-seed-v8','habits-seed-v9','habits-seed-v10','objectifs-v5-espanol',
     'horizon','last-auto-backup','last-manual-backup','last-bilan-prompt','last-compaction','last-open','last-rotation','notion-url',
     'pomodial-purge','projets','report','revision','revision-fusionnee','revue','sante','sauvegarde','sessions',
@@ -6974,7 +6974,7 @@
   var HABIT_SEED_V6 = [
     {id:'core-pesee-dim', label:'Pesée, à jeun', icon:'⚖️', jours:[0], cycleSemaines:2, ancre:ANCRE_DIMANCHE},
     {id:'core-photos-dim', label:'Photos — peau et corps', icon:'📸', jours:[0], cycleSemaines:4, ancre:ANCRE_DIMANCHE},
-    {id:'core-cheveux', label:'Coupe de cheveux', icon:'💈', jours:[6], cycleSemaines:3, ancre:'2026-10-03'},
+    {id:'core-cheveux', label:'Coupe de cheveux', icon:'💈', jours:[6], cycleSemaines:3, ancre:'2026-10-31'},   /* 30 septembre : le coiffeur saute ce mois-ci (budget), premiere coupe le 31 octobre */
     {id:'core-rasage', label:'Rasage — aisselles et parties intimes', icon:'🪒', jours:[0]},
     {id:'core-brosse-dents', label:'Brosse à dents changée', icon:'🪥', jours:[0], cycleSemaines:12, ancre:ANCRE_DIMANCHE},
     /* Les quatre jours de muscu, PLUS le dimanche : depuis le 19 septembre il court le
@@ -7139,6 +7139,18 @@
   /* Les serviettes (29 septembre) : ses habitudes deja enregistrees gardaient l'ancien rythme.
      On ne touche que celles qui sont encore au rythme d'origine -- un rythme qu'il aurait
      change lui-meme reste le sien. */
+  /* Le coiffeur (30 septembre au soir) : 56 € depenses dehors dans la semaine ont vide la
+     marge du mois ; sa decision, sauter le coiffeur de la periode (30 €). La coupe du samedi
+     3 octobre passe au samedi 31, premier samedi de la periode suivante (le 25). Seule
+     l'ancre d'origine bouge : une ancre qu'il aurait posee lui-meme reste la sienne. */
+  if(!load('batcave-coiffeur-v1', false)){
+    var coupeBougee = false;
+    (habitsState || []).forEach(function(h){
+      if(h && h.id === 'core-cheveux' && h.ancre === '2026-10-03'){ h.ancre = '2026-10-31'; coupeBougee = true; }
+    });
+    if(coupeBougee) save('batcave-habits', habitsState);
+    saveInternal('batcave-coiffeur-v1', true);
+  }
   if(!load('batcave-serviettes-v1', false)){
     var servBougee = false;
     (habitsState || []).forEach(function(h){

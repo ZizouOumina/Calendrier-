@@ -69,7 +69,7 @@ console.log('\n== 331) Départ neuf : les quatre habitudes du dimanche partent d
      && a['core-ongles'] === '2026-10-04' && a['core-brosse-dents'] === '2026-10-04',
      'les quatre ancres valent 2026-10-04 dans le stockage');
   /* La coupe de cheveux a sa propre ancre (un samedi) : elle ne doit pas etre emportee. */
-  ok(a['core-cheveux'] === '2026-10-03', 'la coupe de cheveux garde son ancre du samedi 3 octobre (' + a['core-cheveux'] + ')');
+  ok(a['core-cheveux'] === '2026-10-31', 'la coupe de cheveux a sa propre ancre, un samedi : le 31 octobre depuis le 30 septembre (coiffeur sauté ce mois-ci) (' + a['core-cheveux'] + ')');
   await ctx.close();
 }
 
@@ -81,7 +81,7 @@ console.log('\n== 332) Une Batcave déjà enregistrée est migrée au chargement
   ok(a['core-pesee-dim'] === '2026-10-04' && a['core-photos-dim'] === '2026-10-04'
      && a['core-ongles'] === '2026-10-04' && a['core-brosse-dents'] === '2026-10-04',
      'les quatre ancres du 13 ont été réécrites au 4 octobre');
-  ok(a['core-cheveux'] === '2026-10-03', 'et celle qui n\'était pas au 13 n\'a pas bougé');
+  ok(a['core-cheveux'] === '2026-10-31', 'et celle qui n\'était pas au 13 suit sa propre migration : le 3 octobre passe au 31 (coiffeur sauté)');
   const c = await cartes(fr);
   ok(/prochaine fois le 0?4 oct/.test(c.filter(x => x.indexOf('Photos') > -1)[0] || ''),
      'l\'écran dit la même chose que le stockage');
@@ -95,8 +95,8 @@ console.log('\n== 332) Une Batcave déjà enregistrée est migrée au chargement
   const { ctx, fr } = await ouvrir('2026-09-29T08:00:00+02:00', sienne);
   const a = await ancres(fr);
   ok(a['core-pesee-dim'] === '2026-10-04' && a['core-photos-dim'] === '2026-10-04'
-     && a['core-ongles'] === '2026-10-04' && a['core-brosse-dents'] === '2026-10-04' && a['core-cheveux'] === '2026-10-03',
-     'ses ancres du 20 passent au 4 octobre, la coupe reste au 3 (' + JSON.stringify(a) + ')');
+     && a['core-ongles'] === '2026-10-04' && a['core-brosse-dents'] === '2026-10-04' && a['core-cheveux'] === '2026-10-31',
+     'ses ancres du 20 passent au 4 octobre, la coupe va au 31 (' + JSON.stringify(a) + ')');
   await ctx.close();
 }
 

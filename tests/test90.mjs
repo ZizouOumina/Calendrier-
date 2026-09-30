@@ -85,14 +85,16 @@ console.log('\n== 303) Un cloud déjà propre ne déclenche aucune réécriture 
 console.log('\n== 304) La coupe de cheveux : le SAMEDI, une semaine sur trois ==');
 /* Le coiffeur est ferme le dimanche. Coupe le samedi 12 septembre, donc due le 3 octobre,
    puis le 24, puis le 14 novembre. Avant l'ancre, elle ne s'affiche pas du tout : rien n'est
-   « en retard » avant d'exister. */
+   « en retard » avant d'exister. Le 30 septembre au soir, il saute le coiffeur du mois
+   (budget) : l'ancre passe au samedi 31 octobre, puis 21 novembre, 12 decembre. */
 for (const [d, nom, du] of [['2026-09-19','sam. 19 sept (avant l\'ancre)',false],
                             ['2026-09-26','sam. 26 sept',false],
-                            ['2026-10-03','sam. 3 oct',true],
+                            ['2026-10-03','sam. 3 oct (coiffeur sauté ce mois-ci)',false],
                             ['2026-10-10','sam. 10 oct',false],
-                            ['2026-10-17','sam. 17 oct',false],
-                            ['2026-10-24','sam. 24 oct',true],
-                            ['2026-11-14','sam. 14 nov',true],
+                            ['2026-10-24','sam. 24 oct',false],
+                            ['2026-10-31','sam. 31 oct',true],
+                            ['2026-11-14','sam. 14 nov',false],
+                            ['2026-11-21','sam. 21 nov',true],
                             ['2026-10-04','dim. 4 oct (pas un samedi)',false]]) {
   const { ctx, fr } = await jour(d + 'T09:00:00+02:00');
   const l = await duJour(fr);
@@ -190,8 +192,9 @@ console.log('\n== 306) Série et taux ne comptent que les jours dus ==');
 {
   /* Deux coupes tenues, le 4 et le 25 octobre. Les dimanches intermediaires ne sont pas des
      echecs : la serie doit valoir 2 et le taux 100 %, pas 2 sur 4. */
-  const log = {'core-cheveux': ['2026-10-03','2026-10-24']};
-  const { ctx, fr } = await jour('2026-10-24T20:00:00+02:00', {'batcave-habitlog': log});
+  /* Depuis le 30 septembre, la coupe part du 31 octobre (coiffeur sauté en octobre). */
+  const log = {'core-cheveux': ['2026-10-31','2026-11-21']};
+  const { ctx, fr } = await jour('2026-11-21T20:00:00+01:00', {'batcave-habitlog': log});
   const r = await fr.evaluate(() => ({
     serie: window.__bcHabitStreak ? window.__bcHabitStreak('core-cheveux') : null,
     taux: window.__bcHabitRate ? window.__bcHabitRate('core-cheveux', 30) : null
