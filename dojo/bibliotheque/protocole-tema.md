@@ -42,7 +42,7 @@ Le prof avance de 4 à 5 temas par semaine (68 au semestre). Chaque nouveau tema
 file, à sa place dans l'ordre des échéances. Le rattrapage continue à 2 temas par jour tant que
 la file n'est pas vide ; il s'arrête le jour où elle l'est, pas à une date. Ensuite « Étudier en
 avance » repasse à 1 tema par jour, ce qui suffit pour le flux (environ 6 h 30 par semaine sur
-les 11 h 30 du bloc).
+les 9 h 15 du bloc).
 
 ## L'approfondissement (Anatomía, Biología celular, Epidemiología seulement)
 Il ne se fait pas pendant le rattrapage : on n'approfondit pas un tema qu'on n'a pas encore
@@ -50,7 +50,7 @@ compris. Il a ses blocs, réservés à ces trois matières, dès que la file est
 - **Approfondir**, mercredi 13:00 (1 h) et samedi 09:20 (2 h), soit 3 h par semaine. Plan
   prévu : potentiel d'action, membrane et signalisation, hémostase, biais et plans d'étude, os et
   remodelage, cas complet RR/OR, inflammation ;
-- le temps que libère « Étudier en avance » une fois le flux absorbé (environ 5 h par semaine) ;
+- le temps que libère « Étudier en avance » une fois le flux absorbé (environ 3 h par semaine), et les 2 h de « Question ouverte » ;
 - **Anki**, chaque matin, qui ramène les cartes jusqu'à ce qu'elles tiennent.
 
 ## 0. Survol — 10 minutes
