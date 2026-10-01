@@ -9,7 +9,7 @@ l'IA, vérifiée — et partagée.
 
 | Livrable | Échéance | État |
 |---|---|---|
-| 16 temas rattrapés (diapos d'environ 60 pages, 1 h 30 chacun) : 2 par jour, d'affilée, à partir du bloc « Étudier en avance » ; quand un bloc Español est pris, le 2e résumé s'écrit en espagnol ; détail dans `bibliotheque/protocole-tema.md` (recalé le 1er oct. : 3 par jour à 40 min ne tenait pas sur 60 diapos) | jeudi 8 octobre (vendredi 9 en réserve) | 0 / 16 |
+| File de temas vidée : les 16 de retard + les nouveaux qui arrivent (4 à 5 par semaine). Ordre par échéance (Anatomía T1-T2 avant le cuestionario du 7-8 oct., Antropología T1-T3 avant le 16 oct.). Socle (Anatomía, Biología celular, Epidemiología) en protocole complet 1 h 30 ; Antropología et Documentación en version courte 40 min. Détail dans `bibliotheque/protocole-tema.md` | vers le samedi 10 octobre (à recalculer quand il donne la répartition par matière) | 0 / 16 |
 | Lexique dentaire français ↔ espagnol vérifié, partagé à 3 compañeros au moins | samedi 31 octobre | pas commencé |
 | Outil de quiz sur ses temas, construit par lui dans Claude Code | dimanche 29 novembre | novembre |
 | Boutique Shopify en ligne | lundi 30 novembre | novembre |
@@ -18,7 +18,7 @@ l'IA, vérifiée — et partagée.
 ## Les indicateurs (on mesure des résultats, pas des efforts)
 | Indicateur | Cible | Semaine 1 |
 |---|---|---|
-| Temas faits avec le protocole | 2 / jour jusqu'au 8 oct., puis 1 / jour | — |
+| Temas faits avec le protocole | 2 / jour (socle) tant que la file n'est pas vide, puis 1 / jour | — |
 | Erreurs de l'IA trouvées contre le cours | le chiffre compte, pas la cible | — |
 | Notes aux questionnaires | ≥ 8/10 | — |
 | Choses livrées à quelqu'un d'autre | 1 par module | — |

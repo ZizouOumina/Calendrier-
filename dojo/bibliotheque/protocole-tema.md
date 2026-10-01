@@ -17,11 +17,41 @@ espagnol**. Changement du 1er octobre : 40 minutes, c'était calibré pour 10 pa
 | Lun. 5 | 08:20 → 09:50 | 13:00 → 14:30 (Question ouverte + Español → résumé en espagnol) | 10 |
 | Mar. 6 | 09:20 → 10:50 | 10:50 → 12:20 (Question ouverte) | 12 |
 | Mer. 7 | 08:20 → 09:50 | 13:00 → 14:30 (Approfondir + Español → résumé en espagnol) | 14 |
-| Jeu. 8 | 09:20 → 10:50 | 10:50 → 12:20 (Projets perso 3) | **16** |
+| Jeu. 8 | 09:20 → 10:50 | 10:50 → 12:20 (Projets perso 3) | 16 |
 
-Vendredi 9 en réserve si un jour a glissé. Cinq minutes de pause entre les deux temas, debout.
+Ces créneaux continuent tant que la file n'est pas vide (voir plus bas : les nouveaux temas). Cinq minutes de pause entre les deux temas, debout.
 Si un soir la vérification rate ou les cartes sont floues, on redescend à un tema le lendemain :
 un tema appris vaut mieux que deux survolés.
+
+## Le tri (1er octobre) : toutes les matières ne valent pas 1 h 30
+| Matière | Poids | Traitement |
+|---|---|---|
+| **Anatomía I** (15 temas), **Biología celular** (14), **Epidemiología y bioestadística** (21) | 6 ECTS chacune, le socle du métier | **Protocole complet, 1 h 30**, puis approfondissement |
+| **Antropología** (10), **Documentación** (8) | 3 ECTS chacune | **Version courte, 40 min** : survol, résumé d'une page de mémoire, 5 cartes. Pas de socratique. |
+
+Un créneau de 3 heures tient donc 2 temas du socle, ou 1 du socle et 2 courts.
+
+**L'ordre suit les échéances, pas les numéros** :
+1. Anatomía T1 (homeostasis) et T2 (sangre) : cuestionario 1 le mercredi 7 ou le jeudi 8 octobre.
+2. Antropología T1 à T3 : cuestionario le vendredi 16 octobre.
+3. Biología celular et Epidemiología, en alternance : leur examen est en janvier, aucun
+   cuestionario sur les temas avant.
+
+## Les nouveaux temas qui arrivent pendant le rattrapage
+Le prof avance de 4 à 5 temas par semaine (68 au semestre). Chaque nouveau tema entre dans la
+file, à sa place dans l'ordre des échéances. Le rattrapage continue à 2 temas par jour tant que
+la file n'est pas vide ; il s'arrête le jour où elle l'est, pas à une date. Ensuite « Étudier en
+avance » repasse à 1 tema par jour, ce qui suffit pour le flux (environ 6 h 30 par semaine sur
+les 11 h 30 du bloc).
+
+## L'approfondissement (Anatomía, Biología celular, Epidemiología seulement)
+Il ne se fait pas pendant le rattrapage : on n'approfondit pas un tema qu'on n'a pas encore
+compris. Il a ses blocs, réservés à ces trois matières, dès que la file est vide :
+- **Approfondir**, mercredi 13:00 (1 h) et samedi 09:20 (2 h), soit 3 h par semaine. Plan
+  prévu : potentiel d'action, membrane et signalisation, hémostase, biais et plans d'étude, os et
+  remodelage, cas complet RR/OR, inflammation ;
+- le temps que libère « Étudier en avance » une fois le flux absorbé (environ 5 h par semaine) ;
+- **Anki**, chaque matin, qui ramène les cartes jusqu'à ce qu'elles tiennent.
 
 ## 0. Survol — 10 minutes
 Fais défiler les 60 diapos sans lire en détail. Note le **plan** : les 4 à 6 grandes parties, et les
