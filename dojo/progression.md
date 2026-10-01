@@ -9,7 +9,7 @@ l'IA, vérifiée — et partagée.
 
 | Livrable | Échéance | État |
 |---|---|---|
-| File de temas vidée : les 16 de retard + les nouveaux qui arrivent (4 à 5 par semaine). Ordre par échéance (Anatomía T1-T2 avant le cuestionario du 7-8 oct., Antropología T1-T3 avant le 16 oct.). Socle (Anatomía, Biología celular, Epidemiología) en protocole complet 1 h 30 ; Antropología et Documentación en version courte 40 min. Détail dans `bibliotheque/protocole-tema.md` | vers le samedi 10 octobre (à recalculer quand il donne la répartition par matière) | 0 / 16 |
+| File de temas vidée : les 16 de retard (Anatomía 3, Biología celular 4, Epidemiología 5, Documentación 2, Antropología 2 ; environ 22 h) le jeudi 8, puis les nouveaux vus en cours. Ordre par échéance : Anatomía T1-T2 d'abord (cuestionario du 7-8 oct.). Plan jour par jour dans `bibliotheque/protocole-tema.md` | 16 de retard : jeudi 8 octobre ; file vide : dimanche 11 octobre | 0 / 16 |
 | Lexique dentaire français ↔ espagnol vérifié, partagé à 3 compañeros au moins | samedi 31 octobre | pas commencé |
 | Outil de quiz sur ses temas, construit par lui dans Claude Code | dimanche 29 novembre | novembre |
 | Boutique Shopify en ligne | lundi 30 novembre | novembre |

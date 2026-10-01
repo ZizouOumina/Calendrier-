@@ -8,16 +8,28 @@ en prenant le bloc qui suit (Question ouverte, Projets perso 3, Approfondir — 
 rattrapage). Quand les 3 heures mangent un bloc Español, le résumé du 2e tema s'écrit **en
 espagnol**. Changement du 1er octobre : 40 minutes, c'était calibré pour 10 pages, pas 60.
 
-| Jour | Tema 1 | Tema 2 | Total |
+**Le retard réel (relevé le 1er octobre)** : Anatomía 3 temas (247 pages en tout, environ 1 h 50
+chacun), Biología celular 4 (60 pages chacun, 1 h 30), Epidemiología y bioestadística 5 (1 h 30),
+Documentación 2 et Antropología 2 (version courte, 40 min). Environ 22 heures en tout.
+
+| Jour | Créneau | Temas | Fait |
 |---|---|---|---|
-| Jeu. 1 | 09:20 → 10:50 | 10:50 → 12:20 (Projets perso 3) | 2 |
-| Ven. 2 | 08:20 → 09:50 | 09:50 → 11:20 (Question ouverte) | 4 |
-| Sam. 3 | 09:20 → 10:50 | 10:50 → 12:20 (Español · gramática → résumé en espagnol) | 6 |
-| Dim. 4 | 09:20 → 10:50 (Simulation, suspendue) | 17:30 → 19:00 (Projets perso 3) | 8 |
-| Lun. 5 | 08:20 → 09:50 | 13:00 → 14:30 (Question ouverte + Español → résumé en espagnol) | 10 |
-| Mar. 6 | 09:20 → 10:50 | 10:50 → 12:20 (Question ouverte) | 12 |
-| Mer. 7 | 08:20 → 09:50 | 13:00 → 14:30 (Approfondir + Español → résumé en espagnol) | 14 |
-| Jeu. 8 | 09:20 → 10:50 | 10:50 → 12:20 (Projets perso 3) | 16 |
+| Jeu. 1 | 09:20 → 12:20 | **Anatomía T1** (homeostasis) + Documentación 1 | 2 |
+| Ven. 2 | 08:20 → 11:20 | **Anatomía T2** (sangre) + Antropología 1 | 4 |
+| Sam. 3 | 09:20 → 12:20 | Biología celular 1 + Epidemiología 1 (résumé en espagnol) | 6 |
+| Dim. 4 | 09:20 → 10:50 et 17:30 → 19:00 | Biología celular 2 + Epidemiología 2 | 8 |
+| Lun. 5 | 08:20 → 09:50 et 13:00 → 14:30 | Biología celular 3 + Epidemiología 3 (résumé en espagnol) | 10 |
+| Mar. 6 | 09:20 → 12:20 | **Anatomía T3** + Documentación 2 + 25 min : relire les résumés T1-T2 | 13 |
+| Mer. 7 | 08:20 → 09:50 et 13:00 → 14:30 | Biología celular 4 + Epidemiología 4 (résumé en espagnol) | 14 |
+| Jeu. 8 | 09:20 → 12:20 | Epidemiología 5 + Antropología 2 | **16** |
+
+Anatomía T1 et T2 passent en premier : cuestionario 1 le mercredi 7 ou le jeudi 8. Leurs cartes
+reviennent dans Anki d'ici là, et le mardi tu relis les deux résumés. Si un des trois temas
+d'Anatomía dépasse 100 pages, il prend deux créneaux et tout glisse d'un demi-jour.
+
+Les nouveaux temas vus en cours entre le 1er et le 8 (environ 6) passent ensuite, à 2 par jour :
+**file vide vers le dimanche 11 octobre**. Antropología T3 doit être fait avant le cuestionario
+du vendredi 16.
 
 Ces créneaux continuent tant que la file n'est pas vide (voir plus bas : les nouveaux temas). Cinq minutes de pause entre les deux temas, debout.
 Si un soir la vérification rate ou les cartes sont floues, on redescend à un tema le lendemain :
