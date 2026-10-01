@@ -15428,7 +15428,7 @@
     'Español · escribir largo': "300 mots chronométrés (30 min) sur un sujet d'examen, sans dictionnaire, puis « corrige » et les cartes d'erreurs.",
     'Español · hablar': "Quinze minutes de shadowing sur un cours d'anatomía, puis 45 min de tuteur, ou de conversation avec un compañero, ou en dictée avec Claude. Technique 4-3-2 pour finir.",
     'Español · tutor': "Séance de tuteur : 3 min de conversation, 12 min à expliquer le cours de la veille, 10 min de corrections répétées, 5 min de jeu de rôle en usted. Dix cartes d'erreurs après.",
-    'Español · simulación': "Deux réponses de type examen en espagnol, sur deux temas vus cette semaine, 55 min sans dictionnaire, puis « examen » avec Claude : le contenu d'abord, la langue ensuite. Dimanche 20 septembre : le diagnostic (300 mots, 3 min d'oral, Kwiziq), ses trois chiffres à la clôture.",
+    'Español · simulación': "Deux réponses de type examen en espagnol, sur deux temas vus cette semaine, 55 min sans dictionnaire, puis « examen » avec Claude : le contenu d'abord, la langue ensuite. Dimanche 4 octobre : le diagnostic (300 mots, 3 min d'oral, Kwiziq), ses trois chiffres à la clôture.",
     'Español · balance de la semana': "Les quatre chiffres du dimanche : erreurs pour 100 mots, minutes d'oral sans pause, pages lues, minutes de conversation. Le code d'erreur dominant devient le point de grammaire de la semaine. Saisis-les à la clôture du jour.",
     'Español': "Un bloc au choix selon le jour : lundi grammaire C1, mardi écrit long, mercredi lecture avec fiche de vingt mots, jeudi tuteur, vendredi écoute exigeante avec dictée, samedi DELE C1, dimanche bilan.",
     'Español · serie en VO': "Une série espagnole sans sous-titres français (sous-titres espagnols au début, "
@@ -15450,7 +15450,55 @@
     },
     'Coucher': "Clôture du jour faite, la ligne en espagnol ? Écran off, réveil posé loin du lit."
   };
+  /* ===== Le rattrapage des temas (1er -> 10 octobre) =====
+     16 temas de retard au 1er octobre (Anatomia 3, Biologia celular 4, Epidemiologia 5,
+     Documentacion 2, Antropologia 2), puis les nouveaux de la semaine du 5. Deux temas par
+     jour, d'affilee, a partir du bloc « Etudier en avance » : le bloc qui suit (question
+     ouverte, Projets perso 3, Approfondir, simulation) est prete au rattrapage. Ordre par
+     echeance : Anatomia T1-T2 d'abord (cuestionario 1 le 7 ou le 8). La consigne du jour
+     REMPLACE celle du bloc ; « puis: true » la fait suivre de la consigne habituelle, pour
+     les blocs que le rattrapage ne prend qu'en partie. Le detail est dans le dojo
+     (dojo/bibliotheque/protocole-tema.md) et dans Prise en main. */
+  var RATTRAPAGE_PROTOCOLE = ' Protocole, 1 h 30 par tema : survol 10 min · partie par partie 45 min, IA fermée · « tema » dans le Projet Dentaire 20 min · vérification dans le cours 5 min · 8 à 10 cartes écrites par toi, puis « vérifie mes cartes ». Antropología et Documentación : version courte, 40 min, sans « tema ».';
+  var RATTRAPAGE_TEMAS = {
+    '2026-10-01': {'Étudier en avance': {t:'Rattrapage, jour 1 sur 8 : Anatomía T1 (homeostasis, ≈ 1 h 50), puis Documentación 1 en version courte — jusqu\'à 12:20 au plus tard, en prenant Projets perso 3. Avant de commencer : recolle les instructions du Projet Dentaire dans claude.ai.', p:1},
+                   'Projets perso 3': {t:'Rattrapage : la suite du matin (Documentación 1). Le bloc de projet revient le 11 octobre.'}},
+    '2026-10-02': {'Étudier en avance': {t:'Rattrapage, jour 2 : Anatomía T2 (sangre, ≈ 1 h 50), puis Antropología 1 en version courte — jusqu\'à 11:20, en prenant la question ouverte.', p:1},
+                   'Question ouverte ou autre': {t:'Rattrapage : la suite du matin (Antropología 1).'}},
+    '2026-10-03': {'Approfondir': {t:'Rattrapage, jour 3 : Biología celular 1 (09:20 → 10:50), puis Epidemiología 1 (10:50 → 12:20, résumé écrit en espagnol). Approfondir reprend le mercredi 14 octobre.', p:1},
+                   'Español · gramática': {t:'Rattrapage : la fin d\'Epidemiología 1 — le résumé s\'écrit en espagnol, c\'est ton écrit du jour.'}},
+    '2026-10-04': {'Simulation dentaire': {t:'Rattrapage, jour 4 : Biología celular 2, de 09:20 à 10:50.', p:1},
+                   'Réexpliquer': {t:'Jusqu\'à 10:50 : la fin de Biología celular 2. Puis Réexpliquer, en version courte.', puis:true},
+                   'Projets perso 3': {t:'Rattrapage : Epidemiología 2, de 17:30 à 19:00.', p:1}},
+    '2026-10-05': {'Étudier en avance': {t:'Rattrapage, jour 5 : Biología celular 3, de 08:20 à 09:50.', p:1},
+                   'Question ouverte ou autre': {t:'Rattrapage : Epidemiología 3, de 13:00 à 14:30 — résumé écrit en espagnol.', p:1},
+                   'Español · gramática': {t:'Jusqu\'à 14:30 : la fin d\'Epidemiología 3. Puis la gramática.', puis:true}},
+    '2026-10-06': {'Étudier en avance': {t:'Rattrapage, jour 6 : Anatomía T3 (≈ 1 h 50), puis Documentación 2 en version courte, puis 25 min : relis tes résumés d\'Anatomía T1 et T2 (cuestionario 1 mercredi ou jeudi). Jusqu\'à 12:20, en prenant la question ouverte.', p:1},
+                   'Question ouverte ou autre': {t:'Rattrapage : la suite du matin (Documentación 2, relecture d\'Anatomía T1-T2).'}},
+    '2026-10-07': {'Étudier en avance': {t:'Rattrapage, jour 7 : Biología celular 4, de 08:20 à 09:50.', p:1},
+                   'Approfondir': {t:'Rattrapage : Epidemiología 4, de 13:00 à 14:30 — résumé écrit en espagnol.', p:1},
+                   'Español · gramática': {t:'Jusqu\'à 14:30 : la fin d\'Epidemiología 4. Puis la gramática.', puis:true}},
+    '2026-10-08': {'Étudier en avance': {t:'Rattrapage, jour 8 : Epidemiología 5, puis Antropología 2 en version courte. À la fin du bloc, les 16 temas de retard sont faits.', p:1},
+                   'Projets perso 3': {t:'Rattrapage : la suite du matin (Antropología 2). S\'il reste du temps : le premier tema vu en cours cette semaine.'}},
+    '2026-10-09': {'Étudier en avance': {t:'Rattrapage, jour 9 : le premier des nouveaux temas de la semaine (ordre des échéances), de 08:20 à 09:50.', p:1},
+                   'Lire': {t:'Rattrapage : un nouveau tema de la semaine, de 17:00 à 19:00 (à la place de Lire et Réexpliquer).', p:1},
+                   'Réexpliquer': {t:'Rattrapage : la suite du tema de 17:00.'}},
+    '2026-10-10': {'Approfondir': {t:'Rattrapage, dernier jour : les deux derniers nouveaux temas, de 09:20 à 12:20 (le 2e résumé en espagnol). À midi, la file est vide : tu es à jour.', p:1},
+                   'Español · gramática': {t:'Rattrapage : la fin du 2e tema, résumé écrit en espagnol.'}}
+  };
+  function consigneRattrapage(label, iso){
+    var j = RATTRAPAGE_TEMAS[iso];
+    var r = j && j[label];
+    if(!r) return null;
+    return {texte: '📚 ' + r.t + (r.p ? RATTRAPAGE_PROTOCOLE : ''), puis: !!r.puis};
+  }
   function consigneBloc(label, dow, iso, heure){
+    var rt = consigneRattrapage(label, iso || todayISO);
+    if(rt && !rt.puis) return rt.texte;
+    var base = consigneBlocBase(label, dow, iso, heure);
+    return rt ? rt.texte + (base ? ' ' + base : '') : base;
+  }
+  function consigneBlocBase(label, dow, iso, heure){
     var p = periodeGrille(iso || todayISO);
     var c = (p && p.consignes && p.consignes[label]) || CONSIGNES_ES[label] || CONSIGNES[label];
     /* blocs des journees exceptionnelles : la veille, le trajet, l'evenement lui-meme */
