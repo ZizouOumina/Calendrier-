@@ -1,0 +1,201 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Paliers de physique</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800&family=Atkinson+Hyperlegible:wght@400;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout : une fiche d'athlète — en-tête chiffré, une rangée de silhouettes à la même échelle, puis une carte par palier. */
+:root{
+  --bg:#f3f2ee; --paper:#fbfaf7; --ink:#1f2328; --ink-2:#565d66; --line:#d9d6ce;
+  --brass:#a0742a; --brass-soft:#efe3cc; --body:#8c96a3; --body-now:#3d4652; --ghost:#b4533a;
+  --good:#3f7a4f;
+  --f-display:"Big Shoulders Display", "Arial Narrow", Impact, sans-serif;
+  --f-body:"Atkinson Hyperlegible", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --f-mono:"IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#15181c; --paper:#1c2026; --ink:#e8e6e1; --ink-2:#a3a9b1; --line:#2e343c;
+  --brass:#d3a55a; --brass-soft:#3a3122; --body:#6f7a88; --body-now:#c9d0d8; --ghost:#e0795e; --good:#7cc08c; color-scheme:dark } }
+:root[data-theme="dark"]{
+  --bg:#15181c; --paper:#1c2026; --ink:#e8e6e1; --ink-2:#a3a9b1; --line:#2e343c;
+  --brass:#d3a55a; --brass-soft:#3a3122; --body:#6f7a88; --body-now:#c9d0d8; --ghost:#e0795e; --good:#7cc08c; color-scheme:dark }
+body{ background:var(--bg); color:var(--ink); font:16px/1.55 var(--f-body); }
+.wrap{ max-width:1080px; margin:0 auto; padding-inline:20px; padding-block:28px 56px; display:grid; grid-template-columns:minmax(0,1fr); gap:28px; }
+h1,h2,h3{ font-family:var(--f-display); letter-spacing:.01em; text-wrap:balance; margin:0; }
+h1{ font-size:clamp(2.2rem,6vw,3.6rem); font-weight:800; line-height:1; }
+h2{ font-size:1.7rem; font-weight:800; }
+h3{ font-size:1.35rem; font-weight:800; }
+.eyebrow{ font:500 .75rem/1 var(--f-mono); letter-spacing:.12em; text-transform:uppercase; color:var(--brass); }
+.lead{ color:var(--ink-2); max-width:62ch; margin:10px 0 0; }
+.mono{ font-family:var(--f-mono); font-variant-numeric:tabular-nums; }
+.stats{ display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:1px; background:var(--line); border:1px solid var(--line); border-radius:6px; overflow:hidden; }
+.stat{ background:var(--paper); padding:14px 16px; min-width:0; }
+.stat b{ display:block; font:500 1.5rem/1.2 var(--f-mono); font-variant-numeric:tabular-nums; }
+.stat span{ font-size:.85rem; color:var(--ink-2); }
+.imc{ display:grid; gap:10px; }
+.imc-bar{ position:relative; height:34px; border-radius:4px; overflow:hidden; display:flex; font:500 .72rem/34px var(--f-mono); color:var(--ink); }
+.imc-bar div{ text-align:center; white-space:nowrap; overflow:hidden; }
+.z1{ background:color-mix(in srgb,var(--ghost) 22%,var(--paper)); }
+.z2{ background:color-mix(in srgb,var(--body) 22%,var(--paper)); }
+.z3{ background:color-mix(in srgb,var(--good) 30%,var(--paper)); }
+.z4{ background:color-mix(in srgb,var(--body) 22%,var(--paper)); }
+.marks{ position:relative; height:44px; }
+.mark{ position:absolute; top:0; transform:translateX(-50%); text-align:center; font:500 .72rem/1.2 var(--f-mono); color:var(--ink-2); white-space:nowrap; }
+.mark::before{ content:""; display:block; width:2px; height:12px; margin:0 auto 3px; background:var(--ink-2); }
+.mark.now{ color:var(--ghost); } .mark.now::before{ background:var(--ghost); }
+.mark.goal{ color:var(--brass); } .mark.goal::before{ background:var(--brass); }
+.lineup-box{ background:var(--paper); border:1px solid var(--line); border-radius:6px; padding:18px 12px 8px; }
+.lineup{ overflow-x:auto; }
+.lineup-inner{ display:grid; grid-template-columns:repeat(5, minmax(120px,1fr)); gap:4px; min-width:620px; }
+.fig{ display:grid; justify-items:center; gap:6px; }
+.fig svg{ width:100%; max-width:170px; height:auto; }
+.fig .kg{ font:800 1.6rem/1 var(--f-display); }
+.fig .when{ font:500 .72rem/1.3 var(--f-mono); color:var(--ink-2); text-align:center; }
+.legend{ display:flex; flex-wrap:wrap; gap:16px; font-size:.82rem; color:var(--ink-2); padding:6px 8px 0; }
+.legend i{ display:inline-block; width:22px; height:0; border-top:2px dashed var(--ghost); vertical-align:middle; margin-right:6px; }
+.legend u{ display:inline-block; width:12px; height:12px; background:var(--body); border-radius:2px; vertical-align:middle; margin-right:6px; text-decoration:none; }
+.cards{ display:grid; grid-template-columns:repeat(auto-fit,minmax(290px,1fr)); gap:14px; }
+.card{ background:var(--paper); border:1px solid var(--line); border-radius:6px; padding:18px; display:grid; gap:10px; align-content:start; min-width:0; }
+.card.start{ border-color:var(--ghost); }
+.card header{ display:flex; justify-content:space-between; align-items:baseline; gap:10px; flex-wrap:wrap; }
+.tag{ font:500 .7rem/1 var(--f-mono); letter-spacing:.08em; text-transform:uppercase; padding:5px 7px; border-radius:3px; background:var(--brass-soft); color:var(--brass); }
+.card ul{ margin:0; padding-left:18px; display:grid; gap:4px; }
+.card dl{ display:grid; grid-template-columns:auto 1fr; gap:3px 12px; margin:0; font-size:.88rem; }
+.card dt{ color:var(--ink-2); } .card dd{ margin:0; font-family:var(--f-mono); font-variant-numeric:tabular-nums; }
+.note{ border-left:3px solid var(--brass); padding:4px 0 4px 14px; color:var(--ink-2); max-width:70ch; }
+.note b{ color:var(--ink); }
+@media (max-width:480px){ .wrap{ padding-inline:16px; } }
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">1,82 m · départ 64 kg · photos du 13 septembre</div>
+    <h1>Paliers de physique</h1>
+    <p class="lead">Où ton corps va, palier par palier, avec ton programme actuel : prise de masse lente (+0,3 kg par semaine), trois séances de muscu et quatre de combat. Les silhouettes sont à la même échelle que toi. Le trait pointillé, c'est ton corps de départ.</p>
+  </header>
+
+  <section class="stats" aria-label="Chiffres de départ">
+    <div class="stat"><b>19,3</b><span>ton IMC à 64 kg — normal, côté mince</span></div>
+    <div class="stat"><b>61–83 kg</b><span>la plage « poids santé » à 1,82 m</span></div>
+    <div class="stat"><b>73–79 kg</b><span>la zone d'un physique sec et musclé (IMC 22–24)</span></div>
+    <div class="stat"><b>72 kg</b><span>ton objectif Batcave, visé pour mars 2027</span></div>
+  </section>
+
+  <section class="imc" aria-label="IMC">
+    <h2>Le poids recommandé pour ta taille</h2>
+    <p class="lead" style="margin:0">Le médecin te dirait « entre 61 et 83 kg ». C'est très large, et ça ne dit rien de l'allure. Pour un corps de combattant sec et costaud, la bonne zone à 1,82 m se situe entre 73 et 79 kg. 72 kg est un premier cap réaliste en 6 mois ; la suite se fait plus lentement.</p>
+    <div class="imc-bar" role="img" aria-label="Échelle de poids de 55 à 90 kg">
+      <div class="z1" style="width:17.1%">maigreur</div>
+      <div class="z2" style="width:34.3%">normal</div>
+      <div class="z3" style="width:17.1%">sec et musclé</div>
+      <div class="z4" style="width:31.5%">normal haut / surpoids</div>
+    </div>
+    <div class="marks" id="marks"></div>
+  </section>
+
+  <section aria-label="Silhouettes">
+    <h2 style="margin-bottom:12px">Les silhouettes, à ton échelle</h2>
+    <div class="lineup-box">
+      <div class="lineup"><div class="lineup-inner" id="lineup"></div></div>
+      <div class="legend"><span><i></i>ton corps au départ (64 kg)</span><span><u></u>le palier</span><span>Illustration, pas une photo : la forme exacte dépend de ta génétique.</span></div>
+    </div>
+  </section>
+
+  <section class="cards" id="cards" aria-label="Détail des paliers"></section>
+
+  <p class="note"><b>Comment lire tout ça.</b> Les dates supposent que tu tiens le plan la plupart des semaines, sans perfection. Les 2–3 premières semaines, la balance monte de 1 à 3 kg d'eau et de réserves (plus ~1 kg avec la créatine) : ce n'est pas du gras, et c'est normal. La première année, ton corps répond vite parce qu'il part de peu ; ensuite, chaque kilo de muscle demande plus de temps. Tes vraies photos, toutes les 4 semaines à partir du 4 octobre, restent la seule mesure qui compte : compare-les à ces silhouettes.</p>
+</div>
+
+<script>
+const STAGES = [
+  {kg:64, when:"13 sept. 2026", tag:"départ", tee:"S", imc:"19,3",
+   S:54, C:41, W:34, H:39, N:11, A:8.5, F:7, Th:17, Cf:10,
+   see:["Silhouette longue et fine, épaules à peine plus larges que le bassin.","Pectoraux plats, bras fins, avant-bras et mollets peu marqués.","Ventre sans gras visible mais sans relief, un peu de mou sous le nombril.","Taux de gras estimé autour de 12–14 % : tu pars sec, c'est un avantage."],
+   force:"Base mesurée le jeudi 1er octobre, jour 1 : tractions, dips, pompes et suspension au maximum (séance de référence). Premier retest le jeudi 29 octobre."},
+  {kg:68, when:"≈ janvier 2027", tag:"palier 1", tee:"M", imc:"20,5",
+   S:56.5, C:43, W:34.5, H:39.5, N:11.8, A:9.5, F:7.6, Th:18, Cf:10.5,
+   see:["Le visage se remplit un peu : tu parais moins fatigué, plus « en forme ».","Les épaules s'arrondissent, le haut des pecs commence à se voir de face.","Les t-shirts S deviennent justes aux épaules : tu passes en M.","Les gens proches commencent à le remarquer ; toi, surtout sur les photos."],
+   force:"Tractions : +3 à 5 répétitions par rapport au départ. Dips au poids du corps faciles."},
+  {kg:72, when:"≈ mars 2027 · objectif", tag:"palier 2", tee:"M, ajusté", imc:"21,7",
+   S:59, C:45, W:35, H:40, N:12.6, A:10.5, F:8.2, Th:19, Cf:11,
+   see:["Le « V » apparaît : épaules et dos plus larges, taille qui reste fine.","Bras nettement plus épais (+2 à 3 cm de tour), veines sur les avant-bras.","Cou plus épais grâce au travail de nuque et au combat.","Tu as l'air sportif habillé, pas seulement torse nu."],
+   force:"Tractions strictes : 12–15. Premiers lests sur tractions et dips."},
+  {kg:76, when:"≈ fin 2027", tag:"palier 3", tee:"M–L", imc:"22,9",
+   S:61.5, C:47, W:35.5, H:40.5, N:13.4, A:11.5, F:8.8, Th:20, Cf:11.5,
+   see:["Physique clairement musclé : pecs pleins, trapèzes visibles.","Cuisses et mollets remplis, la silhouette n'est plus « longue et fine ».","Tu entres dans la zone sec-et-musclé pour ta taille.","Au combat, la différence de force et de solidité se sent."],
+   force:"Tractions lestées +10 kg. Dips lestés +20 kg."},
+  {kg:80, when:"≈ 2029 · si tu veux aller plus loin", tag:"long terme", tee:"L", imc:"24,2",
+   S:63.5, C:48.5, W:36.5, H:41, N:14.2, A:12.3, F:9.3, Th:21, Cf:12,
+   see:["Gabarit d'athlète de combat, épaules très larges pour ta taille.","Demande plusieurs années régulières : ce n'est pas un objectif pour 2027.","À ce stade, garder le gras bas demande une vraie discipline alimentaire."],
+   force:"Niveau avancé : tractions lestées +20 kg."}
+];
+
+/* Catmull-Rom → Bézier : une courbe lisse qui passe par chaque point */
+function smooth(pts, closed){
+  const p = closed ? [pts[pts.length-1], ...pts, pts[0], pts[1]] : [pts[0], ...pts, pts[pts.length-1]];
+  let d = `M${pts[0][0].toFixed(1)},${pts[0][1].toFixed(1)}`;
+  const n = closed ? pts.length : pts.length - 1;
+  for(let i = 1; i <= n; i++){
+    const p0=p[i-1], p1=p[i], p2=p[i+1], p3=p[i+2];
+    const c1=[p1[0]+(p2[0]-p0[0])/6, p1[1]+(p2[1]-p0[1])/6];
+    const c2=[p2[0]-(p3[0]-p1[0])/6, p2[1]-(p3[1]-p1[1])/6];
+    d += ` C${c1[0].toFixed(1)},${c1[1].toFixed(1)} ${c2[0].toFixed(1)},${c2[1].toFixed(1)} ${p2[0].toFixed(1)},${p2[1].toFixed(1)}`;
+  }
+  return d + (closed ? "Z" : "");
+}
+const CX = 110, LEG = 19;
+function bodyPath(s){
+  const L = [
+    [CX-s.N, 58],[CX-s.N-1.5, 76],[CX-s.N-14, 82],[CX-s.S+7, 88],[CX-s.S, 104],[CX-s.S+3, 121],
+    [CX-s.C, 137],[CX-s.C+2, 166],[CX-s.W, 192],[CX-s.H, 222],
+    [CX-LEG-s.Th, 262],[CX-LEG-s.Th+3, 300],[CX-LEG-9, 340],[CX-LEG-s.Cf, 378],[CX-LEG-5, 430],
+    [CX-LEG-8, 450],[CX-LEG+4, 456],[CX-LEG+5.5, 432],[CX-LEG+s.Cf*0.72, 382],[CX-LEG+8.5, 342],
+    [Math.min(CX-1.5, CX-LEG+s.Th*0.85), 272],[CX, 238]
+  ];
+  const R = L.slice(0, -1).reverse().map(([x,y]) => [2*CX-x, y]);
+  return smooth([...L, ...R], true);
+}
+function armPath(s, side){
+  const ax = [[92, CX-s.S+10],[130, CX-(s.C+s.A+1)],[190, CX-(s.W+s.A*0.8+6)],[255, CX-(s.H+6)],[292, CX-(s.H+6)]];
+  const axisAt = y => { for(let i=0;i<ax.length-1;i++){ const [y0,x0]=ax[i],[y1,x1]=ax[i+1]; if(y>=y0&&y<=y1) return x0+(x1-x0)*(y-y0)/(y1-y0);} return ax[ax.length-1][1]; };
+  const th = [[96, s.A+5],[130, s.A],[160, s.A*0.9],[190, s.A*0.72],[215, s.F],[252, s.F*0.55],[268, s.F*0.72],[288, 3]];
+  const out = th.map(([y,t]) => [axisAt(y)-t, y]);
+  const inn = th.slice().reverse().map(([y,t]) => [axisAt(y)+t, y]);
+  let pts = [...out, ...inn];
+  if(side === "r") pts = pts.map(([x,y]) => [2*CX-x, y]);
+  return smooth(pts, true);
+}
+function figure(s, base, isStart){
+  const fill = isStart ? "var(--body-now)" : "var(--body)";
+  const ghost = isStart ? "" : `
+    <g fill="none" stroke="var(--ghost)" stroke-width="1.3" stroke-dasharray="3 3" opacity=".9">
+      <path d="${armPath(base,'l')}"/><path d="${armPath(base,'r')}"/><path d="${bodyPath(base)}"/>
+    </g>`;
+  return `<svg viewBox="0 0 220 462" role="img" aria-label="Silhouette à ${s.kg} kilos">
+    <g fill="${fill}">
+      <path d="${armPath(s,'l')}"/><path d="${armPath(s,'r')}"/>
+      <path d="${bodyPath(s)}"/>
+      <ellipse cx="${CX}" cy="34" rx="${20+(s.N-11)*0.35}" ry="27"/>
+    </g>${ghost}
+    <line x1="10" y1="459" x2="210" y2="459" stroke="var(--line)" stroke-width="2"/>
+  </svg>`;
+}
+const base = STAGES[0];
+document.getElementById("lineup").innerHTML = STAGES.map((s,i) =>
+  `<div class="fig">${figure(s, base, i===0)}<div class="kg">${s.kg} kg</div><div class="when">${s.when}</div></div>`).join("");
+document.getElementById("cards").innerHTML = STAGES.map((s,i) => `
+  <article class="card${i===0?' start':''}">
+    <header><h3>${s.kg} kg</h3><span class="tag">${s.tag}</span></header>
+    <dl><dt>Quand</dt><dd>${s.when}</dd><dt>IMC</dt><dd>${s.imc}</dd><dt>T-shirt</dt><dd>${s.tee}</dd></dl>
+    <ul>${s.see.map(t=>`<li>${t}</li>`).join("")}</ul>
+    <div style="font-size:.88rem;color:var(--ink-2)"><b style="color:var(--ink)">Force :</b> ${s.force}</div>
+  </article>`).join("");
+/* repères sur l'échelle 55 → 90 kg */
+const pos = kg => ((kg-55)/35*100).toFixed(1)+"%";
+document.getElementById("marks").innerHTML =
+  `<div class="mark now" style="left:${pos(64)}">64 · toi</div>` +
+  `<div class="mark goal" style="left:${pos(72)}">72 · mars</div>` +
+  `<div class="mark" style="left:${pos(76)}">76</div>` +
+  `<div class="mark" style="left:${pos(80)}">80</div>`;
+</script>
+
+</body></html>
