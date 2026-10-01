@@ -67,6 +67,11 @@ compris. Il a ses blocs, réservés à ces trois matières, dès que la file est
 - le temps que libère « Étudier en avance » une fois le flux absorbé (environ 3 h par semaine), et les 2 h de « Question ouverte » ;
 - **Anki**, chaque matin, qui ramène les cartes jusqu'à ce qu'elles tiennent.
 
+**Premier bloc Approfondir : mercredi 14 octobre, 13:00** (ou samedi 10 à 09:20 si la file est
+vide dès le vendredi 9 au soir). Puis chaque mercredi 13:00 et samedi 09:20. Les trois matières
+tournent, en partant de ce qui vient d'être vu au rattrapage : hémostase (Anatomía T2 sangre),
+membrane et signalisation (Biología celular), biais et plans d'étude (bioestadística).
+
 ## 0. Survol — 10 minutes
 Fais défiler les 60 diapos sans lire en détail. Note le **plan** : les 4 à 6 grandes parties, et les
 diapos qui comptent (définitions, schémas, tableaux, classifications). Les diapos de titre, de
