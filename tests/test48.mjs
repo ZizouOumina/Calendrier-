@@ -105,7 +105,7 @@ console.log('\n== 113) Comparaison sur des données réelles ==');
     /* 23 septembre : la cible de sommeil est du sommeil REEL (Bevel), le temps au lit × 0,88.
      L'objectif seme a 7,75 h -- une moyenne de temps au lit -- passe a la moyenne reelle
      visee sur une semaine de la grille (7,33 h) : 7,50 h de vrai sommeil l'atteignent. */
-  ok(som && /réel 7,50 h/.test(som.txt) && /attendu 6,94 h/.test(som.txt) && /atteint|\bok\b/.test(som.led), 'Sommeil moyen 7,50 h réelles sur 6,94 visées (octobre, régime combat, mardis à 22:00) → atteint : ' + (som && som.txt.slice(0, 60)));
+  ok(som && /réel 7,50 h/.test(som.txt) && /attendu 7,00 h/.test(som.txt) && /atteint|\bok\b/.test(som.led), 'Sommeil moyen 7,50 h réelles sur 7,00 visées (octobre, régime combat, coucher 21:35 tous les jours) → atteint : ' + (som && som.txt.slice(0, 60)));
   /* Plus de ligne « Eau » : eau_moy est sortie des metriques semees le 19 septembre,
      quand il a ramene les objectifs a un seul palier et aux six mesures qui se pilotent. */
   ok(!(await ligne(fr, 'Eau')), 'plus d\'objectif d\'eau : il ne reste que les six métriques du mois');

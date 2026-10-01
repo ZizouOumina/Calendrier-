@@ -1,6 +1,6 @@
 import { chromium } from 'playwright';
 /* Le mois de l'argent (onglet Budget). Depuis le 1er octobre, sa mere paie elle-meme le
-   loyer et le wifi au proprietaire, et lui vire 700 EUR (plus 1 400) ; le virement arrive le 25 (sa decision
+   loyer et le wifi au proprietaire, et lui vire 700 EUR (plus 1 400) ; le 1er octobre, la Muay Thai sort : le club passe a 70 EUR, plus une licence de 30 EUR par an ; le virement arrive le 25 (sa decision
    du 25 septembre au soir) ; le tout premier arrive encore le 28 septembre. La premiere
    periode va donc du 28 septembre au 24 octobre, les suivantes du 25 au 24. Les courses se
    font le samedi, et une periode en compte 4 ou 5 : le montant pose le jour du virement doit
@@ -36,20 +36,22 @@ console.log('— vendredi 25 septembre : la premiere periode, 28 sept. -> 24 oct
   const {ctx, fr} = await ouvrir('2026-09-25T20:00:00+02:00');
   const a = await fr.evaluate(() => window.__bcMoisArgent('2026-09-25'));
   ok(a.revenu === 700, 'revenu : 700 EUR (loyer et wifi payes par sa mere)');
-  ok(a.fixes === 276, 'charges fixes : 276 EUR, sans loyer ni wifi (' + a.fixes + ')');
-  ok(pres(a.semaine, 44.51), 'courses : 44,51 EUR par semaine depuis le 29 septembre (le shake, puis plus de sauce au skyr : 7 boites au lieu de 13, +15 g d\'amandes par jour) (' + a.semaine.toFixed(2) + ')');
+  ok(a.fixes === 248.5, 'charges fixes : 248,50 EUR, sans loyer ni wifi, club 70 EUR et licence lissee a 2,50 EUR (' + a.fixes + ')');
+  ok(pres(a.semaine, 44.08), 'courses : 44,08 EUR par semaine (le shake, sans sauce au skyr, trois collations combat depuis que la Muay Thai est sortie) (' + a.semaine.toFixed(2) + ')');
   ok(a.estimes.length === 0, 'plus aucune estimation : les amandes ont leur prix releve');
-  ok(a.cagnotte === 200, 'jour du virement : 200 EUR dans la cagnotte — le wifi parti, 11 EUR de plus chaque mois (' + a.cagnotte + ')');
+  ok(a.cagnotte === 230, 'jour du virement : 230 EUR dans la cagnotte — le club a 70 EUR (' + a.cagnotte + ')');
   ok(a.periode.debut === '2026-09-28' && a.periode.fin === '2026-10-24', 'premiere periode du 28 sept. (dernier virement a l\'ancienne date) au 24 oct.');
   ok(a.periode.samedis === 4, '4 samedis de courses');
-  ok(pres(a.periode.balayage, 45.95), 'le 24 : environ 45,95 EUR a balayer (' + a.periode.balayage.toFixed(2) + ')');
-  ok(pres(a.moyenne, 231.11), 'epargne moyenne : 231,11 EUR par mois (' + a.moyenne.toFixed(2) + ')');
+  ok(pres(a.periode.balayage, 45.18), 'le 24 : environ 45,18 EUR a balayer (' + a.periode.balayage.toFixed(2) + ')');
+  ok(pres(a.moyenne, 260.48), 'epargne moyenne : 260,48 EUR par mois (' + a.moyenne.toFixed(2) + ')');
   ok(a.prochaine5 && a.prochaine5.debut === '2026-12-25' && a.prochaine5.fin === '2027-01-24' && a.prochaine5.samedis === 5, 'prochaine periode a 5 samedis : 25 dec. -> 24 janv.');
-  ok(pres(a.prochaine5.balayage, 1.43), 'avec 5 samedis, il reste encore 1,43 EUR le 24 (' + a.prochaine5.balayage.toFixed(2) + ')');
+  ok(pres(a.prochaine5.balayage, 1.10), 'avec 5 samedis, il reste encore 1,10 EUR le 24 (' + a.prochaine5.balayage.toFixed(2) + ')');
   const L = a.lignes;
   ok(L[0].montant === 700 && L[0].plus && L[0].quand === 'le 28', 'le fil commence par le virement, le 28 pour cette premiere periode');
-  ok(L[1].montant === 200 && L[1].cagnotte && L[1].quand === 'le 28', 'puis la cagnotte, le meme jour');
-  ok(L[2].montant === 100 && /club/.test(L[2].action) && L[2].quand === 'le 28', 'puis le club, 100 EUR, le 28');
+  ok(L[1].montant === 230 && L[1].cagnotte && L[1].quand === 'le 28', 'puis la cagnotte, le meme jour');
+  ok(L[2].montant === 70 && /club/.test(L[2].action) && L[2].quand === 'le 28', 'puis le club, 70 EUR, le 28');
+  const lic = L.find(l => /Licence/.test(l.action));
+  ok(lic && pres(lic.montant, 2.5), 'la licence JJB, 30 EUR par an, lissee a 2,50 EUR par mois');
   const proprio = L.find(l => /propri/.test(l.action));
   ok(proprio && proprio.montant === 70 && proprio.quand === 'le 1er', 'au proprietaire, seulement l\'eau et l\'electricite : 70 EUR le 1er');
   ok(proprio && /\u00e0 la main/.test(proprio.action) && /lui qui te le donne/.test(proprio.detail), 'le virement du proprietaire : a la main, au montant qu\'il donne');
@@ -61,7 +63,7 @@ console.log('— vendredi 25 septembre : la premiere periode, 28 sept. -> 24 oct
   ok(pres(somme, 700), 'tout ce qui sort fait exactement 700 EUR');
   const txt = await fr.evaluate(() => document.getElementById('budget-mois-panel').innerText);
   ok(/Le mois de l.argent/.test(txt), 'le panneau est dans l\'onglet Budget');
-  ok(txt.includes('200,00 €') && txt.includes('700,00 €'), 'montants affiches : 200,00 EUR et 700,00 EUR');
+  ok(txt.includes('230,00 €') && txt.includes('700,00 €'), 'montants affiches : 230,00 EUR et 700,00 EUR');
   ok(/28 sept\..*24 oct\..*4 samedis/.test(txt), 'la periode et ses samedis sont ecrits en tete');
   ok(/Le 28, dans la cagnotte/.test(txt) && /Ce mois-ci le 28, puis chaque 25/.test(txt), 'la tuile dit : ce mois-ci le 28, puis chaque 25');
   ok(/Le 24, en plus/.test(txt), 'la tuile du balayage dit le 24');
@@ -84,7 +86,7 @@ console.log('— dimanche 3 janvier : une periode a 5 samedis');
   const {ctx, fr} = await ouvrir('2027-01-03T20:00:00+01:00');
   const a = await fr.evaluate(() => window.__bcMoisArgent('2027-01-03'));
   ok(a.periode.debut === '2026-12-25' && a.periode.fin === '2027-01-24' && a.periode.samedis === 5, 'periode du 25 dec. au 24 janv., 5 samedis');
-  ok(a.cagnotte === 200, 'la cagnotte du 25 ne bouge pas : 200 EUR');
+  ok(a.cagnotte === 230, 'la cagnotte du 25 ne bouge pas : 230 EUR');
   ok(a.periode.balayage >= 0, 'et le compte ne passe pas dans le rouge (' + a.periode.balayage.toFixed(2) + ' EUR le 24)');
   ok(a.lignes[0].quand === 'le 25' && a.lignes[1].quand === 'le 25' && a.lignes[a.lignes.length - 1].quand === 'le 24', 'virement et cagnotte le 25, balayage le 24');
   const tete = await fr.evaluate(() => document.getElementById('ma-periode').textContent);
@@ -119,15 +121,16 @@ console.log('— une charge qui change : le plan suit');
     {id:'fc7', label:'Coiffeur', montant:30, cat:'Autres'},
     {id:'fc8', label:'iCloud', montant:3, cat:'Abonnements'},
     {id:'fc9', label:'Claude Pro', montant:22, cat:'Abonnements'},
-    {id:'fc10', label:'Club JJB / Muay Thai', montant:100, cat:'Abonnements'},
+    {id:'fc10', label:'Club JJB', montant:70, cat:'Abonnements'},
+    {id:'fc11', label:'Licence JJB', montant:30, cat:'Abonnements', periode:'annuel'},
     {id:'fcx1', label:'Assurance', montant:240, cat:'Autres', periode:'annuel'}
   ];
   const {ctx, fr} = await ouvrir('2026-09-25T20:00:00+02:00', {charges});
   const a = await fr.evaluate(() => window.__bcMoisArgent('2026-09-25'));
-  ok(a.fixes === 296, 'charges fixes : 296 EUR avec une assurance lissee de 20 EUR (' + a.fixes + ')');
-  ok(a.cagnotte === 180, 'la cagnotte du 28 descend a 180 EUR (' + a.cagnotte + ')');
+  ok(a.fixes === 268.5, 'charges fixes : 268,50 EUR avec une assurance lissee de 20 EUR (' + a.fixes + ')');
+  ok(a.cagnotte === 210, 'la cagnotte du 28 descend a 210 EUR (' + a.cagnotte + ')');
   const autre = a.lignes.find(l => /Assurance/.test(l.action));
-  ok(autre && pres(autre.montant, 20), 'la charge sans date passe dans le fil, 20 EUR par mois');
+  ok(autre && /Licence JJB/.test(autre.action) && pres(autre.montant, 22.5), 'la charge sans date passe dans le fil, regroupee avec la licence : 20 + 2,50 EUR par mois (' + (autre && autre.action) + ')');
   ok(Math.abs(a.lignes[a.lignes.length - 1].solde) < 0.001, 'et le compte finit toujours a zero le 27');
   ok(a.lignes[a.lignes.length - 1].cagnotte && /Balaye/.test(a.lignes[a.lignes.length - 1].action), 'le balayage reste la derniere ligne');
   await ctx.close();
@@ -140,7 +143,8 @@ console.log('— des charges au-dessus du virement : le fil le dit, sans solde n
     {id:'fc5', label:'Eau + Électricité', montant:70, cat:'Eau & Électricité'},
     {id:'fc8', label:'iCloud', montant:3, cat:'Abonnements'},
     {id:'fc9', label:'Claude Pro', montant:22, cat:'Abonnements'},
-    {id:'fc10', label:'Club JJB / Muay Thai', montant:100, cat:'Abonnements'}
+    {id:'fc10', label:'Club JJB', montant:70, cat:'Abonnements'},
+    {id:'fc11', label:'Licence JJB', montant:30, cat:'Abonnements', periode:'annuel'}
   ];
   const {ctx, fr} = await ouvrir('2026-09-25T20:00:00+02:00', {charges});
   const a = await fr.evaluate(() => window.__bcMoisArgent('2026-09-25'));
@@ -155,7 +159,7 @@ console.log('— des charges au-dessus du virement : le fil le dit, sans solde n
 
 console.log('— le plafond Nourriture suit le prix des amandes');
 {
-  for(const [avant, attendu, nom] of [[201, 193, 'pose par la Batcave (201) : suit le plan, 193 depuis le 29 septembre (shake, sans sauce au skyr)'], [180, 180, 'regle a la main (180) : ne bouge pas']]){
+  for(const [avant, attendu, nom] of [[201, 191, 'pose par la Batcave (201) : suit le plan, 191 (shake, sans sauce au skyr, trois collations combat)'], [180, 180, 'regle a la main (180) : ne bouge pas']]){
     const ctx = await browser.newContext({ viewport:{width:1440, height:900}, timezoneId:'Europe/Madrid', locale:'fr-FR' });
     await ctx.addInitScript(v => { window.claude = undefined; localStorage.setItem('batcave-budget-limits', JSON.stringify({Nourriture: v})); }, avant);
     const page = await ctx.newPage();

@@ -96,9 +96,9 @@ console.log('\n== 252) Mode partiels : J-7 avant le premier examen, jusqu\'au de
      'la matinée ne change pas : Anki 1, Anki 2, Étudier en avance, Question ouverte ou autre');
   ok(!g.some(x => /Cours$|Trajet cours|Clore le cours/.test(x)), 'mardi en partiels : ni cours, ni trajet, ni « Clore le cours du jour »');
   ok(g.includes('05:30 Sport'), 'le sport du mardi reste à 05:30 : les séances ne bougent pas');
-  /* Regime combat : un mardi sans cours garde sa Muay Thai -- diner 18:00, club 19:30, coucher 22:00. */
-  ok(g.includes('13:00 Lire') && g.includes('15:00 Projets perso 4') && g.includes('17:00 Réexpliquer') && g.includes('18:00 Dîner') && g.includes('19:30 🥊 Muay Thai') && g.includes('22:00 Coucher'),
-     'l\'après-midi libérée comme un jour sans cours : Lire, projets, Réexpliquer, dîner 18:00, Muay Thai, coucher 22:00 (' + g.filter(x => /^1[3-9]|^2/.test(x)).join(' · ') + ')');
+  /* Regime combat : depuis le 1er octobre, plus de Muay Thai -- un mardi sans cours finit comme les autres jours, diner 19:00, coucher 21:35. */
+  ok(g.includes('13:00 Lire') && g.includes('15:00 Projets perso 4') && g.includes('17:00 Réexpliquer') && g.includes('19:00 Dîner') && !g.some(x => /Muay Thai|club/i.test(x)) && g.includes('21:35 Coucher'),
+     'l\'après-midi libérée comme un jour sans cours : Lire, projets, Réexpliquer, dîner 19:00, pas de Muay Thai, coucher 21:35 (' + g.filter(x => /^1[3-9]|^2/.test(x)).join(' · ') + ')');
   ok(!g.some(x => /ciblée|Fiches de synthèse/.test(x)), 'aucun bloc « ciblé » : la grille de partiels n\'existe plus');
   const gl = await grille(fr, 'monday', '2026-11-09');
   ok(gl.includes('05:30 Sport') && gl.includes('15:00 Projets perso 4') && !gl.some(x => /Cours$/.test(x)), 'lundi en partiels : sport à 05:30, 15:00 en projets, pas de cours (' + gl.filter(x => /05:30|15:00/.test(x)).join(' · ') + ')');

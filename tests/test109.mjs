@@ -74,7 +74,7 @@ console.log('\n== 402) Le plan de secours en texte ==');
   const t = await fr.evaluate(() => window.__bcPlanTexte('2026-10-05'));
   ok(/^LA BATCAVE — plan de la semaine du 05 oct\. au 11 oct\./.test(t), 'en-tête : ' + t.split('\n')[0]);
   ok(/LUNDI 05 oct\. — combat\n  05:30  Sport\n/.test(t) && /  10:30  🥋 JJB\n/.test(t), 'lundi : la grille combat, ligne par ligne');
-  ok(/MARDI 06 oct\. — combat[\s\S]*  19:30  🥊 Muay Thai\n[\s\S]*  22:00  Coucher/.test(t), 'mardi : Muay Thai 19:30, coucher 22:00');
+  ok(/MARDI 06 oct\.\n[\s\S]*  21:35  Coucher/.test(t) && !/MARDI 06 oct\. — combat/.test(t) && !/Muay Thai/.test(t), 'mardi : plus de Muay Thai, coucher 21:35 comme les autres jours');
   ok(/DIMANCHE 11 oct\.\n/.test(t) && !/DIMANCHE 11 oct\. — combat/.test(t), 'dimanche : pas de combat');
   const t0 = await fr.evaluate(() => window.__bcPlanTexte('2026-09-28'));
   ok(!/MARDI 29 sept\. — combat/.test(t0) && !/Muay Thai/.test(t0.split('MERCREDI')[0].split('MARDI')[1] || ''), 'la semaine du 28 septembre, sans combat depuis le 30 au soir : pas de Muay Thai le mardi 29');
@@ -156,7 +156,7 @@ console.log('\n== 404) Le rappel de clôture part dans l\'agenda, et disparaît 
     ete: window.__bcRappels('2027-07-05').filter(b => b.cle === 'cloture').length
   }));
   ok(r.lun && r.lun.debut === 20 * 60 + 5 && r.lun.fin === r.lun.debut + 5 && r.lun.libre === true && r.lun.rappel === 0 && r.lun.titre === '🦇 Clôture du jour', 'lundi : « Clôture du jour » à 20:05 (coucher 21:35 − 1 h 30), 5 min, n\'occupe pas l\'agenda');
-  ok(r.mar && r.mar.debut === 20 * 60 + 30, 'mardi (coucher 22:00) : à 20:30');
+  ok(r.mar && r.mar.debut === 20 * 60 + 5, 'mardi (coucher 21:35, plus de Muay Thai) : à 20:05');
   ok(r.avant === 0, 'avant le programme : pas de rappel');
   ok(r.ete === 1, 'l\'été aussi (journées sans cours, elles travaillent) : le rappel y est');
   await ctx.close();

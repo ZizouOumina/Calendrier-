@@ -208,7 +208,7 @@ console.log('\n== 294) Le panneau « Jours sans cours » : la saisie fait foi ==
     st: JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-jours-sans-cours')),
     note: document.getElementById('sans-cours-note').textContent
   }));
-  ok(ap.sans === true && ap.g.includes('15:00 Español · hablar') && ap.g.includes('22:00 Coucher'),
+  ok(ap.sans === true && ap.g.includes('15:00 Español · hablar') && ap.g.includes('21:35 Coucher'),
      'le 6 octobre devient un jour sans cours, grille comprise');
   ok(ap.st.ajoutes.length === 1 && ap.st.ajoutes[0] === '2026-10-06' && !ap.st.retires.length,
      'on ne garde que l\'écart à la liste de départ : ' + JSON.stringify(ap.st));

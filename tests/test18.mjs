@@ -86,14 +86,14 @@ console.log('\n== 55) Charges fixes : total et suppression restent cohérents ==
      21 septembre. Elle comptait la nourriture deux fois -- une fois en forfait, une fois
      en tickets réels -- et un plafond sur la catégorie Nourriture l'a remplacée. Un
      plafond ne crée aucune dépense, donc il ne compte pas dans ce total. */
-  ok(/276\s*€/.test(total0.replace(/ /g,' ')), 'total de départ 276 €/mois (le club à 100 € ; loyer et wifi payés par sa mère depuis octobre) : ' + total0);
+  ok(/249\s*€/.test(total0.replace(/ /g,' ')), 'total de départ 249 €/mois (club 70 €, licence lissée 2,50 € ; loyer et wifi payés par sa mère) : ' + total0);
   // supprime la première charge (téléphone, 11 €) et vérifie que le total baisse exactement du bon montant
   await fr.evaluate(() => document.querySelector('#fixed-charges-list [data-delfc]').click());
   await page.waitForTimeout(200);
   const total1 = await fr.evaluate(() => document.getElementById('fixed-charges-total').textContent);
-  ok(/265\s*€/.test(total1.replace(/ /g,' ')), 'après suppression du téléphone (11 €) : 265 €/mois (obtenu : ' + total1 + ')');
+  ok(/238\s*€/.test(total1.replace(/ /g,' ')), 'après suppression du téléphone (11 €) : 238 €/mois (obtenu : ' + total1 + ')');
   const statTile = await fr.evaluate(() => document.getElementById('budget-stats').innerText.replace(/\s+/g,' '));
-  ok(/265\s*€\/mois/.test(statTile), 'la tuile "Charges fixes" du budget suit aussi : ' + statTile.slice(0,120));
+  ok(/238\s*€\/mois/.test(statTile), 'la tuile "Charges fixes" du budget suit aussi : ' + statTile.slice(0,120));
   await ctx.close();
 }
 

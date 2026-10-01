@@ -1,6 +1,6 @@
 # Programme de sport — La Batcave · Programme v5, régime combat
 
-Copie de référence du programme appliqué dans la Batcave (onglet Sport). **Jour 1 : jeudi 1er octobre 2026** (décidé le 30 septembre au soir : « on décale tout, demain c'est le vrai jour » ; les cours, eux, ont repris le 14 septembre). Régime combat : trois séances de muscu et quatre de combat par semaine — **mais la première semaine (1er → 4 octobre) est sans combat** : muscu seule, le jeudi 1er (haut lourd, séance de référence) et le samedi 3 (bas complet, à 05:30). Le combat commence le **lundi 5 octobre**.
+Copie de référence du programme appliqué dans la Batcave (onglet Sport). **Jour 1 : jeudi 1er octobre 2026** (décidé le 30 septembre au soir : « on décale tout, demain c'est le vrai jour » ; les cours, eux, ont repris le 14 septembre). Régime combat : trois séances de muscu et trois de combat (JJB) par semaine — **mais la première semaine (1er → 4 octobre) est sans combat** : muscu seule, le jeudi 1er (haut lourd, séance de référence) et le samedi 3 (bas complet, à 05:30). Le combat commence le **lundi 5 octobre**.
 
 ## Le meilleur programme possible (30 septembre au soir)
 Deux révisions le même soir. D'abord « ya pas un peu trop d'exercices ? » — le haut du corps passe à six exercices. Puis : « me considère pas comme un débutant, je veux juste le meilleur programme possible ». En repartant de cette question, le vrai défaut de toutes les versions précédentes apparaît : **les jambes et les épaules latérales ne travaillaient qu'une fois par semaine**. À volume égal, deux passages par semaine font au moins aussi bien et répartissent les séries sur des séances plus fraîches. Donc :
@@ -12,14 +12,14 @@ Deux révisions le même soir. D'abord « ya pas un peu trop d'exercices ? » �
 Lundi et jeudi : huit exercices, quatre paires, ~50 minutes. Le mardi ne change pas. Volumes par semaine : dos 14 séries, pectoraux-triceps 14, épaules latérales 7, biceps 3 directes + 14 indirectes, quadriceps 7, ischios-fessiers 10, cou 15 (dont 6 le jeudi soir à la maison).
 
 ## Le régime combat (décision du 25 septembre)
-- **JJB le lundi, le mercredi et le vendredi à 10:30 ; Muay Thai le mardi à 19:30.** 1 h 30 par séance, club à dix minutes à pied, 100 € par mois (charge fixe « Club JJB / Muay Thai », catégorie Abonnements). La lutte (mardi et jeudi) et le MMA (mardi 18:30) attendent novembre.
-- **Le combat est le cardio.** La course du dimanche et les sprints du samedi sont sortis ; le panneau « Cardio & combat » de l'onglet Sport liste les quatre séances de la semaine, à cocher, 90 minutes chacune. Elles ne comptent pas dans « Séances tenues », qui reste le compteur de la muscu.
+- **JJB le lundi, le mercredi et le vendredi à 10:30.** La Muay Thai du mardi est sortie le 1er octobre (sa décision). 1 h 30 par séance, club à dix minutes à pied, 70 € par mois et une licence de 30 € par an (charges fixes « Club JJB » et « Licence JJB », catégorie Abonnements). La lutte (mardi et jeudi) et le MMA (mardi 18:30) attendent novembre.
+- **Le combat est le cardio.** La course du dimanche et les sprints du samedi sont sortis ; le panneau « Cardio & combat » de l'onglet Sport liste les trois séances de la semaine, à cocher, 90 minutes chacune. Elles ne comptent pas dans « Séances tenues », qui reste le compteur de la muscu.
 - **Lundi et jeudi s'inversent.** La séance lourde passe le **jeudi**, le seul jour sans combat, avec une récupération complète ; le **lundi**, avant le JJB de 10:30, c'est le volume, plus léger. Le lundi, on ne va pas à l'échec : il faut de l'énergie pour le tatami.
 - **La séance du samedi saute** pendant le mois d'adaptation : ses exercices clés passent ailleurs — mollets le mardi, élévations latérales et curl le lundi (l'extension triceps est sortie le 30 septembre : dips, pompes et pike suffisent). Elle peut revenir en novembre si le sommeil tient et que le poids monte.
-- **Sortent ce que le tatami travaille déjà** : curl inversé (séance lourde), relevés de genoux (volume), et les fentes du mardi — pour garder des jambes pour la Muay Thai du soir. Les avant-bras sont chargés quatre fois par semaine par les prises de kimono, la sangle par la garde, les ponts et les sorties de hanche. Les relevés de jambes suspendus, sortis le même jour, sont revenus le jeudi le 25 septembre.
-- **Lever 05:30 tous les jours, coucher 21:35** (22:00 le mardi, retour du club à 21:15). Le samedi et le dimanche dormaient jusqu'à 06:30 : une heure fixe tous les jours est ce qui recale une horloge interne.
-- **Eau : 3,5 à 4 L les jours de combat** (3 L les autres). **Collation combat** à 10:05 avant le JJB (14:50 le mardi, avec la collation d'entraînement) : banane, 50 g de flocons, 15 g d'amandes, ≈ 390 kcal.
-- **Shampooing les jours de sueur** : du lundi au vendredi (muscu, JJB, Muay Thai). Le week-end reste sec.
+- **Sortent ce que le tatami travaille déjà** : curl inversé (séance lourde), relevés de genoux (volume), et les fentes du mardi (elles ne sont pas revenues avec la sortie de la Muay Thai : les jambes travaillent deux fois par semaine, mardi et jeudi). Les avant-bras sont chargés quatre fois par semaine par les prises de kimono, la sangle par la garde, les ponts et les sorties de hanche. Les relevés de jambes suspendus, sortis le même jour, sont revenus le jeudi le 25 septembre.
+- **Lever 05:30 tous les jours, coucher 21:35**, mardi compris. Le samedi et le dimanche dormaient jusqu'à 06:30 : une heure fixe tous les jours est ce qui recale une horloge interne.
+- **Eau : 3,5 à 4 L les jours de combat** (3 L les autres). **Collation combat** à 10:05 avant le JJB : banane, 50 g de flocons, 15 g d'amandes, ≈ 390 kcal.
+- **Shampooing les jours de sueur** : du lundi au vendredi (muscu, JJB). Le week-end reste sec.
 - **Si la semaine dérape** : tu sautes une séance de combat, jamais la muscu ni le sommeil. Pendant les partiels, rien ne s'allège (sa décision du 23) ; seul le jour d'un examen, la séance saute.
 
 ## Le cadre
@@ -50,7 +50,7 @@ Avant le JJB de 10:30 : pas d'échec, on garde de l'énergie pour le tatami.
 | 4 B | Extension du cou | 3 × 12-20 |
 
 ### Mardi · Bas complet (47 min)
-Le soir, Muay Thai : les fentes sont sorties pour garder des jambes.
+Le soir est libre depuis que la Muay Thai est sortie (1er octobre).
 
 | Paire | Exercice | Tours × fourchette |
 |---|---|---|
@@ -77,16 +77,15 @@ Repos par paire : 45 s entre A et B, puis 90 s · 45 s / 75 s · 45 s / 75 s · 
 
 Tractions et dips reviennent lundi et jeudi avec des fourchettes différentes ; leur cible se déduit du dernier journal, quel que soit le jour.
 
-### Les quatre séances de combat
+### Les trois séances de combat
 
 | Jour | Heure | Discipline | Avant | Après |
 |---|---|---|---|---|
 | Lundi | 10:30 → 12:00 | JJB | Collation combat 10:05, trajet 10:20 | Retour 12:00, douche, déjeuner 12:20 |
-| Mardi | 19:30 → 21:00 | Muay Thai | Dîner 18:00, Clore 18:30, trajet 19:10 | Retour 21:00, douche, coucher 22:00 |
 | Mercredi | 10:30 → 12:00 | JJB | Collation combat 10:05, trajet 10:20 | Retour 12:00, douche, déjeuner 12:20 |
 | Vendredi | 10:30 → 12:00 | JJB | Collation combat 10:05, trajet 10:20 | Retour 12:00, déjeuner, Jumu'ah 13:30 |
 
-Les consignes des blocs, dans la Batcave et dans l'agenda : protège-dents, tape tôt sur une clé ou un étranglement (un débutant qui attend se blesse), touche léger au sparring, bois entre les rounds, pose tes questions en espagnol — c'est aussi de l'immersion. Le sac : kimono ou short, bandes et gants le mardi, protège-dents, gourde pleine, serviette ; ongles courts.
+Les consignes des blocs, dans la Batcave et dans l'agenda : protège-dents, tape tôt sur une clé ou un étranglement (un débutant qui attend se blesse), bois entre les rounds, pose tes questions en espagnol — c'est aussi de l'immersion. Le sac : kimono, protège-dents, gourde pleine, serviette ; ongles courts.
 
 ## Les avant-bras
 
@@ -110,7 +109,7 @@ Le cou grossit comme un mollet : par la charge et par la fréquence. Flexion et 
 
 ## Les abdos — le crunch lesté, et le tatami
 
-Les gainages statiques ont disparu du programme : ils entretiennent, ils ne font pas grossir. Depuis le 28 septembre, le JJB (garde, ponts, sorties de hanche) et la Muay Thai (gainage sous les coups, genoux) font travailler la sangle quatre fois par semaine : les relevés de genoux latéraux et le dragon flag sont sortis. Le tatami entraîne l'endurance du ventre, pas sa taille : il reste donc deux mouvements chargés. Les relevés de jambes suspendus sont revenus le 25 septembre, à sa demande, le jeudi seulement (le seul jour sans combat : ils fatiguent aussi la poigne et les fléchisseurs de hanche dont le JJB a besoin).
+Les gainages statiques ont disparu du programme : ils entretiennent, ils ne font pas grossir. Depuis le 28 septembre, le JJB (garde, ponts, sorties de hanche) fait travailler la sangle trois fois par semaine : les relevés de genoux latéraux et le dragon flag sont sortis. Le tatami entraîne l'endurance du ventre, pas sa taille : il reste donc deux mouvements chargés. Les relevés de jambes suspendus sont revenus le 25 septembre, à sa demande, le jeudi seulement (le seul jour sans combat : ils fatiguent aussi la poigne et les fléchisseurs de hanche dont le JJB a besoin).
 
 | Mouvement | Jour | Exécution | Progression |
 |---|---|---|---|
@@ -208,5 +207,5 @@ Tractions à 12 reps propres sur toutes les séries, dips à 15, jambes dès que
 
 ## Autour de la séance
 - Collation entraînement à 14:50 (pain complet, 2 œufs durs, fromage, amandes) ; le petit-déjeuner suit la séance à 06:45. Les jours de JJB, collation combat à 10:05 (banane, flocons, amandes).
-- Sommeil : lever 05:30 tous les jours, coucher 21:35 (22:00 le mardi, après la Muay Thai). L'efficacité de sommeil se mesure sur tes vraies nuits dès que sept nuits portent le sommeil Bevel et le temps au lit.
+- Sommeil : lever 05:30 tous les jours, coucher 21:35, tous les jours. L'efficacité de sommeil se mesure sur tes vraies nuits dès que sept nuits portent le sommeil Bevel et le temps au lit.
 - Objectif à six mois : 64 → 72 kg (≈ 1,3 kg par mois, relevé le 23 septembre) avec le plan d'alimentation (voir programme-alimentation.md).

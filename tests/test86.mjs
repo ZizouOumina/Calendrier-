@@ -73,8 +73,8 @@ console.log('\n== 282) Une conversion qui traîne dans le stockage ne convertit 
   const { ctx, fr } = await ouvrir('2026-10-12T12:00:00+02:00',
     Object.assign(SEED(3, 1.0), {'batcave-portes': {p1:true, p2:true, c1:'2026-10-08', c2:'2026-10-08'}}));
   const g = await grille(fr, '2026-10-13');
-  ok(!g.some(x => /20:30/.test(x)) && g.some(x => /Muay Thai/.test(x)),
-     'le mardi soir est à la Muay Thai (régime combat) : ' + (g.filter(x => /19:30/.test(x))[0] || '—'));
+  ok(!g.some(x => /20:30/.test(x)) && !g.some(x => /Muay Thai/.test(x)) && g.some(x => /19:10.*Temps libre/.test(x)),
+     'le mardi soir est libre (plus de Muay Thai depuis le 1er octobre) : ' + (g.filter(x => /19:10/.test(x))[0] || '—'));
   ok(g.some(x => /14:00 Español · escribir/.test(x)),
      'et 14:00 reste de l\'espagnol (13:00 est « Lire » le mardi) : ' + (g.filter(x => /^14:00/.test(x))[0] || '—'));
   await ctx.close();
