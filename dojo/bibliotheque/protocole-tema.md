@@ -14,23 +14,24 @@ Documentación 2 et Antropología 2 (version courte, 40 min). Environ 22 heures 
 
 | Jour | Créneau | Temas | Fait |
 |---|---|---|---|
-| Jeu. 1 | 09:20 → 12:20 | **Anatomía T1** (homeostasis) + Documentación 1 | 2 |
-| Ven. 2 | 08:20 → 11:20 | **Anatomía T2** (sangre) + Antropología 1 | 4 |
-| Sam. 3 | 09:20 → 12:20 | Biología celular 1 + Epidemiología 1 (résumé en espagnol) | 6 |
-| Dim. 4 | 09:20 → 10:50 et 17:30 → 19:00 | Biología celular 2 + Epidemiología 2 | 8 |
-| Lun. 5 | 08:20 → 09:50 et 13:00 → 14:30 | Biología celular 3 + Epidemiología 3 (résumé en espagnol) | 10 |
-| Mar. 6 | 09:20 → 12:20 | **Anatomía T3** + Documentación 2 + 25 min : relire les résumés T1-T2 | 13 |
-| Mer. 7 | 08:20 → 09:50 et 13:00 → 14:30 | Biología celular 4 + Epidemiología 4 (résumé en espagnol) | 14 |
-| Jeu. 8 | 09:20 → 12:20 | Epidemiología 5 + Antropología 2 | **16** |
+| Ven. 2 | 08:20 → 11:20 | **Anatomía T1** (homeostasis) + Documentación 1 | 2 |
+| Sam. 3 | 09:20 → 12:20 | **Anatomía T2** (sangre) + Antropología 1 | 4 |
+| Dim. 4 | 09:20 → 10:50 et 17:30 → 19:00 | Biología celular 1 + Epidemiología 1 | 6 |
+| Lun. 5 | 08:20 → 09:50 et 13:00 → 14:30 | Biología celular 2 + Epidemiología 2 (résumé en espagnol) | 8 |
+| Mar. 6 | 09:20 → 12:20 | **Anatomía T3** + Documentación 2 + 25 min : relire les résumés T1-T2 | 11 |
+| Mer. 7 | 08:20 → 09:50 et 13:00 → 14:30 | Biología celular 3 + Epidemiología 3 (résumé en espagnol) | 12 |
+| Jeu. 8 | 09:20 → 12:20 | Biología celular 4 + Epidemiología 4 | 14 |
+| Ven. 9 | 08:20 → 09:50 et 17:00 → 19:00 | Epidemiología 5 + Antropología 2, puis un nouveau tema | **16** |
+
+Le jeudi 1er, malade, est resté vide : tout a glissé d'un jour.
 
 Anatomía T1 et T2 passent en premier : cuestionario 1 le mercredi 7 ou le jeudi 8. Leurs cartes
 reviennent dans Anki d'ici là, et le mardi tu relis les deux résumés. Si un des trois temas
 d'Anatomía dépasse 100 pages, il prend deux créneaux et tout glisse d'un demi-jour.
 
 Les 16 comptent déjà tout jusqu'au vendredi 2 (anticipé sur le calendrier de chaque matière).
-Les nouveaux temas de la semaine du 5 (environ 4 jusqu'au jeudi 8) passent le vendredi 9
-(08:20 → 09:50 et 17:00 → 19:00, à la place de Lire et Réexpliquer) et le samedi 10
-(09:20 → 12:20) : **file vide le samedi 10 octobre**. À partir du lundi 12, 1 tema par jour.
+Les nouveaux temas de la semaine du 5 (environ 4 jusqu'au jeudi 8) passent le vendredi 9 au soir,
+le samedi 10 (09:20 → 12:20) et le dimanche 11 (09:20 → 10:50 et 17:30 → 19:00) : **file vide le dimanche 11 octobre au soir**. À partir du lundi 12, 1 tema par jour.
 Antropología T3 doit être fait avant le cuestionario du vendredi 16.
 
 Ces créneaux continuent tant que la file n'est pas vide (voir plus bas : les nouveaux temas). Cinq minutes de pause entre les deux temas, debout.
@@ -67,8 +68,7 @@ compris. Il a ses blocs, réservés à ces trois matières, dès que la file est
 - le temps que libère « Étudier en avance » une fois le flux absorbé (environ 3 h par semaine), et les 2 h de « Question ouverte » ;
 - **Anki**, chaque matin, qui ramène les cartes jusqu'à ce qu'elles tiennent.
 
-**Premier bloc Approfondir : mercredi 14 octobre, 13:00** (ou samedi 10 à 09:20 si la file est
-vide dès le vendredi 9 au soir). Puis chaque mercredi 13:00 et samedi 09:20. Les trois matières
+**Premier bloc Approfondir : mercredi 14 octobre, 13:00** . Puis chaque mercredi 13:00 et samedi 09:20. Les trois matières
 tournent, en partant de ce qui vient d'être vu au rattrapage : hémostase (Anatomía T2 sangre),
 membrane et signalisation (Biología celular), biais et plans d'étude (bioestadística).
 
