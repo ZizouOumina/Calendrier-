@@ -27,9 +27,11 @@ Anatomía T1 et T2 passent en premier : cuestionario 1 le mercredi 7 ou le jeudi
 reviennent dans Anki d'ici là, et le mardi tu relis les deux résumés. Si un des trois temas
 d'Anatomía dépasse 100 pages, il prend deux créneaux et tout glisse d'un demi-jour.
 
-Les nouveaux temas vus en cours entre le 1er et le 8 (environ 6) passent ensuite, à 2 par jour :
-**file vide vers le dimanche 11 octobre**. Antropología T3 doit être fait avant le cuestionario
-du vendredi 16.
+Les 16 comptent déjà tout jusqu'au vendredi 2 (anticipé sur le calendrier de chaque matière).
+Les nouveaux temas de la semaine du 5 (environ 4 jusqu'au jeudi 8) passent le vendredi 9
+(08:20 → 09:50 et 17:00 → 19:00, à la place de Lire et Réexpliquer) et le samedi 10
+(09:20 → 12:20) : **file vide le samedi 10 octobre**. À partir du lundi 12, 1 tema par jour.
+Antropología T3 doit être fait avant le cuestionario du vendredi 16.
 
 Ces créneaux continuent tant que la file n'est pas vide (voir plus bas : les nouveaux temas). Cinq minutes de pause entre les deux temas, debout.
 Si un soir la vérification rate ou les cartes sont floues, on redescend à un tema le lendemain :
