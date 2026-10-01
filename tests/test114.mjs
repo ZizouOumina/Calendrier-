@@ -1,5 +1,6 @@
 import { chromium } from 'playwright';
-/* Le mois de l'argent (onglet Budget). Le virement de 1 400 EUR arrive le 25 (sa decision
+/* Le mois de l'argent (onglet Budget). Depuis le 1er octobre, sa mere paie elle-meme le
+   loyer et le wifi au proprietaire, et lui vire 700 EUR (plus 1 400) ; le virement arrive le 25 (sa decision
    du 25 septembre au soir) ; le tout premier arrive encore le 28 septembre. La premiere
    periode va donc du 28 septembre au 24 octobre, les suivantes du 25 au 24. Les courses se
    font le samedi, et une periode en compte 4 ou 5 : le montant pose le jour du virement doit
@@ -34,37 +35,37 @@ console.log('— vendredi 25 septembre : la premiere periode, 28 sept. -> 24 oct
 {
   const {ctx, fr} = await ouvrir('2026-09-25T20:00:00+02:00');
   const a = await fr.evaluate(() => window.__bcMoisArgent('2026-09-25'));
-  ok(a.revenu === 1400, 'revenu : 1 400 EUR');
-  ok(a.fixes === 987, 'charges fixes : 987 EUR (' + a.fixes + ')');
+  ok(a.revenu === 700, 'revenu : 700 EUR (loyer et wifi payes par sa mere)');
+  ok(a.fixes === 276, 'charges fixes : 276 EUR, sans loyer ni wifi (' + a.fixes + ')');
   ok(pres(a.semaine, 44.51), 'courses : 44,51 EUR par semaine depuis le 29 septembre (le shake, puis plus de sauce au skyr : 7 boites au lieu de 13, +15 g d\'amandes par jour) (' + a.semaine.toFixed(2) + ')');
   ok(a.estimes.length === 0, 'plus aucune estimation : les amandes ont leur prix releve');
-  ok(a.cagnotte === 190, 'jour du virement : 190 EUR dans la cagnotte — 20 de plus depuis que les sauces au skyr sont sorties, 3 EUR de moins par semaine (' + a.cagnotte + ')');
+  ok(a.cagnotte === 200, 'jour du virement : 200 EUR dans la cagnotte — le wifi parti, 11 EUR de plus chaque mois (' + a.cagnotte + ')');
   ok(a.periode.debut === '2026-09-28' && a.periode.fin === '2026-10-24', 'premiere periode du 28 sept. (dernier virement a l\'ancienne date) au 24 oct.');
   ok(a.periode.samedis === 4, '4 samedis de courses');
-  ok(pres(a.periode.balayage, 44.95), 'le 24 : environ 44,95 EUR a balayer (' + a.periode.balayage.toFixed(2) + ')');
-  ok(pres(a.moyenne, 220.11), 'epargne moyenne : 220,11 EUR par mois (' + a.moyenne.toFixed(2) + ')');
+  ok(pres(a.periode.balayage, 45.95), 'le 24 : environ 45,95 EUR a balayer (' + a.periode.balayage.toFixed(2) + ')');
+  ok(pres(a.moyenne, 231.11), 'epargne moyenne : 231,11 EUR par mois (' + a.moyenne.toFixed(2) + ')');
   ok(a.prochaine5 && a.prochaine5.debut === '2026-12-25' && a.prochaine5.fin === '2027-01-24' && a.prochaine5.samedis === 5, 'prochaine periode a 5 samedis : 25 dec. -> 24 janv.');
-  ok(pres(a.prochaine5.balayage, 0.43), 'avec 5 samedis, il reste encore 0,43 EUR le 24');
+  ok(pres(a.prochaine5.balayage, 1.43), 'avec 5 samedis, il reste encore 1,43 EUR le 24 (' + a.prochaine5.balayage.toFixed(2) + ')');
   const L = a.lignes;
-  ok(L[0].montant === 1400 && L[0].plus && L[0].quand === 'le 28', 'le fil commence par le virement, le 28 pour cette premiere periode');
-  ok(L[1].montant === 190 && L[1].cagnotte && L[1].quand === 'le 28', 'puis la cagnotte, le meme jour');
+  ok(L[0].montant === 700 && L[0].plus && L[0].quand === 'le 28', 'le fil commence par le virement, le 28 pour cette premiere periode');
+  ok(L[1].montant === 200 && L[1].cagnotte && L[1].quand === 'le 28', 'puis la cagnotte, le meme jour');
   ok(L[2].montant === 100 && /club/.test(L[2].action) && L[2].quand === 'le 28', 'puis le club, 100 EUR, le 28');
   const proprio = L.find(l => /propri/.test(l.action));
-  ok(proprio && proprio.montant === 781 && proprio.quand === 'le 1er', 'un seul virement au proprietaire : 781 EUR le 1er');
+  ok(proprio && proprio.montant === 70 && proprio.quand === 'le 1er', 'au proprietaire, seulement l\'eau et l\'electricite : 70 EUR le 1er');
   ok(proprio && /\u00e0 la main/.test(proprio.action) && /lui qui te le donne/.test(proprio.detail), 'le virement du proprietaire : a la main, au montant qu\'il donne');
-  ok(proprio && /Loyer 700/.test(proprio.detail) && /70/.test(proprio.detail) && /Wifi 11/.test(proprio.detail), 'le detail du virement : loyer + eau/electricite + wifi');
+  ok(proprio && /Eau \+ \u00c9lectricit\u00e9 70/.test(proprio.detail) && !/Loyer|Wifi/.test(proprio.detail), 'le detail du virement : eau et electricite, plus de loyer ni de wifi');
   ok(['iCloud', 'Claude Pro', 'Bouygues'].every(n => L.some(l => l.action === n && !l.faire)), 'iCloud, Claude Pro et Bouygues partent seuls (auto)');
   ok(Math.abs(L[L.length - 1].solde) < 0.001 && L[L.length - 1].quand === 'le 24', 'le 24, le compte est a zero apres le balayage');
   ok(L.every(l => l.solde > -0.001), 'le solde n\'est jamais negatif dans le fil');
   const somme = L.slice(1).reduce((t, l) => t + l.montant, 0);
-  ok(pres(somme, 1400), 'tout ce qui sort fait exactement 1 400 EUR');
+  ok(pres(somme, 700), 'tout ce qui sort fait exactement 700 EUR');
   const txt = await fr.evaluate(() => document.getElementById('budget-mois-panel').innerText);
   ok(/Le mois de l.argent/.test(txt), 'le panneau est dans l\'onglet Budget');
-  ok(txt.includes('190,00 €') && txt.includes('1 400,00 €'), 'montants affiches : 190,00 EUR et 1 400,00 EUR (espace fine)');
+  ok(txt.includes('200,00 €') && txt.includes('700,00 €'), 'montants affiches : 200,00 EUR et 700,00 EUR');
   ok(/28 sept\..*24 oct\..*4 samedis/.test(txt), 'la periode et ses samedis sont ecrits en tete');
   ok(/Le 28, dans la cagnotte/.test(txt) && /Ce mois-ci le 28, puis chaque 25/.test(txt), 'la tuile dit : ce mois-ci le 28, puis chaque 25');
   ok(/Le 24, en plus/.test(txt), 'la tuile du balayage dit le 24');
-  ok(/virement permanent de 1\u202f400 \u20ac le 25/.test(txt), 'consigne : le virement permanent de ta mere, le 25');
+  ok(/virement permanent de 700 \u20ac le 25/.test(txt) && /loyer et le wifi, elle les paie elle-m\u00eame/.test(txt), 'consigne : le virement permanent de 700 EUR le 25, le loyer et le wifi payes par sa mere');
   ok(/Jar/.test(txt) && /\u00c9pargne et business/.test(txt), 'consigne : la cagnotte Wise');
   const faits = await fr.evaluate(() => [...document.querySelectorAll('.ma-setup li')].filter(li => li.querySelector('.badge.good')).map(li => li.querySelector('b').textContent));
   ok(faits.length === 3 && /Jar/.test(faits[0]) && /iCloud/.test(faits[1]) && /Bouygues/.test(faits[2]), 'trois consignes marquees faites : le Jar, Apple et Bouygues ' + JSON.stringify(faits));
@@ -83,7 +84,7 @@ console.log('— dimanche 3 janvier : une periode a 5 samedis');
   const {ctx, fr} = await ouvrir('2027-01-03T20:00:00+01:00');
   const a = await fr.evaluate(() => window.__bcMoisArgent('2027-01-03'));
   ok(a.periode.debut === '2026-12-25' && a.periode.fin === '2027-01-24' && a.periode.samedis === 5, 'periode du 25 dec. au 24 janv., 5 samedis');
-  ok(a.cagnotte === 190, 'la cagnotte du 25 ne bouge pas : 190 EUR');
+  ok(a.cagnotte === 200, 'la cagnotte du 25 ne bouge pas : 200 EUR');
   ok(a.periode.balayage >= 0, 'et le compte ne passe pas dans le rouge (' + a.periode.balayage.toFixed(2) + ' EUR le 24)');
   ok(a.lignes[0].quand === 'le 25' && a.lignes[1].quand === 'le 25' && a.lignes[a.lignes.length - 1].quand === 'le 24', 'virement et cagnotte le 25, balayage le 24');
   const tete = await fr.evaluate(() => document.getElementById('ma-periode').textContent);
@@ -112,8 +113,6 @@ console.log('— dimanche 3 janvier : une periode a 5 samedis');
 console.log('— une charge qui change : le plan suit');
 {
   const charges = [
-    {id:'fc1', label:'Loyer', montant:700, cat:'Logement'},
-    {id:'fc2', label:'Wifi', montant:11, cat:'Abonnements'},
     {id:'fc3', label:'Téléphone portable', montant:11, cat:'Abonnements'},
     {id:'fc5', label:'Eau + Électricité', montant:70, cat:'Eau & Électricité'},
     {id:'fc6', label:'Transports', montant:40, cat:'Transport (TAM)'},
@@ -125,8 +124,8 @@ console.log('— une charge qui change : le plan suit');
   ];
   const {ctx, fr} = await ouvrir('2026-09-25T20:00:00+02:00', {charges});
   const a = await fr.evaluate(() => window.__bcMoisArgent('2026-09-25'));
-  ok(a.fixes === 1007, 'charges fixes : 1 007 EUR avec une assurance lissee de 20 EUR (' + a.fixes + ')');
-  ok(a.cagnotte === 170, 'la cagnotte du 28 descend a 170 EUR (' + a.cagnotte + ')');
+  ok(a.fixes === 296, 'charges fixes : 296 EUR avec une assurance lissee de 20 EUR (' + a.fixes + ')');
+  ok(a.cagnotte === 180, 'la cagnotte du 28 descend a 180 EUR (' + a.cagnotte + ')');
   const autre = a.lignes.find(l => /Assurance/.test(l.action));
   ok(autre && pres(autre.montant, 20), 'la charge sans date passe dans le fil, 20 EUR par mois');
   ok(Math.abs(a.lignes[a.lignes.length - 1].solde) < 0.001, 'et le compte finit toujours a zero le 27');
@@ -137,8 +136,7 @@ console.log('— une charge qui change : le plan suit');
 console.log('— des charges au-dessus du virement : le fil le dit, sans solde negatif affiche');
 {
   const charges = [
-    {id:'fc1', label:'Loyer', montant:1300, cat:'Logement'},
-    {id:'fc2', label:'Wifi', montant:11, cat:'Abonnements'},
+    {id:'fcx2', label:'Assurance auto', montant:800, cat:'Autres'},
     {id:'fc5', label:'Eau + Électricité', montant:70, cat:'Eau & Électricité'},
     {id:'fc8', label:'iCloud', montant:3, cat:'Abonnements'},
     {id:'fc9', label:'Claude Pro', montant:22, cat:'Abonnements'},

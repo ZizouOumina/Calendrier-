@@ -3623,7 +3623,7 @@
   var DRAPEAUX_MIGRATION = ['objectifs-seed-v1','objectifs-v2-55','objectifs-v5-espanol',
     'habits-ecran-v2','habitlog-hebdo-v1','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','habits-seed-v7','habits-seed-v8','habits-seed-v9','habits-seed-v10',
     'courses-plan-v2','courses-plan-v3','courses-plan-v4','courses-plan-v5','courses-plan-v6','courses-plan-v7','courses-plan-v8','courses-plan-v9','courses-plan-v10',
-    'charges-v2','plafond-nourriture-v2','plafond-nourriture-v3','plafond-nourriture-v4','ancre-dimanche-v1','ancre-dimanche-v2','serviettes-v1','coiffeur-v1','shampoing-dim-v1','marche-cible-v1','fc-migration-v1','fc-migration-v2','revision-fusionnee'];
+    'charges-v2','plafond-nourriture-v2','plafond-nourriture-v3','plafond-nourriture-v4','ancre-dimanche-v1','ancre-dimanche-v2','serviettes-v1','coiffeur-v1','shampoing-dim-v1','marche-cible-v1','fc-migration-v1','fc-migration-v2','fc-migration-v3','revision-fusionnee'];
   /* Drapeaux que rien ne pose plus (migrations retirees) ou poses seulement quand il y a
      eu quelque chose a migrer : connus et gardes, jamais exiges. */
   var DRAPEAUX_ANCIENS = ['objectifs-v3-trajet','objectifs-v4-dimanche','habits-retirees-v1','shampoing-combat-v1'];   /* le dernier n'ecrit qu'a partir du 28 septembre */
@@ -3740,7 +3740,7 @@
      vestige : une fonctionnalite retiree (batcave-matieres) ou un essai. Elle prend de la
      place dans le quota de 5000 documents et embrouille les sauvegardes, sans que rien ne
      la lise jamais. On la signale ; la suppression reste ton geste. */
-  var CLES_CONNUES = ['addictions','budget-limits','business','coran','courses','dash-more','duaas','duree-bloc','sport-log','objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','courses-plan-v3','courses-plan-v4','courses-plan-v5','courses-plan-v6','courses-plan-v7','courses-plan-v8','courses-plan-v9','courses-plan-v10','charges-v2','plafond-nourriture-v2','plafond-nourriture-v3','plafond-nourriture-v4','gcal-controle','ancre-dimanche-v1','ancre-dimanche-v2','serviettes-v1','coiffeur-v1','shampoing-dim-v1','marche-cible-v1','cardio','kcal-ajustement','gcal-ecriture','reinit','fc-migration-v1','fc-migration-v2','livrables','shampoing-combat-v1','charge','shopify-boutique','journees','examens-heures','vacances','jours-exclus',
+  var CLES_CONNUES = ['addictions','budget-limits','business','coran','courses','dash-more','duaas','duree-bloc','sport-log','objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','courses-plan-v3','courses-plan-v4','courses-plan-v5','courses-plan-v6','courses-plan-v7','courses-plan-v8','courses-plan-v9','courses-plan-v10','charges-v2','plafond-nourriture-v2','plafond-nourriture-v3','plafond-nourriture-v4','gcal-controle','ancre-dimanche-v1','ancre-dimanche-v2','serviettes-v1','coiffeur-v1','shampoing-dim-v1','marche-cible-v1','cardio','kcal-ajustement','gcal-ecriture','reinit','fc-migration-v1','fc-migration-v2','fc-migration-v3','livrables','shampoing-combat-v1','charge','shopify-boutique','journees','examens-heures','vacances','jours-exclus',
     'espagnol','examens','cours-suivi','portes','periodes-closes','fc-prix-icloud-3','fc-prix-club-100','fixed-charges','goals','goals-depart','saisons','insights-hist','last-restore-drill','habitlog','habits','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','habits-seed-v7','habits-seed-v8','habits-seed-v9','habits-seed-v10','objectifs-v5-espanol',
     'horizon','last-auto-backup','last-manual-backup','last-bilan-prompt','last-compaction','last-open','last-rotation','notion-url',
     'pomodial-purge','projets','report','revision','revision-fusionnee','revue','sante','sauvegarde','sessions',
@@ -17145,8 +17145,8 @@
      calculee. Un plafond ne cree aucune depense -- il compare ce qui est vraiment saisi
      a ce que le plan prevoit, ce qui est exactement ce qu'il voulait. */
   var FIXED_CHARGES_SEED = [
-    {id:'fc1', label:'Loyer', montant:700, cat:'Logement'},
-    {id:'fc2', label:'Wifi', montant:11, cat:'Abonnements'},
+    /* Depuis octobre, sa mere paie elle-meme le loyer et le wifi au proprietaire (voir la
+       migration v3 plus bas) : ils ne sont plus des charges a lui. */
     {id:'fc3', label:'Téléphone portable', montant:11, cat:'Abonnements'},
     {id:'fc5', label:'Eau + Électricité', montant:70, cat:'Eau & Électricité'},
     {id:'fc6', label:'Transports', montant:40, cat:'Transport (TAM)'},
@@ -17290,6 +17290,51 @@
   migrerChargesFixesV2();
   MIGRATIONS_DEMARRAGE.push({cle:'batcave-fc-migration-v2', rejouer: function(){
     if(!migrerChargesFixesV2()) return false;
+    try{ renderBudget(); renderDashboard(); }catch(e){}
+    return true;
+  }});
+  /* v3 (1er octobre) : sa mere paie desormais elle-meme le loyer (700 EUR) et le wifi
+     (11 EUR) au proprietaire, et lui vire 700 EUR par mois pour tout le reste (REVENU_MOIS).
+     Les deux charges sortent de sa liste, quel que soit leur montant -- ce ne sont plus ses
+     depenses. Eau et electricite restent a lui. Le plafond d'une categorie suit s'il valait
+     encore la somme de ses charges (il n'y avait pas touche), et les deux depenses deja
+     postees a partir d'octobre partent avec elles : les garder ferait compter 711 EUR qu'il
+     n'a pas payes. Septembre, lui, reste tel quel : c'etait bien lui qui payait. */
+  function migrerChargesFixesV3(){
+    if(load('batcave-fc-migration-v3', false)) return false;
+    var fc = load('batcave-fixed-charges', null);
+    if(Array.isArray(fc)) fixedCharges = fc.filter(function(x){ return x && typeof x === 'object' && !Array.isArray(x); });
+    var bl = load('batcave-budget-limits', null);
+    if(bl && typeof bl === 'object' && !Array.isArray(bl)) budgetLimits = bl;
+    var sortantes = fixedCharges.filter(function(c){ return c.id === 'fc1' || c.id === 'fc2'; });
+    var change = false;
+    if(sortantes.length){
+      var parCat = {};
+      fixedCharges.forEach(function(c){ parCat[c.cat] = (parCat[c.cat] || 0) + montantMensuel(c); });
+      fixedCharges = fixedCharges.filter(function(c){ return c.id !== 'fc1' && c.id !== 'fc2'; });
+      save('batcave-fixed-charges', fixedCharges);
+      sortantes.forEach(function(c){
+        if(Number(budgetLimits[c.cat]) === parCat[c.cat]){
+          budgetLimits[c.cat] = parCat[c.cat] - montantMensuel(c);
+          parCat[c.cat] -= montantMensuel(c);
+          if(budgetLimits[c.cat] <= 0) delete budgetLimits[c.cat];
+        }
+      });
+      save('batcave-budget-limits', budgetLimits);
+      txState = chargerFractionne('batcave-transactions');
+      var labels = sortantes.map(function(c){ return c.label; });
+      var tx = txState.filter(function(t){
+        return !(t && t.fixed && labels.indexOf(t.label) > -1 && String(t.date) >= '2026-10-01');
+      });
+      if(tx.length !== txState.length){ txState = tx; sauverFractionne('batcave-transactions', txState); }
+      change = true;
+    }
+    saveInternal('batcave-fc-migration-v3', true);
+    return change;
+  }
+  migrerChargesFixesV3();
+  MIGRATIONS_DEMARRAGE.push({cle:'batcave-fc-migration-v3', rejouer: function(){
+    if(!migrerChargesFixesV3()) return false;
     try{ renderBudget(); renderDashboard(); }catch(e){}
     return true;
   }});
@@ -17506,7 +17551,9 @@
      virement, lui, arrive encore le 28 septembre (« depuis ») : la premiere periode va du 28
      au 24 octobre, les suivantes du 25 au 24. Aucune des deux dates ne change l'epargne :
      toute periode de 28 a 31 jours compte 4 ou 5 samedis. */
-  var REVENU_MOIS = {montant:1400, jour:25, depuis:'2026-09-28'};
+  /* 1er octobre : 700 EUR, et plus 1 400. Sa mere paie elle-meme le loyer et le wifi au
+     proprietaire depuis le loyer d'octobre ; le virement du 28 septembre etait deja de 700. */
+  var REVENU_MOIS = {montant:700, jour:25, depuis:'2026-09-28'};
   /* Une ligne de courses sans prix releve sort du total de la liste ; ici, un plan d'epargne
      sans elle serait trop optimiste. Elle se compte alors a un prix estime, dit comme tel.
      Vide depuis le 25 septembre au soir : les amandes, estimees a 13 EUR/kg une soiree,
@@ -17520,7 +17567,7 @@
     {ids:['fc10'], quand:'le 28', action:'Paie le club par carte', detail:'Carte Wise, au club \u2014 \u00e0 la s\u00e9ance suivante s\u2019il est ferm\u00e9.', faire:true},
     /* A la main, jamais programme : le contrat d'eau et d'electricite est au nom du proprietaire,
        qui annonce chaque mois le montant du -- il suit la conso (25 septembre au soir). */
-    {ids:['fc1','fc5','fc2'], quand:'le 1er', action:'Un seul virement au propri\u00e9taire, \u00e0 la main', faire:true, proprio:true},
+    {ids:['fc1','fc5','fc2'], quand:'le 1er', action:'Eau et \u00e9lectricit\u00e9 : virement au propri\u00e9taire, \u00e0 la main', faire:true, proprio:true},
     {ids:['fc8'], quand:'le 2', action:'iCloud', detail:'Pr\u00e9lev\u00e9 par Apple sur la carte Wise.'},
     {ids:['fc9'], quand:'le 4', action:'Claude Pro', detail:'Pr\u00e9lev\u00e9 par Apple sur la carte Wise.'},
     {ids:['fc3'], quand:'le 5', action:'Bouygues', detail:'Pr\u00e9l\u00e8vement sur Wise.'},
@@ -17619,10 +17666,10 @@
         '<span class="ms" title="Reste sur le compte">' + eurMille(Math.round(l.solde * 100) / 100 === 0 ? 0 : l.solde) + '</span></li>';
     }).join('') + '</ol>';
     h += '<ul class="ma-regles">' +
-      '<li><b>Pas de virement, pas de d\u00e9pense.</b> Tant que les 1 400 \u20ac ne sont pas sur Wise, ni club ni cagnotte.</li>' +
+      '<li><b>Pas de virement, pas de d\u00e9pense.</b> Tant que les ' + eurMille(REVENU_MOIS.montant).replace(',00', '') + ' ne sont pas sur Wise, ni club ni cagnotte.</li>' +
       '<li><b>La cagnotte ne paie jamais le quotidien.</b> Elle sert au business, et aux impr\u00e9vus.</li>' +
       '<li><b>Si l\u2019eau et l\u2019\u00e9lectricit\u00e9 d\u00e9passent 70 \u20ac,</b> la diff\u00e9rence sort de la cagnotte, pas des courses. En dessous, le surplus y part le ' + (REVENU_MOIS.jour - 1) + '.</li>' +
-      '<li><b>Si le ' + REVENU_MOIS.jour + ' tombe un week-end,</b> le virement arrive le lundi. C\u2019est pr\u00e9vu : le loyer n\u2019est que le 1er.</li>' +
+      '<li><b>Si le ' + REVENU_MOIS.jour + ' tombe un week-end,</b> le virement arrive le lundi. C\u2019est pr\u00e9vu : le propri\u00e9taire n\u2019est que le 1er.</li>' +
       '</ul>';
     /* Ce qui se regle une fois. Deux lignes sont faites (les abonnements Apple, Bouygues) :
        elles le disent. Les autres restent des consignes -- rien ne sait ici si elles sont
@@ -17630,7 +17677,7 @@
     var faite = '<span class="badge good">fait</span>';
     h += '<div class="sub-head ma-une-fois"><h3>\u00c0 mettre en place une fois</h3><span class="sub-note">puis tout tourne seul</span></div>' +
       '<ul class="ma-setup">' +
-      '<li><b>Ta m\u00e8re : un virement permanent de 1\u202f400 \u20ac le ' + REVENU_MOIS.jour + ' de chaque mois,</b> vers ton IBAN belge Wise. Ce mois-ci, il arrive encore le 28 ; le premier ' + REVENU_MOIS.jour + ', c\u2019est le ' + REVENU_MOIS.jour + ' octobre. Si elle pr\u00e9f\u00e8re le faire \u00e0 la main, un virement instantan\u00e9 arrive en quelques secondes, m\u00eame le week-end.</li>' +
+      '<li><b>Ta m\u00e8re : un virement permanent de ' + eurMille(REVENU_MOIS.montant).replace(',00', '') + ' le ' + REVENU_MOIS.jour + ' de chaque mois,</b> vers ton IBAN belge Wise. Le loyer et le wifi, elle les paie elle-m\u00eame au propri\u00e9taire depuis octobre. Ce mois-ci, le virement est arriv\u00e9 le 28 ; le premier ' + REVENU_MOIS.jour + ', c\u2019est le ' + REVENU_MOIS.jour + ' octobre. Si elle pr\u00e9f\u00e8re le faire \u00e0 la main, un virement instantan\u00e9 arrive en quelques secondes, m\u00eame le week-end.</li>' +
       '<li><b>Wise : une cagnotte (Jar) \u00ab\u00a0\u00c9pargne et business\u00a0\u00bb,</b> s\u00e9par\u00e9e du solde courant. C\u2019est l\u00e0 que vont les ' + eurMille(a.cagnotte).replace(',00', '') + ' du ' + REVENU_MOIS.jour + ' et le reste du ' + (REVENU_MOIS.jour - 1) + '.' + faite + '</li>' +
       '<li><b>iCloud et Claude Pro sur la carte Wise,</b> via Apple.' + faite + '</li>' +
       '<li><b>Bouygues pr\u00e9lev\u00e9 sur Wise.</b>' + faite + '</li>' +
