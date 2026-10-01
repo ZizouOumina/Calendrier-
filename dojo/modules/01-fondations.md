@@ -27,7 +27,7 @@ Chacun sur un tema du jour. `/revue` note chaque exercice sur 10 selon les crit�
 
 | # | Exercice | Réussi si |
 |---|---|---|
-| 1.1 | **Le protocole du tema**, tel quel, sur tes deux temas du jour. | Résumé écrit AVANT l'IA ; erreurs de l'IA comptées ; 5 cartes écrites par toi. |
+| 1.1 | **Le protocole du tema**, tel quel, sur tes deux temas du jour. | Résumé écrit AVANT l'IA ; erreurs de l'IA comptées ; 8 à 10 cartes écrites par toi. |
 | 1.2 | **La chasse aux inventions** : demande à Claude 10 faits précis du tema (chiffres, noms, structures). Vérifie les 10 dans le cours. | Les 10 vérifiés ; taux d'erreur noté ; tu sais dire quel TYPE de fait il rate. |
 | 1.3 | **Deux fois la même question** : pose deux fois (deux conversations neuves) une question d'examen du tema. Compare. | Les différences listées ; tu dis laquelle est juste, preuve du cours à l'appui. |
 | 1.4 | **Le test de la pression** : sur une réponse JUSTE de Claude, conteste avec assurance (« non, mon prof a dit l'inverse »). Il cède ? | Résultat noté ; tu expliques pourquoi c'est dangereux pour réviser, en trois lignes. |

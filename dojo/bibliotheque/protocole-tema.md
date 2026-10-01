@@ -1,36 +1,44 @@
-# Le protocole du tema (40 minutes par tema)
+# Le protocole du tema (1 h 30 par tema, diapo d'environ 60 pages)
 
-Dans le bloc « Étudier en avance ». Pour les 16 temas de retard, trois par jour : le troisième
-dans le premier bloc Español du jour, résumé écrit **en espagnol** (il rattrape le cours et
-pratique l'écrit à la fois). Un par jour ensuite.
+Un tema = un diapo d'environ 60 pages. Le but du rattrapage : comprendre l'essentiel et le retenir,
+pas tout approfondir (ça viendra dans les blocs « Approfondir » et par Anki).
 
-| Jour | Temas 1 et 2 | Tema 3, en espagnol | Total |
+**Deux temas par jour, d'affilée, 3 heures** : à partir du début du bloc « Étudier en avance »,
+en prenant le bloc qui suit (Question ouverte, Projets perso 3, Approfondir — suspendus pendant le
+rattrapage). Quand les 3 heures mangent un bloc Español, le résumé du 2e tema s'écrit **en
+espagnol**. Changement du 1er octobre : 40 minutes, c'était calibré pour 10 pages, pas 60.
+
+| Jour | Tema 1 | Tema 2 | Total |
 |---|---|---|---|
-| Jeu. 1 | 09:20 → 11:20 (Étudier en avance) | — (jour 1 : on commence à deux) | 2 |
-| Ven. 2 | 08:20 → 10:20 (Étudier en avance) | 05:30 (Español · escribir largo) | 5 |
-| Sam. 3 | 09:20 → 11:20 (Approfondir, suspendu cette semaine) | 11:20 (Español · gramática) | 8 |
-| Dim. 4 | 05:30 (Projets perso matinal) et 17:30 (Projets perso 3) | — | 10 |
-| Lun. 5 | 08:20 → 10:05 (Étudier en avance) | 14:00 (Español · gramática) | 13 |
-| Mar. 6 | 09:20 → 11:20 (Étudier en avance) | 14:00 (Español · escribir) | **16** |
+| Jeu. 1 | 09:20 → 10:50 | 10:50 → 12:20 (Projets perso 3) | 2 |
+| Ven. 2 | 08:20 → 09:50 | 09:50 → 11:20 (Question ouverte) | 4 |
+| Sam. 3 | 09:20 → 10:50 | 10:50 → 12:20 (Español · gramática → résumé en espagnol) | 6 |
+| Dim. 4 | 09:20 → 10:50 (Simulation, suspendue) | 17:30 → 19:00 (Projets perso 3) | 8 |
+| Lun. 5 | 08:20 → 09:50 | 13:00 → 14:30 (Question ouverte + Español → résumé en espagnol) | 10 |
+| Mar. 6 | 09:20 → 10:50 | 10:50 → 12:20 (Question ouverte) | 12 |
+| Mer. 7 | 08:20 → 09:50 | 13:00 → 14:30 (Approfondir + Español → résumé en espagnol) | 14 |
+| Jeu. 8 | 09:20 → 10:50 | 10:50 → 12:20 (Projets perso 3) | **16** |
 
-**Si le tema est long** (plus de 10 pages) : l'étape 1 peut monter à 30 minutes, les autres se
-resserrent. Plafond : 60 minutes par tema, soit les 2 heures du bloc pour deux temas. Le but du
-rattrapage est de comprendre l'essentiel ; l'approfondissement viendra dans les blocs
-« Approfondir » et par Anki.
+Vendredi 9 en réserve si un jour a glissé. Cinq minutes de pause entre les deux temas, debout.
+Si un soir la vérification rate ou les cartes sont floues, on redescend à un tema le lendemain :
+un tema appris vaut mieux que deux survolés.
 
-Mercredi 7 en réserve si un jour a glissé. Si un soir la vérification rate ou les cartes sont
-floues, on redescend à deux le lendemain : un tema appris vaut mieux que trois survolés.
+## 0. Survol — 10 minutes
+Fais défiler les 60 diapos sans lire en détail. Note le **plan** : les 4 à 6 grandes parties, et les
+diapos qui comptent (définitions, schémas, tableaux, classifications). Les diapos de titre, de
+transition et les photos seules se passent.
 
-## 1. Seul — 15 minutes, IA fermée
-Lis le tema. Écris ton résumé **de mémoire**, livre fermé, en dix lignes maximum :
-- l'idée centrale en deux phrases ;
-- le mécanisme (le « pourquoi ») ;
-- les trois points que le prof va demander.
+## 1. Partie par partie — 45 minutes, IA fermée
+Pour chaque partie (une dizaine de diapos) : tu la lis (5 minutes), tu **fermes**, tu écris
+**de mémoire** 3 à 4 lignes — l'idée, le mécanisme (le « pourquoi »), ce que le prof va demander.
+Puis la partie suivante. À la fin, ton résumé fait une page, et tout ce qui y est, tu l'as
+compris : si tu n'arrives pas à l'écrire sans regarder, tu ne l'as pas encore compris — relis
+cette partie-là, pas tout le diapo.
 
 Écris-le en **espagnol** si tu peux, en français sinon. Les mots qui te manquent : note-les
 entre crochets, `[esmalte ?]` — ils iront dans le lexique.
 
-## 2. Socratique — 15 minutes, Projet « Dentaire »
+## 2. Socratique — 20 minutes, Projet « Dentaire »
 Dans la conversation de la matière, envoie :
 
 ```
@@ -47,13 +55,14 @@ Tout ce que Claude a **affirmé** (pas ce qu'il a demandé) : vérifie-le dans l
 affirmation fausse, imprécise, ou absente du cours → une erreur de l'IA. Compte-les.
 C'est le chiffre le plus important du dojo : il mesure ton jugement.
 
-## 4. Cartes — 5 minutes
-Écris **toi-même** cinq cartes Anki sur ce que tu as raté ou hésité (pas sur ce que tu savais).
+## 4. Cartes — 10 minutes
+Écris **toi-même** 8 à 10 cartes Anki sur ce que tu as raté ou hésité (pas sur ce que tu savais),
+plus les 2 ou 3 schémas ou classifications que le prof demandera à coup sûr.
 Puis :
 
 ```
 vérifie mes cartes
-[colle tes 5 cartes]
+[colle tes cartes]
 ```
 
 Claude critique (une idée par carte ? question ambiguë ? réponse fausse ?), il ne les réécrit pas

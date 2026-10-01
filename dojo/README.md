@@ -21,12 +21,13 @@ la fac d'abord, la boutique à partir de novembre — et ce que ça produit de v
    « pour le dojo », c'est qu'on a recréé une Batcave.
 
 ## Le rituel quotidien (bloc « Étudier en avance », 09:20 ; 08:20 les jours de JJB)
-Un tema, quatre temps — le protocole complet est dans `bibliotheque/protocole-tema.md` :
-1. **15 min sans IA** — tu lis et tu écris ton résumé.
-2. **15 min socratique** — dans le Projet « Dentaire » : `tema` + ton résumé. Claude te questionne,
+Un tema (diapo d'environ 60 pages), 1 h 30 — le protocole complet est dans `bibliotheque/protocole-tema.md` :
+0. **10 min de survol** — le plan du diapo, les diapos qui comptent.
+1. **45 min partie par partie, sans IA** — tu lis une partie, tu fermes, tu écris de mémoire.
+2. **20 min socratique** — dans le Projet « Dentaire » : `tema` + ton résumé. Claude te questionne,
    ne te donne jamais la réponse.
 3. **5 min de vérification** — ce qu'il a affirmé, contre le cours. Chaque erreur de l'IA → notée.
-4. **5 min de cartes** — tu écris tes 5 cartes ; `vérifie mes cartes` pour la critique.
+4. **10 min de cartes** — tu écris 8 à 10 cartes ; `vérifie mes cartes` pour la critique.
 
 Le soir, une ligne dans le journal de `progression.md` : tema fait, erreurs de l'IA trouvées,
 ce qui a coincé.
