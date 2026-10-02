@@ -1,0 +1,636 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Cantine de la Batcave</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout : carnet de cuisine — filtres en colonne collante à gauche, fiches en grille ; chaque fiche porte son « assiette » (part des calories P/G/L). */
+:root {
+  --bg: #f1f4ef; --surface: #ffffff; --ink: #17231b; --muted: #59695e; --line: #d9e1d6;
+  --accent: #1e6a44; --accent-ink: #ffffff; --accent-soft: #dcebe1;
+  --prot: #b8435a; --carb: #cf9226; --fat: #74872a;
+  --shadow: 0 1px 2px rgba(23,35,27,.06), 0 8px 24px rgba(23,35,27,.06);
+  --f-display: "Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --f-body: "Instrument Sans", "Helvetica Neue", Arial, system-ui, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0f1611; --surface: #18211b; --ink: #e5ece5; --muted: #9aaa9e; --line: #2a362e;
+  --accent: #5cba85; --accent-ink: #0c1a11; --accent-soft: #1f3327;
+  --prot: #e07189; --carb: #e8b552; --fat: #a8bd55;
+  --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.25); color-scheme: dark;
+} }
+:root[data-theme="dark"] {
+  --bg: #0f1611; --surface: #18211b; --ink: #e5ece5; --muted: #9aaa9e; --line: #2a362e;
+  --accent: #5cba85; --accent-ink: #0c1a11; --accent-soft: #1f3327;
+  --prot: #e07189; --carb: #e8b552; --fat: #a8bd55;
+  --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.25); color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font: 15px/1.55 var(--f-body); margin: 0; }
+.wrap { max-width: 1180px; margin: 0 auto; padding-inline: 20px; padding-block: 28px 64px; }
+h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; margin: 0; }
+button, input, select { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.num { font-family: var(--f-mono); font-variant-numeric: tabular-nums; }
+
+/* En-tête */
+header.top { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 16px 32px; padding-bottom: 22px; border-bottom: 1px solid var(--line); margin-bottom: 24px; }
+.brand h1 { font-size: clamp(30px, 5vw, 46px); font-weight: 800; letter-spacing: -.02em; line-height: 1.02; }
+.brand h1 em { font-style: normal; color: var(--accent); }
+.brand p { margin: 8px 0 0; color: var(--muted); max-width: 58ch; }
+.top-actions { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+.target { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--muted); }
+.target input { width: 70px; padding: 7px 8px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); text-align: right; }
+.btn { display: inline-flex; align-items: center; gap: 8px; padding: 9px 14px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); cursor: pointer; font-weight: 600; font-size: 14px; }
+.btn:hover { border-color: var(--accent); }
+.btn.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.badge { min-width: 22px; padding: 0 6px; height: 22px; border-radius: 999px; background: var(--accent); color: var(--accent-ink); font-size: 12px; display: inline-grid; place-items: center; }
+.btn.primary .badge { background: var(--accent-ink); color: var(--accent); }
+
+/* Mise en page */
+.layout { display: grid; grid-template-columns: 240px minmax(0,1fr); gap: 32px; align-items: start; }
+aside.filters { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 16px); display: grid; gap: 22px; }
+.fgroup { display: grid; gap: 8px; }
+.flabel { font-size: 11px; text-transform: uppercase; letter-spacing: .09em; color: var(--muted); font-weight: 600; }
+.search { width: 100%; padding: 10px 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { padding: 6px 11px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); cursor: pointer; font-size: 13px; font-weight: 500; }
+.chip[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.check { display: flex; align-items: center; gap: 9px; font-size: 14px; cursor: pointer; }
+.check input { accent-color: var(--accent); width: 16px; height: 16px; }
+select.search { cursor: pointer; }
+.legend { display: grid; gap: 4px; font-size: 13px; color: var(--muted); }
+.legend span::before { content: ""; display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 7px; background: var(--c); }
+
+.results-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 14px; color: var(--muted); font-size: 14px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 16px; }
+.empty { padding: 40px 20px; text-align: center; color: var(--muted); border: 1px dashed var(--line); border-radius: 14px; }
+
+/* Fiche */
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 18px; display: grid; grid-template-rows: auto auto 1fr auto; gap: 12px; cursor: pointer; text-align: left; transition: transform .15s ease, box-shadow .15s ease; position: relative; }
+.card:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+.card-top { display: flex; justify-content: space-between; align-items: start; gap: 12px; }
+.cat { font-size: 11px; text-transform: uppercase; letter-spacing: .09em; color: var(--accent); font-weight: 600; }
+.card h3 { font-size: 19px; font-weight: 700; line-height: 1.2; margin-top: 4px; letter-spacing: -.01em; }
+.card p.hook { margin: 0; color: var(--muted); font-size: 14px; }
+.plate { --p: 30; --c: 50; width: 58px; height: 58px; flex: none; border-radius: 50%;
+  background: conic-gradient(var(--prot) 0 calc(var(--p) * 1%), var(--carb) 0 calc((var(--p) + var(--c)) * 1%), var(--fat) 0 100%);
+  display: grid; place-items: center; }
+.plate::after { content: ""; width: 58%; height: 58%; border-radius: 50%; background: var(--surface); box-shadow: inset 0 0 0 1px var(--line); }
+.plate.big { width: 104px; height: 104px; }
+.macros { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; border-top: 1px solid var(--line); padding-top: 12px; }
+.macro { display: grid; gap: 1px; }
+.macro b { font-family: var(--f-mono); font-weight: 500; font-size: 15px; font-variant-numeric: tabular-nums; }
+.macro small { font-size: 11px; color: var(--muted); }
+.macro.p b { color: var(--prot); }
+.meta { display: flex; flex-wrap: wrap; gap: 6px; align-items: flex-start; align-content: flex-start; }
+.tag { font-size: 12px; padding: 2px 8px; border-radius: 6px; background: var(--accent-soft); color: var(--ink); }
+.tag.time { background: transparent; border: 1px solid var(--line); color: var(--muted); }
+.fav { position: absolute; top: 12px; right: 12px; }
+.star { width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--line); background: var(--surface); cursor: pointer; display: grid; place-items: center; color: var(--muted); font-size: 16px; line-height: 1; }
+.star[aria-pressed="true"] { color: var(--carb); border-color: var(--carb); }
+
+/* Détail */
+dialog { border: 0; padding: 0; background: var(--surface); color: var(--ink); border-radius: 18px; width: min(860px, calc(100vw - 24px)); max-height: calc(100vh - 32px); box-shadow: 0 24px 80px rgba(0,0,0,.3); }
+dialog::backdrop { background: rgba(10,18,12,.55); }
+.d-inner { padding: 28px; display: grid; gap: 22px; }
+.d-head { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 20px; align-items: start; }
+.d-head h2 { font-size: clamp(24px, 4vw, 34px); font-weight: 800; letter-spacing: -.02em; line-height: 1.08; margin-top: 4px; }
+.d-head p { margin: 8px 0 0; color: var(--muted); max-width: 60ch; }
+.close { position: sticky; top: 0; float: right; margin: 12px 12px 0 0; z-index: 2; }
+.d-stats { display: flex; flex-wrap: wrap; gap: 18px 28px; align-items: center; padding: 16px 18px; background: var(--bg); border-radius: 14px; }
+.d-stats .macros { border: 0; padding: 0; gap: 22px; grid-template-columns: repeat(4, auto); }
+.d-stats .macro b { font-size: 20px; }
+.share { font-size: 13px; color: var(--muted); }
+.share b { color: var(--prot); font-family: var(--f-mono); font-weight: 500; }
+.d-body { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 28px; }
+.d-body h3 { font-size: 15px; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 10px; color: var(--muted); font-family: var(--f-body); font-weight: 600; }
+.stepper { display: inline-flex; align-items: center; border: 1px solid var(--line); border-radius: 999px; overflow: hidden; }
+.stepper button { width: 34px; height: 32px; border: 0; background: var(--surface); cursor: pointer; font-size: 17px; }
+.stepper button:hover { background: var(--accent-soft); }
+.stepper output { min-width: 92px; text-align: center; font-size: 14px; font-weight: 600; }
+.ing-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
+.ing-head h3 { margin: 0; }
+ul.ings { list-style: none; margin: 0; padding: 0; }
+ul.ings li { display: flex; justify-content: space-between; gap: 12px; padding: 7px 0; border-bottom: 1px dashed var(--line); font-size: 14px; }
+ul.ings li .q { font-family: var(--f-mono); font-variant-numeric: tabular-nums; white-space: nowrap; color: var(--muted); }
+.extras { font-size: 13px; color: var(--muted); margin: 10px 0 0; }
+ol.steps { margin: 0; padding: 0; list-style: none; counter-reset: s; display: grid; gap: 10px; }
+ol.steps li { counter-increment: s; display: grid; grid-template-columns: 30px minmax(0,1fr); gap: 10px; cursor: pointer; font-size: 15px; }
+ol.steps li::before { content: counter(s); width: 26px; height: 26px; border-radius: 50%; border: 1px solid var(--accent); color: var(--accent); display: grid; place-items: center; font-family: var(--f-mono); font-size: 12px; }
+ol.steps li.done { color: var(--muted); text-decoration: line-through; }
+ol.steps li.done::before { content: "✓"; background: var(--accent); color: var(--accent-ink); }
+.note { font-size: 13px; padding: 10px 12px; border-radius: 10px; background: var(--accent-soft); margin-top: 14px; }
+.d-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+
+/* Courses */
+.list-group { display: grid; gap: 4px; }
+.list-recipes { display: grid; gap: 6px; margin-bottom: 4px; }
+.list-recipes div { display: flex; justify-content: space-between; align-items: center; gap: 10px; font-size: 14px; padding: 8px 12px; background: var(--bg); border-radius: 10px; }
+.link { border: 0; background: none; color: var(--prot); cursor: pointer; font-size: 13px; padding: 0; text-decoration: underline; }
+.toast { position: fixed; left: 50%; bottom: calc(env(safe-area-inset-bottom, 0px) + 20px); transform: translateX(-50%); background: var(--ink); color: var(--bg); padding: 10px 16px; border-radius: 999px; font-size: 14px; font-weight: 500; z-index: 10; }
+
+@media (max-width: 820px) {
+  .layout { grid-template-columns: minmax(0,1fr); gap: 20px; }
+  aside.filters { position: static; }
+  .d-body { grid-template-columns: minmax(0,1fr); }
+}
+@media (max-width: 520px) {
+  .wrap { padding-inline: 16px; }
+  .d-inner { padding: 20px 16px; }
+  .d-head { grid-template-columns: minmax(0,1fr); }
+  .plate.big { width: 76px; height: 76px; }
+  .d-stats .macros { grid-template-columns: repeat(4, minmax(0,1fr)); gap: 10px; width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) { .card { transition: none; } .card:hover { transform: none; } }
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <h1>Cantine de la <em>Batcave</em></h1>
+      <p>Recettes healthy, sans lait, pesées crues. Les macros se calculent ingrédient par ingrédient et suivent le nombre de portions.</p>
+    </div>
+    <div class="top-actions">
+      <label class="target" for="cible">Protéines / jour <input id="cible" class="num" type="number" min="40" max="300" step="1" value="142"> g</label>
+      <button class="btn primary" id="open-list" type="button">Courses <span class="badge num" id="list-count">0</span></button>
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="filters" aria-label="Filtres">
+      <div class="fgroup">
+        <label class="flabel" for="q">Rechercher</label>
+        <input class="search" id="q" type="search" placeholder="poulet, lentilles, avoine…" autocomplete="off">
+      </div>
+      <div class="fgroup">
+        <span class="flabel">Moment</span>
+        <div class="chips" id="cats"></div>
+      </div>
+      <div class="fgroup">
+        <span class="flabel">Critères</span>
+        <label class="check"><input type="checkbox" id="f-prot"> 35 g de protéines ou plus</label>
+        <label class="check"><input type="checkbox" id="f-rapide"> Prêt en 15 min</label>
+        <label class="check"><input type="checkbox" id="f-batch"> Batch cooking</label>
+        <label class="check"><input type="checkbox" id="f-vege"> Végétarien</label>
+        <label class="check"><input type="checkbox" id="f-lactose"> Sans lactose</label>
+        <label class="check"><input type="checkbox" id="f-fav"> Mes favoris</label>
+      </div>
+      <div class="fgroup">
+        <label class="flabel" for="sort">Trier par</label>
+        <select class="search" id="sort">
+          <option value="prot">Protéines (plus d’abord)</option>
+          <option value="ratio">Protéines pour 100 kcal</option>
+          <option value="kcal-desc">Calories (plus d’abord)</option>
+          <option value="kcal-asc">Calories (moins d’abord)</option>
+          <option value="temps">Temps de préparation</option>
+        </select>
+      </div>
+      <div class="fgroup">
+        <span class="flabel">L’assiette</span>
+        <div class="legend">
+          <span style="--c: var(--prot)">Protéines</span>
+          <span style="--c: var(--carb)">Glucides</span>
+          <span style="--c: var(--fat)">Lipides</span>
+        </div>
+        <small style="color: var(--muted)">Part de chaque macro dans les calories de la portion.</small>
+      </div>
+    </aside>
+
+    <main>
+      <div class="results-head"><span id="count"></span><button class="link" id="reset" type="button">Réinitialiser</button></div>
+      <div class="grid" id="grid"></div>
+    </main>
+  </div>
+</div>
+
+<dialog id="detail" aria-labelledby="d-title"></dialog>
+<dialog id="list" aria-labelledby="l-title"></dialog>
+<div class="toast" id="toast" role="status" hidden></div>
+
+<script>
+// [nom, kcal, protéines, glucides, lipides] pour 100 g (ou 100 ml), unité affichée, pièce [nom, grammes]
+const FOODS = {
+  avoine: ['Flocons d’avoine', 370, 13, 60, 7],
+  boissonAvoine: ['Boisson d’avoine', 45, 1, 7, 1.5, 'ml'],
+  skyr: ['Skyr nature', 63, 11, 4, 0.2],
+  banane: ['Banane', 90, 1.1, 21, 0.3, 'g', ['banane', 120]],
+  miel: ['Miel', 305, 0.3, 82, 0],
+  amandes: ['Amandes', 600, 21, 8, 52],
+  cacahuete: ['Beurre de cacahuète', 600, 25, 14, 50],
+  cacao: ['Cacao non sucré', 230, 20, 14, 14],
+  oeuf: ['Œufs', 143, 12.5, 0.7, 10, 'g', ['œuf', 60]],
+  epinards: ['Épinards frais', 23, 2.9, 1.4, 0.4],
+  feta: ['Feta', 260, 14, 1, 21],
+  emmental: ['Emmental râpé', 380, 28, 0, 30],
+  pain: ['Pain complet', 245, 9, 43, 3.5],
+  huile: ['Huile d’olive', 820, 0, 0, 91, 'ml'],
+  riz: ['Riz basmati', 355, 7.5, 78, 0.9],
+  pates: ['Pâtes complètes', 350, 13, 64, 2.5],
+  couscous: ['Semoule complète', 350, 12, 70, 2],
+  quinoa: ['Quinoa', 365, 14, 64, 6],
+  nouilles: ['Nouilles de riz', 360, 6, 80, 1],
+  patate: ['Patate douce', 86, 1.6, 20, 0.1],
+  tortilla: ['Tortilla complète', 300, 9, 50, 7, 'g', ['tortilla', 60]],
+  poulet: ['Blanc de poulet', 110, 23, 0, 1.5],
+  dinde: ['Escalope de dinde', 110, 24, 0, 1.5],
+  boeuf: ['Bœuf haché 5 %', 125, 21, 0, 5],
+  saumon: ['Pavé de saumon', 200, 20, 0, 13],
+  thon: ['Thon au naturel, égoutté', 110, 25, 0, 1],
+  tofu: ['Tofu ferme', 140, 15, 2, 8],
+  lentilles: ['Lentilles corail', 345, 24, 52, 2],
+  rouges: ['Haricots rouges cuits', 110, 8, 16, 0.5],
+  poischiches: ['Pois chiches cuits', 140, 8, 19, 2.5],
+  edamame: ['Edamame écossés', 120, 11, 9, 5],
+  brocoli: ['Brocoli', 34, 2.8, 4, 0.4],
+  haricotsV: ['Haricots verts', 31, 1.8, 4.3, 0.2],
+  courgette: ['Courgette', 17, 1.2, 2.6, 0.3],
+  poivron: ['Poivron', 31, 1, 6, 0.3],
+  carotte: ['Carotte', 41, 0.9, 8, 0.2],
+  oignon: ['Oignon', 40, 1.1, 9, 0.1],
+  tomate: ['Tomate', 18, 0.9, 3.5, 0.2],
+  tomateC: ['Tomates concassées', 30, 1.3, 5, 0.2],
+  concombre: ['Concombre', 15, 0.7, 3, 0.1],
+  avocat: ['Avocat', 160, 2, 2, 15],
+  fruitsRouges: ['Fruits rouges surgelés', 45, 1, 9, 0.3],
+  citron: ['Jus de citron', 22, 0.4, 7, 0.2, 'ml'],
+  coco: ['Lait de coco allégé', 75, 0.7, 2, 7, 'ml'],
+  soja: ['Sauce soja', 60, 8, 6, 0, 'ml'],
+  harissa: ['Harissa', 80, 3, 8, 4],
+  ail: ['Ail', 149, 6, 30, 0.5, 'g', ['gousse', 5]],
+  gingembre: ['Gingembre frais', 80, 1.8, 15, 0.8],
+};
+const LACTOSE = ['skyr', 'feta', 'emmental'];
+const ANIMAL = ['poulet', 'dinde', 'boeuf', 'saumon', 'thon'];
+const CATS = { 'petit-dej': 'Petit-déj', dejeuner: 'Déjeuner', diner: 'Dîner', collation: 'Collation', dessert: 'Dessert' };
+
+// Quantités pour le nombre de portions de base (`n`), pesées crues.
+const RECIPES = [
+  { id: 'shake-avoine', nom: 'Shake avoine, banane et skyr', cat: 'petit-dej', temps: 5, n: 1,
+    hook: 'Le petit-déj qui se boit en deux minutes, près de 900 kcal sans forcer.',
+    ing: [['boissonAvoine', 300], ['skyr', 150], ['avoine', 80], ['banane', 120], ['miel', 20], ['amandes', 30]],
+    steps: ['Mets la boisson d’avoine et le skyr dans le blender.', 'Ajoute les flocons, la banane coupée, le miel et les amandes.', 'Mixe 45 secondes, jusqu’à ce qu’il n’y ait plus de morceaux d’amande.', 'Bois tout de suite : les flocons épaississent en quelques minutes.'],
+    note: 'Trop épais ? Rallonge avec 50 ml de boisson d’avoine.' },
+  { id: 'porridge-cacao', nom: 'Porridge cacao et cacahuète', cat: 'petit-dej', temps: 10, n: 1,
+    hook: 'Crémeux, chocolaté, et le skyr ajouté hors du feu pour les protéines.',
+    ing: [['avoine', 80], ['boissonAvoine', 250], ['banane', 100], ['cacao', 10], ['cacahuete', 20], ['skyr', 100]],
+    steps: ['Chauffe la boisson d’avoine avec les flocons à feu moyen, 4 à 5 minutes, en remuant.', 'Ajoute le cacao et la moitié de la banane écrasée, mélange.', 'Hors du feu, incorpore le skyr.', 'Sers avec le reste de banane en rondelles et le beurre de cacahuète par-dessus.'] },
+  { id: 'pancakes-avoine', nom: 'Pancakes avoine-banane', cat: 'petit-dej', temps: 15, n: 1,
+    hook: 'Trois ingrédients de base, pas de farine, pas de lait.',
+    ing: [['avoine', 60], ['banane', 120], ['oeuf', 120], ['boissonAvoine', 80], ['miel', 15], ['huile', 5]],
+    extras: 'cannelle, une pincée de sel',
+    steps: ['Mixe les flocons, la banane, les œufs et la boisson d’avoine en pâte lisse.', 'Laisse reposer 3 minutes, le temps que l’avoine gonfle.', 'Huile légèrement une poêle chaude, verse des petites louches.', 'Retourne quand des bulles apparaissent, environ 1 min 30 par face.', 'Arrose de miel au service.'] },
+  { id: 'omelette-epinards', nom: 'Omelette épinards-feta, pain complet', cat: 'petit-dej', temps: 10, n: 1,
+    hook: 'Version salée du matin : trois œufs, une poignée de vert.',
+    ing: [['oeuf', 180], ['epinards', 100], ['feta', 30], ['pain', 60], ['huile', 5]],
+    extras: 'poivre, piment d’Espelette',
+    steps: ['Fais tomber les épinards 1 minute dans la poêle huilée.', 'Bats les œufs, verse-les sur les épinards.', 'Émiette la feta par-dessus quand le dessous a pris.', 'Plie l’omelette, sers avec le pain grillé.'] },
+
+  { id: 'bowl-poulet-citron', nom: 'Bowl poulet, riz et brocoli au citron', cat: 'dejeuner', temps: 30, n: 4, conserv: '4 jours au frigo, en boîtes séparées.',
+    hook: 'Le classique du batch du dimanche, relevé au citron et à l’ail.',
+    ing: [['riz', 480], ['poulet', 600], ['brocoli', 800], ['huile', 60], ['citron', 60], ['ail', 10]],
+    extras: 'sel, poivre, paprika',
+    steps: ['Lance le riz : 1,5 fois son volume d’eau, 12 minutes à couvert, puis 5 minutes de repos.', 'Coupe le poulet en dés, assaisonne de paprika, saisis-le 7 à 8 minutes dans 20 ml d’huile.', 'Cuis le brocoli 5 minutes à la vapeur : il doit rester vert vif.', 'Mélange le reste de l’huile, le jus de citron et l’ail râpé.', 'Répartis en 4 boîtes et arrose de la sauce au moment de manger.'],
+    note: 'L’huile ajoutée froide au service garde son goût et compte dans les macros.' },
+  { id: 'poulet-harissa', nom: 'Poulet harissa, semoule et courgettes', cat: 'dejeuner', temps: 25, n: 2,
+    hook: 'Le goût vient de la harissa et du citron, pas d’une sauce.',
+    ing: [['poulet', 320], ['couscous', 180], ['courgette', 400], ['harissa', 30], ['huile', 30], ['citron', 20]],
+    extras: 'cumin, coriandre fraîche, sel',
+    steps: ['Mélange la harissa, 10 ml d’huile et le cumin ; enrobe le poulet coupé en lanières.', 'Fais dorer les courgettes en demi-rondelles dans 10 ml d’huile, 6 minutes.', 'Saisis le poulet 6 à 7 minutes à feu vif.', 'Verse 1,2 fois le volume de semoule en eau bouillante salée, couvre 5 minutes, égrène avec le reste d’huile.', 'Sers avec le citron et la coriandre.'] },
+  { id: 'salade-quinoa-thon', nom: 'Salade quinoa, pois chiches et thon', cat: 'dejeuner', temps: 20, n: 2, conserv: '3 jours au frigo, sauce à part.',
+    hook: 'Froide, croquante, prête la veille.',
+    ing: [['quinoa', 140], ['poischiches', 240], ['thon', 200], ['concombre', 200], ['tomate', 200], ['huile', 30], ['citron', 30]],
+    extras: 'moutarde, persil, sel, poivre',
+    steps: ['Rince le quinoa, cuis-le 12 minutes dans deux fois son volume d’eau, laisse refroidir.', 'Coupe concombre et tomates en dés.', 'Rince les pois chiches, émiette le thon.', 'Fouette l’huile, le citron et une cuillère de moutarde.', 'Mélange le tout au dernier moment.'] },
+  { id: 'dahl-lentilles', nom: 'Dahl de lentilles corail et épinards', cat: 'dejeuner', temps: 35, n: 4, conserv: '4 jours au frigo, se congèle.',
+    hook: 'Végétarien, épicé, et toujours meilleur le lendemain.',
+    ing: [['lentilles', 320], ['coco', 400], ['tomateC', 400], ['oignon', 150], ['epinards', 300], ['riz', 240], ['ail', 10], ['gingembre', 15], ['huile', 20]],
+    extras: 'curry, curcuma, cumin, sel',
+    steps: ['Fais revenir l’oignon, l’ail et le gingembre dans l’huile, 5 minutes.', 'Ajoute les épices, puis les lentilles rincées, les tomates, le lait de coco et 500 ml d’eau.', 'Laisse mijoter 20 minutes en remuant, jusqu’à ce que les lentilles se défassent.', 'Incorpore les épinards les 2 dernières minutes.', 'Sers sur le riz cuit à part.'] },
+
+  { id: 'chili-con-carne', nom: 'Chili con carne maigre', cat: 'diner', temps: 45, n: 4, conserv: '4 jours au frigo, se congèle très bien.',
+    hook: 'Bœuf 5 %, haricots rouges, paprika fumé : le plat qui tient au corps.',
+    ing: [['boeuf', 600], ['rouges', 480], ['tomateC', 800], ['oignon', 200], ['poivron', 300], ['riz', 320], ['huile', 30], ['ail', 10]],
+    extras: 'cumin, paprika fumé, piment, origan, sel',
+    steps: ['Fais revenir oignon, ail et poivron dans l’huile, 6 minutes.', 'Ajoute le bœuf, émiette-le et laisse colorer 5 minutes.', 'Ajoute les épices, les tomates et les haricots rincés.', 'Mijote 25 minutes à couvert, puis 5 minutes sans couvercle pour réduire.', 'Sers avec le riz cuit à part.'] },
+  { id: 'bolognaise-express', nom: 'Pâtes bolognaise express', cat: 'diner', temps: 25, n: 2,
+    hook: 'Une bolognaise du soir, avec des carottes cachées dans la sauce.',
+    ing: [['pates', 210], ['boeuf', 240], ['tomateC', 400], ['oignon', 100], ['carotte', 120], ['huile', 20], ['ail', 5]],
+    extras: 'origan, basilic, sel, poivre',
+    steps: ['Râpe la carotte, hache l’oignon et l’ail.', 'Fais-les revenir 5 minutes dans l’huile, ajoute le bœuf.', 'Verse les tomates et l’origan, laisse mijoter 15 minutes.', 'Cuis les pâtes pendant ce temps, égoutte-les al dente.', 'Mélange les pâtes à la sauce dans la poêle.'] },
+  { id: 'saumon-patate-douce', nom: 'Saumon, patate douce rôtie et haricots verts', cat: 'diner', temps: 35, n: 1,
+    hook: 'Les oméga-3 du saumon, le four fait presque tout.',
+    ing: [['saumon', 150], ['patate', 250], ['haricotsV', 150], ['huile', 10], ['citron', 15]],
+    extras: 'paprika, aneth, sel',
+    steps: ['Préchauffe le four à 210 °C.', 'Coupe la patate douce en cubes, mélange avec l’huile et le paprika, enfourne 25 minutes.', 'Ajoute le saumon sur la plaque pour les 12 dernières minutes.', 'Cuis les haricots verts 8 minutes à l’eau bouillante salée.', 'Arrose le saumon de citron, parsème d’aneth.'] },
+  { id: 'wok-dinde', nom: 'Wok de dinde, nouilles de riz et légumes', cat: 'diner', temps: 20, n: 2,
+    hook: 'Feu vif, sauce soja, gingembre : vingt minutes montre en main.',
+    ing: [['dinde', 300], ['nouilles', 180], ['poivron', 200], ['brocoli', 200], ['soja', 30], ['huile', 20], ['gingembre', 10], ['ail', 5]],
+    extras: 'graines de sésame, piment',
+    steps: ['Fais tremper les nouilles 8 minutes dans l’eau chaude, égoutte.', 'Coupe la dinde en lanières, saisis-la à feu vif dans la moitié de l’huile, réserve.', 'Fais sauter poivron et brocoli 4 minutes avec l’ail et le gingembre.', 'Remets la dinde, ajoute les nouilles et la sauce soja, mélange 1 minute.'] },
+  { id: 'tofu-croustillant', nom: 'Tofu croustillant, riz et edamame', cat: 'diner', temps: 25, n: 2,
+    hook: 'Le tofu bien pressé et bien doré, c’est tout le secret.',
+    ing: [['tofu', 400], ['riz', 180], ['edamame', 160], ['soja', 30], ['huile', 20], ['gingembre', 10]],
+    extras: 'fécule de maïs (1 c. à soupe), oignon nouveau, sésame',
+    steps: ['Presse le tofu 10 minutes entre deux torchons, coupe-le en cubes.', 'Enrobe-le de fécule, dore-le 8 minutes dans l’huile en le retournant.', 'Cuis le riz ; plonge les edamame 3 minutes dans l’eau bouillante.', 'Hors du feu, arrose le tofu de sauce soja et de gingembre râpé.'] },
+  { id: 'parmentier-patate-douce', nom: 'Hachis parmentier à la patate douce', cat: 'diner', temps: 60, n: 4, conserv: '4 jours au frigo, se congèle en parts.',
+    hook: 'Le gratin du dimanche, en version qui rentre dans les macros.',
+    ing: [['boeuf', 600], ['patate', 1200], ['oignon', 200], ['carotte', 300], ['tomateC', 200], ['emmental', 80], ['huile', 20]],
+    extras: 'thym, muscade, sel, poivre',
+    steps: ['Cuis la patate douce en morceaux 15 minutes à l’eau salée, écrase-la en purée avec la muscade.', 'Fais revenir l’oignon et la carotte râpée dans l’huile, ajoute le bœuf et le thym.', 'Ajoute les tomates, laisse réduire 5 minutes.', 'Étale la viande dans un plat, couvre de purée, parsème d’emmental.', 'Gratine 20 minutes à 200 °C.'] },
+
+  { id: 'wrap-oeuf-avocat', nom: 'Wrap œufs et avocat', cat: 'collation', temps: 10, n: 1,
+    hook: 'La collation qui se mange d’une main en sortant de l’entraînement.',
+    ing: [['tortilla', 60], ['oeuf', 120], ['avocat', 50], ['tomate', 60], ['epinards', 30]],
+    extras: 'citron, sel, piment',
+    steps: ['Cuis les œufs 9 minutes (durs), écale et coupe-les.', 'Écrase l’avocat avec un peu de citron et de sel.', 'Tartine la tortilla, ajoute épinards, tomate et œufs.', 'Roule serré, coupe en deux.'] },
+  { id: 'boules-energie', nom: 'Boules d’énergie avoine-cacahuète', cat: 'collation', temps: 15, n: 6, conserv: '1 semaine au frigo. Une portion = 2 boules.',
+    hook: 'Douze boules sans cuisson pour la semaine, avant le combat.',
+    ing: [['avoine', 240], ['cacahuete', 120], ['miel', 90], ['cacao', 30], ['amandes', 60]],
+    extras: 'une pincée de sel',
+    steps: ['Concasse grossièrement les amandes.', 'Mélange tous les ingrédients dans un saladier, la pâte doit se tenir.', 'Trop sèche : une cuillère d’eau. Trop collante : une poignée de flocons.', 'Forme 12 boules, laisse-les durcir 30 minutes au frigo.'] },
+
+  { id: 'bowl-skyr-fruits', nom: 'Bol skyr, fruits rouges et avoine', cat: 'dessert', temps: 5, n: 1,
+    hook: 'Le dessert du soir qui apporte encore 30 g de protéines.',
+    ing: [['skyr', 200], ['fruitsRouges', 120], ['avoine', 30], ['miel', 10], ['amandes', 15]],
+    steps: ['Décongèle les fruits rouges 1 minute au micro-ondes, ils rendent leur jus.', 'Verse-les sur le skyr.', 'Toaste les flocons et les amandes 2 minutes à la poêle sèche.', 'Parsème, arrose de miel.'] },
+  { id: 'banana-bread', nom: 'Banana bread à l’avoine', cat: 'dessert', temps: 55, n: 8, conserv: '5 jours dans une boîte. Une portion = une tranche.',
+    hook: 'Sans farine blanche ni beurre, avec les bananes trop mûres.',
+    ing: [['banane', 360], ['avoine', 240], ['oeuf', 180], ['boissonAvoine', 100], ['miel', 40], ['amandes', 60], ['huile', 20]],
+    extras: 'levure chimique (1 sachet), cannelle',
+    steps: ['Préchauffe le four à 180 °C.', 'Mixe les flocons en farine grossière.', 'Écrase les bananes, ajoute œufs, boisson d’avoine, miel et huile.', 'Incorpore la farine d’avoine, la levure, la cannelle et les amandes concassées.', 'Verse dans un moule à cake, cuis 40 minutes : la lame doit ressortir sèche.'] },
+];
+
+// ---- calculs
+const r1 = x => Math.round(x * 10) / 10;
+function macros(rec, portions) {
+  const t = { kcal: 0, p: 0, c: 0, f: 0 };
+  for (const [k, g] of rec.ing) {
+    const [, kcal, p, c, f] = FOODS[k];
+    t.kcal += kcal * g / 100; t.p += p * g / 100; t.c += c * g / 100; t.f += f * g / 100;
+  }
+  const k = (portions ?? 1) / rec.n;
+  return { kcal: t.kcal * k, p: t.p * k, c: t.c * k, f: t.f * k };
+}
+RECIPES.forEach(r => {
+  r.m = macros(r, 1);
+  r.vege = !r.ing.some(([k]) => ANIMAL.includes(k));
+  r.lactoseFree = !r.ing.some(([k]) => LACTOSE.includes(k));
+  r.batch = r.n >= 4;
+  r.ratio = r.m.p / r.m.kcal * 100;
+});
+function split(m) {
+  const P = m.p * 4, C = m.c * 4, F = m.f * 9, T = P + C + F || 1;
+  return { p: P / T * 100, c: C / T * 100 };
+}
+function fmtQty(key, g) {
+  const food = FOODS[key], unit = food[5] || 'g';
+  const rounded = g >= 50 ? Math.round(g / 5) * 5 : Math.round(g);
+  let s = `${rounded} ${unit}`;
+  if (food[6]) {
+    const n = Math.round(g / food[6][1] * 2) / 2;
+    if (n > 0) s = `${String(n).replace('.', ',')} ${food[6][0]}${n > 1 ? 's' : ''} · ${s}`;
+  }
+  return s;
+}
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+// ---- état local (confort, jamais indispensable)
+function load(key, fallback) { try { const v = localStorage.getItem(key); return v ? JSON.parse(v) : fallback; } catch { return fallback; } }
+function save(key, v) { try { localStorage.setItem(key, JSON.stringify(v)); } catch {} }
+let favs = new Set(load('cantine-favs', []));
+let courses = load('cantine-courses', {});
+let cible = load('cantine-cible', 142);
+const state = { cat: 'all', q: '' };
+
+const $ = s => document.querySelector(s);
+const grid = $('#grid'), detail = $('#detail'), listDlg = $('#list');
+$('#cible').value = cible;
+
+function plate(m, big) {
+  const s = split(m);
+  return `<div class="plate${big ? ' big' : ''}" style="--p:${s.p.toFixed(1)};--c:${s.c.toFixed(1)}" role="img" aria-label="${Math.round(s.p)} % protéines, ${Math.round(s.c)} % glucides, ${Math.round(100 - s.p - s.c)} % lipides"></div>`;
+}
+function macroRow(m) {
+  return `<div class="macros">
+    <div class="macro"><b>${Math.round(m.kcal)}</b><small>kcal</small></div>
+    <div class="macro p"><b>${Math.round(m.p)} g</b><small>protéines</small></div>
+    <div class="macro"><b>${Math.round(m.c)} g</b><small>glucides</small></div>
+    <div class="macro"><b>${Math.round(m.f)} g</b><small>lipides</small></div>
+  </div>`;
+}
+function tags(r) {
+  const t = [`<span class="tag time num">${r.temps} min</span>`];
+  if (r.batch) t.push(`<span class="tag">Batch · ${r.n} portions</span>`);
+  if (r.vege) t.push('<span class="tag">Végétarien</span>');
+  if (r.lactoseFree) t.push('<span class="tag">Sans lactose</span>');
+  return t.join('');
+}
+
+// ---- liste
+function renderCats() {
+  const counts = { all: RECIPES.length };
+  RECIPES.forEach(r => counts[r.cat] = (counts[r.cat] || 0) + 1);
+  $('#cats').innerHTML = [['all', 'Tout'], ...Object.entries(CATS)].map(([k, v]) =>
+    `<button class="chip" type="button" data-cat="${k}" aria-pressed="${state.cat === k}">${v} <span class="num" style="opacity:.6">${counts[k] || 0}</span></button>`).join('');
+}
+function filtered() {
+  const q = state.q.trim().toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu, '');
+  const norm = s => s.toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu, '');
+  let list = RECIPES.filter(r => {
+    if (state.cat !== 'all' && r.cat !== state.cat) return false;
+    if ($('#f-prot').checked && r.m.p < 35) return false;
+    if ($('#f-rapide').checked && r.temps > 15) return false;
+    if ($('#f-batch').checked && !r.batch) return false;
+    if ($('#f-vege').checked && !r.vege) return false;
+    if ($('#f-lactose').checked && !r.lactoseFree) return false;
+    if ($('#f-fav').checked && !favs.has(r.id)) return false;
+    if (q) {
+      const hay = norm(r.nom + ' ' + r.hook + ' ' + r.ing.map(([k]) => FOODS[k][0]).join(' ') + ' ' + (r.extras || ''));
+      if (!q.split(/\s+/).every(w => hay.includes(w))) return false;
+    }
+    return true;
+  });
+  const sorts = {
+    prot: (a, b) => b.m.p - a.m.p,
+    ratio: (a, b) => b.ratio - a.ratio,
+    'kcal-desc': (a, b) => b.m.kcal - a.m.kcal,
+    'kcal-asc': (a, b) => a.m.kcal - b.m.kcal,
+    temps: (a, b) => a.temps - b.temps,
+  };
+  return list.sort(sorts[$('#sort').value]);
+}
+function renderGrid() {
+  const list = filtered();
+  $('#count').textContent = `${list.length} recette${list.length > 1 ? 's' : ''}`;
+  if (!list.length) {
+    grid.innerHTML = `<div class="empty">Aucune recette ne coche tous ces critères. Retire un filtre ou <button class="link" type="button" data-reset>repars de zéro</button>.</div>`;
+    return;
+  }
+  grid.innerHTML = list.map(r => `
+    <article class="card" tabindex="0" data-open="${r.id}" aria-label="${esc(r.nom)}">
+      <div class="card-top">
+        <div style="min-width:0;padding-right:28px"><div class="cat">${CATS[r.cat]}</div><h3>${esc(r.nom)}</h3></div>
+      </div>
+      <div style="display:flex;gap:14px;align-items:center">${plate(r.m)}<p class="hook">${esc(r.hook)}</p></div>
+      <div class="meta">${tags(r)}</div>
+      ${macroRow(r.m)}
+      <div class="fav"><button class="star" type="button" data-fav="${r.id}" aria-pressed="${favs.has(r.id)}" aria-label="Favori">★</button></div>
+    </article>`).join('');
+}
+
+// ---- détail
+let current = null, portions = 1;
+function openRecipe(id) {
+  const r = RECIPES.find(x => x.id === id);
+  if (!r) return;
+  current = r; portions = r.n;
+  renderDetail();
+  if (!detail.open) detail.showModal();
+  try { history.replaceState(null, '', '#' + r.id); } catch {}
+}
+function renderDetail() {
+  const r = current, m1 = r.m;
+  const pct = Math.round(m1.p / cible * 100);
+  detail.innerHTML = `
+    <button class="star close" type="button" data-close aria-label="Fermer">✕</button>
+    <div class="d-inner">
+      <div class="d-head">
+        <div style="min-width:0"><div class="cat">${CATS[r.cat]} · ${r.temps} min</div><h2 id="d-title">${esc(r.nom)}</h2><p>${esc(r.hook)}</p></div>
+        ${plate(m1, true)}
+      </div>
+      <div class="d-stats">
+        ${macroRow(m1)}
+        <div class="share">Par portion : <b>${pct} %</b> de tes ${cible} g de protéines du jour.</div>
+      </div>
+      <div class="meta">${tags(r)}</div>
+      <div class="d-body">
+        <section>
+          <div class="ing-head">
+            <h3>Ingrédients</h3>
+            <div class="stepper">
+              <button type="button" data-step="-1" aria-label="Une portion de moins">−</button>
+              <output class="num" id="portions-out">${portions} portion${portions > 1 ? 's' : ''}</output>
+              <button type="button" data-step="1" aria-label="Une portion de plus">+</button>
+            </div>
+          </div>
+          <ul class="ings">${r.ing.map(([k, g]) => `<li><span>${FOODS[k][0]}</span><span class="q">${fmtQty(k, g * portions / r.n)}</span></li>`).join('')}</ul>
+          ${r.extras ? `<p class="extras">Et aussi : ${esc(r.extras)}.</p>` : ''}
+          <p class="extras">Poids crus. Total pour ${portions} : <span class="num">${Math.round(macros(r, portions).kcal)} kcal · ${Math.round(macros(r, portions).p)} g de protéines</span>.</p>
+        </section>
+        <section>
+          <h3>Préparation</h3>
+          <ol class="steps">${r.steps.map(s => `<li tabindex="0">${esc(s)}</li>`).join('')}</ol>
+          ${r.note ? `<div class="note">${esc(r.note)}</div>` : ''}
+          ${r.conserv ? `<div class="note">Conservation : ${esc(r.conserv)}</div>` : ''}
+        </section>
+      </div>
+      <div class="d-actions">
+        <button class="btn primary" type="button" data-add>${courses[r.id] ? 'Mettre à jour la liste' : 'Ajouter aux courses'} (${portions} portion${portions > 1 ? 's' : ''})</button>
+        <button class="btn" type="button" data-fav="${r.id}" aria-pressed="${favs.has(r.id)}">${favs.has(r.id) ? '★ Dans mes favoris' : '☆ Ajouter aux favoris'}</button>
+      </div>
+    </div>`;
+}
+
+// ---- courses
+function renderList() {
+  const ids = Object.keys(courses).filter(id => RECIPES.some(r => r.id === id));
+  const total = {}, extras = new Set();
+  ids.forEach(id => {
+    const r = RECIPES.find(x => x.id === id);
+    r.ing.forEach(([k, g]) => total[k] = (total[k] || 0) + g * courses[id] / r.n);
+    if (r.extras) r.extras.split(/,\s*/).forEach(e => extras.add(e.replace(/\s*\(.*\)/, '')));
+  });
+  const items = Object.entries(total).sort((a, b) => FOODS[a[0]][0].localeCompare(FOODS[b[0]][0], 'fr'));
+  listDlg.innerHTML = `
+    <button class="star close" type="button" data-close aria-label="Fermer">✕</button>
+    <div class="d-inner">
+      <div><div class="cat">Liste de courses</div><h2 id="l-title" style="font-size:30px;font-weight:800;margin-top:4px">Ce qu’il faut acheter</h2></div>
+      ${ids.length ? `
+      <div class="list-recipes">${ids.map(id => { const r = RECIPES.find(x => x.id === id); return `<div><span>${esc(r.nom)} · <span class="num">${courses[id]}</span> portion${courses[id] > 1 ? 's' : ''}</span><button class="link" type="button" data-remove="${id}">Retirer</button></div>`; }).join('')}</div>
+      <ul class="ings" id="list-items">${items.map(([k, g]) => `<li><span>${FOODS[k][0]}</span><span class="q">${fmtQty(k, g)}</span></li>`).join('')}</ul>
+      ${extras.size ? `<p class="extras">Placard : ${[...extras].map(esc).join(', ')}.</p>` : ''}
+      <div class="d-actions"><button class="btn primary" type="button" data-copy>Copier la liste</button><button class="btn" type="button" data-clear>Vider la liste</button></div>`
+      : `<p class="empty">La liste est vide. Ouvre une recette, choisis le nombre de portions, puis « Ajouter aux courses ».</p>`}
+    </div>`;
+  listDlg._text = items.map(([k, g]) => `- ${FOODS[k][0]} : ${fmtQty(k, g)}`).join('\n') + (extras.size ? `\n- Placard : ${[...extras].join(', ')}` : '');
+}
+function updateBadge() { $('#list-count').textContent = Object.keys(courses).length; }
+
+let toastTimer;
+function toast(msg) {
+  const t = $('#toast'); t.textContent = msg; t.hidden = false;
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => t.hidden = true, 2200);
+}
+function toggleFav(id) {
+  favs.has(id) ? favs.delete(id) : favs.add(id);
+  save('cantine-favs', [...favs]);
+  renderGrid();
+  if (detail.open && current) renderDetail();
+}
+function resetFilters() {
+  state.cat = 'all'; state.q = ''; $('#q').value = '';
+  document.querySelectorAll('.filters input[type=checkbox]').forEach(c => c.checked = false);
+  $('#sort').value = 'prot';
+  renderCats(); renderGrid();
+}
+
+// ---- événements
+$('#cats').addEventListener('click', e => {
+  const b = e.target.closest('[data-cat]'); if (!b) return;
+  state.cat = b.dataset.cat; renderCats(); renderGrid();
+});
+$('#q').addEventListener('input', e => { state.q = e.target.value; renderGrid(); });
+document.querySelectorAll('.filters input[type=checkbox], #sort').forEach(el => el.addEventListener('change', renderGrid));
+$('#reset').addEventListener('click', resetFilters);
+$('#cible').addEventListener('change', e => {
+  const v = Math.round(+e.target.value);
+  if (v >= 40 && v <= 300) { cible = v; save('cantine-cible', v); if (detail.open) renderDetail(); }
+  else e.target.value = cible;
+});
+grid.addEventListener('click', e => {
+  if (e.target.closest('[data-reset]')) return resetFilters();
+  const f = e.target.closest('[data-fav]');
+  if (f) { e.stopPropagation(); return toggleFav(f.dataset.fav); }
+  const c = e.target.closest('[data-open]'); if (c) openRecipe(c.dataset.open);
+});
+grid.addEventListener('keydown', e => {
+  if ((e.key === 'Enter' || e.key === ' ') && e.target.matches('[data-open]')) { e.preventDefault(); openRecipe(e.target.dataset.open); }
+});
+detail.addEventListener('click', e => {
+  if (e.target === detail || e.target.closest('[data-close]')) return detail.close();
+  const s = e.target.closest('[data-step]');
+  if (s) { portions = Math.min(24, Math.max(1, portions + +s.dataset.step)); return renderDetail(); }
+  const f = e.target.closest('[data-fav]'); if (f) return toggleFav(f.dataset.fav);
+  if (e.target.closest('[data-add]')) {
+    courses[current.id] = portions; save('cantine-courses', courses); updateBadge(); renderDetail();
+    return toast(`${current.nom} : ${portions} portion${portions > 1 ? 's' : ''} sur la liste`);
+  }
+  const li = e.target.closest('ol.steps li'); if (li) li.classList.toggle('done');
+});
+detail.addEventListener('keydown', e => {
+  if ((e.key === 'Enter' || e.key === ' ') && e.target.matches('ol.steps li')) { e.preventDefault(); e.target.classList.toggle('done'); }
+});
+detail.addEventListener('close', () => { try { history.replaceState(null, '', location.pathname + location.search); } catch {} });
+$('#open-list').addEventListener('click', () => { renderList(); listDlg.showModal(); });
+listDlg.addEventListener('click', e => {
+  if (e.target === listDlg || e.target.closest('[data-close]')) return listDlg.close();
+  const rm = e.target.closest('[data-remove]');
+  if (rm) { delete courses[rm.dataset.remove]; save('cantine-courses', courses); updateBadge(); return renderList(); }
+  if (e.target.closest('[data-clear]')) { courses = {}; save('cantine-courses', courses); updateBadge(); return renderList(); }
+  if (e.target.closest('[data-copy]')) {
+    const text = listDlg._text;
+    const fallback = () => {
+      const el = $('#list-items'); const range = document.createRange(); range.selectNodeContents(el);
+      const sel = getSelection(); sel.removeAllRanges(); sel.addRange(range);
+      toast('Liste sélectionnée : copie-la avec Ctrl+C');
+    };
+    try { navigator.clipboard.writeText(text).then(() => toast('Liste copiée'), fallback); } catch { fallback(); }
+  }
+});
+
+renderCats(); renderGrid(); updateBadge();
+const hash = location.hash.slice(1);
+if (hash) openRecipe(hash);
+</script>
