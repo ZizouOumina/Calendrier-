@@ -35,7 +35,10 @@ moitié du rythme visé), elle propose **+150 kcal**, soit +40 g de pâtes crues
 rapide (plus de 1,5 fois le rythme), **−100 kcal**. Elle propose, tu valides.
 
 ## Les courses
-Environ **44,08 € par semaine** (191,02 € par mois), le samedi à 13:30. La liste
+Ce que tu manges vaut **44,08 € par semaine** (191,02 € par mois). En caisse, conditionnements
+et cycles compris, tu paies **≈ 209 € par mois** (48,22 € par semaine en moyenne : 33,78 € un
+samedi ordinaire, jusqu'à 67,68 € quand surgelés, réserves et huile tombent ensemble). Le samedi
+à 13:30 ; la première fois, le lundi 5 octobre (≈ 81 €, toutes les réserves). La liste
 de l'onglet Courses est calculée pour le plan entier : skyr 1,05 kg (7 boîtes), 18 œufs,
 amandes 3 sachets, poulet, viande hachée 5 %, riz, pâtes, flocons, boisson d'avoine, bananes,
 fruits, légumes verts, pain complet, fromage, miel, huile d'olive.

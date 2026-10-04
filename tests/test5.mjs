@@ -46,7 +46,7 @@ async function scenario(nom, icloudMontant, limiteAbo, txMontant){
     tx: JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-transactions') || '[]'),
     /* Le plafond attendu est calculé par la page elle-même : l'écrire à la main ici
        le figerait, et il bougera dès qu'il enverra le prix du beurre de cacahuète. */
-    moisPlan: window.__bcCoutSemaine ? Math.round(window.__bcCoutSemaine().mois) : null
+    moisPlan: window.__bcCoutAchats ? Math.round(window.__bcCoutAchats().mois) : null   /* 4 octobre : le plafond suit les achats en caisse */
   }));
   await ctx.close();
   return out;
@@ -88,7 +88,7 @@ ok(r.moisPlan > 0 && r.limits['Nourriture'] === r.moisPlan,
     const f = pg.frames().find(x => x.url().includes('batcave.html'));
     const out = await f.evaluate(() => ({
       plafond: JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-budget-limits'))['Nourriture'],
-      attendu: Math.round(window.__bcCoutSemaine().mois)
+      attendu: Math.round(window.__bcCoutAchats().mois)
     }));
     await c.close();
     return out;

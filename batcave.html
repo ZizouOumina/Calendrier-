@@ -3625,7 +3625,7 @@
   var DRAPEAUX_MIGRATION = ['objectifs-seed-v1','objectifs-v2-55','objectifs-v5-espanol',
     'habits-ecran-v2','habitlog-hebdo-v1','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','habits-seed-v7','habits-seed-v8','habits-seed-v9','habits-seed-v10',
     'courses-plan-v2','courses-plan-v3','courses-plan-v4','courses-plan-v5','courses-plan-v6','courses-plan-v7','courses-plan-v8','courses-plan-v9','courses-plan-v10',
-    'charges-v2','plafond-nourriture-v2','plafond-nourriture-v3','plafond-nourriture-v4','ancre-dimanche-v1','ancre-dimanche-v2','serviettes-v1','coiffeur-v1','shampoing-dim-v1','marche-cible-v1','fc-migration-v1','fc-migration-v2','fc-migration-v3','fc-migration-v4','revision-fusionnee'];
+    'charges-v2','plafond-nourriture-v2','plafond-nourriture-v3','plafond-nourriture-v4','plafond-nourriture-v5','ancre-dimanche-v1','ancre-dimanche-v2','serviettes-v1','coiffeur-v1','shampoing-dim-v1','marche-cible-v1','fc-migration-v1','fc-migration-v2','fc-migration-v3','fc-migration-v4','revision-fusionnee'];
   /* Drapeaux que rien ne pose plus (migrations retirees) ou poses seulement quand il y a
      eu quelque chose a migrer : connus et gardes, jamais exiges. */
   var DRAPEAUX_ANCIENS = ['objectifs-v3-trajet','objectifs-v4-dimanche','habits-retirees-v1','shampoing-combat-v1'];   /* le dernier n'ecrit qu'a partir du 28 septembre */
@@ -3742,7 +3742,7 @@
      vestige : une fonctionnalite retiree (batcave-matieres) ou un essai. Elle prend de la
      place dans le quota de 5000 documents et embrouille les sauvegardes, sans que rien ne
      la lise jamais. On la signale ; la suppression reste ton geste. */
-  var CLES_CONNUES = ['addictions','budget-limits','business','coran','courses','dash-more','duaas','duree-bloc','sport-log','objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','courses-plan-v3','courses-plan-v4','courses-plan-v5','courses-plan-v6','courses-plan-v7','courses-plan-v8','courses-plan-v9','courses-plan-v10','charges-v2','plafond-nourriture-v2','plafond-nourriture-v3','plafond-nourriture-v4','gcal-controle','ancre-dimanche-v1','ancre-dimanche-v2','serviettes-v1','coiffeur-v1','shampoing-dim-v1','marche-cible-v1','cardio','kcal-ajustement','gcal-ecriture','reinit','fc-migration-v1','fc-migration-v2','fc-migration-v3','fc-migration-v4','livrables','shampoing-combat-v1','charge','shopify-boutique','journees','examens-heures','vacances','jours-exclus',
+  var CLES_CONNUES = ['addictions','budget-limits','business','coran','courses','dash-more','duaas','duree-bloc','sport-log','objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','courses-plan-v3','courses-plan-v4','courses-plan-v5','courses-plan-v6','courses-plan-v7','courses-plan-v8','courses-plan-v9','courses-plan-v10','charges-v2','plafond-nourriture-v2','plafond-nourriture-v3','plafond-nourriture-v4','plafond-nourriture-v5','gcal-controle','ancre-dimanche-v1','ancre-dimanche-v2','serviettes-v1','coiffeur-v1','shampoing-dim-v1','marche-cible-v1','cardio','kcal-ajustement','gcal-ecriture','reinit','fc-migration-v1','fc-migration-v2','fc-migration-v3','fc-migration-v4','livrables','shampoing-combat-v1','charge','shopify-boutique','journees','examens-heures','vacances','jours-exclus',
     'espagnol','examens','cours-suivi','portes','periodes-closes','fc-prix-icloud-3','fc-prix-club-100','fc-prix-club-70','fixed-charges','goals','goals-depart','saisons','insights-hist','last-restore-drill','habitlog','habits','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','habits-seed-v7','habits-seed-v8','habits-seed-v9','habits-seed-v10','objectifs-v5-espanol',
     'horizon','last-auto-backup','last-manual-backup','last-bilan-prompt','last-compaction','last-open','last-rotation','notion-url',
     'pomodial-purge','projets','report','revision','revision-fusionnee','revue','sante','sauvegarde','sessions',
@@ -12150,6 +12150,38 @@
     });
     return {total: total, mois: total * 52 / 12, lignes: lignes, manque: manque};
   }
+  /* ===== Ce qu'il paie en caisse (4 octobre) =====
+     « si je dois acheter plus toutes les 5 semaines alors le budget que tu m'as donne n'est
+     pas le bon ». Il a raison. coutSemaine() chiffre ce qu'il MANGE (44,08 EUR) ; en caisse il
+     paie le CONDITIONNEMENT -- un pack d'avoine de 6 L pour 4,2 L bus, 18 oeufs pour 14, 3 kg
+     de flocons pour 2,84 -- et les reserves tombent d'un bloc certains samedis. Le budget du
+     mois se lit donc sur les ACHATS : chaque samedi, ce qui est du ce jour-la, au prix
+     releve, conditionnement compris. Si un samedi il coche « j'en ai » au lieu d'acheter
+     (le surplus d'oeufs finit par faire une boite), la difference part au balayage du 24.
+     La creatine n'a pas de prix releve (commande en ligne, un pot par trimestre) : elle
+     reste hors de ce calcul. */
+  function coutAchatArticle(it){
+    var cle = it && CLE_PRIX[it.label], p = cle && PRIX[cle];
+    if(!p || !it.achat) return 0;
+    return p.par === 'pi\u00e8ce' ? it.achat * p.eur : (it.achat / 1000) * p.eur;
+  }
+  function achatsDuSamedi(iso, plan){
+    plan = plan || planCoursesSemaine(ajustementKcalPour(iso));
+    var t = 0;
+    plan.forEach(function(c){ c.items.forEach(function(it){
+      if(estDuCycle(cycleArticle(c, it), c.ancre, c.aussi, iso)) t += coutAchatArticle(it);
+    }); });
+    return t;
+  }
+  /* La moyenne des achats : chaque article au prorata de son cycle. */
+  function coutAchatsMoyen(){
+    var plan = planCoursesSemaine(ajustementKcalPour(todayISO)), t = 0, ordinaire = 0;
+    plan.forEach(function(c){ c.items.forEach(function(it){
+      var x = coutAchatArticle(it), n = cycleArticle(c, it);
+      t += x / n; if(n === 1) ordinaire += x;
+    }); });
+    return {total: t, mois: t * 52 / 12, ordinaire: ordinaire};
+  }
   /* Le prix d'une ligne, tel qu'il s'ecrit sous l'article. */
   function prixLigne(label){
     var cle = CLE_PRIX[label];
@@ -12180,7 +12212,7 @@
       /* Le conditionnement s'ECRIT depuis le compte : « 5 paquets de 1 kg » etait fige a
          « 4 paquets » et mentait des que le besoin changeait d'un gramme. */
       if(pas > 1) pack = n + ' ' + pack + (n > 1 ? 's' : '') + ' de ' + fmt(pas);
-      return {label: label, qte: fmt(achat), semaines: semaines,
+      return {label: label, qte: fmt(achat), achat: achat, semaines: semaines,
               /* Le BESOIN se lit dans son unite brute -- « 2 135 g », pas « 2,135 kg » :
                  c'est un chiffre du plan, pas une quantite qu'on va chercher en rayon. */
               note: pack + (achat > besoin ? ' \u00b7 le plan en demande ' +
@@ -12613,9 +12645,9 @@
        la semaine ou il l'achete ferait un budget en dents de scie.
        Les lignes sans prix (les amandes, depuis le 24 septembre) sortent du total et se disent. */
     if(budget){
-      var cs = coutSemaine();
-      budget.innerHTML = '<b style="color:var(--ink);">' + eur(cs.mois) + ' par mois</b> \u00b7 ' +
-        eur(cs.total) + ' par semaine, calcul\u00e9 sur <b style="color:var(--ink-dim);">tes</b> prix relev\u00e9s en magasin les 20, 21, 25 et 29 septembre, ligne par ligne.' +
+      var cs = coutSemaine(), am = coutAchatsMoyen();
+      budget.innerHTML = '<b style="color:var(--ink);">' + eur(am.mois) + ' par mois en caisse</b> \u00b7 ' +
+        eur(am.total) + ' par semaine en moyenne, conditionnements compris : ' + eur(am.ordinaire) + ' un samedi ordinaire, davantage quand les surgel\u00e9s, les r\u00e9serves ou l\u2019huile tombent ce jour-l\u00e0. Ce que tu <b style="color:var(--ink-dim);">manges</b> vaut ' + eur(cs.total) + ' par semaine (' + eur(cs.mois) + ' par mois) : l\u2019\u00e9cart, c\u2019est le surplus des paquets \u2014 coche « j\u2019en ai » quand il te reste de quoi tenir, et la diff\u00e9rence part \u00e0 la cagnotte. Prix relev\u00e9s en magasin les 20, 21, 25 et 29 septembre, ligne par ligne.' +
         (cs.manque.length ? ' <b style="color:var(--warn);">' + cs.manque.join(', ') + '</b> : prix pas encore relev\u00e9, donc hors total \u2014 le chiffre montera quand il y sera.' : '') +
         ' Ce montant est le <b style="color:var(--ink-dim);">plan</b> ; ce que tu as vraiment pay\u00e9 se saisit dans <b style="color:var(--ink-dim);">Budget \u2192 Nourriture</b>, et c\'est lui qui compte dans tes d\u00e9penses du mois.';
     }
@@ -16525,7 +16557,7 @@
     window.__bcMeteoInjecter = function(liste){ meteoHeures = liste; try{ majMeteoSeance(); }catch(e){} };
     window.__bcMeteoSeance = texteMeteoSeance;
     window.__bcSeanceDehors = seanceExterieureLe;
-    window.__bcChiffresSemaine = chiffresSemaine; window.__bcMacrosJour = macrosJour; window.__bcPrepSemaine = prepSemaine; window.__bcPrepTotaux = prepTotaux; window.__bcMacrosRepas = macrosRepas; window.__bcCompoRepas = compoRepas; window.__bcAliments = ALIMENTS; window.__bcBesoinSemaine = BESOIN_SEMAINE; window.__bcCoutSemaine = coutSemaine; window.__bcMoisArgent = moisArgent; window.__bcPrix = PRIX; window.__bcEvalMatieres = EVAL_MATIERES; window.__bcTypesEcheance = TYPES_ECHEANCE; window.__bcCopieVierge = copieVierge; window.__bcNotion = absorberNotion; window.__bcNotionBases = function(){ return NOTION_BASES; }; window.__bcNotionBasesDu = basesNotionDuSemestre; window.__bcNotionRetards = notionRetards; window.__bcCoursPasFait = coursPasFait; window.__bcExercice = exerciceDu; window.__bcChiffrer = chiffrerTexte; window.__bcDechiffrer = dechiffrerEnveloppe;
+    window.__bcChiffresSemaine = chiffresSemaine; window.__bcMacrosJour = macrosJour; window.__bcPrepSemaine = prepSemaine; window.__bcPrepTotaux = prepTotaux; window.__bcMacrosRepas = macrosRepas; window.__bcCompoRepas = compoRepas; window.__bcAliments = ALIMENTS; window.__bcBesoinSemaine = BESOIN_SEMAINE; window.__bcCoutSemaine = coutSemaine; window.__bcCoutAchats = coutAchatsMoyen; window.__bcAchatsDuSamedi = achatsDuSamedi; window.__bcMoisArgent = moisArgent; window.__bcPrix = PRIX; window.__bcEvalMatieres = EVAL_MATIERES; window.__bcTypesEcheance = TYPES_ECHEANCE; window.__bcCopieVierge = copieVierge; window.__bcNotion = absorberNotion; window.__bcNotionBases = function(){ return NOTION_BASES; }; window.__bcNotionBasesDu = basesNotionDuSemestre; window.__bcNotionRetards = notionRetards; window.__bcCoursPasFait = coursPasFait; window.__bcExercice = exerciceDu; window.__bcChiffrer = chiffrerTexte; window.__bcDechiffrer = dechiffrerEnveloppe;
        /* rapport hebdomadaire (tests/rapport-hebdo.mjs) : la semaine à un décalage donné, ses
           statistiques de bilan et le prévu/réalisé de chaque jour */
        window.__bcSemaine = function(off){
@@ -17212,7 +17244,7 @@
        il n'y a aucune charge « Courses » a retirer puisqu'elle ne figure plus dans la
        graine. Le retrait, lui, ne concerne que les Batcave qui l'ont encore en memoire. */
     if(!budgetLimits['Nourriture']){
-      budgetLimits['Nourriture'] = Math.round(coutSemaine().mois);
+      budgetLimits['Nourriture'] = Math.round(coutAchatsMoyen().mois);
       save('batcave-budget-limits', budgetLimits);
     }
     var liste = load('batcave-fixed-charges', null);
@@ -17264,6 +17296,17 @@
       save('batcave-budget-limits', budgetLimits);
     }
     saveInternal('batcave-plafond-nourriture-v4', true);
+  }
+  /* Cinquieme fois, le 4 octobre : le plafond suit ce qu'il PAIE en caisse (coutAchatsMoyen,
+     conditionnements et cycles compris, ~209 EUR par mois) et non plus ce qu'il mange (191).
+     Meme regle : seulement s'il vaut encore une valeur posee par moi (191 ou 193). */
+  if(!load('batcave-plafond-nourriture-v5', false)){
+    var pn = Number(budgetLimits['Nourriture']);
+    if(pn === 191 || pn === 193){
+      budgetLimits['Nourriture'] = Math.round(coutAchatsMoyen().mois);
+      save('batcave-budget-limits', budgetLimits);
+    }
+    saveInternal('batcave-plafond-nourriture-v5', true);
   }
   var fixedCharges = load('batcave-fixed-charges', null);
   if(fixedCharges === null){ fixedCharges = FIXED_CHARGES_SEED.slice(); save('batcave-fixed-charges', fixedCharges); }
@@ -17663,24 +17706,27 @@
     });
     var fixes = fixedChargesTotal();
     var libre = REVENU_MOIS.montant - fixes;                 /* ce qui reste pour les courses et la cagnotte */
-    var cagnotte = Math.max(0, Math.floor((libre - 5 * sem) / 10) * 10);
-    /* La periode : du dernier 25 passe (jamais avant le premier virement) au 24 suivant. */
-    var periode = function(debut){
+    /* 4 octobre : les courses d'une periode sont ses ACHATS, samedi par samedi (voir
+       achatsDuSamedi), et non plus « samedis x moyenne ». La cagnotte du 25 reste le montant
+       SUR : ce que laisse la periode la plus chere des douze qui viennent. */
+    var plan = planCoursesSemaine(ajustementKcalPour(iso)), am = coutAchatsMoyen();
+    var periodeBrute = function(debut){
       var d = new Date(debut + 'T00:00:00');
       var fin = localISO(new Date(d.getFullYear(), d.getMonth() + 1, REVENU_MOIS.jour - 1));
-      var n = 0;
-      for(var x = debut; x <= fin; x = isoDecale(x, 1)) if(dowDe(x) === 6) n++;
-      return {debut: debut, fin: fin, samedis: n, balayage: libre - n * sem - cagnotte};
+      var sams = [];
+      /* le samedi dont les courses se font un autre jour (le 3 octobre, faites le lundi 5) s'affiche au jour reel */
+      for(var x = debut; x <= fin; x = isoDecale(x, 1)) if(dowDe(x) === 6) sams.push({date: (PREMIER_JOUR_COURSES > x && PREMIER_JOUR_COURSES < isoDecale(x, 7)) ? PREMIER_JOUR_COURSES : x, montant: achatsDuSamedi(x, plan)});
+      return {debut: debut, fin: fin, samedis: sams.length, achats: sams, courses: sams.reduce(function(t, s){ return t + s.montant; }, 0)};
     };
     var j = new Date(iso + 'T00:00:00');
     var debut = localISO(new Date(j.getFullYear(), j.getMonth() - (j.getDate() < REVENU_MOIS.jour ? 1 : 0), REVENU_MOIS.jour));
     if(debut < REVENU_MOIS.depuis) debut = REVENU_MOIS.depuis;
-    var cette = periode(debut), prochaine5 = null, x = debut;
-    for(var k = 0; k < 13 && !prochaine5; k++){
-      var pk = periode(x);
-      if(pk.samedis === 5) prochaine5 = pk;
-      x = isoDecale(pk.fin, 1);
-    }
+    var suite = [], x = debut;
+    for(var k = 0; k < 13; k++){ var pk = periodeBrute(x); suite.push(pk); x = isoDecale(pk.fin, 1); }
+    var pire = suite.reduce(function(m, p){ return Math.max(m, p.courses); }, 0);
+    var cagnotte = Math.max(0, Math.floor((libre - pire) / 10) * 10);
+    suite.forEach(function(p){ p.balayage = libre - p.courses - cagnotte; });
+    var cette = suite[0], prochaine5 = suite.filter(function(p){ return p.samedis === 5; })[0] || null;
     /* Le fil du mois, avec le solde apres chaque geste. Le jour du virement et celui du
        balayage se lisent sur la periode : le 28 pour la premiere, le 25 ensuite. */
     var le = function(iso){ var n = Number(iso.slice(8)); return 'le ' + n + (n === 1 ? 'er' : ''); };
@@ -17688,8 +17734,8 @@
     var vus = {};
     ECHEANCES_ARGENT.forEach(function(e){
       var l;
-      if(e.cagnotte) l = {quand: le(cette.debut), action:'Mets de c\u00f4t\u00e9 dans la cagnotte', detail:'Le montant s\u00fbr, m\u00eame les mois \u00e0 5 samedis.', montant: cagnotte, cagnotte:true, faire:true};
-      else if(e.courses) l = {quand:'le samedi', action:'Courses \u00d7 ' + cette.samedis, detail:'\u2248 ' + eur(sem) + ' par samedi.', montant: cette.samedis * sem, faire:true};
+      if(e.cagnotte) l = {quand: le(cette.debut), action:'Mets de c\u00f4t\u00e9 dans la cagnotte', detail:'Le montant s\u00fbr : ce que laisse m\u00eame la p\u00e9riode la plus ch\u00e8re de l\u2019ann\u00e9e (5 samedis et les r\u00e9serves qui tombent ensemble).', montant: cagnotte, cagnotte:true, faire:true};
+      else if(e.courses) l = {quand:'le samedi', action:'Courses \u00d7 ' + cette.samedis, detail: cette.achats.map(function(a){ return fmtDate(a.date) + ' ' + eur(a.montant); }).join(' \u00b7 ') + ' \u2014 ce que tu paies en caisse, conditionnements compris.', montant: cette.courses, faire:true};
       else if(e.balayage) l = cette.balayage >= 0
         ? {quand: le(cette.fin), action:'Balaye le reste vers la cagnotte', detail:'Ce qui reste sur le compte la veille du virement.', montant: cette.balayage, cagnotte:true, faire:true}
         /* Des charges qui depassent le virement : le fil le dit au lieu d'afficher un solde
@@ -17718,7 +17764,8 @@
       lignes.forEach(function(l, i){ if(i){ solde -= l.montant; } l.solde = solde; });
     }
     return {revenu: REVENU_MOIS.montant, fixes: fixes, semaine: sem, estimes: estimes, cagnotte: cagnotte,
-      moyenne: libre - sem * 52 / 12, periode: cette, prochaine5: prochaine5, lignes: lignes};
+      achatsSemaine: am.total, achatsMois: am.mois, pire: pire,
+      moyenne: libre - am.mois, periode: cette, prochaine5: prochaine5, lignes: lignes};
   }
   /* 1 400 et pas 1400 : l'espace fine des milliers, comme partout ailleurs dans la Batcave. */
   function eurMille(n){ return eur(n).replace(/\B(?=(\d{3})+(?!\d))/g, '\u202f'); }

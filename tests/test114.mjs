@@ -39,16 +39,16 @@ console.log('— vendredi 25 septembre : la premiere periode, 28 sept. -> 24 oct
   ok(a.fixes === 248.5, 'charges fixes : 248,50 EUR, sans loyer ni wifi, club 70 EUR et licence lissee a 2,50 EUR (' + a.fixes + ')');
   ok(pres(a.semaine, 44.08), 'courses : 44,08 EUR par semaine (le shake, sans sauce au skyr, trois collations combat depuis que la Muay Thai est sortie) (' + a.semaine.toFixed(2) + ')');
   ok(a.estimes.length === 0, 'plus aucune estimation : les amandes ont leur prix releve');
-  ok(a.cagnotte === 230, 'jour du virement : 230 EUR dans la cagnotte — le club a 70 EUR (' + a.cagnotte + ')');
+  ok(a.cagnotte === 190, 'jour du virement : 190 EUR dans la cagnotte — ce que laisse la periode la plus chere, les courses comptees en caisse (4 octobre) (' + a.cagnotte + ')');
   ok(a.periode.debut === '2026-09-28' && a.periode.fin === '2026-10-24', 'premiere periode du 28 sept. (dernier virement a l\'ancienne date) au 24 oct.');
   ok(a.periode.samedis === 4, '4 samedis de courses');
-  ok(pres(a.periode.balayage, 45.18), 'le 24 : environ 45,18 EUR a balayer (' + a.periode.balayage.toFixed(2) + ')');
-  ok(pres(a.moyenne, 260.48), 'epargne moyenne : 260,48 EUR par mois (' + a.moyenne.toFixed(2) + ')');
+  ok(pres(a.periode.balayage, 64.75), 'le 24 : environ 64,75 EUR a balayer (achats reels : 80,90 + 33,79 + 48,29 + 33,79) (' + a.periode.balayage.toFixed(2) + ')');
+  ok(pres(a.moyenne, 242.55), 'epargne moyenne : 242,55 EUR par mois, sur 208,95 EUR d\'achats moyens (' + a.moyenne.toFixed(2) + ')');
   ok(a.prochaine5 && a.prochaine5.debut === '2026-12-25' && a.prochaine5.fin === '2027-01-24' && a.prochaine5.samedis === 5, 'prochaine periode a 5 samedis : 25 dec. -> 24 janv.');
-  ok(pres(a.prochaine5.balayage, 1.10), 'avec 5 samedis, il reste encore 1,10 EUR le 24 (' + a.prochaine5.balayage.toFixed(2) + ')');
+  ok(pres(a.prochaine5.balayage, 3.24), 'avec 5 samedis et les reserves, il reste encore 3,24 EUR le 24 (' + a.prochaine5.balayage.toFixed(2) + ')');
   const L = a.lignes;
   ok(L[0].montant === 700 && L[0].plus && L[0].quand === 'le 28', 'le fil commence par le virement, le 28 pour cette premiere periode');
-  ok(L[1].montant === 230 && L[1].cagnotte && L[1].quand === 'le 28', 'puis la cagnotte, le meme jour');
+  ok(L[1].montant === 190 && L[1].cagnotte && L[1].quand === 'le 28', 'puis la cagnotte, le meme jour');
   ok(L[2].montant === 70 && /club/.test(L[2].action) && L[2].quand === 'le 28', 'puis le club, 70 EUR, le 28');
   const lic = L.find(l => /Licence/.test(l.action));
   ok(lic && pres(lic.montant, 2.5), 'la licence JJB, 30 EUR par an, lissee a 2,50 EUR par mois');
@@ -63,7 +63,7 @@ console.log('— vendredi 25 septembre : la premiere periode, 28 sept. -> 24 oct
   ok(pres(somme, 700), 'tout ce qui sort fait exactement 700 EUR');
   const txt = await fr.evaluate(() => document.getElementById('budget-mois-panel').innerText);
   ok(/Le mois de l.argent/.test(txt), 'le panneau est dans l\'onglet Budget');
-  ok(txt.includes('230,00 €') && txt.includes('700,00 €'), 'montants affiches : 230,00 EUR et 700,00 EUR');
+  ok(txt.includes('190,00 €') && txt.includes('700,00 €'), 'montants affiches : 190,00 EUR et 700,00 EUR');
   ok(/28 sept\..*24 oct\..*4 samedis/.test(txt), 'la periode et ses samedis sont ecrits en tete');
   ok(/Le 28, dans la cagnotte/.test(txt) && /Ce mois-ci le 28, puis chaque 25/.test(txt), 'la tuile dit : ce mois-ci le 28, puis chaque 25');
   ok(/Le 24, en plus/.test(txt), 'la tuile du balayage dit le 24');
@@ -86,7 +86,7 @@ console.log('— dimanche 3 janvier : une periode a 5 samedis');
   const {ctx, fr} = await ouvrir('2027-01-03T20:00:00+01:00');
   const a = await fr.evaluate(() => window.__bcMoisArgent('2027-01-03'));
   ok(a.periode.debut === '2026-12-25' && a.periode.fin === '2027-01-24' && a.periode.samedis === 5, 'periode du 25 dec. au 24 janv., 5 samedis');
-  ok(a.cagnotte === 230, 'la cagnotte du 25 ne bouge pas : 230 EUR');
+  ok(a.cagnotte === 190, 'la cagnotte du 25 ne bouge pas : 190 EUR');
   ok(a.periode.balayage >= 0, 'et le compte ne passe pas dans le rouge (' + a.periode.balayage.toFixed(2) + ' EUR le 24)');
   ok(a.lignes[0].quand === 'le 25' && a.lignes[1].quand === 'le 25' && a.lignes[a.lignes.length - 1].quand === 'le 24', 'virement et cagnotte le 25, balayage le 24');
   const tete = await fr.evaluate(() => document.getElementById('ma-periode').textContent);
@@ -128,7 +128,7 @@ console.log('— une charge qui change : le plan suit');
   const {ctx, fr} = await ouvrir('2026-09-25T20:00:00+02:00', {charges});
   const a = await fr.evaluate(() => window.__bcMoisArgent('2026-09-25'));
   ok(a.fixes === 268.5, 'charges fixes : 268,50 EUR avec une assurance lissee de 20 EUR (' + a.fixes + ')');
-  ok(a.cagnotte === 210, 'la cagnotte du 28 descend a 210 EUR (' + a.cagnotte + ')');
+  ok(a.cagnotte === 170, 'la cagnotte du 28 descend a 170 EUR (' + a.cagnotte + ')');
   const autre = a.lignes.find(l => /Assurance/.test(l.action));
   ok(autre && /Licence JJB/.test(autre.action) && pres(autre.montant, 22.5), 'la charge sans date passe dans le fil, regroupee avec la licence : 20 + 2,50 EUR par mois (' + (autre && autre.action) + ')');
   ok(Math.abs(a.lignes[a.lignes.length - 1].solde) < 0.001, 'et le compte finit toujours a zero le 27');
@@ -159,7 +159,7 @@ console.log('— des charges au-dessus du virement : le fil le dit, sans solde n
 
 console.log('— le plafond Nourriture suit le prix des amandes');
 {
-  for(const [avant, attendu, nom] of [[201, 191, 'pose par la Batcave (201) : suit le plan, 191 (shake, sans sauce au skyr, trois collations combat)'], [180, 180, 'regle a la main (180) : ne bouge pas']]){
+  for(const [avant, attendu, nom] of [[201, 209, 'pose par la Batcave (201) : suit le plan en caisse, 209 (conditionnements et cycles compris, 4 octobre)'], [180, 180, 'regle a la main (180) : ne bouge pas']]){
     const ctx = await browser.newContext({ viewport:{width:1440, height:900}, timezoneId:'Europe/Madrid', locale:'fr-FR' });
     await ctx.addInitScript(v => { window.claude = undefined; localStorage.setItem('batcave-budget-limits', JSON.stringify({Nourriture: v})); }, avant);
     const page = await ctx.newPage();
