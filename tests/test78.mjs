@@ -44,8 +44,10 @@ console.log('\n== 2) L\'espagnol manqué est une dette d\'espagnol, pas de proje
 {
   /* Le programme ouvre le MARDI 29 septembre (depuis le 28 au soir) : avant lui aucun bloc
      n'est du, donc aucun ne peut etre manque. On prend le lundi 5 octobre -- un lundi,
-     toujours en phase 1 Espanol, et bien a l'interieur du programme. */
-  const {ctx, fr} = await ouvrir({}, '2026-10-05T21:00:00+02:00');
+     toujours en phase 1 Espanol, et bien a l'interieur du programme.
+     4 octobre : le lundi 5 devient le jour 1 ET le jour des premieres courses -- le plan du
+     jour y porte l'inventaire et le ticket. On lit donc le mardi 6 (escribir a 14:00). */
+  const {ctx, fr} = await ouvrir({}, '2026-10-06T21:00:00+02:00');
   const t = await plan(fr);
   const l = t.split('\n').filter(x=>/Bloc manqué/.test(x) && /Español/.test(x))[0] || '';
   ok(/d'espagnol/.test(l), 'libellé : ' + (l.trim() || '(aucun bloc Español manqué)'));

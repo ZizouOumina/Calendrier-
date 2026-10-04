@@ -1,3 +1,5 @@
+/* 4 octobre : l'ancre des courses passe du samedi 26 septembre au samedi 3 octobre (premieres
+   courses le lundi 5) -- toutes les dates de ce fichier glissent d'une semaine. */
 /* Ou acheter quoi. L'etiquette vit sur la ligne de l'article, pas dans un panneau a part.
    Les adresses ont ete RELEVEES, pas supposees : les 20 et 21 septembre il a fait le
    tour, prix en main. Ce qui a change ce jour-la, et que ce test garde desormais :
@@ -47,7 +49,7 @@ console.log('\n== 320) Les 17 articles portent tous une adresse ==');
 {
   /* Le 26 septembre, l'ancre (ANCRE_COURSES, depuis le 26) : toutes les categories sont dues, donc la liste entiere
      est affichee d'un coup. C'est le seul jour ou ce test voit les 46 lignes. */
-  const { ctx, fr } = await courses('2026-09-26T10:00:00+02:00');
+  const { ctx, fr } = await courses('2026-10-03T10:00:00+02:00');
   const l = await lignes(fr);
   ok(l.length === 17, '17 articles affichés le 26, jour de l\'ancre — le jambon est sorti le 23 septembre, la boisson d\'avoine du shake est entré le 29 (' + l.length + ')');
   const muets = l.filter(x => !x.ou);
@@ -65,7 +67,7 @@ console.log('\n== 320) Les 17 articles portent tous une adresse ==');
 
 console.log('\n== 321) Le halal : viande et jambon vont a la boucherie ==');
 {
-  const { ctx, fr } = await courses('2026-09-26T10:00:00+02:00');
+  const { ctx, fr } = await courses('2026-10-03T10:00:00+02:00');
   const l = await lignes(fr);
   const chez = n => (l.find(x => x.nom.indexOf(n) === 0) || {}).ou;
   ok(chez('Poulet') === 'Boucherie', 'Poulet → Boucherie (' + chez('Poulet') + ')');
@@ -79,7 +81,7 @@ console.log('\n== 321) Le halal : viande et jambon vont a la boucherie ==');
 
 console.log('\n== 322) Les trajets qui font gagner de l\'argent ==');
 {
-  const { ctx, fr } = await courses('2026-09-26T10:00:00+02:00');
+  const { ctx, fr } = await courses('2026-10-03T10:00:00+02:00');
   const l = await lignes(fr);
   const chez = n => (l.find(x => x.nom.indexOf(n) === 0) || {}).ou;
   /* 21 septembre, en rayon : Lidl a le skyr (0,75 € la boite de 150 g) ET l'huile
@@ -114,7 +116,7 @@ console.log('\n== 322) Les trajets qui font gagner de l\'argent ==');
 
 console.log('\n== 323) La pastille n\'a rien cassé ==');
 {
-  const { ctx, page, fr } = await courses('2026-09-26T10:00:00+02:00');
+  const { ctx, page, fr } = await courses('2026-10-03T10:00:00+02:00');
   /* Elle vit DANS le <label> : cliquer dessus doit cocher l'article, pas rater la cible. */
   const avant = await fr.evaluate(() => document.getElementById('courses-summary').textContent);
   await fr.evaluate(() => document.querySelector('#courses-grid .cat-card li .ou-tag').click());
@@ -145,7 +147,7 @@ for(const ecran of [{n:'iPhone', w:390, h:844}, {n:'iPad portrait', w:820, h:118
   await ctx.addInitScript(() => { window.claude = undefined; });
   const page = await ctx.newPage();
   page.on('pageerror', e => { err++; console.log('  PAGEERROR ' + ecran.n + ' : ' + e.message); });
-  await page.clock.install({ time: new Date('2026-09-26T10:00:00+02:00') });
+  await page.clock.install({ time: new Date('2026-10-03T10:00:00+02:00') });
   await page.goto('http://127.0.0.1:8199/host.html');
   await page.frameLocator('#f').locator('#dash-focus').waitFor({state:'attached', timeout:20000});
   const fr = page.frames().find(x => x.url().includes('batcave.html'));
@@ -173,7 +175,7 @@ for(const ecran of [{n:'iPhone', w:390, h:844}, {n:'iPad portrait', w:820, h:118
 
 console.log('\n== 325) La page Courses annonce les adresses ==');
 {
-  const { ctx, fr } = await courses('2026-09-26T10:00:00+02:00');
+  const { ctx, fr } = await courses('2026-10-03T10:00:00+02:00');
   const d = await fr.evaluate(() => document.querySelector('.page[data-page="courses"] .page-head .desc').textContent);
   ok(/pastille/.test(d) && /moins cher/.test(d), 'la description explique à quoi sert la pastille');
   ok(/boucherie/i.test(d) && /Lidl/.test(d) && /fruter/i.test(d) && !/Alcampo/.test(d) && /en ligne/i.test(d),

@@ -12279,7 +12279,13 @@
      battement repart donc du samedi 26 : ce jour-la, TOUTES les categories sont dues (le
      stock deja au placard se coche « j'en ai »), puis surgeles et fromage le 10 octobre,
      reserves le 24 octobre, huile le 31 octobre, creatine le 19 decembre. */
-  var ANCRE_COURSES = '2026-09-26';
+  /* 4 octobre : ni courses ni preparation faites, magasins fermes le dimanche. Il fait ses
+     premieres courses du programme le LUNDI 5, jour 1 (« pendant la periode d'Anki », il n'a
+     pas encore de cartes). Le battement repart du samedi 3 -- le samedi de cette semaine-la,
+     pour rester un samedi : le 5 tombe a deux jours de lui, donc TOUT est du ce jour-la, puis
+     l'hebdo le 10, surgeles et fromage le 17, reserves le 31 octobre, huile et miel le
+     7 novembre, creatine le 26 decembre. */
+  var ANCRE_COURSES = '2026-10-03';
   /* L'ancre est le BATTEMENT du rythme, et elle doit rester un samedi : ancrer sur un autre
      jour ferait tomber tous les rachats suivants ce jour-la. Le jour ou il fait REELLEMENT
      ses premieres courses est une autre chose -- le 19 au soir il a repousse a dimanche
@@ -12288,7 +12294,9 @@
   /* 26 septembre : ses premieres vraies courses du programme sont ce samedi -- inventaire
      du placard envoye a 17 h (bananes, skyr, miel, oeufs, viande hachee, pates, riz,
      flocons, huile), liste deduite du stock. Le battement (ANCRE_COURSES) part du meme jour. */
-  var PREMIER_JOUR_COURSES = '2026-09-26';
+  /* 4 octobre : les premieres courses passent au lundi 5 (voir ANCRE_COURSES) -- c'est ce
+     jour-la que le plan du jour demande l'inventaire du placard et le ticket. */
+  var PREMIER_JOUR_COURSES = '2026-10-05';
   /* ===== Le cycle appartient a l'ARTICLE ===== (20 septembre)
      Il tenait a la categorie : tout le rayon hygiene se rachetait toutes les 4 semaines,
      lessive comprise -- un bidon de 40 doses pour une lessive par samedi, soit dix fois
@@ -15482,10 +15490,19 @@
      au matin -- Approfondir reprend ce jour-la a 13:00, comme prevu. L'epreuve du dimanche
      11 (le diagnostic, 11:20) n'est pas touchee. */
   var RATTRAPAGE_TEMAS = {
-    '2026-10-05': {'Étudier en avance': {t:'Rattrapage, jour 1 sur 10 : Anatomía T1 (homeostasis, ≈ 1 h 45), jusqu\'à 10:05. Avant de commencer : recolle les instructions du Projet Dentaire dans claude.ai.', p:1},
+    /* 4 octobre au soir : ni courses ni preparation. Pas encore de cartes Anki, donc l'heure
+       d'Anki du lundi passe a Anatomia T1 (des 07:20) et libere 09:05-10:05 pour les courses
+       -- les supermarches ouvrent vers 09:00, pas a 07:20. Le lundi, midi et soir se cuisent
+       ensemble au retour du club ; la vraie preparation se fait le mardi pendant Anki 1 et
+       Anki 2 (07:20-09:00), onze boites jusqu'au dimanche midi. */
+    '2026-10-05': {'Anki 1': {t:'Rattrapage, jour 1 sur 10 — pas encore de cartes : Anatomía T1 (homeostasis) commence maintenant, jusqu\'à 09:05. Avant de commencer : recolle les instructions du Projet Dentaire dans claude.ai.', p:1},
+                   'Étudier en avance': {t:'Anatomía T1 jusqu\'à 09:05. Puis 🛒 courses de 09:05 à 10:00 : la liste de l\'onglet Courses, tout est dû aujourd\'hui (coche ce que tu as déjà), et 8 boîtes d\'environ 1 L. Garde le ticket. Au retour, le frais au frigo et la collation combat de 10:05 sort du sac.'},
+                   'Retour du club': {t:'En rentrant, 25 min de cuisine pour midi ET ce soir : une casserole de riz (155 g crus), une de pâtes (105 g crus) avec 4 œufs dedans les 10 dernières minutes, à la poêle le poulet (80 g) puis la viande hachée (90 g), légumes au micro-ondes. Le dîner part dans une boîte, au frigo.'},
                    'Question ouverte ou autre': {t:'Rattrapage : Anatomía T2 (sangre), de 13:00 à 14:50 — résumé écrit en espagnol.', p:1},
                    'Español · gramática': {t:'Rattrapage : la fin d\'Anatomía T2, jusqu\'à 14:50. Español · hablar à 15:00, comme d\'habitude.'}},
-    '2026-10-06': {'Étudier en avance': {t:'Rattrapage, jour 2 : Anatomía T3 (≈ 1 h 50), puis Documentación 1 en version courte, puis 25 min : relis tes résumés d\'Anatomía T1 et T2 (cuestionario 1 mercredi ou jeudi). Jusqu\'à 12:20, en prenant la question ouverte.', p:1},
+    '2026-10-06': {'Anki 1': {t:'🍲 La préparation de la semaine, de 07:20 à 09:00 (pas encore assez de cartes pour deux heures d\'Anki) : onze boîtes, du déjeuner d\'aujourd\'hui au déjeuner de dimanche — 6 déjeuners (riz 155 g, poulet 80 g, légumes 200 g crus chacun) et 5 dîners (pâtes 105 g, viande hachée 90 g, légumes 150 g). Six au frigo (mardi, mercredi, jeudi), cinq au congélateur (vendredi, samedi, dimanche midi). Et les œufs durs de la semaine. L\'onglet Préparation donne l\'ordre.'},
+                   'Anki 2': {t:'Jusqu\'à 09:00 : la fin de la préparation. Puis 20 min d\'Anki : les premières cartes d\'Anatomía T1 et T2, faites hier.'},
+                   'Étudier en avance': {t:'Rattrapage, jour 2 : Anatomía T3 (≈ 1 h 50), puis Documentación 1 en version courte, puis 25 min : relis tes résumés d\'Anatomía T1 et T2 (cuestionario 1 mercredi ou jeudi). Jusqu\'à 12:20, en prenant la question ouverte.', p:1},
                    'Question ouverte ou autre': {t:'Rattrapage : la suite du matin (Documentación 1, relecture d\'Anatomía T1-T2).'}},
     '2026-10-07': {'Étudier en avance': {t:'Rattrapage, jour 3 : Biología celular 1, de 08:20 à 09:50.', p:1},
                    'Approfondir': {t:'Rattrapage : Epidemiología 1, de 13:00 à 14:30 — résumé écrit en espagnol.', p:1},
