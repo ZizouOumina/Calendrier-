@@ -1,6 +1,6 @@
 # Programme de sport — La Batcave · Programme v5, régime combat
 
-Copie de référence du programme appliqué dans la Batcave (onglet Sport). **Jour 1 : lundi 5 octobre 2026** (décidé le 4 octobre : « on décale tout à demain lundi » ; les cours, eux, ont repris le 14 septembre). Régime combat : trois séances de muscu et trois de combat (JJB) par semaine, **tout dès le lundi 5** — plus de semaine de reprise sans combat.
+Copie de référence du programme appliqué dans la Batcave (onglet Sport). **Jour 1 : lundi 5 octobre 2026** (décidé le 4 octobre : « on décale tout à demain lundi » ; les cours, eux, ont repris le 14 septembre). Régime combat : quatre séances de muscu et trois de combat (JJB) par semaine, **tout dès le lundi 5**. La séance du samedi (bras et épaules) est revenue le 4 octobre, avec la sortie de la Muay Thai — plus de semaine de reprise sans combat.
 
 ## Le meilleur programme possible (30 septembre au soir)
 Deux révisions le même soir. D'abord « ya pas un peu trop d'exercices ? » — le haut du corps passe à six exercices. Puis : « me considère pas comme un débutant, je veux juste le meilleur programme possible ». En repartant de cette question, le vrai défaut de toutes les versions précédentes apparaît : **les jambes et les épaules latérales ne travaillaient qu'une fois par semaine**. À volume égal, deux passages par semaine font au moins aussi bien et répartissent les séries sur des séances plus fraîches. Donc :
@@ -15,15 +15,15 @@ Lundi et jeudi : huit exercices, quatre paires, ~50 minutes. Le mardi ne change 
 - **JJB le lundi, le mercredi et le vendredi à 10:30.** La Muay Thai du mardi est sortie le 1er octobre (sa décision). 1 h 30 par séance, club à dix minutes à pied, 70 € par mois et une licence de 30 € par an (charges fixes « Club JJB » et « Licence JJB », catégorie Abonnements). La lutte (mardi et jeudi) et le MMA (mardi 18:30) attendent novembre.
 - **Le combat est le cardio.** La course du dimanche et les sprints du samedi sont sortis ; le panneau « Cardio & combat » de l'onglet Sport liste les trois séances de la semaine, à cocher, 90 minutes chacune. Elles ne comptent pas dans « Séances tenues », qui reste le compteur de la muscu.
 - **Lundi et jeudi s'inversent.** La séance lourde passe le **jeudi**, jour sans combat, avec une récupération complète ; le **lundi**, avant le JJB de 10:30, c'est le volume, plus léger. Le lundi, on ne va pas à l'échec : il faut de l'énergie pour le tatami.
-- **La séance du samedi saute** pendant le mois d'adaptation : ses exercices clés passent ailleurs — mollets le mardi, élévations latérales et curl le lundi (l'extension triceps est sortie le 30 septembre : dips, pompes et pike suffisent). Elle peut revenir en novembre si le sommeil tient et que le poids monte.
+- **La séance du samedi revient le 4 octobre** (sa décision, la Muay Thai sortie) : bras et épaules, à 05:30 comme les autres, six exercices, ~40 minutes. Les mollets restent le mardi.
 - **Sortent ce que le tatami travaille déjà** : curl inversé (séance lourde), relevés de genoux (volume), et les fentes du mardi (elles ne sont pas revenues avec la sortie de la Muay Thai : les jambes travaillent deux fois par semaine, mardi et jeudi). Les avant-bras sont chargés quatre fois par semaine par les prises de kimono, la sangle par la garde, les ponts et les sorties de hanche. Les relevés de jambes suspendus, sortis le même jour, sont revenus le jeudi le 25 septembre.
 - **Lever 05:30 tous les jours, coucher 21:35**, mardi compris. Le samedi et le dimanche dormaient jusqu'à 06:30 : une heure fixe tous les jours est ce qui recale une horloge interne.
 - **Eau : 3,5 à 4 L les jours de combat** (3 L les autres). **Collation combat** à 10:05 avant le JJB : banane, 50 g de flocons, 15 g d'amandes, ≈ 390 kcal.
-- **Shampooing les jours de sueur** : du lundi au vendredi (muscu, JJB). Le week-end reste sec.
+- **Shampooing les jours de sueur** : du lundi au samedi (muscu, JJB). Le dimanche reste sec.
 - **Si la semaine dérape** : tu sautes une séance de combat, jamais la muscu ni le sommeil. Pendant les partiels, rien ne s'allège (sa décision du 23) ; seul le jour d'un examen, la séance saute.
 
 ## Le cadre
-- Trois séances d'environ 50 minutes au parc, **à 05:30** : lundi haut volume, mardi bas complet, jeudi haut lourd + jambes. Mercredi, vendredi, samedi et dimanche off pour la muscu.
+- Quatre séances au parc, **à 05:30** : lundi haut volume, mardi bas complet, jeudi haut lourd + jambes (≈ 50 min chacune), samedi bras et épaules (≈ 40 min). Mercredi, vendredi et dimanche off pour la muscu.
 - **Montée en charge : deux semaines à la moitié des tours, puis le volume complet.** La Batcave affiche directement le bon nombre de tours, il n'y a rien à calculer. Semaines 1 et 2 (du lundi 5 au dimanche 18 octobre) : moitié. À partir de la semaine 3 (lundi 19 octobre) : programme entier. Le passage double le volume d'un coup — si les courbatures font sauter une séance cette semaine-là, c'est le moment d'utiliser la réduction de charge, pas de serrer les dents.
 - **La séance de référence est le lundi 5 octobre à 05:30**, le haut volume du jour 1. On ne suit pas la séance normale : on mesure le point de départ — les maximums de tractions et de dips. Les maximums du bas (split squat, soulevé de terre roumain, hip thrust) se prennent au premier **bas complet, le mardi 6**. Après l'échauffement, une seule série à l'échec sur quatre mouvements — tractions, dips, pompes, dead hang — notée dans l'onglet Sport. Sans ce point de départ, la surcharge progressive part du bas de la fourchette et on ne saura jamais ce qu'on valait au début.
 - **Pesée le dimanche, à jeun, une semaine sur deux** (4 et 18 octobre, 1er et 15 novembre, et ainsi de suite) : au réveil, après les toilettes, avant de boire. Pas tous les jours : un poids se lit sur une tendance, et se peser quotidiennement fait prendre des décisions sur du bruit. La Batcave la rappelle en habitude du dimanche.
@@ -33,7 +33,7 @@ Lundi et jeudi : huit exercices, quatre paires, ~50 minutes. Le mardi ne change 
 - Le parc est à 1 km : l'aller se fait en courant, allure conversation (5 à 6 min), c'est l'échauffement général ; l'échauffement haut se réduit alors à la mobilité des épaules et aux séries légères, l'échauffement bas garde ses mouvements. Retour en marchant les jours haut du corps (lundi, jeudi), en trottinant le mardi. Jamais plus vite qu'une allure où l'on peut parler : les tractions ne doivent rien perdre.
 - Podcast en espagnol sur le kilomètre de course et pendant l'échauffement.
 
-## Les trois séances
+## Les quatre séances
 
 ### Lundi · Haut volume (50 min)
 Avant le JJB de 10:30 : pas d'échec, on garde de l'énergie pour le tatami.
@@ -76,6 +76,20 @@ Repos par paire : 45 s entre A et B, puis 90 s · 45 s / 75 s · 45 s / 75 s · 
 | 4 B | Relevés de jambes suspendus | 3 × 8-15 |
 
 Tractions et dips reviennent lundi et jeudi avec des fourchettes différentes ; leur cible se déduit du dernier journal, quel que soit le jour.
+
+### Samedi · Bras et épaules (40 min)
+Revenu le 4 octobre. 48 h après le haut lourd du jeudi, 48 h avant le volume du lundi.
+
+| Paire | Exercice | Tours × fourchette |
+|---|---|---|
+| 1 A | Chin-ups prise serrée | 3 × 6-12 |
+| 1 B | Pompes archer ou diamant | 3 × 8-12 |
+| 2 A | Curl barre basse | 3 × 10-15 |
+| 2 B | Extension triceps barre basse | 3 × 10-15 |
+| 3 A | Élévations latérales | 3 × 12-20 |
+| 3 B | Face pulls | 3 × 15-20 |
+
+Volumes qui changent : biceps 6 séries directes (lundi et samedi), triceps 3 directes, épaules latérales 10 (lundi 4, jeudi 3, samedi 3), arrière d'épaule 3.
 
 ### Les trois séances de combat
 

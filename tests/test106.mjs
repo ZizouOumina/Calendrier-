@@ -79,7 +79,7 @@ console.log('\n== 262) Les élévations latérales, lundi et samedi ==');
   await ctx.close();
 }
 
-console.log('\n== 263) Le samedi du régime combat : lever 05:30, pas de séance, projets le soir ==');
+console.log('\n== 263) Le samedi du régime combat : lever 05:30, bras et épaules, projets le soir ==');
 {
   /* Le samedi 3 octobre est l'exception de la semaine sans combat (un bas complet a 05:30,
      SEANCES_REPRISE) : le samedi type se lit le 10. */
@@ -93,11 +93,12 @@ console.log('\n== 263) Le samedi du régime combat : lever 05:30, pas de séance
     g3: window.__bcGrille('saturday', '2026-10-03').map(b => b[0] + ' ' + b[1]),
     sport3: window.__bcTypeSport('2026-10-03')
   }));
-  ok(r.sport3 !== 'Bas complet' && r.g3[0] !== '05:30 Sport', 'le samedi 3 n\'a plus de bas complet : la semaine de reprise a disparu avec le départ au lundi 5 (' + r.sport3 + ' · ' + r.g3[0] + ')');
-  ok(r.lever === '05:30' && r.g[0] === '05:30 Projets perso matinal', 'lever 05:30, un bloc de projets d\'abord (' + r.g[0] + ')');
+  ok(r.sport3 !== 'Bas complet', 'le samedi 3 n\'a plus de bas complet : la semaine de reprise a disparu avec le départ au lundi 5 (' + r.sport3 + ')');
+  /* 4 octobre : la Muay Thai sortie, la seance bras et epaules revient le samedi a 05:30. */
+  ok(r.lever === '05:30' && r.g[0] === '05:30 Sport', 'lever 05:30, la séance bras et épaules d\'abord (' + r.g[0] + ')');
   ok(r.g.includes('18:00 Projets perso 3') && r.g.includes('19:30 Dîner') && !r.g.some(x => /Course à pied/.test(x)), 'projets 18:00 → 19:30, dîner 19:30, plus de course');
-  ok(r.g.filter(x => / Sport$/.test(x)).length === 0, 'aucune séance de muscu le samedi : le combat de la semaine est le cardio');
-  ok(r.sport === 'Off' && r.prevu.sport === 0, 'le samedi n\'est plus compté comme séance (' + r.sport + ')');
+  ok(r.g.filter(x => / Sport$/.test(x)).length === 1, 'une séance de muscu le samedi, à 05:30, et une seule');
+  ok(r.sport === 'Bras · épaules' && r.prevu.sport > 0, 'le samedi compte comme séance : bras et épaules (' + r.sport + ')');
   ok(Math.abs(r.som - (24 - 21 - 35/60 + 5.5)) < 0.01, 'nuit du vendredi : 21:35 → 05:30 = 7 h 55 (' + r.som.toFixed(2) + ' h)');
   ok(r.g.includes('09:20 Approfondir') && r.g.some(x => /^16:00 Cartes d'erreurs/.test(x)), 'aucun bloc de travail n\'a bougé');
   const c = await fr.evaluate(() => [window.__bcConsigne('Projets perso 3', 6, '2026-10-10'), window.__bcConsigne('Sport', 1, '2026-10-05')]);

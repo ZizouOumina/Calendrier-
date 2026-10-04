@@ -87,7 +87,8 @@ console.log('\n== 271) Le cardio : sprints le samedi, course longue le dimanche 
   ok(r.rappel && r.rappel.titreBase === '🦇 🥋 JJB' && r.rappel.debut === 630, 'le rappel du vendredi 9 : JJB à 10:30');
   ok(/6 à 8 sprints/.test(r.consigneSam) && /en montée/.test(r.consigneSam), 'la consigne des sprints : ' + r.consigneSam.slice(0, 70));
   ok(/^40 minutes/.test(r.consigneDim), 'le dimanche 18 : « 40 minutes cette semaine » (' + r.consigneDim.slice(0, 40) + ')');
-  ok(/sprints en côte/.test(r.sport), 'la séance du samedi soir sait qu\'elle suit les sprints');
+  /* 4 octobre : au regime combat, plus de sprints ; la seance du samedi est a 05:30, bras et epaules. */
+  ok(!/sprints/.test(r.sport) && /kilomètre/.test(r.sport), 'la consigne du samedi ne parle plus de sprints : 05:30, le kilomètre jusqu\'au parc (' + r.sport.slice(0, 60) + ')');
   await fr.evaluate(() => document.querySelector('.nav-btn[data-page="sport"]').click());
   await page.waitForTimeout(300);
   const liste = await fr.evaluate(() => document.getElementById('cardio-liste').innerText);

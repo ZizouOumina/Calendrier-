@@ -59,7 +59,7 @@ console.log('\n== 276) Partiels : le sport et le sommeil ne bougent pas ==');
   }));
   ok(sport.lun === 'Haut volume' && sport.jeu === 'Haut lourd', 'lundi et jeudi gardent leur séance (volume le lundi, lourd le jeudi depuis le régime combat) (' + sport.lun + ' · ' + sport.jeu + ')');
   ok(sport.mar === sport.horsMar && sport.mar === 'Bas complet', 'le mardi reste Bas complet pendant les partiels (' + sport.mar + ')');
-  ok(sport.sam === sport.horsSam && sport.sam === 'Off', 'le samedi reste Off (la séance du samedi est sortie avec le régime combat) (' + sport.sam + ')');
+  ok(sport.sam === sport.horsSam && sport.sam === 'Bras · épaules', 'le samedi garde sa séance bras et épaules (revenue le 4 octobre avec la sortie de la Muay Thai) (' + sport.sam + ')');
   const som = await fr.evaluate(() => ({ cible: window.__bcSommeilCible('2027-01-15'), coucher: window.__bcCoucher(window.__bcCle(4), '2027-01-14'), lever: window.__bcLever(window.__bcCle(5), '2027-01-15') }));
   const [hc, mc] = som.coucher.split(':').map(Number), [hl, ml] = som.lever.split(':').map(Number);
   const attendu = (24 * 60 - (hc * 60 + mc) + hl * 60 + ml) / 60;
