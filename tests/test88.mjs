@@ -151,19 +151,20 @@ console.log('\n== 293) Sans dates d\'examen, la Batcave le dit — et se taît d
      donnait le 23 octobre, 23 sept. + 31 le 24 ; depuis que le jour 1 est au 24 septembre,
      c'etait le 25 ; depuis le lundi 28 (26 septembre), le 29 octobre ; depuis le mardi 29
      (28 septembre au soir), c'etait le 30 octobre ; depuis le jeudi 1er octobre (30
-     septembre au soir), c'est le dimanche 1er novembre. */
-  const { ctx, fr } = await ouvrir('2026-10-31T09:00:00+01:00');
+     septembre au soir), c'etait le dimanche 1er novembre ; depuis le lundi 5 (4 octobre),
+     c'est le jeudi 5 novembre. */
+  const { ctx, fr } = await ouvrir('2026-11-04T09:00:00+01:00');
   const a = await fr.evaluate(() => document.getElementById('dash-plan').innerText);
-  ok(!/Aucune date d’examen/.test(a), 'le 31 octobre, la veille du seuil, rien encore');
+  ok(!/Aucune date d’examen/.test(a), 'le 4 novembre, la veille du seuil, rien encore');
   await ctx.close();
 }
 {
-  const { ctx, fr } = await ouvrir('2026-11-01T09:00:00+01:00');
+  const { ctx, fr } = await ouvrir('2026-11-05T09:00:00+01:00');
   const v = await fr.evaluate(() => ({
     t: document.getElementById('dash-plan').innerText,
     btn: document.querySelectorAll('#dash-plan [data-ouvrir="etudes"]').length
   }));
-  ok(/Aucune date d’examen saisie/.test(v.t), 'le 1er novembre, la ligne apparaît');
+  ok(/Aucune date d’examen saisie/.test(v.t), 'le 5 novembre, la ligne apparaît');
   ok(/pas de mode partiels/.test(v.t) && /sommeil majoré/.test(v.t), 'et elle dit ce qui reste éteint tant qu\'elles manquent');
   ok(v.btn === 1, 'un bouton qui ouvre l\'onglet Études');
   await ctx.close();

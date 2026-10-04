@@ -67,15 +67,15 @@ console.log('\n== 3) Sans bloc de projets dans la journée, la cellule dit pourq
 {
   const {ctx, fr} = await ouvrir({}, '2026-09-14T09:00:00+02:00');
   const t = await temps(fr), l = await legend(fr);
-  ok(/Español à leur place jusqu’au 31 oct/.test(t), 'cellule : ' + (t.match(/Español à leur place[^|]*/)||['(absent)'])[0]);
+  ok(/Español à leur place jusqu’au 04 nov/.test(t), 'cellule : ' + (t.match(/Español à leur place[^|]*/)||['(absent)'])[0]);
   ok(/projets — sans minuteur/.test(l), 'réacteur : ' + (l.match(/projets[^‖]*/)||['(absent)'])[0].trim());
   await ctx.close();
 }
 {
-  const {ctx, fr} = await ouvrir({}, '2026-10-29T09:00:00+01:00');   /* la phase Español finit le 28 */
+  const {ctx, fr} = await ouvrir({}, '2026-11-05T09:00:00+01:00');   /* la phase Español finit le 4 novembre (depuis le 4 octobre) */
   const t = await temps(fr);
   ok(!/Español à leur place/.test(t) && /Projets perso \| 0 \| \d+ h( \d+)? au planning, sans minuteur/.test(t),
-     'le 29 octobre, la mention disparaît et la grille redonne des blocs de projets, toujours sans minuteur : ' + (t.match(/Projets perso[^|]*\|[^|]*\|[^|]*/)||[''])[0].trim());
+     'le 5 novembre, la mention disparaît et la grille redonne des blocs de projets, toujours sans minuteur : ' + (t.match(/Projets perso[^|]*\|[^|]*\|[^|]*/)||[''])[0].trim());
   await ctx.close();
 }
 
@@ -148,8 +148,9 @@ console.log('\n== 7) Rattrapage unique après une absence ==');
      qu'il faut ici -- tout l'objet du test est qu'une absence ne fasse qu'UN item, et
      une seule journee ne le prouverait pas. Le retour etait au 24 quand le depart etait
      au 22, au 25 quand il etait au 23 ; il glisse avec lui. Depuis le 30 septembre au soir,
-     le jour 1 est le jeudi 1er octobre : retour le samedi 3, les 1er et 2 sans cloture. */
-  const {ctx, page, fr} = await ouvrir({'batcave-last-open':'2026-09-16'}, '2026-10-03T10:00:00+02:00');
+     le jour 1 est le jeudi 1er octobre : retour le samedi 3, les 1er et 2 sans cloture.
+     Depuis le 4 octobre, le jour 1 est le lundi 5 : retour le mercredi 7, les 5 et 6 sans cloture. */
+  const {ctx, page, fr} = await ouvrir({'batcave-last-open':'2026-09-16'}, '2026-10-07T10:00:00+02:00');
   const t = await plan(fr);
   const l = t.split('\n').filter(x=>/Absence —/.test(x))[0] || '';
   ok(/2 journées sans clôture/.test(l), 'un seul item pour toute l\'absence : ' + l.trim().slice(0, 90));
@@ -161,7 +162,7 @@ console.log('\n== 7) Rattrapage unique après une absence ==');
   await ctx.close();
 }
 {
-  const {ctx, fr} = await ouvrir({'batcave-last-open':'2026-10-01'}, '2026-10-02T10:00:00+02:00');
+  const {ctx, fr} = await ouvrir({'batcave-last-open':'2026-10-05'}, '2026-10-06T10:00:00+02:00');
   ok(!/Absence —/.test(await plan(fr)), 'ouvert hier : aucun rattrapage');
   await ctx.close();
 }

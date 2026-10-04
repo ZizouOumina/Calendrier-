@@ -48,7 +48,7 @@ console.log('\n== 311) Le 14 au réveil : aucun objectif en retard des jours d\'
 console.log('\n== 312) Le réacteur annonce le jour 1, pas un « 0 % » ==');
 {
   /* le jour 1 est le mardi 29 (depuis le 28 septembre au soir), premier jour du programme */
-  const { ctx, fr, page } = await ouvrir('2026-10-01T06:45:00+02:00');   /* jour 1 (30 septembre au soir : jeudi 1er octobre) */
+  const { ctx, fr, page } = await ouvrir('2026-10-05T06:45:00+02:00');   /* jour 1 (4 octobre : lundi 5 octobre) */
   let v = await fr.evaluate(() => ({
     num: document.getElementById('dash-score-num').textContent,
     unite: document.getElementById('dash-score-unit').textContent,
@@ -58,7 +58,7 @@ console.log('\n== 312) Le réacteur annonce le jour 1, pas un « 0 % » ==');
   /* 172 et non 174 : le depart a glisse au 24 septembre, et le 14 mars ne bouge pas --
      c'est la fin de la saison, pas une duree a reporter. */
   /* 167 depuis le 28 septembre au soir : le depart au mardi 29, le 14 mars toujours fixe. */
-  ok(v.num === '1' && v.unite === '/165', 'le premier matin affiche « 1/165 » — 1er oct. → 14 mars, pas « 0 % » (' + v.num + v.unite + ')');
+  ok(v.num === '1' && v.unite === '/161', 'le premier matin affiche « 1/161 » — 5 oct. → 14 mars, pas « 0 % » (' + v.num + v.unite + ')');
   ok(/Premier jour du programme/.test(v.note) && !/À reprendre/.test(v.note), 'la note dit ce que c\'est : ' + v.note);
   ok(v.hors === v.note, 'la même note existe hors de l\'anneau, pour le téléphone');
 
@@ -158,9 +158,9 @@ console.log('\n== 312b) Avant le premier jour, aucun bloc n\'est reproche ==');
 }
 {
   /* Et des le jour 1, la detection reprend : un bloc echu et non fait est bien signale. */
-  const { ctx, fr } = await ouvrir('2026-10-01T12:00:00+02:00');
+  const { ctx, fr } = await ouvrir('2026-10-05T12:00:00+02:00');
   const t = await fr.evaluate(() => document.getElementById('dash-plan').innerText);
-  ok(/Bloc manqu\u00e9/.test(t), 'le 1er octobre à midi, les blocs échus non faits sont de nouveau signalés');
+  ok(/Bloc manqu\u00e9/.test(t), 'le lundi 5 à midi, jour 1, les blocs échus non faits sont de nouveau signalés');
   await ctx.close();
 }
 

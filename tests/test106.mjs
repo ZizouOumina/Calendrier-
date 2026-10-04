@@ -93,7 +93,7 @@ console.log('\n== 263) Le samedi du régime combat : lever 05:30, pas de séance
     g3: window.__bcGrille('saturday', '2026-10-03').map(b => b[0] + ' ' + b[1]),
     sport3: window.__bcTypeSport('2026-10-03')
   }));
-  ok(r.sport3 === 'Bas complet' && r.g3[0] === '05:30 Sport', 'le samedi 3 (semaine sans combat) : un bas complet à 05:30 (' + r.sport3 + ' · ' + r.g3[0] + ')');
+  ok(r.sport3 !== 'Bas complet' && r.g3[0] !== '05:30 Sport', 'le samedi 3 n\'a plus de bas complet : la semaine de reprise a disparu avec le départ au lundi 5 (' + r.sport3 + ' · ' + r.g3[0] + ')');
   ok(r.lever === '05:30' && r.g[0] === '05:30 Projets perso matinal', 'lever 05:30, un bloc de projets d\'abord (' + r.g[0] + ')');
   ok(r.g.includes('18:00 Projets perso 3') && r.g.includes('19:30 Dîner') && !r.g.some(x => /Course à pied/.test(x)), 'projets 18:00 → 19:30, dîner 19:30, plus de course');
   ok(r.g.filter(x => / Sport$/.test(x)).length === 0, 'aucune séance de muscu le samedi : le combat de la semaine est le cardio');

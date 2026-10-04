@@ -50,15 +50,17 @@ console.log('\n== 264) Les cibles sortent de la grille, phase par phase ==');
 console.log('\n== 265) Un jour de TP et les partiels ne créent aucun retard ==');
 {
   /* Depuis le 26 septembre le programme part du lundi 28 : la semaine testee est donc celle
-     du 28 septembre au 4 octobre, TP le jeudi 1er (la semaine du 21 ne prevoit plus rien). */
-  const TP = {'batcave-journees': {'2026-10-01': {type:'tp', label:'Anatomía I', debut:'11:00', fin:'13:00', trajet:30}}};
+     du 28 septembre au 4 octobre, TP le jeudi 1er (la semaine du 21 ne prevoit plus rien).
+     4 octobre : le jour 1 passe au lundi 5 -- la semaine testee est celle du 5 au 11, TP le
+     jeudi 8. */
+  const TP = {'batcave-journees': {'2026-10-08': {type:'tp', label:'Anatomía I', debut:'11:00', fin:'13:00', trajet:30}}};
   const { ctx, fr } = await ouvrir('2026-09-15T09:00:00+02:00');
-  const sans = await fr.evaluate(() => window.__bcCibleGrille('revision_h', '2026-09-28', '2026-10-04'));
+  const sans = await fr.evaluate(() => window.__bcCibleGrille('revision_h', '2026-10-05', '2026-10-11'));
   await ctx.close();
   const b = await ouvrir('2026-09-15T09:00:00+02:00', TP);
-  const avec = await b.fr.evaluate(() => window.__bcCibleGrille('revision_h', '2026-09-28', '2026-10-04'));
+  const avec = await b.fr.evaluate(() => window.__bcCibleGrille('revision_h', '2026-10-05', '2026-10-11'));
   ok(avec < sans, 'la semaine du TP demande moins de révision : ' + avec + ' h au lieu de ' + sans + ' h');
-  const prevuTP = await b.fr.evaluate(() => window.__bcPrevu('2026-10-01'));
+  const prevuTP = await b.fr.evaluate(() => window.__bcPrevu('2026-10-08'));
   ok(prevuTP.rev < 265, 'le jour du TP, la grille prévoit moins de révision (' + prevuTP.rev + ' min)');
   await b.ctx.close();
   /* Partiels : depuis le 23 septembre, un jour de partiels est un jour SANS COURS. La cible

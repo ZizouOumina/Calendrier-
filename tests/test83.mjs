@@ -69,17 +69,17 @@ console.log('\n== 1) Sans un seul jour noté, le panneau le dit et ne calcule ri
 
 console.log('\n== 2) Sous 12 jours notés, le chiffre est donné mais annoncé comme indicatif ==');
 {
-  /* Fin au 14 octobre : dix notes posees du 1er au 14, dont le 9 et le 12, jours sans cours
-     -- il reste huit jours de cours notes, tous apres le jour 1 (jeudi 1er octobre depuis le
-     30 septembre au soir). Un jour d'avant le programme, ou sans cours, ne compte pas. */
+  /* Fin au 14 octobre : dix notes posees jusqu'au 14, dont le 9 et le 12, jours sans cours
+     -- il reste six jours de cours notes, tous a partir du jour 1 (lundi 5 octobre depuis le
+     4 octobre). Un jour d'avant le programme, ou sans cours, ne compte pas. */
   const fin = '2026-10-14';
   const { ctx, page, fr } = await ouvrir({'batcave-cours-suivi': notes(fin, 10, 3)}, '2026-10-14T21:00:00+02:00');
   await etudes(fr, page);
   await fr.evaluate(() => { const t = document.getElementById('portes-toggle'); if(t) t.click(); });
   await page.waitForTimeout(300);
   const c = await carte(fr);
-  ok(/3,00 \/ 3/.test(c.etat), 'la moyenne de huit 3 vaut 3,00 / 3 : ' + (c.etat.match(/\d,\d\d \/ 3/) || [''])[0]);
-  ok(/8 jours de cours notés/.test(c.etat), 'le nombre de jours est dit : ' + c.etat.slice(0, 160));
+  ok(/3,00 \/ 3/.test(c.etat), 'la moyenne de six 3 vaut 3,00 / 3 : ' + (c.etat.match(/\d,\d\d \/ 3/) || [''])[0]);
+  ok(/6 jours de cours notés/.test(c.etat), 'le nombre de jours est dit : ' + c.etat.slice(0, 160));
   ok(/indicatif/.test(c.etat), 'et le chiffre est annoncé comme indicatif sous le plancher de 12');
   await ctx.close();
 }

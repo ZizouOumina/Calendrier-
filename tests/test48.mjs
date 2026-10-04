@@ -24,7 +24,7 @@ const ligne = (fr, titre) => fr.evaluate(t => { const r = [...document.querySele
 
 /* 30 septembre au soir : « on decale tout, demain c'est le vrai jour » -- le jour 1 passe au
    jeudi 1er octobre. Septembre ne porte plus aucun jour de programme : le test lit OCTOBRE. */
-const MI_SEPT = '2026-10-01T10:00:00+02:00';   /* le jour 1 (jeudi 1er octobre) */
+const MI_SEPT = '2026-10-05T10:00:00+02:00';   /* le jour 1 (lundi 5 octobre, depuis le 4 octobre) */
 /* Le 15 est le JOUR 1 : la regle « trop tot pour juger » met tout « dans les clous ».
    Pour lire de vrais verdicts il faut une periode entamee : mardi 22, une semaine
    plus tard, ou 46,3 % de la revision de septembre et 44,4 % des seances sont passes. */
@@ -66,7 +66,7 @@ console.log('\n== 112) Semis : un seul palier, le mois ==');
      soir : deux jours, le 29 et le 30 -- 9,7 h. */
   /* Puis au JEUDI 1er octobre le 30 au soir : septembre n'a plus un seul jour de programme,
      et c'est octobre, entier et en regime combat, qui porte la cible -- 119,7 h. */
-  ok(m9 && m9.cible === 119.7, 'révision d\'octobre calculée depuis la grille, du jeudi 1er au 31, régime combat : 119,7 h (' + (m9 && m9.cible) + ')');
+  ok(m9 && m9.cible === 105.1, 'révision d\'octobre calculée depuis la grille, du lundi 5 au 31, régime combat : 105,1 h (' + (m9 && m9.cible) + ')');
   ok(m9 && m9.auto === true, 'la cible est marquée automatique : elle suivra la grille');
   ok(!o.liste.some(x => /exo:|snus|eau_moy|depenses_var/.test(x.metrique)),
      'ni niveaux, ni snus, ni eau, ni dépenses : ils ne sont plus semés du tout');
@@ -81,7 +81,7 @@ console.log('\n== 113) Comparaison sur des données réelles ==');
     const j1 = await ouvrir(MI_SEPT, Object.assign({ 'batcave-sessions': sessions }, journaux));
     await aller(j1.fr, j1.page, 'objectifs');
     const r1 = await ligne(j1.fr, 'Révision'), s1 = await ligne(j1.fr, 'Séances');
-    ok(r1 && /attendu 2,0 h/.test(r1.txt), 'au matin du jour 1, la grille n\'attend que 2,0 h — les jours d\'avant ne comptent plus (' + (r1 && (r1.txt.match(/attendu [^ ]+ h/) || [''])[0]) + ')');
+    ok(r1 && /attendu 2,1 h/.test(r1.txt), 'au matin du jour 1, la grille n\'attend que 2,1 h — les jours d\'avant ne comptent plus (' + (r1 && (r1.txt.match(/attendu [^ ]+ h/) || [''])[0]) + ')');
     /* Ce que ce bloc garde, c'est qu'AUCUN objectif n'est en RETARD au matin du jour 1 :
        c'est le bug d'origine, « Projets perso −29,9 h » des la premiere ouverture. La
        Revision y lit desormais « atteint » et non « dans les clous », et c'est exact, pas
@@ -98,9 +98,9 @@ console.log('\n== 113) Comparaison sur des données réelles ==');
      compte que le programme : 30,3 h de cible × la part de septembre écoulée = 6,6 h
      (le programme court du 24 au 30, et le 25 à 10:00 en a consommé un jour et un matin).
      Une séance faite avant le départ compte, mais ne crée pas de retard. */
-  /* Octobre (jour 1 le 1er) : 119,7 h de cible, dont 44,4 h attendues le lundi 12 à 10:00.
-     40 h faites : un peu sous le rythme, sans alerte -- « dans les clous ». */
-  ok(rev && /réel 40,0 h/.test(rev.txt) && /attendu 44,4 h/.test(rev.txt) && /ok|clous/.test(rev.led + rev.txt) && !/retard/.test(rev.led), 'Révision : réel 40,0 h pour 44,4 h attendues le 12 à 10:00 → dans les clous : ' + (rev && rev.txt.slice(0, 80)));
+  /* Octobre (jour 1 le lundi 5, depuis le 4 octobre) : 105,1 h de cible, dont 29,9 h
+     attendues le lundi 12 à 10:00. 40 h faites (la graine compte aussi les 1er-4) : en avance. */
+  ok(rev && /réel 40,0 h/.test(rev.txt) && /attendu 29,9 h/.test(rev.txt) && /avance/.test(rev.led) && !/retard/.test(rev.led), 'Révision : réel 40,0 h pour 29,9 h attendues le 12 à 10:00 → en avance : ' + (rev && rev.txt.slice(0, 80)));
   const som = await ligne(fr, 'Sommeil');
     /* 23 septembre : la cible de sommeil est du sommeil REEL (Bevel), le temps au lit × 0,88.
      L'objectif seme a 7,75 h -- une moyenne de temps au lit -- passe a la moyenne reelle
@@ -113,7 +113,7 @@ console.log('\n== 113) Comparaison sur des données réelles ==');
   /* Semaine de reprise (28 septembre au soir) : aucune seance de muscu avant le lundi 5 octobre,
      septembre n'en attend donc aucune -- zero seance n'y est pas un retard. */
   /* Depuis le 30 au soir, la muscu commence le jour 1 : le 12, six seances sont passees
-     (jeudi 1er, samedi 3, lundi 5, mardi 6, jeudi 8, lundi 12). Zero faite, c'est un vrai retard. */
+     (depuis le 4 octobre : lundi 5, mardi 6, jeudi 8, lundi 12). Zero faite, c'est un vrai retard. */
   ok(sport && /réel 0,0 séances/.test(sport.txt) && !/attendu 0,0 séances/.test(sport.txt) && /retard/.test(sport.led), 'Séances de sport : la muscu commence le jour 1, zéro séance le 12 → en retard (' + (sport && sport.txt.slice(0, 70)) + ')');
   const resume = await fr.evaluate(() => document.getElementById('obj-resume').innerText);
   ok(/en retard/.test(resume) && /% de la période/.test(resume), 'résumé : ' + resume);
@@ -128,7 +128,7 @@ console.log('\n== 114) Éditer une cible, supprimer, ajouter ==');
   await page.waitForTimeout(250);
   const rev = await ligne(fr, 'Révision');
   ok((await local(fr, 'batcave-objectifs')).liste.find(x => x.id === 'M2026-10:revision_h').cible === 44, 'cible enregistrée : 44');
-  ok(rev && /attendu 16,3 h/.test(rev.txt) && /avance/.test(rev.led), 'recalcul immédiat sur une cible de 44 h : attendu 16,3 h, 40 h réelles → en avance (' + (rev && rev.txt.slice(0, 70)) + ')');
+  ok(rev && /attendu 12,5 h/.test(rev.txt) && /avance/.test(rev.led), 'recalcul immédiat sur une cible de 44 h : attendu 12,5 h, 40 h réelles → en avance (' + (rev && rev.txt.slice(0, 70)) + ')');
   ok((await local(fr, 'batcave-objectifs')).liste.find(x => x.id === 'M2026-10:revision_h').auto === false, 'une cible saisie à la main sort du calcul automatique');
   const avant = (await local(fr, 'batcave-objectifs')).liste.length;
   await fr.evaluate(() => document.querySelector('[data-obj-del="M2026-10:sommeil_moy"]').click());

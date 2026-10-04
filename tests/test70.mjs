@@ -22,8 +22,8 @@ async function ouvrir(quand, local){
   return { ctx, page, fr };
 }
 const local = (fr,k) => fr.evaluate(x => JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))(x) || 'null'), k);
-const MERCREDI = '2026-10-14T09:00:00+02:00';   /* semaine 5 : tours complets, jour off */
-const LUNDI    = '2026-10-15T09:00:00+02:00';   /* jeudi : la seance lourde depuis le regime combat */
+const MERCREDI = '2026-10-21T09:00:00+02:00';   /* semaine 3 (jour 1 au lundi 5) : tours complets, jour off */
+const LUNDI    = '2026-10-22T09:00:00+02:00';   /* jeudi : la seance lourde depuis le regime combat */
 
 console.log('\n== 270) Un jour off, le bandeau propose de choisir une séance ==');
 {
@@ -41,7 +41,7 @@ console.log('\n== 271) Choisir une séance la rend cochable et la compte comme t
   const { ctx, fr, page } = await ouvrir(MERCREDI);
   await fr.evaluate(() => document.querySelector('[data-seance="Haut lourd"]').click());
   await page.waitForTimeout(250);
-  ok(await local(fr, 'batcave-sport-jour-2026-10-14') === 'Haut lourd', 'le choix est écrit dans batcave-sport-jour-<date>');
+  ok(await local(fr, 'batcave-sport-jour-2026-10-21') === 'Haut lourd', 'le choix est écrit dans batcave-sport-jour-<date>');
   ok(await fr.evaluate(() => (document.querySelector('.sport-card.today .stitle') || {}).textContent) === 'Haut lourd', 'la carte Haut lourd devient la séance du jour');
   ok(/choisie à la main/.test(await fr.evaluate(() => document.getElementById('seance-choix').innerText)), 'le bandeau signale que le choix est manuel');
   const strip = await fr.evaluate(() => document.getElementById('week-strip').innerText);
@@ -80,7 +80,7 @@ console.log('\n== 273) Saisie au pas : séries, répétitions, lest ==');
   ok(log.length === 1 && JSON.stringify(log[0].series) === '[9,8,7,7]' && log[0].charge === 2.5,
      'journal : 9/8/7/7 @2,5 kg (' + JSON.stringify(log[0] && [log[0].series, log[0].charge]) + ')');
   ok(await fr.evaluate(() => document.querySelector('.sport-card.today .saisie [data-valider]').textContent.trim()) === '✓ enregistré', 'le bouton passe à « enregistré »');
-  ok((await local(fr, 'batcave-sport-2026-10-15'))['Haut lourd-0'] === true, 'l\'exercice est coché tout seul');
+  ok((await local(fr, 'batcave-sport-2026-10-22'))['Haut lourd-0'] === true, 'l\'exercice est coché tout seul');
   await ctx.close();
 }
 
@@ -109,7 +109,7 @@ console.log('\n== 275) « Effacer » retire la séance du jour ==');
   await effacerSaisie(fr);
   await page.waitForTimeout(200);
   ok((await local(fr, 'batcave-sport-log')).length === 0, 'effacer vide le journal du jour');
-  ok((await local(fr, 'batcave-sport-2026-10-15'))['Haut lourd-0'] === false, 'et décoche l\'exercice');
+  ok((await local(fr, 'batcave-sport-2026-10-22'))['Haut lourd-0'] === false, 'et décoche l\'exercice');
   ok(await valeursSaisie(fr) === '6/6/6/6', 'le bloc repart de la cible');
   await ctx.close();
 }
@@ -121,7 +121,7 @@ console.log('\n== 276) Revenir au plan ==');
   await page.waitForTimeout(200);
   await fr.evaluate(() => document.querySelector('.sc-annule').click());
   await page.waitForTimeout(200);
-  ok(await local(fr, 'batcave-sport-jour-2026-10-14') === null, 'la surcharge est supprimée');
+  ok(await local(fr, 'batcave-sport-jour-2026-10-21') === null, 'la surcharge est supprimée');
   ok(/Repos/.test(await fr.evaluate(() => document.getElementById('seance-choix').innerText)), 'la journée redevient un repos');
   await ctx.close();
 }

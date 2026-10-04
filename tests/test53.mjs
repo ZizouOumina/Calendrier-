@@ -25,7 +25,7 @@ const MARDI = '2026-09-08T10:00:00+02:00';
 /* La boucle poids -> calories ecarte les pesees d'avant le 10 octobre (glycogene et eau
    du changement d'alimentation). Le 3 novembre est un mardi comme le 8 septembre :
    meme rotation, memes macros. */
-const MARDI_KCAL = '2026-11-03T10:00:00+01:00';
+const MARDI_KCAL = '2026-11-10T10:00:00+01:00';   /* 4 octobre : jour 1 au lundi 5, stabilisation jusqu'au 26 octobre -- une semaine plus tard */
 const page_ = (fr, p) => fr.evaluate(x => { document.querySelector('.nav-btn[data-page="' + x + '"]').click(); }, p);
 
 console.log('\n== 180) Sans ajustement : plan de base, liste = plan × 7 ==');
@@ -171,7 +171,7 @@ console.log('\n== 181) Avec +150 kcal : le dîner et les courses l\'écrivent ==
 console.log('\n== 182) Appliquer / revenir depuis la boucle met tout à jour d\'un coup ==');
 {
   const local = {};
-  const d0 = new Date('2026-10-21T00:00:00');
+  const d0 = new Date('2026-10-28T00:00:00');
   for(let i = 0; i < 14; i++){ const d = new Date(d0); d.setDate(d0.getDate() + i); local['batcave-journal-' + d.toISOString().slice(0,10)] = {poids: (64 + (i < 7 ? 0 : 0.02)).toFixed(2), sommeil:'', water:0, complements:[], notes:'', mood:null, coran:'', duaa:''}; }
   const { ctx, fr, page } = await ouvrir(MARDI_KCAL, local);
   await page_(fr, 'repas');
