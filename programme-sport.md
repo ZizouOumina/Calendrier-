@@ -4,7 +4,7 @@ Copie de référence du programme appliqué dans la Batcave (onglet Sport). **Jo
 
 ## Le meilleur programme possible (30 septembre au soir)
 Deux révisions le même soir. D'abord « ya pas un peu trop d'exercices ? » — le haut du corps passe à six exercices. Puis : « me considère pas comme un débutant, je veux juste le meilleur programme possible ». En repartant de cette question, le vrai défaut de toutes les versions précédentes apparaît : **les jambes et les épaules latérales ne travaillaient qu'une fois par semaine**. À volume égal, deux passages par semaine font au moins aussi bien et répartissent les séries sur des séances plus fraîches. Donc :
-- **le jeudi** (le seul jour sans combat) devient **haut lourd + jambes** : split squat bulgare et soulevé de terre roumain y reviennent, 3 séries chacun — les jambes passent à deux séances par semaine ;
+- **le jeudi** (sans combat, comme le mardi) devient **haut lourd + jambes** : split squat bulgare et soulevé de terre roumain y reviennent, 3 séries chacun — les jambes passent à deux séances par semaine ;
 - **les élévations latérales** reviennent le jeudi — deux séances, 7 séries ;
 - **le lundi** retrouve un curl (3 séries de biceps en direct) et le cou en entier, flexion et extension en superset ;
 - **restent dehors** : l'extension triceps (dips, pompes et pike font déjà 14 séries de poussée), les face pulls et les shrugs (les rows coudes hauts et le JJB couvrent l'arrière d'épaule et les trapèzes).
@@ -14,7 +14,7 @@ Lundi et jeudi : huit exercices, quatre paires, ~50 minutes. Le mardi ne change 
 ## Le régime combat (décision du 25 septembre)
 - **JJB le lundi, le mercredi et le vendredi à 10:30.** La Muay Thai du mardi est sortie le 1er octobre (sa décision). 1 h 30 par séance, club à dix minutes à pied, 70 € par mois et une licence de 30 € par an (charges fixes « Club JJB » et « Licence JJB », catégorie Abonnements). La lutte (mardi et jeudi) et le MMA (mardi 18:30) attendent novembre.
 - **Le combat est le cardio.** La course du dimanche et les sprints du samedi sont sortis ; le panneau « Cardio & combat » de l'onglet Sport liste les trois séances de la semaine, à cocher, 90 minutes chacune. Elles ne comptent pas dans « Séances tenues », qui reste le compteur de la muscu.
-- **Lundi et jeudi s'inversent.** La séance lourde passe le **jeudi**, le seul jour sans combat, avec une récupération complète ; le **lundi**, avant le JJB de 10:30, c'est le volume, plus léger. Le lundi, on ne va pas à l'échec : il faut de l'énergie pour le tatami.
+- **Lundi et jeudi s'inversent.** La séance lourde passe le **jeudi**, jour sans combat, avec une récupération complète ; le **lundi**, avant le JJB de 10:30, c'est le volume, plus léger. Le lundi, on ne va pas à l'échec : il faut de l'énergie pour le tatami.
 - **La séance du samedi saute** pendant le mois d'adaptation : ses exercices clés passent ailleurs — mollets le mardi, élévations latérales et curl le lundi (l'extension triceps est sortie le 30 septembre : dips, pompes et pike suffisent). Elle peut revenir en novembre si le sommeil tient et que le poids monte.
 - **Sortent ce que le tatami travaille déjà** : curl inversé (séance lourde), relevés de genoux (volume), et les fentes du mardi (elles ne sont pas revenues avec la sortie de la Muay Thai : les jambes travaillent deux fois par semaine, mardi et jeudi). Les avant-bras sont chargés quatre fois par semaine par les prises de kimono, la sangle par la garde, les ponts et les sorties de hanche. Les relevés de jambes suspendus, sortis le même jour, sont revenus le jeudi le 25 septembre.
 - **Lever 05:30 tous les jours, coucher 21:35**, mardi compris. Le samedi et le dimanche dormaient jusqu'à 06:30 : une heure fixe tous les jours est ce qui recale une horloge interne.
@@ -62,7 +62,7 @@ Le soir est libre depuis que la Muay Thai est sortie (1er octobre).
 | 3 B | Inclinaisons latérales du cou | 3 × 12-20 par côté |
 
 ### Jeudi · Haut lourd + jambes (50 min)
-Repos par paire : 45 s entre A et B, puis 90 s · 45 s / 75 s · 45 s / 75 s · 30 s / 60 s. Le seul jour sans combat : c'est ici que la force se construit, et que les jambes font leur deuxième passage de la semaine.
+Repos par paire : 45 s entre A et B, puis 90 s · 45 s / 75 s · 45 s / 75 s · 30 s / 60 s. Jour sans combat : c'est ici que la force se construit, et que les jambes font leur deuxième passage de la semaine.
 
 | Paire | Exercice | Tours × fourchette |
 |---|---|---|

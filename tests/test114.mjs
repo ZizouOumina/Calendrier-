@@ -49,7 +49,8 @@ console.log('— vendredi 25 septembre : la premiere periode, 28 sept. -> 24 oct
   const L = a.lignes;
   ok(L[0].montant === 700 && L[0].plus && L[0].quand === 'le 28', 'le fil commence par le virement, le 28 pour cette premiere periode');
   ok(L[1].montant === 190 && L[1].cagnotte && L[1].quand === 'le 28', 'puis la cagnotte, le meme jour');
-  ok(L[2].montant === 70 && /club/.test(L[2].action) && L[2].quand === 'le 28', 'puis le club, 70 EUR, le 28');
+  const club = L.find(l => /club/.test(l.action));
+  ok(club && club.montant === 70 && club.quand === 'le 5', 'le club, 70 EUR, le 5 : il le paie le lundi 5, premier jour de JJB (4 octobre)');
   const lic = L.find(l => /Licence/.test(l.action));
   ok(lic && pres(lic.montant, 2.5), 'la licence JJB, 30 EUR par an, lissee a 2,50 EUR par mois');
   const proprio = L.find(l => /propri/.test(l.action));
@@ -73,7 +74,7 @@ console.log('— vendredi 25 septembre : la premiere periode, 28 sept. -> 24 oct
   ok(faits.length === 3 && /Jar/.test(faits[0]) && /iCloud/.test(faits[1]) && /Bouygues/.test(faits[2]), 'trois consignes marquees faites : le Jar, Apple et Bouygues ' + JSON.stringify(faits));
   ok(/virement du 1er se fait \u00e0 la main, jamais programm\u00e9/.test(txt) && /il te dit combien payer/.test(txt) && !/rel\u00e8ve leur prix/.test(txt), 'consigne : le proprietaire donne le montant, virement a la main ; plus de consigne pour les amandes');
   ok(/le vrai montant suit ta conso/.test(txt) && !/pas encore connu/.test(txt), 'le pied dit : eau et electricite suivent la conso');
-  ok(/le 25 \(virement et cagnotte\), le 28 \(club\), le 1er \(propri\u00e9taire\), le 24/.test(txt), 'les quatre rappels de l\'agenda sont nommes');
+  ok(/le 25 \(virement et cagnotte\), le 1er \(propri\u00e9taire\), le 5 \(club\), le 24/.test(txt), 'les quatre rappels de l\'agenda sont nommes');
   ok(/Si le 25 tombe un week-end/.test(txt), 'regle : un 25 de week-end, c\'est prevu');
   ok(/70 € estim/.test(txt) && !/prix à relever/.test(txt) && !/amandes/i.test(txt), 'une seule estimation dite : l\'eau et l\'electricite (les amandes ont leur prix)');
   const ordre = await fr.evaluate(() => { const p = document.getElementById('budget-mois-panel'); return p.previousElementSibling && p.previousElementSibling.id; });
