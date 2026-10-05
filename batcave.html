@@ -3474,7 +3474,9 @@
      demain je vais pas faire de sport ». La pause s'etend au dimanche 11 : pas de JJB du 5 au
      11, donc ni collation combat ni 3,5 L ces jours-la, et les matins de club redeviennent du
      travail (grilleBase). Le JJB commence le lundi 12. */
-  var COMBAT_PAUSE = {debut:'2026-09-29', fin:'2026-10-11'};
+  /* 5 octobre, plus tard : 188 EUR de depenses inutiles sur le mois, il repousse le JJB au
+     lundi 26 -- le club (70 EUR) et la licence (30 EUR) partent avec le virement du 25. */
+  var COMBAT_PAUSE = {debut:'2026-09-29', fin:'2026-10-25'};
   function combatEnPause(iso){ return iso >= COMBAT_PAUSE.debut && iso <= COMBAT_PAUSE.fin; }
   function jourDeCombat(iso){
     iso = iso || todayISO;
@@ -12122,7 +12124,7 @@
     /* la semaine TYPE : celle du 5 octobre, la premiere complete (muscu et combat). Celle
        du 28 septembre n'a pas de combat (COMBAT_PAUSE) : elle sous-compterait la collation. */
     for(var j = 0; j < 7; j++){
-      var iso = localISO(new Date(2026, 9, 12 + j));   /* 5 octobre : la semaine du 5 est sans JJB, la semaine type devient celle du 12 */
+      var iso = localISO(new Date(2026, 9, 26 + j));   /* 5 octobre : pas de JJB avant le 26, la semaine type devient celle du 26 */
       repasDuJour(iso).forEach(function(m){
         compoRepas(m.name, iso, true).forEach(function(x){
           var a = ALIMENTS[x.c], k = alias[x.c] || x.c;
