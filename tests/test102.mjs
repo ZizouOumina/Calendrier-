@@ -70,10 +70,11 @@ console.log('\n== 337) Le panneau dit ce qu\'il faut ==');
 {
   /* La semaine du 5 octobre : la premiere avec le combat (celle du 28 septembre est sans
      combat depuis le 30 au soir -- COMBAT_PAUSE). */
-  const { ctx, page, fr } = await ouvrir('2026-10-05T10:00:00+02:00');
+  /* 5 octobre : pas de JJB du 5 au 11 -- la premiere semaine de combat est celle du 12. */
+  const { ctx, page, fr } = await ouvrir('2026-10-12T10:00:00+02:00');
   const vide = await fr.evaluate(() => document.getElementById('cardio-note').textContent);
   ok(/0\/3/.test(vide), 'semaine neuve : 0/3 (trois séances de combat) (' + vide + ')');
-  await fr.evaluate(() => window.__bcNoterCardio('2026-10-05', 35));   /* le lundi : JJB */
+  await fr.evaluate(() => window.__bcNoterCardio('2026-10-12', 35));   /* le lundi : JJB */
   await page.waitForTimeout(300);
   const t = await fr.evaluate(() => document.getElementById('cardio-note').textContent);
   ok(/1\/3/.test(t) && /35 min/.test(t), 'une séance de 35 min le lundi (JJB) : 1/3 · 35 min (' + t + ')');
@@ -91,7 +92,7 @@ console.log('\n== 338) La série ne compte que les semaines écoulées ==');
     '2026-09-26': {min:30}, '2026-09-27': {min:30},
     '2026-09-28': {min:90}, '2026-09-29': {min:90}, '2026-09-30': {min:90}, '2026-10-02': {min:90}
   }};
-  const { ctx, fr } = await ouvrir('2026-10-05T08:00:00+02:00', seed);
+  const { ctx, fr } = await ouvrir('2026-10-12T08:00:00+02:00', seed);   /* la semaine du 5, sans combat prevu, ne casse pas la serie */
   const n = await fr.evaluate(() => window.__bcSerieCardio());
   ok(n === 2, 'deux semaines complètes d\'affilée, lundi matin, série intacte (' + n + ')');
   const t = await fr.evaluate(() => document.getElementById('cardio-resume').innerText);

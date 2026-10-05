@@ -9285,7 +9285,9 @@
     var n = 0;
     for(var o = -1; o > -60; o--){
       var jours = weekRange(o), prev = sortiesCardio(jours[0]);
-      if(!prev.length) break;
+      /* 5 octobre : une semaine sans seance prevue (la pause de JJB du 5 au 11) est neutre --
+         elle ne casse pas la serie et ne la rallonge pas. */
+      if(!prev.length) continue;
       if(!prev.every(function(x){ return cardioFait(x.iso); })) break;
       n++;
     }

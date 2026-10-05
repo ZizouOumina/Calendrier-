@@ -67,14 +67,14 @@ console.log('\n== 270) Le rythme de prise : 72 kg au bout de la saison ==');
 
 console.log('\n== 271) Le cardio : sprints le samedi, course longue le dimanche ==');
 {
-  const { ctx, page, fr } = await ouvrir('2026-10-10T09:00:00+02:00');
+  const { ctx, page, fr } = await ouvrir('2026-10-17T09:00:00+02:00');   /* 5 octobre : la semaine du 5 est sans JJB, on lit celle du 12 */
   const r = await fr.evaluate(() => ({
     s3: (window.__bcGrille('saturday','2026-10-03').find(b => b[0] === '18:00') || [])[1],
     s10: (window.__bcGrille('saturday','2026-10-10').find(b => b[0] === '18:00') || [])[1],
     base10: (window.__bcGrilleBase('saturday','2026-10-10').find(b => b[0] === '18:00') || [])[1],
     cibles: ['2026-10-03','2026-10-04','2026-10-10','2026-10-11','2026-10-18','2026-10-25','2026-11-08'].map(d => window.__bcCibleCardio(d)),
-    sorties: window.__bcSortiesCardio('2026-10-05'),
-    rappel: window.__bcRappels('2026-10-09').find(b => /JJB/.test(b.titre)),
+    sorties: window.__bcSortiesCardio('2026-10-12'),
+    rappel: window.__bcRappels('2026-10-16').find(b => /JJB/.test(b.titre)),
     consigneSam: window.__bcConsigne('⚡ Sprints en côte', 6, '2026-10-10', '18:00'),
     consigneDim: window.__bcConsigne('🏃 Course à pied', 0, '2026-10-18', '17:30'),
     sport: window.__bcConsigne('Sport', 6, '2026-10-10', '18:30')
@@ -83,8 +83,8 @@ console.log('\n== 271) Le cardio : sprints le samedi, course longue le dimanche 
   ok(r.s3 === 'Projets perso 3' && r.s10 === 'Projets perso 3', 'samedi 3 et samedi 10 : un bloc de projets à 18:00, plus de course ni de sprints (' + r.s3 + ' / ' + r.s10 + ')');
   ok(r.base10 === 'Projets perso 3', 'la grille de base du samedi porte le bloc de projets');
   ok(JSON.stringify(r.cibles) === JSON.stringify([30,30,15,35,40,45,45]), 'minutes visées : 30, 30, puis sprints 15, dimanche 35 → 40 → 45 (' + r.cibles.join(', ') + ')');
-  ok(r.sorties.length === 3 && r.sorties.every(x => x.combat), 'la semaine du 5 octobre compte trois séances de combat (lundi, mercredi, vendredi : la Muay Thai est sortie le 1er octobre)');
-  ok(r.rappel && r.rappel.titreBase === '🦇 🥋 JJB' && r.rappel.debut === 630, 'le rappel du vendredi 9 : JJB à 10:30');
+  ok(r.sorties.length === 3 && r.sorties.every(x => x.combat), 'la semaine du 12 octobre compte trois séances de combat (lundi, mercredi, vendredi ; pas de JJB du 5 au 11)');
+  ok(r.rappel && r.rappel.titreBase === '🦇 🥋 JJB' && r.rappel.debut === 630, 'le rappel du vendredi 16 : JJB à 10:30');
   ok(/6 à 8 sprints/.test(r.consigneSam) && /en montée/.test(r.consigneSam), 'la consigne des sprints : ' + r.consigneSam.slice(0, 70));
   ok(/^40 minutes/.test(r.consigneDim), 'le dimanche 18 : « 40 minutes cette semaine » (' + r.consigneDim.slice(0, 40) + ')');
   /* 4 octobre : au regime combat, plus de sprints ; la seance du samedi est a 05:30, bras et epaules. */

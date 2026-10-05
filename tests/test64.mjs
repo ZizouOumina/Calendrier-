@@ -177,7 +177,7 @@ console.log('\n== 232) Avant le lundi 14 septembre : aucune période, la grille 
      'le 14 : révision dentaire, déjeuner et cours intacts : ' + [g.l0720, g.l0820, g.l0920, g.l1220, g.l1730].join(' / '));
   ok(g.l1120 === 'Question ouverte ou autre' && g.l1300 === 'Español · gramática' && g.l1400 === 'Español · escribir' && g.l1500 === 'Español · hablar',
      'le 14 : seuls les Projets perso deviennent Español, les quatre du lundi : ' + [g.l1120, g.l1300, g.l1400, g.l1500].join(' / '));
-  ok(/muscu à partir du/.test(g.sport) && /05 oct/.test(g.sport), 'sport : avant le jour 1, « muscu à partir du 05 oct. » (' + g.sport + ')');
+  ok(/muscu à partir du/.test(g.sport) && /06 oct/.test(g.sport), 'sport : avant la première séance, « muscu à partir du 06 oct. » (' + g.sport + ')');
   await ctx.close();
 }
 
