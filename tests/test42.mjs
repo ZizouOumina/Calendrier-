@@ -116,11 +116,12 @@ console.log('\n== 97) Un cloud déjà à jour ne déclenche aucune réécriture 
      ce n'est pas un cloud a jour, c'est un cloud en retard d'une generation, et la
      reecriture qu'il declenche est justement celle qu'on veut. A chaque nouvelle graine,
      ce jeu d'essai se complete -- v9 (la taie d'oreiller du mercredi) le 20 septembre, v10 (le cou
-     du jeudi soir) le 30. */
+     du jeudi soir) le 30, v11 (la douche froide) le 5 octobre. */
   const aJour = {'batcave-habits': HABITS_17.concat([{id:'core-courses', label:'Courses faites', icon:'🛒', jour:6},
                                                      {id:'core-taie-merc', label:'Taie d’oreiller changée', icon:'🛌', jours:[3]},
-                                                     {id:'core-cou-jeudi', label:'Cou — flexion et extension, 3 × 12-20', icon:'🦴', jours:[4]}]),
-                 'batcave-habits-seed-v2': true, 'batcave-habits-seed-v3': true, 'batcave-habits-seed-v4': true, 'batcave-habits-seed-v5': true, 'batcave-habits-seed-v6': true, 'batcave-habits-seed-v7': true, 'batcave-habits-seed-v8': true, 'batcave-habits-seed-v9': true, 'batcave-habits-seed-v10': true, 'batcave-objectifs-v5-espanol': true};
+                                                     {id:'core-cou-jeudi', label:'Cou — flexion et extension, 3 × 12-20', icon:'🦴', jours:[4]},
+                                                     {id:'core-douche-froide', label:'Douche froide — 30 à 60 s en fin de douche', icon:'🚿', jours:[0,3,5]}]),
+                 'batcave-habits-seed-v2': true, 'batcave-habits-seed-v3': true, 'batcave-habits-seed-v4': true, 'batcave-habits-seed-v5': true, 'batcave-habits-seed-v6': true, 'batcave-habits-seed-v7': true, 'batcave-habits-seed-v8': true, 'batcave-habits-seed-v9': true, 'batcave-habits-seed-v10': true, 'batcave-habits-seed-v11': true, 'batcave-objectifs-v5-espanol': true};
   const { ctx, fr } = await ouvrir(aJour, aJour, SAMEDI);
   const ecrits = await fr.evaluate(() => window.__w.filter(k => k === 'batcave-habits'));
   ok(ecrits.length === 0, 'aucune réécriture inutile de batcave-habits');

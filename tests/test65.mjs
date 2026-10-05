@@ -96,11 +96,12 @@ console.log('\n== 242) Habitudes à plusieurs jours : le linge lundi, mercredi, 
   /* Le magnésium a été retiré le 19 septembre — il n'en prend pas.
      Le 20 septembre, la TAIE D'OREILLER du mercredi est venue s'ajouter (génération v9) :
      c'est une habitude du mercredi, elle a donc toute sa place dans cette console-là, et
-     ce test est justement celui qui le prouve. Quatre cartes. */
-  ok(r.dash.length === 4 && r.dash.some(t => /Linge/.test(t)) && r.dash.some(t => /Créatine/.test(t))
-     && r.dash.some(t => /Taie d.oreiller/i.test(t))
-     && !r.dash.some(t => /Magnésium/.test(t)) && !r.dash.some(t => /balai|Courses/.test(t)) && r.count === '0/4',
-     'console du mercredi : Lit fait + Linge + créatine + taie d\u2019oreiller, ni magnésium ni balai ni courses (' + r.count + ' · ' + r.dash.length + ' cartes)');
+     ce test est justement celui qui le prouve. Quatre cartes. Le 5 octobre, la DOUCHE
+     FROIDE (generation v11, mercredi, vendredi, dimanche) en fait cinq. */
+  ok(r.dash.length === 5 && r.dash.some(t => /Linge/.test(t)) && r.dash.some(t => /Créatine/.test(t))
+     && r.dash.some(t => /Taie d.oreiller/i.test(t)) && r.dash.some(t => /Douche froide/.test(t))
+     && !r.dash.some(t => /Magnésium/.test(t)) && !r.dash.some(t => /balai|Courses/.test(t)) && r.count === '0/5',
+     'console du mercredi : Lit fait + Linge + créatine + taie d\u2019oreiller + douche froide, ni magnésium ni balai ni courses (' + r.count + ' · ' + r.dash.length + ' cartes)');
   const linge = cards.find(t => /Linge/.test(t)) || '';
   ok(/lun · mer · ven/.test(linge) && !/seulement/.test(linge), 'carte Linge un mercredi : « lun · mer · ven », sans « seulement » (' + linge.slice(0, 40) + ')');
   ok(/2 jours? d'affilée/i.test(linge), 'série : ven 11 + lun 14 = 2 d\'affilée, le mercredi pas encore coché ne casse rien (' + (linge.match(/\d+ jours? d'affilée/i) || [''])[0] + ')');
