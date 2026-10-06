@@ -70,13 +70,14 @@ console.log('\n== 402) Le plan de secours en texte ==');
 {
   /* La semaine du 5 octobre : la premiere avec le combat (celle du 28 septembre est sans
      combat depuis le 30 au soir). */
-  /* 5 octobre : la semaine du 5 est sans sport le lundi et sans JJB -- on lit celle du 12. */
-  const { ctx, fr } = await ouvrir('2026-10-11T20:00:00+02:00');
-  const t = await fr.evaluate(() => window.__bcPlanTexte('2026-10-12'));
-  ok(/^LA BATCAVE — plan de la semaine du 12 oct\. au 18 oct\./.test(t), 'en-tête : ' + t.split('\n')[0]);
-  ok(/LUNDI 12 oct\. — sans cours — combat\n  05:30  Sport\n/.test(t) && /  10:30  🥋 JJB\n/.test(t), 'lundi : la grille combat, ligne par ligne');
-  ok(/MARDI 13 oct\.\n[\s\S]*  21:35  Coucher/.test(t) && !/MARDI 13 oct\. — combat/.test(t) && !/Muay Thai/.test(t), 'mardi : plus de Muay Thai, coucher 21:35 comme les autres jours');
-  ok(/DIMANCHE 18 oct\.\n/.test(t) && !/DIMANCHE 18 oct\. — combat/.test(t), 'dimanche : pas de combat');
+  /* 5 octobre : la semaine du 5 est sans sport le lundi et sans JJB -- on lit celle du 12.
+     6 octobre : le JJB est repousse au 26 -- on lit celle du 26. */
+  const { ctx, fr } = await ouvrir('2026-10-25T20:00:00+02:00');
+  const t = await fr.evaluate(() => window.__bcPlanTexte('2026-10-26'));
+  ok(/^LA BATCAVE — plan de la semaine du 26 oct\. au 01 nov\./.test(t), 'en-tête : ' + t.split('\n')[0]);
+  ok(/LUNDI 26 oct\. — combat\n  05:30  Sport\n/.test(t) && /  10:30  🥋 JJB\n/.test(t), 'lundi : la grille combat, ligne par ligne');
+  ok(/MARDI 27 oct\.\n[\s\S]*  21:35  Coucher/.test(t) && !/MARDI 27 oct\. — combat/.test(t) && !/Muay Thai/.test(t), 'mardi : plus de Muay Thai, coucher 21:35 comme les autres jours');
+  ok(/DIMANCHE 0?1 nov\.\n/.test(t) && !/DIMANCHE 0?1 nov\. — combat/.test(t), 'dimanche : pas de combat');
   const t0 = await fr.evaluate(() => window.__bcPlanTexte('2026-09-28'));
   ok(!/MARDI 29 sept\. — combat/.test(t0) && !/Muay Thai/.test(t0.split('MERCREDI')[0].split('MARDI')[1] || ''), 'la semaine du 28 septembre, sans combat depuis le 30 au soir : pas de Muay Thai le mardi 29');
   ok(/LES 5 QUI COMPTENT\n  Sommeil : /.test(t) && /\n  Argent : /.test(t), 'les cinq qui comptent, avec leur chiffre du jour');
