@@ -104,8 +104,11 @@ console.log('\n== 287) Un jour sans cours : la plage se libère, sans jamais dou
   const i = await infos(fr, '2026-10-12'), g = await jour(fr, '2026-10-12');
   ok(i.sans === true && i.per === 'es-1', 'le lundi 12 octobre (Fiesta Nacional) est sans cours, et toujours en phase 1');
   ok(!g.some(x => /Cours|Trajet cours|Trajet retour/.test(x)), 'plus de cours, plus de trajets : ' + g.slice(13, 16).join(' | '));
-  ok(g.includes('16:50 Collation entraînement') && g.includes('17:00 Español · tutor') && g.includes('18:00 Lire'),
-     'la plage devient un bloc de projet (espagnol en phase 1) puis « Lire »');
+  /* 6 octobre : plus de JJB avant le 26, « Lire » prend la place du club a 10:20 ; la plage du soir
+     passe donc au suivant, « Réexpliquer ». Toujours un seul « Lire » dans la journee. */
+  ok(g.includes('16:50 Collation entraînement') && g.includes('17:00 Español · tutor') && g.includes('18:00 Réexpliquer')
+     && g.filter(x => / Lire$/.test(x)).length === 1 && g.includes('10:20 Lire'),
+     'la plage devient un bloc de projet (espagnol en phase 1) puis « Réexpliquer » — « Lire » a pris la place du JJB à 10:20');
   ok(g.includes('19:00 Dîner') && g.includes('21:35 Coucher'), 'le soir : dîner 19:00, coucher 21:35 (la même heure tous les jours au régime combat)');
   const pp4 = g.filter(x => /Español · hablar/.test(x));
   ok(pp4.length === 1 && pp4[0] === '15:00 Español · hablar',
