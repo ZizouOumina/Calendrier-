@@ -37,15 +37,15 @@ console.log('— vendredi 25 septembre : la premiere periode, 28 sept. -> 24 oct
   const a = await fr.evaluate(() => window.__bcMoisArgent('2026-09-25'));
   ok(a.revenu === 700, 'revenu : 700 EUR (loyer et wifi payes par sa mere)');
   ok(a.fixes === 248.5, 'charges fixes : 248,50 EUR, sans loyer ni wifi, club 70 EUR et licence lissee a 2,50 EUR (' + a.fixes + ')');
-  ok(pres(a.semaine, 44.08), 'courses : 44,08 EUR par semaine (le shake, sans sauce au skyr, trois collations combat depuis que la Muay Thai est sortie) (' + a.semaine.toFixed(2) + ')');
+  ok(pres(a.semaine, 43.64), 'courses : 43,64 EUR par semaine (boisson d\'avoine au Lidl, 6 octobre) (le shake, sans sauce au skyr, trois collations combat depuis que la Muay Thai est sortie) (' + a.semaine.toFixed(2) + ')');
   ok(a.estimes.length === 0, 'plus aucune estimation : les amandes ont leur prix releve');
   ok(a.cagnotte === 190, 'jour du virement : 190 EUR dans la cagnotte — ce que laisse la periode la plus chere, les courses comptees en caisse (4 octobre) (' + a.cagnotte + ')');
   ok(a.periode.debut === '2026-09-28' && a.periode.fin === '2026-10-24', 'premiere periode du 28 sept. (dernier virement a l\'ancienne date) au 24 oct.');
   ok(a.periode.samedis === 4, '4 samedis de courses');
-  ok(pres(a.periode.balayage, 64.75), 'le 24 : environ 64,75 EUR a balayer (achats reels : 80,90 + 33,79 + 48,29 + 33,79) (' + a.periode.balayage.toFixed(2) + ')');
-  ok(pres(a.moyenne, 242.55), 'epargne moyenne : 242,55 EUR par mois, sur 208,95 EUR d\'achats moyens (' + a.moyenne.toFixed(2) + ')');
+  ok(pres(a.periode.balayage, 67.27), 'le 24 : environ 67,27 EUR a balayer (achats reels : 79,64 + 33,79 + 47,03 + 33,79) (' + a.periode.balayage.toFixed(2) + ')');
+  ok(pres(a.moyenne, 245.28), 'epargne moyenne : 245,28 EUR par mois, sur 206,22 EUR d\'achats moyens (' + a.moyenne.toFixed(2) + ')');
   ok(a.prochaine5 && a.prochaine5.debut === '2026-12-25' && a.prochaine5.fin === '2027-01-24' && a.prochaine5.samedis === 5, 'prochaine periode a 5 samedis : 25 dec. -> 24 janv.');
-  ok(pres(a.prochaine5.balayage, 3.24), 'avec 5 samedis et les reserves, il reste encore 3,24 EUR le 24 (' + a.prochaine5.balayage.toFixed(2) + ')');
+  ok(pres(a.prochaine5.balayage, 7.02), 'avec 5 samedis et les reserves, il reste encore 7,02 EUR le 24 (' + a.prochaine5.balayage.toFixed(2) + ')');
   const L = a.lignes;
   ok(L[0].montant === 700 && L[0].plus && L[0].quand === 'le 28', 'le fil commence par le virement, le 28 pour cette premiere periode');
   ok(L[1].montant === 190 && L[1].cagnotte && L[1].quand === 'le 28', 'puis la cagnotte, le meme jour');
@@ -160,7 +160,7 @@ console.log('— des charges au-dessus du virement : le fil le dit, sans solde n
 
 console.log('— le plafond Nourriture suit le prix des amandes');
 {
-  for(const [avant, attendu, nom] of [[201, 209, 'pose par la Batcave (201) : suit le plan en caisse, 209 (conditionnements et cycles compris, 4 octobre)'], [180, 180, 'regle a la main (180) : ne bouge pas']]){
+  for(const [avant, attendu, nom] of [[201, 206, 'pose par la Batcave (201) : suit le plan en caisse, 206 (conditionnements et cycles compris, 4 octobre ; boisson d\'avoine au Lidl, 6 octobre)'], [209, 206, 'la valeur du 4 octobre (209) : 206 depuis la boisson d\'avoine du Lidl'], [180, 180, 'regle a la main (180) : ne bouge pas']]){
     const ctx = await browser.newContext({ viewport:{width:1440, height:900}, timezoneId:'Europe/Madrid', locale:'fr-FR' });
     await ctx.addInitScript(v => { window.claude = undefined; localStorage.setItem('batcave-budget-limits', JSON.stringify({Nourriture: v})); }, avant);
     const page = await ctx.newPage();

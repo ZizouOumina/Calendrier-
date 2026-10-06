@@ -3631,7 +3631,7 @@
   var DRAPEAUX_MIGRATION = ['objectifs-seed-v1','objectifs-v2-55','objectifs-v5-espanol',
     'habits-ecran-v2','habitlog-hebdo-v1','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','habits-seed-v7','habits-seed-v8','habits-seed-v9','habits-seed-v10','habits-seed-v11',
     'courses-plan-v2','courses-plan-v3','courses-plan-v4','courses-plan-v5','courses-plan-v6','courses-plan-v7','courses-plan-v8','courses-plan-v9','courses-plan-v10',
-    'charges-v2','plafond-nourriture-v2','plafond-nourriture-v3','plafond-nourriture-v4','plafond-nourriture-v5','ancre-dimanche-v1','ancre-dimanche-v2','serviettes-v1','coiffeur-v1','shampoing-dim-v1','marche-cible-v1','fc-migration-v1','fc-migration-v2','fc-migration-v3','fc-migration-v4','revision-fusionnee'];
+    'charges-v2','plafond-nourriture-v2','plafond-nourriture-v3','plafond-nourriture-v4','plafond-nourriture-v5','plafond-nourriture-v6','ancre-dimanche-v1','ancre-dimanche-v2','serviettes-v1','coiffeur-v1','shampoing-dim-v1','marche-cible-v1','fc-migration-v1','fc-migration-v2','fc-migration-v3','fc-migration-v4','revision-fusionnee'];
   /* Drapeaux que rien ne pose plus (migrations retirees) ou poses seulement quand il y a
      eu quelque chose a migrer : connus et gardes, jamais exiges. */
   var DRAPEAUX_ANCIENS = ['objectifs-v3-trajet','objectifs-v4-dimanche','habits-retirees-v1','shampoing-combat-v1','shampoing-samedi-v1'];   /* les deux derniers n'ecrivent qu'a partir du 28 septembre */
@@ -3748,7 +3748,7 @@
      vestige : une fonctionnalite retiree (batcave-matieres) ou un essai. Elle prend de la
      place dans le quota de 5000 documents et embrouille les sauvegardes, sans que rien ne
      la lise jamais. On la signale ; la suppression reste ton geste. */
-  var CLES_CONNUES = ['addictions','budget-limits','business','coran','courses','dash-more','duaas','duree-bloc','sport-log','objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','courses-plan-v3','courses-plan-v4','courses-plan-v5','courses-plan-v6','courses-plan-v7','courses-plan-v8','courses-plan-v9','courses-plan-v10','charges-v2','plafond-nourriture-v2','plafond-nourriture-v3','plafond-nourriture-v4','plafond-nourriture-v5','gcal-controle','ancre-dimanche-v1','ancre-dimanche-v2','serviettes-v1','coiffeur-v1','shampoing-dim-v1','marche-cible-v1','cardio','kcal-ajustement','gcal-ecriture','reinit','fc-migration-v1','fc-migration-v2','fc-migration-v3','fc-migration-v4','livrables','shampoing-combat-v1','shampoing-samedi-v1','charge','shopify-boutique','journees','examens-heures','vacances','jours-exclus',
+  var CLES_CONNUES = ['addictions','budget-limits','business','coran','courses','dash-more','duaas','duree-bloc','sport-log','objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','courses-plan-v3','courses-plan-v4','courses-plan-v5','courses-plan-v6','courses-plan-v7','courses-plan-v8','courses-plan-v9','courses-plan-v10','charges-v2','plafond-nourriture-v2','plafond-nourriture-v3','plafond-nourriture-v4','plafond-nourriture-v5','plafond-nourriture-v6','gcal-controle','ancre-dimanche-v1','ancre-dimanche-v2','serviettes-v1','coiffeur-v1','shampoing-dim-v1','marche-cible-v1','cardio','kcal-ajustement','gcal-ecriture','reinit','fc-migration-v1','fc-migration-v2','fc-migration-v3','fc-migration-v4','livrables','shampoing-combat-v1','shampoing-samedi-v1','charge','shopify-boutique','journees','examens-heures','vacances','jours-exclus',
     'espagnol','examens','cours-suivi','portes','periodes-closes','fc-prix-icloud-3','fc-prix-club-100','fc-prix-club-70','fixed-charges','goals','goals-depart','saisons','insights-hist','last-restore-drill','habitlog','habits','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','habits-seed-v7','habits-seed-v8','habits-seed-v9','habits-seed-v10','habits-seed-v11','objectifs-v5-espanol',
     'horizon','last-auto-backup','last-manual-backup','last-bilan-prompt','last-compaction','last-open','last-rotation','notion-url',
     'pomodial-purge','projets','report','revision','revision-fusionnee','revue','sante','sauvegarde','sessions',
@@ -12173,7 +12173,8 @@
        sans prix -- « prix a relever », hors total. 25 septembre au soir : son releve,
        12 EUR le kilo. */
     amandes:  {eur:12.00, par:'kg',    quand:'25 sept.'},
-    avoine:   {eur:0.95,  par:'L',     ou:'Mercadona', quand:'29 sept.', detail:'5,70 \u20ac le pack de 6 briks de 1 L (Alitey)'}
+    /* 6 octobre : son releve au Lidl, 4,44 EUR le pack de 6 L (contre 5,70 chez Mercadona). */
+    avoine:   {eur:4.44/6, par:'L',    ou:'Lidl',      quand:'6 oct.', detail:'4,44 \u20ac le pack de 6 briks de 1 L'}
   };
   /* La cle du besoin par libelle : c'est elle qui relie une ligne de courses a son prix. */
   var CLE_PRIX = {
@@ -12303,7 +12304,7 @@
         art('Légumes verts surgelés', B.legumes * 2, 1000, poids, 'sachet'),
         art('Fromage en tranches', B.fromage * 2, 400, poids, 'paquet'),
         /* 29 septembre : la boisson d'avoine du shake, 300 ml par jour, 2,1 L par semaine. Il
-           l'achete en PACK DE 6 BRIKS DE 1 L chez Mercadona (Alitey, 5,70 EUR) : un pack couvre
+           l'achete en PACK DE 6 BRIKS DE 1 L (Lidl depuis le 6 octobre, 4,44 EUR ; Mercadona 5,70 avant) : un pack couvre
            deux semaines (4,2 L) avec 1,8 L de marge, d'ou ce cycle. En DERNIER dans la
            categorie : les coches sont indexees par position, rien ne se decale. */
         art('Boisson d\'avoine', B.avoine * 2, 6000, vol, 'pack')
@@ -12505,7 +12506,7 @@
     'Fromage en tranches': 'Lidl · cuajo vegetal',
     'Riz': 'Lidl', 'P\u00e2tes': 'Lidl', 'Flocons d\'avoine': 'Lidl',
     'L\u00e9gumes verts surgel\u00e9s': 'Lidl', 'Miel': 'Lidl', 'Amandes ou noix nature': 'Lidl',
-    'Boisson d\'avoine': 'Mercadona · Alitey',
+    'Boisson d\'avoine': 'Lidl',
     'Bananes': 'Lidl', 'Fruits (pommes, poires, oranges\u2026)': 'Frutería · de saison',
     'Cr\u00e9atine monohydrate': 'En ligne'
   };
@@ -17354,11 +17355,22 @@
      Meme regle : seulement s'il vaut encore une valeur posee par moi (191 ou 193). */
   if(!load('batcave-plafond-nourriture-v5', false)){
     var pn = Number(budgetLimits['Nourriture']);
-    if(pn === 191 || pn === 193){
+    /* 6 octobre : la boisson d'avoine moins chere fait aussi baisser ce que la v4 pose (189) --
+       cette valeur-la est donc aussi la mienne. */
+    if(pn === 191 || pn === 193 || pn === Math.round(coutSemaine().mois)){
       budgetLimits['Nourriture'] = Math.round(coutAchatsMoyen().mois);
       save('batcave-budget-limits', budgetLimits);
     }
     saveInternal('batcave-plafond-nourriture-v5', true);
+  }
+  /* Sixieme fois, le 6 octobre : la boisson d'avoine passe au Lidl (4,44 EUR les 6 L au lieu
+     de 5,70), ~206 EUR par mois en caisse. Seulement s'il vaut encore ma valeur d'hier (209). */
+  if(!load('batcave-plafond-nourriture-v6', false)){
+    if(Number(budgetLimits['Nourriture']) === 209){
+      budgetLimits['Nourriture'] = Math.round(coutAchatsMoyen().mois);
+      save('batcave-budget-limits', budgetLimits);
+    }
+    saveInternal('batcave-plafond-nourriture-v6', true);
   }
   var fixedCharges = load('batcave-fixed-charges', null);
   if(fixedCharges === null){ fixedCharges = FIXED_CHARGES_SEED.slice(); save('batcave-fixed-charges', fixedCharges); }

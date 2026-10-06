@@ -39,7 +39,7 @@ console.log('\n== 269) Deux oeufs a la place du jambon ==');
      miel, amandes) : -21 kcal et -11 g de proteines par jour (etiquette Alitey), les deux oeufs du matin sortent. */
   ok(r.jour.kcal === 3601 && r.jour.p === 153, 'un jour de combat : 3 601 kcal, 153 g de protéines, cinq prises -- les sauces au skyr sortent, +15 g d\'amandes (' + r.jour.kcal + ' / ' + r.jour.p + ')');
   ok(r.oeufs === 14 && r.jambon === undefined, 'les courses : 14 œufs par semaine (la collation seule depuis le shake), plus de jambon (' + r.oeufs + ' / ' + r.jambon + ')');
-  ok(!r.cout.lignes.some(l => /Jambon/.test(l.label)) && r.cout.manque.length === 0, 'le coût ne compte plus de jambon ; aucun prix ne manque — la boisson d\'avoine a le sien depuis le 29 (Mercadona, 0,95 €/L) ('  + r.cout.manque.join() + ')');
+  ok(!r.cout.lignes.some(l => /Jambon/.test(l.label)) && r.cout.manque.length === 0, 'le coût ne compte plus de jambon ; aucun prix ne manque — la boisson d\'avoine a le sien depuis le 29 (Lidl depuis le 6 octobre, 0,74 €/L) ('  + r.cout.manque.join() + ')');
   /* 4 octobre : le plafond suit ce qu'il paie en caisse (conditionnements et cycles compris), pas ce qu'il mange. */
   ok(r.plafond === Math.round(r.achats.mois), 'le plafond Nourriture posé par la Batcave suit le coût en caisse : ' + r.plafond + ' €');
   await fr.evaluate(() => document.querySelector('.nav-btn[data-page="repas"]') && document.querySelector('.nav-btn[data-page="repas"]').click());

@@ -74,8 +74,8 @@ console.log('\n== 180) Sans ajustement : plan de base, liste = plan × 7 ==');
   ok(c.items.some(t => /^Skyr — 1,05 kg\b/.test(t) && !/demande/.test(t) && /7 boîtes de 150 g/.test(t))
   && !c.items.some(t => /^(Dattes|Cacahuètes)/.test(t)),
      'skyr : 1,05 kg en 7 boîtes de 150 g pour 1 050 g demandés (le shake seul)');
-  ok(c.items.some(t => /^Boisson d\'avoine — 6 L\b/.test(t) && /1 pack de 6 L/.test(t) && /demande 4\u202f200 ml/.test(t) && /0,95 €\/L/.test(t)),
-     'boisson d\'avoine : un pack de 6 L (Mercadona, 0,95 €/L) toutes les deux semaines pour les 4 200 ml du shake');
+  ok(c.items.some(t => /^Boisson d\'avoine — 6 L\b/.test(t) && /1 pack de 6 L/.test(t) && /demande 4\u202f200 ml/.test(t) && /0,74 €\/L/.test(t)),
+     'boisson d\'avoine : un pack de 6 L (Lidl depuis le 6 octobre, 0,74 €/L) toutes les deux semaines pour les 4 200 ml du shake');
   /* L'HUILE etait la vraie erreur : 288 ml par semaine, donc 1 152 sur 4 semaines alors
      que la liste disait 1 000 -- quatre jours de rupture par cycle, tous les mois. Elle est
      passee a 5 semaines. Depuis le retrait du poisson elle monte a 315 ml par semaine
