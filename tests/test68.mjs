@@ -27,13 +27,13 @@ console.log('\n== 264) Les cibles sortent de la grille, phase par phase ==');
 {
   const { ctx, fr } = await ouvrir('2026-09-15T09:00:00+02:00');
   const p = await fr.evaluate(() => ({
-    s14: window.__bcPrevu('2026-09-14'), s19oct: window.__bcPrevu('2026-11-05'), s1dec: window.__bcPrevu('2026-12-01')
+    s14: window.__bcPrevu('2026-09-14'), s19oct: window.__bcPrevu('2026-11-13'), s1dec: window.__bcPrevu('2026-12-01')
   }));
   /* Le 14/09 et le 19/10 sont des lundis (4 blocs de projet : 11:20, 13:00, 14:00, 15:00),
      le 01/12 un mardi (5 blocs : 11:20, 13:00, 14:00, 19:00, 20:30). Pauses deduites. */
   ok(p.s14.proj === 0 && p.s14.es === 211, 'phase 1 : aucun projet perso prévu, 211 min d\'espagnol (' + JSON.stringify(p.s14) + ')');
   /* 25 septembre : les projets n'ont plus de minuteur, donc plus rien de PREVU pour eux. */
-  ok(p.s19oct.proj === 0 && p.s19oct.es === 0, 'le jeudi 5 nov., après la phase (finie le 31 octobre) : plus d\'espagnol, et les projets ne sont plus prévus (sans minuteur) (' + JSON.stringify(p.s19oct) + ')');
+  ok(p.s19oct.proj === 0 && p.s19oct.es === 0, 'le vendredi 13 nov., après la phase (finie le 12 novembre) : plus d\'espagnol, et les projets ne sont plus prévus (sans minuteur) (' + JSON.stringify(p.s19oct) + ')');
   ok(p.s1dec.proj === 0 && p.s1dec.es === 0, 'décembre : même grille, rien de prévu en projets (' + JSON.stringify(p.s1dec) + ')');
   const o = await fr.evaluate(() => { const l = {}; window.__bcObjectifs().forEach(x => l[x.id] = {c:x.cible, a:x.auto}); return l; });
   /* Septembre ne compte qu'à partir du 14, et cette part du mois est entièrement en
@@ -52,15 +52,17 @@ console.log('\n== 265) Un jour de TP et les partiels ne créent aucun retard =='
   /* Depuis le 26 septembre le programme part du lundi 28 : la semaine testee est donc celle
      du 28 septembre au 4 octobre, TP le jeudi 1er (la semaine du 21 ne prevoit plus rien).
      4 octobre : le jour 1 passe au lundi 5 -- la semaine testee est celle du 5 au 11, TP le
-     jeudi 8. */
-  const TP = {'batcave-journees': {'2026-10-08': {type:'tp', label:'Anatomía I', debut:'11:00', fin:'13:00', trajet:30}}};
+     jeudi 8.
+     12 octobre : le jour 1 passe au mardi 13 -- la semaine testee est celle du 19 au 25 (la
+     premiere entiere), TP le jeudi 22. */
+  const TP = {'batcave-journees': {'2026-10-22': {type:'tp', label:'Anatomía I', debut:'11:00', fin:'13:00', trajet:30}}};
   const { ctx, fr } = await ouvrir('2026-09-15T09:00:00+02:00');
-  const sans = await fr.evaluate(() => window.__bcCibleGrille('revision_h', '2026-10-05', '2026-10-11'));
+  const sans = await fr.evaluate(() => window.__bcCibleGrille('revision_h', '2026-10-19', '2026-10-25'));
   await ctx.close();
   const b = await ouvrir('2026-09-15T09:00:00+02:00', TP);
-  const avec = await b.fr.evaluate(() => window.__bcCibleGrille('revision_h', '2026-10-05', '2026-10-11'));
+  const avec = await b.fr.evaluate(() => window.__bcCibleGrille('revision_h', '2026-10-19', '2026-10-25'));
   ok(avec < sans, 'la semaine du TP demande moins de révision : ' + avec + ' h au lieu de ' + sans + ' h');
-  const prevuTP = await b.fr.evaluate(() => window.__bcPrevu('2026-10-08'));
+  const prevuTP = await b.fr.evaluate(() => window.__bcPrevu('2026-10-22'));
   ok(prevuTP.rev < 265, 'le jour du TP, la grille prévoit moins de révision (' + prevuTP.rev + ' min)');
   await b.ctx.close();
   /* Partiels : depuis le 23 septembre, un jour de partiels est un jour SANS COURS. La cible

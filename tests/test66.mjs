@@ -85,7 +85,8 @@ console.log('\n== 252) Mode partiels : J-7 avant le premier examen, jusqu\'au de
   const p = await fr.evaluate(() => window.__bcPeriode('2026-11-10'));
   ok(p && p.id === 'partiels' && p.debut === '2026-11-09', 'le 10 novembre est en mode partiels');
   const p8 = await fr.evaluate(() => window.__bcPeriode('2026-11-08'));
-  ok(p8 === null, 'le 8 novembre n\'est plus dans aucune phase Español');
+  /* 12 octobre : la phase Español court jusqu'au 12 novembre -- le dimanche 8 en fait encore partie. */
+  ok(p8 && p8.id === 'es-1', 'le 8 novembre est encore dans la phase Español (jusqu\'au 12) (' + (p8 && p8.id) + ')');
   const g = await grille(fr, 'tuesday', '2026-11-10');
   /* Depuis le 23 septembre, une journee de partiels est une journee SANS COURS, et rien
      d'autre : « pendant les partiels les seances restent les memes. mes journees ne
@@ -97,11 +98,12 @@ console.log('\n== 252) Mode partiels : J-7 avant le premier examen, jusqu\'au de
   ok(!g.some(x => /Cours$|Trajet cours|Clore le cours/.test(x)), 'mardi en partiels : ni cours, ni trajet, ni « Clore le cours du jour »');
   ok(g.includes('05:30 Sport'), 'le sport du mardi reste à 05:30 : les séances ne bougent pas');
   /* Regime combat : depuis le 1er octobre, plus de Muay Thai -- un mardi sans cours finit comme les autres jours, diner 19:00, coucher 21:35. */
-  ok(g.includes('13:00 Lire') && g.includes('15:00 Projets perso 4') && g.includes('17:00 Réexpliquer') && g.includes('19:00 Dîner') && !g.some(x => /Muay Thai|club/i.test(x)) && g.includes('21:35 Coucher'),
+  /* 12 octobre : jusqu'au 12 novembre, la phase Español renomme les blocs de projet de l'apres-midi libere. */
+  ok(g.includes('13:00 Lire') && g.includes('15:00 Español · hablar') && g.includes('17:00 Réexpliquer') && g.includes('19:00 Dîner') && !g.some(x => /Muay Thai|club/i.test(x)) && g.includes('21:35 Coucher'),
      'l\'après-midi libérée comme un jour sans cours : Lire, projets, Réexpliquer, dîner 19:00, pas de Muay Thai, coucher 21:35 (' + g.filter(x => /^1[3-9]|^2/.test(x)).join(' · ') + ')');
   ok(!g.some(x => /ciblée|Fiches de synthèse/.test(x)), 'aucun bloc « ciblé » : la grille de partiels n\'existe plus');
   const gl = await grille(fr, 'monday', '2026-11-09');
-  ok(gl.includes('05:30 Sport') && gl.includes('15:00 Projets perso 4') && !gl.some(x => /Cours$/.test(x)), 'lundi en partiels : sport à 05:30, 15:00 en projets, pas de cours (' + gl.filter(x => /05:30|15:00/.test(x)).join(' · ') + ')');
+  ok(gl.includes('05:30 Sport') && gl.includes('15:00 Español · hablar') && !gl.some(x => /Cours$/.test(x)), 'lundi en partiels : sport à 05:30, 15:00 en espagnol (phase jusqu\'au 12), pas de cours (' + gl.filter(x => /05:30|15:00/.test(x)).join(' · ') + ')');
   const gv = await grille(fr, 'friday', '2026-11-13');
   ok(gv.includes('05:30 Projets perso matinal') && gv.includes('10:30 🥋 JJB') && gv.some(x => /^13:30 Jumu'ah/.test(x)) && gv.includes('15:00 Projets perso 4'),
      'vendredi : le matinal et le JJB inchangés, Jumu\'ah, puis l\'après-midi libre (' + gv.filter(x => /05:30|11:20|15:00/.test(x)).join(' · ') + ')');

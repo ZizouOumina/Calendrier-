@@ -26,8 +26,11 @@ console.log('\n== tours : moitie deux semaines, puis complet ==');
 /* 28 septembre au soir : jour 1 au mardi 29, semaine de reprise sans muscu. Le premier lundi
    de muscu est le 5 octobre, en S2 (moitie des tours) ; S3 des le lundi 12. */
 /* 4 octobre : jour 1 au lundi 5 -- S1 et S2 (5 et 12) a moitie, S3 des le 19. */
-for (const [d, attendu, moitie] of [['2026-10-08',2,true],['2026-10-12',2,true],['2026-10-19',4,false]]) {   /* 5 octobre : pas de sport le lundi 5, on lit le jeudi 8 */
-  const {ctx, fr} = await jour(d+'T05:35:00+02:00');
+/* 12 octobre : jour 1 au mardi 13 -- S1 (jeudi 15) et S2 (lundi 19) a moitie, S3 des le lundi 26
+   (apres le changement d'heure du 25 : +01:00). */
+for (const [q, attendu, moitie] of [['2026-10-15T05:35:00+02:00',2,true],['2026-10-19T05:35:00+02:00',2,true],['2026-10-26T05:35:00+01:00',4,false]]) {
+  const d = q.slice(0, 10);
+  const {ctx, fr} = await jour(q);
   const t = await fr.evaluate(()=>{const c=document.getElementById('dash-sport'); return c?c.innerText.replace(/\s+/g,' '):'';});
   const m = t.match(/Tractions ([\d/]+)/);
   const n = m ? m[1].split('/').length : 0;
@@ -82,8 +85,9 @@ for (const [d, jour_, pesee, coupe] of [
    (street workout seul la premiere semaine) -- la seance de reference est le 1er. Rien
    avant, rien le samedi 3 (le bas complet ou se prennent les maximums du bas), rien le 5. */
 /* 4 octobre : jour 1 au lundi 5, la seance de reference est le haut volume du 5. */
-console.log('\n== seance de reference : la premiere seance de MUSCU du programme, lundi 5 octobre ==');
-for (const [d, attendu] of [['2026-09-29',false],['2026-10-01',false],['2026-10-03',false],['2026-10-05',false],['2026-10-06',true],['2026-10-08',false]]) {   /* la reference passe au mardi 6 */
+/* 12 octobre : jour 1 au mardi 13, la seance de reference est le bas complet du 13. */
+console.log('\n== seance de reference : la premiere seance de MUSCU du programme, mardi 13 octobre ==');
+for (const [d, attendu] of [['2026-10-03',false],['2026-10-05',false],['2026-10-06',false],['2026-10-12',false],['2026-10-13',true],['2026-10-15',false]]) {   /* la reference passe au mardi 13 */
   const {ctx, fr} = await jour(d+'T05:35:00+02:00');
   const p = await fr.evaluate(()=>document.getElementById('dash-plan').innerText);
   ok(/Séance de référence/.test(p)===attendu, d+' : séance de référence dans le plan = '+/Séance de référence/.test(p));

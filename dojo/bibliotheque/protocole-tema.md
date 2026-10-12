@@ -12,27 +12,35 @@ espagnol**. Changement du 1er octobre : 40 minutes, c'était calibré pour 10 pa
 chacun), Biología celular 4 (60 pages chacun, 1 h 30), Epidemiología y bioestadística 5 (1 h 30),
 Documentación 2 et Antropología 2 (version courte, 40 min). Environ 22 heures en tout.
 
+**Le plan du 12 octobre** (jour 1 au mardi 13, « tout à 100 % dès mardi ») : rien n'a été fait du
+5 au 12, le plan repart de zéro. Pas de JJB avant le 26, donc les matinées du mercredi et du
+vendredi sont libres jusqu'à 12:20. Deux ou trois temas par jour, sur la vraie grille :
+
 | Jour | Créneau | Temas | Fait |
 |---|---|---|---|
-| Ven. 2 | 08:20 → 11:20 | **Anatomía T1** (homeostasis) + Documentación 1 | 2 |
-| Sam. 3 | 09:20 → 12:20 | **Anatomía T2** (sangre) + Antropología 1 | 4 |
-| Dim. 4 | 09:20 → 10:50 et 17:30 → 19:00 | Biología celular 1 + Epidemiología 1 | 6 |
-| Lun. 5 | 08:20 → 09:50 et 13:00 → 14:30 | Biología celular 2 + Epidemiología 2 (résumé en espagnol) | 8 |
-| Mar. 6 | 09:20 → 12:20 | **Anatomía T3** + Documentación 2 + 25 min : relire les résumés T1-T2 | 11 |
-| Mer. 7 | 08:20 → 09:50 et 13:00 → 14:30 | Biología celular 3 + Epidemiología 3 (résumé en espagnol) | 12 |
-| Jeu. 8 | 09:20 → 12:20 | Biología celular 4 + Epidemiología 4 | 14 |
-| Ven. 9 | 08:20 → 09:50 et 17:00 → 19:00 | Epidemiología 5 + Antropología 2, puis un nouveau tema | **16** |
+| Mar. 13 | 09:20 → 12:20 | **Anatomía T1** (homeostasis) + Antropología 1 | 2 |
+| Mer. 14 | 08:20 → 11:50 et 13:00 → 14:30 | **Anatomía T2** (sangre) + Biología celular 1 + Epidemiología 1 (résumé en espagnol) | 5 |
+| Jeu. 15 | 09:20 → 12:20 | **Anatomía T3** + Antropología 2 + 20 min : relire les résumés T1-T3 | 7 |
+| Ven. 16 | 08:20 → 11:10, puis révision | Antropología 3 + Biología celular 2 + Documentación 1 ; 11:20 : relire Antropología T1-T3 (**cuestionario T1-3 à 17:30**) | 10 |
+| Sam. 17 | 09:20 → 10:50 et 18:00 → 19:30 | Epidemiología 2 + Biología celular 3 | 12 |
+| Dim. 18 | 09:20 → 10:50 et 17:30 → 19:00 | Epidemiología 3 + Biología celular 4 (11:20 : le diagnostic d'espagnol) | 14 |
+| Lun. 19 | 08:20 → 12:00 et 13:00 → 14:30 | Epidemiología 4 + Documentación 2 + Epidemiología 5 — **les 16 de retard sont faits** — puis un nouveau tema | 18 |
+| Mar. 20 | 09:20 → 12:20 | deux nouveaux temas | 20 |
+| Mer. 21 | 08:20 → 11:50 et 13:00 → 14:30 | trois nouveaux temas | 23 |
+| Jeu. 22 | 09:20 → 12:20 | deux nouveaux temas | 25 |
+| Ven. 23 | 08:20 → 11:20 | le dernier des semaines du 5 et du 12, puis le premier de la semaine du 19 | 27 |
+| Sam. 24 | 09:20 → 10:50 et 18:00 → 19:30 | deux temas de la semaine du 19 | 29 |
+| Dim. 25 | 09:20 → 10:50 et 17:30 → 19:00 | les deux derniers — **file vide le dimanche 25 au soir**, la veille du premier JJB | **31** |
 
-Le jeudi 1er, malade, est resté vide : tout a glissé d'un jour.
+Les nouveaux temas sont comptés large (le semestre, semaine par semaine) : semaines du 5 et du 12 —
+Anatomía T3 histología et T4 piel, Biología celular T5 à T8, Epidemiología T6 et T7,
+Antropología T3 et T4 —, puis la semaine du 19 (Anatomía T5-T6, Biología T9, Epidemiología T8-T9).
+Ordre des échéances : Antropología T1-T3 avant le vendredi 16, puis **Anatomía** (cuestionario 2,
+T3 à T6, la semaine du 2 novembre), puis les plus anciens. Si la file en compte moins, elle se vide
+plus tôt : les blocs reprennent leur consigne habituelle, et à partir de là, 1 tema par jour.
 
-Anatomía T1 et T2 passent en premier : cuestionario 1 le mercredi 7 ou le jeudi 8. Leurs cartes
-reviennent dans Anki d'ici là, et le mardi tu relis les deux résumés. Si un des trois temas
-d'Anatomía dépasse 100 pages, il prend deux créneaux et tout glisse d'un demi-jour.
-
-Les 16 comptent déjà tout jusqu'au vendredi 2 (anticipé sur le calendrier de chaque matière).
-Les nouveaux temas de la semaine du 5 (environ 4 jusqu'au jeudi 8) passent le vendredi 9 au soir,
-le samedi 10 (09:20 → 12:20) et le dimanche 11 (09:20 → 10:50 et 17:30 → 19:00) : **file vide le dimanche 11 octobre au soir**. À partir du lundi 12, 1 tema par jour.
-Antropología T3 doit être fait avant le cuestionario du vendredi 16.
+À ne pas oublier à côté : l'**infografía** d'Epidemiología (10 %, à rendre fin octobre, date sur
+Canvas), expliquée en cours le vendredi 16.
 
 Ces créneaux continuent tant que la file n'est pas vide (voir plus bas : les nouveaux temas). Cinq minutes de pause entre les deux temas, debout.
 Si un soir la vérification rate ou les cartes sont floues, on redescend à un tema le lendemain :
@@ -68,7 +76,7 @@ compris. Il a ses blocs, réservés à ces trois matières, dès que la file est
 - le temps que libère « Étudier en avance » une fois le flux absorbé (environ 3 h par semaine), et les 2 h de « Question ouverte » ;
 - **Anki**, chaque matin, qui ramène les cartes jusqu'à ce qu'elles tiennent.
 
-**Premier bloc Approfondir : mercredi 14 octobre, 13:00** . Puis chaque mercredi 13:00 et samedi 09:20. Les trois matières
+**Premier bloc Approfondir : mercredi 28 octobre, 13:00** (jusque-là, il sert au rattrapage). Puis chaque mercredi 13:00 et samedi 09:20. Les trois matières
 tournent, en partant de ce qui vient d'être vu au rattrapage : hémostase (Anatomía T2 sangre),
 membrane et signalisation (Biología celular), biais et plans d'étude (bioestadística).
 

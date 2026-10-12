@@ -9,7 +9,7 @@ l'IA, vérifiée — et partagée.
 
 | Livrable | Échéance | État |
 |---|---|---|
-| File de temas vidée : les 16 de retard, comptés jusqu'au vendredi 2 (Anatomía 3, Biología celular 4, Epidemiología 5, Documentación 2, Antropología 2 ; environ 22 h) le jeudi 8, puis les nouveaux vus en cours. Ordre par échéance : Anatomía T1-T2 d'abord (cuestionario du 7-8 oct.). Plan jour par jour dans `bibliotheque/protocole-tema.md` | 16 de retard : vendredi 9 octobre ; file vide : dimanche 11 octobre (le 1er, malade, a tout décalé d'un jour) | 0 / 16 |
+| File de temas vidée : les 16 de retard, comptés jusqu'au vendredi 2 (Anatomía 3, Biología celular 4, Epidemiología 5, Documentación 2, Antropología 2 ; environ 22 h) puis les nouveaux vus en cours. Ordre par échéance : Antropología T1-T3 d'abord (cuestionario du vendredi 16), Anatomía ensuite (cuestionario 2 la semaine du 2 novembre). Plan jour par jour dans `bibliotheque/protocole-tema.md` | 16 de retard : lundi 19 octobre ; file vide : dimanche 25 octobre (jour 1 passé au mardi 13 le 12 octobre) | 0 / 16 |
 | Lexique dentaire français ↔ espagnol vérifié, partagé à 3 compañeros au moins | samedi 31 octobre | pas commencé |
 | Outil de quiz sur ses temas, construit par lui dans Claude Code | dimanche 29 novembre | novembre |
 | Boutique Shopify en ligne | lundi 30 novembre | novembre |
