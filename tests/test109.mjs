@@ -45,9 +45,9 @@ console.log('\n== 401) Santé de la Batcave : six contrôles, un relevé qui ne 
   await ctx.close();
 }
 {
-  /* la clôture n'est due qu'à partir du jour 1 (lundi 5 octobre depuis le 4 octobre) */
-  const seed = {'batcave-journal-2026-10-05': {sommeil:'7', cloture:'21:20'}};
-  const { ctx, page, fr } = await ouvrir('2026-10-08T10:00:00+02:00', seed);
+  /* la clôture n'est due qu'à partir du jour 1 (mardi 13 octobre depuis le 12 octobre) */
+  const seed = {'batcave-journal-2026-10-13': {sommeil:'7', cloture:'21:20'}};
+  const { ctx, page, fr } = await ouvrir('2026-10-16T10:00:00+02:00', seed);
   const r = await fr.evaluate(() => ({ vide: window.__bcAppVide(), sante: window.__bcSante().filter(c => !c.ok).map(c => c.id), releve: document.getElementById('bc-sante').hidden, txt: document.querySelector('#bc-sante .v').textContent }));
   ok(r.vide === false, 'une clôture suffit : l\'appli n\'est plus neuve');
   ok(r.sante.join(',') === 'sauvegarde,exercice,cloture', 'trois défauts : aucune sauvegarde, aucun exercice, clôture vieille de 3 jours (' + r.sante.join(', ') + ')');
@@ -150,10 +150,10 @@ console.log('\n== 403) Les bornes de saisie et l\'annulation d\'un geste ==');
 console.log('\n== 404) Le rappel de clôture part dans l\'agenda, et disparaît une fois la journée close ==');
 {
   /* le lundi 28 est passé avant le jour 1 : on lit le lundi 5 et le mardi 6 */
-  const { ctx, fr } = await ouvrir('2026-10-05T10:00:00+02:00');
+  const { ctx, fr } = await ouvrir('2026-10-19T10:00:00+02:00');   /* 12 octobre : un lundi et un mardi du programme (jour 1 au mardi 13) */
   const r = await fr.evaluate(() => ({
-    lun: window.__bcRappels('2026-10-05').filter(b => b.cle === 'cloture')[0],
-    mar: window.__bcRappels('2026-10-06').filter(b => b.cle === 'cloture')[0],
+    lun: window.__bcRappels('2026-10-19').filter(b => b.cle === 'cloture')[0],
+    mar: window.__bcRappels('2026-10-20').filter(b => b.cle === 'cloture')[0],
     avant: window.__bcRappels('2026-09-20').filter(b => b.cle === 'cloture').length,
     ete: window.__bcRappels('2027-07-05').filter(b => b.cle === 'cloture').length
   }));
