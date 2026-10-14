@@ -1,7 +1,7 @@
 # Programme d'alimentation — La Batcave
 
 Copie de référence du plan appliqué dans la Batcave (onglets Repas, Préparation et Courses),
-au **mardi 13 octobre 2026, jour 1**. Si un chiffre diverge, c'est l'application qui fait foi : les
+au **jeudi 15 octobre 2026, jour 1**. Si un chiffre diverge, c'est l'application qui fait foi : les
 macros, la liste de courses et la préparation sortent toutes de la même source (`compoRepas`).
 
 ## Le cadre
@@ -10,12 +10,12 @@ macros, la liste de courses et la préparation sortent toutes de la même source
   399 g · lipides 115 g**, en quatre prises.
 - **Jours de combat** (lundi, mercredi, vendredi : le JJB, à partir du lundi 26 octobre) :
   **3 601 kcal · protéines 153 g**, avec une cinquième prise, la collation combat.
-- **Le plan entier dès le jour 1, mardi 13 octobre** : plus de semaine à 85 % (décision du
-  12 octobre : « tout à 100 % dès mardi »). Jusqu'au 25, sans JJB, tous les jours sont des jours sans combat. Mange aux heures prévues, même sans faim.
+- **Le plan entier dès le jour 1, jeudi 15 octobre** : plus de semaine à 85 % (décision du
+  14 octobre : « on va commencer tout demain matin »). Jusqu'au 25, sans JJB, tous les jours sont des jours sans combat. Mange aux heures prévues, même sans faim.
 - Tout est pesé **cru**. Pas de lait (acné) : boisson d'avoine. Pas de sauce au skyr (sortie le
   29 septembre) : le goût vient du citron, de la moutarde, de la harissa, de la tomate, des épices.
 
-## Les repas (à partir du mardi 13 octobre)
+## Les repas (à partir du jeudi 15 octobre)
 | Repas | Heure | Contenu | kcal · protéines |
 |---|---|---|---|
 | Petit-déjeuner (shake) | 06:45 | boisson d'avoine 300 ml, skyr 150 g, flocons d'avoine 80 g, banane 120 g, miel 20 g, amandes ou noix 30 g | 888 · 39 g |
@@ -29,7 +29,7 @@ soir. Créatine 5 g par jour, avec le dîner.
 
 ## La boucle poids → calories
 Une pesée **un dimanche sur deux, à jeun**. Rien ne se lit pendant les trois premières semaines
-(jusqu'au 3 novembre) : la balance monte d'un à trois kilos d'eau et de glycogène, ce n'est pas
+(jusqu'au 5 novembre) : la balance monte d'un à trois kilos d'eau et de glycogène, ce n'est pas
 du gras. Ensuite, dès quatre pesées, la Batcave calcule la pente : trop lente (moins de la
 moitié du rythme visé), elle propose **+150 kcal**, soit +40 g de pâtes crues au dîner ; trop
 rapide (plus de 1,5 fois le rythme), **−100 kcal**. Elle propose, tu valides.

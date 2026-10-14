@@ -12,25 +12,25 @@ espagnol**. Changement du 1er octobre : 40 minutes, c'était calibré pour 10 pa
 chacun), Biología celular 4 (60 pages chacun, 1 h 30), Epidemiología y bioestadística 5 (1 h 30),
 Documentación 2 et Antropología 2 (version courte, 40 min). Environ 22 heures en tout.
 
-**Le plan du 12 octobre** (jour 1 au mardi 13, « tout à 100 % dès mardi ») : rien n'a été fait du
-5 au 12, le plan repart de zéro. Pas de JJB avant le 26, donc les matinées du mercredi et du
-vendredi sont libres jusqu'à 12:20. Deux ou trois temas par jour, sur la vraie grille :
+**Le plan du 14 octobre** (jour 1 au jeudi 15, « on va commencer tout demain matin ») : malade
+du 13 au 14, le plan repart de zéro le 15. Pas de JJB avant le 26, donc les matinées du mercredi
+et du vendredi sont libres jusqu'à 12:20. Deux à quatre temas par jour, sur la vraie grille :
 
 | Jour | Créneau | Temas | Fait |
 |---|---|---|---|
-| Mar. 13 | 09:20 → 12:20 | **Anatomía T1** (homeostasis) + Antropología 1 | 2 |
-| Mer. 14 | 08:20 → 11:50 et 13:00 → 14:30 | **Anatomía T2** (sangre) + Biología celular 1 + Epidemiología 1 (résumé en espagnol) | 5 |
-| Jeu. 15 | 09:20 → 12:20 | **Anatomía T3** + Antropología 2 + 20 min : relire les résumés T1-T3 | 7 |
-| Ven. 16 | 08:20 → 11:10, puis révision | Antropología 3 + Biología celular 2 + Documentación 1 ; 11:20 : relire Antropología T1-T3 (**cuestionario T1-3 à 17:30**) | 10 |
-| Sam. 17 | 09:20 → 10:50 et 18:00 → 19:30 | Epidemiología 2 + Biología celular 3 | 12 |
-| Dim. 18 | 09:20 → 10:50 et 17:30 → 19:00 | Epidemiología 3 + Biología celular 4 (11:20 : le diagnostic d'espagnol) | 14 |
-| Lun. 19 | 08:20 → 12:00 et 13:00 → 14:30 | Epidemiología 4 + Documentación 2 + Epidemiología 5 — **les 16 de retard sont faits** — puis un nouveau tema | 18 |
-| Mar. 20 | 09:20 → 12:20 | deux nouveaux temas | 20 |
-| Mer. 21 | 08:20 → 11:50 et 13:00 → 14:30 | trois nouveaux temas | 23 |
-| Jeu. 22 | 09:20 → 12:20 | deux nouveaux temas | 25 |
-| Ven. 23 | 08:20 → 11:20 | le dernier des semaines du 5 et du 12, puis le premier de la semaine du 19 | 27 |
-| Sam. 24 | 09:20 → 10:50 et 18:00 → 19:30 | deux temas de la semaine du 19 | 29 |
-| Dim. 25 | 09:20 → 10:50 et 17:30 → 19:00 | les deux derniers — **file vide le dimanche 25 au soir**, la veille du premier JJB | **31** |
+| Jeu. 15 | 09:20 → 12:20 | **Antropología 1, 2 et 3** (40 min chacun) + Documentación 1 | 4 |
+| Ven. 16 | 08:20 → 11:50, puis révision | **Anatomía T1** + Biología celular 1 ; 30 min : relire Antropología T1-T3 (**cuestionario à 17:30**) | 6 |
+| Sam. 17 | 09:20 → 11:10 et 18:00 → 19:30 | **Anatomía T2** (sangre) + Epidemiología 1 (résumé en espagnol) | 8 |
+| Dim. 18 | 09:20 → 11:10 et 17:30 → 19:00 | **Anatomía T3** + Biología celular 2 (11:20 : le diagnostic d'espagnol) | 10 |
+| Lun. 19 | 08:20 → 12:00 et 13:00 → 14:30 | Epidemiología 2 + Documentación 2 + Biología celular 3 + Epidemiología 3 | 14 |
+| Mar. 20 | 09:20 → 12:20 | Biología celular 4 + Epidemiología 4 | 16 |
+| Mer. 21 | 08:20 → 11:50 et 13:00 → 14:30 | Epidemiología 5 — **les 16 de retard sont faits** — puis deux nouveaux temas | 19 |
+| Jeu. 22 | 09:20 → 12:20 | deux nouveaux temas | 21 |
+| Ven. 23 | 08:20 → 11:20 | deux nouveaux temas | 23 |
+| Sam. 24 | 09:20 → 10:50 et 18:00 → 19:30 | deux nouveaux temas | 25 |
+| Dim. 25 | 09:20 → 10:50 et 17:30 → 19:00 | le dernier des semaines du 5 et du 12, puis le premier de la semaine du 19 | 27 |
+| Lun. 26 | 08:20 → 09:50 et 13:00 → 14:30 | deux temas de la semaine du 19 (JJB à 10:30) | 29 |
+| Mar. 27 | 09:20 → 12:20 | les deux derniers — **file vide le mardi 27 à midi** | **31** |
 
 Les nouveaux temas sont comptés large (le semestre, semaine par semaine) : semaines du 5 et du 12 —
 Anatomía T3 histología et T4 piel, Biología celular T5 à T8, Epidemiología T6 et T7,
