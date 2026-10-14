@@ -3631,7 +3631,7 @@
   var DRAPEAUX_MIGRATION = ['objectifs-seed-v1','objectifs-v2-55','objectifs-v5-espanol',
     'habits-ecran-v2','habitlog-hebdo-v1','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','habits-seed-v7','habits-seed-v8','habits-seed-v9','habits-seed-v10','habits-seed-v11',
     'courses-plan-v2','courses-plan-v3','courses-plan-v4','courses-plan-v5','courses-plan-v6','courses-plan-v7','courses-plan-v8','courses-plan-v9','courses-plan-v10',
-    'charges-v2','plafond-nourriture-v2','plafond-nourriture-v3','plafond-nourriture-v4','plafond-nourriture-v5','plafond-nourriture-v6','ancre-dimanche-v1','ancre-dimanche-v2','serviettes-v1','coiffeur-v1','shampoing-dim-v1','marche-cible-v1','fc-migration-v1','fc-migration-v2','fc-migration-v3','fc-migration-v4','revision-fusionnee'];
+    'charges-v2','plafond-nourriture-v2','plafond-nourriture-v3','plafond-nourriture-v4','plafond-nourriture-v5','plafond-nourriture-v6','plafond-nourriture-v7','ancre-dimanche-v1','ancre-dimanche-v2','serviettes-v1','coiffeur-v1','shampoing-dim-v1','marche-cible-v1','fc-migration-v1','fc-migration-v2','fc-migration-v3','fc-migration-v4','revision-fusionnee'];
   /* Drapeaux que rien ne pose plus (migrations retirees) ou poses seulement quand il y a
      eu quelque chose a migrer : connus et gardes, jamais exiges. */
   var DRAPEAUX_ANCIENS = ['objectifs-v3-trajet','objectifs-v4-dimanche','habits-retirees-v1','shampoing-combat-v1','shampoing-samedi-v1'];   /* les deux derniers n'ecrivent qu'a partir du 28 septembre */
@@ -3748,7 +3748,7 @@
      vestige : une fonctionnalite retiree (batcave-matieres) ou un essai. Elle prend de la
      place dans le quota de 5000 documents et embrouille les sauvegardes, sans que rien ne
      la lise jamais. On la signale ; la suppression reste ton geste. */
-  var CLES_CONNUES = ['addictions','budget-limits','business','coran','courses','dash-more','duaas','duree-bloc','sport-log','objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','courses-plan-v3','courses-plan-v4','courses-plan-v5','courses-plan-v6','courses-plan-v7','courses-plan-v8','courses-plan-v9','courses-plan-v10','charges-v2','plafond-nourriture-v2','plafond-nourriture-v3','plafond-nourriture-v4','plafond-nourriture-v5','plafond-nourriture-v6','gcal-controle','ancre-dimanche-v1','ancre-dimanche-v2','serviettes-v1','coiffeur-v1','shampoing-dim-v1','marche-cible-v1','cardio','kcal-ajustement','gcal-ecriture','reinit','fc-migration-v1','fc-migration-v2','fc-migration-v3','fc-migration-v4','livrables','shampoing-combat-v1','shampoing-samedi-v1','charge','shopify-boutique','journees','examens-heures','vacances','jours-exclus',
+  var CLES_CONNUES = ['addictions','budget-limits','business','coran','courses','dash-more','duaas','duree-bloc','sport-log','objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','courses-plan-v3','courses-plan-v4','courses-plan-v5','courses-plan-v6','courses-plan-v7','courses-plan-v8','courses-plan-v9','courses-plan-v10','charges-v2','plafond-nourriture-v2','plafond-nourriture-v3','plafond-nourriture-v4','plafond-nourriture-v5','plafond-nourriture-v6','plafond-nourriture-v7','gcal-controle','ancre-dimanche-v1','ancre-dimanche-v2','serviettes-v1','coiffeur-v1','shampoing-dim-v1','marche-cible-v1','cardio','kcal-ajustement','gcal-ecriture','reinit','fc-migration-v1','fc-migration-v2','fc-migration-v3','fc-migration-v4','livrables','shampoing-combat-v1','shampoing-samedi-v1','charge','shopify-boutique','journees','examens-heures','vacances','jours-exclus',
     'espagnol','examens','cours-suivi','portes','periodes-closes','fc-prix-icloud-3','fc-prix-club-100','fc-prix-club-70','fixed-charges','goals','goals-depart','saisons','insights-hist','last-restore-drill','habitlog','habits','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','habits-seed-v7','habits-seed-v8','habits-seed-v9','habits-seed-v10','habits-seed-v11','objectifs-v5-espanol',
     'horizon','last-auto-backup','last-manual-backup','last-bilan-prompt','last-compaction','last-open','last-rotation','notion-url',
     'pomodial-purge','projets','report','revision','revision-fusionnee','revue','sante','sauvegarde','sessions',
@@ -8213,14 +8213,14 @@
        journee reste au-dessus de 150 g. Le skyr, fermente, passe dans le mixeur ; les deux
        oeufs du matin sortent (ceux de la collation restent). Il a un mixeur. */
     {name:'Petit-déjeuner', items:['Boisson d\'avoine (300 ml)','Skyr (150g)','Flocons d\'avoine (80g)','Banane (120g)','Miel (20g)','Amandes ou noix nature (30g)']},
-    {name:'Déjeuner', items:['Féculent cru — Riz 155g','Protéine crue — rotation du jour','Légumes verts (200g)','Huile d\'olive — selon la protéine, dont 10 ml versés froids à l\'assiette']},
+    {name:'Déjeuner', items:['Féculent cru — Riz 155g','Protéine crue — rotation du jour','Légumes verts (100g)','Huile d\'olive — selon la protéine, dont 10 ml versés froids à l\'assiette']},
     /* 23 septembre : le jambon (charcuterie, 40 g par jour) cede la place a deux oeufs durs,
        cuits le dimanche avec ceux du petit-dejeuner. La viande transformee etait le seul
        aliment du plan classe cancerogene ; deux oeufs apportent plus de proteines (12,6 g
        contre 7,2) et environ 100 kcal de plus -- qui vont avec le rythme de prise releve
        le meme jour (objectif poids 72 kg). */
     {name:'Collation entraînement', items:['Pain complet (60g)','2 œufs durs (100g)','Fromage (20g)','Amandes ou noix nature (40g)']},
-    {name:'Dîner', items:['Féculent cru — Pâtes 105g','Protéine crue — rotation du jour','Légumes verts (150g)','Huile d\'olive — selon la protéine, dont 5 ml versés froids à l\'assiette','1 fruit (~120g)','Créatine — 5 g']},
+    {name:'Dîner', items:['Féculent cru — Pâtes 105g','Protéine crue — rotation du jour','Légumes verts (100g)','Huile d\'olive — selon la protéine, dont 5 ml versés froids à l\'assiette','1 fruit (~120g)','Créatine — 5 g']},
     /* 25 septembre, le regime combat : une cinquieme prise, les QUATRE jours de combat
        seulement (jourDeCombat). A 10:05 avant le JJB ; le mardi, avec la collation de 14:50
        (la Muay Thai est a 19:30, le diner a 18:00). Rangee EN DERNIER dans la liste pour que
@@ -8288,12 +8288,12 @@
     if(nom === 'Collation combat') return [{c:'banane', q:120}, {c:'flocons', q:50}, {c:'amandes', q:15}];
     if(nom === 'Déjeuner'){
       var nd = proteineDuJour('dej', iso), pd = PROTEINES[nd].dej;
-      return [{c:'riz', q:FECULENTS.dej.g}, {c:CLE_PROTEINE[nd], q:pd.g}, {c:'legumes', q:200}, {c:'huile', q:pd.huile}];
+      return [{c:'riz', q:FECULENTS.dej.g}, {c:CLE_PROTEINE[nd], q:pd.g}, {c:'legumes', q:LEGUMES_REPAS.dej}, {c:'huile', q:pd.huile}];
     }
     if(nom === 'Dîner'){
       var nn = PROTEINES[proteineDuJour('din', iso)].din;
       var pates = FECULENTS.din.g + (brut ? 0 : grammesAjustement(ajustementKcalPour(iso || todayISO), FECULENTS.din.kcalG));
-      return [{c:'pates', q:pates}, {c:CLE_PROTEINE[proteineDuJour('din', iso)], q:nn.g}, {c:'legumes', q:150}, {c:'huile', q:nn.huile}, {c:'fruit', q:120}];
+      return [{c:'pates', q:pates}, {c:CLE_PROTEINE[proteineDuJour('din', iso)], q:nn.g}, {c:'legumes', q:LEGUMES_REPAS.din}, {c:'huile', q:nn.huile}, {c:'fruit', q:120}];
     }
     return [];
   }
@@ -8330,6 +8330,45 @@
     'Poulet':            {dej:{g:80, huile:30}, din:{g:80, huile:15}, prixKg:6.5},
     'Viande hachée 5 %': {dej:{g:75, huile:20}, din:{g:90, huile:15}, prixKg:8.0}
   };
+  /* 14 octobre, sa demande : « 200 g de legumes par repas c'est trop, ca me remplit trop
+     l'estomac et je jette souvent le reste ». 100 g a chaque repas (une grosse poignee) au
+     lieu de 200 et 150 : 200 g par jour au lieu de 350. Ce qui part (~50 kcal, 4 g de
+     proteines) est negligeable ; la boucle poids -> calories corrige le reste. */
+  var LEGUMES_REPAS = {dej:100, din:100};
+  /* ===== Les sauces du jour ===== (14 octobre, sa demande)
+     « Propose-moi des sauces pour le riz ou les pates, on les met fixes dans le calendrier,
+     comme ca je sais quoi manger et quand exactement. » Une sauce par repas et par jour de
+     la semaine, toujours la meme : rien a decider au moment de manger. Toutes sans lait,
+     sans alcool (halal), presque sans sucre, et faites de ce qui ne compte pas -- ail,
+     citron, epices, tomate concassee, sauce soja, harissa, moutarde --, montees avec
+     l'huile crue DEJA prevue au repas : les macros du plan ne bougent pas. Seul le pesto
+     porte des calories ; il prend la place des 5 ml d'huile crue du diner (15 g de pesto,
+     ~70 kcal contre 44 : l'ecart est sous le bruit de la boucle). Le riz du midi va avec
+     les sauces seches et acides ; les pates du soir avec les sauces tomate et le pesto. */
+  var SAUCES = {
+    dej:{
+      1:{nom:'Soja-ail', recette:'1 c. à soupe de sauce soja, 1 gousse d\'ail râpée, les 10 ml d\'huile crue'},
+      2:{nom:'Citron-cumin', recette:'le jus d\'un demi-citron, ½ c. à café de cumin, 1 gousse d\'ail, les 10 ml d\'huile crue'},
+      3:{nom:'Harissa-tomate', recette:'1 c. à café de harissa, 2 c. à soupe de tomate concassée, les 10 ml d\'huile crue'},
+      4:{nom:'Curry', recette:'1 c. à café de curry en poudre chauffé 30 s dans l\'huile de cuisson, 2 c. à soupe de tomate concassée'},
+      5:{nom:'Chimichurri', recette:'persil haché (frais ou séché), 1 gousse d\'ail, 1 c. à soupe de vinaigre, une pincée de piment, les 10 ml d\'huile crue'},
+      6:{nom:'Moutarde-citron', recette:'1 c. à café de moutarde, le jus d\'un demi-citron, les 10 ml d\'huile crue'},
+      0:{nom:'Paprika-ail', recette:'1 c. à café de paprika fumé, 1 gousse d\'ail, les 10 ml d\'huile crue'}
+    },
+    din:{
+      1:{nom:'Tomate-ail', recette:'100 g de tomate concassée, 1 gousse d\'ail, origan, 5 min à la poêle avec la viande'},
+      2:{nom:'Pesto', recette:'1 c. à soupe de pesto (15 g) à la place des 5 ml d\'huile crue'},
+      3:{nom:'Arrabbiata', recette:'100 g de tomate concassée, 1 gousse d\'ail, une pincée de piment, 5 min à la poêle avec la viande'},
+      4:{nom:'Ail-huile-piment', recette:'1 gousse d\'ail dorée dans l\'huile de cuisson, une pincée de piment, persil'},
+      5:{nom:'Pesto', recette:'1 c. à soupe de pesto (15 g) à la place des 5 ml d\'huile crue'},
+      6:{nom:'Bolognaise', recette:'100 g de tomate concassée, ail, origan, la viande hachée mijotée dedans 5 min'},
+      0:{nom:'Tomate-harissa', recette:'100 g de tomate concassée, 1 c. à café de harissa, 5 min à la poêle avec la viande'}
+    }
+  };
+  function sauceDuJour(repas, iso){
+    var dow = new Date((iso || todayISO) + 'T00:00:00').getDay();
+    return SAUCES[repas][dow];
+  }
   /* [déjeuner, dîner] par jour de la semaine (0 = dimanche) */
   var ROTATION = {
     1:['Poulet','Viande hachée 5 %'], 2:['Poulet','Viande hachée 5 %'], 3:['Poulet','Viande hachée 5 %'],
@@ -8356,7 +8395,7 @@
     if(ii === 0) return texteFeculent(repas, repas === 'din' ? ajustementKcalPour(iso || todayISO) : 0, iso);
     var nom = proteineDuJour(repas, iso), p = PROTEINES[nom][repas];
     if(ii === 1) return 'Protéine crue — ' + nom + ' ' + portionReprise(p.g, f) + 'g';
-    if(ii === 3) return 'Huile d\'olive (' + p.huile + 'ml)';
+    if(ii === 3){ var sc = sauceDuJour(repas, iso); return 'Huile d\'olive (' + p.huile + 'ml) · sauce ' + sc.nom.toLowerCase() + ' : ' + sc.recette; }
     return reduit(it);
   }
   function texteKcalRepas(m, iso){
@@ -15521,11 +15560,13 @@
        MEALS change la consigne. */
     'Déjeuner': function(d, iso){
       var c = compoRepas('Déjeuner', iso, false), g = function(k){ var x = c.filter(function(y){ return y.c === k; })[0]; return x ? Math.round(x.q) : 0; };
-      return "La boîte du jour : riz " + g('riz') + " g crus, poulet " + g('poulet') + " g, légumes. Réchauffée à la poêle avec 2 à 3 cuillères d'eau, couvercle, 4 à 5 min, brûlante jusqu'au cœur. Puis 10 ml d'huile d'olive crue par-dessus, sel, et ce que tu veux qui ne compte pas : citron, harissa, moutarde, épices.";
+      var sc = sauceDuJour('dej', iso);
+      return "La boîte du jour : riz " + g('riz') + " g crus, poulet " + g('poulet') + " g, " + g('legumes') + " g de légumes. Réchauffée à la poêle avec 2 à 3 cuillères d'eau, couvercle, 4 à 5 min, brûlante jusqu'au cœur. Sauce du jour — " + sc.nom + " : " + sc.recette + ". Sel.";
     },
     'Dîner': function(d, iso){
       var c = compoRepas('Dîner', iso, false), g = function(k){ var x = c.filter(function(y){ return y.c === k; })[0]; return x ? Math.round(x.q) : 0; };
-      return "La boîte du jour : pâtes " + g('pates') + " g crues, viande hachée " + g('hachee') + " g, légumes, à la poêle. Hors du feu, 5 ml d'huile d'olive crue, et de la tomate concassée, de l'ail ou du paprika si tu veux du goût (ça ne compte pas). Un fruit. La créatine, 5 g, avec le repas. Ensuite plus rien jusqu'au lendemain.";
+      var sc = sauceDuJour('din', iso);
+      return "La boîte du jour : pâtes " + g('pates') + " g crues, viande hachée " + g('hachee') + " g, " + g('legumes') + " g de légumes, à la poêle. Sauce du jour — " + sc.nom + " : " + sc.recette + (sc.nom === 'Pesto' ? "" : " ; hors du feu, 5 ml d'huile d'olive crue") + ". Un fruit. La créatine, 5 g, avec le repas. Ensuite plus rien jusqu'au lendemain.";
     },
     'Temps libre': {defaut: "Libre.", 0: "10 minutes pour la revue du dimanche guidée (onglet Études), le reste est libre."},
     'Coucher': "Clôture du jour faite ? Écran off, réveil posé loin du lit.",
@@ -16647,7 +16688,7 @@
     window.__bcMeteoInjecter = function(liste){ meteoHeures = liste; try{ majMeteoSeance(); }catch(e){} };
     window.__bcMeteoSeance = texteMeteoSeance;
     window.__bcSeanceDehors = seanceExterieureLe;
-    window.__bcChiffresSemaine = chiffresSemaine; window.__bcMacrosJour = macrosJour; window.__bcPrepSemaine = prepSemaine; window.__bcPrepTotaux = prepTotaux; window.__bcMacrosRepas = macrosRepas; window.__bcCompoRepas = compoRepas; window.__bcAliments = ALIMENTS; window.__bcBesoinSemaine = BESOIN_SEMAINE; window.__bcCoutSemaine = coutSemaine; window.__bcCoutAchats = coutAchatsMoyen; window.__bcAchatsDuSamedi = achatsDuSamedi; window.__bcMoisArgent = moisArgent; window.__bcPrix = PRIX; window.__bcEvalMatieres = EVAL_MATIERES; window.__bcTypesEcheance = TYPES_ECHEANCE; window.__bcCopieVierge = copieVierge; window.__bcNotion = absorberNotion; window.__bcNotionBases = function(){ return NOTION_BASES; }; window.__bcNotionBasesDu = basesNotionDuSemestre; window.__bcNotionRetards = notionRetards; window.__bcCoursPasFait = coursPasFait; window.__bcExercice = exerciceDu; window.__bcChiffrer = chiffrerTexte; window.__bcDechiffrer = dechiffrerEnveloppe;
+    window.__bcChiffresSemaine = chiffresSemaine; window.__bcMacrosJour = macrosJour; window.__bcSauceDuJour = sauceDuJour; window.__bcPrepSemaine = prepSemaine; window.__bcPrepTotaux = prepTotaux; window.__bcMacrosRepas = macrosRepas; window.__bcCompoRepas = compoRepas; window.__bcAliments = ALIMENTS; window.__bcBesoinSemaine = BESOIN_SEMAINE; window.__bcCoutSemaine = coutSemaine; window.__bcCoutAchats = coutAchatsMoyen; window.__bcAchatsDuSamedi = achatsDuSamedi; window.__bcMoisArgent = moisArgent; window.__bcPrix = PRIX; window.__bcEvalMatieres = EVAL_MATIERES; window.__bcTypesEcheance = TYPES_ECHEANCE; window.__bcCopieVierge = copieVierge; window.__bcNotion = absorberNotion; window.__bcNotionBases = function(){ return NOTION_BASES; }; window.__bcNotionBasesDu = basesNotionDuSemestre; window.__bcNotionRetards = notionRetards; window.__bcCoursPasFait = coursPasFait; window.__bcExercice = exerciceDu; window.__bcChiffrer = chiffrerTexte; window.__bcDechiffrer = dechiffrerEnveloppe;
        /* rapport hebdomadaire (tests/rapport-hebdo.mjs) : la semaine à un décalage donné, ses
           statistiques de bilan et le prévu/réalisé de chaque jour */
        window.__bcSemaine = function(off){
@@ -17408,6 +17449,15 @@
       save('batcave-budget-limits', budgetLimits);
     }
     saveInternal('batcave-plafond-nourriture-v6', true);
+  }
+  /* Septieme fois, le 14 octobre : 100 g de legumes par repas au lieu de 200 et 150, ~201 EUR
+     par mois en caisse. Seulement s'il vaut encore ma valeur d'avant (206). */
+  if(!load('batcave-plafond-nourriture-v7', false)){
+    if(Number(budgetLimits['Nourriture']) === 206){
+      budgetLimits['Nourriture'] = Math.round(coutAchatsMoyen().mois);
+      save('batcave-budget-limits', budgetLimits);
+    }
+    saveInternal('batcave-plafond-nourriture-v7', true);
   }
   var fixedCharges = load('batcave-fixed-charges', null);
   if(fixedCharges === null){ fixedCharges = FIXED_CHARGES_SEED.slice(); save('batcave-fixed-charges', fixedCharges); }

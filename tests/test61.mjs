@@ -76,7 +76,8 @@ console.log('\n== 217) Google Calendar : un titre « 🦇 Bloc · consigne » se
   }));
   ok(r.a === '🦇 Anki 1' && r.b === '🦇 Projets perso 3' && r.c === '🦇 Repos — après-midi libre', 'titre de base : ' + r.a + ' / ' + r.b);
   ok(/construire/.test(r.lun) && /Bilan de la semaine/.test(r.ven) && /3 d’avance|3 d'avance/.test(r.sam) && r.rien === '', 'consignes par jour (lundi construire, vendredi bilan, samedi 3 d’avance, micro-sieste vide)');
-  ok(!/skyr/i.test(r.dej) && /10 ml d'huile d'olive crue/.test(r.dej) && /citron/.test(r.dej) && /riz 155 g/.test(r.dej), 'le déjeuner a une consigne : plus de sauce au skyr depuis le 29 septembre, l\'huile crue et des parfums sans calories (' + (r.dej || '').slice(0, 60) + '…)');
+  /* 14 octobre : la sauce du jour est fixe -- le lundi, soja-ail, montee avec les 10 ml d'huile crue. */
+  ok(!/skyr/i.test(r.dej) && /10 ml d'huile crue/.test(r.dej) && /Sauce du jour — Soja-ail/.test(r.dej) && /riz 155 g/.test(r.dej) && /100 g de légumes/.test(r.dej), 'le déjeuner a une consigne : plus de sauce au skyr depuis le 29 septembre, la sauce du jour avec l\'huile crue (' + (r.dej || '').slice(0, 60) + '…)');
   await ctx.close();
 }
 await browser.close();

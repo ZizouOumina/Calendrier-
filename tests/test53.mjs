@@ -88,9 +88,9 @@ console.log('\n== 180) Sans ajustement : plan de base, liste = plan × 7 ==');
      ne rentraient pas dans son congelateur. La consommation n'a pas bouge (2 450 g par
      semaine), c'est le rythme de rachat qui a change -- 5 kg tous les quinze jours. */
   ok(c.items.some(t => /^Œufs — 18\b/.test(t) && /demande 14 œufs/.test(t))
-  && c.items.some(t => /^Légumes verts surgelés — 5 kg\b/.test(t) && /demande 4\u202f900 g/.test(t))
+  && c.items.some(t => /^Légumes verts surgelés — 3 kg\b/.test(t) && /demande 2\u202f800 g/.test(t))
   && c.items.some(t => /^Huile d'olive — 2 L\b/.test(t) && /1 bouteille de 2 L/.test(t) && /demande 1\u202f575 ml/.test(t)),
-     'œufs 18 pour 14 (la collation seule depuis le shake), surgelés 5 kg pour 4 900 g sur deux semaines, huile 2 L pour 1 575 ml sur cinq');
+     'œufs 18 pour 14 (la collation seule depuis le shake), surgelés 3 kg pour 2 800 g sur deux semaines (100 g par repas depuis le 14 octobre), huile 2 L pour 1 575 ml sur cinq');
   /* Aucun stock n'est suppose : rien ne dit « tu en as », rien n'est repousse a plus tard. */
   ok(!c.items.some(t => /tu en as|il t’en reste|à racheter le/.test(t)), 'aucune ligne ne suppose un stock : tout part de zéro, il coche ce qu\'il a');
   /* Le contraire de ce que ce fichier tenait jusqu'au 20 septembre : ces lignes ne
@@ -130,7 +130,7 @@ console.log('\n== 180) Sans ajustement : plan de base, liste = plan × 7 ==');
 
   await page_(fr, 'repas');
   const r = await fr.evaluate(() => ({ diner: [...document.querySelectorAll('.meal-card')].find(c => /Dîner/.test(c.querySelector('.mtitle').textContent)) }) && [...document.querySelectorAll('.meal-card')].find(c => /Dîner/.test(c.querySelector('.mtitle').textContent)).innerText);
-  ok(/Pâtes 105g/.test(r) && /~752 kcal/.test(r) && /Viande hachée 5 % 90g/.test(r) && !/Sauce skyr/.test(r), 'dîner de base du mardi : pâtes 105 g, viande hachée 90 g, plus de sauce au skyr (29 septembre), ~752 kcal');
+  ok(/Pâtes 105g/.test(r) && /~735 kcal/.test(r) && /Viande hachée 5 % 90g/.test(r) && !/Sauce skyr/.test(r), 'dîner de base du mardi : pâtes 105 g, viande hachée 90 g, plus de sauce au skyr (29 septembre), ~752 kcal');
   await ctx.close();
 }
 
@@ -140,18 +140,18 @@ console.log('\n== 181) Avec +150 kcal : le dîner et les courses l\'écrivent ==
   await page_(fr, 'repas');
   const r = await fr.evaluate(() => [...document.querySelectorAll('.meal-card')].find(c => /Dîner/.test(c.querySelector('.mtitle').textContent)).innerText);
   ok(/Pâtes 145g/.test(r), 'féculent du dîner : pâtes 145 g (+40)');
-  ok(/boucle kcal \+150 kcal/.test(r) && /~896 kcal/.test(r), 'le dîner annonce ~896 kcal et la boucle');
+  ok(/boucle kcal \+150 kcal/.test(r) && /~879 kcal/.test(r), 'le dîner annonce ~879 kcal et la boucle');
   const sub = await fr.evaluate(() => document.getElementById('meal-kcal-sub').textContent);
   /* 3 131 + 144 : la boucle demande +150 kcal, mais les pates s'ajustent par pas de 10 g,
      donc elle en ajoute 144. On annonce l'ecart REEL entre les deux journees, pas la
      consigne -- sinon la soustraction affichee ne tombe pas juste. */
-  ok(/\/ 3357 kcal \(plan 3213 \+ 144\)/.test(sub), 'cible du jour : ' + sub);
+  ok(/\/ 3305 kcal \(plan 3161 \+ 144\)/.test(sub), 'cible du jour : ' + sub);
   /* cocher tout le dîner : l\'apport consommé porte les 150 kcal */
   /* un clic redessine la grille : on re-cherche la première case non cochée du dîner à chaque tour */
   await fr.evaluate(() => { for(let i = 0; i < 10; i++){ const card = [...document.querySelectorAll('.meal-card')].find(c => /Dîner/.test(c.querySelector('.mtitle').textContent)); const cb = card && card.querySelector('input:not(:checked)'); if(!cb) break; cb.click(); } });
   await page.waitForTimeout(200);
   const sub2 = await fr.evaluate(() => document.getElementById('meal-kcal-sub').textContent);
-  ok(/^896 \/ 3357 kcal/.test(sub2), 'dîner coché : ' + sub2);
+  ok(/^879 \/ 3305 kcal/.test(sub2), 'dîner coché : ' + sub2);
   await page_(fr, 'courses');
   const c = await fr.evaluate(() => ({ items: [...document.querySelectorAll('#courses-grid label, #courses-grid-plus label')].map(l => l.textContent), note: document.getElementById('courses-plan-note').textContent }));
   /* L'ajustement suit le sac : +280 g par semaine font +1 120 g sur quatre semaines.
