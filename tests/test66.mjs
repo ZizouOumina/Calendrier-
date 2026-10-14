@@ -103,10 +103,11 @@ console.log('\n== 252) Mode partiels : J-7 avant le premier examen, jusqu\'au de
      'l\'après-midi libérée comme un jour sans cours : Lire, projets, Réexpliquer, dîner 19:00, pas de Muay Thai, coucher 21:35 (' + g.filter(x => /^1[3-9]|^2/.test(x)).join(' · ') + ')');
   ok(!g.some(x => /ciblée|Fiches de synthèse/.test(x)), 'aucun bloc « ciblé » : la grille de partiels n\'existe plus');
   const gl = await grille(fr, 'monday', '2026-11-09');
-  ok(gl.includes('05:30 Sport') && gl.includes('15:00 Español · hablar') && !gl.some(x => /Cours$/.test(x)), 'lundi en partiels : sport à 05:30, 15:00 en espagnol (phase jusqu\'au 12), pas de cours (' + gl.filter(x => /05:30|15:00/.test(x)).join(' · ') + ')');
+  ok(gl.includes('05:30 Sport') && gl.includes('15:00 Español · hablar') && !gl.some(x => /Cours$/.test(x)), 'lundi en partiels : sport à 05:30, 15:00 en espagnol (phase jusqu\'au 14), pas de cours (' + gl.filter(x => /05:30|15:00/.test(x)).join(' · ') + ')');
   const gv = await grille(fr, 'friday', '2026-11-13');
-  ok(gv.includes('05:30 Projets perso matinal') && gv.includes('10:30 🥋 JJB') && gv.some(x => /^13:30 Jumu'ah/.test(x)) && gv.includes('15:00 Projets perso 4'),
-     'vendredi : le matinal et le JJB inchangés, Jumu\'ah, puis l\'après-midi libre (' + gv.filter(x => /05:30|11:20|15:00/.test(x)).join(' · ') + ')');
+  /* 14 octobre : la phase Español court jusqu'au 14 novembre -- le vendredi 13, le matinal et la plage liberee sont de l'espagnol. */
+  ok(gv.includes('05:30 Español · escribir largo') && gv.includes('10:30 🥋 JJB') && gv.some(x => /^13:30 Jumu'ah/.test(x)) && gv.includes('15:00 Español · hablar'),
+     'vendredi : le matinal (escribir largo, phase 1) et le JJB inchangés, Jumu\'ah, puis l\'après-midi libre (' + gv.filter(x => /05:30|11:20|15:00/.test(x)).join(' · ') + ')');
   /* La matiere, elle, reste calculee : le lanceur de Pomodoro propose celle dont le besoin
      est le plus fort dans la session (ce qu'il reste a faire / jours avant SON examen). */
   const c = await fr.evaluate(() => [window.__bcMatiereBloc('2026-11-10'), window.__bcMatiereBloc('2026-11-17'), window.__bcTypeBloc('Révision ciblée')]);

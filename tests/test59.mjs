@@ -107,8 +107,8 @@ console.log('\n== 193) Eau, sommeil, poids : Calendrier et Journal → tableau d
      pesee -- elle decrit l'ancienne alimentation -- et elle dit pourquoi au lieu de se taire.
      Les trois semaines partent de ses PREMIERES courses (20 sept.), donc du 11 octobre. */
   /* stabilisation : 21 jours apres le jour 1 (mardi 29 septembre, apres ses premieres courses du 26) -> 20 octobre */
-  /* 12 octobre : jour 1 au mardi 13 -> stabilisation jusqu'au 3 novembre. */
-  ok(/rien avant le 0?3 nov\./.test(await txt('#kcal-analyse')), 'Boucle poids → calories : la pesée d\'avant le plan est écartée, et la Batcave dit pourquoi');
+  /* 14 octobre : jour 1 au jeudi 15 -> stabilisation jusqu'au 5 novembre. */
+  ok(/rien avant le 0?5 nov\./.test(await txt('#kcal-analyse')), 'Boucle poids → calories : la pesée d\'avant le plan est écartée, et la Batcave dit pourquoi');
 }
 
 console.log('\n== 194) Repas cochés → tableau de bord et score ==');

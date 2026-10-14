@@ -14,7 +14,7 @@ const JOUR = '2026-09-14';                       /* lundi, veille du jour 1 du p
    semaines du plan, la balance monte d'un a trois kilos de glycogene, d'eau et de contenu
    digestif. Ses scenarios se jouent donc neuf semaines plus tard, jour pour jour --
    memes jours de la semaine, meme rotation. */
-const JOUR_KCAL = '2026-11-16';
+const JOUR_KCAL = '2026-11-18';   /* 14 octobre : stabilisation jusqu'au 5 novembre -- tout glisse de deux jours */
 async function ouvrir(seed, quand){
   const ctx = await b.newContext({viewport:{width:1440, height:1200}, timezoneId:'Europe/Madrid', locale:'fr-FR'});
   await ctx.addInitScript(s => {
@@ -60,36 +60,36 @@ console.log('\n== 2) Une pesée salée ne fait plus retirer 100 kcal ==');
      visé (0,23) : l'ancien calcul retirait 100 kcal pour un dîner de la veille. Sans lui, la
      pente retombe dans la cible — donc la recommandation tient à cette pesée-là, et la
      Batcave refuse de conclure au lieu de couper les calories. */
-  const av = jours('2026-11-03', 7).map(iso => [iso, 64.0]);
-  const rec = jours('2026-11-10', 7).map((iso, i) => [iso, i === 3 ? 66.0 : 64.4]);
+  const av = jours('2026-11-05', 7).map(iso => [iso, 64.0]);
+  const rec = jours('2026-11-12', 7).map((iso, i) => [iso, i === 3 ? 66.0 : 64.4]);
   const {ctx, page, fr} = await ouvrir(pesees(av.concat(rec)), JOUR_KCAL + 'T18:00:00+01:00');
   await aller(fr, page, 'repas');
   const k = await fr.evaluate(() => ({note: document.getElementById('kcal-note').innerText,
                                       txt: document.getElementById('kcal-analyse').innerText.replace(/\s+/g,' ')}));
   ok(!/-100/.test(k.note), 'la pesée à 66,0 kg ne déclenche plus de coupe : ' + k.note);
   ok(/une seule pesée décide/.test(k.note), 'verdict : on ne conclut pas sur un matin salé (' + k.note + ')');
-  ok(/sans celle du 13 nov/.test(k.txt) && /66,0 kg/.test(k.txt), 'et la pesée en cause est nommée : ' + (k.txt.match(/Une seule pesée[^.]*\./) || [''])[0]);
+  ok(/sans celle du 15 nov/.test(k.txt) && /66,0 kg/.test(k.txt), 'et la pesée en cause est nommée : ' + (k.txt.match(/Une seule pesée[^.]*\./) || [''])[0]);
   await ctx.close();
 }
 {
   /* Quand la tendance tient VRAIMENT à une seule pesée (4 pesées par semaine, donc pas
      d'élagage), la Batcave ne recommande rien et dit laquelle. */
-  const av = ['2026-11-03','2026-11-05','2026-11-07','2026-11-09'].map(iso => [iso, 64.0]);
-  const rec = [['2026-11-10',64.4],['2026-11-12',64.4],['2026-11-14',64.4],['2026-11-16',66.0]];
+  const av = ['2026-11-05','2026-11-07','2026-11-09','2026-11-11'].map(iso => [iso, 64.0]);
+  const rec = [['2026-11-12',64.4],['2026-11-14',64.4],['2026-11-16',64.4],['2026-11-18',66.0]];
   const {ctx, page, fr} = await ouvrir(pesees(av.concat(rec)), JOUR_KCAL + 'T18:00:00+01:00');
   await aller(fr, page, 'repas');
   const k = await fr.evaluate(() => ({note: document.getElementById('kcal-note').innerText,
                                       txt: document.getElementById('kcal-analyse').innerText.replace(/\s+/g,' '),
                                       btn: document.getElementById('kcal-appliquer').hidden}));
   ok(/une seule pesée décide/.test(k.note), 'la note le dit : ' + k.note);
-  ok(/sans celle du 16 nov/.test(k.txt) && /66,0 kg/.test(k.txt), 'et elle nomme la pesée en cause : ' + (k.txt.match(/Une seule pesée[^.]*\./) || [''])[0]);
+  ok(/sans celle du 18 nov/.test(k.txt) && /66,0 kg/.test(k.txt), 'et elle nomme la pesée en cause : ' + (k.txt.match(/Une seule pesée[^.]*\./) || [''])[0]);
   ok(k.btn === true, 'le bouton « Appliquer » reste masqué tant qu’une pesée de plus n’a pas tranché');
   await ctx.close();
 }
 {
   /* et une vraie prise franche passe toujours : 64,0 → 65,0, sept pesées de chaque côté */
-  const av = jours('2026-11-03', 7).map(iso => [iso, 64.0]);
-  const rec = jours('2026-11-10', 7).map(iso => [iso, 65.0]);
+  const av = jours('2026-11-05', 7).map(iso => [iso, 64.0]);
+  const rec = jours('2026-11-12', 7).map(iso => [iso, 65.0]);
   const {ctx, page, fr} = await ouvrir(pesees(av.concat(rec)), JOUR_KCAL + 'T18:00:00+01:00');
   await aller(fr, page, 'repas');
   const note = await fr.evaluate(() => document.getElementById('kcal-note').innerText);
