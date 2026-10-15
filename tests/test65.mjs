@@ -29,21 +29,23 @@ const HABITS = [
 const seedHab = {'batcave-habits': HABITS, 'batcave-habits-seed-v2': true, 'batcave-habits-seed-v3': true, 'batcave-habits-seed-v4': true, 'batcave-habits-seed-v5': true, 'batcave-habits-seed-v6': true, 'batcave-habits-seed-v7': true, 'batcave-habits-ecran-v2': true, 'batcave-habitlog-hebdo-v1': true};
 const cartes = fr => fr.evaluate(() => [...document.querySelectorAll('#habits-grid .card')].map(c => c.innerText.replace(/\s+/g,' ')));
 
-console.log('\n== 240) Sport : jeudi 15 octobre = jour 1 et première muscu (tours × ½), jeudi 12 novembre = retest ==');
+console.log('\n== 240) Sport : vendredi 16 octobre = jour 1, première muscu le samedi 17 (tours × ½), samedi 14 novembre = retest ==');
 {
   /* 30 septembre au soir : jour 1 au jeudi 1er octobre, muscu des le jour 1 (street workout
      seul jusqu'au dimanche 4, le combat commence le lundi 5). */
   /* 4 octobre : « on decale tout a demain lundi » -- jour 1 au lundi 5, tout le plan d'un coup. */
   /* 12 octobre : « tout a 100 % des mardi » -- jour 1 et premiere muscu le mardi 13.
-     14 octobre : « on va commencer tout demain matin » -- jour 1 et premiere muscu le jeudi 15. */
-  const { ctx, fr } = await ouvrir('2026-10-15T06:30:00+02:00');
+     14 octobre : « on va commencer tout demain matin » -- jour 1 et premiere muscu le jeudi 15.
+     15 octobre : « on commence vendredi pour de bon » -- jour 1 le vendredi 16 (off au sport),
+     premiere muscu le samedi 17. */
+  const { ctx, fr } = await ouvrir('2026-10-17T06:30:00+02:00');
   const r = await fr.evaluate(() => ({ debut: window.__bcProgrammeDebut, note: document.getElementById('programme-note').textContent }));
-  ok(r.debut === '2026-10-15', 'PROGRAMME_DEBUT = 2026-10-15 (' + r.debut + ')');
+  ok(r.debut === '2026-10-16', 'PROGRAMME_DEBUT = 2026-10-16 (' + r.debut + ')');
   ok(/semaine 1/.test(r.note) && /½/.test(r.note), 'note : semaine 1, tours × ½ dès la première séance (' + r.note + ')');
   await ctx.close();
-  const v = await ouvrir('2026-10-14T20:00:00+02:00');
+  const v = await ouvrir('2026-10-15T20:00:00+02:00');
   const nv = await v.fr.evaluate(() => document.getElementById('programme-note').textContent);
-  ok(/muscu à partir du/.test(nv) && /15 oct/.test(nv), 'la veille : « muscu à partir du 15 oct. » (' + nv + ')');
+  ok(/muscu à partir du/.test(nv) && /17 oct/.test(nv), 'la veille : « muscu à partir du 17 oct. » (' + nv + ')');
   await v.ctx.close();
   const l5 = await ouvrir('2026-10-19T06:30:00+02:00');
   const n5b = await l5.fr.evaluate(() => document.getElementById('programme-note').textContent);
@@ -51,7 +53,7 @@ console.log('\n== 240) Sport : jeudi 15 octobre = jour 1 et première muscu (tou
   await l5.ctx.close();
   const s = await ouvrir('2026-09-10T06:30:00+02:00');
   const n2 = await s.fr.evaluate(() => document.getElementById('programme-note').textContent);
-  ok(/muscu à partir du/.test(n2) && /15 oct/.test(n2), 'avant le jour 1 : « muscu à partir du 15 oct. » (' + n2 + ')');
+  ok(/muscu à partir du/.test(n2) && /17 oct/.test(n2), 'avant le jour 1 : « muscu à partir du 17 oct. » (' + n2 + ')');
   await s.ctx.close();
   /* 26 septembre : le jour 1 passe au LUNDI 28. La semaine de programme court du lundi au
      dimanche ; le lundi est un jour de sport (haut volume), premierJourSport() rend le 28
@@ -59,9 +61,9 @@ console.log('\n== 240) Sport : jeudi 15 octobre = jour 1 et première muscu (tou
   /* 30 septembre : la premiere seance est le jeudi 1er, les retests tombent donc le jeudi
      des semaines 5, 10 et 15 -- le 29 octobre pour la semaine 5. */
   /* 4 octobre : la premiere seance est le lundi 5 -- retests le lundi des semaines 5, 10, 15. */
-  const r5 = await ouvrir('2026-11-12T06:30:00+01:00');   /* 14 octobre : la premiere seance est le jeudi 15 -- retests le jeudi */
+  const r5 = await ouvrir('2026-11-14T06:30:00+01:00');   /* 15 octobre : la premiere seance est le samedi 17 -- retests le samedi */
   const n5 = await r5.fr.evaluate(() => document.getElementById('programme-note').textContent);
-  ok(/semaine 5/.test(n5) && /jeudi : retest/.test(n5), 'jeudi 12 novembre : semaine 5, retest (' + n5 + ')');
+  ok(/semaine 5/.test(n5) && /samedi : retest/.test(n5), 'samedi 14 novembre : semaine 5, retest (' + n5 + ')');
   await r5.ctx.close();
 }
 

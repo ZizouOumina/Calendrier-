@@ -103,7 +103,7 @@ console.log('\n== 252) Mode partiels : J-7 avant le premier examen, jusqu\'au de
      'l\'après-midi libérée comme un jour sans cours : Lire, projets, Réexpliquer, dîner 19:00, pas de Muay Thai, coucher 21:35 (' + g.filter(x => /^1[3-9]|^2/.test(x)).join(' · ') + ')');
   ok(!g.some(x => /ciblée|Fiches de synthèse/.test(x)), 'aucun bloc « ciblé » : la grille de partiels n\'existe plus');
   const gl = await grille(fr, 'monday', '2026-11-09');
-  ok(gl.includes('05:30 Sport') && gl.includes('15:00 Español · hablar') && !gl.some(x => /Cours$/.test(x)), 'lundi en partiels : sport à 05:30, 15:00 en espagnol (phase jusqu\'au 14), pas de cours (' + gl.filter(x => /05:30|15:00/.test(x)).join(' · ') + ')');
+  ok(gl.includes('05:30 Sport') && gl.includes('15:00 Español · hablar') && !gl.some(x => /Cours$/.test(x)), 'lundi en partiels : sport à 05:30, 15:00 en espagnol (phase jusqu\'au 15), pas de cours (' + gl.filter(x => /05:30|15:00/.test(x)).join(' · ') + ')');
   const gv = await grille(fr, 'friday', '2026-11-13');
   /* 14 octobre : la phase Español court jusqu'au 14 novembre -- le vendredi 13, le matinal et la plage liberee sont de l'espagnol. */
   ok(gv.includes('05:30 Español · escribir largo') && gv.includes('10:30 🥋 JJB') && gv.some(x => /^13:30 Jumu'ah/.test(x)) && gv.includes('15:00 Español · hablar'),

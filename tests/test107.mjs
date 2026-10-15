@@ -30,7 +30,7 @@ console.log('\n== 265) Le jour 1 au jeudi 24, la phase Español au 23 octobre ==
   const { ctx, fr } = await ouvrir('2026-09-23T10:00:00+02:00');
   const r = await fr.evaluate(() => ({
     debut: window.__bcProgrammeDebut,
-    es23: !!window.__bcPhaseEspanol('2026-11-14'), es24: !!window.__bcPhaseEspanol('2026-11-15'),
+    es23: !!window.__bcPhaseEspanol('2026-11-15'), es24: !!window.__bcPhaseEspanol('2026-11-16'),
     nom23: (window.__bcPeriode('2026-10-23') || {}).id || null
   }));
   /* 28 septembre au soir, « tout commence demain » : jour 1 au mardi 29, et la phase
@@ -42,9 +42,11 @@ console.log('\n== 265) Le jour 1 au jeudi 24, la phase Español au 23 octobre ==
      12 octobre, « tout a 100 % des mardi » : jour 1 au mardi 13, phase Español jusqu'au
      jeudi 12 novembre.
      14 octobre, « on va commencer tout demain matin » : jour 1 au jeudi 15, phase Español
-     jusqu'au samedi 14 novembre. */
-  ok(r.debut === '2026-10-15', 'PROGRAMME_DEBUT = ' + r.debut);
-  ok(r.es23 && !r.es24, 'phase Español jusqu\'au 14 novembre (un mois pile depuis le 15 octobre), plus le 15 novembre (' + r.es23 + ' / ' + r.es24 + ')');
+     jusqu'au samedi 14 novembre.
+     15 octobre, « on commence vendredi pour de bon » : jour 1 au vendredi 16, phase Español
+     jusqu'au dimanche 15 novembre. */
+  ok(r.debut === '2026-10-16', 'PROGRAMME_DEBUT = ' + r.debut);
+  ok(r.es23 && !r.es24, 'phase Español jusqu\'au 15 novembre (un mois pile depuis le 16 octobre), plus le 16 novembre (' + r.es23 + ' / ' + r.es24 + ')');
   await ctx.close();
 }
 

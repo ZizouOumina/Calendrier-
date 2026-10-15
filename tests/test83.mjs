@@ -74,9 +74,9 @@ console.log('\n== 2) Sous 12 jours notés, le chiffre est donné mais annoncé c
      4 octobre). Un jour d'avant le programme, ou sans cours, ne compte pas.
      12 octobre : jour 1 au mardi 13 -- fin au 20 : dix notes jusqu'au 20, dont le 12 (sans
      cours) et trois d'avant le programme ; il en reste six, du 13 au 20. */
-  /* 14 octobre : jour 1 au jeudi 15 -- fin au 22 : dix notes, six a partir du 15. */
-  const fin = '2026-10-22';
-  const { ctx, page, fr } = await ouvrir({'batcave-cours-suivi': notes(fin, 10, 3)}, '2026-10-22T21:00:00+02:00');
+  /* 15 octobre : jour 1 au vendredi 16 -- fin au 23 : dix notes, six a partir du 16. */
+  const fin = '2026-10-23';
+  const { ctx, page, fr } = await ouvrir({'batcave-cours-suivi': notes(fin, 10, 3)}, '2026-10-23T21:00:00+02:00');
   await etudes(fr, page);
   await fr.evaluate(() => { const t = document.getElementById('portes-toggle'); if(t) t.click(); });
   await page.waitForTimeout(300);
@@ -90,8 +90,8 @@ console.log('\n== 2) Sous 12 jours notés, le chiffre est donné mais annoncé c
 console.log('\n== 3) Au-dessus de 12 jours, la moyenne est ferme et le mot suit le niveau ==');
 {
   /* Seize notes jusqu'au 30 : quatorze jours de cours une fois retires le 9 et le 12 (12 octobre : jour 1 au 13). */
-  const fin = '2026-11-03';   /* 14 octobre : seize notes jusqu'au 3 novembre, quatorze a partir du 15 */
-  const { ctx, page, fr } = await ouvrir({'batcave-cours-suivi': notes(fin, 16, 3)}, '2026-11-03T21:00:00+01:00');
+  const fin = '2026-11-04';   /* 15 octobre : seize notes jusqu'au 4 novembre, quatorze a partir du 16 */
+  const { ctx, page, fr } = await ouvrir({'batcave-cours-suivi': notes(fin, 16, 3)}, '2026-11-04T21:00:00+01:00');
   await etudes(fr, page);
   await fr.evaluate(() => { const t = document.getElementById('portes-toggle'); if(t) t.click(); });
   await page.waitForTimeout(300);
