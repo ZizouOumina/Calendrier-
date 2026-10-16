@@ -12,27 +12,28 @@ espagnol**. Changement du 1er octobre : 40 minutes, c'était calibré pour 10 pa
 chacun), Biología celular 4 (60 pages chacun, 1 h 30), Epidemiología y bioestadística 5 (1 h 30),
 Documentación 2 et Antropología 2 (version courte, 40 min). Environ 22 heures en tout.
 
-**Le plan intensif du 15 octobre** (jour 1 au vendredi 16 ; sa décision : « je vais faire 5 temas par
-jour ») : 5 le samedi, 4 du vendredi au mardi, 3 le mercredi et le jeudi, 2 le vendredi 23. Tous les
-blocs d'espagnol restent ; le temps vient des créneaux d'Anki (pas encore de cartes) et des blocs
-d'étude. Les révisions Anki se font dans le tram jusqu'au jeudi 22.
+**Le plan intensif du 15 octobre, recalé le 16** (jour 1 au samedi 17 ; sa décision : « je vais faire
+5 temas par jour », puis « samedi matin sans faute ») : 5 le samedi 17, 4 du dimanche au mercredi, 3 le
+jeudi, 4 le vendredi 23, et le dernier le samedi 24 au matin. Tous les blocs d'espagnol restent ; le temps
+vient des créneaux d'Anki (pas encore de cartes) et des blocs d'étude. Les révisions Anki se font dans
+le tram jusqu'au vendredi 23.
 
 | Jour | Créneaux | Temas | Fait |
 |---|---|---|---|
-| Ven. 16 | 08:20 → 12:10 | **Antropología 1, 2, 3** + **Anatomía T1** (**cuestionario Antropología à 17:30**) | 4 |
-| Sam. 17 | 07:20 → 10:50 · 14:30 → 15:10 · 16:00 → 16:40 · 18:00 → 19:30 | **Anatomía T2** + Biología celular 1 + Documentación 1 + Antropología 4 + Epidemiología 1 | 9 |
-| Dim. 18 | 05:30 → 06:10 · 07:20 → 10:50 · 17:30 → 19:00 | Documentación 2 + **Anatomía T3** + Epidemiología 2 + Biología celular 2 (11:20 : diagnostic d'espagnol) | 13 |
-| Lun. 19 | 07:20 → 12:10 · 13:00 → 13:40 | **Anatomía T4** + Biología celular 3 + Epidemiología 3 + Documentación 3 | 17 |
-| Mar. 20 | 07:20 → 11:50 · 13:00 → 13:40 | Biología celular 4 + Epidemiología 4 + Biología celular 5 + Documentación 4 | 21 |
-| Mer. 21 | 07:20 → 11:50 | Epidemiología 5 — **les 16 de retard sont faits** — + Biología celular 6 + Epidemiología 6 | 24 |
-| Jeu. 22 | 07:20 → 12:10 | Biología celular 7 + Epidemiología 7 + **Anatomía T5** | 27 |
-| Ven. 23 | 08:20 → 11:20 | Biología celular 8 + Biología celular 9 — **file vide à 11:20** | **29** |
+| Sam. 17 | 07:20 → 10:50 · 14:30 → 15:10 · 16:00 → 16:40 · 18:00 → 19:30 | **Anatomía T1** + Biología celular 1 + Documentación 1 + Antropología 1 + Epidemiología 1 | 5 |
+| Dim. 18 | 05:30 → 06:10 · 07:20 → 10:50 · 17:30 → 19:00 | Documentación 2 + **Anatomía T2** + Epidemiología 2 + Biología celular 2 (11:20 : diagnostic d'espagnol) | 9 |
+| Lun. 19 | 07:20 → 12:10 · 13:00 → 13:40 | **Anatomía T3** + Biología celular 3 + Epidemiología 3 + Documentación 3 | 13 |
+| Mar. 20 | 07:20 → 11:50 · 13:00 → 13:40 | Biología celular 4 + Epidemiología 4 + Biología celular 5 + Documentación 4 | 17 |
+| Mer. 21 | 07:20 → 11:50 · 13:00 → 13:40 | Epidemiología 5 + Biología celular 6 + Epidemiología 6 + Antropología 2 — **les 16 de retard sont faits** | 21 |
+| Jeu. 22 | 07:20 → 12:10 | Biología celular 7 + Epidemiología 7 + **Anatomía T4** | 24 |
+| Ven. 23 | 07:20 → 11:40 | Biología celular 8 + Biología celular 9 + Antropología 3 + Antropología 4 | 28 |
+| Sam. 24 | 07:20 → 09:10 | **Anatomía T5** — **file vide à 09:10** | **29** |
 
 Les nouveaux temas sont comptés large (le semestre, semaine par semaine) : semaines du 5 et du 12 —
 Anatomía T3 histología et T4 piel, Biología celular T5 à T8, Epidemiología T6 et T7,
 Antropología T3 et T4 —, puis la semaine du 19 (Anatomía T5-T6, Biología T9, Epidemiología T8-T9).
-Ordre des échéances : Antropología T1-T3 avant le vendredi 16, puis **Anatomía** (cuestionario 2,
-T3 à T6, la semaine du 2 novembre), puis les plus anciens. Si la file en compte moins, elle se vide
+Ordre des échéances : **Anatomía** dans l'ordre des temas (cuestionario 2, T3 à T6, la semaine du
+2 novembre), puis les plus anciens ; le cuestionario d'Antropología T1-T3 est passé (vendredi 16). Si la file en compte moins, elle se vide
 plus tôt : les blocs reprennent leur consigne habituelle, et à partir de là, 1 tema par jour.
 
 À ne pas oublier à côté : l'**infografía** d'Epidemiología (10 %, à rendre fin octobre, date sur
@@ -52,7 +53,7 @@ Un créneau de 3 heures tient donc 2 temas du socle, ou 1 du socle et 2 courts.
 
 **L'ordre suit les échéances, pas les numéros** :
 1. Anatomía T1 (homeostasis) et T2 (sangre) : cuestionario 1 le mercredi 7 ou le jeudi 8 octobre.
-2. Antropología T1 à T3 : cuestionario le vendredi 16 octobre.
+2. Antropología T1 à T3 : cuestionario le vendredi 16 octobre (passé ; restent à apprendre pour l'examen).
 3. Biología celular et Epidemiología, en alternance : leur examen est en janvier, aucun
    cuestionario sur les temas avant.
 

@@ -1,7 +1,7 @@
 # Programme d'alimentation — La Batcave
 
 Copie de référence du plan appliqué dans la Batcave (onglets Repas, Préparation et Courses),
-au **vendredi 16 octobre 2026, jour 1**. Si un chiffre diverge, c'est l'application qui fait foi : les
+au **samedi 17 octobre 2026, jour 1**. Si un chiffre diverge, c'est l'application qui fait foi : les
 macros, la liste de courses et la préparation sortent toutes de la même source (`compoRepas`).
 
 ## Le cadre
@@ -10,14 +10,14 @@ macros, la liste de courses et la préparation sortent toutes de la même source
   392 g · lipides 115 g**, en quatre prises.
 - **Jours de combat** (lundi, mercredi, vendredi : le JJB, à partir du lundi 26 octobre) :
   **3 549 kcal · protéines 149 g**, avec une cinquième prise, la collation combat.
-- **Le plan entier dès le jour 1, vendredi 16 octobre** : plus de semaine à 85 % (décision du
-  15 octobre : « on commence vendredi pour de bon »). Jusqu'au 25, sans JJB, tous les jours sont des jours sans combat. Mange aux heures prévues, même sans faim.
+- **Le plan entier dès le jour 1, samedi 17 octobre** : plus de semaine à 85 % (décision du
+  16 octobre : « samedi matin sans faute »). Jusqu'au 25, sans JJB, tous les jours sont des jours sans combat. Mange aux heures prévues, même sans faim.
 - Tout est pesé **cru**. Pas de lait (acné) : boisson d'avoine. Pas de sauce au skyr (sortie le
   29 septembre) : le goût vient des **sauces du jour** (plus bas), fixes, une par repas.
 - **100 g de légumes par repas** depuis le 14 octobre (sa demande : 200 g lui remplissaient trop
   l'estomac, et il en jetait) : 200 g par jour au lieu de 350.
 
-## Les repas (à partir du vendredi 16 octobre)
+## Les repas (à partir du samedi 17 octobre)
 | Repas | Heure | Contenu | kcal · protéines |
 |---|---|---|---|
 | Petit-déjeuner (shake) | 06:45 | boisson d'avoine 300 ml, skyr 150 g, flocons d'avoine 80 g, banane 120 g, miel 20 g, amandes ou noix 30 g | 888 · 39 g |
@@ -51,7 +51,7 @@ du séché), environ 450 g de tomate concassée (deux briques).
 
 ## La boucle poids → calories
 Une pesée **un dimanche sur deux, à jeun**. Rien ne se lit pendant les trois premières semaines
-(jusqu'au 6 novembre) : la balance monte d'un à trois kilos d'eau et de glycogène, ce n'est pas
+(jusqu'au 7 novembre) : la balance monte d'un à trois kilos d'eau et de glycogène, ce n'est pas
 du gras. Ensuite, dès quatre pesées, la Batcave calcule la pente : trop lente (moins de la
 moitié du rythme visé), elle propose **+150 kcal**, soit +40 g de pâtes crues au dîner ; trop
 rapide (plus de 1,5 fois le rythme), **−100 kcal**. Elle propose, tu valides.
