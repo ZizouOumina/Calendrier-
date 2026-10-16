@@ -25,7 +25,7 @@ const MARDI = '2026-09-08T10:00:00+02:00';
 /* La boucle poids -> calories ecarte les pesees d'avant le 10 octobre (glycogene et eau
    du changement d'alimentation). Le 3 novembre est un mardi comme le 8 septembre :
    meme rotation, memes macros. */
-const MARDI_KCAL = '2026-11-24T10:00:00+01:00';   /* 15 octobre : jour 1 au vendredi 16, stabilisation jusqu'au 6 novembre -- les quatorze jours de pesees tombent tous apres */
+const MARDI_KCAL = '2026-11-24T10:00:00+01:00';   /* 16 octobre : jour 1 au samedi 17, stabilisation jusqu'au 7 novembre -- les quatorze jours de pesees tombent tous apres */
 const page_ = (fr, p) => fr.evaluate(x => { document.querySelector('.nav-btn[data-page="' + x + '"]').click(); }, p);
 
 console.log('\n== 180) Sans ajustement : plan de base, liste = plan × 7 ==');

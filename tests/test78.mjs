@@ -155,8 +155,9 @@ console.log('\n== 7) Rattrapage unique après une absence ==');
      Depuis le 4 octobre, le jour 1 est le lundi 5 : retour le mercredi 7, les 5 et 6 sans cloture.
      Depuis le 12 octobre, le jour 1 est le mardi 13 : retour le jeudi 15, les 13 et 14 sans cloture.
      Depuis le 14 octobre, le jour 1 est le jeudi 15 : retour le samedi 17, les 15 et 16 sans cloture.
-     Depuis le 15 octobre, le jour 1 est le vendredi 16 : retour le dimanche 18, les 16 et 17 sans cloture. */
-  const {ctx, page, fr} = await ouvrir({'batcave-last-open':'2026-09-16'}, '2026-10-18T10:00:00+02:00');
+     Depuis le 15 octobre, le jour 1 est le vendredi 16 : retour le dimanche 18, les 16 et 17 sans cloture.
+     Depuis le 16 octobre, le jour 1 est le samedi 17 : retour le lundi 19, les 17 et 18 sans cloture. */
+  const {ctx, page, fr} = await ouvrir({'batcave-last-open':'2026-09-16'}, '2026-10-19T10:00:00+02:00');
   const t = await plan(fr);
   const l = t.split('\n').filter(x=>/Absence —/.test(x))[0] || '';
   ok(/2 journées sans clôture/.test(l), 'un seul item pour toute l\'absence : ' + l.trim().slice(0, 90));

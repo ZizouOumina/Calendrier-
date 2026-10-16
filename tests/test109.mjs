@@ -45,9 +45,10 @@ console.log('\n== 401) Santé de la Batcave : six contrôles, un relevé qui ne 
   await ctx.close();
 }
 {
-  /* la clôture n'est due qu'à partir du jour 1 (mardi 13 octobre depuis le 12 octobre) */
-  const seed = {'batcave-journal-2026-10-13': {sommeil:'7', cloture:'21:20'}};
-  const { ctx, page, fr } = await ouvrir('2026-10-16T10:00:00+02:00', seed);
+  /* la clôture n'est due qu'à partir du jour 1 (mardi 13 octobre depuis le 12 octobre ;
+     samedi 17 depuis le 16 octobre) : on lit le jour 1, avec une clôture du mercredi 14. */
+  const seed = {'batcave-journal-2026-10-14': {sommeil:'7', cloture:'21:20'}};
+  const { ctx, page, fr } = await ouvrir('2026-10-17T10:00:00+02:00', seed);
   const r = await fr.evaluate(() => ({ vide: window.__bcAppVide(), sante: window.__bcSante().filter(c => !c.ok).map(c => c.id), releve: document.getElementById('bc-sante').hidden, txt: document.querySelector('#bc-sante .v').textContent }));
   ok(r.vide === false, 'une clôture suffit : l\'appli n\'est plus neuve');
   ok(r.sante.join(',') === 'sauvegarde,exercice,cloture', 'trois défauts : aucune sauvegarde, aucun exercice, clôture vieille de 3 jours (' + r.sante.join(', ') + ')');
