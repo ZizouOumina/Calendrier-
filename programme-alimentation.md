@@ -13,7 +13,8 @@ macros, la liste de courses et la préparation sortent toutes de la même source
 - **Le plan entier dès le jour 1, samedi 17 octobre** : plus de semaine à 85 % (décision du
   16 octobre : « samedi matin sans faute »). Jusqu'au 25, sans JJB, tous les jours sont des jours sans combat. Mange aux heures prévues, même sans faim.
 - Tout est pesé **cru**. Pas de lait (acné) : boisson d'avoine. Pas de sauce au skyr (sortie le
-  29 septembre) : le goût vient des **sauces du jour** (plus bas), fixes, une par repas.
+  29 septembre) : le goût vient des **sauces du jour** (plus bas), fixes, une par repas, faites
+  de ses condiments depuis le 18 octobre.
 - **100 g de légumes par repas** depuis le 14 octobre (sa demande : 200 g lui remplissaient trop
   l'estomac, et il en jetait) : 200 g par jour au lieu de 350.
 
@@ -29,25 +30,27 @@ macros, la liste de courses et la préparation sortent toutes de la même source
 Rotation fixe : **poulet tous les midis, viande hachée 5 % tous les soirs**. Riz à midi, pâtes le
 soir. Créatine 5 g par jour, avec le dîner.
 
-## Les sauces du jour (fixes depuis le 14 octobre)
+## Les sauces du jour (fixes depuis le 14 octobre, ses condiments depuis le 18)
 Une sauce par repas et par jour, toujours la même : rien à décider au moment de manger. La
-Batcave l'écrit dans le plan du jour et dans la consigne des blocs Déjeuner et Dîner. Toutes
-sans lait, sans alcool, presque sans sucre, montées avec l'huile crue déjà prévue au repas :
-elles ne changent pas les macros. Le pesto prend la place des 5 ml d'huile crue du soir.
+Batcave l'écrit dans le plan du jour et dans la consigne des blocs Déjeuner et Dîner. Depuis le
+18 octobre, elles sont faites de ses condiments à lui : moutarde, sauce soja, harissa, crème de
+cuisson, parmesan, pesto verde, pesto rosso. **La crème ou le pesto remplace l'huile crue du
+repas** (10 ml à midi, 5 ml le soir) ; les **10 g de parmesan** se prennent sur les 20 g de
+fromage de la collation. Les macros ne bougent pas.
 
-| Jour | Midi (riz) | Soir (pâtes) |
+| Jour | Midi (riz + poulet) | Soir (pâtes + viande hachée) |
 |---|---|---|
-| Lundi | Soja-ail : 1 c. à soupe de sauce soja, 1 gousse d'ail, les 10 ml d'huile crue | Tomate-ail : 100 g de tomate concassée, ail, origan |
-| Mardi | Citron-cumin : ½ citron, ½ c. à café de cumin, ail | Pesto : 1 c. à soupe (15 g) |
-| Mercredi | Harissa-tomate : 1 c. à café de harissa, 2 c. à soupe de tomate concassée | Arrabbiata : 100 g de tomate concassée, ail, piment |
-| Jeudi | Curry : 1 c. à café de curry chauffé dans l'huile, 2 c. à soupe de tomate concassée | Ail-huile-piment : ail doré, piment, persil |
-| Vendredi | Chimichurri : persil, ail, 1 c. à soupe de vinaigre, piment | Pesto : 1 c. à soupe (15 g) |
-| Samedi | Moutarde-citron : 1 c. à café de moutarde, ½ citron | Bolognaise : 100 g de tomate concassée, ail, origan, la viande dedans |
-| Dimanche | Paprika-ail : 1 c. à café de paprika fumé, ail | Tomate-harissa : 100 g de tomate concassée, 1 c. à café de harissa |
+| Lundi | Soja-moutarde : 1 c. à soupe de soja, 1 c. à café de moutarde, les 10 ml d'huile crue | Pesto rosso : 1 c. à soupe (15 g) |
+| Mardi | Crème-moutarde : 2 c. à soupe de crème, 1 c. à café de moutarde, chauffées avec le poulet | Pesto verde-parmesan : 15 g de pesto, 10 g de parmesan |
+| Mercredi | Harissa-soja : ½ c. à café de harissa, 1 c. à soupe de soja, les 10 ml d'huile crue | Crème-parmesan : 2 c. à soupe de crème, 10 g de parmesan, poivre |
+| Jeudi | Soja-moutarde | Rosso-harissa : 15 g de pesto rosso, une pointe de harissa |
+| Vendredi | Crème-harissa : 2 c. à soupe de crème, ½ c. à café de harissa | Pesto verde-parmesan |
+| Samedi | Crème-moutarde | Pesto rosso crémeux : 15 g de pesto rosso, 1 c. à soupe de crème |
+| Dimanche | Harissa-soja | Crème-parmesan |
 
-Le placard, une fois : sauce soja, harissa, moutarde, curry, cumin, paprika fumé, origan,
-piment, vinaigre, pesto. Chaque semaine : une tête d'ail, deux citrons, un bouquet de persil (ou
-du séché), environ 450 g de tomate concassée (deux briques).
+Crème et parmesan sont laitiers : 2 à 3 cuillères de crème au plus par repas, 10 g de parmesan.
+Si des boutons apparaissent, la crème sort la première. Les condiments ont leur carte dans
+l'onglet Courses : hors du total, il coche ce qui manque et écrit lui-même la quantité.
 
 ## La boucle poids → calories
 Une pesée **un dimanche sur deux, à jeun**. Rien ne se lit pendant les trois premières semaines
@@ -60,7 +63,8 @@ rapide (plus de 1,5 fois le rythme), **−100 kcal**. Elle propose, tu valides.
 Ce que tu manges vaut **42,33 € par semaine** (183,42 € par mois). En caisse, conditionnements
 et cycles compris, tu paies **≈ 201 € par mois** (46,34 € par semaine en moyenne : 33,79 € un
 samedi ordinaire, jusqu'à 63,92 € quand surgelés, réserves et huile tombent ensemble). Les
-condiments des sauces ne sont pas dans la liste : quelques euros par mois, hors plan. Le samedi
+condiments des sauces ont leur carte à part, hors du total : il coche ce qui manque et écrit la
+quantité. Le samedi
 à 13:30 ; la première fois, le mardi 6 octobre (toutes les réserves). La liste
 de l'onglet Courses est calculée pour le plan entier : skyr 1,05 kg (7 boîtes), 18 œufs,
 amandes 3 sachets, poulet, viande hachée 5 %, riz, pâtes, flocons, boisson d'avoine, bananes,

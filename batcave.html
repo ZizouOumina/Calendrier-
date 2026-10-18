@@ -3037,6 +3037,7 @@
 
       <p class="sub-note" id="courses-plan-note" style="margin-bottom:12px; line-height:1.7;"></p>
       <div class="courses-grid" id="courses-grid"></div>
+      <div class="courses-grid" id="courses-condiments" style="margin-top:14px;"></div>
       <p class="sub-note" id="courses-calendrier" style="margin-top:14px; line-height:1.8;"></p>
       <div id="courses-plus-tard" style="margin-top:16px;" hidden></div>
 
@@ -3748,7 +3749,7 @@
      vestige : une fonctionnalite retiree (batcave-matieres) ou un essai. Elle prend de la
      place dans le quota de 5000 documents et embrouille les sauvegardes, sans que rien ne
      la lise jamais. On la signale ; la suppression reste ton geste. */
-  var CLES_CONNUES = ['addictions','budget-limits','business','coran','courses','dash-more','duaas','duree-bloc','sport-log','objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','courses-plan-v3','courses-plan-v4','courses-plan-v5','courses-plan-v6','courses-plan-v7','courses-plan-v8','courses-plan-v9','courses-plan-v10','charges-v2','plafond-nourriture-v2','plafond-nourriture-v3','plafond-nourriture-v4','plafond-nourriture-v5','plafond-nourriture-v6','plafond-nourriture-v7','gcal-controle','ancre-dimanche-v1','ancre-dimanche-v2','serviettes-v1','coiffeur-v1','shampoing-dim-v1','marche-cible-v1','cardio','kcal-ajustement','gcal-ecriture','reinit','fc-migration-v1','fc-migration-v2','fc-migration-v3','fc-migration-v4','livrables','shampoing-combat-v1','shampoing-samedi-v1','charge','shopify-boutique','journees','examens-heures','vacances','jours-exclus',
+  var CLES_CONNUES = ['addictions','budget-limits','business','coran','courses','condiments','dash-more','duaas','duree-bloc','sport-log','objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','courses-plan-v3','courses-plan-v4','courses-plan-v5','courses-plan-v6','courses-plan-v7','courses-plan-v8','courses-plan-v9','courses-plan-v10','charges-v2','plafond-nourriture-v2','plafond-nourriture-v3','plafond-nourriture-v4','plafond-nourriture-v5','plafond-nourriture-v6','plafond-nourriture-v7','gcal-controle','ancre-dimanche-v1','ancre-dimanche-v2','serviettes-v1','coiffeur-v1','shampoing-dim-v1','marche-cible-v1','cardio','kcal-ajustement','gcal-ecriture','reinit','fc-migration-v1','fc-migration-v2','fc-migration-v3','fc-migration-v4','livrables','shampoing-combat-v1','shampoing-samedi-v1','charge','shopify-boutique','journees','examens-heures','vacances','jours-exclus',
     'espagnol','examens','cours-suivi','portes','periodes-closes','fc-prix-icloud-3','fc-prix-club-100','fc-prix-club-70','fixed-charges','goals','goals-depart','saisons','insights-hist','last-restore-drill','habitlog','habits','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','habits-seed-v7','habits-seed-v8','habits-seed-v9','habits-seed-v10','habits-seed-v11','objectifs-v5-espanol',
     'horizon','last-auto-backup','last-manual-backup','last-bilan-prompt','last-compaction','last-open','last-rotation','notion-url',
     'pomodial-purge','projets','report','revision','revision-fusionnee','revue','sante','sauvegarde','sessions',
@@ -8345,24 +8346,35 @@
      porte des calories ; il prend la place des 5 ml d'huile crue du diner (15 g de pesto,
      ~70 kcal contre 44 : l'ecart est sous le bruit de la boucle). Le riz du midi va avec
      les sauces seches et acides ; les pates du soir avec les sauces tomate et le pesto. */
+  /* ===== 18 octobre : ses condiments a lui =====
+     « J'ai de la moutarde, de la sauce soja, de la harissa, de la creme de cuisson, du
+     parmesan, du pesto verde et du pesto rosso [...] je peux faire quoi avec ca » -- puis
+     « vas-y fais ca ». La semaine fixe se construit sur ce qu'il a, et rien d'autre : plus
+     de tomate concassee, de citron ni d'epices a racheter. Les regles qui tiennent les
+     macros a leur place : la creme ou le pesto REMPLACE l'huile crue du repas (10 ml a
+     midi, 5 ml le soir ; « sansHuile »), et les 10 g de parmesan se prennent sur les 20 g
+     de fromage de la collation. Creme et parmesan sont laitiers : 2 a 3 cuilleres de creme
+     au plus par repas, 10 g de parmesan -- s'il voit des boutons, la creme sort la
+     premiere. « ingr » nomme les condiments de la sauce : la carte Condiments des courses
+     s'en sert pour dire quels repas en dependent. */
   var SAUCES = {
     dej:{
-      1:{nom:'Soja-ail', recette:'1 c. à soupe de sauce soja, 1 gousse d\'ail râpée, les 10 ml d\'huile crue'},
-      2:{nom:'Citron-cumin', recette:'le jus d\'un demi-citron, ½ c. à café de cumin, 1 gousse d\'ail, les 10 ml d\'huile crue'},
-      3:{nom:'Harissa-tomate', recette:'1 c. à café de harissa, 2 c. à soupe de tomate concassée, les 10 ml d\'huile crue'},
-      4:{nom:'Curry', recette:'1 c. à café de curry en poudre chauffé 30 s dans l\'huile de cuisson, 2 c. à soupe de tomate concassée'},
-      5:{nom:'Chimichurri', recette:'persil haché (frais ou séché), 1 gousse d\'ail, 1 c. à soupe de vinaigre, une pincée de piment, les 10 ml d\'huile crue'},
-      6:{nom:'Moutarde-citron', recette:'1 c. à café de moutarde, le jus d\'un demi-citron, les 10 ml d\'huile crue'},
-      0:{nom:'Paprika-ail', recette:'1 c. à café de paprika fumé, 1 gousse d\'ail, les 10 ml d\'huile crue'}
+      1:{nom:'Soja-moutarde', recette:'1 c. à soupe de sauce soja, 1 c. à café de moutarde, les 10 ml d\'huile crue', ingr:['Sauce soja','Moutarde']},
+      2:{nom:'Crème-moutarde', recette:'2 c. à soupe de crème de cuisson et 1 c. à café de moutarde, chauffées 1 min avec le poulet, à la place des 10 ml d\'huile crue', ingr:['Crème de cuisson','Moutarde'], sansHuile:true},
+      3:{nom:'Harissa-soja', recette:'½ c. à café de harissa, 1 c. à soupe de sauce soja, les 10 ml d\'huile crue', ingr:['Harissa','Sauce soja']},
+      4:{nom:'Soja-moutarde', recette:'1 c. à soupe de sauce soja, 1 c. à café de moutarde, les 10 ml d\'huile crue', ingr:['Sauce soja','Moutarde']},
+      5:{nom:'Crème-harissa', recette:'2 c. à soupe de crème de cuisson et ½ c. à café de harissa, chauffées 1 min avec le poulet, à la place des 10 ml d\'huile crue', ingr:['Crème de cuisson','Harissa'], sansHuile:true},
+      6:{nom:'Crème-moutarde', recette:'2 c. à soupe de crème de cuisson et 1 c. à café de moutarde, chauffées 1 min avec le poulet, à la place des 10 ml d\'huile crue', ingr:['Crème de cuisson','Moutarde'], sansHuile:true},
+      0:{nom:'Harissa-soja', recette:'½ c. à café de harissa, 1 c. à soupe de sauce soja, les 10 ml d\'huile crue', ingr:['Harissa','Sauce soja']}
     },
     din:{
-      1:{nom:'Tomate-ail', recette:'100 g de tomate concassée, 1 gousse d\'ail, origan, 5 min à la poêle avec la viande'},
-      2:{nom:'Pesto', recette:'1 c. à soupe de pesto (15 g) à la place des 5 ml d\'huile crue'},
-      3:{nom:'Arrabbiata', recette:'100 g de tomate concassée, 1 gousse d\'ail, une pincée de piment, 5 min à la poêle avec la viande'},
-      4:{nom:'Ail-huile-piment', recette:'1 gousse d\'ail dorée dans l\'huile de cuisson, une pincée de piment, persil'},
-      5:{nom:'Pesto', recette:'1 c. à soupe de pesto (15 g) à la place des 5 ml d\'huile crue'},
-      6:{nom:'Bolognaise', recette:'100 g de tomate concassée, ail, origan, la viande hachée mijotée dedans 5 min'},
-      0:{nom:'Tomate-harissa', recette:'100 g de tomate concassée, 1 c. à café de harissa, 5 min à la poêle avec la viande'}
+      1:{nom:'Pesto rosso', recette:'1 c. à soupe de pesto rosso (15 g), à la place des 5 ml d\'huile crue', ingr:['Pesto rosso'], sansHuile:true},
+      2:{nom:'Pesto verde-parmesan', recette:'1 c. à soupe de pesto verde (15 g) à la place des 5 ml d\'huile crue, 10 g de parmesan (pris sur le fromage de la collation)', ingr:['Pesto verde','Parmesan'], sansHuile:true},
+      3:{nom:'Crème-parmesan', recette:'2 c. à soupe de crème de cuisson chauffées avec les pâtes, 10 g de parmesan (pris sur le fromage de la collation), poivre, à la place des 5 ml d\'huile crue', ingr:['Crème de cuisson','Parmesan'], sansHuile:true},
+      4:{nom:'Rosso-harissa', recette:'1 c. à soupe de pesto rosso (15 g) et une pointe de harissa, à la place des 5 ml d\'huile crue', ingr:['Pesto rosso','Harissa'], sansHuile:true},
+      5:{nom:'Pesto verde-parmesan', recette:'1 c. à soupe de pesto verde (15 g) à la place des 5 ml d\'huile crue, 10 g de parmesan (pris sur le fromage de la collation)', ingr:['Pesto verde','Parmesan'], sansHuile:true},
+      6:{nom:'Pesto rosso crémeux', recette:'1 c. à soupe de pesto rosso (15 g) et 1 c. à soupe de crème de cuisson, à la place des 5 ml d\'huile crue', ingr:['Pesto rosso','Crème de cuisson'], sansHuile:true},
+      0:{nom:'Crème-parmesan', recette:'2 c. à soupe de crème de cuisson chauffées avec les pâtes, 10 g de parmesan (pris sur le fromage de la collation), poivre, à la place des 5 ml d\'huile crue', ingr:['Crème de cuisson','Parmesan'], sansHuile:true}
     }
   };
   function sauceDuJour(repas, iso){
@@ -12875,6 +12887,7 @@
           }).join(' · ')
         : '';
     }
+    renderCondiments();
     /* Les cases sont maintenant dans deux grilles -- celle du jour et le repli « pas
        aujourd'hui ». Ecouter la seule premiere aurait rendu le repli inerte. */
     document.querySelectorAll('#courses-grid input[type="checkbox"], #courses-grid-plus input[type="checkbox"]').forEach(function(cb){
@@ -12883,6 +12896,60 @@
         save('batcave-courses', coursesState);
         synchroniserHabitudeCourses();
         renderCourses(); renderCoursesSummary(); renderDashboard(); renderHabits();
+      });
+    });
+  }
+  /* ===== Les condiments (18 octobre) =====
+     « Rajoute a ma liste de courses, je choisirai les quantites au fur et a mesure, tu mets
+     un onglet condiment. » Ce sont les condiments des sauces du jour : ils ne sortent pas
+     du plan de repas (une cuillere par-ci, 10 g par-la), donc pas de quantite calculee, pas
+     de prix, pas de cycle -- il les prend quand il en manque, a la quantite qu'il ecrit
+     lui-meme. Ils vivent HORS de COURSES, dans leur propre cle : les coches de COURSES sont
+     indexees par position, et ces lignes ne doivent ni compter dans « x/11 articles
+     coches » ni bloquer l'habitude « Courses faites ». Chaque ligne dit quels repas de la
+     semaine en dependent, lu dans SAUCES : quand une sauce change, la ligne suit. */
+  var CONDIMENTS = ['Moutarde', 'Sauce soja', 'Harissa', 'Crème de cuisson', 'Parmesan', 'Pesto verde', 'Pesto rosso'];
+  var condimentsState = load('batcave-condiments', {coches:{}, qte:{}});
+  if(!condimentsState || typeof condimentsState !== 'object') condimentsState = {coches:{}, qte:{}};
+  if(!condimentsState.coches) condimentsState.coches = {};
+  if(!condimentsState.qte) condimentsState.qte = {};
+  function usageCondiment(nom){
+    var jours = ['dim.','lun.','mar.','mer.','jeu.','ven.','sam.'], ordre = [1,2,3,4,5,6,0], out = [];
+    [['dej','midi'],['din','soir']].forEach(function(r){
+      var d = ordre.filter(function(k){ var sc = SAUCES[r[0]][k]; return sc && (sc.ingr || []).indexOf(nom) > -1; });
+      if(d.length) out.push(r[1] + ' ' + d.map(function(k){ return jours[k]; }).join(', '));
+    });
+    return out.join(' · ');
+  }
+  function renderCondiments(){
+    var box = document.getElementById('courses-condiments');
+    if(!box || !condimentsState) return;   /* appel d'avant l'initialisation de l'etat */
+    var n = CONDIMENTS.filter(function(c){ return condimentsState.coches[c]; }).length;
+    var lignes = CONDIMENTS.map(function(c, i){
+      var coche = !!condimentsState.coches[c], u = usageCondiment(c), q = condimentsState.qte[c] || '';
+      return '<li class="' + (coche ? 'checked' : '') + '">' +
+        '<input type="checkbox" id="cd-' + i + '" data-condiment="' + escapeHtml(c) + '"' + (coche ? ' checked' : '') + '>' +
+        '<label for="cd-' + i + '">' + escapeHtml(c) + (u ? ' <span class="sub-note">— ' + u + '</span>' : '') + '</label>' +
+        '<input type="text" data-condiment-qte="' + escapeHtml(c) + '" value="' + escapeHtml(q) + '" placeholder="quantité" aria-label="Quantité de ' + escapeHtml(c) + '" ' +
+        'style="flex:0 0 92px; width:92px; min-width:0; background:var(--surface-raised); border:1px solid var(--border); color:var(--ink); border-radius:6px; padding:4px 7px; font-size:12px;">' +
+        '</li>';
+    }).join('');
+    box.innerHTML = '<div class="cat-card" style="grid-column:1 / -1;"><h4>Condiments</h4>' +
+      '<p class="sub-note" style="margin:0 0 6px;">quand il en manque · la quantité, c\'est toi qui l\'écris · hors du total' + (n ? ' · <b style="color:var(--ink-dim);">' + n + ' à prendre</b>' : '') + '</p>' +
+      '<ul>' + lignes + '</ul></div>';
+    box.querySelectorAll('input[data-condiment]').forEach(function(cb){
+      cb.addEventListener('change', function(){
+        condimentsState.coches[cb.dataset.condiment] = cb.checked;
+        if(!cb.checked) delete condimentsState.coches[cb.dataset.condiment];
+        save('batcave-condiments', condimentsState);
+        renderCondiments();
+      });
+    });
+    box.querySelectorAll('input[data-condiment-qte]').forEach(function(inp){
+      inp.addEventListener('change', function(){
+        var v = inp.value.trim();
+        if(v) condimentsState.qte[inp.dataset.condimentQte] = v; else delete condimentsState.qte[inp.dataset.condimentQte];
+        save('batcave-condiments', condimentsState);
       });
     });
   }
@@ -12912,6 +12979,9 @@
     });
     coursesState = garde;
     save('batcave-courses', coursesState);
+    /* les condiments achetes se decochent ; les quantites ecrites restent */
+    condimentsState.coches = {};
+    save('batcave-condiments', condimentsState);
     renderCourses(); renderCoursesSummary(); renderDashboard(); renderHabits();
   });
 
@@ -15587,7 +15657,7 @@
     'Dîner': function(d, iso){
       var c = compoRepas('Dîner', iso, false), g = function(k){ var x = c.filter(function(y){ return y.c === k; })[0]; return x ? Math.round(x.q) : 0; };
       var sc = sauceDuJour('din', iso);
-      return "La boîte du jour : pâtes " + g('pates') + " g crues, viande hachée " + g('hachee') + " g, " + g('legumes') + " g de légumes, à la poêle. Sauce du jour — " + sc.nom + " : " + sc.recette + (sc.nom === 'Pesto' ? "" : " ; hors du feu, 5 ml d'huile d'olive crue") + ". Un fruit. La créatine, 5 g, avec le repas. Ensuite plus rien jusqu'au lendemain.";
+      return "La boîte du jour : pâtes " + g('pates') + " g crues, viande hachée " + g('hachee') + " g, " + g('legumes') + " g de légumes, à la poêle. Sauce du jour — " + sc.nom + " : " + sc.recette + (sc.sansHuile ? "" : " ; hors du feu, 5 ml d'huile d'olive crue") + ". Un fruit. La créatine, 5 g, avec le repas. Ensuite plus rien jusqu'au lendemain.";
     },
     'Temps libre': {defaut: "Libre.", 0: "10 minutes pour la revue du dimanche guidée (onglet Études), le reste est libre."},
     'Coucher': "Clôture du jour faite ? Écran off, réveil posé loin du lit.",
