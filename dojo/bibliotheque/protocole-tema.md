@@ -12,22 +12,22 @@ espagnol**. Changement du 1er octobre : 40 minutes, c'était calibré pour 10 pa
 chacun), Biología celular 4 (60 pages chacun, 1 h 30), Epidemiología y bioestadística 5 (1 h 30),
 Documentación 2 et Antropología 2 (version courte, 40 min). Environ 22 heures en tout.
 
-**Le plan intensif du 15 octobre, recalé le 16** (jour 1 au samedi 17 ; sa décision : « je vais faire
-5 temas par jour », puis « samedi matin sans faute ») : 5 le samedi 17, 4 du dimanche au mercredi, 3 le
-jeudi, 4 le vendredi 23, et le dernier le samedi 24 au matin. Tous les blocs d'espagnol restent ; le temps
-vient des créneaux d'Anki (pas encore de cartes) et des blocs d'étude. Les révisions Anki se font dans
-le tram jusqu'au vendredi 23.
+**Le plan intensif du 15 octobre, recalé le 19** (jour 1 au mardi 20 ; sa décision : « je vais faire
+5 temas par jour », puis « on décale tout à demain, premier jour ») : 4 le mardi, le mercredi et le
+vendredi, 3 le jeudi, 5 le samedi 24, 4 le dimanche, 2 le lundi 26 (le JJB reprend), 3 le mardi 27.
+Tous les blocs d'espagnol restent ; le temps vient des créneaux d'Anki (pas encore de cartes) et des
+blocs d'étude. Les révisions Anki se font dans le tram jusqu'au mardi 27.
 
 | Jour | Créneaux | Temas | Fait |
 |---|---|---|---|
-| Sam. 17 | 07:20 → 10:50 · 14:30 → 15:10 · 16:00 → 16:40 · 18:00 → 19:30 | **Anatomía T1** + Biología celular 1 + Documentación 1 + Antropología 1 + Epidemiología 1 | 5 |
-| Dim. 18 | 05:30 → 06:10 · 07:20 → 10:50 · 17:30 → 19:00 | Documentación 2 + **Anatomía T2** + Epidemiología 2 + Biología celular 2 (11:20 : diagnostic d'espagnol) | 9 |
-| Lun. 19 | 07:20 → 12:10 · 13:00 → 13:40 | **Anatomía T3** + Biología celular 3 + Epidemiología 3 + Documentación 3 | 13 |
-| Mar. 20 | 07:20 → 11:50 · 13:00 → 13:40 | Biología celular 4 + Epidemiología 4 + Biología celular 5 + Documentación 4 | 17 |
-| Mer. 21 | 07:20 → 11:50 · 13:00 → 13:40 | Epidemiología 5 + Biología celular 6 + Epidemiología 6 + Antropología 2 — **les 16 de retard sont faits** | 21 |
-| Jeu. 22 | 07:20 → 12:10 | Biología celular 7 + Epidemiología 7 + **Anatomía T4** | 24 |
-| Ven. 23 | 07:20 → 11:40 | Biología celular 8 + Biología celular 9 + Antropología 3 + Antropología 4 | 28 |
-| Sam. 24 | 07:20 → 09:10 | **Anatomía T5** — **file vide à 09:10** | **29** |
+| Mar. 20 | 07:20 → 12:20 · 13:00 → 13:40 | **Anatomía T1** + Biología celular 1 + Epidemiología 1 + Documentación 1 | 4 |
+| Mer. 21 | 07:20 → 12:10 · 13:00 → 13:40 | **Anatomía T2** + Epidemiología 2 + Biología celular 2 + Antropología 1 | 8 |
+| Jeu. 22 | 07:20 → 12:20 | **Anatomía T3** + Biología celular 3 + Epidemiología 3 | 11 |
+| Ven. 23 | 07:20 → 11:40 | Biología celular 4 + Epidemiología 4 + Documentación 2 + Antropología 2 | 15 |
+| Sam. 24 | 07:20 → 10:50 · 14:30 → 15:10 · 16:00 → 16:40 · 18:00 → 19:30 | **Anatomía T4** + Biología celular 5 + Documentación 3 + Antropología 3 + Epidemiología 5 — **les 16 de retard sont faits** | 20 |
+| Dim. 25 | 05:30 → 06:10 · 07:20 → 10:50 · 17:30 → 19:00 | Documentación 4 + **Anatomía T5** + Epidemiología 6 + Biología celular 6 (11:20 : diagnostic d'espagnol) | 24 |
+| Lun. 26 | 07:20 → 09:30 | Biología celular 7 + Antropología 4 (JJB à 10:30) | 26 |
+| Mar. 27 | 07:20 → 11:50 | Epidemiología 7 + Biología celular 8 + Biología celular 9 — **file vide à 11:50** | **29** |
 
 Les nouveaux temas sont comptés large (le semestre, semaine par semaine) : semaines du 5 et du 12 —
 Anatomía T3 histología et T4 piel, Biología celular T5 à T8, Epidemiología T6 et T7,
@@ -73,7 +73,7 @@ compris. Il a ses blocs, réservés à ces trois matières, dès que la file est
 - le temps que libère « Étudier en avance » une fois le flux absorbé (environ 3 h par semaine), et les 2 h de « Question ouverte » ;
 - **Anki**, chaque matin, qui ramène les cartes jusqu'à ce qu'elles tiennent.
 
-**Premier bloc Approfondir : samedi 24 octobre, 09:20** (jusque-là, il sert au rattrapage). Puis chaque samedi 09:20 et mercredi 13:00. Les trois matières
+**Premier bloc Approfondir : mercredi 28 octobre, 13:00** (jusque-là, il sert au rattrapage). Puis chaque samedi 09:20 et mercredi 13:00. Les trois matières
 tournent, en partant de ce qui vient d'être vu au rattrapage : hémostase (Anatomía T2 sangre),
 membrane et signalisation (Biología celular), biais et plans d'étude (bioestadística).
 
