@@ -45,8 +45,7 @@ console.log('\n== 269) Deux oeufs a la place du jambon ==');
   await fr.evaluate(() => document.querySelector('.nav-btn[data-page="repas"]') && document.querySelector('.nav-btn[data-page="repas"]').click());
   await page.waitForTimeout(300);
   const txt = await fr.evaluate(() => document.body.innerText);
-  /* 19 octobre : le plan sans balance -- les oeufs s'affichent en unites (« ceux du dimanche ») */
-  ok(/2 œufs durs — ceux du dimanche/.test(txt) && !/Jambon \(40g\)/.test(txt), 'l\'onglet Repas affiche les œufs, plus le jambon');
+  ok(/2 œufs durs \(100g\)/.test(txt) && !/Jambon \(40g\)/.test(txt), 'l\'onglet Repas affiche les œufs, plus le jambon');
   await ctx.close();
 }
 {

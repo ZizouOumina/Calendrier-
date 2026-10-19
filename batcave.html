@@ -3002,12 +3002,12 @@
       </div>
       <div class="panel" style="margin-bottom:14px;">
         <h3 style="margin-bottom:4px;">Ce qu'il y a à cuire</h3>
-        <p class="sub-note" style="margin:0 0 10px;">Rien ne se pèse : les paquets vont entiers à la cuisson, le boucher a déjà pesé la viande, et tout se partage à l'œil en sept. Les grammes crus restent écrits pour qui veut vérifier.</p>
+        <p class="sub-note" style="margin:0 0 10px;">Tout est pesé CRU, comme le plan. Le poids cuit sert à choisir les boîtes, pas à doser.</p>
         <div id="prep-cuire" class="mini-list"></div>
       </div>
       <div class="panel" style="margin-bottom:14px;">
         <h3 style="margin-bottom:4px;">L'ordre, minuté</h3>
-        <p class="sub-note" style="margin:0 0 10px;">Une heure tient à une condition : le four et les deux casseroles travaillent en même temps. Toi, tu lances, tu égouttes et tu partages.</p>
+        <p class="sub-note" style="margin:0 0 10px;">Deux heures tiennent à une condition : rien n'attend son tour. Le riz et le four démarrent en premier parce qu'ils sont les plus longs et qu'ils n'ont besoin de personne.</p>
         <ol id="prep-ordre" class="prep-ordre"></ol>
       </div>
       <div class="panel" style="margin-bottom:14px;">
@@ -8396,28 +8396,6 @@
     var f = FECULENTS[repas], g = portionReprise(f.g + (repas === 'din' ? grammesAjustement(ajust, f.kcalG) : 0), facteurPortions(iso));
     return 'Féculent cru — ' + f.nom + ' ' + g + 'g' + (repas === 'din' && ajust ? ' (boucle kcal ' + (ajust > 0 ? '+' : '') + ajust + ' kcal)' : '');
   }
-  /* ===== 19 octobre : le plan sans balance =====
-     Sa reponse a « qu'est-ce qui ne va pas dans le plan » : trop long a preparer. Les
-     chiffres ne bougent pas (3 161 kcal, 138 g de proteines) ; c'est la facon de les
-     servir qui change. Chaque aliment qui se pesait chaque jour porte maintenant une
-     mesure de cuisine -- un pot, une poignee, un mug, une tranche --, les grammes restant
-     entre parentheses pour qui veut verifier. Les feculents et la viande ne se pesent
-     plus du tout : ils sortent des boites du dimanche, partagees a l'oeil en sept. */
-  var UNITES_MENAGE = {
-    'Boisson d\'avoine (300 ml)': 'Boisson d\'avoine — un tiers de brique (300 ml)',
-    'Skyr (150g)': 'Skyr — 1 pot (150 g)',
-    'Flocons d\'avoine (80g)': 'Flocons d\'avoine — 1 mug plein (80 g)',
-    'Banane (120g)': 'Banane — 1 (120 g)',
-    'Miel (20g)': 'Miel — 1 cuillère à soupe (20 g)',
-    'Amandes ou noix nature (30g)': 'Amandes ou noix — 1 poignée (30 g)',
-    'Pain complet (60g)': 'Pain complet — 2 tranches (60 g)',
-    '2 œufs durs (100g)': '2 œufs durs — ceux du dimanche',
-    'Fromage (20g)': 'Fromage — 1 tranche (20 g)',
-    'Amandes ou noix nature (40g)': 'Amandes ou noix — 1 grosse poignée (40 g)',
-    'Flocons d\'avoine (50g)': 'Flocons d\'avoine — ⅔ de mug (50 g)',
-    'Amandes ou noix nature (15g)': 'Amandes ou noix — une demi-poignée (15 g)',
-    'Légumes verts (100g)': 'Légumes verts surgelés — 1 grosse poignée, dans la poêle au réchauffage (100 g)'
-  };
   /* Le libellé d'un item : féculent avec l'ajustement du jour (dîner), protéine et huile de
      la rotation du jour (déjeuner et dîner). */
   function texteItemRepas(m, it, ii, iso){
@@ -8425,13 +8403,12 @@
     /* semaine de reprise : les grammes ecrits dans le libelle suivent le facteur, sauf ce
        qui se mange a l'unite (oeufs, banane, fruit) */
     var reduit = function(t){ return (f >= 1 || /œuf|Banane|fruit/i.test(t)) ? t : t.replace(/\((\d+) ?(g|ml)\)/, function(_, n, u){ return '(' + portionReprise(Number(n), f) + (u === 'ml' ? ' ml' : 'g') + ')'; }); };
-    var menage = function(t){ return (f >= 1 && UNITES_MENAGE[t]) || reduit(t); };
-    if(!repas) return menage(it);
-    if(ii === 0) return texteFeculent(repas, repas === 'din' ? ajustementKcalPour(iso || todayISO) : 0, iso) + ' · un septième de la casserole du dimanche';
+    if(!repas) return reduit(it);
+    if(ii === 0) return texteFeculent(repas, repas === 'din' ? ajustementKcalPour(iso || todayISO) : 0, iso);
     var nom = proteineDuJour(repas, iso), p = PROTEINES[nom][repas];
-    if(ii === 1) return 'Protéine crue — ' + nom + ' ' + portionReprise(p.g, f) + 'g · un septième, dans la même boîte';
+    if(ii === 1) return 'Protéine crue — ' + nom + ' ' + portionReprise(p.g, f) + 'g';
     if(ii === 3){ var sc = sauceDuJour(repas, iso); return 'Huile d\'olive (' + p.huile + 'ml) · sauce ' + sc.nom.toLowerCase() + ' : ' + sc.recette; }
-    return menage(it);
+    return reduit(it);
   }
   function texteKcalRepas(m, iso){
     var x = macrosRepas(m, iso);
@@ -12144,51 +12121,37 @@
     });
     return t;
   }
-  /* Un poids de paquet de 1 kg dit en paquets, pour qu'il n'y ait rien a peser : « 1 paquet »,
-     « ¾ de paquet », « 1 paquet + ½ verre ». Le verre (20 cl) tient ~170 g de riz cru. */
-  function enPaquets(g){
-    var q = Math.floor(g / 1000), r = g - q * 1000, fr = ['', '¼', '½', '¾'];
-    if(r >= 875){ q++; r = 0; }
-    var quart = r >= 125 ? Math.round(r / 250) : 0;
-    if(quart >= 4){ q++; quart = 0; }
-    var t = q ? q + ' paquet' + (q > 1 ? 's' : '') + ' de 1 kg' : '';
-    if(quart) t += (t ? ' + ' : '') + fr[quart] + (q ? ' de paquet' : ' d\'un paquet de 1 kg');
-    else if(r >= 40) t += (t ? ' + ' : '') + '½ verre';
-    return t || '½ verre';
-  }
   function renderPrep(){
     var host = document.getElementById('prep-cuire');
     if(!host) return;
     var jours = prepSemaine(todayISO), T = prepTotaux(jours);
-    var sep = function(n){ return String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ' '); };
+    var sep = function(n){ return String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ' '); };
     var poids = function(n){ return n >= 1000 ? String(Math.round(n / 100) / 10).replace('.', ',') + ' kg' : sep(n) + ' g'; };
-    var nOeufs = Math.round(BESOIN_SEMAINE.oeufs || 0);
-    /* 19 octobre, sa reponse : « trop long a preparer ». La session passe de deux heures a
-       une : les legumes ne se cuisent plus le dimanche (une poignee de surgeles va dans la
-       poele au rechauffage, ils cuisent en cinq minutes), le poulet passe au four et cuit
-       seul pendant que la viande hachee est a la poele, et plus rien ne se pese -- les
-       paquets vont entiers a la cuisson et tout se partage a l'oeil en sept. */
+    var dim = jours[0].iso;
     document.getElementById('prep-desc').textContent =
-      'Une session le dimanche à 14:30, une heure, pour les sept repas de midi et les sept du soir. ' +
-      'Les légumes ne se préparent pas — une poignée de surgelés va dans la poêle au réchauffage. ' +
-      'Quatorze boîtes : quatre jours au frigo, trois au congélateur. Le petit-déjeuner et la collation s’assemblent en cinq minutes.';
-    var mesure = {riz: enPaquets(T.riz), pates: enPaquets(T.pates),
-                  poulet: 'tout ce que le boucher a pesé', hachee: 'tout ce que le boucher a pesé'};
-    host.innerHTML = ['riz','pates','poulet','hachee'].filter(function(c){ return T[c] > 0; }).map(function(c){
-      return '<li><span>' + escapeHtml(NOM_ALIMENT[c] || c) + '</span><span><b>' + mesure[c] + '</b> <span class="sub-note">(' + poids(T[c]) + ' crus)</span></span></li>';
+      'Une session le dimanche à 14:30, deux heures, pour les sept repas de midi et les sept du soir. ' +
+      'Quatorze boîtes : quatre jours au frigo, trois au congélateur. Le petit-déjeuner et la collation ne se préparent pas — ils s’assemblent en cinq minutes.';
+    /* Ce qu'il y a a cuire : chaque poste, cru, et ce qu'il pesera cuit. */
+    var postes = ['riz','pates','poulet','hachee','legumes'];
+    host.innerHTML = postes.filter(function(c){ return T[c] > 0; }).map(function(c){
+      var cuit = RENDEMENT[c] ? ' <span class="sub-note">→ ~' + poids(T[c] * RENDEMENT[c]) + ' cuits</span>' : '';
+      return '<li><span>' + escapeHtml(NOM_ALIMENT[c] || c) + '</span><span><b>' + poids(T[c]) + '</b> crus' + cuit + '</span></li>';
     }).join('') +
-      '<li><span>Œufs durs <span class="sub-note">(la collation)</span></span><span><b>' + nOeufs + '</b> <span class="sub-note">— ils tiennent 7 jours en coquille</span></span></li>' +
-      '<li><span>Légumes verts surgelés</span><span><b>rien à cuire</b> <span class="sub-note">— une grosse poignée par repas, au réchauffage</span></span></li>';
+      '<li><span>Huile d\'olive</span><span><b>' + Math.round(T.huile) + ' ml</b> <span class="sub-note">— un tiers à la cuisson, le reste versé froid à l\'assiette</span></span></li>' +
+      '<li><span>Œufs durs <span class="sub-note">(la collation)</span></span><span><b>' + Math.round(BESOIN_SEMAINE.oeufs || 0) + '</b> <span class="sub-note">— ils tiennent 7 jours en coquille</span></span></li>';
+    /* L'ordre. Les durees sont celles des quantites ci-dessus ; les postes longs et
+       autonomes (riz, four) partent en premier, le reste se glisse pendant. */
     var etapes = [
-      [0,  'Four à <b>200 °C</b>. Deux casseroles d\'eau salée sur le feu : une grande (le riz, puis les pâtes), une petite (les œufs).'],
-      [2,  'Le <b>poulet au four</b> — ' + poids(T.poulet) + ', sur une plaque, sel, paprika, un filet d\'huile. 25 min : il cuit seul.'],
-      [5,  'Le <b>riz</b> comme des pâtes — ' + enPaquets(T.riz) + ', 12 à 15 min à découvert. Les <b>' + nOeufs + ' œufs</b> dans la petite casserole, 10 min, puis eau froide : en coquille, ils tiennent la semaine.'],
-      [8,  'La <b>viande hachée</b> à la poêle — ' + poids(T.hachee) + ', en deux fournées pour qu\'elle grille. 10 min.'],
-      [20, '<b>Égoutter le riz</b> et l\'étaler sur une plaque. Dans la même eau, remise à bouillir, les <b>pâtes</b> — ' + enPaquets(T.pates) + ', deux minutes de moins que le paquet.'],
-      [27, 'Sortir le <b>poulet</b> et le couper en morceaux.'],
-      [32, 'Égoutter les pâtes, les étaler. <b>Tout refroidit à découvert, 20 min</b> — la vaisselle pendant ce temps.'],
-      [52, '<b>Partager à l\'œil</b> : le riz en 7 boîtes et le poulet par-dessus, les pâtes en 7 et la viande hachée par-dessus. Le jour écrit sur chaque boîte.'],
-      [60, '<b>8 au frigo</b> (dimanche à mercredi), <b>6 au congélateur</b> (jeudi à samedi). Sortir chaque boîte congelée la veille au soir, au frigo.']
+      [0,  'Le <b>riz</b> comme des pâtes — ' + poids(T.riz) + ' crus, rincés, dans une grande casserole d\'eau salée à gros bouillons, 12 à 15 min à découvert (goûter à 12). Pas de proportion d\'eau à respecter.'],
+      [3,  'Le <b>poulet</b> à la poêle — ' + poids(T.poulet) + ', feu vif, 4 min par face puis 3 min à couvert.'],
+      [18, 'Sortir le poulet. <b>Égoutter le riz</b> et l\'étaler sur une plaque : à plat il refroidit en 15 min, en tas il met une heure.'],
+      [22, 'La <b>viande hachée</b> — ' + poids(T.hachee) + ', en deux fournées pour qu\'elle grille au lieu de bouillir. 10 min.'],
+      [34, 'Les <b>pâtes</b> — ' + poids(T.pates) + ' crues, <b>deux minutes de moins</b> que le paquet : elles finiront de cuire au réchauffage.'],
+      [46, 'Les <b>légumes surgelés</b> — ' + poids(T.legumes) + ', à la poêle en trois fournées ou à la vapeur, 7 min. Sans les décongeler avant.'],
+      [60, 'Les <b>' + Math.round(BESOIN_SEMAINE.oeufs || 0) + ' œufs durs</b> (la collation) — une casserole, 10 min dans l\'eau bouillante, puis eau froide. On les garde en coquille : une semaine au frigo.'],
+      [75, '<b>Tout refroidir à découvert, 20 min.</b> Un tupperware fermé sur du chaud fabrique de la condensation, et la condensation fabrique des bactéries.'],
+      [95, 'Remplir les <b>14 boîtes</b> dans l\'ordre du tableau ci-dessous, et écrire le jour dessus.'],
+      [110,'<b>8 au frigo</b> (dimanche à mercredi), <b>6 au congélateur</b> (jeudi à samedi). Sortir chaque boîte congelée la veille au soir, au frigo.']
     ];
     var h0 = 14 * 60 + 30;
     document.getElementById('prep-ordre').innerHTML = etapes.map(function(e){
@@ -12196,15 +12159,16 @@
       return '<li><span class="h">' + String(Math.floor(m / 60)).padStart(2, '0') + ':' + String(m % 60).padStart(2, '0') +
              '</span><span>' + e[1] + '</span></li>';
     }).join('');
-    /* Les quatorze boites : un septieme de chaque casserole. Les legumes n'y sont plus (ils
-       vont dans la poele au rechauffage), ni l'huile (cuisson et assiette), ni le fruit. */
+    /* Les quatorze boites : le contenu exact du repas de ce jour-la. */
     document.getElementById('prep-boites-note').textContent =
-      'Quatorze boîtes, un septième de chaque casserole dans chacune. Les quatre premiers jours vont au frigo, les trois derniers au congélateur.';
+      'Quatorze boîtes, écrites depuis le plan du jour — pas depuis une recette. Les quatre premiers jours vont au frigo, les trois derniers au congélateur.';
     document.getElementById('prep-boites').innerHTML = jours.map(function(j, i){
       var ou = i < 4 ? 'frigo' : 'congélateur';
-      var dansBoite = function(x){ return x.c !== 'fruit' && x.c !== 'legumes' && x.c !== 'huile'; };
+      /* Ce qui ne va PAS dans la boite : le fruit (entier, a cote). */
+      var dansBoite = function(x){ return x.c !== 'fruit'; };
       var ligne = function(x){
-        return '<li>' + escapeHtml(NOM_ALIMENT[x.c] || x.c) + ' — un septième <span class="sub-note">(' + poids(x.q) + ' cru)</span></li>';
+        var n = NOM_ALIMENT[x.c] || x.c;
+        return '<li>' + escapeHtml(n) + ' — ' + (x.c === 'huile' ? Math.round(x.q) + ' ml' : poids(x.q)) + '</li>';
       };
       return '<div class="prep-boite"><h5>' + escapeHtml(j.nom.charAt(0).toUpperCase() + j.nom.slice(1)) +
              ' <span class="ou">' + ou + '</span></h5>' +
@@ -12214,14 +12178,14 @@
              j.din.filter(dansBoite).map(ligne).join('') + '</ul></div>';
     }).join('');
     document.getElementById('prep-regles').innerHTML = [
-      ['Le petit-déjeuner', 'un shake : un tiers de brique de boisson d\'avoine, 1 pot de skyr, 1 mug plein de flocons, 1 banane, 1 cuillère à soupe de miel, 1 poignée d\'amandes — 40 secondes de mixeur, à boire en dix minutes'],
-      ['La collation d\'entraînement', '2 tranches de pain, 2 œufs durs, 1 tranche de fromage, 1 grosse poignée d\'amandes — les œufs sont cuits le dimanche ; le reste s\'assemble au moment de partir'],
-      ['Le goût', 'la sauce du jour, écrite dans le plan du jour : tes condiments, montés avec l\'huile crue — ou à sa place pour la crème et le pesto'],
-      ['Réchauffer à la poêle', 'la boîte vidée dans la poêle avec une grosse poignée de légumes surgelés et 2 à 3 cuillères d\'eau, couvercle, feu moyen, 5 à 6 min, puis 1 min à découvert. Brûlant jusqu\'au cœur. Pas l\'air fryer : il dessèche le riz et les pâtes'],
+      ['Le petit-déjeuner', 'un shake : 300 ml de boisson d\'avoine, 150 g de skyr, 80 g de flocons, une banane, 20 g de miel, 30 g d\'amandes — 40 secondes de mixeur, à boire en dix minutes'],
+      ['La collation d\'entraînement', 'pain, 2 œufs durs, fromage, 40 g d\'amandes — les œufs sont cuits le dimanche ; le reste s\'assemble au moment de partir'],
+      ['Le goût', 'l\'huile d\'olive froide à l\'assiette, puis ce qui ne compte pas : citron, moutarde, harissa, tomate concassée, ail, épices. Sans limite'],
+      ['Réchauffer à la poêle', 'la boîte vidée dans la poêle avec 2 à 3 cuillères d\'eau, couvercle, feu moyen, 4 à 5 min, puis 1 min à découvert. Brûlant jusqu\'au cœur. Pas l\'air fryer : il dessèche le riz et les pâtes'],
       ['Le fruit du dîner', 'entier, jamais dans la boîte : coupé le dimanche il rend de l\'eau et noircit'],
       ['Refroidir vite', 'deux heures maximum entre la casserole et le frigo. Étaler plutôt qu\'entasser'],
       ['Quatre jours au frigo', 'de la viande cuite tient quatre jours à 4 °C, pas sept. Au-delà, c\'est le congélateur'],
-      ['Un mois au congélateur', 'riz, pâtes et viande cuits se congèlent très bien. Décongélation au frigo la veille, jamais sur le plan de travail'],
+      ['Un mois au congélateur', 'riz, pâtes, viande et légumes cuits se congèlent très bien. Décongélation au frigo la veille, jamais sur le plan de travail'],
       ['Réchauffer une seule fois', 'un plat ne se réchauffe pas deux fois. Ce qui est sorti se mange']
     ].map(function(x){ return '<li><span><b>' + x[0] + '</b></span><span style="text-align:right; max-width:62%;">' + x[1] + '</span></li>'; }).join('');
   }
@@ -15688,16 +15652,13 @@
     'Déjeuner': function(d, iso){
       var c = compoRepas('Déjeuner', iso, false), g = function(k){ var x = c.filter(function(y){ return y.c === k; })[0]; return x ? Math.round(x.q) : 0; };
       var sc = sauceDuJour('dej', iso);
-      return "La boîte du jour — riz et poulet, ton septième du dimanche (" + g('riz') + " g et " + g('poulet') + " g crus) — dans la poêle avec une grosse poignée de légumes surgelés (" + g('legumes') + " g) et 2 à 3 cuillères d'eau, couvercle, 5 à 6 min, brûlante jusqu'au cœur. Sauce du jour — " + sc.nom + " : " + sc.recette + ". Sel.";
+      return "La boîte du jour : riz " + g('riz') + " g crus, poulet " + g('poulet') + " g, " + g('legumes') + " g de légumes. Réchauffée à la poêle avec 2 à 3 cuillères d'eau, couvercle, 4 à 5 min, brûlante jusqu'au cœur. Sauce du jour — " + sc.nom + " : " + sc.recette + ". Sel.";
     },
     'Dîner': function(d, iso){
       var c = compoRepas('Dîner', iso, false), g = function(k){ var x = c.filter(function(y){ return y.c === k; })[0]; return x ? Math.round(x.q) : 0; };
       var sc = sauceDuJour('din', iso);
-      return "La boîte du jour — pâtes et viande hachée, ton septième du dimanche (" + g('pates') + " g et " + g('hachee') + " g crus) — dans la poêle avec une grosse poignée de légumes surgelés (" + g('legumes') + " g) et 2 à 3 cuillères d'eau, couvercle, 5 à 6 min. Sauce du jour — " + sc.nom + " : " + sc.recette + (sc.sansHuile ? "" : " ; hors du feu, 5 ml d'huile d'olive crue") + ". Un fruit. La créatine, 5 g, avec le repas. Ensuite plus rien jusqu'au lendemain.";
+      return "La boîte du jour : pâtes " + g('pates') + " g crues, viande hachée " + g('hachee') + " g, " + g('legumes') + " g de légumes, à la poêle. Sauce du jour — " + sc.nom + " : " + sc.recette + (sc.sansHuile ? "" : " ; hors du feu, 5 ml d'huile d'olive crue") + ". Un fruit. La créatine, 5 g, avec le repas. Ensuite plus rien jusqu'au lendemain.";
     },
-    /* 19 octobre : la session passe a une heure (le plan sans balance). Le bloc garde ses deux
-       heures dans la grille -- la seconde est rendue, pas reaffectee. */
-    '🍲 Batch cooking de la semaine': "Une heure, de 14:30 à 15:30, minutée dans Repas › Meal prep : four à 200 °C pour le poulet, le riz puis les pâtes dans la même eau, les œufs à côté, la viande hachée à la poêle. Rien ne se pèse — paquets entiers, partagés à l'œil en sept. Les légumes ne se cuisent pas : une poignée de surgelés au réchauffage. L'heure qui reste est à toi, jusqu'au ménage de 16:30.",
     'Temps libre': {defaut: "Libre.", 0: "10 minutes pour la revue du dimanche guidée (onglet Études), le reste est libre."},
     'Coucher': "Clôture du jour faite ? Écran off, réveil posé loin du lit.",
     /* Le regime combat (lundi 28 septembre) : les blocs qu'il ajoute. L'eau monte a 3,5-4 L
