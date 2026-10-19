@@ -97,7 +97,7 @@ const L = lundis('2026-11-09', 8);              /* 8 lundis, du 9 nov. au 28 dec
   const k = await fr.evaluate(() => ({note: document.getElementById('kcal-note').innerText,
                                       txt: document.getElementById('kcal-analyse').innerText.replace(/\s+/g,' ')}));
   ok(/\+150 kcal/.test(k.note), 'huit lundis à 64,0 kg : stagnation → +150 kcal (' + k.note + ')');
-  ok(/8 pesées étalées sur 49 jours/.test(k.txt), 'et la tendance dit sur quoi elle s’appuie : ' + (k.txt.match(/Tendance[^.]*/) || [''])[0]);
+  ok(/7 pesées étalées sur 42 jours/.test(k.txt), 'et la tendance dit sur quoi elle s’appuie : ' + (k.txt.match(/Tendance[^.]*/) || [''])[0]);
   await ctx.close();
 }
 {

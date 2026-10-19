@@ -46,8 +46,9 @@ console.log('\n== 265) Le jour 1 au jeudi 24, la phase Español au 23 octobre ==
      15 octobre, « on commence vendredi pour de bon » : jour 1 au vendredi 16, phase Español
      jusqu'au dimanche 15 novembre.
      16 octobre, « samedi matin sans faute » : jour 1 au samedi 17, la phase garde sa fin, le
-     dimanche 15 novembre (le dossier e-commerce demarre le 16). */
-  ok(r.debut === '2026-10-17', 'PROGRAMME_DEBUT = ' + r.debut);
+     dimanche 15 novembre (le dossier e-commerce demarre le 16).
+     19 octobre, « on decale tout a demain » : jour 1 au mardi 20, meme fin de phase. */
+  ok(r.debut === '2026-10-20', 'PROGRAMME_DEBUT = ' + r.debut);
   ok(r.es23 && !r.es24, 'phase Español jusqu\'au 15 novembre, plus le 16 novembre (' + r.es23 + ' / ' + r.es24 + ')');
   await ctx.close();
 }

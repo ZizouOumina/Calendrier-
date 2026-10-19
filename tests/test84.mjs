@@ -109,7 +109,8 @@ console.log('\n== 84.6) Cibles hebdo : constantes en revision, croissantes en pr
   /* Regime combat : 29 h 13 de revision par semaine des le 28 septembre (33 h 12 sur la grille type d'avant). */
   ok(pr(e2.rev) === pr(e3.rev),
      'la revision ne bouge plus apres la phase (finie le 12 novembre depuis le 12 octobre) : ' + [pr(t.rev), pr(e2.rev), pr(e3.rev)].join(' -> '));
-  ok(pr(e2.rev) === 29.22 && pr(t.rev) === 33.17, 'revision = 29 h 13 de travail reel par semaine au regime combat, 33 h 12 avant (' + pr(e2.rev) + ' / ' + pr(t.rev) + ')');
+  /* 19 octobre : « Clore le cours » a vingt minutes les quatre soirs de cours -- 29 h 13 -> 27 h 53. */
+  ok(pr(e2.rev) === 27.88 && pr(t.rev) === 33.17, 'revision = 27 h 53 de travail reel par semaine au regime combat, 33 h 12 avant (' + pr(e2.rev) + ' / ' + pr(t.rev) + ')');
   /* seule exception : en phase Español le mercredi 05:30 reste « Anki matinal », donc la
      phase 1 porte 50 min de revision de plus. Le 5 novembre, ce bloc passe aux projets ; la premiere semaine entiere d'apres est celle du 9 novembre. */
   ok(pr(e1.rev) === 34, 'phase 1 avant le 28 : 34 h, le mercredi matin est encore de l\'Anki (' + pr(e1.rev) + ')');

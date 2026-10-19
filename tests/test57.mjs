@@ -106,8 +106,9 @@ console.log('\n== 213) Relevé OBJECTIF dans la barre ==');
   /* Au matin du jour 1, la grille n'a presque rien attendu encore, et les quinze jours de
      sessions d'avant le programme mettent tout « en avance ». Pour voir un retard il faut
      une date ou le mois en cours a deja tourne sans lui : le 20 octobre, ou les sessions
-     se sont arretees le 5. */
-  const { ctx, fr } = await ouvrir('2026-10-20T10:00:00+02:00', {'batcave-sessions': sessionsMoitie()});
+     se sont arretees le 5. 19 octobre : le 20 devient le jour 1 -- on lit le vendredi 30, quatre
+     jours apres la fin des sessions (le 26). */
+  const { ctx, fr } = await ouvrir('2026-10-30T10:00:00+01:00', {'batcave-sessions': sessionsMoitie()});
   const r = await fr.evaluate(() => ({ txt: document.querySelector('#bc-objectif .v').textContent, titre: document.querySelector('#bc-objectif .v').title }));
   /* Lot 42 : le relevé ne montre plus un écart négatif nu (« Révision −90,7 h »), qui ne
      dit pas quoi faire, mais le réel sur l'attendu du jour. */

@@ -88,12 +88,13 @@ console.log('\n== 4) Un rendez-vous dans l\'agenda Google n\'est pas un bloc man
      on l'écrit directement pour éprouver la règle sans connecteur. */
   /* Le programme ouvre le MARDI 29 septembre (depuis le 28 au soir) : avant lui aucun bloc
      n'est du, donc aucun ne peut etre manque. On prend le lundi 5 octobre -- un lundi,
-     toujours en phase 1 Espanol, et bien a l'interieur du programme. 12 octobre : le lundi 19. */
-  const {ctx, page, fr} = await ouvrir({}, '2026-10-19T21:00:00+02:00');
+     toujours en phase 1 Espanol, et bien a l'interieur du programme. 12 octobre : le lundi 19.
+     19 octobre : le jour 1 passe au mardi 20 -- on lit le mardi 20 (Anki 1 et Anki 2 le matin). */
+  const {ctx, page, fr} = await ouvrir({}, '2026-10-20T21:00:00+02:00');
   const avant = (await plan(fr)).split('\n').filter(l=>/Bloc manqué/.test(l)).length;
   await fr.evaluate(()=>{
-    /* lundi = 1 ; deux vrais rendez-vous couvrent Anki 1 et Anki 2 */
-    window.__bcSetGcal && window.__bcSetGcal({1:[['07:15','Dentiste — dents de sagesse','09:30']]});
+    /* mardi = 2 ; un vrai rendez-vous couvre Anki 1 et Anki 2 */
+    window.__bcSetGcal && window.__bcSetGcal({2:[['07:15','Dentiste — dents de sagesse','09:30']]});
   });
   await page.waitForTimeout(300);
   const apres = await fr.evaluate(()=>{ window.__bcRenderPlan(); return document.getElementById('dash-plan').innerText; });
@@ -156,8 +157,9 @@ console.log('\n== 7) Rattrapage unique après une absence ==');
      Depuis le 12 octobre, le jour 1 est le mardi 13 : retour le jeudi 15, les 13 et 14 sans cloture.
      Depuis le 14 octobre, le jour 1 est le jeudi 15 : retour le samedi 17, les 15 et 16 sans cloture.
      Depuis le 15 octobre, le jour 1 est le vendredi 16 : retour le dimanche 18, les 16 et 17 sans cloture.
-     Depuis le 16 octobre, le jour 1 est le samedi 17 : retour le lundi 19, les 17 et 18 sans cloture. */
-  const {ctx, page, fr} = await ouvrir({'batcave-last-open':'2026-09-16'}, '2026-10-19T10:00:00+02:00');
+     Depuis le 16 octobre, le jour 1 est le samedi 17 : retour le lundi 19, les 17 et 18 sans cloture.
+     Depuis le 19 octobre, le jour 1 est le mardi 20 : retour le jeudi 22, les 20 et 21 sans cloture. */
+  const {ctx, page, fr} = await ouvrir({'batcave-last-open':'2026-09-16'}, '2026-10-22T10:00:00+02:00');
   const t = await plan(fr);
   const l = t.split('\n').filter(x=>/Absence —/.test(x))[0] || '';
   ok(/2 journées sans clôture/.test(l), 'un seul item pour toute l\'absence : ' + l.trim().slice(0, 90));

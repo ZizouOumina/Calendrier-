@@ -76,15 +76,16 @@ console.log('\n== 2) Sous 12 jours notés, le chiffre est donné mais annoncé c
      cours) et trois d'avant le programme ; il en reste six, du 13 au 20. */
   /* 15 octobre : jour 1 au vendredi 16 -- fin au 23 : dix notes, six a partir du 16.
      16 octobre : jour 1 au samedi 17 -- toujours fin au 23 : le 17 et le 18 sont sans cours,
-     il reste cinq jours de cours notes, du lundi 19 au vendredi 23. */
+     il reste cinq jours de cours notes, du lundi 19 au vendredi 23.
+     19 octobre : jour 1 au mardi 20 -- quatre jours de cours notes, du mardi 20 au vendredi 23. */
   const fin = '2026-10-23';
   const { ctx, page, fr } = await ouvrir({'batcave-cours-suivi': notes(fin, 10, 3)}, '2026-10-23T21:00:00+02:00');
   await etudes(fr, page);
   await fr.evaluate(() => { const t = document.getElementById('portes-toggle'); if(t) t.click(); });
   await page.waitForTimeout(300);
   const c = await carte(fr);
-  ok(/3,00 \/ 3/.test(c.etat), 'la moyenne de cinq 3 vaut 3,00 / 3 : ' + (c.etat.match(/\d,\d\d \/ 3/) || [''])[0]);
-  ok(/5 jours de cours notés/.test(c.etat), 'le nombre de jours est dit : ' + c.etat.slice(0, 160));
+  ok(/3,00 \/ 3/.test(c.etat), 'la moyenne de quatre 3 vaut 3,00 / 3 : ' + (c.etat.match(/\d,\d\d \/ 3/) || [''])[0]);
+  ok(/4 jours de cours notés/.test(c.etat), 'le nombre de jours est dit : ' + c.etat.slice(0, 160));
   ok(/indicatif/.test(c.etat), 'et le chiffre est annoncé comme indicatif sous le plancher de 12');
   await ctx.close();
 }

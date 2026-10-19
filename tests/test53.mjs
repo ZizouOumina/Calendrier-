@@ -51,8 +51,8 @@ console.log('\n== 180) Sans ajustement : plan de base, liste = plan × 7 ==');
      pates 105 -> 735 -> 2 940, donc 3 paquets de 1 kg -- le format dont il a donne le
      prix lui-meme (1,09 EUR/kg). Acheter en dessous du besoin
      serait une rupture en milieu de cycle : l'arrondi va toujours VERS LE HAUT. */
-  ok(c.items.some(t => /^Riz — 5 kg\b/.test(t) && /le plan en demande 4\u202f340 g/.test(t)), 'riz : 5 kg achetés pour 4 340 g demandés (' + c.items.find(t => /^Riz/.test(t)) + ')');
-  ok(c.items.some(t => /^Pâtes — 3 kg\b/.test(t) && /le plan en demande 2\u202f940 g/.test(t)), 'pâtes : 3 kg achetés pour 2 940 g demandés (' + c.items.find(t => /^Pâtes/.test(t)) + ')');
+  ok(c.items.some(t => /^Riz — 4 kg\b/.test(t) && /le plan en demande 3\u202f500 g/.test(t)), 'riz : 4 kg achetés pour 3 500 g demandés (125 g par jour depuis le 19 octobre) (' + c.items.find(t => /^Riz/.test(t)) + ')');
+  ok(c.items.some(t => /^Pâtes — 4 kg\b/.test(t) && /le plan en demande 3\u202f780 g/.test(t)), 'pâtes : 4 kg achetés pour 3 780 g demandés (135 g par jour depuis le 19 octobre) (' + c.items.find(t => /^Pâtes/.test(t)) + ')');
   /* Depuis le 20 septembre la rotation est la meme tous les jours : poulet a midi
      (80 g x 7 = 560), viande hachee le soir (90 g x 7 = 630). Le poisson est sorti.
      La viande ne s'arrondit PAS : le boucher pese le montant exact, donc ces deux
@@ -130,7 +130,7 @@ console.log('\n== 180) Sans ajustement : plan de base, liste = plan × 7 ==');
 
   await page_(fr, 'repas');
   const r = await fr.evaluate(() => ({ diner: [...document.querySelectorAll('.meal-card')].find(c => /Dîner/.test(c.querySelector('.mtitle').textContent)) }) && [...document.querySelectorAll('.meal-card')].find(c => /Dîner/.test(c.querySelector('.mtitle').textContent)).innerText);
-  ok(/Pâtes 105g/.test(r) && /~735 kcal/.test(r) && /Viande hachée 5 % 90g/.test(r) && !/Sauce skyr/.test(r), 'dîner de base du mardi : pâtes 105 g, viande hachée 90 g, plus de sauce au skyr (29 septembre), ~752 kcal');
+  ok(/Pâtes 135g/.test(r) && /~843 kcal/.test(r) && /Viande hachée 5 % 90g/.test(r) && !/Sauce skyr/.test(r), 'dîner de base du mardi : pâtes 135 g (105 avant le 19 octobre), viande hachée 90 g, plus de sauce au skyr (29 septembre), ~843 kcal');
   await ctx.close();
 }
 
@@ -139,8 +139,8 @@ console.log('\n== 181) Avec +150 kcal : le dîner et les courses l\'écrivent ==
   const { ctx, fr, page } = await ouvrir(MARDI, {'batcave-kcal-ajustement': {valeur:150, depuis:'2026-09-01'}});
   await page_(fr, 'repas');
   const r = await fr.evaluate(() => [...document.querySelectorAll('.meal-card')].find(c => /Dîner/.test(c.querySelector('.mtitle').textContent)).innerText);
-  ok(/Pâtes 145g/.test(r), 'féculent du dîner : pâtes 145 g (+40)');
-  ok(/boucle kcal \+150 kcal/.test(r) && /~879 kcal/.test(r), 'le dîner annonce ~879 kcal et la boucle');
+  ok(/Pâtes 175g/.test(r), 'féculent du dîner : pâtes 175 g (+40)');
+  ok(/boucle kcal \+150 kcal/.test(r) && /~987 kcal/.test(r), 'le dîner annonce ~987 kcal et la boucle');
   const sub = await fr.evaluate(() => document.getElementById('meal-kcal-sub').textContent);
   /* 3 131 + 144 : la boucle demande +150 kcal, mais les pates s'ajustent par pas de 10 g,
      donc elle en ajoute 144. On annonce l'ecart REEL entre les deux journees, pas la
@@ -151,7 +151,7 @@ console.log('\n== 181) Avec +150 kcal : le dîner et les courses l\'écrivent ==
   await fr.evaluate(() => { for(let i = 0; i < 10; i++){ const card = [...document.querySelectorAll('.meal-card')].find(c => /Dîner/.test(c.querySelector('.mtitle').textContent)); const cb = card && card.querySelector('input:not(:checked)'); if(!cb) break; cb.click(); } });
   await page.waitForTimeout(200);
   const sub2 = await fr.evaluate(() => document.getElementById('meal-kcal-sub').textContent);
-  ok(/^879 \/ 3305 kcal/.test(sub2), 'dîner coché : ' + sub2);
+  ok(/^987 \/ 3305 kcal/.test(sub2), 'dîner coché : ' + sub2);
   await page_(fr, 'courses');
   const c = await fr.evaluate(() => ({ items: [...document.querySelectorAll('#courses-grid label, #courses-grid-plus label')].map(l => l.textContent), note: document.getElementById('courses-plan-note').textContent }));
   /* L'ajustement suit le sac : +280 g par semaine font +1 120 g sur quatre semaines.
@@ -160,7 +160,7 @@ console.log('\n== 181) Avec +150 kcal : le dîner et les courses l\'écrivent ==
      dont il a donné le prix. L'arrondi va toujours AU-DESSUS du besoin, donc 4 060 g
      demandés font cinq paquets — 940 g de surplus, qui se cuisent et partent en
      tupperware comme le reste. */
-  ok(c.items.some(t => /^Pâtes — 5 kg\b/.test(t) && /demande 4\u202f060 g/.test(t)), 'la boucle kcal remonte le besoin à (735 + 280) × 4 = 4 060 g, et l\'achat suit à 5 kg (' + c.items.find(t => /^Pâtes/.test(t)) + ')');
+  ok(c.items.some(t => /^Pâtes — 5 kg\b/.test(t) && /demande 4\u202f900 g/.test(t)), 'la boucle kcal remonte le besoin à (945 + 280) × 4 = 4 900 g, et l\'achat suit à 5 kg (' + c.items.find(t => /^Pâtes/.test(t)) + ')');
   ok(/\+150 kcal\/jour/.test(c.note) && /\+40 g de pâtes crues/.test(c.note) && /\+280 g sur la semaine/.test(c.note), 'note : ' + c.note.slice(0, 120));
   /* La boucle kcal ne touche QUE le feculent du diner : les proteines gardent la quantite
      de la rotation, 560 g de poulet par semaine. */
@@ -181,13 +181,13 @@ console.log('\n== 182) Appliquer / revenir depuis la boucle met tout à jour d\'
   await page.waitForTimeout(250);
   const apres = await fr.evaluate(() => ({ diner: [...document.querySelectorAll('.meal-card')].find(c => /Dîner/.test(c.querySelector('.mtitle').textContent)).innerText,
     courses: (document.querySelector('.nav-btn[data-page="courses"]').click(), [...document.querySelectorAll('#courses-grid label, #courses-grid-plus label')].map(l => l.textContent).find(t => /^Pâtes/.test(t))) }));
-  ok(/Pâtes 145g/.test(apres.diner) && /Pâtes — 5 kg/.test(apres.courses), 'après « Appliquer » : dîner à 145 g de pâtes, courses à 5 kg');
+  ok(/Pâtes 175g/.test(apres.diner) && /Pâtes — 5 kg/.test(apres.courses), 'après « Appliquer » : dîner à 175 g de pâtes, courses à 5 kg');
   await page_(fr, 'repas');
   await fr.evaluate(() => document.getElementById('kcal-reset').click());
   await page.waitForTimeout(250);
   const retour = await fr.evaluate(() => ({ diner: [...document.querySelectorAll('.meal-card')].find(c => /Dîner/.test(c.querySelector('.mtitle').textContent)).innerText,
     courses: (document.querySelector('.nav-btn[data-page="courses"]').click(), [...document.querySelectorAll('#courses-grid label, #courses-grid-plus label')].map(l => l.textContent).find(t => /^Pâtes/.test(t))) }));
-  ok(/Pâtes 105g/.test(retour.diner) && /3 kg/.test(retour.courses), 'après « Revenir au plan de base » : 105 g au dîner et 3 kg de pâtes');
+  ok(/Pâtes 135g/.test(retour.diner) && /4 kg/.test(retour.courses), 'après « Revenir au plan de base » : 135 g au dîner et 4 kg de pâtes');
   await ctx.close();
 }
 

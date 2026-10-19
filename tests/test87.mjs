@@ -20,7 +20,7 @@ let errs = 0;
 const ok = (c,m) => { if(c) console.log('  ok  '+m); else { errs++; console.log('  FAIL '+m); } };
 const browser = await chromium.launch();
 
-const SANS19 = {'batcave-jours-sans-cours': {ajoutes:['2026-10-19'], retires:[]}};
+const SANS19 = {'batcave-jours-sans-cours': {ajoutes:['2026-10-26'], retires:[]}};   /* 19 octobre : le 19 est avant le jour 1 (mardi 20) -- c'est le lundi 26 */
 async function ouvrir(quand, seed){
   const ctx = await browser.newContext({viewport:{width:1440,height:900}, timezoneId:'Europe/Madrid', locale:'fr-FR'});
   await ctx.addInitScript(() => { window.claude = undefined; });
@@ -78,8 +78,8 @@ console.log('\n== 285) Le semestre 2 : 24 h de cours, mardi et mercredi jusqu\'a
      et le lundi est passe de 21:55 a 21:35. 21:35 -> 05:30 = 7 h 55 = 7,92 h. */
   ok(ma.sommeil === 7.92 && me.sommeil === 7.83 && je.sommeil === 6.83,
      'la cible de sommeil est celle que l\'emploi du temps permet, pas 8 h : ' + [ma, me, je].map(x => x.sommeil).join(' / ') + ' h');
-  ok(ma.cible.rev === 265 && lu.cible.rev === 305,
-     'mardi perd le bloc « Question ouverte ou autre » du soir : 265 min de révision contre 305 le lundi (' + ma.cible.rev + ' / ' + lu.cible.rev + ')');
+  ok(ma.cible.rev === 265 && lu.cible.rev === 285,
+     'mardi perd le bloc « Question ouverte ou autre » du soir : 265 min de révision contre 285 le lundi (305 avant que « Clore le cours » passe à vingt minutes, 19 octobre) (' + ma.cible.rev + ' / ' + lu.cible.rev + ')');
   await ctx.close();
 }
 
@@ -104,15 +104,17 @@ console.log('\n== 287) Un jour sans cours : la plage se libère, sans jamais dou
   /* 12 octobre : le jour 1 passe au mardi 13 -- le lundi 12 (Fiesta Nacional) est avant le
      programme, ou aucun jour n'est sans cours. Aucun ferie ne tombe ensuite dans la phase
      Español : on declare le lundi 19 sans cours, la meme journee (lundi, phase 1, pas de JJB). */
-  const { ctx, fr } = await ouvrir('2026-10-19T09:00:00+02:00', SANS19);
-  const i = await infos(fr, '2026-10-19'), g = await jour(fr, '2026-10-19');
-  ok(i.sans === true && i.per === 'es-1', 'le lundi 19 octobre (déclaré sans cours) est sans cours, et toujours en phase 1');
+  /* 19 octobre : le jour 1 passe au mardi 20 -- le lundi 19 est avant le programme. Le lundi
+     declare sans cours devient le 26, premier jour de JJB : le club garde sa matinee. */
+  const { ctx, fr } = await ouvrir('2026-10-26T09:00:00+01:00', SANS19);
+  const i = await infos(fr, '2026-10-26'), g = await jour(fr, '2026-10-26');
+  ok(i.sans === true && i.per === 'es-1', 'le lundi 26 octobre (déclaré sans cours) est sans cours, et toujours en phase 1');
   ok(!g.some(x => /Cours|Trajet cours|Trajet retour/.test(x)), 'plus de cours, plus de trajets : ' + g.slice(13, 16).join(' | '));
   /* 6 octobre : plus de JJB avant le 26, « Lire » prend la place du club a 10:20 ; la plage du soir
      passe donc au suivant, « Réexpliquer ». Toujours un seul « Lire » dans la journee. */
-  ok(g.includes('16:50 Collation entraînement') && g.includes('17:00 Español · tutor') && g.includes('18:00 Réexpliquer')
-     && g.filter(x => / Lire$/.test(x)).length === 1 && g.includes('10:20 Lire'),
-     'la plage devient un bloc de projet (espagnol en phase 1) puis « Réexpliquer » — « Lire » a pris la place du JJB à 10:20');
+  ok(g.includes('16:50 Collation entraînement') && g.includes('17:00 Español · tutor') && g.includes('18:00 Lire')
+     && g.filter(x => / Lire$/.test(x)).length === 1 && g.includes('10:30 🥋 JJB'),
+     'la plage devient un bloc de projet (espagnol en phase 1) puis « Lire » — le JJB garde sa matinée à 10:30');
   ok(g.includes('19:00 Dîner') && g.includes('21:35 Coucher'), 'le soir : dîner 19:00, coucher 21:35 (la même heure tous les jours au régime combat)');
   const pp4 = g.filter(x => /Español · hablar/.test(x));
   ok(pp4.length === 1 && pp4[0] === '15:00 Español · hablar',
@@ -180,7 +182,7 @@ console.log('\n== 290) L\'en-tête « Emploi du temps » lit la plage dans la gr
   await ctx.close();
 }
 {
-  const { ctx, fr } = await ouvrir('2026-10-19T09:00:00+02:00', SANS19);
+  const { ctx, fr } = await ouvrir('2026-10-26T09:00:00+01:00', SANS19);
   const b = await fr.evaluate(() => ({ l: document.getElementById('cal-schedule-label').textContent,
                                        g: document.querySelector('#bc-grille .v').textContent }));
   ok(/lundi \(pas de cours\)/.test(b.l), 'un lundi sans cours : « ' + b.l + ' »');

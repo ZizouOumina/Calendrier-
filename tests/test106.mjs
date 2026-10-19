@@ -40,7 +40,7 @@ console.log('\n== 261) Le cran de charge suit l\'exercice ==');
     log('Crunch lesté', 'Bas complet', [20,20,20], 0),
     log('Dips', 'Haut lourd', [15,14,13,12], 5)
   ]};
-  const { ctx, fr } = await ouvrir('2026-10-26T09:00:00+01:00', LOG);   /* semaine 3 (jour 1 au mardi 13 depuis le 12 octobre) : volume complet */
+  const { ctx, fr } = await ouvrir('2026-11-02T09:00:00+01:00', LOG);   /* semaine 3 (jour 1 au mardi 13 depuis le 12 octobre) : volume complet. 19 octobre : jour 1 au mardi 20 -- la semaine 3 commence le 2 novembre */
   const c = await fr.evaluate(() => {
     const ex = {}; window.__bcSessionsSport().forEach(s => s.exercises.forEach(e => { if(!ex[e.name]) ex[e.name] = e; }));
     const r = {}; ['Flexion du cou','Extension du cou','Tractions','Élévations latérales','Crunch lesté','Dips'].forEach(n => { const x = window.__bcCibleProchaine(ex[n]); r[n] = {charge: x.charge, monter: x.monter, series: x.series}; });
