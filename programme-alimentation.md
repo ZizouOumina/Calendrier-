@@ -12,20 +12,24 @@ macros, la liste de courses et la préparation sortent toutes de la même source
   **3 549 kcal · protéines 149 g**, avec une cinquième prise, la collation combat.
 - **Le plan entier dès le jour 1, samedi 17 octobre** : plus de semaine à 85 % (décision du
   16 octobre : « samedi matin sans faute »). Jusqu'au 25, sans JJB, tous les jours sont des jours sans combat. Mange aux heures prévues, même sans faim.
-- Tout est pesé **cru**. Pas de lait (acné) : boisson d'avoine. Pas de sauce au skyr (sortie le
+- Les chiffres sont en **cru** ; au quotidien, plus de balance depuis le 19 octobre (mesures de
+  cuisine, boîtes partagées à l'œil). Pas de lait (acné) : boisson d'avoine. Pas de sauce au skyr (sortie le
   29 septembre) : le goût vient des **sauces du jour** (plus bas), fixes, une par repas, faites
   de ses condiments depuis le 18 octobre.
 - **100 g de légumes par repas** depuis le 14 octobre (sa demande : 200 g lui remplissaient trop
   l'estomac, et il en jetait) : 200 g par jour au lieu de 350.
 
-## Les repas (à partir du samedi 17 octobre)
+## Les repas (à partir du samedi 17 octobre ; sans balance depuis le 19)
+Depuis le 19 octobre (« trop long à préparer »), plus rien ne se pèse au quotidien : les mêmes
+chiffres, en mesures de cuisine. Les grammes restent entre parenthèses pour vérifier.
+
 | Repas | Heure | Contenu | kcal · protéines |
 |---|---|---|---|
-| Petit-déjeuner (shake) | 06:45 | boisson d'avoine 300 ml, skyr 150 g, flocons d'avoine 80 g, banane 120 g, miel 20 g, amandes ou noix 30 g | 888 · 39 g |
-| Collation combat (jours de combat) | 10:05 | banane 120 g, flocons d'avoine 50 g, amandes ou noix 15 g | 388 · 11 g |
-| Déjeuner | 12:20 | riz 155 g, poulet 80 g, légumes verts 100 g, huile d'olive 30 ml (dont 10 versés froids), sauce du jour | 943 · 33 g |
-| Collation entraînement | 14:50 | pain complet 60 g, 2 œufs durs, fromage 20 g, amandes ou noix 40 g | 595 · 31 g |
-| Dîner | 20:00 (mardi 18:00) | pâtes 105 g, viande hachée 5 % 90 g, légumes verts 100 g, huile d'olive 15 ml (dont 5 froids), sauce du jour, 1 fruit | 735 · 35 g |
+| Petit-déjeuner (shake) | 06:45 | un tiers de brique de boisson d'avoine (300 ml), 1 pot de skyr (150 g), 1 mug plein de flocons (80 g), 1 banane, 1 cuillère à soupe de miel (20 g), 1 poignée d'amandes ou de noix (30 g) | 888 · 39 g |
+| Collation combat (jours de combat) | 10:05 | 1 banane, ⅔ de mug de flocons (50 g), une demi-poignée d'amandes (15 g) | 388 · 11 g |
+| Déjeuner | 12:20 | la boîte du dimanche : riz et poulet, un septième de chaque casserole (155 g et 80 g crus) ; 1 grosse poignée de légumes surgelés dans la poêle (100 g) ; huile d'olive 30 ml (dont 10 crus), sauce du jour | 943 · 33 g |
+| Collation entraînement | 14:50 | 2 tranches de pain complet (60 g), 2 œufs durs, 1 tranche de fromage (20 g), 1 grosse poignée d'amandes ou de noix (40 g) | 595 · 31 g |
+| Dîner | 20:00 (mardi 18:00) | la boîte du dimanche : pâtes et viande hachée 5 %, un septième (105 g et 90 g crus) ; 1 grosse poignée de légumes surgelés (100 g) ; huile d'olive 15 ml (dont 5 crus), sauce du jour, 1 fruit | 735 · 35 g |
 
 Rotation fixe : **poulet tous les midis, viande hachée 5 % tous les soirs**. Riz à midi, pâtes le
 soir. Créatine 5 g par jour, avec le dîner.
@@ -71,4 +75,10 @@ amandes 3 sachets, poulet, viande hachée 5 %, riz, pâtes, flocons, boisson d'a
 fruits, légumes verts, pain complet, fromage, miel, huile d'olive.
 
 ## La préparation (batch cooking)
-Le dimanche à 14:30 : riz, poulet, viande hachée et légumes pour la semaine, et les œufs durs.
+Le dimanche à 14:30, **une heure** depuis le 19 octobre (deux avant). Rien ne se pèse : 1 paquet
+de riz de 1 kg et un demi-verre, cuit comme des pâtes ; ¾ d'un paquet de pâtes dans la même eau ;
+le poulet au four à 200 °C, 25 min, pendant que la viande hachée est à la poêle ; 14 œufs durs
+à côté. Tout refroidit 20 min à découvert, puis se partage à l'œil en sept boîtes de midi et
+sept du soir. Les légumes ne se cuisent plus : une grosse poignée de surgelés va dans la poêle
+au réchauffage, avec la boîte (5 à 6 min, couvercle). Quatre jours au frigo, trois au
+congélateur.
