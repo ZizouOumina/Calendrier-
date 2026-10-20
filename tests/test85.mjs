@@ -185,8 +185,8 @@ console.log('\n== 279) Le 19 janvier, fin du semestre 1 : la bascule se fait tou
     s25: (window.__bcSemestre('2027-01-25') || {}).id || null,
     ma26: window.__bcGrille('tuesday', '2027-01-26').map(b => b[0] + ' ' + b[1])
   }));
-  ok(v.s19 === 's1' && v.ma19.includes('15:30 Cours') && v.ma19.includes('17:30 Trajet retour'),
-     'le mardi 19 janvier est encore au semestre 1 : cours 15:30 → 17:30');
+  ok(v.s19 === 's1' && v.ma19.includes('15:30 Cours') && v.ma19.includes('17:30 🏊 Piscine · intervalles') && v.ma19.includes('18:30 Trajet retour'),
+     'le mardi 19 janvier est encore au semestre 1 : cours 15:30 → 17:30, puis la piscine (21 octobre)');
   ok(v.sans20 === true && v.sans22 === true, 'du 20 au 22 janvier, pas de cours — déduit des dates, pas saisi');
   ok(v.s25 === 's2' && v.ma26.includes('15:30 Cours') && v.ma26.includes('21:30 Trajet retour') && v.ma26.includes('22:40 Coucher'),
      'le mardi 26 janvier est au semestre 2 : cours jusqu\'à 21:30, coucher 22:40');

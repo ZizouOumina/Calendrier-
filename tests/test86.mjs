@@ -100,17 +100,17 @@ console.log('\n== 283) La note du jour se pose toujours, et se retire ==');
 console.log('\n== 284) Le mode partiels n\'est pas touché par la suppression ==');
 {
   /* 14 octobre : jour 1 au jeudi 15 -- un jour de partiels n'est sans cours que dans le
-     programme. L'examen passe au vendredi 23, on lit le mardi 20. */
+     programme. L'examen passe au vendredi 23, on lit le mardi 20. 21 octobre : jour 1 au mercredi 21 -- on lit le jeudi 22. */
   const { ctx, fr } = await ouvrir('2026-10-19T12:00:00+02:00',
     Object.assign(SEED(3, 1.2), {'batcave-examens': {'Anatomía I':'2026-10-23'}}));
-  const p = await fr.evaluate(() => { const x = window.__bcPeriode('2026-10-20'); return x ? x.id : null; });
-  ok(p === 'partiels', 'le 20 octobre est toujours en mode partiels (' + p + ')');
-  const g = await grille(fr, '2026-10-20');
+  const p = await fr.evaluate(() => { const x = window.__bcPeriode('2026-10-22'); return x ? x.id : null; });
+  ok(p === 'partiels', 'le 22 octobre est toujours en mode partiels (' + p + ')');
+  const g = await grille(fr, '2026-10-22');
   /* Garde-fou du 23 septembre : les partiels ne remplacent plus rien, donc ils n'effacent
      plus la phase Español en dessous -- ils lui empruntent ses renommages. Sans ca, une
      semaine d'examen en octobre rendait tous les blocs Español au dropshipping. */
   ok(g.some(x => /14:00 Español/.test(x)), 'et 14:00 reste le bloc Español de la phase : les partiels ne l\'effacent pas (' + g.filter(x => /^14:00/.test(x)) + ')');
-  ok(!g.some(x => /Cours$/.test(x)), 'le 20 octobre en partiels : pas de cours');
+  ok(!g.some(x => /Cours$/.test(x)), 'le 22 octobre en partiels : pas de cours');
   await ctx.close();
 }
 

@@ -1,0 +1,295 @@
+<title>Cap sur 05:20</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Literata:opsz,wght@7..72,500;7..72,600&display=swap">
+<style>
+  :root{
+    --ground:#ECEFF4; --surface:#FFFFFF; --ink:#18202E; --muted:#596377; --line:#D3D9E3;
+    --accent:#A45C0C; --accent-soft:#F5E6D0; --night:#34416F; --night-soft:#DDE2F1;
+    --sun:#D58F25; --ok:#2C7A52;
+    --serif:"Literata", Georgia, "Times New Roman", serif;
+    --sans:"IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --mono:"IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --ground:#0E1219; --surface:#161B26; --ink:#E3E7EF; --muted:#98A1B3; --line:#283042;
+      --accent:#EBAA5A; --accent-soft:#2F2517; --night:#7385C8; --night-soft:#1E2640;
+      --sun:#F2BB5E; --ok:#5DBE8B; color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"]{
+    --ground:#0E1219; --surface:#161B26; --ink:#E3E7EF; --muted:#98A1B3; --line:#283042;
+    --accent:#EBAA5A; --accent-soft:#2F2517; --night:#7385C8; --night-soft:#1E2640;
+    --sun:#F2BB5E; --ok:#5DBE8B; color-scheme: dark;
+  }
+
+  *{ box-sizing:border-box; }
+  body{ margin:0; background:var(--ground); color:var(--ink); font:400 16px/1.55 var(--sans); -webkit-text-size-adjust:100%; }
+  main{
+    max-width:760px; margin:0 auto;
+    padding-left:max(16px, env(safe-area-inset-left,0px)); padding-right:max(16px, env(safe-area-inset-right,0px));
+    padding-block:32px 72px;
+    display:flex; flex-direction:column; gap:40px;
+  }
+  h1,h2{ font-family:var(--serif); font-weight:600; text-wrap:balance; margin:0; letter-spacing:-0.01em; }
+  h1{ font-size:clamp(2.4rem, 7vw, 3.4rem); line-height:1.05; }
+  h2{ font-size:1.45rem; line-height:1.2; }
+  p{ margin:0; max-width:65ch; }
+  .eyebrow{ font:500 .75rem/1.2 var(--mono); text-transform:uppercase; letter-spacing:.09em; color:var(--muted); }
+  .num{ font-family:var(--mono); font-variant-numeric:tabular-nums; }
+  section{ display:flex; flex-direction:column; gap:16px; }
+
+  /* En-tête */
+  .tete{ display:flex; flex-direction:column; gap:14px; }
+  .lede{ font-size:1.08rem; color:var(--ink); }
+  .lede em{ font-style:normal; color:var(--accent); font-weight:600; }
+
+  .auj{
+    background:var(--surface); border:1px solid var(--line); border-radius:10px;
+    padding:18px 20px; display:flex; flex-direction:column; gap:14px;
+  }
+  .auj-titre{ display:flex; flex-wrap:wrap; align-items:baseline; justify-content:space-between; gap:8px; }
+  .auj-titre strong{ font-family:var(--serif); font-size:1.2rem; font-weight:600; }
+
+  /* Heures */
+  .heures{ display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:10px 16px; }
+  .h{ display:flex; flex-direction:column; gap:2px; min-width:0; }
+  .lab{ font-size:.78rem; color:var(--muted); line-height:1.25; }
+  .val{ font:500 1.15rem/1.2 var(--mono); font-variant-numeric:tabular-nums; }
+  .val.cle{ font-size:1.6rem; font-weight:600; }
+  .val.reveil{ color:var(--accent); }
+  .val.lit{ color:var(--night); }
+  @media (max-width:560px){ .heures{ grid-template-columns:repeat(2, minmax(0,1fr)); } }
+
+  /* Jours */
+  .jours{ display:flex; flex-direction:column; gap:12px; }
+  .jour{
+    background:var(--surface); border:1px solid var(--line); border-radius:10px;
+    padding:16px 18px; display:flex; flex-direction:column; gap:14px;
+  }
+  .jour.ajd{ border-color:var(--accent); box-shadow:0 0 0 1px var(--accent); }
+  .jour.passe{ opacity:.72; }
+  .jour-tete{ display:flex; flex-wrap:wrap; align-items:center; gap:8px; }
+  .jour-nom{ font-family:var(--serif); font-size:1.15rem; font-weight:600; margin-right:4px; }
+  .chip{ font:500 .7rem/1 var(--mono); text-transform:uppercase; letter-spacing:.07em; padding:5px 8px; border-radius:999px; background:var(--night-soft); color:var(--night); }
+  .chip.ajd{ background:var(--accent-soft); color:var(--accent); }
+  .chip.cible{ background:var(--accent); color:var(--surface); }
+  .matin{ color:var(--ink); }
+  .matin b{ font-weight:600; }
+
+  /* Bande de la nuit */
+  .nuit{ display:flex; flex-direction:column; gap:6px; }
+  .nuit-lab{ font-size:.8rem; color:var(--muted); }
+  .piste{ position:relative; height:26px; border-radius:6px; background:var(--ground); border:1px solid var(--line); overflow:hidden; }
+  .bloc{ position:absolute; top:3px; bottom:3px; border-radius:4px; background:var(--night); }
+  .soleil{ position:absolute; top:0; bottom:0; width:2px; margin-left:-1px; background:var(--sun); }
+  .soleil::after{ content:""; position:absolute; top:50%; left:50%; width:9px; height:9px; margin:-4.5px 0 0 -4.5px; border-radius:50%; background:var(--sun); }
+  .graduations{ position:relative; height:14px; font:400 .68rem/1 var(--mono); color:var(--muted); }
+  .graduations span{ position:absolute; top:0; transform:translateX(-50%); white-space:nowrap; }
+  .graduations span:first-child{ transform:none; }
+
+  /* Cases */
+  .cases{ display:flex; flex-wrap:wrap; gap:8px 18px; padding-top:12px; border-top:1px dashed var(--line); }
+  .case{ display:inline-flex; align-items:center; gap:8px; font-size:.9rem; cursor:pointer; user-select:none; }
+  .case input{ width:18px; height:18px; margin:0; accent-color:var(--ok); cursor:pointer; }
+  .case input:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+  .case input:checked + span{ color:var(--muted); text-decoration:line-through; text-decoration-color:var(--muted); }
+
+  /* Listes de règles */
+  .regles{ display:flex; flex-direction:column; margin:0; padding:0; border-top:1px solid var(--line); }
+  .regle{ display:grid; grid-template-columns:9rem 1fr; gap:6px 16px; padding:12px 0; border-bottom:1px solid var(--line); }
+  .regle dt{ font-weight:600; }
+  .regle dd{ margin:0; }
+  @media (max-width:560px){ .regle{ grid-template-columns:1fr; gap:2px; } }
+
+  ol.etapes{ margin:0; padding:0; list-style:none; counter-reset:e; display:flex; flex-direction:column; gap:10px; }
+  ol.etapes li{ counter-increment:e; display:grid; grid-template-columns:2rem 1fr; gap:12px; align-items:baseline; }
+  ol.etapes li::before{ content:counter(e); font:600 .95rem/1 var(--mono); color:var(--night); text-align:right; }
+
+  .encadre{ background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:16px 18px; display:flex; flex-direction:column; gap:12px; }
+  blockquote{ margin:0; padding:12px 16px; border-left:3px solid var(--night); background:var(--night-soft); border-radius:0 8px 8px 0; font-style:italic; max-width:65ch; }
+  .note{ font-size:.85rem; color:var(--muted); }
+
+  @media (prefers-reduced-motion: reduce){ *{ transition:none !important; animation:none !important; } }
+</style>
+
+<main>
+  <header class="tete">
+    <span class="eyebrow">Plan sommeil · 20 → 26 octobre 2026 · Alicante</span>
+    <h1>Cap sur 05:20</h1>
+    <p class="lede">Ton ancre, c'est <em>l'heure du lever</em>, pas celle du coucher. Elle avance d'un cran tous les deux jours, et le coucher suit. Tu ne choisis pas l'heure où tu t'endors, mais tu choisis l'heure où tu te lèves, et c'est elle qui recolle ta nuit en un seul bloc.</p>
+    <div class="auj" id="auj" aria-live="polite"></div>
+  </header>
+
+  <section aria-labelledby="t-jours">
+    <h2 id="t-jours">Jour par jour</h2>
+    <p class="note">Le soir de chaque jour prépare le réveil du lendemain. La bande montre la nuit qui suit : <span style="color:var(--night)">■</span> au lit, <span style="color:var(--sun)">●</span> lever du soleil.</p>
+    <div class="jours" id="jours"></div>
+  </section>
+
+  <section aria-labelledby="t-avancer">
+    <h2 id="t-avancer">La règle pour avancer</h2>
+    <p>Tu passes au palier suivant si les deux dernières nuits ont tenu : endormi en une demi-heure environ, et pas de réveil de plus d'une heure. Sinon, tu restes deux jours de plus sur le même palier.</p>
+    <p>Dans tous les cas, <b>tu te lèves à l'heure du palier</b>, même après une mauvaise nuit, même si tu t'es rendormi à 5 h. C'est la seule règle qui ne plie jamais.</p>
+  </section>
+
+  <section aria-labelledby="t-tous">
+    <h2 id="t-tous">Tous les jours</h2>
+    <dl class="regles">
+      <div class="regle"><dt>Lever</dt><dd>À l'alarme, sans snooze. L'alarme est posée loin du lit, il faut se lever pour l'arrêter.</dd></div>
+      <div class="regle"><dt>Lumière</dt><dd>Toutes les lumières à fond dès le réveil. Puis 15 minutes dehors, ou fenêtre grande ouverte, dès qu'il fait jour. Pas derrière une vitre fermée.</dd></div>
+      <div class="regle"><dt>Sieste</dt><dd>20 minutes maximum, au créneau de la grille (12:40 en semaine). Jamais après 15:00.</dd></div>
+      <div class="regle"><dt>Caféine</dt><dd>Rien après 14:00 : café, thé, energy drink, cola.</dd></div>
+      <div class="regle"><dt>Dîner</dt><dd>À l'heure de la grille, avec ses féculents. Ensuite plus rien à manger, ni le soir ni la nuit.</dd></div>
+      <div class="regle"><dt>Soir</dt><dd>Douche bien tiède, puis lumière tamisée. Écran off veut dire téléphone hors de la chambre, en charge ailleurs.</dd></div>
+      <div class="regle"><dt>Lit</dt><dd>Il ne sert qu'à dormir. Pas de téléphone, pas de révision dedans.</dd></div>
+      <div class="regle"><dt>La nuit</dt><dd>Tu ne regardes pas l'heure. Réveil retourné, téléphone hors de portée.</dd></div>
+    </dl>
+  </section>
+
+  <section aria-labelledby="t-nuit">
+    <h2 id="t-nuit">Si tu te réveilles la nuit</h2>
+    <ol class="etapes">
+      <li>Tu ne regardes pas l'heure.</li>
+      <li>Tant que tu es calme, tu restes allongé. Dès que ça te semble long (une vingtaine de minutes, à la sensation) ou que tu t'agaces, tu te lèves.</li>
+      <li>Une autre pièce ou une chaise, lumière faible, lecture papier un peu ennuyeuse. Pas de téléphone, rien à manger.</li>
+      <li>Tu retournes au lit quand les paupières tombent. Autant de fois qu'il faut.</li>
+      <li>Le matin, tu te lèves à l'heure du palier, sans rattrapage.</li>
+    </ol>
+  </section>
+
+  <section aria-labelledby="t-heure">
+    <h2 id="t-heure">Dimanche 25 : changement d'heure</h2>
+    <p>Dans la nuit de samedi à dimanche, à 03:00 il sera 02:00. Le téléphone change tout seul. Ton réveil de <span class="num">05:20</span> à l'heure d'hiver tombe à <span class="num">06:20</span> pour ton corps : à peine plus tôt que samedi (<span class="num">06:15</span>). Le dernier palier, le plus dur, c'est l'horloge qui te l'offre.</p>
+    <p>À partir de là, le soleil se lève vers <span class="num">07:17</span> : ta lumière du matin arrive une heure plus tôt.</p>
+  </section>
+
+  <section aria-labelledby="t-normal">
+    <h2 id="t-normal">Ce qui est normal</h2>
+    <p>Les trois à cinq premiers jours, coup de barre l'après-midi et envie de te coucher tôt. C'est la pression de sommeil qui se reconstruit, et c'est elle qui va souder ta nuit. Ne la gaspille pas en sieste longue, et ne te couche pas avant l'heure du palier.</p>
+    <p>Le réveil de 01:40 peut encore arriver la première semaine. Tu appliques le protocole de nuit, et il s'espace.</p>
+  </section>
+
+  <section aria-labelledby="t-medecin">
+    <h2 id="t-medecin">Médecin, cette semaine</h2>
+    <div class="encadre">
+      <p>Des mois de nuits coupées, ça mérite un avis, même si le plan marche. Centro de salud (médico de cabecera) ou le service de santé de l'université. Ce que tu dis :</p>
+      <blockquote lang="es">«&nbsp;Desde hace meses me acuesto hacia las once y media, me despierto sobre la una y media o las dos y no consigo volver a dormir hasta las cinco; luego duermo hasta mediodía. Estoy cansado durante el día.&nbsp;»</blockquote>
+      <p>Si tu te sens souvent à plat, sans envie, ou plus irritable que d'habitude, dis-le aussi : c'est fréquent avec ce sommeil-là, et ça se soigne.</p>
+      <div class="cases"><label class="case"><input type="checkbox" data-cle="medecin"><span>Rendez-vous pris</span></label></div>
+    </div>
+  </section>
+
+  <p class="note">La Batcave suit ce plan : le lever, la douche, l'écran off et le coucher de chaque jour y sont, et le sport du matin reprend le lundi 26. Les cases cochées restent sur cet appareil.</p>
+</main>
+
+<script>
+(function(){
+  var JOURS = [
+    { iso:'2026-10-20', nom:'Mardi 20', palier:'Palier 1', reveil:'07:15', lit:'23:00', soleil:'08:12',
+      matin:'<b>Pas de sport.</b> Lumières à fond au réveil, premier bloc de la grille vers 07:45 au lieu de 07:20. Dehors 15 min vers 08:15.' },
+    { iso:'2026-10-21', nom:'Mercredi 21', palier:'Palier 1', reveil:'07:15', lit:'22:45', soleil:'08:13',
+      matin:'<b>Pas de sport.</b> Premier bloc vers 07:45. Dehors 15 min vers 08:15.' },
+    { iso:'2026-10-22', nom:'Jeudi 22', palier:'Palier 2', reveil:'06:45', lit:'22:45', soleil:'08:14',
+      matin:'<b>Pas de sport.</b> Matin de la grille à partir de 07:20. Dehors 15 min vers 08:15.' },
+    { iso:'2026-10-23', nom:'Vendredi 23', palier:'Palier 2', reveil:'06:45', lit:'22:15', soleil:'08:15',
+      matin:'<b>Pas de sport.</b> Matin de la grille à partir de 07:20. Dehors 15 min vers 08:15.' },
+    { iso:'2026-10-24', nom:'Samedi 24', palier:'Palier 3', reveil:'06:15', lit:'22:15', soleil:'08:16',
+      matin:'<b>Pas de sport.</b> Petit-déjeuner sans écran, grille à 07:20. Cette nuit l\'heure recule : une heure de plus au lit.' },
+    { iso:'2026-10-25', nom:'Dimanche 25', palier:'Cible', reveil:'05:20', lit:'21:35', soleil:'07:17',
+      matin:'Heure d\'hiver : <b>05:20, c\'est 06:20 pour ton corps.</b> Journée Batcave complète. Lumière dehors vers 07:20.' },
+    { iso:'2026-10-26', nom:'Lundi 26', palier:'Cible', reveil:'05:20', lit:'21:35', soleil:'07:18',
+      matin:'<b>Sport 05:30 repris</b> : cette première séance sert de référence. Lumière dehors, ou fenêtre ouverte, vers 07:20.' }
+  ];
+  var ENSUITE = { reveil:'05:20', lit:'21:35', soleil:'07:19' };
+
+  var CLE = 'cap-0520:v1', etat = {};
+  try { etat = JSON.parse(localStorage.getItem(CLE) || '{}') || {}; } catch(e){ etat = {}; }
+  function sauver(){ try { localStorage.setItem(CLE, JSON.stringify(etat)); } catch(e){} }
+
+  function minutes(h){ var p = h.split(':'); return (+p[0]) * 60 + (+p[1]); }
+  function hhmm(m){ m = (m + 1440) % 1440; var h = Math.floor(m / 60), n = m % 60; return (h < 10 ? '0' : '') + h + ':' + (n < 10 ? '0' : '') + n; }
+  function soir(lit){ var l = minutes(lit); return { douche:hhmm(l - 50), ecran:hhmm(l - 35), dents:hhmm(l - 5) }; }
+
+  // Piste de 20:00 à 09:00, soit 13 heures.
+  var T0 = 20 * 60, DUREE = 13 * 60;
+  function pos(h){ var m = minutes(h); if(m < 12 * 60) m += 1440; return Math.max(0, Math.min(100, (m - T0) / DUREE * 100)); }
+
+  function aujourdhui(){
+    try { return new Intl.DateTimeFormat('en-CA', { timeZone:'Europe/Madrid', year:'numeric', month:'2-digit', day:'2-digit' }).format(new Date()); }
+    catch(e){ return new Date().toISOString().slice(0, 10); }
+  }
+  var ajd = aujourdhui();
+
+  function heuresHTML(j, s){
+    return '<div class="heures">' +
+      '<div class="h"><span class="lab">Réveil</span><span class="val cle reveil">' + j.reveil + '</span></div>' +
+      '<div class="h"><span class="lab">Douche</span><span class="val">' + s.douche + '</span></div>' +
+      '<div class="h"><span class="lab">Écran off</span><span class="val">' + s.ecran + '</span></div>' +
+      '<div class="h"><span class="lab">Au lit, pas avant</span><span class="val cle lit">' + j.lit + '</span></div>' +
+    '</div>';
+  }
+
+  function caseHTML(cle, texte){
+    return '<label class="case"><input type="checkbox" data-cle="' + cle + '"' + (etat[cle] ? ' checked' : '') + '><span>' + texte + '</span></label>';
+  }
+
+  var html = '';
+  JOURS.forEach(function(j, i){
+    var suivant = JOURS[i + 1] || ENSUITE, s = soir(j.lit);
+    var classes = 'jour' + (j.iso === ajd ? ' ajd' : '') + (j.iso < ajd ? ' passe' : '');
+    var debut = pos(j.lit), fin = pos(suivant.reveil);
+    var nuitTxt = 'Nuit suivante : ' + j.lit + ' → ' + suivant.reveil + (j.iso === '2026-10-24' ? ' (heure d\'hiver, +1 h de nuit)' : '');
+    html += '<article class="' + classes + '" id="j-' + j.iso + '">' +
+      '<div class="jour-tete"><span class="jour-nom">' + j.nom + '</span>' +
+        '<span class="chip' + (j.palier === 'Cible' ? ' cible' : '') + '">' + j.palier + '</span>' +
+        (j.iso === ajd ? '<span class="chip ajd">Aujourd\'hui</span>' : '') +
+      '</div>' +
+      heuresHTML(j, s) +
+      '<p class="matin">' + j.matin + ' Brossage de dents à <span class="num">' + s.dents + '</span>.</p>' +
+      '<div class="nuit"><span class="nuit-lab">' + nuitTxt + '</span>' +
+        '<div class="piste" role="img" aria-label="' + nuitTxt + ', lever du soleil vers ' + suivant.soleil + '">' +
+          '<div class="bloc" style="left:' + debut + '%;width:' + (fin - debut) + '%"></div>' +
+          '<div class="soleil" style="left:' + pos(suivant.soleil) + '%"></div>' +
+        '</div>' +
+        '<div class="graduations" aria-hidden="true">' +
+          ['20:00','23:00','02:00','05:00','08:00'].map(function(t){ return '<span style="left:' + pos(t) + '%">' + t.slice(0, 2) + 'h</span>'; }).join('') +
+        '</div>' +
+      '</div>' +
+      '<div class="cases">' +
+        caseHTML(j.iso + ':leve', 'Levé à l\'heure') +
+        caseHTML(j.iso + ':lumiere', 'Lumière du matin') +
+        caseHTML(j.iso + ':lit', 'Pas au lit avant l\'heure') +
+      '</div>' +
+    '</article>';
+  });
+  html += '<article class="jour" id="j-ensuite"><div class="jour-tete"><span class="jour-nom">Ensuite, tous les jours</span><span class="chip cible">Cible</span></div>' +
+    heuresHTML(ENSUITE, soir(ENSUITE.lit)) +
+    '<p class="matin">Même heure le week-end. Sport 05:30 selon la grille, lumière vers 07:20, sieste 20 min au plus.</p></article>';
+  document.getElementById('jours').innerHTML = html;
+
+  // Encadré du jour
+  var idx = -1;
+  JOURS.forEach(function(j, i){ if(j.iso === ajd) idx = i; });
+  var auj = document.getElementById('auj'), titre, jour;
+  if(idx >= 0){ jour = JOURS[idx]; titre = 'Aujourd\'hui · ' + jour.nom.toLowerCase(); }
+  else if(ajd < JOURS[0].iso){ jour = JOURS[0]; titre = 'Premier jour · ' + jour.nom.toLowerCase(); }
+  else { jour = ENSUITE; titre = 'Aujourd\'hui · rythme cible'; }
+  auj.innerHTML = '<div class="auj-titre"><strong>' + titre + '</strong>' +
+    (jour.palier ? '<span class="chip' + (jour.palier === 'Cible' ? ' cible' : '') + '">' + jour.palier + '</span>' : '') + '</div>' +
+    heuresHTML(jour, soir(jour.lit)) +
+    (jour.matin ? '<p class="matin">' + jour.matin + '</p>' : '');
+
+  document.addEventListener('change', function(e){
+    var t = e.target;
+    if(!t || !t.matches || !t.matches('input[data-cle]')) return;
+    if(t.checked) etat[t.getAttribute('data-cle')] = 1; else delete etat[t.getAttribute('data-cle')];
+    sauver();
+  });
+  var med = document.querySelector('input[data-cle="medecin"]');
+  if(med && etat.medecin) med.checked = true;
+})();
+</script>

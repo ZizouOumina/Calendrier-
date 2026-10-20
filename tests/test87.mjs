@@ -20,7 +20,7 @@ let errs = 0;
 const ok = (c,m) => { if(c) console.log('  ok  '+m); else { errs++; console.log('  FAIL '+m); } };
 const browser = await chromium.launch();
 
-const SANS19 = {'batcave-jours-sans-cours': {ajoutes:['2026-10-26'], retires:[]}};   /* 19 octobre : le 19 est avant le jour 1 (mardi 20) -- c'est le lundi 26 */
+const SANS19 = {'batcave-jours-sans-cours': {ajoutes:['2026-11-02'], retires:[]}};   /* 19 octobre : le 19 est avant le jour 1 (mardi 20) -- c'est le lundi 26. 21 octobre : le JJB commence le 28 -- le lundi 2 novembre */
 async function ouvrir(quand, seed){
   const ctx = await browser.newContext({viewport:{width:1440,height:900}, timezoneId:'Europe/Madrid', locale:'fr-FR'});
   await ctx.addInitScript(() => { window.claude = undefined; });
@@ -106,9 +106,9 @@ console.log('\n== 287) Un jour sans cours : la plage se libère, sans jamais dou
      Español : on declare le lundi 19 sans cours, la meme journee (lundi, phase 1, pas de JJB). */
   /* 19 octobre : le jour 1 passe au mardi 20 -- le lundi 19 est avant le programme. Le lundi
      declare sans cours devient le 26, premier jour de JJB : le club garde sa matinee. */
-  const { ctx, fr } = await ouvrir('2026-10-26T09:00:00+01:00', SANS19);
-  const i = await infos(fr, '2026-10-26'), g = await jour(fr, '2026-10-26');
-  ok(i.sans === true && i.per === 'es-1', 'le lundi 26 octobre (déclaré sans cours) est sans cours, et toujours en phase 1');
+  const { ctx, fr } = await ouvrir('2026-11-02T09:00:00+01:00', SANS19);
+  const i = await infos(fr, '2026-11-02'), g = await jour(fr, '2026-11-02');
+  ok(i.sans === true && i.per === 'es-1', 'le lundi 2 novembre (déclaré sans cours) est sans cours, et toujours en phase 1');
   ok(!g.some(x => /Cours|Trajet cours|Trajet retour/.test(x)), 'plus de cours, plus de trajets : ' + g.slice(13, 16).join(' | '));
   /* 6 octobre : plus de JJB avant le 26, « Lire » prend la place du club a 10:20 ; la plage du soir
      passe donc au suivant, « Réexpliquer ». Toujours un seul « Lire » dans la journee. */
@@ -182,7 +182,7 @@ console.log('\n== 290) L\'en-tête « Emploi du temps » lit la plage dans la gr
   await ctx.close();
 }
 {
-  const { ctx, fr } = await ouvrir('2026-10-26T09:00:00+01:00', SANS19);
+  const { ctx, fr } = await ouvrir('2026-11-02T09:00:00+01:00', SANS19);
   const b = await fr.evaluate(() => ({ l: document.getElementById('cal-schedule-label').textContent,
                                        g: document.querySelector('#bc-grille .v').textContent }));
   ok(/lundi \(pas de cours\)/.test(b.l), 'un lundi sans cours : « ' + b.l + ' »');

@@ -20,8 +20,9 @@ const ok = (c, m) => { if(c) console.log('  ok  ' + m); else { err++; console.lo
    jeudi 15 -- encore deux jours (lu le vendredi 16 au soir, vacances du 17 au 21). 15 octobre : jour 1
    au vendredi 16 -- un jour de plus (lu le samedi 17 au soir, vacances du 18 au 22). 16 octobre :
    jour 1 au samedi 17 -- encore un (lu le dimanche 18 au soir, vacances du 19 au 23). 19 octobre :
-   jour 1 au mardi 20 (lu le mercredi 21 au soir, vacances du 22 au 26). */
-const JOUR = '2026-10-21';
+   jour 1 au mardi 20 (lu le mercredi 21 au soir, vacances du 22 au 26). 21 octobre : jour 1 au
+   mercredi 21 -- encore un (lu le jeudi 22 au soir, vacances du 23 au 27). */
+const JOUR = '2026-10-22';
 async function ouvrir(seed, quand){
   const ctx = await b.newContext({viewport:{width:1440, height:1200}, timezoneId:'Europe/Madrid', locale:'fr-FR'});
   await ctx.addInitScript(s => {
@@ -64,12 +65,12 @@ console.log('\n== 1) Avant le premier jour du programme, rien n’était prévu 
   await sep.ctx.close();
   const {ctx, page, fr} = await ouvrir();
   const cs = await grille(fr, page, 'ag');
-  const j15 = de(cs, '2026-10-20');
-  ok(j15 && !j15.horsPlan, 'le 20 octobre, lui, était prévu — la case reste blanche : c’est une journée ratée, pas un jour vide');
+  const j15 = de(cs, '2026-10-21');
+  ok(j15 && !j15.horsPlan, 'le 21 octobre, lui, était prévu — la case reste blanche : c’est une journée ratée, pas un jour vide');
   ok(/prévu, pas fait/.test(j15.titre), 'et le dit aussi : « ' + j15.titre + ' »');
   /* trois états, pas deux : un jour à venir n'est ni un trou ni une dette */
-  const j24 = de(cs, '2026-10-22');
-  ok(j24 && !j24.horsPlan && /à venir/.test(j24.titre), 'le 22, encore à venir, ne passe pas pour une journée ratée : « ' + j24.titre + ' »');
+  const j24 = de(cs, '2026-10-23');
+  ok(j24 && !j24.horsPlan && /à venir/.test(j24.titre), 'le 23, encore à venir, ne passe pas pour une journée ratée : « ' + j24.titre + ' »');
   await ctx.close();
 }
 
@@ -78,33 +79,33 @@ console.log('\n== 2) Un jour exclu sort du plan ; des vacances, non ==');
   /* Depuis que le programme part du 29 septembre, septembre ne garde plus que deux jours :
      ce bloc se lit en octobre, sur la grille du mois d'octobre. */
   const {ctx, page, fr} = await ouvrir({
-    'batcave-jours-exclus': ['2026-10-21'],
-    'batcave-vacances': [{id:'v1', debut:'2026-10-22', fin:'2026-10-26', label:'Retour au bled'}]
-  }, '2026-10-20T21:00:00+02:00');
+    'batcave-jours-exclus': ['2026-10-22'],
+    'batcave-vacances': [{id:'v1', debut:'2026-10-23', fin:'2026-10-27', label:'Retour au bled'}]
+  }, '2026-10-21T21:00:00+02:00');
   const cs = await grille(fr, page, 'ag');
-  ok(de(cs, '2026-10-21').horsPlan, 'le 21 octobre, marqué « ne compte pas », est hors plan');
-  ok(!de(cs, '2026-10-20').horsPlan && !de(cs, '2026-10-22').horsPlan, 'la veille et le lendemain, eux, étaient prévus');
+  ok(de(cs, '2026-10-22').horsPlan, 'le 22 octobre, marqué « ne compte pas », est hors plan');
+  ok(!de(cs, '2026-10-21').horsPlan && !de(cs, '2026-10-23').horsPlan, 'la veille et le lendemain, eux, étaient prévus');
   /* Depuis le 19 septembre, des vacances sont une journée SANS COURS et non une journée
      vide : la plage de cours se libère, le reste de la journée de travail tient. Ces cinq
      jours restent donc dans le plan — et c'est la conséquence à connaître : ne rien faire
      pendant des vacances déclarées crée bien une dette. La vraie coupure, c'est
      « Aujourd'hui ne compte pas », jour par jour, comme le 2 ci-dessus. */
-  const vac = ['2026-10-22','2026-10-23','2026-10-24','2026-10-25','2026-10-26'].map(i => de(cs, i));
+  const vac = ['2026-10-23','2026-10-24','2026-10-25','2026-10-26','2026-10-27'].map(i => de(cs, i));
   ok(vac.every(c => c && !c.horsPlan), 'les cinq jours de vacances restent dans le plan (' + vac.filter(c=>c&&!c.horsPlan).length + '/5)');
-  ok(!de(cs, '2026-10-26').horsPlan, 'et le 26 aussi, évidemment');
+  ok(!de(cs, '2026-10-27').horsPlan, 'et le 27 aussi, évidemment');
   await ctx.close();
 }
 
 console.log('\n== 3) Une journée travaillée n’est jamais hors plan ==');
 {
   const {ctx, page, fr} = await ouvrir({'batcave-sessions': [
-    sess('cours', 'Anatomie', 110, '2026-10-20'),
+    sess('cours', 'Anatomie', 110, '2026-10-21'),
     /* même un jour exclu : si tu as travaillé, la case porte ses heures */
-    sess('cours', 'Histologie', 55, '2026-10-21')
-  ], 'batcave-jours-exclus': ['2026-10-21']}, '2026-10-21T21:00:00+02:00');
+    sess('cours', 'Histologie', 55, '2026-10-22')
+  ], 'batcave-jours-exclus': ['2026-10-22']}, '2026-10-22T21:00:00+02:00');
   const cs = await grille(fr, page, 'ag');
-  ok(de(cs, '2026-10-20').heure === '1 h 50' && !de(cs, '2026-10-20').horsPlan, 'le 20 : 1 h 50 affichées, jamais hors plan');
-  const j24 = de(cs, '2026-10-21');
+  ok(de(cs, '2026-10-21').heure === '1 h 50' && !de(cs, '2026-10-21').horsPlan, 'le 21 : 1 h 50 affichées, jamais hors plan');
+  const j24 = de(cs, '2026-10-22');
   ok(j24.heure === '55 min' && !j24.horsPlan, 'le 2, exclu mais travaillé : 55 min affichées, pas de pointillé (' + j24.titre + ')');
   await ctx.close();
 }
@@ -117,10 +118,10 @@ console.log('\n== 4) Chaque vue juge sur CE QU’ELLE montre ==');
   const rv = await grille(fr, page, 'rv');
   const pj = await fr.evaluate(() => [...document.querySelectorAll('#pj-grid .cal-day[data-agjour]')].map(c => ({
     iso: c.dataset.agjour, horsPlan: c.classList.contains('hors-plan')})));
-  const premier = '2026-10-20';
-  ok(!de(rv, premier).horsPlan, 'vue Révision : le mardi 20 prévoit de la révision');
+  const premier = '2026-10-21';
+  ok(!de(rv, premier).horsPlan, 'vue Révision : le mercredi 21 prévoit de la révision');
   ok(pj.filter(c => c.iso === premier)[0] && !pj.filter(c => c.iso === premier)[0].horsPlan,
-     'vue Projets : le 20 prévoit de l’Español, qui s’y affiche — donc pas hors plan');
+     'vue Projets : le 21 prévoit de l’Español, qui s’y affiche — donc pas hors plan');
   await ctx.close();
   const sep = await ouvrir(null, '2026-09-30T21:00:00+02:00');
   const rvSep = await grille(sep.fr, sep.page, 'rv');

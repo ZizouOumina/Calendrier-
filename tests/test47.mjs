@@ -26,7 +26,7 @@ const local = (fr,k) => fr.evaluate(x => JSON.parse((window.__bcLire || ((k) => 
    puisse observer a demi-charge. Le 21 septembre, lui, est passe AVANT le programme depuis
    la nuit du 20 au 21 : il n'a plus ni semaine ni facteur de tours. */
 /* Regime combat (28 septembre) : la seance LOURDE est le JEUDI, le lundi porte le volume. */
-const LUNDI = '2026-11-05T06:30:00+01:00';   /* jeudi 29 octobre : Haut lourd, semaine 3 (jour 1 au mardi 13 depuis le 12 octobre) : tours complets. 19 octobre : jour 1 au mardi 20, la semaine 3 commence le 2 novembre -- jeudi 5 */
+const LUNDI = '2026-11-12T06:30:00+01:00';   /* jeudi 29 octobre : Haut lourd, semaine 3 (jour 1 au mardi 13 depuis le 12 octobre) : tours complets. 19 octobre : jour 1 au mardi 20, la semaine 3 commence le 2 novembre -- jeudi 5. 21 octobre : la muscu commence le lundi 26, ses deux semaines a demi-charge vont jusqu'au 8 novembre -- jeudi 12 */
 const SAMEDI = '2027-01-30T06:30:00+01:00';   /* le premier samedi de muscu apres le regime combat (S2) : hors montee en charge, 3 series */
 /* 28 septembre au soir : jour 1 au mardi 29, semaine de reprise en combat seul, la muscu
    commence le lundi 5 octobre -- semaine 2 du programme, encore a demi-charge. */
@@ -63,12 +63,12 @@ console.log('\n== 108) Saisir des séries enregistre le journal et coche l\'exer
   await page.waitForTimeout(250);
   const log = await local(fr, 'batcave-sport-log');
   ok(Array.isArray(log) && log.length === 1 && log[0].exo === 'Tractions' && JSON.stringify(log[0].series) === '[8,7,6,6]', 'journal : Tractions 8/7/6/6 (' + JSON.stringify(log && log[0] && log[0].series) + ')');
-  const st = await local(fr, 'batcave-sport-2026-11-05');
+  const st = await local(fr, 'batcave-sport-2026-11-12');
   ok(st && st['Haut lourd-0'] === true, 'l\'exercice est coché automatiquement');
   ok(await fr.evaluate(() => document.querySelector('.sport-card.today li').classList.contains('checked')), 'la ligne apparaît cochée');
   await effacerSaisie(fr);
   await page.waitForTimeout(200);
-  ok((await local(fr, 'batcave-sport-log')).length === 0 && (await local(fr, 'batcave-sport-2026-11-05'))['Haut lourd-0'] === false, 'effacer → journal vide et case décochée');
+  ok((await local(fr, 'batcave-sport-log')).length === 0 && (await local(fr, 'batcave-sport-2026-11-12'))['Haut lourd-0'] === false, 'effacer → journal vide et case décochée');
   await ctx.close();
 }
 
@@ -114,7 +114,7 @@ console.log('\n== 111) Le tableau de bord annonce les cibles du jour, et le jour
   const t = await fr.evaluate(() => document.getElementById('dash-sport').innerText);
   ok(/Cibles : Tractions 9\/8\/7\/7/.test(t), 'Sport aujourd\'hui : « Cibles : Tractions 9/8/7/7 … » (' + t.replace(/\s+/g,' ').slice(0, 90) + ')');
   await ctx.close();
-  const off = await ouvrir('2026-10-21T06:30:00+02:00');   /* mercredi : off */
+  const off = await ouvrir('2026-11-11T06:30:00+01:00');   /* mercredi : off (21 octobre : le mercredi 21 est avant la muscu, du 26) */
   await off.fr.evaluate(() => { document.querySelector('.nav-btn[data-page="dashboard"]').click(); const b = document.getElementById('dash-more-toggle'); if(document.getElementById('dash-more').hidden) b.click(); });
   const t2 = await off.fr.evaluate(() => document.getElementById('dash-sport').innerText);
   ok(/Jour off/.test(t2) && /Haut lourd/.test(t2), 'mercredi : « Jour off … prochaine séance : Haut lourd » (le jeudi, au regime combat) (' + t2.replace(/\s+/g,' ').slice(0, 80) + ')');

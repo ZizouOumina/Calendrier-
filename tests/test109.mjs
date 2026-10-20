@@ -46,13 +46,13 @@ console.log('\n== 401) Santé de la Batcave : six contrôles, un relevé qui ne 
 }
 {
   /* la clôture n'est due qu'à partir du jour 1 (mardi 13 octobre depuis le 12 octobre ;
-     samedi 17 depuis le 16 octobre, mardi 20 depuis le 19) : on lit le jour 1, avec une
-     clôture du samedi 17. */
+     samedi 17 depuis le 16 octobre, mardi 20 depuis le 19, mercredi 21 depuis le 21) : on lit le
+     jour 1, avec une clôture du samedi 17. */
   const seed = {'batcave-journal-2026-10-17': {sommeil:'7', cloture:'21:20'}};
-  const { ctx, page, fr } = await ouvrir('2026-10-20T10:00:00+02:00', seed);
+  const { ctx, page, fr } = await ouvrir('2026-10-21T10:00:00+02:00', seed);
   const r = await fr.evaluate(() => ({ vide: window.__bcAppVide(), sante: window.__bcSante().filter(c => !c.ok).map(c => c.id), releve: document.getElementById('bc-sante').hidden, txt: document.querySelector('#bc-sante .v').textContent }));
   ok(r.vide === false, 'une clôture suffit : l\'appli n\'est plus neuve');
-  ok(r.sante.join(',') === 'sauvegarde,exercice,cloture', 'trois défauts : aucune sauvegarde, aucun exercice, clôture vieille de 3 jours (' + r.sante.join(', ') + ')');
+  ok(r.sante.join(',') === 'sauvegarde,exercice,cloture', 'trois défauts : aucune sauvegarde, aucun exercice, clôture vieille de 4 jours (' + r.sante.join(', ') + ')');
   ok(r.releve === false && /3 défauts/.test(r.txt), 'le relevé SANTÉ s\'allume : ' + r.txt);
   await fr.evaluate(() => document.getElementById('bc-sante').click());
   await page.waitForTimeout(300);
@@ -73,13 +73,15 @@ console.log('\n== 402) Le plan de secours en texte ==');
   /* La semaine du 5 octobre : la premiere avec le combat (celle du 28 septembre est sans
      combat depuis le 30 au soir). */
   /* 5 octobre : la semaine du 5 est sans sport le lundi et sans JJB -- on lit celle du 12.
-     6 octobre : le JJB est repousse au 26 -- on lit celle du 26. */
-  const { ctx, fr } = await ouvrir('2026-10-25T20:00:00+02:00');
-  const t = await fr.evaluate(() => window.__bcPlanTexte('2026-10-26'));
-  ok(/^LA BATCAVE — plan de la semaine du 26 oct\. au 01 nov\./.test(t), 'en-tête : ' + t.split('\n')[0]);
-  ok(/LUNDI 26 oct\. — combat\n  05:30  Sport\n/.test(t) && /  10:30  🥋 JJB\n/.test(t), 'lundi : la grille combat, ligne par ligne');
-  ok(/MARDI 27 oct\.\n[\s\S]*  21:35  Coucher/.test(t) && !/MARDI 27 oct\. — combat/.test(t) && !/Muay Thai/.test(t), 'mardi : plus de Muay Thai, coucher 21:35 comme les autres jours');
-  ok(/DIMANCHE 0?1 nov\.\n/.test(t) && !/DIMANCHE 0?1 nov\. — combat/.test(t), 'dimanche : pas de combat');
+     6 octobre : le JJB est repousse au 26 -- on lit celle du 26.
+     21 octobre : le JJB commence le mercredi 28 -- on lit celle du 2 novembre, la premiere aux
+     trois matins de combat. */
+  const { ctx, fr } = await ouvrir('2026-11-01T20:00:00+01:00');
+  const t = await fr.evaluate(() => window.__bcPlanTexte('2026-11-02'));
+  ok(/^LA BATCAVE — plan de la semaine du 0?2 nov\. au 0?8 nov\./.test(t), 'en-tête : ' + t.split('\n')[0]);
+  ok(/LUNDI 0?2 nov\. — combat\n  05:30  Sport\n/.test(t) && /  10:30  🥋 JJB\n/.test(t), 'lundi : la grille combat, ligne par ligne');
+  ok(/MARDI 0?3 nov\.\n[\s\S]*  17:30  🏊 Piscine[\s\S]*  21:35  Coucher/.test(t) && !/MARDI 0?3 nov\. — combat/.test(t) && !/Muay Thai/.test(t), 'mardi : plus de Muay Thai, la piscine à 17:30, coucher 21:35 comme les autres jours');
+  ok(/DIMANCHE 0?8 nov\.\n/.test(t) && !/DIMANCHE 0?8 nov\. — combat/.test(t), 'dimanche : pas de combat');
   const t0 = await fr.evaluate(() => window.__bcPlanTexte('2026-09-28'));
   ok(!/MARDI 29 sept\. — combat/.test(t0) && !/Muay Thai/.test(t0.split('MERCREDI')[0].split('MARDI')[1] || ''), 'la semaine du 28 septembre, sans combat depuis le 30 au soir : pas de Muay Thai le mardi 29');
   ok(/LES 5 QUI COMPTENT\n  Sommeil : /.test(t) && /\n  Argent : /.test(t), 'les cinq qui comptent, avec leur chiffre du jour');
@@ -183,7 +185,9 @@ console.log('\n== 405) Le changement d\'heure du 25 octobre ==');
     heure: document.getElementById('bc-time') ? document.getElementById('bc-time').textContent : ''
   }));
   ok(r.avant === '+02:00' && r.jour === '+01:00' && r.apres === '+01:00', 'décalage Madrid : +02:00 le 24, +01:00 dès le 25 (' + [r.avant, r.jour, r.apres].join(' / ') + ')');
-  ok(Math.abs(r.som - (24 - 21 - 35 / 60 + 5.5)) < 0.01 && Math.abs(r.somLun - r.som) < 0.01, 'la cible de sommeil suit la grille (7 h 55), pas l\'heure gagnée cette nuit-là (' + r.som.toFixed(2) + ' h)');
+  /* 21 octobre : la nuit du samedi 24 suit le plan sommeil (coucher 22:15) -- 7 h 15 a l'horloge,
+     sans l'heure gagnee ; celle du dimanche retrouve la grille, 7 h 55. */
+  ok(Math.abs(r.som - (24 - 22 - 15 / 60 + 5.5)) < 0.01 && Math.abs(r.somLun - (24 - 21 - 35 / 60 + 5.5)) < 0.01, 'la cible de sommeil suit le plan (7 h 15 a l\'horloge), pas l\'heure gagnée cette nuit-là (' + r.som.toFixed(2) + ' h), puis la grille (7 h 55)');
   ok(r.lever === '05:30' && r.grille[0] === '05:30 Projets perso matinal', 'dimanche 25 : lever 05:30, la grille combat du dimanche');
   ok(r.premier && r.premier.debut === 330, 'lundi 26 : le premier rappel part à 05:30 (' + r.premier.debut + ' min)');
   await ctx.close();

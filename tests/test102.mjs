@@ -71,14 +71,16 @@ console.log('\n== 337) Le panneau dit ce qu\'il faut ==');
   /* La semaine du 5 octobre : la premiere avec le combat (celle du 28 septembre est sans
      combat depuis le 30 au soir -- COMBAT_PAUSE). */
   /* 5 octobre : pas de JJB du 5 au 11 -- la premiere semaine de combat est celle du 12.
-     6 octobre : le JJB repousse au 26 (budget du mois) -- c'est la semaine du 26. */
-  const { ctx, page, fr } = await ouvrir('2026-10-26T10:00:00+02:00');
+     6 octobre : le JJB repousse au 26 (budget du mois) -- c'est la semaine du 26.
+     21 octobre : le JJB commence le mercredi 28, et la piscine du mardi entre au panneau -- la
+     premiere semaine pleine est celle du 2 novembre : trois JJB et une piscine. */
+  const { ctx, page, fr } = await ouvrir('2026-11-02T10:00:00+01:00');
   const vide = await fr.evaluate(() => document.getElementById('cardio-note').textContent);
-  ok(/0\/3/.test(vide), 'semaine neuve : 0/3 (trois séances de combat) (' + vide + ')');
-  await fr.evaluate(() => window.__bcNoterCardio('2026-10-26', 35));   /* le lundi : JJB */
+  ok(/0\/4/.test(vide), 'semaine neuve : 0/4 (trois séances de combat et la piscine) (' + vide + ')');
+  await fr.evaluate(() => window.__bcNoterCardio('2026-11-02', 35));   /* le lundi : JJB */
   await page.waitForTimeout(300);
   const t = await fr.evaluate(() => document.getElementById('cardio-note').textContent);
-  ok(/1\/3/.test(t) && /35 min/.test(t), 'une séance de 35 min le lundi (JJB) : 1/3 · 35 min (' + t + ')');
+  ok(/1\/4/.test(t) && /35 min/.test(t), 'une séance de 35 min le lundi (JJB) : 1/4 · 35 min (' + t + ')');
   const p = await fr.evaluate(() => document.getElementById('cardio-panel').innerText);
   ok(/ne comptent pas dans/.test(p), 'le panneau dit explicitement qu\'il ne compte pas dans les séances');
   ok(/six derni/.test(p), 'et il montre les six dernières semaines');
