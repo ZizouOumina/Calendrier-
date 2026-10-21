@@ -71,11 +71,11 @@ console.log('\n== 262) Les élévations latérales, lundi et samedi ==');
   const hv = s['Haut volume'].noms, sa = s['Bras · épaules · mollets'].noms;
   ok(hv.indexOf('Élévations latérales') < hv.indexOf('Flexion du cou'), 'lundi : avant le cou, qui reste le finisseur');
   const hl = s['Haut lourd'].noms;
-  ok(hv.length === 8 && hl.length === 8 && s['Bas complet'].noms.length === 6, 'huit exercices le lundi et le jeudi, six le mardi (' + [hv.length, hl.length, s['Bas complet'].noms.length].join(' / ') + ')');
+  ok(hv.length === 8 && hl.length === 9 && hl[8] === 'Tractions serviette (grip kimono)' && s['Bas complet'].noms.length === 6, 'huit exercices le lundi, neuf le jeudi (les tractions serviette depuis le 21 octobre), six le mardi (' + [hv.length, hl.length, s['Bas complet'].noms.length].join(' / ') + ')');
   ok(hl.includes('Split squat bulgare') && hl.includes('Soulevé de terre roumain une jambe'), 'le jeudi porte aussi les jambes : elles passent à deux séances par semaine');
   ok(hv.includes('Curl barre basse') && hv.includes('Flexion du cou') && hv.includes('Extension du cou') && !hv.includes('Face pulls') && !hv.includes('Shrugs suspendus'), 'lundi : curl et cou complet ; face pulls et shrugs restent dehors');
   ok(sa.indexOf('Élévations latérales') === sa.indexOf('Shrugs suspendus') + 1, 'samedi : dans le bloc épaules, juste après les shrugs');
-  ok(s['Haut lourd'].duree === '50 min' && s['Haut volume'].duree === '50 min', 'durées annoncées : 50 min (lourd) et 50 min (volume)');
+  ok(s['Haut lourd'].duree === '55 min' && s['Haut volume'].duree === '50 min', 'durées annoncées : 55 min (lourd, avec les tractions serviette) et 50 min (volume)');
   await ctx.close();
 }
 

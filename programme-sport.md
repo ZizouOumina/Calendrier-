@@ -19,7 +19,7 @@ Lundi et jeudi : huit exercices, quatre paires, ~50 minutes. Le mardi ne change 
 - **La séance du samedi revient le 4 octobre** (sa décision, la Muay Thai sortie) : bras et épaules, à 05:30 comme les autres, six exercices, ~40 minutes. Les mollets restent le mardi.
 - **Sortent ce que le tatami travaille déjà** : curl inversé (séance lourde), relevés de genoux (volume), et les fentes du mardi (elles ne sont pas revenues avec la sortie de la Muay Thai : les jambes travaillent deux fois par semaine, mardi et jeudi). Les avant-bras sont chargés quatre fois par semaine par les prises de kimono, la sangle par la garde, les ponts et les sorties de hanche. Les relevés de jambes suspendus, sortis le même jour, sont revenus le jeudi le 25 septembre.
 - **Lever 05:30 tous les jours, coucher 21:35**, mardi compris. Le samedi et le dimanche dormaient jusqu'à 06:30 : une heure fixe tous les jours est ce qui recale une horloge interne. Du 21 au 24 octobre, le plan sommeil (« Cap sur 05:20 ») y ramène par paliers : lever 07:15, 06:45, 06:15, puis 05:20 dès le dimanche 25 — pas de 05:30 avant.
-- **Eau : 3,5 à 4 L les jours de combat** (3 L les autres). **Collation combat** à 10:05 avant le JJB : banane, 50 g de flocons, 15 g d'amandes, ≈ 390 kcal.
+- **Eau : 3,5 à 4 L les jours de combat** (3 L les autres). **Collation combat** à 10:05 avant le JJB : banane, 2 galettes de riz, 15 g de miel, ≈ 230 kcal — rien de lourd sur le tatami ; le reste revient au déjeuner (+45 g de couscous), depuis le 21 octobre.
 - **Shampooing les jours de sueur** : du lundi au samedi (muscu, JJB). Le dimanche reste sec.
 - **Si la semaine dérape** : tu sautes une séance de combat, jamais la muscu ni le sommeil. Pendant les partiels, rien ne s'allège (sa décision du 23) ; seul le jour d'un examen, la séance saute.
 
@@ -62,7 +62,7 @@ Le soir est libre depuis que la Muay Thai est sortie (1er octobre).
 | 3 A | Crunch lesté | 3 × 12-20 |
 | 3 B | Inclinaisons latérales du cou | 3 × 12-20 par côté |
 
-### Jeudi · Haut lourd + jambes (50 min)
+### Jeudi · Haut lourd + jambes (55 min)
 Repos par paire : 45 s entre A et B, puis 90 s · 45 s / 75 s · 45 s / 75 s · 30 s / 60 s. Jour sans combat : c'est ici que la force se construit, et que les jambes font leur deuxième passage de la semaine.
 
 | Paire | Exercice | Tours × fourchette |
@@ -75,6 +75,9 @@ Repos par paire : 45 s entre A et B, puis 90 s · 45 s / 75 s · 45 s / 75 s · 
 | 3 B | Soulevé de terre roumain une jambe | 3 × 8-12 par jambe |
 | 4 A | Élévations latérales | 3 × 12-20 |
 | 4 B | Relevés de jambes suspendus | 3 × 8-15 |
+| 5 | Tractions serviette (grip kimono) | 2 × 3-8, seul, repos 90 s |
+
+**Tractions serviette** (21 octobre, sa décision) : une serviette pliée passée sur la barre, une extrémité dans chaque main, comme une manche de kimono. En fin de séance, seul. C'est le grip du JJB.
 
 Tractions et dips reviennent lundi et jeudi avec des fourchettes différentes ; leur cible se déduit du dernier journal, quel que soit le jour.
 
@@ -91,6 +94,12 @@ Revenu le 4 octobre. 48 h après le haut lourd du jeudi, 48 h avant le volume du
 | 3 B | Face pulls | 3 × 15-20 |
 
 Volumes qui changent : biceps 6 séries directes (lundi et samedi), triceps 3 directes, épaules latérales 10 (lundi 4, jeudi 3, samedi 3), arrière d'épaule 3.
+
+### Les mesures du cardio (21 octobre)
+Deux chiffres dans l'onglet Sport, panneau « Cardio & combat », sous « 📈 Mesures » (replié) : la **fréquence cardiaque de repos**, notée chaque dimanche (Bevel ou la montre — elle baisse quand le moteur grossit, le snus la fait monter), et le **400 m nagé chronométré**, le premier mardi du mois à la place de la piscine habituelle (3 novembre, 1er décembre), toujours dans la même nage. Le plan du jour les réclame le jour venu.
+
+### La mobilité des hanches (21 octobre)
+Le dimanche à 19:30, dix minutes au sol, prises sur le temps libre : 90/90 (2 × 1 min par côté), pigeon (2 × 1 min par côté), papillon (2 × 1 min), dix bascules du bassin. Pour la garde.
 
 ### Les trois séances de combat
 
@@ -221,6 +230,6 @@ Tractions à 12 reps propres sur toutes les séries, dips à 15, jambes dès que
 - **Le repos entre les séries** : la barre « Repos » en haut de l'onglet Sport propose les temps de la séance du jour (30, 45, 60, 75, 90, 120 s). Un appui lance le décompte, un bip et une vibration sonnent la fin. On ne compte plus dans sa tête, et les repos courts arrêtent de s'allonger.
 
 ## Autour de la séance
-- Collation entraînement à 14:50 (pain complet, 2 œufs durs, fromage, amandes) ; le petit-déjeuner suit la séance à 06:45. Les jours de JJB, collation combat à 10:05 (banane, flocons, amandes).
+- Collation entraînement à 14:50 (pain complet, 2 œufs durs — sardines ou maquereau le mardi et le jeudi —, fromage, amandes) ; le petit-déjeuner suit la séance à 06:45. Les jours de JJB, collation combat à 10:05 (banane, galettes de riz, miel).
 - Sommeil : lever 05:30 tous les jours, coucher 21:35, tous les jours. L'efficacité de sommeil se mesure sur tes vraies nuits dès que sept nuits portent le sommeil Bevel et le temps au lit.
 - Objectif à six mois : 64 → 72 kg (≈ 1,3 kg par mois, relevé le 23 septembre) avec le plan d'alimentation (voir programme-alimentation.md).

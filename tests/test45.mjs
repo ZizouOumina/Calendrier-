@@ -107,8 +107,9 @@ console.log('\n== 111) Dimanche : créneau libre proposé, bouton « Maintenant 
   const t = await texte(fr, '#dash-plan');
   /* Regime combat : plus de course le dimanche, et 17:30-19:00 est un bloc de projets
      (pas un creneau de rattrapage). Le creneau propose est donc le temps libre du soir,
-     19:30 -> 21:25 : 1 h 55. Depuis le 19 octobre, la douche du soir est a 20:45 : 1 h 15. */
-  ok(/créneau libre : Temps libre à 19:30 \(1 h 15\)/.test(t), 'suggestion : Temps libre à 19:30 (1 h 15) — ni la course ni les projets ne sont proposés en rattrapage — ' + ((t.match(/créneau libre[^\n]*/)||[''])[0]));
+     19:30 -> 21:25 : 1 h 55. Depuis le 19 octobre, la douche du soir est a 20:45 : 1 h 15.
+     Depuis le 21 octobre, la mobilite des hanches prend 19:30 -> 19:40 : 1 h 05. */
+  ok(/créneau libre : Temps libre à 19:40 \(1 h 05\)/.test(t), 'suggestion : Temps libre à 19:40 (1 h 05) — ni la course ni les projets ne sont proposés en rattrapage — ' + ((t.match(/créneau libre[^\n]*/)||[''])[0]));
   ok(!/\d h \)/.test(t), 'la durée d\'un créneau rond s\'écrit « 1 h », sans espace avant la parenthèse');
   ok(!/Course à pied/.test(t), 'et la course à pied n\'apparaît nulle part comme créneau libre');
   ok(await fr.evaluate(() => !!document.querySelector('[data-plan-manque-lancer]')), 'bouton « Maintenant » présent');

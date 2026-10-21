@@ -49,9 +49,9 @@ console.log('\n== 330) Cinq catégories, toutes alimentaires, et le frais seul e
      paquet couvre presque trois semaines. Il portait déjà ce cycle-là tout en restant
      rangé dans le frais, et la catégorie annonçait donc un rythme qu'un de ses articles
      ne suivait pas. */
-  ok(/Chaque semaine/.test(hebdo.titre) && hebdo.n === 8, 'la liste hebdomadaire fait 9 articles — les amandes entrent le 24 septembre à la place du beurre de cacahuète, la boisson d\'avoine du shake le 29 (' + hebdo.n + ')');
+  ok(/Chaque semaine/.test(hebdo.titre) && hebdo.n === 9, 'la liste hebdomadaire fait 9 articles — les amandes entrent le 24 septembre à la place du beurre de cacahuète, les sardines le 21 octobre (' + hebdo.n + ')');
   const t = await fr.evaluate(() => document.querySelector('.page[data-page="courses"]').textContent);
-  ok(!/Riz/.test(hebdo.titre + '') && /Riz — 4 kg/.test(t) && /demande 3\u202f500 g/.test(t), 'le riz est en réserve : 4 kg achetés pour 3 500 g demandés (125 g par jour depuis le 19 octobre)');
+  ok(!/Couscous/.test(hebdo.titre + '') && /Couscous — 5 kg/.test(t) && /demande 4\u202f040 g/.test(t), 'le couscous est en réserve : 5 kg achetés pour 4 040 g demandés (125 g par jour, 170 les jours de combat, depuis le 21 octobre)');
   ok(!/Shampooing|Cotons-tiges|Nettoyant visage|Brosse à dents|Bain de bouche|Brossettes|Crème solaire|Lessive|Dentifrice/.test(t),
      'plus une seule ligne de santé et hygiène');
   ok(!/Éponges|Sacs poubelle|Nettoyant sol|Papier toilette|Essuie-tout|Liquide vaisselle|Anticalcaire|Nettoyant WC|Gants de ménage/.test(t),
@@ -76,7 +76,7 @@ console.log('\n== 331) Samedi 26 septembre : l\'ancre, tout est dû ==');
   /* Aucun stock n'est suppose : le 19, TOUTES les categories sont dues et toutes leurs
      lignes comptent. 9 frais + 1 surgele + 4 reserves + 2 (cycle de 5 semaines) + 1 pot de
      creatine = 17. Ce qu'il a deja, il le coche quand meme. */
-  ok(/\/17 articles/.test(somme), '17 articles le 26 : tout part de zéro (' + somme + ')');
+  ok(/\/20 articles/.test(somme), '20 articles le 26 : tout part de zéro (' + somme + ')');
   await ctx.close();
 }
 {
@@ -125,7 +125,7 @@ console.log('\n== 333) L\'habitude « Courses faites » reste validable ==');
     await new Promise(r => setTimeout(r, 120));
   }
   const somme = await fr.evaluate(() => document.getElementById('courses-summary').textContent);
-  ok(/^8\/8/.test(somme), 'cocher le frais suffit : ' + somme + ' (' + avant + ' cases)');
+  ok(/^9\/9/.test(somme), 'cocher le frais suffit : ' + somme + ' (' + avant + ' cases)');
   const coche = await fr.evaluate(() => {
     const l = [...document.querySelectorAll('#dash-checklist li label')].map(x => x.textContent);
     return l.some(x => /Courses/.test(x));
@@ -158,15 +158,15 @@ console.log('\n== 334b) Aucun stock n\'est supposé : il coche ce qu\'il a ==');
   const t = await fr.evaluate(() => document.querySelector('.page[data-page="courses"]').textContent);
   ok(!/tu en as|il t’en reste|à racheter le/.test(t), 'aucune ligne ne parle de stock ni de date de rachat');
   ok(!/Beurre de cacahuète/.test(t), 'le beurre de cacahuète est sorti de la liste (24 septembre)');
-  ok(/Amandes ou noix nature — 600 g/.test(t) && /demande 535 g/.test(t), 'amandes : 3 sachets de 200 g, pour 535 g demandés (trois collations combat ; 40 g à 14:50 depuis le 29 septembre)');
-  ok(/Huile d'olive — 2 L/.test(t) && /demande 1\u202f575 ml/.test(t), 'huile : un bidon de 2 L, pour 1 575 ml demandés');
+  ok(/Amandes ou noix nature — 600 g/.test(t) && /demande 490 g/.test(t), 'amandes : 3 sachets de 200 g, pour 490 g demandés (30 g le matin, 40 g à 14:50 ; plus d\'amandes dans la collation combat depuis le 21 octobre)');
+  ok(/Huile d'olive — 2 L/.test(t) && /demande 1\u202f250 ml/.test(t), 'huile : un bidon de 2 L, pour 1 250 ml demandés (la crème ou le pesto remplacent l\'huile crue, 21 octobre)');
   await ctx.close();
 }
 {
   /* Le 17 octobre les reserves reviennent, aux memes quantites : aucun report. */
   const { ctx, fr } = await jour('2026-10-31T10:00:00+02:00');
   const t = await fr.evaluate(() => document.querySelector('.page[data-page="courses"]').textContent);
-  ok(/Riz — 4 kg/.test(t) && /Pâtes — 4 kg/.test(t), 'le 24 octobre, riz et pâtes reviennent aux mêmes quantités');
+  ok(/Couscous — 5 kg/.test(t) && /Pâtes — 4 kg/.test(t), 'le 24 octobre, couscous et pâtes reviennent aux mêmes quantités');
   await ctx.close();
 }
 
@@ -197,7 +197,7 @@ for (const d of ['2026-10-03', '2026-10-10', '2026-10-31', '2026-12-05']) {
   const t = await fr.evaluate(() => document.querySelector('.page[data-page="courses"]').textContent);
   /* 14 par semaine : 2 par jour au petit-dejeuner, tire du plan de repas. Mais on
      n'achete pas 14 oeufs : une boite de 12 plus une de 6 font 18. */
-  ok(/Œufs — 18/.test(t) && /demande 14 œufs/.test(t), 'les œufs : 18 achetés pour les 14 du plan (deux à la collation ; le petit-déjeuner est un shake depuis le 29 septembre)');
+  ok(/Œufs — 12/.test(t) && /demande 10 œufs/.test(t), 'les œufs : 12 achetés pour les 10 du plan (deux à la collation, les sardines le mardi et le jeudi depuis le 21 octobre ; collation ; le petit-déjeuner est un shake depuis le 29 septembre)');
   await ctx.close();
 }
 
@@ -222,15 +222,20 @@ console.log('\n== 334d) La liste ne porte QUE de la nourriture ==');
   const ATTENDU = ['Poulet', 'Viande hachée 5 %', 'Skyr', 'Œufs',
                    'Pain complet', 'Bananes', 'Fruits (pommes, poires, oranges…)',
                    'Amandes ou noix nature',
+                   /* 21 octobre : les sardines, en fin de « Chaque semaine » */
+                   'Sardines ou maquereau (boîte)',
                    'Légumes verts surgelés', 'Fromage en tranches',
                    /* 29 septembre : la boisson d'avoine du shake, un pack de 6 L toutes les deux semaines */
                    'Boisson d\'avoine',
-                   'Riz', 'Pâtes', 'Flocons d\'avoine',
+                   /* 21 octobre : les fruits rouges du shake et les galettes de riz de la collation combat */
+                   'Fruits rouges surgelés', 'Galettes de riz',
+                   /* 21 octobre : le couscous prend la place du riz */
+                   'Couscous', 'Pâtes', 'Flocons d\'avoine',
                    /* 26 septembre : le miel passe au cycle de cinq semaines, en pot de 750 g */
                    'Huile d\'olive', 'Miel', 'Créatine monohydrate'];
-  ok(lignes.length === 17, '17 lignes, pas une de plus (' + lignes.length + ')');
+  ok(lignes.length === 20, '20 lignes, pas une de plus (' + lignes.length + ')');
   ok(JSON.stringify(lignes) === JSON.stringify(ATTENDU),
-     'et ce sont exactement les dix-sept attendues' +
+     'et ce sont exactement les vingt attendues' +
      (JSON.stringify(lignes) === JSON.stringify(ATTENDU) ? '' : ' — reçu : ' + lignes.join(' · ')));
   /* Nommement, les rayons qui sont sortis : hygiene, maison, menage, brosse a dents. */
   const SORTIS = ['Shampooing', 'Après-shampooing', 'Gel douche', 'Nettoyant visage', 'Dentifrice',
@@ -285,8 +290,9 @@ console.log('\n== 334) Ses prix a lui, releves en magasin -- et rien d\'invente 
   /* 25 septembre au soir : leur prix est releve (12 EUR/kg) -- plus de ligne hors total. */
   /* 29 septembre : la boisson d\'avoine du shake n'a pas encore son prix (il attend son ticket) -- le
      panneau le nomme, et c'est la seule ligne hors total. */
-  ok(!/Amandes/.test((t.match(/[^.]*hors total[^.]*/) || [''])[0]) && (!/hors total/.test(t) || /avoine/i.test(t)),
-     'une seule ligne hors total, la boisson d\'avoine du shake — les amandes ont leur prix (' + t.slice(0, 120) + ')');
+  /* 21 octobre : couscous, fruits rouges, galettes de riz et sardines attendent son ticket. */
+  ok(!/Amandes/.test((t.match(/[^.]*hors total[^.]*/) || [''])[0]),
+     'hors total : seulement les articles qui attendent son ticket — les amandes ont leur prix (' + t.slice(0, 120) + ')');
   ok(/Budget/.test(t) && /Nourriture/.test(t),
      'et il dit toujours où vivent les montants payés : Budget → Nourriture');
   /* Les prix sur les lignes elles-memes. La creatine est hors plan de repas -- elle
@@ -297,12 +303,12 @@ console.log('\n== 334) Ses prix a lui, releves en magasin -- et rien d\'invente 
      Les assertions ci-dessous cherchent ce que le code ÉCRIT, pas ce que le CSS affiche. */
   const lignes = await fr.evaluate(() =>
     [...document.querySelectorAll('#courses-grid .cat-card li')].map(l => l.textContent));
-  const muettes = lignes.filter(l => !/€|Créatine|^Boisson d\'avoine/.test(l));
+  const muettes = lignes.filter(l => !/€|Créatine|^Boisson d\'avoine|^(Couscous|Fruits rouges|Galettes de riz|Sardines)/.test(l));
   ok(lignes.length > 0 && muettes.length === 0,
      'les ' + lignes.length + ' lignes du jour portent toutes leur prix' +
      (muettes.length ? ' — muettes : ' + muettes.join(' · ') : ''));
-  ok(lignes.filter(l => /prix à relever/.test(l)).every(l => /^Boisson d\'avoine/.test(l)) && lignes.some(l => /^Amandes/.test(l) && /12,00 €\/kg/.test(l)),
-     'seul la boisson d\'avoine du shake dit « prix à relever » ; les amandes à 12 €/kg');
+  ok(lignes.filter(l => /prix à relever/.test(l)).every(l => /^(Boisson d\'avoine|Couscous|Fruits rouges|Galettes de riz|Sardines)/.test(l)) && lignes.some(l => /^Amandes/.test(l) && /12,00 €\/kg/.test(l)),
+     'seuls les articles du 21 octobre disent « prix à relever » ; les amandes à 12 €/kg');
   ok(!lignes.some(l => /Beurre de cacahuète/.test(l)), 'plus de beurre de cacahuète');
   ok(lignes.some(l => /Poulet/.test(l) && /7,50 €\/kg/.test(l)),
      'le poulet porte le prix de sa boucherie : 7,50 €/kg');

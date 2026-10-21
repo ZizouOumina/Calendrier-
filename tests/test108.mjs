@@ -37,9 +37,10 @@ console.log('\n== 269) Deux oeufs a la place du jambon ==');
   /* Le lundi 28 est un jour de combat : la collation combat ajoute 388 kcal. */
   /* 29 septembre : le petit-dejeuner devient un shake (boisson d'avoine, skyr, flocons, banane,
      miel, amandes) : -21 kcal et -11 g de proteines par jour (etiquette Alitey), les deux oeufs du matin sortent. */
-  ok(r.jour.kcal === 3549 && r.jour.p === 150, 'un jour de combat : 3 549 kcal, 150 g de protéines (149 avant que 30 g de féculent passent du riz aux pâtes, 19 octobre), cinq prises -- les sauces au skyr sortent, +15 g d\'amandes, 100 g de légumes par repas (14 octobre) (' + r.jour.kcal + ' / ' + r.jour.p + ')');
-  ok(r.oeufs === 14 && r.jambon === undefined, 'les courses : 14 œufs par semaine (la collation seule depuis le shake), plus de jambon (' + r.oeufs + ' / ' + r.jambon + ')');
-  ok(!r.cout.lignes.some(l => /Jambon/.test(l.label)) && r.cout.manque.length === 0, 'le coût ne compte plus de jambon ; aucun prix ne manque — la boisson d\'avoine a le sien depuis le 29 (Lidl depuis le 6 octobre, 0,74 €/L) ('  + r.cout.manque.join() + ')');
+  /* 21 octobre : le couscous (170 g les jours de combat), la collation combat legere, les fruits rouges du shake et les sauces comptees : 3 593 kcal, 159 g. */
+  ok(r.jour.kcal === 3593 && r.jour.p === 159, 'un jour de combat : 3 593 kcal, 159 g de protéines (3 549 et 150 avant le 21 octobre : couscous, collation légère, fruits rouges, sauces comptées), cinq prises (' + r.jour.kcal + ' / ' + r.jour.p + ')');
+  ok(r.oeufs === 10 && r.jambon === undefined, 'les courses : 10 œufs par semaine (la collation seule depuis le shake, les sardines le mardi et le jeudi depuis le 21 octobre), plus de jambon (' + r.oeufs + ' / ' + r.jambon + ')');
+  ok(!r.cout.lignes.some(l => /Jambon/.test(l.label)) && r.cout.manque.slice().sort().join('|') === ['Couscous', 'Fruits rouges surgelés', 'Galettes de riz', 'Sardines ou maquereau (boîte)'].join('|'), 'le coût ne compte plus de jambon ; seuls manquent les prix des articles du 21 octobre (son ticket) — la boisson d\'avoine a le sien depuis le 29 septembre ('  + r.cout.manque.join() + ')');
   /* 4 octobre : le plafond suit ce qu'il paie en caisse (conditionnements et cycles compris), pas ce qu'il mange. */
   ok(r.plafond === Math.round(r.achats.mois), 'le plafond Nourriture posé par la Batcave suit le coût en caisse : ' + r.plafond + ' €');
   await fr.evaluate(() => document.querySelector('.nav-btn[data-page="repas"]') && document.querySelector('.nav-btn[data-page="repas"]').click());

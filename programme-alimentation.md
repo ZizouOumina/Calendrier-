@@ -6,10 +6,11 @@ macros, la liste de courses et la préparation sortent toutes de la même source
 
 ## Le cadre
 - 64 kg · 182 cm · 20 ans · objectif **72 kg en mars 2027** (environ +0,3 kg par semaine).
-- **Jours sans combat** (mardi, jeudi, samedi, dimanche) : **3 161 kcal · protéines 139 g · glucides
-  389 g · lipides 114 g**, en quatre prises.
+- **Jours sans combat** (mardi, jeudi, samedi, dimanche) : **≈ 3 180 à 3 230 kcal · protéines 143
+  à 152 g · glucides ≈ 390 g · lipides ≈ 115 g**, en quatre prises. Le chiffre varie d'un jour à
+  l'autre depuis le 21 octobre : les sauces du jour sont comptées (voir plus bas).
 - **Jours de combat** (lundi, mercredi, vendredi : le JJB, à partir du mercredi 28 octobre) :
-  **3 549 kcal · protéines 150 g**, avec une cinquième prise, la collation combat.
+  **≈ 3 570 à 3 590 kcal · protéines ≈ 150 g**, avec une cinquième prise, la collation combat.
 - **Le plan entier dès le jour 1, mercredi 21 octobre** : plus de semaine à 85 % (décision du
   21 octobre : « on commence demain la Batcave »). Jusqu'au mardi 27, sans JJB, tous les jours sont des jours sans combat. Du 21 au 24, le petit-déjeuner suit le lever du plan sommeil (07:30 le mercredi, 07:00 le jeudi et le vendredi). Mange aux heures prévues, même sans faim.
 - Tout est pesé **cru**. Pas de lait (acné) : boisson d'avoine. Pas de sauce au skyr (sortie le
@@ -21,17 +22,30 @@ macros, la liste de courses et la préparation sortent toutes de la même source
 ## Les repas (à partir du mercredi 21 octobre)
 | Repas | Heure | Contenu | kcal · protéines |
 |---|---|---|---|
-| Petit-déjeuner (shake) | 06:45 | boisson d'avoine 300 ml, skyr 150 g, flocons d'avoine 80 g, banane 120 g, miel 20 g, amandes ou noix 30 g | 888 · 39 g |
-| Collation combat (jours de combat) | 10:05 | banane 120 g, flocons d'avoine 50 g, amandes ou noix 15 g | 388 · 11 g |
-| Déjeuner | 12:20 | riz 125 g, poulet 80 g, légumes verts 100 g, huile d'olive 30 ml (dont 10 versés froids), sauce du jour | 835 · 30 g |
-| Collation entraînement | 14:50 | pain complet 60 g, 2 œufs durs, fromage 20 g, amandes ou noix 40 g | 595 · 31 g |
+| Petit-déjeuner (shake) | 06:45 | boisson d'avoine 300 ml, skyr 150 g, flocons d'avoine 80 g, banane 120 g, **fruits rouges surgelés 100 g**, miel 10 g, amandes ou noix 30 g | ≈ 900 · 40 g |
+| Collation combat (jours de combat) | 10:05 | banane 120 g, **2 galettes de riz (20 g), miel 15 g** | ≈ 230 · 3 g |
+| Déjeuner | 12:20 | **couscous 125 g (170 g les jours de combat)**, poulet 80 g, légumes verts 100 g, huile d'olive 30 ml (dont 10 versés froids, remplacés par la sauce les jours de crème), sauce du jour | ≈ 850 · 37 g |
+| Collation entraînement | 14:50 | pain complet 60 g, 2 œufs durs (**sardines ou maquereau, une boîte, le mardi et le jeudi**), fromage 20 g (10 g les soirs de parmesan), amandes ou noix 40 g | ≈ 600 · 31 g |
 | Dîner | 20:00 (mardi 19:00, après la piscine) | pâtes 135 g, viande hachée 5 % 90 g, légumes verts 100 g, huile d'olive 15 ml (dont 5 froids), sauce du jour, 1 fruit | 843 · 39 g |
 
 **Plus de glucides le soir depuis le 19 octobre** (pour le sommeil) : 30 g de féculent passent du
 midi au soir, riz 155 → 125 g, pâtes 105 → 135 g. Mêmes calories sur la journée.
 
-Rotation fixe : **poulet tous les midis, viande hachée 5 % tous les soirs**. Riz à midi, pâtes le
-soir. Créatine 5 g par jour, avec le dîner.
+Rotation fixe : **poulet tous les midis, viande hachée 5 % tous les soirs**. Couscous à midi, pâtes
+le soir. Créatine 5 g par jour, avec le dîner.
+
+**Les changements du 21 octobre** (ses choix) :
+- **Le shake a du goût** : 100 g de fruits rouges surgelés, le miel descend à 10 g (pas de
+  cannelle). Astuce : bananes congelées en rondelles, il devient un milkshake glacé.
+- **La collation combat est légère** : banane, deux galettes de riz et 15 g de miel, 25 minutes
+  avant le tatami. Les flocons et les amandes en sortent ; leurs ~160 kcal reviennent au
+  déjeuner des jours de combat, +45 g de couscous.
+- **Sardines ou maquereau** (une boîte égouttée, ≈ 85 g) le mardi et le jeudi, à la place des
+  deux œufs de la collation : les oméga-3, sortis du plan avec le poisson. 10 œufs par semaine.
+- **Le couscous remplace le riz du midi** : « c'est plus simple de cuire des pâtes que du riz ».
+  Eau bouillante, couvercle, cinq minutes. Mêmes calories (363 contre 360 pour 100 g), plus de
+  protéines (12,8 g contre 7,4).
+- **Les sauces sont comptées** dans les macros, condiment par condiment (voir plus bas).
 
 ## Les sauces du jour (fixes depuis le 14 octobre, ses condiments depuis le 18)
 Une sauce par repas et par jour, toujours la même : rien à décider au moment de manger. La
@@ -39,7 +53,10 @@ Batcave l'écrit dans le plan du jour et dans la consigne des blocs Déjeuner et
 18 octobre, elles sont faites de ses condiments à lui : moutarde, sauce soja, harissa, crème de
 cuisson, parmesan, pesto verde, pesto rosso. **La crème ou le pesto remplace l'huile crue du
 repas** (10 ml à midi, 5 ml le soir) ; les **10 g de parmesan** se prennent sur les 20 g de
-fromage de la collation. Les macros ne bougent pas.
+fromage de la collation. **Depuis le 21 octobre, chaque sauce entre dans les macros** : 1 c. à
+soupe = 15 g, 1 c. à café = 5 g, une demie = 3 g, une pointe = 2 g ; l'huile qu'elle remplace
+sort du repas. Valeurs moyennes d'étiquette (crème de cuisson à 18 %) : de 10 à 100 kcal par
+sauce, affichées à côté de la recette dans l'onglet Table.
 
 | Jour | Midi (riz + poulet) | Soir (pâtes + viande hachée) |
 |---|---|---|
@@ -74,4 +91,4 @@ amandes 3 sachets, poulet, viande hachée 5 %, riz, pâtes, flocons, boisson d'a
 fruits, légumes verts, pain complet, fromage, miel, huile d'olive.
 
 ## La préparation (batch cooking)
-Le dimanche à 14:30 : riz, poulet, viande hachée et légumes pour la semaine, et les œufs durs.
+Le dimanche à 14:30 : couscous (eau bouillante, couvercle, 5 min), pâtes, poulet, viande hachée et légumes pour la semaine, et les œufs durs (10 depuis que les sardines prennent le mardi et le jeudi).

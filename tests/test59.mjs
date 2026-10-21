@@ -123,9 +123,9 @@ console.log('\n== 194) Repas cochés → tableau de bord et score ==');
     await page.waitForTimeout(50);
   }
   await page.waitForTimeout(200);
-  ok(/888 \/ 3161 kcal/.test(await txt('#meal-kcal-sub')), 'Repas : 888 / 3161 kcal, le shake du matin depuis le 29 septembre, sans sauce au skyr (' + (await txt('#meal-kcal-sub')) + ')');
+  ok(/901 \/ 3182 kcal/.test(await txt('#meal-kcal-sub')), 'Repas : 901 / 3182 kcal, le shake du matin depuis le 29 septembre (fruits rouges et 10 g de miel depuis le 21 octobre), les sauces comptées (' + (await txt('#meal-kcal-sub')) + ')');
   await aller('dashboard');
-  ok(/Petit-déjeuner[\s\S]*?6\/6/.test(await txt('#dash-meals')), 'Tableau de bord : petit-déjeuner 6/6 (le miel et les amandes y sont depuis le 24 septembre)');
+  ok(/Petit-déjeuner[\s\S]*?7\/7/.test(await txt('#dash-meals')), 'Tableau de bord : petit-déjeuner 7/7 (le miel et les amandes y sont depuis le 24 septembre, les fruits rouges depuis le 21 octobre)');
   ok(/28% kcal/.test(await txt('#dash-meals-kcal-pct')), 'Tableau de bord : 28 % des kcal (' + (await txt('#dash-meals-kcal-pct')) + ')');
 }
 
@@ -172,7 +172,7 @@ console.log('\n== 197) Rechargement : tout est écrit, rien n\'était seulement 
      C'est le comportement voulu -- clore sa journee EST une habitude tenue. */
   ok(/^2\//.test(d.compte), 'habitude conservée, plus celle de la clôture (' + d.compte + ')');
   ok(/64,5/.test(d.releves) && /8 h/.test(d.releves) && /Coran[\s\S]*?3/.test(d.releves), 'poids, sommeil et Coran conservés');
-  ok(/Petit-déjeuner[\s\S]*?6\/6/.test(d.meals) && /Réviser anatomie/.test(d.taches) && /3 \/ 180/.test(d.coran), 'repas, tâche et Coran conservés');
+  ok(/Petit-déjeuner[\s\S]*?7\/7/.test(d.meals) && /Réviser anatomie/.test(d.taches) && /3 \/ 180/.test(d.coran), 'repas, tâche et Coran conservés');
   const bannière = await fr.evaluate(() => document.getElementById('coherence-banner').hidden);
   ok(bannière === true, 'aucune incohérence signalée après tout ça');
 }

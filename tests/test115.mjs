@@ -95,6 +95,54 @@ console.log('\n== 3) La piscine du mardi, puis les intervalles ; le JJB du 28 ==
   await ctx.close();
 }
 
+console.log('\n== 4) L\'alimentation du 21 octobre : shake, sauces comptées, couscous, collation combat, sardines ==');
+{
+  const { ctx, fr } = await ouvrir('2026-11-03T08:00:00+01:00');
+  const r = await fr.evaluate(() => {
+    const c = (n, iso) => window.__bcCompoRepas(n, iso, true).map(x => x.c + ' ' + x.q).join(', ');
+    return {
+      shake: c('Petit-déjeuner', '2026-11-03'),
+      dejLun: c('Déjeuner', '2026-11-02'), dejMar: c('Déjeuner', '2026-11-03'),
+      dinMar: c('Dîner', '2026-11-03'), dinLun: c('Dîner', '2026-11-02'),
+      colMar: c('Collation entraînement', '2026-11-03'), colLun: c('Collation entraînement', '2026-11-02'),
+      combat: c('Collation combat', '2026-11-02'),
+      besoin: window.__bcBesoinSemaine
+    };
+  });
+  ok(/fruitsrouges 100/.test(r.shake) && /miel 10/.test(r.shake), 'shake : 100 g de fruits rouges, 10 g de miel (' + r.shake + ')');
+  ok(/^couscous 170/.test(r.dejLun) && /^couscous 125/.test(r.dejMar), 'couscous à midi : 170 g le lundi (combat), 125 g le mardi');
+  ok(/huile 30, soja 15, moutarde 5/.test(r.dejLun), 'lundi midi : soja-moutarde comptée, l\'huile crue reste (' + r.dejLun + ')');
+  ok(/huile 20, creme 30, moutarde 5/.test(r.dejMar), 'mardi midi : crème-moutarde comptée, les 10 ml d\'huile crue sortent (' + r.dejMar + ')');
+  ok(/huile 10/.test(r.dinMar) && /pestoverde 15, parmesan 10/.test(r.dinMar), 'mardi soir : pesto verde et parmesan comptés, 5 ml d\'huile en moins (' + r.dinMar + ')');
+  ok(/sardines 85/.test(r.colMar) && !/oeufs/.test(r.colMar) && /fromage 10/.test(r.colMar), 'mardi 14:50 : sardines à la place des œufs, 10 g de fromage (parmesan le soir)');
+  ok(/oeufs 100/.test(r.colLun) && /fromage 20/.test(r.colLun), 'lundi 14:50 : les œufs, 20 g de fromage');
+  ok(r.combat === 'banane 120, galettes 20, miel 15', 'collation combat : banane, 2 galettes de riz, 15 g de miel (' + r.combat + ')');
+  ok(!('creme' in r.besoin) && !('pestoverde' in r.besoin) && r.besoin.sardines === 2 && r.besoin.galettes === 6 && r.besoin.fruitsrouges === 700 && !('riz' in r.besoin),
+     'courses : les condiments restent hors liste ; 2 sardines, 6 galettes, 700 g de fruits rouges, plus de riz');
+  await ctx.close();
+}
+
+console.log('\n== 5) Le sport du 21 octobre : test 400 m, mobilité, mesures notées ==');
+{
+  const { ctx, page, fr } = await ouvrir('2026-11-03T08:00:00+01:00');
+  const t3 = await grille(fr, '2026-11-03'), t10 = await grille(fr, '2026-11-10'), d8 = await grille(fr, '2026-11-08');
+  ok(t3.includes('17:30 🏊 Piscine · test 400 m') && t10.includes('17:30 🏊 Piscine'), 'le premier mardi du mois, la piscine est le test du 400 m ; le mardi suivant, la séance normale');
+  ok(d8.includes('19:30 🧘 Mobilité des hanches') && d8.includes('19:40 Temps libre'), 'dimanche : dix minutes de mobilité des hanches à 19:30');
+  const plan = await fr.evaluate(() => document.getElementById('dash-plan').innerText);
+  ok(/Test du mois à la piscine/.test(plan), 'le plan du jour réclame le 400 m le jour du test');
+  await fr.evaluate(() => { document.querySelector('.nav-btn[data-page="sport"]').click(); });
+  await page.waitForTimeout(300);
+  await fr.evaluate(() => { document.getElementById('cardio-tests-toggle').click(); document.getElementById('mesure-nage').value = '8:40'; document.getElementById('mesure-nage-ok').click(); document.getElementById('mesure-fc').value = '62'; document.getElementById('mesure-fc-ok').click(); });
+  await page.waitForTimeout(300);
+  const st = await fr.evaluate(() => JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-cardio-tests') || 'null'));
+  ok(st && st.nage['2026-11-03'] === 520 && st.fc['2026-11-03'] === 62, '400 m en 8:40 (520 s) et FC 62 bpm enregistrés (' + JSON.stringify(st) + ')');
+  const bouton = await fr.evaluate(() => document.getElementById('cardio-tests-toggle').textContent);
+  ok(/62 bpm/.test(bouton) && /8:40/.test(bouton), 'le bouton replié dit les derniers chiffres (' + bouton + ')');
+  const plan2 = await fr.evaluate(() => { window.__bcRenderPlan && window.__bcRenderPlan(); return document.getElementById('dash-plan').innerText; });
+  ok(!/Test du mois à la piscine/.test(plan2), 'une fois noté, le rappel disparaît');
+  await ctx.close();
+}
+
 await browser.close();
 console.log(errs ? '\n' + errs + ' ÉCHEC(S)' : '\nTOUT VERT');
 process.exit(errs ? 1 : 0);

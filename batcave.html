@@ -2345,9 +2345,21 @@
            Le cardio a donc son propre compteur, sa propre ligne de bilan, sa propre serie. -->
       <div class="panel sub-panel" id="cardio-panel" style="margin-top:16px;">
         <div class="sub-head"><h3>🥋 Cardio &amp; combat</h3><span class="sub-note" id="cardio-note">—</span></div>
-        <p class="sub-note" style="margin-bottom:12px; line-height:1.6;">À partir du mercredi 28 octobre, <b style="color:var(--ink-dim);">le combat remplace la course et les sprints</b> : JJB le lundi, le mercredi et le vendredi à 10:30, 1 h 30 chacun — ce sont tes rounds. <b style="color:var(--ink-dim);">La piscine du mardi</b> (17:30, après le cours, dès le 27) construit le moteur : 35 minutes sans t'arrêter, à une allure où tu respires calmement — c'est elle qui fait baisser la fréquence cardiaque de repos. À partir du 17 novembre, elle finit par des intervalles. Coche chaque séance faite. <b style="color:var(--ink-dim);">Elles ne comptent pas dans « Séances tenues »</b> — ce compteur reste celui de la muscu, et le combat a le sien, ici.</p>
+        <p class="sub-note" style="margin-bottom:12px; line-height:1.6;"><b style="color:var(--ink-dim);">Tes rounds</b> : le JJB, lundi, mercredi et vendredi à 10:30 (dès le 28 octobre). <b style="color:var(--ink-dim);">Ton moteur</b> : la piscine du mardi à 17:30 (dès le 27), 35 minutes à une allure où tu respires calmement, des intervalles dès le 17 novembre. Coche chaque séance : elles ne comptent pas dans « Séances tenues », qui reste le compteur de la muscu.</p>
         <ul class="check-list" id="cardio-liste"></ul>
         <div id="cardio-resume" class="sub-note" style="margin-top:12px; line-height:1.7;"></div>
+        <!-- 21 octobre : les deux mesures du cardio, repliees par defaut (l'onglet reste court) -->
+        <button type="button" class="heat-toggle" id="cardio-tests-toggle" style="padding:0; margin-top:10px;">📈 Mesures : FC de repos, 400 m ▾</button>
+        <div id="cardio-tests" hidden style="margin-top:10px;">
+          <p class="sub-note" style="margin-bottom:10px; line-height:1.6;"><b style="color:var(--ink-dim);">La fréquence cardiaque de repos</b>, chaque dimanche — celle de Bevel ou de ta montre : elle baisse quand le cardio progresse, et le snus la fait monter. <b style="color:var(--ink-dim);">Le 400 m nagé</b>, chronométré le premier mardi du mois à la piscine (3 novembre, 1er décembre), toujours dans la même nage.</p>
+          <div style="display:flex; flex-wrap:wrap; gap:10px 14px; align-items:flex-end; margin-bottom:10px;">
+            <div class="f"><label for="mesure-fc">FC de repos (bpm)</label><input type="number" id="mesure-fc" min="30" max="120" inputmode="numeric" placeholder="ex : 62" style="width:110px;"></div>
+            <button class="btn" type="button" id="mesure-fc-ok">Noter</button>
+            <div class="f"><label for="mesure-nage">400 m nagé (min:s)</label><input type="text" id="mesure-nage" inputmode="numeric" placeholder="ex : 8:40" style="width:110px;"></div>
+            <button class="btn" type="button" id="mesure-nage-ok">Noter</button>
+          </div>
+          <ul class="check-list" id="cardio-tests-liste"></ul>
+        </div>
       </div>
 
       <div class="panel sub-panel" id="programme-panel" style="margin-top:16px;">
@@ -3464,7 +3476,8 @@
   var JOURS_COMBAT = [1, 3, 5];
   var JJB_LABEL = '\ud83e\udd4b JJB', MT_LABEL = '\ud83e\udd4a Muay Thai';
   /* 21 octobre : la piscine du mardi (avecPiscine) et le lever du plan sommeil (recalageSommeil) */
-  var PISCINE_LABEL = '\ud83c\udfca Piscine', PISCINE_INT_LABEL = '\ud83c\udfca Piscine \u00b7 intervalles';
+  var PISCINE_LABEL = '\ud83c\udfca Piscine', PISCINE_INT_LABEL = '\ud83c\udfca Piscine \u00b7 intervalles', PISCINE_TEST_LABEL = '\ud83c\udfca Piscine \u00b7 test 400 m';
+  var MOBILITE_LABEL = '\ud83e\uddd8 Mobilit\u00e9 des hanches';
   var LEVER_LABEL = '\u23f0 Lever';
   function regimeCombat(iso){ iso = iso || todayISO; return iso >= COMBAT_DEBUT && iso <= COMBAT_FIN; }
   /* ===== La semaine sans combat ===== (30 septembre au soir, sa decision)
@@ -3754,7 +3767,7 @@
      vestige : une fonctionnalite retiree (batcave-matieres) ou un essai. Elle prend de la
      place dans le quota de 5000 documents et embrouille les sauvegardes, sans que rien ne
      la lise jamais. On la signale ; la suppression reste ton geste. */
-  var CLES_CONNUES = ['addictions','budget-limits','business','coran','courses','condiments','dash-more','duaas','duree-bloc','sport-log','objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','courses-plan-v3','courses-plan-v4','courses-plan-v5','courses-plan-v6','courses-plan-v7','courses-plan-v8','courses-plan-v9','courses-plan-v10','charges-v2','plafond-nourriture-v2','plafond-nourriture-v3','plafond-nourriture-v4','plafond-nourriture-v5','plafond-nourriture-v6','plafond-nourriture-v7','gcal-controle','ancre-dimanche-v1','ancre-dimanche-v2','serviettes-v1','coiffeur-v1','shampoing-dim-v1','marche-cible-v1','cardio','kcal-ajustement','gcal-ecriture','reinit','fc-migration-v1','fc-migration-v2','fc-migration-v3','fc-migration-v4','livrables','shampoing-combat-v1','shampoing-samedi-v1','charge','shopify-boutique','journees','examens-heures','vacances','jours-exclus',
+  var CLES_CONNUES = ['addictions','budget-limits','business','coran','courses','condiments','dash-more','duaas','duree-bloc','sport-log','objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','courses-plan-v3','courses-plan-v4','courses-plan-v5','courses-plan-v6','courses-plan-v7','courses-plan-v8','courses-plan-v9','courses-plan-v10','charges-v2','plafond-nourriture-v2','plafond-nourriture-v3','plafond-nourriture-v4','plafond-nourriture-v5','plafond-nourriture-v6','plafond-nourriture-v7','gcal-controle','ancre-dimanche-v1','ancre-dimanche-v2','serviettes-v1','coiffeur-v1','shampoing-dim-v1','marche-cible-v1','cardio','cardio-tests','kcal-ajustement','gcal-ecriture','reinit','fc-migration-v1','fc-migration-v2','fc-migration-v3','fc-migration-v4','livrables','shampoing-combat-v1','shampoing-samedi-v1','charge','shopify-boutique','journees','examens-heures','vacances','jours-exclus',
     'espagnol','examens','cours-suivi','portes','periodes-closes','fc-prix-icloud-3','fc-prix-club-100','fc-prix-club-70','fixed-charges','goals','goals-depart','saisons','insights-hist','last-restore-drill','habitlog','habits','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','habits-seed-v7','habits-seed-v8','habits-seed-v9','habits-seed-v10','habits-seed-v11','objectifs-v5-espanol',
     'horizon','last-auto-backup','last-manual-backup','last-bilan-prompt','last-compaction','last-open','last-rotation','notion-url',
     'pomodial-purge','projets','report','revision','revision-fusionnee','revue','sante','sauvegarde','sessions',
@@ -8218,7 +8231,10 @@
        sans lien avec l'acne ; presque sans proteines, mais le skyr en porte 16 g et la
        journee reste au-dessus de 150 g. Le skyr, fermente, passe dans le mixeur ; les deux
        oeufs du matin sortent (ceux de la collation restent). Il a un mixeur. */
-    {name:'Petit-déjeuner', items:['Boisson d\'avoine (300 ml)','Skyr (150g)','Flocons d\'avoine (80g)','Banane (120g)','Miel (20g)','Amandes ou noix nature (30g)']},
+    /* 21 octobre : « le shake le matin n'a pas de gout » -- 100 g de fruits rouges surgeles,
+       le miel descend de 20 a 10 g (pas de cannelle, sa demande). Ajoutes EN DERNIER : les
+       cases sont indexees par position. */
+    {name:'Petit-déjeuner', items:['Boisson d\'avoine (300 ml)','Skyr (150g)','Flocons d\'avoine (80g)','Banane (120g)','Miel (10g)','Amandes ou noix nature (30g)','Fruits rouges surgelés (100g)']},
     {name:'Déjeuner', items:['Féculent cru — Riz 155g','Protéine crue — rotation du jour','Légumes verts (100g)','Huile d\'olive — selon la protéine, dont 10 ml versés froids à l\'assiette']},
     /* 23 septembre : le jambon (charcuterie, 40 g par jour) cede la place a deux oeufs durs,
        cuits le dimanche avec ceux du petit-dejeuner. La viande transformee etait le seul
@@ -8232,7 +8248,10 @@
        (la Muay Thai est a 19:30, le diner a 18:00). Rangee EN DERNIER dans la liste pour que
        les cases des quatre autres repas gardent leur numero (« 0-0 » a « 3-6 ») : l'ordre
        affiche, lui, la place apres le petit-dejeuner (ORDRE_REPAS). */
-    {name:'Collation combat', combat:true, items:['Banane (120g)','Flocons d\'avoine (50g)','Amandes ou noix nature (15g)']}
+    /* 21 octobre : 25 minutes avant le tatami, les flocons et les amandes (fibres, graisses)
+       pesaient sur l'estomac. Il reste du glucide qui passe vite ; les ~160 kcal qui sortent
+       reviennent au retour du club, dans le feculent du dejeuner (+45 g, RIZ_COMBAT_PLUS). */
+    {name:'Collation combat', combat:true, items:['Banane (120g)','2 galettes de riz (20g)','Miel (15g)']}
   ];
   function repasActif(m, iso){ return !m.combat || jourDeCombat(iso || todayISO); }
   function repasDuJour(iso){ return MEALS.filter(function(m){ return repasActif(m, iso); }); }
@@ -8252,6 +8271,7 @@
     amandes:   {kcal:579, p:21.2, g:21.6, l:49.9},
     banane:    {kcal:89,  p:1.1,  g:22.8, l:0.3,  piece:120},
     riz:       {kcal:360, p:7.4,  g:80.0, l:0.9},
+    couscous:  {kcal:363, p:12.8, g:72.0, l:1.9},   /* 21 octobre : il remplace le riz du midi */
     pates:     {kcal:360, p:12.0, g:71.0, l:1.5},
     legumes:   {kcal:35,  p:2.8,  g:5.0,  l:0.4},
     pain:      {kcal:250, p:9.0,  g:43.0, l:3.0},
@@ -8260,7 +8280,23 @@
     fruit:     {kcal:55,  p:0.5,  g:12.0, l:0.2,  piece:120},
     poulet:    {kcal:106, p:23.0, g:0.0,  l:1.2},
     hachee:    {kcal:137, p:21.5, g:0.0,  l:5.0},
-    huile:     {kcal:884, p:0.0,  g:0.0,  l:100.0}
+    huile:     {kcal:884, p:0.0,  g:0.0,  l:100.0},
+    /* 21 octobre, ses choix : des fruits rouges dans le shake, une collation legere avant le
+       JJB (galettes de riz), et des sardines ou du maquereau deux fois par semaine. */
+    fruitsrouges: {kcal:43, p:0.9, g:7.5, l:0.3},
+    galettes:  {kcal:387, p:8.0,  g:81.5, l:2.8,  piece:10},    /* galettes de riz souffle, ~10 g la galette */
+    sardines:  {kcal:208, p:24.6, g:0.0,  l:12.2, piece:85},    /* sardines ou maquereau a l'huile, egouttes : ~85 g la boite */
+    /* Les condiments des sauces du jour, comptes depuis le 21 octobre (« j'ai l'impression de
+       pas traquer les sauces »). Valeurs moyennes d'etiquette -- creme de cuisson a 18 % --,
+       a remplacer par les siennes s'il les releve. « condiment » : ils entrent dans les
+       macros, pas dans la liste de courses (ils ont leur carte, quantites libres). */
+    creme:     {kcal:183, p:2.5,  g:3.5,  l:18.0, condiment:true},
+    pestoverde:{kcal:470, p:5.0,  g:6.0,  l:47.0, condiment:true},
+    pestorosso:{kcal:330, p:4.0,  g:10.0, l:30.0, condiment:true},
+    parmesan:  {kcal:392, p:33.0, g:0.0,  l:28.0, condiment:true},
+    soja:      {kcal:60,  p:8.0,  g:6.0,  l:0.1,  condiment:true},
+    moutarde:  {kcal:151, p:6.8,  g:3.5,  l:11.5, condiment:true},
+    harissa:   {kcal:80,  p:3.0,  g:9.0,  l:3.5,  condiment:true}
   };
   var CLE_PROTEINE = {'Poulet':'poulet', 'Viande hachée 5 %':'hachee'};
   /* 29 septembre : plus de sauce au skyr (sa decision, il la trouve immangeable). Les
@@ -8289,17 +8325,17 @@
     return liste.map(function(x){ return ENTIERS_REPRISE[x.c] ? x : {c:x.c, q:portionReprise(x.q, f)}; });
   }
   function compoRepasPlein(nom, iso, brut){
-    if(nom === 'Petit-déjeuner') return [{c:'avoine', q:300}, {c:'skyr', q:150}, {c:'flocons', q:80}, {c:'banane', q:120}, {c:'miel', q:20}, {c:'amandes', q:30}];
-    if(nom === 'Collation entraînement') return [{c:'pain', q:60}, {c:'oeufs', q:100}, {c:'fromage', q:20}, {c:'amandes', q:40}];
-    if(nom === 'Collation combat') return [{c:'banane', q:120}, {c:'flocons', q:50}, {c:'amandes', q:15}];
+    if(nom === 'Petit-déjeuner') return [{c:'avoine', q:300}, {c:'skyr', q:150}, {c:'flocons', q:80}, {c:'banane', q:120}, {c:'miel', q:10}, {c:'amandes', q:30}, {c:'fruitsrouges', q:100}];
+    if(nom === 'Collation entraînement') return [{c:'pain', q:60}, sardinesLe(iso) ? {c:'sardines', q:85} : {c:'oeufs', q:100}, {c:'fromage', q:parmesanLeSoir(iso) ? 10 : 20}, {c:'amandes', q:40}];
+    if(nom === 'Collation combat') return [{c:'banane', q:120}, {c:'galettes', q:20}, {c:'miel', q:15}];
     if(nom === 'Déjeuner'){
-      var nd = proteineDuJour('dej', iso), pd = PROTEINES[nd].dej;
-      return [{c:'riz', q:FECULENTS.dej.g}, {c:CLE_PROTEINE[nd], q:pd.g}, {c:'legumes', q:LEGUMES_REPAS.dej}, {c:'huile', q:pd.huile}];
+      var nd = proteineDuJour('dej', iso), pd = PROTEINES[nd].dej, sd = sauceDuJour('dej', iso);
+      return [{c:'couscous', q:grammesFeculent('dej', iso)}, {c:CLE_PROTEINE[nd], q:pd.g}, {c:'legumes', q:LEGUMES_REPAS.dej}, {c:'huile', q:pd.huile - (sd.sansHuile ? HUILE_CRUE.dej : 0)}].concat(compoSauce(sd));
     }
     if(nom === 'Dîner'){
-      var nn = PROTEINES[proteineDuJour('din', iso)].din;
+      var nn = PROTEINES[proteineDuJour('din', iso)].din, sn = sauceDuJour('din', iso);
       var pates = FECULENTS.din.g + (brut ? 0 : grammesAjustement(ajustementKcalPour(iso || todayISO), FECULENTS.din.kcalG));
-      return [{c:'pates', q:pates}, {c:CLE_PROTEINE[proteineDuJour('din', iso)], q:nn.g}, {c:'legumes', q:LEGUMES_REPAS.din}, {c:'huile', q:nn.huile}, {c:'fruit', q:120}];
+      return [{c:'pates', q:pates}, {c:CLE_PROTEINE[proteineDuJour('din', iso)], q:nn.g}, {c:'legumes', q:LEGUMES_REPAS.din}, {c:'huile', q:nn.huile - (sn.sansHuile ? HUILE_CRUE.din : 0)}, {c:'fruit', q:120}].concat(compoSauce(sn));
     }
     return [];
   }
@@ -8329,7 +8365,11 @@
      glucides. Une etude (un repas riche en glucides quatre heures avant le coucher) a
      montre un endormissement plus rapide : l'effet est modeste, le cout nul. */
   var FECULENTS = {
-    dej: {nom:'Riz',   g:125, kcalG:3.6, prixKg:1.1},
+    /* 21 octobre : « c'est plus simple de cuire des pates que du riz » -- le midi passe au
+       COUSCOUS : de l'eau bouillante, un couvercle, cinq minutes, rien a surveiller ni a
+       egoutter. Memes calories que le riz (363 contre 360 pour 100 g), un peu plus de
+       proteines (12,8 contre 7,4) : memes grammes. La cle reste « dej ». */
+    dej: {nom:'Couscous', g:125, kcalG:3.6, prixKg:1.1},
     din: {nom:'Pâtes', g:135, kcalG:3.6, prixKg:1.0}
   };
   /* Poulet a midi, viande hachee le soir, les sept jours. Le poisson a ete retire le
@@ -8391,6 +8431,25 @@
     var dow = new Date((iso || todayISO) + 'T00:00:00').getDay();
     return SAUCES[repas][dow];
   }
+  /* ===== Les sauces comptees (21 octobre) =====
+     « J'ai l'impression de pas traquer les sauces. » Elles etaient comptees en creux : la
+     creme ou le pesto prenaient la place de l'huile crue, et l'ecart (de -35 a +60 kcal
+     selon le jour) restait sous le bruit de la boucle. Elles entrent maintenant dans les
+     macros, aliment par aliment, en cuilleres converties en grammes : 1 c. a soupe = 15 g
+     (15 ml), 1 c. a cafe = 5 g, une demi = 3 g, une pointe = 2 g. L'huile crue qu'elles
+     remplacent sort du repas (HUILE_CRUE), et le parmesan sort du fromage de la collation. */
+  var COMPO_SAUCES = {
+    'Soja-moutarde':        [{c:'soja', q:15}, {c:'moutarde', q:5}],
+    'Crème-moutarde':       [{c:'creme', q:30}, {c:'moutarde', q:5}],
+    'Harissa-soja':         [{c:'harissa', q:3}, {c:'soja', q:15}],
+    'Crème-harissa':        [{c:'creme', q:30}, {c:'harissa', q:3}],
+    'Pesto rosso':          [{c:'pestorosso', q:15}],
+    'Pesto verde-parmesan': [{c:'pestoverde', q:15}, {c:'parmesan', q:10}],
+    'Crème-parmesan':       [{c:'creme', q:30}, {c:'parmesan', q:10}],
+    'Rosso-harissa':        [{c:'pestorosso', q:15}, {c:'harissa', q:2}],
+    'Pesto rosso crémeux':  [{c:'pestorosso', q:15}, {c:'creme', q:15}]
+  };
+  function compoSauce(sc){ return ((sc && COMPO_SAUCES[sc.nom]) || []).map(function(x){ return {c:x.c, q:x.q}; }); }
   /* [déjeuner, dîner] par jour de la semaine (0 = dimanche) */
   var ROTATION = {
     1:['Poulet','Viande hachée 5 %'], 2:['Poulet','Viande hachée 5 %'], 3:['Poulet','Viande hachée 5 %'],
@@ -8403,12 +8462,32 @@
   /* grammes de féculent cru équivalant à un ajustement en kcal, arrondis à 10 g */
   function grammesAjustement(kcal, kcalG){ return Math.round((Number(kcal) || 0) / kcalG / 10) * 10; }
   function texteFeculent(repas, ajust, iso){
-    var f = FECULENTS[repas], g = portionReprise(f.g + (repas === 'din' ? grammesAjustement(ajust, f.kcalG) : 0), facteurPortions(iso));
-    return 'Féculent cru — ' + f.nom + ' ' + g + 'g' + (repas === 'din' && ajust ? ' (boucle kcal ' + (ajust > 0 ? '+' : '') + ajust + ' kcal)' : '');
+    var f = FECULENTS[repas], g = portionReprise(grammesFeculent(repas, iso) + (repas === 'din' ? grammesAjustement(ajust, f.kcalG) : 0), facteurPortions(iso));
+    return 'Féculent cru — ' + f.nom + ' ' + g + 'g' + (repas === 'din' && ajust ? ' (boucle kcal ' + (ajust > 0 ? '+' : '') + ajust + ' kcal)' : '') +
+           (repas === 'dej' && g > f.g ? ' (+' + RIZ_COMBAT_PLUS + ' g les jours de combat : la collation d\'avant le tatami est plus légère)' : '');
   }
+  /* 21 octobre : le feculent du midi (couscous) monte les jours de combat -- il reprend les ~160 kcal que la
+     collation combat a laissees (flocons et amandes sortis d'avant le tatami). */
+  var RIZ_COMBAT_PLUS = 45;
+  function grammesFeculent(repas, iso){
+    return FECULENTS[repas].g + (repas === 'dej' && jourDeCombat(iso || todayISO) ? RIZ_COMBAT_PLUS : 0);
+  }
+  /* L'huile crue de chaque repas (comprise dans PROTEINES.huile) : celle que la creme ou le
+     pesto remplacent (« sansHuile »). */
+  var HUILE_CRUE = {dej:10, din:5};
+  /* La sardine ou le maquereau, le mardi et le jeudi, a la place des deux oeufs de la
+     collation (21 octobre, sa decision : les omega-3, sortis du plan avec le poisson). */
+  var SARDINES_DEBUT = '2026-10-21', JOURS_SARDINES = [2, 4];
+  function sardinesLe(iso){ iso = iso || todayISO; return iso >= SARDINES_DEBUT && JOURS_SARDINES.indexOf(dowDe(iso)) > -1; }
+  /* Les 10 g de parmesan de la sauce du soir sont pris sur le fromage de la collation. */
+  function parmesanLeSoir(iso){ var s = sauceDuJour('din', iso); return !!(s && s.ingr && s.ingr.indexOf('Parmesan') > -1); }
   /* Le libellé d'un item : féculent avec l'ajustement du jour (dîner), protéine et huile de
      la rotation du jour (déjeuner et dîner). */
   function texteItemRepas(m, it, ii, iso){
+    if(m.name === 'Collation entraînement'){
+      if(ii === 1 && sardinesLe(iso)) return '1 boîte de sardines ou de maquereau (≈ 85 g égouttés) — à la place des œufs, le mardi et le jeudi';
+      if(ii === 2 && parmesanLeSoir(iso)) return 'Fromage (10g) — les 10 autres grammes sont le parmesan de ce soir';
+    }
     var repas = m.name === 'Dîner' ? 'din' : (m.name === 'Déjeuner' ? 'dej' : null), f = facteurPortions(iso);
     /* semaine de reprise : les grammes ecrits dans le libelle suivent le facteur, sauf ce
        qui se mange a l'unite (oeufs, banane, fruit) */
@@ -8417,7 +8496,10 @@
     if(ii === 0) return texteFeculent(repas, repas === 'din' ? ajustementKcalPour(iso || todayISO) : 0, iso);
     var nom = proteineDuJour(repas, iso), p = PROTEINES[nom][repas];
     if(ii === 1) return 'Protéine crue — ' + nom + ' ' + portionReprise(p.g, f) + 'g';
-    if(ii === 3){ var sc = sauceDuJour(repas, iso); return 'Huile d\'olive (' + p.huile + 'ml) · sauce ' + sc.nom.toLowerCase() + ' : ' + sc.recette; }
+    if(ii === 3){
+      var sc = sauceDuJour(repas, iso), kc = Math.round(compoSauce(sc).reduce(function(t, x){ return t + ALIMENTS[x.c].kcal * x.q / 100; }, 0));
+      return 'Huile d\'olive (' + (p.huile - (sc.sansHuile ? HUILE_CRUE[repas] : 0)) + 'ml) · sauce ' + sc.nom.toLowerCase() + ' (≈ ' + kc + ' kcal, comptée) : ' + sc.recette;
+    }
     return reduit(it);
   }
   function texteKcalRepas(m, iso){
@@ -8673,7 +8755,7 @@
       var dsc = document.getElementById('repas-desc');
       if(dsc) dsc.textContent = 'Programme du jour, ' + repasDuJour().length + ' prises' + (jourDeCombat() ? ' (jour de combat)' : '') + ' : ' + Math.round(n.targets.kcal) + ' kcal, P ' +
         Math.round(n.targets.p) + ' g, G ' + Math.round(n.targets.g) + ' g, L ' + Math.round(n.targets.l) +
-        ' g, tout pesé cru. Riz à midi (' + FECULENTS.dej.g + ' g), pâtes le soir (' + FECULENTS.din.g +
+        ' g, tout pesé cru, sauces comprises. Couscous à midi (' + grammesFeculent('dej') + ' g), pâtes le soir (' + FECULENTS.din.g +
         ' g) ; la protéine suit la rotation de la semaine. Les cases se réinitialisent à minuit.';
       document.getElementById('meal-kcal-sub').textContent = Math.round(n.totals.kcal) + ' / ' + Math.round(n.targets.kcal) + ' kcal' +
         (n.targets.ajustement ? ' (plan ' + Math.round(n.targets.plan) + (n.targets.ajustement > 0 ? ' + ' : ' − ') + Math.abs(n.targets.ajustement) + ')' : '');
@@ -8918,14 +9000,17 @@
        Huit exercices le lundi et le jeudi, quatre paires, ~50 minutes ; le mardi ne bouge pas.
        Volumes par semaine : dos 14, pectoraux-triceps 14, epaules laterales 7, biceps 3 +
        14 indirects, quadriceps 7, ischios-fessiers 10, cou 9. */
-    {type:'Haut lourd', days:[4], duree:'50 min', repos:['45 s / 90 s', '45 s / 75 s', '45 s / 75 s', '30 s / 60 s'], exercises:[
+    {type:'Haut lourd', days:[4], duree:'55 min', repos:['45 s / 90 s', '45 s / 75 s', '45 s / 75 s', '30 s / 60 s'], exercises:[
       {name:'Tractions', reps:'4×6-12'},{name:'Dips', reps:'4×8-15'},
       {name:'Rows australiens pieds surélevés', reps:'3×10-15'},{name:'Pompes déclinées', reps:'3×8-12'},
       {name:'Split squat bulgare', reps:'3×8-12/jambe'},{name:'Soulevé de terre roumain une jambe', reps:'3×8-12/jambe'},
       {name:'Élévations latérales', reps:'3×12-20', pas:0.25, depart:1},
       /* 25 septembre, a sa demande : le seul travail du bas des abdos sous charge, le jeudi
          (seul jour sans combat), pas a l'echec. Lest : une bouteille coincee entre les pieds. */
-      {name:'Relevés de jambes suspendus', reps:'3×8-15', pas:0.5, depart:1}
+      {name:'Relevés de jambes suspendus', reps:'3×8-15', pas:0.5, depart:1},
+      /* 21 octobre, sa decision : le grip du kimono. Une serviette pliee sur la barre, une
+         extremite dans chaque main, comme une manche. En fin de seance, seule. */
+      {name:'Tractions serviette (grip kimono)', reps:'2×3-8'}
     ]},
     {type:'Bas complet', days:[2], duree:'47 min', exercises:[
       {name:'Split squat bulgare', reps:'4×8-12/jambe'},{name:'Soulevé de terre roumain une jambe', reps:'4×10-12/jambe'},
@@ -9363,7 +9448,7 @@
      panneau le suit comme il suivait la course : une ligne par seance, a cocher, avec ses
      minutes. JJB_LABEL et MT_LABEL sont declares en tete, avec le regime combat. */
   function estCombat(label){ return label === JJB_LABEL || label === MT_LABEL; }
-  function estPiscine(label){ return label === PISCINE_LABEL || label === PISCINE_INT_LABEL; }
+  function estPiscine(label){ return label === PISCINE_LABEL || label === PISCINE_INT_LABEL || label === PISCINE_TEST_LABEL; }
   function estCardio(label){ return label === CARDIO_LABEL || label === SPRINT_LABEL || estCombat(label) || estPiscine(label); }
   var PISCINE_MIN = 35;
   var COMBAT_MIN = 90;
@@ -9402,7 +9487,7 @@
       var g = grilleDe(cleJournee(dowDe(iso)), iso);
       g.forEach(function(b){
         if(estCardio(b[1])) out.push({iso: iso, heure: b[0], sprints: b[1] === SPRINT_LABEL, combat: estCombat(b[1]) ? b[1].replace(/^\S+\s/, '') : null,
-                                      piscine: estPiscine(b[1]) ? (b[1] === PISCINE_INT_LABEL ? 'piscine, intervalles' : 'piscine') : null});
+                                      piscine: estPiscine(b[1]) ? (b[1] === PISCINE_INT_LABEL ? 'piscine, intervalles' : (b[1] === PISCINE_TEST_LABEL ? 'piscine, test 400 m' : 'piscine')) : null});
       });
     }
     return out;
@@ -9434,7 +9519,68 @@
     }
     return n;
   }
+  /* ===== Les mesures du cardio (21 octobre) =====
+     « Je veux devenir un monstre du cardio. » Deux chiffres, pas un de plus : la frequence
+     cardiaque de REPOS, notee le dimanche (Bevel ou la montre -- elle baisse quand le moteur
+     grossit, la nicotine la fait monter), et un 400 m nage chronometre le premier mardi du
+     mois (PISCINE_TEST_LABEL). Ils vivent dans l'onglet Sport avec leur historique, et le
+     plan du jour les reclame le jour venu. */
+  var MESURES_CARDIO_DEBUT = '2026-10-25';
+  var mesuresCardio = load('batcave-cardio-tests', null);
+  if(!mesuresCardio || typeof mesuresCardio !== 'object') mesuresCardio = {};
+  if(!mesuresCardio.fc || typeof mesuresCardio.fc !== 'object') mesuresCardio.fc = {};
+  if(!mesuresCardio.nage || typeof mesuresCardio.nage !== 'object') mesuresCardio.nage = {};
+  function fmtNage(s){ s = Math.round(Number(s) || 0); return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); }
+  function lireNage(t){
+    var m = /^\s*(\d{1,2})\s*[:'’m]\s*(\d{1,2})\s*s?\s*$/.exec(String(t || ''));
+    return m && Number(m[2]) < 60 ? Number(m[1]) * 60 + Number(m[2]) : null;
+  }
+  function testNageLe(iso){
+    iso = iso || todayISO;
+    return grilleDe(cleJournee(dowDe(iso)), iso, true).some(function(b){ return b[1] === PISCINE_TEST_LABEL; });
+  }
+  function noterMesureCardio(type, iso, valeur){
+    var t = mesuresCardio[type]; if(!t) return;
+    if(valeur === null || valeur === undefined) delete t[iso]; else t[iso] = valeur;
+    save('batcave-cardio-tests', mesuresCardio);
+    try{ renderMesuresCardio(); renderDashboard(); }catch(e){}
+  }
+  function renderMesuresCardio(){
+    var ul = document.getElementById('cardio-tests-liste'); if(!ul) return;
+    var ligne = function(titre, serie, fmt, unite){
+      var jours = Object.keys(serie).sort();
+      if(!jours.length) return '<li class="entry-empty">' + titre + ' — rien de noté pour l\'instant.</li>';
+      var premier = jours[0], dernier = jours[jours.length - 1], ecart = serie[dernier] - serie[premier];
+      var hist = jours.slice(-6).map(function(d){ return fmt(serie[d]) + ' <span class="sub-note">(' + fmtDate(d) + ')</span>'; }).join(' · ');
+      return '<li><span><b style="color:var(--ink);">' + titre + '</b> — ' + hist +
+        (jours.length > 1 ? ' · <b style="color:' + (ecart <= 0 ? 'var(--good)' : 'var(--ink-dim)') + ';">' + (ecart > 0 ? '+' : ecart < 0 ? '−' : '±') + fmt(Math.abs(ecart)) + unite + ' depuis le ' + fmtDate(premier) + '</b>' : '') + '</span></li>';
+    };
+    ul.innerHTML = ligne('❤️ FC de repos', mesuresCardio.fc, function(v){ return String(v); }, ' bpm') +
+                   ligne('🏊 400 m nagé', mesuresCardio.nage, fmtNage, '');
+    /* le bouton replie dit les derniers chiffres : on n'ouvre que pour noter */
+    var t = document.getElementById('cardio-tests-toggle'), z = document.getElementById('cardio-tests');
+    if(t){
+      var fcJ = Object.keys(mesuresCardio.fc).sort().pop(), ngJ = Object.keys(mesuresCardio.nage).sort().pop();
+      t.textContent = '📈 Mesures : ' + (fcJ ? 'FC de repos ' + mesuresCardio.fc[fcJ] + ' bpm' : 'FC de repos') + ', ' + (ngJ ? '400 m en ' + fmtNage(mesuresCardio.nage[ngJ]) : '400 m') + ' ' + (z && !z.hidden ? '▴' : '▾');
+    }
+  }
+  document.addEventListener('click', function(e){
+    var tg = e.target && e.target.closest ? e.target.closest('#cardio-tests-toggle') : null;
+    if(tg){ var z = document.getElementById('cardio-tests'); if(z){ z.hidden = !z.hidden; renderMesuresCardio(); } return; }
+    var b = e.target && e.target.closest ? e.target.closest('#mesure-fc-ok, #mesure-nage-ok') : null;
+    if(!b) return;
+    if(b.id === 'mesure-fc-ok'){
+      var i = document.getElementById('mesure-fc'), v = Math.round(Number(i.value));
+      if(!(v >= 30 && v <= 120)){ showToast('Une FC de repos entre 30 et 120 bpm.'); return; }
+      noterMesureCardio('fc', todayISO, v); i.value = ''; showToast('❤️ FC de repos notée : ' + v + ' bpm.');
+    } else {
+      var j = document.getElementById('mesure-nage'), s = lireNage(j.value);
+      if(!(s >= 120 && s <= 1800)){ showToast('Le temps du 400 m en minutes:secondes, par exemple 8:40.'); return; }
+      noterMesureCardio('nage', todayISO, s); j.value = ''; showToast('🏊 400 m noté : ' + fmtNage(s) + '.');
+    }
+  });
   function renderCardio(){
+    try{ renderMesuresCardio(); }catch(e){}
     var ul = document.getElementById('cardio-liste'); if(!ul) return;
     var jours = weekRange(0), prevues = sortiesCardio(jours[0]);
     if(!prevues.length){
@@ -12138,11 +12284,14 @@
      celui du repas de ce jour-la. Changer un grammage dans le plan change la session.
      Rendement a la cuisson : ce que 100 g crus pesent une fois cuits. Sert UNIQUEMENT a
      choisir la taille des boites -- le plan, lui, se pese cru. */
-  var RENDEMENT = {riz:2.6, pates:2.4, poulet:0.72, hachee:0.75, legumes:0.9};
-  var NOM_ALIMENT = {riz:'Riz', pates:'Pâtes', poulet:'Poulet', hachee:'Viande hachée 5 %',
+  var RENDEMENT = {riz:2.6, couscous:2.5, pates:2.4, poulet:0.72, hachee:0.75, legumes:0.9};
+  var NOM_ALIMENT = {riz:'Riz', couscous:'Couscous', pates:'Pâtes', poulet:'Poulet', hachee:'Viande hachée 5 %',
                      legumes:'Légumes verts surgelés', huile:'Huile d\'olive',
                      oeufs:'Œufs', flocons:'Flocons d\'avoine', skyr:'Skyr', amandes:'Amandes ou noix',
-                     banane:'Banane', pain:'Pain complet', fromage:'Fromage', miel:'Miel', fruit:'Fruit', avoine:'Boisson d\'avoine'};
+                     banane:'Banane', pain:'Pain complet', fromage:'Fromage', miel:'Miel', fruit:'Fruit', avoine:'Boisson d\'avoine',
+                     fruitsrouges:'Fruits rouges surgelés', galettes:'Galettes de riz', sardines:'Sardines ou maquereau',
+                     creme:'Crème de cuisson', pestoverde:'Pesto verde', pestorosso:'Pesto rosso', parmesan:'Parmesan',
+                     soja:'Sauce soja', moutarde:'Moutarde', harissa:'Harissa'};
   var NOMS_SEMAINE = ['dimanche','lundi','mardi','mercredi','jeudi','vendredi','samedi'];
   /* Les sept jours de la semaine qui commence le dimanche contenant « iso ». La session a
      lieu ce dimanche-la : elle couvre donc la semaine entiere, dimanche compris. */
@@ -12177,7 +12326,7 @@
       'Une session le dimanche à 14:30, deux heures, pour les sept repas de midi et les sept du soir. ' +
       'Quatorze boîtes : quatre jours au frigo, trois au congélateur. Le petit-déjeuner et la collation ne se préparent pas — ils s’assemblent en cinq minutes.';
     /* Ce qu'il y a a cuire : chaque poste, cru, et ce qu'il pesera cuit. */
-    var postes = ['riz','pates','poulet','hachee','legumes'];
+    var postes = ['couscous','riz','pates','poulet','hachee','legumes'];
     host.innerHTML = postes.filter(function(c){ return T[c] > 0; }).map(function(c){
       var cuit = RENDEMENT[c] ? ' <span class="sub-note">→ ~' + poids(T[c] * RENDEMENT[c]) + ' cuits</span>' : '';
       return '<li><span>' + escapeHtml(NOM_ALIMENT[c] || c) + '</span><span><b>' + poids(T[c]) + '</b> crus' + cuit + '</span></li>';
@@ -12187,9 +12336,9 @@
     /* L'ordre. Les durees sont celles des quantites ci-dessus ; les postes longs et
        autonomes (riz, four) partent en premier, le reste se glisse pendant. */
     var etapes = [
-      [0,  'Le <b>riz</b> comme des pâtes — ' + poids(T.riz) + ' crus, rincés, dans une grande casserole d\'eau salée à gros bouillons, 12 à 15 min à découvert (goûter à 12). Pas de proportion d\'eau à respecter.'],
+      [0,  'Le <b>couscous</b> — ' + poids(T.couscous) + ' dans un grand saladier, autant d\'eau bouillante salée que de couscous en poids, plus 10 % (la bouilloire suffit), une assiette dessus, 5 min. Rien à surveiller ni à égoutter.'],
       [3,  'Le <b>poulet</b> à la poêle — ' + poids(T.poulet) + ', feu vif, 4 min par face puis 3 min à couvert.'],
-      [18, 'Sortir le poulet. <b>Égoutter le riz</b> et l\'étaler sur une plaque : à plat il refroidit en 15 min, en tas il met une heure.'],
+      [18, 'Sortir le poulet. <b>Égrener le couscous</b> à la fourchette et l\'étaler sur une plaque : à plat il refroidit en 15 min, en tas il met une heure.'],
       [22, 'La <b>viande hachée</b> — ' + poids(T.hachee) + ', en deux fournées pour qu\'elle grille au lieu de bouillir. 10 min.'],
       [34, 'Les <b>pâtes</b> — ' + poids(T.pates) + ' crues, <b>deux minutes de moins</b> que le paquet : elles finiront de cuire au réchauffage.'],
       [46, 'Les <b>légumes surgelés</b> — ' + poids(T.legumes) + ', à la poêle en trois fournées ou à la vapeur, 7 min. Sans les décongeler avant.'],
@@ -12210,7 +12359,7 @@
     document.getElementById('prep-boites').innerHTML = jours.map(function(j, i){
       var ou = i < 4 ? 'frigo' : 'congélateur';
       /* Ce qui ne va PAS dans la boite : le fruit (entier, a cote). */
-      var dansBoite = function(x){ return x.c !== 'fruit'; };
+      var dansBoite = function(x){ return x.c !== 'fruit' && !(ALIMENTS[x.c] && ALIMENTS[x.c].condiment); };   /* la sauce se fait au rechauffage */
       var ligne = function(x){
         var n = NOM_ALIMENT[x.c] || x.c;
         return '<li>' + escapeHtml(n) + ' — ' + (x.c === 'huile' ? Math.round(x.q) + ' ml' : poids(x.q)) + '</li>';
@@ -12223,9 +12372,9 @@
              j.din.filter(dansBoite).map(ligne).join('') + '</ul></div>';
     }).join('');
     document.getElementById('prep-regles').innerHTML = [
-      ['Le petit-déjeuner', 'un shake : 300 ml de boisson d\'avoine, 150 g de skyr, 80 g de flocons, une banane, 20 g de miel, 30 g d\'amandes — 40 secondes de mixeur, à boire en dix minutes'],
-      ['La collation d\'entraînement', 'pain, 2 œufs durs, fromage, 40 g d\'amandes — les œufs sont cuits le dimanche ; le reste s\'assemble au moment de partir'],
-      ['Le goût', 'l\'huile d\'olive froide à l\'assiette, puis ce qui ne compte pas : citron, moutarde, harissa, tomate concassée, ail, épices. Sans limite'],
+      ['Le petit-déjeuner', 'un shake : 300 ml de boisson d\'avoine, 150 g de skyr, 80 g de flocons, une banane (congelée en rondelles, c\'est un milkshake), 100 g de fruits rouges surgelés, 10 g de miel, 30 g d\'amandes — 40 secondes de mixeur, à boire en dix minutes'],
+      ['La collation d\'entraînement', 'pain, 2 œufs durs (une boîte de sardines ou de maquereau le mardi et le jeudi), fromage, 40 g d\'amandes — les œufs sont cuits le dimanche ; le reste s\'assemble au moment de partir'],
+      ['Le goût', 'la sauce du jour, faite au réchauffage (onglet Repas) : ses calories sont comptées. L\'huile froide à l\'assiette les jours où la sauce n\'est ni crème ni pesto'],
       ['Réchauffer à la poêle', 'la boîte vidée dans la poêle avec 2 à 3 cuillères d\'eau, couvercle, feu moyen, 4 à 5 min, puis 1 min à découvert. Brûlant jusqu\'au cœur. Pas l\'air fryer : il dessèche le riz et les pâtes'],
       ['Le fruit du dîner', 'entier, jamais dans la boîte : coupé le dimanche il rend de l\'eau et noircit'],
       ['Refroidir vite', 'deux heures maximum entre la casserole et le frigo. Étaler plutôt qu\'entasser'],
@@ -12267,6 +12416,7 @@
       repasDuJour(iso).forEach(function(m){
         compoRepas(m.name, iso, true).forEach(function(x){
           var a = ALIMENTS[x.c], k = alias[x.c] || x.c;
+          if(a && a.condiment) return;   /* les condiments ont leur carte, hors de la liste (21 octobre) */
           b[k] = (b[k] || 0) + (a && a.piece ? x.q / a.piece : x.q);
         });
       });
@@ -12320,9 +12470,11 @@
     'Poulet':'poulet', 'Viande hach\u00e9e 5 %':'hachee', 'Skyr':'skyr', '\u0152ufs':'oeufs',
     'Fromage en tranches':'fromage', 'Pain complet':'pain',
     'Bananes':'bananes', 'Fruits (pommes, poires, oranges\u2026)':'fruits',
-    'L\u00e9gumes verts surgel\u00e9s':'legumes', 'Riz':'riz', 'P\u00e2tes':'pates',
+    'L\u00e9gumes verts surgel\u00e9s':'legumes', 'Couscous':'couscous', 'P\u00e2tes':'pates',
     'Flocons d\'avoine':'flocons', 'Miel':'miel', 'Amandes ou noix nature':'amandes',
-    'Huile d\'olive':'huile', 'Boisson d\'avoine':'avoine'
+    'Huile d\'olive':'huile', 'Boisson d\'avoine':'avoine',
+    /* 21 octobre : sans prix releve -- « prix a relever », hors total, jusqu'a son ticket */
+    'Sardines ou maquereau (boîte)':'sardines', 'Fruits rouges surgelés':'fruitsrouges', 'Galettes de riz':'galettes'
   };
   function eur(n){ return (Math.round(n * 100) / 100).toFixed(2).replace('.', ',') + ' \u20ac'; }
   /* Le cout d'une semaine se calcule sur le BESOIN, pas sur l'achat : un pot de 2 L d'huile
@@ -12427,7 +12579,10 @@
            depuis le 28 (collation combat), soit 445 g. Le sachet de 200 g est le format
            courant du rayon ; nature, non salees. Moitie noix si possible : le poisson est
            sorti du plan, et les noix sont la seule source d'omega-3 qui reste. */
-        art('Amandes ou noix nature', B.amandes, 200, poids, 'sachet')
+        art('Amandes ou noix nature', B.amandes, 200, poids, 'sachet'),
+        /* 21 octobre : les omega-3, le mardi et le jeudi. En DERNIER : les coches sont
+           indexees par position, rien ne se decale. */
+        art('Sardines ou maquereau (boîte)', B.sardines, 1, sep, 'boîtes · à l\'huile d\'olive ou au naturel', B.sardines + ' boîtes')
       ]},
       /* Les legumes surgeles ont leur propre cycle, plus court que les autres reserves :
          DEUX semaines. Sa contrainte du 20 septembre, et elle est physique -- 10 kg de
@@ -12446,11 +12601,17 @@
            l'achete en PACK DE 6 BRIKS DE 1 L (Lidl depuis le 6 octobre, 4,44 EUR ; Mercadona 5,70 avant) : un pack couvre
            deux semaines (4,2 L) avec 1,8 L de marge, d'ou ce cycle. En DERNIER dans la
            categorie : les coches sont indexees par position, rien ne se decale. */
-        art('Boisson d\'avoine', B.avoine * 2, 6000, vol, 'pack')
+        art('Boisson d\'avoine', B.avoine * 2, 6000, vol, 'pack'),
+        /* 21 octobre : les fruits rouges du shake (700 g par semaine) et les galettes de riz de
+           la collation combat. En DERNIER, comme la boisson d'avoine. */
+        art('Fruits rouges surgelés', B.fruitsrouges * 2, 1, poids, 'sachets du rayon surgelés'),
+        art('Galettes de riz', B.galettes * 2, 1, sep, 'galettes · un paquet suffit', (B.galettes * 2) + ' galettes')
       ]},
       /* Cycle de 4 semaines, ancre au samedi 26 septembre : 26/9, 24/10, 21/11, 19/12. */
       {cat:'Réserves — toutes les 4 semaines', semaines:4, ancre:ANCRE_COURSES, items:[
-        art('Riz',               B.riz * 4,            1000, poids, 'paquet'),
+        /* 21 octobre : le couscous prend la place du riz, a la meme position (les coches sont
+           indexees par position). Sans prix releve : « prix a relever » jusqu'a son ticket. */
+        art('Couscous',          B.couscous * 4,       1000, poids, 'paquet'),
         art('Pâtes',            (B.pates + plus) * 4, 1000, poids, 'paquet'),
         art('Flocons d\'avoine',  B.flocons * 4,         500, poids, 'paquet')
       ]},
@@ -12643,7 +12804,9 @@
     'Skyr': 'Lidl', 'Huile d\'olive': 'Lidl',
     '\u0152ufs': 'Lidl', 'Pain complet': 'Lidl',
     'Fromage en tranches': 'Lidl · cuajo vegetal',
-    'Riz': 'Lidl', 'P\u00e2tes': 'Lidl', 'Flocons d\'avoine': 'Lidl',
+    'Riz': 'Lidl', 'Couscous': 'Lidl', 'P\u00e2tes': 'Lidl', 'Flocons d\'avoine': 'Lidl',
+    /* 21 octobre : les nouveaux articles vont chez Lidl, avec le reste -- leur prix attend son ticket */
+    'Sardines ou maquereau (bo\u00eete)': 'Lidl', 'Fruits rouges surgel\u00e9s': 'Lidl', 'Galettes de riz': 'Lidl',
     'L\u00e9gumes verts surgel\u00e9s': 'Lidl', 'Miel': 'Lidl', 'Amandes ou noix nature': 'Lidl',
     'Boisson d\'avoine': 'Lidl',
     'Bananes': 'Lidl', 'Fruits (pommes, poires, oranges\u2026)': 'Frutería · de saison',
@@ -13254,6 +13417,9 @@
     /* Le test du mois : trier par sangsues et réécrire les dix pires cartes. */
     if(copieViergeDue()) items.push({pri:0.5, icon:'🌱', text:'Copie vierge à prendre — avant la première saisie, pour pouvoir revenir exactement à aujourd\u2019hui', action:{type:'vierge'}});
     if(seanceReferenceDue()) items.push({pri:0.6, icon:'🧪', text:'Séance de référence — aujourd\u2019hui on mesure le point de départ, on ne suit pas la séance normale', action:{type:'sport'}});
+    /* 21 octobre : les mesures du cardio, le jour venu */
+    if(todayISO >= MESURES_CARDIO_DEBUT && dowDe(todayISO) === 0 && !mesuresCardio.fc[todayISO]) items.push({pri:2.3, icon:'❤️', text:'FC de repos de la semaine — le chiffre de Bevel (ou de ta montre), à noter dans Sport → Cardio & combat → 📈 Mesures', action:{type:'sport'}});
+    if(testNageLe(todayISO) && !mesuresCardio.nage[todayISO]) items.push({pri:2.0, icon:'🏊', text:'Test du mois à la piscine : 400 m chronométrés — note ton temps dans Sport → Cardio & combat → 📈 Mesures', action:{type:'sport'}});
     if(testAnkiDu()) items.push({pri:2.6, icon:'🧪', text:'Test du mois Anki — trie par Lapses et réécris tes dix pires cartes' + (ankiState && ankiState.sangsues ? ' (' + ankiState.sangsues + ' sangsue' + (ankiState.sangsues > 1 ? 's' : '') + ' étiquetée' + (ankiState.sangsues > 1 ? 's' : '') + ')' : ''), action:{type:'test-anki'}});
 
     /* Notion : la matière qui a le plus de cours pas faits, à partir de deux. */
@@ -15456,7 +15622,19 @@
     if(typeof SEANCES_REPRISE !== 'undefined' && SEANCES_REPRISE[iso])
       base = base.map(function(b){ return b[0] === '05:30' && b[1] === 'Projets perso matinal' ? [b[0], 'Sport'] : b; });
     if(typeof combatEnPause === 'function' && combatEnPause(iso)) base = sansCombat(base);
-    return avecPiscine(sansCoursLe(iso) ? libere(base, iso) : base, iso);
+    return avecMobilite(avecPiscine(sansCoursLe(iso) ? libere(base, iso) : base, iso), iso);
+  }
+  /* ===== La mobilite des hanches, le dimanche (21 octobre) =====
+     Pour la garde au JJB : dix minutes au sol apres le diner du dimanche, prises sur le debut
+     du temps libre (19:30 -> 19:40). */
+  var MOBILITE_DEBUT = '2026-10-25';
+  function avecMobilite(g, iso){
+    iso = iso || todayISO;
+    if(iso < MOBILITE_DEBUT || dowDe(iso) !== 0) return g;
+    if(!g.some(function(b){ return b[0] === '19:30' && b[1] === 'Temps libre'; })) return g;
+    return g.map(function(b){ return (b[0] === '19:30' && b[1] === 'Temps libre') ? ['19:30', MOBILITE_LABEL] : b; })
+            .concat([['19:40', 'Temps libre']])
+            .sort(function(x, y){ return x[0] < y[0] ? -1 : x[0] > y[0] ? 1 : 0; });
   }
   /* ===== La piscine du mardi (21 octobre) =====
      « je veux devenir un monstre du cardio, du JJB et de la boxe [...] je peux aller a la
@@ -15475,7 +15653,9 @@
     var a = function(h, l){ return g.some(function(b){ return b[0] === h && b[1] === l; }); };
     if(!a('17:30', 'Trajet retour') || !a('18:00', 'Dîner') || !a('18:30', 'Clore le cours du jour') || !a('19:10', 'Temps libre')) return g;
     var out = g.filter(function(b){ return ['17:30', '18:00', '18:30', '19:10'].indexOf(b[0]) < 0; });
-    out.push(['17:30', iso >= PISCINE_INTERVALLES_DEBUT ? PISCINE_INT_LABEL : PISCINE_LABEL], ['18:30', 'Trajet retour'],
+    /* 21 octobre : le premier mardi du mois, la seance est le test du 400 m (les mesures du cardio) */
+    var test = Number(iso.slice(8, 10)) <= 7;
+    out.push(['17:30', test ? PISCINE_TEST_LABEL : (iso >= PISCINE_INTERVALLES_DEBUT ? PISCINE_INT_LABEL : PISCINE_LABEL)], ['18:30', 'Trajet retour'],
              ['19:00', 'Dîner'], ['19:30', 'Clore le cours du jour'], ['19:50', 'Temps libre']);
     out.sort(function(x, y){ return x[0] < y[0] ? -1 : x[0] > y[0] ? 1 : 0; });
     return out;
@@ -15719,7 +15899,7 @@
     'Déjeuner': function(d, iso){
       var c = compoRepas('Déjeuner', iso, false), g = function(k){ var x = c.filter(function(y){ return y.c === k; })[0]; return x ? Math.round(x.q) : 0; };
       var sc = sauceDuJour('dej', iso);
-      return "La boîte du jour : riz " + g('riz') + " g crus, poulet " + g('poulet') + " g, " + g('legumes') + " g de légumes. Réchauffée à la poêle avec 2 à 3 cuillères d'eau, couvercle, 4 à 5 min, brûlante jusqu'au cœur. Sauce du jour — " + sc.nom + " : " + sc.recette + ". Sel.";
+      return "La boîte du jour : couscous " + g('couscous') + " g crus, poulet " + g('poulet') + " g, " + g('legumes') + " g de légumes. Réchauffée à la poêle avec 2 à 3 cuillères d'eau, couvercle, 4 à 5 min, brûlante jusqu'au cœur. Sauce du jour — " + sc.nom + " : " + sc.recette + ". Sel.";
     },
     'Dîner': function(d, iso){
       var c = compoRepas('Dîner', iso, false), g = function(k){ var x = c.filter(function(y){ return y.c === k; })[0]; return x ? Math.round(x.q) : 0; };
@@ -15734,7 +15914,7 @@
     /* Le regime combat (lundi 28 septembre) : les blocs qu'il ajoute. L'eau monte a 3,5-4 L
        ces jours-la (objectifEauL), et la collation combat se prend 25 min avant le tatami. */
     'Collation combat': function(d){
-      return "Banane, 50 g de flocons, 15 g d'amandes : du glucide qui passe vite, 25 minutes avant le tatami. Remplis la gourde. Aujourd'hui, l'eau monte à 3,5 à 4 L.";
+      return "Une banane, 2 galettes de riz et 15 g de miel : du glucide qui passe vite et rien de lourd, 25 minutes avant le tatami. Le reste revient au déjeuner (couscous + 45 g). Remplis la gourde. Aujourd'hui, l'eau monte à 3,5 à 4 L.";
     },
     'Trajet club': "Dix minutes à pied. Dans le sac : kimono ou short, protège-dents, gourde pleine, serviette. Ongles des mains et des pieds courts.",
     'Retour du club': "Douche dès que possible, kimono ou tenue à laver le jour même. Bois 500 ml en rentrant."
@@ -15743,6 +15923,8 @@
   CONSIGNES[MT_LABEL] = "1 h 30 de Muay Thai. Bandes, protège-dents, gants. Au sparring, touche léger : tu apprends, tu ne gagnes pas. Bois entre les rounds — aujourd'hui, 3,5 à 4 L d'eau sur la journée. Retour 21:00, douche, et au lit à 22:00.";
   CONSIGNES[PISCINE_LABEL] = "Nado libre à la piscine du campus — réserve ton créneau la veille sur sd.ua.es. 35 minutes sans t'arrêter, crawl ou brasse, à une allure où tu respires calmement : tu pourrais parler entre deux longueurs. C'est le moteur, du volume facile, pas une course. Sac : maillot, bonnet, lunettes, serviette, tongs, cadenas. Douche tiède en sortant, jamais chaude (Skinoren), et rince bien le chlore. Coche la séance dans Cardio & combat.";
   CONSIGNES[PISCINE_INT_LABEL] = "Piscine du campus, nado libre réservé la veille sur sd.ua.es. 10 minutes faciles, puis 8 × (50 m vite, 50 m tranquille), puis 5 minutes faciles. « Vite » veut dire dur mais propre : la technique ne casse pas. Ce sont les rounds du JJB, sans adversaire. Douche tiède, rince le chlore, coche la séance dans Cardio & combat.";
+  CONSIGNES[PISCINE_TEST_LABEL] = "Le test du mois. 10 minutes faciles, puis 400 m chronométrés — à fond mais propres, toujours dans la même nage d'un test à l'autre (crawl si tu tiens, sinon brasse) —, puis 10 minutes faciles. Le chrono du téléphone au bord du bassin, ou la grande horloge. Note ton temps dans Sport → Cardio & combat → 📈 Mesures. Douche tiède, rince le chlore.";
+  CONSIGNES[MOBILITE_LABEL] = "Dix minutes au sol, sur un tapis ou une serviette. 90/90 : 2 × 1 min par côté, buste droit puis penché sur la jambe avant. Pigeon : 2 × 1 min par côté. Papillon : 2 × 1 min, les coudes poussent doucement les genoux. Puis dix bascules du bassin, allongé. Respire lentement, jamais de douleur vive : c'est la souplesse de ta garde au JJB.";
   CONSIGNES[LEVER_LABEL] = "Debout à l'alarme — posée loin du lit, sans snooze —, même après une mauvaise nuit : c'est ce lever qui recolle la nuit suivante. Toutes les lumières à fond. Vers 08:15, quand il fait jour, 15 minutes dehors ou fenêtre grande ouverte (Anki se fait très bien sur un banc). Plan « Cap sur 05:20 », dans tes artefacts.";
   /* ===== Consignes des blocs Español (Dossier Español, sections 05 et 06) =====
      Ces consignes sont consultees AVANT CONSIGNES, toute l'annee : une cle qui existe ici

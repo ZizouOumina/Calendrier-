@@ -132,7 +132,8 @@ console.log('\n== 253) Jour d\'examen et veille ==');
   ok(g.includes('09:00 Examen · Anatomía I') && g.includes('08:30 Trajet · Examen · Anatomía I') && g.includes('11:00 Trajet retour'), 'lundi 16 : trajet 08:30, examen 09:00 → 11:00 (' + g.filter(x => /Examen|retour/.test(x)) + ')');
   ok(g.includes('07:20 Anki 1') && !g.some(x => /08:20 Anki 2/.test(x)) && g.includes('07:30 Préparer · Examen · Anatomía I'), 'Anki 1 gardé, Anki 2 sacrifié pour la préparation à 07:30');
   const v = await grille(fr, 'weekend', '2026-11-15');
-  ok(v.includes('19:30 Préparer · Examen · Anatomía I') && v.includes('09:20 Simulation dentaire'), 'dimanche 15 : le temps libre du soir prépare l\'examen, l\'annale du matin reste');
+  /* 21 octobre : la mobilite des hanches prend 19:30 -> 19:40, le temps libre commence a 19:40 */
+  ok(v.includes('19:40 Préparer · Examen · Anatomía I') && v.includes('19:30 🧘 Mobilité des hanches') && v.includes('09:20 Simulation dentaire'), 'dimanche 15 : le temps libre du soir prépare l\'examen (après les dix minutes de mobilité), l\'annale du matin reste');
   const j = await grille(fr, 'weekday', '2026-11-19');
   ok(j.includes('15:00 Examen · Bioquímica') && j.includes('13:30 Préparer · Examen · Bioquímica') && j.includes('14:30 Trajet · Examen · Bioquímica') && !j.some(x => /Cours$/.test(x)), 'jeudi 19 : préparation 13:30, trajet 14:30, examen 15:00 → 17:00, le cours de 15:30 sacrifié');
   const jour1 = await fr.evaluate(() => ({ p: window.__bcPeriode('2026-11-20'), g: window.__bcGrille('friday', '2026-11-20').map(b => b[1]) }));
