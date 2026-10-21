@@ -12680,7 +12680,7 @@
            21 octobre : la version enrichie en calcium (le lait est sorti du plan, c'est la
            que le calcium revient), et le shake de recup des jours de JJB -- 750 ml de plus
            par semaine, 5,7 L sur deux : le pack de 6 L suffit toujours. */
-        art('Boisson d\'avoine', B.avoine * 2, 6000, vol, 'pack · la version au calcium, « con calcio »'),
+        (function(a){ a.note += ' \u00b7 la version au calcium, \u00ab con calcio \u00bb'; return a; })(art('Boisson d\'avoine', B.avoine * 2, 6000, vol, 'pack')),
         /* 21 octobre : les fruits rouges du shake (700 g par semaine) et les galettes de riz de
            la collation combat. En DERNIER, comme la boisson d'avoine. */
         art('Fruits rouges surgelés', B.fruitsrouges * 2, 1, poids, 'sachets du rayon surgelés'),

@@ -67,7 +67,8 @@ console.log('\n== 180) Sans ajustement : plan de base, liste = plan × 7 ==');
   && !c.items.some(t => /^Saumon/.test(t)),
      'viande au gramme près, pesée au comptoir, et plus de poisson : ' + c.items.filter(t => /^(Poulet|Viande|Saumon)/.test(t)).join(' · '));
   /* Les fruits se comptent, ils ne se pesent pas. */
-  ok(c.items.some(t => /^Bananes — 10 .*l'unité/.test(t)) && c.items.some(t => /^Fruits[^\n]*— 7 .*l'unité/.test(t)),
+  /* 21 octobre au soir : trois bananes de plus par semaine, celles du shake de recup. */
+  ok(c.items.some(t => /^Bananes — 13 .*l'unité/.test(t)) && c.items.some(t => /^Fruits[^\n]*— 7 .*l'unité/.test(t)),
      'bananes et fruits à l\'unité : ' + c.items.filter(t => /^(Bananes|Fruits)/.test(t)).join(' · '));
   /* Le reste au paquet, avec le plus petit format courant : 5 pots de 450 g laissent
      115 g de surplus de skyr, la ou 5 pots de 500 en laissaient 365. Le 21 septembre, en
@@ -79,8 +80,10 @@ console.log('\n== 180) Sans ajustement : plan de base, liste = plan × 7 ==');
   ok(c.items.some(t => /^Skyr — 1,05 kg\b/.test(t) && !/demande/.test(t) && /7 boîtes de 150 g/.test(t))
   && !c.items.some(t => /^(Dattes|Cacahuètes)/.test(t)),
      'skyr : 1,05 kg en 7 boîtes de 150 g pour 1 050 g demandés (le shake seul)');
-  ok(c.items.some(t => /^Boisson d\'avoine — 6 L\b/.test(t) && /1 pack de 6 L/.test(t) && /demande 4\u202f200 ml/.test(t) && /0,74 €\/L/.test(t)),
-     'boisson d\'avoine : un pack de 6 L (Lidl depuis le 6 octobre, 0,74 €/L) toutes les deux semaines pour les 4 200 ml du shake');
+  /* 21 octobre au soir : 750 ml de plus par semaine pour le shake de recup (5 700 ml sur deux
+     semaines, le pack de 6 L suffit encore), et la version au calcium. */
+  ok(c.items.some(t => /^Boisson d\'avoine — 6 L\b/.test(t) && /1 pack de 6 L/.test(t) && /demande 5\u202f700 ml/.test(t) && /0,74 €\/L/.test(t) && /au calcium/.test(t)),
+     'boisson d\'avoine : un pack de 6 L (Lidl depuis le 6 octobre, 0,74 €/L) toutes les deux semaines pour les 5 700 ml des shakes, version au calcium');
   /* L'HUILE etait la vraie erreur : 288 ml par semaine, donc 1 152 sur 4 semaines alors
      que la liste disait 1 000 -- quatre jours de rupture par cycle, tous les mois. Elle est
      passee a 5 semaines. Depuis le retrait du poisson elle monte a 315 ml par semaine
