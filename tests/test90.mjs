@@ -69,15 +69,17 @@ console.log('\n== 303) Un cloud déjà propre ne déclenche aucune réécriture 
   /* « Propre » suppose que toutes les generations de semis sont deja passees, la derniere
      comprise : un drapeau manquant n'est pas un cloud propre, c'est un cloud a completer,
      et l'ecriture qui suit est la bonne. v9 = la taie d'oreiller du mercredi (20 septembre),
-     v10 = le cou du jeudi soir (30 septembre). v11 = la douche froide (5 octobre). */
+     v10 = le cou du jeudi soir (30 septembre). v11 = la douche froide (5 octobre). v12 = la
+     lumiere du matin (21 octobre). */
   const propre = [{id:'core-lit', label:'Lit fait', icon:'🛏️'},
                   {id:'core-pesee-dim', label:'Pesée du dimanche, à jeun', icon:'⚖️', jours:[0]},
                   {id:'core-taie-merc', label:'Taie d’oreiller changée', icon:'🛌', jours:[3]},
                   {id:'core-cou-jeudi', label:'Cou — flexion et extension, 3 × 12-20', icon:'🦴', jours:[4]},
-                  {id:'core-douche-froide', label:'Douche froide — 30 à 60 s en fin de douche', icon:'🚿', jours:[0,3,5]}];
+                  {id:'core-douche-froide', label:'Douche froide — 30 à 60 s en fin de douche', icon:'🚿', jours:[0,3,5]},
+                  {id:'core-lumiere', label:'Lumière du matin — 15 min dehors, dès qu’il fait jour', icon:'☀️'}];
   const { ctx, fr } = await jour('2026-09-21T09:00:00+02:00', {
     'batcave-habits': propre, 'batcave-habits-seed-v2': true, 'batcave-habits-seed-v3': true,
-    'batcave-habits-seed-v4': true, 'batcave-habits-seed-v5': true, 'batcave-habits-seed-v6': true, 'batcave-habits-seed-v7': true, 'batcave-habits-seed-v8': true, 'batcave-habits-seed-v9': true, 'batcave-habits-seed-v10': true, 'batcave-habits-seed-v11': true });
+    'batcave-habits-seed-v4': true, 'batcave-habits-seed-v5': true, 'batcave-habits-seed-v6': true, 'batcave-habits-seed-v7': true, 'batcave-habits-seed-v8': true, 'batcave-habits-seed-v9': true, 'batcave-habits-seed-v10': true, 'batcave-habits-seed-v11': true, 'batcave-habits-seed-v12': true });
   const n = await fr.evaluate(() => window.__w.filter(k => k === 'batcave-habits').length);
   ok(n === 0, 'aucune écriture (' + n + ')');
   await ctx.close();
@@ -117,7 +119,9 @@ for (const [d, nom, du] of [['2026-09-20','dim. 20 sept (avant l\'ancre)',false]
   await ctx.close();
 }
 
-console.log('\n== 305b) Pesée un dimanche sur deux, photos une fois sur quatre ==');
+/* 21 octobre au soir : la pesee passe a CHAQUE dimanche (pesee-hebdo-v1). Les photos gardent
+   leur cycle de quatre semaines : elles tombent toujours un dimanche de pesee. */
+console.log('\n== 305b) Pesée chaque dimanche, photos une fois sur quatre ==');
 /* Les deux partent de la MEME ancre, donc une seance photo tombe TOUJOURS un dimanche de
    pesee, jamais l'inverse. Quatre semaines pour les photos parce que la seance sert a deux
    suivis lents : l'acne se juge sur douze semaines, et un corps qui prend un kilo par mois ne
@@ -130,10 +134,10 @@ console.log('\n== 305b) Pesée un dimanche sur deux, photos une fois sur quatre 
    l'hygiene laissait un jour de sueur sans shampooing. Mercredi et vendredi restent secs. */
 /* 28 septembre au soir : l'ancre passe au 4 OCTOBRE, premier dimanche du programme -- la
    meme raison qu'au 19 : la photo et la pesee du point de depart tombent au depart. */
-for (const [d, nom, pesee, photos, shamp] of [['2026-09-20','dim. 20 sept (avant l\'ancre)',false,false,true],
-                                              ['2026-09-27','dim. 27 sept',false,false,true],
+for (const [d, nom, pesee, photos, shamp] of [['2026-09-20','dim. 20 sept (avant l\'ancre)',true,false,true],
+                                              ['2026-09-27','dim. 27 sept',true,false,true],
                                               ['2026-10-04','dim. 4 oct (l\'ancre)',true,true,false],
-                                              ['2026-10-11','dim. 11 oct',false,false,false],
+                                              ['2026-10-11','dim. 11 oct',true,false,false],
                                               ['2026-10-18','dim. 18 oct',true,false,false],
                                               ['2026-11-01','dim. 1er nov',true,true,false],
                                               ['2026-11-15','dim. 15 nov',true,false,false],
@@ -176,7 +180,8 @@ for (const [d, nom, du] of [['2026-09-20','dim. 20 sept (avant l\'ancre)',false]
   const on = l.some(t => /Ongles/.test(t)), ph = l.some(t => /Photos/.test(t)),
         pe = l.some(t => /Pesée/.test(t));
   ok(on === du, nom + ' : ongles ' + on + ' (' + du + ' attendu)');
-  ok(on === pe, nom + ' : les ongles tombent exactement les dimanches de pesée');
+  /* depuis le 21 octobre la pesee tombe chaque dimanche : un dimanche d'ongles est toujours un dimanche de pesee */
+  if(on) ok(pe, nom + ' : les ongles tombent un dimanche de pesée');
   /* le libelle promet « pieds les dimanches de photo » : une photo sans ongles le rendrait faux */
   if(ph) ok(on, nom + ' : jour de photo, donc jour d\'ongles — les pieds ont bien une case');
   await ctx.close();
