@@ -154,7 +154,8 @@ console.log('\n== 120b) Le saut de depart ne doit JAMAIS faire retirer des calor
   const { ctx, fr, page } = await ouvrir('2026-10-04T10:00:00+02:00', {'batcave-journal-2026-09-20': {poids: 64.0}, 'batcave-journal-2026-10-04': {poids: 66.4}});
   await aller(fr, page, 'repas');
   const txt = await fr.evaluate(() => document.getElementById('kcal-analyse').innerText.replace(/\s+/g,' '));
-  ok(/rien avant le 11 nov\./.test(txt) && /glyc\u00e8ne|glycog\u00e8ne/.test(txt),
+  /* 21 octobre au matin : jour 1 au jeudi 22, trois semaines plus tard -- rien avant le 12 novembre. */
+  ok(/rien avant le 12 nov\./.test(txt) && /glyc\u00e8ne|glycog\u00e8ne/.test(txt),
      'elle explique l\'attente au lieu de rester muette : ' + txt.slice(-190));
   await ctx.close();
 }
