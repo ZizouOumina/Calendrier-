@@ -47,16 +47,18 @@ for (const [q, attendu, moitie] of [['2026-10-26T05:35:00+01:00',2,true],['2026-
    trois, ancree au 3 octobre — elle ne tombe donc sur aucun dimanche, et c'est ce que
    verifie la colonne « coupe ». Le 30 septembre au soir, il saute le coiffeur du mois
    (budget) : l'ancre passe au samedi 31 octobre. */
-console.log('\n== habitudes : pesee un dimanche sur deux, photos un sur quatre, coupe le samedi ==');
+/* 21 octobre au soir : la pesee passe a CHAQUE dimanche (pesee-hebdo-v1) -- vraie tous les dimanches,
+   comme le rasage ; les photos gardent leur cycle de quatre semaines sur l'ancre du 4 octobre. */
+console.log('\n== habitudes : pesee chaque dimanche, photos un sur quatre, coupe le samedi ==');
 for (const [d, jour_, pesee, coupe] of [
   ['2026-09-14','lundi 14',false,false],
-  ['2026-09-13','dimanche 13 (avant l\'ancre)',false,false],
-  ['2026-09-20','dimanche 20 (ancienne ancre, avant le jour 1)',false,false],
-  ['2026-09-27','dimanche 27',false,false],
+  ['2026-09-13','dimanche 13 (avant l\'ancre)',true,false],
+  ['2026-09-20','dimanche 20 (ancienne ancre, avant le jour 1)',true,false],
+  ['2026-09-27','dimanche 27',true,false],
   ['2026-10-04','dimanche 4 oct (l\'ancre, premier dimanche du programme)',true,false],
-  ['2026-10-11','dimanche 11 oct',false,false],
+  ['2026-10-11','dimanche 11 oct',true,false],
   ['2026-10-18','dimanche 18 oct',true,false],
-  ['2026-10-25','dimanche 25 oct',false,false],
+  ['2026-10-25','dimanche 25 oct',true,false],
   ['2026-10-03','samedi 3 oct (coiffeur sauté ce mois-ci)',false,false],
   ['2026-10-31','samedi 31 oct',false,true],
   ['2026-09-15','mardi 15',false,false]]) {
