@@ -75,7 +75,9 @@ console.log('\n== 2) Une pesée salée ne fait plus retirer 100 kcal ==');
 {
   /* Quand la tendance tient VRAIMENT à une seule pesée (4 pesées par semaine, donc pas
      d'élagage), la Batcave ne recommande rien et dit laquelle. */
-  const av = ['2026-11-11','2026-11-13','2026-11-15','2026-11-17'].map(iso => [iso, 64.0]);
+  /* 21 octobre au matin : jour 1 au jeudi 22, la stabilisation court jusqu'au 11 novembre --
+     la premiere pesee lue est celle du 12. */
+  const av = ['2026-11-12','2026-11-13','2026-11-15','2026-11-17'].map(iso => [iso, 64.0]);
   const rec = [['2026-11-18',64.4],['2026-11-20',64.4],['2026-11-22',64.4],['2026-11-24',66.0]];
   const {ctx, page, fr} = await ouvrir(pesees(av.concat(rec)), JOUR_KCAL + 'T18:00:00+01:00');
   await aller(fr, page, 'repas');
