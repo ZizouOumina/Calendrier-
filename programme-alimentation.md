@@ -1,7 +1,7 @@
 # Programme d'alimentation — La Batcave
 
 Copie de référence du plan appliqué dans la Batcave (onglets Repas, Préparation et Courses),
-au **mercredi 21 octobre 2026, jour 1**. Si un chiffre diverge, c'est l'application qui fait foi : les
+au **jeudi 22 octobre 2026, jour 1**. Si un chiffre diverge, c'est l'application qui fait foi : les
 macros, la liste de courses et la préparation sortent toutes de la même source (`compoRepas`).
 
 ## Le cadre
@@ -12,15 +12,15 @@ macros, la liste de courses et la préparation sortent toutes de la même source
 - **Jours de combat** (lundi, mercredi, vendredi : le JJB, à partir du mercredi 28 octobre) :
   **≈ 3 870 à 3 900 kcal · protéines ≈ 167 g**, avec deux prises de plus : la collation combat
   avant le tatami et le shake de récup au retour.
-- **Le plan entier dès le jour 1, mercredi 21 octobre** : plus de semaine à 85 % (décision du
-  21 octobre : « on commence demain la Batcave »). Jusqu'au mardi 27, sans JJB, tous les jours sont des jours sans combat. Du 21 au 24, le petit-déjeuner suit le lever du plan sommeil (07:30 le mercredi, 07:00 le jeudi et le vendredi). Mange aux heures prévues, même sans faim.
+- **Le plan entier dès le jour 1, jeudi 22 octobre** : plus de semaine à 85 % (décision du
+  21 octobre : « on commence jeudi matin »). Jusqu'au mardi 27, sans JJB, tous les jours sont des jours sans combat. Du 22 au 24, le petit-déjeuner suit le lever du plan sommeil (07:00 le jeudi et le vendredi). Mange aux heures prévues, même sans faim.
 - Tout est pesé **cru**. Pas de lait (acné) : boisson d'avoine, la version au calcium (« con calcio »). Pas de sauce au skyr (sortie le
   29 septembre) : le goût vient des **sauces du jour** (plus bas), fixes, une par repas, faites
   de ses condiments depuis le 18 octobre.
 - **100 g de légumes par repas** depuis le 14 octobre (sa demande : 200 g lui remplissaient trop
   l'estomac, et il en jetait) : 200 g par jour au lieu de 350.
 
-## Les repas (à partir du mercredi 21 octobre)
+## Les repas (à partir du jeudi 22 octobre)
 | Repas | Heure | Contenu | kcal · protéines |
 |---|---|---|---|
 | Petit-déjeuner (shake) | 06:45 | boisson d'avoine au calcium 300 ml, skyr 150 g, flocons d'avoine 80 g, banane 120 g, **fruits rouges surgelés 100 g**, miel 10 g, amandes ou noix 30 g | ≈ 900 · 40 g |
@@ -82,7 +82,7 @@ l'onglet Courses : hors du total, il coche ce qui manque et écrit lui-même la 
 
 ## La boucle poids → calories
 Une pesée **chaque dimanche, à jeun** (une sur deux jusqu'au 21 octobre). Rien ne se lit pendant les trois premières semaines
-(jusqu'au 10 novembre) : la balance monte d'un à trois kilos d'eau et de glycogène, ce n'est pas
+(jusqu'au 11 novembre) : la balance monte d'un à trois kilos d'eau et de glycogène, ce n'est pas
 du gras. Ensuite, dès quatre pesées, la Batcave calcule la pente : trop lente (moins de la
 moitié du rythme visé), elle propose **+150 kcal**, soit +40 g de pâtes crues au dîner ; trop
 rapide (plus de 1,5 fois le rythme), **−100 kcal**. Elle propose, tu valides.

@@ -46,13 +46,13 @@ console.log('\n== 401) Santé de la Batcave : six contrôles, un relevé qui ne 
 }
 {
   /* la clôture n'est due qu'à partir du jour 1 (mardi 13 octobre depuis le 12 octobre ;
-     samedi 17 depuis le 16 octobre, mardi 20 depuis le 19, mercredi 21 depuis le 21) : on lit le
-     jour 1, avec une clôture du samedi 17. */
+     samedi 17 depuis le 16 octobre, mardi 20 depuis le 19, mercredi 21 puis jeudi 22 depuis le 21) :
+     on lit le jour 1, avec une clôture du samedi 17. */
   const seed = {'batcave-journal-2026-10-17': {sommeil:'7', cloture:'21:20'}};
-  const { ctx, page, fr } = await ouvrir('2026-10-21T10:00:00+02:00', seed);
+  const { ctx, page, fr } = await ouvrir('2026-10-22T10:00:00+02:00', seed);
   const r = await fr.evaluate(() => ({ vide: window.__bcAppVide(), sante: window.__bcSante().filter(c => !c.ok).map(c => c.id), releve: document.getElementById('bc-sante').hidden, txt: document.querySelector('#bc-sante .v').textContent }));
   ok(r.vide === false, 'une clôture suffit : l\'appli n\'est plus neuve');
-  ok(r.sante.join(',') === 'sauvegarde,exercice,cloture', 'trois défauts : aucune sauvegarde, aucun exercice, clôture vieille de 4 jours (' + r.sante.join(', ') + ')');
+  ok(r.sante.join(',') === 'sauvegarde,exercice,cloture', 'trois défauts : aucune sauvegarde, aucun exercice, clôture vieille de 5 jours (' + r.sante.join(', ') + ')');
   ok(r.releve === false && /3 défauts/.test(r.txt), 'le relevé SANTÉ s\'allume : ' + r.txt);
   await fr.evaluate(() => document.getElementById('bc-sante').click());
   await page.waitForTimeout(300);

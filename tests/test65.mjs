@@ -41,10 +41,11 @@ console.log('\n== 240) Sport : mercredi 21 octobre = jour 1, première muscu le 
      16 octobre : « samedi matin sans faute » -- jour 1 et premiere muscu le samedi 17.
      19 octobre : « on decale tout a demain » -- jour 1 et premiere muscu le mardi 20.
      21 octobre : « on commence demain la Batcave » -- jour 1 le mercredi 21 ; la muscu attend le
-     plan sommeil, premiere seance le lundi 26 (semaine 2). */
-  const { ctx, fr } = await ouvrir('2026-10-21T07:30:00+02:00');
+     plan sommeil, premiere seance le lundi 26 (semaine 2).
+     21 octobre au matin : « on commence jeudi matin » -- jour 1 le jeudi 22, rien d'autre ne bouge. */
+  const { ctx, fr } = await ouvrir('2026-10-22T07:30:00+02:00');
   const r = await fr.evaluate(() => ({ debut: window.__bcProgrammeDebut, note: document.getElementById('programme-note').textContent }));
-  ok(r.debut === '2026-10-21', 'PROGRAMME_DEBUT = 2026-10-21 (' + r.debut + ')');
+  ok(r.debut === '2026-10-22', 'PROGRAMME_DEBUT = 2026-10-22 (' + r.debut + ')');
   ok(/muscu à partir du/.test(r.note) && /26 oct/.test(r.note), 'note du jour 1 : « muscu à partir du 26 oct. » (' + r.note + ')');
   await ctx.close();
   const v = await ouvrir('2026-10-20T20:00:00+02:00');

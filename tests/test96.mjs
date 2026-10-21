@@ -316,28 +316,30 @@ console.log('\n== 303) Trois créneaux par semaine, lus dans la grille ==');
 console.log('\n== 304) Le compteur de la semaine ==');
 {
   const seed = {'batcave-appro': {seq:1, liste:[
-    {id:'a1', sujet:'Anatomía I T1 · homéostasie', matiere:'Anatomía I', tema:'1', nom:'homéostasie', date:'2026-10-21', notes:[]}
+    {id:'a1', sujet:'Anatomía I T1 · homéostasie', matiere:'Anatomía I', tema:'1', nom:'homéostasie', date:'2026-10-28', notes:[]}
   ]}};
-  /* 12 octobre : jour 1 au mardi 13 -- la semaine lue est celle du 19.
+  /* 21 octobre au matin : jour 1 au jeudi 22 -- le mercredi 21 tombe avant le programme, la
+     semaine lue devient celle du 26 (mercredi 28, samedi 31).
+     12 octobre : jour 1 au mardi 13 -- la semaine lue est celle du 19.
      Samedi 24 octobre à 12:00 : le mercredi 21 est passé, les deux séances du samedi
      aussi. Trois créneaux écoulés, un seul sujet écrit. (La semaine du 28 septembre n'en a
      plus que deux dans le programme : le mercredi 30 tombe avant le jour 1 du jeudi 1er
      octobre, depuis le 30 au soir.) */
-  const { ctx, fr, page } = await ouvrir('2026-10-24T12:00:00+02:00', seed);
+  const { ctx, fr, page } = await ouvrir('2026-10-31T12:00:00+01:00', seed);
   await fr.evaluate(() => document.querySelector('.nav-btn[data-page="etudes"]').click());
   await page.waitForTimeout(250);
   const v = await fr.evaluate(() => ({
     note: document.getElementById('appro-note').textContent,
-    bil: window.__bcBilanAppro(['2026-10-19','2026-10-20','2026-10-21','2026-10-22','2026-10-23','2026-10-24','2026-10-25'], 12*60)
+    bil: window.__bcBilanAppro(['2026-10-26','2026-10-27','2026-10-28','2026-10-29','2026-10-30','2026-10-31','2026-11-01'], 12*60)
   }));
   ok(v.bil.creneaux === 3 && v.bil.saisis === 1, 'trois créneaux écoulés, un sujet écrit (' + v.bil.creneaux + '/' + v.bil.saisis + ')');
   ok(/1\/3 créneaux cette semaine/.test(v.note), 'et le panneau l\'affiche : ' + v.note);
 
   /* Même samedi à 11:00 : la séance de 09:20 s'est terminée à 10:20, celle de 10:20 court
      jusqu'à 11:20 — elle est EN COURS, elle ne compte pas encore. Mercredi + une séance. */
-  const onze = await fr.evaluate(() => window.__bcBilanAppro(['2026-10-21','2026-10-24'], 11*60).creneaux);
+  const onze = await fr.evaluate(() => window.__bcBilanAppro(['2026-10-28','2026-10-31'], 11*60).creneaux);
   ok(onze === 2, 'à 11:00, la séance en cours ne compte pas encore comme ratée (' + onze + ')');
-  const dix = await fr.evaluate(() => window.__bcBilanAppro(['2026-10-21','2026-10-24'], 10*60).creneaux);
+  const dix = await fr.evaluate(() => window.__bcBilanAppro(['2026-10-28','2026-10-31'], 10*60).creneaux);
   ok(dix === 1, 'à 10:00, aucune des deux séances du samedi n\'est finie (' + dix + ')');
   await ctx.close();
 }
@@ -455,15 +457,16 @@ console.log('\n== 307) Le filtre par matière ==');
 
 console.log('\n== 308) Les notes 0-3 entrent dans la revue du dimanche ==');
 {
-  /* 12 octobre : la semaine du 19 (le jour 1 est au mardi 13). Avant : la semaine du 5 octobre : celle du 28 septembre n'a plus que deux créneaux dans le
+  /* 21 octobre au matin : la semaine du 26 (le jour 1 au jeudi 22 laisse le mercredi 21 hors
+     programme). 12 octobre : la semaine du 19 (le jour 1 est au mardi 13). Avant : la semaine du 5 octobre : celle du 28 septembre n'a plus que deux créneaux dans le
      programme (le mercredi 30 tombe avant le jour 1 du jeudi 1er octobre). */
   const seed = {'batcave-appro': {seq:2, liste:[
     {id:'a1', sujet:'Anatomía I T1 · homéostasie', matiere:'Anatomía I', tema:'1', nom:'homéostasie',
-     date:'2026-10-21', notes:[{lag:7, n:1, d:'2026-10-25'}]},
+     date:'2026-10-28', notes:[{lag:7, n:1, d:'2026-11-01'}]},
     {id:'a2', sujet:'Anatomía I T4 · le tissu osseux', matiere:'Anatomía I', tema:'4', nom:'le tissu osseux',
-     date:'2026-10-24', notes:[]}
+     date:'2026-10-31', notes:[]}
   ]}};
-  const { ctx, fr } = await ouvrir('2026-10-25T20:00:00+01:00', seed);
+  const { ctx, fr } = await ouvrir('2026-11-01T20:00:00+01:00', seed);
   const c = await fr.evaluate(() => window.__bcConstats());
   const ligne = c.find(x => /🔬/.test(x)) || '';
   ok(ligne, 'la revue du dimanche porte une ligne Approfondir : ' + ligne);

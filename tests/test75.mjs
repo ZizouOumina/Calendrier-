@@ -48,7 +48,7 @@ console.log('\n== 311) Le 14 au réveil : aucun objectif en retard des jours d\'
 console.log('\n== 312) Le réacteur annonce le jour 1, pas un « 0 % » ==');
 {
   /* le jour 1 est le mardi 29 (depuis le 28 septembre au soir), premier jour du programme */
-  const { ctx, fr, page } = await ouvrir('2026-10-21T07:20:00+02:00');   /* jour 1 (21 octobre : mercredi 21 octobre, lever 07:15) */
+  const { ctx, fr, page } = await ouvrir('2026-10-22T07:20:00+02:00');   /* jour 1 (21 octobre au matin : jeudi 22 octobre, lever 06:45) */
   let v = await fr.evaluate(() => ({
     num: document.getElementById('dash-score-num').textContent,
     unite: document.getElementById('dash-score-unit').textContent,
@@ -60,8 +60,8 @@ console.log('\n== 312) Le réacteur annonce le jour 1, pas un « 0 % » ==');
   /* 167 depuis le 28 septembre au soir : le depart au mardi 29, le 14 mars toujours fixe. */
   /* 149 depuis le 16 octobre : le depart au samedi 17, le 14 mars toujours fixe.
      146 depuis le 19 octobre : le depart au mardi 20.
-     145 depuis le 21 octobre : le depart au mercredi 21. */
-  ok(v.num === '1' && v.unite === '/145', 'le premier matin affiche « 1/145 » — 21 oct. → 14 mars, pas « 0 % » (' + v.num + v.unite + ')');
+     145 depuis le 21 octobre : le depart au mercredi 21. 144 le meme jour : au jeudi 22. */
+  ok(v.num === '1' && v.unite === '/144', 'le premier matin affiche « 1/144 » — 22 oct. → 14 mars, pas « 0 % » (' + v.num + v.unite + ')');
   ok(/Premier jour du programme/.test(v.note) && !/À reprendre/.test(v.note), 'la note dit ce que c\'est : ' + v.note);
   ok(v.hors === v.note, 'la même note existe hors de l\'anneau, pour le téléphone');
 
@@ -161,9 +161,9 @@ console.log('\n== 312b) Avant le premier jour, aucun bloc n\'est reproche ==');
 }
 {
   /* Et des le jour 1, la detection reprend : un bloc echu et non fait est bien signale. */
-  const { ctx, fr } = await ouvrir('2026-10-21T12:00:00+02:00');
+  const { ctx, fr } = await ouvrir('2026-10-22T12:00:00+02:00');
   const t = await fr.evaluate(() => document.getElementById('dash-plan').innerText);
-  ok(/Bloc manqu\u00e9/.test(t), 'le mercredi 21 à midi, jour 1, les blocs échus non faits sont de nouveau signalés');
+  ok(/Bloc manqu\u00e9/.test(t), 'le jeudi 22 à midi, jour 1, les blocs échus non faits sont de nouveau signalés');
   await ctx.close();
 }
 

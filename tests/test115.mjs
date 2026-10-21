@@ -33,7 +33,9 @@ console.log('\n== 1) Les paliers du plan sommeil, matin et soir ==');
 {
   const { ctx, fr } = await ouvrir('2026-10-21T07:20:00+02:00');
   const debut = await fr.evaluate(() => window.__bcProgrammeDebut);
-  ok(debut === '2026-10-21', 'le jour 1 est le mercredi 21 (' + debut + ')');
+  /* 21 octobre au matin : « on commence jeudi matin » -- le jour 1 passe au jeudi 22 ; les
+     paliers du plan sommeil, eux, ne bougent pas (le mercredi garde son lever de 07:15). */
+  ok(debut === '2026-10-22', 'le jour 1 est le jeudi 22 (' + debut + ')');
   const mer = await grille(fr, '2026-10-21');
   ok(mer[0] === '07:15 ⏰ Lever' && mer.includes('07:20 Douche + préparation') && mer.includes('07:30 Petit-déjeuner + Coran (1 page)') && mer.includes('07:45 Anki 1'),
      'mercredi 21 : lever 07:15, douche, petit-déjeuner, et le premier bloc à 07:45 (' + mer.slice(0, 4).join(' · ') + ')');
@@ -161,7 +163,7 @@ console.log('\n== 6) Le 21 octobre au soir : shake de récup, pesée chaque dima
   const pesee = r.habits.filter(h => h.id === 'core-pesee-dim')[0], lumiere = r.habits.filter(h => h.id === 'core-lumiere')[0];
   ok(pesee && !pesee.cycleSemaines && !pesee.ancre, 'la pesée tombe chaque dimanche (' + JSON.stringify(pesee) + ')');
   ok(lumiere && !lumiere.jours, 'la lumière du matin est une habitude de chaque jour (' + JSON.stringify(lumiere) + ')');
-  ok(r.snus && r.snus.start === '2026-10-21', 'le compteur de snus part du mercredi 21 (' + JSON.stringify(r.snus) + ')');
+  ok(r.snus && r.snus.start === '2026-10-22', 'le compteur de snus part du jeudi 22, le jour 1 (' + JSON.stringify(r.snus) + ')');
   await fr.evaluate(() => { document.dispatchEvent(new KeyboardEvent('keydown', {key:'c', bubbles:true})); });
   await page.waitForTimeout(300);
   const sac = await fr.evaluate(() => document.getElementById('cl-sac').textContent);
@@ -184,7 +186,7 @@ console.log('\n== 6) Le 21 octobre au soir : shake de récup, pesée chaque dima
   }));
   const pesee = r.habits.filter(h => h.id === 'core-pesee-dim')[0];
   ok(pesee && !pesee.cycleSemaines && !pesee.ancre, 'migration : la pesée enregistrée une semaine sur deux passe à chaque dimanche');
-  ok(r.snus.start === '2026-10-21' && r.snus.record === 4, 'migration : un départ ancien passe au 21, le record ne bouge pas (' + JSON.stringify(r.snus) + ')');
+  ok(r.snus.start === '2026-10-22' && r.snus.record === 4, 'migration : un départ ancien passe au 22, le record ne bouge pas (' + JSON.stringify(r.snus) + ')');
   await fr.evaluate(() => { document.dispatchEvent(new KeyboardEvent('keydown', {key:'c', bubbles:true})); });
   await page.waitForTimeout(300);
   const sac = await fr.evaluate(() => document.getElementById('cl-sac').textContent);
@@ -192,10 +194,10 @@ console.log('\n== 6) Le 21 octobre au soir : shake de récup, pesée chaque dima
   await ctx.close();
 }
 {
-  /* Une rechute deja notee apres le 21 : le compteur ne recule pas. */
+  /* Une rechute deja notee apres le 22 : le compteur ne recule pas. */
   const { ctx, fr } = await ouvrir('2026-11-05T09:00:00+01:00', {'batcave-addictions': {snus:{start:'2026-10-30', record:8, log:[{id:'lg1', date:'2026-10-30', note:''}]}}});
   const snus = await fr.evaluate(() => JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-addictions') || '{}').snus);
-  ok(snus.start === '2026-10-30', 'un départ après le 21 (une rechute notée) reste tel quel (' + snus.start + ')');
+  ok(snus.start === '2026-10-30', 'un départ après le 22 (une rechute notée) reste tel quel (' + snus.start + ')');
   await ctx.close();
 }
 {
@@ -208,6 +210,26 @@ console.log('\n== 6) Le 21 octobre au soir : shake de récup, pesée chaque dima
   const { ctx, fr } = await ouvrir('2026-12-06T09:00:00+01:00');
   const plan = await fr.evaluate(() => document.getElementById('dash-plan').innerText);
   ok(!/Bilan peau/.test(plan), 'et pas un autre dimanche');
+  await ctx.close();
+}
+
+console.log('\n== 7) Jour 1 au jeudi 22 : le rattrapage glisse d\'un jour, 22 -> 29 ==');
+{
+  const { ctx, fr } = await ouvrir('2026-10-22T07:20:00+02:00');
+  const c = await fr.evaluate(() => ({
+    mer: window.__bcConsigne('Anki 1', 3, '2026-10-21', '07:45'),
+    jeu: window.__bcConsigne('Anki 1', 4, '2026-10-22', '07:20'),
+    jeu2: window.__bcConsigne('Étudier en avance', 4, '2026-10-22', '09:20'),
+    ven: window.__bcConsigne('Question ouverte ou autre', 5, '2026-10-23', '10:20'),
+    mer28: window.__bcConsigne('Approfondir', 3, '2026-10-28', '13:00'),
+    fin: window.__bcConsigne('Projets perso 3', 4, '2026-10-29', '11:20')
+  }));
+  ok(!/Rattrapage/.test(c.mer), 'mercredi 21 : plus de tema, le programme n\'a pas commencé');
+  ok(/jour 1 sur 8/.test(c.jeu) && /Anatomía T1/.test(c.jeu) && /07:20/.test(c.jeu) && /Projet Dentaire/.test(c.jeu), 'jeudi 22, jour 1 : Anatomía T1 à 07:20, le Projet Dentaire prêt avant');
+  ok(/Biología celular 1/.test(c.jeu2) && /Epidemiología 1/.test(c.jeu2), 'puis Biología celular 1 et Epidemiología 1');
+  ok(/Documentación 1/.test(c.ven) && /Antropología 1/.test(c.ven), 'vendredi 23 : Documentación 1 et Antropología 1 en version courte');
+  ok(/Biología celular 8/.test(c.mer28) && !/file est vide/.test(c.mer28), 'mercredi 28 : la fin de Biología celular 8, la file n\'est pas encore vide');
+  ok(/Antropología 4/.test(c.fin) && /file est vide/.test(c.fin) && /samedi 31/.test(c.fin), 'jeudi 29 : Antropología 4, la file est vide à 12:10, premier Approfondir samedi 31');
   await ctx.close();
 }
 

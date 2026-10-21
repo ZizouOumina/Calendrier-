@@ -12,9 +12,9 @@ espagnol**. Changement du 1er octobre : 40 minutes, c'était calibré pour 10 pa
 chacun), Biología celular 4 (60 pages chacun, 1 h 30), Epidemiología y bioestadística 5 (1 h 30),
 Documentación 2 et Antropología 2 (version courte, 40 min). Environ 22 heures en tout.
 
-**Le plan intensif du 15 octobre, recalé le 21** (jour 1 au mercredi 21 ; sa décision : « je vais faire
-5 temas par jour », puis « on commence demain la Batcave ») : 4 le mercredi, 3 le jeudi, 4 le
-vendredi, 5 le samedi 24, 4 le dimanche et le lundi 26, 3 le mardi 27, 2 le mercredi 28 (premier JJB).
+**Le plan intensif du 15 octobre, recalé le 21** (jour 1 au jeudi 22 ; sa décision : « je vais faire
+5 temas par jour », puis « on commence jeudi matin ») : 3 le jeudi 22, 4 le vendredi, 5 le
+samedi 24, 4 le dimanche et le lundi 26, 3 le mardi 27, 2 le mercredi 28 (premier JJB), 4 le jeudi 29.
 Tous les blocs d'espagnol restent ; le temps vient des créneaux d'Anki (pas encore de cartes) et des
 blocs d'étude. Les révisions Anki se font dans le tram jusqu'au mardi 27.
 

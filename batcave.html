@@ -3664,10 +3664,10 @@
   var DRAPEAUX_MIGRATION = ['objectifs-seed-v1','objectifs-v2-55','objectifs-v5-espanol',
     'habits-ecran-v2','habitlog-hebdo-v1','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','habits-seed-v7','habits-seed-v8','habits-seed-v9','habits-seed-v10','habits-seed-v11','habits-seed-v12',
     'courses-plan-v2','courses-plan-v3','courses-plan-v4','courses-plan-v5','courses-plan-v6','courses-plan-v7','courses-plan-v8','courses-plan-v9','courses-plan-v10',
-    'charges-v2','plafond-nourriture-v2','plafond-nourriture-v3','plafond-nourriture-v4','plafond-nourriture-v5','plafond-nourriture-v6','plafond-nourriture-v7','ancre-dimanche-v1','ancre-dimanche-v2','serviettes-v1','coiffeur-v1','shampoing-dim-v1','marche-cible-v1','fc-migration-v1','fc-migration-v2','fc-migration-v3','fc-migration-v4','revision-fusionnee','pesee-hebdo-v1','snus-arret-v1'];
+    'charges-v2','plafond-nourriture-v2','plafond-nourriture-v3','plafond-nourriture-v4','plafond-nourriture-v5','plafond-nourriture-v6','plafond-nourriture-v7','ancre-dimanche-v1','ancre-dimanche-v2','serviettes-v1','coiffeur-v1','shampoing-dim-v1','marche-cible-v1','fc-migration-v1','fc-migration-v2','fc-migration-v3','fc-migration-v4','revision-fusionnee','pesee-hebdo-v1','snus-arret-v2'];
   /* Drapeaux que rien ne pose plus (migrations retirees) ou poses seulement quand il y a
      eu quelque chose a migrer : connus et gardes, jamais exiges. */
-  var DRAPEAUX_ANCIENS = ['objectifs-v3-trajet','objectifs-v4-dimanche','habits-retirees-v1','shampoing-combat-v1','shampoing-samedi-v1'];   /* les deux derniers n'ecrivent qu'a partir du 28 septembre */
+  var DRAPEAUX_ANCIENS = ['objectifs-v3-trajet','objectifs-v4-dimanche','habits-retirees-v1','shampoing-combat-v1','shampoing-samedi-v1','snus-arret-v1'];   /* snus-arret-v1 : remplace par la v2 (jour 1 au 22) ; les deux d'avant n'ecrivent qu'a partir du 28 septembre */
   function drapeauxManquants(){ return DRAPEAUX_MIGRATION.filter(function(d){ return !load('batcave-' + d, false); }); }
   function schemaEnregistre(){ return Number(load('batcave-schema', 0)) || 0; }
   /* ===== Compaction mensuelle du cloud =====
@@ -8161,10 +8161,12 @@
      depart absent ou plus ancien passe au 21 ; un depart plus recent (une rechute deja
      notee) ne bouge pas, et le record n'est pas touche. Sous drapeau, et rejouee apres la
      synchro sur l'etat du stockage, jamais sur celui en memoire. */
-  var SNUS_ARRET = '2026-10-21';
+  /* 21 octobre au matin : le jour 1 passe au jeudi 22, l'arret du snus avec lui. La v2
+     reprend la v1 : un depart pose au 21 par elle (ou plus ancien, ou absent) passe au 22. */
+  var SNUS_ARRET = '2026-10-22';
   function snusArretNet(){
-    if(load('batcave-snus-arret-v1', false)) return false;
-    if(todayISO < SNUS_ARRET){ saveInternal('batcave-snus-arret-v1', true); return false; }   /* une horloge d'avant le 21 : rien a decaler */
+    if(load('batcave-snus-arret-v2', false)) return false;
+    if(todayISO < SNUS_ARRET){ saveInternal('batcave-snus-arret-v2', true); return false; }   /* une horloge d'avant le 22 : rien a decaler */
     var etat = load('batcave-addictions', {});
     if(!etat || typeof etat !== 'object' || Array.isArray(etat)) etat = {};
     var a = (etat.snus && typeof etat.snus === 'object' && !Array.isArray(etat.snus)) ? etat.snus : {record:0, log:[]};
@@ -8174,11 +8176,11 @@
       save('batcave-addictions', etat);
       addictionState.snus.start = SNUS_ARRET;
     }
-    saveInternal('batcave-snus-arret-v1', true);
+    saveInternal('batcave-snus-arret-v2', true);
     return bouge;
   }
   snusArretNet();
-  MIGRATIONS_DEMARRAGE.push({cle:'batcave-snus-arret-v1', rejouer: function(){
+  MIGRATIONS_DEMARRAGE.push({cle:'batcave-snus-arret-v2', rejouer: function(){
     if(!snusArretNet()) return false;
     renderAddictions(); renderDashboard(); return true;
   }});
@@ -9014,7 +9016,11 @@
      sont pas faux -- aucun jour avant le jour 1 ne prevoit rien (prevuSurPeriode) -- mais le
      jour 1 a bouge douze fois. C'est le dernier depart : une journee qui ne tient pas devient
      « Aujourd'hui ne compte pas », plus un nouveau jour 1. */
-  var PROGRAMME_DEBUT = '2026-10-21';
+  /* 21 octobre au matin : « on commence jeudi matin parce que la j'ai tres mal dormi ».
+     Treizieme depart : le JEUDI 22 octobre. Meme semaine 1 (lundi 19 -> dimanche 25), meme
+     plan sommeil (le jeudi, lever 06:45), meme lundi 26 pour la muscu et meme mercredi 28
+     pour le JJB ; le rattrapage glisse d'un jour (22 -> 29) et le snus s'arrete le 22. */
+  var PROGRAMME_DEBUT = '2026-10-22';
   /* La fin ne bouge PAS avec le depart : le 14 mars est le dernier jour de la SAISON,
      un point d'arrivee choisi, pas une duree de 174 jours a reporter. Le decalage du
      depart au 24 septembre raccourcit donc le programme a 172 jours, ce qui est la
@@ -16049,24 +16055,27 @@
     },
     'Coucher': "Clôture du jour faite, la ligne en espagnol ? Écran off, réveil posé loin du lit."
   };
-  /* ===== Le rattrapage des temas (21 -> 28 octobre, intensif) =====
+  /* ===== Le rattrapage des temas (22 -> 29 octobre, intensif) =====
      15 octobre au soir, sa decision : « c'est la premiere fois depuis le debut de l'annee que
      je vais me poser reviser, je vais faire 5 temas par jour » -- puis « mets-moi ca dans la
-     Batcave, a fond ». 21 octobre : le jour 1 passe au mercredi 21, et les matins suivent le
-     plan sommeil (RECALAGE_SOMMEIL : lever 07:15 le mercredi, premier bloc a 07:45). Le plan
-     repart du mercredi 21 : QUATRE temas le mercredi, TROIS le jeudi, QUATRE le vendredi, CINQ
-     le samedi 24, QUATRE le dimanche (le diagnostic d'espagnol et le batch cooking y sont) et
-     le lundi 26 (le JJB ne commence que le 28 : la matinee est entiere), TROIS le mardi 27,
-     DEUX le mercredi 28 (premier JJB : la matinee s'arrete a 10:05) -- file vide a 13:20.
+     Batcave, a fond ». 21 octobre : « on commence jeudi matin, j'ai tres mal dormi » -- le jour
+     1 passe au jeudi 22, et les matins suivent toujours le plan sommeil (RECALAGE_SOMMEIL :
+     lever 06:45 le jeudi, premier bloc a 07:20). Le plan repart du jeudi 22 : TROIS temas le
+     jeudi (l'apres-midi est a l'espagnol), QUATRE le vendredi, CINQ le samedi 24, QUATRE le
+     dimanche (le diagnostic d'espagnol et le batch cooking y sont) et le lundi 26 (le JJB ne
+     commence que le 28 : la matinee est entiere), TROIS le mardi 27, DEUX le mercredi 28
+     (premier JJB : la matinee s'arrete a 10:05), QUATRE le jeudi 29 -- file vide a 12:10.
+     Les quatre temas du mercredi 21 n'ont pas disparu : la file glisse d'un jour, et le
+     jeudi 29 les reprend.
      Tous les blocs d'espagnol restent. Le temps vient des creneaux d'Anki, libres tant qu'il
      n'a pas de cartes (07:20 -> 09:20), et des blocs d'etude (Etudier en avance, question
      ouverte, Lire, Projets perso 3, Approfondir, simulation). Ses revisions Anki se font dans
-     le tram jusqu'au mardi 27, et a l'Anki matinal du mercredi 28.
-     La file au matin du mercredi 21 : les 16 de retard comptes au vendredi 2 (Anatomia T1-T3,
+     le tram jusqu'au mardi 27, a l'Anki matinal du mercredi 28, et dans le tram le jeudi 29.
+     La file au matin du jeudi 22 : les 16 de retard comptes au vendredi 2 (Anatomia T1-T3,
      Biologia celular 1-4, Epidemiologia 1-5, Documentacion 1-2, Antropologia 1-2), plus dix
      des semaines du 5 et du 12 (Antropologia T3 et T4, Anatomia T4 piel, Biologia celular T5
      a T8, Epidemiologia T6 et T7, Documentacion 3), plus Documentacion 4 (lundi 19) et
-     Biologia T9 (mardi 20) ; Anatomia T5 arrive le mercredi 21. 29 temas.
+     Biologia T9 (mardi 20), et Anatomia T5 (mercredi 21). 29 temas.
      Ordre : Anatomia dans l'ordre des temas (cuestionario 2, T3 a T6, la semaine du 2
      novembre), Biologia et Epidemiologia en alternance, Antropologia et Documentacion en
      version courte dans les creneaux d'une heure. Les temas donnes a partir du jeudi 22
@@ -16075,43 +16084,42 @@
      consigne habituelle. */
   var RATTRAPAGE_PROTOCOLE = ' Protocole, 1 h 30 par tema : survol 10 min · partie par partie 45 min, IA fermée · « tema » dans le Projet Dentaire 20 min · vérification dans le cours 5 min · 8 à 10 cartes écrites par toi, puis « vérifie mes cartes ». Antropología et Documentación : version courte, 40 min, sans « tema ». Minuteur : Révision, avec la matière du tema — même dans un bloc Anki ou Projets.';
   var RATTRAPAGE_TEMAS = {
-    '2026-10-21': {'Anki 1': {t:'Rattrapage, jour 1 sur 8 (4 temas aujourd\'hui) : Anatomía T1 (homeostasis, ≈ 1 h 50), de 07:45 à 09:35, en prenant le début d\'Étudier en avance. Avant de commencer : le Projet Dentaire prêt dans claude.ai (instructions collées), et chronomètre ton premier tema.', p:1},
-                   'Étudier en avance': {t:'Jusqu\'à 09:35 : la fin d\'Anatomía T1. 10 min debout, puis Biología celular 1, de 09:45 à 11:15, en prenant la question ouverte.', p:1},
-                   'Question ouverte ou autre': {t:'Jusqu\'à 11:15 : la fin de Biología celular 1. Puis Documentación 1 en version courte, de 11:20 à 12:00, en prenant Projets perso 3.', p:1},
-                   'Projets perso 3': {t:'Jusqu\'à 12:00 : la fin de Documentación 1. Puis 20 min : tes premières cartes, et « vérifie mes cartes ».'},
-                   'Approfondir': {t:'Rattrapage : Antropología 1 en version courte, de 13:00 à 13:40, puis 20 min : tes cartes du jour.', p:1}},
-    '2026-10-22': {'Anki 1': {t:'Rattrapage, jour 2 (3 temas aujourd\'hui) : Anatomía T2 (sangre, ≈ 1 h 50), de 07:20 à 09:10, en prenant Anki 2.', p:1},
+    '2026-10-22': {'Anki 1': {t:'Rattrapage, jour 1 sur 8 (3 temas aujourd\'hui) : Anatomía T1 (homeostasis, ≈ 1 h 50), de 07:20 à 09:10, en prenant Anki 2. Avant de commencer : le Projet Dentaire prêt dans claude.ai (instructions collées), et chronomètre ton premier tema.', p:1},
+                   'Anki 2': {t:'Jusqu\'à 09:10 : la fin d\'Anatomía T1. Puis 10 min debout.'},
+                   'Étudier en avance': {t:'Rattrapage : Biología celular 1, de 09:20 à 10:50. Puis Epidemiología 1, de 10:50 à 12:20, en prenant Projets perso 3.', p:1},
+                   'Projets perso 3': {t:'Jusqu\'à 12:20 : la fin d\'Epidemiología 1. Tes premières cartes se font dans le tram de 15:00.'}},
+    '2026-10-23': {'Anki 1': {t:'Rattrapage, jour 2 (4 temas aujourd\'hui) : Biología celular 2, de 07:20 à 08:50.', p:1},
+                   'Étudier en avance': {t:'Jusqu\'à 08:50 : la fin de Biología celular 2. Puis Epidemiología 2, de 08:50 à 10:20.', p:1},
+                   'Question ouverte ou autre': {t:'Rattrapage : Documentación 1 puis Antropología 1, en version courte, 40 min chacun, de 10:20 à 11:40, en prenant Projets perso 3.', p:1},
+                   'Projets perso 3': {t:'Jusqu\'à 11:40 : la fin d\'Antropología 1. Puis 40 min : tes cartes de la semaine, et « vérifie mes cartes ».'}},
+    '2026-10-24': {'Anki 1': {t:'Rattrapage, jour 3 (5 temas aujourd\'hui) : Anatomía T2 (sangre, ≈ 1 h 50), de 07:20 à 09:10, en prenant Anki 2.', p:1},
                    'Anki 2': {t:'Jusqu\'à 09:10 : la fin d\'Anatomía T2. Puis 10 min debout.'},
-                   'Étudier en avance': {t:'Rattrapage : Epidemiología 1, de 09:20 à 10:50. Puis Biología celular 2, de 10:50 à 12:20, en prenant Projets perso 3.', p:1},
-                   'Projets perso 3': {t:'Jusqu\'à 12:20 : la fin de Biología celular 2. Tes cartes du jour se font dans le tram de 15:00.'}},
-    '2026-10-23': {'Anki 1': {t:'Rattrapage, jour 3 (4 temas aujourd\'hui) : Epidemiología 2, de 07:20 à 08:50.', p:1},
-                   'Étudier en avance': {t:'Jusqu\'à 08:50 : la fin d\'Epidemiología 2. Puis Biología celular 3, de 08:50 à 10:20.', p:1},
-                   'Question ouverte ou autre': {t:'Rattrapage : Documentación 2 puis Antropología 2, en version courte, 40 min chacun, de 10:20 à 11:40, en prenant Projets perso 3.', p:1},
-                   'Projets perso 3': {t:'Jusqu\'à 11:40 : la fin d\'Antropología 2. Puis 40 min : tes cartes de la semaine, et « vérifie mes cartes ».'}},
-    '2026-10-24': {'Anki 1': {t:'Rattrapage, jour 4 (5 temas aujourd\'hui) : Anatomía T3 (≈ 1 h 50), de 07:20 à 09:10, en prenant Anki 2.', p:1},
-                   'Anki 2': {t:'Jusqu\'à 09:10 : la fin d\'Anatomía T3. Puis 10 min debout.'},
-                   'Approfondir': {t:'Rattrapage : Biología celular 4, de 09:20 à 10:50. Puis 30 min : tes cartes de la semaine.', p:1},
-                   '🛒 Courses de la semaine': {t:'Courses rapides (la liste de l\'onglet Courses), retour vers 14:30. Puis Documentación 3 en version courte, de 14:30 à 15:10.', puis:true},
-                   'Cartes d\'erreurs de la semaine': {t:'Rattrapage : Antropología 3 en version courte (40 min), puis 20 min : tes cartes d\'erreurs.', p:1},
+                   'Approfondir': {t:'Rattrapage : Biología celular 3, de 09:20 à 10:50. Puis 30 min : tes cartes de la semaine.', p:1},
+                   '🛒 Courses de la semaine': {t:'Courses rapides (la liste de l\'onglet Courses), retour vers 14:30. Puis Documentación 2 en version courte, de 14:30 à 15:10.', puis:true},
+                   'Cartes d\'erreurs de la semaine': {t:'Rattrapage : Antropología 2 en version courte (40 min), puis 20 min : tes cartes d\'erreurs.', p:1},
                    'Projets perso 3': {t:'Rattrapage : Epidemiología 3, de 18:00 à 19:30 — résumé écrit en espagnol. Ce soir, l\'heure recule : une heure de plus au lit.', p:1}},
-    '2026-10-25': {'Projets perso matinal': {t:'Rattrapage, jour 5 (4 temas aujourd\'hui) : Documentación 4 en version courte, de 05:30 à 06:10. Premier lever à 05:20 : à l\'heure d\'hiver, c\'est 06:20 pour ton corps.', p:1},
-                   'Anki 1': {t:'Rattrapage : Anatomía T4 (piel, ≈ 1 h 50), de 07:20 à 09:10, en prenant Anki 2.', p:1},
-                   'Anki 2': {t:'Jusqu\'à 09:10 : la fin d\'Anatomía T4. Puis 10 min debout.'},
+    '2026-10-25': {'Projets perso matinal': {t:'Rattrapage, jour 4 (4 temas aujourd\'hui) : Documentación 3 en version courte, de 05:30 à 06:10. Premier lever à 05:20 : à l\'heure d\'hiver, c\'est 06:20 pour ton corps.', p:1},
+                   'Anki 1': {t:'Rattrapage : Anatomía T3 (≈ 1 h 50), de 07:20 à 09:10, en prenant Anki 2.', p:1},
+                   'Anki 2': {t:'Jusqu\'à 09:10 : la fin d\'Anatomía T3. Puis 10 min debout.'},
                    'Simulation dentaire': {t:'Rattrapage : Epidemiología 4, de 09:20 à 10:50.', p:1},
-                   'Réexpliquer': {t:'Jusqu\'à 10:50 : la fin d\'Epidemiología 4. Puis 30 min : relis tes résumés d\'Anatomía T1 à T4 à voix haute. À 11:20, l\'épreuve du dimanche : le diagnostic.'},
-                   'Projets perso 3': {t:'Rattrapage : Biología celular 5, de 17:30 à 19:00.', p:1}},
-    '2026-10-26': {'Anki 1': {t:'Rattrapage, jour 6 (4 temas aujourd\'hui) : Anatomía T5 (le cours de mercredi, ≈ 1 h 50), de 07:20 à 09:10, en prenant le début d\'Étudier en avance.', p:1},
-                   'Étudier en avance': {t:'Jusqu\'à 09:10 : la fin d\'Anatomía T5. 10 min debout, puis Biología celular 6, de 09:20 à 10:50, en prenant le début de Lire.', p:1},
-                   'Lire': {t:'Jusqu\'à 10:50 : la fin de Biología celular 6. Puis Epidemiología 5, de 10:50 à 12:20, en prenant Projets perso 3.', p:1},
+                   'Réexpliquer': {t:'Jusqu\'à 10:50 : la fin d\'Epidemiología 4. Puis 30 min : relis tes résumés d\'Anatomía T1 à T3 à voix haute. À 11:20, l\'épreuve du dimanche : le diagnostic.'},
+                   'Projets perso 3': {t:'Rattrapage : Biología celular 4, de 17:30 à 19:00.', p:1}},
+    '2026-10-26': {'Anki 1': {t:'Rattrapage, jour 5 (4 temas aujourd\'hui) : Anatomía T4 (piel, ≈ 1 h 50), de 07:20 à 09:10, en prenant le début d\'Étudier en avance.', p:1},
+                   'Étudier en avance': {t:'Jusqu\'à 09:10 : la fin d\'Anatomía T4. 10 min debout, puis Biología celular 5, de 09:20 à 10:50, en prenant le début de Lire.', p:1},
+                   'Lire': {t:'Jusqu\'à 10:50 : la fin de Biología celular 5. Puis Epidemiología 5, de 10:50 à 12:20, en prenant Projets perso 3.', p:1},
                    'Projets perso 3': {t:'Jusqu\'à 12:20 : la fin d\'Epidemiología 5.'},
-                   'Question ouverte ou autre': {t:'Rattrapage : Antropología 4 en version courte, de 13:00 à 13:40, puis 20 min : tes cartes du jour.', p:1}},
-    '2026-10-27': {'Anki 1': {t:'Rattrapage, jour 7 (3 temas aujourd\'hui) : Biología celular 7, de 07:20 à 08:50.', p:1},
-                   'Anki 2': {t:'Jusqu\'à 08:50 : la fin de Biología celular 7. Puis Epidemiología 6, de 08:50 à 10:20.', p:1},
-                   'Étudier en avance': {t:'Jusqu\'à 10:20 : la fin d\'Epidemiología 6. Puis Biología celular 8, de 10:20 à 11:50, en prenant la question ouverte.', p:1},
-                   'Question ouverte ou autre': {t:'Jusqu\'à 11:50 : la fin de Biología celular 8. Puis 30 min : tes cartes du jour, et « vérifie mes cartes ». Tes révisions Anki dans le tram, une dernière fois.'}},
-    '2026-10-28': {'Anki 1': {t:'Rattrapage, dernier jour (2 temas — premier JJB à 10:30) : Epidemiología 7, de 07:20 à 08:50.', p:1},
-                   'Étudier en avance': {t:'Jusqu\'à 08:50 : la fin d\'Epidemiología 7. Puis Biología celular 9 (meiosis), de 08:50 à 10:05 — la vérification et les cartes à 13:00.', p:1},
-                   'Approfondir': {t:'Rattrapage : la fin de Biología celular 9, de 13:00 à 13:20 (vérification dans le cours, cartes) — la file est vide, tu es à jour. Puis 40 min : « vérifie mes cartes » sur la semaine. Dès demain, Étudier en avance redevient l\'avance sur le cours ; le premier vrai Approfondir, samedi 31 à 09:20.'}}
+                   'Question ouverte ou autre': {t:'Rattrapage : Antropología 3 en version courte, de 13:00 à 13:40, puis 20 min : tes cartes du jour.', p:1}},
+    '2026-10-27': {'Anki 1': {t:'Rattrapage, jour 6 (3 temas aujourd\'hui) : Biología celular 6, de 07:20 à 08:50.', p:1},
+                   'Anki 2': {t:'Jusqu\'à 08:50 : la fin de Biología celular 6. Puis Epidemiología 6, de 08:50 à 10:20.', p:1},
+                   'Étudier en avance': {t:'Jusqu\'à 10:20 : la fin d\'Epidemiología 6. Puis Biología celular 7, de 10:20 à 11:50, en prenant la question ouverte.', p:1},
+                   'Question ouverte ou autre': {t:'Jusqu\'à 11:50 : la fin de Biología celular 7. Puis 30 min : tes cartes du jour, et « vérifie mes cartes ». Tes révisions Anki dans le tram.'}},
+    '2026-10-28': {'Anki 1': {t:'Rattrapage, jour 7 (2 temas — premier JJB à 10:30) : Epidemiología 7, de 07:20 à 08:50.', p:1},
+                   'Étudier en avance': {t:'Jusqu\'à 08:50 : la fin d\'Epidemiología 7. Puis Biología celular 8, de 08:50 à 10:05 — la vérification et les cartes à 13:00.', p:1},
+                   'Approfondir': {t:'Rattrapage : la fin de Biología celular 8, de 13:00 à 13:20 (vérification dans le cours, cartes). Puis 40 min : « vérifie mes cartes » sur la semaine. Demain matin, le dernier jour : Anatomía T5, Biología celular 9 et les deux derniers temas courts.'}},
+    '2026-10-29': {'Anki 1': {t:'Rattrapage, dernier jour (4 temas aujourd\'hui) : Anatomía T5 (le cours du mercredi 21, ≈ 1 h 50), de 07:20 à 09:10, en prenant Anki 2.', p:1},
+                   'Anki 2': {t:'Jusqu\'à 09:10 : la fin d\'Anatomía T5. Puis 10 min debout.'},
+                   'Étudier en avance': {t:'Rattrapage : Biología celular 9 (meiosis), de 09:20 à 10:50. Puis Documentación 4 en version courte, de 10:50 à 11:30, en prenant Projets perso 3.', p:1},
+                   'Projets perso 3': {t:'Jusqu\'à 11:30 : la fin de Documentación 4. Puis Antropología 4 en version courte, de 11:30 à 12:10 — la file est vide, tu es à jour. Tes cartes et tes révisions Anki dans le tram de 15:00. Dès demain, Étudier en avance redevient l\'avance sur le cours ; le premier vrai Approfondir, samedi 31 à 09:20.', p:1}}
   };
   function consigneRattrapage(label, iso){
     var j = RATTRAPAGE_TEMAS[iso];
@@ -16213,7 +16221,7 @@
        15 novembre.
 
        Douzieme, le 21 octobre : le jour 1 passe au mercredi 21 ; la phase garde sa fin et ses
-       quatre passages. */
+       quatre passages. Treizieme, le meme jour : le jeudi 22 ; rien ne bouge ici. */
     {id:'es-1', nom:'Español · phase 1', debut:'2026-09-14', fin:'2026-11-15', suite:'Projets perso (livrables, puis boutique)',
      description:'Avec les cours, jusqu\u2019au 15 novembre : les blocs Projets perso sont des blocs Español — gramática à 13:00, escribir à 14:00, hablar le lundi à 15:00, la série en VO le mardi soir, escribir largo et tutor le vendredi, gramática et tutor le samedi, simulación et balance le dimanche. Le 16 novembre, tout revient aux projets.',
      renommages: {
@@ -16741,7 +16749,7 @@
      range dans rvState. Ce panneau les RELIT, les met en face de leur cible, et projette
      ou il sera le 25 octobre au rythme constate. Doubler la saisie aurait garanti que les
      deux series divergent. */
-  var EPREUVE_FIN = '2026-11-15';   /* 15, 16, 19 puis 21 octobre (jour 1 au vendredi 16, au samedi 17, au mardi 20, puis au mercredi 21) : la phase finit le dimanche 15 novembre -- c'est le dernier passage */
+  var EPREUVE_FIN = '2026-11-15';   /* 15, 16, 19, 21 octobre (jour 1 au vendredi 16, au samedi 17, au mardi 20, au mercredi 21, puis au jeudi 22) : la phase finit le dimanche 15 novembre -- c'est le dernier passage */
   var EPREUVE_CIBLES = {errores: 3, oral: 3, drill: 90};   /* < 3 err/100 mots · >= 3 min · <= 90 s */
   /* Les dimanches de la phase Español, du premier apres le jour 1 jusqu'au 25 octobre. */
   function epreuveDimanches(){
