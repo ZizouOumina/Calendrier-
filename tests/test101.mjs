@@ -61,7 +61,8 @@ console.log('\n== 331) Départ neuf : les quatre habitudes du dimanche partent d
   const c = await cartes(fr);
   const dit = n => c.filter(x => x.indexOf(n) > -1)[0] || '(absente)';
   ok(/prochaine fois le 0?4 oct/.test(dit('Photos')), 'photos : dimanche 4 octobre — l\'image du point de départ existe (' + dit('Photos') + ')');
-  ok(/prochaine fois le 0?4 oct/.test(dit('Pesée')), 'pesée : dimanche 4 octobre, le premier dimanche du programme');
+  /* 21 octobre au soir : la pesee tombe chaque dimanche, sa carte dit simplement « dimanche » */
+  ok(/· dimanche/.test(dit('Pesée')) && !/prochaine fois/.test(dit('Pesée')), 'pesée : chaque dimanche (' + dit('Pesée') + ')');
   ok(/prochaine fois le 0?4 oct/.test(dit('Ongles')), 'ongles : le 4 aussi');
   ok(/prochaine fois le 0?4 oct/.test(dit('Brosse à dents')), 'brosse à dents : le 4 aussi');
   const a = await ancres(fr);
@@ -128,7 +129,7 @@ console.log('\n== 334) Le rythme reste le bon après le 4 octobre ==');
   const c = await cartes(fr);
   const dit = n => c.filter(x => x.indexOf(n) > -1)[0] || '(absente)';
   /* 4 octobre + 2 semaines = 18 octobre (pesee) ; photos + 4 semaines = 1er novembre. */
-  ok(/prochaine fois le 18 oct/.test(dit('Pesée')), 'pesée le 18 octobre, deux semaines après (' + dit('Pesée') + ')');
+  ok(/· dimanche/.test(dit('Pesée')) && !/prochaine fois/.test(dit('Pesée')), 'pesée : chaque dimanche, sans cycle (' + dit('Pesée') + ')');
   ok(/prochaine fois le 0?1 nov/.test(dit('Photos')), 'photos le 1er novembre, quatre semaines après (' + dit('Photos') + ')');
   await ctx.close();
 }
