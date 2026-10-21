@@ -19,7 +19,7 @@ Lundi et jeudi : huit exercices, quatre paires, ~50 minutes. Le mardi ne change 
 - **La séance du samedi revient le 4 octobre** (sa décision, la Muay Thai sortie) : bras et épaules, à 05:30 comme les autres, six exercices, ~40 minutes. Les mollets restent le mardi.
 - **Sortent ce que le tatami travaille déjà** : curl inversé (séance lourde), relevés de genoux (volume), et les fentes du mardi (elles ne sont pas revenues avec la sortie de la Muay Thai : les jambes travaillent deux fois par semaine, mardi et jeudi). Les avant-bras sont chargés quatre fois par semaine par les prises de kimono, la sangle par la garde, les ponts et les sorties de hanche. Les relevés de jambes suspendus, sortis le même jour, sont revenus le jeudi le 25 septembre.
 - **Lever 05:30 tous les jours, coucher 21:35**, mardi compris. Le samedi et le dimanche dormaient jusqu'à 06:30 : une heure fixe tous les jours est ce qui recale une horloge interne. Du 21 au 24 octobre, le plan sommeil (« Cap sur 05:20 ») y ramène par paliers : lever 07:15, 06:45, 06:15, puis 05:20 dès le dimanche 25 — pas de 05:30 avant.
-- **Eau : 3,5 à 4 L les jours de combat** (3 L les autres). **Collation combat** à 10:05 avant le JJB : banane, 2 galettes de riz, 15 g de miel, ≈ 230 kcal — rien de lourd sur le tatami ; le reste revient au déjeuner (+45 g de couscous), depuis le 21 octobre.
+- **Eau : 3,5 à 4 L les jours de combat** (3 L les autres). **Collation combat** à 10:05 avant le JJB : banane, 2 galettes de riz, 15 g de miel, ≈ 230 kcal — rien de lourd sur le tatami ; le reste revient au déjeuner (+45 g de couscous), depuis le 21 octobre. **Shake de récup** à 12:00, au retour du club : 250 ml de boisson d'avoine, une banane, 20 g de flocons (≈ 300 kcal).
 - **Shampooing les jours de sueur** : du lundi au samedi (muscu, JJB). Le dimanche reste sec.
 - **Si la semaine dérape** : tu sautes une séance de combat, jamais la muscu ni le sommeil. Pendant les partiels, rien ne s'allège (sa décision du 23) ; seul le jour d'un examen, la séance saute.
 
@@ -27,7 +27,7 @@ Lundi et jeudi : huit exercices, quatre paires, ~50 minutes. Le mardi ne change 
 - Quatre séances au parc, **à 05:30** : lundi haut volume, mardi bas complet, jeudi haut lourd + jambes (≈ 50 min chacune), samedi bras et épaules (≈ 40 min). Mercredi, vendredi et dimanche off pour la muscu.
 - **Montée en charge : deux semaines à la moitié des tours, puis le volume complet.** La Batcave affiche directement le bon nombre de tours, il n'y a rien à calculer. Les deux premières semaines de muscu (du lundi 26 octobre au dimanche 8 novembre) : moitié. À partir du lundi 9 novembre : programme entier. Depuis le 21 octobre, ces deux semaines partent de la première séance, pas du jour 1 — sinon il n'en serait resté qu'une, la semaine même où le JJB commence. Le passage double le volume d'un coup — si les courbatures font sauter une séance cette semaine-là, c'est le moment d'utiliser la réduction de charge, pas de serrer les dents.
 - **La séance de référence est le lundi 26 octobre à 05:30** : d'abord les maximums de tractions, dips, pompes et suspension, puis la séance **haut volume** ; les maximums du bas (split squat, soulevé de terre roumain, hip thrust) se notent le lendemain, au premier bas complet. **Pas de JJB avant le mercredi 28 octobre** : son premier cours. Après l'échauffement, une seule série à l'échec sur quatre mouvements — tractions, dips, pompes, dead hang — notée dans l'onglet Sport. Sans ce point de départ, la surcharge progressive part du bas de la fourchette et on ne saura jamais ce qu'on valait au début.
-- **Pesée le dimanche, à jeun, une semaine sur deux** (4 et 18 octobre, 1er et 15 novembre, et ainsi de suite) : au réveil, après les toilettes, avant de boire. Pas tous les jours : un poids se lit sur une tendance, et se peser quotidiennement fait prendre des décisions sur du bruit. La Batcave la rappelle en habitude du dimanche.
+- **Pesée chaque dimanche, à jeun** (depuis le 21 octobre ; une semaine sur deux avant) : au réveil, après les toilettes, avant de boire. Pas tous les jours : un poids se lit sur une tendance, et se peser quotidiennement fait prendre des décisions sur du bruit. La Batcave la rappelle en habitude du dimanche.
 - **Photos — peau et corps, un dimanche toutes les quatre semaines** (4 octobre — la veille du jour 1, le point zéro —, 1er novembre, 29 novembre, et ainsi de suite) : face, profil, dos, mêmes lieu, même lumière, mêmes poses, deux minutes. C'est la seule mesure de forme du programme — il n'y a pas de mensurations au mètre ruban, la fonctionnalité a été retirée. Quand la balance ne bouge pas, c'est la photo qu'on croit.
 - Paires antagonistes en supersets : exercice A puis exercice B, repos court entre A et B, repos plus long avant la paire suivante.
 - Chaque exercice se lit « tours × fourchette » : 4×6-12 = quatre séries, de six à douze répétitions.
@@ -96,7 +96,7 @@ Revenu le 4 octobre. 48 h après le haut lourd du jeudi, 48 h avant le volume du
 Volumes qui changent : biceps 6 séries directes (lundi et samedi), triceps 3 directes, épaules latérales 10 (lundi 4, jeudi 3, samedi 3), arrière d'épaule 3.
 
 ### Les mesures du cardio (21 octobre)
-Deux chiffres dans l'onglet Sport, panneau « Cardio & combat », sous « 📈 Mesures » (replié) : la **fréquence cardiaque de repos**, notée chaque dimanche (Bevel ou la montre — elle baisse quand le moteur grossit, le snus la fait monter), et le **400 m nagé chronométré**, le premier mardi du mois à la place de la piscine habituelle (3 novembre, 1er décembre), toujours dans la même nage. Le plan du jour les réclame le jour venu.
+Deux chiffres dans l'onglet Sport, panneau « Cardio & combat », sous « 📈 Mesures » (replié) : la **fréquence cardiaque de repos**, notée chaque dimanche (Bevel ou la montre — elle baisse quand le moteur grossit, le snus la faisait monter : arrêt net depuis le 21 octobre), et le **400 m nagé chronométré**, le premier mardi du mois à la place de la piscine habituelle (3 novembre, 1er décembre), toujours dans la même nage. Le plan du jour les réclame le jour venu.
 
 ### La mobilité des hanches (21 octobre)
 Le dimanche à 19:30, dix minutes au sol, prises sur le temps libre : 90/90 (2 × 1 min par côté), pigeon (2 × 1 min par côté), papillon (2 × 1 min), dix bascules du bassin. Pour la garde.
@@ -105,9 +105,9 @@ Le dimanche à 19:30, dix minutes au sol, prises sur le temps libre : 90/90 (2 �
 
 | Jour | Heure | Discipline | Avant | Après |
 |---|---|---|---|---|
-| Lundi | 10:30 → 12:00 | JJB | Collation combat 10:05, trajet 10:20 | Retour 12:00, douche, déjeuner 12:20 |
-| Mercredi | 10:30 → 12:00 | JJB | Collation combat 10:05, trajet 10:20 | Retour 12:00, douche, déjeuner 12:20 |
-| Vendredi | 10:30 → 12:00 | JJB | Collation combat 10:05, trajet 10:20 | Retour 12:00, déjeuner, Jumu'ah 13:30 |
+| Lundi | 10:30 → 12:00 | JJB | Collation combat 10:05, trajet 10:20 | Retour 12:00, shake de récup, douche, déjeuner 12:20 |
+| Mercredi | 10:30 → 12:00 | JJB | Collation combat 10:05, trajet 10:20 | Retour 12:00, shake de récup, douche, déjeuner 12:20 |
+| Vendredi | 10:30 → 12:00 | JJB | Collation combat 10:05, trajet 10:20 | Retour 12:00, shake de récup, déjeuner, Jumu'ah 13:30 |
 
 Les consignes des blocs, dans la Batcave et dans l'agenda : protège-dents, tape tôt sur une clé ou un étranglement (un débutant qui attend se blesse), bois entre les rounds, pose tes questions en espagnol — c'est aussi de l'immersion. Le sac : kimono, protège-dents, gourde pleine, serviette ; ongles courts.
 
@@ -230,6 +230,6 @@ Tractions à 12 reps propres sur toutes les séries, dips à 15, jambes dès que
 - **Le repos entre les séries** : la barre « Repos » en haut de l'onglet Sport propose les temps de la séance du jour (30, 45, 60, 75, 90, 120 s). Un appui lance le décompte, un bip et une vibration sonnent la fin. On ne compte plus dans sa tête, et les repos courts arrêtent de s'allonger.
 
 ## Autour de la séance
-- Collation entraînement à 14:50 (pain complet, 2 œufs durs — sardines ou maquereau le mardi et le jeudi —, fromage, amandes) ; le petit-déjeuner suit la séance à 06:45. Les jours de JJB, collation combat à 10:05 (banane, galettes de riz, miel).
+- Collation entraînement à 14:50 (pain complet, 2 œufs durs — sardines ou maquereau le mardi et le jeudi —, fromage, amandes) ; le petit-déjeuner suit la séance à 06:45. Les jours de JJB, collation combat à 10:05 (banane, galettes de riz, miel) et shake de récup à 12:00 (boisson d'avoine, banane, flocons).
 - Sommeil : lever 05:30 tous les jours, coucher 21:35, tous les jours. L'efficacité de sommeil se mesure sur tes vraies nuits dès que sept nuits portent le sommeil Bevel et le temps au lit.
 - Objectif à six mois : 64 → 72 kg (≈ 1,3 kg par mois, relevé le 23 septembre) avec le plan d'alimentation (voir programme-alimentation.md).

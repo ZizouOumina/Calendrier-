@@ -38,7 +38,8 @@ console.log('\n== 269) Deux oeufs a la place du jambon ==');
   /* 29 septembre : le petit-dejeuner devient un shake (boisson d'avoine, skyr, flocons, banane,
      miel, amandes) : -21 kcal et -11 g de proteines par jour (etiquette Alitey), les deux oeufs du matin sortent. */
   /* 21 octobre : le couscous (170 g les jours de combat), la collation combat legere, les fruits rouges du shake et les sauces comptees : 3 593 kcal, 159 g. */
-  ok(r.jour.kcal === 3593 && r.jour.p === 159, 'un jour de combat : 3 593 kcal, 159 g de protéines (3 549 et 150 avant le 21 octobre : couscous, collation légère, fruits rouges, sauces comptées), cinq prises (' + r.jour.kcal + ' / ' + r.jour.p + ')');
+  /* 21 octobre au soir : le shake de recup au retour du club, +302 kcal et +8 g. */
+  ok(r.jour.kcal === 3895 && r.jour.p === 167, 'un jour de combat : 3 895 kcal, 167 g de protéines (3 593 et 159 avant le shake de récup du 21 octobre au soir), six prises (' + r.jour.kcal + ' / ' + r.jour.p + ')');
   ok(r.oeufs === 10 && r.jambon === undefined, 'les courses : 10 œufs par semaine (la collation seule depuis le shake, les sardines le mardi et le jeudi depuis le 21 octobre), plus de jambon (' + r.oeufs + ' / ' + r.jambon + ')');
   ok(!r.cout.lignes.some(l => /Jambon/.test(l.label)) && r.cout.manque.slice().sort().join('|') === ['Couscous', 'Fruits rouges surgelés', 'Galettes de riz', 'Sardines ou maquereau (boîte)'].join('|'), 'le coût ne compte plus de jambon ; seuls manquent les prix des articles du 21 octobre (son ticket) — la boisson d\'avoine a le sien depuis le 29 septembre ('  + r.cout.manque.join() + ')');
   /* 4 octobre : le plafond suit ce qu'il paie en caisse (conditionnements et cycles compris), pas ce qu'il mange. */

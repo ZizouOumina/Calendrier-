@@ -2242,6 +2242,19 @@
         <p class="desc">Un écart ne remet pas le dossier à zéro pour de bon — clique « J'ai craqué » pour logguer l'incident, le compteur repart et ton record reste affiché.</p>
       </div>
       <div class="addiction-grid" id="addiction-grid"></div>
+      <!-- 21 octobre au soir, sa decision : arret net du snus, des aujourd'hui -->
+      <div class="panel sub-panel" id="snus-plan" style="margin-top:16px;">
+        <div class="sub-head"><h3>Snus : arrêt net depuis le 21 octobre</h3></div>
+        <ul class="sub-note" style="margin:0; padding-left:18px; line-height:1.7;">
+          <li><b style="color:var(--ink-dim);">Plus une boîte chez toi</b> : ce qui reste part à la poubelle, pas de « dernière ».</li>
+          <li><b style="color:var(--ink-dim);">L'envie dure 3 à 5 minutes</b> et passe même si tu ne cèdes pas. Elle est la plus forte les trois premiers jours et s'efface en deux à quatre semaines.</li>
+          <li><b style="color:var(--ink-dim);">À la place</b> : un chewing-gum sans sucre (toujours un paquet sur toi), un grand verre d'eau, 10 pompes ou deux minutes dehors.</li>
+          <li><b style="color:var(--ink-dim);">Tes moments à risque</b> : après les repas, pendant les révisions, le soir. Le chewing-gum est prêt avant.</li>
+          <li><b style="color:var(--ink-dim);">Si c'est trop dur</b> : gommes ou patchs de nicotine en pharmacie, sans ordonnance. Demande conseil au pharmacien.</li>
+          <li><b style="color:var(--ink-dim);">Un écart</b> : « J'ai craqué », le compteur repart, et tu reprends le jour même.</li>
+          <li><b style="color:var(--ink-dim);">Une douleur qui serre</b> la poitrine, qui part dans le bras ou la mâchoire, ou qui vient à l'effort : le 112.</li>
+        </ul>
+      </div>
     </section>
 
     <!-- ================= REPAS ================= -->
@@ -3218,6 +3231,7 @@
       <button class="edel" id="cloture-close" aria-label="Plus tard" style="font-size:22px;">×</button>
     </div>
     <p class="sub-note" id="cloture-date" style="margin-bottom:10px;"></p>
+    <p class="sub-note" id="cl-sac" style="margin:-4px 0 10px;"></p>
     <!-- Deux longueurs pour le meme geste : l'express ne demande que ce qui change les
          chiffres du lendemain (sommeil, eau, humeur, habitudes) ; la complete ajoute le
          poids, le Coran et la note ; le complement (creatine) est dans les
@@ -3648,9 +3662,9 @@
      Sante compare, et une sauvegarde plus ancienne se reconnait a ce seul chiffre. */
   var SCHEMA_VERSION = 50;
   var DRAPEAUX_MIGRATION = ['objectifs-seed-v1','objectifs-v2-55','objectifs-v5-espanol',
-    'habits-ecran-v2','habitlog-hebdo-v1','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','habits-seed-v7','habits-seed-v8','habits-seed-v9','habits-seed-v10','habits-seed-v11',
+    'habits-ecran-v2','habitlog-hebdo-v1','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','habits-seed-v7','habits-seed-v8','habits-seed-v9','habits-seed-v10','habits-seed-v11','habits-seed-v12',
     'courses-plan-v2','courses-plan-v3','courses-plan-v4','courses-plan-v5','courses-plan-v6','courses-plan-v7','courses-plan-v8','courses-plan-v9','courses-plan-v10',
-    'charges-v2','plafond-nourriture-v2','plafond-nourriture-v3','plafond-nourriture-v4','plafond-nourriture-v5','plafond-nourriture-v6','plafond-nourriture-v7','ancre-dimanche-v1','ancre-dimanche-v2','serviettes-v1','coiffeur-v1','shampoing-dim-v1','marche-cible-v1','fc-migration-v1','fc-migration-v2','fc-migration-v3','fc-migration-v4','revision-fusionnee'];
+    'charges-v2','plafond-nourriture-v2','plafond-nourriture-v3','plafond-nourriture-v4','plafond-nourriture-v5','plafond-nourriture-v6','plafond-nourriture-v7','ancre-dimanche-v1','ancre-dimanche-v2','serviettes-v1','coiffeur-v1','shampoing-dim-v1','marche-cible-v1','fc-migration-v1','fc-migration-v2','fc-migration-v3','fc-migration-v4','revision-fusionnee','pesee-hebdo-v1','snus-arret-v1'];
   /* Drapeaux que rien ne pose plus (migrations retirees) ou poses seulement quand il y a
      eu quelque chose a migrer : connus et gardes, jamais exiges. */
   var DRAPEAUX_ANCIENS = ['objectifs-v3-trajet','objectifs-v4-dimanche','habits-retirees-v1','shampoing-combat-v1','shampoing-samedi-v1'];   /* les deux derniers n'ecrivent qu'a partir du 28 septembre */
@@ -3768,7 +3782,7 @@
      place dans le quota de 5000 documents et embrouille les sauvegardes, sans que rien ne
      la lise jamais. On la signale ; la suppression reste ton geste. */
   var CLES_CONNUES = ['addictions','budget-limits','business','coran','courses','condiments','dash-more','duaas','duree-bloc','sport-log','objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','courses-plan-v3','courses-plan-v4','courses-plan-v5','courses-plan-v6','courses-plan-v7','courses-plan-v8','courses-plan-v9','courses-plan-v10','charges-v2','plafond-nourriture-v2','plafond-nourriture-v3','plafond-nourriture-v4','plafond-nourriture-v5','plafond-nourriture-v6','plafond-nourriture-v7','gcal-controle','ancre-dimanche-v1','ancre-dimanche-v2','serviettes-v1','coiffeur-v1','shampoing-dim-v1','marche-cible-v1','cardio','cardio-tests','kcal-ajustement','gcal-ecriture','reinit','fc-migration-v1','fc-migration-v2','fc-migration-v3','fc-migration-v4','livrables','shampoing-combat-v1','shampoing-samedi-v1','charge','shopify-boutique','journees','examens-heures','vacances','jours-exclus',
-    'espagnol','examens','cours-suivi','portes','periodes-closes','fc-prix-icloud-3','fc-prix-club-100','fc-prix-club-70','fixed-charges','goals','goals-depart','saisons','insights-hist','last-restore-drill','habitlog','habits','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','habits-seed-v7','habits-seed-v8','habits-seed-v9','habits-seed-v10','habits-seed-v11','objectifs-v5-espanol',
+    'espagnol','examens','cours-suivi','portes','periodes-closes','fc-prix-icloud-3','fc-prix-club-100','fc-prix-club-70','fixed-charges','goals','goals-depart','saisons','insights-hist','last-restore-drill','habitlog','habits','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','habits-seed-v7','habits-seed-v8','habits-seed-v9','habits-seed-v10','habits-seed-v11','habits-seed-v12','objectifs-v5-espanol',
     'horizon','last-auto-backup','last-manual-backup','last-bilan-prompt','last-compaction','last-open','last-rotation','notion-url',
     'pomodial-purge','projets','report','revision','revision-fusionnee','revue','sante','sauvegarde','sessions',
     'shopify-last-order-count','taches','timer','transactions','undo-stack','undo-toast','cloud-reload-at','cloud-toast','notion-cache','anki',
@@ -5359,7 +5373,7 @@
      ni synchronisee ni rattrapee) et efface ses copies locales AVANT le rattrapage, sinon
      elles repartiraient vers le cloud. La meme remise a zero peut donc etre decidee depuis
      l'appli ou directement dans le cloud. */
-  var REINIT_GARDER = ['habits','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','habits-seed-v7','habits-seed-v8','habits-seed-v9','habits-seed-v10','habits-seed-v11','objectifs-v5-espanol','fixed-charges','fc-prix-icloud-3','fc-prix-club-100','fc-prix-club-70','budget-limits','examens','examens-heures','journees','echeances','vacances','jours-exclus','jours-sans-cours','portes','appro','notion-url','shopify-boutique',
+  var REINIT_GARDER = ['habits','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','habits-seed-v7','habits-seed-v8','habits-seed-v9','habits-seed-v10','habits-seed-v11','habits-seed-v12','objectifs-v5-espanol','fixed-charges','fc-prix-icloud-3','fc-prix-club-100','fc-prix-club-70','budget-limits','examens','examens-heures','journees','echeances','vacances','jours-exclus','jours-sans-cours','portes','appro','notion-url','shopify-boutique',
                        'objectifs','horizon','goals-depart','saisons','periodes-closes','gcal-ecriture','duree-bloc','dash-more','reinit','copie-vierge','schema'].concat(DRAPEAUX_MIGRATION, DRAPEAUX_ANCIENS);
   var REINIT_PREFIXES_GARDER = ['pomodial-', 'coherence-ignore-'];
   function reinitGarder(cle){
@@ -6998,8 +7012,9 @@
      photo et la pesee du point de depart doivent tomber au depart. Toutes les deux
      semaines ensuite (18 octobre...), photos toutes les quatre (1er novembre...). */
   var ANCRE_DIMANCHE = '2026-10-04';
+  var BILAN_PEAU_ISO = '2026-12-13';   /* fin des douze semaines du protocole peau : le bilan s'affiche dans le Plan du jour */
   var HABIT_SEED_V6 = [
-    {id:'core-pesee-dim', label:'Pesée, à jeun', icon:'⚖️', jours:[0], cycleSemaines:2, ancre:ANCRE_DIMANCHE},
+    {id:'core-pesee-dim', label:'Pesée, à jeun', icon:'⚖️', jours:[0]},   /* chaque dimanche depuis le 21 octobre (pesee-hebdo-v1) */
     {id:'core-photos-dim', label:'Photos — peau et corps', icon:'📸', jours:[0], cycleSemaines:4, ancre:ANCRE_DIMANCHE},
     {id:'core-cheveux', label:'Coupe de cheveux', icon:'💈', jours:[6], cycleSemaines:3, ancre:'2026-10-31'},   /* 30 septembre : le coiffeur saute ce mois-ci (budget), premiere coupe le 31 octobre */
     {id:'core-rasage', label:'Rasage — aisselles et parties intimes', icon:'🪒', jours:[0]},
@@ -7082,6 +7097,13 @@
   var HABIT_SEED_V11 = [
     {id:'core-douche-froide', label:'Douche froide — 30 à 60 s en fin de douche', icon:'🚿', jours:[0,3,5]}
   ];
+  /* Le lot du 21 octobre au soir : la LUMIERE DU MATIN, sa demande (« Lumiere du matin »
+     dans les ameliorations proposees). C'est la regle du plan sommeil : 15 minutes dehors,
+     ou fenetre grande ouverte, des qu'il fait jour -- vers 08:15 jusqu'au 24 octobre, vers
+     07:20 a l'heure d'hiver. La lumiere du matin est ce qui recale le plus vite l'horloge. */
+  var HABIT_SEED_V12 = [
+    {id:'core-lumiere', label:'Lumi\u00e8re du matin \u2014 15 min dehors, d\u00e8s qu\u2019il fait jour', icon:'\u2600\ufe0f'}
+  ];
   var HABIT_GENERATIONS = [
     {cle: 'batcave-habits-seed-v2', graines: HABIT_SEED_V2},
     {cle: 'batcave-habits-seed-v3', graines: HABIT_SEED_V3},
@@ -7092,7 +7114,8 @@
     {cle: 'batcave-habits-seed-v8', graines: HABIT_SEED_V8},
     {cle: 'batcave-habits-seed-v9', graines: HABIT_SEED_V9},
     {cle: 'batcave-habits-seed-v10', graines: HABIT_SEED_V10},
-    {cle: 'batcave-habits-seed-v11', graines: HABIT_SEED_V11}
+    {cle: 'batcave-habits-seed-v11', graines: HABIT_SEED_V11},
+    {cle: 'batcave-habits-seed-v12', graines: HABIT_SEED_V12}
   ];
   var habitsState = load('batcave-habits', null);
   if(habitsState !== null && !Array.isArray(habitsState)) habitsState = null;
@@ -7121,7 +7144,7 @@
     return ajoutees || retirees;
   }
   if(habitsState === null){
-    habitsState = HABIT_SEED.concat(HABIT_SEED_V2, HABIT_SEED_V3, HABIT_SEED_V4, HABIT_SEED_V5, HABIT_SEED_V6, HABIT_SEED_V7, HABIT_SEED_V8, HABIT_SEED_V9, HABIT_SEED_V10, HABIT_SEED_V11);
+    habitsState = HABIT_SEED.concat(HABIT_SEED_V2, HABIT_SEED_V3, HABIT_SEED_V4, HABIT_SEED_V5, HABIT_SEED_V6, HABIT_SEED_V7, HABIT_SEED_V8, HABIT_SEED_V9, HABIT_SEED_V10, HABIT_SEED_V11, HABIT_SEED_V12);
     save('batcave-habits', habitsState);
     HABIT_GENERATIONS.forEach(function(g){ save(g.cle, true); });
   } else {
@@ -7209,6 +7232,27 @@
     if(servBougee) save('batcave-habits', habitsState);
     saveInternal('batcave-serviettes-v1', true);
   }
+  /* 21 octobre au soir, son choix : la PESEE revient a CHAQUE dimanche. Une sur deux ne
+     donnait que six points sur la fenetre de douze semaines ; chaque dimanche en donne
+     douze, et une pesee sautee ne fait plus taire la recommandation. Le semis ne touche
+     pas une habitude deja enregistree : on retire son cycle une fois, sous drapeau. */
+  function peseeHebdomadaire(){
+    if(load('batcave-pesee-hebdo-v1', false)) return false;
+    var courant = load('batcave-habits', null), bouge = false;
+    if(Array.isArray(courant)){
+      courant.forEach(function(h){
+        if(h && h.id === 'core-pesee-dim' && h.cycleSemaines > 1){ delete h.cycleSemaines; delete h.ancre; bouge = true; }
+      });
+      if(bouge){ habitsState = normaliserHabitudes(courant); save('batcave-habits', habitsState); }
+    }
+    saveInternal('batcave-pesee-hebdo-v1', true);
+    return bouge;
+  }
+  peseeHebdomadaire();
+  MIGRATIONS_DEMARRAGE.push({cle:'batcave-pesee-hebdo-v1', rejouer: function(){
+    if(!peseeHebdomadaire()) return false;
+    renderHabits(); renderDashboard(); return true;
+  }});
   if(!load('batcave-ancre-dimanche-v2', false)){
     var ancreBougee2 = false, CYCLE_DIMANCHE = ['core-pesee-dim', 'core-photos-dim', 'core-brosse-dents', 'core-ongles'];
     (habitsState || []).forEach(function(h){
@@ -8112,6 +8156,32 @@
     };
   });
 
+  /* 21 octobre au soir, sa decision : ARRET NET DU SNUS, des aujourd'hui (des douleurs a la
+     poitrine quand il en met ; le medecin n'a rien trouve). Le compteur part du jour 1 : un
+     depart absent ou plus ancien passe au 21 ; un depart plus recent (une rechute deja
+     notee) ne bouge pas, et le record n'est pas touche. Sous drapeau, et rejouee apres la
+     synchro sur l'etat du stockage, jamais sur celui en memoire. */
+  var SNUS_ARRET = '2026-10-21';
+  function snusArretNet(){
+    if(load('batcave-snus-arret-v1', false)) return false;
+    if(todayISO < SNUS_ARRET){ saveInternal('batcave-snus-arret-v1', true); return false; }   /* une horloge d'avant le 21 : rien a decaler */
+    var etat = load('batcave-addictions', {});
+    if(!etat || typeof etat !== 'object' || Array.isArray(etat)) etat = {};
+    var a = (etat.snus && typeof etat.snus === 'object' && !Array.isArray(etat.snus)) ? etat.snus : {record:0, log:[]};
+    var bouge = !(typeof a.start === 'string' && a.start >= SNUS_ARRET);
+    if(bouge){
+      a.start = SNUS_ARRET; etat.snus = a;
+      save('batcave-addictions', etat);
+      addictionState.snus.start = SNUS_ARRET;
+    }
+    saveInternal('batcave-snus-arret-v1', true);
+    return bouge;
+  }
+  snusArretNet();
+  MIGRATIONS_DEMARRAGE.push({cle:'batcave-snus-arret-v1', rejouer: function(){
+    if(!snusArretNet()) return false;
+    renderAddictions(); renderDashboard(); return true;
+  }});
   function currentStreak(a){
     if(!a.start) return null;
     /* un depart pose a une date future (nouveau depart du 14 septembre) compte 0, pas un negatif */
@@ -8234,7 +8304,7 @@
     /* 21 octobre : « le shake le matin n'a pas de gout » -- 100 g de fruits rouges surgeles,
        le miel descend de 20 a 10 g (pas de cannelle, sa demande). Ajoutes EN DERNIER : les
        cases sont indexees par position. */
-    {name:'Petit-déjeuner', items:['Boisson d\'avoine (300 ml)','Skyr (150g)','Flocons d\'avoine (80g)','Banane (120g)','Miel (10g)','Amandes ou noix nature (30g)','Fruits rouges surgelés (100g)']},
+    {name:'Petit-déjeuner', items:['Boisson d\'avoine au calcium (300 ml)','Skyr (150g)','Flocons d\'avoine (80g)','Banane (120g)','Miel (10g)','Amandes ou noix nature (30g)','Fruits rouges surgelés (100g)']},
     {name:'Déjeuner', items:['Féculent cru — Riz 155g','Protéine crue — rotation du jour','Légumes verts (100g)','Huile d\'olive — selon la protéine, dont 10 ml versés froids à l\'assiette']},
     /* 23 septembre : le jambon (charcuterie, 40 g par jour) cede la place a deux oeufs durs,
        cuits le dimanche avec ceux du petit-dejeuner. La viande transformee etait le seul
@@ -8251,11 +8321,16 @@
     /* 21 octobre : 25 minutes avant le tatami, les flocons et les amandes (fibres, graisses)
        pesaient sur l'estomac. Il reste du glucide qui passe vite ; les ~160 kcal qui sortent
        reviennent au retour du club, dans le feculent du dejeuner (+45 g, RIZ_COMBAT_PLUS). */
-    {name:'Collation combat', combat:true, items:['Banane (120g)','2 galettes de riz (20g)','Miel (15g)']}
+    {name:'Collation combat', combat:true, items:['Banane (120g)','2 galettes de riz (20g)','Miel (15g)']},
+    /* 21 octobre au soir, son choix : un SHAKE DE RECUP au retour du club, les jours de JJB.
+       250 ml de boisson d'avoine, une banane, 20 g de flocons, au mixeur (~300 kcal) : du
+       glucide pour refaire le glycogene d'1 h 30 de tatami ; les proteines arrivent avec le
+       dejeuner de 12:20. Range EN DERNIER, comme la collation combat : cases indexees. */
+    {name:'Récup combat', combat:true, items:['Boisson d\'avoine au calcium (250 ml)','Banane (120g)','Flocons d\'avoine (20g)']}
   ];
   function repasActif(m, iso){ return !m.combat || jourDeCombat(iso || todayISO); }
   function repasDuJour(iso){ return MEALS.filter(function(m){ return repasActif(m, iso); }); }
-  var ORDRE_REPAS = {'Petit-déjeuner':0, 'Collation combat':1, 'Déjeuner':2, 'Collation entraînement':3, 'Dîner':4};
+  var ORDRE_REPAS = {'Petit-déjeuner':0, 'Collation combat':1, 'Récup combat':2, 'Déjeuner':3, 'Collation entraînement':4, 'Dîner':5};
   /* ===== Table de composition (pour 100 g ou 100 ml, cru) =====
      Une seule source pour TOUT ce qui est nutritionnel : les macros de chaque repas, le
      total du jour et la liste de courses en sortent. Les chiffres « ~931 kcal · P44 G110
@@ -8328,6 +8403,7 @@
     if(nom === 'Petit-déjeuner') return [{c:'avoine', q:300}, {c:'skyr', q:150}, {c:'flocons', q:80}, {c:'banane', q:120}, {c:'miel', q:10}, {c:'amandes', q:30}, {c:'fruitsrouges', q:100}];
     if(nom === 'Collation entraînement') return [{c:'pain', q:60}, sardinesLe(iso) ? {c:'sardines', q:85} : {c:'oeufs', q:100}, {c:'fromage', q:parmesanLeSoir(iso) ? 10 : 20}, {c:'amandes', q:40}];
     if(nom === 'Collation combat') return [{c:'banane', q:120}, {c:'galettes', q:20}, {c:'miel', q:15}];
+    if(nom === 'Récup combat') return [{c:'avoine', q:250}, {c:'banane', q:120}, {c:'flocons', q:20}];
     if(nom === 'Déjeuner'){
       var nd = proteineDuJour('dej', iso), pd = PROTEINES[nd].dej, sd = sauceDuJour('dej', iso);
       return [{c:'couscous', q:grammesFeculent('dej', iso)}, {c:CLE_PROTEINE[nd], q:pd.g}, {c:'legumes', q:LEGUMES_REPAS.dej}, {c:'huile', q:pd.huile - (sd.sansHuile ? HUILE_CRUE.dej : 0)}].concat(compoSauce(sd));
@@ -8550,7 +8626,7 @@
     targets.ajustement = ajust ? Math.round(targets.kcal - plan) : 0;
     return {totals:totals, targets:targets};
   }
-  /* ===== Tendance de poids, à raison d'une pesée un dimanche sur deux =====
+  /* ===== Tendance de poids, à raison d'une pesée chaque dimanche (une sur deux jusqu'au 21 octobre) =====
      Le protocole a changé deux fois. D'abord une seule pesée par semaine au lieu d'une par
      jour : l'ancien calcul comparait la moyenne des 7 derniers jours à celle des 7 précédents
      et exigeait TROIS pesées dans chacune des deux semaines — avec une pesée hebdomadaire, il
@@ -8624,7 +8700,7 @@
     if(pts.length < KCAL_MIN_PESEES || etalement < KCAL_MIN_ETALEMENT_J){
       out.motif = 'Il faut au moins ' + KCAL_MIN_PESEES + ' pesées étalées sur ' + KCAL_MIN_ETALEMENT_J +
                   ' jours pour lire une pente — ' + pts.length + ' pesée' + (pts.length > 1 ? 's' : '') +
-                  ' sur ' + etalement + ' jour' + (etalement > 1 ? 's' : '') + ' pour l\'instant. Une pesée un dimanche sur deux, à jeun : au bout de la quatrième, la Batcave sait.' +
+                  ' sur ' + etalement + ' jour' + (etalement > 1 ? 's' : '') + ' pour l\'instant. Une pesée chaque dimanche, à jeun : au bout de la quatrième, la Batcave sait.' +
                   (todayISO < utile ? ' Et rien avant le ' + fmtDate(utile) + ' : les trois premières semaines du plan, la balance monte d\'un à trois kilos de glycogène, d\'eau et de contenu digestif — ce n\'est ni du muscle ni du gras, et une pente tracée à travers ce saut dirait n\'importe quoi.' : '');
       return out;
     }
@@ -8722,7 +8798,7 @@
         var key = mi+'-'+ii, checked = !!mealState[key];
         return '<li class="'+(checked?'checked':'')+'"><input type="checkbox" id="m-'+key+'" data-meal="'+key+'" '+(checked?'checked':'')+'><label for="m-'+key+'">'+texteItemRepas(m, it, ii)+'</label></li>';
       }).join('');
-      var quand = m.combat ? (dowDe(todayISO) === 2 ? ' · à 14:50, avec la collation' : ' · 10:05, avant le JJB') : '';
+      var quand = m.name === 'Récup combat' ? ' · 12:00, au retour du club' : m.combat ? (dowDe(todayISO) === 2 ? ' · à 14:50, avec la collation' : ' · 10:05, avant le JJB') : '';
       card.innerHTML = '<div class="meal-head"><span class="mtitle">'+m.name+quand+'</span><span class="mkcal">'+texteKcalRepas(m)+'</span></div><ul class="meal-items">'+itemsHtml+'</ul>';
       grid.appendChild(card);
     });
@@ -12372,7 +12448,7 @@
              j.din.filter(dansBoite).map(ligne).join('') + '</ul></div>';
     }).join('');
     document.getElementById('prep-regles').innerHTML = [
-      ['Le petit-déjeuner', 'un shake : 300 ml de boisson d\'avoine, 150 g de skyr, 80 g de flocons, une banane (congelée en rondelles, c\'est un milkshake), 100 g de fruits rouges surgelés, 10 g de miel, 30 g d\'amandes — 40 secondes de mixeur, à boire en dix minutes'],
+      ['Le petit-déjeuner', 'un shake : 300 ml de boisson d\'avoine au calcium, 150 g de skyr, 80 g de flocons, une banane (congelée en rondelles, c\'est un milkshake), 100 g de fruits rouges surgelés, 10 g de miel, 30 g d\'amandes — 40 secondes de mixeur, à boire en dix minutes. Les jours de JJB, un shake de récup au retour : 250 ml de boisson d\'avoine, une banane, 20 g de flocons'],
       ['La collation d\'entraînement', 'pain, 2 œufs durs (une boîte de sardines ou de maquereau le mardi et le jeudi), fromage, 40 g d\'amandes — les œufs sont cuits le dimanche ; le reste s\'assemble au moment de partir'],
       ['Le goût', 'la sauce du jour, faite au réchauffage (onglet Repas) : ses calories sont comptées. L\'huile froide à l\'assiette les jours où la sauce n\'est ni crème ni pesto'],
       ['Réchauffer à la poêle', 'la boîte vidée dans la poêle avec 2 à 3 cuillères d\'eau, couvercle, feu moyen, 4 à 5 min, puis 1 min à découvert. Brûlant jusqu\'au cœur. Pas l\'air fryer : il dessèche le riz et les pâtes'],
@@ -12600,8 +12676,11 @@
         /* 29 septembre : la boisson d'avoine du shake, 300 ml par jour, 2,1 L par semaine. Il
            l'achete en PACK DE 6 BRIKS DE 1 L (Lidl depuis le 6 octobre, 4,44 EUR ; Mercadona 5,70 avant) : un pack couvre
            deux semaines (4,2 L) avec 1,8 L de marge, d'ou ce cycle. En DERNIER dans la
-           categorie : les coches sont indexees par position, rien ne se decale. */
-        art('Boisson d\'avoine', B.avoine * 2, 6000, vol, 'pack'),
+           categorie : les coches sont indexees par position, rien ne se decale.
+           21 octobre : la version enrichie en calcium (le lait est sorti du plan, c'est la
+           que le calcium revient), et le shake de recup des jours de JJB -- 750 ml de plus
+           par semaine, 5,7 L sur deux : le pack de 6 L suffit toujours. */
+        art('Boisson d\'avoine', B.avoine * 2, 6000, vol, 'pack · la version au calcium, « con calcio »'),
         /* 21 octobre : les fruits rouges du shake (700 g par semaine) et les galettes de riz de
            la collation combat. En DERNIER, comme la boisson d'avoine. */
         art('Fruits rouges surgelés', B.fruitsrouges * 2, 1, poids, 'sachets du rayon surgelés'),
@@ -13419,6 +13498,9 @@
     if(seanceReferenceDue()) items.push({pri:0.6, icon:'🧪', text:'Séance de référence — aujourd\u2019hui on mesure le point de départ, on ne suit pas la séance normale', action:{type:'sport'}});
     /* 21 octobre : les mesures du cardio, le jour venu */
     if(todayISO >= MESURES_CARDIO_DEBUT && dowDe(todayISO) === 0 && !mesuresCardio.fc[todayISO]) items.push({pri:2.3, icon:'❤️', text:'FC de repos de la semaine — le chiffre de Bevel (ou de ta montre), à noter dans Sport → Cardio & combat → 📈 Mesures', action:{type:'sport'}});
+    /* 21 octobre au soir, son choix : le bilan peau des douze semaines de Skinoren, le jour
+       ou le protocole se termine. Les photos du jour, la premiere serie, et une regle simple. */
+    if(todayISO === BILAN_PEAU_ISO) items.push({pri:2.1, icon:'🔬', text:'Bilan peau des 12 semaines : photos du jour (même lumière, même endroit), compare-les à ta première série. Pas au moins moitié mieux ? Rendez-vous chez le médecin pour passer au traitement au-dessus.'});
     if(testNageLe(todayISO) && !mesuresCardio.nage[todayISO]) items.push({pri:2.0, icon:'🏊', text:'Test du mois à la piscine : 400 m chronométrés — note ton temps dans Sport → Cardio & combat → 📈 Mesures', action:{type:'sport'}});
     if(testAnkiDu()) items.push({pri:2.6, icon:'🧪', text:'Test du mois Anki — trie par Lapses et réécris tes dix pires cartes' + (ankiState && ankiState.sangsues ? ' (' + ankiState.sangsues + ' sangsue' + (ankiState.sangsues > 1 ? 's' : '') + ' étiquetée' + (ankiState.sangsues > 1 ? 's' : '') + ')' : ''), action:{type:'test-anki'}});
 
@@ -15917,7 +15999,7 @@
       return "Une banane, 2 galettes de riz et 15 g de miel : du glucide qui passe vite et rien de lourd, 25 minutes avant le tatami. Le reste revient au déjeuner (couscous + 45 g). Remplis la gourde. Aujourd'hui, l'eau monte à 3,5 à 4 L.";
     },
     'Trajet club': "Dix minutes à pied. Dans le sac : kimono ou short, protège-dents, gourde pleine, serviette. Ongles des mains et des pieds courts.",
-    'Retour du club': "Douche dès que possible, kimono ou tenue à laver le jour même. Bois 500 ml en rentrant."
+    'Retour du club': "Le shake de récup en rentrant : 250 ml de boisson d'avoine, une banane, 20 g de flocons, au mixeur. Puis la douche dès que possible, kimono ou tenue à laver le jour même. Bois 500 ml d'eau en rentrant."
   };
   CONSIGNES[JJB_LABEL] = "1 h 30 de JJB. Protège-dents. Tape tôt sur une clé ou un étranglement : un débutant qui attend se blesse. Bois entre les rounds — aujourd'hui, 3,5 à 4 L d'eau sur la journée. Pose des questions en espagnol : c'est aussi de l'immersion.";
   CONSIGNES[MT_LABEL] = "1 h 30 de Muay Thai. Bandes, protège-dents, gants. Au sparring, touche léger : tu apprends, tu ne gagnes pas. Bois entre les rounds — aujourd'hui, 3,5 à 4 L d'eau sur la journée. Retour 21:00, douche, et au lit à 22:00.";
@@ -20182,6 +20264,16 @@
       b.title = (weekday === 0) ? 'Dimanche : la revue de la semaine demande la clôture complète.' : '';
     });
   }
+  /* 21 octobre au soir, son choix : LE SAC DE DEMAIN, dit a la cloture du soir. Lu dans la
+     grille du lendemain -- le club, la piscine, le cours -- pour ne rien chercher le matin. */
+  function sacDeDemain(iso){
+    var d = isoDecale(iso || todayISO, 1), g = grilleDe(cleJournee(dowDe(d)), d), mots = [];
+    if(g.some(function(b){ return estCombat(b[1]); })) mots.push('kimono propre, protège-dents, tongs, serviette');
+    if(g.some(function(b){ return estPiscine(b[1]); })) mots.push('maillot, bonnet, lunettes, serviette, tongs, cadenas');
+    if(jourDeCours(d)) mots.push('les cours du jour, un stylo');
+    mots.push('la gourde, remplie');
+    return '🎒 Le sac de demain : ' + mots.join(' · ') + '.';
+  }
   function ouvrirCloture(){
     var ov = document.getElementById('cloture-overlay');
     if(!ov) return;
@@ -20199,6 +20291,8 @@
     var chAuLit = document.getElementById('cl-aulit'); if(chAuLit) chAuLit.value = journalState.auLit || '';
     document.getElementById('cl-poids').value = journalState.poids || '';
     var chPas = document.getElementById('cl-pas'); if(chPas) chPas.value = journalState.pas || '';
+    var sac = document.getElementById('cl-sac');
+    if(sac){ try{ sac.textContent = sacDeDemain(todayISO); }catch(e){ sac.textContent = ''; } }
     clEau = Number(journalState.water) || 0; majClEau();
     clHumeur = journalState.mood; renderClHumeur();
     document.getElementById('cl-coran').value = journalState.coran || '';

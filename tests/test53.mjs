@@ -257,13 +257,14 @@ console.log('\n== 183) La liste de courses sort du MEME plan que les repas ==');
   const r = await fr.evaluate(() => {
     const A = window.__bcAliments, alias = {banane:'bananes', fruit:'fruits'};
     /* Semaine de reference du 2 au 8 novembre (21 octobre : la premiere aux trois matins de
-       JJB) : la collation combat n'existe que les jours de combat (lundi, mercredi, vendredi).
+       JJB) : la collation combat et le shake de recup n'existent que les jours de combat (lundi,
+       mercredi, vendredi).
        Les condiments des sauces sont dans les repas, pas dans la liste : ils ont leur carte. */
     const noms = ['Petit-déjeuner','Déjeuner','Collation entraînement','Dîner'];
     const b = {};
     for(let j = 0; j < 7; j++){
       const d = new Date(2026, 10, 2 + j), iso = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
-      const duJour = [1, 3, 5].indexOf(d.getDay()) > -1 ? noms.concat(['Collation combat']) : noms;
+      const duJour = [1, 3, 5].indexOf(d.getDay()) > -1 ? noms.concat(['Collation combat', 'Récup combat']) : noms;
       duJour.forEach(n => window.__bcCompoRepas(n, iso, true).forEach(x => {
         const a = A[x.c], k = alias[x.c] || x.c;
         if(a && a.condiment) return;
@@ -278,7 +279,7 @@ console.log('\n== 183) La liste de courses sort du MEME plan que les repas ==');
      'les 19 besoins de la semaine (la boisson d\'avoine du shake depuis le 29 septembre ; couscous, fruits rouges, galettes de riz et sardines depuis le 21 octobre) sont exactement la somme des repas' + (faux.length ? ' — ' + faux.map(k => k + ' : ' + r.lu[k] + ' vs ' + r.recompte[k]).join(', ') : ' (' + cles.length + ')'));
   /* Et aucun aliment du plan ne manque a la liste de courses. */
   const manquants = await fr.evaluate(() => {
-    const noms = ['Petit-déjeuner','Déjeuner','Collation entraînement','Dîner','Collation combat'];
+    const noms = ['Petit-déjeuner','Déjeuner','Collation entraînement','Dîner','Collation combat','Récup combat'];
     const dans = {};
     for(let j = 2; j <= 8; j++) noms.forEach(n => window.__bcCompoRepas(n, '2026-11-0' + j, true).forEach(x => { if(!window.__bcAliments[x.c].condiment) dans[x.c] = true; }));
     const alias = {banane:'bananes', fruit:'fruits'};

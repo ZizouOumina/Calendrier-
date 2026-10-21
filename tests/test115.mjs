@@ -11,9 +11,10 @@ let errs = 0;
 const ok = (c, m) => { if(c) console.log('  ok  ' + m); else { errs++; console.log('  FAIL ' + m); } };
 const browser = await chromium.launch();
 
-async function ouvrir(quand){
+async function ouvrir(quand, seed){
   const ctx = await browser.newContext({ viewport:{width:1440, height:900}, timezoneId:'Europe/Madrid', locale:'fr-FR' });
   await ctx.addInitScript(() => { window.claude = undefined; });
+  if(seed) await ctx.addInitScript(x => { Object.keys(x).forEach(k => localStorage.setItem(k, JSON.stringify(x[k]))); }, seed);
   const page = await ctx.newPage();
   page.on('pageerror', e => { errs++; console.log('  PAGEERROR: ' + e.message); });
   await page.clock.install({ time: new Date(quand) });
@@ -140,6 +141,73 @@ console.log('\n== 5) Le sport du 21 octobre : test 400 m, mobilité, mesures not
   ok(/62 bpm/.test(bouton) && /8:40/.test(bouton), 'le bouton replié dit les derniers chiffres (' + bouton + ')');
   const plan2 = await fr.evaluate(() => { window.__bcRenderPlan && window.__bcRenderPlan(); return document.getElementById('dash-plan').innerText; });
   ok(!/Test du mois à la piscine/.test(plan2), 'une fois noté, le rappel disparaît');
+  await ctx.close();
+}
+
+console.log('\n== 6) Le 21 octobre au soir : shake de récup, pesée chaque dimanche, snus, peau, lumière, sac ==');
+{
+  const { ctx, page, fr } = await ouvrir('2026-11-02T20:50:00+01:00');
+  const r = await fr.evaluate(() => ({
+    recup: window.__bcCompoRepas('Récup combat', '2026-11-02', true).map(x => x.c + ' ' + x.q).join(', '),
+    kcal: window.__bcMacrosRepas({name:'Récup combat'}, '2026-11-02'),
+    lun: window.__bcMacrosJour('2026-11-02').kcal, mar: window.__bcMacrosJour('2026-11-03').kcal,
+    avoine: window.__bcBesoinSemaine.avoine,
+    habits: JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-habits') || '[]'),
+    snus: JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-addictions') || '{}').snus
+  }));
+  ok(r.recup === 'avoine 250, banane 120, flocons 20' && r.kcal.kcal === 302, 'shake de récup : 250 ml de boisson d\'avoine, une banane, 20 g de flocons, 302 kcal (' + r.recup + ')');
+  ok(r.lun - r.mar > 600, 'il ne compte que les jours de combat : lundi ' + r.lun + ' kcal, mardi ' + r.mar);
+  ok(r.avoine === 2850, 'courses : 2,1 L pour les shakes du matin + 750 ml pour les trois récups = 2 850 ml (' + r.avoine + ')');
+  const pesee = r.habits.filter(h => h.id === 'core-pesee-dim')[0], lumiere = r.habits.filter(h => h.id === 'core-lumiere')[0];
+  ok(pesee && !pesee.cycleSemaines && !pesee.ancre, 'la pesée tombe chaque dimanche (' + JSON.stringify(pesee) + ')');
+  ok(lumiere && !lumiere.jours, 'la lumière du matin est une habitude de chaque jour (' + JSON.stringify(lumiere) + ')');
+  ok(r.snus && r.snus.start === '2026-10-21', 'le compteur de snus part du mercredi 21 (' + JSON.stringify(r.snus) + ')');
+  await fr.evaluate(() => { document.dispatchEvent(new KeyboardEvent('keydown', {key:'c', bubbles:true})); });
+  await page.waitForTimeout(300);
+  const sac = await fr.evaluate(() => document.getElementById('cl-sac').textContent);
+  ok(/maillot/.test(sac) && /cours/.test(sac) && !/kimono/.test(sac), 'lundi soir, la clôture dit le sac du mardi : piscine et cours (' + sac + ')');
+  await fr.evaluate(() => { document.querySelector('.nav-btn[data-page="addictions"]').click(); });
+  await page.waitForTimeout(200);
+  const plan = await fr.evaluate(() => document.getElementById('snus-plan').innerText);
+  ok(/3 à 5 minutes/.test(plan) && /112/.test(plan), 'le plan anti-envie est sous les compteurs');
+  await ctx.close();
+}
+{
+  /* Une Batcave d'avant : la pesee portait un cycle de deux semaines, le snus un depart ancien. */
+  const { ctx, page, fr } = await ouvrir('2026-11-03T20:50:00+01:00', {
+    'batcave-habits': [{id:'core-pesee-dim', label:'Pesée, à jeun', icon:'⚖️', jours:[0], cycleSemaines:2, ancre:'2026-10-04'}],
+    'batcave-addictions': {snus:{start:'2026-09-01', record:4, log:[]}}
+  });
+  const r = await fr.evaluate(() => ({
+    habits: JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-habits') || '[]'),
+    snus: JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-addictions') || '{}').snus
+  }));
+  const pesee = r.habits.filter(h => h.id === 'core-pesee-dim')[0];
+  ok(pesee && !pesee.cycleSemaines && !pesee.ancre, 'migration : la pesée enregistrée une semaine sur deux passe à chaque dimanche');
+  ok(r.snus.start === '2026-10-21' && r.snus.record === 4, 'migration : un départ ancien passe au 21, le record ne bouge pas (' + JSON.stringify(r.snus) + ')');
+  await fr.evaluate(() => { document.dispatchEvent(new KeyboardEvent('keydown', {key:'c', bubbles:true})); });
+  await page.waitForTimeout(300);
+  const sac = await fr.evaluate(() => document.getElementById('cl-sac').textContent);
+  ok(/kimono/.test(sac) && !/maillot/.test(sac), 'mardi soir : le kimono pour le JJB du mercredi (' + sac + ')');
+  await ctx.close();
+}
+{
+  /* Une rechute deja notee apres le 21 : le compteur ne recule pas. */
+  const { ctx, fr } = await ouvrir('2026-11-05T09:00:00+01:00', {'batcave-addictions': {snus:{start:'2026-10-30', record:8, log:[{id:'lg1', date:'2026-10-30', note:''}]}}});
+  const snus = await fr.evaluate(() => JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-addictions') || '{}').snus);
+  ok(snus.start === '2026-10-30', 'un départ après le 21 (une rechute notée) reste tel quel (' + snus.start + ')');
+  await ctx.close();
+}
+{
+  const { ctx, fr } = await ouvrir('2026-12-13T09:00:00+01:00');
+  const plan = await fr.evaluate(() => document.getElementById('dash-plan').innerText);
+  ok(/Bilan peau des 12 semaines/.test(plan), 'dimanche 13 décembre : le plan du jour demande le bilan peau');
+  await ctx.close();
+}
+{
+  const { ctx, fr } = await ouvrir('2026-12-06T09:00:00+01:00');
+  const plan = await fr.evaluate(() => document.getElementById('dash-plan').innerText);
+  ok(!/Bilan peau/.test(plan), 'et pas un autre dimanche');
   await ctx.close();
 }
 

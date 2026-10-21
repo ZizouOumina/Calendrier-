@@ -111,7 +111,9 @@ console.log('\n== 36) Agir en haut, consulter replié ==');
   // 1670 → 1690 (lot 51) : une liste vide le dit désormais (« — rien pour l'instant » sous
   // « À venir » quand rien n'est prévu) : mesuré, 1662 → 1678 px. Les pastilles du groupe
   // Aujourd'hui, elles, sont logées dans la marge haute et ne coûtent rien.
-  ok(e.basAgir < 1690, 'la zone « agir » tient en environ un écran et demi (' + e.basAgir + 'px)');
+  // 1690 → 1720 (21 octobre au soir) : la lumière du matin devient une habitude quotidienne,
+  // une case de plus dans la check-list du jour, comme la créatine au lot 37 : mesuré, 1704 px.
+  ok(e.basAgir < 1720, 'la zone « agir » tient en environ un écran et demi (' + e.basAgir + 'px)');
   // les panneaux repliés restent alimentés
   const caches = await fr.evaluate(() => document.getElementById('dash-more').innerText.length);
   ok(caches > 50, 'le contenu replié est déjà rendu (' + caches + ' caractères), pas vide');
