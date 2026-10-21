@@ -130,7 +130,7 @@ const L = lundis('2026-11-09', 8);              /* 8 lundis, du 9 nov. au 28 dec
                                       btn: document.getElementById('kcal-appliquer').hidden}));
   ok(/en attente de pesées/.test(k.note) && k.btn, 'trois lundis : rien n’est recommandé, le bouton reste masqué');
   ok(/au moins 4 pesées étalées sur 12 jours/.test(k.txt) && /3 pesées sur 14 jours/.test(k.txt), 'et il dit exactement ce qui manque : ' + (k.txt.match(/Il faut[^.]*\./) || [''])[0]);
-  ok(/une pesée un dimanche sur deux/i.test(k.txt), 'en rappelant le protocole');
+  ok(/une pesée chaque dimanche/i.test(k.txt), 'en rappelant le protocole (chaque dimanche depuis le 21 octobre)');
   await ctx.close();
 }
 
