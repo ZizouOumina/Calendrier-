@@ -12432,7 +12432,7 @@
       'Une session le dimanche à 14:30, deux heures, pour les sept repas de midi et les sept du soir. ' +
       'Quatorze boîtes : quatre jours au frigo, trois au congélateur. Le petit-déjeuner et la collation ne se préparent pas — ils s’assemblent en cinq minutes.';
     /* Ce qu'il y a a cuire : chaque poste, cru, et ce qu'il pesera cuit. */
-    var postes = ['riz','couscous','pates','poulet','hachee','legumes'];
+    var postes = ['couscous','pates','poulet','hachee','legumes'];   /* 23 octobre au soir : le riz se cuit chaque matin, hors batch */
     host.innerHTML = postes.filter(function(c){ return T[c] > 0; }).map(function(c){
       var cuit = RENDEMENT[c] ? ' <span class="sub-note">→ ~' + poids(T[c] * RENDEMENT[c]) + ' cuits</span>' : '';
       return '<li><span>' + escapeHtml(NOM_ALIMENT[c] || c) + '</span><span><b>' + poids(T[c]) + '</b> crus' + cuit + '</span></li>';
@@ -12442,10 +12442,9 @@
     /* L'ordre. Les durees sont celles des quantites ci-dessus ; les postes longs et
        autonomes (riz, four) partent en premier, le reste se glisse pendant. */
     var etapes = [
-      [0,  'Le <b>riz</b> au rice cooker — ' + poids(T.riz) + ' crus, rincés deux fois, l\'eau jusqu\'au trait de la cuve (ou 1,3 fois le poids du riz). Il cuit seul pendant tout le reste ; en deux fournées si la cuve est trop petite.'],
+      [0,  'Le <b>riz</b> ne se fait plus le dimanche : il se cuit chaque matin, frais, au rice cooker (la consigne du petit-déjeuner). Le batch, c\'est la viande, les légumes et les œufs.'],
       [3,  'Le <b>poulet</b> à la poêle — ' + poids(T.poulet) + ', feu vif, 4 min par face puis 3 min à couvert.'],
       [22, 'La <b>viande hachée</b> — ' + poids(T.hachee) + ', en deux fournées pour qu\'elle grille au lieu de bouillir. 10 min.'],
-      [40, 'Le riz est cuit : <b>l\'étaler sur une plaque</b>, il refroidit en 15 min. Du riz cuit qui reste tiède des heures est le plus risqué de tous ; à plat, il passe vite au frigo.'],
       [46, 'Les <b>légumes surgelés</b> — ' + poids(T.legumes) + ', à la poêle en trois fournées ou à la vapeur, 7 min. Sans les décongeler avant.'],
       [60, 'Les <b>' + Math.round(BESOIN_SEMAINE.oeufs || 0) + ' œufs durs</b> (la collation) — une casserole, 10 min dans l\'eau bouillante, puis eau froide. On les garde en coquille : une semaine au frigo.'],
       [75, '<b>Tout refroidir à découvert, 20 min.</b> Un tupperware fermé sur du chaud fabrique de la condensation, et la condensation fabrique des bactéries.'],
@@ -12464,7 +12463,7 @@
     document.getElementById('prep-boites').innerHTML = jours.map(function(j, i){
       var ou = i < 4 ? 'frigo' : 'congélateur';
       /* Ce qui ne va PAS dans la boite : le fruit (entier, a cote). */
-      var dansBoite = function(x){ return x.c !== 'fruit' && !(ALIMENTS[x.c] && ALIMENTS[x.c].condiment); };   /* la sauce se fait au rechauffage */
+      var dansBoite = function(x){ return x.c !== 'fruit' && x.c !== 'riz' && !(ALIMENTS[x.c] && ALIMENTS[x.c].condiment); };   /* la sauce se fait au rechauffage ; le riz se cuit le matin meme */
       var ligne = function(x){
         var n = NOM_ALIMENT[x.c] || x.c;
         return '<li>' + escapeHtml(n) + ' — ' + (x.c === 'huile' ? Math.round(x.q) + ' ml' : poids(x.q)) + '</li>';
@@ -16012,6 +16011,13 @@
        le 29, la sauce au skyr est sortie du plan).
        Les grammes se lisent dans le plan du jour, pas ici : un grammage qui change dans
        MEALS change la consigne. */
+    /* 23 octobre au soir : « je vais cuire le riz fraichement chaque matin pour toute la journee ».
+       Le rice cooker tourne pendant le shake ; le riz quitte le batch du dimanche. */
+    'Petit-déjeuner + Coran (1 page)': function(d, iso){
+      var c = compoRepas('Déjeuner', iso, false).concat(compoRepas('Dîner', iso, false)), r = 0;
+      c.forEach(function(x){ if(x.c === 'riz') r += x.q; });
+      return "Avant le shake : le riz du jour au rice cooker — " + Math.round(r) + " g crus (midi et soir), rincés trois fois, l'eau jusqu'au trait, une pincée de sel. Il cuit pendant que tu bois le shake. Le midi reste au chaud dans la cuve ; la part du soir part dans une boîte, au frigo dès qu'elle est tiède.";
+    },
     'Déjeuner': function(d, iso){
       var c = compoRepas('Déjeuner', iso, false), g = function(k){ var x = c.filter(function(y){ return y.c === k; })[0]; return x ? Math.round(x.q) : 0; };
       var sc = sauceDuJour('dej', iso);

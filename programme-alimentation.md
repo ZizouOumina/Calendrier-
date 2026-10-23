@@ -88,7 +88,11 @@ riz, dattes, riz, flocons, huile d'olive, miel. La Batcave en calcule le coût ;
 prix relevé (fruits rouges, galettes, sardines, dattes) attendent son ticket.
 
 ## La préparation (batch cooking)
-Le dimanche à 14:30 : le riz de la semaine au rice cooker (en deux fournées si la cuve est trop
-petite, étalé sur une plaque dès qu'il est cuit), le poulet, la viande hachée et les légumes, et
-les 10 œufs durs. Sept boîtes pour les midis,
-sept pour les soirs ; l'huile crue, la harissa et la sauce du soir se mettent au réchauffage.
+Le dimanche à 14:30 : le poulet, la viande hachée et les légumes de la semaine, et les 10 œufs
+durs. Sept boîtes pour les midis, sept pour les soirs ; l'huile crue, la harissa et la sauce du
+soir se mettent au réchauffage.
+
+**Le riz se cuit chaque matin** (23 octobre au soir : « je vais cuire le riz fraîchement chaque
+matin pour toute la journée »), avant le shake : 250 g crus rincés trois fois, l'eau jusqu'au trait
+du rice cooker, une pincée de sel. Le midi reste au chaud dans la cuve ; la part du soir part dans
+une boîte, au frigo dès qu'elle est tiède. Un rice cooker de 1 L suffit.
