@@ -66,7 +66,7 @@ soupe = 15 g, 1 c. à café = 5 g, une demie = 3 g, une pointe = 2 g ; l'huile q
 sort du repas. Valeurs moyennes d'étiquette (crème de cuisson à 18 %) : de 10 à 100 kcal par
 sauce, affichées à côté de la recette dans l'onglet Table.
 
-| Jour | Midi (riz + poulet) | Soir (pâtes + viande hachée) |
+| Jour | Midi (couscous + poulet) | Soir (pâtes + viande hachée) |
 |---|---|---|
 | Lundi | Soja-moutarde : 1 c. à soupe de soja, 1 c. à café de moutarde, les 10 ml d'huile crue | Pesto rosso : 1 c. à soupe (15 g) |
 | Mardi | Crème-moutarde : 2 c. à soupe de crème, 1 c. à café de moutarde, chauffées avec le poulet | Pesto verde-parmesan : 15 g de pesto, 10 g de parmesan |
