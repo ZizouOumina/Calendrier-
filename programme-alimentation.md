@@ -23,7 +23,7 @@ de courses et la préparation sortent toutes de la même source (`compoRepas`).
 ## Les repas — les mêmes grammes tous les jours
 | Repas | Heure | Contenu | kcal · protéines |
 |---|---|---|---|
-| **Shake** | 06:45 | boisson d'avoine au calcium 400 ml, skyr 150 g, flocons d'avoine 80 g, banane 120 g, fruits rouges surgelés 100 g, miel 10 g, **beurre de cacahuète 30 g** (les amandes en attendant le pot) | ≈ 955 · 42 g |
+| **Shake** | 06:45 | boisson d'avoine au calcium 400 ml, skyr 150 g, flocons d'avoine 80 g, banane 120 g, fruits rouges surgelés 100 g, miel 10 g, amandes ou noix 30 g | ≈ 955 · 42 g |
 | **Déjeuner** | 12:20 | **semoule 140 g**, **poulet 120 g**, légumes verts 100 g, huile d'olive 15 ml (5 de cuisson, 10 crus sur la semoule — ou 10 g de beurre), ½ c. à café de harissa, épices | ≈ 805 · 48 g |
 | **Collation** | 14:50 (16:50 le lundi) | un sandwich : **pain complet 100 g**, 2 œufs durs, fromage 20 g ; puis amandes ou noix 20 g et **1 fruit** | ≈ 680 · 40 g |
 | **Dîner** | 20:00 (19:00 le mardi et le dimanche, 19:30 le samedi) | **pâtes 140 g**, **viande hachée 5 % 120 g**, légumes verts 100 g, huile d'olive 10 ml, sauce du soir, créatine 5 g | ≈ 855 · 49 g |
@@ -41,8 +41,8 @@ de courses et la préparation sortent toutes de la même source (`compoRepas`).
   viennent du repas.
 - **Moitié moins d'huile** : 30 ml le midi et 15 le soir faisaient 400 kcal d'huile par jour.
   Les calories viennent maintenant de la semoule, des pâtes (140 g chacune) et du pain (100 g).
-- **Le beurre de cacahuète** remplace les amandes du shake : meilleur goût, texture lisse. Le
-  shake passe à 400 ml.
+- **Le shake passe à 400 ml** de boisson d'avoine. Le beurre de cacahuète ne revient pas : il ne
+  l'aime pas (sorti le 24 septembre) ; les amandes restent.
 - **Le fruit passe du dîner à la collation**, qui devient un vrai sandwich.
 - **Les mêmes grammes tous les jours** : plus de semoule en plus les jours de JJB, plus de
   fromage réduit les soirs de parmesan.
@@ -83,9 +83,9 @@ du rythme visé), elle propose **+150 kcal**, soit +40 g de pâtes crues au dîn
 Le samedi à 13:30, la liste de l'onglet Courses, calculée pour le plan entier : poulet 840 g et
 viande hachée 840 g (pesés au comptoir), skyr, œufs, pain complet, bananes, fruits, amandes,
 sardines ou maquereau, légumes verts surgelés, fromage, boisson d'avoine (en briks de 1 L), fruits
-rouges, galettes de riz, beurre de cacahuète, semoule, pâtes, flocons, huile d'olive, miel. La
-Batcave en calcule le coût ; les articles sans prix relevé (semoule, fruits rouges, galettes,
-sardines, beurre de cacahuète) attendent son ticket.
+rouges, galettes de riz, semoule, pâtes, flocons, huile d'olive, miel. La Batcave en calcule le
+coût ; les articles sans prix relevé (semoule, fruits rouges, galettes, sardines) attendent son
+ticket.
 
 ## La préparation (batch cooking)
 Le dimanche à 14:30 : la semoule (eau bouillante, couvercle, 5 min), les pâtes, le poulet, la

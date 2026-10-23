@@ -113,12 +113,13 @@ console.log('\n== 4) L\'alimentation du 21 octobre : shake, sauces comptées, co
     };
   });
   ok(/fruitsrouges 100/.test(r.shake) && /miel 10/.test(r.shake), 'shake : 100 g de fruits rouges, 10 g de miel (' + r.shake + ')');
-  ok(/^couscous 170/.test(r.dejLun) && /^couscous 125/.test(r.dejMar), 'couscous à midi : 170 g le lundi (combat), 125 g le mardi');
-  /* 23 octobre : la semoule nature a midi, tous les jours -- huile d'olive (ou beurre), harissa, epices ; plus de creme a midi. */
-  ok(/huile 30, harissa 3$/.test(r.dejLun), 'lundi midi : semoule à l\'huile d\'olive et harissa, comptée (' + r.dejLun + ')');
-  ok(/huile 30, harissa 3$/.test(r.dejMar) && !/creme/.test(r.dejMar), 'mardi midi : la même semoule, la crème ne reste que le soir (' + r.dejMar + ')');
-  ok(/huile 10/.test(r.dinMar) && /pestoverde 15, parmesan 10/.test(r.dinMar), 'mardi soir : pesto verde et parmesan comptés, 5 ml d\'huile en moins (' + r.dinMar + ')');
-  ok(/sardines 85/.test(r.colMar) && !/oeufs/.test(r.colMar) && /fromage 10/.test(r.colMar), 'mardi 14:50 : sardines à la place des œufs, 10 g de fromage (parmesan le soir)');
+  /* 23 octobre, le plan de prise de masse : les memes grammes tous les jours -- 140 g de semoule et 120 g
+     de poulet a midi, 15 ml d'huile (10 crus) et la harissa ; 120 g de viande hachee le soir. */
+  ok(/^couscous 140, poulet 120/.test(r.dejLun) && /^couscous 140, poulet 120/.test(r.dejMar), 'semoule à midi : 140 g et 120 g de poulet, le lundi (combat) comme le mardi');
+  ok(/huile 15, harissa 3$/.test(r.dejLun), 'lundi midi : semoule à l\'huile d\'olive et harissa, comptée (' + r.dejLun + ')');
+  ok(/huile 15, harissa 3$/.test(r.dejMar) && !/creme/.test(r.dejMar), 'mardi midi : la même semoule, la crème ne reste que le soir (' + r.dejMar + ')');
+  ok(/^pates 140, hachee 120/.test(r.dinMar) && /huile 5/.test(r.dinMar) && /pestoverde 15, parmesan 10/.test(r.dinMar), 'mardi soir : 140 g de pâtes, 120 g de viande, pesto verde et parmesan comptés, 5 ml d\'huile en moins (' + r.dinMar + ')');
+  ok(/^pain 100, sardines 85/.test(r.colMar) && !/oeufs/.test(r.colMar) && /fromage 20, amandes 20, fruit 120/.test(r.colMar), 'mardi 14:50 : le sandwich aux sardines, 20 g de fromage, 20 g d\'amandes et un fruit (' + r.colMar + ')');
   ok(/oeufs 100/.test(r.colLun) && /fromage 20/.test(r.colLun), 'lundi 14:50 : les œufs, 20 g de fromage');
   ok(r.combat === 'banane 120, galettes 20, miel 15', 'collation combat : banane, 2 galettes de riz, 15 g de miel (' + r.combat + ')');
   ok(!('creme' in r.besoin) && !('pestoverde' in r.besoin) && r.besoin.sardines === 2 && r.besoin.galettes === 6 && r.besoin.fruitsrouges === 700 && !('riz' in r.besoin),
@@ -159,8 +160,9 @@ console.log('\n== 6) Le 21 octobre au soir : shake de récup, pesée chaque dima
     snus: JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-addictions') || '{}').snus
   }));
   ok(r.recup === 'avoine 250, banane 120, flocons 20' && r.kcal.kcal === 302, 'shake de récup : 250 ml de boisson d\'avoine, une banane, 20 g de flocons, 302 kcal (' + r.recup + ')');
-  ok(r.lun - r.mar > 600, 'il ne compte que les jours de combat : lundi ' + r.lun + ' kcal, mardi ' + r.mar);
-  ok(r.avoine === 2850, 'courses : 2,1 L pour les shakes du matin + 750 ml pour les trois récups = 2 850 ml (' + r.avoine + ')');
+  /* 23 octobre : plus de semoule en plus les jours de combat -- l'ecart, ce sont la collation combat et le shake de recup (≈ 530 kcal), moins les sardines du mardi. */
+  ok(r.lun - r.mar > 400, 'il ne compte que les jours de combat : lundi ' + r.lun + ' kcal, mardi ' + r.mar);
+  ok(r.avoine === 3550, 'courses : 2,8 L pour les shakes du matin (400 ml depuis le 23 octobre) + 750 ml pour les trois récups = 3 550 ml (' + r.avoine + ')');
   const pesee = r.habits.filter(h => h.id === 'core-pesee-dim')[0], lumiere = r.habits.filter(h => h.id === 'core-lumiere')[0];
   ok(pesee && !pesee.cycleSemaines && !pesee.ancre, 'la pesée tombe chaque dimanche (' + JSON.stringify(pesee) + ')');
   ok(lumiere && !lumiere.jours, 'la lumière du matin est une habitude de chaque jour (' + JSON.stringify(lumiere) + ')');

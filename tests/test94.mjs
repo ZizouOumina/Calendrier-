@@ -51,7 +51,7 @@ console.log('\n== 330) Cinq catégories, toutes alimentaires, et le frais seul e
      ne suivait pas. */
   ok(/Chaque semaine/.test(hebdo.titre) && hebdo.n === 9, 'la liste hebdomadaire fait 9 articles — les amandes entrent le 24 septembre à la place du beurre de cacahuète, les sardines le 21 octobre (' + hebdo.n + ')');
   const t = await fr.evaluate(() => document.querySelector('.page[data-page="courses"]').textContent);
-  ok(!/Couscous/.test(hebdo.titre + '') && /Couscous — 5 kg/.test(t) && /demande 4\u202f040 g/.test(t), 'le couscous est en réserve : 5 kg achetés pour 4 040 g demandés (125 g par jour, 170 les jours de combat, depuis le 21 octobre)');
+  ok(!/Couscous/.test(hebdo.titre + '') && /Couscous — 4 kg/.test(t) && /demande 3\u202f920 g/.test(t), 'le couscous est en réserve : 4 kg achetés pour 3 920 g demandés (140 g par jour depuis le 23 octobre, les mêmes grammes les jours de combat ; avant : 125 g par jour, 170 les jours de combat, depuis le 21 octobre)');
   ok(!/Shampooing|Cotons-tiges|Nettoyant visage|Brosse à dents|Bain de bouche|Brossettes|Crème solaire|Lessive|Dentifrice/.test(t),
      'plus une seule ligne de santé et hygiène');
   ok(!/Éponges|Sacs poubelle|Nettoyant sol|Papier toilette|Essuie-tout|Liquide vaisselle|Anticalcaire|Nettoyant WC|Gants de ménage/.test(t),
@@ -158,15 +158,15 @@ console.log('\n== 334b) Aucun stock n\'est supposé : il coche ce qu\'il a ==');
   const t = await fr.evaluate(() => document.querySelector('.page[data-page="courses"]').textContent);
   ok(!/tu en as|il t’en reste|à racheter le/.test(t), 'aucune ligne ne parle de stock ni de date de rachat');
   ok(!/Beurre de cacahuète/.test(t), 'le beurre de cacahuète est sorti de la liste (24 septembre)');
-  ok(/Amandes ou noix nature — 600 g/.test(t) && /demande 490 g/.test(t), 'amandes : 3 sachets de 200 g, pour 490 g demandés (30 g le matin, 40 g à 14:50 ; plus d\'amandes dans la collation combat depuis le 21 octobre)');
-  ok(/Huile d'olive — 2 L/.test(t) && /demande 1\u202f400 ml/.test(t), 'huile : un bidon de 2 L, pour 1 400 ml demandés (le pesto remplace l\'huile crue du soir ; plus de crème à midi depuis le 23 octobre)');
+  ok(/Amandes ou noix nature — 400 g/.test(t) && /demande 350 g/.test(t), 'amandes : 2 sachets de 200 g, pour 350 g demandés (30 g le matin, 20 g à 14:50 depuis le 23 octobre ; plus d\'amandes dans la collation combat depuis le 21 octobre)');
+  ok(/Huile d'olive — 2 L/.test(t) && /demande 700 ml/.test(t), 'huile : un bidon de 2 L, pour 700 ml demandés (15 ml à midi et 10 le soir depuis le 23 octobre ; plus de crème à midi depuis le 23 octobre)');
   await ctx.close();
 }
 {
   /* Le 17 octobre les reserves reviennent, aux memes quantites : aucun report. */
   const { ctx, fr } = await jour('2026-10-31T10:00:00+02:00');
   const t = await fr.evaluate(() => document.querySelector('.page[data-page="courses"]').textContent);
-  ok(/Couscous — 5 kg/.test(t) && /Pâtes — 4 kg/.test(t), 'le 24 octobre, couscous et pâtes reviennent aux mêmes quantités');
+  ok(/Couscous — 4 kg/.test(t) && /Pâtes — 4 kg/.test(t), 'le 24 octobre, couscous et pâtes reviennent aux mêmes quantités');
   await ctx.close();
 }
 

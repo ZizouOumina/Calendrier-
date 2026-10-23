@@ -56,14 +56,16 @@ console.log('\n== 180) Sans ajustement : plan de base, liste = plan × 7 ==');
      serait une rupture en milieu de cycle : l'arrondi va toujours VERS LE HAUT. */
   /* 21 octobre : le couscous remplace le riz du midi -- 125 g par jour, 170 les trois jours de
      combat, 1 010 g par semaine, 4 040 g sur quatre semaines : 5 paquets de 1 kg. */
-  ok(c.items.some(t => /^Couscous — 5 kg\b/.test(t) && /le plan en demande 4\u202f040 g/.test(t)), 'couscous : 5 kg achetés pour 4 040 g demandés (125 g par jour, 170 les jours de combat) (' + c.items.find(t => /^Couscous/.test(t)) + ')');
-  ok(c.items.some(t => /^Pâtes — 4 kg\b/.test(t) && /le plan en demande 3\u202f780 g/.test(t)), 'pâtes : 4 kg achetés pour 3 780 g demandés (135 g par jour depuis le 19 octobre) (' + c.items.find(t => /^Pâtes/.test(t)) + ')');
+  /* 23 octobre, le plan de prise de masse : 140 g de semoule et 140 g de pates, tous les jours. */
+  ok(c.items.some(t => /^Couscous — 4 kg\b/.test(t) && /le plan en demande 3\u202f920 g/.test(t)), 'couscous : 4 kg achetés pour 3 920 g demandés (140 g par jour) (' + c.items.find(t => /^Couscous/.test(t)) + ')');
+  ok(c.items.some(t => /^Pâtes — 4 kg\b/.test(t) && /le plan en demande 3\u202f920 g/.test(t)), 'pâtes : 4 kg achetés pour 3 920 g demandés (140 g par jour depuis le 23 octobre) (' + c.items.find(t => /^Pâtes/.test(t)) + ')');
   /* Depuis le 20 septembre la rotation est la meme tous les jours : poulet a midi
      (80 g x 7 = 560), viande hachee le soir (90 g x 7 = 630). Le poisson est sorti.
      La viande ne s'arrondit PAS : le boucher pese le montant exact, donc ces deux
      lignes portent le chiffre du plan tel quel, sans surplus. */
-  ok(c.items.some(t => /^Poulet — 560 g .*pesé au comptoir/.test(t) && !/demande/.test(t))
-  && c.items.some(t => /^Viande hachée 5 % — 630 g .*pesée au comptoir/.test(t))
+  /* 23 octobre : 120 g de viande par repas -- 840 g de chaque par semaine. */
+  ok(c.items.some(t => /^Poulet — 840 g .*pesé au comptoir/.test(t) && !/demande/.test(t))
+  && c.items.some(t => /^Viande hachée 5 % — 840 g .*pesée au comptoir/.test(t))
   && !c.items.some(t => /^Saumon/.test(t)),
      'viande au gramme près, pesée au comptoir, et plus de poisson : ' + c.items.filter(t => /^(Poulet|Viande|Saumon)/.test(t)).join(' · '));
   /* Les fruits se comptent, ils ne se pesent pas. */
@@ -82,8 +84,9 @@ console.log('\n== 180) Sans ajustement : plan de base, liste = plan × 7 ==');
      'skyr : 1,05 kg en 7 boîtes de 150 g pour 1 050 g demandés (le shake seul)');
   /* 21 octobre au soir : 750 ml de plus par semaine pour le shake de recup (5 700 ml sur deux
      semaines, le pack de 6 L suffit encore), et la version au calcium. */
-  ok(c.items.some(t => /^Boisson d\'avoine — 6 L\b/.test(t) && /1 pack de 6 L/.test(t) && /demande 5\u202f700 ml/.test(t) && /0,74 €\/L/.test(t) && /au calcium/.test(t)),
-     'boisson d\'avoine : un pack de 6 L (Lidl depuis le 6 octobre, 0,74 €/L) toutes les deux semaines pour les 5 700 ml des shakes, version au calcium');
+  /* 23 octobre : 400 ml le matin, 7,1 L sur deux semaines -- en briks de 1 L, le pack de 6 ne suffit plus. */
+  ok(c.items.some(t => /^Boisson d\'avoine — 8 L\b/.test(t) && /8 briks de 1 L/.test(t) && /demande 7\u202f100 ml/.test(t) && /0,74 €\/L/.test(t) && /au calcium/.test(t)),
+     'boisson d\'avoine : 8 briks de 1 L (Lidl, 0,74 €/L) toutes les deux semaines pour les 7 100 ml des shakes, version au calcium');
   /* L'HUILE etait la vraie erreur : 288 ml par semaine, donc 1 152 sur 4 semaines alors
      que la liste disait 1 000 -- quatre jours de rupture par cycle, tous les mois. Elle est
      passee a 5 semaines. Depuis le retrait du poisson elle monte a 315 ml par semaine
@@ -97,8 +100,8 @@ console.log('\n== 180) Sans ajustement : plan de base, liste = plan × 7 ==');
      semaine), c'est le rythme de rachat qui a change -- 5 kg tous les quinze jours. */
   ok(c.items.some(t => /^Œufs — 12\b/.test(t) && /demande 10 œufs/.test(t))
   && c.items.some(t => /^Légumes verts surgelés — 3 kg\b/.test(t) && /demande 2\u202f800 g/.test(t))
-  && c.items.some(t => /^Huile d'olive — 2 L\b/.test(t) && /1 bouteille de 2 L/.test(t) && /demande 1\u202f400 ml/.test(t)),
-     'œufs 12 pour 10 (les sardines prennent le mardi et le jeudi depuis le 21 octobre), surgelés 3 kg pour 2 800 g sur deux semaines (100 g par repas depuis le 14 octobre), huile 2 L pour 1 400 ml sur cinq (le pesto remplace l\'huile crue du soir ; plus de crème à midi depuis le 23 octobre, 21 octobre)');
+  && c.items.some(t => /^Huile d'olive — 2 L\b/.test(t) && /1 bouteille de 2 L/.test(t) && /demande 700 ml/.test(t)),
+     'œufs 12 pour 10 (les sardines prennent le mardi et le jeudi depuis le 21 octobre), surgelés 3 kg pour 2 800 g sur deux semaines (100 g par repas depuis le 14 octobre), huile 2 L pour 700 ml sur cinq (15 ml à midi, 10 le soir depuis le 23 octobre, 21 octobre)');
   /* Aucun stock n'est suppose : rien ne dit « tu en as », rien n'est repousse a plus tard. */
   ok(!c.items.some(t => /tu en as|il t’en reste|à racheter le/.test(t)), 'aucune ligne ne suppose un stock : tout part de zéro, il coche ce qu\'il a');
   /* Le contraire de ce que ce fichier tenait jusqu'au 20 septembre : ces lignes ne
@@ -141,7 +144,8 @@ console.log('\n== 180) Sans ajustement : plan de base, liste = plan × 7 ==');
   const r = await fr.evaluate(() => ({ diner: [...document.querySelectorAll('.meal-card')].find(c => /Dîner/.test(c.querySelector('.mtitle').textContent)) }) && [...document.querySelectorAll('.meal-card')].find(c => /Dîner/.test(c.querySelector('.mtitle').textContent)).innerText);
   /* 21 octobre : la sauce du mardi soir est comptee -- pesto verde 15 g et parmesan 10 g
      (≈ 110 kcal), a la place des 5 ml d'huile crue : ~908 kcal. */
-  ok(/Pâtes 135g/.test(r) && /~908 kcal/.test(r) && /Viande hachée 5 % 90g/.test(r) && !/Sauce skyr/.test(r) && /≈ 110 kcal, comptée/.test(r), 'dîner de base du mardi : pâtes 135 g, viande hachée 90 g, la sauce comptée (≈ 110 kcal), ~908 kcal');
+  /* 23 octobre : pates 140 g, viande hachee 120 g -- ~857 kcal. */
+  ok(/Pâtes 140g/.test(r) && /~857 kcal/.test(r) && /Viande hachée 5 % 120g/.test(r) && !/Sauce skyr/.test(r) && /≈ 110 kcal, comptée/.test(r), 'dîner de base du mardi : pâtes 140 g, viande hachée 120 g, la sauce comptée (≈ 110 kcal), ~908 kcal');
   await ctx.close();
 }
 
@@ -150,20 +154,20 @@ console.log('\n== 181) Avec +150 kcal : le dîner et les courses l\'écrivent ==
   const { ctx, fr, page } = await ouvrir(MARDI, {'batcave-kcal-ajustement': {valeur:150, depuis:'2026-09-01'}});
   await page_(fr, 'repas');
   const r = await fr.evaluate(() => [...document.querySelectorAll('.meal-card')].find(c => /Dîner/.test(c.querySelector('.mtitle').textContent)).innerText);
-  ok(/Pâtes 175g/.test(r), 'féculent du dîner : pâtes 175 g (+40)');
-  ok(/boucle kcal \+150 kcal/.test(r) && /~1052 kcal/.test(r), 'le dîner annonce ~1052 kcal et la boucle');
+  ok(/Pâtes 180g/.test(r), 'féculent du dîner : pâtes 180 g (+40)');
+  ok(/boucle kcal \+150 kcal/.test(r) && /~1001 kcal/.test(r), 'le dîner annonce ~1001 kcal et la boucle');
   const sub = await fr.evaluate(() => document.getElementById('meal-kcal-sub').textContent);
   /* 3 131 + 144 : la boucle demande +150 kcal, mais les pates s'ajustent par pas de 10 g,
      donc elle en ajoute 144. On annonce l'ecart REEL entre les deux journees, pas la
      consigne -- sinon la soustraction affichee ne tombe pas juste. */
-  /* 23 octobre : la semoule a l'huile d'olive remplace la creme du midi -- +28 kcal, plan 3 210. */
-  ok(/\/ 3354 kcal \(plan 3210 \+ 144\)/.test(sub), 'cible du jour : ' + sub);
+  /* 23 octobre : le plan de prise de masse -- plan 3 255. */
+  ok(/\/ 3399 kcal \(plan 3255 \+ 144\)/.test(sub), 'cible du jour : ' + sub);
   /* cocher tout le dîner : l\'apport consommé porte les 150 kcal */
   /* un clic redessine la grille : on re-cherche la première case non cochée du dîner à chaque tour */
   await fr.evaluate(() => { for(let i = 0; i < 10; i++){ const card = [...document.querySelectorAll('.meal-card')].find(c => /Dîner/.test(c.querySelector('.mtitle').textContent)); const cb = card && card.querySelector('input:not(:checked)'); if(!cb) break; cb.click(); } });
   await page.waitForTimeout(200);
   const sub2 = await fr.evaluate(() => document.getElementById('meal-kcal-sub').textContent);
-  ok(/^1052 \/ 3354 kcal/.test(sub2), 'dîner coché : ' + sub2);
+  ok(/^1001 \/ 3399 kcal/.test(sub2), 'dîner coché : ' + sub2);
   await page_(fr, 'courses');
   const c = await fr.evaluate(() => ({ items: [...document.querySelectorAll('#courses-grid label, #courses-grid-plus label')].map(l => l.textContent), note: document.getElementById('courses-plan-note').textContent }));
   /* L'ajustement suit le sac : +280 g par semaine font +1 120 g sur quatre semaines.
@@ -172,11 +176,11 @@ console.log('\n== 181) Avec +150 kcal : le dîner et les courses l\'écrivent ==
      dont il a donné le prix. L'arrondi va toujours AU-DESSUS du besoin, donc 4 060 g
      demandés font cinq paquets — 940 g de surplus, qui se cuisent et partent en
      tupperware comme le reste. */
-  ok(c.items.some(t => /^Pâtes — 5 kg\b/.test(t) && /demande 4\u202f900 g/.test(t)), 'la boucle kcal remonte le besoin à (945 + 280) × 4 = 4 900 g, et l\'achat suit à 5 kg (' + c.items.find(t => /^Pâtes/.test(t)) + ')');
+  ok(c.items.some(t => /^Pâtes — 6 kg\b/.test(t) && /demande 5\u202f040 g/.test(t)), 'la boucle kcal remonte le besoin à (980 + 280) × 4 = 5 040 g, et l\'achat suit à 6 kg (' + c.items.find(t => /^Pâtes/.test(t)) + ')');
   ok(/\+150 kcal\/jour/.test(c.note) && /\+40 g de pâtes crues/.test(c.note) && /\+280 g sur la semaine/.test(c.note), 'note : ' + c.note.slice(0, 120));
   /* La boucle kcal ne touche QUE le feculent du diner : les proteines gardent la quantite
      de la rotation, 560 g de poulet par semaine. */
-  ok(c.items.filter(t => /^Poulet/.test(t)).length === 1 && /560 g/.test(c.items.find(t => /^Poulet/.test(t))), 'les protéines ne bougent pas');
+  ok(c.items.filter(t => /^Poulet/.test(t)).length === 1 && /840 g/.test(c.items.find(t => /^Poulet/.test(t))), 'les protéines ne bougent pas');
   await ctx.close();
 }
 
@@ -193,13 +197,13 @@ console.log('\n== 182) Appliquer / revenir depuis la boucle met tout à jour d\'
   await page.waitForTimeout(250);
   const apres = await fr.evaluate(() => ({ diner: [...document.querySelectorAll('.meal-card')].find(c => /Dîner/.test(c.querySelector('.mtitle').textContent)).innerText,
     courses: (document.querySelector('.nav-btn[data-page="courses"]').click(), [...document.querySelectorAll('#courses-grid label, #courses-grid-plus label')].map(l => l.textContent).find(t => /^Pâtes/.test(t))) }));
-  ok(/Pâtes 175g/.test(apres.diner) && /Pâtes — 5 kg/.test(apres.courses), 'après « Appliquer » : dîner à 175 g de pâtes, courses à 5 kg');
+  ok(/Pâtes 180g/.test(apres.diner) && /Pâtes — 6 kg/.test(apres.courses), 'après « Appliquer » : dîner à 180 g de pâtes, courses à 6 kg');
   await page_(fr, 'repas');
   await fr.evaluate(() => document.getElementById('kcal-reset').click());
   await page.waitForTimeout(250);
   const retour = await fr.evaluate(() => ({ diner: [...document.querySelectorAll('.meal-card')].find(c => /Dîner/.test(c.querySelector('.mtitle').textContent)).innerText,
     courses: (document.querySelector('.nav-btn[data-page="courses"]').click(), [...document.querySelectorAll('#courses-grid label, #courses-grid-plus label')].map(l => l.textContent).find(t => /^Pâtes/.test(t))) }));
-  ok(/Pâtes 135g/.test(retour.diner) && /4 kg/.test(retour.courses), 'après « Revenir au plan de base » : 135 g au dîner et 4 kg de pâtes');
+  ok(/Pâtes 140g/.test(retour.diner) && /4 kg/.test(retour.courses), 'après « Revenir au plan de base » : 140 g au dîner et 4 kg de pâtes');
   await ctx.close();
 }
 
@@ -245,9 +249,12 @@ for (const jour of ['2026-09-20','2026-09-21','2026-09-22','2026-09-23','2026-09
   ok(Math.abs(r.jourRecompte.kcal - 3184) <= 100, jour + ' : ' + r.jourRecompte.kcal + ' kcal, dans les clous de la prise de masse (3 184 ± 100)');
   /* Proteines entre 2,0 et 2,6 g/kg a 64 kg : au-dela de 2,2 le gain s'arrete, en dessous
      de 1,6 la prise de muscle souffre. On garde une fourchette qui laisse respirer. */
-  ok(r.jourRecompte.p >= 128 && r.jourRecompte.p <= 166, jour + ' : P ' + r.jourRecompte.p + ' g (' + (r.jourRecompte.p / 64).toFixed(2) + ' g/kg)');
+  /* 23 octobre : 120 g de viande par repas -- jusqu'a 2,8 g/kg, plus qu'il n'en faut, sans risque. */
+  ok(r.jourRecompte.p >= 128 && r.jourRecompte.p <= 185, jour + ' : P ' + r.jourRecompte.p + ' g (' + (r.jourRecompte.p / 64).toFixed(2) + ' g/kg)');
   ok(r.jourRecompte.l >= 64, jour + ' : L ' + r.jourRecompte.l + ' g, au-dessus du plancher hormonal (1 g/kg)');
-  ok(Math.abs((r.jourRecompte.p * 4 + r.jourRecompte.g * 4 + r.jourRecompte.l * 9) - r.jourRecompte.kcal) <= 40,
+  /* La tolerance passe de 40 a 80 le 23 octobre : 100 g de pain et 140 g de semoule par jour, leurs fibres
+     comptent dans les kcal de l'etiquette mais pas dans G. */
+  ok(Math.abs((r.jourRecompte.p * 4 + r.jourRecompte.g * 4 + r.jourRecompte.l * 9) - r.jourRecompte.kcal) <= 80,
      jour + ' : les macros redonnent les calories (P×4 + G×4 + L×9 = ' + (r.jourRecompte.p*4 + r.jourRecompte.g*4 + r.jourRecompte.l*9) + ')');
   await ctx.close();
 }

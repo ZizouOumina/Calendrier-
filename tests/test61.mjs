@@ -80,7 +80,7 @@ console.log('\n== 217) Google Calendar : un titre « 🦇 Bloc · consigne » se
      18 octobre : ses condiments -- le lundi, soja-moutarde, toujours avec les 10 ml d'huile crue.
      21 octobre : le couscous remplace le riz, 170 g le lundi (jour de combat, +45 g).
      23 octobre : la semoule nature, huile d'olive et harissa, tous les midis. */
-  ok(!/skyr/i.test(r.dej) && /10 ml d'huile d'olive crue/.test(r.dej) && /Sauce du jour — Huile d'olive-harissa/.test(r.dej) && /couscous 170 g/.test(r.dej) && /100 g de légumes/.test(r.dej), 'le déjeuner a une consigne : plus de sauce au skyr depuis le 29 septembre, la sauce du jour avec l\'huile crue (' + (r.dej || '').slice(0, 60) + '…)');
+  ok(!/skyr/i.test(r.dej) && /10 ml d'huile d'olive crue/.test(r.dej) && /Sauce du jour — Huile d'olive-harissa/.test(r.dej) && /couscous 140 g/.test(r.dej) && /poulet 120 g/.test(r.dej) && /100 g de légumes/.test(r.dej), 'le déjeuner a une consigne : plus de sauce au skyr depuis le 29 septembre, la sauce du jour avec l\'huile crue (' + (r.dej || '').slice(0, 60) + '…)');
   await ctx.close();
 }
 await browser.close();
