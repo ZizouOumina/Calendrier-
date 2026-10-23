@@ -123,10 +123,11 @@ console.log('\n== 194) Repas cochés → tableau de bord et score ==');
     await page.waitForTimeout(50);
   }
   await page.waitForTimeout(200);
-  ok(/901 \/ 3182 kcal/.test(await txt('#meal-kcal-sub')), 'Repas : 901 / 3182 kcal, le shake du matin depuis le 29 septembre (fruits rouges et 10 g de miel depuis le 21 octobre), les sauces comptées (' + (await txt('#meal-kcal-sub')) + ')');
+  /* 23 octobre au soir : le shake passe a 400 ml (948 kcal), et la journee au plan dense (3 198 kcal). */
+  ok(/948 \/ 3198 kcal/.test(await txt('#meal-kcal-sub')), 'Repas : 948 / 3198 kcal, le shake du matin (400 ml de boisson d\'avoine depuis le 23 octobre), les sauces comptées (' + (await txt('#meal-kcal-sub')) + ')');
   await aller('dashboard');
   ok(/Petit-déjeuner[\s\S]*?7\/7/.test(await txt('#dash-meals')), 'Tableau de bord : petit-déjeuner 7/7 (le miel et les amandes y sont depuis le 24 septembre, les fruits rouges depuis le 21 octobre)');
-  ok(/28% kcal/.test(await txt('#dash-meals-kcal-pct')), 'Tableau de bord : 28 % des kcal (' + (await txt('#dash-meals-kcal-pct')) + ')');
+  ok(/30% kcal/.test(await txt('#dash-meals-kcal-pct')), 'Tableau de bord : 30 % des kcal (' + (await txt('#dash-meals-kcal-pct')) + ')');
 }
 
 console.log('\n== 195) Séries de sport → Sport, tableau de bord, Objectifs ==');
