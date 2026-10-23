@@ -8306,15 +8306,21 @@
     /* 21 octobre : « le shake le matin n'a pas de gout » -- 100 g de fruits rouges surgeles,
        le miel descend de 20 a 10 g (pas de cannelle, sa demande). Ajoutes EN DERNIER : les
        cases sont indexees par position. */
-    {name:'Petit-déjeuner', items:['Boisson d\'avoine au calcium (300 ml)','Skyr (150g)','Flocons d\'avoine (80g)','Banane (120g)','Miel (10g)','Amandes ou noix nature (30g)','Fruits rouges surgelés (100g)']},
+    /* 23 octobre, « on repart de zero, le meilleur programme pour la prise de masse » : le
+       shake passe a 400 ml de boisson d'avoine et le beurre de cacahuete (30 g) prend la place
+       des amandes -- meilleur gout, texture lisse au mixeur. Le miel reste (« j'ai plein de
+       fromage, de miel etc qu'il me reste ») : rien ne se jette. */
+    {name:'Petit-déjeuner', items:['Boisson d\'avoine au calcium (400 ml)','Skyr (150g)','Flocons d\'avoine (80g)','Banane (120g)','Miel (10g)','Beurre de cacahuète (30g) — les amandes en attendant le pot','Fruits rouges surgelés (100g)']},
     {name:'Déjeuner', items:['Féculent cru — Riz 155g','Protéine crue — rotation du jour','Légumes verts (100g)','Huile d\'olive — selon la protéine, dont 10 ml versés froids à l\'assiette']},
     /* 23 septembre : le jambon (charcuterie, 40 g par jour) cede la place a deux oeufs durs,
        cuits le dimanche avec ceux du petit-dejeuner. La viande transformee etait le seul
        aliment du plan classe cancerogene ; deux oeufs apportent plus de proteines (12,6 g
        contre 7,2) et environ 100 kcal de plus -- qui vont avec le rythme de prise releve
        le meme jour (objectif poids 72 kg). */
-    {name:'Collation entraînement', items:['Pain complet (60g)','2 œufs durs (100g)','Fromage (20g)','Amandes ou noix nature (40g)']},
-    {name:'Dîner', items:['Féculent cru — Pâtes 105g','Protéine crue — rotation du jour','Légumes verts (100g)','Huile d\'olive — selon la protéine, dont 5 ml versés froids à l\'assiette','1 fruit (~120g)','Créatine — 5 g']},
+    /* 23 octobre : un vrai sandwich -- 100 g de pain, deux oeufs, le fromage qui lui reste,
+       20 g d'amandes et le fruit du jour (il quitte le diner). */
+    {name:'Collation entraînement', items:['Pain complet (100g)','2 œufs durs (100g)','Fromage (20g)','Amandes ou noix nature (20g)','1 fruit (~120g)']},
+    {name:'Dîner', items:['Féculent cru — Pâtes 140g','Protéine crue — rotation du jour','Légumes verts (100g)','Huile d\'olive — selon la protéine, dont 5 ml versés froids à l\'assiette','Créatine — 5 g']},
     /* 25 septembre, le regime combat : une cinquieme prise, les QUATRE jours de combat
        seulement (jourDeCombat). A 10:05 avant le JJB ; le mardi, avec la collation de 14:50
        (la Muay Thai est a 19:30, le diner a 18:00). Rangee EN DERNIER dans la liste pour que
@@ -8361,6 +8367,7 @@
     /* 21 octobre, ses choix : des fruits rouges dans le shake, une collation legere avant le
        JJB (galettes de riz), et des sardines ou du maquereau deux fois par semaine. */
     fruitsrouges: {kcal:43, p:0.9, g:7.5, l:0.3},
+    cacahuete: {kcal:600, p:25.0, g:14.0, l:50.0},   /* 23 octobre : beurre de cacahuete 100 %, sans sucre ajoute (valeurs moyennes d'etiquette) */
     galettes:  {kcal:387, p:8.0,  g:81.5, l:2.8,  piece:10},    /* galettes de riz souffle, ~10 g la galette */
     sardines:  {kcal:208, p:24.6, g:0.0,  l:12.2, piece:85},    /* sardines ou maquereau a l'huile, egouttes : ~85 g la boite */
     /* Les condiments des sauces du jour, comptes depuis le 21 octobre (« j'ai l'impression de
@@ -8402,8 +8409,8 @@
     return liste.map(function(x){ return ENTIERS_REPRISE[x.c] ? x : {c:x.c, q:portionReprise(x.q, f)}; });
   }
   function compoRepasPlein(nom, iso, brut){
-    if(nom === 'Petit-déjeuner') return [{c:'avoine', q:300}, {c:'skyr', q:150}, {c:'flocons', q:80}, {c:'banane', q:120}, {c:'miel', q:10}, {c:'amandes', q:30}, {c:'fruitsrouges', q:100}];
-    if(nom === 'Collation entraînement') return [{c:'pain', q:60}, sardinesLe(iso) ? {c:'sardines', q:85} : {c:'oeufs', q:100}, {c:'fromage', q:parmesanLeSoir(iso) ? 10 : 20}, {c:'amandes', q:40}];
+    if(nom === 'Petit-déjeuner') return [{c:'avoine', q:400}, {c:'skyr', q:150}, {c:'flocons', q:80}, {c:'banane', q:120}, {c:'miel', q:10}, {c:'cacahuete', q:30}, {c:'fruitsrouges', q:100}];
+    if(nom === 'Collation entraînement') return [{c:'pain', q:100}, sardinesLe(iso) ? {c:'sardines', q:85} : {c:'oeufs', q:100}, {c:'fromage', q:20}, {c:'amandes', q:20}, {c:'fruit', q:120}];
     if(nom === 'Collation combat') return [{c:'banane', q:120}, {c:'galettes', q:20}, {c:'miel', q:15}];
     if(nom === 'Récup combat') return [{c:'avoine', q:250}, {c:'banane', q:120}, {c:'flocons', q:20}];
     if(nom === 'Déjeuner'){
@@ -8413,7 +8420,7 @@
     if(nom === 'Dîner'){
       var nn = PROTEINES[proteineDuJour('din', iso)].din, sn = sauceDuJour('din', iso);
       var pates = FECULENTS.din.g + (brut ? 0 : grammesAjustement(ajustementKcalPour(iso || todayISO), FECULENTS.din.kcalG));
-      return [{c:'pates', q:pates}, {c:CLE_PROTEINE[proteineDuJour('din', iso)], q:nn.g}, {c:'legumes', q:LEGUMES_REPAS.din}, {c:'huile', q:nn.huile - (sn.sansHuile ? HUILE_CRUE.din : 0)}, {c:'fruit', q:120}].concat(compoSauce(sn));
+      return [{c:'pates', q:pates}, {c:CLE_PROTEINE[proteineDuJour('din', iso)], q:nn.g}, {c:'legumes', q:LEGUMES_REPAS.din}, {c:'huile', q:nn.huile - (sn.sansHuile ? HUILE_CRUE.din : 0)}].concat(compoSauce(sn));
     }
     return [];
   }
@@ -8447,8 +8454,10 @@
        COUSCOUS : de l'eau bouillante, un couvercle, cinq minutes, rien a surveiller ni a
        egoutter. Memes calories que le riz (363 contre 360 pour 100 g), un peu plus de
        proteines (12,8 contre 7,4) : memes grammes. La cle reste « dej ». */
-    dej: {nom:'Couscous', g:125, kcalG:3.6, prixKg:1.1},
-    din: {nom:'Pâtes', g:135, kcalG:3.6, prixKg:1.0}
+    /* 23 octobre, le plan de prise de masse : 140 g de semoule a midi, 140 g de pates le soir,
+       les memes grammes tous les jours (plus de +45 g les jours de combat). */
+    dej: {nom:'Couscous', g:140, kcalG:3.6, prixKg:1.1},
+    din: {nom:'Pâtes', g:140, kcalG:3.6, prixKg:1.0}
   };
   /* Poulet a midi, viande hachee le soir, les sept jours. Le poisson a ete retire le
      20 septembre -- sa decision, et elle est economique : a 13 EUR le kilo il coutait plus
@@ -8456,8 +8465,12 @@
      n'appelle plus (poulet le soir, viande hachee a midi) gardent des valeurs de repli :
      compoRepas les lirait si la rotation changeait. */
   var PROTEINES = {
-    'Poulet':            {dej:{g:80, huile:30}, din:{g:80, huile:15}, prixKg:6.5},
-    'Viande hachée 5 %': {dej:{g:75, huile:20}, din:{g:90, huile:15}, prixKg:8.0}
+    /* 23 octobre, le plan de prise de masse repart de zero : 120 g de viande par repas (au lieu
+       de 80 et 90) -- une vraie assiette --, et l'huile redescend : 15 ml a midi (5 de cuisson,
+       10 crus sur la semoule) et 10 le soir (5 de cuisson, 5 crus que la sauce remplace). Les
+       calories viennent des feculents et du pain, plus de l'huile. */
+    'Poulet':            {dej:{g:120, huile:15}, din:{g:120, huile:10}, prixKg:6.5},
+    'Viande hachée 5 %': {dej:{g:120, huile:15}, din:{g:120, huile:10}, prixKg:8.0}
   };
   /* 14 octobre, sa demande : « 200 g de legumes par repas c'est trop, ca me remplit trop
      l'estomac et je jette souvent le reste ». 100 g a chaque repas (une grosse poignee) au
@@ -8549,7 +8562,7 @@
   }
   /* 21 octobre : le feculent du midi (couscous) monte les jours de combat -- il reprend les ~160 kcal que la
      collation combat a laissees (flocons et amandes sortis d'avant le tatami). */
-  var RIZ_COMBAT_PLUS = 45;
+  var RIZ_COMBAT_PLUS = 0;   /* 23 octobre : plus de feculent en plus les jours de combat -- la collation combat et le shake de recup suffisent, les grammes sont les memes tous les jours */
   function grammesFeculent(repas, iso){
     return FECULENTS[repas].g + (repas === 'dej' && jourDeCombat(iso || todayISO) ? RIZ_COMBAT_PLUS : 0);
   }
@@ -8567,7 +8580,6 @@
   function texteItemRepas(m, it, ii, iso){
     if(m.name === 'Collation entraînement'){
       if(ii === 1 && sardinesLe(iso)) return '1 boîte de sardines ou de maquereau (≈ 85 g égouttés) — à la place des œufs, le mardi et le jeudi';
-      if(ii === 2 && parmesanLeSoir(iso)) return 'Fromage (10g) — les 10 autres grammes sont le parmesan de ce soir';
     }
     var repas = m.name === 'Dîner' ? 'din' : (m.name === 'Déjeuner' ? 'dej' : null), f = facteurPortions(iso);
     /* semaine de reprise : les grammes ecrits dans le libelle suivent le facteur, sauf ce
@@ -12374,7 +12386,7 @@
                      legumes:'Légumes verts surgelés', huile:'Huile d\'olive',
                      oeufs:'Œufs', flocons:'Flocons d\'avoine', skyr:'Skyr', amandes:'Amandes ou noix',
                      banane:'Banane', pain:'Pain complet', fromage:'Fromage', miel:'Miel', fruit:'Fruit', avoine:'Boisson d\'avoine',
-                     fruitsrouges:'Fruits rouges surgelés', galettes:'Galettes de riz', sardines:'Sardines ou maquereau',
+                     fruitsrouges:'Fruits rouges surgelés', galettes:'Galettes de riz', sardines:'Sardines ou maquereau', cacahuete:'Beurre de cacahuète',
                      creme:'Crème de cuisson', pestoverde:'Pesto verde', pestorosso:'Pesto rosso', parmesan:'Parmesan',
                      soja:'Sauce soja', moutarde:'Moutarde', harissa:'Harissa'};
   var NOMS_SEMAINE = ['dimanche','lundi','mardi','mercredi','jeudi','vendredi','samedi'];
@@ -12457,8 +12469,8 @@
              j.din.filter(dansBoite).map(ligne).join('') + '</ul></div>';
     }).join('');
     document.getElementById('prep-regles').innerHTML = [
-      ['Le petit-déjeuner', 'un shake : 300 ml de boisson d\'avoine au calcium, 150 g de skyr, 80 g de flocons, une banane (congelée en rondelles, c\'est un milkshake), 100 g de fruits rouges surgelés, 10 g de miel, 30 g d\'amandes — 40 secondes de mixeur, à boire en dix minutes. Les jours de JJB, un shake de récup au retour : 250 ml de boisson d\'avoine, une banane, 20 g de flocons'],
-      ['La collation d\'entraînement', 'pain, 2 œufs durs (une boîte de sardines ou de maquereau le mardi et le jeudi), fromage, 40 g d\'amandes — les œufs sont cuits le dimanche ; le reste s\'assemble au moment de partir'],
+      ['Le petit-déjeuner', 'un shake : 400 ml de boisson d\'avoine au calcium, 150 g de skyr, 80 g de flocons, une banane (congelée en rondelles, c\'est un milkshake), 100 g de fruits rouges surgelés, 10 g de miel, 30 g de beurre de cacahuète (les amandes en attendant le pot) — 40 secondes de mixeur, à boire en dix minutes. Les jours de JJB, un shake de récup au retour : 250 ml de boisson d\'avoine, une banane, 20 g de flocons'],
+      ['La collation d\'entraînement', 'un sandwich : 100 g de pain complet, 2 œufs durs (une boîte de sardines ou de maquereau le mardi et le jeudi), 20 g de fromage, puis 20 g d\'amandes et un fruit — les œufs sont cuits le dimanche ; le reste s\'assemble au moment de partir'],
       ['Le goût', 'la sauce du jour, faite au réchauffage (onglet Repas) : ses calories sont comptées. L\'huile froide à l\'assiette les jours où la sauce n\'est ni crème ni pesto'],
       ['Réchauffer à la poêle', 'la boîte vidée dans la poêle avec 2 à 3 cuillères d\'eau, couvercle, feu moyen, 4 à 5 min, puis 1 min à découvert. Brûlant jusqu\'au cœur. Pas l\'air fryer : il dessèche le riz et les pâtes'],
       ['Le fruit du dîner', 'entier, jamais dans la boîte : coupé le dimanche il rend de l\'eau et noircit'],
@@ -12559,7 +12571,7 @@
     'Flocons d\'avoine':'flocons', 'Miel':'miel', 'Amandes ou noix nature':'amandes',
     'Huile d\'olive':'huile', 'Boisson d\'avoine':'avoine',
     /* 21 octobre : sans prix releve -- « prix a relever », hors total, jusqu'a son ticket */
-    'Sardines ou maquereau (boîte)':'sardines', 'Fruits rouges surgelés':'fruitsrouges', 'Galettes de riz':'galettes'
+    'Sardines ou maquereau (boîte)':'sardines', 'Fruits rouges surgelés':'fruitsrouges', 'Galettes de riz':'galettes', 'Beurre de cacahuète':'cacahuete'
   };
   function eur(n){ return (Math.round(n * 100) / 100).toFixed(2).replace('.', ',') + ' \u20ac'; }
   /* Le cout d'une semaine se calcule sur le BESOIN, pas sur l'achat : un pot de 2 L d'huile
@@ -12689,11 +12701,16 @@
            21 octobre : la version enrichie en calcium (le lait est sorti du plan, c'est la
            que le calcium revient), et le shake de recup des jours de JJB -- 750 ml de plus
            par semaine, 5,7 L sur deux : le pack de 6 L suffit toujours. */
-        (function(a){ a.note += ' \u00b7 la version au calcium, \u00ab con calcio \u00bb'; return a; })(art('Boisson d\'avoine', B.avoine * 2, 6000, vol, 'pack')),
+        /* 23 octobre : 400 ml le matin, 3,55 L par semaine -- le pack de 6 L ne couvre plus deux
+           semaines (7,1 L) et deux packs en laisseraient 4,9 L de trop a chaque passage : on
+           compte en briks de 1 L. */
+        (function(a){ a.note += ' \u00b7 la version au calcium, \u00ab con calcio \u00bb'; return a; })(art('Boisson d\'avoine', B.avoine * 2, 1000, vol, 'brik')),
         /* 21 octobre : les fruits rouges du shake (700 g par semaine) et les galettes de riz de
            la collation combat. En DERNIER, comme la boisson d'avoine. */
         art('Fruits rouges surgelés', B.fruitsrouges * 2, 1, poids, 'sachets du rayon surgelés'),
-        art('Galettes de riz', B.galettes * 2, 1, sep, 'galettes · un paquet suffit', (B.galettes * 2) + ' galettes')
+        art('Galettes de riz', B.galettes * 2, 1, sep, 'galettes · un paquet suffit', (B.galettes * 2) + ' galettes'),
+        /* 23 octobre : le beurre de cacahuete du shake, 30 g par jour. En DERNIER. */
+        art('Beurre de cacahuète', B.cacahuete * 2, 1, poids, 'pots · 100 % cacahuète, sans sucre ajouté')
       ]},
       /* Cycle de 4 semaines, ancre au samedi 26 septembre : 26/9, 24/10, 21/11, 19/12. */
       {cat:'Réserves — toutes les 4 semaines', semaines:4, ancre:ANCRE_COURSES, items:[
@@ -12894,7 +12911,7 @@
     'Fromage en tranches': 'Lidl · cuajo vegetal',
     'Riz': 'Lidl', 'Couscous': 'Lidl', 'P\u00e2tes': 'Lidl', 'Flocons d\'avoine': 'Lidl',
     /* 21 octobre : les nouveaux articles vont chez Lidl, avec le reste -- leur prix attend son ticket */
-    'Sardines ou maquereau (bo\u00eete)': 'Lidl', 'Fruits rouges surgel\u00e9s': 'Lidl', 'Galettes de riz': 'Lidl',
+    'Sardines ou maquereau (bo\u00eete)': 'Lidl', 'Fruits rouges surgel\u00e9s': 'Lidl', 'Galettes de riz': 'Lidl', 'Beurre de cacahu\u00e8te': 'Lidl',
     'L\u00e9gumes verts surgel\u00e9s': 'Lidl', 'Miel': 'Lidl', 'Amandes ou noix nature': 'Lidl',
     'Boisson d\'avoine': 'Lidl',
     'Bananes': 'Lidl', 'Fruits (pommes, poires, oranges\u2026)': 'Frutería · de saison',
@@ -16007,7 +16024,7 @@
     /* Le regime combat (lundi 28 septembre) : les blocs qu'il ajoute. L'eau monte a 3,5-4 L
        ces jours-la (objectifEauL), et la collation combat se prend 25 min avant le tatami. */
     'Collation combat': function(d){
-      return "Une banane, 2 galettes de riz et 15 g de miel : du glucide qui passe vite et rien de lourd, 25 minutes avant le tatami. Le reste revient au déjeuner (couscous + 45 g). Remplis la gourde. Aujourd'hui, l'eau monte à 3,5 à 4 L.";
+      return "Une banane, 2 galettes de riz et 15 g de miel : du glucide qui passe vite et rien de lourd, 25 minutes avant le tatami. Le shake de récup t'attend au retour. Remplis la gourde. Aujourd'hui, l'eau monte à 3,5 à 4 L.";
     },
     'Trajet club': "Dix minutes à pied. Dans le sac : kimono ou short, protège-dents, gourde pleine, serviette. Ongles des mains et des pieds courts.",
     'Retour du club': "Le shake de récup en rentrant : 250 ml de boisson d'avoine, une banane, 20 g de flocons, au mixeur. Puis la douche dès que possible, kimono ou tenue à laver le jour même. Bois 500 ml d'eau en rentrant."
