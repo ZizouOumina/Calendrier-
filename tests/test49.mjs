@@ -81,7 +81,8 @@ console.log('\n== 120) Boucle poids → calories ==');
   ok(/recommandation : \+150 kcal/.test(k.note), 'poids stable deux semaines → +150 kcal recommandé : ' + k.note);
   ok(/Rythme visé : \+0,31 kg \/ semaine/.test(k.txt), 'rythme visé dérivé de l\'objectif poids (64 → 72 sur l\'horizon, relevé le 23 septembre) : ' + (k.txt.match(/Rythme visé[^.]*/) || [''])[0]);
   ok(/Tendance : \+0,00 kg/.test(k.txt) && !k.btn, 'tendance +0,00 kg, bouton « Appliquer » visible');
-  ok(/\/ 3234 kcal$/.test(k.sub), 'cible de base 3234 kcal (quatre prises, shake le matin depuis le 29 septembre) : ' + k.sub);
+  /* 23 octobre au soir, le plan dense (riz midi et soir, huile crue, amandes, dattes) : 3 173 kcal ce jour-la. */
+  ok(/\/ 3173 kcal$/.test(k.sub), 'cible de base 3173 kcal (quatre prises, shake le matin, plan dense du 23 octobre) : ' + k.sub);
   await fr.evaluate(() => document.getElementById('kcal-appliquer').click());
   await page.waitForTimeout(300);
   const aj = await local(fr, 'batcave-kcal-ajustement');
@@ -89,8 +90,8 @@ console.log('\n== 120) Boucle poids → calories ==');
   k = await fr.evaluate(() => ({ sub: document.getElementById('meal-kcal-sub').innerText, txt: document.getElementById('kcal-analyse').innerText.replace(/\s+/g,' ') }));
   /* La boucle demande +150 kcal, les pates s'ajustent par pas de 10 g : elle en ajoute 144.
      C'est cet ecart REEL entre les deux journees qui s'affiche, sinon la soustraction ment. */
-  ok(/\/ 3378 kcal \(plan 3234 \+ 144\)/.test(k.sub), 'la barre Repas vise 3378 kcal : ' + k.sub);
-  ok(/Cible calorique actuelle : 3378 kcal/.test(k.txt), 'l\'analyse affiche la cible ajustée (' + ((k.txt.match(/Cible calorique actuelle : [^\n]*/) || [])[0] || '?') + ')');
+  ok(/\/ 3317 kcal \(plan 3173 \+ 144\)/.test(k.sub), 'la barre Repas vise 3317 kcal : ' + k.sub);
+  ok(/Cible calorique actuelle : 3317 kcal/.test(k.txt), 'l\'analyse affiche la cible ajustée (' + ((k.txt.match(/Cible calorique actuelle : [^\n]*/) || [])[0] || '?') + ')');
   /* tout coché aujourd'hui → 3237/3237 = 100 % : l'ajustement vit dans le dîner, l'apport le suit */
   /* un clic redessine la grille : on re-cherche la premiere case non cochee a chaque tour */
   await fr.evaluate(() => { for(let i = 0; i < 60; i++){ const cb = document.querySelector('#meal-grid input[type="checkbox"]:not(:checked)'); if(!cb) break; cb.click(); } });
