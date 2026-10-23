@@ -114,8 +114,9 @@ console.log('\n== 4) L\'alimentation du 21 octobre : shake, sauces comptées, co
   });
   ok(/fruitsrouges 100/.test(r.shake) && /miel 10/.test(r.shake), 'shake : 100 g de fruits rouges, 10 g de miel (' + r.shake + ')');
   ok(/^couscous 170/.test(r.dejLun) && /^couscous 125/.test(r.dejMar), 'couscous à midi : 170 g le lundi (combat), 125 g le mardi');
-  ok(/huile 30, soja 15, moutarde 5/.test(r.dejLun), 'lundi midi : soja-moutarde comptée, l\'huile crue reste (' + r.dejLun + ')');
-  ok(/huile 20, creme 30, moutarde 5/.test(r.dejMar), 'mardi midi : crème-moutarde comptée, les 10 ml d\'huile crue sortent (' + r.dejMar + ')');
+  /* 23 octobre : la semoule nature a midi, tous les jours -- huile d'olive (ou beurre), harissa, epices ; plus de creme a midi. */
+  ok(/huile 30, harissa 3$/.test(r.dejLun), 'lundi midi : semoule à l\'huile d\'olive et harissa, comptée (' + r.dejLun + ')');
+  ok(/huile 30, harissa 3$/.test(r.dejMar) && !/creme/.test(r.dejMar), 'mardi midi : la même semoule, la crème ne reste que le soir (' + r.dejMar + ')');
   ok(/huile 10/.test(r.dinMar) && /pestoverde 15, parmesan 10/.test(r.dinMar), 'mardi soir : pesto verde et parmesan comptés, 5 ml d\'huile en moins (' + r.dinMar + ')');
   ok(/sardines 85/.test(r.colMar) && !/oeufs/.test(r.colMar) && /fromage 10/.test(r.colMar), 'mardi 14:50 : sardines à la place des œufs, 10 g de fromage (parmesan le soir)');
   ok(/oeufs 100/.test(r.colLun) && /fromage 20/.test(r.colLun), 'lundi 14:50 : les œufs, 20 g de fromage');

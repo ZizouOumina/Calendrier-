@@ -59,8 +59,8 @@ le soir. Créatine 5 g par jour, avec le dîner.
 Une sauce par repas et par jour, toujours la même : rien à décider au moment de manger. La
 Batcave l'écrit dans le plan du jour et dans la consigne des blocs Déjeuner et Dîner. Depuis le
 18 octobre, elles sont faites de ses condiments à lui : moutarde, sauce soja, harissa, crème de
-cuisson, parmesan, pesto verde, pesto rosso. **La crème ou le pesto remplace l'huile crue du
-repas** (10 ml à midi, 5 ml le soir) ; les **10 g de parmesan** se prennent sur les 20 g de
+cuisson, parmesan, pesto verde, pesto rosso. **Le soir, la crème ou le pesto remplace les 5 ml
+d'huile crue** ; les **10 g de parmesan** se prennent sur les 20 g de
 fromage de la collation. **Depuis le 21 octobre, chaque sauce entre dans les macros** : 1 c. à
 soupe = 15 g, 1 c. à café = 5 g, une demie = 3 g, une pointe = 2 g ; l'huile qu'elle remplace
 sort du repas. Valeurs moyennes d'étiquette (crème de cuisson à 18 %) : de 10 à 100 kcal par
@@ -68,13 +68,18 @@ sauce, affichées à côté de la recette dans l'onglet Table.
 
 | Jour | Midi (couscous + poulet) | Soir (pâtes + viande hachée) |
 |---|---|---|
-| Lundi | Soja-moutarde : 1 c. à soupe de soja, 1 c. à café de moutarde, les 10 ml d'huile crue | Pesto rosso : 1 c. à soupe (15 g) |
-| Mardi | Crème-moutarde : 2 c. à soupe de crème, 1 c. à café de moutarde, chauffées avec le poulet | Pesto verde-parmesan : 15 g de pesto, 10 g de parmesan |
-| Mercredi | Harissa-soja : ½ c. à café de harissa, 1 c. à soupe de soja, les 10 ml d'huile crue | Crème-parmesan : 2 c. à soupe de crème, 10 g de parmesan, poivre |
-| Jeudi | Soja-moutarde | Rosso-harissa : 15 g de pesto rosso, une pointe de harissa |
-| Vendredi | Crème-harissa : 2 c. à soupe de crème, ½ c. à café de harissa | Pesto verde-parmesan |
-| Samedi | Crème-moutarde | Pesto rosso crémeux : 15 g de pesto rosso, 1 c. à soupe de crème |
-| Dimanche | Harissa-soja | Crème-parmesan |
+| Lundi | Huile d'olive-harissa (tous les midis) | Pesto rosso : 1 c. à soupe (15 g) |
+| Mardi | Huile d'olive-harissa | Pesto verde-parmesan : 15 g de pesto, 10 g de parmesan |
+| Mercredi | Huile d'olive-harissa | Crème-parmesan : 2 c. à soupe de crème, 10 g de parmesan, poivre |
+| Jeudi | Huile d'olive-harissa | Rosso-harissa : 15 g de pesto rosso, une pointe de harissa |
+| Vendredi | Huile d'olive-harissa | Pesto verde-parmesan |
+| Samedi | Huile d'olive-harissa | Pesto rosso crémeux : 15 g de pesto rosso, 1 c. à soupe de crème |
+| Dimanche | Huile d'olive-harissa | Crème-parmesan |
+
+**Le midi depuis le 23 octobre** (« les sauces ne vont pas avec la semoule » ; « j'aime bien la
+semoule nature avec de l'huile d'olive ou du beurre et quelques épices, harissa ; la crème ça va
+mieux avec le riz et les pâtes ») : la semoule nature, les 10 ml d'huile d'olive crue (ou 10 g de
+beurre), ½ c. à café de harissa et les épices qu'il a. Soja et moutarde sortent du plan.
 
 Crème et parmesan sont laitiers : 2 à 3 cuillères de crème au plus par repas, 10 g de parmesan.
 Si des boutons apparaissent, la crème sort la première. Les condiments ont leur carte dans

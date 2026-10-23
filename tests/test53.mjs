@@ -97,8 +97,8 @@ console.log('\n== 180) Sans ajustement : plan de base, liste = plan × 7 ==');
      semaine), c'est le rythme de rachat qui a change -- 5 kg tous les quinze jours. */
   ok(c.items.some(t => /^Œufs — 12\b/.test(t) && /demande 10 œufs/.test(t))
   && c.items.some(t => /^Légumes verts surgelés — 3 kg\b/.test(t) && /demande 2\u202f800 g/.test(t))
-  && c.items.some(t => /^Huile d'olive — 2 L\b/.test(t) && /1 bouteille de 2 L/.test(t) && /demande 1\u202f250 ml/.test(t)),
-     'œufs 12 pour 10 (les sardines prennent le mardi et le jeudi depuis le 21 octobre), surgelés 3 kg pour 2 800 g sur deux semaines (100 g par repas depuis le 14 octobre), huile 2 L pour 1 250 ml sur cinq (la crème ou le pesto remplacent l\'huile crue, 21 octobre)');
+  && c.items.some(t => /^Huile d'olive — 2 L\b/.test(t) && /1 bouteille de 2 L/.test(t) && /demande 1\u202f400 ml/.test(t)),
+     'œufs 12 pour 10 (les sardines prennent le mardi et le jeudi depuis le 21 octobre), surgelés 3 kg pour 2 800 g sur deux semaines (100 g par repas depuis le 14 octobre), huile 2 L pour 1 400 ml sur cinq (le pesto remplace l\'huile crue du soir ; plus de crème à midi depuis le 23 octobre, 21 octobre)');
   /* Aucun stock n'est suppose : rien ne dit « tu en as », rien n'est repousse a plus tard. */
   ok(!c.items.some(t => /tu en as|il t’en reste|à racheter le/.test(t)), 'aucune ligne ne suppose un stock : tout part de zéro, il coche ce qu\'il a');
   /* Le contraire de ce que ce fichier tenait jusqu'au 20 septembre : ces lignes ne
@@ -156,13 +156,14 @@ console.log('\n== 181) Avec +150 kcal : le dîner et les courses l\'écrivent ==
   /* 3 131 + 144 : la boucle demande +150 kcal, mais les pates s'ajustent par pas de 10 g,
      donc elle en ajoute 144. On annonce l'ecart REEL entre les deux journees, pas la
      consigne -- sinon la soustraction affichee ne tombe pas juste. */
-  ok(/\/ 3326 kcal \(plan 3182 \+ 144\)/.test(sub), 'cible du jour : ' + sub);
+  /* 23 octobre : la semoule a l'huile d'olive remplace la creme du midi -- +28 kcal, plan 3 210. */
+  ok(/\/ 3354 kcal \(plan 3210 \+ 144\)/.test(sub), 'cible du jour : ' + sub);
   /* cocher tout le dîner : l\'apport consommé porte les 150 kcal */
   /* un clic redessine la grille : on re-cherche la première case non cochée du dîner à chaque tour */
   await fr.evaluate(() => { for(let i = 0; i < 10; i++){ const card = [...document.querySelectorAll('.meal-card')].find(c => /Dîner/.test(c.querySelector('.mtitle').textContent)); const cb = card && card.querySelector('input:not(:checked)'); if(!cb) break; cb.click(); } });
   await page.waitForTimeout(200);
   const sub2 = await fr.evaluate(() => document.getElementById('meal-kcal-sub').textContent);
-  ok(/^1052 \/ 3326 kcal/.test(sub2), 'dîner coché : ' + sub2);
+  ok(/^1052 \/ 3354 kcal/.test(sub2), 'dîner coché : ' + sub2);
   await page_(fr, 'courses');
   const c = await fr.evaluate(() => ({ items: [...document.querySelectorAll('#courses-grid label, #courses-grid-plus label')].map(l => l.textContent), note: document.getElementById('courses-plan-note').textContent }));
   /* L'ajustement suit le sac : +280 g par semaine font +1 120 g sur quatre semaines.

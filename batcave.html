@@ -8486,14 +8486,20 @@
      premiere. « ingr » nomme les condiments de la sauce : la carte Condiments des courses
      s'en sert pour dire quels repas en dependent. */
   var SAUCES = {
+    /* 23 octobre : « les sauces ne vont pas avec la semoule », puis « j'aime bien la semoule
+       nature avec de l'huile d'olive ou du beurre et quelques epices, harissa ; la creme ca
+       va mieux avec le riz et les pates ». Soja, moutarde et creme sortent du midi : chaque
+       jour la meme semoule, les 10 ml d'huile crue (ou 10 g de beurre, ~72 kcal contre 82),
+       la harissa et ses epices -- rien a racheter, rien a decider. La creme ne reste que le
+       soir, avec les pates. */
     dej:{
-      1:{nom:'Soja-moutarde', recette:'1 c. à soupe de sauce soja, 1 c. à café de moutarde, les 10 ml d\'huile crue', ingr:['Sauce soja','Moutarde']},
-      2:{nom:'Crème-moutarde', recette:'2 c. à soupe de crème de cuisson et 1 c. à café de moutarde, chauffées 1 min avec le poulet, à la place des 10 ml d\'huile crue', ingr:['Crème de cuisson','Moutarde'], sansHuile:true},
-      3:{nom:'Harissa-soja', recette:'½ c. à café de harissa, 1 c. à soupe de sauce soja, les 10 ml d\'huile crue', ingr:['Harissa','Sauce soja']},
-      4:{nom:'Soja-moutarde', recette:'1 c. à soupe de sauce soja, 1 c. à café de moutarde, les 10 ml d\'huile crue', ingr:['Sauce soja','Moutarde']},
-      5:{nom:'Crème-harissa', recette:'2 c. à soupe de crème de cuisson et ½ c. à café de harissa, chauffées 1 min avec le poulet, à la place des 10 ml d\'huile crue', ingr:['Crème de cuisson','Harissa'], sansHuile:true},
-      6:{nom:'Crème-moutarde', recette:'2 c. à soupe de crème de cuisson et 1 c. à café de moutarde, chauffées 1 min avec le poulet, à la place des 10 ml d\'huile crue', ingr:['Crème de cuisson','Moutarde'], sansHuile:true},
-      0:{nom:'Harissa-soja', recette:'½ c. à café de harissa, 1 c. à soupe de sauce soja, les 10 ml d\'huile crue', ingr:['Harissa','Sauce soja']}
+      1:{nom:'Huile d\'olive-harissa', recette:'semoule nature, les 10 ml d\'huile d\'olive crue (ou 10 g de beurre) mélangés à chaud, ½ c. à café de harissa et les épices que tu as (cumin, ras el hanout, paprika), à ton goût', ingr:['Harissa']},
+      2:{nom:'Huile d\'olive-harissa', recette:'semoule nature, les 10 ml d\'huile d\'olive crue (ou 10 g de beurre) mélangés à chaud, ½ c. à café de harissa et les épices que tu as (cumin, ras el hanout, paprika), à ton goût', ingr:['Harissa']},
+      3:{nom:'Huile d\'olive-harissa', recette:'semoule nature, les 10 ml d\'huile d\'olive crue (ou 10 g de beurre) mélangés à chaud, ½ c. à café de harissa et les épices que tu as (cumin, ras el hanout, paprika), à ton goût', ingr:['Harissa']},
+      4:{nom:'Huile d\'olive-harissa', recette:'semoule nature, les 10 ml d\'huile d\'olive crue (ou 10 g de beurre) mélangés à chaud, ½ c. à café de harissa et les épices que tu as (cumin, ras el hanout, paprika), à ton goût', ingr:['Harissa']},
+      5:{nom:'Huile d\'olive-harissa', recette:'semoule nature, les 10 ml d\'huile d\'olive crue (ou 10 g de beurre) mélangés à chaud, ½ c. à café de harissa et les épices que tu as (cumin, ras el hanout, paprika), à ton goût', ingr:['Harissa']},
+      6:{nom:'Huile d\'olive-harissa', recette:'semoule nature, les 10 ml d\'huile d\'olive crue (ou 10 g de beurre) mélangés à chaud, ½ c. à café de harissa et les épices que tu as (cumin, ras el hanout, paprika), à ton goût', ingr:['Harissa']},
+      0:{nom:'Huile d\'olive-harissa', recette:'semoule nature, les 10 ml d\'huile d\'olive crue (ou 10 g de beurre) mélangés à chaud, ½ c. à café de harissa et les épices que tu as (cumin, ras el hanout, paprika), à ton goût', ingr:['Harissa']}
     },
     din:{
       1:{nom:'Pesto rosso', recette:'1 c. à soupe de pesto rosso (15 g), à la place des 5 ml d\'huile crue', ingr:['Pesto rosso'], sansHuile:true},
@@ -8517,10 +8523,7 @@
      (15 ml), 1 c. a cafe = 5 g, une demi = 3 g, une pointe = 2 g. L'huile crue qu'elles
      remplacent sort du repas (HUILE_CRUE), et le parmesan sort du fromage de la collation. */
   var COMPO_SAUCES = {
-    'Soja-moutarde':        [{c:'soja', q:15}, {c:'moutarde', q:5}],
-    'Crème-moutarde':       [{c:'creme', q:30}, {c:'moutarde', q:5}],
-    'Harissa-soja':         [{c:'harissa', q:3}, {c:'soja', q:15}],
-    'Crème-harissa':        [{c:'creme', q:30}, {c:'harissa', q:3}],
+    'Huile d\'olive-harissa': [{c:'harissa', q:3}],
     'Pesto rosso':          [{c:'pestorosso', q:15}],
     'Pesto verde-parmesan': [{c:'pestoverde', q:15}, {c:'parmesan', q:10}],
     'Crème-parmesan':       [{c:'creme', q:30}, {c:'parmesan', q:10}],
@@ -13201,7 +13204,9 @@
      indexees par position, et ces lignes ne doivent ni compter dans « x/11 articles
      coches » ni bloquer l'habitude « Courses faites ». Chaque ligne dit quels repas de la
      semaine en dependent, lu dans SAUCES : quand une sauce change, la ligne suit. */
-  var CONDIMENTS = ['Moutarde', 'Sauce soja', 'Harissa', 'Crème de cuisson', 'Parmesan', 'Pesto verde', 'Pesto rosso'];
+  /* 23 octobre : moutarde et sauce soja ne servent plus a aucune sauce (le midi passe a la
+     harissa) -- elles sortent de la carte ; leurs coches sont indexees par nom, rien ne glisse. */
+  var CONDIMENTS = ['Harissa', 'Crème de cuisson', 'Parmesan', 'Pesto verde', 'Pesto rosso'];
   var condimentsState = load('batcave-condiments', {coches:{}, qte:{}});
   if(!condimentsState || typeof condimentsState !== 'object') condimentsState = {coches:{}, qte:{}};
   if(!condimentsState.coches) condimentsState.coches = {};

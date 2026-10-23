@@ -159,7 +159,7 @@ console.log('\n== 334b) Aucun stock n\'est supposé : il coche ce qu\'il a ==');
   ok(!/tu en as|il t’en reste|à racheter le/.test(t), 'aucune ligne ne parle de stock ni de date de rachat');
   ok(!/Beurre de cacahuète/.test(t), 'le beurre de cacahuète est sorti de la liste (24 septembre)');
   ok(/Amandes ou noix nature — 600 g/.test(t) && /demande 490 g/.test(t), 'amandes : 3 sachets de 200 g, pour 490 g demandés (30 g le matin, 40 g à 14:50 ; plus d\'amandes dans la collation combat depuis le 21 octobre)');
-  ok(/Huile d'olive — 2 L/.test(t) && /demande 1\u202f250 ml/.test(t), 'huile : un bidon de 2 L, pour 1 250 ml demandés (la crème ou le pesto remplacent l\'huile crue, 21 octobre)');
+  ok(/Huile d'olive — 2 L/.test(t) && /demande 1\u202f400 ml/.test(t), 'huile : un bidon de 2 L, pour 1 400 ml demandés (le pesto remplace l\'huile crue du soir ; plus de crème à midi depuis le 23 octobre)');
   await ctx.close();
 }
 {

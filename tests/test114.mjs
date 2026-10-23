@@ -41,7 +41,8 @@ console.log('— vendredi 25 septembre : la premiere periode, 28 sept. -> 24 oct
      (son ticket) -- hors du calcul jusque-la ; le riz sort, les oeufs, les amandes, l'huile et le miel baissent.
      Le meme soir, le shake de recup des jours de JJB : 3 bananes, 750 ml de boisson d'avoine et 60 g de
      flocons de plus par semaine, +1,18 EUR (38,59 -> 39,77). */
-  ok(pres(a.semaine, 39.77), 'courses : 39,77 EUR par semaine hors les quatre articles du 21 octobre sans prix, shake de récup compris (' + a.semaine.toFixed(2) + ')');
+  /* 23 octobre : plus de creme a midi, l'huile d'olive revient les mardis, vendredis et samedis -- +30 ml, +0,18 EUR. */
+  ok(pres(a.semaine, 39.95), 'courses : 39,95 EUR par semaine hors les quatre articles du 21 octobre sans prix, shake de récup et semoule à l\'huile compris (' + a.semaine.toFixed(2) + ')');
   ok(a.estimes.length === 0, 'plus aucune estimation : les amandes ont leur prix releve');
   ok(a.cagnotte === 220, 'jour du virement : 220 EUR dans la cagnotte — ce que laisse la periode la plus chere, les courses comptees en caisse (200 depuis les legumes reduits, 14 octobre ; 220 tant que les articles du 21 octobre n\'ont pas de prix) (' + a.cagnotte + ')');
   ok(a.periode.debut === '2026-09-28' && a.periode.fin === '2026-10-24', 'premiere periode du 28 sept. (dernier virement a l\'ancienne date) au 24 oct.');
