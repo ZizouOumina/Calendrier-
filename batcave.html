@@ -8311,7 +8311,11 @@
        il ne l'aime pas : sorti le 24 septembre, il ne revient pas), le miel aussi (« j'ai
        plein de fromage, de miel etc qu'il me reste ») : rien ne se jette. */
     {name:'Petit-déjeuner', items:['Boisson d\'avoine au calcium (400 ml)','Skyr (150g)','Flocons d\'avoine (80g)','Banane (120g)','Miel (10g)','Amandes ou noix nature (30g)','Fruits rouges surgelés (100g)']},
-    {name:'Déjeuner', items:['Féculent cru — Riz 155g','Protéine crue — rotation du jour','Légumes verts (100g)','Huile d\'olive — selon la protéine, dont 10 ml versés froids à l\'assiette']},
+    /* 23 octobre au soir : « il me faut du faible volume pour beaucoup de calories, j'arriverai pas
+       a manger autant », et « pas de semoule, que du riz, je vais acheter un rice cooker » -- riz
+       midi et soir, assiettes plus petites (100 g de viande, 80 g de legumes), l'huile d'olive
+       remonte : 10 ml = 88 kcal sans une bouchee de plus. */
+    {name:'Déjeuner', items:['Féculent cru — Riz 125g','Protéine crue — rotation du jour','Légumes verts (80g)','Huile d\'olive — selon la protéine, dont 15 ml versés crus sur le riz']},
     /* 23 septembre : le jambon (charcuterie, 40 g par jour) cede la place a deux oeufs durs,
        cuits le dimanche avec ceux du petit-dejeuner. La viande transformee etait le seul
        aliment du plan classe cancerogene ; deux oeufs apportent plus de proteines (12,6 g
@@ -8319,8 +8323,10 @@
        le meme jour (objectif poids 72 kg). */
     /* 23 octobre : un vrai sandwich -- 100 g de pain, deux oeufs, le fromage qui lui reste,
        20 g d'amandes et le fruit du jour (il quitte le diner). */
-    {name:'Collation entraînement', items:['Pain complet (100g)','2 œufs durs (100g)','Fromage (20g)','Amandes ou noix nature (20g)','1 fruit (~120g)']},
-    {name:'Dîner', items:['Féculent cru — Pâtes 140g','Protéine crue — rotation du jour','Légumes verts (100g)','Huile d\'olive — selon la protéine, dont 5 ml versés froids à l\'assiette','Créatine — 5 g']},
+    /* 23 octobre au soir : une poignee plutot qu'un sandwich -- amandes, deux oeufs, le fromage,
+       et cinq dattes (son choix parmi les aliments denses). ~590 kcal qui tiennent dans une main. */
+    {name:'Collation entraînement', items:['Amandes ou noix nature (40g)','2 œufs durs (100g)','Fromage (20g)','5 dattes (50g)']},
+    {name:'Dîner', items:['Féculent cru — Riz 125g','Protéine crue — rotation du jour','Légumes verts (80g)','Huile d\'olive — selon la protéine, dont 10 ml versés crus sur le riz','Créatine — 5 g']},
     /* 25 septembre, le regime combat : une cinquieme prise, les QUATRE jours de combat
        seulement (jourDeCombat). A 10:05 avant le JJB ; le mardi, avec la collation de 14:50
        (la Muay Thai est a 19:30, le diner a 18:00). Rangee EN DERNIER dans la liste pour que
@@ -8367,6 +8373,7 @@
     /* 21 octobre, ses choix : des fruits rouges dans le shake, une collation legere avant le
        JJB (galettes de riz), et des sardines ou du maquereau deux fois par semaine. */
     fruitsrouges: {kcal:43, p:0.9, g:7.5, l:0.3},
+    dattes:    {kcal:282, p:2.5,  g:67.0, l:0.4},   /* 23 octobre au soir : dattes Deglet Nour, ~10 g la datte ; elles s'achetent au poids */
     galettes:  {kcal:387, p:8.0,  g:81.5, l:2.8,  piece:10},    /* galettes de riz souffle, ~10 g la galette */
     sardines:  {kcal:208, p:24.6, g:0.0,  l:12.2, piece:85},    /* sardines ou maquereau a l'huile, egouttes : ~85 g la boite */
     /* Les condiments des sauces du jour, comptes depuis le 21 octobre (« j'ai l'impression de
@@ -8409,17 +8416,17 @@
   }
   function compoRepasPlein(nom, iso, brut){
     if(nom === 'Petit-déjeuner') return [{c:'avoine', q:400}, {c:'skyr', q:150}, {c:'flocons', q:80}, {c:'banane', q:120}, {c:'miel', q:10}, {c:'amandes', q:30}, {c:'fruitsrouges', q:100}];
-    if(nom === 'Collation entraînement') return [{c:'pain', q:100}, sardinesLe(iso) ? {c:'sardines', q:85} : {c:'oeufs', q:100}, {c:'fromage', q:20}, {c:'amandes', q:20}, {c:'fruit', q:120}];
+    if(nom === 'Collation entraînement') return [{c:'amandes', q:40}, sardinesLe(iso) ? {c:'sardines', q:85} : {c:'oeufs', q:100}, {c:'fromage', q:20}, {c:'dattes', q:50}];
     if(nom === 'Collation combat') return [{c:'banane', q:120}, {c:'galettes', q:20}, {c:'miel', q:15}];
     if(nom === 'Récup combat') return [{c:'avoine', q:250}, {c:'banane', q:120}, {c:'flocons', q:20}];
     if(nom === 'Déjeuner'){
       var nd = proteineDuJour('dej', iso), pd = PROTEINES[nd].dej, sd = sauceDuJour('dej', iso);
-      return [{c:'couscous', q:grammesFeculent('dej', iso)}, {c:CLE_PROTEINE[nd], q:pd.g}, {c:'legumes', q:LEGUMES_REPAS.dej}, {c:'huile', q:pd.huile - (sd.sansHuile ? HUILE_CRUE.dej : 0)}].concat(compoSauce(sd));
+      return [{c:'riz', q:grammesFeculent('dej', iso)}, {c:CLE_PROTEINE[nd], q:pd.g}, {c:'legumes', q:LEGUMES_REPAS.dej}, {c:'huile', q:pd.huile - (sd.sansHuile ? HUILE_CRUE.dej : 0)}].concat(compoSauce(sd));
     }
     if(nom === 'Dîner'){
       var nn = PROTEINES[proteineDuJour('din', iso)].din, sn = sauceDuJour('din', iso);
       var pates = FECULENTS.din.g + (brut ? 0 : grammesAjustement(ajustementKcalPour(iso || todayISO), FECULENTS.din.kcalG));
-      return [{c:'pates', q:pates}, {c:CLE_PROTEINE[proteineDuJour('din', iso)], q:nn.g}, {c:'legumes', q:LEGUMES_REPAS.din}, {c:'huile', q:nn.huile - (sn.sansHuile ? HUILE_CRUE.din : 0)}].concat(compoSauce(sn));
+      return [{c:'riz', q:pates}, {c:CLE_PROTEINE[proteineDuJour('din', iso)], q:nn.g}, {c:'legumes', q:LEGUMES_REPAS.din}, {c:'huile', q:nn.huile - (sn.sansHuile ? HUILE_CRUE.din : 0)}].concat(compoSauce(sn));
     }
     return [];
   }
@@ -8455,8 +8462,8 @@
        proteines (12,8 contre 7,4) : memes grammes. La cle reste « dej ». */
     /* 23 octobre, le plan de prise de masse : 140 g de semoule a midi, 140 g de pates le soir,
        les memes grammes tous les jours (plus de +45 g les jours de combat). */
-    dej: {nom:'Couscous', g:140, kcalG:3.6, prixKg:1.1},
-    din: {nom:'Pâtes', g:140, kcalG:3.6, prixKg:1.0}
+    dej: {nom:'Riz', g:125, kcalG:3.6, prixKg:1.09},   /* 23 octobre au soir : le riz au rice cooker, midi et soir */
+    din: {nom:'Riz', g:125, kcalG:3.6, prixKg:1.09}
   };
   /* Poulet a midi, viande hachee le soir, les sept jours. Le poisson a ete retire le
      20 septembre -- sa decision, et elle est economique : a 13 EUR le kilo il coutait plus
@@ -8468,14 +8475,17 @@
        de 80 et 90) -- une vraie assiette --, et l'huile redescend : 15 ml a midi (5 de cuisson,
        10 crus sur la semoule) et 10 le soir (5 de cuisson, 5 crus que la sauce remplace). Les
        calories viennent des feculents et du pain, plus de l'huile. */
-    'Poulet':            {dej:{g:120, huile:15}, din:{g:120, huile:10}, prixKg:6.5},
-    'Viande hachée 5 %': {dej:{g:120, huile:15}, din:{g:120, huile:10}, prixKg:8.0}
+    /* 23 octobre au soir, « faible volume pour beaucoup de calories » : 100 g de viande, et l'huile
+       remonte -- 25 ml a midi (10 de cuisson, 15 crus sur le riz), 20 le soir (10 et 10, dont 5
+       que la sauce remplace). */
+    'Poulet':            {dej:{g:100, huile:25}, din:{g:100, huile:20}, prixKg:6.5},
+    'Viande hachée 5 %': {dej:{g:100, huile:25}, din:{g:100, huile:20}, prixKg:8.0}
   };
   /* 14 octobre, sa demande : « 200 g de legumes par repas c'est trop, ca me remplit trop
      l'estomac et je jette souvent le reste ». 100 g a chaque repas (une grosse poignee) au
      lieu de 200 et 150 : 200 g par jour au lieu de 350. Ce qui part (~50 kcal, 4 g de
      proteines) est negligeable ; la boucle poids -> calories corrige le reste. */
-  var LEGUMES_REPAS = {dej:100, din:100};
+  var LEGUMES_REPAS = {dej:80, din:80};   /* 23 octobre au soir : 80 g, le volume baisse */
   /* ===== Les sauces du jour ===== (14 octobre, sa demande)
      « Propose-moi des sauces pour le riz ou les pates, on les met fixes dans le calendrier,
      comme ca je sais quoi manger et quand exactement. » Une sauce par repas et par jour de
@@ -8505,13 +8515,13 @@
        la harissa et ses epices -- rien a racheter, rien a decider. La creme ne reste que le
        soir, avec les pates. */
     dej:{
-      1:{nom:'Huile d\'olive-harissa', recette:'semoule nature, les 10 ml d\'huile d\'olive crue (ou 10 g de beurre) mélangés à chaud, ½ c. à café de harissa et les épices que tu as (cumin, ras el hanout, paprika), à ton goût', ingr:['Harissa']},
-      2:{nom:'Huile d\'olive-harissa', recette:'semoule nature, les 10 ml d\'huile d\'olive crue (ou 10 g de beurre) mélangés à chaud, ½ c. à café de harissa et les épices que tu as (cumin, ras el hanout, paprika), à ton goût', ingr:['Harissa']},
-      3:{nom:'Huile d\'olive-harissa', recette:'semoule nature, les 10 ml d\'huile d\'olive crue (ou 10 g de beurre) mélangés à chaud, ½ c. à café de harissa et les épices que tu as (cumin, ras el hanout, paprika), à ton goût', ingr:['Harissa']},
-      4:{nom:'Huile d\'olive-harissa', recette:'semoule nature, les 10 ml d\'huile d\'olive crue (ou 10 g de beurre) mélangés à chaud, ½ c. à café de harissa et les épices que tu as (cumin, ras el hanout, paprika), à ton goût', ingr:['Harissa']},
-      5:{nom:'Huile d\'olive-harissa', recette:'semoule nature, les 10 ml d\'huile d\'olive crue (ou 10 g de beurre) mélangés à chaud, ½ c. à café de harissa et les épices que tu as (cumin, ras el hanout, paprika), à ton goût', ingr:['Harissa']},
-      6:{nom:'Huile d\'olive-harissa', recette:'semoule nature, les 10 ml d\'huile d\'olive crue (ou 10 g de beurre) mélangés à chaud, ½ c. à café de harissa et les épices que tu as (cumin, ras el hanout, paprika), à ton goût', ingr:['Harissa']},
-      0:{nom:'Huile d\'olive-harissa', recette:'semoule nature, les 10 ml d\'huile d\'olive crue (ou 10 g de beurre) mélangés à chaud, ½ c. à café de harissa et les épices que tu as (cumin, ras el hanout, paprika), à ton goût', ingr:['Harissa']}
+      1:{nom:'Huile d\'olive-harissa', recette:'riz nature, les 15 ml d\'huile d\'olive crue (ou 15 g de beurre) mélangés à chaud, ½ c. à café de harissa et les épices que tu as (cumin, ras el hanout, paprika), à ton goût', ingr:['Harissa']},
+      2:{nom:'Huile d\'olive-harissa', recette:'riz nature, les 15 ml d\'huile d\'olive crue (ou 15 g de beurre) mélangés à chaud, ½ c. à café de harissa et les épices que tu as (cumin, ras el hanout, paprika), à ton goût', ingr:['Harissa']},
+      3:{nom:'Huile d\'olive-harissa', recette:'riz nature, les 15 ml d\'huile d\'olive crue (ou 15 g de beurre) mélangés à chaud, ½ c. à café de harissa et les épices que tu as (cumin, ras el hanout, paprika), à ton goût', ingr:['Harissa']},
+      4:{nom:'Huile d\'olive-harissa', recette:'riz nature, les 15 ml d\'huile d\'olive crue (ou 15 g de beurre) mélangés à chaud, ½ c. à café de harissa et les épices que tu as (cumin, ras el hanout, paprika), à ton goût', ingr:['Harissa']},
+      5:{nom:'Huile d\'olive-harissa', recette:'riz nature, les 15 ml d\'huile d\'olive crue (ou 15 g de beurre) mélangés à chaud, ½ c. à café de harissa et les épices que tu as (cumin, ras el hanout, paprika), à ton goût', ingr:['Harissa']},
+      6:{nom:'Huile d\'olive-harissa', recette:'riz nature, les 15 ml d\'huile d\'olive crue (ou 15 g de beurre) mélangés à chaud, ½ c. à café de harissa et les épices que tu as (cumin, ras el hanout, paprika), à ton goût', ingr:['Harissa']},
+      0:{nom:'Huile d\'olive-harissa', recette:'riz nature, les 15 ml d\'huile d\'olive crue (ou 15 g de beurre) mélangés à chaud, ½ c. à café de harissa et les épices que tu as (cumin, ras el hanout, paprika), à ton goût', ingr:['Harissa']}
     },
     din:{
       1:{nom:'Pesto rosso', recette:'1 c. à soupe de pesto rosso (15 g), à la place des 5 ml d\'huile crue', ingr:['Pesto rosso'], sansHuile:true},
@@ -8766,8 +8776,8 @@
     lignes.push('Rythme visé : <b style="color:var(--ink);">' + kg(b.rythmeVise) + ' / semaine</b> (objectif poids sur son horizon).');
     if(b.delta !== null) lignes.push('Tendance : <b style="color:var(--ink);">' + kg(b.delta) + ' / semaine</b> sur ' + b.n + ' pesées étalées sur ' + b.etalement + ' jours (' + b.premier.toFixed(1).replace('.', ',') + ' → ' + b.dernier.toFixed(1).replace('.', ',') + ' kg).');
     lignes.push((b.delta === null ? '' : '→ ') + b.motif);
-    if(b.reco && b.reco > 0) lignes.push('<span class="sub-note">' + (b.reco > 0 ? '+' : '') + b.reco + ' kcal = ' + (grammesAjustement(b.reco, FECULENTS.din.kcalG) > 0 ? '+' : '') + grammesAjustement(b.reco, FECULENTS.din.kcalG) + ' g de pâtes crues au dîner — écrit dans le plan et dans la liste de courses dès que tu appliques.</span>');
-    if(b.reco && b.reco < 0) lignes.push('<span class="sub-note">−100 kcal = −30 g de pâtes crues au dîner — écrit dans le plan et dans la liste de courses dès que tu appliques.</span>');
+    if(b.reco && b.reco > 0) lignes.push('<span class="sub-note">' + (b.reco > 0 ? '+' : '') + b.reco + ' kcal = ' + (grammesAjustement(b.reco, FECULENTS.din.kcalG) > 0 ? '+' : '') + grammesAjustement(b.reco, FECULENTS.din.kcalG) + ' g de riz cru au dîner — écrit dans le plan et dans la liste de courses dès que tu appliques.</span>');
+    if(b.reco && b.reco < 0) lignes.push('<span class="sub-note">−100 kcal = −30 g de riz cru au dîner — écrit dans le plan et dans la liste de courses dès que tu appliques.</span>');
     el.innerHTML = lignes.map(function(l){ return '<p>' + l + '</p>'; }).join('');
     var cibleReco = b.delta === null ? null : actuel + b.reco;
     if(bApp){
@@ -12381,11 +12391,11 @@
      Rendement a la cuisson : ce que 100 g crus pesent une fois cuits. Sert UNIQUEMENT a
      choisir la taille des boites -- le plan, lui, se pese cru. */
   var RENDEMENT = {riz:2.6, couscous:2.5, pates:2.4, poulet:0.72, hachee:0.75, legumes:0.9};
-  var NOM_ALIMENT = {riz:'Riz', couscous:'Couscous', pates:'Pâtes', poulet:'Poulet', hachee:'Viande hachée 5 %',
+  var NOM_ALIMENT = {riz:'Riz', couscous:'Couscous', pates:'Pâtes', poulet:'Poulet', hachee:'Viande hachée 5 %', dattes:'Dattes',
                      legumes:'Légumes verts surgelés', huile:'Huile d\'olive',
                      oeufs:'Œufs', flocons:'Flocons d\'avoine', skyr:'Skyr', amandes:'Amandes ou noix',
                      banane:'Banane', pain:'Pain complet', fromage:'Fromage', miel:'Miel', fruit:'Fruit', avoine:'Boisson d\'avoine',
-                     fruitsrouges:'Fruits rouges surgelés', galettes:'Galettes de riz', sardines:'Sardines ou maquereau',
+                     fruitsrouges:'Fruits rouges surgelés', galettes:'Galettes de riz', sardines:'Sardines ou maquereau', dattes:'Dattes',
                      creme:'Crème de cuisson', pestoverde:'Pesto verde', pestorosso:'Pesto rosso', parmesan:'Parmesan',
                      soja:'Sauce soja', moutarde:'Moutarde', harissa:'Harissa'};
   var NOMS_SEMAINE = ['dimanche','lundi','mardi','mercredi','jeudi','vendredi','samedi'];
@@ -12422,7 +12432,7 @@
       'Une session le dimanche à 14:30, deux heures, pour les sept repas de midi et les sept du soir. ' +
       'Quatorze boîtes : quatre jours au frigo, trois au congélateur. Le petit-déjeuner et la collation ne se préparent pas — ils s’assemblent en cinq minutes.';
     /* Ce qu'il y a a cuire : chaque poste, cru, et ce qu'il pesera cuit. */
-    var postes = ['couscous','riz','pates','poulet','hachee','legumes'];
+    var postes = ['riz','couscous','pates','poulet','hachee','legumes'];
     host.innerHTML = postes.filter(function(c){ return T[c] > 0; }).map(function(c){
       var cuit = RENDEMENT[c] ? ' <span class="sub-note">→ ~' + poids(T[c] * RENDEMENT[c]) + ' cuits</span>' : '';
       return '<li><span>' + escapeHtml(NOM_ALIMENT[c] || c) + '</span><span><b>' + poids(T[c]) + '</b> crus' + cuit + '</span></li>';
@@ -12432,11 +12442,10 @@
     /* L'ordre. Les durees sont celles des quantites ci-dessus ; les postes longs et
        autonomes (riz, four) partent en premier, le reste se glisse pendant. */
     var etapes = [
-      [0,  'Le <b>couscous</b> — ' + poids(T.couscous) + ' dans un grand saladier, autant d\'eau bouillante salée que de couscous en poids, plus 10 % (la bouilloire suffit), une assiette dessus, 5 min. Rien à surveiller ni à égoutter.'],
+      [0,  'Le <b>riz</b> au rice cooker — ' + poids(T.riz) + ' crus, rincés deux fois, l\'eau jusqu\'au trait de la cuve (ou 1,3 fois le poids du riz). Il cuit seul pendant tout le reste ; en deux fournées si la cuve est trop petite.'],
       [3,  'Le <b>poulet</b> à la poêle — ' + poids(T.poulet) + ', feu vif, 4 min par face puis 3 min à couvert.'],
-      [18, 'Sortir le poulet. <b>Égrener le couscous</b> à la fourchette et l\'étaler sur une plaque : à plat il refroidit en 15 min, en tas il met une heure.'],
       [22, 'La <b>viande hachée</b> — ' + poids(T.hachee) + ', en deux fournées pour qu\'elle grille au lieu de bouillir. 10 min.'],
-      [34, 'Les <b>pâtes</b> — ' + poids(T.pates) + ' crues, <b>deux minutes de moins</b> que le paquet : elles finiront de cuire au réchauffage.'],
+      [40, 'Le riz est cuit : <b>l\'étaler sur une plaque</b>, il refroidit en 15 min. Du riz cuit qui reste tiède des heures est le plus risqué de tous ; à plat, il passe vite au frigo.'],
       [46, 'Les <b>légumes surgelés</b> — ' + poids(T.legumes) + ', à la poêle en trois fournées ou à la vapeur, 7 min. Sans les décongeler avant.'],
       [60, 'Les <b>' + Math.round(BESOIN_SEMAINE.oeufs || 0) + ' œufs durs</b> (la collation) — une casserole, 10 min dans l\'eau bouillante, puis eau froide. On les garde en coquille : une semaine au frigo.'],
       [75, '<b>Tout refroidir à découvert, 20 min.</b> Un tupperware fermé sur du chaud fabrique de la condensation, et la condensation fabrique des bactéries.'],
@@ -12469,7 +12478,7 @@
     }).join('');
     document.getElementById('prep-regles').innerHTML = [
       ['Le petit-déjeuner', 'un shake : 400 ml de boisson d\'avoine au calcium, 150 g de skyr, 80 g de flocons, une banane (congelée en rondelles, c\'est un milkshake), 100 g de fruits rouges surgelés, 10 g de miel, 30 g d\'amandes — 40 secondes de mixeur, à boire en dix minutes. Les jours de JJB, un shake de récup au retour : 250 ml de boisson d\'avoine, une banane, 20 g de flocons'],
-      ['La collation d\'entraînement', 'un sandwich : 100 g de pain complet, 2 œufs durs (une boîte de sardines ou de maquereau le mardi et le jeudi), 20 g de fromage, puis 20 g d\'amandes et un fruit — les œufs sont cuits le dimanche ; le reste s\'assemble au moment de partir'],
+      ['La collation d\'entraînement', 'une poignée : 40 g d\'amandes, 2 œufs durs (une boîte de sardines ou de maquereau le mardi et le jeudi), 20 g de fromage, 5 dattes — peu de volume, ~590 kcal ; les œufs sont cuits le dimanche, le reste s\'emporte'],
       ['Le goût', 'la sauce du jour, faite au réchauffage (onglet Repas) : ses calories sont comptées. L\'huile froide à l\'assiette les jours où la sauce n\'est ni crème ni pesto'],
       ['Réchauffer à la poêle', 'la boîte vidée dans la poêle avec 2 à 3 cuillères d\'eau, couvercle, feu moyen, 4 à 5 min, puis 1 min à découvert. Brûlant jusqu\'au cœur. Pas l\'air fryer : il dessèche le riz et les pâtes'],
       ['Le fruit du dîner', 'entier, jamais dans la boîte : coupé le dimanche il rend de l\'eau et noircit'],
@@ -12566,7 +12575,7 @@
     'Poulet':'poulet', 'Viande hach\u00e9e 5 %':'hachee', 'Skyr':'skyr', '\u0152ufs':'oeufs',
     'Fromage en tranches':'fromage', 'Pain complet':'pain',
     'Bananes':'bananes', 'Fruits (pommes, poires, oranges\u2026)':'fruits',
-    'L\u00e9gumes verts surgel\u00e9s':'legumes', 'Couscous':'couscous', 'P\u00e2tes':'pates',
+    'L\u00e9gumes verts surgel\u00e9s':'legumes', 'Couscous':'couscous', 'P\u00e2tes':'pates', 'Riz':'riz', 'Dattes':'dattes',
     'Flocons d\'avoine':'flocons', 'Miel':'miel', 'Amandes ou noix nature':'amandes',
     'Huile d\'olive':'huile', 'Boisson d\'avoine':'avoine',
     /* 21 octobre : sans prix releve -- « prix a relever », hors total, jusqu'a son ticket */
@@ -12668,9 +12677,7 @@
         art('Viande hach\u00e9e 5 %', B.hachee,  1,  poids, 'pes\u00e9e au comptoir'),
         art('Skyr',              B.skyr,  150,  poids, 'boîte'),
         art('\u0152ufs',              B.oeufs,   6,      sep,   'bo\u00eete', B.oeufs + ' \u0153ufs'),
-        art('Pain complet',      B.pain,  450,  poids, 'paquet'),
         art('Bananes',           B.bananes, 1,      sep,   '\u00e0 l\'unit\u00e9', B.bananes + ' bananes'),
-        art('Fruits (pommes, poires, oranges\u2026)', B.fruits, 1, sep, '\u00e0 l\'unit\u00e9', B.fruits + ' fruits'),
         /* 24 septembre : 55 g par jour, 385 g par semaine -- plus 15 g par jour de combat
            depuis le 28 (collation combat), soit 445 g. Le sachet de 200 g est le format
            courant du rayon ; nature, non salees. Moitie noix si possible : le poisson est
@@ -12707,14 +12714,16 @@
         /* 21 octobre : les fruits rouges du shake (700 g par semaine) et les galettes de riz de
            la collation combat. En DERNIER, comme la boisson d'avoine. */
         art('Fruits rouges surgelés', B.fruitsrouges * 2, 1, poids, 'sachets du rayon surgelés'),
-        art('Galettes de riz', B.galettes * 2, 1, sep, 'galettes · un paquet suffit', (B.galettes * 2) + ' galettes')
+        art('Galettes de riz', B.galettes * 2, 1, sep, 'galettes · un paquet suffit', (B.galettes * 2) + ' galettes'),
+        /* 23 octobre au soir : les dattes de la collation, 50 g par jour. En DERNIER. */
+        art('Dattes', B.dattes * 2, 1, poids, 'dénoyautées')
       ]},
       /* Cycle de 4 semaines, ancre au samedi 26 septembre : 26/9, 24/10, 21/11, 19/12. */
       {cat:'Réserves — toutes les 4 semaines', semaines:4, ancre:ANCRE_COURSES, items:[
         /* 21 octobre : le couscous prend la place du riz, a la meme position (les coches sont
            indexees par position). Sans prix releve : « prix a relever » jusqu'a son ticket. */
-        art('Couscous',          B.couscous * 4,       1000, poids, 'paquet'),
-        art('Pâtes',            (B.pates + plus) * 4, 1000, poids, 'paquet'),
+        /* 23 octobre au soir : le riz, midi et soir, au rice cooker ; il porte l'ajustement de la boucle. */
+        art('Riz',              (B.riz + plus) * 4,   1000, poids, 'paquet'),
         art('Flocons d\'avoine',  B.flocons * 4,         500, poids, 'paquet')
       ]},
       /* Cinq semaines : le cycle venait du beurre de cacahuete (2 kg tombaient presque pile,
@@ -12908,7 +12917,7 @@
     'Fromage en tranches': 'Lidl · cuajo vegetal',
     'Riz': 'Lidl', 'Couscous': 'Lidl', 'P\u00e2tes': 'Lidl', 'Flocons d\'avoine': 'Lidl',
     /* 21 octobre : les nouveaux articles vont chez Lidl, avec le reste -- leur prix attend son ticket */
-    'Sardines ou maquereau (bo\u00eete)': 'Lidl', 'Fruits rouges surgel\u00e9s': 'Lidl', 'Galettes de riz': 'Lidl',
+    'Sardines ou maquereau (bo\u00eete)': 'Lidl', 'Fruits rouges surgel\u00e9s': 'Lidl', 'Galettes de riz': 'Lidl', 'Dattes': 'Lidl',
     'L\u00e9gumes verts surgel\u00e9s': 'Lidl', 'Miel': 'Lidl', 'Amandes ou noix nature': 'Lidl',
     'Boisson d\'avoine': 'Lidl',
     'Bananes': 'Lidl', 'Fruits (pommes, poires, oranges\u2026)': 'Frutería · de saison',
@@ -13092,7 +13101,7 @@
     var plan = construireCourses(), ajust = ajustementKcalPour(todayISO);
     var note = document.getElementById('courses-plan-note'), budget = document.getElementById('courses-budget');
     if(note) note.innerHTML = 'Quantités arrondies au conditionnement du magasin, jamais en dessous du besoin : chaque ligne dit ce que tu prends et ce que le plan demande. Le surplus se cuit et part en tupperware. Coche ce que tu as déjà — aucun stock n\'est supposé. ' + (ajust
-      ? 'Boucle poids → calories en vigueur : <b style="color:var(--ink-dim);">' + (ajust > 0 ? '+' : '') + ajust + ' kcal/jour</b>, soit ' + (grammesAjustement(ajust, 3.6) > 0 ? '+' : '') + grammesAjustement(ajust, 3.6) + ' g de pâtes crues au dîner (' + (grammesAjustement(ajust, 3.6) * 7 > 0 ? '+' : '') + grammesAjustement(ajust, 3.6) * 7 + ' g sur la semaine) — déjà compté ci-dessous.'
+      ? 'Boucle poids → calories en vigueur : <b style="color:var(--ink-dim);">' + (ajust > 0 ? '+' : '') + ajust + ' kcal/jour</b>, soit ' + (grammesAjustement(ajust, 3.6) > 0 ? '+' : '') + grammesAjustement(ajust, 3.6) + ' g de riz cru au dîner (' + (grammesAjustement(ajust, 3.6) * 7 > 0 ? '+' : '') + grammesAjustement(ajust, 3.6) * 7 + ' g sur la semaine) — déjà compté ci-dessous.'
       : 'Aucun ajustement calorique en cours : quantités du plan de base.');
     /* 19 septembre : les prix estimes etaient partis. 21 septembre : ils reviennent,
        mais ce sont les SIENS, releves en magasin, chacun avec sa boutique et sa date.
@@ -16006,12 +16015,12 @@
     'Déjeuner': function(d, iso){
       var c = compoRepas('Déjeuner', iso, false), g = function(k){ var x = c.filter(function(y){ return y.c === k; })[0]; return x ? Math.round(x.q) : 0; };
       var sc = sauceDuJour('dej', iso);
-      return "La boîte du jour : couscous " + g('couscous') + " g crus, poulet " + g('poulet') + " g, " + g('legumes') + " g de légumes. Réchauffée à la poêle avec 2 à 3 cuillères d'eau, couvercle, 4 à 5 min, brûlante jusqu'au cœur. Sauce du jour — " + sc.nom + " : " + sc.recette + ". Sel.";
+      return "La boîte du jour : riz " + g('riz') + " g crus, poulet " + g('poulet') + " g, " + g('legumes') + " g de légumes. Réchauffée à la poêle avec 2 à 3 cuillères d'eau, couvercle, 4 à 5 min, brûlante jusqu'au cœur. Sauce du jour — " + sc.nom + " : " + sc.recette + ". Sel.";
     },
     'Dîner': function(d, iso){
       var c = compoRepas('Dîner', iso, false), g = function(k){ var x = c.filter(function(y){ return y.c === k; })[0]; return x ? Math.round(x.q) : 0; };
       var sc = sauceDuJour('din', iso);
-      return "La boîte du jour : pâtes " + g('pates') + " g crues, viande hachée " + g('hachee') + " g, " + g('legumes') + " g de légumes, à la poêle. Sauce du jour — " + sc.nom + " : " + sc.recette + (sc.sansHuile ? "" : " ; hors du feu, 5 ml d'huile d'olive crue") + ". Un fruit. La créatine, 5 g, avec le repas. Ensuite plus rien jusqu'au lendemain.";
+      return "La boîte du jour : riz " + g('riz') + " g crus, viande hachée " + g('hachee') + " g, " + g('legumes') + " g de légumes, à la poêle. Sauce du jour — " + sc.nom + " : " + sc.recette + (sc.sansHuile ? "" : " ; hors du feu, 5 ml d'huile d'olive crue") + ". Un fruit. La créatine, 5 g, avec le repas. Ensuite plus rien jusqu'au lendemain.";
     },
     '🚿 Douche du soir': "Dix minutes, eau bien tiède — agréable, jamais brûlante : visage et dos restent tièdes (Skinoren). Une heure avant le coucher, le corps évacue ensuite sa chaleur et tu t'endors plus vite. Eau seule sur les cheveux et le corps, gel doux aux aisselles, à l'aine et aux pieds ; la fin à l'eau froide (dimanche, mercredi, vendredi) se fait le matin. Cinq minutes plus tard, le Skinoren. Lumières basses : une lampe, plus le plafonnier.",
     '📖 Écran off — lecture papier': "Avant d'éteindre : la clôture du jour dans la Batcave, deux minutes. Puis téléphone en charge hors de portée, réveil posé loin du lit. Chambre vers 18 °C (fenêtre ouverte dix minutes), noir complet. Tes vingt pages en espagnol, sur papier.",

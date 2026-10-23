@@ -10,23 +10,25 @@ de courses et la préparation sortent toutes de la même source (`compoRepas`).
   assez pour construire du muscle, pas assez pour stocker du gras inutile.
 - Dépense estimée : environ 2 900 à 3 000 kcal par jour (métabolisme de base ≈ 1 680 kcal,
   muscu quatre fois, JJB trois fois à partir du 28 octobre, piscine le mardi). Le plan met
-  **≈ 300 kcal au-dessus**, et la balance corrige (plus bas).
-- **Jours normaux** (mardi, jeudi, samedi, dimanche) : **≈ 3 230 à 3 300 kcal · protéines
-  ≈ 170 g · glucides ≈ 410 g · lipides ≈ 95 g**, en quatre prises.
-- **Jours de JJB** (lundi, mercredi, vendredi, à partir du 28 octobre) : **≈ 3 730 à 3 790
-  kcal · protéines ≈ 180 g**, avec deux prises de plus.
-- Protéines au-delà de 2,5 g par kilo : plus qu'il n'en faut, mais elles viennent d'une vraie
-  assiette (120 g de viande par repas), pas de suppléments.
+  **≈ 250 kcal au-dessus**, et la balance corrige (plus bas).
+- **Peu de volume, beaucoup de calories** (23 octobre au soir : « il me faut du faible volume pour
+  beaucoup de calories, j'arriverai pas à manger autant ») : un shake le matin, l'huile d'olive
+  versée crue sur le riz (10 ml = 88 kcal sans une bouchée de plus), des amandes et des dattes,
+  des assiettes plus petites.
+- **Jours normaux** (mardi, jeudi, samedi, dimanche) : **≈ 3 170 à 3 230 kcal · protéines
+  ≈ 140 à 150 g (2,2 g par kilo) · glucides ≈ 390 g · lipides ≈ 115 g**, en quatre prises.
+- **Jours de JJB** (lundi, mercredi, vendredi, à partir du 28 octobre) : **≈ 3 670 à 3 720
+  kcal · protéines ≈ 150 g**, avec deux prises de plus.
 - Tout est pesé **cru**. Pas de lait (acné) : boisson d'avoine, la version au calcium (« con
   calcio »). Créatine 5 g par jour, au dîner. Eau : 3 L, 3,5 à 4 L les jours de JJB.
 
 ## Les repas — les mêmes grammes tous les jours
 | Repas | Heure | Contenu | kcal · protéines |
 |---|---|---|---|
-| **Shake** | 06:45 | boisson d'avoine au calcium 400 ml, skyr 150 g, flocons d'avoine 80 g, banane 120 g, fruits rouges surgelés 100 g, miel 10 g, amandes ou noix 30 g | ≈ 955 · 42 g |
-| **Déjeuner** | 12:20 | **semoule 140 g**, **poulet 120 g**, légumes verts 100 g, huile d'olive 15 ml (5 de cuisson, 10 crus sur la semoule — ou 10 g de beurre), ½ c. à café de harissa, épices | ≈ 805 · 48 g |
-| **Collation** | 14:50 (16:50 le lundi) | un sandwich : **pain complet 100 g**, 2 œufs durs, fromage 20 g ; puis amandes ou noix 20 g et **1 fruit** | ≈ 680 · 40 g |
-| **Dîner** | 20:00 (19:00 le mardi et le dimanche, 19:30 le samedi) | **pâtes 140 g**, **viande hachée 5 % 120 g**, légumes verts 100 g, huile d'olive 10 ml, sauce du soir, créatine 5 g | ≈ 855 · 49 g |
+| **Shake** | 06:45 | boisson d'avoine au calcium 400 ml, skyr 150 g, flocons d'avoine 80 g, banane 120 g, fruits rouges surgelés 100 g, miel 10 g, amandes ou noix 30 g | ≈ 950 · 41 g |
+| **Déjeuner** | 12:20 | **riz 125 g** (rice cooker), **poulet 100 g**, légumes verts 80 g, **huile d'olive 25 ml** (10 de cuisson, 15 crus sur le riz — ou 15 g de beurre), ½ c. à café de harissa, épices | ≈ 805 · 35 g |
+| **Collation** | 14:50 (16:50 le lundi) | une poignée : **amandes ou noix 40 g**, 2 œufs durs, fromage 20 g, **5 dattes (50 g)** | ≈ 590 · 30 g |
+| **Dîner** | 20:00 (19:00 le mardi et le dimanche, 19:30 le samedi) | **riz 125 g**, **viande hachée 5 % 100 g**, légumes verts 80 g, huile d'olive 20 ml (10 de cuisson, 10 crus, dont 5 que la sauce remplace), sauce du soir, créatine 5 g | ≈ 800 · 34 g |
 
 - **Le mardi et le jeudi**, une boîte de sardines ou de maquereau (≈ 85 g égouttés) remplace les
   deux œufs de la collation : les oméga-3.
@@ -36,29 +38,28 @@ de courses et la préparation sortent toutes de la même source (`compoRepas`).
   - **12:00, le shake de récup** : boisson d'avoine 250 ml, banane 120 g, flocons 20 g (≈ 300
     kcal), au retour du club.
 
-### Ce qui a changé le 23 octobre, et pourquoi
-- **120 g de viande par repas** au lieu de 80 et 90 : une vraie assiette, et des protéines qui
-  viennent du repas.
-- **Moitié moins d'huile** : 30 ml le midi et 15 le soir faisaient 400 kcal d'huile par jour.
-  Les calories viennent maintenant de la semoule, des pâtes (140 g chacune) et du pain (100 g).
-- **Le shake passe à 400 ml** de boisson d'avoine. Le beurre de cacahuète ne revient pas : il ne
-  l'aime pas (sorti le 24 septembre) ; les amandes restent.
-- **Le fruit passe du dîner à la collation**, qui devient un vrai sandwich.
-- **Les mêmes grammes tous les jours** : plus de semoule en plus les jours de JJB, plus de
-  fromage réduit les soirs de parmesan.
-- Rien ne se jette : le fromage et le miel qui restent des anciennes courses restent dans le plan.
+### Pourquoi ce plan (23 octobre)
+- **Le volume d'abord** : les calories viennent de ce qui ne remplit pas — le shake (liquide),
+  l'huile d'olive crue, les amandes, les dattes. Moins de viande (100 g), moins de légumes (80 g),
+  plus de pain ni de fruit à mâcher.
+- **Le riz, midi et soir**, au rice cooker : plus de semoule ni de pâtes. 125 g cru par repas.
+- **Les protéines à 2,2 g par kilo**, ce qu'il faut pour construire, sans en rajouter : les
+  protéines sont ce qui cale le plus.
+- **Les mêmes grammes tous les jours.**
+- Rien ne se jette : le fromage et le miel des anciennes courses restent. Le beurre de cacahuète
+  ne revient pas (il ne l'aime pas, sorti le 24 septembre).
 
 ## Les sauces
 **Le midi, tous les jours** (23 octobre : « j'aime bien la semoule nature avec de l'huile d'olive
-ou du beurre et quelques épices, harissa ; la crème ça va mieux avec le riz et les pâtes ») : la
-semoule nature, les 10 ml d'huile d'olive crue (ou 10 g de beurre), ½ c. à café de harissa et les
+ou du beurre et quelques épices, harissa ; la crème ça va mieux avec le riz et les pâtes ») : le
+riz nature, les 15 ml d'huile d'olive crue (ou 15 g de beurre), ½ c. à café de harissa et les
 épices qu'il a (cumin, ras el hanout, paprika).
 
 **Le soir**, une sauce par jour, toujours la même, faite de ses condiments ; la crème ou le pesto
 remplace les 5 ml d'huile crue, et chaque sauce est comptée dans les macros (1 c. à soupe = 15 g,
 1 c. à café = 5 g) :
 
-| Jour | Soir (pâtes + viande hachée) |
+| Jour | Soir (riz + viande hachée) |
 |---|---|
 | Lundi | Pesto rosso : 1 c. à soupe (15 g) |
 | Mardi | Pesto verde-parmesan : 15 g de pesto, 10 g de parmesan |
@@ -76,18 +77,18 @@ lui-même la quantité.
 Une pesée **chaque dimanche, à jeun**. Rien ne se lit pendant les trois premières semaines
 (jusqu'au 11 novembre) : la balance monte d'un à trois kilos d'eau et de glycogène, ce n'est pas
 du gras. Ensuite, dès quatre pesées, la Batcave calcule la pente : trop lente (moins de la moitié
-du rythme visé), elle propose **+150 kcal**, soit +40 g de pâtes crues au dîner ; trop rapide
+du rythme visé), elle propose **+150 kcal**, soit +40 g de riz cru au dîner ; trop rapide
 (plus de 1,5 fois le rythme), **−100 kcal**. Elle propose, tu valides.
 
 ## Les courses
-Le samedi à 13:30, la liste de l'onglet Courses, calculée pour le plan entier : poulet 840 g et
-viande hachée 840 g (pesés au comptoir), skyr, œufs, pain complet, bananes, fruits, amandes,
-sardines ou maquereau, légumes verts surgelés, fromage, boisson d'avoine (en briks de 1 L), fruits
-rouges, galettes de riz, semoule, pâtes, flocons, huile d'olive, miel. La Batcave en calcule le
-coût ; les articles sans prix relevé (semoule, fruits rouges, galettes, sardines) attendent son
-ticket.
+Le samedi à 13:30, la liste de l'onglet Courses, calculée pour le plan entier : poulet 700 g et
+viande hachée 700 g (pesés au comptoir), skyr, œufs, bananes, amandes, sardines ou maquereau,
+légumes verts surgelés, fromage, boisson d'avoine (en briks de 1 L), fruits rouges, galettes de
+riz, dattes, riz, flocons, huile d'olive, miel. La Batcave en calcule le coût ; les articles sans
+prix relevé (fruits rouges, galettes, sardines, dattes) attendent son ticket.
 
 ## La préparation (batch cooking)
-Le dimanche à 14:30 : la semoule (eau bouillante, couvercle, 5 min), les pâtes, le poulet, la
-viande hachée et les légumes pour la semaine, et les 10 œufs durs. Sept boîtes pour les midis,
+Le dimanche à 14:30 : le riz de la semaine au rice cooker (en deux fournées si la cuve est trop
+petite, étalé sur une plaque dès qu'il est cuit), le poulet, la viande hachée et les légumes, et
+les 10 œufs durs. Sept boîtes pour les midis,
 sept pour les soirs ; l'huile crue, la harissa et la sauce du soir se mettent au réchauffage.

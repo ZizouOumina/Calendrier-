@@ -230,6 +230,6 @@ Tractions à 12 reps propres sur toutes les séries, dips à 15, jambes dès que
 - **Le repos entre les séries** : la barre « Repos » en haut de l'onglet Sport propose les temps de la séance du jour (30, 45, 60, 75, 90, 120 s). Un appui lance le décompte, un bip et une vibration sonnent la fin. On ne compte plus dans sa tête, et les repos courts arrêtent de s'allonger.
 
 ## Autour de la séance
-- Collation entraînement à 14:50 (un sandwich : pain complet, 2 œufs durs — sardines ou maquereau le mardi et le jeudi —, fromage ; puis amandes et un fruit) ; le petit-déjeuner suit la séance à 06:45. Les jours de JJB, collation combat à 10:05 (banane, galettes de riz, miel) et shake de récup à 12:00 (boisson d'avoine, banane, flocons).
+- Collation entraînement à 14:50 (une poignée : amandes, 2 œufs durs — sardines ou maquereau le mardi et le jeudi —, fromage, dattes) ; le petit-déjeuner suit la séance à 06:45. Les jours de JJB, collation combat à 10:05 (banane, galettes de riz, miel) et shake de récup à 12:00 (boisson d'avoine, banane, flocons).
 - Sommeil : lever 05:30 tous les jours, coucher 21:35, tous les jours. L'efficacité de sommeil se mesure sur tes vraies nuits dès que sept nuits portent le sommeil Bevel et le temps au lit.
 - Objectif à six mois : 64 → 72 kg (≈ 1,3 kg par mois, relevé le 23 septembre) avec le plan d'alimentation (voir programme-alimentation.md).
