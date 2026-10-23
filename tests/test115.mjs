@@ -115,15 +115,17 @@ console.log('\n== 4) L\'alimentation du 21 octobre : shake, sauces comptées, co
   ok(/fruitsrouges 100/.test(r.shake) && /miel 10/.test(r.shake), 'shake : 100 g de fruits rouges, 10 g de miel (' + r.shake + ')');
   /* 23 octobre, le plan de prise de masse : les memes grammes tous les jours -- 140 g de semoule et 120 g
      de poulet a midi, 15 ml d'huile (10 crus) et la harissa ; 120 g de viande hachee le soir. */
-  ok(/^couscous 140, poulet 120/.test(r.dejLun) && /^couscous 140, poulet 120/.test(r.dejMar), 'semoule à midi : 140 g et 120 g de poulet, le lundi (combat) comme le mardi');
-  ok(/huile 15, harissa 3$/.test(r.dejLun), 'lundi midi : semoule à l\'huile d\'olive et harissa, comptée (' + r.dejLun + ')');
-  ok(/huile 15, harissa 3$/.test(r.dejMar) && !/creme/.test(r.dejMar), 'mardi midi : la même semoule, la crème ne reste que le soir (' + r.dejMar + ')');
-  ok(/^pates 140, hachee 120/.test(r.dinMar) && /huile 5/.test(r.dinMar) && /pestoverde 15, parmesan 10/.test(r.dinMar), 'mardi soir : 140 g de pâtes, 120 g de viande, pesto verde et parmesan comptés, 5 ml d\'huile en moins (' + r.dinMar + ')');
-  ok(/^pain 100, sardines 85/.test(r.colMar) && !/oeufs/.test(r.colMar) && /fromage 20, amandes 20, fruit 120/.test(r.colMar), 'mardi 14:50 : le sandwich aux sardines, 20 g de fromage, 20 g d\'amandes et un fruit (' + r.colMar + ')');
+  /* 23 octobre au soir, le plan dense : riz 125 g midi et soir, 100 g de viande, 80 g de legumes, l'huile
+     crue sur le riz (25 ml a midi, 15 le soir apres la sauce) ; la collation est une poignee. */
+  ok(/^riz 125, poulet 100, legumes 80/.test(r.dejLun) && /^riz 125, poulet 100/.test(r.dejMar), 'riz à midi : 125 g et 100 g de poulet, le lundi (combat) comme le mardi');
+  ok(/huile 25, harissa 3$/.test(r.dejLun), 'lundi midi : riz à l\'huile d\'olive et harissa, comptée (' + r.dejLun + ')');
+  ok(/huile 25, harissa 3$/.test(r.dejMar) && !/creme/.test(r.dejMar), 'mardi midi : le même riz, la crème ne reste que le soir (' + r.dejMar + ')');
+  ok(/^riz 125, hachee 100, legumes 80/.test(r.dinMar) && /huile 15/.test(r.dinMar) && /pestoverde 15, parmesan 10/.test(r.dinMar), 'mardi soir : riz 125 g, 100 g de viande, pesto verde et parmesan comptés, 5 ml d\'huile en moins (' + r.dinMar + ')');
+  ok(/^amandes 40, sardines 85, fromage 20, dattes 50$/.test(r.colMar) && !/oeufs/.test(r.colMar), 'mardi 14:50 : la poignée — amandes, sardines à la place des œufs, fromage, dattes (' + r.colMar + ')');
   ok(/oeufs 100/.test(r.colLun) && /fromage 20/.test(r.colLun), 'lundi 14:50 : les œufs, 20 g de fromage');
   ok(r.combat === 'banane 120, galettes 20, miel 15', 'collation combat : banane, 2 galettes de riz, 15 g de miel (' + r.combat + ')');
-  ok(!('creme' in r.besoin) && !('pestoverde' in r.besoin) && r.besoin.sardines === 2 && r.besoin.galettes === 6 && r.besoin.fruitsrouges === 700 && !('riz' in r.besoin),
-     'courses : les condiments restent hors liste ; 2 sardines, 6 galettes, 700 g de fruits rouges, plus de riz');
+  ok(!('creme' in r.besoin) && !('pestoverde' in r.besoin) && r.besoin.sardines === 2 && r.besoin.galettes === 6 && r.besoin.fruitsrouges === 700 && r.besoin.riz === 1750 && !('couscous' in r.besoin) && !('pates' in r.besoin) && r.besoin.dattes === 350,
+     'courses : les condiments restent hors liste ; 2 sardines, 6 galettes, 700 g de fruits rouges, 1 750 g de riz (midi et soir), plus de semoule ni de pâtes, 350 g de dattes');
   await ctx.close();
 }
 

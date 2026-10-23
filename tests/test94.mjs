@@ -49,9 +49,9 @@ console.log('\n== 330) Cinq catégories, toutes alimentaires, et le frais seul e
      paquet couvre presque trois semaines. Il portait déjà ce cycle-là tout en restant
      rangé dans le frais, et la catégorie annonçait donc un rythme qu'un de ses articles
      ne suivait pas. */
-  ok(/Chaque semaine/.test(hebdo.titre) && hebdo.n === 9, 'la liste hebdomadaire fait 9 articles — les amandes entrent le 24 septembre à la place du beurre de cacahuète, les sardines le 21 octobre (' + hebdo.n + ')');
+  ok(/Chaque semaine/.test(hebdo.titre) && hebdo.n === 7, 'la liste hebdomadaire fait 7 articles — le pain et les fruits sortent le 23 octobre au soir (le volume) ; les amandes entrent le 24 septembre à la place du beurre de cacahuète, les sardines le 21 octobre (' + hebdo.n + ')');
   const t = await fr.evaluate(() => document.querySelector('.page[data-page="courses"]').textContent);
-  ok(!/Couscous/.test(hebdo.titre + '') && /Couscous — 4 kg/.test(t) && /demande 3\u202f920 g/.test(t), 'le couscous est en réserve : 4 kg achetés pour 3 920 g demandés (140 g par jour depuis le 23 octobre, les mêmes grammes les jours de combat ; avant : 125 g par jour, 170 les jours de combat, depuis le 21 octobre)');
+  ok(!/Riz/.test(hebdo.titre + '') && /Riz — 7 kg/.test(t) && !/Couscous|Pâtes —/.test(t), 'le riz est en réserve : 7 kg pour quatre semaines (125 g midi et soir depuis le 23 octobre au soir, plus de semoule ni de pâtes ; avant, les mêmes grammes les jours de combat ; avant : 125 g par jour, 170 les jours de combat, depuis le 21 octobre)');
   ok(!/Shampooing|Cotons-tiges|Nettoyant visage|Brosse à dents|Bain de bouche|Brossettes|Crème solaire|Lessive|Dentifrice/.test(t),
      'plus une seule ligne de santé et hygiène');
   ok(!/Éponges|Sacs poubelle|Nettoyant sol|Papier toilette|Essuie-tout|Liquide vaisselle|Anticalcaire|Nettoyant WC|Gants de ménage/.test(t),
@@ -76,7 +76,7 @@ console.log('\n== 331) Samedi 26 septembre : l\'ancre, tout est dû ==');
   /* Aucun stock n'est suppose : le 19, TOUTES les categories sont dues et toutes leurs
      lignes comptent. 9 frais + 1 surgele + 4 reserves + 2 (cycle de 5 semaines) + 1 pot de
      creatine = 17. Ce qu'il a deja, il le coche quand meme. */
-  ok(/\/20 articles/.test(somme), '20 articles le 26 : tout part de zéro (' + somme + ')');
+  ok(/\/18 articles/.test(somme), '18 articles le 26 : tout part de zéro (' + somme + ')');
   await ctx.close();
 }
 {
@@ -125,7 +125,7 @@ console.log('\n== 333) L\'habitude « Courses faites » reste validable ==');
     await new Promise(r => setTimeout(r, 120));
   }
   const somme = await fr.evaluate(() => document.getElementById('courses-summary').textContent);
-  ok(/^9\/9/.test(somme), 'cocher le frais suffit : ' + somme + ' (' + avant + ' cases)');
+  ok(/^7\/7/.test(somme), 'cocher le frais suffit : ' + somme + ' (' + avant + ' cases)');
   const coche = await fr.evaluate(() => {
     const l = [...document.querySelectorAll('#dash-checklist li label')].map(x => x.textContent);
     return l.some(x => /Courses/.test(x));
@@ -158,15 +158,15 @@ console.log('\n== 334b) Aucun stock n\'est supposé : il coche ce qu\'il a ==');
   const t = await fr.evaluate(() => document.querySelector('.page[data-page="courses"]').textContent);
   ok(!/tu en as|il t’en reste|à racheter le/.test(t), 'aucune ligne ne parle de stock ni de date de rachat');
   ok(!/Beurre de cacahuète/.test(t), 'le beurre de cacahuète est sorti de la liste (24 septembre)');
-  ok(/Amandes ou noix nature — 400 g/.test(t) && /demande 350 g/.test(t), 'amandes : 2 sachets de 200 g, pour 350 g demandés (30 g le matin, 20 g à 14:50 depuis le 23 octobre ; plus d\'amandes dans la collation combat depuis le 21 octobre)');
-  ok(/Huile d'olive — 2 L/.test(t) && /demande 700 ml/.test(t), 'huile : un bidon de 2 L, pour 700 ml demandés (15 ml à midi et 10 le soir depuis le 23 octobre ; plus de crème à midi depuis le 23 octobre)');
+  ok(/Amandes ou noix nature — 600 g/.test(t) && /demande 490 g/.test(t), 'amandes : 3 sachets de 200 g, pour 490 g demandés (30 g le matin, 40 g à 14:50 depuis le 23 octobre au soir ; plus d\'amandes dans la collation combat depuis le 21 octobre)');
+  ok(/Huile d'olive — 2 L/.test(t) && /demande 1\u202f400 ml/.test(t), 'huile : un bidon de 2 L, pour 1 400 ml demandés (25 ml à midi et 15 le soir depuis le 23 octobre au soir : l\'huile crue sur le riz, des calories sans volume)');
   await ctx.close();
 }
 {
   /* Le 17 octobre les reserves reviennent, aux memes quantites : aucun report. */
   const { ctx, fr } = await jour('2026-10-31T10:00:00+02:00');
   const t = await fr.evaluate(() => document.querySelector('.page[data-page="courses"]').textContent);
-  ok(/Couscous — 4 kg/.test(t) && /Pâtes — 4 kg/.test(t), 'le 24 octobre, couscous et pâtes reviennent aux mêmes quantités');
+  ok(/Riz — 7 kg/.test(t), 'le 24 octobre, le riz revient à la même quantité');
   await ctx.close();
 }
 
@@ -219,8 +219,10 @@ console.log('\n== 334d) La liste ne porte QUE de la nourriture ==');
   /* Le fromage n'est plus la 6e ligne du frais : depuis le 22 septembre il est range
      dans « Toutes les 2 semaines », derriere les surgeles, parce que c'est le cycle
      qu'il portait deja. L'ordre attendu suit donc le DOM, categorie par categorie. */
+  /* 23 octobre au soir, le plan dense : le pain et les fruits sortent, le riz remplace semoule et
+     pates (une seule ligne), les dattes entrent en fin des « 2 semaines ». */
   const ATTENDU = ['Poulet', 'Viande hachée 5 %', 'Skyr', 'Œufs',
-                   'Pain complet', 'Bananes', 'Fruits (pommes, poires, oranges…)',
+                   'Bananes',
                    'Amandes ou noix nature',
                    /* 21 octobre : les sardines, en fin de « Chaque semaine » */
                    'Sardines ou maquereau (boîte)',
@@ -228,14 +230,13 @@ console.log('\n== 334d) La liste ne porte QUE de la nourriture ==');
                    /* 29 septembre : la boisson d'avoine du shake, un pack de 6 L toutes les deux semaines */
                    'Boisson d\'avoine',
                    /* 21 octobre : les fruits rouges du shake et les galettes de riz de la collation combat */
-                   'Fruits rouges surgelés', 'Galettes de riz',
-                   /* 21 octobre : le couscous prend la place du riz */
-                   'Couscous', 'Pâtes', 'Flocons d\'avoine',
+                   'Fruits rouges surgelés', 'Galettes de riz', 'Dattes',
+                   'Riz', 'Flocons d\'avoine',
                    /* 26 septembre : le miel passe au cycle de cinq semaines, en pot de 750 g */
                    'Huile d\'olive', 'Miel', 'Créatine monohydrate'];
-  ok(lignes.length === 20, '20 lignes, pas une de plus (' + lignes.length + ')');
+  ok(lignes.length === 18, '18 lignes, pas une de plus (' + lignes.length + ')');
   ok(JSON.stringify(lignes) === JSON.stringify(ATTENDU),
-     'et ce sont exactement les vingt attendues' +
+     'et ce sont exactement les dix-huit attendues' +
      (JSON.stringify(lignes) === JSON.stringify(ATTENDU) ? '' : ' — reçu : ' + lignes.join(' · ')));
   /* Nommement, les rayons qui sont sortis : hygiene, maison, menage, brosse a dents. */
   const SORTIS = ['Shampooing', 'Après-shampooing', 'Gel douche', 'Nettoyant visage', 'Dentifrice',
@@ -303,12 +304,12 @@ console.log('\n== 334) Ses prix a lui, releves en magasin -- et rien d\'invente 
      Les assertions ci-dessous cherchent ce que le code ÉCRIT, pas ce que le CSS affiche. */
   const lignes = await fr.evaluate(() =>
     [...document.querySelectorAll('#courses-grid .cat-card li')].map(l => l.textContent));
-  const muettes = lignes.filter(l => !/€|Créatine|^Boisson d\'avoine|^(Couscous|Fruits rouges|Galettes de riz|Sardines)/.test(l));
+  const muettes = lignes.filter(l => !/€|Créatine|^Boisson d\'avoine|^(Couscous|Fruits rouges|Galettes de riz|Sardines|Dattes)/.test(l));
   ok(lignes.length > 0 && muettes.length === 0,
      'les ' + lignes.length + ' lignes du jour portent toutes leur prix' +
      (muettes.length ? ' — muettes : ' + muettes.join(' · ') : ''));
-  ok(lignes.filter(l => /prix à relever/.test(l)).every(l => /^(Boisson d\'avoine|Couscous|Fruits rouges|Galettes de riz|Sardines)/.test(l)) && lignes.some(l => /^Amandes/.test(l) && /12,00 €\/kg/.test(l)),
-     'seuls les articles du 21 octobre disent « prix à relever » ; les amandes à 12 €/kg');
+  ok(lignes.filter(l => /prix à relever/.test(l)).every(l => /^(Boisson d\'avoine|Couscous|Fruits rouges|Galettes de riz|Sardines|Dattes)/.test(l)) && lignes.some(l => /^Amandes/.test(l) && /12,00 €\/kg/.test(l)),
+     'seuls les articles des 21 et 23 octobre disent « prix à relever » ; les amandes à 12 €/kg');
   ok(!lignes.some(l => /Beurre de cacahuète/.test(l)), 'plus de beurre de cacahuète');
   ok(lignes.some(l => /Poulet/.test(l) && /7,50 €\/kg/.test(l)),
      'le poulet porte le prix de sa boucherie : 7,50 €/kg');
