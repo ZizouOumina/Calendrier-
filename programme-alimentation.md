@@ -15,17 +15,20 @@ de courses et la préparation sortent toutes de la même source (`compoRepas`).
   beaucoup de calories, j'arriverai pas à manger autant ») : un shake le matin, l'huile d'olive
   versée crue sur le riz (10 ml = 88 kcal sans une bouchée de plus), des amandes et des dattes,
   des assiettes plus petites.
-- **Jours normaux** (mardi, jeudi, samedi, dimanche) : **≈ 3 160 à 3 240 kcal · protéines
-  ≈ 115 à 121 g (1,8 à 1,9 g par kilo) · glucides ≈ 415 g · lipides ≈ 120 g**, en quatre prises.
-- **Jours de JJB** (lundi, mercredi, vendredi, à partir du 28 octobre) : **≈ 3 720 à 3 780
-  kcal · protéines ≈ 126 à 129 g**, avec deux prises de plus.
+- **Jours normaux** (mardi, jeudi, samedi, dimanche) : **≈ 3 140 à 3 220 kcal · protéines
+  ≈ 114 à 120 g (1,8 à 1,9 g par kilo) · glucides ≈ 413 g · lipides ≈ 117 à 124 g**, en quatre prises.
+- **Jours de JJB** (lundi, mercredi, vendredi, à partir du 28 octobre) : **≈ 3 700 à 3 760
+  kcal · protéines ≈ 124 à 127 g**, avec deux prises de plus.
+- Les valeurs : CIQUAL/USDA pour les aliments bruts, les étiquettes pour la boisson d'avoine
+  (Lidl : 43 kcal, 1,3 g de protéines pour 100 ml) et le skyr. Recalculées à la main le
+  25 octobre, aliment par aliment : la Batcave tombe juste, à l'arrondi près.
 - Tout est pesé **cru**. Pas de lait (acné) : boisson d'avoine, la version au calcium (« con
   calcio »). Créatine 5 g par jour, au dîner. Eau : 3 L, 3,5 à 4 L les jours de JJB.
 
 ## Les repas — les mêmes grammes tous les jours
 | Repas | Heure | Contenu | kcal · protéines |
 |---|---|---|---|
-| **Shake** | 06:45 | boisson d'avoine au calcium 400 ml, skyr 150 g, flocons d'avoine 80 g, banane 120 g, fruits rouges surgelés 100 g, **miel 20 g**, amandes ou noix 30 g | ≈ 980 · 41 g |
+| **Shake** | 06:45 | boisson d'avoine au calcium 400 ml, skyr 150 g, flocons d'avoine 80 g, banane 120 g, fruits rouges surgelés 100 g, **miel 20 g**, amandes ou noix 30 g | ≈ 960 · 40 g |
 | **Déjeuner** | 12:20 | **riz 125 g** (rice cooker), **poulet 50 g**, légumes verts 80 g, **huile d'olive 30 ml** (10 de cuisson, 20 crus sur le riz — ou 20 g de beurre), ½ c. à café de harissa, épices | ≈ 800 · 23 g |
 | **Collation** | 14:50 (16:50 le lundi) | une poignée : **amandes ou noix 40 g**, 2 œufs durs, fromage 20 g, **7 dattes (70 g)** | ≈ 640 · 28 g |
 | **Dîner** | 20:00 (19:00 le mardi et le dimanche, 19:30 le samedi) | **riz 125 g**, **viande hachée 5 % 50 g**, légumes verts 80 g, huile d'olive 25 ml (10 de cuisson, 15 crus, dont 5 que la sauce remplace), sauce du soir, créatine 5 g | ≈ 775 à 800 · 23 g |
@@ -35,8 +38,22 @@ de courses et la préparation sortent toutes de la même source (`compoRepas`).
 - **Les jours de JJB**, deux prises en plus :
   - **10:05, la collation combat** : banane 120 g, 2 galettes de riz, miel 15 g (≈ 230 kcal),
     25 minutes avant le tatami ;
-  - **12:00, le shake de récup** : boisson d'avoine 250 ml, banane 120 g, flocons 20 g (≈ 300
+  - **12:00, le shake de récup** : boisson d'avoine 250 ml, banane 120 g, flocons 20 g (≈ 290
     kcal), au retour du club.
+
+### D'où viennent les protéines (un samedi, 114 g)
+Riz 18,5 g · skyr 15,8 · amandes 14,8 · œufs 12,6 · poulet 11,5 · viande hachée 10,8 · flocons
+10,6 · boisson d'avoine 5,2 · fromage 5 · légumes 4,5 · dattes 1,8 · banane 1,3 · sauce du soir 1 ·
+fruits rouges 0,9. Le mardi et le jeudi, les sardines (20,9 g) prennent la place des œufs et du fromage.
+
+### Les fruits et les légumes
+- **Fruits, chaque jour** : une banane (120 g) et 100 g de fruits rouges dans le shake, 7 dattes
+  à la collation. Les jours de JJB, deux bananes de plus (collation combat et récup).
+- **Légumes, chaque jour** : 80 g à midi, 80 g le soir — 160 g, des légumes verts surgelés.
+- Au compte des « 5 par jour » (une portion = 80 g, les fruits secs une seule fois) : ≈ 5
+  portions, ≈ 380 g de fruits et légumes frais plus les dattes. Le point faible : les légumes,
+  deux portions seulement, gardées petites pour le volume (« 200 g par repas, ça me remplit
+  trop », 14 octobre).
 
 ### Pourquoi ce plan (23 octobre)
 - **Le volume d'abord** : les calories viennent de ce qui ne remplit pas — le shake (liquide),

@@ -162,7 +162,7 @@ console.log('\n== 6) Le 21 octobre au soir : shake de récup, pesée chaque dima
     habits: JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-habits') || '[]'),
     snus: JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-addictions') || '{}').snus
   }));
-  ok(r.recup === 'avoine 250, banane 120, flocons 20' && r.kcal.kcal === 302, 'shake de récup : 250 ml de boisson d\'avoine, une banane, 20 g de flocons, 302 kcal (' + r.recup + ')');
+  ok(r.recup === 'avoine 250, banane 120, flocons 20' && r.kcal.kcal === 292, 'shake de récup : 250 ml de boisson d\'avoine, une banane, 20 g de flocons, 292 kcal (étiquette Lidl depuis le 25 octobre) (' + r.recup + ')');
   /* 23 octobre : plus de semoule en plus les jours de combat -- l'ecart, ce sont la collation combat et le shake de recup (≈ 530 kcal), moins les sardines du mardi. */
   ok(r.lun - r.mar > 400, 'il ne compte que les jours de combat : lundi ' + r.lun + ' kcal, mardi ' + r.mar);
   ok(r.avoine === 3550, 'courses : 2,8 L pour les shakes du matin (400 ml depuis le 23 octobre) + 750 ml pour les trois récups = 3 550 ml (' + r.avoine + ')');

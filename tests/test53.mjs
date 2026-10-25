@@ -167,14 +167,14 @@ console.log('\n== 181) Avec +150 kcal : le dîner et les courses l\'écrivent ==
      donc elle en ajoute 144. On annonce l'ecart REEL entre les deux journees, pas la
      consigne -- sinon la soustraction affichee ne tombe pas juste. */
   /* 23 octobre au soir : le plan dense -- plan 3 198. */
-  /* 25 octobre : 50 g de viande, 7 dattes, 20 g de miel -- plan 3 252. */
-  ok(/\/ 3396 kcal \(plan 3252 \+ 144\)/.test(sub), 'cible du jour : ' + sub);
+  /* 25 octobre : 50 g de viande, 7 dattes, 20 g de miel, la boisson d'avoine du Lidl -- plan 3 236. */
+  ok(/\/ 3380 kcal \(plan 3236 \+ 144\)/.test(sub), 'cible du jour : ' + sub);
   /* cocher tout le dîner : l\'apport consommé porte les 150 kcal */
   /* un clic redessine la grille : on re-cherche la première case non cochée du dîner à chaque tour */
   await fr.evaluate(() => { for(let i = 0; i < 10; i++){ const card = [...document.querySelectorAll('.meal-card')].find(c => /Dîner/.test(c.querySelector('.mtitle').textContent)); const cb = card && card.querySelector('input:not(:checked)'); if(!cb) break; cb.click(); } });
   await page.waitForTimeout(200);
   const sub2 = await fr.evaluate(() => document.getElementById('meal-kcal-sub').textContent);
-  ok(/^977 \/ 3396 kcal/.test(sub2), 'dîner coché : ' + sub2);
+  ok(/^977 \/ 3380 kcal/.test(sub2), 'dîner coché : ' + sub2);
   await page_(fr, 'courses');
   const c = await fr.evaluate(() => ({ items: [...document.querySelectorAll('#courses-grid label, #courses-grid-plus label')].map(l => l.textContent), note: document.getElementById('courses-plan-note').textContent }));
   /* L'ajustement suit le sac : +280 g par semaine font +1 120 g sur quatre semaines.
