@@ -94,7 +94,9 @@ ok(r.moisPlan > 0 && r.limits['Nourriture'] === r.moisPlan,
     return out;
   };
   const corrige = await bump(186);
-  ok(corrige.plafond === corrige.attendu && corrige.attendu > 186,
+  /* 25 octobre : 50 g de viande par repas -- le plan en caisse (170) passe SOUS les 186 de la v89.
+     Ce qui se verifie reste le meme : le plafond de la Batcave suit le plan, il ne reste pas a 186. */
+  ok(corrige.plafond === corrige.attendu && corrige.attendu !== 186,
      'plafond de la v89 (186 €) corrigé à ' + corrige.plafond + ' € (' + corrige.attendu + ' attendu)');
   const sien = await bump(250);
   ok(sien.plafond === 250, 'un plafond réglé à la main (250 €) n\'est PAS écrasé (' + sien.plafond + ' €)');

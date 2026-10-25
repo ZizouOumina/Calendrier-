@@ -124,7 +124,8 @@ console.log('\n== 194) Repas cochés → tableau de bord et score ==');
   }
   await page.waitForTimeout(200);
   /* 23 octobre au soir : le shake passe a 400 ml (948 kcal), et la journee au plan dense (3 198 kcal). */
-  ok(/948 \/ 3198 kcal/.test(await txt('#meal-kcal-sub')), 'Repas : 948 / 3198 kcal, le shake du matin (400 ml de boisson d\'avoine depuis le 23 octobre), les sauces comptées (' + (await txt('#meal-kcal-sub')) + ')');
+  /* 25 octobre : 20 g de miel dans le shake (978 kcal), 50 g de viande et 7 dattes (3 252). */
+  ok(/978 \/ 3252 kcal/.test(await txt('#meal-kcal-sub')), 'Repas : 978 / 3252 kcal, le shake du matin (400 ml de boisson d\'avoine depuis le 23 octobre), les sauces comptées (' + (await txt('#meal-kcal-sub')) + ')');
   await aller('dashboard');
   ok(/Petit-déjeuner[\s\S]*?7\/7/.test(await txt('#dash-meals')), 'Tableau de bord : petit-déjeuner 7/7 (le miel et les amandes y sont depuis le 24 septembre, les fruits rouges depuis le 21 octobre)');
   ok(/30% kcal/.test(await txt('#dash-meals-kcal-pct')), 'Tableau de bord : 30 % des kcal (' + (await txt('#dash-meals-kcal-pct')) + ')');

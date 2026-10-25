@@ -34,14 +34,15 @@ console.log('\n== 269) Deux oeufs a la place du jambon ==');
     plafond: JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-budget-limits') || '{}').Nourriture
   }));
   /* 23 octobre au soir, le plan dense : une poignee -- 40 g d'amandes, 2 oeufs, 20 g de fromage, 5 dattes. */
-  ok(r.col.kcal === 586 && r.col.p === 27, 'la collation : 40 g d\'amandes, 2 œufs, fromage, 5 dattes = 586 kcal, 27 g de protéines (' + r.col.kcal + ' / ' + r.col.p + ')');
+  /* 25 octobre : 7 dattes (70 g), les calories de la viande qui descend a 50 g. */
+  ok(r.col.kcal === 642 && r.col.p === 28, 'la collation : 40 g d\'amandes, 2 œufs, fromage, 7 dattes = 642 kcal, 28 g de protéines (' + r.col.kcal + ' / ' + r.col.p + ')');
   /* Le lundi 28 est un jour de combat : la collation combat ajoute 388 kcal. */
   /* 29 septembre : le petit-dejeuner devient un shake (boisson d'avoine, skyr, flocons, banane,
      miel, amandes) : -21 kcal et -11 g de proteines par jour (etiquette Alitey), les deux oeufs du matin sortent. */
   /* 21 octobre : le couscous (170 g les jours de combat), la collation combat legere, les fruits rouges du shake et les sauces comptees : 3 593 kcal, 159 g. */
   /* 21 octobre au soir : le shake de recup au retour du club, +302 kcal et +8 g. */
   /* 23 octobre : la semoule nature a midi (huile d'olive, harissa) -- la sauce soja-moutarde sort, -15 kcal et -2 g. */
-  ok(r.jour.kcal === 3670 && r.jour.p === 148, 'un jour de combat : 3 670 kcal, 148 g de protéines (le plan dense du 23 octobre au soir : riz, huile crue, amandes et dattes), six prises (' + r.jour.kcal + ' / ' + r.jour.p + ')');
+  ok(r.jour.kcal === 3724 && r.jour.p === 126, 'un jour de combat : 3 724 kcal, 126 g de protéines (le plan dense du 23 octobre, la viande à 50 g le 25, 7 dattes et 20 g de miel ; au soir : riz, huile crue, amandes et dattes), six prises (' + r.jour.kcal + ' / ' + r.jour.p + ')');
   ok(r.oeufs === 10 && r.jambon === undefined, 'les courses : 10 œufs par semaine (la collation seule depuis le shake, les sardines le mardi et le jeudi depuis le 21 octobre), plus de jambon (' + r.oeufs + ' / ' + r.jambon + ')');
   ok(!r.cout.lignes.some(l => /Jambon/.test(l.label)) && r.cout.manque.slice().sort().join('|') === ['Dattes', 'Fruits rouges surgelés', 'Galettes de riz', 'Sardines ou maquereau (boîte)'].join('|'), 'le coût ne compte plus de jambon ; seuls manquent les prix des articles du 21 octobre (son ticket) — la boisson d\'avoine a le sien depuis le 29 septembre ('  + r.cout.manque.join() + ')');
   /* 4 octobre : le plafond suit ce qu'il paie en caisse (conditionnements et cycles compris), pas ce qu'il mange. */

@@ -15,23 +15,23 @@ de courses et la préparation sortent toutes de la même source (`compoRepas`).
   beaucoup de calories, j'arriverai pas à manger autant ») : un shake le matin, l'huile d'olive
   versée crue sur le riz (10 ml = 88 kcal sans une bouchée de plus), des amandes et des dattes,
   des assiettes plus petites.
-- **Jours normaux** (mardi, jeudi, samedi, dimanche) : **≈ 3 170 à 3 230 kcal · protéines
-  ≈ 140 à 150 g (2,2 g par kilo) · glucides ≈ 390 g · lipides ≈ 115 g**, en quatre prises.
-- **Jours de JJB** (lundi, mercredi, vendredi, à partir du 28 octobre) : **≈ 3 670 à 3 720
-  kcal · protéines ≈ 150 g**, avec deux prises de plus.
+- **Jours normaux** (mardi, jeudi, samedi, dimanche) : **≈ 3 160 à 3 240 kcal · protéines
+  ≈ 115 à 121 g (1,8 à 1,9 g par kilo) · glucides ≈ 415 g · lipides ≈ 120 g**, en quatre prises.
+- **Jours de JJB** (lundi, mercredi, vendredi, à partir du 28 octobre) : **≈ 3 720 à 3 780
+  kcal · protéines ≈ 126 à 129 g**, avec deux prises de plus.
 - Tout est pesé **cru**. Pas de lait (acné) : boisson d'avoine, la version au calcium (« con
   calcio »). Créatine 5 g par jour, au dîner. Eau : 3 L, 3,5 à 4 L les jours de JJB.
 
 ## Les repas — les mêmes grammes tous les jours
 | Repas | Heure | Contenu | kcal · protéines |
 |---|---|---|---|
-| **Shake** | 06:45 | boisson d'avoine au calcium 400 ml, skyr 150 g, flocons d'avoine 80 g, banane 120 g, fruits rouges surgelés 100 g, miel 10 g, amandes ou noix 30 g | ≈ 950 · 41 g |
-| **Déjeuner** | 12:20 | **riz 125 g** (rice cooker), **poulet 100 g**, légumes verts 80 g, **huile d'olive 25 ml** (10 de cuisson, 15 crus sur le riz — ou 15 g de beurre), ½ c. à café de harissa, épices | ≈ 805 · 35 g |
-| **Collation** | 14:50 (16:50 le lundi) | une poignée : **amandes ou noix 40 g**, 2 œufs durs, fromage 20 g, **5 dattes (50 g)** | ≈ 590 · 30 g |
-| **Dîner** | 20:00 (19:00 le mardi et le dimanche, 19:30 le samedi) | **riz 125 g**, **viande hachée 5 % 100 g**, légumes verts 80 g, huile d'olive 20 ml (10 de cuisson, 10 crus, dont 5 que la sauce remplace), sauce du soir, créatine 5 g | ≈ 800 · 34 g |
+| **Shake** | 06:45 | boisson d'avoine au calcium 400 ml, skyr 150 g, flocons d'avoine 80 g, banane 120 g, fruits rouges surgelés 100 g, **miel 20 g**, amandes ou noix 30 g | ≈ 980 · 41 g |
+| **Déjeuner** | 12:20 | **riz 125 g** (rice cooker), **poulet 50 g**, légumes verts 80 g, **huile d'olive 30 ml** (10 de cuisson, 20 crus sur le riz — ou 20 g de beurre), ½ c. à café de harissa, épices | ≈ 800 · 23 g |
+| **Collation** | 14:50 (16:50 le lundi) | une poignée : **amandes ou noix 40 g**, 2 œufs durs, fromage 20 g, **7 dattes (70 g)** | ≈ 640 · 28 g |
+| **Dîner** | 20:00 (19:00 le mardi et le dimanche, 19:30 le samedi) | **riz 125 g**, **viande hachée 5 % 50 g**, légumes verts 80 g, huile d'olive 25 ml (10 de cuisson, 15 crus, dont 5 que la sauce remplace), sauce du soir, créatine 5 g | ≈ 775 à 800 · 23 g |
 
 - **Le mardi et le jeudi**, une boîte de sardines ou de maquereau (≈ 85 g égouttés) remplace les
-  deux œufs de la collation : les oméga-3.
+  deux œufs **et le fromage** de la collation : les oméga-3, et pas de protéines en trop.
 - **Les jours de JJB**, deux prises en plus :
   - **10:05, la collation combat** : banane 120 g, 2 galettes de riz, miel 15 g (≈ 230 kcal),
     25 minutes avant le tatami ;
@@ -40,11 +40,15 @@ de courses et la préparation sortent toutes de la même source (`compoRepas`).
 
 ### Pourquoi ce plan (23 octobre)
 - **Le volume d'abord** : les calories viennent de ce qui ne remplit pas — le shake (liquide),
-  l'huile d'olive crue, les amandes, les dattes. Moins de viande (100 g), moins de légumes (80 g),
+  l'huile d'olive crue, les amandes, les dattes. Moins de viande (50 g), moins de légumes (80 g),
   plus de pain ni de fruit à mâcher.
 - **Le riz, midi et soir**, au rice cooker : plus de semoule ni de pâtes. 125 g cru par repas.
-- **Les protéines à 2,2 g par kilo**, ce qu'il faut pour construire, sans en rajouter : les
-  protéines sont ce qui cale le plus.
+- **Les protéines à ≈ 120 g, 1,9 g par kilo** (25 octobre : « c'est trop de protéines, réduis
+  juste la viande », puis « descends à 120 g sans toucher au skyr ») : 50 g de viande par repas,
+  et les calories qui partent reviennent en sucre dense — 2 dattes de plus, 10 g de miel de plus
+  dans le shake. Dans la fourchette qui construit (1,6 à 2,2 g par kilo), sans en rajouter, car
+  les protéines sont ce qui cale le plus. Le skyr et la viande, c'est la même qualité : des
+  protéines complètes, avec tous les acides aminés essentiels.
 - **Les mêmes grammes tous les jours.**
 - Rien ne se jette : le fromage et le miel des anciennes courses restent. Le beurre de cacahuète
   ne revient pas (il ne l'aime pas, sorti le 24 septembre).
@@ -52,7 +56,7 @@ de courses et la préparation sortent toutes de la même source (`compoRepas`).
 ## Les sauces
 **Le midi, tous les jours** (23 octobre : « j'aime bien la semoule nature avec de l'huile d'olive
 ou du beurre et quelques épices, harissa ; la crème ça va mieux avec le riz et les pâtes ») : le
-riz nature, les 15 ml d'huile d'olive crue (ou 15 g de beurre), ½ c. à café de harissa et les
+riz nature, les 20 ml d'huile d'olive crue (ou 20 g de beurre), ½ c. à café de harissa et les
 épices qu'il a (cumin, ras el hanout, paprika).
 
 **Le soir**, une sauce par jour, toujours la même, faite de ses condiments ; la crème ou le pesto
@@ -81,8 +85,8 @@ du rythme visé), elle propose **+150 kcal**, soit +40 g de riz cru au dîner ; 
 (plus de 1,5 fois le rythme), **−100 kcal**. Elle propose, tu valides.
 
 ## Les courses
-Le samedi à 13:30, la liste de l'onglet Courses, calculée pour le plan entier : poulet 700 g et
-viande hachée 700 g (pesés au comptoir), skyr, œufs, bananes, amandes, sardines ou maquereau,
+Le samedi à 13:30, la liste de l'onglet Courses, calculée pour le plan entier : poulet 350 g et
+viande hachée 350 g (pesés au comptoir), skyr, œufs, bananes, amandes, sardines ou maquereau,
 légumes verts surgelés, fromage, boisson d'avoine (en briks de 1 L), fruits rouges, galettes de
 riz, dattes, riz, flocons, huile d'olive, miel. La Batcave en calcule le coût ; les articles sans
 prix relevé (fruits rouges, galettes, sardines, dattes) attendent son ticket.

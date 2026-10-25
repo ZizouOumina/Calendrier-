@@ -8310,12 +8310,12 @@
        shake passe a 400 ml de boisson d'avoine. Les amandes restent (le beurre de cacahuete,
        il ne l'aime pas : sorti le 24 septembre, il ne revient pas), le miel aussi (« j'ai
        plein de fromage, de miel etc qu'il me reste ») : rien ne se jette. */
-    {name:'Petit-déjeuner', items:['Boisson d\'avoine au calcium (400 ml)','Skyr (150g)','Flocons d\'avoine (80g)','Banane (120g)','Miel (10g)','Amandes ou noix nature (30g)','Fruits rouges surgelés (100g)']},
+    {name:'Petit-déjeuner', items:['Boisson d\'avoine au calcium (400 ml)','Skyr (150g)','Flocons d\'avoine (80g)','Banane (120g)','Miel (20g)','Amandes ou noix nature (30g)','Fruits rouges surgelés (100g)']},
     /* 23 octobre au soir : « il me faut du faible volume pour beaucoup de calories, j'arriverai pas
        a manger autant », et « pas de semoule, que du riz, je vais acheter un rice cooker » -- riz
        midi et soir, assiettes plus petites (100 g de viande, 80 g de legumes), l'huile d'olive
        remonte : 10 ml = 88 kcal sans une bouchee de plus. */
-    {name:'Déjeuner', items:['Féculent cru — Riz 125g','Protéine crue — rotation du jour','Légumes verts (80g)','Huile d\'olive — selon la protéine, dont 15 ml versés crus sur le riz']},
+    {name:'Déjeuner', items:['Féculent cru — Riz 125g','Protéine crue — rotation du jour','Légumes verts (80g)','Huile d\'olive — selon la protéine, dont 20 ml versés crus sur le riz']},
     /* 23 septembre : le jambon (charcuterie, 40 g par jour) cede la place a deux oeufs durs,
        cuits le dimanche avec ceux du petit-dejeuner. La viande transformee etait le seul
        aliment du plan classe cancerogene ; deux oeufs apportent plus de proteines (12,6 g
@@ -8325,8 +8325,9 @@
        20 g d'amandes et le fruit du jour (il quitte le diner). */
     /* 23 octobre au soir : une poignee plutot qu'un sandwich -- amandes, deux oeufs, le fromage,
        et cinq dattes (son choix parmi les aliments denses). ~590 kcal qui tiennent dans une main. */
-    {name:'Collation entraînement', items:['Amandes ou noix nature (40g)','2 œufs durs (100g)','Fromage (20g)','5 dattes (50g)']},
-    {name:'Dîner', items:['Féculent cru — Riz 125g','Protéine crue — rotation du jour','Légumes verts (80g)','Huile d\'olive — selon la protéine, dont 10 ml versés crus sur le riz','Créatine — 5 g']},
+    /* 25 octobre : 7 dattes (70 g) au lieu de 5, les calories de la viande qui baisse. */
+    {name:'Collation entraînement', items:['Amandes ou noix nature (40g)','2 œufs durs (100g)','Fromage (20g)','7 dattes (70g)']},
+    {name:'Dîner', items:['Féculent cru — Riz 125g','Protéine crue — rotation du jour','Légumes verts (80g)','Huile d\'olive — selon la protéine, dont 15 ml versés crus sur le riz','Créatine — 5 g']},
     /* 25 septembre, le regime combat : une cinquieme prise, les QUATRE jours de combat
        seulement (jourDeCombat). A 10:05 avant le JJB ; le mardi, avec la collation de 14:50
        (la Muay Thai est a 19:30, le diner a 18:00). Rangee EN DERNIER dans la liste pour que
@@ -8415,8 +8416,11 @@
     return liste.map(function(x){ return ENTIERS_REPRISE[x.c] ? x : {c:x.c, q:portionReprise(x.q, f)}; });
   }
   function compoRepasPlein(nom, iso, brut){
-    if(nom === 'Petit-déjeuner') return [{c:'avoine', q:400}, {c:'skyr', q:150}, {c:'flocons', q:80}, {c:'banane', q:120}, {c:'miel', q:10}, {c:'amandes', q:30}, {c:'fruitsrouges', q:100}];
-    if(nom === 'Collation entraînement') return [{c:'amandes', q:40}, sardinesLe(iso) ? {c:'sardines', q:85} : {c:'oeufs', q:100}, {c:'fromage', q:20}, {c:'dattes', q:50}];
+    if(nom === 'Petit-déjeuner') return [{c:'avoine', q:400}, {c:'skyr', q:150}, {c:'flocons', q:80}, {c:'banane', q:120}, {c:'miel', q:20}, {c:'amandes', q:30}, {c:'fruitsrouges', q:100}];
+    /* 25 octobre : le mardi et le jeudi, la boite de sardines remplace les oeufs ET le fromage
+       (elle porte 21 g de proteines, contre 18 pour les deux) -- sinon ces deux jours depassent
+       les 120 g. L'item reste a sa place : les cases sont indexees. */
+    if(nom === 'Collation entraînement') return [{c:'amandes', q:40}, sardinesLe(iso) ? {c:'sardines', q:85} : {c:'oeufs', q:100}, {c:'fromage', q:sardinesLe(iso) ? 0 : 20}, {c:'dattes', q:70}];
     if(nom === 'Collation combat') return [{c:'banane', q:120}, {c:'galettes', q:20}, {c:'miel', q:15}];
     if(nom === 'Récup combat') return [{c:'avoine', q:250}, {c:'banane', q:120}, {c:'flocons', q:20}];
     if(nom === 'Déjeuner'){
@@ -8478,8 +8482,15 @@
     /* 23 octobre au soir, « faible volume pour beaucoup de calories » : 100 g de viande, et l'huile
        remonte -- 25 ml a midi (10 de cuisson, 15 crus sur le riz), 20 le soir (10 et 10, dont 5
        que la sauce remplace). */
-    'Poulet':            {dej:{g:100, huile:25}, din:{g:100, huile:20}, prixKg:6.5},
-    'Viande hachée 5 %': {dej:{g:100, huile:25}, din:{g:100, huile:20}, prixKg:8.0}
+    /* 25 octobre, « c'est trop de proteines, reduis juste la viande » : 80 g par repas (≈ 135 g de
+       proteines par jour, 2,1 g/kg), et 5 ml d'huile crue de plus pour garder les calories --
+       30 ml a midi (10 de cuisson, 20 crus), 25 le soir (10 et 15, dont 5 que la sauce remplace). */
+    /* 25 octobre, la suite : « descends a 120 g de proteines sans toucher au skyr » -- 50 g de
+       viande par repas, l'huile ne bouge pas. Les ~75 kcal qui partent reviennent par deux
+       dattes de plus a la collation et 10 g de miel de plus dans le shake (celui qui lui reste
+       des anciennes courses) : du sucre dense, sans volume ni proteines. */
+    'Poulet':            {dej:{g:50, huile:30}, din:{g:50, huile:25}, prixKg:6.5},
+    'Viande hachée 5 %': {dej:{g:50, huile:30}, din:{g:50, huile:25}, prixKg:8.0}
   };
   /* 14 octobre, sa demande : « 200 g de legumes par repas c'est trop, ca me remplit trop
      l'estomac et je jette souvent le reste ». 100 g a chaque repas (une grosse poignee) au
@@ -8515,13 +8526,13 @@
        la harissa et ses epices -- rien a racheter, rien a decider. La creme ne reste que le
        soir, avec les pates. */
     dej:{
-      1:{nom:'Huile d\'olive-harissa', recette:'riz nature, les 15 ml d\'huile d\'olive crue (ou 15 g de beurre) mélangés à chaud, ½ c. à café de harissa et les épices que tu as (cumin, ras el hanout, paprika), à ton goût', ingr:['Harissa']},
-      2:{nom:'Huile d\'olive-harissa', recette:'riz nature, les 15 ml d\'huile d\'olive crue (ou 15 g de beurre) mélangés à chaud, ½ c. à café de harissa et les épices que tu as (cumin, ras el hanout, paprika), à ton goût', ingr:['Harissa']},
-      3:{nom:'Huile d\'olive-harissa', recette:'riz nature, les 15 ml d\'huile d\'olive crue (ou 15 g de beurre) mélangés à chaud, ½ c. à café de harissa et les épices que tu as (cumin, ras el hanout, paprika), à ton goût', ingr:['Harissa']},
-      4:{nom:'Huile d\'olive-harissa', recette:'riz nature, les 15 ml d\'huile d\'olive crue (ou 15 g de beurre) mélangés à chaud, ½ c. à café de harissa et les épices que tu as (cumin, ras el hanout, paprika), à ton goût', ingr:['Harissa']},
-      5:{nom:'Huile d\'olive-harissa', recette:'riz nature, les 15 ml d\'huile d\'olive crue (ou 15 g de beurre) mélangés à chaud, ½ c. à café de harissa et les épices que tu as (cumin, ras el hanout, paprika), à ton goût', ingr:['Harissa']},
-      6:{nom:'Huile d\'olive-harissa', recette:'riz nature, les 15 ml d\'huile d\'olive crue (ou 15 g de beurre) mélangés à chaud, ½ c. à café de harissa et les épices que tu as (cumin, ras el hanout, paprika), à ton goût', ingr:['Harissa']},
-      0:{nom:'Huile d\'olive-harissa', recette:'riz nature, les 15 ml d\'huile d\'olive crue (ou 15 g de beurre) mélangés à chaud, ½ c. à café de harissa et les épices que tu as (cumin, ras el hanout, paprika), à ton goût', ingr:['Harissa']}
+      1:{nom:'Huile d\'olive-harissa', recette:'riz nature, les 20 ml d\'huile d\'olive crue (ou 20 g de beurre) mélangés à chaud, ½ c. à café de harissa et les épices que tu as (cumin, ras el hanout, paprika), à ton goût', ingr:['Harissa']},
+      2:{nom:'Huile d\'olive-harissa', recette:'riz nature, les 20 ml d\'huile d\'olive crue (ou 20 g de beurre) mélangés à chaud, ½ c. à café de harissa et les épices que tu as (cumin, ras el hanout, paprika), à ton goût', ingr:['Harissa']},
+      3:{nom:'Huile d\'olive-harissa', recette:'riz nature, les 20 ml d\'huile d\'olive crue (ou 20 g de beurre) mélangés à chaud, ½ c. à café de harissa et les épices que tu as (cumin, ras el hanout, paprika), à ton goût', ingr:['Harissa']},
+      4:{nom:'Huile d\'olive-harissa', recette:'riz nature, les 20 ml d\'huile d\'olive crue (ou 20 g de beurre) mélangés à chaud, ½ c. à café de harissa et les épices que tu as (cumin, ras el hanout, paprika), à ton goût', ingr:['Harissa']},
+      5:{nom:'Huile d\'olive-harissa', recette:'riz nature, les 20 ml d\'huile d\'olive crue (ou 20 g de beurre) mélangés à chaud, ½ c. à café de harissa et les épices que tu as (cumin, ras el hanout, paprika), à ton goût', ingr:['Harissa']},
+      6:{nom:'Huile d\'olive-harissa', recette:'riz nature, les 20 ml d\'huile d\'olive crue (ou 20 g de beurre) mélangés à chaud, ½ c. à café de harissa et les épices que tu as (cumin, ras el hanout, paprika), à ton goût', ingr:['Harissa']},
+      0:{nom:'Huile d\'olive-harissa', recette:'riz nature, les 20 ml d\'huile d\'olive crue (ou 20 g de beurre) mélangés à chaud, ½ c. à café de harissa et les épices que tu as (cumin, ras el hanout, paprika), à ton goût', ingr:['Harissa']}
     },
     din:{
       1:{nom:'Pesto rosso', recette:'1 c. à soupe de pesto rosso (15 g), à la place des 5 ml d\'huile crue', ingr:['Pesto rosso'], sansHuile:true},
@@ -8588,7 +8599,8 @@
      la rotation du jour (déjeuner et dîner). */
   function texteItemRepas(m, it, ii, iso){
     if(m.name === 'Collation entraînement'){
-      if(ii === 1 && sardinesLe(iso)) return '1 boîte de sardines ou de maquereau (≈ 85 g égouttés) — à la place des œufs, le mardi et le jeudi';
+      if(ii === 1 && sardinesLe(iso)) return '1 boîte de sardines ou de maquereau (≈ 85 g égouttés) — à la place des œufs et du fromage, le mardi et le jeudi';
+      if(ii === 2 && sardinesLe(iso)) return 'Pas de fromage aujourd\'hui — la boîte de sardines le remplace';
     }
     var repas = m.name === 'Dîner' ? 'din' : (m.name === 'Déjeuner' ? 'dej' : null), f = facteurPortions(iso);
     /* semaine de reprise : les grammes ecrits dans le libelle suivent le facteur, sauf ce
@@ -12476,8 +12488,8 @@
              j.din.filter(dansBoite).map(ligne).join('') + '</ul></div>';
     }).join('');
     document.getElementById('prep-regles').innerHTML = [
-      ['Le petit-déjeuner', 'un shake : 400 ml de boisson d\'avoine au calcium, 150 g de skyr, 80 g de flocons, une banane (congelée en rondelles, c\'est un milkshake), 100 g de fruits rouges surgelés, 10 g de miel, 30 g d\'amandes — 40 secondes de mixeur, à boire en dix minutes. Les jours de JJB, un shake de récup au retour : 250 ml de boisson d\'avoine, une banane, 20 g de flocons'],
-      ['La collation d\'entraînement', 'une poignée : 40 g d\'amandes, 2 œufs durs (une boîte de sardines ou de maquereau le mardi et le jeudi), 20 g de fromage, 5 dattes — peu de volume, ~590 kcal ; les œufs sont cuits le dimanche, le reste s\'emporte'],
+      ['Le petit-déjeuner', 'un shake : 400 ml de boisson d\'avoine au calcium, 150 g de skyr, 80 g de flocons, une banane (congelée en rondelles, c\'est un milkshake), 100 g de fruits rouges surgelés, 20 g de miel, 30 g d\'amandes — 40 secondes de mixeur, à boire en dix minutes. Les jours de JJB, un shake de récup au retour : 250 ml de boisson d\'avoine, une banane, 20 g de flocons'],
+      ['La collation d\'entraînement', 'une poignée : 40 g d\'amandes, 2 œufs durs et 20 g de fromage (le mardi et le jeudi, une boîte de sardines ou de maquereau à la place des deux), 7 dattes — peu de volume, ~650 kcal ; les œufs sont cuits le dimanche, le reste s\'emporte'],
       ['Le goût', 'la sauce du jour, faite au réchauffage (onglet Repas) : ses calories sont comptées. L\'huile froide à l\'assiette les jours où la sauce n\'est ni crème ni pesto'],
       ['Réchauffer à la poêle', 'la boîte vidée dans la poêle avec 2 à 3 cuillères d\'eau, couvercle, feu moyen, 4 à 5 min, puis 1 min à découvert. Brûlant jusqu\'au cœur. Pas l\'air fryer : il dessèche le riz et les pâtes'],
       ['Le fruit du dîner', 'entier, jamais dans la boîte : coupé le dimanche il rend de l\'eau et noircit'],
@@ -12714,7 +12726,7 @@
            la collation combat. En DERNIER, comme la boisson d'avoine. */
         art('Fruits rouges surgelés', B.fruitsrouges * 2, 1, poids, 'sachets du rayon surgelés'),
         art('Galettes de riz', B.galettes * 2, 1, sep, 'galettes · un paquet suffit', (B.galettes * 2) + ' galettes'),
-        /* 23 octobre au soir : les dattes de la collation, 50 g par jour. En DERNIER. */
+        /* 23 octobre au soir : les dattes de la collation, 50 g par jour (70 depuis le 25). En DERNIER. */
         art('Dattes', B.dattes * 2, 1, poids, 'dénoyautées')
       ]},
       /* Cycle de 4 semaines, ancre au samedi 26 septembre : 26/9, 24/10, 21/11, 19/12. */
