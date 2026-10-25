@@ -68,8 +68,9 @@ console.log('\n== 180) Sans ajustement : plan de base, liste = plan × 7 ==');
   /* 23 octobre : 120 g de viande par repas -- 840 g de chaque par semaine. */
   /* 25 octobre : 80 g de viande par repas (« reduis juste la viande ») -- 560 g de chaque par semaine. */
   /* 25 octobre, la suite : 50 g (« descends a 120 g de proteines sans toucher au skyr ») -- 350 g. */
-  ok(c.items.some(t => /^Poulet — 350 g .*pesé au comptoir/.test(t) && !/demande/.test(t))
-  && c.items.some(t => /^Viande hachée 5 % — 350 g .*pesée au comptoir/.test(t))
+  /* 25 octobre au soir : 70 g, 0,4 g/kg de proteines a chaque repas (Iraki 2019) -- 490 g. */
+  ok(c.items.some(t => /^Poulet — 490 g .*pesé au comptoir/.test(t) && !/demande/.test(t))
+  && c.items.some(t => /^Viande hachée 5 % — 490 g .*pesée au comptoir/.test(t))
   && !c.items.some(t => /^Saumon/.test(t)),
      'viande au gramme près, pesée au comptoir, et plus de poisson : ' + c.items.filter(t => /^(Poulet|Viande|Saumon)/.test(t)).join(' · '));
   /* Les fruits se comptent, ils ne se pesent pas. */
@@ -150,8 +151,8 @@ console.log('\n== 180) Sans ajustement : plan de base, liste = plan × 7 ==');
   /* 21 octobre : la sauce du mardi soir est comptee -- pesto verde 15 g et parmesan 10 g
      (≈ 110 kcal), a la place des 5 ml d'huile crue : ~908 kcal. */
   /* 23 octobre au soir : riz 125 g, viande hachee 100 g, 15 ml d'huile -- ~857 kcal. */
-  /* 25 octobre : viande hachee 50 g, 20 ml d'huile -- ~833 kcal. */
-  ok(/Riz 125g/.test(r) && /~833 kcal/.test(r) && /Viande hachée 5 % 50g/.test(r) && !/Sauce skyr/.test(r) && /≈ 110 kcal, comptée/.test(r), 'dîner de base du mardi : riz 125 g, viande hachée 50 g, la sauce comptée (≈ 110 kcal), ~833 kcal');
+  /* 25 octobre au soir : viande hachee 70 g, 20 ml d'huile -- ~860 kcal. */
+  ok(/Riz 125g/.test(r) && /~860 kcal/.test(r) && /Viande hachée 5 % 70g/.test(r) && !/Sauce skyr/.test(r) && /≈ 110 kcal, comptée/.test(r), 'dîner de base du mardi : riz 125 g, viande hachée 70 g, la sauce comptée (≈ 110 kcal), ~860 kcal');
   await ctx.close();
 }
 
@@ -161,20 +162,20 @@ console.log('\n== 181) Avec +150 kcal : le dîner et les courses l\'écrivent ==
   await page_(fr, 'repas');
   const r = await fr.evaluate(() => [...document.querySelectorAll('.meal-card')].find(c => /Dîner/.test(c.querySelector('.mtitle').textContent)).innerText);
   ok(/Riz 165g/.test(r), 'féculent du dîner : riz 165 g (+40)');
-  ok(/boucle kcal \+150 kcal/.test(r) && /~977 kcal/.test(r), 'le dîner annonce ~977 kcal et la boucle');
+  ok(/boucle kcal \+150 kcal/.test(r) && /~1004 kcal/.test(r), 'le dîner annonce ~1004 kcal et la boucle');
   const sub = await fr.evaluate(() => document.getElementById('meal-kcal-sub').textContent);
   /* 3 131 + 144 : la boucle demande +150 kcal, mais les pates s'ajustent par pas de 10 g,
      donc elle en ajoute 144. On annonce l'ecart REEL entre les deux journees, pas la
      consigne -- sinon la soustraction affichee ne tombe pas juste. */
   /* 23 octobre au soir : le plan dense -- plan 3 198. */
-  /* 25 octobre : 50 g de viande, 7 dattes, 20 g de miel, la boisson d'avoine du Lidl -- plan 3 236. */
-  ok(/\/ 3380 kcal \(plan 3236 \+ 144\)/.test(sub), 'cible du jour : ' + sub);
+  /* 25 octobre : 7 dattes, 20 g de miel, la boisson d'avoine du Lidl, 70 g de viande le soir -- plan 3 284. */
+  ok(/\/ 3428 kcal \(plan 3284 \+ 144\)/.test(sub), 'cible du jour : ' + sub);
   /* cocher tout le dîner : l\'apport consommé porte les 150 kcal */
   /* un clic redessine la grille : on re-cherche la première case non cochée du dîner à chaque tour */
   await fr.evaluate(() => { for(let i = 0; i < 10; i++){ const card = [...document.querySelectorAll('.meal-card')].find(c => /Dîner/.test(c.querySelector('.mtitle').textContent)); const cb = card && card.querySelector('input:not(:checked)'); if(!cb) break; cb.click(); } });
   await page.waitForTimeout(200);
   const sub2 = await fr.evaluate(() => document.getElementById('meal-kcal-sub').textContent);
-  ok(/^977 \/ 3380 kcal/.test(sub2), 'dîner coché : ' + sub2);
+  ok(/^1004 \/ 3428 kcal/.test(sub2), 'dîner coché : ' + sub2);
   await page_(fr, 'courses');
   const c = await fr.evaluate(() => ({ items: [...document.querySelectorAll('#courses-grid label, #courses-grid-plus label')].map(l => l.textContent), note: document.getElementById('courses-plan-note').textContent }));
   /* L'ajustement suit le sac : +280 g par semaine font +1 120 g sur quatre semaines.
@@ -187,7 +188,7 @@ console.log('\n== 181) Avec +150 kcal : le dîner et les courses l\'écrivent ==
   ok(/\+150 kcal\/jour/.test(c.note) && /\+40 g de riz cru/.test(c.note) && /\+280 g sur la semaine/.test(c.note), 'note : ' + c.note.slice(0, 120));
   /* La boucle kcal ne touche QUE le feculent du diner : les proteines gardent la quantite
      de la rotation, 560 g de poulet par semaine. */
-  ok(c.items.filter(t => /^Poulet/.test(t)).length === 1 && /350 g/.test(c.items.find(t => /^Poulet/.test(t))), 'les protéines ne bougent pas');
+  ok(c.items.filter(t => /^Poulet/.test(t)).length === 1 && /490 g/.test(c.items.find(t => /^Poulet/.test(t))), 'les protéines ne bougent pas');
   await ctx.close();
 }
 

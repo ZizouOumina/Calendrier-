@@ -77,8 +77,12 @@ console.log('\n== 2) Une pesée salée ne fait plus retirer 100 kcal ==');
      d'élagage), la Batcave ne recommande rien et dit laquelle. */
   /* 21 octobre au matin : jour 1 au jeudi 22, la stabilisation court jusqu'au 11 novembre --
      la premiere pesee lue est celle du 12. */
+  /* 25 octobre : 64,3 et non plus 64,4. Sans la pesee salee, 64,4 donnait +0,35 kg par semaine --
+     dans l'ancienne bande (1,5 x 0,31 = 0,47), mais au-dessus du plafond qui suit la science
+     (0,5 % du poids, ≈ 0,32 kg). A 64,3, la pente sans elle (≈ 0,26) reste dans la bande, et
+     c'est bien cette pesee seule qui ferait couper. */
   const av = ['2026-11-12','2026-11-13','2026-11-15','2026-11-17'].map(iso => [iso, 64.0]);
-  const rec = [['2026-11-18',64.4],['2026-11-20',64.4],['2026-11-22',64.4],['2026-11-24',66.0]];
+  const rec = [['2026-11-18',64.3],['2026-11-20',64.3],['2026-11-22',64.3],['2026-11-24',66.0]];
   const {ctx, page, fr} = await ouvrir(pesees(av.concat(rec)), JOUR_KCAL + 'T18:00:00+01:00');
   await aller(fr, page, 'repas');
   const k = await fr.evaluate(() => ({note: document.getElementById('kcal-note').innerText,

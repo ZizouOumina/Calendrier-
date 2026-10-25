@@ -8492,8 +8492,13 @@
        viande par repas, l'huile ne bouge pas. Les ~75 kcal qui partent reviennent par deux
        dattes de plus a la collation et 10 g de miel de plus dans le shake (celui qui lui reste
        des anciennes courses) : du sucre dense, sans volume ni proteines. */
-    'Poulet':            {dej:{g:50, huile:30}, din:{g:50, huile:25}, prixKg:6.5},
-    'Viande hachée 5 %': {dej:{g:50, huile:30}, din:{g:50, huile:25}, prixKg:8.0}
+    /* 25 octobre au soir, « je veux le meilleur programme scientifiquement base » : 70 g, le plus
+       petit grammage qui met CHAQUE repas a 0,4 g de proteines par kilo (≈ 26 g a 64 kg) --
+       Iraki et al. 2019 (0,40 a 0,55 g/kg par repas, 3 a 6 repas), Schoenfeld et Aragon 2018.
+       A 50 g, midi et soir tombaient a 23 g (0,36). La journee remonte a ≈ 123-129 g
+       (1,9 a 2,0 g/kg), dans les 1,6 a 2,2 de Morton et al. 2018. */
+    'Poulet':            {dej:{g:70, huile:30}, din:{g:70, huile:25}, prixKg:6.5},
+    'Viande hachée 5 %': {dej:{g:70, huile:30}, din:{g:70, huile:25}, prixKg:8.0}
   };
   /* 14 octobre, sa demande : « 200 g de legumes par repas c'est trop, ca me remplit trop
      l'estomac et je jette souvent le reste ». 100 g a chaque repas (une grosse poignee) au
@@ -8717,9 +8722,14 @@
      des 0,25 a 0,5 % du poids de corps par semaine au-dela desquels la prise devient
      surtout grasse. Il descend a 1,5 x (0,35 kg par semaine), qui tombe dans cette bande.
      Le plancher reste a 0,5 x : on laisse le temps de repondre avant d'ajouter. */
-  function recoKcal(delta, rythmeVise){
+  /* 25 octobre : l'objectif (72 kg sur l'horizon) vise 0,31 kg par semaine, et 1,5 x ce rythme
+     laissait monter jusqu'a 0,47 kg (0,73 % du poids) sans rien dire. Le plafond suit
+     desormais la science : jamais au-dessus de 0,5 % du poids de corps par semaine (Iraki et
+     al. 2019, 0,25 a 0,5 % pour un debutant ou un intermediaire ; Helms et al. 2023, une prise
+     plus rapide ajoute surtout du gras). A 64 kg : 0,32 kg par semaine. */
+  function recoKcal(delta, rythmeVise, poids){
     if(delta < rythmeVise * 0.5) return 150;
-    if(delta > rythmeVise * 1.5) return -100;
+    if(delta > Math.min(rythmeVise * 1.5, poids > 0 ? poids * 0.005 : Infinity)) return -100;
     return 0;
   }
   function boucleKcal(){
@@ -8749,7 +8759,9 @@
     out.delta = parSemaine(pts);
     if(out.delta === null){ out.motif = 'Toutes les pesées sont du même jour : rien à lire.'; return out; }
     out.premier = pts[0].value; out.dernier = pts[pts.length - 1].value;
-    out.reco = recoKcal(out.delta, rythmeVise);
+    /* le plafond de 0,5 % se calcule sur le poids MOYEN de la fenetre : une pesee salee ne le deplace pas */
+    var poidsRef = pts.reduce(function(a, p){ return a + p.value; }, 0) / pts.length;
+    out.reco = recoKcal(out.delta, rythmeVise, poidsRef);
     /* La pesée qui, à elle seule, ferait dire autre chose. Plusieurs peuvent faire basculer
        le verdict ; on nomme CELLE QUI PÈSE LE PLUS, c'est-à-dire celle dont le retrait
        déplace le plus la pente — sinon on désignait la première venue dans l'ordre des
@@ -8759,7 +8771,7 @@
       var reste = pts.filter(function(q){ return q !== p; });
       if(reste.length < 3) return;
       var d = parSemaine(reste);
-      if(d === null || recoKcal(d, rythmeVise) === out.reco) return;
+      if(d === null || recoKcal(d, rythmeVise, poidsRef) === out.reco) return;
       var poids = Math.abs(d - out.delta);
       if(!pivot || poids > ecartPivot){ pivot = p; ecartPivot = poids; }
     });
