@@ -3660,10 +3660,10 @@
      comme inconnu. DRAPEAUX_MIGRATION est desormais LA liste ; les autres la reprennent.
      SCHEMA_VERSION est ecrit dans « batcave-schema » quand toutes ont tourne : le panneau
      Sante compare, et une sauvegarde plus ancienne se reconnait a ce seul chiffre. */
-  var SCHEMA_VERSION = 50;
+  var SCHEMA_VERSION = 51;
   var DRAPEAUX_MIGRATION = ['objectifs-seed-v1','objectifs-v2-55','objectifs-v5-espanol',
     'habits-ecran-v2','habitlog-hebdo-v1','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','habits-seed-v7','habits-seed-v8','habits-seed-v9','habits-seed-v10','habits-seed-v11','habits-seed-v12',
-    'courses-plan-v2','courses-plan-v3','courses-plan-v4','courses-plan-v5','courses-plan-v6','courses-plan-v7','courses-plan-v8','courses-plan-v9','courses-plan-v10',
+    'courses-plan-v2','courses-plan-v3','courses-plan-v4','courses-plan-v5','courses-plan-v6','courses-plan-v7','courses-plan-v8','courses-plan-v9','courses-plan-v10','courses-plan-v11',
     'charges-v2','plafond-nourriture-v2','plafond-nourriture-v3','plafond-nourriture-v4','plafond-nourriture-v5','plafond-nourriture-v6','plafond-nourriture-v7','ancre-dimanche-v1','ancre-dimanche-v2','serviettes-v1','coiffeur-v1','shampoing-dim-v1','marche-cible-v1','fc-migration-v1','fc-migration-v2','fc-migration-v3','fc-migration-v4','revision-fusionnee','pesee-hebdo-v1','snus-arret-v2'];
   /* Drapeaux que rien ne pose plus (migrations retirees) ou poses seulement quand il y a
      eu quelque chose a migrer : connus et gardes, jamais exiges. */
@@ -8326,7 +8326,11 @@
     /* 23 octobre au soir : une poignee plutot qu'un sandwich -- amandes, deux oeufs, le fromage,
        et cinq dattes (son choix parmi les aliments denses). ~590 kcal qui tiennent dans une main. */
     /* 25 octobre : 7 dattes (70 g) au lieu de 5, les calories de la viande qui baisse. */
-    {name:'Collation entraînement', items:['Amandes ou noix nature (40g)','2 œufs durs (100g)','Fromage (20g)','7 dattes (70g)']},
+    /* 26 octobre, « il me reste plus de fromage, on peut l'enlever du programme » : un 3e oeuf
+       prend sa place -- memes calories (72 contre 70 kcal), plus de proteines (6,3 g contre 5),
+       et la collation reste au-dessus de 0,4 g/kg (29 g). A la meme position : les cases sont
+       indexees, et les jours d'avant gardent leur fromage (FROMAGE_FIN). */
+    {name:'Collation entraînement', items:['Amandes ou noix nature (40g)','2 œufs durs (100g)','1 œuf dur de plus (50g)','7 dattes (70g)']},
     {name:'Dîner', items:['Féculent cru — Riz 125g','Protéine crue — rotation du jour','Légumes verts (80g)','Huile d\'olive — selon la protéine, dont 15 ml versés crus sur le riz','Créatine — 5 g']},
     /* 25 septembre, le regime combat : une cinquieme prise, les QUATRE jours de combat
        seulement (jourDeCombat). A 10:05 avant le JJB ; le mardi, avec la collation de 14:50
@@ -8418,12 +8422,17 @@
     if(f >= 1) return liste;
     return liste.map(function(x){ return ENTIERS_REPRISE[x.c] ? x : {c:x.c, q:portionReprise(x.q, f)}; });
   }
+  var FROMAGE_FIN = '2026-10-26';   /* plus de fromage a la collation a partir de ce jour : un 3e oeuf */
   function compoRepasPlein(nom, iso, brut){
     if(nom === 'Petit-déjeuner') return [{c:'avoine', q:400}, {c:'skyr', q:150}, {c:'flocons', q:80}, {c:'banane', q:120}, {c:'miel', q:20}, {c:'amandes', q:30}, {c:'fruitsrouges', q:100}];
     /* 25 octobre : le mardi et le jeudi, la boite de sardines remplace les oeufs ET le fromage
        (elle porte 21 g de proteines, contre 18 pour les deux) -- sinon ces deux jours depassent
        les 120 g. L'item reste a sa place : les cases sont indexees. */
-    if(nom === 'Collation entraînement') return [{c:'amandes', q:40}, sardinesLe(iso) ? {c:'sardines', q:85} : {c:'oeufs', q:100}, {c:'fromage', q:sardinesLe(iso) ? 0 : 20}, {c:'dattes', q:70}];
+    if(nom === 'Collation entraînement'){
+      var sard = sardinesLe(iso), sansFromage = (iso || todayISO) >= FROMAGE_FIN;
+      return [{c:'amandes', q:40}, sard ? {c:'sardines', q:85} : {c:'oeufs', q:100},
+              sansFromage ? {c:'oeufs', q:sard ? 0 : 50} : {c:'fromage', q:sard ? 0 : 20}, {c:'dattes', q:70}];
+    }
     if(nom === 'Collation combat') return [{c:'banane', q:120}, {c:'galettes', q:20}, {c:'miel', q:15}];
     if(nom === 'Récup combat') return [{c:'avoine', q:250}, {c:'banane', q:120}, {c:'flocons', q:20}];
     if(nom === 'Déjeuner'){
@@ -8607,8 +8616,10 @@
      la rotation du jour (déjeuner et dîner). */
   function texteItemRepas(m, it, ii, iso){
     if(m.name === 'Collation entraînement'){
-      if(ii === 1 && sardinesLe(iso)) return '1 boîte de sardines ou de maquereau (≈ 85 g égouttés) — à la place des œufs et du fromage, le mardi et le jeudi';
-      if(ii === 2 && sardinesLe(iso)) return 'Pas de fromage aujourd\'hui — la boîte de sardines le remplace';
+      var avantFin = (iso || todayISO) < FROMAGE_FIN;
+      if(ii === 1 && sardinesLe(iso)) return '1 boîte de sardines ou de maquereau (≈ 85 g égouttés) — à la place des œufs' + (avantFin ? ' et du fromage' : '') + ', le mardi et le jeudi';
+      if(ii === 2 && sardinesLe(iso)) return avantFin ? 'Pas de fromage aujourd\'hui — la boîte de sardines le remplace' : 'Pas d\'œuf en plus aujourd\'hui — la boîte de sardines remplace les œufs';
+      if(ii === 2 && avantFin) return 'Fromage (20g)';
     }
     var repas = m.name === 'Dîner' ? 'din' : (m.name === 'Déjeuner' ? 'dej' : null), f = facteurPortions(iso);
     /* semaine de reprise : les grammes ecrits dans le libelle suivent le facteur, sauf ce
@@ -12504,7 +12515,7 @@
     }).join('');
     document.getElementById('prep-regles').innerHTML = [
       ['Le petit-déjeuner', 'un shake : 400 ml de boisson d\'avoine au calcium, 150 g de skyr, 80 g de flocons, une banane (congelée en rondelles, c\'est un milkshake), 100 g de fruits rouges surgelés, 20 g de miel, 30 g d\'amandes — 40 secondes de mixeur, à boire en dix minutes. Les jours de JJB, un shake de récup au retour : 250 ml de boisson d\'avoine, une banane, 20 g de flocons'],
-      ['La collation d\'entraînement', 'une poignée : 40 g d\'amandes, 2 œufs durs et 20 g de fromage (le mardi et le jeudi, une boîte de sardines ou de maquereau à la place des deux), 7 dattes — peu de volume, ~650 kcal ; les œufs sont cuits le dimanche, le reste s\'emporte'],
+      ['La collation d\'entraînement', 'une poignée : 40 g d\'amandes, 3 œufs durs (le mardi et le jeudi, une boîte de sardines ou de maquereau à la place), 7 dattes — peu de volume, ~640 kcal ; les œufs sont cuits le dimanche, le reste s\'emporte'],
       ['Le goût', 'la sauce du jour, faite au réchauffage (onglet Repas) : ses calories sont comptées. L\'huile froide à l\'assiette les jours où la sauce n\'est ni crème ni pesto'],
       ['Réchauffer à la poêle', 'la boîte vidée dans la poêle avec 2 à 3 cuillères d\'eau, couvercle, feu moyen, 4 à 5 min, puis 1 min à découvert. Brûlant jusqu\'au cœur. Pas l\'air fryer : il dessèche le riz et les pâtes'],
       ['Le fruit du dîner', 'entier, jamais dans la boîte : coupé le dimanche il rend de l\'eau et noircit'],
@@ -12725,7 +12736,8 @@
          est ecrit, et « Chaque semaine » redevient vrai pour ses huit lignes. */
       {cat:'Toutes les 2 semaines', semaines:2, ancre:ANCRE_COURSES, items:[
         art('Légumes verts surgelés', B.legumes * 2, 1000, poids, 'sachet'),
-        art('Fromage en tranches', B.fromage * 2, 400, poids, 'paquet'),
+        /* 26 octobre : le fromage sort du plan (il n'en a plus ; un 3e oeuf le remplace a la
+           collation). Ce qui le suivait remonte d'un cran -- courses-plan-v11. */
         /* 29 septembre : la boisson d'avoine du shake, 300 ml par jour, 2,1 L par semaine. Il
            l'achete en PACK DE 6 BRIKS DE 1 L (Lidl depuis le 6 octobre, 4,44 EUR ; Mercadona 5,70 avant) : un pack couvre
            deux semaines (4,2 L) avec 1,8 L de marge, d'ou ce cycle. En DERNIER dans la
@@ -13110,6 +13122,33 @@
     if(bougeV10){ coursesState = versV10; save('batcave-courses', coursesState); }
     saveInternal('batcave-courses-plan-v10', true);
   }
+  /* v11 (26 octobre) : le fromage sort de « Toutes les 2 semaines » (categorie 1, rang 1) ;
+     boisson d'avoine, fruits rouges, galettes et dattes remontent d'un cran. Leurs coches
+     les suivent, celle du fromage part avec lui. Sur l'etat du STOCKAGE, et rejouee apres
+     la synchro : le cloud peut ramener la liste d'avant. */
+  function coursesSansFromage(){
+    if(load('batcave-courses-plan-v11', false)) return false;
+    var etat = load('batcave-courses', {}), vers = {}, bouge = false;
+    if(etat && typeof etat === 'object' && !Array.isArray(etat)){
+      Object.keys(etat).forEach(function(k){
+        var m = /^(\d+)-(\d+)$/.exec(k);
+        if(!m || Number(m[1]) !== 1 || Number(m[2]) < 1){ vers[k] = etat[k]; return; }
+        bouge = true;
+        if(Number(m[2]) === 1) return;
+        vers['1-' + (Number(m[2]) - 1)] = etat[k];
+      });
+      if(bouge){ coursesState = vers; save('batcave-courses', coursesState); }
+    }
+    saveInternal('batcave-courses-plan-v11', true);
+    return bouge;
+  }
+  coursesSansFromage();
+  MIGRATIONS_DEMARRAGE.push({cle:'batcave-courses-plan-v11', rejouer: function(){
+    if(!coursesSansFromage()) return false;
+    if(document.getElementById('courses-grid')) renderCourses();
+    if(document.getElementById('courses-summary')) renderCoursesSummary();
+    return true;
+  }});
 
   /* Seules les categories DUES cette semaine comptent. Sans ce filtre, l'habitude
      « Courses faites » -- qui ne se coche que lorsque tout est coche -- ne se validerait

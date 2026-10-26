@@ -76,7 +76,7 @@ console.log('\n== 331) Samedi 26 septembre : l\'ancre, tout est dû ==');
   /* Aucun stock n'est suppose : le 19, TOUTES les categories sont dues et toutes leurs
      lignes comptent. 9 frais + 1 surgele + 4 reserves + 2 (cycle de 5 semaines) + 1 pot de
      creatine = 17. Ce qu'il a deja, il le coche quand meme. */
-  ok(/\/18 articles/.test(somme), '18 articles le 26 : tout part de zéro (' + somme + ')');
+  ok(/\/17 articles/.test(somme), '17 articles le 26 : tout part de zéro (' + somme + ')');
   await ctx.close();
 }
 {
@@ -197,7 +197,7 @@ for (const d of ['2026-10-03', '2026-10-10', '2026-10-31', '2026-12-05']) {
   const t = await fr.evaluate(() => document.querySelector('.page[data-page="courses"]').textContent);
   /* 14 par semaine : 2 par jour au petit-dejeuner, tire du plan de repas. Mais on
      n'achete pas 14 oeufs : une boite de 12 plus une de 6 font 18. */
-  ok(/Œufs — 12/.test(t) && /demande 10 œufs/.test(t), 'les œufs : 12 achetés pour les 10 du plan (deux à la collation, les sardines le mardi et le jeudi depuis le 21 octobre ; collation ; le petit-déjeuner est un shake depuis le 29 septembre)');
+  ok(/Œufs — 18/.test(t) && /demande 15 œufs/.test(t), 'les œufs : 18 achetés pour les 15 du plan (trois à la collation depuis le 26 octobre, les sardines le mardi et le jeudi depuis le 21 octobre ; collation ; le petit-déjeuner est un shake depuis le 29 septembre)');
   await ctx.close();
 }
 
@@ -226,7 +226,8 @@ console.log('\n== 334d) La liste ne porte QUE de la nourriture ==');
                    'Amandes ou noix nature',
                    /* 21 octobre : les sardines, en fin de « Chaque semaine » */
                    'Sardines ou maquereau (boîte)',
-                   'Légumes verts surgelés', 'Fromage en tranches',
+                   /* 26 octobre : le fromage sort, la boisson d'avoine remonte d'un cran */
+                   'Légumes verts surgelés',
                    /* 29 septembre : la boisson d'avoine du shake, un pack de 6 L toutes les deux semaines */
                    'Boisson d\'avoine',
                    /* 21 octobre : les fruits rouges du shake et les galettes de riz de la collation combat */
@@ -234,9 +235,9 @@ console.log('\n== 334d) La liste ne porte QUE de la nourriture ==');
                    'Riz', 'Flocons d\'avoine',
                    /* 26 septembre : le miel passe au cycle de cinq semaines, en pot de 750 g */
                    'Huile d\'olive', 'Miel', 'Créatine monohydrate'];
-  ok(lignes.length === 18, '18 lignes, pas une de plus (' + lignes.length + ')');
+  ok(lignes.length === 17, '17 lignes, pas une de plus (' + lignes.length + ')');
   ok(JSON.stringify(lignes) === JSON.stringify(ATTENDU),
-     'et ce sont exactement les dix-huit attendues' +
+     'et ce sont exactement les dix-sept attendues' +
      (JSON.stringify(lignes) === JSON.stringify(ATTENDU) ? '' : ' — reçu : ' + lignes.join(' · ')));
   /* Nommement, les rayons qui sont sortis : hygiene, maison, menage, brosse a dents. */
   const SORTIS = ['Shampooing', 'Après-shampooing', 'Gel douche', 'Nettoyant visage', 'Dentifrice',
@@ -346,6 +347,31 @@ console.log('\n== 334e) Les deux choses que la Batcave ne peut pas deviner sont 
   ok(!/Avant de partir/.test(veille.txt) && !/ticket de caisse/.test(veille.txt), 'le 4, la veille, rien n\'est demandé');
   ok(!/Avant de partir/.test(apres.txt) && !/ticket de caisse/.test(apres.txt), 'le lendemain non plus : la demande ne traîne pas');
   ok(jourJ.taches === null, 'et rien n\'est écrit dans ses tâches — la Batcave demande, elle ne remplit pas sa liste');
+}
+
+console.log('\n== 331b) Le fromage sort : les coches de « Toutes les 2 semaines » suivent leur article ==');
+{
+  /* 26 octobre (courses-plan-v11). Un profil d'avant : toutes les migrations faites sauf la v11,
+     et des coches dans la categorie 1 -- surgeles (1-0), fromage (1-1), boisson d'avoine (1-2),
+     dattes (1-5). Apres : surgeles 1-0, avoine 1-1, dattes 1-4 ; la coche du fromage disparait,
+     celles des autres categories ne bougent pas. */
+  const ctx = await b.newContext({viewport:{width:1440,height:1000}, timezoneId:'Europe/Madrid', locale:'fr-FR'});
+  await ctx.addInitScript(() => {
+    window.claude = undefined;
+    for(let v = 2; v <= 10; v++) localStorage.setItem('batcave-courses-plan-v' + v, 'true');
+    localStorage.setItem('batcave-courses', JSON.stringify({'0-3': true, '1-0': true, '1-1': true, '1-2': true, '1-5': true, '2-0': true}));
+  });
+  const page = await ctx.newPage();
+  page.on('pageerror', e => { err++; console.log('  PAGEERROR 331 : ' + e.message); });
+  await page.clock.install({ time: new Date('2026-10-26T10:00:00+01:00') });
+  await page.goto('http://127.0.0.1:8199/host.html');
+  await page.frameLocator('#f').locator('#dash-focus').waitFor({state:'attached', timeout:20000});
+  const fr = page.frames().find(x => x.url().includes('batcave.html'));
+  const r = await fr.evaluate(() => ({ etat: JSON.parse(window.__bcLire ? window.__bcLire('batcave-courses') : localStorage.getItem('batcave-courses')),
+                                       v11: JSON.parse(window.__bcLire ? window.__bcLire('batcave-courses-plan-v11') : localStorage.getItem('batcave-courses-plan-v11')) }));
+  const cles = Object.keys(r.etat || {}).filter(k => r.etat[k]).sort().join(',');
+  ok(cles === '0-3,1-0,1-1,1-4,2-0' && r.v11 === true, 'avoine 1-2 → 1-1, dattes 1-5 → 1-4, la coche du fromage part, le reste ne bouge pas (' + cles + ')');
+  await ctx.close();
 }
 
 await b.close();

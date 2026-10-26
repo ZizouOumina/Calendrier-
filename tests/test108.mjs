@@ -43,7 +43,7 @@ console.log('\n== 269) Deux oeufs a la place du jambon ==');
   /* 21 octobre au soir : le shake de recup au retour du club, +302 kcal et +8 g. */
   /* 23 octobre : la semoule nature a midi (huile d'olive, harissa) -- la sauce soja-moutarde sort, -15 kcal et -2 g. */
   ok(r.jour.kcal === 3746 && r.jour.p === 133, 'un jour de combat : 3 746 kcal, 133 g de protéines (le plan dense du 23 octobre, la viande à 70 g le 25 au soir -- 0,4 g/kg par repas --, 7 dattes et 20 g de miel, la boisson d\'avoine du Lidl ; au soir : riz, huile crue, amandes et dattes), six prises (' + r.jour.kcal + ' / ' + r.jour.p + ')');
-  ok(r.oeufs === 10 && r.jambon === undefined, 'les courses : 10 œufs par semaine (la collation seule depuis le shake, les sardines le mardi et le jeudi depuis le 21 octobre), plus de jambon (' + r.oeufs + ' / ' + r.jambon + ')');
+  ok(r.oeufs === 15 && r.jambon === undefined, 'les courses : 15 œufs par semaine (trois à la collation depuis le 26 octobre, les sardines le mardi et le jeudi depuis le 21), plus de jambon (' + r.oeufs + ' / ' + r.jambon + ')');
   ok(!r.cout.lignes.some(l => /Jambon/.test(l.label)) && r.cout.manque.slice().sort().join('|') === ['Dattes', 'Fruits rouges surgelés', 'Galettes de riz', 'Sardines ou maquereau (boîte)'].join('|'), 'le coût ne compte plus de jambon ; seuls manquent les prix des articles du 21 octobre (son ticket) — la boisson d\'avoine a le sien depuis le 29 septembre ('  + r.cout.manque.join() + ')');
   /* 4 octobre : le plafond suit ce qu'il paie en caisse (conditionnements et cycles compris), pas ce qu'il mange. */
   ok(r.plafond === Math.round(r.achats.mois), 'le plafond Nourriture posé par la Batcave suit le coût en caisse : ' + r.plafond + ' €');

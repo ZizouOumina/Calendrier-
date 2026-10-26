@@ -49,7 +49,7 @@ console.log('\n== 342) Le jour du premier ravitaillement : tout est dû, et tout
   const v = await vue(fr);
   ok(v.jour.length === 5, 'les cinq catégories sont dans la grille du jour (' + v.jour.length + ')');
   /* 23 octobre au soir, le plan dense : pain, fruits, semoule et pates sortent, riz et dattes entrent -- 18 articles. */
-  ok(/18 à prendre/.test(v.resume), 'et le résumé annonce 18 articles — riz et dattes entrent le 23 octobre, pain, fruits, semoule et pâtes sortent (' + v.resume + ')');
+  ok(/17 à prendre/.test(v.resume), 'et le résumé annonce 17 articles — riz et dattes entrent le 23 octobre, pain, fruits, semoule et pâtes sortent, le fromage le 26 (' + v.resume + ')');
   ok(v.dates.every(t => /aujourd/i.test(t)), 'chacune dit « aujourd’hui »');
   ok(v.dates.every(t => /puis le/.test(t)), 'ET chacune dit sa fois suivante — c’est ce qui manquait');
   ok(/10 oct/.test(v.dates[0]) && /17 oct/.test(v.dates[1]) && /31 oct/.test(v.dates[2]),

@@ -46,15 +46,16 @@ console.log('— vendredi 25 septembre : la premiere periode, 28 sept. -> 24 oct
      et les amandes remontent ; les dattes attendent leur prix -- 40,48 EUR par semaine. */
   /* 25 octobre : 50 g de viande par repas (≈ 120 g de proteines), 20 g de miel le matin -- 34,51 EUR. */
   /* 25 octobre au soir : 70 g (0,4 g/kg de proteines par repas) -- 37,24 EUR. */
-  ok(pres(a.semaine, 37.24), 'courses : 37,24 EUR par semaine hors les articles sans prix (dattes, sardines, fruits rouges, galettes), plan dense du 23 octobre (' + a.semaine.toFixed(2) + ')');
+  /* 26 octobre : le fromage sort, 5 oeufs de plus par semaine -- 38,01 EUR. */
+  ok(pres(a.semaine, 38.01), 'courses : 38,01 EUR par semaine hors les articles sans prix (dattes, sardines, fruits rouges, galettes), plan dense du 23 octobre (' + a.semaine.toFixed(2) + ')');
   ok(a.estimes.length === 0, 'plus aucune estimation : les amandes ont leur prix releve');
   ok(a.cagnotte === 220, 'jour du virement : 220 EUR dans la cagnotte — ce que laisse la periode la plus chere, les courses comptees en caisse (plan dense du 23 octobre au soir) (' + a.cagnotte + ')');
   ok(a.periode.debut === '2026-09-28' && a.periode.fin === '2026-10-24', 'premiere periode du 28 sept. (dernier virement a l\'ancienne date) au 24 oct.');
   ok(a.periode.samedis === 4, '4 samedis de courses');
-  ok(pres(a.periode.balayage, 58.01), 'le 24 : environ 58,01 EUR a balayer (' + a.periode.balayage.toFixed(2) + ')');
-  ok(pres(a.moyenne, 269.38), 'epargne moyenne : 269,38 EUR par mois (hors les prix a relever, plan dense du 23 octobre) (' + a.moyenne.toFixed(2) + ')');
+  ok(pres(a.periode.balayage, 56.35), 'le 24 : environ 56,35 EUR a balayer (' + a.periode.balayage.toFixed(2) + ')');
+  ok(pres(a.moyenne, 267.59), 'epargne moyenne : 267,59 EUR par mois (hors les prix a relever, plan dense du 23 octobre) (' + a.moyenne.toFixed(2) + ')');
   ok(a.prochaine5 && a.prochaine5.debut === '2026-12-25' && a.prochaine5.fin === '2027-01-24' && a.prochaine5.samedis === 5, 'prochaine periode a 5 samedis : 25 dec. -> 24 janv.');
-  ok(pres(a.prochaine5.balayage, 6.72), 'avec 5 samedis et les reserves, il reste encore 6,72 EUR le 24 (' + a.prochaine5.balayage.toFixed(2) + ')');
+  ok(pres(a.prochaine5.balayage, 5.92), 'avec 5 samedis et les reserves, il reste encore 5,92 EUR le 24 (' + a.prochaine5.balayage.toFixed(2) + ')');
   const L = a.lignes;
   ok(L[0].montant === 700 && L[0].plus && L[0].quand === 'le 28', 'le fil commence par le virement, le 28 pour cette premiere periode');
   ok(L[1].montant === 220 && L[1].cagnotte && L[1].quand === 'le 28', 'puis la cagnotte, le meme jour');
@@ -169,7 +170,7 @@ console.log('— des charges au-dessus du virement : le fil le dit, sans solde n
 
 console.log('— le plafond Nourriture suit le prix des amandes');
 {
-  for(const [avant, attendu, nom] of [[201, 182, 'pose par la Batcave (201) : suit le plan en caisse, 182 (conditionnements et cycles compris ; hors les prix a relever ; 70 g de viande depuis le 25 octobre au soir)'], [209, 182, 'la valeur du 4 octobre (209) : 182'], [206, 182, 'la valeur du 6 octobre (206) : 182'], [180, 180, 'regle a la main (180) : ne bouge pas']]){
+  for(const [avant, attendu, nom] of [[201, 184, 'pose par la Batcave (201) : suit le plan en caisse, 184 (conditionnements et cycles compris ; hors les prix a relever ; 70 g de viande le 25 octobre au soir, le fromage remplace par un oeuf le 26)'], [209, 184, 'la valeur du 4 octobre (209) : 184'], [206, 184, 'la valeur du 6 octobre (206) : 184'], [180, 180, 'regle a la main (180) : ne bouge pas']]){
     const ctx = await browser.newContext({ viewport:{width:1440, height:900}, timezoneId:'Europe/Madrid', locale:'fr-FR' });
     await ctx.addInitScript(v => { window.claude = undefined; localStorage.setItem('batcave-budget-limits', JSON.stringify({Nourriture: v})); }, avant);
     const page = await ctx.newPage();
