@@ -8330,7 +8330,11 @@
        prend sa place -- memes calories (72 contre 70 kcal), plus de proteines (6,3 g contre 5),
        et la collation reste au-dessus de 0,4 g/kg (29 g). A la meme position : les cases sont
        indexees, et les jours d'avant gardent leur fromage (FROMAGE_FIN). */
-    {name:'Collation entraînement', items:['Amandes ou noix nature (40g)','2 œufs durs (100g)','1 œuf dur de plus (50g)','7 dattes (70g)']},
+    /* 27 octobre, « j'aime bien le cottage cheese aussi » : 100 g a la place du 3e oeuf, a la meme
+       position. 11 g de proteines au lieu de 6 -- la collation passe a 34 g (0,53 g/kg, dans les
+       0,40 a 0,55 d'Iraki), et c'est surtout de la caseine. Elle se mange a la maison, avant de
+       partir en cours : le pot reste au frigo. */
+    {name:'Collation entraînement', items:['Amandes ou noix nature (40g)','2 œufs durs (100g)','Cottage cheese (100g)','7 dattes (70g)']},
     {name:'Dîner', items:['Féculent cru — Riz 125g','Protéine crue — rotation du jour','Légumes verts (80g)','Huile d\'olive — selon la protéine, dont 15 ml versés crus sur le riz','Créatine — 5 g']},
     /* 25 septembre, le regime combat : une cinquieme prise, les QUATRE jours de combat
        seulement (jourDeCombat). A 10:05 avant le JJB ; le mardi, avec la collation de 14:50
@@ -8381,7 +8385,8 @@
     /* 21 octobre, ses choix : des fruits rouges dans le shake, une collation legere avant le
        JJB (galettes de riz), et des sardines ou du maquereau deux fois par semaine. */
     fruitsrouges: {kcal:43, p:0.9, g:7.5, l:0.3},
-    dattes:    {kcal:282, p:2.5,  g:67.0, l:0.4},   /* 23 octobre au soir : dattes Deglet Nour, ~10 g la datte ; elles s'achetent au poids */
+    dattes:    {kcal:282, p:2.5,  g:67.0, l:0.4},
+    cottage:   {kcal:98,  p:11.1, g:3.4,  l:4.3},   /* 27 octobre : cottage cheese (USDA, 4 % de matiere grasse) ; a remplacer par son etiquette */   /* 23 octobre au soir : dattes Deglet Nour, ~10 g la datte ; elles s'achetent au poids */
     galettes:  {kcal:387, p:8.0,  g:81.5, l:2.8,  piece:10},    /* galettes de riz souffle, ~10 g la galette */
     sardines:  {kcal:208, p:24.6, g:0.0,  l:12.2, piece:85},    /* sardines ou maquereau a l'huile, egouttes : ~85 g la boite */
     /* Les condiments des sauces du jour, comptes depuis le 21 octobre (« j'ai l'impression de
@@ -8423,15 +8428,17 @@
     return liste.map(function(x){ return ENTIERS_REPRISE[x.c] ? x : {c:x.c, q:portionReprise(x.q, f)}; });
   }
   var FROMAGE_FIN = '2026-10-26';   /* plus de fromage a la collation a partir de ce jour : un 3e oeuf */
+  var COTTAGE_DEBUT = '2026-10-27';  /* puis 100 g de cottage cheese a sa place */
   function compoRepasPlein(nom, iso, brut){
     if(nom === 'Petit-déjeuner') return [{c:'avoine', q:400}, {c:'skyr', q:150}, {c:'flocons', q:80}, {c:'banane', q:120}, {c:'miel', q:20}, {c:'amandes', q:30}, {c:'fruitsrouges', q:100}];
     /* 25 octobre : le mardi et le jeudi, la boite de sardines remplace les oeufs ET le fromage
        (elle porte 21 g de proteines, contre 18 pour les deux) -- sinon ces deux jours depassent
        les 120 g. L'item reste a sa place : les cases sont indexees. */
     if(nom === 'Collation entraînement'){
-      var sard = sardinesLe(iso), sansFromage = (iso || todayISO) >= FROMAGE_FIN;
-      return [{c:'amandes', q:40}, sard ? {c:'sardines', q:85} : {c:'oeufs', q:100},
-              sansFromage ? {c:'oeufs', q:sard ? 0 : 50} : {c:'fromage', q:sard ? 0 : 20}, {c:'dattes', q:70}];
+      var sard = sardinesLe(iso), j = iso || todayISO;
+      var troisieme = j >= COTTAGE_DEBUT ? {c:'cottage', q:sard ? 0 : 100}
+                    : j >= FROMAGE_FIN ? {c:'oeufs', q:sard ? 0 : 50} : {c:'fromage', q:sard ? 0 : 20};
+      return [{c:'amandes', q:40}, sard ? {c:'sardines', q:85} : {c:'oeufs', q:100}, troisieme, {c:'dattes', q:70}];
     }
     if(nom === 'Collation combat') return [{c:'banane', q:120}, {c:'galettes', q:20}, {c:'miel', q:15}];
     if(nom === 'Récup combat') return [{c:'avoine', q:250}, {c:'banane', q:120}, {c:'flocons', q:20}];
@@ -8616,10 +8623,13 @@
      la rotation du jour (déjeuner et dîner). */
   function texteItemRepas(m, it, ii, iso){
     if(m.name === 'Collation entraînement'){
-      var avantFin = (iso || todayISO) < FROMAGE_FIN;
-      if(ii === 1 && sardinesLe(iso)) return '1 boîte de sardines ou de maquereau (≈ 85 g égouttés) — à la place des œufs' + (avantFin ? ' et du fromage' : '') + ', le mardi et le jeudi';
-      if(ii === 2 && sardinesLe(iso)) return avantFin ? 'Pas de fromage aujourd\'hui — la boîte de sardines le remplace' : 'Pas d\'œuf en plus aujourd\'hui — la boîte de sardines remplace les œufs';
+      var jc = iso || todayISO, avantFin = jc < FROMAGE_FIN, oeufEnPlus = !avantFin && jc < COTTAGE_DEBUT;
+      if(ii === 1 && sardinesLe(iso)) return '1 boîte de sardines ou de maquereau (≈ 85 g égouttés) — à la place des œufs' + (avantFin ? ' et du fromage' : oeufEnPlus ? '' : ' et du cottage cheese') + ', le mardi et le jeudi';
+      if(ii === 2 && sardinesLe(iso)) return avantFin ? 'Pas de fromage aujourd\'hui — la boîte de sardines le remplace'
+                                           : oeufEnPlus ? 'Pas d\'œuf en plus aujourd\'hui — la boîte de sardines remplace les œufs'
+                                           : 'Pas de cottage cheese aujourd\'hui — la boîte de sardines le remplace';
       if(ii === 2 && avantFin) return 'Fromage (20g)';
+      if(ii === 2 && oeufEnPlus) return '1 œuf dur de plus (50g)';
     }
     var repas = m.name === 'Dîner' ? 'din' : (m.name === 'Déjeuner' ? 'dej' : null), f = facteurPortions(iso);
     /* semaine de reprise : les grammes ecrits dans le libelle suivent le facteur, sauf ce
@@ -12433,7 +12443,7 @@
                      legumes:'Légumes verts surgelés', huile:'Huile d\'olive',
                      oeufs:'Œufs', flocons:'Flocons d\'avoine', skyr:'Skyr', amandes:'Amandes ou noix',
                      banane:'Banane', pain:'Pain complet', fromage:'Fromage', miel:'Miel', fruit:'Fruit', avoine:'Boisson d\'avoine',
-                     fruitsrouges:'Fruits rouges surgelés', galettes:'Galettes de riz', sardines:'Sardines ou maquereau', dattes:'Dattes',
+                     fruitsrouges:'Fruits rouges surgelés', galettes:'Galettes de riz', sardines:'Sardines ou maquereau', dattes:'Dattes', cottage:'Cottage cheese',
                      creme:'Crème de cuisson', pestoverde:'Pesto verde', pestorosso:'Pesto rosso', parmesan:'Parmesan',
                      soja:'Sauce soja', moutarde:'Moutarde', harissa:'Harissa'};
   var NOMS_SEMAINE = ['dimanche','lundi','mardi','mercredi','jeudi','vendredi','samedi'];
@@ -12515,7 +12525,7 @@
     }).join('');
     document.getElementById('prep-regles').innerHTML = [
       ['Le petit-déjeuner', 'un shake : 400 ml de boisson d\'avoine au calcium, 150 g de skyr, 80 g de flocons, une banane (congelée en rondelles, c\'est un milkshake), 100 g de fruits rouges surgelés, 20 g de miel, 30 g d\'amandes — 40 secondes de mixeur, à boire en dix minutes. Les jours de JJB, un shake de récup au retour : 250 ml de boisson d\'avoine, une banane, 20 g de flocons'],
-      ['La collation d\'entraînement', 'une poignée : 40 g d\'amandes, 3 œufs durs (le mardi et le jeudi, une boîte de sardines ou de maquereau à la place), 7 dattes — peu de volume, ~640 kcal ; les œufs sont cuits le dimanche, le reste s\'emporte'],
+      ['La collation d\'entraînement', '40 g d\'amandes, 2 œufs durs, 100 g de cottage cheese (le mardi et le jeudi, une boîte de sardines ou de maquereau à la place des deux), 7 dattes — ~670 kcal, à la maison avant de partir ; les œufs sont cuits le dimanche, le reste s\'emporte'],
       ['Le goût', 'la sauce du jour, faite au réchauffage (onglet Repas) : ses calories sont comptées. L\'huile froide à l\'assiette les jours où la sauce n\'est ni crème ni pesto'],
       ['Réchauffer à la poêle', 'la boîte vidée dans la poêle avec 2 à 3 cuillères d\'eau, couvercle, feu moyen, 4 à 5 min, puis 1 min à découvert. Brûlant jusqu\'au cœur. Pas l\'air fryer : il dessèche le riz et les pâtes'],
       ['Le fruit du dîner', 'entier, jamais dans la boîte : coupé le dimanche il rend de l\'eau et noircit'],
@@ -12616,7 +12626,8 @@
     'Flocons d\'avoine':'flocons', 'Miel':'miel', 'Amandes ou noix nature':'amandes',
     'Huile d\'olive':'huile', 'Boisson d\'avoine':'avoine',
     /* 21 octobre : sans prix releve -- « prix a relever », hors total, jusqu'a son ticket */
-    'Sardines ou maquereau (boîte)':'sardines', 'Fruits rouges surgelés':'fruitsrouges', 'Galettes de riz':'galettes'
+    'Sardines ou maquereau (boîte)':'sardines', 'Fruits rouges surgelés':'fruitsrouges', 'Galettes de riz':'galettes',
+    'Cottage cheese':'cottage'   /* 27 octobre : prix a relever */
   };
   function eur(n){ return (Math.round(n * 100) / 100).toFixed(2).replace('.', ',') + ' \u20ac'; }
   /* Le cout d'une semaine se calcule sur le BESOIN, pas sur l'achat : un pot de 2 L d'huile
@@ -12722,7 +12733,9 @@
         art('Amandes ou noix nature', B.amandes, 200, poids, 'sachet'),
         /* 21 octobre : les omega-3, le mardi et le jeudi. En DERNIER : les coches sont
            indexees par position, rien ne se decale. */
-        art('Sardines ou maquereau (boîte)', B.sardines, 1, sep, 'boîtes · à l\'huile d\'olive ou au naturel', B.sardines + ' boîtes')
+        art('Sardines ou maquereau (boîte)', B.sardines, 1, sep, 'boîtes · à l\'huile d\'olive ou au naturel', B.sardines + ' boîtes'),
+        /* 27 octobre : le cottage cheese de la collation, 100 g cinq jours sur sept. En DERNIER. */
+        art('Cottage cheese', B.cottage, 1, poids, 'pots · « queso cottage »')
       ]},
       /* Les legumes surgeles ont leur propre cycle, plus court que les autres reserves :
          DEUX semaines. Sa contrainte du 20 septembre, et elle est physique -- 10 kg de
@@ -12955,7 +12968,7 @@
     'Fromage en tranches': 'Lidl · cuajo vegetal',
     'Riz': 'Lidl', 'Couscous': 'Lidl', 'P\u00e2tes': 'Lidl', 'Flocons d\'avoine': 'Lidl',
     /* 21 octobre : les nouveaux articles vont chez Lidl, avec le reste -- leur prix attend son ticket */
-    'Sardines ou maquereau (bo\u00eete)': 'Lidl', 'Fruits rouges surgel\u00e9s': 'Lidl', 'Galettes de riz': 'Lidl', 'Dattes': 'Lidl',
+    'Sardines ou maquereau (bo\u00eete)': 'Lidl', 'Fruits rouges surgel\u00e9s': 'Lidl', 'Galettes de riz': 'Lidl', 'Dattes': 'Lidl', 'Cottage cheese': 'Lidl',
     'L\u00e9gumes verts surgel\u00e9s': 'Lidl', 'Miel': 'Lidl', 'Amandes ou noix nature': 'Lidl',
     'Boisson d\'avoine': 'Lidl',
     'Bananes': 'Lidl', 'Fruits (pommes, poires, oranges\u2026)': 'Frutería · de saison',

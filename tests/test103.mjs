@@ -49,7 +49,7 @@ console.log('\n== 342) Le jour du premier ravitaillement : tout est dû, et tout
   const v = await vue(fr);
   ok(v.jour.length === 5, 'les cinq catégories sont dans la grille du jour (' + v.jour.length + ')');
   /* 23 octobre au soir, le plan dense : pain, fruits, semoule et pates sortent, riz et dattes entrent -- 18 articles. */
-  ok(/17 à prendre/.test(v.resume), 'et le résumé annonce 17 articles — riz et dattes entrent le 23 octobre, pain, fruits, semoule et pâtes sortent, le fromage le 26 (' + v.resume + ')');
+  ok(/18 à prendre/.test(v.resume), 'et le résumé annonce 18 articles — riz et dattes entrent le 23 octobre, pain, fruits, semoule et pâtes sortent, le fromage le 26, le cottage cheese entre le 27 (' + v.resume + ')');
   ok(v.dates.every(t => /aujourd/i.test(t)), 'chacune dit « aujourd’hui »');
   ok(v.dates.every(t => /puis le/.test(t)), 'ET chacune dit sa fois suivante — c’est ce qui manquait');
   ok(/10 oct/.test(v.dates[0]) && /17 oct/.test(v.dates[1]) && /31 oct/.test(v.dates[2]),
@@ -67,7 +67,7 @@ console.log('\n== 343) Un samedi ordinaire : la grille ne montre que le frais ==
      catégorie de deux semaines, dont il portait déjà le cycle. Tant qu'il y restait,
      « Chaque semaine » apparaissait dans la grille du jour ET dans le repli — une même
      catégorie coupée en deux, et un repli qui annonçait cinq catégories pour quatre. */
-  ok(/0\/7 .*7 à prendre/.test(v.resume), 'le résumé dit 7, pas 18 — la boisson d\'avoine, les fruits rouges, les galettes et les dattes sont aux deux semaines (' + v.resume + ')');
+  ok(/0\/8 .*8 à prendre/.test(v.resume), 'le résumé dit 8, pas 18 — la boisson d\'avoine, les fruits rouges, les galettes et les dattes sont aux deux semaines (' + v.resume + ')');
   ok(/4 catégories/.test(v.repli), 'les quatre autres catégories sont dans le repli (' + v.repli + ')');
   ok(v.tard.length === 4, 'et le repli les contient toutes, rachetables en avance (' + v.tard.length + ')');
   await ctx.close();

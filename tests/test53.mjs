@@ -50,7 +50,8 @@ console.log('\n== 180) Sans ajustement : plan de base, liste = plan × 7 ==');
   /* 23 octobre au soir, le plan dense : le pain et les fruits sortent (plus rien a macher), le
      riz remplace semoule et pates (une ligne pour deux), les dattes entrent. Dix-huit lignes. */
   /* 26 octobre : le fromage sort (il n'en a plus ; un 3e oeuf a la collation). Dix-sept lignes. */
-  ok(c.n === 17, '17 articles au total, tous rythmes confondus — plus de pain, de fruits ni de pâtes depuis le 23 octobre, les dattes entrent, le fromage sort le 26 (' + c.n + ')');
+  /* 27 octobre : le cottage cheese entre en fin de « Chaque semaine ». Dix-huit lignes. */
+  ok(c.n === 18, '18 articles au total, tous rythmes confondus — plus de pain, de fruits ni de pâtes depuis le 23 octobre, les dattes entrent, le fromage sort le 26, le cottage cheese entre le 27 (' + c.n + ')');
   /* Deux chiffres par ligne, et il faut les deux : ce qu'on ACHETE (un multiple du
      conditionnement) et ce que le PLAN demande (la somme des 7 jours de repas). Riz
      135 g/jour -> 945/semaine -> 3 780 sur 4 semaines, donc 4 paquets de 1 kg ;
@@ -105,10 +106,10 @@ console.log('\n== 180) Sans ajustement : plan de base, liste = plan × 7 ==');
   /* Les legumes surgeles sont passes a DEUX semaines le 20 septembre : 10 kg par passage
      ne rentraient pas dans son congelateur. La consommation n'a pas bouge (2 450 g par
      semaine), c'est le rythme de rachat qui a change -- 5 kg tous les quinze jours. */
-  ok(c.items.some(t => /^Œufs — 18\b/.test(t) && /demande 15 œufs/.test(t))
+  ok(c.items.some(t => /^Œufs — 12\b/.test(t) && /demande 10 œufs/.test(t))
   && c.items.some(t => /^Légumes verts surgelés — 3 kg\b/.test(t) && /demande 2\u202f240 g/.test(t))
   && c.items.some(t => /^Huile d'olive — 2 L\b/.test(t) && /1 bouteille de 2 L/.test(t) && /demande 1\u202f750 ml/.test(t)),
-     'œufs 18 pour 15 (trois à la collation depuis le 26 octobre, les sardines le mardi et le jeudi depuis le 21), surgelés 3 kg pour 2 240 g sur deux semaines (80 g par repas depuis le 23 octobre), huile 2 L pour 1 750 ml sur cinq (30 ml à midi, 20 le soir depuis le 25 octobre, 21 octobre)');
+     'œufs 12 pour 10 (deux à la collation et 100 g de cottage cheese depuis le 27 octobre, les sardines le mardi et le jeudi depuis le 21), surgelés 3 kg pour 2 240 g sur deux semaines (80 g par repas depuis le 23 octobre), huile 2 L pour 1 750 ml sur cinq (30 ml à midi, 20 le soir depuis le 25 octobre, 21 octobre)');
   /* Aucun stock n'est suppose : rien ne dit « tu en as », rien n'est repousse a plus tard. */
   ok(!c.items.some(t => /tu en as|il t’en reste|à racheter le/.test(t)), 'aucune ligne ne suppose un stock : tout part de zéro, il coche ce qu\'il a');
   /* Le contraire de ce que ce fichier tenait jusqu'au 20 septembre : ces lignes ne
@@ -144,7 +145,7 @@ console.log('\n== 180) Sans ajustement : plan de base, liste = plan × 7 ==');
   ok(!c.items.some(t => /^Beurre de cacahuète/.test(t)), 'le beurre de cacahuète est sorti de la liste');
   /* 29 septembre : la boisson d\'avoine du shake attend son prix (son ticket) -- c'est la seule ligne. */
   /* 21 octobre : couscous, fruits rouges, galettes de riz et sardines attendent son ticket. */
-  ok(c.items.filter(t => /prix à relever/.test(t)).every(t => /^(Boisson d\'avoine|Couscous|Fruits rouges|Galettes de riz|Sardines|Dattes)/.test(t)) && c.items.some(t => /^Amandes ou noix nature/.test(t) && /12,00 €\/kg/.test(t)),
+  ok(c.items.filter(t => /prix à relever/.test(t)).every(t => /^(Boisson d\'avoine|Couscous|Fruits rouges|Galettes de riz|Sardines|Dattes|Cottage cheese)/.test(t)) && c.items.some(t => /^Amandes ou noix nature/.test(t) && /12,00 €\/kg/.test(t)),
      'les amandes portent leur prix, 12 €/kg ; seuls les nouveaux articles du 21 octobre attendent le leur (' + c.items.find(t => /^Amandes/.test(t)) + ')');
 
   await page_(fr, 'repas');
@@ -296,8 +297,8 @@ console.log('\n== 183) La liste de courses sort du MEME plan que les repas ==');
   });
   const cles = Object.keys(r.recompte).sort();
   const faux = cles.filter(k => Math.abs(r.recompte[k] - r.lu[k]) > 0.001);
-  ok(faux.length === 0 && cles.length === 16,
-     'les 16 besoins de la semaine (le riz midi et soir, les dattes, plus de pain ni de fruits depuis le 23 octobre au soir, plus de fromage depuis le 26) sont exactement la somme des repas' + (faux.length ? ' — ' + faux.map(k => k + ' : ' + r.lu[k] + ' vs ' + r.recompte[k]).join(', ') : ' (' + cles.length + ')'));
+  ok(faux.length === 0 && cles.length === 17,
+     'les 17 besoins de la semaine (le riz midi et soir, les dattes, plus de pain ni de fruits depuis le 23 octobre au soir, plus de fromage depuis le 26, le cottage cheese depuis le 27) sont exactement la somme des repas' + (faux.length ? ' — ' + faux.map(k => k + ' : ' + r.lu[k] + ' vs ' + r.recompte[k]).join(', ') : ' (' + cles.length + ')'));
   /* Et aucun aliment du plan ne manque a la liste de courses. */
   const manquants = await fr.evaluate(() => {
     const noms = ['Petit-déjeuner','Déjeuner','Collation entraînement','Dîner','Collation combat','Récup combat'];

@@ -51,7 +51,7 @@ console.log('\n== 320) Les 17 articles portent tous une adresse ==');
      est affichee d'un coup. C'est le seul jour ou ce test voit les 46 lignes. */
   const { ctx, fr } = await courses('2026-10-03T10:00:00+02:00');
   const l = await lignes(fr);
-  ok(l.length === 17, '17 articles affichés le 26, jour de l\'ancre — le pain, les fruits, la semoule et les pâtes sont sortis le 23 octobre au soir (le riz et les dattes entrent), le fromage le 26 (' + l.length + ')');
+  ok(l.length === 18, '18 articles affichés le 26, jour de l\'ancre — le pain, les fruits, la semoule et les pâtes sont sortis le 23 octobre au soir (le riz et les dattes entrent), le fromage le 26, le cottage cheese entre le 27 (' + l.length + ')');
   const muets = l.filter(x => !x.ou);
   ok(!muets.length, 'aucun article sans adresse (' + (muets.map(x => x.nom).join(', ') || 'aucun') + ')');
   /* Cinq destinations, pas une de plus : une faute de frappe dans OU_ARTICLE passerait
@@ -127,7 +127,7 @@ console.log('\n== 323) La pastille n\'a rien cassé ==');
     coche: document.querySelector('#courses-grid .cat-card li').classList.contains('checked')
   }));
   ok(apres.coche, 'cliquer la pastille coche bien l\'article — elle est dans le label');
-  ok(avant !== apres.txt && /1\/17/.test(apres.txt), 'le compteur suit : ' + apres.txt.trim());
+  ok(avant !== apres.txt && /1\/18/.test(apres.txt), 'le compteur suit : ' + apres.txt.trim());
   /* Coche = « j'ai deja ce qu'il faut » aussi bien que « achete ». L'adresse doit rester
      lisible-mais-en-retrait, jamais disparaitre : il peut decocher. */
   const opac = await fr.evaluate(() => getComputedStyle(document.querySelector('#courses-grid .cat-card li .ou-tag')).opacity);
