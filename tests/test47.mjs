@@ -37,10 +37,11 @@ console.log('\n== 107) Première séance : cible = tours × bas de fourchette ==
   const { ctx, fr } = await ouvrir(LUNDI);
   const t = await fr.evaluate(() => document.querySelector('.sport-card.today').innerText);
   ok(/Haut lourd/.test(t) && /Tractions/.test(t) && /première séance/.test(t), 'la séance du jour est Haut lourd et n\'a pas d\'historique');
-  ok(/cible 6\/6\/6\/6/.test(t), 'Tractions 4×6-12 → cible 6/6/6/6 : ' + (t.match(/cible [^\n]*/) || [''])[0]);
+  /* 27 octobre, en salle : le jeudi lourd, tractions 4 × 5-8 */
+  ok(/cible 5\/5\/5\/5/.test(t), 'Tractions 4×5-8 → cible 5/5/5/5 : ' + (t.match(/cible [^\n]*/) || [''])[0]);
   const pre = await valeursSaisie(fr);
-  ok(pre === '6/6/6/6', 'la saisie au pas s\'ouvre sur la cible (' + pre + ')');
-  ok(/1 · Tractions \+ Dips/.test(t) && /repos 45 s \/ 90 s/.test(t), 'les paires et les repos du jeudi (séance lourde) sont affichés');
+  ok(pre === '5/5/5/5', 'la saisie au pas s\'ouvre sur la cible (' + pre + ')');
+  ok(/1 · Tractions \+ Développé couché barre/.test(t) && /repos 90 s \/ 2 min 30/.test(t), 'les paires et les repos du jeudi (séance lourde) sont affichés');
   await ctx.close();
 }
 
@@ -48,7 +49,7 @@ console.log('\n== 107b) Montée en charge : première semaine de muscu (semaine 
 {
   const { ctx, fr } = await ouvrir(PREMIER_LUNDI);
   const t = await fr.evaluate(() => document.querySelector('.sport-card.today').innerText);
-  ok(/cible 8\/8(?!\/)/.test(t), 'lundi 26 octobre, premier Haut volume au regime combat : Tractions 4 tours → 2 tours, cible 8/8 : ' + (t.match(/cible [^\n]*/) || [''])[0]);
+  ok(/cible 8\/8(?!\/)/.test(t), 'lundi 26 octobre, premier Haut volume au regime combat : Tractions 3 tours → 2 tours, cible 8/8 : ' + (t.match(/cible [^\n]*/) || [''])[0]);
   const note = await fr.evaluate(() => document.getElementById('programme-note').textContent);
   ok(/semaine 2/.test(note) && /½/.test(note), 'note du programme : ' + note);
   const off = await fr.evaluate(() => [...document.querySelectorAll('.sport-card')].map(c => c.innerText).filter(t => /Off/.test(t))[0] || '');
@@ -74,19 +75,21 @@ console.log('\n== 108) Saisir des séries enregistre le journal et coche l\'exer
 
 console.log('\n== 109) Double progression ==');
 {
-  /* dernière 8/7/6/6 → cible 9/8/7/7 ; toutes au haut (15/15/15) → monter : 10/10/10 @2,5 kg */
+  /* 27 octobre, en salle : tractions 4 × 5-8 -- dernière 8/7/6/6 → cible 8/8/7/7 (plafonnée au haut) ;
+     rowing barre 3 × 6-10 tout au haut (10/10/10 à 40 kg) → monter : 6/6/6 @42,5 kg */
   const { ctx, fr } = await ouvrir(LUNDI, { 'batcave-sport-log': [
     {id:'a', date:'2026-10-15', type:'Haut lourd', exo:'Tractions', series:[8,7,6,6], charge:0, unite:'reps'},
-    {id:'b', date:'2026-10-15', type:'Haut lourd', exo:'Rows australiens pieds surélevés', series:[15,15,15], charge:0, unite:'reps'}
+    {id:'b', date:'2026-10-15', type:'Haut lourd', exo:'Rowing barre', series:[10,10,10], charge:40, unite:'reps'}
   ]});
   const t = await fr.evaluate(() => document.querySelector('.sport-card.today').innerText);
-  ok(/dernière 8\/7\/6\/6/.test(t) && /cible 9\/8\/7\/7/.test(t), 'Tractions : dernière 8/7/6/6 → cible 9/8/7/7');
-  ok(/cible 10\/10\/10 @2,5 kg · monter/.test(t), 'Rows 15/15/15 (haut de 10-15) → monter : 10/10/10 @2,5 kg : ' + (t.match(/cible 10[^\n]*/) || [''])[0]);
+  ok(/dernière 8\/7\/6\/6/.test(t) && /cible 8\/8\/7\/7/.test(t), 'Tractions : dernière 8/7/6/6 → cible 8/8/7/7');
+  ok(/cible 6\/6\/6 @42,5 kg · monter/.test(t), 'Rowing barre 10/10/10 à 40 kg (haut de 6-10) → monter : 6/6/6 @42,5 kg : ' + (t.match(/cible 6\/6\/6[^\n]*/) || [''])[0]);
+  ok(/charge/i.test(t) && /barre et disques, au total/.test(t) && /lest/i.test(t) && /0 = poids du corps/.test(t), 'la saisie dit « Charge » à la barre, « Lest » aux tractions');
   await ctx.close();
-  const s2 = await ouvrir(SAMEDI, { 'batcave-sport-log': [{id:'c', date:'2027-01-23', type:'Bras · épaules · mollets', exo:'Dead hang', series:[30,30,30], charge:0, unite:'s'}] });
+  /* Après le régime combat (S2) aussi, le samedi est le second bas, en salle */
+  const s2 = await ouvrir(SAMEDI, { 'batcave-sport-log': [{id:'c', date:'2027-01-23', type:'Bas · charnière', exo:'Relevés de jambes suspendus', series:[15,15,15], charge:0, unite:'reps'}] });
   const t2 = await s2.fr.evaluate(() => document.querySelector('.sport-card.today').innerText);
-  ok(/cible 35\/35\/35 s/.test(t2), 'Dead hang 30 s → +5 s : 35/35/35 s');
-  ok(/dernière 30\/30\/30 s/.test(t2), 'les secondes sont affichées avec leur unité');
+  ok(/Bas · charnière/.test(t2) && /cible 8\/8\/8 @2 kg · monter/.test(t2), 'relevés 15/15/15 au poids du corps → un haltère de 2 kg entre les pieds : 8/8/8 @2 kg');
   await s2.ctx.close();
 }
 
@@ -112,7 +115,7 @@ console.log('\n== 111) Le tableau de bord annonce les cibles du jour, et le jour
   const { ctx, fr } = await ouvrir(LUNDI, { 'batcave-sport-log': [{id:'a', date:'2026-10-15', type:'Haut lourd', exo:'Tractions', series:[8,7,6,6], charge:0, unite:'reps'}] });
   await fr.evaluate(() => { document.querySelector('.nav-btn[data-page="dashboard"]').click(); const b = document.getElementById('dash-more-toggle'); if(document.getElementById('dash-more').hidden) b.click(); });
   const t = await fr.evaluate(() => document.getElementById('dash-sport').innerText);
-  ok(/Cibles : Tractions 9\/8\/7\/7/.test(t), 'Sport aujourd\'hui : « Cibles : Tractions 9/8/7/7 … » (' + t.replace(/\s+/g,' ').slice(0, 90) + ')');
+  ok(/Cibles : Tractions 8\/8\/7\/7/.test(t), 'Sport aujourd\'hui : « Cibles : Tractions 8/8/7/7 … » (' + t.replace(/\s+/g,' ').slice(0, 90) + ')');
   await ctx.close();
   const off = await ouvrir('2026-11-11T06:30:00+01:00');   /* mercredi : off (21 octobre : le mercredi 21 est avant la muscu, du 26) */
   await off.fr.evaluate(() => { document.querySelector('.nav-btn[data-page="dashboard"]').click(); const b = document.getElementById('dash-more-toggle'); if(document.getElementById('dash-more').hidden) b.click(); });

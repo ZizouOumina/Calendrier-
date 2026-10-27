@@ -32,50 +32,54 @@ const log = (exo, type, series, charge) => ({id: 'l-' + exo, date: '2026-10-12',
 
 console.log('\n== 261) Le cran de charge suit l\'exercice ==');
 {
+  /* 27 octobre, en salle : 2,5 kg à la barre, aux machines et en lest ; 2 kg par haltère ;
+     1 kg aux élévations latérales (départ 2 kg) ; 1,25 kg au cou ; un haltère de 2 kg pour les relevés. */
   const LOG = {'batcave-sport-log': [
     log('Flexion du cou', 'Haut volume', [20,20,20], 0),
-    log('Extension du cou', 'Haut lourd', [20,20,20], 1.25),
+    log('Extension du cou', 'Haut volume', [20,20,20], 1.25),
     log('Tractions', 'Haut lourd', [12,12,12,12], 0),
-    log('Élévations latérales', 'Haut volume', [20,20,20,20], 1),   /* 4 × 12-20 depuis le 30 septembre */
-    log('Crunch lesté', 'Bas complet', [20,20,20], 0),
-    log('Dips', 'Haut lourd', [15,14,13,12], 5)
+    log('Élévations latérales', 'Haut volume', [20,20,20,20], 2),
+    log('Relevés de jambes suspendus', 'Bas · charnière', [15,15,15], 0),
+    log('Squat barre', 'Bas complet', [10,10,10,10], 60),
+    log('Développé incliné haltères', 'Haut volume', [12,12,12], 16),
+    log('Dips', 'Haut lourd', [11,10,9], 5)
   ]};
-  const { ctx, fr } = await ouvrir('2026-11-09T09:00:00+01:00', LOG);   /* semaine 3 (jour 1 au mardi 13 depuis le 12 octobre) : volume complet. 19 octobre : jour 1 au mardi 20 -- la semaine 3 commence le 2 novembre. 21 octobre : la muscu commence le 26, volume complet des le lundi 9 */
+  const { ctx, fr } = await ouvrir('2026-11-09T09:00:00+01:00', LOG);   /* volume complet des le lundi 9 */
   const c = await fr.evaluate(() => {
     const ex = {}; window.__bcSessionsSport().forEach(s => s.exercises.forEach(e => { if(!ex[e.name]) ex[e.name] = e; }));
-    const r = {}; ['Flexion du cou','Extension du cou','Tractions','Élévations latérales','Crunch lesté','Dips'].forEach(n => { const x = window.__bcCibleProchaine(ex[n]); r[n] = {charge: x.charge, monter: x.monter, series: x.series}; });
+    const r = {}; ['Flexion du cou','Extension du cou','Tractions','Élévations latérales','Relevés de jambes suspendus','Squat barre','Développé incliné haltères','Dips'].forEach(n => { const x = window.__bcCibleProchaine(ex[n]); r[n] = {charge: x.charge, monter: x.monter, series: x.series}; });
     return r;
   });
-  ok(c['Flexion du cou'].monter && c['Flexion du cou'].charge === 1.25, 'cou, depuis le poids du corps : premier palier à 1,25 kg, pas 2,5 (' + c['Flexion du cou'].charge + ')');
-  ok(c['Extension du cou'].charge === 1.5, 'cou à 1,25 kg : un trait de 250 g → 1,5 kg (' + c['Extension du cou'].charge + ')');
-  ok(c['Tractions'].charge === 2.5, 'tractions : le sac lesté garde son cran de 2,5 kg (' + c['Tractions'].charge + ')');
-  ok(c['Élévations latérales'].charge === 1.25, 'élévations à 1 kg par main → 1,25 kg (' + c['Élévations latérales'].charge + ')');
-  ok(c['Crunch lesté'].charge === 3, 'crunch, depuis rien : la bouteille de sable, 3 kg (' + c['Crunch lesté'].charge + ')');
-  ok(!c['Dips'].monter && c['Dips'].charge === 5 && JSON.stringify(c['Dips'].series) === JSON.stringify([15,15,14,13]),
+  ok(c['Flexion du cou'].monter && c['Flexion du cou'].charge === 1.25, 'cou, depuis le poids du corps : le plus petit disque, 1,25 kg (' + c['Flexion du cou'].charge + ')');
+  ok(c['Extension du cou'].charge === 2.5, 'cou à 1,25 kg : +1,25 kg → 2,5 kg (' + c['Extension du cou'].charge + ')');
+  ok(c['Tractions'].charge === 2.5, 'tractions : le lest garde son cran de 2,5 kg (' + c['Tractions'].charge + ')');
+  ok(c['Élévations latérales'].charge === 3, 'élévations à 2 kg par main → 3 kg (' + c['Élévations latérales'].charge + ')');
+  ok(c['Relevés de jambes suspendus'].charge === 2, 'relevés, depuis rien : un haltère de 2 kg (' + c['Relevés de jambes suspendus'].charge + ')');
+  ok(c['Squat barre'].charge === 62.5, 'squat à 60 kg → 62,5 kg (' + c['Squat barre'].charge + ')');
+  ok(c['Développé incliné haltères'].charge === 18, 'haltères à 16 kg → 18 kg (' + c['Développé incliné haltères'].charge + ')');
+  ok(!c['Dips'].monter && c['Dips'].charge === 5 && JSON.stringify(c['Dips'].series) === JSON.stringify([12,11,10]),
      'dips pas tous au haut : même charge, +1 rep par série (' + c['Dips'].series.join('/') + ' à ' + c['Dips'].charge + ' kg)');
   const pas = await fr.evaluate(() => [window.__bcPasCharge({name:'x'}).pas, window.__bcPasCharge({name:'y', pas:0.25, depart:1}).depart]);
   ok(pas[0] === 2.5 && pas[1] === 1, 'sans cran déclaré, 2,5 kg ; avec, le sien');
   await ctx.close();
 }
 
-console.log('\n== 262) Les élévations latérales, lundi et samedi ==');
+console.log('\n== 262) En salle : haut / bas sur quatre jours, chaque muscle deux fois ==');
 {
-  const { ctx, fr } = await ouvrir('2026-10-19T09:00:00+02:00');
+  const { ctx, fr } = await ouvrir('2026-10-29T09:00:00+01:00');
   const s = await fr.evaluate(() => {
     const o = {}; window.__bcSessionsSport().forEach(x => { o[x.type] = {duree: x.duree, noms: x.exercises.map(e => e.name)}; });
-    return o;
+    return Object.assign(o, {sam: window.__bcTypeSport('2026-10-31'), samS2: window.__bcTypeSport('2027-02-06')});
   });
-  /* 30 septembre au soir : deux passages par semaine -- le lundi (4 series) et le jeudi (3). */
-  ok(s['Haut volume'].noms.includes('Élévations latérales') && s['Haut lourd'].noms.includes('Élévations latérales'), 'présentes le lundi (volume) et le jeudi (lourd) : deux passages par semaine');
-  ok(!s['Bas complet'].noms.includes('Élévations latérales'), 'et pas le mardi');
-  const hv = s['Haut volume'].noms, sa = s['Bras · épaules · mollets'].noms;
-  ok(hv.indexOf('Élévations latérales') < hv.indexOf('Flexion du cou'), 'lundi : avant le cou, qui reste le finisseur');
-  const hl = s['Haut lourd'].noms;
-  ok(hv.length === 8 && hl.length === 9 && hl[8] === 'Tractions serviette (grip kimono)' && s['Bas complet'].noms.length === 6, 'huit exercices le lundi, neuf le jeudi (les tractions serviette depuis le 21 octobre), six le mardi (' + [hv.length, hl.length, s['Bas complet'].noms.length].join(' / ') + ')');
-  ok(hl.includes('Split squat bulgare') && hl.includes('Soulevé de terre roumain une jambe'), 'le jeudi porte aussi les jambes : elles passent à deux séances par semaine');
-  ok(hv.includes('Curl barre basse') && hv.includes('Flexion du cou') && hv.includes('Extension du cou') && !hv.includes('Face pulls') && !hv.includes('Shrugs suspendus'), 'lundi : curl et cou complet ; face pulls et shrugs restent dehors');
-  ok(sa.indexOf('Élévations latérales') === sa.indexOf('Shrugs suspendus') + 1, 'samedi : dans le bloc épaules, juste après les shrugs');
-  ok(s['Haut lourd'].duree === '55 min' && s['Haut volume'].duree === '50 min', 'durées annoncées : 55 min (lourd, avec les tractions serviette) et 50 min (volume)');
+  const hv = s['Haut volume'].noms, hl = s['Haut lourd'].noms, bc = s['Bas complet'].noms, bch = s['Bas · charnière'].noms;
+  ok(hv.length === 8 && hl.length === 9 && bc.length === 6 && hl[8] === 'Tractions serviette (grip kimono)', 'les mêmes nombres qu\'avant le 27 : huit le lundi, neuf le jeudi (tractions serviette en dernier), six le mardi (' + [hv.length, hl.length, bc.length].join(' / ') + ')');
+  ok(s.sam === 'Bas · charnière' && s.samS2 === 'Bas · charnière' && bch.length === 7, 'le samedi est le second bas, au régime combat comme après (' + s.sam + ' / ' + s.samS2 + ')');
+  ok(hv.includes('Élévations latérales') && hl.includes('Élévations latérales') && bch.includes('Élévations latérales') && !bc.includes('Élévations latérales'), 'élévations latérales lundi, jeudi et samedi');
+  ok(hv.indexOf('Élévations latérales') < hv.indexOf('Flexion du cou'), 'lundi : le cou reste le finisseur');
+  ok(bc.includes('Squat barre') && bc.includes('Leg curl assis') && bch.includes('Split squat bulgare') && bch.includes('Leg curl couché'), 'les jambes deux fois : squat et leg curl assis le mardi, split squat et leg curl couché le samedi');
+  ok(!hl.some(n => /squat|Soulevé|Leg curl/i.test(n)), 'le jeudi ne porte plus de jambes : le haut lourd seul');
+  ok(hl.includes('Extension triceps à la poulie au-dessus de la tête') && hl.includes('Développé couché barre') && hl.includes('Rowing barre'), 'jeudi : développé couché, rowing barre, extension au-dessus de la tête (Maeo 2023)');
+  ok(s['Haut lourd'].duree === '55 min' && s['Haut volume'].duree === '50 min' && s['Bas complet'].duree === '50 min' && s['Bas · charnière'].duree === '50 min', 'durées annoncées : 55 min le jeudi, 50 les autres');
   await ctx.close();
 }
 
@@ -98,12 +102,12 @@ console.log('\n== 263) Le samedi du régime combat : lever 05:30, bras et épaul
   ok(r.lever === '05:30' && r.g[0] === '05:30 Sport', 'lever 05:30, la séance bras et épaules d\'abord (' + r.g[0] + ')');
   ok(r.g.includes('18:00 Projets perso 3') && r.g.includes('19:30 Dîner') && !r.g.some(x => /Course à pied/.test(x)), 'projets 18:00 → 19:30, dîner 19:30, plus de course');
   ok(r.g.filter(x => / Sport$/.test(x)).length === 1, 'une séance de muscu le samedi, à 05:30, et une seule');
-  ok(r.sport === 'Bras · épaules' && r.prevu.sport > 0, 'le samedi compte comme séance : bras et épaules (' + r.sport + ')');
+  ok(r.sport === 'Bas · charnière' && r.prevu.sport > 0, 'le samedi compte comme séance : le second bas depuis la salle (' + r.sport + ')');
   ok(Math.abs(r.som - (24 - 21 - 35/60 + 5.5)) < 0.01, 'nuit du vendredi : 21:35 → 05:30 = 7 h 55 (' + r.som.toFixed(2) + ' h)');
   ok(r.g.includes('09:20 Approfondir') && r.g.some(x => /^16:00 Cartes d'erreurs/.test(x)), 'aucun bloc de travail n\'a bougé');
   const c = await fr.evaluate(() => [window.__bcConsigne('Projets perso 3', 6, '2026-10-10'), window.__bcConsigne('Sport', 1, '2026-10-05')]);
   ok(/18:00/.test(c[0]) && /sans minuteur/.test(c[0]), 'la consigne du samedi soir parle du bloc de 18:00, sans minuteur');
-  ok(/kilomètre/.test(c[1]), 'celle du lundi garde le kilomètre jusqu\'au parc');
+  ok(/vélo ou de rameur/.test(c[1]) && !/parc/.test(c[1]), 'celle du lundi parle de la salle, plus du parc');
   await ctx.close();
 }
 

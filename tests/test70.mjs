@@ -30,7 +30,7 @@ console.log('\n== 270) Un jour off, le bandeau propose de choisir une séance ==
   const { ctx, fr } = await ouvrir(MERCREDI);
   const b = await fr.evaluate(() => document.getElementById('seance-choix').innerText);
   ok(/Repos/.test(b), 'la séance du jour est « Repos »');
-  ok(/Haut lourd/.test(b) && /Bas complet/.test(b) && /Haut volume/.test(b) && /Bras/.test(b), 'les quatre séances sont proposées');
+  ok(/Haut lourd/.test(b) && /Bas complet/.test(b) && /Haut volume/.test(b) && /Bas · charnière/.test(b) && !/Bras/.test(b), 'les quatre séances de la salle sont proposées, pas celles du parc');
   ok(/compte comme séance tenue/.test(b) && /ne bouge pas/.test(b), 'le bandeau dit que c\'est un bonus qui ne change pas la cible');
   ok(await fr.evaluate(() => !document.querySelector('.sport-card.today .saisie')), 'sans choix, aucune saisie n\'est offerte');
   await ctx.close();
@@ -68,12 +68,12 @@ console.log('\n== 272) Le prévu du mois ignore la séance bonus ==');
 console.log('\n== 273) Saisie au pas : séries, répétitions, lest ==');
 {
   const { ctx, fr, page } = await ouvrir(LUNDI);
-  ok(await valeursSaisie(fr) === '6/6/6/6', 'la saisie s\'ouvre sur la cible 6/6/6/6 (' + await valeursSaisie(fr) + ')');
+  ok(await valeursSaisie(fr) === '5/5/5/5', 'la saisie s\'ouvre sur la cible 5/5/5/5 (' + await valeursSaisie(fr) + ')');
   /* + une série */
   await fr.evaluate(() => document.querySelector('.sport-card.today .saisie [data-pas="nb"][data-d="1"]').click());
-  ok(await valeursSaisie(fr) === '6/6/6/6/6', 'un appui sur + ajoute une série (' + await valeursSaisie(fr) + ')');
+  ok(await valeursSaisie(fr) === '5/5/5/5/5', 'un appui sur + ajoute une série (' + await valeursSaisie(fr) + ')');
   await fr.evaluate(() => document.querySelector('.sport-card.today .saisie [data-pas="nb"][data-d="-1"]').click());
-  ok(await valeursSaisie(fr) === '6/6/6/6', 'un appui sur − la retire');
+  ok(await valeursSaisie(fr) === '5/5/5/5', 'un appui sur − la retire');
   await saisirSeries(fr, [9, 8, 7, 7], 2.5);
   await page.waitForTimeout(250);
   const log = await local(fr, 'batcave-sport-log');
@@ -110,7 +110,7 @@ console.log('\n== 275) « Effacer » retire la séance du jour ==');
   await page.waitForTimeout(200);
   ok((await local(fr, 'batcave-sport-log')).length === 0, 'effacer vide le journal du jour');
   ok((await local(fr, 'batcave-sport-2026-11-12'))['Haut lourd-0'] === false, 'et décoche l\'exercice');
-  ok(await valeursSaisie(fr) === '6/6/6/6', 'le bloc repart de la cible');
+  ok(await valeursSaisie(fr) === '5/5/5/5', 'le bloc repart de la cible');
   await ctx.close();
 }
 
@@ -146,8 +146,9 @@ console.log('\n== 278) Le programme parle du vrai travail de cou et d\'abdos =='
      sol du parc ne glisse pas, et le fall-out sur barre etait plus complique que le probleme.
      Le crunch est le seul des quatre qui travaille les abdos par le HAUT, et il reutilise le
      poids deja necessaire au cou -- donc zero materiel de plus. */
-  ok(/crunch lesté/i.test(t) && /par le\s*<?b?>?\s*haut/i.test(t) && /dragon flag/i.test(t),
-     'les abdos lestés sont décrits, crunch du mardi compris');
+  /* 27 octobre, en salle : les relevés de jambes du samedi, lestés d'un haltère */
+  ok(/relevés de jambes suspendus/i.test(t) && /haltère de 2 kg/.test(t) && /JJB/.test(t),
+     'les abdos sont décrits : relevés lestés d\'un haltère, et le tatami');
   const cartes = await fr.evaluate(() => [...document.querySelectorAll('.sport-card')].map(c => c.innerText).join('\n'));
   ok(/Flexion du cou/.test(cartes) && /Extension du cou/.test(cartes) && /Inclinaisons latérales du cou/.test(cartes), 'les trois mouvements de cou sont dans les séances');
   ok(!/Hollow hold|Planche latérale|Isométrie du cou/.test(cartes), 'les gainages isométriques ont disparu');

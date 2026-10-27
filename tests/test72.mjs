@@ -107,8 +107,9 @@ console.log('\n== 294) Le minuteur de repos propose les temps de la séance ==')
   const { ctx, fr, page } = await ouvrir(LUNDI_SPORT);
   await aller(fr, page, 'sport');
   const secs = await fr.evaluate(() => [...document.querySelectorAll('[data-repos]')].map(x => Number(x.dataset.repos)));
-  ok(secs.indexOf(45) > -1 && secs.indexOf(90) > -1 && secs.indexOf(75) > -1 && secs.indexOf(30) > -1,
-     'les repos du jeudi (30, 45, 60, 75, 90 s) sont proposés : ' + secs.join(', '));
+  /* 27 octobre, en salle : « 90 s / 2 min 30 » se lit 90 et 150 s */
+  ok(secs.indexOf(45) > -1 && secs.indexOf(90) > -1 && secs.indexOf(75) > -1 && secs.indexOf(150) > -1,
+     'les repos du jeudi (45, 75, 90, 120, 150 s) sont proposés : ' + secs.join(', '));
   ok(secs.length <= 7 && secs.every((v, i, a) => i === 0 || v > a[i-1]), 'sept boutons au plus, triés');
   await fr.evaluate(() => document.querySelector('[data-repos="90"]').click());
   await page.waitForTimeout(200);

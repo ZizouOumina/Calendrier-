@@ -21,7 +21,7 @@ async function ouvrir(quand, local, garderClaude){
   return { ctx, page, fr };
 }
 const local = (fr,k) => fr.evaluate(x => JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))(x) || 'null'), k);
-const MARDI = '2026-09-08T06:30:00+02:00';   /* Bas complet : Split squat bulgare en premier */
+const MARDI = '2026-09-08T06:30:00+02:00';   /* Bas complet : Split squat bulgare en premier -- le squat barre depuis la salle (27 octobre) */
 const LUNDI = '2026-09-07T06:30:00+02:00';   /* Haut lourd : Tractions en premier */
 
 console.log('\n== 150) Décocher un exercice retire ses séries du jour ==');
@@ -31,7 +31,7 @@ console.log('\n== 150) Décocher un exercice retire ses séries du jour ==');
   await saisirSeries(fr, [6, 6, 5]);
   await page.waitForTimeout(200);
   let log = await local(fr, 'batcave-sport-log');
-  ok(Array.isArray(log) && log.length === 1 && log[0].exo === 'Split squat bulgare', 'les séries sont dans le journal (' + (log && log.length) + ' entrée)');
+  ok(Array.isArray(log) && log.length === 1 && log[0].exo === 'Squat barre', 'les séries sont dans le journal (' + (log && log.length) + ' entrée)');
   let coche = await fr.evaluate(() => document.querySelector('.sport-card.today input[type="checkbox"]').checked);
   ok(coche === true, 'l\'exercice est coché');
   await fr.evaluate(() => { const cb = document.querySelector('.sport-card.today input[type="checkbox"]'); cb.checked = false; cb.dispatchEvent(new Event('change', {bubbles:true})); });

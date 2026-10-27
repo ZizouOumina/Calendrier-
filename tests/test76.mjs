@@ -28,7 +28,7 @@ console.log('\n== tours : moitie deux semaines, puis complet ==');
 /* 4 octobre : jour 1 au lundi 5 -- S1 et S2 (5 et 12) a moitie, S3 des le 19. */
 /* 12 octobre : jour 1 au mardi 13 -- S1 (jeudi 15) et S2 (lundi 19) a moitie, S3 des le lundi 26
    (apres le changement d'heure du 25 : +01:00). */
-for (const [q, attendu, moitie] of [['2026-10-26T05:35:00+01:00',2,true],['2026-11-05T05:35:00+01:00',2,true],['2026-11-09T05:35:00+01:00',4,false]]) {   /* 15 octobre : le jeudi 15 est avant le jour 1. 19 octobre : jour 1 au mardi 20, semaines 1-2 du 19 octobre au 1er novembre. 21 octobre : la muscu commence le lundi 26, ses deux semaines a moitie vont jusqu'au 8 novembre */
+for (const [q, attendu, moitie] of [['2026-10-26T05:35:00+01:00',2,true],['2026-11-05T05:35:00+01:00',2,true],['2026-11-09T05:35:00+01:00',3,false]]) {   /* 15 octobre : le jeudi 15 est avant le jour 1. 19 octobre : jour 1 au mardi 20, semaines 1-2 du 19 octobre au 1er novembre. 21 octobre : la muscu commence le lundi 26, ses deux semaines a moitie vont jusqu'au 8 novembre */
   const d = q.slice(0, 10);
   const {ctx, fr} = await jour(q);
   const t = await fr.evaluate(()=>{const c=document.getElementById('dash-sport'); return c?c.innerText.replace(/\s+/g,' '):'';});

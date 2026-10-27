@@ -197,12 +197,13 @@ console.log('\n== 255) Agenda Google : titres de la grille du jour, titre de bas
   await ctx.close();
 }
 
-console.log('\n== 256) Course jusqu\'au parc ==');
+console.log('\n== 256) En salle, l\'échauffement sur le vélo ==');
 {
   const { ctx, fr } = await ouvrir('2026-09-14T06:00:00+02:00');
   const t = await fr.evaluate(() => [document.getElementById('programme-details').textContent, window.__bcConsigne('Sport', 1, '2026-09-14')]);
-  ok(/Trajet en courant/.test(t[0]) && /1 km/.test(t[0]) && /allure conversation/.test(t[0]), 'le programme décrit le trajet en courant');
-  ok(/1 km|kilomètre/.test(t[1]) && /trottinant le mardi/.test(t[1]), 'consigne du bloc Sport (phase Español) : ' + t[1].slice(0, 60));
+  /* 27 octobre : le parc est sorti, la muscu se fait en salle */
+  ok(/Échauffement \(5 min\)/.test(t[0]) && /vélo ou de rameur/.test(t[0]) && /séries d'approche/.test(t[0]) && !/Trajet en courant/.test(t[0]), 'le programme décrit l\'échauffement en salle');
+  ok(/vélo ou de rameur/.test(t[1]) && !/parc/.test(t[1]), 'consigne du bloc Sport (phase Español) : ' + t[1].slice(0, 60));
   await ctx.close();
 }
 
