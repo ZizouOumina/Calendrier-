@@ -2,7 +2,8 @@
 
 Copie de référence du plan appliqué dans la Batcave (onglets Repas, Préparation et Courses).
 **Repartie de zéro le 23 octobre 2026** (« je veux le meilleur programme d'alimentation pour la
-prise de masse »). Si un chiffre diverge, c'est l'application qui fait foi : les macros, la liste
+prise de masse »), **finalisée le 29 octobre** (« il faut qu'il soit parfait ») : l'audit des
+vitamines et des minéraux, plus bas. Si un chiffre diverge, c'est l'application qui fait foi : les macros, la liste
 de courses et la préparation sortent toutes de la même source (`compoRepas`).
 
 ## Le cadre
@@ -17,10 +18,13 @@ de courses et la préparation sortent toutes de la même source (`compoRepas`).
 - **Jours de JJB** (lundi, mercredi, vendredi, à partir du 28 octobre) : **≈ 3 775 à 3 835
   kcal · protéines 139 à 143 g**, avec deux prises de plus.
 - Les valeurs : CIQUAL/USDA pour les aliments bruts, les étiquettes pour la boisson d'avoine
-  (Lidl : 43 kcal, 1,3 g de protéines pour 100 ml) et le skyr. Recalculées à la main le
-  25 octobre, aliment par aliment : la Batcave tombe juste, à l'arrondi près.
+  (Lidl : 43 kcal, 1,3 g de protéines pour 100 ml), le skyr et le cottage cheese (Milbona, Lidl :
+  98 kcal, 11,5 g de protéines, 2,8 g de glucides, 4,5 g de lipides pour 100 g ; présure
+  microbienne, pas animale). Recalculées à la main le 25 octobre, aliment par aliment : la
+  Batcave tombe juste, à l'arrondi près.
 - Tout est pesé **cru**. Pas de lait (acné) : boisson d'avoine, la version au calcium (« con
-  calcio »). Créatine 5 g par jour, au dîner. Eau : 3 L, 3,5 à 4 L les jours de JJB.
+  calcio »), enrichie aussi en vitamine D. Créatine 5 g par jour, au dîner. Eau : 3 L, 3,5 à
+  4 L les jours de JJB. Le sel : **iodé** (« sal yodada »).
 
 ## Ce que dit la science, et ce que fait le plan
 Refait le 25 octobre au soir (« je veux le meilleur programme scientifiquement basé »). Chaque
@@ -39,6 +43,8 @@ chiffre de la colonne « science » vient du résumé publié de la source, vér
 | Lipides | 0,5 à 1,5 g par kilo | **1,8 à 2,0 : au-dessus**, voir plus bas | Iraki 2019 |
 | Créatine | monohydrate, 3 à 5 g par jour | 5 g au dîner | Iraki 2019 ; Kreider 2017 (ISSN) |
 | Fruits et légumes | au moins 400 g par jour | ≈ 380 g frais et 70 g de dattes | OMS |
+| Vitamines et minéraux | couvrir les références de l'EFSA | tout couvert sauf la vitamine D l'hiver, voir l'audit | EFSA (valeurs de référence) |
+| Avant la séance de 05:30 | manger avant une séance de muscu le matin : effet nul ou minime dans la plupart des études | rien avant ; le shake après la séance | Stratton 2025 ; Naharudin 2019 |
 
 **Le seul écart, les lipides.** La fourchette d'Iraki sert à laisser assez de place aux glucides
 pour l'entraînement ; ici ils sont déjà à 6,4 g par kilo, au-dessus des 3 à 5 demandés. Aucune
@@ -84,14 +90,24 @@ riz dans l'assiette, ce qu'il ne peut pas manger.
   efficacy of creatine supplementation.* JISSN, 2017. https://pubmed.ncbi.nlm.nih.gov/28615996/
 - OMS, *Alimentation saine* (au moins 400 g de fruits et légumes par jour).
   https://www.who.int/fr/news-room/fact-sheets/detail/healthy-diet
+- EFSA, *Dietary Reference Values for nutrients — Summary report*, 2017 (les références de
+  l'audit, hommes adultes). https://doi.org/10.2903/sp.efsa.2017.e15121
+- Stratton MT et al. *The Impact of Breakfast Consumption or Omission on Exercise Performance
+  and Adaptations: A Narrative Review.* Nutrients, 2025 (pour la muscu du matin, effet nul ou
+  minime). https://pubmed.ncbi.nlm.nih.gov/39861430/
+- Naharudin MN et al. *Breakfast Omission Reduces Subsequent Resistance Exercise Performance.*
+  J Strength Cond Res, 2019 (un effet chez des gens qui prennent d'habitude un petit-déjeuner).
+  https://pubmed.ncbi.nlm.nih.gov/30707135/
+- AESAN, Comité scientifique, rapport n° 37 (sel iodé en Espagne : 60 mg d'iode par kilo de
+  sel).
 
 ## Les repas — les mêmes grammes tous les jours
 | Repas | Heure | Contenu | kcal · protéines |
 |---|---|---|---|
 | **Shake** | 06:45, juste après la séance | boisson d'avoine au calcium 400 ml, skyr 150 g, flocons d'avoine 80 g, banane 120 g, fruits rouges surgelés 100 g, **miel 20 g**, amandes ou noix 30 g | ≈ 960 · 40 g |
-| **Déjeuner** | 12:20 | **riz 125 g** (rice cooker), **poulet 70 g**, légumes verts 80 g, **huile d'olive 30 ml** (10 de cuisson, 20 crus sur le riz — ou 20 g de beurre), ½ c. à café de harissa, épices | ≈ 820 · 28 g |
+| **Déjeuner** | 12:20 | **riz 125 g** (rice cooker), **poulet 70 g**, **brocoli 80 g**, **huile d'olive 30 ml** (10 de cuisson, 20 crus sur le riz — ou 20 g de beurre), ½ c. à café de harissa, épices | ≈ 820 · 28 g |
 | **Collation** | 14:50 (16:50 le lundi), à la maison | **amandes ou noix 40 g**, 2 œufs durs, **cottage cheese 100 g**, **7 dattes (70 g)** | ≈ 670 · 34 g |
-| **Dîner** | 20:00 (19:00 le mardi et le dimanche, 19:30 le samedi) | **riz 125 g**, **viande hachée 5 % 70 g**, légumes verts 80 g, huile d'olive 25 ml (10 de cuisson, 15 crus, dont 5 que la sauce remplace), sauce du soir, créatine 5 g | ≈ 830 à 860 · 28 à 31 g |
+| **Dîner** | 20:00 (19:00 le mardi et le dimanche, 19:30 le samedi) | **riz 125 g**, **viande hachée 5 % 70 g**, **épinards 80 g**, huile d'olive 25 ml (10 de cuisson, 15 crus, dont 5 que la sauce remplace), sauce du soir, créatine 5 g | ≈ 830 à 860 · 28 à 31 g |
 
 - **Le mardi et le jeudi**, une boîte de sardines ou de maquereau (≈ 85 g égouttés) remplace les
   œufs et le cottage cheese de la collation : les oméga-3.
@@ -107,17 +123,46 @@ riz dans l'assiette, ce qu'il ne peut pas manger.
 
 ### D'où viennent les protéines (un samedi, 130 g)
 Riz 18,5 g · poulet 16,1 · skyr 15,8 · viande hachée 15,1 · amandes 14,8 · œufs 12,6 · cottage
-cheese 11,1 · flocons 10,6 · boisson d'avoine 5,2 · légumes 4,5 · dattes 1,8 · banane 1,3 · sauce
+cheese 11,5 · flocons 10,6 · boisson d'avoine 5,2 · légumes 4,5 · dattes 1,8 · banane 1,3 · sauce
 du soir 1 · fruits rouges 0,9. Animales : ≈ 71 g. Le mardi et le jeudi, les sardines (20,9 g)
 prennent la place des œufs et du cottage cheese.
 
 ### Les fruits et les légumes
 - **Fruits, chaque jour** : une banane (120 g) et 100 g de fruits rouges dans le shake, 7 dattes
   à la collation. Les jours de JJB, deux bananes de plus (collation combat et récup).
-- **Légumes, chaque jour** : 80 g à midi, 80 g le soir — 160 g, des légumes verts surgelés.
+- **Légumes, chaque jour** : 80 g à midi, 80 g le soir — 160 g, surgelés. **Depuis le batch du
+  1er novembre : du brocoli à midi, des épinards en portions le soir** (l'audit ci-dessous).
+  Les mêmes grammes ; les épinards fondent à la cuisson, le volume baisse encore.
 - Au compte des « 5 par jour » (une portion = 80 g, les fruits secs une seule fois) : ≈ 5
   portions. Le point faible : les légumes, deux portions seulement, gardées petites pour le
   volume (« 200 g par repas, ça me remplit trop », 14 octobre).
+
+### Vitamines et minéraux — l'audit du 29 octobre
+Calculé sur la journée réelle (tables USDA/CIQUAL et étiquettes ; c'est une estimation, à
+± 20 % près), comparé aux références de l'EFSA pour un homme de 20 ans. Deux journées types :
+un samedi (œufs et cottage cheese à la collation) et un mardi (la boîte de sardines).
+
+| Nutriment | Référence | Avant (sam. · mar.) | Depuis le 1er novembre | Verdict |
+|---|---|---|---|---|
+| Vitamine A | 750 µg | 300 · 145 µg | **640 · 490 µg** | réglé par les épinards : sur la semaine ≈ 600 µg, au-dessus du besoin moyen (570) |
+| Folates | 330 µg | 265 · 215 µg | **385 · 335 µg** | réglé (brocoli, épinards) |
+| Vitamine C | 110 mg | ≈ 60 mg | **≈ 90 mg** | au niveau du besoin moyen (90 mg) ; un kiwi ajouterait 60 mg si tu en veux un |
+| Iode | 150 µg | ≈ 110 · 75 µg | **+ le sel iodé** | 1 à 2 g de sel iodé (60 µg par gramme) complètent |
+| Vitamine D | 15 µg | ≈ 5 · 7 µg | ≈ 5 · 7 µg | **le seul manque** : voir plus bas |
+| Oméga-3 (EPA + DHA) | 250 mg | — | ≈ 290 mg par jour en moyenne | couvert par les deux boîtes de sardines ou de maquereau |
+| Calcium | 1 000 mg | 1 225 · 1 530 mg | ≈ 1 300 · 1 600 mg | couvert (boisson au calcium, amandes, skyr) |
+| Fer · zinc · magnésium | 11 · 9,4 à 16,3 · 350 mg | 16 · 16 · 585 mg | idem | couverts |
+| Potassium · fibres | 3 500 mg · 25 g | 3 600 mg · 41 g | idem | couverts |
+| Vitamine B12 | 4 µg | 4,1 · 10,5 µg | idem | couverte |
+
+- **La vitamine D** : l'alimentation en donne 5 à 7 µg ; le reste vient du soleil. À Alicante,
+  de novembre à février, le soleil est trop bas pour en faire produire beaucoup à la peau. Ce
+  qui se fait (la même règle que pour les compléments, 25 octobre) : demander un dosage de la
+  vitamine D au médecin, et n'en prendre que s'il le dit. Pour le halal : gouttes ou gélules
+  sans gélatine animale.
+- **Le sel iodé** : peu de laitages et pas de poisson tous les jours, c'est lui qui complète
+  l'iode. Quand le paquet est fini, « sal yodada ». Une pincée dans le riz du matin suffit.
+- **Les sauces du soir** vont avec le riz (crème-parmesan : chauffée avec le riz).
 
 ### Les choix qui restent les siens
 - **Le riz, midi et soir**, au rice cooker : plus de semoule ni de pâtes. 125 g cru par repas.
@@ -163,15 +208,16 @@ Le samedi à 13:30, la liste de l'onglet Courses, calculée pour le plan entier 
 viande hachée 490 g (pesés au comptoir), skyr, 10 œufs, 500 g de cottage cheese, bananes,
 amandes, sardines ou maquereau, légumes verts surgelés, boisson d'avoine (en briks de 1 L),
 fruits rouges, galettes de riz, dattes, riz, flocons, huile d'olive, miel. Plus de fromage depuis
-le 26 octobre. La Batcave en calcule le coût ; les articles sans
+le 26 octobre. Les légumes surgelés : moitié brocoli, moitié épinards en portions. La Batcave en calcule le coût ; les articles sans
 prix relevé (fruits rouges, galettes, sardines, dattes, cottage cheese) attendent son ticket.
 
 ## La préparation (batch cooking)
-Le dimanche à 14:30 : le poulet, la viande hachée et les légumes de la semaine, et les 10 œufs
-durs. Sept boîtes pour les midis, sept pour les soirs ; l'huile crue, la harissa et la sauce du
+Le dimanche à 14:30 : le poulet, la viande hachée et les légumes de la semaine (le brocoli pour
+les boîtes du midi, les épinards pour celles du soir), et les 10 œufs durs. Sept boîtes pour les
+midis, sept pour les soirs : quatre jours au frigo, trois au congélateur ; l'huile crue, la harissa et la sauce du
 soir se mettent au réchauffage.
 
 **Le riz se cuit chaque matin** (23 octobre au soir : « je vais cuire le riz fraîchement chaque
 matin pour toute la journée »), avant le shake : 250 g crus rincés trois fois, l'eau jusqu'au trait
-du rice cooker, une pincée de sel. Le midi reste au chaud dans la cuve ; la part du soir part dans
+du rice cooker, une pincée de sel iodé. Le midi reste au chaud dans la cuve ; la part du soir part dans
 une boîte, au frigo dès qu'elle est tiède. Un rice cooker de 1 L suffit.

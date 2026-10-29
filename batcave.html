@@ -8388,7 +8388,9 @@
        JJB (galettes de riz), et des sardines ou du maquereau deux fois par semaine. */
     fruitsrouges: {kcal:43, p:0.9, g:7.5, l:0.3},
     dattes:    {kcal:282, p:2.5,  g:67.0, l:0.4},
-    cottage:   {kcal:98,  p:11.1, g:3.4,  l:4.3},   /* 27 octobre : cottage cheese (USDA, 4 % de matiere grasse) ; a remplacer par son etiquette */   /* 23 octobre au soir : dattes Deglet Nour, ~10 g la datte ; elles s'achetent au poids */
+    /* 29 octobre : l'etiquette du Milbona (Lidl, Open Food Facts) remplace les valeurs USDA du 27
+       (P 11,1, G 3,4, L 4,3). Presure microbienne sur la liste d'ingredients : pas de presure animale. */
+    cottage:   {kcal:98,  p:11.5, g:2.8,  l:4.5},   /* 23 octobre au soir : dattes Deglet Nour, ~10 g la datte ; elles s'achetent au poids */
     galettes:  {kcal:387, p:8.0,  g:81.5, l:2.8,  piece:10},    /* galettes de riz souffle, ~10 g la galette */
     sardines:  {kcal:208, p:24.6, g:0.0,  l:12.2, piece:85},    /* sardines ou maquereau a l'huile, egouttes : ~85 g la boite */
     /* Les condiments des sauces du jour, comptes depuis le 21 octobre (« j'ai l'impression de
@@ -8523,6 +8525,17 @@
      lieu de 200 et 150 : 200 g par jour au lieu de 350. Ce qui part (~50 kcal, 4 g de
      proteines) est negligeable ; la boucle poids -> calories corrige le reste. */
   var LEGUMES_REPAS = {dej:80, din:80};   /* 23 octobre au soir : 80 g, le volume baisse */
+  /* 29 octobre, « il faut qu'il soit parfait » : l'audit des micronutriments (programme-
+     alimentation.md) trouve la vitamine A a 20-40 % de la reference (750 µg, EFSA), les folates
+     et la vitamine C justes. Les memes 80 g changent de legume a partir du batch du dimanche
+     1er novembre : du BROCOLI a midi (vitamine C, folates), des EPINARDS en portions le soir
+     (vitamine A, folates, calcium ; ils fondent a la cuisson, le volume baisse encore). Memes
+     macros a 10 kcal pres : la cle « legumes » ne change pas, seuls les libelles suivent. */
+  var LEGUMES_VARIES_DEBUT = '2026-11-01';
+  function nomLegumes(repas, iso){
+    if((iso || todayISO) < LEGUMES_VARIES_DEBUT) return 'Légumes verts';
+    return repas === 'din' ? 'Épinards' : 'Brocoli';
+  }
   /* ===== Les sauces du jour ===== (14 octobre, sa demande)
      « Propose-moi des sauces pour le riz ou les pates, on les met fixes dans le calendrier,
      comme ca je sais quoi manger et quand exactement. » Une sauce par repas et par jour de
@@ -8563,11 +8576,11 @@
     din:{
       1:{nom:'Pesto rosso', recette:'1 c. à soupe de pesto rosso (15 g), à la place des 5 ml d\'huile crue', ingr:['Pesto rosso'], sansHuile:true},
       2:{nom:'Pesto verde-parmesan', recette:'1 c. à soupe de pesto verde (15 g) à la place des 5 ml d\'huile crue, 10 g de parmesan', ingr:['Pesto verde','Parmesan'], sansHuile:true},
-      3:{nom:'Crème-parmesan', recette:'2 c. à soupe de crème de cuisson chauffées avec les pâtes, 10 g de parmesan, poivre, à la place des 5 ml d\'huile crue', ingr:['Crème de cuisson','Parmesan'], sansHuile:true},
+      3:{nom:'Crème-parmesan', recette:'2 c. à soupe de crème de cuisson chauffées avec le riz, 10 g de parmesan, poivre, à la place des 5 ml d\'huile crue', ingr:['Crème de cuisson','Parmesan'], sansHuile:true},
       4:{nom:'Rosso-harissa', recette:'1 c. à soupe de pesto rosso (15 g) et une pointe de harissa, à la place des 5 ml d\'huile crue', ingr:['Pesto rosso','Harissa'], sansHuile:true},
       5:{nom:'Pesto verde-parmesan', recette:'1 c. à soupe de pesto verde (15 g) à la place des 5 ml d\'huile crue, 10 g de parmesan', ingr:['Pesto verde','Parmesan'], sansHuile:true},
       6:{nom:'Pesto rosso crémeux', recette:'1 c. à soupe de pesto rosso (15 g) et 1 c. à soupe de crème de cuisson, à la place des 5 ml d\'huile crue', ingr:['Pesto rosso','Crème de cuisson'], sansHuile:true},
-      0:{nom:'Crème-parmesan', recette:'2 c. à soupe de crème de cuisson chauffées avec les pâtes, 10 g de parmesan, poivre, à la place des 5 ml d\'huile crue', ingr:['Crème de cuisson','Parmesan'], sansHuile:true}
+      0:{nom:'Crème-parmesan', recette:'2 c. à soupe de crème de cuisson chauffées avec le riz, 10 g de parmesan, poivre, à la place des 5 ml d\'huile crue', ingr:['Crème de cuisson','Parmesan'], sansHuile:true}
     }
   };
   function sauceDuJour(repas, iso){
@@ -8645,6 +8658,7 @@
       var sc = sauceDuJour(repas, iso), kc = Math.round(compoSauce(sc).reduce(function(t, x){ return t + ALIMENTS[x.c].kcal * x.q / 100; }, 0));
       return 'Huile d\'olive (' + (p.huile - (sc.sansHuile ? HUILE_CRUE[repas] : 0)) + 'ml) · sauce ' + sc.nom.toLowerCase() + ' (≈ ' + kc + ' kcal, comptée) : ' + sc.recette;
     }
+    if(ii === 2) return reduit(it.replace('Légumes verts', nomLegumes(repas, iso)));
     return reduit(it);
   }
   function texteKcalRepas(m, iso){
@@ -8907,8 +8921,8 @@
       var dsc = document.getElementById('repas-desc');
       if(dsc) dsc.textContent = 'Programme du jour, ' + repasDuJour().length + ' prises' + (jourDeCombat() ? ' (jour de combat)' : '') + ' : ' + Math.round(n.targets.kcal) + ' kcal, P ' +
         Math.round(n.targets.p) + ' g, G ' + Math.round(n.targets.g) + ' g, L ' + Math.round(n.targets.l) +
-        ' g, tout pesé cru, sauces comprises. Couscous à midi (' + grammesFeculent('dej') + ' g), pâtes le soir (' + FECULENTS.din.g +
-        ' g) ; la protéine suit la rotation de la semaine. Les cases se réinitialisent à minuit.';
+        ' g, tout pesé cru, sauces comprises. Riz à midi (' + grammesFeculent('dej') + ' g) et le soir (' + FECULENTS.din.g +
+        ' g), cuit chaque matin ; poulet à midi, viande hachée le soir. Les cases se réinitialisent à minuit.';
       document.getElementById('meal-kcal-sub').textContent = Math.round(n.totals.kcal) + ' / ' + Math.round(n.targets.kcal) + ' kcal' +
         (n.targets.ajustement ? ' (plan ' + Math.round(n.targets.plan) + (n.targets.ajustement > 0 ? ' + ' : ' − ') + Math.abs(n.targets.ajustement) + ')' : '');
       document.getElementById('meal-p-fill').style.width = pPct + '%';
@@ -12548,7 +12562,9 @@
       [0,  'Le <b>riz</b> ne se fait plus le dimanche : il se cuit chaque matin, frais, au rice cooker (la consigne du petit-déjeuner). Le batch, c\'est la viande, les légumes et les œufs.'],
       [3,  'Le <b>poulet</b> à la poêle — ' + poids(T.poulet) + ', feu vif, 4 min par face puis 3 min à couvert.'],
       [22, 'La <b>viande hachée</b> — ' + poids(T.hachee) + ', en deux fournées pour qu\'elle grille au lieu de bouillir. 10 min.'],
-      [46, 'Les <b>légumes surgelés</b> — ' + poids(T.legumes) + ', à la poêle en trois fournées ou à la vapeur, 7 min. Sans les décongeler avant.'],
+      [46, 'Les <b>légumes surgelés</b> — ' + poids(T.legumes) + (dim >= LEGUMES_VARIES_DEBUT
+             ? ' : moitié brocoli (les boîtes du midi), moitié épinards en portions (celles du soir). À la poêle ou à la vapeur, sans les décongeler avant : 7 min le brocoli, 5 min à couvert les épinards.'
+             : ', à la poêle en trois fournées ou à la vapeur, 7 min. Sans les décongeler avant.')],
       [60, 'Les <b>' + Math.round(BESOIN_SEMAINE.oeufs || 0) + ' œufs durs</b> (la collation) — une casserole, 10 min dans l\'eau bouillante, puis eau froide. On les garde en coquille : une semaine au frigo.'],
       [75, '<b>Tout refroidir à découvert, 20 min.</b> Un tupperware fermé sur du chaud fabrique de la condensation, et la condensation fabrique des bactéries.'],
       [95, 'Remplir les <b>14 boîtes</b> dans l\'ordre du tableau ci-dessous, et écrire le jour dessus.'],
@@ -12567,23 +12583,23 @@
       var ou = i < 4 ? 'frigo' : 'congélateur';
       /* Ce qui ne va PAS dans la boite : le fruit (entier, a cote). */
       var dansBoite = function(x){ return x.c !== 'fruit' && x.c !== 'riz' && !(ALIMENTS[x.c] && ALIMENTS[x.c].condiment); };   /* la sauce se fait au rechauffage ; le riz se cuit le matin meme */
-      var ligne = function(x){
-        var n = NOM_ALIMENT[x.c] || x.c;
+      var ligne = function(repas){ return function(x){
+        var n = (x.c === 'legumes' && j.iso >= LEGUMES_VARIES_DEBUT) ? nomLegumes(repas, j.iso) : (NOM_ALIMENT[x.c] || x.c);
         return '<li>' + escapeHtml(n) + ' — ' + (x.c === 'huile' ? Math.round(x.q) + ' ml' : poids(x.q)) + '</li>';
-      };
+      }; };
       return '<div class="prep-boite"><h5>' + escapeHtml(j.nom.charAt(0).toUpperCase() + j.nom.slice(1)) +
              ' <span class="ou">' + ou + '</span></h5>' +
              '<ul><li style="list-style:none; margin-left:-16px; color:var(--ink-faint); font-size:11px; letter-spacing:.03em; text-transform:uppercase;">Midi</li>' +
-             j.dej.filter(dansBoite).map(ligne).join('') +
+             j.dej.filter(dansBoite).map(ligne('dej')).join('') +
              '<li style="list-style:none; margin-left:-16px; color:var(--ink-faint); font-size:11px; letter-spacing:.03em; text-transform:uppercase; padding-top:4px;">Soir</li>' +
-             j.din.filter(dansBoite).map(ligne).join('') + '</ul></div>';
+             j.din.filter(dansBoite).map(ligne('din')).join('') + '</ul></div>';
     }).join('');
     document.getElementById('prep-regles').innerHTML = [
       ['Le petit-déjeuner', 'un shake : 400 ml de boisson d\'avoine au calcium, 150 g de skyr, 80 g de flocons, une banane (congelée en rondelles, c\'est un milkshake), 100 g de fruits rouges surgelés, 20 g de miel, 30 g d\'amandes — 40 secondes de mixeur, à boire en dix minutes. Les jours de JJB, un shake de récup au retour : 250 ml de boisson d\'avoine, une banane, 20 g de flocons'],
       ['La collation d\'entraînement', '40 g d\'amandes, 2 œufs durs, 100 g de cottage cheese (le mardi et le jeudi, une boîte de sardines ou de maquereau à la place des deux), 7 dattes — ~670 kcal, à la maison avant de partir ; les œufs sont cuits le dimanche, le reste s\'emporte'],
       ['Le goût', 'la sauce du jour, faite au réchauffage (onglet Repas) : ses calories sont comptées. L\'huile froide à l\'assiette les jours où la sauce n\'est ni crème ni pesto'],
       ['Réchauffer à la poêle', 'la boîte vidée dans la poêle avec 2 à 3 cuillères d\'eau, couvercle, feu moyen, 4 à 5 min, puis 1 min à découvert. Brûlant jusqu\'au cœur. Pas l\'air fryer : il dessèche le riz et les pâtes'],
-      ['Le fruit du dîner', 'entier, jamais dans la boîte : coupé le dimanche il rend de l\'eau et noircit'],
+      ['Le sel', 'iodé (« sal yodada ») : peu de laitages et du poisson deux fois par semaine, c\'est lui qui complète l\'iode du plan. Une pincée dans le riz suffit'],
       ['Refroidir vite', 'deux heures maximum entre la casserole et le frigo. Étaler plutôt qu\'entasser'],
       ['Quatre jours au frigo', 'de la viande cuite tient quatre jours à 4 °C, pas sept. Au-delà, c\'est le congélateur'],
       ['Un mois au congélateur', 'riz, pâtes, viande et légumes cuits se congèlent très bien. Décongélation au frigo la veille, jamais sur le plan de travail'],
@@ -12769,6 +12785,7 @@
               note: pack + (achat > besoin ? ' \u00b7 le plan en demande ' +
                     (besoinTxt || (sep(besoin) + (fmt === vol ? ' ml' : ' g'))) : '')};
     }
+    function avecNote(a, t){ a.note += t; return a; }
     var cat = [
       /* Le frais, chaque samedi.
          La viande ne s'arrondit PAS : le boucher pese le montant exact.
@@ -12803,7 +12820,8 @@
          alors un rythme que l'un de ses articles ne suivait pas. Il est range ou son cycle
          est ecrit, et « Chaque semaine » redevient vrai pour ses huit lignes. */
       {cat:'Toutes les 2 semaines', semaines:2, ancre:ANCRE_COURSES, items:[
-        art('Légumes verts surgelés', B.legumes * 2, 1000, poids, 'sachet'),
+        /* 29 octobre : moitie brocoli (midi), moitie epinards (soir) -- LEGUMES_VARIES_DEBUT. */
+        avecNote(art('Légumes verts surgelés', B.legumes * 2, 1000, poids, 'sachet'), ' \u00b7 moitié brocoli, moitié épinards en portions'),
         /* 26 octobre : le fromage sort du plan (il n'en a plus ; un 3e oeuf le remplace a la
            collation). Ce qui le suivait remonte d'un cran -- courses-plan-v11. */
         /* 29 septembre : la boisson d'avoine du shake, 300 ml par jour, 2,1 L par semaine. Il
@@ -16150,17 +16168,17 @@
     'Petit-déjeuner + Coran (1 page)': function(d, iso){
       var c = compoRepas('Déjeuner', iso, false).concat(compoRepas('Dîner', iso, false)), r = 0;
       c.forEach(function(x){ if(x.c === 'riz') r += x.q; });
-      return "Avant le shake : le riz du jour au rice cooker — " + Math.round(r) + " g crus (midi et soir), rincés trois fois, l'eau jusqu'au trait, une pincée de sel. Il cuit pendant que tu bois le shake. Le midi reste au chaud dans la cuve ; la part du soir part dans une boîte, au frigo dès qu'elle est tiède.";
+      return "Avant le shake : le riz du jour au rice cooker — " + Math.round(r) + " g crus (midi et soir), rincés trois fois, l'eau jusqu'au trait, une pincée de sel iodé (« sal yodada » : quand ton paquet est fini, prends celui-là ; c'est lui qui complète l'iode). Il cuit pendant que tu bois le shake. Le midi reste au chaud dans la cuve ; la part du soir part dans une boîte, au frigo dès qu'elle est tiède.";
     },
     'Déjeuner': function(d, iso){
       var c = compoRepas('Déjeuner', iso, false), g = function(k){ var x = c.filter(function(y){ return y.c === k; })[0]; return x ? Math.round(x.q) : 0; };
       var sc = sauceDuJour('dej', iso);
-      return "La boîte du jour : riz " + g('riz') + " g crus, poulet " + g('poulet') + " g, " + g('legumes') + " g de légumes. Réchauffée à la poêle avec 2 à 3 cuillères d'eau, couvercle, 4 à 5 min, brûlante jusqu'au cœur. Sauce du jour — " + sc.nom + " : " + sc.recette + ". Sel.";
+      return "La boîte du jour : riz " + g('riz') + " g crus, poulet " + g('poulet') + " g, " + g('legumes') + " g de " + nomLegumes('dej', iso).toLowerCase() + ". Réchauffée à la poêle avec 2 à 3 cuillères d'eau, couvercle, 4 à 5 min, brûlante jusqu'au cœur. Sauce du jour — " + sc.nom + " : " + sc.recette + ". Sel.";
     },
     'Dîner': function(d, iso){
       var c = compoRepas('Dîner', iso, false), g = function(k){ var x = c.filter(function(y){ return y.c === k; })[0]; return x ? Math.round(x.q) : 0; };
       var sc = sauceDuJour('din', iso);
-      return "La boîte du jour : riz " + g('riz') + " g crus, viande hachée " + g('hachee') + " g, " + g('legumes') + " g de légumes, à la poêle. Sauce du jour — " + sc.nom + " : " + sc.recette + (sc.sansHuile ? "" : " ; hors du feu, 5 ml d'huile d'olive crue") + ". Un fruit. La créatine, 5 g, avec le repas. Ensuite plus rien jusqu'au lendemain.";
+      return "La boîte du jour : riz " + g('riz') + " g crus, viande hachée " + g('hachee') + " g, " + g('legumes') + " g " + (nomLegumes('din', iso) === 'Épinards' ? "d'épinards" : "de légumes verts") + ", à la poêle. Sauce du jour — " + sc.nom + " : " + sc.recette + (sc.sansHuile ? "" : " ; hors du feu, 5 ml d'huile d'olive crue") + ". La créatine, 5 g, avec le repas. Ensuite plus rien jusqu'au lendemain.";
     },
     '🚿 Douche du soir': "Dix minutes, eau bien tiède — agréable, jamais brûlante : visage et dos restent tièdes (Skinoren). Une heure avant le coucher, le corps évacue ensuite sa chaleur et tu t'endors plus vite. Eau seule sur les cheveux et le corps, gel doux aux aisselles, à l'aine et aux pieds ; la fin à l'eau froide (dimanche, mercredi, vendredi) se fait le matin. Cinq minutes plus tard, le Skinoren. Lumières basses : une lampe, plus le plafonnier.",
     '📖 Écran off — lecture papier': "Avant d'éteindre : la clôture du jour dans la Batcave, deux minutes. Puis téléphone en charge hors de portée, réveil posé loin du lit. Chambre vers 18 °C (fenêtre ouverte dix minutes), noir complet. Tes vingt pages en espagnol, sur papier.",

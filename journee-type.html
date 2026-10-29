@@ -162,11 +162,11 @@
       <div class="tab-wrap"><table>
         <thead><tr><th>Repas</th><th>Heure</th><th>Dans l'assiette</th></tr></thead>
         <tbody>
-          <tr><td>Petit-déjeuner</td><td>06:45</td><td>flocons d'avoine 80 g + miel 20 g, skyr 180 g, 2 œufs, amandes 30 g, 1 banane</td></tr>
-          <tr><td>Collation combat</td><td>10:05 (L, Me, V) · 14:50 (Ma)</td><td>banane 120 g, flocons 50 g, amandes 15 g — les jours de combat seulement</td></tr>
-          <tr><td>Déjeuner</td><td>12:20</td><td>la boîte : riz 155 g crus, poulet 80 g, légumes 200 g ; sauce skyr 65 g + 10 ml d'huile, hors du feu</td></tr>
-          <tr><td>Collation entraînement</td><td>14:50 (16:50 le lundi)</td><td>pain complet 60 g, 2 œufs durs, fromage 20 g, amandes 25 g</td></tr>
-          <tr><td>Dîner</td><td>20:00 (18:00 Ma · 19:30 Sa · 19:00 Di)</td><td>la boîte : pâtes 105 g crues, viande hachée 90 g, légumes 150 g ; skyr à l'ail 60 g, 5 ml d'huile au paprika ; 1 fruit ; <b>créatine 5 g</b>. Puis plus rien.</td></tr>
+          <tr><td>Petit-déjeuner</td><td>06:45</td><td>le riz du jour au rice cooker (250 g crus, une pincée de sel iodé), puis le shake : boisson d'avoine au calcium 400 ml, skyr 150 g, flocons 80 g, 1 banane, fruits rouges 100 g, miel 20 g, amandes 30 g</td></tr>
+          <tr><td>Collation combat</td><td>10:05 (L, Me, V)</td><td>banane 120 g, 2 galettes de riz, miel 15 g ; au retour du club (12:00), le shake de récup : boisson d'avoine 250 ml, 1 banane, flocons 20 g</td></tr>
+          <tr><td>Déjeuner</td><td>12:20</td><td>riz 125 g crus, poulet 70 g, brocoli 80 g ; 20 ml d'huile d'olive crue sur le riz, ½ c. à café de harissa, épices</td></tr>
+          <tr><td>Collation entraînement</td><td>14:50 (16:50 le lundi)</td><td>amandes 40 g, 2 œufs durs, cottage cheese 100 g, 7 dattes ; le mardi et le jeudi, une boîte de sardines ou de maquereau à la place des œufs et du cottage cheese</td></tr>
+          <tr><td>Dîner</td><td>20:00 (19:00 Ma · 19:30 Sa · 19:00 Di)</td><td>riz 125 g crus, viande hachée 70 g, épinards 80 g, la sauce du soir ; <b>créatine 5 g</b>. Puis plus rien.</td></tr>
         </tbody>
       </table></div>
       <ul>
@@ -247,7 +247,8 @@
   function petitDej(){
     return ['06:45', 'Petit-déjeuner + une page de Coran', 'repas', [
       'Un grand verre d\'eau d\'abord.',
-      'Flocons d\'avoine 80 g + miel 20 g, skyr 180 g, 2 œufs, amandes 30 g, 1 banane.',
+      'D\'abord le riz du jour au rice cooker : 250 g crus rincés, l\'eau au trait, une pincée de sel iodé.',
+      'Le shake : boisson d\'avoine au calcium 400 ml, skyr 150 g, flocons 80 g, 1 banane, fruits rouges 100 g, miel 20 g, amandes 30 g.',
       'Une page de Coran en mangeant (tu la notes à la clôture).'
     ], true];
   }
@@ -269,7 +270,7 @@
       'Puis le projet Claude Dentaire : « estudia · matière Tn · tes ? ».'
     ], true];
   }
-  var COLL_COMBAT = ['10:05', 'Collation combat', 'repas', ['Banane 120 g, flocons 50 g, amandes 15 g — 25 min avant le tatami.', 'Gourde remplie.'], true];
+  var COLL_COMBAT = ['10:05', 'Collation combat', 'repas', ['Banane 120 g, 2 galettes de riz, miel 15 g — 25 min avant le tatami.', 'Gourde remplie. Au retour (12:00) : le shake de récup, boisson d\'avoine 250 ml, 1 banane, flocons 20 g.'], true];
   var TRAJET_CLUB = ['10:20', 'Trajet club', 'combat', ['Dix minutes à pied.'], true];
   var JJB = ['10:30', '🥋 JJB (1 h 30)', 'combat', ['Protège-dents. Tape tôt sur une clé ou un étranglement. Bois entre les rounds. Questions en espagnol.'], true];
   function retourJJB(ghusl){
@@ -281,8 +282,8 @@
   }
   function dejeuner(h){
     return [h || '12:20', 'Déjeuner', 'repas', [
-      'La boîte du batch : riz 155 g crus, poulet 80 g, légumes 200 g. Poêle avec 2-3 cuillères d\'eau, couvercle, 4-5 min, brûlant au cœur.',
-      'Hors du feu : sauce skyr 65 g + 10 ml d\'huile, sel, un parfum. Gourde re-remplie.'
+      'Le riz du matin (125 g crus), la boîte du batch : poulet 70 g, brocoli 80 g. Poêle avec 2-3 cuillères d\'eau, couvercle, 4-5 min, brûlant au cœur.',
+      '20 ml d\'huile d\'olive crue sur le riz, ½ c. à café de harissa, tes épices. Gourde re-remplie.'
     ], true];
   }
   function sieste(h){ return [h, 'Micro-sieste', 'sommeil', ['20 minutes au plus, alarme mise.'], true]; }
@@ -290,7 +291,7 @@
   var TAPIS = ['14:52', 'Tapis enlevés du sol', 'maison', ['L\'aspirateur passe à 15:45 et à 18:15.'], 'tapis'];
   function collEntr(h, plusCombat){
     return [h, 'Collation entraînement' + (plusCombat ? ' + collation combat' : ''), 'repas',
-      ['Pain complet 60 g, 2 œufs durs, fromage 20 g, amandes 25 g.'].concat(plusCombat ? ['Plus la collation combat : banane 120 g, flocons 50 g, amandes 15 g (pour la Muay Thai de 19:30).'] : []), true];
+      ['Amandes 40 g, 2 œufs durs, cottage cheese 100 g, 7 dattes. Le mardi et le jeudi : une boîte de sardines ou de maquereau à la place des œufs et du cottage cheese.'], true];
   }
   function trajetCours(h){ return [h, 'Trajet vers la fac', 'fac', ['Podcast en marchant, shadowing à mi-voix dans le tram. Arrivé en avance : conversation avec les compañeros.'], true]; }
   function cours(h, fin, asr){ return [h, 'Cours (jusqu\'à ' + fin + ')', 'fac', ['Notes en espagnol, un « ? » par mot inconnu, ta question posée avant la fin.', asr], false]; }
@@ -298,8 +299,8 @@
   var MAGHRIB = ['19:55', 'Maghrib, puis tapis remis', 'deen', ['≈ 19:51 le 28 sept. — en rentrant, avant le dîner. Les tapis reprennent leur place.']];
   function diner(h){
     return [h, 'Dîner', 'repas', [
-      'La boîte : pâtes 105 g crues, viande hachée 90 g, légumes 150 g, à la poêle.',
-      'Hors du feu : skyr à l\'ail 60 g, 5 ml d\'huile au paprika. Un fruit.',
+      'Le riz du matin (125 g crus), la boîte : viande hachée 70 g, épinards 80 g, à la poêle.',
+      'La sauce du soir (onglet Repas de la Batcave).',
       '<b>Créatine 5 g</b>, avec le repas. Ensuite plus rien jusqu\'au lendemain.'
     ], true];
   }
@@ -412,7 +413,7 @@
       ['11:20', 'Español · simulación', 'espagnol', ['Deux réponses d\'examen en espagnol, 55 min, puis « examen » avec Claude. Dès le 26 oct. : projets perso.'], true],
       dejeuner(), sieste('13:10'),
       ['13:30', 'Español · balance de la semana', 'espagnol', ['Les quatre chiffres du dimanche (erreurs / 100 mots, oral sans pause, pages lues, minutes de conversation), saisis à la clôture. Dhuhr (≈ 13:55) au milieu.'], true],
-      ['14:30', 'Batch cooking de la semaine (2 h)', 'repas', ['Riz, poulet, pâtes, viande hachée, légumes : les boîtes du déjeuner et du dîner.', 'Les <b>œufs durs de la semaine</b> (petit-déjeuner et collation).'], true],
+      ['14:30', 'Batch cooking de la semaine (2 h)', 'repas', ['Poulet, viande hachée, brocoli (midi) et épinards (soir) : les quatorze boîtes. Le riz, lui, se cuit chaque matin.', 'Les <b>œufs durs de la semaine</b> (la collation).'], true],
       TAPIS,
       ['16:30', 'Ménage (1 h)', 'maison', ['Sols, salle de bain, poussière.', '<b>Draps et taies changés, serviette de corps propre.</b>', 'Asr (≈ 17:16) à la fin.'], true],
       ['17:30', 'Projets perso 3 : le livrable (jusqu\'à 19:00)', 'travail', ['Finir le livrable de la semaine ; s\'il est fait, préparer celui de la suivante.'], true],
