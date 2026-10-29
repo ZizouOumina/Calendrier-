@@ -48,7 +48,9 @@ console.log('— vendredi 25 septembre : la premiere periode, 28 sept. -> 24 oct
   /* 25 octobre au soir : 70 g (0,4 g/kg de proteines par repas) -- 37,24 EUR. */
   /* 26 octobre : le fromage sort, 5 oeufs de plus par semaine -- 38,01 EUR. */
   /* 27 octobre : le cottage cheese (prix a relever, hors total) remplace le 3e oeuf -- 36,61 EUR. */
-  ok(pres(a.semaine, 36.61), 'courses : 36,61 EUR par semaine hors les articles sans prix (dattes, sardines, fruits rouges, galettes), plan dense du 23 octobre (' + a.semaine.toFixed(2) + ')');
+  /* 30 octobre : plus de sauces -- 10 g d'amandes de plus par jour (+0,84 EUR) et les 5 ml d'huile que
+     la sauce remplacait le soir (+0,21 EUR) : 37,65 EUR. */
+  ok(pres(a.semaine, 37.65), 'courses : 37,65 EUR par semaine hors les articles sans prix (dattes, sardines, fruits rouges, galettes, cottage cheese), plus de sauces depuis le 30 octobre (' + a.semaine.toFixed(2) + ')');
   ok(a.estimes.length === 0, 'plus aucune estimation : les amandes ont leur prix releve');
   ok(a.cagnotte === 230, 'jour du virement : 230 EUR dans la cagnotte — ce que laisse la periode la plus chere, les courses comptees en caisse (plan dense du 23 octobre au soir) (' + a.cagnotte + ')');
   ok(a.periode.debut === '2026-09-28' && a.periode.fin === '2026-10-24', 'premiere periode du 28 sept. (dernier virement a l\'ancienne date) au 24 oct.');
