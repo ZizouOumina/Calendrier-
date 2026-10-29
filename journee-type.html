@@ -164,9 +164,9 @@
         <tbody>
           <tr><td>Petit-déjeuner</td><td>06:45</td><td>le riz du jour au rice cooker (250 g crus, une pincée de sel iodé), puis le shake : boisson d'avoine au calcium 400 ml, skyr 150 g, flocons 80 g, 1 banane, fruits rouges 100 g, miel 20 g, amandes 30 g</td></tr>
           <tr><td>Collation combat</td><td>10:05 (L, Me, V)</td><td>banane 120 g, 2 galettes de riz, miel 15 g ; au retour du club (12:00), le shake de récup : boisson d'avoine 250 ml, 1 banane, flocons 20 g</td></tr>
-          <tr><td>Déjeuner</td><td>12:20</td><td>riz 125 g crus, poulet 70 g, brocoli 80 g ; 20 ml d'huile d'olive crue sur le riz, ½ c. à café de harissa, épices</td></tr>
-          <tr><td>Collation entraînement</td><td>14:50 (16:50 le lundi)</td><td>amandes 40 g, 2 œufs durs, cottage cheese 100 g, 7 dattes ; le mardi et le jeudi, une boîte de sardines ou de maquereau à la place des œufs et du cottage cheese</td></tr>
-          <tr><td>Dîner</td><td>20:00 (19:00 Ma · 19:30 Sa · 19:00 Di)</td><td>riz 125 g crus, viande hachée 70 g, épinards 80 g, la sauce du soir ; <b>créatine 5 g</b>. Puis plus rien.</td></tr>
+          <tr><td>Déjeuner</td><td>12:20</td><td>riz 125 g crus, poulet 70 g, brocoli 80 g ; 20 ml d'huile d'olive crue sur le riz, sel iodé, épices</td></tr>
+          <tr><td>Collation entraînement</td><td>14:50 (16:50 le lundi)</td><td>amandes 50 g, 2 œufs durs, cottage cheese 100 g, 7 dattes ; le mardi et le jeudi, une boîte de sardines ou de maquereau à la place des œufs et du cottage cheese</td></tr>
+          <tr><td>Dîner</td><td>20:00 (19:00 Ma · 19:30 Sa · 19:00 Di)</td><td>riz 125 g crus, viande hachée 70 g, épinards 80 g ; 15 ml d'huile d'olive crue sur le riz, sel iodé, épices ; <b>créatine 5 g</b>. Puis plus rien.</td></tr>
         </tbody>
       </table></div>
       <ul>
@@ -283,7 +283,7 @@
   function dejeuner(h){
     return [h || '12:20', 'Déjeuner', 'repas', [
       'Le riz du matin (125 g crus), la boîte du batch : poulet 70 g, brocoli 80 g. Poêle avec 2-3 cuillères d\'eau, couvercle, 4-5 min, brûlant au cœur.',
-      '20 ml d\'huile d\'olive crue sur le riz, ½ c. à café de harissa, tes épices. Gourde re-remplie.'
+      '20 ml d\'huile d\'olive crue sur le riz, sel iodé, tes épices. Pas de sauce. Gourde re-remplie.'
     ], true];
   }
   function sieste(h){ return [h, 'Micro-sieste', 'sommeil', ['20 minutes au plus, alarme mise.'], true]; }
@@ -291,7 +291,7 @@
   var TAPIS = ['14:52', 'Tapis enlevés du sol', 'maison', ['L\'aspirateur passe à 15:45 et à 18:15.'], 'tapis'];
   function collEntr(h, plusCombat){
     return [h, 'Collation entraînement' + (plusCombat ? ' + collation combat' : ''), 'repas',
-      ['Amandes 40 g, 2 œufs durs, cottage cheese 100 g, 7 dattes. Le mardi et le jeudi : une boîte de sardines ou de maquereau à la place des œufs et du cottage cheese.'], true];
+      ['Amandes 50 g, 2 œufs durs, cottage cheese 100 g, 7 dattes. Le mardi et le jeudi : une boîte de sardines ou de maquereau à la place des œufs et du cottage cheese.'], true];
   }
   function trajetCours(h){ return [h, 'Trajet vers la fac', 'fac', ['Podcast en marchant, shadowing à mi-voix dans le tram. Arrivé en avance : conversation avec les compañeros.'], true]; }
   function cours(h, fin, asr){ return [h, 'Cours (jusqu\'à ' + fin + ')', 'fac', ['Notes en espagnol, un « ? » par mot inconnu, ta question posée avant la fin.', asr], false]; }
@@ -300,7 +300,7 @@
   function diner(h){
     return [h, 'Dîner', 'repas', [
       'Le riz du matin (125 g crus), la boîte : viande hachée 70 g, épinards 80 g, à la poêle.',
-      'La sauce du soir (onglet Repas de la Batcave).',
+      'Hors du feu : 15 ml d\'huile d\'olive crue sur le riz, sel iodé, tes épices. Pas de sauce.',
       '<b>Créatine 5 g</b>, avec le repas. Ensuite plus rien jusqu\'au lendemain.'
     ], true];
   }

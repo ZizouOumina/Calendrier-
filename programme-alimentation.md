@@ -13,10 +13,11 @@ de courses et la préparation sortent toutes de la même source (`compoRepas`).
 - **Peu de volume, beaucoup de calories** (23 octobre au soir : « il me faut du faible volume pour
   beaucoup de calories, j'arriverai pas à manger autant ») : un shake le matin, l'huile d'olive
   versée crue sur le riz (10 ml = 88 kcal sans une bouchée de plus), des amandes et des dattes.
-- **Jours normaux** (mardi, jeudi, samedi, dimanche) : **≈ 3 190 à 3 300 kcal · protéines
-  126 à 133 g (2,0 à 2,1 g par kilo) · glucides ≈ 415 g · lipides ≈ 118 à 124 g**, en quatre prises.
-- **Jours de JJB** (lundi, mercredi, vendredi, à partir du 28 octobre) : **≈ 3 775 à 3 835
-  kcal · protéines 139 à 143 g**, avec deux prises de plus.
+- **Jours normaux** (mardi, jeudi, samedi, dimanche) : **≈ 3 240 à 3 300 kcal · protéines
+  128 à 131 g (2,0 g par kilo) · glucides ≈ 415 g · lipides ≈ 123 à 126 g**, en quatre prises.
+- **Jours de JJB** (lundi, mercredi, vendredi, à partir du 28 octobre) : **≈ 3 825 kcal ·
+  protéines 141 g**, avec deux prises de plus.
+- **Plus de sauces depuis le 30 octobre** : l'huile d'olive, le sel iodé et les épices (plus bas).
 - Les valeurs : CIQUAL/USDA pour les aliments bruts, les étiquettes pour la boisson d'avoine
   (Lidl : 43 kcal, 1,3 g de protéines pour 100 ml), le skyr et le cottage cheese (Milbona, Lidl :
   98 kcal, 11,5 g de protéines, 2,8 g de glucides, 4,5 g de lipides pour 100 g ; présure
@@ -32,15 +33,15 @@ chiffre de la colonne « science » vient du résumé publié de la source, vér
 
 | Point | La science | Le plan | Source |
 |---|---|---|---|
-| Surplus | +10 à 20 % au-dessus de l'entretien | ≈ 3 470 kcal en moyenne sur la semaine, ≈ +16 % | Iraki 2019 |
+| Surplus | +10 à 20 % au-dessus de l'entretien | ≈ 3 510 kcal en moyenne sur la semaine, ≈ +18 % | Iraki 2019 |
 | Rythme de prise | 0,25 à 0,5 % du poids par semaine (0,16 à 0,32 kg à 64 kg) ; plus vite, c'est surtout du gras | vise 0,31 kg ; la Batcave propose −100 kcal au-dessus de 0,5 % | Iraki 2019 ; Helms 2023 |
 | Protéines par jour | 1,6 à 2,2 g par kilo ; au-delà de ≈ 1,6, plus de gain mesurable | 2,0 à 2,1 (2,2 les jours de JJB) | Morton 2018 ; Iraki 2019 |
 | Protéines par repas | 0,40 à 0,55 g par kilo, sur 3 à 6 repas ; 4 × 20 g battent 2 × 40 et 8 × 10 | 4 repas, de 0,44 à 0,63 g par kilo | Iraki 2019 ; Schoenfeld et Aragon 2018 ; Areta 2013 |
 | Autour de l'entraînement | des protéines dans les 1 à 2 h avant ou après | le shake (40 g) 15 min après la séance de 05:30 ; après le JJB, la récup et le déjeuner (35 g) | Iraki 2019 ; Jäger 2017 (ISSN) |
-| Avant le coucher | 30 à 40 g de caséine augmentent la synthèse de la nuit | le dîner, 1 h 30 avant le coucher : 28 à 31 g, bas de la fourchette | Jäger 2017 (ISSN) |
+| Avant le coucher | 30 à 40 g de caséine augmentent la synthèse de la nuit | le dîner, 1 h 30 avant le coucher : 27 g, bas de la fourchette | Jäger 2017 (ISSN) |
 | Végétal ou animal | avec assez de protéines, pas de différence de muscle ni de force | 55 % animales (skyr, cottage cheese, œufs, viande, sardines) | Hevia-Larraín 2021 ; Monteyne 2023 ; Joy 2013 |
 | Glucides | au moins 3 à 5 g par kilo | 6,4 (8,3 les jours de JJB) | Iraki 2019 |
-| Lipides | 0,5 à 1,5 g par kilo | **1,8 à 2,0 : au-dessus**, voir plus bas | Iraki 2019 |
+| Lipides | 0,5 à 1,5 g par kilo | **1,9 à 2,0 : au-dessus**, voir plus bas | Iraki 2019 |
 | Créatine | monohydrate, 3 à 5 g par jour | 5 g au dîner | Iraki 2019 ; Kreider 2017 (ISSN) |
 | Fruits et légumes | au moins 400 g par jour | ≈ 380 g frais et 70 g de dattes | OMS |
 | Vitamines et minéraux | couvrir les références de l'EFSA | tout couvert sauf la vitamine D l'hiver, voir l'audit | EFSA (valeurs de référence) |
@@ -105,9 +106,9 @@ riz dans l'assiette, ce qu'il ne peut pas manger.
 | Repas | Heure | Contenu | kcal · protéines |
 |---|---|---|---|
 | **Shake** | 06:45, juste après la séance | boisson d'avoine au calcium 400 ml, skyr 150 g, flocons d'avoine 80 g, banane 120 g, fruits rouges surgelés 100 g, **miel 20 g**, amandes ou noix 30 g | ≈ 960 · 40 g |
-| **Déjeuner** | 12:20 | **riz 125 g** (rice cooker), **poulet 70 g**, **brocoli 80 g**, **huile d'olive 30 ml** (10 de cuisson, 20 crus sur le riz — ou 20 g de beurre), ½ c. à café de harissa, épices | ≈ 820 · 28 g |
-| **Collation** | 14:50 (16:50 le lundi), à la maison | **amandes ou noix 40 g**, 2 œufs durs, **cottage cheese 100 g**, **7 dattes (70 g)** | ≈ 670 · 34 g |
-| **Dîner** | 20:00 (19:00 le mardi et le dimanche, 19:30 le samedi) | **riz 125 g**, **viande hachée 5 % 70 g**, **épinards 80 g**, huile d'olive 25 ml (10 de cuisson, 15 crus, dont 5 que la sauce remplace), sauce du soir, créatine 5 g | ≈ 830 à 860 · 28 à 31 g |
+| **Déjeuner** | 12:20 | **riz 125 g** (rice cooker), **poulet 70 g**, **brocoli 80 g**, **huile d'olive 30 ml** (10 de cuisson, 20 crus sur le riz — ou 20 g de beurre), sel iodé, épices | ≈ 820 · 28 g |
+| **Collation** | 14:50 (16:50 le lundi), à la maison | **amandes ou noix 50 g**, 2 œufs durs, **cottage cheese 100 g**, **7 dattes (70 g)** | ≈ 730 · 36 g |
+| **Dîner** | 20:00 (19:00 le mardi et le dimanche, 19:30 le samedi) | **riz 125 g**, **viande hachée 5 % 70 g**, **épinards 80 g**, huile d'olive 25 ml (10 de cuisson, 15 crus sur le riz), sel iodé, épices, créatine 5 g | ≈ 800 · 27 g |
 
 - **Le mardi et le jeudi**, une boîte de sardines ou de maquereau (≈ 85 g égouttés) remplace les
   œufs et le cottage cheese de la collation : les oméga-3.
@@ -121,10 +122,10 @@ riz dans l'assiette, ce qu'il ne peut pas manger.
   - **12:00, le shake de récup** : boisson d'avoine 250 ml, banane 120 g, flocons 20 g (≈ 290
     kcal), au retour du club.
 
-### D'où viennent les protéines (un samedi, 130 g)
-Riz 18,5 g · poulet 16,1 · skyr 15,8 · viande hachée 15,1 · amandes 14,8 · œufs 12,6 · cottage
-cheese 11,5 · flocons 10,6 · boisson d'avoine 5,2 · légumes 4,5 · dattes 1,8 · banane 1,3 · sauce
-du soir 1 · fruits rouges 0,9. Animales : ≈ 71 g. Le mardi et le jeudi, les sardines (20,9 g)
+### D'où viennent les protéines (un samedi, 131 g)
+Riz 18,5 g · poulet 16,1 · skyr 15,8 · viande hachée 15,1 · amandes 17,0 · œufs 12,6 · cottage
+cheese 11,5 · flocons 10,6 · boisson d'avoine 5,2 · légumes 4,5 · dattes 1,8 · banane 1,3 ·
+fruits rouges 0,9. Animales : ≈ 71 g. Le mardi et le jeudi, les sardines (20,9 g)
 prennent la place des œufs et du cottage cheese.
 
 ### Les fruits et les légumes
@@ -139,18 +140,18 @@ prennent la place des œufs et du cottage cheese.
 
 ### Vitamines et minéraux — l'audit du 29 octobre
 Calculé sur la journée réelle (tables USDA/CIQUAL et étiquettes ; c'est une estimation, à
-± 20 % près), comparé aux références de l'EFSA pour un homme de 20 ans. Deux journées types :
+± 20 % près ; la colonne « depuis » compte aussi la fin des sauces, le 30 octobre), comparé aux références de l'EFSA pour un homme de 20 ans. Deux journées types :
 un samedi (œufs et cottage cheese à la collation) et un mardi (la boîte de sardines).
 
 | Nutriment | Référence | Avant (sam. · mar.) | Depuis le 1er novembre | Verdict |
 |---|---|---|---|---|
-| Vitamine A | 750 µg | 300 · 145 µg | **640 · 490 µg** | réglé par les épinards : sur la semaine ≈ 600 µg, au-dessus du besoin moyen (570) |
-| Folates | 330 µg | 265 · 215 µg | **385 · 335 µg** | réglé (brocoli, épinards) |
+| Vitamine A | 750 µg | 300 · 145 µg | **610 · 440 µg** | réglé par les épinards : sur la semaine ≈ 560 µg, au niveau du besoin moyen (570) |
+| Folates | 330 µg | 265 · 215 µg | **385 · 330 µg** | réglé (brocoli, épinards) |
 | Vitamine C | 110 mg | ≈ 60 mg | **≈ 90 mg** | au niveau du besoin moyen (90 mg) ; un kiwi ajouterait 60 mg si tu en veux un |
 | Iode | 150 µg | ≈ 110 · 75 µg | **+ le sel iodé** | 1 à 2 g de sel iodé (60 µg par gramme) complètent |
 | Vitamine D | 15 µg | ≈ 5 · 7 µg | ≈ 5 · 7 µg | **le seul manque** : voir plus bas |
 | Oméga-3 (EPA + DHA) | 250 mg | — | ≈ 290 mg par jour en moyenne | couvert par les deux boîtes de sardines ou de maquereau |
-| Calcium | 1 000 mg | 1 225 · 1 530 mg | ≈ 1 300 · 1 600 mg | couvert (boisson au calcium, amandes, skyr) |
+| Calcium | 1 000 mg | 1 225 · 1 530 mg | ≈ 1 290 · 1 470 mg | couvert (boisson au calcium, amandes, skyr) |
 | Fer · zinc · magnésium | 11 · 9,4 à 16,3 · 350 mg | 16 · 16 · 585 mg | idem | couverts |
 | Potassium · fibres | 3 500 mg · 25 g | 3 600 mg · 41 g | idem | couverts |
 | Vitamine B12 | 4 µg | 4,1 · 10,5 µg | idem | couverte |
@@ -162,7 +163,6 @@ un samedi (œufs et cottage cheese à la collation) et un mardi (la boîte de sa
   sans gélatine animale.
 - **Le sel iodé** : peu de laitages et pas de poisson tous les jours, c'est lui qui complète
   l'iode. Quand le paquet est fini, « sal yodada ». Une pincée dans le riz du matin suffit.
-- **Les sauces du soir** vont avec le riz (crème-parmesan : chauffée avec le riz).
 
 ### Les choix qui restent les siens
 - **Le riz, midi et soir**, au rice cooker : plus de semoule ni de pâtes. 125 g cru par repas.
@@ -170,30 +170,23 @@ un samedi (œufs et cottage cheese à la collation) et un mardi (la boîte de sa
 - Le miel des anciennes courses sert au shake. Le beurre de cacahuète ne revient pas (il ne
   l'aime pas, sorti le 24 septembre).
 
-## Les sauces
-**Le midi, tous les jours** (23 octobre : « j'aime bien la semoule nature avec de l'huile d'olive
-ou du beurre et quelques épices, harissa ; la crème ça va mieux avec le riz et les pâtes ») : le
-riz nature, les 20 ml d'huile d'olive crue (ou 20 g de beurre), ½ c. à café de harissa et les
-épices qu'il a (cumin, ras el hanout, paprika).
+## L'assaisonnement : plus de sauces
+**Depuis le vendredi 30 octobre** (29 octobre au soir : « enlève les sauces et ajuste en
+fonction »), midi et soir la même chose : **l'huile d'olive crue versée sur le riz (20 ml à midi, 15 le soir),
+le sel iodé et les épices** (cumin, ras el hanout, paprika, poivre ; une pointe de harissa s'il en a
+envie). Les épices n'ont pas de calories : elles restent hors du plan. Plus de pesto, de crème ni
+de parmesan.
 
-**Le soir**, une sauce par jour, toujours la même, faite de ses condiments ; la crème ou le pesto
-remplace les 5 ml d'huile crue, et chaque sauce est comptée dans les macros (1 c. à soupe = 15 g,
-1 c. à café = 5 g) :
+**L'ajustement.** Le soir, les 5 ml d'huile crue que la sauce remplaçait reviennent : 25 ml
+(15 crus sur le riz). Le reste de ce que les sauces apportaient (≈ 40 kcal par jour en moyenne,
+≈ 2,5 g de protéines, le parmesan surtout) revient par **10 g d'amandes de plus à la collation**
+(50 g au lieu de 40 : +58 kcal, +2 g de protéines). Pas plus d'huile : à 60 ml par jour, le
+bidon de 2 L ne tenait plus les cinq semaines, il en aurait fallu deux. Les amandes tiennent
+dans les trois sachets de 200 g (560 g pour 600). La semaine passe de ≈ 3 490 à ≈ 3 510 kcal ;
+les protéines restent entre 128 et 141 g par jour, 2,0 à 2,2 g par kilo.
 
-| Jour | Soir (riz + viande hachée) |
-|---|---|
-| Lundi | Pesto rosso : 1 c. à soupe (15 g) |
-| Mardi | Pesto verde-parmesan : 15 g de pesto, 10 g de parmesan |
-| Mercredi | Crème-parmesan : 2 c. à soupe de crème, 10 g de parmesan, poivre |
-| Jeudi | Rosso-harissa : 15 g de pesto rosso, une pointe de harissa |
-| Vendredi | Pesto verde-parmesan |
-| Samedi | Pesto rosso crémeux : 15 g de pesto rosso, 1 c. à soupe de crème |
-| Dimanche | Crème-parmesan |
-
-Crème, parmesan, skyr et cottage cheese sont laitiers : s'il voit des boutons, la crème sort la
-première.
-Les condiments ont leur carte dans l'onglet Courses : hors du total, il coche ce qui manque et écrit
-lui-même la quantité.
+Les seuls laitiers qui restent : le skyr et le cottage cheese. La carte Condiments de l'onglet
+Courses a disparu avec les sauces.
 
 ## La boucle poids → calories
 Une pesée **chaque dimanche, à jeun**. Rien ne se lit pendant les trois premières semaines
@@ -214,8 +207,8 @@ prix relevé (fruits rouges, galettes, sardines, dattes, cottage cheese) attende
 ## La préparation (batch cooking)
 Le dimanche à 14:30 : le poulet, la viande hachée et les légumes de la semaine (le brocoli pour
 les boîtes du midi, les épinards pour celles du soir), et les 10 œufs durs. Sept boîtes pour les
-midis, sept pour les soirs : quatre jours au frigo, trois au congélateur ; l'huile crue, la harissa et la sauce du
-soir se mettent au réchauffage.
+midis, sept pour les soirs : quatre jours au frigo, trois au congélateur ; l'huile crue, le sel et les épices se mettent à
+l'assiette.
 
 **Le riz se cuit chaque matin** (23 octobre au soir : « je vais cuire le riz fraîchement chaque
 matin pour toute la journée »), avant le shake : 250 g crus rincés trois fois, l'eau jusqu'au trait

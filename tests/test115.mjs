@@ -106,7 +106,7 @@ console.log('\n== 4) L\'alimentation du 21 octobre : shake, sauces comptées, co
     return {
       shake: c('Petit-déjeuner', '2026-11-03'),
       dejLun: c('Déjeuner', '2026-11-02'), dejMar: c('Déjeuner', '2026-11-03'),
-      dinMar: c('Dîner', '2026-11-03'), dinLun: c('Dîner', '2026-11-02'),
+      dinMar: c('Dîner', '2026-11-03'), dinLun: c('Dîner', '2026-11-02'), dinMar27: c('Dîner', '2026-10-27'),
       colMar: c('Collation entraînement', '2026-11-03'), colLun: c('Collation entraînement', '2026-11-02'),
       combat: c('Collation combat', '2026-11-02'),
       besoin: window.__bcBesoinSemaine
@@ -119,13 +119,17 @@ console.log('\n== 4) L\'alimentation du 21 octobre : shake, sauces comptées, co
      crue sur le riz (25 ml a midi, 15 le soir apres la sauce) ; la collation est une poignee. */
   /* 25 octobre : 80 g de viande par repas, 5 ml d'huile crue de plus. */
   ok(/^riz 125, poulet 70, legumes 80/.test(r.dejLun) && /^riz 125, poulet 70/.test(r.dejMar), 'riz à midi : 125 g et 70 g de poulet (0,4 g de protéines par kilo à chaque repas, 25 octobre), le lundi (combat) comme le mardi');
-  ok(/huile 30, harissa 3$/.test(r.dejLun), 'lundi midi : riz à l\'huile d\'olive et harissa, comptée (' + r.dejLun + ')');
-  ok(/huile 30, harissa 3$/.test(r.dejMar) && !/creme/.test(r.dejMar), 'mardi midi : le même riz, la crème ne reste que le soir (' + r.dejMar + ')');
-  ok(/^riz 125, hachee 70, legumes 80/.test(r.dinMar) && /huile 20/.test(r.dinMar) && /pestoverde 15, parmesan 10/.test(r.dinMar), 'mardi soir : riz 125 g, 70 g de viande, pesto verde et parmesan comptés, 5 ml d\'huile en moins (' + r.dinMar + ')');
+  /* 29 octobre au soir : plus de sauces a partir du 30 -- l'huile crue, le sel iode et les epices,
+     les 5 ml d'huile que la sauce remplacait reviennent le soir (25 ml), et 10 g d'amandes de plus a la
+     collation rendent le reste (50 g). Les jours d'avant gardent leur sauce comptee. */
+  ok(/huile 30$/.test(r.dejLun), 'lundi midi : riz à l\'huile d\'olive, plus de harissa comptée depuis le 30 octobre (' + r.dejLun + ')');
+  ok(/huile 30$/.test(r.dejMar) && !/creme/.test(r.dejMar), 'mardi midi : le même riz, sans sauce (' + r.dejMar + ')');
+  ok(/^riz 125, hachee 70, legumes 80, huile 25$/.test(r.dinMar), 'mardi soir : riz 125 g, 70 g de viande, 25 ml d\'huile (les 5 ml que la sauce remplaçait reviennent), plus de pesto ni de parmesan (' + r.dinMar + ')');
+  ok(/^riz 125, hachee 70, legumes 80, huile 20, pestoverde 15, parmesan 10$/.test(r.dinMar27), 'mardi 27 octobre, avant la fin des sauces : pesto verde et parmesan comptés, 5 ml d\'huile en moins (' + r.dinMar27 + ')');
   /* 26 octobre : plus de fromage -- un 3e oeuf, a la meme place. 27 octobre : 100 g de cottage cheese
      a la place du 3e oeuf ; le mardi et le jeudi, la boite de sardines remplace les oeufs et le cottage. */
-  ok(/^amandes 40, sardines 85, cottage 0, dattes 70$/.test(r.colMar) && !/fromage/.test(r.colMar), 'mardi 14:50 : la poignée — amandes, sardines à la place des œufs et du cottage cheese, 7 dattes (' + r.colMar + ')');
-  ok(/^amandes 40, oeufs 100, cottage 100, dattes 70$/.test(r.colLun) && !/fromage/.test(r.colLun), 'lundi 14:50 : deux œufs, 100 g de cottage cheese, plus de fromage (' + r.colLun + ')');
+  ok(/^amandes 50, sardines 85, cottage 0, dattes 70$/.test(r.colMar) && !/fromage/.test(r.colMar), 'mardi 14:50 : la poignée — amandes, sardines à la place des œufs et du cottage cheese, 7 dattes (' + r.colMar + ')');
+  ok(/^amandes 50, oeufs 100, cottage 100, dattes 70$/.test(r.colLun) && !/fromage/.test(r.colLun), 'lundi 14:50 : 50 g d\'amandes depuis la fin des sauces (30 octobre), deux œufs, 100 g de cottage cheese, plus de fromage (' + r.colLun + ')');
   ok(r.combat === 'banane 120, galettes 20, miel 15', 'collation combat : banane, 2 galettes de riz, 15 g de miel (' + r.combat + ')');
   ok(!('creme' in r.besoin) && !('pestoverde' in r.besoin) && r.besoin.sardines === 2 && r.besoin.galettes === 6 && r.besoin.fruitsrouges === 700 && r.besoin.riz === 1750 && !('couscous' in r.besoin) && !('pates' in r.besoin) && r.besoin.dattes === 490,
      'courses : les condiments restent hors liste ; 2 sardines, 6 galettes, 700 g de fruits rouges, 1 750 g de riz (midi et soir), plus de semoule ni de pâtes, 490 g de dattes (70 g par jour depuis le 25 octobre)');

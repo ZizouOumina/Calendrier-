@@ -158,8 +158,8 @@ console.log('\n== 334b) Aucun stock n\'est supposé : il coche ce qu\'il a ==');
   const t = await fr.evaluate(() => document.querySelector('.page[data-page="courses"]').textContent);
   ok(!/tu en as|il t’en reste|à racheter le/.test(t), 'aucune ligne ne parle de stock ni de date de rachat');
   ok(!/Beurre de cacahuète/.test(t), 'le beurre de cacahuète est sorti de la liste (24 septembre)');
-  ok(/Amandes ou noix nature — 600 g/.test(t) && /demande 490 g/.test(t), 'amandes : 3 sachets de 200 g, pour 490 g demandés (30 g le matin, 40 g à 14:50 depuis le 23 octobre au soir ; plus d\'amandes dans la collation combat depuis le 21 octobre)');
-  ok(/Huile d'olive — 2 L/.test(t) && /demande 1\u202f750 ml/.test(t), 'huile : un bidon de 2 L, pour 1 750 ml demandés (30 ml à midi et 20 le soir depuis le 25 octobre : l\'huile crue sur le riz, des calories sans volume)');
+  ok(/Amandes ou noix nature — 600 g/.test(t) && /demande 560 g/.test(t), 'amandes : 3 sachets de 200 g, pour 560 g demandés (30 g le matin, 50 g à 14:50 depuis la fin des sauces, le 30 octobre ; plus d\'amandes dans la collation combat depuis le 21 octobre)');
+  ok(/Huile d'olive — 2 L/.test(t) && /demande 1\u202f925 ml/.test(t), 'huile : un bidon de 2 L, pour 1 925 ml demandés (30 ml à midi et 25 le soir depuis la fin des sauces, le 30 octobre : l\'huile crue sur le riz, des calories sans volume)');
   await ctx.close();
 }
 {

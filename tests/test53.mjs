@@ -108,8 +108,8 @@ console.log('\n== 180) Sans ajustement : plan de base, liste = plan × 7 ==');
      semaine), c'est le rythme de rachat qui a change -- 5 kg tous les quinze jours. */
   ok(c.items.some(t => /^Œufs — 12\b/.test(t) && /demande 10 œufs/.test(t))
   && c.items.some(t => /^Légumes verts surgelés — 3 kg\b/.test(t) && /demande 2\u202f240 g/.test(t))
-  && c.items.some(t => /^Huile d'olive — 2 L\b/.test(t) && /1 bouteille de 2 L/.test(t) && /demande 1\u202f750 ml/.test(t)),
-     'œufs 12 pour 10 (deux à la collation et 100 g de cottage cheese depuis le 27 octobre, les sardines le mardi et le jeudi depuis le 21), surgelés 3 kg pour 2 240 g sur deux semaines (80 g par repas depuis le 23 octobre), huile 2 L pour 1 750 ml sur cinq (30 ml à midi, 20 le soir depuis le 25 octobre, 21 octobre)');
+  && c.items.some(t => /^Huile d'olive — 2 L\b/.test(t) && /1 bouteille de 2 L/.test(t) && /demande 1\u202f925 ml/.test(t)),
+     'œufs 12 pour 10 (deux à la collation et 100 g de cottage cheese depuis le 27 octobre, les sardines le mardi et le jeudi depuis le 21), surgelés 3 kg pour 2 240 g sur deux semaines (80 g par repas depuis le 23 octobre), huile 2 L pour 1 925 ml sur cinq (30 ml à midi, 25 le soir depuis la fin des sauces, 30 octobre)');
   /* Aucun stock n'est suppose : rien ne dit « tu en as », rien n'est repousse a plus tard. */
   ok(!c.items.some(t => /tu en as|il t’en reste|à racheter le/.test(t)), 'aucune ligne ne suppose un stock : tout part de zéro, il coche ce qu\'il a');
   /* Le contraire de ce que ce fichier tenait jusqu'au 20 septembre : ces lignes ne

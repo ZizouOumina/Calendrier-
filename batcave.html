@@ -8442,7 +8442,7 @@
       var sard = sardinesLe(iso), j = iso || todayISO;
       var troisieme = j >= COTTAGE_DEBUT ? {c:'cottage', q:sard ? 0 : 100}
                     : j >= FROMAGE_FIN ? {c:'oeufs', q:sard ? 0 : 50} : {c:'fromage', q:sard ? 0 : 20};
-      return [{c:'amandes', q:40}, sard ? {c:'sardines', q:85} : {c:'oeufs', q:100}, troisieme, {c:'dattes', q:70}];
+      return [{c:'amandes', q:j >= SANS_SAUCE_DEBUT ? AMANDES_SANS_SAUCE : 40}, sard ? {c:'sardines', q:85} : {c:'oeufs', q:100}, troisieme, {c:'dattes', q:70}];
     }
     if(nom === 'Collation combat') return [{c:'banane', q:120}, {c:'galettes', q:20}, {c:'miel', q:15}];
     if(nom === 'Récup combat') return [{c:'avoine', q:250}, {c:'banane', q:120}, {c:'flocons', q:20}];
@@ -8583,7 +8583,25 @@
       0:{nom:'Crème-parmesan', recette:'2 c. à soupe de crème de cuisson chauffées avec le riz, 10 g de parmesan, poivre, à la place des 5 ml d\'huile crue', ingr:['Crème de cuisson','Parmesan'], sansHuile:true}
     }
   };
+  /* 29 octobre au soir, sa demande : « enleve les sauces et ajuste en fonction ». A partir du
+     vendredi 30 : plus de pesto, de creme, de parmesan ni de harissa comptee. Le riz se mange a
+     l'huile d'olive crue, au sel iode et aux epices (zero calorie, hors du plan) ; les 5 ml
+     d'huile crue que la sauce remplacait le soir reviennent (25 ml, dont 15 crus). Ce que les
+     sauces apportaient en plus -- ≈ 40 kcal par jour en moyenne, ≈ 2,5 g de proteines (le
+     parmesan) -- revient par 10 g d'amandes de plus a la collation (AMANDES_SANS_SAUCE : 50 g
+     au lieu de 40, +58 kcal, +2,1 g). Pas 5 ml d'huile de plus le soir : 60 ml par jour
+     auraient fait 2 100 ml sur le cycle de cinq semaines, soit DEUX bidons de 2 L ; les
+     amandes, elles, tiennent dans les trois sachets de 200 g (560 g pour 600). Les jours
+     d'avant gardent leurs sauces. */
+  var SANS_SAUCE_DEBUT = '2026-10-30', AMANDES_SANS_SAUCE = 50;
+  var NATURE = {
+    dej: {nom:'Huile d\'olive et épices', nature:true, ingr:[],
+          recette:'riz nature, les 20 ml d\'huile d\'olive crue mélangés à chaud, sel iodé et tes épices (cumin, ras el hanout, paprika ; une pointe de harissa si tu veux)'},
+    din: {nom:'Huile d\'olive et épices', nature:true, ingr:[],
+          recette:'hors du feu, les 15 ml d\'huile d\'olive crue sur le riz, sel iodé et tes épices'}
+  };
   function sauceDuJour(repas, iso){
+    if((iso || todayISO) >= SANS_SAUCE_DEBUT) return NATURE[repas];
     var dow = new Date((iso || todayISO) + 'T00:00:00').getDay();
     return SAUCES[repas][dow];
   }
@@ -8645,6 +8663,7 @@
                                            : 'Pas de cottage cheese aujourd\'hui — la boîte de sardines le remplace';
       if(ii === 2 && avantFin) return 'Fromage (20g)';
       if(ii === 2 && oeufEnPlus) return '1 œuf dur de plus (50g)';
+      if(ii === 0 && jc >= SANS_SAUCE_DEBUT) return 'Amandes ou noix nature (' + AMANDES_SANS_SAUCE + 'g)';
     }
     var repas = m.name === 'Dîner' ? 'din' : (m.name === 'Déjeuner' ? 'dej' : null), f = facteurPortions(iso);
     /* semaine de reprise : les grammes ecrits dans le libelle suivent le facteur, sauf ce
@@ -8656,6 +8675,7 @@
     if(ii === 1) return 'Protéine crue — ' + nom + ' ' + portionReprise(p.g, f) + 'g';
     if(ii === 3){
       var sc = sauceDuJour(repas, iso), kc = Math.round(compoSauce(sc).reduce(function(t, x){ return t + ALIMENTS[x.c].kcal * x.q / 100; }, 0));
+      if(sc.nature) return 'Huile d\'olive (' + p.huile + 'ml, dont ' + (p.huile - 10) + ' crus) · pas de sauce : ' + sc.recette;
       return 'Huile d\'olive (' + (p.huile - (sc.sansHuile ? HUILE_CRUE[repas] : 0)) + 'ml) · sauce ' + sc.nom.toLowerCase() + ' (≈ ' + kc + ' kcal, comptée) : ' + sc.recette;
     }
     if(ii === 2) return reduit(it.replace('Légumes verts', nomLegumes(repas, iso)));
@@ -8921,7 +8941,7 @@
       var dsc = document.getElementById('repas-desc');
       if(dsc) dsc.textContent = 'Programme du jour, ' + repasDuJour().length + ' prises' + (jourDeCombat() ? ' (jour de combat)' : '') + ' : ' + Math.round(n.targets.kcal) + ' kcal, P ' +
         Math.round(n.targets.p) + ' g, G ' + Math.round(n.targets.g) + ' g, L ' + Math.round(n.targets.l) +
-        ' g, tout pesé cru, sauces comprises. Riz à midi (' + grammesFeculent('dej') + ' g) et le soir (' + FECULENTS.din.g +
+        ' g, tout pesé cru' + (todayISO < SANS_SAUCE_DEBUT ? ', sauces comprises' : '') + '. Riz à midi (' + grammesFeculent('dej') + ' g) et le soir (' + FECULENTS.din.g +
         ' g), cuit chaque matin ; poulet à midi, viande hachée le soir. Les cases se réinitialisent à minuit.';
       document.getElementById('meal-kcal-sub').textContent = Math.round(n.totals.kcal) + ' / ' + Math.round(n.targets.kcal) + ' kcal' +
         (n.targets.ajustement ? ' (plan ' + Math.round(n.targets.plan) + (n.targets.ajustement > 0 ? ' + ' : ' − ') + Math.abs(n.targets.ajustement) + ')' : '');
@@ -12596,8 +12616,8 @@
     }).join('');
     document.getElementById('prep-regles').innerHTML = [
       ['Le petit-déjeuner', 'un shake : 400 ml de boisson d\'avoine au calcium, 150 g de skyr, 80 g de flocons, une banane (congelée en rondelles, c\'est un milkshake), 100 g de fruits rouges surgelés, 20 g de miel, 30 g d\'amandes — 40 secondes de mixeur, à boire en dix minutes. Les jours de JJB, un shake de récup au retour : 250 ml de boisson d\'avoine, une banane, 20 g de flocons'],
-      ['La collation d\'entraînement', '40 g d\'amandes, 2 œufs durs, 100 g de cottage cheese (le mardi et le jeudi, une boîte de sardines ou de maquereau à la place des deux), 7 dattes — ~670 kcal, à la maison avant de partir ; les œufs sont cuits le dimanche, le reste s\'emporte'],
-      ['Le goût', 'la sauce du jour, faite au réchauffage (onglet Repas) : ses calories sont comptées. L\'huile froide à l\'assiette les jours où la sauce n\'est ni crème ni pesto'],
+      ['La collation d\'entraînement', '50 g d\'amandes, 2 œufs durs, 100 g de cottage cheese (le mardi et le jeudi, une boîte de sardines ou de maquereau à la place des deux), 7 dattes — ~730 kcal, à la maison avant de partir ; les œufs sont cuits le dimanche, le reste s\'emporte'],
+      ['Le goût', 'pas de sauce depuis le 30 octobre : l\'huile d\'olive crue versée sur le riz à l\'assiette (20 ml à midi, 15 le soir), le sel iodé et tes épices. Rien de tout ça ne va dans la boîte'],
       ['Réchauffer à la poêle', 'la boîte vidée dans la poêle avec 2 à 3 cuillères d\'eau, couvercle, feu moyen, 4 à 5 min, puis 1 min à découvert. Brûlant jusqu\'au cœur. Pas l\'air fryer : il dessèche le riz et les pâtes'],
       ['Le sel', 'iodé (« sal yodada ») : peu de laitages et du poisson deux fois par semaine, c\'est lui qui complète l\'iode du plan. Une pincée dans le riz suffit'],
       ['Refroidir vite', 'deux heures maximum entre la casserole et le frigo. Étaler plutôt qu\'entasser'],
@@ -13385,10 +13405,17 @@
   if(!condimentsState || typeof condimentsState !== 'object') condimentsState = {coches:{}, qte:{}};
   if(!condimentsState.coches) condimentsState.coches = {};
   if(!condimentsState.qte) condimentsState.qte = {};
+  /* 29 octobre au soir : l'usage se lit sur les sept jours qui viennent (sauceDuJour, datee) et
+     plus sur la semaine type -- les sauces sortent le 30 (SANS_SAUCE_DEBUT), et un condiment
+     qui ne sert plus quitte la carte ; sans aucun, la carte disparait. */
   function usageCondiment(nom){
-    var jours = ['dim.','lun.','mar.','mer.','jeu.','ven.','sam.'], ordre = [1,2,3,4,5,6,0], out = [];
+    var jours = ['dim.','lun.','mar.','mer.','jeu.','ven.','sam.'], ordre = [1,2,3,4,5,6,0], out = [], vu = {dej:{}, din:{}};
+    for(var i = 1; i <= 7; i++){
+      var j = isoDecale(todayISO, i), dw = new Date(j + 'T00:00:00').getDay();
+      ['dej','din'].forEach(function(r){ var sc = sauceDuJour(r, j); if(sc && (sc.ingr || []).indexOf(nom) > -1) vu[r][dw] = true; });
+    }
     [['dej','midi'],['din','soir']].forEach(function(r){
-      var d = ordre.filter(function(k){ var sc = SAUCES[r[0]][k]; return sc && (sc.ingr || []).indexOf(nom) > -1; });
+      var d = ordre.filter(function(k){ return vu[r[0]][k]; });
       if(d.length) out.push(r[1] + ' ' + d.map(function(k){ return jours[k]; }).join(', '));
     });
     return out.join(' · ');
@@ -13397,7 +13424,9 @@
     var box = document.getElementById('courses-condiments');
     if(!box || !condimentsState) return;   /* appel d'avant l'initialisation de l'etat */
     var n = CONDIMENTS.filter(function(c){ return condimentsState.coches[c]; }).length;
+    if(!CONDIMENTS.some(function(c){ return usageCondiment(c); })){ box.innerHTML = ''; return; }
     var lignes = CONDIMENTS.map(function(c, i){
+      if(!usageCondiment(c)) return '';
       var coche = !!condimentsState.coches[c], u = usageCondiment(c), q = condimentsState.qte[c] || '';
       return '<li class="' + (coche ? 'checked' : '') + '">' +
         '<input type="checkbox" id="cd-' + i + '" data-condiment="' + escapeHtml(c) + '"' + (coche ? ' checked' : '') + '>' +
@@ -16173,12 +16202,12 @@
     'Déjeuner': function(d, iso){
       var c = compoRepas('Déjeuner', iso, false), g = function(k){ var x = c.filter(function(y){ return y.c === k; })[0]; return x ? Math.round(x.q) : 0; };
       var sc = sauceDuJour('dej', iso);
-      return "La boîte du jour : riz " + g('riz') + " g crus, poulet " + g('poulet') + " g, " + g('legumes') + " g de " + nomLegumes('dej', iso).toLowerCase() + ". Réchauffée à la poêle avec 2 à 3 cuillères d'eau, couvercle, 4 à 5 min, brûlante jusqu'au cœur. Sauce du jour — " + sc.nom + " : " + sc.recette + ". Sel.";
+      return "La boîte du jour : riz " + g('riz') + " g crus, poulet " + g('poulet') + " g, " + g('legumes') + " g de " + nomLegumes('dej', iso).toLowerCase() + ". Réchauffée à la poêle avec 2 à 3 cuillères d'eau, couvercle, 4 à 5 min, brûlante jusqu'au cœur. " + (sc.nature ? "Pas de sauce : " + sc.recette + "." : "Sauce du jour — " + sc.nom + " : " + sc.recette + ". Sel.");
     },
     'Dîner': function(d, iso){
       var c = compoRepas('Dîner', iso, false), g = function(k){ var x = c.filter(function(y){ return y.c === k; })[0]; return x ? Math.round(x.q) : 0; };
       var sc = sauceDuJour('din', iso);
-      return "La boîte du jour : riz " + g('riz') + " g crus, viande hachée " + g('hachee') + " g, " + g('legumes') + " g " + (nomLegumes('din', iso) === 'Épinards' ? "d'épinards" : "de légumes verts") + ", à la poêle. Sauce du jour — " + sc.nom + " : " + sc.recette + (sc.sansHuile ? "" : " ; hors du feu, 5 ml d'huile d'olive crue") + ". La créatine, 5 g, avec le repas. Ensuite plus rien jusqu'au lendemain.";
+      return "La boîte du jour : riz " + g('riz') + " g crus, viande hachée " + g('hachee') + " g, " + g('legumes') + " g " + (nomLegumes('din', iso) === 'Épinards' ? "d'épinards" : "de légumes verts") + ", à la poêle. " + (sc.nature ? "Pas de sauce : " + sc.recette : "Sauce du jour — " + sc.nom + " : " + sc.recette + (sc.sansHuile ? "" : " ; hors du feu, 5 ml d'huile d'olive crue")) + ". La créatine, 5 g, avec le repas. Ensuite plus rien jusqu'au lendemain.";
     },
     '🚿 Douche du soir': "Dix minutes, eau bien tiède — agréable, jamais brûlante : visage et dos restent tièdes (Skinoren). Une heure avant le coucher, le corps évacue ensuite sa chaleur et tu t'endors plus vite. Eau seule sur les cheveux et le corps, gel doux aux aisselles, à l'aine et aux pieds ; la fin à l'eau froide (dimanche, mercredi, vendredi) se fait le matin. Cinq minutes plus tard, le Skinoren. Lumières basses : une lampe, plus le plafonnier.",
     '📖 Écran off — lecture papier': "Avant d'éteindre : la clôture du jour dans la Batcave, deux minutes. Puis téléphone en charge hors de portée, réveil posé loin du lit. Chambre vers 18 °C (fenêtre ouverte dix minutes), noir complet. Tes vingt pages en espagnol, sur papier.",
