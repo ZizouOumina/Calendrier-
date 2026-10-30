@@ -9,7 +9,7 @@ de courses et la préparation sortent toutes de la même source (`compoRepas`).
 ## Le cadre
 - 64 kg · 182 cm · 20 ans · objectif **72 kg fin mars 2027**, soit ≈ +0,3 kg par semaine.
 - Dépense estimée : environ 2 900 à 3 000 kcal par jour en moyenne (métabolisme de base
-  ≈ 1 680 kcal, muscu quatre fois à 07:00 en salle, JJB trois fois à partir du 28 octobre, piscine le mardi).
+  ≈ 1 680 kcal, muscu quatre fois à 07:00 en salle, JJB trois fois à partir du 28 octobre ; plus de piscine depuis le 30 octobre).
 - **Peu de volume, beaucoup de calories** (23 octobre au soir : « il me faut du faible volume pour
   beaucoup de calories, j'arriverai pas à manger autant ») : un shake le matin, l'huile d'olive
   versée crue sur le riz (10 ml = 88 kcal sans une bouchée de plus), des amandes et des dattes.
@@ -108,7 +108,7 @@ riz dans l'assiette, ce qu'il ne peut pas manger.
 | **Shake** | 08:30 les jours de muscu, 35 min après la séance (06:45 les autres jours) | boisson d'avoine au calcium 400 ml, skyr 150 g, flocons d'avoine 80 g, banane 120 g, fruits rouges surgelés 100 g, **miel 20 g**, amandes ou noix 30 g | ≈ 960 · 40 g |
 | **Déjeuner** | 12:20 | **riz 125 g** (rice cooker), **poulet 70 g**, **brocoli 80 g**, **huile d'olive 30 ml** (10 de cuisson, 20 crus sur le riz — ou 20 g de beurre), sel iodé, épices | ≈ 820 · 28 g |
 | **Collation** | 14:50 (16:50 le lundi), à la maison | **amandes ou noix 50 g**, 2 œufs durs, **cottage cheese 100 g**, **7 dattes (70 g)** | ≈ 730 · 36 g |
-| **Dîner** | 20:00 (19:00 le mardi et le dimanche, 19:30 le samedi) | **riz 125 g**, **viande hachée 5 % 70 g**, **épinards 80 g**, huile d'olive 25 ml (10 de cuisson, 15 crus sur le riz), sel iodé, épices, créatine 5 g | ≈ 800 · 27 g |
+| **Dîner** | 20:00 (18:00 le mardi, 19:00 le dimanche, 19:30 le samedi) | **riz 125 g**, **viande hachée 5 % 70 g**, **épinards 80 g**, huile d'olive 25 ml (10 de cuisson, 15 crus sur le riz), sel iodé, épices, créatine 5 g | ≈ 800 · 27 g |
 
 - **Le mardi et le jeudi**, une boîte de sardines ou de maquereau (≈ 85 g égouttés) remplace les
   œufs et le cottage cheese de la collation : les oméga-3.

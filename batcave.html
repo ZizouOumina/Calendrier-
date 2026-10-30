@@ -2358,13 +2358,13 @@
            Le cardio a donc son propre compteur, sa propre ligne de bilan, sa propre serie. -->
       <div class="panel sub-panel" id="cardio-panel" style="margin-top:16px;">
         <div class="sub-head"><h3>🥋 Cardio &amp; combat</h3><span class="sub-note" id="cardio-note">—</span></div>
-        <p class="sub-note" style="margin-bottom:12px; line-height:1.6;"><b style="color:var(--ink-dim);">Tes rounds</b> : le JJB, lundi, mercredi et vendredi à 10:30 (dès le 28 octobre). <b style="color:var(--ink-dim);">Ton moteur</b> : la piscine du mardi à 17:30 (dès le 27), 35 minutes à une allure où tu respires calmement, des intervalles dès le 17 novembre. Coche chaque séance : elles ne comptent pas dans « Séances tenues », qui reste le compteur de la muscu.</p>
+        <p class="sub-note" style="margin-bottom:12px; line-height:1.6;"><b style="color:var(--ink-dim);">Tes rounds</b> : le JJB, lundi, mercredi et vendredi à 10:30 (dès le 28 octobre). <b style="color:var(--ink-dim);">Ton moteur</b> : le JJB lui-même — plus de piscine depuis le 30 octobre (ta décision). Coche chaque séance : elles ne comptent pas dans « Séances tenues », qui reste le compteur de la muscu.</p>
         <ul class="check-list" id="cardio-liste"></ul>
         <div id="cardio-resume" class="sub-note" style="margin-top:12px; line-height:1.7;"></div>
         <!-- 21 octobre : les deux mesures du cardio, repliees par defaut (l'onglet reste court) -->
         <button type="button" class="heat-toggle" id="cardio-tests-toggle" style="padding:0; margin-top:10px;">📈 Mesures : FC de repos, 400 m ▾</button>
         <div id="cardio-tests" hidden style="margin-top:10px;">
-          <p class="sub-note" style="margin-bottom:10px; line-height:1.6;"><b style="color:var(--ink-dim);">La fréquence cardiaque de repos</b>, chaque dimanche — celle de Bevel ou de ta montre : elle baisse quand le cardio progresse, et le snus la fait monter. <b style="color:var(--ink-dim);">Le 400 m nagé</b>, chronométré le premier mardi du mois à la piscine (3 novembre, 1er décembre), toujours dans la même nage.</p>
+          <p class="sub-note" style="margin-bottom:10px; line-height:1.6;"><b style="color:var(--ink-dim);">La fréquence cardiaque de repos</b>, chaque dimanche — celle de Bevel ou de ta montre : elle baisse quand le cardio progresse, et le snus la fait monter. <b style="color:var(--ink-dim);">Le 400 m nagé</b> : plus de piscine depuis le 30 octobre, la fréquence de repos suffit.</p>
           <div style="display:flex; flex-wrap:wrap; gap:10px 14px; align-items:flex-end; margin-bottom:10px;">
             <div class="f"><label for="mesure-fc">FC de repos (bpm)</label><input type="number" id="mesure-fc" min="30" max="120" inputmode="numeric" placeholder="ex : 62" style="width:110px;"></div>
             <button class="btn" type="button" id="mesure-fc-ok">Noter</button>
@@ -15993,10 +15993,13 @@
      cours » a 19:30, vingt minutes. A partir du 17 novembre, la seance finit par des
      intervalles. Seulement un mardi de cours : un jour libere n'a pas de trajet a 17:30.
      La boxe attend janvier (le MMA du club, le mardi 18:30, si le budget suit). */
-  var PISCINE_DEBUT = '2026-10-27', PISCINE_INTERVALLES_DEBUT = '2026-11-17';
+  /* 30 octobre, sa decision : « je vais pas a la piscine ». Elle sort a partir de ce jour
+     (PISCINE_FIN) : le mardi soir reprend sa forme d'avant le 27 -- diner 18:00, cours clos a
+     18:30, temps libre -- et le cardio, c'est le JJB. Le mardi 27 garde sa seance. */
+  var PISCINE_DEBUT = '2026-10-27', PISCINE_INTERVALLES_DEBUT = '2026-11-17', PISCINE_FIN = '2026-10-30';
   function avecPiscine(g, iso){
     iso = iso || todayISO;
-    if(iso < PISCINE_DEBUT || dowDe(iso) !== 2) return g;
+    if(iso < PISCINE_DEBUT || iso >= PISCINE_FIN || dowDe(iso) !== 2) return g;
     var a = function(h, l){ return g.some(function(b){ return b[0] === h && b[1] === l; }); };
     if(!a('17:30', 'Trajet retour') || !a('18:00', 'Dîner') || !a('18:30', 'Clore le cours du jour') || !a('19:10', 'Temps libre')) return g;
     var out = g.filter(function(b){ return ['17:30', '18:00', '18:30', '19:10'].indexOf(b[0]) < 0; });

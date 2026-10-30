@@ -82,7 +82,8 @@ console.log('\n== 3) La piscine du mardi, puis les intervalles ; le JJB du 28 ==
   ok(!m20.some(b => /Piscine/.test(b)), 'pas de piscine avant le 27');
   ok(m27.includes('17:30 🏊 Piscine') && m27.includes('18:30 Trajet retour') && m27.includes('19:00 Dîner') && m27.includes('19:30 Clore le cours du jour') && m27.includes('19:50 Temps libre'),
      'mardi 27 : piscine 17:30, trajet 18:30, dîner 19:00, Clore 19:30 (vingt minutes), temps libre 19:50');
-  ok(m17.includes('17:30 🏊 Piscine · intervalles'), 'mardi 17 novembre : la piscine finit par des intervalles');
+  /* 30 octobre : plus de piscine (sa decision, PISCINE_FIN) -- le mardi 27 garde la sienne. */
+  ok(!m17.some(x => /Piscine/.test(x)) && m17.includes('18:00 Dîner'), 'mardi 17 novembre : plus de piscine, dîner 18:00 (' + m17.filter(x => /^1[78]/.test(x)).join(' · ') + ')');
   const lun = await grille(fr, '2026-10-26'), mer = await grille(fr, '2026-10-28');
   ok(!lun.some(b => /JJB/.test(b)) && mer.includes('10:30 🥋 JJB'), 'pas de JJB le lundi 26, le premier est le mercredi 28');
   const c = await fr.evaluate(() => ({
@@ -140,10 +141,10 @@ console.log('\n== 5) Le sport du 21 octobre : test 400 m, mobilité, mesures not
 {
   const { ctx, page, fr } = await ouvrir('2026-11-03T08:00:00+01:00');
   const t3 = await grille(fr, '2026-11-03'), t10 = await grille(fr, '2026-11-10'), d8 = await grille(fr, '2026-11-08');
-  ok(t3.includes('17:30 🏊 Piscine · test 400 m') && t10.includes('17:30 🏊 Piscine'), 'le premier mardi du mois, la piscine est le test du 400 m ; le mardi suivant, la séance normale');
+  ok(!t3.some(x => /Piscine/.test(x)) && !t10.some(x => /Piscine/.test(x)), 'plus de piscine depuis le 30 octobre : ni test du 400 m le 3, ni séance le 10');
   ok(d8.includes('19:30 🧘 Mobilité des hanches') && d8.includes('19:40 Temps libre'), 'dimanche : dix minutes de mobilité des hanches à 19:30');
   const plan = await fr.evaluate(() => document.getElementById('dash-plan').innerText);
-  ok(/Test du mois à la piscine/.test(plan), 'le plan du jour réclame le 400 m le jour du test');
+  ok(!/Test du mois à la piscine/.test(plan), 'le plan du jour ne réclame plus le 400 m');
   await fr.evaluate(() => { document.querySelector('.nav-btn[data-page="sport"]').click(); });
   await page.waitForTimeout(300);
   await fr.evaluate(() => { document.getElementById('cardio-tests-toggle').click(); document.getElementById('mesure-nage').value = '8:40'; document.getElementById('mesure-nage-ok').click(); document.getElementById('mesure-fc').value = '62'; document.getElementById('mesure-fc-ok').click(); });
@@ -179,7 +180,7 @@ console.log('\n== 6) Le 21 octobre au soir : shake de récup, pesée chaque dima
   await fr.evaluate(() => { document.dispatchEvent(new KeyboardEvent('keydown', {key:'c', bubbles:true})); });
   await page.waitForTimeout(300);
   const sac = await fr.evaluate(() => document.getElementById('cl-sac').textContent);
-  ok(/maillot/.test(sac) && /cours/.test(sac) && !/kimono/.test(sac), 'lundi soir, la clôture dit le sac du mardi : piscine et cours (' + sac + ')');
+  ok(!/maillot/.test(sac) && /cours/.test(sac) && !/kimono/.test(sac), 'lundi soir, la clôture dit le sac du mardi : les cours, plus de maillot (' + sac + ')');
   await fr.evaluate(() => { document.querySelector('.nav-btn[data-page="addictions"]').click(); });
   await page.waitForTimeout(200);
   const plan = await fr.evaluate(() => document.getElementById('snus-plan').innerText);

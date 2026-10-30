@@ -88,7 +88,7 @@ console.log('\n== 271) Le cardio : sprints le samedi, course longue le dimanche 
   ok(r.s3 === 'Projets perso 3' && r.s10 === 'Projets perso 3', 'samedi 3 et samedi 10 : un bloc de projets à 18:00, plus de course ni de sprints (' + r.s3 + ' / ' + r.s10 + ')');
   ok(r.base10 === 'Projets perso 3', 'la grille de base du samedi porte le bloc de projets');
   ok(JSON.stringify(r.cibles) === JSON.stringify([30,30,15,35,40,45,45]), 'minutes visées : 30, 30, puis sprints 15, dimanche 35 → 40 → 45 (' + r.cibles.join(', ') + ')');
-  ok(r.sorties.length === 4 && r.sorties.filter(x => x.combat).length === 3 && r.sorties.filter(x => x.piscine).length === 1, 'la semaine du 2 novembre compte trois séances de combat (lundi, mercredi, vendredi ; pas de JJB avant le 28 octobre) et la piscine du mardi');
+  ok(r.sorties.length === 3 && r.sorties.filter(x => x.combat).length === 3 && r.sorties.filter(x => x.piscine).length === 0, 'la semaine du 2 novembre compte trois séances de combat (lundi, mercredi, vendredi ; pas de JJB avant le 28 octobre), plus de piscine depuis le 30 octobre');
   ok(r.rappel && r.rappel.titreBase === '🦇 🥋 JJB' && r.rappel.debut === 630, 'le rappel du vendredi 30 : JJB à 10:30');
   ok(/6 à 8 sprints/.test(r.consigneSam) && /en montée/.test(r.consigneSam), 'la consigne des sprints : ' + r.consigneSam.slice(0, 70));
   ok(/^40 minutes/.test(r.consigneDim), 'le dimanche 18 : « 40 minutes cette semaine » (' + r.consigneDim.slice(0, 40) + ')');

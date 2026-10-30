@@ -112,7 +112,8 @@ console.log('\n== 84.6) Cibles hebdo : constantes en revision, croissantes en pr
   /* 19 octobre : « Clore le cours » a vingt minutes les quatre soirs de cours -- 29 h 13 -> 27 h 53.
      21 octobre : la piscine du mardi -- le Clore du mardi passe a vingt minutes lui aussi : 27 h 33. */
   /* 30 octobre : la salle a 07:00 -- le trajet prend une demi-heure d'etude aux quatre matins de muscu : 25 h 43. */
-  ok(pr(e2.rev) === 25.72 && pr(t.rev) === 33.17, 'revision = 25 h 43 de travail reel par semaine au regime combat (salle à 07:00), 33 h 12 avant (' + pr(e2.rev) + ' / ' + pr(t.rev) + ')');
+  /* 30 octobre : plus de piscine -- « Clore le cours » du mardi reprend ses quarante minutes : 26 h 03. */
+  ok(pr(e2.rev) === 26.05 && pr(t.rev) === 33.17, 'revision = 26 h 03 de travail reel par semaine au regime combat (salle à 07:00, plus de piscine), 33 h 12 avant (' + pr(e2.rev) + ' / ' + pr(t.rev) + ')');
   /* seule exception : en phase Español le mercredi 05:30 reste « Anki matinal », donc la
      phase 1 porte 50 min de revision de plus. Le 5 novembre, ce bloc passe aux projets ; la premiere semaine entiere d'apres est celle du 9 novembre. */
   ok(pr(e1.rev) === 34, 'phase 1 avant le 28 : 34 h, le mercredi matin est encore de l\'Anki (' + pr(e1.rev) + ')');

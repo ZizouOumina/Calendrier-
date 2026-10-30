@@ -81,7 +81,7 @@ console.log('\n== 402) Le plan de secours en texte ==');
   ok(/^LA BATCAVE — plan de la semaine du 0?2 nov\. au 0?8 nov\./.test(t), 'en-tête : ' + t.split('\n')[0]);
   /* 30 octobre : la salle ouvre a 07:00 -- Anki 1 au reveil, le trajet, la seance a 07:00. */
   ok(/LUNDI 0?2 nov\. — combat\n  05:30  Anki 1\n  06:40  Trajet salle\n  07:00  Sport\n/.test(t) && /  10:30  🥋 JJB\n/.test(t), 'lundi : la grille combat, ligne par ligne');
-  ok(/MARDI 0?3 nov\.\n[\s\S]*  17:30  🏊 Piscine[\s\S]*  21:35  Coucher/.test(t) && !/MARDI 0?3 nov\. — combat/.test(t) && !/Muay Thai/.test(t), 'mardi : plus de Muay Thai, la piscine à 17:30, coucher 21:35 comme les autres jours');
+  ok(/MARDI 0?3 nov\.\n[\s\S]*  18:00  Dîner[\s\S]*  21:35  Coucher/.test(t) && !/Piscine/.test(t) && !/MARDI 0?3 nov\. — combat/.test(t) && !/Muay Thai/.test(t), 'mardi : plus de Muay Thai ni de piscine (30 octobre), dîner 18:00, coucher 21:35 comme les autres jours');
   ok(/DIMANCHE 0?8 nov\.\n/.test(t) && !/DIMANCHE 0?8 nov\. — combat/.test(t), 'dimanche : pas de combat');
   const t0 = await fr.evaluate(() => window.__bcPlanTexte('2026-09-28'));
   ok(!/MARDI 29 sept\. — combat/.test(t0) && !/Muay Thai/.test(t0.split('MERCREDI')[0].split('MARDI')[1] || ''), 'la semaine du 28 septembre, sans combat depuis le 30 au soir : pas de Muay Thai le mardi 29');

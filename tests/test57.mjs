@@ -99,7 +99,8 @@ console.log('\n== 212) La réduction se termine toute seule ==');
 {
   const { ctx, fr } = await ouvrir('2026-11-10T10:00:00+01:00', {'batcave-charge': {facteur:0.8, depuis:'2026-10-27', jusqua:'2026-11-09', motif:'test'}});
   /* 30 octobre : la salle a 07:00 -- le mardi 10 novembre perd la demi-heure du trajet (5 h 40 -> 5 h 11). */
-  ok(/\/ 5 h 11/.test(await texte(fr, '#dash-temps')), 'le 10 novembre, la veille passée : cible de nouveau pleine, 5 h 11 depuis la salle à 07:00');
+  /* 30 octobre : plus de piscine -- « Clore le cours » du mardi reprend ses quarante minutes (5 h 11 -> 5 h 31). */
+  ok(/\/ 5 h 31/.test(await texte(fr, '#dash-temps')), 'le 10 novembre, la veille passée : cible de nouveau pleine, 5 h 31 (salle à 07:00, plus de piscine)');
   ok(!/Charge réduite/.test(await texte(fr, '#dash-semaine')), 'plus de mention de charge réduite');
   await ctx.close();
 }

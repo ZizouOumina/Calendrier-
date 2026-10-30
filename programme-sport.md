@@ -7,7 +7,7 @@ Copie de référence du programme appliqué dans la Batcave (onglet Sport). **De
 | Jour | 05:30 | 07:00, à la salle | 10:30 | Soir |
 |---|---|---|---|---|
 | Lundi | Anki 1 | **Haut volume** (haut du corps, 2-3 reps en réserve) | JJB | — |
-| Mardi | Anki 1 | **Bas complet** (squat) | — | Piscine 17:30 |
+| Mardi | Anki 1 | **Bas complet** (squat) | — | — |
 | Mercredi | projets | — | JJB | — |
 | Jeudi | Anki 1 | **Haut lourd** | — | cou à la maison (habitude) |
 | Vendredi | projets | — | JJB | — |
@@ -157,8 +157,8 @@ Le JJB (garde, ponts, sorties de hanche) fait travailler la sangle trois fois pa
 | Vendredi | 10:30 → 12:00 | JJB | Collation combat 10:05, trajet 10:20 | Shake de récup 12:00, déjeuner, Jumu'ah 13:30 |
 
 - **Premier JJB le mercredi 28 octobre.** Protège-dents, tape tôt sur une clé ou un étranglement (un débutant qui attend se blesse), bois entre les rounds, pose tes questions en espagnol. Le sac : kimono, protège-dents, gourde pleine, serviette ; ongles courts.
-- **La piscine, le mardi à 17:30**, sur le campus : 35 minutes à une allure où l'on respire calmement ; à partir du 17 novembre, la séance finit par des intervalles (10 min faciles, 8 × (50 m vite, 50 m tranquille), 5 min faciles).
-- **Les mesures** : la fréquence cardiaque de repos chaque dimanche, le 400 m nagé le premier mardi du mois (panneau « Cardio & combat »).
+- **Plus de piscine depuis le 30 octobre** (sa décision) : le cardio, c'est le JJB.
+- **La mesure** : la fréquence cardiaque de repos chaque dimanche (panneau « Cardio & combat »).
 - **La mobilité des hanches**, le dimanche à 19:30, dix minutes au sol : 90/90, pigeon, papillon, bascules du bassin. Pour la garde.
 - **Si la semaine dérape** : tu sautes une séance de combat, jamais la muscu ni le sommeil.
 
