@@ -9,7 +9,7 @@ de courses et la préparation sortent toutes de la même source (`compoRepas`).
 ## Le cadre
 - 64 kg · 182 cm · 20 ans · objectif **72 kg fin mars 2027**, soit ≈ +0,3 kg par semaine.
 - Dépense estimée : environ 2 900 à 3 000 kcal par jour en moyenne (métabolisme de base
-  ≈ 1 680 kcal, muscu quatre fois à 05:30, JJB trois fois à partir du 28 octobre, piscine le mardi).
+  ≈ 1 680 kcal, muscu quatre fois à 07:00 en salle, JJB trois fois à partir du 28 octobre, piscine le mardi).
 - **Peu de volume, beaucoup de calories** (23 octobre au soir : « il me faut du faible volume pour
   beaucoup de calories, j'arriverai pas à manger autant ») : un shake le matin, l'huile d'olive
   versée crue sur le riz (10 ml = 88 kcal sans une bouchée de plus), des amandes et des dattes.
@@ -37,7 +37,7 @@ chiffre de la colonne « science » vient du résumé publié de la source, vér
 | Rythme de prise | 0,25 à 0,5 % du poids par semaine (0,16 à 0,32 kg à 64 kg) ; plus vite, c'est surtout du gras | vise 0,31 kg ; la Batcave propose −100 kcal au-dessus de 0,5 % | Iraki 2019 ; Helms 2023 |
 | Protéines par jour | 1,6 à 2,2 g par kilo ; au-delà de ≈ 1,6, plus de gain mesurable | 2,0 à 2,1 (2,2 les jours de JJB) | Morton 2018 ; Iraki 2019 |
 | Protéines par repas | 0,40 à 0,55 g par kilo, sur 3 à 6 repas ; 4 × 20 g battent 2 × 40 et 8 × 10 | 4 repas, de 0,44 à 0,63 g par kilo | Iraki 2019 ; Schoenfeld et Aragon 2018 ; Areta 2013 |
-| Autour de l'entraînement | des protéines dans les 1 à 2 h avant ou après | le shake (40 g) 15 min après la séance de 05:30 ; après le JJB, la récup et le déjeuner (35 g) | Iraki 2019 ; Jäger 2017 (ISSN) |
+| Autour de l'entraînement | des protéines dans les 1 à 2 h avant ou après | le shake (40 g) 35 min après la séance de 07:00 ; après le JJB, la récup et le déjeuner (35 g) | Iraki 2019 ; Jäger 2017 (ISSN) |
 | Avant le coucher | 30 à 40 g de caséine augmentent la synthèse de la nuit | le dîner, 1 h 30 avant le coucher : 27 g, bas de la fourchette | Jäger 2017 (ISSN) |
 | Végétal ou animal | avec assez de protéines, pas de différence de muscle ni de force | 55 % animales (skyr, cottage cheese, œufs, viande, sardines) | Hevia-Larraín 2021 ; Monteyne 2023 ; Joy 2013 |
 | Glucides | au moins 3 à 5 g par kilo | 6,4 (8,3 les jours de JJB) | Iraki 2019 |
@@ -45,7 +45,7 @@ chiffre de la colonne « science » vient du résumé publié de la source, vér
 | Créatine | monohydrate, 3 à 5 g par jour | 5 g au dîner | Iraki 2019 ; Kreider 2017 (ISSN) |
 | Fruits et légumes | au moins 400 g par jour | ≈ 380 g frais et 70 g de dattes | OMS |
 | Vitamines et minéraux | couvrir les références de l'EFSA | tout couvert sauf la vitamine D l'hiver, voir l'audit | EFSA (valeurs de référence) |
-| Avant la séance de 05:30 | manger avant une séance de muscu le matin : effet nul ou minime dans la plupart des études | rien avant ; le shake après la séance | Stratton 2025 ; Naharudin 2019 |
+| Avant la séance de 07:00 | manger avant une séance de muscu le matin : effet nul ou minime dans la plupart des études | rien avant ; le shake après la séance | Stratton 2025 ; Naharudin 2019 |
 
 **Le seul écart, les lipides.** La fourchette d'Iraki sert à laisser assez de place aux glucides
 pour l'entraînement ; ici ils sont déjà à 6,4 g par kilo, au-dessus des 3 à 5 demandés. Aucune
@@ -105,7 +105,7 @@ riz dans l'assiette, ce qu'il ne peut pas manger.
 ## Les repas — les mêmes grammes tous les jours
 | Repas | Heure | Contenu | kcal · protéines |
 |---|---|---|---|
-| **Shake** | 06:45, juste après la séance | boisson d'avoine au calcium 400 ml, skyr 150 g, flocons d'avoine 80 g, banane 120 g, fruits rouges surgelés 100 g, **miel 20 g**, amandes ou noix 30 g | ≈ 960 · 40 g |
+| **Shake** | 08:30 les jours de muscu, 35 min après la séance (06:45 les autres jours) | boisson d'avoine au calcium 400 ml, skyr 150 g, flocons d'avoine 80 g, banane 120 g, fruits rouges surgelés 100 g, **miel 20 g**, amandes ou noix 30 g | ≈ 960 · 40 g |
 | **Déjeuner** | 12:20 | **riz 125 g** (rice cooker), **poulet 70 g**, **brocoli 80 g**, **huile d'olive 30 ml** (10 de cuisson, 20 crus sur le riz — ou 20 g de beurre), sel iodé, épices | ≈ 820 · 28 g |
 | **Collation** | 14:50 (16:50 le lundi), à la maison | **amandes ou noix 50 g**, 2 œufs durs, **cottage cheese 100 g**, **7 dattes (70 g)** | ≈ 730 · 36 g |
 | **Dîner** | 20:00 (19:00 le mardi et le dimanche, 19:30 le samedi) | **riz 125 g**, **viande hachée 5 % 70 g**, **épinards 80 g**, huile d'olive 25 ml (10 de cuisson, 15 crus sur le riz), sel iodé, épices, créatine 5 g | ≈ 800 · 27 g |

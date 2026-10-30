@@ -79,7 +79,8 @@ console.log('\n== 402) Le plan de secours en texte ==');
   const { ctx, fr } = await ouvrir('2026-11-01T20:00:00+01:00');
   const t = await fr.evaluate(() => window.__bcPlanTexte('2026-11-02'));
   ok(/^LA BATCAVE — plan de la semaine du 0?2 nov\. au 0?8 nov\./.test(t), 'en-tête : ' + t.split('\n')[0]);
-  ok(/LUNDI 0?2 nov\. — combat\n  05:30  Sport\n/.test(t) && /  10:30  🥋 JJB\n/.test(t), 'lundi : la grille combat, ligne par ligne');
+  /* 30 octobre : la salle ouvre a 07:00 -- Anki 1 au reveil, le trajet, la seance a 07:00. */
+  ok(/LUNDI 0?2 nov\. — combat\n  05:30  Anki 1\n  06:40  Trajet salle\n  07:00  Sport\n/.test(t) && /  10:30  🥋 JJB\n/.test(t), 'lundi : la grille combat, ligne par ligne');
   ok(/MARDI 0?3 nov\.\n[\s\S]*  17:30  🏊 Piscine[\s\S]*  21:35  Coucher/.test(t) && !/MARDI 0?3 nov\. — combat/.test(t) && !/Muay Thai/.test(t), 'mardi : plus de Muay Thai, la piscine à 17:30, coucher 21:35 comme les autres jours');
   ok(/DIMANCHE 0?8 nov\.\n/.test(t) && !/DIMANCHE 0?8 nov\. — combat/.test(t), 'dimanche : pas de combat');
   const t0 = await fr.evaluate(() => window.__bcPlanTexte('2026-09-28'));

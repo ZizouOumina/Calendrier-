@@ -71,7 +71,8 @@ console.log('\n== 112) Semis : un seul palier, le mois ==');
      19 octobre : jour 1 au mardi 20, « Clore le cours » a vingt minutes les soirs de cours -- 46,8 h.
      21 octobre : jour 1 au mercredi 21, matins du plan sommeil (premier bloc a 07:45 le 21) -- 41,1 h.
      Le meme jour, jour 1 au jeudi 22 -- 37,1 h. */
-  ok(m9 && m9.cible === 37.1, 'révision d\'octobre calculée depuis la grille, du jeudi 22 au 31, régime combat, sans JJB avant le 28 : 37,1 h (' + (m9 && m9.cible) + ')');
+  /* 30 octobre : la salle a 07:00 -- le samedi 31, Anki 2 saute et le matin perd une demi-heure de revision : 36,8 h. */
+  ok(m9 && m9.cible === 36.8, 'révision d\'octobre calculée depuis la grille, du jeudi 22 au 31, régime combat, sans JJB avant le 28, salle à 07:00 le 31 : 36,8 h (' + (m9 && m9.cible) + ')');
   ok(m9 && m9.auto === true, 'la cible est marquée automatique : elle suivra la grille');
   ok(!o.liste.some(x => /exo:|snus|eau_moy|depenses_var/.test(x.metrique)),
      'ni niveaux, ni snus, ni eau, ni dépenses : ils ne sont plus semés du tout');
@@ -105,7 +106,7 @@ console.log('\n== 113) Comparaison sur des données réelles ==');
      Une séance faite avant le départ compte, mais ne crée pas de retard. */
   /* Octobre (jour 1 le lundi 5, depuis le 4 octobre) : 105,1 h de cible, dont 29,9 h
      attendues le lundi 12 à 10:00. 40 h faites (la graine compte aussi les 1er-4) : en avance. */
-  ok(rev && /réel 40,0 h/.test(rev.txt) && /attendu 25,3 h/.test(rev.txt) && /avance|atteint/.test(rev.led) && !/retard/.test(rev.led), 'Révision : réel 40,0 h pour 25,3 h attendues le 28 à 10:00 → en avance (et même au-delà des 37,1 h du mois depuis le jour 1 au 22 : atteint) : ' + (rev && rev.txt.slice(0, 80)));
+  ok(rev && /réel 40,0 h/.test(rev.txt) && /attendu 25,3 h/.test(rev.txt) && /avance|atteint/.test(rev.led) && !/retard/.test(rev.led), 'Révision : réel 40,0 h pour 25,3 h attendues le 28 à 10:00 → en avance (et même au-delà des 36,8 h du mois depuis le jour 1 au 22 : atteint) : ' + (rev && rev.txt.slice(0, 80)));
   const som = await ligne(fr, 'Sommeil');
     /* 23 septembre : la cible de sommeil est du sommeil REEL (Bevel), le temps au lit × 0,88.
      L'objectif seme a 7,75 h -- une moyenne de temps au lit -- passe a la moyenne reelle
@@ -133,7 +134,7 @@ console.log('\n== 114) Éditer une cible, supprimer, ajouter ==');
   await page.waitForTimeout(250);
   const rev = await ligne(fr, 'Révision');
   ok((await local(fr, 'batcave-objectifs')).liste.find(x => x.id === 'M2026-10:revision_h').cible === 44, 'cible enregistrée : 44');
-  ok(rev && /attendu 30,0 h/.test(rev.txt) && /avance/.test(rev.led), 'recalcul immédiat sur une cible de 44 h : attendu 30,0 h, 40 h réelles → en avance (' + (rev && rev.txt.slice(0, 70)) + ')');
+  ok(rev && /attendu 30,3 h/.test(rev.txt) && /avance/.test(rev.led), 'recalcul immédiat sur une cible de 44 h : attendu 30,3 h, 40 h réelles → en avance (' + (rev && rev.txt.slice(0, 70)) + ')');
   ok((await local(fr, 'batcave-objectifs')).liste.find(x => x.id === 'M2026-10:revision_h').auto === false, 'une cible saisie à la main sort du calcul automatique');
   const avant = (await local(fr, 'batcave-objectifs')).liste.length;
   await fr.evaluate(() => document.querySelector('[data-obj-del="M2026-10:sommeil_moy"]').click());

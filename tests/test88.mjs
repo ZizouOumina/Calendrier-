@@ -56,20 +56,21 @@ console.log('\n== 291) Le 4 juin est le dernier jour de cours ; le 5, l\'été t
   ok(!v.g7.some(x => /Cours|Trajet cours|Trajet retour/.test(x)), 'plus de cours ni de trajets');
   ok(v.g7.includes('15:00 Projets perso 4') && v.g7.includes('16:00 Projets perso 5') && v.g7.includes('17:00 Lire') && v.g7.includes('18:00 Réexpliquer'),
      'la journée est celle d\'un jour sans cours : deux blocs de projet, Lire et Réexpliquer');
-  ok(v.g7.includes('07:20 Anki 1') && v.g7.includes('08:20 Anki 2'),
+  ok(v.g7.includes('05:30 Anki 1') && v.g7.includes('09:00 Anki 2'),
      'Anki ne s\'arrête pas : les cartes arrivent à échéance tous les jours, été compris');
-  ok(v.g7.some(x => /05:30 Sport/.test(x)) && v.g7.some(x => /Coran/.test(x)) && v.g7.some(x => /19:00 Dîner/.test(x)) && v.g7.some(x => /21:00 Coucher/.test(x)),
+  ok(v.g7.some(x => /07:00 Sport/.test(x)) && v.g7.some(x => /Coran/.test(x)) && v.g7.some(x => /19:00 Dîner/.test(x)) && v.g7.some(x => /21:00 Coucher/.test(x)),
      'et le reste de la journée tient : sport, Coran, repas, coucher à 21:00');
   /* La charge d'un jour d'ete est celle d'un jour libre de l'annee scolaire, ni plus ni
      moins : 6 h 15 de revision et 3 h 35 de projets. Ce n'est PAS zero -- une grille vide
      n'apprend rien a quelqu'un qui travaille tous les jours -- et ce n'est pas invente non
      plus : c'est exactement la journee sans cours du 12 octobre ou du 21 janvier. */
-  ok(v.c7.rev === 375 && v.c7.proj === 0 && v.c7.es === 0,
+  /* 30 octobre : la salle a 07:00 -- le trajet prend une demi-heure d'etude aux matins de muscu (375 -> 346). */
+  ok(v.c7.rev === 346 && v.c7.proj === 0 && v.c7.es === 0,
      'la charge est celle d\'un jour libre : ' + JSON.stringify(v.c7));
-  ok(v.prevu7.rev === 375 && v.prevu7.proj === 0 && v.prevu7.sport === 1,
+  ok(v.prevu7.rev === 346 && v.prevu7.proj === 0 && v.prevu7.sport === 1,
      'et elle est bien PRÉVUE, donc comptée dans les objectifs du quatrième trimestre');
   /* 19 octobre : « Clore le cours » passe a vingt minutes les soirs de cours (la soiree du sommeil) -- 305 -> 285. */
-  ok(v.prevu4.rev > 0 && v.cJuin.rev === 285, 'le 1er et le 4 juin restent des jours de cours (' + v.cJuin.rev + ' min de révision)');
+  ok(v.prevu4.rev > 0 && v.cJuin.rev === 256, 'le 1er et le 4 juin restent des jours de cours (' + v.cJuin.rev + ' min de révision ; 285 avant la salle à 07:00)');
   await ctx.close();
 }
 {

@@ -335,12 +335,13 @@ console.log('\n== 304) Le compteur de la semaine ==');
   ok(v.bil.creneaux === 3 && v.bil.saisis === 1, 'trois créneaux écoulés, un sujet écrit (' + v.bil.creneaux + '/' + v.bil.saisis + ')');
   ok(/1\/3 créneaux cette semaine/.test(v.note), 'et le panneau l\'affiche : ' + v.note);
 
-  /* Même samedi à 11:00 : la séance de 09:20 s'est terminée à 10:20, celle de 10:20 court
-     jusqu'à 11:20 — elle est EN COURS, elle ne compte pas encore. Mercredi + une séance. */
-  const onze = await fr.evaluate(() => window.__bcBilanAppro(['2026-10-28','2026-10-31'], 11*60).creneaux);
-  ok(onze === 2, 'à 11:00, la séance en cours ne compte pas encore comme ratée (' + onze + ')');
-  const dix = await fr.evaluate(() => window.__bcBilanAppro(['2026-10-28','2026-10-31'], 10*60).creneaux);
-  ok(dix === 1, 'à 10:00, aucune des deux séances du samedi n\'est finie (' + dix + ')');
+  /* Même samedi à 10:30 : depuis la salle à 07:00 (30 octobre), Approfondir va de 09:00 à 11:20 --
+     la séance de 09:00 s'est terminée à 10:00, celle de 10:00 court jusqu'à 11:00 : elle est EN
+     COURS, elle ne compte pas encore. Mercredi + une séance. */
+  const onze = await fr.evaluate(() => window.__bcBilanAppro(['2026-10-28','2026-10-31'], 10*60 + 30).creneaux);
+  ok(onze === 2, 'à 10:30, la séance en cours ne compte pas encore comme ratée (' + onze + ')');
+  const dix = await fr.evaluate(() => window.__bcBilanAppro(['2026-10-28','2026-10-31'], 9*60 + 30).creneaux);
+  ok(dix === 1, 'à 09:30, aucune des deux séances du samedi n\'est finie (' + dix + ')');
   await ctx.close();
 }
 

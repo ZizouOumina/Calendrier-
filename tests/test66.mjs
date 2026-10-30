@@ -93,17 +93,18 @@ console.log('\n== 252) Mode partiels : J-7 avant le premier examen, jusqu\'au de
      changent pas. juste je n'ai pas cours ». La grille d'examen (Annales ciblées, Révision
      ciblée, Fiches de synthèse, un seul bloc Español) a disparu : ce bloc verifiait
      autrefois qu'elle s'appliquait, il verifie maintenant qu'elle ne revient pas. */
-  ok(g.includes('07:20 Anki 1') && g.includes('08:20 Anki 2') && g.includes('09:20 Étudier en avance') && g.includes('11:20 Question ouverte ou autre'),
+  /* 30 octobre : la salle ouvre a 07:00 -- Anki 1 au reveil, la seance, puis Anki 2 a 09:00. */
+  ok(g.includes('05:30 Anki 1') && g.includes('09:00 Anki 2') && g.includes('10:00 Étudier en avance') && g.includes('11:20 Question ouverte ou autre'),
      'la matinée ne change pas : Anki 1, Anki 2, Étudier en avance, Question ouverte ou autre');
   ok(!g.some(x => /Cours$|Trajet cours|Clore le cours/.test(x)), 'mardi en partiels : ni cours, ni trajet, ni « Clore le cours du jour »');
-  ok(g.includes('05:30 Sport'), 'le sport du mardi reste à 05:30 : les séances ne bougent pas');
+  ok(g.includes('07:00 Sport'), 'le sport du mardi reste à sa place (07:00, à la salle) : les séances ne bougent pas');
   /* Regime combat : depuis le 1er octobre, plus de Muay Thai -- un mardi sans cours finit comme les autres jours, diner 19:00, coucher 21:35. */
   /* 12 octobre : jusqu'au 12 novembre, la phase Español renomme les blocs de projet de l'apres-midi libere. */
   ok(g.includes('13:00 Lire') && g.includes('15:00 Español · hablar') && g.includes('17:00 Réexpliquer') && g.includes('19:00 Dîner') && !g.some(x => /Muay Thai|club/i.test(x)) && g.includes('21:35 Coucher'),
      'l\'après-midi libérée comme un jour sans cours : Lire, projets, Réexpliquer, dîner 19:00, pas de Muay Thai, coucher 21:35 (' + g.filter(x => /^1[3-9]|^2/.test(x)).join(' · ') + ')');
   ok(!g.some(x => /ciblée|Fiches de synthèse/.test(x)), 'aucun bloc « ciblé » : la grille de partiels n\'existe plus');
   const gl = await grille(fr, 'monday', '2026-11-09');
-  ok(gl.includes('05:30 Sport') && gl.includes('15:00 Español · hablar') && !gl.some(x => /Cours$/.test(x)), 'lundi en partiels : sport à 05:30, 15:00 en espagnol (phase jusqu\'au 15), pas de cours (' + gl.filter(x => /05:30|15:00/.test(x)).join(' · ') + ')');
+  ok(gl.includes('07:00 Sport') && gl.includes('15:00 Español · hablar') && !gl.some(x => /Cours$/.test(x)), 'lundi en partiels : salle à 07:00, 15:00 en espagnol (phase jusqu\'au 15), pas de cours (' + gl.filter(x => /05:30|15:00/.test(x)).join(' · ') + ')');
   const gv = await grille(fr, 'friday', '2026-11-13');
   /* 14 octobre : la phase Español court jusqu'au 14 novembre -- le vendredi 13, le matinal et la plage liberee sont de l'espagnol. */
   ok(gv.includes('05:30 Español · escribir largo') && gv.includes('10:30 🥋 JJB') && gv.some(x => /^13:30 Jumu'ah/.test(x)) && gv.includes('15:00 Español · hablar'),
@@ -130,7 +131,9 @@ console.log('\n== 253) Jour d\'examen et veille ==');
   const { ctx, fr } = await ouvrir('2026-11-16T06:00:00+02:00', EXAMENS);   /* lundi, Anatomía I 09:00 (défaut) */
   const g = await grille(fr, 'monday', '2026-11-16');
   ok(g.includes('09:00 Examen · Anatomía I') && g.includes('08:30 Trajet · Examen · Anatomía I') && g.includes('11:00 Trajet retour'), 'lundi 16 : trajet 08:30, examen 09:00 → 11:00 (' + g.filter(x => /Examen|retour/.test(x)) + ')');
-  ok(g.includes('07:20 Anki 1') && !g.some(x => /08:20 Anki 2/.test(x)) && g.includes('07:30 Préparer · Examen · Anatomía I'), 'Anki 1 gardé, Anki 2 sacrifié pour la préparation à 07:30');
+  /* 30 octobre : un matin d'examen, pas de salle (elle n'ouvre qu'a 07:00) -- le matin des jours sans muscu. */
+  ok(g.includes('07:20 Anki 1') && !g.some(x => /08:20 Anki 2/.test(x)) && g.includes('07:30 Préparer · Examen · Anatomía I') && !g.some(x => /Sport|Trajet salle/.test(x)) && g.includes('06:45 Petit-déjeuner + Coran (1 page)'),
+     'Anki 1 gardé, Anki 2 sacrifié pour la préparation à 07:30 ; pas de salle un matin d\'examen, le shake à 06:45');
   const v = await grille(fr, 'weekend', '2026-11-15');
   /* 21 octobre : la mobilite des hanches prend 19:30 -> 19:40, le temps libre commence a 19:40 */
   ok(v.includes('19:40 Préparer · Examen · Anatomía I') && v.includes('19:30 🧘 Mobilité des hanches') && v.includes('09:20 Simulation dentaire'), 'dimanche 15 : le temps libre du soir prépare l\'examen (après les dix minutes de mobilité), l\'annale du matin reste');

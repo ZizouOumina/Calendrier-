@@ -54,19 +54,21 @@ console.log('\n== 109) Le lendemain, la cible intègre le report ==');
   const { ctx, fr } = await ouvrir('2026-12-03T10:00:00+01:00', {'batcave-report': {date:'2026-12-03', rev:120, proj:0}});
   const cells = await fr.evaluate(() => [...document.querySelectorAll('#dash-temps .temps-cell')].map(e => e.innerText.replace(/\s+/g,' ')));
   /* 19 octobre : « Clore le cours » passe a vingt minutes (la soiree du sommeil) -- 4 h 10 -> 3 h 50 */
-  ok(/\/ 5 h 50/.test(cells[0]) && /\+2 h/.test(cells[0]), 'révision : « / 5 h 50 +2 h ↪ » (jeudi du régime combat : 3 h 50 + 2 h) (obtenu ' + cells[0] + ')');
+  /* 30 octobre : la salle a 07:00 (SALLE_HORAIRES_DEBUT) -- Anki 1 au reveil (70 min), Étudier en avance
+     ramene a 1 h 20 par le trajet : le jeudi passe de 3 h 50 a 3 h 21 de revision. */
+  ok(/\/ 5 h 21/.test(cells[0]) && /\+2 h/.test(cells[0]), 'révision : « / 5 h 21 +2 h ↪ » (jeudi du régime combat, salle à 07:00 : 3 h 21 + 2 h) (obtenu ' + cells[0] + ')');
   /* 1 h 45 et non 2 h 40 : en phase 3 un bloc « Projets perso » reste de l'espagnol.
      Ce qui compte ici, c'est l'absence de « + » : le report ne touche que la revision. */
   ok(/sans minuteur/.test(cells[1]) && !/\+/.test(cells[1]), 'projets : sans cible ni report (obtenu ' + cells[1] + ')');
   const plan = await texte(fr, '#dash-plan');
-  ok(/Révision — 0 sur 5 h 50/.test(plan), 'Plan du jour : cible 5 h 50 (3 h 50 + 2 h de report)');
+  ok(/Révision — 0 sur 5 h 21/.test(plan), 'Plan du jour : cible 5 h 21 (3 h 21 + 2 h de report)');
   await ctx.close();
 }
 {
   /* un report daté d'un autre jour ne s'applique pas */
   const { ctx, fr } = await ouvrir('2026-12-03T10:00:00+01:00', {'batcave-report': {date:'2026-12-02', rev:120, proj:0}});
   const cells = await fr.evaluate(() => [...document.querySelectorAll('#dash-temps .temps-cell .tv')].map(e => e.innerText.replace(/\s+/g,' ')));
-  ok(/\/ 3 h 50/.test(cells[0]) && !/\+/.test(cells[0]), 'report périmé ignoré : « / 3 h 50 »');
+  ok(/\/ 3 h 21/.test(cells[0]) && !/\+/.test(cells[0]), 'report périmé ignoré : « / 3 h 21 »');
   await ctx.close();
 }
 

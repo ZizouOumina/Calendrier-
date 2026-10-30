@@ -78,8 +78,9 @@ console.log('\n== 285) Le semestre 2 : 24 h de cours, mardi et mercredi jusqu\'a
      et le lundi est passe de 21:55 a 21:35. 21:35 -> 05:30 = 7 h 55 = 7,92 h. */
   ok(ma.sommeil === 7.92 && me.sommeil === 7.83 && je.sommeil === 6.83,
      'la cible de sommeil est celle que l\'emploi du temps permet, pas 8 h : ' + [ma, me, je].map(x => x.sommeil).join(' / ') + ' h');
-  ok(ma.cible.rev === 265 && lu.cible.rev === 285,
-     'mardi perd le bloc « Question ouverte ou autre » du soir : 265 min de révision contre 285 le lundi (305 avant que « Clore le cours » passe à vingt minutes, 19 octobre) (' + ma.cible.rev + ' / ' + lu.cible.rev + ')');
+  /* 30 octobre : la salle a 07:00 -- le trajet prend une demi-heure d'etude a chacun des deux matins (265 -> 236, 285 -> 256). */
+  ok(ma.cible.rev === 236 && lu.cible.rev === 256,
+     'mardi perd le bloc « Question ouverte ou autre » du soir : 236 min de révision contre 256 le lundi (305 avant que « Clore le cours » passe à vingt minutes, 19 octobre, puis la salle à 07:00, 30 octobre) (' + ma.cible.rev + ' / ' + lu.cible.rev + ')');
   await ctx.close();
 }
 
@@ -165,10 +166,10 @@ console.log('\n== 289) Le mode partiels passe devant, même un jour sans cours =
     c: window.__bcCibleJour('monday', '2026-12-28')
   }));
   ok(v.p === 'partiels' && v.sans === true, 'le 28 décembre : sans cours ET en mode partiels');
-  ok(v.g.includes('07:20 Anki 1') && v.g.includes('08:20 Étudier en avance') && v.g.includes('13:00 Question ouverte ou autre'),
+  ok(v.g.includes('05:30 Anki 1') && v.g.includes('09:00 Étudier en avance') && v.g.includes('13:00 Question ouverte ou autre'),
      'les vacances ne gagnent pas : la matinée de travail est là, avec le JJB du lundi (' + v.g.filter(x => /07:20|09:20|11:20/.test(x)).join(' · ') + ')');
-  ok(v.g.includes('05:30 Sport') && v.g.includes('17:00 Projets perso 5') && v.g.includes('21:35 Coucher'),
-     'c\'est la journée sans cours d\'un lundi : sport 05:30, projets l\'après-midi, coucher 21:35');
+  ok(v.g.includes('07:00 Sport') && v.g.includes('17:00 Projets perso 5') && v.g.includes('21:35 Coucher'),
+     'c\'est la journée sans cours d\'un lundi : salle à 07:00, projets l\'après-midi, coucher 21:35');
   ok(!v.g.some(x => /ciblée|Fiches de synthèse|Español/.test(x)), 'ni bloc « ciblé », ni bloc Español (la phase est finie depuis le 22 octobre)');
   ok(v.c.proj === 0 && v.c.rev > 0, 'la cible du jour suit cette grille : révision ' + v.c.rev + ' min, projets sans cible (' + v.c.proj + ')');
   await ctx.close();

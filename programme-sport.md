@@ -4,17 +4,22 @@ Copie de référence du programme appliqué dans la Batcave (onglet Sport). **De
 
 ## La semaine
 
-| Jour | 05:30 | 10:30 | Soir |
-|---|---|---|---|
-| Lundi | **Haut volume** (haut du corps, 2-3 reps en réserve) | JJB | — |
-| Mardi | **Bas complet** (squat) | — | Piscine 17:30 |
-| Mercredi | projets | JJB | — |
-| Jeudi | **Haut lourd** | — | cou à la maison (habitude) |
-| Vendredi | projets | JJB | — |
-| Samedi | **Bas · charnière** (puis les bras) | — | — |
-| Dimanche | projets | — | mobilité des hanches 19:30 |
+| Jour | 05:30 | 07:00, à la salle | 10:30 | Soir |
+|---|---|---|---|---|
+| Lundi | Anki 1 | **Haut volume** (haut du corps, 2-3 reps en réserve) | JJB | — |
+| Mardi | Anki 1 | **Bas complet** (squat) | — | Piscine 17:30 |
+| Mercredi | projets | — | JJB | — |
+| Jeudi | Anki 1 | **Haut lourd** | — | cou à la maison (habitude) |
+| Vendredi | projets | — | JJB | — |
+| Samedi | Anki 1 | **Bas · charnière** (puis les bras) | — | — |
+| Dimanche | projets | — | — | mobilité des hanches 19:30 |
 
-Le squelette est un **haut / bas sur quatre jours**, celui des programmes de référence en hypertrophie (PHUL, le *Generic Bulking Routine* de Lyle McDonald, les programmes haut/bas de Jeff Nippard) : chaque muscle deux fois par semaine, un jour lourd et un jour en volume pour le haut, deux bas aux accents différents (squat le mardi, charnière et unilatéral le samedi). Les jambes travaillent les jours **sans** tatami ; le lundi, la muscu passe cinq heures avant le JJB.
+**La salle ouvre à 07:00** (07:00 → 22:30 en semaine, 07:00 → 21:00 le week-end), à 15-20 minutes
+de chez lui. Depuis le samedi 31 octobre, les jours de muscu : Anki 1 au réveil (05:30 → 06:40),
+départ 06:40, séance 07:00 → 07:55, retour 08:15 (le jour se lève pendant le trajet : c'est la
+lumière du matin), douche, puis le riz et le shake à 08:30. Le réveil reste à 05:20.
+
+Le squelette est un **haut / bas sur quatre jours**, celui des programmes de référence en hypertrophie (PHUL, le *Generic Bulking Routine* de Lyle McDonald, les programmes haut/bas de Jeff Nippard) : chaque muscle deux fois par semaine, un jour lourd et un jour en volume pour le haut, deux bas aux accents différents (squat le mardi, charnière et unilatéral le samedi). Les jambes travaillent les jours **sans** tatami ; le lundi, la muscu finit 2 h 30 avant le JJB.
 
 ## Pourquoi ces choix — ce que disent les études
 
@@ -111,7 +116,7 @@ Le seul jour de semaine sans combat : c'est ici que la force se construit. Repos
 - **Trouver ses charges, la première semaine** : sur chaque exercice, monter par paliers jusqu'à une charge où la première série tombe dans la fourchette avec 2 ou 3 reps en réserve, et la noter. La Batcave calcule la suite.
 - **Ce que veut dire « Charge »** : *barre* = barre et disques au total ; *haltères* = le poids d'un seul haltère ; *machine* = la charge de la machine ou de la poulie ; *cou* = le disque sur la serviette. **« Lest »** (tractions, dips, relevés de jambes) = ce qui s'ajoute au poids du corps, 0 sans rien.
 - **L'effort** : arrêter à 1 ou 2 reps de l'échec ; sur la dernière série des isolations (élévations, curls, extensions, leg curl, leg extension, mollets), aller jusqu'à l'échec. Le lundi : 2 ou 3 reps en réserve partout. Une rep sale ne compte pas : dos qui se creuse, coup de reins, la série s'arrête.
-- **Sécurité, seul à 05:30** : squat, développé couché et hip thrust dans le rack, barres de sécurité réglées juste sous le bas du mouvement. Jamais de série d'échec au squat ni au développé couché sans elles.
+- **Sécurité, salle presque vide à 07:00** : squat, développé couché et hip thrust dans le rack, barres de sécurité réglées juste sous le bas du mouvement. Jamais de série d'échec au squat ni au développé couché sans elles.
 - **Montée en charge** : les deux premières semaines de muscu (jusqu'au dimanche 8 novembre), la moitié des tours ; à partir du lundi 9 novembre, le programme complet. La Batcave applique le facteur toute seule.
 - **Retest** : le lundi des semaines 5, 10 et 15 (16 novembre, 21 décembre, 25 janvier), avant le Haut volume : tractions max et dips max au poids du corps, 3 min de repos entre les deux, puis la séance normale.
 - **Décharge** : seulement si tu stagnes deux séances de suite sur tout — une semaine à 2 tours par paire, loin de l'échec.
@@ -158,7 +163,7 @@ Le JJB (garde, ponts, sorties de hanche) fait travailler la sangle trois fois pa
 - **Si la semaine dérape** : tu sautes une séance de combat, jamais la muscu ni le sommeil.
 
 ## Autour de la séance
-- Le shake suit la séance à 06:45 (40 g de protéines). Les jours de JJB, collation combat à 10:05 et shake de récup à 12:00. Voir `programme-alimentation.md`.
+- Le shake suit la séance à 08:30, 35 minutes après (40 g de protéines). Les jours de JJB, collation combat à 10:05 et shake de récup à 12:00. Voir `programme-alimentation.md`.
 - Eau : 3 L, 3,5 à 4 L les jours de JJB. Créatine 5 g par jour, au dîner.
 - Sommeil : lever 05:20, coucher 21:35, tous les jours.
 - Les étirements (`guide-etirements.html`) se font quand il y a un moment, jamais juste avant une série lourde.
