@@ -202,7 +202,8 @@ viande hachée 490 g (pesés au comptoir), skyr, 10 œufs, 500 g de cottage chee
 amandes, sardines ou maquereau, légumes verts surgelés, boisson d'avoine (en briks de 1 L),
 fruits rouges, galettes de riz, dattes, riz, flocons, huile d'olive, miel. Plus de fromage depuis
 le 26 octobre. Les légumes surgelés : moitié brocoli, moitié épinards en portions. La Batcave en calcule le coût ; les articles sans
-prix relevé (fruits rouges, galettes, sardines, dattes, cottage cheese) attendent son ticket.
+prix relevé (galettes, sardines, dattes, cottage cheese) attendent son ticket. Les fruits rouges ont le
+leur depuis le 30 octobre : le mélange Auchan d'Alcampo, 2,85 € les 450 g.
 
 ## La préparation (batch cooking)
 Le dimanche à 14:30 : le poulet, la viande hachée et les légumes de la semaine (le brocoli pour
