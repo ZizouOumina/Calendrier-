@@ -2613,7 +2613,7 @@
            samedi 10:20. -->
       <div class="panel sub-panel" id="appro-panel">
         <div class="sub-head"><h3>🔬 Approfondissements</h3><span class="sub-note" id="appro-note">—</span></div>
-        <p class="sub-note" style="margin-bottom:12px; line-height:1.6;">Trois créneaux par semaine : <b>mercredi 13:00</b>, <b>samedi 09:00 et 10:10</b>. Le sujet, c'est toi qui le choisis. Écris-le ici quand la séance est finie : la Batcave le représente à <b>J+7, J+30 et J+90</b> au bloc « Réexpliquer », tu te notes 0-3 à chaque passage, et sous 2 le sujet reprend le prochain créneau.</p>
+        <p class="sub-note" style="margin-bottom:12px; line-height:1.6;">Trois créneaux par semaine : <b>mercredi 13:00</b>, <b>samedi 09:00 et 10:00</b>. Le sujet, c'est toi qui le choisis. Écris-le ici quand la séance est finie : la Batcave le représente à <b>J+7, J+30 et J+90</b> au bloc « Réexpliquer », tu te notes 0-3 à chaque passage, et sous 2 le sujet reprend le prochain créneau.</p>
 
         <div class="add-form">
           <div class="f" id="appro-f-mat"><label for="appro-matiere">Matière</label><select id="appro-matiere"></select></div>
@@ -16133,7 +16133,7 @@
      cle du jour, sinon « defaut ». Les memes textes sont dans les series recurrentes de
      l'agenda Google (titres « 🦇 Bloc · consigne courte »). */
   /* ===== Les approfondissements, et les rappels qu'ils declenchent =====
-     La grille donne des CRENEAUX -- mercredi 11:20, samedi 09:20 et samedi 10:20 (le bloc du
+     La grille donne des CRENEAUX -- mercredi 13:00, samedi 09:00 et samedi 10:00 depuis le 31 octobre (le bloc du
      samedi matin dure deux heures, donc deux seances) : trois par semaine. Elle ne dit pas ce
      qu'on y met. C'est lui qui choisit le sujet et qui l'ECRIT une fois la seance finie
      (Etudes -> Approfondissements). A partir de la, la Batcave fait le reste : elle represente
@@ -16310,7 +16310,7 @@
        la Batcave impose, c'est de l'écrire à la fin — sans ça, aucun rappel ne part. */
     'Approfondir': function(dow, iso){
       var socle = " Une heure : 25 min de lecture dans la référence (Guyton, Karp, Greenhalgh, Abbas), 15 min de teach-back enregistré en espagnol sans notes, 10 min de cartes de mécanisme en chaîne, 10 min de vignettes (« profundiza · sujet » dans le projet Dentaire). L'enregistrement se garde : Réexpliquer le réécoute. À la fin, écris le sujet dans Études → Approfondissements — c'est ce qui déclenche J+7, J+30 et J+90.";
-      var deux = dowDe(iso) === 6 ? " Le bloc dure 2 h 20 : DEUX séances d'une heure, à 09:00 et à 10:10." : "";   /* 31 octobre : la salle a 07:00 a pousse le bloc a 09:00 -> 11:20 */
+      var deux = dowDe(iso) === 6 ? " Le bloc dure 2 h 20 : DEUX séances d'une heure, à 09:00 et à 10:00 (la demi-heure qui reste, tes cartes)." : "";   /* 31 octobre : la salle a 07:00 a pousse le bloc a 09:00 -> 11:20 */
       var frag = approFragiles();
       if(frag.length) return "À repasser d'abord (noté sous 2 au dernier Réexpliquer) : " + frag.map(function(x){ return x.sujet; }).join(' ; ') + "." + deux + socle;
       return "Le sujet, c'est toi qui le choisis : le tema que le prof vient de donner, ou celui qui te servira le plus au fauteuil." + deux + socle;
