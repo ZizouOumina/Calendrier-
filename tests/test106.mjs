@@ -66,7 +66,8 @@ console.log('\n== 261) Le cran de charge suit l\'exercice ==');
 
 console.log('\n== 262) En salle : haut / bas sur quatre jours, chaque muscle deux fois ==');
 {
-  const { ctx, fr } = await ouvrir('2026-10-29T09:00:00+01:00');
+  /* des sauts deja faits au haut de la fourchette : un exercice charge proposerait de monter */
+  const { ctx, fr } = await ouvrir('2026-10-29T09:00:00+01:00', {'batcave-sport-log': [log('Sauts sur box', 'Bas complet', [5,5,5], 0)]});
   const s = await fr.evaluate(() => {
     const o = {}; window.__bcSessionsSport().forEach(x => { o[x.type] = {duree: x.duree, noms: x.exercises.map(e => e.name)}; });
     return Object.assign(o, {sam: window.__bcTypeSport('2026-10-31'), samS2: window.__bcTypeSport('2027-02-06')});
@@ -76,7 +77,16 @@ console.log('\n== 262) En salle : haut / bas sur quatre jours, chaque muscle deu
   ok(s.sam === 'Bas · charnière' && s.samS2 === 'Bas · charnière' && bch.length === 7, 'le samedi est le second bas, au régime combat comme après (' + s.sam + ' / ' + s.samS2 + ')');
   ok(hv.includes('Élévations latérales') && hl.includes('Élévations latérales') && bch.includes('Élévations latérales') && !bc.includes('Élévations latérales'), 'élévations latérales lundi, jeudi et samedi');
   ok(hv.indexOf('Élévations latérales') < hv.indexOf('Flexion du cou'), 'lundi : le cou reste le finisseur');
-  ok(bc.includes('Squat barre') && bc.includes('Leg curl assis') && bch.includes('Split squat bulgare') && bch.includes('Leg curl couché'), 'les jambes deux fois : squat et leg curl assis le mardi, split squat et leg curl couché le samedi');
+  ok(bc.includes('Squat barre') && bc.includes('Leg curl assis') && bch.includes('Split squat bulgare') && bch.includes('Nordic ischios'), 'les jambes deux fois : squat et leg curl assis le mardi, split squat et Nordic le samedi');
+  /* 31 octobre : athletique, pas massif -- la puissance en tete de seance, sans charge. */
+  ok(bc[0] === 'Sauts sur box' && hl[0] === 'Pompes claquées' && bch[0] === 'Sauts en longueur', 'la puissance ouvre le mardi, le jeudi et le samedi (' + [bc[0], hl[0], bch[0]].join(' / ') + ')');
+  ok(!bc.includes('Leg extension') && !hl.includes('Curl barre EZ'), 'leg extension et curl EZ sont sortis');
+  const p = await fr.evaluate(() => {
+    const ex = {}; window.__bcSessionsSport().forEach(s => s.exercises.forEach(e => { if(!ex[e.name]) ex[e.name] = e; }));
+    const c = window.__bcCibleProchaine(ex['Sauts sur box']);
+    return {charge: c.charge, monter: c.monter, series: c.series};
+  });
+  ok(p.charge === 0 && !p.monter && p.series.every(x => x === 5), 'les sauts ne se chargent pas : 5 reps par série, 0 kg (' + JSON.stringify(p) + ')');
   ok(!hl.some(n => /squat|Soulevé|Leg curl/i.test(n)), 'le jeudi ne porte plus de jambes : le haut lourd seul');
   ok(hl.includes('Extension triceps à la poulie au-dessus de la tête') && hl.includes('Développé couché barre') && hl.includes('Rowing barre'), 'jeudi : développé couché, rowing barre, extension au-dessus de la tête (Maeo 2023)');
   ok(s['Haut lourd'].duree === '55 min' && s['Haut volume'].duree === '50 min' && s['Bas complet'].duree === '50 min' && s['Bas · charnière'].duree === '50 min', 'durées annoncées : 55 min le jeudi, 50 les autres');
