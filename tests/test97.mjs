@@ -48,39 +48,39 @@ console.log('\n== 312) Une période en cours n\'est jamais close ==');
 /* 30 septembre au soir, le jour 1 passe au jeudi 1er octobre : septembre est entierement
    avant le programme, il ne se clot jamais. Le premier mois clos est octobre, le 1er
    novembre. */
-console.log('\n== 313) Le 1er novembre, octobre est clos une fois, avec ses lignes ==');
+console.log('\n== 313) Le 1er décembre, novembre est clos une fois, avec ses lignes ==');   // 31 octobre : jour 1 au dimanche 1er novembre -- octobre est tout entier avant
 {
-  const s1 = await ouvrir('2026-10-01T09:00:00+02:00');
+  const s1 = await ouvrir('2026-11-01T09:00:00+01:00');
   const ids1 = await s1.fr.evaluate(() => window.__bcPeriodesCloses().map(x => x.id));
-  ok(ids1.indexOf('M2026-09') === -1, 'le 1er octobre, septembre (tout entier avant le jour 1) n\'est pas clos (' + ids1.join(', ') + ')');
+  ok(ids1.indexOf('M2026-10') === -1 && ids1.indexOf('M2026-09') === -1, 'le 1er novembre, octobre (tout entier avant le jour 1) n\'est pas clos (' + ids1.join(', ') + ')');
   await s1.ctx.close();
-  const { ctx, fr } = await ouvrir('2026-11-01T09:00:00+01:00');
+  const { ctx, fr } = await ouvrir('2026-12-01T09:00:00+01:00');
   const v = await fr.evaluate(() => {
     const p = window.__bcPeriodesCloses();
     return {
       ids: p.map(x => x.id),
-      sept: p.filter(x => x.id === 'M2026-10')[0] || null,
+      sept: p.filter(x => x.id === 'M2026-11')[0] || null,
       carte: !document.getElementById('periode-close-carte').hidden,
       titre: (document.getElementById('pcc-titre') || {}).textContent || ''
     };
   });
-  ok(v.sept !== null, 'octobre est clos (' + v.ids.join(', ') + ')');
-  ok(v.ids.filter(x => x === 'M2026-10').length === 1, 'et une seule fois');
+  ok(v.sept !== null, 'novembre est clos (' + v.ids.join(', ') + ')');
+  ok(v.ids.filter(x => x === 'M2026-11').length === 1, 'et une seule fois');
   ok(v.sept && v.sept.lignes.length > 0, 'la clôture porte les lignes des objectifs : ' + (v.sept ? v.sept.lignes.length : 0));
   ok(v.sept && v.sept.lignes.every(l => typeof l.cible === 'number' && typeof l.statut === 'string'),
      'chaque ligne a sa cible et son verdict');
   ok(v.sept && v.sept.total === v.sept.lignes.length && v.sept.tenus <= v.sept.total,
      'le score tient : ' + (v.sept ? v.sept.tenus + ' / ' + v.sept.total : '—'));
-  ok(v.carte === true && /Octobre/.test(v.titre), 'la carte l\'annonce : « ' + v.titre + ' »');
+  ok(v.carte === true && /Novembre/.test(v.titre), 'la carte l\'annonce : « ' + v.titre + ' »');
   /* aucune periode anterieure au programme ne doit etre close */
-  ok(v.ids.indexOf('M2026-09') === -1 && v.ids.indexOf('M2026-08') === -1,
+  ok(v.ids.indexOf('M2026-10') === -1 && v.ids.indexOf('M2026-09') === -1,
      'aucun mois antérieur au programme n\'est clos');
   await ctx.close();
 }
 
 console.log('\n== 314) Rejouer le même jour ne crée pas de doublon ==');
 {
-  const { ctx, fr } = await ouvrir('2026-11-01T09:00:00+01:00');
+  const { ctx, fr } = await ouvrir('2026-12-01T09:00:00+01:00');
   const v = await fr.evaluate(() => {
     const avant = window.__bcPeriodesCloses().length;
     window.__bcCloturerPeriodes(); window.__bcCloturerPeriodes(); window.__bcCloturerPeriodes();
@@ -92,7 +92,7 @@ console.log('\n== 314) Rejouer le même jour ne crée pas de doublon ==');
 
 console.log('\n== 315) « J\'ai vu » éteint la carte, l\'archive reste ==');
 {
-  const { ctx, page, fr } = await ouvrir('2026-11-01T09:00:00+01:00');
+  const { ctx, page, fr } = await ouvrir('2026-12-01T09:00:00+01:00');
   await fr.evaluate(() => document.getElementById('pcc-vu').click());
   await page.waitForTimeout(250);
   const v = await fr.evaluate(() => ({
@@ -111,15 +111,15 @@ console.log('\n== 315 bis) Seul le mois se clôt : le trimestre n\'existe plus =
   /* Ce test verifiait la cloture du trimestre T1. Le 19 septembre, il a ramene les
      objectifs a UN SEUL palier -- le mois -- et periodesObjectifs() ne propose donc plus
      que des mois a clore. Un « T1 » clos serait desormais un bug, pas un succes. */
-  const a = await ouvrir('2026-11-30T20:00:00+01:00');
+  const a = await ouvrir('2026-12-31T20:00:00+01:00');
   const av = await a.fr.evaluate(() => window.__bcPeriodesCloses().map(p => p.id));
-  ok(av.indexOf('M2026-11') === -1, 'le 30 novembre, novembre n\'est pas encore clos');
-  ok(av.indexOf('M2026-10') > -1, 'mais octobre, lui, l\'est (' + av.join(', ') + ')');
+  ok(av.indexOf('M2026-12') === -1, 'le 31 décembre, décembre n\'est pas encore clos');
+  ok(av.indexOf('M2026-11') > -1, 'mais novembre, lui, l\'est (' + av.join(', ') + ')');
   await a.ctx.close();
-  const b2 = await ouvrir('2026-12-01T09:00:00+01:00');
+  const b2 = await ouvrir('2027-01-01T09:00:00+01:00');
   const ap = await b2.fr.evaluate(() => window.__bcPeriodesCloses());
   const ids = ap.map(p => p.id);
-  ok(ids.indexOf('M2026-11') > -1, 'le 1er décembre, novembre est clos (' + ids.join(', ') + ')');
+  ok(ids.indexOf('M2026-12') > -1, 'le 1er janvier, décembre est clos (' + ids.join(', ') + ')');
   ok(!ids.some(i => /^T\d/.test(i)), 'et aucun trimestre n\'a été clos : il n\'y en a plus');
   ok(ap.every(p => p.type === 'mois'), 'toute période close est un mois');
   await b2.ctx.close();

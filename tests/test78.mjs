@@ -48,8 +48,9 @@ console.log('\n== 2) L\'espagnol manqué est une dette d\'espagnol, pas de proje
      4 octobre : le lundi 5 devient le jour 1 ET le jour des premieres courses -- le plan du
      jour y porte l'inventaire et le ticket. On lit donc le mardi 6 (escribir a 14:00).
      12 octobre : le jour 1 passe au mardi 13 -- on lit le mardi 20 (escribir a 14:00).
-     21 octobre : le jour 1 passe au mercredi 21 -- on lit le jeudi 22 (gramática 13:00, escribir 14:00). */
-  const {ctx, fr} = await ouvrir({}, '2026-10-22T21:00:00+02:00');
+     21 octobre : le jour 1 passe au mercredi 21 -- on lit le jeudi 22 (gramática 13:00, escribir 14:00).
+     31 octobre : le jour 1 passe au dimanche 1er novembre -- on lit le jeudi 5 (gramática 13:00, escribir 14:00). */
+  const {ctx, fr} = await ouvrir({}, '2026-11-05T21:00:00+01:00');
   const t = await plan(fr);
   const l = t.split('\n').filter(x=>/Bloc manqué/.test(x) && /Español/.test(x))[0] || '';
   ok(/d'espagnol/.test(l), 'libellé : ' + (l.trim() || '(aucun bloc Español manqué)'));
@@ -91,12 +92,14 @@ console.log('\n== 4) Un rendez-vous dans l\'agenda Google n\'est pas un bloc man
      n'est du, donc aucun ne peut etre manque. On prend le lundi 5 octobre -- un lundi,
      toujours en phase 1 Espanol, et bien a l'interieur du programme. 12 octobre : le lundi 19.
      19 octobre : le jour 1 passe au mardi 20 -- on lit le mardi 20 (Anki 1 et Anki 2 le matin).
-     21 octobre : le jour 1 passe au mercredi 21 -- on lit le jeudi 22 (Anki 1 et Anki 2 le matin). */
-  const {ctx, page, fr} = await ouvrir({}, '2026-10-22T21:00:00+02:00');
+     21 octobre : le jour 1 passe au mercredi 21 -- on lit le jeudi 22 (Anki 1 et Anki 2 le matin).
+     31 octobre : le jour 1 passe au dimanche 1er novembre, et le jeudi est un jour de salle a 07:00 --
+     on lit le mercredi 4 (Anki 1 a 07:20, Étudier en avance a 08:20). */
+  const {ctx, page, fr} = await ouvrir({}, '2026-11-04T21:00:00+01:00');
   const avant = (await plan(fr)).split('\n').filter(l=>/Bloc manqué/.test(l)).length;
   await fr.evaluate(()=>{
-    /* jeudi = 4 ; un vrai rendez-vous couvre Anki 1 et Anki 2 */
-    window.__bcSetGcal && window.__bcSetGcal({4:[['07:15','Dentiste — dents de sagesse','09:30']]});
+    /* mercredi = 3 ; un vrai rendez-vous couvre Anki 1 et le debut d'Étudier en avance */
+    window.__bcSetGcal && window.__bcSetGcal({3:[['07:15','Dentiste — dents de sagesse','09:30']]});
   });
   await page.waitForTimeout(300);
   const apres = await fr.evaluate(()=>{ window.__bcRenderPlan(); return document.getElementById('dash-plan').innerText; });
@@ -162,8 +165,9 @@ console.log('\n== 7) Rattrapage unique après une absence ==');
      Depuis le 16 octobre, le jour 1 est le samedi 17 : retour le lundi 19, les 17 et 18 sans cloture.
      Depuis le 19 octobre, le jour 1 est le mardi 20 : retour le jeudi 22, les 20 et 21 sans cloture.
      Depuis le 21 octobre, le jour 1 est le mercredi 21 : retour le vendredi 23, les 21 et 22 sans cloture.
-     Le meme jour, au jeudi 22 : retour le samedi 24, les 22 et 23 sans cloture. */
-  const {ctx, page, fr} = await ouvrir({'batcave-last-open':'2026-09-16'}, '2026-10-24T10:00:00+02:00');
+     Le meme jour, au jeudi 22 : retour le samedi 24, les 22 et 23 sans cloture.
+     Depuis le 31 octobre, le jour 1 est le dimanche 1er novembre : retour le mardi 3, les 1er et 2 sans cloture. */
+  const {ctx, page, fr} = await ouvrir({'batcave-last-open':'2026-09-16'}, '2026-11-03T10:00:00+01:00');
   const t = await plan(fr);
   const l = t.split('\n').filter(x=>/Absence —/.test(x))[0] || '';
   ok(/2 journées sans clôture/.test(l), 'un seul item pour toute l\'absence : ' + l.trim().slice(0, 90));

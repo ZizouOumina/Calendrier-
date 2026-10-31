@@ -35,7 +35,7 @@ const texte = (fr, sel) => fr.evaluate(s => (document.querySelector(s) || {inner
 /* 12 octobre, le jour 1 passe au mardi 13 : la fenetre des quatorze jours avant le mardi 20
    tomberait a moitie avant le programme. Le mardi de reference devient le 27 (meme grille du
    mardi, sans combat), et la fenetre suit : du 13 au 26 octobre, toute dans le programme. */
-const MARDI29 = '2026-10-27T10:00:00+01:00';
+const MARDI29 = '2026-11-17T10:00:00+01:00';   /* 31 octobre : jour 1 au dimanche 1er novembre -- le premier mardi dont les quatorze jours d'avant sont tous dans le programme */
 function sessionsMoitie(){
   const out = [];
   /* Les quatorze jours qui PRECEDENT le mardi de reference. Ils couraient du 7 au 20
@@ -43,9 +43,9 @@ function sessionsMoitie(){
      mardi de reference au 29, et la fenetre suit : du 14 au 27. Sans ce decalage, la
      semaine du 21 au 27 serait vide et la regle « non-usage n'est pas infidelite »
      supprimerait la proposition -- le bloc ne testerait plus rien. */
-  const jours = ['2026-10-13','2026-10-14','2026-10-15','2026-10-16','2026-10-17','2026-10-18','2026-10-19','2026-10-20','2026-10-21','2026-10-22','2026-10-23','2026-10-24','2026-10-25','2026-10-26'];
+  const jours = ['2026-11-03','2026-11-04','2026-11-05','2026-11-06','2026-11-07','2026-11-08','2026-11-09','2026-11-10','2026-11-11','2026-11-12','2026-11-13','2026-11-14','2026-11-15','2026-11-16'];
   jours.forEach((iso, i) => {
-    const t0 = new Date(iso + 'T07:20:00+02:00').getTime();
+    const t0 = new Date(iso + 'T07:20:00+01:00').getTime();
     out.push({id:'c' + i, date: iso, type:'cours', label:'Anatomía', duree:150, debut:t0, fin:t0 + 150*60000});       /* 2,5 h sur 4-5 h */
     out.push({id:'p' + i, date: iso, type:'projet', label:'Shopify', duree:60, debut:t0 + 5*3600e3, fin:t0 + 6*3600e3}); /* 1 h sur 1-3 h */
   });
@@ -60,19 +60,20 @@ console.log('\n== 210) Deux semaines à ~50 % : la proposition apparaît dans le
   const temps = await texte(fr, '#dash-temps');
   /* Mardi 29 septembre, regime combat : Anki 1 et 2, Étudier, question ouverte, Lire, Clore = 6 h.
      21 octobre : la piscine du mardi (17:30) -- « Clore le cours » passe a 19:30 et dure vingt
-     minutes, au lieu des quarante de 18:30 a 19:10 : 5 h 40. */
-  ok(/\/ 5 h 40/.test(temps), 'avant : cible du jour 5 h 40 de révision (' + temps.slice(0, 40) + ')');
+     minutes, au lieu des quarante de 18:30 a 19:10 : 5 h 40.
+     30 octobre : la salle a 07:00 et plus de piscine -- 5 h 31 (comme le mardi du bloc 212). */
+  ok(/\/ 5 h 31/.test(temps), 'avant : cible du jour 5 h 31 de révision (' + temps.slice(0, 40) + ')');
   const objAvant = await fr.evaluate(() => { document.querySelector('.nav-btn[data-page="objectifs"]').click(); const r = [...document.querySelectorAll('#obj-liste .obj-row')].find(x => /^Révision/.test(x.innerText)); return r ? r.innerText.replace(/\s+/g,' ') : ''; });
   const attenduAvant = Number((objAvant.match(/attendu ([\d,]+)/) || ['', '0'])[1].replace(',', '.'));
   await fr.evaluate(() => document.querySelector('.nav-btn[data-page="dashboard"]').click());
   await fr.evaluate(() => document.querySelector('[data-plan-charge-oui]').click());
   await page.waitForTimeout(250);
   const ch = await local(fr, 'batcave-charge');
-  ok(ch && ch.facteur === 0.8 && ch.depuis === '2026-10-27' && ch.jusqua === '2026-11-09', 'charge réduite de 20 % du 27 oct. au 9 nov.');
+  ok(ch && ch.facteur === 0.8 && ch.depuis === '2026-11-17' && ch.jusqua === '2026-11-30', 'charge réduite de 20 % du 17 au 30 nov.');
   const temps2 = await texte(fr, '#dash-temps');
-  ok(/\/ 4 h 32/.test(temps2), 'après : cible du jour réduite de 20 % (4 h 32 au lieu de 5 h 40) (' + temps2.slice(0, 50) + ')');
+  ok(/\/ 4 h 2[45]/.test(temps2), 'après : cible du jour réduite de 20 % (≈ 4 h 25 au lieu de 5 h 31) (' + temps2.slice(0, 50) + ')');
   const sem = await texte(fr, '#dash-semaine');
-  ok(/Charge réduite de 20 % jusqu'au 0?9 nov\./.test(sem), 'la note de la semaine le dit : ' + sem.slice(0, 60));
+  ok(/Charge réduite de 20 % jusqu'au 30 nov\./.test(sem), 'la note de la semaine le dit : ' + sem.slice(0, 60));
   const objApres = await fr.evaluate(() => { document.querySelector('.nav-btn[data-page="objectifs"]').click(); const r = [...document.querySelectorAll('#obj-liste .obj-row')].find(x => /^Révision/.test(x.innerText)); return r ? r.innerText.replace(/\s+/g,' ') : ''; });
   const attenduApres = Number((objApres.match(/attendu ([\d,]+)/) || ['', '0'])[1].replace(',', '.'));
   ok(attenduAvant > 0 && attenduApres < attenduAvant, 'le rythme attendu de l\'objectif Révision baisse (' + attenduAvant + ' → ' + attenduApres + ' h), la cible du mois ne bouge pas');
@@ -86,9 +87,9 @@ console.log('\n== 211) Refuser : plus proposé cette semaine ; sans aucune sessi
   await fr.evaluate(() => document.querySelector('[data-plan-charge-non]').click());
   await page.waitForTimeout(200);
   const ch = await local(fr, 'batcave-charge');
-  ok(ch && ch.refus === '2026-10-26', 'le refus est noté pour la semaine du 26 oct.');
+  ok(ch && ch.refus === '2026-11-16', 'le refus est noté pour la semaine du 16 nov.');
   ok(!/réduire la cible du jour/.test(await texte(fr, '#dash-plan')), 'et la proposition disparaît');
-  ok(/\/ 5 h 40/.test(await texte(fr, '#dash-temps')), 'la cible reste à 5 h 40');
+  ok(/\/ 5 h 31/.test(await texte(fr, '#dash-temps')), 'la cible reste à 5 h 31');
   await ctx.close();
   const o = await ouvrir(MARDI29);
   ok(!/réduire la cible du jour/.test(await texte(o.fr, '#dash-plan')), 'sans aucune session les deux semaines précédentes : pas de proposition (non-usage ≠ infidélité)');
@@ -97,10 +98,10 @@ console.log('\n== 211) Refuser : plus proposé cette semaine ; sans aucune sessi
 
 console.log('\n== 212) La réduction se termine toute seule ==');
 {
-  const { ctx, fr } = await ouvrir('2026-11-10T10:00:00+01:00', {'batcave-charge': {facteur:0.8, depuis:'2026-10-27', jusqua:'2026-11-09', motif:'test'}});
+  const { ctx, fr } = await ouvrir('2026-12-01T10:00:00+01:00', {'batcave-charge': {facteur:0.8, depuis:'2026-11-17', jusqua:'2026-11-30', motif:'test'}});
   /* 30 octobre : la salle a 07:00 -- le mardi 10 novembre perd la demi-heure du trajet (5 h 40 -> 5 h 11). */
   /* 30 octobre : plus de piscine -- « Clore le cours » du mardi reprend ses quarante minutes (5 h 11 -> 5 h 31). */
-  ok(/\/ 5 h 31/.test(await texte(fr, '#dash-temps')), 'le 10 novembre, la veille passée : cible de nouveau pleine, 5 h 31 (salle à 07:00, plus de piscine)');
+  ok(/\/ 5 h 31/.test(await texte(fr, '#dash-temps')), 'le 1er décembre, la veille passée : cible de nouveau pleine, 5 h 31 (salle à 07:00, plus de piscine)');
   ok(!/Charge réduite/.test(await texte(fr, '#dash-semaine')), 'plus de mention de charge réduite');
   await ctx.close();
 }
@@ -111,8 +112,9 @@ console.log('\n== 213) Relevé OBJECTIF dans la barre ==');
      sessions d'avant le programme mettent tout « en avance ». Pour voir un retard il faut
      une date ou le mois en cours a deja tourne sans lui : le 20 octobre, ou les sessions
      se sont arretees le 5. 19 octobre : le 20 devient le jour 1 -- on lit le vendredi 30, quatre
-     jours apres la fin des sessions (le 26). */
-  const { ctx, fr } = await ouvrir('2026-10-30T10:00:00+01:00', {'batcave-sessions': sessionsMoitie()});
+     jours apres la fin des sessions (le 26). 31 octobre : jour 1 au 1er novembre -- on lit le
+     vendredi 20 novembre, quatre jours apres la fin des sessions (le 16). */
+  const { ctx, fr } = await ouvrir('2026-11-20T10:00:00+01:00', {'batcave-sessions': sessionsMoitie()});
   const r = await fr.evaluate(() => ({ txt: document.querySelector('#bc-objectif .v').textContent, titre: document.querySelector('#bc-objectif .v').title }));
   /* Lot 42 : le relevé ne montre plus un écart négatif nu (« Révision −90,7 h »), qui ne
      dit pas quoi faire, mais le réel sur l'attendu du jour. */
