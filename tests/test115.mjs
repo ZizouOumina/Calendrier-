@@ -226,23 +226,31 @@ console.log('\n== 6) Le 21 octobre au soir : shake de récup, pesée chaque dima
   await ctx.close();
 }
 
-console.log('\n== 7) Jour 1 au jeudi 22 : le rattrapage glisse d\'un jour, 22 -> 29 ==');
+console.log('\n== 7) Départ au dimanche 1er novembre : le vrai rattrapage, 38 temas, file vide le 24 ==');
 {
-  const { ctx, fr } = await ouvrir('2026-10-22T07:20:00+02:00');
+  /* 31 octobre : le plan du 22 au 29 octobre n'a jamais commencé ; il est remplacé par un plan
+     généré sur la grille réelle, qui suit les échéances (cuestionarios, prácticas). */
+  const { ctx, fr } = await ouvrir('2026-11-01T07:20:00+01:00');
   const c = await fr.evaluate(() => ({
-    mer: window.__bcConsigne('Anki 1', 3, '2026-10-21', '07:45'),
-    jeu: window.__bcConsigne('Anki 1', 4, '2026-10-22', '07:20'),
-    jeu2: window.__bcConsigne('Étudier en avance', 4, '2026-10-22', '09:20'),
-    ven: window.__bcConsigne('Question ouverte ou autre', 5, '2026-10-23', '10:20'),
-    mer28: window.__bcConsigne('Approfondir', 3, '2026-10-28', '13:00'),
-    fin: window.__bcConsigne('Projets perso 3', 4, '2026-10-29', '11:20')
+    oct22: window.__bcConsigne('Anki 1', 4, '2026-10-22', '07:20'),
+    dim: window.__bcConsigne('Projets perso matinal', 0, '2026-11-01', '05:30'),
+    dim2: window.__bcConsigne('Anki 1', 0, '2026-11-01', '07:20'),
+    dim3: window.__bcConsigne('Anki 2', 0, '2026-11-01', '08:20'),
+    mer4: window.__bcConsigne('Approfondir', 3, '2026-11-04', '13:00'),
+    mer4b: window.__bcConsigne('Anki 1', 3, '2026-11-04', '07:20'),
+    ven6: window.__bcConsigne('Anki 1', 5, '2026-11-06', '07:20'),
+    mer11: window.__bcConsigne('Approfondir', 3, '2026-11-11', '13:00'),
+    fin: window.__bcConsigne('Anki 2', 2, '2026-11-24', '09:00'),
+    apres: window.__bcConsigne('Étudier en avance', 3, '2026-11-25', '08:20')
   }));
-  ok(!/Rattrapage/.test(c.mer), 'mercredi 21 : plus de tema, le programme n\'a pas commencé');
-  ok(/jour 1 sur 8/.test(c.jeu) && /Anatomía T1/.test(c.jeu) && /07:20/.test(c.jeu) && /Projet Dentaire/.test(c.jeu), 'jeudi 22, jour 1 : Anatomía T1 à 07:20, le Projet Dentaire prêt avant');
-  ok(/Biología celular 1/.test(c.jeu2) && /Epidemiología 1/.test(c.jeu2), 'puis Biología celular 1 et Epidemiología 1');
-  ok(/Documentación 1/.test(c.ven) && /Antropología 1/.test(c.ven), 'vendredi 23 : Documentación 1 et Antropología 1 en version courte');
-  ok(/Biología celular 8/.test(c.mer28) && !/file est vide/.test(c.mer28), 'mercredi 28 : la fin de Biología celular 8, la file n\'est pas encore vide');
-  ok(/Antropología 4/.test(c.fin) && /file est vide/.test(c.fin) && /samedi 31/.test(c.fin), 'jeudi 29 : Antropología 4, la file est vide à 12:10, premier Approfondir samedi 31');
+  ok(!/Rattrapage/.test(c.oct22), 'jeudi 22 octobre : l\'ancien plan a disparu');
+  ok(/jour 1 sur 22/.test(c.dim) && /Antropología 4/.test(c.dim), 'dimanche 1er, jour 1 sur 22 : Antropología 4 à 05:30 (cuestionario du vendredi 6)');
+  ok(/Anatomía T3/.test(c.dim2) && /Anatomía T4/.test(c.dim3), 'puis Anatomía T3 et T4 : le cuestionario 2 (T3 à T6) d\'abord');
+  ok(/Anatomía T6/.test(c.mer4b) && /Cuestionario 2 d'Anatomía/.test(c.mer4), 'mercredi 4 : T6 le matin, le rappel actif du cuestionario 2 à 13:00');
+  ok(/Cuestionario d'Antropología/.test(c.ven6), 'vendredi 6 : le rappel d\'Antropología avant le cuestionario du soir');
+  ok(/Vidal-Alaball/.test(c.mer11), 'mercredi 11 : l\'article du cuestionario IA d\'Epidemiología');
+  ok(/Epidemiología 15/.test(c.fin) && /file est vide/.test(c.fin), 'mardi 24 : Epidemiología 15, la file est vide');
+  ok(!/Rattrapage/.test(c.apres), 'mercredi 25 : plus de rattrapage, Étudier en avance reprend son rôle');
   await ctx.close();
 }
 
