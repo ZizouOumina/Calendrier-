@@ -49,8 +49,9 @@ console.log('\n== 265) Le jour 1 au jeudi 24, la phase Español au 23 octobre ==
      dimanche 15 novembre (le dossier e-commerce demarre le 16).
      19 octobre, « on decale tout a demain » : jour 1 au mardi 20, meme fin de phase.
      21 octobre, « on commence demain la Batcave » : jour 1 au mercredi 21, meme fin de phase.
-     21 octobre au matin, « on commence jeudi matin » : jour 1 au jeudi 22, meme fin de phase. */
-  ok(r.debut === '2026-10-22', 'PROGRAMME_DEBUT = ' + r.debut);
+     21 octobre au matin, « on commence jeudi matin » : jour 1 au jeudi 22, meme fin de phase.
+     31 octobre, « on commence tout dimanche matin » : jour 1 au dimanche 1er novembre, meme fin de phase. */
+  ok(r.debut === '2026-11-01', 'PROGRAMME_DEBUT = ' + r.debut);
   ok(r.es23 && !r.es24, 'phase Español jusqu\'au 15 novembre, plus le 16 novembre (' + r.es23 + ' / ' + r.es24 + ')');
   await ctx.close();
 }

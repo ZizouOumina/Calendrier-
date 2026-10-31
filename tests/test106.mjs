@@ -44,7 +44,7 @@ console.log('\n== 261) Le cran de charge suit l\'exercice ==');
     log('Développé incliné haltères', 'Haut volume', [12,12,12], 16),
     log('Dips', 'Haut lourd', [11,10,9], 5)
   ]};
-  const { ctx, fr } = await ouvrir('2026-11-09T09:00:00+01:00', LOG);   /* volume complet des le lundi 9 */
+  const { ctx, fr } = await ouvrir('2026-11-16T09:00:00+01:00', LOG);   /* volume complet des le lundi 16 (31 octobre : jour 1 au dimanche 1er) */
   const c = await fr.evaluate(() => {
     const ex = {}; window.__bcSessionsSport().forEach(s => s.exercises.forEach(e => { if(!ex[e.name]) ex[e.name] = e; }));
     const r = {}; ['Flexion du cou','Extension du cou','Tractions','Élévations latérales','Relevés de jambes suspendus','Squat barre','Développé incliné haltères','Dips'].forEach(n => { const x = window.__bcCibleProchaine(ex[n]); r[n] = {charge: x.charge, monter: x.monter, series: x.series}; });

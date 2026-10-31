@@ -34,8 +34,10 @@ console.log('\n== 1) Les paliers du plan sommeil, matin et soir ==');
   const { ctx, fr } = await ouvrir('2026-10-21T07:20:00+02:00');
   const debut = await fr.evaluate(() => window.__bcProgrammeDebut);
   /* 21 octobre au matin : « on commence jeudi matin » -- le jour 1 passe au jeudi 22 ; les
-     paliers du plan sommeil, eux, ne bougent pas (le mercredi garde son lever de 07:15). */
-  ok(debut === '2026-10-22', 'le jour 1 est le jeudi 22 (' + debut + ')');
+     paliers du plan sommeil, eux, ne bougent pas (le mercredi garde son lever de 07:15).
+     31 octobre : rien n'avait commence -- le jour 1 passe au dimanche 1er novembre. Les paliers
+     d'octobre restent ecrits (ils sont passes) ; le lever de 05:20 vaut des dimanche. */
+  ok(debut === '2026-11-01', 'le jour 1 est le dimanche 1er novembre (' + debut + ')');
   const mer = await grille(fr, '2026-10-21');
   ok(mer[0] === '07:15 ⏰ Lever' && mer.includes('07:20 Douche + préparation') && mer.includes('07:30 Petit-déjeuner + Coran (1 page)') && mer.includes('07:45 Anki 1'),
      'mercredi 21 : lever 07:15, douche, petit-déjeuner, et le premier bloc à 07:45 (' + mer.slice(0, 4).join(' · ') + ')');
@@ -61,17 +63,17 @@ console.log('\n== 1) Les paliers du plan sommeil, matin et soir ==');
   await ctx.close();
 }
 
-console.log('\n== 2) La muscu attend le lundi 26, la montée en charge part de là ==');
+console.log('\n== 2) La muscu attend le lundi 2 novembre, la montée en charge part de là ==');
 {
   const { ctx, fr } = await ouvrir('2026-10-21T07:20:00+02:00');
   const r = await fr.evaluate(() => ({
     premier: window.__bcPremierJourSport(),
-    types: ['2026-10-21', '2026-10-22', '2026-10-24', '2026-10-26', '2026-10-27'].map(d => window.__bcTypeSport(d)),
-    f: ['2026-10-26', '2026-11-08', '2026-11-09'].map(d => window.__bcFacteurTours(d))
+    types: ['2026-11-01', '2026-11-02', '2026-11-03'].map(d => window.__bcTypeSport(d)),
+    f: ['2026-11-02', '2026-11-15', '2026-11-16'].map(d => window.__bcFacteurTours(d))
   }));
-  ok(r.premier === '2026-10-26', 'la première séance est le lundi 26 (' + r.premier + ')');
-  ok(r.types[0] === 'Off' && r.types[1] === 'Off' && r.types[2] === 'Off' && r.types[3] === 'Haut volume' && r.types[4] === 'Bas complet', 'pas de muscu avant le 26, puis haut volume et bas complet : ' + r.types.join(' / '));
-  ok(r.f[0] === 0.5 && r.f[1] === 0.5 && r.f[2] === 1, 'tours × ½ du 26 octobre au 8 novembre, complets le 9 (' + r.f.join(' / ') + ')');
+  ok(r.premier === '2026-11-02', 'la première séance est le lundi 2 novembre (' + r.premier + ')');
+  ok(r.types[0] === 'Off' && r.types[1] === 'Haut volume' && r.types[2] === 'Bas complet', 'le dimanche 1er sans muscu, puis haut volume et bas complet : ' + r.types.join(' / '));
+  ok(r.f[0] === 0.5 && r.f[1] === 0.5 && r.f[2] === 1, 'tours × ½ du 2 au 15 novembre, complets le 16 (' + r.f.join(' / ') + ')');
   await ctx.close();
 }
 
@@ -176,7 +178,7 @@ console.log('\n== 6) Le 21 octobre au soir : shake de récup, pesée chaque dima
   const pesee = r.habits.filter(h => h.id === 'core-pesee-dim')[0], lumiere = r.habits.filter(h => h.id === 'core-lumiere')[0];
   ok(pesee && !pesee.cycleSemaines && !pesee.ancre, 'la pesée tombe chaque dimanche (' + JSON.stringify(pesee) + ')');
   ok(lumiere && !lumiere.jours, 'la lumière du matin est une habitude de chaque jour (' + JSON.stringify(lumiere) + ')');
-  ok(r.snus && r.snus.start === '2026-10-22', 'le compteur de snus part du jeudi 22, le jour 1 (' + JSON.stringify(r.snus) + ')');
+  ok(r.snus && r.snus.start === '2026-11-01', 'le compteur de snus part du dimanche 1er, le jour 1 (' + JSON.stringify(r.snus) + ')');
   await fr.evaluate(() => { document.dispatchEvent(new KeyboardEvent('keydown', {key:'c', bubbles:true})); });
   await page.waitForTimeout(300);
   const sac = await fr.evaluate(() => document.getElementById('cl-sac').textContent);
@@ -199,7 +201,7 @@ console.log('\n== 6) Le 21 octobre au soir : shake de récup, pesée chaque dima
   }));
   const pesee = r.habits.filter(h => h.id === 'core-pesee-dim')[0];
   ok(pesee && !pesee.cycleSemaines && !pesee.ancre, 'migration : la pesée enregistrée une semaine sur deux passe à chaque dimanche');
-  ok(r.snus.start === '2026-10-22' && r.snus.record === 4, 'migration : un départ ancien passe au 22, le record ne bouge pas (' + JSON.stringify(r.snus) + ')');
+  ok(r.snus.start === '2026-11-01' && r.snus.record === 4, 'migration : un départ ancien passe au 1er novembre, le record ne bouge pas (' + JSON.stringify(r.snus) + ')');
   await fr.evaluate(() => { document.dispatchEvent(new KeyboardEvent('keydown', {key:'c', bubbles:true})); });
   await page.waitForTimeout(300);
   const sac = await fr.evaluate(() => document.getElementById('cl-sac').textContent);
@@ -207,10 +209,10 @@ console.log('\n== 6) Le 21 octobre au soir : shake de récup, pesée chaque dima
   await ctx.close();
 }
 {
-  /* Une rechute deja notee apres le 22 : le compteur ne recule pas. */
-  const { ctx, fr } = await ouvrir('2026-11-05T09:00:00+01:00', {'batcave-addictions': {snus:{start:'2026-10-30', record:8, log:[{id:'lg1', date:'2026-10-30', note:''}]}}});
+  /* Une rechute deja notee apres le jour 1 : le compteur ne recule pas. */
+  const { ctx, fr } = await ouvrir('2026-11-05T09:00:00+01:00', {'batcave-addictions': {snus:{start:'2026-11-03', record:8, log:[{id:'lg1', date:'2026-11-03', note:''}]}}});
   const snus = await fr.evaluate(() => JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-addictions') || '{}').snus);
-  ok(snus.start === '2026-10-30', 'un départ après le 22 (une rechute notée) reste tel quel (' + snus.start + ')');
+  ok(snus.start === '2026-11-03', 'un départ après le 1er (une rechute notée) reste tel quel (' + snus.start + ')');
   await ctx.close();
 }
 {

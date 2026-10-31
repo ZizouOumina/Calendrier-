@@ -42,23 +42,25 @@ console.log('\n== 240) Sport : mercredi 21 octobre = jour 1, première muscu le 
      19 octobre : « on decale tout a demain » -- jour 1 et premiere muscu le mardi 20.
      21 octobre : « on commence demain la Batcave » -- jour 1 le mercredi 21 ; la muscu attend le
      plan sommeil, premiere seance le lundi 26 (semaine 2).
-     21 octobre au matin : « on commence jeudi matin » -- jour 1 le jeudi 22, rien d'autre ne bouge. */
-  const { ctx, fr } = await ouvrir('2026-10-22T07:30:00+02:00');
+     21 octobre au matin : « on commence jeudi matin » -- jour 1 le jeudi 22, rien d'autre ne bouge.
+     31 octobre : « on commence tout dimanche matin » -- jour 1 le dimanche 1er novembre, premiere
+     seance le lundi 2 (semaine 2 : la semaine 1 est celle du lundi 26, dont le jour 1 est le dimanche). */
+  const { ctx, fr } = await ouvrir('2026-11-01T07:30:00+01:00');
   const r = await fr.evaluate(() => ({ debut: window.__bcProgrammeDebut, note: document.getElementById('programme-note').textContent }));
-  ok(r.debut === '2026-10-22', 'PROGRAMME_DEBUT = 2026-10-22 (' + r.debut + ')');
-  ok(/muscu à partir du/.test(r.note) && /26 oct/.test(r.note), 'note du jour 1 : « muscu à partir du 26 oct. » (' + r.note + ')');
+  ok(r.debut === '2026-11-01', 'PROGRAMME_DEBUT = 2026-11-01 (' + r.debut + ')');
+  ok(/muscu à partir du/.test(r.note) && /02 nov/.test(r.note), 'note du jour 1 : « muscu à partir du 02 nov. » (' + r.note + ')');
   await ctx.close();
-  const v = await ouvrir('2026-10-20T20:00:00+02:00');
+  const v = await ouvrir('2026-10-31T20:00:00+01:00');
   const nv = await v.fr.evaluate(() => document.getElementById('programme-note').textContent);
-  ok(/muscu à partir du/.test(nv) && /26 oct/.test(nv), 'la veille : « muscu à partir du 26 oct. » (' + nv + ')');
+  ok(/muscu à partir du/.test(nv) && /02 nov/.test(nv), 'la veille : « muscu à partir du 02 nov. » (' + nv + ')');
   await v.ctx.close();
-  const l5 = await ouvrir('2026-10-26T06:30:00+01:00');
+  const l5 = await ouvrir('2026-11-02T06:30:00+01:00');
   const n5b = await l5.fr.evaluate(() => document.getElementById('programme-note').textContent);
-  ok(/semaine 2/.test(n5b) && /½/.test(n5b), 'lundi 26 octobre : semaine 2, tours × ½ (' + n5b + ')');
+  ok(/semaine 2/.test(n5b) && /½/.test(n5b), 'lundi 2 novembre : semaine 2, tours × ½ (' + n5b + ')');
   await l5.ctx.close();
   const s = await ouvrir('2026-09-10T06:30:00+02:00');
   const n2 = await s.fr.evaluate(() => document.getElementById('programme-note').textContent);
-  ok(/muscu à partir du/.test(n2) && /26 oct/.test(n2), 'avant le jour 1 : « muscu à partir du 26 oct. » (' + n2 + ')');
+  ok(/muscu à partir du/.test(n2) && /02 nov/.test(n2), 'avant le jour 1 : « muscu à partir du 02 nov. » (' + n2 + ')');
   await s.ctx.close();
   /* 26 septembre : le jour 1 passe au LUNDI 28. La semaine de programme court du lundi au
      dimanche ; le lundi est un jour de sport (haut volume), premierJourSport() rend le 28
@@ -66,9 +68,9 @@ console.log('\n== 240) Sport : mercredi 21 octobre = jour 1, première muscu le 
   /* 30 septembre : la premiere seance est le jeudi 1er, les retests tombent donc le jeudi
      des semaines 5, 10 et 15 -- le 29 octobre pour la semaine 5. */
   /* 4 octobre : la premiere seance est le lundi 5 -- retests le lundi des semaines 5, 10, 15. */
-  const r5 = await ouvrir('2026-11-16T06:30:00+01:00');   /* 15 octobre : la premiere seance est le samedi 17 -- retests le samedi. 19 octobre : le mardi 20 -- retests le mardi. 21 octobre : le lundi 26 -- retests le lundi */
+  const r5 = await ouvrir('2026-11-23T06:30:00+01:00');   /* 31 octobre : semaine 5 = celle du lundi 23 (semaine 1 = celle du lundi 26 octobre) */   /* 15 octobre : la premiere seance est le samedi 17 -- retests le samedi. 19 octobre : le mardi 20 -- retests le mardi. 21 octobre : le lundi 26 -- retests le lundi */
   const n5 = await r5.fr.evaluate(() => document.getElementById('programme-note').textContent);
-  ok(/semaine 5/.test(n5) && /lundi : retest/.test(n5), 'lundi 16 novembre : semaine 5, retest (' + n5 + ')');
+  ok(/semaine 5/.test(n5) && /lundi : retest/.test(n5), 'lundi 23 novembre : semaine 5, retest (' + n5 + ')');
   await r5.ctx.close();
 }
 
