@@ -341,9 +341,10 @@ console.log('\n== 334e) Les deux choses que la Batcave ne peut pas deviner sont 
   };
   /* 26 septembre : ses premieres vraies courses du programme sont le samedi 26 -- un jour de
      l'ancre, cette fois. La veille et le lendemain restent muets.
-     4 octobre : elles passent au lundi 5, jour 1 (magasins fermes le dimanche 4). */
-  const veille = await lire('2026-10-04'), jourJ = await lire('2026-10-05'), apres = await lire('2026-10-06');
-  ok(/Avant de partir/.test(jourJ.txt) && /aucun stock/.test(jourJ.txt), 'le lundi 5, le plan réclame le relevé du stock avant de partir');
+     4 octobre : elles passent au lundi 5, jour 1 (magasins fermes le dimanche 4).
+     31 octobre : ses premieres courses du programme sont faites le samedi 31, la veille du jour 1. */
+  const veille = await lire('2026-10-30'), jourJ = await lire('2026-10-31'), apres = await lire('2026-11-01');
+  ok(/Avant de partir/.test(jourJ.txt) && /aucun stock/.test(jourJ.txt), 'le samedi 31, le plan réclame le relevé du stock avant de partir');
   ok(/ticket de caisse/.test(jourJ.txt) && /Budget → Nourriture/.test(jourJ.txt), 'et le ticket au retour, en disant où il va');
   ok(jourJ.btn === 2, 'chacun porte un bouton qui ouvre la liste de courses (' + jourJ.btn + ')');
   ok(!/Avant de partir/.test(veille.txt) && !/ticket de caisse/.test(veille.txt), 'le 4, la veille, rien n\'est demandé');
