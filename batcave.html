@@ -8178,8 +8178,14 @@
      un depart pose au 22 (ou plus ancien, ou absent) passe au dimanche 1er novembre. */
   var SNUS_ARRET = '2026-11-01';
   function snusArretNet(){
-    if(load('batcave-snus-arret-v3', false)) return false;
-    if(todayISO < SNUS_ARRET){ saveInternal('batcave-snus-arret-v3', true); return false; }   /* une horloge d'avant le 1er : rien a decaler */
+    /* 31 octobre : avant le 1er, le drapeau dit « en attente » au lieu de « fait ». Il disait
+       « fait » : ouverte le samedi 31, la Batcave fermait la migration sans rien decaler, et le
+       dimanche elle ne repassait plus -- le compteur serait parti du 22 octobre. « attente » est
+       vrai pour drapeauxManquants() (le panneau Sante reste vert) et laisse la migration jouer
+       a la premiere ouverture du 1er ou d'apres. */
+    var drap = load('batcave-snus-arret-v3', false);
+    if(drap === true) return false;
+    if(todayISO < SNUS_ARRET){ if(drap !== 'attente') saveInternal('batcave-snus-arret-v3', 'attente'); return false; }   /* une horloge d'avant le 1er : rien a decaler, pas encore */
     var etat = load('batcave-addictions', {});
     if(!etat || typeof etat !== 'object' || Array.isArray(etat)) etat = {};
     var a = (etat.snus && typeof etat.snus === 'object' && !Array.isArray(etat.snus)) ? etat.snus : {record:0, log:[]};

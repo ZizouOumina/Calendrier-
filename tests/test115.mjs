@@ -216,6 +216,22 @@ console.log('\n== 6) Le 21 octobre au soir : shake de récup, pesée chaque dima
   await ctx.close();
 }
 {
+  /* 31 octobre : ouverte la veille du jour 1, la migration attend (« attente ») au lieu de se
+     clore ; le lendemain, a la premiere ouverture, elle joue. */
+  const { ctx, page, fr } = await ouvrir('2026-10-31T20:00:00+01:00', {'batcave-addictions': {snus:{start:'2026-10-22', record:0, log:[]}}});
+  const lire = f => f.evaluate(() => ({ snus: JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-addictions') || '{}').snus, drap: localStorage.getItem('batcave-snus-arret-v3') }));
+  const veille = await lire(fr);
+  ok(veille.snus.start === '2026-10-22' && /attente/.test(veille.drap || ''), 'samedi 31 : rien ne bouge, la migration attend (' + JSON.stringify(veille) + ')');
+  await page.clock.setSystemTime(new Date('2026-11-01T07:00:00+01:00'));
+  await page.reload();
+  await page.frameLocator('#f').locator('#dash-plan').waitFor({ state:'attached', timeout:20000 });
+  await page.waitForTimeout(500);
+  const fr2 = page.frames().find(x => x.url().includes('batcave.html'));
+  const jour1 = await lire(fr2);
+  ok(jour1.snus.start === '2026-11-01' && jour1.drap === 'true', 'dimanche 1er : le compteur part du jour 1 (' + JSON.stringify(jour1) + ')');
+  await ctx.close();
+}
+{
   const { ctx, fr } = await ouvrir('2026-12-13T09:00:00+01:00');
   const plan = await fr.evaluate(() => document.getElementById('dash-plan').innerText);
   ok(/Bilan peau des 12 semaines/.test(plan), 'dimanche 13 décembre : le plan du jour demande le bilan peau');
