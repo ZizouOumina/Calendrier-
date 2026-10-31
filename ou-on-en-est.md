@@ -1,5 +1,26 @@
 # Où on en est — samedi 19 septembre 2026, au soir
 
+> ### Samedi 31 octobre, la nuit — le vrai départ, le dimanche 1er novembre
+> **Départ** : rien n'avait commencé le 22 (« on commence tout dimanche matin »). Jour 1 au dimanche
+> 1er novembre, lever 05:20 d'un coup, muscu et JJB le lundi 2 (tours × ½ jusqu'au 15, retests les
+> 23 novembre, 28 décembre et 1er février), courses faites le 31, snus au 1er (migration v3, schéma 52),
+> stabilisation de la boucle poids jusqu'au 22 novembre. La phase Español garde sa fin, le 15 novembre.
+> **Rattrapage** : 38 temas donnés au 30 octobre (cronogramas de `le-semestre.html`), plan généré sur la
+> grille réelle du 1er au 24 novembre, dans l'ordre des échéances (cuestionario 2 d'Anatomía le 4 ou 5,
+> cuestionario d'Antropología le 6, prácticas, RR/OR les 26-27). Les temas d'Anatomía donnés ensuite
+> passent devant. **À lui de confirmer** que les profs ont suivi le cronograma, et le compte de Documentación.
+> **Sport v7** « athlétique, pas massif » : puissance en tête (sauts, pompes claquées, en paire avec le
+> gros exercice), Nordic, leg extension et curl EZ sortis, face pulls le lundi. **Tour de taille** chaque
+> dimanche dans la clôture, tour d'épaules le dimanche des photos ; +1 cm par mois → −100 kcal.
+> **Audit de ce qui s'affiche** : préparation, courses, sport, snus, objectifs, Approfondir, déjeuner,
+> trajet du lundi, épreuve d'espagnol (dimanches calculés). **Agenda** : les séries 🦇 de septembre
+> portaient encore pâtes, fromage, parc, Muay Thai ; l'instance du jour et du lendemain reprend désormais
+> la consigne du jour. Les séries au-delà de demain gardent leurs anciennes heures et descriptions : le
+> connecteur ne sait pas réécrire une récurrence — à décider avec lui (les supprimer, et la Batcave pose
+> les blocs du jour).
+> **En attente** : test14 (le tableau de bord dépasse son seuil de 3 px, échec antérieur à ce lot) ;
+> la page « Les délices de Yanis » (semoule, pâtes, beurre de cacahuète) n'est pas touchée sans son avis.
+
 Ce fichier existe pour une seule raison : que rien ne dépende de ma mémoire.
 Il dit ce qui est fait, ce qui reste, et ce qui attend une décision de toi.
 

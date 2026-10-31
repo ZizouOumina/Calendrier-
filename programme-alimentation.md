@@ -9,13 +9,13 @@ de courses et la préparation sortent toutes de la même source (`compoRepas`).
 ## Le cadre
 - 64 kg · 182 cm · 20 ans · objectif **72 kg fin mars 2027**, soit ≈ +0,3 kg par semaine.
 - Dépense estimée : environ 2 900 à 3 000 kcal par jour en moyenne (métabolisme de base
-  ≈ 1 680 kcal, muscu quatre fois à 07:00 en salle, JJB trois fois à partir du 28 octobre ; plus de piscine depuis le 30 octobre).
+  ≈ 1 680 kcal, muscu quatre fois à 07:00 en salle, JJB trois fois à partir du 2 novembre ; plus de piscine depuis le 30 octobre).
 - **Peu de volume, beaucoup de calories** (23 octobre au soir : « il me faut du faible volume pour
   beaucoup de calories, j'arriverai pas à manger autant ») : un shake le matin, l'huile d'olive
   versée crue sur le riz (10 ml = 88 kcal sans une bouchée de plus), des amandes et des dattes.
 - **Jours normaux** (mardi, jeudi, samedi, dimanche) : **≈ 3 240 à 3 300 kcal · protéines
   128 à 131 g (2,0 g par kilo) · glucides ≈ 415 g · lipides ≈ 123 à 126 g**, en quatre prises.
-- **Jours de JJB** (lundi, mercredi, vendredi, à partir du 28 octobre) : **≈ 3 825 kcal ·
+- **Jours de JJB** (lundi, mercredi, vendredi, à partir du 2 novembre) : **≈ 3 825 kcal ·
   protéines 141 g**, avec deux prises de plus.
 - **Plus de sauces depuis le 30 octobre** : l'huile d'olive, le sel iodé et les épices (plus bas).
 - Les valeurs : CIQUAL/USDA pour les aliments bruts, les étiquettes pour la boisson d'avoine
@@ -190,7 +190,7 @@ Courses a disparu avec les sauces.
 
 ## La boucle poids → calories
 Une pesée **chaque dimanche, à jeun**. Rien ne se lit pendant les trois premières semaines
-(jusqu'au 11 novembre) : la balance monte d'un à trois kilos d'eau et de glycogène, ce n'est pas
+(jusqu'au 22 novembre : le plan commence le dimanche 1er, les courses ont été faites le 31 octobre) : la balance monte d'un à trois kilos d'eau et de glycogène, ce n'est pas
 du gras. Ensuite, dès quatre pesées, la Batcave calcule la pente : trop lente (moins de la moitié
 du rythme visé), elle propose **+150 kcal**, soit +40 g de riz cru au dîner ; trop rapide
 (au-delà de 0,5 % du poids par semaine — ≈ 0,32 kg à 64 kg —, ou de 1,5 fois le rythme visé),

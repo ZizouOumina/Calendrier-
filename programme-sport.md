@@ -1,6 +1,6 @@
 # Programme de sport — La Batcave · Programme v7, athlétique
 
-Copie de référence du programme appliqué dans la Batcave (onglet Sport). **Depuis le 27 octobre 2026, la muscu se fait en salle**, avec des poids, pour de bon (« il fait froid dehors, je vais passer à la salle de sport » ; une chaîne, l'horaire d'ouverture reste à confirmer : 05:30 gardé d'ici là). Le même soir : « je veux le meilleur programme possible, base-toi sur la science et inspire-toi des meilleurs splits ». Jour 1 du programme : jeudi 22 octobre ; première séance de muscu le lundi 26 (au parc), premier JJB le mercredi 28.
+Copie de référence du programme appliqué dans la Batcave (onglet Sport). **Depuis le 27 octobre 2026, la muscu se fait en salle**, avec des poids, pour de bon (« il fait froid dehors, je vais passer à la salle de sport » ; une chaîne, l'horaire d'ouverture reste à confirmer : 05:30 gardé d'ici là). Le même soir : « je veux le meilleur programme possible, base-toi sur la science et inspire-toi des meilleurs splits ». Jour 1 du programme : **dimanche 1er novembre** (31 octobre : « on commence tout dimanche matin » — rien n'avait commencé le 22 octobre) ; première séance de muscu et premier JJB le lundi 2 novembre.
 
 **v7, le 31 octobre** : « fais en sorte qu'il soit basé sur la science pour avoir un corps athlétique, pas trop massif ». Le squelette haut / bas ne bouge pas ; trois changements, à nombre d'exercices égal (voir « Athlétique, pas massif » plus bas) :
 - **la puissance en tête** du mardi, du jeudi et du samedi : sauts sur box, pompes claquées, sauts en longueur ;
@@ -127,8 +127,8 @@ Le seul jour de semaine sans combat : c'est ici que la force se construit. Repos
 - **Ce que veut dire « Charge »** : *barre* = barre et disques au total ; *haltères* = le poids d'un seul haltère ; *machine* = la charge de la machine ou de la poulie ; *cou* = le disque sur la serviette. **« Lest »** (tractions, dips, relevés de jambes) = ce qui s'ajoute au poids du corps, 0 sans rien.
 - **L'effort** : arrêter à 1 ou 2 reps de l'échec ; sur la dernière série des isolations (élévations, curls, extensions, leg curl assis, mollets), aller jusqu'à l'échec. Le lundi : 2 ou 3 reps en réserve partout. Une rep sale ne compte pas : dos qui se creuse, coup de reins, la série s'arrête.
 - **Sécurité, salle presque vide à 07:00** : squat, développé couché et hip thrust dans le rack, barres de sécurité réglées juste sous le bas du mouvement. Jamais de série d'échec au squat ni au développé couché sans elles.
-- **Montée en charge** : les deux premières semaines de muscu (jusqu'au dimanche 8 novembre), la moitié des tours ; à partir du lundi 9 novembre, le programme complet. La Batcave applique le facteur toute seule.
-- **Retest** : le lundi des semaines 5, 10 et 15 (16 novembre, 21 décembre, 25 janvier), avant le Haut volume : tractions max et dips max au poids du corps, 3 min de repos entre les deux, puis la séance normale.
+- **Montée en charge** : les deux premières semaines de muscu (jusqu'au dimanche 15 novembre), la moitié des tours ; à partir du lundi 16 novembre, le programme complet. La Batcave applique le facteur toute seule.
+- **Retest** : le lundi des semaines 5, 10 et 15 (23 novembre, 28 décembre, 1er février ; la Batcave les calcule), avant le Haut volume : tractions max et dips max au poids du corps, 3 min de repos entre les deux, puis la séance normale.
 - **Décharge** : seulement si tu stagnes deux séances de suite sur tout — une semaine à 2 tours par paire, loin de l'échec.
 - **Huit semaines sans changer d'exercice**, en notant tout : c'est la répétition des mêmes mouvements qui rend la progression mesurable.
 - **Le carnet** : dans la Batcave, sur la séance du jour, le nombre de séries, les répétitions et la charge se règlent aux boutons + et −, puis « Enregistrer ». L'exercice se coche tout seul.
@@ -177,7 +177,7 @@ Le JJB (garde, ponts, sorties de hanche) fait travailler la sangle trois fois pa
 | Mercredi | 10:30 → 12:00 | JJB | Collation combat 10:05, trajet 10:20 | Shake de récup 12:00, douche, déjeuner 12:20 |
 | Vendredi | 10:30 → 12:00 | JJB | Collation combat 10:05, trajet 10:20 | Shake de récup 12:00, déjeuner, Jumu'ah 13:30 |
 
-- **Premier JJB le mercredi 28 octobre.** Protège-dents, tape tôt sur une clé ou un étranglement (un débutant qui attend se blesse), bois entre les rounds, pose tes questions en espagnol. Le sac : kimono, protège-dents, gourde pleine, serviette ; ongles courts.
+- **Premier JJB le lundi 2 novembre.** Protège-dents, tape tôt sur une clé ou un étranglement (un débutant qui attend se blesse), bois entre les rounds, pose tes questions en espagnol. Le sac : kimono, protège-dents, gourde pleine, serviette ; ongles courts.
 - **Plus de piscine depuis le 30 octobre** (sa décision) : le cardio, c'est le JJB.
 - **La mesure** : la fréquence cardiaque de repos chaque dimanche (panneau « Cardio & combat »).
 - **La mobilité des hanches**, le dimanche à 19:30, dix minutes au sol : 90/90, pigeon, papillon, bascules du bassin. Pour la garde.

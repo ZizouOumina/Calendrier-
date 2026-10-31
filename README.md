@@ -33,7 +33,8 @@ La version publiée vit sur claude.ai (Artifact) avec synchronisation cloud et c
 - `programme-alimentation.md`, `programme-sport.md` — copies de référence du plan alimentaire (prises, boucle poids → calories, tour de taille, courses, préparation) et du programme de sport v7 « athlétique, pas massif » (haut / bas sur quatre jours en salle, la puissance en tête du mardi, du jeudi et du samedi, le Nordic, les épaules et le dos en priorité, le cou, les sources).
 - `vocabulaire-espagnol.md`, `vocabulaire-shopify-finance.md` — les mêmes cartes en listes de lecture (485 phrases espagnoles par sous-deck, 163 termes e-commerce et finance par thème).
 - `prise-en-main.html` — depuis le 21 octobre 2026, le mode d'emploi court de la journée (« Ta journée, pas à pas ») : chaque moment, ce qu'on fait et ce qu'on remplit dans la Batcave, la semaine, quand ça déraille. La version longue (Batcave onglet par onglet, protocole peau complet en section 11, dates) est archivée dans `archives/prise-en-main-v8.7.html`.
-- `plan-sommeil.html` — « Cap sur 05:20 », le plan sommeil jour par jour du 20 au 26 octobre 2026.
+- `plan-sommeil.html` — « Cap sur 05:20 », le plan sommeil jour par jour du 20 au 26 octobre 2026. Passé : depuis le départ du 1er novembre, le lever est à 05:20 d'un coup, tous les jours.
+- `archives/journee-type-regime-combat.html` — l'ancienne journée type, celle du parc et de la Muay Thai (septembre-octobre), archivée le 31 octobre : `prise-en-main.html` (« Ta journée, pas à pas ») la remplace.
 - `espagnol-batcave.apkg` — le paquet Anki « Español · Batcave » : 485 notes (495 cartes : quelques notes portent deux trous) à trou en espagnol, sept sous-paquets dans l'ordre du dossier ; `espagnol-batcave-anki.txt` est la même chose en import texte (type Cloze, 4e colonne = sous-paquet) et `deck-espagnol.py` le générateur (genanki).
 
 ## Lancer la campagne en local
