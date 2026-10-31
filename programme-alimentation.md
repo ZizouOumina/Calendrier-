@@ -196,6 +196,17 @@ du rythme visé), elle propose **+150 kcal**, soit +40 g de riz cru au dîner ; 
 (au-delà de 0,5 % du poids par semaine — ≈ 0,32 kg à 64 kg —, ou de 1,5 fois le rythme visé),
 **−100 kcal**. Elle propose, tu valides.
 
+**Le tour de taille** (depuis le 31 octobre). La balance ne fait pas la différence entre un kilo
+de muscle et un kilo de gras ; le tour de taille, si. Chaque dimanche, avec la pesée : au
+nombril, à jeun, ventre relâché, noté dans la clôture du soir. Le tour d'épaules (au plus large,
+bras le long du corps) le dimanche des photos, toutes les quatre semaines. La Batcave affiche le
+rapport épaules / taille (visé ≈ 1,6) et lit la pente de la taille dans la même fenêtre que le
+poids (au moins trois mesures sur trois semaines). **Si la taille prend plus d'un centimètre par
+mois, elle propose −100 kcal, quoi que dise la balance** : c'est le signe que la prise est
+surtout grasse. Pourquoi la taille : le rapport taille / poitrine explique à lui seul ≈ 50 à
+56 % des jugements d'attrait d'un corps d'homme (Maisey 1999 ; Fan 2005), et le taux de gras
+pèse plus que la carrure (Xia 2025).
+
 ## Les courses
 Le samedi à 13:30, la liste de l'onglet Courses, calculée pour le plan entier : poulet 490 g et
 viande hachée 490 g (pesés au comptoir), skyr, 10 œufs, 500 g de cottage cheese, bananes,

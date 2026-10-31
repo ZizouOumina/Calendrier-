@@ -3249,6 +3249,12 @@
       <div class="field-row"><label for="cl-sommeil">Sommeil réel de la nuit (h) <span class="sub-note">(endormi, Bevel)</span></label><input type="number" id="cl-sommeil" min="0" max="16" step="any" inputmode="decimal" placeholder="ex : 6,7"></div>
       <div class="field-row"><label for="cl-aulit">Au lit (h) <span class="sub-note">(mesure ton efficacité)</span></label><input type="number" id="cl-aulit" min="0" max="18" step="any" inputmode="decimal" placeholder="ex : 7,6"></div>
       <div class="field-row" data-cl-plus><label for="cl-poids">Poids ce matin (kg)</label><input type="number" id="cl-poids" min="30" max="200" step="0.1" inputmode="decimal" placeholder="ex : 64,2"></div>
+      <!-- 31 octobre : la balance ne distingue pas un kilo de muscle d'un kilo de gras ; le tour
+           de taille, si. Le dimanche (le jour de la pesee), au nombril, a jeun, ventre relache.
+           Le tour d'epaules, le dimanche des photos (toutes les quatre semaines), mesure au plus
+           large, bras le long du corps. -->
+      <div class="field-row" id="cl-taille-row" hidden><label for="cl-taille">Tour de taille ce matin (cm) <span class="sub-note">(au nombril, à jeun, ventre relâché)</span></label><input type="number" id="cl-taille" min="50" max="150" step="0.5" inputmode="decimal" placeholder="ex : 74,5"></div>
+      <div class="field-row" id="cl-epaules-row" hidden><label for="cl-epaules">Tour d'épaules (cm) <span class="sub-note">(au plus large, bras le long du corps — le dimanche des photos)</span></label><input type="number" id="cl-epaules" min="70" max="180" step="0.5" inputmode="decimal" placeholder="ex : 108"></div>
       <!-- Les pas se lisent dans l'appli Santé du telephone, qui les compte toute seule.
            Le chiffre coche l'habitude « Marche » a partir de la cible : une seule saisie,
            pas deux gestes qui disent la meme chose. -->
@@ -8791,6 +8797,32 @@
     if(delta > Math.min(rythmeVise * 1.5, poids > 0 ? poids * 0.005 : Infinity)) return -100;
     return 0;
   }
+  /* ===== Le tour de taille ===== (31 octobre, « pour que ca aille a 100 % dans le bon sens »)
+     Ce qui rend un corps athletique plutot que massif, c'est une taille fine par rapport aux
+     epaules (le rapport taille / poitrine explique ~50 a 56 % des jugements, Maisey 1999 ;
+     Fan 2005) et peu de gras (il pese plus que la carrure, Xia 2025). La balance ne voit ni
+     l'un ni l'autre : un kilo de muscle et un kilo de gras s'y ressemblent. Le tour de taille,
+     mesure chaque dimanche avec la pesee, tranche : s'il prend plus d'un centimetre par mois,
+     la prise est surtout grasse, et la boucle retire 100 kcal QUOI QUE dise la balance. Meme
+     lecture que le poids : une pente des moindres carres, au moins trois mesures sur trois
+     semaines, dans la meme fenetre (les trois semaines de stabilisation exclues : le ventre
+     gonfle aussi du volume des repas). */
+  var TAILLE_MIN_MESURES = 3, TAILLE_MIN_ETALEMENT_J = 21, TAILLE_SEUIL_CM_MOIS = 1, RATIO_EPAULES_VISE = 1.6;
+  function bilanTaille(depuis){
+    var pts = mesureHistory('taille').filter(function(p){ return p.date <= todayISO && (!depuis || p.date >= depuis); });
+    var tout = mesureHistory('taille').filter(function(p){ return p.date <= todayISO; });
+    var ep = mesureHistory('epaules').filter(function(p){ return p.date <= todayISO; });
+    var out = {n: pts.length, etalement: 0, parMois: null, alerte: false,
+               derniere: tout.length ? tout[tout.length - 1].value : null,
+               epaules: ep.length ? ep[ep.length - 1].value : null, ratio: null};
+    if(out.derniere && out.epaules) out.ratio = out.epaules / out.derniere;
+    if(pts.length) out.etalement = daysBetween(new Date(pts[0].date + 'T00:00:00'), new Date(pts[pts.length - 1].date + 'T00:00:00'));
+    if(pts.length >= TAILLE_MIN_MESURES && out.etalement >= TAILLE_MIN_ETALEMENT_J){
+      var p = penteParJour(pts);
+      if(p !== null){ out.parMois = p * 30; out.alerte = out.parMois > TAILLE_SEUIL_CM_MOIS; }
+    }
+    return out;
+  }
   function boucleKcal(){
     var pts = weightHistory().filter(function(p){ return p.date <= todayISO; });
     var depuis = isoDecale(todayISO, -(KCAL_FENETRE_J - 1));
@@ -8806,7 +8838,7 @@
     var semaines = Math.max(1, daysBetween(new Date(horizonState.debut + 'T00:00:00'), new Date(horizonState.fin + 'T00:00:00')) / 7);
     var rythmeVise = g ? (g.target - g.start) / semaines : 0;
     var etalement = pts.length ? daysBetween(new Date(pts[0].date + 'T00:00:00'), new Date(pts[pts.length - 1].date + 'T00:00:00')) : 0;
-    var out = {n: pts.length, etalement: etalement, rythmeVise: rythmeVise, delta: null, reco: 0, motif: '', fragile: false};
+    var out = {n: pts.length, etalement: etalement, rythmeVise: rythmeVise, delta: null, reco: 0, motif: '', fragile: false, taille: bilanTaille(depuis)};
     if(pts.length < KCAL_MIN_PESEES || etalement < KCAL_MIN_ETALEMENT_J){
       out.motif = 'Il faut au moins ' + KCAL_MIN_PESEES + ' pesées étalées sur ' + KCAL_MIN_ETALEMENT_J +
                   ' jours pour lire une pente — ' + pts.length + ' pesée' + (pts.length > 1 ? 's' : '') +
@@ -8841,11 +8873,17 @@
                   'On ne touche à rien — la prochaine pesée tranchera.';
       return out;
     }
+    if(out.taille.alerte){
+      out.reco = -100;
+      out.motif = 'Le tour de taille prend ' + out.taille.parMois.toFixed(1).replace('.', ',') + ' cm par mois : au-delà de ' + TAILLE_SEUIL_CM_MOIS + ' cm, c\'est surtout du gras. Retire 100 kcal par jour, quoi que dise la balance.';
+      return out;
+    }
     if(out.reco > 0) out.motif = 'Prise trop lente : ajoute 150 kcal par jour.';
     else if(out.reco < 0) out.motif = 'Prise trop rapide (plus de gras que de muscle) : retire 100 kcal par jour.';
     else out.motif = 'Rythme dans la cible : on ne touche à rien.';
     return out;
   }
+  window.__bcBilanTaille = function(){ return bilanTaille(); };
   function renderKcalBoucle(){
     var el = document.getElementById('kcal-analyse'), note = document.getElementById('kcal-note');
     var bApp = document.getElementById('kcal-appliquer'), bReset = document.getElementById('kcal-reset');
@@ -8861,6 +8899,12 @@
     lignes.push('Cible calorique actuelle : <b style="color:var(--ink);">' + Math.round(plan + actuel) + ' kcal</b> (plan ' + Math.round(plan) + (actuel ? (actuel > 0 ? ' + ' : ' − ') + Math.abs(actuel) + ' kcal depuis le ' + fmtDate(kcalAjust.depuis) : '') + ').');
     lignes.push('Rythme visé : <b style="color:var(--ink);">' + kg(b.rythmeVise) + ' / semaine</b> (objectif poids sur son horizon).');
     if(b.delta !== null) lignes.push('Tendance : <b style="color:var(--ink);">' + kg(b.delta) + ' / semaine</b> sur ' + b.n + ' pesées étalées sur ' + b.etalement + ' jours (' + b.premier.toFixed(1).replace('.', ',') + ' → ' + b.dernier.toFixed(1).replace('.', ',') + ' kg).');
+    var tt = b.taille, cm = function(v){ return v.toFixed(1).replace('.', ',').replace(',0', ''); };
+    lignes.push(tt.derniere === null
+      ? 'Tour de taille : pas encore de mesure — chaque dimanche, au nombril et à jeun, dans la clôture du soir. C\'est lui qui dit si les kilos sont du muscle ou du gras.'
+      : 'Tour de taille : <b style="color:var(--ink);">' + cm(tt.derniere) + ' cm</b>' +
+        (tt.parMois !== null ? ' (' + (tt.parMois >= 0 ? '+' : '−') + Math.abs(tt.parMois).toFixed(1).replace('.', ',') + ' cm / mois sur ' + tt.n + ' mesures ; au-delà de +' + TAILLE_SEUIL_CM_MOIS + ' cm, c\'est du gras)' : ' (la tendance se lit à partir de ' + TAILLE_MIN_MESURES + ' mesures étalées sur ' + TAILLE_MIN_ETALEMENT_J + ' jours)') +
+        (tt.ratio ? ' · épaules / taille : <b style="color:var(--ink);">' + tt.ratio.toFixed(2).replace('.', ',') + '</b> (visé ≈ ' + String(RATIO_EPAULES_VISE).replace('.', ',') + ')' : ' · tour d\'épaules le dimanche des photos'));
     lignes.push((b.delta === null ? '' : '→ ') + b.motif);
     if(b.reco && b.reco > 0) lignes.push('<span class="sub-note">' + (b.reco > 0 ? '+' : '') + b.reco + ' kcal = ' + (grammesAjustement(b.reco, FECULENTS.din.kcalG) > 0 ? '+' : '') + grammesAjustement(b.reco, FECULENTS.din.kcalG) + ' g de riz cru au dîner — écrit dans le plan et dans la liste de courses dès que tu appliques.</span>');
     if(b.reco && b.reco < 0) lignes.push('<span class="sub-note">−100 kcal = −30 g de riz cru au dîner — écrit dans le plan et dans la liste de courses dès que tu appliques.</span>');
@@ -9248,11 +9292,15 @@
       {name:'Leg curl assis', reps:'3×10-15', outil:'machine'},
       {name:'Inclinaisons latérales du cou', reps:'3×12-20/côté', outil:'disque', pas:1.25, depart:1.25}
     ]},
-    {type:'Haut volume', days:[1], duree:'50 min', repos:['60 s / 90 s', '60 s / 90 s', '45 s / 75 s', '30 s / 60 s'], exercises:[
+    {type:'Haut volume', days:[1], duree:'55 min', repos:['60 s / 90 s', '60 s / 90 s', '45 s / 75 s', '30 s / 60 s'], exercises:[
       {name:'Tractions', reps:'3×8-12'},{name:'Développé incliné haltères', reps:'3×8-12', outil:'halteres', pas:2},
       {name:'Rowing haltère poitrine appuyée', reps:'3×10-15', outil:'halteres', pas:2},{name:'Développé militaire haltères assis', reps:'3×8-12', outil:'halteres', pas:2},
       {name:'Élévations latérales', reps:'4×12-20', outil:'halteres', pas:1, depart:2},{name:'Curl incliné haltères', reps:'3×10-15', outil:'halteres', pas:2},
-      {name:'Flexion du cou', reps:'3×12-20', outil:'disque', pas:1.25, depart:1.25},{name:'Extension du cou', reps:'3×12-20', outil:'disque', pas:1.25, depart:1.25}
+      {name:'Flexion du cou', reps:'3×12-20', outil:'disque', pas:1.25, depart:1.25},{name:'Extension du cou', reps:'3×12-20', outil:'disque', pas:1.25, depart:1.25},
+      /* 31 octobre : l'arriere d'epaule passe de 3 a 6 series directes -- la largeur vue de
+         cote et de dos, et la posture. En dernier, seul : les indices des huit premiers ne
+         bougent pas. */
+      {name:'Face pulls', reps:'3×15-20', outil:'machine'}
     ]},
     {type:'Bras · épaules · mollets', days:[6], duree:'53 min', exercises:[
       {name:'Chin-ups prise serrée', reps:'3×6-12'},{name:'Pompes archer ou diamant', reps:'3×8-12'},
@@ -12309,7 +12357,9 @@
         cloturerSaison, {titre:'Clôture de saison', libelleOk:'Clôturer et repartir'});
     });
   })();
-  function weightHistory(){
+  /* Une mesure du journal, jour par jour : le poids, et depuis le 31 octobre le tour de
+     taille et le tour d'epaules (en cm). */
+  function mesureHistory(champ){
     var pts = [];
     for(var i=0;i<localStorage.length;i++){
       var k = localStorage.key(i);
@@ -12317,8 +12367,8 @@
         var d = k.slice('batcave-journal-'.length);
         try{
           var obj = JSON.parse(localStorage.getItem(k));
-          if(obj && obj.poids !== undefined && obj.poids !== '' && obj.poids !== null){
-            pts.push({date:d, value:Number(obj.poids)});
+          if(obj && obj[champ] !== undefined && obj[champ] !== '' && obj[champ] !== null && !isNaN(Number(obj[champ]))){
+            pts.push({date:d, value:Number(obj[champ])});
           }
         }catch(e){}
       }
@@ -12326,6 +12376,7 @@
     pts.sort(function(a,b){ return a.date.localeCompare(b.date); });
     return pts;
   }
+  function weightHistory(){ return mesureHistory('poids'); }
 
   function lineChartSVG(points, targetVal, unit, emptyMsg, ariaLabel){
     var w = 560, h = 140, padL = 34, padR = 14, padT = 14, padB = 22;
@@ -20596,6 +20647,13 @@
     document.getElementById('cl-sommeil').value = journalState.sommeil || '';
     var chAuLit = document.getElementById('cl-aulit'); if(chAuLit) chAuLit.value = journalState.auLit || '';
     document.getElementById('cl-poids').value = journalState.poids || '';
+    (function(){
+      var dimanche = dowDe(todayISO) === 0;
+      var photos = dimanche && habitsDuJour(0, todayISO).some(function(h){ return h.id === 'core-photos-dim'; });
+      var rT = document.getElementById('cl-taille-row'), rE = document.getElementById('cl-epaules-row');
+      if(rT){ rT.hidden = !(dimanche || journalState.taille); document.getElementById('cl-taille').value = journalState.taille || ''; }
+      if(rE){ rE.hidden = !(photos || journalState.epaules); document.getElementById('cl-epaules').value = journalState.epaules || ''; }
+    })();
     var chPas = document.getElementById('cl-pas'); if(chPas) chPas.value = journalState.pas || '';
     var sac = document.getElementById('cl-sac');
     if(sac){ try{ sac.textContent = sacDeDemain(todayISO); }catch(e){ sac.textContent = ''; } }
@@ -20716,7 +20774,7 @@
   /* ===== Les bornes de saisie =====
      Une faute de frappe (25 h de sommeil, 700 kg) fausserait la moyenne du mois, la dette
      de sommeil, la courbe de poids. La cloture refuse la valeur et pose le curseur dessus. */
-  var BORNES_SAISIE = {'cl-sommeil':[0, 14, 'h de sommeil'], 'cl-aulit':[0, 16, 'h au lit'], 'cl-poids':[40, 150, 'kg'], 'cl-pas':[0, 60000, 'pas'], 'cl-coran':[0, 604, 'pour une page de Coran']};
+  var BORNES_SAISIE = {'cl-sommeil':[0, 14, 'h de sommeil'], 'cl-aulit':[0, 16, 'h au lit'], 'cl-poids':[40, 150, 'kg'], 'cl-taille':[50, 150, 'cm de tour de taille'], 'cl-epaules':[70, 180, 'cm de tour d\'épaules'], 'cl-pas':[0, 60000, 'pas'], 'cl-coran':[0, 604, 'pour une page de Coran']};
   function controlerSaisieCloture(){
     var ids = Object.keys(BORNES_SAISIE), num = function(v){ return Number(String(v).replace(',', '.')); };
     for(var i = 0; i < ids.length; i++){
@@ -20747,6 +20805,9 @@
     if(auLit !== '') journalState.auLit = auLit;
     oublierEfficacite();   /* une nuit de plus : l'efficacite mesuree se recalcule */
     if(poids !== '') journalState.poids = poids;
+    var chT = document.getElementById('cl-taille'), chE = document.getElementById('cl-epaules');
+    if(chT && chT.value !== '') journalState.taille = chT.value;
+    if(chE && chE.value !== '') journalState.epaules = chE.value;
     /* Les pas : un seul geste. Le chiffre est enregistre ET il coche l'habitude « Marche »
        s'il atteint la cible -- sinon il la decoche. Sans ca, il saisirait 9 000 pas et
        verrait quand meme sa case grise : deux ecrans qui se contredisent. */

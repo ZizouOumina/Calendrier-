@@ -45,7 +45,7 @@ Le squelette est un **haut / bas sur quatre jours**, celui des programmes de ré
 
 Paires antagonistes : A, puis B, puis A — deux muscles qui ne se gênent pas. Chaque exercice se lit « tours × fourchette » : 4 × 5-8 = quatre séries de cinq à huit répétitions.
 
-### Lundi · Haut volume (50 min)
+### Lundi · Haut volume (55 min)
 JJB à 10:30 : **2 à 3 reps en réserve**, jamais l'échec. Repos : 60 s / 90 s · 60 s / 90 s · 45 s / 75 s · 30 s / 60 s.
 
 | Paire | Exercice | Tours × fourchette |
@@ -58,6 +58,7 @@ JJB à 10:30 : **2 à 3 reps en réserve**, jamais l'échec. Repos : 60 s / 90 s
 | 3 B | Curl incliné haltères | 3 × 10-15 |
 | 4 A | Flexion du cou | 3 × 12-20 |
 | 4 B | Extension du cou | 3 × 12-20 |
+| 5 | Face pulls | 3 × 15-20, seul, repos 60 s |
 
 ### Mardi · Bas complet (50 min)
 Les sauts en paire avec le squat, puis la charnière. Repos : 90 s / 2 min 30 · 90 s / 2 min · 45 s / 75 s.
@@ -108,7 +109,7 @@ Le seul jour de semaine sans combat : c'est ici que la force se construit. Repos
 | Dos (grand dorsal, haut du dos) | 15 | tractions et rowings lundi et jeudi, tractions serviette |
 | Pectoraux | 10 + les pompes claquées | incliné lundi, couché et dips jeudi |
 | Épaules latérales | 10 | élévations lundi, jeudi, samedi |
-| Arrière d'épaule | 3 + les rowings | face pulls jeudi |
+| Arrière d'épaule | 6 + les rowings | face pulls lundi et jeudi |
 | Biceps | 6 + les tirages | curl incliné, curl marteau |
 | Triceps | 3 + les poussées | extension au-dessus de la tête |
 | Quadriceps | 7 + les sauts | squat, split squat |
