@@ -2381,7 +2381,7 @@
         <button type="button" class="heat-toggle" id="programme-toggle" style="padding:0;">Échauffements, charges, progression, effort, retests ▾</button>
         <div id="programme-details" hidden style="margin-top:10px; font-size:12.5px; color:var(--ink-dim); line-height:1.7; display:flex; flex-direction:column; gap:8px;">
           <p><b style="color:var(--ink);">Échauffement (5 min)</b> — 5 minutes de vélo ou de rameur, facile, avec le podcast espagnol. Haut du corps : 10 rotations d'épaules et 10 tirages d'omoplates suspendu à la barre. Bas du corps : 10 charnières de hanche et 8 squats au poids du corps. Puis <b>deux séries d'approche</b> sur le premier exercice chargé : la moitié de la charge × 8, les trois quarts × 4.</p>
-          <p><b style="color:var(--ink);">Puissance, en tête de séance</b> — sauts sur box le mardi, pompes claquées le jeudi, sauts en longueur le samedi : 3 × 5, juste après l'échauffement, quand tu es frais. Chaque rep à fond et rapide, 60 à 90 s de repos, jamais jusqu'à la fatigue : dès qu'une rep ralentit, la série s'arrête. Pas de charge ; ce qui monte, c'est la hauteur de la box (descends-en en marchant) ou la distance. C'est ce qui rend athlétique sans ajouter de masse (Markovic 2007).</p>
+          <p><b style="color:var(--ink);">Puissance, en tête de séance</b> — sauts sur box le mardi, pompes claquées le jeudi, sauts en longueur le samedi : 3 × 5, juste après l'échauffement, quand tu es frais, en paire avec le gros exercice du jour (une série de sauts, une série lourde, une série de sauts). Chaque rep à fond et rapide, jamais jusqu'à la fatigue : dès qu'une rep ralentit, la série s'arrête. Pas de charge ; ce qui monte, c'est la hauteur de la box (descends-en en marchant) ou la distance. C'est ce qui rend athlétique sans ajouter de masse (Markovic 2007).</p>
           <p><b style="color:var(--ink);">Nordic ischios (samedi)</b> — à genoux sur un tapis, les talons bloqués sous le boudin d'une machine, le corps droit des genoux à la tête : descends le plus lentement possible, rattrape-toi aux mains, remonte en poussant. 3 × 4-8. Il divise par deux les blessures aux ischios (van Dyk 2019). Courbatures fortes la première fois : la moitié des tours, c'est fait pour ça. Dès 8 descentes propres sur les trois séries, un disque de 2,5 kg contre la poitrine.</p>
           <p><b style="color:var(--ink);">Trouver ses charges (la première semaine)</b> — sur chaque exercice, monte par paliers jusqu'à une charge où la première série tombe dans la fourchette avec 2 ou 3 reps en réserve, et note-la : c'est ton point de départ, la Batcave calcule la suite. Les deux premières semaines sont à la moitié des tours : c'est le moment d'apprendre les mouvements, pas de battre des records.</p>
           <p><b style="color:var(--ink);">Les charges</b> — « Charge » se lit selon l'exercice : <i>barre</i> = barre et disques au total ; <i>haltères</i> = le poids d'un seul haltère ; <i>machine</i> = la charge de la machine ou de la poulie ; <i>cou</i> = le disque sur la serviette. « Lest » (tractions, dips, relevés de jambes) = ce que tu ajoutes au poids du corps, 0 sans rien.</p>
@@ -9231,20 +9231,22 @@
          - moins d'isolation de « volume » : leg extension et curl EZ sortent. Les gros
            exercices restent lourds (5 a 8 reps) : a hypertrophie egale, les charges lourdes
            font plus de force (Schoenfeld 2017) -- plus fort pour le meme gabarit. */
-    {type:'Haut lourd', days:[4], duree:'55 min', repos:['60 s / 90 s', '90 s / 2 min 30', '75 s / 2 min', '45 s / 75 s'], exercises:[
-      {name:'Pompes claquées', reps:'3×5', puissance:true},{name:'Face pulls', reps:'3×15-20', outil:'machine'},
-      {name:'Tractions', reps:'4×5-8'},{name:'Développé couché barre', reps:'4×5-8', outil:'barre'},
-      {name:'Rowing barre', reps:'3×6-10', outil:'barre'},{name:'Dips', reps:'3×6-12'},
+    /* L'explosif en paire avec le gros exercice : une serie de sauts, une serie lourde, une
+       serie de sauts -- le travail combine de la meta-analyse. */
+    {type:'Haut lourd', days:[4], duree:'55 min', repos:['90 s / 2 min 30', '90 s / 2 min 30', '75 s / 2 min', '45 s / 75 s'], exercises:[
+      {name:'Pompes claquées', reps:'3×5', puissance:true},{name:'Tractions', reps:'4×5-8'},
+      {name:'Développé couché barre', reps:'4×5-8', outil:'barre'},{name:'Rowing barre', reps:'3×6-10', outil:'barre'},
+      {name:'Dips', reps:'3×6-12'},{name:'Face pulls', reps:'3×15-20', outil:'machine'},
       {name:'Élévations latérales', reps:'3×12-20', outil:'halteres', pas:1, depart:2},{name:'Extension triceps à la poulie au-dessus de la tête', reps:'3×10-15', outil:'machine'},
       /* 21 octobre, sa decision : le grip du kimono. Une serviette pliee sur la barre, une
          extremite dans chaque main, comme une manche. En fin de seance, seule. */
       {name:'Tractions serviette (grip kimono)', reps:'2×3-8'}
     ]},
-    {type:'Bas complet', days:[2], duree:'50 min', repos:['60 s / 90 s', '90 s / 2 min 30', '90 s / 2 min'], exercises:[
-      {name:'Sauts sur box', reps:'3×5', puissance:true},
-      {name:'Inclinaisons latérales du cou', reps:'3×12-20/côté', outil:'disque', pas:1.25, depart:1.25},
-      {name:'Squat barre', reps:'4×5-8', outil:'barre'},{name:'Mollets debout à la machine', reps:'4×10-15', outil:'machine'},
-      {name:'Soulevé de terre roumain barre', reps:'3×6-10', outil:'barre'},{name:'Leg curl assis', reps:'3×10-15', outil:'machine'}
+    {type:'Bas complet', days:[2], duree:'50 min', repos:['90 s / 2 min 30', '90 s / 2 min', '45 s / 75 s'], exercises:[
+      {name:'Sauts sur box', reps:'3×5', puissance:true},{name:'Squat barre', reps:'4×5-8', outil:'barre'},
+      {name:'Soulevé de terre roumain barre', reps:'3×6-10', outil:'barre'},{name:'Mollets debout à la machine', reps:'4×10-15', outil:'machine'},
+      {name:'Leg curl assis', reps:'3×10-15', outil:'machine'},
+      {name:'Inclinaisons latérales du cou', reps:'3×12-20/côté', outil:'disque', pas:1.25, depart:1.25}
     ]},
     {type:'Haut volume', days:[1], duree:'50 min', repos:['60 s / 90 s', '60 s / 90 s', '45 s / 75 s', '30 s / 60 s'], exercises:[
       {name:'Tractions', reps:'3×8-12'},{name:'Développé incliné haltères', reps:'3×8-12', outil:'halteres', pas:2},
@@ -9280,14 +9282,14 @@
     /* 27 octobre : le second bas de la semaine, le samedi -- 72 h apres le mardi, 48 h avant le
        JJB du lundi. La charniere et l'unilateral (split squat, hip thrust, leg curl couche),
        les abdos sous charge, puis les bras et le troisieme passage des epaules laterales. */
-    {type:'Bas · charnière', days:[6], duree:'50 min', repos:['60 s / 90 s', '90 s / 2 min', '60 s / 90 s'], exercises:[
-      {name:'Sauts en longueur', reps:'3×5', puissance:true},
-      /* lest : un haltere coince entre les pieds, des 15 reps propres sur les trois series */
-      {name:'Relevés de jambes suspendus', reps:'3×8-15', pas:2, depart:2},
+    {type:'Bas · charnière', days:[6], duree:'50 min', repos:['90 s / 2 min', '60 s / 90 s', '60 s / 90 s'], exercises:[
+      {name:'Sauts en longueur', reps:'3×5', puissance:true},{name:'Split squat bulgare', reps:'3×8-12/jambe', outil:'halteres', pas:2},
       /* Nordic : genoux sur un tapis, talons bloques sous le boudin d'une machine ; on descend
          le plus lentement possible, on se rattrape aux mains, on remonte en poussant. Lest =
          un disque contre la poitrine, des 8 descentes propres sur les trois series. */
-      {name:'Split squat bulgare', reps:'3×8-12/jambe', outil:'halteres', pas:2},{name:'Nordic ischios', reps:'3×4-8', pas:2.5, depart:2.5},
+      {name:'Nordic ischios', reps:'3×4-8', pas:2.5, depart:2.5},
+      /* lest : un haltere coince entre les pieds, des 15 reps propres sur les trois series */
+      {name:'Relevés de jambes suspendus', reps:'3×8-15', pas:2, depart:2},
       {name:'Hip thrust barre', reps:'3×8-12', outil:'barre'},{name:'Curl marteau haltères', reps:'3×10-15', outil:'halteres', pas:2},
       {name:'Élévations latérales', reps:'3×12-20', outil:'halteres', pas:1, depart:2}
     ]},

@@ -60,28 +60,28 @@ JJB à 10:30 : **2 à 3 reps en réserve**, jamais l'échec. Repos : 60 s / 90 s
 | 4 B | Extension du cou | 3 × 12-20 |
 
 ### Mardi · Bas complet (50 min)
-La puissance, puis l'accent sur le squat. Repos : 60 s / 90 s · 90 s / 2 min 30 · 90 s / 2 min.
+Les sauts en paire avec le squat, puis la charnière. Repos : 90 s / 2 min 30 · 90 s / 2 min · 45 s / 75 s.
 
 | Paire | Exercice | Tours × fourchette |
 |---|---|---|
 | 1 A | Sauts sur box | 3 × 5, sans charge |
-| 1 B | Inclinaisons latérales du cou | 3 × 12-20 par côté |
-| 2 A | Squat barre | 4 × 5-8 |
+| 1 B | Squat barre | 4 × 5-8 |
+| 2 A | Soulevé de terre roumain barre | 3 × 6-10 |
 | 2 B | Mollets debout à la machine | 4 × 10-15 |
-| 3 A | Soulevé de terre roumain barre | 3 × 6-10 |
-| 3 B | Leg curl assis | 3 × 10-15 |
+| 3 A | Leg curl assis | 3 × 10-15 |
+| 3 B | Inclinaisons latérales du cou | 3 × 12-20 par côté |
 
 ### Jeudi · Haut lourd (55 min)
-Le seul jour de semaine sans combat : c'est ici que la force se construit. Repos : 60 s / 90 s · 90 s / 2 min 30 · 75 s / 2 min · 45 s / 75 s.
+Le seul jour de semaine sans combat : c'est ici que la force se construit. Repos : 90 s / 2 min 30 · 90 s / 2 min 30 · 75 s / 2 min · 45 s / 75 s.
 
 | Paire | Exercice | Tours × fourchette |
 |---|---|---|
 | 1 A | Pompes claquées | 3 × 5, sans charge |
-| 1 B | Face pulls | 3 × 15-20 |
-| 2 A | Tractions (lestées dès 8 reps) | 4 × 5-8 |
-| 2 B | Développé couché barre | 4 × 5-8 |
-| 3 A | Rowing barre | 3 × 6-10 |
-| 3 B | Dips (lestés dès 12 reps) | 3 × 6-12 |
+| 1 B | Tractions (lestées dès 8 reps) | 4 × 5-8 |
+| 2 A | Développé couché barre | 4 × 5-8 |
+| 2 B | Rowing barre | 3 × 6-10 |
+| 3 A | Dips (lestés dès 12 reps) | 3 × 6-12 |
+| 3 B | Face pulls | 3 × 15-20 |
 | 4 A | Élévations latérales | 3 × 12-20 |
 | 4 B | Extension triceps à la poulie au-dessus de la tête | 3 × 10-15 |
 | 5 | Tractions serviette (grip kimono) | 2 × 3-8, seul, repos 90 s |
@@ -89,14 +89,14 @@ Le seul jour de semaine sans combat : c'est ici que la force se construit. Repos
 **Tractions serviette** (21 octobre, sa décision) : une serviette pliée passée sur la barre, une extrémité dans chaque main, comme une manche de kimono. C'est le grip du JJB.
 
 ### Samedi · Bas · charnière (50 min)
-72 h après le bas du mardi, 48 h avant le JJB du lundi. Repos : 60 s / 90 s · 90 s / 2 min · 60 s / 90 s.
+72 h après le bas du mardi, 48 h avant le JJB du lundi. Repos : 90 s / 2 min · 60 s / 90 s · 60 s / 90 s.
 
 | Paire | Exercice | Tours × fourchette |
 |---|---|---|
 | 1 A | Sauts en longueur | 3 × 5, sans charge |
-| 1 B | Relevés de jambes suspendus | 3 × 8-15 |
-| 2 A | Split squat bulgare (haltères) | 3 × 8-12 par jambe |
-| 2 B | Nordic ischios | 3 × 4-8 |
+| 1 B | Split squat bulgare (haltères) | 3 × 8-12 par jambe |
+| 2 A | Nordic ischios | 3 × 4-8 |
+| 2 B | Relevés de jambes suspendus | 3 × 8-15 |
 | 3 A | Hip thrust barre | 3 × 8-12 |
 | 3 B | Curl marteau haltères | 3 × 10-15 |
 | 4 | Élévations latérales | 3 × 12-20 |
@@ -153,7 +153,7 @@ Tractions et dips reviennent lundi et jeudi avec des fourchettes différentes : 
 **D'abord, la réalité.** À 64 kg pour 1,82 m, sans produits, devenir « trop massif » ne peut pas arriver par accident : un débutant prend au mieux quelques kilos de muscle la première année, puis de moins en moins chaque année. Ce qui donne l'air massif, c'est surtout **le gras** pris pendant une prise de masse trop rapide, et des années d'entraînement de bodybuilder. Le levier principal, c'est donc **le rythme de prise de poids** (voir `programme-alimentation.md`) ; une prise plus rapide donne surtout plus de gras, pas plus de muscle ni de force (Helms 2023).
 
 **Ce que le programme fait pour l'athlétique :**
-- **La puissance** (sauts, pompes claquées) : 3 × 5 en tête de séance, frais, chaque rep à fond. Ça rend plus explosif sans ajouter de masse. Pas de charge : ce qui progresse, c'est la hauteur de la box ou la distance. Dès qu'une rep ralentit, la série s'arrête. La box : descendre en marchant, jamais en sautant en arrière.
+- **La puissance** (sauts, pompes claquées) : 3 × 5 en tête de séance, frais, chaque rep à fond, en paire avec le gros exercice du jour (une série de sauts, une série lourde) : c'est le travail combiné qui fait le plus progresser la détente. Ça rend plus explosif sans ajouter de masse. Pas de charge : ce qui progresse, c'est la hauteur de la box ou la distance. Dès qu'une rep ralentit, la série s'arrête. La box : descendre en marchant, jamais en sautant en arrière.
 - **La force relative** : les gros exercices restent lourds (5 à 8 reps), pour être plus fort au même poids, ce qui compte aussi sur le tatami.
 - **Le Nordic** : à genoux sur un tapis, talons bloqués sous le boudin d'une machine, corps droit des genoux à la tête ; descendre le plus lentement possible, se rattraper aux mains, remonter en poussant. Dès 8 descentes propres sur les trois séries, un disque de 2,5 kg contre la poitrine. Courbatures fortes les premières fois : c'est normal.
 - **La silhouette en V** : épaules latérales (10 séries) et dos (15 séries) gardent la priorité. Les cuisses et les bras ne reçoivent plus d'isolation de volume (leg extension, curl EZ sortis) : ils travaillent par les gros exercices.
