@@ -111,7 +111,7 @@ console.log('\n== 193) Eau, sommeil, poids : Calendrier et Journal → tableau d
      16 octobre : jour 1 au samedi 17 -> jusqu'au 7 novembre.
      19 octobre : jour 1 au mardi 20 -> jusqu'au 10 novembre.
      21 octobre : jour 1 au mercredi 21 -> jusqu'au 11 novembre, puis au jeudi 22 -> rien avant le 12. */
-  ok(/rien avant le 12 nov\./.test(await txt('#kcal-analyse')), 'Boucle poids → calories : la pesée d\'avant le plan est écartée, et la Batcave dit pourquoi (rien avant le 12 nov., jour 1 au 22 + 21 jours)');
+  ok(/rien avant le 22 nov\./.test(await txt('#kcal-analyse')), 'Boucle poids → calories : la pesée d\'avant le plan est écartée, et la Batcave dit pourquoi (rien avant le 22 nov., jour 1 au 1er + 21 jours)');
 }
 
 console.log('\n== 194) Repas cochés → tableau de bord et score ==');

@@ -14,7 +14,7 @@ const JOUR = '2026-09-14';                       /* lundi, veille du jour 1 du p
    semaines du plan, la balance monte d'un a trois kilos de glycogene, d'eau et de contenu
    digestif. Ses scenarios se jouent donc neuf semaines plus tard, jour pour jour --
    memes jours de la semaine, meme rotation. */
-const JOUR_KCAL = '2026-11-24';   /* 15 octobre : stabilisation jusqu'au 6 novembre -- tout glisse de trois jours. 16 octobre : jusqu'au 7 -- encore un jour. 19 octobre : jusqu'au 10 -- trois de plus. 21 octobre : jusqu'au 11 -- encore un */
+const JOUR_KCAL = '2026-12-15';   /* 31 octobre : jour 1 au dimanche 1er novembre, stabilisation jusqu'au 22 -- tout glisse de trois semaines (memes jours de la semaine). 15 octobre : stabilisation jusqu'au 6 novembre -- tout glisse de trois jours. 16 octobre : jusqu'au 7 -- encore un jour. 19 octobre : jusqu'au 10 -- trois de plus. 21 octobre : jusqu'au 11 -- encore un */
 async function ouvrir(seed, quand){
   const ctx = await b.newContext({viewport:{width:1440, height:1200}, timezoneId:'Europe/Madrid', locale:'fr-FR'});
   await ctx.addInitScript(s => {
@@ -61,15 +61,15 @@ console.log('\n== 2) Une pesée salée ne fait plus retirer 100 kcal ==');
      visé (0,23) : l'ancien calcul retirait 100 kcal pour un dîner de la veille. Sans lui, la
      pente retombe dans la cible — donc la recommandation tient à cette pesée-là, et la
      Batcave refuse de conclure au lieu de couper les calories. */
-  const av = jours('2026-11-11', 7).map(iso => [iso, 64.0]);
-  const rec = jours('2026-11-18', 7).map((iso, i) => [iso, i === 3 ? 66.0 : 64.4]);
+  const av = jours('2026-12-02', 7).map(iso => [iso, 64.0]);
+  const rec = jours('2026-12-09', 7).map((iso, i) => [iso, i === 3 ? 66.0 : 64.4]);
   const {ctx, page, fr} = await ouvrir(pesees(av.concat(rec)), JOUR_KCAL + 'T18:00:00+01:00');
   await aller(fr, page, 'repas');
   const k = await fr.evaluate(() => ({note: document.getElementById('kcal-note').innerText,
                                       txt: document.getElementById('kcal-analyse').innerText.replace(/\s+/g,' ')}));
   ok(!/-100/.test(k.note), 'la pesée à 66,0 kg ne déclenche plus de coupe : ' + k.note);
   ok(/une seule pesée décide/.test(k.note), 'verdict : on ne conclut pas sur un matin salé (' + k.note + ')');
-  ok(/sans celle du 21 nov/.test(k.txt) && /66,0 kg/.test(k.txt), 'et la pesée en cause est nommée : ' + (k.txt.match(/Une seule pesée[^.]*\./) || [''])[0]);
+  ok(/sans celle du 12 déc/.test(k.txt) && /66,0 kg/.test(k.txt), 'et la pesée en cause est nommée : ' + (k.txt.match(/Une seule pesée[^.]*\./) || [''])[0]);
   await ctx.close();
 }
 {
@@ -81,22 +81,22 @@ console.log('\n== 2) Une pesée salée ne fait plus retirer 100 kcal ==');
      dans l'ancienne bande (1,5 x 0,31 = 0,47), mais au-dessus du plafond qui suit la science
      (0,5 % du poids, ≈ 0,32 kg). A 64,3, la pente sans elle (≈ 0,26) reste dans la bande, et
      c'est bien cette pesee seule qui ferait couper. */
-  const av = ['2026-11-12','2026-11-13','2026-11-15','2026-11-17'].map(iso => [iso, 64.0]);
-  const rec = [['2026-11-18',64.3],['2026-11-20',64.3],['2026-11-22',64.3],['2026-11-24',66.0]];
+  const av = ['2026-12-03','2026-12-04','2026-12-06','2026-12-08'].map(iso => [iso, 64.0]);
+  const rec = [['2026-12-09',64.3],['2026-12-11',64.3],['2026-12-13',64.3],['2026-12-15',66.0]];
   const {ctx, page, fr} = await ouvrir(pesees(av.concat(rec)), JOUR_KCAL + 'T18:00:00+01:00');
   await aller(fr, page, 'repas');
   const k = await fr.evaluate(() => ({note: document.getElementById('kcal-note').innerText,
                                       txt: document.getElementById('kcal-analyse').innerText.replace(/\s+/g,' '),
                                       btn: document.getElementById('kcal-appliquer').hidden}));
   ok(/une seule pesée décide/.test(k.note), 'la note le dit : ' + k.note);
-  ok(/sans celle du 24 nov/.test(k.txt) && /66,0 kg/.test(k.txt), 'et elle nomme la pesée en cause : ' + (k.txt.match(/Une seule pesée[^.]*\./) || [''])[0]);
+  ok(/sans celle du 15 déc/.test(k.txt) && /66,0 kg/.test(k.txt), 'et elle nomme la pesée en cause : ' + (k.txt.match(/Une seule pesée[^.]*\./) || [''])[0]);
   ok(k.btn === true, 'le bouton « Appliquer » reste masqué tant qu’une pesée de plus n’a pas tranché');
   await ctx.close();
 }
 {
   /* et une vraie prise franche passe toujours : 64,0 → 65,0, sept pesées de chaque côté */
-  const av = jours('2026-11-11', 7).map(iso => [iso, 64.0]);
-  const rec = jours('2026-11-18', 7).map(iso => [iso, 65.0]);
+  const av = jours('2026-12-02', 7).map(iso => [iso, 64.0]);
+  const rec = jours('2026-12-09', 7).map(iso => [iso, 65.0]);
   const {ctx, page, fr} = await ouvrir(pesees(av.concat(rec)), JOUR_KCAL + 'T18:00:00+01:00');
   await aller(fr, page, 'repas');
   const note = await fr.evaluate(() => document.getElementById('kcal-note').innerText);
