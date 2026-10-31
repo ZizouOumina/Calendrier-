@@ -1,8 +1,11 @@
+/* 31 octobre : les exercices de puissance (sauts, pompes claquees, sans charge) ouvrent trois
+   seances ; par defaut on pilote le premier exercice CHARGE de la seance du jour. */
+const PREMIER = '.sport-card.today li:not(.puissance) .saisie';
 /* Pilote la saisie au pas de la séance du jour comme le ferait un doigt : les boutons
    + et − du nombre de séries, puis ceux de chaque série, puis le lest, puis « Enregistrer ».
    Le bloc se redessine à chaque appui : on le re-interroge à chaque tour, jamais de
    référence gardée sur un bouton. */
-export async function saisirSeries(fr, reps, charge = 0, sel = '.sport-card.today .saisie'){
+export async function saisirSeries(fr, reps, charge = 0, sel = PREMIER){
   return fr.evaluate(({sel, reps, charge}) => {
     const bloc = document.querySelector(sel);
     if(!bloc) throw new Error('bloc de saisie introuvable : ' + sel);
@@ -32,7 +35,7 @@ export async function saisirSeries(fr, reps, charge = 0, sel = '.sport-card.toda
   }, {sel, reps, charge});
 }
 /* « effacer » : retire la séance du jour pour cet exercice et décoche. */
-export async function effacerSaisie(fr, sel = '.sport-card.today .saisie'){
+export async function effacerSaisie(fr, sel = PREMIER){
   return fr.evaluate(s => {
     const b = document.querySelector(s).querySelector('[data-effacer]');
     if(!b) return false;
@@ -40,7 +43,7 @@ export async function effacerSaisie(fr, sel = '.sport-card.today .saisie'){
   }, sel);
 }
 /* Les valeurs actuellement affichées dans le bloc, en « 8/7/6 ». */
-export async function valeursSaisie(fr, sel = '.sport-card.today .saisie'){
+export async function valeursSaisie(fr, sel = PREMIER){
   return fr.evaluate(s => {
     const b = document.querySelector(s);
     if(!b) return null;

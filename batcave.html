@@ -10046,7 +10046,7 @@
       var t = sportTotals(session.type);
       var itemsHtml = session.exercises.map(function(ex, ei){
         var key = session.type+'-'+ei, checked = !!sportState[key];
-        var ligne = '<li class="'+(checked?'checked':'')+'"><input type="checkbox" id="s-'+key+'" data-sport="'+key+'" '+(checked?'checked':'')+'><label for="s-'+key+'">'+ex.name+'</label><span class="sreps">'+ex.reps+'</span>';
+        var ligne = '<li class="'+(checked?'checked':'')+(ex.puissance?' puissance':'')+'"><input type="checkbox" id="s-'+key+'" data-sport="'+key+'" '+(checked?'checked':'')+'><label for="s-'+key+'">'+ex.name+'</label><span class="sreps">'+ex.reps+'</span>';
         /* la saisie des series n'existe que sur la seance du jour : c'est la seule qu'on fait */
         if(isToday) ligne += '<span class="saisie" data-saisie="' + escapeHtml(key) + '">' + blocSaisieHtml(key, ex) + '</span>';
         return ligne + '</li>';

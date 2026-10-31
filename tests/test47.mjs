@@ -41,7 +41,7 @@ console.log('\n== 107) Première séance : cible = tours × bas de fourchette ==
   ok(/cible 5\/5\/5\/5/.test(t), 'Tractions 4×5-8 → cible 5/5/5/5 : ' + (t.match(/cible [^\n]*/) || [''])[0]);
   const pre = await valeursSaisie(fr);
   ok(pre === '5/5/5/5', 'la saisie au pas s\'ouvre sur la cible (' + pre + ')');
-  ok(/1 · Tractions \+ Développé couché barre/.test(t) && /repos 90 s \/ 2 min 30/.test(t), 'les paires et les repos du jeudi (séance lourde) sont affichés');
+  ok(/1 · Pompes claquées \+ Tractions/.test(t) && /2 · Développé couché barre \+ Rowing barre/.test(t) && /repos 90 s \/ 2 min 30/.test(t), 'les paires et les repos du jeudi (séance lourde) sont affichés');
   await ctx.close();
 }
 
@@ -65,11 +65,11 @@ console.log('\n== 108) Saisir des séries enregistre le journal et coche l\'exer
   const log = await local(fr, 'batcave-sport-log');
   ok(Array.isArray(log) && log.length === 1 && log[0].exo === 'Tractions' && JSON.stringify(log[0].series) === '[8,7,6,6]', 'journal : Tractions 8/7/6/6 (' + JSON.stringify(log && log[0] && log[0].series) + ')');
   const st = await local(fr, 'batcave-sport-2026-11-12');
-  ok(st && st['Haut lourd-0'] === true, 'l\'exercice est coché automatiquement');
-  ok(await fr.evaluate(() => document.querySelector('.sport-card.today li').classList.contains('checked')), 'la ligne apparaît cochée');
+  ok(st && st['Haut lourd-1'] === true, 'l\'exercice est coché automatiquement');
+  ok(await fr.evaluate(() => document.querySelector('.sport-card.today li:not(.puissance)').classList.contains('checked')), 'la ligne apparaît cochée');
   await effacerSaisie(fr);
   await page.waitForTimeout(200);
-  ok((await local(fr, 'batcave-sport-log')).length === 0 && (await local(fr, 'batcave-sport-2026-11-12'))['Haut lourd-0'] === false, 'effacer → journal vide et case décochée');
+  ok((await local(fr, 'batcave-sport-log')).length === 0 && (await local(fr, 'batcave-sport-2026-11-12'))['Haut lourd-1'] === false, 'effacer → journal vide et case décochée');
   await ctx.close();
 }
 

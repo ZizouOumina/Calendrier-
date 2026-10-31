@@ -39,7 +39,7 @@ console.log('\n== 150) Décocher un exercice retire ses séries du jour ==');
   log = await local(fr, 'batcave-sport-log');
   const st = await local(fr, 'batcave-sport-2026-09-08');
   ok(Array.isArray(log) && log.length === 0, 'décoché → le journal du jour est vidé pour cet exercice (' + log.length + ' entrée)');
-  ok(st && st['Bas complet-0'] === false, 'et la case reste décochée dans l\'état de la séance');
+  ok(st && st['Bas complet-1'] === false, 'et la case reste décochée dans l\'état de la séance');
   const champ = await fr.evaluate(() => document.querySelector('.sport-card.today .saisie [data-valider]').textContent.trim());
   ok(champ === 'Enregistrer', 'le bloc de saisie est revenu à l\'état « rien d\'enregistré » (' + champ + ')');
   await ctx.close();

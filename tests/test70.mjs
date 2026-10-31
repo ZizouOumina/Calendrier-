@@ -80,7 +80,7 @@ console.log('\n== 273) Saisie au pas : séries, répétitions, lest ==');
   ok(log.length === 1 && JSON.stringify(log[0].series) === '[9,8,7,7]' && log[0].charge === 2.5,
      'journal : 9/8/7/7 @2,5 kg (' + JSON.stringify(log[0] && [log[0].series, log[0].charge]) + ')');
   ok(await fr.evaluate(() => document.querySelector('.sport-card.today .saisie [data-valider]').textContent.trim()) === '✓ enregistré', 'le bouton passe à « enregistré »');
-  ok((await local(fr, 'batcave-sport-2026-11-12'))['Haut lourd-0'] === true, 'l\'exercice est coché tout seul');
+  ok((await local(fr, 'batcave-sport-2026-11-12'))['Haut lourd-1'] === true, 'l\'exercice est coché tout seul');
   await ctx.close();
 }
 
@@ -109,7 +109,7 @@ console.log('\n== 275) « Effacer » retire la séance du jour ==');
   await effacerSaisie(fr);
   await page.waitForTimeout(200);
   ok((await local(fr, 'batcave-sport-log')).length === 0, 'effacer vide le journal du jour');
-  ok((await local(fr, 'batcave-sport-2026-11-12'))['Haut lourd-0'] === false, 'et décoche l\'exercice');
+  ok((await local(fr, 'batcave-sport-2026-11-12'))['Haut lourd-1'] === false, 'et décoche l\'exercice');
   ok(await valeursSaisie(fr) === '5/5/5/5', 'le bloc repart de la cible');
   await ctx.close();
 }

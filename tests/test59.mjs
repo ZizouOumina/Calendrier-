@@ -136,7 +136,7 @@ console.log('\n== 195) Séries de sport → Sport, tableau de bord, Objectifs ==
   await aller('sport');
   await saisirSeries(fr, [10, 10]);
   await page.waitForTimeout(200);
-  ok(await fr.evaluate(() => document.querySelector('.sport-card.today li').classList.contains('checked')), 'Sport : Split squat bulgare coché');
+  ok(await fr.evaluate(() => document.querySelector('.sport-card.today li:not(.puissance)').classList.contains('checked')), 'Sport : Split squat bulgare coché');
   await aller('dashboard');
   await fr.evaluate(() => { const b = document.getElementById('dash-more-toggle'); if(document.getElementById('dash-more').hidden) b.click(); });
   ok(/Bas complet[\s\S]*?1\/6/.test(await txt('#dash-sport')), 'Tableau de bord : Bas complet 1/6 (crunch lesté et cou latéral en fin de séance)');
