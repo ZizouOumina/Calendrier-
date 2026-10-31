@@ -70,16 +70,16 @@ console.log('\n== 273) Saisie au pas : séries, répétitions, lest ==');
   const { ctx, fr, page } = await ouvrir(LUNDI);
   ok(await valeursSaisie(fr) === '5/5/5/5', 'la saisie s\'ouvre sur la cible 5/5/5/5 (' + await valeursSaisie(fr) + ')');
   /* + une série */
-  await fr.evaluate(() => document.querySelector('.sport-card.today .saisie [data-pas="nb"][data-d="1"]').click());
+  await fr.evaluate(() => document.querySelector('.sport-card.today li:not(.puissance) .saisie [data-pas="nb"][data-d="1"]').click());
   ok(await valeursSaisie(fr) === '5/5/5/5/5', 'un appui sur + ajoute une série (' + await valeursSaisie(fr) + ')');
-  await fr.evaluate(() => document.querySelector('.sport-card.today .saisie [data-pas="nb"][data-d="-1"]').click());
+  await fr.evaluate(() => document.querySelector('.sport-card.today li:not(.puissance) .saisie [data-pas="nb"][data-d="-1"]').click());
   ok(await valeursSaisie(fr) === '5/5/5/5', 'un appui sur − la retire');
   await saisirSeries(fr, [9, 8, 7, 7], 2.5);
   await page.waitForTimeout(250);
   const log = await local(fr, 'batcave-sport-log');
   ok(log.length === 1 && JSON.stringify(log[0].series) === '[9,8,7,7]' && log[0].charge === 2.5,
      'journal : 9/8/7/7 @2,5 kg (' + JSON.stringify(log[0] && [log[0].series, log[0].charge]) + ')');
-  ok(await fr.evaluate(() => document.querySelector('.sport-card.today .saisie [data-valider]').textContent.trim()) === '✓ enregistré', 'le bouton passe à « enregistré »');
+  ok(await fr.evaluate(() => document.querySelector('.sport-card.today li:not(.puissance) .saisie [data-valider]').textContent.trim()) === '✓ enregistré', 'le bouton passe à « enregistré »');
   ok((await local(fr, 'batcave-sport-2026-11-12'))['Haut lourd-1'] === true, 'l\'exercice est coché tout seul');
   await ctx.close();
 }
@@ -88,7 +88,7 @@ console.log('\n== 274) Le lest ne descend pas sous zéro, les séries pas sous u
 {
   const { ctx, fr } = await ouvrir(LUNDI);
   const etat = await fr.evaluate(() => {
-    const b = document.querySelector('.sport-card.today .saisie');
+    const b = document.querySelector('.sport-card.today li:not(.puissance) .saisie');
     const moinsCharge = b.querySelector('[data-pas="charge"][data-d="-1"]');
     let n = b.querySelectorAll('.serie').length, g = 0;
     while(n > 1 && g++ < 20){ b.querySelector('[data-pas="nb"][data-d="-1"]').click(); n = b.querySelectorAll('.serie').length; }
