@@ -51,6 +51,7 @@ Le squelette est un **haut / bas sur quatre jours**, celui des programmes de ré
 | Nordic | Les programmes qui l'incluent divisent par deux les blessures aux ischios (RR 0,49) | 3 × 4-8 le samedi | van Dyk 2019 |
 | Paires | Les paires agoniste-antagoniste gardent le volume, la force et la prise de muscle des séries classiques, en moins de temps | Paires A / B : la séance tient en 55 min | Zhang 2025 |
 | Cou | Chaque livre (450 g) de force du cou en plus : −5 % de risque de commotion | 9 séries par semaine et l'habitude du jeudi soir | Collins 2014 |
+| Abdos | Les relevés de jambes chargent surtout le bas du grand droit, le crunch surtout le haut ; un travail direct l'épaissit ; des abdos sans baisse du gras ne font pas fondre le ventre | Relevés le samedi, crunch à la poulie le jeudi | Gomirato 2023 ; Dorado 2012 ; Vispute 2011 |
 | Sommeil | « 7 à 9 h » ne convient pas à tous les athlètes ; ils disent avoir besoin d'environ 8 h 20 pour se sentir reposés | Coucher 21:35, lever 05:20 : 7 h 45 au lit. La lumière éteinte à 21:15 donne 8 h au lit | Walsh 2021 ; Sargent 2021 |
 
 ## Les quatre séances
@@ -84,7 +85,7 @@ JJB à 10:30 : **2 à 3 reps en réserve**, jamais l'échec. Repos : 60 s / 90 s
 | 3 | Sac · rounds techniques | 3 × 3 min, seul, 1 min de repos |
 
 ### Jeudi · Haut lourd (55 min)
-Le seul jour de semaine sans combat : c'est ici que la force se construit. Repos : 90 s / 2 min 30 · 90 s / 2 min 30 · 75 s / 2 min · 45 s / 75 s.
+Le seul jour de semaine sans combat : c'est ici que la force se construit. Repos : 90 s / 2 min 30 · 90 s / 2 min 30 · 75 s / 2 min · 45 s / 75 s · 45 s / 60 s.
 
 | Paire | Exercice | Tours × fourchette |
 |---|---|---|
@@ -96,7 +97,8 @@ Le seul jour de semaine sans combat : c'est ici que la force se construit. Repos
 | 3 B | Face pulls | 3 × 15-20 |
 | 4 A | Élévations latérales | 3 × 12-20 |
 | 4 B | Extension triceps à la poulie au-dessus de la tête | 3 × 10-15 |
-| 5 | Tractions serviette (grip kimono) | 2 × 3-8, seul, repos 90 s |
+| 5 A | Tractions serviette (grip kimono) | 2 × 3-8 |
+| 5 B | Crunch à la poulie (7 novembre) | 3 × 10-15 |
 
 **Tractions serviette** (21 octobre, sa décision) : une serviette pliée passée sur la barre, une extrémité dans chaque main, comme une manche de kimono. C'est le grip du JJB.
 
@@ -128,7 +130,7 @@ Le seul jour de semaine sans combat : c'est ici que la force se construit. Repos
 | Fessiers | 10 | squat, soulevé de terre roumain, split squat |
 | Mollets | — | les sauts et le sac, sur l'avant des pieds |
 | Cou | 9 + l'habitude du jeudi soir | lundi, mardi |
-| Abdos | 3 + le JJB + la rotation | relevés de jambes, lancers rotatifs le samedi |
+| Abdos | 6 + le JJB + la rotation | relevés de jambes le samedi (le bas), crunch à la poulie le jeudi (le haut), lancers rotatifs |
 | Puissance | 9 séries | sauts sur box, pompes claquées, lancers rotatifs |
 | Sac | 6 rounds de 3 min | 3 techniques le mardi, 3 en intervalles le samedi |
 
@@ -191,7 +193,7 @@ Le 7 novembre : des gants achetés pour s'entraîner sur le sac (celui de la sal
 - **Le sac ne remplace pas un coach** : si tu veux progresser en boxe, quelques cours apprennent la garde et les appuis mieux que n'importe quelle vidéo.
 
 ## Les abdos et les avant-bras
-Le JJB (garde, ponts, sorties de hanche) fait travailler la sangle trois fois par semaine ; il reste les **relevés de jambes suspendus** et les **lancers rotatifs** du samedi. Les prises de kimono chargent les avant-bras trois fois par semaine ; les tractions serviette et le curl marteau complètent. Si les avant-bras plafonnent, le curl inversé (3 × 12-20) entre le jeudi.
+Le JJB (garde, ponts, sorties de hanche) fait travailler la sangle trois fois par semaine. En direct, depuis le 7 novembre (« et les abdos ? »), deux exercices qui se complètent : les **relevés de jambes suspendus** du samedi (le bas des abdos) et le **crunch à la poulie** du jeudi (le haut), en paire avec les tractions serviette, plus les **lancers rotatifs** du samedi pour la rotation. Crunch : à genoux face à la poulie haute, la corde contre le front, enrouler le dos vers le bas sans tirer avec les bras ; +2,5 kg quand les trois séries touchent 15. Les voir dépend surtout du gras (Vispute 2011) ; le travail direct les épaissit (Dorado 2012). Les prises de kimono chargent les avant-bras trois fois par semaine ; les tractions serviette et le curl marteau complètent. Si les avant-bras plafonnent, le curl inversé (3 × 12-20) entre le jeudi.
 
 ## Le combat et le cardio
 
@@ -259,3 +261,6 @@ Si la santé suit (le médecin d'abord), avec au moins 9 séances sur 10 faites,
 - Hubal MJ et al. *Variability in muscle size and strength gain after unilateral resistance training.* Med Sci Sports Exerc, 2005. https://pubmed.ncbi.nlm.nih.gov/15947721/
 - Schutz Y et al. *Fat-free mass index and fat mass index percentiles in Caucasians aged 18-98 y.* Int J Obes, 2002. https://pubmed.ncbi.nlm.nih.gov/12080449/
 - Kouri EM et al. *Fat-free mass index in users and nonusers of anabolic-androgenic steroids.* Clin J Sport Med, 1995. https://pubmed.ncbi.nlm.nih.gov/7496846/
+- Gomirato AP, Grenier SG. *Diagnostic Ultrasound Shows Preferential Activation of Rectus Abdominis Segments with Exercises Targeting Upper Versus Lower Segments.* Int J Exerc Sci, 2023. https://pubmed.ncbi.nlm.nih.gov/38288259/
+- Dorado C et al. *Marked effects of Pilates on the abdominal muscles: a longitudinal magnetic resonance imaging study.* Med Sci Sports Exerc, 2012. https://pubmed.ncbi.nlm.nih.gov/22357302/
+- Vispute SS et al. *The effect of abdominal exercise on abdominal fat.* J Strength Cond Res, 2011. https://pubmed.ncbi.nlm.nih.gov/21804427/
