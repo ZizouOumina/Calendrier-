@@ -74,8 +74,10 @@ console.log('\n== 112) Semis : un seul palier, le mois ==');
   /* 30 octobre : la salle a 07:00 -- le samedi 31, Anki 2 saute et le matin perd une demi-heure de revision : 36,8 h. */
   /* 31 octobre : jour 1 au dimanche 1er novembre -- octobre n'a plus un seul jour de programme, et c'est
      novembre, entier (phase Español jusqu'au 15, salle a 07:00, JJB lundi, mercredi et vendredi), qui
-     porte la cible : 100,2 h. */
-  ok(m9 && m9.cible === 100.2, 'révision de novembre calculée depuis la grille, du 1er au 30 : 100,2 h (' + (m9 && m9.cible) + ')');
+     porte la cible : 100,2 h.
+     7 novembre : le mois d'espagnol repris court du 9 au 8 decembre -- le mercredi 05:30 reste
+     « Anki matinal » (de la revision) les 18 et 25 aussi : 101,7 h. */
+  ok(m9 && m9.cible === 101.7, 'révision de novembre calculée depuis la grille, du 1er au 30 : 101,7 h (' + (m9 && m9.cible) + ')');
   ok(m9 && m9.auto === true, 'la cible est marquée automatique : elle suivra la grille');
   ok(!o.liste.some(x => /exo:|snus|eau_moy|depenses_var/.test(x.metrique)),
      'ni niveaux, ni snus, ni eau, ni dépenses : ils ne sont plus semés du tout');
@@ -137,7 +139,8 @@ console.log('\n== 114) Éditer une cible, supprimer, ajouter ==');
   await page.waitForTimeout(250);
   const rev = await ligne(fr, 'Révision');
   ok((await local(fr, 'batcave-objectifs')).liste.find(x => x.id === 'M2026-11:revision_h').cible === 44, 'cible enregistrée : 44');
-  ok(rev && /attendu 16,5 h/.test(rev.txt) && /avance/.test(rev.led), 'recalcul immédiat sur une cible de 44 h : attendu 16,5 h, 40 h réelles → en avance (' + (rev && rev.txt.slice(0, 70)) + ')');
+  /* 7 novembre : le prevu du mois grandit (Anki matinal les 18 et 25), la part ecoulee baisse un peu : 16,3 h */
+  ok(rev && /attendu 16,3 h/.test(rev.txt) && /avance/.test(rev.led), 'recalcul immédiat sur une cible de 44 h : attendu 16,3 h, 40 h réelles → en avance (' + (rev && rev.txt.slice(0, 70)) + ')');
   ok((await local(fr, 'batcave-objectifs')).liste.find(x => x.id === 'M2026-11:revision_h').auto === false, 'une cible saisie à la main sort du calcul automatique');
   const avant = (await local(fr, 'batcave-objectifs')).liste.length;
   await fr.evaluate(() => document.querySelector('[data-obj-del="M2026-11:sommeil_moy"]').click());
