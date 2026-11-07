@@ -27,14 +27,17 @@ console.log('\n== 264) Les cibles sortent de la grille, phase par phase ==');
 {
   const { ctx, fr } = await ouvrir('2026-09-15T09:00:00+02:00');
   const p = await fr.evaluate(() => ({
-    s14: window.__bcPrevu('2026-09-14'), s19oct: window.__bcPrevu('2026-11-16'), s1dec: window.__bcPrevu('2026-12-01')
+    s14: window.__bcPrevu('2026-09-14'), s16nov: window.__bcPrevu('2026-11-16'), s19oct: window.__bcPrevu('2026-12-14'), s1dec: window.__bcPrevu('2026-12-15')
   }));
   /* Le 14/09 et le 19/10 sont des lundis (4 blocs de projet : 11:20, 13:00, 14:00, 15:00),
      le 01/12 un mardi (5 blocs : 11:20, 13:00, 14:00, 19:00, 20:30). Pauses deduites. */
   ok(p.s14.proj === 0 && p.s14.es === 211, 'phase 1 : aucun projet perso prévu, 211 min d\'espagnol (' + JSON.stringify(p.s14) + ')');
   /* 25 septembre : les projets n'ont plus de minuteur, donc plus rien de PREVU pour eux. */
-  ok(p.s19oct.proj === 0 && p.s19oct.es === 0, 'le lundi 16 nov., après la phase (finie le 14 novembre) : plus d\'espagnol, et les projets ne sont plus prévus (sans minuteur) (' + JSON.stringify(p.s19oct) + ')');
-  ok(p.s1dec.proj === 0 && p.s1dec.es === 0, 'décembre : même grille, rien de prévu en projets (' + JSON.stringify(p.s1dec) + ')');
+  /* 7 novembre : le mois d'espagnol repris court du 9 novembre au 8 decembre -- le lundi 16 en fait
+     partie ; l'apres-phase se lit le lundi 14 et le mardi 15 decembre. */
+  ok(p.s16nov.es === 156 && p.s16nov.proj === 0, 'le lundi 16 nov., dans le mois repris : 156 min d\'espagnol prévues (' + JSON.stringify(p.s16nov) + ')');
+  ok(p.s19oct.proj === 0 && p.s19oct.es === 0, 'le lundi 14 déc., après le mois repris : plus d\'espagnol, et les projets ne sont plus prévus (sans minuteur) (' + JSON.stringify(p.s19oct) + ')');
+  ok(p.s1dec.proj === 0 && p.s1dec.es === 0, 'le mardi 15 déc. : même grille, rien de prévu en projets (' + JSON.stringify(p.s1dec) + ')');
   const o = await fr.evaluate(() => { const l = {}; window.__bcObjectifs().forEach(x => l[x.id] = {c:x.cible, a:x.auto}); return l; });
   /* Septembre ne compte qu'à partir du 14, et cette part du mois est entièrement en
      phase 1 : aucun bloc Projets perso, donc cible zéro. Octobre en a un peu (la phase 2
