@@ -54,9 +54,11 @@ console.log('\n== 240) Sport : mercredi 21 octobre = jour 1, première muscu le 
   const nv = await v.fr.evaluate(() => document.getElementById('programme-note').textContent);
   ok(/muscu à partir du/.test(nv) && /02 nov/.test(nv), 'la veille : « muscu à partir du 02 nov. » (' + nv + ')');
   await v.ctx.close();
+  /* 7 novembre : les semaines de muscu se comptent depuis la premiere seance faite -- le lundi 2,
+     c'est la semaine 1, a la moitie des tours. */
   const l5 = await ouvrir('2026-11-02T06:30:00+01:00');
   const n5b = await l5.fr.evaluate(() => document.getElementById('programme-note').textContent);
-  ok(/semaine 2/.test(n5b) && /½/.test(n5b), 'lundi 2 novembre : semaine 2, tours × ½ (' + n5b + ')');
+  ok(/semaine 1 de muscu/.test(n5b) && /½/.test(n5b), 'lundi 2 novembre : semaine 1 de muscu, tours × ½ (' + n5b + ')');
   await l5.ctx.close();
   const s = await ouvrir('2026-09-10T06:30:00+02:00');
   const n2 = await s.fr.evaluate(() => document.getElementById('programme-note').textContent);
@@ -68,9 +70,19 @@ console.log('\n== 240) Sport : mercredi 21 octobre = jour 1, première muscu le 
   /* 30 septembre : la premiere seance est le jeudi 1er, les retests tombent donc le jeudi
      des semaines 5, 10 et 15 -- le 29 octobre pour la semaine 5. */
   /* 4 octobre : la premiere seance est le lundi 5 -- retests le lundi des semaines 5, 10, 15. */
-  const r5 = await ouvrir('2026-11-23T06:30:00+01:00');   /* 31 octobre : semaine 5 = celle du lundi 23 (semaine 1 = celle du lundi 26 octobre) */   /* 15 octobre : la premiere seance est le samedi 17 -- retests le samedi. 19 octobre : le mardi 20 -- retests le mardi. 21 octobre : le lundi 26 -- retests le lundi */
-  const n5 = await r5.fr.evaluate(() => document.getElementById('programme-note').textContent);
-  ok(/semaine 5/.test(n5) && /lundi : retest/.test(n5), 'lundi 23 novembre : semaine 5, retest (' + n5 + ')');
+  /* 7 novembre : « j'ai rien fait encore ». Sans aucune seance, le lundi 23 n'est pas la semaine 5 :
+     la prochaine seance sera la premiere, a la moitie des tours. */
+  const a5 = await ouvrir('2026-11-23T06:30:00+01:00');
+  const na = await a5.fr.evaluate(() => ({note: document.getElementById('programme-note').textContent, retests: document.getElementById('retest-dates').textContent}));
+  ok(/semaine 1 de muscu/.test(na.note) && /½/.test(na.note) && !/retest/.test(na.note), 'lundi 23 novembre sans séance faite : semaine 1 de muscu, tours × ½ (' + na.note + ')');
+  ok(/23 nov/.test(na.retests) === false && /21 déc/.test(na.retests), 'les retests partent du lundi 23 : 21 déc., 25 janv., 1 mars (' + na.retests + ')');
+  await a5.ctx.close();
+  /* une premiere seance le lundi 2 : la semaine 5 est celle du lundi 30 -- quatre semaines de pratique */
+  const premiere = {'batcave-sport-log': [{id: 'l-premiere', date: '2026-11-02', type: 'Haut volume', exo: 'Tractions', series: [8, 7, 6], charge: 0, unite: 'reps'}]};
+  const r5 = await ouvrir('2026-11-30T06:30:00+01:00', premiere);
+  const n5 = await r5.fr.evaluate(() => ({note: document.getElementById('programme-note').textContent, retests: document.getElementById('retest-dates').textContent}));
+  ok(/semaine 5 de muscu/.test(n5.note) && /tours complets/.test(n5.note) && /lundi : retest/.test(n5.note), 'première séance le 2 novembre → lundi 30 novembre : semaine 5, tours complets, retest (' + n5.note + ')');
+  ok(/30 nov/.test(n5.retests) && /04 janv/.test(n5.retests) && /08 févr/.test(n5.retests), 'retests les lundis 30 novembre, 4 janvier, 8 février (' + n5.retests + ')');
   await r5.ctx.close();
 }
 

@@ -28,7 +28,9 @@ async function ouvrir(quand, extra){
   await page.waitForTimeout(300);
   return { ctx, page, fr };
 }
-const log = (exo, type, series, charge) => ({id: 'l-' + exo, date: '2026-10-12', type, exo, series, charge, unite: 'reps'});
+/* 7 novembre : la montee en charge part de la premiere seance FAITE -- un journal du lundi 2
+   en fait la premiere seance, et le lundi 16 tombe 14 jours plus tard : volume complet. */
+const log = (exo, type, series, charge) => ({id: 'l-' + exo, date: '2026-11-02', type, exo, series, charge, unite: 'reps'});
 
 console.log('\n== 261) Le cran de charge suit l\'exercice ==');
 {
@@ -73,13 +75,19 @@ console.log('\n== 262) En salle : haut / bas sur quatre jours, chaque muscle deu
     return Object.assign(o, {sam: window.__bcTypeSport('2026-10-31'), samS2: window.__bcTypeSport('2027-02-06')});
   });
   const hv = s['Haut volume'].noms, hl = s['Haut lourd'].noms, bc = s['Bas complet'].noms, bch = s['Bas · charnière'].noms;
-  ok(hv.length === 9 && hl.length === 9 && bc.length === 6 && hl[8] === 'Tractions serviette (grip kimono)', 'neuf le lundi (face pulls ajoutés le 31 octobre), neuf le jeudi (tractions serviette en dernier), six le mardi (' + [hv.length, hl.length, bc.length].join(' / ') + ')');
+  /* 7 novembre (v8) : le mardi perd les mollets et le leg curl, gagne le sac -- cinq exercices */
+  ok(hv.length === 9 && hl.length === 9 && bc.length === 5 && hl[8] === 'Tractions serviette (grip kimono)', 'neuf le lundi (face pulls ajoutés le 31 octobre), neuf le jeudi (tractions serviette en dernier), cinq le mardi (' + [hv.length, hl.length, bc.length].join(' / ') + ')');
   ok(s.sam === 'Bas · charnière' && s.samS2 === 'Bas · charnière' && bch.length === 7, 'le samedi est le second bas, au régime combat comme après (' + s.sam + ' / ' + s.samS2 + ')');
   ok(hv.includes('Élévations latérales') && hl.includes('Élévations latérales') && bch.includes('Élévations latérales') && !bc.includes('Élévations latérales'), 'élévations latérales lundi, jeudi et samedi');
   ok(hv.indexOf('Élévations latérales') < hv.indexOf('Flexion du cou'), 'lundi : le cou reste le finisseur');
-  ok(bc.includes('Squat barre') && bc.includes('Leg curl assis') && bch.includes('Split squat bulgare') && bch.includes('Nordic ischios'), 'les jambes deux fois : squat et leg curl assis le mardi, split squat et Nordic le samedi');
-  /* 31 octobre : athletique, pas massif -- la puissance en tete de seance, sans charge. */
-  ok(bc[0] === 'Sauts sur box' && hl[0] === 'Pompes claquées' && bch[0] === 'Sauts en longueur', 'la puissance ouvre le mardi, le jeudi et le samedi (' + [bc[0], hl[0], bch[0]].join(' / ') + ')');
+  ok(bc.includes('Squat barre') && bc.includes('Soulevé de terre roumain barre') && bch.includes('Split squat bulgare') && bch.includes('Nordic ischios'), 'les jambes deux fois : squat et soulevé de terre roumain le mardi, split squat et Nordic le samedi');
+  /* 31 octobre : athletique, pas massif -- la puissance en tete de seance, sans charge.
+     7 novembre (v8) : la rotation remplace les sauts en longueur le samedi. */
+  ok(bc[0] === 'Sauts sur box' && hl[0] === 'Pompes claquées' && bch[0] === 'Lancers rotatifs médecine-ball', 'la puissance ouvre le mardi, le jeudi et le samedi (' + [bc[0], hl[0], bch[0]].join(' / ') + ')');
+  /* 7 novembre (v8) : le sac, seul, en dernier, le mardi et le samedi ; l'isolation des jambes sort */
+  ok(bc[bc.length - 1] === 'Sac · rounds techniques' && bch[bch.length - 1] === 'Sac · intervalles' && !hv.some(n => /^Sac/.test(n)) && !hl.some(n => /^Sac/.test(n)),
+     'le sac finit le mardi (rounds techniques) et le samedi (intervalles), jamais les jours du haut (' + [bc[bc.length - 1], bch[bch.length - 1]].join(' / ') + ')');
+  ok(!bc.includes('Leg curl assis') && !bc.includes('Mollets debout à la machine') && !bch.includes('Hip thrust barre') && !bch.includes('Sauts en longueur'), 'leg curl assis, mollets, hip thrust et sauts en longueur sont sortis');
   ok(!bc.includes('Leg extension') && !hl.includes('Curl barre EZ'), 'leg extension et curl EZ sont sortis');
   ok(hv[8] === 'Face pulls' && hl.includes('Face pulls'), 'face pulls lundi (en dernier) et jeudi : 6 séries pour l\'arrière d\'épaule');
   const p = await fr.evaluate(() => {
@@ -90,7 +98,15 @@ console.log('\n== 262) En salle : haut / bas sur quatre jours, chaque muscle deu
   ok(p.charge === 0 && !p.monter && p.series.every(x => x === 5), 'les sauts ne se chargent pas : 5 reps par série, 0 kg (' + JSON.stringify(p) + ')');
   ok(!hl.some(n => /squat|Soulevé|Leg curl/i.test(n)), 'le jeudi ne porte plus de jambes : le haut lourd seul');
   ok(hl.includes('Extension triceps à la poulie au-dessus de la tête') && hl.includes('Développé couché barre') && hl.includes('Rowing barre'), 'jeudi : développé couché, rowing barre, extension au-dessus de la tête (Maeo 2023)');
-  ok(s['Haut lourd'].duree === '55 min' && s['Haut volume'].duree === '55 min' && s['Bas complet'].duree === '50 min' && s['Bas · charnière'].duree === '50 min', 'durées annoncées : 55 min le lundi et le jeudi, 50 les autres');
+  ok(['Haut lourd', 'Haut volume', 'Bas complet', 'Bas · charnière'].every(t => s[t].duree === '55 min'), 'durées annoncées : 55 min partout, sac compris (' + ['Haut volume', 'Bas complet', 'Haut lourd', 'Bas · charnière'].map(t => s[t].duree).join(' / ') + ')');
+  /* le sac ne se charge pas et se compte en minutes : 3 rounds de 3 min (2 pendant la montee en charge) */
+  const sac = await fr.evaluate(() => {
+    const ex = {}; window.__bcSessionsSport().forEach(s => s.exercises.forEach(e => { if(!ex[e.name]) ex[e.name] = e; }));
+    const c = window.__bcCibleProchaine(ex['Sac · intervalles']), m = window.__bcCibleProchaine(ex['Lancers rotatifs médecine-ball']);
+    return {sac: {charge: c.charge, monter: c.monter, series: c.series, unite: c.f.unite}, mb: {charge: m.charge, monter: m.monter, series: m.series}};
+  });
+  ok(sac.sac.unite === 'min' && sac.sac.charge === 0 && !sac.sac.monter && sac.sac.series.every(x => x === 3), 'le sac : des rounds de 3 min, sans charge (' + JSON.stringify(sac.sac) + ')');
+  ok(sac.mb.charge === 0 && !sac.mb.monter && sac.mb.series.every(x => x === 5), 'les lancers ne se chargent pas : 5 par côté (' + JSON.stringify(sac.mb) + ')');
   await ctx.close();
 }
 

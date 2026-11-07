@@ -1,5 +1,17 @@
 # Où on en est — samedi 19 septembre 2026, au soir
 
+> ### Samedi 7 novembre — sport v8 : le sac et le combat
+> **Sa demande** : un programme athlétique, pas trop massif, qui serve au JJB et au sac (gants achetés,
+> abonnement en salle), polyarticulaires bienvenus. **Le haut ne bouge pas** (lundi volume, jeudi lourd).
+> **Mardi** : sauts sur box + squat, soulevé de terre roumain + cou, puis **3 rounds techniques au sac**.
+> **Samedi** : **lancers rotatifs au médecine-ball** (à la place des sauts en longueur) + bulgare, Nordic +
+> relevés, élévations + curl marteau, puis **3 rounds d'intervalles** (14 × 3 s à fond, 10 s légers).
+> Shadow boxing en échauffement ces deux jours. Sortent leg curl assis, mollets, hip thrust (55 min tenues).
+> Sources : Loturco 2016, Dunn 2022 (le coup suit les jambes), Pinto 2026 (rotation), Kamandulis 2018 (sac
+> en intervalles), Arseneau 2011 (intensité du sac). **« J'ai rien fait encore »** : la montée en charge
+> (14 jours à la moitié des tours), la séance de référence et les retests (lundis des semaines 5, 10, 15)
+> partent maintenant de la **première séance faite**, plus d'une date écrite.
+
 > ### Samedi 31 octobre, la nuit — le vrai départ, le dimanche 1er novembre
 > **Départ** : rien n'avait commencé le 22 (« on commence tout dimanche matin »). Jour 1 au dimanche
 > 1er novembre, lever 05:20 d'un coup, muscu et JJB le lundi 2 (tours × ½ jusqu'au 15, retests les

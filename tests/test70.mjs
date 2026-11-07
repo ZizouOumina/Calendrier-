@@ -23,6 +23,9 @@ async function ouvrir(quand, local){
 }
 const local = (fr,k) => fr.evaluate(x => JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))(x) || 'null'), k);
 const MERCREDI = '2026-11-18T09:00:00+01:00';   /* 31 octobre : jour 1 au 1er novembre, tours complets des le 16 */   /* semaine 3 (jour 1 au mardi 13) : tours complets, jour off. 19 octobre : jour 1 au mardi 20, la semaine 3 commence le 2 novembre. 21 octobre : la muscu commence le 26, tours complets des le 9 novembre -- mercredi 11 */
+/* 7 novembre : la montee en charge part de la premiere seance FAITE -- un squat le lundi 2 en
+   fait la premiere ; le jeudi 19 tombe 17 jours plus tard, aux tours complets. */
+const PREMIERE = {'batcave-sport-log': [{id:'p0', date:'2026-11-03', type:'Bas complet', exo:'Squat barre', series:[8,8,8,8], charge:40, unite:'reps'}]};
 const LUNDI    = '2026-11-19T09:00:00+01:00';   /* jeudi : la seance lourde depuis le regime combat (21 octobre : le 12, tours complets) */
 
 console.log('\n== 270) Un jour off, le bandeau propose de choisir une séance ==');
@@ -67,7 +70,7 @@ console.log('\n== 272) Le prévu du mois ignore la séance bonus ==');
 
 console.log('\n== 273) Saisie au pas : séries, répétitions, lest ==');
 {
-  const { ctx, fr, page } = await ouvrir(LUNDI);
+  const { ctx, fr, page } = await ouvrir(LUNDI, PREMIERE);
   ok(await valeursSaisie(fr) === '5/5/5/5', 'la saisie s\'ouvre sur la cible 5/5/5/5 (' + await valeursSaisie(fr) + ')');
   /* + une série */
   await fr.evaluate(() => document.querySelector('.sport-card.today li:not(.puissance) .saisie [data-pas="nb"][data-d="1"]').click());
@@ -76,7 +79,8 @@ console.log('\n== 273) Saisie au pas : séries, répétitions, lest ==');
   ok(await valeursSaisie(fr) === '5/5/5/5', 'un appui sur − la retire');
   await saisirSeries(fr, [9, 8, 7, 7], 2.5);
   await page.waitForTimeout(250);
-  const log = await local(fr, 'batcave-sport-log');
+  /* le journal porte aussi la premiere seance du 3 (PREMIERE) : on lit l'entree du jour */
+  const log = (await local(fr, 'batcave-sport-log')).filter(l => l.date === '2026-11-19');
   ok(log.length === 1 && JSON.stringify(log[0].series) === '[9,8,7,7]' && log[0].charge === 2.5,
      'journal : 9/8/7/7 @2,5 kg (' + JSON.stringify(log[0] && [log[0].series, log[0].charge]) + ')');
   ok(await fr.evaluate(() => document.querySelector('.sport-card.today li:not(.puissance) .saisie [data-valider]').textContent.trim()) === '✓ enregistré', 'le bouton passe à « enregistré »');
@@ -110,7 +114,8 @@ console.log('\n== 275) « Effacer » retire la séance du jour ==');
   await page.waitForTimeout(200);
   ok((await local(fr, 'batcave-sport-log')).length === 0, 'effacer vide le journal du jour');
   ok((await local(fr, 'batcave-sport-2026-11-19'))['Haut lourd-1'] === false, 'et décoche l\'exercice');
-  ok(await valeursSaisie(fr) === '5/5/5/5', 'le bloc repart de la cible');
+  /* 7 novembre : rien d'autre au journal -- la seance du jour redevient la premiere, a la moitie des tours */
+  ok(await valeursSaisie(fr) === '5/5', 'le bloc repart de la cible (' + await valeursSaisie(fr) + ')');
   await ctx.close();
 }
 
