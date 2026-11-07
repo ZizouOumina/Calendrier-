@@ -49,6 +49,9 @@ Le squelette est un **haut / bas sur quatre jours**, celui des programmes de ré
 | Charges lourdes | À l'échec ou près, charges légères et lourdes font grossir autant ; les lourdes font nettement plus de force | Les gros exercices entre 5 et 8 reps : plus fort pour le même gabarit | Schoenfeld 2017 (charges) |
 | Pliométrie | Les sauts augmentent la détente de 4,7 à 8,7 % ; force lourde et sauts dans la même séance font mieux que chacun seul | 3 × 5 sauts ou pompes claquées en tête de trois séances | Markovic 2007 ; JSSM 2025 |
 | Nordic | Les programmes qui l'incluent divisent par deux les blessures aux ischios (RR 0,49) | 3 × 4-8 le samedi | van Dyk 2019 |
+| Paires | Les paires agoniste-antagoniste gardent le volume, la force et la prise de muscle des séries classiques, en moins de temps | Paires A / B : la séance tient en 55 min | Zhang 2025 |
+| Cou | Chaque livre (450 g) de force du cou en plus : −5 % de risque de commotion | 9 séries par semaine et l'habitude du jeudi soir | Collins 2014 |
+| Sommeil | « 7 à 9 h » ne convient pas à tous les athlètes ; ils disent avoir besoin d'environ 8 h 20 pour se sentir reposés | Coucher 21:35, lever 05:20 : 7 h 45 au lit. La lumière éteinte à 21:15 donne 8 h au lit | Walsh 2021 ; Sargent 2021 |
 
 ## Les quatre séances
 
@@ -210,6 +213,25 @@ Le JJB (garde, ponts, sorties de hanche) fait travailler la sangle trois fois pa
 - Sommeil : lever 05:20, coucher 21:35, tous les jours.
 - Les étirements (`guide-etirements.html`) se font quand il y a un moment, jamais juste avant une série lourde.
 
+## À quoi t'attendre si tu suis tout
+Le 7 novembre : « dis-moi à quel corps je peux m'attendre si je suis tout ».
+
+**Le point de départ.** 60 kg pour 1,82 m le 4 novembre. Sans mesure du gras, à environ 12 %, cela fait ≈ 53 kg de masse maigre, soit un FFMI (la masse maigre divisée par la taille au carré) d'environ **16**. La médiane des hommes de 18 à 34 ans est de **18,9** (Schutz 2002). Le plafond naturel est de **25** : c'est celui des athlètes sans produits les plus musclés et des Mr. America d'avant les stéroïdes (Kouri 1995). Il y a beaucoup de place pour progresser, et « massif » est à des années.
+
+**Ce que disent les études.** Un programme de musculation fait gagner **≈ 1,5 kg de muscle** en moyenne, sur des essais de 2 à 3 mois le plus souvent (Benito 2020, 111 études, 1 927 hommes). Les écarts entre personnes sont énormes : de −2 % à +59 % de volume du biceps en 12 semaines, de 0 à +250 % de force (Hubal 2005). Au-delà de six mois, il n'existe presque pas d'essais contrôlés : les chiffres à un et trois ans sont une **extrapolation** (des gains qui ralentissent chaque année), pas une mesure. Prendre du poids plus vite que 0,25 à 0,5 % par semaine (Iraki 2019) ajoute surtout du gras, ni plus de muscle ni plus de force (Helms 2023).
+
+Si la santé suit (le médecin d'abord), avec au moins 9 séances sur 10 faites, le plan mangé et 8 h de sommeil :
+
+| Quand | Poids | Muscle gagné | À quoi ça ressemble |
+|---|---|---|---|
+| Fin mars 2027 (4 mois) | ≈ 64 à 67 kg | ≈ +1,5 à +3 kg | Les kilos perdus repris. La force monte vite, le corps change peu : épaules et dos un peu plus pleins |
+| Novembre 2027 (1 an) | ≈ 66 à 70 kg | ≈ +4 à +7 kg | Ça se voit en t-shirt : épaules plus larges, dos et bras visibles, ventre plat. Plus fort et plus explosif au JJB |
+| Fin 2029 (3 ans) | ≈ 70 à 76 kg à ~12 % | ≈ +8 à +13 kg (FFMI ≈ 18,5 à 20) | Silhouette en V nette, muscles visibles habillé, abdos visibles si tu restes vers 10-12 % de gras. Un corps d'athlète de combat, pas de bodybuilder |
+
+**Où tu tomberas dans la fourchette** : l'assiduité (le nombre de séries dures faites, Pelland 2025), le surplus et les protéines (Iraki 2019), le sommeil (Walsh 2021), la génétique (Hubal 2005), et d'abord ta santé (la perte de poids du début de novembre doit être expliquée).
+
+**L'objectif « 72 kg fin mars »** : depuis 60 kg, il faudrait ≈ 0,58 kg par semaine, presque 1 % du poids, soit le double du rythme qui reste du muscle. Au rythme maigre : ≈ 64-67 kg fin mars, 72 kg vers l'automne 2027.
+
 ## Les sources
 - Pelland JC et al. *The Resistance Training Dose Response: Meta-Regressions Exploring the Effects of Weekly Volume and Frequency on Muscle Hypertrophy and Strength Gains.* Sports Med, 2025. https://pubmed.ncbi.nlm.nih.gov/41343037/
 - Schoenfeld BJ et al. *Dose-response relationship between weekly resistance training volume and increases in muscle mass.* J Sports Sci, 2017. https://pubmed.ncbi.nlm.nih.gov/27433992/
@@ -229,3 +251,11 @@ Le JJB (garde, ponts, sorties de hanche) fait travailler la sangle trois fois pa
 - Pinto M et al. *Effects of Specific Training Programs on Punch Performance.* Sports, 2026. https://pubmed.ncbi.nlm.nih.gov/42188570/
 - Kamandulis S et al. *Sport-Specific Repeated Sprint Training Improves Punching Ability and Upper-Body Aerobic Power in Experienced Amateur Boxers.* J Strength Cond Res, 2018. https://pubmed.ncbi.nlm.nih.gov/28800004/
 - Arseneau E et al. *VO₂ requirements of boxing exercises.* J Strength Cond Res, 2011. https://pubmed.ncbi.nlm.nih.gov/21217532/
+- Zhang X et al. *Superset Versus Traditional Resistance Training Prescriptions: A Systematic Review and Meta-analysis.* Sports Med, 2025. https://pubmed.ncbi.nlm.nih.gov/39903375/
+- Collins CL et al. *Neck strength: a protective factor reducing risk for concussion in high school sports.* J Prim Prev, 2014. https://pubmed.ncbi.nlm.nih.gov/24930131/
+- Walsh NP et al. *Sleep and the athlete: narrative review and 2021 expert consensus recommendations.* Br J Sports Med, 2021. https://pubmed.ncbi.nlm.nih.gov/33144349/
+- Sargent C et al. *How Much Sleep Does an Elite Athlete Need?* Int J Sports Physiol Perform, 2021. https://pubmed.ncbi.nlm.nih.gov/34021090/
+- Benito PJ et al. *A Systematic Review with Meta-Analysis of the Effect of Resistance Training on Whole-Body Muscle Growth in Healthy Adult Males.* Int J Environ Res Public Health, 2020. https://pubmed.ncbi.nlm.nih.gov/32079265/
+- Hubal MJ et al. *Variability in muscle size and strength gain after unilateral resistance training.* Med Sci Sports Exerc, 2005. https://pubmed.ncbi.nlm.nih.gov/15947721/
+- Schutz Y et al. *Fat-free mass index and fat mass index percentiles in Caucasians aged 18-98 y.* Int J Obes, 2002. https://pubmed.ncbi.nlm.nih.gov/12080449/
+- Kouri EM et al. *Fat-free mass index in users and nonusers of anabolic-androgenic steroids.* Clin J Sport Med, 1995. https://pubmed.ncbi.nlm.nih.gov/7496846/
