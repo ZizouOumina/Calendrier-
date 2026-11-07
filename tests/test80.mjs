@@ -42,8 +42,9 @@ console.log('\n== 1) Une séance à moitié faite vaut une demi-séance ==');
 {
   /* Haut lourd compte 8 exercices depuis le 30 septembre au soir (haut lourd + jambes :
      split squat et soulevé de terre roumain y reviennent, élévations latérales aussi),
-     9 depuis le 21 octobre (les tractions serviette, en fin de séance). */
-  for(const [n, attendu, desc] of [[0,'0,0','aucune case'], [3,'0,3','3 sur 9'], [4,'0,4','4 sur 9'], [9,'1,0','les 9']]){
+     9 depuis le 21 octobre (les tractions serviette, en fin de séance), 10 depuis le 7 novembre
+     (le crunch à la poulie, en paire avec elles). */
+  for(const [n, attendu, desc] of [[0,'0,0','aucune case'], [3,'0,3','3 sur 10'], [4,'0,4','4 sur 10'], [10,'1,0','les 10']]){
     const st = {}; for(let i = 0; i < n; i++) st['Haut lourd-' + i] = true;
     const {ctx, page, fr} = await ouvrir({['batcave-sport-' + JOUR]: st});
     await aller(fr, page, 'objectifs');
