@@ -85,8 +85,9 @@ console.log('\n== 252) Mode partiels : J-7 avant le premier examen, jusqu\'au de
   const p = await fr.evaluate(() => window.__bcPeriode('2026-11-10'));
   ok(p && p.id === 'partiels' && p.debut === '2026-11-09', 'le 10 novembre est en mode partiels');
   const p8 = await fr.evaluate(() => window.__bcPeriode('2026-11-08'));
-  /* 12 octobre : la phase Español court jusqu'au 12 novembre -- le dimanche 8 en fait encore partie. */
-  ok(p8 && p8.id === 'es-1', 'le 8 novembre est encore dans la phase Español (jusqu\'au 12) (' + (p8 && p8.id) + ')');
+  /* 12 octobre : la phase Español court jusqu'au 12 novembre -- le dimanche 8 en fait encore partie.
+     7 novembre : es-1 s'arrete le 7 et la reprise part le 9 -- le dimanche 8 est hors phase. */
+  ok(p8 === null, 'le dimanche 8 novembre est hors phase (es-1 jusqu\'au 7, la reprise dès le 9) (' + (p8 && p8.id) + ')');
   const g = await grille(fr, 'tuesday', '2026-11-10');
   /* Depuis le 23 septembre, une journee de partiels est une journee SANS COURS, et rien
      d'autre : « pendant les partiels les seances restent les memes. mes journees ne
@@ -140,7 +141,8 @@ console.log('\n== 253) Jour d\'examen et veille ==');
   const j = await grille(fr, 'weekday', '2026-11-19');
   ok(j.includes('15:00 Examen · Bioquímica') && j.includes('13:30 Préparer · Examen · Bioquímica') && j.includes('14:30 Trajet · Examen · Bioquímica') && !j.some(x => /Cours$/.test(x)), 'jeudi 19 : préparation 13:30, trajet 14:30, examen 15:00 → 17:00, le cours de 15:30 sacrifié');
   const jour1 = await fr.evaluate(() => ({ p: window.__bcPeriode('2026-11-20'), g: window.__bcGrille('friday', '2026-11-20').map(b => b[1]) }));
-  ok(jour1.p === null && jour1.g.some(x => /Projets perso matinal/.test(x)), 'le 20 : fin des partiels, les blocs de projet reprennent');
+  /* 7 novembre : apres les partiels, c'est le mois d'espagnol repris qui reprend (jusqu'au 8 decembre) */
+  ok(jour1.p && jour1.p.id === 'es-1-reprise' && jour1.g.some(x => /Español · escribir largo/.test(x)), 'le 20 : fin des partiels, le mois d\'espagnol reprend (vendredi 05:30 : escribir largo)');
   await ctx.close();
 }
 

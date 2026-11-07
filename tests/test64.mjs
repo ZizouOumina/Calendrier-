@@ -71,7 +71,7 @@ console.log('\n== 231) Phase 1 (mercredi 16 septembre) : blocs Projets perso ren
   ok(g.d0530 === undefined && g.d1120 === 'Español · simulación' && g.d1330 === 'Español · balance de la semana', 'dimanche : plus de bloc à 05:30, simulación et balance : ' + [g.d0530, g.d1120, g.d1330].join(' / '));
   ok(g.tEsc === 'projet' && g.tConv === null && g.tAnki === null, 'type : escribir = projet, conversación real et Anki = hors compteur (' + g.tEsc + ', ' + g.tConv + ', ' + g.tAnki + ')');
   ok(g.cible === 105, 'cible Español du jour = 55 + 50 = 105 min (obtenu ' + g.cible + ')');
-  ok(g.periode === 'es-1' && /phase 1 · J-60$/.test(g.grille), 'relevé GRILLE : « Español · phase 1 · J-60 » (fin le 15 novembre) (obtenu « ' + g.grille + ' »)');
+  ok(g.periode === 'es-1' && /phase 1 · J-52$/.test(g.grille), 'relevé GRILLE : « Español · phase 1 · J-52 » (es-1 finit le 7 novembre) (obtenu « ' + g.grille + ' »)');
   ok(g.cellules.length === 3 && /Español/.test(g.cellules[2]), 'troisième cellule « Español » sur le tableau de bord : ' + g.cellules.join(' | '));
   ok(!g.btnDash && !g.btnTimer, 'boutons Pomodoro Español visibles (tableau de bord et Études)');
   ok(g.habits.some(h => /formules du jour/.test(h)) && g.habits.some(h => /natif/.test(h)) && g.habits.some(h => /20 pages/.test(h)), 'les trois habitudes du plan sont dans la console du jour');
@@ -198,22 +198,28 @@ console.log('\n== 232) Avant le lundi 14 septembre : aucune période, la grille 
    jour sans phase le DIMANCHE 15 novembre.
    Le 15 octobre, avec le jour 1 au vendredi 16 : dernier jour le dimanche 15 novembre, premier
    jour sans phase le LUNDI 16 novembre. */
-console.log('\n== 233) Fin de phase (lundi 16 novembre) puis décembre : les projets reviennent ==');
+/* 7 novembre : es-1 s'arrete le samedi 7, le dimanche 8 est hors phase, et le mois repart en
+   entier du lundi 9 au mardi 8 decembre (es-1-reprise) : premier jour sans phase le MERCREDI 9
+   DECEMBRE. */
+console.log('\n== 233) Fin du mois repris (mardi 8 décembre) puis la suite : les projets reviennent ==');
 {
-  const { ctx, fr } = await ouvrir('2026-11-16T12:00:00+01:00');
+  const { ctx, fr } = await ouvrir('2026-12-09T12:00:00+01:00');
   const g = await fr.evaluate(() => {
     const at = (cle, iso, h) => (window.__bcGrille(cle, iso).find(b => b[0] === h) || [])[1];
     /* Le vendredi n'a pas de bloc a 11:20 (Jumu'ah) : les trois creneaux se lisent donc sur
-       le premier MARDI d'apres la phase, le 17 novembre ; le bloc matinal, sur le vendredi 20. */
-    return { p: (window.__bcPeriode('2026-11-16') || {}).id, p25: (window.__bcPeriode('2026-11-15') || {}).id, a1120: at('tuesday','2026-11-17','11:20'), a1300: at('tuesday','2026-11-17','13:00'), a1400: at('tuesday','2026-11-17','14:00'),
-             f0530: at('friday','2026-11-20','05:30'), releve: document.querySelector('#bc-grille .v').textContent,
-             p3: (window.__bcPeriode('2026-12-08') || {}).id, d1120: at('tuesday','2026-12-08','11:20'), d1300: at('tuesday','2026-12-08','13:00'), d1400: at('tuesday','2026-12-08','14:00'), ds1800: at('saturday','2026-12-12','18:00') };
+       le premier MARDI d'apres la phase, le 15 decembre ; le bloc matinal, sur le vendredi 11. */
+    return { p: (window.__bcPeriode('2026-12-09') || {}).id, p25: (window.__bcPeriode('2026-12-08') || {}).id,
+             p8: (window.__bcPeriode('2026-11-08') || {}).id, p16: (window.__bcPeriode('2026-11-16') || {}).id,
+             a1120: at('tuesday','2026-12-15','11:20'), a1300: at('tuesday','2026-12-15','13:00'), a1400: at('tuesday','2026-12-15','14:00'),
+             f0530: at('friday','2026-12-11','05:30'), releve: document.querySelector('#bc-grille .v').textContent,
+             ds1800: at('saturday','2026-12-12','18:00') };
   });
   /* Regime combat : le mardi, 13:00 est « Lire » et les projets sont a 14:00. */
-  ok(g.p === undefined && g.a1120 === 'Question ouverte ou autre' && g.a1300 === 'Lire' && g.a1400 === 'Projets perso 2' && g.f0530 === 'Projets perso matinal', 'dès le 16 novembre : plus de phase, les blocs reviennent aux projets ('+[g.p,g.a1300,g.a1400].join(' / ')+')'); if(0) ok(false, 'classe à 14:00');
-  ok(g.p25 === 'es-1', 'le dimanche 15 novembre est encore le dernier jour de la phase (' + g.p25 + ')');
+  ok(g.p === undefined && g.a1120 === 'Question ouverte ou autre' && g.a1300 === 'Lire' && g.a1400 === 'Projets perso 2' && g.f0530 === 'Projets perso matinal', 'dès le 9 décembre : plus de phase, les blocs reviennent aux projets ('+[g.p,g.a1300,g.a1400].join(' / ')+')');
+  ok(g.p25 === 'es-1-reprise' && g.p16 === 'es-1-reprise', 'le mardi 8 décembre est le dernier jour du mois repris, et le 16 novembre en fait partie (' + [g.p25, g.p16].join(' / ') + ')');
+  ok(g.p8 === undefined, 'le dimanche 8 novembre est hors phase (' + g.p8 + ')');
   ok(!/phase/.test(g.releve), 'relevé GRILLE : ' + g.releve);
-  ok(g.p3 === undefined && g.d1120 === 'Question ouverte ou autre' && g.d1300 === 'Lire' && g.d1400 === 'Projets perso 2' && g.ds1800 === 'Projets perso 3', 'décembre : même grille, tout en projets (le samedi 18:00 est un bloc de projets depuis le régime combat)');
+  ok(g.ds1800 === 'Projets perso 3', 'le samedi 18:00 reste un bloc de projets depuis le régime combat (' + g.ds1800 + ')');
   await ctx.close();
 }
 

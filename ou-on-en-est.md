@@ -1,5 +1,21 @@
 # Où on en est — samedi 19 septembre 2026, au soir
 
+> ### Samedi 7 novembre, le soir — le rattrapage refait, le mois d'espagnol repris
+> **Ses mots** : « refais le plan de rattrapage avec le réveil à 5h30 […] il faut que je rattrape
+> énormément de cours sur la semaine qui vient, et on décale aussi le début de la période
+> d'apprentissage d'espagnol », puis « le rattrapage et l'espagnol en même temps », puis « pas le 8
+> mais le 9, demain je vais faire le mealprep ». Rien n'a été fait du 6 au 7 (malade).
+> **Espagnol** : es-1 s'arrête le samedi 7 (le passé garde ses blocs) ; le dimanche 8 est hors phase ;
+> le mois repart en entier du **lundi 9 au mardi 8 décembre** (`es-1-reprise`, ≈ 11 h de blocs par
+> semaine). L'épreuve suit : diagnostic le 15, puis 22, 29 novembre et 6 décembre. L'objectif
+> « Espagnol » ne compte plus les blocs d'avant le 9 : 30,6 h en novembre, 11,8 h en décembre.
+> **Rattrapage** : les 44 temas, du **lundi 9**, régénéré sur la grille réelle (lever 05:20, Anki 05:30)
+> dans l'ordre des échéances : Anatomía T2 et Biología 10 le lundi (practicas 1 et 4), T10 à T12 avant la
+> practica 2 (semaine du 16), Epidemiología 6, 8 et 10 avant RR/OR (26-27), l'article du cuestionario IA
+> le 12. Les blocs d'espagnol restent à l'espagnol ; du 9 au 14, la salle et le JJB attendent le
+> médecin et leurs créneaux vont au rattrapage (la muscu part de la première séance faite). **34 temas
+> du 9 au 15, la file vide le mardi 24.** Le dossier Español et la prise en main suivent les dates.
+
 > ### Samedi 7 novembre — sport v8 : le sac et le combat
 > **Sa demande** : un programme athlétique, pas trop massif, qui serve au JJB et au sac (gants achetés,
 > abonnement en salle), polyarticulaires bienvenus. **Le haut ne bouge pas** (lundi volume, jeudi lourd).

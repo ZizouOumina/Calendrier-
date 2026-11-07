@@ -141,18 +141,22 @@ console.log('\n== 263) Le samedi du régime combat : lever 05:30, bras et épaul
 console.log('\n== 264) « Phase Español » ne veut dire que la phase Español ==');
 {
   const NOEL = {'batcave-vacances': [{debut:'2026-12-21', fin:'2027-01-06', label:'Noël'}]};
-  const EX = Object.assign({'batcave-examens': {'Anatomía I':'2026-10-16', 'Bioquímica':'2026-11-19'}}, NOEL);
+  /* 7 novembre : le mois d'espagnol court du 9 novembre au 8 decembre -- des partiels « hors phase »
+     se lisent donc apres le 8 decembre (Bioquimica le 16). */
+  const EX = Object.assign({'batcave-examens': {'Anatomía I':'2026-10-16', 'Bioquímica':'2026-12-16'}}, NOEL);
   const { ctx, fr } = await ouvrir('2026-10-02T09:00:00+02:00', EX);
   const r = await fr.evaluate(() => ({
     oct2: (window.__bcPhaseEspanol('2026-10-02') || {}).id || null,
     oct13: window.__bcPhaseEspanol('2026-10-13'), oct13p: (window.__bcPeriode('2026-10-13') || {}).id,
-    nov16: window.__bcPhaseEspanol('2026-11-16'), nov16p: (window.__bcPeriode('2026-11-16') || {}).id,
+    nov16: (window.__bcPhaseEspanol('2026-11-16') || {}).id || null,
+    dec14: window.__bcPhaseEspanol('2026-12-14'), dec14p: (window.__bcPeriode('2026-12-14') || {}).id,
     dec28: window.__bcPhaseEspanol('2026-12-28'), dec28p: (window.__bcPeriode('2026-12-28') || {}).id,
     juil: window.__bcPhaseEspanol('2027-07-10'), juilp: (window.__bcPeriode('2027-07-10') || {}).id
   }));
   ok(r.oct2 === 'es-1', 'le 2 octobre : phase Español');
   ok(r.oct13p === 'partiels' && r.oct13 && r.oct13.sous === 'es-1', 'le 13 octobre, partiels dans la phase : la phase est toujours vue dessous');
-  ok(r.nov16p === 'partiels' && r.nov16 === null, 'le 16 novembre, partiels hors phase : pas de phase Español');
+  ok(r.nov16 === 'es-1-reprise', 'le 16 novembre : le mois d\'espagnol repris (' + r.nov16 + ')');
+  ok(r.dec14p === 'partiels' && r.dec14 === null, 'le 14 décembre, partiels hors phase : pas de phase Español');
   ok(r.dec28p === 'vacances' && r.dec28 === null, 'le 28 décembre, vacances : pas de phase Español (' + r.dec28p + ')');
   ok(r.juilp === 'ete' && r.juil === null, 'en juillet, l\'été : pas de phase Español');
   await ctx.close();

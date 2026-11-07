@@ -30,7 +30,8 @@ console.log('\n== 265) Le jour 1 au jeudi 24, la phase Español au 23 octobre ==
   const { ctx, fr } = await ouvrir('2026-09-23T10:00:00+02:00');
   const r = await fr.evaluate(() => ({
     debut: window.__bcProgrammeDebut,
-    es23: !!window.__bcPhaseEspanol('2026-11-15'), es24: !!window.__bcPhaseEspanol('2026-11-16'),
+    es23: !!window.__bcPhaseEspanol('2026-12-08'), es24: !!window.__bcPhaseEspanol('2026-12-09'),
+    es7: !!window.__bcPhaseEspanol('2026-11-07'), es8: !!window.__bcPhaseEspanol('2026-11-08'), es9: !!window.__bcPhaseEspanol('2026-11-09'),
     nom23: (window.__bcPeriode('2026-10-23') || {}).id || null
   }));
   /* 28 septembre au soir, « tout commence demain » : jour 1 au mardi 29, et la phase
@@ -50,9 +51,13 @@ console.log('\n== 265) Le jour 1 au jeudi 24, la phase Español au 23 octobre ==
      19 octobre, « on decale tout a demain » : jour 1 au mardi 20, meme fin de phase.
      21 octobre, « on commence demain la Batcave » : jour 1 au mercredi 21, meme fin de phase.
      21 octobre au matin, « on commence jeudi matin » : jour 1 au jeudi 22, meme fin de phase.
-     31 octobre, « on commence tout dimanche matin » : jour 1 au dimanche 1er novembre, meme fin de phase. */
+     31 octobre, « on commence tout dimanche matin » : jour 1 au dimanche 1er novembre, meme fin de phase.
+     7 novembre, « on decale aussi le debut de la periode d'espagnol », puis « pas le 8 mais le 9 » :
+     es-1 s'arrete le samedi 7, le dimanche 8 est hors phase, et le mois repart en entier du lundi 9
+     au mardi 8 decembre (es-1-reprise). */
   ok(r.debut === '2026-11-01', 'PROGRAMME_DEBUT = ' + r.debut);
-  ok(r.es23 && !r.es24, 'phase Español jusqu\'au 15 novembre, plus le 16 novembre (' + r.es23 + ' / ' + r.es24 + ')');
+  ok(r.es7 && !r.es8 && r.es9, 'es-1 jusqu\'au samedi 7, rien le dimanche 8, la reprise dès le lundi 9 (' + [r.es7, r.es8, r.es9].join(' / ') + ')');
+  ok(r.es23 && !r.es24, 'le mois repris court jusqu\'au mardi 8 décembre, plus le 9 (' + r.es23 + ' / ' + r.es24 + ')');
   await ctx.close();
 }
 
