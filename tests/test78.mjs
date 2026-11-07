@@ -30,7 +30,8 @@ console.log('\n== 1) Le réacteur et la cellule disent la même chose : projets 
 /* Depuis le 25 septembre les projets perso n'ont plus de cible ni de minuteur : le reacteur
    ne leur dessine plus d'arc (« projets — sans minuteur »), la cellule dit ce que la grille
    leur donne dans la journee, et 1 h d'espagnol enregistree ne les remplit toujours pas. */
-for(const [d, desc] of [['2026-11-16','regime combat, projets perso au programme'],
+/* 7 novembre : le mois d'espagnol repris court jusqu'au 8 decembre -- le lundi sans phase est le 14 */
+for(const [d, desc] of [['2026-12-14','regime combat, projets perso au programme'],
                         ['2027-02-15','semestre 2']]){
   const {ctx, fr} = await ouvrir({'batcave-sessions':[es(d,60)]}, d+'T21:00:00+02:00');
   const l = await legend(fr), t = await temps(fr);
@@ -72,15 +73,16 @@ console.log('\n== 3) Sans bloc de projets dans la journée, la cellule dit pourq
 {
   const {ctx, fr} = await ouvrir({}, '2026-09-14T09:00:00+02:00');
   const t = await temps(fr), l = await legend(fr);
-  ok(/Español à leur place jusqu’au 15 nov/.test(t), 'cellule : ' + (t.match(/Español à leur place[^|]*/)||['(absent)'])[0]);
+  /* 7 novembre : es-1 s'arrete le 7 novembre (le mois repart le 9) */
+  ok(/Español à leur place jusqu’au 07 nov/.test(t), 'cellule : ' + (t.match(/Español à leur place[^|]*/)||['(absent)'])[0]);
   ok(/projets — sans minuteur/.test(l), 'réacteur : ' + (l.match(/projets[^‖]*/)||['(absent)'])[0].trim());
   await ctx.close();
 }
 {
-  const {ctx, fr} = await ouvrir({}, '2026-11-16T09:00:00+01:00');   /* la phase Español finit le 15 novembre (depuis le 15 octobre) */
+  const {ctx, fr} = await ouvrir({}, '2026-12-14T09:00:00+01:00');   /* la phase Español finit le 15 novembre (depuis le 15 octobre) ; le mois repris, le 8 decembre (7 novembre) */
   const t = await temps(fr);
   ok(!/Español à leur place/.test(t) && /Projets perso \| 0 \| \d+ h( \d+)? au planning, sans minuteur/.test(t),
-     'le 16 novembre, la mention disparaît et la grille redonne des blocs de projets, toujours sans minuteur : ' + (t.match(/Projets perso[^|]*\|[^|]*\|[^|]*/)||[''])[0].trim());
+     'le 14 décembre, la mention disparaît et la grille redonne des blocs de projets, toujours sans minuteur : ' + (t.match(/Projets perso[^|]*\|[^|]*\|[^|]*/)||[''])[0].trim());
   await ctx.close();
 }
 
