@@ -1,5 +1,18 @@
 # Où on en est — samedi 19 septembre 2026, au soir
 
+> ### Dimanche 8 novembre — plus de cottage cheese, le 3e œuf revient
+> **Ses mots** : « enlève le cottage cheese, ça me dégoûte, je peux remplacer par quoi ».
+> **Le changement** : dès le 8, la collation redevient 50 g d'amandes, **3 œufs durs** et 7 dattes
+> (≈ 700 kcal, 31 g de protéines, 0,49 g par kilo) ; le mardi et le jeudi, la boîte de sardines
+> remplace les trois œufs. Les jours d'avant gardent leur cottage cheese (`COTTAGE_FIN`). La journée :
+> ≈ 3 275 kcal et 126 g de protéines (2,0 g par kilo), ≈ 3 800 kcal et 136 g les jours de JJB.
+> **Ce qui suit** : la liste de courses perd sa ligne (17 articles) et passe à 15 œufs (trois boîtes
+> de 6) ; la semaine type des besoins devient celle du 9 ; le batch cooking cuit 15 œufs. Le budget
+> compte les 5 œufs de plus (+1,41 € par semaine au plan ; le cottage cheese n'avait pas de prix) : la
+> cagnotte conseillée passe de 200 à 190 €, le plafond Nourriture de 201 à 209 € (migration v8, s'il
+> vaut encore 201). L'autre option proposée : 150 g de skyr nature avec les dattes coupées dedans,
+> qui garde toutes les protéines.
+
 > ### Samedi 7 novembre, le soir — le rattrapage refait, le mois d'espagnol repris
 > **Ses mots** : « refais le plan de rattrapage avec le réveil à 5h30 […] il faut que je rattrape
 > énormément de cours sur la semaine qui vient, et on décale aussi le début de la période

@@ -52,18 +52,20 @@ console.log('— vendredi 25 septembre : la premiere periode, 28 sept. -> 24 oct
      la sauce remplacait le soir (+0,21 EUR) : 37,65 EUR. */
   /* 30 octobre : son releve chez Alcampo -- les fruits rouges, 2,85 EUR les 450 g (6,33 EUR/kg), 700 g par
      semaine : +4,43 EUR, 42,09 EUR. */
-  ok(pres(a.semaine, 42.09), 'courses : 42,09 EUR par semaine hors les articles sans prix (dattes, sardines, galettes, cottage cheese), les fruits rouges releves le 30 octobre (' + a.semaine.toFixed(2) + ')');
+  /* 8 novembre : le cottage cheese sort (il le degoute ; il n'avait pas de prix, il etait hors du total) et
+     5 oeufs de plus par semaine entrent : +1,41 EUR, 43,50 EUR. */
+  ok(pres(a.semaine, 43.50), 'courses : 43,50 EUR par semaine hors les articles sans prix (dattes, sardines, galettes), les fruits rouges releves le 30 octobre, les 5 oeufs du 8 novembre (' + a.semaine.toFixed(2) + ')');
   ok(a.estimes.length === 0, 'plus aucune estimation : les amandes ont leur prix releve');
-  ok(a.cagnotte === 200, 'jour du virement : 200 EUR dans la cagnotte (230 avant le prix des fruits rouges, 30 octobre) — ce que laisse la periode la plus chere, les courses comptees en caisse (plan dense du 23 octobre au soir) (' + a.cagnotte + ')');
+  ok(a.cagnotte === 190, 'jour du virement : 190 EUR dans la cagnotte (230 avant le prix des fruits rouges, 30 octobre ; 200 avant les oeufs du 8 novembre) — ce que laisse la periode la plus chere, les courses comptees en caisse (plan dense du 23 octobre au soir) (' + a.cagnotte + ')');
   ok(a.periode.debut === '2026-09-28' && a.periode.fin === '2026-10-24', 'premiere periode du 28 sept. (dernier virement a l\'ancienne date) au 24 oct.');
   ok(a.periode.samedis === 4, '4 samedis de courses');
-  ok(pres(a.periode.balayage, 60.31), 'le 24 : environ 60,31 EUR a balayer (' + a.periode.balayage.toFixed(2) + ')');
-  ok(pres(a.moyenne, 250.21), 'epargne moyenne : 250,21 EUR par mois (hors les prix a relever, les fruits rouges releves le 30 octobre) (' + a.moyenne.toFixed(2) + ')');
+  ok(pres(a.periode.balayage, 63.55), 'le 24 : environ 63,55 EUR a balayer (' + a.periode.balayage.toFixed(2) + ')');
+  ok(pres(a.moyenne, 242.89), 'epargne moyenne : 242,89 EUR par mois (hors les prix a relever, les fruits rouges releves le 30 octobre) (' + a.moyenne.toFixed(2) + ')');
   ok(a.prochaine5 && a.prochaine5.debut === '2026-12-25' && a.prochaine5.fin === '2027-01-24' && a.prochaine5.samedis === 5, 'prochaine periode a 5 samedis : 25 dec. -> 24 janv.');
-  ok(pres(a.prochaine5.balayage, 0.17), 'avec 5 samedis et les reserves, il reste encore 0,17 EUR le 24 — tout juste (' + a.prochaine5.balayage.toFixed(2) + ')');
+  ok(pres(a.prochaine5.balayage, 1.72), 'avec 5 samedis et les reserves, il reste encore 1,72 EUR le 24 — tout juste (' + a.prochaine5.balayage.toFixed(2) + ')');
   const L = a.lignes;
   ok(L[0].montant === 700 && L[0].plus && L[0].quand === 'le 28', 'le fil commence par le virement, le 28 pour cette premiere periode');
-  ok(L[1].montant === 200 && L[1].cagnotte && L[1].quand === 'le 28', 'puis la cagnotte, le meme jour');
+  ok(L[1].montant === 190 && L[1].cagnotte && L[1].quand === 'le 28', 'puis la cagnotte, le meme jour');
   const club = L.find(l => /club/.test(l.action));
   ok(club && club.montant === 70 && club.quand === 'le 5', 'le club, 70 EUR, le 5 : il le paie le lundi 5, premier jour de JJB (4 octobre)');
   const lic = L.find(l => /Licence/.test(l.action));
@@ -79,7 +81,7 @@ console.log('— vendredi 25 septembre : la premiere periode, 28 sept. -> 24 oct
   ok(pres(somme, 700), 'tout ce qui sort fait exactement 700 EUR');
   const txt = await fr.evaluate(() => document.getElementById('budget-mois-panel').innerText);
   ok(/Le mois de l.argent/.test(txt), 'le panneau est dans l\'onglet Budget');
-  ok(txt.includes('200,00 €') && txt.includes('700,00 €'), 'montants affiches : 200,00 EUR et 700,00 EUR');
+  ok(txt.includes('190,00 €') && txt.includes('700,00 €'), 'montants affiches : 190,00 EUR et 700,00 EUR');
   ok(/28 sept\..*24 oct\..*4 samedis/.test(txt), 'la periode et ses samedis sont ecrits en tete');
   ok(/Le 28, dans la cagnotte/.test(txt) && /Ce mois-ci le 28, puis chaque 25/.test(txt), 'la tuile dit : ce mois-ci le 28, puis chaque 25');
   ok(/Le 24, en plus/.test(txt), 'la tuile du balayage dit le 24');
@@ -102,7 +104,7 @@ console.log('— dimanche 3 janvier : une periode a 5 samedis');
   const {ctx, fr} = await ouvrir('2027-01-03T20:00:00+01:00');
   const a = await fr.evaluate(() => window.__bcMoisArgent('2027-01-03'));
   ok(a.periode.debut === '2026-12-25' && a.periode.fin === '2027-01-24' && a.periode.samedis === 5, 'periode du 25 dec. au 24 janv., 5 samedis');
-  ok(a.cagnotte === 200, 'la cagnotte du 25 ne bouge pas : 200 EUR');
+  ok(a.cagnotte === 190, 'la cagnotte du 25 ne bouge pas : 190 EUR');
   ok(a.periode.balayage >= 0, 'et le compte ne passe pas dans le rouge (' + a.periode.balayage.toFixed(2) + ' EUR le 24)');
   ok(a.lignes[0].quand === 'le 25' && a.lignes[1].quand === 'le 25' && a.lignes[a.lignes.length - 1].quand === 'le 24', 'virement et cagnotte le 25, balayage le 24');
   const tete = await fr.evaluate(() => document.getElementById('ma-periode').textContent);
@@ -144,7 +146,7 @@ console.log('— une charge qui change : le plan suit');
   const {ctx, fr} = await ouvrir('2026-09-25T20:00:00+02:00', {charges});
   const a = await fr.evaluate(() => window.__bcMoisArgent('2026-09-25'));
   ok(a.fixes === 268.5, 'charges fixes : 268,50 EUR avec une assurance lissee de 20 EUR (' + a.fixes + ')');
-  ok(a.cagnotte === 180, 'la cagnotte du 28 descend a 180 EUR (' + a.cagnotte + ')');
+  ok(a.cagnotte === 170, 'la cagnotte du 28 descend a 170 EUR (' + a.cagnotte + ')');
   const autre = a.lignes.find(l => /Assurance/.test(l.action));
   ok(autre && /Licence JJB/.test(autre.action) && pres(autre.montant, 22.5), 'la charge sans date passe dans le fil, regroupee avec la licence : 20 + 2,50 EUR par mois (' + (autre && autre.action) + ')');
   ok(Math.abs(a.lignes[a.lignes.length - 1].solde) < 0.001, 'et le compte finit toujours a zero le 27');
@@ -175,9 +177,12 @@ console.log('— des charges au-dessus du virement : le fil le dit, sans solde n
 
 console.log('— le plafond Nourriture suit le prix des amandes');
 {
-  for(const [avant, attendu, nom] of [[201, 201, 'pose par la Batcave (201) : suit le plan en caisse, 201 (conditionnements et cycles compris ; hors les prix a relever ; les fruits rouges releves le 30 octobre)'], [209, 201, 'la valeur du 4 octobre (209) : 201'], [206, 201, 'la valeur du 6 octobre (206) : 201'], [180, 180, 'regle a la main (180) : ne bouge pas']]){
+  for(const [avant, attendu, nom, drapeaux] of [[201, 209, 'pose par la Batcave (201) : suit le plan en caisse, 209 (conditionnements et cycles compris ; hors les prix a relever ; les fruits rouges releves le 30 octobre ; les oeufs du 8 novembre)'], [209, 209, 'la valeur du 4 octobre (209) : 209'], [206, 209, 'la valeur du 6 octobre (206) : 209'], [180, 180, 'regle a la main (180) : ne bouge pas'],
+      /* 8 novembre : sa Batcave a deja joue les migrations v2 a v7 et garde 201 ; la v8 le remonte */
+      [201, 209, 'deja migre jusqu\'a la v7, toujours 201 : la v8 le remonte a 209 (les oeufs du 8 novembre)', ['v2', 'v3', 'v4', 'v5', 'v6', 'v7']],
+      [180, 180, 'deja migre jusqu\'a la v7, regle a la main (180) : la v8 n\'y touche pas', ['v2', 'v3', 'v4', 'v5', 'v6', 'v7']]]){
     const ctx = await browser.newContext({ viewport:{width:1440, height:900}, timezoneId:'Europe/Madrid', locale:'fr-FR' });
-    await ctx.addInitScript(v => { window.claude = undefined; localStorage.setItem('batcave-budget-limits', JSON.stringify({Nourriture: v})); }, avant);
+    await ctx.addInitScript(([v, d]) => { window.claude = undefined; localStorage.setItem('batcave-budget-limits', JSON.stringify({Nourriture: v})); d.forEach(k => localStorage.setItem('batcave-plafond-nourriture-' + k, 'true')); }, [avant, drapeaux || []]);
     const page = await ctx.newPage();
     page.on('pageerror', e => { errs++; console.log('  PAGEERROR: ' + e.message); });
     await page.clock.install({ time: new Date('2026-09-25T21:00:00+02:00') });

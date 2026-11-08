@@ -3,7 +3,8 @@
 Copie de référence du plan appliqué dans la Batcave (onglets Repas, Préparation et Courses).
 **Repartie de zéro le 23 octobre 2026** (« je veux le meilleur programme d'alimentation pour la
 prise de masse »), **finalisée le 29 octobre** (« il faut qu'il soit parfait ») : l'audit des
-vitamines et des minéraux, plus bas. Si un chiffre diverge, c'est l'application qui fait foi : les macros, la liste
+vitamines et des minéraux, plus bas. **Le 8 novembre**, le cottage cheese sort (« enlève le cottage cheese,
+ça me dégoûte ») : un 3e œuf dur reprend sa place. Si un chiffre diverge, c'est l'application qui fait foi : les macros, la liste
 de courses et la préparation sortent toutes de la même source (`compoRepas`).
 
 ## Le cadre
@@ -13,15 +14,13 @@ de courses et la préparation sortent toutes de la même source (`compoRepas`).
 - **Peu de volume, beaucoup de calories** (23 octobre au soir : « il me faut du faible volume pour
   beaucoup de calories, j'arriverai pas à manger autant ») : un shake le matin, l'huile d'olive
   versée crue sur le riz (10 ml = 88 kcal sans une bouchée de plus), des amandes et des dattes.
-- **Jours normaux** (mardi, jeudi, samedi, dimanche) : **≈ 3 240 à 3 300 kcal · protéines
-  128 à 131 g (2,0 g par kilo) · glucides ≈ 415 g · lipides ≈ 123 à 126 g**, en quatre prises.
-- **Jours de JJB** (lundi, mercredi, vendredi, à partir du 2 novembre) : **≈ 3 825 kcal ·
-  protéines 141 g**, avec deux prises de plus.
+- **Jours normaux** (mardi, jeudi, samedi, dimanche) : **≈ 3 240 à 3 280 kcal · protéines
+  126 à 128 g (2,0 g par kilo) · glucides ≈ 415 g · lipides ≈ 123 à 126 g**, en quatre prises.
+- **Jours de JJB** (lundi, mercredi, vendredi, à partir du 2 novembre) : **≈ 3 800 kcal ·
+  protéines 136 g**, avec deux prises de plus.
 - **Plus de sauces depuis le 30 octobre** : l'huile d'olive, le sel iodé et les épices (plus bas).
 - Les valeurs : CIQUAL/USDA pour les aliments bruts, les étiquettes pour la boisson d'avoine
-  (Lidl : 43 kcal, 1,3 g de protéines pour 100 ml), le skyr et le cottage cheese (Milbona, Lidl :
-  98 kcal, 11,5 g de protéines, 2,8 g de glucides, 4,5 g de lipides pour 100 g ; présure
-  microbienne, pas animale). Recalculées à la main le 25 octobre, aliment par aliment : la
+  (Lidl : 43 kcal, 1,3 g de protéines pour 100 ml) et le skyr. Recalculées à la main le 25 octobre, aliment par aliment : la
   Batcave tombe juste, à l'arrondi près.
 - Tout est pesé **cru**. Pas de lait (acné) : boisson d'avoine, la version au calcium (« con
   calcio »), enrichie aussi en vitamine D. Créatine 5 g par jour, au dîner. Eau : 3 L, 3,5 à
@@ -33,13 +32,13 @@ chiffre de la colonne « science » vient du résumé publié de la source, vér
 
 | Point | La science | Le plan | Source |
 |---|---|---|---|
-| Surplus | +10 à 20 % au-dessus de l'entretien | ≈ 3 510 kcal en moyenne sur la semaine, ≈ +18 % | Iraki 2019 |
+| Surplus | +10 à 20 % au-dessus de l'entretien | ≈ 3 490 kcal en moyenne sur la semaine, ≈ +18 % | Iraki 2019 |
 | Rythme de prise | 0,25 à 0,5 % du poids par semaine (0,16 à 0,32 kg à 64 kg) ; plus vite, c'est surtout du gras | vise 0,31 kg ; la Batcave propose −100 kcal au-dessus de 0,5 % | Iraki 2019 ; Helms 2023 |
-| Protéines par jour | 1,6 à 2,2 g par kilo ; au-delà de ≈ 1,6, plus de gain mesurable | 2,0 à 2,1 (2,2 les jours de JJB) | Morton 2018 ; Iraki 2019 |
+| Protéines par jour | 1,6 à 2,2 g par kilo ; au-delà de ≈ 1,6, plus de gain mesurable | 2,0 (2,1 les jours de JJB) | Morton 2018 ; Iraki 2019 |
 | Protéines par repas | 0,40 à 0,55 g par kilo, sur 3 à 6 repas ; 4 × 20 g battent 2 × 40 et 8 × 10 | 4 repas, de 0,44 à 0,63 g par kilo | Iraki 2019 ; Schoenfeld et Aragon 2018 ; Areta 2013 |
 | Autour de l'entraînement | des protéines dans les 1 à 2 h avant ou après | le shake (40 g) 35 min après la séance de 07:00 ; après le JJB, la récup et le déjeuner (35 g) | Iraki 2019 ; Jäger 2017 (ISSN) |
 | Avant le coucher | 30 à 40 g de caséine augmentent la synthèse de la nuit | le dîner, 1 h 30 avant le coucher : 27 g, bas de la fourchette | Jäger 2017 (ISSN) |
-| Végétal ou animal | avec assez de protéines, pas de différence de muscle ni de force | 55 % animales (skyr, cottage cheese, œufs, viande, sardines) | Hevia-Larraín 2021 ; Monteyne 2023 ; Joy 2013 |
+| Végétal ou animal | avec assez de protéines, pas de différence de muscle ni de force | ≈ 52 % animales (skyr, œufs, viande, sardines) | Hevia-Larraín 2021 ; Monteyne 2023 ; Joy 2013 |
 | Glucides | au moins 3 à 5 g par kilo | 6,4 (8,3 les jours de JJB) | Iraki 2019 |
 | Lipides | 0,5 à 1,5 g par kilo | **1,9 à 2,0 : au-dessus**, voir plus bas | Iraki 2019 |
 | Créatine | monohydrate, 3 à 5 g par jour | 5 g au dîner | Iraki 2019 ; Kreider 2017 (ISSN) |
@@ -89,6 +88,10 @@ riz dans l'assiette, ce qu'il ne peut pas manger.
   sous 75, caséine et œuf au-dessus de 100). https://pubmed.ncbi.nlm.nih.gov/33133540/
 - Kreider RB et al. *International Society of Sports Nutrition position stand: safety and
   efficacy of creatine supplementation.* JISSN, 2017. https://pubmed.ncbi.nlm.nih.gov/28615996/
+- DiMarco DM et al. *Intake of up to 3 Eggs/Day Increases HDL Cholesterol and Plasma Choline While
+  Plasma Trimethylamine-N-oxide is Unchanged in a Healthy Population.* Lipids, 2017 (38 adultes de
+  24 ans en moyenne, 1, 2 puis 3 œufs par jour, 4 semaines chacun : le LDL ne monte pas, le HDL
+  monte ; petite étude, courte). https://pubmed.ncbi.nlm.nih.gov/28091798/
 - OMS, *Alimentation saine* (au moins 400 g de fruits et légumes par jour).
   https://www.who.int/fr/news-room/fact-sheets/detail/healthy-diet
 - EFSA, *Dietary Reference Values for nutrients — Summary report*, 2017 (les références de
@@ -107,26 +110,28 @@ riz dans l'assiette, ce qu'il ne peut pas manger.
 |---|---|---|---|
 | **Shake** | 08:30 les jours de muscu, 35 min après la séance (06:45 les autres jours) | boisson d'avoine au calcium 400 ml, skyr 150 g, flocons d'avoine 80 g, banane 120 g, fruits rouges surgelés 100 g, **miel 20 g**, amandes ou noix 30 g | ≈ 960 · 40 g |
 | **Déjeuner** | 12:20 | **riz 125 g** (rice cooker), **poulet 70 g**, **brocoli 80 g**, **huile d'olive 30 ml** (10 de cuisson, 20 crus sur le riz — ou 20 g de beurre), sel iodé, épices | ≈ 820 · 28 g |
-| **Collation** | 14:50 (16:50 le lundi), à la maison | **amandes ou noix 50 g**, 2 œufs durs, **cottage cheese 100 g**, **7 dattes (70 g)** | ≈ 730 · 36 g |
+| **Collation** | 14:50 (16:50 le lundi), à la maison | **amandes ou noix 50 g**, **3 œufs durs**, **7 dattes (70 g)** | ≈ 700 · 31 g |
 | **Dîner** | 20:00 (18:00 le mardi, 19:00 le dimanche, 19:30 le samedi) | **riz 125 g**, **viande hachée 5 % 70 g**, **épinards 80 g**, huile d'olive 25 ml (10 de cuisson, 15 crus sur le riz), sel iodé, épices, créatine 5 g | ≈ 800 · 27 g |
 
 - **Le mardi et le jeudi**, une boîte de sardines ou de maquereau (≈ 85 g égouttés) remplace les
-  œufs et le cottage cheese de la collation : les oméga-3.
-- **Plus de fromage depuis le 26 octobre** (« il me reste plus de fromage, on peut l'enlever ») ;
-  **le cottage cheese depuis le 27** (« j'aime bien le cottage cheese aussi ») : 100 g à la place
-  du 3e œuf, 11 g de protéines, surtout de la caséine. La collation se mange à la maison avant de
-  partir en cours : le pot reste au frigo.
+  trois œufs de la collation : les oméga-3.
+- **Plus de fromage depuis le 26 octobre** (« il me reste plus de fromage, on peut l'enlever ») : un
+  3e œuf à sa place. Du 27 octobre au 7 novembre, 100 g de cottage cheese l'ont remplacé (« j'aime
+  bien le cottage cheese aussi ») ; **depuis le 8 novembre, le 3e œuf est revenu** (« enlève le
+  cottage cheese, ça me dégoûte ») : 6,3 g de protéines au lieu de 11,5, la collation reste à 31 g
+  (0,49 g par kilo, dans les 0,40 à 0,55 d'Iraki) et la journée à 2,0 g par kilo. Trois œufs par
+  jour : chez de jeunes adultes en bonne santé, le LDL n'a pas monté et le HDL a monté (DiMarco
+  2017). La collation se mange à la maison avant de partir en cours ; les œufs sont cuits le dimanche.
 - **Les jours de JJB**, deux prises en plus :
   - **10:05, la collation combat** : banane 120 g, 2 galettes de riz, miel 15 g (≈ 230 kcal),
     25 minutes avant le tatami ;
   - **12:00, le shake de récup** : boisson d'avoine 250 ml, banane 120 g, flocons 20 g (≈ 290
     kcal), au retour du club.
 
-### D'où viennent les protéines (un samedi, 131 g)
-Riz 18,5 g · poulet 16,1 · skyr 15,8 · viande hachée 15,1 · amandes 17,0 · œufs 12,6 · cottage
-cheese 11,5 · flocons 10,6 · boisson d'avoine 5,2 · légumes 4,5 · dattes 1,8 · banane 1,3 ·
-fruits rouges 0,9. Animales : ≈ 71 g. Le mardi et le jeudi, les sardines (20,9 g)
-prennent la place des œufs et du cottage cheese.
+### D'où viennent les protéines (un samedi, 126 g)
+Riz 18,5 g · poulet 16,1 · skyr 15,8 · viande hachée 15,1 · amandes 17,0 · œufs 18,9 · flocons
+10,6 · boisson d'avoine 5,2 · légumes 4,5 · dattes 1,8 · banane 1,3 · fruits rouges 0,9.
+Animales : ≈ 66 g. Le mardi et le jeudi, les sardines (20,9 g) prennent la place des trois œufs.
 
 ### Les fruits et les légumes
 - **Fruits, chaque jour** : une banane (120 g) et 100 g de fruits rouges dans le shake, 7 dattes
@@ -163,6 +168,9 @@ un samedi (œufs et cottage cheese à la collation) et un mardi (la boîte de sa
   sans gélatine animale.
 - **Le sel iodé** : peu de laitages et pas de poisson tous les jours, c'est lui qui complète
   l'iode. Quand le paquet est fini, « sal yodada ». Une pincée dans le riz du matin suffit.
+- **Depuis le 8 novembre** (un 3e œuf à la place du cottage cheese) : le calcium baisse de 50 à
+  80 mg (≈ 1 210 à 1 240 mg le samedi, toujours au-dessus des 1 000) et l'iode un peu (le sel iodé
+  le couvre toujours) ; la vitamine A gagne ≈ 40 µg, la vitamine D ≈ 1 µg.
 
 ### Les choix qui restent les siens
 - **Le riz, midi et soir**, au rice cooker : plus de semoule ni de pâtes. 125 g cru par repas.
@@ -185,8 +193,8 @@ bidon de 2 L ne tenait plus les cinq semaines, il en aurait fallu deux. Les aman
 dans les trois sachets de 200 g (560 g pour 600). La semaine passe de ≈ 3 490 à ≈ 3 510 kcal ;
 les protéines restent entre 128 et 141 g par jour, 2,0 à 2,2 g par kilo.
 
-Les seuls laitiers qui restent : le skyr et le cottage cheese. La carte Condiments de l'onglet
-Courses a disparu avec les sauces.
+Le seul laitier qui reste : le skyr (le cottage cheese est sorti le 8 novembre). La carte
+Condiments de l'onglet Courses a disparu avec les sauces.
 
 ## La boucle poids → calories
 Une pesée **chaque dimanche, à jeun**. Rien ne se lit pendant les trois premières semaines
@@ -209,16 +217,16 @@ pèse plus que la carrure (Xia 2025).
 
 ## Les courses
 Le samedi à 13:30, la liste de l'onglet Courses, calculée pour le plan entier : poulet 490 g et
-viande hachée 490 g (pesés au comptoir), skyr, 10 œufs, 500 g de cottage cheese, bananes,
+viande hachée 490 g (pesés au comptoir), skyr, 15 œufs, bananes,
 amandes, sardines ou maquereau, légumes verts surgelés, boisson d'avoine (en briks de 1 L),
 fruits rouges, galettes de riz, dattes, riz, flocons, huile d'olive, miel. Plus de fromage depuis
-le 26 octobre. Les légumes surgelés : moitié brocoli, moitié épinards en portions. La Batcave en calcule le coût ; les articles sans
-prix relevé (galettes, sardines, dattes, cottage cheese) attendent son ticket. Les fruits rouges ont le
+le 26 octobre, plus de cottage cheese depuis le 8 novembre. Les légumes surgelés : moitié brocoli, moitié épinards en portions. La Batcave en calcule le coût ; les articles sans
+prix relevé (galettes, sardines, dattes) attendent son ticket. Les fruits rouges ont le
 leur depuis le 30 octobre : le mélange Auchan d'Alcampo, 2,85 € les 450 g.
 
 ## La préparation (batch cooking)
 Le dimanche à 14:30 : le poulet, la viande hachée et les légumes de la semaine (le brocoli pour
-les boîtes du midi, les épinards pour celles du soir), et les 10 œufs durs. Sept boîtes pour les
+les boîtes du midi, les épinards pour celles du soir), et les 15 œufs durs. Sept boîtes pour les
 midis, sept pour les soirs : quatre jours au frigo, trois au congélateur ; l'huile crue, le sel et les épices se mettent à
 l'assiette.
 

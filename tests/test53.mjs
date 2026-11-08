@@ -51,7 +51,8 @@ console.log('\n== 180) Sans ajustement : plan de base, liste = plan × 7 ==');
      riz remplace semoule et pates (une ligne pour deux), les dattes entrent. Dix-huit lignes. */
   /* 26 octobre : le fromage sort (il n'en a plus ; un 3e oeuf a la collation). Dix-sept lignes. */
   /* 27 octobre : le cottage cheese entre en fin de « Chaque semaine ». Dix-huit lignes. */
-  ok(c.n === 18, '18 articles au total, tous rythmes confondus — plus de pain, de fruits ni de pâtes depuis le 23 octobre, les dattes entrent, le fromage sort le 26, le cottage cheese entre le 27 (' + c.n + ')');
+  /* 8 novembre : il sort (il le degoute ; le 3e oeuf revient). Dix-sept lignes. */
+  ok(c.n === 17, '17 articles au total, tous rythmes confondus — plus de pain, de fruits ni de pâtes depuis le 23 octobre, les dattes entrent, le fromage sort le 26, le cottage cheese entre le 27 et sort le 8 novembre (' + c.n + ')');
   /* Deux chiffres par ligne, et il faut les deux : ce qu'on ACHETE (un multiple du
      conditionnement) et ce que le PLAN demande (la somme des 7 jours de repas). Riz
      135 g/jour -> 945/semaine -> 3 780 sur 4 semaines, donc 4 paquets de 1 kg ;
@@ -106,10 +107,10 @@ console.log('\n== 180) Sans ajustement : plan de base, liste = plan × 7 ==');
   /* Les legumes surgeles sont passes a DEUX semaines le 20 septembre : 10 kg par passage
      ne rentraient pas dans son congelateur. La consommation n'a pas bouge (2 450 g par
      semaine), c'est le rythme de rachat qui a change -- 5 kg tous les quinze jours. */
-  ok(c.items.some(t => /^Œufs — 12\b/.test(t) && /demande 10 œufs/.test(t))
+  ok(c.items.some(t => /^Œufs — 18\b/.test(t) && /demande 15 œufs/.test(t))
   && c.items.some(t => /^Légumes verts surgelés — 3 kg\b/.test(t) && /demande 2\u202f240 g/.test(t))
   && c.items.some(t => /^Huile d'olive — 2 L\b/.test(t) && /1 bouteille de 2 L/.test(t) && /demande 1\u202f925 ml/.test(t)),
-     'œufs 12 pour 10 (deux à la collation et 100 g de cottage cheese depuis le 27 octobre, les sardines le mardi et le jeudi depuis le 21), surgelés 3 kg pour 2 240 g sur deux semaines (80 g par repas depuis le 23 octobre), huile 2 L pour 1 925 ml sur cinq (30 ml à midi, 25 le soir depuis la fin des sauces, 30 octobre)');
+     'œufs 18 pour 15 (trois à la collation depuis le 8 novembre, quand le cottage cheese sort ; les sardines le mardi et le jeudi depuis le 21 octobre), surgelés 3 kg pour 2 240 g sur deux semaines (80 g par repas depuis le 23 octobre), huile 2 L pour 1 925 ml sur cinq (30 ml à midi, 25 le soir depuis la fin des sauces, 30 octobre)');
   /* Aucun stock n'est suppose : rien ne dit « tu en as », rien n'est repousse a plus tard. */
   ok(!c.items.some(t => /tu en as|il t’en reste|à racheter le/.test(t)), 'aucune ligne ne suppose un stock : tout part de zéro, il coche ce qu\'il a');
   /* Le contraire de ce que ce fichier tenait jusqu'au 20 septembre : ces lignes ne
@@ -278,14 +279,14 @@ console.log('\n== 183) La liste de courses sort du MEME plan que les repas ==');
   const { ctx, fr } = await ouvrir('2026-09-22T10:00:00+02:00');
   const r = await fr.evaluate(() => {
     const A = window.__bcAliments, alias = {banane:'bananes', fruit:'fruits'};
-    /* Semaine de reference du 2 au 8 novembre (21 octobre : la premiere aux trois matins de
-       JJB) : la collation combat et le shake de recup n'existent que les jours de combat (lundi,
+    /* Semaine de reference du 9 au 15 novembre (21 octobre : celle du 2, la premiere aux trois
+       matins de JJB ; 8 novembre : celle du 9, la premiere sans cottage cheese) : la collation combat et le shake de recup n'existent que les jours de combat (lundi,
        mercredi, vendredi).
        Les condiments des sauces sont dans les repas, pas dans la liste : ils ont leur carte. */
     const noms = ['Petit-déjeuner','Déjeuner','Collation entraînement','Dîner'];
     const b = {};
     for(let j = 0; j < 7; j++){
-      const d = new Date(2026, 10, 2 + j), iso = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+      const d = new Date(2026, 10, 9 + j), iso = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
       const duJour = [1, 3, 5].indexOf(d.getDay()) > -1 ? noms.concat(['Collation combat', 'Récup combat']) : noms;
       duJour.forEach(n => window.__bcCompoRepas(n, iso, true).forEach(x => {
         const a = A[x.c], k = alias[x.c] || x.c;
@@ -297,13 +298,13 @@ console.log('\n== 183) La liste de courses sort du MEME plan que les repas ==');
   });
   const cles = Object.keys(r.recompte).sort();
   const faux = cles.filter(k => Math.abs(r.recompte[k] - r.lu[k]) > 0.001);
-  ok(faux.length === 0 && cles.length === 17,
-     'les 17 besoins de la semaine (le riz midi et soir, les dattes, plus de pain ni de fruits depuis le 23 octobre au soir, plus de fromage depuis le 26, le cottage cheese depuis le 27) sont exactement la somme des repas' + (faux.length ? ' — ' + faux.map(k => k + ' : ' + r.lu[k] + ' vs ' + r.recompte[k]).join(', ') : ' (' + cles.length + ')'));
+  ok(faux.length === 0 && cles.length === 16,
+     'les 16 besoins de la semaine (le riz midi et soir, les dattes, plus de pain ni de fruits depuis le 23 octobre au soir, plus de fromage depuis le 26, plus de cottage cheese depuis le 8 novembre) sont exactement la somme des repas' + (faux.length ? ' — ' + faux.map(k => k + ' : ' + r.lu[k] + ' vs ' + r.recompte[k]).join(', ') : ' (' + cles.length + ')'));
   /* Et aucun aliment du plan ne manque a la liste de courses. */
   const manquants = await fr.evaluate(() => {
     const noms = ['Petit-déjeuner','Déjeuner','Collation entraînement','Dîner','Collation combat','Récup combat'];
     const dans = {};
-    for(let j = 2; j <= 8; j++) noms.forEach(n => window.__bcCompoRepas(n, '2026-11-0' + j, true).forEach(x => { if(!window.__bcAliments[x.c].condiment) dans[x.c] = true; }));
+    for(let j = 9; j <= 15; j++) noms.forEach(n => window.__bcCompoRepas(n, '2026-11-' + String(j).padStart(2, '0'), true).forEach(x => { if(!window.__bcAliments[x.c].condiment) dans[x.c] = true; }));
     const alias = {banane:'bananes', fruit:'fruits'};
     return Object.keys(dans).filter(c => !((alias[c] || c) in window.__bcBesoinSemaine));
   });

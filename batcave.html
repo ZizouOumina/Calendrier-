@@ -8356,6 +8356,10 @@
        position. 11 g de proteines au lieu de 6 -- la collation passe a 34 g (0,53 g/kg, dans les
        0,40 a 0,55 d'Iraki), et c'est surtout de la caseine. Elle se mange a la maison, avant de
        partir en cours : le pot reste au frigo. */
+    /* 8 novembre, « enleve le cottage cheese, ca me degoute » : le 3e oeuf dur revient a sa
+       place, comme le 26 octobre (COTTAGE_FIN). 6,3 g de proteines au lieu de 11,5 : la
+       collation reste a 31 g (0,49 g/kg), la journee a ~126 g, 2,0 a 2,1 g/kg -- toujours dans
+       la fourchette de Morton 2018. Les jours d'avant gardent leur cottage cheese. */
     {name:'Collation entraînement', items:['Amandes ou noix nature (40g)','2 œufs durs (100g)','Cottage cheese (100g)','7 dattes (70g)']},
     {name:'Dîner', items:['Féculent cru — Riz 125g','Protéine crue — rotation du jour','Légumes verts (80g)','Huile d\'olive — selon la protéine, dont 15 ml versés crus sur le riz','Créatine — 5 g']},
     /* 25 septembre, le regime combat : une cinquieme prise, les QUATRE jours de combat
@@ -8453,6 +8457,7 @@
   }
   var FROMAGE_FIN = '2026-10-26';   /* plus de fromage a la collation a partir de ce jour : un 3e oeuf */
   var COTTAGE_DEBUT = '2026-10-27';  /* puis 100 g de cottage cheese a sa place */
+  var COTTAGE_FIN = '2026-11-08';    /* et le 3e oeuf revient : le cottage cheese le degoute */
   function compoRepasPlein(nom, iso, brut){
     if(nom === 'Petit-déjeuner') return [{c:'avoine', q:400}, {c:'skyr', q:150}, {c:'flocons', q:80}, {c:'banane', q:120}, {c:'miel', q:20}, {c:'amandes', q:30}, {c:'fruitsrouges', q:100}];
     /* 25 octobre : le mardi et le jeudi, la boite de sardines remplace les oeufs ET le fromage
@@ -8460,7 +8465,8 @@
        les 120 g. L'item reste a sa place : les cases sont indexees. */
     if(nom === 'Collation entraînement'){
       var sard = sardinesLe(iso), j = iso || todayISO;
-      var troisieme = j >= COTTAGE_DEBUT ? {c:'cottage', q:sard ? 0 : 100}
+      var troisieme = j >= COTTAGE_FIN ? {c:'oeufs', q:sard ? 0 : 50}
+                    : j >= COTTAGE_DEBUT ? {c:'cottage', q:sard ? 0 : 100}
                     : j >= FROMAGE_FIN ? {c:'oeufs', q:sard ? 0 : 50} : {c:'fromage', q:sard ? 0 : 20};
       return [{c:'amandes', q:j >= SANS_SAUCE_DEBUT ? AMANDES_SANS_SAUCE : 40}, sard ? {c:'sardines', q:85} : {c:'oeufs', q:100}, troisieme, {c:'dattes', q:70}];
     }
@@ -8676,7 +8682,7 @@
      la rotation du jour (déjeuner et dîner). */
   function texteItemRepas(m, it, ii, iso){
     if(m.name === 'Collation entraînement'){
-      var jc = iso || todayISO, avantFin = jc < FROMAGE_FIN, oeufEnPlus = !avantFin && jc < COTTAGE_DEBUT;
+      var jc = iso || todayISO, avantFin = jc < FROMAGE_FIN, oeufEnPlus = !avantFin && (jc < COTTAGE_DEBUT || jc >= COTTAGE_FIN);
       if(ii === 1 && sardinesLe(iso)) return '1 boîte de sardines ou de maquereau (≈ 85 g égouttés) — à la place des œufs' + (avantFin ? ' et du fromage' : oeufEnPlus ? '' : ' et du cottage cheese') + ', le mardi et le jeudi';
       if(ii === 2 && sardinesLe(iso)) return avantFin ? 'Pas de fromage aujourd\'hui — la boîte de sardines le remplace'
                                            : oeufEnPlus ? 'Pas d\'œuf en plus aujourd\'hui — la boîte de sardines remplace les œufs'
@@ -12788,7 +12794,7 @@
     }).join('');
     document.getElementById('prep-regles').innerHTML = [
       ['Le petit-déjeuner', 'un shake : 400 ml de boisson d\'avoine au calcium, 150 g de skyr, 80 g de flocons, une banane (congelée en rondelles, c\'est un milkshake), 100 g de fruits rouges surgelés, 20 g de miel, 30 g d\'amandes — 40 secondes de mixeur, à boire en dix minutes. Les jours de JJB, un shake de récup au retour : 250 ml de boisson d\'avoine, une banane, 20 g de flocons'],
-      ['La collation d\'entraînement', '50 g d\'amandes, 2 œufs durs, 100 g de cottage cheese (le mardi et le jeudi, une boîte de sardines ou de maquereau à la place des deux), 7 dattes — ~730 kcal, à la maison avant de partir ; les œufs sont cuits le dimanche, le reste s\'emporte'],
+      ['La collation d\'entraînement', '50 g d\'amandes, 3 œufs durs (le mardi et le jeudi, une boîte de sardines ou de maquereau à leur place), 7 dattes — ~700 kcal, à la maison avant de partir ; les œufs sont cuits le dimanche, le reste s\'emporte'],
       ['Le goût', 'pas de sauce depuis le 30 octobre : l\'huile d\'olive crue versée sur le riz à l\'assiette (20 ml à midi, 15 le soir), le sel iodé et tes épices. Rien de tout ça ne va dans la boîte'],
       ['Réchauffer à la poêle', 'la boîte vidée dans la poêle avec 2 à 3 cuillères d\'eau, couvercle, feu moyen, 4 à 5 min, puis 1 min à découvert. Brûlant jusqu\'au cœur. Pas l\'air fryer : il dessèche la viande'],
       ['Le sel', 'iodé (« sal yodada ») : peu de laitages et du poisson deux fois par semaine, c\'est lui qui complète l\'iode du plan. Une pincée dans le riz suffit'],
@@ -12827,7 +12833,7 @@
     /* la semaine TYPE : celle du 5 octobre, la premiere complete (muscu et combat). Celle
        du 28 septembre n'a pas de combat (COMBAT_PAUSE) : elle sous-compterait la collation. */
     for(var j = 0; j < 7; j++){
-      var iso = localISO(new Date(2026, 10, 2 + j));   /* 5 octobre : pas de JJB avant le 26, la semaine type devient celle du 26. 21 octobre : le JJB commence le mercredi 28 -- la premiere semaine aux trois matins de combat est celle du 2 novembre */
+      var iso = localISO(new Date(2026, 10, 9 + j));   /* 5 octobre : pas de JJB avant le 26, la semaine type devient celle du 26. 21 octobre : le JJB commence le mercredi 28 -- la premiere semaine aux trois matins de combat est celle du 2 novembre. 8 novembre : le cottage cheese sort ce dimanche-la, la semaine type devient celle du 9 */
       repasDuJour(iso).forEach(function(m){
         compoRepas(m.name, iso, true).forEach(function(x){
           var a = ALIMENTS[x.c], k = alias[x.c] || x.c;
@@ -13001,9 +13007,10 @@
         art('Amandes ou noix nature', B.amandes, 200, poids, 'sachet'),
         /* 21 octobre : les omega-3, le mardi et le jeudi. En DERNIER : les coches sont
            indexees par position, rien ne se decale. */
-        art('Sardines ou maquereau (boîte)', B.sardines, 1, sep, 'boîtes · à l\'huile d\'olive ou au naturel', B.sardines + ' boîtes'),
-        /* 27 octobre : le cottage cheese de la collation, 100 g cinq jours sur sept. En DERNIER. */
-        art('Cottage cheese', B.cottage, 1, poids, 'pots · « queso cottage »')
+        art('Sardines ou maquereau (boîte)', B.sardines, 1, sep, 'boîtes · à l\'huile d\'olive ou au naturel', B.sardines + ' boîtes')
+        /* 27 octobre : le cottage cheese de la collation (rang 7), 100 g cinq jours sur sept.
+           8 novembre : il sort, le 3e oeuf le remplace. Il etait EN DERNIER, rien ne se decale ;
+           un article ajoute un jour a ce rang pourrait heriter de son ancienne coche. */
       ]},
       /* Les legumes surgeles ont leur propre cycle, plus court que les autres reserves :
          DEUX semaines. Sa contrainte du 20 septembre, et elle est physique -- 10 kg de
@@ -18550,6 +18557,16 @@
       save('batcave-budget-limits', budgetLimits);
     }
     saveInternal('batcave-plafond-nourriture-v7', true);
+  }
+  /* Huitieme fois, le 8 novembre : le cottage cheese sort (il n'avait pas de prix releve, il
+     etait hors du calcul) et 5 oeufs de plus par semaine entrent -- ~209 EUR par mois en
+     caisse. Seulement s'il vaut encore ma valeur d'avant (201). */
+  if(!load('batcave-plafond-nourriture-v8', false)){
+    if(Number(budgetLimits['Nourriture']) === 201){
+      budgetLimits['Nourriture'] = Math.round(coutAchatsMoyen().mois);
+      save('batcave-budget-limits', budgetLimits);
+    }
+    saveInternal('batcave-plafond-nourriture-v8', true);
   }
   var fixedCharges = load('batcave-fixed-charges', null);
   if(fixedCharges === null){ fixedCharges = FIXED_CHARGES_SEED.slice(); save('batcave-fixed-charges', fixedCharges); }
