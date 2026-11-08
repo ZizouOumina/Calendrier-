@@ -57,11 +57,11 @@ let r = await scenario('normal', 1, 45, 1);
 let fc8 = r.charges.filter(c => c.id === 'fc8')[0];
 ok(fc8 && fc8.montant === 3, 'charge iCloud passée à 3 € (obtenu: ' + (fc8 ? fc8.montant : 'absente') + ')');
 /* 25 septembre : la migration v2 ajoute le club (fc10, 90 EUR) et releve le plafond Abonnements d'autant */
-ok(r.limits['Abonnements'] === 108.5, 'budget Abonnements 45 → 47 → 137 → 147 € avec le club à 100 €, puis 136 € sans le wifi, puis 108,50 € avec le club à 70 € et la licence lissée (obtenu: ' + r.limits['Abonnements'] + ')');
+ok(r.limits['Abonnements'] === 140.99, 'budget Abonnements 45 → 47 → 137 → 147 € avec le club à 100 €, puis 136 € sans le wifi, puis 108,50 € avec le club à 70 € et la licence lissée, puis 140,99 € avec Basic-Fit Premium (8 novembre) (obtenu: ' + r.limits['Abonnements'] + ')');
 const txIc = r.tx.filter(t => t.label === 'iCloud');
 ok(txIc.length === 1 && txIc[0].montant === 3, 'la dépense de septembre est corrigée à 3 € (obtenu: ' + JSON.stringify(txIc.map(t=>t.montant)) + ')');
 const total = r.charges.reduce((s,c) => s + c.montant, 0);
-ok(total === 276, 'total des charges fixes = 276 €/mois : les 300 € de « Courses » sortis, le club à 70 € et la licence 30 €/an, et depuis octobre ni loyer ni wifi (sa mère les paie) (obtenu: ' + total + ')');
+ok(Math.abs(total - 265.99) < 0.001, 'total des montants = 265,99 € : les 300 € de « Courses » sortis, le club à 70 € et la licence 30 €/an, depuis octobre ni loyer ni wifi (sa mère les paie), et le 8 novembre les transports sortis (pas de carte) et Basic-Fit Premium à 29,99 € (obtenu: ' + total + ')');
 ok(!r.charges.some(c => c.id === 'fc1' || c.id === 'fc2'), 'loyer et wifi retirés : sa mère les paie au propriétaire');
 /* La migration, vérifiée des deux côtés : la charge part, et le plafond arrive. */
 ok(!r.charges.some(c => c.id === 'fc4'), 'la charge fixe « Courses » de 300 € a été retirée');
@@ -119,7 +119,7 @@ await p2.reload();
 await p2.frameLocator('#f').locator('#timer-pomodoro').waitFor({ state:'attached', timeout:15000 });
 const fr2 = p2.frames().find(x => x.url().includes('batcave.html'));
 const r2 = await fr2.evaluate(() => ({ c: JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-fixed-charges')), l: JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-budget-limits')) }));
-ok(r2.c.filter(c=>c.id==='fc8')[0].montant === 3 && r2.l['Abonnements'] === 108.5, 'rechargement : pas de seconde augmentation (3 € / budget 108,50 €)');
+ok(r2.c.filter(c=>c.id==='fc8')[0].montant === 3 && r2.l['Abonnements'] === 140.99, 'rechargement : pas de seconde augmentation (3 € / budget 140,99 €)');
 await ctx2.close();
 
 // montant déjà personnalisé -> respecté
@@ -136,13 +136,13 @@ await p4.frameLocator('#f').locator('#timer-pomodoro').waitFor({ state:'attached
 const fr4 = p4.frames().find(x => x.url().includes('batcave.html'));
 const r4 = await fr4.evaluate(() => JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-fixed-charges')));
 ok(r4.filter(c=>c.id==='fc8')[0].montant === 3, 'installation neuve : iCloud seedé à 3 €');
-ok(r4.reduce((s,c)=>s+c.montant,0) === 276, 'installation neuve : total 276 € (ni loyer ni wifi)');
+ok(Math.abs(r4.reduce((s,c)=>s+c.montant,0) - 265.99) < 0.001, 'installation neuve : total 265,99 € (ni loyer ni wifi, ni transports ; Basic-Fit Premium)');
 ok(!r4.some(c => c.label === 'Courses'), 'installation neuve : aucune charge « Courses » dans la graine');
 // affichage
 await fr4.evaluate(() => document.querySelector('.nav-btn[data-page="budget"]').click());
 await p4.waitForTimeout(300);
 const txt = await fr4.evaluate(() => document.body.innerText);
-ok(/248,5/.test(txt.replace(/ | /g,' ')), 'le total 248,50 € (licence lissée à 2,50 €) s\'affiche dans Budget');
+ok(/240,99/.test(txt.replace(/ | /g,' ')), 'le total 240,99 € (licence lissée à 2,50 €, Basic-Fit à 32,49 € par mois) s\'affiche dans Budget');
 await ctx4.close();
 
 console.log('\nERREURS: ' + errs);

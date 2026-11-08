@@ -482,6 +482,13 @@
   .ma-fil .mq{font-family:var(--font-mono); font-size:11.5px; color:var(--ink-faint);}
   .ma-fil b{color:var(--ink); font-weight:600;}
   .ma-fil .md{display:block; font-size:12px; color:var(--ink-faint); margin-top:2px; line-height:1.4;}
+  /* 8 novembre : « A regler », ce qui est en retard (A_REGLER) */
+  .ma-dettes{list-style:none; margin:0 0 16px; padding:0;}
+  .ma-dettes li{display:grid; grid-template-columns:minmax(0,1fr) auto auto; gap:12px; align-items:center; padding:9px 0; border-bottom:1px solid var(--border-soft); font-size:13px; color:var(--ink-dim);}
+  .ma-dettes li:last-child{border-bottom:none;}
+  .ma-dettes b{color:var(--ink); font-weight:600;}
+  .ma-dettes .md{display:block; font-size:12px; color:var(--ink-faint); margin-top:2px; line-height:1.4;}
+  .ma-dettes .mm{font-family:var(--font-mono); font-size:12.5px; color:var(--warn); white-space:nowrap;}
   .ma-fil .mm, .ma-fil .ms{font-family:var(--font-mono); font-size:12.5px; text-align:right; font-variant-numeric:tabular-nums; white-space:nowrap;}
   .ma-fil .mm.plus{color:var(--good);}
   .ma-fil .ms{color:var(--ink);}
@@ -2532,7 +2539,7 @@
           <div class="f"><label>Élément</label><input type="text" id="fc-label" placeholder="ex : Assurance"></div>
           <div class="f"><label>Montant (€)</label><input type="number" id="fc-montant" min="0" step="0.5"></div>
           <div class="f"><label>Catégorie</label><select id="fc-cat"></select></div>
-          <div class="f"><label>Périodicité</label><select id="fc-periode"><option value="mensuel">Mensuel</option><option value="trimestriel">Trimestriel</option><option value="annuel">Annuel</option></select></div>
+          <div class="f"><label>Périodicité</label><select id="fc-periode"><option value="mensuel">Mensuel</option><option value="trimestriel">Trimestriel</option><option value="annuel">Annuel</option><option value="4semaines">Toutes les 4 semaines</option></select></div>
           <button class="btn btn-primary" id="fc-add">Ajouter</button>
         </div>
         <ul class="entry-list" id="fixed-charges-list"></ul>
@@ -3672,11 +3679,11 @@
      comme inconnu. DRAPEAUX_MIGRATION est desormais LA liste ; les autres la reprennent.
      SCHEMA_VERSION est ecrit dans « batcave-schema » quand toutes ont tourne : le panneau
      Sante compare, et une sauvegarde plus ancienne se reconnait a ce seul chiffre. */
-  var SCHEMA_VERSION = 53;
+  var SCHEMA_VERSION = 54;
   var DRAPEAUX_MIGRATION = ['objectifs-seed-v1','objectifs-v2-55','objectifs-v5-espanol',
     'habits-ecran-v2','habitlog-hebdo-v1','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','habits-seed-v7','habits-seed-v8','habits-seed-v9','habits-seed-v10','habits-seed-v11','habits-seed-v12',
     'courses-plan-v2','courses-plan-v3','courses-plan-v4','courses-plan-v5','courses-plan-v6','courses-plan-v7','courses-plan-v8','courses-plan-v9','courses-plan-v10','courses-plan-v11',
-    'charges-v2','plafond-nourriture-v2','plafond-nourriture-v3','plafond-nourriture-v4','plafond-nourriture-v5','plafond-nourriture-v6','plafond-nourriture-v7','plafond-nourriture-v8','ancre-dimanche-v1','ancre-dimanche-v2','serviettes-v1','coiffeur-v1','shampoing-dim-v1','marche-cible-v1','fc-migration-v1','fc-migration-v2','fc-migration-v3','fc-migration-v4','revision-fusionnee','pesee-hebdo-v1','snus-arret-v3'];
+    'charges-v2','plafond-nourriture-v2','plafond-nourriture-v3','plafond-nourriture-v4','plafond-nourriture-v5','plafond-nourriture-v6','plafond-nourriture-v7','plafond-nourriture-v8','ancre-dimanche-v1','ancre-dimanche-v2','serviettes-v1','coiffeur-v1','shampoing-dim-v1','marche-cible-v1','fc-migration-v1','fc-migration-v2','fc-migration-v3','fc-migration-v4','fc-migration-v5','revision-fusionnee','pesee-hebdo-v1','snus-arret-v3'];
   /* Drapeaux que rien ne pose plus (migrations retirees) ou poses seulement quand il y a
      eu quelque chose a migrer : connus et gardes, jamais exiges. */
   var DRAPEAUX_ANCIENS = ['objectifs-v3-trajet','objectifs-v4-dimanche','habits-retirees-v1','shampoing-combat-v1','shampoing-samedi-v1','snus-arret-v1','snus-arret-v2'];   /* snus-arret-v1 puis v2 : remplacees par la v3 (jour 1 au 22, puis au dimanche 1er novembre) ; les deux d'avant n'ecrivent qu'a partir du 28 septembre */
@@ -3811,7 +3818,9 @@
        que le code ecrit : cette categorie de faux signalement ne peut plus revenir. */
     'jours-sans-cours','copie-vierge','chrono-seance','insights-vu','seance-duree','echeances',
     /* le schema et le plan de secours en texte (lot 50) */
-    'schema','last-plan-texte'].concat(DRAPEAUX_MIGRATION, DRAPEAUX_ANCIENS);
+    'schema','last-plan-texte',
+    /* 8 novembre : ce qui est en retard et ce qui est paye (le panneau « A regler ») */
+    'a-regler'].concat(DRAPEAUX_MIGRATION, DRAPEAUX_ANCIENS);
   var PREFIXES_CONNUS = ['archive-','cal-','coherence-ignore-','drill-ignore-','test-anki-','fc-logged-','fixed-logged-','gcal-','journal-','manque-traite-',
     'meals-','pomodial-','rattrapage-vu-','sauvegarde-','sport-','habitlog-','resume-'];
   function cleConnue(k){
@@ -18459,7 +18468,9 @@
      équivalent mensuel (lissage) : une assurance de 240 €/an pèse 20 €/mois dans le budget,
      au lieu de fausser un seul mois. Les charges d'avant cette version n'ont pas de champ
      "periode" : elles restent mensuelles, donc rien ne bouge pour l'existant. */
-  var PERIODES = {mensuel:{label:'/mois', diviseur:1}, trimestriel:{label:'/trimestre', diviseur:3}, annuel:{label:'/an', diviseur:12}};
+  /* 8 novembre : « toutes les 4 semaines » (Basic-Fit preleve 13 fois par an) -- le douzieme
+     de treize prelevements, soit le montant x 13/12 par mois. */
+  var PERIODES = {mensuel:{label:'/mois', diviseur:1}, trimestriel:{label:'/trimestre', diviseur:3}, annuel:{label:'/an', diviseur:12}, '4semaines':{label:'/4 semaines', diviseur:12/13}};
   function periodeDe(c){ return PERIODES[c && c.periode] ? c.periode : 'mensuel'; }
   function montantMensuel(c){
     return (Number(c.montant)||0) / PERIODES[periodeDe(c)].diviseur;
@@ -18773,6 +18784,68 @@
     try{ renderFixedCharges(); renderBudget(); renderDashboard(); }catch(e){}
     return true;
   }});
+  /* v5 (8 novembre) : le budget remis au reel, ses mots -- « j'ai pas encore paye ma licence de
+     JJB, elle se paye en une fois », « il y a l'abonnement Basic-Fit aussi », « j'ai pris le
+     premium », « j'ai pas de carte de transports encore ».
+     - « Courses » a 300 EUR (fc4) sort une seconde fois. La v2 du 21 septembre l'avait retiree ;
+       sa liste du cloud la portait encore le 27 octobre (une ancienne copie, revenue apres le
+       drapeau). Elle comptait la nourriture deux fois : 548,50 EUR de charges, une cagnotte a
+       zero, un trou le 24. Ses depenses automatiques partent avec elle, et le plafond
+       Nourriture revient au plan en caisse s'il valait encore 300.
+     - Les transports (fc6, 40 EUR) sortent : pas de carte, il n'a jamais rien paye. Leurs
+       depenses automatiques aussi, et leur plafond s'il valait encore 40.
+     - Basic-Fit Premium entre (fc12) : 29,99 EUR toutes les 4 semaines.
+     - La licence (fc11) se paie en une fois, en novembre (uneFois) : le plan d'argent la sort en
+       entier dans cette periode ; le budget la garde lissee.
+     - Le plafond Abonnements suit s'il valait encore la somme de ses charges ; celui de l'eau et
+       de l'electricite passe a 70 s'il valait 60, un chiffre que rien ici ne posait.
+     Rejouee apres l'hydratation : c'est le cloud qui avait ramene la ligne des courses. */
+  function migrerChargesFixesV5(){
+    if(load('batcave-fc-migration-v5', false)) return false;
+    var fc = load('batcave-fixed-charges', null);
+    if(Array.isArray(fc)) fixedCharges = fc.filter(function(x){ return x && typeof x === 'object' && !Array.isArray(x); });
+    var bl = load('batcave-budget-limits', null);
+    if(bl && typeof bl === 'object' && !Array.isArray(bl)) budgetLimits = bl;
+    var somme = function(cat){ return fixedCharges.filter(function(c){ return c.cat === cat; }).reduce(function(t, c){ return t + montantMensuel(c); }, 0); };
+    var avantAbo = somme('Abonnements'), sorties = [], change = false, bouge = false;
+    fixedCharges = fixedCharges.filter(function(c){
+      var dehors = (c.id === 'fc4' && c.label === 'Courses' && Number(c.montant) === 300) ||
+                   (c.id === 'fc6' && c.label === 'Transports' && Number(c.montant) === 40);
+      if(dehors) sorties.push(c.label);
+      return !dehors;
+    });
+    if(sorties.length) change = true;
+    if(!fixedCharges.some(function(c){ return c.id === 'fc12'; })){
+      fixedCharges.push({id:'fc12', label:'Basic-Fit Premium', montant:29.99, cat:'Abonnements', periode:'4semaines'});
+      change = true;
+    }
+    fixedCharges.forEach(function(c){ if(c.id === 'fc11' && c.uneFois !== 11){ c.uneFois = 11; change = true; } });
+    if(change) save('batcave-fixed-charges', fixedCharges);
+    if(sorties.indexOf('Courses') > -1 && Number(budgetLimits['Nourriture']) === 300){ budgetLimits['Nourriture'] = Math.round(coutAchatsMoyen().mois); bouge = true; }
+    if(sorties.indexOf('Transports') > -1 && Number(budgetLimits['Transport (TAM)']) === 40){ delete budgetLimits['Transport (TAM)']; bouge = true; }
+    if(budgetLimits['Abonnements'] !== undefined && Math.abs(Number(budgetLimits['Abonnements']) - avantAbo) < 0.005){ budgetLimits['Abonnements'] = Math.round(somme('Abonnements') * 100) / 100; bouge = true; }
+    if(Number(budgetLimits['Eau & Électricité']) === 60 && fixedCharges.some(function(c){ return c.id === 'fc5' && Number(c.montant) === 70; })){ budgetLimits['Eau & Électricité'] = 70; bouge = true; }
+    if(bouge) save('batcave-budget-limits', budgetLimits);
+    if(sorties.length){
+      txState = chargerFractionne('batcave-transactions');
+      var tx = txState.filter(function(t){
+        if(!t || !t.fixed) return true;
+        var lb = String(t.label || '');
+        if(sorties.indexOf('Courses') > -1 && t.categorie === 'Nourriture' && /^Courses/.test(lb)) return false;
+        if(sorties.indexOf('Transports') > -1 && /^Transports/.test(lb)) return false;
+        return true;
+      });
+      if(tx.length !== txState.length){ txState = tx; sauverFractionne('batcave-transactions', txState); }
+    }
+    saveInternal('batcave-fc-migration-v5', true);
+    return change || bouge;
+  }
+  migrerChargesFixesV5();
+  MIGRATIONS_DEMARRAGE.push({cle:'batcave-fc-migration-v5', rejouer: function(){
+    if(!migrerChargesFixesV5()) return false;
+    try{ renderFixedCharges(); renderBudget(); renderDashboard(); }catch(e){}
+    return true;
+  }});
 
   /* budgets par défaut = somme des charges fixes par catégorie, seulement si l'utilisateur n'a pas déjà personnalisé */
   (function(){
@@ -18781,7 +18854,7 @@
     fixedCharges.forEach(function(c){ catTotals[c.cat] = (catTotals[c.cat]||0) + montantMensuel(c); });
     var changed = false;
     Object.keys(catTotals).forEach(function(cat){
-      if(budgetLimits[cat] === undefined){ budgetLimits[cat] = catTotals[cat]; changed = true; }
+      if(budgetLimits[cat] === undefined){ budgetLimits[cat] = Math.round(catTotals[cat] * 100) / 100; changed = true; }   /* au centime : 29,99 x 13/12 ne tombe pas juste */
     });
     if(changed) save('batcave-budget-limits', budgetLimits);
   })();
@@ -18796,7 +18869,7 @@
       var flagKey = 'batcave-fc-logged-' + c.id + '-' + monthKey;
       if(load(flagKey, false)) return;
       var per = periodeDe(c);
-      var libelle = per === 'mensuel' ? c.label : (c.label + ' (' + per + ', lissé)');
+      var libelle = per === 'mensuel' ? c.label : (c.label + ' (' + (per === '4semaines' ? 'toutes les 4 semaines' : per) + ', lissé)');
       txState.push({id:'fctx'+Date.now()+Math.random().toString(36).slice(2,7), date: monthKey+'-01', type:'Dépense', categorie:c.cat, montant:Math.round(montantMensuel(c)*100)/100, methode:'Virement', fixed:true, label:libelle});
       saveInternal(flagKey, true);
       changed = true;
@@ -18942,6 +19015,17 @@
   var PRIX_ESTIMES = {};
   /* Quand et comment part chaque charge. Les trois du proprietaire partent en UN virement :
      le contrat d'eau, d'electricite et de wifi est a son nom. */
+  /* ===== A regler ===== (8 novembre : « je n'ai pas paye le proprio pour les deux mois
+     d'electricite encore », « j'ai pas encore paye ma licence de JJB »)
+     Ce qui est en retard, hors du plan du mois : une ligne par dette et un bouton « Paye ». La
+     date du paiement se garde (batcave-a-regler) ; une ligne payee sort, et le bloc disparait
+     quand tout est regle. Rien a saisir dans les depenses : le budget compte deja ces charges
+     le 1er de chaque mois (la licence, lissee). */
+  var A_REGLER = [
+    {id:'proprio-elec-2-mois', label:'Le proprio : 2 mois d\u2019eau et d\u2019\u00e9lectricit\u00e9', montant:140,
+     detail:'2 \u00d7 70 \u20ac estim\u00e9s : le montant exact, c\u2019est lui qui te le donne. Virement \u00e0 la main. Le premier mois vient de l\u2019argent du mois dernier : s\u2019il est parti dans la cagnotte, reprends-l\u2019y.'},
+    {id:'licence-jjb-2026', label:'La licence JJB', montant:30, detail:'En une fois, au club.'}
+  ];
   var ECHEANCES_ARGENT = [
     {cagnotte:true},
     /* A la main, jamais programme : le contrat d'eau et d'electricite est au nom du proprietaire,
@@ -18952,13 +19036,31 @@
     /* 4 octobre : il paie le club le lundi 5, premier jour de JJB -- l'abonnement court donc
        du 5 au 4, et le paiement tombe chaque 5 (il etait au 28 tant que le combat devait
        commencer le 28 septembre). */
-    {ids:['fc10'], quand:'le 5', action:'Paie le club par carte', detail:'Carte Wise, au club \u2014 \u00e0 la s\u00e9ance suivante s\u2019il est ferm\u00e9. Ce mois-ci, la licence de 30 \u20ac en plus.', faire:true},
+    {ids:['fc10'], quand:'le 5', action:'Paie le club par carte', detail:'Carte Wise, au club \u2014 \u00e0 la s\u00e9ance suivante s\u2019il est ferm\u00e9.', faire:true},
+    /* 8 novembre : la licence se paie en une fois (uneFois) -- sa ligne n'apparait que dans la
+       periode ou tombe son mois. */
+    {ids:['fc11'], quand:'ce mois-ci', action:'Licence JJB, en une fois', detail:'Au club, avec l\u2019abonnement : une fois par an.', faire:true},
     {ids:['fc3'], quand:'le 5', action:'Bouygues', detail:'Pr\u00e9l\u00e8vement sur Wise.'},
+    /* 8 novembre : Basic-Fit Premium, preleve toutes les 4 semaines (le detail se calcule). */
+    {ids:['fc12'], quand:'toutes les 4 sem.', action:'Basic-Fit', quatreSemaines:true},
     {ids:['fc6'], quand:'quand vide', action:'Recharge les transports', detail:'Le jour o\u00f9 la carte est vide.', faire:true},
     {ids:['fc7'], quand:'1 fois', action:'Coiffeur', detail:'Un samedi dans le mois.', faire:true},
     {courses:true},
     {balayage:true}
   ];
+  /* 8 novembre : une charge annuelle payee EN UNE FOIS (« uneFois », le numero de son mois :
+     la licence JJB, 30 EUR au club en novembre). Le budget la garde lissee (2,50 EUR par mois :
+     la tuile, les plafonds, les depenses automatiques) ; le plan d'argent la sort en entier
+     dans la periode ou tombe le 1er de son mois, et nulle part ailleurs. */
+  var NOMS_MOIS = ['janvier','f\u00e9vrier','mars','avril','mai','juin','juillet','ao\u00fbt','septembre','octobre','novembre','d\u00e9cembre'];
+  function montantPeriode(c, debut, fin){
+    if(!c.uneFois) return montantMensuel(c);
+    for(var y = Number(debut.slice(0, 4)); y <= Number(fin.slice(0, 4)); y++){
+      var d = y + '-' + String(c.uneFois).padStart(2, '0') + '-01';
+      if(d >= debut && d <= fin) return Number(c.montant) || 0;
+    }
+    return 0;
+  }
   function moisArgent(iso){
     var parId = {}; fixedCharges.forEach(function(c){ parId[c.id] = c; });
     var cs = coutSemaine(), sem = cs.total, estimes = [];
@@ -18978,7 +19080,9 @@
       var sams = [];
       /* le samedi dont les courses se font un autre jour (le 3 octobre, faites le lundi 5) s'affiche au jour reel */
       for(var x = debut; x <= fin; x = isoDecale(x, 1)) if(dowDe(x) === 6) sams.push({date: (PREMIER_JOUR_COURSES > x && PREMIER_JOUR_COURSES < isoDecale(x, 7)) ? PREMIER_JOUR_COURSES : x, montant: achatsDuSamedi(x, plan)});
-      return {debut: debut, fin: fin, samedis: sams.length, achats: sams, courses: sams.reduce(function(t, s){ return t + s.montant; }, 0)};
+      /* 8 novembre : chaque periode a SES charges -- la licence payee en une fois n'en charge qu'une. */
+      var fx = fixedCharges.reduce(function(t, c){ return t + montantPeriode(c, debut, fin); }, 0);
+      return {debut: debut, fin: fin, samedis: sams.length, achats: sams, courses: sams.reduce(function(t, s){ return t + s.montant; }, 0), fixes: fx, libre: REVENU_MOIS.montant - fx};
     };
     var j = new Date(iso + 'T00:00:00');
     var debut = localISO(new Date(j.getFullYear(), j.getMonth() - (j.getDate() < REVENU_MOIS.jour ? 1 : 0), REVENU_MOIS.jour));
@@ -18986,8 +19090,14 @@
     var suite = [], x = debut;
     for(var k = 0; k < 13; k++){ var pk = periodeBrute(x); suite.push(pk); x = isoDecale(pk.fin, 1); }
     var pire = suite.reduce(function(m, p){ return Math.max(m, p.courses); }, 0);
-    var cagnotte = Math.max(0, Math.floor((libre - pire) / 10) * 10);
-    suite.forEach(function(p){ p.balayage = libre - p.courses - cagnotte; });
+    /* 8 novembre : le montant sur se lit periode par periode (ses charges et ses courses), et un
+       prelevement toutes les 4 semaines tombe DEUX fois dans une periode par an, sans qu'on
+       sache laquelle : la cagnotte garde cette marge (le second prelevement, moins la part
+       lissee deja comptee). Sans charge de ce genre, c'est exactement l'ancien calcul. */
+    var marge4s = fixedCharges.reduce(function(t, c){ return t + (periodeDe(c) === '4semaines' ? 2 * (Number(c.montant) || 0) - montantMensuel(c) : 0); }, 0);
+    var pireReste = suite.reduce(function(m, p){ return Math.min(m, p.libre - p.courses); }, Infinity);
+    var cagnotte = Math.max(0, Math.floor((pireReste - marge4s) / 10) * 10);
+    suite.forEach(function(p){ p.balayage = p.libre - p.courses - cagnotte; });
     var cette = suite[0], prochaine5 = suite.filter(function(p){ return p.samedis === 5; })[0] || null;
     /* Le fil du mois, avec le solde apres chaque geste. Le jour du virement et celui du
        balayage se lisent sur la periode : le 28 pour la premiere, le 25 ensuite. */
@@ -19006,10 +19116,12 @@
       else {
         var cs2 = e.ids.map(function(id){ vus[id] = true; return parId[id]; }).filter(Boolean);
         if(!cs2.length) return;
-        var m = cs2.reduce(function(t, c){ return t + montantMensuel(c); }, 0);
+        var m = cs2.reduce(function(t, c){ return t + montantPeriode(c, cette.debut, cette.fin); }, 0);
+        if(!m && cs2.every(function(c){ return c.uneFois; })) return;   /* payee en une fois, pas ce mois-ci */
         var detail = e.detail || '';
         if(e.proprio) detail = cs2.map(function(c){ return c.label + ' ' + Math.round(montantMensuel(c) * 100) / 100 + ' \u20ac'; }).join(' + ') + '. Le montant exact, c\u2019est lui qui te le donne : l\u2019eau et l\u2019\u00e9lectricit\u00e9 suivent ta conso.';
         else if(!e.detail) detail = cs2.map(function(c){ return c.label; }).join(', ');
+        if(e.quatreSemaines) detail = 'Pr\u00e9l\u00e8vement automatique : ' + cs2.map(function(c){ return eur(Number(c.montant) || 0); }).join(' + ') + ' toutes les 4 semaines, 13 fois par an \u2014 ' + eur(m) + ' par mois en moyenne.';
         l = {quand: e.quand, action: e.action, detail: detail, montant: m, faire: !!e.faire};
       }
       solde -= l.montant; l.solde = solde;
@@ -19017,9 +19129,9 @@
     });
     /* Une charge qu'il ajoutera lui-meme n'a pas de date connue : elle passe quand meme
        dans le fil, juste avant les courses, pour que le solde reste juste. */
-    var autres = fixedCharges.filter(function(c){ return !vus[c.id]; });
+    var autres = fixedCharges.filter(function(c){ return !vus[c.id] && montantPeriode(c, cette.debut, cette.fin) > 0; });
     if(autres.length){
-      var ma = autres.reduce(function(t, c){ return t + montantMensuel(c); }, 0);
+      var ma = autres.reduce(function(t, c){ return t + montantPeriode(c, cette.debut, cette.fin); }, 0);
       var pos = lignes.length - 2;
       lignes.splice(pos, 0, {quand:'\u00e0 sa date', action: autres.map(function(c){ return c.label; }).join(', '), detail:'Charge fixe sans date dans ce plan.', montant: ma, faire:false});
       solde = REVENU_MOIS.montant;
@@ -19046,6 +19158,16 @@
         (a.prochaine5 && a.prochaine5.debut !== P.debut ? ' Du ' + jm(a.prochaine5.debut) + ' au ' + jm(a.prochaine5.fin) + ' (5 samedis) : \u2248 ' + eurMille(Math.max(0, a.prochaine5.balayage)) + '.' : '') + '</div></div>' +
       '<div class="ma-chiffre"><div class="ml">\u00c9pargne moyenne</div><div class="mv">' + eurMille(a.moyenne) + '</div><div class="mn">Par mois sur l\u2019ann\u00e9e : ' + eurMille(a.moyenne * 12).replace(',00', '') + ' en douze mois.</div></div>' +
       '</div>';
+    /* 8 novembre : ce qui est en retard passe avant le fil du mois (A_REGLER). */
+    var regles = load('batcave-a-regler', {}) || {}, dus = A_REGLER.filter(function(r){ return !regles[r.id]; });
+    if(dus.length){
+      h += '<div class="sub-head ma-a-regler"><h3>\u00c0 r\u00e9gler</h3><span class="sub-note">en retard \u00b7 \u2248 ' + eurMille(dus.reduce(function(t, r){ return t + r.montant; }, 0)) + '</span></div>' +
+        '<ul class="ma-dettes">' + dus.map(function(r){
+          return '<li><span><b>' + escapeHtml(r.label) + '</b><span class="md">' + escapeHtml(r.detail) + '</span></span>' +
+            '<span class="mm">\u2248 ' + eurMille(r.montant) + '</span>' +
+            '<button type="button" class="btn" data-regle="' + r.id + '">Pay\u00e9</button></li>';
+        }).join('') + '</ul>';
+    }
     h += '<ol class="ma-fil">' + a.lignes.map(function(l){
       return '<li' + (l.cagnotte ? ' class="cagnotte"' : '') + '><span class="mq">' + escapeHtml(l.quand) + '</span>' +
         '<span><b>' + escapeHtml(l.action) + '</b>' + (l.faire ? '' : '<span class="badge">auto</span>') + (l.detail ? '<span class="md">' + escapeHtml(l.detail) + '</span>' : '') + '</span>' +
@@ -19077,6 +19199,15 @@
       (a.estimes.length ? ', dont ' + a.estimes.map(function(e){ return e.label.toLowerCase() + ' estim\u00e9es \u00e0 ' + e.prix.eur + ' \u20ac/' + e.prix.par + ' (prix \u00e0 relever)'; }).join(', ') : '') +
       '. Eau et \u00e9lectricit\u00e9 : 70 \u20ac estim\u00e9s par mois, une provision \u2014 le vrai montant suit ta conso, le propri\u00e9taire te le donne chaque mois. Charges fixes : ' + eurMille(a.fixes) + ' par mois.</p>';
     el.innerHTML = h;
+    el.querySelectorAll('[data-regle]').forEach(function(b){
+      b.addEventListener('click', function(){
+        var r = load('batcave-a-regler', {}) || {};
+        r[b.dataset.regle] = todayISO;
+        save('batcave-a-regler', r);
+        showToast('\u2705 Not\u00e9 : c\u2019est r\u00e9gl\u00e9.');
+        renderMoisArgent();
+      });
+    });
   }
   document.getElementById('tx-add').addEventListener('click', function(){
     var montant = Number(document.getElementById('tx-montant').value);
@@ -19104,9 +19235,12 @@
     document.getElementById('fixed-charges-total').textContent = total.toFixed(0) + ' €/mois';
     el.innerHTML = fixedCharges.length ? fixedCharges.map(function(c){
       var per = periodeDe(c), lissee = montantMensuel(c);
+      /* 8 novembre : les centimes quand il y en a (29,99 EUR n'est pas 30), et le mois d'une
+         charge payee en une fois. */
+      var mt = function(n){ n = Number(n) || 0; return (Math.abs(n - Math.round(n)) < 0.005 ? String(Math.round(n)) : n.toFixed(2).replace('.', ',')) + ' €'; };
       var detail = per === 'mensuel'
-        ? Number(c.montant).toFixed(0) + ' €/mois'
-        : Number(c.montant).toFixed(0) + ' €' + PERIODES[per].label + ' <span style="color:var(--ink-faint);">soit ' + lissee.toFixed(0) + ' €/mois</span>';
+        ? mt(c.montant) + '/mois'
+        : mt(c.montant) + PERIODES[per].label + (c.uneFois ? ' · en une fois, en ' + NOMS_MOIS[c.uneFois - 1] : '') + ' <span style="color:var(--ink-faint);">soit ' + mt(lissee) + '/mois</span>';
       return '<li class="entry-row"><span class="ecell"><b>'+escapeHtml(c.label)+'</b></span><span class="ecell small badge">'+escapeHtml(c.cat)+'</span><span class="ecell small">'+detail+'</span><button class="edel" aria-label="Supprimer" title="Supprimer" data-delfc="'+c.id+'">×</button></li>';
     }).join('') : '<li class="entry-empty">Aucune charge fixe.</li>';
     el.querySelectorAll('[data-delfc]').forEach(function(btn){

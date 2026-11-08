@@ -27,9 +27,9 @@ console.log('\n== 400) Un seul numéro de schéma ==');
 {
   const { ctx, fr } = await ouvrir('2026-09-28T10:00:00+02:00');
   const r = await fr.evaluate(() => ({ s: window.__bcSchema(), m: window.__bcDrapeaux(), fini: window.__bcInitFini === true }));
-  ok(r.s.attendu === 53 && r.s.enregistre === 53, 'batcave-schema écrit au démarrage : ' + r.s.enregistre + ' (attendu ' + r.s.attendu + ')');
+  ok(r.s.attendu === 54 && r.s.enregistre === 54, 'batcave-schema écrit au démarrage : ' + r.s.enregistre + ' (attendu ' + r.s.attendu + ')');
   ok(r.m.length === 0, 'toutes les migrations ont posé leur drapeau au premier chargement (manquants : ' + (r.m.join(', ') || 'aucun') + ')');
-  ok(await lire(fr, 'batcave-schema') === 53, 'la clé batcave-schema vaut 53 (plafond-nourriture-v8, le 8 novembre)');
+  ok(await lire(fr, 'batcave-schema') === 54, 'la clé batcave-schema vaut 54 (fc-migration-v5, le 8 novembre)');
   ok(r.fini, 'le second temps du démarrage (les autres onglets) est terminé');
   await ctx.close();
 }

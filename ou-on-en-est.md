@@ -1,5 +1,20 @@
 # Où on en est — samedi 19 septembre 2026, au soir
 
+> ### Dimanche 8 novembre, le soir — le budget remis au réel
+> **Ses mots** : « c'est quoi mes frais fixes », puis « j'ai pas encore payé ma licence de JJB, elle se
+> paye en une fois, et je n'ai pas payé le proprio pour les deux mois d'électricité », « il y a
+> l'abonnement Basic-Fit aussi », « j'ai pris le premium, et j'ai pas de carte de transports encore ».
+> **Trouvé dans son cloud** : la ligne « Courses 300 € », retirée le 21 septembre, était revenue (sa
+> liste du 27 octobre) ; avec elle, 548,50 € de charges, une cagnotte à zéro et un trou de 46 € le 24.
+> **Fait** (`fc-migration-v5`, rejouée après le cloud ; schéma 54) : « Courses 300 € » et les
+> transports sortent, avec leurs dépenses automatiques ; Basic-Fit Premium entre, 29,99 € toutes les
+> 4 semaines (nouvelle périodicité, 32,49 € par mois) ; la licence se paie en une fois, en novembre
+> (`uneFois`) : le plan d'argent la sort en entier dans cette période, le budget la garde lissée ;
+> plafonds Nourriture 209 €, Abonnements 140,99 €, Eau et électricité 70 €. Le plan d'argent se lit
+> période par période, et la cagnotte garde la marge d'un second prélèvement Basic-Fit (27,49 €) :
+> **170 €** le 25. Frais fixes : **240,99 € par mois**. Un bloc « À régler » dans le mois de l'argent :
+> le proprio (2 mois, ≈ 140 €) et la licence (30 €), chacun avec un bouton « Payé ».
+
 > ### Dimanche 8 novembre — plus de cottage cheese, le 3e œuf revient
 > **Ses mots** : « enlève le cottage cheese, ça me dégoûte, je peux remplacer par quoi ».
 > **Le changement** : dès le 8, la collation redevient 50 g d'amandes, **3 œufs durs** et 7 dattes

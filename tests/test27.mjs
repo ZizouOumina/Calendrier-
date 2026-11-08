@@ -44,17 +44,17 @@ console.log('\n== 63) Charges annuelles et trimestrielles, lissées au mois ==')
 
   const total = await fr.evaluate(() => document.getElementById('fixed-charges-total').textContent);
   // +25 € : iCloud (3 €) et Claude Pro (22 €) sont réinjectés d'office par la migration
-  ok(/848/.test(total), 'total lissé = 700 + 20 + 30 + 25 + 70 + 2,50 (charges par défaut : club à 70 €, licence lissée) = 848 €/mois : ' + total);
+  ok(/880/.test(total), 'total lissé = 700 + 20 + 30 + 25 + 70 + 2,50 + 32,49 (charges par défaut : club à 70 €, licence lissée, Basic-Fit Premium) = 880 €/mois : ' + total);
 
   const tuile = await fr.evaluate(() => document.querySelectorAll('#budget-stats .stat-tile')[4].innerText.replace(/\s+/g,''));
-  ok(/848/.test(tuile), 'la tuile "Charges fixes" affiche le même total lissé : ' + tuile);
+  ok(/880/.test(tuile), 'la tuile "Charges fixes" affiche le même total lissé : ' + tuile);
 
   const tx = await fr.evaluate(() => JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-transactions')||'[]').filter(t=>t.fixed));
   const assurance = tx.find(t => /Assurance/.test(t.label||''));
   ok(assurance && assurance.montant === 20, 'la transaction du mois pour l\'assurance est de 20 € (pas 240) : ' + (assurance&&assurance.montant));
   ok(assurance && /lissé/.test(assurance.label), 'son libellé indique le lissage : ' + (assurance&&assurance.label));
   const somme = tx.reduce((a,t)=>a+Number(t.montant),0);
-  ok(Math.round(somme) === 848, 'les dépenses fixes du mois totalisent 848 € : ' + somme);
+  ok(Math.round(somme) === 880, 'les dépenses fixes du mois totalisent 880 € : ' + somme);
   await ctx.close();
 }
 
@@ -65,7 +65,7 @@ console.log('\n== 64) Rétrocompatibilité : charges existantes sans périodicit
     'batcave-transactions': []
   });
   const total = await fr.evaluate(() => document.getElementById('fixed-charges-total').textContent);
-  ok(/598/.test(total), 'une charge sans champ "periode" reste mensuelle (500 + 25 + 70 + 2,50 par défaut) : ' + total);
+  ok(/630/.test(total), 'une charge sans champ "periode" reste mensuelle (500 + 25 + 70 + 2,50 + 32,49 par défaut) : ' + total);
   const liste = await fr.evaluate(() => document.getElementById('fixed-charges-list').innerText.replace(/\s+/g,' '));
   const ligneAnc = await fr.evaluate(() => [...document.querySelectorAll('#fixed-charges-list li')].map(li => li.innerText.replace(/\s+/g,' ')).find(l => l.startsWith('Ancien loyer')) || '');
   ok(/500 €\/mois/.test(ligneAnc) && !/soit/.test(ligneAnc), 'affichée comme mensuelle, sans mention de lissage : ' + ligneAnc);

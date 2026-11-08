@@ -36,7 +36,9 @@ console.log('— vendredi 25 septembre : la premiere periode, 28 sept. -> 24 oct
   const {ctx, fr} = await ouvrir('2026-09-25T20:00:00+02:00');
   const a = await fr.evaluate(() => window.__bcMoisArgent('2026-09-25'));
   ok(a.revenu === 700, 'revenu : 700 EUR (loyer et wifi payes par sa mere)');
-  ok(a.fixes === 248.5, 'charges fixes : 248,50 EUR, sans loyer ni wifi, club 70 EUR et licence lissee a 2,50 EUR (' + a.fixes + ')');
+  /* 8 novembre : plus de transports (pas de carte), Basic-Fit Premium (29,99 EUR toutes les 4 semaines,
+     32,49 EUR par mois), la licence payee en une fois en novembre (lissee dans le budget). */
+  ok(pres(a.fixes, 240.99), 'charges fixes : 240,99 EUR, sans loyer ni wifi ni transports, club 70 EUR, licence lissee a 2,50 EUR, Basic-Fit Premium a 32,49 EUR par mois (' + a.fixes + ')');
   /* 21 octobre : le couscous, les fruits rouges, les galettes de riz et les sardines entrent sans prix
      (son ticket) -- hors du calcul jusque-la ; le riz sort, les oeufs, les amandes, l'huile et le miel baissent.
      Le meme soir, le shake de recup des jours de JJB : 3 bananes, 750 ml de boisson d'avoine et 60 g de
@@ -53,23 +55,30 @@ console.log('— vendredi 25 septembre : la premiere periode, 28 sept. -> 24 oct
   /* 30 octobre : son releve chez Alcampo -- les fruits rouges, 2,85 EUR les 450 g (6,33 EUR/kg), 700 g par
      semaine : +4,43 EUR, 42,09 EUR. */
   /* 8 novembre : le cottage cheese sort (il le degoute ; il n'avait pas de prix, il etait hors du total) et
-     5 oeufs de plus par semaine entrent : +1,41 EUR, 43,50 EUR. */
+     5 oeufs de plus par semaine entrent : +1,41 EUR, 43,50 EUR. Le meme soir, le budget remis au reel (sans
+     transports, avec Basic-Fit, la licence en une fois) : la cagnotte garde la marge d'un second
+     prelevement Basic-Fit dans une periode (27,49 EUR) -- 170 EUR. */
   ok(pres(a.semaine, 43.50), 'courses : 43,50 EUR par semaine hors les articles sans prix (dattes, sardines, galettes), les fruits rouges releves le 30 octobre, les 5 oeufs du 8 novembre (' + a.semaine.toFixed(2) + ')');
   ok(a.estimes.length === 0, 'plus aucune estimation : les amandes ont leur prix releve');
-  ok(a.cagnotte === 190, 'jour du virement : 190 EUR dans la cagnotte (230 avant le prix des fruits rouges, 30 octobre ; 200 avant les oeufs du 8 novembre) — ce que laisse la periode la plus chere, les courses comptees en caisse (plan dense du 23 octobre au soir) (' + a.cagnotte + ')');
+  ok(a.cagnotte === 170, 'jour du virement : 170 EUR dans la cagnotte (230 avant le prix des fruits rouges, 30 octobre ; 200 avant les oeufs du 8 novembre ; 190 avant Basic-Fit) — ce que laisse la periode la plus chere, les courses comptees en caisse (plan dense du 23 octobre au soir) (' + a.cagnotte + ')');
   ok(a.periode.debut === '2026-09-28' && a.periode.fin === '2026-10-24', 'premiere periode du 28 sept. (dernier virement a l\'ancienne date) au 24 oct.');
   ok(a.periode.samedis === 4, '4 samedis de courses');
-  ok(pres(a.periode.balayage, 63.55), 'le 24 : environ 63,55 EUR a balayer (' + a.periode.balayage.toFixed(2) + ')');
-  ok(pres(a.moyenne, 242.89), 'epargne moyenne : 242,89 EUR par mois (hors les prix a relever, les fruits rouges releves le 30 octobre) (' + a.moyenne.toFixed(2) + ')');
+  ok(pres(a.periode.balayage, 93.57), 'le 24 : environ 93,57 EUR a balayer (' + a.periode.balayage.toFixed(2) + ')');
+  ok(pres(a.moyenne, 250.40), 'epargne moyenne : 250,40 EUR par mois (hors les prix a relever, les fruits rouges releves le 30 octobre) (' + a.moyenne.toFixed(2) + ')');
   ok(a.prochaine5 && a.prochaine5.debut === '2026-12-25' && a.prochaine5.fin === '2027-01-24' && a.prochaine5.samedis === 5, 'prochaine periode a 5 samedis : 25 dec. -> 24 janv.');
-  ok(pres(a.prochaine5.balayage, 1.72), 'avec 5 samedis et les reserves, il reste encore 1,72 EUR le 24 — tout juste (' + a.prochaine5.balayage.toFixed(2) + ')');
+  ok(pres(a.prochaine5.balayage, 31.73), 'avec 5 samedis et les reserves, il reste encore 31,73 EUR le 24, la marge d\'un second prelevement Basic-Fit (' + a.prochaine5.balayage.toFixed(2) + ')');
   const L = a.lignes;
   ok(L[0].montant === 700 && L[0].plus && L[0].quand === 'le 28', 'le fil commence par le virement, le 28 pour cette premiere periode');
-  ok(L[1].montant === 190 && L[1].cagnotte && L[1].quand === 'le 28', 'puis la cagnotte, le meme jour');
+  ok(L[1].montant === 170 && L[1].cagnotte && L[1].quand === 'le 28', 'puis la cagnotte, le meme jour');
   const club = L.find(l => /club/.test(l.action));
   ok(club && club.montant === 70 && club.quand === 'le 5', 'le club, 70 EUR, le 5 : il le paie le lundi 5, premier jour de JJB (4 octobre)');
   const lic = L.find(l => /Licence/.test(l.action));
-  ok(lic && pres(lic.montant, 2.5), 'la licence JJB, 30 EUR par an, lissee a 2,50 EUR par mois');
+  /* 8 novembre : la licence se paie en une fois, en novembre -- pas de ligne dans cette periode-ci. */
+  ok(!lic, 'la licence JJB se paie en une fois, en novembre : aucune ligne du 28 sept. au 24 oct.');
+  const nov = await fr.evaluate(() => { const b = window.__bcMoisArgent('2026-11-08'); return {lic: b.lignes.find(l => /Licence/.test(l.action)) || null, bf: b.lignes.find(l => /Basic-Fit/.test(l.action)) || null, somme: b.lignes.slice(1).reduce((t, l) => t + l.montant, 0)}; });
+  ok(nov.lic && nov.lic.montant === 30 && /en une fois/.test(nov.lic.action), 'du 25 oct. au 24 nov. : la licence, 30 EUR en une fois (' + JSON.stringify(nov.lic) + ')');
+  ok(nov.bf && pres(nov.bf.montant, 32.49) && /29,99/.test(nov.bf.detail) && /13 fois par an/.test(nov.bf.detail), 'Basic-Fit : 29,99 EUR toutes les 4 semaines, 32,49 EUR par mois dans le fil (' + (nov.bf && nov.bf.detail) + ')');
+  ok(pres(nov.somme, 700), 'et ce fil-la aussi fait exactement 700 EUR (' + nov.somme + ')');
   const proprio = L.find(l => /propri/.test(l.action));
   ok(proprio && proprio.montant === 70 && proprio.quand === 'le 1er', 'au proprietaire, seulement l\'eau et l\'electricite : 70 EUR le 1er');
   ok(proprio && /\u00e0 la main/.test(proprio.action) && /lui qui te le donne/.test(proprio.detail), 'le virement du proprietaire : a la main, au montant qu\'il donne');
@@ -81,7 +90,7 @@ console.log('— vendredi 25 septembre : la premiere periode, 28 sept. -> 24 oct
   ok(pres(somme, 700), 'tout ce qui sort fait exactement 700 EUR');
   const txt = await fr.evaluate(() => document.getElementById('budget-mois-panel').innerText);
   ok(/Le mois de l.argent/.test(txt), 'le panneau est dans l\'onglet Budget');
-  ok(txt.includes('190,00 €') && txt.includes('700,00 €'), 'montants affiches : 190,00 EUR et 700,00 EUR');
+  ok(txt.includes('170,00 €') && txt.includes('700,00 €'), 'montants affiches : 170,00 EUR et 700,00 EUR');
   ok(/28 sept\..*24 oct\..*4 samedis/.test(txt), 'la periode et ses samedis sont ecrits en tete');
   ok(/Le 28, dans la cagnotte/.test(txt) && /Ce mois-ci le 28, puis chaque 25/.test(txt), 'la tuile dit : ce mois-ci le 28, puis chaque 25');
   ok(/Le 24, en plus/.test(txt), 'la tuile du balayage dit le 24');
@@ -104,7 +113,7 @@ console.log('— dimanche 3 janvier : une periode a 5 samedis');
   const {ctx, fr} = await ouvrir('2027-01-03T20:00:00+01:00');
   const a = await fr.evaluate(() => window.__bcMoisArgent('2027-01-03'));
   ok(a.periode.debut === '2026-12-25' && a.periode.fin === '2027-01-24' && a.periode.samedis === 5, 'periode du 25 dec. au 24 janv., 5 samedis');
-  ok(a.cagnotte === 190, 'la cagnotte du 25 ne bouge pas : 190 EUR');
+  ok(a.cagnotte === 170, 'la cagnotte du 25 ne bouge pas : 170 EUR');
   ok(a.periode.balayage >= 0, 'et le compte ne passe pas dans le rouge (' + a.periode.balayage.toFixed(2) + ' EUR le 24)');
   ok(a.lignes[0].quand === 'le 25' && a.lignes[1].quand === 'le 25' && a.lignes[a.lignes.length - 1].quand === 'le 24', 'virement et cagnotte le 25, balayage le 24');
   const tete = await fr.evaluate(() => document.getElementById('ma-periode').textContent);
@@ -145,10 +154,11 @@ console.log('— une charge qui change : le plan suit');
   ];
   const {ctx, fr} = await ouvrir('2026-09-25T20:00:00+02:00', {charges});
   const a = await fr.evaluate(() => window.__bcMoisArgent('2026-09-25'));
-  ok(a.fixes === 268.5, 'charges fixes : 268,50 EUR avec une assurance lissee de 20 EUR (' + a.fixes + ')');
-  ok(a.cagnotte === 170, 'la cagnotte du 28 descend a 170 EUR (' + a.cagnotte + ')');
+  /* 8 novembre : la v5 retire les transports a 40 EUR (pas de carte) et ajoute Basic-Fit Premium. */
+  ok(pres(a.fixes, 260.99), 'charges fixes : 260,99 EUR avec une assurance lissee de 20 EUR (sans transports, avec Basic-Fit) (' + a.fixes + ')');
+  ok(a.cagnotte === 150, 'la cagnotte du 28 descend a 150 EUR (' + a.cagnotte + ')');
   const autre = a.lignes.find(l => /Assurance/.test(l.action));
-  ok(autre && /Licence JJB/.test(autre.action) && pres(autre.montant, 22.5), 'la charge sans date passe dans le fil, regroupee avec la licence : 20 + 2,50 EUR par mois (' + (autre && autre.action) + ')');
+  ok(autre && autre.action === 'Assurance' && pres(autre.montant, 20), 'la charge sans date passe dans le fil : 20 EUR par mois -- la licence, payee en une fois en novembre, n\'est pas de cette periode (' + (autre && autre.action) + ')');
   ok(Math.abs(a.lignes[a.lignes.length - 1].solde) < 0.001, 'et le compte finit toujours a zero le 27');
   ok(a.lignes[a.lignes.length - 1].cagnotte && /Balaye/.test(a.lignes[a.lignes.length - 1].action), 'le balayage reste la derniere ligne');
   await ctx.close();
