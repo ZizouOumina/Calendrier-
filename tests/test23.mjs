@@ -68,7 +68,7 @@ const pie = await fr.evaluate(() => ({
   solde: document.querySelectorAll('#budget-stats .stat-tile')[2].innerText.replace(/\s+/g,''),
 }));
 ok(pie.parts === 1 && /Shopify 1200/.test(pie.txt), 'camembert Entrées à 100% Shopify : ' + pie.txt);
-ok(/952/.test(pie.solde), 'le solde se recalcule : 1200 - 248,50 de charges (club à 70 €, licence lissée, ni loyer ni wifi) = 952 (' + pie.solde + ')');
+ok(/959/.test(pie.solde), 'le solde se recalcule : 1200 - 240,99 de charges (club à 70 €, licence lissée, Basic-Fit Premium, ni loyer ni wifi ni transports) = 959 (' + pie.solde + ')');
 
 console.log('\n== E) Habitude cochée → score + bilan ==');
 await fr.evaluate(() => document.querySelector('.nav-btn[data-page="habitudes"]').click());
