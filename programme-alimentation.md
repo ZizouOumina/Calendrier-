@@ -124,8 +124,10 @@ riz dans l'assiette, ce qu'il ne peut pas manger.
   jour : chez de jeunes adultes en bonne santé, le LDL n'a pas monté et le HDL a monté (DiMarco
   2017). La collation se mange à la maison avant de partir en cours ; les œufs sont cuits le dimanche.
 - **Les jours de JJB**, deux prises en plus :
-  - **10:05, la collation combat** : banane 120 g, 2 galettes de riz, miel 15 g (≈ 230 kcal),
-    25 minutes avant le tatami ;
+  - **10:05, la collation combat** : banane 120 g, 2 galettes de riz avec **15 g de Nutella**
+    (≈ 265 kcal ; jusqu'au 9 novembre, 15 g de miel, ≈ 230 kcal), 25 minutes avant le tatami.
+    Ses mots, le 9 novembre : « sur les galettes de riz tu peux remplacer par du nutella » ; le miel
+    reste dans le shake. 15 g trois fois par semaine : +35 kcal et 4,6 g de gras ces jours-là ;
   - **12:00, le shake de récup** : boisson d'avoine 250 ml, banane 120 g, flocons 20 g (≈ 290
     kcal), au retour du club.
 
@@ -224,9 +226,11 @@ Le samedi à 13:30, la liste de l'onglet Courses, calculée pour le plan entier 
 viande hachée 490 g (pesés au comptoir), skyr, 18 œufs (3 boîtes de 6 : les 15 de la collation, les 3 du
 dimanche midi), bananes,
 amandes, sardines ou maquereau, légumes verts surgelés, boisson d'avoine (en briks de 1 L),
-fruits rouges, galettes de riz, dattes, riz, flocons, huile d'olive, miel. Plus de fromage depuis
+fruits rouges, galettes de riz, dattes, riz, flocons, huile d'olive, miel (un pot de 750 g toutes
+les cinq semaines, pour le shake seul depuis le 9 novembre), Nutella (un pot de 400 g toutes les cinq
+semaines, à Alcampo). Plus de fromage depuis
 le 26 octobre, plus de cottage cheese depuis le 8 novembre. Les légumes surgelés : moitié brocoli, moitié épinards en portions. La Batcave en calcule le coût ; les articles sans
-prix relevé (galettes, sardines, dattes) attendent son ticket. Les fruits rouges ont le
+prix relevé (galettes, sardines, dattes, Nutella) attendent son ticket. Les fruits rouges ont le
 leur depuis le 30 octobre : le mélange Auchan d'Alcampo, 2,85 € les 450 g.
 
 ## La préparation (batch cooking)

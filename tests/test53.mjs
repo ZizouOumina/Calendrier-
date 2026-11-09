@@ -53,7 +53,8 @@ console.log('\n== 180) Sans ajustement : plan de base, liste = plan × 7 ==');
   /* 27 octobre : le cottage cheese entre en fin de « Chaque semaine ». Dix-huit lignes. */
   /* 8 novembre : il sort (il le degoute ; le 3e oeuf revient). Dix-sept lignes. */
   /* 9 novembre : les pâtes du midi entrent en fin des réserves. Dix-huit lignes. */
-  ok(c.n === 18, '18 articles au total, tous rythmes confondus — plus de pain, de fruits ni de pâtes depuis le 23 octobre, les dattes entrent, le fromage sort le 26, le cottage cheese entre le 27 et sort le 8 novembre, les pâtes du midi entrent le 9 (' + c.n + ')');
+  /* 9 novembre au soir : le Nutella des galettes entre dans les reserves de cinq semaines -- 19 articles. */
+  ok(c.n === 19, '19 articles au total, tous rythmes confondus — plus de pain, de fruits ni de pâtes depuis le 23 octobre, les dattes entrent, le fromage sort le 26, le cottage cheese entre le 27 et sort le 8 novembre, les pâtes du midi entrent le 9, le Nutella le même soir (' + c.n + ')');
   /* Deux chiffres par ligne, et il faut les deux : ce qu'on ACHETE (un multiple du
      conditionnement) et ce que le PLAN demande (la somme des 7 jours de repas). Riz
      135 g/jour -> 945/semaine -> 3 780 sur 4 semaines, donc 4 paquets de 1 kg ;
@@ -152,8 +153,8 @@ console.log('\n== 180) Sans ajustement : plan de base, liste = plan × 7 ==');
   ok(!c.items.some(t => /^Beurre de cacahuète/.test(t)), 'le beurre de cacahuète est sorti de la liste');
   /* 29 septembre : la boisson d\'avoine du shake attend son prix (son ticket) -- c'est la seule ligne. */
   /* 21 octobre : couscous, fruits rouges, galettes de riz et sardines attendent son ticket. */
-  ok(c.items.filter(t => /prix à relever/.test(t)).every(t => /^(Boisson d\'avoine|Couscous|Fruits rouges|Galettes de riz|Sardines|Dattes|Cottage cheese)/.test(t)) && c.items.some(t => /^Amandes ou noix nature/.test(t) && /12,00 €\/kg/.test(t)),
-     'les amandes portent leur prix, 12 €/kg ; seuls les nouveaux articles du 21 octobre attendent le leur (' + c.items.find(t => /^Amandes/.test(t)) + ')');
+  ok(c.items.filter(t => /prix à relever/.test(t)).every(t => /^(Boisson d\'avoine|Couscous|Fruits rouges|Galettes de riz|Sardines|Dattes|Cottage cheese|Nutella)/.test(t)) && c.items.some(t => /^Amandes ou noix nature/.test(t) && /12,00 €\/kg/.test(t)),
+     'les amandes portent leur prix, 12 €/kg ; seuls les nouveaux articles du 21 octobre et le Nutella du 9 novembre attendent le leur (' + c.items.find(t => /^Amandes/.test(t)) + ')');
 
   await page_(fr, 'repas');
   const r = await fr.evaluate(() => ({ diner: [...document.querySelectorAll('.meal-card')].find(c => /Dîner/.test(c.querySelector('.mtitle').textContent)) }) && [...document.querySelectorAll('.meal-card')].find(c => /Dîner/.test(c.querySelector('.mtitle').textContent)).innerText);
@@ -305,8 +306,8 @@ console.log('\n== 183) La liste de courses sort du MEME plan que les repas ==');
   });
   const cles = Object.keys(r.recompte).sort();
   const faux = cles.filter(k => Math.abs(r.recompte[k] - r.lu[k]) > 0.001);
-  ok(faux.length === 0 && cles.length === 17,
-     'les 17 besoins de la semaine (le riz le soir et les pâtes à midi depuis le 16 novembre, les dattes, plus de pain ni de fruits depuis le 23 octobre au soir, plus de fromage depuis le 26, plus de cottage cheese depuis le 8 novembre) sont exactement la somme des repas' + (faux.length ? ' — ' + faux.map(k => k + ' : ' + r.lu[k] + ' vs ' + r.recompte[k]).join(', ') : ' (' + cles.length + ')'));
+  ok(faux.length === 0 && cles.length === 18,
+     'les 18 besoins de la semaine (le Nutella des galettes depuis le 10 novembre, le riz le soir et les pâtes à midi depuis le 16 novembre, les dattes, plus de pain ni de fruits depuis le 23 octobre au soir, plus de fromage depuis le 26, plus de cottage cheese depuis le 8 novembre) sont exactement la somme des repas' + (faux.length ? ' — ' + faux.map(k => k + ' : ' + r.lu[k] + ' vs ' + r.recompte[k]).join(', ') : ' (' + cles.length + ')'));
   /* Et aucun aliment du plan ne manque a la liste de courses. */
   const manquants = await fr.evaluate(() => {
     const noms = ['Petit-déjeuner','Déjeuner','Collation entraînement','Dîner','Collation combat','Récup combat'];

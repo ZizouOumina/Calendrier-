@@ -3679,11 +3679,11 @@
      comme inconnu. DRAPEAUX_MIGRATION est desormais LA liste ; les autres la reprennent.
      SCHEMA_VERSION est ecrit dans « batcave-schema » quand toutes ont tourne : le panneau
      Sante compare, et une sauvegarde plus ancienne se reconnait a ce seul chiffre. */
-  var SCHEMA_VERSION = 55;
+  var SCHEMA_VERSION = 56;
   var DRAPEAUX_MIGRATION = ['objectifs-seed-v1','objectifs-v2-55','objectifs-v5-espanol',
     'habits-ecran-v2','habitlog-hebdo-v1','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','habits-seed-v7','habits-seed-v8','habits-seed-v9','habits-seed-v10','habits-seed-v11','habits-seed-v12',
     'courses-plan-v2','courses-plan-v3','courses-plan-v4','courses-plan-v5','courses-plan-v6','courses-plan-v7','courses-plan-v8','courses-plan-v9','courses-plan-v10','courses-plan-v11',
-    'charges-v2','plafond-nourriture-v2','plafond-nourriture-v3','plafond-nourriture-v4','plafond-nourriture-v5','plafond-nourriture-v6','plafond-nourriture-v7','plafond-nourriture-v8','plafond-nourriture-v9','ancre-dimanche-v1','ancre-dimanche-v2','serviettes-v1','coiffeur-v1','shampoing-dim-v1','marche-cible-v1','fc-migration-v1','fc-migration-v2','fc-migration-v3','fc-migration-v4','fc-migration-v5','revision-fusionnee','pesee-hebdo-v1','snus-arret-v3'];
+    'charges-v2','plafond-nourriture-v2','plafond-nourriture-v3','plafond-nourriture-v4','plafond-nourriture-v5','plafond-nourriture-v6','plafond-nourriture-v7','plafond-nourriture-v8','plafond-nourriture-v9','plafond-nourriture-v10','ancre-dimanche-v1','ancre-dimanche-v2','serviettes-v1','coiffeur-v1','shampoing-dim-v1','marche-cible-v1','fc-migration-v1','fc-migration-v2','fc-migration-v3','fc-migration-v4','fc-migration-v5','revision-fusionnee','pesee-hebdo-v1','snus-arret-v3'];
   /* Drapeaux que rien ne pose plus (migrations retirees) ou poses seulement quand il y a
      eu quelque chose a migrer : connus et gardes, jamais exiges. */
   var DRAPEAUX_ANCIENS = ['objectifs-v3-trajet','objectifs-v4-dimanche','habits-retirees-v1','shampoing-combat-v1','shampoing-samedi-v1','snus-arret-v1','snus-arret-v2'];   /* snus-arret-v1 puis v2 : remplacees par la v3 (jour 1 au 22, puis au dimanche 1er novembre) ; les deux d'avant n'ecrivent qu'a partir du 28 septembre */
@@ -8381,7 +8381,7 @@
     /* 21 octobre : 25 minutes avant le tatami, les flocons et les amandes (fibres, graisses)
        pesaient sur l'estomac. Il reste du glucide qui passe vite ; les ~160 kcal qui sortent
        reviennent au retour du club, dans le feculent du dejeuner (+45 g, RIZ_COMBAT_PLUS). */
-    {name:'Collation combat', combat:true, items:['Banane (120g)','2 galettes de riz (20g)','Miel (15g)']},
+    {name:'Collation combat', combat:true, items:['Banane (120g)','2 galettes de riz (20g)','Nutella (15g)']},
     /* 21 octobre au soir, son choix : un SHAKE DE RECUP au retour du club, les jours de JJB.
        250 ml de boisson d'avoine, une banane, 20 g de flocons, au mixeur (~300 kcal) : du
        glucide pour refaire le glycogene d'1 h 30 de tatami ; les proteines arrivent avec le
@@ -8415,6 +8415,7 @@
     pain:      {kcal:250, p:9.0,  g:43.0, l:3.0},
     fromage:   {kcal:350, p:25.0, g:1.0,  l:27.0},
     miel:      {kcal:304, p:0.3,  g:82.0, l:0.0},
+    nutella:   {kcal:539, p:6.3,  g:57.5, l:30.9},   /* 9 novembre : sur les galettes des jours de JJB, a la place du miel (etiquette UE) */
     fruit:     {kcal:55,  p:0.5,  g:12.0, l:0.2,  piece:120},
     poulet:    {kcal:106, p:23.0, g:0.0,  l:1.2},
     hachee:    {kcal:137, p:21.5, g:0.0,  l:5.0},
@@ -8480,6 +8481,7 @@
      aurait cinq jours : a partir du 22, un repas frais, les pates du jour, 3 oeufs au plat ou brouilles et 80 g
      de brocoli. Les oeufs remplacent le poulet ce midi-la (19 g de proteines au lieu de 16). */
   var DEUX_BATCHS_DEBUT = '2026-11-15', MARDI_BATCH_DEBUT = '2026-11-17';
+  var NUTELLA_DEBUT = '2026-11-10';   /* le Nutella sur les galettes de la collation combat (voir compoRepas) */
   function dimancheFrais(iso){ iso = iso || todayISO; return iso > DEUX_BATCHS_DEBUT && dowDe(iso) === 0; }
   function feculentMidi(iso){ return (iso || todayISO) >= PATES_MIDI_DEBUT ? 'pates' : 'riz'; }
   var FROMAGE_FIN = '2026-10-26';   /* plus de fromage a la collation a partir de ce jour : un 3e oeuf */
@@ -8497,7 +8499,9 @@
                     : j >= FROMAGE_FIN ? {c:'oeufs', q:sard ? 0 : 50} : {c:'fromage', q:sard ? 0 : 20};
       return [{c:'amandes', q:j >= SANS_SAUCE_DEBUT ? AMANDES_SANS_SAUCE : 40}, sard ? {c:'sardines', q:85} : {c:'oeufs', q:100}, troisieme, {c:'dattes', q:70}];
     }
-    if(nom === 'Collation combat') return [{c:'banane', q:120}, {c:'galettes', q:20}, {c:'miel', q:15}];
+    /* 9 novembre au soir, ses mots : « sur les galettes de riz tu peux remplacer par du nutella » ; le miel reste
+       dans le shake. 15 g : +35 kcal et 4,6 g de gras de plus que le miel, les jours de JJB seulement. */
+    if(nom === 'Collation combat') return [{c:'banane', q:120}, {c:'galettes', q:20}, {c:(iso || todayISO) >= NUTELLA_DEBUT ? 'nutella' : 'miel', q:15}];
     if(nom === 'Récup combat') return [{c:'avoine', q:250}, {c:'banane', q:120}, {c:'flocons', q:20}];
     if(nom === 'Déjeuner'){
       var nd = proteineDuJour('dej', iso), pd = PROTEINES[nd].dej, sd = sauceDuJour('dej', iso);
@@ -8654,6 +8658,10 @@
     din: {nom:'Huile d\'olive et épices', nature:true, ingr:[],
           recette:'hors du feu, les 15 ml d\'huile d\'olive crue sur le riz, sel iodé et tes épices'}
   };
+  /* 9 novembre au soir : la recette sans sauce du midi disait « riz nature » meme les jours de pates. */
+  function recetteNature(sc, repas, iso){
+    return (sc.nature && repas === 'dej' && feculentMidi(iso) === 'pates') ? sc.recette.replace('riz nature', 'pâtes nature') : sc.recette;
+  }
   function sauceDuJour(repas, iso){
     if((iso || todayISO) >= SANS_SAUCE_DEBUT) return NATURE[repas];
     var dow = new Date((iso || todayISO) + 'T00:00:00').getDay();
@@ -8730,7 +8738,8 @@
     if(ii === 1) return 'Protéine crue — ' + nom + ' ' + portionReprise(p.g, f) + 'g';
     if(ii === 3){
       var sc = sauceDuJour(repas, iso), kc = Math.round(compoSauce(sc).reduce(function(t, x){ return t + ALIMENTS[x.c].kcal * x.q / 100; }, 0));
-      if(sc.nature) return 'Huile d\'olive (' + p.huile + 'ml, dont ' + (p.huile - 10) + ' crus) · pas de sauce : ' + sc.recette;
+      if(repas === 'dej' && dimancheFrais(iso)) return 'Huile d\'olive (20ml, dont 10 crus) · 10 ml pour cuire les œufs, 10 ml crus sur les pâtes, sel iodé et tes épices';
+      if(sc.nature) return 'Huile d\'olive (' + p.huile + 'ml, dont ' + (p.huile - 10) + ' crus) · pas de sauce : ' + recetteNature(sc, repas, iso);
       return 'Huile d\'olive (' + (p.huile - (sc.sansHuile ? HUILE_CRUE[repas] : 0)) + 'ml) · sauce ' + sc.nom.toLowerCase() + ' (≈ ' + kc + ' kcal, comptée) : ' + sc.recette;
     }
     if(ii === 2) return reduit(it.replace('Légumes verts', nomLegumes(repas, iso)));
@@ -12739,7 +12748,7 @@
                      legumes:'Légumes verts surgelés', huile:'Huile d\'olive',
                      oeufs:'Œufs', flocons:'Flocons d\'avoine', skyr:'Skyr', amandes:'Amandes ou noix',
                      banane:'Banane', pain:'Pain complet', fromage:'Fromage', miel:'Miel', fruit:'Fruit', avoine:'Boisson d\'avoine',
-                     fruitsrouges:'Fruits rouges surgelés', galettes:'Galettes de riz', sardines:'Sardines ou maquereau', dattes:'Dattes', cottage:'Cottage cheese',
+                     fruitsrouges:'Fruits rouges surgelés', galettes:'Galettes de riz', nutella:'Nutella', sardines:'Sardines ou maquereau', dattes:'Dattes', cottage:'Cottage cheese',
                      creme:'Crème de cuisson', pestoverde:'Pesto verde', pestorosso:'Pesto rosso', parmesan:'Parmesan',
                      soja:'Sauce soja', moutarde:'Moutarde', harissa:'Harissa'};
   var NOMS_SEMAINE = ['dimanche','lundi','mardi','mercredi','jeudi','vendredi','samedi'];
@@ -12875,7 +12884,7 @@
     document.getElementById('prep-regles').innerHTML = [
       ['Le petit-déjeuner', 'un shake : 400 ml de boisson d\'avoine au calcium, 150 g de skyr, 80 g de flocons, une banane (congelée en rondelles, c\'est un milkshake), 100 g de fruits rouges surgelés, 20 g de miel, 30 g d\'amandes — 40 secondes de mixeur, à boire en dix minutes. Les jours de JJB, un shake de récup au retour : 250 ml de boisson d\'avoine, une banane, 20 g de flocons'],
       ['La collation d\'entraînement', '50 g d\'amandes, 3 œufs durs (le mardi et le jeudi, une boîte de sardines ou de maquereau à leur place), 7 dattes — ~700 kcal, à la maison avant de partir ; les œufs sont cuits le dimanche, le reste s\'emporte'],
-      ['Le goût', 'pas de sauce depuis le 30 octobre : l\'huile d\'olive crue versée sur le riz à l\'assiette (20 ml à midi, 15 le soir), le sel iodé et tes épices. Rien de tout ça ne va dans la boîte'],
+      ['Le goût', 'pas de sauce depuis le 30 octobre : l\'huile d\'olive crue versée ' + (deux ? 'à l\'assiette, sur les pâtes à midi et le riz le soir' : 'sur le riz à l\'assiette') + ' (20 ml à midi, 15 le soir), le sel iodé et tes épices. Rien de tout ça ne va dans la boîte'],
       ['Réchauffer à la poêle', 'la boîte vidée dans la poêle avec 2 à 3 cuillères d\'eau, couvercle, feu moyen, 4 à 5 min, puis 1 min à découvert. Brûlant jusqu\'au cœur. Pas l\'air fryer : il dessèche la viande'],
       ['Le sel', 'iodé (« sal yodada ») : peu de laitages et du poisson deux fois par semaine, c\'est lui qui complète l\'iode du plan. Une pincée dans le riz suffit'],
       ['Refroidir vite', 'deux heures maximum entre la casserole et le frigo. Étaler plutôt qu\'entasser'],
@@ -12981,7 +12990,8 @@
     'Huile d\'olive':'huile', 'Boisson d\'avoine':'avoine',
     /* 21 octobre : sans prix releve -- « prix a relever », hors total, jusqu'a son ticket */
     'Sardines ou maquereau (boîte)':'sardines', 'Fruits rouges surgelés':'fruitsrouges', 'Galettes de riz':'galettes',
-    'Cottage cheese':'cottage'   /* 27 octobre : prix a relever */
+    'Cottage cheese':'cottage',   /* 27 octobre : prix a relever */
+    'Nutella':'nutella'   /* 9 novembre : prix a relever */
   };
   function eur(n){ return (Math.round(n * 100) / 100).toFixed(2).replace('.', ',') + ' \u20ac'; }
   /* Le cout d'une semaine se calcule sur le BESOIN, pas sur l'achat : un pot de 2 L d'huile
@@ -13149,7 +13159,10 @@
          cycle de quatre il aurait rachete un pot plein tous les mois. */
       {cat:'Toutes les 5 semaines', semaines:5, ancre:ANCRE_COURSES, items:[
         art('Huile d\'olive',        B.huile * 5,     2000, vol,   'bouteille'),
-        art('Miel',                  B.miel * 5,       750, poids, 'pot')
+        art('Miel',                  B.miel * 5,       750, poids, 'pot'),
+        /* 9 novembre : le Nutella des galettes, 15 g les trois jours de JJB -- 225 g sur cinq semaines, un pot
+           de 400 g. Le miel ne sert plus qu'au shake : un pot de 750 g, comme le 26 septembre. Prix a relever. */
+        art('Nutella',               B.nutella * 5,    400, poids, 'pot')
       ]},
       /* ===== 20 septembre : la liste ne porte plus que de la nourriture =====
          Sa decision, et elle est nette : « dans l'onglet courses tu vas juste laisser les
@@ -13331,7 +13344,8 @@
     'L\u00e9gumes verts surgel\u00e9s': 'Lidl', 'Miel': 'Lidl', 'Amandes ou noix nature': 'Lidl',
     'Boisson d\'avoine': 'Lidl',
     'Bananes': 'Lidl', 'Fruits (pommes, poires, oranges\u2026)': 'Frutería · de saison',
-    'Cr\u00e9atine monohydrate': 'En ligne'
+    'Cr\u00e9atine monohydrate': 'En ligne',
+    'Nutella': 'Alcampo'   /* 9 novembre : Lidl n'en vend pas (sa marque a lui) ; Alcampo, ou il prend deja les fruits rouges */
   };
   function ouAcheter(label, cat){ return OU_ARTICLE[label] || OU_DEFAUT[cat] || ''; }
 
@@ -16520,7 +16534,8 @@
       var c = compoRepas('Déjeuner', iso, false), g = function(k){ var x = c.filter(function(y){ return y.c === k; })[0]; return x ? Math.round(x.q) : 0; };
       var sc = sauceDuJour('dej', iso);
       if(dimancheFrais(iso)) return "Un repas frais, le dimanche (la boîte du mardi aurait cinq jours), vingt minutes : " + g(feculentMidi(iso)) + " g " + (feculentMidi(iso) === 'pates' ? "de pâtes dans une grande casserole d'eau bouillante salée, le temps du paquet" : "de riz, cuit le matin") + " ; pendant ce temps, " + g('legumes') + " g de brocoli surgelé à la poêle, 7 min à couvert, puis 3 œufs au plat ou brouillés dans 10 ml d'huile. " + Math.max(0, g('huile') - 10) + " ml d'huile d'olive crue sur les pâtes, sel iodé, épices.";
-      return (feculentMidi(iso) === 'pates' ? "La boîte du jour : les pâtes (" + g('pates') + " g crus, cuites au batch du dimanche), poulet " : "Le riz du midi (" + g('riz') + " g crus), au chaud dans la cuve depuis le matin, et la boîte du jour : poulet ") + g('poulet') + " g, " + g('legumes') + " g de " + nomLegumes('dej', iso).toLowerCase() + ", réchauffée à la poêle avec 2 à 3 cuillères d'eau, couvercle, 4 à 5 min, brûlante jusqu'au cœur. " + (sc.nature ? "Pas de sauce : " + sc.recette + "." : "Sauce du jour — " + sc.nom + " : " + sc.recette + ". Sel.");
+      var sessionMardi = (iso || todayISO) > MARDI_BATCH_DEBUT && d >= 3;
+      return (feculentMidi(iso) === 'pates' ? "La boîte du jour : les pâtes (" + g('pates') + " g crus, cuites au batch du " + (sessionMardi ? "mardi" : "dimanche") + "), poulet " : "Le riz du midi (" + g('riz') + " g crus), au chaud dans la cuve depuis le matin, et la boîte du jour : poulet ") + g('poulet') + " g, " + g('legumes') + " g de " + nomLegumes('dej', iso).toLowerCase() + ", réchauffée à la poêle avec 2 à 3 cuillères d'eau, couvercle, 4 à 5 min, brûlante jusqu'au cœur. " + (sc.nature ? "Pas de sauce : " + recetteNature(sc, 'dej', iso) + "." : "Sauce du jour — " + sc.nom + " : " + sc.recette + ". Sel.");
     },
     'Dîner': function(d, iso){
       var c = compoRepas('Dîner', iso, false), g = function(k){ var x = c.filter(function(y){ return y.c === k; })[0]; return x ? Math.round(x.q) : 0; };
@@ -16553,7 +16568,8 @@
     'Coucher': "Clôture du jour faite ? Écran off, réveil posé loin du lit.",
     /* Le regime combat (lundi 28 septembre) : les blocs qu'il ajoute. L'eau monte a 3,5-4 L
        ces jours-la (objectifEauL), et la collation combat se prend 25 min avant le tatami. */
-    'Collation combat': function(d){
+    'Collation combat': function(d, iso){
+      if((iso || todayISO) >= NUTELLA_DEBUT) return "Une banane, et 2 galettes de riz avec 15 g de Nutella : du glucide qui passe vite et rien de lourd, 25 minutes avant le tatami. Le shake de récup t'attend au retour. Remplis la gourde. Aujourd'hui, l'eau monte à 3,5 à 4 L.";
       return "Une banane, 2 galettes de riz et 15 g de miel : du glucide qui passe vite et rien de lourd, 25 minutes avant le tatami. Le shake de récup t'attend au retour. Remplis la gourde. Aujourd'hui, l'eau monte à 3,5 à 4 L.";
     },
     /* 29 octobre au soir : la salle ouvre a 07:00, a 15-20 minutes (SALLE_HORAIRES_DEBUT). */
@@ -18683,6 +18699,16 @@
       save('batcave-budget-limits', budgetLimits);
     }
     saveInternal('batcave-plafond-nourriture-v9', true);
+  }
+  /* Dixieme fois, le meme soir : le Nutella remplace le miel sur les galettes du JJB. Le miel ne sert plus
+     qu'au shake (un pot de 750 g toutes les cinq semaines au lieu de deux), et le Nutella attend son prix
+     -- ~200 EUR par mois en caisse. Seulement s'il vaut encore ma valeur d'avant (207). */
+  if(!load('batcave-plafond-nourriture-v10', false)){
+    if(Number(budgetLimits['Nourriture']) === 207){
+      budgetLimits['Nourriture'] = Math.round(coutAchatsMoyen().mois);
+      save('batcave-budget-limits', budgetLimits);
+    }
+    saveInternal('batcave-plafond-nourriture-v10', true);
   }
   var fixedCharges = load('batcave-fixed-charges', null);
   if(fixedCharges === null){ fixedCharges = FIXED_CHARGES_SEED.slice(); save('batcave-fixed-charges', fixedCharges); }

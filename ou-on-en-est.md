@@ -1,5 +1,20 @@
 # Où on en est — samedi 19 septembre 2026, au soir
 
+> ### Lundi 9 novembre, plus tard — le Nutella sur les galettes, dans la Batcave aussi
+> **Ses mots** (plus tôt dans la soirée) : « sur les galettes de riz tu peux remplacer par du nutella » ; le miel
+> reste dans le shake. Jusqu'ici, seule la page de la semaine le disait ; la Batcave, qui fait foi, disait encore
+> le miel.
+> **Fait** (`NUTELLA_DEBUT` = 10 novembre) : la collation combat devient banane, 2 galettes et 15 g de Nutella
+> (aliment ajouté, étiquette UE : 539 kcal, 6,3 g de protéines, 57,5 g de glucides, 30,9 g de lipides pour
+> 100 g), dans le plan, l'onglet Repas et la consigne ; les jours d'avant gardent leur miel. Courses : le miel
+> ne sert plus qu'au shake, un pot de 750 g toutes les cinq semaines au lieu de deux ; un pot de Nutella de
+> 400 g entre en fin des réserves de cinq semaines (Alcampo, prix à relever). Plafond Nourriture 207 -> 200 €
+> (`plafond-nourriture-v10`, schéma 56) ; la cagnotte du plan d'argent passe à 180 €.
+> **Corrigé au passage** : la recette sans sauce du midi disait « riz nature » les jours de pâtes ; la consigne
+> du déjeuner dit maintenant « cuites au batch du mardi » de mercredi à samedi ; l'huile du dimanche midi frais
+> (20 ml, dont 10 crus) dans l'onglet Repas ; la règle « Le goût » parle des pâtes à midi.
+> Tests 53, 94, 99, 103, 108, 109 et 114 recalés.
+
 > ### Lundi 9 novembre, le soir — deux batchs par semaine, plus rien au congélateur
 > **Ses mots** : « si je divise le batch cooking en deux jours, comme ça je congèle ni riz ni pâtes ».
 > **Fait** (`DEUX_BATCHS_DEBUT` = 15 novembre) : deux sessions d'une heure. Le dimanche à 14:30, le dîner du
