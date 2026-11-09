@@ -233,6 +233,10 @@ le 26 octobre, plus de cottage cheese depuis le 8 novembre. Les légumes surgel�
 prix relevé (galettes, sardines, dattes, Nutella) attendent son ticket. Les fruits rouges ont le
 leur depuis le 30 octobre : le mélange Auchan d'Alcampo, 2,85 € les 450 g.
 
+Depuis le 9 novembre au soir, la même liste porte aussi le soin, la santé et le ménage, en deux rayons à part
+(« Soin et santé », « Maison et ménage », 28 produits, dus pour la première fois le samedi 14) : ils ne
+touchent ni au plan de repas ni au plafond Nourriture (200 €), et ont leurs propres postes dans le budget.
+
 ## La préparation (batch cooking)
 **Deux sessions d'environ une heure, tout au frigo, depuis le dimanche 15 novembre** (9 novembre au
 soir : « si je divise le batch cooking en deux jours, comme ça je congèle ni riz ni pâtes ») :

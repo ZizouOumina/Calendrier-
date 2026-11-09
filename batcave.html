@@ -403,6 +403,11 @@
      la page. Et le libelle doit pouvoir retrecir, sinon min-width:auto le rattrape. */
   .cat-card label{ min-width:0; overflow-wrap:anywhere; }
   .cat-card li.checked .ou-tag{ opacity:.35; }
+  /* 9 novembre au soir : « fini » sur les produits de soin et de menage -- petit, a droite, jamais devant le nom. */
+  .fini-btn{ flex:none; font-family:var(--font-mono); font-size:10.5px; letter-spacing:.04em; color:var(--ink-dim);
+    background:transparent; border:1px solid var(--border); border-radius:20px; padding:5px 10px; cursor:pointer; min-height:30px; }
+  .fini-btn:hover{ color:var(--ink); border-color:var(--cyan-dim); }
+  .fini-btn[data-fini-annuler]{ color:var(--warn); border-color:var(--warn); }
 
   /* ---------- journal ---------- */
   .journal-grid{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
@@ -3064,7 +3069,7 @@
       <div class="page-head">
         <span class="eyebrow">Dossier N° 14</span>
         <h1>Courses</h1>
-        <p class="desc">Panier de ravitaillement hebdomadaire — passage tous les samedis. Les quantités sortent du plan alimentation, et chaque ligne porte le prix que tu as relevé <b style="color:var(--dom-table);">toi-même</b> en magasin les 20 et 21 septembre. <b style="color:var(--dom-table);">La pastille de chaque ligne dit où l'acheter au moins cher</b> — la boucherie pour le halal, Lidl pour presque tout le reste, la frutería pour les fruits de saison, en ligne pour la créatine. Une ligne sans prix relevé le dit (« prix à relever ») et reste hors du total.</p>
+        <p class="desc">Panier de ravitaillement hebdomadaire — passage tous les samedis. Les quantités sortent du plan alimentation, et chaque ligne porte le prix que tu as relevé <b style="color:var(--dom-table);">toi-même</b> en magasin les 20 et 21 septembre. <b style="color:var(--dom-table);">La pastille de chaque ligne dit où l'acheter au moins cher</b> — la boucherie pour le halal, Lidl pour presque tout le reste, la frutería pour les fruits de saison, en ligne pour la créatine, Mercadona pour le soin et le ménage. Une ligne sans prix relevé le dit (« prix à relever ») et reste hors du total. Un produit de soin ou de ménage fini : touche <b style="color:var(--dom-table);">« fini »</b>, il passe au samedi qui suit.</p>
       </div>
 
       <div class="courses-toolbar">
@@ -3679,11 +3684,11 @@
      comme inconnu. DRAPEAUX_MIGRATION est desormais LA liste ; les autres la reprennent.
      SCHEMA_VERSION est ecrit dans « batcave-schema » quand toutes ont tourne : le panneau
      Sante compare, et une sauvegarde plus ancienne se reconnait a ce seul chiffre. */
-  var SCHEMA_VERSION = 56;
+  var SCHEMA_VERSION = 57;   /* 9 novembre au soir : courses-plan-v12 et postes-soin-maison-v1 */
   var DRAPEAUX_MIGRATION = ['objectifs-seed-v1','objectifs-v2-55','objectifs-v5-espanol',
     'habits-ecran-v2','habitlog-hebdo-v1','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','habits-seed-v7','habits-seed-v8','habits-seed-v9','habits-seed-v10','habits-seed-v11','habits-seed-v12',
-    'courses-plan-v2','courses-plan-v3','courses-plan-v4','courses-plan-v5','courses-plan-v6','courses-plan-v7','courses-plan-v8','courses-plan-v9','courses-plan-v10','courses-plan-v11',
-    'charges-v2','plafond-nourriture-v2','plafond-nourriture-v3','plafond-nourriture-v4','plafond-nourriture-v5','plafond-nourriture-v6','plafond-nourriture-v7','plafond-nourriture-v8','plafond-nourriture-v9','plafond-nourriture-v10','ancre-dimanche-v1','ancre-dimanche-v2','serviettes-v1','coiffeur-v1','shampoing-dim-v1','marche-cible-v1','fc-migration-v1','fc-migration-v2','fc-migration-v3','fc-migration-v4','fc-migration-v5','revision-fusionnee','pesee-hebdo-v1','snus-arret-v3'];
+    'courses-plan-v2','courses-plan-v3','courses-plan-v4','courses-plan-v5','courses-plan-v6','courses-plan-v7','courses-plan-v8','courses-plan-v9','courses-plan-v10','courses-plan-v11','courses-plan-v12',
+    'charges-v2','plafond-nourriture-v2','plafond-nourriture-v3','plafond-nourriture-v4','plafond-nourriture-v5','plafond-nourriture-v6','plafond-nourriture-v7','plafond-nourriture-v8','plafond-nourriture-v9','plafond-nourriture-v10','postes-soin-maison-v1','ancre-dimanche-v1','ancre-dimanche-v2','serviettes-v1','coiffeur-v1','shampoing-dim-v1','marche-cible-v1','fc-migration-v1','fc-migration-v2','fc-migration-v3','fc-migration-v4','fc-migration-v5','revision-fusionnee','pesee-hebdo-v1','snus-arret-v3'];
   /* Drapeaux que rien ne pose plus (migrations retirees) ou poses seulement quand il y a
      eu quelque chose a migrer : connus et gardes, jamais exiges. */
   var DRAPEAUX_ANCIENS = ['objectifs-v3-trajet','objectifs-v4-dimanche','habits-retirees-v1','shampoing-combat-v1','shampoing-samedi-v1','snus-arret-v1','snus-arret-v2'];   /* snus-arret-v1 puis v2 : remplacees par la v3 (jour 1 au 22, puis au dimanche 1er novembre) ; les deux d'avant n'ecrivent qu'a partir du 28 septembre */
@@ -3820,7 +3825,9 @@
     /* le schema et le plan de secours en texte (lot 50) */
     'schema','last-plan-texte',
     /* 8 novembre : ce qui est en retard et ce qui est paye (le panneau « A regler ») */
-    'a-regler'].concat(DRAPEAUX_MIGRATION, DRAPEAUX_ANCIENS);
+    'a-regler',
+    /* 9 novembre au soir : les « fini » du soin et du menage (la duree mesuree de chaque produit) */
+    'produits-fini'].concat(DRAPEAUX_MIGRATION, DRAPEAUX_ANCIENS);
   var PREFIXES_CONNUS = ['archive-','cal-','coherence-ignore-','drill-ignore-','test-anki-','fc-logged-','fixed-logged-','gcal-','journal-','manque-traite-',
     'meals-','pomodial-','rattrapage-vu-','sauvegarde-','sport-','habitlog-','resume-'];
   function cleConnue(k){
@@ -5396,7 +5403,7 @@
      ni synchronisee ni rattrapee) et efface ses copies locales AVANT le rattrapage, sinon
      elles repartiraient vers le cloud. La meme remise a zero peut donc etre decidee depuis
      l'appli ou directement dans le cloud. */
-  var REINIT_GARDER = ['habits','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','habits-seed-v7','habits-seed-v8','habits-seed-v9','habits-seed-v10','habits-seed-v11','habits-seed-v12','objectifs-v5-espanol','fixed-charges','fc-prix-icloud-3','fc-prix-club-100','fc-prix-club-70','budget-limits','examens','examens-heures','journees','echeances','vacances','jours-exclus','jours-sans-cours','portes','appro','notion-url','shopify-boutique',
+  var REINIT_GARDER = ['habits','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','habits-seed-v7','habits-seed-v8','habits-seed-v9','habits-seed-v10','habits-seed-v11','habits-seed-v12','objectifs-v5-espanol','fixed-charges','fc-prix-icloud-3','fc-prix-club-100','fc-prix-club-70','budget-limits','examens','examens-heures','journees','echeances','vacances','jours-exclus','jours-sans-cours','portes','appro','notion-url','shopify-boutique','produits-fini',
                        'objectifs','horizon','goals-depart','saisons','periodes-closes','gcal-ecriture','duree-bloc','dash-more','reinit','copie-vierge','schema'].concat(DRAPEAUX_MIGRATION, DRAPEAUX_ANCIENS);
   var REINIT_PREFIXES_GARDER = ['pomodial-', 'coherence-ignore-'];
   function reinitGarder(cle){
@@ -12978,8 +12985,42 @@
     /* 30 octobre : son releve, chez Alcampo -- le melange Auchan de fruits rouges, 2,85 EUR les
        450 g (6,33 EUR/kg). Les myrtilles seules coutent plus (1,79 EUR les 250 g, 7,16 EUR/kg) et
        apportent moins de vitamine C que les framboises et les groseilles du melange. */
-    fruitsrouges: {eur:2.85/0.45, par:'kg', ou:'Alcampo', quand:'30 oct.', detail:'2,85 \u20ac le sachet de 450 g (m\u00e9lange Auchan)'}
+    fruitsrouges: {eur:2.85/0.45, par:'kg', ou:'Alcampo', quand:'30 oct.', detail:'2,85 \u20ac le sachet de 450 g (m\u00e9lange Auchan)'},
+    /* 9 novembre au soir : le soin et le menage, au PAQUET (« pièce »), releves en ligne le 9 novembre --
+       Mercadona (tienda.mercadona.es, magasin d'Alicante), Alcampo pour la lessive et la poudre du
+       lave-vaisselle. Les marques sont celles du magasin, les moins cheres du rayon. Son ticket les remplacera. */
+    geldouche:   {eur:0.95, par:'pi\u00e8ce', ou:'Mercadona', quand:'9 nov.', enLigne:true, detail:'Gel de ba\u00f1o frescor azul Deliplus, 750 ml'},
+    shampoing:   {eur:1.35, par:'pi\u00e8ce', ou:'Mercadona', quand:'9 nov.', enLigne:true, detail:'Champ\u00fa protecci\u00f3n y brillo Deliplus, 1 L'},
+    deo:         {eur:1.65, par:'pi\u00e8ce', ou:'Mercadona', quand:'9 nov.', enLigne:true, detail:'Desodorante invisible men Deliplus, spray de 200 ml'},
+    dentifrice:  {eur:1.05, par:'pi\u00e8ce', ou:'Mercadona', quand:'9 nov.', enLigne:true, detail:'Dent\u00edfrico Anticaries Deliplus, 100 ml'},
+    fil:         {eur:1.80, par:'pi\u00e8ce', ou:'Mercadona', quand:'9 nov.', enLigne:true, detail:'Hilo dental con cera y sabor menta, 2 bobines'},
+    brosse:      {eur:1.35, par:'pi\u00e8ce', ou:'Mercadona', quand:'9 nov.', enLigne:true, detail:'Cepillo dental Medio Deliplus, 4 brosses'},
+    visage:      {eur:2.50, par:'pi\u00e8ce', ou:'Mercadona', quand:'9 nov.', enLigne:true, detail:'Gel facial limpiador Facial Clean, 250 ml'},
+    savon:       {eur:0.80, par:'pi\u00e8ce', ou:'Mercadona', quand:'9 nov.', enLigne:true, detail:'Jab\u00f3n de manos dermoprotector Deliplus, 500 ml'},
+    rasoirs:     {eur:1.50, par:'pi\u00e8ce', ou:'Mercadona', quand:'9 nov.', enLigne:true, detail:'Maquinillas desechables Deliplus Active 3 hojas'},
+    gelrasage:   {eur:1.75, par:'pi\u00e8ce', ou:'Mercadona', quand:'9 nov.', enLigne:true, detail:'Gel de afeitar Sensitive Deliplus, 200 ml'},
+    mouchoirs:   {eur:1.35, par:'pi\u00e8ce', ou:'Mercadona', quand:'9 nov.', enLigne:true, detail:'Pa\u00f1uelos Extra Suaves Bosque Verde, bo\u00eete'},
+    lessive:     {eur:14.69, par:'pi\u00e8ce', ou:'Alcampo', quand:'9 nov.', enLigne:true, unite:'le sac', detail:'PRODUCTO ALCAMPO detergente en polvo, 5 kg (100 doses)'},
+    adoucissant: {eur:1.80, par:'pi\u00e8ce', ou:'Mercadona', quand:'9 nov.', enLigne:true, detail:'Suavizante concentrado Bosque Verde, 1,6 L'},
+    poudrelv:    {eur:9.75, par:'pi\u00e8ce', ou:'Alcampo', quand:'9 nov.', enLigne:true, detail:'Finish Classic en polvo, 2 kg'},
+    sel:         {eur:1.00, par:'pi\u00e8ce', ou:'Mercadona', quand:'9 nov.', enLigne:true, detail:'Sal lavavajillas Bosque Verde, 2 kg'},
+    rincage:     {eur:1.20, par:'pi\u00e8ce', ou:'Mercadona', quand:'9 nov.', enLigne:true, detail:'Abrillantador Bosque Verde, 750 ml'},
+    vaisselle:   {eur:1.15, par:'pi\u00e8ce', ou:'Mercadona', quand:'9 nov.', enLigne:true, detail:'Lavavajillas a mano Bosque Verde, 1,3 L'},
+    degraissant: {eur:1.50, par:'pi\u00e8ce', ou:'Mercadona', quand:'9 nov.', enLigne:true, detail:'Quitagrasas Bosque Verde, 750 ml'},
+    multi:       {eur:1.30, par:'pi\u00e8ce', ou:'Mercadona', quand:'9 nov.', enLigne:true, detail:'Multiusos Perfumado Bosque Verde, 1 L'},
+    antical:     {eur:1.70, par:'pi\u00e8ce', ou:'Mercadona', quand:'9 nov.', enLigne:true, detail:'Limpiador Antical Bosque Verde, 750 ml'},
+    wc:          {eur:0.95, par:'pi\u00e8ce', ou:'Mercadona', quand:'9 nov.', enLigne:true, detail:'Limpiador WC con lej\u00eda Bosque Verde, 1 L'},
+    eponges:     {eur:0.90, par:'pi\u00e8ce', ou:'Mercadona', quand:'9 nov.', enLigne:true, detail:'Estropajo suciedad resistente Bosque Verde, 3'},
+    lavettes:    {eur:0.95, par:'pi\u00e8ce', ou:'Mercadona', quand:'9 nov.', enLigne:true, unite:'la lavette', detail:'Bayeta multiusos microfibra Bosque Verde'},
+    sacs:        {eur:1.80, par:'pi\u00e8ce', ou:'Mercadona', quand:'9 nov.', enLigne:true, detail:'Bolsas de basura 30 L Bosque Verde, 40'},
+    congelation: {eur:0.85, par:'pi\u00e8ce', ou:'Mercadona', quand:'9 nov.', enLigne:true, detail:'Bolsas congelaci\u00f3n medianas Bosque Verde, 40'},
+    essuietout:  {eur:2.30, par:'pi\u00e8ce', ou:'Mercadona', quand:'9 nov.', enLigne:true, detail:'Papel hogar compacto Bosque Verde, 3 rouleaux'},
+    pq:          {eur:2.40, par:'pi\u00e8ce', ou:'Mercadona', quand:'9 nov.', enLigne:true, detail:'Papel higi\u00e9nico doble hoja Bosque Verde, 12 rouleaux'}
   };
+  /* Le Skinoren n'a pas de prix espagnol trouve en ligne (medicament sur ordonnance) : « prix a relever » dans
+     la liste, et 19,90 EUR dans le plan d'argent -- le prix d'une pharmacie en ligne le 9 novembre, dit comme
+     tel jusqu'au ticket de la pharmacie. */
+  var PRIX_ESTIMES_HORS = {skinoren: {eur:19.90, detail:'prix d\u2019une pharmacie en ligne le 9 nov.'}};
   /* La cle du besoin par libelle : c'est elle qui relie une ligne de courses a son prix. */
   var CLE_PRIX = {
     'Poulet':'poulet', 'Viande hach\u00e9e 5 %':'hachee', 'Skyr':'skyr', '\u0152ufs':'oeufs',
@@ -12991,7 +13032,16 @@
     /* 21 octobre : sans prix releve -- « prix a relever », hors total, jusqu'a son ticket */
     'Sardines ou maquereau (boîte)':'sardines', 'Fruits rouges surgelés':'fruitsrouges', 'Galettes de riz':'galettes',
     'Cottage cheese':'cottage',   /* 27 octobre : prix a relever */
-    'Nutella':'nutella'   /* 9 novembre : prix a relever */
+    'Nutella':'nutella',   /* 9 novembre : prix a relever */
+    /* 9 novembre au soir : le soin, la sante et le menage */
+    'Gel douche':'geldouche', 'Shampoing':'shampoing', 'D\u00e9odorant':'deo', 'Dentifrice':'dentifrice',
+    'Fil dentaire':'fil', 'Brosse \u00e0 dents':'brosse', 'Nettoyant visage':'visage', 'Skinoren':'skinoren',
+    'Savon pour les mains':'savon', 'Rasoirs jetables':'rasoirs', 'Gel de rasage':'gelrasage', 'Mouchoirs':'mouchoirs',
+    'Lessive en poudre':'lessive', 'Adoucissant':'adoucissant', 'Poudre lave-vaisselle':'poudrelv',
+    'Sel lave-vaisselle':'sel', 'Liquide de rin\u00e7age':'rincage', 'Liquide vaisselle':'vaisselle',
+    'D\u00e9graissant':'degraissant', 'Multi-surfaces':'multi', 'Anticalcaire salle de bain':'antical', 'Gel WC':'wc',
+    '\u00c9ponges':'eponges', 'Lavettes microfibre':'lavettes', 'Sacs poubelle 30 L':'sacs',
+    'Sacs cong\u00e9lation':'congelation', 'Essuie-tout':'essuietout', 'Papier toilette':'pq'
   };
   function eur(n){ return (Math.round(n * 100) / 100).toFixed(2).replace('.', ',') + ' \u20ac'; }
   /* Le cout d'une semaine se calcule sur le BESOIN, pas sur l'achat : un pot de 2 L d'huile
@@ -13025,22 +13075,42 @@
     if(!p || !it.achat) return 0;
     return p.par === 'pi\u00e8ce' ? it.achat * p.eur : (it.achat / 1000) * p.eur;
   }
+  /* 9 novembre au soir : la nourriture seule. Le soin et le menage ont leur compte (coutHorsNourriture) :
+     le plafond Nourriture et le fil du mois les lisent separement. */
   function achatsDuSamedi(iso, plan){
     plan = plan || planCoursesSemaine(ajustementKcalPour(iso));
     var t = 0;
-    plan.forEach(function(c){ c.items.forEach(function(it){
-      if(estDuCycle(cycleArticle(c, it), c.ancre, c.aussi, iso)) t += coutAchatArticle(it);
+    plan.forEach(function(c){ if(c.poste) return; c.items.forEach(function(it){
+      if(articleDu(c, it, iso)) t += coutAchatArticle(it);
     }); });
     return t;
   }
   /* La moyenne des achats : chaque article au prorata de son cycle. */
   function coutAchatsMoyen(){
     var plan = planCoursesSemaine(ajustementKcalPour(todayISO)), t = 0, ordinaire = 0;
-    plan.forEach(function(c){ c.items.forEach(function(it){
+    plan.forEach(function(c){ if(c.poste) return; c.items.forEach(function(it){
       var x = coutAchatArticle(it), n = cycleArticle(c, it);
       t += x / n; if(n === 1) ordinaire += x;
     }); });
     return {total: t, mois: t * 52 / 12, ordinaire: ordinaire};
+  }
+  /* Le soin, la sante et le menage, au prorata de leur rythme (mesure s'il l'est, estime sinon), par
+     poste du budget. Un article sans prix releve se compte ici a son prix estime, dit comme tel
+     (PRIX_ESTIMES_HORS) : un plan d'epargne qui l'oublierait serait trop optimiste. */
+  function coutHorsNourriture(){
+    var plan = planCoursesSemaine(ajustementKcalPour(todayISO)), t = 0, postes = {}, estimes = [], manque = [];
+    plan.forEach(function(c){ if(!c.poste) return; c.items.forEach(function(it){
+      var x = coutAchatArticle(it), n = cycleArticle(c, it), poste = it.poste || c.poste;
+      if(!x){
+        var e = PRIX_ESTIMES_HORS[CLE_PRIX[it.label]];
+        if(!e){ manque.push(it.label); return; }
+        x = e.eur * (it.achat || 1); estimes.push({label: it.label, prix: e});
+      }
+      t += x / n; postes[poste] = (postes[poste] || 0) + x / n;
+    }); });
+    var mois = {};
+    Object.keys(postes).forEach(function(k){ mois[k] = postes[k] * 52 / 12; });
+    return {hebdo: t, mois: t * 52 / 12, postes: postes, postesMois: mois, estimes: estimes, manque: manque};
   }
   /* Le prix d'une ligne, tel qu'il s'ecrit sous l'article. */
   function prixLigne(label){
@@ -13048,9 +13118,45 @@
     if(!cle) return '';
     var p = PRIX[cle];
     if(!p) return 'prix \u00e0 relever';
+    /* 9 novembre au soir : le prix du paquet, releve en ligne -- dit comme tel jusqu'a son ticket. */
+    if(p.enLigne) return eur(p.eur) + (p.unite ? ' ' + p.unite : '') + ' \u00b7 en ligne';
     /* Le magasin est deja sur la pastille d'a cote : le repeter ici faisait
        « Lidl · 5 €/kg   5,00 €/kg · Lidl » sur la meme ligne. */
     return eur(p.eur) + '/' + p.par;
+  }
+  /* ===== Le soin, la sante et le menage : le samedi du rachat, et la duree mesuree ===== (9 novembre au soir)
+     « fini » ecrit {d: le jour ou il touche, a: le samedi ou il rachete} dans batcave-produits-fini. Le samedi
+     du rachat est le jour meme si c'est un samedi avant 16:00 (courses a 13:30, rangement fini a 16:00),
+     sinon le samedi qui suit. L'article repart de ce samedi-la (son « ancre »), et la duree entre le
+     rachat precedent et ce « fini » devient son rythme -- moins d'une semaine, c'est une correction
+     (deux touches de suite), pas une duree. */
+  var SOIN_MAISON_DEBUT = '2026-11-14';
+  var FINI_CLE = 'batcave-produits-fini';
+  function chargerFini(){
+    var f = load(FINI_CLE, {});
+    return f && typeof f === 'object' && !Array.isArray(f) ? f : {};
+  }
+  function samediDuRachat(iso, heure){
+    var d = dowDe(iso);
+    if(d === 6) return heure < 16 ? iso : isoDecale(iso, 7);
+    return isoDecale(iso, 6 - d);
+  }
+  function appliquerFini(cat){
+    var f = chargerFini(), dateOk = function(x){ return typeof x === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(x); };
+    cat.forEach(function(c){
+      if(!c.poste) return;
+      c.items.forEach(function(it){
+        var h = (Array.isArray(f[it.label]) ? f[it.label] : []).filter(function(x){ return x && dateOk(x.d) && dateOk(x.a); });
+        if(!h.length) return;
+        var der = h[h.length - 1];
+        it.ancre = der.a; it.dernierFini = der.d;
+        for(var k = h.length - 1; k > 0; k--){
+          var jours = daysBetween(new Date(h[k - 1].a + 'T00:00:00'), new Date(h[k].d + 'T00:00:00'));
+          if(jours >= 7){ it.semaines = Math.max(1, Math.round(jours / 7)); it.mesure = true; break; }
+        }
+      });
+    });
+    return cat;
   }
   function planCoursesSemaine(ajust){
     var plus = grammesAjustement(ajust, 3.6) * 7;          /* g de pates en plus par semaine */
@@ -13079,6 +13185,11 @@
                     (besoinTxt || (sep(besoin) + (fmt === vol ? ' ml' : ' g'))) : '')};
     }
     function avecNote(a, t){ a.note += t; return a; }
+    /* 9 novembre au soir : un produit de soin ou de menage s'achete a l'unite (« achat » = combien de
+       paquets, pour le prix), avec un rythme ESTIME (« estime ») tant qu'il n'est pas mesure. */
+    function prod(label, qte, semaines, note, achat){
+      return {label: label, qte: qte, achat: achat || 1, semaines: semaines, estime: semaines, note: note || ''};
+    }
     var cat = [
       /* Le frais, chaque samedi.
          La viande ne s'arrondit PAS : le boucher pese le montant exact.
@@ -13180,9 +13291,56 @@
          est suivie, pas dans les courses. */
       {cat:'Tous les 3 mois', semaines:12, ancre:ANCRE_COURSES, items:[
         {label:'Créatine monohydrate', qte:'1 pot de 500 g', note:'5 g par jour — le pot tient un trimestre'}
+      ]},
+      /* ===== 9 novembre au soir : le soin, la sante et le menage reviennent =====
+         Ses mots : « aussi les produits de soin et de sante. je veux meme traquer les produits de
+         nettoyage pour la maison. comme ca tout ce que je depense est comptabilise ». Le 20 septembre,
+         ces rayons etaient sortis parce que leurs rythmes reposaient sur des volumes d'usage supposes.
+         Ils reviennent avec deux garde-fous :
+         - le PRIX est un vrai prix de rayon, releve en ligne le 9 novembre chez Mercadona (Alicante)
+           et chez Alcampo pour la lessive et la poudre du lave-vaisselle -- son ticket le remplacera ;
+           le Skinoren, sans prix espagnol trouve, reste « prix a relever » (estime dans le plan d'argent) ;
+         - le RYTHME part de sa grille (douches, machines, lave-vaisselle, rasage du dimanche) et du
+           format, puis se MESURE : le bouton « fini » ramene l'article au samedi qui suit, et la
+           duree entre deux « fini » remplace l'estimation (appliquerFini).
+         Tout tombe le samedi 14 (SOIN_MAISON_DEBUT) : ce jour-la il fait le tour de la salle de bain
+         et de la cuisine, coche « j'en ai » pour ce qu'il a, achete le reste. En DERNIER dans la
+         liste : les coches sont indexees par position, rien ne se decale (courses-plan-v12 vide les
+         rangs 5 et 6, ceux des anciens rayons du 19 septembre). */
+      {cat:'Soin et santé', ancre:SOIN_MAISON_DEBUT, poste:'Soin et santé', items:[
+        prod('Gel douche', '1 flacon de 750 ml', 7, 'Deliplus « frescor azul »'),
+        prod('Shampoing', '1 flacon de 1 L', 24, 'Deliplus « protección y brillo »'),
+        prod('Déodorant', '1 spray de 200 ml', 4, 'Deliplus « invisible men »'),
+        prod('Dentifrice', '1 tube de 100 ml', 10, 'Deliplus anticaries, au fluor'),
+        prod('Fil dentaire', '1 paquet de 2 bobines', 26, 'ciré, à la menthe'),
+        prod('Brosse à dents', '1 paquet de 4', 48, 'Deliplus medio — une neuve tous les 3 mois'),
+        prod('Nettoyant visage', '1 flacon de 250 ml', 10, 'Deliplus « Facial Clean », gel doux'),
+        prod('Skinoren', '1 tube de 30 g', 4, 'à la pharmacie, avec ton ordonnance'),
+        prod('Savon pour les mains', '1 flacon de 500 ml', 8, 'Deliplus dermoprotector — cuisine et salle de bain'),
+        prod('Rasoirs jetables', '1 paquet', 12, 'Deliplus Active 3 lames — le rasage du dimanche'),
+        prod('Gel de rasage', '1 flacon de 200 ml', 36, 'Deliplus Sensitive'),
+        prod('Mouchoirs', '1 boîte', 12, 'Bosque Verde extra suaves')
+      ]},
+      {cat:'Maison et ménage', ancre:SOIN_MAISON_DEBUT, poste:'Maison et ménage', items:[
+        prod('Lessive en poudre', '10 kg', 36, '2 sacs de 5 kg, 200 doses — cinq machines par semaine', 2),
+        prod('Adoucissant', '1 flacon de 1,6 L', 52, 'la machine du mardi seulement : jamais sur les serviettes, les draps, le kimono ni le sport'),
+        prod('Poudre lave-vaisselle', '1 boîte de 2 kg', 20, 'Finish Classic'),
+        prod('Sel lave-vaisselle', '1 sac de 2 kg', 20, 'l\'eau d\'Alicante est très calcaire'),
+        prod('Liquide de rinçage', '1 flacon de 750 ml', 52, 'contre les traces de calcaire'),
+        prod('Liquide vaisselle', '1 flacon de 1,3 L', 8, 'les poêles, le shaker, la cuve du rice cooker'),
+        prod('Dégraissant', '1 flacon de 750 ml', 12, 'Quitagrasas — plaques et hotte'),
+        prod('Multi-surfaces', '1 flacon de 1 L', 16, 'tables et plan de travail'),
+        prod('Anticalcaire salle de bain', '1 flacon de 750 ml', 12, 'douche, lavabo, robinets'),
+        prod('Gel WC', '1 flacon de 1 L', 12, 'à la javel'),
+        prod('Éponges', '1 paquet de 3', 6, 'une neuve toutes les deux semaines'),
+        prod('Lavettes microfibre', '2 lavettes', 26, 'à 60 °C avec les serviettes', 2),
+        prod('Sacs poubelle 30 L', '1 paquet de 40', 10, 'trois ou quatre par semaine'),
+        prod('Sacs congélation', '1 boîte de 40', 20, 'la viande du mardi, deux par semaine'),
+        prod('Essuie-tout', '1 paquet de 3 rouleaux', 6, ''),
+        prod('Papier toilette', '1 paquet de 12 rouleaux', 6, '')
       ]}
     ];
-    return cat;
+    return appliquerFini(cat);
   }
   /* Les categories a cycle (surgeles, reserves, cinq semaines, trimestriel) sont
      ancrees sur le premier SAMEDI de courses du programme : elles retombent donc toujours
@@ -13234,7 +13392,8 @@
     if(d < a) return false;
     return Math.floor(daysBetween(new Date(a + 'T00:00:00'), new Date(d + 'T00:00:00')) / 7) % n === 0;
   }
-  function articleDu(c, it, iso){ return estDuCycle(cycleArticle(c, it), c.ancre, c.aussi, iso); }
+  /* 9 novembre au soir : un produit de soin ou de menage porte sa propre ancre, le samedi de son dernier « fini ». */
+  function articleDu(c, it, iso){ return estDuCycle(cycleArticle(c, it), (it && it.ancre) || c.ancre, c.aussi, iso); }
   function indicesDus(c, iso){
     var out = [];
     c.items.forEach(function(it, ii){ if(articleDu(c, it, iso)) out.push(ii); });
@@ -13325,7 +13484,7 @@
      - la creatine se commande EN LIGNE.
      MERCADONA a disparu de la liste. Ce n'est pas un oubli : ce qu'il y prenait etait
      l'hygiene et le menage, sortis de la liste le 20 septembre a sa demande, et son
-     Mercadona n'a pas de skyr. */
+     Mercadona n'a pas de skyr. Il revient le 9 novembre au soir, avec eux. */
   /* Aucun defaut par categorie. Il y en avait un -- « Tous les 3 mois » -> Mercadona --
      et il ne servait plus rien : la creatine, seule ligne de cette categorie, porte sa
      propre adresse. Un defaut qui survit a la disparition de son magasin est pire qu'un
@@ -13345,7 +13504,17 @@
     'Boisson d\'avoine': 'Lidl',
     'Bananes': 'Lidl', 'Fruits (pommes, poires, oranges\u2026)': 'Frutería · de saison',
     'Cr\u00e9atine monohydrate': 'En ligne',
-    'Nutella': 'Alcampo'   /* 9 novembre : Lidl n'en vend pas (sa marque a lui) ; Alcampo, ou il prend deja les fruits rouges */
+    'Nutella': 'Alcampo',   /* 9 novembre : Lidl n'en vend pas (sa marque a lui) ; Alcampo, ou il prend deja les fruits rouges */
+    /* 9 novembre au soir : Mercadona revient avec le soin et le menage, la ou leurs prix ont ete releves ;
+       la lessive de 10 kg et la poudre du lave-vaisselle chez Alcampo ; le Skinoren a la pharmacie. */
+    'Gel douche': 'Mercadona', 'Shampoing': 'Mercadona', 'D\u00e9odorant': 'Mercadona', 'Dentifrice': 'Mercadona',
+    'Fil dentaire': 'Mercadona', 'Brosse \u00e0 dents': 'Mercadona', 'Nettoyant visage': 'Mercadona', 'Skinoren': 'Pharmacie',
+    'Savon pour les mains': 'Mercadona', 'Rasoirs jetables': 'Mercadona', 'Gel de rasage': 'Mercadona', 'Mouchoirs': 'Mercadona',
+    'Lessive en poudre': 'Alcampo', 'Adoucissant': 'Mercadona', 'Poudre lave-vaisselle': 'Alcampo',
+    'Sel lave-vaisselle': 'Mercadona', 'Liquide de rin\u00e7age': 'Mercadona', 'Liquide vaisselle': 'Mercadona',
+    'D\u00e9graissant': 'Mercadona', 'Multi-surfaces': 'Mercadona', 'Anticalcaire salle de bain': 'Mercadona', 'Gel WC': 'Mercadona',
+    '\u00c9ponges': 'Mercadona', 'Lavettes microfibre': 'Mercadona', 'Sacs poubelle 30 L': 'Mercadona',
+    'Sacs cong\u00e9lation': 'Mercadona', 'Essuie-tout': 'Mercadona', 'Papier toilette': 'Mercadona'
   };
   function ouAcheter(label, cat){ return OU_ARTICLE[label] || OU_DEFAUT[cat] || ''; }
 
@@ -13354,13 +13523,15 @@
     var plan = planCoursesSemaine(ajustementKcalPour(todayISO));
     /* « aussi » doit voyager jusqu'ici : sans lui la date d'exception etait perdue entre
        le plan et l'affichage, et le 13 septembre ne montrait que le frais. */
-    COURSES = plan.map(function(c){ return {cat: c.cat, semaines: c.semaines || 1, ancre: c.ancre, aussi: c.aussi,
+    COURSES = plan.map(function(c){ return {cat: c.cat, semaines: c.semaines || 1, ancre: c.ancre, aussi: c.aussi, poste: c.poste,
       items: c.items.map(function(i){
         /* « semaines » doit voyager jusqu'ici, comme « aussi » plus haut : sans lui le
            cycle propre de l'article se perdait entre le plan et l'affichage, et tout le
            rayon retombait sur celui de la categorie. */
         return {texte: i.label + ' \u2014 ' + i.qte, ou: ouAcheter(i.label, c.cat),
-                note: i.note, semaines: i.semaines, prix: prixLigne(i.label)};
+                note: i.note, semaines: i.semaines, prix: prixLigne(i.label),
+                /* 9 novembre au soir : le soin et le menage -- leur ancre (dernier « fini »), et le bouton */
+                ancre: i.ancre, label: i.label, fini: !!c.poste, mesure: !!i.mesure, dernierFini: i.dernierFini || ''};
       })}; });
     return plan;
   }
@@ -13535,6 +13706,30 @@
     if(document.getElementById('courses-summary')) renderCoursesSummary();
     return true;
   }});
+  /* v12 (9 novembre au soir) : « Soin et sante » et « Maison et menage » prennent les rangs 5 et 6, ceux
+     des rayons non alimentaires sortis le 20 septembre. Une coche restee a ces rangs (une vieille copie
+     du cloud) tomberait sur un produit neuf : elles partent, une fois. Rejouee apres la synchro. */
+  function coursesSoinMaison(){
+    if(load('batcave-courses-plan-v12', false)) return false;
+    var etat = load('batcave-courses', {}), vers = {}, bouge = false;
+    if(etat && typeof etat === 'object' && !Array.isArray(etat)){
+      Object.keys(etat).forEach(function(k){
+        var m = /^(\d+)-(\d+)$/.exec(k);
+        if(m && Number(m[1]) >= 5){ bouge = true; return; }
+        vers[k] = etat[k];
+      });
+      if(bouge){ coursesState = vers; save('batcave-courses', coursesState); }
+    }
+    saveInternal('batcave-courses-plan-v12', true);
+    return bouge;
+  }
+  coursesSoinMaison();
+  MIGRATIONS_DEMARRAGE.push({cle:'batcave-courses-plan-v12', rejouer: function(){
+    if(!coursesSoinMaison()) return false;
+    if(document.getElementById('courses-grid')) renderCourses();
+    if(document.getElementById('courses-summary')) renderCoursesSummary();
+    return true;
+  }});
 
   /* Seules les categories DUES cette semaine comptent. Sans ce filtre, l'habitude
      « Courses faites » -- qui ne se coche que lorsque tout est coche -- ne se validerait
@@ -13565,7 +13760,14 @@
       budget.innerHTML = '<b style="color:var(--ink);">' + eur(am.mois) + ' par mois en caisse</b> \u00b7 ' +
         eur(am.total) + ' par semaine en moyenne, conditionnements compris : ' + eur(am.ordinaire) + ' un samedi ordinaire, davantage quand les surgel\u00e9s, les r\u00e9serves ou l\u2019huile tombent ce jour-l\u00e0. Ce que tu <b style="color:var(--ink-dim);">manges</b> vaut ' + eur(cs.total) + ' par semaine (' + eur(cs.mois) + ' par mois) : l\u2019\u00e9cart, c\u2019est le surplus des paquets \u2014 coche « j\u2019en ai » quand il te reste de quoi tenir, et la diff\u00e9rence part \u00e0 la cagnotte. Prix relev\u00e9s en magasin les 20, 21, 25 et 29 septembre, ligne par ligne.' +
         (cs.manque.length ? ' <b style="color:var(--warn);">' + cs.manque.join(', ') + '</b> : prix pas encore relev\u00e9, donc hors total \u2014 le chiffre montera quand il y sera.' : '') +
-        ' Ce montant est le <b style="color:var(--ink-dim);">plan</b> ; ce que tu as vraiment pay\u00e9 se saisit dans <b style="color:var(--ink-dim);">Budget \u2192 Nourriture</b>, et c\'est lui qui compte dans tes d\u00e9penses du mois.';
+        /* 9 novembre au soir : le soin et le menage, a part -- au prorata du rythme de chaque produit. */
+        (function(){
+          var hn = coutHorsNourriture(), pm = hn.postesMois;
+          return ' <b style="color:var(--ink);">En plus, ' + eur(hn.mois) + ' par mois de soin et de m\u00e9nage</b> : ' + eur(pm['Soin et sant\u00e9'] || 0) + ' de soin et sant\u00e9, ' + eur(pm['Maison et m\u00e9nage'] || 0) + ' de maison et m\u00e9nage, chaque produit au prorata de son rythme, aux prix relev\u00e9s en ligne le 9 novembre (Mercadona, Alcampo)' +
+            (hn.estimes.length ? ' ; ' + hn.estimes.map(function(x){ return x.label; }).join(', ') + ' compt\u00e9 ' + hn.estimes.map(function(x){ return eur(x.prix.eur); }).join(', ') + ' (une pharmacie en ligne) jusqu\u2019au ticket' : '') +
+            '. Quand un produit est fini, touche \u00ab fini \u00bb : il passe au samedi qui suit, et sa vraie dur\u00e9e remplace la mienne.';
+        })() +
+        ' Ce montant est le <b style="color:var(--ink-dim);">plan</b> ; ce que tu as vraiment pay\u00e9 se saisit dans <b style="color:var(--ink-dim);">Budget \u2192 Nourriture</b> (ou Soin et sant\u00e9, Maison et m\u00e9nage), et c\'est lui qui compte dans tes d\u00e9penses du mois.';
     }
     grid.innerHTML = '';
     /* Ce qui est DU aujourd'hui, et rien d'autre, dans la grille principale. Avant, les
@@ -13585,16 +13787,24 @@
       card.className = 'cat-card';
       var itemsHtml = indices.map(function(ii){
         var it = c.items[ii], key = ci+'-'+ii, checked = !!coursesState[key];
-        /* Plus de pastille de rythme sur la ligne : depuis que les rayons non alimentaires
-           sont sortis, chaque categorie a de nouveau UN seul cycle, deja ecrit dans son
-           en-tete. La repeter sur chacune de ses lignes ne serait que du bruit. */
+        /* Plus de pastille de rythme sur les lignes de NOURRITURE : chaque categorie y a UN seul
+           cycle, deja ecrit dans son en-tete. Le soin et le menage, revenus le 9 novembre au soir,
+           melangent les leurs : ces lignes-la portent le leur (plus bas). */
         return '<li class="'+(checked?'checked':'')+'">' +
                '<input type="checkbox" id="c-'+key+'" data-course="'+key+'" '+(checked?'checked':'')+'>' +
                '<label for="c-'+key+'">'+it.texte +
                (it.ou ? ' <span class="ou-tag">' + escapeHtml(it.ou) + '</span>' : '') +
                (it.prix ? ' <span class="ou-tag">' + escapeHtml(it.prix) + '</span>' : '') +
                (it.note ? ' <span class="sub-note">— ' + escapeHtml(it.note) + '</span>' : '') +
-               '</label></li>';
+               /* 9 novembre au soir : les rayons de soin et de menage melangent les rythmes -- chaque ligne
+                  dit le sien, estime ou mesure, et son dernier « fini » s'il date de moins de deux semaines. */
+               (it.fini ? ' <span class="sub-note">\u00b7 ' + rythmeCycle(Number(it.semaines) || 1) + (it.mesure ? ' (dur\u00e9e mesur\u00e9e)' : '') + '</span>' : '') +
+               (it.fini && it.dernierFini && it.dernierFini > isoDecale(todayISO, -14) ? ' <span class="sub-note">— fini le ' + fmtDate(it.dernierFini) + '</span>' : '') +
+               '</label>' +
+               (it.fini ? (it.dernierFini === todayISO
+                 ? '<button type="button" class="fini-btn" data-fini-annuler="' + escapeHtml(it.label) + '" data-key="' + key + '" title="Annuler le \u00ab fini \u00bb d\u2019aujourd\u2019hui">annuler</button>'
+                 : '<button type="button" class="fini-btn" data-fini="' + escapeHtml(it.label) + '" data-key="' + key + '" title="Il n\u2019en reste plus, ou presque : il passe sur la liste du samedi">fini</button>') : '') +
+               '</li>';
       }).join('');
       /* La date est ecrite DANS LES DEUX CAS. Une categorie due qui ne disait rien laissait
          la page sans aucune date le jour ou tout tombait ensemble. */
@@ -13664,6 +13874,26 @@
       cb.addEventListener('change', function(){
         coursesState[cb.dataset.course] = cb.checked;
         save('batcave-courses', coursesState);
+        synchroniserHabitudeCourses();
+        renderCourses(); renderCoursesSummary(); renderDashboard(); renderHabits();
+      });
+    });
+    /* 9 novembre au soir : « fini » -- l'article passe au samedi du rachat et sa coche tombe ;
+       « annuler » retire le « fini » du jour (une touche par erreur). */
+    document.querySelectorAll('#courses-grid .fini-btn, #courses-grid-plus .fini-btn').forEach(function(b){
+      b.addEventListener('click', function(){
+        var f = chargerFini(), lab = b.getAttribute('data-fini') || b.getAttribute('data-fini-annuler');
+        var h = (Array.isArray(f[lab]) ? f[lab] : []).slice();
+        if(b.hasAttribute('data-fini')){
+          if(!(h.length && h[h.length - 1].d === todayISO)) h.push({d: todayISO, a: samediDuRachat(todayISO, new Date().getHours())});
+          f[lab] = h.slice(-8);
+          coursesState[b.getAttribute('data-key')] = false;
+          save('batcave-courses', coursesState);
+        } else {
+          if(h.length && h[h.length - 1].d === todayISO) h.pop();
+          if(h.length) f[lab] = h; else delete f[lab];
+        }
+        save(FINI_CLE, f);
         synchroniserHabitudeCourses();
         renderCourses(); renderCoursesSummary(); renderDashboard(); renderHabits();
       });
@@ -14075,6 +14305,11 @@
     if(todayISO === PREMIER_JOUR_COURSES){
       items.push({pri:0.4, icon:'\ud83d\uded2', text:'Avant de partir : compte ce qui te reste (p\u00e2tes, riz, flocons, \u0153ufs, huile, amandes) et envoie-le \u2014 la liste ne suppose aucun stock : ce que tu as d\u00e9j\u00e0, tu le coches', action:{type:'courses'}});
       items.push({pri:2.7, icon:'\ud83e\uddfe', text:'Au retour : garde le ticket de caisse et envoie-le \u2014 la liste chiffre le plan, ce que tu as vraiment pay\u00e9 se saisit dans Budget \u2192 Nourriture', action:{type:'courses'}});
+    }
+    /* 9 novembre au soir : le premier samedi du soin et du menage (SOIN_MAISON_DEBUT) -- tout y est du. */
+    if(todayISO === SOIN_MAISON_DEBUT){
+      items.push({pri:0.4, icon:'\ud83e\uddf4', text:'Avant de partir : le tour de la salle de bain et de la cuisine \u2014 dans Courses, coche \u00ab j\u2019en ai \u00bb pour chaque produit de soin ou de m\u00e9nage qu\u2019il te reste ; le reste s\u2019ach\u00e8te aujourd\u2019hui', action:{type:'courses'}});
+      items.push({pri:2.7, icon:'\ud83e\uddfe', text:'Au retour : garde les tickets \u2014 la nourriture se saisit dans Budget \u2192 Nourriture, le reste dans Soin et sant\u00e9 ou Maison et m\u00e9nage', action:{type:'courses'}});
     }
 
     /* ===== Les approfondissements sur le tableau de bord =====
@@ -16559,7 +16794,7 @@
         var j = isoDecale(iso, k);
         compoRepas('Déjeuner', j, false).concat(compoRepas('Dîner', j, false)).forEach(function(x){ if(t[x.c] !== undefined) t[x.c] += x.q; });
       }
-      return "La viande de la session du mardi va au congélateur tout de suite, crue : " + Math.round(t.poulet) + " g de poulet et " + Math.round(t.hachee) + " g de viande hachée (mercredi à samedi), à plat dans deux sacs congélation, la date dessus. Le reste de la viande au frigo, en bas : c'est celle de demain. Les surgelés au congélateur, puis le frais, puis le sec.";
+      return "La viande de la session du mardi va au congélateur tout de suite, crue : " + Math.round(t.poulet) + " g de poulet et " + Math.round(t.hachee) + " g de viande hachée (mercredi à samedi), à plat dans deux sacs congélation, la date dessus. Le reste de la viande au frigo, en bas : c'est celle de demain. Les surgelés au congélateur, puis le frais, puis le sec, puis les produits de salle de bain et de ménage à leur place. Les tickets dans Budget : la nourriture dans Nourriture, le reste dans Soin et santé ou Maison et ménage.";
     },
     'Temps libre': function(d, iso){
       if(d === 2 && (iso || todayISO) >= MARDI_BATCH_DEBUT) return "La deuxième session de batch cooking, une heure : les pâtes des midis, le poulet, la viande hachée et les légumes de mercredi à samedi, puis huit boîtes, toutes au frigo (le détail dans l'onglet Préparation). Le reste est libre.";
@@ -17896,7 +18131,7 @@
     window.__bcMeteoInjecter = function(liste){ meteoHeures = liste; try{ majMeteoSeance(); }catch(e){} };
     window.__bcMeteoSeance = texteMeteoSeance;
     window.__bcSeanceDehors = seanceExterieureLe;
-    window.__bcChiffresSemaine = chiffresSemaine; window.__bcMacrosJour = macrosJour; window.__bcSauceDuJour = sauceDuJour; window.__bcPrepSemaine = prepSemaine; window.__bcPrepTotaux = prepTotaux; window.__bcMacrosRepas = macrosRepas; window.__bcCompoRepas = compoRepas; window.__bcAliments = ALIMENTS; window.__bcBesoinSemaine = BESOIN_SEMAINE; window.__bcCoutSemaine = coutSemaine; window.__bcCoutAchats = coutAchatsMoyen; window.__bcAchatsDuSamedi = achatsDuSamedi; window.__bcMoisArgent = moisArgent; window.__bcPrix = PRIX; window.__bcEvalMatieres = EVAL_MATIERES; window.__bcTypesEcheance = TYPES_ECHEANCE; window.__bcCopieVierge = copieVierge; window.__bcNotion = absorberNotion; window.__bcNotionBases = function(){ return NOTION_BASES; }; window.__bcNotionBasesDu = basesNotionDuSemestre; window.__bcNotionRetards = notionRetards; window.__bcCoursPasFait = coursPasFait; window.__bcExercice = exerciceDu; window.__bcChiffrer = chiffrerTexte; window.__bcDechiffrer = dechiffrerEnveloppe;
+    window.__bcChiffresSemaine = chiffresSemaine; window.__bcMacrosJour = macrosJour; window.__bcSauceDuJour = sauceDuJour; window.__bcPrepSemaine = prepSemaine; window.__bcPrepTotaux = prepTotaux; window.__bcMacrosRepas = macrosRepas; window.__bcCompoRepas = compoRepas; window.__bcAliments = ALIMENTS; window.__bcBesoinSemaine = BESOIN_SEMAINE; window.__bcCoutSemaine = coutSemaine; window.__bcCoutAchats = coutAchatsMoyen; window.__bcCoutHors = coutHorsNourriture; window.__bcPlanCourses = function(){ return planCoursesSemaine(ajustementKcalPour(todayISO)); }; window.__bcAchatsDuSamedi = achatsDuSamedi; window.__bcMoisArgent = moisArgent; window.__bcPrix = PRIX; window.__bcEvalMatieres = EVAL_MATIERES; window.__bcTypesEcheance = TYPES_ECHEANCE; window.__bcCopieVierge = copieVierge; window.__bcNotion = absorberNotion; window.__bcNotionBases = function(){ return NOTION_BASES; }; window.__bcNotionBasesDu = basesNotionDuSemestre; window.__bcNotionRetards = notionRetards; window.__bcCoursPasFait = coursPasFait; window.__bcExercice = exerciceDu; window.__bcChiffrer = chiffrerTexte; window.__bcDechiffrer = dechiffrerEnveloppe;
        /* rapport hebdomadaire (tests/rapport-hebdo.mjs) : la semaine à un décalage donné, ses
           statistiques de bilan et le prévu/réalisé de chaque jour */
        window.__bcSemaine = function(off){
@@ -18551,7 +18786,9 @@
   });
 
   /* ================= BUDGET ================= */
-  var CATS_DEPENSE = ['Logement','Eau & Électricité','Transport (TAM)','Nourriture','Santé','Éducation','Business Shopify','Spirituel (sadaqah)','Abonnements','Loisirs','Autres'];
+  /* 9 novembre au soir : « Santé » devient « Soin et santé » (les produits de soin avec la pharmacie et le
+     médecin), et « Maison et ménage » arrive pour le nettoyage -- migrerPostesSoinMaison, plus bas. */
+  var CATS_DEPENSE = ['Logement','Eau & Électricité','Transport (TAM)','Nourriture','Soin et santé','Maison et ménage','Éducation','Business Shopify','Spirituel (sadaqah)','Abonnements','Loisirs','Autres'];
   var CATS_ENTREE = ['Shopify','Aide familiale','Bourse/aide étudiante','Autre'];
   var txState = chargerFractionne('batcave-transactions');
   var budgetLimits = load('batcave-budget-limits', {});
@@ -18710,6 +18947,36 @@
     }
     saveInternal('batcave-plafond-nourriture-v10', true);
   }
+  /* 9 novembre au soir : « Sante » devient « Soin et sante » -- les produits de soin s'y rangent avec la
+     pharmacie et le medecin (ses mots : « aussi les produits de soin et de sante ») -- et « Maison et menage »
+     arrive pour le nettoyage. Les depenses deja saisies en Sante suivent. Les deux plafonds se posent a ce
+     que la liste achete en moyenne (coutHorsNourriture : prix releves en ligne le 9 novembre, le Skinoren
+     compte a 19,90 EUR) ; un plafond Sante qu'il avait pose garde sa valeur et le soin s'y ajoute. Le
+     plafond Nourriture ne bouge pas : coutAchatsMoyen ne lit que la nourriture. Rejouee apres la synchro. */
+  function migrerPostesSoinMaison(){
+    if(load('batcave-postes-soin-maison-v1', false)) return false;
+    var bl = load('batcave-budget-limits', null);
+    if(bl && typeof bl === 'object' && !Array.isArray(bl)) budgetLimits = bl;
+    var tx = chargerFractionne('batcave-transactions'), bouge = false;
+    tx.forEach(function(t){ if(t && t.categorie === 'Sant\u00e9'){ t.categorie = 'Soin et sant\u00e9'; bouge = true; } });
+    if(bouge){ txState = tx; sauverFractionne('batcave-transactions', txState); }
+    var hm = coutHorsNourriture().postesMois, change = false;
+    var soin = Math.round(hm['Soin et sant\u00e9'] || 0), maison = Math.round(hm['Maison et m\u00e9nage'] || 0);
+    if(budgetLimits['Sant\u00e9'] !== undefined){
+      if(budgetLimits['Soin et sant\u00e9'] === undefined) budgetLimits['Soin et sant\u00e9'] = (Number(budgetLimits['Sant\u00e9']) || 0) + soin;
+      delete budgetLimits['Sant\u00e9']; change = true;
+    } else if(budgetLimits['Soin et sant\u00e9'] === undefined){ budgetLimits['Soin et sant\u00e9'] = soin; change = true; }
+    if(budgetLimits['Maison et m\u00e9nage'] === undefined){ budgetLimits['Maison et m\u00e9nage'] = maison; change = true; }
+    if(change) save('batcave-budget-limits', budgetLimits);
+    saveInternal('batcave-postes-soin-maison-v1', true);
+    return bouge || change;
+  }
+  migrerPostesSoinMaison();
+  MIGRATIONS_DEMARRAGE.push({cle:'batcave-postes-soin-maison-v1', rejouer: function(){
+    if(!migrerPostesSoinMaison()) return false;
+    try{ renderBudget(); renderDashboard(); }catch(e){}
+    return true;
+  }});
   var fixedCharges = load('batcave-fixed-charges', null);
   if(fixedCharges === null){ fixedCharges = FIXED_CHARGES_SEED.slice(); save('batcave-fixed-charges', fixedCharges); }
   if(!Array.isArray(fixedCharges)) fixedCharges = FIXED_CHARGES_SEED.slice();
@@ -19177,6 +19444,8 @@
     {ids:['fc6'], quand:'quand vide', action:'Recharge les transports', detail:'Le jour o\u00f9 la carte est vide.', faire:true},
     {ids:['fc7'], quand:'1 fois', action:'Coiffeur', detail:'Un samedi dans le mois.', faire:true},
     {courses:true},
+    /* 9 novembre au soir : le soin, la sante et le menage */
+    {soins:true},
     {balayage:true}
   ];
   /* 8 novembre : une charge annuelle payee EN UNE FOIS (« uneFois », le numero de son mois :
@@ -19204,16 +19473,20 @@
     /* 4 octobre : les courses d'une periode sont ses ACHATS, samedi par samedi (voir
        achatsDuSamedi), et non plus « samedis x moyenne ». La cagnotte du 25 reste le montant
        SUR : ce que laisse la periode la plus chere des douze qui viennent. */
-    var plan = planCoursesSemaine(ajustementKcalPour(iso)), am = coutAchatsMoyen();
+    /* 9 novembre au soir : le soin et le menage (hn) se comptent a leur MOYENNE par samedi, des le premier
+       samedi de la liste (SOIN_MAISON_DEBUT). Pas a leurs dates : le 14, tout est du d'un coup alors qu'il
+       en a deja la plupart, et un rythme pas encore mesure ne doit pas faire une periode « la plus chere ». */
+    var plan = planCoursesSemaine(ajustementKcalPour(iso)), am = coutAchatsMoyen(), hn = coutHorsNourriture();
     var periodeBrute = function(debut){
       var d = new Date(debut + 'T00:00:00');
       var fin = localISO(new Date(d.getFullYear(), d.getMonth() + 1, REVENU_MOIS.jour - 1));
       var sams = [];
       /* le samedi dont les courses se font un autre jour (le 3 octobre, faites le lundi 5) s'affiche au jour reel */
-      for(var x = debut; x <= fin; x = isoDecale(x, 1)) if(dowDe(x) === 6) sams.push({date: (PREMIER_JOUR_COURSES > x && PREMIER_JOUR_COURSES < isoDecale(x, 7)) ? PREMIER_JOUR_COURSES : x, montant: achatsDuSamedi(x, plan)});
+      for(var x = debut; x <= fin; x = isoDecale(x, 1)) if(dowDe(x) === 6) sams.push({date: (PREMIER_JOUR_COURSES > x && PREMIER_JOUR_COURSES < isoDecale(x, 7)) ? PREMIER_JOUR_COURSES : x, samedi: x, montant: achatsDuSamedi(x, plan)});
       /* 8 novembre : chaque periode a SES charges -- la licence payee en une fois n'en charge qu'une. */
       var fx = fixedCharges.reduce(function(t, c){ return t + montantPeriode(c, debut, fin); }, 0);
-      return {debut: debut, fin: fin, samedis: sams.length, achats: sams, courses: sams.reduce(function(t, s){ return t + s.montant; }, 0), fixes: fx, libre: REVENU_MOIS.montant - fx};
+      var soins = hn.hebdo * sams.filter(function(s){ return s.samedi >= SOIN_MAISON_DEBUT; }).length;
+      return {debut: debut, fin: fin, samedis: sams.length, achats: sams, courses: sams.reduce(function(t, s){ return t + s.montant; }, 0), soins: soins, fixes: fx, libre: REVENU_MOIS.montant - fx};
     };
     var j = new Date(iso + 'T00:00:00');
     var debut = localISO(new Date(j.getFullYear(), j.getMonth() - (j.getDate() < REVENU_MOIS.jour ? 1 : 0), REVENU_MOIS.jour));
@@ -19226,9 +19499,9 @@
        sache laquelle : la cagnotte garde cette marge (le second prelevement, moins la part
        lissee deja comptee). Sans charge de ce genre, c'est exactement l'ancien calcul. */
     var marge4s = fixedCharges.reduce(function(t, c){ return t + (periodeDe(c) === '4semaines' ? 2 * (Number(c.montant) || 0) - montantMensuel(c) : 0); }, 0);
-    var pireReste = suite.reduce(function(m, p){ return Math.min(m, p.libre - p.courses); }, Infinity);
+    var pireReste = suite.reduce(function(m, p){ return Math.min(m, p.libre - p.courses - p.soins); }, Infinity);
     var cagnotte = Math.max(0, Math.floor((pireReste - marge4s) / 10) * 10);
-    suite.forEach(function(p){ p.balayage = p.libre - p.courses - cagnotte; });
+    suite.forEach(function(p){ p.balayage = p.libre - p.courses - p.soins - cagnotte; });
     var cette = suite[0], prochaine5 = suite.filter(function(p){ return p.samedis === 5; })[0] || null;
     /* Le fil du mois, avec le solde apres chaque geste. Le jour du virement et celui du
        balayage se lisent sur la periode : le 28 pour la premiere, le 25 ensuite. */
@@ -19238,7 +19511,13 @@
     ECHEANCES_ARGENT.forEach(function(e){
       var l;
       if(e.cagnotte) l = {quand: le(cette.debut), action:'Mets de c\u00f4t\u00e9 dans la cagnotte', detail:'Le montant s\u00fbr : ce que laisse m\u00eame la p\u00e9riode la plus ch\u00e8re de l\u2019ann\u00e9e (5 samedis et les r\u00e9serves qui tombent ensemble).', montant: cagnotte, cagnotte:true, faire:true};
-      else if(e.courses) l = {quand:'le samedi', action:'Courses \u00d7 ' + cette.samedis, detail: cette.achats.map(function(a){ return fmtDate(a.date) + ' ' + eur(a.montant); }).join(' \u00b7 ') + ' \u2014 ce que tu paies en caisse, conditionnements compris.', montant: cette.courses, faire:true};
+      else if(e.courses) l = {quand:'le samedi', action:'Courses \u00d7 ' + cette.samedis, detail: cette.achats.map(function(a){ return fmtDate(a.date) + ' ' + eur(a.montant); }).join(' \u00b7 ') + ' \u2014 ce que tu paies en caisse, conditionnements compris.', montant: cette.courses, faire:true, courses:true};
+      /* 9 novembre au soir : le soin et le menage, une ligne a part -- leur moyenne, pas leurs dates. */
+      else if(e.soins){
+        if(!cette.soins) return;
+        l = {quand:'le samedi', action:'Soin et maison', detail:'Salle de bain, sant\u00e9 et m\u00e9nage : ' + eur(hn.hebdo) + ' par semaine en moyenne \u2014 chaque produit le samedi o\u00f9 il est d\u00fb (onglet Courses), au prix relev\u00e9 en ligne' +
+          (hn.estimes.length ? ' ; ' + hn.estimes.map(function(x){ return x.label + ' compt\u00e9 ' + eur(x.prix.eur); }).join(', ') + ' jusqu\u2019\u00e0 ton ticket' : '') + '.', montant: cette.soins, faire:true, soins:true};
+      }
       else if(e.balayage) l = cette.balayage >= 0
         ? {quand: le(cette.fin), action:'Balaye le reste vers la cagnotte', detail:'Ce qui reste sur le compte la veille du virement.', montant: cette.balayage, cagnotte:true, faire:true}
         /* Des charges qui depassent le virement : le fil le dit au lieu d'afficher un solde
@@ -19263,14 +19542,17 @@
     var autres = fixedCharges.filter(function(c){ return !vus[c.id] && montantPeriode(c, cette.debut, cette.fin) > 0; });
     if(autres.length){
       var ma = autres.reduce(function(t, c){ return t + montantPeriode(c, cette.debut, cette.fin); }, 0);
-      var pos = lignes.length - 2;
+      /* juste avant les courses (9 novembre au soir : le soin et le menage les suivent) */
+      var pos = lignes.map(function(l){ return !!l.courses; }).indexOf(true);
+      if(pos < 0) pos = lignes.length - 1;
       lignes.splice(pos, 0, {quand:'\u00e0 sa date', action: autres.map(function(c){ return c.label; }).join(', '), detail:'Charge fixe sans date dans ce plan.', montant: ma, faire:false});
       solde = REVENU_MOIS.montant;
       lignes.forEach(function(l, i){ if(i){ solde -= l.montant; } l.solde = solde; });
     }
     return {revenu: REVENU_MOIS.montant, fixes: fixes, semaine: sem, estimes: estimes, cagnotte: cagnotte,
       achatsSemaine: am.total, achatsMois: am.mois, pire: pire,
-      moyenne: libre - am.mois, periode: cette, prochaine5: prochaine5, lignes: lignes};
+      soinsSemaine: hn.hebdo, soinsMois: hn.mois, soinsPostes: hn.postesMois,
+      moyenne: libre - am.mois - hn.mois, periode: cette, prochaine5: prochaine5, lignes: lignes};
   }
   /* 1 400 et pas 1400 : l'espace fine des milliers, comme partout ailleurs dans la Batcave. */
   function eurMille(n){ return eur(n).replace(/\B(?=(\d{3})+(?!\d))/g, '\u202f'); }

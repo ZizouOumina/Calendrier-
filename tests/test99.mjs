@@ -186,8 +186,25 @@ console.log('\n== 325) La page Courses annonce les adresses ==');
      description qui contredit la page est un mensonge de plus, pas un détail. */
   ok(!/ne sont plus affich/.test(d) && /relev/.test(d) && /20 et 21 septembre/.test(d),
      'et elle dit que les prix affichés sont les SIENS, relevés en magasin');
-  ok(!/estim/i.test(d) && !/Mercadona/.test(d) && !/mercadillo/i.test(d),
-     'aucune estimation annoncée, et plus aucune adresse périmée');
+  /* 9 novembre au soir : Mercadona revient dans la description, pour le soin et le menage -- les deux
+     rayons ou ses prix ont ete releves. Le mercadillo, lui, reste dehors. */
+  ok(!/estim/i.test(d) && /Mercadona pour le soin et le ménage/.test(d) && !/mercadillo/i.test(d),
+     'aucune estimation annoncée, Mercadona nommé pour le soin et le ménage, plus de mercadillo');
+  await ctx.close();
+}
+
+console.log('\n== 326) Le samedi 14 novembre : le soin et le menage ont aussi leur adresse ==');
+{
+  const { ctx, fr } = await courses('2026-11-14T10:00:00+01:00');
+  const l = await lignes(fr);
+  const muets = l.filter(x => !x.ou);
+  ok(l.length === 40 && !muets.length, '40 articles le 14, tous avec une adresse (' + l.length + (muets.length ? ' ; sans : ' + muets.map(x => x.nom).join(', ') : '') + ')');
+  const connues = ['Boucherie', 'Lidl', 'Alcampo', 'Mercadona', 'Frutería', 'En ligne', 'Pharmacie'];
+  const inconnues = [...new Set(l.map(x => x.ou.split(' · ')[0]))].filter(x => connues.indexOf(x) === -1);
+  ok(!inconnues.length, 'aucune adresse inventée, la pharmacie comprise (' + (inconnues.join(', ') || 'aucune') + ')');
+  const chez = n => (l.find(x => x.nom.indexOf(n) === 0) || {}).ou;
+  ok(chez('Lessive en poudre') === 'Alcampo' && chez('Poudre lave-vaisselle') === 'Alcampo' && chez('Skinoren') === 'Pharmacie' && chez('Gel douche') === 'Mercadona',
+     'la lessive et la poudre chez Alcampo, le Skinoren à la pharmacie, le reste chez Mercadona');
   await ctx.close();
 }
 
