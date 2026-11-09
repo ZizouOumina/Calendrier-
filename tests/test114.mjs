@@ -63,10 +63,10 @@ console.log('— vendredi 25 septembre : la premiere periode, 28 sept. -> 24 oct
   ok(a.cagnotte === 170, 'jour du virement : 170 EUR dans la cagnotte (230 avant le prix des fruits rouges, 30 octobre ; 200 avant les oeufs du 8 novembre ; 190 avant Basic-Fit) — ce que laisse la periode la plus chere, les courses comptees en caisse (plan dense du 23 octobre au soir) (' + a.cagnotte + ')');
   ok(a.periode.debut === '2026-09-28' && a.periode.fin === '2026-10-24', 'premiere periode du 28 sept. (dernier virement a l\'ancienne date) au 24 oct.');
   ok(a.periode.samedis === 4, '4 samedis de courses');
-  ok(pres(a.periode.balayage, 93.57), 'le 24 : environ 93,57 EUR a balayer (' + a.periode.balayage.toFixed(2) + ')');
-  ok(pres(a.moyenne, 250.40), 'epargne moyenne : 250,40 EUR par mois (hors les prix a relever, les fruits rouges releves le 30 octobre) (' + a.moyenne.toFixed(2) + ')');
+  ok(pres(a.periode.balayage, 93.02), 'le 24 : environ 93,02 EUR a balayer (les pates du 9 novembre en paquets de 500 g) (' + a.periode.balayage.toFixed(2) + ')');
+  ok(pres(a.moyenne, 249.81), 'epargne moyenne : 249,81 EUR par mois (hors les prix a relever, les fruits rouges releves le 30 octobre) (' + a.moyenne.toFixed(2) + ')');
   ok(a.prochaine5 && a.prochaine5.debut === '2026-12-25' && a.prochaine5.fin === '2027-01-24' && a.prochaine5.samedis === 5, 'prochaine periode a 5 samedis : 25 dec. -> 24 janv.');
-  ok(pres(a.prochaine5.balayage, 31.73), 'avec 5 samedis et les reserves, il reste encore 31,73 EUR le 24, la marge d\'un second prelevement Basic-Fit (' + a.prochaine5.balayage.toFixed(2) + ')');
+  ok(pres(a.prochaine5.balayage, 30.64), 'avec 5 samedis et les reserves, il reste encore 30,64 EUR le 24, la marge d\'un second prelevement Basic-Fit (' + a.prochaine5.balayage.toFixed(2) + ')');
   const L = a.lignes;
   ok(L[0].montant === 700 && L[0].plus && L[0].quand === 'le 28', 'le fil commence par le virement, le 28 pour cette premiere periode');
   ok(L[1].montant === 170 && L[1].cagnotte && L[1].quand === 'le 28', 'puis la cagnotte, le meme jour');

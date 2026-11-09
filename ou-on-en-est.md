@@ -1,5 +1,14 @@
 # Où on en est — samedi 19 septembre 2026, au soir
 
+> ### Lundi 9 novembre — des pâtes à midi, le riz le soir ; la peau commence mardi
+> **Ses mots** : « le riz, ça monte vite au cerveau », puis « au pire, pâtes à midi tous les jours et riz le soir
+> tous les jours » ; « j'ai rien commencé, même le traitement, et je n'ai pas de peroxyde ».
+> **Fait** : dès le lundi 16 (`PATES_MIDI_DEBUT`), 125 g de pâtes à midi, cuites au batch du dimanche et rangées
+> dans les boîtes du midi ; le riz, 125 g, se cuit chaque matin pour le soir. Mêmes calories, 5,75 g de protéines
+> de plus. Courses : les pâtes en fin des réserves de 4 semaines (7 paquets de 500 g), le riz passe à 4 kg ; la
+> semaine type des besoins devient celle du 16 ; 3 paquets à prendre samedi 14 pour aller jusqu'au 28. Le bilan
+> peau des 12 semaines passe au dimanche 7 février 2027. Tests 53, 94, 99, 103, 114 et 115 recalés.
+
 > ### Dimanche 8 novembre, le soir — le budget remis au réel
 > **Ses mots** : « c'est quoi mes frais fixes », puis « j'ai pas encore payé ma licence de JJB, elle se
 > paye en une fois, et je n'ai pas payé le proprio pour les deux mois d'électricité », « il y a

@@ -8466,6 +8466,14 @@
     if(f >= 1) return liste;
     return liste.map(function(x){ return ENTIERS_REPRISE[x.c] ? x : {c:x.c, q:portionReprise(x.q, f)}; });
   }
+  /* 9 novembre au soir, ses mots : « le riz, ça monte vite au cerveau », puis « au pire, pâtes à midi tous les
+     jours et riz le soir tous les jours ». Des le lundi 16 : 125 g de pates crues a midi, cuites au batch du
+     dimanche et rangees dans les boites du midi (elles s'y rechauffent tres bien) ; le riz, 125 g, se cuit
+     chaque matin pour le soir seulement. Memes calories (360 kcal pour 100 g), 5,75 g de proteines de plus,
+     un index glycemique plus bas a midi -- moins de coup de barre l'apres-midi --, et le riz garde le soir,
+     ou ses glucides aident a s'endormir. */
+  var PATES_MIDI_DEBUT = '2026-11-16';
+  function feculentMidi(iso){ return (iso || todayISO) >= PATES_MIDI_DEBUT ? 'pates' : 'riz'; }
   var FROMAGE_FIN = '2026-10-26';   /* plus de fromage a la collation a partir de ce jour : un 3e oeuf */
   var COTTAGE_DEBUT = '2026-10-27';  /* puis 100 g de cottage cheese a sa place */
   var COTTAGE_FIN = '2026-11-08';    /* et le 3e oeuf revient : le cottage cheese le degoute */
@@ -8485,7 +8493,7 @@
     if(nom === 'Récup combat') return [{c:'avoine', q:250}, {c:'banane', q:120}, {c:'flocons', q:20}];
     if(nom === 'Déjeuner'){
       var nd = proteineDuJour('dej', iso), pd = PROTEINES[nd].dej, sd = sauceDuJour('dej', iso);
-      return [{c:'riz', q:grammesFeculent('dej', iso)}, {c:CLE_PROTEINE[nd], q:pd.g}, {c:'legumes', q:LEGUMES_REPAS.dej}, {c:'huile', q:pd.huile - (sd.sansHuile ? HUILE_CRUE.dej : 0)}].concat(compoSauce(sd));
+      return [{c:feculentMidi(iso), q:grammesFeculent('dej', iso)}, {c:CLE_PROTEINE[nd], q:pd.g}, {c:'legumes', q:LEGUMES_REPAS.dej}, {c:'huile', q:pd.huile - (sd.sansHuile ? HUILE_CRUE.dej : 0)}].concat(compoSauce(sd));
     }
     if(nom === 'Dîner'){
       var nn = PROTEINES[proteineDuJour('din', iso)].din, sn = sauceDuJour('din', iso);
@@ -8671,7 +8679,7 @@
   function grammesAjustement(kcal, kcalG){ return Math.round((Number(kcal) || 0) / kcalG / 10) * 10; }
   function texteFeculent(repas, ajust, iso){
     var f = FECULENTS[repas], g = portionReprise(grammesFeculent(repas, iso) + (repas === 'din' ? grammesAjustement(ajust, f.kcalG) : 0), facteurPortions(iso));
-    return 'Féculent cru — ' + f.nom + ' ' + g + 'g' + (repas === 'din' && ajust ? ' (boucle kcal ' + (ajust > 0 ? '+' : '') + ajust + ' kcal)' : '') +
+    return 'Féculent cru — ' + (repas === 'dej' && feculentMidi(iso) === 'pates' ? 'Pâtes' : f.nom) + ' ' + g + 'g' + (repas === 'din' && ajust ? ' (boucle kcal ' + (ajust > 0 ? '+' : '') + ajust + ' kcal)' : '') +
            (repas === 'dej' && g > f.g ? ' (+' + RIZ_COMBAT_PLUS + ' g les jours de combat : la collation d\'avant le tatami est plus légère)' : '');
   }
   /* 21 octobre : le feculent du midi (couscous) monte les jours de combat -- il reprend les ~160 kcal que la
@@ -9016,8 +9024,8 @@
       var dsc = document.getElementById('repas-desc');
       if(dsc) dsc.textContent = 'Programme du jour, ' + repasDuJour().length + ' prises' + (jourDeCombat() ? ' (jour de combat)' : '') + ' : ' + Math.round(n.targets.kcal) + ' kcal, P ' +
         Math.round(n.targets.p) + ' g, G ' + Math.round(n.targets.g) + ' g, L ' + Math.round(n.targets.l) +
-        ' g, tout pesé cru' + (todayISO < SANS_SAUCE_DEBUT ? ', sauces comprises' : '') + '. Riz à midi (' + grammesFeculent('dej') + ' g) et le soir (' + FECULENTS.din.g +
-        ' g), cuit chaque matin ; poulet à midi, viande hachée le soir. Les cases se réinitialisent à minuit.';
+        ' g, tout pesé cru' + (todayISO < SANS_SAUCE_DEBUT ? ', sauces comprises' : '') + '. ' + (feculentMidi() === 'pates' ? 'Pâtes à midi (' + grammesFeculent('dej') + ' g, au batch du dimanche) et riz le soir (' + FECULENTS.din.g + ' g, cuit chaque matin)' : 'Riz à midi (' + grammesFeculent('dej') + ' g) et le soir (' + FECULENTS.din.g + ' g), cuit chaque matin') + ' ;' +
+        ' poulet à midi, viande hachée le soir. Les cases se réinitialisent à minuit.';
       document.getElementById('meal-kcal-sub').textContent = Math.round(n.totals.kcal) + ' / ' + Math.round(n.targets.kcal) + ' kcal' +
         (n.targets.ajustement ? ' (plan ' + Math.round(n.targets.plan) + (n.targets.ajustement > 0 ? ' + ' : ' − ') + Math.abs(n.targets.ajustement) + ')' : '');
       document.getElementById('meal-p-fill').style.width = pPct + '%';
@@ -12768,7 +12776,9 @@
     /* L'ordre. Les durees sont celles des quantites ci-dessus ; les postes longs et
        autonomes (riz, four) partent en premier, le reste se glisse pendant. */
     var etapes = [
-      [0,  'Le <b>riz</b> ne se fait plus le dimanche : il se cuit chaque matin, frais, au rice cooker (la consigne du petit-déjeuner). Le batch, c\'est la viande, les légumes et les œufs.'],
+      [0,  T.pates > 0
+             ? 'Les <b>pâtes</b> du midi — ' + poids(T.pates) + ' : une grande casserole d\'eau salée, une minute de moins que le paquet (elles finissent au réchauffage), égouttées, un filet d\'huile pour qu\'elles ne collent pas. Le <b>riz</b>, lui, se cuit chaque matin pour le soir.'
+             : 'Le <b>riz</b> ne se fait plus le dimanche : il se cuit chaque matin, frais, au rice cooker (la consigne du petit-déjeuner). Le batch, c\'est la viande, les légumes et les œufs.'],
       [3,  'Le <b>poulet</b> à la poêle — ' + poids(T.poulet) + ', feu vif, 4 min par face puis 3 min à couvert.'],
       [22, 'La <b>viande hachée</b> — ' + poids(T.hachee) + ', en deux fournées pour qu\'elle grille au lieu de bouillir. 10 min.'],
       [46, 'Les <b>légumes surgelés</b> — ' + poids(T.legumes) + (dim >= LEGUMES_VARIES_DEBUT
@@ -12844,7 +12854,7 @@
     /* la semaine TYPE : celle du 5 octobre, la premiere complete (muscu et combat). Celle
        du 28 septembre n'a pas de combat (COMBAT_PAUSE) : elle sous-compterait la collation. */
     for(var j = 0; j < 7; j++){
-      var iso = localISO(new Date(2026, 10, 9 + j));   /* 5 octobre : pas de JJB avant le 26, la semaine type devient celle du 26. 21 octobre : le JJB commence le mercredi 28 -- la premiere semaine aux trois matins de combat est celle du 2 novembre. 8 novembre : le cottage cheese sort ce dimanche-la, la semaine type devient celle du 9 */
+      var iso = localISO(new Date(2026, 10, 16 + j));   /* 5 octobre : pas de JJB avant le 26, la semaine type devient celle du 26. 21 octobre : le JJB commence le mercredi 28 -- la premiere semaine aux trois matins de combat est celle du 2 novembre. 8 novembre : le cottage cheese sort ce dimanche-la, la semaine type devient celle du 9. 9 novembre : les pates du midi commencent le lundi 16, la semaine type devient celle du 16 */
       repasDuJour(iso).forEach(function(m){
         compoRepas(m.name, iso, true).forEach(function(x){
           var a = ALIMENTS[x.c], k = alias[x.c] || x.c;
@@ -13062,7 +13072,9 @@
            indexees par position). Sans prix releve : « prix a relever » jusqu'a son ticket. */
         /* 23 octobre au soir : le riz, midi et soir, au rice cooker ; il porte l'ajustement de la boucle. */
         art('Riz',              (B.riz + plus) * 4,   1000, poids, 'paquet'),
-        art('Flocons d\'avoine',  B.flocons * 4,         500, poids, 'paquet')
+        art('Flocons d\'avoine',  B.flocons * 4,         500, poids, 'paquet'),
+        /* 9 novembre : les pates du midi, des le 16. EN DERNIER : les coches sont indexees par position. */
+        art('P\u00e2tes',            B.pates * 4,          500, poids, 'paquet')
       ]},
       /* Cinq semaines : le cycle venait du beurre de cacahuete (2 kg tombaient presque pile,
          385 x 5 = 1 925) ; il est sorti du plan le 24 septembre et l'huile reste seule.
@@ -16441,12 +16453,13 @@
     'Petit-déjeuner + Coran (1 page)': function(d, iso){
       var c = compoRepas('Déjeuner', iso, false).concat(compoRepas('Dîner', iso, false)), r = 0;
       c.forEach(function(x){ if(x.c === 'riz') r += x.q; });
-      return "Avant le shake : le riz du jour au rice cooker — " + Math.round(r) + " g crus (midi et soir), rincés trois fois, l'eau jusqu'au trait, une pincée de sel iodé (« sal yodada » : quand ton paquet est fini, prends celui-là ; c'est lui qui complète l'iode). Il cuit pendant que tu bois le shake. Le midi reste au chaud dans la cuve ; la part du soir part dans une boîte, au frigo dès qu'elle est tiède.";
+      var soirSeul = feculentMidi(iso) === 'pates';
+      return "Avant le shake : le riz du jour au rice cooker — " + Math.round(r) + (soirSeul ? " g crus (pour le soir : à midi, ce sont les pâtes de ta boîte)" : " g crus (midi et soir)") + ", rincés trois fois, l'eau jusqu'au trait, une pincée de sel iodé (« sal yodada » : quand ton paquet est fini, prends celui-là ; c'est lui qui complète l'iode). Il cuit pendant que tu bois le shake. " + (soirSeul ? "Il part dans une boîte, au frigo dès qu'il est tiède." : "Le midi reste au chaud dans la cuve ; la part du soir part dans une boîte, au frigo dès qu'elle est tiède.");
     },
     'Déjeuner': function(d, iso){
       var c = compoRepas('Déjeuner', iso, false), g = function(k){ var x = c.filter(function(y){ return y.c === k; })[0]; return x ? Math.round(x.q) : 0; };
       var sc = sauceDuJour('dej', iso);
-      return "Le riz du midi (" + g('riz') + " g crus), au chaud dans la cuve depuis le matin, et la boîte du jour : poulet " + g('poulet') + " g, " + g('legumes') + " g de " + nomLegumes('dej', iso).toLowerCase() + ", réchauffée à la poêle avec 2 à 3 cuillères d'eau, couvercle, 4 à 5 min, brûlante jusqu'au cœur. " + (sc.nature ? "Pas de sauce : " + sc.recette + "." : "Sauce du jour — " + sc.nom + " : " + sc.recette + ". Sel.");
+      return (feculentMidi(iso) === 'pates' ? "La boîte du jour : les pâtes (" + g('pates') + " g crus, cuites au batch du dimanche), poulet " : "Le riz du midi (" + g('riz') + " g crus), au chaud dans la cuve depuis le matin, et la boîte du jour : poulet ") + g('poulet') + " g, " + g('legumes') + " g de " + nomLegumes('dej', iso).toLowerCase() + ", réchauffée à la poêle avec 2 à 3 cuillères d'eau, couvercle, 4 à 5 min, brûlante jusqu'au cœur. " + (sc.nature ? "Pas de sauce : " + sc.recette + "." : "Sauce du jour — " + sc.nom + " : " + sc.recette + ". Sel.");
     },
     'Dîner': function(d, iso){
       var c = compoRepas('Dîner', iso, false), g = function(k){ var x = c.filter(function(y){ return y.c === k; })[0]; return x ? Math.round(x.q) : 0; };

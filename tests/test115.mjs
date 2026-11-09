@@ -134,8 +134,8 @@ console.log('\n== 4) L\'alimentation du 21 octobre : shake, sauces comptées, co
   ok(/^amandes 50, sardines 85, cottage 0, dattes 70$/.test(r.colMar) && !/fromage/.test(r.colMar), 'mardi 14:50 : la poignée — amandes, sardines à la place des œufs et du cottage cheese, 7 dattes (' + r.colMar + ')');
   ok(/^amandes 50, oeufs 100, cottage 100, dattes 70$/.test(r.colLun) && !/fromage/.test(r.colLun), 'lundi 14:50 : 50 g d\'amandes depuis la fin des sauces (30 octobre), deux œufs, 100 g de cottage cheese, plus de fromage (' + r.colLun + ')');
   ok(r.combat === 'banane 120, galettes 20, miel 15', 'collation combat : banane, 2 galettes de riz, 15 g de miel (' + r.combat + ')');
-  ok(!('creme' in r.besoin) && !('pestoverde' in r.besoin) && r.besoin.sardines === 2 && r.besoin.galettes === 6 && r.besoin.fruitsrouges === 700 && r.besoin.riz === 1750 && !('couscous' in r.besoin) && !('pates' in r.besoin) && r.besoin.dattes === 490,
-     'courses : les condiments restent hors liste ; 2 sardines, 6 galettes, 700 g de fruits rouges, 1 750 g de riz (midi et soir), plus de semoule ni de pâtes, 490 g de dattes (70 g par jour depuis le 25 octobre)');
+  ok(!('creme' in r.besoin) && !('pestoverde' in r.besoin) && r.besoin.sardines === 2 && r.besoin.galettes === 6 && r.besoin.fruitsrouges === 700 && r.besoin.riz === 875 && !('couscous' in r.besoin) && r.besoin.pates === 875 && r.besoin.dattes === 490,
+     'courses : les condiments restent hors liste ; 2 sardines, 6 galettes, 700 g de fruits rouges, 875 g de riz (le soir) et 875 g de pâtes (à midi depuis le 16 novembre), plus de semoule, 490 g de dattes (70 g par jour depuis le 25 octobre)');
   await ctx.close();
 }
 

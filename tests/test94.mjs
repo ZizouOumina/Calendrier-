@@ -51,7 +51,7 @@ console.log('\n== 330) Cinq catégories, toutes alimentaires, et le frais seul e
      ne suivait pas. */
   ok(/Chaque semaine/.test(hebdo.titre) && hebdo.n === 7, 'la liste hebdomadaire fait 7 articles — le pain et les fruits sortent le 23 octobre au soir (le volume) ; les amandes entrent le 24 septembre à la place du beurre de cacahuète, les sardines le 21 octobre, le cottage cheese le 27, sorti le 8 novembre (' + hebdo.n + ')');
   const t = await fr.evaluate(() => document.querySelector('.page[data-page="courses"]').textContent);
-  ok(!/Riz/.test(hebdo.titre + '') && /Riz — 7 kg/.test(t) && !/Couscous|Pâtes —/.test(t), 'le riz est en réserve : 7 kg pour quatre semaines (125 g midi et soir depuis le 23 octobre au soir, plus de semoule ni de pâtes ; avant, les mêmes grammes les jours de combat ; avant : 125 g par jour, 170 les jours de combat, depuis le 21 octobre)');
+  ok(!/Riz/.test(hebdo.titre + '') && /Riz — 4 kg/.test(t) && /Pâtes — 3,5 kg/.test(t) && !/Couscous/.test(t), 'le riz est en réserve : 4 kg pour quatre semaines (125 g le soir ; depuis le 16 novembre, les pâtes à midi, 3,5 kg ; plus de semoule ; avant, les mêmes grammes les jours de combat ; avant : 125 g par jour, 170 les jours de combat, depuis le 21 octobre)');
   ok(!/Shampooing|Cotons-tiges|Nettoyant visage|Brosse à dents|Bain de bouche|Brossettes|Crème solaire|Lessive|Dentifrice/.test(t),
      'plus une seule ligne de santé et hygiène');
   ok(!/Éponges|Sacs poubelle|Nettoyant sol|Papier toilette|Essuie-tout|Liquide vaisselle|Anticalcaire|Nettoyant WC|Gants de ménage/.test(t),
@@ -76,7 +76,7 @@ console.log('\n== 331) Samedi 26 septembre : l\'ancre, tout est dû ==');
   /* Aucun stock n'est suppose : le 19, TOUTES les categories sont dues et toutes leurs
      lignes comptent. 9 frais + 1 surgele + 4 reserves + 2 (cycle de 5 semaines) + 1 pot de
      creatine = 17. Ce qu'il a deja, il le coche quand meme. */
-  ok(/\/17 articles/.test(somme), '17 articles le 26 : tout part de zéro (' + somme + ')');
+  ok(/\/18 articles/.test(somme), '18 articles le 26 : tout part de zéro (' + somme + ')');
   await ctx.close();
 }
 {
@@ -166,7 +166,7 @@ console.log('\n== 334b) Aucun stock n\'est supposé : il coche ce qu\'il a ==');
   /* Le 17 octobre les reserves reviennent, aux memes quantites : aucun report. */
   const { ctx, fr } = await jour('2026-10-31T10:00:00+02:00');
   const t = await fr.evaluate(() => document.querySelector('.page[data-page="courses"]').textContent);
-  ok(/Riz — 7 kg/.test(t), 'le 24 octobre, le riz revient à la même quantité');
+  ok(/Riz — 4 kg/.test(t), 'le 24 octobre, le riz revient à la même quantité');
   await ctx.close();
 }
 
@@ -235,11 +235,13 @@ console.log('\n== 334d) La liste ne porte QUE de la nourriture ==');
                    /* 21 octobre : les fruits rouges du shake et les galettes de riz de la collation combat */
                    'Fruits rouges surgelés', 'Galettes de riz', 'Dattes',
                    'Riz', 'Flocons d\'avoine',
+                   /* 9 novembre : les pâtes du midi, en fin des réserves de quatre semaines */
+                   'Pâtes',
                    /* 26 septembre : le miel passe au cycle de cinq semaines, en pot de 750 g */
                    'Huile d\'olive', 'Miel', 'Créatine monohydrate'];
-  ok(lignes.length === 17, '17 lignes, pas une de plus (' + lignes.length + ')');
+  ok(lignes.length === 18, '18 lignes, pas une de plus (' + lignes.length + ')');
   ok(JSON.stringify(lignes) === JSON.stringify(ATTENDU),
-     'et ce sont exactement les dix-sept attendues' +
+     'et ce sont exactement les dix-huit attendues' +
      (JSON.stringify(lignes) === JSON.stringify(ATTENDU) ? '' : ' — reçu : ' + lignes.join(' · ')));
   /* Nommement, les rayons qui sont sortis : hygiene, maison, menage, brosse a dents. */
   const SORTIS = ['Shampooing', 'Après-shampooing', 'Gel douche', 'Nettoyant visage', 'Dentifrice',

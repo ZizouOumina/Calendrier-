@@ -52,7 +52,8 @@ console.log('\n== 180) Sans ajustement : plan de base, liste = plan × 7 ==');
   /* 26 octobre : le fromage sort (il n'en a plus ; un 3e oeuf a la collation). Dix-sept lignes. */
   /* 27 octobre : le cottage cheese entre en fin de « Chaque semaine ». Dix-huit lignes. */
   /* 8 novembre : il sort (il le degoute ; le 3e oeuf revient). Dix-sept lignes. */
-  ok(c.n === 17, '17 articles au total, tous rythmes confondus — plus de pain, de fruits ni de pâtes depuis le 23 octobre, les dattes entrent, le fromage sort le 26, le cottage cheese entre le 27 et sort le 8 novembre (' + c.n + ')');
+  /* 9 novembre : les pâtes du midi entrent en fin des réserves. Dix-huit lignes. */
+  ok(c.n === 18, '18 articles au total, tous rythmes confondus — plus de pain, de fruits ni de pâtes depuis le 23 octobre, les dattes entrent, le fromage sort le 26, le cottage cheese entre le 27 et sort le 8 novembre, les pâtes du midi entrent le 9 (' + c.n + ')');
   /* Deux chiffres par ligne, et il faut les deux : ce qu'on ACHETE (un multiple du
      conditionnement) et ce que le PLAN demande (la somme des 7 jours de repas). Riz
      135 g/jour -> 945/semaine -> 3 780 sur 4 semaines, donc 4 paquets de 1 kg ;
@@ -63,7 +64,8 @@ console.log('\n== 180) Sans ajustement : plan de base, liste = plan × 7 ==');
      combat, 1 010 g par semaine, 4 040 g sur quatre semaines : 5 paquets de 1 kg. */
   /* 23 octobre, le plan de prise de masse : 140 g de semoule et 140 g de pates, tous les jours. */
   /* 23 octobre au soir : le riz au rice cooker, midi et soir -- 250 g par jour, 7 000 g sur quatre semaines. */
-  ok(c.items.some(t => /^Riz — 7 kg\b/.test(t) && !/demande/.test(t)) && !c.items.some(t => /^(Couscous|Pâtes)/.test(t)), 'riz : 7 kg pour quatre semaines (125 g midi et soir), plus de semoule ni de pâtes (' + c.items.find(t => /^Riz/.test(t)) + ')');
+  /* 9 novembre : des pâtes à midi dès le 16, le riz seulement le soir -- 875 g de chaque par semaine. */
+  ok(c.items.some(t => /^Riz — 4 kg\b/.test(t) && /demande 3\u202f500 g/.test(t)) && c.items.some(t => /^Pâtes — 3,5 kg\b/.test(t)) && !c.items.some(t => /^Couscous/.test(t)), 'riz : 4 kg pour quatre semaines (125 g le soir), pâtes : 3,5 kg (125 g à midi depuis le 16 novembre), plus de semoule (' + c.items.find(t => /^Riz/.test(t)) + ' / ' + c.items.find(t => /^Pâtes/.test(t)) + ')');
   /* Depuis le 20 septembre la rotation est la meme tous les jours : poulet a midi
      (80 g x 7 = 560), viande hachee le soir (90 g x 7 = 630). Le poisson est sorti.
      La viande ne s'arrondit PAS : le boucher pese le montant exact, donc ces deux
@@ -187,7 +189,7 @@ console.log('\n== 181) Avec +150 kcal : le dîner et les courses l\'écrivent ==
      dont il a donné le prix. L'arrondi va toujours AU-DESSUS du besoin, donc 4 060 g
      demandés font cinq paquets — 940 g de surplus, qui se cuisent et partent en
      tupperware comme le reste. */
-  ok(c.items.some(t => /^Riz — 9 kg\b/.test(t) && /demande 8\u202f120 g/.test(t)), 'la boucle kcal remonte le besoin à (1 750 + 280) × 4 = 8 120 g, et l\'achat suit à 9 kg (' + c.items.find(t => /^Riz/.test(t)) + ')');
+  ok(c.items.some(t => /^Riz — 5 kg\b/.test(t) && /demande 4\u202f620 g/.test(t)), 'la boucle kcal remonte le besoin à (875 + 280) × 4 = 4 620 g, et l\'achat suit à 5 kg (' + c.items.find(t => /^Riz/.test(t)) + ')');
   ok(/\+150 kcal\/jour/.test(c.note) && /\+40 g de riz cru/.test(c.note) && /\+280 g sur la semaine/.test(c.note), 'note : ' + c.note.slice(0, 120));
   /* La boucle kcal ne touche QUE le feculent du diner : les proteines gardent la quantite
      de la rotation, 560 g de poulet par semaine. */
@@ -208,13 +210,13 @@ console.log('\n== 182) Appliquer / revenir depuis la boucle met tout à jour d\'
   await page.waitForTimeout(250);
   const apres = await fr.evaluate(() => ({ diner: [...document.querySelectorAll('.meal-card')].find(c => /Dîner/.test(c.querySelector('.mtitle').textContent)).innerText,
     courses: (document.querySelector('.nav-btn[data-page="courses"]').click(), [...document.querySelectorAll('#courses-grid label, #courses-grid-plus label')].map(l => l.textContent).find(t => /^Riz/.test(t))) }));
-  ok(/Riz 165g/.test(apres.diner) && /Riz — 9 kg/.test(apres.courses), 'après « Appliquer » : dîner à 165 g de riz, courses à 9 kg');
+  ok(/Riz 165g/.test(apres.diner) && /Riz — 5 kg/.test(apres.courses), 'après « Appliquer » : dîner à 165 g de riz, courses à 5 kg');
   await page_(fr, 'repas');
   await fr.evaluate(() => document.getElementById('kcal-reset').click());
   await page.waitForTimeout(250);
   const retour = await fr.evaluate(() => ({ diner: [...document.querySelectorAll('.meal-card')].find(c => /Dîner/.test(c.querySelector('.mtitle').textContent)).innerText,
     courses: (document.querySelector('.nav-btn[data-page="courses"]').click(), [...document.querySelectorAll('#courses-grid label, #courses-grid-plus label')].map(l => l.textContent).find(t => /^Riz/.test(t))) }));
-  ok(/Riz 125g/.test(retour.diner) && /7 kg/.test(retour.courses), 'après « Revenir au plan de base » : 125 g au dîner et 7 kg de riz');
+  ok(/Riz 125g/.test(retour.diner) && /Riz — 4 kg/.test(retour.courses), 'après « Revenir au plan de base » : 125 g au dîner et 4 kg de riz');
   await ctx.close();
 }
 
@@ -279,14 +281,15 @@ console.log('\n== 183) La liste de courses sort du MEME plan que les repas ==');
   const { ctx, fr } = await ouvrir('2026-09-22T10:00:00+02:00');
   const r = await fr.evaluate(() => {
     const A = window.__bcAliments, alias = {banane:'bananes', fruit:'fruits'};
-    /* Semaine de reference du 9 au 15 novembre (21 octobre : celle du 2, la premiere aux trois
-       matins de JJB ; 8 novembre : celle du 9, la premiere sans cottage cheese) : la collation combat et le shake de recup n'existent que les jours de combat (lundi,
+    /* Semaine de reference du 16 au 22 novembre (21 octobre : celle du 2, la premiere aux trois
+       matins de JJB ; 8 novembre : celle du 9, la premiere sans cottage cheese ; 9 novembre : celle du 16,
+       la premiere aux pates du midi) : la collation combat et le shake de recup n'existent que les jours de combat (lundi,
        mercredi, vendredi).
        Les condiments des sauces sont dans les repas, pas dans la liste : ils ont leur carte. */
     const noms = ['Petit-déjeuner','Déjeuner','Collation entraînement','Dîner'];
     const b = {};
     for(let j = 0; j < 7; j++){
-      const d = new Date(2026, 10, 9 + j), iso = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+      const d = new Date(2026, 10, 16 + j), iso = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
       const duJour = [1, 3, 5].indexOf(d.getDay()) > -1 ? noms.concat(['Collation combat', 'Récup combat']) : noms;
       duJour.forEach(n => window.__bcCompoRepas(n, iso, true).forEach(x => {
         const a = A[x.c], k = alias[x.c] || x.c;
@@ -298,13 +301,13 @@ console.log('\n== 183) La liste de courses sort du MEME plan que les repas ==');
   });
   const cles = Object.keys(r.recompte).sort();
   const faux = cles.filter(k => Math.abs(r.recompte[k] - r.lu[k]) > 0.001);
-  ok(faux.length === 0 && cles.length === 16,
-     'les 16 besoins de la semaine (le riz midi et soir, les dattes, plus de pain ni de fruits depuis le 23 octobre au soir, plus de fromage depuis le 26, plus de cottage cheese depuis le 8 novembre) sont exactement la somme des repas' + (faux.length ? ' — ' + faux.map(k => k + ' : ' + r.lu[k] + ' vs ' + r.recompte[k]).join(', ') : ' (' + cles.length + ')'));
+  ok(faux.length === 0 && cles.length === 17,
+     'les 17 besoins de la semaine (le riz le soir et les pâtes à midi depuis le 16 novembre, les dattes, plus de pain ni de fruits depuis le 23 octobre au soir, plus de fromage depuis le 26, plus de cottage cheese depuis le 8 novembre) sont exactement la somme des repas' + (faux.length ? ' — ' + faux.map(k => k + ' : ' + r.lu[k] + ' vs ' + r.recompte[k]).join(', ') : ' (' + cles.length + ')'));
   /* Et aucun aliment du plan ne manque a la liste de courses. */
   const manquants = await fr.evaluate(() => {
     const noms = ['Petit-déjeuner','Déjeuner','Collation entraînement','Dîner','Collation combat','Récup combat'];
     const dans = {};
-    for(let j = 9; j <= 15; j++) noms.forEach(n => window.__bcCompoRepas(n, '2026-11-' + String(j).padStart(2, '0'), true).forEach(x => { if(!window.__bcAliments[x.c].condiment) dans[x.c] = true; }));
+    for(let j = 16; j <= 22; j++) noms.forEach(n => window.__bcCompoRepas(n, '2026-11-' + String(j).padStart(2, '0'), true).forEach(x => { if(!window.__bcAliments[x.c].condiment) dans[x.c] = true; }));
     const alias = {banane:'bananes', fruit:'fruits'};
     return Object.keys(dans).filter(c => !((alias[c] || c) in window.__bcBesoinSemaine));
   });

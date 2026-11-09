@@ -4,7 +4,8 @@ Copie de référence du plan appliqué dans la Batcave (onglets Repas, Préparat
 **Repartie de zéro le 23 octobre 2026** (« je veux le meilleur programme d'alimentation pour la
 prise de masse »), **finalisée le 29 octobre** (« il faut qu'il soit parfait ») : l'audit des
 vitamines et des minéraux, plus bas. **Le 8 novembre**, le cottage cheese sort (« enlève le cottage cheese,
-ça me dégoûte ») : un 3e œuf dur reprend sa place. Si un chiffre diverge, c'est l'application qui fait foi : les macros, la liste
+ça me dégoûte ») : un 3e œuf dur reprend sa place. **Dès le 16 novembre**, des pâtes à midi et le riz le soir
+(« le riz, ça monte vite au cerveau ; au pire, pâtes à midi tous les jours et riz le soir tous les jours »). Si un chiffre diverge, c'est l'application qui fait foi : les macros, la liste
 de courses et la préparation sortent toutes de la même source (`compoRepas`).
 
 ## Le cadre
@@ -109,7 +110,7 @@ riz dans l'assiette, ce qu'il ne peut pas manger.
 | Repas | Heure | Contenu | kcal · protéines |
 |---|---|---|---|
 | **Shake** | 08:30 les jours de muscu, 35 min après la séance (06:45 les autres jours) | boisson d'avoine au calcium 400 ml, skyr 150 g, flocons d'avoine 80 g, banane 120 g, fruits rouges surgelés 100 g, **miel 20 g**, amandes ou noix 30 g | ≈ 960 · 40 g |
-| **Déjeuner** | 12:20 | **riz 125 g** (rice cooker), **poulet 70 g**, **brocoli 80 g**, **huile d'olive 30 ml** (10 de cuisson, 20 crus sur le riz — ou 20 g de beurre), sel iodé, épices | ≈ 820 · 28 g |
+| **Déjeuner** | 12:20 | **riz 125 g** (rice cooker ; **dès le 16 novembre, pâtes 125 g, cuites au batch du dimanche, dans la boîte**), **poulet 70 g**, **brocoli 80 g**, **huile d'olive 30 ml** (10 de cuisson, 20 crus sur le riz — ou 20 g de beurre), sel iodé, épices | ≈ 820 · 28 g |
 | **Collation** | 14:50 (16:50 le lundi), à la maison | **amandes ou noix 50 g**, **3 œufs durs**, **7 dattes (70 g)** | ≈ 700 · 31 g |
 | **Dîner** | 20:00 (18:00 le mardi, 19:00 le dimanche, 19:30 le samedi) | **riz 125 g**, **viande hachée 5 % 70 g**, **épinards 80 g**, huile d'olive 25 ml (10 de cuisson, 15 crus sur le riz), sel iodé, épices, créatine 5 g | ≈ 800 · 27 g |
 
@@ -173,7 +174,10 @@ un samedi (œufs et cottage cheese à la collation) et un mardi (la boîte de sa
   le couvre toujours) ; la vitamine A gagne ≈ 40 µg, la vitamine D ≈ 1 µg.
 
 ### Les choix qui restent les siens
-- **Le riz, midi et soir**, au rice cooker : plus de semoule ni de pâtes. 125 g cru par repas.
+- **Le riz le soir, les pâtes à midi** (depuis le 16 novembre) : 125 g crus chacun. Le riz se cuit chaque
+  matin pour le soir ; les pâtes, au batch du dimanche, rangées dans les boîtes du midi. Mêmes calories
+  (360 kcal pour 100 g), 5,75 g de protéines de plus à midi, un sucre plus lent l'après-midi ; le riz garde
+  le soir, où ses glucides aident à s'endormir.
 - **Les mêmes grammes tous les jours.**
 - Le miel des anciennes courses sert au shake. Le beurre de cacahuète ne revient pas (il ne
   l'aime pas, sorti le 24 septembre).
@@ -225,12 +229,12 @@ prix relevé (galettes, sardines, dattes) attendent son ticket. Les fruits rouge
 leur depuis le 30 octobre : le mélange Auchan d'Alcampo, 2,85 € les 450 g.
 
 ## La préparation (batch cooking)
-Le dimanche à 14:30 : le poulet, la viande hachée et les légumes de la semaine (le brocoli pour
+Le dimanche à 14:30 : les pâtes des midis (depuis le 16 novembre, 875 g crus, une minute de moins que le paquet), le poulet, la viande hachée et les légumes de la semaine (le brocoli pour
 les boîtes du midi, les épinards pour celles du soir), et les 15 œufs durs. Sept boîtes pour les
 midis, sept pour les soirs : quatre jours au frigo, trois au congélateur ; l'huile crue, le sel et les épices se mettent à
 l'assiette.
 
 **Le riz se cuit chaque matin** (23 octobre au soir : « je vais cuire le riz fraîchement chaque
-matin pour toute la journée »), avant le shake : 250 g crus rincés trois fois, l'eau jusqu'au trait
+matin pour toute la journée »), avant le shake : 250 g crus (125 g, pour le soir seulement, depuis le 16 novembre) rincés trois fois, l'eau jusqu'au trait
 du rice cooker, une pincée de sel iodé. Le midi reste au chaud dans la cuve ; la part du soir part dans
 une boîte, au frigo dès qu'elle est tiède. Un rice cooker de 1 L suffit.
