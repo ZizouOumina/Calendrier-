@@ -232,15 +232,16 @@ console.log('\n== 6) Le 21 octobre au soir : shake de récup, pesée chaque dima
   await ctx.close();
 }
 {
-  const { ctx, fr } = await ouvrir('2026-12-13T09:00:00+01:00');
+  /* 9 novembre : le traitement n'avait pas commencé ; il part du mardi 10, le bilan passe au dimanche 7 février 2027. */
+  const { ctx, fr } = await ouvrir('2027-02-07T09:00:00+01:00');
   const plan = await fr.evaluate(() => document.getElementById('dash-plan').innerText);
-  ok(/Bilan peau des 12 semaines/.test(plan), 'dimanche 13 décembre : le plan du jour demande le bilan peau');
+  ok(/Bilan peau des 12 semaines/.test(plan), 'dimanche 7 février : le plan du jour demande le bilan peau');
   await ctx.close();
 }
 {
-  const { ctx, fr } = await ouvrir('2026-12-06T09:00:00+01:00');
+  const { ctx, fr } = await ouvrir('2026-12-13T09:00:00+01:00');
   const plan = await fr.evaluate(() => document.getElementById('dash-plan').innerText);
-  ok(!/Bilan peau/.test(plan), 'et pas un autre dimanche');
+  ok(!/Bilan peau/.test(plan), 'et pas un autre dimanche, ni l\'ancien 13 décembre');
   await ctx.close();
 }
 

@@ -7035,7 +7035,9 @@
      photo et la pesee du point de depart doivent tomber au depart. Toutes les deux
      semaines ensuite (18 octobre...), photos toutes les quatre (1er novembre...). */
   var ANCRE_DIMANCHE = '2026-10-04';
-  var BILAN_PEAU_ISO = '2026-12-13';   /* fin des douze semaines du protocole peau : le bilan s'affiche dans le Plan du jour */
+  /* 9 novembre, ses mots : « j'ai rien commencé, même le traitement » -- le Skinoren commence le mardi 10 ;
+     douze semaines plus tard, le premier dimanche : le 7 février 2027 (et non plus le 13 décembre). */
+  var BILAN_PEAU_ISO = '2027-02-07';   /* fin des douze semaines du protocole peau : le bilan s'affiche dans le Plan du jour */
   var HABIT_SEED_V6 = [
     {id:'core-pesee-dim', label:'Pesée, à jeun', icon:'⚖️', jours:[0]},   /* chaque dimanche depuis le 21 octobre (pesee-hebdo-v1) */
     {id:'core-photos-dim', label:'Photos — peau et corps', icon:'📸', jours:[0], cycleSemaines:4, ancre:ANCRE_DIMANCHE},
