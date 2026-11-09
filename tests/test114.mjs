@@ -58,15 +58,17 @@ console.log('— vendredi 25 septembre : la premiere periode, 28 sept. -> 24 oct
      5 oeufs de plus par semaine entrent : +1,41 EUR, 43,50 EUR. Le meme soir, le budget remis au reel (sans
      transports, avec Basic-Fit, la licence en une fois) : la cagnotte garde la marge d'un second
      prelevement Basic-Fit dans une periode (27,49 EUR) -- 170 EUR. */
-  ok(pres(a.semaine, 43.50), 'courses : 43,50 EUR par semaine hors les articles sans prix (dattes, sardines, galettes), les fruits rouges releves le 30 octobre, les 5 oeufs du 8 novembre (' + a.semaine.toFixed(2) + ')');
+  /* 9 novembre au soir : deux sessions de batch, le dimanche midi frais -- 3 oeufs de plus, 70 g de poulet et
+     10 ml d'huile de moins par semaine : 43,76 EUR (le plafond, lui, baisse : les oeufs restent en 3 boites de 6). */
+  ok(pres(a.semaine, 43.76), 'courses : 43,76 EUR par semaine hors les articles sans prix (dattes, sardines, galettes), les fruits rouges releves le 30 octobre, les oeufs du 8 et du 9 novembre (' + a.semaine.toFixed(2) + ')');
   ok(a.estimes.length === 0, 'plus aucune estimation : les amandes ont leur prix releve');
   ok(a.cagnotte === 170, 'jour du virement : 170 EUR dans la cagnotte (230 avant le prix des fruits rouges, 30 octobre ; 200 avant les oeufs du 8 novembre ; 190 avant Basic-Fit) — ce que laisse la periode la plus chere, les courses comptees en caisse (plan dense du 23 octobre au soir) (' + a.cagnotte + ')');
   ok(a.periode.debut === '2026-09-28' && a.periode.fin === '2026-10-24', 'premiere periode du 28 sept. (dernier virement a l\'ancienne date) au 24 oct.');
   ok(a.periode.samedis === 4, '4 samedis de courses');
-  ok(pres(a.periode.balayage, 93.02), 'le 24 : environ 93,02 EUR a balayer (les pates du 9 novembre en paquets de 500 g) (' + a.periode.balayage.toFixed(2) + ')');
-  ok(pres(a.moyenne, 249.81), 'epargne moyenne : 249,81 EUR par mois (hors les prix a relever, les fruits rouges releves le 30 octobre) (' + a.moyenne.toFixed(2) + ')');
+  ok(pres(a.periode.balayage, 95.12), 'le 24 : environ 95,12 EUR a balayer (les pates du 9 novembre en paquets de 500 g, les deux batchs du meme soir) (' + a.periode.balayage.toFixed(2) + ')');
+  ok(pres(a.moyenne, 252.08), 'epargne moyenne : 252,08 EUR par mois (hors les prix a relever, les fruits rouges releves le 30 octobre) (' + a.moyenne.toFixed(2) + ')');
   ok(a.prochaine5 && a.prochaine5.debut === '2026-12-25' && a.prochaine5.fin === '2027-01-24' && a.prochaine5.samedis === 5, 'prochaine periode a 5 samedis : 25 dec. -> 24 janv.');
-  ok(pres(a.prochaine5.balayage, 30.64), 'avec 5 samedis et les reserves, il reste encore 30,64 EUR le 24, la marge d\'un second prelevement Basic-Fit (' + a.prochaine5.balayage.toFixed(2) + ')');
+  ok(pres(a.prochaine5.balayage, 33.27), 'avec 5 samedis et les reserves, il reste encore 33,27 EUR le 24, la marge d\'un second prelevement Basic-Fit (' + a.prochaine5.balayage.toFixed(2) + ')');
   const L = a.lignes;
   ok(L[0].montant === 700 && L[0].plus && L[0].quand === 'le 28', 'le fil commence par le virement, le 28 pour cette premiere periode');
   ok(L[1].montant === 170 && L[1].cagnotte && L[1].quand === 'le 28', 'puis la cagnotte, le meme jour');
@@ -187,9 +189,12 @@ console.log('— des charges au-dessus du virement : le fil le dit, sans solde n
 
 console.log('— le plafond Nourriture suit le prix des amandes');
 {
-  for(const [avant, attendu, nom, drapeaux] of [[201, 209, 'pose par la Batcave (201) : suit le plan en caisse, 209 (conditionnements et cycles compris ; hors les prix a relever ; les fruits rouges releves le 30 octobre ; les oeufs du 8 novembre)'], [209, 209, 'la valeur du 4 octobre (209) : 209'], [206, 209, 'la valeur du 6 octobre (206) : 209'], [180, 180, 'regle a la main (180) : ne bouge pas'],
+  for(const [avant, attendu, nom, drapeaux] of [[201, 207, 'pose par la Batcave (201) : suit le plan en caisse, 207 (conditionnements et cycles compris ; hors les prix a relever ; les fruits rouges releves le 30 octobre ; les oeufs du 8 novembre ; les deux batchs du 9)'], [209, 207, 'la valeur du 4 octobre (209) : 207'], [206, 207, 'la valeur du 6 octobre (206) : 207'], [180, 180, 'regle a la main (180) : ne bouge pas'],
       /* 8 novembre : sa Batcave a deja joue les migrations v2 a v7 et garde 201 ; la v8 le remonte */
-      [201, 209, 'deja migre jusqu\'a la v7, toujours 201 : la v8 le remonte a 209 (les oeufs du 8 novembre)', ['v2', 'v3', 'v4', 'v5', 'v6', 'v7']],
+      [201, 207, 'deja migre jusqu\'a la v7, toujours 201 : la v8 le recale a 207 (les oeufs du 8 novembre, les deux batchs du 9)', ['v2', 'v3', 'v4', 'v5', 'v6', 'v7']],
+      /* 9 novembre au soir : sa Batcave garde les 209 poses par la v8 la veille ; la v9 les ramene a 207 */
+      [209, 207, 'deja migre jusqu\'a la v8, 209 : la v9 le ramene a 207 (le dimanche midi frais)', ['v2', 'v3', 'v4', 'v5', 'v6', 'v7', 'v8']],
+      [180, 180, 'deja migre jusqu\'a la v8, regle a la main (180) : la v9 n\'y touche pas', ['v2', 'v3', 'v4', 'v5', 'v6', 'v7', 'v8']],
       [180, 180, 'deja migre jusqu\'a la v7, regle a la main (180) : la v8 n\'y touche pas', ['v2', 'v3', 'v4', 'v5', 'v6', 'v7']]]){
     const ctx = await browser.newContext({ viewport:{width:1440, height:900}, timezoneId:'Europe/Madrid', locale:'fr-FR' });
     await ctx.addInitScript(([v, d]) => { window.claude = undefined; localStorage.setItem('batcave-budget-limits', JSON.stringify({Nourriture: v})); d.forEach(k => localStorage.setItem('batcave-plafond-nourriture-' + k, 'true')); }, [avant, drapeaux || []]);

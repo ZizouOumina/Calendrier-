@@ -159,7 +159,7 @@ console.log('\n== 334b) Aucun stock n\'est supposé : il coche ce qu\'il a ==');
   ok(!/tu en as|il t’en reste|à racheter le/.test(t), 'aucune ligne ne parle de stock ni de date de rachat');
   ok(!/Beurre de cacahuète/.test(t), 'le beurre de cacahuète est sorti de la liste (24 septembre)');
   ok(/Amandes ou noix nature — 600 g/.test(t) && /demande 560 g/.test(t), 'amandes : 3 sachets de 200 g, pour 560 g demandés (30 g le matin, 50 g à 14:50 depuis la fin des sauces, le 30 octobre ; plus d\'amandes dans la collation combat depuis le 21 octobre)');
-  ok(/Huile d'olive — 2 L/.test(t) && /demande 1\u202f925 ml/.test(t), 'huile : un bidon de 2 L, pour 1 925 ml demandés (30 ml à midi et 25 le soir depuis la fin des sauces, le 30 octobre : l\'huile crue sur le riz, des calories sans volume)');
+  ok(/Huile d'olive — 2 L/.test(t) && /demande 1\u202f875 ml/.test(t), 'huile : un bidon de 2 L, pour 1 875 ml demandés (20 ml le dimanche midi depuis le 22 novembre, les œufs ont leur gras ; 30 ml à midi et 25 le soir depuis la fin des sauces, le 30 octobre : l\'huile crue sur le riz, des calories sans volume)');
   await ctx.close();
 }
 {
@@ -197,7 +197,7 @@ for (const d of ['2026-10-03', '2026-10-10', '2026-10-31', '2026-12-05']) {
   const t = await fr.evaluate(() => document.querySelector('.page[data-page="courses"]').textContent);
   /* 14 par semaine : 2 par jour au petit-dejeuner, tire du plan de repas. Mais on
      n'achete pas 14 oeufs : une boite de 12 plus une de 6 font 18. */
-  ok(/Œufs — 18/.test(t) && /demande 15 œufs/.test(t), 'les œufs : 18 achetés pour les 15 du plan (trois à la collation depuis le 8 novembre, quand le cottage cheese sort, les sardines le mardi et le jeudi depuis le 21 octobre ; collation ; le petit-déjeuner est un shake depuis le 29 septembre)');
+  ok(/Œufs — 18\D[^—]*— 3 boîtes de 6(?! · le plan en demande)/.test(t), 'les œufs : 18 achetés pour les 18 du plan (les 3 du dimanche midi depuis le 22 novembre ; trois à la collation depuis le 8 novembre, quand le cottage cheese sort, les sardines le mardi et le jeudi depuis le 21 octobre ; collation ; le petit-déjeuner est un shake depuis le 29 septembre)');
   await ctx.close();
 }
 

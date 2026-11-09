@@ -1,5 +1,19 @@
 # Où on en est — samedi 19 septembre 2026, au soir
 
+> ### Lundi 9 novembre, le soir — deux batchs par semaine, plus rien au congélateur
+> **Ses mots** : « si je divise le batch cooking en deux jours, comme ça je congèle ni riz ni pâtes ».
+> **Fait** (`DEUX_BATCHS_DEBUT` = 15 novembre) : deux sessions d'une heure. Le dimanche à 14:30, le dîner du
+> dimanche puis lundi et mardi, midi et soir (5 boîtes, et les 15 œufs durs) ; le mardi à 19:10, dans le temps
+> libre après le dîner, mercredi à samedi (8 boîtes). Tout au frigo, quatre jours au plus. Le dimanche midi,
+> dès le 22 (`dimancheFrais`) : un repas frais, pâtes, 3 œufs, brocoli, 20 ml d'huile (le 15, la dernière
+> boîte du congélateur). La viande crue du mardi, achetée le samedi, part au congélateur au rangement des
+> courses (nouvelle consigne du samedi, grammes calculés) et descend au frigo le lundi soir (consigne du
+> dîner). Courses : 18 œufs, 420 g de poulet. Le plafond Nourriture passe de 209 à 207 €
+> (`plafond-nourriture-v9`, schéma 55 : son cloud gardait les 209 de la v8). L'onglet Préparation montre
+> les deux sessions, leurs postes et leurs heures. Tests 53, 94, 108, 109 et 114 recalés.
+> **À noter** : je lui avais dit « mardi à 18:05 » (l'heure du batch de cette semaine) ; dès le 17, son
+> mardi dîne à 18:00 et n'est libre qu'à 19:10 — la session est à 19:10, le dîner du mardi vient du dimanche.
+
 > ### Lundi 9 novembre — des pâtes à midi, le riz le soir ; la peau commence mardi
 > **Ses mots** : « le riz, ça monte vite au cerveau », puis « au pire, pâtes à midi tous les jours et riz le soir
 > tous les jours » ; « j'ai rien commencé, même le traitement, et je n'ai pas de peroxyde ».

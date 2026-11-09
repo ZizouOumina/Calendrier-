@@ -3044,13 +3044,13 @@
       </div>
       <div class="panel" style="margin-bottom:14px;">
         <h3 style="margin-bottom:4px;">L'ordre, minuté</h3>
-        <p class="sub-note" style="margin:0 0 10px;">Deux heures tiennent à une condition : rien n'attend son tour. La viande part en premier ; les légumes et les œufs se glissent pendant qu'elle cuit. Le riz n'est plus du batch : il se cuit chaque matin.</p>
+        <p class="sub-note" style="margin:0 0 10px;" id="prep-ordre-note">Deux heures tiennent à une condition : rien n'attend son tour. La viande part en premier ; les légumes et les œufs se glissent pendant qu'elle cuit. Le riz n'est plus du batch : il se cuit chaque matin.</p>
         <ol id="prep-ordre" class="prep-ordre"></ol>
       </div>
       <div class="panel" style="margin-bottom:14px;">
         <h3 style="margin-bottom:4px;">Les boîtes</h3>
         <p class="sub-note" style="margin:0 0 10px;" id="prep-boites-note">—</p>
-        <button class="btn" id="prep-boites-toggle" type="button" aria-expanded="false" aria-controls="prep-boites">Voir les quatorze boîtes ▾</button>
+        <button class="btn" id="prep-boites-toggle" type="button" aria-expanded="false" aria-controls="prep-boites">Voir les boîtes de la semaine ▾</button>
         <div id="prep-boites" class="prep-boites" hidden style="margin-top:12px;"></div>
       </div>
       <div class="panel">
@@ -3679,11 +3679,11 @@
      comme inconnu. DRAPEAUX_MIGRATION est desormais LA liste ; les autres la reprennent.
      SCHEMA_VERSION est ecrit dans « batcave-schema » quand toutes ont tourne : le panneau
      Sante compare, et une sauvegarde plus ancienne se reconnait a ce seul chiffre. */
-  var SCHEMA_VERSION = 54;
+  var SCHEMA_VERSION = 55;
   var DRAPEAUX_MIGRATION = ['objectifs-seed-v1','objectifs-v2-55','objectifs-v5-espanol',
     'habits-ecran-v2','habitlog-hebdo-v1','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','habits-seed-v7','habits-seed-v8','habits-seed-v9','habits-seed-v10','habits-seed-v11','habits-seed-v12',
     'courses-plan-v2','courses-plan-v3','courses-plan-v4','courses-plan-v5','courses-plan-v6','courses-plan-v7','courses-plan-v8','courses-plan-v9','courses-plan-v10','courses-plan-v11',
-    'charges-v2','plafond-nourriture-v2','plafond-nourriture-v3','plafond-nourriture-v4','plafond-nourriture-v5','plafond-nourriture-v6','plafond-nourriture-v7','plafond-nourriture-v8','ancre-dimanche-v1','ancre-dimanche-v2','serviettes-v1','coiffeur-v1','shampoing-dim-v1','marche-cible-v1','fc-migration-v1','fc-migration-v2','fc-migration-v3','fc-migration-v4','fc-migration-v5','revision-fusionnee','pesee-hebdo-v1','snus-arret-v3'];
+    'charges-v2','plafond-nourriture-v2','plafond-nourriture-v3','plafond-nourriture-v4','plafond-nourriture-v5','plafond-nourriture-v6','plafond-nourriture-v7','plafond-nourriture-v8','plafond-nourriture-v9','ancre-dimanche-v1','ancre-dimanche-v2','serviettes-v1','coiffeur-v1','shampoing-dim-v1','marche-cible-v1','fc-migration-v1','fc-migration-v2','fc-migration-v3','fc-migration-v4','fc-migration-v5','revision-fusionnee','pesee-hebdo-v1','snus-arret-v3'];
   /* Drapeaux que rien ne pose plus (migrations retirees) ou poses seulement quand il y a
      eu quelque chose a migrer : connus et gardes, jamais exiges. */
   var DRAPEAUX_ANCIENS = ['objectifs-v3-trajet','objectifs-v4-dimanche','habits-retirees-v1','shampoing-combat-v1','shampoing-samedi-v1','snus-arret-v1','snus-arret-v2'];   /* snus-arret-v1 puis v2 : remplacees par la v3 (jour 1 au 22, puis au dimanche 1er novembre) ; les deux d'avant n'ecrivent qu'a partir du 28 septembre */
@@ -8473,6 +8473,14 @@
      un index glycemique plus bas a midi -- moins de coup de barre l'apres-midi --, et le riz garde le soir,
      ou ses glucides aident a s'endormir. */
   var PATES_MIDI_DEBUT = '2026-11-16';
+  /* 9 novembre au soir, ses mots : « si je divise le batch cooking en deux jours, comme ça je congèle ni riz ni
+     pâtes ». Dès le dimanche 15 : deux sessions d'environ une heure, et tout reste au frigo, quatre jours au plus.
+     Le dimanche a 14:30, le diner du dimanche puis lundi et mardi, midi et soir ; le mardi a 19:10 (son seul soir
+     libre de la semaine), de mercredi a samedi. Le dimanche midi ne vient d'aucune session -- la boite du mardi
+     aurait cinq jours : a partir du 22, un repas frais, les pates du jour, 3 oeufs au plat ou brouilles et 80 g
+     de brocoli. Les oeufs remplacent le poulet ce midi-la (19 g de proteines au lieu de 16). */
+  var DEUX_BATCHS_DEBUT = '2026-11-15', MARDI_BATCH_DEBUT = '2026-11-17';
+  function dimancheFrais(iso){ iso = iso || todayISO; return iso > DEUX_BATCHS_DEBUT && dowDe(iso) === 0; }
   function feculentMidi(iso){ return (iso || todayISO) >= PATES_MIDI_DEBUT ? 'pates' : 'riz'; }
   var FROMAGE_FIN = '2026-10-26';   /* plus de fromage a la collation a partir de ce jour : un 3e oeuf */
   var COTTAGE_DEBUT = '2026-10-27';  /* puis 100 g de cottage cheese a sa place */
@@ -8493,6 +8501,7 @@
     if(nom === 'Récup combat') return [{c:'avoine', q:250}, {c:'banane', q:120}, {c:'flocons', q:20}];
     if(nom === 'Déjeuner'){
       var nd = proteineDuJour('dej', iso), pd = PROTEINES[nd].dej, sd = sauceDuJour('dej', iso);
+      if(dimancheFrais(iso)) return [{c:feculentMidi(iso), q:grammesFeculent('dej', iso)}, {c:'oeufs', q:150}, {c:'legumes', q:LEGUMES_REPAS.dej}, {c:'huile', q:Math.max(0, pd.huile - 10 - (sd.sansHuile ? HUILE_CRUE.dej : 0))}].concat(compoSauce(sd));   /* 10 ml de moins : les oeufs apportent leur gras (15 g, contre 2 pour le poulet) */
       return [{c:feculentMidi(iso), q:grammesFeculent('dej', iso)}, {c:CLE_PROTEINE[nd], q:pd.g}, {c:'legumes', q:LEGUMES_REPAS.dej}, {c:'huile', q:pd.huile - (sd.sansHuile ? HUILE_CRUE.dej : 0)}].concat(compoSauce(sd));
     }
     if(nom === 'Dîner'){
@@ -8717,6 +8726,7 @@
     if(!repas) return reduit(it);
     if(ii === 0) return texteFeculent(repas, repas === 'din' ? ajustementKcalPour(iso || todayISO) : 0, iso);
     var nom = proteineDuJour(repas, iso), p = PROTEINES[nom][repas];
+    if(ii === 1 && repas === 'dej' && dimancheFrais(iso)) return '3 œufs au plat ou brouillés (150g) — le dimanche midi, un repas frais';
     if(ii === 1) return 'Protéine crue — ' + nom + ' ' + portionReprise(p.g, f) + 'g';
     if(ii === 3){
       var sc = sauceDuJour(repas, iso), kc = Math.round(compoSauce(sc).reduce(function(t, x){ return t + ALIMENTS[x.c].kcal * x.q / 100; }, 0));
@@ -11018,7 +11028,7 @@
     /* Préparation : les quatorze boîtes font 2 048 px, la moitié de l'onglet. On ne les lit
        que le dimanche, pendant la préparation — une fois ouvertes elles le restent pour la
        séance. Les huit règles, elles, sont de la référence pure. */
-    plierBloc('prep-boites-toggle', 'prep-boites', 'Voir les quatorze boîtes ▾', 'Masquer les boîtes ▴');
+    plierBloc('prep-boites-toggle', 'prep-boites', 'Voir les boîtes de la semaine ▾', 'Masquer les boîtes ▴');
     plierBloc('prep-regles-toggle', 'prep-regles', 'Voir les huit règles ▾', 'Masquer les règles ▴');
     plierBloc('portes-toggle', 'portes-fold', 'Voir l\'état des trois portes ▾', 'Masquer l\'état des portes ▴',
               function(){ if(typeof renderPortes === 'function') renderPortes(); });
@@ -12790,16 +12800,65 @@
       [110,'<b>8 au frigo</b> (dimanche à mercredi), <b>6 au congélateur</b> (jeudi à samedi). Sortir chaque boîte congelée la veille au soir, au frigo.']
     ];
     var h0 = 14 * 60 + 30;
+    var minute = function(m){ return String(Math.floor(m / 60)).padStart(2, '0') + ':' + String(m % 60).padStart(2, '0'); };
     document.getElementById('prep-ordre').innerHTML = etapes.map(function(e){
       var m = h0 + e[0];
-      return '<li><span class="h">' + String(Math.floor(m / 60)).padStart(2, '0') + ':' + String(m % 60).padStart(2, '0') +
-             '</span><span>' + e[1] + '</span></li>';
+      return '<li><span class="h">' + minute(m) + '</span><span>' + e[1] + '</span></li>';
     }).join('');
+    /* 9 novembre au soir : deux sessions, tout au frigo (DEUX_BATCHS_DEBUT). Le dimanche, le diner du jour puis
+       lundi et mardi ; le mardi, de mercredi a samedi ; le dimanche midi, un repas frais, hors session. */
+    var deux = dim >= DEUX_BATCHS_DEBUT;
+    var noteOrdre = document.getElementById('prep-ordre-note');
+    if(noteOrdre){
+      if(noteOrdre.dataset.une === undefined) noteOrdre.dataset.une = noteOrdre.textContent;
+      noteOrdre.textContent = deux
+        ? 'Une heure par session, à une condition : rien n’attend son tour. Les pâtes d’abord, la viande pendant qu’elles cuisent, les légumes à la fin. Le riz n’est pas du batch : il se cuit chaque matin.'
+        : noteOrdre.dataset.une;
+    }
+    if(deux){
+      var S1 = [], S2 = [];
+      jours.forEach(function(j, i){
+        if(i === 0) S1.push({j:j, r:'din'});
+        else if(i <= 2) S1.push({j:j, r:'dej'}, {j:j, r:'din'});
+        else S2.push({j:j, r:'dej'}, {j:j, r:'din'});
+      });
+      var somme = function(S){ var t = {}; S.forEach(function(x){ x.j[x.r].forEach(function(y){ t[y.c] = (t[y.c] || 0) + y.q; }); }); return t; };
+      var T1 = somme(S1), T2 = somme(S2);
+      var durs = Math.round(jours.reduce(function(n, j){ return n + compoRepas('Collation entraînement', j.iso, false).reduce(function(a, y){ return a + (y.c === 'oeufs' ? y.q : 0); }, 0); }, 0) / 50);
+      document.getElementById('prep-desc').textContent =
+        'Deux sessions d’environ une heure : le dimanche à 14:30, pour le dîner du dimanche puis lundi et mardi, midi et soir ; le mardi à 19:10, pour mercredi à samedi. ' +
+        'Tout reste au frigo, quatre jours au plus : plus rien au congélateur. ' + (dimancheFrais(dim) ? 'Le dimanche midi, un repas frais. ' : 'Ce dimanche midi, la dernière boîte du congélateur ; dès dimanche prochain, un repas frais. ') + 'Le petit-déjeuner et la collation ne se préparent pas — ils s’assemblent en cinq minutes.';
+      var postesHtml = function(t){ return postes.filter(function(c){ return t[c] > 0; }).map(function(c){
+        var cuit = RENDEMENT[c] ? ' <span class="sub-note">→ ~' + poids(t[c] * RENDEMENT[c]) + ' cuits</span>' : '';
+        return '<li><span>' + escapeHtml(NOM_ALIMENT[c] || c) + '</span><span><b>' + poids(t[c]) + '</b> crus' + cuit + '</span></li>';
+      }).join(''); };
+      var titre = function(x){ return '<li style="list-style:none;"><span><b>' + x + '</b></span><span></span></li>'; };
+      host.innerHTML = titre('Dimanche, 14:30') + postesHtml(T1) +
+        '<li><span>Œufs durs <span class="sub-note">(les collations de la semaine)</span></span><span><b>' + durs + '</b> <span class="sub-note">— ils tiennent 7 jours en coquille</span></span></li>' +
+        titre('Mardi, 19:10') + postesHtml(T2) +
+        '<li><span>Huile d\'olive</span><span><b>' + Math.round((T1.huile || 0) + (T2.huile || 0)) + ' ml</b> <span class="sub-note">— un tiers à la cuisson, le reste versé froid à l\'assiette</span></span></li>';
+      var etapes2 = function(t, h, boites, quand, avecOeufs){
+        var e = [];
+        if(t.pates > 0) e.push([0, 'Les <b>pâtes</b> des midis — ' + poids(t.pates) + ' : une grande casserole d\'eau salée, une minute de moins que le paquet, égouttées, un filet d\'huile.']);
+        e.push([3, 'Le <b>poulet</b> — ' + poids(t.poulet || 0) + ', feu vif, 4 min par face puis 3 min à couvert.']);
+        e.push([18, 'La <b>viande hachée</b> — ' + poids(t.hachee || 0) + (t.hachee > 250 ? ', en deux fournées, 10 min chacune.' : ', en une fournée, 10 min.')]);
+        e.push([35, 'Les <b>légumes surgelés</b> — ' + poids(t.legumes || 0) + ' : le brocoli (les midis) 7 min, les épinards (les soirs) 5 min à couvert, sans les décongeler avant.']);
+        if(avecOeufs) e.push([38, 'Les <b>' + durs + ' œufs durs</b> (les collations de la semaine) — 10 min dans l\'eau bouillante, puis eau froide. En coquille : une semaine au frigo.']);
+        e.push([45, '<b>Tout refroidir à découvert, 20 min.</b>']);
+        e.push([65, '<b>' + boites + ' boîtes, toutes au frigo</b> : ' + quand + ', le jour écrit dessus.']);
+        return e.map(function(x){ return '<li><span class="h">' + minute(h + x[0]) + '</span><span>' + x[1] + '</span></li>'; }).join('');
+      };
+      document.getElementById('prep-ordre').innerHTML =
+        etapes2(T1, 14 * 60 + 30, S1.length, 'le dîner de ce soir, puis lundi et mardi, midi et soir', true) +
+        etapes2(T2, 19 * 60 + 10, S2.length, 'de mercredi à samedi, midi et soir', false);
+    }
     /* Les quatorze boites : le contenu exact du repas de ce jour-la. */
-    document.getElementById('prep-boites-note').textContent =
-      'Quatorze boîtes, écrites depuis le plan du jour — pas depuis une recette. Les quatre premiers jours vont au frigo, les trois derniers au congélateur.';
+    document.getElementById('prep-boites-note').textContent = deux
+      ? 'Les boîtes de la semaine, écrites depuis le plan du jour. Toutes au frigo : celles du dimanche jusqu’au mardi soir, celles du mardi jusqu’au samedi soir. ' + (dimancheFrais(dim) ? 'Le dimanche midi, un repas frais.' : 'Ce dimanche midi, la dernière boîte du congélateur.')
+      : 'Quatorze boîtes, écrites depuis le plan du jour — pas depuis une recette. Les quatre premiers jours vont au frigo, les trois derniers au congélateur.';
     document.getElementById('prep-boites').innerHTML = jours.map(function(j, i){
-      var ou = i < 4 ? 'frigo' : 'congélateur';
+      var frais = deux && i === 0 && dimancheFrais(j.iso);
+      var ou = deux ? (i === 0 ? (frais ? 'midi frais · soir : session du dimanche' : 'midi : boîte du congélateur · soir : session du dimanche') : (i <= 2 ? 'session du dimanche' : 'session du mardi')) : (i < 4 ? 'frigo' : 'congélateur');
       /* Ce qui ne va PAS dans la boite : le fruit (entier, a cote). */
       var dansBoite = function(x){ return x.c !== 'fruit' && x.c !== 'riz' && x.c !== 'huile' && !(ALIMENTS[x.c] && ALIMENTS[x.c].condiment); };   /* la sauce se fait au rechauffage ; le riz se cuit le matin meme ; 31 octobre : l'huile non plus -- un tiers part dans la cuisson du batch, le reste se verse cru a l'assiette (la regle « Le gout » le dit) */
       var ligne = function(repas){ return function(x){
@@ -12809,7 +12868,7 @@
       return '<div class="prep-boite"><h5>' + escapeHtml(j.nom.charAt(0).toUpperCase() + j.nom.slice(1)) +
              ' <span class="ou">' + ou + '</span></h5>' +
              '<ul><li style="list-style:none; margin-left:-16px; color:var(--ink-faint); font-size:11px; letter-spacing:.03em; text-transform:uppercase;">Midi</li>' +
-             j.dej.filter(dansBoite).map(ligne('dej')).join('') +
+             (frais ? '<li style="list-style:none; margin-left:-16px;" class="sub-note">un repas frais, pas de boîte</li>' : j.dej.filter(dansBoite).map(ligne('dej')).join('')) +
              '<li style="list-style:none; margin-left:-16px; color:var(--ink-faint); font-size:11px; letter-spacing:.03em; text-transform:uppercase; padding-top:4px;">Soir</li>' +
              j.din.filter(dansBoite).map(ligne('din')).join('') + '</ul></div>';
     }).join('');
@@ -12821,7 +12880,8 @@
       ['Le sel', 'iodé (« sal yodada ») : peu de laitages et du poisson deux fois par semaine, c\'est lui qui complète l\'iode du plan. Une pincée dans le riz suffit'],
       ['Refroidir vite', 'deux heures maximum entre la casserole et le frigo. Étaler plutôt qu\'entasser'],
       ['Quatre jours au frigo', 'de la viande cuite tient quatre jours à 4 °C, pas sept. Au-delà, c\'est le congélateur'],
-      ['Un mois au congélateur', 'viande et légumes cuits se congèlent très bien (le riz, lui, se cuit chaque matin). Décongélation au frigo la veille, jamais sur le plan de travail'],
+      deux ? ['Plus de congélateur', 'deux sessions par semaine : chaque boîte se mange dans les quatre jours, ni les pâtes ni la viande ne sont congelées. Seule la viande crue du mardi, achetée le samedi, passe au congélateur et se décongèle au frigo le lundi soir']
+           : ['Un mois au congélateur', 'viande et légumes cuits se congèlent très bien (le riz, lui, se cuit chaque matin). Décongélation au frigo la veille, jamais sur le plan de travail'],
       ['Réchauffer une seule fois', 'un plat ne se réchauffe pas deux fois. Ce qui est sorti se mange']
     ].map(function(x){ return '<li><span><b>' + x[0] + '</b></span><span style="text-align:right; max-width:62%;">' + x[1] + '</span></li>'; }).join('');
   }
@@ -16454,22 +16514,42 @@
       var c = compoRepas('Déjeuner', iso, false).concat(compoRepas('Dîner', iso, false)), r = 0;
       c.forEach(function(x){ if(x.c === 'riz') r += x.q; });
       var soirSeul = feculentMidi(iso) === 'pates';
-      return "Avant le shake : le riz du jour au rice cooker — " + Math.round(r) + (soirSeul ? " g crus (pour le soir : à midi, ce sont les pâtes de ta boîte)" : " g crus (midi et soir)") + ", rincés trois fois, l'eau jusqu'au trait, une pincée de sel iodé (« sal yodada » : quand ton paquet est fini, prends celui-là ; c'est lui qui complète l'iode). Il cuit pendant que tu bois le shake. " + (soirSeul ? "Il part dans une boîte, au frigo dès qu'il est tiède." : "Le midi reste au chaud dans la cuve ; la part du soir part dans une boîte, au frigo dès qu'elle est tiède.");
+      return "Avant le shake : le riz du jour au rice cooker — " + Math.round(r) + (soirSeul ? (dimancheFrais(iso) ? " g crus (pour le soir : à midi, les pâtes se cuisent sur le moment)" : " g crus (pour le soir : à midi, ce sont les pâtes de ta boîte)") : " g crus (midi et soir)") + ", rincés trois fois, l'eau jusqu'au trait, une pincée de sel iodé (« sal yodada » : quand ton paquet est fini, prends celui-là ; c'est lui qui complète l'iode). Il cuit pendant que tu bois le shake. " + (soirSeul ? "Il part dans une boîte, au frigo dès qu'il est tiède." : "Le midi reste au chaud dans la cuve ; la part du soir part dans une boîte, au frigo dès qu'elle est tiède.");
     },
     'Déjeuner': function(d, iso){
       var c = compoRepas('Déjeuner', iso, false), g = function(k){ var x = c.filter(function(y){ return y.c === k; })[0]; return x ? Math.round(x.q) : 0; };
       var sc = sauceDuJour('dej', iso);
+      if(dimancheFrais(iso)) return "Un repas frais, le dimanche (la boîte du mardi aurait cinq jours), vingt minutes : " + g(feculentMidi(iso)) + " g " + (feculentMidi(iso) === 'pates' ? "de pâtes dans une grande casserole d'eau bouillante salée, le temps du paquet" : "de riz, cuit le matin") + " ; pendant ce temps, " + g('legumes') + " g de brocoli surgelé à la poêle, 7 min à couvert, puis 3 œufs au plat ou brouillés dans 10 ml d'huile. " + Math.max(0, g('huile') - 10) + " ml d'huile d'olive crue sur les pâtes, sel iodé, épices.";
       return (feculentMidi(iso) === 'pates' ? "La boîte du jour : les pâtes (" + g('pates') + " g crus, cuites au batch du dimanche), poulet " : "Le riz du midi (" + g('riz') + " g crus), au chaud dans la cuve depuis le matin, et la boîte du jour : poulet ") + g('poulet') + " g, " + g('legumes') + " g de " + nomLegumes('dej', iso).toLowerCase() + ", réchauffée à la poêle avec 2 à 3 cuillères d'eau, couvercle, 4 à 5 min, brûlante jusqu'au cœur. " + (sc.nature ? "Pas de sauce : " + sc.recette + "." : "Sauce du jour — " + sc.nom + " : " + sc.recette + ". Sel.");
     },
     'Dîner': function(d, iso){
       var c = compoRepas('Dîner', iso, false), g = function(k){ var x = c.filter(function(y){ return y.c === k; })[0]; return x ? Math.round(x.q) : 0; };
       var sc = sauceDuJour('din', iso);
-      return "La boîte de riz du matin (" + g('riz') + " g crus) et la boîte du jour : viande hachée " + g('hachee') + " g, " + g('legumes') + " g " + (nomLegumes('din', iso) === 'Épinards' ? "d'épinards" : "de légumes verts") + ", réchauffées ensemble à la poêle. " + (sc.nature ? "Pas de sauce : " + sc.recette : "Sauce du jour — " + sc.nom + " : " + sc.recette + (sc.sansHuile ? "" : " ; hors du feu, 5 ml d'huile d'olive crue")) + ". La créatine, 5 g, avec le repas. Ensuite plus rien jusqu'au lendemain.";
+      /* 9 novembre au soir : la viande crue de la session du mardi, achetee le samedi, attend au congelateur ;
+         elle descend au frigo le lundi soir et decongele en 24 h. */
+      var lundi = d === 1 && (iso || todayISO) > DEUX_BATCHS_DEBUT ? "D'abord, trente secondes : la viande crue du mardi (poulet et viande hachée) passe du congélateur au frigo, dans une assiette creuse, en bas. Elle décongèle en 24 h pour la session de demain soir. " : "";
+      return lundi + "La boîte de riz du matin (" + g('riz') + " g crus) et la boîte du jour : viande hachée " + g('hachee') + " g, " + g('legumes') + " g " + (nomLegumes('din', iso) === 'Épinards' ? "d'épinards" : "de légumes verts") + ", réchauffées ensemble à la poêle. " + (sc.nature ? "Pas de sauce : " + sc.recette : "Sauce du jour — " + sc.nom + " : " + sc.recette + (sc.sansHuile ? "" : " ; hors du feu, 5 ml d'huile d'olive crue")) + ". La créatine, 5 g, avec le repas. Ensuite plus rien jusqu'au lendemain.";
     },
     '🚿 Douche du soir': "Dix minutes, eau bien tiède — agréable, jamais brûlante : visage et dos restent tièdes (Skinoren). Une heure avant le coucher, le corps évacue ensuite sa chaleur et tu t'endors plus vite. Eau seule sur les cheveux et le corps, gel doux aux aisselles, à l'aine et aux pieds ; la fin à l'eau froide (dimanche, mercredi, vendredi) se fait le matin. Cinq minutes plus tard, le Skinoren. Lumières basses : une lampe, plus le plafonnier.",
     '📖 Écran off — lecture papier': "Avant d'éteindre : la clôture du jour dans la Batcave, deux minutes. Puis téléphone en charge hors de portée, réveil posé loin du lit. Chambre vers 18 °C (fenêtre ouverte dix minutes), noir complet. Tes vingt pages en espagnol, sur papier.",
     'Brossage de dents': "Les dents, puis au lit. Si tu ne dors pas au bout de vingt minutes, lève-toi, lis dix minutes sous une lumière faible, et reviens.",
-    'Temps libre': {defaut: "Libre.", 0: "10 minutes pour la revue du dimanche guidée (onglet Études), le reste est libre."},
+    /* 9 novembre au soir : deux sessions de batch (DEUX_BATCHS_DEBUT). Le poulet et la viande hachee de la session
+       du mardi -- de mercredi a samedi -- passent au congelateur crus, des le rangement : cru, le poulet ne tient que
+       deux jours au frigo. Les grammes viennent du plan de ces quatre jours. */
+    'Rangement des courses': function(d, iso){
+      iso = iso || todayISO;
+      if(d !== 6 || iso < '2026-11-14') return '';
+      var t = {poulet:0, hachee:0};
+      for(var k = 4; k <= 7; k++){
+        var j = isoDecale(iso, k);
+        compoRepas('Déjeuner', j, false).concat(compoRepas('Dîner', j, false)).forEach(function(x){ if(t[x.c] !== undefined) t[x.c] += x.q; });
+      }
+      return "La viande de la session du mardi va au congélateur tout de suite, crue : " + Math.round(t.poulet) + " g de poulet et " + Math.round(t.hachee) + " g de viande hachée (mercredi à samedi), à plat dans deux sacs congélation, la date dessus. Le reste de la viande au frigo, en bas : c'est celle de demain. Les surgelés au congélateur, puis le frais, puis le sec.";
+    },
+    'Temps libre': function(d, iso){
+      if(d === 2 && (iso || todayISO) >= MARDI_BATCH_DEBUT) return "La deuxième session de batch cooking, une heure : les pâtes des midis, le poulet, la viande hachée et les légumes de mercredi à samedi, puis huit boîtes, toutes au frigo (le détail dans l'onglet Préparation). Le reste est libre.";
+      return d === 0 ? "10 minutes pour la revue du dimanche guidée (onglet Études), le reste est libre." : "Libre.";
+    },
     'Coucher': "Clôture du jour faite ? Écran off, réveil posé loin du lit.",
     /* Le regime combat (lundi 28 septembre) : les blocs qu'il ajoute. L'eau monte a 3,5-4 L
        ces jours-la (objectifEauL), et la collation combat se prend 25 min avant le tatami. */
@@ -18593,6 +18673,16 @@
       save('batcave-budget-limits', budgetLimits);
     }
     saveInternal('batcave-plafond-nourriture-v8', true);
+  }
+  /* Neuvieme fois, le 9 novembre au soir : deux sessions de batch, le dimanche midi devient un repas frais
+     (3 oeufs au lieu de 70 g de poulet, 10 ml d'huile de moins) -- ~207 EUR par mois en caisse. Seulement
+     s'il vaut encore ma valeur d'avant (209, posee par la v8 la veille). */
+  if(!load('batcave-plafond-nourriture-v9', false)){
+    if(Number(budgetLimits['Nourriture']) === 209){
+      budgetLimits['Nourriture'] = Math.round(coutAchatsMoyen().mois);
+      save('batcave-budget-limits', budgetLimits);
+    }
+    saveInternal('batcave-plafond-nourriture-v9', true);
   }
   var fixedCharges = load('batcave-fixed-charges', null);
   if(fixedCharges === null){ fixedCharges = FIXED_CHARGES_SEED.slice(); save('batcave-fixed-charges', fixedCharges); }

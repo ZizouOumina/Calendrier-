@@ -74,7 +74,9 @@ console.log('\n== 180) Sans ajustement : plan de base, liste = plan × 7 ==');
   /* 25 octobre : 80 g de viande par repas (« reduis juste la viande ») -- 560 g de chaque par semaine. */
   /* 25 octobre, la suite : 50 g (« descends a 120 g de proteines sans toucher au skyr ») -- 350 g. */
   /* 25 octobre au soir : 70 g, 0,4 g/kg de proteines a chaque repas (Iraki 2019) -- 490 g. */
-  ok(c.items.some(t => /^Poulet — 490 g .*pesé au comptoir/.test(t) && !/demande/.test(t))
+  /* 9 novembre au soir, deux sessions de batch : le dimanche midi devient un repas frais, 3 oeufs a la place
+     du poulet -- 420 g de poulet (six midis), toujours 490 g de viande hachee (sept soirs). */
+  ok(c.items.some(t => /^Poulet — 420 g .*pesé au comptoir/.test(t) && !/demande/.test(t))
   && c.items.some(t => /^Viande hachée 5 % — 490 g .*pesée au comptoir/.test(t))
   && !c.items.some(t => /^Saumon/.test(t)),
      'viande au gramme près, pesée au comptoir, et plus de poisson : ' + c.items.filter(t => /^(Poulet|Viande|Saumon)/.test(t)).join(' · '));
@@ -109,10 +111,12 @@ console.log('\n== 180) Sans ajustement : plan de base, liste = plan × 7 ==');
   /* Les legumes surgeles sont passes a DEUX semaines le 20 septembre : 10 kg par passage
      ne rentraient pas dans son congelateur. La consommation n'a pas bouge (2 450 g par
      semaine), c'est le rythme de rachat qui a change -- 5 kg tous les quinze jours. */
-  ok(c.items.some(t => /^Œufs — 18\b/.test(t) && /demande 15 œufs/.test(t))
+  /* 9 novembre au soir : 18 oeufs, les 15 de la collation et les 3 du dimanche midi ; 1 875 ml d'huile sur cinq
+     semaines, le dimanche midi en prend 20 ml au lieu de 30 (les oeufs ont leur gras). */
+  ok(c.items.some(t => /^Œufs — 18\b/.test(t) && /3 boîtes de 6/.test(t) && !/demande/.test(t))
   && c.items.some(t => /^Légumes verts surgelés — 3 kg\b/.test(t) && /demande 2\u202f240 g/.test(t))
-  && c.items.some(t => /^Huile d'olive — 2 L\b/.test(t) && /1 bouteille de 2 L/.test(t) && /demande 1\u202f925 ml/.test(t)),
-     'œufs 18 pour 15 (trois à la collation depuis le 8 novembre, quand le cottage cheese sort ; les sardines le mardi et le jeudi depuis le 21 octobre), surgelés 3 kg pour 2 240 g sur deux semaines (80 g par repas depuis le 23 octobre), huile 2 L pour 1 925 ml sur cinq (30 ml à midi, 25 le soir depuis la fin des sauces, 30 octobre)');
+  && c.items.some(t => /^Huile d'olive — 2 L\b/.test(t) && /1 bouteille de 2 L/.test(t) && /demande 1\u202f875 ml/.test(t)),
+     'œufs 18 pour 18 (les 3 du dimanche midi depuis le 22 novembre ; trois à la collation depuis le 8 novembre, quand le cottage cheese sort ; les sardines le mardi et le jeudi depuis le 21 octobre), surgelés 3 kg pour 2 240 g sur deux semaines (80 g par repas depuis le 23 octobre), huile 2 L pour 1 875 ml sur cinq (30 ml à midi, 25 le soir depuis la fin des sauces, 30 octobre ; 20 le dimanche midi depuis le 22 novembre)');
   /* Aucun stock n'est suppose : rien ne dit « tu en as », rien n'est repousse a plus tard. */
   ok(!c.items.some(t => /tu en as|il t’en reste|à racheter le/.test(t)), 'aucune ligne ne suppose un stock : tout part de zéro, il coche ce qu\'il a');
   /* Le contraire de ce que ce fichier tenait jusqu'au 20 septembre : ces lignes ne
@@ -193,7 +197,7 @@ console.log('\n== 181) Avec +150 kcal : le dîner et les courses l\'écrivent ==
   ok(/\+150 kcal\/jour/.test(c.note) && /\+40 g de riz cru/.test(c.note) && /\+280 g sur la semaine/.test(c.note), 'note : ' + c.note.slice(0, 120));
   /* La boucle kcal ne touche QUE le feculent du diner : les proteines gardent la quantite
      de la rotation, 560 g de poulet par semaine. */
-  ok(c.items.filter(t => /^Poulet/.test(t)).length === 1 && /490 g/.test(c.items.find(t => /^Poulet/.test(t))), 'les protéines ne bougent pas');
+  ok(c.items.filter(t => /^Poulet/.test(t)).length === 1 && /420 g/.test(c.items.find(t => /^Poulet/.test(t))), 'les protéines ne bougent pas');   /* 420 g depuis les deux batchs du 9 novembre */
   await ctx.close();
 }
 

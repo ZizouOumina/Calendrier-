@@ -110,7 +110,7 @@ riz dans l'assiette, ce qu'il ne peut pas manger.
 | Repas | Heure | Contenu | kcal · protéines |
 |---|---|---|---|
 | **Shake** | 08:30 les jours de muscu, 35 min après la séance (06:45 les autres jours) | boisson d'avoine au calcium 400 ml, skyr 150 g, flocons d'avoine 80 g, banane 120 g, fruits rouges surgelés 100 g, **miel 20 g**, amandes ou noix 30 g | ≈ 960 · 40 g |
-| **Déjeuner** | 12:20 | **riz 125 g** (rice cooker ; **dès le 16 novembre, pâtes 125 g, cuites au batch du dimanche, dans la boîte**), **poulet 70 g**, **brocoli 80 g**, **huile d'olive 30 ml** (10 de cuisson, 20 crus sur le riz — ou 20 g de beurre), sel iodé, épices | ≈ 820 · 28 g |
+| **Déjeuner** | 12:20 | **riz 125 g** (rice cooker ; **dès le 16 novembre, pâtes 125 g, cuites au batch, dans la boîte**), **poulet 70 g**, **brocoli 80 g**, **huile d'olive 30 ml** (10 de cuisson, 20 crus sur le riz — ou 20 g de beurre), sel iodé, épices. **Le dimanche midi, dès le 22 novembre : un repas frais**, pâtes 125 g, **3 œufs** au plat ou brouillés, brocoli 80 g, huile 20 ml | ≈ 820 · 28 g |
 | **Collation** | 14:50 (16:50 le lundi), à la maison | **amandes ou noix 50 g**, **3 œufs durs**, **7 dattes (70 g)** | ≈ 700 · 31 g |
 | **Dîner** | 20:00 (18:00 le mardi, 19:00 le dimanche, 19:30 le samedi) | **riz 125 g**, **viande hachée 5 % 70 g**, **épinards 80 g**, huile d'olive 25 ml (10 de cuisson, 15 crus sur le riz), sel iodé, épices, créatine 5 g | ≈ 800 · 27 g |
 
@@ -175,7 +175,7 @@ un samedi (œufs et cottage cheese à la collation) et un mardi (la boîte de sa
 
 ### Les choix qui restent les siens
 - **Le riz le soir, les pâtes à midi** (depuis le 16 novembre) : 125 g crus chacun. Le riz se cuit chaque
-  matin pour le soir ; les pâtes, au batch du dimanche, rangées dans les boîtes du midi. Mêmes calories
+  matin pour le soir ; les pâtes, au batch (dimanche et mardi), rangées dans les boîtes du midi. Mêmes calories
   (360 kcal pour 100 g), 5,75 g de protéines de plus à midi, un sucre plus lent l'après-midi ; le riz garde
   le soir, où ses glucides aident à s'endormir.
 - **Les mêmes grammes tous les jours.**
@@ -220,8 +220,9 @@ surtout grasse. Pourquoi la taille : le rapport taille / poitrine explique à lu
 pèse plus que la carrure (Xia 2025).
 
 ## Les courses
-Le samedi à 13:30, la liste de l'onglet Courses, calculée pour le plan entier : poulet 490 g et
-viande hachée 490 g (pesés au comptoir), skyr, 15 œufs, bananes,
+Le samedi à 13:30, la liste de l'onglet Courses, calculée pour le plan entier : poulet 420 g et
+viande hachée 490 g (pesés au comptoir), skyr, 18 œufs (3 boîtes de 6 : les 15 de la collation, les 3 du
+dimanche midi), bananes,
 amandes, sardines ou maquereau, légumes verts surgelés, boisson d'avoine (en briks de 1 L),
 fruits rouges, galettes de riz, dattes, riz, flocons, huile d'olive, miel. Plus de fromage depuis
 le 26 octobre, plus de cottage cheese depuis le 8 novembre. Les légumes surgelés : moitié brocoli, moitié épinards en portions. La Batcave en calcule le coût ; les articles sans
@@ -229,10 +230,24 @@ prix relevé (galettes, sardines, dattes) attendent son ticket. Les fruits rouge
 leur depuis le 30 octobre : le mélange Auchan d'Alcampo, 2,85 € les 450 g.
 
 ## La préparation (batch cooking)
-Le dimanche à 14:30 : les pâtes des midis (depuis le 16 novembre, 875 g crus, une minute de moins que le paquet), le poulet, la viande hachée et les légumes de la semaine (le brocoli pour
-les boîtes du midi, les épinards pour celles du soir), et les 15 œufs durs. Sept boîtes pour les
-midis, sept pour les soirs : quatre jours au frigo, trois au congélateur ; l'huile crue, le sel et les épices se mettent à
-l'assiette.
+**Deux sessions d'environ une heure, tout au frigo, depuis le dimanche 15 novembre** (9 novembre au
+soir : « si je divise le batch cooking en deux jours, comme ça je congèle ni riz ni pâtes ») :
+- **le dimanche à 14:30**, pour le dîner du dimanche, puis lundi et mardi, midi et soir : les pâtes
+  (250 g crus, une minute de moins que le paquet), le poulet (140 g), la viande hachée (210 g), les
+  légumes (400 g : le brocoli pour les midis, les épinards pour les soirs) et les 15 œufs durs de la
+  semaine. Cinq boîtes ;
+- **le mardi à 19:10**, après le dîner (son seul soir libre), pour mercredi à samedi : les pâtes
+  (500 g), le poulet (280 g), la viande hachée (280 g en deux fournées), les légumes (640 g). Huit boîtes.
+
+Chaque boîte se mange dans les quatre jours (la viande cuite tient quatre jours à 4 °C) : ni les pâtes
+ni la viande ne passent au congélateur. Seule la viande crue du mardi, achetée le samedi, y va dès le
+rangement des courses (le poulet cru ne tient que deux jours au frigo) ; elle descend au frigo le lundi
+soir et décongèle en 24 h. **Le dimanche midi** ne vient d'aucune session (la boîte du mardi aurait
+cinq jours) : dès le 22 novembre, un repas frais de vingt minutes, les pâtes du jour, 3 œufs et le
+brocoli (le 15, la dernière boîte du congélateur). Les 3 œufs remplacent les 70 g de poulet : 19 g
+de protéines au lieu de 16, et 10 ml d'huile de moins (les œufs apportent leur gras) — la journée
+reste à ≈ +50 kcal. Ce dimanche-là, six œufs avec ceux de la collation ; sur la semaine, 18, moins de
+3 par jour en moyenne. L'huile crue, le sel et les épices se mettent à l'assiette.
 
 **Le riz se cuit chaque matin** (23 octobre au soir : « je vais cuire le riz fraîchement chaque
 matin pour toute la journée »), avant le shake : 250 g crus (125 g, pour le soir seulement, depuis le 16 novembre) rincés trois fois, l'eau jusqu'au trait
