@@ -10,9 +10,10 @@
 > blocs d'espagnol jusqu'au 8 décembre (`UNTIL`), les « Projets perso » qui les remplacent dès le 9 ; descriptions
 > courtes et à jour (pâtes à midi, Nutella, sessions de batch, viande du mardi), révisions sans contenu (« c'est
 > toi qui choisis quoi »). 66 anciennes séries supprimées ; gardés : « 🦇 Enlever les tapis » (14:52), les rappels
-> 💶, les cours de la fac. **Reste** : l'ancien « 🦇 Rangement des courses » du samedi 15:30
-> (`kv478nj1svmo0ckekl2vc0s0us`), dont il a refusé la suppression : il double le nouveau. Le rappel « 💶 Paie le
-> club (100 €) » du 28 est inchangé (question laissée sans réponse ; la Batcave compte 70 € le 5).
+> 💶, les cours de la fac. L'ancien « 🦇 Rangement des courses » du samedi 15:30 (`kv478nj1svmo0ckekl2vc0s0us`),
+> dont il avait refusé la suppression par erreur (« j'ai pas fait exprès »), est supprimé aussi : 67 en tout. Le
+> samedi 21 ne montre plus que les nouvelles séries. Le rappel « 💶 Paie le club (100 €) » du 28 est inchangé
+> (question laissée sans réponse ; la Batcave compte 70 € le 5).
 
 > ### Lundi 9 novembre, plus tard — le Nutella sur les galettes, dans la Batcave aussi
 > **Ses mots** (plus tôt dans la soirée) : « sur les galettes de riz tu peux remplacer par du nutella » ; le miel
