@@ -1,5 +1,19 @@
 # Où on en est — samedi 19 septembre 2026, au soir
 
+> ### Lundi 9 novembre, la nuit — Google Agenda reconstruit sur le plan actuel
+> **Ses mots** : « j'ai pas de muay thai le mardi » ; puis, à « je reconstruis ton agenda sur le plan actuel ? » :
+> « oui ». Son agenda gardait les séries 🦇 de septembre : la Muay Thai du mardi 19:30 (sortie le 1er octobre),
+> la course de 05:30 jusqu'au parc, le skyr à l'ail, « pain complet, fromage » à la collation, un coucher à 22:00.
+> La Batcave n'aligne que le jour et le lendemain quand il l'ouvre, et ne supprime jamais une série adoptée.
+> **Fait** : 85 séries créées depuis la grille du jour de la Batcave (`__bcRappels`), sous ses propres titres pour
+> qu'elle les adopte sans doublon : dès le 10 novembre ; salle et JJB dès le 16 (pas de sport cette semaine) ; les
+> blocs d'espagnol jusqu'au 8 décembre (`UNTIL`), les « Projets perso » qui les remplacent dès le 9 ; descriptions
+> courtes et à jour (pâtes à midi, Nutella, sessions de batch, viande du mardi), révisions sans contenu (« c'est
+> toi qui choisis quoi »). 66 anciennes séries supprimées ; gardés : « 🦇 Enlever les tapis » (14:52), les rappels
+> 💶, les cours de la fac. **Reste** : l'ancien « 🦇 Rangement des courses » du samedi 15:30
+> (`kv478nj1svmo0ckekl2vc0s0us`), dont il a refusé la suppression : il double le nouveau. Le rappel « 💶 Paie le
+> club (100 €) » du 28 est inchangé (question laissée sans réponse ; la Batcave compte 70 € le 5).
+
 > ### Lundi 9 novembre, plus tard — le Nutella sur les galettes, dans la Batcave aussi
 > **Ses mots** (plus tôt dans la soirée) : « sur les galettes de riz tu peux remplacer par du nutella » ; le miel
 > reste dans le shake. Jusqu'ici, seule la page de la semaine le disait ; la Batcave, qui fait foi, disait encore
