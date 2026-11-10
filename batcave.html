@@ -3684,11 +3684,11 @@
      comme inconnu. DRAPEAUX_MIGRATION est desormais LA liste ; les autres la reprennent.
      SCHEMA_VERSION est ecrit dans « batcave-schema » quand toutes ont tourne : le panneau
      Sante compare, et une sauvegarde plus ancienne se reconnait a ce seul chiffre. */
-  var SCHEMA_VERSION = 57;   /* 9 novembre au soir : courses-plan-v12 et postes-soin-maison-v1 */
+  var SCHEMA_VERSION = 58;   /* 9 novembre au soir : courses-plan-v12 et postes-soin-maison-v1 ; 10 novembre : postes-soin-maison-v2 */
   var DRAPEAUX_MIGRATION = ['objectifs-seed-v1','objectifs-v2-55','objectifs-v5-espanol',
     'habits-ecran-v2','habitlog-hebdo-v1','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','habits-seed-v7','habits-seed-v8','habits-seed-v9','habits-seed-v10','habits-seed-v11','habits-seed-v12',
     'courses-plan-v2','courses-plan-v3','courses-plan-v4','courses-plan-v5','courses-plan-v6','courses-plan-v7','courses-plan-v8','courses-plan-v9','courses-plan-v10','courses-plan-v11','courses-plan-v12',
-    'charges-v2','plafond-nourriture-v2','plafond-nourriture-v3','plafond-nourriture-v4','plafond-nourriture-v5','plafond-nourriture-v6','plafond-nourriture-v7','plafond-nourriture-v8','plafond-nourriture-v9','plafond-nourriture-v10','postes-soin-maison-v1','ancre-dimanche-v1','ancre-dimanche-v2','serviettes-v1','coiffeur-v1','shampoing-dim-v1','marche-cible-v1','fc-migration-v1','fc-migration-v2','fc-migration-v3','fc-migration-v4','fc-migration-v5','revision-fusionnee','pesee-hebdo-v1','snus-arret-v3'];
+    'charges-v2','plafond-nourriture-v2','plafond-nourriture-v3','plafond-nourriture-v4','plafond-nourriture-v5','plafond-nourriture-v6','plafond-nourriture-v7','plafond-nourriture-v8','plafond-nourriture-v9','plafond-nourriture-v10','postes-soin-maison-v1','postes-soin-maison-v2','ancre-dimanche-v1','ancre-dimanche-v2','serviettes-v1','coiffeur-v1','shampoing-dim-v1','marche-cible-v1','fc-migration-v1','fc-migration-v2','fc-migration-v3','fc-migration-v4','fc-migration-v5','revision-fusionnee','pesee-hebdo-v1','snus-arret-v3'];
   /* Drapeaux que rien ne pose plus (migrations retirees) ou poses seulement quand il y a
      eu quelque chose a migrer : connus et gardes, jamais exiges. */
   var DRAPEAUX_ANCIENS = ['objectifs-v3-trajet','objectifs-v4-dimanche','habits-retirees-v1','shampoing-combat-v1','shampoing-samedi-v1','snus-arret-v1','snus-arret-v2'];   /* snus-arret-v1 puis v2 : remplacees par la v3 (jour 1 au 22, puis au dimanche 1er novembre) ; les deux d'avant n'ecrivent qu'a partir du 28 septembre */
@@ -13328,8 +13328,11 @@
            joints, et une poudre maison (sans enzymes) laisse un voile blanc avec l'eau d'Alicante. Le moins cher
            qui lave : les pastilles « Todo en 1 » de Mercadona, 2,95 EUR les 30 (0,10 EUR le lavage, contre ~0,12
            pour la poudre Finish d'Alcampo), le liquide de rincage dedans -- sa ligne sort ; le sel reste. */
-        prod('Pastilles lave-vaisselle', '1 paquet de 30', 7, 'Bosque Verde « Todo en 1 », 0,10 € le lavage — quatre lavages par semaine'),
-        prod('Sel lave-vaisselle', '1 sac de 2 kg', 20, 'même avec les pastilles : l\'eau d\'Alicante est très calcaire'),
+        /* 10 novembre, sa reponse : « lave vaisselle 1 fois par jour ». Sept lavages par semaine : le paquet de 30
+           tient 4 semaines (pas 7), et le sel -- ~25 g par regeneration avec une eau tres dure, 2 kg pour ~60
+           lavages -- 8 semaines (pas 20). */
+        prod('Pastilles lave-vaisselle', '1 paquet de 30', 4, 'Bosque Verde « Todo en 1 », 0,10 € le lavage — un lavage par jour'),
+        prod('Sel lave-vaisselle', '1 sac de 2 kg', 8, 'même avec les pastilles : l\'eau d\'Alicante est très calcaire'),
         prod('Liquide vaisselle', '1 flacon de 1,3 L', 8, 'les poêles, le shaker, la cuve du rice cooker'),
         prod('Dégraissant', '1 flacon de 750 ml', 12, 'Quitagrasas — plaques et hotte'),
         prod('Multi-surfaces', '1 flacon de 1 L', 16, 'tables et plan de travail'),
@@ -18977,6 +18980,26 @@
   migrerPostesSoinMaison();
   MIGRATIONS_DEMARRAGE.push({cle:'batcave-postes-soin-maison-v1', rejouer: function(){
     if(!migrerPostesSoinMaison()) return false;
+    try{ renderBudget(); renderDashboard(); }catch(e){}
+    return true;
+  }});
+  /* 10 novembre : un lave-vaisselle par jour (sa reponse) -- les pastilles et le sel reviennent plus souvent, et
+     « Maison et menage » passe de ~13,5 a ~15 EUR par mois. Le plafond suit, seulement s'il vaut encore 14 (la
+     valeur posee la veille) : s'il l'a change lui-meme, c'est sa decision. */
+  function plafondMaisonV2(){
+    if(load('batcave-postes-soin-maison-v2', false)) return false;
+    var bl = load('batcave-budget-limits', null), bouge = false;
+    if(bl && typeof bl === 'object' && !Array.isArray(bl)) budgetLimits = bl;
+    if(Number(budgetLimits['Maison et m\u00e9nage']) === 14){
+      budgetLimits['Maison et m\u00e9nage'] = Math.round(coutHorsNourriture().postesMois['Maison et m\u00e9nage'] || 0);
+      save('batcave-budget-limits', budgetLimits); bouge = true;
+    }
+    saveInternal('batcave-postes-soin-maison-v2', true);
+    return bouge;
+  }
+  plafondMaisonV2();
+  MIGRATIONS_DEMARRAGE.push({cle:'batcave-postes-soin-maison-v2', rejouer: function(){
+    if(!plafondMaisonV2()) return false;
     try{ renderBudget(); renderDashboard(); }catch(e){}
     return true;
   }});

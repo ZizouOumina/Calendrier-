@@ -1,5 +1,15 @@
 # Où on en est — samedi 19 septembre 2026, au soir
 
+> ### Mardi 10 novembre — un lave-vaisselle par jour, cinq machines par semaine
+> **Ses mots** : « lave vaisselle 1 fois par jour. et pour la machine a laver je la lance combien de fois par semaine? »
+> **Fait** : les pastilles « Todo en 1 » toutes les 4 semaines (le paquet de 30), le sel toutes les 8 ; soin et ménage
+> ≈ 43,03 € par mois (maison et ménage 15,22) ; le plafond « Maison et ménage » suit de 14 à 15 € s'il valait encore
+> 14 (`postes-soin-maison-v2`, schéma 58) ; la cagnotte reste à 130 €. Pages de la semaine : le lave-vaisselle
+> rempli et lancé chaque soir après le dîner ; le vendredi, la tenue de salle du jeudi part avec le kimono.
+> **La machine à laver** (réponse) : 2 cette semaine (mardi soir, dimanche 16:30) ; 5 dès le 16 — lundi, mercredi
+> et vendredi au retour du JJB (kimono et rashguard, 30 °C), mardi 19:10 (vêtements), dimanche 16:30 (draps et
+> serviettes, 60 °C).
+
 > ### Lundi 9 novembre, la nuit — le soin, la santé et le ménage comptés au centime
 > **Ses mots** : « aussi les produits de soin et de santé. je veux meme traquer les produits de nettoyage pour la
 > maison. comme ca tout ce que je dépense est comptabilisé », puis sa liste (lessive par 10 kg, adoucissant, poudre
