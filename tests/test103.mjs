@@ -54,7 +54,8 @@ console.log('\n== 342) Le jour du premier ravitaillement : tout est dû, et tout
   ok(v.dates.every(t => /puis le/.test(t)), 'ET chacune dit sa fois suivante — c’est ce qui manquait');
   ok(/10 oct/.test(v.dates[0]) && /17 oct/.test(v.dates[1]) && /31 oct/.test(v.dates[2]),
      'hebdo → 10 oct., surgelés → 17 oct., réserves → 31 oct. (' + v.dates.slice(0,3).map(t => t.split('puis le ')[1]).join(' · ') + ')');
-  ok(!v.repli, 'aucun repli : rien n’est reporté ce jour-là');
+  /* 9 novembre, la nuit : le repli porte desormais le soin et le menage -- dus pour la premiere fois le 14 novembre. */
+  ok(JSON.stringify(v.tard) === JSON.stringify(['Soin et santé', 'Maison et ménage']), 'aucune catégorie de nourriture reportée : le repli ne porte que le soin et le ménage, dus le 14 novembre (' + v.tard.join(', ') + ')');
   await ctx.close();
 }
 
@@ -68,8 +69,9 @@ console.log('\n== 343) Un samedi ordinaire : la grille ne montre que le frais ==
      « Chaque semaine » apparaissait dans la grille du jour ET dans le repli — une même
      catégorie coupée en deux, et un repli qui annonçait cinq catégories pour quatre. */
   ok(/0\/7 .*7 à prendre/.test(v.resume), 'le résumé dit 7, pas 17 — la boisson d\'avoine, les fruits rouges, les galettes et les dattes sont aux deux semaines (' + v.resume + ')');
-  ok(/4 catégories/.test(v.repli), 'les quatre autres catégories sont dans le repli (' + v.repli + ')');
-  ok(v.tard.length === 4, 'et le repli les contient toutes, rachetables en avance (' + v.tard.length + ')');
+  /* 9 novembre, la nuit : plus le soin et le menage, dus pour la premiere fois le 14 novembre. */
+  ok(/6 catégories/.test(v.repli), 'les quatre autres catégories de nourriture, le soin et le ménage sont dans le repli (' + v.repli + ')');
+  ok(v.tard.length === 6, 'et le repli les contient toutes, rachetables en avance (' + v.tard.length + ')');
   await ctx.close();
 }
 

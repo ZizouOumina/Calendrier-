@@ -6,19 +6,24 @@
 > de lave-vaisselle, dégraissant, surfaces, sol ; déo, shampoing, gel douche, dentifrice, nettoyant visage, papier
 > toilette) et « quoi d'autre ? », et « pour le sol je peux utiliser quoi ? vu que j'ai l'aspirateur serpillère ».
 > **Fait** : deux rayons en fin de liste de Courses, « Soin et santé » (12) et « Maison et ménage » (16), tous dus le
-> samedi 14 (il coche « j'en ai » pour ce qu'il a). Ajoutés à sa liste : sel et liquide de rinçage du
-> lave-vaisselle (eau très calcaire), liquide vaisselle, éponges, lavettes, sacs poubelle et congélation,
+> samedi 14 (il coche « j'en ai » pour ce qu'il a). Ajoutés à sa liste : le sel du lave-vaisselle (eau très
+> calcaire), liquide vaisselle, éponges, lavettes, sacs poubelle et congélation,
 > essuie-tout, gel WC, anticalcaire, savon pour les mains, fil dentaire, brosse à dents, rasoirs et gel, mouchoirs,
-> Skinoren. Prix relevés **en ligne** le 9 novembre (Mercadona Alicante, Alcampo pour la lessive et la poudre),
+> Skinoren. Prix relevés **en ligne** le 9 novembre (Mercadona Alicante, Alcampo pour la lessive),
 > marques du magasin ; le Skinoren reste « prix à relever » et compte 19,90 € dans le plan d'argent. Les rythmes
 > partent de sa grille (5 machines, ~17 douches, rasage du dimanche…) puis se **mesurent** : le bouton « fini »
 > ramène le produit au samedi suivant (le jour même un samedi avant 16:00) et la durée entre deux « fini »
-> remplace la mienne. ≈ 41,73 € par mois (27,81 soin et santé dont ≈ 21,56 de Skinoren, 13,91 maison et ménage).
+> remplace la mienne. ≈ 41,34 € par mois (27,81 soin et santé dont ≈ 21,56 de Skinoren, 13,53 maison et ménage).
 > Budget : « Santé » devient « Soin et santé », « Maison et ménage » arrive (plafonds 28 et 14 €) ; Nourriture
 > reste 200 €. Plan d'argent : une ligne « Soin et maison », leur moyenne par samedi dès le 14 ; la cagnotte du
 > 25 passe de 180 à 130 €. Migrations `courses-plan-v12` et `postes-soin-maison-v1`, schéma 57, test117.
 > Pages de la semaine : le tour de la salle de bain samedi 14, les tickets rangés par poste au rangement.
 > **Le sol** : pas de friegasuelos (la mousse remonte dans l'appareil) ; eau seule ou la solution de sa marque.
+> **Puis** : « je peux acheter du vinaigre blanc pour le mettre dans le lave vaisselle [...] je peux faire une poudre
+> maison moins chère ». Non aux deux (le vinaigre use les joints ; une poudre maison, sans enzymes, laisse un voile
+> blanc avec cette eau) : les pastilles « Todo en 1 » de Mercadona, 2,95 € les 30 (0,10 € le lavage, contre ~0,12
+> pour la poudre Finish), le rinçage dedans — la ligne « Liquide de rinçage » sort, le sel reste. Le vinaigre sert
+> au détartrage de la bouilloire et de la cuve du rice cooker.
 > **Reste** : la marque et le modèle de l'aspirateur-serpillière, et la fréquence réelle du lave-vaisselle.
 
 > ### Lundi 9 novembre, la nuit — Google Agenda reconstruit sur le plan actuel

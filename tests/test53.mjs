@@ -32,7 +32,14 @@ console.log('\n== 180) Sans ajustement : plan de base, liste = plan × 7 ==');
 {
   const { ctx, fr } = await ouvrir(MARDI);
   await page_(fr, 'courses');
-  const c = await fr.evaluate(() => ({ items: [...document.querySelectorAll('#courses-grid label, #courses-grid-plus label')].map(l => l.textContent), note: document.getElementById('courses-plan-note').textContent, budget: document.getElementById('courses-budget').textContent, n: document.querySelectorAll('#courses-grid input, #courses-grid-plus input').length }));
+  const c = await fr.evaluate(() => ({ items: [...document.querySelectorAll('#courses-grid label, #courses-grid-plus label')].map(l => l.textContent), note: document.getElementById('courses-plan-note').textContent, budget: document.getElementById('courses-budget').textContent, n: document.querySelectorAll('#courses-grid input, #courses-grid-plus input').length,
+    rayons: [...document.querySelectorAll('#courses-grid .cat-card, #courses-grid-plus .cat-card')].map(k => ({cat: k.querySelector('h4').textContent, items: [...k.querySelectorAll('label')].map(l => l.textContent)})) }));
+  /* 9 novembre, la nuit : le soin, la sante et le menage reviennent, a SA demande (« je veux meme traquer les
+     produits de nettoyage pour la maison. comme ca tout ce que je depense est comptabilise »), dans deux rayons
+     a eux, en fin de liste. La liste alimentaire, elle, ne bouge pas : 19 lignes. */
+  const nonAlim = r => /^(Soin et santé|Maison et ménage)$/.test(r.cat);
+  const alim = c.rayons.filter(r => !nonAlim(r)).reduce((t, r) => t + r.items.length, 0);
+  const soinMaison = c.rayons.filter(nonAlim).reduce((t, r) => t + r.items.length, 0);
   /* 20 septembre, sa derniere decision sur cette liste : « dans l'onglet courses tu vas
      juste laisser les aliments et la bouffe cest tout ». Les trois rayons non alimentaires
      sont sortis -- Sante et hygiene (16 lignes), Maison (6), Menage (5) -- et la brosse a
@@ -54,7 +61,7 @@ console.log('\n== 180) Sans ajustement : plan de base, liste = plan × 7 ==');
   /* 8 novembre : il sort (il le degoute ; le 3e oeuf revient). Dix-sept lignes. */
   /* 9 novembre : les pâtes du midi entrent en fin des réserves. Dix-huit lignes. */
   /* 9 novembre au soir : le Nutella des galettes entre dans les reserves de cinq semaines -- 19 articles. */
-  ok(c.n === 19, '19 articles au total, tous rythmes confondus — plus de pain, de fruits ni de pâtes depuis le 23 octobre, les dattes entrent, le fromage sort le 26, le cottage cheese entre le 27 et sort le 8 novembre, les pâtes du midi entrent le 9, le Nutella le même soir (' + c.n + ')');
+  ok(c.n === 46 && alim === 19 && soinMaison === 27, '46 articles au total : 19 de nourriture et 27 de soin et de menage (' + alim + ' + ' + soinMaison + ') ; la nourriture : 19 articles, tous rythmes confondus — plus de pain, de fruits ni de pâtes depuis le 23 octobre, les dattes entrent, le fromage sort le 26, le cottage cheese entre le 27 et sort le 8 novembre, les pâtes du midi entrent le 9, le Nutella le même soir (' + c.n + ')');
   /* Deux chiffres par ligne, et il faut les deux : ce qu'on ACHETE (un multiple du
      conditionnement) et ce que le PLAN demande (la somme des 7 jours de repas). Riz
      135 g/jour -> 945/semaine -> 3 780 sur 4 semaines, donc 4 paquets de 1 kg ;
@@ -124,8 +131,10 @@ console.log('\n== 180) Sans ajustement : plan de base, liste = plan × 7 ==');
      doivent PLUS exister. Elles etaient revenues le 19, puis leurs rythmes avaient ete
      recalcules le 20 -- mais ces rythmes restaient des estimations posees sur des volumes
      d'usage supposes, et il n'en veut pas. Cette porte garde la liste alimentaire. */
-  const intrus = c.items.filter(t => /^(Shampooing|Après-shampooing|Gel douche|Nettoyant visage|Dentifrice|Déodorant|Cotons-tiges|Rasoirs|Fil dentaire|Lessive|Détachant|Bain de bouche|Brossettes|Crème|Mouchoirs|Papier toilette|Sacs poubelle|Liquide vaisselle|Éponges|Essuie-tout|Nettoyant sol|Anticalcaire|Multi-usage|Nettoyant WC|Gants de ménage|Brosse à dents)/.test(t));
-  ok(intrus.length === 0, 'plus rien de non alimentaire dans la liste' + (intrus.length ? ' — reste : ' + intrus.join(' · ') : ''));
+  /* 9 novembre, la nuit : ils reviennent, a sa demande -- mais dans LEURS rayons. Cette porte garde
+     desormais la liste alimentaire : aucun produit de soin ou de menage ne s'y glisse. */
+  const intrus = c.rayons.filter(r => !nonAlim(r)).flatMap(r => r.items).filter(t => /^(Shampo+ing|Après-shampooing|Gel douche|Nettoyant visage|Dentifrice|Déodorant|Cotons-tiges|Rasoirs|Fil dentaire|Lessive|Détachant|Bain de bouche|Brossettes|Crème|Mouchoirs|Papier toilette|Sacs poubelle|Liquide vaisselle|Éponges|Essuie-tout|Nettoyant sol|Anticalcaire|Multi-usage|Nettoyant WC|Gants de ménage|Brosse à dents|Skinoren|Savon)/.test(t));
+  ok(intrus.length === 0, 'rien de non alimentaire dans les rayons de nourriture' + (intrus.length ? ' — reste : ' + intrus.join(' · ') : ''));
   /* La creatine, elle, reste : elle s'avale, et aucune autre page ne la rachete. */
   ok(c.items.some(t => /^Créatine monohydrate — 1 pot de 500 g/.test(t)), 'la créatine reste — elle s\'avale, et rien d\'autre ne la rachète');
   ok(/Aucun ajustement/.test(c.note), 'note : ' + c.note.slice(0, 60));
@@ -153,7 +162,7 @@ console.log('\n== 180) Sans ajustement : plan de base, liste = plan × 7 ==');
   ok(!c.items.some(t => /^Beurre de cacahuète/.test(t)), 'le beurre de cacahuète est sorti de la liste');
   /* 29 septembre : la boisson d\'avoine du shake attend son prix (son ticket) -- c'est la seule ligne. */
   /* 21 octobre : couscous, fruits rouges, galettes de riz et sardines attendent son ticket. */
-  ok(c.items.filter(t => /prix à relever/.test(t)).every(t => /^(Boisson d\'avoine|Couscous|Fruits rouges|Galettes de riz|Sardines|Dattes|Cottage cheese|Nutella)/.test(t)) && c.items.some(t => /^Amandes ou noix nature/.test(t) && /12,00 €\/kg/.test(t)),
+  ok(c.items.filter(t => /prix à relever/.test(t)).every(t => /^(Boisson d\'avoine|Couscous|Fruits rouges|Galettes de riz|Sardines|Dattes|Cottage cheese|Nutella|Skinoren)/.test(t)) && c.items.some(t => /^Amandes ou noix nature/.test(t) && /12,00 €\/kg/.test(t)),
      'les amandes portent leur prix, 12 €/kg ; seuls les nouveaux articles du 21 octobre et le Nutella du 9 novembre attendent le leur (' + c.items.find(t => /^Amandes/.test(t)) + ')');
 
   await page_(fr, 'repas');

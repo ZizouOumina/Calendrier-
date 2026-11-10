@@ -42,7 +42,10 @@ console.log('\n== 330) Cinq catégories, toutes alimentaires, et le frais seul e
   /* 20 septembre au soir, sa decision : la liste ne porte plus que de la nourriture.
      Les produits menagers, revenus le 19, ressortent avec l'hygiene et la brosse a dents.
      Cinq categories restent : frais, surgeles, reserves, cinq semaines, trimestriel. */
-  ok(c.length === 5, '5 catégories, toutes alimentaires (' + c.length + ')');
+  /* 9 novembre, la nuit : le soin et le menage reviennent, a sa demande, dans DEUX rayons a eux, en fin de
+     liste (test117). Les cinq categories de nourriture ne bougent pas. */
+  const nonAlim = x => /^(Soin et santé|Maison et ménage)$/.test(x.titre);
+  ok(c.length === 7 && c.filter(x => !nonAlim(x)).length === 5, '5 catégories de nourriture, plus les deux rayons du soin et du ménage (' + c.map(x => x.titre).join(', ') + ')');
   const hebdo = c[0];
   /* HUIT depuis le 22 septembre : le fromage est parti dans « Toutes les 2 semaines ».
      Il n'en consomme que 140 g par semaine et l'édam se vend par paquets de 400 — un
@@ -52,10 +55,12 @@ console.log('\n== 330) Cinq catégories, toutes alimentaires, et le frais seul e
   ok(/Chaque semaine/.test(hebdo.titre) && hebdo.n === 7, 'la liste hebdomadaire fait 7 articles — le pain et les fruits sortent le 23 octobre au soir (le volume) ; les amandes entrent le 24 septembre à la place du beurre de cacahuète, les sardines le 21 octobre, le cottage cheese le 27, sorti le 8 novembre (' + hebdo.n + ')');
   const t = await fr.evaluate(() => document.querySelector('.page[data-page="courses"]').textContent);
   ok(!/Riz/.test(hebdo.titre + '') && /Riz — 4 kg/.test(t) && /Pâtes — 3,5 kg/.test(t) && !/Couscous/.test(t), 'le riz est en réserve : 4 kg pour quatre semaines (125 g le soir ; depuis le 16 novembre, les pâtes à midi, 3,5 kg ; plus de semoule ; avant, les mêmes grammes les jours de combat ; avant : 125 g par jour, 170 les jours de combat, depuis le 21 octobre)');
-  ok(!/Shampooing|Cotons-tiges|Nettoyant visage|Brosse à dents|Bain de bouche|Brossettes|Crème solaire|Lessive|Dentifrice/.test(t),
-     'plus une seule ligne de santé et hygiène');
-  ok(!/Éponges|Sacs poubelle|Nettoyant sol|Papier toilette|Essuie-tout|Liquide vaisselle|Anticalcaire|Nettoyant WC|Gants de ménage/.test(t),
-     'plus une seule ligne de maison ni de ménage');
+  const tAlim = await fr.evaluate(() => [...document.querySelectorAll('#courses-grid .cat-card, #courses-grid-plus .cat-card')]
+    .filter(k => !/^(Soin et santé|Maison et ménage)$/.test(k.querySelector('h4').textContent)).map(k => k.textContent).join(' '));
+  ok(!/Shampo+ing|Cotons-tiges|Nettoyant visage|Brosse à dents|Bain de bouche|Brossettes|Crème solaire|Lessive|Dentifrice/.test(tAlim),
+     'aucune ligne de santé et hygiène dans les catégories de nourriture');
+  ok(!/Éponges|Sacs poubelle|Nettoyant sol|Papier toilette|Essuie-tout|Liquide vaisselle|Anticalcaire|Nettoyant WC|Gants de ménage/.test(tAlim),
+     'aucune ligne de maison ni de ménage dans les catégories de nourriture');
   ok(/Créatine monohydrate/.test(t), 'la créatine reste — elle s\'avale');
   await ctx.close();
 }
@@ -71,7 +76,8 @@ console.log('\n== 331) Samedi 26 septembre : l\'ancre, tout est dû ==');
 {
   const { ctx, fr } = await jour('2026-10-03T10:00:00+02:00');
   const c = await cartes(fr);
-  ok(c.every(x => x.due), 'les 5 catégories sont dues le 26 (ancre commune)');
+  const nonAlim = x => /^(Soin et santé|Maison et ménage)$/.test(x.titre);
+  ok(c.filter(x => !nonAlim(x)).every(x => x.due) && c.filter(nonAlim).every(x => !x.due), 'les 5 catégories de nourriture sont dues le 26 (ancre commune) ; le soin et le ménage attendent le 14 novembre');
   const somme = await fr.evaluate(() => document.getElementById('courses-summary').textContent);
   /* Aucun stock n'est suppose : le 19, TOUTES les categories sont dues et toutes leurs
      lignes comptent. 9 frais + 1 surgele + 4 reserves + 2 (cycle de 5 semaines) + 1 pot de
@@ -82,7 +88,7 @@ console.log('\n== 331) Samedi 26 septembre : l\'ancre, tout est dû ==');
 {
   const { ctx, fr } = await jour('2026-10-04T10:00:00+02:00');
   const c = await cartes(fr);
-  ok(c.every(x => x.due), 'et le dimanche 27, le lendemain de ses premières courses, tout est encore dû');
+  ok(c.filter(x => !/^(Soin et santé|Maison et ménage)$/.test(x.titre)).every(x => x.due), 'et le dimanche 27, le lendemain de ses premières courses, toute la nourriture est encore due');
   await ctx.close();
 }
 {
@@ -213,8 +219,12 @@ console.log('\n== 334d) La liste ne porte QUE de la nourriture ==');
    chaque ligne restante adossee au plan -- sauf la creatine, qui s'avale. */
 {
   const { ctx, fr } = await jour('2026-10-03T10:00:00+02:00');
+  /* 9 novembre, la nuit : le soin et le menage ont leurs deux rayons, en fin de liste (test117) ; ce test-ci
+     garde la liste ALIMENTAIRE, ligne par ligne. */
   const lignes = await fr.evaluate(() =>
-    [...document.querySelectorAll('#courses-grid label, #courses-grid-plus label')]
+    [...document.querySelectorAll('#courses-grid .cat-card, #courses-grid-plus .cat-card')]
+      .filter(k => !/^(Soin et santé|Maison et ménage)$/.test(k.querySelector('h4').textContent))
+      .flatMap(k => [...k.querySelectorAll('label')])
       .map(l => l.textContent.split(' \u2014 ')[0].trim()));
   /* Le fromage n'est plus la 6e ligne du frais : depuis le 22 septembre il est range
      dans « Toutes les 2 semaines », derriere les surgeles, parce que c'est le cycle

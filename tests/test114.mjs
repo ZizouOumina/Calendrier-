@@ -65,15 +65,15 @@ console.log('— vendredi 25 septembre : la premiere periode, 28 sept. -> 24 oct
   ok(pres(a.semaine, 43.31), 'courses : 43,31 EUR par semaine hors les articles sans prix (dattes, sardines, galettes, Nutella), les fruits rouges releves le 30 octobre, les oeufs du 8 et du 9 novembre, le miel du shake seul (' + a.semaine.toFixed(2) + ')');
   ok(a.estimes.length === 0, 'plus aucune estimation : les amandes ont leur prix releve');
   /* 9 novembre, la nuit : le soin, la sante et le menage entrent dans le plan -- 9,63 EUR par semaine en moyenne
-     (le Skinoren compte 19,90 EUR), des le samedi 14. La periode la plus chere (5 samedis) en porte 48,14 : la
+     (9,54 avec les pastilles du lave-vaisselle ; le Skinoren compte 19,90 EUR), des le samedi 14. La periode la plus chere (5 samedis) en porte 47,70 : la
      cagnotte descend de 180 a 130 EUR. */
   ok(a.cagnotte === 130, 'jour du virement : 130 EUR dans la cagnotte (230 avant le prix des fruits rouges, 30 octobre ; 200 avant les oeufs du 8 novembre ; 190 avant Basic-Fit ; 170 avant le pot de miel en moins du 9 novembre au soir ; 180 avant le soin et le menage) — ce que laisse la periode la plus chere, les courses comptees en caisse (plan dense du 23 octobre au soir) (' + a.cagnotte + ')');
   ok(a.periode.debut === '2026-09-28' && a.periode.fin === '2026-10-24', 'premiere periode du 28 sept. (dernier virement a l\'ancienne date) au 24 oct.');
   ok(a.periode.samedis === 4, '4 samedis de courses');
   ok(pres(a.periode.balayage, 142.62), 'le 24 : environ 142,62 EUR a balayer — cette periode-ci n\'a pas encore de soin ni de menage (ils commencent le 14 novembre), et la cagnotte prend 50 EUR de moins (' + a.periode.balayage.toFixed(2) + ')');
-  ok(pres(a.moyenne, 216.86), 'epargne moyenne : 216,86 EUR par mois — 258,58 moins les 41,73 EUR du soin et du menage (hors les prix a relever) (' + a.moyenne.toFixed(2) + ')');
+  ok(pres(a.moyenne, 217.24), 'epargne moyenne : 217,24 EUR par mois — 258,58 moins les 41,34 EUR du soin et du menage (hors les prix a relever) (' + a.moyenne.toFixed(2) + ')');
   ok(a.prochaine5 && a.prochaine5.debut === '2026-12-25' && a.prochaine5.fin === '2027-01-24' && a.prochaine5.samedis === 5, 'prochaine periode a 5 samedis : 25 dec. -> 24 janv.');
-  ok(pres(a.prochaine5.balayage, 32.62), 'avec 5 samedis, les reserves, le soin et le menage, il reste encore 32,62 EUR le 24, la marge d\'un second prelevement Basic-Fit (' + a.prochaine5.balayage.toFixed(2) + ')');
+  ok(pres(a.prochaine5.balayage, 33.07), 'avec 5 samedis, les reserves, le soin et le menage, il reste encore 33,07 EUR le 24, la marge d\'un second prelevement Basic-Fit (' + a.prochaine5.balayage.toFixed(2) + ')');
   const L = a.lignes;
   ok(L[0].montant === 700 && L[0].plus && L[0].quand === 'le 28', 'le fil commence par le virement, le 28 pour cette premiere periode');
   ok(L[1].montant === 130 && L[1].cagnotte && L[1].quand === 'le 28', 'puis la cagnotte, le meme jour');

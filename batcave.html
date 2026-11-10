@@ -12987,8 +12987,8 @@
        apportent moins de vitamine C que les framboises et les groseilles du melange. */
     fruitsrouges: {eur:2.85/0.45, par:'kg', ou:'Alcampo', quand:'30 oct.', detail:'2,85 \u20ac le sachet de 450 g (m\u00e9lange Auchan)'},
     /* 9 novembre au soir : le soin et le menage, au PAQUET (« pièce »), releves en ligne le 9 novembre --
-       Mercadona (tienda.mercadona.es, magasin d'Alicante), Alcampo pour la lessive et la poudre du
-       lave-vaisselle. Les marques sont celles du magasin, les moins cheres du rayon. Son ticket les remplacera. */
+       Mercadona (tienda.mercadona.es, magasin d'Alicante), Alcampo pour la lessive. Les marques sont celles
+       du magasin, les moins cheres du rayon. Son ticket les remplacera. */
     geldouche:   {eur:0.95, par:'pi\u00e8ce', ou:'Mercadona', quand:'9 nov.', enLigne:true, detail:'Gel de ba\u00f1o frescor azul Deliplus, 750 ml'},
     shampoing:   {eur:1.35, par:'pi\u00e8ce', ou:'Mercadona', quand:'9 nov.', enLigne:true, detail:'Champ\u00fa protecci\u00f3n y brillo Deliplus, 1 L'},
     deo:         {eur:1.65, par:'pi\u00e8ce', ou:'Mercadona', quand:'9 nov.', enLigne:true, detail:'Desodorante invisible men Deliplus, spray de 200 ml'},
@@ -13002,9 +13002,8 @@
     mouchoirs:   {eur:1.35, par:'pi\u00e8ce', ou:'Mercadona', quand:'9 nov.', enLigne:true, detail:'Pa\u00f1uelos Extra Suaves Bosque Verde, bo\u00eete'},
     lessive:     {eur:14.69, par:'pi\u00e8ce', ou:'Alcampo', quand:'9 nov.', enLigne:true, unite:'le sac', detail:'PRODUCTO ALCAMPO detergente en polvo, 5 kg (100 doses)'},
     adoucissant: {eur:1.80, par:'pi\u00e8ce', ou:'Mercadona', quand:'9 nov.', enLigne:true, detail:'Suavizante concentrado Bosque Verde, 1,6 L'},
-    poudrelv:    {eur:9.75, par:'pi\u00e8ce', ou:'Alcampo', quand:'9 nov.', enLigne:true, detail:'Finish Classic en polvo, 2 kg'},
+    pastilleslv: {eur:2.95, par:'pi\u00e8ce', ou:'Mercadona', quand:'9 nov.', enLigne:true, detail:'Lavavajillas Todo en 1 Bosque Verde, 30 pastilles'},
     sel:         {eur:1.00, par:'pi\u00e8ce', ou:'Mercadona', quand:'9 nov.', enLigne:true, detail:'Sal lavavajillas Bosque Verde, 2 kg'},
-    rincage:     {eur:1.20, par:'pi\u00e8ce', ou:'Mercadona', quand:'9 nov.', enLigne:true, detail:'Abrillantador Bosque Verde, 750 ml'},
     vaisselle:   {eur:1.15, par:'pi\u00e8ce', ou:'Mercadona', quand:'9 nov.', enLigne:true, detail:'Lavavajillas a mano Bosque Verde, 1,3 L'},
     degraissant: {eur:1.50, par:'pi\u00e8ce', ou:'Mercadona', quand:'9 nov.', enLigne:true, detail:'Quitagrasas Bosque Verde, 750 ml'},
     multi:       {eur:1.30, par:'pi\u00e8ce', ou:'Mercadona', quand:'9 nov.', enLigne:true, detail:'Multiusos Perfumado Bosque Verde, 1 L'},
@@ -13037,8 +13036,8 @@
     'Gel douche':'geldouche', 'Shampoing':'shampoing', 'D\u00e9odorant':'deo', 'Dentifrice':'dentifrice',
     'Fil dentaire':'fil', 'Brosse \u00e0 dents':'brosse', 'Nettoyant visage':'visage', 'Skinoren':'skinoren',
     'Savon pour les mains':'savon', 'Rasoirs jetables':'rasoirs', 'Gel de rasage':'gelrasage', 'Mouchoirs':'mouchoirs',
-    'Lessive en poudre':'lessive', 'Adoucissant':'adoucissant', 'Poudre lave-vaisselle':'poudrelv',
-    'Sel lave-vaisselle':'sel', 'Liquide de rin\u00e7age':'rincage', 'Liquide vaisselle':'vaisselle',
+    'Lessive en poudre':'lessive', 'Adoucissant':'adoucissant', 'Pastilles lave-vaisselle':'pastilleslv',
+    'Sel lave-vaisselle':'sel', 'Liquide vaisselle':'vaisselle',
     'D\u00e9graissant':'degraissant', 'Multi-surfaces':'multi', 'Anticalcaire salle de bain':'antical', 'Gel WC':'wc',
     '\u00c9ponges':'eponges', 'Lavettes microfibre':'lavettes', 'Sacs poubelle 30 L':'sacs',
     'Sacs cong\u00e9lation':'congelation', 'Essuie-tout':'essuietout', 'Papier toilette':'pq'
@@ -13298,7 +13297,7 @@
          ces rayons etaient sortis parce que leurs rythmes reposaient sur des volumes d'usage supposes.
          Ils reviennent avec deux garde-fous :
          - le PRIX est un vrai prix de rayon, releve en ligne le 9 novembre chez Mercadona (Alicante)
-           et chez Alcampo pour la lessive et la poudre du lave-vaisselle -- son ticket le remplacera ;
+           et chez Alcampo pour la lessive -- son ticket le remplacera ;
            le Skinoren, sans prix espagnol trouve, reste « prix a relever » (estime dans le plan d'argent) ;
          - le RYTHME part de sa grille (douches, machines, lave-vaisselle, rasage du dimanche) et du
            format, puis se MESURE : le bouton « fini » ramene l'article au samedi qui suit, et la
@@ -13324,9 +13323,13 @@
       {cat:'Maison et ménage', ancre:SOIN_MAISON_DEBUT, poste:'Maison et ménage', items:[
         prod('Lessive en poudre', '10 kg', 36, '2 sacs de 5 kg, 200 doses — cinq machines par semaine', 2),
         prod('Adoucissant', '1 flacon de 1,6 L', 52, 'la machine du mardi seulement : jamais sur les serviettes, les draps, le kimono ni le sport'),
-        prod('Poudre lave-vaisselle', '1 boîte de 2 kg', 20, 'Finish Classic'),
-        prod('Sel lave-vaisselle', '1 sac de 2 kg', 20, 'l\'eau d\'Alicante est très calcaire'),
-        prod('Liquide de rinçage', '1 flacon de 750 ml', 52, 'contre les traces de calcaire'),
+        /* 9 novembre, la nuit, sa question : « je peux acheter du vinaigre blanc pour le mettre dans le lave
+           vaisselle [...] je peux faire une poudre maison moins chere ». Ni l'un ni l'autre : le vinaigre use les
+           joints, et une poudre maison (sans enzymes) laisse un voile blanc avec l'eau d'Alicante. Le moins cher
+           qui lave : les pastilles « Todo en 1 » de Mercadona, 2,95 EUR les 30 (0,10 EUR le lavage, contre ~0,12
+           pour la poudre Finish d'Alcampo), le liquide de rincage dedans -- sa ligne sort ; le sel reste. */
+        prod('Pastilles lave-vaisselle', '1 paquet de 30', 7, 'Bosque Verde « Todo en 1 », 0,10 € le lavage — quatre lavages par semaine'),
+        prod('Sel lave-vaisselle', '1 sac de 2 kg', 20, 'même avec les pastilles : l\'eau d\'Alicante est très calcaire'),
         prod('Liquide vaisselle', '1 flacon de 1,3 L', 8, 'les poêles, le shaker, la cuve du rice cooker'),
         prod('Dégraissant', '1 flacon de 750 ml', 12, 'Quitagrasas — plaques et hotte'),
         prod('Multi-surfaces', '1 flacon de 1 L', 16, 'tables et plan de travail'),
@@ -13506,12 +13509,12 @@
     'Cr\u00e9atine monohydrate': 'En ligne',
     'Nutella': 'Alcampo',   /* 9 novembre : Lidl n'en vend pas (sa marque a lui) ; Alcampo, ou il prend deja les fruits rouges */
     /* 9 novembre au soir : Mercadona revient avec le soin et le menage, la ou leurs prix ont ete releves ;
-       la lessive de 10 kg et la poudre du lave-vaisselle chez Alcampo ; le Skinoren a la pharmacie. */
+       la lessive de 10 kg chez Alcampo ; le Skinoren a la pharmacie. */
     'Gel douche': 'Mercadona', 'Shampoing': 'Mercadona', 'D\u00e9odorant': 'Mercadona', 'Dentifrice': 'Mercadona',
     'Fil dentaire': 'Mercadona', 'Brosse \u00e0 dents': 'Mercadona', 'Nettoyant visage': 'Mercadona', 'Skinoren': 'Pharmacie',
     'Savon pour les mains': 'Mercadona', 'Rasoirs jetables': 'Mercadona', 'Gel de rasage': 'Mercadona', 'Mouchoirs': 'Mercadona',
-    'Lessive en poudre': 'Alcampo', 'Adoucissant': 'Mercadona', 'Poudre lave-vaisselle': 'Alcampo',
-    'Sel lave-vaisselle': 'Mercadona', 'Liquide de rin\u00e7age': 'Mercadona', 'Liquide vaisselle': 'Mercadona',
+    'Lessive en poudre': 'Alcampo', 'Adoucissant': 'Mercadona', 'Pastilles lave-vaisselle': 'Mercadona',
+    'Sel lave-vaisselle': 'Mercadona', 'Liquide vaisselle': 'Mercadona',
     'D\u00e9graissant': 'Mercadona', 'Multi-surfaces': 'Mercadona', 'Anticalcaire salle de bain': 'Mercadona', 'Gel WC': 'Mercadona',
     '\u00c9ponges': 'Mercadona', 'Lavettes microfibre': 'Mercadona', 'Sacs poubelle 30 L': 'Mercadona',
     'Sacs cong\u00e9lation': 'Mercadona', 'Essuie-tout': 'Mercadona', 'Papier toilette': 'Mercadona'
