@@ -45,7 +45,8 @@ console.log('\n== 301) Les cibles du jour et de la semaine viennent de la grille
   const c1 = await cellules(p1.fr);
   const sem1 = await p1.fr.evaluate(() => document.getElementById('dash-semaine').innerText.replace(/\s+/g, ' '));
   ok(/\/ 2 h 40/.test(c1[2]), 'phase 1 : la cellule Español porte une cible du jour (' + c1[2] + ')');
-  ok(/d'espagnol sur 15 h 12/.test(sem1), 'phase 1 : 15 h 12 d\'espagnol prévues dans la semaine (' + sem1.slice(0, 110) + ')');
+  /* 11 novembre : plus d'arrondi au dixieme d'heure -- 15 h 11, comme l'onglet Etudes */
+  ok(/d'espagnol sur 15 h 11/.test(sem1), 'phase 1 : 15 h 11 d\'espagnol prévues dans la semaine (' + sem1.slice(0, 110) + ')');
   ok(!/de projets sur 0/.test(sem1), 'phase 1 : la ligne « projets » se tait au lieu d\'afficher « sur 0 »');
   await p1.ctx.close();
   /* dès le 23 octobre : plus de bloc Español du tout, tout revient aux projets.

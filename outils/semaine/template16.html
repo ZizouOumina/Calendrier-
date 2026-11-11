@@ -1,0 +1,214 @@
+<title>Semaine du 16 novembre</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&family=Barlow:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  /* Une colonne de journee : l'heure en marge comme un agenda papier, les onglets des jours colles en haut.
+     Palette de la Batcave, « ardoise et laiton » : graphite chaud, encre ivoire, une teinte par domaine. */
+  :root{
+    color-scheme:dark;
+    --bg:#191b1e; --surface:#212428; --raised:#2a2e33; --line:#2d3137; --line-fort:#3a4048;
+    --ink:#ede7da; --dim:#aca597; --faint:#a8a192; --laiton:#d9a84e; --laiton-fond:rgba(217,168,78,.13);
+    --etude:#d9a84e; --esp:#f2724b; --repas:#e0917a; --soin:#7cb877; --maison:#8fb6d0; --foi:#b8a2e0; --rdv:#e26b5e; --cours:#aca597; --libre:#a8a192; --sport:#5fc2b0; --projet:#b9c96f;
+    --f-titre:"Rajdhani","Barlow Semi Condensed","Arial Narrow",sans-serif;
+    --f-texte:"Barlow","Segoe UI",system-ui,sans-serif;
+    --f-heure:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+  }
+  @media (prefers-color-scheme: light){
+    :root:not([data-theme="dark"]){
+      color-scheme:light;
+      --bg:#ece9e2; --surface:#ffffff; --raised:#f5f3ee; --line:#e2ded5; --line-fort:#cfc9bd;
+      --ink:#1f1d19; --dim:#5a564e; --faint:#625d54; --laiton:#8a5f12; --laiton-fond:rgba(138,95,18,.10);
+      --etude:#8a5f12; --esp:#b8442a; --repas:#a5522e; --soin:#2f7a45; --maison:#2f6a86; --foi:#6a4aa0; --rdv:#a5372f; --cours:#5a564e; --libre:#625d54; --sport:#1d6d61; --projet:#5a6a1c;
+    }
+  }
+  :root[data-theme="light"]{
+    color-scheme:light;
+    --bg:#ece9e2; --surface:#ffffff; --raised:#f5f3ee; --line:#e2ded5; --line-fort:#cfc9bd;
+    --ink:#1f1d19; --dim:#5a564e; --faint:#625d54; --laiton:#8a5f12; --laiton-fond:rgba(138,95,18,.10);
+    --etude:#8a5f12; --esp:#b8442a; --repas:#a5522e; --soin:#2f7a45; --maison:#2f6a86; --foi:#6a4aa0; --rdv:#a5372f; --cours:#5a564e; --libre:#625d54; --sport:#1d6d61; --projet:#5a6a1c;
+  }
+  *{box-sizing:border-box}
+  body{background:var(--bg); color:var(--ink); font:16px/1.5 var(--f-texte); margin:0;
+       padding-left:max(16px, env(safe-area-inset-left, 0px)); padding-right:max(16px, env(safe-area-inset-right, 0px));}
+  body::before{content:""; position:fixed; inset:0 0 auto; height:env(safe-area-inset-top, 0px); z-index:10; background:var(--bg);}
+  .page{max-width:44rem; margin:0 auto; padding-block:24px 48px; display:grid; gap:20px;}
+  h1,h2{font-family:var(--f-titre); font-weight:700; letter-spacing:.01em; text-wrap:balance; margin:0; line-height:1.1;}
+  h1{font-size:2.1rem;}
+  h2{font-size:1.7rem;}
+  .sous{color:var(--dim); margin:4px 0 0;}
+  .tete{display:grid; gap:10px;}
+  .tete ul{margin:0; padding:0; list-style:none; display:grid; gap:6px; color:var(--dim); font-size:.94rem;}
+  .tete li{padding-left:14px; position:relative;}
+  .tete li::before{content:""; position:absolute; left:0; top:.62em; width:6px; height:6px; border-radius:50%; background:var(--laiton);}
+  nav.jours{position:sticky; top:env(safe-area-inset-top, 0px); z-index:5; background:var(--bg); padding-block:8px;
+            display:grid; grid-template-columns:repeat(7, minmax(0,1fr)); gap:4px; border-bottom:1px solid var(--line);}
+  nav.jours button{font:inherit; color:var(--dim); background:transparent; border:1px solid transparent; border-radius:8px;
+                   padding:6px 0 5px; cursor:pointer; display:grid; justify-items:center; line-height:1.15; min-width:0;}
+  nav.jours button .j{font-size:.72rem; text-transform:uppercase; letter-spacing:.08em;}
+  nav.jours button .n{font-family:var(--f-titre); font-weight:700; font-size:1.35rem;}
+  nav.jours button[aria-selected="true"]{color:var(--ink); background:var(--laiton-fond); border-color:var(--laiton);}
+  nav.jours button.auj .j::after{content:" ●"; color:var(--laiton);}
+  nav.jours button:focus-visible, .bascule:focus-visible{outline:2px solid var(--laiton); outline-offset:2px;}
+  .jour{display:grid; gap:16px;}
+  .entete{display:flex; flex-wrap:wrap; align-items:end; justify-content:space-between; gap:8px 16px;}
+  .entete > div{min-width:0;}
+  .bascule{font:inherit; font-size:.85rem; color:var(--dim); background:var(--surface); border:1px solid var(--line-fort); border-radius:8px; padding:5px 10px; cursor:pointer;}
+  .prieres{display:flex; flex-wrap:wrap; gap:6px 14px; font-size:.9rem; color:var(--dim); margin:0; padding:0; list-style:none;}
+  .prieres li{white-space:nowrap;}
+  .prieres b{color:var(--foi); font-weight:600;}
+  .prieres time{font-family:var(--f-heure); font-variant-numeric:tabular-nums; color:var(--ink);}
+  .rappels{background:var(--surface); border:1px solid var(--line-fort); border-radius:10px; padding:12px 14px;}
+  .rappels h3, .cocher h3{font:600 .78rem/1.2 var(--f-texte); text-transform:uppercase; letter-spacing:.09em; color:var(--laiton); margin:0 0 8px;}
+  .rappels ul{margin:0; padding:0 0 0 18px; display:grid; gap:4px;}
+  ol.fil{list-style:none; margin:0; padding:0;}
+  ol.fil > li{display:grid; grid-template-columns:3.6rem minmax(0,1fr); gap:12px; padding:10px 0; border-bottom:1px solid var(--line);}
+  ol.fil > li:last-child{border-bottom:none;}
+  ol.fil > li.en{padding-block:6px;}
+  ol.fil > li.en .quoi{border-left:2px solid var(--line-fort); padding-left:10px;}
+  .h{font-family:var(--f-heure); font-variant-numeric:tabular-nums; font-size:.95rem; font-weight:500; color:var(--ink); padding-top:1px;}
+  .h small{display:block; font-size:.78rem; color:var(--faint); font-weight:400;}
+  .quoi{min-width:0;}
+  .quoi b{font-weight:600; display:block;}
+  .tag{font-size:.7rem; text-transform:uppercase; letter-spacing:.08em; font-weight:600; display:inline-flex; align-items:center; gap:6px; color:var(--k);}
+  .tag::before{content:""; width:7px; height:7px; border-radius:50%; background:var(--k);}
+  .quoi p{margin:3px 0 0; color:var(--dim); font-size:.93rem; max-width:62ch;}
+  .quoi ol.pas{margin:4px 0 0; padding-left:1.3rem; color:var(--dim); font-size:.93rem; display:grid; gap:2px; max-width:62ch;}
+  .quoi ol.pas li::marker{color:var(--faint); font-family:var(--f-heure); font-size:.8rem;}
+  .compact .quoi p, .compact .quoi ol.pas{display:none;}
+  li.now{background:var(--laiton-fond); border-radius:8px; margin-inline:-8px; padding-inline:8px;}
+  li.now .h::after{content:"en cours"; display:block; font:600 .6rem/1.4 var(--f-texte); letter-spacing:.04em; text-transform:uppercase; color:var(--laiton); margin-top:3px; white-space:nowrap;}
+  .k-etude{--k:var(--etude)} .k-esp{--k:var(--esp)} .k-repas{--k:var(--repas)} .k-soin{--k:var(--soin)} .k-maison{--k:var(--maison)}
+  .k-foi{--k:var(--foi)} .k-rdv{--k:var(--rdv)} .k-cours{--k:var(--cours)} .k-libre{--k:var(--libre)} .k-sport{--k:var(--sport)} .k-projet{--k:var(--projet)}
+  li.k-rdv b{color:var(--rdv);}
+  .cocher{display:grid; gap:8px;}
+  .puces{display:flex; flex-wrap:wrap; gap:6px; margin:0; padding:0; list-style:none;}
+  .puces li{font-size:.86rem; padding:3px 10px; border-radius:999px; border:1px solid var(--line-fort); color:var(--ink); background:var(--surface);}
+  .puces.calme li{color:var(--dim); background:transparent;}
+  .rythmes{display:grid; grid-template-columns:repeat(auto-fit, minmax(16rem, 1fr)); gap:12px;}
+  .rythmes section{background:var(--surface); border:1px solid var(--line-fort); border-radius:10px; padding:12px 14px; min-width:0;}
+  .rythmes h3{font:600 .78rem/1.2 var(--f-texte); text-transform:uppercase; letter-spacing:.09em; color:var(--maison); margin:0 0 8px;}
+  .rythmes ul{margin:0; padding:0 0 0 18px; display:grid; gap:4px; color:var(--dim); font-size:.93rem;}
+  footer{color:var(--dim); font-size:.9rem; display:grid; gap:6px; border-top:1px solid var(--line); padding-top:14px;}
+  footer p{margin:0;}
+  @media (prefers-reduced-motion: no-preference){ html{scroll-behavior:smooth;} }
+</style>
+
+<div class="page">
+  <header class="tete">
+    <div>
+      <h1>Semaine du 16 novembre</h1>
+      <p class="sous">Réveil 05:20 · coucher 21:35 · la salle et le JJB reprennent</p>
+    </div>
+    <ul>
+      <li>La salle reprend lundi, quatre matins (lundi, mardi, jeudi, samedi), et le JJB lundi, mercredi et vendredi. La séance du jour est dans l’onglet Sport de la Batcave.</li>
+      <li>Si tu n’as pas encore vu le médecin, ou s’il t’a dit d’attendre les résultats de la prise de sang : pas de salle ni de JJB avant son feu vert. Leurs créneaux servent alors aux révisions.</li>
+      <li>Des pâtes tous les midis, du riz tous les soirs. Le batch cooking se fait en deux fois, dimanche 14:30 et mardi 19:10, et tout reste au frigo.</li>
+      <li>Les révisions : tu choisis quoi réviser, la page te dit seulement quand.</li>
+      <li>Les habitudes se cochent dans la Batcave. Si un bloc y change, c’est elle qui a raison.</li>
+      <li>Une envie de snus : bois de l’eau, mâche un chewing-gum, marche 5 minutes. Elle passe.</li>
+    </ul>
+  </header>
+
+  <nav class="jours" role="tablist" aria-label="Jours de la semaine" id="onglets"></nav>
+
+  <main id="jour" class="jour" role="tabpanel" aria-live="polite"></main>
+
+  <div class="rythmes">
+    <section><h3>Une fois par mois</h3><ul id="mois"></ul></section>
+    <section><h3>Plus rarement</h3><ul id="rare"></ul></section>
+  </div>
+
+  <footer>
+    <p><b>Après chaque JJB :</b> kimono et rashguard en machine le jour même, à 30 °C et à l’envers, séchés à l’air libre. Jamais deux séances avec le même kimono.</p>
+    <p><b>Chaque jour :</b> 3 L d’eau (3,5 à 4 L les jours de JJB), la créatine au dîner, 8 000 pas, fenêtres ouvertes 10 min le matin et le soir.</p>
+    <p>Heures de prière calculées pour Alicante (méthode de la Ligue islamique mondiale) : elles peuvent différer de quelques minutes de ton appli, c’est elle qui compte.</p>
+  </footer>
+</div>
+
+<script>
+const DATA = __DATA__;
+const NOMS = {etude:'Révisions', esp:'Espagnol', repas:'Repas', soin:'Soin', maison:'Maison', foi:'Foi', rdv:'À faire', cours:'Cours', libre:'Libre', sport:'Sport', projet:'Projet'};
+const HASH = {1:'lundi', 2:'mardi', 3:'mercredi', 4:'jeudi', 5:'vendredi', 6:'samedi', 0:'dimanche'};
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const isoLocal = d => d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+const minutes = h => { const [a, b] = h.split(':').map(Number); return a * 60 + b; };
+let compact = false;
+try { compact = localStorage.getItem('semaine-compact') === '1'; } catch (e) {}
+let actif = 0;
+
+function jourParHash(){
+  const h = location.hash.replace('#', '');
+  const i = DATA.jours.findIndex(j => HASH[j.dow] === h);
+  if (i >= 0) return i;
+  const auj = DATA.jours.findIndex(j => j.iso === isoLocal(new Date()));
+  return auj >= 0 ? auj : 0;
+}
+
+function onglets(){
+  const auj = isoLocal(new Date());
+  document.getElementById('onglets').innerHTML = DATA.jours.map((j, i) =>
+    '<button type="button" role="tab" id="t-' + i + '" aria-controls="jour" aria-selected="' + (i === actif) + '"' +
+    (j.iso === auj ? ' class="auj"' : '') + ' data-i="' + i + '"><span class="j">' + j.court + '</span><span class="n">' + j.num + '</span></button>').join('');
+}
+
+function rendre(){
+  const j = DATA.jours[actif];
+  const lignes = j.rows.map(r =>
+    '<li class="k-' + r.k + (r.en ? ' en' : '') + '" data-t="' + r.t + '"' + (r.en ? ' data-en="1"' : '') + '>' +
+      '<span class="h">' + r.t + (r.fin ? '<small>→ ' + r.fin + '</small>' : '') + '</span>' +
+      '<div class="quoi"><span class="tag">' + NOMS[r.k] + '</span><b>' + esc(r.titre) + '</b>' + (r.d ? '<p>' + esc(r.d) + '</p>' : '') +
+      (r.pas ? '<ol class="pas">' + r.pas.map(x => '<li>' + esc(x) + '</li>').join('') + '</ol>' : '') + '</div>' +
+    '</li>').join('');
+  document.getElementById('jour').innerHTML =
+    '<div class="entete"><div><h2>' + j.jour + ' ' + j.num + ' novembre</h2><p class="sous">' + esc(j.rattrapage) + '</p></div>' +
+    '<button type="button" class="bascule" id="bascule">' + (compact ? 'Afficher les détails' : 'Masquer les détails') + '</button></div>' +
+    '<ul class="prieres" aria-label="Heures de prière">' + j.prieres.map(p => '<li><b>' + p[0] + '</b> <time>' + p[1] + '</time></li>').join('') + '</ul>' +
+    '<section class="rappels"><h3>À ne pas oublier</h3><ul>' + j.notes.map(n => '<li>' + esc(n) + '</li>').join('') + '</ul></section>' +
+    '<ol class="fil' + (compact ? ' compact' : '') + '" id="fil">' + lignes + '</ol>' +
+    '<section class="cocher"><h3>À cocher dans la Batcave</h3>' +
+      '<ul class="puces">' + j.enPlus.map(x => '<li>' + esc(x) + '</li>').join('') + '</ul>' +
+      '<ul class="puces calme">' + DATA.chaqueJour.map(x => '<li>' + esc(x) + '</li>').join('') + '</ul></section>';
+  document.getElementById('bascule').addEventListener('click', () => {
+    compact = !compact;
+    try { localStorage.setItem('semaine-compact', compact ? '1' : '0'); } catch (e) {}
+    document.getElementById('fil').classList.toggle('compact', compact);
+    document.getElementById('bascule').textContent = compact ? 'Afficher les détails' : 'Masquer les détails';
+  });
+  maintenant(false);
+}
+
+function maintenant(defiler){
+  const j = DATA.jours[actif], fil = document.getElementById('fil');
+  if (!fil) return;
+  fil.querySelectorAll(':scope > li.now').forEach(li => li.classList.remove('now'));
+  const d = new Date();
+  if (j.iso !== isoLocal(d)) return;
+  const m = d.getHours() * 60 + d.getMinutes();
+  let cible = null;
+  fil.querySelectorAll(':scope > li:not([data-en])').forEach(li => { if (minutes(li.dataset.t) <= m) cible = li; });
+  if (cible){ cible.classList.add('now'); if (defiler) cible.scrollIntoView({block:'center'}); }
+}
+
+function choisir(i, maj){
+  actif = i;
+  onglets();
+  rendre();
+  if (maj) history.replaceState(null, '', '#' + HASH[DATA.jours[i].dow]);
+}
+
+document.getElementById('onglets').addEventListener('click', e => {
+  const b = e.target.closest('button[data-i]');
+  if (b){ choisir(Number(b.dataset.i), true); window.scrollTo({top:0}); }
+});
+document.getElementById('onglets').addEventListener('keydown', e => {
+  if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+  const n = (actif + (e.key === 'ArrowRight' ? 1 : DATA.jours.length - 1)) % DATA.jours.length;
+  choisir(n, true); document.getElementById('t-' + n).focus();
+});
+window.addEventListener('hashchange', () => choisir(jourParHash(), false));
+document.getElementById('mois').innerHTML = DATA.mois.map(x => '<li>' + esc(x) + '</li>').join('');
+document.getElementById('rare').innerHTML = DATA.plusRare.map(x => '<li>' + esc(x) + '</li>').join('');
+choisir(jourParHash(), false);
+maintenant(true);
+setInterval(() => maintenant(false), 60000);
+</script>

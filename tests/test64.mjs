@@ -177,7 +177,7 @@ console.log('\n== 232) Avant le lundi 14 septembre : aucune période, la grille 
      'le 14 : révision dentaire, déjeuner et cours intacts : ' + [g.l0720, g.l0820, g.l0920, g.l1220, g.l1730].join(' / '));
   ok(g.l1120 === 'Question ouverte ou autre' && g.l1300 === 'Español · gramática' && g.l1400 === 'Español · escribir' && g.l1500 === 'Español · hablar',
      'le 14 : seuls les Projets perso deviennent Español, les quatre du lundi : ' + [g.l1120, g.l1300, g.l1400, g.l1500].join(' / '));
-  ok(/muscu à partir du/.test(g.sport) && /02 nov/.test(g.sport), 'sport : avant la première séance, « muscu à partir du 02 nov. » (' + g.sport + ')');
+  ok(/muscu à partir du/.test(g.sport) && /16 nov/.test(g.sport), 'sport : avant la première séance, « muscu à partir du 16 nov. » (' + g.sport + ')');
   await ctx.close();
 }
 
@@ -201,23 +201,25 @@ console.log('\n== 232) Avant le lundi 14 septembre : aucune période, la grille 
 /* 7 novembre : es-1 s'arrete le samedi 7, le dimanche 8 est hors phase, et le mois repart en
    entier du lundi 9 au mardi 8 decembre (es-1-reprise) : premier jour sans phase le MERCREDI 9
    DECEMBRE. */
-console.log('\n== 233) Fin du mois repris (mardi 8 décembre) puis la suite : les projets reviennent ==');
+/* 11 novembre : le mois repris va du jeudi 12 novembre au vendredi 11 decembre -- premier jour sans phase le
+   SAMEDI 12 DECEMBRE ; le bloc matinal se lit sur le vendredi d'apres, le 18. */
+console.log('\n== 233) Fin du mois repris (vendredi 11 décembre) puis la suite : les projets reviennent ==');
 {
-  const { ctx, fr } = await ouvrir('2026-12-09T12:00:00+01:00');
+  const { ctx, fr } = await ouvrir('2026-12-12T12:00:00+01:00');
   const g = await fr.evaluate(() => {
     const at = (cle, iso, h) => (window.__bcGrille(cle, iso).find(b => b[0] === h) || [])[1];
     /* Le vendredi n'a pas de bloc a 11:20 (Jumu'ah) : les trois creneaux se lisent donc sur
        le premier MARDI d'apres la phase, le 15 decembre ; le bloc matinal, sur le vendredi 11. */
-    return { p: (window.__bcPeriode('2026-12-09') || {}).id, p25: (window.__bcPeriode('2026-12-08') || {}).id,
-             p8: (window.__bcPeriode('2026-11-08') || {}).id, p16: (window.__bcPeriode('2026-11-16') || {}).id,
+    return { p: (window.__bcPeriode('2026-12-12') || {}).id, p25: (window.__bcPeriode('2026-12-11') || {}).id,
+             p8: (window.__bcPeriode('2026-11-11') || {}).id, p16: (window.__bcPeriode('2026-11-16') || {}).id,
              a1120: at('tuesday','2026-12-15','11:20'), a1300: at('tuesday','2026-12-15','13:00'), a1400: at('tuesday','2026-12-15','14:00'),
-             f0530: at('friday','2026-12-11','05:30'), releve: document.querySelector('#bc-grille .v').textContent,
+             f0530: at('friday','2026-12-18','05:30'), releve: document.querySelector('#bc-grille .v').textContent,
              ds1800: at('saturday','2026-12-12','18:00') };
   });
   /* Regime combat : le mardi, 13:00 est « Lire » et les projets sont a 14:00. */
-  ok(g.p === undefined && g.a1120 === 'Question ouverte ou autre' && g.a1300 === 'Lire' && g.a1400 === 'Projets perso 2' && g.f0530 === 'Projets perso matinal', 'dès le 9 décembre : plus de phase, les blocs reviennent aux projets ('+[g.p,g.a1300,g.a1400].join(' / ')+')');
-  ok(g.p25 === 'es-1-reprise' && g.p16 === 'es-1-reprise', 'le mardi 8 décembre est le dernier jour du mois repris, et le 16 novembre en fait partie (' + [g.p25, g.p16].join(' / ') + ')');
-  ok(g.p8 === undefined, 'le dimanche 8 novembre est hors phase (' + g.p8 + ')');
+  ok(g.p === undefined && g.a1120 === 'Question ouverte ou autre' && g.a1300 === 'Lire' && g.a1400 === 'Projets perso 2' && g.f0530 === 'Projets perso matinal', 'dès le 12 décembre : plus de phase, les blocs reviennent aux projets ('+[g.p,g.a1300,g.a1400].join(' / ')+')');
+  ok(g.p25 === 'es-1-reprise' && g.p16 === 'es-1-reprise', 'le vendredi 11 décembre est le dernier jour du mois repris, et le 16 novembre en fait partie (' + [g.p25, g.p16].join(' / ') + ')');
+  ok(g.p8 === undefined, 'le mercredi 11 novembre, veille du jour 1, est hors phase (' + g.p8 + ')');
   ok(!/phase/.test(g.releve), 'relevé GRILLE : ' + g.releve);
   ok(g.ds1800 === 'Projets perso 3', 'le samedi 18:00 reste un bloc de projets depuis le régime combat (' + g.ds1800 + ')');
   await ctx.close();

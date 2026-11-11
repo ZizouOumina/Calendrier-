@@ -1,5 +1,6 @@
 /* Lot 22 — la séance du jour choisie à la main (jour off ou échange), et la saisie au pas :
    nombre de séries, répétitions de chaque série, lest. */
+/* 11 novembre : la muscu commence le lundi 16 (MUSCU_DEBUT) -- les dates de novembre decalees de 14 jours, meme jour de la semaine. */
 import { chromium } from 'playwright';
 import { saisirSeries, effacerSaisie, valeursSaisie } from './saisir.mjs';
 const URL = 'http://127.0.0.1:8199/host.html';
@@ -22,11 +23,11 @@ async function ouvrir(quand, local){
   return { ctx, page, fr };
 }
 const local = (fr,k) => fr.evaluate(x => JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))(x) || 'null'), k);
-const MERCREDI = '2026-11-18T09:00:00+01:00';   /* 31 octobre : jour 1 au 1er novembre, tours complets des le 16 */   /* semaine 3 (jour 1 au mardi 13) : tours complets, jour off. 19 octobre : jour 1 au mardi 20, la semaine 3 commence le 2 novembre. 21 octobre : la muscu commence le 26, tours complets des le 9 novembre -- mercredi 11 */
+const MERCREDI = '2026-12-02T09:00:00+01:00';   /* 31 octobre : jour 1 au 1er novembre, tours complets des le 16 */   /* semaine 3 (jour 1 au mardi 13) : tours complets, jour off. 19 octobre : jour 1 au mardi 20, la semaine 3 commence le 2 novembre. 21 octobre : la muscu commence le 26, tours complets des le 9 novembre -- mercredi 11 */
 /* 7 novembre : la montee en charge part de la premiere seance FAITE -- un squat le lundi 2 en
    fait la premiere ; le jeudi 19 tombe 17 jours plus tard, aux tours complets. */
-const PREMIERE = {'batcave-sport-log': [{id:'p0', date:'2026-11-03', type:'Bas complet', exo:'Squat barre', series:[8,8,8,8], charge:40, unite:'reps'}]};
-const LUNDI    = '2026-11-19T09:00:00+01:00';   /* jeudi : la seance lourde depuis le regime combat (21 octobre : le 12, tours complets) */
+const PREMIERE = {'batcave-sport-log': [{id:'p0', date:'2026-11-17', type:'Bas complet', exo:'Squat barre', series:[8,8,8,8], charge:40, unite:'reps'}]};
+const LUNDI    = '2026-12-03T09:00:00+01:00';   /* jeudi : la seance lourde depuis le regime combat (21 octobre : le 12, tours complets) */
 
 console.log('\n== 270) Un jour off, le bandeau propose de choisir une séance ==');
 {
@@ -44,7 +45,7 @@ console.log('\n== 271) Choisir une séance la rend cochable et la compte comme t
   const { ctx, fr, page } = await ouvrir(MERCREDI);
   await fr.evaluate(() => document.querySelector('[data-seance="Haut lourd"]').click());
   await page.waitForTimeout(250);
-  ok(await local(fr, 'batcave-sport-jour-2026-11-18') === 'Haut lourd', 'le choix est écrit dans batcave-sport-jour-<date>');
+  ok(await local(fr, 'batcave-sport-jour-2026-12-02') === 'Haut lourd', 'le choix est écrit dans batcave-sport-jour-<date>');
   ok(await fr.evaluate(() => (document.querySelector('.sport-card.today .stitle') || {}).textContent) === 'Haut lourd', 'la carte Haut lourd devient la séance du jour');
   ok(/choisie à la main/.test(await fr.evaluate(() => document.getElementById('seance-choix').innerText)), 'le bandeau signale que le choix est manuel');
   const strip = await fr.evaluate(() => document.getElementById('week-strip').innerText);
@@ -64,7 +65,9 @@ console.log('\n== 272) Le prévu du mois ignore la séance bonus ==');
     return [...document.querySelectorAll('#obj-liste .obj-row')].map(r => r.innerText.replace(/\s+/g,' ')).filter(t => /Séances de sport/.test(t))[0] || '';
   });
   ok(prevuMerc.length > 0, 'la ligne « Séances de sport tenues » existe (' + prevuMerc.slice(0, 70) + ')');
-  ok(!/attendu\s*0\b/.test(prevuMerc), 'la cible reste calculée sur la grille, pas sur les séances bonus');
+  /* 11 novembre : le mercredi 2 decembre, decembre commence -- « attendu 0,9 séance » ; l'expression prenait le
+     0 de « 0,9 » pour un zero. Seul un vrai zero (« 0 » ou « 0,0 séance ») est une faute. */
+  ok(!/attendu\s*0(,0+)?\s*séance/.test(prevuMerc), 'la cible reste calculée sur la grille, pas sur les séances bonus (' + (prevuMerc.match(/attendu [^ ]+ séances?/) || [''])[0] + ')');
   await ctx.close();
 }
 
@@ -80,11 +83,11 @@ console.log('\n== 273) Saisie au pas : séries, répétitions, lest ==');
   await saisirSeries(fr, [9, 8, 7, 7], 2.5);
   await page.waitForTimeout(250);
   /* le journal porte aussi la premiere seance du 3 (PREMIERE) : on lit l'entree du jour */
-  const log = (await local(fr, 'batcave-sport-log')).filter(l => l.date === '2026-11-19');
+  const log = (await local(fr, 'batcave-sport-log')).filter(l => l.date === '2026-12-03');
   ok(log.length === 1 && JSON.stringify(log[0].series) === '[9,8,7,7]' && log[0].charge === 2.5,
      'journal : 9/8/7/7 @2,5 kg (' + JSON.stringify(log[0] && [log[0].series, log[0].charge]) + ')');
   ok(await fr.evaluate(() => document.querySelector('.sport-card.today li:not(.puissance) .saisie [data-valider]').textContent.trim()) === '✓ enregistré', 'le bouton passe à « enregistré »');
-  ok((await local(fr, 'batcave-sport-2026-11-19'))['Haut lourd-1'] === true, 'l\'exercice est coché tout seul');
+  ok((await local(fr, 'batcave-sport-2026-12-03'))['Haut lourd-1'] === true, 'l\'exercice est coché tout seul');
   await ctx.close();
 }
 
@@ -113,7 +116,7 @@ console.log('\n== 275) « Effacer » retire la séance du jour ==');
   await effacerSaisie(fr);
   await page.waitForTimeout(200);
   ok((await local(fr, 'batcave-sport-log')).length === 0, 'effacer vide le journal du jour');
-  ok((await local(fr, 'batcave-sport-2026-11-19'))['Haut lourd-1'] === false, 'et décoche l\'exercice');
+  ok((await local(fr, 'batcave-sport-2026-12-03'))['Haut lourd-1'] === false, 'et décoche l\'exercice');
   /* 7 novembre : rien d'autre au journal -- la seance du jour redevient la premiere, a la moitie des tours */
   ok(await valeursSaisie(fr) === '5/5', 'le bloc repart de la cible (' + await valeursSaisie(fr) + ')');
   await ctx.close();
@@ -126,7 +129,7 @@ console.log('\n== 276) Revenir au plan ==');
   await page.waitForTimeout(200);
   await fr.evaluate(() => document.querySelector('.sc-annule').click());
   await page.waitForTimeout(200);
-  ok(await local(fr, 'batcave-sport-jour-2026-11-18') === null, 'la surcharge est supprimée');
+  ok(await local(fr, 'batcave-sport-jour-2026-12-02') === null, 'la surcharge est supprimée');
   ok(/Repos/.test(await fr.evaluate(() => document.getElementById('seance-choix').innerText)), 'la journée redevient un repos');
   await ctx.close();
 }

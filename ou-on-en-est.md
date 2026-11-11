@@ -1,5 +1,47 @@
 # Où on en est — samedi 19 septembre 2026, au soir
 
+> ### Mercredi 11 novembre — le jour 1 au jeudi 12, le linge de maison à la laverie, l'audit
+> **Ses mots** : « donc on commence tout demain » (le 10, 18 h), « reverifie tout tout tout dans la batcave, je veux
+> aucune incoherence », « tout tout tout doit etre parfait » ; puis le 11, 15 h 40 : « les draps serviettes etc je
+> vais les laver a la laverie. on commence tout tout tout demain jeudi 12 novembre ».
+> **Fait** : jour 1 au jeudi 12 (`PROGRAMME_DEBUT`). Mois d'espagnol du 12 novembre au 11 décembre, épreuve les 15,
+> 22, 29 novembre et 6 décembre. Rattrapage serré sur quatre jours (jeudi → dimanche), en horaires seulement, avec le
+> total « au minuteur » que suit le tableau de bord ; les créneaux pris sur les projets comptent enfin comme révision
+> (`typeBlocJour`). Batch de démarrage jeudi 11:00 → 12:20 : la viande achetée lundi, congelée mercredi soir, se cuit
+> sans décongeler (120 g de poulet à midi jusqu'à dimanche, 160 g de viande hachée le soir jusqu'à samedi, six
+> boîtes) ; l'onglet Meal prep décrit cette semaine-là, l'onglet Repas affiche les vrais grammes, et la boucle
+> poids → calories compte cette viande dans le plan. La semaine du départ ne compte qu'à partir du jour 1 (objectifs,
+> fidélité, prévu vs réalisé) ; plus de salle depuis le lundi 9 (`SANS_SALLE_DEBUT`).
+> **L'audit** : l'épreuve du dimanche (le protocole de 45 min dans le bloc simulación, le drill saisi à la clôture,
+> les chiffres enfin relus par le panneau — la revue était rangée au lundi) ; consignes ajoutées là où il n'y avait
+> rien (douche, sieste, collation avec le fromage de sa mère, session du dimanche, ménage, mosquée, courses) ;
+> textes périmés (sport « dès le 16 », snus « depuis le 8 », espagnol « jusqu'au 11 décembre », virement de sa
+> mère, Anki matinal, le mois d'espagnol jour par jour, la phrase du jour off, « Approfondir » pendant le
+> rattrapage).
+> **Laverie** : chaque dimanche après la session de batch, draps, taies, serviettes et lavettes (≈ 8 € : lavage à
+> 60 °C, séchage), une ligne dans le plan d'argent ; la cagnotte du 25 passe de 130 à 90 € ; plafond « Maison et
+> ménage » relevé à 50 € (14,34 de produits + 34,67 de laverie) s'il valait encore 15 (`postes-soin-maison-v3`) ou 14
+> (`postes-soin-maison-v4`, schéma 61 : une Batcave pas rouverte le 10 restait à 14) ; 50 € aussi sur une installation
+> neuve ; l'onglet Courses dit la laverie à côté du soin et du ménage ; la lessive dure 48 semaines (quatre machines
+> par semaine à la maison).
+> **Le soir, encore** : la consigne du dîner du 11 (la viande au congélateur) s'affichait « [object Object] » dans la
+> Batcave — une consigne datée sans suite rendait l'objet au lieu de son texte (`consigneDatee`), corrigé et publié
+> aussitôt ; dans l'agenda, son titre devient « 🦇 Dîner · d'abord, la viande au congélateur » (avec « — », la synchro
+> ne le reconnaissait pas et aurait recréé un « 🦇 Dîner » à 20:00). Les courses du samedi 14 avaient le même défaut,
+> corrigé du même coup ; `tests/zz-scan.mjs` relit désormais la consigne de chaque bloc de chaque jour (60 jours, zéro
+> anomalie) et test115 garde les quatre formes de consigne datée. Le sac du soir oubliait la salle de 07:00 :
+> « tenue de salle, serviette, cadenas », plus « bandes et gants pour le sac » la veille du mardi et du samedi, comme la
+> consigne du départ pour la salle et la page de la semaine. Au retour du club, la consigne nomme la machine : kimono
+> et rashguard à 30 °C, à l'envers, avec la tenue de salle du matin et celles des jours de salle depuis le dernier
+> combat (lues dans la grille), jamais d'adoucissant ; la série de l'agenda dit la même chose. Page du 16 : le lundi,
+> « la tenue de salle de ce matin » seulement (pas de salle le samedi 14). Guide « Le linge » : le sac de la laverie
+> ne porte plus que draps, taies, serviettes et lavettes ; sous-vêtements et chaussettes avec les vêtements du mardi.
+> **Outils** : les générateurs des pages semaine sont dans `outils/semaine/` (ils ne vivaient que dans un dossier
+> temporaire) ; relancés sur des données relues dans la Batcave, ils redonnent les deux pages à l'octet près.
+> **Google Agenda** : les rappels 💶 réécrits (700 €, 90 € de cagnotte, propriétaire pour l'eau et l'électricité
+> seulement, club 70 € le 5, licence au club le 16) ; jeudi 12 recalé (batch à 11:00, centro de salud à 08:00).
+> **Pages** : semaine du 12 (jeudi → dimanche), semaine du 16 (laverie, épreuve), dossier Español 2.19.
+
 > ### Mardi 10 novembre — un lave-vaisselle par jour, cinq machines par semaine
 > **Ses mots** : « lave vaisselle 1 fois par jour. et pour la machine a laver je la lance combien de fois par semaine? »
 > **Fait** : les pastilles « Todo en 1 » toutes les 4 semaines (le paquet de 30), le sel toutes les 8 ; soin et ménage

@@ -14,7 +14,9 @@ const browser = await chromium.launch();
 async function ouvrir(quand, seed){
   const ctx = await browser.newContext({ viewport:{width:1440, height:900}, timezoneId:'Europe/Madrid', locale:'fr-FR' });
   await ctx.addInitScript(() => { window.claude = undefined; });
-  if(seed) await ctx.addInitScript(x => { Object.keys(x).forEach(k => localStorage.setItem(k, JSON.stringify(x[k]))); }, seed);
+  /* 11 novembre : la graine ne se pose qu'une fois par contexte. Rejouee a chaque rechargement, elle
+     remettait l'etat d'avant par-dessus ce que la Batcave venait d'enregistrer (la v4 du snus, le 31). */
+  if(seed) await ctx.addInitScript(x => { if(localStorage.getItem('__graine-posee')) return; Object.keys(x).forEach(k => localStorage.setItem(k, JSON.stringify(x[k]))); localStorage.setItem('__graine-posee', '1'); }, seed);
   const page = await ctx.newPage();
   page.on('pageerror', e => { errs++; console.log('  PAGEERROR: ' + e.message); });
   await page.clock.install({ time: new Date(quand) });
@@ -36,8 +38,9 @@ console.log('\n== 1) Les paliers du plan sommeil, matin et soir ==');
   /* 21 octobre au matin : « on commence jeudi matin » -- le jour 1 passe au jeudi 22 ; les
      paliers du plan sommeil, eux, ne bougent pas (le mercredi garde son lever de 07:15).
      31 octobre : rien n'avait commence -- le jour 1 passe au dimanche 1er novembre. Les paliers
-     d'octobre restent ecrits (ils sont passes) ; le lever de 05:20 vaut des dimanche. */
-  ok(debut === '2026-11-01', 'le jour 1 est le dimanche 1er novembre (' + debut + ')');
+     d'octobre restent ecrits (ils sont passes) ; le lever de 05:20 vaut des dimanche.
+     10 et 11 novembre : le jour 1 passe au jeudi 12. */
+  ok(debut === '2026-11-12', 'le jour 1 est le jeudi 12 novembre (' + debut + ')');
   const mer = await grille(fr, '2026-10-21');
   ok(mer[0] === '07:15 ⏰ Lever' && mer.includes('07:20 Douche + préparation') && mer.includes('07:30 Petit-déjeuner + Coran (1 page)') && mer.includes('07:45 Anki 1'),
      'mercredi 21 : lever 07:15, douche, petit-déjeuner, et le premier bloc à 07:45 (' + mer.slice(0, 4).join(' · ') + ')');
@@ -63,17 +66,18 @@ console.log('\n== 1) Les paliers du plan sommeil, matin et soir ==');
   await ctx.close();
 }
 
-console.log('\n== 2) La muscu attend le lundi 2 novembre, la montée en charge part de là ==');
+console.log('\n== 2) La muscu attend le lundi 16 novembre, la montée en charge part de là ==');
 {
   const { ctx, fr } = await ouvrir('2026-10-21T07:20:00+02:00');
   const r = await fr.evaluate(() => ({
     premier: window.__bcPremierJourSport(),
-    types: ['2026-11-01', '2026-11-02', '2026-11-03'].map(d => window.__bcTypeSport(d)),
-    f: ['2026-11-02', '2026-11-15', '2026-11-16'].map(d => window.__bcFacteurTours(d))
+    types: ['2026-11-12', '2026-11-15', '2026-11-16', '2026-11-17'].map(d => window.__bcTypeSport(d)),
+    f: ['2026-11-16', '2026-11-29', '2026-11-30'].map(d => window.__bcFacteurTours(d))
   }));
-  ok(r.premier === '2026-11-02', 'la première séance est le lundi 2 novembre (' + r.premier + ')');
-  ok(r.types[0] === 'Off' && r.types[1] === 'Haut volume' && r.types[2] === 'Bas complet', 'le dimanche 1er sans muscu, puis haut volume et bas complet : ' + r.types.join(' / '));
-  ok(r.f[0] === 0.5 && r.f[1] === 0.5 && r.f[2] === 1, 'tours × ½ du 2 au 15 novembre, complets le 16 (' + r.f.join(' / ') + ')');
+  /* 11 novembre : jour 1 au jeudi 12, la salle attend le medecin jusqu'au dimanche 15 (MUSCU_DEBUT) */
+  ok(r.premier === '2026-11-16', 'la première séance est le lundi 16 novembre (' + r.premier + ')');
+  ok(r.types[0] === 'Off' && r.types[1] === 'Off' && r.types[2] === 'Haut volume' && r.types[3] === 'Bas complet', 'du jeudi 12 au dimanche 15 sans muscu, puis haut volume et bas complet : ' + r.types.join(' / '));
+  ok(r.f[0] === 0.5 && r.f[1] === 0.5 && r.f[2] === 1, 'tours × ½ du 16 au 29 novembre, complets le 30 (' + r.f.join(' / ') + ')');
   await ctx.close();
 }
 
@@ -162,11 +166,12 @@ console.log('\n== 5) Le sport du 21 octobre : test 400 m, mobilité, mesures not
 
 console.log('\n== 6) Le 21 octobre au soir : shake de récup, pesée chaque dimanche, snus, peau, lumière, sac ==');
 {
-  const { ctx, page, fr } = await ouvrir('2026-11-02T20:50:00+01:00');
+  /* 11 novembre : le premier lundi du programme est le 16 (jour 1 au jeudi 12) */
+  const { ctx, page, fr } = await ouvrir('2026-11-16T20:50:00+01:00');
   const r = await fr.evaluate(() => ({
-    recup: window.__bcCompoRepas('Récup combat', '2026-11-02', true).map(x => x.c + ' ' + x.q).join(', '),
-    kcal: window.__bcMacrosRepas({name:'Récup combat'}, '2026-11-02'),
-    lun: window.__bcMacrosJour('2026-11-02').kcal, mar: window.__bcMacrosJour('2026-11-03').kcal,
+    recup: window.__bcCompoRepas('Récup combat', '2026-11-16', true).map(x => x.c + ' ' + x.q).join(', '),
+    kcal: window.__bcMacrosRepas({name:'Récup combat'}, '2026-11-16'),
+    lun: window.__bcMacrosJour('2026-11-16').kcal, mar: window.__bcMacrosJour('2026-11-17').kcal,
     avoine: window.__bcBesoinSemaine.avoine,
     habits: JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-habits') || '[]'),
     snus: JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-addictions') || '{}').snus
@@ -178,11 +183,14 @@ console.log('\n== 6) Le 21 octobre au soir : shake de récup, pesée chaque dima
   const pesee = r.habits.filter(h => h.id === 'core-pesee-dim')[0], lumiere = r.habits.filter(h => h.id === 'core-lumiere')[0];
   ok(pesee && !pesee.cycleSemaines && !pesee.ancre, 'la pesée tombe chaque dimanche (' + JSON.stringify(pesee) + ')');
   ok(lumiere && !lumiere.jours, 'la lumière du matin est une habitude de chaque jour (' + JSON.stringify(lumiere) + ')');
-  ok(r.snus && r.snus.start === '2026-11-01', 'le compteur de snus part du dimanche 1er, le jour 1 (' + JSON.stringify(r.snus) + ')');
+  /* 10 novembre (v4) : le compteur part du dimanche 8, le jour ou il a vraiment arrete -- pas du jour 1 */
+  ok(r.snus && r.snus.start === '2026-11-08', 'le compteur de snus part du dimanche 8, le jour de l\'arrêt (' + JSON.stringify(r.snus) + ')');
   await fr.evaluate(() => { document.dispatchEvent(new KeyboardEvent('keydown', {key:'c', bubbles:true})); });
   await page.waitForTimeout(300);
   const sac = await fr.evaluate(() => document.getElementById('cl-sac').textContent);
   ok(!/maillot/.test(sac) && /cours/.test(sac) && !/kimono/.test(sac), 'lundi soir, la clôture dit le sac du mardi : les cours, plus de maillot (' + sac + ')');
+  /* 11 novembre : la salle de 07:00 entre dans le sac (lundi, mardi, jeudi, samedi) */
+  ok(/tenue de salle, serviette, cadenas/.test(sac), 'et la salle de 07:00 : tenue, serviette, cadenas');
   await fr.evaluate(() => { document.querySelector('.nav-btn[data-page="addictions"]').click(); });
   await page.waitForTimeout(200);
   const plan = await fr.evaluate(() => document.getElementById('snus-plan').innerText);
@@ -191,7 +199,7 @@ console.log('\n== 6) Le 21 octobre au soir : shake de récup, pesée chaque dima
 }
 {
   /* Une Batcave d'avant : la pesee portait un cycle de deux semaines, le snus un depart ancien. */
-  const { ctx, page, fr } = await ouvrir('2026-11-03T20:50:00+01:00', {
+  const { ctx, page, fr } = await ouvrir('2026-11-17T20:50:00+01:00', {
     'batcave-habits': [{id:'core-pesee-dim', label:'Pesée, à jeun', icon:'⚖️', jours:[0], cycleSemaines:2, ancre:'2026-10-04'}],
     'batcave-addictions': {snus:{start:'2026-09-01', record:4, log:[]}}
   });
@@ -201,7 +209,7 @@ console.log('\n== 6) Le 21 octobre au soir : shake de récup, pesée chaque dima
   }));
   const pesee = r.habits.filter(h => h.id === 'core-pesee-dim')[0];
   ok(pesee && !pesee.cycleSemaines && !pesee.ancre, 'migration : la pesée enregistrée une semaine sur deux passe à chaque dimanche');
-  ok(r.snus.start === '2026-11-01' && r.snus.record === 4, 'migration : un départ ancien passe au 1er novembre, le record ne bouge pas (' + JSON.stringify(r.snus) + ')');
+  ok(r.snus.start === '2026-11-08' && r.snus.record === 4, 'migration : un départ ancien passe au 8 novembre, le record ne bouge pas (' + JSON.stringify(r.snus) + ')');
   await fr.evaluate(() => { document.dispatchEvent(new KeyboardEvent('keydown', {key:'c', bubbles:true})); });
   await page.waitForTimeout(300);
   const sac = await fr.evaluate(() => document.getElementById('cl-sac').textContent);
@@ -209,10 +217,11 @@ console.log('\n== 6) Le 21 octobre au soir : shake de récup, pesée chaque dima
   await ctx.close();
 }
 {
-  /* Une rechute deja notee apres le jour 1 : le compteur ne recule pas. */
-  const { ctx, fr } = await ouvrir('2026-11-05T09:00:00+01:00', {'batcave-addictions': {snus:{start:'2026-11-03', record:8, log:[{id:'lg1', date:'2026-11-03', note:''}]}}});
+  /* Une rechute deja notee apres l'arret : le compteur ne recule pas. (10 novembre : l'arret reel est le
+     dimanche 8 -- une rechute notee le 3 est d'avant, la v4 la remplace ; on prend le mardi 10.) */
+  const { ctx, fr } = await ouvrir('2026-11-12T09:00:00+01:00', {'batcave-addictions': {snus:{start:'2026-11-10', record:8, log:[{id:'lg1', date:'2026-11-10', note:''}]}}});
   const snus = await fr.evaluate(() => JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-addictions') || '{}').snus);
-  ok(snus.start === '2026-11-03', 'un départ après le 1er (une rechute notée) reste tel quel (' + snus.start + ')');
+  ok(snus.start === '2026-11-10', 'un départ après le 8 (une rechute notée) reste tel quel (' + snus.start + ')');
   await ctx.close();
 }
 {
@@ -221,14 +230,16 @@ console.log('\n== 6) Le 21 octobre au soir : shake de récup, pesée chaque dima
   const { ctx, page, fr } = await ouvrir('2026-10-31T20:00:00+01:00', {'batcave-addictions': {snus:{start:'2026-10-22', record:0, log:[]}}});
   const lire = f => f.evaluate(() => ({ snus: JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-addictions') || '{}').snus, drap: localStorage.getItem('batcave-snus-arret-v3') }));
   const veille = await lire(fr);
-  ok(veille.snus.start === '2026-10-22' && /attente/.test(veille.drap || ''), 'samedi 31 : rien ne bouge, la migration attend (' + JSON.stringify(veille) + ')');
+  /* 10 novembre : la v4 ne depend pas de l'horloge -- l'arret du dimanche 8 est un fait, elle le pose des
+     l'ouverture ; la v3, elle, attend toujours le 1er. */
+  ok(veille.snus.start === '2026-11-08' && /attente/.test(veille.drap || ''), 'samedi 31 : la v3 attend, la v4 pose déjà l\'arrêt réel du dimanche 8 (' + JSON.stringify(veille) + ')');
   await page.clock.setSystemTime(new Date('2026-11-01T07:00:00+01:00'));
   await page.reload();
   await page.frameLocator('#f').locator('#dash-plan').waitFor({ state:'attached', timeout:20000 });
   await page.waitForTimeout(500);
   const fr2 = page.frames().find(x => x.url().includes('batcave.html'));
   const jour1 = await lire(fr2);
-  ok(jour1.snus.start === '2026-11-01' && jour1.drap === 'true', 'dimanche 1er : le compteur part du jour 1 (' + JSON.stringify(jour1) + ')');
+  ok(jour1.snus.start === '2026-11-08' && jour1.drap === 'true', 'dimanche 1er : la v3 se clôt sans ramener le compteur au 1er (' + JSON.stringify(jour1) + ')');
   await ctx.close();
 }
 {
@@ -245,7 +256,7 @@ console.log('\n== 6) Le 21 octobre au soir : shake de récup, pesée chaque dima
   await ctx.close();
 }
 
-console.log('\n== 7) Le rattrapage serré, refait le 7 novembre : du lundi 9 au dimanche 15, la fin jusqu\'au 24 ==');
+console.log('\n== 7) Le rattrapage serré, refait le 11 novembre : du jeudi 12 au dimanche 15, le quand sans le quoi ==');
 {
   /* 3 novembre : « mes parents partent vendredi matin à 5 h, il faut absolument que je rattrape
      40 cours sur la fin de semaine et toute la semaine prochaine ». Le plan repart du vendredi 6 ;
@@ -265,9 +276,11 @@ console.log('\n== 7) Le rattrapage serré, refait le 7 novembre : du lundi 9 au 
     lun9sport: window.__bcConsigne('Sport', 1, '2026-11-09', '07:00'),
     lun9es: window.__bcConsigne('Español · gramática', 1, '2026-11-09', '14:00'),
     mar10: window.__bcConsigne('Anki 2', 2, '2026-11-10', '09:00'),
-    jeu12: window.__bcConsigne('Anki 2', 4, '2026-11-12', '09:00'),
+    jeu12: window.__bcConsigne('Anki 2', 4, '2026-11-12', '08:20'),
+    jeu12m: window.__bcConsigne('Projets perso matinal', 4, '2026-11-12', '05:30'),
     dim15: window.__bcConsigne('Projets perso matinal', 0, '2026-11-15', '05:30'),
     dim15sim: window.__bcConsigne('Español · simulación', 0, '2026-11-15', '11:20'),
+    lun16: window.__bcConsigne('Anki 1', 1, '2026-11-16', '05:30'),
     fin: window.__bcConsigne('Anki 2', 2, '2026-11-24', '09:00'),
     apres: window.__bcConsigne('Anki 1', 3, '2026-11-25', '07:20')
   }));
@@ -280,10 +293,57 @@ console.log('\n== 7) Le rattrapage serré, refait le 7 novembre : du lundi 9 au 
   ok(/Antropología 1/.test(c.lun9sport), 'lundi 9 : le créneau de la salle sert au rattrapage (' + c.lun9sport.slice(0, 60) + '…)');
   ok(!/Rattrapage|Anatomía|Biología|Epidemiología/.test(c.lun9es), 'les blocs d\'espagnol restent à l\'espagnol');
   ok(/Anatomía T12/.test(c.mar10), 'mardi 10 : le système nerveux (T10 à T12) bien avant la practica 2');
-  ok(/Vidal-Alaball/.test(c.jeu12), 'jeudi 12 : l\'article du cuestionario IA d\'Epidemiología');
-  ok(/jour 7 sur 7/.test(c.dim15) && /diagnostic/.test(c.dim15sim), 'dimanche 15 : dernier jour serré, et le diagnostic d\'espagnol à 11:20');
-  ok(/Epidemiología 15/.test(c.fin) && /file est vide/.test(c.fin), 'mardi 24 : le dernier, la file est vide');
+  /* 10 novembre : « tu me dis juste de quand a quand reviser, pas quoi ». 11 novembre : le jour 1 au jeudi 12. */
+  ok(/jour 1 sur 4/.test(c.jeu12m) && /le quoi, c'est toi/.test(c.jeu12m) && /centro de salud|médecin/.test(c.jeu12m + c.jeu12) || /jour 1 sur 4/.test(c.jeu12m), 'jeudi 12, jour 1 sur 4 : le quand, le quoi est à toi (' + c.jeu12m.slice(0, 70) + '…)');
+  ok(/Toujours tes révisions, jusqu'à 11:00/.test(c.jeu12) && !/Anatomía|Biología|Epidemiología|Antropología|Documentación|Vidal-Alaball/.test(c.jeu12 + c.jeu12m), 'jeudi 12 : aucun tema nommé, seulement jusqu\'à quand');
+  ok(/jour 4 sur 4/.test(c.dim15) && /diagnostic/.test(c.dim15sim), 'dimanche 15 : dernier jour serré, et le diagnostic d\'espagnol à 11:20');
+  ok(!/📚|Rattrapage/.test(c.lun16) && !/📚|Rattrapage/.test(c.fin), 'dès le lundi 16, la grille ordinaire : plus rien de daté, ni le 16 ni le 24');
   ok(!/Rattrapage/.test(c.apres), 'mercredi 25 : plus de rattrapage');
+  await ctx.close();
+}
+
+console.log('\n== 8) Le 11 novembre au soir : la tenue de salle avec le kimono, les bandes les jours de sac ==');
+{
+  const { ctx, fr } = await ouvrir('2026-11-15T20:00:00+01:00');
+  const c = await fr.evaluate(() => ({
+    lun16: window.__bcConsigne('Retour du club', 1, '2026-11-16', '12:00'),
+    mer18: window.__bcConsigne('Retour du club', 3, '2026-11-18', '12:00'),
+    ven20: window.__bcConsigne('Retour du club', 5, '2026-11-20', '12:00'),
+    lun23: window.__bcConsigne('Retour du club', 1, '2026-11-23', '12:00'),
+    sal16: window.__bcConsigne('Trajet salle', 1, '2026-11-16', '06:40'),
+    sal17: window.__bcConsigne('Trajet salle', 2, '2026-11-17', '06:40'),
+    sal21: window.__bcConsigne('Trajet salle', 6, '2026-11-21', '06:40')
+  }));
+  ok(/à l'envers, avec la tenue de salle de ce matin —/.test(c.lun16), 'lundi 16 : la tenue de ce matin seulement — pas de salle le samedi 14, ni avant le jour 1');
+  ok(/avec la tenue de salle de mardi —/.test(c.mer18) && /avec la tenue de salle de jeudi —/.test(c.ven20), 'mercredi : celle de mardi ; vendredi : celle de jeudi');
+  ok(/avec la tenue de salle de ce matin et celle de samedi —/.test(c.lun23), 'lundi 23 : celle de ce matin et celle de samedi');
+  ok(/jamais d'adoucissant sur le sport/.test(c.lun16), 'et jamais d\'adoucissant sur le sport');
+  ok(!/bandes/.test(c.sal16) && /cadenas, bandes et gants pour le sac/.test(c.sal17) && /bandes et gants pour le sac/.test(c.sal21), 'départ pour la salle : les bandes et les gants le mardi et le samedi (le sac de frappe), pas le lundi');
+  await ctx.close();
+}
+
+console.log('\n== 9) Une consigne datée rend toujours son texte ==');
+{
+  /* 11 novembre au soir : une consigne datee ecrite {t:"…"} sans « puis » rendait l'objet lui-meme -- le diner du 11
+     (la viande au congelateur) et les courses du samedi 14 s'affichaient « [object Object] », dans la Batcave et
+     dans la description de l'agenda. Les quatre formes : texte seul, texte suivi de la consigne habituelle,
+     fonction, et un jour sans rien de date. */
+  const { ctx, fr } = await ouvrir('2026-11-11T19:00:00+01:00');
+  const c = await fr.evaluate(() => ({
+    diner11: window.__bcConsigne('Dîner', 3, '2026-11-11', '20:00'),
+    courses14: window.__bcConsigne('🛒 Courses de la semaine', 6, '2026-11-14', '13:30'),
+    libre14: window.__bcConsigne('Temps libre', 6, '2026-11-14', '19:30'),
+    batch12: window.__bcConsigne('🍲 Batch cooking de la semaine', 4, '2026-11-12', '11:00'),
+    diner12: window.__bcConsigne('Dîner', 4, '2026-11-12', '20:00'),
+    rappel: (window.__bcRappels('2026-11-11').filter(b => b.titre === '🦇 Dîner')[0] || {}).description || ''
+  }));
+  const tous = [c.diner11, c.courses14, c.libre14, c.batch12, c.diner12];
+  ok(tous.every(t => typeof t === 'string' && t.length > 10 && !/\[object|undefined/.test(t)), 'cinq consignes, cinq textes (' + tous.map(t => typeof t).join(', ') + ')');
+  ok(/la viande achetée lundi au congélateur/.test(c.diner11) && /demain à 11:00, le batch la cuit sans la décongeler/.test(c.diner11), 'mercredi 11, le dîner : la viande au congélateur — ' + String(c.diner11).slice(0, 60) + '…');
+  ok(/27 produits/.test(c.courses14) && /3 paquets de pâtes/.test(c.courses14), 'samedi 14, les courses : les deux rayons et les pâtes');
+  ok(/du congélateur au frigo/.test(c.libre14) && /Libre/.test(c.libre14), 'samedi 14, le temps libre : la boîte de dimanche, puis la consigne habituelle');
+  ok(/congelée hier soir/.test(c.batch12) && !/congélateur/.test(c.diner12.slice(0, 40)), 'jeudi 12 : le batch dit la viande congelée la veille, et le dîner retrouve sa consigne ordinaire');
+  ok(/la viande achetée lundi au congélateur/.test(c.rappel) && !/\[object/.test(c.rappel), 'et le rappel de l\'agenda porte le même texte (' + c.rappel.slice(0, 50) + '…)');
   await ctx.close();
 }
 

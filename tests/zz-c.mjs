@@ -1,0 +1,12 @@
+import { chromium } from 'playwright';
+const b = await chromium.launch();
+const ctx = await b.newContext({ viewport:{width:1440,height:900}, timezoneId:'Europe/Madrid', locale:'fr-FR' });
+const page = await ctx.newPage();
+await page.clock.install({ time: new Date(process.argv[2]) });
+await page.goto('http://127.0.0.1:8199/host.html', {timeout:20000}).catch(() => {});
+await page.frameLocator('#f').locator('#dash-plan').waitFor({ state:'attached', timeout:15000 });
+const fr = page.frames().find(x => x.url().includes('batcave.html'));
+const req = JSON.parse(process.argv[3]);
+const out = await fr.evaluate((req) => req.map(([l, d, iso, h]) => l + ' @ ' + iso + ' ' + h + ' → ' + window.__bcConsigne(l, d, iso, h)), req);
+out.forEach(x => console.log(x + '\n'));
+await b.close();

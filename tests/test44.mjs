@@ -32,7 +32,8 @@ console.log('\n== 105) Charge restante : cible hebdo moins le fait depuis lundi 
   ]};
   const { ctx, fr } = await ouvrir('2026-09-02T10:00:00+02:00', seed);   /* mercredi */
   const t = await texte(fr, '#dash-semaine');
-  ok(/25 h 12 de révision restantes sur 33 h 12/.test(t), '33 h 12 − 8 h = 25 h 12 de révision (' + t.slice(0,70) + '…)');
+  /* 11 novembre : plus d'arrondi au dixieme d'heure -- 33 h 10, pas 33 h 12 */
+  ok(/25 h 10 de révision restantes sur 33 h 10/.test(t), '33 h 10 − 8 h = 25 h 10 de révision (' + t.slice(0,70) + '…)');
   /* 25 septembre : les projets n'ont plus de cible, la phrase ne les mentionne plus */
   ok(!/de projets sur/.test(t), 'plus de charge de projets annoncée (sans minuteur depuis le 25 septembre)');
   ok(/5 jours/.test(t), 'mercredi → dimanche : 5 jours');

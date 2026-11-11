@@ -50,10 +50,13 @@ const CHARNIERES = [
   /* 7 novembre : es-1 s'arrete le 7, le dimanche 8 est hors phase, le mois repart du 9 au 8 decembre */
   ['dernier jour de es-1',      '2026-11-07', 'es-1'],
   ['le dimanche entre les deux','2026-11-08', null],
+  /* 11 novembre : le mois repart du jeudi 12 au vendredi 11 decembre -- le mercredi 11 est encore hors phase */
+  ['la veille du jour 1',       '2026-11-11', null],
+  ['jour 1, mois repris',       '2026-11-12', 'es-1-reprise'],
   ['dans le mois repris',       '2026-11-16', 'es-1-reprise'],
   ['fin novembre, mois repris', '2026-11-29', 'es-1-reprise'],
-  ['dernier jour du mois repris','2026-12-08', 'es-1-reprise'],
-  ['premier jour sans phase',   '2026-12-09', null],
+  ['dernier jour du mois repris','2026-12-11', 'es-1-reprise'],
+  ['premier jour sans phase',   '2026-12-12', null],
   ['pendant les vacances',      '2026-12-28', 'vacances'],
   ['en mode partiels',          '2027-01-19', 'partiels'],
   ['apres les partiels',        '2027-02-08', null],

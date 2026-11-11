@@ -29,7 +29,8 @@ console.log('\n== 83) Les objectifs hebdomadaires se déduisent du planning ==')
     proj: document.getElementById('proj-stats').innerText,
   }));
   /* écrits en dur, ils valaient encore 39 h et 23 h : l'ancien planning. */
-  ok(nb(v.rev) === '33h12', 'objectif révision = 33 h 12 de travail réel (grille du 18 septembre : Étudier en avance 2 h, Question ouverte ou autre 1 h, Clore 40 min, Approfondir et Réexpliquer le week-end) : ' + nb(v.rev));
+  /* 11 novembre : la cible hebdo n'est plus arrondie au dixieme d'heure (33,2 h = 33 h 12) : 33 h 10 exactement */
+  ok(nb(v.rev) === '33h10', 'objectif révision = 33 h 10 de travail réel (grille du 18 septembre : Étudier en avance 2 h, Question ouverte ou autre 1 h, Clore 40 min, Approfondir et Réexpliquer le week-end) : ' + nb(v.rev));
   /* 22 h 30 depuis l'emploi du temps reel du S1 : lundi gagne « Projets perso 4 » (1 h 50)
      et mardi « Projets perso 5 » et « 6 » (2 h), soit 3 h 36 de travail net en plus. */
   /* 25 septembre : plus de minuteur sur les projets perso, donc plus d'objectif en heures */

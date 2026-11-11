@@ -67,24 +67,29 @@ console.log('— vendredi 25 septembre : la premiere periode, 28 sept. -> 24 oct
   /* 9 novembre, la nuit : le soin, la sante et le menage entrent dans le plan -- 9,63 EUR par semaine en moyenne
      (9,54 avec les pastilles du lave-vaisselle, 9,93 a un lavage par jour ; le Skinoren compte 19,90 EUR), des le samedi 14. La periode la plus chere (5 samedis) en porte 49,65 : la
      cagnotte descend de 180 a 130 EUR. */
-  ok(a.cagnotte === 130, 'jour du virement : 130 EUR dans la cagnotte (230 avant le prix des fruits rouges, 30 octobre ; 200 avant les oeufs du 8 novembre ; 190 avant Basic-Fit ; 170 avant le pot de miel en moins du 9 novembre au soir ; 180 avant le soin et le menage) — ce que laisse la periode la plus chere, les courses comptees en caisse (plan dense du 23 octobre au soir) (' + a.cagnotte + ')');
+  /* 11 novembre : les draps, les serviettes et les lavettes vont a la laverie, 8 EUR par dimanche des le 15
+     (a corriger au premier ticket) ; a la maison, quatre machines par semaine au lieu de six -- le soin et
+     le menage passent a 9,73 EUR par semaine (42,15 EUR par mois). La periode la plus chere porte aussi
+     5 dimanches de laverie (40 EUR) : la cagnotte descend de 130 a 90 EUR. */
+  ok(a.cagnotte === 90, 'jour du virement : 90 EUR dans la cagnotte (230 avant le prix des fruits rouges, 30 octobre ; 200 avant les oeufs du 8 novembre ; 190 avant Basic-Fit ; 170 avant le pot de miel en moins du 9 novembre au soir ; 180 avant le soin et le menage ; 130 avant la laverie du 11 novembre) — ce que laisse la periode la plus chere, les courses comptees en caisse (plan dense du 23 octobre au soir) (' + a.cagnotte + ')');
   ok(a.periode.debut === '2026-09-28' && a.periode.fin === '2026-10-24', 'premiere periode du 28 sept. (dernier virement a l\'ancienne date) au 24 oct.');
   ok(a.periode.samedis === 4, '4 samedis de courses');
-  ok(pres(a.periode.balayage, 142.62), 'le 24 : environ 142,62 EUR a balayer — cette periode-ci n\'a pas encore de soin ni de menage (ils commencent le 14 novembre), et la cagnotte prend 50 EUR de moins (' + a.periode.balayage.toFixed(2) + ')');
-  ok(pres(a.moyenne, 215.55), 'epargne moyenne : 215,55 EUR par mois — 258,58 moins les 43,03 EUR du soin et du menage, un lave-vaisselle par jour (hors les prix a relever) (' + a.moyenne.toFixed(2) + ')');
+  ok(pres(a.periode.balayage, 182.62), 'le 24 : environ 182,62 EUR a balayer — cette periode-ci n\'a pas encore de soin ni de menage (ils commencent le 14 novembre), ni de laverie (le 15), et la cagnotte prend 90 EUR (' + a.periode.balayage.toFixed(2) + ')');
+  ok(pres(a.moyenne, 181.76), 'epargne moyenne : 181,76 EUR par mois — 258,58 moins les 42,15 EUR du soin et du menage (un lave-vaisselle par jour, le linge de maison a la laverie) et les 34,67 EUR de la laverie, 8 EUR par dimanche (hors les prix a relever) (' + a.moyenne.toFixed(2) + ')');
   ok(a.prochaine5 && a.prochaine5.debut === '2026-12-25' && a.prochaine5.fin === '2027-01-24' && a.prochaine5.samedis === 5, 'prochaine periode a 5 samedis : 25 dec. -> 24 janv.');
-  ok(pres(a.prochaine5.balayage, 31.11), 'avec 5 samedis, les reserves, le soin et le menage, il reste encore 31,11 EUR le 24, la marge d\'un second prelevement Basic-Fit (' + a.prochaine5.balayage.toFixed(2) + ')');
+  ok(pres(a.prochaine5.balayage, 32.13), 'avec 5 samedis, 5 dimanches de laverie, les reserves, le soin et le menage, il reste encore 32,13 EUR le 24, la marge d\'un second prelevement Basic-Fit (' + a.prochaine5.balayage.toFixed(2) + ')');
   const L = a.lignes;
   ok(L[0].montant === 700 && L[0].plus && L[0].quand === 'le 28', 'le fil commence par le virement, le 28 pour cette premiere periode');
-  ok(L[1].montant === 130 && L[1].cagnotte && L[1].quand === 'le 28', 'puis la cagnotte, le meme jour');
+  ok(L[1].montant === 90 && L[1].cagnotte && L[1].quand === 'le 28', 'puis la cagnotte, le meme jour : 90 EUR');
   const club = L.find(l => /club/.test(l.action));
   ok(club && club.montant === 70 && club.quand === 'le 5', 'le club, 70 EUR, le 5 : il le paie le lundi 5, premier jour de JJB (4 octobre)');
   const lic = L.find(l => /Licence/.test(l.action));
   /* 8 novembre : la licence se paie en une fois, en novembre -- pas de ligne dans cette periode-ci. */
   ok(!lic, 'la licence JJB se paie en une fois, en novembre : aucune ligne du 28 sept. au 24 oct.');
-  const nov = await fr.evaluate(() => { const b = window.__bcMoisArgent('2026-11-08'); return {lic: b.lignes.find(l => /Licence/.test(l.action)) || null, bf: b.lignes.find(l => /Basic-Fit/.test(l.action)) || null, somme: b.lignes.slice(1).reduce((t, l) => t + l.montant, 0)}; });
+  const nov = await fr.evaluate(() => { const b = window.__bcMoisArgent('2026-11-08'); return {lic: b.lignes.find(l => /Licence/.test(l.action)) || null, bf: b.lignes.find(l => /Basic-Fit/.test(l.action)) || null, lav: b.lignes.find(l => /laverie/i.test(l.action)) || null, somme: b.lignes.slice(1).reduce((t, l) => t + l.montant, 0)}; });
   ok(nov.lic && nov.lic.montant === 30 && /en une fois/.test(nov.lic.action), 'du 25 oct. au 24 nov. : la licence, 30 EUR en une fois (' + JSON.stringify(nov.lic) + ')');
   ok(nov.bf && pres(nov.bf.montant, 32.49) && /29,99/.test(nov.bf.detail) && /13 fois par an/.test(nov.bf.detail), 'Basic-Fit : 29,99 EUR toutes les 4 semaines, 32,49 EUR par mois dans le fil (' + (nov.bf && nov.bf.detail) + ')');
+  ok(nov.lav && nov.lav.montant === 16 && /× 2/.test(nov.lav.action) && nov.lav.quand === 'le dimanche', 'la laverie : deux dimanches dans la periode, le 15 et le 22 — 16 EUR (' + (nov.lav && nov.lav.action) + ')');
   ok(pres(nov.somme, 700), 'et ce fil-la aussi fait exactement 700 EUR (' + nov.somme + ')');
   const proprio = L.find(l => /propri/.test(l.action));
   ok(proprio && proprio.montant === 70 && proprio.quand === 'le 1er', 'au proprietaire, seulement l\'eau et l\'electricite : 70 EUR le 1er');
@@ -97,7 +102,7 @@ console.log('— vendredi 25 septembre : la premiere periode, 28 sept. -> 24 oct
   ok(pres(somme, 700), 'tout ce qui sort fait exactement 700 EUR');
   const txt = await fr.evaluate(() => document.getElementById('budget-mois-panel').innerText);
   ok(/Le mois de l.argent/.test(txt), 'le panneau est dans l\'onglet Budget');
-  ok(txt.includes('170,00 €') && txt.includes('700,00 €'), 'montants affiches : 170,00 EUR et 700,00 EUR');
+  ok(txt.includes('170,00 €') && txt.includes('700,00 €') && txt.includes('90,00 €') && /les 90 € du 25/.test(txt), 'montants affiches : 170,00 EUR (le proprio en retard), 700,00 EUR, et les 90 EUR de la cagnotte');
   ok(/28 sept\..*24 oct\..*4 samedis/.test(txt), 'la periode et ses samedis sont ecrits en tete');
   ok(/Le 28, dans la cagnotte/.test(txt) && /Ce mois-ci le 28, puis chaque 25/.test(txt), 'la tuile dit : ce mois-ci le 28, puis chaque 25');
   ok(/Le 24, en plus/.test(txt), 'la tuile du balayage dit le 24');
@@ -120,7 +125,7 @@ console.log('— dimanche 3 janvier : une periode a 5 samedis');
   const {ctx, fr} = await ouvrir('2027-01-03T20:00:00+01:00');
   const a = await fr.evaluate(() => window.__bcMoisArgent('2027-01-03'));
   ok(a.periode.debut === '2026-12-25' && a.periode.fin === '2027-01-24' && a.periode.samedis === 5, 'periode du 25 dec. au 24 janv., 5 samedis');
-  ok(a.cagnotte === 130, 'la cagnotte du 25 ne bouge pas : 130 EUR');
+  ok(a.cagnotte === 90, 'la cagnotte du 25 ne bouge pas : 90 EUR');
   ok(a.periode.balayage >= 0, 'et le compte ne passe pas dans le rouge (' + a.periode.balayage.toFixed(2) + ' EUR le 24)');
   ok(a.lignes[0].quand === 'le 25' && a.lignes[1].quand === 'le 25' && a.lignes[a.lignes.length - 1].quand === 'le 24', 'virement et cagnotte le 25, balayage le 24');
   const tete = await fr.evaluate(() => document.getElementById('ma-periode').textContent);
@@ -163,7 +168,7 @@ console.log('— une charge qui change : le plan suit');
   const a = await fr.evaluate(() => window.__bcMoisArgent('2026-09-25'));
   /* 8 novembre : la v5 retire les transports a 40 EUR (pas de carte) et ajoute Basic-Fit Premium. */
   ok(pres(a.fixes, 260.99), 'charges fixes : 260,99 EUR avec une assurance lissee de 20 EUR (sans transports, avec Basic-Fit) (' + a.fixes + ')');
-  ok(a.cagnotte === 110, 'la cagnotte du 28 descend a 110 EUR (150 avant le pot de miel en moins du 9 novembre au soir, 160 avant le soin et le menage) (' + a.cagnotte + ')');
+  ok(a.cagnotte === 70, 'la cagnotte du 28 descend a 70 EUR (110 avant la laverie du 11 novembre, 150 avant le pot de miel en moins du 9 novembre au soir, 160 avant le soin et le menage) (' + a.cagnotte + ')');
   const autre = a.lignes.find(l => /Assurance/.test(l.action));
   ok(autre && autre.action === 'Assurance' && pres(autre.montant, 20), 'la charge sans date passe dans le fil : 20 EUR par mois -- la licence, payee en une fois en novembre, n\'est pas de cette periode (' + (autre && autre.action) + ')');
   ok(Math.abs(a.lignes[a.lignes.length - 1].solde) < 0.001, 'et le compte finit toujours a zero le 27');
