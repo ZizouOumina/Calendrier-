@@ -22,7 +22,7 @@ const errs = []; page.on('pageerror', e => errs.push(e.message));
 /* par defaut, l'horloge est la veille du premier jour, a midi : la Batcave telle qu'il l'ouvre avant la semaine */
 const veille = new Date(debut + 'T12:00:00+01:00'); veille.setDate(veille.getDate() - 1);
 await page.clock.install({time: horloge ? new Date(horloge) : veille});
-await page.goto('http://127.0.0.1:8199/host.html', {timeout:20000}).catch(()=>{});
+await page.goto(process.env.BC_HOST || 'http://127.0.0.1:8199/host.html', {timeout:20000}).catch(()=>{});
 await page.frameLocator('#f').locator('#dash-plan').waitFor({state:'attached', timeout:20000});
 const fr = page.frames().find(x => x.url().includes('batcave.html'));
 await fr.waitForFunction(() => window.__bcInitFini === true, null, {timeout:20000});

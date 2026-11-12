@@ -4800,9 +4800,10 @@
       /* rappels Google Calendar : le panneau apparait, et si l'option est active les blocs
          d'aujourd'hui et de demain partent quelques secondes apres l'ouverture */
       try{ renderGcalPanel(); }catch(e){}
-      setTimeout(function(){ try{ if(gcalActif()) nettoyerAgendaJanvier(mcp).catch(function(){}).then(function(){ return reconstruireAgenda(mcp); }).catch(function(){ gcalEnCours = false; }).then(function(){ return pousserRappels(mcp); }); }catch(e){} }, 6000);
-      /* controle des series 🦇 : une fois par jour, apres l'envoi des rappels */
-      setTimeout(function(){ try{ if(!gcalControle || gcalControle.date !== todayISO) controlerSeriesGcal(mcp); }catch(e){} }, 9000);
+      setTimeout(function(){ try{ if(gcalActif()) nettoyerAgendaJanvier(mcp).catch(function(){}).then(function(){ return reconstruireAgenda(mcp); }).catch(function(){ gcalEnCours = false; }).then(function(){ return pousserRappels(mcp); }).then(function(){ if(!gcalControle || gcalControle.date !== todayISO) return controlerSeriesGcal(mcp); }).catch(function(){}); }catch(e){} }, 6000);
+      /* controle des series 🦇 : une fois par jour, apres l'envoi des rappels -- rappels actifs, il suit l'envoi (et la
+         reconstruction du 12 novembre, qui dure quelques minutes : lu pendant, il aurait signale des ecarts deja corriges) */
+      setTimeout(function(){ try{ if(!gcalActif() && (!gcalControle || gcalControle.date !== todayISO)) controlerSeriesGcal(mcp); }catch(e){} }, 9000);
 
       /* Météo (AccuWeather) — le fetch direct est bloqué côté hébergé, le connecteur non */
       mcp.watchTool('AccuWeather®', 'widgets-current-claude', {queryParams:{locationKey:'310681', unit:'metric', lang:'fr'}}, function(ev){

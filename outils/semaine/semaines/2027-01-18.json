@@ -22,12 +22,12 @@
    {
     "h": "07:00",
     "l": "Préparer · Examen · Documentación",
-    "c": "Veille de Examen · Documentación : documents et matériel prêts, protocole ou programme relu, trois questions écrites, tenue et trajet préparés. Coucher à l'heure."
+    "c": "Veille de l’examen de Documentación : documents et matériel prêts, protocole ou programme relu, trois questions écrites, tenue et trajet préparés. Coucher à l'heure."
    },
    {
     "h": "08:00",
     "l": "Trajet · Examen · Documentación",
-    "c": "Départ pour Examen · Documentación. Téléphone en silencieux ; en route, une page de notes, pas plus."
+    "c": "Départ pour l’examen de Documentación. Téléphone en silencieux ; en route, une page de notes, pas plus."
    },
    {
     "h": "08:30",
@@ -37,7 +37,7 @@
    {
     "h": "10:30",
     "l": "Trajet retour",
-    "c": "Une minute de résumé oral du cours enregistrée en marchant, puis un appel ou un message à ta famille."
+    "c": "En rentrant : ce qui est tombé à l’examen, en deux lignes dans tes notes — c’est ce qui guide la suite des révisions. Puis un appel ou un message à ta famille."
    },
    {
     "h": "12:00",
@@ -597,7 +597,7 @@
    {
     "h": "18:00",
     "l": "Préparer · Examen · Antropología",
-    "c": "Veille de Examen · Antropología : documents et matériel prêts, protocole ou programme relu, trois questions écrites, tenue et trajet préparés. Coucher à l'heure."
+    "c": "Veille de l’examen d’Antropología : documents et matériel prêts, protocole ou programme relu, trois questions écrites, tenue et trajet préparés. Coucher à l'heure."
    },
    {
     "h": "19:00",
@@ -1026,12 +1026,12 @@
    {
     "h": "07:00",
     "l": "Préparer · Examen · Antropología",
-    "c": "Veille de Examen · Antropología : documents et matériel prêts, protocole ou programme relu, trois questions écrites, tenue et trajet préparés. Coucher à l'heure."
+    "c": "Veille de l’examen d’Antropología : documents et matériel prêts, protocole ou programme relu, trois questions écrites, tenue et trajet préparés. Coucher à l'heure."
    },
    {
     "h": "08:00",
     "l": "Trajet · Examen · Antropología",
-    "c": "Départ pour Examen · Antropología. Téléphone en silencieux ; en route, une page de notes, pas plus."
+    "c": "Départ pour l’examen d’Antropología. Téléphone en silencieux ; en route, une page de notes, pas plus."
    },
    {
     "h": "08:30",
@@ -1041,7 +1041,7 @@
    {
     "h": "10:30",
     "l": "Trajet retour",
-    "c": "Une minute de résumé oral du cours enregistrée en marchant, puis un appel ou un message à ta famille."
+    "c": "En rentrant : ce qui est tombé à l’examen, en deux lignes dans tes notes — c’est ce qui guide la suite des révisions. Puis un appel ou un message à ta famille."
    },
    {
     "h": "12:00",

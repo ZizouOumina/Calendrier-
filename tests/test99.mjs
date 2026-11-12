@@ -198,7 +198,7 @@ console.log('\n== 326) Le samedi 14 novembre : le soin et le menage ont aussi le
   const { ctx, fr } = await courses('2026-11-14T10:00:00+01:00');
   const l = await lignes(fr);
   const muets = l.filter(x => !x.ou);
-  ok(l.length === 39 && !muets.length, '39 articles le 14, tous avec une adresse (' + l.length + (muets.length ? ' ; sans : ' + muets.map(x => x.nom).join(', ') : '') + ')');
+  ok(l.length === 40 && !muets.length, '40 articles le 14 (le gratte-langue compris), tous avec une adresse (' + l.length + (muets.length ? ' ; sans : ' + muets.map(x => x.nom).join(', ') : '') + ')');
   const connues = ['Boucherie', 'Lidl', 'Alcampo', 'Mercadona', 'Frutería', 'En ligne', 'Pharmacie'];
   const inconnues = [...new Set(l.map(x => x.ou.split(' · ')[0]))].filter(x => connues.indexOf(x) === -1);
   ok(!inconnues.length, 'aucune adresse inventée, la pharmacie comprise (' + (inconnues.join(', ') || 'aucune') + ')');
