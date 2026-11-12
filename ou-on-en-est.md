@@ -1,5 +1,18 @@
 # Où on en est — samedi 19 septembre 2026, au soir
 
+> ### Jeudi 12 novembre, l'après-midi — « un guide à la semaine, pour chaque jour, précisément »
+> **Ses mots** : « donc il me faut un guide a la semaine, pour chaque jour, precisement ».
+> **Fait** : une seule page, « Ta semaine, jour par jour » (`ta-semaine.html`, `outils/semaine/build_guide.py`) : six
+> semaines, du vendredi 13 novembre au dimanche 20 décembre, chaque jour heure par heure, ouverte sur aujourd'hui.
+> Les dix premiers jours sont ceux des deux pages d'origine ; les quatre semaines suivantes sont construites depuis la
+> Batcave seule (consignes, cases du jour, grammes) — le lundi 23 sort identique, bloc pour bloc, au lundi 16 écrit à
+> la main. Le mardi 8 décembre (férié, l'Inmaculada) a sa grille sans cours ; le samedi 12, la fin du mois d'espagnol ;
+> le dimanche 13, l'e-commerce et les photos. « Ta journée, pas à pas » renvoie à cette page.
+> **Une incohérence corrigée** : pendant le mois d'espagnol, les blocs Projets perso qui restent (jeudi 11:20, samedi
+> 18:00) envoyaient « sinon, au dossier e-commerce », alors que l'e-commerce commence le 13 décembre (« pile 1 mois ») :
+> ils disent maintenant « le livrable de la semaine (un devoir de la fac), sinon des révisions ». La page de la semaine
+> du 16 suit. Les vacances de Noël (à partir du 23 décembre) attendent de savoir où il les passe.
+
 > ### Jeudi 12 novembre — la viande jetée, le jour 1 au vendredi 13
 > **Ses mots** (9 h) : « j'ai jeté donc je vais devoir refaire les courses, on commence tout demain pétante, est-ce
 > que tu as tout vérifié pour un début demain […] dans mon guide journalier tu as mis tout tout tout ce que je dois

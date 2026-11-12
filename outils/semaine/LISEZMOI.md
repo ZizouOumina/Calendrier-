@@ -1,6 +1,29 @@
 # Les pages « semaine jour par jour »
 
-Ce dossier reconstruit les deux pages de la racine du dépôt, à l'octet près :
+## Le guide de toutes les semaines : `ta-semaine.html`
+
+Une seule page, « Ta semaine, jour par jour » : toutes les semaines, chaque jour heure par heure, ouverte sur
+aujourd'hui (les flèches changent de semaine, `#AAAA-MM-JJ` ouvre un jour précis).
+
+```bash
+python3 outils/semaine/build_guide.py
+```
+
+- Du 13 au 22 novembre, les jours sont ceux de `build11.py` et `build16.py` (lancés par `build_guide.py`).
+- Les semaines suivantes (`SEMAINES` dans `build_guide.py`) sont construites depuis la Batcave seule : la consigne de
+  chaque bloc telle qu'elle l'affiche, les cases du jour (cycles compris), les grammes du batch du mardi calculés sur
+  les repas de mercredi à samedi. Leurs données sont dans `semaines/<lundi>.json` :
+
+```bash
+cd tests && node zz-semaine.mjs ../outils/semaine/semaines/2026-11-23.json 2026-11-23 7
+```
+
+Pour ajouter une semaine : l'extraire comme ci-dessus, ajouter son lundi à `SEMAINES`, relancer `build_guide.py`.
+Un bloc que le constructeur ne connaît pas arrête la construction (« bloc inconnu ») : on lui écrit sa ligne.
+
+## Les deux pages d'origine
+
+Ce dossier reconstruit aussi les deux pages de la racine du dépôt, à l'octet près :
 
 | Page | Générateur | Données lues | Gabarit |
 | --- | --- | --- | --- |
@@ -34,8 +57,9 @@ cd tests && node zz-grilles.mjs 2026-11-13 3 ../outils/semaine/grille11.json 202
 cd tests && node zz-semaine.mjs ../outils/semaine/semaine16.json
 ```
 
-`zz-grilles.mjs <début> <n jours> <sortie> [horloge]` sort la grille de chaque jour ; `zz-semaine.mjs <sortie>` sort
-la semaine du 16 au 22 novembre (dates écrites dans le script). Pour une nouvelle semaine : copier `build16.py` et
+`zz-grilles.mjs <début> <n jours> <sortie> [horloge]` sort la grille de chaque jour ; `zz-semaine.mjs <sortie>
+[premier jour] [n jours] [horloge]` sort une semaine (par défaut celle du 16 au 22 novembre ; l'horloge, la veille du
+premier jour à midi). Pour une nouvelle semaine : copier `build16.py` et
 `template16.html`, changer les dates dans la copie et dans `zz-semaine.mjs`, relire les textes écrits à la main
 (les pas de chaque bloc, les « trois choses du jour »), puis comparer la page à la Batcave, bloc par bloc.
 

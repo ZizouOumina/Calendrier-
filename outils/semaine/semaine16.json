@@ -289,6 +289,103 @@
     "quinzaine": false
    }
   ],
+  "duJour": [
+   {
+    "id": "core-lit",
+    "label": "Lit fait",
+    "icon": "🛏️"
+   },
+   {
+    "id": "core-etirements",
+    "label": "Étirements faits",
+    "icon": "🤸"
+   },
+   {
+    "id": "core-fajr",
+    "label": "Fajr",
+    "icon": "🕌"
+   },
+   {
+    "id": "core-dhuhr",
+    "label": "Dhuhr",
+    "icon": "🕌"
+   },
+   {
+    "id": "core-asr",
+    "label": "Asr",
+    "icon": "🕌"
+   },
+   {
+    "id": "core-maghrib",
+    "label": "Maghrib",
+    "icon": "🕌"
+   },
+   {
+    "id": "core-isha",
+    "label": "Isha",
+    "icon": "🕌"
+   },
+   {
+    "id": "core-ecran",
+    "label": "Téléphone hors de la chambre",
+    "icon": "📵"
+   },
+   {
+    "id": "core-sadaqah",
+    "label": "Sadaqah du jour",
+    "icon": "🤲"
+   },
+   {
+    "id": "core-revue",
+    "label": "Revue de la veille / plan du lendemain",
+    "icon": "📝"
+   },
+   {
+    "id": "core-famille",
+    "label": "Nouvelles à la famille",
+    "icon": "📞"
+   },
+   {
+    "id": "core-marche",
+    "label": "Marche — 8 000 pas",
+    "icon": "🚶"
+   },
+   {
+    "id": "core-es-conversacion",
+    "label": "30 min en espagnol avec un natif",
+    "icon": "🗣️"
+   },
+   {
+    "id": "core-es-formulas",
+    "label": "Les dix formules du jour",
+    "icon": "💬"
+   },
+   {
+    "id": "core-es-lectura",
+    "label": "20 pages lues en espagnol",
+    "icon": "📖"
+   },
+   {
+    "id": "core-shampoing",
+    "label": "Shampoing",
+    "icon": "🧴"
+   },
+   {
+    "id": "core-serviette-visage",
+    "label": "Serviette de visage changée",
+    "icon": "🧼"
+   },
+   {
+    "id": "core-creatine",
+    "label": "Créatine — 5 g",
+    "icon": "🥄"
+   },
+   {
+    "id": "core-lumiere",
+    "label": "Lumière du matin — 15 min dehors, dès qu’il fait jour",
+    "icon": "☀️"
+   }
+  ],
   "repas": {
    "Petit-déjeuner": [
     {
@@ -407,7 +504,9 @@
    "rev": 193,
    "proj": 0,
    "es": 156
-  }
+  },
+  "periode": "es-1-reprise",
+  "espagnol": true
  },
  {
   "iso": "2026-11-17",
@@ -681,6 +780,98 @@
     "quinzaine": false
    }
   ],
+  "duJour": [
+   {
+    "id": "core-lit",
+    "label": "Lit fait",
+    "icon": "🛏️"
+   },
+   {
+    "id": "core-etirements",
+    "label": "Étirements faits",
+    "icon": "🤸"
+   },
+   {
+    "id": "core-fajr",
+    "label": "Fajr",
+    "icon": "🕌"
+   },
+   {
+    "id": "core-dhuhr",
+    "label": "Dhuhr",
+    "icon": "🕌"
+   },
+   {
+    "id": "core-asr",
+    "label": "Asr",
+    "icon": "🕌"
+   },
+   {
+    "id": "core-maghrib",
+    "label": "Maghrib",
+    "icon": "🕌"
+   },
+   {
+    "id": "core-isha",
+    "label": "Isha",
+    "icon": "🕌"
+   },
+   {
+    "id": "core-ecran",
+    "label": "Téléphone hors de la chambre",
+    "icon": "📵"
+   },
+   {
+    "id": "core-sadaqah",
+    "label": "Sadaqah du jour",
+    "icon": "🤲"
+   },
+   {
+    "id": "core-revue",
+    "label": "Revue de la veille / plan du lendemain",
+    "icon": "📝"
+   },
+   {
+    "id": "core-famille",
+    "label": "Nouvelles à la famille",
+    "icon": "📞"
+   },
+   {
+    "id": "core-marche",
+    "label": "Marche — 8 000 pas",
+    "icon": "🚶"
+   },
+   {
+    "id": "core-es-conversacion",
+    "label": "30 min en espagnol avec un natif",
+    "icon": "🗣️"
+   },
+   {
+    "id": "core-es-formulas",
+    "label": "Les dix formules du jour",
+    "icon": "💬"
+   },
+   {
+    "id": "core-es-lectura",
+    "label": "20 pages lues en espagnol",
+    "icon": "📖"
+   },
+   {
+    "id": "core-shampoing",
+    "label": "Shampoing",
+    "icon": "🧴"
+   },
+   {
+    "id": "core-creatine",
+    "label": "Créatine — 5 g",
+    "icon": "🥄"
+   },
+   {
+    "id": "core-lumiere",
+    "label": "Lumière du matin — 15 min dehors, dès qu’il fait jour",
+    "icon": "☀️"
+   }
+  ],
   "repas": {
    "Petit-déjeuner": [
     {
@@ -799,7 +990,9 @@
    "rev": 331,
    "proj": 0,
    "es": 50
-  }
+  },
+  "periode": "es-1-reprise",
+  "espagnol": true
  },
  {
   "iso": "2026-11-18",
@@ -1100,6 +1293,118 @@
     "quinzaine": false
    }
   ],
+  "duJour": [
+   {
+    "id": "core-lit",
+    "label": "Lit fait",
+    "icon": "🛏️"
+   },
+   {
+    "id": "core-etirements",
+    "label": "Étirements faits",
+    "icon": "🤸"
+   },
+   {
+    "id": "core-fajr",
+    "label": "Fajr",
+    "icon": "🕌"
+   },
+   {
+    "id": "core-dhuhr",
+    "label": "Dhuhr",
+    "icon": "🕌"
+   },
+   {
+    "id": "core-asr",
+    "label": "Asr",
+    "icon": "🕌"
+   },
+   {
+    "id": "core-maghrib",
+    "label": "Maghrib",
+    "icon": "🕌"
+   },
+   {
+    "id": "core-isha",
+    "label": "Isha",
+    "icon": "🕌"
+   },
+   {
+    "id": "core-ecran",
+    "label": "Téléphone hors de la chambre",
+    "icon": "📵"
+   },
+   {
+    "id": "core-sadaqah",
+    "label": "Sadaqah du jour",
+    "icon": "🤲"
+   },
+   {
+    "id": "core-revue",
+    "label": "Revue de la veille / plan du lendemain",
+    "icon": "📝"
+   },
+   {
+    "id": "core-famille",
+    "label": "Nouvelles à la famille",
+    "icon": "📞"
+   },
+   {
+    "id": "core-marche",
+    "label": "Marche — 8 000 pas",
+    "icon": "🚶"
+   },
+   {
+    "id": "core-es-conversacion",
+    "label": "30 min en espagnol avec un natif",
+    "icon": "🗣️"
+   },
+   {
+    "id": "core-es-formulas",
+    "label": "Les dix formules du jour",
+    "icon": "💬"
+   },
+   {
+    "id": "core-es-lectura",
+    "label": "20 pages lues en espagnol",
+    "icon": "📖"
+   },
+   {
+    "id": "core-shampoing",
+    "label": "Shampoing",
+    "icon": "🧴"
+   },
+   {
+    "id": "core-serviette-visage",
+    "label": "Serviette de visage changée",
+    "icon": "🧼"
+   },
+   {
+    "id": "core-serviette-corps",
+    "label": "Serviette de corps changée",
+    "icon": "🛁"
+   },
+   {
+    "id": "core-creatine",
+    "label": "Créatine — 5 g",
+    "icon": "🥄"
+   },
+   {
+    "id": "core-taie-merc",
+    "label": "Taie d’oreiller changée",
+    "icon": "🛌"
+   },
+   {
+    "id": "core-douche-froide",
+    "label": "Douche froide — 30 à 60 s en fin de douche",
+    "icon": "🚿"
+   },
+   {
+    "id": "core-lumiere",
+    "label": "Lumière du matin — 15 min dehors, dès qu’il fait jour",
+    "icon": "☀️"
+   }
+  ],
   "repas": {
    "Petit-déjeuner": [
     {
@@ -1218,7 +1523,9 @@
    "rev": 271,
    "proj": 0,
    "es": 50
-  }
+  },
+  "periode": "es-1-reprise",
+  "espagnol": true
  },
  {
   "iso": "2026-11-19",
@@ -1268,7 +1575,7 @@
    {
     "h": "11:20",
     "l": "Projets perso 3",
-    "c": "Un bloc de projet de plus depuis le 28 septembre, sans minuteur : le livrable de la semaine d'abord (celui que tu cocheras dimanche), sinon la prochaine ligne non cochée du dossier e-commerce."
+    "c": "Un bloc de projet de plus, sans minuteur : le livrable de la semaine d'abord (un devoir ou une présentation de la fac, celui que tu cocheras dimanche). Sinon, des révisions : tu choisis quoi. La boutique ne commence que le dimanche 13 décembre."
    },
    {
     "h": "12:20",
@@ -1495,6 +1802,103 @@
     "quinzaine": false
    }
   ],
+  "duJour": [
+   {
+    "id": "core-lit",
+    "label": "Lit fait",
+    "icon": "🛏️"
+   },
+   {
+    "id": "core-etirements",
+    "label": "Étirements faits",
+    "icon": "🤸"
+   },
+   {
+    "id": "core-fajr",
+    "label": "Fajr",
+    "icon": "🕌"
+   },
+   {
+    "id": "core-dhuhr",
+    "label": "Dhuhr",
+    "icon": "🕌"
+   },
+   {
+    "id": "core-asr",
+    "label": "Asr",
+    "icon": "🕌"
+   },
+   {
+    "id": "core-maghrib",
+    "label": "Maghrib",
+    "icon": "🕌"
+   },
+   {
+    "id": "core-isha",
+    "label": "Isha",
+    "icon": "🕌"
+   },
+   {
+    "id": "core-ecran",
+    "label": "Téléphone hors de la chambre",
+    "icon": "📵"
+   },
+   {
+    "id": "core-sadaqah",
+    "label": "Sadaqah du jour",
+    "icon": "🤲"
+   },
+   {
+    "id": "core-revue",
+    "label": "Revue de la veille / plan du lendemain",
+    "icon": "📝"
+   },
+   {
+    "id": "core-famille",
+    "label": "Nouvelles à la famille",
+    "icon": "📞"
+   },
+   {
+    "id": "core-marche",
+    "label": "Marche — 8 000 pas",
+    "icon": "🚶"
+   },
+   {
+    "id": "core-es-conversacion",
+    "label": "30 min en espagnol avec un natif",
+    "icon": "🗣️"
+   },
+   {
+    "id": "core-es-formulas",
+    "label": "Les dix formules du jour",
+    "icon": "💬"
+   },
+   {
+    "id": "core-es-lectura",
+    "label": "20 pages lues en espagnol",
+    "icon": "📖"
+   },
+   {
+    "id": "core-shampoing",
+    "label": "Shampoing",
+    "icon": "🧴"
+   },
+   {
+    "id": "core-creatine",
+    "label": "Créatine — 5 g",
+    "icon": "🥄"
+   },
+   {
+    "id": "core-cou-jeudi",
+    "label": "Cou — flexion et extension, 3 × 12-20",
+    "icon": "🦴"
+   },
+   {
+    "id": "core-lumiere",
+    "label": "Lumière du matin — 15 min dehors, dès qu’il fait jour",
+    "icon": "☀️"
+   }
+  ],
   "repas": {
    "Petit-déjeuner": [
     {
@@ -1613,7 +2017,9 @@
    "rev": 201,
    "proj": 0,
    "es": 105
-  }
+  },
+  "periode": "es-1-reprise",
+  "espagnol": true
  },
  {
   "iso": "2026-11-20",
@@ -1898,6 +2304,108 @@
     "quinzaine": false
    }
   ],
+  "duJour": [
+   {
+    "id": "core-lit",
+    "label": "Lit fait",
+    "icon": "🛏️"
+   },
+   {
+    "id": "core-etirements",
+    "label": "Étirements faits",
+    "icon": "🤸"
+   },
+   {
+    "id": "core-fajr",
+    "label": "Fajr",
+    "icon": "🕌"
+   },
+   {
+    "id": "core-dhuhr",
+    "label": "Dhuhr",
+    "icon": "🕌"
+   },
+   {
+    "id": "core-asr",
+    "label": "Asr",
+    "icon": "🕌"
+   },
+   {
+    "id": "core-maghrib",
+    "label": "Maghrib",
+    "icon": "🕌"
+   },
+   {
+    "id": "core-isha",
+    "label": "Isha",
+    "icon": "🕌"
+   },
+   {
+    "id": "core-ecran",
+    "label": "Téléphone hors de la chambre",
+    "icon": "📵"
+   },
+   {
+    "id": "core-sadaqah",
+    "label": "Sadaqah du jour",
+    "icon": "🤲"
+   },
+   {
+    "id": "core-revue",
+    "label": "Revue de la veille / plan du lendemain",
+    "icon": "📝"
+   },
+   {
+    "id": "core-famille",
+    "label": "Nouvelles à la famille",
+    "icon": "📞"
+   },
+   {
+    "id": "core-marche",
+    "label": "Marche — 8 000 pas",
+    "icon": "🚶"
+   },
+   {
+    "id": "core-es-conversacion",
+    "label": "30 min en espagnol avec un natif",
+    "icon": "🗣️"
+   },
+   {
+    "id": "core-es-formulas",
+    "label": "Les dix formules du jour",
+    "icon": "💬"
+   },
+   {
+    "id": "core-es-lectura",
+    "label": "20 pages lues en espagnol",
+    "icon": "📖"
+   },
+   {
+    "id": "core-shampoing",
+    "label": "Shampoing",
+    "icon": "🧴"
+   },
+   {
+    "id": "core-serviette-visage",
+    "label": "Serviette de visage changée",
+    "icon": "🧼"
+   },
+   {
+    "id": "core-creatine",
+    "label": "Créatine — 5 g",
+    "icon": "🥄"
+   },
+   {
+    "id": "core-douche-froide",
+    "label": "Douche froide — 30 à 60 s en fin de douche",
+    "icon": "🚿"
+   },
+   {
+    "id": "core-lumiere",
+    "label": "Lumière du matin — 15 min dehors, dès qu’il fait jour",
+    "icon": "☀️"
+   }
+  ],
   "repas": {
    "Petit-déjeuner": [
     {
@@ -2016,7 +2524,9 @@
    "rev": 166,
    "proj": 0,
    "es": 55
-  }
+  },
+  "periode": "es-1-reprise",
+  "espagnol": true
  },
  {
   "iso": "2026-11-21",
@@ -2096,7 +2606,7 @@
    {
     "h": "18:00",
     "l": "Projets perso 3",
-    "c": "Samedi 18:00-19:30, une heure et demie d'un trait, sans minuteur : le livrable de la semaine d'abord (celui que tu cocheras dimanche), sinon la prochaine ligne non cochée du dossier e-commerce."
+    "c": "Samedi 18:00-19:30, une heure et demie d'un trait, sans minuteur : le livrable de la semaine d'abord (un devoir ou une présentation de la fac, celui que tu cocheras dimanche). Sinon, des révisions : tu choisis quoi. La boutique ne commence que le dimanche 13 décembre."
    },
    {
     "h": "19:30",
@@ -2291,6 +2801,108 @@
     "quinzaine": false
    }
   ],
+  "duJour": [
+   {
+    "id": "core-lit",
+    "label": "Lit fait",
+    "icon": "🛏️"
+   },
+   {
+    "id": "core-etirements",
+    "label": "Étirements faits",
+    "icon": "🤸"
+   },
+   {
+    "id": "core-fajr",
+    "label": "Fajr",
+    "icon": "🕌"
+   },
+   {
+    "id": "core-dhuhr",
+    "label": "Dhuhr",
+    "icon": "🕌"
+   },
+   {
+    "id": "core-asr",
+    "label": "Asr",
+    "icon": "🕌"
+   },
+   {
+    "id": "core-maghrib",
+    "label": "Maghrib",
+    "icon": "🕌"
+   },
+   {
+    "id": "core-isha",
+    "label": "Isha",
+    "icon": "🕌"
+   },
+   {
+    "id": "core-ecran",
+    "label": "Téléphone hors de la chambre",
+    "icon": "📵"
+   },
+   {
+    "id": "core-sadaqah",
+    "label": "Sadaqah du jour",
+    "icon": "🤲"
+   },
+   {
+    "id": "core-revue",
+    "label": "Revue de la veille / plan du lendemain",
+    "icon": "📝"
+   },
+   {
+    "id": "core-famille",
+    "label": "Nouvelles à la famille",
+    "icon": "📞"
+   },
+   {
+    "id": "core-marche",
+    "label": "Marche — 8 000 pas",
+    "icon": "🚶"
+   },
+   {
+    "id": "core-courses",
+    "label": "Courses faites",
+    "icon": "🛒"
+   },
+   {
+    "id": "core-es-conversacion",
+    "label": "30 min en espagnol avec un natif",
+    "icon": "🗣️"
+   },
+   {
+    "id": "core-es-formulas",
+    "label": "Les dix formules du jour",
+    "icon": "💬"
+   },
+   {
+    "id": "core-es-lectura",
+    "label": "20 pages lues en espagnol",
+    "icon": "📖"
+   },
+   {
+    "id": "core-cheveux",
+    "label": "Coupe de cheveux",
+    "icon": "💈"
+   },
+   {
+    "id": "core-shampoing",
+    "label": "Shampoing",
+    "icon": "🧴"
+   },
+   {
+    "id": "core-creatine",
+    "label": "Créatine — 5 g",
+    "icon": "🥄"
+   },
+   {
+    "id": "core-lumiere",
+    "label": "Lumière du matin — 15 min dehors, dès qu’il fait jour",
+    "icon": "☀️"
+   }
+  ],
   "repas": {
    "Petit-déjeuner": [
     {
@@ -2409,7 +3021,9 @@
    "rev": 241,
    "proj": 0,
    "es": 110
-  }
+  },
+  "periode": "es-1-reprise",
+  "espagnol": true
  },
  {
   "iso": "2026-11-22",
@@ -2740,6 +3354,128 @@
     "quinzaine": false
    }
   ],
+  "duJour": [
+   {
+    "id": "core-lit",
+    "label": "Lit fait",
+    "icon": "🛏️"
+   },
+   {
+    "id": "core-etirements",
+    "label": "Étirements faits",
+    "icon": "🤸"
+   },
+   {
+    "id": "core-fajr",
+    "label": "Fajr",
+    "icon": "🕌"
+   },
+   {
+    "id": "core-dhuhr",
+    "label": "Dhuhr",
+    "icon": "🕌"
+   },
+   {
+    "id": "core-asr",
+    "label": "Asr",
+    "icon": "🕌"
+   },
+   {
+    "id": "core-maghrib",
+    "label": "Maghrib",
+    "icon": "🕌"
+   },
+   {
+    "id": "core-isha",
+    "label": "Isha",
+    "icon": "🕌"
+   },
+   {
+    "id": "core-ecran",
+    "label": "Téléphone hors de la chambre",
+    "icon": "📵"
+   },
+   {
+    "id": "core-sadaqah",
+    "label": "Sadaqah du jour",
+    "icon": "🤲"
+   },
+   {
+    "id": "core-revue",
+    "label": "Revue de la veille / plan du lendemain",
+    "icon": "📝"
+   },
+   {
+    "id": "core-famille",
+    "label": "Nouvelles à la famille",
+    "icon": "📞"
+   },
+   {
+    "id": "core-marche",
+    "label": "Marche — 8 000 pas",
+    "icon": "🚶"
+   },
+   {
+    "id": "core-es-conversacion",
+    "label": "30 min en espagnol avec un natif",
+    "icon": "🗣️"
+   },
+   {
+    "id": "core-es-formulas",
+    "label": "Les dix formules du jour",
+    "icon": "💬"
+   },
+   {
+    "id": "core-es-lectura",
+    "label": "20 pages lues en espagnol",
+    "icon": "📖"
+   },
+   {
+    "id": "core-pesee-dim",
+    "label": "Pesée, à jeun",
+    "icon": "⚖️"
+   },
+   {
+    "id": "core-rasage",
+    "label": "Rasage — aisselles et parties intimes",
+    "icon": "🪒"
+   },
+   {
+    "id": "core-serviette-visage",
+    "label": "Serviette de visage changée",
+    "icon": "🧼"
+   },
+   {
+    "id": "core-serviette-corps",
+    "label": "Serviette de corps changée",
+    "icon": "🛁"
+   },
+   {
+    "id": "core-draps",
+    "label": "Draps et taies d’oreiller changés",
+    "icon": "🧺"
+   },
+   {
+    "id": "core-menage",
+    "label": "Ménage du dimanche",
+    "icon": "🧽"
+   },
+   {
+    "id": "core-creatine",
+    "label": "Créatine — 5 g",
+    "icon": "🥄"
+   },
+   {
+    "id": "core-douche-froide",
+    "label": "Douche froide — 30 à 60 s en fin de douche",
+    "icon": "🚿"
+   },
+   {
+    "id": "core-lumiere",
+    "label": "Lumière du matin — 15 min dehors, dès qu’il fait jour",
+    "icon": "☀️"
+   }
+  ],
   "repas": {
    "Petit-déjeuner": [
     {
@@ -2858,6 +3594,8 @@
    "rev": 210,
    "proj": 0,
    "es": 110
-  }
+  },
+  "periode": "es-1-reprise",
+  "espagnol": true
  }
 ]

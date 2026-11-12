@@ -152,8 +152,11 @@ for J in S:
             creneaux.append((mn(h), mn(fin)))
             continue
         if lab in PROJETS:
-            rows.append({'t': h, 'fin': fin, 'k': 'projet', 'titre': 'Projet perso · %d h' % ((mn(fin) - mn(h)) // 60) if (mn(fin) - mn(h)) % 60 == 0 else 'Projet perso',
-                         'd': 'Ta boutique ou le livrable de ta semaine : c’est toi qui choisis.'})
+            # 12 novembre : l'e-commerce commence le 13 decembre -- pendant le mois d'espagnol, ces blocs vont au
+            # livrable de la semaine, sinon aux revisions ; la consigne est celle de la Batcave
+            t = ('Projet · une tâche décidée la veille' if lab == 'Projets perso matinal' else
+                 'Le livrable de la semaine' if 'finir le livrable' in b['c'] else 'Le livrable de la semaine, sinon révisions')
+            rows.append({'t': h, 'fin': fin, 'k': 'projet', 'titre': t, 'd': b['c']})
             continue
         r = bloc(iso, dow, h, lab, fin)
         if r is False: raise SystemExit('bloc inconnu : ' + lab)
