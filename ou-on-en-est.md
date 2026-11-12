@@ -27,9 +27,14 @@
 > et le matin, le départ et le retour ; jamais une prière pendant un examen ; les 21 et 22 janvier entre les deux
 > semestres. Batcave : « Veille de l'examen d'Anatomía I », « Départ pour l'examen d'… » (et plus « Veille de Examen ·
 > … »), et le retour d'un jour d'examen sans « résumé oral du cours ».
-> **En attente de lui** : les prix des sardines (ou maquereau), des galettes de riz, du Nutella ; Noël à Alicante ou
-> ailleurs (la grille des vacances suppose Alicante) ; la banque (réponse donnée : sa mère vire directement sur le
-> Wise, LuxTrust à récupérer à distance).
+> **Noël** : « oui je reste a alicante pour noel » — la grille des vacances et le guide le supposaient déjà, rien ne
+> change. **Le rattrapage, ce qu'il demande le soir même** (« j'ai combien de cours a rattraper ») : la file comptée le
+> 9 novembre, 44 temas (Anatomía 9 : T1-T6, T10, T11, T12 ; Biología 11 ; Epidemiología 11 ; Antropología 7 ;
+> Documentación 6), rien de fait depuis, plus ceux de la semaine du 9 au cronograma (Biología 12, Epidemiología 12 et
+> 13, Antropología 8 le vendredi 13) : ≈ 48, à recouper avec Canvas. Ses échéances : vendredi 13 à 15:30 le
+> cuestionario « uso ético de la IA en salud » (Epidemiología, en classe), 17:30 l'actividad 3 d'Antropología.
+> **En attente de lui** : les prix des sardines (ou maquereau), des galettes de riz, du Nutella ; la banque (réponse
+> donnée : sa mère vire directement sur le Wise, LuxTrust à récupérer à distance).
 
 > ### Jeudi 12 novembre — la laverie, les dattes, trois brossages par jour
 > **Ses mots** : « elle est a 5 min de marche de chez moi, et le cycle lavage+sechage dure 45 min » ; « donc 8€
