@@ -111,7 +111,7 @@ def bloc(iso, dow, h, lab, suivant):
     if lab == '🍲 Batch cooking de la semaine':
         return ('maison', 'Batch cooking, la première session', '')
     if lab.startswith('🧽 Ménage'):
-        return ('maison', 'Ménage', 'À ton retour de la laverie : aspirateur-serpillière dans tout l’appart (réservoir vidé et rincé après), salle de bain, poussière. Le linge propre plié et rangé. À la fin, sors la poubelle.')
+        return ('maison', 'Ménage', 'À ton retour de la laverie (vers 16:30) : le lit refait avec la parure propre, puis aspirateur-serpillière dans tout l’appart (réservoir vidé et rincé après), salle de bain, poussière. Le linge propre plié et rangé. À la fin, sors la poubelle.')
     if lab == '🧘 Mobilité des hanches':
         return ('soin', 'Mobilité des hanches', '10 min au sol : 90/90, 2 × 1 min par côté.')
     return False
@@ -192,7 +192,7 @@ for J in S:
         t, d = soir[dow]
         rows.append({'t': '20:40', 'k': 'maison', 'titre': t, 'd': d})
     if dow == 0:
-        rows.append({'t': '15:30', 'k': 'maison', 'titre': 'La laverie', 'd': '', 'pas': ['Défais le lit : draps, taies, serviettes et lavettes dans le sac.', 'Le lit refait avec la parure propre.', 'À la laverie : un lavage à 60 °C, sans adoucissant si tu as le choix, puis le séchage — environ une heure, ≈ 8 €.', 'Tes 20 pages en espagnol pendant que ça tourne.', 'Le ticket dans la Batcave : Budget, catégorie Maison et ménage.']})
+        rows.append({'t': '15:30', 'k': 'maison', 'titre': 'La laverie', 'd': '', 'pas': ['Défais le lit : draps, taies, serviettes et lavettes dans le sac.', 'Départ 15:35 : la laverie est à 5 min à pied.', 'À la laverie : un lavage à 60 °C, sans adoucissant si tu as le choix, puis le séchage — 45 min en tout, ≈ 8 €. Le linge sorti vers 16:25, de retour vers 16:30.', 'Tes 20 pages en espagnol pendant que ça tourne.', 'Le ticket dans la Batcave : Budget, catégorie Maison et ménage.']})
     if dow == 2:
         # 9 novembre au soir : « si je divise le batch cooking en deux jours, comme ca je congele ni riz ni pates »
         rows += [
