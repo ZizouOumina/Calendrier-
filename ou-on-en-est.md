@@ -1,5 +1,16 @@
 # Où on en est — samedi 19 septembre 2026, au soir
 
+> ### Jeudi 12 novembre — la laverie, les dattes, trois brossages par jour
+> **Ses mots** : « elle est a 5 min de marche de chez moi, et le cycle lavage+sechage dure 45 min » ; « donc 8€
+> total » ; « les dates, cest 5€ le kilo » ; « je passe le fil dentaire, la brosse a dent et je nettoie ma langue, je
+> le fais 3 fois par jour » ; et pour les prix : « touts les prix [...] que je ne t'ai jamais envoyé tu me demandes ».
+> **Fait** : laverie à 15:35 (5 min à pied), 45 min, retour vers 16:30, le lit refait au début du ménage ; 8 €
+> confirmés. Dattes à 5 €/kg : courses 45,76 €/semaine, plafond Nourriture 200 → 211 € (`plafond-nourriture-v11`,
+> schéma 63), cagnotte du 25 de 90 à 70 € (agenda réécrit). Dentifrice toutes les 7 semaines (pas 10), fil dentaire
+> toutes les 10 (pas 26).
+> **En attente** : les vrais prix du soin et du ménage (relevés en ligne le 9 novembre, faux selon lui), des
+> sardines, des galettes, du Nutella, du Skinoren ; un gratte-langue déjà là ou à acheter ?
+
 > ### Jeudi 12 novembre, l'après-midi — « un guide à la semaine, pour chaque jour, précisément »
 > **Ses mots** : « donc il me faut un guide a la semaine, pour chaque jour, precisement ».
 > **Fait** : une seule page, « Ta semaine, jour par jour » (`ta-semaine.html`, `outils/semaine/build_guide.py`) : six

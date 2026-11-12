@@ -3688,11 +3688,11 @@
      comme inconnu. DRAPEAUX_MIGRATION est desormais LA liste ; les autres la reprennent.
      SCHEMA_VERSION est ecrit dans « batcave-schema » quand toutes ont tourne : le panneau
      Sante compare, et une sauvegarde plus ancienne se reconnait a ce seul chiffre. */
-  var SCHEMA_VERSION = 62;   /* 11 novembre, la nuit : ancre-dimanche-v3 (photos, brosse a dents et ongles repartent du dimanche 15) ; 11 novembre au soir : postes-soin-maison-v4 (le plafond reste a 14 rattrape) ; 11 novembre : postes-soin-maison-v3 (la laverie) ; 10 novembre, 18 h : snus-arret-v4 (le depart au mercredi 11) */   /* 9 novembre au soir : courses-plan-v12 et postes-soin-maison-v1 ; 10 novembre : postes-soin-maison-v2 */
+  var SCHEMA_VERSION = 63;   /* 12 novembre : plafond-nourriture-v11 (les dattes a 5 EUR le kilo) ; 11 novembre, la nuit : ancre-dimanche-v3 (photos, brosse a dents et ongles repartent du dimanche 15) ; 11 novembre au soir : postes-soin-maison-v4 (le plafond reste a 14 rattrape) ; 11 novembre : postes-soin-maison-v3 (la laverie) ; 10 novembre, 18 h : snus-arret-v4 (le depart au mercredi 11) */   /* 9 novembre au soir : courses-plan-v12 et postes-soin-maison-v1 ; 10 novembre : postes-soin-maison-v2 */
   var DRAPEAUX_MIGRATION = ['objectifs-seed-v1','objectifs-v2-55','objectifs-v5-espanol',
     'habits-ecran-v2','habitlog-hebdo-v1','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','habits-seed-v7','habits-seed-v8','habits-seed-v9','habits-seed-v10','habits-seed-v11','habits-seed-v12',
     'courses-plan-v2','courses-plan-v3','courses-plan-v4','courses-plan-v5','courses-plan-v6','courses-plan-v7','courses-plan-v8','courses-plan-v9','courses-plan-v10','courses-plan-v11','courses-plan-v12',
-    'charges-v2','plafond-nourriture-v2','plafond-nourriture-v3','plafond-nourriture-v4','plafond-nourriture-v5','plafond-nourriture-v6','plafond-nourriture-v7','plafond-nourriture-v8','plafond-nourriture-v9','plafond-nourriture-v10','postes-soin-maison-v1','postes-soin-maison-v2','ancre-dimanche-v1','ancre-dimanche-v2','serviettes-v1','coiffeur-v1','shampoing-dim-v1','marche-cible-v1','fc-migration-v1','fc-migration-v2','fc-migration-v3','fc-migration-v4','fc-migration-v5','revision-fusionnee','pesee-hebdo-v1','snus-arret-v3','snus-arret-v4','postes-soin-maison-v3','postes-soin-maison-v4','ancre-dimanche-v3'];
+    'charges-v2','plafond-nourriture-v2','plafond-nourriture-v3','plafond-nourriture-v4','plafond-nourriture-v5','plafond-nourriture-v6','plafond-nourriture-v7','plafond-nourriture-v8','plafond-nourriture-v9','plafond-nourriture-v10','plafond-nourriture-v11','postes-soin-maison-v1','postes-soin-maison-v2','ancre-dimanche-v1','ancre-dimanche-v2','serviettes-v1','coiffeur-v1','shampoing-dim-v1','marche-cible-v1','fc-migration-v1','fc-migration-v2','fc-migration-v3','fc-migration-v4','fc-migration-v5','revision-fusionnee','pesee-hebdo-v1','snus-arret-v3','snus-arret-v4','postes-soin-maison-v3','postes-soin-maison-v4','ancre-dimanche-v3'];
   /* Drapeaux que rien ne pose plus (migrations retirees) ou poses seulement quand il y a
      eu quelque chose a migrer : connus et gardes, jamais exiges. */
   var DRAPEAUX_ANCIENS = ['objectifs-v3-trajet','objectifs-v4-dimanche','habits-retirees-v1','shampoing-combat-v1','shampoing-samedi-v1','snus-arret-v1','snus-arret-v2'];   /* snus-arret-v1 puis v2 : remplacees par la v3 (jour 1 au 22, puis au dimanche 1er novembre) ; les deux d'avant n'ecrivent qu'a partir du 28 septembre */
@@ -13171,6 +13171,8 @@
        450 g (6,33 EUR/kg). Les myrtilles seules coutent plus (1,79 EUR les 250 g, 7,16 EUR/kg) et
        apportent moins de vitamine C que les framboises et les groseilles du melange. */
     fruitsrouges: {eur:2.85/0.45, par:'kg', ou:'Alcampo', quand:'30 oct.', detail:'2,85 \u20ac le sachet de 450 g (m\u00e9lange Auchan)'},
+    /* 12 novembre : son prix, 5 EUR le kilo (les dattes de la collation, 70 g par jour). */
+    dattes:   {eur:5.00,  par:'kg',    quand:'12 nov.'},
     /* 9 novembre au soir : le soin et le menage, au PAQUET (« pièce »), releves en ligne le 9 novembre --
        Mercadona (tienda.mercadona.es, magasin d'Alicante), Alcampo pour la lessive. Les marques sont celles
        du magasin, les moins cheres du rayon. Son ticket les remplacera. */
@@ -13499,8 +13501,12 @@
         prod('Gel douche', '1 flacon de 750 ml', 7, 'Deliplus « frescor azul »'),
         prod('Shampoing', '1 flacon de 1 L', 24, 'Deliplus « protección y brillo »'),
         prod('Déodorant', '1 spray de 200 ml', 4, 'Deliplus « invisible men »'),
-        prod('Dentifrice', '1 tube de 100 ml', 10, 'Deliplus anticaries, au fluor'),
-        prod('Fil dentaire', '1 paquet de 2 bobines', 26, 'ciré, à la menthe'),
+        /* 12 novembre, ses mots : « quand je me brosse les dents je passe le fil dentaire, la brosse a dent et je
+           nettoie ma langue, je le fais 3 fois par jour ». 21 brossages par semaine : un tube de 100 ml en ~7 semaines
+           (pas 10), et le fil -- ~45 cm par passage, ~9,5 m par semaine -- deux bobines de 50 m en ~10 semaines (pas 26).
+           Le bouton « fini » mesurera le vrai rythme. */
+        prod('Dentifrice', '1 tube de 100 ml', 7, 'Deliplus anticaries, au fluor — trois brossages par jour'),
+        prod('Fil dentaire', '1 paquet de 2 bobines', 10, 'ciré, à la menthe — trois passages par jour'),
         prod('Brosse à dents', '1 paquet de 4', 48, 'Deliplus medio — une neuve tous les 3 mois'),
         prod('Nettoyant visage', '1 flacon de 250 ml', 10, 'Deliplus « Facial Clean », gel doux'),
         prod('Skinoren', '1 tube de 30 g', 4, 'à la pharmacie, avec ton ordonnance'),
@@ -19333,6 +19339,15 @@
       save('batcave-budget-limits', budgetLimits);
     }
     saveInternal('batcave-plafond-nourriture-v10', true);
+  }
+  /* Onzieme fois, le 12 novembre : les dattes ont leur prix (5 EUR le kilo, ses mots), 70 g par jour -- ~211 EUR
+     par mois en caisse. Seulement s'il vaut encore ma valeur d'avant (200, posee par la v10). */
+  if(!load('batcave-plafond-nourriture-v11', false)){
+    if(Number(budgetLimits['Nourriture']) === 200){
+      budgetLimits['Nourriture'] = Math.round(coutAchatsMoyen().mois);
+      save('batcave-budget-limits', budgetLimits);
+    }
+    saveInternal('batcave-plafond-nourriture-v11', true);
   }
   /* 9 novembre au soir : « Sante » devient « Soin et sante » -- les produits de soin s'y rangent avec la
      pharmacie et le medecin (ses mots : « aussi les produits de soin et de sante ») -- et « Maison et menage »
