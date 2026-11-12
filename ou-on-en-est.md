@@ -33,8 +33,13 @@
 > Documentación 6), rien de fait depuis, plus ceux de la semaine du 9 au cronograma (Biología 12, Epidemiología 12 et
 > 13, Antropología 8 le vendredi 13) : ≈ 48, à recouper avec Canvas. Ses échéances : vendredi 13 à 15:30 le
 > cuestionario « uso ético de la IA en salud » (Epidemiología, en classe), 17:30 l'actividad 3 d'Antropología.
-> **En attente de lui** : les prix des sardines (ou maquereau), des galettes de riz, du Nutella ; la banque (réponse
-> donnée : sa mère vire directement sur le Wise, LuxTrust à récupérer à distance).
+> **LuxTrust** (le 12 au soir) : l'appli était sur un téléphone cassé, sans sauvegarde ; il n'a plus l'ancien numéro, et
+> au téléphone il ne se souvient plus des questions de sécurité. La banque est BGL BNP Paribas (service client
+> +352 42 42-2500, lundi-vendredi 8-18 h ; elle renvoie les identifiants LuxTrust à LuxTrust, +352 24 550 550). Ce qui
+> lui a été dit : redemander à LuxTrust la vérification vidéo (procédure « sans appareil », 20 €) avec le nouveau
+> numéro ; sinon BGL, qui l'a identifié à l'ouverture du compte ; plan B, une nouvelle identité LuxTrust par vidéo
+> (50 € pour 3 ans), à relier ensuite au Web Banking BGL. Rien de bloqué : sa mère vire sur le Wise.
+> **En attente de lui** : les prix des sardines (ou maquereau), des galettes de riz, du Nutella.
 
 > ### Jeudi 12 novembre — la laverie, les dattes, trois brossages par jour
 > **Ses mots** : « elle est a 5 min de marche de chez moi, et le cycle lavage+sechage dure 45 min » ; « donc 8€
