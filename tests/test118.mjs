@@ -74,8 +74,11 @@ console.log('\n== 1) Ce soir (avant le 13) : les 124 partent d\'un coup, puis to
   ok(ids.length === 124 && ids[0] === 'ejbpepcf6nkjslupv8sitgsog8_20270107T120000Z' && ids[123] === 'ubopd57ud8p8h6skefse6eojg8_20270122T192500Z' && ids.filter(i => /_20270(10[7-9]|11\d|12[0-2])T/.test(i)).length === 123 && ids.includes('amvacjo55pjdp3c9c662dfhk4g'), 'du 7 au 22 janvier : 123 occurrences de séries et 1 doublon');
   const drapeau = await local(fr, 'batcave-gcal-nettoyage-janvier');
   ok(drapeau && drapeau.retires === 124 && drapeau.date === '2026-11-12', 'fait une fois pour toutes : ' + JSON.stringify(drapeau));
-  const lus = await appels(fr, 'list_events');
+  /* la lecture du controle des series (une semaine d'un coup, triee) suit l'envoi : elle ne compte pas parmi les jours */
+  const tout = await appels(fr, 'list_events'), lus = tout.filter(a => a.input.orderBy !== 'startTime');
   ok(lus.length === 73 && lus[0].input.startTime.startsWith('2026-11-13T00:00:00') && lus[72].input.startTime.startsWith('2027-01-24T00:00:00'), 'reconstruction : chaque jour du vendredi 13 novembre au dimanche 24 janvier est relu (' + lus.length + ' jours)');
+  const ctrl = tout.findIndex(a => a.input.orderBy === 'startTime');
+  ok(ctrl === tout.length - 1, 'le controle des series vient apres, une seule lecture (' + (tout.length - lus.length) + ')');
   const crees = await appels(fr, 'create_event');
   ok(crees.length > 1500 && crees.every(a => a.input.startTime >= '2026-11-13'), 'rien avant le 13, tout le reste posé (' + crees.length + ' événements)');
   const jours = new Set(crees.map(a => a.input.startTime.slice(0, 10)));
@@ -94,7 +97,7 @@ console.log('\n== 2) Déjà fait : rien ne repart ==');
   await page.waitForTimeout(800);
   const sup = await appels(fr, 'delete_event');
   ok(!sup.some(a => /^ejbpepcf6nkjslupv8sitgsog8_/.test(a.input.eventId)), 'aucune suppression de la liste (' + sup.length + ' suppressions en tout)');
-  const lus = await appels(fr, 'list_events');
+  const lus = (await appels(fr, 'list_events')).filter(a => a.input.orderBy !== 'startTime');
   ok(lus.length < 73, 'pas de seconde reconstruction : l\'envoi habituel seulement (' + lus.length + ' jours relus)');
   await ctx.close();
 }
@@ -106,7 +109,7 @@ console.log('\n== 3) Un agenda qui n\'a jamais reçu janvier (installation neuve
   await page.waitForTimeout(500);
   ok((await appels(fr, 'delete_event')).length === 0, 'aucune suppression');
   ok((await local(fr, 'batcave-gcal-nettoyage-janvier')) === null && (await local(fr, 'batcave-gcal-reconstruction')) === null, 'pas de drapeau : rien de lancé');
-  ok((await appels(fr, 'list_events')).length === 0, 'et rien de relu avant le 13');
+  ok((await appels(fr, 'list_events')).filter(a => a.input.orderBy !== 'startTime').length === 0, 'et rien de relu avant le 13 (le controle des series seul)');
   await ctx.close();
 }
 
