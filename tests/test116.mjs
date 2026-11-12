@@ -65,8 +65,10 @@ console.log('\n== 2) La taille tient : la balance décide, le rapport épaules /
 
 console.log('\n== 3) La clôture : le tour de taille le dimanche, les épaules le dimanche des photos ==');
 {
-  /* le 29 novembre est un dimanche de photos (toutes les quatre semaines depuis le 4 octobre) */
-  const {ctx, page, fr} = await ouvrir({}, '2026-11-29T21:00:00+01:00');
+  /* le 29 novembre etait un dimanche de photos (toutes les quatre semaines depuis le 4 octobre).
+     11 novembre, la nuit : l'ancre passe au dimanche 15 novembre -- les photos tombent les 15 novembre,
+     13 decembre, 10 janvier, 7 fevrier. On lit le 13 decembre. */
+  const {ctx, page, fr} = await ouvrir({}, '2026-12-13T21:00:00+01:00');
   await fr.evaluate(() => { document.getElementById('bc-cloture').click(); const m = document.querySelector('[data-cl-mode="complet"]'); if(m) m.click(); });
   await page.waitForTimeout(300);
   const v = await fr.evaluate(() => ({t: document.getElementById('cl-taille-row').hidden, e: document.getElementById('cl-epaules-row').hidden}));
@@ -76,7 +78,7 @@ console.log('\n== 3) La clôture : le tour de taille le dimanche, les épaules l
     document.getElementById('cloture-valider').click(); const d = document.getElementById('demain-ok'); if(d) d.click();
   });
   await page.waitForTimeout(300);
-  const j = await fr.evaluate(() => JSON.parse(localStorage.getItem('batcave-journal-2026-11-29') || 'null'));
+  const j = await fr.evaluate(() => JSON.parse(localStorage.getItem('batcave-journal-2026-12-13') || 'null'));
   ok(j && Number(j.taille) === 75.5 && Number(j.epaules) === 110, 'les deux mesures sont dans le journal du jour (' + JSON.stringify(j && {taille: j.taille, epaules: j.epaules}) + ')');
   await ctx.close();
 }

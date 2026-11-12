@@ -57,6 +57,8 @@
 > jeudi 12 (centro de salud, propriétaire) ; liens vers les deux pages semaine et « Le linge ».
 > *Dossier E-commerce* : départ recalé au samedi 12 décembre (≈ 17 h par semaine dès la semaine du 14, 23 à 26 h à
 > Noël, 13 h au second semestre — lu dans la grille), les dates de ses douze semaines glissent de sept semaines.
+> *Campagne* : 109 fichiers, 2 946 vérifications vertes ; test14 seul en échec (antérieur), test116 recalé sur le
+> nouveau dimanche de photos (13 décembre). Batcave publiée en version 186.
 > **Reste à faire** : republier le Dossier E-commerce (514 Ko : la publication exige de relire toute la version en
 > ligne, trop lourd cette nuit) et recaler ses jalons une fois les dates d'examen de janvier saisies ;
 > `calendrier-s1.html` (septembre) n'est plus la référence de la grille — c'est la Batcave.
