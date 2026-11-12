@@ -259,7 +259,7 @@ def construire(J, semaine, k):
     if '🍲 Batch cooking de la semaine' in labs and dow == 0:
         rows.append({'t': '15:30', 'k': 'maison', 'titre': 'La laverie', 'd': '', 'pas': [
             'Défais le lit : draps, taies, serviettes et lavettes dans le sac.', 'Départ 15:35 : la laverie est à 5 min à pied.',
-            'À la laverie : un lavage à 60 °C, sans adoucissant si tu as le choix, puis le séchage — 45 min en tout, ≈ 8 €. Le linge sorti vers 16:25, de retour vers 16:30.',
+            'À la laverie : un lavage à 60 °C, sans adoucissant si tu as le choix, puis le séchage — 45 min en tout, 8 €. Le linge sorti vers 16:25, de retour vers 16:30.',
             'Tes 20 pages en espagnol pendant que ça tourne.', 'Le ticket dans la Batcave : Budget, catégorie Maison et ménage.']})
     # le soir : preparer demain, d'apres la grille de demain
     if suiv is not None or dow == 0:

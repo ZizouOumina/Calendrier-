@@ -13207,7 +13207,7 @@
   var PRIX_ESTIMES_HORS = {skinoren: {eur:19.90, detail:'prix d\u2019une pharmacie en ligne le 9 nov.'}};
   /* 11 novembre, ses mots : « les draps, serviettes etc je vais les laver a la laverie ». Chaque dimanche, apres la
      session de batch : un lavage a 60 °C (≈ 5 EUR, lessive comprise) et un sechage (≈ 3 EUR, 1 EUR les 10 min) -- les
-     prix des laveries libre-service d'Alicante, a remplacer par son premier ticket. */
+     prix des laveries libre-service d'Alicante ; confirme le 12 novembre : 8 EUR lavage et sechage compris. */
   var LAVERIE = {eur: 8, depuis: '2026-11-15'};
   /* La cle du besoin par libelle : c'est elle qui relie une ligne de courses a son prix. */
   var CLE_PRIX = {
@@ -13964,7 +13964,7 @@
             (hn.estimes.length ? ' ; ' + hn.estimes.map(function(x){ return x.label; }).join(', ') + ' compt\u00e9 ' + hn.estimes.map(function(x){ return eur(x.prix.eur); }).join(', ') + ' (une pharmacie en ligne) jusqu\u2019au ticket' : '') +
             '. Quand un produit est fini, touche \u00ab fini \u00bb : il passe au samedi qui suit, et sa vraie dur\u00e9e remplace la mienne.' +
             /* 11 novembre : le linge de maison a la laverie -- pas un produit de la liste, mais le meme poste */
-            ' Hors liste, la laverie du dimanche : \u2248 ' + eur(LAVERIE.eur) + ' par semaine, ' + eur(LAVERIE.eur * 52 / 12) + ' par mois, dans Maison et m\u00e9nage.';
+            ' Hors liste, la laverie du dimanche : ' + eur(LAVERIE.eur) + ' par semaine, ' + eur(LAVERIE.eur * 52 / 12) + ' par mois, dans Maison et m\u00e9nage.';
         })() +
         ' Ce montant est le <b style="color:var(--ink-dim);">plan</b> ; ce que tu as vraiment pay\u00e9 se saisit dans <b style="color:var(--ink-dim);">Budget \u2192 Nourriture</b> (ou Soin et sant\u00e9, Maison et m\u00e9nage), et c\'est lui qui compte dans tes d\u00e9penses du mois.';
     }
@@ -17052,7 +17052,7 @@
       return "La première des deux sessions de la semaine, une heure (le détail dans l'onglet Meal prep). " +
         (g('pates') ? "Une grande casserole d'eau salée : " + g('pates') + " g de pâtes (lundi et mardi midi), une minute de moins que le paquet, égouttées, un filet d'huile. Pendant ce temps, " : "") +
         "le poulet (" + g('poulet') + " g) à la poêle, feu vif : 4 min par face, puis 3 min à couvert. La viande hachée (" + g('hachee') + " g), " + (g('hachee') > 250 ? "en deux fournées, 10 min chacune" : "en une fournée, 10 min") + ". Les légumes surgelés (" + g('legumes') + " g), sans les décongeler : le brocoli 7 min, les épinards 5 min à couvert. " +
-        "Les " + Math.round(oeufs / 50) + " œufs durs de la semaine : 10 min dans l'eau bouillante, puis eau froide ; en coquille, au frigo. Tout refroidit 20 min à découvert, puis " + S.length + " boîtes, toutes au frigo, le jour écrit dessus : ce soir, puis lundi et mardi, midi et soir. La viande de mardi reste au congélateur. La vaisselle, le plan de travail essuyé. Puis, vers 15:30, la laverie : défais le lit — draps, taies, serviettes et lavettes dans le sac — et pars à 15:35, à 5 min à pied (un lavage à 60 °C, sans adoucissant si tu as le choix, puis le séchage : 45 min en tout, ≈ " + eur(LAVERIE.eur) + "). Tes 20 pages en espagnol pendant que ça tourne ; de retour vers 16:30, le lit se refait au début du ménage. Le ticket dans Budget, Maison et ménage.";
+        "Les " + Math.round(oeufs / 50) + " œufs durs de la semaine : 10 min dans l'eau bouillante, puis eau froide ; en coquille, au frigo. Tout refroidit 20 min à découvert, puis " + S.length + " boîtes, toutes au frigo, le jour écrit dessus : ce soir, puis lundi et mardi, midi et soir. La viande de mardi reste au congélateur. La vaisselle, le plan de travail essuyé. Puis, vers 15:30, la laverie : défais le lit — draps, taies, serviettes et lavettes dans le sac — et pars à 15:35, à 5 min à pied (un lavage à 60 °C, sans adoucissant si tu as le choix, puis le séchage : 45 min en tout, " + eur(LAVERIE.eur) + "). Tes 20 pages en espagnol pendant que ça tourne ; de retour vers 16:30, le lit se refait au début du ménage. Le ticket dans Budget, Maison et ménage.";
     },
     /* 11 novembre : les draps et les serviettes vont a la laverie (LAVERIE), juste apres la session du dimanche */
     '🧽 Ménage — sols, salle de bain, poussière': "À ton retour de la laverie (vers 16:30) : le lit refait avec la parure propre, puis aspirateur-serpillière dans tout l'appart (réservoir vidé et rincé après), salle de bain, poussière. Le linge propre plié et rangé. À la fin, sors la poubelle.",
@@ -19974,7 +19974,7 @@
       }
       else if(e.laverie){
         if(!cette.laverie) return;
-        l = {quand:'le dimanche', action:'La laverie \u00d7 ' + cette.dimanchesLaverie, detail:'Draps, taies, serviettes et lavettes : un lavage \u00e0 60 \u00b0C et un s\u00e9chage, \u2248 ' + eur(LAVERIE.eur) + ' \u2014 compt\u00e9 ainsi jusqu\u2019\u00e0 ton premier ticket (Budget, Maison et m\u00e9nage).', montant: cette.laverie, faire:true, laverie:true};
+        l = {quand:'le dimanche', action:'La laverie \u00d7 ' + cette.dimanchesLaverie, detail:'Draps, taies, serviettes et lavettes : un lavage \u00e0 60 \u00b0C et un s\u00e9chage, ' + eur(LAVERIE.eur) + ' (Budget, Maison et m\u00e9nage).', montant: cette.laverie, faire:true, laverie:true};
       }
       else if(e.balayage) l = cette.balayage >= 0
         ? {quand: le(cette.fin), action:'Balaye le reste vers la cagnotte', detail:'Ce qui reste sur le compte la veille du virement.', montant: cette.balayage, cagnotte:true, faire:true}
