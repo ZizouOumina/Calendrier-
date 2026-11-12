@@ -130,7 +130,8 @@ NOTES = {
 EN_PLUS = {
  1: ['Shampoing', 'Serviette de visage'], 2: ['Shampoing'], 3: ['Shampoing', 'Serviettes de visage et de corps', 'Taie d’oreiller', 'Douche froide'],
  4: ['Shampoing', 'Cou — flexion et extension, 3 × 12-20'], 5: ['Shampoing', 'Serviette de visage', 'Douche froide'], 6: ['Shampoing', 'Courses faites', 'Coupe de cheveux'],
- 0: ['Pesée à jeun', 'Rasage', 'Ongles des mains', 'Draps et taies', 'Serviettes de visage et de corps', 'Douche froide', 'Ménage du dimanche'],
+ # 11 novembre, la nuit : les ongles tombent un dimanche sur deux (15, 29 novembre), pas le 22 -- la Batcave ne les demande pas
+ 0: ['Pesée à jeun', 'Rasage', 'Draps et taies', 'Serviettes de visage et de corps', 'Douche froide', 'Ménage du dimanche'],
 }
 CHAQUE_JOUR = ['Lit fait', 'Lumière du matin', 'Les cinq prières', 'Créatine', 'Étirements', '8 000 pas', 'Téléphone hors de la chambre',
                'Sadaqah', 'Nouvelles à la famille', 'Revue du jour', '30 min d’espagnol avec un natif', 'Les dix formules', '20 pages en espagnol']
@@ -260,8 +261,6 @@ for J in S:
             'Pour finir, 30 à 60 s d’eau froide.', 'Sèche en tamponnant : serviettes de visage et de corps propres.',
             'Le Skinoren en couche fine, sur la peau sèche, là où tu as des boutons.', 'Déodorant.', 'La barbe brossée, et taillée si besoin.',
             'Habillé avec les vêtements posés hier soir, cheveux coiffés.', 'Fenêtres fermées.']
-    if dow == 0:
-        PAS['Douche du soir'] = PAS['Douche du soir'][:3] + ['Les ongles des mains coupés.'] + PAS['Douche du soir'][3:]
     if dow == 4:
         PAS['Écrans coupés'] = PAS['Écrans coupés'][:3] + ['5 min d’étirements, puis le cou : flexion et extension, 3 × 12-20.'] + PAS['Écrans coupés'][4:]
     for r in rows:

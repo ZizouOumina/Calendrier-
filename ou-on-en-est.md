@@ -38,6 +38,28 @@
 > ne porte plus que draps, taies, serviettes et lavettes ; sous-vêtements et chaussettes avec les vêtements du mardi.
 > **Outils** : les générateurs des pages semaine sont dans `outils/semaine/` (ils ne vivaient que dans un dossier
 > temporaire) ; relancés sur des données relues dans la Batcave, ils redonnent les deux pages à l'octet près.
+> **La nuit du 11 au 12** — ses mots, avant de dormir : « je veux que tout soit parfait au reveil […] si il ya des
+> trucs auxquels je nai pas pensé fait les aussi », puis « tout commence demain. L'espagnol etc ? Comme ça dans pile
+> 1 mois je commence l'ecommerce […] J'ai jeté mes snus et je commence à bien manger demain ».
+> *Les photos du point de départ* : le cycle du dimanche (photos toutes les quatre semaines, brosse à dents toutes
+> les douze, ongles toutes les deux) était resté ancré au 4 octobre — première série le 29 novembre, et le bilan peau
+> du 7 février hors d'un dimanche de photos. `ANCRE_DIMANCHE` passe au 15 novembre, premier dimanche du programme
+> (`ancre-dimanche-v3`, schéma 62) : photos les 15 novembre, 13 décembre, 10 janvier et 7 février ; brosse neuve le
+> 15 (le paquet s'achète le 14). La page du dimanche 15 les dit, avec le tour d'épaules à la clôture.
+> *La viande* : il s'est couché sans dire s'il l'avait congelée — le batch du jeudi (Batcave, Meal prep, page,
+> agenda) dit aussi quoi faire si elle est restée au frigo : la date limite des barquettes et l'odeur décident.
+> *Page du 16* : plus d'« ongles » le dimanche 22 (un dimanche sur deux : 15, 29) ; `tests/zz-habitudes.mjs` compare
+> les habitudes de chaque jour à celles des pages.
+> *« Ta journée, pas à pas »* (épinglée, restée au 31 octobre) : réécrite sur la Batcave — jour 1 au jeudi 12,
+> rattrapage du 12 au 15, mois d'espagnol jusqu'au 11 décembre, e-commerce le 12 ; plus de peroxyde ni de SPF (visage
+> lavé, puis Skinoren là où il a des boutons) ; riz 125 g dès le 16 ; « Clore » à 18:30 le mardi ; deux sessions de
+> batch ; la laverie ; photos et bilan peau du 7 février ; plus de 400 m nagé ; les cases « une seule fois » du
+> jeudi 12 (centro de salud, propriétaire) ; liens vers les deux pages semaine et « Le linge ».
+> *Dossier E-commerce* : départ recalé au samedi 12 décembre (≈ 17 h par semaine dès la semaine du 14, 23 à 26 h à
+> Noël, 13 h au second semestre — lu dans la grille), les dates de ses douze semaines glissent de sept semaines.
+> **Reste à faire** : republier le Dossier E-commerce (514 Ko : la publication exige de relire toute la version en
+> ligne, trop lourd cette nuit) et recaler ses jalons une fois les dates d'examen de janvier saisies ;
+> `calendrier-s1.html` (septembre) n'est plus la référence de la grille — c'est la Batcave.
 > **Google Agenda** : les rappels 💶 réécrits (700 €, 90 € de cagnotte, propriétaire pour l'eau et l'électricité
 > seulement, club 70 € le 5, licence au club le 16) ; jeudi 12 recalé (batch à 11:00, centro de salud à 08:00).
 > **Pages** : semaine du 12 (jeudi → dimanche), semaine du 16 (laverie, épreuve), dossier Español 2.19.

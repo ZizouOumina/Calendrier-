@@ -123,15 +123,15 @@ def bloc(iso, dow, h, lab, suivant):
 JOURS = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi']
 COURT = ['dim', 'lun', 'mar', 'mer', 'jeu', 'ven', 'sam']
 NOTES = {
- 4: ['Jour 1 : tout commence ce matin, réveil 05:20.', 'La viande achetée lundi est au congélateur depuis hier soir : le batch la cuit sans la décongeler.', '08:00 : appelle le centro de salud (rendez-vous et prise de sang), si ce n’est pas fait.', '11:00 : le batch de démarrage (jusqu’à dimanche midi), avec une machine de vêtements en même temps ; le déjeuner en sort tout chaud.', 'Collation : les sardines à la place des œufs.', 'Écris au proprio pour le montant des 2 mois d’électricité, puis vire-le.'],
+ 4: ['Jour 1 : tout commence ce matin, réveil 05:20.', 'La viande achetée lundi est au congélateur depuis hier soir : le batch la cuit sans la décongeler. Pas congelée ? La date limite des barquettes et l’odeur décident : le détail est à 11:00.', '08:00 : appelle le centro de salud (rendez-vous et prise de sang), si ce n’est pas fait.', '11:00 : le batch de démarrage (jusqu’à dimanche midi), avec une machine de vêtements en même temps ; le déjeuner en sort tout chaud.', 'Collation : les sardines à la place des œufs.', 'Écris au proprio pour le montant des 2 mois d’électricité, puis vire-le.'],
  5: ['13:15 : Jumu’ah à la mosquée.', 'Douche du matin : finis par 30 à 60 s d’eau froide.', '20:40 : plie et range le linge de jeudi.'],
  6: ['13:30 : les courses, plus 3 paquets de pâtes et les produits de soin et de ménage qui te manquent.', 'Au rangement : la viande de mardi au congélateur, crue.', 'Le soir : sors la boîte de demain midi du congélateur.'],
- 0: ['Au réveil : pesée à jeun et tour de taille.', '11:20 : l’épreuve d’espagnol, le premier passage (le diagnostic).', '14:30 : la première session de batch, une heure, 5 boîtes (la seconde mardi soir). 15:30 : la laverie (draps, taies, serviettes), puis le ménage à ton retour.', 'Demain, la salle reprend à 07:00 (départ 06:40) et le JJB à 10:30, si le médecin est d’accord : les sacs se préparent ce soir.'],
+ 0: ['Au réveil : pesée à jeun, tour de taille, et les photos du point de départ (peau et corps) : c’est à elles que tu compareras les suivantes.', '11:20 : l’épreuve d’espagnol, le premier passage (le diagnostic).', '14:30 : la première session de batch, une heure, 5 boîtes (la seconde mardi soir). 15:30 : la laverie (draps, taies, serviettes), puis le ménage à ton retour.', 'Demain, la salle reprend à 07:00 (départ 06:40) et le JJB à 10:30, si le médecin est d’accord : les sacs se préparent ce soir.'],
 }
 EN_PLUS = {
  1: ['Shampoing', 'Serviette de visage'], 2: ['Shampoing'], 3: ['Shampoing', 'Serviettes de visage et de corps', 'Taie d’oreiller', 'Douche froide'],
  4: ['Shampoing', 'Cou — flexion et extension, 3 × 12-20'], 5: ['Shampoing', 'Serviette de visage', 'Douche froide'], 6: ['Shampoing', 'Courses faites'],
- 0: ['Pesée à jeun', 'Rasage', 'Ongles des mains', 'Draps et taies', 'Serviettes de visage et de corps', 'Douche froide', 'Ménage du dimanche'],
+ 0: ['Pesée à jeun', 'Photos — peau et corps', 'Brosse à dents neuve', 'Rasage', 'Ongles des mains et des pieds', 'Draps et taies', 'Serviettes de visage et de corps', 'Douche froide', 'Ménage du dimanche'],
 }
 CHAQUE_JOUR = ['Lit fait', 'Lumière du matin', 'Les cinq prières', 'Créatine', 'Étirements', '8 000 pas', 'Téléphone hors de la chambre',
                'Sadaqah', 'Nouvelles à la famille', 'Revue du jour', '30 min d’espagnol avec un natif', 'Les dix formules', '20 pages en espagnol']
@@ -141,8 +141,9 @@ for J in S:
     iso, dow = J['iso'], J['dow']
     g = J['blocs']
     rows = []
-    rows.append({'t': '05:20', 'k': 'soin', 'titre': 'Réveil' + (', puis la pesée' if dow == 0 else ''),
-                 'd': ('Pesée à jeun et tour de taille, avant de boire ou manger. ' if dow == 0 else '') + 'Alarme loin du lit, lumières à fond, lit fait.'})
+    # 11 novembre, la nuit : le dimanche 15 est l'ancre des photos (ancre-dimanche-v3) -- la premiere serie, au depart
+    rows.append({'t': '05:20', 'k': 'soin', 'titre': 'Réveil' + (', puis la pesée et les photos' if dow == 0 else ''),
+                 'd': ('Pesée à jeun et tour de taille, avant de boire ou manger, puis les photos du point de départ. ' if dow == 0 else '') + 'Alarme loin du lit, lumières à fond, lit fait.'})
     creneaux = []
     for i, b in enumerate(g):
         lab, h = b['l'], b['h']
@@ -208,8 +209,9 @@ for J in S:
     if dow in (0, 3): serv.append('de corps')
     PAS = {
       'Réveil': ['Alarme coupée, loin du lit. Lumières à fond.', 'Toilettes.'] +
-                (['Pesée à jeun et tour de taille, notés dans la Batcave.'] if dow == 0 else []) +
-                ['Un grand verre d’eau.', 'Les dents : 2 min.', 'Le lit fait.'],
+                (['Pesée à jeun et tour de taille, notés dans la Batcave.',
+                  'Les photos du point de départ, peau et corps : le visage et le dos pour la peau, le corps de face et de profil. Même endroit, même lumière : tu les referas toutes les 4 semaines (13 décembre, 10 janvier, 7 février).'] if dow == 0 else []) +
+                ['Un grand verre d’eau.', 'Les dents : 2 min' + (', avec une brosse neuve (celle des courses d’hier).' if dow == 0 else '.'), 'Le lit fait.'],
       'Aérer, douche et soins': ['Fenêtres grandes ouvertes, 10 min.', 'Le visage lavé avec ton nettoyant, à la main.'] +
                 (['Le shampoing.'] if dow != 0 else []) + ['Le corps au gel doux.'] +
                 (['Pour finir, 30 à 60 s d’eau froide.'] if dow in (0, 3, 5) else []) +
@@ -240,7 +242,8 @@ for J in S:
             'Le Skinoren en couche fine, sur la peau sèche, là où tu as des boutons.', 'Déodorant.', 'La barbe brossée, et taillée si besoin.',
             'Habillé avec les vêtements posés hier soir, cheveux coiffés.', 'Fenêtres fermées.']
     if dow == 0:
-        PAS['Douche du soir'] = PAS['Douche du soir'][:3] + ['Les ongles des mains coupés.'] + PAS['Douche du soir'][3:]
+        PAS['Douche du soir'] = PAS['Douche du soir'][:3] + ['Les ongles des mains et des pieds coupés.'] + PAS['Douche du soir'][3:]
+        PAS['Écrans coupés'] = ['La clôture du jour dans la Batcave : ce soir elle demande aussi ton tour d’épaules (au plus large, bras le long du corps). Puis un coup d’œil à demain sur cette page.'] + PAS['Écrans coupés'][1:]
     if dow == 4:
         PAS['Écrans coupés'] = PAS['Écrans coupés'][:3] + ['5 min d’étirements, puis le cou : flexion et extension, 3 × 12-20.'] + PAS['Écrans coupés'][4:]
     # 9 novembre au soir : deux sessions de batch, tout au frigo ; dimanche 15, la premiere
@@ -268,6 +271,7 @@ for J in S:
                 r['pas'] = ['La machine : tes vêtements de la semaine, à 30 ou 40 °C.',
                     'Les 9 œufs dans l’eau bouillante, 10 min, puis dans l’eau froide : les collations de vendredi, samedi et dimanche (jeudi, les sardines).',
                     'La viande, congelée hier soir, sans la décongeler, dans deux poêles en même temps à feu moyen-vif : tout le poulet en morceaux (≈ 480 g) dans l’une, toute la viande hachée (≈ 480 g) dans l’autre, émiettée à mesure qu’elle dégèle. Moitié plus longtemps que d’habitude, 25 à 30 min ; le poulet est cuit quand le cœur n’est plus rose.',
+                    'Si tu ne l’as pas congelée hier soir : regarde la date limite sur les barquettes et sens-la. Dans les temps, sans odeur ni surface collante : elle se cuit maintenant, au temps habituel (15 à 20 min). Sinon : poubelle, et écris-moi, je refais les repas.',
                     'Les légumes surgelés, sans les décongeler : 320 g de brocoli 7 min, 240 g d’épinards 5 min à couvert.',
                     'Ton déjeuner sort de là : 120 g de poulet et 80 g de brocoli.',
                     'Le reste refroidit 20 min à découvert, puis 6 boîtes, le jour écrit dessus : les soirs de jeudi à samedi (160 g de viande hachée, épinards) et les midis de vendredi et samedi (120 g de poulet, brocoli) au frigo ; dimanche midi au congélateur. Tu as acheté pour sept jours, tu en manges quatre : un peu plus de viande par boîte, c’est bon pour tes kilos.',

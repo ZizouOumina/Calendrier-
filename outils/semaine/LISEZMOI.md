@@ -45,6 +45,14 @@ la semaine du 16 au 22 novembre (dates écrites dans le script). Pour une nouvel
   un texte propre (`[object`, `undefined`, `NaN`…) et liste les blocs sans consigne.
 - `zz-audit.mjs <horloge> <sortie>` : le texte de tous les onglets, à une heure donnée.
 - `zz-c.mjs <horloge> '<json>'` : quelques consignes, `[["libellé", jour 0-6, "AAAA-MM-JJ", "HH:MM"], …]`.
+- `zz-habitudes.mjs <AAAA-MM-JJ> …` : les habitudes du jour telles que le tableau de bord les affiche, date par
+  date (cycles compris : photos, ongles, brosse à dents) — à comparer aux « en plus aujourd'hui » des pages.
+- `zz-rappels.mjs <horloge> <AAAA-MM-JJ> [motif]` : les événements d'agenda que la Batcave écrirait ce jour-là
+  (titre, heures, description), pour les comparer à Google Agenda.
+- `zz-g.mjs <AAAA-MM-JJ> …` : la grille de quelques jours (`TOUT=1` pour tous les blocs).
+- `zz-cibles.mjs <lundi> [n]` et `zz-projets.mjs <lundi> [n]` : les cibles de révision et d'espagnol, et les heures
+  de blocs « Projets perso », semaine par semaine.
+- `zz-page.mjs <fichier> [horloge]` : une page autonome du dépôt à la largeur d'un téléphone (erreurs, débordement).
 - `zz-rev.mjs [horloge]` : pour chaque jour du 9 au 16 novembre, les blocs de travail, leur type et la cible du jour.
 - `zz-pages.mjs [dossier]` : ouvre les deux pages semaine à la largeur d'un téléphone, signale les erreurs, affiche
   le haut de la page ; avec un dossier, y dépose une capture par page.

@@ -3688,11 +3688,11 @@
      comme inconnu. DRAPEAUX_MIGRATION est desormais LA liste ; les autres la reprennent.
      SCHEMA_VERSION est ecrit dans « batcave-schema » quand toutes ont tourne : le panneau
      Sante compare, et une sauvegarde plus ancienne se reconnait a ce seul chiffre. */
-  var SCHEMA_VERSION = 61;   /* 11 novembre au soir : postes-soin-maison-v4 (le plafond reste a 14 rattrape) ; 11 novembre : postes-soin-maison-v3 (la laverie) ; 10 novembre, 18 h : snus-arret-v4 (le depart au mercredi 11) */   /* 9 novembre au soir : courses-plan-v12 et postes-soin-maison-v1 ; 10 novembre : postes-soin-maison-v2 */
+  var SCHEMA_VERSION = 62;   /* 11 novembre, la nuit : ancre-dimanche-v3 (photos, brosse a dents et ongles repartent du dimanche 15) ; 11 novembre au soir : postes-soin-maison-v4 (le plafond reste a 14 rattrape) ; 11 novembre : postes-soin-maison-v3 (la laverie) ; 10 novembre, 18 h : snus-arret-v4 (le depart au mercredi 11) */   /* 9 novembre au soir : courses-plan-v12 et postes-soin-maison-v1 ; 10 novembre : postes-soin-maison-v2 */
   var DRAPEAUX_MIGRATION = ['objectifs-seed-v1','objectifs-v2-55','objectifs-v5-espanol',
     'habits-ecran-v2','habitlog-hebdo-v1','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','habits-seed-v7','habits-seed-v8','habits-seed-v9','habits-seed-v10','habits-seed-v11','habits-seed-v12',
     'courses-plan-v2','courses-plan-v3','courses-plan-v4','courses-plan-v5','courses-plan-v6','courses-plan-v7','courses-plan-v8','courses-plan-v9','courses-plan-v10','courses-plan-v11','courses-plan-v12',
-    'charges-v2','plafond-nourriture-v2','plafond-nourriture-v3','plafond-nourriture-v4','plafond-nourriture-v5','plafond-nourriture-v6','plafond-nourriture-v7','plafond-nourriture-v8','plafond-nourriture-v9','plafond-nourriture-v10','postes-soin-maison-v1','postes-soin-maison-v2','ancre-dimanche-v1','ancre-dimanche-v2','serviettes-v1','coiffeur-v1','shampoing-dim-v1','marche-cible-v1','fc-migration-v1','fc-migration-v2','fc-migration-v3','fc-migration-v4','fc-migration-v5','revision-fusionnee','pesee-hebdo-v1','snus-arret-v3','snus-arret-v4','postes-soin-maison-v3','postes-soin-maison-v4'];
+    'charges-v2','plafond-nourriture-v2','plafond-nourriture-v3','plafond-nourriture-v4','plafond-nourriture-v5','plafond-nourriture-v6','plafond-nourriture-v7','plafond-nourriture-v8','plafond-nourriture-v9','plafond-nourriture-v10','postes-soin-maison-v1','postes-soin-maison-v2','ancre-dimanche-v1','ancre-dimanche-v2','serviettes-v1','coiffeur-v1','shampoing-dim-v1','marche-cible-v1','fc-migration-v1','fc-migration-v2','fc-migration-v3','fc-migration-v4','fc-migration-v5','revision-fusionnee','pesee-hebdo-v1','snus-arret-v3','snus-arret-v4','postes-soin-maison-v3','postes-soin-maison-v4','ancre-dimanche-v3'];
   /* Drapeaux que rien ne pose plus (migrations retirees) ou poses seulement quand il y a
      eu quelque chose a migrer : connus et gardes, jamais exiges. */
   var DRAPEAUX_ANCIENS = ['objectifs-v3-trajet','objectifs-v4-dimanche','habits-retirees-v1','shampoing-combat-v1','shampoing-samedi-v1','snus-arret-v1','snus-arret-v2'];   /* snus-arret-v1 puis v2 : remplacees par la v3 (jour 1 au 22, puis au dimanche 1er novembre) ; les deux d'avant n'ecrivent qu'a partir du 28 septembre */
@@ -7045,7 +7045,13 @@
      passe au PREMIER dimanche du programme, le 4 octobre -- la meme raison qu'au 19 : la
      photo et la pesee du point de depart doivent tomber au depart. Toutes les deux
      semaines ensuite (18 octobre...), photos toutes les quatre (1er novembre...). */
-  var ANCRE_DIMANCHE = '2026-10-04';
+  /* 11 novembre au soir : le jour 1 est le jeudi 12 novembre, le premier dimanche du programme le 15. L'ancre le
+     suit (ancre-dimanche-v3) : la premiere serie de photos tombe au depart du Skinoren, puis les 13 decembre,
+     10 janvier et 7 fevrier -- le dimanche du bilan peau, qui les compare a la premiere ; la brosse a dents neuve
+     le 15 (le paquet s'achete le samedi 14), puis toutes les douze semaines ; les ongles, toutes les deux, ne
+     changent pas de dimanche. Restee au 4 octobre, la premiere serie attendait le 29 novembre, et le 7 fevrier
+     n'etait pas un dimanche de photos. */
+  var ANCRE_DIMANCHE = '2026-11-15';
   /* 9 novembre, ses mots : « j'ai rien commencé, même le traitement » -- le Skinoren commence le mardi 10 ;
      douze semaines plus tard, le premier dimanche : le 7 février 2027 (et non plus le 13 décembre). */
   var BILAN_PEAU_ISO = '2027-02-07';   /* fin des douze semaines du protocole peau : le bilan s'affiche dans le Plan du jour */
@@ -7297,6 +7303,26 @@
     if(ancreBougee2) save('batcave-habits', habitsState);
     saveInternal('batcave-ancre-dimanche-v2', true);
   }
+  /* v3 (11 novembre au soir) : les trois habitudes a cycle du dimanche deja enregistrees portent l'ancre du
+     4 octobre ; elles passent au 15 novembre, premier dimanche du programme (voir ANCRE_DIMANCHE). Seule cette
+     ancre-la bouge : une ancre qu'il a posee lui-meme reste. Rejouee apres la synchro, sur l'etat du stockage. */
+  function ancreDimancheV3(){
+    if(load('batcave-ancre-dimanche-v3', false)) return false;
+    var courant = load('batcave-habits', null), bouge = false, cycle = ['core-photos-dim', 'core-brosse-dents', 'core-ongles'];
+    if(Array.isArray(courant)){
+      courant.forEach(function(h){
+        if(h && cycle.indexOf(h.id) > -1 && h.ancre === '2026-10-04'){ h.ancre = ANCRE_DIMANCHE; bouge = true; }
+      });
+      if(bouge){ habitsState = normaliserHabitudes(courant); save('batcave-habits', habitsState); }
+    }
+    saveInternal('batcave-ancre-dimanche-v3', true);
+    return bouge;
+  }
+  ancreDimancheV3();
+  MIGRATIONS_DEMARRAGE.push({cle:'batcave-ancre-dimanche-v3', rejouer: function(){
+    if(!ancreDimancheV3()) return false;
+    renderHabits(); renderDashboard(); return true;
+  }});
   HABIT_GENERATIONS.forEach(function(g){
     MIGRATIONS_DEMARRAGE.push({cle: g.cle, rejouer: function(){
       if(!reconcilierHabitudes()) return false;
@@ -13026,7 +13052,7 @@
     /* le meme ordre que la page de la semaine : les oeufs d'abord (ils cuisent seuls), la viande pendant ce temps */
     var e = [
       [0,  'Les <b>' + durs + ' œufs durs</b> (les collations) — dans l\'eau bouillante, 10 min, puis eau froide. En coquille : une semaine au frigo.'],
-      [2,  'Pendant ce temps, deux poêles à feu moyen-vif, la viande encore congelée : le <b>poulet</b> en morceaux (' + poids(T.poulet || 0) + ') dans l\'une, la <b>viande hachée</b> (' + poids(T.hachee || 0) + ') dans l\'autre, émiettée à mesure qu\'elle dégèle. Moitié plus longtemps que d\'habitude, 25 à 30 min ; le poulet est cuit quand le cœur n\'est plus rose.'],
+      [2,  'Pendant ce temps, deux poêles à feu moyen-vif, la viande encore congelée : le <b>poulet</b> en morceaux (' + poids(T.poulet || 0) + ') dans l\'une, la <b>viande hachée</b> (' + poids(T.hachee || 0) + ') dans l\'autre, émiettée à mesure qu\'elle dégèle. Moitié plus longtemps que d\'habitude, 25 à 30 min ; le poulet est cuit quand le cœur n\'est plus rose. Pas congelée la veille ? La date limite des barquettes et l\'odeur décident : dans les temps et sans odeur, elle se cuit au temps habituel, 15 à 20 min ; sinon, poubelle.'],
       [35, 'Les <b>légumes surgelés</b> — ' + poids(T.legumes || 0) + ' : le brocoli (les midis) 7 min, les épinards (les soirs) 5 min à couvert, sans les décongeler avant.'],
       [55, 'Ton <b>déjeuner</b> de côté, tout chaud. Le reste <b>refroidit à découvert, 20 min</b> : pendant ce temps, la vaisselle et le plan de travail.'],
       [75, '<b>' + boites + ' boîtes</b>, le jour écrit dessus : au frigo, sauf ' + nomJour(V.finPoulet) + ' midi, au congélateur (il descend au frigo la veille au soir).']
@@ -17232,7 +17258,9 @@
     var broco = somme('Déjeuner', 'legumes', iso, fin.finPoulet), epin = somme('Dîner', 'legumes', iso, fin.finHachee);
     var oeufs = Math.round(somme('Collation entraînement', 'oeufs', iso, fin.finPoulet) / 50);
     /* 11 novembre : les jours se lisent dans les dates (le batch est passe du mercredi au jeudi), et la viande est
-       congelee la veille -- elle se cuit sans decongeler, une fois et demie le temps habituel. */
+       congelee la veille -- elle se cuit sans decongeler, une fois et demie le temps habituel.
+       La nuit du 11 : il s'est couche sans dire s'il l'avait congelee. La consigne couvre l'autre cas -- la date
+       limite de la barquette et l'odeur decident, pas le calendrier. */
     var nj = function(x){ return NOMS_SEMAINE[dowDe(x)]; }, jours = [];
     for(var x = iso; x <= fin.finPoulet; x = isoDecale(x, 1)) jours.push(x);
     var avecOeufs = jours.filter(function(x){ return !sardinesLe(x); }).map(nj), avecSardines = jours.filter(sardinesLe).map(nj);
@@ -17240,7 +17268,7 @@
     var midis = jours.length, soirs = daysBetween(new Date(iso + 'T00:00:00'), new Date(fin.finHachee + 'T00:00:00')) + 1;
     var mots = ['zéro','une','deux','trois','quatre','cinq','six','sept','huit','neuf'];
     var boites = (midis - 1) + soirs, apres = isoDecale(iso, 1), veilleDim = isoDecale(fin.finPoulet, -1);
-    return "Le batch de démarrage, une heure vingt, et le déjeuner en sort tout chaud. D'abord, une machine de vêtements (30 à 40 °C) : elle tourne pendant le batch, et le linge s'étend après le déjeuner. La viande achetée lundi, congelée hier soir, se cuit sans la décongeler, dans deux poêles en même temps, moitié plus longtemps que d'habitude : tout le poulet (≈ " + poulet + " g, en morceaux) pour les midis de " + nj(iso) + " à " + nj(fin.finPoulet) + ", toute la viande hachée (≈ " + hachee + " g, émiettée à mesure qu'elle dégèle) pour les soirs de " + nj(iso) + " à " + nj(fin.finHachee) + " — " + fin.poulet + " g et " + fin.hachee + " g par boîte cette semaine : tu as acheté pour sept jours, tu en manges " + (mots[midis] || midis).replace('une', 'un') + ". Le poulet est cuit quand le cœur n'est plus rose. Avec " + broco + " g de brocoli (les midis) et " + epin + " g d'épinards (les soirs). Et " + oeufs + " œufs durs, 10 min dans l'eau bouillante puis l'eau froide : les collations de " + liste(avecOeufs) + (avecSardines.length ? " (" + liste(avecSardines) + ", les sardines)" : "") + ". Le riz, lui, se cuit chaque matin au rice cooker. " + capitaliser(mots[boites] || String(boites)) + " boîtes : le dîner de ce soir" + (soirs > 1 || midis > 2 ? ", puis " + nj(apres) + (veilleDim > apres ? " → " + nj(veilleDim) : "") + ", midi et soir," : "") + " au frigo ; le midi de " + nj(fin.finPoulet) + " au congélateur (il descend au frigo la veille au soir). Tout refroidit 20 min à découvert avant le frigo ; pendant ce temps, la vaisselle, le plan de travail, et 5 min d'aspirateur-serpillière dans la cuisine.";
+    return "Le batch de démarrage, une heure vingt, et le déjeuner en sort tout chaud. D'abord, une machine de vêtements (30 à 40 °C) : elle tourne pendant le batch, et le linge s'étend après le déjeuner. La viande achetée lundi, congelée hier soir, se cuit sans la décongeler, dans deux poêles en même temps, moitié plus longtemps que d'habitude : tout le poulet (≈ " + poulet + " g, en morceaux) pour les midis de " + nj(iso) + " à " + nj(fin.finPoulet) + ", toute la viande hachée (≈ " + hachee + " g, émiettée à mesure qu'elle dégèle) pour les soirs de " + nj(iso) + " à " + nj(fin.finHachee) + " — " + fin.poulet + " g et " + fin.hachee + " g par boîte cette semaine : tu as acheté pour sept jours, tu en manges " + (mots[midis] || midis).replace('une', 'un') + ". Le poulet est cuit quand le cœur n'est plus rose. Si tu ne l'as pas congelée hier soir : regarde la date limite sur les barquettes et sens-la — dans les temps, sans odeur ni surface collante, elle se cuit maintenant, au temps habituel ; sinon tu la jettes, et tu me l'écris pour que je refasse les repas. Avec " + broco + " g de brocoli (les midis) et " + epin + " g d'épinards (les soirs). Et " + oeufs + " œufs durs, 10 min dans l'eau bouillante puis l'eau froide : les collations de " + liste(avecOeufs) + (avecSardines.length ? " (" + liste(avecSardines) + ", les sardines)" : "") + ". Le riz, lui, se cuit chaque matin au rice cooker. " + capitaliser(mots[boites] || String(boites)) + " boîtes : le dîner de ce soir" + (soirs > 1 || midis > 2 ? ", puis " + nj(apres) + (veilleDim > apres ? " → " + nj(veilleDim) : "") + ", midi et soir," : "") + " au frigo ; le midi de " + nj(fin.finPoulet) + " au congélateur (il descend au frigo la veille au soir). Tout refroidit 20 min à découvert avant le frigo ; pendant ce temps, la vaisselle, le plan de travail, et 5 min d'aspirateur-serpillière dans la cuisine.";
   }
   var CONSIGNES_DATEES = {
     /* 11 novembre : le mercredi n'est plus le jour 1. La viande achetee lundi ne tient pas un jour de plus crue : elle

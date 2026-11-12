@@ -2656,7 +2656,7 @@
     "label": "Photos — peau et corps",
     "icon": "📸",
     "cycle": 4,
-    "ancre": "2026-10-04",
+    "ancre": "2026-11-15",
     "quinzaine": false
    },
    {
@@ -2672,7 +2672,7 @@
     "label": "Brosse à dents changée",
     "icon": "🪥",
     "cycle": 12,
-    "ancre": "2026-10-04",
+    "ancre": "2026-11-15",
     "quinzaine": false
    },
    {
@@ -2712,7 +2712,7 @@
     "label": "Ongles — mains ; pieds les dimanches de photo",
     "icon": "✂️",
     "cycle": 2,
-    "ancre": "2026-10-04",
+    "ancre": "2026-11-15",
     "quinzaine": false
    },
    {

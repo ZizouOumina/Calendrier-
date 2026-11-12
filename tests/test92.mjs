@@ -71,16 +71,18 @@ ok(!banniere, 'aucune bannière d\'incohérence après la remise à zéro' + (ba
 
 /* Le dimanche 4 octobre : premier dimanche d'ongles APRES la remise a zero. Depuis le 28
    septembre au soir, c'est l'ANCRE du cycle (premier dimanche du programme) : pesee, ongles
-   et photos -- donc mains ET pieds. */
-await page.clock.setFixedTime(new Date('2026-10-04T09:00:00+02:00'));
+   et photos -- donc mains ET pieds.
+   11 novembre, la nuit : jour 1 au jeudi 12 novembre -- l'ancre passe au dimanche 15 (ancre-dimanche-v3). */
+await page.clock.setFixedTime(new Date('2026-11-15T09:00:00+01:00'));
 await page.reload();
 await page.frameLocator('#f').locator('#dash-focus').waitFor({state:'attached', timeout:20000});
 const fr3 = page.frames().find(x => x.url().includes('batcave.html'));
 await fr3.evaluate(() => { document.querySelectorAll('.overlay').forEach(o => o.hidden = true); });
 await page.waitForTimeout(600);
 const l27 = await fr3.evaluate(() => [...document.querySelectorAll('#dash-checklist li label')].map(x=>x.textContent));
-ok(l27.some(t=>/Ongles/.test(t)), 'dim. 4 oct : la case ongles est bien là, après la remise à zéro');
-ok(l27.some(t=>/Photos/.test(t)), 'dim. 4 oct : l\'ancre, donc photos du point de départ (mains et pieds)');
+ok(l27.some(t=>/Ongles/.test(t)), 'dim. 15 nov : la case ongles est bien là, après la remise à zéro');
+ok(l27.some(t=>/Photos/.test(t)), 'dim. 15 nov : l\'ancre, donc photos du point de départ (mains et pieds)');
+ok(l27.some(t=>/Brosse à dents/.test(t)), 'dim. 15 nov : et la brosse à dents neuve, achetée la veille');
 
 await ctx.close(); await b.close();
 console.log(err ? '\n' + err + ' ÉCHEC(S)' : '\nTOUT VERT');

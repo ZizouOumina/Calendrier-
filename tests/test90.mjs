@@ -107,12 +107,17 @@ for (const [d, nom, du] of [['2026-09-19','sam. 19 sept (avant l\'ancre)',false]
 
 console.log('\n== 305) La brosse à dents : douze semaines ==');
 /* 28 septembre au soir, « tout commence demain » : l'ancre du dimanche passe au 4 octobre,
-   premier dimanche du programme. */
+   premier dimanche du programme.
+   11 novembre, la nuit : le jour 1 est le jeudi 12 novembre -- l'ancre passe au dimanche 15, premier dimanche du
+   programme (ancre-dimanche-v3). La brosse neuve le 15 (le paquet s'achete le samedi 14), puis le 7 fevrier. */
 for (const [d, nom, du] of [['2026-09-20','dim. 20 sept (avant l\'ancre)',false],
-                            ['2026-10-04','dim. 4 oct (la première)',true],
-                            ['2026-10-11','dim. 11 oct',false],
-                            ['2026-12-27','dim. 27 déc',true],
-                            ['2027-01-03','dim. 3 janv',false]]) {
+                            ['2026-10-04','dim. 4 oct (l\'ancienne ancre, avant la nouvelle)',false],
+                            ['2026-11-08','dim. 8 nov (avant l\'ancre)',false],
+                            ['2026-11-15','dim. 15 nov (la première)',true],
+                            ['2026-11-22','dim. 22 nov',false],
+                            ['2026-12-27','dim. 27 déc (l\'ancien rythme)',false],
+                            ['2027-02-07','dim. 7 févr',true],
+                            ['2027-02-14','dim. 14 févr',false]]) {
   const { ctx, fr } = await jour(d + 'T09:00:00+02:00');
   const l = await duJour(fr);
   ok(l.some(t => /Brosse à dents/.test(t)) === du, nom + ' : brosse ' + (du ? 'due' : 'pas due'));
@@ -134,15 +139,21 @@ console.log('\n== 305b) Pesée chaque dimanche, photos une fois sur quatre ==');
    l'hygiene laissait un jour de sueur sans shampooing. Mercredi et vendredi restent secs. */
 /* 28 septembre au soir : l'ancre passe au 4 OCTOBRE, premier dimanche du programme -- la
    meme raison qu'au 19 : la photo et la pesee du point de depart tombent au depart. */
+/* 11 novembre, la nuit : jour 1 au jeudi 12 novembre, l'ancre au dimanche 15 -- encore la meme raison. Les photos :
+   15 novembre, 13 decembre, 10 janvier, 7 fevrier (le dimanche du bilan peau, douze semaines apres la premiere
+   serie). Avant le 15, aucune : une seance du 4 octobre ou du 1er novembre n'a jamais eu lieu. */
 for (const [d, nom, pesee, photos, shamp] of [['2026-09-20','dim. 20 sept (avant l\'ancre)',true,false,true],
                                               ['2026-09-27','dim. 27 sept',true,false,true],
-                                              ['2026-10-04','dim. 4 oct (l\'ancre)',true,true,false],
+                                              ['2026-10-04','dim. 4 oct (l\'ancienne ancre)',true,false,false],
                                               ['2026-10-11','dim. 11 oct',true,false,false],
                                               ['2026-10-18','dim. 18 oct',true,false,false],
-                                              ['2026-11-01','dim. 1er nov',true,true,false],
-                                              ['2026-11-15','dim. 15 nov',true,false,false],
-                                              ['2026-11-29','dim. 29 nov',true,true,false],
-                                              ['2026-12-13','dim. 13 déc',true,false,false],
+                                              ['2026-11-01','dim. 1er nov',true,false,false],
+                                              ['2026-11-15','dim. 15 nov (l\'ancre : le point de départ)',true,true,false],
+                                              ['2026-11-22','dim. 22 nov',true,false,false],
+                                              ['2026-11-29','dim. 29 nov',true,false,false],
+                                              ['2026-12-13','dim. 13 déc',true,true,false],
+                                              ['2027-01-10','dim. 10 janv',true,true,false],
+                                              ['2027-02-07','dim. 7 févr (le bilan peau)',true,true,false],
                                               ['2026-09-14','lun. 14 (muscu)',false,false,true],
                                               ['2026-09-15','mar. 15 (muscu)',false,false,true],
                                               ['2026-09-16','mer. 16 (repos)',false,false,false],
@@ -166,13 +177,17 @@ console.log('\n== 305c) Les ongles : un dimanche sur deux, et les pieds les dima
    photo, et comme les photos sont un cycle de quatre semaines sur la meme ancre, un dimanche
    de photo est toujours un dimanche d'ongles. C'est cette implication-la qu'on verrouille
    ici : si quelqu'un deplace une des deux ancres, le libelle devient un mensonge. */
+/* 11 novembre, la nuit : l'ancre au dimanche 15 novembre. Avant elle, rien n'est du. */
 for (const [d, nom, du] of [['2026-09-20','dim. 20 sept (avant l\'ancre)',false],
                             ['2026-09-27','dim. 27 sept',false],
-                            ['2026-10-04','dim. 4 oct',true],
+                            ['2026-10-04','dim. 4 oct (l\'ancienne ancre)',false],
                             ['2026-10-11','dim. 11 oct',false],
-                            ['2026-10-18','dim. 18 oct',true],
+                            ['2026-10-18','dim. 18 oct',false],
                             ['2026-11-15','dim. 15 nov',true],
+                            ['2026-11-22','dim. 22 nov',false],
+                            ['2026-11-29','dim. 29 nov',true],
                             ['2026-12-13','dim. 13 déc',true],
+                            ['2027-02-07','dim. 7 févr',true],
                             ['2026-09-14','lun. 14',false],
                             ['2026-09-19','sam. 19',false]]) {
   const { ctx, fr } = await jour(d + 'T09:00:00+02:00');
@@ -187,7 +202,7 @@ for (const [d, nom, du] of [['2026-09-20','dim. 20 sept (avant l\'ancre)',false]
   await ctx.close();
 }
 {
-  const { ctx, fr } = await jour('2026-10-04T09:00:00+02:00');
+  const { ctx, fr } = await jour('2026-11-15T09:00:00+01:00');
   const t = (await duJour(fr)).find(x => /Ongles/.test(x)) || '';
   ok(/mains/.test(t) && /pieds les dimanches de photo/.test(t),
      'le libellé porte la règle : « ' + t.trim() + ' »');
