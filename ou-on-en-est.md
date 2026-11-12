@@ -8,8 +8,14 @@
 > confirmés. Dattes à 5 €/kg : courses 45,76 €/semaine, plafond Nourriture 200 → 211 € (`plafond-nourriture-v11`,
 > schéma 63), cagnotte du 25 de 90 à 70 € (agenda réécrit). Dentifrice toutes les 7 semaines (pas 10), fil dentaire
 > toutes les 10 (pas 26).
-> **En attente** : les vrais prix du soin et du ménage (relevés en ligne le 9 novembre, faux selon lui), des
-> sardines, des galettes, du Nutella, du Skinoren ; un gratte-langue déjà là ou à acheter ?
+> **Le soir, l'enveloppe** : « mets pas les prix des produits de nettoyage et de santé, on va juste dire que j'ai
+> 300€ par mois pour les courses etc » ; la laverie « compte dans les 300 ». Les prix du soin et du ménage sortent
+> (la liste garde produits, rythmes et « fini ») ; `ENVELOPPE_COURSES` (300 €, dès le 25 novembre) remplace les
+> plafonds Nourriture, Soin et santé, Maison et ménage (`enveloppe-courses-v1`, schéma 64) ; Budget : une barre
+> « L'enveloppe ». Plan d'argent : cagnotte du 25 à 130 € (100 € quand la licence de novembre 2027 entre dans
+> l'horizon), épargne moyenne 159,01 € + le reste de l'enveloppe. Agenda : rappel du 25 à 130 €.
+> **En attente** : les prix des sardines, des galettes, du Nutella ; un gratte-langue ? ; la banque (pas d'accès
+> LuxTrust, virement de sa mère sur le compte luxembourgeois) ; le club pas payé ce mois-ci ; draps et housses.
 
 > ### Jeudi 12 novembre, l'après-midi — « un guide à la semaine, pour chaque jour, précisément »
 > **Ses mots** : « donc il me faut un guide a la semaine, pour chaque jour, precisement ».

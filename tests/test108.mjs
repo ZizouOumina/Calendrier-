@@ -46,7 +46,8 @@ console.log('\n== 269) Deux oeufs a la place du jambon ==');
   ok(r.oeufs === 18 && r.jambon === undefined, 'les courses : 18 œufs par semaine (les 3 du dimanche midi depuis le 22 novembre ; trois à la collation depuis le 8 novembre, quand le cottage cheese sort ; les sardines le mardi et le jeudi depuis le 21 octobre), plus de jambon (' + r.oeufs + ' / ' + r.jambon + ')');
   ok(!r.cout.lignes.some(l => /Jambon/.test(l.label)) && r.cout.manque.slice().sort().join('|') === ['Galettes de riz', 'Nutella', 'Sardines ou maquereau (boîte)'].join('|'), 'le coût ne compte plus de jambon ; les dattes ont leur prix depuis le 12 novembre (5 EUR le kilo) ; seuls manquent les prix des articles des 21 et 23 octobre et du Nutella du 9 novembre (son ticket ; le cottage cheese du 27 est sorti le 8 novembre) — les fruits rouges ont le leur depuis le 30 octobre (Alcampo) — la boisson d\'avoine a le sien depuis le 29 septembre ('  + r.cout.manque.join() + ')');
   /* 4 octobre : le plafond suit ce qu'il paie en caisse (conditionnements et cycles compris), pas ce qu'il mange. */
-  ok(r.plafond === Math.round(r.achats.mois), 'le plafond Nourriture posé par la Batcave suit le coût en caisse : ' + r.plafond + ' €');
+  /* 12 novembre : l'enveloppe de 300 EUR remplace le plafond Nourriture (enveloppe-courses-v1) */
+  ok(r.plafond === undefined, 'plus de plafond Nourriture : l\'enveloppe de 300 EUR le remplace (' + r.plafond + ')');
   await fr.evaluate(() => document.querySelector('.nav-btn[data-page="repas"]') && document.querySelector('.nav-btn[data-page="repas"]').click());
   await page.waitForTimeout(300);
   const txt = await fr.evaluate(() => document.body.innerText);
@@ -56,7 +57,7 @@ console.log('\n== 269) Deux oeufs a la place du jambon ==');
 {
   const { ctx, fr } = await ouvrir('2026-09-28T10:00:00+02:00', {'batcave-budget-limits': {Nourriture: 180}});
   const p = await fr.evaluate(() => JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-budget-limits') || '{}').Nourriture);
-  ok(p === 180, 'un plafond réglé à la main ne bouge pas (' + p + ')');
+  ok(p === undefined, 'même réglé à la main, le plafond Nourriture laisse place à l\'enveloppe — sa décision du 12 novembre (' + p + ')');
   await ctx.close();
 }
 

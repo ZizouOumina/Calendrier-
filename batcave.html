@@ -3688,11 +3688,11 @@
      comme inconnu. DRAPEAUX_MIGRATION est desormais LA liste ; les autres la reprennent.
      SCHEMA_VERSION est ecrit dans « batcave-schema » quand toutes ont tourne : le panneau
      Sante compare, et une sauvegarde plus ancienne se reconnait a ce seul chiffre. */
-  var SCHEMA_VERSION = 63;   /* 12 novembre : plafond-nourriture-v11 (les dattes a 5 EUR le kilo) ; 11 novembre, la nuit : ancre-dimanche-v3 (photos, brosse a dents et ongles repartent du dimanche 15) ; 11 novembre au soir : postes-soin-maison-v4 (le plafond reste a 14 rattrape) ; 11 novembre : postes-soin-maison-v3 (la laverie) ; 10 novembre, 18 h : snus-arret-v4 (le depart au mercredi 11) */   /* 9 novembre au soir : courses-plan-v12 et postes-soin-maison-v1 ; 10 novembre : postes-soin-maison-v2 */
+  var SCHEMA_VERSION = 64;   /* 12 novembre, le soir : enveloppe-courses-v1 (300 EUR pour les courses, le soin, le menage et la laverie) ; 12 novembre : plafond-nourriture-v11 (les dattes a 5 EUR le kilo) ; 11 novembre, la nuit : ancre-dimanche-v3 (photos, brosse a dents et ongles repartent du dimanche 15) ; 11 novembre au soir : postes-soin-maison-v4 (le plafond reste a 14 rattrape) ; 11 novembre : postes-soin-maison-v3 (la laverie) ; 10 novembre, 18 h : snus-arret-v4 (le depart au mercredi 11) */   /* 9 novembre au soir : courses-plan-v12 et postes-soin-maison-v1 ; 10 novembre : postes-soin-maison-v2 */
   var DRAPEAUX_MIGRATION = ['objectifs-seed-v1','objectifs-v2-55','objectifs-v5-espanol',
     'habits-ecran-v2','habitlog-hebdo-v1','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','habits-seed-v7','habits-seed-v8','habits-seed-v9','habits-seed-v10','habits-seed-v11','habits-seed-v12',
     'courses-plan-v2','courses-plan-v3','courses-plan-v4','courses-plan-v5','courses-plan-v6','courses-plan-v7','courses-plan-v8','courses-plan-v9','courses-plan-v10','courses-plan-v11','courses-plan-v12',
-    'charges-v2','plafond-nourriture-v2','plafond-nourriture-v3','plafond-nourriture-v4','plafond-nourriture-v5','plafond-nourriture-v6','plafond-nourriture-v7','plafond-nourriture-v8','plafond-nourriture-v9','plafond-nourriture-v10','plafond-nourriture-v11','postes-soin-maison-v1','postes-soin-maison-v2','ancre-dimanche-v1','ancre-dimanche-v2','serviettes-v1','coiffeur-v1','shampoing-dim-v1','marche-cible-v1','fc-migration-v1','fc-migration-v2','fc-migration-v3','fc-migration-v4','fc-migration-v5','revision-fusionnee','pesee-hebdo-v1','snus-arret-v3','snus-arret-v4','postes-soin-maison-v3','postes-soin-maison-v4','ancre-dimanche-v3'];
+    'charges-v2','plafond-nourriture-v2','plafond-nourriture-v3','plafond-nourriture-v4','plafond-nourriture-v5','plafond-nourriture-v6','plafond-nourriture-v7','plafond-nourriture-v8','plafond-nourriture-v9','plafond-nourriture-v10','postes-soin-maison-v1','postes-soin-maison-v2','ancre-dimanche-v1','ancre-dimanche-v2','serviettes-v1','coiffeur-v1','shampoing-dim-v1','marche-cible-v1','fc-migration-v1','fc-migration-v2','fc-migration-v3','fc-migration-v4','fc-migration-v5','revision-fusionnee','pesee-hebdo-v1','snus-arret-v3','snus-arret-v4','postes-soin-maison-v3','postes-soin-maison-v4','ancre-dimanche-v3','plafond-nourriture-v11','enveloppe-courses-v1'];
   /* Drapeaux que rien ne pose plus (migrations retirees) ou poses seulement quand il y a
      eu quelque chose a migrer : connus et gardes, jamais exiges. */
   var DRAPEAUX_ANCIENS = ['objectifs-v3-trajet','objectifs-v4-dimanche','habits-retirees-v1','shampoing-combat-v1','shampoing-samedi-v1','snus-arret-v1','snus-arret-v2'];   /* snus-arret-v1 puis v2 : remplacees par la v3 (jour 1 au 22, puis au dimanche 1er novembre) ; les deux d'avant n'ecrivent qu'a partir du 28 septembre */
@@ -13172,45 +13172,25 @@
        apportent moins de vitamine C que les framboises et les groseilles du melange. */
     fruitsrouges: {eur:2.85/0.45, par:'kg', ou:'Alcampo', quand:'30 oct.', detail:'2,85 \u20ac le sachet de 450 g (m\u00e9lange Auchan)'},
     /* 12 novembre : son prix, 5 EUR le kilo (les dattes de la collation, 70 g par jour). */
-    dattes:   {eur:5.00,  par:'kg',    quand:'12 nov.'},
-    /* 9 novembre au soir : le soin et le menage, au PAQUET (« pièce »), releves en ligne le 9 novembre --
-       Mercadona (tienda.mercadona.es, magasin d'Alicante), Alcampo pour la lessive. Les marques sont celles
-       du magasin, les moins cheres du rayon. Son ticket les remplacera. */
-    geldouche:   {eur:0.95, par:'pi\u00e8ce', ou:'Mercadona', quand:'9 nov.', enLigne:true, detail:'Gel de ba\u00f1o frescor azul Deliplus, 750 ml'},
-    shampoing:   {eur:1.35, par:'pi\u00e8ce', ou:'Mercadona', quand:'9 nov.', enLigne:true, detail:'Champ\u00fa protecci\u00f3n y brillo Deliplus, 1 L'},
-    deo:         {eur:1.65, par:'pi\u00e8ce', ou:'Mercadona', quand:'9 nov.', enLigne:true, detail:'Desodorante invisible men Deliplus, spray de 200 ml'},
-    dentifrice:  {eur:1.05, par:'pi\u00e8ce', ou:'Mercadona', quand:'9 nov.', enLigne:true, detail:'Dent\u00edfrico Anticaries Deliplus, 100 ml'},
-    fil:         {eur:1.80, par:'pi\u00e8ce', ou:'Mercadona', quand:'9 nov.', enLigne:true, detail:'Hilo dental con cera y sabor menta, 2 bobines'},
-    brosse:      {eur:1.35, par:'pi\u00e8ce', ou:'Mercadona', quand:'9 nov.', enLigne:true, detail:'Cepillo dental Medio Deliplus, 4 brosses'},
-    visage:      {eur:2.50, par:'pi\u00e8ce', ou:'Mercadona', quand:'9 nov.', enLigne:true, detail:'Gel facial limpiador Facial Clean, 250 ml'},
-    savon:       {eur:0.80, par:'pi\u00e8ce', ou:'Mercadona', quand:'9 nov.', enLigne:true, detail:'Jab\u00f3n de manos dermoprotector Deliplus, 500 ml'},
-    rasoirs:     {eur:1.50, par:'pi\u00e8ce', ou:'Mercadona', quand:'9 nov.', enLigne:true, detail:'Maquinillas desechables Deliplus Active 3 hojas'},
-    gelrasage:   {eur:1.75, par:'pi\u00e8ce', ou:'Mercadona', quand:'9 nov.', enLigne:true, detail:'Gel de afeitar Sensitive Deliplus, 200 ml'},
-    mouchoirs:   {eur:1.35, par:'pi\u00e8ce', ou:'Mercadona', quand:'9 nov.', enLigne:true, detail:'Pa\u00f1uelos Extra Suaves Bosque Verde, bo\u00eete'},
-    lessive:     {eur:14.69, par:'pi\u00e8ce', ou:'Alcampo', quand:'9 nov.', enLigne:true, unite:'le sac', detail:'PRODUCTO ALCAMPO detergente en polvo, 5 kg (100 doses)'},
-    adoucissant: {eur:1.80, par:'pi\u00e8ce', ou:'Mercadona', quand:'9 nov.', enLigne:true, detail:'Suavizante concentrado Bosque Verde, 1,6 L'},
-    pastilleslv: {eur:2.95, par:'pi\u00e8ce', ou:'Mercadona', quand:'9 nov.', enLigne:true, detail:'Lavavajillas Todo en 1 Bosque Verde, 30 pastilles'},
-    sel:         {eur:1.00, par:'pi\u00e8ce', ou:'Mercadona', quand:'9 nov.', enLigne:true, detail:'Sal lavavajillas Bosque Verde, 2 kg'},
-    vaisselle:   {eur:1.15, par:'pi\u00e8ce', ou:'Mercadona', quand:'9 nov.', enLigne:true, detail:'Lavavajillas a mano Bosque Verde, 1,3 L'},
-    degraissant: {eur:1.50, par:'pi\u00e8ce', ou:'Mercadona', quand:'9 nov.', enLigne:true, detail:'Quitagrasas Bosque Verde, 750 ml'},
-    multi:       {eur:1.30, par:'pi\u00e8ce', ou:'Mercadona', quand:'9 nov.', enLigne:true, detail:'Multiusos Perfumado Bosque Verde, 1 L'},
-    antical:     {eur:1.70, par:'pi\u00e8ce', ou:'Mercadona', quand:'9 nov.', enLigne:true, detail:'Limpiador Antical Bosque Verde, 750 ml'},
-    wc:          {eur:0.95, par:'pi\u00e8ce', ou:'Mercadona', quand:'9 nov.', enLigne:true, detail:'Limpiador WC con lej\u00eda Bosque Verde, 1 L'},
-    eponges:     {eur:0.90, par:'pi\u00e8ce', ou:'Mercadona', quand:'9 nov.', enLigne:true, detail:'Estropajo suciedad resistente Bosque Verde, 3'},
-    lavettes:    {eur:0.95, par:'pi\u00e8ce', ou:'Mercadona', quand:'9 nov.', enLigne:true, unite:'la lavette', detail:'Bayeta multiusos microfibra Bosque Verde'},
-    sacs:        {eur:1.80, par:'pi\u00e8ce', ou:'Mercadona', quand:'9 nov.', enLigne:true, detail:'Bolsas de basura 30 L Bosque Verde, 40'},
-    congelation: {eur:0.85, par:'pi\u00e8ce', ou:'Mercadona', quand:'9 nov.', enLigne:true, detail:'Bolsas congelaci\u00f3n medianas Bosque Verde, 40'},
-    essuietout:  {eur:2.30, par:'pi\u00e8ce', ou:'Mercadona', quand:'9 nov.', enLigne:true, detail:'Papel hogar compacto Bosque Verde, 3 rouleaux'},
-    pq:          {eur:2.40, par:'pi\u00e8ce', ou:'Mercadona', quand:'9 nov.', enLigne:true, detail:'Papel higi\u00e9nico doble hoja Bosque Verde, 12 rouleaux'}
+    dattes:   {eur:5.00,  par:'kg',    quand:'12 nov.'}
+    /* 9 novembre au soir, les prix du soin et du menage releves en ligne (Mercadona, Alcampo) ; 12 novembre, sa
+       decision : « mets pas les prix des produits de nettoyage et de sante, on va juste dire que j'ai 300EUR par mois
+       pour les courses etc ». Ils sortent : la liste garde les produits, leur rythme et le bouton « fini », sans prix.
+       C'est l'enveloppe (ENVELOPPE_COURSES) qui porte le budget. */
   };
   /* Le Skinoren n'a pas de prix espagnol trouve en ligne (medicament sur ordonnance) : « prix a relever » dans
      la liste, et 19,90 EUR dans le plan d'argent -- le prix d'une pharmacie en ligne le 9 novembre, dit comme
      tel jusqu'au ticket de la pharmacie. */
-  var PRIX_ESTIMES_HORS = {skinoren: {eur:19.90, detail:'prix d\u2019une pharmacie en ligne le 9 nov.'}};
+  var PRIX_ESTIMES_HORS = {};   /* 12 novembre : plus de prix pour le soin et le menage (ENVELOPPE_COURSES) */
   /* 11 novembre, ses mots : « les draps, serviettes etc je vais les laver a la laverie ». Chaque dimanche, apres la
      session de batch : un lavage a 60 °C (≈ 5 EUR, lessive comprise) et un sechage (≈ 3 EUR, 1 EUR les 10 min) -- les
      prix des laveries libre-service d'Alicante ; confirme le 12 novembre : 8 EUR lavage et sechage compris. */
   var LAVERIE = {eur: 8, depuis: '2026-11-15'};
+  /* 12 novembre, ses mots : « on va juste dire que j'ai 300EUR par mois pour les courses etc, et si il ya du reste je le
+     mettrai dans la cagnotte » ; la laverie « compte dans les 300 ». Une seule enveloppe pour la nourriture, le soin et
+     la sante, la maison et le menage, et la laverie -- des la periode du 25 novembre (celle d'avant garde son calcul,
+     samedi par samedi). Dans le budget, les trois postes n'ont plus de plafond chacun : l'enveloppe les tient ensemble. */
+  var ENVELOPPE_COURSES = {montant: 300, depuis: '2026-11-25', cats: ['Nourriture', 'Soin et sant\u00e9', 'Maison et m\u00e9nage']};
   /* La cle du besoin par libelle : c'est elle qui relie une ligne de courses a son prix. */
   var CLE_PRIX = {
     'Poulet':'poulet', 'Viande hach\u00e9e 5 %':'hachee', 'Skyr':'skyr', '\u0152ufs':'oeufs',
@@ -13222,16 +13202,8 @@
     /* 21 octobre : sans prix releve -- « prix a relever », hors total, jusqu'a son ticket */
     'Sardines ou maquereau (boîte)':'sardines', 'Fruits rouges surgelés':'fruitsrouges', 'Galettes de riz':'galettes',
     'Cottage cheese':'cottage',   /* 27 octobre : prix a relever */
-    'Nutella':'nutella',   /* 9 novembre : prix a relever */
-    /* 9 novembre au soir : le soin, la sante et le menage */
-    'Gel douche':'geldouche', 'Shampoing':'shampoing', 'D\u00e9odorant':'deo', 'Dentifrice':'dentifrice',
-    'Fil dentaire':'fil', 'Brosse \u00e0 dents':'brosse', 'Nettoyant visage':'visage', 'Skinoren':'skinoren',
-    'Savon pour les mains':'savon', 'Rasoirs jetables':'rasoirs', 'Gel de rasage':'gelrasage', 'Mouchoirs':'mouchoirs',
-    'Lessive en poudre':'lessive', 'Adoucissant':'adoucissant', 'Pastilles lave-vaisselle':'pastilleslv',
-    'Sel lave-vaisselle':'sel', 'Liquide vaisselle':'vaisselle',
-    'D\u00e9graissant':'degraissant', 'Multi-surfaces':'multi', 'Anticalcaire salle de bain':'antical', 'Gel WC':'wc',
-    '\u00c9ponges':'eponges', 'Lavettes microfibre':'lavettes', 'Sacs poubelle 30 L':'sacs',
-    'Sacs cong\u00e9lation':'congelation', 'Essuie-tout':'essuietout', 'Papier toilette':'pq'
+    'Nutella':'nutella'   /* 9 novembre : prix a relever */
+    /* le soin, la sante et le menage n'ont plus de prix depuis le 12 novembre (ENVELOPPE_COURSES) */
   };
   function eur(n){ return (Math.round(n * 100) / 100).toFixed(2).replace('.', ',') + ' \u20ac'; }
   /* Le cout d'une semaine se calcule sur le BESOIN, pas sur l'achat : un pot de 2 L d'huile
@@ -13963,16 +13935,9 @@
       budget.innerHTML = '<b style="color:var(--ink);">' + eur(am.mois) + ' par mois en caisse</b> \u00b7 ' +
         eur(am.total) + ' par semaine en moyenne, conditionnements compris : ' + eur(am.ordinaire) + ' un samedi ordinaire, davantage quand les surgel\u00e9s, les r\u00e9serves ou l\u2019huile tombent ce jour-l\u00e0. Ce que tu <b style="color:var(--ink-dim);">manges</b> vaut ' + eur(cs.total) + ' par semaine (' + eur(cs.mois) + ' par mois) : l\u2019\u00e9cart, c\u2019est le surplus des paquets \u2014 coche « j\u2019en ai » quand il te reste de quoi tenir, et la diff\u00e9rence part \u00e0 la cagnotte. Prix relev\u00e9s en magasin les 20, 21, 25 et 29 septembre, ligne par ligne.' +
         (cs.manque.length ? ' <b style="color:var(--warn);">' + cs.manque.join(', ') + '</b> : prix pas encore relev\u00e9, donc hors total \u2014 le chiffre montera quand il y sera.' : '') +
-        /* 9 novembre au soir : le soin et le menage, a part -- au prorata du rythme de chaque produit. */
-        (function(){
-          var hn = coutHorsNourriture(), pm = hn.postesMois;
-          return ' <b style="color:var(--ink);">En plus, ' + eur(hn.mois) + ' par mois de soin et de m\u00e9nage</b> : ' + eur(pm['Soin et sant\u00e9'] || 0) + ' de soin et sant\u00e9, ' + eur(pm['Maison et m\u00e9nage'] || 0) + ' de maison et m\u00e9nage, chaque produit au prorata de son rythme, aux prix relev\u00e9s en ligne le 9 novembre (Mercadona, Alcampo)' +
-            (hn.estimes.length ? ' ; ' + hn.estimes.map(function(x){ return x.label; }).join(', ') + ' compt\u00e9 ' + hn.estimes.map(function(x){ return eur(x.prix.eur); }).join(', ') + ' (une pharmacie en ligne) jusqu\u2019au ticket' : '') +
-            '. Quand un produit est fini, touche \u00ab fini \u00bb : il passe au samedi qui suit, et sa vraie dur\u00e9e remplace la mienne.' +
-            /* 11 novembre : le linge de maison a la laverie -- pas un produit de la liste, mais le meme poste */
-            ' Hors liste, la laverie du dimanche : ' + eur(LAVERIE.eur) + ' par semaine, ' + eur(LAVERIE.eur * 52 / 12) + ' par mois, dans Maison et m\u00e9nage.';
-        })() +
-        ' Ce montant est le <b style="color:var(--ink-dim);">plan</b> ; ce que tu as vraiment pay\u00e9 se saisit dans <b style="color:var(--ink-dim);">Budget \u2192 Nourriture</b> (ou Soin et sant\u00e9, Maison et m\u00e9nage), et c\'est lui qui compte dans tes d\u00e9penses du mois.';
+        /* 12 novembre : le soin, le menage et la laverie n'ont plus de prix -- une enveloppe de 300 EUR par mois tient tout. */
+        ' <b style="color:var(--ink);">L\u2019enveloppe : ' + eur(ENVELOPPE_COURSES.montant) + ' par mois</b> pour la nourriture, le soin, le m\u00e9nage et la laverie (' + eur(LAVERIE.eur) + ' chaque dimanche), d\u00e8s le ' + fmtDate(ENVELOPPE_COURSES.depuis) + ' \u2014 ce qui en reste part dans la cagnotte le ' + (REVENU_MOIS.jour - 1) + '. Le soin et le m\u00e9nage n\u2019ont pas de prix : quand un produit est fini, touche \u00ab fini \u00bb, il passe au samedi qui suit.' +
+        ' Ce montant est le <b style="color:var(--ink-dim);">plan</b> ; ce que tu as vraiment pay\u00e9 se saisit dans <b style="color:var(--ink-dim);">Budget \u2192 Nourriture</b> (ou Soin et sant\u00e9, Maison et m\u00e9nage : les trois comptent dans l\u2019enveloppe), et c\'est lui qui compte dans tes d\u00e9penses du mois.';
     }
     grid.innerHTML = '';
     /* Ce qui est DU aujourd'hui, et rien d'autre, dans la grille principale. Avant, les
@@ -19442,6 +19407,23 @@
     try{ renderBudget(); renderDashboard(); }catch(e){}
     return true;
   }});
+  /* 12 novembre : l'enveloppe (ENVELOPPE_COURSES). Les plafonds Nourriture, Soin et sante, Maison et menage -- poses
+     par les migrations precedentes ou a la main -- s'effacent : l'enveloppe de 300 EUR les remplace, sa decision. */
+  function migrerEnveloppeCourses(){
+    if(load('batcave-enveloppe-courses-v1', false)) return false;
+    var bl = load('batcave-budget-limits', null), bouge = false;
+    if(bl && typeof bl === 'object' && !Array.isArray(bl)) budgetLimits = bl;
+    ENVELOPPE_COURSES.cats.forEach(function(c){ if(budgetLimits[c] !== undefined){ delete budgetLimits[c]; bouge = true; } });
+    if(bouge) save('batcave-budget-limits', budgetLimits);
+    saveInternal('batcave-enveloppe-courses-v1', true);
+    return bouge;
+  }
+  migrerEnveloppeCourses();
+  MIGRATIONS_DEMARRAGE.push({cle:'batcave-enveloppe-courses-v1', rejouer: function(){
+    if(!migrerEnveloppeCourses()) return false;
+    try{ renderBudget(); renderDashboard(); }catch(e){}
+    return true;
+  }});
   var fixedCharges = load('batcave-fixed-charges', null);
   if(fixedCharges === null){ fixedCharges = FIXED_CHARGES_SEED.slice(); save('batcave-fixed-charges', fixedCharges); }
   if(!Array.isArray(fixedCharges)) fixedCharges = FIXED_CHARGES_SEED.slice();
@@ -19784,8 +19766,22 @@
     if(!el) return;
     var monthKey = todayISO.slice(0,7);
     var monthDep = txState.filter(function(t){ return t.date && t.date.slice(0,7)===monthKey && t.type==='Dépense'; });
-    el.innerHTML = CATS_DEPENSE.map(function(cat){
+    /* 12 novembre : l'enveloppe -- nourriture, soin et sante, maison et menage (laverie comprise) sous un seul plafond. */
+    var envCats = ENVELOPPE_COURSES.cats, envLim = ENVELOPPE_COURSES.montant;
+    var envSpent = monthDep.filter(function(t){ return envCats.indexOf(t.categorie) > -1; }).reduce(function(s,t){ return s+Number(t.montant); }, 0);
+    var envPct = Math.round(100*envSpent/envLim), envOver = envSpent > envLim;
+    var envHtml = '<div class="bud-env" style="margin-bottom:16px;">'+
+        '<div class="bud-cat">'+
+          '<span class="bc-nom"><b>L\u2019enveloppe</b> \u00b7 courses, soin, m\u00e9nage, laverie</span>'+
+          '<span class="bc-reglage"><span class="sub-note" style="font-size:11.5px; color:'+(envOver?'var(--danger)':'var(--ink-faint)')+';">'+envSpent.toFixed(0)+' / '+envLim.toFixed(0)+' € · '+envPct+'%</span></span>'+
+        '</div>'+
+        '<div class="progress-track"><div class="progress-fill" style="width:'+Math.min(envPct,100)+'%; background:'+(envOver?'var(--danger)':'linear-gradient(90deg, var(--cyan-dim), var(--cyan-bright))')+';"></div></div>'+
+        '<p class="sub-note" style="font-size:11.5px; margin-top:4px;">'+(envOver ? 'D\u00e9pass\u00e9e de '+(envSpent-envLim).toFixed(0)+' €.' : 'Reste '+(envLim-envSpent).toFixed(0)+' € : il part dans la cagnotte le '+(REVENU_MOIS.jour-1)+'.')+'</p>'+
+      '</div>';
+    el.innerHTML = envHtml + CATS_DEPENSE.map(function(cat){
       var spent = monthDep.filter(function(t){ return t.categorie===cat; }).reduce(function(s,t){ return s+Number(t.montant); }, 0);
+      if(envCats.indexOf(cat) > -1)
+        return '<div style="margin-bottom:12px;"><div class="bud-cat"><span class="bc-nom">'+escapeHtml(cat)+'</span><span class="bc-reglage"><span class="sub-note" style="font-size:11.5px;">'+spent.toFixed(0)+' € \u00b7 dans l\u2019enveloppe</span></span></div></div>';
       var limit = Number(budgetLimits[cat])||0;
       var pct = limit ? Math.round(100*spent/limit) : 0;
       var over = limit>0 && spent>limit;
@@ -19955,6 +19951,10 @@
       /* 11 novembre : la laverie, chaque dimanche des LAVERIE.depuis */
       var dims = 0; for(var y = debut; y <= fin; y = isoDecale(y, 1)) if(dowDe(y) === 0 && y >= LAVERIE.depuis) dims++;
       var laverie = dims * LAVERIE.eur;
+      /* 12 novembre : des le 25 novembre, l'enveloppe -- 300 EUR pour les courses, le soin, le menage et la laverie,
+         quel que soit le nombre de samedis. */
+      if(debut >= ENVELOPPE_COURSES.depuis)
+        return {debut: debut, fin: fin, samedis: sams.length, achats: sams, courses: ENVELOPPE_COURSES.montant, soins: 0, laverie: 0, dimanchesLaverie: dims, enveloppe: true, fixes: fx, libre: REVENU_MOIS.montant - fx};
       return {debut: debut, fin: fin, samedis: sams.length, achats: sams, courses: sams.reduce(function(t, s){ return t + s.montant; }, 0), soins: soins, laverie: laverie, dimanchesLaverie: dims, fixes: fx, libre: REVENU_MOIS.montant - fx};
     };
     var j = new Date(iso + 'T00:00:00');
@@ -19968,7 +19968,9 @@
        sache laquelle : la cagnotte garde cette marge (le second prelevement, moins la part
        lissee deja comptee). Sans charge de ce genre, c'est exactement l'ancien calcul. */
     var marge4s = fixedCharges.reduce(function(t, c){ return t + (periodeDe(c) === '4semaines' ? 2 * (Number(c.montant) || 0) - montantMensuel(c) : 0); }, 0);
-    var pireReste = suite.reduce(function(m, p){ return Math.min(m, p.libre - p.courses - p.soins - p.laverie); }, Infinity);
+    /* 12 novembre : la cagnotte se lit sur les periodes de l'enveloppe -- celle d'avant a deja eu la sienne le 25 octobre. */
+    var sources = suite.filter(function(p){ return p.enveloppe; });
+    var pireReste = (sources.length ? sources : suite).reduce(function(m, p){ return Math.min(m, p.libre - p.courses - p.soins - p.laverie); }, Infinity);
     var cagnotte = Math.max(0, Math.floor((pireReste - marge4s) / 10) * 10);
     suite.forEach(function(p){ p.balayage = p.libre - p.courses - p.soins - p.laverie - cagnotte; });
     var cette = suite[0], prochaine5 = suite.filter(function(p){ return p.samedis === 5; })[0] || null;
@@ -19979,7 +19981,9 @@
     var vus = {};
     ECHEANCES_ARGENT.forEach(function(e){
       var l;
-      if(e.cagnotte) l = {quand: le(cette.debut), action:'Mets de c\u00f4t\u00e9 dans la cagnotte', detail:'Le montant s\u00fbr : ce que laisse m\u00eame la p\u00e9riode la plus ch\u00e8re de l\u2019ann\u00e9e (5 samedis et les r\u00e9serves qui tombent ensemble).', montant: cagnotte, cagnotte:true, faire:true};
+      if(e.cagnotte) l = {quand: le(cette.debut), action:'Mets de c\u00f4t\u00e9 dans la cagnotte', detail: sources.length ? 'Le montant s\u00fbr : le virement, moins les charges fixes et l\u2019enveloppe de ' + eur(ENVELOPPE_COURSES.montant) + ', moins la marge d\u2019un second pr\u00e9l\u00e8vement Basic-Fit dans le m\u00eame mois.' : 'Le montant s\u00fbr : ce que laisse m\u00eame la p\u00e9riode la plus ch\u00e8re de l\u2019ann\u00e9e (5 samedis et les r\u00e9serves qui tombent ensemble).', montant: cagnotte, cagnotte:true, faire:true};
+      /* 12 novembre : une periode de l'enveloppe n'a qu'une ligne pour les courses, le soin, le menage et la laverie */
+      else if(e.courses && cette.enveloppe) l = {quand:'le mois', action:'L\u2019enveloppe : courses, soin, m\u00e9nage, laverie', detail:'Tout ce qui se d\u00e9pense en courses, produits de soin et de m\u00e9nage, et la laverie du dimanche (' + eur(LAVERIE.eur) + '). Ce qui en reste le ' + (REVENU_MOIS.jour - 1) + ' part dans la cagnotte.', montant: cette.courses, faire:true, courses:true};
       else if(e.courses) l = {quand:'le samedi', action:'Courses \u00d7 ' + cette.samedis, detail: cette.achats.map(function(a){ return fmtDate(a.date) + ' ' + eur(a.montant); }).join(' \u00b7 ') + ' \u2014 ce que tu paies en caisse, conditionnements compris.', montant: cette.courses, faire:true, courses:true};
       /* 9 novembre au soir : le soin et le menage, une ligne a part -- leur moyenne, pas leurs dates. */
       else if(e.soins){
@@ -20025,7 +20029,7 @@
     return {revenu: REVENU_MOIS.montant, fixes: fixes, semaine: sem, estimes: estimes, cagnotte: cagnotte,
       achatsSemaine: am.total, achatsMois: am.mois, pire: pire,
       soinsSemaine: hn.hebdo, soinsMois: hn.mois, soinsPostes: hn.postesMois,
-      moyenne: libre - am.mois - hn.mois - LAVERIE.eur * 52 / 12, periode: cette, prochaine5: prochaine5, lignes: lignes};   /* 11 novembre : la laverie aussi */
+      moyenne: libre - ENVELOPPE_COURSES.montant, enveloppe: ENVELOPPE_COURSES.montant, periode: cette, prochaine5: prochaine5, lignes: lignes};   /* 11 novembre : la laverie aussi */
   }
   /* 1 400 et pas 1400 : l'espace fine des milliers, comme partout ailleurs dans la Batcave. */
   function eurMille(n){ return eur(n).replace(/\B(?=(\d{3})+(?!\d))/g, '\u202f'); }
@@ -20081,7 +20085,7 @@
       (a.estimes.length ? '<li><b>Les amandes : rel\u00e8ve leur prix samedi</b> et envoie-le-moi. En attendant, elles comptent \u00e0 ' + a.estimes[0].prix.eur + ' \u20ac/' + a.estimes[0].prix.par + '.</li>' : '') +
       '<li><b>Tes rappels \ud83d\udcb6 dans l\u2019agenda :</b> le ' + REVENU_MOIS.jour + ' (virement et cagnotte), le 1er (propri\u00e9taire), le 5 (club), le ' + (REVENU_MOIS.jour - 1) + ' (le reste dans la cagnotte).</li>' +
       '</ul>';
-    h += '<p class="ma-pied">Courses : ' + eurMille(a.achatsSemaine) + ' par semaine en caisse en moyenne (' + eurMille(a.achatsMois) + ' par mois, conditionnements compris ; ' + eurMille(a.semaine) + ' pour ce que tu manges), d\u2019apr\u00e8s tes relev\u00e9s des 20, 21, 25 et 29 septembre' +
+    h += '<p class="ma-pied">L\u2019enveloppe : ' + eurMille(ENVELOPPE_COURSES.montant) + ' par mois d\u00e8s le ' + fmtDate(ENVELOPPE_COURSES.depuis) + ' (courses, soin, m\u00e9nage, laverie) ; ce qui en reste part dans la cagnotte. Le plan de repas co\u00fbte ' + eurMille(a.achatsSemaine) + ' par semaine en caisse en moyenne (' + eurMille(a.achatsMois) + ' par mois, conditionnements compris ; ' + eurMille(a.semaine) + ' pour ce que tu manges), d\u2019apr\u00e8s tes relev\u00e9s des 20, 21, 25 et 29 septembre' +
       (a.estimes.length ? ', dont ' + a.estimes.map(function(e){ return e.label.toLowerCase() + ' estim\u00e9es \u00e0 ' + e.prix.eur + ' \u20ac/' + e.prix.par + ' (prix \u00e0 relever)'; }).join(', ') : '') +
       '. Eau et \u00e9lectricit\u00e9 : 70 \u20ac estim\u00e9s par mois, une provision \u2014 le vrai montant suit ta conso, le propri\u00e9taire te le donne chaque mois. Charges fixes : ' + eurMille(a.fixes) + ' par mois.</p>';
     el.innerHTML = h;
