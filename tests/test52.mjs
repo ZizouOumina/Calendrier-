@@ -190,6 +190,9 @@ console.log('\n== 172) Option active au démarrage : envoi automatique ; bloc d�
 {
   const { ctx, fr, page } = await ouvrir(MARDI, {'batcave-gcal-ecriture': {actif:true, depuis:'2026-09-14'},
     'batcave-gcal-2026-11-17': {'p6': {id:'ancien1', empreinte:'2026-11-17T08:40:00+01:00|2026-11-17T09:40:00+01:00|🦇 Anki 2'}}});
+  /* 12 novembre : l'événement du relevé doit EXISTER dans l'agenda -- un identifiant du relevé que l'agenda ne
+     porte plus ne compte plus (supprimé à la main, ou doublon retiré), le bloc repart du titre. */
+  await fr.evaluate(() => window.__gcalEvents.push({id:'ancien1', summary:'🦇 Anki 2', description:'', start:{dateTime:'2026-11-17T08:40:00+01:00', timeZone:'Europe/Madrid'}, end:{dateTime:'2026-11-17T09:40:00+01:00', timeZone:'Europe/Madrid'}, status:'confirmed'}));
   await page.clock.runFor(7000);
   await page.waitForTimeout(600);
   const maj = await appels(fr, 'update_event');

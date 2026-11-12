@@ -38,7 +38,7 @@ console.log('\n== 250) Journée exceptionnelle : TP jeudi 24 sept. 11:00 → 13:
   const lundi = await grille(fr, 'monday', '2026-09-21');
   ok(lundi.includes('20:30 Clore le cours du jour'), 'un autre jour reste tel quel');
   const cs = await fr.evaluate(() => [window.__bcConsigne('Préparer · TP · Anatomía I', 3, '2026-09-23'), window.__bcConsigne('TP · Anatomía I', 4, '2026-09-24'), window.__bcTypeBloc('Préparer · TP · Anatomía I'), window.__bcTypeBloc('TP · Anatomía I')]);
-  ok(/Veille de TP · Anatomía I/.test(cs[0]) && /silencieux/.test(cs[1]), 'consignes de la veille et de l\'événement');
+  ok(/Veille du TP d’Anatomía I/.test(cs[0]) && /silencieux/.test(cs[1]), 'consignes de la veille et de l\'événement');
   ok(cs[2] === 'cours' && cs[3] === null, '« Préparer » est du temps de révision, le TP lui-même non');
   const lab = await fr.evaluate(() => document.getElementById('cal-schedule-label').textContent);
   ok(/📌 TP · Anatomía I 11:00/.test(lab), 'étiquette de l\'emploi du temps (' + lab + ')');

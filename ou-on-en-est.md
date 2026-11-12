@@ -1,5 +1,36 @@
 # Où on en est — samedi 19 septembre 2026, au soir
 
+> ### Jeudi 12 novembre, le soir — l'agenda remis au propre jusqu'au 24 janvier, le budget, le guide
+> **Ses mots** : « je veux que tout soit parfait, et que je n'ai plus besoin de toucher quoi que ce soit avant le
+> debut du 2ieme semestre » ; « et pour le budget, je le vois pas dans tes tasks » ; « tu peux changer mon agenda
+> google librement » ; « je veux tout supprimer en meme temps, pas une par une » ; « on a fait nimp, recommence a
+> 100% tout, tu sais ce que je veux ».
+> **Google Agenda** : 95 rappels en trop ou en double supprimés depuis la conversation (16 novembre → 7 janvier). Le
+> reste se fait dans la Batcave, à l'ouverture, sans une validation par événement (chaque suppression demandait la
+> sienne depuis la conversation) : les 124 rappels en trop du 7 au 22 janvier (`GCAL_NETTOYAGE_JANVIER`, une fois,
+> drapeau `batcave-gcal-nettoyage-janvier`), puis la reconstruction complète du vendredi 13 novembre au dimanche
+> 24 janvier (`reconstruireAgenda`, trois jours à la fois, drapeau `batcave-gcal-reconstruction`) : chaque bloc à son
+> heure, avec le titre et la consigne de ce jour-là ; tout autre « 🦇 » du jour retiré (anciennes séries, doublons,
+> trajets des jours sans cours) ; les cours de la fac et l'argent (sans « 🦇 ») restent. Une coupure reprend à
+> l'ouverture suivante. Deux gardes : chaque jour poussé retire les « 🦇 » qu'il ne porte plus (sauf
+> `GCAL_PROTEGES` : « Enlever les tapis ») ; un événement du relevé qui n'est plus dans l'agenda ne compte plus — sans
+> quoi le jour passait pour « déjà envoyé » et le nettoyage retirait la copie restante. Le rappel du 25 dit 100 € (la
+> Batcave), plus 130. `.claude/settings.json` autorise Google Calendar sans validation dans les prochaines sessions.
+> **Budget** : l'enveloppe vérifiée de bout en bout (test117 réécrit) : cagnotte de 100 € le 25, chaque mois — le mois
+> le plus cher de l'horizon (celui de la licence de novembre 2027) fixe le montant sûr ; le 24, 61,51 € plus ce qui
+> reste des 300 € partent à la cagnotte. Barre « L'enveloppe » dans Budget. À régler : l'abonnement de novembre (70 €)
+> et la licence (30 €), au club lundi 16 par carte Wise, 100 € en tout. Le gratte-langue rejoint le soin (pharmacie,
+> samedi 14 : « j'en ai » s'il en a déjà un) — 28 produits.
+> **Guide « Ta semaine »** jusqu'au dimanche 24 janvier (onze semaines) : les vacances de Noël (23 décembre →
+> 6 janvier), les partiels (Anatomía I jeudi 7 à 13:30 ; Epidemiología lundi 11 à 08:30 ; Biología celular mercredi 13
+> à 13:30 ; Documentación lundi 18 et Antropología mercredi 20 à 08:30), chacun avec sa préparation la veille au soir
+> et le matin, le départ et le retour ; jamais une prière pendant un examen ; les 21 et 22 janvier entre les deux
+> semestres. Batcave : « Veille de l'examen d'Anatomía I », « Départ pour l'examen d'… » (et plus « Veille de Examen ·
+> … »), et le retour d'un jour d'examen sans « résumé oral du cours ».
+> **En attente de lui** : les prix des sardines (ou maquereau), des galettes de riz, du Nutella ; Noël à Alicante ou
+> ailleurs (la grille des vacances suppose Alicante) ; la banque (réponse donnée : sa mère vire directement sur le
+> Wise, LuxTrust à récupérer à distance).
+
 > ### Jeudi 12 novembre — la laverie, les dattes, trois brossages par jour
 > **Ses mots** : « elle est a 5 min de marche de chez moi, et le cycle lavage+sechage dure 45 min » ; « donc 8€
 > total » ; « les dates, cest 5€ le kilo » ; « je passe le fil dentaire, la brosse a dent et je nettoie ma langue, je

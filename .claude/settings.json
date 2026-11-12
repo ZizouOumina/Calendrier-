@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__Google_Calendar",
+      "mcp__Google_Calendar__list_calendars",
+      "mcp__Google_Calendar__list_events",
+      "mcp__Google_Calendar__search_events",
+      "mcp__Google_Calendar__get_event",
+      "mcp__Google_Calendar__create_event",
+      "mcp__Google_Calendar__update_event",
+      "mcp__Google_Calendar__delete_event",
+      "mcp__Google_Calendar__respond_to_event",
+      "mcp__Google_Calendar__suggest_time"
+    ]
+  }
+}

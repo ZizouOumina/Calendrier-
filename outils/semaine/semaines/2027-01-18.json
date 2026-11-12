@@ -1,0 +1,3662 @@
+[
+ {
+  "iso": "2027-01-18",
+  "dow": 1,
+  "cle": "monday",
+  "blocs": [
+   {
+    "h": "05:30",
+    "l": "Anki matinal",
+    "c": "Jour off de sport : une heure de cartes de dentaire, deux Pomodoros 25 + 5. Toutes les échéances, puis les cartes des matières faibles. Le 13 décembre, la fin de la phase Español, ce créneau passe aux projets comme les autres — la file se vide alors dans Anki 1 et Anki 2."
+   },
+   {
+    "h": "06:30",
+    "l": "Douche + préparation",
+    "c": "Fenêtres grandes ouvertes, 10 min. Le visage lavé avec ton nettoyant, à la main ; le shampoing ; le corps au gel doux. Sèche en tamponnant, sans frotter : serviette de visage propre. Le Skinoren en couche fine, sur la peau sèche, là où tu as des boutons. Déodorant. La barbe brossée. Habillé avec les vêtements posés hier soir, cheveux coiffés. Fenêtres fermées."
+   },
+   {
+    "h": "06:45",
+    "l": "Petit-déjeuner + Coran (1 page)",
+    "c": "Avant le shake : le riz du jour au rice cooker — 125 g crus (pour le soir : à midi, ce sont les pâtes de ta boîte), rincés trois fois, l'eau jusqu'au trait, une pincée de sel iodé (« sal yodada » : quand ton paquet est fini, prends celui-là ; c'est lui qui complète l'iode). Il cuit pendant que tu bois le shake. Il part dans une boîte, au frigo dès qu'il est tiède."
+   },
+   {
+    "h": "07:00",
+    "l": "Préparer · Examen · Documentación",
+    "c": "Veille de Examen · Documentación : documents et matériel prêts, protocole ou programme relu, trois questions écrites, tenue et trajet préparés. Coucher à l'heure."
+   },
+   {
+    "h": "08:00",
+    "l": "Trajet · Examen · Documentación",
+    "c": "Départ pour Examen · Documentación. Téléphone en silencieux ; en route, une page de notes, pas plus."
+   },
+   {
+    "h": "08:30",
+    "l": "Examen · Documentación",
+    "c": "C'est le moment. Téléphone en silencieux, lecture complète de la consigne avant de commencer."
+   },
+   {
+    "h": "10:30",
+    "l": "Trajet retour",
+    "c": "Une minute de résumé oral du cours enregistrée en marchant, puis un appel ou un message à ta famille."
+   },
+   {
+    "h": "12:00",
+    "l": "Retour du club",
+    "c": "Le shake de récup en rentrant : 250 ml de boisson d'avoine, une banane, 20 g de flocons, au mixeur. Puis la douche dès que possible. Le kimono et le rashguard en machine le jour même, 30 °C, à l'envers, avec la tenue de salle de samedi — jamais d'adoucissant sur le sport. Bois 500 ml d'eau en rentrant."
+   },
+   {
+    "h": "12:20",
+    "l": "Déjeuner",
+    "c": "La boîte du jour : les pâtes (125 g crus, cuites au batch du dimanche), poulet 70 g, 80 g de brocoli, réchauffée à la poêle avec 2 à 3 cuillères d'eau, couvercle, 4 à 5 min, brûlante jusqu'au cœur. Pas de sauce : pâtes nature, les 20 ml d'huile d'olive crue mélangés à chaud, sel iodé et tes épices (cumin, ras el hanout, paprika ; une pointe de harissa si tu veux)."
+   },
+   {
+    "h": "12:40",
+    "l": "😴 Micro-sieste",
+    "c": "20 min, alarme mise. Pas plus, sinon tu dormiras mal ce soir."
+   },
+   {
+    "h": "13:00",
+    "l": "Question ouverte ou autre",
+    "c": "Une heure de révision, à toi de choisir ce qui sert le plus cette semaine : une question ouverte d'examen rédigée en espagnol (25 min sans support, puis « examen » avec Claude : contenu, puis langue), des exercices d'Epidemiología (tableau 2×2, RR, OR, taux), le blanc du prochain questionnaire (15 questions, 20 min, livre fermé), ou la préparation d'un TP. Chaque erreur → une carte."
+   },
+   {
+    "h": "14:00",
+    "l": "Projets perso 1",
+    "c": "Dossier dropshipping : la prochaine ligne non cochée. Dès que des pubs tournent, c'est le rituel du lundi (chiffres, décisions pub, opérations, argent, journal)."
+   },
+   {
+    "h": "15:00",
+    "l": "Projets perso 4",
+    "c": "Lundi, 15:00-16:50, juste avant de partir en cours (hablar en phase Español). Même règle que les autres blocs de projet : un livrable à rendre d'abord, sinon la prochaine ligne non cochée du dossier e-commerce."
+   },
+   {
+    "h": "16:50",
+    "l": "Collation entraînement",
+    "c": "50 g d'amandes, 3 œufs durs, 7 dattes. Tant qu'il reste du fromage de ta mère : une portion en plus (2 Vache qui rit, 30 g de Caprice des Dieux ou 30 g de Philadelphia)."
+   },
+   {
+    "h": "17:00",
+    "l": "Projets perso 5",
+    "c": "Un jour sans cours, l'après-midi : même règle, un livrable d'abord, sinon la boutique."
+   },
+   {
+    "h": "18:00",
+    "l": "Lire",
+    "c": "Le chapitre que la réponse « estudia » du matin a indiqué : un bloc, un livre, en espagnol ou en anglais, une seule question en tête — qu'est-ce que le cours n'a pas expliqué ? Trois cartes au plus à la fin. Rien d'autre d'ouvert."
+   },
+   {
+    "h": "19:00",
+    "l": "Dîner",
+    "c": "D'abord, trente secondes : la viande crue du mardi (poulet et viande hachée) passe du congélateur au frigo, dans une assiette creuse, en bas. Elle décongèle en 24 h pour la session de demain soir. La boîte de riz du matin (125 g crus) et la boîte du jour : viande hachée 70 g, 80 g d'épinards, réchauffées ensemble à la poêle. Pas de sauce : hors du feu, les 15 ml d'huile d'olive crue sur le riz, sel iodé et tes épices. La créatine, 5 g, avec le repas. Ensuite plus rien jusqu'au lendemain."
+   },
+   {
+    "h": "19:30",
+    "l": "Temps libre",
+    "c": "Libre."
+   },
+   {
+    "h": "21:25",
+    "l": "Douche + brossage de dents",
+    "c": ""
+   },
+   {
+    "h": "21:35",
+    "l": "Coucher",
+    "c": "Clôture du jour faite ? Écran off, réveil posé loin du lit."
+   }
+  ],
+  "habits": [
+   {
+    "id": "core-lit",
+    "label": "Lit fait",
+    "icon": "🛏️",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-etirements",
+    "label": "Étirements faits",
+    "icon": "🤸",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-fajr",
+    "label": "Fajr",
+    "icon": "🕌",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-dhuhr",
+    "label": "Dhuhr",
+    "icon": "🕌",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-asr",
+    "label": "Asr",
+    "icon": "🕌",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-maghrib",
+    "label": "Maghrib",
+    "icon": "🕌",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-isha",
+    "label": "Isha",
+    "icon": "🕌",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-ecran",
+    "label": "Téléphone hors de la chambre",
+    "icon": "📵",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-sadaqah",
+    "label": "Sadaqah du jour",
+    "icon": "🤲",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-revue",
+    "label": "Revue de la veille / plan du lendemain",
+    "icon": "📝",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-famille",
+    "label": "Nouvelles à la famille",
+    "icon": "📞",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-marche",
+    "label": "Marche / pas",
+    "icon": "🚶",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "hab1788303551564",
+    "label": "Vaisselle",
+    "icon": "🍽️",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "hab1788303558397",
+    "label": "Linge",
+    "icon": "🧺",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-es-conversacion",
+    "label": "30 min en espagnol avec un natif",
+    "icon": "🗣️",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-es-formulas",
+    "label": "Les dix formules du jour",
+    "icon": "💬",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-es-lectura",
+    "label": "20 pages lues en espagnol",
+    "icon": "📖",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-shampoing",
+    "label": "Shampoing",
+    "icon": "🧴",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-serviette-visage",
+    "label": "Serviette de visage changée",
+    "icon": "🧼",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-creatine",
+    "label": "Créatine — 5 g",
+    "icon": "🥄",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-lumiere",
+    "label": "Lumière du matin — 15 min dehors, dès qu’il fait jour",
+    "icon": "☀️",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   }
+  ],
+  "duJour": [
+   {
+    "id": "core-lit",
+    "label": "Lit fait",
+    "icon": "🛏️"
+   },
+   {
+    "id": "core-etirements",
+    "label": "Étirements faits",
+    "icon": "🤸"
+   },
+   {
+    "id": "core-fajr",
+    "label": "Fajr",
+    "icon": "🕌"
+   },
+   {
+    "id": "core-dhuhr",
+    "label": "Dhuhr",
+    "icon": "🕌"
+   },
+   {
+    "id": "core-asr",
+    "label": "Asr",
+    "icon": "🕌"
+   },
+   {
+    "id": "core-maghrib",
+    "label": "Maghrib",
+    "icon": "🕌"
+   },
+   {
+    "id": "core-isha",
+    "label": "Isha",
+    "icon": "🕌"
+   },
+   {
+    "id": "core-ecran",
+    "label": "Téléphone hors de la chambre",
+    "icon": "📵"
+   },
+   {
+    "id": "core-sadaqah",
+    "label": "Sadaqah du jour",
+    "icon": "🤲"
+   },
+   {
+    "id": "core-revue",
+    "label": "Revue de la veille / plan du lendemain",
+    "icon": "📝"
+   },
+   {
+    "id": "core-famille",
+    "label": "Nouvelles à la famille",
+    "icon": "📞"
+   },
+   {
+    "id": "core-marche",
+    "label": "Marche / pas",
+    "icon": "🚶"
+   },
+   {
+    "id": "hab1788303551564",
+    "label": "Vaisselle",
+    "icon": "🍽️"
+   },
+   {
+    "id": "hab1788303558397",
+    "label": "Linge",
+    "icon": "🧺"
+   },
+   {
+    "id": "core-es-conversacion",
+    "label": "30 min en espagnol avec un natif",
+    "icon": "🗣️"
+   },
+   {
+    "id": "core-es-formulas",
+    "label": "Les dix formules du jour",
+    "icon": "💬"
+   },
+   {
+    "id": "core-es-lectura",
+    "label": "20 pages lues en espagnol",
+    "icon": "📖"
+   },
+   {
+    "id": "core-shampoing",
+    "label": "Shampoing",
+    "icon": "🧴"
+   },
+   {
+    "id": "core-serviette-visage",
+    "label": "Serviette de visage changée",
+    "icon": "🧼"
+   },
+   {
+    "id": "core-creatine",
+    "label": "Créatine — 5 g",
+    "icon": "🥄"
+   },
+   {
+    "id": "core-lumiere",
+    "label": "Lumière du matin — 15 min dehors, dès qu’il fait jour",
+    "icon": "☀️"
+   }
+  ],
+  "repas": {
+   "Petit-déjeuner": [
+    {
+     "c": "avoine",
+     "q": 400
+    },
+    {
+     "c": "skyr",
+     "q": 150
+    },
+    {
+     "c": "flocons",
+     "q": 80
+    },
+    {
+     "c": "banane",
+     "q": 120
+    },
+    {
+     "c": "miel",
+     "q": 20
+    },
+    {
+     "c": "amandes",
+     "q": 30
+    },
+    {
+     "c": "fruitsrouges",
+     "q": 100
+    }
+   ],
+   "Collation combat": [
+    {
+     "c": "banane",
+     "q": 120
+    },
+    {
+     "c": "galettes",
+     "q": 20
+    },
+    {
+     "c": "nutella",
+     "q": 15
+    }
+   ],
+   "Récup combat": [
+    {
+     "c": "avoine",
+     "q": 250
+    },
+    {
+     "c": "banane",
+     "q": 120
+    },
+    {
+     "c": "flocons",
+     "q": 20
+    }
+   ],
+   "Déjeuner": [
+    {
+     "c": "pates",
+     "q": 125
+    },
+    {
+     "c": "poulet",
+     "q": 70
+    },
+    {
+     "c": "legumes",
+     "q": 80
+    },
+    {
+     "c": "huile",
+     "q": 30
+    }
+   ],
+   "Collation entraînement": [
+    {
+     "c": "amandes",
+     "q": 50
+    },
+    {
+     "c": "oeufs",
+     "q": 100
+    },
+    {
+     "c": "oeufs",
+     "q": 50
+    },
+    {
+     "c": "dattes",
+     "q": 70
+    }
+   ],
+   "Dîner": [
+    {
+     "c": "riz",
+     "q": 125
+    },
+    {
+     "c": "hachee",
+     "q": 70
+    },
+    {
+     "c": "legumes",
+     "q": 80
+    },
+    {
+     "c": "huile",
+     "q": 25
+    }
+   ]
+  },
+  "cible": {
+   "rev": 215,
+   "proj": 0,
+   "es": 0
+  },
+  "periode": "partiels",
+  "espagnol": false
+ },
+ {
+  "iso": "2027-01-19",
+  "dow": 2,
+  "cle": "tuesday",
+  "blocs": [
+   {
+    "h": "05:30",
+    "l": "Anki 1",
+    "c": "Toutes les échéances de dentaire, deux Pomodoros 25 + 5 sans téléphone. File vide avant la fin : cartes du cours suivant à partir des notes."
+   },
+   {
+    "h": "06:40",
+    "l": "Trajet salle",
+    "c": "Départ 06:40, quinze à vingt minutes. Un grand verre d'eau avant de partir ; à jeun, c'est prévu : le shake t'attend au retour. Dans le sac : tenue, serviette, gourde pleine, cadenas, bandes et gants pour le sac, la séance ouverte dans l'onglet Sport."
+   },
+   {
+    "h": "07:00",
+    "l": "Sport",
+    "c": "La salle à 07:00, dès l'ouverture. Échauffement : 5 minutes de vélo ou de rameur (mardi et samedi : 2 rounds de 2 min de shadow boxing), puis deux séries d'approche du premier exercice (la moitié de la charge, puis les trois quarts). La séance du jour est dans l'onglet Sport, charges déjà calculées. Lundi, haut du corps en volume, à 2 ou 3 reps de l'échec : JJB à 10:30. Mardi, bas complet (squat), puis le sac en rounds techniques. Jeudi, haut lourd : c'est là que la force se construit. Samedi, le second bas et les bras, puis le sac en intervalles. Mardi et samedi, bandes et gants dans le sac. Squat et développé couché dans le rack, barres de sécurité réglées juste sous le bas du mouvement : à l'ouverture, la salle est presque vide. Retour à 07:55, douche en rentrant."
+   },
+   {
+    "h": "07:55",
+    "l": "Retour de la salle",
+    "c": "Vingt minutes à pied : le jour se lève pendant ton retour, c'est ta lumière du matin (coche-la). En rentrant, lance le riz au rice cooker avant la douche ; le shake juste après."
+   },
+   {
+    "h": "08:15",
+    "l": "Douche + préparation",
+    "c": "Fenêtres grandes ouvertes, 10 min. Le visage lavé avec ton nettoyant, à la main ; le shampoing ; le corps au gel doux. Sèche en tamponnant, sans frotter. Le Skinoren en couche fine, sur la peau sèche, là où tu as des boutons. Déodorant. La barbe brossée. Habillé avec les vêtements posés hier soir, cheveux coiffés. Fenêtres fermées."
+   },
+   {
+    "h": "08:30",
+    "l": "Petit-déjeuner + Coran (1 page)",
+    "c": "Avant le shake : le riz du jour au rice cooker — 125 g crus (pour le soir : à midi, ce sont les pâtes de ta boîte), rincés trois fois, l'eau jusqu'au trait, une pincée de sel iodé (« sal yodada » : quand ton paquet est fini, prends celui-là ; c'est lui qui complète l'iode). Il cuit pendant que tu bois le shake. Il part dans une boîte, au frigo dès qu'il est tiède."
+   },
+   {
+    "h": "09:00",
+    "l": "Anki 2",
+    "c": "Suite des échéances de dentaire. Les 5 dernières minutes : échéances du paquet Business (glossaire dropshipping)."
+   },
+   {
+    "h": "10:00",
+    "l": "Étudier en avance",
+    "c": "Un tema que le prof n'a pas encore donné (la matière la plus loin de ses 3 d'avance). Lire les diapos en espagnol, une phrase à toi par point, « ? » dans la marge, 15-25 cartes Dentaire importées (40 en Anatomía). Puis, dans le projet Claude Dentaire : « estudia · matière Tn · tes ? » — la réponse en sept parties, la chaîne du mécanisme pour tout tema d'Anatomía, Biología ou Epidemiología, tes dix lignes en espagnol dans Notion, les cartes de la réponse importées. Pomodoro nommé « Étudier · matière Tn ». Une base qui manque (« base · notion ») passe devant tout le reste."
+   },
+   {
+    "h": "11:20",
+    "l": "Question ouverte ou autre",
+    "c": "Une heure de révision, à toi de choisir ce qui sert le plus cette semaine : une question ouverte d'examen rédigée en espagnol (25 min sans support, puis « examen » avec Claude : contenu, puis langue), des exercices d'Epidemiología (tableau 2×2, RR, OR, taux), le blanc du prochain questionnaire (15 questions, 20 min, livre fermé), ou la préparation d'un TP. Chaque erreur → une carte."
+   },
+   {
+    "h": "12:20",
+    "l": "Déjeuner",
+    "c": "La boîte du jour : les pâtes (125 g crus, cuites au batch du dimanche), poulet 70 g, 80 g de brocoli, réchauffée à la poêle avec 2 à 3 cuillères d'eau, couvercle, 4 à 5 min, brûlante jusqu'au cœur. Pas de sauce : pâtes nature, les 20 ml d'huile d'olive crue mélangés à chaud, sel iodé et tes épices (cumin, ras el hanout, paprika ; une pointe de harissa si tu veux)."
+   },
+   {
+    "h": "12:40",
+    "l": "😴 Micro-sieste",
+    "c": "20 min, alarme mise. Pas plus, sinon tu dormiras mal ce soir."
+   },
+   {
+    "h": "13:00",
+    "l": "Lire",
+    "c": "Le chapitre que la réponse « estudia » du matin a indiqué : un bloc, un livre, en espagnol ou en anglais, une seule question en tête — qu'est-ce que le cours n'a pas expliqué ? Trois cartes au plus à la fin. Rien d'autre d'ouvert."
+   },
+   {
+    "h": "14:00",
+    "l": "Projets perso 2",
+    "c": "Un livrable en cours d'abord (l'échéance la plus proche). Sinon la ligne suivante de type « construire » du dossier e-commerce : feuille, page, brief, fiche, compte. Quelque chose qui existe à la fin du bloc."
+   },
+   {
+    "h": "14:50",
+    "l": "Collation entraînement",
+    "c": "50 g d'amandes, une boîte de sardines ou de maquereau, 7 dattes. Tant qu'il reste du fromage de ta mère : une portion en plus (2 Vache qui rit, 30 g de Caprice des Dieux ou 30 g de Philadelphia)."
+   },
+   {
+    "h": "15:00",
+    "l": "Projets perso 4",
+    "c": "Lundi, 15:00-16:50, juste avant de partir en cours (hablar en phase Español). Même règle que les autres blocs de projet : un livrable à rendre d'abord, sinon la prochaine ligne non cochée du dossier e-commerce."
+   },
+   {
+    "h": "16:00",
+    "l": "Projets perso 5",
+    "c": "Un jour sans cours, l'après-midi : même règle, un livrable d'abord, sinon la boutique."
+   },
+   {
+    "h": "17:00",
+    "l": "Réexpliquer",
+    "c": "Aucun rappel dû aujourd'hui : soit rien n'est encore enregistré, soit tout est à jour. Reprends le sujet que tu as le moins bien redit, ou avance sur les cartes de mécanisme. Chacun : quatre minutes au téléphone, sans notes, la chaîne complète — quoi, pourquoi, comment, quand ce n'est pas vrai, et au fauteuil. Compare à ton premier enregistrement, puis note-toi 0-3 dans Études → Approfondissements. Sous 2, le sujet reprend le prochain créneau « Approfondir »."
+   },
+   {
+    "h": "18:00",
+    "l": "Préparer · Examen · Antropología",
+    "c": "Veille de Examen · Antropología : documents et matériel prêts, protocole ou programme relu, trois questions écrites, tenue et trajet préparés. Coucher à l'heure."
+   },
+   {
+    "h": "19:00",
+    "l": "Dîner",
+    "c": "La boîte de riz du matin (125 g crus) et la boîte du jour : viande hachée 70 g, 80 g d'épinards, réchauffées ensemble à la poêle. Pas de sauce : hors du feu, les 15 ml d'huile d'olive crue sur le riz, sel iodé et tes épices. La créatine, 5 g, avec le repas. Ensuite plus rien jusqu'au lendemain."
+   },
+   {
+    "h": "19:30",
+    "l": "Temps libre",
+    "c": "La deuxième session de batch cooking, une heure : les pâtes des midis, le poulet, la viande hachée et les légumes de mercredi à samedi, puis huit boîtes, toutes au frigo (le détail dans l'onglet Meal prep). Le reste est libre."
+   },
+   {
+    "h": "20:45",
+    "l": "🚿 Douche du soir",
+    "c": "Dix minutes, eau bien tiède — agréable, jamais brûlante : visage et dos restent tièdes (Skinoren). Une heure avant le coucher, le corps évacue ensuite sa chaleur et tu t'endors plus vite. Eau seule sur les cheveux et le corps, gel doux aux aisselles, à l'aine et aux pieds ; la fin à l'eau froide (dimanche, mercredi, vendredi) se fait le matin. Cinq minutes plus tard, le Skinoren. Lumières basses : une lampe, plus le plafonnier."
+   },
+   {
+    "h": "21:00",
+    "l": "📖 Écran off — lecture papier",
+    "c": "Avant d'éteindre : la clôture du jour dans la Batcave, deux minutes. Puis téléphone en charge hors de portée, réveil posé loin du lit. Chambre vers 18 °C (fenêtre ouverte dix minutes), noir complet. Tes vingt pages en espagnol, sur papier."
+   },
+   {
+    "h": "21:30",
+    "l": "Brossage de dents",
+    "c": "Les dents, puis au lit. Si tu ne dors pas au bout de vingt minutes, lève-toi, lis dix minutes sous une lumière faible, et reviens."
+   },
+   {
+    "h": "21:35",
+    "l": "Coucher",
+    "c": "Clôture du jour faite ? Écran off, réveil posé loin du lit."
+   }
+  ],
+  "habits": [
+   {
+    "id": "core-lit",
+    "label": "Lit fait",
+    "icon": "🛏️",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-etirements",
+    "label": "Étirements faits",
+    "icon": "🤸",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-fajr",
+    "label": "Fajr",
+    "icon": "🕌",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-dhuhr",
+    "label": "Dhuhr",
+    "icon": "🕌",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-asr",
+    "label": "Asr",
+    "icon": "🕌",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-maghrib",
+    "label": "Maghrib",
+    "icon": "🕌",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-isha",
+    "label": "Isha",
+    "icon": "🕌",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-ecran",
+    "label": "Téléphone hors de la chambre",
+    "icon": "📵",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-sadaqah",
+    "label": "Sadaqah du jour",
+    "icon": "🤲",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-revue",
+    "label": "Revue de la veille / plan du lendemain",
+    "icon": "📝",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-famille",
+    "label": "Nouvelles à la famille",
+    "icon": "📞",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-marche",
+    "label": "Marche / pas",
+    "icon": "🚶",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "hab1788303551564",
+    "label": "Vaisselle",
+    "icon": "🍽️",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-es-conversacion",
+    "label": "30 min en espagnol avec un natif",
+    "icon": "🗣️",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-es-formulas",
+    "label": "Les dix formules du jour",
+    "icon": "💬",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-es-lectura",
+    "label": "20 pages lues en espagnol",
+    "icon": "📖",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-shampoing",
+    "label": "Shampoing",
+    "icon": "🧴",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-creatine",
+    "label": "Créatine — 5 g",
+    "icon": "🥄",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-lumiere",
+    "label": "Lumière du matin — 15 min dehors, dès qu’il fait jour",
+    "icon": "☀️",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   }
+  ],
+  "duJour": [
+   {
+    "id": "core-lit",
+    "label": "Lit fait",
+    "icon": "🛏️"
+   },
+   {
+    "id": "core-etirements",
+    "label": "Étirements faits",
+    "icon": "🤸"
+   },
+   {
+    "id": "core-fajr",
+    "label": "Fajr",
+    "icon": "🕌"
+   },
+   {
+    "id": "core-dhuhr",
+    "label": "Dhuhr",
+    "icon": "🕌"
+   },
+   {
+    "id": "core-asr",
+    "label": "Asr",
+    "icon": "🕌"
+   },
+   {
+    "id": "core-maghrib",
+    "label": "Maghrib",
+    "icon": "🕌"
+   },
+   {
+    "id": "core-isha",
+    "label": "Isha",
+    "icon": "🕌"
+   },
+   {
+    "id": "core-ecran",
+    "label": "Téléphone hors de la chambre",
+    "icon": "📵"
+   },
+   {
+    "id": "core-sadaqah",
+    "label": "Sadaqah du jour",
+    "icon": "🤲"
+   },
+   {
+    "id": "core-revue",
+    "label": "Revue de la veille / plan du lendemain",
+    "icon": "📝"
+   },
+   {
+    "id": "core-famille",
+    "label": "Nouvelles à la famille",
+    "icon": "📞"
+   },
+   {
+    "id": "core-marche",
+    "label": "Marche / pas",
+    "icon": "🚶"
+   },
+   {
+    "id": "hab1788303551564",
+    "label": "Vaisselle",
+    "icon": "🍽️"
+   },
+   {
+    "id": "core-es-conversacion",
+    "label": "30 min en espagnol avec un natif",
+    "icon": "🗣️"
+   },
+   {
+    "id": "core-es-formulas",
+    "label": "Les dix formules du jour",
+    "icon": "💬"
+   },
+   {
+    "id": "core-es-lectura",
+    "label": "20 pages lues en espagnol",
+    "icon": "📖"
+   },
+   {
+    "id": "core-shampoing",
+    "label": "Shampoing",
+    "icon": "🧴"
+   },
+   {
+    "id": "core-creatine",
+    "label": "Créatine — 5 g",
+    "icon": "🥄"
+   },
+   {
+    "id": "core-lumiere",
+    "label": "Lumière du matin — 15 min dehors, dès qu’il fait jour",
+    "icon": "☀️"
+   }
+  ],
+  "repas": {
+   "Petit-déjeuner": [
+    {
+     "c": "avoine",
+     "q": 400
+    },
+    {
+     "c": "skyr",
+     "q": 150
+    },
+    {
+     "c": "flocons",
+     "q": 80
+    },
+    {
+     "c": "banane",
+     "q": 120
+    },
+    {
+     "c": "miel",
+     "q": 20
+    },
+    {
+     "c": "amandes",
+     "q": 30
+    },
+    {
+     "c": "fruitsrouges",
+     "q": 100
+    }
+   ],
+   "Collation combat": [
+    {
+     "c": "banane",
+     "q": 120
+    },
+    {
+     "c": "galettes",
+     "q": 20
+    },
+    {
+     "c": "nutella",
+     "q": 15
+    }
+   ],
+   "Récup combat": [
+    {
+     "c": "avoine",
+     "q": 250
+    },
+    {
+     "c": "banane",
+     "q": 120
+    },
+    {
+     "c": "flocons",
+     "q": 20
+    }
+   ],
+   "Déjeuner": [
+    {
+     "c": "pates",
+     "q": 125
+    },
+    {
+     "c": "poulet",
+     "q": 70
+    },
+    {
+     "c": "legumes",
+     "q": 80
+    },
+    {
+     "c": "huile",
+     "q": 30
+    }
+   ],
+   "Collation entraînement": [
+    {
+     "c": "amandes",
+     "q": 50
+    },
+    {
+     "c": "sardines",
+     "q": 85
+    },
+    {
+     "c": "oeufs",
+     "q": 0
+    },
+    {
+     "c": "dattes",
+     "q": 70
+    }
+   ],
+   "Dîner": [
+    {
+     "c": "riz",
+     "q": 125
+    },
+    {
+     "c": "hachee",
+     "q": 70
+    },
+    {
+     "c": "legumes",
+     "q": 80
+    },
+    {
+     "c": "huile",
+     "q": 25
+    }
+   ]
+  },
+  "cible": {
+   "rev": 401,
+   "proj": 0,
+   "es": 0
+  },
+  "periode": "partiels",
+  "espagnol": false
+ },
+ {
+  "iso": "2027-01-20",
+  "dow": 3,
+  "cle": "wednesday",
+  "blocs": [
+   {
+    "h": "05:30",
+    "l": "Projets perso matinal",
+    "c": "05:30 : exécution pure d'une tâche déjà décidée la veille — montage, import, rédaction, fiches, code. Jamais une décision : à cette heure-là on exécute, on n'arbitre pas. Ce que tu feras s'écrit la veille au soir, à la clôture. Pas de minuteur : tu travailles jusqu'à la douche de 06:30."
+   },
+   {
+    "h": "06:30",
+    "l": "Douche + préparation",
+    "c": "Fenêtres grandes ouvertes, 10 min. Le visage lavé avec ton nettoyant, à la main ; le shampoing ; le corps au gel doux ; pour finir, 30 à 60 s d'eau froide. Sèche en tamponnant, sans frotter : serviettes de visage et de corps propres. Le Skinoren en couche fine, sur la peau sèche, là où tu as des boutons. Déodorant. La barbe brossée. Habillé avec les vêtements posés hier soir, cheveux coiffés. Fenêtres fermées."
+   },
+   {
+    "h": "06:45",
+    "l": "Petit-déjeuner + Coran (1 page)",
+    "c": "Avant le shake : le riz du jour au rice cooker — 125 g crus (pour le soir : à midi, ce sont les pâtes de ta boîte), rincés trois fois, l'eau jusqu'au trait, une pincée de sel iodé (« sal yodada » : quand ton paquet est fini, prends celui-là ; c'est lui qui complète l'iode). Il cuit pendant que tu bois le shake. Il part dans une boîte, au frigo dès qu'il est tiède."
+   },
+   {
+    "h": "07:00",
+    "l": "Préparer · Examen · Antropología",
+    "c": "Veille de Examen · Antropología : documents et matériel prêts, protocole ou programme relu, trois questions écrites, tenue et trajet préparés. Coucher à l'heure."
+   },
+   {
+    "h": "08:00",
+    "l": "Trajet · Examen · Antropología",
+    "c": "Départ pour Examen · Antropología. Téléphone en silencieux ; en route, une page de notes, pas plus."
+   },
+   {
+    "h": "08:30",
+    "l": "Examen · Antropología",
+    "c": "C'est le moment. Téléphone en silencieux, lecture complète de la consigne avant de commencer."
+   },
+   {
+    "h": "10:30",
+    "l": "Trajet retour",
+    "c": "Une minute de résumé oral du cours enregistrée en marchant, puis un appel ou un message à ta famille."
+   },
+   {
+    "h": "12:00",
+    "l": "Retour du club",
+    "c": "Le shake de récup en rentrant : 250 ml de boisson d'avoine, une banane, 20 g de flocons, au mixeur. Puis la douche dès que possible. Le kimono et le rashguard en machine le jour même, 30 °C, à l'envers, avec la tenue de salle de mardi et celle de samedi — jamais d'adoucissant sur le sport. Bois 500 ml d'eau en rentrant."
+   },
+   {
+    "h": "12:20",
+    "l": "Déjeuner",
+    "c": "La boîte du jour : les pâtes (125 g crus, cuites au batch du mardi), poulet 70 g, 80 g de brocoli, réchauffée à la poêle avec 2 à 3 cuillères d'eau, couvercle, 4 à 5 min, brûlante jusqu'au cœur. Pas de sauce : pâtes nature, les 20 ml d'huile d'olive crue mélangés à chaud, sel iodé et tes épices (cumin, ras el hanout, paprika ; une pointe de harissa si tu veux)."
+   },
+   {
+    "h": "12:40",
+    "l": "😴 Micro-sieste",
+    "c": "20 min, alarme mise. Pas plus, sinon tu dormiras mal ce soir."
+   },
+   {
+    "h": "13:00",
+    "l": "Approfondir",
+    "c": "Le sujet, c'est toi qui le choisis : le tema que le prof vient de donner, ou celui qui te servira le plus au fauteuil. Une heure : 25 min de lecture dans la référence (Guyton, Karp, Greenhalgh, Abbas), 15 min de teach-back enregistré en espagnol sans notes, 10 min de cartes de mécanisme en chaîne, 10 min de vignettes (« profundiza · sujet » dans le projet Dentaire). L'enregistrement se garde : Réexpliquer le réécoute. À la fin, écris le sujet dans Études → Approfondissements — c'est ce qui déclenche J+7, J+30 et J+90."
+   },
+   {
+    "h": "14:00",
+    "l": "Projets perso 1",
+    "c": "Un devoir ou une présentation à rendre passe en premier (l'échéance la plus proche, onglet Calendrier). Sinon la boutique : la prochaine ligne non cochée du dossier e-commerce. Bloc des décisions (produit, fournisseur, pub). Sans minuteur : tu travailles jusqu'au bloc suivant."
+   },
+   {
+    "h": "14:50",
+    "l": "Collation entraînement",
+    "c": "50 g d'amandes, 3 œufs durs, 7 dattes. Tant qu'il reste du fromage de ta mère : une portion en plus (2 Vache qui rit, 30 g de Caprice des Dieux ou 30 g de Philadelphia)."
+   },
+   {
+    "h": "15:00",
+    "l": "Projets perso 4",
+    "c": "Lundi, 15:00-16:50, juste avant de partir en cours (hablar en phase Español). Même règle que les autres blocs de projet : un livrable à rendre d'abord, sinon la prochaine ligne non cochée du dossier e-commerce."
+   },
+   {
+    "h": "16:00",
+    "l": "Projets perso 5",
+    "c": "Un jour sans cours, l'après-midi : même règle, un livrable d'abord, sinon la boutique."
+   },
+   {
+    "h": "17:00",
+    "l": "Lire",
+    "c": "Le chapitre que la réponse « estudia » du matin a indiqué : un bloc, un livre, en espagnol ou en anglais, une seule question en tête — qu'est-ce que le cours n'a pas expliqué ? Trois cartes au plus à la fin. Rien d'autre d'ouvert."
+   },
+   {
+    "h": "18:00",
+    "l": "Réexpliquer",
+    "c": "Aucun rappel dû aujourd'hui : soit rien n'est encore enregistré, soit tout est à jour. Reprends le sujet que tu as le moins bien redit, ou avance sur les cartes de mécanisme. Chacun : quatre minutes au téléphone, sans notes, la chaîne complète — quoi, pourquoi, comment, quand ce n'est pas vrai, et au fauteuil. Compare à ton premier enregistrement, puis note-toi 0-3 dans Études → Approfondissements. Sous 2, le sujet reprend le prochain créneau « Approfondir »."
+   },
+   {
+    "h": "19:00",
+    "l": "Dîner",
+    "c": "La boîte de riz du matin (125 g crus) et la boîte du jour : viande hachée 70 g, 80 g d'épinards, réchauffées ensemble à la poêle. Pas de sauce : hors du feu, les 15 ml d'huile d'olive crue sur le riz, sel iodé et tes épices. La créatine, 5 g, avec le repas. Ensuite plus rien jusqu'au lendemain."
+   },
+   {
+    "h": "19:30",
+    "l": "Temps libre",
+    "c": "Libre."
+   },
+   {
+    "h": "21:25",
+    "l": "Douche + brossage de dents",
+    "c": ""
+   },
+   {
+    "h": "21:35",
+    "l": "Coucher",
+    "c": "Clôture du jour faite ? Écran off, réveil posé loin du lit."
+   }
+  ],
+  "habits": [
+   {
+    "id": "core-lit",
+    "label": "Lit fait",
+    "icon": "🛏️",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-etirements",
+    "label": "Étirements faits",
+    "icon": "🤸",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-fajr",
+    "label": "Fajr",
+    "icon": "🕌",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-dhuhr",
+    "label": "Dhuhr",
+    "icon": "🕌",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-asr",
+    "label": "Asr",
+    "icon": "🕌",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-maghrib",
+    "label": "Maghrib",
+    "icon": "🕌",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-isha",
+    "label": "Isha",
+    "icon": "🕌",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-ecran",
+    "label": "Téléphone hors de la chambre",
+    "icon": "📵",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-sadaqah",
+    "label": "Sadaqah du jour",
+    "icon": "🤲",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-revue",
+    "label": "Revue de la veille / plan du lendemain",
+    "icon": "📝",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-famille",
+    "label": "Nouvelles à la famille",
+    "icon": "📞",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-marche",
+    "label": "Marche / pas",
+    "icon": "🚶",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "hab1788303551564",
+    "label": "Vaisselle",
+    "icon": "🍽️",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "hab1788303558397",
+    "label": "Linge",
+    "icon": "🧺",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-es-conversacion",
+    "label": "30 min en espagnol avec un natif",
+    "icon": "🗣️",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-es-formulas",
+    "label": "Les dix formules du jour",
+    "icon": "💬",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-es-lectura",
+    "label": "20 pages lues en espagnol",
+    "icon": "📖",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-serviette-visage",
+    "label": "Serviette de visage changée",
+    "icon": "🧼",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-creatine",
+    "label": "Créatine — 5 g",
+    "icon": "🥄",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-taie-merc",
+    "label": "Taie d’oreiller changée",
+    "icon": "🛌",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-douche-froide",
+    "label": "Douche froide — 30 à 60 s en fin de douche",
+    "icon": "🚿",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-lumiere",
+    "label": "Lumière du matin — 15 min dehors, dès qu’il fait jour",
+    "icon": "☀️",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   }
+  ],
+  "duJour": [
+   {
+    "id": "core-lit",
+    "label": "Lit fait",
+    "icon": "🛏️"
+   },
+   {
+    "id": "core-etirements",
+    "label": "Étirements faits",
+    "icon": "🤸"
+   },
+   {
+    "id": "core-fajr",
+    "label": "Fajr",
+    "icon": "🕌"
+   },
+   {
+    "id": "core-dhuhr",
+    "label": "Dhuhr",
+    "icon": "🕌"
+   },
+   {
+    "id": "core-asr",
+    "label": "Asr",
+    "icon": "🕌"
+   },
+   {
+    "id": "core-maghrib",
+    "label": "Maghrib",
+    "icon": "🕌"
+   },
+   {
+    "id": "core-isha",
+    "label": "Isha",
+    "icon": "🕌"
+   },
+   {
+    "id": "core-ecran",
+    "label": "Téléphone hors de la chambre",
+    "icon": "📵"
+   },
+   {
+    "id": "core-sadaqah",
+    "label": "Sadaqah du jour",
+    "icon": "🤲"
+   },
+   {
+    "id": "core-revue",
+    "label": "Revue de la veille / plan du lendemain",
+    "icon": "📝"
+   },
+   {
+    "id": "core-famille",
+    "label": "Nouvelles à la famille",
+    "icon": "📞"
+   },
+   {
+    "id": "core-marche",
+    "label": "Marche / pas",
+    "icon": "🚶"
+   },
+   {
+    "id": "hab1788303551564",
+    "label": "Vaisselle",
+    "icon": "🍽️"
+   },
+   {
+    "id": "hab1788303558397",
+    "label": "Linge",
+    "icon": "🧺"
+   },
+   {
+    "id": "core-es-conversacion",
+    "label": "30 min en espagnol avec un natif",
+    "icon": "🗣️"
+   },
+   {
+    "id": "core-es-formulas",
+    "label": "Les dix formules du jour",
+    "icon": "💬"
+   },
+   {
+    "id": "core-es-lectura",
+    "label": "20 pages lues en espagnol",
+    "icon": "📖"
+   },
+   {
+    "id": "core-serviette-visage",
+    "label": "Serviette de visage changée",
+    "icon": "🧼"
+   },
+   {
+    "id": "core-creatine",
+    "label": "Créatine — 5 g",
+    "icon": "🥄"
+   },
+   {
+    "id": "core-taie-merc",
+    "label": "Taie d’oreiller changée",
+    "icon": "🛌"
+   },
+   {
+    "id": "core-douche-froide",
+    "label": "Douche froide — 30 à 60 s en fin de douche",
+    "icon": "🚿"
+   },
+   {
+    "id": "core-lumiere",
+    "label": "Lumière du matin — 15 min dehors, dès qu’il fait jour",
+    "icon": "☀️"
+   }
+  ],
+  "repas": {
+   "Petit-déjeuner": [
+    {
+     "c": "avoine",
+     "q": 400
+    },
+    {
+     "c": "skyr",
+     "q": 150
+    },
+    {
+     "c": "flocons",
+     "q": 80
+    },
+    {
+     "c": "banane",
+     "q": 120
+    },
+    {
+     "c": "miel",
+     "q": 20
+    },
+    {
+     "c": "amandes",
+     "q": 30
+    },
+    {
+     "c": "fruitsrouges",
+     "q": 100
+    }
+   ],
+   "Collation combat": [
+    {
+     "c": "banane",
+     "q": 120
+    },
+    {
+     "c": "galettes",
+     "q": 20
+    },
+    {
+     "c": "nutella",
+     "q": 15
+    }
+   ],
+   "Récup combat": [
+    {
+     "c": "avoine",
+     "q": 250
+    },
+    {
+     "c": "banane",
+     "q": 120
+    },
+    {
+     "c": "flocons",
+     "q": 20
+    }
+   ],
+   "Déjeuner": [
+    {
+     "c": "pates",
+     "q": 125
+    },
+    {
+     "c": "poulet",
+     "q": 70
+    },
+    {
+     "c": "legumes",
+     "q": 80
+    },
+    {
+     "c": "huile",
+     "q": 30
+    }
+   ],
+   "Collation entraînement": [
+    {
+     "c": "amandes",
+     "q": 50
+    },
+    {
+     "c": "oeufs",
+     "q": 100
+    },
+    {
+     "c": "oeufs",
+     "q": 50
+    },
+    {
+     "c": "dattes",
+     "q": 70
+    }
+   ],
+   "Dîner": [
+    {
+     "c": "riz",
+     "q": 125
+    },
+    {
+     "c": "hachee",
+     "q": 70
+    },
+    {
+     "c": "legumes",
+     "q": 80
+    },
+    {
+     "c": "huile",
+     "q": 25
+    }
+   ]
+  },
+  "cible": {
+   "rev": 220,
+   "proj": 0,
+   "es": 0
+  },
+  "periode": "partiels",
+  "espagnol": false
+ },
+ {
+  "iso": "2027-01-21",
+  "dow": 4,
+  "cle": "weekday",
+  "blocs": [
+   {
+    "h": "05:30",
+    "l": "Anki 1",
+    "c": "Toutes les échéances de dentaire, deux Pomodoros 25 + 5 sans téléphone. File vide avant la fin : cartes du cours suivant à partir des notes."
+   },
+   {
+    "h": "06:40",
+    "l": "Trajet salle",
+    "c": "Départ 06:40, quinze à vingt minutes. Un grand verre d'eau avant de partir ; à jeun, c'est prévu : le shake t'attend au retour. Dans le sac : tenue, serviette, gourde pleine, cadenas, la séance ouverte dans l'onglet Sport."
+   },
+   {
+    "h": "07:00",
+    "l": "Sport",
+    "c": "La salle à 07:00, dès l'ouverture. Échauffement : 5 minutes de vélo ou de rameur (mardi et samedi : 2 rounds de 2 min de shadow boxing), puis deux séries d'approche du premier exercice (la moitié de la charge, puis les trois quarts). La séance du jour est dans l'onglet Sport, charges déjà calculées. Lundi, haut du corps en volume, à 2 ou 3 reps de l'échec : JJB à 10:30. Mardi, bas complet (squat), puis le sac en rounds techniques. Jeudi, haut lourd : c'est là que la force se construit. Samedi, le second bas et les bras, puis le sac en intervalles. Mardi et samedi, bandes et gants dans le sac. Squat et développé couché dans le rack, barres de sécurité réglées juste sous le bas du mouvement : à l'ouverture, la salle est presque vide. Retour à 07:55, douche en rentrant."
+   },
+   {
+    "h": "07:55",
+    "l": "Retour de la salle",
+    "c": "Vingt minutes à pied : le jour se lève pendant ton retour, c'est ta lumière du matin (coche-la). En rentrant, lance le riz au rice cooker avant la douche ; le shake juste après."
+   },
+   {
+    "h": "08:15",
+    "l": "Douche + préparation",
+    "c": "Fenêtres grandes ouvertes, 10 min. Le visage lavé avec ton nettoyant, à la main ; le shampoing ; le corps au gel doux. Sèche en tamponnant, sans frotter. Le Skinoren en couche fine, sur la peau sèche, là où tu as des boutons. Déodorant. La barbe brossée. Habillé avec les vêtements posés hier soir, cheveux coiffés. Fenêtres fermées."
+   },
+   {
+    "h": "08:30",
+    "l": "Petit-déjeuner + Coran (1 page)",
+    "c": "Avant le shake : le riz du jour au rice cooker — 125 g crus (pour le soir : à midi, ce sont les pâtes de ta boîte), rincés trois fois, l'eau jusqu'au trait, une pincée de sel iodé (« sal yodada » : quand ton paquet est fini, prends celui-là ; c'est lui qui complète l'iode). Il cuit pendant que tu bois le shake. Il part dans une boîte, au frigo dès qu'il est tiède."
+   },
+   {
+    "h": "09:00",
+    "l": "Anki 2",
+    "c": "Suite des échéances de dentaire. Les 5 dernières minutes : échéances du paquet Business (glossaire dropshipping)."
+   },
+   {
+    "h": "10:00",
+    "l": "Étudier en avance",
+    "c": "Un tema que le prof n'a pas encore donné (la matière la plus loin de ses 3 d'avance). Lire les diapos en espagnol, une phrase à toi par point, « ? » dans la marge, 15-25 cartes Dentaire importées (40 en Anatomía). Puis, dans le projet Claude Dentaire : « estudia · matière Tn · tes ? » — la réponse en sept parties, la chaîne du mécanisme pour tout tema d'Anatomía, Biología ou Epidemiología, tes dix lignes en espagnol dans Notion, les cartes de la réponse importées. Pomodoro nommé « Étudier · matière Tn ». Une base qui manque (« base · notion ») passe devant tout le reste."
+   },
+   {
+    "h": "11:20",
+    "l": "Projets perso 3",
+    "c": "Un bloc de projet de plus depuis le 28 septembre, sans minuteur : le livrable de la semaine d'abord (celui que tu cocheras dimanche), sinon la prochaine ligne non cochée du dossier e-commerce."
+   },
+   {
+    "h": "12:20",
+    "l": "Déjeuner",
+    "c": "La boîte du jour : les pâtes (125 g crus, cuites au batch du mardi), poulet 70 g, 80 g de brocoli, réchauffée à la poêle avec 2 à 3 cuillères d'eau, couvercle, 4 à 5 min, brûlante jusqu'au cœur. Pas de sauce : pâtes nature, les 20 ml d'huile d'olive crue mélangés à chaud, sel iodé et tes épices (cumin, ras el hanout, paprika ; une pointe de harissa si tu veux)."
+   },
+   {
+    "h": "12:40",
+    "l": "😴 Micro-sieste",
+    "c": "20 min, alarme mise. Pas plus, sinon tu dormiras mal ce soir."
+   },
+   {
+    "h": "13:00",
+    "l": "Projets perso 1",
+    "c": "Un devoir ou une présentation à rendre passe en premier (l'échéance la plus proche, onglet Calendrier). Sinon la boutique : la prochaine ligne non cochée du dossier e-commerce. Bloc des décisions (produit, fournisseur, pub). Sans minuteur : tu travailles jusqu'au bloc suivant."
+   },
+   {
+    "h": "14:00",
+    "l": "Projets perso 2",
+    "c": "Un livrable en cours d'abord (l'échéance la plus proche). Sinon la ligne suivante de type « construire » du dossier e-commerce : feuille, page, brief, fiche, compte. Quelque chose qui existe à la fin du bloc."
+   },
+   {
+    "h": "14:50",
+    "l": "Collation entraînement",
+    "c": "50 g d'amandes, une boîte de sardines ou de maquereau, 7 dattes. Tant qu'il reste du fromage de ta mère : une portion en plus (2 Vache qui rit, 30 g de Caprice des Dieux ou 30 g de Philadelphia)."
+   },
+   {
+    "h": "15:00",
+    "l": "Projets perso 4",
+    "c": "Lundi, 15:00-16:50, juste avant de partir en cours (hablar en phase Español). Même règle que les autres blocs de projet : un livrable à rendre d'abord, sinon la prochaine ligne non cochée du dossier e-commerce."
+   },
+   {
+    "h": "16:00",
+    "l": "Projets perso 5",
+    "c": "Un jour sans cours, l'après-midi : même règle, un livrable d'abord, sinon la boutique."
+   },
+   {
+    "h": "17:00",
+    "l": "Lire",
+    "c": "Le chapitre que la réponse « estudia » du matin a indiqué : un bloc, un livre, en espagnol ou en anglais, une seule question en tête — qu'est-ce que le cours n'a pas expliqué ? Trois cartes au plus à la fin. Rien d'autre d'ouvert."
+   },
+   {
+    "h": "18:00",
+    "l": "Réexpliquer",
+    "c": "Aucun rappel dû aujourd'hui : soit rien n'est encore enregistré, soit tout est à jour. Reprends le sujet que tu as le moins bien redit, ou avance sur les cartes de mécanisme. Chacun : quatre minutes au téléphone, sans notes, la chaîne complète — quoi, pourquoi, comment, quand ce n'est pas vrai, et au fauteuil. Compare à ton premier enregistrement, puis note-toi 0-3 dans Études → Approfondissements. Sous 2, le sujet reprend le prochain créneau « Approfondir »."
+   },
+   {
+    "h": "19:00",
+    "l": "Dîner",
+    "c": "La boîte de riz du matin (125 g crus) et la boîte du jour : viande hachée 70 g, 80 g d'épinards, réchauffées ensemble à la poêle. Pas de sauce : hors du feu, les 15 ml d'huile d'olive crue sur le riz, sel iodé et tes épices. La créatine, 5 g, avec le repas. Ensuite plus rien jusqu'au lendemain."
+   },
+   {
+    "h": "19:30",
+    "l": "Temps libre",
+    "c": "Libre."
+   },
+   {
+    "h": "20:45",
+    "l": "🚿 Douche du soir",
+    "c": "Dix minutes, eau bien tiède — agréable, jamais brûlante : visage et dos restent tièdes (Skinoren). Une heure avant le coucher, le corps évacue ensuite sa chaleur et tu t'endors plus vite. Eau seule sur les cheveux et le corps, gel doux aux aisselles, à l'aine et aux pieds ; la fin à l'eau froide (dimanche, mercredi, vendredi) se fait le matin. Cinq minutes plus tard, le Skinoren. Lumières basses : une lampe, plus le plafonnier."
+   },
+   {
+    "h": "21:00",
+    "l": "📖 Écran off — lecture papier",
+    "c": "Avant d'éteindre : la clôture du jour dans la Batcave, deux minutes. Puis téléphone en charge hors de portée, réveil posé loin du lit. Chambre vers 18 °C (fenêtre ouverte dix minutes), noir complet. Tes vingt pages en espagnol, sur papier."
+   },
+   {
+    "h": "21:30",
+    "l": "Brossage de dents",
+    "c": "Les dents, puis au lit. Si tu ne dors pas au bout de vingt minutes, lève-toi, lis dix minutes sous une lumière faible, et reviens."
+   },
+   {
+    "h": "21:35",
+    "l": "Coucher",
+    "c": "Clôture du jour faite ? Écran off, réveil posé loin du lit."
+   }
+  ],
+  "habits": [
+   {
+    "id": "core-lit",
+    "label": "Lit fait",
+    "icon": "🛏️",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-etirements",
+    "label": "Étirements faits",
+    "icon": "🤸",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-fajr",
+    "label": "Fajr",
+    "icon": "🕌",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-dhuhr",
+    "label": "Dhuhr",
+    "icon": "🕌",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-asr",
+    "label": "Asr",
+    "icon": "🕌",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-maghrib",
+    "label": "Maghrib",
+    "icon": "🕌",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-isha",
+    "label": "Isha",
+    "icon": "🕌",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-ecran",
+    "label": "Téléphone hors de la chambre",
+    "icon": "📵",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-sadaqah",
+    "label": "Sadaqah du jour",
+    "icon": "🤲",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-revue",
+    "label": "Revue de la veille / plan du lendemain",
+    "icon": "📝",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-famille",
+    "label": "Nouvelles à la famille",
+    "icon": "📞",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-marche",
+    "label": "Marche / pas",
+    "icon": "🚶",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "hab1788303551564",
+    "label": "Vaisselle",
+    "icon": "🍽️",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-es-conversacion",
+    "label": "30 min en espagnol avec un natif",
+    "icon": "🗣️",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-es-formulas",
+    "label": "Les dix formules du jour",
+    "icon": "💬",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-es-lectura",
+    "label": "20 pages lues en espagnol",
+    "icon": "📖",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-shampoing",
+    "label": "Shampoing",
+    "icon": "🧴",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-creatine",
+    "label": "Créatine — 5 g",
+    "icon": "🥄",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-cou-jeudi",
+    "label": "Cou — flexion et extension, 3 × 12-20",
+    "icon": "🦴",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-lumiere",
+    "label": "Lumière du matin — 15 min dehors, dès qu’il fait jour",
+    "icon": "☀️",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   }
+  ],
+  "duJour": [
+   {
+    "id": "core-lit",
+    "label": "Lit fait",
+    "icon": "🛏️"
+   },
+   {
+    "id": "core-etirements",
+    "label": "Étirements faits",
+    "icon": "🤸"
+   },
+   {
+    "id": "core-fajr",
+    "label": "Fajr",
+    "icon": "🕌"
+   },
+   {
+    "id": "core-dhuhr",
+    "label": "Dhuhr",
+    "icon": "🕌"
+   },
+   {
+    "id": "core-asr",
+    "label": "Asr",
+    "icon": "🕌"
+   },
+   {
+    "id": "core-maghrib",
+    "label": "Maghrib",
+    "icon": "🕌"
+   },
+   {
+    "id": "core-isha",
+    "label": "Isha",
+    "icon": "🕌"
+   },
+   {
+    "id": "core-ecran",
+    "label": "Téléphone hors de la chambre",
+    "icon": "📵"
+   },
+   {
+    "id": "core-sadaqah",
+    "label": "Sadaqah du jour",
+    "icon": "🤲"
+   },
+   {
+    "id": "core-revue",
+    "label": "Revue de la veille / plan du lendemain",
+    "icon": "📝"
+   },
+   {
+    "id": "core-famille",
+    "label": "Nouvelles à la famille",
+    "icon": "📞"
+   },
+   {
+    "id": "core-marche",
+    "label": "Marche / pas",
+    "icon": "🚶"
+   },
+   {
+    "id": "hab1788303551564",
+    "label": "Vaisselle",
+    "icon": "🍽️"
+   },
+   {
+    "id": "core-es-conversacion",
+    "label": "30 min en espagnol avec un natif",
+    "icon": "🗣️"
+   },
+   {
+    "id": "core-es-formulas",
+    "label": "Les dix formules du jour",
+    "icon": "💬"
+   },
+   {
+    "id": "core-es-lectura",
+    "label": "20 pages lues en espagnol",
+    "icon": "📖"
+   },
+   {
+    "id": "core-shampoing",
+    "label": "Shampoing",
+    "icon": "🧴"
+   },
+   {
+    "id": "core-creatine",
+    "label": "Créatine — 5 g",
+    "icon": "🥄"
+   },
+   {
+    "id": "core-cou-jeudi",
+    "label": "Cou — flexion et extension, 3 × 12-20",
+    "icon": "🦴"
+   },
+   {
+    "id": "core-lumiere",
+    "label": "Lumière du matin — 15 min dehors, dès qu’il fait jour",
+    "icon": "☀️"
+   }
+  ],
+  "repas": {
+   "Petit-déjeuner": [
+    {
+     "c": "avoine",
+     "q": 400
+    },
+    {
+     "c": "skyr",
+     "q": 150
+    },
+    {
+     "c": "flocons",
+     "q": 80
+    },
+    {
+     "c": "banane",
+     "q": 120
+    },
+    {
+     "c": "miel",
+     "q": 20
+    },
+    {
+     "c": "amandes",
+     "q": 30
+    },
+    {
+     "c": "fruitsrouges",
+     "q": 100
+    }
+   ],
+   "Collation combat": [
+    {
+     "c": "banane",
+     "q": 120
+    },
+    {
+     "c": "galettes",
+     "q": 20
+    },
+    {
+     "c": "nutella",
+     "q": 15
+    }
+   ],
+   "Récup combat": [
+    {
+     "c": "avoine",
+     "q": 250
+    },
+    {
+     "c": "banane",
+     "q": 120
+    },
+    {
+     "c": "flocons",
+     "q": 20
+    }
+   ],
+   "Déjeuner": [
+    {
+     "c": "pates",
+     "q": 125
+    },
+    {
+     "c": "poulet",
+     "q": 70
+    },
+    {
+     "c": "legumes",
+     "q": 80
+    },
+    {
+     "c": "huile",
+     "q": 30
+    }
+   ],
+   "Collation entraînement": [
+    {
+     "c": "amandes",
+     "q": 50
+    },
+    {
+     "c": "sardines",
+     "q": 85
+    },
+    {
+     "c": "oeufs",
+     "q": 0
+    },
+    {
+     "c": "dattes",
+     "q": 70
+    }
+   ],
+   "Dîner": [
+    {
+     "c": "riz",
+     "q": 125
+    },
+    {
+     "c": "hachee",
+     "q": 70
+    },
+    {
+     "c": "legumes",
+     "q": 80
+    },
+    {
+     "c": "huile",
+     "q": 25
+    }
+   ]
+  },
+  "cible": {
+   "rev": 291,
+   "proj": 0,
+   "es": 0
+  },
+  "periode": null,
+  "espagnol": false
+ },
+ {
+  "iso": "2027-01-22",
+  "dow": 5,
+  "cle": "friday",
+  "blocs": [
+   {
+    "h": "05:30",
+    "l": "Projets perso matinal",
+    "c": "05:30 : exécution pure d'une tâche déjà décidée la veille — montage, import, rédaction, fiches, code. Jamais une décision : à cette heure-là on exécute, on n'arbitre pas. Ce que tu feras s'écrit la veille au soir, à la clôture. Pas de minuteur : tu travailles jusqu'à la douche de 06:30."
+   },
+   {
+    "h": "06:30",
+    "l": "Douche + préparation",
+    "c": "Fenêtres grandes ouvertes, 10 min. Le visage lavé avec ton nettoyant, à la main ; le shampoing ; le corps au gel doux ; pour finir, 30 à 60 s d'eau froide. Sèche en tamponnant, sans frotter : serviette de visage propre. Le Skinoren en couche fine, sur la peau sèche, là où tu as des boutons. Déodorant. La barbe brossée. Habillé avec les vêtements posés hier soir, cheveux coiffés. Fenêtres fermées."
+   },
+   {
+    "h": "06:45",
+    "l": "Petit-déjeuner + Coran (1 page)",
+    "c": "Avant le shake : le riz du jour au rice cooker — 125 g crus (pour le soir : à midi, ce sont les pâtes de ta boîte), rincés trois fois, l'eau jusqu'au trait, une pincée de sel iodé (« sal yodada » : quand ton paquet est fini, prends celui-là ; c'est lui qui complète l'iode). Il cuit pendant que tu bois le shake. Il part dans une boîte, au frigo dès qu'il est tiède."
+   },
+   {
+    "h": "07:20",
+    "l": "Anki 1",
+    "c": "Toutes les échéances de dentaire, deux Pomodoros 25 + 5 sans téléphone. File vide avant la fin : cartes du cours suivant à partir des notes."
+   },
+   {
+    "h": "08:20",
+    "l": "Étudier en avance",
+    "c": "Un tema que le prof n'a pas encore donné (la matière la plus loin de ses 3 d'avance). Lire les diapos en espagnol, une phrase à toi par point, « ? » dans la marge, 15-25 cartes Dentaire importées (40 en Anatomía). Puis, dans le projet Claude Dentaire : « estudia · matière Tn · tes ? » — la réponse en sept parties, la chaîne du mécanisme pour tout tema d'Anatomía, Biología ou Epidemiología, tes dix lignes en espagnol dans Notion, les cartes de la réponse importées. Pomodoro nommé « Étudier · matière Tn ». Une base qui manque (« base · notion ») passe devant tout le reste."
+   },
+   {
+    "h": "10:05",
+    "l": "Collation combat",
+    "c": "Une banane, et 2 galettes de riz avec 15 g de Nutella : du glucide qui passe vite et rien de lourd, 25 minutes avant le tatami. Le shake de récup t'attend au retour. Remplis la gourde. Aujourd'hui, l'eau monte à 3,5 à 4 L."
+   },
+   {
+    "h": "10:20",
+    "l": "Trajet club",
+    "c": "Dix minutes à pied. Dans le sac : kimono ou short, protège-dents, gourde pleine, serviette. Ongles des mains et des pieds courts."
+   },
+   {
+    "h": "10:30",
+    "l": "🥋 JJB",
+    "c": "1 h 30 de JJB. Protège-dents. Tape tôt sur une clé ou un étranglement : un débutant qui attend se blesse. Bois entre les rounds — aujourd'hui, 3,5 à 4 L d'eau sur la journée. Pose des questions en espagnol : c'est aussi de l'immersion."
+   },
+   {
+    "h": "12:00",
+    "l": "Retour du club",
+    "c": "Le shake de récup en rentrant : 250 ml de boisson d'avoine, une banane, 20 g de flocons, au mixeur. Puis la douche dès que possible. Le kimono et le rashguard en machine le jour même, 30 °C, à l'envers, avec la tenue de salle de jeudi et celle de mardi et celle de samedi — jamais d'adoucissant sur le sport. Bois 500 ml d'eau en rentrant."
+   },
+   {
+    "h": "12:20",
+    "l": "Déjeuner",
+    "c": "La boîte du jour : les pâtes (125 g crus, cuites au batch du mardi), poulet 70 g, 80 g de brocoli, réchauffée à la poêle avec 2 à 3 cuillères d'eau, couvercle, 4 à 5 min, brûlante jusqu'au cœur. Pas de sauce : pâtes nature, les 20 ml d'huile d'olive crue mélangés à chaud, sel iodé et tes épices (cumin, ras el hanout, paprika ; une pointe de harissa si tu veux)."
+   },
+   {
+    "h": "13:15",
+    "l": "Trajet mosquée",
+    "c": "Avant de fermer : clés, portefeuille, téléphone."
+   },
+   {
+    "h": "13:30",
+    "l": "Jumu'ah (khutba + prière ~14h)",
+    "c": "La khutba, puis la prière vers 14 h."
+   },
+   {
+    "h": "14:30",
+    "l": "😴 Micro-sieste",
+    "c": "20 min, alarme mise. Pas plus, sinon tu dormiras mal ce soir."
+   },
+   {
+    "h": "14:50",
+    "l": "Collation entraînement",
+    "c": "50 g d'amandes, 3 œufs durs, 7 dattes. Tant qu'il reste du fromage de ta mère : une portion en plus (2 Vache qui rit, 30 g de Caprice des Dieux ou 30 g de Philadelphia)."
+   },
+   {
+    "h": "15:00",
+    "l": "Projets perso 4",
+    "c": "Lundi, 15:00-16:50, juste avant de partir en cours (hablar en phase Español). Même règle que les autres blocs de projet : un livrable à rendre d'abord, sinon la prochaine ligne non cochée du dossier e-commerce."
+   },
+   {
+    "h": "16:00",
+    "l": "Projets perso 5",
+    "c": "Un jour sans cours, l'après-midi : même règle, un livrable d'abord, sinon la boutique."
+   },
+   {
+    "h": "17:00",
+    "l": "Lire",
+    "c": "Le chapitre que la réponse « estudia » du matin a indiqué : un bloc, un livre, en espagnol ou en anglais, une seule question en tête — qu'est-ce que le cours n'a pas expliqué ? Trois cartes au plus à la fin. Rien d'autre d'ouvert."
+   },
+   {
+    "h": "18:00",
+    "l": "Réexpliquer",
+    "c": "Aucun rappel dû aujourd'hui : soit rien n'est encore enregistré, soit tout est à jour. Reprends le sujet que tu as le moins bien redit, ou avance sur les cartes de mécanisme. Chacun : quatre minutes au téléphone, sans notes, la chaîne complète — quoi, pourquoi, comment, quand ce n'est pas vrai, et au fauteuil. Compare à ton premier enregistrement, puis note-toi 0-3 dans Études → Approfondissements. Sous 2, le sujet reprend le prochain créneau « Approfondir »."
+   },
+   {
+    "h": "19:00",
+    "l": "Dîner",
+    "c": "La boîte de riz du matin (125 g crus) et la boîte du jour : viande hachée 70 g, 80 g d'épinards, réchauffées ensemble à la poêle. Pas de sauce : hors du feu, les 15 ml d'huile d'olive crue sur le riz, sel iodé et tes épices. La créatine, 5 g, avec le repas. Ensuite plus rien jusqu'au lendemain."
+   },
+   {
+    "h": "19:30",
+    "l": "Temps libre",
+    "c": "Libre."
+   },
+   {
+    "h": "20:45",
+    "l": "🚿 Douche du soir",
+    "c": "Dix minutes, eau bien tiède — agréable, jamais brûlante : visage et dos restent tièdes (Skinoren). Une heure avant le coucher, le corps évacue ensuite sa chaleur et tu t'endors plus vite. Eau seule sur les cheveux et le corps, gel doux aux aisselles, à l'aine et aux pieds ; la fin à l'eau froide (dimanche, mercredi, vendredi) se fait le matin. Cinq minutes plus tard, le Skinoren. Lumières basses : une lampe, plus le plafonnier."
+   },
+   {
+    "h": "21:00",
+    "l": "📖 Écran off — lecture papier",
+    "c": "Avant d'éteindre : la clôture du jour dans la Batcave, deux minutes. Puis téléphone en charge hors de portée, réveil posé loin du lit. Chambre vers 18 °C (fenêtre ouverte dix minutes), noir complet. Tes vingt pages en espagnol, sur papier."
+   },
+   {
+    "h": "21:30",
+    "l": "Brossage de dents",
+    "c": "Les dents, puis au lit. Si tu ne dors pas au bout de vingt minutes, lève-toi, lis dix minutes sous une lumière faible, et reviens."
+   },
+   {
+    "h": "21:35",
+    "l": "Coucher",
+    "c": "Clôture du jour faite ? Écran off, réveil posé loin du lit."
+   }
+  ],
+  "habits": [
+   {
+    "id": "core-lit",
+    "label": "Lit fait",
+    "icon": "🛏️",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-etirements",
+    "label": "Étirements faits",
+    "icon": "🤸",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-fajr",
+    "label": "Fajr",
+    "icon": "🕌",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-dhuhr",
+    "label": "Dhuhr",
+    "icon": "🕌",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-asr",
+    "label": "Asr",
+    "icon": "🕌",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-maghrib",
+    "label": "Maghrib",
+    "icon": "🕌",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-isha",
+    "label": "Isha",
+    "icon": "🕌",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-ecran",
+    "label": "Téléphone hors de la chambre",
+    "icon": "📵",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-sadaqah",
+    "label": "Sadaqah du jour",
+    "icon": "🤲",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-revue",
+    "label": "Revue de la veille / plan du lendemain",
+    "icon": "📝",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-famille",
+    "label": "Nouvelles à la famille",
+    "icon": "📞",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-marche",
+    "label": "Marche / pas",
+    "icon": "🚶",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "hab1788303551564",
+    "label": "Vaisselle",
+    "icon": "🍽️",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "hab1788303558397",
+    "label": "Linge",
+    "icon": "🧺",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-es-conversacion",
+    "label": "30 min en espagnol avec un natif",
+    "icon": "🗣️",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-es-formulas",
+    "label": "Les dix formules du jour",
+    "icon": "💬",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-es-lectura",
+    "label": "20 pages lues en espagnol",
+    "icon": "📖",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-serviette-visage",
+    "label": "Serviette de visage changée",
+    "icon": "🧼",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-creatine",
+    "label": "Créatine — 5 g",
+    "icon": "🥄",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-douche-froide",
+    "label": "Douche froide — 30 à 60 s en fin de douche",
+    "icon": "🚿",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-lumiere",
+    "label": "Lumière du matin — 15 min dehors, dès qu’il fait jour",
+    "icon": "☀️",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   }
+  ],
+  "duJour": [
+   {
+    "id": "core-lit",
+    "label": "Lit fait",
+    "icon": "🛏️"
+   },
+   {
+    "id": "core-etirements",
+    "label": "Étirements faits",
+    "icon": "🤸"
+   },
+   {
+    "id": "core-fajr",
+    "label": "Fajr",
+    "icon": "🕌"
+   },
+   {
+    "id": "core-dhuhr",
+    "label": "Dhuhr",
+    "icon": "🕌"
+   },
+   {
+    "id": "core-asr",
+    "label": "Asr",
+    "icon": "🕌"
+   },
+   {
+    "id": "core-maghrib",
+    "label": "Maghrib",
+    "icon": "🕌"
+   },
+   {
+    "id": "core-isha",
+    "label": "Isha",
+    "icon": "🕌"
+   },
+   {
+    "id": "core-ecran",
+    "label": "Téléphone hors de la chambre",
+    "icon": "📵"
+   },
+   {
+    "id": "core-sadaqah",
+    "label": "Sadaqah du jour",
+    "icon": "🤲"
+   },
+   {
+    "id": "core-revue",
+    "label": "Revue de la veille / plan du lendemain",
+    "icon": "📝"
+   },
+   {
+    "id": "core-famille",
+    "label": "Nouvelles à la famille",
+    "icon": "📞"
+   },
+   {
+    "id": "core-marche",
+    "label": "Marche / pas",
+    "icon": "🚶"
+   },
+   {
+    "id": "hab1788303551564",
+    "label": "Vaisselle",
+    "icon": "🍽️"
+   },
+   {
+    "id": "hab1788303558397",
+    "label": "Linge",
+    "icon": "🧺"
+   },
+   {
+    "id": "core-es-conversacion",
+    "label": "30 min en espagnol avec un natif",
+    "icon": "🗣️"
+   },
+   {
+    "id": "core-es-formulas",
+    "label": "Les dix formules du jour",
+    "icon": "💬"
+   },
+   {
+    "id": "core-es-lectura",
+    "label": "20 pages lues en espagnol",
+    "icon": "📖"
+   },
+   {
+    "id": "core-serviette-visage",
+    "label": "Serviette de visage changée",
+    "icon": "🧼"
+   },
+   {
+    "id": "core-creatine",
+    "label": "Créatine — 5 g",
+    "icon": "🥄"
+   },
+   {
+    "id": "core-douche-froide",
+    "label": "Douche froide — 30 à 60 s en fin de douche",
+    "icon": "🚿"
+   },
+   {
+    "id": "core-lumiere",
+    "label": "Lumière du matin — 15 min dehors, dès qu’il fait jour",
+    "icon": "☀️"
+   }
+  ],
+  "repas": {
+   "Petit-déjeuner": [
+    {
+     "c": "avoine",
+     "q": 400
+    },
+    {
+     "c": "skyr",
+     "q": 150
+    },
+    {
+     "c": "flocons",
+     "q": 80
+    },
+    {
+     "c": "banane",
+     "q": 120
+    },
+    {
+     "c": "miel",
+     "q": 20
+    },
+    {
+     "c": "amandes",
+     "q": 30
+    },
+    {
+     "c": "fruitsrouges",
+     "q": 100
+    }
+   ],
+   "Collation combat": [
+    {
+     "c": "banane",
+     "q": 120
+    },
+    {
+     "c": "galettes",
+     "q": 20
+    },
+    {
+     "c": "nutella",
+     "q": 15
+    }
+   ],
+   "Récup combat": [
+    {
+     "c": "avoine",
+     "q": 250
+    },
+    {
+     "c": "banane",
+     "q": 120
+    },
+    {
+     "c": "flocons",
+     "q": 20
+    }
+   ],
+   "Déjeuner": [
+    {
+     "c": "pates",
+     "q": 125
+    },
+    {
+     "c": "poulet",
+     "q": 70
+    },
+    {
+     "c": "legumes",
+     "q": 80
+    },
+    {
+     "c": "huile",
+     "q": 30
+    }
+   ],
+   "Collation entraînement": [
+    {
+     "c": "amandes",
+     "q": 50
+    },
+    {
+     "c": "oeufs",
+     "q": 100
+    },
+    {
+     "c": "oeufs",
+     "q": 50
+    },
+    {
+     "c": "dattes",
+     "q": 70
+    }
+   ],
+   "Dîner": [
+    {
+     "c": "riz",
+     "q": 125
+    },
+    {
+     "c": "hachee",
+     "q": 70
+    },
+    {
+     "c": "legumes",
+     "q": 80
+    },
+    {
+     "c": "huile",
+     "q": 25
+    }
+   ]
+  },
+  "cible": {
+   "rev": 256,
+   "proj": 0,
+   "es": 0
+  },
+  "periode": null,
+  "espagnol": false
+ },
+ {
+  "iso": "2027-01-23",
+  "dow": 6,
+  "cle": "saturday",
+  "blocs": [
+   {
+    "h": "05:30",
+    "l": "Anki 1",
+    "c": "Toutes les échéances de dentaire, deux Pomodoros 25 + 5 sans téléphone. File vide avant la fin : cartes du cours suivant à partir des notes."
+   },
+   {
+    "h": "06:40",
+    "l": "Trajet salle",
+    "c": "Départ 06:40, quinze à vingt minutes. Un grand verre d'eau avant de partir ; à jeun, c'est prévu : le shake t'attend au retour. Dans le sac : tenue, serviette, gourde pleine, cadenas, bandes et gants pour le sac, la séance ouverte dans l'onglet Sport."
+   },
+   {
+    "h": "07:00",
+    "l": "Sport",
+    "c": "La salle à 07:00, dès l'ouverture. Échauffement : 5 minutes de vélo ou de rameur (mardi et samedi : 2 rounds de 2 min de shadow boxing), puis deux séries d'approche du premier exercice (la moitié de la charge, puis les trois quarts). La séance du jour est dans l'onglet Sport, charges déjà calculées. Lundi, haut du corps en volume, à 2 ou 3 reps de l'échec : JJB à 10:30. Mardi, bas complet (squat), puis le sac en rounds techniques. Jeudi, haut lourd : c'est là que la force se construit. Samedi, le second bas et les bras, puis le sac en intervalles. Mardi et samedi, bandes et gants dans le sac. Squat et développé couché dans le rack, barres de sécurité réglées juste sous le bas du mouvement : à l'ouverture, la salle est presque vide. Retour à 07:55, douche en rentrant."
+   },
+   {
+    "h": "07:55",
+    "l": "Retour de la salle",
+    "c": "Vingt minutes à pied : le jour se lève pendant ton retour, c'est ta lumière du matin (coche-la). En rentrant, lance le riz au rice cooker avant la douche ; le shake juste après."
+   },
+   {
+    "h": "08:15",
+    "l": "Douche + préparation",
+    "c": "Fenêtres grandes ouvertes, 10 min. Le visage lavé avec ton nettoyant, à la main ; le shampoing ; le corps au gel doux. Sèche en tamponnant, sans frotter. Le Skinoren en couche fine, sur la peau sèche, là où tu as des boutons. Déodorant. La barbe brossée. Habillé avec les vêtements posés hier soir, cheveux coiffés. Fenêtres fermées."
+   },
+   {
+    "h": "08:30",
+    "l": "Petit-déjeuner + Coran (1 page)",
+    "c": "Avant le shake : le riz du jour au rice cooker — 125 g crus (pour le soir : à midi, ce sont les pâtes de ta boîte), rincés trois fois, l'eau jusqu'au trait, une pincée de sel iodé (« sal yodada » : quand ton paquet est fini, prends celui-là ; c'est lui qui complète l'iode). Il cuit pendant que tu bois le shake. Il part dans une boîte, au frigo dès qu'il est tiède."
+   },
+   {
+    "h": "09:00",
+    "l": "Approfondir",
+    "c": "Le sujet, c'est toi qui le choisis : le tema que le prof vient de donner, ou celui qui te servira le plus au fauteuil. Le bloc dure 2 h 20 : DEUX séances d'une heure, à 09:00 et à 10:00 (la demi-heure qui reste, tes cartes). Une heure : 25 min de lecture dans la référence (Guyton, Karp, Greenhalgh, Abbas), 15 min de teach-back enregistré en espagnol sans notes, 10 min de cartes de mécanisme en chaîne, 10 min de vignettes (« profundiza · sujet » dans le projet Dentaire). L'enregistrement se garde : Réexpliquer le réécoute. À la fin, écris le sujet dans Études → Approfondissements — c'est ce qui déclenche J+7, J+30 et J+90."
+   },
+   {
+    "h": "11:20",
+    "l": "Projets perso 1",
+    "c": "Réserve : ce qui a débordé de la semaine dans le dossier ; s'il n'y a rien, la semaine suivante commence."
+   },
+   {
+    "h": "12:20",
+    "l": "Déjeuner",
+    "c": "La boîte du jour : les pâtes (125 g crus, cuites au batch du mardi), poulet 70 g, 80 g de brocoli, réchauffée à la poêle avec 2 à 3 cuillères d'eau, couvercle, 4 à 5 min, brûlante jusqu'au cœur. Pas de sauce : pâtes nature, les 20 ml d'huile d'olive crue mélangés à chaud, sel iodé et tes épices (cumin, ras el hanout, paprika ; une pointe de harissa si tu veux)."
+   },
+   {
+    "h": "13:10",
+    "l": "😴 Micro-sieste",
+    "c": "20 min, alarme mise. Pas plus, sinon tu dormiras mal ce soir."
+   },
+   {
+    "h": "13:30",
+    "l": "🛒 Courses de la semaine",
+    "c": "Avant de partir, 10 min : regarde le frigo et le placard, fais le tour de la salle de bain et de la cuisine, et coche dans l'onglet Courses ce que tu as déjà. N'achète que ce qui te manque."
+   },
+   {
+    "h": "15:30",
+    "l": "Rangement des courses",
+    "c": "La viande de la session du mardi va au congélateur tout de suite, crue : 280 g de poulet et 280 g de viande hachée (mercredi à samedi), à plat dans deux sacs congélation, la date dessus. Le reste de la viande au frigo, en bas : c'est celle de demain. Les surgelés au congélateur, puis le frais, puis le sec, puis les produits de salle de bain et de ménage à leur place. Les tickets dans Budget : la nourriture dans Nourriture, le reste dans Soin et santé ou Maison et ménage."
+   },
+   {
+    "h": "16:00",
+    "l": "Cartes d'erreurs de la semaine",
+    "c": "Les cartes ratées de la semaine, les erreurs des questions ouvertes et des exercices de calcul → une carte de correction par cause, étiquette « erreur » + semaine."
+   },
+   {
+    "h": "17:00",
+    "l": "Projets perso 2",
+    "c": "Fiscalité F1 (apprendre) : la ligne « Apprendre » de la semaine, section 09 du dossier, à partir de la source officielle."
+   },
+   {
+    "h": "18:00",
+    "l": "Projets perso 3",
+    "c": "Samedi 18:00-19:30, une heure et demie d'un trait, sans minuteur : le livrable de la semaine d'abord (celui que tu cocheras dimanche), sinon la prochaine ligne non cochée du dossier e-commerce."
+   },
+   {
+    "h": "19:30",
+    "l": "Dîner",
+    "c": "La boîte de riz du matin (125 g crus) et la boîte du jour : viande hachée 70 g, 80 g d'épinards, réchauffées ensemble à la poêle. Pas de sauce : hors du feu, les 15 ml d'huile d'olive crue sur le riz, sel iodé et tes épices. La créatine, 5 g, avec le repas. Ensuite plus rien jusqu'au lendemain."
+   },
+   {
+    "h": "20:00",
+    "l": "Temps libre",
+    "c": "Libre."
+   },
+   {
+    "h": "20:45",
+    "l": "🚿 Douche du soir",
+    "c": "Dix minutes, eau bien tiède — agréable, jamais brûlante : visage et dos restent tièdes (Skinoren). Une heure avant le coucher, le corps évacue ensuite sa chaleur et tu t'endors plus vite. Eau seule sur les cheveux et le corps, gel doux aux aisselles, à l'aine et aux pieds ; la fin à l'eau froide (dimanche, mercredi, vendredi) se fait le matin. Cinq minutes plus tard, le Skinoren. Lumières basses : une lampe, plus le plafonnier."
+   },
+   {
+    "h": "21:00",
+    "l": "📖 Écran off — lecture papier",
+    "c": "Avant d'éteindre : la clôture du jour dans la Batcave, deux minutes. Puis téléphone en charge hors de portée, réveil posé loin du lit. Chambre vers 18 °C (fenêtre ouverte dix minutes), noir complet. Tes vingt pages en espagnol, sur papier."
+   },
+   {
+    "h": "21:30",
+    "l": "Brossage de dents",
+    "c": "Les dents, puis au lit. Si tu ne dors pas au bout de vingt minutes, lève-toi, lis dix minutes sous une lumière faible, et reviens."
+   },
+   {
+    "h": "21:35",
+    "l": "Coucher",
+    "c": "Clôture du jour faite ? Écran off, réveil posé loin du lit."
+   }
+  ],
+  "habits": [
+   {
+    "id": "core-lit",
+    "label": "Lit fait",
+    "icon": "🛏️",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-etirements",
+    "label": "Étirements faits",
+    "icon": "🤸",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-fajr",
+    "label": "Fajr",
+    "icon": "🕌",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-dhuhr",
+    "label": "Dhuhr",
+    "icon": "🕌",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-asr",
+    "label": "Asr",
+    "icon": "🕌",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-maghrib",
+    "label": "Maghrib",
+    "icon": "🕌",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-isha",
+    "label": "Isha",
+    "icon": "🕌",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-ecran",
+    "label": "Téléphone hors de la chambre",
+    "icon": "📵",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-sadaqah",
+    "label": "Sadaqah du jour",
+    "icon": "🤲",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-revue",
+    "label": "Revue de la veille / plan du lendemain",
+    "icon": "📝",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-famille",
+    "label": "Nouvelles à la famille",
+    "icon": "📞",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-marche",
+    "label": "Marche / pas",
+    "icon": "🚶",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "hab1788303536189",
+    "label": "Passer le balai",
+    "icon": "🧹",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "hab1788303551564",
+    "label": "Vaisselle",
+    "icon": "🍽️",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-courses",
+    "label": "Courses faites",
+    "icon": "🛒",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-es-conversacion",
+    "label": "30 min en espagnol avec un natif",
+    "icon": "🗣️",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-es-formulas",
+    "label": "Les dix formules du jour",
+    "icon": "💬",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-es-lectura",
+    "label": "20 pages lues en espagnol",
+    "icon": "📖",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-cheveux",
+    "label": "Coupe de cheveux",
+    "icon": "💈",
+    "cycle": 3,
+    "ancre": "2026-10-31",
+    "quinzaine": false
+   },
+   {
+    "id": "core-shampoing",
+    "label": "Shampoing",
+    "icon": "🧴",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-creatine",
+    "label": "Créatine — 5 g",
+    "icon": "🥄",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-lumiere",
+    "label": "Lumière du matin — 15 min dehors, dès qu’il fait jour",
+    "icon": "☀️",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   }
+  ],
+  "duJour": [
+   {
+    "id": "core-lit",
+    "label": "Lit fait",
+    "icon": "🛏️"
+   },
+   {
+    "id": "core-etirements",
+    "label": "Étirements faits",
+    "icon": "🤸"
+   },
+   {
+    "id": "core-fajr",
+    "label": "Fajr",
+    "icon": "🕌"
+   },
+   {
+    "id": "core-dhuhr",
+    "label": "Dhuhr",
+    "icon": "🕌"
+   },
+   {
+    "id": "core-asr",
+    "label": "Asr",
+    "icon": "🕌"
+   },
+   {
+    "id": "core-maghrib",
+    "label": "Maghrib",
+    "icon": "🕌"
+   },
+   {
+    "id": "core-isha",
+    "label": "Isha",
+    "icon": "🕌"
+   },
+   {
+    "id": "core-ecran",
+    "label": "Téléphone hors de la chambre",
+    "icon": "📵"
+   },
+   {
+    "id": "core-sadaqah",
+    "label": "Sadaqah du jour",
+    "icon": "🤲"
+   },
+   {
+    "id": "core-revue",
+    "label": "Revue de la veille / plan du lendemain",
+    "icon": "📝"
+   },
+   {
+    "id": "core-famille",
+    "label": "Nouvelles à la famille",
+    "icon": "📞"
+   },
+   {
+    "id": "core-marche",
+    "label": "Marche / pas",
+    "icon": "🚶"
+   },
+   {
+    "id": "hab1788303536189",
+    "label": "Passer le balai",
+    "icon": "🧹"
+   },
+   {
+    "id": "hab1788303551564",
+    "label": "Vaisselle",
+    "icon": "🍽️"
+   },
+   {
+    "id": "core-courses",
+    "label": "Courses faites",
+    "icon": "🛒"
+   },
+   {
+    "id": "core-es-conversacion",
+    "label": "30 min en espagnol avec un natif",
+    "icon": "🗣️"
+   },
+   {
+    "id": "core-es-formulas",
+    "label": "Les dix formules du jour",
+    "icon": "💬"
+   },
+   {
+    "id": "core-es-lectura",
+    "label": "20 pages lues en espagnol",
+    "icon": "📖"
+   },
+   {
+    "id": "core-cheveux",
+    "label": "Coupe de cheveux",
+    "icon": "💈"
+   },
+   {
+    "id": "core-shampoing",
+    "label": "Shampoing",
+    "icon": "🧴"
+   },
+   {
+    "id": "core-creatine",
+    "label": "Créatine — 5 g",
+    "icon": "🥄"
+   },
+   {
+    "id": "core-lumiere",
+    "label": "Lumière du matin — 15 min dehors, dès qu’il fait jour",
+    "icon": "☀️"
+   }
+  ],
+  "repas": {
+   "Petit-déjeuner": [
+    {
+     "c": "avoine",
+     "q": 400
+    },
+    {
+     "c": "skyr",
+     "q": 150
+    },
+    {
+     "c": "flocons",
+     "q": 80
+    },
+    {
+     "c": "banane",
+     "q": 120
+    },
+    {
+     "c": "miel",
+     "q": 20
+    },
+    {
+     "c": "amandes",
+     "q": 30
+    },
+    {
+     "c": "fruitsrouges",
+     "q": 100
+    }
+   ],
+   "Collation combat": [
+    {
+     "c": "banane",
+     "q": 120
+    },
+    {
+     "c": "galettes",
+     "q": 20
+    },
+    {
+     "c": "nutella",
+     "q": 15
+    }
+   ],
+   "Récup combat": [
+    {
+     "c": "avoine",
+     "q": 250
+    },
+    {
+     "c": "banane",
+     "q": 120
+    },
+    {
+     "c": "flocons",
+     "q": 20
+    }
+   ],
+   "Déjeuner": [
+    {
+     "c": "pates",
+     "q": 125
+    },
+    {
+     "c": "poulet",
+     "q": 70
+    },
+    {
+     "c": "legumes",
+     "q": 80
+    },
+    {
+     "c": "huile",
+     "q": 30
+    }
+   ],
+   "Collation entraînement": [
+    {
+     "c": "amandes",
+     "q": 50
+    },
+    {
+     "c": "oeufs",
+     "q": 100
+    },
+    {
+     "c": "oeufs",
+     "q": 50
+    },
+    {
+     "c": "dattes",
+     "q": 70
+    }
+   ],
+   "Dîner": [
+    {
+     "c": "riz",
+     "q": 125
+    },
+    {
+     "c": "hachee",
+     "q": 70
+    },
+    {
+     "c": "legumes",
+     "q": 80
+    },
+    {
+     "c": "huile",
+     "q": 25
+    }
+   ]
+  },
+  "cible": {
+   "rev": 241,
+   "proj": 0,
+   "es": 0
+  },
+  "periode": null,
+  "espagnol": false
+ },
+ {
+  "iso": "2027-01-24",
+  "dow": 0,
+  "cle": "weekend",
+  "blocs": [
+   {
+    "h": "05:30",
+    "l": "Projets perso matinal",
+    "c": "05:30 : exécution pure d'une tâche déjà décidée la veille — montage, import, rédaction, fiches, code. Jamais une décision : à cette heure-là on exécute, on n'arbitre pas. Ce que tu feras s'écrit la veille au soir, à la clôture. Pas de minuteur : tu travailles jusqu'à la douche de 06:30."
+   },
+   {
+    "h": "06:30",
+    "l": "Douche + préparation",
+    "c": "Fenêtres grandes ouvertes, 10 min. Le visage lavé avec ton nettoyant, à la main ; le corps au gel doux ; le rasage (aisselles et parties intimes) ; pour finir, 30 à 60 s d'eau froide. Sèche en tamponnant : serviettes de visage et de corps propres. Le Skinoren en couche fine, sur la peau sèche, là où tu as des boutons. Déodorant. La barbe brossée, et taillée si besoin. Habillé avec les vêtements posés hier soir, cheveux coiffés. Fenêtres fermées."
+   },
+   {
+    "h": "06:45",
+    "l": "Petit-déjeuner + Coran (1 page)",
+    "c": "Avant le shake : le riz du jour au rice cooker — 125 g crus (pour le soir : à midi, les pâtes se cuisent sur le moment), rincés trois fois, l'eau jusqu'au trait, une pincée de sel iodé (« sal yodada » : quand ton paquet est fini, prends celui-là ; c'est lui qui complète l'iode). Il cuit pendant que tu bois le shake. Il part dans une boîte, au frigo dès qu'il est tiède."
+   },
+   {
+    "h": "07:20",
+    "l": "Anki 1",
+    "c": "Toutes les échéances de dentaire, deux Pomodoros 25 + 5 sans téléphone. File vide avant la fin : cartes du cours suivant à partir des notes."
+   },
+   {
+    "h": "08:20",
+    "l": "Anki 2",
+    "c": "Suite des échéances de dentaire. Les 5 dernières minutes : échéances du paquet Business (glossaire dropshipping)."
+   },
+   {
+    "h": "09:20",
+    "l": "Simulation dentaire",
+    "c": "La semaine avant un questionnaire : son blanc complet (15 questions, 20 min, sans support, en espagnol). Sinon : 10 QCM + une question ouverte sur le dernier bloc de trois temas de Biología ou d'Epidemiología, en alternance. En décembre : un examen blanc complet (40 QCM + 4 ouvertes, 90 min), une matière par dimanche. Le premier dimanche du mois : l'examen mensuel de vingt vignettes."
+   },
+   {
+    "h": "10:20",
+    "l": "Réexpliquer",
+    "c": "Aucun rappel dû aujourd'hui : soit rien n'est encore enregistré, soit tout est à jour. Reprends le sujet que tu as le moins bien redit, ou avance sur les cartes de mécanisme. Chacun : quatre minutes au téléphone, sans notes, la chaîne complète — quoi, pourquoi, comment, quand ce n'est pas vrai, et au fauteuil. Compare à ton premier enregistrement, puis note-toi 0-3 dans Études → Approfondissements. Sous 2, le sujet reprend le prochain créneau « Approfondir »."
+   },
+   {
+    "h": "11:20",
+    "l": "Projets perso 1",
+    "c": "Réserve : service client et chiffres du week-end quand la boutique tourne ; sinon, débordement du dossier."
+   },
+   {
+    "h": "12:20",
+    "l": "Déjeuner",
+    "c": "Un repas frais, le dimanche (la boîte du mardi aurait cinq jours), vingt minutes : 125 g de pâtes dans une grande casserole d'eau bouillante salée, le temps du paquet ; pendant ce temps, 80 g de brocoli surgelé à la poêle, 7 min à couvert, puis 3 œufs au plat ou brouillés dans 10 ml d'huile. 10 ml d'huile d'olive crue sur les pâtes, sel iodé, épices."
+   },
+   {
+    "h": "13:10",
+    "l": "😴 Micro-sieste",
+    "c": "20 min, alarme mise. Pas plus, sinon tu dormiras mal ce soir."
+   },
+   {
+    "h": "13:30",
+    "l": "Projets perso 2",
+    "c": "Fiscalité F3 (réviser) : relecture des fiches, 10 cartes fiscalité, tableau de maîtrise du dossier (les cinq piliers), page « ce que je sais maintenant »."
+   },
+   {
+    "h": "14:30",
+    "l": "🍲 Batch cooking de la semaine",
+    "c": "La première des deux sessions de la semaine, une heure (le détail dans l'onglet Meal prep). Une grande casserole d'eau salée : 250 g de pâtes (lundi et mardi midi), une minute de moins que le paquet, égouttées, un filet d'huile. Pendant ce temps, le poulet (140 g) à la poêle, feu vif : 4 min par face, puis 3 min à couvert. La viande hachée (210 g), en une fournée, 10 min. Les légumes surgelés (400 g), sans les décongeler : le brocoli 7 min, les épinards 5 min à couvert. Les 15 œufs durs de la semaine : 10 min dans l'eau bouillante, puis eau froide ; en coquille, au frigo. Tout refroidit 20 min à découvert, puis 5 boîtes, toutes au frigo, le jour écrit dessus : ce soir, puis lundi et mardi, midi et soir. La viande de mardi reste au congélateur. La vaisselle, le plan de travail essuyé. Puis, vers 15:30, la laverie : défais le lit — draps, taies, serviettes et lavettes dans le sac — et pars à 15:35, à 5 min à pied (un lavage à 60 °C, sans adoucissant si tu as le choix, puis le séchage : 45 min en tout, 8,00 €). Tes 20 pages en espagnol pendant que ça tourne ; de retour vers 16:30, le lit se refait au début du ménage. Le ticket dans Budget, Maison et ménage."
+   },
+   {
+    "h": "16:30",
+    "l": "🧽 Ménage — sols, salle de bain, poussière",
+    "c": "À ton retour de la laverie (vers 16:30) : le lit refait avec la parure propre, puis aspirateur-serpillière dans tout l'appart (réservoir vidé et rincé après), salle de bain, poussière. Le linge propre plié et rangé. À la fin, sors la poubelle."
+   },
+   {
+    "h": "17:30",
+    "l": "Projets perso 3",
+    "c": "Dimanche 17:30-19:00 : finir le livrable de la semaine — c'est lui que la revue du dimanche te demande de cocher. S'il est fait, prépare celui de la semaine suivante."
+   },
+   {
+    "h": "19:00",
+    "l": "Dîner",
+    "c": "La boîte de riz du matin (125 g crus) et la boîte du jour : viande hachée 70 g, 80 g d'épinards, réchauffées ensemble à la poêle. Pas de sauce : hors du feu, les 15 ml d'huile d'olive crue sur le riz, sel iodé et tes épices. La créatine, 5 g, avec le repas. Ensuite plus rien jusqu'au lendemain."
+   },
+   {
+    "h": "19:30",
+    "l": "🧘 Mobilité des hanches",
+    "c": "Dix minutes au sol, sur un tapis ou une serviette. 90/90 : 2 × 1 min par côté, buste droit puis penché sur la jambe avant. Pigeon : 2 × 1 min par côté. Papillon : 2 × 1 min, les coudes poussent doucement les genoux. Puis dix bascules du bassin, allongé. Respire lentement, jamais de douleur vive : c'est la souplesse de ta garde au JJB."
+   },
+   {
+    "h": "19:40",
+    "l": "Temps libre",
+    "c": "10 minutes pour la revue du dimanche guidée (onglet Études), 5 pour tes mails et tes factures, le reste est libre."
+   },
+   {
+    "h": "20:45",
+    "l": "🚿 Douche du soir",
+    "c": "Dix minutes, eau bien tiède — agréable, jamais brûlante : visage et dos restent tièdes (Skinoren). Une heure avant le coucher, le corps évacue ensuite sa chaleur et tu t'endors plus vite. Eau seule sur les cheveux et le corps, gel doux aux aisselles, à l'aine et aux pieds ; la fin à l'eau froide (dimanche, mercredi, vendredi) se fait le matin. Cinq minutes plus tard, le Skinoren. Lumières basses : une lampe, plus le plafonnier."
+   },
+   {
+    "h": "21:00",
+    "l": "📖 Écran off — lecture papier",
+    "c": "Avant d'éteindre : la clôture du jour dans la Batcave, deux minutes. Puis téléphone en charge hors de portée, réveil posé loin du lit. Chambre vers 18 °C (fenêtre ouverte dix minutes), noir complet. Tes vingt pages en espagnol, sur papier."
+   },
+   {
+    "h": "21:30",
+    "l": "Brossage de dents",
+    "c": "Les dents, puis au lit. Si tu ne dors pas au bout de vingt minutes, lève-toi, lis dix minutes sous une lumière faible, et reviens."
+   },
+   {
+    "h": "21:35",
+    "l": "Coucher",
+    "c": "Clôture du jour faite ? Écran off, réveil posé loin du lit."
+   }
+  ],
+  "habits": [
+   {
+    "id": "core-lit",
+    "label": "Lit fait",
+    "icon": "🛏️",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-etirements",
+    "label": "Étirements faits",
+    "icon": "🤸",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-fajr",
+    "label": "Fajr",
+    "icon": "🕌",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-dhuhr",
+    "label": "Dhuhr",
+    "icon": "🕌",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-asr",
+    "label": "Asr",
+    "icon": "🕌",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-maghrib",
+    "label": "Maghrib",
+    "icon": "🕌",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-isha",
+    "label": "Isha",
+    "icon": "🕌",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-ecran",
+    "label": "Téléphone hors de la chambre",
+    "icon": "📵",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-sadaqah",
+    "label": "Sadaqah du jour",
+    "icon": "🤲",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-revue",
+    "label": "Revue de la veille / plan du lendemain",
+    "icon": "📝",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-famille",
+    "label": "Nouvelles à la famille",
+    "icon": "📞",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-marche",
+    "label": "Marche / pas",
+    "icon": "🚶",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "hab1788303551564",
+    "label": "Vaisselle",
+    "icon": "🍽️",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-es-conversacion",
+    "label": "30 min en espagnol avec un natif",
+    "icon": "🗣️",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-es-formulas",
+    "label": "Les dix formules du jour",
+    "icon": "💬",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-es-lectura",
+    "label": "20 pages lues en espagnol",
+    "icon": "📖",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-pesee-dim",
+    "label": "Pesée, à jeun",
+    "icon": "⚖️",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-photos-dim",
+    "label": "Photos — peau et corps",
+    "icon": "📸",
+    "cycle": 4,
+    "ancre": "2026-09-13",
+    "quinzaine": false
+   },
+   {
+    "id": "core-rasage",
+    "label": "Rasage — aisselles et parties intimes",
+    "icon": "🪒",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-brosse-dents",
+    "label": "Brosse à dents changée",
+    "icon": "🪥",
+    "cycle": 12,
+    "ancre": "2026-09-13",
+    "quinzaine": false
+   },
+   {
+    "id": "core-serviette-corps",
+    "label": "Serviette de corps changée",
+    "icon": "🛁",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-draps",
+    "label": "Draps et taies d’oreiller changés",
+    "icon": "🧺",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-menage",
+    "label": "Ménage du dimanche",
+    "icon": "🧽",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-ongles",
+    "label": "Ongles — mains ; pieds les dimanches de photo",
+    "icon": "✂️",
+    "cycle": 2,
+    "ancre": "2026-09-13",
+    "quinzaine": false
+   },
+   {
+    "id": "core-creatine",
+    "label": "Créatine — 5 g",
+    "icon": "🥄",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-douche-froide",
+    "label": "Douche froide — 30 à 60 s en fin de douche",
+    "icon": "🚿",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-lumiere",
+    "label": "Lumière du matin — 15 min dehors, dès qu’il fait jour",
+    "icon": "☀️",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   }
+  ],
+  "duJour": [
+   {
+    "id": "core-lit",
+    "label": "Lit fait",
+    "icon": "🛏️"
+   },
+   {
+    "id": "core-etirements",
+    "label": "Étirements faits",
+    "icon": "🤸"
+   },
+   {
+    "id": "core-fajr",
+    "label": "Fajr",
+    "icon": "🕌"
+   },
+   {
+    "id": "core-dhuhr",
+    "label": "Dhuhr",
+    "icon": "🕌"
+   },
+   {
+    "id": "core-asr",
+    "label": "Asr",
+    "icon": "🕌"
+   },
+   {
+    "id": "core-maghrib",
+    "label": "Maghrib",
+    "icon": "🕌"
+   },
+   {
+    "id": "core-isha",
+    "label": "Isha",
+    "icon": "🕌"
+   },
+   {
+    "id": "core-ecran",
+    "label": "Téléphone hors de la chambre",
+    "icon": "📵"
+   },
+   {
+    "id": "core-sadaqah",
+    "label": "Sadaqah du jour",
+    "icon": "🤲"
+   },
+   {
+    "id": "core-revue",
+    "label": "Revue de la veille / plan du lendemain",
+    "icon": "📝"
+   },
+   {
+    "id": "core-famille",
+    "label": "Nouvelles à la famille",
+    "icon": "📞"
+   },
+   {
+    "id": "core-marche",
+    "label": "Marche / pas",
+    "icon": "🚶"
+   },
+   {
+    "id": "hab1788303551564",
+    "label": "Vaisselle",
+    "icon": "🍽️"
+   },
+   {
+    "id": "core-es-conversacion",
+    "label": "30 min en espagnol avec un natif",
+    "icon": "🗣️"
+   },
+   {
+    "id": "core-es-formulas",
+    "label": "Les dix formules du jour",
+    "icon": "💬"
+   },
+   {
+    "id": "core-es-lectura",
+    "label": "20 pages lues en espagnol",
+    "icon": "📖"
+   },
+   {
+    "id": "core-pesee-dim",
+    "label": "Pesée, à jeun",
+    "icon": "⚖️"
+   },
+   {
+    "id": "core-rasage",
+    "label": "Rasage — aisselles et parties intimes",
+    "icon": "🪒"
+   },
+   {
+    "id": "core-serviette-corps",
+    "label": "Serviette de corps changée",
+    "icon": "🛁"
+   },
+   {
+    "id": "core-draps",
+    "label": "Draps et taies d’oreiller changés",
+    "icon": "🧺"
+   },
+   {
+    "id": "core-menage",
+    "label": "Ménage du dimanche",
+    "icon": "🧽"
+   },
+   {
+    "id": "core-creatine",
+    "label": "Créatine — 5 g",
+    "icon": "🥄"
+   },
+   {
+    "id": "core-douche-froide",
+    "label": "Douche froide — 30 à 60 s en fin de douche",
+    "icon": "🚿"
+   },
+   {
+    "id": "core-lumiere",
+    "label": "Lumière du matin — 15 min dehors, dès qu’il fait jour",
+    "icon": "☀️"
+   }
+  ],
+  "repas": {
+   "Petit-déjeuner": [
+    {
+     "c": "avoine",
+     "q": 400
+    },
+    {
+     "c": "skyr",
+     "q": 150
+    },
+    {
+     "c": "flocons",
+     "q": 80
+    },
+    {
+     "c": "banane",
+     "q": 120
+    },
+    {
+     "c": "miel",
+     "q": 20
+    },
+    {
+     "c": "amandes",
+     "q": 30
+    },
+    {
+     "c": "fruitsrouges",
+     "q": 100
+    }
+   ],
+   "Collation combat": [
+    {
+     "c": "banane",
+     "q": 120
+    },
+    {
+     "c": "galettes",
+     "q": 20
+    },
+    {
+     "c": "nutella",
+     "q": 15
+    }
+   ],
+   "Récup combat": [
+    {
+     "c": "avoine",
+     "q": 250
+    },
+    {
+     "c": "banane",
+     "q": 120
+    },
+    {
+     "c": "flocons",
+     "q": 20
+    }
+   ],
+   "Déjeuner": [
+    {
+     "c": "pates",
+     "q": 125
+    },
+    {
+     "c": "oeufs",
+     "q": 150
+    },
+    {
+     "c": "legumes",
+     "q": 80
+    },
+    {
+     "c": "huile",
+     "q": 20
+    }
+   ],
+   "Collation entraînement": [
+    {
+     "c": "amandes",
+     "q": 50
+    },
+    {
+     "c": "oeufs",
+     "q": 100
+    },
+    {
+     "c": "oeufs",
+     "q": 50
+    },
+    {
+     "c": "dattes",
+     "q": 70
+    }
+   ],
+   "Dîner": [
+    {
+     "c": "riz",
+     "q": 125
+    },
+    {
+     "c": "hachee",
+     "q": 70
+    },
+    {
+     "c": "legumes",
+     "q": 80
+    },
+    {
+     "c": "huile",
+     "q": 25
+    }
+   ]
+  },
+  "cible": {
+   "rev": 210,
+   "proj": 0,
+   "es": 0
+  },
+  "periode": null,
+  "espagnol": false
+ }
+]

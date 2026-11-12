@@ -10,6 +10,13 @@ const horloge = process.argv[5] || (debut === '2026-11-16' ? '2026-11-15T12:00:0
 const b = await chromium.launch();
 const ctx = await b.newContext({viewport:{width:1200, height:900}, timezoneId:'Europe/Madrid', locale:'fr-FR'});
 await ctx.addInitScript(() => { window.claude = undefined; });
+/* DONNEES=<sauvegarde.json> : SES donnees (dates d'examen, echeances, journees), chargees avant l'ouverture */
+if (process.env.DONNEES) {
+  const sauvegarde = JSON.parse(fs.readFileSync(process.env.DONNEES, 'utf8'));
+  await ctx.addInitScript((s) => {
+    try { if (!sessionStorage.getItem('__seme')) { Object.keys(s).forEach(k => localStorage.setItem(k, JSON.stringify(s[k]))); sessionStorage.setItem('__seme', '1'); } } catch (e) {}
+  }, sauvegarde);
+}
 const page = await ctx.newPage();
 const errs = []; page.on('pageerror', e => errs.push(e.message));
 /* par defaut, l'horloge est la veille du premier jour, a midi : la Batcave telle qu'il l'ouvre avant la semaine */

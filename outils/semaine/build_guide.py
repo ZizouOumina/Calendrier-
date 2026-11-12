@@ -15,10 +15,18 @@
 import json, math, os, re, subprocess
 
 SP = os.path.dirname(os.path.abspath(__file__)) + '/'
-SEMAINES = ['2026-11-23', '2026-11-30', '2026-12-07', '2026-12-14']
+SEMAINES = ['2026-11-23', '2026-11-30', '2026-12-07', '2026-12-14', '2026-12-21', '2026-12-28', '2027-01-04', '2027-01-11', '2027-01-18']
+# 12 novembre, « que je n'aie plus besoin de toucher quoi que ce soit avant le debut du 2e semestre » : jusqu'au dimanche 24 janvier.
+# Les jours sans cours de la Batcave (JOURS_SANS_COURS_LISTE, periodeGrille) : le 8 decembre ferie, les vacances de Noel
+# (du 23 decembre au 6 janvier), les partiels (periode « partiels » des semaines extraites), puis les 21 et 22 janvier entre
+# les deux semestres.
+FERIES = {'2026-12-08': 'l’Immaculée Conception'}
+VACANCES = ('2026-12-23', '2027-01-06')
+INTERSEMESTRE = ('2027-01-21', '2027-01-22')
 ES_FIN = '2026-12-12'                     # le dernier jour du mois d'espagnol (ES_REPRISE_FIN dans la Batcave)
 
 def hh(m): return '%02d:%02d' % (m // 60, m % 60)
+def de(x): return ('d’' if x[:1] in 'AEIOUÁÉÍÓÚHaeiouáéíóúh' else 'de ') + x
 def mn(h): a, b = h.split(':'); return int(a) * 60 + int(b)
 
 # ---------- heures de priere (Alicante, Ligue islamique mondiale 18/17, Asr standard) : build16.py, pour toute date ----------
@@ -153,6 +161,17 @@ def construire(J, semaine, k):
             rows.append({'t': h, 'fin': fin, 'k': 'projet', 'titre': t, 'd': c}); continue
         if lab in ESP:
             rows.append({'t': h, 'fin': fin, 'k': 'esp', 'titre': ESP[lab], 'd': c}); continue
+        # les partiels (12 novembre) : la Batcave pose la veille et le matin « Préparer · Examen · … », le départ, l'examen
+        if lab.startswith('Préparer · '):
+            # la veille d'un examen, ou d'un devoir a rendre (une presentation orale, un dossier) : a la place de la cloture du soir
+            clore += mn(fin) - mn(h)
+            quoi = lab[len('Préparer · '):]
+            titre = ('Préparer l’examen ' + de(quoi[len('Examen · '):])) if quoi.startswith('Examen · ') else ('Préparer · ' + quoi)
+            rows.append({'t': h, 'fin': fin, 'k': 'etude', 'titre': titre, 'd': c}); continue
+        if lab.startswith('Trajet · Examen · '):
+            rows.append({'t': h, 'k': 'cours', 'titre': 'Départ pour l’examen ' + de(lab[len('Trajet · Examen · '):]), 'd': c}); continue
+        if lab.startswith('Examen · '):
+            rows.append({'t': h, 'fin': fin, 'k': 'rdv', 'titre': 'Examen ' + de(lab[len('Examen · '):]) + ', jusqu’à ' + fin, 'd': c}); continue
         r = None
         if lab == 'Douche + préparation': r = ('soin', 'Aérer, douche et soins', '', phrases(c))
         elif lab == 'Petit-déjeuner + Coran (1 page)':
@@ -195,6 +214,9 @@ def construire(J, semaine, k):
                  'Téléphone en charge hors de la chambre, réveil posé loin du lit.', 'Fenêtre ouverte 10 min, puis fermée.',
                  '5 min d’étirements' + (', puis le cou : flexion et extension, 3 × 12-20.' if a('Cou') else '.'), 'Tes 20 pages en espagnol, sur papier.'])
         elif lab == 'Brossage de dents': r = ('soin', 'Dents', '', ['Brossage, 2 min.', 'Le fil dentaire.', 'Toilettes.'])
+        elif lab == 'Douche + brossage de dents':
+            r = ('soin', 'Douche et dents', '', phrases(c) or ['La clôture du jour dans la Batcave (2 min), téléphone en charge hors de la chambre.',
+                 'Douche tiède, 10 min.', 'Brossage, 2 min, et le fil dentaire.'])
         elif lab == 'Coucher': r = ('soin', 'Au lit', 'Si tu ne dors pas au bout de 20 min, lève-toi, lis 10 min sous une lumière faible, puis reviens.', None)
         elif lab == 'Trajet mosquée': r = ('foi', 'Départ pour la mosquée', c + (' Le kimono étendu avant de partir.' if jjb else ''), None)
         elif lab.startswith('Jumu'): r = ('foi', 'Jumu’ah', c, None)
@@ -268,13 +290,18 @@ def construire(J, semaine, k):
         if 'Sport' in ls: sacs.append('le sac de salle (tenue, serviette, gourde, cadenas' + (', bandes et gants pour le sac' if suiv['dow'] in (2, 6) else '') + ')')
         if '🥋 JJB' in ls: sacs.append(SAC_JJB)
         if 'Cours' in ls: sacs.append('le sac de cours')
+        exam = next((l for l in ls if l.startswith('Examen · ')), None)
+        if exam: sacs.append('les affaires de l’examen ' + de(exam[len('Examen · '):]) + ' (pièce d’identité, convocation, stylos, montre)')
         d = ''
         if dow == 4: d = 'Plie et range le linge de mardi (10 min). '
         if sacs: d += (sacs[0][0].upper() + sacs[0][1:] + (', ' + ', '.join(sacs[1:-1]) if len(sacs) > 2 else '') + (' et ' + sacs[-1] if len(sacs) > 1 else '')) + (' prêts' if len(sacs) > 1 else ' prêt') + ', vêtements posés.'
         else: d += 'Vêtements posés.'
         if dow == 6: d += ' Rien à sortir du congélateur : demain midi, un repas frais.'
         if suiv:
-            rows.append({'t': '20:40', 'k': 'maison', 'titre': ('Plie le linge, puis prépare demain' if dow == 4 else 'Prépare demain'), 'd': d})
+            tp = '20:40'
+            for r_ in rows:
+                if r_['titre'].startswith('Préparer') and r_.get('fin') and mn(r_['t']) < mn('20:40') < mn(r_['fin']): tp = r_['fin']
+            rows.append({'t': tp, 'k': 'maison', 'titre': ('Plie le linge, puis prépare demain' if dow == 4 else 'Prépare demain'), 'd': d})
     rows.sort(key=lambda r: (mn(r['t']), 3 if r.get('en') else (2 if r.get('fin') else 1)))
 
     # les cinq prieres, a leur place (build16.py)
@@ -303,6 +330,9 @@ def construire(J, semaine, k):
             t, en, d = mn(cx['t']) + 20, False, 'Au réveil de la sieste : ablutions, puis la prière. Le bloc suivant commence 5 min plus tard.'
         elif titre == 'Départ pour le cours':
             d = 'Au cours, à la première pause, avant ' + ensuite + ' : ablutions, puis la prière.'
+        elif titre.startswith('Départ pour l’examen') or (cx and cx['k'] == 'rdv' and titre.startswith('Examen ')):
+            ex = next(r for r in rows if r['k'] == 'rdv' and r['titre'].startswith('Examen '))
+            t, en, d = mn(ex['fin']), False, 'En sortant de l’examen' + (', avant ' + ensuite if ensuite else '') + ' : ablutions, puis la prière.'
         elif titre.startswith('Lance la machine'):
             d = 'Pendant que l’eau des pâtes chauffe : ablutions, puis la prière.'
         elif titre.startswith('Batch cooking'):
@@ -324,8 +354,18 @@ def construire(J, semaine, k):
     N = []
     if prec is not None and prec.get('espagnol') and not J.get('espagnol'):
         N.append('Les blocs Projets perso reviennent : l’e-commerce commence aujourd’hui (Dossier E-commerce, semaine 1). Chaque bloc dit quoi faire.')
-    if dow in (1, 2, 3, 4, 5) and 'Cours' not in labs:
-        N.append('Jour férié : pas de cours. L’après-midi suit la grille de cette page.')
+    exam = next((b for b in g if b['l'].startswith('Examen · ')), None)
+    if exam:
+        dep = next((b['h'] for b in g if b['l'].startswith('Trajet · Examen · ')), None)
+        N.append('Examen ' + de(exam['l'][len('Examen · '):]) + ' à ' + exam['h'] + (' : départ ' + dep + ', ' if dep else ' : ') + 'pièce d’identité et convocation.')
+    if dow in (1, 2, 3, 4, 5) and 'Cours' not in labs and not exam:
+        if J.get('periode') == 'partiels': N.append('Partiels : pas de cours. Les révisions de la page, à la Batcave pour le détail.')
+        elif VACANCES[0] <= iso <= VACANCES[1]: N.append('Vacances de Noël : pas de cours. La journée suit la grille de cette page.')
+        elif INTERSEMESTRE[0] <= iso <= INTERSEMESTRE[1]: N.append('Entre les deux semestres : pas de cours. Le second commence lundi 25 janvier.')
+        else: N.append('Jour férié' + (' (' + FERIES[iso] + ')' if iso in FERIES else '') + ' : pas de cours. L’après-midi suit la grille de cette page.')
+    if suiv is not None:
+        ex2 = next((b for b in suiv['blocs'] if b['l'].startswith('Examen · ')), None)
+        if ex2: N.append('Demain à ' + ex2['h'] + ' : examen ' + de(ex2['l'][len('Examen · '):]) + '. Ce soir, coucher à l’heure.')
     if 'Sport' in labs: N.append('La salle à 07:00' + (' : bandes et gants dans le sac.' if dow in (2, 6) else '.'))
     if jjb: N.append('JJB à 10:30 : la collation à 10:05, le kimono en machine en rentrant' + (', étendu avant la mosquée.' if 'Trajet mosquée' in labs else '.'))
     if 'Trajet mosquée' in labs: N.append('13:15 : Jumu’ah à la mosquée.')
@@ -379,6 +419,15 @@ def tete(S, jours):
     debut_ecom = next((j for j in S if not j.get('espagnol')), None) if espagnol else None
     sous = 'Réveil 05:20 · coucher 21:35 · ' + ('mois d’espagnol jusqu’au samedi 12 décembre' if espagnol and not debut_ecom else
                                                 ('fin du mois d’espagnol, l’e-commerce commence dimanche' if debut_ecom else 'l’e-commerce, une semaine du dossier'))
+    examens = [(j, b) for j in S for b in j['blocs'] if b['l'].startswith('Examen · ')]
+    partiels = any(j.get('periode') == 'partiels' for j in S)
+    vacances = any(VACANCES[0] <= j['iso'] <= VACANCES[1] for j in S)
+    inter = any(INTERSEMESTRE[0] <= j['iso'] <= INTERSEMESTRE[1] for j in S)
+    if examens: sous = 'Réveil 05:20 · coucher 21:35 · partiels : ' + ', '.join(b['l'][len('Examen · '):] + ' ' + COURT[j['dow']] + '. ' + str(j['num'] if 'num' in j else int(j['iso'][8:])) for j, b in examens)
+    elif partiels and vacances: sous = 'Réveil 05:20 · coucher 21:35 · vacances de Noël, puis les partiels'
+    elif partiels: sous = 'Réveil 05:20 · coucher 21:35 · partiels'
+    elif vacances: sous = 'Réveil 05:20 · coucher 21:35 · vacances de Noël, pas de cours'
+    elif inter: sous = 'Réveil 05:20 · coucher 21:35 · entre les deux semestres'
     L = ['La salle lundi, mardi, jeudi et samedi à 07:00 ; le JJB lundi, mercredi et vendredi à 10:30. La séance du jour est dans l’onglet Sport de la Batcave.']
     mardi = next((j for j in S if j['dow'] == 2), None)
     hb = next((b['h'] for b in mardi['blocs'] if b['l'] == 'Temps libre' and 'deuxième session de batch' in b['c']), '19:10') if mardi else '19:10'
@@ -388,7 +437,13 @@ def tete(S, jours):
         ls = [b['l'] for b in j['blocs']]
         hab = [h['label'] for h in (j.get('duJour') or [])]
         jl = date_longue(j['iso'], j['dow']).capitalize()
-        if j['dow'] in (1, 2, 3, 4, 5) and 'Cours' not in ls:
+        ex = next((b for b in j['blocs'] if b['l'].startswith('Examen · ')), None)
+        if ex:
+            dep = next((b['h'] for b in j['blocs'] if b['l'].startswith('Trajet · Examen · ')), None)
+            ev.append(jl + ' : examen ' + de(ex['l'][len('Examen · '):]) + ' à ' + ex['h'] + (', départ ' + dep if dep else '') + ' — la veille au soir et le matin, sa préparation.')
+        elif j['dow'] in (1, 2, 3, 4, 5) and 'Cours' not in ls and j['iso'] in FERIES:
+            ev.append(jl + ' : jour férié (' + FERIES[j['iso']] + '), pas de cours — l’après-midi suit la grille.')
+        elif j['dow'] in (1, 2, 3, 4, 5) and 'Cours' not in ls and not (VACANCES[0] <= j['iso'] <= VACANCES[1]) and j.get('periode') != 'partiels' and not (INTERSEMESTRE[0] <= j['iso'] <= INTERSEMESTRE[1]):
             ev.append(jl + ' : jour férié, pas de cours — l’après-midi suit la grille.')
         if 'Español · simulación' in ls:
             m = re.search(r'passage (\d) sur (\d)', next(b['c'] for b in j['blocs'] if b['l'] == 'Español · simulación'))
@@ -397,6 +452,12 @@ def tete(S, jours):
         if any('Coupe de cheveux' in h for h in hab): ev.append(jl + ' : le coiffeur, avant les courses.')
         if debut_ecom is j: ev.append(jl + ' : les blocs Projets perso reviennent, l’e-commerce commence (Dossier E-commerce).')
         if any('Photos' in h for h in hab): ev.append(jl + ' : les photos du point d’étape, au réveil.')
+    if vacances:
+        L.append('Vacances de Noël : pas de cours du mercredi 23 décembre au mercredi 6 janvier. Les journées suivent la grille sans cours de cette page ; la salle et le JJB continuent.')
+    if partiels:
+        L.append('Partiels : la Batcave est en mode partiels (pas de cours) ; chaque examen a sa préparation la veille au soir et le matin, et la page le dit jour par jour. Les cours de la fac restent dans ton agenda.')
+    if inter:
+        L.append('Jeudi 21 et vendredi 22 janvier : entre les deux semestres, pas de cours. Le second semestre commence lundi 25 janvier.')
     L += ev
     if not espagnol: L.append('Les blocs Projets perso sont à la boutique : chacun dit quoi faire dans le Dossier E-commerce. Un devoir de la fac passe toujours avant.')
     d = int(lundi[8:])

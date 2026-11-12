@@ -65,8 +65,10 @@ ok(Math.abs(total - 265.99) < 0.001, 'total des montants = 265,99 € : les 300 
 ok(!r.charges.some(c => c.id === 'fc1' || c.id === 'fc2'), 'loyer et wifi retirés : sa mère les paie au propriétaire');
 /* La migration, vérifiée des deux côtés : la charge part, et le plafond arrive. */
 ok(!r.charges.some(c => c.id === 'fc4'), 'la charge fixe « Courses » de 300 € a été retirée');
-ok(r.moisPlan > 0 && r.limits['Nourriture'] === r.moisPlan,
-   'et un plafond Nourriture la remplace, à la valeur calculée sur ses relevés : ' + r.limits['Nourriture'] + ' € (' + r.moisPlan + ' attendu)');
+/* 12 novembre, le soir : « j'ai 300 EUR par mois pour les courses, la laverie et les produits de sante et de nettoyage ».
+   L'enveloppe (ENVELOPPE_COURSES, enveloppe-courses-v1) remplace les plafonds Nourriture, Soin et sante, Maison et menage. */
+ok(r.moisPlan > 0 && r.limits['Nourriture'] === undefined && r.limits['Soin et santé'] === undefined && r.limits['Maison et ménage'] === undefined,
+   'et plus de plafond Nourriture, Soin ou Maison : l\'enveloppe de 300 € les remplace (' + JSON.stringify(r.limits) + ')');
 /* Le profil d'un utilisateur de la v89 : le plafond y avait été posé à 186 €, calculé
    sur quinze prix sur seize (le beurre de cacahuète comptait pour zéro). Avec ses
    5,30 €/kg le plan monte, et la migration plafond-nourriture-v2 doit corriger — mais
@@ -96,10 +98,12 @@ ok(r.moisPlan > 0 && r.limits['Nourriture'] === r.moisPlan,
   const corrige = await bump(186);
   /* 25 octobre : 50 g de viande par repas -- le plan en caisse (170) passe SOUS les 186 de la v89.
      Ce qui se verifie reste le meme : le plafond de la Batcave suit le plan, il ne reste pas a 186. */
-  ok(corrige.plafond === corrige.attendu && corrige.attendu !== 186,
-     'plafond de la v89 (186 €) corrigé à ' + corrige.plafond + ' € (' + corrige.attendu + ' attendu)');
+  /* 12 novembre, le soir : l'enveloppe de 300 EUR remplace tout plafond Nourriture, celui de la v89 comme un
+     plafond regle a la main -- la nourriture se lit dans l'enveloppe, avec le soin, le menage et la laverie. */
+  ok(corrige.plafond === undefined && corrige.attendu > 0,
+     'le plafond de la v89 (186 €) part : l\'enveloppe de 300 € le remplace (' + corrige.plafond + ')');
   const sien = await bump(250);
-  ok(sien.plafond === 250, 'un plafond réglé à la main (250 €) n\'est PAS écrasé (' + sien.plafond + ' €)');
+  ok(sien.plafond === undefined, 'un plafond réglé à la main (250 €) part aussi : l\'enveloppe de 300 € couvre la nourriture (' + sien.plafond + ')');
 }
 
 // pas de double application au rechargement

@@ -346,7 +346,7 @@ console.log('\n== 9) Une consigne datée rend toujours son texte ==');
   const tous = [c.diner11, c.courses14, c.libre14, c.dej12, c.diner12, c.batch13, c.diner13];
   ok(tous.every(t => typeof t === 'string' && t.length > 4 && !/\[object|undefined/.test(t)), 'sept consignes, sept textes (' + tous.map(t => typeof t).join(', ') + ')');
   ok(/la viande achetée lundi au congélateur/.test(c.diner11) && /demain à 11:00, le batch la cuit sans la décongeler/.test(c.diner11), 'mercredi 11, le dîner : la viande au congélateur — ' + String(c.diner11).slice(0, 60) + '…');
-  ok(/27 produits/.test(c.courses14) && /3 paquets de pâtes/.test(c.courses14), 'samedi 14, les courses : les deux rayons et les pâtes');
+  ok(/28 produits/.test(c.courses14) && /3 paquets de pâtes/.test(c.courses14), 'samedi 14, les courses : les deux rayons et les pâtes');
   /* 12 novembre : la viande de lundi jetee, celle du jour gardee au frigo -- le batch du vendredi 13 la cuit
      fraiche, ses quatre boites tiennent au frigo jusqu'au dimanche midi : plus rien au congelateur. */
   ok(/^Libre/.test(c.libre14) && !/congélateur/.test(c.libre14), 'samedi 14, le temps libre : plus de boîte à sortir du congélateur (' + c.libre14 + ')');

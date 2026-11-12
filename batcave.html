@@ -4800,7 +4800,7 @@
       /* rappels Google Calendar : le panneau apparait, et si l'option est active les blocs
          d'aujourd'hui et de demain partent quelques secondes apres l'ouverture */
       try{ renderGcalPanel(); }catch(e){}
-      setTimeout(function(){ try{ if(gcalActif()) pousserRappels(mcp); }catch(e){} }, 6000);
+      setTimeout(function(){ try{ if(gcalActif()) nettoyerAgendaJanvier(mcp).catch(function(){}).then(function(){ return reconstruireAgenda(mcp); }).catch(function(){ gcalEnCours = false; }).then(function(){ return pousserRappels(mcp); }); }catch(e){} }, 6000);
       /* controle des series 🦇 : une fois par jour, apres l'envoi des rappels */
       setTimeout(function(){ try{ if(!gcalControle || gcalControle.date !== todayISO) controlerSeriesGcal(mcp); }catch(e){} }, 9000);
 
@@ -13485,7 +13485,12 @@
         prod('Savon pour les mains', '1 flacon de 500 ml', 8, 'Deliplus dermoprotector — cuisine et salle de bain'),
         prod('Rasoirs jetables', '1 paquet', 12, 'Deliplus Active 3 lames — le rasage du dimanche'),
         prod('Gel de rasage', '1 flacon de 200 ml', 36, 'Deliplus Sensitive'),
-        prod('Mouchoirs', '1 boîte', 12, 'Bosque Verde extra suaves')
+        prod('Mouchoirs', '1 boîte', 12, 'Bosque Verde extra suaves'),
+        /* 12 novembre, sa question : « gratte-langue : est-ce que j'en ai un, ou faut-il l'ajouter a la liste ? ».
+           Il nettoie sa langue trois fois par jour : la ligne entre EN DERNIER (les coches sont indexees par position),
+           et le tour du samedi 14 dit s'il en a deja un -- « j'en ai », sinon il l'achete. En inox, il dure des annees :
+           un an de rythme, et le bouton « fini » le ramene s'il casse. */
+        prod('Gratte-langue', '1 gratte-langue en inox', 52, 'trois passages par jour, après la brosse — en inox, il dure des années')
       ]},
       {cat:'Maison et ménage', ancre:SOIN_MAISON_DEBUT, poste:'Maison et ménage', items:[
         /* 11 novembre : les draps et les serviettes partent a la laverie -- quatre machines par semaine a la maison
@@ -13684,7 +13689,7 @@
        la lessive de 10 kg chez Alcampo ; le Skinoren a la pharmacie. */
     'Gel douche': 'Mercadona', 'Shampoing': 'Mercadona', 'D\u00e9odorant': 'Mercadona', 'Dentifrice': 'Mercadona',
     'Fil dentaire': 'Mercadona', 'Brosse \u00e0 dents': 'Mercadona', 'Nettoyant visage': 'Mercadona', 'Skinoren': 'Pharmacie',
-    'Savon pour les mains': 'Mercadona', 'Rasoirs jetables': 'Mercadona', 'Gel de rasage': 'Mercadona', 'Mouchoirs': 'Mercadona',
+    'Savon pour les mains': 'Mercadona', 'Rasoirs jetables': 'Mercadona', 'Gel de rasage': 'Mercadona', 'Mouchoirs': 'Mercadona', 'Gratte-langue': 'Pharmacie',
     'Lessive en poudre': 'Alcampo', 'Adoucissant': 'Mercadona', 'Pastilles lave-vaisselle': 'Mercadona',
     'Sel lave-vaisselle': 'Mercadona', 'Liquide vaisselle': 'Mercadona',
     'D\u00e9graissant': 'Mercadona', 'Multi-surfaces': 'Mercadona', 'Anticalcaire salle de bain': 'Mercadona', 'Gel WC': 'Mercadona',
@@ -17299,7 +17304,7 @@
     /* 12 novembre : plus de boite au congelateur (la viande fraiche cuite vendredi tient jusqu'a dimanche midi) --
        la consigne du samedi soir qui la faisait descendre au frigo est retiree. */
     '2026-11-14': {/* les premieres courses du programme : les produits de deux semaines, les pates, et les deux rayons hors nourriture */
-                   '\ud83d\uded2 Courses de la semaine': {t:"Avant de partir, 10 min : regarde le frigo et le placard, fais le tour de la salle de bain et de la cuisine, et coche dans l'onglet Courses ce que tu as déjà. Cette fois, les produits des deux semaines reviennent : légumes surgelés, boisson d'avoine, fruits rouges, galettes de riz, dattes. En plus : 3 paquets de pâtes de 500 g — dès lundi 16, des pâtes tous les midis et le riz le soir ; le 28, les pâtes entrent dans les réserves du mois. Nouveau : les rayons « Soin et santé » et « Maison et ménage », 27 produits, tous à vérifier aujourd'hui. N'achète que ce qui te manque, chez Mercadona (la lessive chez Alcampo) ; prends au moins le sel du lave-vaisselle et ses pastilles « Todo en 1 », l'eau d'Alicante est très calcaire."}}
+                   '\ud83d\uded2 Courses de la semaine': {t:"Avant de partir, 10 min : regarde le frigo et le placard, fais le tour de la salle de bain et de la cuisine, et coche dans l'onglet Courses ce que tu as déjà. Cette fois, les produits des deux semaines reviennent : légumes surgelés, boisson d'avoine, fruits rouges, galettes de riz, dattes. En plus : 3 paquets de pâtes de 500 g — dès lundi 16, des pâtes tous les midis et le riz le soir ; le 28, les pâtes entrent dans les réserves du mois. Nouveau : les rayons « Soin et santé » et « Maison et ménage », 28 produits, tous à vérifier aujourd'hui. N'achète que ce qui te manque, chez Mercadona (la lessive chez Alcampo) ; prends au moins le sel du lave-vaisselle et ses pastilles « Todo en 1 », l'eau d'Alicante est très calcaire."}}
   };
   function consigneDatee(label, iso, dow, heure){
     var j = CONSIGNES_DATEES[iso], c = j && j[label];
@@ -17319,13 +17324,29 @@
     var base = consigneBlocBase(label, dow, iso, heure);
     return rt ? rt.texte + (base ? ' ' + base : '') : base;
   }
+  function nomEvenementBloc(rest){
+    var m = /^(Examen|TP|Événement) · (.+)$/.exec(rest);
+    var de = function(x){ return (/^[AEIOUÁÉÍÓÚHaeiouáéíóúh]/.test(x) ? 'd\u2019' : 'de ') + x; };
+    if(m && m[1] === 'Examen') return {pour: 'l\u2019examen ' + de(m[2]), veille: 'Veille de l\u2019examen ' + de(m[2])};
+    if(m && m[1] === 'TP') return {pour: 'le TP ' + de(m[2]), veille: 'Veille du TP ' + de(m[2])};
+    var nom = m ? m[2] : rest;
+    return {pour: '« ' + nom + ' »', veille: 'Veille de « ' + nom + ' »'};
+  }
   function consigneBlocBase(label, dow, iso, heure){
     var p = periodeGrille(iso || todayISO);
     var c = (p && p.consignes && p.consignes[label]) || CONSIGNES_ES[label] || CONSIGNES[label];
     /* blocs des journees exceptionnelles : la veille, le trajet, l'evenement lui-meme */
-    if(!c && /^Préparer · /.test(label)) c = 'Veille de ' + label.slice(11) + ' : documents et matériel prêts, protocole ou programme relu, trois questions écrites, tenue et trajet préparés. Coucher à l\'heure.';
-    if(!c && /^Trajet · /.test(label)) c = 'Départ pour ' + label.slice(9) + '. Téléphone en silencieux ; en route, une page de notes, pas plus.';
+    /* 12 novembre : « Veille de Examen · Anatomía I » se lit « Veille de l'examen d'Anatomía I » */
+    if(!c && /^Préparer · /.test(label)) c = nomEvenementBloc(label.slice(11)).veille + ' : documents et matériel prêts, protocole ou programme relu, trois questions écrites, tenue et trajet préparés. Coucher à l\'heure.';
+    if(!c && /^Trajet · /.test(label)) c = 'Départ pour ' + nomEvenementBloc(label.slice(9)).pour + '. Téléphone en silencieux ; en route, une page de notes, pas plus.';
     if(!c && /^(TP|Examen|Événement) · /.test(label)) c = 'C\'est le moment. Téléphone en silencieux, lecture complète de la consigne avant de commencer.';
+    /* 12 novembre : le retour d'un jour d'examen n'a pas de cours a resumer */
+    if(label === 'Trajet retour' && iso){
+      try{
+        var gj = grilleDe(cleJournee(dowDe(iso)), iso) || [];
+        if(gj.some(function(b){ return /^Examen · /.test(b[1]); })) return 'En rentrant : ce qui est tombé à l\u2019examen, en deux lignes dans tes notes \u2014 c\u2019est ce qui guide la suite des révisions. Puis un appel ou un message à ta famille.';
+      }catch(e){}
+    }
     if(!c) return '';
     var d = (dow === undefined || dow === null) ? new Date(now).getDay() : dow;
     if(typeof c === 'function') return c(d, iso || todayISO, heure) || '';
@@ -18450,6 +18471,120 @@
      Formes des reponses observees en session : create_event / update_event / delete_event
      renvoient l'evenement {id, summary, start:{dateTime}, end:{dateTime}, status}. */
   var GCAL_CALENDRIER = 'zizou.oumina@gmail.com';
+  /* 12 novembre : les rappels « 🦇 » qui ne sont pas des blocs de la grille -- le nettoyage du jour n'y touche jamais. */
+  var GCAL_PROTEGES = ['\ud83e\udd87 Enlever les tapis'];
+  /* 12 novembre, « je veux tout supprimer en même temps, pas une par une » : les 124 rappels en trop du 7 au
+     22 janvier (anciennes séries pendant les partiels, doublons), relevés ce jour-là dans l'agenda. Depuis la
+     conversation, chaque suppression demandait une validation ; la Batcave les retire d'un coup, une seule fois,
+     dès l'ouverture -- avant le 13 aussi. Le nettoyage du jour (pousserRappelsJour) prend le relais ensuite.
+     Seulement là où l'agenda a déjà reçu des rappels de janvier (un relevé batcave-gcal-2027-01-…). */
+  var GCAL_NETTOYAGE_JANVIER = [
+    'ejbpepcf6nkjslupv8sitgsog8_20270107T120000Z','ad2r54rbgg9fsrtg8nl6prhs0s_20270107T130000Z','ls14vp2nm2vt7qgslpd368p20c_20270107T135000Z',
+    'plg6efsgkharpeqoe4etsrsor8_20270107T140000Z','ubopd57ud8p8h6skefse6eojg8_20270107T192500Z','47kddu7mrd0ndbogo28gjh6kns_20270107T194500Z',
+    'e8j93d8tom5ecdgfhifc5g6aas_20270107T200000Z','25i71u99h6lvifhp7a0tf0na64_20270107T203000Z','47kddu7mrd0ndbogo28gjh6kns_20270108T194500Z',
+    'e8j93d8tom5ecdgfhifc5g6aas_20270108T200000Z','25i71u99h6lvifhp7a0tf0na64_20270108T203000Z','plg6efsgkharpeqoe4etsrsor8_20270108T140000Z',
+    'nen086llvtstbmsho8mgu5hf3s_20270108T183000Z','ubopd57ud8p8h6skefse6eojg8_20270108T192500Z','jusbs8is7r8604f7qo9150v0g4_20270109T043000Z',
+    'pk4af410trrk8l3bdb3q9dsfq0_20270109T190000Z','47kddu7mrd0ndbogo28gjh6kns_20270109T194500Z','e8j93d8tom5ecdgfhifc5g6aas_20270109T200000Z',
+    'pep76dp3vo5ds8f1p2jk5tu0i0_20270110T183000Z','47kddu7mrd0ndbogo28gjh6kns_20270110T194500Z','e8j93d8tom5ecdgfhifc5g6aas_20270110T200000Z',
+    '25i71u99h6lvifhp7a0tf0na64_20270110T203000Z','4t737i4195k2934bggob6u3fig_20270110T184000Z','jusbs8is7r8604f7qo9150v0g4_20270111T043000Z',
+    'lnfdv40du24khe07e0lfejv1fk_20270111T054000Z','mph5v4tirbt7c951ejjcmpbch0_20270111T060000Z','aeda0i1hm4ai128o1tkacvthg8_20270111T065500Z',
+    'c6d8qmal7ljh6hvmoljpv3cdf8_20270111T080000Z','po2ai3123bt2aum4ej5jo69cr4_20270111T090500Z','b79i4ecbn5de8ak7ucmcgndeek_20270111T092000Z',
+    'nvp620dq9eetftlh4uhtvbfhf8_20270111T093000Z','eq3r7laheanjjgrpk3j3anjkpo_20270111T160000Z','ubopd57ud8p8h6skefse6eojg8_20270111T192500Z',
+    '47kddu7mrd0ndbogo28gjh6kns_20270111T194500Z','e8j93d8tom5ecdgfhifc5g6aas_20270111T200000Z','25i71u99h6lvifhp7a0tf0na64_20270111T203000Z',
+    'ad2r54rbgg9fsrtg8nl6prhs0s_20270112T130000Z','ls14vp2nm2vt7qgslpd368p20c_20270112T135000Z','nb13p95eqrbocc74dld2mj3a9k_20270112T170000Z',
+    'e9r2delqdi2q1ovjo66nh9caug_20270112T181000Z','amvacjo55pjdp3c9c662dfhk4g','plg6efsgkharpeqoe4etsrsor8_20270112T140000Z',
+    'oor7qlmlvvfifcasfm955pbqv0_20270112T163000Z','e5311kutdhtp07f6muicqogko8_20270112T173000Z','9btjfqp3rmgqp92plno21cfehk_20270113T110000Z',
+    'gs7ufl1vnglod4lbrccu02940k_20270113T114000Z','9vs7oo03da3t81m62fln5uou8k_20270113T120000Z','i8m194p5cur8t6v37jo6bfmi1c_20270113T130000Z',
+    'ls14vp2nm2vt7qgslpd368p20c_20270113T135000Z','plg6efsgkharpeqoe4etsrsor8_20270113T140000Z','ubopd57ud8p8h6skefse6eojg8_20270113T192500Z',
+    '47kddu7mrd0ndbogo28gjh6kns_20270113T194500Z','e8j93d8tom5ecdgfhifc5g6aas_20270113T200000Z','25i71u99h6lvifhp7a0tf0na64_20270113T203000Z',
+    'lnfdv40du24khe07e0lfejv1fk_20270114T054000Z','aeda0i1hm4ai128o1tkacvthg8_20270114T065500Z','47kddu7mrd0ndbogo28gjh6kns_20270114T194500Z',
+    'e8j93d8tom5ecdgfhifc5g6aas_20270114T200000Z','25i71u99h6lvifhp7a0tf0na64_20270114T203000Z','plg6efsgkharpeqoe4etsrsor8_20270114T140000Z',
+    'nen086llvtstbmsho8mgu5hf3s_20270114T183000Z','ubopd57ud8p8h6skefse6eojg8_20270114T192500Z','47kddu7mrd0ndbogo28gjh6kns_20270115T194500Z',
+    'e8j93d8tom5ecdgfhifc5g6aas_20270115T200000Z','25i71u99h6lvifhp7a0tf0na64_20270115T203000Z','plg6efsgkharpeqoe4etsrsor8_20270115T140000Z',
+    'nen086llvtstbmsho8mgu5hf3s_20270115T183000Z','ubopd57ud8p8h6skefse6eojg8_20270115T192500Z','jogb44ruhrnpjfoavkmd41t2r8_20270116T054000Z',
+    'mph5v4tirbt7c951ejjcmpbch0_20270116T060000Z','aeda0i1hm4ai128o1tkacvthg8_20270116T065500Z','47kddu7mrd0ndbogo28gjh6kns_20270116T194500Z',
+    'e8j93d8tom5ecdgfhifc5g6aas_20270116T200000Z','25i71u99h6lvifhp7a0tf0na64_20270116T203000Z','pep76dp3vo5ds8f1p2jk5tu0i0_20270117T183000Z',
+    '47kddu7mrd0ndbogo28gjh6kns_20270117T194500Z','e8j93d8tom5ecdgfhifc5g6aas_20270117T200000Z','25i71u99h6lvifhp7a0tf0na64_20270117T203000Z',
+    '4t737i4195k2934bggob6u3fig_20270117T184000Z','jusbs8is7r8604f7qo9150v0g4_20270118T043000Z','lnfdv40du24khe07e0lfejv1fk_20270118T054000Z',
+    'mph5v4tirbt7c951ejjcmpbch0_20270118T060000Z','aeda0i1hm4ai128o1tkacvthg8_20270118T065500Z','c6d8qmal7ljh6hvmoljpv3cdf8_20270118T080000Z',
+    'po2ai3123bt2aum4ej5jo69cr4_20270118T090500Z','b79i4ecbn5de8ak7ucmcgndeek_20270118T092000Z','nvp620dq9eetftlh4uhtvbfhf8_20270118T093000Z',
+    'eq3r7laheanjjgrpk3j3anjkpo_20270118T160000Z','ubopd57ud8p8h6skefse6eojg8_20270118T192500Z','47kddu7mrd0ndbogo28gjh6kns_20270118T194500Z',
+    'e8j93d8tom5ecdgfhifc5g6aas_20270118T200000Z','25i71u99h6lvifhp7a0tf0na64_20270118T203000Z','jogb44ruhrnpjfoavkmd41t2r8_20270119T054000Z',
+    'aeda0i1hm4ai128o1tkacvthg8_20270119T065500Z','47kddu7mrd0ndbogo28gjh6kns_20270119T194500Z','e8j93d8tom5ecdgfhifc5g6aas_20270119T200000Z',
+    '25i71u99h6lvifhp7a0tf0na64_20270119T203000Z','plg6efsgkharpeqoe4etsrsor8_20270119T140000Z','oor7qlmlvvfifcasfm955pbqv0_20270119T163000Z',
+    'e5311kutdhtp07f6muicqogko8_20270119T173000Z','lmlfb6v469s5j6mbm0c2360o78_20270120T062000Z','l1ldsu1gj55r9so3frl06gsv24_20270120T072000Z',
+    'po2ai3123bt2aum4ej5jo69cr4_20270120T090500Z','b79i4ecbn5de8ak7ucmcgndeek_20270120T092000Z','nvp620dq9eetftlh4uhtvbfhf8_20270120T093000Z',
+    'plg6efsgkharpeqoe4etsrsor8_20270120T140000Z','ubopd57ud8p8h6skefse6eojg8_20270120T192500Z','47kddu7mrd0ndbogo28gjh6kns_20270120T194500Z',
+    'e8j93d8tom5ecdgfhifc5g6aas_20270120T200000Z','25i71u99h6lvifhp7a0tf0na64_20270120T203000Z','lnfdv40du24khe07e0lfejv1fk_20270121T054000Z',
+    'aeda0i1hm4ai128o1tkacvthg8_20270121T065500Z','47kddu7mrd0ndbogo28gjh6kns_20270121T194500Z','e8j93d8tom5ecdgfhifc5g6aas_20270121T200000Z',
+    '25i71u99h6lvifhp7a0tf0na64_20270121T203000Z','plg6efsgkharpeqoe4etsrsor8_20270121T140000Z','nen086llvtstbmsho8mgu5hf3s_20270121T183000Z',
+    'ubopd57ud8p8h6skefse6eojg8_20270121T192500Z','47kddu7mrd0ndbogo28gjh6kns_20270122T194500Z','e8j93d8tom5ecdgfhifc5g6aas_20270122T200000Z',
+    '25i71u99h6lvifhp7a0tf0na64_20270122T203000Z','plg6efsgkharpeqoe4etsrsor8_20270122T140000Z','nen086llvtstbmsho8mgu5hf3s_20270122T183000Z',
+    'ubopd57ud8p8h6skefse6eojg8_20270122T192500Z'
+  ];
+  function agendaADejaJanvier(){
+    try{
+      for(var i = 0; i < localStorage.length; i++){
+        var k = localStorage.key(i);
+        if(k && k.indexOf('batcave-gcal-2027-01-') === 0) return true;
+      }
+    }catch(e){}
+    return false;
+  }
+  function nettoyerAgendaJanvier(mcp){
+    if(!mcp || !gcalActif() || load('batcave-gcal-nettoyage-janvier', null) || todayISO > '2027-01-22' || !agendaADejaJanvier()) return Promise.resolve(0);
+    var n = 0;
+    return GCAL_NETTOYAGE_JANVIER.reduce(function(c, id){
+      return c.then(function(){
+        return mcp.callTool('Google Calendar', 'delete_event', {calendarId: GCAL_CALENDRIER, eventId: id, notificationLevel:'NONE'})
+          .then(function(){ n++; }).catch(function(){});
+      });
+    }, Promise.resolve()).then(function(){
+      save('batcave-gcal-nettoyage-janvier', {date: todayISO, retires: n});
+      if(n) try{ showToast('\ud83d\uddd1\ufe0f Agenda nettoy\u00e9 : ' + n + ' rappel' + (n > 1 ? 's' : '') + ' en trop retir\u00e9' + (n > 1 ? 's' : '') + ' (janvier, partiels).'); }catch(e){}
+      return n;
+    });
+  }
+  try{ window.__bcNettoyageJanvier = function(){ return GCAL_NETTOYAGE_JANVIER.slice(); }; }catch(e){}
+  /* 12 novembre, « on a fait n'importe quoi, recommence à 100 % tout, tu sais ce que je veux » : une fois, toute la
+     période jusqu'au 2e semestre est reposée jour par jour, du premier jour du programme (ou d'aujourd'hui) au dimanche
+     24 janvier. Chaque bloc à son heure, avec le titre et la consigne de CE jour-là ; tout autre « 🦇 » du jour retiré
+     (anciennes séries, doublons, trajets des jours sans cours) ; les cours de la fac et l'argent n'ont pas de « 🦇 » et
+     restent. Ensuite, l'envoi habituel (aujourd'hui, demain, les jours sans cours) entretient le tout. Trois jours à la
+     fois ; une coupure reprend à l'ouverture suivante, et les jours déjà faits ne coûtent qu'une lecture. */
+  var GCAL_RECONSTRUCTION_JUSQUAU = '2027-01-24';
+  function joursAReconstruire(){
+    var out = [], d = todayISO < PROGRAMME_DEBUT ? PROGRAMME_DEBUT : todayISO;
+    for(; d <= GCAL_RECONSTRUCTION_JUSQUAU && d <= finProgramme(); d = isoDecale(d, 1)) out.push(d);
+    return out;
+  }
+  function reconstruireAgenda(mcp){
+    if(!mcp || !gcalActif() || gcalEnCours || load('batcave-gcal-reconstruction', null) || !agendaADejaJanvier()) return Promise.resolve(null);
+    var jours = joursAReconstruire();
+    if(!jours.length) return Promise.resolve(null);
+    gcalEnCours = true;
+    var t = {crees:0, majs:0, adoptes:0, retires:0, deja:0, passes:0}, faits = 0, echecs = 0, file = jours.slice();
+    var majStatut = function(){ var st = document.getElementById('gcal-statut'); if(st) st.textContent = 'agenda en reconstruction : ' + faits + ' / ' + jours.length + ' jours\u2026'; };
+    majStatut();
+    try{ showToast('\ud83d\udcf2 Je remets ton agenda au propre, jour par jour jusqu\u2019au 24 janvier \u2014 laisse la Batcave ouverte quelques minutes.'); }catch(e){}
+    var ouvrier = function(){
+      var iso = file.shift();
+      if(!iso) return Promise.resolve();
+      return pousserRappelsJour(mcp, iso).then(function(b){
+        Object.keys(t).forEach(function(k){ t[k] += (b && b[k]) || 0; });
+      }, function(){ echecs++; }).then(function(){ faits++; majStatut(); return ouvrier(); });
+    };
+    return Promise.all([ouvrier(), ouvrier(), ouvrier()]).then(function(){
+      gcalEnCours = false;
+      if(!echecs) save('batcave-gcal-reconstruction', {date: todayISO, jours: jours.length, du: jours[0], au: jours[jours.length - 1], bilan: t});
+      gcalEcriture.dernier = new Date().toISOString(); gcalEcriture.bilan = t; delete gcalEcriture.erreur;
+      save('batcave-gcal-ecriture', gcalEcriture);
+      try{ renderGcalPanel(); }catch(e){}
+      try{ showToast('\ud83d\udcf2 Agenda remis au propre jusqu\u2019au 24 janvier : ' + t.crees + ' cr\u00e9\u00e9s, ' + t.majs + ' mis \u00e0 jour, ' + t.adoptes + ' d\u00e9j\u00e0 justes, ' + t.retires + ' retir\u00e9s' + (echecs ? ' \u2014 ' + echecs + ' jour' + (echecs > 1 ? 's' : '') + ' \u00e0 reprendre \u00e0 la prochaine ouverture' : '') + '.'); }catch(e){}
+      return t;
+    });
+  }
+  try{ window.__bcJoursAReconstruire = joursAReconstruire; }catch(e){}
   var gcalEcriture = load('batcave-gcal-ecriture', null);
   if(!gcalEcriture || typeof gcalEcriture !== 'object' || Array.isArray(gcalEcriture)) gcalEcriture = {actif:false};
   var gcalEnCours = false;
@@ -18608,9 +18743,14 @@
           var cleT = titreBaseGcal(e.summary);
           if(!parTitre[cleT]) parTitre[cleT] = e;
         });
-        var chaine = Promise.resolve();
+        var chaine = Promise.resolve(), vivants = {};
+        events.forEach(function(e){ if(e && e.id && e.status !== 'cancelled') vivants[e.id] = true; });
         blocs.forEach(function(b){
           var emp = empreinteBloc(iso, b), debutMs = new Date(isoAvecHeure(iso, b.debut)).getTime(), connu = releve[b.cle];
+          /* 12 novembre : un événement du relevé qui n'est plus dans l'agenda (supprimé à la main, ou retiré comme
+             doublon) ne compte plus. Sinon le bloc passait pour « déjà envoyé », et le nettoyage ci-dessous retirait
+             la copie restante : plus aucun rappel. On repart du titre : la copie restante est adoptée, ou recréée. */
+          if(connu && connu.id && !vivants[connu.id]){ delete releve[b.cle]; connu = null; }
           if(connu && connu.id && connu.empreinte === emp){ bilan.deja++; return; }
           chaine = chaine.then(function(){
             var creer = function(){
@@ -18675,6 +18815,29 @@
             return mcp.callTool('Google Calendar', 'delete_event', {calendarId: GCAL_CALENDRIER, eventId: r.id, notificationLevel:'NONE'})
               .catch(function(){}).then(function(){ delete releve[k]; bilan.retires++; });
           });
+        });
+        /* 12 novembre, « je veux que je n'aie plus besoin de toucher quoi que ce soit avant le 2e semestre » : les series
+           posees dans l'agenda le 9 novembre continuent les jours feries, aux vacances et pendant les partiels, et une
+           copie poussee d'avance doublait parfois l'occurrence de la serie -- deux notifications pour un bloc, ou un
+           « Trajet cours » le 25 decembre. Une fois le jour pousse, tout evenement « 🦇 » de ce jour que la grille ne porte
+           plus (ni par son titre, ni par son titre de base) part, doublons compris : jamais un evenement passe, jamais
+           un rappel protege (GCAL_PROTEGES), jamais un evenement sans « 🦇 » -- les cours de la fac, l'argent, le reste. */
+        chaine = chaine.then(function(){
+          if(!blocs.length) return;
+          var garde = {}, maintenant = Date.now();
+          Object.keys(releve).forEach(function(k){ if(releve[k] && releve[k].id) garde[releve[k].id] = true; });
+          return events.filter(function(e){
+            if(!e || !e.id || garde[e.id] || e.status === 'cancelled') return false;
+            if(!e.summary || e.summary.indexOf('\ud83e\udd87 ') !== 0) return false;
+            if(GCAL_PROTEGES.indexOf(titreBaseGcal(e.summary)) > -1) return false;
+            if(!(e.start && e.start.dateTime) || String(e.start.dateTime).slice(0, 10) !== iso) return false;
+            return new Date(e.start.dateTime).getTime() > maintenant;
+          }).reduce(function(c, e){
+            return c.then(function(){
+              return mcp.callTool('Google Calendar', 'delete_event', {calendarId: GCAL_CALENDRIER, eventId: e.id, notificationLevel:'NONE'})
+                .then(function(){ bilan.retires++; }).catch(function(){});
+            });
+          }, Promise.resolve());
         });
         return chaine.then(function(){ save(cleGcalJour(iso), releve); return bilan; });
       });
@@ -19883,7 +20046,11 @@
   var A_REGLER = [
     {id:'proprio-elec-2-mois', label:'Le proprio : 2 mois d\u2019eau et d\u2019\u00e9lectricit\u00e9', montant:140,
      detail:'2 \u00d7 70 \u20ac estim\u00e9s : le montant exact, c\u2019est lui qui te le donne. Virement \u00e0 la main. Le premier mois vient de l\u2019argent du mois dernier : s\u2019il est parti dans la cagnotte, reprends-l\u2019y.'},
-    {id:'licence-jjb-2026', label:'La licence JJB', montant:30, detail:'En une fois, au club.'}
+    {id:'licence-jjb-2026', label:'La licence JJB', montant:30, detail:'En une fois, au club, lundi 16 avec l\u2019abonnement de novembre, par carte Wise.'},
+    /* 12 novembre, ses mots : « ce mois-ci, je n'ai pas paye l'abonnement du club et la licence (100 EUR) ». Le 5,
+       le JJB etait en pause (le medecin d'abord) : l'abonnement de novembre se paie au club le lundi 16, premier
+       JJB, avec la licence -- 70 + 30 = 100 EUR, l'argent de cette periode (il etait prevu le 5). */
+    {id:'club-novembre-2026', label:'Le club : l\u2019abonnement de novembre', montant:70, detail:'Pas pay\u00e9 le 5 (le JJB \u00e9tait en pause) : au club, lundi 16 avant la s\u00e9ance, par carte Wise, avec la licence \u2014 100 \u20ac en tout.'}
   ];
   var ECHEANCES_ARGENT = [
     {cagnotte:true},

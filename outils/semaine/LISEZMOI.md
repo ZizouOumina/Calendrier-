@@ -19,6 +19,11 @@ cd tests && node zz-semaine.mjs ../outils/semaine/semaines/2026-11-23.json 2026-
 ```
 
 Pour ajouter une semaine : l'extraire comme ci-dessus, ajouter son lundi à `SEMAINES`, relancer `build_guide.py`.
+
+Depuis le 12 novembre, les semaines vont jusqu'au dimanche 24 janvier (la veille du 2e semestre) et sont extraites
+avec ses vraies données (ses examens, ses devoirs) : `DONNEES=<sauvegarde.json> node zz-semaine.mjs …`. Le
+constructeur connaît les jours sans cours (`FERIES`, `VACANCES`, `INTERSEMESTRE`, la période « partiels ») et les blocs
+d'examen (« Préparer · … », « Trajet · Examen · … », « Examen · … »).
 Un bloc que le constructeur ne connaît pas arrête la construction (« bloc inconnu ») : on lui écrit sa ligne.
 
 ## Les deux pages d'origine

@@ -111,8 +111,8 @@
    },
    {
     "h": "20:25",
-    "l": "Clore le cours du jour",
-    "c": "Le tema a déjà été étudié le matin d'avance : vingt minutes par cours, en espagnol. « cierra » dans le projet Dentaire avec tes « ? » d'amphi, ce que le prof a souligné en cartes, la note 0-3 du cours à la clôture."
+    "l": "Préparer · Biología Celular y Genética Humana · Exposiciones Orales",
+    "c": "Veille de Biología Celular y Genética Humana · Exposiciones Orales : documents et matériel prêts, protocole ou programme relu, trois questions écrites, tenue et trajet préparés. Coucher à l'heure."
    },
    {
     "h": "20:45",
@@ -226,8 +226,24 @@
    },
    {
     "id": "core-marche",
-    "label": "Marche — 8 000 pas",
+    "label": "Marche / pas",
     "icon": "🚶",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "hab1788303551564",
+    "label": "Vaisselle",
+    "icon": "🍽️",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "hab1788303558397",
+    "label": "Linge",
+    "icon": "🧺",
     "cycle": 0,
     "ancre": null,
     "quinzaine": false
@@ -347,8 +363,18 @@
    },
    {
     "id": "core-marche",
-    "label": "Marche — 8 000 pas",
+    "label": "Marche / pas",
     "icon": "🚶"
+   },
+   {
+    "id": "hab1788303551564",
+    "label": "Vaisselle",
+    "icon": "🍽️"
+   },
+   {
+    "id": "hab1788303558397",
+    "label": "Linge",
+    "icon": "🧺"
    },
    {
     "id": "core-es-conversacion",
@@ -605,8 +631,8 @@
    },
    {
     "h": "18:30",
-    "l": "Clore le cours du jour",
-    "c": "Le tema a déjà été étudié le matin d'avance : vingt minutes par cours, en espagnol. « cierra » dans le projet Dentaire avec tes « ? » d'amphi, ce que le prof a souligné en cartes, la note 0-3 du cours à la clôture."
+    "l": "Préparer · Biología Celular y Genética Humana · Práctica 6",
+    "c": "Veille de Biología Celular y Genética Humana · Práctica 6 : documents et matériel prêts, protocole ou programme relu, trois questions écrites, tenue et trajet préparés. Coucher à l'heure."
    },
    {
     "h": "19:10",
@@ -725,8 +751,16 @@
    },
    {
     "id": "core-marche",
-    "label": "Marche — 8 000 pas",
+    "label": "Marche / pas",
     "icon": "🚶",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "hab1788303551564",
+    "label": "Vaisselle",
+    "icon": "🍽️",
     "cycle": 0,
     "ancre": null,
     "quinzaine": false
@@ -838,8 +872,13 @@
    },
    {
     "id": "core-marche",
-    "label": "Marche — 8 000 pas",
+    "label": "Marche / pas",
     "icon": "🚶"
+   },
+   {
+    "id": "hab1788303551564",
+    "label": "Vaisselle",
+    "icon": "🍽️"
    },
    {
     "id": "core-es-conversacion",
@@ -1091,8 +1130,8 @@
    },
    {
     "h": "20:25",
-    "l": "Clore le cours du jour",
-    "c": "Le tema a déjà été étudié le matin d'avance : vingt minutes par cours, en espagnol. « cierra » dans le projet Dentaire avec tes « ? » d'amphi, ce que le prof a souligné en cartes, la note 0-3 du cours à la clôture."
+    "l": "Préparer · EPIDEMIOLOGÍA, SALUD PUBLICA Y BIOESTADISTICA APLICADA · PROBLEMAS RR y OR en aula + Anatomia 1 · Práctica 3. Histología",
+    "c": "Veille de EPIDEMIOLOGÍA, SALUD PUBLICA Y BIOESTADISTICA APLICADA · PROBLEMAS RR y OR en aula + Anatomia 1 · Práctica 3. Histología : documents et matériel prêts, protocole ou programme relu, trois questions écrites, tenue et trajet préparés. Coucher à l'heure."
    },
    {
     "h": "20:45",
@@ -1206,8 +1245,24 @@
    },
    {
     "id": "core-marche",
-    "label": "Marche — 8 000 pas",
+    "label": "Marche / pas",
     "icon": "🚶",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "hab1788303551564",
+    "label": "Vaisselle",
+    "icon": "🍽️",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "hab1788303558397",
+    "label": "Linge",
+    "icon": "🧺",
     "cycle": 0,
     "ancre": null,
     "quinzaine": false
@@ -1237,25 +1292,9 @@
     "quinzaine": false
    },
    {
-    "id": "core-shampoing",
-    "label": "Shampoing",
-    "icon": "🧴",
-    "cycle": 0,
-    "ancre": null,
-    "quinzaine": false
-   },
-   {
     "id": "core-serviette-visage",
     "label": "Serviette de visage changée",
     "icon": "🧼",
-    "cycle": 0,
-    "ancre": null,
-    "quinzaine": false
-   },
-   {
-    "id": "core-serviette-corps",
-    "label": "Serviette de corps changée",
-    "icon": "🛁",
     "cycle": 0,
     "ancre": null,
     "quinzaine": false
@@ -1351,8 +1390,18 @@
    },
    {
     "id": "core-marche",
-    "label": "Marche — 8 000 pas",
+    "label": "Marche / pas",
     "icon": "🚶"
+   },
+   {
+    "id": "hab1788303551564",
+    "label": "Vaisselle",
+    "icon": "🍽️"
+   },
+   {
+    "id": "hab1788303558397",
+    "label": "Linge",
+    "icon": "🧺"
    },
    {
     "id": "core-es-conversacion",
@@ -1370,19 +1419,9 @@
     "icon": "📖"
    },
    {
-    "id": "core-shampoing",
-    "label": "Shampoing",
-    "icon": "🧴"
-   },
-   {
     "id": "core-serviette-visage",
     "label": "Serviette de visage changée",
     "icon": "🧼"
-   },
-   {
-    "id": "core-serviette-corps",
-    "label": "Serviette de corps changée",
-    "icon": "🛁"
    },
    {
     "id": "core-creatine",
@@ -1739,8 +1778,16 @@
    },
    {
     "id": "core-marche",
-    "label": "Marche — 8 000 pas",
+    "label": "Marche / pas",
     "icon": "🚶",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "hab1788303551564",
+    "label": "Vaisselle",
+    "icon": "🍽️",
     "cycle": 0,
     "ancre": null,
     "quinzaine": false
@@ -1860,8 +1907,13 @@
    },
    {
     "id": "core-marche",
-    "label": "Marche — 8 000 pas",
+    "label": "Marche / pas",
     "icon": "🚶"
+   },
+   {
+    "id": "hab1788303551564",
+    "label": "Vaisselle",
+    "icon": "🍽️"
    },
    {
     "id": "core-es-conversacion",
@@ -2233,8 +2285,24 @@
    },
    {
     "id": "core-marche",
-    "label": "Marche — 8 000 pas",
+    "label": "Marche / pas",
     "icon": "🚶",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "hab1788303551564",
+    "label": "Vaisselle",
+    "icon": "🍽️",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "hab1788303558397",
+    "label": "Linge",
+    "icon": "🧺",
     "cycle": 0,
     "ancre": null,
     "quinzaine": false
@@ -2259,14 +2327,6 @@
     "id": "core-es-lectura",
     "label": "20 pages lues en espagnol",
     "icon": "📖",
-    "cycle": 0,
-    "ancre": null,
-    "quinzaine": false
-   },
-   {
-    "id": "core-shampoing",
-    "label": "Shampoing",
-    "icon": "🧴",
     "cycle": 0,
     "ancre": null,
     "quinzaine": false
@@ -2362,8 +2422,18 @@
    },
    {
     "id": "core-marche",
-    "label": "Marche — 8 000 pas",
+    "label": "Marche / pas",
     "icon": "🚶"
+   },
+   {
+    "id": "hab1788303551564",
+    "label": "Vaisselle",
+    "icon": "🍽️"
+   },
+   {
+    "id": "hab1788303558397",
+    "label": "Linge",
+    "icon": "🧺"
    },
    {
     "id": "core-es-conversacion",
@@ -2379,11 +2449,6 @@
     "id": "core-es-lectura",
     "label": "20 pages lues en espagnol",
     "icon": "📖"
-   },
-   {
-    "id": "core-shampoing",
-    "label": "Shampoing",
-    "icon": "🧴"
    },
    {
     "id": "core-serviette-visage",
@@ -2730,8 +2795,24 @@
    },
    {
     "id": "core-marche",
-    "label": "Marche — 8 000 pas",
+    "label": "Marche / pas",
     "icon": "🚶",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "hab1788303536189",
+    "label": "Passer le balai",
+    "icon": "🧹",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "hab1788303551564",
+    "label": "Vaisselle",
+    "icon": "🍽️",
     "cycle": 0,
     "ancre": null,
     "quinzaine": false
@@ -2859,8 +2940,18 @@
    },
    {
     "id": "core-marche",
-    "label": "Marche — 8 000 pas",
+    "label": "Marche / pas",
     "icon": "🚶"
+   },
+   {
+    "id": "hab1788303536189",
+    "label": "Passer le balai",
+    "icon": "🧹"
+   },
+   {
+    "id": "hab1788303551564",
+    "label": "Vaisselle",
+    "icon": "🍽️"
    },
    {
     "id": "core-courses",
@@ -3222,8 +3313,16 @@
    },
    {
     "id": "core-marche",
-    "label": "Marche — 8 000 pas",
+    "label": "Marche / pas",
     "icon": "🚶",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "hab1788303551564",
+    "label": "Vaisselle",
+    "icon": "🍽️",
     "cycle": 0,
     "ancre": null,
     "quinzaine": false
@@ -3265,7 +3364,7 @@
     "label": "Photos — peau et corps",
     "icon": "📸",
     "cycle": 4,
-    "ancre": "2026-11-15",
+    "ancre": "2026-09-13",
     "quinzaine": false
    },
    {
@@ -3281,15 +3380,7 @@
     "label": "Brosse à dents changée",
     "icon": "🪥",
     "cycle": 12,
-    "ancre": "2026-11-15",
-    "quinzaine": false
-   },
-   {
-    "id": "core-serviette-visage",
-    "label": "Serviette de visage changée",
-    "icon": "🧼",
-    "cycle": 0,
-    "ancre": null,
+    "ancre": "2026-09-13",
     "quinzaine": false
    },
    {
@@ -3321,7 +3412,7 @@
     "label": "Ongles — mains ; pieds les dimanches de photo",
     "icon": "✂️",
     "cycle": 2,
-    "ancre": "2026-11-15",
+    "ancre": "2026-09-13",
     "quinzaine": false
    },
    {
@@ -3407,8 +3498,13 @@
    },
    {
     "id": "core-marche",
-    "label": "Marche — 8 000 pas",
+    "label": "Marche / pas",
     "icon": "🚶"
+   },
+   {
+    "id": "hab1788303551564",
+    "label": "Vaisselle",
+    "icon": "🍽️"
    },
    {
     "id": "core-es-conversacion",
@@ -3436,11 +3532,6 @@
     "icon": "🪒"
    },
    {
-    "id": "core-serviette-visage",
-    "label": "Serviette de visage changée",
-    "icon": "🧼"
-   },
-   {
     "id": "core-serviette-corps",
     "label": "Serviette de corps changée",
     "icon": "🛁"
@@ -3454,11 +3545,6 @@
     "id": "core-menage",
     "label": "Ménage du dimanche",
     "icon": "🧽"
-   },
-   {
-    "id": "core-ongles",
-    "label": "Ongles — mains ; pieds les dimanches de photo",
-    "icon": "✂️"
    },
    {
     "id": "core-creatine",
