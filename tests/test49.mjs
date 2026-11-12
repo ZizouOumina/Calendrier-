@@ -162,7 +162,7 @@ console.log('\n== 120b) Le saut de depart ne doit JAMAIS faire retirer des calor
   ok(!/-100 kcal/.test(k.note), 'le saut de depart ne fait pas retirer de calories : ' + k.note);
   /* La pente lue ne porte que sur les pesees d'apres stabilisation : 67,2 -> 67,8. */
   ok(/4 pes\u00e9es/.test(k.txt) && /67,4 \u2192 68,0 kg/.test(k.txt),
-     'seules les 4 pes\u00e9es d\'apr\u00e8s le 3 d\u00e9cembre comptent : ' + ((k.txt.match(/Tendance[^.]*/) || [''])[0]));
+     'seules les 4 pes\u00e9es d\'apr\u00e8s le 4 d\u00e9cembre comptent : ' + ((k.txt.match(/Tendance[^.]*/) || [''])[0]));
   await ctx.close();
 }
 {
@@ -170,8 +170,9 @@ console.log('\n== 120b) Le saut de depart ne doit JAMAIS faire retirer des calor
   const { ctx, fr, page } = await ouvrir('2026-10-04T10:00:00+02:00', {'batcave-journal-2026-09-20': {poids: 64.0}, 'batcave-journal-2026-10-04': {poids: 66.4}});
   await aller(fr, page, 'repas');
   const txt = await fr.evaluate(() => document.getElementById('kcal-analyse').innerText.replace(/\s+/g,' '));
-  /* 31 octobre : jour 1 au dimanche 1er novembre, trois semaines plus tard -- rien avant le 22 novembre. */
-  ok(/rien avant le 03 d\u00e9c\./.test(txt) && /glyc\u00e8ne|glycog\u00e8ne/.test(txt),
+  /* 31 octobre : jour 1 au dimanche 1er novembre, trois semaines plus tard -- rien avant le 22 novembre.
+     12 novembre : jour 1 au vendredi 13 -- rien avant le 4 decembre. */
+  ok(/rien avant le 04 d\u00e9c\./.test(txt) && /glyc\u00e8ne|glycog\u00e8ne/.test(txt),
      'elle explique l\'attente au lieu de rester muette : ' + txt.slice(-190));
   await ctx.close();
 }

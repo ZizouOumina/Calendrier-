@@ -4,7 +4,7 @@ Ce dossier reconstruit les deux pages de la racine du dépôt, à l'octet près 
 
 | Page | Générateur | Données lues | Gabarit |
 | --- | --- | --- | --- |
-| `semaine-du-9-novembre.html` (jeudi 12 → dimanche 15) | `build11.py` | `grille11.json` | `template11.html` |
+| `semaine-du-9-novembre.html` (vendredi 13 → dimanche 15) | `build11.py` | `grille11.json` | `template11.html` |
 | `semaine-du-16-novembre.html` (lundi 16 → dimanche 22) | `build16.py` | `semaine16.json` | `template16.html` |
 
 ```bash
@@ -27,7 +27,7 @@ cd tests && bash sync.sh && (setsid nohup python3 -m http.server 8199 >/dev/null
 ```
 
 ```bash
-cd tests && node zz-grilles.mjs 2026-11-12 4 ../outils/semaine/grille11.json 2026-11-11T16:00:00+01:00
+cd tests && node zz-grilles.mjs 2026-11-13 3 ../outils/semaine/grille11.json 2026-11-12T16:00:00+01:00
 ```
 
 ```bash
@@ -54,5 +54,8 @@ la semaine du 16 au 22 novembre (dates écrites dans le script). Pour une nouvel
   de blocs « Projets perso », semaine par semaine.
 - `zz-page.mjs <fichier> [horloge]` : une page autonome du dépôt à la largeur d'un téléphone (erreurs, débordement).
 - `zz-rev.mjs [horloge]` : pour chaque jour du 9 au 16 novembre, les blocs de travail, leur type et la cible du jour.
+- `zz-besoins.mjs <de> <à>` : ce que mangent ces jours, repas par repas, et le total par ingrédient (`BRUT=1` : le plan
+  sans la viande de la première semaine) — la base de la liste de courses d'un départ.
+- `zz-es.mjs <de> <à>` : les blocs « Español · … » de la grille entre deux dates, en minutes.
 - `zz-pages.mjs [dossier]` : ouvre les deux pages semaine à la largeur d'un téléphone, signale les erreurs, affiche
   le haut de la page ; avec un dossier, y dépose une capture par page.

@@ -2,8 +2,9 @@ import json, math
 import os
 SP = os.path.dirname(os.path.abspath(__file__)) + '/'   # ce dossier : les donnees lues, le gabarit ; la page sort a la racine du depot
 # 11 novembre : « on commence tout tout tout demain jeudi 12 novembre » -- jour 1 le jeudi 12 ; la grille vient de la Batcave
+# 12 novembre, 9 h : la viande jetee, « on commence tout demain petante » -- jour 1 le vendredi 13, trois jours
 S = json.load(open(SP + 'grille11.json'))
-S = [j for j in S if '2026-11-11' <= j['iso'] <= '2026-11-15']
+S = [j for j in S if '2026-11-13' <= j['iso'] <= '2026-11-15']
 
 def hh(m): return '%02d:%02d' % (m // 60, m % 60)
 def mn(h): a, b = h.split(':'); return int(a) * 60 + int(b)
@@ -123,9 +124,8 @@ def bloc(iso, dow, h, lab, suivant):
 JOURS = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi']
 COURT = ['dim', 'lun', 'mar', 'mer', 'jeu', 'ven', 'sam']
 NOTES = {
- 4: ['Jour 1 : tout commence ce matin, réveil 05:20.', 'La viande achetée lundi est au congélateur depuis hier soir : le batch la cuit sans la décongeler. Pas congelée ? La date limite des barquettes et l’odeur décident : le détail est à 11:00.', '08:00 : appelle le centro de salud (rendez-vous et prise de sang), si ce n’est pas fait.', '11:00 : le batch de démarrage (jusqu’à dimanche midi), avec une machine de vêtements en même temps ; le déjeuner en sort tout chaud.', 'Collation : les sardines à la place des œufs.', 'Écris au proprio pour le montant des 2 mois d’électricité, puis vire-le.'],
- 5: ['13:15 : Jumu’ah à la mosquée.', 'Douche du matin : finis par 30 à 60 s d’eau froide.', '20:40 : plie et range le linge de jeudi.'],
- 6: ['13:30 : les courses, plus 3 paquets de pâtes et les produits de soin et de ménage qui te manquent.', 'Au rangement : la viande de mardi au congélateur, crue.', 'Le soir : sors la boîte de demain midi du congélateur.'],
+ 5: ['Jour 1 : tout commence ce matin, réveil 05:20.', 'La viande achetée hier est au frigo : le batch de 11:00 la cuit, 15 à 20 min, sans passer par le congélateur.', '08:00 : appelle le centro de salud (rendez-vous et prise de sang), si ce n’est pas fait.', '11:00 : le batch de démarrage (jusqu’à dimanche midi), avec une machine de vêtements en même temps ; le déjeuner en sort tout chaud.', '13:15 : Jumu’ah à la mosquée.', 'Douche du matin : finis par 30 à 60 s d’eau froide.', 'Écris au proprio pour le montant des 2 mois d’eau et d’électricité, puis vire-le.'],
+ 6: ['13:30 : les courses, plus 3 paquets de pâtes et les produits de soin et de ménage qui te manquent.', 'Au rangement : la viande de mardi au congélateur, crue.', 'Le soir : plie et range le linge d’hier.'],
  0: ['Au réveil : pesée à jeun, tour de taille, et les photos du point de départ (peau et corps) : c’est à elles que tu compareras les suivantes.', '11:20 : l’épreuve d’espagnol, le premier passage (le diagnostic).', '14:30 : la première session de batch, une heure, 5 boîtes (la seconde mardi soir). 15:30 : la laverie (draps, taies, serviettes), puis le ménage à ton retour.', 'Demain, la salle reprend à 07:00 (départ 06:40) et le JJB à 10:30, si le médecin est d’accord : les sacs se préparent ce soir.'],
 }
 EN_PLUS = {
@@ -185,7 +185,7 @@ for J in S:
         # le week-end, la grille n'a pas de bloc pour la collation : elle se mange quand meme
         k_, t_, d_ = bloc(iso, dow, '', 'Collation entraînement', '')
         rows.append({'t': '15:45' if dow == 6 else '16:25', 'k': k_, 'titre': t_ + (', après le rangement' if dow == 6 else ', avant le ménage'), 'd': d_})
-    if iso == '2026-11-12':
+    if iso == '2026-11-13':
         rows.append({'t': '08:00', 'k': 'rdv', 'titre': 'Appelle le centro de salud, si ce n’est pas fait',
                      'd': 'Rendez-vous et prise de sang. Dis ce que tu as eu (soif, perte de poids, fatigue) et que tu as arrêté le snus. Demande aussi le dosage de la vitamine D.'})
     soir = {
@@ -193,8 +193,8 @@ for J in S:
       2: ('Étends le linge, puis prépare demain', 'Le linge sur l’étendoir. Sac prêt, vêtements posés.'),
       3: ('Prépare demain', 'Sac prêt (ordi chargé, gourde, cours), vêtements posés. Rien à sortir du congélateur : tout est au frigo jusqu’à samedi.'),
       4: ('Prépare demain', 'Sac prêt (ordi chargé, gourde, cours), vêtements posés. Rien à sortir du congélateur : tout est au frigo jusqu’à samedi.'),
-      5: ('Plie le linge, puis prépare demain', 'Plie et range le linge de jeudi (10 min). Sac prêt, vêtements posés. Rien à sortir du congélateur : les boîtes de samedi sont au frigo.'),
-      6: ('Prépare demain', 'Sors la boîte de demain midi du congélateur. Vêtements posés.'),
+      5: ('Prépare demain', 'Vêtements posés. Rien à sortir du congélateur : les boîtes de samedi sont au frigo. Le linge de ce midi finit de sécher.'),
+      6: ('Plie le linge, puis prépare demain', 'Plie et range le linge d’hier (10 min). Vêtements posés. Rien à sortir du congélateur : la boîte de demain midi est au frigo.'),
       0: ('Prépare lundi', 'Si le médecin t’a donné son feu vert : le sac de salle (tenue, serviette, gourde, cadenas) et le sac de JJB (kimono ou short, rashguard, protège-dents, serviette, tongs) prêts, demain c’est la salle à 07:00 et le JJB à 10:30. Le sac de cours (ordi chargé, gourde), vêtements posés.'),
     }
     t, d = soir[dow]
@@ -262,25 +262,24 @@ for J in S:
             r['pas'] = PAS[cle]; r['d'] = ''
         if r['titre'] == 'Retour':
             r['d'] = 'En marchant : appelle ou écris à ta famille.' + (' Tapis remis après 18:30.' if dow in (2, 3, 4, 5) else '')
-    if iso == '2026-11-12':
-        # 11 novembre : le batch de demarrage passe au jeudi 12, la viande congelee la veille
+    if iso == '2026-11-13':
+        # 12 novembre : le batch de demarrage passe au vendredi 13, la viande achetee la veille, fraiche
         for r in rows:
             if r['titre'] == 'Batch cooking, la première session':
                 r['titre'] = 'Lance une machine, puis le batch de démarrage'
                 r['fin'] = '12:20'
                 r['pas'] = ['La machine : tes vêtements de la semaine, à 30 ou 40 °C.',
-                    'Les 9 œufs dans l’eau bouillante, 10 min, puis dans l’eau froide : les collations de vendredi, samedi et dimanche (jeudi, les sardines).',
-                    'La viande, congelée hier soir, sans la décongeler, dans deux poêles en même temps à feu moyen-vif : tout le poulet en morceaux (≈ 480 g) dans l’une, toute la viande hachée (≈ 480 g) dans l’autre, émiettée à mesure qu’elle dégèle. Moitié plus longtemps que d’habitude, 25 à 30 min ; le poulet est cuit quand le cœur n’est plus rose.',
-                    'Si tu ne l’as pas congelée hier soir : regarde la date limite sur les barquettes et sens-la. Dans les temps, sans odeur ni surface collante : elle se cuit maintenant, au temps habituel (15 à 20 min). Sinon : poubelle, et écris-moi, je refais les repas.',
-                    'Les légumes surgelés, sans les décongeler : 320 g de brocoli 7 min, 240 g d’épinards 5 min à couvert.',
-                    'Ton déjeuner sort de là : 120 g de poulet et 80 g de brocoli.',
-                    'Le reste refroidit 20 min à découvert, puis 6 boîtes, le jour écrit dessus : les soirs de jeudi à samedi (160 g de viande hachée, épinards) et les midis de vendredi et samedi (120 g de poulet, brocoli) au frigo ; dimanche midi au congélateur. Tu as acheté pour sept jours, tu en manges quatre : un peu plus de viande par boîte, c’est bon pour tes kilos.',
+                    'Les 9 œufs dans l’eau bouillante, 10 min, puis dans l’eau froide : les collations de vendredi, samedi et dimanche.',
+                    'La viande achetée hier, sortie du frigo, dans deux poêles en même temps à feu moyen-vif : tout le poulet en morceaux (≈ 210 g) dans l’une, toute la viande hachée (≈ 140 g) dans l’autre, émiettée. 15 à 20 min ; le poulet est cuit quand le cœur n’est plus rose, la viande hachée quand elle est brune partout.',
+                    'Les légumes surgelés, sans les décongeler : 240 g de brocoli 7 min, 160 g d’épinards 5 min à couvert.',
+                    'Ton déjeuner sort de là : 70 g de poulet et 80 g de brocoli.',
+                    'Le reste refroidit 20 min à découvert, puis 4 boîtes, le jour écrit dessus, toutes au frigo : ce soir et samedi soir (70 g de viande hachée, épinards), samedi et dimanche midi (70 g de poulet, brocoli). Cuite, la viande tient trois jours.',
                     'La vaisselle, le plan de travail essuyé, puis 5 min d’aspirateur-serpillière dans la cuisine (réservoir vidé et rincé après).']
                 r['d'] = ''
             if r['titre'] == 'Déjeuner':
-                r['pas'] = ['Tout chaud, du batch : 120 g de poulet et 80 g de brocoli, avec le riz de la cuve.',
+                r['pas'] = ['Tout chaud, du batch : 70 g de poulet et 80 g de brocoli, avec le riz de la cuve.',
                             '20 ml d’huile d’olive crue, sel iodé, épices.', 'Ta gourde remplie une deuxième fois.']
-        rows.append({'t': '12:35', 'k': 'maison', 'titre': 'Étends le linge', 'd': 'Sur l’étendoir, 5 min, avant la sieste.'})
+        rows.append({'t': '13:05', 'k': 'maison', 'titre': 'Étends le linge', 'd': 'Sur l’étendoir, 5 min, avant de partir à la mosquée.'})
         rows.sort(key=lambda r: (mn(r['t']), 1 if r.get('en') else 0))
     if False:
         rows[:] = [r for r in rows if r['titre'] not in ('Dîner', 'Le linge et l’aspirateur, puis temps libre', 'Étends le linge, puis prépare demain')]

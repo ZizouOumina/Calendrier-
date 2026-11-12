@@ -48,9 +48,10 @@ console.log('\n== 401) Santé de la Batcave : six contrôles, un relevé qui ne 
   /* la clôture n'est due qu'à partir du jour 1 (mardi 13 octobre depuis le 12 octobre ;
      samedi 17 depuis le 16 octobre, mardi 20 depuis le 19, mercredi 21 puis jeudi 22 depuis le 21,
      dimanche 1er novembre depuis le 31) : on lit le jour 1, avec une clôture du mardi 27.
-     11 novembre : jour 1 au jeudi 12 -- clôture du samedi 7, cinq jours avant. */
-  const seed = {'batcave-journal-2026-11-07': {sommeil:'7', cloture:'21:20'}};
-  const { ctx, page, fr } = await ouvrir('2026-11-12T10:00:00+01:00', seed);
+     11 novembre : jour 1 au jeudi 12 -- clôture du samedi 7, cinq jours avant.
+     12 novembre : jour 1 au vendredi 13 -- clôture du dimanche 8, cinq jours avant. */
+  const seed = {'batcave-journal-2026-11-08': {sommeil:'7', cloture:'21:20'}};
+  const { ctx, page, fr } = await ouvrir('2026-11-13T10:00:00+01:00', seed);
   const r = await fr.evaluate(() => ({ vide: window.__bcAppVide(), sante: window.__bcSante().filter(c => !c.ok).map(c => c.id), releve: document.getElementById('bc-sante').hidden, txt: document.querySelector('#bc-sante .v').textContent }));
   ok(r.vide === false, 'une clôture suffit : l\'appli n\'est plus neuve');
   ok(r.sante.join(',') === 'sauvegarde,exercice,cloture', 'trois défauts : aucune sauvegarde, aucun exercice, clôture vieille de 5 jours (' + r.sante.join(', ') + ')');

@@ -1,5 +1,33 @@
 # Où on en est — samedi 19 septembre 2026, au soir
 
+> ### Jeudi 12 novembre — la viande jetée, le jour 1 au vendredi 13
+> **Ses mots** (9 h) : « j'ai jeté donc je vais devoir refaire les courses, on commence tout demain pétante, est-ce
+> que tu as tout vérifié pour un début demain […] dans mon guide journalier tu as mis tout tout tout ce que je dois
+> faire tous les jours ».
+> **Fait** : jour 1 au vendredi 13 (`PROGRAMME_DEBUT`) ; mois d'espagnol du 13 novembre au samedi 12 décembre, projets
+> et e-commerce le dimanche 13 décembre (« pile 1 mois ») ; rattrapage serré sur trois jours (vendredi → dimanche,
+> « jour N sur 3 »), le vendredi de 07:20 à 11:00 avec l'appel au centro de salud à 08:00 ; salle et JJB toujours le
+> lundi 16 (le médecin d'abord). Batch de démarrage le vendredi à 11:00 avec la viande achetée jeudi au comptoir
+> (`VIANDE_PREMIERE_SEMAINE` : 210 g de poulet, 140 g de viande hachée, 70 g par boîte, fraîche, rien au
+> congélateur) : 4 boîtes au frigo, la dernière dimanche midi ; la consigne du samedi soir (la boîte du congélateur)
+> est retirée, le déjeuner du dimanche dit « la dernière boîte du batch ». La veille du jour 1, le plan du jour dit
+> les courses de la viande ; le déjeuner et le dîner du jeudi disent « pas encore de boîte » (la viande du jour et
+> 9 œufs gardés pour le batch). Hors du mois d'espagnol, « Trajet cours », « Cours » et « Trajet retour » ont enfin une
+> consigne (`zz-scan` : 60 jours, 1 378 blocs, aucun sans consigne).
+> **Courses du jeudi 12** : 250 g de blanc de poulet et 150 g de viande hachée de bœuf maigre au comptoir (le plan en
+> demande 210 et 140) ; le reste seulement s'il manque (calculé dans la Batcave pour vendredi → dimanche midi).
+> **Google Agenda** : le batch et l'appel au centro de salud passent à vendredi ; les courses jeudi à 14:05 ; vendredi
+> recalé bloc par bloc sur la Batcave (rattrapage, « Question ouverte » 10:20, déjeuner tout chaud, clôture 20:05),
+> puis l'après-midi, tout le week-end remis mot pour mot sur la Batcave (`zz-rappels`) : dix descriptions de
+> vendredi ; samedi, qui gardait les heures d'un samedi de salle (Anki 05:30, douche 08:15) et des pâtes au
+> déjeuner, réaligné (17 rappels) avec le 05:30 du rattrapage, Anki 2 et la clôture créés ; dimanche, 20 textes
+> (le riz à 250 g, le diagnostic d'espagnol) et la clôture ; et le dîner du jeudi.
+> **Tests** : 19 recalés sur le vendredi 13 (rattrapage sur 3 jours, mois repris jusqu'au 12 décembre, seuils
+> du 13-14 décembre, clôture vieille de 5 jours, semaine de cours notés) ; campagne complète verte, sauf test14.
+> **Pages** : « Du vendredi 13 au dimanche 15 novembre » ; « Ta journée, pas à pas » au vendredi 13, avec une
+> section « Les cases du jour, toutes » (les dix-sept de chaque jour, celles de chaque jour de la semaine, les rares) ;
+> Dossier Español 2.20 ; Dossier E-commerce au dimanche 13 décembre (dépôt).
+
 > ### Mercredi 11 novembre — le jour 1 au jeudi 12, le linge de maison à la laverie, l'audit
 > **Ses mots** : « donc on commence tout demain » (le 10, 18 h), « reverifie tout tout tout dans la batcave, je veux
 > aucune incoherence », « tout tout tout doit etre parfait » ; puis le 11, 15 h 40 : « les draps serviettes etc je

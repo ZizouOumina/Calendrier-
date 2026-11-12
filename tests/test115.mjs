@@ -39,8 +39,8 @@ console.log('\n== 1) Les paliers du plan sommeil, matin et soir ==');
      paliers du plan sommeil, eux, ne bougent pas (le mercredi garde son lever de 07:15).
      31 octobre : rien n'avait commence -- le jour 1 passe au dimanche 1er novembre. Les paliers
      d'octobre restent ecrits (ils sont passes) ; le lever de 05:20 vaut des dimanche.
-     10 et 11 novembre : le jour 1 passe au jeudi 12. */
-  ok(debut === '2026-11-12', 'le jour 1 est le jeudi 12 novembre (' + debut + ')');
+     10 et 11 novembre : le jour 1 passe au jeudi 12. 12 novembre, la viande jetee : au vendredi 13. */
+  ok(debut === '2026-11-13', 'le jour 1 est le vendredi 13 novembre (' + debut + ')');
   const mer = await grille(fr, '2026-10-21');
   ok(mer[0] === '07:15 ⏰ Lever' && mer.includes('07:20 Douche + préparation') && mer.includes('07:30 Petit-déjeuner + Coran (1 page)') && mer.includes('07:45 Anki 1'),
      'mercredi 21 : lever 07:15, douche, petit-déjeuner, et le premier bloc à 07:45 (' + mer.slice(0, 4).join(' · ') + ')');
@@ -256,7 +256,7 @@ console.log('\n== 6) Le 21 octobre au soir : shake de récup, pesée chaque dima
   await ctx.close();
 }
 
-console.log('\n== 7) Le rattrapage serré, refait le 11 novembre : du jeudi 12 au dimanche 15, le quand sans le quoi ==');
+console.log('\n== 7) Le rattrapage serré, refait le 12 novembre : du vendredi 13 au dimanche 15, le quand sans le quoi ==');
 {
   /* 3 novembre : « mes parents partent vendredi matin à 5 h, il faut absolument que je rattrape
      40 cours sur la fin de semaine et toute la semaine prochaine ». Le plan repart du vendredi 6 ;
@@ -276,8 +276,9 @@ console.log('\n== 7) Le rattrapage serré, refait le 11 novembre : du jeudi 12 a
     lun9sport: window.__bcConsigne('Sport', 1, '2026-11-09', '07:00'),
     lun9es: window.__bcConsigne('Español · gramática', 1, '2026-11-09', '14:00'),
     mar10: window.__bcConsigne('Anki 2', 2, '2026-11-10', '09:00'),
-    jeu12: window.__bcConsigne('Anki 2', 4, '2026-11-12', '08:20'),
-    jeu12m: window.__bcConsigne('Projets perso matinal', 4, '2026-11-12', '05:30'),
+    jeu12m: window.__bcConsigne('Anki 1', 4, '2026-11-12', '05:30'),
+    ven13: window.__bcConsigne('Anki 1', 5, '2026-11-13', '07:20'),
+    ven13b: window.__bcConsigne('Étudier en avance', 5, '2026-11-13', '08:20'),
     dim15: window.__bcConsigne('Projets perso matinal', 0, '2026-11-15', '05:30'),
     dim15sim: window.__bcConsigne('Español · simulación', 0, '2026-11-15', '11:20'),
     lun16: window.__bcConsigne('Anki 1', 1, '2026-11-16', '05:30'),
@@ -294,9 +295,12 @@ console.log('\n== 7) Le rattrapage serré, refait le 11 novembre : du jeudi 12 a
   ok(!/Rattrapage|Anatomía|Biología|Epidemiología/.test(c.lun9es), 'les blocs d\'espagnol restent à l\'espagnol');
   ok(/Anatomía T12/.test(c.mar10), 'mardi 10 : le système nerveux (T10 à T12) bien avant la practica 2');
   /* 10 novembre : « tu me dis juste de quand a quand reviser, pas quoi ». 11 novembre : le jour 1 au jeudi 12. */
-  ok(/jour 1 sur 4/.test(c.jeu12m) && /le quoi, c'est toi/.test(c.jeu12m) && /centro de salud|médecin/.test(c.jeu12m + c.jeu12) || /jour 1 sur 4/.test(c.jeu12m), 'jeudi 12, jour 1 sur 4 : le quand, le quoi est à toi (' + c.jeu12m.slice(0, 70) + '…)');
-  ok(/Toujours tes révisions, jusqu'à 11:00/.test(c.jeu12) && !/Anatomía|Biología|Epidemiología|Antropología|Documentación|Vidal-Alaball/.test(c.jeu12 + c.jeu12m), 'jeudi 12 : aucun tema nommé, seulement jusqu\'à quand');
-  ok(/jour 4 sur 4/.test(c.dim15) && /diagnostic/.test(c.dim15sim), 'dimanche 15 : dernier jour serré, et le diagnostic d\'espagnol à 11:20');
+  /* 12 novembre : la viande jetee, le jour 1 au vendredi 13 -- trois jours serres, du vendredi au dimanche ;
+     le jeudi 12 redevient la veille, sans rien de date. */
+  ok(!/Rattrapage|jour \d sur/.test(c.jeu12m), 'jeudi 12, la veille : plus de rattrapage daté (' + c.jeu12m.slice(0, 50) + '…)');
+  ok(/jour 1 sur 3/.test(c.ven13) && /le quoi, c'est toi/.test(c.ven13) && /de 07:20 à 11:00/.test(c.ven13) && /centro de salud/.test(c.ven13), 'vendredi 13, jour 1 sur 3 : le quand, le quoi est à toi, et l\'appel au centro de salud (' + c.ven13.slice(0, 70) + '…)');
+  ok(/Toujours tes révisions, jusqu'à 11:00/.test(c.ven13b) && !/Anatomía|Biología|Epidemiología|Antropología|Documentación|Vidal-Alaball/.test(c.ven13 + c.ven13b), 'vendredi 13 : aucun tema nommé, seulement jusqu\'à quand');
+  ok(/jour 3 sur 3/.test(c.dim15) && /diagnostic/.test(c.dim15sim), 'dimanche 15 : dernier jour serré, et le diagnostic d\'espagnol à 11:20');
   ok(!/📚|Rattrapage/.test(c.lun16) && !/📚|Rattrapage/.test(c.fin), 'dès le lundi 16, la grille ordinaire : plus rien de daté, ni le 16 ni le 24');
   ok(!/Rattrapage/.test(c.apres), 'mercredi 25 : plus de rattrapage');
   await ctx.close();
@@ -333,16 +337,22 @@ console.log('\n== 9) Une consigne datée rend toujours son texte ==');
     diner11: window.__bcConsigne('Dîner', 3, '2026-11-11', '20:00'),
     courses14: window.__bcConsigne('🛒 Courses de la semaine', 6, '2026-11-14', '13:30'),
     libre14: window.__bcConsigne('Temps libre', 6, '2026-11-14', '19:30'),
-    batch12: window.__bcConsigne('🍲 Batch cooking de la semaine', 4, '2026-11-12', '11:00'),
+    dej12: window.__bcConsigne('Déjeuner', 4, '2026-11-12', '12:20'),
     diner12: window.__bcConsigne('Dîner', 4, '2026-11-12', '20:00'),
+    batch13: window.__bcConsigne('🍲 Batch cooking de la semaine', 5, '2026-11-13', '11:00'),
+    diner13: window.__bcConsigne('Dîner', 5, '2026-11-13', '20:00'),
     rappel: (window.__bcRappels('2026-11-11').filter(b => b.titre === '🦇 Dîner')[0] || {}).description || ''
   }));
-  const tous = [c.diner11, c.courses14, c.libre14, c.batch12, c.diner12];
-  ok(tous.every(t => typeof t === 'string' && t.length > 10 && !/\[object|undefined/.test(t)), 'cinq consignes, cinq textes (' + tous.map(t => typeof t).join(', ') + ')');
+  const tous = [c.diner11, c.courses14, c.libre14, c.dej12, c.diner12, c.batch13, c.diner13];
+  ok(tous.every(t => typeof t === 'string' && t.length > 4 && !/\[object|undefined/.test(t)), 'sept consignes, sept textes (' + tous.map(t => typeof t).join(', ') + ')');
   ok(/la viande achetée lundi au congélateur/.test(c.diner11) && /demain à 11:00, le batch la cuit sans la décongeler/.test(c.diner11), 'mercredi 11, le dîner : la viande au congélateur — ' + String(c.diner11).slice(0, 60) + '…');
   ok(/27 produits/.test(c.courses14) && /3 paquets de pâtes/.test(c.courses14), 'samedi 14, les courses : les deux rayons et les pâtes');
-  ok(/du congélateur au frigo/.test(c.libre14) && /Libre/.test(c.libre14), 'samedi 14, le temps libre : la boîte de dimanche, puis la consigne habituelle');
-  ok(/congelée hier soir/.test(c.batch12) && !/congélateur/.test(c.diner12.slice(0, 40)), 'jeudi 12 : le batch dit la viande congelée la veille, et le dîner retrouve sa consigne ordinaire');
+  /* 12 novembre : la viande de lundi jetee, celle du jour gardee au frigo -- le batch du vendredi 13 la cuit
+     fraiche, ses quatre boites tiennent au frigo jusqu'au dimanche midi : plus rien au congelateur. */
+  ok(/^Libre/.test(c.libre14) && !/congélateur/.test(c.libre14), 'samedi 14, le temps libre : plus de boîte à sortir du congélateur (' + c.libre14 + ')');
+  ok(/pas encore de boîte/.test(c.dej12) && /pas encore de boîte/.test(c.diner12) && /9 œufs/.test(c.diner12) && /tu n'y touches pas/.test(c.diner12), 'jeudi 12, la veille : midi et soir sans boîte, la viande du jour et 9 œufs gardés pour le batch');
+  ok(/achetée hier, gardée au frigo/.test(c.batch13) && /toutes au frigo/.test(c.batch13) && !/congel/.test(c.batch13), 'vendredi 13 : le batch cuit la viande achetée la veille, quatre boîtes au frigo, rien au congélateur');
+  ok(/viande hachée 70 g/.test(c.diner13) && !/congélateur/.test(c.diner13), 'vendredi 13 : le dîner, la première boîte du batch');
   ok(/la viande achetée lundi au congélateur/.test(c.rappel) && !/\[object/.test(c.rappel), 'et le rappel de l\'agenda porte le même texte (' + c.rappel.slice(0, 50) + '…)');
   await ctx.close();
 }

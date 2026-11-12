@@ -67,8 +67,9 @@ console.log('\n== 216) Timeline du calendrier : consigne sous MAINTENANT, infobu
   ok(r2.quoi === '😴 Micro-sieste' && r2.hidden === false && /alarme mise/.test(c2), 'Micro-sieste : sa consigne est affichée (' + c2.slice(0, 40) + ')');
   await o2.ctx.close();
   const o3 = await ouvrir('2026-08-31T18:00:00+02:00');
-  const r3 = await o3.fr.evaluate(() => ({ quoi: document.getElementById('pb-quoi').textContent, hidden: document.getElementById('pb-consigne').hidden }));
-  ok(r3.quoi === 'Cours' && r3.hidden === true, 'bloc sans consigne (le cours, hors phase) : la ligne est masquée (' + r3.quoi + ')');
+  const r3 = await o3.fr.evaluate(() => ({ quoi: document.getElementById('pb-quoi').textContent, hidden: document.getElementById('pb-consigne').hidden, txt: document.getElementById('pb-consigne').textContent }));
+  /* 12 novembre : hors du mois d'espagnol, le cours a desormais sa consigne (il n'en avait aucune) -- la ligne s'affiche */
+  ok(r3.quoi === 'Cours' && r3.hidden === false && /dans la marge/.test(r3.txt), 'le cours, hors phase : sa consigne est affichée (' + r3.txt.slice(0, 50) + ')');
   await o3.ctx.close();
 }
 
@@ -79,10 +80,10 @@ console.log('\n== 217) Google Calendar : un titre « 🦇 Bloc · consigne » se
     a: window.__bcTitreBase('🦇 Anki 1 · cartes dues dentaire (25/5)'),
     b: window.__bcTitreBase('🦇 Projets perso 3 · tâche courte · mer : révision Business'),
     c: window.__bcTitreBase('🦇 Repos — après-midi libre'),
-    lun: window.__bcConsigne('Projets perso 2', 1), ven: window.__bcConsigne('Projets perso 2', 5), sam: window.__bcConsigne('Étudier en avance', 6), rien: window.__bcConsigne('Cours', 1), dej: window.__bcConsigne('Déjeuner', 1, '2026-09-28')
+    lun: window.__bcConsigne('Projets perso 2', 1), ven: window.__bcConsigne('Projets perso 2', 5), sam: window.__bcConsigne('Étudier en avance', 6), rien: window.__bcConsigne('Bloc qui n\'existe pas', 1), dej: window.__bcConsigne('Déjeuner', 1, '2026-09-28')
   }));
   ok(r.a === '🦇 Anki 1' && r.b === '🦇 Projets perso 3' && r.c === '🦇 Repos — après-midi libre', 'titre de base : ' + r.a + ' / ' + r.b);
-  ok(/construire/.test(r.lun) && /Bilan de la semaine/.test(r.ven) && /3 d’avance|3 d'avance/.test(r.sam) && r.rien === '', 'consignes par jour (lundi construire, vendredi bilan, samedi 3 d’avance, le cours hors phase vide)');
+  ok(/construire/.test(r.lun) && /Bilan de la semaine/.test(r.ven) && /3 d’avance|3 d'avance/.test(r.sam) && r.rien === '', 'consignes par jour (lundi construire, vendredi bilan, samedi 3 d’avance, un bloc inconnu vide)');
   /* 14 octobre : la sauce du jour est fixe -- le lundi, soja-ail, montee avec les 10 ml d'huile crue.
      18 octobre : ses condiments -- le lundi, soja-moutarde, toujours avec les 10 ml d'huile crue.
      21 octobre : le couscous remplace le riz, 170 g le lundi (jour de combat, +45 g).

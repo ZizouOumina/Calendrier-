@@ -30,8 +30,8 @@ console.log('\n== 265) Le jour 1 au jeudi 24, la phase Español au 23 octobre ==
   const { ctx, fr } = await ouvrir('2026-09-23T10:00:00+02:00');
   const r = await fr.evaluate(() => ({
     debut: window.__bcProgrammeDebut,
-    es23: !!window.__bcPhaseEspanol('2026-12-11'), es24: !!window.__bcPhaseEspanol('2026-12-12'),
-    es7: !!window.__bcPhaseEspanol('2026-11-07'), es8: !!window.__bcPhaseEspanol('2026-11-08'), es11: !!window.__bcPhaseEspanol('2026-11-11'), es9: !!window.__bcPhaseEspanol('2026-11-12'),
+    es23: !!window.__bcPhaseEspanol('2026-12-12'), es24: !!window.__bcPhaseEspanol('2026-12-13'),
+    es7: !!window.__bcPhaseEspanol('2026-11-07'), es8: !!window.__bcPhaseEspanol('2026-11-08'), es11: !!window.__bcPhaseEspanol('2026-11-12'), es9: !!window.__bcPhaseEspanol('2026-11-13'),
     nom23: (window.__bcPeriode('2026-10-23') || {}).id || null
   }));
   /* 28 septembre au soir, « tout commence demain » : jour 1 au mardi 29, et la phase
@@ -56,10 +56,12 @@ console.log('\n== 265) Le jour 1 au jeudi 24, la phase Español au 23 octobre ==
      es-1 s'arrete le samedi 7, le dimanche 8 est hors phase, et le mois repart en entier du lundi 9
      au mardi 8 decembre (es-1-reprise).
      10 et 11 novembre : jour 1 au jeudi 12, et le mois repris avec lui -- du jeudi 12 au
-     vendredi 11 decembre. Du dimanche 8 au mercredi 11, hors phase. */
-  ok(r.debut === '2026-11-12', 'PROGRAMME_DEBUT = ' + r.debut);
-  ok(r.es7 && !r.es8 && !r.es11 && r.es9, 'es-1 jusqu\'au samedi 7, rien du dimanche 8 au mercredi 11, la reprise dès le jeudi 12 (' + [r.es7, r.es8, r.es11, r.es9].join(' / ') + ')');
-  ok(r.es23 && !r.es24, 'le mois repris court jusqu\'au vendredi 11 décembre, plus le 12 (' + r.es23 + ' / ' + r.es24 + ')');
+     vendredi 11 decembre. Du dimanche 8 au mercredi 11, hors phase.
+     12 novembre, la viande jetee : jour 1 au vendredi 13, et le mois repris avec lui -- du
+     vendredi 13 au samedi 12 decembre. Du dimanche 8 au jeudi 12, hors phase. */
+  ok(r.debut === '2026-11-13', 'PROGRAMME_DEBUT = ' + r.debut);
+  ok(r.es7 && !r.es8 && !r.es11 && r.es9, 'es-1 jusqu\'au samedi 7, rien du dimanche 8 au jeudi 12, la reprise dès le vendredi 13 (' + [r.es7, r.es8, r.es11, r.es9].join(' / ') + ')');
+  ok(r.es23 && !r.es24, 'le mois repris court jusqu\'au samedi 12 décembre, plus le 13 (' + r.es23 + ' / ' + r.es24 + ')');
   await ctx.close();
 }
 
