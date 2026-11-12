@@ -12,8 +12,9 @@
 > 300€ par mois pour les courses etc » ; la laverie « compte dans les 300 ». Les prix du soin et du ménage sortent
 > (la liste garde produits, rythmes et « fini ») ; `ENVELOPPE_COURSES` (300 €, dès le 25 novembre) remplace les
 > plafonds Nourriture, Soin et santé, Maison et ménage (`enveloppe-courses-v1`, schéma 64) ; Budget : une barre
-> « L'enveloppe ». Plan d'argent : cagnotte du 25 à 130 € (100 € quand la licence de novembre 2027 entre dans
-> l'horizon), épargne moyenne 159,01 € + le reste de l'enveloppe. Agenda : rappel du 25 à 130 €.
+> « L'enveloppe ». Plan d'argent : cagnotte du 25 à 100 € (les douze périodes qui viennent comptent la licence de
+> novembre 2027, 30 € d'un coup ; 130 € sans elle), épargne moyenne 159,01 € + le reste de l'enveloppe. Agenda : le
+> rappel du 25 dit encore 130 €, à mettre à 100 €.
 > **En attente** : les prix des sardines, des galettes, du Nutella ; un gratte-langue ? ; la banque (pas d'accès
 > LuxTrust, virement de sa mère sur le compte luxembourgeois) ; le club pas payé ce mois-ci ; draps et housses.
 

@@ -9,7 +9,10 @@ import { chromium } from 'playwright';
    Ce test verifie : les deux rayons, dus le samedi 14 ; les prix releves en ligne (Mercadona, Alcampo),
    le Skinoren « prix a relever » ; le bouton « fini » (samedi du rachat, annuler, duree mesuree) ; le
    plafond Nourriture inchange ; les postes du budget (Sante -> Soin et sante, Maison et menage) ; le plan
-   d'argent qui compte leur moyenne des le 14 ; les vieilles coches des rangs 5 et 6 ; l'iPhone. */
+   d'argent qui compte leur moyenne des le 14 ; les vieilles coches des rangs 5 et 6 ; l'iPhone.
+   12 novembre au soir, sa decision : « mets pas les prix des produits de nettoyage et de sante, on va juste dire que
+   j'ai 300EUR par mois pour les courses etc ». Les prix sortent, les plafonds des trois postes aussi : l'enveloppe
+   (ENVELOPPE_COURSES) les remplace. Les produits, leurs rythmes et le bouton « fini » restent. */
 const URL = process.env.BC_URL || 'http://127.0.0.1:8199/host.html';
 let errs = 0;
 const ok = (c, m) => { if(c) console.log('  ok  ' + m); else { errs++; console.log('  FAIL ' + m); } };
@@ -51,31 +54,31 @@ console.log('— samedi 14 novembre, 10:00 : tout est du, le tour de la salle de
   ok(/\/39 articles/.test(c.resume), 'la liste du jour : 39 articles (12 de nourriture + 27) (' + c.resume + ')');
   const L = await lignes(fr);
   const de = n => L.find(t => t.startsWith(n + ' —')) || '';
-  ok(/MERCADONA|Mercadona/.test(de('Gel douche')) && /0,95 € · en ligne/.test(de('Gel douche')) && /toutes les 7 semaines/.test(de('Gel douche')), 'gel douche : Mercadona, 0,95 € releve en ligne, toutes les 7 semaines (' + de('Gel douche') + ')');
-  ok(/^Lessive en poudre — 10 kg/.test(de('Lessive en poudre')) && /Alcampo/.test(de('Lessive en poudre')) && /14,69 € le sac · en ligne/.test(de('Lessive en poudre')), 'la lessive par 10 kg, deux sacs Alcampo a 14,69 € (' + de('Lessive en poudre') + ')');
-  ok(/Pharmacie/.test(de('Skinoren')) && /prix à relever/.test(de('Skinoren')), 'le Skinoren : pharmacie, prix a relever (' + de('Skinoren') + ')');
+  ok(/Mercadona/.test(de('Gel douche')) && !/€/.test(de('Gel douche')) && /toutes les 7 semaines/.test(de('Gel douche')), 'gel douche : Mercadona, toutes les 7 semaines, sans prix depuis le 12 novembre (' + de('Gel douche') + ')');
+  ok(/^Lessive en poudre — 10 kg/.test(de('Lessive en poudre')) && /Alcampo/.test(de('Lessive en poudre')) && !/€/.test(de('Lessive en poudre')), 'la lessive par 10 kg, chez Alcampo, sans prix (' + de('Lessive en poudre') + ')');
+  ok(/Pharmacie/.test(de('Skinoren')) && !/prix à relever|€/.test(de('Skinoren')), 'le Skinoren : pharmacie, sans prix ni « prix a relever » (' + de('Skinoren') + ')');
   ok(['Adoucissant', 'Pastilles lave-vaisselle', 'Dégraissant', 'Multi-surfaces', 'Déodorant', 'Shampoing', 'Dentifrice', 'Nettoyant visage', 'Papier toilette'].every(n => de(n)), 'tout ce qu\'il a cite est la');
   ok(['Sel lave-vaisselle', 'Liquide vaisselle', 'Éponges', 'Sacs poubelle 30 L', 'Sacs congélation', 'Savon pour les mains', 'Gel WC', 'Anticalcaire salle de bain', 'Fil dentaire', 'Brosse à dents', 'Rasoirs jetables'].every(n => de(n)), 'et ce qui lui manquait : le sel du lave-vaisselle, liquide vaisselle, eponges, sacs, savon, WC, anticalcaire, fil, brosse, rasoirs');
   ok(/jamais sur les serviettes, les draps, le kimono ni le sport/.test(de('Adoucissant')), 'l\'adoucissant dit ou il ne va pas');
-  ok(/^Pastilles lave-vaisselle — 1 paquet de 30/.test(de('Pastilles lave-vaisselle')) && /Mercadona/.test(de('Pastilles lave-vaisselle')) && /2,95 € · en ligne/.test(de('Pastilles lave-vaisselle')) && !de('Poudre lave-vaisselle') && !de('Liquide de rinçage'),
-     'les pastilles « Todo en 1 » de Mercadona, 2,95 € les 30 : plus de poudre ni de liquide de rincage, pas de vinaigre (' + de('Pastilles lave-vaisselle') + ')');
+  ok(/^Pastilles lave-vaisselle — 1 paquet de 30/.test(de('Pastilles lave-vaisselle')) && /Mercadona/.test(de('Pastilles lave-vaisselle')) && /0,10 € le lavage/.test(de('Pastilles lave-vaisselle')) && !de('Poudre lave-vaisselle') && !de('Liquide de rinçage'),
+     'les pastilles « Todo en 1 » de Mercadona : plus de poudre ni de liquide de rincage, pas de vinaigre (' + de('Pastilles lave-vaisselle') + ')');
   ok(/même avec les pastilles/.test(de('Sel lave-vaisselle')), 'le sel reste, meme avec les pastilles tout-en-un');
   /* 10 novembre : « lave vaisselle 1 fois par jour » -- le paquet de 30 tient 4 semaines, le sel 8. */
   ok(/toutes les 4 semaines/.test(de('Pastilles lave-vaisselle')) && /un lavage par jour/.test(de('Pastilles lave-vaisselle')) && /toutes les 8 semaines/.test(de('Sel lave-vaisselle')),
      'un lavage par jour : les pastilles toutes les 4 semaines, le sel toutes les 8');
   ok(!/estim/i.test(c.budget), 'le panneau du budget de la liste ne dit toujours « estim » nulle part');
-  ok(/En plus, 42,1\d € par mois de soin et de ménage/.test(c.budget) && /27,8\d € de soin et santé/.test(c.budget) && /14,3\d € de maison et ménage/.test(c.budget) && /Hors liste, la laverie du dimanche : ≈ 8,00 € par semaine, 34,67 € par mois, dans Maison et ménage/.test(c.budget), 'il chiffre le soin et le menage a part : ~42,15 € par mois (un lave-vaisselle par jour, le linge de maison a la laverie) -- et la laverie a cote, 34,67 € par mois (' + c.budget.slice(c.budget.indexOf('En plus'), c.budget.indexOf('En plus') + 120) + '…)');
-  ok(/Skinoren compté 19,90 €/.test(c.budget) && /Soin et santé, Maison et ménage/.test(c.budget), 'le Skinoren compte a 19,90 € jusqu\'au ticket ; les montants payes vont dans les deux postes');
+  ok(/L’enveloppe : 300,00 € par mois/.test(c.budget) && /laverie \(8,00 € chaque dimanche\)/.test(c.budget) && !/de soin et de ménage<\/b>|En plus, /.test(c.budget), 'le panneau dit l\'enveloppe de 300 € (courses, soin, menage, laverie), plus de total du soin et du menage (' + c.budget.slice(0, 120) + ')');
+  ok(!/Skinoren/.test(c.budget) && /les trois comptent dans l’enveloppe/.test(c.budget), 'plus de Skinoren compte a part ; les tickets vont dans les trois postes de l\'enveloppe');
   ok(/Mercadona pour le soin et le ménage/.test(c.desc) && /« fini »/.test(c.desc), 'l\'en-tete de l\'onglet dit Mercadona et le bouton « fini »');
   const plan = await fr.evaluate(() => document.getElementById('dash-plan').textContent);
   ok(/le tour de la salle de bain et de la cuisine/.test(plan) && /Soin et santé ou Maison et ménage/.test(plan), 'le plan du jour du 14 : le tour des produits avant de partir, les tickets au retour');
   const h = await fr.evaluate(() => window.__bcCoutHors());
   /* 11 novembre : les draps, les serviettes et les lavettes partent a la laverie -- quatre machines par semaine a la
      maison au lieu de six, la lessive dure plus longtemps : 9,93 -> 9,73 EUR par semaine. */
-  ok(pres(h.hebdo, 9.727, 0.01) && pres(h.mois, 42.15, 0.01), 'soin et menage : 9,73 € par semaine, 42,15 € par mois (un lave-vaisselle par jour, quatre machines par semaine) (' + h.hebdo.toFixed(3) + ', ' + h.mois.toFixed(2) + ')');
-  ok(h.estimes.length === 1 && h.estimes[0].label === 'Skinoren' && h.manque.length === 0, 'une seule ligne comptee a un prix d\'ailleurs : le Skinoren');
+  ok(h.hebdo === 0 && h.mois === 0, 'soin et menage : plus aucun euro calcule, l\'enveloppe les porte (' + h.hebdo + ', ' + h.mois + ')');
+  ok(h.estimes.length === 0 && h.manque.length === 27, 'aucun prix estime, les 27 produits sans prix (' + h.estimes.length + ' / ' + h.manque.length + ')');
   const am = await fr.evaluate(() => window.__bcCoutAchats());
-  ok(pres(am.mois, 200.43, 0.01), 'la nourriture seule dans coutAchatsMoyen : 200,43 € par mois, rien ne bouge (' + am.mois.toFixed(2) + ')');
+  ok(pres(am.mois, 211.05, 0.01), 'la nourriture seule dans coutAchatsMoyen : 211,05 € par mois (les dattes a 5 EUR le kilo depuis le 12 novembre) (' + am.mois.toFixed(2) + ')');
   const autre = await fr.evaluate(() => document.querySelector('#dash-plan') && [...document.querySelectorAll('#dash-plan li')].filter(li => /salle de bain/.test(li.textContent)).length);
   ok(autre === 1, 'une seule ligne pour le tour des produits');
   await ctx.close();
@@ -140,7 +143,7 @@ console.log('— samedi 2 janvier : le second « fini » mesure la vraie duree')
   const L = await lignes(fr);
   ok(/toutes les 6 semaines \(durée mesurée\)/.test(L.find(t => /^Gel douche/.test(t)) || ''), 'la ligne dit « toutes les 6 semaines (duree mesuree) »');
   const h = await fr.evaluate(() => window.__bcCoutHors().hebdo);
-  ok(pres(h, 9.7269 - 0.95 / 7 + 0.95 / 6, 0.005), 'et la moyenne suit la duree mesuree (' + h.toFixed(3) + ')');
+  ok(h === 0, 'sans prix, la duree mesuree ne sert qu\'au rythme : rien a chiffrer (' + h + ')');
   await ctx.close();
 }
 
@@ -150,7 +153,8 @@ console.log('— le budget : « Sante » devient « Soin et sante », « Maison 
                  'batcave-budget-limits': {'Nourriture': 200, 'Santé': 20}};
   const {ctx, page, fr} = await ouvrir('2026-11-09T21:00:00+01:00', {stock});
   const r = await fr.evaluate(() => ({ bl: JSON.parse((window.__bcLire || (k => localStorage.getItem(k)))('batcave-budget-limits')) }));
-  ok(r.bl['Soin et santé'] === 48 && r.bl['Santé'] === undefined && r.bl['Maison et ménage'] === 50 && r.bl['Nourriture'] === 200, 'plafonds : Soin et sante 48 (ses 20 + 28 de soin), Maison et menage 50 (14,34 de produits + 34,67 de laverie), Nourriture 200 inchange (' + JSON.stringify(r.bl) + ')');
+  /* 12 novembre au soir : l'enveloppe passe apres les anciennes migrations et efface les trois plafonds */
+  ok(r.bl['Soin et santé'] === undefined && r.bl['Santé'] === undefined && r.bl['Maison et ménage'] === undefined && r.bl['Nourriture'] === undefined, 'plafonds : Sante devient Soin et sante, puis l\'enveloppe de 300 € remplace les trois plafonds (' + JSON.stringify(r.bl) + ')');
   await fr.evaluate(() => document.querySelector('.nav-btn[data-page="budget"]').click());
   await page.waitForTimeout(400);
   const b = await fr.evaluate(() => ({ cats: [...document.querySelectorAll('#budget-cats-list .bc-nom')].map(x => x.textContent), liste: document.getElementById('tx-list').textContent, sel: [...document.querySelectorAll('#tx-cat option')].map(o => o.textContent) }));
@@ -162,7 +166,8 @@ console.log('— le budget : « Sante » devient « Soin et sante », « Maison 
 {
   const {ctx, fr} = await ouvrir('2026-11-09T21:00:00+01:00');
   const bl = await fr.evaluate(() => JSON.parse((window.__bcLire || (k => localStorage.getItem(k)))('batcave-budget-limits')));
-  ok(bl['Soin et santé'] === 28 && bl['Maison et ménage'] === 50 && bl['Nourriture'] === 200, 'installation neuve : Soin et sante 28, Maison et menage 50 (la laverie comprise), Nourriture 200 (' + JSON.stringify(bl) + ')');
+  /* 12 novembre au soir : une installation neuve n'a plus de plafond pour les trois postes -- l'enveloppe les tient */
+  ok(bl['Soin et santé'] === undefined && bl['Maison et ménage'] === undefined && bl['Nourriture'] === undefined, 'installation neuve : ni Nourriture, ni Soin et sante, ni Maison et menage, l\'enveloppe de 300 € les remplace (' + JSON.stringify(bl) + ')');
   await ctx.close();
 }
 {
@@ -173,14 +178,14 @@ console.log('— le budget : « Sante » devient « Soin et sante », « Maison 
   const veille = {'batcave-budget-limits': {'Nourriture': 200, 'Soin et santé': 28, 'Maison et ménage': 14}, 'batcave-postes-soin-maison-v1': true};
   const {ctx, fr} = await ouvrir('2026-11-10T09:00:00+01:00', {stock: veille});
   const bl = await fr.evaluate(() => JSON.parse((window.__bcLire || (k => localStorage.getItem(k)))('batcave-budget-limits')));
-  ok(bl['Maison et ménage'] === 50 && bl['Soin et santé'] === 28, 'le plafond pose le 9 (14), Batcave pas rouverte le 10 : il suit a 50 (' + JSON.stringify(bl) + ')');
+  ok(bl['Maison et ménage'] === undefined && bl['Soin et santé'] === undefined, 'le plafond pose le 9 (14), Batcave pas rouverte depuis : l\'enveloppe le remplace (' + JSON.stringify(bl) + ')');
   await ctx.close();
 }
 {
   const sien = {'batcave-budget-limits': {'Nourriture': 200, 'Soin et santé': 28, 'Maison et ménage': 25}, 'batcave-postes-soin-maison-v1': true};
   const {ctx, fr} = await ouvrir('2026-11-10T09:00:00+01:00', {stock: sien});
   const bl = await fr.evaluate(() => JSON.parse((window.__bcLire || (k => localStorage.getItem(k)))('batcave-budget-limits')));
-  ok(bl['Maison et ménage'] === 25, 'un plafond qu\'il a pose lui-meme (25) ne bouge pas (' + bl['Maison et ménage'] + ')');
+  ok(bl['Maison et ménage'] === undefined, 'meme un plafond qu\'il avait pose lui-meme (25) laisse place a l\'enveloppe -- sa decision du 12 novembre (' + bl['Maison et ménage'] + ')');
   await ctx.close();
 }
 {
@@ -188,7 +193,7 @@ console.log('— le budget : « Sante » devient « Soin et sante », « Maison 
   const v2 = {'batcave-budget-limits': {'Nourriture': 200, 'Soin et santé': 28, 'Maison et ménage': 15}, 'batcave-postes-soin-maison-v1': true, 'batcave-postes-soin-maison-v2': true};
   const {ctx, fr} = await ouvrir('2026-11-11T21:00:00+01:00', {stock: v2});
   const bl = await fr.evaluate(() => JSON.parse((window.__bcLire || (k => localStorage.getItem(k)))('batcave-budget-limits')));
-  ok(bl['Maison et ménage'] === 50 && bl['Soin et santé'] === 28, 'le plafond de la v2 (15) suit la laverie : 50 (' + JSON.stringify(bl) + ')');
+  ok(bl['Maison et ménage'] === undefined && bl['Soin et santé'] === undefined, 'le plafond de la v2 (15) : l\'enveloppe le remplace (' + JSON.stringify(bl) + ')');
   await ctx.close();
 }
 
@@ -196,12 +201,14 @@ console.log('— le plan d\'argent : leur moyenne, des le samedi 14');
 {
   const {ctx, fr} = await ouvrir('2026-11-09T21:00:00+01:00');
   const a = await fr.evaluate(() => { const a = window.__bcMoisArgent('2026-11-09'); return {cagnotte: a.cagnotte, soins: a.periode.soins, bal: a.periode.balayage, ligne: a.lignes.find(l => l.soins) || null, somme: a.lignes.slice(1).reduce((t, l) => t + l.montant, 0), fin: a.lignes[a.lignes.length - 1].solde, ordre: a.lignes.map(l => l.soins ? 'S' : l.laverie ? 'L' : l.courses ? 'C' : l.cagnotte ? 'K' : '.').join(''), soinsMois: a.soinsMois, lav: a.lignes.find(l => l.laverie) || null}; });
-  /* 11 novembre : la laverie, 8 EUR chaque dimanche des le 15 -- la periode la plus chere en porte 5 : 130 -> 90 */
-  ok(a.cagnotte === 90, 'la cagnotte du 25 : 90 € (180 avant le soin et le menage, 130 avant la laverie)');
-  ok(pres(a.soins, 2 * 9.727, 0.03), 'du 25 oct. au 24 nov. : deux samedis du soin et du menage, le 14 et le 21 (' + a.soins.toFixed(2) + ')');
-  ok(a.ligne && a.ligne.action === 'Soin et maison' && /9,73 € par semaine en moyenne/.test(a.ligne.detail) && /Skinoren compté 19,90 €/.test(a.ligne.detail), 'une ligne « Soin et maison » dans le fil, qui dit sa moyenne et le Skinoren');
+  /* 11 novembre : la laverie, 8 EUR chaque dimanche des le 15 -- la periode la plus chere en porte 5 : 130 -> 90.
+     12 novembre au soir : l'enveloppe des le 25 novembre -- 431,51 la periode de la licence de novembre 2027,
+     moins 300, moins 27,49 de marge Basic-Fit : 100. */
+  ok(a.cagnotte === 100, 'la cagnotte du 25 : 100 €, l\'enveloppe des le 25 novembre, et la licence de novembre 2027 (30 € d\'un coup) dans les douze periodes qui viennent (90 avant l\'enveloppe ; 180 avant le soin et le menage, 130 avant la laverie) (' + a.cagnotte + ')');
+  ok(a.soins === 0, 'du 25 oct. au 24 nov. : le soin et le menage n\'ont plus de prix, rien a compter (' + a.soins + ')');
+  ok(!a.ligne, 'plus de ligne « Soin et maison » dans le fil');
   ok(a.lav && a.lav.action === 'La laverie × 2' && a.lav.montant === 16 && /60 °C/.test(a.lav.detail) && /Maison et ménage/.test(a.lav.detail), 'puis la laverie : deux dimanches, le 15 et le 22, 16 € (' + (a.lav && a.lav.action) + ')');
-  ok(/CSLK$/.test(a.ordre), 'le fil finit par les courses, le soin et le menage, la laverie, puis le balayage (' + a.ordre + ')');
+  ok(/CLK$/.test(a.ordre), 'le fil finit par les courses, la laverie, puis le balayage (' + a.ordre + ')');
   ok(pres(a.somme, 700) && Math.abs(a.fin) < 0.001, 'le fil fait toujours 700 €, et le compte finit a zero');
   const sept = await fr.evaluate(() => { const a = window.__bcMoisArgent('2026-09-25'); return {soins: a.periode.soins, ligne: !!a.lignes.find(l => l.soins)}; });
   ok(sept.soins === 0 && !sept.ligne, 'avant le 14 novembre, rien n\'est compte (la liste n\'existait pas)');
