@@ -1,5 +1,18 @@
 # Où on en est — samedi 19 septembre 2026, au soir
 
+> ### Vendredi 13 novembre, le soir — « j'ai pas acheté de viande, j'ai pas fait toutes les courses, on va faire ça demain » ; « dans la batcave les connecteurs ne marchent pas »
+> **Demain sans batch** : `BATCH_DATES` vide (plus de batch le vendredi), `VIANDE_PREMIERE_SEMAINE` neutralisée.
+> Samedi 14 et dimanche 15 à midi, le repas frais des dimanches (`midiFrais` : 3 œufs, 80 g de brocoli, le riz ; le samedi,
+> « sinon le placard », les courses étant à 13:30) ; samedi soir, la viande hachée des courses cuite sur le moment ; au
+> rangement, 3 œufs durs pour la collation. La liste du 13 et du 14 porte 560 g de viande hachée (dont 70 pour samedi soir)
+> et 24 œufs (21 au plan) ; le 21, la semaine type revient. Agenda : les cinq rappels concernés mis à jour depuis la
+> conversation ; guide et « Ta journée, pas à pas » suivent (test119, scénario 5).
+> **Connecteurs** : vérifiés un par un depuis la conversation (agenda, météo, Drive, Shopify) — tous répondent. Sa base en
+> ligne montre que sa Batcave a écrit l'agenda à 15:57 (remise au propre réussie : 1 659 déjà justes, 25 adoptés, 2 corrigés),
+> lu Notion à 15:56 et fait sa sauvegarde du jour : la panne qu'il a vue vers 17:45 était côté claude.ai (cette session
+> aussi a perdu ses connecteurs au même moment). Corrigé quand même : la météo appelait « AccuWeather® » en dur ; elle
+> demande maintenant à `listTools()` le nom que claude.ai affiche chez lui (« AccuWeather » sinon), avec un filet à 8 s.
+
 > ### Vendredi 13 novembre, l'après-midi — « je veux que tout soit parfait pour demain, ça doit être nickel »
 > **Ses mots** : « décale tout à partir de demain, et prendre les photos etc je fais ça quand, on considère que demain
 > c'est le premier jour de courses aussi » ; puis « je veux que tout soit parfait pour demain ».

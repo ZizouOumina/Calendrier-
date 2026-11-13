@@ -83,6 +83,71 @@ console.log('\n== 3) Une Batcave neuve : rien à retirer, le drapeau posé quand
   await ctx.close();
 }
 
+console.log('\n== 4) La météo prend le nom que claude.ai affiche chez lui (« AccuWeather », sans le ®) ==');
+{
+  for(const [nom, attendu] of [['AccuWeather', 'AccuWeather'], [null, 'AccuWeather®']]){
+    const ctx = await browser.newContext({ viewport:{width:1440,height:900}, timezoneId:'Europe/Madrid', locale:'fr-FR' });
+    await ctx.addInitScript((nom) => {
+      window.__watches = [];
+      const mcp = {
+        callTool(){ return Promise.resolve({content:[], payload:{}}); },
+        watchTool(server, tool, input, handler){
+          window.__watches.push(server + '/' + tool);
+          Promise.resolve().then(() => {
+            if(tool === 'widgets-current-claude') handler({type:'data', result:{payload:{location:{localizedName:'Alicante'}, currentConditions:{temperatureValue:20.3, phrase:'Plutôt dégagé', extended:{uv:{value:0}}}}}});
+            else handler({type:'error', error:{code:'server_not_connected', message:'x'}});
+          });
+          return () => {};
+        },
+        invalidate(){ return Promise.resolve(); },
+        listTools(){ return Promise.resolve({servers: nom ? [{server: nom, authStatus:'connected', tools:[{name:'widgets-current-claude', description:''}]}, {server:'AccuWeather®', authStatus:'connected', tools:[]}] : []}); }
+      };
+      window.claude = { use(n){ return Promise.resolve(n === 'mcp' ? mcp : null); } };
+    }, nom);
+    const page = await ctx.newPage();
+    page.on('pageerror', e => { errs++; console.log('  PAGEERROR: ' + e.message); });
+    await page.clock.install({ time: new Date('2026-11-14T07:00:00+01:00') });
+    await page.goto(URL, {timeout:20000}).catch(() => {});
+    await page.frameLocator('#f').locator('#dash-plan').waitFor({ state:'attached', timeout:15000 });
+    const fr = page.frames().find(x => x.url().includes('batcave.html'));
+    await page.waitForTimeout(800);
+    const w = await fr.evaluate(() => window.__watches.filter(x => /AccuWeather/.test(x)));
+    const meteo = await fr.evaluate(() => (document.getElementById('dash-weather') || {}).textContent || '');
+    ok(w.length === 3 && w.every(x => x.startsWith(attendu + '/')), (nom ? 'branché sous « ' + nom + ' »' : 'listTools muet') + ' : les trois lectures météo partent sous « ' + attendu + ' » (' + w.join(', ') + ')');
+    ok(/20°C/.test(meteo) && /Alicante/.test(meteo), 'et la météo s\'affiche : ' + meteo);
+    await ctx.close();
+  }
+}
+
+console.log('\n== 5) Pas de viande jeudi, pas de batch vendredi : le week-end du départ tient quand même ==');
+{
+  const { ctx, fr, page } = await ouvrir('2026-11-14T13:00:00+01:00');
+  const r = await fr.evaluate(() => {
+    const t = (iso, re) => (window.__bcRappels(iso).filter(b => re.test(b.titre))[0] || {}).description || '';
+    return { dej14: t('2026-11-14', /Déjeuner/), din14: t('2026-11-14', /Dîner/), range14: t('2026-11-14', /Rangement/), courses14: t('2026-11-14', /Courses/),
+             dej15: t('2026-11-15', /Déjeuner/), din15: t('2026-11-15', /Dîner/), batch13: window.__bcRappels('2026-11-13').some(b => /Batch/.test(b.titre)) };
+  });
+  ok(/repas frais/.test(r.dej14) && /3 œufs/.test(r.dej14) && /placard/.test(r.dej14) && !/boîte du jour/.test(r.dej14), 'samedi midi : un repas frais, 3 œufs, sinon le placard');
+  ok(/repas frais/.test(r.dej15) && /courses d'hier/.test(r.dej15) && !/dernière boîte/.test(r.dej15), 'dimanche midi : un repas frais aussi, plus de « dernière boîte du batch »');
+  ok(/cuite sur le moment/.test(r.din14) && /70 g émiettés/.test(r.din14), 'samedi soir : la viande hachée des courses, cuite sur le moment');
+  ok(/la boîte du jour/.test(r.din15), 'dimanche soir : la boîte de la session du dimanche, comme prévu');
+  ok(/70 g de viande hachée de ce soir/.test(r.range14) && /3 œufs/.test(r.range14), 'au rangement : la viande du soir au frigo, 3 œufs durs pour la collation');
+  ok(/Pas de batch hier/.test(r.courses14), 'les courses le disent');
+  ok(!r.batch13, 'plus de batch le vendredi 13');
+  await fr.evaluate(() => document.querySelector('.nav-btn[data-page="courses"]').click());
+  await page.waitForTimeout(400);
+  const c = await fr.evaluate(() => document.getElementById('courses-grid').innerText);
+  ok(/Viande hachée 5 % — 560 g/.test(c) && /dont 70 g pour samedi soir/.test(c), 'la liste du samedi 14 : 560 g de viande hachée, dont 70 pour le soir');
+  ok(/Œufs — 24/.test(c) && /21 œufs/.test(c), 'et 24 œufs pour les 21 du plan');
+  await ctx.close();
+  const b = await ouvrir('2026-11-21T09:00:00+01:00');
+  await b.fr.evaluate(() => document.querySelector('.nav-btn[data-page="courses"]').click());
+  await b.page.waitForTimeout(400);
+  const c2 = await b.fr.evaluate(() => document.getElementById('courses-grid').innerText);
+  ok(/Viande hachée 5 % — 490 g/.test(c2) && /Œufs — 18/.test(c2) && !/samedi soir/.test(c2), 'le samedi 21, la semaine type revient : 490 g, 18 œufs');
+  await b.ctx.close();
+}
+
 await browser.close();
 console.log(errs ? '\n' + errs + ' ÉCHEC(S)' : '\nTOUT VERT');
 process.exit(errs ? 1 : 0);
