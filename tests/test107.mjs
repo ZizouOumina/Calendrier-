@@ -31,7 +31,7 @@ console.log('\n== 265) Le jour 1 au jeudi 24, la phase Español au 23 octobre ==
   const r = await fr.evaluate(() => ({
     debut: window.__bcProgrammeDebut,
     es23: !!window.__bcPhaseEspanol('2026-12-12'), es24: !!window.__bcPhaseEspanol('2026-12-13'),
-    es7: !!window.__bcPhaseEspanol('2026-11-07'), es8: !!window.__bcPhaseEspanol('2026-11-08'), es11: !!window.__bcPhaseEspanol('2026-11-12'), es9: !!window.__bcPhaseEspanol('2026-11-13'),
+    es7: !!window.__bcPhaseEspanol('2026-11-07'), es8: !!window.__bcPhaseEspanol('2026-11-08'), es11: !!window.__bcPhaseEspanol('2026-11-13'), es9: !!window.__bcPhaseEspanol('2026-11-14'),
     nom23: (window.__bcPeriode('2026-10-23') || {}).id || null
   }));
   /* 28 septembre au soir, « tout commence demain » : jour 1 au mardi 29, et la phase
@@ -58,9 +58,11 @@ console.log('\n== 265) Le jour 1 au jeudi 24, la phase Español au 23 octobre ==
      10 et 11 novembre : jour 1 au jeudi 12, et le mois repris avec lui -- du jeudi 12 au
      vendredi 11 decembre. Du dimanche 8 au mercredi 11, hors phase.
      12 novembre, la viande jetee : jour 1 au vendredi 13, et le mois repris avec lui -- du
-     vendredi 13 au samedi 12 decembre. Du dimanche 8 au jeudi 12, hors phase. */
-  ok(r.debut === '2026-11-13', 'PROGRAMME_DEBUT = ' + r.debut);
-  ok(r.es7 && !r.es8 && !r.es11 && r.es9, 'es-1 jusqu\'au samedi 7, rien du dimanche 8 au jeudi 12, la reprise dès le vendredi 13 (' + [r.es7, r.es8, r.es11, r.es9].join(' / ') + ')');
+     vendredi 13 au samedi 12 decembre. Du dimanche 8 au jeudi 12, hors phase.
+     13 novembre, « on commence tout samedi » : jour 1 au samedi 14, et le mois repris avec lui --
+     du samedi 14 au samedi 12 decembre. Du dimanche 8 au vendredi 13, hors phase. */
+  ok(r.debut === '2026-11-14', 'PROGRAMME_DEBUT = ' + r.debut);
+  ok(r.es7 && !r.es8 && !r.es11 && r.es9, 'es-1 jusqu\'au samedi 7, rien du dimanche 8 au vendredi 13, la reprise dès le samedi 14 (' + [r.es7, r.es8, r.es11, r.es9].join(' / ') + ')');
   ok(r.es23 && !r.es24, 'le mois repris court jusqu\'au samedi 12 décembre, plus le 13 (' + r.es23 + ' / ' + r.es24 + ')');
   await ctx.close();
 }
@@ -102,15 +104,19 @@ console.log('\n== 267) Le controle sait voir une serie decalee, en trop, manquan
     const mm = m => String(Math.floor(m / 60)).padStart(2, '0') + ':' + String(m % 60).padStart(2, '0');
     const juste = blocs.map((b, i) => ev(b.titreBase + ' · consigne', mm(b.debut), i));
     const propre = window.__bcComparerSeries(iso, juste);
-    const faux = juste.slice(1);                        /* le premier bloc n'a plus de serie */
+    /* 13 novembre : depuis la remise au propre jour par jour, un bloc pose en evenement unique est annonce lui aussi */
+    const uniques = blocs.map((b, i) => ({id: 'u' + i, summary: b.titre, status: 'confirmed', start: {dateTime: iso + 'T' + mm(b.debut) + ':00+02:00'}}));
+    const propreUniques = window.__bcComparerSeries(iso, uniques.concat([{id:'tapis', summary:'🦇 Enlever les tapis', recurringEventId:'tapis', status:'confirmed', start:{dateTime: iso + 'T14:52:00+02:00'}}]));
+    const faux = juste.slice(1);                        /* le premier bloc n'a plus de rappel */
     faux[0] = ev(faux[0].summary, '04:00', 'x');       /* le deuxieme sonne a 04:00 */
     faux.push(ev('🦇 Vieux bloc · supprime', '23:00', 'z'));
-    faux.push({id:'u', summary:'🦇 Evenement unique', status:'confirmed', start:{dateTime: iso + 'T10:00:00+02:00'}});
+    faux.push({id:'t', summary:'🦇 Enlever les tapis', recurringEventId:'tapis', status:'confirmed', start:{dateTime: iso + 'T14:52:00+02:00'}});
     const e = window.__bcComparerSeries(iso, faux);
-    return {n: blocs.length, propre: propre.length, types: e.map(x => x.type).sort(), premier: blocs[0].titreBase, decale: e.filter(x => x.type === 'decale')[0]};
+    return {n: blocs.length, propre: propre.length, propreUniques: propreUniques.length, types: e.map(x => x.type).sort(), premier: blocs[0].titreBase, decale: e.filter(x => x.type === 'decale')[0], texte: window.__bcGroupesDerive(e).map(g => g.type + ':' + g.titre)};
   });
   ok(r.propre === 0, 'une semaine juste : aucun écart (' + r.n + ' blocs)');
-  ok(JSON.stringify(r.types) === JSON.stringify(['decale','en-trop','manquant']), 'décalée, en trop, manquante — et l\'événement unique ignoré : ' + r.types.join(', '));
+  ok(r.propreUniques === 0, 'des blocs posés en événements uniques, et le rappel des tapis : aucun écart non plus (' + r.propreUniques + ')');
+  ok(JSON.stringify(r.types) === JSON.stringify(['decale','en-trop','manquant']), 'décalée, en trop, manquante — et le rappel protégé des tapis jamais « en trop » : ' + r.texte.join(', '));
   ok(r.decale && r.decale.agenda === '04:00', 'la série décalée dit son heure : ' + (r.decale && r.decale.agenda) + ' au lieu de ' + (r.decale && r.decale.grille));
   await ctx.close();
 }

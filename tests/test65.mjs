@@ -45,12 +45,12 @@ console.log('\n== 240) Sport : mercredi 21 octobre = jour 1, première muscu le 
      21 octobre au matin : « on commence jeudi matin » -- jour 1 le jeudi 22, rien d'autre ne bouge.
      31 octobre : « on commence tout dimanche matin » -- jour 1 le dimanche 1er novembre, premiere
      seance le lundi 2 (semaine 2 : la semaine 1 est celle du lundi 26, dont le jour 1 est le dimanche). */
-  const { ctx, fr } = await ouvrir('2026-11-13T07:30:00+01:00');   /* 12 novembre : le jour 1 passe au vendredi 13 ; 11 novembre : au jeudi 12 */
+  const { ctx, fr } = await ouvrir('2026-11-14T07:30:00+01:00');   /* 13 novembre : le jour 1 passe au samedi 14 ; 12 novembre : au vendredi 13 ; 11 novembre : au jeudi 12 */
   const r = await fr.evaluate(() => ({ debut: window.__bcProgrammeDebut, note: document.getElementById('programme-note').textContent }));
-  ok(r.debut === '2026-11-13', 'PROGRAMME_DEBUT = 2026-11-13 (' + r.debut + ')');
+  ok(r.debut === '2026-11-14', 'PROGRAMME_DEBUT = 2026-11-14 (' + r.debut + ')');
   ok(/muscu à partir du/.test(r.note) && /16 nov/.test(r.note), 'note du jour 1 : « muscu à partir du 16 nov. » (' + r.note + ')');
   await ctx.close();
-  const v = await ouvrir('2026-11-12T20:00:00+01:00');
+  const v = await ouvrir('2026-11-13T20:00:00+01:00');
   const nv = await v.fr.evaluate(() => document.getElementById('programme-note').textContent);
   ok(/muscu à partir du/.test(nv) && /16 nov/.test(nv), 'la veille : « muscu à partir du 16 nov. » (' + nv + ')');
   await v.ctx.close();

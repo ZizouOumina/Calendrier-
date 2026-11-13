@@ -61,7 +61,7 @@ const appels = (fr, tool) => fr.evaluate(t => window.__appels.filter(a => a.tool
 const RELEVE_JANVIER = {'batcave-gcal-2027-01-12': {p20: {id:'amvacjo55pjdp3c9c662dfhk4g', empreinte:'x', cree:true}}};
 const ACTIF = {'batcave-gcal-ecriture': {actif:true, depuis:'2026-09-09'}};
 
-console.log('\n== 1) Ce soir (avant le 13) : les 124 partent d\'un coup, puis tout l\'agenda est reposé jusqu\'au 24 janvier ==');
+console.log('\n== 1) Avant le jour 1 : les 124 partent d\'un coup, puis tout l\'agenda est reposé jusqu\'au 24 janvier ==');
 {
   const { ctx, fr, page } = await ouvrir('2026-11-12T22:00:00+01:00', Object.assign({}, ACTIF, RELEVE_JANVIER));
   await page.clock.runFor(7000);
@@ -76,29 +76,60 @@ console.log('\n== 1) Ce soir (avant le 13) : les 124 partent d\'un coup, puis to
   ok(drapeau && drapeau.retires === 124 && drapeau.date === '2026-11-12', 'fait une fois pour toutes : ' + JSON.stringify(drapeau));
   /* la lecture du controle des series (une semaine d'un coup, triee) suit l'envoi : elle ne compte pas parmi les jours */
   const tout = await appels(fr, 'list_events'), lus = tout.filter(a => a.input.orderBy !== 'startTime');
-  ok(lus.length === 73 && lus[0].input.startTime.startsWith('2026-11-13T00:00:00') && lus[72].input.startTime.startsWith('2027-01-24T00:00:00'), 'reconstruction : chaque jour du vendredi 13 novembre au dimanche 24 janvier est relu (' + lus.length + ' jours)');
+  /* 13 novembre : jour 1 au samedi 14 -- 72 jours, du samedi 14 novembre au dimanche 24 janvier */
+  ok(lus.length === 72 && lus[0].input.startTime.startsWith('2026-11-14T00:00:00') && lus[71].input.startTime.startsWith('2027-01-24T00:00:00'), 'reconstruction : chaque jour du samedi 14 novembre au dimanche 24 janvier est relu (' + lus.length + ' jours)');
   const ctrl = tout.findIndex(a => a.input.orderBy === 'startTime');
   ok(ctrl === tout.length - 1, 'le controle des series vient apres, une seule lecture (' + (tout.length - lus.length) + ')');
   const crees = await appels(fr, 'create_event');
-  ok(crees.length > 1500 && crees.every(a => a.input.startTime >= '2026-11-13'), 'rien avant le 13, tout le reste posé (' + crees.length + ' événements)');
+  ok(crees.length > 1500 && crees.every(a => a.input.startTime >= '2026-11-14'), 'rien avant le 14, tout le reste posé (' + crees.length + ' événements)');
   const jours = new Set(crees.map(a => a.input.startTime.slice(0, 10)));
-  ok(jours.size === 73, 'les 73 jours ont leurs blocs (' + jours.size + ')');
+  ok(jours.size === 72, 'les 72 jours ont leurs blocs (' + jours.size + ')');
   const rec = await local(fr, 'batcave-gcal-reconstruction');
-  ok(rec && rec.jours === 73 && rec.du === '2026-11-13' && rec.au === '2027-01-24' && rec.date === '2026-11-12', 'reconstruction faite une fois pour toutes : ' + JSON.stringify(rec && {jours: rec.jours, du: rec.du, au: rec.au}));
+  ok(rec && rec.jours === 72 && rec.du === '2026-11-14' && rec.au === '2027-01-24' && rec.date === '2026-11-12' && rec.programme === '2026-11-14', 'reconstruction faite une fois pour toutes, pour ce jour 1 : ' + JSON.stringify(rec && {jours: rec.jours, du: rec.du, au: rec.au, programme: rec.programme}));
   const toast = await fr.evaluate(() => (document.getElementById('toast') || {}).textContent || '');
   ok(/Agenda remis au propre jusqu’au 24 janvier/.test(toast), 'message : ' + toast.slice(0, 110));
+  /* 13 novembre : le controle qui suit relit l'agenda reconstruit -- chaque bloc y est, unique ou serie : aucun ecart */
+  await fr.waitForFunction(() => { try{ return !!JSON.parse(localStorage.getItem('batcave-gcal-controle')); }catch(e){ return false; } }, null, {timeout:20000}).catch(() => {});
+  const controle = await local(fr, 'batcave-gcal-controle');
+  ok(controle && controle.ecarts && controle.ecarts.length === 0, 'après la reconstruction, le contrôle ne voit aucun écart (' + (controle && controle.ecarts ? controle.ecarts.length + ' : ' + controle.ecarts.slice(0, 3).map(x => x.type + ' ' + x.titre).join(', ') : 'pas de contrôle') + ')');
+  const plan = await fr.evaluate(() => document.getElementById('dash-plan').innerText);
+  ok(!/Agenda Google : \d+ séries?/.test(plan), 'et le Plan du jour ne parle d\'aucune série en écart');
   await ctx.close();
 }
 
 console.log('\n== 2) Déjà fait : rien ne repart ==');
 {
-  const { ctx, fr, page } = await ouvrir('2026-11-13T06:00:00+01:00', Object.assign({}, ACTIF, RELEVE_JANVIER, {'batcave-gcal-nettoyage-janvier': {date:'2026-11-12', retires:124}, 'batcave-gcal-reconstruction': {date:'2026-11-12', jours:73}}));
+  const { ctx, fr, page } = await ouvrir('2026-11-14T06:00:00+01:00', Object.assign({}, ACTIF, RELEVE_JANVIER, {'batcave-gcal-nettoyage-janvier': {date:'2026-11-12', retires:124}, 'batcave-gcal-reconstruction': {date:'2026-11-13', programme:'2026-11-14', jours:72, du:'2026-11-14', au:'2027-01-24'}}));
   await page.clock.runFor(7000);
   await page.waitForTimeout(800);
   const sup = await appels(fr, 'delete_event');
   ok(!sup.some(a => /^ejbpepcf6nkjslupv8sitgsog8_/.test(a.input.eventId)), 'aucune suppression de la liste (' + sup.length + ' suppressions en tout)');
   const lus = (await appels(fr, 'list_events')).filter(a => a.input.orderBy !== 'startTime');
-  ok(lus.length < 73, 'pas de seconde reconstruction : l\'envoi habituel seulement (' + lus.length + ' jours relus)');
+  ok(lus.length < 72, 'pas de seconde reconstruction : l\'envoi habituel seulement (' + lus.length + ' jours relus)');
+  await ctx.close();
+}
+{
+  /* Un relevé d'avant le champ « programme », mais déjà fait depuis le samedi 14 : il compte aussi. */
+  const { ctx, fr, page } = await ouvrir('2026-11-14T06:00:00+01:00', Object.assign({}, ACTIF, RELEVE_JANVIER, {'batcave-gcal-nettoyage-janvier': {date:'2026-11-12', retires:124}, 'batcave-gcal-reconstruction': {date:'2026-11-13', jours:72, du:'2026-11-14', au:'2027-01-24'}}));
+  await page.clock.runFor(7000);
+  await page.waitForTimeout(800);
+  const lus = (await appels(fr, 'list_events')).filter(a => a.input.orderBy !== 'startTime');
+  ok(lus.length < 72, 'une reconstruction depuis le 14, sans le champ « programme », ne repart pas (' + lus.length + ' jours relus)');
+  await ctx.close();
+}
+
+console.log('\n== 2 bis) Faite pour l\'ancien jour 1 (le vendredi 13) : elle repart une fois, depuis le samedi 14 ==');
+{
+  const { ctx, fr, page } = await ouvrir('2026-11-13T21:00:00+01:00', Object.assign({}, ACTIF, RELEVE_JANVIER, {'batcave-gcal-nettoyage-janvier': {date:'2026-11-12', retires:124}, 'batcave-gcal-reconstruction': {date:'2026-11-12', jours:73, du:'2026-11-13', au:'2027-01-24'}}));
+  await page.clock.runFor(7000);
+  await fr.waitForFunction(() => { try{ return (JSON.parse(localStorage.getItem('batcave-gcal-reconstruction')) || {}).programme === '2026-11-14'; }catch(e){ return false; } }, null, {timeout:60000}).catch(() => {});
+  await page.waitForTimeout(500);
+  const lus = (await appels(fr, 'list_events')).filter(a => a.input.orderBy !== 'startTime');
+  ok(lus.length === 72 && lus[0].input.startTime.startsWith('2026-11-14T00:00:00'), 'les 72 jours du samedi 14 au 24 janvier sont repris (' + lus.length + ', dès ' + (lus[0] && lus[0].input.startTime.slice(0, 10)) + ')');
+  const crees = await appels(fr, 'create_event');
+  ok(!crees.some(a => a.input.startTime < '2026-11-14'), 'rien n\'est posé le vendredi 13');
+  const rec = await local(fr, 'batcave-gcal-reconstruction');
+  ok(rec && rec.programme === '2026-11-14' && rec.du === '2026-11-14' && rec.jours === 72, 'le relevé porte le nouveau jour 1 : ' + JSON.stringify(rec && {programme: rec.programme, du: rec.du, jours: rec.jours}));
   await ctx.close();
 }
 
@@ -129,7 +160,8 @@ console.log('\n== 4) Demain matin, pas encore fait : le nettoyage d\'abord, l\'e
 
 console.log('\n== 5) Un événement du relevé supprimé : la copie restante est adoptée, pas retirée ==');
 {
-  const { ctx, fr, page } = await ouvrir('2026-11-13T06:00:00+01:00', Object.assign({}, ACTIF, {'batcave-gcal-nettoyage-janvier': {date:'2026-11-12', retires:124}}));
+  /* 13 novembre : jour 1 au samedi 14 -- avant lui, l'envoi habituel ne part pas ; le scénario se joue le 14 */
+  const { ctx, fr, page } = await ouvrir('2026-11-14T06:00:00+01:00', Object.assign({}, ACTIF, {'batcave-gcal-nettoyage-janvier': {date:'2026-11-12', retires:124}}));
   /* le 8 décembre (férié) : le relevé dit « Douche du soir » = un événement supprimé ; l'agenda porte l'autre copie */
   const douche = await fr.evaluate(() => { const b = window.__bcRappels ? window.__bcRappels('2026-12-08') : null; return b && b.find(x => /Douche du soir/.test(x.titre)); });
   ok(!!douche, 'le 8 décembre a bien un bloc « Douche du soir » (' + (douche && douche.cle) + ')');

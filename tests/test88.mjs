@@ -159,18 +159,18 @@ console.log('\n== 293) Sans dates d\'examen, la Batcave le dit — et se taît d
      lundi 16 novembre ; depuis le samedi 17 (16 octobre), c'etait le mardi 17 novembre ; depuis
      le mardi 20 (19 octobre), c'etait le vendredi 20 novembre ; depuis le mercredi 21 (21 octobre),
      c'etait le samedi 21 novembre ; depuis le jeudi 22 (21 octobre au matin), c'est le dimanche 22. */
-  const { ctx, fr } = await ouvrir('2026-12-13T09:00:00+01:00');   /* 12 novembre : jour 1 au vendredi 13 + 31 jours -- le lundi 14 decembre. 31 octobre : jour 1 au dimanche 1er novembre + 31 jours -- le seuil etait le mercredi 2 decembre. 11 novembre : jour 1 au jeudi 12 + 31 jours -- le dimanche 13 decembre */
+  const { ctx, fr } = await ouvrir('2026-12-14T09:00:00+01:00');   /* 13 novembre : jour 1 au samedi 14 + 31 jours -- le mardi 15 decembre. 12 novembre : jour 1 au vendredi 13 + 31 jours -- le lundi 14 decembre. 31 octobre : jour 1 au dimanche 1er novembre + 31 jours -- le seuil etait le mercredi 2 decembre. 11 novembre : jour 1 au jeudi 12 + 31 jours -- le dimanche 13 decembre */
   const a = await fr.evaluate(() => document.getElementById('dash-plan').innerText);
-  ok(!/Aucune date d’examen/.test(a), 'le 13 décembre, la veille du seuil, rien encore');
+  ok(!/Aucune date d’examen/.test(a), 'le 14 décembre, la veille du seuil, rien encore');
   await ctx.close();
 }
 {
-  const { ctx, fr } = await ouvrir('2026-12-14T09:00:00+01:00');
+  const { ctx, fr } = await ouvrir('2026-12-15T09:00:00+01:00');
   const v = await fr.evaluate(() => ({
     t: document.getElementById('dash-plan').innerText,
     btn: document.querySelectorAll('#dash-plan [data-ouvrir="etudes"]').length
   }));
-  ok(/Aucune date d’examen saisie/.test(v.t), 'le 14 décembre, la ligne apparaît');
+  ok(/Aucune date d’examen saisie/.test(v.t), 'le 15 décembre, la ligne apparaît');
   ok(/pas de mode partiels/.test(v.t) && /sommeil majoré/.test(v.t), 'et elle dit ce qui reste éteint tant qu\'elles manquent');
   ok(v.btn === 1, 'un bouton qui ouvre l\'onglet Études');
   await ctx.close();

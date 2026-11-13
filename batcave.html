@@ -3688,11 +3688,11 @@
      comme inconnu. DRAPEAUX_MIGRATION est desormais LA liste ; les autres la reprennent.
      SCHEMA_VERSION est ecrit dans « batcave-schema » quand toutes ont tourne : le panneau
      Sante compare, et une sauvegarde plus ancienne se reconnait a ce seul chiffre. */
-  var SCHEMA_VERSION = 64;   /* 12 novembre, le soir : enveloppe-courses-v1 (300 EUR pour les courses, le soin, le menage et la laverie) ; 12 novembre : plafond-nourriture-v11 (les dattes a 5 EUR le kilo) ; 11 novembre, la nuit : ancre-dimanche-v3 (photos, brosse a dents et ongles repartent du dimanche 15) ; 11 novembre au soir : postes-soin-maison-v4 (le plafond reste a 14 rattrape) ; 11 novembre : postes-soin-maison-v3 (la laverie) ; 10 novembre, 18 h : snus-arret-v4 (le depart au mercredi 11) */   /* 9 novembre au soir : courses-plan-v12 et postes-soin-maison-v1 ; 10 novembre : postes-soin-maison-v2 */
+  var SCHEMA_VERSION = 66;   /* 13 novembre : taches-octobre-v1 (onze consignes d'octobre, perimees, quittent sa liste) ; 13 novembre : ancre-dimanche-v4 (ses ancres du 13 septembre, restées après une synchro, repartent du dimanche 15 : photos, brosse, ongles) ; 12 novembre, le soir : enveloppe-courses-v1 (300 EUR pour les courses, le soin, le menage et la laverie) ; 12 novembre : plafond-nourriture-v11 (les dattes a 5 EUR le kilo) ; 11 novembre, la nuit : ancre-dimanche-v3 (photos, brosse a dents et ongles repartent du dimanche 15) ; 11 novembre au soir : postes-soin-maison-v4 (le plafond reste a 14 rattrape) ; 11 novembre : postes-soin-maison-v3 (la laverie) ; 10 novembre, 18 h : snus-arret-v4 (le depart au mercredi 11) */   /* 9 novembre au soir : courses-plan-v12 et postes-soin-maison-v1 ; 10 novembre : postes-soin-maison-v2 */
   var DRAPEAUX_MIGRATION = ['objectifs-seed-v1','objectifs-v2-55','objectifs-v5-espanol',
     'habits-ecran-v2','habitlog-hebdo-v1','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','habits-seed-v7','habits-seed-v8','habits-seed-v9','habits-seed-v10','habits-seed-v11','habits-seed-v12',
     'courses-plan-v2','courses-plan-v3','courses-plan-v4','courses-plan-v5','courses-plan-v6','courses-plan-v7','courses-plan-v8','courses-plan-v9','courses-plan-v10','courses-plan-v11','courses-plan-v12',
-    'charges-v2','plafond-nourriture-v2','plafond-nourriture-v3','plafond-nourriture-v4','plafond-nourriture-v5','plafond-nourriture-v6','plafond-nourriture-v7','plafond-nourriture-v8','plafond-nourriture-v9','plafond-nourriture-v10','postes-soin-maison-v1','postes-soin-maison-v2','ancre-dimanche-v1','ancre-dimanche-v2','serviettes-v1','coiffeur-v1','shampoing-dim-v1','marche-cible-v1','fc-migration-v1','fc-migration-v2','fc-migration-v3','fc-migration-v4','fc-migration-v5','revision-fusionnee','pesee-hebdo-v1','snus-arret-v3','snus-arret-v4','postes-soin-maison-v3','postes-soin-maison-v4','ancre-dimanche-v3','plafond-nourriture-v11','enveloppe-courses-v1'];
+    'charges-v2','plafond-nourriture-v2','plafond-nourriture-v3','plafond-nourriture-v4','plafond-nourriture-v5','plafond-nourriture-v6','plafond-nourriture-v7','plafond-nourriture-v8','plafond-nourriture-v9','plafond-nourriture-v10','postes-soin-maison-v1','postes-soin-maison-v2','ancre-dimanche-v1','ancre-dimanche-v2','serviettes-v1','coiffeur-v1','shampoing-dim-v1','marche-cible-v1','fc-migration-v1','fc-migration-v2','fc-migration-v3','fc-migration-v4','fc-migration-v5','revision-fusionnee','pesee-hebdo-v1','snus-arret-v3','snus-arret-v4','postes-soin-maison-v3','postes-soin-maison-v4','ancre-dimanche-v3','plafond-nourriture-v11','enveloppe-courses-v1','ancre-dimanche-v4','taches-octobre-v1'];
   /* Drapeaux que rien ne pose plus (migrations retirees) ou poses seulement quand il y a
      eu quelque chose a migrer : connus et gardes, jamais exiges. */
   var DRAPEAUX_ANCIENS = ['objectifs-v3-trajet','objectifs-v4-dimanche','habits-retirees-v1','shampoing-combat-v1','shampoing-samedi-v1','snus-arret-v1','snus-arret-v2'];   /* snus-arret-v1 puis v2 : remplacees par la v3 (jour 1 au 22, puis au dimanche 1er novembre) ; les deux d'avant n'ecrivent qu'a partir du 28 septembre */
@@ -5496,6 +5496,8 @@
     var faire = function(){
       save('batcave-copie-vierge', {date: todayISO, pris: new Date().toISOString(), n: n, data: data});
       renderCopieVierge();
+      /* apres une confirmation (une ancienne copie remplacee), le plan du jour se redessine lui aussi */
+      try{ renderDashboard(); }catch(e){}
       showToast('🌱 Copie vierge prise : ' + n + ' entrées, état du ' + fmtDate(todayISO) + '.');
     };
     if(deja) askConfirm('Une copie vierge du ' + fmtDate(deja.date) + ' existe déjà (' + (deja.n || 0) + ' entrées). La remplacer par l\'état d\'aujourd\'hui ? L\'ancienne sera perdue.', faire, {titre:'Copie vierge', libelleOk:'Remplacer'});
@@ -5525,8 +5527,11 @@
     }, {titre:'Repartir de la copie vierge', libelleOk:'Revenir au ' + fmtDate(v.date)});
   }
   function copieViergeDue(){
-    /* proposee a partir du premier jour du programme, tant qu'aucune copie n'est prise */
-    return todayISO >= PROGRAMME_DEBUT && !copieVierge();
+    /* proposee a partir du premier jour du programme, tant qu'aucune copie n'est prise -- ou que la seule prise date
+       d'AVANT lui (13 novembre : la sienne etait du 22 septembre, un ancien jour 1 ; elle ne dit plus rien de l'etat du
+       samedi 14, et le plan ne la reclamait pas) */
+    var v = copieVierge();
+    return todayISO >= PROGRAMME_DEBUT && (!v || String(v.date || '') < PROGRAMME_DEBUT);
   }
   function renderCopieVierge(){
     var et = document.getElementById('vierge-etat'), pr = document.getElementById('vierge-prendre'), re = document.getElementById('vierge-restaurer');
@@ -5537,7 +5542,9 @@
     var v = copieVierge();
     if(v){
       et.textContent = 'Copie du ' + fmtDate(v.date) + ' · ' + (v.n || 0) + ' entrées' +
-        (v.date === PROGRAMME_DEBUT ? ' · c\'est bien l\'état du premier jour.' : ' · prise après le premier jour : elle contient déjà des saisies.');
+        (v.date === PROGRAMME_DEBUT ? ' · c\'est bien l\'état du premier jour.'
+          : (String(v.date || '') < PROGRAMME_DEBUT ? ' · prise avant le premier jour (' + fmtDate(PROGRAMME_DEBUT) + ') : remplace-la ce matin-là, avant la première saisie.'
+          : ' · prise après le premier jour : elle contient déjà des saisies.'));
     } else {
       et.textContent = todayISO < PROGRAMME_DEBUT
         ? 'Aucune copie vierge. À prendre le ' + fmtDate(PROGRAMME_DEBUT) + ' au matin, avant la première saisie.'
@@ -7322,6 +7329,29 @@
   ancreDimancheV3();
   MIGRATIONS_DEMARRAGE.push({cle:'batcave-ancre-dimanche-v3', rejouer: function(){
     if(!ancreDimancheV3()) return false;
+    renderHabits(); renderDashboard(); return true;
+  }});
+  /* v4 (13 novembre, « prendre les photos etc je fais ça quand ») : SA sauvegarde du 11 portait encore l'ancre d'origine,
+     le 13 septembre, sur les trois habitudes a cycle -- les drapeaux v1 et v2 poses, mais une synchro ou une
+     restauration avait remis les anciennes ancres apres eux, et la v3 ne cherchait que le 4 octobre. Resultat : ni photos,
+     ni brosse, ni ongles le dimanche 15, et les photos le 6 decembre au lieu du 13. Toutes les ancres que la Batcave a
+     posees elle-meme (13 et 20 septembre, 4 octobre) passent au 15 novembre ; une autre date, posee a la main, reste. */
+  function ancreDimancheV4(){
+    if(load('batcave-ancre-dimanche-v4', false)) return false;
+    var courant = load('batcave-habits', null), bouge = false, cycle = ['core-photos-dim', 'core-brosse-dents', 'core-ongles'];
+    var anciennes = ['2026-09-13', '2026-09-20', '2026-10-04'];
+    if(Array.isArray(courant)){
+      courant.forEach(function(h){
+        if(h && cycle.indexOf(h.id) > -1 && anciennes.indexOf(h.ancre) > -1){ h.ancre = ANCRE_DIMANCHE; bouge = true; }
+      });
+      if(bouge){ habitsState = normaliserHabitudes(courant); save('batcave-habits', habitsState); }
+    }
+    saveInternal('batcave-ancre-dimanche-v4', true);
+    return bouge;
+  }
+  ancreDimancheV4();
+  MIGRATIONS_DEMARRAGE.push({cle:'batcave-ancre-dimanche-v4', rejouer: function(){
+    if(!ancreDimancheV4()) return false;
     renderHabits(); renderDashboard(); return true;
   }});
   HABIT_GENERATIONS.forEach(function(g){
@@ -14398,7 +14428,12 @@
       if(dus > 0 && !ankiFait) items.push({pri: nowMin >= 12 * 60 ? 0.9 : 2.4, icon:'🃏', text: dus + ' carte' + (dus > 1 ? 's' : '') + ' due' + (dus > 1 ? 's' : '') + ' dans Anki' + (ankiDus('Dentaire') >= ANKI_SEUIL_CHARGE ? ' — la file dentaire déborde, baisse les nouvelles à 35' : ''), action:{type:'anki'}});
     }
     /* Le test du mois : trier par sangsues et réécrire les dix pires cartes. */
-    if(copieViergeDue()) items.push({pri:0.5, icon:'🌱', text:'Copie vierge à prendre — avant la première saisie, pour pouvoir revenir exactement à aujourd\u2019hui', action:{type:'vierge'}});
+    if(copieViergeDue()){
+      var vAncienne = copieVierge();
+      items.push({pri:0.5, icon:'🌱', text: vAncienne
+        ? 'Copie vierge à refaire — celle du ' + fmtDate(vAncienne.date) + ' date d\u2019avant le programme : remplace-la avant la première saisie, pour pouvoir revenir exactement à aujourd\u2019hui'
+        : 'Copie vierge à prendre — avant la première saisie, pour pouvoir revenir exactement à aujourd\u2019hui', action:{type:'vierge'}});
+    }
     if(seanceReferenceDue()) items.push({pri:0.6, icon:'🧪', text:'Séance de référence — aujourd\u2019hui on mesure le point de départ, on ne suit pas la séance normale', action:{type:'sport'}});
     /* 21 octobre : les mesures du cardio, le jour venu */
     if(todayISO >= MESURES_CARDIO_DEBUT && dowDe(todayISO) === 0 && !mesuresCardio.fc[todayISO]) items.push({pri:2.3, icon:'❤️', text:'FC de repos de la semaine — le chiffre de Bevel (ou de ta montre), à noter dans Sport → Cardio & combat → 📈 Mesures', action:{type:'sport'}});
@@ -18564,8 +18599,17 @@
     for(; d <= GCAL_RECONSTRUCTION_JUSQUAU && d <= finProgramme(); d = isoDecale(d, 1)) out.push(d);
     return out;
   }
+  /* 13 novembre, « on commence tout samedi » : une reconstruction faite pour un AUTRE premier jour (le vendredi 13)
+     ne compte pas -- elle a pose le rattrapage sur trois jours et le mois d'espagnol depuis le 13. Elle repart une
+     fois, depuis le nouveau jour 1. Un releve sans « programme » date d'avant ce champ : son « du » le dit. */
+  function reconstructionAJour(){
+    var r = load('batcave-gcal-reconstruction', null);
+    if(!r || typeof r !== 'object') return false;
+    if(r.programme) return r.programme === PROGRAMME_DEBUT;
+    return !r.du || r.du >= PROGRAMME_DEBUT;
+  }
   function reconstruireAgenda(mcp){
-    if(!mcp || !gcalActif() || gcalEnCours || load('batcave-gcal-reconstruction', null) || !agendaADejaJanvier()) return Promise.resolve(null);
+    if(!mcp || !gcalActif() || gcalEnCours || reconstructionAJour() || !agendaADejaJanvier()) return Promise.resolve(null);
     var jours = joursAReconstruire();
     if(!jours.length) return Promise.resolve(null);
     gcalEnCours = true;
@@ -18582,7 +18626,7 @@
     };
     return Promise.all([ouvrier(), ouvrier(), ouvrier()]).then(function(){
       gcalEnCours = false;
-      if(!echecs) save('batcave-gcal-reconstruction', {date: todayISO, jours: jours.length, du: jours[0], au: jours[jours.length - 1], bilan: t});
+      if(!echecs) save('batcave-gcal-reconstruction', {date: todayISO, quand: new Date().toISOString(), programme: PROGRAMME_DEBUT, jours: jours.length, du: jours[0], au: jours[jours.length - 1], bilan: t});
       gcalEcriture.dernier = new Date().toISOString(); gcalEcriture.bilan = t; delete gcalEcriture.erreur;
       save('batcave-gcal-ecriture', gcalEcriture);
       try{ renderGcalPanel(); }catch(e){}
@@ -18968,11 +19012,16 @@
     return out;
   }
   function heureEvt(e){ return String((e && e.start && e.start.dateTime) || '').slice(11, 16); }
+  /* 13 novembre : depuis la remise au propre du 12, chaque jour est pose bloc par bloc -- une occurrence de serie adoptee
+     OU un evenement unique cree pour lui. Les deux annoncent le bloc : le controle les lit tous (il ne lisait que les
+     series, et chaque bloc pose en evenement unique passait pour « manquant »). Le rappel protege (« Enlever les tapis »)
+     n'est jamais « en trop » : il n'a pas de bloc, c'est voulu. */
   function comparerSeriesJour(iso, events){
     var blocs = blocsARappeler(iso), ecarts = [], pris = {};
     var serie = (events || []).filter(function(e){
-      return e && e.recurringEventId && e.status !== 'cancelled' && e.start && e.start.dateTime &&
-             String(e.start.dateTime).slice(0, 10) === iso && String(e.summary || '').indexOf('🦇') === 0;
+      return e && e.status !== 'cancelled' && e.start && e.start.dateTime &&
+             String(e.start.dateTime).slice(0, 10) === iso && String(e.summary || '').indexOf('🦇') === 0 &&
+             GCAL_PROTEGES.indexOf(titreBaseGcal(e.summary)) < 0;
     });
     function chercher(b){
       var exact = -1, base = -1, tb = titreBaseGcal(b.titreBase), tt = titreBaseGcal(b.titre);
@@ -19039,11 +19088,16 @@
     var t = x.titre.replace(/^🦇\s*/, '');
     if(x.type === 'decale') return t + ' sonne à ' + x.agenda + ', la grille dit ' + x.grille + ' (' + j + ')';
     if(x.type === 'en-trop') return t + ' sonne à ' + x.agenda + ' pour un bloc qui n’existe plus (' + j + ')';
-    return t + ' à ' + x.grille + ' : aucune série ne l’annonce (' + j + ')';
+    return t + ' à ' + x.grille + ' : rien ne l’annonce dans l’agenda (' + j + ')';
   }
   function resumeDeriveGcal(){
     if(!gcalControle || !gcalControle.ecarts || !gcalControle.ecarts.length) return '';
     if(daysBetween(new Date(gcalControle.date + 'T00:00:00'), new Date(todayISO + 'T00:00:00')) > 7) return '';
+    /* pendant un envoi, et pour un controle plus vieux que la derniere remise au propre, rien a dire : l'agenda a
+       change depuis (13 novembre : celui du 10 annoncait douze ecarts que la reconstruction avait deja effaces) */
+    if(gcalEnCours) return '';
+    var rec = load('batcave-gcal-reconstruction', null);
+    if(rec && rec.quand && (!gcalControle.quand || gcalControle.quand < rec.quand)) return '';
     var gr = groupesDerive(gcalControle.ecarts);
     return 'Agenda Google : ' + gr.length + ' série' + (gr.length > 1 ? 's' : '') + ' 🦇 ne sui' + (gr.length > 1 ? 'vent' : 't') + ' plus la grille — ' + texteGroupeDerive(gr[0]) + (gr.length > 1 ? '…' : '');
   }
@@ -19265,6 +19319,29 @@
 
   /* ================= TÂCHES ================= */
   var tachesState = loadList('batcave-taches');
+  /* 13 novembre, « je veux que tout soit parfait pour demain » : onze consignes ponctuelles d'octobre, ecrites pour les
+     anciens jours 1 (le jeudi 22, puis le lundi 26), restaient « a faire » dans SA liste -- au matin du jour 1, le plan
+     du jour s'ouvrait sur sept lignes rouges « en retard », dont un coucher a 22:45 et des courses de couscous. Elles
+     sont retirees une fois, par leur identifiant, et seulement si elles ne sont pas faites ; ses demarches (ambassade,
+     fac, IKEA) restent. Rejouee apres la synchro, sur l'etat du stockage. */
+  var TACHES_PERIMEES = ['t1792416491564', 't1792416491557', 't1792541669672', 't1792416491558', 't1792416491560', 't1792416491562',
+    't1792416491563', 't1792416491561', 't1792416491559', 't1792537948512', 't1792537948513'];
+  function retirerTachesPerimees(){
+    if(load('batcave-taches-octobre-v1', false)) return false;
+    var courant = loadList('batcave-taches');
+    var reste = courant.filter(function(t){ return !(t && TACHES_PERIMEES.indexOf(t.id) > -1 && t.status !== 'Fait'); });
+    var bouge = reste.length !== courant.length;
+    if(bouge){ tachesState = reste; save('batcave-taches', tachesState); }
+    saveInternal('batcave-taches-octobre-v1', true);
+    return bouge;
+  }
+  retirerTachesPerimees();
+  MIGRATIONS_DEMARRAGE.push({cle:'batcave-taches-octobre-v1', rejouer: function(){
+    if(!retirerTachesPerimees()) return false;
+    try{ renderTaches(); }catch(e){}
+    renderDashboard(); return true;
+  }});
+  try{ window.__bcTachesPerimees = function(){ return TACHES_PERIMEES.slice(); }; }catch(e){}
   function renderTaches(){
     var list = document.getElementById('taches-list');
     if(!tachesState.length){ list.innerHTML = '<li class="entry-empty">Aucune tâche pour le moment.</li>'; return; }

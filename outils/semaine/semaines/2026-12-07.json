@@ -3369,7 +3369,7 @@
     "label": "Photos — peau et corps",
     "icon": "📸",
     "cycle": 4,
-    "ancre": "2026-09-13",
+    "ancre": "2026-11-15",
     "quinzaine": false
    },
    {
@@ -3385,7 +3385,7 @@
     "label": "Brosse à dents changée",
     "icon": "🪥",
     "cycle": 12,
-    "ancre": "2026-09-13",
+    "ancre": "2026-11-15",
     "quinzaine": false
    },
    {
@@ -3417,7 +3417,7 @@
     "label": "Ongles — mains ; pieds les dimanches de photo",
     "icon": "✂️",
     "cycle": 2,
-    "ancre": "2026-09-13",
+    "ancre": "2026-11-15",
     "quinzaine": false
    },
    {
@@ -3532,6 +3532,11 @@
     "icon": "⚖️"
    },
    {
+    "id": "core-photos-dim",
+    "label": "Photos — peau et corps",
+    "icon": "📸"
+   },
+   {
     "id": "core-rasage",
     "label": "Rasage — aisselles et parties intimes",
     "icon": "🪒"
@@ -3550,6 +3555,11 @@
     "id": "core-menage",
     "label": "Ménage du dimanche",
     "icon": "🧽"
+   },
+   {
+    "id": "core-ongles",
+    "label": "Ongles — mains ; pieds les dimanches de photo",
+    "icon": "✂️"
    },
    {
     "id": "core-creatine",

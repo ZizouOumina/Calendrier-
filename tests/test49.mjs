@@ -29,7 +29,7 @@ const MERCREDI = '2026-09-02T10:00:00+02:00';
    scenarios se jouent donc en novembre. Le 4 novembre est un mercredi, comme le 2
    septembre (neuf semaines pile) : meme rotation, memes macros, 3 135 kcal. */
 /* Un JEUDI : le seul jour de semaine sans combat, donc sans collation combat (3 213 kcal depuis le shake et la fin des sauces au skyr, 29 septembre ; 3 161 depuis les 100 g de legumes par repas, 14 octobre ; 3 234 depuis le 21 octobre : les sauces comptees, les sardines du jeudi, les fruits rouges du shake). */
-const MERCREDI_KCAL = '2026-12-17T10:00:00+01:00';   /* 11 novembre : jour 1 au jeudi 12 -- stabilisation jusqu'au 3 decembre ; le jeudi 17 porte quatorze jours de pesees (4 -> 17) qui tombent tous apres. */   /* 31 octobre : jour 1 au dimanche 1er novembre, courses du 31 octobre -- stabilisation jusqu'au 22 novembre ; le jeudi 10 decembre porte quatorze jours de pesees qui tombent tous apres. 12 octobre : le jour 1 passe au mardi 13, la stabilisation finit le 3 novembre -- les quatorze jours de pesees doivent tous tomber apres. 16 octobre : jour 1 au samedi 17, stabilisation jusqu'au 7 novembre : le jeudi suivant, le 26. */
+const MERCREDI_KCAL = '2026-12-17T10:00:00+01:00';   /* 13 novembre : jour 1 au samedi 14 -- stabilisation jusqu'au 4 decembre ; les quatorze jours de pesees vont du 4 au 17 (dates locales, a midi : a minuit en UTC elles reculaient d'un jour), dont treize apres la coupure, sur douze jours. */   /* 11 novembre : jour 1 au jeudi 12 -- stabilisation jusqu'au 3 decembre ; le jeudi 17 porte quatorze jours de pesees (4 -> 17) qui tombent tous apres. */   /* 31 octobre : jour 1 au dimanche 1er novembre, courses du 31 octobre -- stabilisation jusqu'au 22 novembre ; le jeudi 10 decembre porte quatorze jours de pesees qui tombent tous apres. 12 octobre : le jour 1 passe au mardi 13, la stabilisation finit le 3 novembre -- les quatorze jours de pesees doivent tous tomber apres. 16 octobre : jour 1 au samedi 17, stabilisation jusqu'au 7 novembre : le jeudi suivant, le 26. */
 
 console.log('\n== 118) La priorité des tâches compte enfin ==');
 {
@@ -74,7 +74,7 @@ console.log('\n== 119) Prévu vs réalisé — Bilan ==');
 console.log('\n== 120) Boucle poids → calories ==');
 {
   const stagne = {};
-  for(let i = 13; i >= 0; i--){ const d = new Date('2026-12-17T00:00:00+01:00'); d.setDate(d.getDate() - i); const iso = d.toISOString().slice(0,10); stagne['batcave-journal-' + iso] = {poids: 64.0, water: 0}; }
+  for(let i = 13; i >= 0; i--){ const d = new Date('2026-12-17T12:00:00+01:00'); d.setDate(d.getDate() - i); const iso = d.toISOString().slice(0,10); stagne['batcave-journal-' + iso] = {poids: 64.0, water: 0}; }
   const { ctx, fr, page } = await ouvrir(MERCREDI_KCAL, stagne);
   await aller(fr, page, 'repas');
   let k = await fr.evaluate(() => ({ note: document.getElementById('kcal-note').innerText, txt: document.getElementById('kcal-analyse').innerText.replace(/\s+/g,' '), sub: document.getElementById('meal-kcal-sub').innerText, btn: document.getElementById('kcal-appliquer').hidden }));
@@ -109,7 +109,7 @@ console.log('\n== 120) Boucle poids → calories ==');
      soit deux kilos par mois — au-dela des 0,25 a 0,5 % du poids de corps par semaine
      où la prise reste majoritairement musculaire. */
   const rapide = {};
-  for(let i = 13; i >= 0; i--){ const d = new Date('2026-12-17T00:00:00+01:00'); d.setDate(d.getDate() - i); const iso = d.toISOString().slice(0,10); rapide['batcave-journal-' + iso] = {poids: i >= 7 ? 64.0 : 65.0, water: 0}; }
+  for(let i = 13; i >= 0; i--){ const d = new Date('2026-12-17T12:00:00+01:00'); d.setDate(d.getDate() - i); const iso = d.toISOString().slice(0,10); rapide['batcave-journal-' + iso] = {poids: i >= 7 ? 64.0 : 65.0, water: 0}; }
   const { ctx, fr, page } = await ouvrir(MERCREDI_KCAL, rapide);
   await aller(fr, page, 'repas');
   const note = await fr.evaluate(() => document.getElementById('kcal-note').innerText);
@@ -122,7 +122,7 @@ console.log('\n== 120) Boucle poids → calories ==');
      1,5 x 0,31 = 0,47 de l'ancienne regle (rien a changer), au-dessus des 0,32 kg qui font
      0,5 % de 64,55 kg -- il faut retirer 100 kcal. */
   const assezVite = {};
-  for(let i = 13; i >= 0; i--){ const d = new Date('2026-12-17T00:00:00+01:00'); d.setDate(d.getDate() - i); const iso = d.toISOString().slice(0,10); assezVite['batcave-journal-' + iso] = {poids: i >= 7 ? 64.0 : 64.55, water: 0}; }
+  for(let i = 13; i >= 0; i--){ const d = new Date('2026-12-17T12:00:00+01:00'); d.setDate(d.getDate() - i); const iso = d.toISOString().slice(0,10); assezVite['batcave-journal-' + iso] = {poids: i >= 7 ? 64.0 : 64.55, water: 0}; }
   const { ctx, fr, page } = await ouvrir(MERCREDI_KCAL, assezVite);
   await aller(fr, page, 'repas');
   const k = await fr.evaluate(() => ({ note: document.getElementById('kcal-note').innerText, txt: document.getElementById('kcal-analyse').innerText }));
@@ -162,7 +162,7 @@ console.log('\n== 120b) Le saut de depart ne doit JAMAIS faire retirer des calor
   ok(!/-100 kcal/.test(k.note), 'le saut de depart ne fait pas retirer de calories : ' + k.note);
   /* La pente lue ne porte que sur les pesees d'apres stabilisation : 67,2 -> 67,8. */
   ok(/4 pes\u00e9es/.test(k.txt) && /67,4 \u2192 68,0 kg/.test(k.txt),
-     'seules les 4 pes\u00e9es d\'apr\u00e8s le 4 d\u00e9cembre comptent : ' + ((k.txt.match(/Tendance[^.]*/) || [''])[0]));
+     'seules les 4 pes\u00e9es d\'apr\u00e8s le 5 d\u00e9cembre comptent : ' + ((k.txt.match(/Tendance[^.]*/) || [''])[0]));
   await ctx.close();
 }
 {
@@ -171,8 +171,9 @@ console.log('\n== 120b) Le saut de depart ne doit JAMAIS faire retirer des calor
   await aller(fr, page, 'repas');
   const txt = await fr.evaluate(() => document.getElementById('kcal-analyse').innerText.replace(/\s+/g,' '));
   /* 31 octobre : jour 1 au dimanche 1er novembre, trois semaines plus tard -- rien avant le 22 novembre.
-     12 novembre : jour 1 au vendredi 13 -- rien avant le 4 decembre. */
-  ok(/rien avant le 04 d\u00e9c\./.test(txt) && /glyc\u00e8ne|glycog\u00e8ne/.test(txt),
+     12 novembre : jour 1 au vendredi 13 -- rien avant le 4 decembre.
+     13 novembre : jour 1 au samedi 14 -- rien avant le 5 decembre. */
+  ok(/rien avant le 05 d\u00e9c\./.test(txt) && /glyc\u00e8ne|glycog\u00e8ne/.test(txt),
      'elle explique l\'attente au lieu de rester muette : ' + txt.slice(-190));
   await ctx.close();
 }

@@ -39,8 +39,9 @@ console.log('\n== 1) Les paliers du plan sommeil, matin et soir ==');
      paliers du plan sommeil, eux, ne bougent pas (le mercredi garde son lever de 07:15).
      31 octobre : rien n'avait commence -- le jour 1 passe au dimanche 1er novembre. Les paliers
      d'octobre restent ecrits (ils sont passes) ; le lever de 05:20 vaut des dimanche.
-     10 et 11 novembre : le jour 1 passe au jeudi 12. 12 novembre, la viande jetee : au vendredi 13. */
-  ok(debut === '2026-11-13', 'le jour 1 est le vendredi 13 novembre (' + debut + ')');
+     10 et 11 novembre : le jour 1 passe au jeudi 12. 12 novembre, la viande jetee : au vendredi 13.
+     13 novembre, « on commence tout samedi » : au samedi 14. */
+  ok(debut === '2026-11-14', 'le jour 1 est le samedi 14 novembre (' + debut + ')');
   const mer = await grille(fr, '2026-10-21');
   ok(mer[0] === '07:15 ⏰ Lever' && mer.includes('07:20 Douche + préparation') && mer.includes('07:30 Petit-déjeuner + Coran (1 page)') && mer.includes('07:45 Anki 1'),
      'mercredi 21 : lever 07:15, douche, petit-déjeuner, et le premier bloc à 07:45 (' + mer.slice(0, 4).join(' · ') + ')');
@@ -256,7 +257,7 @@ console.log('\n== 6) Le 21 octobre au soir : shake de récup, pesée chaque dima
   await ctx.close();
 }
 
-console.log('\n== 7) Le rattrapage serré, refait le 12 novembre : du vendredi 13 au dimanche 15, le quand sans le quoi ==');
+console.log('\n== 7) Le rattrapage serré, refait le 13 novembre : le samedi 14 et le dimanche 15, le quand sans le quoi ==');
 {
   /* 3 novembre : « mes parents partent vendredi matin à 5 h, il faut absolument que je rattrape
      40 cours sur la fin de semaine et toute la semaine prochaine ». Le plan repart du vendredi 6 ;
@@ -279,6 +280,9 @@ console.log('\n== 7) Le rattrapage serré, refait le 12 novembre : du vendredi 1
     jeu12m: window.__bcConsigne('Anki 1', 4, '2026-11-12', '05:30'),
     ven13: window.__bcConsigne('Anki 1', 5, '2026-11-13', '07:20'),
     ven13b: window.__bcConsigne('Étudier en avance', 5, '2026-11-13', '08:20'),
+    sam14: window.__bcConsigne('Projets perso matinal', 6, '2026-11-14', '05:30'),
+    sam14a: window.__bcConsigne('Anki 1', 6, '2026-11-14', '07:20'),
+    sam14b: window.__bcConsigne('Anki 2', 6, '2026-11-14', '08:20'),
     dim15: window.__bcConsigne('Projets perso matinal', 0, '2026-11-15', '05:30'),
     dim15sim: window.__bcConsigne('Español · simulación', 0, '2026-11-15', '11:20'),
     lun16: window.__bcConsigne('Anki 1', 1, '2026-11-16', '05:30'),
@@ -298,9 +302,12 @@ console.log('\n== 7) Le rattrapage serré, refait le 12 novembre : du vendredi 1
   /* 12 novembre : la viande jetee, le jour 1 au vendredi 13 -- trois jours serres, du vendredi au dimanche ;
      le jeudi 12 redevient la veille, sans rien de date. */
   ok(!/Rattrapage|jour \d sur/.test(c.jeu12m), 'jeudi 12, la veille : plus de rattrapage daté (' + c.jeu12m.slice(0, 50) + '…)');
-  ok(/jour 1 sur 3/.test(c.ven13) && /le quoi, c'est toi/.test(c.ven13) && /de 07:20 à 11:00/.test(c.ven13) && /centro de salud/.test(c.ven13), 'vendredi 13, jour 1 sur 3 : le quand, le quoi est à toi, et l\'appel au centro de salud (' + c.ven13.slice(0, 70) + '…)');
-  ok(/Toujours tes révisions, jusqu'à 11:00/.test(c.ven13b) && !/Anatomía|Biología|Epidemiología|Antropología|Documentación|Vidal-Alaball/.test(c.ven13 + c.ven13b), 'vendredi 13 : aucun tema nommé, seulement jusqu\'à quand');
-  ok(/jour 3 sur 3/.test(c.dim15) && /diagnostic/.test(c.dim15sim), 'dimanche 15 : dernier jour serré, et le diagnostic d\'espagnol à 11:20');
+  /* 13 novembre : reveille trop tard, le jour 1 passe au samedi 14 -- deux jours serres, le samedi et le dimanche ;
+     le vendredi 13 redevient la veille, sans rien de date (le batch de 11:00 reste : la viande de jeudi). */
+  ok(!/Rattrapage|jour \d sur/.test(c.ven13) && !/Rattrapage|jour \d sur/.test(c.ven13b), 'vendredi 13, la veille : plus de rattrapage daté (' + c.ven13.slice(0, 50) + '…)');
+  ok(/jour 1 sur 2/.test(c.sam14) && /7 h 30/.test(c.sam14) && /le quoi, c'est toi/.test(c.sam14) && /de 05:30 à 06:30/.test(c.sam14), 'samedi 14, jour 1 sur 2 : 7 h 30, le quand, le quoi est à toi (' + c.sam14.slice(0, 70) + '…)');
+  ok(/de 07:20 à 11:20/.test(c.sam14a) && /Toujours tes révisions, jusqu'à 11:20/.test(c.sam14b) && !/Anatomía|Biología|Epidemiología|Antropología|Documentación|Vidal-Alaball/.test(c.sam14 + c.sam14a + c.sam14b), 'samedi 14 : aucun tema nommé, seulement jusqu\'à quand');
+  ok(/jour 2 sur 2/.test(c.dim15) && /6 h 30/.test(c.dim15) && /diagnostic/.test(c.dim15sim), 'dimanche 15 : dernier jour serré (6 h 30), et le diagnostic d\'espagnol à 11:20');
   ok(!/📚|Rattrapage/.test(c.lun16) && !/📚|Rattrapage/.test(c.fin), 'dès le lundi 16, la grille ordinaire : plus rien de daté, ni le 16 ni le 24');
   ok(!/Rattrapage/.test(c.apres), 'mercredi 25 : plus de rattrapage');
   await ctx.close();

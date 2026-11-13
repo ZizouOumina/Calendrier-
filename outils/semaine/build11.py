@@ -127,7 +127,7 @@ JOURS = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'
 COURT = ['dim', 'lun', 'mar', 'mer', 'jeu', 'ven', 'sam']
 NOTES = {
  5: ['Jour 1 : tout commence ce matin, réveil 05:20.', 'La viande achetée hier est au frigo : le batch de 11:00 la cuit, 15 à 20 min, sans passer par le congélateur.', '08:00 : appelle le centro de salud (rendez-vous et prise de sang), si ce n’est pas fait.', '11:00 : le batch de démarrage (jusqu’à dimanche midi), avec une machine de vêtements en même temps ; le déjeuner en sort tout chaud.', '13:15 : Jumu’ah à la mosquée.', 'Douche du matin : finis par 30 à 60 s d’eau froide.', 'Écris au proprio pour le montant des 2 mois d’eau et d’électricité, puis vire-le.'],
- 6: ['Jour 1 : tout commence ce matin, réveil 05:20.', 'Les boîtes du batch d’hier sont au frigo : ce midi, ce soir, et dimanche midi.', '13:30 : les courses, plus 3 paquets de pâtes et les produits de soin et de ménage qui te manquent.', 'Au rangement : la viande de mardi au congélateur, crue.', 'Écris au proprio pour le montant des 2 mois d’eau et d’électricité, puis vire-le.', 'Le soir : plie et range le linge d’hier.'],
+ 6: ['Jour 1 : tout commence ce matin, réveil 05:20.', 'Les boîtes du batch d’hier sont au frigo : ce midi, ce soir, et dimanche midi.', '13:30 : les courses, plus 3 paquets de pâtes et les produits de soin et de ménage qui te manquent.', 'Au rangement : la viande de mardi au congélateur, crue.', 'Écris au proprio pour le montant des 2 mois d’eau et d’électricité, puis vire-le.', 'Le soir : si tu as lancé une machine hier avec le batch, plie et range le linge.'],
  0: ['Au réveil : pesée à jeun, tour de taille, et les photos du point de départ (peau et corps) : c’est à elles que tu compareras les suivantes.', '11:20 : l’épreuve d’espagnol, le premier passage (le diagnostic).', '14:30 : la première session de batch, une heure, 5 boîtes (la seconde mardi soir). 15:30 : la laverie (draps, taies, serviettes), puis le ménage à ton retour.', 'Demain, la salle reprend à 07:00 (départ 06:40) et le JJB à 10:30, si le médecin est d’accord : les sacs se préparent ce soir.', 'Pas encore appelé le centro de salud ? Lundi, dès 08:00 : rendez-vous et prise de sang.'],
 }
 EN_PLUS = {
@@ -196,7 +196,7 @@ for J in S:
       3: ('Prépare demain', 'Sac prêt (ordi chargé, gourde, cours), vêtements posés. Rien à sortir du congélateur : tout est au frigo jusqu’à samedi.'),
       4: ('Prépare demain', 'Sac prêt (ordi chargé, gourde, cours), vêtements posés. Rien à sortir du congélateur : tout est au frigo jusqu’à samedi.'),
       5: ('Prépare demain', 'Vêtements posés. Rien à sortir du congélateur : les boîtes de samedi sont au frigo. Le linge de ce midi finit de sécher.'),
-      6: ('Plie le linge, puis prépare demain', 'Plie et range le linge d’hier (10 min). Vêtements posés. Rien à sortir du congélateur : la boîte de demain midi est au frigo.'),
+      6: ('Prépare demain', 'Le linge d’hier plié et rangé, si tu as lancé une machine (10 min). Vêtements posés. Rien à sortir du congélateur : la boîte de demain midi est au frigo.'),
       0: ('Prépare lundi', 'Si le médecin t’a donné son feu vert : le sac de salle (tenue, serviette, gourde, cadenas) et le sac de JJB (kimono ou short, rashguard, protège-dents, serviette, tongs) prêts, demain c’est la salle à 07:00 et le JJB à 10:30. Le sac de cours (ordi chargé, gourde), vêtements posés.'),
     }
     t, d = soir[dow]

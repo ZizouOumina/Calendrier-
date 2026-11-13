@@ -51,8 +51,9 @@ const CHARNIERES = [
   ['dernier jour de es-1',      '2026-11-07', 'es-1'],
   ['le dimanche entre les deux','2026-11-08', null],
   /* 11 novembre : le mois repart du jeudi 12 au vendredi 11 decembre -- le mercredi 11 est encore hors phase */
-  ['la veille du jour 1',       '2026-11-12', null],
-  ['jour 1, mois repris',       '2026-11-13', 'es-1-reprise'],
+  /* 13 novembre : jour 1 au samedi 14 -- le mois repart du 14 novembre au 12 decembre, le vendredi 13 est encore hors phase */
+  ['la veille du jour 1',       '2026-11-13', null],
+  ['jour 1, mois repris',       '2026-11-14', 'es-1-reprise'],
   ['dans le mois repris',       '2026-11-16', 'es-1-reprise'],
   ['fin novembre, mois repris', '2026-11-29', 'es-1-reprise'],
   ['dernier jour du mois repris','2026-12-12', 'es-1-reprise'],
@@ -122,7 +123,8 @@ console.log('\n== 276) Les 182 jours, un par un : la grille ne trébuche jamais 
      dans la nuit du 20 au 21 septembre (« pile un mois » apres le jour 1 du 22), puis au
      23 le matin du 23 septembre, avec le jour 1 decale d'un jour. */
   /* 7 novembre : es-1 du 14 septembre au 7 novembre (55 jours), puis le mois repris du 9 novembre au 8 decembre (30 jours) */
-  ok(bilan.phases['es-1'] === 55 && bilan.phases['es-1-reprise'] === 30 && bilan.phases['es-2'] === undefined, 'es-1 sur 55 jours (14 septembre → 7 novembre), le mois repris sur 30 (9 novembre → 8 décembre) (obtenu ' + bilan.phases['es-1'] + ' / ' + bilan.phases['es-1-reprise'] + ' / ' + bilan.phases['es-2'] + ')');
+  /* 13 novembre : le mois repris va du samedi 14 novembre au samedi 12 decembre (29 jours) */
+  ok(bilan.phases['es-1'] === 55 && bilan.phases['es-1-reprise'] === 29 && bilan.phases['es-2'] === undefined, 'es-1 sur 55 jours (14 septembre → 7 novembre), le mois repris sur 29 (14 novembre → 12 décembre) (obtenu ' + bilan.phases['es-1'] + ' / ' + bilan.phases['es-1-reprise'] + ' / ' + bilan.phases['es-2'] + ')');
   ok(bilan.phases['partiels'] > 0, 'le mode partiels occupe ' + bilan.phases['partiels'] + ' jours de janvier');
   /* La revision est la seule constante du programme : elle ne depend pas de la phase.
      Sur 182 jours moins les 15 de vacances et le regime de partiels, elle reste massive. */

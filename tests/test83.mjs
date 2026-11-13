@@ -83,9 +83,10 @@ console.log('\n== 2) Sous 12 jours notés, le chiffre est donné mais annoncé c
      31 octobre : jour 1 au dimanche 1er novembre -- deux, le lundi 2 et le mardi 3. */
   /* 11 novembre : jour 1 au jeudi 12 -- deux, le jeudi 12 et le vendredi 13.
      12 novembre : jour 1 au vendredi 13 -- fin au lundi 16 : deux, le vendredi 13 et le lundi 16
-     (le samedi 14 et le dimanche 15 sont sans cours). */
-  const fin = '2026-11-16';
-  const { ctx, page, fr } = await ouvrir({'batcave-cours-suivi': notes(fin, 10, 3)}, '2026-11-16T21:00:00+01:00');
+     (le samedi 14 et le dimanche 15 sont sans cours).
+     13 novembre : jour 1 au samedi 14 -- fin au mardi 17 : deux, le lundi 16 et le mardi 17. */
+  const fin = '2026-11-17';
+  const { ctx, page, fr } = await ouvrir({'batcave-cours-suivi': notes(fin, 10, 3)}, '2026-11-17T21:00:00+01:00');
   await etudes(fr, page);
   await fr.evaluate(() => { const t = document.getElementById('portes-toggle'); if(t) t.click(); });
   await page.waitForTimeout(300);

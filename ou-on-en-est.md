@@ -1,5 +1,30 @@
 # Où on en est — samedi 19 septembre 2026, au soir
 
+> ### Vendredi 13 novembre, l'après-midi — « je veux que tout soit parfait pour demain, ça doit être nickel »
+> **Ses mots** : « décale tout à partir de demain, et prendre les photos etc je fais ça quand, on considère que demain
+> c'est le premier jour de courses aussi » ; puis « je veux que tout soit parfait pour demain ».
+> **Agenda** : relu samedi et dimanche — il portait l'ancien plan (« jour 2 sur 3 », « jour 3 sur 3 » à 05:30) : la
+> remise au propre du 12 avait tourné pour le vendredi 13. Les deux consignes corrigées depuis la conversation, et la
+> Batcave refait la remise au propre une fois quand elle a été faite pour un autre jour 1 (`reconstructionAJour`, le
+> relevé porte désormais `programme`) : à la prochaine ouverture, du samedi 14 au 24 janvier. Le rappel LuxTrust du
+> samedi 20:00 renvoyait au formulaire en ligne (qui veut l'ancien numéro) : déplacé au vendredi 20 à 12:50, en appel
+> (LuxTrust lundi-vendredi 08:00-18:00, sinon BGL).
+> **Photos, brosse, ongles** : sa sauvegarde du 11 portait encore l'ancre d'origine (13 septembre) sur les trois
+> habitudes à cycle, drapeaux v1 et v2 posés — rien le dimanche 15, les photos le 6 décembre. `ancre-dimanche-v4`
+> (schéma 65) reprend les ancres posées par la Batcave (13 et 20 septembre, 4 octobre) : dimanche 15 au réveil, puis
+> les photos les 13 décembre, 10 janvier, 7 février ; les ongles un dimanche sur deux (29 novembre, 13 décembre…).
+> Les neuf semaines du guide ré-extraites avec ses données.
+> **Pages** : « Ta journée, pas à pas » au samedi 14 (la viande de jeudi cuite aujourd'hui, le centro de salud
+> aujourd'hui ou lundi 08:00, le proprio samedi, le guide jusqu'au 24 janvier) ; samedi soir, le linge plié « si tu as
+> lancé une machine hier » ; le titre de la page des deux premiers jours.
+> **Le réveil du jour 1, relu avec SES données** (sauvegarde du 11) : le plan du jour s'ouvrait sur onze consignes
+> ponctuelles d'octobre restées « à faire » (l'ancien jour 1 du 22, un coucher à 22:45, des courses de couscous…) :
+> `taches-octobre-v1` (schéma 66) les retire une fois, par identifiant ; restent ses trois démarches (ambassade, fac,
+> IKEA). Sa copie vierge datait du 22 septembre, et le plan ne la réclamait plus : une copie d'avant le jour 1 se refait
+> (« Copie vierge à refaire — celle du 22 sept. »), et le plan se redessine après la confirmation. Le contrôle des séries
+> lit maintenant tous les « 🦇 » du jour (occurrences et événements uniques), ignore « Enlever les tapis », et se tait
+> pendant un envoi ou s'il est plus vieux que la dernière remise au propre (celui du 10 annonçait douze écarts).
+
 > ### Vendredi 13 novembre — le jour 1 passe au samedi 14
 > **Ses mots** : « on commence tout samedi, la j'ai dormi trop tard je me suis reveille trop tard ».
 > **Fait** : `PROGRAMME_DEBUT` au samedi 14 ; le rattrapage serré tient en deux jours (« jour 1 sur 2 » samedi, « jour 2

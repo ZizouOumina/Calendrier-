@@ -132,20 +132,41 @@ console.log('\n== 333) La migration ne tourne qu\'une fois ==');
   /* Un mois plus tard il decide de decaler sa seance photo, a la main. Si la migration
      rejouait, elle ecraserait son choix au prochain demarrage : on verifie que les drapeaux
      sont poses, et qu'une ancre remise au 13 ou au 20 APRES coup survit. */
+  /* 13 novembre : une ancre au 13 septembre n'est plus un choix possible -- c'est l'ancre d'origine de la Batcave, et
+     SA sauvegarde du 11 la portait encore, drapeaux poses (v4, plus bas). Le choix a la main se lit sur une autre date. */
   const apres = JSON.parse(JSON.stringify(AVANT));
+  apres['batcave-habits'].forEach(h => { if(h.id === 'core-photos-dim') h.ancre = '2026-10-11'; });
   apres['batcave-ancre-dimanche-v1'] = true;
   apres['batcave-ancre-dimanche-v2'] = true;
   const { ctx, fr } = await ouvrir('2026-10-18T08:00:00+02:00', apres);
   const a = await ancres(fr);
-  ok(a['core-photos-dim'] === '2026-09-13',
-     'les drapeaux posés, une ancre au 13 est laissée telle quelle — c\'est son choix, pas une donnée périmée (' + a['core-photos-dim'] + ')');
+  ok(a['core-photos-dim'] === '2026-10-11',
+     'les drapeaux posés, une ancre posée à la main (le 11 octobre) est laissée telle quelle — c\'est son choix (' + a['core-photos-dim'] + ')');
+  await ctx.close();
+}
+{
+  /* 13 novembre, SA sauvegarde du 11 : les trois ancres au 13 septembre, les drapeaux v1, v2 et v3 poses -- une synchro
+     ou une restauration avait remis les anciennes ancres apres eux. Ni photos, ni brosse, ni ongles le dimanche 15, et
+     les photos le 6 decembre. La v4 reprend toutes les ancres posees par la Batcave (13 et 20 septembre, 4 octobre). */
+  const sienne = JSON.parse(JSON.stringify(AVANT));
+  sienne['batcave-habits'].forEach(h => { if(h.id === 'core-pesee-dim'){ delete h.cycleSemaines; delete h.ancre; } if(h.id === 'core-cheveux') h.ancre = '2026-10-31'; });
+  sienne['batcave-ancre-dimanche-v1'] = true; sienne['batcave-ancre-dimanche-v2'] = true; sienne['batcave-ancre-dimanche-v3'] = true; sienne['batcave-pesee-hebdo-v1'] = true;
+  const { ctx, fr } = await ouvrir('2026-11-13T21:00:00+01:00', sienne);
+  const a = await ancres(fr);
+  ok(a['core-photos-dim'] === '2026-11-15' && a['core-ongles'] === '2026-11-15' && a['core-brosse-dents'] === '2026-11-15' && a['core-cheveux'] === '2026-10-31',
+     'ses trois ancres du 13 septembre passent au dimanche 15 novembre, la coupe reste au 31 octobre (' + JSON.stringify(a) + ')');
+  const c = await cartes(fr);
+  const dit = n => c.filter(x => x.indexOf(n) > -1)[0] || '(absente)';
+  ok(/prochaine fois le 15 nov/.test(dit('Photos')) && /prochaine fois le 15 nov/.test(dit('Brosse à dents')) && /prochaine fois le 15 nov/.test(dit('Ongles')),
+     'photos, brosse et ongles annoncés pour le dimanche 15 (' + dit('Photos') + ')');
+  ok(await fr.evaluate(() => (window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-ancre-dimanche-v4')) === 'true', 'le drapeau de la v4 est posé');
   await ctx.close();
 }
 {
   const { ctx, fr } = await ouvrir('2026-09-29T08:00:00+02:00', AVANT);
   const lire = k => fr.evaluate(k => (window.__bcLire || ((k) => localStorage.getItem(k)))(k), k);
-  const v1 = await lire('batcave-ancre-dimanche-v1'), v2 = await lire('batcave-ancre-dimanche-v2'), v3 = await lire('batcave-ancre-dimanche-v3');
-  ok(v1 === 'true' && v2 === 'true' && v3 === 'true', 'et la première ouverture pose bien les trois drapeaux (' + v1 + ' / ' + v2 + ' / ' + v3 + ')');
+  const v1 = await lire('batcave-ancre-dimanche-v1'), v2 = await lire('batcave-ancre-dimanche-v2'), v3 = await lire('batcave-ancre-dimanche-v3'), v4 = await lire('batcave-ancre-dimanche-v4');
+  ok(v1 === 'true' && v2 === 'true' && v3 === 'true' && v4 === 'true', 'et la première ouverture pose bien les quatre drapeaux (' + v1 + ' / ' + v2 + ' / ' + v3 + ' / ' + v4 + ')');
   await ctx.close();
 }
 
