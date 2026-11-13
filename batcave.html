@@ -13379,14 +13379,16 @@
     });
     return cat;
   }
-  function planCoursesSemaine(ajust){
+  function planCoursesSemaine(ajust, avecPremieres){
     var plus = grammesAjustement(ajust, 3.6) * 7;          /* g de pates en plus par semaine */
     /* espace fine insecable (U+202F) : « 3 780 g », comme partout ailleurs dans la Batcave */
     var sep = function(n){ return String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ' '); };
     /* 2 500 g s'ecrit « 2,5 kg », 500 g reste « 500 g » : on achete en kilos, pas en grammes. */
     var poids = function(n){ return n >= 1000 ? String(n / 1000).replace('.', ',') + ' kg' : sep(n) + ' g'; };
     var vol   = function(n){ return n >= 1000 ? String(n / 1000).replace('.', ',') + ' L'  : sep(n) + ' ml'; };
-    var B = BESOIN_SEMAINE, premieresCourses = todayISO >= isoDecale(MIDIS_FRAIS_DEPART[0], -1) && todayISO <= MIDIS_FRAIS_DEPART[0];   /* la veille et le jour des courses du samedi 14 */
+    /* la veille et le jour des courses du samedi 14, et seulement pour la LISTE affichee : les couts moyens, l'enveloppe et
+       la cagnotte restent sur la semaine type -- un supplement ponctuel ne fait pas un mois plus cher */
+    var B = BESOIN_SEMAINE, premieresCourses = !!avecPremieres && todayISO >= isoDecale(MIDIS_FRAIS_DEPART[0], -1) && todayISO <= MIDIS_FRAIS_DEPART[0];
     /* Une ligne d'achat. « pas » est le conditionnement : 450 pour un pot de skyr, 1 pour
        ce qui se pese au comptoir ou se compte a l'unite. L'achat est le premier multiple
        de « pas » AU-DESSUS du besoin -- jamais en dessous : une rupture en milieu de cycle
@@ -13762,7 +13764,7 @@
 
   var COURSES = [];
   function construireCourses(){
-    var plan = planCoursesSemaine(ajustementKcalPour(todayISO));
+    var plan = planCoursesSemaine(ajustementKcalPour(todayISO), true);
     /* « aussi » doit voyager jusqu'ici : sans lui la date d'exception etait perdue entre
        le plan et l'affichage, et le 13 septembre ne montrait que le frais. */
     COURSES = plan.map(function(c){ return {cat: c.cat, semaines: c.semaines || 1, ancre: c.ancre, aussi: c.aussi, poste: c.poste,
