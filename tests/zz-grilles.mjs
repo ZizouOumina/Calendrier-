@@ -7,7 +7,7 @@ await ctx.addInitScript(() => { window.claude = undefined; });
 const page = await ctx.newPage();
 const errs = []; page.on('pageerror', e => errs.push(e.message));
 await page.clock.install({ time: new Date(quand) });
-await page.goto('http://127.0.0.1:8199/host.html');
+await page.goto(process.env.BC_HOST || 'http://127.0.0.1:8199/host.html');
 await page.frameLocator('#f').locator('#dash-plan').waitFor({ state:'attached', timeout:20000 });
 const fr = page.frames().find(x => x.url().includes('batcave.html'));
 await fr.waitForFunction(() => window.__bcInitFini === true, null, {timeout:20000});

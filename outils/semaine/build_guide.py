@@ -479,7 +479,7 @@ def semaine_ecrite(script, data, gabarit, cle):
     return {'cle': cle, 'titre': h1, 'sous': sous, 'tete': lis, 'jours': D['jours']}, D
 
 def main():
-    s11, D11 = semaine_ecrite('build11.py', 'data11.json', 'template11.html', '2026-11-13')
+    s11, D11 = semaine_ecrite('build11.py', 'data11.json', 'template11.html', '2026-11-14')
     s16, D16 = semaine_ecrite('build16.py', 'data16.json', 'template16.html', '2026-11-16')
     semaines = [s11, s16]
     for lundi in SEMAINES:

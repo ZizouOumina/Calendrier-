@@ -1,5 +1,17 @@
 # Où on en est — samedi 19 septembre 2026, au soir
 
+> ### Vendredi 13 novembre — le jour 1 passe au samedi 14
+> **Ses mots** : « on commence tout samedi, la j'ai dormi trop tard je me suis reveille trop tard ».
+> **Fait** : `PROGRAMME_DEBUT` au samedi 14 ; le rattrapage serré tient en deux jours (« jour 1 sur 2 » samedi, « jour 2
+> sur 2 » dimanche, mêmes créneaux) ; le mois d'espagnol commence avec le jour 1 (`ES_REPRISE_DEBUT`, 14 novembre) et
+> garde sa fin, le 12 décembre — l'e-commerce, le dimanche 13 décembre, ne bouge pas. Le batch du vendredi reste
+> (`BATCH_DATES`) : la viande achetée jeudi ne se garde pas un jour de plus crue (sinon, au congélateur). La page des
+> premiers jours devient « Du samedi 14 au dimanche 15 » (grille11.json ré-extraite), le guide « Ta semaine » s'ouvre
+> sur le samedi 14, « Ta journée, pas à pas », le Dossier Español (2.21) et le Dossier E-commerce suivent. Le vendredi
+> reste : le cours de 15:30 (le cuestionario IA, 10 %, présence obligatoire), l'actividad 3 d'Antropología à 17:30, et
+> l'appel au centro de salud (sinon lundi dès 08:00). Agenda : la Batcave reconstruit à partir du samedi 14 (la remise
+> au propre n'avait pas encore tourné, ou elle met samedi et dimanche à jour à la première ouverture du samedi).
+
 > ### Jeudi 12 novembre, le soir — l'agenda remis au propre jusqu'au 24 janvier, le budget, le guide
 > **Ses mots** : « je veux que tout soit parfait, et que je n'ai plus besoin de toucher quoi que ce soit avant le
 > debut du 2ieme semestre » ; « et pour le budget, je le vois pas dans tes tasks » ; « tu peux changer mon agenda

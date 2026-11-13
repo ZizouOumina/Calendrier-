@@ -9338,7 +9338,11 @@
   /* 12 novembre, 9 h : la viande achetee lundi est partie a la poubelle (je le lui avais dit : date passee, odeur),
      et ses mots -- « je vais devoir refaire les courses, on commence tout demain petante ». Le jour 1 passe au
      vendredi 13 ; il fait les courses de la viande aujourd'hui. */
-  var PROGRAMME_DEBUT = '2026-11-13';   /* avant : jeudi 12, mercredi 11, et avant encore le 1er novembre (31 octobre : « on commence tout dimanche matin ») */
+  /* 13 novembre au matin, ses mots : « on commence tout samedi, la j'ai dormi trop tard je me suis reveille trop tard ».
+     Le jour 1 passe au samedi 14. Le batch du vendredi reste (BATCH_DATES : la viande achetee jeudi ne se garde pas un
+     jour de plus crue) ; le rattrapage serre tient en deux jours, samedi et dimanche ; le mois d'espagnol commence avec
+     le jour 1 et garde sa fin, le samedi 12 decembre (l'e-commerce, le dimanche 13). */
+  var PROGRAMME_DEBUT = '2026-11-14';   /* avant : jeudi 12, mercredi 11, et avant encore le 1er novembre (31 octobre : « on commence tout dimanche matin ») */
   /* La fin ne bouge PAS avec le depart : le 14 mars est le dernier jour de la SAISON,
      un point d'arrivee choisi, pas une duree de 174 jours a reporter. Le decalage du
      depart au 24 septembre raccourcit donc le programme a 172 jours, ce qui est la
@@ -17230,16 +17234,15 @@
                    'Lire': {t:'Antropología 4 (version courte), de 13:00 à 13:40. Puis 20 min : tes cartes du jour, et « vérifie mes cartes ».', p:1}},
     /* 12 novembre, 9 h : le jour 1 passe au vendredi 13 -- trois jours (vendredi -> dimanche). Le vendredi, le batch prend
        11:00 -> 12:20 : les revisions vont de 07:20 a 11:00, avec l'appel au centro de salud a 08:00. */
-    '2026-11-13': {'Anki 1': {t:'Rattrapage serré, jour 1 sur 3 : 3 h 40 de révisions aujourd\'hui, en un créneau — le quoi, c\'est toi. Au minuteur, ça fait {MINUTEUR} (les pauses en moins, la clôture du cours de 20:25 en plus) : c\'est le chiffre que suit le tableau de bord. Pas de salle ni de JJB avant lundi 16 : le médecin d\'abord. Révisions, de 07:20 à 11:00 (3 h 40) : tu choisis quoi. À 08:00, une pause : appelle le centro de salud (rendez-vous et prise de sang), si ce n\'est pas déjà fait. Minuteur : « Révision ».'},
-                   'Étudier en avance': {t:'Toujours tes révisions, jusqu\'à 11:00.'},
-                   'Question ouverte ou autre': {t:'Toujours tes révisions, jusqu\'à 11:00.'}},
-    '2026-11-14': {'Projets perso matinal': {t:'Rattrapage serré, jour 2 sur 3 : 7 h 30 de révisions aujourd\'hui, en quatre créneaux — le quoi, c\'est toi. Au minuteur, ça fait {MINUTEUR} (les pauses en moins) : c\'est le chiffre que suit le tableau de bord. Pas de salle ni de JJB avant lundi 16 : le médecin d\'abord. Révisions, de 05:30 à 06:30 (1 h) : tu choisis quoi. Minuteur : « Révision ».'},
+    /* 13 novembre : il s'est reveille trop tard, le jour 1 passe au samedi 14 -- le vendredi n'a plus de rattrapage (le
+       batch de 11:00 reste : la viande de jeudi) ; le samedi et le dimanche gardent leurs creneaux. */
+    '2026-11-14': {'Projets perso matinal': {t:'Rattrapage serré, jour 1 sur 2 : 7 h 30 de révisions aujourd\'hui, en quatre créneaux — le quoi, c\'est toi. Au minuteur, ça fait {MINUTEUR} (les pauses en moins) : c\'est le chiffre que suit le tableau de bord. Pas de salle ni de JJB avant lundi 16 : le médecin d\'abord. Révisions, de 05:30 à 06:30 (1 h) : tu choisis quoi. Minuteur : « Révision ».'},
                    'Anki 1': {t:'Révisions, de 07:20 à 11:20 (4 h) : tu choisis quoi. Minuteur : « Révision ».'},
                    'Anki 2': {t:'Toujours tes révisions, jusqu\'à 11:20.'},
                    'Approfondir': {t:'Toujours tes révisions, jusqu\'à 11:20.'},
                    'Cartes d\'erreurs de la semaine': {t:'Révisions, de 16:00 à 17:00 (1 h) : tu choisis quoi. Minuteur : « Révision ».'},
                    'Projets perso 3': {t:'Révisions, de 18:00 à 19:30 (1 h 30) : tu choisis quoi. Minuteur : « Révision ».'}},
-    '2026-11-15': {'Projets perso matinal': {t:'Rattrapage serré, jour 3 sur 3 : 6 h 30 de révisions aujourd\'hui, en trois créneaux — le quoi, c\'est toi. Au minuteur, ça fait {MINUTEUR} (les pauses en moins) : c\'est le chiffre que suit le tableau de bord. Pas de salle ni de JJB avant lundi 16 : le médecin d\'abord. Révisions, de 05:30 à 06:30 (1 h) : tu choisis quoi. Minuteur : « Révision ».'},
+    '2026-11-15': {'Projets perso matinal': {t:'Rattrapage serré, jour 2 sur 2 : 6 h 30 de révisions aujourd\'hui, en trois créneaux — le quoi, c\'est toi. Au minuteur, ça fait {MINUTEUR} (les pauses en moins) : c\'est le chiffre que suit le tableau de bord. Pas de salle ni de JJB avant lundi 16 : le médecin d\'abord. Révisions, de 05:30 à 06:30 (1 h) : tu choisis quoi. Minuteur : « Révision ».'},
                    'Anki 1': {t:'Révisions, de 07:20 à 11:20 (4 h) : tu choisis quoi. Minuteur : « Révision ».'},
                    'Anki 2': {t:'Toujours tes révisions, jusqu\'à 11:20.'},
                    'Simulation dentaire': {t:'Toujours tes révisions, jusqu\'à 11:20.'},
@@ -17380,7 +17383,9 @@
      L'epreuve garde ses dimanches. */
   /* 12 novembre : le mois d'espagnol repart avec le jour 1, du vendredi 13 au samedi 12 decembre -- « comme ca dans
      pile 1 mois je commence le ecommerce » : les projets reviennent le dimanche 13 decembre. */
-  var ES_REPRISE_DEBUT = '2026-11-13', ES_REPRISE_FIN = '2026-12-12';
+  /* 13 novembre : le jour 1 passe au samedi 14 -- le mois commence avec lui ; sa fin, et l'e-commerce du 13 decembre,
+     ne bougent pas. */
+  var ES_REPRISE_DEBUT = '2026-11-14', ES_REPRISE_FIN = '2026-12-12';
   var PERIODES_GRILLE = [
     /* Tout commence le lundi 14 septembre 2026, premier jour de cours : avant, la grille type.
        UNE SEULE phase Español, jusqu'au 25 octobre (voir plus bas) : elle ne renomme que des blocs
@@ -17461,11 +17466,11 @@
     /* Quinzieme, le 10 novembre a 18 h : « donc on commence tout demain ». Rien n'avait demarre le 9. Le mois
        repart du mercredi 11 et finit le jeudi 10 decembre inclus (un mois pile) ; les jours 8, 9 et 10 sont hors
        phase. L'epreuve garde ses dimanches : 15, 22, 29 novembre et 6 decembre. */
-    {id:'es-1', nom:'Español · phase 1', debut:'2026-09-14', fin:'2026-11-07', suite:'le mois d\u2019espagnol, repris en entier le 13 novembre',
-     description:'Avec les cours, jusqu\u2019au 7 novembre : les blocs Projets perso étaient des blocs Español. Le mois repart en entier le 13 novembre, en même temps que le rattrapage des cours.',
+    {id:'es-1', nom:'Español · phase 1', debut:'2026-09-14', fin:'2026-11-07', suite:'le mois d\u2019espagnol, repris le 14 novembre',
+     description:'Avec les cours, jusqu\u2019au 7 novembre : les blocs Projets perso étaient des blocs Español. Le mois repart le 14 novembre, en même temps que le rattrapage des cours.',
      renommages: RENOMMAGES_ES1, consignes: CONSIGNES_PERIODE_ES},
     {id:'es-1-reprise', nom:'Español · phase 1', debut:ES_REPRISE_DEBUT, fin:ES_REPRISE_FIN, suite:'Projets perso (livrables, puis boutique)',
-     description:'Le mois d\u2019espagnol, repris en entier du 13 novembre au 12 décembre, en même temps que le rattrapage : les blocs Projets perso sont des blocs Español — le lundi gramática (14:00) et hablar (15:00), le mardi escribir (14:00), le mercredi gramática (14:00), le jeudi gramática (13:00) et escribir (14:00), le vendredi escribir largo (05:30), le samedi gramática (11:20) et tutor (17:00), le dimanche l\u2019épreuve (simulación, 11:20) et balance (13:30). Le 12 décembre, tout revient aux projets.',
+     description:'Le mois d\u2019espagnol, repris du 14 novembre au 12 décembre, en même temps que le rattrapage : les blocs Projets perso sont des blocs Español — le lundi gramática (14:00) et hablar (15:00), le mardi escribir (14:00), le mercredi gramática (14:00), le jeudi gramática (13:00) et escribir (14:00), le vendredi escribir largo (05:30), le samedi gramática (11:20) et tutor (17:00), le dimanche l\u2019épreuve (simulación, 11:20) et balance (13:30). Le 12 décembre, tout revient aux projets.',
      renommages: RENOMMAGES_ES1, consignes: CONSIGNES_PERIODE_ES},
     /* ===== L'ete 2027 =====
        Le dernier cours est le vendredi 4 juin. A partir du 5, sansCoursLe libere deja la

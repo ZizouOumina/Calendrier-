@@ -4,7 +4,9 @@ SP = os.path.dirname(os.path.abspath(__file__)) + '/'   # ce dossier : les donne
 # 11 novembre : « on commence tout tout tout demain jeudi 12 novembre » -- jour 1 le jeudi 12 ; la grille vient de la Batcave
 # 12 novembre, 9 h : la viande jetee, « on commence tout demain petante » -- jour 1 le vendredi 13, trois jours
 S = json.load(open(SP + 'grille11.json'))
-S = [j for j in S if '2026-11-13' <= j['iso'] <= '2026-11-15']
+# 13 novembre au matin : « on commence tout samedi, la j'ai dormi trop tard » -- jour 1 le samedi 14, deux jours ; le batch
+# de la viande reste le vendredi (hors de cette page)
+S = [j for j in S if '2026-11-14' <= j['iso'] <= '2026-11-15']
 
 def hh(m): return '%02d:%02d' % (m // 60, m % 60)
 def mn(h): a, b = h.split(':'); return int(a) * 60 + int(b)
@@ -125,8 +127,8 @@ JOURS = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'
 COURT = ['dim', 'lun', 'mar', 'mer', 'jeu', 'ven', 'sam']
 NOTES = {
  5: ['Jour 1 : tout commence ce matin, réveil 05:20.', 'La viande achetée hier est au frigo : le batch de 11:00 la cuit, 15 à 20 min, sans passer par le congélateur.', '08:00 : appelle le centro de salud (rendez-vous et prise de sang), si ce n’est pas fait.', '11:00 : le batch de démarrage (jusqu’à dimanche midi), avec une machine de vêtements en même temps ; le déjeuner en sort tout chaud.', '13:15 : Jumu’ah à la mosquée.', 'Douche du matin : finis par 30 à 60 s d’eau froide.', 'Écris au proprio pour le montant des 2 mois d’eau et d’électricité, puis vire-le.'],
- 6: ['13:30 : les courses, plus 3 paquets de pâtes et les produits de soin et de ménage qui te manquent.', 'Au rangement : la viande de mardi au congélateur, crue.', 'Le soir : plie et range le linge d’hier.'],
- 0: ['Au réveil : pesée à jeun, tour de taille, et les photos du point de départ (peau et corps) : c’est à elles que tu compareras les suivantes.', '11:20 : l’épreuve d’espagnol, le premier passage (le diagnostic).', '14:30 : la première session de batch, une heure, 5 boîtes (la seconde mardi soir). 15:30 : la laverie (draps, taies, serviettes), puis le ménage à ton retour.', 'Demain, la salle reprend à 07:00 (départ 06:40) et le JJB à 10:30, si le médecin est d’accord : les sacs se préparent ce soir.'],
+ 6: ['Jour 1 : tout commence ce matin, réveil 05:20.', 'Les boîtes du batch d’hier sont au frigo : ce midi, ce soir, et dimanche midi.', '13:30 : les courses, plus 3 paquets de pâtes et les produits de soin et de ménage qui te manquent.', 'Au rangement : la viande de mardi au congélateur, crue.', 'Écris au proprio pour le montant des 2 mois d’eau et d’électricité, puis vire-le.', 'Le soir : plie et range le linge d’hier.'],
+ 0: ['Au réveil : pesée à jeun, tour de taille, et les photos du point de départ (peau et corps) : c’est à elles que tu compareras les suivantes.', '11:20 : l’épreuve d’espagnol, le premier passage (le diagnostic).', '14:30 : la première session de batch, une heure, 5 boîtes (la seconde mardi soir). 15:30 : la laverie (draps, taies, serviettes), puis le ménage à ton retour.', 'Demain, la salle reprend à 07:00 (départ 06:40) et le JJB à 10:30, si le médecin est d’accord : les sacs se préparent ce soir.', 'Pas encore appelé le centro de salud ? Lundi, dès 08:00 : rendez-vous et prise de sang.'],
 }
 EN_PLUS = {
  1: ['Shampoing', 'Serviette de visage'], 2: ['Shampoing'], 3: ['Shampoing', 'Serviettes de visage et de corps', 'Taie d’oreiller', 'Douche froide'],
