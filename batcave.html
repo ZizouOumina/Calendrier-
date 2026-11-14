@@ -9295,8 +9295,10 @@
       var dsc = document.getElementById('repas-desc');
       if(dsc) dsc.textContent = 'Programme du jour, ' + repasDuJour().length + ' prises' + (jourDeCombat() ? ' (jour de combat)' : '') + ' : ' + Math.round(n.targets.kcal) + ' kcal, P ' +
         Math.round(n.targets.p) + ' g, G ' + Math.round(n.targets.g) + ' g, L ' + Math.round(n.targets.l) +
-        ' g, tout pesé cru' + (todayISO < SANS_SAUCE_DEBUT ? ', sauces comprises' : '') + '. ' + (feculentMidi() === 'pates' ? 'Pâtes à midi (' + grammesFeculent('dej') + ' g, au batch du dimanche) et riz le soir (' + FECULENTS.din.g + ' g, cuit chaque matin)' : 'Riz à midi (' + grammesFeculent('dej') + ' g) et le soir (' + FECULENTS.din.g + ' g), cuit chaque matin') + ' ;' +
-        ' poulet à midi, viande hachée le soir. Les cases se réinitialisent à minuit.';
+        ' g, tout pesé cru' + (todayISO < SANS_SAUCE_DEBUT ? ', sauces comprises' : '') + '. ' + (feculentMidi() === 'pates' ? 'Pâtes à midi (' + grammesFeculent('dej') + ' g, ' + (midiFrais() ? 'cuites sur le moment' : 'du batch') + ') et riz le soir (' + FECULENTS.din.g + ' g, cuit chaque matin)' : 'Riz à midi (' + grammesFeculent('dej') + ' g) et le soir (' + FECULENTS.din.g + ' g), cuit chaque matin') + ' ;' +
+        /* 14 novembre, « je vois des œufs le samedi midi » : les jours de repas frais (le dimanche, et le samedi 14 du
+           depart), le midi, ce sont 3 oeufs -- l'en-tete disait « poulet a midi » au-dessus d'une carte qui disait l'inverse */
+        (midiFrais() ? ' 3 œufs à midi (un repas frais, sans boîte), viande hachée le soir.' : ' poulet à midi, viande hachée le soir.') + ' Les cases se réinitialisent à minuit.';
       document.getElementById('meal-kcal-sub').textContent = Math.round(n.totals.kcal) + ' / ' + Math.round(n.targets.kcal) + ' kcal' +
         (n.targets.ajustement ? ' (plan ' + Math.round(n.targets.plan) + (n.targets.ajustement > 0 ? ' + ' : ' − ') + Math.abs(n.targets.ajustement) + ')' : '');
       document.getElementById('meal-p-fill').style.width = pPct + '%';

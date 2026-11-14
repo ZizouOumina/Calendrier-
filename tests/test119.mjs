@@ -134,6 +134,11 @@ console.log('\n== 5) Pas de viande jeudi, pas de batch vendredi : le week-end du
   ok(/70 g de viande hachée de ce soir/.test(r.range14) && /3 œufs/.test(r.range14), 'au rangement : la viande du soir au frigo, 3 œufs durs pour la collation');
   ok(/Pas de batch hier/.test(r.courses14), 'les courses le disent');
   ok(!r.batch13, 'plus de batch le vendredi 13');
+  /* « je vois des oeufs le samedi midi » : l'en-tete de l'onglet Repas disait « poulet a midi » au-dessus de la carte des oeufs */
+  await fr.evaluate(() => document.querySelector('.nav-btn[data-page="repas"]').click());
+  await page.waitForTimeout(300);
+  const d14 = await fr.evaluate(() => document.getElementById('repas-desc').textContent);
+  ok(/3 œufs à midi \(un repas frais, sans boîte\), viande hachée le soir/.test(d14) && !/poulet à midi/.test(d14), 'l\'onglet Repas du samedi 14 dit « 3 œufs à midi », comme sa carte');
   await fr.evaluate(() => document.querySelector('.nav-btn[data-page="courses"]').click());
   await page.waitForTimeout(400);
   const c = await fr.evaluate(() => document.getElementById('courses-grid').innerText);
@@ -145,6 +150,10 @@ console.log('\n== 5) Pas de viande jeudi, pas de batch vendredi : le week-end du
   await b.page.waitForTimeout(400);
   const c2 = await b.fr.evaluate(() => document.getElementById('courses-grid').innerText);
   ok(/Viande hachée 5 % — 490 g/.test(c2) && /Œufs — 18/.test(c2) && !/samedi soir/.test(c2), 'le samedi 21, la semaine type revient : 490 g, 18 œufs');
+  await b.fr.evaluate(() => document.querySelector('.nav-btn[data-page="repas"]').click());
+  await b.page.waitForTimeout(300);
+  const d21 = await b.fr.evaluate(() => document.getElementById('repas-desc').textContent);
+  ok(/Pâtes à midi \(125 g, du batch\)/.test(d21) && /poulet à midi, viande hachée le soir/.test(d21), 'le samedi 21 : les pâtes et le poulet du batch à midi');
   await b.ctx.close();
 }
 
