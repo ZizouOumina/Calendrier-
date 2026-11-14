@@ -1,6 +1,6 @@
 /* Parcours de garde : quinze dates qui couvrent tout le programme (jour 1, dimanche, lundi,
    jours sans cours d'octobre, phase 2, partiels, semestre 2, été). A chaque date, la Batcave
-   s'ouvre sans erreur JS, chacun des dix-neuf onglets s'affiche sans « undefined », « NaN »
+   s'ouvre sans erreur JS, chacun des vingt onglets s'affiche sans « undefined », « NaN »
    ni « [object », le bloc en cours porte une consigne, et les rappels de l'agenda sont
    coherents avec la grille : le titre de base d'un rappel est un bloc de la grille type du
    jour (c'est ainsi que les series 🦇 sont reconnues) et tout bloc de travail commence sa
@@ -21,7 +21,7 @@ const DATES = [
   ['2026-10-19T11:25:00+02:00', {}, 'phase 2'], ['2026-11-10T09:25:00+01:00', EX, 'partiels'],
   ['2027-01-26T10:25:00+01:00', {}, 'semestre 2'], ['2027-03-16T11:25:00+01:00', {}, 'grille type'], ['2027-06-10T15:05:00+02:00', {}, 'été']
 ];
-const PAGES = ['dashboard','bilan','calendrier','habitudes','addictions','repas','prep','sport','coran','budget','etudes','objectifs','courses','insights','taches','vie','agenda','business'];
+const PAGES = ['dashboard','journee','bilan','calendrier','habitudes','addictions','repas','prep','sport','coran','budget','etudes','objectifs','courses','insights','taches','vie','agenda','business'];
 for(const [quand, seed, nom] of DATES){
   console.log('\n== ' + nom + ' · ' + quand.slice(0, 16) + ' ==');
   const ctx = await b.newContext({viewport:{width:1440,height:1000}, timezoneId:'Europe/Madrid', locale:'fr-FR'});
@@ -60,7 +60,7 @@ for(const [quand, seed, nom] of DATES){
     const m = txt.match(/\bundefined\b|\bNaN\b|\[object /);
     if(m) casses.push(p + ' « ' + txt.slice(Math.max(0, m.index - 50), m.index + 25).replace(/\s+/g, ' ') + ' »');
   }
-  ok(!errs.length, 'aucune erreur JS en parcourant les dix-neuf onglets' + (errs.length ? ' — ' + errs.slice(0, 3).join(' | ') : ''));
+  ok(!errs.length, 'aucune erreur JS en parcourant les vingt onglets' + (errs.length ? ' — ' + errs.slice(0, 3).join(' | ') : ''));
   ok(!casses.length, 'aucun « undefined », « NaN » ou « [object » à l\'écran' + (casses.length ? ' — ' + casses.join(' ; ') : ''));
   await ctx.close();
 }

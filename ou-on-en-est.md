@@ -1,5 +1,25 @@
 # Où on en est — samedi 19 septembre 2026, au soir
 
+> ### Samedi 14 novembre, tard le soir — l'onglet « Ma journée »
+> **Ses mots** : « tu peux pas mettre tout ce que je dois faire précisément dans la batcave, comme ça j'évite de devoir
+> toucher à d'autres artefacts et tout est centralisé, au jour le jour […] un onglet, aujourd'hui, et dedans ça regroupe
+> tout précisément, ce dont on avait parlé, que ça soit le nettoyage, brossage de dents à telle heure etc. »
+> **Fait** : onglet `journee` (deuxième de la barre, touche 2 ; la touche 0 ouvre désormais le dixième). Les 72 jours du
+> guide (14 novembre → 24 janvier) sont embarqués dans `#journees-guide` par `outils/semaine/build_guide.py`, avec la grille
+> d'origine de chaque jour (`sig`) : si la grille vivante diffère (un examen, une échéance, un jour sans cours ajoutés
+> depuis), l'onglet le dit et montre la grille de la Batcave, bloc par bloc ; hors du guide aussi. En haut, la carte
+> « Maintenant » (ligne en cours, prière dans ses dix minutes, ligne suivante, bouton 🍅 pour les blocs de travail) ; les
+> lignes passées se replient (un toucher les rouvre) ; les cases du jour se cochent sur place (`toggleHabit`, les mêmes
+> que Habitudes). Classes `mj-*` (le préfixe `jr-` appartenait déjà aux journées reconstruites). Test `test120` ; tests
+> 67, 68, 69, 88, 95 et 110 passés à dix onglets.
+> **Trouvé en route** : la semaine du 16 du guide avait été extraite sans ses données — les quatre soirs de préparation de
+> ses échéances (exposé de Biología le 17, Práctica 5 le 18, Práctica 2 d'Anatomía le 19, Actividad 4 d'Antropología le 20)
+> manquaient. `semaine16.json` ré-extrait avec sa sauvegarde, `build16.py` connaît les blocs « Préparer · … » (la
+> préparation compte dans les révisions, « Prépare demain » passe à 20:45, un rappel dans la journée). Son état en ligne
+> du 14 au soir (échéances, examens, jours exclus) est identique à la sauvegarde du 11 : les 72 grilles coïncident.
+> **Rideau** : le libellé passait sur trois lignes au téléphone (test71) ; il devient « Rideau de douche à la machine,
+> 40 °C », et l'ancien libellé exact est remplacé chez lui sans drapeau (`LIBELLES_REMPLACES`, test119 scénario 7).
+
 > ### Samedi 14 novembre, le soir — le rideau de douche, une fois par mois
 > **Ses mots** : « rajoute le lavage du rideau une fois par mois, dans ma batcave etc., comme ça je garde le track de
 > tout ». Le rideau neuf : 100 % polyester, le bas lesté recoupé (des pinces le lestent en attendant).

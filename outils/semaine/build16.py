@@ -7,6 +7,7 @@ S = json.load(open(SP + 'semaine16.json'))
 
 def hh(m): return '%02d:%02d' % (m // 60, m % 60)
 def mn(h): a, b = h.split(':'); return int(a) * 60 + int(b)
+def de(x): return ('d’' if x[:1] in 'AEIOUÁÉÍÓÚHaeiouáéíóúh' else 'de ') + x
 
 # ---------- heures de priere (Alicante, Ligue islamique mondiale 18/17, Asr standard) ----------
 LAT, LNG, TZ = 38.3452, -0.4810, 1
@@ -144,10 +145,21 @@ for J in S:
     g = J['blocs']
     rows = []
     rows.append({'t': '05:20', 'k': 'soin', 'titre': 'Réveil' + (', puis la pesée' if dow == 0 else ''), 'd': ''})
-    creneaux = []
+    creneaux, prep, notes = [], 0, list(NOTES[dow])
     for i, b in enumerate(g):
         lab, h = b['l'], b['h']
         fin = g[i + 1]['h'] if i + 1 < len(g) else ''
+        # 14 novembre : la veille d'une echeance (un expose, une pratique, une activite notee : ses echeances dans la
+        # Batcave), le bloc du soir devient sa preparation, a la place de la cloture du cours. semaine16.json est
+        # extrait avec SES donnees (DONNEES=<sauvegarde>), sinon ces quatre soirs manquaient. Meme ligne que build_guide.py.
+        if lab.startswith('Préparer · '):
+            prep += mn(fin) - mn(h)
+            quoi = lab[len('Préparer · '):]
+            titre = ('Préparer l’examen ' + de(quoi[len('Examen · '):])) if quoi.startswith('Examen · ') else ('Préparer · ' + quoi)
+            rows.append({'t': h, 'fin': fin, 'k': 'etude', 'titre': titre, 'd': b['c']})
+            mat, _, quoi2 = quoi.rpartition(' · ')
+            notes.append('Ce soir à ' + h + ' : prépare « ' + quoi2 + ' »' + (' (' + mat + ')' if mat else '') + ' pour demain, à la place de la clôture du cours.')
+            continue
         if lab in ETUDE or (lab in PROJETS and b['c'].startswith('📚')):
             creneaux.append((mn(h), mn(fin)))
             continue
@@ -168,7 +180,7 @@ for J in S:
     for a, z in creneaux:
         if blocs_rev and a <= blocs_rev[-1][1]: blocs_rev[-1][1] = max(blocs_rev[-1][1], z)
         else: blocs_rev.append([a, z])
-    total_rev = sum(z - a for a, z in blocs_rev)
+    total_rev = sum(z - a for a, z in blocs_rev) + prep
     for a, z in blocs_rev:
         d = 'À 08:00 : 15 min de lumière, fenêtre grande ouverte.' if (dow in (0, 3, 5) and a <= mn('08:00') < z) else ''
         duree = z - a
@@ -190,7 +202,10 @@ for J in S:
     }
     if dow in soir:
         t, d = soir[dow]
-        rows.append({'t': '20:40', 'k': 'maison', 'titre': t, 'd': d})
+        tp = '20:40'   # apres la preparation du soir si elle couvre 20:40
+        for r_ in rows:
+            if r_['titre'].startswith('Préparer') and r_.get('fin') and mn(r_['t']) < mn('20:40') < mn(r_['fin']): tp = r_['fin']
+        rows.append({'t': tp, 'k': 'maison', 'titre': t, 'd': d})
     if dow == 0:
         rows.append({'t': '15:30', 'k': 'maison', 'titre': 'La laverie', 'd': '', 'pas': ['Défais le lit : draps, taies, serviettes et lavettes dans le sac.', 'Départ 15:35 : la laverie est à 5 min à pied.', 'À la laverie : un lavage à 60 °C, sans adoucissant si tu as le choix, puis le séchage — 45 min en tout, 8 €. Le linge sorti vers 16:25, de retour vers 16:30.', 'Tes 20 pages en espagnol pendant que ça tourne.', 'Le ticket dans la Batcave : Budget, catégorie Maison et ménage.']})
     if dow == 2:
@@ -314,7 +329,7 @@ for J in S:
     rows.sort(key=lambda r: (mn(r['t']), 0 if (r['k'] == 'foi' and not r.get('en')) else (3 if r.get('en') else (2 if r.get('fin') else 1))))
     jours.append({'iso': iso, 'dow': dow, 'jour': JOURS[dow], 'court': COURT[dow], 'num': int(iso[8:]),
                   'rattrapage': 'Révisions : %d h %02d dans la journée' % (total_rev // 60, total_rev % 60) + ((' · %s au minuteur, comme le tableau de bord' % ((('%d h %02d' % (J['cible']['rev'] // 60, J['cible']['rev'] % 60)) if J['cible']['rev'] % 60 else ('%d h' % (J['cible']['rev'] // 60))) if J['cible']['rev'] >= 60 else ('%d min' % J['cible']['rev']))) if J.get('cible') else ''),
-                  'prieres': prieres(int(iso[8:])), 'notes': NOTES[dow], 'enPlus': EN_PLUS[dow], 'rows': rows})
+                  'prieres': prieres(int(iso[8:])), 'notes': notes, 'enPlus': EN_PLUS[dow], 'rows': rows})
 
 MOIS = ['Le frigo vidé et nettoyé, le samedi des courses, avant de ranger.', 'Le rideau de douche à la machine, 40 °C, un dimanche sur quatre au début du ménage (13 décembre, 10 janvier, 7 février), puis raccroché humide, déplié : la Batcave le coche ces dimanches-là.', 'Le filtre et le joint de la machine à laver nettoyés.', 'La bouilloire et la cuve du rice cooker détartrées (l’eau d’Alicante est calcaire).', 'Les factures et le budget relus le 24, avant le virement du 25.']
 PLUS_RARE = ['Brosse à dents : tous les 3 mois (la Batcave te le rappelle).', 'Coiffeur : toutes les 3 semaines, le prochain le samedi 12 décembre.', 'Oreiller lavé : tous les 3 à 6 mois.', 'Couette lavée : 1 à 2 fois par an, en laverie si elle ne rentre pas dans ta machine.']

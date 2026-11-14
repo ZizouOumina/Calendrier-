@@ -258,15 +258,16 @@ console.log('\n== 273) Notion : les cours pas faits remontent ==');
   await ctx.close();
 }
 
-console.log('\n== 274) Neuf onglets, et rien de perdu ==');
+console.log('\n== 274) Dix onglets, et rien de perdu ==');
 {
   const { ctx, page, fr } = await ouvrir('2026-09-15T09:00:00+02:00');
   const nav = await fr.evaluate(() => [...document.querySelectorAll('.nav-btn[data-page]')].filter(b => !b.hidden).map(b => b.dataset.page));
   /* Neuf onglets depuis le regroupement du 19 septembre : quatre pages sont devenues des
      sous-onglets — Coran sous Habitudes, Meal prep et Courses sous Table, Objectifs sous
      Semaine. Leurs boutons restent dans le DOM, cachés, donc tout ce qui les visait par
-     leur nom continue de fonctionner. */
-  ok(nav.length === 9, 'neuf onglets visibles : ' + nav.join(' '));
+     leur nom continue de fonctionner. Dix depuis le 14 novembre : « Ma journée », après le
+     tableau de bord, sa demande (« tout est centralisé, au jour le jour »). */
+  ok(nav.length === 10, 'dix onglets visibles : ' + nav.join(' '));
   ok(nav.indexOf('business') < 0, 'Business reste caché tant qu\'aucune boutique n\'est branchée');
   const sem = await fr.evaluate(() => { document.querySelector('.nav-btn[data-page="bilan"]').click();
     return {actives: [...document.querySelectorAll('.page.active')].map(p => p.dataset.page),

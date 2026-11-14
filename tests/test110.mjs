@@ -22,7 +22,7 @@ async function ouvrir(quand, seed, vp){
 const pageActive = fr => fr.evaluate(() => [...document.querySelectorAll('.page.active')].map(p => p.dataset.page).join(','));
 const teteActive = fr => fr.evaluate(() => (document.querySelector('.nav-btn.active') || {dataset:{}}).dataset.page);
 
-console.log('\n== 410) Neuf onglets, Système en pastille sous Semaine ==');
+console.log('\n== 410) Dix onglets, Système en pastille sous Semaine ==');
 {
   /* Les six entrées du lot 51 ont été essayées puis retirées (25 septembre) : la barre
      d'avant reste, seule la carte du Système s'ajoute, en pastille sous Semaine. */
@@ -31,7 +31,7 @@ console.log('\n== 410) Neuf onglets, Système en pastille sous Semaine ==');
     visibles: [...document.querySelectorAll('.nav-btn[data-page]')].filter(b => !b.hidden).map(b => b.textContent.trim()),
     labels: [...document.querySelectorAll('nav > .nav-label')].filter(l => getComputedStyle(l).display !== 'none').length
   }));
-  ok(r.visibles.join(' · ') === 'Tableau de bord · Calendrier · Études · Semaine · Budget · Habitudes · Sport · Corps · Table', 'la barre : ' + r.visibles.join(' · '));
+  ok(r.visibles.join(' · ') === 'Tableau de bord · Ma journée · Calendrier · Études · Semaine · Budget · Habitudes · Sport · Corps · Table', 'la barre : ' + r.visibles.join(' · '));
   ok(r.labels === 3, 'les trois intertitres sont là');
   for(const [bouton, page2, tete, pastilles] of [
     ['coran', 'coran', 'habitudes', 'Habitudes|Coran & Duaas'],
@@ -47,8 +47,11 @@ console.log('\n== 410) Neuf onglets, Système en pastille sous Semaine ==');
   }
   const dir = await fr.evaluate(() => getComputedStyle(document.querySelector('.page.active > .sous-nav')).flexDirection);
   ok(dir === 'row', 'sur grand écran, les pastilles sont en ligne (' + dir + ')');
+  /* depuis le 14 novembre, « Ma journée » est le deuxième onglet : le Calendrier passe au 3 */
   await page.keyboard.press('2'); await page.waitForTimeout(150);
-  ok((await pageActive(fr)).split(',')[0] === 'calendrier', 'la touche 2 ouvre le Calendrier (' + await pageActive(fr) + ')');
+  ok((await pageActive(fr)).split(',')[0] === 'journee', 'la touche 2 ouvre Ma journée (' + await pageActive(fr) + ')');
+  await page.keyboard.press('3'); await page.waitForTimeout(150);
+  ok((await pageActive(fr)).split(',')[0] === 'calendrier', 'la touche 3 ouvre le Calendrier (' + await pageActive(fr) + ')');
   await ctx.close();
 }
 

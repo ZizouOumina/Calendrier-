@@ -10,7 +10,8 @@
   cocher sont celles du tableau de bord ce jour-la (cycles compris : photos, ongles, coupe, brosse a dents) ; les
   grammes du batch du mardi se calculent sur les repas de mercredi a samedi.
 
-  python3 outils/semaine/build_guide.py      -> ta-semaine.html a la racine du depot
+  python3 outils/semaine/build_guide.py      -> ta-semaine.html a la racine du depot, et les memes jours dans
+                                              batcave.html (#journees-guide, l'onglet « Ma journée »)
 """
 import json, math, os, re, subprocess
 
@@ -478,6 +479,28 @@ def semaine_ecrite(script, data, gabarit, cle):
     h1, sous, lis = entete_gabarit(gabarit)
     return {'cle': cle, 'titre': h1, 'sous': sous, 'tete': lis, 'jours': D['jours']}, D
 
+# la grille d'ou chaque jour a ete ecrit, en une ligne (« 05:30 Anki 1|06:30 Douche + préparation|… ») : l'onglet
+# « Ma journée » de la Batcave la compare a sa grille vivante et previent si elle a change depuis
+def signature(blocs): return '|'.join(b['h'] + ' ' + b['l'] for b in blocs)
+
+# 14 novembre au soir, « tu peux pas mettre tout ce que je dois faire precisement dans la batcave [...] tout est
+# centralise » : les memes jours, embarques dans la Batcave (#journees-guide), avec leur grille d'origine
+def vers_batcave(data, sig):
+    import copy
+    d = copy.deepcopy(data)
+    for se in d['semaines']:
+        for j in se['jours']:
+            if j['iso'] not in sig: raise SystemExit(j['iso'] + ' : pas de grille d’origine pour ce jour')
+            j['sig'] = sig[j['iso']]
+    s = json.dumps(d, ensure_ascii=False, separators=(',', ':'))
+    assert '</script' not in s.lower() and '<!--' not in s
+    chemin = SP + '../../batcave.html'
+    bc = open(chemin, encoding='utf-8').read()
+    if bc.count('id="journees-guide"') != 1: raise SystemExit('batcave.html : le bloc #journees-guide est introuvable ou en double')
+    m = re.search(r'(<script type="application/json" id="journees-guide">)(.*?)(</script>)', bc, re.S)
+    open(chemin, 'w', encoding='utf-8').write(bc[:m.start(2)] + s + bc[m.end(2):])
+    return len(s)
+
 def main():
     s11, D11 = semaine_ecrite('build11.py', 'data11.json', 'template11.html', '2026-11-14')
     s16, D16 = semaine_ecrite('build16.py', 'data16.json', 'template16.html', '2026-11-16')
@@ -499,6 +522,12 @@ def main():
     s = json.dumps(data, ensure_ascii=False)
     assert '</script' not in s.lower()
     open(SP + '../../ta-semaine.html', 'w', encoding='utf-8').write(t.replace('__DATA__', s))
+    sig = {}
+    for J in json.load(open(SP + 'grille11.json', encoding='utf-8')) + json.load(open(SP + 'semaine16.json', encoding='utf-8')):
+        sig[J['iso']] = signature(J['blocs'])
+    for lundi in SEMAINES:
+        for J in json.load(open(SP + 'semaines/' + lundi + '.json', encoding='utf-8')): sig[J['iso']] = signature(J['blocs'])
+    print('Batcave : #journees-guide,', vers_batcave(data, sig), 'caractères')
     for se in semaines:
         print(se['cle'], se['titre'], len(se['jours']), 'jours')
         for j in se['jours'][:7]:

@@ -413,7 +413,7 @@ console.log('\n== 310 bis) Un jour de séance : seuls ses exercices restent ouve
   await ctx.close();
 }
 
-console.log('\n== 311) Neuf onglets, et rien qui devient inatteignable ==');
+console.log('\n== 311) Dix onglets, et rien qui devient inatteignable ==');
 {
   const { ctx, page, fr } = await ouvrir('2026-09-23T09:00:00+02:00');
   const v = await fr.evaluate(() => ({
@@ -425,8 +425,8 @@ console.log('\n== 311) Neuf onglets, et rien qui devient inatteignable ==');
        .sous-onglet, et il apparait les jours ou une categorie n'est pas due. */
     pastilles: document.querySelectorAll('.sous-nav .sous-onglet').length
   }));
-  ok(v.visibles.length === 9, 'neuf boutons dans la barre : ' + v.visibles.join(' '));
-  ok(v.toutes.length === 19, 'mais les dix-neuf boutons restent dans le DOM (' + v.toutes.length + ', Système compris) — rien n\'a été supprimé');
+  ok(v.visibles.length === 10, 'dix boutons dans la barre (« Ma journée » depuis le 14 novembre) : ' + v.visibles.join(' '));
+  ok(v.toutes.length === 20, 'mais les vingt boutons restent dans le DOM (' + v.toutes.length + ', Système compris) — rien n\'a été supprimé');
   ok(v.groupes.join(' | ') === 'Aujourd’hui | Le travail | Le corps',
      'et les trois intertitres veulent dire quelque chose : ' + v.groupes.join(' | '));
   /* lot 52 : la carte du Système en pastille sous Semaine — huit pages groupées, 2+2+3+3+3+3+3+3 = 22 pastilles */
@@ -469,13 +469,13 @@ console.log('\n== 311) Neuf onglets, et rien qui devient inatteignable ==');
   });
   ok(past.pages === 'courses' && past.tete === 'repas', 'la pastille « Courses » ouvre Courses et garde Table allumé');
 
-  /* Neuf onglets visibles : les chiffres 1 à 9 couvrent enfin toute la barre. */
+  /* Dix onglets visibles : les chiffres 1 à 9, puis 0 pour le dixième, couvrent toute la barre. */
   const clav = await fr.evaluate(() => {
     const t = k => { document.dispatchEvent(new KeyboardEvent('keydown', {key:k, bubbles:true}));
                      return [...document.querySelectorAll('.page.active')].map(s => s.dataset.page)[0]; };
-    return [t('1'), t('9')];
+    return [t('1'), t('0')];
   });
-  ok(clav[0] === 'dashboard' && clav[1] === 'repas', 'les touches 1 et 9 vont du premier au dernier onglet : ' + clav.join(' → '));
+  ok(clav[0] === 'dashboard' && clav[1] === 'repas', 'les touches 1 et 0 vont du premier au dernier onglet : ' + clav.join(' → '));
   await ctx.close();
 }
 

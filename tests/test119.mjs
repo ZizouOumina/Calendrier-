@@ -173,6 +173,25 @@ console.log('\n== 6) Le rideau de douche à la machine, un dimanche sur quatre d
   await ctx.close();
 }
 
+console.log('\n== 7) Le premier libellé du rideau, trop long au téléphone, est raccourci chez lui ==');
+{
+  const graines = {}; for(let v = 2; v <= 13; v++) graines['batcave-habits-seed-v' + v] = true;
+  const LONG = 'Rideau de douche à la machine — 40 °C, pendant le ménage';
+  const avec = label => Object.assign({'batcave-habits': [{id:'core-lit', label:'Lit fait', icon:'🛏️'},
+    {id:'core-rideau-douche', label, icon:'🧺', jours:[0], cycleSemaines:4, ancre:'2026-12-13'}]}, graines);
+  const lu = async local => {
+    const { ctx, fr } = await ouvrir('2026-11-14T21:00:00+01:00', local);
+    const r = await fr.evaluate(() => ({
+      stock: JSON.parse(localStorage.getItem('batcave-habits') || '[]').filter(h => h.id === 'core-rideau-douche').map(h => h.label)[0],
+      ecran: window.__bcHabitsDuJour(0, '2026-12-13').filter(h => h.id === 'core-rideau-douche').map(h => h.label)[0] }));
+    await ctx.close(); return r;
+  };
+  const a = await lu(avec(LONG));
+  ok(a.stock === 'Rideau de douche à la machine, 40 °C' && a.ecran === a.stock, 'l\'ancien libellé exact devient « ' + a.stock + ' », à l\'écran comme dans le stockage');
+  const b = await lu(avec('Rideau à laver'));
+  ok(b.stock === 'Rideau à laver', 'un libellé qu\'il a choisi lui-même n\'est pas touché (' + b.stock + ')');
+}
+
 await browser.close();
 console.log(errs ? '\n' + errs + ' ÉCHEC(S)' : '\nTOUT VERT');
 process.exit(errs ? 1 : 0);

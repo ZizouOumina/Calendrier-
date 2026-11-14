@@ -3431,7 +3431,7 @@
    },
    {
     "id": "core-rideau-douche",
-    "label": "Rideau de douche à la machine — 40 °C, pendant le ménage",
+    "label": "Rideau de douche à la machine, 40 °C",
     "icon": "🧺",
     "cycle": 4,
     "ancre": "2026-12-13",
@@ -3571,7 +3571,7 @@
    },
    {
     "id": "core-rideau-douche",
-    "label": "Rideau de douche à la machine — 40 °C, pendant le ménage",
+    "label": "Rideau de douche à la machine, 40 °C",
     "icon": "🧺"
    }
   ],

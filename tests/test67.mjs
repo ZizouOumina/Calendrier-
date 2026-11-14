@@ -90,8 +90,9 @@ console.log('\n== 263) iPhone : rien ne déborde, tout est lisible ==');
   /* Neuf onglets depuis le regroupement du 19 septembre : quatre pages sont devenues des
      sous-onglets — Coran sous Habitudes, Meal prep et Courses sous Table, Objectifs sous
      Semaine. Leurs boutons restent dans le DOM, cachés, donc tout ce qui les visait par
-     leur nom continue de fonctionner. */
-  ok(pages.length === 9 && pages.indexOf('business') < 0, 'neuf onglets sur iPhone : ' + pages.join(' '));
+     leur nom continue de fonctionner. Dix depuis le 14 novembre : « Ma journée », après le
+     tableau de bord, sa demande (« tout est centralisé, au jour le jour »). */
+  ok(pages.length === 10 && pages.indexOf('business') < 0, 'dix onglets sur iPhone : ' + pages.join(' '));
   let deborde = [];
   for(const p of pages){
     await fr.evaluate(x => document.querySelector('.nav-btn[data-page="' + x + '"]').click(), p);
@@ -99,7 +100,7 @@ console.log('\n== 263) iPhone : rien ne déborde, tout est lisible ==');
     const ov = await fr.evaluate(() => ({sw: document.documentElement.scrollWidth, cw: document.documentElement.clientWidth}));
     if(ov.sw > ov.cw + 1) deborde.push(p + ':+' + (ov.sw - ov.cw) + 'px');
   }
-  ok(deborde.length === 0, 'aucun débordement horizontal sur les neuf onglets : ' + (deborde.join(' ') || 'RAS'));
+  ok(deborde.length === 0, 'aucun débordement horizontal sur les dix onglets : ' + (deborde.join(' ') || 'RAS'));
   ok(pe.length === 0, 'aucune erreur JS sur iPhone : ' + (pe[0] || 'RAS'));
   await ctx.close();
 }
