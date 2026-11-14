@@ -347,7 +347,7 @@ for J in S:
                   'rattrapage': 'Révisions : %d h %02d dans la journée' % (total_rev // 60, total_rev % 60) + ((' · %s au minuteur, comme le tableau de bord' % ((('%d h %02d' % (J['cible']['rev'] // 60, J['cible']['rev'] % 60)) if J['cible']['rev'] % 60 else ('%d h' % (J['cible']['rev'] // 60))) if J['cible']['rev'] >= 60 else ('%d min' % J['cible']['rev']))) if J.get('cible') else ''),
                   'prieres': prieres(int(iso[8:])), 'notes': NOTES[dow], 'enPlus': EN_PLUS[dow], 'rows': rows})
 
-MOIS = ['Le frigo vidé et nettoyé, le samedi des courses, avant de ranger.', 'Le filtre et le joint de la machine à laver nettoyés.', 'La bouilloire et la cuve du rice cooker détartrées (l’eau d’Alicante est calcaire).', 'Les factures et le budget relus le 24, avant le virement du 25.']
+MOIS = ['Le frigo vidé et nettoyé, le samedi des courses, avant de ranger.', 'Le rideau de douche à la machine, 40 °C, un dimanche sur quatre au début du ménage (13 décembre, 10 janvier, 7 février), puis raccroché humide, déplié : la Batcave le coche ces dimanches-là.', 'Le filtre et le joint de la machine à laver nettoyés.', 'La bouilloire et la cuve du rice cooker détartrées (l’eau d’Alicante est calcaire).', 'Les factures et le budget relus le 24, avant le virement du 25.']
 PLUS_RARE = ['Brosse à dents : tous les 3 mois (la Batcave te le rappelle).', 'Coiffeur : toutes les 3 semaines, le prochain le samedi 21.', 'Oreiller lavé : tous les 3 à 6 mois.', 'Couette lavée : 1 à 2 fois par an, en laverie si elle ne rentre pas dans ta machine.']
 json.dump({'jours': jours, 'chaqueJour': CHAQUE_JOUR, 'mois': MOIS, 'plusRare': PLUS_RARE}, open(SP + 'data11.json', 'w'), ensure_ascii=False, indent=0)
 t = open(SP + 'template11.html', encoding='utf-8').read()

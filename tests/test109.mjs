@@ -27,9 +27,9 @@ console.log('\n== 400) Un seul numéro de schéma ==');
 {
   const { ctx, fr } = await ouvrir('2026-09-28T10:00:00+02:00');
   const r = await fr.evaluate(() => ({ s: window.__bcSchema(), m: window.__bcDrapeaux(), fini: window.__bcInitFini === true }));
-  ok(r.s.attendu === 66 && r.s.enregistre === 66, 'batcave-schema écrit au démarrage : ' + r.s.enregistre + ' (attendu ' + r.s.attendu + ')');
+  ok(r.s.attendu === 67 && r.s.enregistre === 67, 'batcave-schema écrit au démarrage : ' + r.s.enregistre + ' (attendu ' + r.s.attendu + ')');
   ok(r.m.length === 0, 'toutes les migrations ont posé leur drapeau au premier chargement (manquants : ' + (r.m.join(', ') || 'aucun') + ')');
-  ok(await lire(fr, 'batcave-schema') === 66, 'la clé batcave-schema vaut 66 (taches-octobre-v1 : les consignes d\'octobre, périmées, quittent sa liste)');
+  ok(await lire(fr, 'batcave-schema') === 67, 'la clé batcave-schema vaut 67 (habits-seed-v13 : le rideau de douche à la machine, un dimanche sur quatre)');
   ok(r.fini, 'le second temps du démarrage (les autres onglets) est terminé');
   await ctx.close();
 }

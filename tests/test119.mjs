@@ -148,6 +148,31 @@ console.log('\n== 5) Pas de viande jeudi, pas de batch vendredi : le week-end du
   await b.ctx.close();
 }
 
+console.log('\n== 6) Le rideau de douche à la machine, un dimanche sur quatre dès le 13 décembre ==');
+{
+  const { ctx, fr } = await ouvrir('2026-11-14T21:00:00+01:00', {'batcave-taches': SIENNE});
+  const r = await fr.evaluate(() => {
+    const vaut = iso => window.__bcHabitsDuJour(new Date(iso + 'T00:00:00').getDay(), iso).some(h => h.id === 'core-rideau-douche');
+    const menage = iso => (window.__bcRappels(iso).filter(b => /Ménage/.test(b.titre))[0] || {}).description || '';
+    return { j: ['2026-11-15','2026-11-22','2026-12-06','2026-12-13','2027-01-10','2027-02-07'].map(vaut),
+             m13: menage('2026-12-13'), m6: menage('2026-12-06'),
+             stock: JSON.parse(localStorage.getItem('batcave-habits') || '[]').filter(h => h.id === 'core-rideau-douche').length };
+  });
+  ok(JSON.stringify(r.j) === JSON.stringify([false, false, false, true, true, true]), 'dû les 13 décembre, 10 janvier, 7 février — pas avant (' + r.j.join(', ') + ')');
+  ok(/^D'abord le rideau de douche à la machine/.test(r.m13) && !/rideau/.test(r.m6), 'ces dimanches-là, le ménage commence par le rideau ; les autres, rien ne change');
+  ok(r.stock === 1, 'une seule fois dans le stockage (' + r.stock + ')');
+  await ctx.close();
+}
+{
+  /* Une Batcave déjà semée jusqu'à la v12 : la v13 ajoute le rideau sans toucher au reste */
+  const base = [{id:'core-lit', label:'Lit fait', icon:'🛏️'}];
+  const graines = {}; for(let v = 2; v <= 12; v++) graines['batcave-habits-seed-v' + v] = true;
+  const { ctx, fr } = await ouvrir('2026-11-14T21:00:00+01:00', Object.assign({'batcave-habits': base}, graines));
+  const h = await fr.evaluate(() => JSON.parse(localStorage.getItem('batcave-habits') || '[]').map(x => x.id));
+  ok(h.includes('core-lit') && h.includes('core-rideau-douche') && h.length === 2, 'ajouté à une Batcave existante, sans toucher au reste (' + h.join(', ') + ')');
+  await ctx.close();
+}
+
 await browser.close();
 console.log(errs ? '\n' + errs + ' ÉCHEC(S)' : '\nTOUT VERT');
 process.exit(errs ? 1 : 0);

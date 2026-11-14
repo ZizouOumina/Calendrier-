@@ -1,5 +1,14 @@
 # Où on en est — samedi 19 septembre 2026, au soir
 
+> ### Samedi 14 novembre, le soir — le rideau de douche, une fois par mois
+> **Ses mots** : « rajoute le lavage du rideau une fois par mois, dans ma batcave etc., comme ça je garde le track de
+> tout ». Le rideau neuf : 100 % polyester, le bas lesté recoupé (des pinces le lestent en attendant).
+> **Fait** : habitude `core-rideau-douche` (graine v13, schéma 67), le dimanche toutes les quatre semaines dès le
+> 13 décembre (puis 10 janvier, 7 février) ; ces dimanches-là, la consigne du ménage commence par le rideau (machine
+> 40 °C au début, raccroché humide à la fin). Guide : liste « Chaque mois », semaines ré-extraites (13 décembre,
+> 10 janvier) ; « Ta journée, pas à pas » (« Moins souvent ») ; agenda : les deux ménages concernés (test119,
+> scénario 6 ; test42 et test90 complétés de la v13).
+
 > ### Vendredi 13 novembre, le soir — « j'ai pas acheté de viande, j'ai pas fait toutes les courses, on va faire ça demain » ; « dans la batcave les connecteurs ne marchent pas »
 > **Demain sans batch** : `BATCH_DATES` vide (plus de batch le vendredi), `VIANDE_PREMIERE_SEMAINE` neutralisée.
 > Samedi 14 et dimanche 15 à midi, le repas frais des dimanches (`midiFrais` : 3 œufs, 80 g de brocoli, le riz ; le samedi,

@@ -3184,7 +3184,7 @@
    {
     "h": "16:30",
     "l": "🧽 Ménage — sols, salle de bain, poussière",
-    "c": "À ton retour de la laverie (vers 16:30) : le lit refait avec la parure propre, puis aspirateur-serpillière dans tout l'appart (réservoir vidé et rincé après), salle de bain, poussière. Le linge propre plié et rangé. À la fin, sors la poubelle."
+    "c": "D'abord le rideau de douche à la machine, seul ou avec deux serviettes, 40 °C : il tourne pendant le ménage, et se raccroche humide à la fin, où il sèche déplié. À ton retour de la laverie (vers 16:30) : le lit refait avec la parure propre, puis aspirateur-serpillière dans tout l'appart (réservoir vidé et rincé après), salle de bain, poussière. Le linge propre plié et rangé. À la fin, sors la poubelle."
    },
    {
     "h": "17:30",
@@ -3443,6 +3443,14 @@
     "cycle": 0,
     "ancre": null,
     "quinzaine": false
+   },
+   {
+    "id": "core-rideau-douche",
+    "label": "Rideau de douche à la machine — 40 °C, pendant le ménage",
+    "icon": "🧺",
+    "cycle": 4,
+    "ancre": "2026-12-13",
+    "quinzaine": false
    }
   ],
   "duJour": [
@@ -3575,6 +3583,11 @@
     "id": "core-lumiere",
     "label": "Lumière du matin — 15 min dehors, dès qu’il fait jour",
     "icon": "☀️"
+   },
+   {
+    "id": "core-rideau-douche",
+    "label": "Rideau de douche à la machine — 40 °C, pendant le ménage",
+    "icon": "🧺"
    }
   ],
   "repas": {

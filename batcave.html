@@ -3688,9 +3688,9 @@
      comme inconnu. DRAPEAUX_MIGRATION est desormais LA liste ; les autres la reprennent.
      SCHEMA_VERSION est ecrit dans « batcave-schema » quand toutes ont tourne : le panneau
      Sante compare, et une sauvegarde plus ancienne se reconnait a ce seul chiffre. */
-  var SCHEMA_VERSION = 66;   /* 13 novembre : taches-octobre-v1 (onze consignes d'octobre, perimees, quittent sa liste) ; 13 novembre : ancre-dimanche-v4 (ses ancres du 13 septembre, restées après une synchro, repartent du dimanche 15 : photos, brosse, ongles) ; 12 novembre, le soir : enveloppe-courses-v1 (300 EUR pour les courses, le soin, le menage et la laverie) ; 12 novembre : plafond-nourriture-v11 (les dattes a 5 EUR le kilo) ; 11 novembre, la nuit : ancre-dimanche-v3 (photos, brosse a dents et ongles repartent du dimanche 15) ; 11 novembre au soir : postes-soin-maison-v4 (le plafond reste a 14 rattrape) ; 11 novembre : postes-soin-maison-v3 (la laverie) ; 10 novembre, 18 h : snus-arret-v4 (le depart au mercredi 11) */   /* 9 novembre au soir : courses-plan-v12 et postes-soin-maison-v1 ; 10 novembre : postes-soin-maison-v2 */
+  var SCHEMA_VERSION = 67;   /* 14 novembre : habits-seed-v13 (le rideau de douche à la machine, un dimanche sur quatre dès le 13 décembre) ; 13 novembre : taches-octobre-v1 (onze consignes d'octobre, perimees, quittent sa liste) ; 13 novembre : ancre-dimanche-v4 (ses ancres du 13 septembre, restées après une synchro, repartent du dimanche 15 : photos, brosse, ongles) ; 12 novembre, le soir : enveloppe-courses-v1 (300 EUR pour les courses, le soin, le menage et la laverie) ; 12 novembre : plafond-nourriture-v11 (les dattes a 5 EUR le kilo) ; 11 novembre, la nuit : ancre-dimanche-v3 (photos, brosse a dents et ongles repartent du dimanche 15) ; 11 novembre au soir : postes-soin-maison-v4 (le plafond reste a 14 rattrape) ; 11 novembre : postes-soin-maison-v3 (la laverie) ; 10 novembre, 18 h : snus-arret-v4 (le depart au mercredi 11) */   /* 9 novembre au soir : courses-plan-v12 et postes-soin-maison-v1 ; 10 novembre : postes-soin-maison-v2 */
   var DRAPEAUX_MIGRATION = ['objectifs-seed-v1','objectifs-v2-55','objectifs-v5-espanol',
-    'habits-ecran-v2','habitlog-hebdo-v1','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','habits-seed-v7','habits-seed-v8','habits-seed-v9','habits-seed-v10','habits-seed-v11','habits-seed-v12',
+    'habits-ecran-v2','habitlog-hebdo-v1','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','habits-seed-v7','habits-seed-v8','habits-seed-v9','habits-seed-v10','habits-seed-v11','habits-seed-v12','habits-seed-v13',
     'courses-plan-v2','courses-plan-v3','courses-plan-v4','courses-plan-v5','courses-plan-v6','courses-plan-v7','courses-plan-v8','courses-plan-v9','courses-plan-v10','courses-plan-v11','courses-plan-v12',
     'charges-v2','plafond-nourriture-v2','plafond-nourriture-v3','plafond-nourriture-v4','plafond-nourriture-v5','plafond-nourriture-v6','plafond-nourriture-v7','plafond-nourriture-v8','plafond-nourriture-v9','plafond-nourriture-v10','postes-soin-maison-v1','postes-soin-maison-v2','ancre-dimanche-v1','ancre-dimanche-v2','serviettes-v1','coiffeur-v1','shampoing-dim-v1','marche-cible-v1','fc-migration-v1','fc-migration-v2','fc-migration-v3','fc-migration-v4','fc-migration-v5','revision-fusionnee','pesee-hebdo-v1','snus-arret-v3','snus-arret-v4','postes-soin-maison-v3','postes-soin-maison-v4','ancre-dimanche-v3','plafond-nourriture-v11','enveloppe-courses-v1','ancre-dimanche-v4','taches-octobre-v1'];
   /* Drapeaux que rien ne pose plus (migrations retirees) ou poses seulement quand il y a
@@ -3810,7 +3810,7 @@
      place dans le quota de 5000 documents et embrouille les sauvegardes, sans que rien ne
      la lise jamais. On la signale ; la suppression reste ton geste. */
   var CLES_CONNUES = ['addictions','budget-limits','business','coran','courses','condiments','dash-more','duaas','duree-bloc','sport-log','objectifs','objectifs-seed-v1','objectifs-v2-55','objectifs-v3-trajet','objectifs-v4-dimanche','habits-ecran-v2','habitlog-hebdo-v1','courses-plan-v2','courses-plan-v3','courses-plan-v4','courses-plan-v5','courses-plan-v6','courses-plan-v7','courses-plan-v8','courses-plan-v9','courses-plan-v10','charges-v2','plafond-nourriture-v2','plafond-nourriture-v3','plafond-nourriture-v4','plafond-nourriture-v5','plafond-nourriture-v6','plafond-nourriture-v7','gcal-controle','ancre-dimanche-v1','ancre-dimanche-v2','serviettes-v1','coiffeur-v1','shampoing-dim-v1','marche-cible-v1','cardio','cardio-tests','kcal-ajustement','gcal-ecriture','reinit','fc-migration-v1','fc-migration-v2','fc-migration-v3','fc-migration-v4','livrables','shampoing-combat-v1','shampoing-samedi-v1','charge','shopify-boutique','journees','examens-heures','vacances','jours-exclus',
-    'espagnol','examens','cours-suivi','portes','periodes-closes','fc-prix-icloud-3','fc-prix-club-100','fc-prix-club-70','fixed-charges','goals','goals-depart','saisons','insights-hist','last-restore-drill','habitlog','habits','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','habits-seed-v7','habits-seed-v8','habits-seed-v9','habits-seed-v10','habits-seed-v11','habits-seed-v12','objectifs-v5-espanol',
+    'espagnol','examens','cours-suivi','portes','periodes-closes','fc-prix-icloud-3','fc-prix-club-100','fc-prix-club-70','fixed-charges','goals','goals-depart','saisons','insights-hist','last-restore-drill','habitlog','habits','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','habits-seed-v7','habits-seed-v8','habits-seed-v9','habits-seed-v10','habits-seed-v11','habits-seed-v12','habits-seed-v13','objectifs-v5-espanol',
     'horizon','last-auto-backup','last-manual-backup','last-bilan-prompt','last-compaction','last-open','last-rotation','notion-url',
     'pomodial-purge','projets','report','revision','revision-fusionnee','revue','sante','sauvegarde','sessions',
     'shopify-last-order-count','taches','timer','transactions','undo-stack','undo-toast','cloud-reload-at','cloud-toast','notion-cache','anki',
@@ -5424,7 +5424,7 @@
      ni synchronisee ni rattrapee) et efface ses copies locales AVANT le rattrapage, sinon
      elles repartiraient vers le cloud. La meme remise a zero peut donc etre decidee depuis
      l'appli ou directement dans le cloud. */
-  var REINIT_GARDER = ['habits','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','habits-seed-v7','habits-seed-v8','habits-seed-v9','habits-seed-v10','habits-seed-v11','habits-seed-v12','objectifs-v5-espanol','fixed-charges','fc-prix-icloud-3','fc-prix-club-100','fc-prix-club-70','budget-limits','examens','examens-heures','journees','echeances','vacances','jours-exclus','jours-sans-cours','portes','appro','notion-url','shopify-boutique','produits-fini',
+  var REINIT_GARDER = ['habits','habits-seed-v2','habits-seed-v3','habits-seed-v4','habits-seed-v5','habits-seed-v6','habits-seed-v7','habits-seed-v8','habits-seed-v9','habits-seed-v10','habits-seed-v11','habits-seed-v12','habits-seed-v13','objectifs-v5-espanol','fixed-charges','fc-prix-icloud-3','fc-prix-club-100','fc-prix-club-70','budget-limits','examens','examens-heures','journees','echeances','vacances','jours-exclus','jours-sans-cours','portes','appro','notion-url','shopify-boutique','produits-fini',
                        'objectifs','horizon','goals-depart','saisons','periodes-closes','gcal-ecriture','duree-bloc','dash-more','reinit','copie-vierge','schema'].concat(DRAPEAUX_MIGRATION, DRAPEAUX_ANCIENS);
   var REINIT_PREFIXES_GARDER = ['pomodial-', 'coherence-ignore-'];
   function reinitGarder(cle){
@@ -7170,6 +7170,13 @@
   var HABIT_SEED_V12 = [
     {id:'core-lumiere', label:'Lumi\u00e8re du matin \u2014 15 min dehors, d\u00e8s qu\u2019il fait jour', icon:'\u2600\ufe0f'}
   ];
+  /* Le lot du 14 novembre au soir, sa demande : « rajoute le lavage du rideau une fois par mois, dans ma batcave etc.,
+     comme ça je garde le track de tout ». Le rideau neuf (100 % polyester, le bas lesté recoupé) passe à la machine à
+     40 °C toutes les quatre semaines, le dimanche, au début du ménage : il tourne pendant, et se raccroche humide à la
+     fin. Premier lavage le 13 décembre, un mois après l'achat -- puis les dimanches de photo (10 janvier, 7 février). */
+  var HABIT_SEED_V13 = [
+    {id:'core-rideau-douche', label:'Rideau de douche à la machine — 40 °C, pendant le ménage', icon:'\ud83e\uddfa', jours:[0], cycleSemaines:4, ancre:'2026-12-13'}
+  ];
   var HABIT_GENERATIONS = [
     {cle: 'batcave-habits-seed-v2', graines: HABIT_SEED_V2},
     {cle: 'batcave-habits-seed-v3', graines: HABIT_SEED_V3},
@@ -7181,7 +7188,8 @@
     {cle: 'batcave-habits-seed-v9', graines: HABIT_SEED_V9},
     {cle: 'batcave-habits-seed-v10', graines: HABIT_SEED_V10},
     {cle: 'batcave-habits-seed-v11', graines: HABIT_SEED_V11},
-    {cle: 'batcave-habits-seed-v12', graines: HABIT_SEED_V12}
+    {cle: 'batcave-habits-seed-v12', graines: HABIT_SEED_V12},
+    {cle: 'batcave-habits-seed-v13', graines: HABIT_SEED_V13}
   ];
   var habitsState = load('batcave-habits', null);
   if(habitsState !== null && !Array.isArray(habitsState)) habitsState = null;
@@ -7210,7 +7218,7 @@
     return ajoutees || retirees;
   }
   if(habitsState === null){
-    habitsState = HABIT_SEED.concat(HABIT_SEED_V2, HABIT_SEED_V3, HABIT_SEED_V4, HABIT_SEED_V5, HABIT_SEED_V6, HABIT_SEED_V7, HABIT_SEED_V8, HABIT_SEED_V9, HABIT_SEED_V10, HABIT_SEED_V11, HABIT_SEED_V12);
+    habitsState = HABIT_SEED.concat(HABIT_SEED_V2, HABIT_SEED_V3, HABIT_SEED_V4, HABIT_SEED_V5, HABIT_SEED_V6, HABIT_SEED_V7, HABIT_SEED_V8, HABIT_SEED_V9, HABIT_SEED_V10, HABIT_SEED_V11, HABIT_SEED_V12, HABIT_SEED_V13);
     save('batcave-habits', habitsState);
     HABIT_GENERATIONS.forEach(function(g){ save(g.cle, true); });
   } else {
@@ -17104,7 +17112,13 @@
         "Les " + Math.round(oeufs / 50) + " œufs durs de la semaine : 10 min dans l'eau bouillante, puis eau froide ; en coquille, au frigo. Tout refroidit 20 min à découvert, puis " + S.length + " boîtes, toutes au frigo, le jour écrit dessus : ce soir, puis lundi et mardi, midi et soir. La viande de mardi reste au congélateur. La vaisselle, le plan de travail essuyé. Puis, vers 15:30, la laverie : défais le lit — draps, taies, serviettes et lavettes dans le sac — et pars à 15:35, à 5 min à pied (un lavage à 60 °C, sans adoucissant si tu as le choix, puis le séchage : 45 min en tout, " + eur(LAVERIE.eur) + "). Tes 20 pages en espagnol pendant que ça tourne ; de retour vers 16:30, le lit se refait au début du ménage. Le ticket dans Budget, Maison et ménage.";
     },
     /* 11 novembre : les draps et les serviettes vont a la laverie (LAVERIE), juste apres la session du dimanche */
-    '🧽 Ménage — sols, salle de bain, poussière': "À ton retour de la laverie (vers 16:30) : le lit refait avec la parure propre, puis aspirateur-serpillière dans tout l'appart (réservoir vidé et rincé après), salle de bain, poussière. Le linge propre plié et rangé. À la fin, sors la poubelle.",
+    /* 14 novembre : un dimanche sur quatre (core-rideau-douche), le ménage commence par le rideau de douche */
+    '🧽 Ménage — sols, salle de bain, poussière': function(d, iso){
+      var rideau = habitParId('core-rideau-douche');
+      var avecRideau = rideau && habitVautLe(rideau, dowDe(iso || todayISO), iso || todayISO);
+      return (avecRideau ? "D'abord le rideau de douche à la machine, seul ou avec deux serviettes, 40 °C : il tourne pendant le ménage, et se raccroche humide à la fin, où il sèche déplié. " : "") +
+        "À ton retour de la laverie (vers 16:30) : le lit refait avec la parure propre, puis aspirateur-serpillière dans tout l'appart (réservoir vidé et rincé après), salle de bain, poussière. Le linge propre plié et rangé. À la fin, sors la poubelle.";
+    },
     '🚿 Douche du soir': "Dix minutes, eau bien tiède — agréable, jamais brûlante : visage et dos restent tièdes (Skinoren). Une heure avant le coucher, le corps évacue ensuite sa chaleur et tu t'endors plus vite. Eau seule sur les cheveux et le corps, gel doux aux aisselles, à l'aine et aux pieds ; la fin à l'eau froide (dimanche, mercredi, vendredi) se fait le matin. Cinq minutes plus tard, le Skinoren. Lumières basses : une lampe, plus le plafonnier.",
     '📖 Écran off — lecture papier': "Avant d'éteindre : la clôture du jour dans la Batcave, deux minutes. Puis téléphone en charge hors de portée, réveil posé loin du lit. Chambre vers 18 °C (fenêtre ouverte dix minutes), noir complet. Tes vingt pages en espagnol, sur papier.",
     'Brossage de dents': "Les dents, puis au lit. Si tu ne dors pas au bout de vingt minutes, lève-toi, lis dix minutes sous une lumière faible, et reviens.",

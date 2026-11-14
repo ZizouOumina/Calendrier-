@@ -3438,6 +3438,14 @@
     "cycle": 0,
     "ancre": null,
     "quinzaine": false
+   },
+   {
+    "id": "core-rideau-douche",
+    "label": "Rideau de douche à la machine — 40 °C, pendant le ménage",
+    "icon": "🧺",
+    "cycle": 4,
+    "ancre": "2026-12-13",
+    "quinzaine": false
    }
   ],
   "duJour": [
