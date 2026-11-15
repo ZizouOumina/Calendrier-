@@ -121,12 +121,13 @@ console.log('\n== 4) Un rendez-vous dans l\'agenda Google n\'est pas un bloc man
 
 console.log('\n== 5) Les durées s\'écrivent en heures et minutes, jamais en dixièmes ==');
 {
-  const {ctx, fr} = await ouvrir({'batcave-sessions':[{id:'s1',date:'2026-09-14',
-    debut:Date.parse('2026-09-14T07:20:00+02:00'), fin:Date.parse('2026-09-14T08:15:00+02:00'),
-    duree:55, type:'cours', label:'Anatomie'}]}, '2026-09-14T21:00:00+02:00');
+  /* 15 novembre : avant le jour 1, le plan ne reproche plus la révision -- la scène se joue le lundi 23, dans le programme */
+  const {ctx, fr} = await ouvrir({'batcave-sessions':[{id:'s1',date:'2026-11-23',
+    debut:Date.parse('2026-11-23T05:30:00+01:00'), fin:Date.parse('2026-11-23T06:25:00+01:00'),
+    duree:55, type:'cours', label:'Anatomie'}]}, '2026-11-23T21:00:00+01:00');
   const t = await plan(fr), c = await temps(fr), l = await legend(fr);
   const ligne = t.split('\n').filter(x=>/Révision —/.test(x))[0] || '';
-  ok(/Révision — 55 min sur 5 h 05 — il reste 4 h 10/.test(ligne), 'plan : ' + ligne.trim());
+  ok(/Révision — 55 min sur 3 h 13 — il reste 2 h 18/.test(ligne), 'plan : ' + ligne.trim());
   ok(!/\d,\dh|\d,\d h/.test(t + c + l), 'plus une seule durée en dixièmes d\'heure sur le tableau de bord');
   ok(/55 min/.test(c), 'cellule : ' + (c.match(/Révision[^|]*\|[^|]*/)||[''])[0].trim());
   await ctx.close();
@@ -173,8 +174,9 @@ console.log('\n== 7) Rattrapage unique après une absence ==');
      Depuis le 31 octobre, le jour 1 est le dimanche 1er novembre : retour le mardi 3, les 1er et 2 sans cloture. */
   /* 11 novembre : jour 1 au jeudi 12 -- retour le samedi 14, les 12 et 13 sans cloture.
      12 novembre : jour 1 au vendredi 13 -- retour le dimanche 15, les 13 et 14 sans cloture.
-     13 novembre : jour 1 au samedi 14 -- retour le lundi 16, les 14 et 15 sans cloture. */
-  const {ctx, page, fr} = await ouvrir({'batcave-last-open':'2026-09-16'}, '2026-11-16T10:00:00+01:00');
+     13 novembre : jour 1 au samedi 14 -- retour le lundi 16, les 14 et 15 sans cloture.
+     15 novembre : jour 1 au lundi 16 -- retour le mercredi 18, les 16 et 17 sans cloture. */
+  const {ctx, page, fr} = await ouvrir({'batcave-last-open':'2026-09-16'}, '2026-11-18T10:00:00+01:00');
   const t = await plan(fr);
   const l = t.split('\n').filter(x=>/Absence —/.test(x))[0] || '';
   ok(/2 journées sans clôture/.test(l), 'un seul item pour toute l\'absence : ' + l.trim().slice(0, 90));

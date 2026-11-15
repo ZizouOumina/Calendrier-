@@ -35,7 +35,9 @@ console.log('\n== A) Chaque bloc de la grille a-t-il une destination ? ==');
        destination est le livrable coche le dimanche), ou un bloc de vie sans suivi assume
        (douche, trajet, retour du club, coucher, temps libre...). On liste ce qui n'entre
        nulle part. */
-    const vie = /Douche|Trajet|Retour du club|Coucher|Temps libre|Repos|Micro-sieste|Collation|Déjeuner|Dîner|Petit-déjeuner|Sport|Course à pied|JJB|Muay Thai|^Projets perso|Jumu|Ménage|Batch cooking|Courses|Rangement|Cours$/;
+    /* 15 novembre : le retour a pied de la salle, l'ecran coupe et le brossage de dents sont des moments de vie, sans
+       suivi -- ils manquaient a la liste depuis qu'ils sont dans la grille ; « Ma journée » en donne les etapes */
+    const vie = /Douche|Trajet|Retour du club|Retour de la salle|Écran off|Brossage de dents|Coucher|Temps libre|Repos|Micro-sieste|Collation|Déjeuner|Dîner|Petit-déjeuner|Sport|Course à pied|JJB|Muay Thai|^Projets perso|Jumu|Ménage|Batch cooking|Courses|Rangement|Cours$/;
     Object.keys(vus).forEach(l => {
       if(window.__bcTypeBloc(l)) return;
       if(vie.test(l)) return;
@@ -92,18 +94,19 @@ console.log('\n== E) Le cardio, bout en bout ==');
 {
   const r = await fr.evaluate(() => {
     const sorties = window.__bcSortiesCardio('2026-11-02');
-    /* regime combat (28 septembre -> 24 janvier) : le cardio, c'est le club -- JJB lundi,
-       mercredi et vendredi a 10:30, Muay Thai mardi a 19:30 ; plus de course ni de sprints */
+    /* regime combat (28 septembre -> 24 janvier) : le cardio, c'est le club -- JJB lundi, mercredi et vendredi a 10:30 ;
+       plus de course ni de sprints. La Muay Thai du mardi a ete retiree a sa demande (le mardi garde sa seconde session de
+       batch) : trois seances de combat par semaine, plus quatre. */
     const jjb = [['monday','2026-11-02'],['wednesday','2026-11-04'],['friday','2026-11-06']]
       .every(([c, iso]) => window.__bcGrille(c, iso).some(b => b[0] === '10:30' && /JJB/.test(b[1])));
-    const grille = jjb && window.__bcGrille('tuesday', '2026-11-03').some(b => b[0] === '19:30' && /Muay Thai/.test(b[1]));
-    const agenda = window.__bcRappels('2026-11-02').some(x => /JJB/.test(x.titre)) && window.__bcRappels('2026-11-03').some(x => /Muay Thai/.test(x.titre));
+    const grille = jjb && !window.__bcGrille('tuesday', '2026-11-03').some(b => /Muay Thai/.test(b[1]));
+    const agenda = window.__bcRappels('2026-11-02').some(x => /JJB/.test(x.titre)) && !window.__bcRappels('2026-11-03').some(x => /Muay Thai/.test(x.titre));
     const panneau = !!document.getElementById('cardio-panel');
     return {sorties: sorties.length, grille, agenda, panneau};
   });
-  pt(r.grille, 'dans la grille (JJB lundi, mercredi et vendredi 10:30 ; Muay Thai mardi 19:30)');
+  pt(r.grille, 'dans la grille (JJB lundi, mercredi et vendredi 10:30 ; plus de Muay Thai le mardi)');
   pt(r.agenda, 'dans ce qui part vers l\'agenda Google');
-  pt(r.panneau && r.sorties === 4, 'dans l\'onglet Sport, avec ses 4 séances de combat (' + r.sorties + ')');
+  pt(r.panneau && r.sorties === 3, 'dans l\'onglet Sport, avec ses 3 séances de combat (' + r.sorties + ')');
 }
 
 await ctx.close(); await b.close();

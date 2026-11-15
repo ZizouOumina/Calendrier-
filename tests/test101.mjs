@@ -59,20 +59,20 @@ const AVANT = {
    du programme -- toujours la meme raison. Une troisieme migration (ancre-dimanche-v3) reecrit les ancres deja
    enregistrees au 4 octobre (les siennes). Les photos : 15 novembre, 13 decembre, 10 janvier, 7 fevrier -- le
    dimanche du bilan peau. */
-console.log('\n== 331) Départ neuf : les habitudes à cycle du dimanche partent du 15 novembre ==');
+console.log('\n== 331) Départ neuf : les habitudes à cycle du dimanche partent du 22 novembre ==');
 {
   const { ctx, fr } = await ouvrir('2026-09-29T08:00:00+02:00');
   const c = await cartes(fr);
   const dit = n => c.filter(x => x.indexOf(n) > -1)[0] || '(absente)';
-  ok(/prochaine fois le 15 nov/.test(dit('Photos')), 'photos : dimanche 15 novembre — l\'image du point de départ existe (' + dit('Photos') + ')');
+  ok(/prochaine fois le 22 nov/.test(dit('Photos')), 'photos : dimanche 22 novembre — l\'image du point de départ existe (' + dit('Photos') + ')');
   /* 21 octobre au soir : la pesee tombe chaque dimanche, sa carte dit simplement « dimanche » */
   ok(/· dimanche/.test(dit('Pesée')) && !/prochaine fois/.test(dit('Pesée')), 'pesée : chaque dimanche (' + dit('Pesée') + ')');
-  ok(/prochaine fois le 15 nov/.test(dit('Ongles')), 'ongles : le 15 aussi');
-  ok(/prochaine fois le 15 nov/.test(dit('Brosse à dents')), 'brosse à dents : le 15 aussi');
+  ok(/prochaine fois le 22 nov/.test(dit('Ongles')), 'ongles : le 22 aussi');
+  ok(/prochaine fois le 22 nov/.test(dit('Brosse à dents')), 'brosse à dents : le 22 aussi');
   const a = await ancres(fr);
-  ok(!a['core-pesee-dim'] && a['core-photos-dim'] === '2026-11-15'
-     && a['core-ongles'] === '2026-11-15' && a['core-brosse-dents'] === '2026-11-15',
-     'la pesée n\'a plus d\'ancre (chaque dimanche depuis le 21 octobre), les trois autres valent 2026-11-15 dans le stockage');
+  ok(!a['core-pesee-dim'] && a['core-photos-dim'] === '2026-11-22'
+     && a['core-ongles'] === '2026-11-22' && a['core-brosse-dents'] === '2026-11-22',
+     'la pesée n\'a plus d\'ancre (chaque dimanche depuis le 21 octobre), les trois autres valent 2026-11-22 dans le stockage');
   /* La coupe de cheveux a sa propre ancre (un samedi) : elle ne doit pas etre emportee. */
   ok(a['core-cheveux'] === '2026-10-31', 'la coupe de cheveux a sa propre ancre, un samedi : le 31 octobre depuis le 30 septembre (coiffeur sauté ce mois-ci) (' + a['core-cheveux'] + ')');
   await ctx.close();
@@ -83,12 +83,12 @@ console.log('\n== 332) Une Batcave déjà enregistrée est migrée au chargement
   /* Le cas le plus ancien : des ancres au 13. */
   const { ctx, fr } = await ouvrir('2026-09-29T08:00:00+02:00', AVANT);
   const a = await ancres(fr);
-  ok(!a['core-pesee-dim'] && a['core-photos-dim'] === '2026-11-15'
-     && a['core-ongles'] === '2026-11-15' && a['core-brosse-dents'] === '2026-11-15',
-     'les trois ancres du 13 ont été réécrites au 15 novembre, la pesée a perdu la sienne (chaque dimanche)');
+  ok(!a['core-pesee-dim'] && a['core-photos-dim'] === '2026-11-22'
+     && a['core-ongles'] === '2026-11-22' && a['core-brosse-dents'] === '2026-11-22',
+     'les trois ancres du 13 ont été réécrites au 22 novembre, la pesée a perdu la sienne (chaque dimanche)');
   ok(a['core-cheveux'] === '2026-10-31', 'et celle qui n\'était pas au 13 suit sa propre migration : le 3 octobre passe au 31 (coiffeur sauté)');
   const c = await cartes(fr);
-  ok(/prochaine fois le 15 nov/.test(c.filter(x => x.indexOf('Photos') > -1)[0] || ''),
+  ok(/prochaine fois le 22 nov/.test(c.filter(x => x.indexOf('Photos') > -1)[0] || ''),
      'l\'écran dit la même chose que le stockage');
   await ctx.close();
 }
@@ -99,31 +99,31 @@ console.log('\n== 332) Une Batcave déjà enregistrée est migrée au chargement
   sienne['batcave-ancre-dimanche-v1'] = true;
   const { ctx, fr } = await ouvrir('2026-09-29T08:00:00+02:00', sienne);
   const a = await ancres(fr);
-  ok(!a['core-pesee-dim'] && a['core-photos-dim'] === '2026-11-15'
-     && a['core-ongles'] === '2026-11-15' && a['core-brosse-dents'] === '2026-11-15' && a['core-cheveux'] === '2026-10-31',
-     'des ancres au 20 septembre passent au 15 novembre, la coupe va au 31 octobre (' + JSON.stringify(a) + ')');
+  ok(!a['core-pesee-dim'] && a['core-photos-dim'] === '2026-11-22'
+     && a['core-ongles'] === '2026-11-22' && a['core-brosse-dents'] === '2026-11-22' && a['core-cheveux'] === '2026-10-31',
+     'des ancres au 20 septembre passent au 22 novembre, la coupe va au 31 octobre (' + JSON.stringify(a) + ')');
   await ctx.close();
 }
 {
   /* Le cas qui compte aujourd'hui : la SIENNE, au 4 octobre depuis la v2, ouverte le matin du jour 1. Les trois
-     ancres passent au 15 novembre (v3) ; la coupe de cheveux garde la sienne ; une ancre posee a la main ailleurs
+     ancres passent au 22 novembre (v3) ; la coupe de cheveux garde la sienne ; une ancre posee a la main ailleurs
      (ici les ongles, decales d'une semaine) ne bouge pas. */
   const sienne = JSON.parse(JSON.stringify(AVANT));
   sienne['batcave-habits'].forEach(h => { if(h.ancre === '2026-09-13') h.ancre = '2026-10-04'; if(h.id === 'core-pesee-dim'){ delete h.cycleSemaines; delete h.ancre; } if(h.id === 'core-cheveux') h.ancre = '2026-10-31'; });
   sienne['batcave-ancre-dimanche-v1'] = true; sienne['batcave-ancre-dimanche-v2'] = true; sienne['batcave-pesee-hebdo-v1'] = true;
   const { ctx, fr } = await ouvrir('2026-11-12T05:25:00+01:00', sienne);
   const a = await ancres(fr);
-  ok(a['core-photos-dim'] === '2026-11-15' && a['core-ongles'] === '2026-11-15' && a['core-brosse-dents'] === '2026-11-15' && a['core-cheveux'] === '2026-10-31',
-     'le matin du jour 1 : ses trois ancres du 4 octobre passent au dimanche 15 novembre, la coupe reste au 31 octobre (' + JSON.stringify(a) + ')');
+  ok(a['core-photos-dim'] === '2026-11-22' && a['core-ongles'] === '2026-11-22' && a['core-brosse-dents'] === '2026-11-22' && a['core-cheveux'] === '2026-10-31',
+     'le matin du jour 1 : ses trois ancres du 4 octobre passent au dimanche 22 novembre, la coupe reste au 31 octobre (' + JSON.stringify(a) + ')');
   const c = await cartes(fr);
-  ok(/prochaine fois le 15 nov/.test(c.filter(x => x.indexOf('Photos') > -1)[0] || ''), 'et la carte des photos annonce le 15 novembre');
+  ok(/prochaine fois le 22 nov/.test(c.filter(x => x.indexOf('Photos') > -1)[0] || ''), 'et la carte des photos annonce le 22 novembre');
   ok(await fr.evaluate(() => (window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-ancre-dimanche-v3')) === 'true', 'le drapeau de la v3 est posé');
   await ctx.close();
   const main = JSON.parse(JSON.stringify(sienne));
   main['batcave-habits'].forEach(h => { if(h.id === 'core-ongles') h.ancre = '2026-10-11'; });
   const b2 = await ouvrir('2026-11-12T05:25:00+01:00', main);
   const a2 = await ancres(b2.fr);
-  ok(a2['core-ongles'] === '2026-10-11' && a2['core-photos-dim'] === '2026-11-15', 'une ancre qu\'il a posée lui-même (les ongles au 11 octobre) ne bouge pas (' + JSON.stringify(a2) + ')');
+  ok(a2['core-ongles'] === '2026-10-11' && a2['core-photos-dim'] === '2026-11-22', 'une ancre qu\'il a posée lui-même (les ongles au 11 octobre) ne bouge pas (' + JSON.stringify(a2) + ')');
   await b2.ctx.close();
 }
 
@@ -153,47 +153,70 @@ console.log('\n== 333) La migration ne tourne qu\'une fois ==');
   sienne['batcave-ancre-dimanche-v1'] = true; sienne['batcave-ancre-dimanche-v2'] = true; sienne['batcave-ancre-dimanche-v3'] = true; sienne['batcave-pesee-hebdo-v1'] = true;
   const { ctx, fr } = await ouvrir('2026-11-13T21:00:00+01:00', sienne);
   const a = await ancres(fr);
-  ok(a['core-photos-dim'] === '2026-11-15' && a['core-ongles'] === '2026-11-15' && a['core-brosse-dents'] === '2026-11-15' && a['core-cheveux'] === '2026-10-31',
-     'ses trois ancres du 13 septembre passent au dimanche 15 novembre, la coupe reste au 31 octobre (' + JSON.stringify(a) + ')');
+  ok(a['core-photos-dim'] === '2026-11-22' && a['core-ongles'] === '2026-11-22' && a['core-brosse-dents'] === '2026-11-22' && a['core-cheveux'] === '2026-10-31',
+     'ses trois ancres du 13 septembre passent au dimanche 22 novembre, la coupe reste au 31 octobre (' + JSON.stringify(a) + ')');
   const c = await cartes(fr);
   const dit = n => c.filter(x => x.indexOf(n) > -1)[0] || '(absente)';
-  ok(/prochaine fois le 15 nov/.test(dit('Photos')) && /prochaine fois le 15 nov/.test(dit('Brosse à dents')) && /prochaine fois le 15 nov/.test(dit('Ongles')),
-     'photos, brosse et ongles annoncés pour le dimanche 15 (' + dit('Photos') + ')');
+  ok(/prochaine fois le 22 nov/.test(dit('Photos')) && /prochaine fois le 22 nov/.test(dit('Brosse à dents')) && /prochaine fois le 22 nov/.test(dit('Ongles')),
+     'photos, brosse et ongles annoncés pour le dimanche 22 (' + dit('Photos') + ')');
   ok(await fr.evaluate(() => (window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-ancre-dimanche-v4')) === 'true', 'le drapeau de la v4 est posé');
   await ctx.close();
 }
 {
+  /* 15 novembre, « recale tout sur lundi » : SON etat en ligne du 14 au soir -- les trois ancres au 15 novembre (la v4 faite),
+     les drapeaux v1 a v4 poses. Le jour 1 passe au lundi 16 : la v5 les porte au dimanche 22, premier dimanche du programme.
+     Une ancre posee a la main ailleurs ne bouge pas. */
+  const sienne = JSON.parse(JSON.stringify(AVANT));
+  sienne['batcave-habits'].forEach(h => { if(h.id === 'core-pesee-dim'){ delete h.cycleSemaines; delete h.ancre; } else if(h.id === 'core-cheveux') h.ancre = '2026-10-31'; else if(h.ancre) h.ancre = '2026-11-15'; });
+  ['v1','v2','v3','v4'].forEach(v => { sienne['batcave-ancre-dimanche-' + v] = true; }); sienne['batcave-pesee-hebdo-v1'] = true;
+  const { ctx, fr } = await ouvrir('2026-11-15T09:00:00+01:00', sienne);
+  const a = await ancres(fr);
+  ok(a['core-photos-dim'] === '2026-11-22' && a['core-ongles'] === '2026-11-22' && a['core-brosse-dents'] === '2026-11-22' && a['core-cheveux'] === '2026-10-31',
+     'v5 : ses trois ancres du 15 novembre passent au dimanche 22, la coupe reste au 31 octobre (' + JSON.stringify(a) + ')');
+  const cases = await fr.evaluate(() => [...document.querySelectorAll('#dash-checklist li label')].map(x => x.textContent));
+  ok(!cases.some(t => /Photos|Brosse à dents|Ongles/.test(t)), 'et ce dimanche 15, veille du jour 1, ne réclame ni photos, ni brosse, ni ongles');
+  ok(await fr.evaluate(() => (window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-ancre-dimanche-v5')) === 'true', 'le drapeau de la v5 est posé');
+  await ctx.close();
+  const main = JSON.parse(JSON.stringify(sienne));
+  main['batcave-habits'].forEach(h => { if(h.id === 'core-ongles') h.ancre = '2026-11-29'; });
+  const b2 = await ouvrir('2026-11-15T09:00:00+01:00', main);
+  const a2 = await ancres(b2.fr);
+  ok(a2['core-ongles'] === '2026-11-29' && a2['core-photos-dim'] === '2026-11-22', 'une ancre posée à la main (les ongles au 29) ne bouge pas (' + JSON.stringify(a2) + ')');
+  await b2.ctx.close();
+}
+{
   const { ctx, fr } = await ouvrir('2026-09-29T08:00:00+02:00', AVANT);
   const lire = k => fr.evaluate(k => (window.__bcLire || ((k) => localStorage.getItem(k)))(k), k);
-  const v1 = await lire('batcave-ancre-dimanche-v1'), v2 = await lire('batcave-ancre-dimanche-v2'), v3 = await lire('batcave-ancre-dimanche-v3'), v4 = await lire('batcave-ancre-dimanche-v4');
-  ok(v1 === 'true' && v2 === 'true' && v3 === 'true' && v4 === 'true', 'et la première ouverture pose bien les quatre drapeaux (' + v1 + ' / ' + v2 + ' / ' + v3 + ' / ' + v4 + ')');
+  const v1 = await lire('batcave-ancre-dimanche-v1'), v2 = await lire('batcave-ancre-dimanche-v2'), v3 = await lire('batcave-ancre-dimanche-v3'), v4 = await lire('batcave-ancre-dimanche-v4'), v5 = await lire('batcave-ancre-dimanche-v5');
+  ok(v1 === 'true' && v2 === 'true' && v3 === 'true' && v4 === 'true' && v5 === 'true', 'et la première ouverture pose bien les cinq drapeaux (' + v1 + ' / ' + v2 + ' / ' + v3 + ' / ' + v4 + ' / ' + v5 + ')');
   await ctx.close();
 }
 
-console.log('\n== 334) Le rythme reste le bon après le 15 novembre ==');
+console.log('\n== 334) Le rythme reste le bon après le 22 novembre ==');
 {
-  const { ctx, fr } = await ouvrir('2026-11-16T08:00:00+01:00');
+  const { ctx, fr } = await ouvrir('2026-11-23T08:00:00+01:00');
   const c = await cartes(fr);
   const dit = n => c.filter(x => x.indexOf(n) > -1)[0] || '(absente)';
-  /* 15 novembre + 4 semaines = 13 decembre (photos) ; + 12 semaines = 7 fevrier (brosse a dents, et le bilan peau). */
+  /* 15 novembre, « recale tout sur lundi » : l'ancre au dimanche 22. 22 novembre + 4 semaines = 20 decembre (photos) ;
+     + 12 semaines = 14 fevrier (brosse a dents, et le bilan peau). */
   ok(/· dimanche/.test(dit('Pesée')) && !/prochaine fois/.test(dit('Pesée')), 'pesée : chaque dimanche, sans cycle (' + dit('Pesée') + ')');
-  ok(/prochaine fois le 13 déc/.test(dit('Photos')), 'photos le 13 décembre, quatre semaines après (' + dit('Photos') + ')');
-  ok(/prochaine fois le 0?7 févr/.test(dit('Brosse à dents')), 'brosse à dents le 7 février, douze semaines après (' + dit('Brosse à dents') + ')');
+  ok(/prochaine fois le 20 déc/.test(dit('Photos')), 'photos le 20 décembre, quatre semaines après (' + dit('Photos') + ')');
+  ok(/prochaine fois le 14 févr/.test(dit('Brosse à dents')), 'brosse à dents le 14 février, douze semaines après (' + dit('Brosse à dents') + ')');
   await ctx.close();
 }
 {
-  const { ctx, fr } = await ouvrir('2026-12-13T08:00:00+01:00');
+  const { ctx, fr } = await ouvrir('2026-12-20T08:00:00+01:00');
   const c = await cartes(fr);
-  ok(/prochaine fois le 13 déc/.test(c.filter(x => x.indexOf('Photos') > -1)[0] || ''),
-     'puis le 13 décembre — la photo tombe toujours un dimanche de pesée');
+  ok(/prochaine fois le 20 déc/.test(c.filter(x => x.indexOf('Photos') > -1)[0] || ''),
+     'puis le 20 décembre — la photo tombe toujours un dimanche de pesée');
   await ctx.close();
 }
 {
   /* Le bilan peau des douze semaines tombe un dimanche de photos : la consigne « photos du jour, comparees a ta
-     premiere serie » a ses deux series. */
-  const { ctx, fr } = await ouvrir('2027-02-07T08:00:00+01:00');
+     premiere serie » a ses deux series. 15 novembre : le 14 fevrier (BILAN_PEAU_ISO), plus le 7. */
+  const { ctx, fr } = await ouvrir('2027-02-14T08:00:00+01:00');
   const v = await fr.evaluate(() => ({ plan: document.getElementById('dash-plan').innerText, cases: [...document.querySelectorAll('#dash-checklist li label')].map(x => x.textContent) }));
-  ok(/Bilan peau des 12 semaines/.test(v.plan) && v.cases.some(t => /Photos/.test(t)), 'dimanche 7 février : le bilan peau, et les photos sont une case du jour');
+  ok(/Bilan peau des 12 semaines/.test(v.plan) && v.cases.some(t => /Photos/.test(t)), 'dimanche 14 février : le bilan peau, et les photos sont une case du jour');
   await ctx.close();
 }
 

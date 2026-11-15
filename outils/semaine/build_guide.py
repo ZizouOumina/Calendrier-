@@ -3,9 +3,7 @@
 
 12 novembre, ses mots : « donc il me faut un guide a la semaine, pour chaque jour, precisement ».
 
-- Du vendredi 13 au dimanche 15 et du lundi 16 au dimanche 22 novembre : les jours viennent de build11.py et de
-  build16.py, ecrits bloc par bloc (le depart, la reprise de la salle) -- lances ici tels quels.
-- Les semaines suivantes (SEMAINES) sont construites a partir de la Batcave seule : semaines/<lundi>.json, sorti par
+- Depuis le 15 novembre, le guide commence le lundi 16 (le jour 1) et toutes les semaines (SEMAINES) sont construites a partir de la Batcave seule : semaines/<lundi>.json, sorti par
   tests/zz-semaine.mjs <sortie> <lundi> 7. La consigne de chaque bloc est celle que la Batcave affiche ; les cases a
   cocher sont celles du tableau de bord ce jour-la (cycles compris : photos, ongles, coupe, brosse a dents) ; les
   grammes du batch du mardi se calculent sur les repas de mercredi a samedi.
@@ -16,7 +14,9 @@
 import json, math, os, re, subprocess
 
 SP = os.path.dirname(os.path.abspath(__file__)) + '/'
-SEMAINES = ['2026-11-23', '2026-11-30', '2026-12-07', '2026-12-14', '2026-12-21', '2026-12-28', '2027-01-04', '2027-01-11', '2027-01-18']
+# 15 novembre, « recale tout sur lundi » : le jour 1 passe au lundi 16 et la semaine du 16 se construit comme les
+# autres, depuis la Batcave et SES donnees (semaines/2026-11-16.json) -- plus de week-end du depart ni de page ecrite a part.
+SEMAINES = ['2026-11-16', '2026-11-23', '2026-11-30', '2026-12-07', '2026-12-14', '2026-12-21', '2026-12-28', '2027-01-04', '2027-01-11', '2027-01-18']
 # 12 novembre, « que je n'aie plus besoin de toucher quoi que ce soit avant le debut du 2e semestre » : jusqu'au dimanche 24 janvier.
 # Les jours sans cours de la Batcave (JOURS_SANS_COURS_LISTE, periodeGrille) : le 8 decembre ferie, les vacances de Noel
 # (du 23 decembre au 6 janvier), les partiels (periode « partiels » des semaines extraites), puis les 21 et 22 janvier entre
@@ -132,14 +132,21 @@ def construire(J, semaine, k):
     rows = []
 
     # le reveil
+    premieres_photos = a('Photos') and iso == PREMIERES_PHOTOS
     titre = 'Réveil' + (', puis la pesée' + (' et les photos' if a('Photos') else '') if a('Pesée') else '')
     pas = ['Alarme coupée, loin du lit. Lumières à fond.', 'Toilettes.']
     if a('Pesée'): pas.append('Pesée à jeun et tour de taille, notés dans la Batcave.')
-    if a('Photos'): pas.append('Les photos de la peau et du corps : même endroit, même lumière qu’au point de départ.')
-    pas += ['Un grand verre d’eau.', 'Les dents : 2 min.', 'Le lit fait.']
+    if premieres_photos: pas.append('Les photos du point de départ, peau et corps : le visage et le dos, le corps de face et de profil. Note l’endroit et la lumière : les suivantes se prennent pareil.')
+    elif a('Photos'): pas.append('Les photos de la peau et du corps : même endroit, même lumière qu’au point de départ.')
+    pas += ['Un grand verre d’eau.', 'Le lit fait.']
     rows.append({'t': '05:20', 'k': 'soin', 'titre': titre, 'd': '', 'pas': pas})
+    # 15 novembre, « je vois qu'un brossage de dents dans la journée » : le matin avait le sien, cache dans les etapes du
+    # reveil ; il a maintenant sa ligne, comme celui du soir
+    neuve = a('Brosse à dents')
+    rows.append({'t': '05:25', 'k': 'soin', 'titre': 'Brossage de dents', 'd': '', 'pas': (['La brosse à dents neuve aujourd’hui : l’ancienne à la poubelle.'] if neuve else []) + [
+        '2 min, avec le dentifrice au fluor : toutes les faces, le bord des gencives.', 'Crache sans rincer : le fluor reste sur l’émail.']})
 
-    creneaux, clore = [], 0
+    creneaux, clore, prepas = [], 0, []
     batch_mardi = None
     tapis = any(b['l'] == 'Trajet cours' and b['h'] == '15:00' for b in g)
     jjb = '🥋 JJB' in labs
@@ -168,6 +175,9 @@ def construire(J, semaine, k):
             clore += mn(fin) - mn(h)
             quoi = lab[len('Préparer · '):]
             titre = ('Préparer l’examen ' + de(quoi[len('Examen · '):])) if quoi.startswith('Examen · ') else ('Préparer · ' + quoi)
+            if not quoi.startswith('Examen · '):
+                mat, _, quoi2 = quoi.rpartition(' · ')
+                prepas.append('Ce soir à ' + h + ' : prépare « ' + quoi2 + ' »' + (' (' + mat + ')' if mat else '') + ' pour demain, à la place de la clôture du cours.')
             rows.append({'t': h, 'fin': fin, 'k': 'etude', 'titre': titre, 'd': c}); continue
         if lab.startswith('Trajet · Examen · '):
             rows.append({'t': h, 'k': 'cours', 'titre': 'Départ pour l’examen ' + de(lab[len('Trajet · Examen · '):]), 'd': c}); continue
@@ -181,8 +191,12 @@ def construire(J, semaine, k):
             if set(q) != attendu: raise SystemExit(iso + ' : le shake a changé dans la Batcave : ' + json.dumps(q))
             riz = somme(J['repas'], 'Dîner', 'riz') + somme(J['repas'], 'Déjeuner', 'riz')
             midi = 'à midi, tu cuis des pâtes fraîches' if 'repas frais' in consigne.get('Déjeuner', '') else 'à midi, ce sont les pâtes de ta boîte'
-            r = ('repas', 'Lance le riz, puis le shake et une page de Coran', '', [
-                'Le riz : %d g rincés trois fois, l’eau au trait, une pincée de sel iodé. Cuve lancée : c’est le riz du soir (%s).' % (riz, midi),
+            # 15 novembre : un jour de salle, le riz part en rentrant, avant la douche (consigne « Retour de la salle ») --
+            # a 08:30 il cuit deja ; « lance le riz » ici le faisait lancer deux fois
+            salle = any(x['l'] == 'Retour de la salle' and x['h'] < h for x in g)
+            r = ('repas', 'Le shake et une page de Coran' if salle else 'Lance le riz, puis le shake et une page de Coran', '', [
+                ('Le riz, lancé en rentrant de la salle : %d g rincés trois fois, l’eau au trait, une pincée de sel iodé — c’est le riz du soir (%s).' if salle else
+                 'Le riz : %d g rincés trois fois, l’eau au trait, une pincée de sel iodé. Cuve lancée : c’est le riz du soir (%s).') % (riz, midi),
                 'Le shake : %d ml de boisson d’avoine, %d g de skyr, %d g de flocons, une banane, %d g de fruits rouges, %d g de miel, %d g d’amandes. 40 s de mixeur.'
                 % (q['avoine'], q['skyr'], q['flocons'], q['fruitsrouges'], q['miel'], q['amandes']),
                 'Une page de Coran pendant que tu bois.', 'Le blender rincé.', 'Ta gourde de 1,5 L remplie, à finir avant le déjeuner.',
@@ -214,9 +228,9 @@ def construire(J, semaine, k):
             r = ('soin', 'Écrans coupés', '', ['La clôture du jour dans la Batcave (2 min), et un coup d’œil à demain sur cette page.',
                  'Téléphone en charge hors de la chambre, réveil posé loin du lit.', 'Fenêtre ouverte 10 min, puis fermée.',
                  '5 min d’étirements' + (', puis le cou : flexion et extension, 3 × 12-20.' if a('Cou') else '.'), 'Tes 20 pages en espagnol, sur papier.'])
-        elif lab == 'Brossage de dents': r = ('soin', 'Dents', '', ['Brossage, 2 min.', 'Le fil dentaire.', 'Toilettes.'])
+        elif lab == 'Brossage de dents': r = ('soin', 'Brossage de dents', '', ['2 min, avec le dentifrice au fluor : toutes les faces, le bord des gencives.', 'Le fil dentaire, entre chaque dent.', 'Crache sans rincer.', 'Toilettes.'])
         elif lab == 'Douche + brossage de dents':
-            r = ('soin', 'Douche et dents', '', phrases(c) or ['La clôture du jour dans la Batcave (2 min), téléphone en charge hors de la chambre.',
+            r = ('soin', 'Douche, puis brossage de dents', '', phrases(c) or ['La clôture du jour dans la Batcave (2 min), téléphone en charge hors de la chambre.',
                  'Douche tiède, 10 min.', 'Brossage, 2 min, et le fil dentaire.'])
         elif lab == 'Coucher': r = ('soin', 'Au lit', 'Si tu ne dors pas au bout de 20 min, lève-toi, lis 10 min sous une lumière faible, puis reviens.', None)
         elif lab == 'Trajet mosquée': r = ('foi', 'Départ pour la mosquée', c + (' Le kimono étendu avant de partir.' if jjb else ''), None)
@@ -353,6 +367,9 @@ def construire(J, semaine, k):
 
     # a ne pas oublier
     N = []
+    if iso == JOUR_1:
+        N.append('Jour 1 : tout commence ce matin, réveil 05:20. D’abord la copie vierge (bouton Sauvegarde), avant toute saisie.')
+        N.append('Pas encore vu le médecin pour les douleurs à la poitrine ? Appelle le centro de salud à 08:00, en rentrant de la salle : rendez-vous et prise de sang.')
     if prec is not None and prec.get('espagnol') and not J.get('espagnol'):
         N.append('Les blocs Projets perso reviennent : l’e-commerce commence aujourd’hui (Dossier E-commerce, semaine 1). Chaque bloc dit quoi faire.')
     exam = next((b for b in g if b['l'].startswith('Examen · ')), None)
@@ -367,6 +384,7 @@ def construire(J, semaine, k):
     if suiv is not None:
         ex2 = next((b for b in suiv['blocs'] if b['l'].startswith('Examen · ')), None)
         if ex2: N.append('Demain à ' + ex2['h'] + ' : examen ' + de(ex2['l'][len('Examen · '):]) + '. Ce soir, coucher à l’heure.')
+    N += prepas
     if 'Sport' in labs: N.append('La salle à 07:00' + (' : bandes et gants dans le sac.' if dow in (2, 6) else '.'))
     if jjb: N.append('JJB à 10:30 : la collation à 10:05, le kimono en machine en rentrant' + (', étendu avant la mosquée.' if 'Trajet mosquée' in labs else '.'))
     if 'Trajet mosquée' in labs: N.append('13:15 : Jumu’ah à la mosquée.')
@@ -380,14 +398,15 @@ def construire(J, semaine, k):
         N.append('13:30 : ' + ('le coiffeur, puis ' if a('Coupe de cheveux') else '') + 'les courses de la semaine.')
         N.append('Au rangement : la viande de mardi au congélateur, crue.')
     if dow == 0:
-        N.append('Au réveil : pesée à jeun et tour de taille' + (', puis les photos du point d’étape.' if a('Photos') else '.'))
+        N.append('Au réveil : pesée à jeun et tour de taille' + ((', puis les photos du point de départ : c’est à elles que tu compareras les suivantes.' if iso == PREMIERES_PHOTOS else ', puis les photos du point d’étape.') if a('Photos') else '.'))
         if 'Español · simulación' in labs:
             m = re.search(r'passage (\d) sur (\d)', consigne['Español · simulación'])
-            N.append('11:20 : l’épreuve d’espagnol' + (', passage ' + m.group(1) + ' sur ' + m.group(2) if m else '') + ' — les trois chiffres à la clôture du soir.')
+            prem = 'premier passage' in consigne['Español · simulación']
+            N.append('11:20 : l’épreuve d’espagnol' + (', passage ' + m.group(1) + ' sur ' + m.group(2) if m else (', le premier passage : le diagnostic, ta ligne de départ' if prem else '')) + ' — les trois chiffres à la clôture du soir.')
         N.append('12:20 : un repas frais, pas de boîte (pâtes, 3 œufs, brocoli).')
         N.append('14:30 : la première session de batch. 15:30 : la laverie, puis le ménage à ton retour.')
         if a('Ongles'): N.append('Les ongles' + (', mains et pieds.' if a('Photos') else ', des mains.'))
-        if a('Brosse à dents'): N.append('Une brosse à dents neuve.')
+        if a('Brosse à dents'): N.append('Une brosse à dents neuve, ce matin.')
     if dow == 1 and suiv is not None:
         sam = next((j for j in semaine if j['dow'] == 6), None)
         if sam and any('Coupe de cheveux' in h['label'] for h in (sam.get('duJour') or [])):
@@ -448,11 +467,12 @@ def tete(S, jours):
             ev.append(jl + ' : jour férié, pas de cours — l’après-midi suit la grille.')
         if 'Español · simulación' in ls:
             m = re.search(r'passage (\d) sur (\d)', next(b['c'] for b in j['blocs'] if b['l'] == 'Español · simulación'))
-            ev.append(jl + ' : l’épreuve d’espagnol' + (', passage ' + m.group(1) + ' sur ' + m.group(2) if m else '') + '.')
+            prem = 'premier passage' in next(b['c'] for b in j['blocs'] if b['l'] == 'Español · simulación')
+            ev.append(jl + ' : l’épreuve d’espagnol' + (', passage ' + m.group(1) + ' sur ' + m.group(2) if m else (', le premier passage (le diagnostic)' if prem else '')) + '.')
         if fin_es is j: ev.append(jl + ' : le dernier jour du mois d’espagnol.')
         if any('Coupe de cheveux' in h for h in hab): ev.append(jl + ' : le coiffeur, avant les courses.')
         if debut_ecom is j: ev.append(jl + ' : les blocs Projets perso reviennent, l’e-commerce commence (Dossier E-commerce).')
-        if any('Photos' in h for h in hab): ev.append(jl + ' : les photos du point d’étape, au réveil.')
+        if any('Photos' in h for h in hab): ev.append(jl + (' : les photos du point de départ, au réveil, et une brosse à dents neuve.' if j['iso'] == PREMIERES_PHOTOS else ' : les photos du point d’étape, au réveil.'))
     if vacances:
         L.append('Vacances de Noël : pas de cours du mercredi 23 décembre au mercredi 6 janvier. Les journées suivent la grille sans cours de cette page ; la salle et le JJB continuent.')
     if partiels:
@@ -501,10 +521,19 @@ def vers_batcave(data, sig):
     open(chemin, 'w', encoding='utf-8').write(bc[:m.start(2)] + s + bc[m.end(2):])
     return len(s)
 
+JOUR_1 = '2026-11-16'            # PROGRAMME_DEBUT dans la Batcave
+PREMIERES_PHOTOS = '2026-11-22'  # ANCRE_DIMANCHE : le premier dimanche du programme
+CHAQUE_JOUR = ['Lit fait', 'Lumière du matin', 'Les cinq prières', 'Créatine', 'Étirements', '8 000 pas', 'Téléphone hors de la chambre',
+               'Sadaqah', 'Nouvelles à la famille', 'Revue du jour', '30 min d’espagnol avec un natif', 'Les dix formules', '20 pages en espagnol']
+MOIS_LISTE = ['Le frigo vidé et nettoyé, le samedi des courses, avant de ranger.',
+              'Le rideau de douche à la machine, 40 °C, un dimanche sur quatre au début du ménage (13 décembre, 10 janvier, 7 février), puis raccroché humide, déplié : la Batcave le coche ces dimanches-là.',
+              'Le filtre et le joint de la machine à laver nettoyés.', 'La bouilloire et la cuve du rice cooker détartrées (l’eau d’Alicante est calcaire).',
+              'Les factures et le budget relus le 24, avant le virement du 25.']
+PLUS_RARE = ['Brosse à dents : tous les 3 mois (la Batcave te le rappelle : la prochaine le 14 février).', 'Oreiller lavé : tous les 3 à 6 mois.',
+             'Couette lavée : 1 à 2 fois par an, en laverie si elle ne rentre pas dans ta machine.']
+
 def main():
-    s11, D11 = semaine_ecrite('build11.py', 'data11.json', 'template11.html', '2026-11-14')
-    s16, D16 = semaine_ecrite('build16.py', 'data16.json', 'template16.html', '2026-11-16')
-    semaines = [s11, s16]
+    semaines = []
     for lundi in SEMAINES:
         S = json.load(open(SP + 'semaines/' + lundi + '.json', encoding='utf-8'))
         if len(S) != 7 or S[0]['iso'] != lundi: raise SystemExit(lundi + ' : la semaine extraite ne commence pas ce lundi')
@@ -515,16 +544,14 @@ def main():
                 if any(m in b['c'] for m in ('[object', 'undefined', 'NaN')): raise SystemExit(J['iso'] + ' : consigne cassée : ' + b['l'])
     coif = sorted({J['iso'] for lundi in SEMAINES for J in json.load(open(SP + 'semaines/' + lundi + '.json', encoding='utf-8'))
                    if any('Coupe de cheveux' in h['label'] for h in (J.get('duJour') or []))})
-    rare = [x for x in D16['plusRare'] if not x.startswith('Coiffeur')]
-    rare.insert(1, 'Coiffeur : toutes les 3 semaines, le samedi avant les courses (21 novembre' + ''.join(', ' + str(int(i[8:])) + ' ' + nom_mois(i) for i in coif) + '…).')
-    data = {'semaines': semaines, 'chaqueJour': D16['chaqueJour'], 'mois': D16['mois'], 'plusRare': rare}
+    rare = list(PLUS_RARE)
+    rare.insert(1, 'Coiffeur : toutes les 3 semaines, le samedi avant les courses (' + ', '.join(str(int(i[8:])) + ('er' if i[8:] == '01' else '') + ' ' + nom_mois(i) for i in coif) + '…).')
+    data = {'semaines': semaines, 'chaqueJour': CHAQUE_JOUR, 'mois': MOIS_LISTE, 'plusRare': rare}
     t = open(SP + 'template-guide.html', encoding='utf-8').read()
     s = json.dumps(data, ensure_ascii=False)
     assert '</script' not in s.lower()
     open(SP + '../../ta-semaine.html', 'w', encoding='utf-8').write(t.replace('__DATA__', s))
     sig = {}
-    for J in json.load(open(SP + 'grille11.json', encoding='utf-8')) + json.load(open(SP + 'semaine16.json', encoding='utf-8')):
-        sig[J['iso']] = signature(J['blocs'])
     for lundi in SEMAINES:
         for J in json.load(open(SP + 'semaines/' + lundi + '.json', encoding='utf-8')): sig[J['iso']] = signature(J['blocs'])
     print('Batcave : #journees-guide,', vers_batcave(data, sig), 'caractères')

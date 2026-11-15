@@ -31,7 +31,7 @@ console.log('\n== 265) Le jour 1 au jeudi 24, la phase Español au 23 octobre ==
   const r = await fr.evaluate(() => ({
     debut: window.__bcProgrammeDebut,
     es23: !!window.__bcPhaseEspanol('2026-12-12'), es24: !!window.__bcPhaseEspanol('2026-12-13'),
-    es7: !!window.__bcPhaseEspanol('2026-11-07'), es8: !!window.__bcPhaseEspanol('2026-11-08'), es11: !!window.__bcPhaseEspanol('2026-11-13'), es9: !!window.__bcPhaseEspanol('2026-11-14'),
+    es7: !!window.__bcPhaseEspanol('2026-11-07'), es8: !!window.__bcPhaseEspanol('2026-11-08'), es11: !!window.__bcPhaseEspanol('2026-11-15'), es9: !!window.__bcPhaseEspanol('2026-11-16'),
     nom23: (window.__bcPeriode('2026-10-23') || {}).id || null
   }));
   /* 28 septembre au soir, « tout commence demain » : jour 1 au mardi 29, et la phase
@@ -60,37 +60,54 @@ console.log('\n== 265) Le jour 1 au jeudi 24, la phase Español au 23 octobre ==
      12 novembre, la viande jetee : jour 1 au vendredi 13, et le mois repris avec lui -- du
      vendredi 13 au samedi 12 decembre. Du dimanche 8 au jeudi 12, hors phase.
      13 novembre, « on commence tout samedi » : jour 1 au samedi 14, et le mois repris avec lui --
-     du samedi 14 au samedi 12 decembre. Du dimanche 8 au vendredi 13, hors phase. */
-  ok(r.debut === '2026-11-14', 'PROGRAMME_DEBUT = ' + r.debut);
-  ok(r.es7 && !r.es8 && !r.es11 && r.es9, 'es-1 jusqu\'au samedi 7, rien du dimanche 8 au vendredi 13, la reprise dès le samedi 14 (' + [r.es7, r.es8, r.es11, r.es9].join(' / ') + ')');
+     du samedi 14 au samedi 12 decembre. Du dimanche 8 au vendredi 13, hors phase.
+     15 novembre, « recale tout sur lundi » : jour 1 au lundi 16, et le mois repris avec lui -- du lundi 16 au samedi 12
+     decembre. Du dimanche 8 au dimanche 15, hors phase. */
+  ok(r.debut === '2026-11-16', 'PROGRAMME_DEBUT = ' + r.debut);
+  ok(r.es7 && !r.es8 && !r.es11 && r.es9, 'es-1 jusqu\'au samedi 7, rien du dimanche 8 au dimanche 15, la reprise dès le lundi 16 (' + [r.es7, r.es8, r.es11, r.es9].join(' / ') + ')');
   ok(r.es23 && !r.es24, 'le mois repris court jusqu\'au samedi 12 décembre, plus le 13 (' + r.es23 + ' / ' + r.es24 + ')');
   await ctx.close();
 }
 
-console.log('\n== 266) Le controle des series, sur la vraie semaine ==');
+console.log('\n== 266) Le controle des series : rien avant le jour 1, puis la première semaine ==');
 {
+  /* 15 novembre : le jour 1 passe au lundi 16 et le controle saute les jours d'avant -- aucun rappel n'y est envoye.
+     Le 23 septembre, J+2 a J+8 sont tous avant lui : rien a relire, et l'agenda n'est pas appele. (La semaine
+     reelle du 25 septembre qu'il relisait n'est plus une semaine du programme.) */
   const { ctx, fr } = await ouvrir('2026-09-23T10:00:00+02:00');
   const r = await fr.evaluate(async (payload) => {
     let appel = null;
     const mcp = { callTool: (srv, tool, args) => { appel = {srv, tool, args}; return Promise.resolve({payload}); } };
     const c = await window.__bcControlerSeries(mcp);
-    const gr = window.__bcGroupesDerive(c.ecarts);
-    return { appel, jours: c.jours, n: c.ecarts.length, gr, resume: window.__bcResumeDerive(),
-             statut: document.getElementById('gcal-controle-statut').textContent,
-             lignes: [...document.querySelectorAll('#gcal-controle-liste li')].map(l => l.textContent),
+    return { appel, c, jours: window.__bcJoursAControler() };
+  }, SEMAINE);
+  ok(!r.appel && r.c === null && r.jours.length === 0, 'le 23 septembre, avant le jour 1 : aucun jour à contrôler, aucun appel à l\'agenda');
+  await ctx.close();
+}
+{
+  /* le lundi 16, jour 1 : J+2 a J+8, du mercredi 18 au mardi 24. Un agenda qui porte chaque rappel a son heure
+     (series et evenements uniques, comme depuis la remise au propre) suit la grille de bout en bout. */
+  const { ctx, fr } = await ouvrir('2026-11-16T10:00:00+01:00');
+  const r = await fr.evaluate(async () => {
+    const jours = window.__bcJoursAControler();
+    const mm = m => String(Math.floor(m / 60)).padStart(2, '0') + ':' + String(m % 60).padStart(2, '0');
+    const events = [];
+    jours.forEach(iso => window.__bcRappels(iso).forEach((b, i) => events.push(i % 2
+      ? {id: iso + '-' + i, summary: b.titre, status: 'confirmed', start: {dateTime: iso + 'T' + mm(b.debut) + ':00+01:00'}}
+      : {id: iso + '-' + i, summary: b.titreBase + ' · consigne', recurringEventId: 'serie-' + i, status: 'confirmed', start: {dateTime: iso + 'T' + mm(b.debut) + ':00+01:00'}})));
+    let appel = null;
+    const mcp = { callTool: (srv, tool, args) => { appel = {srv, tool, args}; return Promise.resolve({payload: {events}}); } };
+    const c = await window.__bcControlerSeries(mcp);
+    return { appel, jours, blocs: events.length, n: c ? c.ecarts.length : -1, statut: document.getElementById('gcal-controle-statut').textContent,
              plan: document.getElementById('dash-plan').innerText,
              sauve: JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-gcal-controle') || 'null') };
-  }, SEMAINE);
-  ok(r.appel && r.appel.tool === 'list_events' && /^2026-09-25T00:00:00\+02:00$/.test(r.appel.args.startTime) && /^2026-10-02T00:00:00\+02:00$/.test(r.appel.args.endTime),
-     'un seul list_events, du 25 septembre au 2 octobre (' + (r.appel && r.appel.args.startTime) + ' → ' + (r.appel && r.appel.args.endTime) + ')');
-  ok(r.jours.length === 7 && r.jours[0] === '2026-09-25', 'sept jours relus, J+2 à J+8 : ' + r.jours.join(' '));
-  console.log('    — ce que dit ton agenda réel :');
-  r.gr.forEach(g => console.log('      ' + g.type.padEnd(8) + ' ' + g.titre + ' · agenda ' + (g.agenda || '—') + ' · grille ' + (g.grille || '—') + ' · ' + g.jours.join(',')));
-  ok(!r.gr.some(g => /Sport/.test(g.titre) && g.jours.includes('2026-09-26')), 'le samedi, la série Sport de 18:30 refaite hier suit la grille');
-  ok(r.sauve && r.sauve.date === '2026-09-23', 'le contrôle est gardé pour la journée');
-  ok(r.gr.length === r.lignes.length, 'le panneau liste chaque écart regroupé (' + r.lignes.length + ')');
-  ok(r.gr.length ? /écart/.test(r.statut) : /tout suit la grille/.test(r.statut), 'statut : ' + r.statut);
-  ok(r.gr.length ? /Agenda Google : \d+ séries? 🦇/.test(r.plan) : !/Agenda Google/.test(r.plan), 'le Plan du jour le dit : ' + (r.resume || '(rien)').slice(0, 110));
+  });
+  ok(r.appel && r.appel.tool === 'list_events' && /^2026-11-18T00:00:00\+01:00$/.test(r.appel.args.startTime) && /^2026-11-25T00:00:00\+01:00$/.test(r.appel.args.endTime),
+     'un seul list_events, du 18 au 25 novembre (' + (r.appel && r.appel.args.startTime) + ' → ' + (r.appel && r.appel.args.endTime) + ')');
+  ok(r.jours.length === 7 && r.jours[0] === '2026-11-18' && r.jours[6] === '2026-11-24', 'sept jours relus, J+2 à J+8 : ' + r.jours.join(' '));
+  ok(r.n === 0 && /tout suit la grille/.test(r.statut), 'chaque rappel à son heure (' + r.blocs + ') : aucun écart — ' + r.statut);
+  ok(!/Agenda Google : \d+ séries? 🦇/.test(r.plan), 'le Plan du jour n\'en dit rien');
+  ok(r.sauve && r.sauve.date === '2026-11-16', 'le contrôle est gardé pour la journée');
   await ctx.close();
 }
 
@@ -106,7 +123,9 @@ console.log('\n== 267) Le controle sait voir une serie decalee, en trop, manquan
     const propre = window.__bcComparerSeries(iso, juste);
     /* 13 novembre : depuis la remise au propre jour par jour, un bloc pose en evenement unique est annonce lui aussi */
     const uniques = blocs.map((b, i) => ({id: 'u' + i, summary: b.titre, status: 'confirmed', start: {dateTime: iso + 'T' + mm(b.debut) + ':00+02:00'}}));
-    const propreUniques = window.__bcComparerSeries(iso, uniques.concat([{id:'tapis', summary:'🦇 Enlever les tapis', recurringEventId:'tapis', status:'confirmed', start:{dateTime: iso + 'T14:52:00+02:00'}}]));
+    /* 15 novembre : le brossage du matin (05:25) est une serie posee a part, protegee comme les tapis */
+    const propreUniques = window.__bcComparerSeries(iso, uniques.concat([{id:'tapis', summary:'🦇 Enlever les tapis', recurringEventId:'tapis', status:'confirmed', start:{dateTime: iso + 'T14:52:00+02:00'}},
+      {id:'dents', summary:'🦇 Brossage de dents du matin', recurringEventId:'dents', status:'confirmed', start:{dateTime: iso + 'T05:25:00+02:00'}}]));
     const faux = juste.slice(1);                        /* le premier bloc n'a plus de rappel */
     faux[0] = ev(faux[0].summary, '04:00', 'x');       /* le deuxieme sonne a 04:00 */
     faux.push(ev('🦇 Vieux bloc · supprime', '23:00', 'z'));
@@ -115,7 +134,7 @@ console.log('\n== 267) Le controle sait voir une serie decalee, en trop, manquan
     return {n: blocs.length, propre: propre.length, propreUniques: propreUniques.length, types: e.map(x => x.type).sort(), premier: blocs[0].titreBase, decale: e.filter(x => x.type === 'decale')[0], texte: window.__bcGroupesDerive(e).map(g => g.type + ':' + g.titre)};
   });
   ok(r.propre === 0, 'une semaine juste : aucun écart (' + r.n + ' blocs)');
-  ok(r.propreUniques === 0, 'des blocs posés en événements uniques, et le rappel des tapis : aucun écart non plus (' + r.propreUniques + ')');
+  ok(r.propreUniques === 0, 'des blocs posés en événements uniques, les rappels des tapis et du brossage du matin : aucun écart non plus (' + r.propreUniques + ')');
   ok(JSON.stringify(r.types) === JSON.stringify(['decale','en-trop','manquant']), 'décalée, en trop, manquante — et le rappel protégé des tapis jamais « en trop » : ' + r.texte.join(', '));
   ok(r.decale && r.decale.agenda === '04:00', 'la série décalée dit son heure : ' + (r.decale && r.decale.agenda) + ' au lieu de ' + (r.decale && r.decale.grille));
   await ctx.close();

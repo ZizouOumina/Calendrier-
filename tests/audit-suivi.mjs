@@ -8,7 +8,7 @@ let err = 0, avert = 0;
 const ok = (c,m)=>{ if(c) console.log('  ok    '+m); else { err++; console.log('  ERREUR '+m); } };
 const note = m => { avert++; console.log('  ⚠     '+m); };
 
-const JOUR = '2026-09-14';   /* lundi, jour 1 du programme */
+const JOUR = '2026-11-16';   /* lundi, jour 1 du programme (15 novembre : « recale tout sur lundi » ; avant, le lundi 14 septembre) */
 async function ouvrir(seed, quand){
   const ctx = await b.newContext({viewport:{width:1440,height:1200}, timezoneId:'Europe/Madrid', locale:'fr-FR'});
   await ctx.addInitScript(s=>{
@@ -17,7 +17,7 @@ async function ouvrir(seed, quand){
   }, seed || {});
   const page = await ctx.newPage();
   page.on('pageerror', e=>{err++; console.log('  PAGEERROR '+e.message);});
-  await page.clock.install({time:new Date(quand || (JOUR+'T21:00:00+02:00'))});
+  await page.clock.install({time:new Date(quand || (JOUR+'T21:00:00+01:00'))});
   await page.goto('http://127.0.0.1:8199/host.html');
   await page.frameLocator('#f').locator('#dash-focus').waitFor({state:'attached',timeout:20000});
   const fr = page.frames().find(x=>x.url().includes('batcave.html'));
@@ -39,8 +39,8 @@ async function objectifs(fr, page){
   return fr.evaluate(()=>document.querySelector('section.page[data-page="objectifs"]').innerText);
 }
 const sess = (type,label,duree,date=JOUR)=>({id:'s'+Math.random().toString(36).slice(2),
-  date, debut: new Date(date+'T08:00:00+02:00').getTime(),
-  fin: new Date(date+'T08:00:00+02:00').getTime()+duree*60000, duree, type, label});
+  date, debut: new Date(date+'T08:00:00+01:00').getTime(),
+  fin: new Date(date+'T08:00:00+01:00').getTime()+duree*60000, duree, type, label});
 
 console.log('\n═══ 1. La minute de révision : entrée = sortie ═══');
 {
@@ -48,9 +48,9 @@ console.log('\n═══ 1. La minute de révision : entrée = sortie ═══'
   const t = await plan(fr);
   const m = ligneRev(t);
   ok(m && m.fait === '55 min', '55 min de révision → « ' + (m?m.fait:'?') + ' » affichées (55 min attendu)');
-  ok(m && m.cible === '5 h 05', 'cible du lundi : ' + (m?m.cible:'?') + ' (5 h 05 attendu)');
-  /* 305 − 55 = 250 min : la même phrase ne mélange plus heures décimales et heures-minutes */
-  ok(m && m.reste === '4 h 10', 'reste = cible − fait : ' + (m?m.reste:'?') + ' (4 h 10 attendu)');
+  ok(m && m.cible === '3 h 13', 'cible du lundi : ' + (m?m.cible:'?') + ' (3 h 13 attendu)');
+  /* 193 − 55 = 138 min : la même phrase ne mélange plus heures décimales et heures-minutes */
+  ok(m && m.reste === '2 h 18', 'reste = cible − fait : ' + (m?m.reste:'?') + ' (2 h 18 attendu)');
   await ctx.close();
 }
 
@@ -101,19 +101,20 @@ console.log('\n═══ 5. Le bloc « Cours » de la fac n\'est pas de la révi
   const {ctx, page, fr} = await ouvrir({});
   const t = await plan(fr);
   const cible = (ligneRev(t) || {}).cible || '';
-  /* 4 h de cours magistral en plus feraient 9 h 05 : la cible doit rester à 5 h 05 */
-  ok(cible === '5 h 05', 'cible = 5 h 05, les 15:30–19:30 de fac ne sont pas comptés (' + cible + ')');
+  /* 2 h de cours magistral en plus feraient 5 h 13 : la cible doit rester à 3 h 13 */
+  ok(cible === '3 h 13', 'cible = 3 h 13, les 17:30–19:30 de fac ne sont pas comptés (' + cible + ')');
   await ctx.close();
 }
 
 console.log('\n═══ 6. Sport : une séance vaut la part de ses cases cochées ═══');
 {
-  /* le 14 septembre, lundi = « Haut lourd » : 10 exercices depuis le 25 septembre (les relevés de jambes
-     suspendus sont revenus en fin de séance ; plus de curl inversé) ; les clés sont « <type>-<index> » */
-  const TYPE = 'Haut lourd', N = 10;
+  /* le jeudi du regime combat = « Haut lourd » : 10 exercices depuis le 25 septembre (les relevés de jambes
+     suspendus sont revenus en fin de séance ; plus de curl inversé) ; les clés sont « <type>-<index> ».
+     15 novembre : le lundi 16, jour 1, est un « Haut volume » et la séance de référence -- la scène se joue le jeudi 19. */
+  const TYPE = 'Haut lourd', N = 10, JEUDI = '2026-11-19';
   for(const n of [0, 3, 4, 5, 7, N]){
     const st = {}; for(let i=0;i<n;i++) st[TYPE+'-'+i] = true;
-    const {ctx, page, fr} = await ouvrir({['batcave-sport-'+JOUR]: st});
+    const {ctx, page, fr} = await ouvrir({['batcave-sport-'+JEUDI]: st}, JEUDI+'T21:00:00+01:00');
     const o = await objectifs(fr, page);
     const m = o.match(/Séances de sport tenues[\s\S]{0,60}?réel\s*\n?([\d,]+) séances/);
     const v = m ? m[1] : null;
@@ -128,7 +129,7 @@ console.log('\n═══ 6 bis. Blocs Español manqués : reportés dans QUEL co
   /* Le lundi, les blocs de 11:20, 13:00 et 14:00 sont des blocs Español. Manqués, ils sont
      annoncés comme « projets perso » et le report atterrit dans report.proj — alors que la
      cible du jour les range dans « es », jamais dans « proj ». */
-  const {ctx, page, fr} = await ouvrir({}, JOUR+'T21:00:00+02:00');
+  const {ctx, page, fr} = await ouvrir({}, JOUR+'T21:00:00+01:00');
   const t = await plan(fr);
   const ligne = (t.split('\n').filter(l=>/Bloc manqué/.test(l) && /Español/.test(l))[0]) || '';
   if(ligne){
@@ -138,7 +139,7 @@ console.log('\n═══ 6 bis. Blocs Español manqués : reportés dans QUEL co
 }
 {
   /* et l'effet du report sur la cible du lendemain */
-  const {ctx, page, fr} = await ouvrir({'batcave-report':{date:'2026-09-15', rev:0, proj:120}}, '2026-09-15T06:00:00+02:00');
+  const {ctx, page, fr} = await ouvrir({'batcave-report':{date:'2026-11-17', rev:0, proj:120}}, '2026-11-17T06:00:00+01:00');
   const t = await plan(fr);
   const l = t.split('\n').filter(x=>/Projets perso —/.test(x))[0] || '(pas de ligne Projets perso)';
   console.log('       mardi 15, avec 2 h reportées dans « proj » : ' + l.trim());
@@ -211,11 +212,11 @@ console.log('\n═══ 9. Budget : la dépense variable est distinguée de la 
 
 console.log('\n═══ 10. Jour 1 : aucun objectif en déficit ═══');
 {
-  const {ctx, page, fr} = await ouvrir({}, JOUR+'T06:00:00+02:00');
+  const {ctx, page, fr} = await ouvrir({}, JOUR+'T06:00:00+01:00');
   const o = await objectifs(fr, page);
   /* la ligne de synthèse fait foi : « X/Y dans les clous ou mieux · N en retard · … » */
   const m = o.match(/(\d+)\/(\d+) dans les clous ou mieux · (\d+) en retard · (\d+) sans données · (\d+) % de la période écoulée/);
-  ok(m && m[3] === '0', 'le matin du 14 : ' + (m?m[3]:'?') + ' objectif(s) en retard (0 attendu) — ' + (m?m[0]:'ligne introuvable'));
+  ok(m && m[3] === '0', 'le matin du 16 : ' + (m?m[3]:'?') + ' objectif(s) en retard (0 attendu) — ' + (m?m[0]:'ligne introuvable'));
   ok(m && Number(m[5]) <= 6, 'part de période écoulée le jour 1 : ' + (m?m[5]:'?') + ' % (pas 100 %)');
   await ctx.close();
 }
@@ -225,12 +226,13 @@ console.log('\n═══ 11. Le réacteur et les cellules disent-ils la même ch
   /* Depuis le 25 septembre les projets perso n'ont ni cible ni minuteur : le réacteur ne
      leur dessine plus d'arc et le dit, la cellule dit ce que la grille leur donne dans la
      journée, et 1 h d'espagnol enregistrée ne les remplit toujours pas. Deux jours où la
-     grille prévoit des blocs « Projets perso » : le 16 novembre (régime combat) et le
-     15 février (semestre 2). On fait 1 h d'espagnol et rien d'autre. */
-  for(const d of ['2026-11-16','2027-02-15']){
+     grille prévoit des blocs « Projets perso » : le 14 décembre (régime combat, l'e-commerce, après le mois d'espagnol)
+     et le 15 février (semestre 2). On fait 1 h d'espagnol et rien d'autre. Le 16 novembre est dans le mois d'espagnol :
+     ses blocs de projets SONT de l'espagnol, la cellule le dit (« Español à leur place »). */
+  for(const d of ['2026-12-14','2027-02-15']){
     const {ctx, page, fr} = await ouvrir({'batcave-sessions':[
-      {id:'sa', date:d, debut:Date.parse(d+'T11:20:00+02:00'), fin:Date.parse(d+'T12:20:00+02:00'),
-       duree:60, type:'projet', label:'Español · gramática'}]}, d+'T21:00:00+02:00');
+      {id:'sa', date:d, debut:Date.parse(d+'T11:20:00+01:00'), fin:Date.parse(d+'T12:20:00+01:00'),
+       duree:60, type:'projet', label:'Español · gramática'}]}, d+'T21:00:00+01:00');
     const r = await fr.evaluate(()=>({
       reacteur: (document.getElementById('leg-proj')||{}).textContent || '',
       cellules: document.getElementById('dash-temps').innerText.replace(/\n/g,' ')

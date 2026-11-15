@@ -98,14 +98,18 @@ async function ordre(quand, dueISO){
   return { iRev, iTache };
 }
 {
-  let o = await ordre('2026-09-05T15:00:00+02:00', '2026-09-05');   /* samedi 15:00, dernier bloc à 16:00 */
-  ok(o.iRev > o.iTache && o.iTache >= 0, 'samedi 15:00 : révision pas encore urgente (bloc 3 à 16:00)');
-  o = await ordre('2026-09-05T16:30:00+02:00', '2026-09-05');
+  /* 15 novembre : avant le jour 1 (PROGRAMME_DEBUT), le plan ne reproche plus la revision -- la semaine de
+     septembre de ce test n'avait plus de ligne « Révision ». Les memes cas, dans la semaine du 16. */
+  let o = await ordre('2026-11-21T15:00:00+01:00', '2026-11-21');   /* samedi : dernier bloc (Cartes d'erreurs) à 16:00 */
+  ok(o.iRev > o.iTache && o.iTache >= 0, 'samedi 15:00 : révision pas encore urgente (Cartes d\'erreurs à 16:00)');
+  o = await ordre('2026-11-21T16:30:00+01:00', '2026-11-21');
   ok(o.iRev >= 0 && o.iRev < o.iTache, 'samedi 16:30 : révision urgente, passe devant la tâche du jour');
-  o = await ordre('2026-09-06T11:00:00+02:00', '2026-09-06');       /* dimanche : dernier bloc (Correction + cartes) à 10:35 */
-  ok(o.iRev >= 0 && o.iRev < o.iTache, 'dimanche 11:00 : urgente dès 10:35 (dernier bloc du jour)');
-  o = await ordre('2026-09-02T19:00:00+02:00', '2026-09-02');       /* mercredi : dernier bloc à 20:30 */
-  ok(o.iRev > o.iTache && o.iTache >= 0, 'mercredi 19:00 : pas encore urgente (Comprendre à 20:30) — l\'ancien seuil 18:00 l\'aurait déjà rougie');
+  o = await ordre('2026-11-22T11:00:00+01:00', '2026-11-22');       /* dimanche : dernier bloc (Réexpliquer) à 10:20 */
+  ok(o.iRev >= 0 && o.iRev < o.iTache, 'dimanche 11:00 : urgente dès 10:20 (dernier bloc du jour)');
+  o = await ordre('2026-11-18T19:00:00+01:00', '2026-11-18');       /* mercredi : dernier bloc (Clore le cours du jour) à 20:30 */
+  ok(o.iRev > o.iTache && o.iTache >= 0, 'mercredi 19:00 : pas encore urgente (Clore le cours du jour à 20:30) — l\'ancien seuil 18:00 l\'aurait déjà rougie');
+  o = await ordre('2026-11-15T19:00:00+01:00', '2026-11-15');       /* la veille du jour 1 : rien à reprocher */
+  ok(o.iRev < 0 && o.iTache >= 0, 'dimanche 15, la veille du jour 1 : pas de ligne « Révision »');
 }
 
 await browser.close();

@@ -27,9 +27,9 @@ console.log('\n== 400) Un seul numéro de schéma ==');
 {
   const { ctx, fr } = await ouvrir('2026-09-28T10:00:00+02:00');
   const r = await fr.evaluate(() => ({ s: window.__bcSchema(), m: window.__bcDrapeaux(), fini: window.__bcInitFini === true }));
-  ok(r.s.attendu === 67 && r.s.enregistre === 67, 'batcave-schema écrit au démarrage : ' + r.s.enregistre + ' (attendu ' + r.s.attendu + ')');
+  ok(r.s.attendu === 68 && r.s.enregistre === 68, 'batcave-schema écrit au démarrage : ' + r.s.enregistre + ' (attendu ' + r.s.attendu + ')');
   ok(r.m.length === 0, 'toutes les migrations ont posé leur drapeau au premier chargement (manquants : ' + (r.m.join(', ') || 'aucun') + ')');
-  ok(await lire(fr, 'batcave-schema') === 67, 'la clé batcave-schema vaut 67 (habits-seed-v13 : le rideau de douche à la machine, un dimanche sur quatre)');
+  ok(await lire(fr, 'batcave-schema') === 68, 'la clé batcave-schema vaut 68 (ancre-dimanche-v5 : le jour 1 au lundi 16, les dimanches à cycle repartent du 22)');
   ok(r.fini, 'le second temps du démarrage (les autres onglets) est terminé');
   await ctx.close();
 }
@@ -50,9 +50,10 @@ console.log('\n== 401) Santé de la Batcave : six contrôles, un relevé qui ne 
      dimanche 1er novembre depuis le 31) : on lit le jour 1, avec une clôture du mardi 27.
      11 novembre : jour 1 au jeudi 12 -- clôture du samedi 7, cinq jours avant.
      12 novembre : jour 1 au vendredi 13 -- clôture du dimanche 8, cinq jours avant.
-     13 novembre : jour 1 au samedi 14 -- clôture du lundi 9, cinq jours avant. */
-  const seed = {'batcave-journal-2026-11-09': {sommeil:'7', cloture:'21:20'}};
-  const { ctx, page, fr } = await ouvrir('2026-11-14T10:00:00+01:00', seed);
+     13 novembre : jour 1 au samedi 14 -- clôture du lundi 9, cinq jours avant.
+     15 novembre : jour 1 au lundi 16 -- clôture du mercredi 11, cinq jours avant. */
+  const seed = {'batcave-journal-2026-11-11': {sommeil:'7', cloture:'21:20'}};
+  const { ctx, page, fr } = await ouvrir('2026-11-16T10:00:00+01:00', seed);
   const r = await fr.evaluate(() => ({ vide: window.__bcAppVide(), sante: window.__bcSante().filter(c => !c.ok).map(c => c.id), releve: document.getElementById('bc-sante').hidden, txt: document.querySelector('#bc-sante .v').textContent }));
   ok(r.vide === false, 'une clôture suffit : l\'appli n\'est plus neuve');
   ok(r.sante.join(',') === 'sauvegarde,exercice,cloture', 'trois défauts : aucune sauvegarde, aucun exercice, clôture vieille de 5 jours (' + r.sante.join(', ') + ')');

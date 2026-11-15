@@ -1614,7 +1614,7 @@
    {
     "h": "11:20",
     "l": "Projets perso 3",
-    "c": "Un bloc de projet de plus depuis le 28 septembre, sans minuteur : le livrable de la semaine d'abord (celui que tu cocheras dimanche), sinon la prochaine ligne non cochée du dossier e-commerce."
+    "c": "Un bloc de projet de plus, sans minuteur : le livrable de la semaine d'abord (celui que tu cocheras dimanche), sinon la prochaine ligne non cochée du dossier e-commerce."
    },
    {
     "h": "12:20",
@@ -2666,7 +2666,7 @@
    {
     "h": "17:00",
     "l": "Projets perso 2",
-    "c": "Fiscalité F1 (apprendre) : la ligne « Apprendre » de la semaine, section 09 du dossier, à partir de la source officielle."
+    "c": "Fiscalité F1 (apprendre) : la ligne « Apprendre » de la semaine, section 18 du dossier, à partir de la source officielle."
    },
    {
     "h": "18:00",
@@ -3364,7 +3364,7 @@
     "label": "Photos — peau et corps",
     "icon": "📸",
     "cycle": 4,
-    "ancre": "2026-11-15",
+    "ancre": "2026-11-22",
     "quinzaine": false
    },
    {
@@ -3380,7 +3380,7 @@
     "label": "Brosse à dents changée",
     "icon": "🪥",
     "cycle": 12,
-    "ancre": "2026-11-15",
+    "ancre": "2026-11-22",
     "quinzaine": false
    },
    {
@@ -3412,7 +3412,7 @@
     "label": "Ongles — mains ; pieds les dimanches de photo",
     "icon": "✂️",
     "cycle": 2,
-    "ancre": "2026-11-15",
+    "ancre": "2026-11-22",
     "quinzaine": false
    },
    {
@@ -3535,6 +3535,11 @@
     "icon": "⚖️"
    },
    {
+    "id": "core-photos-dim",
+    "label": "Photos — peau et corps",
+    "icon": "📸"
+   },
+   {
     "id": "core-rasage",
     "label": "Rasage — aisselles et parties intimes",
     "icon": "🪒"
@@ -3553,6 +3558,11 @@
     "id": "core-menage",
     "label": "Ménage du dimanche",
     "icon": "🧽"
+   },
+   {
+    "id": "core-ongles",
+    "label": "Ongles — mains ; pieds les dimanches de photo",
+    "icon": "✂️"
    },
    {
     "id": "core-creatine",

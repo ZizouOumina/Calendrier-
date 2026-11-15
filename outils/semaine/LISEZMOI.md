@@ -12,15 +12,15 @@ python3 outils/semaine/build_guide.py
 - Les mêmes jours sont écrits dans `batcave.html` (bloc `#journees-guide`) : c'est l'onglet « Ma journée » de la
   Batcave. Chaque jour y porte la grille d'où il a été écrit (`sig`) ; la Batcave prévient si la sienne a changé depuis.
   Après toute ré-extraction, relancer `build_guide.py` puis republier la Batcave.
-- Du 13 au 22 novembre, les jours sont ceux de `build11.py` et `build16.py` (lancés par `build_guide.py`).
-  `semaine16.json` s'extrait comme les autres semaines, avec ses données (sinon les soirs « Préparer · … » manquent) :
-  `DONNEES=<sauvegarde.json> node zz-semaine.mjs ../outils/semaine/semaine16.json 2026-11-16 7`.
-- Les semaines suivantes (`SEMAINES` dans `build_guide.py`) sont construites depuis la Batcave seule : la consigne de
+- Depuis le 15 novembre (« recale tout sur lundi »), le guide commence le **lundi 16 novembre**, le jour 1, et la
+  semaine du 16 se construit comme les autres : `build11.py` et `build16.py` ne sont plus lancés par `build_guide.py`
+  (ils ne servent plus qu'aux deux pages d'origine, plus bas).
+- Toutes les semaines (`SEMAINES` dans `build_guide.py`) sont construites depuis la Batcave seule : la consigne de
   chaque bloc telle qu'elle l'affiche, les cases du jour (cycles compris), les grammes du batch du mardi calculés sur
   les repas de mercredi à samedi. Leurs données sont dans `semaines/<lundi>.json` :
 
 ```bash
-cd tests && node zz-semaine.mjs ../outils/semaine/semaines/2026-11-23.json 2026-11-23 7
+cd tests && DONNEES=<sauvegarde.json> node zz-semaine.mjs ../outils/semaine/semaines/2026-11-23.json 2026-11-23 7
 ```
 
 Pour ajouter une semaine : l'extraire comme ci-dessus, ajouter son lundi à `SEMAINES`, relancer `build_guide.py`.

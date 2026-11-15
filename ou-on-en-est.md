@@ -1,5 +1,42 @@
 # Où on en est — samedi 19 septembre 2026, au soir
 
+> ### Dimanche 15 novembre — le jour 1 au lundi 16, une semaine normale dès 05:20
+> **Ses mots** : « je veux que tout soit aligné sur le programme de tout le temps, on s'en fout de cette semaine, je veux
+> que quand je commence à l'utiliser lundi tout soit comme d'habitude. Et je vois qu'un brossage de dents dans la
+> journée […] recale tout sur lundi », puis « revérifie toute la Batcave ».
+> **Fait** : `PROGRAMME_DEBUT` = `ES_REPRISE_DEBUT` = `2026-11-16` — le mois d'espagnol va du lundi 16 au samedi
+> 12 décembre, l'épreuve du dimanche passe le 22 (le diagnostic), le 29 et le 6 décembre. Plus de rattrapage : les
+> entrées du 14 et du 15 de `RATTRAPAGE_TEMAS` sont retirées. L'ancre du dimanche passe au 22 (`ANCRE_DIMANCHE`,
+> migration `ancre-dimanche-v5`, rejouée après la synchro, schéma 68) : photos, pesée, brosse à dents neuve et ongles
+> partent du 22, le bilan peau tombe le 14 février. Avant le jour 1, rien ne s'affiche comme un retard : ni
+> « Révision — 0 sur 3 h 30 » ni « Hors rythme » au tableau de bord, et le contrôle de l'agenda (`joursAControler`)
+> saute ces jours-là. La veille d'un dimanche, le message annonce le batch de 14:30.
+> **Le brossage** : le guide (« Ma journée », « Ta semaine ») a sa ligne du matin à 05:25 (2 min, fluor, cracher sans
+> rincer ; la brosse neuve les dimanches où elle se change) et celle du soir (2 min, fil dentaire). Hors du guide (après
+> le 24 janvier, ou quand une grille change), l'onglet ajoute lui-même le réveil et le brossage, dix et cinq minutes
+> avant le premier bloc (`lignesMatin`). Dans l'agenda, une série « 🦇 Brossage de dents du matin », chaque jour à
+> 05:25 du 16 novembre au 24 janvier (notification à l'heure), protégée comme les tapis (`GCAL_PROTEGES`) : le
+> nettoyage du jour et le contrôle n'y touchent pas. L'agenda réel de lundi 16 a été relu : ses 26 rappels 🦇 sont
+> exactement ceux de la Batcave, plus les tapis.
+> **Revérification** : les renvois de section sont corrigés — gramática vers la section 07 du dossier Español,
+> fiscalité vers la section 18 du dossier e-commerce. « Projets perso 3 » ne dit plus « depuis le 28 septembre ».
+> « Projets perso 4 » ne dit plus « lundi, juste avant de partir en cours » les jours sans cours : Noël, janvier et
+> partiels, soit 17 blocs du guide. Les heures du dossier e-commerce sont revérifiées sur la grille : 4 h 30 le
+> 13 décembre, 17 h 20 la semaine du 14, 22 à 26 h du 23 décembre au 24 janvier, 13 h 20 fin janvier, 15 h 20 à la
+> mi-mars, 18 h 30 la semaine de partiels du 24 mai. « Les semaines de partiels, tout s'arrête » était faux : les
+> jours de partiels sont des jours sans cours. Les jours de salle, la ligne de 08:30 du guide disait « Lance le riz »
+> alors que le riz part en rentrant de la salle (07:55) : elle dit maintenant « Le shake et une page de Coran », le riz
+> déjà lancé. Le dossier Español, la prise en main et le guide (70 jours, 0 grille différente) sont recalés sur le 16.
+> **Agenda** : les 9 événements d'étude du dimanche 15 sont supprimés, et les trois épreuves (22 et 29 novembre,
+> 6 décembre) réécrites. Le temps libre du 15 au soir ne propose plus la revue du dimanche : la première est le 22. Comme `programme` a changé, la Batcave refait une reconstruction complète à la prochaine
+> ouverture, du 16 novembre au 24 janvier ; les consignes corrigées y passent.
+> **Tests** : test120 et les tests 41, 43, 48, 49, 59, 65, 74, 75, 78, 81, 85, 88, 90, 92, 101, 107, 109, 115, 116, 118
+> et 119 sont recalés sur le 16. test43 lit l'urgence de la révision dans la semaine du 16 : avant le jour 1, le plan
+> ne la reproche plus. test107 vérifie que rien n'est contrôlé avant le jour 1 (la semaine réelle du 25 septembre ne
+> l'est plus), puis contrôle la première semaine, du 18 au 24 novembre. test116 décale ses pesées d'une semaine : la
+> stabilisation finit le 6 décembre, et les photos tombent le 20 décembre. Les audits `audit-cablage` et `audit-suivi`
+> sont remis à jour.
+
 > ### Samedi 14 novembre, tard le soir — l'onglet « Ma journée »
 > **Ses mots** : « tu peux pas mettre tout ce que je dois faire précisément dans la batcave, comme ça j'évite de devoir
 > toucher à d'autres artefacts et tout est centralisé, au jour le jour […] un onglet, aujourd'hui, et dedans ça regroupe
