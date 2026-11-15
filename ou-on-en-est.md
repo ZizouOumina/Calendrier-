@@ -1,5 +1,36 @@
 # Où on en est — samedi 19 septembre 2026, au soir
 
+> ### Dimanche 15 novembre, l'après-midi — le tri des artefacts, le brossage de midi, « Ma journée » au complet
+> **Ses mots** : « fais un tri dans mes artefacts, et supprime ceux qui sont outdatés. Et aussi rajoute un 3e brossage de
+> dents après le déjeuner. Je veux aussi que tu vérifies que tu as bien mis tout ce qu'il y avait à mettre dans l'onglet
+> Ma journée […] je veux que toutes les étapes soient dessus. »
+> **Artefacts** : supprimés, « Semaine du 16 novembre » et « Du samedi 14 au dimanche 15 novembre » (remplacées par
+> « Ta semaine ») et « Cap sur 05:20 » (le plan sommeil du 20 au 26 octobre, fini ; sa mention quitte la consigne du
+> lever). Leurs sources restent dans le dépôt. Remises à jour : « Paliers de physique » (départ le 16 novembre,
+> 4 séances de salle et 3 de JJB, séance de référence le 16 et retests les 14 décembre, 18 janvier et 22 février,
+> photos dès le 22, 68 kg ≈ fin février et 72 kg ≈ juin au rythme de +0,3 kg par semaine) et « Cinq minutes
+> d'étirements » (v1.1 : les moments recalés sur la grille actuelle, plus de course ni de parc). Gardées telles
+> quelles : la Batcave, « Ta semaine », la prise en main, les deux dossiers, « Le linge » (à jour depuis le 13),
+> « Le semestre », le tajwid, le programme de sa mère.
+> **Le brossage de midi** : une ligne à la fin du déjeuner dans le guide et dans la grille vivante de l'onglet — 12:40
+> du lundi au jeudi, 13:10 le week-end, 13:15 le vendredi (avant la mosquée), 17:00 les deux jours d'examen où le
+> déjeuner est à 16:00. Dans l'agenda : trois séries « 🦇 Brossage de dents après le déjeuner » et deux événements
+> (7 et 13 janvier), protégés comme les autres (`GCAL_PROTEGES`). Prise en main : la ligne du déjeuner le dit.
+> **« Ma journée » au complet** : l'audit des 70 jours a trouvé les blocs d'étude fondus en « Révisions · 1 h 10 »
+> sans consigne (176 lignes vides — un reste du rattrapage) : chacun a maintenant sa ligne et sa consigne (304 lignes).
+> Le temps libre et le coucher portent leur consigne ; le vendredi, Jumu'ah dit qu'elle remplace Dhuhr ; le samedi,
+> le balai après le rangement des courses ; la serviette de visage les jours où la douche ne la nommait pas ; les
+> nouvelles à la famille au dîner les jours sans trajet retour ; les 30 min d'espagnol avec un natif là où elles ont
+> lieu (le tuteur, le cours, le club, sinon le soir) ; les dix formules à la fin du premier Anki quand Anki 2 ne les
+> prend pas (après le mois d'espagnol, ses 5 dernières minutes vont au paquet Business) ; un soir sans cours a sa
+> ligne « Écrans coupés » (étirements, 20 pages, téléphone hors de la chambre), qui manquait.
+> **Bug trouvé en route** (`grilleEvenement`) : un examen du matin effaçait le JJB de 10:30 mais gardait « Retour du
+> club » à 12:00 (shake de récup, douche, machine du kimono, sans club) et un « Trajet retour » de 10:30 à 12:00, les
+> 11, 18 et 20 janvier. Un bloc satellite part maintenant avec le sien, et le temps rendu devient « Repos après
+> l'examen » (sa consigne : une vraie pause, et ce que tu n'as pas su écrit à chaud).
+> **Tests** : test120 (une ligne par bloc d'étude, trois brossages par jour, celui de midi à la fin du déjeuner,
+> 70 jours sur 70).
+
 > ### Dimanche 15 novembre — le jour 1 au lundi 16, une semaine normale dès 05:20
 > **Ses mots** : « je veux que tout soit aligné sur le programme de tout le temps, on s'en fout de cette semaine, je veux
 > que quand je commence à l'utiliser lundi tout soit comme d'habitude. Et je vois qu'un brossage de dents dans la

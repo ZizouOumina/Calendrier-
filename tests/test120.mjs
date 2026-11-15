@@ -64,7 +64,8 @@ console.log('\n== 2) Lundi 16 à 10:00, jour 1 : la ligne en cours, la carte « 
   }));
   ok(r.titre === 'Ma journée' && /^Lundi 16 novembre · Révisions : 3 h 35 dans la journée/.test(r.sous), 'le titre et la date : ' + r.sous);
   const now = await lignes(fr, '.now');
-  ok(now.join(' | ') === '09:00 Révisions · 1 h 05', 'la ligne en cours : ' + now.join(' | '));
+  /* 15 novembre : un bloc d'étude = une ligne, avec sa consigne (avant : « Révisions · 1 h 05 », sans rien dedans) */
+  ok(now.join(' | ') === '09:00 Étudier en avance', 'la ligne en cours : ' + now.join(' | '));
   ok(/Maintenant · 09:00 → 10:05/.test(r.carte) && /ensuite 10:05 · Collation avant le JJB/.test(r.carte), 'la carte « Maintenant » dit le bloc et le suivant');
   ok(r.pomo, 'un bloc de révision : le bouton du Pomodoro est dans la carte');
   ok(/^Jour 1 : tout commence ce matin, réveil 05:20\. D’abord la copie vierge/.test(r.notes[0]) && r.notes.some(n => /^La salle à 07:00/.test(n)), 'les rappels du jour (' + r.notes.length + ')');
@@ -146,9 +147,9 @@ console.log('\n== 4) Hier, demain : la journée d\'un autre jour, sans « mainte
     matin: [...document.querySelectorAll('#mj-fil > li')].slice(0, 3).map(li => li.dataset.t + ' ' + li.querySelector('.mj-quoi > b').textContent),
     dents: [...document.querySelectorAll('#mj-fil > li')].filter(li => /brossage de dents/i.test(li.querySelector('.mj-quoi > b').textContent)).map(li => li.dataset.t) }));
   ok(h.titre === 'Dimanche 15 novembre' && /Le pas à pas écrit va du lundi 16 novembre au dimanche 24 janvier/.test(h.alerte), 'hier, la veille du jour 1, hors du guide : ' + h.alerte.slice(0, 70) + '…');
-  ok(h.n === h.grille + 2 && h.consignes > 5, 'la grille de la Batcave, bloc par bloc avec sa consigne, plus le réveil et le brossage du matin (' + h.n + ' lignes, ' + h.consignes + ' consignes)');
+  ok(h.n === h.grille + 3 && h.consignes > 5, 'la grille de la Batcave, bloc par bloc avec sa consigne, plus le réveil, le brossage du matin et celui d\'après le déjeuner (' + h.n + ' lignes, ' + h.consignes + ' consignes)');
   ok(/^05:20 Réveil/.test(h.matin[0]) && h.matin[1] === '05:25 Brossage de dents' && /^05:30 /.test(h.matin[2]), 'le matin hors du guide : ' + h.matin.join(' | '));
-  ok(h.dents.length === 2, 'deux brossages dans la journée, comme dans le guide (' + h.dents.join(', ') + ')');
+  ok(h.dents.length === 3, 'trois brossages dans la journée, comme dans le guide (' + h.dents.join(', ') + ')');
   /* apres le guide : un lundi de fevrier, la grille vivante a aussi ses deux brossages */
   const f = await fr.evaluate(() => { window.__bcJournee.aller('2027-02-01'); return { alerte: (document.querySelector('.mj-alerte.calme') || {}).textContent || '',
     matin: [...document.querySelectorAll('#mj-fil > li')].slice(0, 2).map(li => li.dataset.t + ' ' + li.querySelector('.mj-quoi > b').textContent),
@@ -156,7 +157,7 @@ console.log('\n== 4) Hier, demain : la journée d\'un autre jour, sans « mainte
     etapes: [...document.querySelectorAll('#mj-fil > li')][1].querySelectorAll('.mj-pas li').length,
     premier: window.__bcGrille(window.__bcCle(1), '2027-02-01')[0][0] }; });
   ok(/Le pas à pas écrit va du/.test(f.alerte) && f.premier === '05:30' && f.matin.join(' | ') === '05:20 Réveil | 05:25 Brossage de dents' && f.etapes === 2, 'lundi 1er février : ' + f.matin.join(' | ') + ', avant le ' + f.premier + ' (' + f.etapes + ' étapes)');
-  ok(f.dents.length === 2, 'et deux brossages (' + f.dents.join(', ') + ')');
+  ok(f.dents.length === 3, 'et trois brossages (' + f.dents.join(', ') + ')');
   await ctx.close();
 }
 
@@ -204,6 +205,17 @@ console.log('\n== 6) Le guide embarqué : du lundi 16 novembre au dimanche 24 ja
   ok(g.identiques === 5, 'les jours sans échéance ont la même grille qu\'une Batcave neuve (' + g.identiques + '/5)');
   ok(g.mois >= 4 && g.rare >= 3, 'une fois par mois (' + g.mois + '), plus rarement (' + g.rare + ')');
   ok(await fr.evaluate(() => /un dimanche sur quatre/.test(window.__bcJournee.guide().mois.join(' '))), 'le rideau de douche est dans « une fois par mois »');
+  /* 15 novembre : trois brossages chaque jour, celui de midi juste après le déjeuner ; chaque bloc d'étude a sa ligne et sa consigne */
+  const b3 = await fr.evaluate(() => { const G = window.__bcJournee.guide(); const out = {jours: 0, trois: 0, apresDej: 0, etudeVide: 0, etudes: 0, fusion: 0};
+    G.isos.forEach(i => { const rows = G.parIso[i].jour.rows; out.jours++;
+      const d = rows.filter(r => /brossage de dents/i.test(r.titre)); if(d.length === 3) out.trois++;
+      /* a l'heure ou le dejeuner finit dans la grille (le bloc qui le suit) : 12:40, 13:10, 13:15 le vendredi, 17:00 un jour d'examen */
+      const sig = G.parIso[i].jour.sig.split('|'), kd = sig.findIndex(x => / Déjeuner$/.test(x));
+      if(kd > -1 && sig[kd + 1] && d.some(r => r.titre === 'Brossage de dents' && r.t === sig[kd + 1].slice(0, 5))) out.apresDej++;
+      rows.filter(r => r.k === 'etude').forEach(r => { out.etudes++; if(!(r.d || (r.pas && r.pas.length))) out.etudeVide++; if(/^Révisions · /.test(r.titre)) out.fusion++; }); });
+    return out; });
+  ok(b3.trois === b3.jours && b3.apresDej === b3.jours, 'trois brossages par jour, celui de midi à la fin du déjeuner (' + b3.trois + ' et ' + b3.apresDej + ' sur ' + b3.jours + ')');
+  ok(b3.etudes > 300 && b3.etudeVide === 0 && b3.fusion === 0, 'chaque bloc d\'étude a sa ligne et sa consigne (' + b3.etudes + ' lignes, ' + b3.etudeVide + ' vides, ' + b3.fusion + ' fondues)');
   await ctx.close();
 }
 

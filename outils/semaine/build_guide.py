@@ -55,6 +55,11 @@ def prieres(iso):
     return [['Fajr', fmt(tang(18, 5, j, True))], ['Dhuhr', fmt(12 - sun(j + .5)[1] + 1 / 60)], ['Asr', fmt(asr)],
             ['Maghrib', fmt(tang(.833, 18, j, False) + 1 / 60)], ['Isha', fmt(tang(17, 18, j, False))]]
 
+def pas_ecrans(cou):
+    return ['La clôture du jour dans la Batcave (2 min), et un coup d’œil à demain sur cette page.',
+            'Téléphone en charge hors de la chambre, réveil posé loin du lit.', 'Fenêtre ouverte 10 min, puis fermée.',
+            '5 min d’étirements' + (', puis le cou : flexion et extension, 3 × 12-20.' if cou else '.'), 'Tes 20 pages en espagnol, sur papier.']
+
 JOURS = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi']
 COURT = ['dim', 'lun', 'mar', 'mer', 'jeu', 'ven', 'sam']
 MOIS = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre']
@@ -154,7 +159,12 @@ def construire(J, semaine, k):
         lab, h, c = b['l'], b['h'], b['c']
         fin = g[i + 1]['h'] if i + 1 < len(g) else ''
         if lab in ETUDE or (lab in PROJ and c.startswith('📚')):
-            creneaux.append((mn(h), mn(fin))); continue
+            # 15 novembre, « je veux que toutes les étapes soient dessus » : les blocs d'étude étaient fondus en une
+            # ligne « Révisions · 1 h 10 » sans consigne (un reste du rattrapage, où le quoi était libre) ; chacun a
+            # maintenant sa ligne et sa consigne, comme dans l'agenda
+            creneaux.append((mn(h), mn(fin)))
+            rows.append({'t': h, 'fin': fin, 'k': 'etude', 'titre': 'Révisions' if lab in PROJ else lab, 'd': c})
+            continue
         if lab == 'Clore le cours du jour':
             clore += mn(fin) - mn(h)
             rows.append({'t': h, 'fin': fin, 'k': 'etude', 'titre': 'Clore le cours du jour', 'd': c}); continue
@@ -203,6 +213,8 @@ def construire(J, semaine, k):
                 'Quand le riz est cuit : en boîte, au frigo dès qu’il est tiède.', 'La sadaqah du jour, même petite.'])
         elif lab == 'Déjeuner':
             r = ('repas', 'Déjeuner' + (', un repas frais' if 'repas frais' in c else ''), '', phrases(c) + ['La vaisselle tout de suite.', 'Ta gourde remplie une deuxième fois.'])
+            # 15 novembre, « rajoute un 3e brossage de dents après le déjeuner » : à la fin du repas, avant la sieste
+
         elif lab == '😴 Micro-sieste': r = ('soin', 'Micro-sieste', c, None)
         elif lab == 'Collation entraînement': r = ('repas', 'Collation', c, None)
         elif lab == 'Collation combat': r = ('repas', 'Collation avant le JJB', c, None)
@@ -222,25 +234,24 @@ def construire(J, semaine, k):
                 batch_mardi = (h, fin)
                 continue
             if 'revue du dimanche' in c: r = ('libre', 'La revue de la semaine, puis libre', c, None)
-            else: r = ('libre', 'Temps libre', '', None)
+            else: r = ('libre', 'Temps libre', '' if c.strip() in ('', 'Libre.') else c, None)
+        elif lab == "Repos après l'examen": r = ('libre', 'Repos après l’examen', c, None)
         elif lab == '🚿 Douche du soir': r = ('soin', 'Douche du soir', '', phrases(c))
-        elif lab == '📖 Écran off — lecture papier':
-            r = ('soin', 'Écrans coupés', '', ['La clôture du jour dans la Batcave (2 min), et un coup d’œil à demain sur cette page.',
-                 'Téléphone en charge hors de la chambre, réveil posé loin du lit.', 'Fenêtre ouverte 10 min, puis fermée.',
-                 '5 min d’étirements' + (', puis le cou : flexion et extension, 3 × 12-20.' if a('Cou') else '.'), 'Tes 20 pages en espagnol, sur papier.'])
+        elif lab == '📖 Écran off — lecture papier': r = ('soin', 'Écrans coupés', '', pas_ecrans(a('Cou')))
         elif lab == 'Brossage de dents': r = ('soin', 'Brossage de dents', '', ['2 min, avec le dentifrice au fluor : toutes les faces, le bord des gencives.', 'Le fil dentaire, entre chaque dent.', 'Crache sans rincer.', 'Toilettes.'])
         elif lab == 'Douche + brossage de dents':
             r = ('soin', 'Douche, puis brossage de dents', '', phrases(c) or ['La clôture du jour dans la Batcave (2 min), téléphone en charge hors de la chambre.',
                  'Douche tiède, 10 min.', 'Brossage, 2 min, et le fil dentaire.'])
-        elif lab == 'Coucher': r = ('soin', 'Au lit', 'Si tu ne dors pas au bout de 20 min, lève-toi, lis 10 min sous une lumière faible, puis reviens.', None)
+        elif lab == 'Coucher': r = ('soin', 'Au lit', (c + ' ' if c else '') + 'Si tu ne dors pas au bout de 20 min, lève-toi, lis 10 min sous une lumière faible, puis reviens.', None)
         elif lab == 'Trajet mosquée': r = ('foi', 'Départ pour la mosquée', c + (' Le kimono étendu avant de partir.' if jjb else ''), None)
-        elif lab.startswith('Jumu'): r = ('foi', 'Jumu’ah', c, None)
+        elif lab.startswith('Jumu'): r = ('foi', 'Jumu’ah', c + (' ' if c else '') + 'Elle remplace Dhuhr : coche aussi la case Dhuhr.', None)
         elif lab == '🛒 Courses de la semaine':
             coif = a('Coupe de cheveux')
             r = ('maison', ('Le coiffeur, puis les courses de la semaine' if coif else 'Les courses de la semaine'),
                  ('D’abord le coiffeur (30 €, prévu au budget). Puis les courses. ' if coif else '') + c +
                  ' La liste est calculée dans l’onglet Courses de la Batcave (nourriture, soin, ménage) : coche en magasin, le ticket dans Budget le jour même.', None)
-        elif lab == 'Rangement des courses': r = ('maison', 'Rangement des courses', '', phrases(c))
+        elif lab == 'Rangement des courses':
+            r = ('maison', 'Rangement des courses' + (', puis le balai' if a('balai') else ''), '', phrases(c) + (['Le balai passé : cuisine, entrée et salle de bain.'] if a('balai') else []))
         elif lab == '🍲 Batch cooking de la semaine':
             ph = phrases(c)
             coupe = next((n for n, x in enumerate(ph) if x.startswith('Puis, vers 15:30')), len(ph))
@@ -252,6 +263,9 @@ def construire(J, semaine, k):
         row = {'t': h, 'k': kk, 'titre': t, 'd': d}
         if p: row['pas'] = p
         rows.append(row)
+        if lab == 'Déjeuner' and fin:
+            rows.append({'t': fin, 'k': 'soin', 'titre': 'Brossage de dents', 'd': '', '_avant': True, 'pas': [
+                '2 min, avec le dentifrice au fluor : toutes les faces, le bord des gencives.', 'Crache sans rincer : le fluor reste sur l’émail.']})
 
     # les revisions, d'un seul tenant
     creneaux.sort(); blocs = []
@@ -260,11 +274,11 @@ def construire(J, semaine, k):
         else: blocs.append([x, z])
     total = sum(z - x for x, z in blocs) + clore
     sans_salle = 'Sport' not in labs
-    for x, z in blocs:
-        d = 'À 08:00 : 15 min de lumière, fenêtre grande ouverte.' if (sans_salle and x <= mn('08:00') < z) else ''
-        du = z - x
-        lib = ('%d min' % du) if du < 60 else ('%d h' % (du // 60) + (' %02d' % (du % 60) if du % 60 else ''))
-        rows.append({'t': hh(x), 'fin': hh(z), 'k': 'etude', 'titre': 'Révisions · ' + lib, 'd': d})
+    if sans_salle:
+        for r in rows:
+            if r.get('k') == 'etude' and r.get('fin') and mn(r['t']) <= mn('08:00') < mn(r['fin']):
+                r['pas'] = ['À 08:00 : 15 min de lumière, fenêtre grande ouverte.'] + (r.get('pas') or [])
+                break
 
     # ce que la grille n'a pas en bloc
     if 'Collation entraînement' not in labs and dow in (6, 0):
@@ -317,7 +331,37 @@ def construire(J, semaine, k):
             for r_ in rows:
                 if r_['titre'].startswith('Préparer') and r_.get('fin') and mn(r_['t']) < mn('20:40') < mn(r_['fin']): tp = r_['fin']
             rows.append({'t': tp, 'k': 'maison', 'titre': ('Plie le linge, puis prépare demain' if dow == 4 else 'Prépare demain'), 'd': d})
-    rows.sort(key=lambda r: (mn(r['t']), 3 if r.get('en') else (2 if r.get('fin') else 1)))
+    # 15 novembre, « je veux que toutes les étapes soient dessus » : ce que la journée demande et qu'aucune ligne ne disait
+    texte = lambda r: (r['titre'] + ' ' + (r.get('d') or '') + ' ' + ' '.join(r.get('pas') or [])).lower()
+    tout = lambda: ' '.join(texte(r) for r in rows)
+    # un soir sans cours (vacances, partiels) n'a pas de bloc « Écran off » : ses étapes manquaient
+    coucher = next((b['h'] for b in g if b['l'] == 'Coucher'), None)
+    if '📖 Écran off — lecture papier' not in labs and coucher:
+        rows.append({'t': hh(mn(coucher) - 35), 'k': 'soin', 'titre': 'Écrans coupés', 'd': '', 'pas': pas_ecrans(a('Cou'))})
+        for r_ in rows:
+            if r_['titre'] == 'Douche, puis brossage de dents' and r_.get('pas') and r_['pas'][0].startswith('La clôture du jour'):
+                r_['pas'] = r_['pas'][1:]
+    if a('Nouvelles à la famille') and 'famille' not in tout():
+        diner_r = next((r_ for r_ in rows if r_['titre'] == 'Dîner'), None)
+        if diner_r: diner_r['pas'] = (diner_r.get('pas') or []) + ['Un appel ou un message à ta famille.']
+    if a('Serviette de visage') and 'serviette de visage' not in tout():
+        dch = next((r_ for r_ in rows if r_['titre'] == 'Aérer, douche et soins'), None)
+        if dch: dch['pas'] = (dch.get('pas') or []) + ['Une serviette de visage propre aujourd’hui.']
+    if a('30 min en espagnol') and 'natif' not in tout():
+        cible = (next((r_ for r_ in rows if r_['k'] == 'esp' and re.search('tuteur|compañero', texte(r_))), None)
+                 or next((r_ for r_ in rows if r_['titre'] == 'Départ pour le cours'), None)
+                 or next((r_ for r_ in rows if r_['titre'].startswith('JJB')), None))
+        if cible: cible['d'] = (cible.get('d') or '').rstrip() + ' Ce sont aussi tes 30 min d’espagnol avec un natif (la case du jour).'
+        else:
+            soir = next((r_ for r_ in rows if r_['titre'] == 'Temps libre' and mn(r_['t']) >= mn('17:00')), None) or next((r_ for r_ in rows if r_['titre'] == 'Dîner'), None)
+            if soir: soir['pas'] = (soir.get('pas') or []) + ['Tes 30 min d’espagnol avec un natif, si ce n’est pas fait : un appel à un compañero ou à ton tuteur.']
+    # les dix formules : Anki 2 les prend pendant le mois d'espagnol ; sans lui (ou après, quand ses 5 dernières minutes
+    # vont au paquet Business), la fin du premier bloc Anki
+    if a('formules') and 'formules' not in tout():
+        anki = next((r_ for r_ in rows if r_['titre'] in ('Anki 1', 'Anki matinal')), None) or next((r_ for r_ in rows if r_['titre'] == 'Retour'), None)
+        if anki: anki['pas'] = (anki.get('pas') or []) + ['Les 5 dernières minutes : les dix formules du jour (paquet Español).']
+    linge_manque = a('Linge') and not re.search('linge|machine', tout())
+    rows.sort(key=lambda r: (mn(r['t']), -1 if r.get('_avant') else (3 if r.get('en') else (2 if r.get('fin') else 1))))
 
     # les cinq prieres, a leur place (build16.py)
     PR = dict((n, t) for n, t in prieres(iso))
@@ -363,7 +407,8 @@ def construire(J, semaine, k):
         elif cx and cx['k'] == 'sport':
             d = 'Après la séance : ablutions, puis la prière.'
         rows.append({'t': hh(t), 'k': 'foi', 'en': en, 'titre': nom + (' (' + PR[nom] + ')' if hh(t) != PR[nom] else ''), 'd': d})
-    rows.sort(key=lambda r: (mn(r['t']), 0 if (r['k'] == 'foi' and not r.get('en')) else (3 if r.get('en') else (2 if r.get('fin') else 1))))
+    rows.sort(key=lambda r: (mn(r['t']), -1 if r.get('_avant') else (0 if (r['k'] == 'foi' and not r.get('en')) else (3 if r.get('en') else (2 if r.get('fin') else 1)))))
+    for r_ in rows: r_.pop('_avant', None)
 
     # a ne pas oublier
     N = []
@@ -413,6 +458,7 @@ def construire(J, semaine, k):
             N.append('Le coiffeur samedi : prends rendez-vous pour 13:30.')
     if J.get('espagnol') and suiv is not None and not suiv.get('espagnol'):
         N.append('Dernier jour du mois d’espagnol : demain, les blocs Projets perso reviennent pour l’e-commerce.')
+    if linge_manque: N.append('Une machine aujourd’hui (la case Linge) : la tenue de salle des derniers jours, 30 °C, à l’envers, sans adoucissant.')
     en_plus = []
     for h in hab:
         if h in QUOTIDIENNES: continue
