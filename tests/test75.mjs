@@ -62,7 +62,8 @@ console.log('\n== 312) Le réacteur annonce le jour 1, pas un « 0 % » ==');
      146 depuis le 19 octobre : le depart au mardi 20.
      145 depuis le 21 octobre : le depart au mercredi 21. 144 le meme jour : au jeudi 22. 134 depuis le 31 octobre : au dimanche 1er novembre. */
   /* 123 depuis le 11 novembre : le depart au jeudi 12, le 14 mars toujours fixe. 122 depuis le 12 : le vendredi 13. 121 depuis le 13 : le samedi 14. 119 depuis le 15 : le lundi 16. */
-  ok(v.num === '1' && v.unite === '/119', 'le premier matin affiche « 1/119 » — 16 nov. → 14 mars, pas « 0 % » (' + v.num + v.unite + ')');
+  /* 15 novembre, tard le soir : la saison va jusqu'au 6 juin (l'horizon des objectifs, « 72 kg en juin ») */
+  ok(v.num === '1' && v.unite === '/203', 'le premier matin affiche « 1/203 » — 16 nov. → 6 juin, pas « 0 % » (' + v.num + v.unite + ')');
   ok(/Premier jour du programme/.test(v.note) && !/À reprendre/.test(v.note), 'la note dit ce que c\'est : ' + v.note);
   ok(v.hors === v.note, 'la même note existe hors de l\'anneau, pour le téléphone');
 

@@ -2661,7 +2661,7 @@
    {
     "h": "13:30",
     "l": "🛒 Courses de la semaine",
-    "c": "Avant de partir, 10 min : regarde le frigo et le placard, fais le tour de la salle de bain et de la cuisine, et coche dans l'onglet Courses ce que tu as déjà. N'achète que ce qui te manque."
+    "c": "D’abord le coiffeur (30 €, prévu au budget). Puis les courses. Avant de partir, 10 min : regarde le frigo et le placard, fais le tour de la salle de bain et de la cuisine, et coche dans l'onglet Courses ce que tu as déjà. N'achète que ce qui te manque."
    },
    {
     "h": "15:30",
@@ -3197,7 +3197,7 @@
    {
     "h": "14:30",
     "l": "🍲 Batch cooking de la semaine",
-    "c": "La première des deux sessions de la semaine, une heure (le détail dans l'onglet Meal prep). Une grande casserole d'eau salée : 250 g de pâtes (lundi et mardi midi), une minute de moins que le paquet, égouttées, un filet d'huile. Pendant ce temps, le poulet (140 g) à la poêle, feu vif : 4 min par face, puis 3 min à couvert. La viande hachée (210 g), en une fournée, 10 min. Les légumes surgelés (400 g), sans les décongeler : le brocoli 7 min, les épinards 5 min à couvert. Les 15 œufs durs de la semaine : 10 min dans l'eau bouillante, puis eau froide ; en coquille, au frigo. Tout refroidit 20 min à découvert, puis 5 boîtes, toutes au frigo, le jour écrit dessus : ce soir, puis lundi et mardi, midi et soir. La viande de mardi reste au congélateur. La vaisselle, le plan de travail essuyé. Puis, vers 15:30, la laverie : défais le lit — draps, taies, serviettes et lavettes dans le sac — et pars à 15:35, à 5 min à pied (un lavage à 60 °C, sans adoucissant si tu as le choix, puis le séchage : 45 min en tout, 8,00 €). Tes 20 pages en espagnol pendant que ça tourne ; de retour vers 16:30, le lit se refait au début du ménage. Le ticket dans Budget, Maison et ménage."
+    "c": "La première des deux sessions de la semaine, une heure (le détail dans l'onglet Meal prep). Une grande casserole d'eau salée : 250 g de pâtes (lundi et mardi midi), une minute de moins que le paquet, égouttées, un filet d'huile. Pendant ce temps, le poulet (140 g) à la poêle, feu vif : 4 min par face, puis 3 min à couvert. La viande hachée (210 g), en une fournée, 10 min. Les légumes surgelés (400 g), sans les décongeler : le brocoli 7 min, les épinards 5 min à couvert. Les 15 œufs durs de la semaine : 10 min dans l'eau bouillante, puis eau froide ; en coquille, au frigo. Tout refroidit 20 min à découvert, puis 5 boîtes, toutes au frigo, le jour écrit dessus : ce soir, puis lundi et mardi, midi et soir. La viande de mardi reste au congélateur. La vaisselle, le plan de travail essuyé. Puis, vers 15:30, la laverie : défais le lit — draps, taies, serviettes et lavettes dans le sac — l'oreiller aussi, dans le même sac (40 °C, ou ce que dit son étiquette, et un séchage long) — et pars à 15:35, à 5 min à pied (un lavage à 60 °C, sans adoucissant si tu as le choix, puis le séchage : 45 min en tout, 8,00 €). Tes 20 pages en espagnol pendant que ça tourne ; de retour vers 16:30, le lit se refait au début du ménage. Le ticket dans Budget, Maison et ménage."
    },
    {
     "h": "16:30",
@@ -3501,6 +3501,62 @@
     "cycle": 4,
     "ancre": "2026-12-13",
     "quinzaine": false
+   },
+   {
+    "id": "core-robot-filtre",
+    "label": "Robot : filtre neuf",
+    "icon": "🤖",
+    "cycle": 8,
+    "ancre": "2026-12-27",
+    "quinzaine": false
+   },
+   {
+    "id": "core-robot-brosse-laterale",
+    "label": "Robot : brosse latérale neuve",
+    "icon": "🤖",
+    "cycle": 16,
+    "ancre": "2027-01-24",
+    "quinzaine": false
+   },
+   {
+    "id": "core-robot-brosses",
+    "label": "Robot : brosses principales neuves",
+    "icon": "🤖",
+    "cycle": 36,
+    "ancre": "2027-05-16",
+    "quinzaine": false
+   },
+   {
+    "id": "core-aspi-pieces",
+    "label": "Aspirateur : brosse et filtre neufs",
+    "icon": "🧹",
+    "cycle": 16,
+    "ancre": "2027-02-21",
+    "quinzaine": false
+   },
+   {
+    "id": "core-oreiller",
+    "label": "Oreiller lavé",
+    "icon": "🛏️",
+    "cycle": 16,
+    "ancre": "2027-01-03",
+    "quinzaine": false
+   },
+   {
+    "id": "core-couette",
+    "label": "Couette lavée",
+    "icon": "🛌",
+    "cycle": 26,
+    "ancre": "2027-01-17",
+    "quinzaine": false
+   },
+   {
+    "id": "core-matelas",
+    "label": "Matelas tourné et aspiré",
+    "icon": "🛏️",
+    "cycle": 13,
+    "ancre": "2026-12-06",
+    "quinzaine": false
    }
   ],
   "duJour": [
@@ -3638,6 +3694,11 @@
     "id": "core-machine-filtre",
     "label": "Machine à laver : filtre et joint",
     "icon": "🌀"
+   },
+   {
+    "id": "core-oreiller",
+    "label": "Oreiller lavé",
+    "icon": "🛏️"
    }
   ],
   "repas": {

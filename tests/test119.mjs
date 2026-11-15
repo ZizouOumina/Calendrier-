@@ -175,7 +175,7 @@ console.log('\n== 6) Le rideau de douche à la machine, un dimanche sur quatre d
 {
   /* Une Batcave déjà semée jusqu'à la v12 : la v13 ajoute le rideau sans toucher au reste */
   const base = [{id:'core-lit', label:'Lit fait', icon:'🛏️'}];
-  const graines = {'batcave-habits-seed-v14': true}; for(let v = 2; v <= 12; v++) graines['batcave-habits-seed-v' + v] = true;
+  const graines = {'batcave-habits-seed-v14': true, 'batcave-habits-seed-v15': true}; for(let v = 2; v <= 12; v++) graines['batcave-habits-seed-v' + v] = true;
   const { ctx, fr } = await ouvrir('2026-11-14T21:00:00+01:00', Object.assign({'batcave-habits': base}, graines));
   const h = await fr.evaluate(() => JSON.parse(localStorage.getItem('batcave-habits') || '[]').map(x => x.id));
   ok(h.includes('core-lit') && h.includes('core-rideau-douche') && h.length === 2, 'ajouté à une Batcave existante, sans toucher au reste (' + h.join(', ') + ')');
@@ -205,7 +205,7 @@ console.log('\n== 8) L\'entretien des machines (v14) : le robot, l\'aspirateur-s
 {
   /* 15 novembre au soir, « même le nettoyage de mon aspirateur serpillère [...] même le nettoyage de mon roomba » */
   const base = [{id:'core-lit', label:'Lit fait', icon:'🛏️'}];
-  const graines = {}; for(let v = 2; v <= 13; v++) graines['batcave-habits-seed-v' + v] = true;
+  const graines = {'batcave-habits-seed-v15': true}; for(let v = 2; v <= 13; v++) graines['batcave-habits-seed-v' + v] = true;
   const { ctx, fr } = await ouvrir('2026-11-15T21:00:00+01:00', Object.assign({'batcave-habits': base}, graines));
   const r = await fr.evaluate(() => {
     const ids = JSON.parse(localStorage.getItem('batcave-habits') || '[]').map(x => x.id);
@@ -230,6 +230,45 @@ console.log('\n== 8) L\'entretien des machines (v14) : le robot, l\'aspirateur-s
   ok(/machine à laver : le petit filtre/.test(r.m06) && !/machine à laver/.test(r.m13) && /détartrage/.test(r.m13) && !/détartrage/.test(r.m06),
      'le 6 décembre la machine à laver, le 13 le détartrage (le dimanche du rideau)');
   ok(/^D'abord le frigo/.test(r.r28) && !/^D'abord le frigo/.test(r.r21), 'le samedi du frigo, le rangement commence par lui ; les autres samedis, non');
+  await ctx.close();
+}
+
+console.log('\n== 9) Les tâches rares à date (v15), et une notification pour chaque tâche périodique ==');
+{
+  /* 15 novembre, tard le soir : « comment je sais quand est-ce que je devrais remplacer ma brosse à dents [...] est-ce que
+     j'aurais une notif ? » */
+  const graines = {}; for(let v = 2; v <= 14; v++) graines['batcave-habits-seed-v' + v] = true;
+  const base = [{id:'core-lit', label:'Lit fait', icon:'🛏️'}, {id:'core-pesee-dim', label:'Pesée, à jeun', icon:'⚖️', jours:[0]},
+                {id:'core-photos-dim', label:'Photos — peau et corps', icon:'📸', jours:[0], cycleSemaines:4, ancre:'2026-11-22'},
+                {id:'core-brosse-dents', label:'Brosse à dents changée', icon:'🪥', jours:[0], cycleSemaines:12, ancre:'2026-11-22'},
+                {id:'core-entretien-mois', label:'Entretien du mois des machines', icon:'🔧', jours:[0], cycleSemaines:4, ancre:'2026-11-29'}];
+  const { ctx, fr } = await ouvrir('2026-11-15T21:00:00+01:00', Object.assign({'batcave-habits': base}, graines));
+  const r = await fr.evaluate(() => {
+    const ids = JSON.parse(localStorage.getItem('batcave-habits') || '[]').map(x => x.id);
+    const du = (id, iso) => window.__bcHabitsDuJour(new Date(iso + 'T00:00:00').getDay(), iso).some(h => h.id === id);
+    const dims = []; for(let d = new Date('2026-11-22T12:00:00'); d <= new Date('2027-06-06T12:00:00'); d.setDate(d.getDate() + 7)) dims.push(d.toISOString().slice(0, 10));
+    const quand = id => dims.filter(i => du(id, i));
+    const notifs = iso => window.__bcRappels(iso).filter(b => /🔔/.test(b.titre)).map(b => String(Math.floor(b.debut / 60)).padStart(2, '0') + ':' + String(b.debut % 60).padStart(2, '0') + ' ' + b.titre);
+    const batch = iso => window.__bcConsigne('🍲 Batch cooking de la semaine', 0, iso, '14:30');
+    const men = iso => window.__bcConsigne('🧽 Ménage — sols, salle de bain, poussière', 0, iso, '16:30');
+    return { ids, filtre: quand('core-robot-filtre'), laterale: quand('core-robot-brosse-laterale'), brosses: quand('core-robot-brosses'), aspi: quand('core-aspi-pieces'),
+             oreiller: quand('core-oreiller'), couette: quand('core-couette'), matelas: quand('core-matelas'),
+             n22: notifs('2026-11-22'), n27: notifs('2026-12-27'), n29: notifs('2026-11-29'), n23: notifs('2026-11-23'), n15: notifs('2026-11-15'),
+             b06: batch('2026-12-06'), b03: batch('2027-01-03'), b17: batch('2027-01-17'), b13: batch('2026-12-13'), m27: men('2026-12-27') };
+  });
+  ok(['core-robot-filtre','core-robot-brosse-laterale','core-robot-brosses','core-aspi-pieces','core-oreiller','core-couette','core-matelas'].every(i => r.ids.includes(i)) && r.ids.length === 12,
+     'sept cases ajoutées, sans toucher au reste (' + r.ids.length + ')');
+  ok(r.filtre.join() === '2026-12-27,2027-02-21,2027-04-18' && r.laterale.join() === '2027-01-24,2027-05-16' && r.brosses.join() === '2027-05-16' && r.aspi.join() === '2027-02-21',
+     'les pièces du robot et de l\'aspirateur, aux dimanches de l\'entretien du mois : ' + [r.filtre, r.laterale, r.brosses, r.aspi].map(x => x.join(' ')).join(' · '));
+  ok(r.oreiller.join() === '2027-01-03,2027-04-25' && r.couette.join() === '2027-01-17' && r.matelas.join() === '2026-12-06,2027-03-07,2027-06-06',
+     'l\'oreiller, la couette, le matelas : ' + [r.oreiller, r.couette, r.matelas].map(x => x.join(' ')).join(' · '));
+  ok(/matelas tourné/.test(r.b06) && /oreiller aussi/.test(r.b03) && /couette dans un second sac/.test(r.b17) && !/matelas|oreiller|couette/.test(r.b13),
+     'la laverie du dimanche les emporte leur jour, et pas les autres');
+  ok(/filtre du robot est neuf/.test(r.m27) && /entretien du mois/.test(r.m27), 'le 27 décembre, le ménage : l\'entretien du mois et le filtre du robot neuf');
+  ok(r.n22.join(' | ') === '05:21 🦇 🔔 Pesée à jeun + Photos | 05:24 🦇 🔔 Brosse à dents neuve',
+     'le 22 novembre, l\'agenda sonne pour la pesée et les photos, puis pour la brosse à dents neuve : ' + r.n22.join(' | '));
+  ok(r.n27.some(x => x === '16:25 🦇 🔔 Entretien du mois + Filtre du robot neuf'), 'le 27 décembre, une seule notification pour les deux tâches du ménage : ' + r.n27.join(' | '));
+  ok(r.n29.some(x => /16:25 .*Entretien du mois/.test(x)) && r.n23.length === 0 && r.n15.length === 0, 'rien un lundi sans tâche, rien avant le jour 1');
   await ctx.close();
 }
 

@@ -2621,7 +2621,7 @@
    {
     "h": "13:30",
     "l": "🛒 Courses de la semaine",
-    "c": "Avant de partir, 10 min : regarde le frigo et le placard, fais le tour de la salle de bain et de la cuisine, et coche dans l'onglet Courses ce que tu as déjà. N'achète que ce qui te manque."
+    "c": "D’abord le coiffeur (30 €, prévu au budget). Puis les courses. Avant de partir, 10 min : regarde le frigo et le placard, fais le tour de la salle de bain et de la cuisine, et coche dans l'onglet Courses ce que tu as déjà. N'achète que ce qui te manque."
    },
    {
     "h": "15:30",
@@ -3167,7 +3167,7 @@
    {
     "h": "16:30",
     "l": "🧽 Ménage — sols, salle de bain, poussière",
-    "c": "À ton retour de la laverie (vers 16:30) : le lit refait avec la parure propre, puis aspirateur-serpillière dans tout l'appart, la salle de bain (la bonde de la douche débarrassée de ses cheveux), la poussière. Le linge propre plié et rangé. Puis l'entretien des deux machines, dix minutes. L'aspirateur-serpillière : le réservoir d'eau sale vidé et rincé, son cycle d'auto-nettoyage sur la base s'il en a un, la brosse-rouleau et le filtre sortis et mis à sécher à l'air, jamais rangés humides. Le robot : le bac vidé, ses brosses démêlées (les cheveux coupés aux ciseaux), le filtre tapoté contre la poubelle, sans le mouiller. Ce dimanche, l'entretien du mois. Le robot : ses capteurs de vide (dessous) et ses contacts de charge essuyés au chiffon sec, la roue avant démontée et débarrassée des cheveux, la brosse latérale dévissée et nettoyée. L'aspirateur-serpillière : la brosse-rouleau lavée à l'eau tiède, le joint et le conduit du réservoir sale rincés. Le lave-vaisselle : son filtre sorti du fond, rincé sous l'eau chaude, remis en place. L'éponge de la cuisine changée. À la fin, sors la poubelle."
+    "c": "À ton retour de la laverie (vers 16:30) : le lit refait avec la parure propre, puis aspirateur-serpillière dans tout l'appart, la salle de bain (la bonde de la douche débarrassée de ses cheveux), la poussière. Le linge propre plié et rangé. Puis l'entretien des deux machines, dix minutes. L'aspirateur-serpillière : le réservoir d'eau sale vidé et rincé, son cycle d'auto-nettoyage sur la base s'il en a un, la brosse-rouleau et le filtre sortis et mis à sécher à l'air, jamais rangés humides. Le robot : le bac vidé, ses brosses démêlées (les cheveux coupés aux ciseaux), le filtre tapoté contre la poubelle, sans le mouiller. Ce dimanche, l'entretien du mois. Le robot : ses capteurs de vide (dessous) et ses contacts de charge essuyés au chiffon sec, la roue avant démontée et débarrassée des cheveux, la brosse latérale dévissée et nettoyée. L'aspirateur-serpillière : la brosse-rouleau lavée à l'eau tiède, le joint et le conduit du réservoir sale rincés. Le lave-vaisselle : son filtre sorti du fond, rincé sous l'eau chaude, remis en place. La brosse latérale du robot est neuve aujourd'hui : une vis dessous, la neuve revissée. L'éponge de la cuisine changée. À la fin, sors la poubelle."
    },
    {
     "h": "17:30",
@@ -3466,6 +3466,62 @@
     "cycle": 4,
     "ancre": "2026-12-13",
     "quinzaine": false
+   },
+   {
+    "id": "core-robot-filtre",
+    "label": "Robot : filtre neuf",
+    "icon": "🤖",
+    "cycle": 8,
+    "ancre": "2026-12-27",
+    "quinzaine": false
+   },
+   {
+    "id": "core-robot-brosse-laterale",
+    "label": "Robot : brosse latérale neuve",
+    "icon": "🤖",
+    "cycle": 16,
+    "ancre": "2027-01-24",
+    "quinzaine": false
+   },
+   {
+    "id": "core-robot-brosses",
+    "label": "Robot : brosses principales neuves",
+    "icon": "🤖",
+    "cycle": 36,
+    "ancre": "2027-05-16",
+    "quinzaine": false
+   },
+   {
+    "id": "core-aspi-pieces",
+    "label": "Aspirateur : brosse et filtre neufs",
+    "icon": "🧹",
+    "cycle": 16,
+    "ancre": "2027-02-21",
+    "quinzaine": false
+   },
+   {
+    "id": "core-oreiller",
+    "label": "Oreiller lavé",
+    "icon": "🛏️",
+    "cycle": 16,
+    "ancre": "2027-01-03",
+    "quinzaine": false
+   },
+   {
+    "id": "core-couette",
+    "label": "Couette lavée",
+    "icon": "🛌",
+    "cycle": 26,
+    "ancre": "2027-01-17",
+    "quinzaine": false
+   },
+   {
+    "id": "core-matelas",
+    "label": "Matelas tourné et aspiré",
+    "icon": "🛏️",
+    "cycle": 13,
+    "ancre": "2026-12-06",
+    "quinzaine": false
    }
   ],
   "duJour": [
@@ -3598,6 +3654,11 @@
     "id": "core-entretien-mois",
     "label": "Entretien du mois des machines",
     "icon": "🔧"
+   },
+   {
+    "id": "core-robot-brosse-laterale",
+    "label": "Robot : brosse latérale neuve",
+    "icon": "🤖"
    }
   ],
   "repas": {

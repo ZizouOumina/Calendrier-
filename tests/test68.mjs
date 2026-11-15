@@ -193,20 +193,21 @@ console.log('\n== 270) Une priorité qui revient trois semaines change de ton ==
 
 console.log('\n== 271) Clôture de saison : nouvel horizon sans rien ressaisir ==');
 {
-  const { ctx, page, fr } = await ouvrir('2027-03-12T09:00:00+01:00', {'batcave-goals': {poids:68, coran:150, duaas:90}});
+  /* 15 novembre : la saison va du 16 novembre au 6 juin -- J-2, c'est le vendredi 4 juin */
+  const { ctx, page, fr } = await ouvrir('2027-06-04T09:00:00+02:00', {'batcave-goals': {poids:68, coran:150, duaas:90}});
   await fr.evaluate(() => document.querySelector('.nav-btn[data-page="objectifs"]').click());
   await page.waitForTimeout(250);
   ok(await fr.evaluate(() => !document.getElementById('saison-cloturer').hidden), 'à J-2, le bouton « Clôturer la saison » apparaît');
   await fr.evaluate(() => window.__bcCloturerSaison());
   await page.waitForTimeout(500);
   const h = await local(fr, 'batcave-horizon'), sa = await local(fr, 'batcave-saisons'), dep = await local(fr, 'batcave-goals-depart');
-  ok(h.debut === '2027-03-14' && h.fin === '2027-09-14', 'le nouvel horizon va du 14 mars au 14 septembre (' + h.debut + ' → ' + h.fin + ')');
+  ok(h.debut === '2027-06-06' && h.fin === '2027-12-06', 'le nouvel horizon va du 6 juin au 6 décembre (' + h.debut + ' → ' + h.fin + ')');
   ok(sa.length === 1 && sa[0].goals.length === 3, 'la saison précédente est archivée avec ses trois cartes');
   ok(Number(dep.poids) === 68, 'le poids repart de 68 kg, la valeur atteinte');
   const t = await fr.evaluate(() => ({ tri: window.__bcTrimestres().length, mois: window.__bcMois().length,
-                                       objs: window.__bcObjectifs().filter(o => o.pid === 'M2027-04').length }));
+                                       objs: window.__bcObjectifs().filter(o => o.pid === 'M2027-07').length }));
   ok(t.tri >= 5 && t.mois >= 13, 'les trimestres et les mois de la nouvelle saison existent (' + t.tri + ' trimestres, ' + t.mois + ' mois)');
-  ok(t.objs > 0, 'les objectifs d\'avril 2027 sont semés tout seuls (' + t.objs + ')');
+  ok(t.objs > 0, 'les objectifs de juillet 2027 sont semés tout seuls (' + t.objs + ')');
   await ctx.close();
 }
 

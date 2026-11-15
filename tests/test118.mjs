@@ -100,7 +100,7 @@ console.log('\n== 1) Avant le jour 1 : les 124 partent d\'un coup, puis tout l\'
 
 console.log('\n== 2) Déjà fait : rien ne repart ==');
 {
-  const { ctx, fr, page } = await ouvrir('2026-11-16T06:00:00+01:00', Object.assign({}, ACTIF, RELEVE_JANVIER, {'batcave-gcal-nettoyage-janvier': {date:'2026-11-12', retires:124}, 'batcave-gcal-reconstruction': {date:'2026-11-15', programme:'2026-11-16', jours:70, du:'2026-11-16', au:'2027-01-24'}}));
+  const { ctx, fr, page } = await ouvrir('2026-11-16T06:00:00+01:00', Object.assign({}, ACTIF, RELEVE_JANVIER, {'batcave-gcal-nettoyage-janvier': {date:'2026-11-12', retires:124}, 'batcave-gcal-reconstruction': {date:'2026-11-15', programme:'2026-11-16', taches:1, jours:70, du:'2026-11-16', au:'2027-01-24'}}));
   await page.clock.runFor(7000);
   await page.waitForTimeout(800);
   const sup = await appels(fr, 'delete_event');
@@ -111,11 +111,23 @@ console.log('\n== 2) Déjà fait : rien ne repart ==');
 }
 {
   /* Un relevé d'avant le champ « programme », mais déjà fait depuis le jour 1 (le lundi 16) : il compte aussi. */
-  const { ctx, fr, page } = await ouvrir('2026-11-16T06:00:00+01:00', Object.assign({}, ACTIF, RELEVE_JANVIER, {'batcave-gcal-nettoyage-janvier': {date:'2026-11-12', retires:124}, 'batcave-gcal-reconstruction': {date:'2026-11-15', jours:70, du:'2026-11-16', au:'2027-01-24'}}));
+  const { ctx, fr, page } = await ouvrir('2026-11-16T06:00:00+01:00', Object.assign({}, ACTIF, RELEVE_JANVIER, {'batcave-gcal-nettoyage-janvier': {date:'2026-11-12', retires:124}, 'batcave-gcal-reconstruction': {date:'2026-11-15', taches:1, jours:70, du:'2026-11-16', au:'2027-01-24'}}));
   await page.clock.runFor(7000);
   await page.waitForTimeout(800);
   const lus = (await appels(fr, 'list_events')).filter(a => a.input.orderBy !== 'startTime');
   ok(lus.length < 70, 'une reconstruction depuis le 16, sans le champ « programme », ne repart pas (' + lus.length + ' jours relus)');
+  await ctx.close();
+}
+
+console.log('\n== 2 ter) Faite avant les rappels des tâches (15 novembre au soir) : elle repart une fois, et les pose ==');
+{
+  const { ctx, fr, page } = await ouvrir('2026-11-16T06:00:00+01:00', Object.assign({}, ACTIF, RELEVE_JANVIER, {'batcave-gcal-nettoyage-janvier': {date:'2026-11-12', retires:124}, 'batcave-gcal-reconstruction': {date:'2026-11-15', programme:'2026-11-16', jours:70, du:'2026-11-16', au:'2027-01-24'}}));
+  await page.clock.runFor(7000);
+  await fr.waitForFunction(() => { try{ return (JSON.parse(localStorage.getItem('batcave-gcal-reconstruction')) || {}).taches === 1; }catch(e){ return false; } }, null, {timeout:90000}).catch(() => {});
+  await page.waitForTimeout(500);
+  const crees = (await appels(fr, 'create_event')).map(a => a.input.startTime.slice(0, 16) + ' ' + a.input.summary).filter(x => /🔔/.test(x));
+  ok(crees.some(x => x === '2026-11-22T05:21 🦇 🔔 Pesée à jeun + Photos') && crees.some(x => x === '2026-11-22T05:24 🦇 🔔 Brosse à dents neuve') && crees.some(x => /^2026-11-28T15:25 .*Frigo/.test(x)),
+     'les notifications des tâches sont posées d\'un coup : ' + crees.length + ' (dont ' + crees.slice(0, 3).join(' | ') + ')');
   await ctx.close();
 }
 

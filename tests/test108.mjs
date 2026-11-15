@@ -65,7 +65,8 @@ console.log('\n== 270) Le rythme de prise : 72 kg au bout de la saison ==');
 {
   const { ctx, page, fr } = await ouvrir('2026-09-28T10:00:00+02:00');
   const t = await fr.evaluate(() => { const el = document.getElementById('kcal-analyse'); return el ? el.innerText : ''; });
-  ok(/\+0,31 kg \/ semaine/.test(t), 'rythme visé : +0,31 kg par semaine (' + (t.match(/Rythme visé[^\n]*/) || [''])[0] + ')');
+  /* 15 novembre : l'horizon va du 16 novembre au 6 juin -- 64 -> 72 kg sur 29 semaines, 0,28 kg par semaine. */
+  ok(/\+0,28 kg \/ semaine/.test(t), 'rythme visé : +0,28 kg par semaine, 72 kg le 6 juin (' + (t.match(/Rythme visé[^\n]*/) || [''])[0] + ')');
   const tuile = await fr.evaluate(() => [...document.querySelectorAll('#dash-releves .stat-tile')].map(x => x.innerText).filter(x => /Poids/.test(x))[0] || '');
   ok(/cible 72 kg/.test(tuile), 'la tuile Poids vise 72 kg : ' + tuile.replace(/\s+/g, ' '));
   await ctx.close();

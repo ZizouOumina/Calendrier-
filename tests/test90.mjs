@@ -82,10 +82,17 @@ console.log('\n== 303) Un cloud déjà propre ne déclenche aucune réécriture 
                   {id:'core-entretien-mois', label:'Entretien du mois des machines', icon:'🔧', jours:[0], cycleSemaines:4, ancre:'2026-11-29'},
                   {id:'core-machine-filtre', label:'Machine à laver : filtre et joint', icon:'🌀', jours:[0], cycleSemaines:4, ancre:'2026-12-06'},
                   {id:'core-detartrage', label:'Bouilloire et rice cooker détartrés', icon:'☕', jours:[0], cycleSemaines:4, ancre:'2026-12-13'},
-                  {id:'core-frigo', label:'Frigo vidé et nettoyé', icon:'🧊', jours:[6], cycleSemaines:4, ancre:'2026-11-28'}];   /* v13 = le rideau de douche (14 novembre), v14 = l'entretien des machines (15 novembre) */
+                  {id:'core-frigo', label:'Frigo vidé et nettoyé', icon:'🧊', jours:[6], cycleSemaines:4, ancre:'2026-11-28'},
+                  {id:'core-robot-filtre', label:'Robot : filtre neuf', icon:'🤖', jours:[0], cycleSemaines:8, ancre:'2026-12-27'},
+                  {id:'core-robot-brosse-laterale', label:'Robot : brosse latérale neuve', icon:'🤖', jours:[0], cycleSemaines:16, ancre:'2027-01-24'},
+                  {id:'core-robot-brosses', label:'Robot : brosses principales neuves', icon:'🤖', jours:[0], cycleSemaines:36, ancre:'2027-05-16'},
+                  {id:'core-aspi-pieces', label:'Aspirateur : brosse et filtre neufs', icon:'🧹', jours:[0], cycleSemaines:16, ancre:'2027-02-21'},
+                  {id:'core-oreiller', label:'Oreiller lavé', icon:'🛏️', jours:[0], cycleSemaines:16, ancre:'2027-01-03'},
+                  {id:'core-couette', label:'Couette lavée', icon:'🛌', jours:[0], cycleSemaines:26, ancre:'2027-01-17'},
+                  {id:'core-matelas', label:'Matelas tourné et aspiré', icon:'🛏️', jours:[0], cycleSemaines:13, ancre:'2026-12-06'}];   /* v13 = le rideau de douche (14 novembre), v14 = l'entretien des machines (15 novembre) */
   const { ctx, fr } = await jour('2026-09-21T09:00:00+02:00', {
     'batcave-habits': propre, 'batcave-habits-seed-v2': true, 'batcave-habits-seed-v3': true,
-    'batcave-habits-seed-v4': true, 'batcave-habits-seed-v5': true, 'batcave-habits-seed-v6': true, 'batcave-habits-seed-v7': true, 'batcave-habits-seed-v8': true, 'batcave-habits-seed-v9': true, 'batcave-habits-seed-v10': true, 'batcave-habits-seed-v11': true, 'batcave-habits-seed-v12': true, 'batcave-habits-seed-v13': true, 'batcave-habits-seed-v14': true });
+    'batcave-habits-seed-v4': true, 'batcave-habits-seed-v5': true, 'batcave-habits-seed-v6': true, 'batcave-habits-seed-v7': true, 'batcave-habits-seed-v8': true, 'batcave-habits-seed-v9': true, 'batcave-habits-seed-v10': true, 'batcave-habits-seed-v11': true, 'batcave-habits-seed-v12': true, 'batcave-habits-seed-v13': true, 'batcave-habits-seed-v14': true, 'batcave-habits-seed-v15': true });
   const n = await fr.evaluate(() => window.__w.filter(k => k === 'batcave-habits').length);
   ok(n === 0, 'aucune écriture (' + n + ')');
   await ctx.close();

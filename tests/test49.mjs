@@ -79,7 +79,7 @@ console.log('\n== 120) Boucle poids → calories ==');
   await aller(fr, page, 'repas');
   let k = await fr.evaluate(() => ({ note: document.getElementById('kcal-note').innerText, txt: document.getElementById('kcal-analyse').innerText.replace(/\s+/g,' '), sub: document.getElementById('meal-kcal-sub').innerText, btn: document.getElementById('kcal-appliquer').hidden }));
   ok(/recommandation : \+150 kcal/.test(k.note), 'poids stable deux semaines → +150 kcal recommandé : ' + k.note);
-  ok(/Rythme visé : \+0,31 kg \/ semaine/.test(k.txt), 'rythme visé dérivé de l\'objectif poids (64 → 72 sur l\'horizon, relevé le 23 septembre) : ' + (k.txt.match(/Rythme visé[^.]*/) || [''])[0]);
+  ok(/Rythme visé : \+0,28 kg \/ semaine/.test(k.txt), 'rythme visé dérivé de l\'objectif poids (64 → 72 sur l\'horizon du 16 novembre au 6 juin) : ' + (k.txt.match(/Rythme visé[^.]*/) || [''])[0]);
   ok(/Tendance : \+0,00 kg/.test(k.txt) && !k.btn, 'tendance +0,00 kg, bouton « Appliquer » visible');
   /* 23 octobre au soir, le plan dense (riz midi et soir, huile crue, amandes, dattes) : 3 173 kcal ce jour-la. */
   ok(/\/ 3238 kcal$/.test(k.sub), 'cible de base 3238 kcal (quatre prises, shake le matin, plan dense du 23 octobre, 70 g de viande et la boisson d\'avoine du Lidl le 25, plus de sauces et 50 g d\'amandes le 30) : ' + k.sub);

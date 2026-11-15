@@ -234,6 +234,8 @@ Si la santé suit (le médecin d'abord), avec au moins 9 séances sur 10 faites,
 
 **L'objectif « 72 kg fin mars »** : depuis 60 kg, il faudrait ≈ 0,58 kg par semaine, presque 1 % du poids, soit le double du rythme qui reste du muscle. Au rythme maigre : ≈ 64-67 kg fin mars, 72 kg vers l'automne 2027.
 
+**Depuis le 15 novembre, l'objectif est « 72 kg le 6 juin »** (la saison va du 16 novembre au 6 juin). Depuis 64 kg, la pesée de septembre, c'est 0,28 kg par semaine, dans la bande. Depuis 60 kg, ta pesée du 4 novembre, ce serait 0,41 kg par semaine, au-dessus du plafond de 0,5 % : la Batcave garde 0,28 kg, et 72 kg glisserait vers la fin de l'été. La pesée du dimanche 22 novembre tranche.
+
 ## Les sources
 - Pelland JC et al. *The Resistance Training Dose Response: Meta-Regressions Exploring the Effects of Weekly Volume and Frequency on Muscle Hypertrophy and Strength Gains.* Sports Med, 2025. https://pubmed.ncbi.nlm.nih.gov/41343037/
 - Schoenfeld BJ et al. *Dose-response relationship between weekly resistance training volume and increases in muscle mass.* J Sports Sci, 2017. https://pubmed.ncbi.nlm.nih.gov/27433992/

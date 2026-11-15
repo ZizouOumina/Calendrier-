@@ -29,15 +29,16 @@ console.log('\n== 101) Horizon des objectifs : dérivé du stockage, éditable =
 {
   const { ctx, page, fr } = await ouvrir(VENDREDI);
   await aller(fr, page, 'objectifs');
-  ok((await texte(fr, '#goal-deadline-days')) === '191', 'par défaut : 191 jours jusqu\'au 14 mars 2027 (obtenu ' + await texte(fr, '#goal-deadline-days') + ')');
-  ok((await texte(fr, '#goal-titre')) === 'Objectifs sur 6\u00a0mois', 'titre dérivé : « Objectifs sur 6 mois »');
-  ok(/sept/.test(await texte(fr, '#goal-periode')) && /mars/.test(await texte(fr, '#goal-periode')), 'période affichée depuis l\'horizon');
-  ok(await fr.evaluate(() => document.getElementById('goal-horizon-fin').value) === '2027-03-14', 'champ date pré-rempli');
+  /* 15 novembre : l'horizon par défaut va du jour 1 (16 novembre) au dimanche 6 juin -- « 72 kg en juin » */
+  ok((await texte(fr, '#goal-deadline-days')) === '275', 'par défaut : 275 jours jusqu\'au 6 juin 2027 (obtenu ' + await texte(fr, '#goal-deadline-days') + ')');
+  ok((await texte(fr, '#goal-titre')) === 'Objectifs sur 7\u00a0mois', 'titre dérivé : « Objectifs sur 7 mois » (16 novembre → 6 juin)');
+  ok(/nov/.test(await texte(fr, '#goal-periode')) && /juin/.test(await texte(fr, '#goal-periode')), 'période affichée depuis l\'horizon');
+  ok(await fr.evaluate(() => document.getElementById('goal-horizon-fin').value) === '2027-06-06', 'champ date pré-rempli');
   /* on avance la fin au 31 décembre */
   await fr.evaluate(() => { const i = document.getElementById('goal-horizon-fin'); i.value = '2026-12-31'; i.dispatchEvent(new Event('change', {bubbles:true})); });
   await page.waitForTimeout(250);
   ok((await texte(fr, '#goal-deadline-days')) === '118', 'après modification : 118 jours (obtenu ' + await texte(fr, '#goal-deadline-days') + ')');
-  ok((await texte(fr, '#goal-titre')) === 'Objectifs sur 4\u00a0mois', 'titre recalculé : 4 mois');
+  ok((await texte(fr, '#goal-titre')) === 'Objectifs sur 1\u00a0mois', 'titre recalculé : 1 mois (16 novembre → 31 décembre)');
   ok((await lire(fr, 'batcave-horizon') || {}).fin === '2026-12-31', 'horizon enregistré');
   /* une fin avant le début est refusée */
   await fr.evaluate(() => { const i = document.getElementById('goal-horizon-fin'); i.value = '2026-01-01'; i.dispatchEvent(new Event('change', {bubbles:true})); });

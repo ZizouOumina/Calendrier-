@@ -1,5 +1,49 @@
 # Où on en est — samedi 19 septembre 2026, au soir
 
+> ### Dimanche 15 novembre, tard le soir — chaque tâche rare à sa date et notifiée, la saison jusqu'au 6 juin, la saison simulée
+> **Ses mots** : « 1 oui, 3 oui aussi, mais il n'y a pas tout, comment je sais quand est-ce que je devrais remplacer ma
+> brosse à dents par exemple, est-ce que j'aurais une notif dans la batcave ? ça apparaîtra dans mes tâches du jour ? » ;
+> puis « vérifie bien qu'il n'y a aucune contradiction, et simule sur plusieurs semaines que tout fonctionne bien, donc
+> que tu n'as rien oublié, exemple aller à la laverie etc ».
+> **Graine v15 (schéma 70)** : sept cases à date fixe, chacune un dimanche :
+> - le filtre du robot, toutes les 8 semaines dès le 27 décembre ;
+> - sa brosse latérale, toutes les 16 semaines dès le 24 janvier ;
+> - ses brosses principales, toutes les 36 semaines, le 16 mai ;
+> - la brosse-rouleau et le filtre de l'aspirateur-serpillière, toutes les 16 semaines, le 21 février ;
+> - l'oreiller à la laverie, toutes les 16 semaines, le 3 janvier ;
+> - la couette, toutes les 26 semaines, le 17 janvier ;
+> - le matelas tourné et aspiré, toutes les 13 semaines, le 6 décembre.
+>
+> Les consignes les disent le bon jour. La laverie du batch prend le matelas, l'oreiller et la couette, le ménage les
+> pièces neuves, et les courses commencent par le coiffeur son samedi.
+> **Les notifications** : chaque tâche du jour sonne dans Google Agenda. C'est un événement « 🦇 🔔 » par heure, qui
+> n'occupe pas l'agenda :
+> - la pesée et les photos à 05:21, la brosse à dents neuve à 05:24 (22 novembre, 14 février, 9 mai) ;
+> - le coiffeur à 13:00 ;
+> - le frigo et la laverie à 15:25 ;
+> - le ménage du mois à 16:25 ;
+> - les ongles à 19:40.
+>
+> À la prochaine ouverture, la Batcave reconstruit l'agenda une fois (`taches: 1`), avec toutes les notifications
+> jusqu'au 24 janvier. Ensuite, chaque ouverture pose celles d'aujourd'hui et de demain.
+> **L'horizon** (« 3 oui ») : la saison va du 16 novembre au 6 juin, 203 jours, et les objectifs portent sur 7 mois. Le
+> poids va de 64 à 72 kg à +0,28 kg par semaine, soit environ 1,2 kg par mois. La note de l'objectif,
+> `programme-alimentation.md` et `programme-sport.md` suivent. Un horizon encore égal à l'ancien défaut (14 septembre →
+> 14 mars) est remplacé une fois. Reste à trancher le 22 novembre : il disait 60 kg le 4 novembre, et la Batcave part de
+> 64, sa pesée de septembre.
+> **La saison simulée** (`tests/zz-saison.mjs` puis `zz-saison.py`, avec ses données) : les 203 jours sont lus un par
+> un : la grille, les cases, les consignes du ménage, de la laverie, du rangement et des courses, et les rappels de
+> l'agenda.
+> - Premier semestre : aucune contradiction, rien d'oublié. La laverie revient chaque dimanche, le batch chaque mardi,
+>   et chaque tâche périodique garde son rythme, avec sa consigne et sa notification le bon jour.
+> - Elle a trouvé le coiffeur absent de la consigne des courses ; c'est corrigé.
+> - Second semestre : la grille est provisoire. Le batch du mardi manque dès le 26 janvier, et le coucher passe à 22:40
+>   le mardi et le mercredi. C'est à refaire avec son emploi du temps du S2.
+>
+> **Tests** : 43, 49, 68, 75 et 109 recalés sur l'horizon et le schéma. 52 compte les quatre notifications de la fenêtre
+> des jours sans cours, et 67 a un jeu de six mois qui finit le 2 juin. 108 passe à +0,28 kg, 118 gagne le scénario
+> 2 ter et 119 le scénario 9. Les fixtures 42 et 90 portent la v15.
+
 > ### Dimanche 15 novembre, le soir — l'entretien des machines, et la semaine tâche par tâche
 > **Ses mots** : « t'as tout mis, même le nettoyage de mon aspirateur serpillère […] même le nettoyage de mon roomba
 > automatique. Je veux que tout soit dedans comme ça j'ai pas besoin de réfléchir. Donne-moi la liste de tout ce que je

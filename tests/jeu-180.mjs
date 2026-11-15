@@ -3,7 +3,7 @@
    vient du code, jamais du hasard. Six mois de journal, de repas, de sport, de
    sessions au minuteur, d'habitudes, de budget et de business. */
 const JOURS = 180;
-export const FIN = '2027-03-10';          /* quatre jours avant la fin de l'horizon */
+export const FIN = '2027-06-02';          /* quatre jours avant la fin de l'horizon (le 6 juin depuis le 15 novembre) */
 export const DEBUT = decale(FIN, -(JOURS - 1));
 
 function iso(d){ return d.toISOString().slice(0, 10); }

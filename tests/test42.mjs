@@ -127,8 +127,15 @@ console.log('\n== 97) Un cloud déjà à jour ne déclenche aucune réécriture 
                                                      {id:'core-entretien-mois', label:'Entretien du mois des machines', icon:'🔧', jours:[0], cycleSemaines:4, ancre:'2026-11-29'},
                                                      {id:'core-machine-filtre', label:'Machine à laver : filtre et joint', icon:'🌀', jours:[0], cycleSemaines:4, ancre:'2026-12-06'},
                                                      {id:'core-detartrage', label:'Bouilloire et rice cooker détartrés', icon:'☕', jours:[0], cycleSemaines:4, ancre:'2026-12-13'},
-                                                     {id:'core-frigo', label:'Frigo vidé et nettoyé', icon:'🧊', jours:[6], cycleSemaines:4, ancre:'2026-11-28'}]),
-                 'batcave-habits-seed-v2': true, 'batcave-habits-seed-v3': true, 'batcave-habits-seed-v4': true, 'batcave-habits-seed-v5': true, 'batcave-habits-seed-v6': true, 'batcave-habits-seed-v7': true, 'batcave-habits-seed-v8': true, 'batcave-habits-seed-v9': true, 'batcave-habits-seed-v10': true, 'batcave-habits-seed-v11': true, 'batcave-habits-seed-v12': true, 'batcave-habits-seed-v13': true, 'batcave-habits-seed-v14': true, 'batcave-objectifs-v5-espanol': true};
+                                                     {id:'core-frigo', label:'Frigo vidé et nettoyé', icon:'🧊', jours:[6], cycleSemaines:4, ancre:'2026-11-28'},
+                                                     {id:'core-robot-filtre', label:'Robot : filtre neuf', icon:'🤖', jours:[0], cycleSemaines:8, ancre:'2026-12-27'},
+                                                     {id:'core-robot-brosse-laterale', label:'Robot : brosse latérale neuve', icon:'🤖', jours:[0], cycleSemaines:16, ancre:'2027-01-24'},
+                                                     {id:'core-robot-brosses', label:'Robot : brosses principales neuves', icon:'🤖', jours:[0], cycleSemaines:36, ancre:'2027-05-16'},
+                                                     {id:'core-aspi-pieces', label:'Aspirateur : brosse et filtre neufs', icon:'🧹', jours:[0], cycleSemaines:16, ancre:'2027-02-21'},
+                                                     {id:'core-oreiller', label:'Oreiller lavé', icon:'🛏️', jours:[0], cycleSemaines:16, ancre:'2027-01-03'},
+                                                     {id:'core-couette', label:'Couette lavée', icon:'🛌', jours:[0], cycleSemaines:26, ancre:'2027-01-17'},
+                                                     {id:'core-matelas', label:'Matelas tourné et aspiré', icon:'🛏️', jours:[0], cycleSemaines:13, ancre:'2026-12-06'}]),
+                 'batcave-habits-seed-v2': true, 'batcave-habits-seed-v3': true, 'batcave-habits-seed-v4': true, 'batcave-habits-seed-v5': true, 'batcave-habits-seed-v6': true, 'batcave-habits-seed-v7': true, 'batcave-habits-seed-v8': true, 'batcave-habits-seed-v9': true, 'batcave-habits-seed-v10': true, 'batcave-habits-seed-v11': true, 'batcave-habits-seed-v12': true, 'batcave-habits-seed-v13': true, 'batcave-habits-seed-v14': true, 'batcave-habits-seed-v15': true, 'batcave-objectifs-v5-espanol': true};
   const { ctx, fr } = await ouvrir(aJour, aJour, SAMEDI);
   const ecrits = await fr.evaluate(() => window.__w.filter(k => k === 'batcave-habits'));
   ok(ecrits.length === 0, 'aucune réécriture inutile de batcave-habits');

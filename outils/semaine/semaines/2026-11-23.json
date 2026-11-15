@@ -3491,6 +3491,62 @@
     "cycle": 4,
     "ancre": "2026-12-13",
     "quinzaine": false
+   },
+   {
+    "id": "core-robot-filtre",
+    "label": "Robot : filtre neuf",
+    "icon": "🤖",
+    "cycle": 8,
+    "ancre": "2026-12-27",
+    "quinzaine": false
+   },
+   {
+    "id": "core-robot-brosse-laterale",
+    "label": "Robot : brosse latérale neuve",
+    "icon": "🤖",
+    "cycle": 16,
+    "ancre": "2027-01-24",
+    "quinzaine": false
+   },
+   {
+    "id": "core-robot-brosses",
+    "label": "Robot : brosses principales neuves",
+    "icon": "🤖",
+    "cycle": 36,
+    "ancre": "2027-05-16",
+    "quinzaine": false
+   },
+   {
+    "id": "core-aspi-pieces",
+    "label": "Aspirateur : brosse et filtre neufs",
+    "icon": "🧹",
+    "cycle": 16,
+    "ancre": "2027-02-21",
+    "quinzaine": false
+   },
+   {
+    "id": "core-oreiller",
+    "label": "Oreiller lavé",
+    "icon": "🛏️",
+    "cycle": 16,
+    "ancre": "2027-01-03",
+    "quinzaine": false
+   },
+   {
+    "id": "core-couette",
+    "label": "Couette lavée",
+    "icon": "🛌",
+    "cycle": 26,
+    "ancre": "2027-01-17",
+    "quinzaine": false
+   },
+   {
+    "id": "core-matelas",
+    "label": "Matelas tourné et aspiré",
+    "icon": "🛏️",
+    "cycle": 13,
+    "ancre": "2026-12-06",
+    "quinzaine": false
    }
   ],
   "duJour": [
