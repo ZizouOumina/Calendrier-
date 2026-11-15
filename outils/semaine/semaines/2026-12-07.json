@@ -1111,7 +1111,7 @@
    {
     "h": "15:00",
     "l": "Trajet cours",
-    "c": "Tapis enlevés du sol (rappel de 14:52) ? L’aspirateur passe à 15:45 et à 18:15. Puis podcast en marchant, shadowing à mi-voix dans le tram. Arrivé avant 15:30 : conversation avec les compañeros, pas le téléphone."
+    "c": "Tapis enlevés du sol (rappel de 14:52) ? Le robot passe à 15:45 et à 18:15 ; ce soir, les tapis remis et son bac vidé. Puis podcast en marchant, shadowing à mi-voix dans le tram. Arrivé avant 15:30 : conversation avec les compañeros, pas le téléphone."
    },
    {
     "h": "15:30",
@@ -1644,7 +1644,7 @@
    {
     "h": "15:00",
     "l": "Trajet cours",
-    "c": "Tapis enlevés du sol (rappel de 14:52) ? L’aspirateur passe à 15:45 et à 18:15. Puis podcast en marchant, shadowing à mi-voix dans le tram. Arrivé avant 15:30 : conversation avec les compañeros, pas le téléphone."
+    "c": "Tapis enlevés du sol (rappel de 14:52) ? Le robot passe à 15:45 et à 18:15 ; ce soir, les tapis remis et son bac vidé. Puis podcast en marchant, shadowing à mi-voix dans le tram. Arrivé avant 15:30 : conversation avec les compañeros, pas le téléphone."
    },
    {
     "h": "15:30",
@@ -2151,7 +2151,7 @@
    {
     "h": "15:00",
     "l": "Trajet cours",
-    "c": "Tapis enlevés du sol (rappel de 14:52) ? L’aspirateur passe à 15:45 et à 18:15. Puis podcast en marchant, shadowing à mi-voix dans le tram. Arrivé avant 15:30 : conversation avec les compañeros, pas le téléphone."
+    "c": "Tapis enlevés du sol (rappel de 14:52) ? Le robot passe à 15:45 et à 18:15 ; ce soir, les tapis remis et son bac vidé. Puis podcast en marchant, shadowing à mi-voix dans le tram. Arrivé avant 15:30 : conversation avec les compañeros, pas le téléphone."
    },
    {
     "h": "15:30",
@@ -2880,6 +2880,14 @@
     "cycle": 0,
     "ancre": null,
     "quinzaine": false
+   },
+   {
+    "id": "core-frigo",
+    "label": "Frigo vidé et nettoyé",
+    "icon": "🧊",
+    "cycle": 4,
+    "ancre": "2026-11-28",
+    "quinzaine": false
    }
   ],
   "duJour": [
@@ -3184,7 +3192,7 @@
    {
     "h": "16:30",
     "l": "🧽 Ménage — sols, salle de bain, poussière",
-    "c": "D'abord le rideau de douche à la machine, seul ou avec deux serviettes, 40 °C : il tourne pendant le ménage, et se raccroche humide à la fin, où il sèche déplié. À ton retour de la laverie (vers 16:30) : le lit refait avec la parure propre, puis aspirateur-serpillière dans tout l'appart (réservoir vidé et rincé après), salle de bain, poussière. Le linge propre plié et rangé. À la fin, sors la poubelle."
+    "c": "D'abord le rideau de douche à la machine, seul ou avec deux serviettes, 40 °C : il tourne pendant le ménage, et se raccroche humide à la fin, où il sèche déplié. Et le détartrage, qui travaille pendant le ménage : la bouilloire et la cuve du rice cooker remplies moitié eau, moitié vinaigre blanc (ou deux cuillères à soupe d'acide citrique dans l'eau chaude), une heure ; puis vidées, rincées deux fois, et une bouilloire d'eau claire jetée. À ton retour de la laverie (vers 16:30) : le lit refait avec la parure propre, puis aspirateur-serpillière dans tout l'appart, la salle de bain (la bonde de la douche débarrassée de ses cheveux), la poussière. Le linge propre plié et rangé. Puis l'entretien des deux machines, dix minutes. L'aspirateur-serpillière : le réservoir d'eau sale vidé et rincé, son cycle d'auto-nettoyage sur la base s'il en a un, la brosse-rouleau et le filtre sortis et mis à sécher à l'air, jamais rangés humides. Le robot : le bac vidé, ses brosses démêlées (les cheveux coupés aux ciseaux), le filtre tapoté contre la poubelle, sans le mouiller. L'éponge de la cuisine changée. À la fin, sors la poubelle."
    },
    {
     "h": "17:30",
@@ -3451,6 +3459,38 @@
     "cycle": 4,
     "ancre": "2026-12-13",
     "quinzaine": false
+   },
+   {
+    "id": "core-entretien-semaine",
+    "label": "Robot et aspirateur-serpillière : brosses et filtres",
+    "icon": "🧹",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-entretien-mois",
+    "label": "Entretien du mois : robot, aspirateur, lave-vaisselle",
+    "icon": "🔧",
+    "cycle": 4,
+    "ancre": "2026-11-29",
+    "quinzaine": false
+   },
+   {
+    "id": "core-machine-filtre",
+    "label": "Machine à laver : filtre, joint et bac",
+    "icon": "🌀",
+    "cycle": 4,
+    "ancre": "2026-12-06",
+    "quinzaine": false
+   },
+   {
+    "id": "core-detartrage",
+    "label": "Bouilloire et rice cooker détartrés",
+    "icon": "☕",
+    "cycle": 4,
+    "ancre": "2026-12-13",
+    "quinzaine": false
    }
   ],
   "duJour": [
@@ -3578,6 +3618,16 @@
     "id": "core-rideau-douche",
     "label": "Rideau de douche à la machine, 40 °C",
     "icon": "🧺"
+   },
+   {
+    "id": "core-entretien-semaine",
+    "label": "Robot et aspirateur-serpillière : brosses et filtres",
+    "icon": "🧹"
+   },
+   {
+    "id": "core-detartrage",
+    "label": "Bouilloire et rice cooker détartrés",
+    "icon": "☕"
    }
   ],
   "repas": {

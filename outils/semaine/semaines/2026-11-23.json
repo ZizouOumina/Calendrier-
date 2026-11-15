@@ -612,7 +612,7 @@
    {
     "h": "15:00",
     "l": "Trajet cours",
-    "c": "Tapis enlevés du sol (rappel de 14:52) ? L’aspirateur passe à 15:45 et à 18:15. Puis podcast en marchant, shadowing à mi-voix dans le tram. Arrivé avant 15:30 : conversation avec les compañeros, pas le téléphone."
+    "c": "Tapis enlevés du sol (rappel de 14:52) ? Le robot passe à 15:45 et à 18:15 ; ce soir, les tapis remis et son bac vidé. Puis podcast en marchant, shadowing à mi-voix dans le tram. Arrivé avant 15:30 : conversation avec les compañeros, pas le téléphone."
    },
    {
     "h": "15:30",
@@ -1111,7 +1111,7 @@
    {
     "h": "15:00",
     "l": "Trajet cours",
-    "c": "Tapis enlevés du sol (rappel de 14:52) ? L’aspirateur passe à 15:45 et à 18:15. Puis podcast en marchant, shadowing à mi-voix dans le tram. Arrivé avant 15:30 : conversation avec les compañeros, pas le téléphone."
+    "c": "Tapis enlevés du sol (rappel de 14:52) ? Le robot passe à 15:45 et à 18:15 ; ce soir, les tapis remis et son bac vidé. Puis podcast en marchant, shadowing à mi-voix dans le tram. Arrivé avant 15:30 : conversation avec les compañeros, pas le téléphone."
    },
    {
     "h": "15:30",
@@ -1644,7 +1644,7 @@
    {
     "h": "15:00",
     "l": "Trajet cours",
-    "c": "Tapis enlevés du sol (rappel de 14:52) ? L’aspirateur passe à 15:45 et à 18:15. Puis podcast en marchant, shadowing à mi-voix dans le tram. Arrivé avant 15:30 : conversation avec les compañeros, pas le téléphone."
+    "c": "Tapis enlevés du sol (rappel de 14:52) ? Le robot passe à 15:45 et à 18:15 ; ce soir, les tapis remis et son bac vidé. Puis podcast en marchant, shadowing à mi-voix dans le tram. Arrivé avant 15:30 : conversation avec les compañeros, pas le téléphone."
    },
    {
     "h": "15:30",
@@ -2151,7 +2151,7 @@
    {
     "h": "15:00",
     "l": "Trajet cours",
-    "c": "Tapis enlevés du sol (rappel de 14:52) ? L’aspirateur passe à 15:45 et à 18:15. Puis podcast en marchant, shadowing à mi-voix dans le tram. Arrivé avant 15:30 : conversation avec les compañeros, pas le téléphone."
+    "c": "Tapis enlevés du sol (rappel de 14:52) ? Le robot passe à 15:45 et à 18:15 ; ce soir, les tapis remis et son bac vidé. Puis podcast en marchant, shadowing à mi-voix dans le tram. Arrivé avant 15:30 : conversation avec les compañeros, pas le téléphone."
    },
    {
     "h": "15:30",
@@ -2656,7 +2656,7 @@
    {
     "h": "15:30",
     "l": "Rangement des courses",
-    "c": "La viande de la session du mardi va au congélateur tout de suite, crue : 280 g de poulet et 280 g de viande hachée (mercredi à samedi), à plat dans deux sacs congélation, la date dessus. Le reste de la viande au frigo, en bas : c'est celle de demain. Les surgelés au congélateur, puis le frais, puis le sec, puis les produits de salle de bain et de ménage à leur place. Les tickets dans Budget : la nourriture dans Nourriture, le reste dans Soin et santé ou Maison et ménage."
+    "c": "D'abord le frigo, une fois par mois, avant de ranger : tout sorti, les périmés jetés, les clayettes et les bacs lavés à l'eau chaude savonneuse et séchés, les parois et le joint de la porte essuyés au vinaigre blanc. Ensuite seulement, les courses. La viande de la session du mardi va au congélateur tout de suite, crue : 280 g de poulet et 280 g de viande hachée (mercredi à samedi), à plat dans deux sacs congélation, la date dessus. Le reste de la viande au frigo, en bas : c'est celle de demain. Les surgelés au congélateur, puis le frais, puis le sec, puis les produits de salle de bain et de ménage à leur place. Les tickets dans Budget : la nourriture dans Nourriture, le reste dans Soin et santé ou Maison et ménage."
    },
    {
     "h": "16:00",
@@ -2880,6 +2880,14 @@
     "cycle": 0,
     "ancre": null,
     "quinzaine": false
+   },
+   {
+    "id": "core-frigo",
+    "label": "Frigo vidé et nettoyé",
+    "icon": "🧊",
+    "cycle": 4,
+    "ancre": "2026-11-28",
+    "quinzaine": false
    }
   ],
   "duJour": [
@@ -2987,6 +2995,11 @@
     "id": "core-lumiere",
     "label": "Lumière du matin — 15 min dehors, dès qu’il fait jour",
     "icon": "☀️"
+   },
+   {
+    "id": "core-frigo",
+    "label": "Frigo vidé et nettoyé",
+    "icon": "🧊"
    }
   ],
   "repas": {
@@ -3179,7 +3192,7 @@
    {
     "h": "16:30",
     "l": "🧽 Ménage — sols, salle de bain, poussière",
-    "c": "À ton retour de la laverie (vers 16:30) : le lit refait avec la parure propre, puis aspirateur-serpillière dans tout l'appart (réservoir vidé et rincé après), salle de bain, poussière. Le linge propre plié et rangé. À la fin, sors la poubelle."
+    "c": "À ton retour de la laverie (vers 16:30) : le lit refait avec la parure propre, puis aspirateur-serpillière dans tout l'appart, la salle de bain (la bonde de la douche débarrassée de ses cheveux), la poussière. Le linge propre plié et rangé. Puis l'entretien des deux machines, dix minutes. L'aspirateur-serpillière : le réservoir d'eau sale vidé et rincé, son cycle d'auto-nettoyage sur la base s'il en a un, la brosse-rouleau et le filtre sortis et mis à sécher à l'air, jamais rangés humides. Le robot : le bac vidé, ses brosses démêlées (les cheveux coupés aux ciseaux), le filtre tapoté contre la poubelle, sans le mouiller. Ce dimanche, l'entretien du mois. Le robot : ses capteurs de vide (dessous) et ses contacts de charge essuyés au chiffon sec, la roue avant démontée et débarrassée des cheveux, la brosse latérale dévissée et nettoyée. L'aspirateur-serpillière : la brosse-rouleau lavée à l'eau tiède, le joint et le conduit du réservoir sale rincés. Le lave-vaisselle : son filtre sorti du fond, rincé sous l'eau chaude, remis en place. L'éponge de la cuisine changée. À la fin, sors la poubelle."
    },
    {
     "h": "17:30",
@@ -3446,6 +3459,38 @@
     "cycle": 4,
     "ancre": "2026-12-13",
     "quinzaine": false
+   },
+   {
+    "id": "core-entretien-semaine",
+    "label": "Robot et aspirateur-serpillière : brosses et filtres",
+    "icon": "🧹",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-entretien-mois",
+    "label": "Entretien du mois : robot, aspirateur, lave-vaisselle",
+    "icon": "🔧",
+    "cycle": 4,
+    "ancre": "2026-11-29",
+    "quinzaine": false
+   },
+   {
+    "id": "core-machine-filtre",
+    "label": "Machine à laver : filtre, joint et bac",
+    "icon": "🌀",
+    "cycle": 4,
+    "ancre": "2026-12-06",
+    "quinzaine": false
+   },
+   {
+    "id": "core-detartrage",
+    "label": "Bouilloire et rice cooker détartrés",
+    "icon": "☕",
+    "cycle": 4,
+    "ancre": "2026-12-13",
+    "quinzaine": false
    }
   ],
   "duJour": [
@@ -3568,6 +3613,16 @@
     "id": "core-lumiere",
     "label": "Lumière du matin — 15 min dehors, dès qu’il fait jour",
     "icon": "☀️"
+   },
+   {
+    "id": "core-entretien-semaine",
+    "label": "Robot et aspirateur-serpillière : brosses et filtres",
+    "icon": "🧹"
+   },
+   {
+    "id": "core-entretien-mois",
+    "label": "Entretien du mois : robot, aspirateur, lave-vaisselle",
+    "icon": "🔧"
    }
   ],
   "repas": {

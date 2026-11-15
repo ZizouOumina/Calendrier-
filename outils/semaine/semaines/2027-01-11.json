@@ -2840,6 +2840,14 @@
     "cycle": 0,
     "ancre": null,
     "quinzaine": false
+   },
+   {
+    "id": "core-frigo",
+    "label": "Frigo vidé et nettoyé",
+    "icon": "🧊",
+    "cycle": 4,
+    "ancre": "2026-11-28",
+    "quinzaine": false
    }
   ],
   "duJour": [
@@ -3139,7 +3147,7 @@
    {
     "h": "16:30",
     "l": "🧽 Ménage — sols, salle de bain, poussière",
-    "c": "À ton retour de la laverie (vers 16:30) : le lit refait avec la parure propre, puis aspirateur-serpillière dans tout l'appart (réservoir vidé et rincé après), salle de bain, poussière. Le linge propre plié et rangé. À la fin, sors la poubelle."
+    "c": "À ton retour de la laverie (vers 16:30) : le lit refait avec la parure propre, puis aspirateur-serpillière dans tout l'appart, la salle de bain (la bonde de la douche débarrassée de ses cheveux), la poussière. Le linge propre plié et rangé. Puis l'entretien des deux machines, dix minutes. L'aspirateur-serpillière : le réservoir d'eau sale vidé et rincé, son cycle d'auto-nettoyage sur la base s'il en a un, la brosse-rouleau et le filtre sortis et mis à sécher à l'air, jamais rangés humides. Le robot : le bac vidé, ses brosses démêlées (les cheveux coupés aux ciseaux), le filtre tapoté contre la poubelle, sans le mouiller. L'éponge de la cuisine changée. À la fin, sors la poubelle."
    },
    {
     "h": "17:30",
@@ -3406,6 +3414,38 @@
     "cycle": 4,
     "ancre": "2026-12-13",
     "quinzaine": false
+   },
+   {
+    "id": "core-entretien-semaine",
+    "label": "Robot et aspirateur-serpillière : brosses et filtres",
+    "icon": "🧹",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
+   },
+   {
+    "id": "core-entretien-mois",
+    "label": "Entretien du mois : robot, aspirateur, lave-vaisselle",
+    "icon": "🔧",
+    "cycle": 4,
+    "ancre": "2026-11-29",
+    "quinzaine": false
+   },
+   {
+    "id": "core-machine-filtre",
+    "label": "Machine à laver : filtre, joint et bac",
+    "icon": "🌀",
+    "cycle": 4,
+    "ancre": "2026-12-06",
+    "quinzaine": false
+   },
+   {
+    "id": "core-detartrage",
+    "label": "Bouilloire et rice cooker détartrés",
+    "icon": "☕",
+    "cycle": 4,
+    "ancre": "2026-12-13",
+    "quinzaine": false
    }
   ],
   "duJour": [
@@ -3538,6 +3578,11 @@
     "id": "core-lumiere",
     "label": "Lumière du matin — 15 min dehors, dès qu’il fait jour",
     "icon": "☀️"
+   },
+   {
+    "id": "core-entretien-semaine",
+    "label": "Robot et aspirateur-serpillière : brosses et filtres",
+    "icon": "🧹"
    }
   ],
   "repas": {

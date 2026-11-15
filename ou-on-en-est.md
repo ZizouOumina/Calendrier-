@@ -1,5 +1,27 @@
 # Où on en est — samedi 19 septembre 2026, au soir
 
+> ### Dimanche 15 novembre, le soir — l'entretien des machines, et la semaine tâche par tâche
+> **Ses mots** : « t'as tout mis, même le nettoyage de mon aspirateur serpillère […] même le nettoyage de mon roomba
+> automatique. Je veux que tout soit dedans comme ça j'ai pas besoin de réfléchir. Donne-moi la liste de tout ce que je
+> dois faire dans la semaine en fonction de la journée […] et une liste de trucs que je pourrais rajouter dans le tracking. »
+> **Trouvé** : le robot (l'« aspirateur » de la Batcave, 15:45 et 18:15 tous les jours d'après la série « Enlever les
+> tapis ») n'avait aucun entretien ; l'aspirateur-serpillière, seulement « réservoir vidé et rincé » ; le filtre de la
+> machine à laver, le détartrage et le frigo flottaient dans « chaque mois » sans jour.
+> **Fait** — graine v14 (schéma 69), cinq cases, chacune son jour : « Robot et aspirateur-serpillière : brosses et
+> filtres » chaque dimanche ; « Entretien du mois » (robot : capteurs, contacts de charge, roue avant, brosse latérale ;
+> aspirateur : brosse lavée, joint ; lave-vaisselle : filtre) les 29 novembre, 27 décembre, 24 janvier ; « Machine à
+> laver : filtre, joint et bac » les 6 décembre, 3 janvier ; « Bouilloire et rice cooker détartrés » avec le rideau, les
+> 13 décembre, 10 janvier ; « Frigo vidé et nettoyé » au samedi des courses, 28 novembre, 26 décembre, 23 janvier. La
+> consigne du ménage du dimanche dit chaque geste (et la bonde de la douche, l'éponge changée) ; celle du rangement
+> commence par le frigo son samedi. Chaque jour, le guide dit les tapis enlevés à 14:52 et, à 20:40, les tapis remis et
+> le bac du robot vidé ; la série de l'agenda le dit aussi. « Plus rarement » : les pièces du robot (filtre tous les
+> 2 mois, brosse latérale 3 à 6, brosses principales 6 à 12, roue avant 12) et de l'aspirateur (3 à 6 mois). Une Batcave
+> neuve sème aussi la v14 (sinon la bannière d'incohérence s'allumait). Tests 42, 90, 109, 119 (scénario 8).
+> **La semaine tâche par tâche** : nouvelle page « Ta semaine type » (`semaine-type.html`, générée depuis le guide :
+> la semaine du 23 au 29 novembre, ses 232 lignes, chaque mois, plus rarement, et dix idées de suivi — douleurs à la
+> poitrine, fréquence cardiaque au repos, forme au réveil, articulations, peau, fil dentaire, dernier café, temps d'écran,
+> repas hors plan, snus).
+
 > ### Dimanche 15 novembre, l'après-midi — le tri des artefacts, le brossage de midi, « Ma journée » au complet
 > **Ses mots** : « fais un tri dans mes artefacts, et supprime ceux qui sont outdatés. Et aussi rajoute un 3e brossage de
 > dents après le déjeuner. Je veux aussi que tu vérifies que tu as bien mis tout ce qu'il y avait à mettre dans l'onglet

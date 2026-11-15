@@ -175,7 +175,7 @@ console.log('\n== 6) Le rideau de douche à la machine, un dimanche sur quatre d
 {
   /* Une Batcave déjà semée jusqu'à la v12 : la v13 ajoute le rideau sans toucher au reste */
   const base = [{id:'core-lit', label:'Lit fait', icon:'🛏️'}];
-  const graines = {}; for(let v = 2; v <= 12; v++) graines['batcave-habits-seed-v' + v] = true;
+  const graines = {'batcave-habits-seed-v14': true}; for(let v = 2; v <= 12; v++) graines['batcave-habits-seed-v' + v] = true;
   const { ctx, fr } = await ouvrir('2026-11-14T21:00:00+01:00', Object.assign({'batcave-habits': base}, graines));
   const h = await fr.evaluate(() => JSON.parse(localStorage.getItem('batcave-habits') || '[]').map(x => x.id));
   ok(h.includes('core-lit') && h.includes('core-rideau-douche') && h.length === 2, 'ajouté à une Batcave existante, sans toucher au reste (' + h.join(', ') + ')');
@@ -199,6 +199,38 @@ console.log('\n== 7) Le premier libellé du rideau, trop long au téléphone, es
   ok(a.stock === 'Rideau de douche à la machine, 40 °C' && a.ecran === a.stock, 'l\'ancien libellé exact devient « ' + a.stock + ' », à l\'écran comme dans le stockage');
   const b = await lu(avec('Rideau à laver'));
   ok(b.stock === 'Rideau à laver', 'un libellé qu\'il a choisi lui-même n\'est pas touché (' + b.stock + ')');
+}
+
+console.log('\n== 8) L\'entretien des machines (v14) : le robot, l\'aspirateur-serpillière, la machine à laver, le lave-vaisselle, le frigo ==');
+{
+  /* 15 novembre au soir, « même le nettoyage de mon aspirateur serpillère [...] même le nettoyage de mon roomba » */
+  const base = [{id:'core-lit', label:'Lit fait', icon:'🛏️'}];
+  const graines = {}; for(let v = 2; v <= 13; v++) graines['batcave-habits-seed-v' + v] = true;
+  const { ctx, fr } = await ouvrir('2026-11-15T21:00:00+01:00', Object.assign({'batcave-habits': base}, graines));
+  const r = await fr.evaluate(() => {
+    const ids = JSON.parse(localStorage.getItem('batcave-habits') || '[]').map(x => x.id);
+    const du = (id, iso) => window.__bcHabitsDuJour(new Date(iso + 'T00:00:00').getDay(), iso).some(h => h.id === id);
+    const jours = (id, isos) => isos.filter(i => du(id, i));
+    const dims = ['2026-11-22','2026-11-29','2026-12-06','2026-12-13','2026-12-20','2026-12-27','2027-01-03','2027-01-10'];
+    const men = iso => window.__bcConsigne('🧽 Ménage — sols, salle de bain, poussière', 0, iso, '16:30');
+    const ran = iso => window.__bcConsigne('Rangement des courses', 6, iso, '15:30');
+    return { ids, semaine: jours('core-entretien-semaine', dims).length, mois: jours('core-entretien-mois', dims), machine: jours('core-machine-filtre', dims),
+             detartrage: jours('core-detartrage', dims), frigo: jours('core-frigo', ['2026-11-21','2026-11-28','2026-12-05','2026-12-26']),
+             m22: men('2026-11-22'), m29: men('2026-11-29'), m06: men('2026-12-06'), m13: men('2026-12-13'), r28: ran('2026-11-28'), r21: ran('2026-11-21') };
+  });
+  ok(['core-lit','core-entretien-semaine','core-entretien-mois','core-machine-filtre','core-detartrage','core-frigo'].every(i => r.ids.includes(i)) && r.ids.length === 6,
+     'cinq cases ajoutées à une Batcave existante, sans toucher au reste (' + r.ids.join(', ') + ')');
+  ok(r.semaine === 8, 'l\'entretien du robot et de l\'aspirateur, chaque dimanche (' + r.semaine + '/8)');
+  ok(r.mois.join() === '2026-11-29,2026-12-27' && r.machine.join() === '2026-12-06,2027-01-03' && r.detartrage.join() === '2026-12-13,2027-01-10',
+     'les tâches du mois, chacune son dimanche : ' + r.mois.join(' ') + ' · ' + r.machine.join(' ') + ' · ' + r.detartrage.join(' '));
+  ok(r.frigo.join() === '2026-11-28,2026-12-26', 'le frigo, le samedi des courses toutes les quatre semaines : ' + r.frigo.join(' '));
+  ok(/brosses démêlées/.test(r.m22) && /réservoir d'eau sale vidé et rincé/.test(r.m22) && !/entretien du mois/.test(r.m22) && /bonde de la douche/.test(r.m22) && /éponge/.test(r.m22),
+     'le ménage de chaque dimanche : le robot, l\'aspirateur-serpillière, la bonde, l\'éponge');
+  ok(/entretien du mois/.test(r.m29) && /contacts de charge/.test(r.m29) && /lave-vaisselle/.test(r.m29), 'le 29 novembre : l\'entretien du mois (capteurs, contacts, roue, lave-vaisselle)');
+  ok(/machine à laver : le petit filtre/.test(r.m06) && !/machine à laver/.test(r.m13) && /détartrage/.test(r.m13) && !/détartrage/.test(r.m06),
+     'le 6 décembre la machine à laver, le 13 le détartrage (le dimanche du rideau)');
+  ok(/^D'abord le frigo/.test(r.r28) && !/^D'abord le frigo/.test(r.r21), 'le samedi du frigo, le rangement commence par lui ; les autres samedis, non');
+  await ctx.close();
 }
 
 await browser.close();

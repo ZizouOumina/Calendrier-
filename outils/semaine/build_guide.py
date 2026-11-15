@@ -79,7 +79,9 @@ QUOTIDIENNES = {'Lit fait', 'Étirements faits', 'Fajr', 'Dhuhr', "Jumu'ah (~14h
                 'Sadaqah du jour', 'Revue de la veille / plan du lendemain', 'Nouvelles à la famille', 'Marche — 8 000 pas',
                 '30 min en espagnol avec un natif', 'Les dix formules du jour', '20 pages lues en espagnol', 'Créatine — 5 g',
                 'Lumière du matin — 15 min dehors, dès qu’il fait jour'}
-COURTS = {'Serviette de visage changée': 'Serviette de visage', 'Serviette de corps changée': 'Serviette de corps',
+COURTS = {'Robot et aspirateur-serpillière : brosses et filtres': 'Entretien du robot et de l’aspirateur', 'Entretien du mois : robot, aspirateur, lave-vaisselle': 'Entretien du mois des machines',
+          'Machine à laver : filtre, joint et bac': 'Filtre de la machine à laver', 'Bouilloire et rice cooker détartrés': 'Détartrage', 'Frigo vidé et nettoyé': 'Frigo',
+          'Serviette de visage changée': 'Serviette de visage', 'Serviette de corps changée': 'Serviette de corps',
           'Taie d’oreiller changée': 'Taie d’oreiller', 'Draps et taies d’oreiller changés': 'Draps et taies', 'Pesée, à jeun': 'Pesée à jeun',
           'Rasage — aisselles et parties intimes': 'Rasage', 'Douche froide — 30 à 60 s en fin de douche': 'Douche froide',
           'Ménage du dimanche': 'Ménage du dimanche', 'Photos — peau et corps': 'Photos de la peau et du corps',
@@ -226,7 +228,7 @@ def construire(J, semaine, k):
         elif lab == 'Retour du club': r = ('sport', 'Retour : le shake de récup, la douche, la machine', '', phrases(c))
         elif lab == 'Trajet cours': r = ('cours', 'Départ pour le cours', c, None)
         elif lab == 'Cours': r = ('cours', 'Cours, jusqu’à ' + fin, c, None)
-        elif lab == 'Trajet retour': r = ('cours', 'Retour', '', phrases(c) + (['Tapis remis après 18:30.'] if tapis else []))
+        elif lab == 'Trajet retour': r = ('cours', 'Retour', '', phrases(c))
         elif lab == 'Dîner':
             r = ('repas', 'Dîner', '', phrases(c) + ['Le lave-vaisselle rempli et lancé (une pastille), la cuve du rice cooker lavée à la main, le plan de travail essuyé.'])
         elif lab == 'Temps libre':
@@ -280,6 +282,9 @@ def construire(J, semaine, k):
                 r['pas'] = ['À 08:00 : 15 min de lumière, fenêtre grande ouverte.'] + (r.get('pas') or [])
                 break
 
+    # 15 novembre au soir : l'agenda sonne chaque jour à 14:52 (« Enlever les tapis ») ; le départ de 15:00 le dit déjà
+    if not any('Tapis enlevés' in b['c'] for b in g):
+        rows.append({'t': '14:52', 'k': 'maison', 'titre': 'Les tapis enlevés du sol', 'd': 'Le robot passe à 15:45 et à 18:15 : il se bloque sur les tapis. Ils reviennent ce soir.'})
     # ce que la grille n'a pas en bloc
     if 'Collation entraînement' not in labs and dow in (6, 0):
         texte = '50 g d’amandes, 3 œufs durs, 7 dattes. Tant qu’il reste du fromage de ta mère : une portion en plus (2 Vache qui rit, 30 g de Caprice des Dieux ou 30 g de Philadelphia).'
@@ -326,6 +331,8 @@ def construire(J, semaine, k):
         if sacs: d += (sacs[0][0].upper() + sacs[0][1:] + (', ' + ', '.join(sacs[1:-1]) if len(sacs) > 2 else '') + (' et ' + sacs[-1] if len(sacs) > 1 else '')) + (' prêts' if len(sacs) > 1 else ' prêt') + ', vêtements posés.'
         else: d += 'Vêtements posés.'
         if dow == 6: d += ' Rien à sortir du congélateur : demain midi, un repas frais.'
+        # 15 novembre au soir : le robot passe chaque jour à 15:45 et 18:15 (la série « Enlever les tapis » de l'agenda)
+        d = 'Les tapis remis, et le bac du robot vidé à la poubelle. ' + d
         if suiv:
             tp = '20:40'
             for r_ in rows:
@@ -458,6 +465,11 @@ def construire(J, semaine, k):
             N.append('Le coiffeur samedi : prends rendez-vous pour 13:30.')
     if J.get('espagnol') and suiv is not None and not suiv.get('espagnol'):
         N.append('Dernier jour du mois d’espagnol : demain, les blocs Projets perso reviennent pour l’e-commerce.')
+    if a('Entretien du mois'): N.append('Au ménage : l’entretien du mois des machines — le robot (capteurs, contacts, roue avant, brosse latérale), l’aspirateur-serpillière (brosse lavée, joint), le filtre du lave-vaisselle.')
+    if a('Machine à laver : filtre'): N.append('Au ménage : la machine à laver — le filtre en bas à l’avant, le joint du hublot, le bac à lessive.')
+    if a('détartrés'): N.append('Pendant le ménage : le détartrage de la bouilloire et du rice cooker (vinaigre blanc ou acide citrique, une heure).')
+    if a('Frigo vidé'): N.append('Avant de ranger les courses : le frigo vidé et nettoyé.')
+    if iso[8:] == '24': N.append('Le 24 : les factures et le budget relus (onglet Budget), avant le virement du 25.')
     if linge_manque: N.append('Une machine aujourd’hui (la case Linge) : la tenue de salle des derniers jours, 30 °C, à l’envers, sans adoucissant.')
     en_plus = []
     for h in hab:
@@ -571,11 +583,15 @@ JOUR_1 = '2026-11-16'            # PROGRAMME_DEBUT dans la Batcave
 PREMIERES_PHOTOS = '2026-11-22'  # ANCRE_DIMANCHE : le premier dimanche du programme
 CHAQUE_JOUR = ['Lit fait', 'Lumière du matin', 'Les cinq prières', 'Créatine', 'Étirements', '8 000 pas', 'Téléphone hors de la chambre',
                'Sadaqah', 'Nouvelles à la famille', 'Revue du jour', '30 min d’espagnol avec un natif', 'Les dix formules', '20 pages en espagnol']
-MOIS_LISTE = ['Le frigo vidé et nettoyé, le samedi des courses, avant de ranger.',
+MOIS_LISTE = ['Le frigo vidé et nettoyé, le samedi des courses, avant de ranger : {frigo}.',
               'Le rideau de douche à la machine, 40 °C, un dimanche sur quatre au début du ménage (13 décembre, 10 janvier, 7 février), puis raccroché humide, déplié : la Batcave le coche ces dimanches-là.',
-              'Le filtre et le joint de la machine à laver nettoyés.', 'La bouilloire et la cuve du rice cooker détartrées (l’eau d’Alicante est calcaire).',
+              'L’entretien du mois des machines, au ménage du dimanche : le robot (capteurs de vide, contacts de charge, roue avant, brosse latérale), l’aspirateur-serpillière (brosse lavée, joint du réservoir), le filtre du lave-vaisselle — {entretien}.',
+              'La machine à laver, au ménage du dimanche : le filtre en bas à l’avant, le joint du hublot, le bac à lessive — {machine}.',
+              'La bouilloire et la cuve du rice cooker détartrées (l’eau d’Alicante est calcaire), pendant le ménage du dimanche du rideau — {detartrage}.',
               'Les factures et le budget relus le 24, avant le virement du 25.']
 PLUS_RARE = ['Brosse à dents : tous les 3 mois (la Batcave te le rappelle : la prochaine le 14 février).', 'Oreiller lavé : tous les 3 à 6 mois.',
+             'Le robot : le filtre neuf tous les 2 mois, la brosse latérale tous les 3 à 6 mois, les brosses principales tous les 6 à 12 mois, la roue avant tous les ans.',
+             'L’aspirateur-serpillière : la brosse-rouleau et le filtre neufs tous les 3 à 6 mois, selon ton modèle (sa notice le dit).',
              'Couette lavée : 1 à 2 fois par an, en laverie si elle ne rentre pas dans ta machine.']
 
 def main():
@@ -592,7 +608,15 @@ def main():
                    if any('Coupe de cheveux' in h['label'] for h in (J.get('duJour') or []))})
     rare = list(PLUS_RARE)
     rare.insert(1, 'Coiffeur : toutes les 3 semaines, le samedi avant les courses (' + ', '.join(str(int(i[8:])) + ('er' if i[8:] == '01' else '') + ' ' + nom_mois(i) for i in coif) + '…).')
-    data = {'semaines': semaines, 'chaqueJour': CHAQUE_JOUR, 'mois': MOIS_LISTE, 'plusRare': rare}
+    # 15 novembre au soir : les tâches du mois disent leurs dates, lues dans les cases des semaines (HABIT_SEED_V14)
+    def dates_de(mot):
+        isos = sorted({J['iso'] for lundi in SEMAINES for J in json.load(open(SP + 'semaines/' + lundi + '.json', encoding='utf-8'))
+                       if any(mot in h['label'] for h in (J.get('duJour') or []))})
+        if not isos: raise SystemExit('aucune date pour « ' + mot + ' » : la graine v14 manque à l’extraction')
+        return ', '.join(str(int(i[8:])) + ('er' if i[8:] == '01' else '') + ' ' + nom_mois(i) for i in isos)
+    mois = [x.format(frigo=dates_de('Frigo vidé'), entretien=dates_de('Entretien du mois'), machine=dates_de('Machine à laver : filtre'),
+                     detartrage=dates_de('détartrés')) for x in MOIS_LISTE]
+    data = {'semaines': semaines, 'chaqueJour': CHAQUE_JOUR, 'mois': mois, 'plusRare': rare}
     t = open(SP + 'template-guide.html', encoding='utf-8').read()
     s = json.dumps(data, ensure_ascii=False)
     assert '</script' not in s.lower()
