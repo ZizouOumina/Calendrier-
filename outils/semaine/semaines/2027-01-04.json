@@ -3447,7 +3447,7 @@
    },
    {
     "id": "core-entretien-semaine",
-    "label": "Robot et aspirateur-serpillière : brosses et filtres",
+    "label": "Robot et aspirateur nettoyés",
     "icon": "🧹",
     "cycle": 0,
     "ancre": null,
@@ -3455,7 +3455,7 @@
    },
    {
     "id": "core-entretien-mois",
-    "label": "Entretien du mois : robot, aspirateur, lave-vaisselle",
+    "label": "Entretien du mois des machines",
     "icon": "🔧",
     "cycle": 4,
     "ancre": "2026-11-29",
@@ -3463,7 +3463,7 @@
    },
    {
     "id": "core-machine-filtre",
-    "label": "Machine à laver : filtre, joint et bac",
+    "label": "Machine à laver : filtre et joint",
     "icon": "🌀",
     "cycle": 4,
     "ancre": "2026-12-06",
@@ -3606,7 +3606,7 @@
    },
    {
     "id": "core-entretien-semaine",
-    "label": "Robot et aspirateur-serpillière : brosses et filtres",
+    "label": "Robot et aspirateur nettoyés",
     "icon": "🧹"
    },
    {

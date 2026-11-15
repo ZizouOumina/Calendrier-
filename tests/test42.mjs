@@ -123,9 +123,9 @@ console.log('\n== 97) Un cloud déjà à jour ne déclenche aucune réécriture 
                                                      {id:'core-douche-froide', label:'Douche froide — 30 à 60 s en fin de douche', icon:'🚿', jours:[0,3,5]},
                                                      {id:'core-lumiere', label:'Lumière du matin — 15 min dehors, dès qu’il fait jour', icon:'☀️'},
                                                      {id:'core-rideau-douche', label:'Rideau de douche à la machine, 40 °C', icon:'🧺', jours:[0], cycleSemaines:4, ancre:'2026-12-13'},
-                                                     {id:'core-entretien-semaine', label:'Robot et aspirateur-serpillière : brosses et filtres', icon:'🧹', jours:[0]},
-                                                     {id:'core-entretien-mois', label:'Entretien du mois : robot, aspirateur, lave-vaisselle', icon:'🔧', jours:[0], cycleSemaines:4, ancre:'2026-11-29'},
-                                                     {id:'core-machine-filtre', label:'Machine à laver : filtre, joint et bac', icon:'🌀', jours:[0], cycleSemaines:4, ancre:'2026-12-06'},
+                                                     {id:'core-entretien-semaine', label:'Robot et aspirateur nettoyés', icon:'🧹', jours:[0]},
+                                                     {id:'core-entretien-mois', label:'Entretien du mois des machines', icon:'🔧', jours:[0], cycleSemaines:4, ancre:'2026-11-29'},
+                                                     {id:'core-machine-filtre', label:'Machine à laver : filtre et joint', icon:'🌀', jours:[0], cycleSemaines:4, ancre:'2026-12-06'},
                                                      {id:'core-detartrage', label:'Bouilloire et rice cooker détartrés', icon:'☕', jours:[0], cycleSemaines:4, ancre:'2026-12-13'},
                                                      {id:'core-frigo', label:'Frigo vidé et nettoyé', icon:'🧊', jours:[6], cycleSemaines:4, ancre:'2026-11-28'}]),
                  'batcave-habits-seed-v2': true, 'batcave-habits-seed-v3': true, 'batcave-habits-seed-v4': true, 'batcave-habits-seed-v5': true, 'batcave-habits-seed-v6': true, 'batcave-habits-seed-v7': true, 'batcave-habits-seed-v8': true, 'batcave-habits-seed-v9': true, 'batcave-habits-seed-v10': true, 'batcave-habits-seed-v11': true, 'batcave-habits-seed-v12': true, 'batcave-habits-seed-v13': true, 'batcave-habits-seed-v14': true, 'batcave-objectifs-v5-espanol': true};

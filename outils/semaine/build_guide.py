@@ -79,8 +79,8 @@ QUOTIDIENNES = {'Lit fait', 'Étirements faits', 'Fajr', 'Dhuhr', "Jumu'ah (~14h
                 'Sadaqah du jour', 'Revue de la veille / plan du lendemain', 'Nouvelles à la famille', 'Marche — 8 000 pas',
                 '30 min en espagnol avec un natif', 'Les dix formules du jour', '20 pages lues en espagnol', 'Créatine — 5 g',
                 'Lumière du matin — 15 min dehors, dès qu’il fait jour'}
-COURTS = {'Robot et aspirateur-serpillière : brosses et filtres': 'Entretien du robot et de l’aspirateur', 'Entretien du mois : robot, aspirateur, lave-vaisselle': 'Entretien du mois des machines',
-          'Machine à laver : filtre, joint et bac': 'Filtre de la machine à laver', 'Bouilloire et rice cooker détartrés': 'Détartrage', 'Frigo vidé et nettoyé': 'Frigo',
+COURTS = {'Robot et aspirateur nettoyés': 'Entretien du robot et de l’aspirateur', 'Entretien du mois des machines': 'Entretien du mois des machines',
+          'Machine à laver : filtre et joint': 'Filtre de la machine à laver', 'Bouilloire et rice cooker détartrés': 'Détartrage', 'Frigo vidé et nettoyé': 'Frigo',
           'Serviette de visage changée': 'Serviette de visage', 'Serviette de corps changée': 'Serviette de corps',
           'Taie d’oreiller changée': 'Taie d’oreiller', 'Draps et taies d’oreiller changés': 'Draps et taies', 'Pesée, à jeun': 'Pesée à jeun',
           'Rasage — aisselles et parties intimes': 'Rasage', 'Douche froide — 30 à 60 s en fin de douche': 'Douche froide',

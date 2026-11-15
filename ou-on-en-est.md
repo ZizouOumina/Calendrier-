@@ -7,10 +7,8 @@
 > **Trouvé** : le robot (l'« aspirateur » de la Batcave, 15:45 et 18:15 tous les jours d'après la série « Enlever les
 > tapis ») n'avait aucun entretien ; l'aspirateur-serpillière, seulement « réservoir vidé et rincé » ; le filtre de la
 > machine à laver, le détartrage et le frigo flottaient dans « chaque mois » sans jour.
-> **Fait** — graine v14 (schéma 69), cinq cases, chacune son jour : « Robot et aspirateur-serpillière : brosses et
-> filtres » chaque dimanche ; « Entretien du mois » (robot : capteurs, contacts de charge, roue avant, brosse latérale ;
-> aspirateur : brosse lavée, joint ; lave-vaisselle : filtre) les 29 novembre, 27 décembre, 24 janvier ; « Machine à
-> laver : filtre, joint et bac » les 6 décembre, 3 janvier ; « Bouilloire et rice cooker détartrés » avec le rideau, les
+> **Fait** — graine v14 (schéma 69), cinq cases, chacune son jour : « Robot et aspirateur nettoyés » chaque dimanche ; « Entretien du mois des machines » (robot : capteurs, contacts de charge, roue avant, brosse latérale ;
+> aspirateur : brosse lavée, joint ; lave-vaisselle : filtre) les 29 novembre, 27 décembre, 24 janvier ; « Machine à laver : filtre et joint » les 6 décembre, 3 janvier ; « Bouilloire et rice cooker détartrés » avec le rideau, les
 > 13 décembre, 10 janvier ; « Frigo vidé et nettoyé » au samedi des courses, 28 novembre, 26 décembre, 23 janvier. La
 > consigne du ménage du dimanche dit chaque geste (et la bonde de la douche, l'éponge changée) ; celle du rangement
 > commence par le frigo son samedi. Chaque jour, le guide dit les tapis enlevés à 14:52 et, à 20:40, les tapis remis et
