@@ -1,0 +1,388 @@
+<title>À quoi sert la Batcave</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&family=Barlow:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Mise en page : une colonne de lecture, un dossier par domaine, chacun dans la couleur que la Batcave lui donne.
+   Une seule ambiance, sombre, comme l'appli. */
+:root{
+  color-scheme: dark;
+  --bg:#191b1e; --surface:#212428; --raised:#2a2e33; --line:#3a4048; --line-soft:#2d3137;
+  --ink:#ede7da; --ink-dim:#b4ad9f; --ink-faint:#8f897c;
+  --etudes:#d9a84e; --suivi:#e893b3; --corps:#7cb877; --table:#e0917a; --argent:#8fb6d0; --foi:#b8a2e0; --espagnol:#f2724b;
+  --warn:#e08a3c;
+  --f-display:'Rajdhani','Arial Narrow',sans-serif;
+  --f-body:'Barlow','Helvetica Neue',Arial,sans-serif;
+  --f-mono:'IBM Plex Mono','SFMono-Regular',Menlo,monospace;
+}
+*{box-sizing:border-box}
+body{background:var(--bg); color:var(--ink); font:16px/1.6 var(--f-body); margin:0}
+.page{max-width:820px; margin:0 auto; padding-block:40px 72px; padding-left:max(16px, env(safe-area-inset-left, 0px)); padding-right:max(16px, env(safe-area-inset-right, 0px)); display:grid; gap:44px}
+h1,h2,h3{font-family:var(--f-display); font-weight:700; letter-spacing:.02em; text-wrap:balance; margin:0; line-height:1.15}
+h1{font-size:clamp(2.1rem, 6vw, 3.1rem)}
+h2{font-size:1.65rem}
+h3{font-size:1.15rem; letter-spacing:.03em}
+p{margin:0}
+.eyebrow,.dossier,.k{font-family:var(--f-mono); font-size:.72rem; letter-spacing:.14em; text-transform:uppercase}
+.eyebrow{color:var(--etudes)}
+.lead{font-size:1.15rem; color:var(--ink-dim); max-width:62ch}
+header{display:grid; gap:14px}
+.gestes{display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:12px}
+.geste{background:var(--surface); border:1px solid var(--line-soft); border-radius:6px; padding:14px 16px; display:grid; gap:6px; min-width:0}
+.geste b{font-family:var(--f-display); font-size:1.08rem; letter-spacing:.03em}
+.geste span{color:var(--ink-dim); font-size:.95rem}
+.k{color:var(--ink-faint)}
+/* le tableau d'ensemble */
+.ensemble{overflow-x:auto; border:1px solid var(--line-soft); border-radius:6px}
+table{border-collapse:collapse; width:100%; min-width:620px; font-size:.95rem}
+th,td{text-align:left; vertical-align:top; padding:11px 14px; border-bottom:1px solid var(--line-soft)}
+th{font-family:var(--f-mono); font-weight:500; font-size:.7rem; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-faint); background:var(--surface)}
+tr:last-child td{border-bottom:0}
+td:first-child{font-weight:600; white-space:nowrap}
+.pt{display:inline-block; width:9px; height:9px; border-radius:50%; margin-right:8px; vertical-align:1px; background:var(--c, var(--etudes))}
+/* les dossiers */
+section{display:grid; gap:16px; border-top:2px solid var(--c, var(--etudes)); padding-top:18px}
+.dossier{color:var(--c, var(--etudes))}
+.cols{display:grid; grid-template-columns:repeat(auto-fit, minmax(250px, 1fr)); gap:14px 26px}
+.cols > div{min-width:0; display:grid; gap:8px; align-content:start}
+ul{margin:0; padding-left:1.15em; display:grid; gap:6px}
+li::marker{color:var(--c, var(--etudes))}
+.note{background:var(--surface); border:1px solid var(--line-soft); border-radius:6px; padding:12px 16px; color:var(--ink-dim); font-size:.95rem}
+.note b{color:var(--ink)}
+.alerte{border-color:color-mix(in srgb, var(--warn) 55%, var(--line-soft))}
+.cases{display:grid; grid-template-columns:repeat(auto-fit, minmax(230px, 1fr)); gap:6px 18px; list-style:none; padding:0}
+.cases li{display:flex; justify-content:space-between; gap:12px; border-bottom:1px dashed var(--line-soft); padding:5px 0; min-width:0}
+.cases li span:last-child{font-family:var(--f-mono); font-size:.78rem; color:var(--ink-faint); white-space:nowrap; text-align:right}
+.mono{font-family:var(--f-mono); font-size:.86rem; font-variant-numeric:tabular-nums}
+.dates{display:grid; gap:0; border:1px solid var(--line-soft); border-radius:6px; overflow:hidden}
+.dates div{display:grid; grid-template-columns:7.5rem 1fr; gap:14px; padding:9px 14px; border-bottom:1px solid var(--line-soft)}
+.dates div:last-child{border-bottom:0}
+.dates .mono{color:var(--c, var(--suivi))}
+footer{color:var(--ink-faint); font-size:.9rem; border-top:1px solid var(--line-soft); padding-top:18px}
+@media (max-width:480px){ .dates div{grid-template-columns:1fr; gap:2px} td:first-child{white-space:normal} }
+</style>
+
+<main class="page">
+
+<header>
+  <p class="eyebrow">Batcomputer · le suivi · lundi 16 novembre 2026, jour 1</p>
+  <h1>À quoi sert la Batcave</h1>
+  <p class="lead">Tout ce qu'elle suit, d'où vient chaque chiffre, et ce qu'elle t'en rend. Toi, tu coches et tu notes. Elle compte, compare avec ta grille, et te dit quoi ajuster.</p>
+  <div class="gestes">
+    <div class="geste"><span class="k">Dans la journée</span><b>Tu coches</b><span>Chaque bloc du Calendrier et chaque case quand c'est fait. « Ma journée » te les montre au bon moment.</span></div>
+    <div class="geste"><span class="k">Quand tu révises</span><b>Tu lances le minuteur</b><span>Il est la seule source de ton temps de travail : une révision sans minuteur n'existe pas pour elle.</span></div>
+    <div class="geste"><span class="k">Le soir</span><b>Tu fais la clôture</b><span>60 secondes : sommeil, eau, humeur, Coran, une ligne sur la journée. Le dimanche, cinq minutes de plus.</span></div>
+  </div>
+</header>
+
+<div style="display:grid; gap:14px">
+  <h2>En un coup d'œil</h2>
+  <div class="ensemble">
+    <table>
+      <thead><tr><th>Domaine</th><th>Ce que tu lui donnes</th><th>Ce qu'elle te rend</th></tr></thead>
+      <tbody>
+        <tr><td><span class="pt" style="--c:var(--etudes)"></span>Ta journée</td><td>Les blocs de ta grille, cochés (une vingtaine par jour)</td><td>Prévu contre réalisé, ta fidélité au plan, le bloc qui saute le plus, ton heure réelle de démarrage</td></tr>
+        <tr><td><span class="pt" style="--c:var(--corps)"></span>Cases du jour</td><td>De 19 à 28 cases selon le jour, 48 en tout</td><td>Le pourcentage tenu, par jour et par semaine, et l'habitude que tu délaisses</td></tr>
+        <tr><td><span class="pt" style="--c:var(--corps)"></span>Clôture du soir</td><td>Sommeil, poids, eau, humeur, pas, Coran, Anki, une ligne</td><td>Tes moyennes, l'efficacité de ton sommeil, ta courbe de poids, un journal où tout se retrouve</td></tr>
+        <tr><td><span class="pt" style="--c:var(--etudes)"></span>Études</td><td>Le minuteur, les temas, Anki, ta note de suivi des cours</td><td>Tes heures par matière face aux examens, ta série, le retard sur la semaine</td></tr>
+        <tr><td><span class="pt" style="--c:var(--corps)"></span>Sport</td><td>Les exercices cochés, séries et charges, chaque JJB</td><td>Ta progression par exercice, une stagnation repérée, tes séances tenues</td></tr>
+        <tr><td><span class="pt" style="--c:var(--table)"></span>Table</td><td>Chaque aliment, coché à la prise</td><td>Tes calories et macros du jour, et l'ajustement des calories selon ta balance</td></tr>
+        <tr><td><span class="pt" style="--c:var(--corps)"></span>Corps et santé</td><td>Un écart quand il arrive, un rendez-vous, une douleur</td><td>Tes jours sans, tes records, ton dossier santé</td></tr>
+        <tr><td><span class="pt" style="--c:var(--foi)"></span>Deen</td><td>Cinq prières, la page de Coran, les duaas</td><td>Tes prières sur 7 jours, tes 180 pages, tes 180 duaas</td></tr>
+        <tr><td><span class="pt" style="--c:var(--argent)"></span>Argent</td><td>Tes tickets, tes charges, ton mois Shopify</td><td>Ton mois de l'argent, ta cagnotte, ton épargne, ton bénéfice</td></tr>
+        <tr><td><span class="pt" style="--c:var(--suivi)"></span>Bilans</td><td>Rien de plus : tout est calculé</td><td>Les 5 qui comptent, tes objectifs du mois, ta semaine contre la précédente, neuf analyses</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<section style="--c:var(--etudes)">
+  <p class="dossier">Dossiers 01 · 02 · 08 · 17 — Calendrier, Ma journée, Tâches, Agenda Batcave</p>
+  <h2>Ta journée</h2>
+  <div class="cols">
+    <div><h3>Ce que tu notes</h3>
+      <ul>
+        <li>Chaque bloc de la grille, coché quand il est fait : Anki, la salle, le JJB, les révisions, le cours, les repas, le coucher.</li>
+        <li>Tes tâches à part, avec leur échéance et leur priorité (à faire, en cours, fait).</li>
+      </ul></div>
+    <div><h3>Ce qu'elle en fait</h3>
+      <ul>
+        <li>Prévu contre réalisé, jour par jour : la barre grise est la grille, la barre colorée ce que tu as fait (verte si tenu, orange sous 70 %).</li>
+        <li>Ta fidélité au plan de la semaine, en pourcentage, comparée à la précédente.</li>
+        <li>Les échéances de la fac (exposés, prácticas, partiels) avec leur compte à rebours, et les jours d'exception (fériés, vacances).</li>
+        <li>L'Agenda Batcave : tout ton temps de travail, posé sur un calendrier.</li>
+      </ul></div>
+  </div>
+  <p class="note"><b>« Ma journée » ne suit rien de plus</b> : elle te montre l'heure, ce qu'il y a à faire et chaque geste détaillé (le ménage, la laverie, la commande d'une pièce du robot), puis les cases du jour. C'est ta seule liste, sans notification à côté.</p>
+</section>
+
+<section style="--c:var(--corps)">
+  <p class="dossier">Dossier 03 — Habitudes</p>
+  <h2>Les cases du jour</h2>
+  <p>48 cases. Chacune n'apparaît que le jour où elle tombe : de 19 à 28 par jour, selon le jour de la semaine et le rythme de chacune.</p>
+  <h3>Tous les jours (18)</h3>
+  <ul class="cases">
+    <li><span>Lit fait</span><span>matin</span></li>
+    <li><span>Étirements faits</span><span>jour</span></li>
+    <li><span>Fajr, Dhuhr, Asr, Maghrib, Isha</span><span>5 cases</span></li>
+    <li><span>Lumière du matin, 15 min dehors</span><span>matin</span></li>
+    <li><span>Créatine, 5 g</span><span>jour</span></li>
+    <li><span>Vaisselle</span><span>jour</span></li>
+    <li><span>Marche / pas</span><span>jour</span></li>
+    <li><span>Sadaqah du jour</span><span>jour</span></li>
+    <li><span>Nouvelles à la famille</span><span>dîner</span></li>
+    <li><span>30 min en espagnol avec un natif</span><span>jour</span></li>
+    <li><span>Les dix formules du jour</span><span>jour</span></li>
+    <li><span>20 pages lues en espagnol</span><span>soir</span></li>
+    <li><span>Revue de la veille, plan du lendemain</span><span>jour</span></li>
+    <li><span>Téléphone hors de la chambre</span><span>nuit</span></li>
+  </ul>
+  <h3>Certains jours (14)</h3>
+  <ul class="cases">
+    <li><span>Linge</span><span>lun · mer · ven</span></li>
+    <li><span>Serviette de visage changée</span><span>lun · mer · ven</span></li>
+    <li><span>Shampoing</span><span>lun · mar · jeu · sam</span></li>
+    <li><span>Taie d'oreiller changée</span><span>mer</span></li>
+    <li><span>Cou, flexion et extension</span><span>jeu</span></li>
+    <li><span>Douche froide, 30 à 60 s</span><span>mer · ven · dim</span></li>
+    <li><span>Passer le balai</span><span>sam</span></li>
+    <li><span>Courses faites</span><span>sam</span></li>
+    <li><span>Pesée à jeun</span><span>dim</span></li>
+    <li><span>Rasage</span><span>dim</span></li>
+    <li><span>Serviette de corps changée</span><span>dim</span></li>
+    <li><span>Draps et taies changés</span><span>dim</span></li>
+    <li><span>Ménage du dimanche</span><span>dim</span></li>
+    <li><span>Robot et aspirateur nettoyés</span><span>dim</span></li>
+  </ul>
+  <h3>À leur rythme (16), avec leur prochaine date</h3>
+  <ul class="cases">
+    <li><span>Ongles</span><span>2 sem. · 22 nov.</span></li>
+    <li><span>Photos, peau et corps</span><span>4 sem. · 22 nov.</span></li>
+    <li><span>Brosse à dents changée</span><span>12 sem. · 22 nov.</span></li>
+    <li><span>Coupe de cheveux</span><span>3 sem. · sam 21 nov.</span></li>
+    <li><span>Frigo vidé et nettoyé</span><span>4 sem. · sam 28 nov.</span></li>
+    <li><span>Entretien du mois des machines</span><span>4 sem. · 29 nov.</span></li>
+    <li><span>Machine à laver, filtre et joint</span><span>4 sem. · 6 déc.</span></li>
+    <li><span>Matelas tourné et aspiré</span><span>13 sem. · 6 déc.</span></li>
+    <li><span>Rideau de douche, 40 °C</span><span>4 sem. · 13 déc.</span></li>
+    <li><span>Bouilloire et rice cooker détartrés</span><span>4 sem. · 13 déc.</span></li>
+    <li><span>Robot, filtre neuf</span><span>8 sem. · 27 déc.</span></li>
+    <li><span>Oreiller lavé</span><span>16 sem. · 3 janv.</span></li>
+    <li><span>Couette lavée</span><span>26 sem. · 17 janv.</span></li>
+    <li><span>Robot, brosse latérale neuve</span><span>16 sem. · 24 janv.</span></li>
+    <li><span>Aspirateur, brosse et filtre neufs</span><span>16 sem. · 21 févr.</span></li>
+    <li><span>Robot, brosses principales neuves</span><span>36 sem. · 16 mai</span></li>
+  </ul>
+  <div class="cols">
+    <div><h3>Ce qu'elle en fait</h3>
+      <ul>
+        <li>Le score du jour, avec les repas, la séance, l'eau et le sommeil.</li>
+        <li>« Habitudes tenues » chaque semaine, contre un objectif du mois de 80 %.</li>
+        <li>L'habitude que tu délaisses le plus, dans les analyses.</li>
+      </ul></div>
+    <div><h3>Ce que tu peux faire</h3>
+      <ul>
+        <li>En ajouter une, avec ses jours (Habitudes, « Nouvelle habitude »).</li>
+        <li>Cocher depuis « Ma journée », le tableau de bord ou la clôture du soir : c'est la même case.</li>
+      </ul></div>
+  </div>
+</section>
+
+<section style="--c:var(--corps)">
+  <p class="dossier">La clôture du jour — le soir, dans la Batcave</p>
+  <h2>Ce que tu notes le soir</h2>
+  <div class="cols">
+    <div><h3>Chaque soir, 60 secondes</h3>
+      <ul>
+        <li>Sommeil réel de la nuit, en heures : le chiffre de Bevel.</li>
+        <li>Heures passées au lit, pour l'efficacité de ton sommeil.</li>
+        <li>Poids ce matin.</li>
+        <li>Pas du jour, lus dans l'appli Santé.</li>
+        <li>Eau bue, contre une cible de 3,5 L.</li>
+        <li>Humeur du jour.</li>
+        <li>Page de Coran, duaa apprise.</li>
+        <li>Anki : cartes dentaires à revoir, cartes révisées.</li>
+        <li>Compléments pris.</li>
+        <li>Les jours de cours : as-tu suivi le cours, de 0 à 3.</li>
+        <li>Les cases pas encore cochées, et une ligne sur la journée.</li>
+      </ul></div>
+    <div><h3>Le dimanche, en plus</h3>
+      <ul>
+        <li>Tour de taille, à jeun, au nombril.</li>
+        <li>Tour d'épaules, le dimanche des photos.</li>
+        <li>Le livrable de la semaine des projets perso : fait ou pas.</li>
+        <li>La revue : ce qui a marché, ce qui a coincé, un changement pour la semaine suivante.</li>
+        <li>Anki de la semaine : cartes révisées, cartes créées.</li>
+        <li>L'expérience de la semaine : une seule chose à changer, et la mesure qui dira si ça a marché.</li>
+        <li>Les dimanches d'épreuve d'espagnol (22 nov., 29 nov., 6 déc.) : erreurs pour 100 mots, minutes d'oral sans pause, secondes du drill de conjugaison.</li>
+      </ul></div>
+  </div>
+  <p class="note"><b>Ce qu'elle en fait</b> : ton sommeil moyen et son efficacité (estimée à 88 % jusqu'à 7 nuits avec « au lit », mesurée ensuite), ton eau moyenne, ta courbe de poids, ton tour de taille (s'il prend plus d'un centimètre par mois, la prise est trop grasse), et ton journal entier, où une recherche retrouve n'importe quel mot.</p>
+</section>
+
+<section style="--c:var(--etudes)">
+  <p class="dossier">Dossier 10 — Études</p>
+  <h2>La fac et l'espagnol</h2>
+  <div class="cols">
+    <div><h3>Ce que tu notes</h3>
+      <ul>
+        <li>Le minuteur Pomodoro, en nommant la matière au lancement. Durée automatique : 25 + 5 min sur Anki, 55 + 5 ailleurs.</li>
+        <li>Les temas révisés et les approfondissements : matière, numéro, nom, date.</li>
+        <li>Anki : cartes à revoir par paquet (dentaire, espagnol, business), cartes révisées, sangsues.</li>
+        <li>Les échéances d'examens et la façon dont chaque matière est notée.</li>
+      </ul></div>
+    <div><h3>Ce qu'elle en fait</h3>
+      <ul>
+        <li>Ton temps du jour contre ta grille, par exemple 3 h 13 de révision un lundi.</li>
+        <li>La semaine : les heures qui restent, et une alerte « allège » quand il y en a trop pour le temps qui reste.</li>
+        <li>Ta série de jours, ta courbe sur 30 jours, tes heures par matière sur 7 jours.</li>
+        <li>La révision par matière face aux examens qui arrivent, dans les analyses.</li>
+        <li>Les cours pas encore faits, lus dans ton Notion.</li>
+      </ul></div>
+  </div>
+  <div class="note" style="--c:var(--espagnol); border-color:color-mix(in srgb, var(--espagnol) 40%, var(--line-soft))"><b>L'espagnol</b> a son minuteur à lui, ses trois cases par jour, et deux mesures. Les portes d'espagnol : ta note de suivi du cours, de 0 à 3, et sa moyenne sur 21 jours. L'épreuve du dimanche : trois passages (22 nov., 29 nov., 6 déc.), toujours le même protocole de 45 minutes, pour que les scores se comparent.</div>
+</section>
+
+<section style="--c:var(--corps)">
+  <p class="dossier">Dossier 06 — Sport</p>
+  <h2>La salle et le combat</h2>
+  <div class="cols">
+    <div><h3>Ce que tu notes</h3>
+      <ul>
+        <li>La séance du jour : haut volume le lundi, bas complet le mardi, haut lourd le jeudi, bas et charnière le samedi. Chaque exercice coché, avec ses séries et sa charge. Un minuteur de repos (30 s à 2 min) tourne en haut de l'onglet.</li>
+        <li>Chaque JJB coché : lundi, mercredi et vendredi, 90 minutes.</li>
+        <li>Ta fréquence cardiaque de repos, chaque dimanche (Bevel ou ta montre).</li>
+      </ul></div>
+    <div><h3>Ce qu'elle en fait</h3>
+      <ul>
+        <li>La progression de chaque exercice, sur une courbe.</li>
+        <li>Une stagnation repérée dès trois séances du même exercice.</li>
+        <li>Tes séances tenues dans le mois, contre ta grille.</li>
+        <li>Le combat : tes séances de la semaine (sur 3) et tes minutes, sur six semaines.</li>
+        <li>Une « meilleure série » par exercice, que tu peux prendre comme objectif.</li>
+      </ul></div>
+  </div>
+</section>
+
+<section style="--c:var(--table)">
+  <p class="dossier">Dossiers 05 · 21 · 14 — Repas, Meal prep, Courses</p>
+  <h2>La table</h2>
+  <div class="cols">
+    <div><h3>Ce que tu notes</h3>
+      <ul>
+        <li>Chaque prise, aliment par aliment : six prises un jour de combat. Les cases repartent à zéro à minuit.</li>
+        <li>Aux courses, le bouton « fini » quand un produit de soin ou de ménage est vide.</li>
+      </ul></div>
+    <div><h3>Ce qu'elle en fait</h3>
+      <ul>
+        <li>Tes calories et tes macros du jour contre la cible : 3 832 kcal et 142 g de protéines un jour de combat.</li>
+        <li>Les quantités des deux batchs (dimanche et mardi), calculées depuis les repas des jours suivants.</li>
+        <li>La liste du samedi : quantités, magasins, prix, et le rythme de chaque produit. Le bouton « fini » mesure la vraie durée de chacun.</li>
+      </ul></div>
+  </div>
+  <p class="note"><b>La boucle poids → calories.</b> À partir du 7 décembre, avec au moins 4 pesées sur 12 jours, elle lit la pente de ton poids. Le rythme visé est de +0,28 kg par semaine. Si tu prends trop lentement, elle propose +150 kcal. Si tu prends trop vite (plus d'une fois et demie le rythme, ou plus de 0,5 % de ton poids par semaine), ou si ton tour de taille prend plus d'un centimètre par mois, elle propose −100 kcal. C'est toi qui appliques.</p>
+</section>
+
+<section style="--c:var(--corps)">
+  <p class="dossier">Dossiers 04 · 13 — Dépendances, Santé</p>
+  <h2>Le corps et la santé</h2>
+  <div class="cols">
+    <div><h3>Quatre compteurs</h3>
+      <ul>
+        <li>Snus, masturbation, malbouffe, boissons sucrées.</li>
+        <li>Pour chacun : tes jours sans, ton record et ton historique.</li>
+        <li>« J'ai craqué » note l'écart : le compteur repart, le record reste.</li>
+      </ul></div>
+    <div><h3>Ton dossier santé</h3>
+      <ul>
+        <li>Bilan sanguin, rendez-vous médical, rendez-vous dentaire, douleur récurrente : une date et le résultat.</li>
+        <li>C'est là que vont ta prise de sang et ta mâchoire.</li>
+      </ul></div>
+  </div>
+  <p class="note alerte"><b>À savoir</b> : le compteur du snus part d'un arrêt net le 8 novembre. Tant que tu en prends, il ne dit vrai que si tu touches « J'ai craqué » à chaque fois.</p>
+</section>
+
+<section style="--c:var(--foi)">
+  <p class="dossier">Dossier 07 — Coran &amp; Duaas</p>
+  <h2>Le deen</h2>
+  <div class="cols">
+    <div><h3>Ce que tu notes</h3>
+      <ul>
+        <li>Les cinq prières, cochées chaque jour. Le vendredi, Jumu'ah coche Dhuhr.</li>
+        <li>La page de Coran du jour, à la clôture. L'onglet suit la sourate, la page, le juz et le statut : en cours, mémorisé, à réviser.</li>
+        <li>Chaque duaa, avec le moment où la dire.</li>
+        <li>La sadaqah du jour.</li>
+      </ul></div>
+    <div><h3>Ce qu'elle en fait</h3>
+      <ul>
+        <li>Tes prières sur les 7 derniers jours, sur 35.</li>
+        <li>180 pages sur la saison : une par jour, environ 9 juz.</li>
+        <li>180 duaas, avec une révision espacée des précédentes.</li>
+      </ul></div>
+  </div>
+</section>
+
+<section style="--c:var(--argent)">
+  <p class="dossier">Dossiers 09 · 11 — Budget, Business</p>
+  <h2>L'argent</h2>
+  <div class="cols">
+    <div><h3>Ce que tu notes</h3>
+      <ul>
+        <li>Chaque ticket : date, type, catégorie, montant, moyen de paiement.</li>
+        <li>Tes charges fixes : 241 € par mois.</li>
+        <li>« Payé » sur ce qui est à régler.</li>
+        <li>Chaque mois Shopify : chiffre d'affaires, bénéfice net, dépenses pub, commandes.</li>
+      </ul></div>
+    <div><h3>Ce qu'elle en fait</h3>
+      <ul>
+        <li>Le mois de l'argent, du 25 au 24 : le virement de 700 €, l'enveloppe de 300 € (courses, laverie, soin, ménage), 100 € dans la cagnotte le 25 et le reste le 24.</li>
+        <li>La répartition par catégorie, l'historique sur 6 mois, ton épargne moyenne (environ 159 € par mois).</li>
+        <li>Ta courbe de bénéfice Shopify, contre 5 000 € par mois (paliers à 1 500 et 3 000 €). Ton premier revenu coche « Argent ».</li>
+      </ul></div>
+  </div>
+</section>
+
+<section style="--c:var(--suivi)">
+  <p class="dossier">Dossiers 12 · 15 · 16 — Objectifs, Semaine, Insights</p>
+  <h2>Les bilans</h2>
+  <div class="cols">
+    <div><h3>Les objectifs</h3>
+      <ul>
+        <li>Les 5 qui comptent : sommeil, fac, corps, deen, argent. Ce sont les seuls qui peuvent passer « en retard ».</li>
+        <li>Le mois : révision, séances tenues, espagnol, sommeil moyen (7,33 h), habitudes tenues (80 %). Pour chacun : le réel, l'attendu à ce jour et la projection.</li>
+        <li>La saison, du 16 novembre au 6 juin : 64 → 72 kg, 180 pages de Coran, 180 duaas. Le bouton « Clôturer la saison » apparaît 7 jours avant la fin.</li>
+      </ul></div>
+    <div><h3>La semaine</h3>
+      <ul>
+        <li>Douze chiffres comparés à la semaine précédente et sur six semaines : fidélité au plan, révision, projets, espagnol, dépenses, habitudes, sommeil, eau, nutrition, séances, cardio, pas.</li>
+        <li>Le score du jour sur 30 jours : la moyenne de tes cases, de tes calories, de ta séance, de ton eau et de ton sommeil.</li>
+        <li>L'expérience de la semaine, la revue, et toutes tes journées passées.</li>
+      </ul></div>
+  </div>
+  <h3>Les neuf analyses, et quand elles s'allument</h3>
+  <p>Chacune a besoin de quelques jours de données. Si tu remplis la Batcave chaque jour à partir d'aujourd'hui :</p>
+  <div class="dates">
+    <div><span class="mono">19 nov.</span><span>Ton créneau le plus productif : l'heure où tes blocs tiennent le mieux.</span></div>
+    <div><span class="mono">20 nov.</span><span>Sommeil : tes nuits réelles contre ta cible.</span></div>
+    <div><span class="mono">21 nov.</span><span>Le bloc le plus fragile, la dérive de ton premier bloc, et le sport (une stagnation).</span></div>
+    <div><span class="mono">23 nov.</span><span>Fidélité au plan, matière et partiel, balance énergétique, et l'habitude la plus délaissée.</span></div>
+    <div><span class="mono">7 déc.</span><span>La boucle poids → calories, avec tes premières pesées réelles.</span></div>
+  </div>
+</section>
+
+<section style="--c:var(--etudes)">
+  <p class="dossier">Hors de la Batcave</p>
+  <h2>Ce qui part ailleurs</h2>
+  <ul>
+    <li><b>Google Agenda</b> reçoit les blocs du jour, avec leurs rappels habituels. Il ne reçoit plus aucune notification de tâche : ta décision du 16 novembre.</li>
+    <li><b>Google Drive</b> : la Batcave y retrouve tes sauvegardes pour se restaurer.</li>
+    <li><b>Notion</b> fournit la liste des cours pas encore faits.</li>
+    <li><b>Shopify</b> alimente le Business. <b>Spotify</b> affiche le morceau en cours sur le tableau de bord.</li>
+    <li>Ton téléphone et ton ordinateur partagent les mêmes données.</li>
+  </ul>
+  <p class="note"><b>Ce qu'elle ne suit pas</b>, parce que tu n'en as pas voulu : les notifications de tâches, un compteur de sachets de snus, le fil dentaire, le temps d'écran. Une douleur peut quand même entrer dans ton dossier santé.</p>
+</section>
+
+<footer>Relevé dans la Batcave du 16 novembre, avec tes propres données : les cases, les champs de la clôture, les chiffres de chaque onglet. Les dates des analyses supposent une Batcave remplie chaque jour.</footer>
+
+</main>

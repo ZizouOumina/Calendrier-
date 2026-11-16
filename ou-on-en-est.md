@@ -19,6 +19,15 @@
 >
 > Tests 52, 118 (scénario 2 ter réécrit sur son état du 16) et 119 (scénario 9). La simulation vérifie qu'il n'y a plus
 > de notification, et chaque commande deux semaines avant sa pièce.
+> **Le bilan du suivi** (« fais-moi un bilan de tout ce qui va être traqué par la batcave, vraiment dans le détail, comme ça
+> je vois vraiment à quoi elle va me servir ») : nouvelle page « À quoi sert la Batcave » (`suivi-batcave.html`),
+> relevée dans la Batcave avec ses données. Elle reprend, domaine par domaine, ce qu'il note et ce que la Batcave en fait :
+> - les 48 cases, par jour et par rythme ;
+> - chaque champ de la clôture ;
+> - les études, le sport, la table, le corps, le deen, l'argent et les bilans ;
+> - les neuf analyses et leur date d'allumage, à partir du 16 : du 19 au 23 novembre, et le 7 décembre pour la boucle.
+>
+> Elle signale aussi que le compteur du snus suppose un arrêt depuis le 8 novembre.
 > **Ses mots** : « j'ai super mal quand je me réveille le matin à la mâchoire, je pense que c'est à cause des snus ».
 > Réponse : c'est probablement du bruxisme du sommeil, que la nicotine favorise. On teste deux semaines sans sachet
 > après 17:30 (4 h avant le coucher) et jamais en dormant. S'il n'y a pas de mieux, c'est le dentiste et une gouttière.
