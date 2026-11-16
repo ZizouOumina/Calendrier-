@@ -2201,7 +2201,7 @@
       </div>
 
       <div class="panel">
-        <div class="sub-head"><h3>Emploi du temps — <span id="cal-schedule-label">—</span></h3><span class="sub-note">coche ce que tu as réellement fait</span></div>
+        <div class="sub-head"><h3>Emploi du temps — <span id="cal-schedule-label">—</span></h3><span class="sub-note">rien à cocher : le minuteur marque les blocs de travail faits</span></div>
         <ul class="timeline" id="cal-timeline"></ul>
       </div>
 
@@ -19835,17 +19835,16 @@
       (jourExclu(todayISO) ? ' · 🚫 ne compte pas' : '');
     var blocks = agendaDuJour(weekday);
 
-    /* Un bloc de travail couvert au moins à moitié par une session au minuteur est coché
-       tout seul (valeur 'auto', pour le distinguer d'une coche à la main). Une case que
-       tu as décochée toi-même (false) n'est jamais recochée. */
+    /* 16 novembre, sa décision : plus de case à cocher sur les blocs -- la grille se lit, rien ne se coche. Aucun calcul
+       ne lisait ces cases : la fidélité au plan, le bloc fragile, la dérive et le créneau se mesurent au minuteur. Un bloc
+       de travail couvert au moins à moitié par une session au minuteur le dit tout seul (« ✓ minuteur »). */
     var plansParDebut = {}; blocsDuPlanning(key).forEach(function(pb){ plansParDebut[pb.debut] = pb; });
-    var sessC = sessionsAujourdhui('cours'), sessP = sessionsAujourdhui('projet'), calChange = false;
+    var sessC = sessionsAujourdhui('cours'), sessP = sessionsAujourdhui('projet'), couvert = {};
     blocks.forEach(function(b){
-      var typeB = typeBlocJour(b[1], todayISO); if(!typeB || calState[b[0]] !== undefined) return;
+      var typeB = typeBlocJour(b[1], todayISO); if(!typeB) return;
       var pb = plansParDebut[timeToMinutes(b[0])]; if(!pb) return;
-      if(recouvrement(pb, typeB === 'projet' ? sessP : sessC) >= (pb.fin - pb.debut) / 2){ calState[b[0]] = 'auto'; calChange = true; }
+      if(recouvrement(pb, typeB === 'projet' ? sessP : sessC) >= (pb.fin - pb.debut) / 2) couvert[b[0]] = true;
     });
-    if(calChange) save(calKey, calState, true);
     var tl = document.getElementById('cal-timeline');
     tl.innerHTML = blocks.map(function(b, i){
       var startM = timeToMinutes(b[0]);
@@ -19855,20 +19854,13 @@
       var isNow = nowMin >= startM && nowMin < nextM;
       /* Cases indexées par HEURE et non par position : un événement Google qui s'insère
          décalait toutes les positions et faisait sauter les cases déjà cochées. */
-      var checked = !!calState[b[0]], auto = calState[b[0]] === 'auto';
-      var cls = (isPast?'past ':'') + (isNow?'now ':'') + (checked?'checked ':'');
+      var auto = !!couvert[b[0]];
+      var cls = (isPast?'past ':'') + (isNow?'now ':'') + (auto?'checked ':'');
       return '<li class="'+cls.trim()+'">'+
         '<span class="t-time">'+b[0]+'</span>'+
-        '<span class="t-body"><input type="checkbox" id="cal-'+i+'" data-cal="'+b[0]+'" '+(checked?'checked':'')+'><label class="t-label" for="cal-'+i+'"'+(consigneBloc(b[1], weekday, todayISO, b[0]) ? ' title="'+escapeHtml(consigneBloc(b[1], weekday, todayISO, b[0]))+'"' : '')+'>'+(b[3]==='google'?'📅 ':'')+escapeHtml(b[1])+'</label>'+(auto?'<span class="t-auto" title="Coché automatiquement : une session au minuteur a couvert ce bloc">auto</span>':'')+(isNow?'<span class="t-now-badge">MAINTENANT</span>':'')+(isNow && consigneBloc(b[1], weekday, todayISO, b[0]) ? '<span class="t-consigne">'+escapeHtml(consigneBloc(b[1], weekday, todayISO, b[0]))+'</span>' : '')+'</span>'+
+        '<span class="t-body"><label class="t-label"'+(consigneBloc(b[1], weekday, todayISO, b[0]) ? ' title="'+escapeHtml(consigneBloc(b[1], weekday, todayISO, b[0]))+'"' : '')+'>'+(b[3]==='google'?'📅 ':'')+escapeHtml(b[1])+'</label>'+(auto?'<span class="t-auto" title="Une session au minuteur a couvert ce bloc">✓ minuteur</span>':'')+(isNow?'<span class="t-now-badge">MAINTENANT</span>':'')+(isNow && consigneBloc(b[1], weekday, todayISO, b[0]) ? '<span class="t-consigne">'+escapeHtml(consigneBloc(b[1], weekday, todayISO, b[0]))+'</span>' : '')+'</span>'+
         '</li>';
     }).join('');
-    tl.querySelectorAll('input[type="checkbox"]').forEach(function(cb){
-      cb.addEventListener('change', function(){
-        calState[cb.dataset.cal] = cb.checked;
-        save(calKey, calState);
-        renderCalendar();
-      });
-    });
 
     renderWeekCalendar();
   }

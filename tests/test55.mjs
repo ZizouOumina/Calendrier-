@@ -53,10 +53,9 @@ console.log('\n== 191) Bilan, Insights, Calendrier, Agenda ==');
   ok(/faites sur/.test(await texte('#bilan-plan-note')) , 'prévu vs réalisé chiffré : ' + await texte('#bilan-plan-note'));
   ok(await go('insights'), 'Insights s\'affiche');
   ok(await go('calendrier'), 'Calendrier s\'affiche');
-  const cb = await click('#cal-timeline input[type="checkbox"]');
-  await page.waitForTimeout(100);
-  const cal = await local('batcave-cal-2026-09-08');
-  ok(cb && cal && Object.values(cal).some(v => v === true), 'un créneau coché est mémorisé pour le jour');
+  /* 16 novembre, sa décision : plus de case à cocher sur les blocs -- l'emploi du temps se lit */
+  const nCal = await fr.evaluate(() => ({ cases: document.querySelectorAll('#cal-timeline input').length, blocs: document.querySelectorAll('#cal-timeline li').length }));
+  ok(nCal.cases === 0 && nCal.blocs > 10, 'l\'emploi du temps s\'affiche, sans case à cocher (' + nCal.blocs + ' blocs)');
   ok(await go('agenda'), 'Agenda s\'affiche');
   const cellules = await fr.evaluate(() => document.querySelectorAll('#ag-grid .cal-day:not(.vide)').length);
   ok(cellules >= 28, 'grille du mois : ' + cellules + ' jours');

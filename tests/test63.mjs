@@ -37,42 +37,38 @@ async function ouvrir(vp, extra){
   return { ctx, page, fr };
 }
 
-console.log('\n== 221) Calendrier : bloc couvert par une session coché tout seul, bloc à moitié fait non, coche manuelle respectée ==');
+console.log('\n== 221) Calendrier : plus de case ; un bloc couvert par le minuteur le dit tout seul ==');
 {
+  /* 16 novembre, sa décision : plus de case à cocher sur les blocs. Rien ne se coche ni ne s'écrit ; un bloc de travail
+     couvert au moins à moitié par une session au minuteur porte « ✓ minuteur ». */
   const { ctx, page, fr } = await ouvrir({width:1440, height:900});
   await fr.evaluate(() => { const r = document.getElementById('ritual-dismiss'); if(r) r.click(); document.querySelector('.nav-btn[data-page="calendrier"]').click(); });
   await page.waitForTimeout(300);
   const st = await fr.evaluate(() => {
-    const li = h => { const cb = document.querySelector('#cal-timeline input[data-cal="' + h + '"]'); const l = cb.closest('li'); return { checked: cb.checked, auto: !!l.querySelector('.t-auto'), cls: l.className }; };
-    return { a1: li('07:20'), a2: li('08:20'), cartes: li('09:20'), sport: li('05:30'), store: JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-cal-2026-09-07')) };
+    const li = h => { const l = [...document.querySelectorAll('#cal-timeline li')].find(x => x.querySelector('.t-time').textContent === h); const a = l && l.querySelector('.t-auto'); return { auto: a ? a.textContent : '', cls: l ? l.className : '' }; };
+    return { cases: document.querySelectorAll('#cal-timeline input').length, a1: li('07:20'), a2: li('08:20'), sport: li('05:30'),
+             store: JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-cal-2026-09-07')) };
   });
-  ok(st.a1.checked && st.a1.auto && /checked/.test(st.a1.cls), 'Anki 1 (53 min sur 60) coché automatiquement avec la marque « auto »');
-  ok(!st.a2.checked && !st.a2.auto, 'Anki 2 (25 min sur 60, sous la moitié) reste décoché');
-  ok(!st.cartes.checked, 'Étudier en avance décoché à la main : jamais recoché');
-  ok(!st.sport.checked, 'un bloc hors travail (Sport) n\'est pas concerné');
-  ok(st.store['07:20'] === 'auto' && st.store['09:20'] === false, 'stockage : 07:20 = "auto", 09:20 = false : ' + JSON.stringify(st.store));
-  /* décocher à la main un bloc auto : il reste décoché au rendu suivant */
-  await fr.evaluate(() => { const cb = document.querySelector('#cal-timeline input[data-cal="07:20"]'); cb.click(); });
-  await page.waitForTimeout(200);
-  await fr.evaluate(() => document.querySelector('.nav-btn[data-page="dashboard"]').click());
-  await fr.evaluate(() => document.querySelector('.nav-btn[data-page="calendrier"]').click());
-  await page.waitForTimeout(200);
-  const apres = await fr.evaluate(() => ({ checked: document.querySelector('#cal-timeline input[data-cal="07:20"]').checked, store: JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-cal-2026-09-07'))['07:20'] }));
-  ok(!apres.checked && apres.store === false, 'décoché à la main → reste décoché après un nouveau rendu (' + apres.store + ')');
+  ok(st.cases === 0, 'plus aucune case à cocher dans l\'emploi du temps');
+  ok(/✓ minuteur/.test(st.a1.auto) && /checked/.test(st.a1.cls), 'Anki 1 (53 min sur 60 au minuteur) porte « ✓ minuteur »');
+  ok(!st.a2.auto, 'Anki 2 (25 min sur 60, sous la moitié) non');
+  ok(!st.sport.auto, 'un bloc hors travail (Sport) n\'est pas concerné');
+  ok(JSON.stringify(st.store) === JSON.stringify({'09:20': false}), 'rien ne s\'écrit dans le stockage du jour : ' + JSON.stringify(st.store));
   await ctx.close();
 }
 
-console.log('\n== 222) Session enregistrée au minuteur → le calendrier se recoche sans recharger ==');
+console.log('\n== 222) Session enregistrée au minuteur → le calendrier le montre sans recharger ==');
 {
   const { ctx, page, fr } = await ouvrir({width:1440, height:900}, {'batcave-sessions': []});
   await fr.evaluate(() => { const r = document.getElementById('ritual-dismiss'); if(r) r.click(); document.querySelector('.nav-btn[data-page="calendrier"]').click(); });
   await page.waitForTimeout(200);
-  const avant = await fr.evaluate(() => document.querySelector('#cal-timeline input[data-cal="11:20"]').checked);
+  const marque = () => fr.evaluate(() => { const l = [...document.querySelectorAll('#cal-timeline li')].find(x => x.querySelector('.t-time').textContent === '11:20'); return !!(l && l.querySelector('.t-auto')); });
+  const avant = await marque();
   /* une session de révision 11:20 → 12:00 enregistrée comme le fait le minuteur (logSession) */
   await fr.evaluate(() => window.__bcLogSession(40, {cible:"cours", matiere:"Anatomía", startedAt: new Date('2026-09-07T11:20:00+02:00').getTime()}));
   await page.waitForTimeout(250);
-  const apres = await fr.evaluate(() => document.querySelector('#cal-timeline input[data-cal="11:20"]').checked);
-  ok(!avant && apres, '« Question ouverte ou autre » non coché avant, coché après une session de 40 min sur 60');
+  const apres = await marque();
+  ok(!avant && apres, '« Question ouverte ou autre » : pas de marque avant, « ✓ minuteur » après une session de 40 min sur 60');
   await ctx.close();
 }
 
@@ -190,7 +186,7 @@ console.log('\n== 227) Fenêtres : focus dedans à l\'ouverture, Tab piégé, É
   await ctx.close();
 }
 
-console.log('\n== 228) Tous les boutons sans texte ont un libellé ; cases du calendrier au clavier ==');
+console.log('\n== 228) Tous les boutons sans texte ont un libellé ; le calendrier n\'a plus de case à atteindre au clavier ==');
 {
   const { ctx, page, fr } = await ouvrir({width:1440, height:900});
   await fr.evaluate(() => { const r = document.getElementById('ritual-dismiss'); if(r) r.click(); });
@@ -209,10 +205,10 @@ console.log('\n== 228) Tous les boutons sans texte ont un libellé ; cases du ca
     return out;
   }, pages);
   ok(sansLibelle.length === 0, 'aucun bouton sans texte ni libellé (' + sansLibelle.length + ')' + (sansLibelle.length ? ' : ' + sansLibelle.slice(0, 6).join(' | ') : ''));
+  /* 16 novembre, sa décision : les blocs ne se cochent plus -- plus de case à atteindre au clavier dans l'emploi du temps */
   await fr.evaluate(() => document.querySelector('.nav-btn[data-page="calendrier"]').click());
-  await page.frameLocator('#f').locator('#cal-timeline input[data-cal="11:20"]').press('Space'); await page.waitForTimeout(150);
-  const coche = await fr.evaluate(() => ({ checked: document.querySelector('#cal-timeline input[data-cal="11:20"]').checked, store: JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-cal-2026-09-07'))['11:20'] }));
-  ok(coche.checked && coche.store === true, 'Espace coche un bloc du calendrier et l\'enregistre');
+  const cases = await fr.evaluate(() => document.querySelectorAll('#cal-timeline input, #cal-timeline [tabindex]').length);
+  ok(cases === 0, 'l\'emploi du temps n\'a plus de case à cocher ni d\'élément focusable inutile (' + cases + ')');
   await ctx.close();
 }
 

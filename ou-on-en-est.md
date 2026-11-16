@@ -21,8 +21,11 @@
 > - « Ta semaine » et « Ta semaine type » séparent « À cocher » de « La routine du jour, sans case ». « La case Linge »
 >   et « la Batcave le coche » disparaissent des textes. « À quoi sert la Batcave » suit.
 >
-> **Les blocs du Calendrier** : il a demandé ce que voulait dire « arrêter de les cocher ». C'est expliqué, rien n'est
-> changé.
+> **Les blocs du Calendrier** : il a demandé ce que voulait dire « arrêter de les cocher », puis il a dit oui (« Ok
+> fait »). Leurs cases sont retirées : la grille se lit, et un bloc de travail couvert à moitié par le minuteur porte
+> « ✓ minuteur », calculé à l'affichage sans rien écrire.
+> Correction de ma réponse : aucun calcul ne lisait ces cases. La fidélité au plan, « prévu contre réalisé », le bloc
+> fragile, la dérive du premier bloc et le créneau se mesurent tous au minuteur. Il ne perd donc rien. Tests 55 et 63.
 > **Tests** :
 > - recalés sur ses décisions : 28, 38, 40, 42, 49, 53, 55, 59, 62, 67, 69, 71, 72, 73, 76, 94, 101, 109 et 120 ;
 > - 60, 65, 68, 90, 92 et 101 gardent la mécanique des cartes et les dates des habitudes à rythme, routine laissée en
