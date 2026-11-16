@@ -75,12 +75,26 @@ console.log('— samedi 14 novembre, 10:00 : tout est du, le tour de la salle de
   const plan = await fr.evaluate(() => document.getElementById('dash-plan').textContent);
   ok(/le tour de la salle de bain et de la cuisine/.test(plan) && /Soin et santé ou Maison et ménage/.test(plan), 'le plan du jour du 14 : le tour des produits avant de partir, les tickets au retour');
   const h = await fr.evaluate(() => window.__bcCoutHors());
-  ok(h.hebdo === 0 && h.mois === 0 && h.estimes.length === 0 && h.manque.length === 28, 'le soin et le menage ne coutent plus rien a part : ils sont dans l\'enveloppe (' + h.hebdo + ', ' + h.mois + ', ' + h.manque.length + ' sans prix)');
+  /* 29 depuis le 15 novembre : le vinaigre blanc (le frigo et le detartrage) rejoint les 28. */
+  ok(h.hebdo === 0 && h.mois === 0 && h.estimes.length === 0 && h.manque.length === 29, 'le soin et le menage ne coutent plus rien a part : ils sont dans l\'enveloppe, vinaigre blanc compris (' + h.hebdo + ', ' + h.mois + ', ' + h.manque.length + ' sans prix)');
   /* 11-12 novembre : les dattes a 5 EUR le kilo -- la nourriture seule, 211,05 EUR par mois en caisse */
   const am = await fr.evaluate(() => window.__bcCoutAchats());
   ok(pres(am.mois, 211.05, 0.01), 'la nourriture seule dans coutAchatsMoyen : 211,05 € par mois (' + am.mois.toFixed(2) + ')');
   const autre = await fr.evaluate(() => document.querySelector('#dash-plan') && [...document.querySelectorAll('#dash-plan li')].filter(li => /salle de bain/.test(li.textContent)).length);
   ok(autre === 1, 'une seule ligne pour le tour des produits');
+  await ctx.close();
+}
+
+console.log('— samedi 28 : le vinaigre blanc, pour le frigo du jour et le détartrage du 13 décembre');
+{
+  /* 15 novembre, tard le soir : la consigne du frigo (le 28) et celle du detartrage (le 13 decembre) demandent du
+     vinaigre blanc ; il n'etait pas dans la liste. Il tombe aux courses du 28, avant le frigo de 15:30. */
+  const {ctx, page, fr} = await ouvrir('2026-11-28T10:00:00+01:00');
+  await versCourses(fr, page);
+  const m = await fr.evaluate(() => { const k = [...document.querySelectorAll('#courses-grid .cat-card')].find(x => x.querySelector('h4').textContent === 'Maison et ménage'); return k ? [...k.querySelectorAll('li')].map(li => li.textContent) : []; });
+  ok(m.some(t => /^Vinaigre blanc — 2 bouteilles de 1 L/.test(t) && /Mercadona/.test(t) && /jamais dans le lave-vaisselle/.test(t)), 'le 28, le vinaigre blanc est dû, chez Mercadona (' + m.join(' | ').slice(0, 220) + ')');
+  const ran = await fr.evaluate(() => window.__bcConsigne('Rangement des courses', 6, '2026-11-28', '15:30'));
+  ok(/vinaigre blanc/.test(ran), 'et le frigo du jour s\'essuie au vinaigre blanc');
   await ctx.close();
 }
 

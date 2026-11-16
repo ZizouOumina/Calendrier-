@@ -62,7 +62,8 @@ console.log('\n== 180) Sans ajustement : plan de base, liste = plan × 7 ==');
   /* 9 novembre : les pâtes du midi entrent en fin des réserves. Dix-huit lignes. */
   /* 9 novembre au soir : le Nutella des galettes entre dans les reserves de cinq semaines -- 19 articles. */
   /* 12 novembre : le gratte-langue rejoint le soin -- 28 produits */
-  ok(c.n === 47 && alim === 19 && soinMaison === 28, '47 articles au total : 19 de nourriture et 28 de soin et de menage (' + alim + ' + ' + soinMaison + ') ; la nourriture : 19 articles, tous rythmes confondus — plus de pain, de fruits ni de pâtes depuis le 23 octobre, les dattes entrent, le fromage sort le 26, le cottage cheese entre le 27 et sort le 8 novembre, les pâtes du midi entrent le 9, le Nutella le même soir (' + c.n + ')');
+  /* 15 novembre, tard le soir : le vinaigre blanc (le frigo et le detartrage) -- 29 produits de soin et de menage */
+  ok(c.n === 48 && alim === 19 && soinMaison === 29, '48 articles au total : 19 de nourriture et 29 de soin et de menage (' + alim + ' + ' + soinMaison + ') ; la nourriture : 19 articles, tous rythmes confondus — plus de pain, de fruits ni de pâtes depuis le 23 octobre, les dattes entrent, le fromage sort le 26, le cottage cheese entre le 27 et sort le 8 novembre, les pâtes du midi entrent le 9, le Nutella le même soir (' + c.n + ')');
   /* Deux chiffres par ligne, et il faut les deux : ce qu'on ACHETE (un multiple du
      conditionnement) et ce que le PLAN demande (la somme des 7 jours de repas). Riz
      135 g/jour -> 945/semaine -> 3 780 sur 4 semaines, donc 4 paquets de 1 kg ;

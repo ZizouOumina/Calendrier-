@@ -13767,6 +13767,11 @@
         prod('Dégraissant', '1 flacon de 750 ml', 12, 'Quitagrasas — plaques et hotte'),
         prod('Multi-surfaces', '1 flacon de 1 L', 16, 'tables et plan de travail'),
         prod('Anticalcaire salle de bain', '1 flacon de 750 ml', 12, 'douche, lavabo, robinets'),
+        /* 15 novembre, tard le soir : le frigo (samedi 28 novembre) et le detartrage (dimanche 13 decembre) demandent
+           du vinaigre blanc, qui n'etait pas dans la liste. Deux bouteilles tiennent douze semaines : chaque mois,
+           ~250 ml pour la bouilloire, autant pour la cuve du rice cooker, un fond pour le frigo. Ancre au 28 : il
+           l'achete aux courses de 13:30, le frigo vient a 15:30. Jamais dans le lave-vaisselle (9 novembre). */
+        Object.assign(prod('Vinaigre blanc', '2 bouteilles de 1 L', 12, 'le frigo (parois, joint) et le détartrage de la bouilloire et du rice cooker, une fois par mois — jamais dans le lave-vaisselle', 2), {ancre: '2026-11-28'}),
         prod('Gel WC', '1 flacon de 1 L', 12, 'à la javel'),
         prod('Éponges', '1 paquet de 3', 6, 'une neuve toutes les deux semaines'),
         prod('Lavettes microfibre', '2 lavettes', 26, 'à la laverie, avec les serviettes', 2),
@@ -13948,7 +13953,7 @@
     'Savon pour les mains': 'Mercadona', 'Rasoirs jetables': 'Mercadona', 'Gel de rasage': 'Mercadona', 'Mouchoirs': 'Mercadona', 'Gratte-langue': 'Pharmacie',
     'Lessive en poudre': 'Alcampo', 'Adoucissant': 'Mercadona', 'Pastilles lave-vaisselle': 'Mercadona',
     'Sel lave-vaisselle': 'Mercadona', 'Liquide vaisselle': 'Mercadona',
-    'D\u00e9graissant': 'Mercadona', 'Multi-surfaces': 'Mercadona', 'Anticalcaire salle de bain': 'Mercadona', 'Gel WC': 'Mercadona',
+    'D\u00e9graissant': 'Mercadona', 'Multi-surfaces': 'Mercadona', 'Anticalcaire salle de bain': 'Mercadona', 'Vinaigre blanc': 'Mercadona', 'Gel WC': 'Mercadona',
     '\u00c9ponges': 'Mercadona', 'Lavettes microfibre': 'Mercadona', 'Sacs poubelle 30 L': 'Mercadona',
     'Sacs cong\u00e9lation': 'Mercadona', 'Essuie-tout': 'Mercadona', 'Papier toilette': 'Mercadona'
   };

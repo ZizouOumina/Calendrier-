@@ -43,6 +43,10 @@
 > **Tests** : 43, 49, 68, 75 et 109 recalés sur l'horizon et le schéma. 52 compte les quatre notifications de la fenêtre
 > des jours sans cours, et 67 a un jeu de six mois qui finit le 2 juin. 108 passe à +0,28 kg, 118 gagne le scénario
 > 2 ter et 119 le scénario 9. Les fixtures 42 et 90 portent la v15.
+> **Après coup** (« il me reste quoi à faire ») : le frigo (le 28 novembre) et le détartrage (le 13 décembre) demandent du
+> vinaigre blanc, qui n'était pas dans la liste de courses. Il y entre dans Maison et ménage : deux bouteilles d'1 L
+> toutes les 12 semaines chez Mercadona, dues dès le samedi 28, donc achetées aux courses de 13:30, avant le frigo de
+> 15:30. Jamais dans le lave-vaisselle. Tests 53 et 117.
 
 > ### Dimanche 15 novembre, le soir — l'entretien des machines, et la semaine tâche par tâche
 > **Ses mots** : « t'as tout mis, même le nettoyage de mon aspirateur serpillère […] même le nettoyage de mon roomba
