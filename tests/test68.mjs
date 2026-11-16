@@ -9,7 +9,9 @@ const ok = (c,m) => { if(c) console.log('  ok  '+m); else { errs++; console.log(
 const browser = await chromium.launch();
 async function ouvrir(quand, extra){
   const ctx = await browser.newContext({ viewport:{width:1440,height:900}, timezoneId:'Europe/Madrid', locale:'fr-FR' });
-  await ctx.addInitScript(() => { window.claude = undefined; });
+  /* 16 novembre : la routine (lit, linge, balai, courses…) est sans case chez lui. Ce test garde la mécanique des cartes
+     d'habitude, qui vaut pour toute case remise (« Remettre la case ») : la routine reste en cases ici (drapeau posé). */
+  await ctx.addInitScript(() => { window.claude = undefined; try{ localStorage.setItem('batcave-sans-case-v1', 'true'); }catch(e){} });
   if(extra) await ctx.addInitScript(x => { Object.keys(x).forEach(k => localStorage.setItem(k, JSON.stringify(x[k]))); }, extra);
   const page = await ctx.newPage();
   page.on('pageerror', e => { errs++; console.log('  PAGEERROR: ' + e.message); });

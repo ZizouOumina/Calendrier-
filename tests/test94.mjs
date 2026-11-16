@@ -132,11 +132,12 @@ console.log('\n== 333) L\'habitude « Courses faites » reste validable ==');
   }
   const somme = await fr.evaluate(() => document.getElementById('courses-summary').textContent);
   ok(/^7\/7/.test(somme), 'cocher le frais suffit : ' + somme + ' (' + avant + ' cases)');
+  /* 16 novembre, sa décision : « Courses faites » est de la routine -- plus de case, la liste de l'onglet Courses fait foi */
   const coche = await fr.evaluate(() => {
     const l = [...document.querySelectorAll('#dash-checklist li label')].map(x => x.textContent);
     return l.some(x => /Courses/.test(x));
   });
-  ok(coche, 'l\'habitude Courses est bien présente le samedi');
+  ok(!coche, 'plus de case « Courses faites » le samedi : la liste des courses suffit');
   await ctx.close();
 }
 

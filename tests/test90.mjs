@@ -14,8 +14,10 @@ const ok = (c, m) => { if(c) console.log('  ok  ' + m); else { err++; console.lo
 
 async function jour(quand, local){
   const ctx = await b.newContext({viewport:{width:1440,height:1000}, timezoneId:'Europe/Madrid', locale:'fr-FR'});
+  /* 16 novembre : la routine est sans case chez lui ; ce test vérifie les dates des habitudes à rythme, lues dans les cases -- la routine y reste en cases (drapeau posé) */
   await ctx.addInitScript(seed => {
     window.claude = undefined;
+    localStorage.setItem('batcave-sans-case-v1', 'true');
     Object.keys(seed || {}).forEach(k => localStorage.setItem(k, JSON.stringify(seed[k])));
     window.__w = [];
     const vrai = Storage.prototype.setItem;

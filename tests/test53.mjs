@@ -191,12 +191,9 @@ console.log('\n== 181) Avec +150 kcal : le dîner et les courses l\'écrivent ==
   /* 23 octobre au soir : le plan dense -- plan 3 198. */
   /* 25 octobre : 7 dattes, 20 g de miel, la boisson d'avoine du Lidl, 70 g de viande le soir -- plan 3 284. */
   ok(/\/ 3428 kcal \(plan 3284 \+ 144\)/.test(sub), 'cible du jour : ' + sub);
-  /* cocher tout le dîner : l\'apport consommé porte les 150 kcal */
-  /* un clic redessine la grille : on re-cherche la première case non cochée du dîner à chaque tour */
-  await fr.evaluate(() => { for(let i = 0; i < 10; i++){ const card = [...document.querySelectorAll('.meal-card')].find(c => /Dîner/.test(c.querySelector('.mtitle').textContent)); const cb = card && card.querySelector('input:not(:checked)'); if(!cb) break; cb.click(); } });
-  await page.waitForTimeout(200);
-  const sub2 = await fr.evaluate(() => document.getElementById('meal-kcal-sub').textContent);
-  ok(/^1004 \/ 3428 kcal/.test(sub2), 'dîner coché : ' + sub2);
+  /* 16 novembre, sa décision : plus de case aliment par aliment -- l'ajustement se lit sur la carte du dîner, pas dans un apport coché */
+  const diner = await fr.evaluate(() => { const card = [...document.querySelectorAll('.meal-card')].find(c => /Dîner/.test(c.querySelector('.mtitle').textContent)); return card ? {cases: card.querySelectorAll('input').length, kcal: card.querySelector('.mkcal').textContent} : null; });
+  ok(diner && diner.cases === 0 && /kcal/.test(diner.kcal), 'le dîner n\'a plus de case, sa carte dit ses calories : ' + (diner && diner.kcal));
   await page_(fr, 'courses');
   const c = await fr.evaluate(() => ({ items: [...document.querySelectorAll('#courses-grid label, #courses-grid-plus label')].map(l => l.textContent), note: document.getElementById('courses-plan-note').textContent }));
   /* L'ajustement suit le sac : +280 g par semaine font +1 120 g sur quatre semaines.

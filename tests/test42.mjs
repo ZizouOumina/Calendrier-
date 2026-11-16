@@ -95,8 +95,8 @@ console.log('\n== 95) Le semis survit à l\'hydratation du cloud ==');
      'les habitudes du cloud sont conservées');
   const loc = await local(fr, 'batcave-habits');
   ok(loc.some(h => h.id === 'core-courses'), 'le local aussi, après hydratation');
-  ok(await attendreTexte(page, '#dash-checklist', /Courses faites/),
-     'elle est affichée dans la liste du samedi');
+  /* 16 novembre, sa décision : « Courses faites » est de la routine -- sans case ; la migration se rejoue sur les données du cloud */
+  ok(loc.some(h => h.id === 'core-courses' && h.sansCase === true), 'elle est de la routine depuis le 16 novembre (sansCase), même après l\'hydratation');
   await ctx.close();
 }
 
@@ -135,7 +135,7 @@ console.log('\n== 97) Un cloud déjà à jour ne déclenche aucune réécriture 
                                                      {id:'core-oreiller', label:'Oreiller lavé', icon:'🛏️', jours:[0], cycleSemaines:16, ancre:'2027-01-03'},
                                                      {id:'core-couette', label:'Couette lavée', icon:'🛌', jours:[0], cycleSemaines:26, ancre:'2027-01-17'},
                                                      {id:'core-matelas', label:'Matelas tourné et aspiré', icon:'🛏️', jours:[0], cycleSemaines:13, ancre:'2026-12-06'}]),
-                 'batcave-habits-seed-v2': true, 'batcave-habits-seed-v3': true, 'batcave-habits-seed-v4': true, 'batcave-habits-seed-v5': true, 'batcave-habits-seed-v6': true, 'batcave-habits-seed-v7': true, 'batcave-habits-seed-v8': true, 'batcave-habits-seed-v9': true, 'batcave-habits-seed-v10': true, 'batcave-habits-seed-v11': true, 'batcave-habits-seed-v12': true, 'batcave-habits-seed-v13': true, 'batcave-habits-seed-v14': true, 'batcave-habits-seed-v15': true, 'batcave-objectifs-v5-espanol': true};
+                 'batcave-sans-case-v1': true, 'batcave-habits-seed-v2': true, 'batcave-habits-seed-v3': true, 'batcave-habits-seed-v4': true, 'batcave-habits-seed-v5': true, 'batcave-habits-seed-v6': true, 'batcave-habits-seed-v7': true, 'batcave-habits-seed-v8': true, 'batcave-habits-seed-v9': true, 'batcave-habits-seed-v10': true, 'batcave-habits-seed-v11': true, 'batcave-habits-seed-v12': true, 'batcave-habits-seed-v13': true, 'batcave-habits-seed-v14': true, 'batcave-habits-seed-v15': true, 'batcave-objectifs-v5-espanol': true};
   const { ctx, fr } = await ouvrir(aJour, aJour, SAMEDI);
   const ecrits = await fr.evaluate(() => window.__w.filter(k => k === 'batcave-habits'));
   ok(ecrits.length === 0, 'aucune réécriture inutile de batcave-habits');

@@ -18,7 +18,8 @@ const ok = (c, m) => { if(c) console.log('  ok  ' + m); else { err++; console.lo
 
 async function ouvrir(quand, seed){
   const ctx = await b.newContext({viewport:{width:1440,height:1200}, timezoneId:'Europe/Madrid', locale:'fr-FR'});
-  await ctx.addInitScript(x => { window.claude = undefined;
+  /* 16 novembre : la routine est sans case chez lui ; ce test vérifie les dates des habitudes à rythme, lues dans les cases -- la routine y reste en cases (drapeau posé) */
+  await ctx.addInitScript(x => { window.claude = undefined; localStorage.setItem('batcave-sans-case-v1', 'true');
     if(x) Object.keys(x).forEach(k => localStorage.setItem(k, JSON.stringify(x[k]))); }, seed || null);
   const page = await ctx.newPage();
   page.on('pageerror', e => { err++; console.log('  PAGEERROR : ' + e.message); });
@@ -262,8 +263,9 @@ console.log('\n== 336) Les pas se saisissent, et ils cochent la case ==');
      CHIFFRE, pas une case. Et le chiffre doit decider de la case, sinon il saisit 9 200
      pas et voit quand meme sa case grise -- deux ecrans qui se contredisent. */
   const { ctx, page, fr } = await ouvrir('2026-09-23T21:20:00+02:00');
-  ok(await fr.evaluate(() => !!document.getElementById('cl-pas')),
-     'la clôture du soir porte un champ « Pas du jour »');
+  /* 16 novembre, sa décision : les pas ne se notent plus -- le champ reste, masqué ; la mécanique (le chiffre décide de la case) reste */
+  ok(await fr.evaluate(() => !!document.getElementById('cl-pas') && document.getElementById('cl-pas').closest('[hidden]') !== null),
+     'le champ « Pas du jour » reste dans la clôture, masqué');
   const cible = await fr.evaluate(() => window.__bcPasCible());
   ok(cible === 8000, 'la cible est lue DANS le libellé de l\'habitude, pas écrite deux fois (' + cible + ')');
 
@@ -305,11 +307,8 @@ console.log('\n== 336) Les pas se saisissent, et ils cochent la case ==');
                             document.querySelector('.nav-btn[data-page="bilan"]').click(); });
   await page.waitForTimeout(500);
   const t = await fr.evaluate(() => document.getElementById('bilan-grid').innerText);
-  ok(/Pas \/ jour/.test(t), 'le Bilan porte une ligne « Pas / jour »');
-  const ligne = (t.match(/Pas \/ jour[^]{0,40}/) || [''])[0].replace(/\n/g, ' ');
-  ok(/8[\s\u202f\u00a0]000/.test(ligne), 'avec la moyenne des trois jours saisis, 8 000 (' + ligne + ')');
-  /* Un nombre de pas n'a pas de decimale : « 8000,0 » se lit comme une erreur de calcul. */
-  ok(!/8000,0/.test(ligne), 'et sans décimale — un nombre de pas est un entier');
+  /* 16 novembre, sa décision : les pas ne se notent plus -- la ligne « Pas / jour » sort du Bilan */
+  ok(!/Pas \/ jour/.test(t), 'le Bilan ne porte plus de ligne « Pas / jour »');
   await ctx.close();
 }
 

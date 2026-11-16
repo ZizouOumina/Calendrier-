@@ -106,10 +106,10 @@ console.log('\n== 192) Journal (par la clôture), Habitudes, Dépendances ==');
 console.log('\n== 193) Repas, Sport, Coran & Duaas ==');
 {
   ok(await go('repas'), 'Repas s\'affiche');
-  await click('#meal-grid input[type="checkbox"]');
-  await page.waitForTimeout(100);
-  const m = await local('batcave-meals-2026-09-08');
-  ok(m && Object.values(m).some(v => v === true), 'un aliment coché est mémorisé');
+  /* 16 novembre, sa décision : plus de case aliment par aliment -- la carte dit quoi manger */
+  const nCases = await page.frameLocator('#f').locator('#meal-grid input[type="checkbox"]').count();
+  const nItems = await page.frameLocator('#f').locator('#meal-grid li').count();
+  ok(nCases === 0 && nItems > 0, 'les repas s\'affichent sans case à cocher (' + nItems + ' aliments, ' + nCases + ' case)');
   ok(/kcal/.test(await texte('#kcal-note')) || /pesées/.test(await texte('#kcal-note')), 'la boucle poids → calories parle : ' + await texte('#kcal-note'));
   ok(await go('sport'), 'Sport s\'affiche');
   await click('.sport-card.today input[type="checkbox"]');

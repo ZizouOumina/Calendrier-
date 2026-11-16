@@ -31,6 +31,7 @@ jours = []
 for i, j in enumerate(sem['jours']):
     notes = ''.join('<li>' + e(n) + '</li>' for n in j.get('notes') or [])
     cases = ''.join('<li>' + e(c) + '</li>' for c in j.get('enPlus') or [])
+    routine = ''.join('<li>' + e(c) + '</li>' for c in j.get('routine') or [])   # 16 novembre : la routine, sans case
     prieres = ' · '.join(e(p[0]) + ' <b>' + e(p[1]) + '</b>' for p in j.get('prieres') or [])
     rows = ''.join(ligne(r) for r in j['rows'])
     jours.append(
@@ -40,6 +41,7 @@ for i, j in enumerate(sem['jours']):
         + '<p class="prieres"><span>Prières</span> ' + prieres + '</p>'
         + '<ol class="fil">' + rows + '</ol>'
         + (('<div class="bloc cases"><h3>Les cases de ce jour, en plus de celles de tous les jours</h3><ul class="puces">' + cases + '</ul></div>') if cases else '')
+        + (('<div class="bloc cases"><h3>La routine du jour, sans case</h3><ul class="puces">' + routine + '</ul></div>') if routine else '')
         + '</section>')
 
 chaque = ''.join('<li>' + e(x) + '</li>' for x in G['chaqueJour'])

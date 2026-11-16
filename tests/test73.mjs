@@ -127,7 +127,8 @@ console.log('\n== 304) L\'espagnol a sa ligne dans le bilan de la semaine ==');
   /* Douze depuis le 19 septembre : le cardio et les pas ont chacun leur ligne. Elles
      mesurent ce que « Séances tenues » ne mesure pas -- l'aerobie, et ce qu'il bouge
      hors entrainement. */
-  ok(cartes.length === 12, 'douze mesures dans le bilan (' + cartes.length + ')');
+  /* 16 novembre : l'eau, la nutrition et les pas sortent (sa décision) -- neuf mesures */
+  ok(cartes.length === 9, 'neuf mesures dans le bilan (' + cartes.length + ')');
   ok(/50 min/.test(es), 'la ligne Espagnol montre 50 min (' + es.slice(0, 40) + ')');
   ok(/1 h/.test(proj), 'la ligne Projets perso montre 1 h, sans l\'espagnol (' + proj.slice(0, 40) + ')');
   await ctx.close();

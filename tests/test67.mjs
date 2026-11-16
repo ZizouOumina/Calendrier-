@@ -47,7 +47,8 @@ console.log('\n== 261) Chaque carte Insights a des données ==');
 {
   const { ctx, fr } = await ouvrir({viewport:{width:1440,height:900}});
   const ins = await fr.evaluate(() => window.__bcInsights().map(i => ({t:i.title, n:i.n || 0, a:!!i.action, s:i.score})));
-  ok(ins.length === 9, '9 cartes calculées (' + ins.length + ')');
+  /* 16 novembre : la balance énergétique sort (les repas ne se cochent plus) -- 8 analyses */
+  ok(ins.length === 8, '8 cartes calculées (' + ins.length + ')');
   const sansDonnees = ins.filter(i => !i.n).map(i => i.t);
   ok(sansDonnees.length === 0, 'toutes les cartes ont des points de données' + (sansDonnees.length ? ' — sauf : ' + sansDonnees.join(', ') : ''));
   ok(ins.filter(i => i.a).length >= 5, ins.filter(i => i.a).length + ' cartes proposent une action');
@@ -70,7 +71,8 @@ console.log('\n== 262) Bilan, objectifs et courbes sur six mois ==');
   /* Dix depuis le lot 24 (l'espagnol a sa propre ligne, sortie de « Projets perso »),
      DOUZE depuis le 19 septembre : le cardio et les pas ont chacun la leur. Ils mesurent
      ce que les seances ne mesurent pas -- l'aerobie, et ce qu'il bouge hors entrainement. */
-  ok(b.cartes === 12, 'douze cartes de bilan (' + b.cartes + ')');
+  /* 16 novembre : l'eau, la nutrition et les pas sortent (sa décision) -- neuf cartes */
+  ok(b.cartes === 9, 'neuf cartes de bilan (' + b.cartes + ')');
   ok(b.points > 0, 'la courbe du score est tracée');
   ok(b.revue >= 1 && b.journal >= 10, 'la revue et l\'historique du journal sont bien sur la page Semaine (' + b.revue + ' revue(s), ' + b.journal + ' journées)');
   const o = await fr.evaluate(() => {

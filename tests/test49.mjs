@@ -92,15 +92,12 @@ console.log('\n== 120) Boucle poids → calories ==');
      C'est cet ecart REEL entre les deux journees qui s'affiche, sinon la soustraction ment. */
   ok(/\/ 3382 kcal \(plan 3238 \+ 144\)/.test(k.sub), 'la barre Repas vise 3382 kcal : ' + k.sub);
   ok(/Cible calorique actuelle : 3382 kcal/.test(k.txt), 'l\'analyse affiche la cible ajustée (' + ((k.txt.match(/Cible calorique actuelle : [^\n]*/) || [])[0] || '?') + ')');
-  /* tout coché aujourd'hui → 3237/3237 = 100 % : l'ajustement vit dans le dîner, l'apport le suit */
-  /* un clic redessine la grille : on re-cherche la premiere case non cochee a chaque tour */
-  await fr.evaluate(() => { for(let i = 0; i < 60; i++){ const cb = document.querySelector('#meal-grid input[type="checkbox"]:not(:checked)'); if(!cb) break; cb.click(); } });
-  await page.waitForTimeout(300);
-  const pct = await fr.evaluate(() => ({ repas: document.getElementById('meal-kcal-pct').innerText, dash: document.getElementById('dash-meals-kcal-pct').innerText }));
-  ok(pct.repas === '100%' && /^100% kcal$/.test(pct.dash), 'Repas et tableau de bord d\'accord : 100 % (' + pct.repas + ' / ' + pct.dash + ')');
+  /* 16 novembre, sa décision : plus de case aliment par aliment -- la carte dit quoi manger, la pesée dit si c'est assez */
+  const cases = await fr.evaluate(() => document.querySelectorAll('#meal-grid input[type="checkbox"]').length);
+  ok(cases === 0, 'les repas n\'ont plus de case à cocher (' + cases + ')');
   await fr.evaluate(() => document.getElementById('kcal-reset').click());
   await page.waitForTimeout(300);
-  ok(await local(fr, 'batcave-kcal-ajustement') === null && (await fr.evaluate(() => document.getElementById('meal-kcal-pct').innerText)) === '100%', 'retour au plan de base → 100 %');
+  ok(await local(fr, 'batcave-kcal-ajustement') === null, 'retour au plan de base');
   await ctx.close();
 }
 {

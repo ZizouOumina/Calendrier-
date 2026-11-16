@@ -78,8 +78,8 @@ console.log('\n== 277) Anki : panneau, cache, plan du jour ==');
   const { ctx, page, fr } = await ouvrir('2026-09-15T09:00:00+02:00', cache);
   const p = await fr.evaluate(() => { document.querySelector('.nav-btn[data-page="etudes"]').click(); const el = document.getElementById('anki-panel'); return {visible: !el.hidden, txt: el.innerText.replace(/\s+/g, ' ')}; });
   /* « à revoir » depuis le lot 23 : c'est le mot d'Anki lui-même, colonne de l'écran d'accueil */
-  ok(p.visible && /Dentaire 240 à revoir/.test(p.txt), 'le panneau Anki montre les échéances par paquet');
-  ok(/Plus de 220 cartes dues/.test(p.txt), 'au-delà de 220 dues, il propose de baisser les nouvelles à 35');
+  /* 16 novembre, sa décision : Anki compte tout seul -- le panneau des études ne se montre plus */
+  ok(!p.visible, 'le panneau Anki des études ne se montre plus');
   const plan = await fr.evaluate(() => { document.querySelector('.nav-btn[data-page="dashboard"]').click(); return document.getElementById('dash-plan').innerText; });
   ok(/270 cartes dues dans Anki/.test(plan), 'le plan du jour remonte les cartes dues : ' + (plan.match(/\d+ cartes? dues[^\n]*/) || [''])[0].slice(0, 70));
   await ctx.close();

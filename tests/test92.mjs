@@ -6,7 +6,8 @@ let err = 0;
 const ok = (c,m) => { if(c) console.log('  ok  ' + m); else { err++; console.log('  FAIL ' + m); } };
 
 const ctx = await b.newContext({viewport:{width:1440,height:1000}, timezoneId:'Europe/Madrid', locale:'fr-FR'});
-await ctx.addInitScript(() => { window.claude = undefined; });
+/* 16 novembre : la routine est sans case chez lui ; ce test vérifie les dates des habitudes à rythme, lues dans les cases -- la routine y reste en cases (drapeau posé) */
+await ctx.addInitScript(() => { window.claude = undefined; try{ if(!sessionStorage.getItem('__sc92')){ sessionStorage.setItem('__sc92', '1'); localStorage.setItem('batcave-sans-case-v1', 'true'); } }catch(e){} });
 const page = await ctx.newPage();
 page.on('pageerror', e => { err++; console.log('  PAGEERROR ' + e.message); });
 await page.clock.install({ time: new Date('2026-09-14T07:00:00+02:00') });

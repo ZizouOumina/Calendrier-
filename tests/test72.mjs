@@ -173,25 +173,12 @@ console.log('\n== 297) Le verdict est calculé, pas ressenti ==');
   await n.ctx.close();
 }
 
-console.log('\n== 298) Anki à la main depuis la page publiée ==');
+console.log('\n== 298) Anki : le panneau des études ne se montre plus ==');
 {
+  /* 16 novembre, sa décision : « Anki (il compte tout seul) » -- plus de saisie à la main, le panneau reste masqué */
   const { ctx, fr, page } = await ouvrir(MERCREDI);
   await aller(fr, page, 'etudes');
-  const expl = await fr.evaluate(() => document.getElementById('anki-explique').innerText);
-  ok(/ne peut pas parler à ton Mac/.test(expl) && /Saisis les chiffres à la main/.test(expl),
-     'la page publiée dit clairement que la lecture automatique est impossible');
-  ok(await fr.evaluate(() => document.getElementById('anki-lire').hidden), 'le bouton de lecture automatique est masqué hors fichier local');
-  await fr.evaluate(() => { document.getElementById('ak-dentaire').value = '230'; document.getElementById('ak-revues').value = '10'; document.getElementById('ak-sangsues').value = '7'; document.getElementById('ak-add').click(); });
-  await page.waitForTimeout(300);
-  const corps = await fr.evaluate(() => document.getElementById('anki-corps').innerText.replace(/\s+/g, ' '));
-  ok(/Dentaire 230 à revoir/.test(corps), 'le chiffre saisi s\'affiche');
-  ok(/Español pas renseigné/.test(corps), 'un paquet non saisi n\'est pas écrasé par un zéro');
-  ok(/Plus de 220 cartes dues/.test(corps), 'le seuil de charge se déclenche sur une saisie manuelle');
-  ok(/saisi/.test(await fr.evaluate(() => document.getElementById('anki-maj').textContent)), 'la source est indiquée comme saisie');
-  await fr.evaluate(() => document.querySelector('.nav-btn[data-page="dashboard"]').click());
-  await page.waitForTimeout(250);
-  ok(/230 cartes dues dans Anki/.test(await fr.evaluate(() => document.getElementById('dash-plan').innerText)),
-     'les cartes dues remontent dans le plan du jour');
+  ok(await fr.evaluate(() => document.getElementById('anki-panel').hidden), 'le panneau Anki reste masqué dans Études');
   await ctx.close();
 }
 

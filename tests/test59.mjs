@@ -81,8 +81,8 @@ console.log('\n== 192) Habitude cochée sur le tableau de bord → Habitudes, sc
 console.log('\n== 193) Eau, sommeil, poids : Calendrier et Journal → tableau de bord, Objectifs, Bilan ==');
 {
   await aller('calendrier');
-  await click('#cal-water-plus'); await click('#cal-water-plus');
-  ok(/0,5 L \/ 3,0 L/.test(await txt('#cal-water-sub')), 'Calendrier : 0,5 L');
+  /* 16 novembre, sa décision : l'eau ne se note plus -- la tuile et ses boutons sont masqués */
+  ok(await fr.evaluate(() => document.getElementById('cal-water-actions').hidden && document.getElementById('cal-water-pct').closest('.stat-tile').hidden), 'Calendrier : plus de compteur d\'eau');
   /* La page « Journal » est supprimee : sommeil et poids se saisissent dans la cloture
      du soir, et l'eau garde son compteur sur le Calendrier, verifie juste au-dessus. */
   await fr.evaluate(() => document.body.dispatchEvent(new KeyboardEvent('keydown', {key:'c', bubbles:true})));
@@ -97,7 +97,7 @@ console.log('\n== 193) Eau, sommeil, poids : Calendrier et Journal → tableau d
   await aller('dashboard');
   const rel = await txt('#dash-releves');
   ok(/Sommeil[\s\S]*?8 h/.test(rel) && /Poids[\s\S]*?64,5/.test(rel), 'Relevés : sommeil 8 h, poids 64,5 kg');
-  ok(/Eau[\s\S]*?0,5 \/ 3,0 L/.test(await txt('#dash-journal')), 'Journal du jour (tableau de bord) : eau 0,5 L');
+  ok(!/Eau/.test(await txt('#dash-journal')), 'Journal du jour (tableau de bord) : plus d\'eau');
   await aller('objectifs');
   ok(/1 pesée/.test(await txt('#weight-chart-sub')), 'Objectifs : courbe de poids, 1 pesée');
   await aller('bilan');
@@ -118,18 +118,9 @@ console.log('\n== 193) Eau, sommeil, poids : Calendrier et Journal → tableau d
 console.log('\n== 194) Repas cochés → tableau de bord et score ==');
 {
   await aller('repas');
-  for(let i = 0; i < 10; i++){
-    const encore = await fr.evaluate(() => { const card = document.querySelector('.meal-card'); const cb = card && card.querySelector('input:not(:checked)'); if(!cb) return false; cb.click(); return true; });
-    if(!encore) break;
-    await page.waitForTimeout(50);
-  }
-  await page.waitForTimeout(200);
-  /* 23 octobre au soir : le shake passe a 400 ml (948 kcal), et la journee au plan dense (3 198 kcal). */
-  /* 25 octobre : 20 g de miel dans le shake et la boisson d'avoine du Lidl (962 kcal), 70 g de viande et 7 dattes (3 284). */
-  ok(/962 \/ 3284 kcal/.test(await txt('#meal-kcal-sub')), 'Repas : 962 / 3284 kcal, le shake du matin (400 ml de boisson d\'avoine depuis le 23 octobre), les sauces comptées (' + (await txt('#meal-kcal-sub')) + ')');
-  await aller('dashboard');
-  ok(/Petit-déjeuner[\s\S]*?7\/7/.test(await txt('#dash-meals')), 'Tableau de bord : petit-déjeuner 7/7 (le miel et les amandes y sont depuis le 24 septembre, les fruits rouges depuis le 21 octobre)');
-  ok(/29% kcal/.test(await txt('#dash-meals-kcal-pct')), 'Tableau de bord : 29 % des kcal (' + (await txt('#dash-meals-kcal-pct')) + ')');
+  /* 16 novembre, sa décision : plus de case aliment par aliment, ni de panneau des repas au tableau de bord */
+  ok(await fr.evaluate(() => document.querySelectorAll('#meal-grid input[type="checkbox"]').length === 0 && document.querySelectorAll('#meal-grid li').length > 0), 'Repas : la carte du jour, sans case à cocher');
+  ok(await fr.evaluate(() => !!document.getElementById('dash-meals').closest('.panel[hidden]')), 'Tableau de bord : plus de panneau « Repas du jour »');
 }
 
 console.log('\n== 195) Séries de sport → Sport, tableau de bord, Objectifs ==');
@@ -176,7 +167,7 @@ console.log('\n== 197) Rechargement : tout est écrit, rien n\'était seulement 
      C'est le comportement voulu -- clore sa journee EST une habitude tenue. */
   ok(/^2\//.test(d.compte), 'habitude conservée, plus celle de la clôture (' + d.compte + ')');
   ok(/64,5/.test(d.releves) && /8 h/.test(d.releves) && /Coran[\s\S]*?3/.test(d.releves), 'poids, sommeil et Coran conservés');
-  ok(/Petit-déjeuner[\s\S]*?7\/7/.test(d.meals) && /Réviser anatomie/.test(d.taches) && /3 \/ 180/.test(d.coran), 'repas, tâche et Coran conservés');
+  ok(/Réviser anatomie/.test(d.taches) && /3 \/ 180/.test(d.coran), 'tâche et Coran conservés');
   const bannière = await fr.evaluate(() => document.getElementById('coherence-banner').hidden);
   ok(bannière === true, 'aucune incohérence signalée après tout ça');
 }

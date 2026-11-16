@@ -7,7 +7,9 @@ const ok = (c,m) => { if(c) console.log('  ok  '+m); else { errs++; console.log(
 const browser = await chromium.launch();
 const ctx = await browser.newContext({ viewport:{width:1440,height:900}, timezoneId:'Europe/Madrid', locale:'fr-FR' });
 /* journal hérité : une coche du dimanche 30 août (avant le correctif) pour le samedi 29 */
-await ctx.addInitScript(() => { window.claude = undefined; try{ localStorage.setItem('batcave-habitlog', JSON.stringify({'core-courses':['2026-08-30']})); }catch(e){} });
+/* 16 novembre : « Courses faites » est de la routine, sans case, chez lui. Ce test garde la mécanique d'une habitude
+   hebdomadaire à cocher (le bouton « Remettre la case » la rend) : la routine reste en cases ici (drapeau posé). */
+await ctx.addInitScript(() => { window.claude = undefined; try{ localStorage.setItem('batcave-habitlog', JSON.stringify({'core-courses':['2026-08-30']})); localStorage.setItem('batcave-sans-case-v1', 'true'); }catch(e){} });
 const page = await ctx.newPage();
 page.on('pageerror', e => { errs++; console.log('  PAGEERROR: ' + e.message); });
 await page.clock.install({ time: new Date('2026-09-06T11:00:00+02:00') });   /* dimanche */

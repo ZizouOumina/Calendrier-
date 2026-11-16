@@ -34,7 +34,9 @@ console.log('\n== 76) L\'habitude Courses n\'apparaît QUE le samedi ==');
 {
   const { ctx, fr } = await ouvrir(SAMEDI);
   const t = await fr.evaluate(() => document.getElementById('dash-checklist').innerText);
-  ok(/Courses faites/.test(t), 'samedi : « Courses faites » est bien là');
+  /* 16 novembre, sa décision : « Courses faites » est de la routine -- plus de case ; « Ma journée » la dit le samedi */
+  const routine = await fr.evaluate(() => { document.querySelector('.nav-btn[data-page="journee"]').click(); return [...document.querySelectorAll('#mj-routine li')].map(x => x.textContent); });
+  ok(!/Courses faites/.test(t) && routine.some(x => /Courses faites/.test(x)), 'samedi : « Courses faites » n\'est plus une case, « Ma journée » la dit dans la routine (' + routine.length + ')');
   await ctx.close();
 }
 
@@ -51,17 +53,15 @@ console.log('\n== 77) Elle ne pénalise pas le score les autres jours ==');
   await ctx.close();
 }
 
-console.log('\n== 78) Cocher l\'habitude remplit la liste de courses ==');
+console.log('\n== 78) Plus de case « Courses faites » : la liste se coche en magasin ==');
 {
+  /* 16 novembre : la case qui remplissait la liste d'un coup n'existe plus -- la liste de l'onglet Courses fait foi */
   const { ctx, page, fr } = await ouvrir(SAMEDI);
   const avant = await fr.evaluate(() => { document.querySelector('.nav-btn[data-page="courses"]').click(); return document.getElementById('courses-summary').textContent; });
   ok(/^0\//.test(avant.trim()), 'au départ la liste est vide : ' + avant);
   await aller(fr, page, 'dashboard');
-  await fr.evaluate(() => document.querySelector('#dash-checklist [data-togglehab="core-courses"]').click());
-  await page.waitForTimeout(400);
-  const apres = await fr.evaluate(() => { document.querySelector('.nav-btn[data-page="courses"]').click(); return document.getElementById('courses-summary').textContent; });
-  const [f, tot] = apres.trim().split(' ')[0].split('/');
-  ok(f === tot && Number(tot) > 0, 'après coche : tous les articles sont cochés — ' + apres.trim());
+  const caseCourses = await fr.evaluate(() => !!document.querySelector('#dash-checklist [data-togglehab="core-courses"]'));
+  ok(!caseCourses, 'le samedi, plus de case « Courses faites » sur le tableau de bord');
   await ctx.close();
 }
 

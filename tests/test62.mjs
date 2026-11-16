@@ -79,10 +79,11 @@ console.log('\n== 218) Insights v2 : bloc fragile, dérive, dette de sommeil, st
   ok(cr && /que tu abats le plus de travail/.test(cr.text) && /Ton meilleur jour est/.test(cr.text) && cr.action, 'créneau + meilleur jour fusionnés, avec action');
   const fi = par('Fidélité au plan');
   ok(fi && /^Semaine dernière : \d+ % du plan/.test(fi.text) && fi.serie === 3 && fi.page === 'bilan', 'fidélité de la semaine dernière mesurée, série de 3 semaines : ' + (fi && fi.text.slice(0, 80)));
-  ok(ins.length === 9 && ins[0].title === 'Sommeil' && ins.every((it, i) => i === 0 || it.score <= ins[i-1].score), '9 cartes triées par score, le sommeil (dette, 100) en tête, puis la matière (61) et le sport (60) (' + ins.length + ')');
+  ok(ins.length === 8 && ins[0].title === 'Sommeil' && ins.every((it, i) => i === 0 || it.score <= ins[i-1].score), '8 cartes triées par score (sans la balance énergétique depuis le 16 novembre), le sommeil (dette, 100) en tête, puis la matière (61) et le sport (60) (' + ins.length + ')');
   ok(ins.every(i => i.page), 'chaque carte a un onglet où agir');
   const sans = ins.filter(i => /Balance énergétique/.test(i.title))[0];
-  ok(sans && sans.score === 0 && /7 jours de repas complets/.test(sans.text) && /partiels ignorés/.test(sans.text), 'balance énergétique : pas assez de données, jours partiels annoncés');
+  /* 16 novembre, sa décision : les repas ne se cochent plus -- la balance énergétique n'a plus de données, elle sort */
+  ok(!sans, 'la balance énergétique ne figure plus parmi les analyses');
 }
 
 console.log('\n== 219) Page Insights : bandeau des priorités et action par carte ; tableau de bord : ligne priorité ==');
@@ -100,8 +101,8 @@ console.log('\n== 219) Page Insights : bandeau des priorités et action par cart
     liensBandeau: document.querySelectorAll('#insights-priorites [data-aller]').length
   }));
   ok(!r.bandeau && r.items === 3 && r.vus === 3 && r.liensBandeau === 3, 'bandeau « Priorités de la semaine » : 3 actions, chacune avec « Vu » et son lien (' + r.items + ')');
-  ok(r.cartes === 9 && r.actions >= 6 && r.premier === 'Sommeil', r.cartes + ' cartes, ' + r.actions + ' actions, première = ' + r.premier);
-  ok(r.n === 9 && r.liens === 9, 'points de données et lien vers l\'onglet sur les 9 cartes (' + r.n + ', ' + r.liens + ')');
+  ok(r.cartes === 8 && r.actions >= 6 && r.premier === 'Sommeil', r.cartes + ' cartes, ' + r.actions + ' actions, première = ' + r.premier);
+  ok(r.n === 8 && r.liens === 8, 'points de données et lien vers l\'onglet sur les 8 cartes (' + r.n + ', ' + r.liens + ')');
   ok(r.tend >= 3 && r.spark === 3, 'tendances (' + r.tend + ') et mini-courbes (' + r.spark + ' : dérive, sommeil, fidélité)');
   await fr.evaluate(() => document.querySelector('#insights-grid .panel[data-titre="Matière et partiel"] [data-aller]').click());
   await page.waitForTimeout(250);
@@ -165,7 +166,7 @@ console.log('\n== 220) Sans données : aucune priorité, cartes explicites, tabl
   await f2.evaluate(() => { const r = document.getElementById('ritual-dismiss'); if(r) r.click(); });
   await p2.waitForTimeout(400);
   const r = await f2.evaluate(() => { document.querySelector('.nav-btn[data-page="insights"]').click(); return { dash: document.getElementById('dash-priorite').hidden, bandeau: document.getElementById('insights-priorites').hidden, cartes: document.querySelectorAll('#insights-grid .panel').length, prio: window.__bcInsights().filter(i => i.action && i.score >= 20).length }; });
-  ok(r.dash === true && r.bandeau === true && r.prio === 0 && r.cartes === 9, 'vierge : pas de priorité, pas de bandeau, 9 cartes qui disent ce qui manque');
+  ok(r.dash === true && r.bandeau === true && r.prio === 0 && r.cartes === 8, 'vierge : pas de priorité, pas de bandeau, 8 cartes qui disent ce qui manque');
   await c2.close();
 }
 await browser.close();

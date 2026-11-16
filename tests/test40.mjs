@@ -46,7 +46,8 @@ console.log('\n== 90) Compte existant : le lot V3 est rattrapé ==');
   ok(habs.some(h => h.id === 'hab1788303536189'), 'les habitudes personnelles sont conservées');
   ok(await lire(fr, 'batcave-habits-seed-v3') === true, 'le drapeau V3 est posé');
   const t = await fr.evaluate(() => document.getElementById('dash-checklist').innerText);
-  ok(/Courses faites/.test(t), 'elle s\'affiche le samedi dans la liste du jour');
+  /* 16 novembre, sa décision : « Courses faites » est de la routine -- plus de case ; « Ma journée » la dit, dans « La routine du jour » */
+  ok(!/Courses faites/.test(t) && habs.some(h => h.id === 'core-courses' && h.sansCase === true), 'elle est de la routine depuis le 16 novembre : pas de case le samedi (sansCase)');
   await ctx.close();
 }
 

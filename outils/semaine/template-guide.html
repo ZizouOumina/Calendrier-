@@ -191,7 +191,8 @@ function rendre(){
     '<ol class="fil' + (compact ? ' compact' : '') + '" id="fil">' + lignes + '</ol>' +
     '<section class="cocher"><h3>À cocher dans la Batcave</h3>' +
       (j.enPlus.length ? '<ul class="puces">' + j.enPlus.map(x => '<li>' + esc(x) + '</li>').join('') + '</ul>' : '') +
-      '<ul class="puces calme">' + DATA.chaqueJour.map(x => '<li>' + esc(x) + '</li>').join('') + '</ul></section>';
+      '<ul class="puces calme">' + DATA.chaqueJour.map(x => '<li>' + esc(x) + '</li>').join('') + '</ul></section>' +
+    ((j.routine || []).length ? '<section class="cocher"><h3>La routine du jour, sans case</h3><ul class="puces calme">' + j.routine.map(x => '<li>' + esc(x) + '</li>').join('') + '</ul></section>' : '');
   document.getElementById('bascule').addEventListener('click', () => {
     compact = !compact;
     try { localStorage.setItem('semaine-compact', compact ? '1' : '0'); } catch (e) {}

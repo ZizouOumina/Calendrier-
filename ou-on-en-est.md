@@ -1,5 +1,36 @@
 # Où on en est — samedi 19 septembre 2026, au soir
 
+> ### Lundi 16 novembre, tard le soir — le suivi allégé
+> **Sa question** : « est-ce que ça fait beaucoup tu trouves, est-ce que j'ai vraiment besoin de suivre tout ça ou c'est
+> contre-productif ». Ma réponse : c'est trop, une centaine de gestes un lundi.
+> **Sa décision** : « enlève ça vu que ma journée les traque ». Ça couvre les repas aliment par aliment, les cases de
+> routine, et à la clôture l'eau, les pas, l'humeur, Anki et les compléments.
+> **Fait (schéma 71, `sans-case-v1`)** :
+> - La routine (29 habitudes : le ménage, le linge, les serviettes, l'hygiène, l'entretien, la créatine) garde ses
+>   dates, puisque ce sont elles qui font les consignes du ménage, de la laverie, du frigo, du coiffeur et de la
+>   commande des pièces. Elle sort des cases à cocher (`sansCase`, `casesDuJour`) : plus rien dans le score, les
+>   bilans, les objectifs ni les analyses. « Ma journée » la dit dans ses lignes et dans « La routine du jour ». L'onglet
+>   Habitudes la liste (« Dans Ma journée, sans case ») avec un bouton « Remettre la case ». Il reste 19 cases, de 15 à
+>   18 par jour.
+> - Les repas n'ont plus de case par aliment : la carte dit quoi manger. Le panneau d'apport, la barre du jour et le
+>   panneau du tableau de bord sont masqués. Le score ne compte plus les calories, la semaine perd « Nutrition » et
+>   l'analyse « Balance énergétique » sort. La boucle poids → calories, qui ne lit que les pesées, reste.
+> - La clôture masque l'eau, les pas, l'humeur, Anki (du jour et de la semaine) et les compléments. Le score ne compte
+>   plus l'eau, la semaine perd « Eau » et « Pas » (9 chiffres), le tableau de bord ne montre plus l'eau ni l'humeur, et
+>   le panneau Anki des études ne s'affiche plus.
+> - « Ta semaine » et « Ta semaine type » séparent « À cocher » de « La routine du jour, sans case ». « La case Linge »
+>   et « la Batcave le coche » disparaissent des textes. « À quoi sert la Batcave » suit.
+>
+> **Les blocs du Calendrier** : il a demandé ce que voulait dire « arrêter de les cocher ». C'est expliqué, rien n'est
+> changé.
+> **Tests** :
+> - recalés sur ses décisions : 28, 38, 40, 42, 49, 53, 55, 59, 62, 67, 69, 71, 72, 73, 76, 94, 101, 109 et 120 ;
+> - 60, 65, 68, 90, 92 et 101 gardent la mécanique des cartes et les dates des habitudes à rythme, routine laissée en
+>   cases (drapeau posé) ;
+> - nouveau test121 : le suivi allégé de bout en bout.
+>
+> test14, l'échec connu de la hauteur du tableau de bord, passe depuis que le panneau des repas est masqué.
+
 > ### Lundi 16 novembre, le soir — ce qu'il lui reste à faire, les pièces de rechange, la mâchoire
 > **Ses réponses** : pas besoin de donner les modèles du robot et de l'aspirateur-serpillière ; pas de nouveaux suivis
 > (ni le compteur de sachets à la place du compteur d'arrêt) ; l'emploi du temps du S2 n'est pas encore sorti.

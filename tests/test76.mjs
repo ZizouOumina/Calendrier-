@@ -67,11 +67,13 @@ for (const [d, jour_, pesee, coupe] of [
   ['2026-10-31','samedi 31 oct',false,true],
   ['2026-09-15','mardi 15',false,false]]) {
   const {ctx, fr} = await jour(d+'T09:00:00+02:00');
-  const h = await fr.evaluate(()=>{
+  /* 16 novembre : la coupe est de la routine, sans case -- elle se lit dans les habitudes du jour, plus dans la liste à cocher */
+  const h = await fr.evaluate((iso)=>{
     const l=[...document.querySelectorAll('#dash-checklist li label')].map(x=>x.textContent);
+    const tout = window.__bcHabitsDuJour(new Date(iso+'T12:00:00').getDay(), iso).map(x => x.label);
     return {pesee: l.some(t=>/Pesée/.test(t)), photos: l.some(t=>/Photos/.test(t)),
-            cheveux: l.some(t=>/Coupe de cheveux/.test(t)), n:l.length};
-  });
+            cheveux: tout.some(t=>/Coupe de cheveux/.test(t)), n:l.length};
+  }, d);
   /* une seance photo ne peut exister qu'un dimanche de pesee : l'inverse serait un bug
      d'ancrage. Le detail des dates de photo est verifie dans test90. */
   ok(h.pesee===pesee && (!h.photos || h.pesee) && h.cheveux===coupe,
