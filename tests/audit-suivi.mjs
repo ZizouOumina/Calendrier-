@@ -146,7 +146,7 @@ console.log('\n═══ 6 bis. Blocs Español manqués : reportés dans QUEL co
   await ctx.close();
 }
 
-console.log('\n═══ 7. Repas : les calories sont proratisées aux cases cochées ═══');
+console.log('\n═══ 7. Repas : la cible du jour, sans case aliment par aliment ═══');
 {
   const {ctx, page, fr} = await ouvrir({['batcave-meals-'+JOUR]: {'0-0':true}});
   /* Ni la cible ni le petit-dejeuner ne sont ecrits ici : on les redemande a la Batcave,
@@ -165,7 +165,8 @@ console.log('\n═══ 7. Repas : les calories sont proratisées aux cases coc
   });
   const m = s.sub.match(/(\d+) \/ (\d+) kcal/);
   ok(m && Number(m[2]) === s.jour, 'cible du jour ' + (m?m[2]:'?') + ' kcal = la somme des ' + s.nRepas + ' repas (' + s.jour + ')');
-  ok(s.nPdej > 0 && m && Math.abs(Number(m[1]) - s.pdej/s.nPdej) < 2, '1 item sur ' + s.nPdej + ' du petit-déjeuner (' + s.pdej + ' kcal) → ' + (m?m[1]:'?') + ' kcal (' + Math.round(s.pdej/s.nPdej) + ' attendu)');
+  /* 16 novembre, sa décision : plus de case aliment par aliment -- la carte dit le plan, la pesée dit si c'est assez */
+  ok(s.nPdej === 0 && s.pdej > 0, 'le petit-déjeuner (' + s.pdej + ' kcal) n\'a plus de case à cocher (' + s.nPdej + ')');
   await ctx.close();
 }
 
@@ -177,15 +178,11 @@ console.log('\n═══ 8. Sommeil et eau : lus dans le journal du jour ══�
   const o = await objectifs(fr, page);
   const s = o.match(/Sommeil[\s\S]{0,140}?([\d,]+)\s*h/);
   ok(s && Math.abs(Number(s[1].replace(',','.'))-7) < 0.1, 'sommeil relu : ' + (s?s[1]:'?') + ' h');
-  /* L'EAU, elle, n'est plus un objectif : eau_moy est sortie des metriques semees le
-     19 septembre, quand il a ramene les objectifs a un seul palier et aux six mesures qui
-     se pilotent. Elle est toujours SUIVIE -- il la saisit et elle compte dans son score --
-     donc on continue de verifier qu'elle est relue, mais la ou elle vit desormais : le
-     journal du jour, sur le tableau de bord. */
+  /* 16 novembre, sa décision : l'eau ne se note plus -- le tableau de bord ne la montre plus, le score ne la compte plus.
+     Le sommeil, lui, se relit sur le journal du tableau de bord. */
   const e = await fr.evaluate(()=>{ document.querySelector('.nav-btn[data-page="dashboard"]').click();
                                     return document.getElementById('dash-journal').innerText; });
-  const me = e.match(/Eau[\s\S]{0,60}?([\d,]+)\s*\/\s*[\d,]+\s*L/);
-  ok(me && Math.abs(Number(me[1].replace(',','.')) - 2.5) < 0.06, 'eau relue sur le tableau de bord : ' + (me?me[1]:'?') + ' L (2,5 attendu)');
+  ok(!/Eau/.test(e) && /Sommeil[\s\S]{0,40}?7\s*h/.test(e), 'le tableau de bord relit le sommeil (7 h), plus l\'eau : ' + e.replace(/\s+/g, ' ').slice(0, 60));
   await ctx.close();
 }
 

@@ -262,13 +262,10 @@ console.log('\n== 306) Série et taux ne comptent que les jours dus ==');
   await ctx.close();
 }
 
-console.log('\n== 306b) La balance énergétique voit les pesées d\'il y a plus d\'un mois ==');
-/* Le piege : la carte lisait les pesees sur 28 JOURS et en exigeait quatre. Avec une pesee
-   tous les quinze jours il n'en existe que deux sur 28 jours — la carte ne se serait jamais
-   allumee, pas une fois en six mois, et rien ne l'aurait signale. Sa fenetre de PESEES est
-   passee a 84 jours, celle des REPAS reste a 28 (une moyenne calorique vieille de trois mois
-   ne dit plus ce qu'on mange). Ce test compte ce que la carte voit : quatre pesees espacees
-   de quinze jours, dont deux au-dela de 28 jours. */
+console.log('\n== 306b) La balance énergétique a quitté les analyses ==');
+/* 16 novembre, sa décision : les repas ne se cochent plus aliment par aliment -- la carte « Balance énergétique », qui
+   croisait les calories cochées et la pente du poids, n'a plus de données : elle sort. La boucle poids → calories, qui
+   ne lit que les pesées, reste (Repas). */
 {
   const j = {};
   [0, 14, 28, 42].forEach(n => {
@@ -276,13 +273,8 @@ console.log('\n== 306b) La balance énergétique voit les pesées d\'il y a plus
     j['batcave-journal-' + d.toISOString().slice(0, 10)] = {poids: 64 + n * 0.03, water: 0};
   });
   const { ctx, fr } = await jour('2026-11-15T09:00:00+01:00', j);
-  const txt = await fr.evaluate(() => {
-    const c = window.__bcInsights().filter(i => /Balance énergétique/.test(i.title))[0];
-    return c ? c.text : '';
-  });
-  const n = (txt.match(/(\d+) pesées/) || [])[1];
-  ok(n === '4', 'les quatre pesées sont vues, celles de 28 et 42 jours comprises (' + n + ' — « ' + txt.slice(0, 95) + ' »)');
-  ok(/4 pesées sur 12 semaines/.test(txt), 'et le message annonce la bonne fenêtre');
+  const r = await fr.evaluate(() => ({ balance: window.__bcInsights().some(i => /Balance énergétique/.test(i.title)), n: window.__bcInsights().length }));
+  ok(!r.balance && r.n === 8, 'plus de carte « Balance énergétique » : ' + r.n + ' analyses');
   await ctx.close();
 }
 
