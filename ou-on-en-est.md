@@ -3,13 +3,22 @@
 > ### Lundi 16 novembre, le soir — ce qu'il lui reste à faire, les pièces de rechange, la mâchoire
 > **Ses réponses** : pas besoin de donner les modèles du robot et de l'aspirateur-serpillière ; pas de nouveaux suivis
 > (ni le compteur de sachets à la place du compteur d'arrêt) ; l'emploi du temps du S2 n'est pas encore sorti.
-> **Les pièces** : sans les modèles, la Batcave dit quand changer les pièces, mais ne peut pas les mettre dans la liste
-> de courses. Deux rappels sont posés dans Google Agenda, sans 🦇 (la Batcave ne les retire donc jamais), à 19:45 :
-> - le dimanche 13 décembre, « 🔧 Commander le kit de rechange du robot » : un kit couvre les filtres (27 décembre,
->   21 février, 18 avril), les brosses latérales (24 janvier, 16 mai) et la brosse principale (16 mai) ;
-> - le dimanche 7 février, « 🔧 Commander la brosse-rouleau et le filtre de l'aspirateur-serpillière » (21 février).
+> **Les notifications** (« j'ai pas besoin d'avoir plein de notifs sur google agenda, tant que ce que je dois faire
+> s'affiche précisément dans ma journée dans la batcave ») : les 33 notifications 🔔 posées par la reconstruction du 15
+> au soir sont retirées de son agenda, et la Batcave n'en pose plus (`blocsARappeler` ne porte plus de tâches). Les
+> rappels de blocs de toujours restent. Les deux rappels 🔧 posés une heure plus tôt pour commander les pièces sont
+> retirés aussi.
+> **Les pièces** : sans les modèles, la Batcave ne connaît pas les références. Deux semaines avant chaque pièce neuve, le
+> ménage du dimanche (« Ma journée ») dit donc de la commander, s'il n'en a pas d'avance :
+> - le 13 décembre, le filtre du robot ;
+> - le 10 janvier, la brosse latérale ;
+> - le 7 février, le filtre et les pièces de l'aspirateur-serpillière ;
+> - le 4 avril, le filtre ;
+> - le 2 mai, les brosses ;
+> - le 30 mai, le filtre du 13 juin.
 >
-> Les deux, seulement s'il n'a pas de pièces d'avance.
+> Tests 52, 118 (scénario 2 ter réécrit sur son état du 16) et 119 (scénario 9). La simulation vérifie qu'il n'y a plus
+> de notification, et chaque commande deux semaines avant sa pièce.
 > **Ses mots** : « j'ai super mal quand je me réveille le matin à la mâchoire, je pense que c'est à cause des snus ».
 > Réponse : c'est probablement du bruxisme du sommeil, que la nicotine favorise. On teste deux semaines sans sachet
 > après 17:30 (4 h avant le coucher) et jamais en dormant. S'il n'y a pas de mieux, c'est le dentiste et une gouttière.

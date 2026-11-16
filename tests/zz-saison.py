@@ -35,7 +35,7 @@ for j in J:
             pass
         if 'core-entretien-semaine' not in hab: regle('dimanche : la case « Robot et aspirateur nettoyés »').append(iso)
         if j['menage'] and 'brosses démêlées' not in j['menage']: regle('dimanche : le ménage dit l’entretien du robot et de l’aspirateur').append(iso)
-        if not any('Pesée à jeun' in r for r in rap): regle('dimanche : la notification de la pesée').append(iso)
+        if 'core-pesee-dim' not in hab: regle('dimanche : la case de la pesée').append(iso)
     # -- le mardi : la seconde session de batch et la machine
     S2 = iso >= '2027-01-25'   # le second semestre : sa grille est provisoire (l'emploi du temps n'est pas encore donné)
     if dow == 2 and not (j['libre'] and 'deuxième session de batch' in j['libre']):
@@ -84,15 +84,37 @@ for hid, (jour, cyc, ou, mot, notif) in PER.items():
         due = j['iso'] in ds
         if ou and due and mot not in texte: regle('le jour d’une tâche, sa consigne la dit').append(hid + ' ' + j['iso'])
         if ou and not due and mot in texte and hid not in ('core-cheveux',): regle('pas de contradiction : une tâche dite un jour où elle ne tombe pas').append(hid + ' ' + j['iso'])
-        if due and not any(notif in r['titre'] and '🔔' in r['titre'] for r in j['rap']): regle('le jour d’une tâche, l’agenda sonne').append(hid + ' ' + j['iso'])
+        # 16 novembre, sa décision : « pas besoin de plein de notifs » -- les tâches vivent dans « Ma journée », sans notification
+        if any('🔔' in r['titre'] for r in j['rap']): regle('aucune notification de tâche dans l’agenda (sa décision du 16 novembre)').append(j['iso'])
+
+# -- les pièces sans modèle : deux semaines avant chaque changement, le ménage dit de les commander
+PIECES = {'core-robot-filtre': 'un filtre pour le robot', 'core-robot-brosse-laterale': 'une brosse latérale pour le robot',
+          'core-robot-brosses': 'les deux brosses principales du robot', 'core-aspi-pieces': 'une brosse-rouleau et un filtre pour l’aspirateur-serpillière'.replace('’', "'")}
+for hid, nom in PIECES.items():
+    for a in calendrier.get(hid, []):
+        avant = str(d(a) - dt.timedelta(days=14))
+        jj = next((x for x in J if x['iso'] == avant), None)
+        if jj and not (jj['menage'] and "commande aujourd'hui" in jj['menage'] and nom in jj['menage']):
+            regle('deux semaines avant une pièce neuve, le ménage dit de la commander').append(hid + ' ' + avant)
+def tombe(hid, iso):   # au-delà de la saison simulée, le rythme continue (le filtre du 13 juin se commande le 30 mai)
+    ds = calendrier.get(hid, [])
+    if iso in ds: return True
+    if not ds or iso <= J[-1]['iso']: return False
+    n = (d(iso) - d(ds[0])).days
+    return n % 7 == 0 and (n // 7) % PER[hid][1] == 0
+for j in J:
+    if j['menage'] and "commande aujourd'hui" in j['menage']:
+        dans = str(d(j['iso']) + dt.timedelta(days=14))
+        if not any(tombe(h, dans) for h in PIECES):
+            regle('pas de contradiction : une commande sans pièce à changer deux semaines plus tard').append(j['iso'])
 
 print('Saison simulée : %d jours, du %s au %s · %d erreurs de page' % (len(J), J[0]['iso'], J[-1]['iso'], len(S['erreurs'])))
 ko = 0
 for nom, v in regles.items():
     print(('  ok  ' if not v else '  KO  ') + nom + ('' if not v else ' — ' + ', '.join(v[:8]) + (' …' if len(v) > 8 else '')))
     ko += bool(v)
-nb = collections.Counter(len([r for r in j['rap'] if '🔔' in r['titre']]) for j in J)
-print('\nNotifications de tâches par jour :', dict(sorted(nb.items())))
+print('\nNotifications de tâches dans l’agenda : %d (aucune, sa décision du 16 novembre)' % sum(1 for j in J for r in j['rap'] if '🔔' in r['titre']))
+print('Commandes de pièces dites au ménage : ' + ' '.join(j['iso'][5:] for j in J if j['menage'] and "commande aujourd'hui" in j['menage']))
 print('\nLe calendrier des tâches périodiques :')
 for hid, ds in calendrier.items(): print('  %-28s %s' % (hid, ' '.join(x[5:] for x in ds)))
 ko1 = sum(1 for nom, v in regles.items() if v and 'provisoire' not in nom)

@@ -604,6 +604,7 @@ PLUS_RARE = ['Brosse à dents neuve : toutes les 12 semaines, un dimanche matin 
              'La brosse latérale du robot neuve, toutes les 16 semaines : {robot_laterale}.',
              'Les brosses principales du robot neuves, toutes les 36 semaines : {robot_brosses}. La roue avant : quand elle accroche ou grince.',
              'La brosse-rouleau et le filtre de l’aspirateur-serpillière neufs, toutes les 16 semaines : {aspi}.',
+             'Les pièces du robot et de l’aspirateur-serpillière : deux semaines avant chaque changement, le ménage te dit de les commander, si tu n’en as pas d’avance.',
              'Le matelas tourné tête-pieds et aspiré, toutes les 13 semaines, le lit défait à 15:30 : {matelas}.',
              'La couette à la laverie, toutes les 26 semaines, la grande machine : {couette}.']
 

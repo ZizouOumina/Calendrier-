@@ -233,10 +233,11 @@ console.log('\n== 8) L\'entretien des machines (v14) : le robot, l\'aspirateur-s
   await ctx.close();
 }
 
-console.log('\n== 9) Les tâches rares à date (v15), et une notification pour chaque tâche périodique ==');
+console.log('\n== 9) Les tâches rares à date (v15), dans « Ma journée » -- sans notification, et la commande des pièces ==');
 {
   /* 15 novembre, tard le soir : « comment je sais quand est-ce que je devrais remplacer ma brosse à dents [...] est-ce que
-     j'aurais une notif ? » */
+     j'aurais une notif ? ». 16 novembre : « pas besoin de plein de notifs, tant que ce que je dois faire s'affiche
+     précisément dans ma journée dans la batcave » -- et pas les modèles : le ménage dit de commander les pièces. */
   const graines = {}; for(let v = 2; v <= 14; v++) graines['batcave-habits-seed-v' + v] = true;
   const base = [{id:'core-lit', label:'Lit fait', icon:'🛏️'}, {id:'core-pesee-dim', label:'Pesée, à jeun', icon:'⚖️', jours:[0]},
                 {id:'core-photos-dim', label:'Photos — peau et corps', icon:'📸', jours:[0], cycleSemaines:4, ancre:'2026-11-22'},
@@ -254,7 +255,8 @@ console.log('\n== 9) Les tâches rares à date (v15), et une notification pour c
     return { ids, filtre: quand('core-robot-filtre'), laterale: quand('core-robot-brosse-laterale'), brosses: quand('core-robot-brosses'), aspi: quand('core-aspi-pieces'),
              oreiller: quand('core-oreiller'), couette: quand('core-couette'), matelas: quand('core-matelas'),
              n22: notifs('2026-11-22'), n27: notifs('2026-12-27'), n29: notifs('2026-11-29'), n23: notifs('2026-11-23'), n15: notifs('2026-11-15'),
-             b06: batch('2026-12-06'), b03: batch('2027-01-03'), b17: batch('2027-01-17'), b13: batch('2026-12-13'), m27: men('2026-12-27') };
+             b06: batch('2026-12-06'), b03: batch('2027-01-03'), b17: batch('2027-01-17'), b13: batch('2026-12-13'), m27: men('2026-12-27'),
+             m13: men('2026-12-13'), m10: men('2027-01-10'), m07: men('2027-02-07'), m02: men('2027-05-02'), m20: men('2026-12-20') };
   });
   ok(['core-robot-filtre','core-robot-brosse-laterale','core-robot-brosses','core-aspi-pieces','core-oreiller','core-couette','core-matelas'].every(i => r.ids.includes(i)) && r.ids.length === 12,
      'sept cases ajoutées, sans toucher au reste (' + r.ids.length + ')');
@@ -265,10 +267,14 @@ console.log('\n== 9) Les tâches rares à date (v15), et une notification pour c
   ok(/matelas tourné/.test(r.b06) && /oreiller aussi/.test(r.b03) && /couette dans un second sac/.test(r.b17) && !/matelas|oreiller|couette/.test(r.b13),
      'la laverie du dimanche les emporte leur jour, et pas les autres');
   ok(/filtre du robot est neuf/.test(r.m27) && /entretien du mois/.test(r.m27), 'le 27 décembre, le ménage : l\'entretien du mois et le filtre du robot neuf');
-  ok(r.n22.join(' | ') === '05:21 🦇 🔔 Pesée à jeun + Photos | 05:24 🦇 🔔 Brosse à dents neuve',
-     'le 22 novembre, l\'agenda sonne pour la pesée et les photos, puis pour la brosse à dents neuve : ' + r.n22.join(' | '));
-  ok(r.n27.some(x => x === '16:25 🦇 🔔 Entretien du mois + Filtre du robot neuf'), 'le 27 décembre, une seule notification pour les deux tâches du ménage : ' + r.n27.join(' | '));
-  ok(r.n29.some(x => /16:25 .*Entretien du mois/.test(x)) && r.n23.length === 0 && r.n15.length === 0, 'rien un lundi sans tâche, rien avant le jour 1');
+  ok(r.n22.length === 0 && r.n27.length === 0 && r.n29.length === 0 && r.n23.length === 0 && r.n15.length === 0,
+     'aucune notification de tâche dans l\'agenda, ni le 22 novembre, ni le 27 décembre : tout est dans « Ma journée » (' + [].concat(r.n22, r.n27, r.n29).join(' | ') + ')');
+  ok(/commande aujourd'hui un filtre pour le robot \(le modèle est écrit sous l'appareil\) : le changement est dans deux semaines, au ménage du 27 décembre/.test(r.m13),
+     'le 13 décembre, le ménage dit de commander le filtre du robot pour le 27 : ' + (r.m13.match(/Si tu n'as pas de rechange[^.]*\./) || [''])[0]);
+  ok(/commande aujourd'hui une brosse latérale pour le robot/.test(r.m10) && /au ménage du 24 janvier/.test(r.m10), 'le 10 janvier, la brosse latérale pour le 24');
+  ok(/commande aujourd'hui un filtre pour le robot et une brosse-rouleau et un filtre pour l'aspirateur-serpillière/.test(r.m07) && /au ménage du 21 février/.test(r.m07), 'le 7 février, le filtre du robot et les pièces de l\'aspirateur, pour le 21');
+  ok(/commande aujourd'hui une brosse latérale pour le robot et les deux brosses principales du robot/.test(r.m02) && /au ménage du 16 mai/.test(r.m02), 'le 2 mai, la brosse latérale et les brosses principales, pour le 16');
+  ok(!/commande aujourd'hui/.test(r.m27) && !/commande aujourd'hui/.test(r.m20), 'les autres dimanches, rien à commander');
   await ctx.close();
 }
 

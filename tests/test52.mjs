@@ -141,14 +141,12 @@ console.log('\n== 171) Activer : un événement par bloc, aujourd\'hui (restants
      va jusqu'au 31 janvier et contient, en plus des douze jours sans cours, ceux du 20 au 24 janvier : 23 (mardi 17) + 23
      (mercredi 18) + 25 (8 dec.) + 25 x 3 (23-25 dec.) + 26 (28 dec.) + 25 x 4 + 26 (4 janv.) + 25 + 25 + 25 x 3 (20-22
      janv.) + 22 + 22 (23-24 janv.) = 467. Dix-neuf journees poussees.
-     15 novembre : les taches du jour sonnent dans l'agenda (une notification 🔔 par heure). Deux de ces journees en
-     portent : le samedi 23 janvier (le coiffeur a 13:00, le frigo a 15:25) et le dimanche 24 (la pesee a 05:21,
-     l'entretien du mois et la brosse laterale du robot a 16:25). 467 + 4 = 471. */
-  ok(crees.length === 471, '471 événements créés : mardi 17 et mercredi 18, plus le 8 décembre, les jours de semaine des vacances de Noël et les jours sans cours de fin janvier, la clôture de chaque soir, et les notifications des tâches du jour (' + crees.length + ')');
-  const cloches = crees.filter(c => /🔔/.test(c.input.summary)).map(c => c.input.startTime.slice(0, 16) + ' ' + c.input.summary).sort();
-  ok(JSON.stringify(cloches) === JSON.stringify(['2027-01-23T13:00 🦇 🔔 Coiffeur', '2027-01-23T15:25 🦇 🔔 Frigo', '2027-01-24T05:21 🦇 🔔 Pesée à jeun', '2027-01-24T16:25 🦇 🔔 Entretien du mois + Brosse latérale du robot neuve']) &&
-     crees.filter(c => /🔔/.test(c.input.summary)).every(c => c.input.availability === 'AVAILABILITY_FREE' && /Tâche du jour dans la Batcave/.test(c.input.description || '')),
-     'les tâches du jour sonnent à leur heure, sans occuper l\'agenda : ' + cloches.join(' | '));
+     15 novembre : les taches du jour sonnaient dans l'agenda (quatre de plus, 471). 16 novembre, sa decision : « pas
+     besoin de plein de notifs, tant que ce que je dois faire s'affiche precisement dans ma journee dans la batcave » --
+     plus aucune : 467. */
+  ok(crees.length === 467, '467 événements créés : mardi 17 et mercredi 18, plus le 8 décembre, les jours de semaine des vacances de Noël et les jours sans cours de fin janvier, et la clôture de chaque soir (' + crees.length + ')');
+  const cloches = crees.filter(c => /🔔/.test(c.input.summary)).map(c => c.input.startTime.slice(0, 16) + ' ' + c.input.summary);
+  ok(cloches.length === 0, 'aucune notification de tâche : les tâches du jour vivent dans « Ma journée » (' + (cloches.join(' | ') || 'aucune') + ')');
   /* Anki 1 (05:30) a commence a 06:30 : il n'est pas envoye. Anki 2, a 09:00, l'est. */
   const rev1 = crees.find(c => c.input.summary === '🦇 Anki 2' && c.input.startTime.startsWith('2026-11-17'));
   ok(!!rev1 && rev1.input.startTime === '2026-11-17T09:00:00+01:00' && rev1.input.endTime === '2026-11-17T10:00:00+01:00', 'Anki 2 : 09:00 → 10:00 heure de Madrid (' + (rev1 && rev1.input.startTime) + ')');
@@ -160,23 +158,23 @@ console.log('\n== 171) Activer : un événement par bloc, aujourd\'hui (restants
   const r8 = await local(fr, 'batcave-gcal-2026-11-17'), r9 = await local(fr, 'batcave-gcal-2026-11-18');
   ok(r8 && Object.keys(r8).length === 23 && r9 && Object.keys(r9).length === 23 && Object.values(r8).every(x => x.id && x.empreinte && x.cree === true), 'relevés locaux : 23 + 23 blocs (la clôture comprise) avec id, empreinte et marque « créé par la Batcave »');
   const opt = await local(fr, 'batcave-gcal-ecriture');
-  ok(opt && opt.actif === true && opt.bilan && opt.bilan.crees === 471 && opt.bilan.passes === 1, 'option active, bilan : 471 créés, 1 déjà commencé non envoyé');
+  ok(opt && opt.actif === true && opt.bilan && opt.bilan.crees === 467 && opt.bilan.passes === 1, 'option active, bilan : 467 créés, 1 déjà commencé non envoyé');
   const lus = await appels(fr, 'list_events');
   ok(lus.length === 19, 'chaque journée poussée est relue dans Google avant l\'envoi (' + lus.length + ' lectures pour 19 jours)');
   /* second envoi : rien à créer */
   await fr.evaluate(() => document.getElementById('gcal-pousser').click());
   await page.waitForTimeout(400);
   const crees2 = await appels(fr, 'create_event');
-  ok(crees2.length === 471, '« Pousser maintenant » ne recrée rien (' + crees2.length + ')');
+  ok(crees2.length === 467, '« Pousser maintenant » ne recrée rien (' + crees2.length + ')');
   const det = await fr.evaluate(() => document.getElementById('gcal-detail').textContent);
-  ok(/471 inchangés/.test(det), 'détail : ' + det.slice(0, 90));
+  ok(/467 inchangés/.test(det), 'détail : ' + det.slice(0, 90));
   /* relevé local perdu (autre appareil) : les événements présents sont adoptés, pas doublés */
   await fr.evaluate(() => localStorage.removeItem('batcave-gcal-2026-11-18'));
   await fr.evaluate(() => document.getElementById('gcal-pousser').click());
   await page.waitForTimeout(400);
   const crees3 = await appels(fr, 'create_event');
   const r9b = await local(fr, 'batcave-gcal-2026-11-18');
-  ok(crees3.length === 471 && r9b && Object.keys(r9b).length === 23 && Object.values(r9b).every(x => x.cree === false), 'sans relevé local, les 23 événements de demain sont reconnus et adoptés (marqués « pas créés par la Batcave »), aucun doublon');
+  ok(crees3.length === 467 && r9b && Object.keys(r9b).length === 23 && Object.values(r9b).every(x => x.cree === false), 'sans relevé local, les 23 événements de demain sont reconnus et adoptés (marqués « pas créés par la Batcave »), aucun doublon');
   const opt2 = await local(fr, 'batcave-gcal-ecriture');
   ok(opt2.bilan.adoptes === 23, 'bilan : 23 adoptés (la clôture comprise)');
   /* désactiver retire les rappels envoyés */
@@ -187,7 +185,7 @@ console.log('\n== 171) Activer : un événement par bloc, aujourd\'hui (restants
      que les jours sans cours partent d'avance, un releve peut porter sur une date lointaine.
      21 (mardi 29) + 20 (9 oct.) + 19 (12 oct.) + 20 (8 dec.) = 80. Ceux du mercredi,
      adoptes au tour precedent donc marques « pas crees par la Batcave », restent. */
-  ok(sup.length === 448, 'désactiver ne retire que ce que la Batcave a créé, sur TOUS les jours poussés (471 − les 23 adoptés du mercredi) — ' + sup.length);
+  ok(sup.length === 444, 'désactiver ne retire que ce que la Batcave a créé, sur TOUS les jours poussés (467 − les 23 adoptés du mercredi) — ' + sup.length);
   const r8c = await local(fr, 'batcave-gcal-2026-11-17');
   ok(r8c === null && (await local(fr, 'batcave-gcal-ecriture')).actif === false, 'relevés effacés, option éteinte');
   await ctx.close();
@@ -205,7 +203,7 @@ console.log('\n== 172) Option active au démarrage : envoi automatique ; bloc d�
   const maj = await appels(fr, 'update_event');
   ok(maj.length === 1 && maj[0].input.eventId === 'ancien1' && maj[0].input.startTime === '2026-11-17T09:00:00+01:00', 'le bloc dont l\'heure a changé est mis à jour, pas recréé');
   const crees = await appels(fr, 'create_event');
-  ok(crees.length === 470, 'les 470 autres sont créés au démarrage (' + crees.length + ')');
+  ok(crees.length === 466, 'les 466 autres sont créés au démarrage (' + crees.length + ')');
   const st = await fr.evaluate(() => document.getElementById('gcal-statut').textContent);
   ok(/actif · dernier envoi/.test(st), 'statut : ' + st);
   await ctx.close();
@@ -236,7 +234,7 @@ console.log('\n== 172b) Ton agenda porte déjà le planning en événements réc
   ok(!crees.some(c => c.input.summary === '🦇 Anki 2' && c.input.startTime.startsWith('2026-11-17')), 'Anki 2 de mardi, déjà là à la bonne heure : adopté, pas recréé');
   ok(!crees.some(c => c.input.summary === '🦇 Coucher' && c.input.startTime.startsWith('2026-11-17')) && maj.some(m => m.input.eventId === 'rec2_20260908' && m.input.startTime === '2026-11-17T21:35:00+01:00'), 'Coucher déjà là à 21:00 : l\'instance est alignée sur le planning (21:35), pas doublée');
   ok(maj.some(m => m.input.eventId === 'rec1' && m.input.overrideReminders && m.input.overrideReminders[0].minutes === 5) && maj.some(m => m.input.eventId === 'rec2' && m.input.overrideReminders[0].minutes === 30), 'les rappels manquants sont posés sur la SÉRIE récurrente : 5 min (révision), 30 min (coucher)');
-  ok(crees.length === 468, '468 créations seulement (471 − 3 adoptés)');
+  ok(crees.length === 464, '464 créations seulement (467 − 3 adoptés)');
   /* 31 octobre : la description d'une serie de septembre (« Réchauffage — repas préparés le dimanche. »)
      ne reste pas sur l'instance du jour : elle reprend la consigne du jour. */
   ok(maj.some(m => m.input.eventId === 'rec3_20260908' && /La boîte du jour : les pâtes/.test(m.input.description || '')), 'le déjeuner adopté reprend la consigne du jour (les pâtes, dès le 16), pas la description de septembre');
@@ -246,7 +244,7 @@ console.log('\n== 172b) Ton agenda porte déjà le planning en événements réc
   await fr.evaluate(() => document.getElementById('gcal-toggle').click());
   await page.waitForTimeout(700);
   const sup = await appels(fr, 'delete_event');
-  ok(sup.length === 468 && !sup.some(d => /^rec/.test(d.input.eventId)), 'désactiver retire les 468 créés et jamais tes événements adoptés (' + sup.length + ')');
+  ok(sup.length === 464 && !sup.some(d => /^rec/.test(d.input.eventId)), 'désactiver retire les 464 créés et jamais tes événements adoptés (' + sup.length + ')');
   await ctx.close();
 }
 

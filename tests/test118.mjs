@@ -119,15 +119,30 @@ console.log('\n== 2) Déjà fait : rien ne repart ==');
   await ctx.close();
 }
 
-console.log('\n== 2 ter) Faite avant les rappels des tâches (15 novembre au soir) : elle repart une fois, et les pose ==');
+console.log('\n== 2 ter) 16 novembre, plus de notifications de tâches : sa reconstruction du 15 ne repart pas, et ce que ses relevés gardent part ==');
 {
-  const { ctx, fr, page } = await ouvrir('2026-11-16T06:00:00+01:00', Object.assign({}, ACTIF, RELEVE_JANVIER, {'batcave-gcal-nettoyage-janvier': {date:'2026-11-12', retires:124}, 'batcave-gcal-reconstruction': {date:'2026-11-15', programme:'2026-11-16', jours:70, du:'2026-11-16', au:'2027-01-24'}}));
+  /* SON état du 16 : la reconstruction du 15 au soir (taches: 1) avait posé les notifications des tâches. Sa décision du
+     16 : « pas besoin de plein de notifs, tant que ce que je dois faire s'affiche précisément dans ma journée dans la
+     batcave ». Les 33 ont été retirées de son agenda ; ici, trois sont encore là, et ses relevés les gardent. */
+  const releves = {
+    'batcave-gcal-2026-11-21': {'h1300': {id:'cl1', empreinte:'2026-11-21T13:00:00+01:00|2026-11-21T13:05:00+01:00|🦇 🔔 Coiffeur', cree:true}},
+    'batcave-gcal-2026-11-22': {'h0521': {id:'cl2', empreinte:'x', cree:true}, 'h0524': {id:'cl3', empreinte:'x', cree:true}}
+  };
+  const { ctx, fr, page } = await ouvrir('2026-11-21T06:00:00+01:00', Object.assign({}, ACTIF, RELEVE_JANVIER, {'batcave-gcal-nettoyage-janvier': {date:'2026-11-12', retires:124}, 'batcave-gcal-reconstruction': {date:'2026-11-15', programme:'2026-11-16', taches:1, jours:70, du:'2026-11-16', au:'2027-01-24'}}, releves));
+  await fr.evaluate(() => { window.__gcalEvents.push(
+    {id:'cl1', summary:'🦇 🔔 Coiffeur', start:{dateTime:'2026-11-21T13:00:00+01:00'}, end:{dateTime:'2026-11-21T13:05:00+01:00'}, status:'confirmed'},
+    {id:'cl2', summary:'🦇 🔔 Pesée à jeun + Photos', start:{dateTime:'2026-11-22T05:21:00+01:00'}, end:{dateTime:'2026-11-22T05:26:00+01:00'}, status:'confirmed'},
+    {id:'cl3', summary:'🦇 🔔 Brosse à dents neuve', start:{dateTime:'2026-11-22T05:24:00+01:00'}, end:{dateTime:'2026-11-22T05:29:00+01:00'}, status:'confirmed'}); });
   await page.clock.runFor(7000);
-  await fr.waitForFunction(() => { try{ return (JSON.parse(localStorage.getItem('batcave-gcal-reconstruction')) || {}).taches === 1; }catch(e){ return false; } }, null, {timeout:90000}).catch(() => {});
-  await page.waitForTimeout(500);
-  const crees = (await appels(fr, 'create_event')).map(a => a.input.startTime.slice(0, 16) + ' ' + a.input.summary).filter(x => /🔔/.test(x));
-  ok(crees.some(x => x === '2026-11-22T05:21 🦇 🔔 Pesée à jeun + Photos') && crees.some(x => x === '2026-11-22T05:24 🦇 🔔 Brosse à dents neuve') && crees.some(x => /^2026-11-28T15:25 .*Frigo/.test(x)),
-     'les notifications des tâches sont posées d\'un coup : ' + crees.length + ' (dont ' + crees.slice(0, 3).join(' | ') + ')');
+  await page.waitForTimeout(800);
+  const crees = (await appels(fr, 'create_event')).filter(a => /🔔/.test(a.input.summary));
+  const sup = (await appels(fr, 'delete_event')).map(a => a.input.eventId);
+  const lus = (await appels(fr, 'list_events')).filter(a => a.input.orderBy !== 'startTime');
+  ok(crees.length === 0, 'aucune notification de tâche n\'est posée (' + crees.length + ')');
+  ok(['cl1', 'cl2', 'cl3'].every(id => sup.includes(id)), 'les trois que ses relevés gardaient partent au premier envoi de leur jour (' + sup.filter(x => /^cl/.test(x)).join(', ') + ')');
+  ok(lus.length < 70, 'la reconstruction du 15 au soir ne repart pas pour rien (' + lus.length + ' jours relus)');
+  const r22 = await local(fr, 'batcave-gcal-2026-11-22');
+  ok(r22 && !r22.h0521 && !r22.h0524, 'et son relevé du 22 les oublie');
   await ctx.close();
 }
 
