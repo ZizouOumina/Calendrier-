@@ -89,6 +89,12 @@ QUOTIDIENNES = {'Lit fait', 'Étirements faits', 'Fajr', 'Dhuhr', "Jumu'ah (~14h
                 'Sadaqah du jour', 'Nouvelles à la famille',
                 '30 min en espagnol avec un natif', 'Les dix formules du jour', '20 pages lues en espagnol', 'Créatine — 5 g',
                 'Lumière du matin — 15 min dehors, dès qu’il fait jour'}
+# 17 novembre : les cases qui se rangent dans une autre le jour où celle-ci tombe (le même ordre que REGROUPES dans la Batcave)
+REGROUPES = {
+    'core-menage': ['core-rideau-douche', 'core-detartrage', 'core-entretien-semaine', 'core-entretien-mois', 'core-robot-filtre',
+                    'core-robot-brosse-laterale', 'core-robot-brosses', 'core-aspi-pieces', 'core-machine-filtre'],
+    'core-draps': ['core-serviette-corps', 'core-matelas', 'core-oreiller', 'core-couette'],
+}
 COURTS = {'Robot : filtre neuf': 'Filtre du robot neuf', 'Robot : brosse latérale neuve': 'Brosse latérale du robot', 'Robot : brosses principales neuves': 'Brosses du robot',
           'Aspirateur : brosse et filtre neufs': 'Pièces de l’aspirateur', 'Matelas tourné et aspiré': 'Matelas',
           'Robot et aspirateur nettoyés': 'Entretien du robot et de l’aspirateur', 'Entretien du mois des machines': 'Entretien du mois des machines',
@@ -492,13 +498,21 @@ def construire(J, semaine, k):
     if iso[8:] == '24': N.append('Le 24 : les factures et le budget relus (onglet Budget), avant le virement du 25.')
     if linge_manque: N.append('Une machine aujourd’hui : la tenue de salle des derniers jours, 30 °C, à l’envers, sans adoucissant.')
     en_plus, routine = [], []
-    for hb in (J.get('duJour') or []):
+    du_jour = J.get('duJour') or []
+    # 17 novembre, « et la 5 » : comme dans la Batcave (REGROUPES), le jour où sa case mère tombe, l'entretien se range
+    # dans le ménage du dimanche et le linge rare dans les draps -- une seule case, « avec : … »
+    presents = {hb.get('id'): hb for hb in du_jour}
+    mere = {c: m for m, enfants in REGROUPES.items() if m in presents for c in enfants if c in presents}
+    for hb in du_jour:
         h = hb['label']
+        if hb.get('id') in mere: continue
         est_routine = hb.get('id') in ROUTINE_IDS or h in ROUTINE_LIBELLES
         if h in QUOTIDIENNES and not est_routine: continue
         x = COURTS.get(h, h)
         if x == 'Ongles des mains' and a('Photos'): x = 'Ongles des mains et des pieds'
         if x == 'Créatine — 5 g': x = 'Créatine, 5 g'
+        avec = [COURTS.get(presents[c]['label'], presents[c]['label']) for c in REGROUPES.get(hb.get('id'), []) if mere.get(c) == hb.get('id')]
+        if avec: x += ', avec : ' + ' · '.join(y[:1].lower() + y[1:] for y in avec)
         (routine if est_routine else en_plus).append(x)
     cib = J.get('cible') or {}
     rev = cib.get('rev') or 0

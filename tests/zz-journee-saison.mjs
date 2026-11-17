@@ -54,6 +54,20 @@ function tombe(h, iso){
   return Math.floor(jrs / 7) % n === 0;
 }
 const libelle = (h, dow) => (h.icon ? h.icon + ' ' : '') + h.label + (h.id === 'core-dhuhr' && dow === 5 ? ' · Jumu’ah' : '');
+/* 17 novembre, « et la 5 » : le jour où sa case mère tombe, l'entretien se range dans le ménage du dimanche et le linge rare
+   dans les draps (« avec : … », dans cet ordre) -- la règle, réécrite ici à part */
+const REGROUPES = {
+  'core-menage': ['core-rideau-douche', 'core-detartrage', 'core-entretien-semaine', 'core-entretien-mois', 'core-robot-filtre',
+                  'core-robot-brosse-laterale', 'core-robot-brosses', 'core-aspi-pieces', 'core-machine-filtre'],
+  'core-draps': ['core-serviette-corps', 'core-matelas', 'core-oreiller', 'core-couette']
+};
+function regrouper(dus){
+  const ids = new Set(dus.map(h => h.id)), mere = {};
+  for (const m of Object.keys(REGROUPES)) if (ids.has(m)) for (const c of REGROUPES[m]) if (ids.has(c)) mere[c] = m;
+  return dus.filter(h => !mere[h.id]).map(h => ({ h, avec: (REGROUPES[h.id] || []).filter(c => mere[c] === h.id).map(c => dus.find(x => x.id === c)) }));
+}
+const minus = l => l.charAt(0).toLowerCase() + l.slice(1);
+const texte = (x, dow) => libelle(x.h, dow) + (x.avec.length ? ' avec : ' + x.avec.map(c => minus(c.label)).join(' · ') : '');
 
 if (quoi.includes('A')){
   console.log('\n== A) chaque jour à la suite, du ' + debut + ' au ' + fin + ' ==');
@@ -88,7 +102,8 @@ if (quoi.includes('A')){
     });
     if (/undefined|NaN|\bnull\b|\[object /.test(r.texte)) ko(iso + ' : texte suspect « ' + (r.texte.match(/.{0,40}(undefined|NaN|\bnull\b|\[object ).{0,40}/) || [''])[0] + ' »');
     const dus = habs.filter(h => tombe(h, iso) && !['core-revue', 'core-marche', 'core-courses', 'core-cou-jeudi'].includes(h.id));
-    const attendu = { cases: dus.filter(h => !h.sansCase).map(h => libelle(h, dow)), routine: dus.filter(h => h.sansCase).map(h => libelle(h, dow)) };
+    const g = regrouper(dus);
+    const attendu = { cases: g.filter(x => !x.h.sansCase).map(x => texte(x, dow)), routine: g.filter(x => x.h.sansCase).map(x => texte(x, dow)) };
     for (const cle of ['cases', 'routine']){
       const a = [...attendu[cle]].sort().join(' | '), b = [...r[cle]].sort().join(' | ');
       if (a !== b) ko(iso + ' ' + cle + ' : attendu [' + a + '] / affiché [' + b + ']');
@@ -112,7 +127,7 @@ if (quoi.includes('B')){
     try {
       await versJournee(fr, page);
       const habs = await fr.evaluate(() => JSON.parse(localStorage.getItem('batcave-habits') || '[]'));
-      const dus = habs.filter(h => tombe(h, iso)).map(h => h.id);
+      const dus = regrouper(habs.filter(h => tombe(h, iso))).map(x => x.h.id);
       const ids = await fr.evaluate(() => [...document.querySelectorAll('#mj-cases input[data-mj-hab], #mj-routine input[data-mj-hab]')].map(x => x.dataset.mjHab));
       if ([...ids].sort().join() !== [...dus].sort().join()) ko(iso + ' : cases [' + ids.join(', ') + '] / attendues [' + dus.join(', ') + ']');
       for (const id of ids){

@@ -1,5 +1,46 @@
 # Où on en est — samedi 19 septembre 2026, au soir
 
+> ### Mardi 17 novembre, l'après-midi — l'agenda ne sonne qu'aux départs ; le jeudi en 55 minutes ; le dimanche allégé
+> **Ses mots** : « fais la 2, ajuste pour la 3, et la 5, je te dirai ce dimanche pour la pesée ». Trois des cinq
+> améliorations proposées le midi.
+> **Google Agenda (la 2)** : il sonnait 5 min avant chaque bloc, de 17 à 26 fois par jour (21,5 en moyenne sur la saison).
+> Il ne sonne plus qu'aux moments où il faut bouger (`rappelBloc`) :
+> - 5 min avant chaque départ (« Trajet salle », « Trajet cours », « Trajet club », « Trajet mosquée », « Trajet · » un
+>   examen) ; « Trajet retour » se tait ;
+> - à l'ouverture de la clôture, et 30 min avant le coucher.
+> Les autres blocs restent dans l'agenda, à leur heure, sans aucun rappel (`useDefaultReminders:false`). Ça fait 3,3
+> moments par jour en moyenne, entre 2 et 5. Les rappels posés à part (les deux brossages, les tapis) et les cours de la
+> fac ne changent pas.
+> L'envoi n'écrit plus que ce qui diffère vraiment de l'agenda (`alignerSurBloc`) : l'heure, le titre, la consigne, le
+> rappel. Un événement déjà juste ne coûte aucun appel. Le rappel va sur la SÉRIE : Google le reporte aussi sur les
+> occurrences déjà modifiées, vérifié sur « Anki matinal » dans son agenda. La remise au propre jusqu'au 24 janvier
+> repart une fois (`GCAL_RECONSTRUCTION_TACHES` = 2) pour poser les bons rappels.
+> J'ai déjà coupé moi-même les 18 séries muettes de mercredi et le « Préparer · Anatomia 1 » du 18 : demain, son agenda
+> ne sonne plus qu'au trajet du club, au trajet des cours, à la clôture et au coucher. Google refuse plus de quelques
+> écritures à la fois (« Resource has been exhausted ») : la Batcave en fait trois en parallèle, comme le 12.
+> **Le jeudi (la 3)** : la séance durait environ 74 min, pas 55. Le calcul compte les séries, les repos, l'échauffement
+> et le passage d'un poste à l'autre ; le lundi, le mardi et le samedi tiennent déjà. Elle tombe à environ 54 min :
+> - tractions et développé couché passent de 4 à 3 séries (dos 14 séries par semaine, pectoraux 9) ;
+> - les repos des paires sont plus courts : 60 s / 90 s, puis 45 s / 75 s, 30 s / 60 s, et 30 s entre les trois du trio.
+> Entre deux séries d'un même gros muscle, il reste plus de 3 min (3 min 20 aux tractions, 3 min 40 au couché). Les
+> exercices et leur ordre ne bougent pas : le journal et la progression se lisent pareil. programme-sport.md suit.
+> **Le dimanche (la 5)** : le jour où leur case mère tombe, les tâches suivantes s'y rangent (`REGROUPES`, `casesDuJour`).
+> - Avec le ménage : l'entretien des machines (la semaine, le mois), le filtre de la machine à laver, le détartrage, le
+>   rideau de douche, les pièces neuves du robot et de l'aspirateur.
+> - Avec les draps : la serviette de corps, le matelas, l'oreiller, la couette.
+> La case mère dit « avec : … » et se coche seule. Leurs dates ne bougent pas : elles suivent un cycle sur le calendrier,
+> pas la dernière coche. Le compte, la clôture, le plan du jour et l'anneau comptent les cases affichées.
+> Le dimanche passe de 24-26 cases à 21-24, soit 2 ou 3 de moins, et non « environ 6 » comme je l'avais annoncé.
+> « Ta semaine » et « Ta semaine type » regroupent pareil.
+> **Vérifié** :
+> - test123 (les trois changements), test52 et test118 (les rappels, avec un agenda simulé qui garde les rappels et les
+>   reporte d'une série sur ses occurrences), test47, test70 et test72 (le jeudi) ;
+> - la campagne complète (115 tests) et les audits (audit, audit-suivi, audit-cablage, verif-pages, contraste,
+>   verif-profonde, et la vérification avec ses données réelles) ;
+> - la saison avec ses données (zz-journee-saison) : A, 203 jours et 3 842 cases (99 de moins), toutes justes ; B,
+>   chaque jour coché, décoché et rechargé.
+> **En attente** : sa pesée de dimanche 22 (60 ou 64 kg) pour recaler les calories et l'objectif de juin.
+
 > ### Mardi 17 novembre — tout se coche dans « Ma journée », sans suivi ; le cou du jeudi à la salle
 > **Ses mots** : « je veux pouvoir cocher dans ma journée, pas besoin de traquer, on va faire un tri dans mes habitudes
 > d'abord, puis on va enlever l'onglet habitude […] mais ça veut aussi dire que l'onglet ma journée doit tout afficher

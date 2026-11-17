@@ -19,13 +19,18 @@ const MOCK = () => {
         return Promise.resolve({content:[], payload:{events: window.__gcalEvents.filter(e => { const t = new Date(e.start.dateTime).getTime(); return t >= a && t <= z && e.status !== 'cancelled'; })}});
       }
       if(tool === 'create_event'){
-        const ev = {id:'ev' + (++n), summary: input.summary, description: input.description, start:{dateTime: input.startTime, timeZone:'Europe/Madrid'}, end:{dateTime: input.endTime, timeZone:'Europe/Madrid'}, status:'confirmed', overrideReminders: input.overrideReminders};
+        const ev = {id:'ev' + (++n), summary: input.summary, description: input.description, start:{dateTime: input.startTime, timeZone:'Europe/Madrid'}, end:{dateTime: input.endTime, timeZone:'Europe/Madrid'}, status:'confirmed', overrideReminders: input.overrideReminders, useDefaultReminders: input.overrideReminders ? false : input.useDefaultReminders !== false};
         window.__gcalEvents.push(ev);
         return Promise.resolve({content:[], payload: ev});
       }
       if(tool === 'update_event'){
         const ev = window.__gcalEvents.find(e => e.id === input.eventId);
-        if(ev){ if(input.summary) ev.summary = input.summary; if('description' in input) ev.description = input.description; if(input.startTime) ev.start.dateTime = input.startTime; if(input.endTime) ev.end.dateTime = input.endTime; }
+        /* le rappel comme Google le garde : overrideReminders remplace tout, useDefaultReminders:false seul n'en laisse aucun ;
+           posé sur une série, il passe à toutes ses occurrences, même modifiées (vérifié le 17 novembre sur son agenda) */
+        const rappel = e => { if(input.overrideReminders){ e.overrideReminders = input.overrideReminders; e.useDefaultReminders = false; }
+                              else if('useDefaultReminders' in input){ delete e.overrideReminders; e.useDefaultReminders = input.useDefaultReminders; } };
+        if(ev){ if(input.summary) ev.summary = input.summary; if('description' in input) ev.description = input.description; if(input.startTime) ev.start.dateTime = input.startTime; if(input.endTime) ev.end.dateTime = input.endTime; rappel(ev); }
+        window.__gcalEvents.filter(e => e.recurringEventId && e.recurringEventId === input.eventId).forEach(rappel);
         return Promise.resolve({content:[], payload: ev || {id: input.eventId}});
       }
       if(tool === 'delete_event'){
@@ -150,7 +155,13 @@ console.log('\n== 171) Activer : un événement par bloc, aujourd\'hui (restants
   /* Anki 1 (05:30) a commence a 06:30 : il n'est pas envoye. Anki 2, a 09:00, l'est. */
   const rev1 = crees.find(c => c.input.summary === '🦇 Anki 2' && c.input.startTime.startsWith('2026-11-17'));
   ok(!!rev1 && rev1.input.startTime === '2026-11-17T09:00:00+01:00' && rev1.input.endTime === '2026-11-17T10:00:00+01:00', 'Anki 2 : 09:00 → 10:00 heure de Madrid (' + (rev1 && rev1.input.startTime) + ')');
-  ok(!!rev1 && rev1.input.overrideReminders[0].minutes === 5 && rev1.input.timeZone === 'Europe/Madrid' && rev1.input.calendarId === 'zizou.oumina@gmail.com', 'rappel 5 min avant, fuseau et agenda précisés');
+  /* 17 novembre, « fais la 2 » : seuls les départs, la clôture et le coucher sonnent ; un bloc d'étude est dans l'agenda sans notification */
+  ok(!!rev1 && rev1.input.useDefaultReminders === false && !rev1.input.overrideReminders && rev1.input.timeZone === 'Europe/Madrid' && rev1.input.calendarId === 'zizou.oumina@gmail.com', 'Anki 2 posé sans notification (aucun rappel, pas ceux de l\'agenda par défaut), fuseau et agenda précisés');
+  const mardi = crees.filter(c => c.input.startTime.startsWith('2026-11-17'));
+  const sonnent = mardi.filter(c => c.input.overrideReminders).map(c => c.input.summary.replace('🦇 ', '') + ' ' + c.input.overrideReminders[0].minutes);
+  ok(sonnent.join(' | ') === 'Trajet salle 5 | Trajet cours 5 | Clôture du jour 0 | Coucher 30' || sonnent.slice().sort().join(' | ') === ['Trajet salle 5', 'Trajet cours 5', 'Clôture du jour 0', 'Coucher 30'].sort().join(' | '),
+     'mardi 17, ne sonnent que : ' + sonnent.join(' | '));
+  ok(mardi.filter(c => !c.input.overrideReminders).every(c => c.input.useDefaultReminders === false), 'tous les autres blocs du mardi sont posés sans aucun rappel (' + mardi.filter(c => !c.input.overrideReminders).length + ')');
   const coucher = crees.find(c => /Coucher/.test(c.input.summary) && c.input.startTime.startsWith('2026-11-17'));
   ok(!!coucher && coucher.input.summary === '🦇 Coucher' && coucher.input.startTime === '2026-11-17T21:35:00+01:00' && coucher.input.overrideReminders[0].minutes === 30 && coucher.input.availability === 'AVAILABILITY_FREE' && /Écran off/.test(coucher.input.description), 'Coucher 21:35 (même titre que ton agenda), rappel 30 min, écran off en description, n\'occupe pas l\'agenda');
   const ankiDemain = crees.find(c => /Anki matinal/.test(c.input.summary));
@@ -233,7 +244,8 @@ console.log('\n== 172b) Ton agenda porte déjà le planning en événements réc
   const crees = await appels(fr, 'create_event'), maj = await appels(fr, 'update_event');
   ok(!crees.some(c => c.input.summary === '🦇 Anki 2' && c.input.startTime.startsWith('2026-11-17')), 'Anki 2 de mardi, déjà là à la bonne heure : adopté, pas recréé');
   ok(!crees.some(c => c.input.summary === '🦇 Coucher' && c.input.startTime.startsWith('2026-11-17')) && maj.some(m => m.input.eventId === 'rec2_20260908' && m.input.startTime === '2026-11-17T21:35:00+01:00'), 'Coucher déjà là à 21:00 : l\'instance est alignée sur le planning (21:35), pas doublée');
-  ok(maj.some(m => m.input.eventId === 'rec1' && m.input.overrideReminders && m.input.overrideReminders[0].minutes === 5) && maj.some(m => m.input.eventId === 'rec2' && m.input.overrideReminders[0].minutes === 30), 'les rappels manquants sont posés sur la SÉRIE récurrente : 5 min (révision), 30 min (coucher)');
+  ok(maj.some(m => m.input.eventId === 'rec1' && m.input.useDefaultReminders === false && !m.input.overrideReminders) && maj.some(m => m.input.eventId === 'rec2' && m.input.overrideReminders && m.input.overrideReminders[0].minutes === 30), 'les rappels sont posés sur la SÉRIE récurrente : aucun pour la révision, 30 min pour le coucher (17 novembre)');
+  ok(!maj.some(m => m.input.eventId === 'rec1_20260908' && ('overrideReminders' in m.input || 'useDefaultReminders' in m.input)), 'Anki 2 : le rappel va à sa série, jamais à l\'occurrence (qui ne reçoit que la consigne du jour)');
   ok(crees.length === 464, '464 créations seulement (467 − 3 adoptés)');
   /* 31 octobre : la description d'une serie de septembre (« Réchauffage — repas préparés le dimanche. »)
      ne reste pas sur l'instance du jour : elle reprend la consigne du jour. */

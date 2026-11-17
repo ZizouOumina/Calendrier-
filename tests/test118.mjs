@@ -20,13 +20,18 @@ const MOCK = () => {
         return Promise.resolve({content:[], payload:{events: window.__gcalEvents.filter(e => { const t = new Date(e.start.dateTime).getTime(); return t >= a && t <= z && e.status !== 'cancelled'; })}});
       }
       if(tool === 'create_event'){
-        const ev = {id:'ev' + (++n), summary: input.summary, description: input.description, start:{dateTime: input.startTime, timeZone:'Europe/Madrid'}, end:{dateTime: input.endTime, timeZone:'Europe/Madrid'}, status:'confirmed', overrideReminders: input.overrideReminders};
+        const ev = {id:'ev' + (++n), summary: input.summary, description: input.description, start:{dateTime: input.startTime, timeZone:'Europe/Madrid'}, end:{dateTime: input.endTime, timeZone:'Europe/Madrid'}, status:'confirmed', overrideReminders: input.overrideReminders, useDefaultReminders: input.overrideReminders ? false : input.useDefaultReminders !== false};
         window.__gcalEvents.push(ev);
         return Promise.resolve({content:[], payload: ev});
       }
       if(tool === 'update_event'){
         const ev = window.__gcalEvents.find(e => e.id === input.eventId);
-        if(ev){ if(input.summary) ev.summary = input.summary; if('description' in input) ev.description = input.description; if(input.startTime) ev.start.dateTime = input.startTime; if(input.endTime) ev.end.dateTime = input.endTime; }
+        /* le rappel comme Google le garde : overrideReminders remplace tout, useDefaultReminders:false seul n'en laisse aucun ;
+           posé sur une série, il passe à toutes ses occurrences, même modifiées (vérifié le 17 novembre sur son agenda) */
+        const rappel = e => { if(input.overrideReminders){ e.overrideReminders = input.overrideReminders; e.useDefaultReminders = false; }
+                              else if('useDefaultReminders' in input){ delete e.overrideReminders; e.useDefaultReminders = input.useDefaultReminders; } };
+        if(ev){ if(input.summary) ev.summary = input.summary; if('description' in input) ev.description = input.description; if(input.startTime) ev.start.dateTime = input.startTime; if(input.endTime) ev.end.dateTime = input.endTime; rappel(ev); }
+        window.__gcalEvents.filter(e => e.recurringEventId && e.recurringEventId === input.eventId).forEach(rappel);
         return Promise.resolve({content:[], payload: ev || {id: input.eventId}});
       }
       if(tool === 'delete_event'){
@@ -100,7 +105,7 @@ console.log('\n== 1) Avant le jour 1 : les 124 partent d\'un coup, puis tout l\'
 
 console.log('\n== 2) Déjà fait : rien ne repart ==');
 {
-  const { ctx, fr, page } = await ouvrir('2026-11-16T06:00:00+01:00', Object.assign({}, ACTIF, RELEVE_JANVIER, {'batcave-gcal-nettoyage-janvier': {date:'2026-11-12', retires:124}, 'batcave-gcal-reconstruction': {date:'2026-11-15', programme:'2026-11-16', taches:1, jours:70, du:'2026-11-16', au:'2027-01-24'}}));
+  const { ctx, fr, page } = await ouvrir('2026-11-16T06:00:00+01:00', Object.assign({}, ACTIF, RELEVE_JANVIER, {'batcave-gcal-nettoyage-janvier': {date:'2026-11-12', retires:124}, 'batcave-gcal-reconstruction': {date:'2026-11-15', programme:'2026-11-16', taches:2, jours:70, du:'2026-11-16', au:'2027-01-24'}}));
   await page.clock.runFor(7000);
   await page.waitForTimeout(800);
   const sup = await appels(fr, 'delete_event');
@@ -111,7 +116,7 @@ console.log('\n== 2) Déjà fait : rien ne repart ==');
 }
 {
   /* Un relevé d'avant le champ « programme », mais déjà fait depuis le jour 1 (le lundi 16) : il compte aussi. */
-  const { ctx, fr, page } = await ouvrir('2026-11-16T06:00:00+01:00', Object.assign({}, ACTIF, RELEVE_JANVIER, {'batcave-gcal-nettoyage-janvier': {date:'2026-11-12', retires:124}, 'batcave-gcal-reconstruction': {date:'2026-11-15', taches:1, jours:70, du:'2026-11-16', au:'2027-01-24'}}));
+  const { ctx, fr, page } = await ouvrir('2026-11-16T06:00:00+01:00', Object.assign({}, ACTIF, RELEVE_JANVIER, {'batcave-gcal-nettoyage-janvier': {date:'2026-11-12', retires:124}, 'batcave-gcal-reconstruction': {date:'2026-11-15', taches:2, jours:70, du:'2026-11-16', au:'2027-01-24'}}));
   await page.clock.runFor(7000);
   await page.waitForTimeout(800);
   const lus = (await appels(fr, 'list_events')).filter(a => a.input.orderBy !== 'startTime');
@@ -128,7 +133,7 @@ console.log('\n== 2 ter) 16 novembre, plus de notifications de tâches : sa reco
     'batcave-gcal-2026-11-21': {'h1300': {id:'cl1', empreinte:'2026-11-21T13:00:00+01:00|2026-11-21T13:05:00+01:00|🦇 🔔 Coiffeur', cree:true}},
     'batcave-gcal-2026-11-22': {'h0521': {id:'cl2', empreinte:'x', cree:true}, 'h0524': {id:'cl3', empreinte:'x', cree:true}}
   };
-  const { ctx, fr, page } = await ouvrir('2026-11-21T06:00:00+01:00', Object.assign({}, ACTIF, RELEVE_JANVIER, {'batcave-gcal-nettoyage-janvier': {date:'2026-11-12', retires:124}, 'batcave-gcal-reconstruction': {date:'2026-11-15', programme:'2026-11-16', taches:1, jours:70, du:'2026-11-16', au:'2027-01-24'}}, releves));
+  const { ctx, fr, page } = await ouvrir('2026-11-21T06:00:00+01:00', Object.assign({}, ACTIF, RELEVE_JANVIER, {'batcave-gcal-nettoyage-janvier': {date:'2026-11-12', retires:124}, 'batcave-gcal-reconstruction': {date:'2026-11-15', programme:'2026-11-16', taches:2, jours:70, du:'2026-11-16', au:'2027-01-24'}}, releves));
   await fr.evaluate(() => { window.__gcalEvents.push(
     {id:'cl1', summary:'🦇 🔔 Coiffeur', start:{dateTime:'2026-11-21T13:00:00+01:00'}, end:{dateTime:'2026-11-21T13:05:00+01:00'}, status:'confirmed'},
     {id:'cl2', summary:'🦇 🔔 Pesée à jeun + Photos', start:{dateTime:'2026-11-22T05:21:00+01:00'}, end:{dateTime:'2026-11-22T05:26:00+01:00'}, status:'confirmed'},
@@ -143,6 +148,45 @@ console.log('\n== 2 ter) 16 novembre, plus de notifications de tâches : sa reco
   ok(lus.length < 70, 'la reconstruction du 15 au soir ne repart pas pour rien (' + lus.length + ' jours relus)');
   const r22 = await local(fr, 'batcave-gcal-2026-11-22');
   ok(r22 && !r22.h0521 && !r22.h0524, 'et son relevé du 22 les oublie');
+  await ctx.close();
+}
+
+console.log('\n== 2 quater) 17 novembre, « fais la 2 » : sa reconstruction (taches: 1) repart une fois pour les rappels ; ce qui est déjà juste ne coûte rien ==');
+{
+  /* SON état du 17 : la reconstruction du 15 au soir (taches: 1), chaque bloc avec un rappel 5 min avant. Seuls les départs,
+     la clôture et le coucher sonnent désormais : la remise au propre repart une fois, et chaque événement n'est touché que
+     là où il diffère. */
+  const { ctx, fr, page } = await ouvrir('2026-11-17T15:00:00+01:00', Object.assign({}, ACTIF, RELEVE_JANVIER, {'batcave-gcal-nettoyage-janvier': {date:'2026-11-12', retires:124}, 'batcave-gcal-reconstruction': {date:'2026-11-15', programme:'2026-11-16', taches:1, jours:70, du:'2026-11-16', au:'2027-01-24'}}));
+  const p18 = await fr.evaluate(() => window.__bcRappels('2026-11-18')), p25 = await fr.evaluate(() => window.__bcRappels('2026-11-25')), p19 = await fr.evaluate(() => window.__bcRappels('2026-11-19'));
+  const pris = (p, re) => p.find(b => re.test(b.titre));
+  const a18 = pris(p18, /Anki matinal/), a25 = pris(p25, /Anki matinal/), t18 = pris(p18, /^🦇 Trajet cours$/), d19 = pris(p19, /^🦇 Déjeuner/), c18 = pris(p18, /^🦇 Coucher/);
+  ok(!!(a18 && a25 && t18 && d19 && c18) && a18.rappel === null && t18.rappel === 5 && c18.rappel === 30 && d19.rappel === null, 'la grille : Anki matinal et le déjeuner sans rappel, le trajet des cours 5 min, le coucher 30 min');
+  const hm = m => String(Math.floor(m / 60)).padStart(2, '0') + ':' + String(m % 60).padStart(2, '0');
+  const ev = (id, rec, iso, b, rappels) => Object.assign({id, summary: b.titre, description: b.description, start:{dateTime: iso + 'T' + hm(b.debut) + ':00+01:00'}, end:{dateTime: iso + 'T' + hm(b.fin) + ':00+01:00'}, status:'confirmed'}, rec ? {recurringEventId: rec} : {}, rappels);
+  const cinq = {overrideReminders:[{method:'popup', minutes:5}], useDefaultReminders:false};
+  await fr.evaluate(liste => { window.__gcalEvents.push(...liste); localStorage.setItem('batcave-gcal-2026-11-19', JSON.stringify({})); }, [
+    ev('anki_20261118', 'anki', '2026-11-18', a18, cinq), ev('anki_20261125', 'anki', '2026-11-25', a25, cinq),
+    ev('trajet_20261118', 'trajet', '2026-11-18', t18, cinq), ev('coucher_20261118', 'coucher', '2026-11-18', c18, cinq),
+    ev('dej19', null, '2026-11-19', d19, cinq)]);
+  await fr.evaluate(([cle]) => { const r = {}; r[cle] = {id:'dej19', empreinte:'ancienne', cree:true}; localStorage.setItem('batcave-gcal-2026-11-19', JSON.stringify(r)); }, [d19.cle]);
+  await page.clock.runFor(7000);
+  await fr.waitForFunction(() => { try{ return (JSON.parse(localStorage.getItem('batcave-gcal-reconstruction')) || {}).taches === 2; }catch(e){ return false; } }, null, {timeout:90000}).catch(() => {});
+  await page.waitForTimeout(500);
+  const lus = (await appels(fr, 'list_events')).filter(a => a.input.orderBy !== 'startTime');
+  ok(lus.length >= 69, 'elle repart une fois : chaque jour d\'aujourd\'hui au 24 janvier est relu (' + lus.length + ')');
+  const maj = await appels(fr, 'update_event');
+  const vers = id => maj.filter(m => m.input.eventId === id).map(m => m.input);
+  ok(vers('anki').some(i => i.useDefaultReminders === false && !i.overrideReminders), 'la série « Anki matinal » perd son rappel, une fois pour tous ses jours');
+  ok(vers('anki_20261118').length === 0 && vers('anki_20261125').length === 0, 'ses occurrences, déjà à l\'heure et à la consigne du jour, ne reçoivent aucun appel');
+  const etat = await fr.evaluate(() => window.__gcalEvents.filter(e => /^anki_/.test(e.id)).map(e => ({id: e.id, o: e.overrideReminders || null, d: e.useDefaultReminders})));
+  ok(etat.length === 2 && etat.every(e => e.o === null && e.d === false), 'et toutes deux ne sonnent plus (' + JSON.stringify(etat) + ')');
+  ok(vers('trajet').length === 0 && vers('trajet_20261118').length === 0, 'le trajet des cours sonnait déjà 5 min avant : rien n\'est envoyé');
+  ok(vers('coucher').some(i => i.overrideReminders && i.overrideReminders[0].minutes === 30) && vers('coucher_20261118').length === 0, 'le coucher : sa série passe à 30 min, l\'occurrence n\'est pas touchée');
+  const d = vers('dej19');
+  ok(d.length === 1 && d[0].useDefaultReminders === false && !d[0].overrideReminders && !d[0].startTime && !('description' in d[0]) && !d[0].summary, 'le déjeuner du 19, un événement unique déjà juste : seul son rappel part, rien d\'autre (' + JSON.stringify(d) + ')');
+  ok(!(await appels(fr, 'create_event')).some(a => /Anki matinal|Trajet cours|Coucher/.test(a.input.summary) && a.input.startTime.startsWith('2026-11-18')), 'aucun doublon le 18');
+  const rec = await local(fr, 'batcave-gcal-reconstruction');
+  ok(rec && rec.taches === 2 && rec.programme === '2026-11-16' && rec.au === '2027-01-24', 'faite une fois pour toutes, avec les rappels : ' + JSON.stringify(rec && {taches: rec.taches, du: rec.du, au: rec.au}));
   await ctx.close();
 }
 

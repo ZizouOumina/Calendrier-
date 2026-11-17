@@ -85,13 +85,13 @@ JJB à 10:30 : **2 à 3 reps en réserve**, jamais l'échec. Repos : 60 s / 90 s
 | 3 | Sac · rounds techniques | 3 × 3 min, seul, 1 min de repos |
 
 ### Jeudi · Haut lourd (55 min)
-Le seul jour de semaine sans combat : c'est ici que la force se construit. Repos : 90 s / 2 min 30 · 90 s / 2 min 30 · 75 s / 2 min · 45 s / 75 s · 45 s / 60 s.
+Le seul jour de semaine sans combat : c'est ici que la force se construit. Repos : 60 s / 90 s · 60 s / 90 s · 45 s / 75 s · 30 s / 60 s · 30 s entre les trois.
 
 | Paire | Exercice | Tours × fourchette |
 |---|---|---|
 | 1 A | Pompes claquées | 3 × 5, sans charge |
-| 1 B | Tractions (lestées dès 8 reps) | 4 × 5-8 |
-| 2 A | Développé couché barre | 4 × 5-8 |
+| 1 B | Tractions (lestées dès 8 reps) | 3 × 5-8 |
+| 2 A | Développé couché barre | 3 × 5-8 |
 | 2 B | Rowing barre | 3 × 6-10 |
 | 3 A | Dips (lestés dès 12 reps) | 3 × 6-12 |
 | 3 B | Face pulls | 3 × 15-20 |
@@ -100,6 +100,12 @@ Le seul jour de semaine sans combat : c'est ici que la force se construit. Repos
 | 5 A | Tractions serviette (grip kimono) | 2 × 3-8 |
 | 5 B | Crunch à la poulie (7 novembre) | 3 × 10-15 |
 | 5 C | Flexion du cou (17 novembre) | 3 × 12-20, dans les repos de la paire 5 : un tour des trois |
+
+**Tenir dans 07:00 → 07:55** (17 novembre, « ajuste pour la 3 ») : avec les repos d'avant (2 min 30 sur les gros exercices) et quatre séries aux tractions et au développé couché, la séance durait environ 74 minutes en comptant l'échauffement et les passages d'un poste à l'autre. Or la douche est à 08:15, après 20 minutes de marche. Deux changements la ramènent à environ 54 minutes :
+- **une série de moins** aux tractions et au développé couché (4 → 3) ;
+- **des repos plus courts dans les paires**. Entre deux séries d'un même muscle, il reste plus de 3 minutes, le temps de l'autre exercice et des deux repos : 3 min 20 aux tractions, 3 min 40 au développé couché. C'est ce que demandent les gros exercices (Schoenfeld 2016).
+
+Les exercices et leur ordre ne changent pas : le journal et la progression des charges se lisent comme avant. Si le chrono de l'onglet Sport dit encore plus de 55 minutes, c'est le passage d'un poste à l'autre qu'il faut serrer : installe les deux postes d'une paire avant sa première série.
 
 **Tractions serviette** (21 octobre, sa décision) : une serviette pliée passée sur la barre, une extrémité dans chaque main, comme une manche de kimono. C'est le grip du JJB.
 
@@ -122,8 +128,8 @@ Le seul jour de semaine sans combat : c'est ici que la force se construit. Repos
 
 | Muscle | Séries | Où |
 |---|---|---|
-| Dos (grand dorsal, haut du dos) | 15 | tractions et rowings lundi et jeudi, tractions serviette |
-| Pectoraux | 10 + les pompes claquées | incliné lundi, couché et dips jeudi |
+| Dos (grand dorsal, haut du dos) | 14 | tractions et rowings lundi et jeudi, tractions serviette |
+| Pectoraux | 9 + les pompes claquées | incliné lundi, couché et dips jeudi |
 | Épaules latérales | 10 | élévations lundi, jeudi, samedi |
 | Arrière d'épaule | 6 + les rowings | face pulls lundi et jeudi |
 | Biceps | 6 + les tirages | curl incliné, curl marteau |
@@ -174,7 +180,7 @@ Tractions et dips reviennent lundi et jeudi avec des fourchettes différentes : 
 - **La puissance** (sauts, pompes claquées) : 3 × 5 en tête de séance, frais, chaque rep à fond, en paire avec le gros exercice du jour (une série de sauts, une série lourde) : c'est le travail combiné qui fait le plus progresser la détente. Ça rend plus explosif sans ajouter de masse. Pas de charge : ce qui progresse, c'est la hauteur de la box ou la distance. Dès qu'une rep ralentit, la série s'arrête. La box : descendre en marchant, jamais en sautant en arrière.
 - **La force relative** : les gros exercices restent lourds (5 à 8 reps), pour être plus fort au même poids, ce qui compte aussi sur le tatami.
 - **Le Nordic** : à genoux sur un tapis, talons bloqués sous le boudin d'une machine, corps droit des genoux à la tête ; descendre le plus lentement possible, se rattraper aux mains, remonter en poussant. Dès 8 descentes propres sur les trois séries, un disque de 2,5 kg contre la poitrine. Courbatures fortes les premières fois : c'est normal.
-- **La silhouette en V** : épaules latérales (10 séries) et dos (15 séries) gardent la priorité. Les cuisses ne reçoivent plus d'isolation (leg extension le 31 octobre ; leg curl, mollets et hip thrust le 7 novembre) : elles travaillent par les gros exercices et les sauts.
+- **La silhouette en V** : épaules latérales (10 séries) et dos (14 séries) gardent la priorité. Les cuisses ne reçoivent plus d'isolation (leg extension le 31 octobre ; leg curl, mollets et hip thrust le 7 novembre) : elles travaillent par les gros exercices et les sauts.
 - **La rotation** (7 novembre) : les lancers au médecine-ball entraînent la poussée de la hanche arrière et la rotation du buste, celles du crochet, du direct du bras arrière et des renversements au sol.
 - **Le cardio** : le JJB, trois fois par semaine, et le sac, deux fois.
 

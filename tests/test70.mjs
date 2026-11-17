@@ -74,12 +74,13 @@ console.log('\n== 272) Le prévu du mois ignore la séance bonus ==');
 console.log('\n== 273) Saisie au pas : séries, répétitions, lest ==');
 {
   const { ctx, fr, page } = await ouvrir(LUNDI, PREMIERE);
-  ok(await valeursSaisie(fr) === '5/5/5/5', 'la saisie s\'ouvre sur la cible 5/5/5/5 (' + await valeursSaisie(fr) + ')');
+  /* 17 novembre, « ajuste pour la 3 » : les tractions du jeudi en 3 × 5-8 -- la saisie s'ouvre sur trois séries */
+  ok(await valeursSaisie(fr) === '5/5/5', 'la saisie s\'ouvre sur la cible 5/5/5 (' + await valeursSaisie(fr) + ')');
   /* + une série */
   await fr.evaluate(() => document.querySelector('.sport-card.today li:not(.puissance) .saisie [data-pas="nb"][data-d="1"]').click());
-  ok(await valeursSaisie(fr) === '5/5/5/5/5', 'un appui sur + ajoute une série (' + await valeursSaisie(fr) + ')');
+  ok(await valeursSaisie(fr) === '5/5/5/5', 'un appui sur + ajoute une série (' + await valeursSaisie(fr) + ')');
   await fr.evaluate(() => document.querySelector('.sport-card.today li:not(.puissance) .saisie [data-pas="nb"][data-d="-1"]').click());
-  ok(await valeursSaisie(fr) === '5/5/5/5', 'un appui sur − la retire');
+  ok(await valeursSaisie(fr) === '5/5/5', 'un appui sur − la retire');
   await saisirSeries(fr, [9, 8, 7, 7], 2.5);
   await page.waitForTimeout(250);
   /* le journal porte aussi la premiere seance du 3 (PREMIERE) : on lit l'entree du jour */
