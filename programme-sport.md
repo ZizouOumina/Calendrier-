@@ -20,7 +20,7 @@ Copie de référence du programme appliqué dans la Batcave (onglet Sport). **De
 | Lundi | Anki 1 | **Haut volume** (haut du corps, 2-3 reps en réserve) | JJB | — |
 | Mardi | Anki 1 | **Bas complet** (squat), puis **le sac** (rounds techniques) | — | — |
 | Mercredi | projets | — | JJB | — |
-| Jeudi | Anki 1 | **Haut lourd** | — | cou à la maison (habitude) |
+| Jeudi | Anki 1 | **Haut lourd** | — | — (le cou est dans la séance depuis le 17 novembre) |
 | Vendredi | projets | — | JJB | — |
 | Samedi | Anki 1 | **Bas · charnière**, les bras, puis **le sac** (intervalles) | — | — |
 | Dimanche | projets | — | — | mobilité des hanches 19:30 |
@@ -50,7 +50,7 @@ Le squelette est un **haut / bas sur quatre jours**, celui des programmes de ré
 | Pliométrie | Les sauts augmentent la détente de 4,7 à 8,7 % ; force lourde et sauts dans la même séance font mieux que chacun seul | 3 × 5 sauts ou pompes claquées en tête de trois séances | Markovic 2007 ; JSSM 2025 |
 | Nordic | Les programmes qui l'incluent divisent par deux les blessures aux ischios (RR 0,49) | 3 × 4-8 le samedi | van Dyk 2019 |
 | Paires | Les paires agoniste-antagoniste gardent le volume, la force et la prise de muscle des séries classiques, en moins de temps | Paires A / B : la séance tient en 55 min | Zhang 2025 |
-| Cou | Chaque livre (450 g) de force du cou en plus : −5 % de risque de commotion | 9 séries par semaine et l'habitude du jeudi soir | Collins 2014 |
+| Cou | Chaque livre (450 g) de force du cou en plus : −5 % de risque de commotion | 12 séries par semaine : flexion lundi et jeudi, extension lundi, inclinaisons mardi | Collins 2014 |
 | Abdos | Les relevés de jambes chargent surtout le bas du grand droit, le crunch surtout le haut ; un travail direct l'épaissit ; des abdos sans baisse du gras ne font pas fondre le ventre | Relevés le samedi, crunch à la poulie le jeudi | Gomirato 2023 ; Dorado 2012 ; Vispute 2011 |
 | Sommeil | « 7 à 9 h » ne convient pas à tous les athlètes ; ils disent avoir besoin d'environ 8 h 20 pour se sentir reposés | Coucher 21:35, lever 05:20 : 7 h 45 au lit. La lumière éteinte à 21:15 donne 8 h au lit | Walsh 2021 ; Sargent 2021 |
 
@@ -99,8 +99,11 @@ Le seul jour de semaine sans combat : c'est ici que la force se construit. Repos
 | 4 B | Extension triceps à la poulie au-dessus de la tête | 3 × 10-15 |
 | 5 A | Tractions serviette (grip kimono) | 2 × 3-8 |
 | 5 B | Crunch à la poulie (7 novembre) | 3 × 10-15 |
+| 5 C | Flexion du cou (17 novembre) | 3 × 12-20, dans les repos de la paire 5 : un tour des trois |
 
 **Tractions serviette** (21 octobre, sa décision) : une serviette pliée passée sur la barre, une extrémité dans chaque main, comme une manche de kimono. C'est le grip du JJB.
+
+**Flexion du cou** (17 novembre, sa demande : « tu rajoutes un exercice d'entraînement du cou dans le programme d'entraînement le jeudi ») : celle du lundi, le disque sur la serviette, sur le front. Elle se fait dans les repos de la dernière paire, un tour des trois (tractions serviette, crunch, cou) : la séance garde ses 55 minutes et le retour de 07:55 ne bouge pas. Même nom que le lundi, donc la Batcave fait progresser la charge d'une séance à l'autre. L'habitude du cou du jeudi soir, à la maison, est retirée.
 
 ### Samedi · Bas · charnière (55 min)
 72 h après le bas du mardi, 48 h avant le JJB du lundi. Échauffement : 2 rounds de 2 min de shadow boxing. Repos : 90 s / 2 min · 60 s / 90 s · 45 s / 75 s · 1 min entre les rounds.
@@ -129,7 +132,7 @@ Le seul jour de semaine sans combat : c'est ici que la force se construit. Repos
 | Ischios | 6 | soulevé de terre roumain, Nordic |
 | Fessiers | 10 | squat, soulevé de terre roumain, split squat |
 | Mollets | — | les sauts et le sac, sur l'avant des pieds |
-| Cou | 9 + l'habitude du jeudi soir | lundi, mardi |
+| Cou | 12 | flexion lundi et jeudi, extension lundi, inclinaisons mardi |
 | Abdos | 6 + le JJB + la rotation | relevés de jambes le samedi (le bas), crunch à la poulie le jeudi (le haut), lancers rotatifs |
 | Puissance | 9 séries | sauts sur box, pompes claquées, lancers rotatifs |
 | Sac | 6 rounds de 3 min | 3 techniques le mardi, 3 en intervalles le samedi |
@@ -176,7 +179,7 @@ Tractions et dips reviennent lundi et jeudi avec des fourchettes différentes : 
 - **Le cardio** : le JJB, trois fois par semaine, et le sac, deux fois.
 
 ## Le cou — faire grossir, pas entretenir
-Allongé sur un banc, la tête dans le vide, une serviette pliée et un disque : sur le front pour la **flexion** (lundi), derrière la tête à plat ventre pour l'**extension** (lundi), sur la tempe couché sur le côté pour l'**inclinaison latérale** (mardi). 3 × 12-20, trois secondes pour descendre, une seconde en haut, jamais d'à-coup, jamais de pont sur la tête. Flexion et extension reviennent **le jeudi soir à la maison** (l'habitude « Cou », une serviette et un poids). Au combat, un cou solide protège des étranglements : c'est la partie du programme qui sert directement sur le tatami.
+Allongé sur un banc, la tête dans le vide, une serviette pliée et un disque : sur le front pour la **flexion** (lundi), derrière la tête à plat ventre pour l'**extension** (lundi), sur la tempe couché sur le côté pour l'**inclinaison latérale** (mardi). 3 × 12-20, trois secondes pour descendre, une seconde en haut, jamais d'à-coup, jamais de pont sur la tête. Depuis le 17 novembre, la flexion revient **le jeudi, à la salle**, dans les repos de la dernière paire (tractions serviette, crunch, cou : un tour des trois) ; l'habitude du jeudi soir à la maison est retirée. Au combat, un cou solide protège des étranglements : c'est la partie du programme qui sert directement sur le tatami.
 
 ## Les épaules — la largeur
 Le faisceau latéral, celui qui élargit la silhouette, travaille à peine dans les développés : d'où les **élévations latérales lundi, jeudi et samedi**, 10 séries par semaine. Debout, buste à peine penché en avant, coudes légèrement fléchis, jusqu'à l'horizontale, deux secondes pour redescendre, aucun élan.

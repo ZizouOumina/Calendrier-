@@ -70,17 +70,17 @@ console.log('\n== 34) « Prochainement » est dans le Plan du jour ==');
   await ctx.close();
 }
 
-console.log('\n== 35) Les dépendances suivent les habitudes ==');
+console.log('\n== 35) Les dépendances suivent le mur du tableau de bord (17 novembre : la console des habitudes est retirée) ==');
 {
   const { ctx, fr } = await ouvrir(null);
   const o = await fr.evaluate(() => {
     const enfants = [...document.querySelector('.page[data-page="dashboard"]').children];
-    const iHab = enfants.findIndex(e => e.contains(document.getElementById('dash-checklist')));
+    const iHab = enfants.findIndex(e => e.contains(document.getElementById('dash-reactor')));
     const iDep = enfants.findIndex(e => e.id === 'dash-stats');
     const iPlus = enfants.findIndex(e => e.id === 'dash-more-toggle');
     return { iHab, iDep, iPlus, nDep: document.querySelectorAll('#dash-stats .stat-tile').length };
   });
-  ok(o.iDep === o.iHab + 1, 'les dépendances viennent juste après les habitudes (positions ' + o.iHab + ' → ' + o.iDep + ')');
+  ok(o.iHab > -1 && o.iDep === o.iHab + 1, 'les dépendances viennent juste après le mur (plan, score, suivi) (positions ' + o.iHab + ' → ' + o.iDep + ')');
   ok(o.iPlus > o.iDep, 'et avant la zone repliée');
   ok(o.nDep === 4, 'les 4 compteurs de dépendances sont bien là');
   await ctx.close();
@@ -136,11 +136,11 @@ console.log('\n== 36) Agir en haut, consulter replié ==');
 console.log('\n== 37) Rien n\'a été perdu ==');
 {
   const { ctx, fr } = await ouvrir(null);
-  const ids = ['dash-plan','dash-upcoming','dash-score-num','dash-temps','dash-checklist','dash-stats',
+  const ids = ['dash-plan','dash-upcoming','dash-score-num','dash-temps','dash-stats',
                'dash-journal','dash-meals','dash-courses-count','dash-sport','dash-goals',
                'dash-taches','dash-budget','dash-coran','dash-greeting','dash-weather','dash-notion-btn'];
   const manquants = await fr.evaluate(l => l.filter(i => !document.getElementById(i)), ids);
-  ok(manquants.length === 0, 'les 17 blocs du tableau de bord sont tous présents' + (manquants.length ? ' — manque ' + manquants.join(', ') : ''));
+  ok(manquants.length === 0, 'les 16 blocs du tableau de bord sont tous présents (la console des habitudes est retirée le 17 novembre)' + (manquants.length ? ' — manque ' + manquants.join(', ') : ''));
   const remplis = await fr.evaluate(() => ({
     journal: document.getElementById('dash-journal').children.length,
     repas: document.getElementById('dash-meals').children.length,

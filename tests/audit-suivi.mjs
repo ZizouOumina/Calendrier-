@@ -111,7 +111,8 @@ console.log('\n═══ 6. Sport : une séance vaut la part de ses cases coché
   /* le jeudi du regime combat = « Haut lourd » : 10 exercices depuis le 25 septembre (les relevés de jambes
      suspendus sont revenus en fin de séance ; plus de curl inversé) ; les clés sont « <type>-<index> ».
      15 novembre : le lundi 16, jour 1, est un « Haut volume » et la séance de référence -- la scène se joue le jeudi 19. */
-  const TYPE = 'Haut lourd', N = 10, JEUDI = '2026-11-19';
+  /* 17 novembre : 11, la flexion du cou ferme la séance du jeudi (en trio avec les tractions serviette et le crunch) */
+  const TYPE = 'Haut lourd', N = 11, JEUDI = '2026-11-19';
   for(const n of [0, 3, 4, 5, 7, N]){
     const st = {}; for(let i=0;i<n;i++) st[TYPE+'-'+i] = true;
     const {ctx, page, fr} = await ouvrir({['batcave-sport-'+JEUDI]: st}, JEUDI+'T21:00:00+01:00');

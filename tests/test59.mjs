@@ -64,18 +64,17 @@ console.log('\n== 191) Un Pomodoro de projet perso se voit sur Business, le tabl
   ok(pastilles === 2, 'la case du jour porte deux pastilles (révision + projet)');
 }
 
-console.log('\n== 192) Habitude cochée sur le tableau de bord → Habitudes, score, bilan ==');
+console.log('\n== 192) Case cochée dans « Ma journée » → l\'anneau du tableau de bord, et rien d\'autre (17 novembre) ==');
 {
+  await aller('journee');
+  const id = await fr.evaluate(() => document.querySelector('#mj-corps input[data-mj-hab]').dataset.mjHab);
+  await click('#mj-corps input[data-mj-hab]');
   await aller('dashboard');
-  const id = await fr.evaluate(() => document.querySelector('#dash-checklist [data-togglehab]').dataset.togglehab);
-  await click('#dash-checklist [data-togglehab]');
-  const compte = await txt('#dash-check-count');
-  ok(/^1\//.test(compte), 'compteur des habitudes : ' + compte);
-  await aller('habitudes');
-  const carte = await fr.evaluate(x => [...document.querySelectorAll('#habits-grid .card')].find(c => c.querySelector('[data-togglehab="' + x + '"]')).innerText, id);
-  ok(/Fait aujourd'hui/.test(carte) && /1\s*jour/i.test(carte), 'Habitudes : « Fait aujourd\'hui », série 1 jour' + (/Fait aujourd'hui/.test(carte) && /1\s*jour/i.test(carte) ? '' : ' — carte : ' + JSON.stringify(carte).slice(0, 300)));
+  const compte = await txt('#leg-hab');
+  ok(/^ma journée 1\//.test(compte), 'l\'anneau « ma journée » : ' + compte);
+  ok(!!id, 'la case cochée : ' + id);
   await aller('bilan');
-  ok(/Habitudes tenues[\s\S]*?[1-9]\d?%/.test(await txt('#bilan-grid')), 'Bilan : habitudes tenues > 0 %');
+  ok(!/Habitudes tenues/.test(await txt('#bilan-grid')), 'Bilan : plus de ligne « Habitudes tenues »');
 }
 
 console.log('\n== 193) Eau, sommeil, poids : Calendrier et Journal → tableau de bord, Objectifs, Bilan ==');
@@ -161,11 +160,10 @@ console.log('\n== 197) Rechargement : tout est écrit, rien n\'était seulement 
   await page.frameLocator('#f').locator('#dash-plan').waitFor({ state:'attached', timeout:15000 });
   fr = page.frames().find(x => x.url().includes('batcave.html'));
   await page.waitForTimeout(300);
-  const d = await fr.evaluate(() => ({ temps: document.getElementById('dash-temps').innerText, total: document.getElementById('dash-temps-total').innerText, compte: document.getElementById('dash-check-count').textContent, releves: document.getElementById('dash-releves').innerText, meals: document.getElementById('dash-meals').innerText, taches: document.getElementById('dash-taches').innerText, coran: document.getElementById('dash-coran').innerText }));
+  const d = await fr.evaluate(() => ({ temps: document.getElementById('dash-temps').innerText, total: document.getElementById('dash-temps-total').innerText, compte: document.getElementById('leg-hab').textContent, releves: document.getElementById('dash-releves').innerText, meals: document.getElementById('dash-meals').innerText, taches: document.getElementById('dash-taches').innerText, coran: document.getElementById('dash-coran').innerText }));
   ok(/Révision[\s\S]*?25 min/.test(d.temps) && /Projets perso[\s\S]*?25 min/.test(d.temps) && /50 min au total/.test(d.total), 'temps du jour conservé (25 + 25 min)');
-  /* Deux, et non une : la cloture validee en §193 coche elle-meme son habitude du soir.
-     C'est le comportement voulu -- clore sa journee EST une habitude tenue. */
-  ok(/^2\//.test(d.compte), 'habitude conservée, plus celle de la clôture (' + d.compte + ')');
+  /* 17 novembre : la clôture ne coche plus rien (la revue de la veille est retirée) -- une seule case, celle du §192 */
+  ok(/^ma journée 1\//.test(d.compte), 'la case cochée est conservée, et la clôture n\'en a pas ajouté (' + d.compte + ')');
   ok(/64,5/.test(d.releves) && /8 h/.test(d.releves) && /Coran[\s\S]*?3/.test(d.releves), 'poids, sommeil et Coran conservés');
   ok(/Réviser anatomie/.test(d.taches) && /3 \/ 180/.test(d.coran), 'tâche et Coran conservés');
   const bannière = await fr.evaluate(() => document.getElementById('coherence-banner').hidden);

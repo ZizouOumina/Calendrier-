@@ -28,11 +28,20 @@ async function ouvrir(quand, seed){
   await page.frameLocator('#f').locator('#dash-focus').waitFor({state:'attached', timeout:25000});
   const fr = page.frames().find(x => x.url().includes('batcave.html'));
   await fr.evaluate(() => { document.querySelectorAll('.overlay').forEach(o => o.hidden = true);
-                            document.querySelector('.nav-btn[data-page="habitudes"]').click(); });
+                            document.querySelector('.nav-btn[data-page="journee"]').click(); });   /* 17 novembre : l'onglet Habitudes est retiré */
   await page.waitForTimeout(500);
   return { ctx, page, fr };
 }
-const cartes = fr => fr.evaluate(() => [...document.querySelectorAll('#habits-grid .card .ctitle')].map(x => x.textContent.trim()));
+/* 17 novembre : l'onglet Habitudes, ses cartes et leur « prochaine fois le … » sont retirés. La date se vérifie à la
+   source -- le premier jour où la case tombe (habitsDuJour, ce que « Ma journée » affiche) -- et dans « Ma journée ». */
+const prochaine = (fr, motif, debut) => fr.evaluate(([m, d]) => {
+  for(let i = 0; i < 400; i++){ const x = new Date(d + 'T12:00:00'); x.setDate(x.getDate() + i);
+    const iso = x.getFullYear() + '-' + String(x.getMonth() + 1).padStart(2, '0') + '-' + String(x.getDate()).padStart(2, '0');
+    if(window.__bcHabitsDuJour(x.getDay(), iso).some(h => new RegExp(m).test(h.label))) return iso; }
+  return null; }, [motif, debut]);
+const habit = (fr, id) => fr.evaluate(x => (JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-habits')) || []).filter(h => h && h.id === x)[0] || null, id);
+const journee = (fr, iso) => fr.evaluate(x => { window.__bcJournee.aller(x); return [...document.querySelectorAll('#mj-cases li, #mj-routine li')].map(l => l.textContent.replace(/^✓ /, '')); }, iso);
+const chaqueDimanche = h => !!h && JSON.stringify(h.jours) === '[0]' && !(h.cycleSemaines > 1);
 const ancres = fr => fr.evaluate(() => {
   const o = {};
   (JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-habits')) || []).forEach(h => { if(h && h.ancre) o[h.id] = h.ancre; });
@@ -63,13 +72,12 @@ const AVANT = {
 console.log('\n== 331) Départ neuf : les habitudes à cycle du dimanche partent du 22 novembre ==');
 {
   const { ctx, fr } = await ouvrir('2026-09-29T08:00:00+02:00');
-  const c = await cartes(fr);
-  const dit = n => c.filter(x => x.indexOf(n) > -1)[0] || '(absente)';
-  ok(/prochaine fois le 22 nov/.test(dit('Photos')), 'photos : dimanche 22 novembre — l\'image du point de départ existe (' + dit('Photos') + ')');
-  /* 21 octobre au soir : la pesee tombe chaque dimanche, sa carte dit simplement « dimanche » */
-  ok(/· dimanche/.test(dit('Pesée')) && !/prochaine fois/.test(dit('Pesée')), 'pesée : chaque dimanche (' + dit('Pesée') + ')');
-  ok(/prochaine fois le 22 nov/.test(dit('Ongles')), 'ongles : le 22 aussi');
-  ok(/prochaine fois le 22 nov/.test(dit('Brosse à dents')), 'brosse à dents : le 22 aussi');
+  const ph = await prochaine(fr, 'Photos', '2026-09-29');
+  ok(ph === '2026-11-22', 'photos : dimanche 22 novembre — l\'image du point de départ existe (' + ph + ')');
+  /* 21 octobre au soir : la pesee tombe chaque dimanche, sans cycle */
+  ok(chaqueDimanche(await habit(fr, 'core-pesee-dim')), 'pesée : chaque dimanche');
+  ok(await prochaine(fr, 'Ongles', '2026-09-29') === '2026-11-22', 'ongles : le 22 aussi');
+  ok(await prochaine(fr, 'Brosse à dents', '2026-09-29') === '2026-11-22', 'brosse à dents : le 22 aussi');
   const a = await ancres(fr);
   ok(!a['core-pesee-dim'] && a['core-photos-dim'] === '2026-11-22'
      && a['core-ongles'] === '2026-11-22' && a['core-brosse-dents'] === '2026-11-22',
@@ -88,9 +96,7 @@ console.log('\n== 332) Une Batcave déjà enregistrée est migrée au chargement
      && a['core-ongles'] === '2026-11-22' && a['core-brosse-dents'] === '2026-11-22',
      'les trois ancres du 13 ont été réécrites au 22 novembre, la pesée a perdu la sienne (chaque dimanche)');
   ok(a['core-cheveux'] === '2026-10-31', 'et celle qui n\'était pas au 13 suit sa propre migration : le 3 octobre passe au 31 (coiffeur sauté)');
-  const c = await cartes(fr);
-  ok(/prochaine fois le 22 nov/.test(c.filter(x => x.indexOf('Photos') > -1)[0] || ''),
-     'l\'écran dit la même chose que le stockage');
+  ok((await journee(fr, '2026-11-22')).some(t => /Photos/.test(t)), '« Ma journée » du 22 novembre dit la même chose que le stockage : les photos');
   await ctx.close();
 }
 {
@@ -116,8 +122,7 @@ console.log('\n== 332) Une Batcave déjà enregistrée est migrée au chargement
   const a = await ancres(fr);
   ok(a['core-photos-dim'] === '2026-11-22' && a['core-ongles'] === '2026-11-22' && a['core-brosse-dents'] === '2026-11-22' && a['core-cheveux'] === '2026-10-31',
      'le matin du jour 1 : ses trois ancres du 4 octobre passent au dimanche 22 novembre, la coupe reste au 31 octobre (' + JSON.stringify(a) + ')');
-  const c = await cartes(fr);
-  ok(/prochaine fois le 22 nov/.test(c.filter(x => x.indexOf('Photos') > -1)[0] || ''), 'et la carte des photos annonce le 22 novembre');
+  ok(await prochaine(fr, 'Photos', '2026-11-12') === '2026-11-22', 'et les photos tombent le 22 novembre');
   ok(await fr.evaluate(() => (window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-ancre-dimanche-v3')) === 'true', 'le drapeau de la v3 est posé');
   await ctx.close();
   const main = JSON.parse(JSON.stringify(sienne));
@@ -156,10 +161,9 @@ console.log('\n== 333) La migration ne tourne qu\'une fois ==');
   const a = await ancres(fr);
   ok(a['core-photos-dim'] === '2026-11-22' && a['core-ongles'] === '2026-11-22' && a['core-brosse-dents'] === '2026-11-22' && a['core-cheveux'] === '2026-10-31',
      'ses trois ancres du 13 septembre passent au dimanche 22 novembre, la coupe reste au 31 octobre (' + JSON.stringify(a) + ')');
-  const c = await cartes(fr);
-  const dit = n => c.filter(x => x.indexOf(n) > -1)[0] || '(absente)';
-  ok(/prochaine fois le 22 nov/.test(dit('Photos')) && /prochaine fois le 22 nov/.test(dit('Brosse à dents')) && /prochaine fois le 22 nov/.test(dit('Ongles')),
-     'photos, brosse et ongles annoncés pour le dimanche 22 (' + dit('Photos') + ')');
+  const j22 = await journee(fr, '2026-11-22');
+  ok(['Photos', 'Brosse à dents', 'Ongles'].every(m => j22.some(t => t.indexOf(m) > -1)) && await prochaine(fr, 'Photos', '2026-11-13') === '2026-11-22',
+     'photos, brosse et ongles dans « Ma journée » du dimanche 22, pas avant');
   ok(await fr.evaluate(() => (window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-ancre-dimanche-v4')) === 'true', 'le drapeau de la v4 est posé');
   await ctx.close();
 }
@@ -174,7 +178,7 @@ console.log('\n== 333) La migration ne tourne qu\'une fois ==');
   const a = await ancres(fr);
   ok(a['core-photos-dim'] === '2026-11-22' && a['core-ongles'] === '2026-11-22' && a['core-brosse-dents'] === '2026-11-22' && a['core-cheveux'] === '2026-10-31',
      'v5 : ses trois ancres du 15 novembre passent au dimanche 22, la coupe reste au 31 octobre (' + JSON.stringify(a) + ')');
-  const cases = await fr.evaluate(() => [...document.querySelectorAll('#dash-checklist li label')].map(x => x.textContent));
+  const cases = await journee(fr, '2026-11-15');
   ok(!cases.some(t => /Photos|Brosse à dents|Ongles/.test(t)), 'et ce dimanche 15, veille du jour 1, ne réclame ni photos, ni brosse, ni ongles');
   ok(await fr.evaluate(() => (window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-ancre-dimanche-v5')) === 'true', 'le drapeau de la v5 est posé');
   await ctx.close();
@@ -196,108 +200,53 @@ console.log('\n== 333) La migration ne tourne qu\'une fois ==');
 console.log('\n== 334) Le rythme reste le bon après le 22 novembre ==');
 {
   const { ctx, fr } = await ouvrir('2026-11-23T08:00:00+01:00');
-  const c = await cartes(fr);
-  const dit = n => c.filter(x => x.indexOf(n) > -1)[0] || '(absente)';
   /* 15 novembre, « recale tout sur lundi » : l'ancre au dimanche 22. 22 novembre + 4 semaines = 20 decembre (photos) ;
      + 12 semaines = 14 fevrier (brosse a dents, et le bilan peau). */
-  ok(/· dimanche/.test(dit('Pesée')) && !/prochaine fois/.test(dit('Pesée')), 'pesée : chaque dimanche, sans cycle (' + dit('Pesée') + ')');
-  ok(/prochaine fois le 20 déc/.test(dit('Photos')), 'photos le 20 décembre, quatre semaines après (' + dit('Photos') + ')');
-  ok(/prochaine fois le 14 févr/.test(dit('Brosse à dents')), 'brosse à dents le 14 février, douze semaines après (' + dit('Brosse à dents') + ')');
+  ok(chaqueDimanche(await habit(fr, 'core-pesee-dim')), 'pesée : chaque dimanche, sans cycle');
+  const p2 = await prochaine(fr, 'Photos', '2026-11-23'), b2 = await prochaine(fr, 'Brosse à dents', '2026-11-23');
+  ok(p2 === '2026-12-20', 'photos le 20 décembre, quatre semaines après (' + p2 + ')');
+  ok(b2 === '2027-02-14', 'brosse à dents le 14 février, douze semaines après (' + b2 + ')');
   await ctx.close();
 }
 {
   const { ctx, fr } = await ouvrir('2026-12-20T08:00:00+01:00');
-  const c = await cartes(fr);
-  ok(/prochaine fois le 20 déc/.test(c.filter(x => x.indexOf('Photos') > -1)[0] || ''),
-     'puis le 20 décembre — la photo tombe toujours un dimanche de pesée');
+  const j = await fr.evaluate(() => [...document.querySelectorAll('#mj-cases li, #mj-routine li')].map(l => l.textContent));
+  ok(j.some(t => /Photos/.test(t)) && j.some(t => /Pesée/.test(t)), 'puis le 20 décembre — la photo tombe toujours un dimanche de pesée');
   await ctx.close();
 }
 {
   /* Le bilan peau des douze semaines tombe un dimanche de photos : la consigne « photos du jour, comparees a ta
      premiere serie » a ses deux series. 15 novembre : le 14 fevrier (BILAN_PEAU_ISO), plus le 7. */
   const { ctx, fr } = await ouvrir('2027-02-14T08:00:00+01:00');
-  const v = await fr.evaluate(() => ({ plan: document.getElementById('dash-plan').innerText, cases: [...document.querySelectorAll('#dash-checklist li label')].map(x => x.textContent) }));
+  const v = await fr.evaluate(() => ({ plan: document.getElementById('dash-plan').innerText, cases: (window.__bcJournee.rendre(), [...document.querySelectorAll('#mj-cases li label, #mj-routine li label')].map(x => x.textContent)) }));
   ok(/Bilan peau des 12 semaines/.test(v.plan) && v.cases.some(t => /Photos/.test(t)), 'dimanche 14 février : le bilan peau, et les photos sont une case du jour');
   await ctx.close();
 }
 
-console.log('\n== 335) La marche a enfin une cible ==');
+console.log('\n== 335-336) La marche est retirée (le tri du 17 novembre) : les pas ne se notent plus, et rien ne coche ==');
 {
-  /* « Marche / pas » n'etait defini nulle part : une seule occurrence dans tout le projet,
-     sa propre declaration. Ni combien, ni pourquoi. Meme defaut que les etirements. */
   const { ctx, fr } = await ouvrir('2026-09-21T08:00:00+02:00');
-  const l = await fr.evaluate(() => (JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-habits')) || [])
-    .filter(h => h.id === 'core-marche').map(h => h.label)[0]);
-  ok(/8\u202f000 pas|8 000 pas/.test(l || ''), 'le libellé porte la cible : « ' + l + ' »');
+  ok(!(await habit(fr, 'core-marche')), 'installation neuve : pas de case « Marche »');
   await ctx.close();
 }
-{
-  /* Et une Batcave deja enregistree avec l'ancien libelle est migree. */
-  const vieux = {'batcave-habits': [{id:'core-marche', label:'Marche / pas', icon:'\ud83d\udeb6'}],
+for(const label of ['Marche / pas', 'Marche — 12 000 pas']){
+  /* l'ancien libellé comme le sien : la case sort par son identifiant, quel que soit son nom */
+  const vieux = {'batcave-habits': [{id:'core-marche', label: label, icon:'\ud83d\udeb6'}],
     'batcave-habits-seed-v2':true,'batcave-habits-seed-v3':true,'batcave-habits-seed-v4':true,
     'batcave-habits-seed-v5':true,'batcave-habits-seed-v6':true,'batcave-habits-seed-v7':true,
     'batcave-habits-seed-v8':true};
   const { ctx, fr } = await ouvrir('2026-09-21T08:00:00+02:00', vieux);
-  const l = await fr.evaluate(() => (JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-habits')) || [])
-    .filter(h => h.id === 'core-marche').map(h => h.label)[0]);
-  ok(/8 000 pas/.test(l || ''), 'l\'ancien libellé est réécrit au chargement (« ' + l + ' »)');
+  ok(!(await habit(fr, 'core-marche')), 'une Batcave enregistrée avec « ' + label + ' » la perd au chargement');
   await ctx.close();
 }
 {
-  /* Mais un libelle qu'il a personnalise lui-meme ne doit PAS etre ecrase. */
-  const sien = {'batcave-habits': [{id:'core-marche', label:'Marche — 12 000 pas', icon:'\ud83d\udeb6'}],
-    'batcave-marche-cible-v1': true,
-    'batcave-habits-seed-v2':true,'batcave-habits-seed-v3':true,'batcave-habits-seed-v4':true,
-    'batcave-habits-seed-v5':true,'batcave-habits-seed-v6':true,'batcave-habits-seed-v7':true,
-    'batcave-habits-seed-v8':true};
-  const { ctx, fr } = await ouvrir('2026-09-21T08:00:00+02:00', sien);
-  const l = await fr.evaluate(() => (JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-habits')) || [])
-    .filter(h => h.id === 'core-marche').map(h => h.label)[0]);
-  ok(l === 'Marche — 12 000 pas', 'son propre libellé n\'est jamais écrasé (« ' + l + ' »)');
-  await ctx.close();
-}
-
-console.log('\n== 336) Les pas se saisissent, et ils cochent la case ==');
-{
-  /* Sa demande : « je mettrai mes pas de la journee selon mon appli sante ». Donc un
-     CHIFFRE, pas une case. Et le chiffre doit decider de la case, sinon il saisit 9 200
-     pas et voit quand meme sa case grise -- deux ecrans qui se contredisent. */
-  const { ctx, page, fr } = await ouvrir('2026-09-23T21:20:00+02:00');
-  /* 16 novembre, sa décision : les pas ne se notent plus -- le champ reste, masqué ; la mécanique (le chiffre décide de la case) reste */
+  const { ctx, fr } = await ouvrir('2026-09-23T21:20:00+02:00');
   ok(await fr.evaluate(() => !!document.getElementById('cl-pas') && document.getElementById('cl-pas').closest('[hidden]') !== null),
      'le champ « Pas du jour » reste dans la clôture, masqué');
-  const cible = await fr.evaluate(() => window.__bcPasCible());
-  ok(cible === 8000, 'la cible est lue DANS le libellé de l\'habitude, pas écrite deux fois (' + cible + ')');
-
-  const coche = () => fr.evaluate(() => ((JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-habitlog')) || {})['core-marche'] || []).indexOf('2026-09-23') > -1);
-  ok(!(await coche()), 'au départ la case Marche n\'est pas cochée');
-  await fr.evaluate(() => window.__bcAccorderMarche(9200));
-  await page.waitForTimeout(200);
-  ok(await coche(), '9 200 pas → la case se coche toute seule');
-  await fr.evaluate(() => window.__bcAccorderMarche(4000));
-  await page.waitForTimeout(200);
-  ok(!(await coche()), 'corrigé à 4 000 → elle se décoche : le chiffre fait foi');
-  /* Et elle ne doit pas basculer deux fois si on resaisit la meme valeur. */
-  await fr.evaluate(() => { window.__bcAccorderMarche(9000); window.__bcAccorderMarche(9000); });
-  await page.waitForTimeout(200);
-  ok(await coche(), 'saisir deux fois la même valeur ne fait pas rebasculer la case');
+  ok(await fr.evaluate(() => typeof window.__bcPasCible === 'undefined' && typeof window.__bcAccorderMarche === 'undefined'), 'et plus rien ne coche une case depuis les pas');
   await ctx.close();
 }
 {
-  /* La cible suit le libelle : s'il la passe a 12 000, le seuil suit. C'est ce qui evite
-     qu'un chiffre vive a deux endroits. */
-  const sien = {'batcave-habits': [{id:'core-marche', label:'Marche — 12 000 pas', icon:'\ud83d\udeb6'}],
-    'batcave-marche-cible-v1': true,
-    'batcave-habits-seed-v2':true,'batcave-habits-seed-v3':true,'batcave-habits-seed-v4':true,
-    'batcave-habits-seed-v5':true,'batcave-habits-seed-v6':true,'batcave-habits-seed-v7':true,
-    'batcave-habits-seed-v8':true};
-  const { ctx, fr } = await ouvrir('2026-09-23T21:20:00+02:00', sien);
-  const c = await fr.evaluate(() => window.__bcPasCible());
-  ok(c === 12000, 'libellé à 12 000 → le seuil vaut 12 000 (' + c + ')');
-  await ctx.close();
-}
-{
-  /* La ligne du Bilan : une moyenne par jour, sur les jours qui portent un chiffre. */
   const seed = {
     'batcave-journal-2026-09-21': {pas: 9000}, 'batcave-journal-2026-09-22': {pas: 7000},
     'batcave-journal-2026-09-23': {pas: 8000}
@@ -320,31 +269,18 @@ console.log('\n== 337) La taie d\u2019oreiller du mercredi ==');
      avec les draps), elle rend six nuits de sebum a une peau qui fait de l'acne. D'ou une
      seconde taie propre, le mercredi. */
   const { ctx, fr } = await ouvrir('2026-09-23T09:00:00+02:00');   /* un mercredi */
-  const c = await cartes(fr);
-  ok(c.some(x => /Taie d.oreiller chang/i.test(x)), 'la carte existe dans l\u2019onglet Habitudes (' + c.length + ' cartes)');
+  const mer = await fr.evaluate(() => [...document.querySelectorAll('#mj-corps input[data-mj-hab]')].map(x => x.dataset.mjHab));
+  ok(mer.includes('core-taie-merc'), 'le mercredi, elle est à cocher dans « Ma journée »');
   const h = await fr.evaluate(() => (JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-habits')) || [])
     .filter(x => x && x.id === 'core-taie-merc'));
   ok(h.length === 1, 'une seule occurrence de core-taie-merc dans le stockage (' + h.length + ')');
   ok(h.length === 1 && JSON.stringify(h[0].jours) === '[3]', 'et elle ne vaut que le mercredi (' + JSON.stringify(h[0] && h[0].jours) + ')');
-  /* L'onglet Habitudes liste TOUTES les habitudes actives -- c'est voulu, on doit pouvoir
-     les gerer. Ce qui dit « due aujourd'hui », c'est le bouton : « Marquer fait » tout court
-     le jour ou elle vaut, « Marquer fait (mercredi) » les autres jours. */
-  const btn = i => fr.evaluate(() => {
-    const c = [...document.querySelectorAll('#habits-grid .card')]
-      .find(x => /Taie d.oreiller chang/i.test(x.querySelector('.ctitle').textContent));
-    return c ? c.querySelector('[data-togglehab]').textContent.trim() : '(absente)';
-  });
-  ok(/^Marquer fait$/.test(await btn()), 'le mercredi, le bouton ne renvoie a aucun autre jour (' + (await btn()) + ')');
   await ctx.close();
 }
 {
   const { ctx, fr } = await ouvrir('2026-09-24T09:00:00+02:00');   /* un jeudi */
-  const t = await fr.evaluate(() => {
-    const c = [...document.querySelectorAll('#habits-grid .card')]
-      .find(x => /Taie d.oreiller chang/i.test(x.querySelector('.ctitle').textContent));
-    return c ? c.querySelector('[data-togglehab]').textContent.trim() : '(absente)';
-  });
-  ok(/mercredi/.test(t), 'le jeudi, le bouton renvoie au mercredi (' + t + ')');
+  const jeu = await fr.evaluate(() => [...document.querySelectorAll('#mj-corps input[data-mj-hab]')].map(x => x.dataset.mjHab));
+  ok(!jeu.includes('core-taie-merc'), 'le jeudi, elle n\'est pas dans « Ma journée »');
   await ctx.close();
 }
 {

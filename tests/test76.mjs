@@ -69,7 +69,7 @@ for (const [d, jour_, pesee, coupe] of [
   const {ctx, fr} = await jour(d+'T09:00:00+02:00');
   /* 16 novembre : la coupe est de la routine, sans case -- elle se lit dans les habitudes du jour, plus dans la liste à cocher */
   const h = await fr.evaluate((iso)=>{
-    const l=[...document.querySelectorAll('#dash-checklist li label')].map(x=>x.textContent);
+    /* 17 novembre : les cases du jour se lisent dans « Ma journée » (la console du tableau de bord est retirée) */ window.__bcJournee.rendre(); const l=[...document.querySelectorAll('#mj-cases li label, #mj-routine li label')].map(x=>x.textContent);
     const tout = window.__bcHabitsDuJour(new Date(iso+'T12:00:00').getDay(), iso).map(x => x.label);
     return {pesee: l.some(t=>/Pesée/.test(t)), photos: l.some(t=>/Photos/.test(t)),
             cheveux: tout.some(t=>/Coupe de cheveux/.test(t)), n:l.length};

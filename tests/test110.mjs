@@ -31,10 +31,9 @@ console.log('\n== 410) Dix onglets, Système en pastille sous Semaine ==');
     visibles: [...document.querySelectorAll('.nav-btn[data-page]')].filter(b => !b.hidden).map(b => b.textContent.trim()),
     labels: [...document.querySelectorAll('nav > .nav-label')].filter(l => getComputedStyle(l).display !== 'none').length
   }));
-  ok(r.visibles.join(' · ') === 'Tableau de bord · Ma journée · Calendrier · Études · Semaine · Budget · Habitudes · Sport · Corps · Table', 'la barre : ' + r.visibles.join(' · '));
+  ok(r.visibles.join(' · ') === 'Tableau de bord · Ma journée · Calendrier · Études · Semaine · Budget · Coran & Duaas · Sport · Corps · Table', 'la barre (17 novembre : Coran & Duaas à la place d\'Habitudes) : ' + r.visibles.join(' · '));
   ok(r.labels === 3, 'les trois intertitres sont là');
   for(const [bouton, page2, tete, pastilles] of [
-    ['coran', 'coran', 'habitudes', 'Habitudes|Coran & Duaas'],
     ['courses', 'courses', 'repas', 'Repas|Meal prep|Courses'],
     ['systeme', 'systeme', 'bilan', 'La semaine|Objectifs|Système']
   ]){
@@ -45,6 +44,13 @@ console.log('\n== 410) Dix onglets, Système en pastille sous Semaine ==');
     ok(p.split(',').indexOf(page2) > -1 && t === tete && sn.replace('*', '') === pastilles && /\*/.test(sn),
        bouton + ' : page ' + p + ', onglet « ' + t + ' » allumé, pastilles ' + sn);
   }
+  /* 17 novembre : Coran & Duaas est un onglet à part entière, sans pastilles */
+  await fr.evaluate(() => document.querySelector('.nav-btn[data-page="coran"]').click());
+  await page.waitForTimeout(150);
+  const co = await fr.evaluate(() => ({ actif: document.querySelector('.nav-btn[data-page="coran"]').classList.contains('active'), pastilles: document.querySelectorAll('.page[data-page="coran"] .sous-onglet').length }));
+  ok((await pageActive(fr)).split(',').indexOf('coran') > -1 && co.actif && co.pastilles === 0, 'coran : sa page, son onglet allumé, sans pastilles');
+  await fr.evaluate(() => document.querySelector('.nav-btn[data-page="courses"]').click());
+  await page.waitForTimeout(150);
   const dir = await fr.evaluate(() => getComputedStyle(document.querySelector('.page.active > .sous-nav')).flexDirection);
   ok(dir === 'row', 'sur grand écran, les pastilles sont en ligne (' + dir + ')');
   /* depuis le 14 novembre, « Ma journée » est le deuxième onglet : le Calendrier passe au 3 */

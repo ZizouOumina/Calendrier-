@@ -21,12 +21,13 @@ const setVal = (id, v) => fr.evaluate(([i, val]) => { const e = document.getElem
 const click = (sel) => fr.evaluate(s => { const e = document.querySelector(s); if(!e) return false; e.click(); return true; }, sel);
 const texte = (sel) => fr.evaluate(s => (document.querySelector(s) || {innerText:''}).innerText.replace(/\s+/g,' ').trim(), sel);
 
-console.log('\n== 190) Tableau de bord : habitude, Pomodoro, séance ==');
+console.log('\n== 190) Ma journée et tableau de bord : une case, Pomodoro, séance ==');
 {
-  await click('#dash-checklist input[type="checkbox"]');
+  /* 17 novembre : la console du tableau de bord est retirée, tout se coche dans « Ma journée » */
+  await click('#mj-corps input[data-mj-hab]');
   await page.waitForTimeout(100);
   const hl = await local('batcave-habitlog');
-  ok(hl && Object.values(hl).some(a => a.includes('2026-09-08')), 'une habitude cochée depuis la console est dans le carnet');
+  ok(hl && Object.values(hl).some(a => a.includes('2026-09-08')), 'une case cochée dans « Ma journée » est dans le carnet');
   await click('#dash-pomodoro');
   await page.waitForTimeout(100);
   /* le tableau de bord demande d'abord la matière : on valide le choix proposé */
@@ -49,7 +50,7 @@ console.log('\n== 191) Bilan, Insights, Calendrier, Agenda ==');
 {
   ok(await go('bilan'), 'Bilan s\'affiche');
   const n = await fr.evaluate(() => document.querySelectorAll('#bilan-grid .bilan-card').length);
-  ok(n >= 9, n + ' cartes de bilan (dont fidélité au plan)');
+  ok(n >= 8, n + ' cartes de bilan (dont fidélité au plan)');
   ok(/faites sur/.test(await texte('#bilan-plan-note')) , 'prévu vs réalisé chiffré : ' + await texte('#bilan-plan-note'));
   ok(await go('insights'), 'Insights s\'affiche');
   ok(await go('calendrier'), 'Calendrier s\'affiche');
@@ -88,13 +89,9 @@ console.log('\n== 192) Journal (par la clôture), Habitudes, Dépendances ==');
   await page.waitForTimeout(300);
   const j = await local('batcave-journal-2026-09-08');
   ok(j && String(j.sommeil) === '7' && String(j.poids) === '64.5' && j.water === 250, 'journal : sommeil 7, poids 64,5, eau 250 ml (' + JSON.stringify(j) + ')');
-  ok(await go('habitudes'), 'Habitudes s\'affiche');
-  const avant = (await local('batcave-habits')).length;
-  await setVal('hab-text', 'Lire 10 pages');
-  await click('#hab-add');
-  await page.waitForTimeout(100);
-  const apres = (await local('batcave-habits')).length;
-  ok(apres === avant + 1, 'une habitude ajoutée (' + avant + ' → ' + apres + ')');
+  /* 17 novembre : l'onglet Habitudes est retiré -- « Ma journée » porte les cases, et on n'en ajoute plus depuis la page */
+  ok(await go('journee'), 'Ma journée s\'affiche');
+  ok(await fr.evaluate(() => !document.getElementById('hab-add') && document.querySelectorAll('#mj-corps input[data-mj-hab]').length > 10), 'ses cases sont là, sans formulaire d\'ajout');
   ok(await go('addictions'), 'Dépendances s\'affiche');
   await click('[data-start="snus"]');
   await page.waitForTimeout(100);
@@ -170,7 +167,7 @@ console.log('\n== 195) Études (date d\'examen), Business, Objectifs, Santé, Co
   ok((await local('batcave-business')).length === 1, 'mois Shopify ajouté');
   ok(await go('objectifs'), 'Objectifs s\'affiche');
   const nObj = await fr.evaluate(() => document.querySelectorAll('#obj-liste .obj-row').length);
-  ok(nObj === 5, nObj + ' objectifs du mois, comparés au réel — un seul palier depuis le 19 septembre, sans les heures de projets depuis le 25');
+  ok(nObj === 4, nObj + ' objectifs du mois, comparés au réel — un seul palier depuis le 19 septembre, sans les heures de projets depuis le 25, ni les habitudes depuis le 17 novembre');
   ok(await go('vie'), 'Santé s\'affiche');
   await setVal('sa-date', '2026-09-20'); await click('#sa-add'); await page.waitForTimeout(100);
   ok((await local('batcave-sante')).length === 1, 'rendez-vous santé ajouté');

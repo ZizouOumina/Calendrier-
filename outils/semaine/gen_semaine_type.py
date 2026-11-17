@@ -31,7 +31,7 @@ jours = []
 for i, j in enumerate(sem['jours']):
     notes = ''.join('<li>' + e(n) + '</li>' for n in j.get('notes') or [])
     cases = ''.join('<li>' + e(c) + '</li>' for c in j.get('enPlus') or [])
-    routine = ''.join('<li>' + e(c) + '</li>' for c in j.get('routine') or [])   # 16 novembre : la routine, sans case
+    routine = ''.join('<li>' + e(c) + '</li>' for c in j.get('routine') or [])   # 16 novembre : la routine a sa liste ; 17 novembre : elle se coche aussi
     prieres = ' · '.join(e(p[0]) + ' <b>' + e(p[1]) + '</b>' for p in j.get('prieres') or [])
     rows = ''.join(ligne(r) for r in j['rows'])
     jours.append(
@@ -40,26 +40,13 @@ for i, j in enumerate(sem['jours']):
         + (('<div class="bloc notes"><h3>À ne pas oublier</h3><ul>' + notes + '</ul></div>') if notes else '')
         + '<p class="prieres"><span>Prières</span> ' + prieres + '</p>'
         + '<ol class="fil">' + rows + '</ol>'
-        + (('<div class="bloc cases"><h3>Les cases de ce jour, en plus de celles de tous les jours</h3><ul class="puces">' + cases + '</ul></div>') if cases else '')
-        + (('<div class="bloc cases"><h3>La routine du jour, sans case</h3><ul class="puces">' + routine + '</ul></div>') if routine else '')
+        + (('<div class="bloc cases"><h3>À cocher dans « Ma journée », en plus de tous les jours</h3><ul class="puces">' + cases + '</ul></div>') if cases else '')
+        + (('<div class="bloc cases"><h3>La routine du jour, à cocher aussi</h3><ul class="puces">' + routine + '</ul></div>') if routine else '')
         + '</section>')
 
 chaque = ''.join('<li>' + e(x) + '</li>' for x in G['chaqueJour'])
 mois = ''.join('<li>' + e(x) + '</li>' for x in G['mois'])
 rare = ''.join('<li>' + e(x) + '</li>' for x in G['plusRare'])
-SUIVI = [
-    ('Les douleurs à la poitrine', 'Chaque épisode : le jour, l’heure, au repos ou à l’effort, la durée, ce que ça fait. C’est exactement ce que le médecin te demandera.', 'santé'),
-    ('La fréquence cardiaque au repos', 'Au réveil, assis, 30 secondes au poignet, × 2. Elle baisse quand la forme monte et remonte avant une blessure ou une maladie.', 'santé'),
-    ('La forme au réveil, de 1 à 5', 'Avec les courbatures. Avec le sommeil, c’est ce qui dit si la charge de la semaine passe.', 'santé'),
-    ('Les douleurs d’articulations', 'Genou, épaule, coude, doigts : où, et de 0 à 10. Au JJB, une douleur qui dure deux semaines doit se voir.', 'santé'),
-    ('La peau, une note chaque dimanche', 'De 0 à 3, et le nombre de nouveaux boutons, au moment des photos : le bilan du 14 février aura des chiffres.', 'soin'),
-    ('Le fil dentaire', 'Une case, le soir. Le brossage est déjà dans chaque journée ; le fil est ce qu’on saute en premier.', 'soin'),
-    ('L’heure du dernier café', 'La règle du sommeil dit « rien après 14:00 » : la noter montre si elle tient.', 'sommeil'),
-    ('Le temps d’écran du téléphone', 'Le chiffre du jour, lu dans les réglages du téléphone à la clôture : le plus honnête des compteurs.', 'discipline'),
-    ('Les repas hors plan', 'Combien dans la semaine, et lesquels. La balance et le tour de taille disent le résultat ; ça, ça dit pourquoi.', 'repas'),
-    ('Le snus', 'Les sachets du jour, ton plafond, et rien après 19:00, si tu veux un suivi plutôt qu’un arrêt.', 'addictions'),
-]
-suivi = ''.join('<li><b>' + e(t) + '</b><span>' + e(d) + '</span><em>' + e(c) + '</em></li>' for t, d, c in SUIVI)
 nav = ''.join('<a href="#' + a + '">' + a[:3] + '</a>' for a in ANCRES)
 
 page = '''<title>Ta semaine type</title>
@@ -132,10 +119,6 @@ summary.sum:focus-visible{outline:2px solid var(--accent);outline-offset:1px;bor
 .liste h2{font-size:1.3rem;font-weight:800}
 .liste ul{margin:0;padding-left:18px;display:grid;gap:4px}
 .liste p{margin:0;color:var(--ink2);max-width:62ch}
-ul.suivi{list-style:none;padding:0;display:grid;gap:10px}
-ul.suivi li{display:grid;gap:2px;border-top:1px solid var(--line);padding-top:8px}
-ul.suivi span{color:var(--ink2);font-size:.92rem}
-ul.suivi em{font:500 .68rem/1 var(--f-chiffre);text-transform:uppercase;letter-spacing:.08em;color:var(--accent);font-style:normal}
 @media (max-width:520px){
   .sum{grid-template-columns:3.9rem minmax(0,1fr);row-gap:2px}
   .sum .k{grid-column:2}
@@ -152,12 +135,9 @@ html{scroll-behavior:smooth}
   </header>
   <nav class="jours" aria-label="Les jours">''' + nav + '''<button type="button" id="tout" aria-pressed="false">Tout déplier</button></nav>
 ''' + '\n'.join(jours) + '''
-  <section class="liste" id="tous-les-jours"><h2>Tous les jours, à cocher</h2><ul>''' + chaque + '''</ul></section>
+  <section class="liste" id="tous-les-jours"><h2>Tous les jours, à cocher dans « Ma journée »</h2><ul>''' + chaque + '''</ul></section>
   <section class="liste" id="chaque-mois"><h2>Une fois par mois</h2><ul>''' + mois + '''</ul></section>
   <section class="liste" id="plus-rarement"><h2>Plus rarement</h2><ul>''' + rare + '''</ul></section>
-  <section class="liste" id="a-suivre"><h2>Ce que tu pourrais suivre en plus</h2>
-    <p>Tu suis déjà le poids, la taille, les épaules, le sommeil, l’eau, l’humeur, les pas, les pages de Coran, Anki, l’espagnol et les Pomodoros. Voici ce qui manque encore, à ajouter si tu veux :</p>
-    <ul class="suivi">''' + suivi + '''</ul></section>
 </div>
 <script>
 (function(){

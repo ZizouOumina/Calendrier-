@@ -50,7 +50,7 @@ async function ouvrir(cloud, local, quand){
   page.on('pageerror', e => { errs++; console.log('  PAGEERROR: ' + e.message); });
   await page.clock.install({ time: new Date(quand) });
   await page.goto(URL, {timeout:20000}).catch(function(){});  /* un rechargement declenche par la synchro peut faire expirer goto : la vraie synchro, c'est le selecteur ci-dessous */
-  await page.frameLocator('#f').locator('#dash-checklist').waitFor({ state:'attached', timeout:15000 });
+  await page.frameLocator('#f').locator('#dash-plan').waitFor({ state:'attached', timeout:15000 });
   const fr = page.frames().find(x => x.url().includes('batcave.html'));
   await fr.evaluate(() => { const r = document.getElementById('ritual-dismiss'); if(r) r.click(); });
   await page.waitForTimeout(900);
@@ -76,36 +76,39 @@ const dansCloud = fr => fr.evaluate(() => window.__cloud);
 const local = (fr,k) => fr.evaluate(x => JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))(x) || 'null'), k);
 
 const SAMEDI = '2026-09-05T10:00:00+02:00';
-/* l'état exact du compte : le cloud fait autorité sur les habitudes, il ignore le lot V3 */
+/* l'état exact du compte : le cloud fait autorité sur les habitudes, il ignore le lot V4.
+   17 novembre : la V3 (« Courses faites ») est vide depuis le tri -- la course se vérifie sur la V4 (l'espagnol) ;
+   le cloud porte aussi une habitude retirée (la marche), qui doit rester dehors après l'hydratation. */
 const HABITS_17 = [
   {id:'core-lit', label:'Lit fait', icon:'🛏️'},
   {id:'core-fajr', label:'Fajr', icon:'🕌'},
   {id:'hab1788303536189', label:'Passer le balais'}
 ];
-const CLOUD = {'batcave-habits': HABITS_17, 'batcave-habits-seed-v2': true};
+const CLOUD = {'batcave-habits': HABITS_17.concat([{id:'core-marche', label:'Marche / pas', icon:'🚶'}]), 'batcave-habits-seed-v2': true, 'batcave-habits-seed-v3': true};
+const LOCAL = {'batcave-habits': HABITS_17, 'batcave-habits-seed-v2': true, 'batcave-habits-seed-v3': true};
 
 console.log('\n== 95) Le semis survit à l\'hydratation du cloud ==');
 {
-  const { ctx, fr, page } = await ouvrir(CLOUD, {'batcave-habits': HABITS_17, 'batcave-habits-seed-v2': true}, SAMEDI);
+  const { ctx, fr, page } = await ouvrir(CLOUD, LOCAL, SAMEDI);
   const cl = await dansCloud(fr);
   const habs = cl['batcave-habits'] || [];
-  ok(habs.some(h => h.id === 'core-courses'), 'le cloud reçoit bien l\'habitude, pas seulement le drapeau');
-  ok(cl['batcave-habits-seed-v3'] === true, 'le drapeau V3 est dans le cloud');
+  ok(habs.some(h => h.id === 'core-es-conversacion'), 'le cloud reçoit bien l\'habitude, pas seulement le drapeau');
+  ok(cl['batcave-habits-seed-v4'] === true, 'le drapeau V4 est dans le cloud');
   ok(habs.some(h => h.id === 'core-lit') && habs.some(h => h.id === 'hab1788303536189'),
      'les habitudes du cloud sont conservées');
   const loc = await local(fr, 'batcave-habits');
-  ok(loc.some(h => h.id === 'core-courses'), 'le local aussi, après hydratation');
-  /* 16 novembre, sa décision : « Courses faites » est de la routine -- sans case ; la migration se rejoue sur les données du cloud */
-  ok(loc.some(h => h.id === 'core-courses' && h.sansCase === true), 'elle est de la routine depuis le 16 novembre (sansCase), même après l\'hydratation');
+  ok(loc.some(h => h.id === 'core-es-conversacion'), 'le local aussi, après hydratation');
+  /* 17 novembre, le tri : une habitude retirée revenue du cloud est filtrée, en local comme au cloud */
+  ok(!loc.some(h => h.id === 'core-marche') && !habs.some(h => h.id === 'core-marche'), 'la marche, retirée le 17 novembre, reste dehors après l\'hydratation');
   await ctx.close();
 }
 
 console.log('\n== 96) Jamais le drapeau seul (l\'état corrompu observé en production) ==');
 {
-  const { ctx, fr } = await ouvrir(CLOUD, {'batcave-habits': HABITS_17, 'batcave-habits-seed-v2': true}, SAMEDI);
+  const { ctx, fr } = await ouvrir(CLOUD, LOCAL, SAMEDI);
   const cl = await dansCloud(fr);
-  const drapeau = cl['batcave-habits-seed-v3'] === true;
-  const donnee = (cl['batcave-habits'] || []).some(h => h.id === 'core-courses');
+  const drapeau = cl['batcave-habits-seed-v4'] === true;
+  const donnee = (cl['batcave-habits'] || []).some(h => h.id === 'core-es-conversacion');
   ok(!(drapeau && !donnee), 'drapeau et habitude arrivent ensemble, ou pas du tout');
   await ctx.close();
 }
@@ -117,9 +120,8 @@ console.log('\n== 97) Un cloud déjà à jour ne déclenche aucune réécriture 
      reecriture qu'il declenche est justement celle qu'on veut. A chaque nouvelle graine,
      ce jeu d'essai se complete -- v9 (la taie d'oreiller du mercredi) le 20 septembre, v10 (le cou
      du jeudi soir) le 30, v11 (la douche froide) le 5 octobre, v12 (la lumiere du matin) le 21, v13 (le rideau de douche) le 14 novembre, v14 (l'entretien des machines) le 15. */
-  const aJour = {'batcave-habits': HABITS_17.concat([{id:'core-courses', label:'Courses faites', icon:'🛒', jour:6},
-                                                     {id:'core-taie-merc', label:'Taie d’oreiller changée', icon:'🛌', jours:[3]},
-                                                     {id:'core-cou-jeudi', label:'Cou — flexion et extension, 3 × 12-20', icon:'🦴', jours:[4]},
+  /* 17 novembre : sans la V3 ni la V10, vidées par le tri (« Courses faites », le cou du jeudi soir) */
+  const aJour = {'batcave-habits': HABITS_17.concat([{id:'core-taie-merc', label:'Taie d’oreiller changée', icon:'🛌', jours:[3]},
                                                      {id:'core-douche-froide', label:'Douche froide — 30 à 60 s en fin de douche', icon:'🚿', jours:[0,3,5]},
                                                      {id:'core-lumiere', label:'Lumière du matin — 15 min dehors, dès qu’il fait jour', icon:'☀️'},
                                                      {id:'core-rideau-douche', label:'Rideau de douche à la machine, 40 °C', icon:'🧺', jours:[0], cycleSemaines:4, ancre:'2026-12-13'},
@@ -140,7 +142,7 @@ console.log('\n== 97) Un cloud déjà à jour ne déclenche aucune réécriture 
   const ecrits = await fr.evaluate(() => window.__w.filter(k => k === 'batcave-habits'));
   ok(ecrits.length === 0, 'aucune réécriture inutile de batcave-habits');
   const cl = await dansCloud(fr);
-  ok((cl['batcave-habits'] || []).filter(h => h.id === 'core-courses').length === 1, 'pas de doublon');
+  ok((cl['batcave-habits'] || []).filter(h => h.id === 'core-taie-merc').length === 1, 'pas de doublon');
   await ctx.close();
 }
 
@@ -149,16 +151,16 @@ console.log('\n== 98) Sans cloud, le semis local fonctionne toujours ==');
   const ctx = await browser.newContext({ viewport:{width:1440,height:900}, timezoneId:'Europe/Madrid', locale:'fr-FR' });
   await ctx.addInitScript(() => { window.claude = undefined; });
   await ctx.addInitScript(x => { Object.keys(x).forEach(k => localStorage.setItem(k, JSON.stringify(x[k]))); },
-                          {'batcave-habits': HABITS_17, 'batcave-habits-seed-v2': true});
+                          LOCAL);
   const page = await ctx.newPage();
   page.on('pageerror', e => { errs++; console.log('  PAGEERROR: ' + e.message); });
   await page.clock.install({ time: new Date(SAMEDI) });
   await page.goto(URL, {timeout:20000}).catch(function(){});  /* un rechargement declenche par la synchro peut faire expirer goto : la vraie synchro, c'est le selecteur ci-dessous */
-  await page.frameLocator('#f').locator('#dash-checklist').waitFor({ state:'attached', timeout:15000 });
+  await page.frameLocator('#f').locator('#dash-plan').waitFor({ state:'attached', timeout:15000 });
   const fr = page.frames().find(x => x.url().includes('batcave.html'));
   await page.waitForTimeout(1200);
   const loc = await fr.evaluate(() => JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-habits')));
-  ok(loc.some(h => h.id === 'core-courses'), 'fichier .html hors ligne : l\'habitude est semée');
+  ok(loc.some(h => h.id === 'core-es-conversacion'), 'fichier .html hors ligne : l\'habitude est semée');
   await ctx.close();
 }
 

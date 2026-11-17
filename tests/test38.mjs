@@ -11,87 +11,43 @@ async function ouvrir(quand, seed){
   page.on('pageerror', e => { errs++; console.log('  PAGEERROR: ' + e.message); });
   await page.clock.install({ time: new Date(quand) });
   await page.goto(URL);
-  await page.frameLocator('#f').locator('#dash-checklist').waitFor({ state:'attached', timeout:15000 });
+  await page.frameLocator('#f').locator('#dash-plan').waitFor({ state:'attached', timeout:15000 });
   const fr = page.frames().find(x => x.url().includes('batcave.html'));
   await fr.evaluate(() => { const r = document.getElementById('ritual-dismiss'); if(r) r.click(); });
   await page.waitForTimeout(450);
   return { ctx, page, fr };
 }
 const aller = async (fr,page,p) => { await fr.evaluate(pg => document.querySelector('.nav-btn[data-page="'+pg+'"]').click(), p); await page.waitForTimeout(350); };
-const listeDash = fr => fr.evaluate(() => [...document.querySelectorAll('#dash-checklist [data-togglehab], #dash-checklist li, #dash-checklist .hrow')].map(e => e.innerText.replace(/\s+/g,' ').trim()).filter(Boolean));
 
 /* jeudi 3 sept 2026 (jour de cours) et samedi 5 sept 2026 */
 const JEUDI = '2026-09-03T10:00:00+02:00';
 const SAMEDI = '2026-09-05T10:00:00+02:00';
 
-console.log('\n== 76) L\'habitude Courses n\'apparaît QUE le samedi ==');
+console.log('\n== 76-79) « Courses faites » est retirée (le tri du 17 novembre) : la liste se coche en magasin ==');
 {
-  const { ctx, fr } = await ouvrir(JEUDI);
-  const t = await fr.evaluate(() => document.getElementById('dash-checklist').innerText);
-  ok(!/Courses faites/.test(t), 'jeudi : pas de « Courses faites » dans la liste du jour');
-  await ctx.close();
+  for(const quand of [JEUDI, SAMEDI]){
+    const { ctx, page, fr } = await ouvrir(quand);
+    await aller(fr, page, 'journee');
+    const t = await fr.evaluate(() => document.getElementById('mj-corps').innerText);
+    ok(!/Courses faites/.test(t), (quand === JEUDI ? 'jeudi' : 'samedi') + ' : pas de « Courses faites » dans « Ma journée »');
+    await ctx.close();
+  }
 }
-{
-  const { ctx, fr } = await ouvrir(SAMEDI);
-  const t = await fr.evaluate(() => document.getElementById('dash-checklist').innerText);
-  /* 16 novembre, sa décision : « Courses faites » est de la routine -- plus de case ; « Ma journée » la dit le samedi */
-  const routine = await fr.evaluate(() => { document.querySelector('.nav-btn[data-page="journee"]').click(); return [...document.querySelectorAll('#mj-routine li')].map(x => x.textContent); });
-  ok(!/Courses faites/.test(t) && routine.some(x => /Courses faites/.test(x)), 'samedi : « Courses faites » n\'est plus une case, « Ma journée » la dit dans la routine (' + routine.length + ')');
-  await ctx.close();
-}
-
-console.log('\n== 77) Elle ne pénalise pas le score les autres jours ==');
-{
-  /* toutes les habitudes du jour cochées un jeudi → la part habitudes doit être à 100%,
-     sans que « Courses faites » (samedi) compte comme ratée. */
-  const { ctx, fr } = await ouvrir(JEUDI);
-  const r = await fr.evaluate(() => {
-    const ids = [...document.querySelectorAll('#dash-checklist [data-togglehab]')].map(e => e.dataset.togglehab);
-    return { ids, courses: ids.indexOf('core-courses') };
-  });
-  ok(r.courses === -1, 'core-courses absent des cases du jeudi : ' + r.ids.length + ' habitudes');
-  await ctx.close();
-}
-
-console.log('\n== 78) Plus de case « Courses faites » : la liste se coche en magasin ==');
-{
-  /* 16 novembre : la case qui remplissait la liste d'un coup n'existe plus -- la liste de l'onglet Courses fait foi */
-  const { ctx, page, fr } = await ouvrir(SAMEDI);
-  const avant = await fr.evaluate(() => { document.querySelector('.nav-btn[data-page="courses"]').click(); return document.getElementById('courses-summary').textContent; });
-  ok(/^0\//.test(avant.trim()), 'au départ la liste est vide : ' + avant);
-  await aller(fr, page, 'dashboard');
-  const caseCourses = await fr.evaluate(() => !!document.querySelector('#dash-checklist [data-togglehab="core-courses"]'));
-  ok(!caseCourses, 'le samedi, plus de case « Courses faites » sur le tableau de bord');
-  await ctx.close();
-}
-
-console.log('\n== 79) Compléter la liste coche l\'habitude (et l\'inverse) ==');
 {
   const { ctx, page, fr } = await ouvrir(SAMEDI);
   await aller(fr, page, 'courses');
-  /* chaque clic redessine la grille : on re-cible l'élément à chaque tour, sinon on
-     cliquerait sur des noeuds détachés et un seul article serait coché. */
+  const avant = await fr.evaluate(() => document.getElementById('courses-summary').textContent);
+  ok(/^0\//.test(avant.trim()), 'au départ la liste est vide : ' + avant);
+  /* chaque clic redessine la grille : on re-cible l'élément à chaque tour */
   const total = await fr.evaluate(() => document.querySelectorAll('#courses-grid input[type=checkbox]').length);
   for(let i = 0; i < total; i++){
-    await fr.evaluate(() => {
-      const cb = [...document.querySelectorAll('#courses-grid input[type=checkbox]')].find(x => !x.checked);
-      if(cb) cb.click();
-    });
+    await fr.evaluate(() => { const cb = [...document.querySelectorAll('#courses-grid input[type=checkbox]')].find(x => !x.checked); if(cb) cb.click(); });
     await page.waitForTimeout(40);
   }
-  await page.waitForTimeout(400);
-  const coche = await fr.evaluate(() => {
-    document.querySelector('.nav-btn[data-page="dashboard"]').click();
-    const b = document.querySelector('#dash-checklist [data-togglehab="core-courses"]');
-    return b ? b.closest('label, li, div').innerText.replace(/\s+/g,' ') : null;
-  });
+  await page.waitForTimeout(300);
+  const apres = await fr.evaluate(() => document.getElementById('courses-summary').textContent);
   const log = await fr.evaluate(() => JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-habitlog')||'{}')['core-courses']||[]);
-  ok(log.indexOf('2026-09-05') > -1, 'liste complète → habitude cochée : ' + JSON.stringify(log));
-  await aller(fr, page, 'courses');
-  await fr.evaluate(() => { const cb = document.querySelector('#courses-grid input[type=checkbox]'); if(cb) cb.click(); });
-  await page.waitForTimeout(400);
-  const log2 = await fr.evaluate(() => JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-habitlog')||'{}')['core-courses']||[]);
-  ok(log2.indexOf('2026-09-05') === -1, 'on décoche un article → habitude décochée : ' + JSON.stringify(log2));
+  ok(new RegExp('^' + total + '/' + total).test(apres.trim()) && log.length === 0, 'la liste complète se coche en magasin (' + apres.trim() + '), sans case derrière');
   await ctx.close();
 }
 

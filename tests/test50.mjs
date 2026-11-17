@@ -106,16 +106,18 @@ console.log('\n== 153) Relevé SAUVEGARDE : auto / manuelle, la plus récente ==
   await ctx.close();
 }
 
-console.log('\n== 154) Console d\'habitudes : des touches en ligne, pas des rangées ==');
+console.log('\n== 154) Les cases du jour vivent dans « Ma journée » (17 novembre : la console du tableau de bord est retirée) ==');
 {
   const { ctx, fr } = await ouvrir(MARDI);
   const h = await fr.evaluate(() => {
-    const lis = [...document.querySelectorAll('#dash-checklist li')];
-    const tops = new Set(lis.map(l => Math.round(l.getBoundingClientRect().top)));
-    return { n: lis.length, lignes: tops.size, largeurMax: Math.max(...lis.map(l => l.getBoundingClientRect().width)), conteneur: document.getElementById('dash-checklist').getBoundingClientRect().width };
+    document.querySelector('.nav-btn[data-page="journee"]').click();
+    const lis = [...document.querySelectorAll('#mj-cases li, #mj-routine li')];
+    return { console: !!document.getElementById('dash-checklist'), n: lis.length, cases: document.querySelectorAll('#mj-corps input[data-mj-hab]').length,
+             hauteurMin: Math.min(...lis.map(l => l.getBoundingClientRect().height)) };
   });
-  ok(h.n > 6 && h.lignes < h.n, h.n + ' touches sur ' + h.lignes + ' lignes');
-  ok(h.largeurMax < h.conteneur * 0.6, 'aucune touche ne prend toute la largeur (max ' + Math.round(h.largeurMax) + ' / ' + Math.round(h.conteneur) + 'px)');
+  ok(!h.console, 'plus de console d\'habitudes sur le tableau de bord');
+  ok(h.n > 6 && h.cases === h.n, h.n + ' cases dans « Ma journée », une par ligne');
+  ok(h.hauteurMin >= 20, 'chaque ligne se touche facilement (' + Math.round(h.hauteurMin) + ' px au minimum)');
   await ctx.close();
 }
 

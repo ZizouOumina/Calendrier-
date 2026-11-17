@@ -56,7 +56,7 @@ console.log('\n== 231) Phase 1 (mercredi 16 septembre) : blocs Projets perso ren
       cible: window.__bcCibleEspanol('2026-09-16'), periode: (window.__bcPeriode('2026-09-16') || {}).id,
       grille: document.querySelector('#bc-grille .v').textContent, cellules: [...document.querySelectorAll('#dash-temps .temps-cell .tl')].map(e => e.textContent),
       btnDash: document.getElementById('dash-pomodoro-espanol').hidden, btnTimer: document.getElementById('timer-pomodoro-espanol').hidden,
-      habits: [...document.querySelectorAll('#dash-checklist label')].map(l => l.textContent)
+      habits: (window.__bcJournee.rendre(), [...document.querySelectorAll('#mj-cases label')].map(l => l.textContent))
     };
   });
   ok(g.w1120 === 'Clore le cours du jour' && g.w1300 === 'Español · gramática' && g.w1400 === 'Español · escribir', 'lun-mer-jeu : 13:00 gramática, 14:00 escribir, et 20:30 reste « Clore » : ' + [g.w1120, g.w1300, g.w1400].join(' / '));
@@ -74,7 +74,7 @@ console.log('\n== 231) Phase 1 (mercredi 16 septembre) : blocs Projets perso ren
   ok(g.periode === 'es-1' && /phase 1 · J-52$/.test(g.grille), 'relevé GRILLE : « Español · phase 1 · J-52 » (es-1 finit le 7 novembre) (obtenu « ' + g.grille + ' »)');
   ok(g.cellules.length === 3 && /Español/.test(g.cellules[2]), 'troisième cellule « Español » sur le tableau de bord : ' + g.cellules.join(' | '));
   ok(!g.btnDash && !g.btnTimer, 'boutons Pomodoro Español visibles (tableau de bord et Études)');
-  ok(g.habits.some(h => /formules du jour/.test(h)) && g.habits.some(h => /natif/.test(h)) && g.habits.some(h => /20 pages/.test(h)), 'les trois habitudes du plan sont dans la console du jour');
+  ok(g.habits.some(h => /formules du jour/.test(h)) && g.habits.some(h => /natif/.test(h)) && g.habits.some(h => /20 pages/.test(h)), 'les trois habitudes du plan sont dans « Ma journée »');
 
   /* calendrier : libellé de la grille, bloc MAINTENANT = gramática avec sa consigne */
   await fr.evaluate(() => document.querySelector('.nav-btn[data-page="calendrier"]').click());

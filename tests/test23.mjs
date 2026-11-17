@@ -70,19 +70,20 @@ const pie = await fr.evaluate(() => ({
 ok(pie.parts === 1 && /Shopify 1200/.test(pie.txt), 'camembert Entrées à 100% Shopify : ' + pie.txt);
 ok(/959/.test(pie.solde), 'le solde se recalcule : 1200 - 240,99 de charges (club à 70 €, licence lissée, Basic-Fit Premium, ni loyer ni wifi ni transports) = 959 (' + pie.solde + ')');
 
-console.log('\n== E) Habitude cochée → score + bilan ==');
-await fr.evaluate(() => document.querySelector('.nav-btn[data-page="habitudes"]').click());
+console.log('\n== E) Case cochée dans « Ma journée » → l\'anneau la compte, pas le score (17 novembre : plus de suivi des cases) ==');
+const lireDash = () => fr.evaluate(() => { document.querySelector('.nav-btn[data-page="dashboard"]').click();
+  return { score: document.getElementById('dash-score-num').textContent, leg: document.getElementById('leg-hab').textContent }; });
+const avantE = await lireDash();
+await fr.evaluate(() => document.querySelector('.nav-btn[data-page="journee"]').click());
 await page.waitForTimeout(150);
-await fr.evaluate(() => document.querySelector('[data-togglehab]').click());
+await fr.evaluate(() => document.querySelector('#mj-corps input[data-mj-hab]:not(:checked)').click());
 await page.waitForTimeout(200);
-const score = await fr.evaluate(() => {
-  document.querySelector('.nav-btn[data-page="dashboard"]').click();
-  return document.getElementById('dash-score-num').textContent;
-});
-ok(Number(score) > 0, 'le score du jour bouge après une habitude cochée : ' + score);
+const apresE = await lireDash();
+const fait = t => Number((t.match(/(\d+)\//) || [])[1]);
+ok(fait(apresE.leg) === fait(avantE.leg) + 1 && apresE.score === avantE.score, 'cocher une case : l\'anneau passe à « ' + apresE.leg + ' », le score ne bouge pas (' + apresE.score + ')');
 
 console.log('\n== F) Zéro erreur console sur toutes les pages ==');
-const pages = ['dashboard','bilan','insights','calendrier','agenda','habitudes','addictions','repas','sport',
+const pages = ['dashboard','bilan','insights','calendrier','agenda','journee','addictions','repas','sport',
                'coran','taches','budget','etudes','business','objectifs','vie','courses'];
 for(const p of pages){
   await fr.evaluate(pg => document.querySelector('.nav-btn[data-page="'+pg+'"]').click(), p);

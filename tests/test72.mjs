@@ -28,7 +28,7 @@ const DIMANCHE = '2026-09-20T21:00:00+02:00';
 console.log('\n== 290) Chaque famille de pages a sa couleur, et elle est tenue ==');
 {
   const { ctx, fr, page } = await ouvrir(MERCREDI);
-  const attendu = {sport:'corps', habitudes:'corps', repas:'table', courses:'table', budget:'argent',
+  const attendu = {sport:'corps', journee:'etudes', repas:'table', courses:'table', budget:'argent',
                    coran:'foi', bilan:'suivi', objectifs:'suivi', etudes:'etudes', calendrier:'etudes'};
   const vus = {};
   for(const [pg, dom] of Object.entries(attendu)){
@@ -131,7 +131,8 @@ console.log('\n== 296) L\'expérience de la semaine : déclaration puis verdict 
   const { ctx, fr, page } = await ouvrir(DIMANCHE);
   await fr.evaluate(() => document.getElementById('bc-cloture').click());
   await page.waitForTimeout(250);
-  ok(await fr.evaluate(() => document.querySelectorAll('#cl-exp-mesure option').length) === 9, 'neuf mesures proposées');
+  /* 16 et 17 novembre : l'eau, la nutrition et les habitudes ne se notent plus -- six mesures */
+  ok(await fr.evaluate(() => document.querySelectorAll('#cl-exp-mesure option').length) === 6, 'six mesures proposées');
   await fr.evaluate(() => { document.getElementById('cl-exp-quoi').value = 'Coucher à 21:30'; document.getElementById('cl-exp-mesure').value = 'sleepH'; document.getElementById('cloture-valider').click(); });
   await page.waitForTimeout(350);
   const x = await fr.evaluate(() => JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-experiences') || '[]'));

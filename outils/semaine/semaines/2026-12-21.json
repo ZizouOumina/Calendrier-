@@ -209,25 +209,9 @@
     "quinzaine": false
    },
    {
-    "id": "core-revue",
-    "label": "Revue de la veille / plan du lendemain",
-    "icon": "📝",
-    "cycle": 0,
-    "ancre": null,
-    "quinzaine": false
-   },
-   {
     "id": "core-famille",
     "label": "Nouvelles à la famille",
     "icon": "📞",
-    "cycle": 0,
-    "ancre": null,
-    "quinzaine": false
-   },
-   {
-    "id": "core-marche",
-    "label": "Marche / pas",
-    "icon": "🚶",
     "cycle": 0,
     "ancre": null,
     "quinzaine": false
@@ -352,19 +336,9 @@
     "icon": "🤲"
    },
    {
-    "id": "core-revue",
-    "label": "Revue de la veille / plan du lendemain",
-    "icon": "📝"
-   },
-   {
     "id": "core-famille",
     "label": "Nouvelles à la famille",
     "icon": "📞"
-   },
-   {
-    "id": "core-marche",
-    "label": "Marche / pas",
-    "icon": "🚶"
    },
    {
     "id": "hab1788303551564",
@@ -734,25 +708,9 @@
     "quinzaine": false
    },
    {
-    "id": "core-revue",
-    "label": "Revue de la veille / plan du lendemain",
-    "icon": "📝",
-    "cycle": 0,
-    "ancre": null,
-    "quinzaine": false
-   },
-   {
     "id": "core-famille",
     "label": "Nouvelles à la famille",
     "icon": "📞",
-    "cycle": 0,
-    "ancre": null,
-    "quinzaine": false
-   },
-   {
-    "id": "core-marche",
-    "label": "Marche / pas",
-    "icon": "🚶",
     "cycle": 0,
     "ancre": null,
     "quinzaine": false
@@ -861,19 +819,9 @@
     "icon": "🤲"
    },
    {
-    "id": "core-revue",
-    "label": "Revue de la veille / plan du lendemain",
-    "icon": "📝"
-   },
-   {
     "id": "core-famille",
     "label": "Nouvelles à la famille",
     "icon": "📞"
-   },
-   {
-    "id": "core-marche",
-    "label": "Marche / pas",
-    "icon": "🚶"
    },
    {
     "id": "hab1788303551564",
@@ -1233,25 +1181,9 @@
     "quinzaine": false
    },
    {
-    "id": "core-revue",
-    "label": "Revue de la veille / plan du lendemain",
-    "icon": "📝",
-    "cycle": 0,
-    "ancre": null,
-    "quinzaine": false
-   },
-   {
     "id": "core-famille",
     "label": "Nouvelles à la famille",
     "icon": "📞",
-    "cycle": 0,
-    "ancre": null,
-    "quinzaine": false
-   },
-   {
-    "id": "core-marche",
-    "label": "Marche / pas",
-    "icon": "🚶",
     "cycle": 0,
     "ancre": null,
     "quinzaine": false
@@ -1384,19 +1316,9 @@
     "icon": "🤲"
    },
    {
-    "id": "core-revue",
-    "label": "Revue de la veille / plan du lendemain",
-    "icon": "📝"
-   },
-   {
     "id": "core-famille",
     "label": "Nouvelles à la famille",
     "icon": "📞"
-   },
-   {
-    "id": "core-marche",
-    "label": "Marche / pas",
-    "icon": "🚶"
    },
    {
     "id": "hab1788303551564",
@@ -1771,25 +1693,9 @@
     "quinzaine": false
    },
    {
-    "id": "core-revue",
-    "label": "Revue de la veille / plan du lendemain",
-    "icon": "📝",
-    "cycle": 0,
-    "ancre": null,
-    "quinzaine": false
-   },
-   {
     "id": "core-famille",
     "label": "Nouvelles à la famille",
     "icon": "📞",
-    "cycle": 0,
-    "ancre": null,
-    "quinzaine": false
-   },
-   {
-    "id": "core-marche",
-    "label": "Marche / pas",
-    "icon": "🚶",
     "cycle": 0,
     "ancre": null,
     "quinzaine": false
@@ -1838,14 +1744,6 @@
     "id": "core-creatine",
     "label": "Créatine — 5 g",
     "icon": "🥄",
-    "cycle": 0,
-    "ancre": null,
-    "quinzaine": false
-   },
-   {
-    "id": "core-cou-jeudi",
-    "label": "Cou — flexion et extension, 3 × 12-20",
-    "icon": "🦴",
     "cycle": 0,
     "ancre": null,
     "quinzaine": false
@@ -1906,19 +1804,9 @@
     "icon": "🤲"
    },
    {
-    "id": "core-revue",
-    "label": "Revue de la veille / plan du lendemain",
-    "icon": "📝"
-   },
-   {
     "id": "core-famille",
     "label": "Nouvelles à la famille",
     "icon": "📞"
-   },
-   {
-    "id": "core-marche",
-    "label": "Marche / pas",
-    "icon": "🚶"
    },
    {
     "id": "hab1788303551564",
@@ -1949,11 +1837,6 @@
     "id": "core-creatine",
     "label": "Créatine — 5 g",
     "icon": "🥄"
-   },
-   {
-    "id": "core-cou-jeudi",
-    "label": "Cou — flexion et extension, 3 × 12-20",
-    "icon": "🦴"
    },
    {
     "id": "core-lumiere",
@@ -2283,25 +2166,9 @@
     "quinzaine": false
    },
    {
-    "id": "core-revue",
-    "label": "Revue de la veille / plan du lendemain",
-    "icon": "📝",
-    "cycle": 0,
-    "ancre": null,
-    "quinzaine": false
-   },
-   {
     "id": "core-famille",
     "label": "Nouvelles à la famille",
     "icon": "📞",
-    "cycle": 0,
-    "ancre": null,
-    "quinzaine": false
-   },
-   {
-    "id": "core-marche",
-    "label": "Marche / pas",
-    "icon": "🚶",
     "cycle": 0,
     "ancre": null,
     "quinzaine": false
@@ -2426,19 +2293,9 @@
     "icon": "🤲"
    },
    {
-    "id": "core-revue",
-    "label": "Revue de la veille / plan du lendemain",
-    "icon": "📝"
-   },
-   {
     "id": "core-famille",
     "label": "Nouvelles à la famille",
     "icon": "📞"
-   },
-   {
-    "id": "core-marche",
-    "label": "Marche / pas",
-    "icon": "🚶"
    },
    {
     "id": "hab1788303551564",
@@ -2793,25 +2650,9 @@
     "quinzaine": false
    },
    {
-    "id": "core-revue",
-    "label": "Revue de la veille / plan du lendemain",
-    "icon": "📝",
-    "cycle": 0,
-    "ancre": null,
-    "quinzaine": false
-   },
-   {
     "id": "core-famille",
     "label": "Nouvelles à la famille",
     "icon": "📞",
-    "cycle": 0,
-    "ancre": null,
-    "quinzaine": false
-   },
-   {
-    "id": "core-marche",
-    "label": "Marche / pas",
-    "icon": "🚶",
     "cycle": 0,
     "ancre": null,
     "quinzaine": false
@@ -2828,14 +2669,6 @@
     "id": "hab1788303551564",
     "label": "Vaisselle",
     "icon": "🍽️",
-    "cycle": 0,
-    "ancre": null,
-    "quinzaine": false
-   },
-   {
-    "id": "core-courses",
-    "label": "Courses faites",
-    "icon": "🛒",
     "cycle": 0,
     "ancre": null,
     "quinzaine": false
@@ -2952,19 +2785,9 @@
     "icon": "🤲"
    },
    {
-    "id": "core-revue",
-    "label": "Revue de la veille / plan du lendemain",
-    "icon": "📝"
-   },
-   {
     "id": "core-famille",
     "label": "Nouvelles à la famille",
     "icon": "📞"
-   },
-   {
-    "id": "core-marche",
-    "label": "Marche / pas",
-    "icon": "🚶"
    },
    {
     "id": "hab1788303536189",
@@ -2975,11 +2798,6 @@
     "id": "hab1788303551564",
     "label": "Vaisselle",
     "icon": "🍽️"
-   },
-   {
-    "id": "core-courses",
-    "label": "Courses faites",
-    "icon": "🛒"
    },
    {
     "id": "core-es-conversacion",
@@ -3324,25 +3142,9 @@
     "quinzaine": false
    },
    {
-    "id": "core-revue",
-    "label": "Revue de la veille / plan du lendemain",
-    "icon": "📝",
-    "cycle": 0,
-    "ancre": null,
-    "quinzaine": false
-   },
-   {
     "id": "core-famille",
     "label": "Nouvelles à la famille",
     "icon": "📞",
-    "cycle": 0,
-    "ancre": null,
-    "quinzaine": false
-   },
-   {
-    "id": "core-marche",
-    "label": "Marche / pas",
-    "icon": "🚶",
     "cycle": 0,
     "ancre": null,
     "quinzaine": false
@@ -3611,19 +3413,9 @@
     "icon": "🤲"
    },
    {
-    "id": "core-revue",
-    "label": "Revue de la veille / plan du lendemain",
-    "icon": "📝"
-   },
-   {
     "id": "core-famille",
     "label": "Nouvelles à la famille",
     "icon": "📞"
-   },
-   {
-    "id": "core-marche",
-    "label": "Marche / pas",
-    "icon": "🚶"
    },
    {
     "id": "hab1788303551564",

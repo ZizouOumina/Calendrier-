@@ -34,7 +34,7 @@ async function jour(quand, local){
   return { ctx, page, fr };
 }
 const ids = fr => fr.evaluate(() => JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-habits') || '[]').map(h => h.id));
-const duJour = fr => fr.evaluate(() => [...document.querySelectorAll('#dash-checklist li label')].map(x => x.textContent));
+const duJour = fr => fr.evaluate(() => { window.__bcJournee.rendre(); return [...document.querySelectorAll('#mj-cases li label, #mj-routine li label')].map(x => x.textContent); });   /* 17 novembre : lues dans « Ma journée » */
 
 console.log('\n== 301) Installation neuve : les retirees ne sont jamais semees ==');
 {
@@ -71,12 +71,11 @@ console.log('\n== 303) Un cloud déjà propre ne déclenche aucune réécriture 
   /* « Propre » suppose que toutes les generations de semis sont deja passees, la derniere
      comprise : un drapeau manquant n'est pas un cloud propre, c'est un cloud a completer,
      et l'ecriture qui suit est la bonne. v9 = la taie d'oreiller du mercredi (20 septembre),
-     v10 = le cou du jeudi soir (30 septembre). v11 = la douche froide (5 octobre). v12 = la
+     v10 = le cou du jeudi soir (30 septembre, retiré le 17 novembre : un cloud propre ne le porte plus). v11 = la douche froide (5 octobre). v12 = la
      lumiere du matin (21 octobre). */
   const propre = [{id:'core-lit', label:'Lit fait', icon:'🛏️'},
                   {id:'core-pesee-dim', label:'Pesée du dimanche, à jeun', icon:'⚖️', jours:[0]},
                   {id:'core-taie-merc', label:'Taie d’oreiller changée', icon:'🛌', jours:[3]},
-                  {id:'core-cou-jeudi', label:'Cou — flexion et extension, 3 × 12-20', icon:'🦴', jours:[4]},
                   {id:'core-douche-froide', label:'Douche froide — 30 à 60 s en fin de douche', icon:'🚿', jours:[0,3,5]},
                   {id:'core-lumiere', label:'Lumière du matin — 15 min dehors, dès qu’il fait jour', icon:'☀️'},
                   {id:'core-rideau-douche', label:'Rideau de douche à la machine, 40 °C', icon:'🧺', jours:[0], cycleSemaines:4, ancre:'2026-12-13'},
@@ -241,24 +240,10 @@ console.log('\n== 306) Série et taux ne comptent que les jours dus ==');
   /* Depuis le 30 septembre, la coupe part du 31 octobre (coiffeur sauté en octobre). */
   const log = {'core-cheveux': ['2026-10-31','2026-11-21']};
   const { ctx, fr } = await jour('2026-11-21T20:00:00+01:00', {'batcave-habitlog': log});
-  const r = await fr.evaluate(() => ({
-    serie: window.__bcHabitStreak ? window.__bcHabitStreak('core-cheveux') : null,
-    taux: window.__bcHabitRate ? window.__bcHabitRate('core-cheveux', 30) : null
-  }));
-  if(r.serie === null){
-    const carte = await fr.evaluate(() => {
-      document.querySelector('.nav-btn[data-page="habitudes"]').click();
-      return [...document.querySelectorAll('#habits-grid .card')]
-        .map(c => c.innerText.replace(/\s+/g, ' ')).filter(t => /Coupe de cheveux/.test(t))[0] || '';
-    });
-    /* La carte porte la serie et les deux taux. Un cycle mal compte donnerait « 30j 50% »
-       (2 tenues sur 4 dimanches) et une serie cassee a 1. */
-    ok(/2 JOURS D.AFFIL/i.test(carte) && /7j 100%/.test(carte) && /30j 100%/.test(carte),
-       'série 2, taux 7j et 30j à 100 % (' + carte.slice(0, 110) + ')');
-  } else {
-    ok(r.serie === 2, 'série = 2, les dimanches non dus ne la cassent pas (' + r.serie + ')');
-    ok(r.taux === 100, 'taux = 100 %, on ne divise que par les jours dus (' + r.taux + ')');
-  }
+  /* 17 novembre : plus de série ni de taux (plus de suivi des cases) -- reste le bon jour : la coupe tombe le samedi 21,
+     se coche dans « Ma journée », et la coche du jour s'y lit */
+  const r = await fr.evaluate(() => { window.__bcJournee.rendre(); const cb = document.querySelector('input[data-mj-hab="core-cheveux"]'); return cb ? cb.checked : null; });
+  ok(r === true, 'samedi 21 : la coupe est dans « Ma journée », cochée (' + r + ')');
   await ctx.close();
 }
 
@@ -274,7 +259,7 @@ console.log('\n== 306b) La balance énergétique a quitté les analyses ==');
   });
   const { ctx, fr } = await jour('2026-11-15T09:00:00+01:00', j);
   const r = await fr.evaluate(() => ({ balance: window.__bcInsights().some(i => /Balance énergétique/.test(i.title)), n: window.__bcInsights().length }));
-  ok(!r.balance && r.n === 8, 'plus de carte « Balance énergétique » : ' + r.n + ' analyses');
+  ok(!r.balance && r.n === 7, 'plus de carte « Balance énergétique » (ni « Habitude la plus délaissée », 17 novembre) : ' + r.n + ' analyses');
   await ctx.close();
 }
 

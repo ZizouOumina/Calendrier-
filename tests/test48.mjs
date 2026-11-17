@@ -45,11 +45,12 @@ console.log('\n== 112) Semis : un seul palier, le mois ==');
   const parPeriode = {};
   o.liste.forEach(x => parPeriode[x.periode] = (parPeriode[x.periode] || 0) + 1);
   /* 25 septembre : projets_h sort (plus de minuteur sur les projets) -- 12 mois x 5 metriques. */
-  ok(o.liste.length === 60 && parPeriode.mois === 60 && !parPeriode.trimestre,
-     '60 objectifs, tous mensuels, plus aucun trimestre (' + JSON.stringify(parPeriode) + ')');
+  /* 17 novembre : « habitudes tenues » sort (plus de suivi des cases) -- quatre métriques par mois, 48 objectifs */
+  ok(o.liste.length === 48 && parPeriode.mois === 48 && !parPeriode.trimestre,
+     '48 objectifs, tous mensuels, plus aucun trimestre (' + JSON.stringify(parPeriode) + ')');
   const mets = [...new Set(o.liste.map(x => x.metrique))].sort().join(',');
-  ok(mets === 'espagnol_h,habitudes_pct,revision_h,sommeil_moy,sport_seances',
-     'cinq metriques et pas une de plus (' + mets + ')');
+  ok(mets === 'espagnol_h,revision_h,sommeil_moy,sport_seances',
+     'quatre métriques et pas une de plus, les habitudes sorties le 17 novembre (' + mets + ')');
   ok(await local(fr, 'batcave-objectifs-seed-v1') === true, 'drapeau de semis posé');
   const m9 = o.liste.find(x => x.id === 'M2026-11:revision_h');
   /* La grille ne prevoit rien avant le jour 1 : la cible de septembre part de la, pas du
@@ -215,7 +216,7 @@ console.log('\n== 117) Le semis survit à l\'hydratation du cloud (jamais le dra
   await page.waitForTimeout(500);
   const cl = await fr.evaluate(() => window.__cloud);
   const n = cl['batcave-objectifs'] && cl['batcave-objectifs'].liste ? cl['batcave-objectifs'].liste.length : 0;
-  ok(n === 60 && cl['batcave-objectifs-seed-v1'] === true, 'le cloud reçoit les 60 objectifs ET le drapeau (' + n + ')');
+  ok(n === 48 && cl['batcave-objectifs-seed-v1'] === true, 'le cloud reçoit les 48 objectifs ET le drapeau (' + n + ')');
   await ctx.close();
 }
 

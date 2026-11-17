@@ -87,44 +87,29 @@ console.log('\n== 282) Thème : clair le jour, sombre le soir, et bascule manuel
   await force.ctx.close();
 }
 
-console.log('\n== 283) Les cartes d\'habitudes ont la même hauteur, et tiennent en trois lignes sur téléphone ==');
+console.log('\n== 283) Les cases de « Ma journée » tiennent sur téléphone (17 novembre : l\'onglet Habitudes et ses cartes sont retirés) ==');
 {
-  const { ctx, fr, page } = await ouvrir(MERCREDI_MATIN);
-  await fr.evaluate(() => document.querySelector('.nav-btn[data-page="habitudes"]').click());
-  await page.waitForTimeout(300);
-  const r = await fr.evaluate(() => {
-    const cs = [...document.querySelectorAll('#habits-grid > .card')];
-    const rangees = {};
-    cs.forEach(c => { const b = c.getBoundingClientRect(); (rangees[Math.round(b.top)] = rangees[Math.round(b.top)] || []).push(Math.round(b.height)); });
-    return Object.values(rangees).map(hs => new Set(hs).size);
-  });
-  ok(r.length > 1 && r.every(n => n === 1), 'chaque rangée n\'a qu\'une hauteur de carte (' + r.join(',') + ')');
-  ok(await fr.evaluate(() => !!document.querySelector('#habits-grid .hab-repli [data-hab-rythme]')), 'le rythme est passé dans le repli');
-  ok(await fr.evaluate(() => /Rythme et historique/.test(document.querySelector('#habits-grid .heat-toggle').textContent)), 'le repli annonce rythme et historique');
-  await ctx.close();
   const tel = await ouvrir(MERCREDI_MATIN, { viewport:{width:390,height:844} });
-  await tel.fr.evaluate(() => document.querySelector('.nav-btn[data-page="habitudes"]').click());
+  await tel.fr.evaluate(() => document.querySelector('.nav-btn[data-page="journee"]').click());
   await tel.page.waitForTimeout(300);
   const h = await tel.fr.evaluate(() => {
-    const cs = [...document.querySelectorAll('#habits-grid > .card')];
-    return { hauteurs: [...new Set(cs.map(c => Math.round(c.getBoundingClientRect().height)))], n: cs.length,
-             boutonADroite: (() => { const c = cs[0]; const b = c.querySelector('.card-actions').getBoundingClientRect(), s = c.querySelector('.streak-display').getBoundingClientRect(); return b.left > s.right; })() };
+    const lis = [...document.querySelectorAll('#mj-cases li, #mj-routine li')];
+    return { n: lis.length, hauteurs: [...new Set(lis.map(l => Math.round(l.getBoundingClientRect().height)))],
+             deborde: lis.some(l => l.getBoundingClientRect().right > window.innerWidth + 1) };
   });
-  /* lot 39 : une habitude = une ligne (nom, série, bouton) ; un nom long fait deux lignes,
-     donc les hauteurs varient un peu -- mais aucune carte ne dépasse 110 px (165 avant) */
-  ok(h.hauteurs.every(x => x <= 110) && Math.min(...h.hauteurs) >= 44, 'sur téléphone, chaque habitude tient sur une ligne compacte, 110 px au plus (' + h.hauteurs.join(',') + ' px)');
-  ok(h.boutonADroite, 'le bouton « fait » occupe la colonne de droite, à côté de la série');
+  ok(h.n > 10 && !h.deborde, 'sur téléphone, ' + h.n + ' cases, aucune ne déborde de l\'écran');
+  ok(h.hauteurs.every(x => x <= 110), 'chaque case tient en une ou deux lignes (' + h.hauteurs.join(',') + ' px)');
   await tel.ctx.close();
 }
 
-console.log('\n== 284) Raccourcis P, C, H ==');
+console.log('\n== 284) Raccourcis P et C ; H ne coche plus rien (17 novembre) ==');
 {
   const { ctx, fr, page } = await ouvrir(MERCREDI_SOIR);
   const presse = async k => { await page.frameLocator('#f').locator('body').press(k); await page.waitForTimeout(220); };
-  const avant = await fr.evaluate(() => document.getElementById('dash-check-count').textContent);
+  const avant = await fr.evaluate(() => (window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-habitlog'));
   await presse('h');
-  const apres = await fr.evaluate(() => document.getElementById('dash-check-count').textContent);
-  ok(avant !== apres, 'H coche l\'habitude suivante (' + avant + ' → ' + apres + ')');
+  const apres = await fr.evaluate(() => (window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-habitlog'));
+  ok(avant === apres, 'H ne coche plus rien : tout se coche dans « Ma journée »');
   await presse('c');
   ok(await fr.evaluate(() => !document.getElementById('cloture-overlay').hidden), 'C ouvre la clôture');
   await fr.evaluate(() => document.getElementById('cloture-plus-tard').click());
@@ -160,8 +145,10 @@ console.log('\n== 285) Clôture express : le minimum, et jamais le dimanche ==')
   /* 25 septembre : « Au lit » entre dans l'express -- c'est lui qui mesure l'efficacite de sommeil. */
   /* 16 novembre, sa décision : l'eau, l'humeur et les compléments ne se notent plus -- l'express garde le sommeil, le lit,
      la note du cours et les cases */
-  ok(champs.length === 4, 'en express un jour de cours : sommeil, au lit, la note du cours et les cases (' + champs.length + ')');
-  ok(/Sommeil/.test(champs[0]) && /Au lit/.test(champs[1]) && /suivi le cours/.test(champs[2]) && /Habitudes/.test(champs[3]), 'sommeil, au lit, cours, habitudes : ' + champs.join(' | ').slice(0, 130));
+  /* 17 novembre : plus de cases dans la clôture (tout se coche dans « Ma journée ») -- un rappel de ce qui y reste */
+  ok(champs.length === 3, 'en express un jour de cours : sommeil, au lit et la note du cours (' + champs.length + ')');
+  ok(/Sommeil/.test(champs[0]) && /Au lit/.test(champs[1]) && /suivi le cours/.test(champs[2]), 'sommeil, au lit, cours : ' + champs.join(' | ').slice(0, 130));
+  ok(await fr.evaluate(() => /Ma journée/.test(document.getElementById('cl-journee').textContent) && document.getElementById('cl-journee').offsetParent !== null), 'et le rappel de ce qui reste dans « Ma journée »');
   ok(await fr.evaluate(() => (window.__bcLire || ((k) => localStorage.getItem(k)))('bc-cloture-mode')) === 'court', 'le choix est mémorisé sur l\'appareil');
   /* et il n'est pas dans la sauvegarde : c'est un réglage d'appareil */
   const dansSauvegarde = await fr.evaluate(() => { try{ return JSON.stringify(window.__bcSauvegarde ? window.__bcSauvegarde() : {}).indexOf('bc-cloture-mode') > -1; }catch(e){ return false; } });

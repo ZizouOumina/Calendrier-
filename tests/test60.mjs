@@ -1,78 +1,65 @@
-/* Habitude hebdomadaire « Courses faites » : une liste finie un dimanche se rattache au
-   samedi, la série et les taux la voient, le tableau de bord et Habitudes sont d'accord. */
+/* Une case hebdomadaire : une coche posée le lendemain se rattache à son jour (la migration habitlog-hebdo-v1), elle
+   se coche dans « Ma journée » le jour où elle tombe, et la veille la montre cochée.
+   17 novembre : « Courses faites », sur qui ce test reposait, est retirée (le tri) ; « Passer le balai », sa case à lui
+   du samedi (un seul jour, « jour:6 »), prend sa place. La série, les taux et le lien avec la liste de courses
+   n'existent plus (plus de suivi des cases). */
 import { chromium } from 'playwright';
 const URL = 'http://127.0.0.1:8199/host.html';
 let errs = 0;
 const ok = (c,m) => { if(c) console.log('  ok  '+m); else { errs++; console.log('  FAIL '+m); } };
 const browser = await chromium.launch();
 const ctx = await browser.newContext({ viewport:{width:1440,height:900}, timezoneId:'Europe/Madrid', locale:'fr-FR' });
-/* journal hérité : une coche du dimanche 30 août (avant le correctif) pour le samedi 29 */
-/* 16 novembre : « Courses faites » est de la routine, sans case, chez lui. Ce test garde la mécanique d'une habitude
-   hebdomadaire à cocher (le bouton « Remettre la case » la rend) : la routine reste en cases ici (drapeau posé). */
-await ctx.addInitScript(() => { window.claude = undefined; try{ localStorage.setItem('batcave-habitlog', JSON.stringify({'core-courses':['2026-08-30']})); localStorage.setItem('batcave-sans-case-v1', 'true'); }catch(e){} });
+/* journal hérité : une coche du dimanche 30 août (avant le correctif) pour le balai du samedi 29 */
+await ctx.addInitScript(() => { window.claude = undefined; try{ if(!sessionStorage.getItem('__seme')){
+  localStorage.setItem('batcave-habits', JSON.stringify([{id:'hab1788303536189', label:'Passer le balai', jour:6}]));
+  localStorage.setItem('batcave-habitlog', JSON.stringify({'hab1788303536189':['2026-08-30']})); sessionStorage.setItem('__seme', '1'); } }catch(e){} });
 const page = await ctx.newPage();
 page.on('pageerror', e => { errs++; console.log('  PAGEERROR: ' + e.message); });
-await page.clock.install({ time: new Date('2026-09-06T11:00:00+02:00') });   /* dimanche */
+await page.clock.install({ time: new Date('2026-09-12T11:00:00+02:00') });   /* samedi */
 await page.goto(URL, {timeout:20000}).catch(() => {});
 await page.frameLocator('#f').locator('#dash-plan').waitFor({ state:'attached', timeout:15000 });
 let fr = page.frames().find(x => x.url().includes('batcave.html'));
 await fr.evaluate(() => { const r = document.getElementById('ritual-dismiss'); if(r) r.click(); });
 await page.waitForTimeout(300);
-const aller = async (p) => { await fr.evaluate(x => document.querySelector('.nav-btn[data-page="' + x + '"]').click(), p); await page.waitForTimeout(80); };
-const txt = (sel) => fr.evaluate(s => (document.querySelector(s) || {}).innerText || '', sel);
-const carte = () => fr.evaluate(() => ([...document.querySelectorAll('#habits-grid .card')].find(c => c.querySelector('[data-togglehab="core-courses"]')) || {}).innerText || '');
+const aller = async (p) => { await fr.evaluate(x => document.querySelector('.nav-btn[data-page="' + x + '"]').click(), p); await page.waitForTimeout(120); };
+const journal = () => fr.evaluate(() => JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-habitlog'))['hab1788303536189'] || []);
+const caseBalai = () => fr.evaluate(() => { const cb = document.querySelector('input[data-mj-hab="hab1788303536189"]'); return cb ? cb.checked : null; });
 
-console.log('\n== 198) Migration : la date du dimanche 30 août est rattachée au samedi 29 ==');
+console.log('\n== 198) Migration : la coche du dimanche 30 août est rattachée au samedi 29 ==');
 {
-  const log = await fr.evaluate(() => JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-habitlog')));
-  ok(JSON.stringify(log['core-courses']) === '["2026-08-29"]', 'journal : ' + JSON.stringify(log['core-courses']));
+  ok(JSON.stringify(await journal()) === '["2026-08-29"]', 'journal : ' + JSON.stringify(await journal()));
   ok(await fr.evaluate(() => (window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-habitlog-hebdo-v1') === 'true'), 'drapeau batcave-habitlog-hebdo-v1 posé');
-  await aller('habitudes');
-  const c = await carte();
-  ok(/1\s*jour/i.test(c) && /Marquer fait \(samedi\)/.test(c), 'Habitudes : série 1 jour, bouton « Marquer fait (samedi) » — ' + JSON.stringify(c).slice(0, 120));
 }
 
-console.log('\n== 199) Liste de courses finie le dimanche → coche du samedi 5, série 2 ==');
+console.log('\n== 199) Samedi 12 : le balai se coche dans « Ma journée », et le reste ==');
 {
-  await aller('courses');
-  for(let i = 0; i < 40; i++){
-    const encore = await fr.evaluate(() => { const cb = document.querySelector('#courses-grid input:not(:checked)'); if(!cb) return false; cb.click(); return true; });
-    if(!encore) break;
-    await page.waitForTimeout(30);
-  }
-  /* 23 octobre au soir : le pain et les fruits sortent de la liste hebdomadaire (le plan dense) -- 7 articles. */
-  ok(/^7\/7 articles/.test(await txt('#courses-summary')), 'Courses : 7/7 articles, les amandes entrées le 24 septembre, les sardines le 21 octobre, pain et fruits sortis le 23, le cottage cheese entré le 27 et sorti le 8 novembre (' + await txt('#courses-summary') + ')');
-  const log = await fr.evaluate(() => JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-habitlog'))['core-courses']);
-  ok(log.indexOf('2026-09-05') > -1 && log.indexOf('2026-09-06') < 0, 'journal : samedi 5 septembre, pas dimanche 6 — ' + JSON.stringify(log));
-  await aller('habitudes');
-  const c = await carte();
-  ok(/2\s*jours/i.test(c) && /Fait samedi/.test(c), 'Habitudes : série 2, « Fait samedi » — ' + JSON.stringify(c).slice(0, 120));
-  ok(/7j 100%/.test(c), 'taux 7 jours : 100 % (un seul samedi applicable, tenu)');
-  /* décocher un article → l'habitude se décoche, la série retombe à 1 */
-  await aller('courses');
-  await fr.evaluate(() => document.querySelector('#courses-grid input:checked').click());
-  await page.waitForTimeout(100);
-  await aller('habitudes');
-  ok(/1\s*jour\b/i.test(await carte()) && !/2\s*jours/i.test(await carte()), 'un article décoché → série 1');
-}
-
-console.log('\n== 200) Samedi : « Fait aujourd\'hui », le tableau de bord la liste ==');
-{
-  await page.clock.setSystemTime(new Date('2026-09-12T12:00:00+02:00'));
+  await aller('journee');
+  ok(await caseBalai() === false, 'la case est là, pas encore cochée');
+  await fr.evaluate(() => document.querySelector('input[data-mj-hab="hab1788303536189"]').click());
+  await page.waitForTimeout(150);
+  const j = await journal();
+  ok(j.indexOf('2026-09-12') > -1, 'journal : samedi 12 — ' + JSON.stringify(j));
   await page.reload({timeout:20000}).catch(() => {});
   await page.frameLocator('#f').locator('#dash-plan').waitFor({ state:'attached', timeout:15000 });
   fr = page.frames().find(x => x.url().includes('batcave.html'));
   await fr.evaluate(() => { const r = document.getElementById('ritual-dismiss'); if(r) r.click(); });
   await page.waitForTimeout(300);
-  ok(await fr.evaluate(() => !!document.querySelector('#dash-checklist [data-togglehab="core-courses"]')), 'tableau de bord : l\'habitude Courses est listée le samedi');
-  await fr.evaluate(() => document.querySelector('#dash-checklist [data-togglehab="core-courses"]').click());
-  await page.waitForTimeout(150);
-  const log = await fr.evaluate(() => JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-habitlog'))['core-courses']);
-  ok(log.indexOf('2026-09-12') > -1, 'journal : samedi 12 — ' + JSON.stringify(log));
-  await aller('courses');
-  ok(/^7\/7 articles/.test(await txt('#courses-summary')), 'Courses : cocher l\'habitude remplit la liste');
-  await aller('habitudes');
-  ok(/Fait aujourd'hui/.test(await carte()), 'Habitudes : « Fait aujourd\'hui » le samedi');
+  await aller('journee');
+  ok(await caseBalai() === true, 'au rechargement, elle est toujours cochée');
+}
+
+console.log('\n== 200) Dimanche 13 : elle n\'est pas dans la journée ; la veille la montre cochée ==');
+{
+  await page.clock.setSystemTime(new Date('2026-09-13T12:00:00+02:00'));
+  await page.reload({timeout:20000}).catch(() => {});
+  await page.frameLocator('#f').locator('#dash-plan').waitFor({ state:'attached', timeout:15000 });
+  fr = page.frames().find(x => x.url().includes('batcave.html'));
+  await fr.evaluate(() => { const r = document.getElementById('ritual-dismiss'); if(r) r.click(); });
+  await page.waitForTimeout(300);
+  await aller('journee');
+  ok(await caseBalai() === null, 'dimanche : pas de case « balai »');
+  const veille = await fr.evaluate(() => { window.__bcJournee.aller('2026-09-12'); return [...document.querySelectorAll('#mj-routine li, #mj-cases li')].map(x => x.textContent).filter(t => /balai/.test(t))[0] || ''; });
+  ok(/^✓ /.test(veille), 'la veille, le balai est marqué fait : « ' + veille + ' »');
 }
 await browser.close();
 console.log(errs ? '\n' + errs + ' ÉCHEC(S)' : '\nTOUT VERT');

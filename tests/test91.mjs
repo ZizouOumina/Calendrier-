@@ -115,8 +115,9 @@ console.log('\n== 315) A5 : les sept chiffres de la semaine, dans la clôture du
     const c = window.__bcChiffresSemaine();
     return {n: c.length, labels: c.map(x => x.label), champs: c.every(x => x.valeur !== undefined && x.avant !== undefined && x.sens)};
   });
-  ok(r.n === 7, 'sept chiffres, pas dix (' + r.n + ')');
-  ok(JSON.stringify(r.labels) === JSON.stringify(['Révision','Projets','Espagnol','Fidélité','Sommeil/nuit','Séances','Habitudes']),
+  /* 17 novembre : les habitudes sortent (plus de suivi des cases) -- six chiffres */
+  ok(r.n === 6, 'six chiffres, pas dix (' + r.n + ')');
+  ok(JSON.stringify(r.labels) === JSON.stringify(['Révision','Projets','Espagnol','Fidélité','Sommeil/nuit','Séances']),
      'et ce sont ceux sur lesquels la semaine suivante peut agir : ' + r.labels.join(' · '));
   ok(r.champs, 'chacun porte sa valeur, celle de la semaine dernière, et le sens');
   /* ils doivent être DANS la clôture, pas seulement calculables */
@@ -130,7 +131,7 @@ console.log('\n== 315) A5 : les sept chiffres de la semaine, dans la clôture du
     const box = document.getElementById('cl-semaine'), rv = document.getElementById('cl-revue');
     return {cases: box ? box.children.length : 0, revueVisible: rv ? !rv.hidden : false};
   });
-  ok(dans.revueVisible && dans.cases === 7, 'les sept cases sont rendues dans l\'écran du dimanche (' + dans.cases + ')');
+  ok(dans.revueVisible && dans.cases === 6, 'les six cases sont rendues dans l\'écran du dimanche (' + dans.cases + ')');
   await ctx.close();
 }
 

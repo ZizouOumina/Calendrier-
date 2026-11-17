@@ -67,14 +67,19 @@ console.log('\n== 312) Le réacteur annonce le jour 1, pas un « 0 % » ==');
   ok(/Premier jour du programme/.test(v.note) && !/À reprendre/.test(v.note), 'la note dit ce que c\'est : ' + v.note);
   ok(v.hors === v.note, 'la même note existe hors de l\'anneau, pour le téléphone');
 
-  /* une seule case cochée et le score reprend son rôle */
-  await fr.evaluate(() => { document.querySelector('#dash-checklist input[type="checkbox"]').click(); });
+  /* 17 novembre : une case de « Ma journée » ne touche plus le score -- la séance et le sommeil, oui */
+  const lire = () => fr.evaluate(() => ({ num: document.getElementById('dash-score-num').textContent,
+                                          unite: document.getElementById('dash-score-unit').textContent,
+                                          note: document.getElementById('dash-score-detail').textContent }));
+  await fr.evaluate(() => { window.__bcJournee.rendre(); document.querySelector('#mj-corps input[data-mj-hab]').click(); });
   await page.waitForTimeout(350);
-  v = await fr.evaluate(() => ({ num: document.getElementById('dash-score-num').textContent,
-                                 unite: document.getElementById('dash-score-unit').textContent,
-                                 note: document.getElementById('dash-score-detail').textContent }));
-  ok(v.unite === '%' && Number(v.num) > 0, 'dès la première case cochée, c\'est un vrai score : ' + v.num + v.unite);
-  ok(/habitudes, nutrition/.test(v.note), 'et la note redevient celle du score : ' + v.note);
+  v = await lire();
+  ok(v.num === '1' && v.unite === '/203', 'une case cochée dans « Ma journée » ne touche pas le score : toujours « 1/203 »');
+  await fr.evaluate(() => { const cb = document.querySelector('#sport-grid .sport-card.today input[data-sport]'); if(cb) cb.click(); });
+  await page.waitForTimeout(350);
+  v = await lire();
+  ok(v.unite === '%' && Number(v.num) > 0, 'dès la première série cochée à la salle, c\'est un vrai score : ' + v.num + v.unite);
+  ok(/la séance et le sommeil/.test(v.note), 'et la note redevient celle du score : ' + v.note);
   await ctx.close();
 }
 
@@ -131,13 +136,14 @@ console.log('\n== 315) iPhone : la barre du bas ramène l\'onglet actif sous les
 console.log('\n== 316) Écran tactile : 44 px sous le doigt ==');
 {
   const { ctx, fr, page } = await ouvrir('2026-09-14T06:45:00+02:00', null, {width:390,height:844});
+  /* 17 novembre : les cases vivent dans « Ma journée » ; toute la ligne est un <label>, donc toute la ligne répond */
   const puce = await fr.evaluate(() => {
-    const li = document.querySelector('#dash-checklist li'), lab = li.querySelector('label');
-    const r = li.getBoundingClientRect(), c = getComputedStyle(lab, '::after');
-    return {h: Math.round(r.height), couvre: c.content !== 'none'};
+    document.querySelector('.nav-btn[data-page="journee"]').click();
+    const lab = document.querySelector('#mj-cases li label');
+    return {h: Math.round(lab.getBoundingClientRect().height), couvre: !!lab.querySelector('input[data-mj-hab]')};
   });
-  ok(puce.h >= 44, 'une puce d\'habitude fait ' + puce.h + ' px de haut (44 minimum)');
-  ok(puce.couvre, 'toute la puce répond au doigt, pas seulement le texte');
+  ok(puce.h >= 44, 'une case de « Ma journée » fait ' + puce.h + ' px de haut (44 minimum)');
+  ok(puce.couvre, 'toute la ligne répond au doigt, pas seulement la case');
   await fr.evaluate(() => document.querySelector('.nav-btn[data-page="sport"]').click());
   await page.waitForTimeout(500);
   const pas = await fr.evaluate(() => {

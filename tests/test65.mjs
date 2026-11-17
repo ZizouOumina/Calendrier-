@@ -29,7 +29,6 @@ const HABITS = [
   {id:'core-courses', label:'Courses faites', icon:'🛒', jour:6}
 ];
 const seedHab = {'batcave-habits': HABITS, 'batcave-habits-seed-v2': true, 'batcave-habits-seed-v3': true, 'batcave-habits-seed-v4': true, 'batcave-habits-seed-v5': true, 'batcave-habits-seed-v6': true, 'batcave-habits-seed-v7': true, 'batcave-habits-ecran-v2': true, 'batcave-habitlog-hebdo-v1': true};
-const cartes = fr => fr.evaluate(() => [...document.querySelectorAll('#habits-grid .card')].map(c => c.innerText.replace(/\s+/g,' ')));
 
 console.log('\n== 240) Sport : mercredi 21 octobre = jour 1, première muscu le lundi 26 (tours × ½), lundi 16 novembre = retest ==');
 {
@@ -107,46 +106,29 @@ console.log('\n== 241) Pomodoro révision : sur Anki, « Sans préciser » propo
   await c.ctx.close();
 }
 
-console.log('\n== 242) Habitudes à plusieurs jours : le linge lundi, mercredi, vendredi ==');
+console.log('\n== 242) Cases à plusieurs jours : le linge lundi, mercredi, vendredi (17 novembre : dans « Ma journée », sans série) ==');
 {
   const log = {'hab-linge': ['2026-09-11','2026-09-14'], 'hab-balai': ['2026-09-12']};
   const { ctx, fr, page } = await ouvrir('2026-09-16T20:00:00+02:00', Object.assign({'batcave-habitlog': log}, seedHab));   /* mercredi */
   const r = await fr.evaluate(() => {
-    document.querySelector('.nav-btn[data-page="habitudes"]').click();
-    return { dash: [...document.querySelectorAll('#dash-checklist li')].map(l => l.innerText.replace(/\s+/g,' ')), jours: window.__bcHabitJours({jours:[5,1,3,1]}), count: document.getElementById('dash-check-count').textContent };
+    document.querySelector('.nav-btn[data-page="journee"]').click();
+    return { ids: [...document.querySelectorAll('#mj-corps input[data-mj-hab]')].map(x => x.dataset.mjHab), jours: window.__bcHabitJours({jours:[5,1,3,1]}) };
   });
-  const cards = await cartes(fr);
   ok(JSON.stringify(r.jours) === '[1,3,5]', 'habitJours trie et dédoublonne : ' + JSON.stringify(r.jours));
-  /* depuis le 16 septembre, la créatine est une habitude quotidienne semée
-     chez tout le monde (génération v8) : elles s'ajoutent à Lit fait et Linge */
-  /* Le magnésium a été retiré le 19 septembre — il n'en prend pas.
-     Le 20 septembre, la TAIE D'OREILLER du mercredi est venue s'ajouter (génération v9) :
-     c'est une habitude du mercredi, elle a donc toute sa place dans cette console-là, et
-     ce test est justement celui qui le prouve. Quatre cartes. Le 5 octobre, la DOUCHE
-     FROIDE (generation v11, mercredi, vendredi, dimanche) en fait cinq. Le 21 octobre, la
-     LUMIERE DU MATIN (generation v12, chaque jour) en fait six. */
-  ok(r.dash.length === 6 && r.dash.some(t => /Linge/.test(t)) && r.dash.some(t => /Créatine/.test(t))
-     && r.dash.some(t => /Taie d.oreiller/i.test(t)) && r.dash.some(t => /Douche froide/.test(t)) && r.dash.some(t => /Lumière du matin/.test(t))
-     && !r.dash.some(t => /Magnésium/.test(t)) && !r.dash.some(t => /balai|Courses/.test(t)) && r.count === '0/6',
-     'console du mercredi : Lit fait + Linge + créatine + taie d\u2019oreiller + douche froide + lumière du matin, ni magnésium ni balai ni courses (' + r.count + ' · ' + r.dash.length + ' cartes)');
-  const linge = cards.find(t => /Linge/.test(t)) || '';
-  ok(/lun · mer · ven/.test(linge) && !/seulement/.test(linge), 'carte Linge un mercredi : « lun · mer · ven », sans « seulement » (' + linge.slice(0, 40) + ')');
-  ok(/2 jours? d'affilée/i.test(linge), 'série : ven 11 + lun 14 = 2 d\'affilée, le mercredi pas encore coché ne casse rien (' + (linge.match(/\d+ jours? d'affilée/i) || [''])[0] + ')');
-  const balai = cards.find(t => /balai/.test(t)) || '';
-  ok(/samedi seulement/.test(balai) && /✓ Fait samedi/.test(balai) && /1 jour d'affilée/i.test(balai), 'carte Balai un mercredi : « samedi seulement », coché le 12 → « ✓ Fait samedi », série 1');
-  const courses = cards.find(t => /Courses/.test(t)) || '';
-  ok(/samedi seulement/.test(courses) && /Marquer fait \(samedi\)/.test(courses), 'carte Courses un mercredi : bouton « Marquer fait (samedi) »');
-  await fr.evaluate(() => { [...document.querySelectorAll('#habits-grid [data-togglehab]')].find(x => x.dataset.togglehab === 'hab-linge').click(); });
+  ok(r.ids.includes('hab-linge') && !r.ids.includes('hab-balai') && !r.ids.includes('core-courses'), 'mercredi : le linge est à cocher, ni le balai (samedi) ni « Courses faites » (retirée le 17 novembre)');
+  await fr.evaluate(() => document.querySelector('input[data-mj-hab="hab-linge"]').click());
   await page.waitForTimeout(200);
-  const linge2 = (await cartes(fr)).find(t => /Linge/.test(t)) || '';
   const log2 = await fr.evaluate(() => JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-habitlog'))['hab-linge']);
-  ok(log2.indexOf('2026-09-16') > -1 && /3 jours? d'affilée/i.test(linge2) && /7j 100%/.test(linge2) && /Record : 3 j/.test(linge2), 'coché : rattaché au 16, série 3, record 3, 7 jours 100 % (' + (linge2.match(/Record[^%]*%/) || [''])[0] + ')');
+  ok(log2.indexOf('2026-09-16') > -1, 'coché : rattaché au mercredi 16 (' + JSON.stringify(log2) + ')');
   await ctx.close();
   const j = await ouvrir('2026-09-17T20:00:00+02:00', Object.assign({'batcave-habitlog': {'hab-linge': ['2026-09-14','2026-09-16']}}, seedHab));   /* jeudi */
-  await j.fr.evaluate(() => document.querySelector('.nav-btn[data-page="habitudes"]').click());
-  const dash3 = await j.fr.evaluate(() => [...document.querySelectorAll('#dash-checklist li')].map(l => l.innerText));
-  const linge3 = (await cartes(j.fr)).find(t => /Linge/.test(t)) || '';
-  ok(!dash3.some(t => /Linge/.test(t)) && /lun · mer · ven seulement/.test(linge3) && /Fait mercredi/.test(linge3) && /2 jours? d'affilée/i.test(linge3), 'jeudi : linge absent de la console, « lun · mer · ven seulement », « ✓ Fait mercredi », série 2');
+  const r3 = await j.fr.evaluate(() => {
+    document.querySelector('.nav-btn[data-page="journee"]').click();
+    const ids = [...document.querySelectorAll('#mj-corps input[data-mj-hab]')].map(x => x.dataset.mjHab);
+    window.__bcJournee.aller('2026-09-16');
+    return { ids, veille: [...document.querySelectorAll('#mj-cases li, #mj-routine li')].map(x => x.textContent).filter(t => /Linge/.test(t))[0] || '' };
+  });
+  ok(!r3.ids.includes('hab-linge') && /^✓ /.test(r3.veille), 'jeudi : pas de linge à cocher ; la veille, il est marqué fait (« ' + r3.veille + ' »)');
   await j.ctx.close();
 }
 

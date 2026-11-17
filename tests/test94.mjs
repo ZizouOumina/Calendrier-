@@ -134,10 +134,11 @@ console.log('\n== 333) L\'habitude « Courses faites » reste validable ==');
   ok(/^7\/7/.test(somme), 'cocher le frais suffit : ' + somme + ' (' + avant + ' cases)');
   /* 16 novembre, sa décision : « Courses faites » est de la routine -- plus de case, la liste de l'onglet Courses fait foi */
   const coche = await fr.evaluate(() => {
-    const l = [...document.querySelectorAll('#dash-checklist li label')].map(x => x.textContent);
-    return l.some(x => /Courses/.test(x));
+    window.__bcJournee.rendre();
+    const l = [...document.querySelectorAll('#mj-corps li')].map(x => x.textContent);
+    return l.some(x => /Courses faites/.test(x));
   });
-  ok(!coche, 'plus de case « Courses faites » le samedi : la liste des courses suffit');
+  ok(!coche, 'plus de case « Courses faites » le samedi (retirée le 17 novembre) : la liste des courses suffit');
   await ctx.close();
 }
 
@@ -268,12 +269,9 @@ console.log('\n== 334d) La liste ne porte QUE de la nourriture ==');
   ok(restes.length === 0, 'les 28 lignes non alimentaires ont toutes disparu' +
      (restes.length ? ' — reste : ' + restes.join(' · ') : ''));
   /* La brosse a dents n'est pas perdue pour autant : son habitude du dimanche la suit,
-     une semaine sur douze. On le verifie sur la carte elle-meme, dans l'onglet Habitudes --
-     une sonde absente rendrait l'assertion toujours vraie, donc inutile. */
-  const brosse = await fr.evaluate(() => {
-    document.querySelectorAll('.page').forEach(p => { p.hidden = p.dataset.page !== 'habitudes'; });
-    return document.querySelector('.page[data-page="habitudes"]').textContent;
-  });
+     une semaine sur douze. 17 novembre : l'onglet Habitudes est retire -- on lit la liste
+     des habitudes elle-meme (une sonde absente rendrait l'assertion toujours vraie). */
+  const brosse = await fr.evaluate(() => JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-habits') || '[]').map(h => h.label).join(' | '));
   ok(/Brosse à dents changée/.test(brosse),
      'la brosse à dents reste suivie par son habitude du dimanche, hors des courses');
   await ctx.close();

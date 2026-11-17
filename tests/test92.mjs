@@ -81,7 +81,7 @@ await page.frameLocator('#f').locator('#dash-focus').waitFor({state:'attached', 
 const fr3 = page.frames().find(x => x.url().includes('batcave.html'));
 await fr3.evaluate(() => { document.querySelectorAll('.overlay').forEach(o => o.hidden = true); });
 await page.waitForTimeout(600);
-const l27 = await fr3.evaluate(() => [...document.querySelectorAll('#dash-checklist li label')].map(x=>x.textContent));
+const l27 = await fr3.evaluate(() => { window.__bcJournee.rendre(); return [...document.querySelectorAll('#mj-cases li label, #mj-routine li label')].map(x=>x.textContent); });   /* 17 novembre : lues dans « Ma journée » */
 ok(l27.some(t=>/Ongles/.test(t)), 'dim. 22 nov : la case ongles est bien là, après la remise à zéro');
 ok(l27.some(t=>/Photos/.test(t)), 'dim. 22 nov : l\'ancre, donc photos du point de départ (mains et pieds)');
 ok(l27.some(t=>/Brosse à dents/.test(t)), 'dim. 22 nov : et la brosse à dents neuve');

@@ -41,19 +41,19 @@ console.log('\n== 161) Le soir : proposée après le rituel, remplie en 60 s, to
   await fr.evaluate(() => document.getElementById('ritual-dismiss').click());
   await page.waitForTimeout(150);
   ok(await visible(fr, 'cloture-overlay') === true, 'la clôture se propose d\'elle-même à 21:00');
-  const nbHab = await fr.evaluate(() => document.querySelectorAll('#cl-habitudes [data-cl-hab]').length);
-  ok(nbHab >= 10, 'les habitudes non cochées sont proposées (' + nbHab + ')');
+  /* 17 novembre : la clôture ne coche plus rien -- elle rappelle ce qui reste dans « Ma journée » */
+  const rappel = await fr.evaluate(() => ({ cases: !!document.getElementById('cl-habitudes'), txt: (document.getElementById('cl-journee') || {}).textContent || '' }));
+  ok(!rappel.cases && /^📋 Pas encore coché dans « Ma journée » : /.test(rappel.txt), 'ce qui reste dans « Ma journée » est rappelé, sans case : « ' + rappel.txt.slice(0, 60) + '… »');
+  const hlAvant = JSON.stringify(await local(fr, 'batcave-habitlog'));
   await fr.evaluate(() => {
     document.getElementById('cl-sommeil').value = '7.5';
     document.getElementById('cl-poids').value = '64.3';
     document.getElementById('cl-eau-plus').click(); document.getElementById('cl-eau-plus').click(); document.getElementById('cl-eau-plus').click();
     document.querySelector('#cl-humeur [data-cl-humeur="4"]').click();
-    const chips = document.querySelectorAll('#cl-habitudes [data-cl-hab]'); chips[0].click(); chips[1].click();
     document.getElementById('cl-note').value = 'Bonne journée, anatomie bien avancée';
   });
   const eau = await fr.evaluate(() => document.getElementById('cl-eau').textContent);
   ok(eau === '0,8 L' || eau === '0,7 L', 'compteur d\'eau : ' + eau);
-  const ids = await fr.evaluate(() => [...document.querySelectorAll('#cl-habitudes [data-cl-hab].active')].map(b => b.dataset.clHab));
   await fr.evaluate(() => document.getElementById('cloture-valider').click());
   await page.waitForTimeout(250);
   ok(await visible(fr, 'cloture-overlay') === false, 'l\'écran se ferme');
@@ -61,8 +61,7 @@ console.log('\n== 161) Le soir : proposée après le rituel, remplie en 60 s, to
   ok(j && j.cloture === '21:00', 'journal : clôturée à ' + (j && j.cloture));
   ok(j && j.sommeil === '7.5' && j.poids === '64.3' && j.water === 750 && j.mood === 4, 'journal : sommeil ' + j.sommeil + ', poids ' + j.poids + ', eau ' + j.water + ' ml, humeur ' + j.mood);
   ok(j && /anatomie/.test(j.notes), 'journal : la note est écrite');
-  const hl = await local(fr, 'batcave-habitlog');
-  ok(ids.length === 2 && ids.every(id => (hl[id] || []).includes('2026-09-01')), 'les 2 habitudes touchées sont cochées dans le carnet');
+  ok(JSON.stringify(await local(fr, 'batcave-habitlog')) === hlAvant, 'la clôture n\'a rien coché : les cases restent celles de « Ma journée »');
   const t = await fr.evaluate(() => document.querySelector('#bc-cloture .v').textContent);
   ok(t === 'faite 21:00', 'relevé CLÔTURE : ' + t);
   const dash = await fr.evaluate(() => document.getElementById('dash-releves').innerText.replace(/\s+/g,' '));

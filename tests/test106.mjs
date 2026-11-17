@@ -78,7 +78,7 @@ console.log('\n== 262) En salle : haut / bas sur quatre jours, chaque muscle deu
   });
   const hv = s['Haut volume'].noms, hl = s['Haut lourd'].noms, bc = s['Bas complet'].noms, bch = s['Bas · charnière'].noms;
   /* 7 novembre (v8) : le mardi perd les mollets et le leg curl, gagne le sac -- cinq exercices */
-  ok(hv.length === 9 && hl.length === 10 && bc.length === 5 && hl[8] === 'Tractions serviette (grip kimono)' && hl[9] === 'Crunch à la poulie', 'neuf le lundi (face pulls ajoutés le 31 octobre), dix le jeudi (tractions serviette + crunch à la poulie en dernier, 7 novembre), cinq le mardi (' + [hv.length, hl.length, bc.length].join(' / ') + ')');
+  ok(hv.length === 9 && hl.length === 11 && bc.length === 5 && hl[8] === 'Tractions serviette (grip kimono)' && hl[9] === 'Crunch à la poulie' && hl[10] === 'Flexion du cou', 'neuf le lundi (face pulls ajoutés le 31 octobre), onze le jeudi (tractions serviette + crunch à la poulie, 7 novembre, + flexion du cou, 17 novembre), cinq le mardi (' + [hv.length, hl.length, bc.length].join(' / ') + ')');
   ok(s.sam === 'Bas · charnière' && s.samS2 === 'Bas · charnière' && bch.length === 7, 'le samedi est le second bas, au régime combat comme après (' + s.sam + ' / ' + s.samS2 + ')');
   ok(hv.includes('Élévations latérales') && hl.includes('Élévations latérales') && bch.includes('Élévations latérales') && !bc.includes('Élévations latérales'), 'élévations latérales lundi, jeudi et samedi');
   ok(hv.indexOf('Élévations latérales') < hv.indexOf('Flexion du cou'), 'lundi : le cou reste le finisseur');

@@ -1,7 +1,7 @@
 import { chromium } from 'playwright';
 import fs from 'fs';
 const [quand, out] = [process.argv[2], process.argv[3]];
-const pages = ['dashboard','calendrier','taches','etudes','agenda','bilan','insights','systeme','objectifs','budget','business','habitudes','coran','sport','addictions','vie','repas','prep','courses'];
+const pages = ['dashboard','calendrier','taches','etudes','agenda','bilan','insights','systeme','objectifs','budget','business','journee','coran','sport','addictions','vie','repas','prep','courses'];
 const b = await chromium.launch();
 const ctx = await b.newContext({ viewport:{width:1440,height:1000}, timezoneId:'Europe/Madrid', locale:'fr-FR' });
 await ctx.addInitScript(() => { window.claude = undefined; });

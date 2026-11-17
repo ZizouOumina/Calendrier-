@@ -100,23 +100,23 @@ console.log('\n== 2) Lundi 16 à 10:00, jour 1 : la ligne en cours, la carte « 
   await ctx.close();
 }
 
-console.log('\n== 3) Les cases du jour se cochent ici comme dans Habitudes ==');
+console.log('\n== 3) Les cases du jour se cochent ici, et seulement ici (17 novembre) ==');
 {
   const { ctx, fr } = await ouvrir('2026-11-16T10:00:00+01:00', {'batcave-echeances': ECHEANCES});
-  const avant = await fr.evaluate(() => document.getElementById('dash-check-count').textContent);
+  const avant = await fr.evaluate(() => document.getElementById('leg-hab').textContent);
   await ouvrirOnglet(fr);
   await fr.waitForTimeout(200);
-  /* 16 novembre, sa décision : la routine n'a plus de case -- elle est listée à part, dans « La routine du jour » */
+  /* 17 novembre, sa décision : tout se coche ici -- ses habitudes, puis la routine dans sa propre liste */
   const n = await fr.evaluate(() => ({ cases: document.querySelectorAll('#mj-cases input[data-mj-hab]').length, dues: window.__bcHabitsDuJour(1, '2026-11-16').filter(h => !h.sansCase).length,
-                                        routine: [...document.querySelectorAll('#mj-routine li')].map(x => x.textContent) }));
-  ok(n.cases === n.dues && n.cases > 10 && n.routine.some(x => /Lit fait/.test(x)) && n.routine.length > 0, 'une case par habitude due aujourd\'hui, la routine à part sans case (' + n.cases + ' cases, ' + n.routine.length + ' en routine)');
+                                        routine: document.querySelectorAll('#mj-routine input[data-mj-hab]').length, duesR: window.__bcHabitsDuJour(1, '2026-11-16').filter(h => h.sansCase).length }));
+  ok(n.cases === n.dues && n.cases > 10 && n.routine === n.duesR && n.routine > 0, 'une case par habitude due aujourd\'hui, et la routine aussi, dans sa liste (' + n.cases + ' + ' + n.routine + ')');
   await fr.evaluate(() => document.querySelector('#mj-cases input[data-mj-hab="core-etirements"]').click());
   await fr.waitForTimeout(150);
   const r = await fr.evaluate(() => ({ compte: document.getElementById('mj-cases-compte').textContent, fait: document.querySelector('#mj-cases input[data-mj-hab="core-etirements"]').closest('li').className,
-                                        dash: document.getElementById('dash-check-count').textContent,
+                                        dash: document.getElementById('leg-hab').textContent,
                                         log: (JSON.parse(localStorage.getItem('batcave-habitlog') || '{}')['core-etirements'] || []).indexOf('2026-11-16') > -1 }));
   ok(/^1 \//.test(r.compte) && /fait/.test(r.fait), 'cochée ici : ' + r.compte);
-  ok(r.log && r.dash !== avant, 'et c\'est la même case que dans Habitudes et le tableau de bord (' + avant + ' → ' + r.dash + ')');
+  ok(r.log && r.dash !== avant, 'l\'anneau « ma journée » du tableau de bord suit (' + avant + ' → ' + r.dash + ')');
   await fr.evaluate(() => document.querySelector('#mj-cases input[data-mj-hab="core-etirements"]').click());
   await fr.waitForTimeout(150);
   ok(await fr.evaluate(() => (JSON.parse(localStorage.getItem('batcave-habitlog') || '{}')['core-etirements'] || []).indexOf('2026-11-16') < 0 && /^0 \//.test(document.getElementById('mj-cases-compte').textContent)), 'décochée ici, décochée partout');

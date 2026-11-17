@@ -426,16 +426,18 @@ console.log('\n== 311) Dix onglets, et rien qui devient inatteignable ==');
     pastilles: document.querySelectorAll('.sous-nav .sous-onglet').length
   }));
   ok(v.visibles.length === 10, 'dix boutons dans la barre (« Ma journée » depuis le 14 novembre) : ' + v.visibles.join(' '));
-  ok(v.toutes.length === 20, 'mais les vingt boutons restent dans le DOM (' + v.toutes.length + ', Système compris) — rien n\'a été supprimé');
+  /* 17 novembre : l'onglet Habitudes est retiré (sa décision, tout se coche dans « Ma journée ») -- dix-neuf boutons */
+  ok(v.toutes.length === 19, 'les dix-neuf autres boutons restent dans le DOM (' + v.toutes.length + ', Système compris) — l\'onglet Habitudes est le seul retiré');
   ok(v.groupes.join(' | ') === 'Aujourd’hui | Le travail | Le corps',
      'et les trois intertitres veulent dire quelque chose : ' + v.groupes.join(' | '));
-  /* lot 52 : la carte du Système en pastille sous Semaine — huit pages groupées, 2+2+3+3+3+3+3+3 = 22 pastilles */
-  ok(v.rangees === 8 && v.pastilles === 22, 'huit pages groupées, vingt-deux pastilles (' + v.rangees + '/' + v.pastilles + ')');
+  /* lot 52 : la carte du Système en pastille sous Semaine ; 17 novembre : le groupe Habitudes / Coran disparaît --
+     six pages groupées, 3+3+3+3+3+3 = 18 pastilles */
+  ok(v.rangees === 6 && v.pastilles === 18, 'six pages groupées, dix-huit pastilles (' + v.rangees + '/' + v.pastilles + ')');
 
   /* Chaque page reste atteignable par son bouton caché : c'est ce qui fait que les liens
      internes, les raccourcis et tout le reste continuent de marcher. Et c'est le bouton de
      TÊTE qui s'allume dans la barre, sinon on croit n'avoir pas changé de page. */
-  for (const [pg, tete] of [['coran','habitudes'], ['prep','repas'], ['courses','repas'], ['objectifs','bilan'], ['systeme','bilan']]) {
+  for (const [pg, tete] of [['prep','repas'], ['courses','repas'], ['objectifs','bilan'], ['systeme','bilan']]) {
     const r = await fr.evaluate(x => {
       document.querySelector('.nav-btn[data-page="' + x + '"]').click();
       return { seule: [...document.querySelectorAll('.page.active')].map(s => s.dataset.page),

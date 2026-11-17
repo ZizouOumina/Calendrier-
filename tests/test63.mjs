@@ -79,14 +79,14 @@ console.log('\n== 223) Téléphone : mode essentiel actif par défaut, bascule �
   await page.waitForTimeout(300);
   const st = await fr.evaluate(() => {
     const v = sel => { const e = document.querySelector(sel); return !!e && getComputedStyle(e).display !== 'none'; };
-    return { mode: window.__bcModeEssentiel(), btn: document.getElementById('mode-essentiel-toggle').textContent, plan: v('.dash-wall > .mon-plan'), suivi: v('.dash-wall > .mon-suivi'), central: v('.panel.mon-central'), habits: v('.mon-habits'), cloture: v('#bc-cloture'), meteo: v('#dash-weather, .bc-row-2 > .bc-r:first-child'), releves: v('#dash-releves'), pomodoro: v('#timer-pomodoro'), reactor: document.querySelector('.reactor').getBoundingClientRect().width, sync: (() => { const s = document.getElementById('cloud-status'); return s ? getComputedStyle(s).display : 'absent'; })() };
+    return { mode: window.__bcModeEssentiel(), btn: document.getElementById('mode-essentiel-toggle').textContent, plan: v('.dash-wall > .mon-plan'), suivi: v('.dash-wall > .mon-suivi'), central: v('.panel.mon-central'), habits: !document.querySelector('.mon-habits'), cloture: v('#bc-cloture'), meteo: v('#dash-weather, .bc-row-2 > .bc-r:first-child'), releves: v('#dash-releves'), pomodoro: v('#timer-pomodoro'), reactor: document.querySelector('.reactor').getBoundingClientRect().width, sync: (() => { const s = document.getElementById('cloud-status'); return s ? getComputedStyle(s).display : 'absent'; })() };
   });
   ok(st.mode && st.btn === 'Tout afficher', 'mode essentiel actif par défaut à 390 px, bouton « Tout afficher »');
   /* Le Plan du jour RESTE, meme en mode essentiel : c'est ce qu'on ouvre la Batcave pour
      lire un matin. Ce qui part, c'est le suivi chiffre et les releves. */
   ok(st.plan, 'le plan du jour reste visible : c\'est l\'essentiel de l\'essentiel');
   ok(!st.suivi && !st.releves, 'le suivi chiffré et les relevés sont masqués');
-  ok(st.central && st.habits && st.cloture && st.pomodoro, 'bloc central, habitudes, clôture et Pomodoro visibles');
+  ok(st.central && st.habits && st.cloture && st.pomodoro, 'bloc central, clôture et Pomodoro visibles ; plus de console d\'habitudes (17 novembre : tout se coche dans « Ma journée »)');
   ok(st.reactor > 100 && st.reactor <= 130, 'réacteur réduit à ' + Math.round(st.reactor) + ' px, en bande à côté de ses lectures');
   await fr.evaluate(() => document.getElementById('mode-essentiel-toggle').click());
   await page.waitForTimeout(150);
@@ -190,7 +190,7 @@ console.log('\n== 228) Tous les boutons sans texte ont un libellé ; le calendri
 {
   const { ctx, page, fr } = await ouvrir({width:1440, height:900});
   await fr.evaluate(() => { const r = document.getElementById('ritual-dismiss'); if(r) r.click(); });
-  const pages = ['dashboard','bilan','insights','calendrier','agenda','habitudes','addictions','repas','sport','coran','taches','budget','etudes','business','objectifs','vie','courses'];
+  const pages = ['dashboard','bilan','insights','calendrier','agenda','journee','addictions','repas','sport','coran','taches','budget','etudes','business','objectifs','vie','courses'];
   const sansLibelle = await fr.evaluate(ps => {
     const out = [];
     ps.forEach(p => {

@@ -113,52 +113,34 @@ console.log('\n== 266) Vacances et « aujourd\'hui ne compte pas » ==');
   await ctx.close();
 }
 
-console.log('\n== 267) Habitudes : acquises comptées mais rangées, revue cochée à la clôture ==');
+console.log('\n== 267) Plus d\'habitude « acquise » : rien ne se coche tout seul, la clôture ne coche rien (17 novembre) ==');
 {
   const log = {}; const j = [];
-  for(let i = 0; i < 60; i++){ const d = new Date(Date.UTC(2026,10,30) - i*86400000); j.push(d.toISOString().slice(0,10)); }
-  log['core-lit'] = j.slice();                 /* 60 jours d'affilée → acquise */
-  log['core-marche'] = j.filter((x, i) => i % 3 !== 0);   /* ~66 % → pas acquise */
+  for(let i = 1; i <= 60; i++){ const d = new Date(Date.UTC(2026,10,30) - i*86400000); j.push(d.toISOString().slice(0,10)); }
+  log['core-lit'] = j.slice();                 /* 60 jours d'affilée : avant le 17 novembre, elle devenait « acquise » et se cochait seule */
   const { ctx, page, fr } = await ouvrir('2026-11-30T20:40:00+01:00', {'batcave-habitlog': log});
-  const a = await fr.evaluate(() => ({ acquises: window.__bcAcquises().map(h => h.id),
-                                       liste: [...document.querySelectorAll('#dash-checklist li')].map(l => l.innerText),
-                                       cochee: (JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-habitlog') || '{}')['core-lit'] || []).indexOf('2026-11-30') > -1 }));
-  ok(a.acquises.indexOf('core-lit') > -1 && a.acquises.indexOf('core-marche') < 0, '« Lit fait » est acquise, « Marche » non (' + a.acquises.join(', ') + ')');
-  ok(!a.liste.some(x => /Lit fait/.test(x)), 'elle ne prend plus de place dans la check-list du jour');
-  ok(a.cochee, 'elle est cochée d\'elle-même : elle continue de compter');
-  const acq = await fr.evaluate(() => { document.querySelector('.nav-btn[data-page="habitudes"]').click(); const p = document.getElementById('habits-acquises');
-    return {visible: !p.hidden, txt: p.innerText.replace(/\s+/g, ' '), grille: document.getElementById('habits-grid').innerText}; });
-  ok(acq.visible && /Lit fait/.test(acq.txt) && !/Lit fait/.test(acq.grille), 'le bloc « Habitudes acquises » la montre, la grille des habitudes ne la répète pas');
-  await fr.evaluate(() => document.querySelector('[data-raterhab="core-lit"]').click());
-  await page.waitForTimeout(250);
-  const apres = await fr.evaluate(() => ({ acquise: window.__bcAcquise(window.__bcHabits ? null : null) , liste: [...document.querySelectorAll('#dash-checklist li')].map(l => l.innerText).join(' ') }));
-  ok(/Lit fait/.test(apres.liste), '« Je l\'ai ratée » la remet dans la liste du jour');
-  /* clôture : la revue de la veille se coche toute seule */
+  const a = await fr.evaluate(() => { window.__bcJournee.rendre(); const cb = document.querySelector('input[data-mj-hab="core-lit"]');
+    return { la: !!cb, cochee: cb ? cb.checked : null, journal: (JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-habitlog') || '{}')['core-lit'] || []).indexOf('2026-11-30') > -1 }; });
+  ok(a.la && a.cochee === false && !a.journal, '« Lit fait », tenue 60 jours, reste une case à cocher aujourd\'hui : rien ne la coche toute seule');
   await fr.evaluate(() => { document.querySelector('.nav-btn[data-page="dashboard"]').click(); window.__bcOuvrirCloture ? window.__bcOuvrirCloture() : document.getElementById('bc-cloture').click(); });
   await page.waitForTimeout(300);
   const ouverte = await fr.evaluate(() => !document.getElementById('cloture-overlay').hidden);
   if(ouverte){
+    const avant = JSON.stringify(await local(fr, 'batcave-habitlog'));
     await fr.evaluate(() => document.getElementById('cloture-valider').click());
     await page.waitForTimeout(300);
-    const revue = await local(fr, 'batcave-habitlog');
-    ok((revue['core-revue'] || []).indexOf('2026-11-30') > -1, 'clôturer la journée coche « Revue de la veille / plan du lendemain »');
+    const apres = await local(fr, 'batcave-habitlog');
+    ok(JSON.stringify(apres) === avant && !(apres['core-revue'] || []).length, 'clôturer la journée ne coche rien (la revue de la veille est retirée)');
   } else ok(false, 'la clôture ne s\'est pas ouverte');
   await ctx.close();
 }
 
-console.log('\n== 268) Rythme d\'une habitude, modifiable sans l\'archiver ==');
+console.log('\n== 268) Le rythme des cases se lit, il ne se règle plus dans la Batcave (17 novembre : l\'onglet Habitudes est retiré) ==');
 {
-  const { ctx, page, fr } = await ouvrir('2026-09-15T09:00:00+02:00');
-  await fr.evaluate(() => document.querySelector('.nav-btn[data-page="habitudes"]').click());
-  await page.waitForTimeout(200);
-  const avant = await fr.evaluate(() => window.__bcHabitJours({jours:null, id:'core-marche'}));
-  await fr.evaluate(() => { const s = document.querySelector('[data-hab-rythme="core-marche"]'); s.value = '1,3,5'; s.dispatchEvent(new Event('change', {bubbles:true})); });
-  await page.waitForTimeout(300);
-  const h = (await local(fr, 'batcave-habits')).find(x => x.id === 'core-marche');
-  ok(h && Array.isArray(h.jours) && h.jours.join(',') === '1,3,5', 'la marche passe à lundi · mercredi · vendredi (' + JSON.stringify(h.jours) + ')');
-  ok(!h.archived, 'l\'habitude n\'a pas été archivée ni recréée : c\'est la même, avec son historique');
-  const affiche = await fr.evaluate(() => document.querySelector('[data-hab-rythme="core-marche"]').value);
-  ok(affiche === '1,3,5', 'la carte affiche le nouveau rythme');
+  const { ctx, fr } = await ouvrir('2026-09-15T09:00:00+02:00');
+  const r = await fr.evaluate(() => ({ jours: window.__bcHabitJours({jours:[5,1,3,1]}), reglage: document.querySelectorAll('[data-hab-rythme]').length, ajout: !!document.getElementById('hab-add') }));
+  ok(JSON.stringify(r.jours) === '[1,3,5]', 'habitJours lit toujours les jours d\'une case : ' + JSON.stringify(r.jours));
+  ok(r.reglage === 0 && !r.ajout, 'plus de réglage de rythme ni d\'ajout de case dans la Batcave : il me le demande');
   await ctx.close();
 }
 

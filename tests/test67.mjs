@@ -35,11 +35,11 @@ console.log('\n== 260) Six mois de données : ça charge, ça calcule, ça n\'ex
   const d = await fr.evaluate(() => ({
     score: Number((document.getElementById('dash-score-num') || {}).textContent || 0),
     plan: document.getElementById('dash-plan').innerText.trim().length,
-    habitudes: document.querySelectorAll('#dash-checklist li').length,
+    habitudes: (window.__bcJournee.rendre(), document.querySelectorAll('#mj-corps input[data-mj-hab]').length),
     temps: document.getElementById('dash-temps').innerText.replace(/\s+/g, ' ').slice(0, 40)
   }));
   ok(d.score > 0 && d.plan > 20, 'le tableau de bord calcule un score (' + d.score + ' %) et un plan');
-  ok(d.habitudes >= 1, 'la check-list du jour est là (' + d.habitudes + ' lignes, les acquises en sont sorties)');
+  ok(d.habitudes >= 10, 'les cases du jour sont dans « Ma journée » (' + d.habitudes + ', 17 novembre : plus d\'habitude « acquise » qui se coche toute seule)');
   await ctx.close();
 }
 
@@ -48,7 +48,7 @@ console.log('\n== 261) Chaque carte Insights a des données ==');
   const { ctx, fr } = await ouvrir({viewport:{width:1440,height:900}});
   const ins = await fr.evaluate(() => window.__bcInsights().map(i => ({t:i.title, n:i.n || 0, a:!!i.action, s:i.score})));
   /* 16 novembre : la balance énergétique sort (les repas ne se cochent plus) -- 8 analyses */
-  ok(ins.length === 8, '8 cartes calculées (' + ins.length + ')');
+  ok(ins.length === 7, '7 cartes calculées (' + ins.length + ')');
   const sansDonnees = ins.filter(i => !i.n).map(i => i.t);
   ok(sansDonnees.length === 0, 'toutes les cartes ont des points de données' + (sansDonnees.length ? ' — sauf : ' + sansDonnees.join(', ') : ''));
   ok(ins.filter(i => i.a).length >= 5, ins.filter(i => i.a).length + ' cartes proposent une action');
@@ -72,7 +72,7 @@ console.log('\n== 262) Bilan, objectifs et courbes sur six mois ==');
      DOUZE depuis le 19 septembre : le cardio et les pas ont chacun la leur. Ils mesurent
      ce que les seances ne mesurent pas -- l'aerobie, et ce qu'il bouge hors entrainement. */
   /* 16 novembre : l'eau, la nutrition et les pas sortent (sa décision) -- neuf cartes */
-  ok(b.cartes === 9, 'neuf cartes de bilan (' + b.cartes + ')');
+  ok(b.cartes === 8, 'huit cartes de bilan (' + b.cartes + ')');
   ok(b.points > 0, 'la courbe du score est tracée');
   ok(b.revue >= 1 && b.journal >= 10, 'la revue et l\'historique du journal sont bien sur la page Semaine (' + b.revue + ' revue(s), ' + b.journal + ' journées)');
   const o = await fr.evaluate(() => {
@@ -80,7 +80,7 @@ console.log('\n== 262) Bilan, objectifs et courbes sur six mois ==');
     const l = [...document.querySelectorAll('#obj-liste .obj-row')].map(r => r.innerText.replace(/\s+/g, ' '));
     return { n: l.length, retard: l.filter(x => /en retard/.test(x)).length, saison: !document.getElementById('saison-cloturer').hidden };
   });
-  ok(o.n >= 5, o.n + ' objectifs du mois affichés (cinq métriques depuis le 25 septembre)');
+  ok(o.n >= 4, o.n + ' objectifs du mois affichés (quatre métriques depuis le 17 novembre)');
   ok(o.saison, 'à quatre jours de la fin de l\'horizon, le bouton « Clôturer la saison » est là');
   await ctx.close();
 }

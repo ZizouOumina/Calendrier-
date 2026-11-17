@@ -79,8 +79,8 @@ console.log('\n== 68) Aucune régression sur les analyses existantes ==');
   const { ctx, fr } = await ouvrir(null);
   const c = await cartes(fr);
   /* 16 novembre : « Balance énergétique » sort -- les repas ne se cochent plus aliment par aliment (sa décision) */
-  ok(c.length === 8, '8 cartes au total (Insights v3, une par thème, sans la balance énergétique) : ' + c.length);
-  const titres = ['Bloc le plus fragile','Dérive du premier bloc','Sommeil','Sport','Matière et partiel','Habitude la plus délaissée','créneau le plus productif','Fidélité au plan'];
+  ok(c.length === 7, '7 cartes au total (Insights v3, une par thème, sans la balance énergétique ni l\'habitude la plus délaissée) : ' + c.length);
+  const titres = ['Bloc le plus fragile','Dérive du premier bloc','Sommeil','Sport','Matière et partiel','créneau le plus productif','Fidélité au plan'];
   const manquants = titres.filter(t => !c.some(x => x.toLowerCase().includes(t.toLowerCase())));
   ok(manquants.length === 0, 'toutes les analyses sont présentes : ' + (manquants.join(', ') || 'OK'));
   await ctx.close();

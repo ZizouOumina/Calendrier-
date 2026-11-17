@@ -114,8 +114,8 @@ console.log('\n== 104) Croisement d\'écritures entre appareils ==');
 {
   const { ctx, fr, page } = await ouvrir(VENDREDI, { mock: { cloud: { 'batcave-goals': {poids:'64'} } } });
   const premier = await fr.evaluate(() => window.__sets.length);
-  /* une écriture locale : cocher une habitude */
-  await fr.evaluate(() => { const cb = document.querySelector('#dash-checklist [data-togglehab]'); if(cb) cb.click(); });
+  /* une écriture locale : cocher une case de « Ma journée » (17 novembre : le seul endroit où l'on coche) */
+  await fr.evaluate(() => { const cb = document.querySelector('#mj-corps input[data-mj-hab]'); if(cb) cb.click(); });
   await page.waitForTimeout(200);
   const ecrit = await fr.evaluate(() => window.__sets.filter(s => s.k === 'batcave-habitlog').slice(-1)[0]);
   ok(!!ecrit && typeof ecrit.v.d === 'string' && ecrit.v.d.length > 3 && typeof ecrit.v.t === 'number', 'chaque écriture cloud porte l\'appareil et l\'heure');

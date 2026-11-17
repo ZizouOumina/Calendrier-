@@ -1,5 +1,55 @@
 # Où on en est — samedi 19 septembre 2026, au soir
 
+> ### Mardi 17 novembre — tout se coche dans « Ma journée », sans suivi ; le cou du jeudi à la salle
+> **Ses mots** : « je veux pouvoir cocher dans ma journée, pas besoin de traquer, on va faire un tri dans mes habitudes
+> d'abord, puis on va enlever l'onglet habitude […] mais ça veut aussi dire que l'onglet ma journée doit tout afficher
+> correctement, il ne peut pas y avoir d'erreurs ». Il a validé le tri proposé (« ok on fait ça »), et ajouté : « tu
+> rajoutes un exercice d'entraînement du cou dans le programme d'entraînement le jeudi ».
+> **Le tri (schéma 72, `HABITUDES_RETIREES`, sans drapeau)** : la revue de la veille (la clôture la fait), la marche
+> (les pas ne se notent plus), « Courses faites » (le bloc et la liste le disent) et le cou du jeudi soir sortent. Le
+> filtre passe à chaque lecture, donc une liste revenue d'un autre appareil est nettoyée aussi. Les graines V2, V3 et
+> V10 ne les portent plus. Il reste 44 cases : 16 habitudes et 28 gestes de routine, de 17 à 26 par jour.
+> **Un seul endroit où cocher** : « Ma journée » montre « Tes habitudes du jour » puis « La routine du jour », toutes
+> deux à cocher (`sansCase` ne fait plus que ranger la routine). Un jour passé montre ce qui a été coché, un jour à
+> venir la liste ; le vendredi, Dhuhr porte la Jumu'ah. Sont retirés :
+> - l'onglet Habitudes (Coran & Duaas prend sa place dans la barre) ;
+> - la console du tableau de bord ;
+> - la touche H ;
+> - les boutons du plan du jour qui cochaient ;
+> - les cases de la clôture, qui ne coche plus rien (ni la revue, ni la créatine par la puce masquée des compléments).
+> L'anneau extérieur du réacteur suit « Ma journée » (« ma journée 5/17 »). Le plan du jour dit combien il en reste et
+> ouvre l'onglet. La clôture rappelle ce qui n'est pas coché.
+> **Plus aucun suivi des cases** :
+> - plus de séries, de taux ni d'habitudes « acquises » (elles se cochaient toutes seules) ;
+> - le score du jour ne compte plus que la séance et le sommeil ;
+> - la semaine perd « Habitudes tenues » (8 chiffres), la clôture du dimanche aussi (6) ;
+> - l'analyse « Habitude la plus délaissée » sort (7 analyses) ;
+> - les objectifs du mois « habitudes tenues » semés sont retirés (`elaguerObjectifs`) ;
+> - le deen des « 5 qui comptent » ne compte plus les prières de la semaine (le Coran reste) ;
+> - l'expérience de la semaine ne propose plus les cases, l'eau ni la nutrition.
+> **Le cou du jeudi** : la flexion du cou (celle du lundi, même nom, donc la progression se partage) ferme la séance du
+> jeudi, dans les repos des tractions serviette et du crunch, un tour des trois. Un seul exercice, comme il l'a demandé :
+> la séance garde ses 55 minutes et le retour de 07:55. Le cou travaille trois fois par semaine (12 séries) :
+> - lundi, flexion et extension ;
+> - mardi, inclinaisons ;
+> - jeudi, flexion.
+> La liste des paires sait lire un trio (`trio:true`).
+> **La vérification de la saison** (`tests/zz-journee-saison.mjs`, avec ses données) :
+> - A : chaque jour du 16 novembre au 6 juin à la suite. 203 jours, 5 411 lignes, toutes avec leur heure, dans l'ordre,
+>   un bloc de travail toujours avec sa consigne. 3 941 cases, chacune le bon jour, recalculées à part depuis leurs
+>   jours, leur cycle et leur ancre. Aucune erreur, aucun « undefined ». Le pas à pas écrit (70 jours) colle à la grille.
+> - B : chaque jour ouvert comme « aujourd'hui » à 07:00. Tout est coché une case à la fois, la première décochée, puis
+>   la page rechargée : les 203 jours restent exactement comme laissés.
+> **Les pages** :
+> - les 10 semaines du guide sont ré-extraites (seules les cases retirées changent), « Ta semaine » et « Ta semaine
+>   type » sont reconstruites (« À cocher dans « Ma journée » », la routine « à cocher aussi ») ;
+> - « Ce que tu pourrais suivre en plus » sort de la semaine type ;
+> - « À quoi sert la Batcave » suit, ainsi que la prise en main (ses cases du jour étaient fausses : le shampoing du
+>   mercredi, la serviette de corps du mercredi, la marche, la revue), le guide des étirements, le dossier Español et
+>   `programme-sport.md`.
+> **Tests** : nouveau test122 (le tri, « Ma journée », un seul endroit, plus de suivi, le cou du jeudi) ; test121 et
+> la campagne recalés (voir le commit).
+
 > ### Lundi 16 novembre, tard le soir — le suivi allégé
 > **Sa question** : « est-ce que ça fait beaucoup tu trouves, est-ce que j'ai vraiment besoin de suivre tout ça ou c'est
 > contre-productif ». Ma réponse : c'est trop, une centaine de gestes un lundi.

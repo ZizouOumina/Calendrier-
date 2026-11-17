@@ -55,10 +55,11 @@ def prieres(iso):
     return [['Fajr', fmt(tang(18, 5, j, True))], ['Dhuhr', fmt(12 - sun(j + .5)[1] + 1 / 60)], ['Asr', fmt(asr)],
             ['Maghrib', fmt(tang(.833, 18, j, False) + 1 / 60)], ['Isha', fmt(tang(17, 18, j, False))]]
 
-def pas_ecrans(cou):
+# 17 novembre : le cou du jeudi soir, à la maison, est retiré -- il passe dans la séance du jeudi, à la salle (sa demande)
+def pas_ecrans():
     return ['La clôture du jour dans la Batcave (2 min), et un coup d’œil à demain sur cette page.',
             'Téléphone en charge hors de la chambre, réveil posé loin du lit.', 'Fenêtre ouverte 10 min, puis fermée.',
-            '5 min d’étirements' + (', puis le cou : flexion et extension, 3 × 12-20.' if cou else '.'), 'Tes 20 pages en espagnol, sur papier.']
+            '5 min d’étirements.', 'Tes 20 pages en espagnol, sur papier.']
 
 JOURS = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi']
 COURT = ['dim', 'lun', 'mar', 'mer', 'jeu', 'ven', 'sam']
@@ -74,9 +75,10 @@ ESP = {'Español · gramática': 'Espagnol · gramática', 'Español · hablar':
        'Español · simulación': 'Espagnol · l’épreuve du dimanche', 'Español · balance de la semana': 'Espagnol · bilan de la semaine'}
 SEANCE = {1: 'haut du corps, en volume', 2: 'bas du corps (squat), puis le sac', 4: 'haut du corps, lourd', 6: 'le second bas et les bras, puis le sac'}
 SAC_JJB = 'le sac de JJB (kimono propre ou short, rashguard, protège-dents, serviette, tongs)'
-# 16 novembre, sa décision : la routine (le ménage, le linge, les serviettes, l'entretien, la créatine…) n'est plus une
-# case à cocher dans la Batcave -- « Ma journée » la dit, sans case. Même liste que ROUTINE_SANS_CASE dans la Batcave.
-ROUTINE_IDS = {'core-lit', 'core-courses', 'core-shampoing', 'core-serviette-visage', 'core-serviette-corps', 'core-taie-merc',
+# 16 novembre, sa décision : la routine (le ménage, le linge, les serviettes, l'entretien, la créatine…) a sa propre liste.
+# 17 novembre : elle se coche dans « Ma journée », comme le reste (« je veux pouvoir cocher dans ma journée, pas besoin de
+# traquer »). Même liste que ROUTINE_SANS_CASE dans la Batcave.
+ROUTINE_IDS = {'core-lit', 'core-shampoing', 'core-serviette-visage', 'core-serviette-corps', 'core-taie-merc',
                'core-draps', 'core-rasage', 'core-menage', 'core-entretien-semaine', 'core-ongles', 'core-brosse-dents', 'core-cheveux',
                'core-frigo', 'core-entretien-mois', 'core-machine-filtre', 'core-matelas', 'core-rideau-douche', 'core-detartrage',
                'core-robot-filtre', 'core-robot-brosse-laterale', 'core-robot-brosses', 'core-aspi-pieces', 'core-oreiller', 'core-couette',
@@ -84,7 +86,7 @@ ROUTINE_IDS = {'core-lit', 'core-courses', 'core-shampoing', 'core-serviette-vis
 ROUTINE_LIBELLES = {'Passer le balai', 'Vaisselle', 'Linge'}
 # les cases de chaque jour (la Batcave, 12 novembre) : elles ne vont pas dans « en plus aujourd'hui »
 QUOTIDIENNES = {'Lit fait', 'Étirements faits', 'Fajr', 'Dhuhr', "Jumu'ah (~14h)", 'Asr', 'Maghrib', 'Isha', 'Téléphone hors de la chambre',
-                'Sadaqah du jour', 'Revue de la veille / plan du lendemain', 'Nouvelles à la famille', 'Marche — 8 000 pas',
+                'Sadaqah du jour', 'Nouvelles à la famille',
                 '30 min en espagnol avec un natif', 'Les dix formules du jour', '20 pages lues en espagnol', 'Créatine — 5 g',
                 'Lumière du matin — 15 min dehors, dès qu’il fait jour'}
 COURTS = {'Robot : filtre neuf': 'Filtre du robot neuf', 'Robot : brosse latérale neuve': 'Brosse latérale du robot', 'Robot : brosses principales neuves': 'Brosses du robot',
@@ -249,7 +251,7 @@ def construire(J, semaine, k):
             else: r = ('libre', 'Temps libre', '' if c.strip() in ('', 'Libre.') else c, None)
         elif lab == "Repos après l'examen": r = ('libre', 'Repos après l’examen', c, None)
         elif lab == '🚿 Douche du soir': r = ('soin', 'Douche du soir', '', phrases(c))
-        elif lab == '📖 Écran off — lecture papier': r = ('soin', 'Écrans coupés', '', pas_ecrans(a('Cou')))
+        elif lab == '📖 Écran off — lecture papier': r = ('soin', 'Écrans coupés', '', pas_ecrans())
         elif lab == 'Brossage de dents': r = ('soin', 'Brossage de dents', '', ['2 min, avec le dentifrice au fluor : toutes les faces, le bord des gencives.', 'Le fil dentaire, entre chaque dent.', 'Crache sans rincer.', 'Toilettes.'])
         elif lab == 'Douche + brossage de dents':
             r = ('soin', 'Douche, puis brossage de dents', '', phrases(c) or ['La clôture du jour dans la Batcave (2 min), téléphone en charge hors de la chambre.',
@@ -354,7 +356,7 @@ def construire(J, semaine, k):
     # un soir sans cours (vacances, partiels) n'a pas de bloc « Écran off » : ses étapes manquaient
     coucher = next((b['h'] for b in g if b['l'] == 'Coucher'), None)
     if '📖 Écran off — lecture papier' not in labs and coucher:
-        rows.append({'t': hh(mn(coucher) - 35), 'k': 'soin', 'titre': 'Écrans coupés', 'd': '', 'pas': pas_ecrans(a('Cou'))})
+        rows.append({'t': hh(mn(coucher) - 35), 'k': 'soin', 'titre': 'Écrans coupés', 'd': '', 'pas': pas_ecrans()})
         for r_ in rows:
             if r_['titre'] == 'Douche, puis brossage de dents' and r_.get('pas') and r_['pas'][0].startswith('La clôture du jour'):
                 r_['pas'] = r_['pas'][1:]
@@ -508,7 +510,7 @@ def construire(J, semaine, k):
 
 # ---------- l'en-tete de chaque semaine ----------
 COMMUNS = ['Les révisions : tu choisis quoi réviser, la page te dit seulement quand.',
-           'Les habitudes se cochent dans la Batcave. Si un bloc y change, c’est elle qui a raison.',
+           'Tout se coche dans « Ma journée », dans la Batcave. Si un bloc y change, c’est elle qui a raison.',
            'Une envie de snus : bois de l’eau, mâche un chewing-gum, marche 5 minutes. Elle passe.']
 
 def tete(S, jours):
@@ -602,8 +604,9 @@ def vers_batcave(data, sig):
 
 JOUR_1 = '2026-11-16'            # PROGRAMME_DEBUT dans la Batcave
 PREMIERES_PHOTOS = '2026-11-22'  # ANCRE_DIMANCHE : le premier dimanche du programme
-CHAQUE_JOUR = ['Lumière du matin', 'Les cinq prières', 'Étirements', '8 000 pas', 'Téléphone hors de la chambre',
-               'Sadaqah', 'Nouvelles à la famille', 'Revue du jour', '30 min d’espagnol avec un natif', 'Les dix formules', '20 pages en espagnol']
+# 17 novembre, le tri (sa décision) : la marche (les pas ne se notent plus) et la revue du jour (la clôture la fait) sortent
+CHAQUE_JOUR = ['Lumière du matin', 'Les cinq prières', 'Étirements', 'Téléphone hors de la chambre',
+               'Sadaqah', 'Nouvelles à la famille', '30 min d’espagnol avec un natif', 'Les dix formules', '20 pages en espagnol']
 MOIS_LISTE = ['Le frigo vidé et nettoyé, le samedi des courses, avant de ranger : {frigo}.',
               'Le rideau de douche à la machine, 40 °C, un dimanche sur quatre au début du ménage (13 décembre, 10 janvier, 7 février), puis raccroché humide, déplié : « Ma journée » le dit ces dimanches-là.',
               'L’entretien du mois des machines, au ménage du dimanche : le robot (capteurs de vide, contacts de charge, roue avant, brosse latérale), l’aspirateur-serpillière (brosse lavée, joint du réservoir), le filtre du lave-vaisselle — {entretien}.',
