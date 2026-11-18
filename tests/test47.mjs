@@ -31,7 +31,7 @@ const LUNDI = '2026-12-03T06:30:00+01:00';   /* 31 octobre : jour 1 au dimanche 
 const SAMEDI = '2027-01-30T06:30:00+01:00';   /* le premier samedi de muscu apres le regime combat (S2) : hors montee en charge, 3 series */
 /* 28 septembre au soir : jour 1 au mardi 29, semaine de reprise en combat seul, la muscu
    commence le lundi 5 octobre -- semaine 2 du programme, encore a demi-charge. */
-const PREMIER_LUNDI = '2026-11-16T06:30:00+01:00';   /* 31 octobre : le premier Haut volume est le lundi 2 novembre (semaine 2) */   /* 12 octobre : jour 1 au mardi 13, le premier Haut volume est le lundi 19 (semaine 2). 19 octobre : jour 1 au mardi 20 -- le lundi 26 (semaine 2) */
+const PREMIER_LUNDI = '2026-11-23T06:30:00+01:00';   /* 18 novembre : jour 1 au jeudi 19 -- le premier Haut volume est le lundi 23, en semaine 1 de muscu (sans seance notee, elle part de lui) */   /* 31 octobre : le premier Haut volume est le lundi 2 novembre (semaine 2) */   /* 12 octobre : jour 1 au mardi 13, le premier Haut volume est le lundi 19 (semaine 2). 19 octobre : jour 1 au mardi 20 -- le lundi 26 (semaine 2) */
 
 console.log('\n== 107) Première séance : cible = tours × bas de fourchette ==');
 {
@@ -80,10 +80,12 @@ console.log('\n== 109) Double progression ==');
 {
   /* 27 octobre, en salle : tractions 4 × 5-8 -- dernière 8/7/6/6 → cible 8/8/7/7 (plafonnée au haut) ;
      rowing barre 3 × 6-10 tout au haut (10/10/10 à 40 kg) → monter : 6/6/6 @42,5 kg */
-  /* 7 novembre : une premiere seance faite le lundi 2 -- le jeudi 19 est hors montee en charge */
+  /* 7 novembre : une premiere seance faite le lundi 2 -- le jeudi 19 est hors montee en charge.
+     18 novembre : jour 1 au jeudi 19 -- la premiere seance (Haut lourd) est le jeudi 19 ; le jeudi 3 decembre, quatorze
+     jours plus tard, sort de la montee en charge. */
   const { ctx, fr } = await ouvrir(LUNDI, { 'batcave-sport-log': [
-    {id:'a', date:'2026-11-16', type:'Haut lourd', exo:'Tractions', series:[8,7,6,6], charge:0, unite:'reps'},
-    {id:'b', date:'2026-11-16', type:'Haut lourd', exo:'Rowing barre', series:[10,10,10], charge:40, unite:'reps'}
+    {id:'a', date:'2026-11-19', type:'Haut lourd', exo:'Tractions', series:[8,7,6,6], charge:0, unite:'reps'},
+    {id:'b', date:'2026-11-19', type:'Haut lourd', exo:'Rowing barre', series:[10,10,10], charge:40, unite:'reps'}
   ]});
   const t = await fr.evaluate(() => document.querySelector('.sport-card.today').innerText);
   /* 17 novembre, « ajuste pour la 3 » : 3 × 5-8 le jeudi -- la dernière séance (quatre séries) donne les trois cibles suivantes */
@@ -92,7 +94,7 @@ console.log('\n== 109) Double progression ==');
   ok(/charge/i.test(t) && /barre et disques, au total/.test(t) && /lest/i.test(t) && /0 = poids du corps/.test(t), 'la saisie dit « Charge » à la barre, « Lest » aux tractions');
   await ctx.close();
   /* Après le régime combat (S2) aussi, le samedi est le second bas, en salle */
-  const s2 = await ouvrir(SAMEDI, { 'batcave-sport-log': [{id:'p', date:'2026-11-17', type:'Bas complet', exo:'Squat barre', series:[8,8,8,8], charge:40, unite:'reps'},
+  const s2 = await ouvrir(SAMEDI, { 'batcave-sport-log': [{id:'p', date:'2026-11-24', type:'Bas complet', exo:'Squat barre', series:[8,8,8,8], charge:40, unite:'reps'},
                                                             {id:'c', date:'2027-01-23', type:'Bas · charnière', exo:'Relevés de jambes suspendus', series:[15,15,15], charge:0, unite:'reps'}] });
   const t2 = await s2.fr.evaluate(() => document.querySelector('.sport-card.today').innerText);
   ok(/Bas · charnière/.test(t2) && /cible 8\/8\/8 @2 kg · monter/.test(t2), 'relevés 15/15/15 au poids du corps → un haltère de 2 kg entre les pieds : 8/8/8 @2 kg');
@@ -118,7 +120,7 @@ console.log('\n== 110) Record, panneau de progression et courbe ==');
 
 console.log('\n== 111) Le tableau de bord annonce les cibles du jour, et le jour off ==');
 {
-  const { ctx, fr } = await ouvrir(LUNDI, { 'batcave-sport-log': [{id:'a', date:'2026-11-16', type:'Haut lourd', exo:'Tractions', series:[8,7,6,6], charge:0, unite:'reps'}] });
+  const { ctx, fr } = await ouvrir(LUNDI, { 'batcave-sport-log': [{id:'a', date:'2026-11-19', type:'Haut lourd', exo:'Tractions', series:[8,7,6,6], charge:0, unite:'reps'}] });
   await fr.evaluate(() => { document.querySelector('.nav-btn[data-page="dashboard"]').click(); const b = document.getElementById('dash-more-toggle'); if(document.getElementById('dash-more').hidden) b.click(); });
   const t = await fr.evaluate(() => document.getElementById('dash-sport').innerText);
   ok(/Cibles : Tractions 8\/8\/7(?!\/)/.test(t), 'Sport aujourd\'hui : « Cibles : Tractions 8/8/7 … » (' + t.replace(/\s+/g,' ').slice(0, 90) + ')');

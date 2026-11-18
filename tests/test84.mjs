@@ -105,17 +105,29 @@ console.log('\n== 84.6) Cibles hebdo : constantes en revision, croissantes en pr
     return {rev: T.rev/60, proj: T.proj/60, es: T.es/60};
   }, L);
   /* 7 novembre : le mois d'espagnol repris court du 9 novembre au 8 decembre -- l'apres-phase se lit
-     les semaines du 14 decembre et du 11 janvier ; la semaine du 16 novembre est dans le mois repris. */
-  const t = await sem('2026-09-07'), e1 = await sem('2026-09-21'), e2 = await sem('2026-12-14'), e3 = await sem('2027-01-11'), rep = await sem('2026-11-16');
+     les semaines du 14 decembre et du 11 janvier ; la semaine du 16 novembre est dans le mois repris.
+     18 novembre : le mois court du jeudi 19 novembre au vendredi 18 decembre, un mois pile. La
+     premiere semaine entiere d'apres est celle du 21 decembre, mais les vacances de Noel commencent
+     le 23 : la seule semaine ordinaire d'apres est celle du 11 janvier. L'apres-phase se lit donc
+     jour par jour : du samedi 19 au mardi 22 decembre, chaque jour porte la revision du meme jour
+     de la semaine du 11 janvier. La semaine du 23 novembre est la premiere entiere du mois. */
+  const t = await sem('2026-09-07'), e1 = await sem('2026-09-21'), e2 = await sem('2026-12-21'), e3 = await sem('2027-01-11'), rep = await sem('2026-11-23');
   const pr = x => Math.round(x * 100) / 100;
+  const jour = iso => fr.evaluate(iso => window.__bcPrevu(iso), iso);
+  const apres = [['2026-12-19', '2027-01-16'], ['2026-12-20', '2027-01-17'], ['2026-12-21', '2027-01-11'], ['2026-12-22', '2027-01-12']];
+  const ecarts = [];
+  for (const [a, b] of apres) { const x = await jour(a), y = await jour(b); if (x.rev !== y.rev || x.proj !== y.proj || x.es !== y.es) ecarts.push(a + ' ' + x.rev + '/' + y.rev); }
   /* Regime combat : 29 h 13 de revision par semaine des le 28 septembre (33 h 12 sur la grille type d'avant). */
-  ok(pr(e2.rev) === pr(e3.rev),
-     'la revision ne bouge plus apres la phase (le mois repris finit le 8 decembre) : ' + [pr(t.rev), pr(e2.rev), pr(e3.rev)].join(' -> '));
+  ok(ecarts.length === 0,
+     'la revision ne bouge plus apres la phase (le mois repris finit le vendredi 18 decembre) : du 19 au 22 decembre, chaque jour vaut celui de la semaine du 11 janvier ' + (ecarts.join(', ') || ''));
+  const v18 = await jour('2026-12-18'), s19 = await jour('2026-12-19');
+  ok(v18.es > 0 && s19.es === 0 && s19.proj === 0,
+     'un mois pile : de l\'espagnol le vendredi 18 decembre (' + v18.es + ' min), plus rien le samedi 19 (' + s19.es + ')');
   /* 19 octobre : « Clore le cours » a vingt minutes les quatre soirs de cours -- 29 h 13 -> 27 h 53.
      21 octobre : la piscine du mardi -- le Clore du mardi passe a vingt minutes lui aussi : 27 h 33. */
   /* 30 octobre : la salle a 07:00 -- le trajet prend une demi-heure d'etude aux quatre matins de muscu : 25 h 43. */
   /* 30 octobre : plus de piscine -- « Clore le cours » du mardi reprend ses quarante minutes : 26 h 03. */
-  ok(pr(e2.rev) === 26.05 && pr(t.rev) === 33.17, 'revision = 26 h 03 de travail reel par semaine au regime combat (salle à 07:00, plus de piscine), 33 h 12 avant (' + pr(e2.rev) + ' / ' + pr(t.rev) + ')');
+  ok(pr(e3.rev) === 26.05 && pr(t.rev) === 33.17, 'revision = 26 h 03 de travail reel par semaine au regime combat (salle à 07:00, plus de piscine), 33 h 12 avant (' + pr(e3.rev) + ' / ' + pr(t.rev) + ')');
   /* seule exception : en phase Español le mercredi 05:30 reste « Anki matinal », donc la
      phase 1 porte 50 min de revision de plus. Le 5 novembre, ce bloc passe aux projets ; la premiere semaine entiere d'apres est celle du 9 novembre. */
   ok(pr(e1.rev) === 34, 'phase 1 avant le 28 : 34 h, le mercredi matin est encore de l\'Anki (' + pr(e1.rev) + ')');
@@ -124,7 +136,7 @@ console.log('\n== 84.6) Cibles hebdo : constantes en revision, croissantes en pr
   ok(e1.proj === 0 && e2.proj === e3.proj && e3.proj === t.proj,
      'une seule bascule : zero en phase 1, puis la meme valeur partout : ' + [pr(e1.proj), pr(e2.proj), pr(e3.proj), pr(t.proj)].join(' -> '));
   ok(e1.es > 0 && e2.es === 0 && e3.es === 0, 'l\'espagnol tombe a zero apres le mois repris : ' + [pr(e1.es), pr(e2.es), pr(e3.es)].join(' -> '));
-  ok(pr(rep.es) === 10.6 && pr(rep.rev) === 26.88, 'la semaine du 16 novembre, dans le mois repris : 10 h 36 d\'espagnol, et le mercredi 05:30 redevient de l\'Anki (26 h 53 de revision) (' + pr(rep.es) + ' / ' + pr(rep.rev) + ')');
+  ok(pr(rep.es) === 10.6 && pr(rep.rev) === 26.88, 'la semaine du 23 novembre, la premiere entiere du mois repris : 10 h 36 d\'espagnol, et le mercredi 05:30 redevient de l\'Anki (26 h 53 de revision) (' + pr(rep.es) + ' / ' + pr(rep.rev) + ')');
   ok(pr(t.proj) === 0, 'grille type : plus aucun projet prevu, sans minuteur depuis le 25 septembre (' + pr(t.proj) + ')');
 }
 

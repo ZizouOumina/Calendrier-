@@ -8,7 +8,10 @@ let err = 0, avert = 0;
 const ok = (c,m)=>{ if(c) console.log('  ok    '+m); else { err++; console.log('  ERREUR '+m); } };
 const note = m => { avert++; console.log('  ⚠     '+m); };
 
-const JOUR = '2026-11-16';   /* lundi, jour 1 du programme (15 novembre : « recale tout sur lundi » ; avant, le lundi 14 septembre) */
+/* 18 novembre : le jour 1 passe au jeudi 19. Les calculs d'un lundi se lisent au premier lundi du programme, le 23 ;
+   le jour 1 lui-même (section 10) au jeudi 19. Avant : le lundi 16 (15 novembre), le lundi 14 septembre. */
+const JOUR = '2026-11-23';   /* lundi, le premier du programme */
+const JOUR1 = '2026-11-19';  /* jeudi, jour 1 du programme */
 async function ouvrir(seed, quand){
   const ctx = await b.newContext({viewport:{width:1440,height:1200}, timezoneId:'Europe/Madrid', locale:'fr-FR'});
   await ctx.addInitScript(s=>{
@@ -140,10 +143,10 @@ console.log('\n═══ 6 bis. Blocs Español manqués : reportés dans QUEL co
 }
 {
   /* et l'effet du report sur la cible du lendemain */
-  const {ctx, page, fr} = await ouvrir({'batcave-report':{date:'2026-11-17', rev:0, proj:120}}, '2026-11-17T06:00:00+01:00');
+  const {ctx, page, fr} = await ouvrir({'batcave-report':{date:'2026-11-24', rev:0, proj:120}}, '2026-11-24T06:00:00+01:00');
   const t = await plan(fr);
   const l = t.split('\n').filter(x=>/Projets perso —/.test(x))[0] || '(pas de ligne Projets perso)';
-  console.log('       mardi 15, avec 2 h reportées dans « proj » : ' + l.trim());
+  console.log('       mardi 24, avec 2 h reportées dans « proj » : ' + l.trim());
   await ctx.close();
 }
 
@@ -210,11 +213,11 @@ console.log('\n═══ 9. Budget : la dépense variable est distinguée de la 
 
 console.log('\n═══ 10. Jour 1 : aucun objectif en déficit ═══');
 {
-  const {ctx, page, fr} = await ouvrir({}, JOUR+'T06:00:00+01:00');
+  const {ctx, page, fr} = await ouvrir({}, JOUR1+'T06:00:00+01:00');
   const o = await objectifs(fr, page);
   /* la ligne de synthèse fait foi : « X/Y dans les clous ou mieux · N en retard · … » */
   const m = o.match(/(\d+)\/(\d+) dans les clous ou mieux · (\d+) en retard · (\d+) sans données · (\d+) % de la période écoulée/);
-  ok(m && m[3] === '0', 'le matin du 16 : ' + (m?m[3]:'?') + ' objectif(s) en retard (0 attendu) — ' + (m?m[0]:'ligne introuvable'));
+  ok(m && m[3] === '0', 'le matin du 19 : ' + (m?m[3]:'?') + ' objectif(s) en retard (0 attendu) — ' + (m?m[0]:'ligne introuvable'));
   ok(m && Number(m[5]) <= 6, 'part de période écoulée le jour 1 : ' + (m?m[5]:'?') + ' % (pas 100 %)');
   await ctx.close();
 }
@@ -224,10 +227,18 @@ console.log('\n═══ 11. Le réacteur et les cellules disent-ils la même ch
   /* Depuis le 25 septembre les projets perso n'ont ni cible ni minuteur : le réacteur ne
      leur dessine plus d'arc et le dit, la cellule dit ce que la grille leur donne dans la
      journée, et 1 h d'espagnol enregistrée ne les remplit toujours pas. Deux jours où la
-     grille prévoit des blocs « Projets perso » : le 14 décembre (régime combat, l'e-commerce, après le mois d'espagnol)
-     et le 15 février (semestre 2). On fait 1 h d'espagnol et rien d'autre. Le 16 novembre est dans le mois d'espagnol :
-     ses blocs de projets SONT de l'espagnol, la cellule le dit (« Español à leur place »). */
-  for(const d of ['2026-12-14','2027-02-15']){
+     grille prévoit des blocs « Projets perso » : le 21 décembre (régime combat, l'e-commerce, après le mois d'espagnol
+     -- 18 novembre : le mois va jusqu'au vendredi 18 décembre ; avant, le 14 décembre) et le 15 février (semestre 2). On
+     fait 1 h d'espagnol et rien d'autre. Le 14 décembre est dans le mois d'espagnol : ses blocs de projets SONT de
+     l'espagnol, la cellule le dit (« Español à leur place jusqu'au 18 déc. »). */
+  {
+    const d = '2026-12-14';
+    const {ctx, page, fr} = await ouvrir({}, d+'T21:00:00+01:00');
+    const cel = await fr.evaluate(()=>((document.getElementById('dash-temps').innerText.replace(/\n/g,' ').match(/Projets perso 0 ([^·]+)/)||[])[1] || ''));
+    ok(/Español à leur place jusqu’au 18 déc\./.test(cel), d + ' : dans le mois d\'espagnol, la cellule le dit — « Projets perso 0 ' + cel.trim() + ' »');
+    await ctx.close();
+  }
+  for(const d of ['2026-12-21','2027-02-15']){
     const {ctx, page, fr} = await ouvrir({'batcave-sessions':[
       {id:'sa', date:d, debut:Date.parse(d+'T11:20:00+01:00'), fin:Date.parse(d+'T12:20:00+01:00'),
        duree:60, type:'projet', label:'Español · gramática'}]}, d+'T21:00:00+01:00');

@@ -45,14 +45,15 @@ async function proposition(fr, page){
   }));
 }
 
+/* 18 novembre : jour 1 au jeudi 19 -- le lundi 16 est avant le programme ; tout se joue une semaine plus tard, le lundi 23 */
 console.log('\n== 1) Hors partiels : la matière la plus délaissée, et le motif ==');
 {
   /* 12 h d'Anatomía I ces trente jours, 30 min de Bioquímica, rien ailleurs. L'ancienne
      règle aurait reproposé Anatomía I — celle du dernier jour travaillé. */
   const seed = Object.assign(
-    revision([{date:'2026-11-14', m:{'Anatomía I': 720}}, {date:'2026-11-13', m:{'Bioquímica': 30}}]),
-    {'batcave-examens': {'Anatomía I':'2026-12-14', 'Bioquímica':'2026-12-16'}});
-  const {ctx, page, fr} = await ouvrir(seed, '2026-11-16T09:40:00+01:00');
+    revision([{date:'2026-11-21', m:{'Anatomía I': 720}}, {date:'2026-11-20', m:{'Bioquímica': 30}}]),
+    {'batcave-examens': {'Anatomía I':'2026-12-21', 'Bioquímica':'2026-12-23'}});
+  const {ctx, page, fr} = await ouvrir(seed, '2026-11-23T09:40:00+01:00');
   const p = await proposition(fr, page);
   ok(p.ouvert, 'la fenêtre « Quelle matière ? » s’ouvre');
   ok(p.choisi !== 'Anatomía I', 'ce n’est plus la matière du dernier jour travaillé qui est proposée (' + p.choisi + ')');
@@ -62,19 +63,19 @@ console.log('\n== 1) Hors partiels : la matière la plus délaissée, et le moti
 }
 {
   /* à heures égales, c'est l'examen le plus proche qui passe devant */
-  const seed = Object.assign(revision([]), {'batcave-examens': {'Bioquímica':'2026-12-16', 'Histología':'2026-11-23'}});
-  const {ctx, page, fr} = await ouvrir(seed, '2026-11-16T09:40:00+01:00');
+  const seed = Object.assign(revision([]), {'batcave-examens': {'Bioquímica':'2026-12-23', 'Histología':'2026-11-30'}});
+  const {ctx, page, fr} = await ouvrir(seed, '2026-11-23T09:40:00+01:00');
   const p = await proposition(fr, page);
   ok(p.choisi === 'Histología', 'aucune heure faite : l’examen dans une semaine passe devant celui du mois prochain (' + p.choisi + ')');
-  ok(/examen le 23 nov\., J-7/.test(p.msg), 'et le motif donne la date et le J- : « ' + (p.msg.match(/Proposé :[^.]*\./) || [''])[0] + ' »');
+  ok(/examen le 30 nov\., J-7/.test(p.msg), 'et le motif donne la date et le J- : « ' + (p.msg.match(/Proposé :[^.]*\./) || [''])[0] + ' »');
   await ctx.close();
 }
 {
   /* une matière sans examen daté n'est pas écartée : elle revient quand on la délaisse */
   const seed = Object.assign(
-    revision([{date:'2026-11-14', m:{'Bioquímica': 600}}]),
-    {'batcave-examens': {'Bioquímica':'2026-12-16'}});
-  const {ctx, page, fr} = await ouvrir(seed, '2026-11-16T09:40:00+01:00');
+    revision([{date:'2026-11-21', m:{'Bioquímica': 600}}]),
+    {'batcave-examens': {'Bioquímica':'2026-12-23'}});
+  const {ctx, page, fr} = await ouvrir(seed, '2026-11-23T09:40:00+01:00');
   const p = await proposition(fr, page);
   ok(p.choisi !== 'Bioquímica', 'la seule matière datée est aussi la plus travaillée : une autre est proposée (' + p.choisi + ')');
   ok(/pas d’examen daté/.test(p.msg), 'et le motif ne prétend pas connaître une date : « ' + (p.msg.match(/Proposé :[^.]*\./) || [''])[0] + ' »');
@@ -89,9 +90,11 @@ console.log('\n== 2) La boucle poids marche avec UNE pesée par lundi ==');
    lundi compte est le 26. */
 /* 12 octobre : jour 1 au mardi 13, stabilisation jusqu'au 3 novembre -- le premier lundi compte
    est le 9 novembre ; tout glisse de deux semaines. */
-const L = lundis('2026-11-30', 8);              /* 8 lundis, du 30 nov. au 18 janv. (11 novembre : jour 1 au jeudi 12, stabilisation jusqu'au 3 decembre -- le premier lundi reste avant) */
+/* 18 novembre : jour 1 au jeudi 19, stabilisation jusqu'au 9 decembre -- tout glisse d'une semaine : 8 lundis du 7 dec. au
+   25 janv., le premier reste avant */
+const L = lundis('2026-12-07', 8);              /* 8 lundis, du 30 nov. au 18 janv. (11 novembre : jour 1 au jeudi 12, stabilisation jusqu'au 3 decembre -- le premier lundi reste avant) */
 {
-  const {ctx, page, fr} = await ouvrir(pesees(L.map(iso => [iso, 64.0])), '2027-01-18T09:40:00+01:00');
+  const {ctx, page, fr} = await ouvrir(pesees(L.map(iso => [iso, 64.0])), '2027-01-25T09:40:00+01:00');
   await fr.evaluate(() => document.querySelector('.nav-btn[data-page="repas"]').click());
   await page.waitForTimeout(500);
   const k = await fr.evaluate(() => ({note: document.getElementById('kcal-note').innerText,
@@ -102,7 +105,7 @@ const L = lundis('2026-11-30', 8);              /* 8 lundis, du 30 nov. au 18 ja
 }
 {
   /* +0,23 kg par semaine, exactement le rythme visé */
-  const {ctx, page, fr} = await ouvrir(pesees(L.map((iso, i) => [iso, Number((64.0 + 0.23*i).toFixed(2))])), '2027-01-11T09:40:00+01:00');
+  const {ctx, page, fr} = await ouvrir(pesees(L.map((iso, i) => [iso, Number((64.0 + 0.23*i).toFixed(2))])), '2027-01-18T09:40:00+01:00');
   await fr.evaluate(() => document.querySelector('.nav-btn[data-page="repas"]').click());
   await page.waitForTimeout(500);
   const k = await fr.evaluate(() => ({note: document.getElementById('kcal-note').innerText,
@@ -113,7 +116,7 @@ const L = lundis('2026-11-30', 8);              /* 8 lundis, du 30 nov. au 18 ja
 }
 {
   /* +0,6 kg par semaine : trop vite */
-  const {ctx, page, fr} = await ouvrir(pesees(L.map((iso, i) => [iso, Number((64.0 + 0.6*i).toFixed(2))])), '2027-01-11T09:40:00+01:00');
+  const {ctx, page, fr} = await ouvrir(pesees(L.map((iso, i) => [iso, Number((64.0 + 0.6*i).toFixed(2))])), '2027-01-18T09:40:00+01:00');
   await fr.evaluate(() => document.querySelector('.nav-btn[data-page="repas"]').click());
   await page.waitForTimeout(500);
   const note = await fr.evaluate(() => document.getElementById('kcal-note').innerText);
@@ -122,7 +125,7 @@ const L = lundis('2026-11-30', 8);              /* 8 lundis, du 30 nov. au 18 ja
 }
 {
   /* trois lundis seulement : pas de pente, et le message dit quoi faire */
-  const {ctx, page, fr} = await ouvrir(pesees(lundis('2026-12-07', 3).map(iso => [iso, 64.0])), '2027-01-04T09:40:00+01:00');
+  const {ctx, page, fr} = await ouvrir(pesees(lundis('2026-12-14', 3).map(iso => [iso, 64.0])), '2027-01-04T09:40:00+01:00');
   await fr.evaluate(() => document.querySelector('.nav-btn[data-page="repas"]').click());
   await page.waitForTimeout(500);
   const k = await fr.evaluate(() => ({note: document.getElementById('kcal-note').innerText,

@@ -6,7 +6,8 @@ import fs from 'fs';
 const out = process.argv[2];
 const debut = process.argv[3] || '2026-11-16';
 const n = Number(process.argv[4] || 7);
-const horloge = process.argv[5] || (debut === '2026-11-16' ? '2026-11-15T12:00:00+01:00' : null);
+/* 18 novembre : le jour 1 au jeudi 19 -- la semaine du 16 se lit le mercredi 18 a midi, la veille du jour 1 */
+const horloge = process.argv[5] || (debut === '2026-11-16' ? '2026-11-18T12:00:00+01:00' : null);
 const b = await chromium.launch();
 const ctx = await b.newContext({viewport:{width:1200, height:900}, timezoneId:'Europe/Madrid', locale:'fr-FR'});
 await ctx.addInitScript(() => { window.claude = undefined; });

@@ -31,8 +31,10 @@ async function ouvrir(quand, extra){
 /* 7 novembre : la montee en charge part de la premiere seance FAITE -- un journal du lundi 2
    en fait la premiere seance, et le lundi 16 tombe 14 jours plus tard : volume complet.
    11 novembre : la muscu part du lundi 16 (MUSCU_DEBUT) et un journal d'avant ne compte pas --
-   le journal passe au lundi 16, et le lundi 30 tombe 14 jours plus tard. */
-const log = (exo, type, series, charge) => ({id: 'l-' + exo, date: '2026-11-16', type, exo, series, charge, unite: 'reps'});
+   le journal passe au lundi 16, et le lundi 30 tombe 14 jours plus tard.
+   18 novembre : la muscu part du jeudi 19 -- le journal passe au jeudi 19, et le jeudi 3 decembre
+   tombe 14 jours plus tard. */
+const log = (exo, type, series, charge) => ({id: 'l-' + exo, date: '2026-11-19', type, exo, series, charge, unite: 'reps'});
 
 console.log('\n== 261) Le cran de charge suit l\'exercice ==');
 {
@@ -48,7 +50,7 @@ console.log('\n== 261) Le cran de charge suit l\'exercice ==');
     log('Développé incliné haltères', 'Haut volume', [12,12,12], 16),
     log('Dips', 'Haut lourd', [11,10,9], 5)
   ]};
-  const { ctx, fr } = await ouvrir('2026-11-30T09:00:00+01:00', LOG);   /* volume complet des le lundi 30 (11 novembre : premiere seance le lundi 16) */
+  const { ctx, fr } = await ouvrir('2026-12-03T09:00:00+01:00', LOG);   /* volume complet des le jeudi 3 decembre (18 novembre : premiere seance le jeudi 19) */
   const c = await fr.evaluate(() => {
     const ex = {}; window.__bcSessionsSport().forEach(s => s.exercises.forEach(e => { if(!ex[e.name]) ex[e.name] = e; }));
     const r = {}; ['Flexion du cou','Extension du cou','Tractions','Élévations latérales','Relevés de jambes suspendus','Squat barre','Développé incliné haltères','Dips'].forEach(n => { const x = window.__bcCibleProchaine(ex[n]); r[n] = {charge: x.charge, monter: x.monter, series: x.series}; });
@@ -142,23 +144,29 @@ console.log('\n== 263) Le samedi du régime combat : lever 05:30, bras et épaul
 
 console.log('\n== 264) « Phase Español » ne veut dire que la phase Español ==');
 {
-  const NOEL = {'batcave-vacances': [{debut:'2026-12-21', fin:'2027-01-06', label:'Noël'}]};
+  /* 18 novembre : les vacances du test partent du mercredi 23 decembre, comme les vraies (les jours
+     sans cours de Noel commencent le 23). */
+  const NOEL = {'batcave-vacances': [{debut:'2026-12-23', fin:'2027-01-06', label:'Noël'}]};
   /* 7 novembre : le mois d'espagnol court du 9 novembre au 8 decembre -- des partiels « hors phase »
-     se lisent donc apres le 8 decembre (Bioquimica le 16). */
-  const EX = Object.assign({'batcave-examens': {'Anatomía I':'2026-10-16', 'Bioquímica':'2026-12-16'}}, NOEL);
+     se lisent donc apres le 8 decembre (Bioquimica le 16).
+     18 novembre : le mois court du 19 novembre au 18 decembre -- Bioquimica passe au mardi 22,
+     ses partiels vont du 15 au 22 : dans la phase jusqu'au 18, hors phase le lundi 21. */
+  const EX = Object.assign({'batcave-examens': {'Anatomía I':'2026-10-16', 'Bioquímica':'2026-12-22'}}, NOEL);
   const { ctx, fr } = await ouvrir('2026-10-02T09:00:00+02:00', EX);
   const r = await fr.evaluate(() => ({
     oct2: (window.__bcPhaseEspanol('2026-10-02') || {}).id || null,
     oct13: window.__bcPhaseEspanol('2026-10-13'), oct13p: (window.__bcPeriode('2026-10-13') || {}).id,
-    nov16: (window.__bcPhaseEspanol('2026-11-16') || {}).id || null,
-    dec14: window.__bcPhaseEspanol('2026-12-14'), dec14p: (window.__bcPeriode('2026-12-14') || {}).id,
+    nov19: (window.__bcPhaseEspanol('2026-11-19') || {}).id || null,
+    dec16: window.__bcPhaseEspanol('2026-12-16'), dec16p: (window.__bcPeriode('2026-12-16') || {}).id,
+    dec21: window.__bcPhaseEspanol('2026-12-21'), dec21p: (window.__bcPeriode('2026-12-21') || {}).id,
     dec28: window.__bcPhaseEspanol('2026-12-28'), dec28p: (window.__bcPeriode('2026-12-28') || {}).id,
     juil: window.__bcPhaseEspanol('2027-07-10'), juilp: (window.__bcPeriode('2027-07-10') || {}).id
   }));
   ok(r.oct2 === 'es-1', 'le 2 octobre : phase Español');
   ok(r.oct13p === 'partiels' && r.oct13 && r.oct13.sous === 'es-1', 'le 13 octobre, partiels dans la phase : la phase est toujours vue dessous');
-  ok(r.nov16 === 'es-1-reprise', 'le 16 novembre : le mois d\'espagnol repris (' + r.nov16 + ')');
-  ok(r.dec14p === 'partiels' && r.dec14 === null, 'le 14 décembre, partiels hors phase : pas de phase Español');
+  ok(r.nov19 === 'es-1-reprise', 'le 19 novembre : le mois d\'espagnol repris (' + r.nov19 + ')');
+  ok(r.dec16p === 'partiels' && r.dec16 && r.dec16.sous === 'es-1-reprise', 'le 16 décembre, partiels dans le mois repris : la phase est toujours vue dessous');
+  ok(r.dec21p === 'partiels' && r.dec21 === null, 'le 21 décembre, partiels hors phase : pas de phase Español');
   ok(r.dec28p === 'vacances' && r.dec28 === null, 'le 28 décembre, vacances : pas de phase Español (' + r.dec28p + ')');
   ok(r.juilp === 'ete' && r.juil === null, 'en juillet, l\'été : pas de phase Español');
   await ctx.close();

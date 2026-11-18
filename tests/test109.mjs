@@ -51,9 +51,10 @@ console.log('\n== 401) Santé de la Batcave : six contrôles, un relevé qui ne 
      11 novembre : jour 1 au jeudi 12 -- clôture du samedi 7, cinq jours avant.
      12 novembre : jour 1 au vendredi 13 -- clôture du dimanche 8, cinq jours avant.
      13 novembre : jour 1 au samedi 14 -- clôture du lundi 9, cinq jours avant.
-     15 novembre : jour 1 au lundi 16 -- clôture du mercredi 11, cinq jours avant. */
-  const seed = {'batcave-journal-2026-11-11': {sommeil:'7', cloture:'21:20'}};
-  const { ctx, page, fr } = await ouvrir('2026-11-16T10:00:00+01:00', seed);
+     15 novembre : jour 1 au lundi 16 -- clôture du mercredi 11, cinq jours avant.
+     18 novembre : jour 1 au jeudi 19 -- clôture du samedi 14, cinq jours avant. */
+  const seed = {'batcave-journal-2026-11-14': {sommeil:'7', cloture:'21:20'}};
+  const { ctx, page, fr } = await ouvrir('2026-11-19T10:00:00+01:00', seed);
   const r = await fr.evaluate(() => ({ vide: window.__bcAppVide(), sante: window.__bcSante().filter(c => !c.ok).map(c => c.id), releve: document.getElementById('bc-sante').hidden, txt: document.querySelector('#bc-sante .v').textContent }));
   ok(r.vide === false, 'une clôture suffit : l\'appli n\'est plus neuve');
   ok(r.sante.join(',') === 'sauvegarde,exercice,cloture', 'trois défauts : aucune sauvegarde, aucun exercice, clôture vieille de 5 jours (' + r.sante.join(', ') + ')');
@@ -80,14 +81,15 @@ console.log('\n== 402) Le plan de secours en texte ==');
      6 octobre : le JJB est repousse au 26 -- on lit celle du 26.
      21 octobre : le JJB commence le mercredi 28 -- on lit celle du 2 novembre, la premiere aux
      trois matins de combat.
-     11 novembre : jour 1 au jeudi 12 -- on lit la semaine du 16, la premiere complete. */
-  const { ctx, fr } = await ouvrir('2026-11-15T20:00:00+01:00');
-  const t = await fr.evaluate(() => window.__bcPlanTexte('2026-11-16'));
-  ok(/^LA BATCAVE — plan de la semaine du 16 nov\. au 22 nov\./.test(t), 'en-tête : ' + t.split('\n')[0]);
+     11 novembre : jour 1 au jeudi 12 -- on lit la semaine du 16, la premiere complete.
+     18 novembre : jour 1 au jeudi 19 -- on lit la semaine du 23, la premiere complete. */
+  const { ctx, fr } = await ouvrir('2026-11-22T20:00:00+01:00');
+  const t = await fr.evaluate(() => window.__bcPlanTexte('2026-11-23'));
+  ok(/^LA BATCAVE — plan de la semaine du 23 nov\. au 29 nov\./.test(t), 'en-tête : ' + t.split('\n')[0]);
   /* 30 octobre : la salle ouvre a 07:00 -- Anki 1 au reveil, le trajet, la seance a 07:00. */
-  ok(/LUNDI 16 nov\. — combat\n  05:30  Anki 1\n  06:40  Trajet salle\n  07:00  Sport\n/.test(t) && /  10:30  🥋 JJB\n/.test(t), 'lundi : la grille combat, ligne par ligne');
-  ok(/MARDI 17 nov\.\n[\s\S]*  18:00  Dîner[\s\S]*  21:35  Coucher/.test(t) && !/Piscine/.test(t) && !/MARDI 17 nov\. — combat/.test(t) && !/Muay Thai/.test(t), 'mardi : plus de Muay Thai ni de piscine (30 octobre), dîner 18:00, coucher 21:35 comme les autres jours');
-  ok(/DIMANCHE 22 nov\.\n/.test(t) && !/DIMANCHE 22 nov\. — combat/.test(t), 'dimanche : pas de combat');
+  ok(/LUNDI 23 nov\. — combat\n  05:30  Anki 1\n  06:40  Trajet salle\n  07:00  Sport\n/.test(t) && /  10:30  🥋 JJB\n/.test(t), 'lundi : la grille combat, ligne par ligne');
+  ok(/MARDI 24 nov\.\n[\s\S]*  18:00  Dîner[\s\S]*  21:35  Coucher/.test(t) && !/Piscine/.test(t) && !/MARDI 24 nov\. — combat/.test(t) && !/Muay Thai/.test(t), 'mardi : plus de Muay Thai ni de piscine (30 octobre), dîner 18:00, coucher 21:35 comme les autres jours');
+  ok(/DIMANCHE 29 nov\.\n/.test(t) && !/DIMANCHE 29 nov\. — combat/.test(t), 'dimanche : pas de combat');
   const t0 = await fr.evaluate(() => window.__bcPlanTexte('2026-09-28'));
   ok(!/MARDI 29 sept\. — combat/.test(t0) && !/Muay Thai/.test(t0.split('MERCREDI')[0].split('MARDI')[1] || ''), 'la semaine du 28 septembre, sans combat depuis le 30 au soir : pas de Muay Thai le mardi 29');
   ok(/LES 5 QUI COMPTENT\n  Sommeil : /.test(t) && /\n  Argent : /.test(t), 'les cinq qui comptent, avec leur chiffre du jour');
@@ -160,10 +162,10 @@ console.log('\n== 403) Les bornes de saisie et l\'annulation d\'un geste ==');
 console.log('\n== 404) Le rappel de clôture part dans l\'agenda, et disparaît une fois la journée close ==');
 {
   /* le lundi 28 est passé avant le jour 1 : on lit le lundi 5 et le mardi 6 */
-  const { ctx, fr } = await ouvrir('2026-11-16T10:00:00+01:00');   /* 11 novembre : le lundi 16 et le mardi 17 (jour 1 au jeudi 12) ; 31 octobre : le lundi 2 et le mardi 3 (jour 1 au dimanche 1er) ; 12 octobre : un lundi et un mardi du programme (jour 1 au mardi 13) ; 19 octobre : le 26 et le 27 (jour 1 au mardi 20) */
+  const { ctx, fr } = await ouvrir('2026-11-23T10:00:00+01:00');   /* 18 novembre : le lundi 23 et le mardi 24 (jour 1 au jeudi 19) ; 11 novembre : le lundi 16 et le mardi 17 (jour 1 au jeudi 12) ; 31 octobre : le lundi 2 et le mardi 3 (jour 1 au dimanche 1er) ; 12 octobre : un lundi et un mardi du programme (jour 1 au mardi 13) ; 19 octobre : le 26 et le 27 (jour 1 au mardi 20) */
   const r = await fr.evaluate(() => ({
-    lun: window.__bcRappels('2026-11-16').filter(b => b.cle === 'cloture')[0],
-    mar: window.__bcRappels('2026-11-17').filter(b => b.cle === 'cloture')[0],
+    lun: window.__bcRappels('2026-11-23').filter(b => b.cle === 'cloture')[0],
+    mar: window.__bcRappels('2026-11-24').filter(b => b.cle === 'cloture')[0],
     avant: window.__bcRappels('2026-09-20').filter(b => b.cle === 'cloture').length,
     ete: window.__bcRappels('2027-07-05').filter(b => b.cle === 'cloture').length
   }));

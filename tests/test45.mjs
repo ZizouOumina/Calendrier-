@@ -32,6 +32,9 @@ const bloc = (date, type, min, hhmm) => { const d = new Date(date+'T'+hhmm+':00+
    devient « Anki matinal ») -- la semaine sans phase est donc celle du mercredi 9.
    11 novembre : il court desormais jusqu'au vendredi 11 decembre -- le mercredi 9 est encore dedans ;
    la semaine sans phase est celle du mercredi 16. */
+/* 18 novembre : le mois d'espagnol va du jeudi 19 novembre au vendredi 18 decembre -- le mercredi 16 est dedans, et plus
+   aucun mercredi de cours du premier semestre n'est hors phase (les vacances, puis les partiels). Le 16 garde donc sa
+   place, avec son « Anki matinal » de 05:30 : trois blocs de revision echus a midi. */
 const MERCREDI_MIDI = '2026-12-16T12:00:00+01:00';
 
 console.log('\n== 108) Deux blocs de révision échus sans session : signalés, avec le déficit ==');
@@ -39,7 +42,7 @@ console.log('\n== 108) Deux blocs de révision échus sans session : signalés, 
   const { ctx, page, fr } = await ouvrir(MERCREDI_MIDI);
   const t = await texte(fr, '#dash-plan');
   /* Regime combat (28 septembre) : le mercredi n'a plus qu'Anki 1 puis Étudier en avance 08:20 → 10:05 avant le JJB. */
-  ok(/Bloc manqué — 2 h 26 de révision non faites \(Anki 1 07:20, Étudier en avance 08:20\)/.test(t), 'texte : « 2 h 26 de révision non faites » — ' + ((t.match(/Bloc manqué[^\n]*/) || [''])[0]));
+  ok(/Bloc manqué — 3 h 16 de révision non faites \(Anki matinal 05:30, Anki 1 07:20, Étudier en avance 08:20\)/.test(t), 'texte : « 3 h 16 de révision non faites » (le mercredi du mois d\'espagnol a son Anki matinal) — ' + ((t.match(/Bloc manqué[^\n]*/) || [''])[0]));
   ok(!/créneau libre/.test(t), 'mercredi : aucun créneau libre ≥ 45 min ne reste → pas de suggestion');
   ok(await fr.evaluate(() => !document.querySelector('[data-plan-manque-lancer]')), 'pas de bouton « Maintenant » sans créneau');
   ok(await fr.evaluate(() => !!document.querySelector('[data-plan-manque-demain]')), 'bouton « Demain » présent');
@@ -103,7 +106,7 @@ console.log('\n== 110) Pas de fausse alerte ==');
   const s = [bloc('2026-12-16','cours',90,'07:20')];   /* 1 h 30 sur Anki 1 + 2 : couverts ; le deficit restant tombe sur Étudier en avance */
   const { ctx, fr } = await ouvrir(MERCREDI_MIDI, {'batcave-sessions': s});
   const t = await texte(fr, '#dash-plan');
-  ok(/de révision non faites \(Étudier en avance 08:20\)/.test(t) && !/Anki 1/.test(t), 'Anki 1 couvert ; seul Étudier en avance est nommé — ' + ((t.match(/Bloc manqué[^\n]*/) || [''])[0]));
+  ok(/de révision non faites \(Anki matinal 05:30, Étudier en avance 08:20\)/.test(t) && !/Anki 1/.test(t), 'Anki 1 couvert ; il n\'est plus nommé (restent Anki matinal et Étudier en avance) — ' + ((t.match(/Bloc manqué[^\n]*/) || [''])[0]));
   await ctx.close();
 }
 

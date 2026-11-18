@@ -24,16 +24,16 @@ const plan = fr => fr.evaluate(() => document.getElementById('dash-plan').innerT
 
 /* tard dans la soirée, aucune révision saisie → l'alerte de rythme se déclenche à coup sûr */
 {
-  /* et la veille du jour 1, rien : la journée n'est pas dans le programme */
-  const { ctx, fr } = await ouvrir('2026-11-15T20:00:00+01:00');
+  /* et la veille du jour 1, rien : la journée n'est pas dans le programme (18 novembre : le jour 1 au jeudi 19, la veille est le mercredi 18) */
+  const { ctx, fr } = await ouvrir('2026-11-18T20:00:00+01:00');
   const t = await plan(fr);
-  ok(!/Hors rythme/.test(t) && !/Révision — /.test(t), 'dimanche 15, veille du jour 1 : ni « Révision — … » ni « Hors rythme »');
+  ok(!/Hors rythme/.test(t) && !/Révision — /.test(t), 'mercredi 18, veille du jour 1 : ni « Révision — … » ni « Hors rythme »');
   await ctx.close();
 }
 /* 15 novembre : avant le jour 1 (lundi 16), le plan ne reproche plus rien -- les jours se lisent donc dans le programme,
    ou le coucher est a 21:35 tous les soirs, le week-end compris. */
 const JOURS = [
-  ['mercredi',  '2026-11-18T20:00:00+01:00', '21:35'],
+  ['mercredi',  '2026-11-25T20:00:00+01:00', '21:35'],   /* 18 novembre : le mercredi 18 est la veille du jour 1 -- le 25 */
   ['vendredi',  '2026-11-20T19:00:00+01:00', '21:35'],
   ['samedi',    '2026-11-21T20:00:00+01:00', '21:35'],
   ['dimanche',  '2026-11-22T19:00:00+01:00', '21:35']

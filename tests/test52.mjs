@@ -77,7 +77,8 @@ const appels = (fr, tool) => fr.evaluate(t => window.__appels.filter(a => a.tool
    jusqu'au 26), meme phase Español. */
 /* 14 octobre, le jour 1 passe au jeudi 15 : le mardi 13 se retrouve avant le programme. Le mardi
    de reference devient le 20 -- meme grille (regime combat, sans JJB jusqu'au 26), meme phase. */
-const MARDI = '2026-11-17T06:30:00+01:00';   /* 31 octobre : jour 1 au dimanche 1er novembre -- le premier mardi du programme */
+/* 18 novembre : jour 1 au jeudi 19 -- le mardi 17 est avant le programme ; le premier mardi du programme est le 24 */
+const MARDI = '2026-11-24T06:30:00+01:00';
 
 console.log('\n== 170) Désactivé par défaut, panneau visible avec le connecteur ==');
 {
@@ -143,30 +144,32 @@ console.log('\n== 171) Activer : un événement par bloc, aujourd\'hui (restants
      + 25 (23-25 dec.) + 26 (28 dec., muscu) + 25 + 25 + 25 + 25 (29 dec.-1er janv.) + 26 (4 janv.) + 25
      + 25 = 348. Quatorze journees poussees. */
   /* 11 novembre : jour 1 au jeudi 12, la muscu le lundi 16 -- le mardi de reference passe au 17 ; la fenetre de 75 jours
-     va jusqu'au 31 janvier et contient, en plus des douze jours sans cours, ceux du 20 au 24 janvier : 23 (mardi 17) + 23
-     (mercredi 18) + 25 (8 dec.) + 25 x 3 (23-25 dec.) + 26 (28 dec.) + 25 x 4 + 26 (4 janv.) + 25 + 25 + 25 x 3 (20-22
+     va jusqu'au 31 janvier et contient, en plus des douze jours sans cours, ceux du 20 au 24 janvier : 23 (mardi 24) + 23
+     (mercredi 25) + 25 (8 dec.) + 25 x 3 (23-25 dec.) + 26 (28 dec.) + 25 x 4 + 26 (4 janv.) + 25 + 25 + 25 x 3 (20-22
      janv.) + 22 + 22 (23-24 janv.) = 467. Dix-neuf journees poussees.
      15 novembre : les taches du jour sonnaient dans l'agenda (quatre de plus, 471). 16 novembre, sa decision : « pas
      besoin de plein de notifs, tant que ce que je dois faire s'affiche precisement dans ma journee dans la batcave » --
-     plus aucune : 467. */
-  ok(crees.length === 467, '467 événements créés : mardi 17 et mercredi 18, plus le 8 décembre, les jours de semaine des vacances de Noël et les jours sans cours de fin janvier, et la clôture de chaque soir (' + crees.length + ')');
+     plus aucune : 467.
+     18 novembre : jour 1 au jeudi 19, le mardi de reference passe au 24 -- la fenetre de 75 jours va jusqu'au 7 fevrier, et
+     contient les memes dix-neuf journees (aucun jour sans cours entre le 31 janvier et le 7 fevrier) : 467. */
+  ok(crees.length === 467, '467 événements créés : mardi 24 et mercredi 25, plus le 8 décembre, les jours de semaine des vacances de Noël et les jours sans cours de fin janvier, et la clôture de chaque soir (' + crees.length + ')');
   const cloches = crees.filter(c => /🔔/.test(c.input.summary)).map(c => c.input.startTime.slice(0, 16) + ' ' + c.input.summary);
   ok(cloches.length === 0, 'aucune notification de tâche : les tâches du jour vivent dans « Ma journée » (' + (cloches.join(' | ') || 'aucune') + ')');
   /* Anki 1 (05:30) a commence a 06:30 : il n'est pas envoye. Anki 2, a 09:00, l'est. */
-  const rev1 = crees.find(c => c.input.summary === '🦇 Anki 2' && c.input.startTime.startsWith('2026-11-17'));
-  ok(!!rev1 && rev1.input.startTime === '2026-11-17T09:00:00+01:00' && rev1.input.endTime === '2026-11-17T10:00:00+01:00', 'Anki 2 : 09:00 → 10:00 heure de Madrid (' + (rev1 && rev1.input.startTime) + ')');
+  const rev1 = crees.find(c => c.input.summary === '🦇 Anki 2' && c.input.startTime.startsWith('2026-11-24'));
+  ok(!!rev1 && rev1.input.startTime === '2026-11-24T09:00:00+01:00' && rev1.input.endTime === '2026-11-24T10:00:00+01:00', 'Anki 2 : 09:00 → 10:00 heure de Madrid (' + (rev1 && rev1.input.startTime) + ')');
   /* 17 novembre, « fais la 2 » : seuls les départs, la clôture et le coucher sonnent ; un bloc d'étude est dans l'agenda sans notification */
   ok(!!rev1 && rev1.input.useDefaultReminders === false && !rev1.input.overrideReminders && rev1.input.timeZone === 'Europe/Madrid' && rev1.input.calendarId === 'zizou.oumina@gmail.com', 'Anki 2 posé sans notification (aucun rappel, pas ceux de l\'agenda par défaut), fuseau et agenda précisés');
-  const mardi = crees.filter(c => c.input.startTime.startsWith('2026-11-17'));
+  const mardi = crees.filter(c => c.input.startTime.startsWith('2026-11-24'));
   const sonnent = mardi.filter(c => c.input.overrideReminders).map(c => c.input.summary.replace('🦇 ', '') + ' ' + c.input.overrideReminders[0].minutes);
   ok(sonnent.join(' | ') === 'Trajet salle 5 | Trajet cours 5 | Clôture du jour 0 | Coucher 30' || sonnent.slice().sort().join(' | ') === ['Trajet salle 5', 'Trajet cours 5', 'Clôture du jour 0', 'Coucher 30'].sort().join(' | '),
-     'mardi 17, ne sonnent que : ' + sonnent.join(' | '));
+     'mardi 24, ne sonnent que : ' + sonnent.join(' | '));
   ok(mardi.filter(c => !c.input.overrideReminders).every(c => c.input.useDefaultReminders === false), 'tous les autres blocs du mardi sont posés sans aucun rappel (' + mardi.filter(c => !c.input.overrideReminders).length + ')');
-  const coucher = crees.find(c => /Coucher/.test(c.input.summary) && c.input.startTime.startsWith('2026-11-17'));
-  ok(!!coucher && coucher.input.summary === '🦇 Coucher' && coucher.input.startTime === '2026-11-17T21:35:00+01:00' && coucher.input.overrideReminders[0].minutes === 30 && coucher.input.availability === 'AVAILABILITY_FREE' && /Écran off/.test(coucher.input.description), 'Coucher 21:35 (même titre que ton agenda), rappel 30 min, écran off en description, n\'occupe pas l\'agenda');
+  const coucher = crees.find(c => /Coucher/.test(c.input.summary) && c.input.startTime.startsWith('2026-11-24'));
+  ok(!!coucher && coucher.input.summary === '🦇 Coucher' && coucher.input.startTime === '2026-11-24T21:35:00+01:00' && coucher.input.overrideReminders[0].minutes === 30 && coucher.input.availability === 'AVAILABILITY_FREE' && /Écran off/.test(coucher.input.description), 'Coucher 21:35 (même titre que ton agenda), rappel 30 min, écran off en description, n\'occupe pas l\'agenda');
   const ankiDemain = crees.find(c => /Anki matinal/.test(c.input.summary));
-  ok(!!ankiDemain && ankiDemain.input.startTime === '2026-11-18T05:30:00+01:00' && ankiDemain.input.endTime === '2026-11-18T06:30:00+01:00', 'mercredi (jour off) : Anki matinal de demain 05:30 → 06:30');
-  const r8 = await local(fr, 'batcave-gcal-2026-11-17'), r9 = await local(fr, 'batcave-gcal-2026-11-18');
+  ok(!!ankiDemain && ankiDemain.input.startTime === '2026-11-25T05:30:00+01:00' && ankiDemain.input.endTime === '2026-11-25T06:30:00+01:00', 'mercredi (jour off) : Anki matinal de demain 05:30 → 06:30');
+  const r8 = await local(fr, 'batcave-gcal-2026-11-24'), r9 = await local(fr, 'batcave-gcal-2026-11-25');
   ok(r8 && Object.keys(r8).length === 23 && r9 && Object.keys(r9).length === 23 && Object.values(r8).every(x => x.id && x.empreinte && x.cree === true), 'relevés locaux : 23 + 23 blocs (la clôture comprise) avec id, empreinte et marque « créé par la Batcave »');
   const opt = await local(fr, 'batcave-gcal-ecriture');
   ok(opt && opt.actif === true && opt.bilan && opt.bilan.crees === 467 && opt.bilan.passes === 1, 'option active, bilan : 467 créés, 1 déjà commencé non envoyé');
@@ -180,11 +183,11 @@ console.log('\n== 171) Activer : un événement par bloc, aujourd\'hui (restants
   const det = await fr.evaluate(() => document.getElementById('gcal-detail').textContent);
   ok(/467 inchangés/.test(det), 'détail : ' + det.slice(0, 90));
   /* relevé local perdu (autre appareil) : les événements présents sont adoptés, pas doublés */
-  await fr.evaluate(() => localStorage.removeItem('batcave-gcal-2026-11-18'));
+  await fr.evaluate(() => localStorage.removeItem('batcave-gcal-2026-11-25'));
   await fr.evaluate(() => document.getElementById('gcal-pousser').click());
   await page.waitForTimeout(400);
   const crees3 = await appels(fr, 'create_event');
-  const r9b = await local(fr, 'batcave-gcal-2026-11-18');
+  const r9b = await local(fr, 'batcave-gcal-2026-11-25');
   ok(crees3.length === 467 && r9b && Object.keys(r9b).length === 23 && Object.values(r9b).every(x => x.cree === false), 'sans relevé local, les 23 événements de demain sont reconnus et adoptés (marqués « pas créés par la Batcave »), aucun doublon');
   const opt2 = await local(fr, 'batcave-gcal-ecriture');
   ok(opt2.bilan.adoptes === 23, 'bilan : 23 adoptés (la clôture comprise)');
@@ -197,7 +200,7 @@ console.log('\n== 171) Activer : un événement par bloc, aujourd\'hui (restants
      21 (mardi 29) + 20 (9 oct.) + 19 (12 oct.) + 20 (8 dec.) = 80. Ceux du mercredi,
      adoptes au tour precedent donc marques « pas crees par la Batcave », restent. */
   ok(sup.length === 444, 'désactiver ne retire que ce que la Batcave a créé, sur TOUS les jours poussés (467 − les 23 adoptés du mercredi) — ' + sup.length);
-  const r8c = await local(fr, 'batcave-gcal-2026-11-17');
+  const r8c = await local(fr, 'batcave-gcal-2026-11-24');
   ok(r8c === null && (await local(fr, 'batcave-gcal-ecriture')).actif === false, 'relevés effacés, option éteinte');
   await ctx.close();
 }
@@ -205,14 +208,14 @@ console.log('\n== 171) Activer : un événement par bloc, aujourd\'hui (restants
 console.log('\n== 172) Option active au démarrage : envoi automatique ; bloc déplacé → mise à jour ==');
 {
   const { ctx, fr, page } = await ouvrir(MARDI, {'batcave-gcal-ecriture': {actif:true, depuis:'2026-09-14'},
-    'batcave-gcal-2026-11-17': {'p6': {id:'ancien1', empreinte:'2026-11-17T08:40:00+01:00|2026-11-17T09:40:00+01:00|🦇 Anki 2'}}});
+    'batcave-gcal-2026-11-24': {'p6': {id:'ancien1', empreinte:'2026-11-24T08:40:00+01:00|2026-11-24T09:40:00+01:00|🦇 Anki 2'}}});
   /* 12 novembre : l'événement du relevé doit EXISTER dans l'agenda -- un identifiant du relevé que l'agenda ne
      porte plus ne compte plus (supprimé à la main, ou doublon retiré), le bloc repart du titre. */
-  await fr.evaluate(() => window.__gcalEvents.push({id:'ancien1', summary:'🦇 Anki 2', description:'', start:{dateTime:'2026-11-17T08:40:00+01:00', timeZone:'Europe/Madrid'}, end:{dateTime:'2026-11-17T09:40:00+01:00', timeZone:'Europe/Madrid'}, status:'confirmed'}));
+  await fr.evaluate(() => window.__gcalEvents.push({id:'ancien1', summary:'🦇 Anki 2', description:'', start:{dateTime:'2026-11-24T08:40:00+01:00', timeZone:'Europe/Madrid'}, end:{dateTime:'2026-11-24T09:40:00+01:00', timeZone:'Europe/Madrid'}, status:'confirmed'}));
   await page.clock.runFor(7000);
   await page.waitForTimeout(600);
   const maj = await appels(fr, 'update_event');
-  ok(maj.length === 1 && maj[0].input.eventId === 'ancien1' && maj[0].input.startTime === '2026-11-17T09:00:00+01:00', 'le bloc dont l\'heure a changé est mis à jour, pas recréé');
+  ok(maj.length === 1 && maj[0].input.eventId === 'ancien1' && maj[0].input.startTime === '2026-11-24T09:00:00+01:00', 'le bloc dont l\'heure a changé est mis à jour, pas recréé');
   const crees = await appels(fr, 'create_event');
   ok(crees.length === 466, 'les 466 autres sont créés au démarrage (' + crees.length + ')');
   const st = await fr.evaluate(() => document.getElementById('gcal-statut').textContent);
@@ -225,9 +228,9 @@ console.log('\n== 172b) Ton agenda porte déjà le planning en événements réc
   const ctx = await browser.newContext({ viewport:{width:1440,height:900}, timezoneId:'Europe/Madrid', locale:'fr-FR' });
   await ctx.addInitScript(() => {
     window.__gcalEvents = [
-      {id:'rec1_20260908', recurringEventId:'rec1', summary:'🦇 Anki 2', start:{dateTime:'2026-11-17T09:00:00+01:00'}, end:{dateTime:'2026-11-17T10:00:00+01:00'}, status:'confirmed'},
-      {id:'rec2_20260908', recurringEventId:'rec2', summary:'🦇 Coucher', start:{dateTime:'2026-11-17T21:00:00+01:00'}, end:{dateTime:'2026-11-17T21:15:00+01:00'}, status:'confirmed'},
-      {id:'rec3_20260908', recurringEventId:'rec3', summary:'🦇 Déjeuner', start:{dateTime:'2026-11-17T12:35:00+01:00'}, end:{dateTime:'2026-11-17T12:55:00+01:00'}, status:'confirmed', description:'Réchauffage — repas préparés le dimanche.'}
+      {id:'rec1_20260908', recurringEventId:'rec1', summary:'🦇 Anki 2', start:{dateTime:'2026-11-24T09:00:00+01:00'}, end:{dateTime:'2026-11-24T10:00:00+01:00'}, status:'confirmed'},
+      {id:'rec2_20260908', recurringEventId:'rec2', summary:'🦇 Coucher', start:{dateTime:'2026-11-24T21:00:00+01:00'}, end:{dateTime:'2026-11-24T21:15:00+01:00'}, status:'confirmed'},
+      {id:'rec3_20260908', recurringEventId:'rec3', summary:'🦇 Déjeuner', start:{dateTime:'2026-11-24T12:35:00+01:00'}, end:{dateTime:'2026-11-24T12:55:00+01:00'}, status:'confirmed', description:'Réchauffage — repas préparés le dimanche.'}
     ];
   });
   await ctx.addInitScript(MOCK);
@@ -242,15 +245,15 @@ console.log('\n== 172b) Ton agenda porte déjà le planning en événements réc
   await fr.evaluate(() => document.getElementById('gcal-toggle').click());
   await page.waitForTimeout(600);
   const crees = await appels(fr, 'create_event'), maj = await appels(fr, 'update_event');
-  ok(!crees.some(c => c.input.summary === '🦇 Anki 2' && c.input.startTime.startsWith('2026-11-17')), 'Anki 2 de mardi, déjà là à la bonne heure : adopté, pas recréé');
-  ok(!crees.some(c => c.input.summary === '🦇 Coucher' && c.input.startTime.startsWith('2026-11-17')) && maj.some(m => m.input.eventId === 'rec2_20260908' && m.input.startTime === '2026-11-17T21:35:00+01:00'), 'Coucher déjà là à 21:00 : l\'instance est alignée sur le planning (21:35), pas doublée');
+  ok(!crees.some(c => c.input.summary === '🦇 Anki 2' && c.input.startTime.startsWith('2026-11-24')), 'Anki 2 de mardi, déjà là à la bonne heure : adopté, pas recréé');
+  ok(!crees.some(c => c.input.summary === '🦇 Coucher' && c.input.startTime.startsWith('2026-11-24')) && maj.some(m => m.input.eventId === 'rec2_20260908' && m.input.startTime === '2026-11-24T21:35:00+01:00'), 'Coucher déjà là à 21:00 : l\'instance est alignée sur le planning (21:35), pas doublée');
   ok(maj.some(m => m.input.eventId === 'rec1' && m.input.useDefaultReminders === false && !m.input.overrideReminders) && maj.some(m => m.input.eventId === 'rec2' && m.input.overrideReminders && m.input.overrideReminders[0].minutes === 30), 'les rappels sont posés sur la SÉRIE récurrente : aucun pour la révision, 30 min pour le coucher (17 novembre)');
   ok(!maj.some(m => m.input.eventId === 'rec1_20260908' && ('overrideReminders' in m.input || 'useDefaultReminders' in m.input)), 'Anki 2 : le rappel va à sa série, jamais à l\'occurrence (qui ne reçoit que la consigne du jour)');
   ok(crees.length === 464, '464 créations seulement (467 − 3 adoptés)');
   /* 31 octobre : la description d'une serie de septembre (« Réchauffage — repas préparés le dimanche. »)
      ne reste pas sur l'instance du jour : elle reprend la consigne du jour. */
   ok(maj.some(m => m.input.eventId === 'rec3_20260908' && /La boîte du jour : les pâtes/.test(m.input.description || '')), 'le déjeuner adopté reprend la consigne du jour (les pâtes, dès le 16), pas la description de septembre');
-  const r8 = await local(fr, 'batcave-gcal-2026-11-17');
+  const r8 = await local(fr, 'batcave-gcal-2026-11-24');
   ok(r8 && r8['p6'] && r8['p6'].id === 'rec1_20260908' && r8['p6'].cree === false, 'le relevé pointe sur l\'instance récurrente adoptée, marquée « pas créée par la Batcave »');
   /* désactiver : les 3 événements adoptés (les tiens) restent, seuls les 38 créés partent */
   await fr.evaluate(() => document.getElementById('gcal-toggle').click());

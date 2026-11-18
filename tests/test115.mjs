@@ -40,8 +40,9 @@ console.log('\n== 1) Les paliers du plan sommeil, matin et soir ==');
      31 octobre : rien n'avait commence -- le jour 1 passe au dimanche 1er novembre. Les paliers
      d'octobre restent ecrits (ils sont passes) ; le lever de 05:20 vaut des dimanche.
      10 et 11 novembre : le jour 1 passe au jeudi 12. 12 novembre, la viande jetee : au vendredi 13.
-     13 novembre, « on commence tout samedi » : au samedi 14. 15 novembre, « recale tout sur lundi » : au lundi 16. */
-  ok(debut === '2026-11-16', 'le jour 1 est le lundi 16 novembre (' + debut + ')');
+     13 novembre, « on commence tout samedi » : au samedi 14. 15 novembre, « recale tout sur lundi » : au lundi 16.
+     18 novembre, « on vas decaler le premier jour a demain, jeudi 19/11 » : au jeudi 19. */
+  ok(debut === '2026-11-19', 'le jour 1 est le jeudi 19 novembre (' + debut + ')');
   const mer = await grille(fr, '2026-10-21');
   ok(mer[0] === '07:15 ⏰ Lever' && mer.includes('07:20 Douche + préparation') && mer.includes('07:30 Petit-déjeuner + Coran (1 page)') && mer.includes('07:45 Anki 1'),
      'mercredi 21 : lever 07:15, douche, petit-déjeuner, et le premier bloc à 07:45 (' + mer.slice(0, 4).join(' · ') + ')');
@@ -67,18 +68,20 @@ console.log('\n== 1) Les paliers du plan sommeil, matin et soir ==');
   await ctx.close();
 }
 
-console.log('\n== 2) La muscu attend le lundi 16 novembre, la montée en charge part de là ==');
+console.log('\n== 2) La muscu attend le jeudi 19 novembre, la montée en charge part de là ==');
 {
   const { ctx, fr } = await ouvrir('2026-10-21T07:20:00+02:00');
   const r = await fr.evaluate(() => ({
     premier: window.__bcPremierJourSport(),
-    types: ['2026-11-12', '2026-11-15', '2026-11-16', '2026-11-17'].map(d => window.__bcTypeSport(d)),
-    f: ['2026-11-16', '2026-11-29', '2026-11-30'].map(d => window.__bcFacteurTours(d))
+    types: ['2026-11-16', '2026-11-17', '2026-11-18', '2026-11-19', '2026-11-21', '2026-11-23'].map(d => window.__bcTypeSport(d)),
+    f: ['2026-11-19', '2026-12-02', '2026-12-03'].map(d => window.__bcFacteurTours(d))
   }));
-  /* 11 novembre : jour 1 au jeudi 12, la salle attend le medecin jusqu'au dimanche 15 (MUSCU_DEBUT) */
-  ok(r.premier === '2026-11-16', 'la première séance est le lundi 16 novembre (' + r.premier + ')');
-  ok(r.types[0] === 'Off' && r.types[1] === 'Off' && r.types[2] === 'Haut volume' && r.types[3] === 'Bas complet', 'du jeudi 12 au dimanche 15 sans muscu, puis haut volume et bas complet : ' + r.types.join(' / '));
-  ok(r.f[0] === 0.5 && r.f[1] === 0.5 && r.f[2] === 1, 'tours × ½ du 16 au 29 novembre, complets le 30 (' + r.f.join(' / ') + ')');
+  /* 11 novembre : jour 1 au jeudi 12, la salle attend le medecin jusqu'au dimanche 15 (MUSCU_DEBUT).
+     18 novembre : la salle reprend avec le jour 1, le jeudi 19 (MUSCU_DEBUT) -- rien le lundi 16 ni le mardi 17. */
+  ok(r.premier === '2026-11-19', 'la première séance est le jeudi 19 novembre (' + r.premier + ')');
+  ok(r.types[0] === 'Off' && r.types[1] === 'Off' && r.types[2] === 'Off' && r.types[3] === 'Haut lourd' && r.types[4] === 'Bas · charnière' && r.types[5] === 'Haut volume',
+     'du lundi 16 au mercredi 18 sans muscu, puis haut lourd le jeudi 19, bas charnière le samedi 21, haut volume le lundi 23 : ' + r.types.join(' / '));
+  ok(r.f[0] === 0.5 && r.f[1] === 0.5 && r.f[2] === 1, 'tours × ½ du 19 novembre au 2 décembre, complets le 3 (' + r.f.join(' / ') + ')');
   await ctx.close();
 }
 
@@ -167,12 +170,13 @@ console.log('\n== 5) Le sport du 21 octobre : test 400 m, mobilité, mesures not
 
 console.log('\n== 6) Le 21 octobre au soir : shake de récup, pesée chaque dimanche, snus, peau, lumière, sac ==');
 {
-  /* 11 novembre : le premier lundi du programme est le 16 (jour 1 au jeudi 12) */
-  const { ctx, page, fr } = await ouvrir('2026-11-16T20:50:00+01:00');
+  /* 11 novembre : le premier lundi du programme est le 16 (jour 1 au jeudi 12).
+     18 novembre : jour 1 au jeudi 19 -- le premier lundi du programme est le 23. */
+  const { ctx, page, fr } = await ouvrir('2026-11-23T20:50:00+01:00');
   const r = await fr.evaluate(() => ({
-    recup: window.__bcCompoRepas('Récup combat', '2026-11-16', true).map(x => x.c + ' ' + x.q).join(', '),
-    kcal: window.__bcMacrosRepas({name:'Récup combat'}, '2026-11-16'),
-    lun: window.__bcMacrosJour('2026-11-16').kcal, mar: window.__bcMacrosJour('2026-11-17').kcal,
+    recup: window.__bcCompoRepas('Récup combat', '2026-11-23', true).map(x => x.c + ' ' + x.q).join(', '),
+    kcal: window.__bcMacrosRepas({name:'Récup combat'}, '2026-11-23'),
+    lun: window.__bcMacrosJour('2026-11-23').kcal, mar: window.__bcMacrosJour('2026-11-24').kcal,
     avoine: window.__bcBesoinSemaine.avoine,
     habits: JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-habits') || '[]'),
     snus: JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-addictions') || '{}').snus
@@ -199,8 +203,9 @@ console.log('\n== 6) Le 21 octobre au soir : shake de récup, pesée chaque dima
   await ctx.close();
 }
 {
-  /* Une Batcave d'avant : la pesee portait un cycle de deux semaines, le snus un depart ancien. */
-  const { ctx, page, fr } = await ouvrir('2026-11-17T20:50:00+01:00', {
+  /* Une Batcave d'avant : la pesee portait un cycle de deux semaines, le snus un depart ancien.
+     18 novembre : le mardi soir du programme est le 24 (le club du mercredi 25). */
+  const { ctx, page, fr } = await ouvrir('2026-11-24T20:50:00+01:00', {
     'batcave-habits': [{id:'core-pesee-dim', label:'Pesée, à jeun', icon:'⚖️', jours:[0], cycleSemaines:2, ancre:'2026-10-04'}],
     'batcave-addictions': {snus:{start:'2026-09-01', record:4, log:[]}}
   });
@@ -317,21 +322,23 @@ console.log('\n== 7) Le rattrapage serré : retiré le 15 novembre, le jour 1 pa
 
 console.log('\n== 8) Le 11 novembre au soir : la tenue de salle avec le kimono, les bandes les jours de sac ==');
 {
-  const { ctx, fr } = await ouvrir('2026-11-15T20:00:00+01:00');
+  /* 18 novembre : jour 1 au jeudi 19, le premier club le vendredi 20 -- lu la veille au soir. */
+  const { ctx, fr } = await ouvrir('2026-11-18T20:00:00+01:00');
   const c = await fr.evaluate(() => ({
-    lun16: window.__bcConsigne('Retour du club', 1, '2026-11-16', '12:00'),
-    mer18: window.__bcConsigne('Retour du club', 3, '2026-11-18', '12:00'),
     ven20: window.__bcConsigne('Retour du club', 5, '2026-11-20', '12:00'),
     lun23: window.__bcConsigne('Retour du club', 1, '2026-11-23', '12:00'),
-    sal16: window.__bcConsigne('Trajet salle', 1, '2026-11-16', '06:40'),
-    sal17: window.__bcConsigne('Trajet salle', 2, '2026-11-17', '06:40'),
-    sal21: window.__bcConsigne('Trajet salle', 6, '2026-11-21', '06:40')
+    mer25: window.__bcConsigne('Retour du club', 3, '2026-11-25', '12:00'),
+    ven27: window.__bcConsigne('Retour du club', 5, '2026-11-27', '12:00'),
+    sal19: window.__bcConsigne('Trajet salle', 4, '2026-11-19', '06:40'),
+    sal21: window.__bcConsigne('Trajet salle', 6, '2026-11-21', '06:40'),
+    sal23: window.__bcConsigne('Trajet salle', 1, '2026-11-23', '06:40'),
+    sal24: window.__bcConsigne('Trajet salle', 2, '2026-11-24', '06:40')
   }));
-  ok(/à l'envers, avec la tenue de salle de ce matin —/.test(c.lun16), 'lundi 16 : la tenue de ce matin seulement — pas de salle le samedi 14, ni avant le jour 1');
-  ok(/avec la tenue de salle de mardi —/.test(c.mer18) && /avec la tenue de salle de jeudi —/.test(c.ven20), 'mercredi : celle de mardi ; vendredi : celle de jeudi');
+  ok(/à l'envers, avec la tenue de salle de jeudi —/.test(c.ven20) && !/mercredi|ce matin/.test(c.ven20.split('—')[0]), 'vendredi 20, le premier club : la tenue de jeudi, le jour 1 — rien d\'avant');
+  ok(/avec la tenue de salle de mardi —/.test(c.mer25) && /avec la tenue de salle de jeudi —/.test(c.ven27), 'mercredi : celle de mardi ; vendredi : celle de jeudi');
   ok(/avec la tenue de salle de ce matin et celle de samedi —/.test(c.lun23), 'lundi 23 : celle de ce matin et celle de samedi');
-  ok(/jamais d'adoucissant sur le sport/.test(c.lun16), 'et jamais d\'adoucissant sur le sport');
-  ok(!/bandes/.test(c.sal16) && /cadenas, bandes et gants pour le sac/.test(c.sal17) && /bandes et gants pour le sac/.test(c.sal21), 'départ pour la salle : les bandes et les gants le mardi et le samedi (le sac de frappe), pas le lundi');
+  ok(/jamais d'adoucissant sur le sport/.test(c.ven20), 'et jamais d\'adoucissant sur le sport');
+  ok(!/bandes/.test(c.sal19) && !/bandes/.test(c.sal23) && /cadenas, bandes et gants pour le sac/.test(c.sal24) && /bandes et gants pour le sac/.test(c.sal21), 'départ pour la salle : les bandes et les gants le mardi et le samedi (le sac de frappe), pas le jeudi ni le lundi');
   await ctx.close();
 }
 

@@ -84,9 +84,10 @@ console.log('\n== 2) Sous 12 jours notés, le chiffre est donné mais annoncé c
   /* 11 novembre : jour 1 au jeudi 12 -- deux, le jeudi 12 et le vendredi 13.
      12 novembre : jour 1 au vendredi 13 -- fin au lundi 16 : deux, le vendredi 13 et le lundi 16
      (le samedi 14 et le dimanche 15 sont sans cours).
-     13 novembre : jour 1 au samedi 14 -- fin au mardi 17 : deux, le lundi 16 et le mardi 17. */
-  const fin = '2026-11-17';
-  const { ctx, page, fr } = await ouvrir({'batcave-cours-suivi': notes(fin, 10, 3)}, '2026-11-17T21:00:00+01:00');
+     13 novembre : jour 1 au samedi 14 -- fin au mardi 17 : deux, le lundi 16 et le mardi 17.
+     18 novembre : jour 1 au jeudi 19 -- fin au vendredi 20 : deux, le jeudi 19 et le vendredi 20. */
+  const fin = '2026-11-20';
+  const { ctx, page, fr } = await ouvrir({'batcave-cours-suivi': notes(fin, 10, 3)}, '2026-11-20T21:00:00+01:00');
   await etudes(fr, page);
   await fr.evaluate(() => { const t = document.getElementById('portes-toggle'); if(t) t.click(); });
   await page.waitForTimeout(300);
@@ -100,9 +101,10 @@ console.log('\n== 2) Sous 12 jours notés, le chiffre est donné mais annoncé c
 console.log('\n== 3) Au-dessus de 12 jours, la moyenne est ferme et le mot suit le niveau ==');
 {
   /* Seize notes jusqu'au 30 : quatorze jours de cours une fois retires le 9 et le 12 (12 octobre : jour 1 au 13). */
-  /* 11 novembre : jour 1 au jeudi 12 -- dix-sept notes jusqu'au mercredi 2 decembre, treize jours de cours (du 16 au 2). */
-  const fin = '2026-12-02';   /* 31 octobre : jour 1 au 1er novembre -- quinze jours de cours notes, du lundi 2 au vendredi 20. 15 octobre : seize notes jusqu'au 4 novembre, quatorze a partir du 16. 21 octobre : dix-sept notes jusqu'au vendredi 6, treize jours de cours a partir du 21 */
-  const { ctx, page, fr } = await ouvrir({'batcave-cours-suivi': notes(fin, 17, 3)}, '2026-12-02T21:00:00+01:00');
+  /* 11 novembre : jour 1 au jeudi 12 -- dix-sept notes jusqu'au mercredi 2 decembre, treize jours de cours (du 16 au 2).
+     18 novembre : jour 1 au jeudi 19 -- dix-sept notes jusqu'au lundi 7 decembre, treize jours de cours (du 19 au 7). */
+  const fin = '2026-12-07';   /* 31 octobre : jour 1 au 1er novembre -- quinze jours de cours notes, du lundi 2 au vendredi 20. 15 octobre : seize notes jusqu'au 4 novembre, quatorze a partir du 16. 21 octobre : dix-sept notes jusqu'au vendredi 6, treize jours de cours a partir du 21 */
+  const { ctx, page, fr } = await ouvrir({'batcave-cours-suivi': notes(fin, 17, 3)}, '2026-12-07T21:00:00+01:00');
   await etudes(fr, page);
   await fr.evaluate(() => { const t = document.getElementById('portes-toggle'); if(t) t.click(); });
   await page.waitForTimeout(300);

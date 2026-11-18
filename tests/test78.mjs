@@ -31,7 +31,8 @@ console.log('\n== 1) Le réacteur et la cellule disent la même chose : projets 
    ne leur dessine plus d'arc (« projets — sans minuteur »), la cellule dit ce que la grille
    leur donne dans la journee, et 1 h d'espagnol enregistree ne les remplit toujours pas. */
 /* 7 novembre : le mois d'espagnol repris court jusqu'au 8 decembre -- le lundi sans phase est le 14 */
-for(const [d, desc] of [['2026-12-14','regime combat, projets perso au programme'],
+/* 18 novembre : le mois va jusqu'au vendredi 18 decembre -- le lundi sans phase est le 21 */
+for(const [d, desc] of [['2026-12-21','regime combat, projets perso au programme'],
                         ['2027-02-15','semestre 2']]){
   const {ctx, fr} = await ouvrir({'batcave-sessions':[es(d,60)]}, d+'T21:00:00+02:00');
   const l = await legend(fr), t = await temps(fr);
@@ -80,10 +81,10 @@ console.log('\n== 3) Sans bloc de projets dans la journée, la cellule dit pourq
   await ctx.close();
 }
 {
-  const {ctx, fr} = await ouvrir({}, '2026-12-14T09:00:00+01:00');   /* la phase Español finit le 15 novembre (depuis le 15 octobre) ; le mois repris, le 8 decembre (7 novembre) */
+  const {ctx, fr} = await ouvrir({}, '2026-12-21T09:00:00+01:00');   /* 18 novembre : le mois repris finit le vendredi 18 decembre ; la phase Español finit le 15 novembre (depuis le 15 octobre) ; le mois repris, le 8 decembre (7 novembre) */
   const t = await temps(fr);
   ok(!/Español à leur place/.test(t) && /Projets perso \| 0 \| \d+ h( \d+)? au planning, sans minuteur/.test(t),
-     'le 14 décembre, la mention disparaît et la grille redonne des blocs de projets, toujours sans minuteur : ' + (t.match(/Projets perso[^|]*\|[^|]*\|[^|]*/)||[''])[0].trim());
+     'le 21 décembre, la mention disparaît et la grille redonne des blocs de projets, toujours sans minuteur : ' + (t.match(/Projets perso[^|]*\|[^|]*\|[^|]*/)||[''])[0].trim());
   await ctx.close();
 }
 
@@ -99,7 +100,8 @@ console.log('\n== 4) Un rendez-vous dans l\'agenda Google n\'est pas un bloc man
      31 octobre : le jour 1 passe au dimanche 1er novembre, et le jeudi est un jour de salle a 07:00 --
      on lit le mercredi 4 (Anki 1 a 07:20, Étudier en avance a 08:20). */
   /* 11 novembre : jour 1 au jeudi 12 -- on lit le mercredi 18 (Anki 1 a 07:20, Étudier en avance a 08:20). */
-  const {ctx, page, fr} = await ouvrir({}, '2026-11-18T21:00:00+01:00');
+  /* 18 novembre : jour 1 au jeudi 19 -- le mercredi 18 est avant le programme ; on lit le mercredi 25 */
+  const {ctx, page, fr} = await ouvrir({}, '2026-11-25T21:00:00+01:00');
   const avant = (await plan(fr)).split('\n').filter(l=>/Bloc manqué/.test(l)).length;
   await fr.evaluate(()=>{
     /* mercredi = 3 ; un vrai rendez-vous couvre Anki 1 et le debut d'Étudier en avance */
@@ -175,8 +177,9 @@ console.log('\n== 7) Rattrapage unique après une absence ==');
   /* 11 novembre : jour 1 au jeudi 12 -- retour le samedi 14, les 12 et 13 sans cloture.
      12 novembre : jour 1 au vendredi 13 -- retour le dimanche 15, les 13 et 14 sans cloture.
      13 novembre : jour 1 au samedi 14 -- retour le lundi 16, les 14 et 15 sans cloture.
-     15 novembre : jour 1 au lundi 16 -- retour le mercredi 18, les 16 et 17 sans cloture. */
-  const {ctx, page, fr} = await ouvrir({'batcave-last-open':'2026-09-16'}, '2026-11-18T10:00:00+01:00');
+     15 novembre : jour 1 au lundi 16 -- retour le mercredi 18, les 16 et 17 sans cloture.
+     18 novembre : jour 1 au jeudi 19 -- retour le samedi 21, les 19 et 20 sans cloture. */
+  const {ctx, page, fr} = await ouvrir({'batcave-last-open':'2026-09-16'}, '2026-11-21T10:00:00+01:00');
   const t = await plan(fr);
   const l = t.split('\n').filter(x=>/Absence —/.test(x))[0] || '';
   ok(/2 journées sans clôture/.test(l), 'un seul item pour toute l\'absence : ' + l.trim().slice(0, 90));

@@ -1,5 +1,55 @@
 # Où on en est — samedi 19 septembre 2026, au soir
 
+> ### Mercredi 18 novembre — le jour 1 au jeudi 19 ; un mois d'espagnol pile, puis l'e-commerce
+> **Ses mots** : « ensuite on vas decaler le premier jour a demain, jeudi 19/11, on va tout decaler, le programme
+> d'apprentissage d'espagnol doit prendre 1 mois pile, parce que apres je commence a rebosser sur l'eccomerce, pas le
+> choix ». Pour manger de jeudi à samedi : « je vais faire les courses et cuisiner apres les cours ajd ».
+> **Les dates (schéma 72)** :
+> - le jour 1 (`PROGRAMME_DEBUT`) et la salle (`MUSCU_DEBUT`) passent au jeudi 19 ;
+> - la pause du combat (`COMBAT_PAUSE_2`) va jusqu'au mercredi 18 : le premier JJB est le vendredi 20, et le club
+>   (licence et abonnement de novembre) se paie ce jour-là ;
+> - le mois d'espagnol (`ES_REPRISE_DEBUT/FIN`) va du jeudi 19 novembre au vendredi 18 décembre, 30 jours : environ
+>   50 h de blocs, dont 47 h au minuteur. L'e-commerce reprend le samedi 19 décembre ;
+> - les quatre passages de l'épreuve d'espagnol tombent les dimanches 22 et 29 novembre, 6 et 13 décembre ;
+> - l'horizon des objectifs va du 19 novembre au 6 juin (migration de l'horizon du 16).
+> - Ce qui se compte depuis le jour 1 suit tout seul. Les retests restent les lundis 14 décembre, 18 janvier et
+>   22 février (lundi des semaines 5, 10 et 15 de muscu).
+> - La salle : séance de référence le jeudi 19, à demi-volume jusqu'au 2 décembre, complète dès le 3.
+> **Le batch de ce soir** (`BATCH_SOIR_DEPART`) : le plan du jour de mercredi le dit, après les cours, en une heure :
+> - les courses : 210 g de poulet, 280 g de viande hachée, 240 g de brocoli, 320 g d'épinards, 6 œufs, une boîte de
+>   sardines (la collation de jeudi) ;
+> - la cuisson : 375 g de pâtes du placard, six boîtes au frigo (3 midis, 3 soirs). Le riz se cuit chaque matin ;
+> - son dîner de mercredi : une septième portion, mangée tout de suite (70 g de viande hachée, 80 g d'épinards, 125 g
+>   de riz cuits le soir). La consigne du dîner du 18 le dit aussi : il n'y avait pas encore de boîte.
+> Les midis du jeudi au samedi disent « cuites au batch de mercredi soir ». La liste lui est partie par notification
+> à 18:55, avant la fin de ses cours (je la croyais déjà envoyée : elle ne l'était pas).
+> **L'agenda** : à la prochaine ouverture de la Batcave, la remise au propre repart une fois, du jeudi 19 au 24 janvier.
+> **Les pages** :
+> - « Ta semaine » commence au jeudi 19 (67 jours jusqu'au 24 janvier) ; « Ta semaine type » et la prise en main suivent ;
+> - le dossier Español (v2.23) et le dossier E-commerce sont recalés (semaine 1 du 21 au 27 décembre) ;
+> - « Paliers de physique » part du jeudi 19, comme programme-sport.md et programme-alimentation.md (du 19 novembre au
+>   6 juin) ;
+> - l'onglet Sport dit « JJB dès le vendredi 20 novembre ».
+> **Corrigé en passant (le guide)** : un soir de préparation (« Préparer · … » de 20:25 à 20:45), « Prépare demain »
+> tombait à 20:45, à la même heure que la douche, et la note du jeudi disait 20:40. Elle passe après la douche, à 21:00,
+> et la note dit l'heure de la ligne. Le jeudi 19 est concerné : l'Actividad 4 d'Antropología du vendredi.
+> **Tests recalés** : 41, 43, 45, 47, 48, 49, 52, 57, 59, 64, 65, 68, 70, 71, 73, 74, 75, 76, 78, 81 à 85, 87, 88, 96,
+> 106, 107, 109, 115, 118 et 120. Les dates qui tombaient avant le jeudi 19, ou dans le mois d'espagnol qui finit
+> désormais le 18 décembre, passent à des dates équivalentes. test84 vérifie aussi le mois pile : de l'espagnol le
+> vendredi 18 décembre, plus rien le samedi 19.
+> **Vérifié** :
+> - la campagne complète (115 tests), puis 74, 115, 120, 64 et 88 après les dernières retouches ;
+> - la saison avec ses données (zz-journee-saison, du 19 novembre au 6 juin) : A, 200 jours et 3 786 cases, toutes
+>   justes, le pas à pas écrit identique à la grille sur ses 67 jours ; B, chaque jour ouvert comme aujourd'hui, coché, décoché et rechargé, tout vert ;
+> - les sept audits : audit, audit-suivi (recalé : ses calculs d'un lundi se lisent au lundi 23, le jour 1 au jeudi 19,
+>   et le 14 décembre est désormais dans le mois d'espagnol), audit-cablage, verif-pages, contraste, verif-profonde, et
+>   ses données réelles le 18 au soir, le 19 et le 22 ;
+> - l'onglet Sport : « dès le vendredi 20 » plutôt que « dès le vendredi 20 novembre », pour qu'il garde sa hauteur
+>   (test88).
+> **Publié** : la Batcave, « Ta semaine », « Ta semaine type », « À quoi sert la Batcave », la prise en main, les
+> dossiers Español et E-commerce, « Paliers de physique ».
+> **En attente** : sa pesée de dimanche 22 (60 ou 64 kg), et sa réponse sur les rappels des cours de la fac.
+
 > ### Mardi 17 novembre, l'après-midi — l'agenda ne sonne qu'aux départs ; le jeudi en 55 minutes ; le dimanche allégé
 > **Ses mots** : « fais la 2, ajuste pour la 3, et la 5, je te dirai ce dimanche pour la pesée ». Trois des cinq
 > améliorations proposées le midi.

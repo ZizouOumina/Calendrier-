@@ -107,10 +107,10 @@ async function ordre(quand, dueISO){
   ok(o.iRev >= 0 && o.iRev < o.iTache, 'samedi 16:30 : révision urgente, passe devant la tâche du jour');
   o = await ordre('2026-11-22T11:00:00+01:00', '2026-11-22');       /* dimanche : dernier bloc (Réexpliquer) à 10:20 */
   ok(o.iRev >= 0 && o.iRev < o.iTache, 'dimanche 11:00 : urgente dès 10:20 (dernier bloc du jour)');
-  o = await ordre('2026-11-18T19:00:00+01:00', '2026-11-18');       /* mercredi : dernier bloc (Clore le cours du jour) à 20:30 */
+  o = await ordre('2026-11-25T19:00:00+01:00', '2026-11-25');       /* mercredi : dernier bloc (Clore le cours du jour) à 20:30 (18 novembre : le 18 est la veille du jour 1 -- le 25) */
   ok(o.iRev > o.iTache && o.iTache >= 0, 'mercredi 19:00 : pas encore urgente (Clore le cours du jour à 20:30) — l\'ancien seuil 18:00 l\'aurait déjà rougie');
-  o = await ordre('2026-11-15T19:00:00+01:00', '2026-11-15');       /* la veille du jour 1 : rien à reprocher */
-  ok(o.iRev < 0 && o.iTache >= 0, 'dimanche 15, la veille du jour 1 : pas de ligne « Révision »');
+  o = await ordre('2026-11-18T19:00:00+01:00', '2026-11-18');       /* la veille du jour 1 (jeudi 19) : rien à reprocher */
+  ok(o.iRev < 0 && o.iTache >= 0, 'mercredi 18, la veille du jour 1 : pas de ligne « Révision »');
 }
 
 await browser.close();

@@ -26,7 +26,9 @@ const local = (fr,k) => fr.evaluate(x => JSON.parse((window.__bcLire || ((k) => 
 const MERCREDI = '2026-12-02T09:00:00+01:00';   /* 31 octobre : jour 1 au 1er novembre, tours complets des le 16 */   /* semaine 3 (jour 1 au mardi 13) : tours complets, jour off. 19 octobre : jour 1 au mardi 20, la semaine 3 commence le 2 novembre. 21 octobre : la muscu commence le 26, tours complets des le 9 novembre -- mercredi 11 */
 /* 7 novembre : la montee en charge part de la premiere seance FAITE -- un squat le lundi 2 en
    fait la premiere ; le jeudi 19 tombe 17 jours plus tard, aux tours complets. */
-const PREMIERE = {'batcave-sport-log': [{id:'p0', date:'2026-11-17', type:'Bas complet', exo:'Squat barre', series:[8,8,8,8], charge:40, unite:'reps'}]};
+/* 18 novembre : jour 1 au jeudi 19 -- la premiere seance est ce jour-la (un Haut lourd) ; le jeudi 3 decembre, quatorze jours
+   plus tard, est en tours complets. Les pompes claquees ne touchent pas la cible des tractions. */
+const PREMIERE = {'batcave-sport-log': [{id:'p0', date:'2026-11-19', type:'Haut lourd', exo:'Pompes claquées', series:[5,5,5], charge:0, unite:'reps'}]};
 const LUNDI    = '2026-12-03T09:00:00+01:00';   /* jeudi : la seance lourde depuis le regime combat (21 octobre : le 12, tours complets) */
 
 console.log('\n== 270) Un jour off, le bandeau propose de choisir une séance ==');
