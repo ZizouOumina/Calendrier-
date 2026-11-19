@@ -52,9 +52,10 @@ console.log('\n== 401) Santé de la Batcave : six contrôles, un relevé qui ne 
      12 novembre : jour 1 au vendredi 13 -- clôture du dimanche 8, cinq jours avant.
      13 novembre : jour 1 au samedi 14 -- clôture du lundi 9, cinq jours avant.
      15 novembre : jour 1 au lundi 16 -- clôture du mercredi 11, cinq jours avant.
-     18 novembre : jour 1 au jeudi 19 -- clôture du samedi 14, cinq jours avant. */
-  const seed = {'batcave-journal-2026-11-14': {sommeil:'7', cloture:'21:20'}};
-  const { ctx, page, fr } = await ouvrir('2026-11-19T10:00:00+01:00', seed);
+     18 novembre : jour 1 au jeudi 19 -- clôture du samedi 14, cinq jours avant.
+     19 novembre : jour 1 au vendredi 20 -- clôture du dimanche 15, cinq jours avant. */
+  const seed = {'batcave-journal-2026-11-15': {sommeil:'7', cloture:'21:20'}};
+  const { ctx, page, fr } = await ouvrir('2026-11-20T10:00:00+01:00', seed);
   const r = await fr.evaluate(() => ({ vide: window.__bcAppVide(), sante: window.__bcSante().filter(c => !c.ok).map(c => c.id), releve: document.getElementById('bc-sante').hidden, txt: document.querySelector('#bc-sante .v').textContent }));
   ok(r.vide === false, 'une clôture suffit : l\'appli n\'est plus neuve');
   ok(r.sante.join(',') === 'sauvegarde,exercice,cloture', 'trois défauts : aucune sauvegarde, aucun exercice, clôture vieille de 5 jours (' + r.sante.join(', ') + ')');
@@ -82,14 +83,15 @@ console.log('\n== 402) Le plan de secours en texte ==');
      21 octobre : le JJB commence le mercredi 28 -- on lit celle du 2 novembre, la premiere aux
      trois matins de combat.
      11 novembre : jour 1 au jeudi 12 -- on lit la semaine du 16, la premiere complete.
-     18 novembre : jour 1 au jeudi 19 -- on lit la semaine du 23, la premiere complete. */
-  const { ctx, fr } = await ouvrir('2026-11-22T20:00:00+01:00');
-  const t = await fr.evaluate(() => window.__bcPlanTexte('2026-11-23'));
-  ok(/^LA BATCAVE — plan de la semaine du 23 nov\. au 29 nov\./.test(t), 'en-tête : ' + t.split('\n')[0]);
+     18 novembre : jour 1 au jeudi 19 -- on lit la semaine du 23, la premiere complete.
+     19 novembre : pas de JJB avant le 2 decembre, et la semaine du 7 a un ferie -- on lit celle du 14 decembre. */
+  const { ctx, fr } = await ouvrir('2026-12-13T20:00:00+01:00');
+  const t = await fr.evaluate(() => window.__bcPlanTexte('2026-12-14'));
+  ok(/^LA BATCAVE — plan de la semaine du 14 déc\. au 20 déc\./.test(t), 'en-tête : ' + t.split('\n')[0]);
   /* 30 octobre : la salle ouvre a 07:00 -- Anki 1 au reveil, le trajet, la seance a 07:00. */
-  ok(/LUNDI 23 nov\. — combat\n  05:30  Anki 1\n  06:40  Trajet salle\n  07:00  Sport\n/.test(t) && /  10:30  🥋 JJB\n/.test(t), 'lundi : la grille combat, ligne par ligne');
-  ok(/MARDI 24 nov\.\n[\s\S]*  18:00  Dîner[\s\S]*  21:35  Coucher/.test(t) && !/Piscine/.test(t) && !/MARDI 24 nov\. — combat/.test(t) && !/Muay Thai/.test(t), 'mardi : plus de Muay Thai ni de piscine (30 octobre), dîner 18:00, coucher 21:35 comme les autres jours');
-  ok(/DIMANCHE 29 nov\.\n/.test(t) && !/DIMANCHE 29 nov\. — combat/.test(t), 'dimanche : pas de combat');
+  ok(/LUNDI 14 déc\. — combat\n  05:30  Anki 1\n  06:40  Trajet salle\n  07:00  Sport\n/.test(t) && /  10:30  🥋 JJB\n/.test(t), 'lundi : la grille combat, ligne par ligne');
+  ok(/MARDI 15 déc\.\n[\s\S]*  18:00  Dîner[\s\S]*  21:35  Coucher/.test(t) && !/Piscine/.test(t) && !/MARDI 15 déc\. — combat/.test(t) && !/Muay Thai/.test(t), 'mardi : plus de Muay Thai ni de piscine (30 octobre), dîner 18:00, coucher 21:35 comme les autres jours');
+  ok(/DIMANCHE 20 déc\.\n/.test(t) && !/DIMANCHE 20 déc\. — combat/.test(t), 'dimanche : pas de combat');
   const t0 = await fr.evaluate(() => window.__bcPlanTexte('2026-09-28'));
   ok(!/MARDI 29 sept\. — combat/.test(t0) && !/Muay Thai/.test(t0.split('MERCREDI')[0].split('MARDI')[1] || ''), 'la semaine du 28 septembre, sans combat depuis le 30 au soir : pas de Muay Thai le mardi 29');
   ok(/LES 5 QUI COMPTENT\n  Sommeil : /.test(t) && /\n  Argent : /.test(t), 'les cinq qui comptent, avec leur chiffre du jour');

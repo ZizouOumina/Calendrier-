@@ -54,13 +54,15 @@ const CHARNIERES = [
   /* 13 novembre : jour 1 au samedi 14 -- le mois repart du 14 novembre au 12 decembre, le vendredi 13 est encore hors phase.
      15 novembre : jour 1 au lundi 16 -- le mois repart avec lui ; le dimanche 15 est encore hors phase
      18 novembre : jour 1 au jeudi 19 -- un mois pile, du jeudi 19 novembre au vendredi 18 decembre ;
-     le mercredi 18 est encore hors phase, le samedi 19 decembre revient aux projets */
-  ['la veille du jour 1',       '2026-11-18', null],
-  ['jour 1, mois repris',       '2026-11-19', 'es-1-reprise'],
+     le mercredi 18 est encore hors phase, le samedi 19 decembre revient aux projets
+     19 novembre : jour 1 au vendredi 20 -- un mois pile, du vendredi 20 novembre au samedi 19 decembre ; le jeudi 19 est
+     encore hors phase, le dimanche 20 decembre revient aux projets */
+  ['la veille du jour 1',       '2026-11-19', null],
+  ['jour 1, mois repris',       '2026-11-20', 'es-1-reprise'],
   ['dans le mois repris',       '2026-11-25', 'es-1-reprise'],
   ['fin novembre, mois repris', '2026-11-29', 'es-1-reprise'],
-  ['dernier jour du mois repris','2026-12-18', 'es-1-reprise'],
-  ['premier jour sans phase',   '2026-12-19', null],
+  ['dernier jour du mois repris','2026-12-19', 'es-1-reprise'],
+  ['premier jour sans phase',   '2026-12-20', null],
   ['pendant les vacances',      '2026-12-28', 'vacances'],
   ['en mode partiels',          '2027-01-19', 'partiels'],
   ['apres les partiels',        '2027-02-08', null],
@@ -128,8 +130,9 @@ console.log('\n== 276) Les 182 jours, un par un : la grille ne trébuche jamais 
   /* 7 novembre : es-1 du 14 septembre au 7 novembre (55 jours), puis le mois repris du 9 novembre au 8 decembre (30 jours) */
   /* 13 novembre : le mois repris va du samedi 14 novembre au samedi 12 decembre (29 jours).
      15 novembre : du lundi 16 au samedi 12 decembre (27 jours)
-     18 novembre : du jeudi 19 novembre au vendredi 18 decembre (30 jours, un mois pile) */
-  ok(bilan.phases['es-1'] === 55 && bilan.phases['es-1-reprise'] === 30 && bilan.phases['es-2'] === undefined, 'es-1 sur 55 jours (14 septembre → 7 novembre), le mois repris sur 30 (19 novembre → 18 décembre) (obtenu ' + bilan.phases['es-1'] + ' / ' + bilan.phases['es-1-reprise'] + ' / ' + bilan.phases['es-2'] + ')');
+     18 novembre : du jeudi 19 novembre au vendredi 18 decembre (30 jours, un mois pile).
+     19 novembre : du vendredi 20 novembre au samedi 19 decembre (30 jours aussi) */
+  ok(bilan.phases['es-1'] === 55 && bilan.phases['es-1-reprise'] === 30 && bilan.phases['es-2'] === undefined, 'es-1 sur 55 jours (14 septembre → 7 novembre), le mois repris sur 30 (20 novembre → 19 décembre) (obtenu ' + bilan.phases['es-1'] + ' / ' + bilan.phases['es-1-reprise'] + ' / ' + bilan.phases['es-2'] + ')');
   ok(bilan.phases['partiels'] > 0, 'le mode partiels occupe ' + bilan.phases['partiels'] + ' jours de janvier');
   /* La revision est la seule constante du programme : elle ne depend pas de la phase.
      Sur 182 jours moins les 15 de vacances et le regime de partiels, elle reste massive. */

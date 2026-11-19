@@ -35,8 +35,8 @@ console.log('\n== 1) L\'agenda ne sonne qu\'aux départs, à la clôture et au c
      'chaque départ sonne 5 min avant : la salle, les cours, le club, la mosquée, un examen');
   ok(R['Coucher'] === 30, 'le coucher, 30 min avant');
   ok(['Trajet retour', 'Anki matinal', 'Déjeuner', 'Préparer · Examen · Anatomía I', '🥋 JJB', 'Sport'].every(l => R[l] === null), 'le reste ne sonne pas : ' + regle.filter(x => x[1] === null).map(x => x[0]).join(', '));
-  /* une semaine type : ce qui sonne, jour par jour */
-  const semaine = await fr.evaluate(() => ['2026-11-23', '2026-11-24', '2026-11-25', '2026-11-26', '2026-11-27', '2026-11-28', '2026-11-29'].map(iso => {
+  /* une semaine type : ce qui sonne, jour par jour (19 novembre : pas de JJB avant le 2 decembre -- la semaine pleine est celle du 14) */
+  const semaine = await fr.evaluate(() => ['2026-12-14', '2026-12-15', '2026-12-16', '2026-12-17', '2026-12-18', '2026-12-19', '2026-12-20'].map(iso => {
     const b = window.__bcRappels(iso);
     return { iso, n: b.length, sonnent: b.filter(x => x.rappel !== null).map(x => x.titre.replace('🦇 ', '') + ' ' + x.rappel), muets: b.filter(x => x.rappel === null).length };
   }));
@@ -46,14 +46,14 @@ console.log('\n== 1) L\'agenda ne sonne qu\'aux départs, à la clôture et au c
   const lundi = semaine[0].sonnent, vendredi = semaine[4].sonnent;
   ok(lundi.includes('Trajet salle 5') && lundi.includes('Trajet club 5') && lundi.includes('Trajet cours 5'), 'lundi : la salle, le club, les cours (' + lundi.join(', ') + ')');
   ok(vendredi.includes('Trajet mosquée 5'), 'vendredi : la mosquée pour la Jumu’ah (' + vendredi.join(', ') + ')');
-  const tous = await fr.evaluate(() => window.__bcRappels('2026-11-24'));
+  const tous = await fr.evaluate(() => window.__bcRappels('2026-12-15'));
   ok(tous.every(b => b.rappelBase === b.rappel), 'la grille type et la grille du jour s\'accordent : le rappel peut aller sur la série');
   await ctx.close();
 }
 
 console.log('\n== 2) Le jeudi tient dans 07:00 → 07:55 ==');
 {
-  const { ctx, page, fr } = await ouvrir('2026-11-19T07:00:00+01:00');
+  const { ctx, page, fr } = await ouvrir('2026-11-26T07:00:00+01:00');   /* 19 novembre : le premier jeudi de salle est le 26 */
   const s = await fr.evaluate(() => window.__bcSessionsSport().filter(x => x.type === 'Haut lourd')[0]);
   const reps = Object.fromEntries(s.exercises.map(e => [e.name, e.reps]));
   ok(reps['Tractions'] === '3×5-8' && reps['Développé couché barre'] === '3×5-8', 'une série de moins : tractions et développé couché en 3 × 5-8');

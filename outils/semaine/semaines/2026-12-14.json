@@ -989,7 +989,7 @@
    {
     "h": "05:30",
     "l": "Anki matinal",
-    "c": "Jour off de sport : une heure de cartes de dentaire, deux Pomodoros 25 + 5. Toutes les échéances, puis les cartes des matières faibles. Le 19 décembre, la fin de la phase Español, ce créneau passe aux projets comme les autres — la file se vide alors dans Anki 1 et Anki 2."
+    "c": "Jour off de sport : une heure de cartes de dentaire, deux Pomodoros 25 + 5. Toutes les échéances, puis les cartes des matières faibles. Le 20 décembre, la fin de la phase Español, ce créneau passe aux projets comme les autres — la file se vide alors dans Anki 1 et Anki 2."
    },
    {
     "h": "06:30",
@@ -1536,7 +1536,7 @@
    {
     "h": "11:20",
     "l": "Projets perso 3",
-    "c": "Un bloc de projet de plus, sans minuteur : le livrable de la semaine d'abord (un devoir ou une présentation de la fac, celui que tu cocheras dimanche). Sinon, des révisions : tu choisis quoi. La boutique ne commence que le samedi 19 décembre."
+    "c": "Un bloc de projet de plus, sans minuteur : le livrable de la semaine d'abord (un devoir ou une présentation de la fac, celui que tu cocheras dimanche). Sinon, des révisions : tu choisis quoi. La boutique ne commence que le dimanche 20 décembre."
    },
    {
     "h": "12:20",
@@ -2468,7 +2468,7 @@
    {
     "h": "07:00",
     "l": "Sport",
-    "c": "La salle à 07:00, dès l'ouverture. Échauffement : 5 minutes de vélo ou de rameur (mardi et samedi : 2 rounds de 2 min de shadow boxing), puis deux séries d'approche du premier exercice (la moitié de la charge, puis les trois quarts). La séance du jour est dans l'onglet Sport, charges déjà calculées. Lundi, haut du corps en volume, à 2 ou 3 reps de l'échec : JJB à 10:30. Mardi, bas complet (squat), puis le sac en rounds techniques. Jeudi, haut lourd : c'est là que la force se construit. Samedi, le second bas et les bras, puis le sac en intervalles. Mardi et samedi, bandes et gants dans le sac. Squat et développé couché dans le rack, barres de sécurité réglées juste sous le bas du mouvement : à l'ouverture, la salle est presque vide. Retour à 07:55, douche en rentrant."
+    "c": "La salle à 07:00, dès l'ouverture : 5 minutes de vélo ou de rameur avec le podcast espagnol, les séries d'approche, puis la séance du jour dans l'onglet Sport. Fini à 07:55."
    },
    {
     "h": "07:55",
@@ -2492,8 +2492,8 @@
    },
    {
     "h": "11:20",
-    "l": "Projets perso 1",
-    "c": "Réserve : ce qui a débordé de la semaine dans le dossier ; s'il n'y a rien, la semaine suivante commence."
+    "l": "Español · gramática",
+    "c": "Le point de grammaire de la semaine (Dossier Español, section 07). Ordre de départ, tiré de ton oral du 25 sept. (A2+) : 1) le passé — indefinido avec ayer / el lunes (comí), perfecto avec hoy / esta semana — et les pronominaux au passé (me levanté, me duché) ; 2) la bonne personne du verbe (vengo, tenía) et le « yo » qu’on retire ; 3) les faux amis (celoso, brasileño, gradiente). « Balance » change l’ordre si tes chiffres du dimanche disent autre chose. Méthode : chaque règle lue → dix phrases écrites et dix dites à voix haute sur tes sujets, puis les exercices du livre corrigés à la main. Pomodoro Español « gramática »."
    },
    {
     "h": "12:20",
@@ -2522,13 +2522,13 @@
    },
    {
     "h": "17:00",
-    "l": "Projets perso 2",
-    "c": "Fiscalité F1 (apprendre) : la ligne « Apprendre » de la semaine, section 18 du dossier, à partir de la source officielle."
+    "l": "Español · tutor",
+    "c": "Séance de tuteur : 3 min de conversation, 12 min à expliquer le cours de la veille, 10 min de corrections répétées, 5 min de jeu de rôle en usted. Dix cartes d'erreurs après."
    },
    {
     "h": "18:00",
     "l": "Projets perso 3",
-    "c": "Samedi 18:00-19:30, une heure et demie d'un trait, sans minuteur : le livrable de la semaine d'abord (celui que tu cocheras dimanche), sinon la prochaine ligne non cochée du dossier e-commerce."
+    "c": "Samedi 18:00-19:30, une heure et demie d'un trait, sans minuteur : le livrable de la semaine d'abord (un devoir ou une présentation de la fac, celui que tu cocheras dimanche). Sinon, des révisions : tu choisis quoi. La boutique ne commence que le dimanche 20 décembre."
    },
    {
     "h": "19:30",
@@ -2558,7 +2558,7 @@
    {
     "h": "21:35",
     "l": "Coucher",
-    "c": "Clôture du jour faite ? Écran off, réveil posé loin du lit."
+    "c": "Clôture du jour faite, la ligne en espagnol ? Écran off, réveil posé loin du lit."
    }
   ],
   "habits": [
@@ -2932,10 +2932,10 @@
   "cible": {
    "rev": 241,
    "proj": 0,
-   "es": 0
+   "es": 110
   },
-  "periode": null,
-  "espagnol": false
+  "periode": "es-1-reprise",
+  "espagnol": true
  },
  {
   "iso": "2026-12-20",

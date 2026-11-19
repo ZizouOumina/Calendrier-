@@ -11,13 +11,13 @@ de courses et la préparation sortent toutes de la même source (`compoRepas`).
 ## Le cadre
 - 64 kg · 182 cm · 20 ans · objectif **72 kg le 6 juin 2027** (la fin de la saison depuis le 15 novembre), soit ≈ +0,28 kg par semaine.
 - Dépense estimée : environ 2 900 à 3 000 kcal par jour en moyenne (métabolisme de base
-  ≈ 1 680 kcal, muscu quatre fois à 07:00 en salle, JJB trois fois à partir du 2 novembre ; plus de piscine depuis le 30 octobre).
+  ≈ 1 680 kcal, muscu quatre fois à 07:00 en salle, JJB trois fois à partir du 2 décembre ; plus de piscine depuis le 30 octobre).
 - **Peu de volume, beaucoup de calories** (23 octobre au soir : « il me faut du faible volume pour
   beaucoup de calories, j'arriverai pas à manger autant ») : un shake le matin, l'huile d'olive
   versée crue sur le riz (10 ml = 88 kcal sans une bouchée de plus), des amandes et des dattes.
 - **Jours normaux** (mardi, jeudi, samedi, dimanche) : **≈ 3 240 à 3 280 kcal · protéines
   126 à 128 g (2,0 g par kilo) · glucides ≈ 415 g · lipides ≈ 123 à 126 g**, en quatre prises.
-- **Jours de JJB** (lundi, mercredi, vendredi, à partir du 2 novembre) : **≈ 3 800 kcal ·
+- **Jours de JJB** (lundi, mercredi, vendredi, à partir du 2 décembre) : **≈ 3 800 kcal ·
   protéines 136 g**, avec deux prises de plus.
 - **Plus de sauces depuis le 30 octobre** : l'huile d'olive, le sel iodé et les épices (plus bas).
 - Les valeurs : CIQUAL/USDA pour les aliments bruts, les étiquettes pour la boisson d'avoine
@@ -34,7 +34,7 @@ chiffre de la colonne « science » vient du résumé publié de la source, vér
 | Point | La science | Le plan | Source |
 |---|---|---|---|
 | Surplus | +10 à 20 % au-dessus de l'entretien | ≈ 3 490 kcal en moyenne sur la semaine, ≈ +18 % | Iraki 2019 |
-| Rythme de prise | 0,25 à 0,5 % du poids par semaine (0,16 à 0,32 kg à 64 kg) ; plus vite, c'est surtout du gras | vise 0,28 kg (64 → 72 kg du 19 novembre au 6 juin) ; la Batcave propose −100 kcal au-dessus de 0,5 % | Iraki 2019 ; Helms 2023 |
+| Rythme de prise | 0,25 à 0,5 % du poids par semaine (0,16 à 0,32 kg à 64 kg) ; plus vite, c'est surtout du gras | vise 0,28 kg (64 → 72 kg du 20 novembre au 6 juin) ; la Batcave propose −100 kcal au-dessus de 0,5 % | Iraki 2019 ; Helms 2023 |
 | Protéines par jour | 1,6 à 2,2 g par kilo ; au-delà de ≈ 1,6, plus de gain mesurable | 2,0 (2,1 les jours de JJB) | Morton 2018 ; Iraki 2019 |
 | Protéines par repas | 0,40 à 0,55 g par kilo, sur 3 à 6 repas ; 4 × 20 g battent 2 × 40 et 8 × 10 | 4 repas, de 0,44 à 0,63 g par kilo | Iraki 2019 ; Schoenfeld et Aragon 2018 ; Areta 2013 |
 | Autour de l'entraînement | des protéines dans les 1 à 2 h avant ou après | le shake (40 g) 35 min après la séance de 07:00 ; après le JJB, la récup et le déjeuner (35 g) | Iraki 2019 ; Jäger 2017 (ISSN) |

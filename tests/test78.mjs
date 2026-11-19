@@ -52,8 +52,9 @@ console.log('\n== 2) L\'espagnol manqué est une dette d\'espagnol, pas de proje
      12 octobre : le jour 1 passe au mardi 13 -- on lit le mardi 20 (escribir a 14:00).
      21 octobre : le jour 1 passe au mercredi 21 -- on lit le jeudi 22 (gramática 13:00, escribir 14:00).
      31 octobre : le jour 1 passe au dimanche 1er novembre -- on lit le jeudi 5 (gramática 13:00, escribir 14:00). */
-  /* 11 novembre : jour 1 au jeudi 12 -- on lit le jeudi 19 (gramática 13:00, escribir 14:00). */
-  const {ctx, fr} = await ouvrir({}, '2026-11-19T21:00:00+01:00');
+  /* 11 novembre : jour 1 au jeudi 12 -- on lit le jeudi 19 (gramática 13:00, escribir 14:00).
+     19 novembre : jour 1 au vendredi 20 -- on lit le jeudi 26. */
+  const {ctx, fr} = await ouvrir({}, '2026-11-26T21:00:00+01:00');
   const t = await plan(fr);
   const l = t.split('\n').filter(x=>/Bloc manqué/.test(x) && /Español/.test(x))[0] || '';
   ok(/d'espagnol/.test(l), 'libellé : ' + (l.trim() || '(aucun bloc Español manqué)'));
@@ -129,7 +130,8 @@ console.log('\n== 5) Les durées s\'écrivent en heures et minutes, jamais en di
     duree:55, type:'cours', label:'Anatomie'}]}, '2026-11-23T21:00:00+01:00');
   const t = await plan(fr), c = await temps(fr), l = await legend(fr);
   const ligne = t.split('\n').filter(x=>/Révision —/.test(x))[0] || '';
-  ok(/Révision — 55 min sur 3 h 13 — il reste 2 h 18/.test(ligne), 'plan : ' + ligne.trim());
+  /* 19 novembre : pas de JJB avant le 2 decembre -- le lundi 23, la matinee du club est du travail : 4 h 21 au lieu de 3 h 13 */
+  ok(/Révision — 55 min sur 4 h 21 — il reste 3 h 26/.test(ligne), 'plan : ' + ligne.trim());
   ok(!/\d,\dh|\d,\d h/.test(t + c + l), 'plus une seule durée en dixièmes d\'heure sur le tableau de bord');
   ok(/55 min/.test(c), 'cellule : ' + (c.match(/Révision[^|]*\|[^|]*/)||[''])[0].trim());
   await ctx.close();
@@ -178,8 +180,9 @@ console.log('\n== 7) Rattrapage unique après une absence ==');
      12 novembre : jour 1 au vendredi 13 -- retour le dimanche 15, les 13 et 14 sans cloture.
      13 novembre : jour 1 au samedi 14 -- retour le lundi 16, les 14 et 15 sans cloture.
      15 novembre : jour 1 au lundi 16 -- retour le mercredi 18, les 16 et 17 sans cloture.
-     18 novembre : jour 1 au jeudi 19 -- retour le samedi 21, les 19 et 20 sans cloture. */
-  const {ctx, page, fr} = await ouvrir({'batcave-last-open':'2026-09-16'}, '2026-11-21T10:00:00+01:00');
+     18 novembre : jour 1 au jeudi 19 -- retour le samedi 21, les 19 et 20 sans cloture.
+     19 novembre : jour 1 au vendredi 20 -- retour le dimanche 22, les 20 et 21 sans cloture. */
+  const {ctx, page, fr} = await ouvrir({'batcave-last-open':'2026-09-16'}, '2026-11-22T10:00:00+01:00');
   const t = await plan(fr);
   const l = t.split('\n').filter(x=>/Absence —/.test(x))[0] || '';
   ok(/2 journées sans clôture/.test(l), 'un seul item pour toute l\'absence : ' + l.trim().slice(0, 90));

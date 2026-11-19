@@ -212,7 +212,7 @@ Le JJB (garde, ponts, sorties de hanche) fait travailler la sangle trois fois pa
 | Mercredi | 10:30 → 12:00 | JJB | Collation combat 10:05, trajet 10:20 | Shake de récup 12:00, douche, déjeuner 12:20 |
 | Vendredi | 10:30 → 12:00 | JJB | Collation combat 10:05, trajet 10:20 | Shake de récup 12:00, déjeuner, Jumu'ah 13:30 |
 
-- **Premier JJB le lundi 2 novembre.** Protège-dents, tape tôt sur une clé ou un étranglement (un débutant qui attend se blesse), bois entre les rounds, pose tes questions en espagnol. Le sac : kimono, protège-dents, gourde pleine, serviette ; ongles courts.
+- **Le JJB reprend le mercredi 2 décembre** (19 novembre : pas de JJB en novembre, faute d'argent ce mois-ci ; la licence et décembre se paient au club ce jour-là, avec l'argent du 25). Protège-dents, tape tôt sur une clé ou un étranglement (un débutant qui attend se blesse), bois entre les rounds, pose tes questions en espagnol. Le sac : kimono, protège-dents, gourde pleine, serviette ; ongles courts.
 - **Plus de piscine depuis le 30 octobre** (sa décision) : le cardio, c'est le JJB, et depuis le 7 novembre le sac, en fin de séance le mardi et le samedi.
 - **La mesure** : la fréquence cardiaque de repos chaque dimanche (panneau « Cardio & combat »).
 - **La mobilité des hanches**, le dimanche à 19:30, dix minutes au sol : 90/90, pigeon, papillon, bascules du bassin. Pour la garde.
@@ -243,7 +243,7 @@ Si la santé suit (le médecin d'abord), avec au moins 9 séances sur 10 faites,
 
 **L'objectif « 72 kg fin mars »** : depuis 60 kg, il faudrait ≈ 0,58 kg par semaine, presque 1 % du poids, soit le double du rythme qui reste du muscle. Au rythme maigre : ≈ 64-67 kg fin mars, 72 kg vers l'automne 2027.
 
-**Depuis le 15 novembre, l'objectif est « 72 kg le 6 juin »** (la saison va du 19 novembre au 6 juin, depuis le 18 novembre). Depuis 64 kg, la pesée de septembre, c'est 0,28 kg par semaine, dans la bande. Depuis 60 kg, ta pesée du 4 novembre, ce serait 0,41 kg par semaine, au-dessus du plafond de 0,5 % : la Batcave garde 0,28 kg, et 72 kg glisserait vers la fin de l'été. La pesée du dimanche 22 novembre tranche.
+**Depuis le 15 novembre, l'objectif est « 72 kg le 6 juin »** (la saison va du 20 novembre au 6 juin, depuis le 19 novembre ; la salle reprend le samedi 21). Depuis 64 kg, la pesée de septembre, c'est 0,28 kg par semaine, dans la bande. Depuis 60 kg, ta pesée du 4 novembre, ce serait 0,41 kg par semaine, au-dessus du plafond de 0,5 % : la Batcave garde 0,28 kg, et 72 kg glisserait vers la fin de l'été. La pesée du dimanche 22 novembre tranche.
 
 ## Les sources
 - Pelland JC et al. *The Resistance Training Dose Response: Meta-Regressions Exploring the Effects of Weekly Volume and Frequency on Muscle Hypertrophy and Strength Gains.* Sports Med, 2025. https://pubmed.ncbi.nlm.nih.gov/41343037/

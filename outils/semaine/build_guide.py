@@ -24,7 +24,7 @@ SEMAINES = ['2026-11-16', '2026-11-23', '2026-11-30', '2026-12-07', '2026-12-14'
 FERIES = {'2026-12-08': 'l’Immaculée Conception'}
 VACANCES = ('2026-12-23', '2027-01-06')
 INTERSEMESTRE = ('2027-01-21', '2027-01-22')
-ES_FIN = '2026-12-18'                     # le dernier jour du mois d'espagnol (ES_REPRISE_FIN dans la Batcave) : 18 novembre, un mois pile depuis le jeudi 19
+ES_FIN = '2026-12-19'                     # le dernier jour du mois d'espagnol (ES_REPRISE_FIN dans la Batcave) : 19 novembre, un mois pile depuis le vendredi 20 (avant : le 18 decembre)
 
 def hh(m): return '%02d:%02d' % (m // 60, m % 60)
 def de(x): return ('d’' if x[:1] in 'AEIOUÁÉÍÓÚHaeiouáéíóúh' else 'de ') + x
@@ -206,8 +206,14 @@ def construire(J, semaine, k):
             quoi = lab[len('Préparer · '):]
             titre = ('Préparer l’examen ' + de(quoi[len('Examen · '):])) if quoi.startswith('Examen · ') else ('Préparer · ' + quoi)
             if not quoi.startswith('Examen · '):
-                mat, _, quoi2 = quoi.rpartition(' · ')
-                prepas.append('Ce soir à ' + h + ' : prépare « ' + quoi2 + ' »' + (' (' + mat + ')' if mat else '') + ' pour demain, à la place de la clôture du cours.')
+                # 19 novembre : deux echeances le lendemain (« matiere · devoir + matiere · devoir ») -- la note melangeait
+                # les matieres ; chacune garde la sienne
+                morceaux = []
+                for part in quoi.split(' + '):
+                    mat, _, quoi2 = part.rpartition(' · ')
+                    morceaux.append('« ' + quoi2 + ' »' + (' (' + mat + ')' if mat else ''))
+                liste = morceaux[0] if len(morceaux) == 1 else ', '.join(morceaux[:-1]) + ' et ' + morceaux[-1]
+                prepas.append('Ce soir à ' + h + ' : prépare ' + liste + ' pour demain, à la place de la clôture du cours.')
             rows.append({'t': h, 'fin': fin, 'k': 'etude', 'titre': titre, 'd': c}); continue
         if lab.startswith('Trajet · Examen · '):
             rows.append({'t': h, 'k': 'cours', 'titre': 'Départ pour l’examen ' + de(lab[len('Trajet · Examen · '):]), 'd': c}); continue
@@ -239,6 +245,9 @@ def construire(J, semaine, k):
         elif lab == 'Collation entraînement': r = ('repas', 'Collation', c, None)
         elif lab == 'Collation combat': r = ('repas', 'Collation avant le JJB', c, None)
         elif lab == 'Trajet salle': r = ('sport', 'Départ pour la salle', c, None)
+        elif lab == 'Sport' and iso == PREMIERE_SALLE:
+            # 19 novembre : la premiere seance est la seance de reference -- la Batcave le dit au plan du jour (seanceReferenceDue)
+            r = ('sport', 'La salle · la séance de référence', 'Aujourd’hui on mesure le point de départ, on ne suit pas la séance normale : tractions, dips, pompes et suspension au maximum, chaque chiffre noté dans l’onglet Sport. Échauffement d’abord : 5 minutes de vélo ou de rameur, puis deux séries d’approche.', None)
         elif lab == 'Sport': r = ('sport', 'La salle · ' + SEANCE.get(dow, 'la séance du jour'), sport_texte(c, dow), None)
         elif lab == 'Retour de la salle': r = ('sport', 'Retour à pied', c, None)
         elif lab == 'Trajet club': r = ('sport', 'Départ pour le club', c, None)
@@ -445,7 +454,7 @@ def construire(J, semaine, k):
     N = []
     if iso == JOUR_1:
         N.append('Jour 1 : tout commence ce matin, réveil 05:20. D’abord la copie vierge (bouton Sauvegarde), avant toute saisie.')
-        N.append('Pas encore vu le médecin pour les douleurs à la poitrine ? Appelle le centro de salud à 08:00, en rentrant de la salle : rendez-vous et prise de sang.')
+        N.append('Pas encore vu le médecin pour les douleurs à la poitrine ? Appelle le centro de salud à 08:00' + (', en rentrant de la salle' if 'Sport' in labs else '') + ' : rendez-vous et prise de sang.')
     if prec is not None and prec.get('espagnol') and not J.get('espagnol'):
         N.append('Les blocs Projets perso reviennent : l’e-commerce commence aujourd’hui (Dossier E-commerce, semaine 1). Chaque bloc dit quoi faire.')
     exam = next((b for b in g if b['l'].startswith('Examen · ')), None)
@@ -461,7 +470,8 @@ def construire(J, semaine, k):
         ex2 = next((b for b in suiv['blocs'] if b['l'].startswith('Examen · ')), None)
         if ex2: N.append('Demain à ' + ex2['h'] + ' : examen ' + de(ex2['l'][len('Examen · '):]) + '. Ce soir, coucher à l’heure.')
     N += prepas
-    if 'Sport' in labs: N.append('La salle à 07:00' + (' : bandes et gants dans le sac.' if dow in (2, 6) else '.'))
+    if 'Sport' in labs and iso == PREMIERE_SALLE: N.append('La salle à 07:00 : la séance de référence. On mesure tes maximums, on ne suit pas la séance normale.')
+    elif 'Sport' in labs: N.append('La salle à 07:00' + (' : bandes et gants dans le sac.' if dow in (2, 6) else '.'))
     if jjb: N.append('JJB à 10:30 : la collation à 10:05, le kimono en machine en rentrant' + (', étendu avant la mosquée.' if 'Trajet mosquée' in labs else '.'))
     if 'Trajet mosquée' in labs: N.append('13:15 : Jumu’ah à la mosquée.')
     if 'passe du congélateur au frigo' in consigne.get('Dîner', ''): N.append('Au dîner : la viande de mardi passe du congélateur au frigo.')
@@ -554,13 +564,19 @@ def tete(S, jours, lundi=None):
     elif partiels: sous = 'Réveil 05:20 · coucher 21:35 · partiels'
     elif vacances: sous = 'Réveil 05:20 · coucher 21:35 · vacances de Noël, pas de cours'
     elif inter: sous = 'Réveil 05:20 · coucher 21:35 · entre les deux semestres'
-    L = ['La salle lundi, mardi, jeudi et samedi à 07:00 ; le JJB lundi, mercredi et vendredi à 10:30. La séance du jour est dans l’onglet Sport de la Batcave.']
+    # 19 novembre : pas de JJB avant le mercredi 2 decembre (« ce mois ci j'aurais pas assez pour le JJB ») -- la semaine le dit
+    jjb = [j for j in S if any(b['l'] == '🥋 JJB' for b in j['blocs'])]
+    if len(jjb) == 0: club = 'pas de JJB cette semaine : il reprend le mercredi 2 décembre, lundi, mercredi et vendredi à 10:30'
+    elif len(jjb) < 3 and lundi <= '2026-12-01': club = 'le JJB reprend le mercredi 2 décembre, lundi, mercredi et vendredi à 10:30'
+    else: club = 'le JJB lundi, mercredi et vendredi à 10:30'
+    L = ['La salle lundi, mardi, jeudi et samedi à 07:00 ; ' + club + '. La séance du jour est dans l’onglet Sport de la Batcave.']
     mardi = next((j for j in S if j['dow'] == 2), None)
     hb = next((b['h'] for b in mardi['blocs'] if b['l'] == 'Temps libre' and 'deuxième session de batch' in b['c']), '19:10') if mardi else '19:10'
     L.append('Des pâtes tous les midis (un repas frais le dimanche), du riz tous les soirs. Le batch cooking : dimanche 14:30 et mardi ' + hb + ', tout au frigo.')
-    # 18 novembre : le jour 1 au jeudi 19 -- la premiere semaine commence ce jour-la, et le batch de la veille au soir la nourrit
+    # 18 novembre : le jour 1 au jeudi 19 -- la premiere semaine commence ce jour-la, et le batch de la veille au soir la nourrit.
+    # 19 novembre : le jour 1 au vendredi 20 -- la salle reprend le samedi 21, le JJB le mercredi 2 decembre.
     if S[0]['iso'] == JOUR_1:
-        L.insert(0, 'Le jour 1, c’est le jeudi 19 : la salle reprend ce matin-là, le JJB le vendredi 20, et le mois d’espagnol commence avec lui. Les midis et les soirs de jeudi à samedi viennent du batch du mercredi 18 au soir.')
+        L.insert(0, 'Le jour 1, c’est le vendredi 20 : le mois d’espagnol commence avec lui ; la salle reprend le samedi 21 (la séance de référence), le JJB le mercredi 2 décembre. Les midis et les soirs de vendredi et samedi viennent du batch du mercredi 18 au soir.')
     ev = []   # les evenements de la semaine, dans l'ordre des jours
     for j in S:
         ls = [b['l'] for b in j['blocs']]
@@ -634,7 +650,8 @@ def vers_batcave(data, sig):
     open(chemin, 'w', encoding='utf-8').write(bc[:m.start(2)] + s + bc[m.end(2):])
     return len(s)
 
-JOUR_1 = '2026-11-19'            # PROGRAMME_DEBUT dans la Batcave (18 novembre : le jeudi 19 ; avant, le lundi 16)
+JOUR_1 = '2026-11-20'            # PROGRAMME_DEBUT dans la Batcave (19 novembre : le vendredi 20 ; avant, le jeudi 19, le lundi 16)
+PREMIERE_SALLE = '2026-11-21'    # premierJourSport dans la Batcave : le vendredi n'a pas de salle, la premiere seance est le samedi 21
 PREMIERES_PHOTOS = '2026-11-22'  # ANCRE_DIMANCHE : le premier dimanche du programme
 # 17 novembre, le tri (sa décision) : la marche (les pas ne se notent plus) et la revue du jour (la clôture la fait) sortent
 CHAQUE_JOUR = ['Lumière du matin', 'Les cinq prières', 'Étirements', 'Téléphone hors de la chambre',

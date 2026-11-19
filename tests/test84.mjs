@@ -114,15 +114,16 @@ console.log('\n== 84.6) Cibles hebdo : constantes en revision, croissantes en pr
   const t = await sem('2026-09-07'), e1 = await sem('2026-09-21'), e2 = await sem('2026-12-21'), e3 = await sem('2027-01-11'), rep = await sem('2026-11-23');
   const pr = x => Math.round(x * 100) / 100;
   const jour = iso => fr.evaluate(iso => window.__bcPrevu(iso), iso);
-  const apres = [['2026-12-19', '2027-01-16'], ['2026-12-20', '2027-01-17'], ['2026-12-21', '2027-01-11'], ['2026-12-22', '2027-01-12']];
+  /* 19 novembre : le mois va jusqu'au samedi 19 decembre -- l'apres-phase se lit du dimanche 20 au mardi 22 */
+  const apres = [['2026-12-20', '2027-01-17'], ['2026-12-21', '2027-01-11'], ['2026-12-22', '2027-01-12']];
   const ecarts = [];
   for (const [a, b] of apres) { const x = await jour(a), y = await jour(b); if (x.rev !== y.rev || x.proj !== y.proj || x.es !== y.es) ecarts.push(a + ' ' + x.rev + '/' + y.rev); }
   /* Regime combat : 29 h 13 de revision par semaine des le 28 septembre (33 h 12 sur la grille type d'avant). */
   ok(ecarts.length === 0,
-     'la revision ne bouge plus apres la phase (le mois repris finit le vendredi 18 decembre) : du 19 au 22 decembre, chaque jour vaut celui de la semaine du 11 janvier ' + (ecarts.join(', ') || ''));
-  const v18 = await jour('2026-12-18'), s19 = await jour('2026-12-19');
+     'la revision ne bouge plus apres la phase (le mois repris finit le samedi 19 decembre) : du 20 au 22 decembre, chaque jour vaut celui de la semaine du 11 janvier ' + (ecarts.join(', ') || ''));
+  const v18 = await jour('2026-12-19'), s19 = await jour('2026-12-20');
   ok(v18.es > 0 && s19.es === 0 && s19.proj === 0,
-     'un mois pile : de l\'espagnol le vendredi 18 decembre (' + v18.es + ' min), plus rien le samedi 19 (' + s19.es + ')');
+     'un mois pile : de l\'espagnol le samedi 19 decembre (' + v18.es + ' min), plus rien le dimanche 20 (' + s19.es + ')');
   /* 19 octobre : « Clore le cours » a vingt minutes les quatre soirs de cours -- 29 h 13 -> 27 h 53.
      21 octobre : la piscine du mardi -- le Clore du mardi passe a vingt minutes lui aussi : 27 h 33. */
   /* 30 octobre : la salle a 07:00 -- le trajet prend une demi-heure d'etude aux quatre matins de muscu : 25 h 43. */
@@ -136,7 +137,8 @@ console.log('\n== 84.6) Cibles hebdo : constantes en revision, croissantes en pr
   ok(e1.proj === 0 && e2.proj === e3.proj && e3.proj === t.proj,
      'une seule bascule : zero en phase 1, puis la meme valeur partout : ' + [pr(e1.proj), pr(e2.proj), pr(e3.proj), pr(t.proj)].join(' -> '));
   ok(e1.es > 0 && e2.es === 0 && e3.es === 0, 'l\'espagnol tombe a zero apres le mois repris : ' + [pr(e1.es), pr(e2.es), pr(e3.es)].join(' -> '));
-  ok(pr(rep.es) === 10.6 && pr(rep.rev) === 26.88, 'la semaine du 23 novembre, la premiere entiere du mois repris : 10 h 36 d\'espagnol, et le mercredi 05:30 redevient de l\'Anki (26 h 53 de revision) (' + pr(rep.es) + ' / ' + pr(rep.rev) + ')');
+  /* 19 novembre : pas de JJB avant le 2 decembre -- la semaine du 23, ses trois matins de club sont du travail : 30 h 19 de revision au lieu de 26 h 53 */
+  ok(pr(rep.es) === 10.6 && pr(rep.rev) === 30.32, 'la semaine du 23 novembre, la premiere entiere du mois repris : 10 h 36 d\'espagnol, et le mercredi 05:30 redevient de l\'Anki (30 h 19 de revision, sans JJB) (' + pr(rep.es) + ' / ' + pr(rep.rev) + ')');
   ok(pr(t.proj) === 0, 'grille type : plus aucun projet prevu, sans minuteur depuis le 25 septembre (' + pr(t.proj) + ')');
 }
 

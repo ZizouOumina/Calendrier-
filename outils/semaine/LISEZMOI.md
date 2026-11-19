@@ -12,9 +12,12 @@ python3 outils/semaine/build_guide.py
 - Les mêmes jours sont écrits dans `batcave.html` (bloc `#journees-guide`) : c'est l'onglet « Ma journée » de la
   Batcave. Chaque jour y porte la grille d'où il a été écrit (`sig`) ; la Batcave prévient si la sienne a changé depuis.
   Après toute ré-extraction, relancer `build_guide.py` puis republier la Batcave.
-- Depuis le 18 novembre (« on va décaler le premier jour à demain, jeudi 19/11 »), le guide commence le **jeudi 19
-  novembre**, le jour 1 : la semaine du 16 est extraite entière, et `build_guide.py` n'en garde que jeudi → dimanche
-  (`JOUR_1`). Avant (15 novembre, « recale tout sur lundi »), il commençait le lundi 16, et la
+- Depuis le 19 novembre (« on commence tout demain vendredi, ce mois ci j'aurais pas assez pour le JJB »), le guide
+  commence le **vendredi 20 novembre**, le jour 1 : la semaine du 16 est extraite entière (horloge le 19 à midi), et
+  `build_guide.py` n'en garde que vendredi → dimanche (`JOUR_1`). La première séance de salle est le samedi 21
+  (`PREMIERE_SALLE`) : sa ligne dit la séance de référence. Le JJB reprend le mercredi 2 décembre ; l'en-tête des
+  semaines du 16, du 23 et du 30 le dit. Le 18 novembre, le guide commençait le jeudi 19
+  (« on va décaler le premier jour à demain, jeudi 19/11 ») ; la semaine du 16 en gardait jeudi → dimanche. Avant (15 novembre, « recale tout sur lundi »), il commençait le lundi 16, et la
   semaine du 16 se construit comme les autres : `build11.py` et `build16.py` ne sont plus lancés par `build_guide.py`
   (ils ne servent plus qu'aux deux pages d'origine, plus bas).
 - Toutes les semaines (`SEMAINES` dans `build_guide.py`) sont construites depuis la Batcave seule : la consigne de

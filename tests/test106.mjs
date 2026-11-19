@@ -34,7 +34,9 @@ async function ouvrir(quand, extra){
    le journal passe au lundi 16, et le lundi 30 tombe 14 jours plus tard.
    18 novembre : la muscu part du jeudi 19 -- le journal passe au jeudi 19, et le jeudi 3 decembre
    tombe 14 jours plus tard. */
-const log = (exo, type, series, charge) => ({id: 'l-' + exo, date: '2026-11-19', type, exo, series, charge, unite: 'reps'});
+/* 19 novembre : la salle reprend le samedi 21 (jour 1 au vendredi 20) -- le journal passe au samedi 21, et le lundi 7 decembre
+   tombe apres ses quatorze jours a moitie (jusqu'au 4). */
+const log = (exo, type, series, charge) => ({id: 'l-' + exo, date: '2026-11-21', type, exo, series, charge, unite: 'reps'});
 
 console.log('\n== 261) Le cran de charge suit l\'exercice ==');
 {
@@ -50,7 +52,7 @@ console.log('\n== 261) Le cran de charge suit l\'exercice ==');
     log('Développé incliné haltères', 'Haut volume', [12,12,12], 16),
     log('Dips', 'Haut lourd', [11,10,9], 5)
   ]};
-  const { ctx, fr } = await ouvrir('2026-12-03T09:00:00+01:00', LOG);   /* volume complet des le jeudi 3 decembre (18 novembre : premiere seance le jeudi 19) */
+  const { ctx, fr } = await ouvrir('2026-12-07T09:00:00+01:00', LOG);   /* volume complet des le samedi 5 decembre (19 novembre : premiere seance le samedi 21) */
   const c = await fr.evaluate(() => {
     const ex = {}; window.__bcSessionsSport().forEach(s => s.exercises.forEach(e => { if(!ex[e.name]) ex[e.name] = e; }));
     const r = {}; ['Flexion du cou','Extension du cou','Tractions','Élévations latérales','Relevés de jambes suspendus','Squat barre','Développé incliné haltères','Dips'].forEach(n => { const x = window.__bcCibleProchaine(ex[n]); r[n] = {charge: x.charge, monter: x.monter, series: x.series}; });
@@ -156,7 +158,7 @@ console.log('\n== 264) « Phase Español » ne veut dire que la phase Español =
   const r = await fr.evaluate(() => ({
     oct2: (window.__bcPhaseEspanol('2026-10-02') || {}).id || null,
     oct13: window.__bcPhaseEspanol('2026-10-13'), oct13p: (window.__bcPeriode('2026-10-13') || {}).id,
-    nov19: (window.__bcPhaseEspanol('2026-11-19') || {}).id || null,
+    nov19: (window.__bcPhaseEspanol('2026-11-20') || {}).id || null,
     dec16: window.__bcPhaseEspanol('2026-12-16'), dec16p: (window.__bcPeriode('2026-12-16') || {}).id,
     dec21: window.__bcPhaseEspanol('2026-12-21'), dec21p: (window.__bcPeriode('2026-12-21') || {}).id,
     dec28: window.__bcPhaseEspanol('2026-12-28'), dec28p: (window.__bcPeriode('2026-12-28') || {}).id,
@@ -164,7 +166,7 @@ console.log('\n== 264) « Phase Español » ne veut dire que la phase Español =
   }));
   ok(r.oct2 === 'es-1', 'le 2 octobre : phase Español');
   ok(r.oct13p === 'partiels' && r.oct13 && r.oct13.sous === 'es-1', 'le 13 octobre, partiels dans la phase : la phase est toujours vue dessous');
-  ok(r.nov19 === 'es-1-reprise', 'le 19 novembre : le mois d\'espagnol repris (' + r.nov19 + ')');
+  ok(r.nov19 === 'es-1-reprise', 'le 20 novembre : le mois d\'espagnol repris (' + r.nov19 + ')');
   ok(r.dec16p === 'partiels' && r.dec16 && r.dec16.sous === 'es-1-reprise', 'le 16 décembre, partiels dans le mois repris : la phase est toujours vue dessous');
   ok(r.dec21p === 'partiels' && r.dec21 === null, 'le 21 décembre, partiels hors phase : pas de phase Español');
   ok(r.dec28p === 'vacances' && r.dec28 === null, 'le 28 décembre, vacances : pas de phase Español (' + r.dec28p + ')');

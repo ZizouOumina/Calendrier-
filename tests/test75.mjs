@@ -48,7 +48,7 @@ console.log('\n== 311) Le 14 au réveil : aucun objectif en retard des jours d\'
 console.log('\n== 312) Le réacteur annonce le jour 1, pas un « 0 % » ==');
 {
   /* le jour 1 est le mardi 29 (depuis le 28 septembre au soir), premier jour du programme */
-  const { ctx, fr, page } = await ouvrir('2026-11-19T07:20:00+01:00');   /* jour 1 (18 novembre : jeudi 19 ; 15 novembre : lundi 16 ; 13 novembre : samedi 14 ; 12 novembre : vendredi 13 ; 11 novembre : jeudi 12) */
+  const { ctx, fr, page } = await ouvrir('2026-11-20T07:20:00+01:00');   /* jour 1 (19 novembre : vendredi 20 ; 18 novembre : jeudi 19 ; 15 novembre : lundi 16 ; 13 novembre : samedi 14 ; 12 novembre : vendredi 13 ; 11 novembre : jeudi 12) */
   let v = await fr.evaluate(() => ({
     num: document.getElementById('dash-score-num').textContent,
     unite: document.getElementById('dash-score-unit').textContent,
@@ -62,8 +62,9 @@ console.log('\n== 312) Le réacteur annonce le jour 1, pas un « 0 % » ==');
      146 depuis le 19 octobre : le depart au mardi 20.
      145 depuis le 21 octobre : le depart au mercredi 21. 144 le meme jour : au jeudi 22. 134 depuis le 31 octobre : au dimanche 1er novembre. */
   /* 123 depuis le 11 novembre : le depart au jeudi 12, le 14 mars toujours fixe. 122 depuis le 12 : le vendredi 13. 121 depuis le 13 : le samedi 14. 119 depuis le 15 : le lundi 16. */
-  /* 15 novembre, tard le soir : la saison va jusqu'au 6 juin (l'horizon des objectifs, « 72 kg en juin ») */
-  ok(v.num === '1' && v.unite === '/200', 'le premier matin affiche « 1/200 » — 19 nov. → 6 juin, pas « 0 % » (' + v.num + v.unite + ')');
+  /* 15 novembre, tard le soir : la saison va jusqu'au 6 juin (l'horizon des objectifs, « 72 kg en juin ») -- 200 jours depuis
+     le jeudi 19, 199 depuis le vendredi 20 (19 novembre). */
+  ok(v.num === '1' && v.unite === '/199', 'le premier matin affiche « 1/199 » — 20 nov. → 6 juin, pas « 0 % » (' + v.num + v.unite + ')');
   ok(/Premier jour du programme/.test(v.note) && !/À reprendre/.test(v.note), 'la note dit ce que c\'est : ' + v.note);
   ok(v.hors === v.note, 'la même note existe hors de l\'anneau, pour le téléphone');
 
@@ -74,11 +75,17 @@ console.log('\n== 312) Le réacteur annonce le jour 1, pas un « 0 % » ==');
   await fr.evaluate(() => { window.__bcJournee.rendre(); document.querySelector('#mj-corps input[data-mj-hab]').click(); });
   await page.waitForTimeout(350);
   v = await lire();
-  ok(v.num === '1' && v.unite === '/200', 'une case cochée dans « Ma journée » ne touche pas le score : toujours « 1/200 »');
+  ok(v.num === '1' && v.unite === '/199', 'une case cochée dans « Ma journée » ne touche pas le score : toujours « 1/199 »');
+  await ctx.close();
+}
+{
+  /* 19 novembre : le vendredi 20, jour 1, n'a pas de salle -- la premiere serie se coche le samedi 21, la seance de reference */
+  const { ctx, fr, page } = await ouvrir('2026-11-21T07:20:00+01:00');
   await fr.evaluate(() => { const cb = document.querySelector('#sport-grid .sport-card.today input[data-sport]'); if(cb) cb.click(); });
   await page.waitForTimeout(350);
-  v = await lire();
-  ok(v.unite === '%' && Number(v.num) > 0, 'dès la première série cochée à la salle, c\'est un vrai score : ' + v.num + v.unite);
+  const v = await fr.evaluate(() => ({ num: document.getElementById('dash-score-num').textContent, unite: document.getElementById('dash-score-unit').textContent,
+                                       note: document.getElementById('dash-score-detail').textContent }));
+  ok(v.unite === '%' && Number(v.num) > 0, 'dès la première série cochée à la salle (samedi 21), c\'est un vrai score : ' + v.num + v.unite);
   ok(/la séance et le sommeil/.test(v.note), 'et la note redevient celle du score : ' + v.note);
   await ctx.close();
 }
@@ -169,9 +176,9 @@ console.log('\n== 312b) Avant le premier jour, aucun bloc n\'est reproche ==');
 }
 {
   /* Et des le jour 1, la detection reprend : un bloc echu et non fait est bien signale. */
-  const { ctx, fr } = await ouvrir('2026-11-19T12:00:00+01:00');
+  const { ctx, fr } = await ouvrir('2026-11-20T12:00:00+01:00');
   const t = await fr.evaluate(() => document.getElementById('dash-plan').innerText);
-  ok(/Bloc manqu\u00e9/.test(t), 'le jeudi 19 à midi, jour 1, les blocs échus non faits sont de nouveau signalés');
+  ok(/Bloc manqu\u00e9/.test(t), 'le vendredi 20 à midi, jour 1, les blocs échus non faits sont de nouveau signalés');
   await ctx.close();
 }
 

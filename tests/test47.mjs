@@ -27,7 +27,7 @@ const local = (fr,k) => fr.evaluate(x => JSON.parse((window.__bcLire || ((k) => 
    puisse observer a demi-charge. Le 21 septembre, lui, est passe AVANT le programme depuis
    la nuit du 20 au 21 : il n'a plus ni semaine ni facteur de tours. */
 /* Regime combat (28 septembre) : la seance LOURDE est le JEUDI, le lundi porte le volume. */
-const LUNDI = '2026-12-03T06:30:00+01:00';   /* 31 octobre : jour 1 au dimanche 1er, muscu le lundi 2 -- tours × ½ jusqu'au 15, le jeudi 19 est le premier Haut lourd complet. */   /* jeudi 29 octobre : Haut lourd, semaine 3 (jour 1 au mardi 13 depuis le 12 octobre) : tours complets. 19 octobre : jour 1 au mardi 20, la semaine 3 commence le 2 novembre -- jeudi 5. 21 octobre : la muscu commence le lundi 26, ses deux semaines a demi-charge vont jusqu'au 8 novembre -- jeudi 12 */
+const LUNDI = '2026-12-10T06:30:00+01:00';   /* 19 novembre : jour 1 au vendredi 20, la salle reprend le samedi 21 -- le premier Haut lourd est le jeudi 26 ; note au journal, il fait la premiere seance, et le jeudi 10 decembre, quatorze jours plus tard, sort de la montee en charge. */   /* 31 octobre : jour 1 au dimanche 1er, muscu le lundi 2 -- tours × ½ jusqu'au 15, le jeudi 19 est le premier Haut lourd complet. */   /* jeudi 29 octobre : Haut lourd, semaine 3 (jour 1 au mardi 13 depuis le 12 octobre) : tours complets. 19 octobre : jour 1 au mardi 20, la semaine 3 commence le 2 novembre -- jeudi 5. 21 octobre : la muscu commence le lundi 26, ses deux semaines a demi-charge vont jusqu'au 8 novembre -- jeudi 12 */
 const SAMEDI = '2027-01-30T06:30:00+01:00';   /* le premier samedi de muscu apres le regime combat (S2) : hors montee en charge, 3 series */
 /* 28 septembre au soir : jour 1 au mardi 29, semaine de reprise en combat seul, la muscu
    commence le lundi 5 octobre -- semaine 2 du programme, encore a demi-charge. */
@@ -67,12 +67,12 @@ console.log('\n== 108) Saisir des séries enregistre le journal et coche l\'exer
   await page.waitForTimeout(250);
   const log = await local(fr, 'batcave-sport-log');
   ok(Array.isArray(log) && log.length === 1 && log[0].exo === 'Tractions' && JSON.stringify(log[0].series) === '[8,7,6,6]', 'journal : Tractions 8/7/6/6 (' + JSON.stringify(log && log[0] && log[0].series) + ')');
-  const st = await local(fr, 'batcave-sport-2026-12-03');
+  const st = await local(fr, 'batcave-sport-2026-12-10');
   ok(st && st['Haut lourd-1'] === true, 'l\'exercice est coché automatiquement');
   ok(await fr.evaluate(() => document.querySelector('.sport-card.today li:not(.puissance)').classList.contains('checked')), 'la ligne apparaît cochée');
   await effacerSaisie(fr);
   await page.waitForTimeout(200);
-  ok((await local(fr, 'batcave-sport-log')).length === 0 && (await local(fr, 'batcave-sport-2026-12-03'))['Haut lourd-1'] === false, 'effacer → journal vide et case décochée');
+  ok((await local(fr, 'batcave-sport-log')).length === 0 && (await local(fr, 'batcave-sport-2026-12-10'))['Haut lourd-1'] === false, 'effacer → journal vide et case décochée');
   await ctx.close();
 }
 
@@ -84,8 +84,8 @@ console.log('\n== 109) Double progression ==');
      18 novembre : jour 1 au jeudi 19 -- la premiere seance (Haut lourd) est le jeudi 19 ; le jeudi 3 decembre, quatorze
      jours plus tard, sort de la montee en charge. */
   const { ctx, fr } = await ouvrir(LUNDI, { 'batcave-sport-log': [
-    {id:'a', date:'2026-11-19', type:'Haut lourd', exo:'Tractions', series:[8,7,6,6], charge:0, unite:'reps'},
-    {id:'b', date:'2026-11-19', type:'Haut lourd', exo:'Rowing barre', series:[10,10,10], charge:40, unite:'reps'}
+    {id:'a', date:'2026-11-26', type:'Haut lourd', exo:'Tractions', series:[8,7,6,6], charge:0, unite:'reps'},
+    {id:'b', date:'2026-11-26', type:'Haut lourd', exo:'Rowing barre', series:[10,10,10], charge:40, unite:'reps'}
   ]});
   const t = await fr.evaluate(() => document.querySelector('.sport-card.today').innerText);
   /* 17 novembre, « ajuste pour la 3 » : 3 × 5-8 le jeudi -- la dernière séance (quatre séries) donne les trois cibles suivantes */
@@ -120,7 +120,7 @@ console.log('\n== 110) Record, panneau de progression et courbe ==');
 
 console.log('\n== 111) Le tableau de bord annonce les cibles du jour, et le jour off ==');
 {
-  const { ctx, fr } = await ouvrir(LUNDI, { 'batcave-sport-log': [{id:'a', date:'2026-11-19', type:'Haut lourd', exo:'Tractions', series:[8,7,6,6], charge:0, unite:'reps'}] });
+  const { ctx, fr } = await ouvrir(LUNDI, { 'batcave-sport-log': [{id:'a', date:'2026-11-26', type:'Haut lourd', exo:'Tractions', series:[8,7,6,6], charge:0, unite:'reps'}] });
   await fr.evaluate(() => { document.querySelector('.nav-btn[data-page="dashboard"]').click(); const b = document.getElementById('dash-more-toggle'); if(document.getElementById('dash-more').hidden) b.click(); });
   const t = await fr.evaluate(() => document.getElementById('dash-sport').innerText);
   ok(/Cibles : Tractions 8\/8\/7(?!\/)/.test(t), 'Sport aujourd\'hui : « Cibles : Tractions 8/8/7 … » (' + t.replace(/\s+/g,' ').slice(0, 90) + ')');

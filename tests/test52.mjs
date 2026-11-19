@@ -151,8 +151,11 @@ console.log('\n== 171) Activer : un événement par bloc, aujourd\'hui (restants
      besoin de plein de notifs, tant que ce que je dois faire s'affiche precisement dans ma journee dans la batcave » --
      plus aucune : 467.
      18 novembre : jour 1 au jeudi 19, le mardi de reference passe au 24 -- la fenetre de 75 jours va jusqu'au 7 fevrier, et
-     contient les memes dix-neuf journees (aucun jour sans cours entre le 31 janvier et le 7 fevrier) : 467. */
-  ok(crees.length === 467, '467 événements créés : mardi 24 et mercredi 25, plus le 8 décembre, les jours de semaine des vacances de Noël et les jours sans cours de fin janvier, et la clôture de chaque soir (' + crees.length + ')');
+     contient les memes dix-neuf journees (aucun jour sans cours entre le 31 janvier et le 7 fevrier) : 467.
+     19 novembre : jour 1 au vendredi 20, pas de JJB avant le 2 decembre -- le mercredi 25 n'a plus la collation combat,
+     le trajet du club, le JJB ni le retour du club, mais la question ouverte et le livrable de la semaine : 21 blocs au
+     lieu de 23, 465. */
+  ok(crees.length === 465, '465 événements créés : mardi 24 et mercredi 25, plus le 8 décembre, les jours de semaine des vacances de Noël et les jours sans cours de fin janvier, et la clôture de chaque soir (' + crees.length + ')');
   const cloches = crees.filter(c => /🔔/.test(c.input.summary)).map(c => c.input.startTime.slice(0, 16) + ' ' + c.input.summary);
   ok(cloches.length === 0, 'aucune notification de tâche : les tâches du jour vivent dans « Ma journée » (' + (cloches.join(' | ') || 'aucune') + ')');
   /* Anki 1 (05:30) a commence a 06:30 : il n'est pas envoye. Anki 2, a 09:00, l'est. */
@@ -170,27 +173,27 @@ console.log('\n== 171) Activer : un événement par bloc, aujourd\'hui (restants
   const ankiDemain = crees.find(c => /Anki matinal/.test(c.input.summary));
   ok(!!ankiDemain && ankiDemain.input.startTime === '2026-11-25T05:30:00+01:00' && ankiDemain.input.endTime === '2026-11-25T06:30:00+01:00', 'mercredi (jour off) : Anki matinal de demain 05:30 → 06:30');
   const r8 = await local(fr, 'batcave-gcal-2026-11-24'), r9 = await local(fr, 'batcave-gcal-2026-11-25');
-  ok(r8 && Object.keys(r8).length === 23 && r9 && Object.keys(r9).length === 23 && Object.values(r8).every(x => x.id && x.empreinte && x.cree === true), 'relevés locaux : 23 + 23 blocs (la clôture comprise) avec id, empreinte et marque « créé par la Batcave »');
+  ok(r8 && Object.keys(r8).length === 23 && r9 && Object.keys(r9).length === 21 && Object.values(r8).every(x => x.id && x.empreinte && x.cree === true), 'relevés locaux : 23 + 21 blocs (la clôture comprise, le mercredi sans JJB) avec id, empreinte et marque « créé par la Batcave »');
   const opt = await local(fr, 'batcave-gcal-ecriture');
-  ok(opt && opt.actif === true && opt.bilan && opt.bilan.crees === 467 && opt.bilan.passes === 1, 'option active, bilan : 467 créés, 1 déjà commencé non envoyé');
+  ok(opt && opt.actif === true && opt.bilan && opt.bilan.crees === 465 && opt.bilan.passes === 1, 'option active, bilan : 465 créés, 1 déjà commencé non envoyé');
   const lus = await appels(fr, 'list_events');
   ok(lus.length === 19, 'chaque journée poussée est relue dans Google avant l\'envoi (' + lus.length + ' lectures pour 19 jours)');
   /* second envoi : rien à créer */
   await fr.evaluate(() => document.getElementById('gcal-pousser').click());
   await page.waitForTimeout(400);
   const crees2 = await appels(fr, 'create_event');
-  ok(crees2.length === 467, '« Pousser maintenant » ne recrée rien (' + crees2.length + ')');
+  ok(crees2.length === 465, '« Pousser maintenant » ne recrée rien (' + crees2.length + ')');
   const det = await fr.evaluate(() => document.getElementById('gcal-detail').textContent);
-  ok(/467 inchangés/.test(det), 'détail : ' + det.slice(0, 90));
+  ok(/465 inchangés/.test(det), 'détail : ' + det.slice(0, 90));
   /* relevé local perdu (autre appareil) : les événements présents sont adoptés, pas doublés */
   await fr.evaluate(() => localStorage.removeItem('batcave-gcal-2026-11-25'));
   await fr.evaluate(() => document.getElementById('gcal-pousser').click());
   await page.waitForTimeout(400);
   const crees3 = await appels(fr, 'create_event');
   const r9b = await local(fr, 'batcave-gcal-2026-11-25');
-  ok(crees3.length === 467 && r9b && Object.keys(r9b).length === 23 && Object.values(r9b).every(x => x.cree === false), 'sans relevé local, les 23 événements de demain sont reconnus et adoptés (marqués « pas créés par la Batcave »), aucun doublon');
+  ok(crees3.length === 465 && r9b && Object.keys(r9b).length === 21 && Object.values(r9b).every(x => x.cree === false), 'sans relevé local, les 21 événements de demain sont reconnus et adoptés (marqués « pas créés par la Batcave »), aucun doublon');
   const opt2 = await local(fr, 'batcave-gcal-ecriture');
-  ok(opt2.bilan.adoptes === 23, 'bilan : 23 adoptés (la clôture comprise)');
+  ok(opt2.bilan.adoptes === 21, 'bilan : 21 adoptés (la clôture comprise)');
   /* désactiver retire les rappels envoyés */
   await fr.evaluate(() => document.getElementById('gcal-toggle').click());
   await page.waitForTimeout(500);
@@ -199,7 +202,7 @@ console.log('\n== 171) Activer : un événement par bloc, aujourd\'hui (restants
      que les jours sans cours partent d'avance, un releve peut porter sur une date lointaine.
      21 (mardi 29) + 20 (9 oct.) + 19 (12 oct.) + 20 (8 dec.) = 80. Ceux du mercredi,
      adoptes au tour precedent donc marques « pas crees par la Batcave », restent. */
-  ok(sup.length === 444, 'désactiver ne retire que ce que la Batcave a créé, sur TOUS les jours poussés (467 − les 23 adoptés du mercredi) — ' + sup.length);
+  ok(sup.length === 444, 'désactiver ne retire que ce que la Batcave a créé, sur TOUS les jours poussés (465 − les 21 adoptés du mercredi) — ' + sup.length);
   const r8c = await local(fr, 'batcave-gcal-2026-11-24');
   ok(r8c === null && (await local(fr, 'batcave-gcal-ecriture')).actif === false, 'relevés effacés, option éteinte');
   await ctx.close();
@@ -217,7 +220,7 @@ console.log('\n== 172) Option active au démarrage : envoi automatique ; bloc d�
   const maj = await appels(fr, 'update_event');
   ok(maj.length === 1 && maj[0].input.eventId === 'ancien1' && maj[0].input.startTime === '2026-11-24T09:00:00+01:00', 'le bloc dont l\'heure a changé est mis à jour, pas recréé');
   const crees = await appels(fr, 'create_event');
-  ok(crees.length === 466, 'les 466 autres sont créés au démarrage (' + crees.length + ')');
+  ok(crees.length === 464, 'les 464 autres sont créés au démarrage (' + crees.length + ')');   /* 19 novembre : 465 − 1 (le mercredi 25 sans JJB) */
   const st = await fr.evaluate(() => document.getElementById('gcal-statut').textContent);
   ok(/actif · dernier envoi/.test(st), 'statut : ' + st);
   await ctx.close();
@@ -249,7 +252,7 @@ console.log('\n== 172b) Ton agenda porte déjà le planning en événements réc
   ok(!crees.some(c => c.input.summary === '🦇 Coucher' && c.input.startTime.startsWith('2026-11-24')) && maj.some(m => m.input.eventId === 'rec2_20260908' && m.input.startTime === '2026-11-24T21:35:00+01:00'), 'Coucher déjà là à 21:00 : l\'instance est alignée sur le planning (21:35), pas doublée');
   ok(maj.some(m => m.input.eventId === 'rec1' && m.input.useDefaultReminders === false && !m.input.overrideReminders) && maj.some(m => m.input.eventId === 'rec2' && m.input.overrideReminders && m.input.overrideReminders[0].minutes === 30), 'les rappels sont posés sur la SÉRIE récurrente : aucun pour la révision, 30 min pour le coucher (17 novembre)');
   ok(!maj.some(m => m.input.eventId === 'rec1_20260908' && ('overrideReminders' in m.input || 'useDefaultReminders' in m.input)), 'Anki 2 : le rappel va à sa série, jamais à l\'occurrence (qui ne reçoit que la consigne du jour)');
-  ok(crees.length === 464, '464 créations seulement (467 − 3 adoptés)');
+  ok(crees.length === 462, '462 créations seulement (465 − 3 adoptés)');
   /* 31 octobre : la description d'une serie de septembre (« Réchauffage — repas préparés le dimanche. »)
      ne reste pas sur l'instance du jour : elle reprend la consigne du jour. */
   ok(maj.some(m => m.input.eventId === 'rec3_20260908' && /La boîte du jour : les pâtes/.test(m.input.description || '')), 'le déjeuner adopté reprend la consigne du jour (les pâtes, dès le 16), pas la description de septembre');
@@ -259,7 +262,7 @@ console.log('\n== 172b) Ton agenda porte déjà le planning en événements réc
   await fr.evaluate(() => document.getElementById('gcal-toggle').click());
   await page.waitForTimeout(700);
   const sup = await appels(fr, 'delete_event');
-  ok(sup.length === 464 && !sup.some(d => /^rec/.test(d.input.eventId)), 'désactiver retire les 464 créés et jamais tes événements adoptés (' + sup.length + ')');
+  ok(sup.length === 462 && !sup.some(d => /^rec/.test(d.input.eventId)), 'désactiver retire les 462 créés et jamais tes événements adoptés (' + sup.length + ')');
   await ctx.close();
 }
 

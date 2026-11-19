@@ -1054,7 +1054,7 @@
    {
     "h": "20:00",
     "l": "Dîner",
-    "c": "La boîte de riz du matin (125 g crus) et la boîte du jour : viande hachée 70 g, 80 g d'épinards, réchauffées ensemble à la poêle. Pas de sauce : hors du feu, les 15 ml d'huile d'olive crue sur le riz, sel iodé et tes épices. La créatine, 5 g, avec le repas. Ensuite plus rien jusqu'au lendemain."
+    "c": "Pas encore de boîte : une septième portion du batch de ce soir, mangée tout de suite — 125 g de riz (crus) cuits ce soir, viande hachée 70 g, 80 g d'épinards. Pas de sauce : hors du feu, les 15 ml d'huile d'olive crue sur le riz, sel iodé et tes épices. La créatine, 5 g, avec le repas. Ensuite plus rien jusqu'au lendemain."
    },
    {
     "h": "20:25",
@@ -1486,7 +1486,7 @@
    {
     "h": "07:00",
     "l": "Sport",
-    "c": "La salle à 07:00, dès l'ouverture : 5 minutes de vélo ou de rameur avec le podcast espagnol, les séries d'approche, puis la séance du jour dans l'onglet Sport. Fini à 07:55."
+    "c": "La salle à 07:00, dès l'ouverture. Échauffement : 5 minutes de vélo ou de rameur (mardi et samedi : 2 rounds de 2 min de shadow boxing), puis deux séries d'approche du premier exercice (la moitié de la charge, puis les trois quarts). La séance du jour est dans l'onglet Sport, charges déjà calculées. Lundi, haut du corps en volume, à 2 ou 3 reps de l'échec : JJB à 10:30. Mardi, bas complet (squat), puis le sac en rounds techniques. Jeudi, haut lourd : c'est là que la force se construit. Samedi, le second bas et les bras, puis le sac en intervalles. Mardi et samedi, bandes et gants dans le sac. Squat et développé couché dans le rack, barres de sécurité réglées juste sous le bas du mouvement : à l'ouverture, la salle est presque vide. Retour à 07:55, douche en rentrant."
    },
    {
     "h": "07:55",
@@ -1506,7 +1506,7 @@
    {
     "h": "09:00",
     "l": "Anki 2",
-    "c": "Suite des échéances de dentaire. Les 5 dernières minutes : les dix formules du jour (paquet Español)."
+    "c": "Suite des échéances de dentaire. Les 5 dernières minutes : échéances du paquet Business (glossaire dropshipping)."
    },
    {
     "h": "10:00",
@@ -1516,7 +1516,7 @@
    {
     "h": "11:20",
     "l": "Projets perso 3",
-    "c": "Un bloc de projet de plus, sans minuteur : le livrable de la semaine d'abord (un devoir ou une présentation de la fac, celui que tu cocheras dimanche). Sinon, des révisions : tu choisis quoi. La boutique ne commence que le samedi 19 décembre."
+    "c": "Un bloc de projet de plus, sans minuteur : le livrable de la semaine d'abord (celui que tu cocheras dimanche), sinon la prochaine ligne non cochée du dossier e-commerce."
    },
    {
     "h": "12:20",
@@ -1530,13 +1530,13 @@
    },
    {
     "h": "13:00",
-    "l": "Español · gramática",
-    "c": "Le point de grammaire de la semaine (Dossier Español, section 07). Ordre de départ, tiré de ton oral du 25 sept. (A2+) : 1) le passé — indefinido avec ayer / el lunes (comí), perfecto avec hoy / esta semana — et les pronominaux au passé (me levanté, me duché) ; 2) la bonne personne du verbe (vengo, tenía) et le « yo » qu’on retire ; 3) les faux amis (celoso, brasileño, gradiente). « Balance » change l’ordre si tes chiffres du dimanche disent autre chose. Méthode : chaque règle lue → dix phrases écrites et dix dites à voix haute sur tes sujets, puis les exercices du livre corrigés à la main. Pomodoro Español « gramática »."
+    "l": "Projets perso 1",
+    "c": "Un devoir ou une présentation à rendre passe en premier (l'échéance la plus proche, onglet Calendrier). Sinon la boutique : la prochaine ligne non cochée du dossier e-commerce. Bloc des décisions (produit, fournisseur, pub). Sans minuteur : tu travailles jusqu'au bloc suivant."
    },
    {
     "h": "14:00",
-    "l": "Español · escribir",
-    "c": "Une question ouverte d'examen sur un tema vu (Claude, « examen ») : 25 min sans dictionnaire, en espagnol, puis correction en deux temps — contenu, puis langue — et une carte par erreur. C'est de la révision qui se fait en espagnol : le Pomodoro Español la compte en espagnol, l'examen de janvier la note à 50 %."
+    "l": "Projets perso 2",
+    "c": "Un livrable en cours d'abord (l'échéance la plus proche). Sinon la ligne suivante de type « construire » du dossier e-commerce : feuille, page, brief, fiche, compte. Quelque chose qui existe à la fin du bloc."
    },
    {
     "h": "14:50",
@@ -1546,17 +1546,17 @@
    {
     "h": "15:00",
     "l": "Trajet cours",
-    "c": "Tapis enlevés du sol (rappel de 14:52) ? Le robot passe à 15:45 et à 18:15 ; ce soir, les tapis remis et son bac vidé. Puis podcast en marchant, shadowing à mi-voix dans le tram. Arrivé avant 15:30 : conversation avec les compañeros, pas le téléphone."
+    "c": "Tapis enlevés du sol (rappel de 14:52) ? Le robot passe à 15:45 et à 18:15 ; ce soir, les tapis remis et son bac vidé. Avant de fermer : clés, portefeuille, téléphone, gourde. Arrivé avant 15:30 : cinq minutes avec les compañeros, pas le téléphone."
    },
    {
     "h": "15:30",
     "l": "Cours",
-    "c": "Notes en espagnol, un « ? » dans la marge pour chaque mot inconnu, ta question posée avant la fin. Trente minutes de conversation réelle dans la journée."
+    "c": "Un « ? » dans la marge pour chaque mot inconnu, ce que le prof souligne entouré, ta question posée avant la fin."
    },
    {
     "h": "19:30",
     "l": "Trajet retour",
-    "c": "Une minute de résumé oral du cours enregistrée en marchant, puis un appel ou un message à ta famille. Dans le tram : Anki Español et trois minutes de paquet Business."
+    "c": "Une minute de résumé oral du cours enregistrée en marchant, puis un appel ou un message à ta famille."
    },
    {
     "h": "20:00",
@@ -1586,7 +1586,7 @@
    {
     "h": "21:35",
     "l": "Coucher",
-    "c": "Clôture du jour faite, la ligne en espagnol ? Écran off, réveil posé loin du lit."
+    "c": "Clôture du jour faite ? Écran off, réveil posé loin du lit."
    }
   ],
   "habits": [
@@ -1931,10 +1931,10 @@
   "cible": {
    "rev": 201,
    "proj": 0,
-   "es": 105
+   "es": 0
   },
-  "periode": "es-1-reprise",
-  "espagnol": true
+  "periode": null,
+  "espagnol": false
  },
  {
   "iso": "2026-11-20",
@@ -1967,24 +1967,14 @@
     "c": "Un tema que le prof n'a pas encore donné (la matière la plus loin de ses 3 d'avance). Lire les diapos en espagnol, une phrase à toi par point, « ? » dans la marge, 15-25 cartes Dentaire importées (40 en Anatomía). Puis, dans le projet Claude Dentaire : « estudia · matière Tn · tes ? » — la réponse en sept parties, la chaîne du mécanisme pour tout tema d'Anatomía, Biología ou Epidemiología, tes dix lignes en espagnol dans Notion, les cartes de la réponse importées. Pomodoro nommé « Étudier · matière Tn ». Une base qui manque (« base · notion ») passe devant tout le reste."
    },
    {
-    "h": "10:05",
-    "l": "Collation combat",
-    "c": "Une banane, et 2 galettes de riz avec 15 g de Nutella : du glucide qui passe vite et rien de lourd, 25 minutes avant le tatami. Le shake de récup t'attend au retour. Remplis la gourde. Aujourd'hui, l'eau monte à 3,5 à 4 L."
-   },
-   {
     "h": "10:20",
-    "l": "Trajet club",
-    "c": "Dix minutes à pied. Dans le sac : kimono ou short, protège-dents, gourde pleine, serviette. Ongles des mains et des pieds courts."
+    "l": "Question ouverte ou autre",
+    "c": "Une heure de révision, à toi de choisir ce qui sert le plus cette semaine : une question ouverte d'examen rédigée en espagnol (25 min sans support, puis « examen » avec Claude : contenu, puis langue), des exercices d'Epidemiología (tableau 2×2, RR, OR, taux), le blanc du prochain questionnaire (15 questions, 20 min, livre fermé), ou la préparation d'un TP. Chaque erreur → une carte."
    },
    {
-    "h": "10:30",
-    "l": "🥋 JJB",
-    "c": "1 h 30 de JJB. Protège-dents. Tape tôt sur une clé ou un étranglement : un débutant qui attend se blesse. Bois entre les rounds — aujourd'hui, 3,5 à 4 L d'eau sur la journée. Pose des questions en espagnol : c'est aussi de l'immersion."
-   },
-   {
-    "h": "12:00",
-    "l": "Retour du club",
-    "c": "Le shake de récup en rentrant : 250 ml de boisson d'avoine, une banane, 20 g de flocons, au mixeur. Puis la douche dès que possible. Le kimono et le rashguard en machine le jour même, 30 °C, à l'envers, avec la tenue de salle de jeudi — jamais d'adoucissant sur le sport. Bois 500 ml d'eau en rentrant."
+    "h": "11:20",
+    "l": "Projets perso 3",
+    "c": "Un bloc de projet de plus, sans minuteur : le livrable de la semaine d'abord (un devoir ou une présentation de la fac, celui que tu cocheras dimanche). Sinon, des révisions : tu choisis quoi. La boutique ne commence que le dimanche 20 décembre."
    },
    {
     "h": "12:20",
@@ -2423,7 +2413,7 @@
    ]
   },
   "cible": {
-   "rev": 166,
+   "rev": 235,
    "proj": 0,
    "es": 55
   },
@@ -2508,7 +2498,7 @@
    {
     "h": "18:00",
     "l": "Projets perso 3",
-    "c": "Samedi 18:00-19:30, une heure et demie d'un trait, sans minuteur : le livrable de la semaine d'abord (un devoir ou une présentation de la fac, celui que tu cocheras dimanche). Sinon, des révisions : tu choisis quoi. La boutique ne commence que le samedi 19 décembre."
+    "c": "Samedi 18:00-19:30, une heure et demie d'un trait, sans minuteur : le livrable de la semaine d'abord (un devoir ou une présentation de la fac, celui que tu cocheras dimanche). Sinon, des révisions : tu choisis quoi. La boutique ne commence que le dimanche 20 décembre."
    },
    {
     "h": "19:30",

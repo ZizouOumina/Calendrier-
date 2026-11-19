@@ -10,8 +10,8 @@ const note = m => { avert++; console.log('  ⚠     '+m); };
 
 /* 18 novembre : le jour 1 passe au jeudi 19. Les calculs d'un lundi se lisent au premier lundi du programme, le 23 ;
    le jour 1 lui-même (section 10) au jeudi 19. Avant : le lundi 16 (15 novembre), le lundi 14 septembre. */
-const JOUR = '2026-11-23';   /* lundi, le premier du programme */
-const JOUR1 = '2026-11-19';  /* jeudi, jour 1 du programme */
+const JOUR = '2026-12-14';   /* lundi de JJB, dans le mois d'espagnol (19 novembre : pas de JJB avant le 2 decembre, et la semaine du 7 a un ferie) */
+const JOUR1 = '2026-11-20';  /* vendredi, jour 1 du programme (19 novembre ; avant, le jeudi 19) */
 async function ouvrir(seed, quand){
   const ctx = await b.newContext({viewport:{width:1440,height:1200}, timezoneId:'Europe/Madrid', locale:'fr-FR'});
   await ctx.addInitScript(s=>{
@@ -115,7 +115,8 @@ console.log('\n═══ 6. Sport : une séance vaut la part de ses cases coché
      suspendus sont revenus en fin de séance ; plus de curl inversé) ; les clés sont « <type>-<index> ».
      15 novembre : le lundi 16, jour 1, est un « Haut volume » et la séance de référence -- la scène se joue le jeudi 19. */
   /* 17 novembre : 11, la flexion du cou ferme la séance du jeudi (en trio avec les tractions serviette et le crunch) */
-  const TYPE = 'Haut lourd', N = 11, JEUDI = '2026-11-19';
+  /* 19 novembre : jour 1 au vendredi 20, la salle des le samedi 21 -- le premier jeudi de salle est le 26 */
+  const TYPE = 'Haut lourd', N = 11, JEUDI = '2026-11-26';
   for(const n of [0, 3, 4, 5, 7, N]){
     const st = {}; for(let i=0;i<n;i++) st[TYPE+'-'+i] = true;
     const {ctx, page, fr} = await ouvrir({['batcave-sport-'+JEUDI]: st}, JEUDI+'T21:00:00+01:00');
@@ -217,7 +218,7 @@ console.log('\n═══ 10. Jour 1 : aucun objectif en déficit ═══');
   const o = await objectifs(fr, page);
   /* la ligne de synthèse fait foi : « X/Y dans les clous ou mieux · N en retard · … » */
   const m = o.match(/(\d+)\/(\d+) dans les clous ou mieux · (\d+) en retard · (\d+) sans données · (\d+) % de la période écoulée/);
-  ok(m && m[3] === '0', 'le matin du 19 : ' + (m?m[3]:'?') + ' objectif(s) en retard (0 attendu) — ' + (m?m[0]:'ligne introuvable'));
+  ok(m && m[3] === '0', 'le matin du 20 : ' + (m?m[3]:'?') + ' objectif(s) en retard (0 attendu) — ' + (m?m[0]:'ligne introuvable'));
   ok(m && Number(m[5]) <= 6, 'part de période écoulée le jour 1 : ' + (m?m[5]:'?') + ' % (pas 100 %)');
   await ctx.close();
 }
@@ -235,7 +236,7 @@ console.log('\n═══ 11. Le réacteur et les cellules disent-ils la même ch
     const d = '2026-12-14';
     const {ctx, page, fr} = await ouvrir({}, d+'T21:00:00+01:00');
     const cel = await fr.evaluate(()=>((document.getElementById('dash-temps').innerText.replace(/\n/g,' ').match(/Projets perso 0 ([^·]+)/)||[])[1] || ''));
-    ok(/Español à leur place jusqu’au 18 déc\./.test(cel), d + ' : dans le mois d\'espagnol, la cellule le dit — « Projets perso 0 ' + cel.trim() + ' »');
+    ok(/Español à leur place jusqu’au 19 déc\./.test(cel), d + ' : dans le mois d\'espagnol, la cellule le dit — « Projets perso 0 ' + cel.trim() + ' »');
     await ctx.close();
   }
   for(const d of ['2026-12-21','2027-02-15']){

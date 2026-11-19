@@ -171,8 +171,9 @@ console.log('\n== 120b) Le saut de depart ne doit JAMAIS faire retirer des calor
      12 novembre : jour 1 au vendredi 13 -- rien avant le 4 decembre.
      13 novembre : jour 1 au samedi 14 -- rien avant le 5 decembre.
      15 novembre : jour 1 au lundi 16 -- rien avant le 7 decembre.
-     18 novembre : jour 1 au jeudi 19 -- rien avant le 10 decembre. */
-  ok(/rien avant le 10 d\u00e9c\./.test(txt) && /glyc\u00e8ne|glycog\u00e8ne/.test(txt),
+     18 novembre : jour 1 au jeudi 19 -- rien avant le 10 decembre.
+     19 novembre : jour 1 au vendredi 20 -- rien avant le 11 decembre. */
+  ok(/rien avant le 11 d\u00e9c\./.test(txt) && /glyc\u00e8ne|glycog\u00e8ne/.test(txt),
      'elle explique l\'attente au lieu de rester muette : ' + txt.slice(-190));
   await ctx.close();
 }

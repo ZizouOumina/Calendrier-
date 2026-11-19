@@ -1,5 +1,53 @@
 # Où on en est — samedi 19 septembre 2026, au soir
 
+> ### Jeudi 19 novembre — le jour 1 au vendredi 20 ; pas de JJB en novembre
+> **Ses mots** : « on commence tout demain vendredi, ce mois ci j'aurais pas assez pour le JJB ». Sa sauvegarde du 19
+> (17:40) : les courses de mercredi cochées, rien d'autre de noté.
+> **Les dates** :
+> - le jour 1 (`PROGRAMME_DEBUT`) passe au vendredi 20 ;
+> - la salle (`MUSCU_DEBUT`) aussi, mais le vendredi n'a pas de salle : la première séance, la séance de référence, est
+>   le samedi 21. Demi-volume jusqu'au 4 décembre ; les retests restent les lundis 14 décembre, 18 janvier et 22 février
+>   (la semaine de la première séance est toujours celle du 16) ;
+> - le JJB : pas en novembre. La pause (`COMBAT_PAUSE_2`) va jusqu'au mardi 1er décembre, et le premier JJB est le
+>   mercredi 2. Choix par défaut, dit dans la réponse : le premier cours de décembre, payé avec l'argent du 25 (la
+>   licence, 30 €, et décembre, 70 €). L'abonnement de novembre sort des dettes (`A_REGLER`). D'ici là, les matins de
+>   club sont des blocs d'étude (question ouverte à 10:20, le livrable de la semaine à 11:20), sans collation combat ni
+>   shake de récup ;
+> - le mois d'espagnol (`ES_REPRISE_DEBUT/FIN`) va du vendredi 20 novembre au samedi 19 décembre, un mois pile : 50 h 20
+>   de blocs, dont 46 h 59 au minuteur. L'e-commerce commence le dimanche 20 décembre (4 h 30 ce jour-là, puis 23 h 20 la
+>   semaine du 21). Les quatre dimanches de l'épreuve ne bougent pas ;
+> - l'horizon des objectifs part du 20 novembre (migration des horizons du 16 et du 19) ;
+> - la semaine de référence des courses (`BESOIN_SEMAINE`) devient celle du 14 décembre, la première pleine (salle, JJB,
+>   cours, sans férié) ; celle du 23 n'a plus de JJB.
+> **L'agenda** : la Batcave du jeudi l'avait déjà remis sur le jeudi 19 à 17:43. J'ai retiré à la main la collation
+> combat, le trajet du club (et son rappel de 10:15), le JJB et le retour du club du vendredi 20 ; le reste se refait à
+> la prochaine ouverture (le jour 1 a changé, la remise au propre repart du 20 au 24 janvier).
+> **Le guide** : « Ta semaine » et « Ma journée » partent du vendredi 20 (66 jours), les dix semaines ré-extraites avec
+> sa sauvegarde du 19. Le samedi 21, la ligne de la salle dit la séance de référence. Le vendredi 20, l'appel au centro
+> de salud ne dit plus « en rentrant de la salle ». « Ta semaine type » reste la semaine du 23, la vraie semaine qui
+> vient, et dit que le JJB n'y est pas.
+> **Les pages** : la prise en main (le club le mercredi 2 décembre, les cases du départ au vendredi 20, sans nouvelle
+> clé pour garder ce qu'il a coché ; l'épreuve du dimanche disait encore trois dates, elle en dit quatre), le dossier
+> Español (v2.24), le dossier E-commerce, « Paliers de physique » (la base mesurée le samedi 21), programme-sport.md et
+> programme-alimentation.md (le JJB disait encore « à partir du 2 novembre »), suivi-batcave.
+> **Corrigé en passant** :
+> - le premier club après la pause (mercredi 2 décembre) annonçait la tenue de salle de mardi, lundi, samedi et jeudi : la
+>   consigne remontait jusqu'au dernier JJB. Pendant la pause, la machine du lundi, du mercredi et du vendredi a lieu quand
+>   même (l'habitude du linge) : elle s'arrête désormais au dernier jour de machine, et ne dit plus que mardi ;
+> - un soir de veille avec deux échéances le lendemain (le mercredi 25, le 1er et le 15 décembre), la note de « Ma
+>   journée » mélangeait les matières ; chacune garde la sienne.
+> **Tests recalés** : 47, 48, 49, 52, 53, 57, 59, 64, 65, 66, 70, 74, 75, 76, 78, 80, 81, 83, 84, 85, 86, 87, 88, 100,
+> 106, 107, 109, 114, 115, 118, 120, 122 et 123, zz-semaine, zz-journee-saison et audit-suivi. Ceux qui lisaient un JJB en
+> novembre lisent la semaine du 14 décembre, la première pleine.
+> **Vérifié** : la campagne complète (115 tests) ; les sept audits (audit, audit-suivi recalé, audit-cablage, verif-pages, contraste,
+>   verif-profonde, et ses données réelles le 19 au soir, le 20 et le 22) ; la saison avec sa sauvegarde du 19, du
+>   20 novembre au 6 juin : A, 199 jours et 3 769 cases, toutes justes, le pas à pas identique à la grille sur ses 66 jours ;
+>   B, chaque jour ouvert comme aujourd'hui, coché, décoché et rechargé, tout vert.
+> **Publié** : la Batcave, « Ta semaine », « Ta semaine type », « À quoi sert la Batcave », la prise en main, les
+>   dossiers Español et E-commerce, « Paliers de physique ».
+> **En attente** : sa pesée de dimanche 22, sa réponse sur les rappels des cours de la fac, et la date du JJB si le
+> mercredi 2 décembre ne lui va pas.
+
 > ### Mercredi 18 novembre — le jour 1 au jeudi 19 ; un mois d'espagnol pile, puis l'e-commerce
 > **Ses mots** : « ensuite on vas decaler le premier jour a demain, jeudi 19/11, on va tout decaler, le programme
 > d'apprentissage d'espagnol doit prendre 1 mois pile, parce que apres je commence a rebosser sur l'eccomerce, pas le

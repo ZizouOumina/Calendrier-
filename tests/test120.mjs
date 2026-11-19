@@ -40,7 +40,7 @@ const ECHEANCES = [
 
 console.log('\n== 1) Un onglet de plus, juste après le tableau de bord ; 2 l\'ouvre, 0 ouvre le dixième ==');
 {
-  const { ctx, fr } = await ouvrir('2026-11-19T10:00:00+01:00', {'batcave-echeances': ECHEANCES});
+  const { ctx, fr } = await ouvrir('2026-11-20T10:00:00+01:00', {'batcave-echeances': ECHEANCES});
   const v = await fr.evaluate(() => [...document.querySelectorAll('.nav-btn[data-page]')].filter(b => !b.hidden).map(b => b.dataset.page));
   ok(v.length === 10 && v[0] === 'dashboard' && v[1] === 'journee', 'dix onglets, « Ma journée » en deuxième : ' + v.join(' '));
   ok(await fr.evaluate(() => /Ma journée/.test(document.querySelector('.nav-btn[data-page="journee"]').textContent)), 'le bouton s\'appelle « Ma journée »');
@@ -53,9 +53,9 @@ console.log('\n== 1) Un onglet de plus, juste après le tableau de bord ; 2 l\'o
   await ctx.close();
 }
 
-console.log('\n== 2) Jeudi 19 à 10:00, jour 1 : la ligne en cours, la carte « Maintenant », le passé replié ==');
+console.log('\n== 2) Vendredi 20 à 10:00, jour 1 : la ligne en cours, la carte « Maintenant », le passé replié ==');
 {
-  const { ctx, fr } = await ouvrir('2026-11-19T10:00:00+01:00', {'batcave-echeances': ECHEANCES});
+  const { ctx, fr } = await ouvrir('2026-11-20T10:00:00+01:00', {'batcave-echeances': ECHEANCES});
   await ouvrirOnglet(fr);
   await fr.waitForTimeout(200);
   const r = await fr.evaluate(() => ({
@@ -65,20 +65,21 @@ console.log('\n== 2) Jeudi 19 à 10:00, jour 1 : la ligne en cours, la carte « 
     prieres: [...document.querySelectorAll('.mj-prieres li')].map(li => li.textContent),
     alerte: !!document.querySelector('.mj-alerte'),
     reveil: document.querySelector('#mj-fil > li[data-t="05:20"]').className,
-    espagnol: document.querySelector('#mj-fil > li[data-t="14:00"].mj-k-esp').className,
+    espagnol: document.querySelector('#mj-fil > li[data-t="11:20"]').className,
     pasVisibles: [...document.querySelectorAll('#mj-fil > li[data-t="05:20"] .mj-pas')].some(o => o.offsetParent !== null)
   }));
-  ok(r.titre === 'Ma journée' && /^Jeudi 19 novembre · Révisions : 3 h 50 dans la journée/.test(r.sous), 'le titre et la date : ' + r.sous);
+  ok(r.titre === 'Ma journée' && /^Vendredi 20 novembre · Révisions : 4 h 20 dans la journée/.test(r.sous), 'le titre et la date : ' + r.sous);
   const now = await lignes(fr, '.now');
   /* 15 novembre : un bloc d'étude = une ligne, avec sa consigne (avant : « Révisions · 1 h 05 », sans rien dedans) */
-  ok(now.join(' | ') === '10:00 Étudier en avance', 'la ligne en cours : ' + now.join(' | '));
-  ok(/Maintenant · 10:00 → 11:20/.test(r.carte) && /ensuite 11:20 · Le livrable de la semaine, sinon révisions/.test(r.carte), 'la carte « Maintenant » dit le bloc et le suivant');
+  /* 19 novembre : jour 1 au vendredi 20, sans JJB -- 08:20 Étudier en avance jusqu'a 10:20, puis la question ouverte */
+  ok(now.join(' | ') === '08:20 Étudier en avance', 'la ligne en cours : ' + now.join(' | '));
+  ok(/Maintenant · 08:20 → 10:20/.test(r.carte) && /ensuite 10:20 · Question ouverte ou autre/.test(r.carte), 'la carte « Maintenant » dit le bloc et le suivant');
   ok(r.pomo, 'un bloc de révision : le bouton du Pomodoro est dans la carte');
-  ok(/^Jour 1 : tout commence ce matin, réveil 05:20\. D’abord la copie vierge/.test(r.notes[0]) && r.notes.some(n => /^La salle à 07:00/.test(n)), 'les rappels du jour (' + r.notes.length + ')');
-  ok(r.prieres.length === 5 && /^Fajr 06:15/.test(r.prieres[0]), 'les cinq prières : ' + r.prieres.join(', '));
+  ok(/^Jour 1 : tout commence ce matin, réveil 05:20\. D’abord la copie vierge/.test(r.notes[0]) && r.notes.some(n => /^13:15 : Jumu’ah à la mosquée/.test(n)) && !r.notes.some(n => /^La salle à 07:00/.test(n)), 'les rappels du jour, la Jumu’ah et pas de salle (' + r.notes.length + ')');
+  ok(r.prieres.length === 5 && /^Fajr 06:16/.test(r.prieres[0]), 'les cinq prières : ' + r.prieres.join(', '));
   ok(!r.alerte, 'la grille du jour est celle du pas à pas : aucune alerte');
   ok(/\bpast\b/.test(r.reveil) && /\breplie\b/.test(r.reveil) && !r.pasVisibles, 'le réveil est passé, ses étapes repliées');
-  ok(!/\bpast\b|\breplie\b/.test(r.espagnol), 'l\'espagnol de 14:00 garde son détail');
+  ok(!/\bpast\b|\breplie\b/.test(r.espagnol), 'le livrable de 11:20, à venir, garde son détail');
   await fr.evaluate(() => document.querySelector('#mj-fil > li[data-t="05:20"] .mj-quoi > b').click());
   const ouvert = await fr.evaluate(() => { const li = document.querySelector('#mj-fil > li[data-t="05:20"]'); return { c: li.className, n: li.querySelectorAll('.mj-pas li').length, vis: li.querySelector('.mj-pas').offsetParent !== null }; });
   ok(/\bouvert\b/.test(ouvert.c) && ouvert.vis && ouvert.n === 4, 'un toucher rouvre ses ' + ouvert.n + ' étapes');
@@ -86,7 +87,7 @@ console.log('\n== 2) Jeudi 19 à 10:00, jour 1 : la ligne en cours, la carte « 
   ok(await fr.evaluate(() => /\breplie\b/.test(document.querySelector('#mj-fil > li[data-t="05:20"]').className)), 'un second toucher les replie');
   /* la vue resserree : tout se replie, sauf la ligne en cours */
   await fr.evaluate(() => document.getElementById('mj-compact').click());
-  const cp = await fr.evaluate(() => ({ esp: document.querySelector('#mj-fil > li[data-t="14:00"].mj-k-esp').className, now: document.querySelector('#mj-fil > li.now').className, b: document.getElementById('mj-compact').textContent }));
+  const cp = await fr.evaluate(() => ({ esp: document.querySelector('#mj-fil > li[data-t="11:20"]').className, now: document.querySelector('#mj-fil > li.now').className, b: document.getElementById('mj-compact').textContent }));
   ok(/\breplie\b/.test(cp.esp) && !/\breplie\b/.test(cp.now) && cp.b === 'Afficher les détails', '« Masquer les détails » replie tout sauf la ligne en cours');
   await fr.evaluate(() => document.getElementById('mj-compact').click());
   /* l'horloge avance : la ligne en cours suit */
@@ -94,11 +95,11 @@ console.log('\n== 2) Jeudi 19 à 10:00, jour 1 : la ligne en cours, la carte « 
   await ctx.close();
 }
 {
-  /* le vendredi 20, le premier JJB du programme */
-  const { ctx, page, fr } = await ouvrir('2026-11-20T11:25:00+01:00', {'batcave-echeances': ECHEANCES});
+  /* le mercredi 2 decembre, le premier JJB du programme (pas de JJB en novembre, 19 novembre) */
+  const { ctx, page, fr } = await ouvrir('2026-12-02T11:25:00+01:00', {'batcave-echeances': ECHEANCES});
   await ouvrirOnglet(fr);
   await fr.waitForTimeout(200);
-  ok((await lignes(fr, '.now')).join(' | ') === '10:30 JJB, jusqu’à 12:00', 'vendredi 20 à 11:25, c\'est le JJB (' + (await lignes(fr, '.now')).join(' | ') + ')');
+  ok((await lignes(fr, '.now')).join(' | ') === '10:30 JJB, jusqu’à 12:00', 'mercredi 2 décembre à 11:25, c\'est le JJB (' + (await lignes(fr, '.now')).join(' | ') + ')');
   ok(await fr.evaluate(() => /Maintenant · 10:30 → 12:00/.test(document.getElementById('mj-maintenant').innerText) && !document.querySelector('#mj-maintenant [data-mj-pomodoro]')), 'sans fin écrite, la carte la prend à la ligne suivante : 10:30 → 12:00, et pas de Pomodoro au JJB');
   await page.clock.runFor(60 * 60 * 1000);
   await fr.waitForTimeout(100);
@@ -109,30 +110,30 @@ console.log('\n== 2) Jeudi 19 à 10:00, jour 1 : la ligne en cours, la carte « 
 
 console.log('\n== 3) Les cases du jour se cochent ici, et seulement ici (17 novembre) ==');
 {
-  const { ctx, fr } = await ouvrir('2026-11-19T10:00:00+01:00', {'batcave-echeances': ECHEANCES});
+  const { ctx, fr } = await ouvrir('2026-11-20T10:00:00+01:00', {'batcave-echeances': ECHEANCES});
   const avant = await fr.evaluate(() => document.getElementById('leg-hab').textContent);
   await ouvrirOnglet(fr);
   await fr.waitForTimeout(200);
   /* 17 novembre, sa décision : tout se coche ici -- ses habitudes, puis la routine dans sa propre liste */
-  const n = await fr.evaluate(() => ({ cases: document.querySelectorAll('#mj-cases input[data-mj-hab]').length, dues: window.__bcHabitsDuJour(4, '2026-11-19').filter(h => !h.sansCase).length,
-                                        routine: document.querySelectorAll('#mj-routine input[data-mj-hab]').length, duesR: window.__bcHabitsDuJour(4, '2026-11-19').filter(h => h.sansCase).length }));
+  const n = await fr.evaluate(() => ({ cases: document.querySelectorAll('#mj-cases input[data-mj-hab]').length, dues: window.__bcHabitsDuJour(5, '2026-11-20').filter(h => !h.sansCase).length,
+                                        routine: document.querySelectorAll('#mj-routine input[data-mj-hab]').length, duesR: window.__bcHabitsDuJour(5, '2026-11-20').filter(h => h.sansCase).length }));
   ok(n.cases === n.dues && n.cases > 10 && n.routine === n.duesR && n.routine > 0, 'une case par habitude due aujourd\'hui, et la routine aussi, dans sa liste (' + n.cases + ' + ' + n.routine + ')');
   await fr.evaluate(() => document.querySelector('#mj-cases input[data-mj-hab="core-etirements"]').click());
   await fr.waitForTimeout(150);
   const r = await fr.evaluate(() => ({ compte: document.getElementById('mj-cases-compte').textContent, fait: document.querySelector('#mj-cases input[data-mj-hab="core-etirements"]').closest('li').className,
                                         dash: document.getElementById('leg-hab').textContent,
-                                        log: (JSON.parse(localStorage.getItem('batcave-habitlog') || '{}')['core-etirements'] || []).indexOf('2026-11-19') > -1 }));
+                                        log: (JSON.parse(localStorage.getItem('batcave-habitlog') || '{}')['core-etirements'] || []).indexOf('2026-11-20') > -1 }));
   ok(/^1 \//.test(r.compte) && /fait/.test(r.fait), 'cochée ici : ' + r.compte);
   ok(r.log && r.dash !== avant, 'l\'anneau « ma journée » du tableau de bord suit (' + avant + ' → ' + r.dash + ')');
   await fr.evaluate(() => document.querySelector('#mj-cases input[data-mj-hab="core-etirements"]').click());
   await fr.waitForTimeout(150);
-  ok(await fr.evaluate(() => (JSON.parse(localStorage.getItem('batcave-habitlog') || '{}')['core-etirements'] || []).indexOf('2026-11-19') < 0 && /^0 \//.test(document.getElementById('mj-cases-compte').textContent)), 'décochée ici, décochée partout');
+  ok(await fr.evaluate(() => (JSON.parse(localStorage.getItem('batcave-habitlog') || '{}')['core-etirements'] || []).indexOf('2026-11-20') < 0 && /^0 \//.test(document.getElementById('mj-cases-compte').textContent)), 'décochée ici, décochée partout');
   await ctx.close();
 }
 
 console.log('\n== 4) Hier, demain : la journée d\'un autre jour, sans « maintenant » ; hors du guide, la grille de la Batcave ==');
 {
-  const { ctx, fr } = await ouvrir('2026-11-19T10:00:00+01:00', {'batcave-echeances': ECHEANCES});
+  const { ctx, fr } = await ouvrir('2026-11-20T10:00:00+01:00', {'batcave-echeances': ECHEANCES});
   await ouvrirOnglet(fr);
   await fr.evaluate(() => document.getElementById('mj-suiv').click());
   await fr.waitForTimeout(150);
@@ -141,7 +142,7 @@ console.log('\n== 4) Hier, demain : la journée d\'un autre jour, sans « mainte
     cases: document.querySelectorAll('#mj-cases input').length, puces: document.querySelectorAll('#mj-cases .mj-puces li').length,
     prec: document.getElementById('mj-prec').textContent, suiv: document.getElementById('mj-suiv').textContent,
     auj: document.getElementById('mj-auj').classList.contains('btn-primary') }));
-  ok(d.titre === 'Vendredi 20 novembre' && /^Demain · /.test(d.sous), 'demain : ' + d.titre + ' — ' + d.sous);
+  ok(d.titre === 'Samedi 21 novembre' && /^Demain · /.test(d.sous), 'demain : ' + d.titre + ' — ' + d.sous);
   ok(!d.carte && d.now === 0, 'pas de « maintenant », rien de passé');
   ok(d.cases === 0 && d.puces > 5, 'les cases de ce jour-là, à cocher le jour même (' + d.puces + ')');
   ok(d.prec === '‹ Veille' && d.suiv === 'Lendemain ›' && d.auj, 'les boutons se disent par rapport au jour affiché, et « Aujourd\'hui » ramène');
@@ -149,14 +150,14 @@ console.log('\n== 4) Hier, demain : la journée d\'un autre jour, sans « mainte
     batch: [...document.querySelectorAll('#mj-fil > li')].some(li => /seconde session de batch/.test(li.textContent)) }; });
   ok(batch.titre === 'Mardi 24 novembre' && !batch.alerte && batch.batch, 'mardi 24 : la seconde session de batch est dans la journée');
   await fr.evaluate(() => document.getElementById('mj-auj').click());
-  ok(await fr.evaluate(() => document.getElementById('mj-titre').textContent === 'Ma journée' && !!document.getElementById('mj-maintenant')), '« Aujourd\'hui » revient au jeudi 19');
+  ok(await fr.evaluate(() => document.getElementById('mj-titre').textContent === 'Ma journée' && !!document.getElementById('mj-maintenant')), '« Aujourd\'hui » revient au vendredi 20');
   await fr.evaluate(() => document.getElementById('mj-prec').click());
   const h = await fr.evaluate(() => ({ titre: document.getElementById('mj-titre').textContent, alerte: (document.querySelector('.mj-alerte.calme') || {}).textContent || '',
-    n: document.querySelectorAll('#mj-fil > li').length, grille: window.__bcGrille(window.__bcCle(3), '2026-11-18').length,
+    n: document.querySelectorAll('#mj-fil > li').length, grille: window.__bcGrille(window.__bcCle(4), '2026-11-19').length,
     consignes: document.querySelectorAll('#mj-fil > li .mj-quoi p').length,
     matin: [...document.querySelectorAll('#mj-fil > li')].slice(0, 3).map(li => li.dataset.t + ' ' + li.querySelector('.mj-quoi > b').textContent),
     dents: [...document.querySelectorAll('#mj-fil > li')].filter(li => /brossage de dents/i.test(li.querySelector('.mj-quoi > b').textContent)).map(li => li.dataset.t) }));
-  ok(h.titre === 'Mercredi 18 novembre' && /Le pas à pas écrit va du jeudi 19 novembre au dimanche 24 janvier/.test(h.alerte), 'hier, la veille du jour 1, hors du guide : ' + h.alerte.slice(0, 70) + '…');
+  ok(h.titre === 'Jeudi 19 novembre' && /Le pas à pas écrit va du vendredi 20 novembre au dimanche 24 janvier/.test(h.alerte), 'hier, la veille du jour 1, hors du guide : ' + h.alerte.slice(0, 70) + '…');
   ok(h.n === h.grille + 3 && h.consignes > 5, 'la grille de la Batcave, bloc par bloc avec sa consigne, plus le réveil, le brossage du matin et celui d\'après le déjeuner (' + h.n + ' lignes, ' + h.consignes + ' consignes)');
   ok(/^05:20 Réveil/.test(h.matin[0]) && h.matin[1] === '05:25 Brossage de dents' && /^05:30 /.test(h.matin[2]), 'le matin hors du guide : ' + h.matin.join(' | '));
   ok(h.dents.length === 3, 'trois brossages dans la journée, comme dans le guide (' + h.dents.join(', ') + ')');
@@ -173,10 +174,11 @@ console.log('\n== 4) Hier, demain : la journée d\'un autre jour, sans « mainte
 
 console.log('\n== 5) La grille a changé depuis l\'écriture : l\'onglet le dit et montre la grille vivante ==');
 {
-  /* sans ses echeances, le jeudi 19 de la Batcave garde « Clore le cours du jour » ; le pas a pas, ecrit avec, prepare l'Actividad 4 */
-  const { ctx, fr } = await ouvrir('2026-11-18T21:00:00+01:00');
+  /* sans ses echeances, le lundi 23 de la Batcave garde « Clore le cours du jour » ; le pas a pas, ecrit avec, prepare l'expose
+     du mardi 24 (19 novembre : le jeudi 19 n'est plus dans le pas a pas) */
+  const { ctx, fr } = await ouvrir('2026-11-19T21:00:00+01:00');
   await ouvrirOnglet(fr);
-  await fr.evaluate(() => window.__bcJournee.aller('2026-11-19'));
+  await fr.evaluate(() => window.__bcJournee.aller('2026-11-23'));
   await fr.waitForTimeout(150);
   const a = await fr.evaluate(() => ({ alerte: (document.querySelector('.mj-alerte:not(.calme)') || {}).textContent || '' }));
   ok(/La grille de ce jour a changé dans la Batcave/.test(a.alerte), 'l\'alerte : « La grille de ce jour a changé… »');
@@ -184,34 +186,36 @@ console.log('\n== 5) La grille a changé depuis l\'écriture : l\'onglet le dit 
   ok(l.includes('20:25 Clore le cours du jour') && !l.some(x => /Préparer/.test(x)), 'la grille vivante : 20:25 Clore le cours du jour');
   await fr.evaluate(() => document.querySelector('[data-mj-origine]').click());
   l = await lignes(fr);
-  ok(l.includes('20:25 Préparer · ANTROPOLOGÍA DENTAL E HISTORIA DE LA ODONTOLOGÍA · Actividad 4') && await fr.evaluate(() => /Tu regardes le pas à pas tel qu’il a été écrit/.test(document.querySelector('.mj-alerte').textContent)),
+  ok(l.includes('20:25 Préparer · Biología Celular y Genética Humana · Exposiciones Orales') && await fr.evaluate(() => /Tu regardes le pas à pas tel qu’il a été écrit/.test(document.querySelector('.mj-alerte').textContent)),
      'le pas à pas écrit reste consultable, et le dit');
   await ctx.close();
 }
 {
   /* avec ses echeances : la Batcave et le pas a pas disent la meme chose, et le soir passe par la preparation */
-  const { ctx, fr } = await ouvrir('2026-11-18T21:00:00+01:00', {'batcave-echeances': ECHEANCES});
+  const { ctx, fr } = await ouvrir('2026-11-19T21:00:00+01:00', {'batcave-echeances': ECHEANCES});
   await ouvrirOnglet(fr);
-  const r = await fr.evaluate(() => ['2026-11-19','2026-11-23','2026-11-24','2026-11-25'].map(iso => { window.__bcJournee.aller(iso); return { iso, alerte: !!document.querySelector('.mj-alerte'),
+  const r = await fr.evaluate(() => ['2026-11-20','2026-11-23','2026-11-24','2026-11-25'].map(iso => { window.__bcJournee.aller(iso); return { iso, alerte: !!document.querySelector('.mj-alerte'),
     prep: [...document.querySelectorAll('#mj-fil > li')].map(li => li.dataset.t + ' ' + li.querySelector('.mj-quoi > b').textContent).filter(x => /Préparer|Prépare demain|prépare demain/.test(x)),
     note: [...document.querySelectorAll('#mj-notes li')].map(li => li.textContent).filter(n => /^Ce soir à/.test(n))[0] || '' }; }));
-  ok(r.every(x => !x.alerte), 'avec ses échéances, aucune alerte le 19 ni du 23 au 25');
-  /* 18 novembre : la preparation finit a 20:45, a l'heure de la douche -- le linge et le sac passent apres elle, a 21:00 */
-  ok(r[0].prep.join(' | ') === '20:25 Préparer · ANTROPOLOGÍA DENTAL E HISTORIA DE LA ODONTOLOGÍA · Actividad 4 | 21:00 Plie le linge, puis prépare demain', 'jeudi 19 : ' + r[0].prep.join(' | '));
-  ok(r[0].note === 'Ce soir à 20:25 : prépare « Actividad 4 » (ANTROPOLOGÍA DENTAL E HISTORIA DE LA ODONTOLOGÍA) pour demain, à la place de la clôture du cours.', 'et le rappel du jour le dit');
+  ok(r.every(x => !x.alerte), 'avec ses échéances, aucune alerte le 20 ni du 23 au 25');
+  /* 19 novembre : le vendredi 20 n'a pas de veille d'echeance -- « Prepare demain » a 20:40, comme un soir ordinaire.
+     18 novembre : un soir de preparation finit a 20:45, a l'heure de la douche -- « Prepare demain » passe apres elle, a 21:00 */
+  ok(r[0].prep.join(' | ') === '20:40 Prépare demain', 'vendredi 20 : ' + r[0].prep.join(' | '));
+  ok(r[1].prep.join(' | ') === '20:25 Préparer · Biología Celular y Genética Humana · Exposiciones Orales | 21:00 Prépare demain', 'lundi 23 : ' + r[1].prep.join(' | '));
+  ok(r[1].note === 'Ce soir à 20:25 : prépare « Exposiciones Orales » (Biología Celular y Genética Humana) pour demain, à la place de la clôture du cours.', 'et le rappel du jour le dit');
   ok(/^\d\d:\d\d Préparer · Biología Celular y Genética Humana · Exposiciones Orales$/.test(r[1].prep[0]) && r[2].prep[0] === '18:30 Préparer · Biología Celular y Genética Humana · Práctica 6' && /^\d\d:\d\d Préparer · (EPIDEMIOLOGÍA|Anatomia 1)/.test(r[3].prep[0]),
      'lundi, mardi, mercredi : l\'exposé, la Práctica 6, le jeudi 26 (' + [r[1].prep[0], r[2].prep[0], r[3].prep[0]].join(' / ') + ')');
   await ctx.close();
 }
 
-console.log('\n== 6) Le guide embarqué : du jeudi 19 novembre au dimanche 24 janvier, chaque jour avec sa grille d\'origine ==');
+console.log('\n== 6) Le guide embarqué : du vendredi 20 novembre au dimanche 24 janvier, chaque jour avec sa grille d\'origine ==');
 {
-  const { ctx, fr } = await ouvrir('2026-11-19T10:00:00+01:00', {'batcave-echeances': ECHEANCES});
+  const { ctx, fr } = await ouvrir('2026-11-20T10:00:00+01:00', {'batcave-echeances': ECHEANCES});
   const g = await fr.evaluate(() => { const G = window.__bcJournee.guide(); return { n: G.isos.length, premier: G.isos[0], dernier: G.isos[G.isos.length - 1],
     sansSig: G.isos.filter(i => !G.parIso[i].jour.sig).length, minLignes: Math.min(...G.isos.map(i => G.parIso[i].jour.rows.length)),
     identiques: ['2026-11-20','2026-11-21','2026-11-22','2026-11-26','2026-11-27'].filter(i => G.parIso[i].jour.sig === window.__bcJournee.signature(i)).length,
     mois: G.mois.length, rare: G.plusRare.length }; });
-  ok(g.n === 67 && g.premier === '2026-11-19' && g.dernier === '2027-01-24', '67 jours, du jeudi ' + g.premier + ' au ' + g.dernier);
+  ok(g.n === 66 && g.premier === '2026-11-20' && g.dernier === '2027-01-24', '66 jours, du vendredi ' + g.premier + ' au ' + g.dernier);
   ok(g.sansSig === 0 && g.minLignes >= 20, 'chacun avec sa grille d\'origine et au moins ' + g.minLignes + ' lignes');
   ok(g.identiques === 5, 'les jours sans échéance ont la même grille qu\'une Batcave neuve (' + g.identiques + '/5)');
   ok(g.mois >= 4 && g.rare >= 3, 'une fois par mois (' + g.mois + '), plus rarement (' + g.rare + ')');
@@ -227,13 +231,13 @@ console.log('\n== 6) Le guide embarqué : du jeudi 19 novembre au dimanche 24 ja
     return out; });
   ok(b3.trois === b3.jours && b3.apresDej === b3.jours, 'trois brossages par jour, celui de midi à la fin du déjeuner (' + b3.trois + ' et ' + b3.apresDej + ' sur ' + b3.jours + ')');
   /* 18 novembre : 67 jours au lieu de 70 -- 290 lignes d'etude (plus de 300 sur 70 jours) */
-  ok(b3.etudes > 280 && b3.etudeVide === 0 && b3.fusion === 0, 'chaque bloc d\'étude a sa ligne et sa consigne (' + b3.etudes + ' lignes, ' + b3.etudeVide + ' vides, ' + b3.fusion + ' fondues)');
+  ok(b3.etudes > 270 && b3.etudeVide === 0 && b3.fusion === 0, 'chaque bloc d\'étude a sa ligne et sa consigne (' + b3.etudes + ' lignes, ' + b3.etudeVide + ' vides, ' + b3.fusion + ' fondues)');
   await ctx.close();
 }
 
 console.log('\n== 7) Téléphone : l\'heure en marge, rien ne déborde ; le Pomodoro de la carte ouvre le lanceur ==');
 {
-  const { ctx, fr } = await ouvrir('2026-11-19T10:00:00+01:00', {'batcave-echeances': ECHEANCES}, {width:390, height:844});
+  const { ctx, fr } = await ouvrir('2026-11-20T10:00:00+01:00', {'batcave-echeances': ECHEANCES}, {width:390, height:844});
   await ouvrirOnglet(fr);
   await fr.waitForTimeout(200);
   const r = await fr.evaluate(() => {

@@ -109,8 +109,9 @@ console.log('\n== 252) Mode partiels : J-7 avant le premier examen, jusqu\'au de
   ok(gl.includes('07:00 Sport') && gl.includes('15:00 Español · hablar') && !gl.some(x => /Cours$/.test(x)), 'lundi en partiels : salle à 07:00, 15:00 en espagnol (phase jusqu\'au 15), pas de cours (' + gl.filter(x => /05:30|15:00/.test(x)).join(' · ') + ')');
   const gv = await grille(fr, 'friday', '2026-11-27');
   /* 14 octobre : la phase Español court jusqu'au 14 novembre -- le vendredi 13, le matinal et la plage liberee sont de l'espagnol. */
-  ok(gv.includes('05:30 Español · escribir largo') && gv.includes('10:30 🥋 JJB') && gv.some(x => /^13:30 Jumu'ah/.test(x)) && gv.includes('15:00 Español · hablar'),
-     'vendredi : le matinal (escribir largo, phase 1) et le JJB inchangés, Jumu\'ah, puis l\'après-midi libre (' + gv.filter(x => /05:30|11:20|15:00/.test(x)).join(' · ') + ')');
+  /* 19 novembre : pas de JJB avant le mercredi 2 decembre -- le vendredi 27, sa matinee est du travail (COMBAT_PAUSE_2) */
+  ok(gv.includes('05:30 Español · escribir largo') && !gv.some(x => /JJB/.test(x)) && gv.some(x => /^13:30 Jumu'ah/.test(x)) && gv.includes('15:00 Español · hablar'),
+     'vendredi 27 : le matinal (escribir largo, phase 1), pas de JJB avant le 2 décembre, Jumu\'ah, puis l\'après-midi libre (' + gv.filter(x => /05:30|11:20|15:00/.test(x)).join(' · ') + ')');
   /* La matiere, elle, reste calculee : le lanceur de Pomodoro propose celle dont le besoin
      est le plus fort dans la session (ce qu'il reste a faire / jours avant SON examen). */
   const c = await fr.evaluate(() => [window.__bcMatiereBloc('2026-11-24'), window.__bcMatiereBloc('2026-12-01'), window.__bcTypeBloc('Révision ciblée')]);

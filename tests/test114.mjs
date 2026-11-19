@@ -103,8 +103,10 @@ console.log('— vendredi 25 septembre : la premiere periode, 28 sept. -> 24 oct
   const txt = await fr.evaluate(() => document.getElementById('budget-mois-panel').innerText);
   ok(/Le mois de l.argent/.test(txt), 'le panneau est dans l\'onglet Budget');
   /* 12 novembre : « ce mois-ci, je n'ai pas paye l'abonnement du club et la licence » -- A regler : le proprio (140),
-     la licence (30) et l'abonnement de novembre (70), 240 EUR */
-  ok(txt.includes('240,00 €') && txt.includes('700,00 €') && txt.includes('130,00 €') && /les 130 € du 25/.test(txt), 'montants affiches : 240,00 EUR a regler (le proprio, la licence, le club de novembre), 700,00 EUR, et les 130 EUR de la cagnotte');
+     la licence (30) et l'abonnement de novembre (70), 240 EUR.
+     19 novembre : « ce mois ci j'aurais pas assez pour le JJB » -- pas de JJB en novembre, l'abonnement de novembre sort :
+     le proprio (140) et la licence (30), 170 EUR */
+  ok(txt.includes('170,00 €') && txt.includes('700,00 €') && txt.includes('130,00 €') && /les 130 € du 25/.test(txt) && !/abonnement de novembre/.test(txt), 'montants affiches : 170,00 EUR a regler (le proprio et la licence, sans le club de novembre), 700,00 EUR, et les 130 EUR de la cagnotte');
   ok(/28 sept\..*24 oct\..*4 samedis/.test(txt), 'la periode et ses samedis sont ecrits en tete');
   ok(/Le 28, dans la cagnotte/.test(txt) && /Ce mois-ci le 28, puis chaque 25/.test(txt), 'la tuile dit : ce mois-ci le 28, puis chaque 25');
   ok(/Le 24, en plus/.test(txt), 'la tuile du balayage dit le 24');
