@@ -1,5 +1,36 @@
 # Où on en est — samedi 19 septembre 2026, au soir
 
+> ### Lundi 23 novembre — « Le plan machine » : études, corps, argent, étape par étape
+> **Ses mots** : « je veux devenir une machine academique, athletique et avoir un gros patrimoine, je veux un guide etape
+> par etape ».
+> **Lu avant d'écrire** :
+> - sa dernière sauvegarde Drive est du vendredi 20 à 13:01, rien depuis. La pesée du dimanche 22 n'y est pas ;
+> - le bilan du dimanche 22 (page générée par la Batcave) : 0 minute sur 26 h 03 prévues, 0 séance, 0 pesée ;
+> - le cache Notion du 18 : 81 temas sur 81 « pas fait » (Anatomía I 26, Epidemiología 20, Biología celular 14,
+>   Documentación 11, Antropología 10) ;
+> - sa page « Que faire de ton argent pendant tes études : 7 plans », faite ailleurs le jour même : ≈ 199 000 € de prêts
+>   à l'été 2027 (50 875 € BNP déjà sur son compte, 48 000 € à débloquer, deux prêts à 0 % pour 100 000 €), l'AideFi dès
+>   l'hiver 2027, le plan D (un grand 4 pièces en 5 chambres, 10 % sous le marché) ou tout placé (plan G).
+> **La page** (`plan-machine.html`, publiée : https://claude.ai/artifact/Cxw8yn1TtkBRHN4sEiytfL, icône « map ») :
+> - le relevé du lundi, puis six règles. La première : le jour 1 ne bouge plus (posé à douze dates depuis la mi-octobre) ;
+> - la route en sept étapes, de cette semaine (étape 0, « Tu es ici ») au cabinet (étape 6). Chaque étape a trois
+>   chantiers (études, corps, argent) et une condition de passage ;
+> - le rattrapage chiffré : ≈ 104 h au protocole de la Batcave. Deux temas par jour de cours, trois les autres jours :
+>   16 d'ici le 29, 65 au 20 décembre, tout vu le 26 ;
+> - l'argent en trois poches (le mois, l'emprunté, l'investi), une projection à 5 % réel avec un calculateur (3, 5 ou 7 %),
+>   où placer en Espagne (fonds indexé plutôt qu'ETF à cause du traspaso, vérifié sur MyInvestor et Economipedia), et
+>   ce qu'il ne fait pas ;
+> - le tableau de bord, la reprise après un décrochage, ses huit pages. « Ton empire dentaire » et « Dental Mastery OS »
+>   ne sont plus publiées : aucun lien vers elles.
+> **Décidé par défaut, dit dans la réponse** :
+> - le test du dimanche 20 décembre : 60 temas vus sur 81, sinon la boutique attend le 21 janvier (la règle de son
+>   dossier E-commerce) ;
+> - l'hypothèse de placement : 100 €/mois dès septembre 2027, 1 000 €/mois dès juillet 2031.
+> **Vérifié** : le rendu à 400 et 1 280 px (aucun débordement, aucune erreur) ; le calculateur, dont le tableau statique
+> égale celui du script ; le jour de la semaine de chaque date citée.
+> **En attente** : la pesée du dimanche 29, son avis sur le test du 20 décembre, le JJB au 2 décembre, les rappels des
+> cours de la fac.
+
 > ### Jeudi 19 novembre — le jour 1 au vendredi 20 ; pas de JJB en novembre
 > **Ses mots** : « on commence tout demain vendredi, ce mois ci j'aurais pas assez pour le JJB ». Sa sauvegarde du 19
 > (17:40) : les courses de mercredi cochées, rien d'autre de noté.

@@ -1,0 +1,655 @@
+<title>Le plan machine</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Inter:wght@400;500;600;700&display=swap">
+<style>
+  :root{
+    /* Mise en page : une colonne de lecture (48rem au plus). La route est un rail vertical numéroté ;
+       chaque étape porte trois lignes de chantier, toujours dans le même ordre : études, corps, argent. */
+    --bg:#ECEFF3;
+    --surface:#FFFFFF;
+    --ink:#0E151C;
+    --ink-2:#34404B;
+    --muted:#5C6874;
+    --rule:#D2D9E0;
+    --etudes:#2350C4;
+    --corps:#B23F27;
+    --argent:#0A7558;
+    --display:"Archivo","Arial Narrow","Helvetica Neue",Arial,sans-serif;
+    --texte:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+    --r:12px;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#0B1015; --surface:#121920; --ink:#E6EBF0; --ink-2:#C3CDD6; --muted:#93A0AC; --rule:#26313C;
+      --etudes:#8EA9FF; --corps:#FF937A; --argent:#4FCCA5; color-scheme:dark;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#0B1015; --surface:#121920; --ink:#E6EBF0; --ink-2:#C3CDD6; --muted:#93A0AC; --rule:#26313C;
+    --etudes:#8EA9FF; --corps:#FF937A; --argent:#4FCCA5; color-scheme:dark;
+  }
+  *,*::before,*::after{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} }
+  body{background:var(--bg); color:var(--ink); font-family:var(--texte); font-size:16px; line-height:1.6; -webkit-text-size-adjust:100%}
+  .page{max-width:48rem; margin-inline:auto; padding-left:max(16px, env(safe-area-inset-left, 0px)); padding-right:max(16px, env(safe-area-inset-right, 0px)); padding-block:2.5rem 4rem}
+  p{margin:0}
+  a{color:var(--etudes); text-underline-offset:2px}
+  a:focus-visible, input:focus-visible, select:focus-visible{outline:2px solid var(--etudes); outline-offset:2px; border-radius:4px}
+  [data-c="etudes"]{--c:var(--etudes)}
+  [data-c="corps"]{--c:var(--corps)}
+  [data-c="argent"]{--c:var(--argent)}
+  [data-c="neutre"]{--c:var(--muted)}
+
+  /* En-tête */
+  .tete{display:flex; flex-direction:column; gap:.9rem}
+  .eyebrow{display:flex; align-items:center; gap:.6rem; font-family:var(--display); font-weight:700; font-size:.78rem; letter-spacing:.14em; text-transform:uppercase; color:var(--muted)}
+  .pastilles{display:inline-flex; gap:4px}
+  .pastilles span{width:10px; height:10px; border-radius:50%; background:var(--c)}
+  h1{margin:0; font-family:var(--display); font-weight:800; font-stretch:125%; font-size:clamp(2.6rem, 9vw, 4.6rem); line-height:.95; letter-spacing:-.01em; text-wrap:balance}
+  .lead{font-size:1.15rem; line-height:1.5; color:var(--ink-2); max-width:40rem}
+  .meta{font-size:.85rem; color:var(--muted)}
+  .sommaire{display:flex; flex-wrap:wrap; gap:.35rem 1.1rem; padding-block:.8rem; border-block:1px solid var(--rule); font-size:.9rem}
+  .sommaire a{color:var(--ink-2); text-decoration:none; font-weight:500}
+  .sommaire a:hover{color:var(--ink); text-decoration:underline}
+
+  main{display:flex; flex-direction:column; gap:3.75rem; margin-top:2.25rem}
+  section{display:flex; flex-direction:column; gap:1.1rem; scroll-margin-top:1rem}
+  h2{margin:0; font-family:var(--display); font-weight:750; font-stretch:112%; font-size:clamp(1.55rem, 4.2vw, 2.1rem); line-height:1.1; text-wrap:balance}
+  .sous{margin:.6rem 0 0; font-family:var(--display); font-weight:750; font-stretch:110%; font-size:1.25rem; line-height:1.2; text-wrap:balance}
+  .intro{color:var(--ink-2); max-width:42rem}
+  .intro b{color:var(--ink)}
+
+  /* Le relevé du lundi */
+  .releve{margin:0; display:flex; flex-direction:column; border-top:1px solid var(--rule)}
+  .releve .ligne{display:grid; grid-template-columns:8.5rem minmax(0,1fr); gap:.35rem 1.25rem; padding-block:.9rem; border-bottom:1px solid var(--rule)}
+  .releve dt{display:flex; align-items:baseline; gap:.5rem; padding-top:.15rem; font-family:var(--display); font-weight:700; font-size:.78rem; letter-spacing:.08em; text-transform:uppercase; color:var(--c)}
+  .releve dt::before{content:""; flex:none; width:8px; height:8px; border-radius:50%; background:var(--c)}
+  .releve dd{margin:0; min-width:0}
+  .verdict{font-size:1.05rem; font-weight:500; padding:1rem 1.15rem; background:var(--surface); border:1px solid var(--rule); border-radius:var(--r)}
+
+  /* Les règles */
+  .regles{list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:1px; background:var(--rule); border:1px solid var(--rule); border-radius:var(--r); overflow:hidden}
+  .regles li{background:var(--surface); padding:1rem 1.1rem; min-width:0}
+  .regles b{display:block; margin-bottom:.3rem; font-family:var(--display); font-weight:750; font-stretch:108%; font-size:1.05rem; line-height:1.25}
+
+  /* La route */
+  .route{display:flex; flex-direction:column; gap:1.5rem}
+  .etape{display:grid; grid-template-columns:2.75rem minmax(0,1fr); gap:0 1rem; scroll-margin-top:1rem}
+  .etape-rail{position:relative; display:flex; justify-content:center}
+  .etape:not(:last-child) .etape-rail::after{content:""; position:absolute; top:2.75rem; bottom:-1.5rem; left:50%; width:2px; transform:translateX(-50%); background:var(--rule)}
+  .etape-num{position:relative; z-index:1; width:2.75rem; height:2.75rem; border-radius:50%; display:grid; place-items:center; border:2px solid var(--ink); background:var(--bg); color:var(--ink); font-family:var(--display); font-weight:800; font-size:1.2rem; font-variant-numeric:tabular-nums}
+  .etape.ici .etape-num{background:var(--ink); color:var(--bg)}
+  .etape-carte{min-width:0; display:flex; flex-direction:column; gap:.85rem; padding:1.1rem 1.2rem 1.2rem; background:var(--surface); border:1px solid var(--rule); border-radius:var(--r)}
+  .etape-quand{display:flex; flex-wrap:wrap; align-items:center; gap:.5rem; font-family:var(--display); font-weight:600; font-size:.8rem; letter-spacing:.06em; text-transform:uppercase; color:var(--muted)}
+  .ici-badge{padding:.1rem .55rem; border-radius:999px; background:var(--ink); color:var(--bg); letter-spacing:.04em}
+  .etape h3{margin:0; font-family:var(--display); font-weight:750; font-stretch:110%; font-size:1.35rem; line-height:1.15; text-wrap:balance}
+  .but{color:var(--ink-2)}
+  .but b{color:var(--ink)}
+  .chantier{display:grid; grid-template-columns:5.5rem minmax(0,1fr); gap:.3rem 1rem; padding-top:.8rem; border-top:1px solid var(--rule)}
+  .chantier h4{margin:0; padding-top:.2rem; font-family:var(--display); font-weight:700; font-size:.75rem; letter-spacing:.08em; text-transform:uppercase; color:var(--c)}
+  .chantier ul{margin:0; padding-left:1.1rem; display:flex; flex-direction:column; gap:.4rem; min-width:0}
+  .chantier li::marker{color:var(--c)}
+  .passage{padding:.75rem .95rem; font-size:.95rem; background:var(--bg); border:1px solid var(--rule); border-radius:8px}
+  .passage b{font-family:var(--display); font-weight:700; font-stretch:105%}
+
+  /* Tableaux */
+  .table-wrap{overflow-x:auto; background:var(--surface); border:1px solid var(--rule); border-radius:var(--r)}
+  table{width:100%; border-collapse:collapse; font-variant-numeric:tabular-nums; font-size:.95rem}
+  th, td{padding:.6rem .85rem; text-align:left; vertical-align:top; border-bottom:1px solid var(--rule)}
+  thead th{font-family:var(--display); font-weight:700; font-size:.74rem; letter-spacing:.07em; text-transform:uppercase; color:var(--muted); white-space:nowrap}
+  tbody tr:last-child td{border-bottom:0}
+  tfoot td{font-weight:700; border-top:2px solid var(--rule); border-bottom:0}
+  .num{text-align:right; white-space:nowrap}
+  .matiere{font-weight:600}
+  .sr{position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0}
+
+  .liste{margin:0; padding-left:1.15rem; display:flex; flex-direction:column; gap:.5rem; color:var(--ink-2)}
+  .liste b{color:var(--ink); font-weight:650}
+
+  /* L'argent */
+  .poches{display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:.9rem}
+  .poche{min-width:0; display:flex; flex-direction:column; gap:.45rem; padding:1rem 1.05rem; background:var(--surface); border:1px solid var(--rule); border-radius:var(--r)}
+  .poche h3{margin:0; font-family:var(--display); font-weight:750; font-stretch:108%; font-size:1.1rem}
+  .poche .montant{font-family:var(--display); font-weight:800; font-stretch:112%; font-size:1.2rem; line-height:1.2; color:var(--argent); font-variant-numeric:tabular-nums}
+  .poche .texte{font-size:.95rem; color:var(--ink-2)}
+  .calc{margin:0; display:flex; flex-wrap:wrap; align-items:flex-end; gap:.75rem 1rem; padding:1rem 1.1rem; background:var(--surface); border:1px solid var(--rule); border-radius:var(--r)}
+  .calc legend{padding:0 .3rem; font-family:var(--display); font-weight:700; font-size:.78rem; letter-spacing:.08em; text-transform:uppercase; color:var(--argent)}
+  .champ{flex:1 1 11rem; min-width:0; display:flex; flex-direction:column; gap:.3rem}
+  .champ label{font-size:.85rem; font-weight:500; color:var(--ink-2)}
+  .champ input, .champ select{width:100%; padding:.5rem .6rem; font:inherit; font-variant-numeric:tabular-nums; color:var(--ink); background:var(--bg); border:1px solid var(--rule); border-radius:8px}
+  .seuils{font-size:.95rem; color:var(--ink-2)}
+  .seuils b{color:var(--ink); font-variant-numeric:tabular-nums}
+
+  /* Si tu décroches */
+  .reprise{margin:0; padding:0; list-style:none; counter-reset:r; display:flex; flex-direction:column; gap:.6rem}
+  .reprise li{counter-increment:r; display:grid; grid-template-columns:2rem minmax(0,1fr); gap:.8rem; align-items:start; padding:.8rem 1rem; background:var(--surface); border:1px solid var(--rule); border-radius:var(--r)}
+  .reprise li::before{content:counter(r); width:2rem; height:2rem; border-radius:50%; display:grid; place-items:center; border:2px solid var(--ink); font-family:var(--display); font-weight:800}
+
+  /* Tes pages */
+  .liens{list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:1px; background:var(--rule); border:1px solid var(--rule); border-radius:var(--r); overflow:hidden}
+  .liens li{min-width:0; display:flex; flex-direction:column; gap:.15rem; padding:.85rem 1rem; background:var(--surface)}
+  .liens a{font-weight:600}
+  .liens span{font-size:.88rem; color:var(--muted)}
+
+  footer{margin-top:3.5rem; padding-top:1.25rem; border-top:1px solid var(--rule); display:flex; flex-direction:column; gap:.6rem; font-size:.85rem; color:var(--muted)}
+  footer a{color:var(--ink-2)}
+
+  @media (max-width:760px){ .poches{grid-template-columns:1fr} }
+  @media (max-width:640px){ .regles{grid-template-columns:1fr} }
+  @media (max-width:560px){
+    .releve .ligne{grid-template-columns:1fr}
+    .chantier{grid-template-columns:1fr}
+    .liens{grid-template-columns:1fr}
+    .etape{grid-template-columns:2.25rem minmax(0,1fr); gap:0 .7rem}
+    .etape-num{width:2.25rem; height:2.25rem; font-size:1rem}
+    .etape:not(:last-child) .etape-rail::after{top:2.25rem}
+    .etape-carte{padding:1rem}
+  }
+</style>
+
+<div class="page">
+  <header class="tete">
+    <p class="eyebrow"><span class="pastilles" aria-hidden="true"><span data-c="etudes"></span><span data-c="corps"></span><span data-c="argent"></span></span>Études · Corps · Argent</p>
+    <h1>Le plan machine</h1>
+    <p class="lead">Ton chemin, étape par étape, de cette semaine jusqu'à ton cabinet. La Batcave décide de chaque journée ; cette page décide de l'ordre des années.</p>
+    <p class="meta">Écrit le lundi 23 novembre 2026 à partir de tes données : la Batcave et Notion, tes examens, ton budget, et ta page « Que faire de ton argent pendant tes études ».</p>
+    <nav class="sommaire" aria-label="Sommaire">
+      <a href="#ce-lundi">Ce lundi</a>
+      <a href="#regles">Les règles</a>
+      <a href="#route">La route</a>
+      <a href="#rattrapage">Le rattrapage</a>
+      <a href="#argent">L'argent</a>
+      <a href="#tableau">Le tableau de bord</a>
+      <a href="#decrochage">Si tu décroches</a>
+      <a href="#pages">Tes pages</a>
+    </nav>
+  </header>
+
+  <main>
+    <section id="ce-lundi" aria-labelledby="t-ce-lundi">
+      <h2 id="t-ce-lundi">Où tu en es, ce lundi 23 novembre</h2>
+      <p class="intro">Une machine part d'un relevé honnête. Voici le tien, tiré de tes données.</p>
+      <dl class="releve">
+        <div class="ligne" data-c="etudes">
+          <dt>Études</dt>
+          <dd><b>81 temas marqués « pas fait » dans Notion</b> : Anatomía I 26, Epidemiología 20, Biología celular 14, Documentación 11, Antropología 10. Premier examen dans 45 jours : Anatomía I, le jeudi 7 janvier à 13:30.</dd>
+        </div>
+        <div class="ligne" data-c="neutre">
+          <dt>Ta semaine</dt>
+          <dd>Du 16 au 22 novembre, la Batcave n'a rien reçu : <b>0 minute sur 26 h prévues</b>, aucune séance, aucune pesée. Tu as peut-être travaillé sans le noter. Pour le plan, ce qui n'est pas noté n'existe pas.</dd>
+        </div>
+        <div class="ligne" data-c="corps">
+          <dt>Corps</dt>
+          <dd>60 kg pour 1,82 m à ta dernière pesée, le 4 novembre. La salle devait commencer samedi 21 ; le JJB reprend le mercredi 2 décembre.</dd>
+        </div>
+        <div class="ligne" data-c="argent">
+          <dt>Argent</dt>
+          <dd>700&nbsp;€ le 25 de chaque mois, dont ≈&nbsp;159&nbsp;€ restent en moyenne après tes charges (241&nbsp;€) et l'enveloppe des courses (300&nbsp;€). Environ 50&nbsp;900&nbsp;€ de prêt dorment déjà sur ton compte, et ≈&nbsp;199&nbsp;000&nbsp;€ seront réunis à l'été 2027.</dd>
+        </div>
+      </dl>
+      <p class="verdict">Rien n'est perdu. Le rattrapage tient dans tes heures prévues si tu commences aujourd'hui, et l'argent emprunté, bien placé, peut te laisser un vrai capital en 2031. Il manque une seule pièce : que la machine tourne tous les jours.</p>
+    </section>
+
+    <section id="regles" aria-labelledby="t-regles">
+      <h2 id="t-regles">Les six règles de la machine</h2>
+      <p class="intro">Elles passent avant le reste, y compris avant l'humeur du jour.</p>
+      <ul class="regles">
+        <li><b>Le jour 1 ne bouge plus.</b> Depuis la mi-octobre, il a été posé à douze dates : les 16, 17, 20, 21 et 22 octobre, puis les 1er, 12, 13, 14, 16, 19 et 20 novembre. Chaque report attendait un jour parfait. Désormais, une journée ratée ne fait rien recommencer : le lendemain, tu reprends la ligne du jour. Jamais deux jours ratés de suite.</li>
+        <li><b>Ce qui n'est pas noté n'existe pas.</b> Le minuteur sur chaque bloc, les cases de « Ma journée », la pesée du dimanche. Trente secondes par jour, et la Batcave peut enfin t'aider.</li>
+        <li><b>Le sommeil et la santé d'abord.</b> Réveil 05:20, coucher 21:35 : la mémoire et le muscle se construisent la nuit. Une douleur ou une perte de poids se montre au médecin avant de forcer.</li>
+        <li><b>La Batcave décide, tu exécutes.</b> Le plan ne change que le dimanche, au bilan. En semaine, tu fais la ligne suivante, même en version courte.</li>
+        <li><b>Les études passent en premier.</b> Révision en retard deux semaines de suite, ou un quiz sous 6/10 : les blocs de projets redeviennent de l'étude jusqu'au rattrapage. C'est la règle de ton dossier E-commerce.</li>
+        <li><b>L'argent emprunté ne se joue pas.</b> Il se place, il achète un bien sous le prix du marché, ou il attend. Jamais la pub, jamais la bourse, jamais le quotidien.</li>
+      </ul>
+    </section>
+
+    <section id="route" aria-labelledby="t-route">
+      <h2 id="t-route">La route, étape par étape</h2>
+      <p class="intro">Sept étapes. Chacune a un but, trois chantiers et une condition pour passer à la suivante. Tu n'en sautes aucune.</p>
+
+      <div class="route">
+        <article class="etape ici" id="etape-0" aria-labelledby="t-e0">
+          <div class="etape-rail"><span class="etape-num">0</span></div>
+          <div class="etape-carte">
+            <p class="etape-quand"><span>Cette semaine · du lundi 23 au dimanche 29 novembre</span><span class="ici-badge">Tu es ici</span></p>
+            <h3 id="t-e0">Allumer la machine</h3>
+            <p class="but"><b>But :</b> sept jours de suite où la Batcave reçoit quelque chose.</p>
+            <div class="chantier" data-c="etudes">
+              <h4>Études</h4>
+              <ul>
+                <li>Ce soir, ouvre Notion et coche les temas que tu as déjà travaillés : le vrai compte sort tout seul.</li>
+                <li>Ensuite, deux temas par jour de cours, trois le samedi et le dimanche, dans tes blocs de révision. Tu choisis lesquels ; le nombre, lui, ne se discute pas.</li>
+                <li>À rendre cette semaine : l'exposición oral de Biología celular (mardi 24), la práctica 6 (mercredi 25), la práctica 3 d'Histología et les problemas RR y OR (jeudi 26).</li>
+              </ul>
+            </div>
+            <div class="chantier" data-c="corps">
+              <h4>Corps</h4>
+              <ul>
+                <li>La salle aux heures de la Batcave. Ta première séance enregistrée devient la séance de référence, à demi-volume pendant 14 jours.</li>
+                <li>Appelle le centro de salud (rendez-vous et prise de sang) : les 4 kg perdus début novembre et ta mâchoire se montrent avant le JJB du 2 décembre.</li>
+                <li>Dimanche 29, à jeun : la pesée. Elle règle tes calories et la date des 72 kg.</li>
+                <li>Le snus reste arrêté : la nicotine entretient le bruxisme.</li>
+              </ul>
+            </div>
+            <div class="chantier" data-c="argent">
+              <h4>Argent</h4>
+              <ul>
+                <li>Le proprio : 140&nbsp;€ pour deux mois d'eau et d'électricité, cette semaine.</li>
+                <li>Mercredi 25, le virement arrive : la cagnotte part la première (130&nbsp;€), avant toute dépense.</li>
+                <li>Les ≈&nbsp;50&nbsp;900&nbsp;€ déjà sur ton compte : ouvre le premier compte rémunéré. À 2,5&nbsp;%, chaque mois passé à 0&nbsp;% te fait perdre environ 100&nbsp;€ d'intérêts.</li>
+              </ul>
+            </div>
+            <p class="passage"><b>Pour passer à l'étape 1 :</b> la Batcave a reçu quelque chose sept jours sur sept, le proprio est payé, le rendez-vous médical est pris et la pesée est notée.</p>
+          </div>
+        </article>
+
+        <article class="etape" id="etape-1" aria-labelledby="t-e1">
+          <div class="etape-rail"><span class="etape-num">1</span></div>
+          <div class="etape-carte">
+            <p class="etape-quand">Du lundi 30 novembre au dimanche 24 janvier</p>
+            <h3 id="t-e1">Réussir le premier semestre</h3>
+            <p class="but"><b>But :</b> les cinq examens de janvier réussis en première convocatoria, le corps lancé, l'argent emprunté placé.</p>
+            <div class="chantier" data-c="etudes">
+              <h4>Études</h4>
+              <ul>
+                <li>Le rattrapage : 16 temas par semaine, tous vus le samedi 26 décembre (<a href="#rattrapage">le détail</a>).</li>
+                <li>Le mois d'espagnol continue jusqu'au samedi 19 décembre, épreuve du dimanche comprise.</li>
+                <li>Les échéances de décembre : Q3 Sistema nervioso et láminas 3 (mercredi 2), Q3 d'Antropología (vendredi 4), actividad 5 (vendredi 11), problemas de genética (mardi 15), Q4 Sistema muscular et simulacro (mercredi 16).</li>
+                <li>Jeudi 31 décembre, le mode partiels s'allume : les blocs de projets deviennent de la révision ciblée jusqu'au 20 janvier. Anki ne s'arrête jamais.</li>
+                <li>Les examens : Anatomía I jeudi 7 janvier à 13:30, Epidemiología lundi 11 à 08:30, Biología celular mercredi 13 à 13:30, Documentación lundi 18 à 08:30, Antropología mercredi 20 à 08:30.</li>
+              </ul>
+            </div>
+            <div class="chantier" data-c="corps">
+              <h4>Corps</h4>
+              <ul>
+                <li>La salle quatre matins par semaine (lundi, mardi, jeudi et samedi, 07:00) ; le JJB lundi, mercredi et vendredi dès le mercredi 2 décembre.</li>
+                <li>Le premier retest, tractions et dips au maximum : sa date est dans la Batcave.</li>
+                <li>Une pesée chaque dimanche, à jeun. La courbe vise +0,25 à 0,3 kg par semaine.</li>
+              </ul>
+            </div>
+            <div class="chantier" data-c="argent">
+              <h4>Argent</h4>
+              <ul>
+                <li>En décembre, fais confirmer les deux prêts à 0&nbsp;% et le reste BNP (taux, différé, date limite), puis répartis tout sur 2 ou 3 comptes rémunérés : la garantie couvre 100&nbsp;000&nbsp;€ par banque.</li>
+                <li>Mercredi 2 décembre, au club : la licence (30&nbsp;€) et décembre (70&nbsp;€), avec l'argent du 25.</li>
+                <li>Dimanche 20 décembre, un seul test : au moins 60 temas vus sur 81, la boutique démarre. Sinon, ses blocs finissent le rattrapage et elle attend le 21 janvier.</li>
+                <li>La boutique se teste avec ton argent : la pub plafonnée à 150&nbsp;€, prise dans la cagnotte. Jamais un euro emprunté.</li>
+              </ul>
+            </div>
+            <p class="passage"><b>Pour passer à l'étape 2 :</b> les cinq examens passés, au moins 9 séances de sport sur 10 faites depuis le 2 décembre, l'argent emprunté placé.</p>
+          </div>
+        </article>
+
+        <article class="etape" id="etape-2" aria-labelledby="t-e2">
+          <div class="etape-rail"><span class="etape-num">2</span></div>
+          <div class="etape-carte">
+            <p class="etape-quand">Du lundi 25 janvier au dimanche 6 juin 2027</p>
+            <h3 id="t-e2">Le second semestre et la première preuve</h3>
+            <p class="but"><b>But :</b> la première année entière validée en première convocatoria, l'espagnol clinique, le poids sur sa courbe, un verdict sur la boutique.</p>
+            <div class="chantier" data-c="etudes">
+              <h4>Études</h4>
+              <ul>
+                <li>Zéro retard cette fois : chaque tema se travaille dans la semaine où il est vu en classe.</li>
+                <li>Les examens : Anatomía II lundi 17 mai, Bioquímica jeudi 20, Microbiología lundi 24, Clínica odontológica vendredi 28, Psicología mercredi 2 juin. Le mode partiels commence le lundi 10 mai.</li>
+                <li>L'espagnol : en juin, tenir une consultation simulée sans chercher tes mots.</li>
+                <li>Trois professeurs qui connaissent ton prénom avant juin : ce sont eux qui recommandent pour les stages et les masters.</li>
+              </ul>
+            </div>
+            <div class="chantier" data-c="corps">
+              <h4>Corps</h4>
+              <ul>
+                <li>72 kg le 6 juin si tu repars de 64 kg, vers septembre si tu repars de 60 kg : la pesée du 29 novembre tranche.</li>
+                <li>Un retest toutes les cinq semaines : les tractions et les dips montent, ou on corrige le programme.</li>
+                <li>Le JJB trois fois par semaine : les premiers galons viennent de la régularité.</li>
+              </ul>
+            </div>
+            <div class="chantier" data-c="argent">
+              <h4>Argent</h4>
+              <ul>
+                <li>En janvier : un architecte et 2 ou 3 agences qui louent des chambres. Demande-leur dans quels quartiers une chambre se loue au moins 370&nbsp;€.</li>
+                <li>De janvier à juin : des alertes idealista et Fotocasa. Tu n'achètes qu'à 10&nbsp;% au moins sous le marché ; sans affaire, l'argent reste placé.</li>
+                <li>La boutique : verdict après 12 semaines de travail, vers avril. Un design qui se vend de façon répétée, avec une marge positive sur 30 commandes, ou ce produit s'arrête selon les règles du dossier.</li>
+                <li>Ton coussin, avec ton argent à toi : 1&nbsp;600&nbsp;€, trois mois de tes dépenses.</li>
+              </ul>
+            </div>
+            <p class="passage"><b>Pour passer à l'étape 3 :</b> la première année validée sans convocatoria extraordinaria, le poids sur sa courbe, une décision écrite pour la boutique.</p>
+          </div>
+        </article>
+
+        <article class="etape" id="etape-3" aria-labelledby="t-e3">
+          <div class="etape-rail"><span class="etape-num">3</span></div>
+          <div class="etape-carte">
+            <p class="etape-quand">De juin à septembre 2027</p>
+            <h3 id="t-e3">L'été qui te met en avance</h3>
+            <p class="but"><b>But :</b> voir un vrai cabinet, gagner ton propre argent, et rentrer en deuxième année plus fort.</p>
+            <div class="chantier" data-c="etudes">
+              <h4>Études</h4>
+              <ul>
+                <li>Deux semaines d'observation dans un cabinet, en Espagne ou en France : la demande part par écrit dès mars.</li>
+                <li>L'espagnol et l'anglais entretenus chaque semaine ; le reste de l'été sert à récupérer.</li>
+              </ul>
+            </div>
+            <div class="chantier" data-c="corps">
+              <h4>Corps</h4>
+              <ul>
+                <li>Le programme continue, et le JJB si le club reste ouvert : tu rentres en septembre plus fort qu'en juin.</li>
+              </ul>
+            </div>
+            <div class="chantier" data-c="argent">
+              <h4>Argent</h4>
+              <ul>
+                <li>Si l'affaire est trouvée : notaire, ITP de 9&nbsp;%, travaux de la 5<sup>e</sup> chambre, numéro d'enregistrement, location par une agence en contrats d'année universitaire.</li>
+                <li>Un job d'été si tu peux : chaque euro remplit d'abord le coussin.</li>
+                <li>En septembre, le premier versement automatique sur un fonds indexé monde, avec ton argent (100&nbsp;€ par mois dans l'hypothèse de cette page).</li>
+              </ul>
+            </div>
+            <p class="passage"><b>Pour passer à l'étape 4 :</b> le coussin plein, le premier versement fait, deux semaines de cabinet dans ton carnet.</p>
+          </div>
+        </article>
+
+        <article class="etape" id="etape-4" aria-labelledby="t-e4">
+          <div class="etape-rail"><span class="etape-num">4</span></div>
+          <div class="etape-carte">
+            <p class="etape-quand">De septembre 2027 à l'été 2031</p>
+            <h3 id="t-e4">Les années de fac</h3>
+            <p class="but"><b>But :</b> le diplôme dans le haut de la promo, un corps d'athlète de combat, un capital qui tourne sans toi.</p>
+            <div class="chantier" data-c="etudes">
+              <h4>Études</h4>
+              <ul>
+                <li>2<sup>e</sup> année : la préclinique au plus haut niveau, et la photographie dentaire.</li>
+                <li>3<sup>e</sup> et 4<sup>e</sup> années : la clinique. Chaque patient vu laisse une ligne dans ton carnet d'observation.</li>
+                <li>5<sup>e</sup> année : le TFG, puis le choix du pays où tu exerceras.</li>
+                <li>Ton expediente compte pour entrer dans un bon master : vise le haut de la promo, matière par matière.</li>
+              </ul>
+            </div>
+            <div class="chantier" data-c="corps">
+              <h4>Corps</h4>
+              <ul>
+                <li>En novembre 2027, ≈&nbsp;66 à 70 kg ; fin 2029, ≈&nbsp;70 à 76 kg vers 12&nbsp;% de gras, si 9 séances sur 10 sont faites (ton programme de sport).</li>
+                <li>La ceinture bleue vient en général après un an et demi à trois ans d'entraînement régulier ; c'est ton professeur qui décide.</li>
+                <li>Un dos et une nuque solides : un dentiste travaille penché toute sa carrière.</li>
+              </ul>
+            </div>
+            <div class="chantier" data-c="argent">
+              <h4>Argent</h4>
+              <ul>
+                <li>Avant le 30 novembre 2027 : la première demande d'AideFi (bourse ≈&nbsp;8&nbsp;464&nbsp;€ par an, prêt ≈&nbsp;13&nbsp;400&nbsp;€), puis une à chaque semestre.</li>
+                <li>Chaque mois, le versement automatique sur le fonds. Chaque année, les loyers déclarés avec un gestor si tu as acheté.</li>
+                <li>Une seule activité à côté à la fois : la boutique ou des cours particuliers, jamais trois projets.</li>
+                <li>Début 2031, fais estimer l'appart : tu le vends en juillet si les prix ont monté, sinon tu le gardes.</li>
+              </ul>
+            </div>
+            <p class="passage"><b>Pour passer à l'étape 5 :</b> le diplôme à l'été 2031, ton capital de 2031 compté, et tes prêts avec leur échéancier écrits sur une page.</p>
+          </div>
+        </article>
+
+        <article class="etape" id="etape-5" aria-labelledby="t-e5">
+          <div class="etape-rail"><span class="etape-num">5</span></div>
+          <div class="etape-carte">
+            <p class="etape-quand">De 2031 à 2034</p>
+            <h3 id="t-e5">Dentiste, et l'apport du cabinet</h3>
+            <p class="but"><b>But :</b> apprendre vite le métier, rembourser ce qui est dû, mettre de côté au moins 30&nbsp;% de ce que tu gagnes.</p>
+            <div class="chantier" data-c="etudes">
+              <h4>Études</h4>
+              <ul>
+                <li>Ton diplôme espagnol vaut en France et au Luxembourg : la reconnaissance est automatique (directive 2005/36/CE). Une inscription, pas un nouvel examen.</li>
+                <li>Un master ou une formation longue après un ou deux ans de pratique : implantologie, parodontologie, orthodontie ou esthétique.</li>
+              </ul>
+            </div>
+            <div class="chantier" data-c="corps">
+              <h4>Corps</h4>
+              <ul>
+                <li>Trois séances par semaine au minimum, quoi qu'il arrive : c'est ce qui protège ton dos au fauteuil.</li>
+              </ul>
+            </div>
+            <div class="chantier" data-c="argent">
+              <h4>Argent</h4>
+              <ul>
+                <li>Les prêts se remboursent selon leur échéancier : c'est la première ligne du budget.</li>
+                <li>Au moins 30&nbsp;% de ton revenu mis de côté : 1&nbsp;000&nbsp;€ par mois sur le fonds dans l'hypothèse de cette page, le reste pour l'apport.</li>
+                <li>L'apport du cabinet : ton capital de 2031 plus deux ans d'épargne, soit 30&nbsp;000 à 60&nbsp;000&nbsp;€.</li>
+              </ul>
+            </div>
+            <p class="passage"><b>Pour passer à l'étape 6 :</b> l'apport réuni, un cabinet repéré, un banquier qui a vu tes comptes.</p>
+          </div>
+        </article>
+
+        <article class="etape" id="etape-6" aria-labelledby="t-e6">
+          <div class="etape-rail"><span class="etape-num">6</span></div>
+          <div class="etape-carte">
+            <p class="etape-quand">2034 et après</p>
+            <h3 id="t-e6">Ton cabinet</h3>
+            <p class="but"><b>But :</b> posséder ton outil de travail, puis le faire tourner sans toi.</p>
+            <div class="chantier" data-c="etudes">
+              <h4>Études</h4>
+              <ul>
+                <li>La formation continue chaque année, et la spécialité qui te distingue.</li>
+              </ul>
+            </div>
+            <div class="chantier" data-c="corps">
+              <h4>Corps</h4>
+              <ul>
+                <li>Le sport reste dans l'agenda comme un rendez-vous patient : il ne se déplace pas.</li>
+              </ul>
+            </div>
+            <div class="chantier" data-c="argent">
+              <h4>Argent</h4>
+              <ul>
+                <li>Un rachat de cabinet se finance en général à 70 à 90&nbsp;% par la banque, sur 7 à 10 ans.</li>
+                <li>Le versement mensuel sur le fonds ne s'arrête jamais, même les années où le cabinet prend tout.</li>
+                <li>Le cabinet fait la fortune ; le fonds indexé est le plancher que rien ne fait tomber.</li>
+              </ul>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="rattrapage" aria-labelledby="t-rattrapage">
+      <h2 id="t-rattrapage">Le rattrapage, chiffré</h2>
+      <p class="intro"><b>81 temas, environ 104 heures</b> au protocole de la Batcave : 1 h 30 par tema, 40 minutes en Documentación et en Antropología. À deux temas par jour de cours et trois les autres jours, à partir d'aujourd'hui, tout est vu le <b>samedi 26 décembre</b>.</p>
+      <div class="table-wrap">
+        <table>
+          <caption class="sr">Les temas à rattraper par matière, le temps qu'ils demandent et la date de l'examen</caption>
+          <thead>
+            <tr><th scope="col">Matière</th><th scope="col" class="num">Temas</th><th scope="col" class="num">Temps</th><th scope="col">Examen</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="matiere">Anatomía I</td><td class="num">26</td><td class="num">≈&nbsp;39&nbsp;h</td><td>jeudi 7 janvier, 13:30</td></tr>
+            <tr><td class="matiere">Epidemiología</td><td class="num">20</td><td class="num">≈&nbsp;30&nbsp;h</td><td>lundi 11 janvier, 08:30</td></tr>
+            <tr><td class="matiere">Biología celular</td><td class="num">14</td><td class="num">≈&nbsp;21&nbsp;h</td><td>mercredi 13 janvier, 13:30</td></tr>
+            <tr><td class="matiere">Documentación</td><td class="num">11</td><td class="num">≈&nbsp;7&nbsp;h&nbsp;20</td><td>lundi 18 janvier, 08:30</td></tr>
+            <tr><td class="matiere">Antropología</td><td class="num">10</td><td class="num">≈&nbsp;6&nbsp;h&nbsp;40</td><td>mercredi 20 janvier, 08:30</td></tr>
+          </tbody>
+          <tfoot>
+            <tr><td>Total</td><td class="num">81</td><td class="num">≈&nbsp;104&nbsp;h</td><td></td></tr>
+          </tfoot>
+        </table>
+      </div>
+      <ul class="liste">
+        <li><b>Les jalons :</b> 16 temas d'ici dimanche 29, 65 au 20 décembre (le test de la boutique en demande 60), 81 le 26 décembre. Les temas ajoutés d'ici la fin des cours, le 22 décembre, tiennent jusqu'au 30.</li>
+        <li><b>Le compte</b> vient de ta dernière synchronisation Notion, le 18 novembre. Coche ce que tu as déjà fait, et il baisse.</li>
+        <li><b>Chaque tema finit en 8 à 10 cartes Anki</b> écrites par toi : ce sont elles qui le gardent en mémoire jusqu'à l'examen.</li>
+      </ul>
+    </section>
+
+    <section id="argent" aria-labelledby="t-argent">
+      <h2 id="t-argent">L'argent : trois poches qui ne se mélangent jamais</h2>
+      <p class="intro">Ton patrimoine, c'est ce que tu possèdes moins ce que tu dois. Les ≈&nbsp;199&nbsp;000&nbsp;€ de l'été 2027 seront des prêts : ce qui compte, c'est ce qu'il en reste une fois remboursés.</p>
+      <div class="poches">
+        <div class="poche">
+          <h3>L'argent du mois</h3>
+          <p class="montant">700&nbsp;€ le 25</p>
+          <p class="texte">La Batcave le gère : charges, enveloppe de 300&nbsp;€, cagnotte. Il paie ta vie, ton coussin de 1&nbsp;600&nbsp;€ et le capital de test de la boutique.</p>
+        </div>
+        <div class="poche">
+          <h3>L'argent emprunté</h3>
+          <p class="montant">≈&nbsp;199&nbsp;000&nbsp;€ à l'été 2027</p>
+          <p class="texte">BNP et deux prêts à 0&nbsp;%, puis l'AideFi. Placé sur des comptes rémunérés, il attend une vraie affaire : le plan D, au moins 10&nbsp;% sous le marché. Ta page « 7 plans » chiffre ce qu'il t'en restera en juillet 2031 : ≈&nbsp;27&nbsp;600&nbsp;€ s'il reste placé, ≈&nbsp;46&nbsp;700&nbsp;€ avec le plan D bien acheté et gardé, à prix stables.</p>
+        </div>
+        <div class="poche">
+          <h3>L'argent investi</h3>
+          <p class="montant">Ton argent, chaque mois</p>
+          <p class="texte">Un fonds indexé monde, en versement automatique dès que le coussin est plein. Petit pendant les études, gros une fois dentiste. C'est la poche que le temps fait grossir.</p>
+        </div>
+      </div>
+
+      <h3 class="sous">Ce que fait le temps</h3>
+      <p class="intro">L'hypothèse : 100&nbsp;€ par mois de septembre 2027 à juin 2031, puis 1&nbsp;000&nbsp;€ par mois une fois dentiste, sur un fonds indexé monde qui rapporterait 5&nbsp;% par an au-dessus de l'inflation. Les montants sont en euros d'aujourd'hui, avant impôt. C'est une hypothèse, pas une promesse : change les chiffres pour voir.</p>
+      <fieldset class="calc">
+        <legend>Essaie tes chiffres</legend>
+        <div class="champ">
+          <label for="calc-etudes">Pendant tes études (€ par mois)</label>
+          <input id="calc-etudes" type="number" inputmode="numeric" min="0" max="100000" step="10" value="100">
+        </div>
+        <div class="champ">
+          <label for="calc-dentiste">Une fois dentiste (€ par mois)</label>
+          <input id="calc-dentiste" type="number" inputmode="numeric" min="0" max="100000" step="50" value="1000">
+        </div>
+        <div class="champ">
+          <label for="calc-taux">Rendement au-dessus de l'inflation</label>
+          <select id="calc-taux">
+            <option value="3">3 % par an</option>
+            <option value="5" selected>5 % par an</option>
+            <option value="7">7 % par an</option>
+          </select>
+        </div>
+      </fieldset>
+      <div class="table-wrap">
+        <table>
+          <caption class="sr">Le total versé et la valeur estimée du fonds à la fin de chaque année</caption>
+          <thead>
+            <tr><th scope="col">Fin d'année</th><th scope="col" class="num">Versé au total</th><th scope="col" class="num">Valeur estimée</th></tr>
+          </thead>
+          <tbody id="projection-corps" aria-live="polite">
+            <tr><td>2031</td><td class="num">10&#8239;600&nbsp;€</td><td class="num">11&#8239;200&nbsp;€</td></tr>
+            <tr><td>2036</td><td class="num">70&#8239;600&nbsp;€</td><td class="num">82&#8239;200&nbsp;€</td></tr>
+            <tr><td>2041</td><td class="num">130&#8239;600&nbsp;€</td><td class="num">172&#8239;700&nbsp;€</td></tr>
+            <tr><td>2051</td><td class="num">250&#8239;600&nbsp;€</td><td class="num">435&#8239;600&nbsp;€</td></tr>
+            <tr><td>2061</td><td class="num">370&#8239;600&nbsp;€</td><td class="num">863&#8239;900&nbsp;€</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="seuils" id="projection-seuils"><b>10&#8239;000&nbsp;€</b> en nov. 2031 · <b>100&#8239;000&nbsp;€</b> en févr. 2038 · <b>500&#8239;000&nbsp;€</b> en nov. 2053 · <b>1&#8239;000&#8239;000&nbsp;€</b> pas avant 2062</p>
+      <ul class="liste">
+        <li><b>Attendre dix ans coûte plus de la moitié.</b> Le même effort commencé en juillet 2041 (1&nbsp;000&nbsp;€ par mois) donne ≈&nbsp;421&nbsp;900&nbsp;€ en 2061, au lieu de ≈&nbsp;863&nbsp;900&nbsp;€.</li>
+        <li><b>Les 4&nbsp;600&nbsp;€ versés pendant tes études</b> valent à eux seuls ≈&nbsp;22&nbsp;400&nbsp;€ en 2061. Leur vrai rôle : que l'habitude existe le jour où ton salaire arrive.</li>
+        <li><b>Le rendement ne dépend pas de toi.</b> À 3&nbsp;% par an, 2061 donne ≈&nbsp;605&nbsp;400&nbsp;€ ; à 7&nbsp;%, ≈&nbsp;1&nbsp;257&nbsp;000&nbsp;€. La régularité, elle, dépend de toi.</li>
+      </ul>
+
+      <h3 class="sous">Où placer, en Espagne</h3>
+      <ul class="liste">
+        <li><b>Le coussin et l'argent emprunté :</b> des comptes rémunérés, disponibles à tout moment. La garantie des dépôts couvre 100&nbsp;000&nbsp;€ par banque, d'où 2 ou 3 banques.</li>
+        <li><b>L'argent investi :</b> un fonds indexé monde (MSCI World ou FTSE All-World) chez un courtier qui opère en Espagne. MyInvestor, par exemple, accepte 1&nbsp;€ par fonds indexé dans son application, sans frais de garde ni de traspaso.</li>
+        <li><b>Un fonds plutôt qu'un ETF :</b> en Espagne, un fonds se change contre un autre sans payer d'impôt (le traspaso) ; un ETF, non. Pour un résident fiscal espagnol, le fonds indexé gagne.</li>
+        <li><b>Les conseils français ne s'appliquent pas tels quels :</b> le PEA, l'assurance-vie et le Livret A supposent d'être résident fiscal en France. Toi, tu l'es en Espagne.</li>
+        <li><b>L'impôt :</b> 19&nbsp;% sur les 6&nbsp;000 premiers euros d'intérêts et de plus-values de l'année. Un fonds ne paie qu'au retrait.</li>
+      </ul>
+
+      <h3 class="sous">Ce que tu ne fais pas</h3>
+      <ul class="liste">
+        <li><b>Le trading, la crypto, les « signaux » :</b> aucun n'entre dans le plan.</li>
+        <li><b>Une formation de gourou à 997&nbsp;€ :</b> c'est le budget de trois tests de produits.</li>
+        <li><b>Le crédit à la consommation et le paiement en 3 ou 4 fois :</b> un patrimoine se construit en possédant.</li>
+        <li><b>Un appart payé au prix du marché parce qu'il te plaît :</b> « 7 plans » montre qu'à ce prix, tu fais moins bien que le simple placement.</li>
+        <li><b>La bourse avec l'argent emprunté :</b> une baisse de 20 ou 30&nbsp;% au mauvais moment, et le remboursement de 2031 est en danger.</li>
+      </ul>
+    </section>
+
+    <section id="tableau" aria-labelledby="t-tableau">
+      <h2 id="t-tableau">Le tableau de bord</h2>
+      <p class="intro">Peu de chiffres, toujours les mêmes, aux mêmes moments. Tout se lit dans la Batcave.</p>
+      <div class="table-wrap">
+        <table>
+          <caption class="sr">Quand regarder quoi, et la cible de chaque relevé</caption>
+          <thead>
+            <tr><th scope="col">Quand</th><th scope="col">Tu regardes</th><th scope="col">La cible</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="matiere">Chaque soir, 1 min</td><td>Les cases de « Ma journée », le minuteur arrêté</td><td>Tout ce qui est fait est noté</td></tr>
+            <tr><td class="matiere">Chaque dimanche, 10 min</td><td>Les temas faits, les heures au minuteur, les cartes Anki en retard, les séances, la pesée, le sommeil</td><td>16 temas par semaine jusqu'au 26 décembre, 0 carte en retard, 9 séances sur 10, au moins 7 h 30 de sommeil</td></tr>
+            <tr><td class="matiere">Chaque 25, 10 min</td><td>La cagnotte, le coussin, les comptes rémunérés, le versement au fonds</td><td>La cagnotte part le jour même</td></tr>
+            <tr><td class="matiere">Toutes les 5 semaines</td><td>Le retest, les photos</td><td>Les chiffres montent</td></tr>
+            <tr><td class="matiere">Chaque fin de semestre</td><td>Les notes, le poids, le capital</td><td>L'étape suivante s'ouvre</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="decrochage" aria-labelledby="t-decrochage">
+      <h2 id="t-decrochage">Si tu décroches</h2>
+      <p class="intro">Ça arrivera. Ce qui fait la machine, c'est le lendemain.</p>
+      <ol class="reprise">
+        <li>Ne déplace pas le jour 1. Ouvre la Batcave et fais la ligne de l'heure qu'il est.</li>
+        <li>Journée trop pleine ? La version minimale : les cartes Anki du jour, un tema, le sport prévu ou 30 minutes de marche, les repas, le coucher à 21:35.</li>
+        <li>Note-le, même incomplet : une journée à 20&nbsp;% notée sert plus qu'une journée parfaite imaginée.</li>
+        <li>Le dimanche, au bilan, on ajuste le plan s'il le faut. Jamais en semaine.</li>
+        <li>Deux jours ratés de suite : écris-moi le soir même. On cherche ce qui a cassé (le sommeil, les courses, l'argent) au lieu de tout décaler.</li>
+      </ol>
+    </section>
+
+    <section id="pages" aria-labelledby="t-pages">
+      <h2 id="t-pages">Tes pages</h2>
+      <ul class="liens">
+        <li><a href="https://claude.ai/artifact/WiRhLTtgsRHFcKX7rxdJwo">La Batcave</a><span>Chaque journée, et le bilan du dimanche.</span></li>
+        <li><a href="https://claude.ai/artifact/YATJHFjCspNz28MarfYVEp">Ta semaine, jour par jour</a><span>Heure par heure, jusqu'au 24 janvier.</span></li>
+        <li><a href="https://claude.ai/artifact/QS76Jnd5Rj8ZtfxD74j5d6">Ta journée, pas à pas</a><span>Chaque moment de la journée, expliqué.</span></li>
+        <li><a href="https://claude.ai/artifact/WDgMdeGacCzg9pxP4Tpwcr">Paliers de physique</a><span>Le poids et les silhouettes, à ton échelle.</span></li>
+        <li><a href="https://claude.ai/artifact/PHJRsB1yY5ZZps4aTJc8tu">Cinq minutes d'étirements</a><span>Le dos et les hanches, chaque jour.</span></li>
+        <li><a href="https://claude.ai/artifact/CJHkfLFePN88EpyHbp1WYX">Dossier Español</a><span>Le mois d'espagnol, jusqu'au 19 décembre.</span></li>
+        <li><a href="https://claude.ai/artifact/U1CMZNXrMdQogtsPaNfTAX">Dossier E-commerce</a><span>La boutique, ses règles d'arrêt, son capital.</span></li>
+        <li><a href="https://claude.ai/artifact/27Kqo38mHrEXg3eb578vYq">Que faire de ton argent pendant tes études</a><span>Les 7 plans pour l'argent emprunté.</span></li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    <p>Des hypothèses, pas des promesses : les rendements, les poids et tout ce qui vient après 2027 sont des estimations, revues chaque été. Cette page se met à jour quand une étape est franchie.</p>
+    <p>Sources : <a href="https://myinvestor.es/inversion/fondos-indexados/">MyInvestor, fonds indexés (minimum, traspaso)</a> · <a href="https://economipedia.com/guia/los-mejores-brokers-para-invertir-en-fondos-indexados-en-2026">Economipedia, fonds indexés et ETF en Espagne</a> · <a href="https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX:32005L0036">Directive 2005/36/CE</a>. Les chiffres de l'appartement viennent de ta page « 7 plans », datée du 23 novembre 2026.</p>
+  </footer>
+</div>
+
+<script>
+(function(){
+  var MOIS = ['janv.', 'févr.', 'mars', 'avr.', 'mai', 'juin', 'juil.', 'août', 'sept.', 'oct.', 'nov.', 'déc.'];
+  var ANNEES = [2031, 2036, 2041, 2051, 2061];
+  var SEUILS = [[10000, '10 000 €'], [100000, '100 000 €'], [500000, '500 000 €'], [1000000, '1 000 000 €']];
+  function fmt(n){ return String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' €'; }
+  function arrondi(v){ return Math.floor(v / 100 + 0.5) * 100; }
+  /* Versements en fin de mois, de septembre 2027 à décembre 2061 ; études jusqu'en juin 2031, dentiste dès juillet 2031. */
+  function simule(etu, dent, taux){
+    var rm = Math.pow(1 + taux, 1 / 12) - 1, v = 0, verse = 0, y = 2027, m = 9, fin = {}, seuils = {};
+    while(y < 2062){
+      v *= 1 + rm;
+      var a = (y < 2031 || (y === 2031 && m <= 6)) ? etu : dent;
+      v += a; verse += a;
+      for(var i = 0; i < SEUILS.length; i++){ var s = SEUILS[i][0]; if(v >= s && !seuils[s]) seuils[s] = MOIS[m - 1] + ' ' + y; }
+      if(m === 12) fin[y] = [verse, v];
+      m++; if(m === 13){ m = 1; y++; }
+    }
+    return {fin: fin, seuils: seuils};
+  }
+  var fEtu = document.getElementById('calc-etudes');
+  var fDent = document.getElementById('calc-dentiste');
+  var fTaux = document.getElementById('calc-taux');
+  var corps = document.getElementById('projection-corps');
+  var seuilsEl = document.getElementById('projection-seuils');
+  if(!fEtu || !fDent || !fTaux || !corps || !seuilsEl) return;
+  function lire(el){ var n = Number(el.value); if(!isFinite(n) || n < 0) n = 0; return Math.min(n, 100000); }
+  function rendre(){
+    var r = simule(lire(fEtu), lire(fDent), (Number(fTaux.value) || 5) / 100);
+    corps.innerHTML = ANNEES.map(function(y){
+      var x = r.fin[y];
+      return '<tr><td>' + y + '</td><td class="num">' + fmt(arrondi(x[0])) + '</td><td class="num">' + fmt(arrondi(x[1])) + '</td></tr>';
+    }).join('');
+    seuilsEl.innerHTML = SEUILS.map(function(p){
+      return '<b>' + p[1] + '</b> ' + (r.seuils[p[0]] ? 'en ' + r.seuils[p[0]] : 'pas avant 2062');
+    }).join(' · ');
+  }
+  [fEtu, fDent, fTaux].forEach(function(el){ el.addEventListener('input', rendre); el.addEventListener('change', rendre); });
+  rendre();
+})();
+</script>
