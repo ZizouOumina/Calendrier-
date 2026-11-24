@@ -57,8 +57,9 @@ const libelle = (h, dow) => (h.icon ? h.icon + ' ' : '') + h.label + (h.id === '
 /* 17 novembre, « et la 5 » : le jour où sa case mère tombe, l'entretien se range dans le ménage du dimanche et le linge rare
    dans les draps (« avec : … », dans cet ordre) -- la règle, réécrite ici à part */
 const REGROUPES = {
+  /* 24 novembre : les brosses de douche en silicone, chaque dimanche, closent le menage */
   'core-menage': ['core-rideau-douche', 'core-detartrage', 'core-entretien-semaine', 'core-entretien-mois', 'core-robot-filtre',
-                  'core-robot-brosse-laterale', 'core-robot-brosses', 'core-aspi-pieces', 'core-machine-filtre'],
+                  'core-robot-brosse-laterale', 'core-robot-brosses', 'core-aspi-pieces', 'core-machine-filtre', 'core-brosses-silicone'],
   'core-draps': ['core-serviette-corps', 'core-matelas', 'core-oreiller', 'core-couette']
 };
 function regrouper(dus){

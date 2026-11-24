@@ -11,7 +11,16 @@
 >   le Plan du jour l'annonce ce matin-là (vérifié en simulant mercredi 25 et jeudi 26 : `premierJourSport` = le 26).
 > **Rappelé aussi** : l'appel au centro de salud pour les douleurs à la poitrine (la note du jour), et la copie vierge
 >   (bouton Sauvegarde) avant toute saisie.
-> **Vérifié** : en cours — les sept audits et la saison (A et B, du 24 novembre au 6 juin), lancés après la réponse.
+> **Vérifié** (après la réponse) : audit, audit-suivi, audit-cablage, contraste, verif-profonde et ses données réelles (le
+>   24 au réveil et à midi, le 29) verts. Deux trouvailles, corrigées :
+>   - verif-pages : dans « Ta semaine type », l'ancre « dimanche » était cassée. La semaine du 23 part du mardi, et les
+>     ancres suivaient l'ordre des jours, pas leur nom (« lun » ouvrait le mardi, « sam » le dimanche). La page montre
+>     désormais la première semaine entière, du lundi 30 novembre au dimanche 6 décembre (ses échéances du 1er, du 2 et
+>     du 4, le JJB du mercredi et du vendredi), et chaque ancre suit le nom de son jour (`gen_semaine_type.py`) ; republiée ;
+>   - la saison (zz-journee-saison) : la règle réécrite à part ne rangeait pas les brosses dans le ménage du dimanche, et
+>     attendait leur ligne à part ; recalée. A : 195 jours, 5 133 lignes, 3 689 cases, toutes justes ; le pas à pas écrit
+>     sur 62 jours, la grille de la Batcave sur 133, aucun jour changé depuis l'écriture. B : en cours.
+>   verif-pages relancé : tout vert, « Ta semaine type » comprise.
 
 > ### Mardi 24 novembre, 00:24 — LE JOUR 1 AU MARDI 24, VERROUILLÉ ; les brosses de douche le dimanche
 > **LE VERROU** : à « veux-tu que je refuse les prochains décalages ? », sa réponse : « Oui, verrouille-le ». S'il redemande

@@ -4,7 +4,7 @@ import json, re, html, sys, os
 
 SRC = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'batcave.html')
 OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'semaine-type.html')
-LUNDI = '2026-11-23'
+LUNDI = '2026-11-30'   # 24 novembre : la semaine du 23 part du mardi (le jour 1) -- la semaine type est la premiere entiere
 
 s = open(SRC, encoding='utf-8').read()
 G = json.loads(re.search(r'<script type="application/json" id="journees-guide">(.*?)</script>', s, re.S).group(1))
@@ -13,7 +13,6 @@ e = lambda x: html.escape(str(x or ''), quote=True)
 
 NOMS = {'etude': 'Révisions', 'esp': 'Espagnol', 'repas': 'Repas', 'soin': 'Soin', 'maison': 'Maison', 'foi': 'Prière',
         'rdv': 'À faire', 'cours': 'Cours', 'libre': 'Libre', 'sport': 'Sport', 'projet': 'Projet'}
-ANCRES = ['lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi', 'dimanche']
 
 def ligne(r):
     k = r['k'] if r['k'] in NOMS else 'libre'
@@ -35,7 +34,7 @@ for i, j in enumerate(sem['jours']):
     prieres = ' · '.join(e(p[0]) + ' <b>' + e(p[1]) + '</b>' for p in j.get('prieres') or [])
     rows = ''.join(ligne(r) for r in j['rows'])
     jours.append(
-        '<section class="jour" id="' + ANCRES[i] + '"><header class="jtete"><h2>' + e(j['jour']) + ' <span>' + str(j['num']) + ' ' + e(j['mois']) + '</span></h2>'
+        '<section class="jour" id="' + e(j['jour'].lower()) + '"><header class="jtete"><h2>' + e(j['jour']) + ' <span>' + str(j['num']) + ' ' + e(j['mois']) + '</span></h2>'
         '<p class="sous">' + str(len(j['rows'])) + ' lignes · ' + e(re.sub(r', comme le tableau de bord$', '', j.get('rattrapage') or '')) + '</p></header>'
         + (('<div class="bloc notes"><h3>À ne pas oublier</h3><ul>' + notes + '</ul></div>') if notes else '')
         + '<p class="prieres"><span>Prières</span> ' + prieres + '</p>'
@@ -47,7 +46,8 @@ for i, j in enumerate(sem['jours']):
 chaque = ''.join('<li>' + e(x) + '</li>' for x in G['chaqueJour'])
 mois = ''.join('<li>' + e(x) + '</li>' for x in G['mois'])
 rare = ''.join('<li>' + e(x) + '</li>' for x in G['plusRare'])
-nav = ''.join('<a href="#' + a + '">' + a[:3] + '</a>' for a in ANCRES)
+# l'ancre suit le nom du jour, et la barre ne montre que les jours de la page : une semaine partielle ne casse plus rien
+nav = ''.join('<a href="#' + e(j['jour'].lower()) + '">' + e(j['jour'].lower()[:3]) + '</a>' for j in sem['jours'])
 
 page = '''<title>Ta semaine type</title>
 <meta name="claude:viewport-fit-sides" content="cover">
@@ -131,7 +131,7 @@ html{scroll-behavior:smooth}
 <div class="wrap">
   <header>
     <h1>Ta semaine type</h1>
-    <p class="intro">La semaine du lundi 23 au dimanche 29 novembre, telle que la Batcave et l’onglet « Ma journée » te la donnent : chaque tâche à son heure, dans l’ordre, avec tes vraies échéances (l’exposé de Biología mardi, les deux TP de mercredi et jeudi). Touche une ligne pour voir ses étapes. Le JJB n’y est pas : il reprend le mercredi 2 décembre, lundi, mercredi et vendredi à 10:30, à la place du bloc de 10:20. Le jour 1 est le mardi 24 : le lundi 23 montre une journée ordinaire, et le mardi a en plus ce qui est propre au départ (la séance de référence, les repas sans boîte) ; à partir du jeudi 24 décembre, les blocs « Projets perso » passent à l’e-commerce. S’il manque quelque chose, dis-le-moi.</p>
+    <p class="intro">La semaine du lundi 30 novembre au dimanche 6 décembre, la première semaine entière du programme, telle que la Batcave et l’onglet « Ma journée » te la donnent : chaque tâche à son heure, dans l’ordre, avec tes vraies échéances (les Problemas de Genética mardi, les Láminas et le Q3 d’Anatomía mercredi, le Q3 d’Antropología vendredi, chacun préparé la veille au soir). Touche une ligne pour voir ses étapes. Le JJB reprend cette semaine-là : mercredi et vendredi à 10:30, à la place du bloc de 10:20, et le lundi s’y ajoute dès le 7 décembre. À partir du jeudi 24 décembre, les blocs « Projets perso » passent à l’e-commerce. S’il manque quelque chose, dis-le-moi.</p>
   </header>
   <nav class="jours" aria-label="Les jours">''' + nav + '''<button type="button" id="tout" aria-pressed="false">Tout déplier</button></nav>
 ''' + '\n'.join(jours) + '''
