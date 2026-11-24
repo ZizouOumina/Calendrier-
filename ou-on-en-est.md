@@ -19,7 +19,8 @@
 >     du 4, le JJB du mercredi et du vendredi), et chaque ancre suit le nom de son jour (`gen_semaine_type.py`) ; republiée ;
 >   - la saison (zz-journee-saison) : la règle réécrite à part ne rangeait pas les brosses dans le ménage du dimanche, et
 >     attendait leur ligne à part ; recalée. A : 195 jours, 5 133 lignes, 3 689 cases, toutes justes ; le pas à pas écrit
->     sur 62 jours, la grille de la Batcave sur 133, aucun jour changé depuis l'écriture. B : en cours.
+>     sur 62 jours, la grille de la Batcave sur 133, aucun jour changé depuis l'écriture. B : les 195 jours ouverts
+>     comme aujourd'hui, tout coché, décoché et rechargé : tout vert.
 >   verif-pages relancé : tout vert, « Ta semaine type » comprise.
 
 > ### Mardi 24 novembre, 00:24 — LE JOUR 1 AU MARDI 24, VERROUILLÉ ; les brosses de douche le dimanche
