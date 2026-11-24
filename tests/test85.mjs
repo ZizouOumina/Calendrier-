@@ -57,12 +57,15 @@ const CHARNIERES = [
      le mercredi 18 est encore hors phase, le samedi 19 decembre revient aux projets
      19 novembre : jour 1 au vendredi 20 -- un mois pile, du vendredi 20 novembre au samedi 19 decembre ; le jeudi 19 est
      encore hors phase, le dimanche 20 decembre revient aux projets */
-  ['la veille du jour 1',       '2026-11-19', null],
-  ['jour 1, mois repris',       '2026-11-20', 'es-1-reprise'],
+  /* 24 novembre : jour 1 au mardi 24 (verrouille) -- un mois pile, du mardi 24 novembre au mercredi 23 decembre. Le 23 est
+     aussi le premier jour des vacances de Noel : sa periode se lit « vacances » (il garde ses blocs d'espagnol) ; le jeudi 24,
+     premier jour sans phase, est en vacances. */
+  ['la veille du jour 1',       '2026-11-23', null],
+  ['jour 1, mois repris',       '2026-11-24', 'es-1-reprise'],
   ['dans le mois repris',       '2026-11-25', 'es-1-reprise'],
   ['fin novembre, mois repris', '2026-11-29', 'es-1-reprise'],
-  ['dernier jour du mois repris','2026-12-19', 'es-1-reprise'],
-  ['premier jour sans phase',   '2026-12-20', null],
+  ['dernier jour de cours du mois repris','2026-12-22', 'es-1-reprise'],
+  ['premier jour sans phase, en vacances', '2026-12-24', 'vacances'],
   ['pendant les vacances',      '2026-12-28', 'vacances'],
   ['en mode partiels',          '2027-01-19', 'partiels'],
   ['apres les partiels',        '2027-02-08', null],
@@ -132,7 +135,7 @@ console.log('\n== 276) Les 182 jours, un par un : la grille ne trébuche jamais 
      15 novembre : du lundi 16 au samedi 12 decembre (27 jours)
      18 novembre : du jeudi 19 novembre au vendredi 18 decembre (30 jours, un mois pile).
      19 novembre : du vendredi 20 novembre au samedi 19 decembre (30 jours aussi) */
-  ok(bilan.phases['es-1'] === 55 && bilan.phases['es-1-reprise'] === 30 && bilan.phases['es-2'] === undefined, 'es-1 sur 55 jours (14 septembre → 7 novembre), le mois repris sur 30 (20 novembre → 19 décembre) (obtenu ' + bilan.phases['es-1'] + ' / ' + bilan.phases['es-1-reprise'] + ' / ' + bilan.phases['es-2'] + ')');
+  ok(bilan.phases['es-1'] === 55 && bilan.phases['es-1-reprise'] === 29 && bilan.phases['es-2'] === undefined, 'es-1 sur 55 jours (14 septembre → 7 novembre), le mois repris sur 29 jours de période (24 novembre → 22 décembre ; le 23, premier jour des vacances, garde ses blocs d\'espagnol) (obtenu ' + bilan.phases['es-1'] + ' / ' + bilan.phases['es-1-reprise'] + ' / ' + bilan.phases['es-2'] + ')');
   ok(bilan.phases['partiels'] > 0, 'le mode partiels occupe ' + bilan.phases['partiels'] + ' jours de janvier');
   /* La revision est la seule constante du programme : elle ne depend pas de la phase.
      Sur 182 jours moins les 15 de vacances et le regime de partiels, elle reste massive. */

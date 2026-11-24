@@ -53,7 +53,7 @@ console.log('\n== 301) Les cibles du jour et de la semaine viennent de la grille
      7 novembre : le mois d'espagnol repris court jusqu'au mardi 8 decembre -- la semaine sans
      espagnol est celle du mardi 15. */
   /* 18 novembre : le mois d'espagnol va jusqu'au vendredi 18 decembre -- l'apres-phase se lit le mardi 22 */
-  const p3 = await ouvrir('2026-12-22T18:00:00+01:00');
+  const p3 = await ouvrir('2026-12-29T18:00:00+01:00');   /* 24 novembre : le mois d'espagnol va jusqu'au mercredi 23 decembre -- apres, le mardi 29 */
   const sem3 = await p3.fr.evaluate(() => document.getElementById('dash-semaine').innerText.replace(/\s+/g, ' '));
   const c3 = await cellules(p3.fr);
   ok(!/de projets sur/.test(sem3), 'décembre : plus de charge de projets annoncée (sans minuteur depuis le 25 septembre) (' + sem3.slice(0, 130) + ')');

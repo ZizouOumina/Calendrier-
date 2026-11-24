@@ -30,8 +30,8 @@ console.log('\n== 265) Le jour 1 au jeudi 24, la phase Español au 23 octobre ==
   const { ctx, fr } = await ouvrir('2026-09-23T10:00:00+02:00');
   const r = await fr.evaluate(() => ({
     debut: window.__bcProgrammeDebut,
-    es23: !!window.__bcPhaseEspanol('2026-12-19'), es24: !!window.__bcPhaseEspanol('2026-12-20'),
-    es7: !!window.__bcPhaseEspanol('2026-11-07'), es8: !!window.__bcPhaseEspanol('2026-11-08'), es11: !!window.__bcPhaseEspanol('2026-11-19'), es9: !!window.__bcPhaseEspanol('2026-11-20'),
+    es23: !!window.__bcPhaseEspanol('2026-12-23'), es24: !!window.__bcPhaseEspanol('2026-12-24'),
+    es7: !!window.__bcPhaseEspanol('2026-11-07'), es8: !!window.__bcPhaseEspanol('2026-11-08'), es11: !!window.__bcPhaseEspanol('2026-11-23'), es9: !!window.__bcPhaseEspanol('2026-11-24'),
     nom23: (window.__bcPeriode('2026-10-23') || {}).id || null
   }));
   /* 28 septembre au soir, « tout commence demain » : jour 1 au mardi 29, et la phase
@@ -68,10 +68,13 @@ console.log('\n== 265) Le jour 1 au jeudi 24, la phase Español au 23 octobre ==
      reprend le samedi 19. Du dimanche 8 au mercredi 18, hors phase.
      19 novembre, « on commence tout demain vendredi, ce mois ci j'aurais pas assez pour le JJB » : jour 1 au vendredi 20, et
      le mois repris avec lui -- du vendredi 20 novembre au samedi 19 decembre ; l'e-commerce reprend le dimanche 20. Du
-     dimanche 8 au jeudi 19, hors phase. */
-  ok(r.debut === '2026-11-20', 'PROGRAMME_DEBUT = ' + r.debut);
-  ok(r.es7 && !r.es8 && !r.es11 && r.es9, 'es-1 jusqu\'au samedi 7, rien du dimanche 8 au jeudi 19, la reprise dès le vendredi 20 (' + [r.es7, r.es8, r.es11, r.es9].join(' / ') + ')');
-  ok(r.es23 && !r.es24, 'le mois repris court jusqu\'au samedi 19 décembre, plus le 20 (' + r.es23 + ' / ' + r.es24 + ')');
+     dimanche 8 au jeudi 19, hors phase.
+     23 novembre au soir, « on decale tout a demain, debut de la phase d'espagnol » : jour 1 au mardi 24, VERROUILLE,
+     et le mois repris avec lui -- du mardi 24 novembre au mercredi 23 decembre ; l'e-commerce reprend le jeudi 24.
+     Du dimanche 8 au lundi 23, hors phase. */
+  ok(r.debut === '2026-11-24', 'PROGRAMME_DEBUT = ' + r.debut);
+  ok(r.es7 && !r.es8 && !r.es11 && r.es9, 'es-1 jusqu\'au samedi 7, rien du dimanche 8 au lundi 23, la reprise dès le mardi 24 (' + [r.es7, r.es8, r.es11, r.es9].join(' / ') + ')');
+  ok(r.es23 && !r.es24, 'le mois repris court jusqu\'au mercredi 23 décembre, plus le 24 (' + r.es23 + ' / ' + r.es24 + ')');
   await ctx.close();
 }
 
@@ -94,8 +97,9 @@ console.log('\n== 266) Le controle des series : rien avant le jour 1, puis la pr
   /* le lundi 16, jour 1 : J+2 a J+8, du mercredi 18 au mardi 24. Un agenda qui porte chaque rappel a son heure
      (series et evenements uniques, comme depuis la remise au propre) suit la grille de bout en bout.
      18 novembre : le jeudi 19, jour 1 -- J+2 a J+8, du samedi 21 au vendredi 27.
-     19 novembre : le vendredi 20, jour 1 -- J+2 a J+8, du dimanche 22 au samedi 28. */
-  const { ctx, fr } = await ouvrir('2026-11-20T10:00:00+01:00');
+     19 novembre : le vendredi 20, jour 1 -- J+2 a J+8, du dimanche 22 au samedi 28.
+     23 novembre : le mardi 24, jour 1 -- J+2 a J+8, du jeudi 26 au mercredi 2 decembre. */
+  const { ctx, fr } = await ouvrir('2026-11-24T10:00:00+01:00');
   const r = await fr.evaluate(async () => {
     const jours = window.__bcJoursAControler();
     const mm = m => String(Math.floor(m / 60)).padStart(2, '0') + ':' + String(m % 60).padStart(2, '0');
@@ -110,12 +114,12 @@ console.log('\n== 266) Le controle des series : rien avant le jour 1, puis la pr
              plan: document.getElementById('dash-plan').innerText,
              sauve: JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-gcal-controle') || 'null') };
   });
-  ok(r.appel && r.appel.tool === 'list_events' && /^2026-11-22T00:00:00\+01:00$/.test(r.appel.args.startTime) && /^2026-11-29T00:00:00\+01:00$/.test(r.appel.args.endTime),
-     'un seul list_events, du 22 au 29 novembre (' + (r.appel && r.appel.args.startTime) + ' → ' + (r.appel && r.appel.args.endTime) + ')');
-  ok(r.jours.length === 7 && r.jours[0] === '2026-11-22' && r.jours[6] === '2026-11-28', 'sept jours relus, J+2 à J+8 : ' + r.jours.join(' '));
+  ok(r.appel && r.appel.tool === 'list_events' && /^2026-11-26T00:00:00\+01:00$/.test(r.appel.args.startTime) && /^2026-12-03T00:00:00\+01:00$/.test(r.appel.args.endTime),
+     'un seul list_events, du 26 novembre au 3 décembre (' + (r.appel && r.appel.args.startTime) + ' → ' + (r.appel && r.appel.args.endTime) + ')');
+  ok(r.jours.length === 7 && r.jours[0] === '2026-11-26' && r.jours[6] === '2026-12-02', 'sept jours relus, J+2 à J+8 : ' + r.jours.join(' '));
   ok(r.n === 0 && /tout suit la grille/.test(r.statut), 'chaque rappel à son heure (' + r.blocs + ') : aucun écart — ' + r.statut);
   ok(!/Agenda Google : \d+ séries? 🦇/.test(r.plan), 'le Plan du jour n\'en dit rien');
-  ok(r.sauve && r.sauve.date === '2026-11-20', 'le contrôle est gardé pour la journée');
+  ok(r.sauve && r.sauve.date === '2026-11-24', 'le contrôle est gardé pour la journée');
   await ctx.close();
 }
 

@@ -3020,7 +3020,7 @@
    {
     "h": "16:30",
     "l": "🧽 Ménage — sols, salle de bain, poussière",
-    "c": "À ton retour de la laverie (vers 16:30) : le lit refait avec la parure propre, puis aspirateur-serpillière dans tout l'appart, la salle de bain (la bonde de la douche débarrassée de ses cheveux), la poussière. Le linge propre plié et rangé. Puis l'entretien des deux machines, dix minutes. L'aspirateur-serpillière : le réservoir d'eau sale vidé et rincé, son cycle d'auto-nettoyage sur la base s'il en a un, la brosse-rouleau et le filtre sortis et mis à sécher à l'air, jamais rangés humides. Le robot : le bac vidé, ses brosses démêlées (les cheveux coupés aux ciseaux), le filtre tapoté contre la poubelle, sans le mouiller. Ce dimanche, la machine à laver : le petit filtre en bas à l'avant vidé (une serpillière et un plat dessous, il reste de l'eau), le joint du hublot essuyé jusqu'au fond des plis, le bac à lessive sorti et rincé, et la porte laissée entrouverte. L'éponge de la cuisine changée. À la fin, sors la poubelle."
+    "c": "À ton retour de la laverie (vers 16:30) : le lit refait avec la parure propre, puis aspirateur-serpillière dans tout l'appart, la salle de bain (la bonde de la douche débarrassée de ses cheveux), la poussière. Le linge propre plié et rangé. Puis l'entretien des deux machines, dix minutes. L'aspirateur-serpillière : le réservoir d'eau sale vidé et rincé, son cycle d'auto-nettoyage sur la base s'il en a un, la brosse-rouleau et le filtre sortis et mis à sécher à l'air, jamais rangés humides. Le robot : le bac vidé, ses brosses démêlées (les cheveux coupés aux ciseaux), le filtre tapoté contre la poubelle, sans le mouiller. Ce dimanche, la machine à laver : le petit filtre en bas à l'avant vidé (une serpillière et un plat dessous, il reste de l'eau), le joint du hublot essuyé jusqu'au fond des plis, le bac à lessive sorti et rincé, et la porte laissée entrouverte. Les brosses de douche en silicone : lavées au liquide vaisselle, puis dix minutes dans un bol d'eau chaude de la bouilloire, et suspendues pour sécher. Après chaque douche, rince-les et suspends-les. L'éponge de la cuisine changée. À la fin, sors la poubelle."
    },
    {
     "h": "17:30",
@@ -3189,7 +3189,7 @@
     "label": "Photos — peau et corps",
     "icon": "📸",
     "cycle": 4,
-    "ancre": "2026-11-22",
+    "ancre": "2026-11-29",
     "quinzaine": false
    },
    {
@@ -3205,7 +3205,7 @@
     "label": "Brosse à dents changée",
     "icon": "🪥",
     "cycle": 12,
-    "ancre": "2026-11-22",
+    "ancre": "2026-11-29",
     "quinzaine": false
    },
    {
@@ -3237,7 +3237,7 @@
     "label": "Ongles — mains ; pieds les dimanches de photo",
     "icon": "✂️",
     "cycle": 2,
-    "ancre": "2026-11-22",
+    "ancre": "2026-11-29",
     "quinzaine": false
    },
    {
@@ -3359,6 +3359,14 @@
     "cycle": 13,
     "ancre": "2026-12-06",
     "quinzaine": false
+   },
+   {
+    "id": "core-brosses-silicone",
+    "label": "Brosses de douche lavées et désinfectées",
+    "icon": "🫧",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
    }
   ],
   "duJour": [
@@ -3458,11 +3466,6 @@
     "icon": "🧽"
    },
    {
-    "id": "core-ongles",
-    "label": "Ongles — mains ; pieds les dimanches de photo",
-    "icon": "✂️"
-   },
-   {
     "id": "core-creatine",
     "label": "Créatine — 5 g",
     "icon": "🥄"
@@ -3491,6 +3494,11 @@
     "id": "core-oreiller",
     "label": "Oreiller lavé",
     "icon": "🛏️"
+   },
+   {
+    "id": "core-brosses-silicone",
+    "label": "Brosses de douche lavées et désinfectées",
+    "icon": "🫧"
    }
   ],
   "repas": {

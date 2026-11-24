@@ -31,7 +31,7 @@ console.log('\n== 101) Horizon des objectifs : dérivé du stockage, éditable =
   await aller(fr, page, 'objectifs');
   /* 15 novembre : l'horizon par défaut va du jour 1 (16 novembre) au dimanche 6 juin -- « 72 kg en juin » */
   ok((await texte(fr, '#goal-deadline-days')) === '275', 'par défaut : 275 jours jusqu\'au 6 juin 2027 (obtenu ' + await texte(fr, '#goal-deadline-days') + ')');
-  ok((await texte(fr, '#goal-titre')) === 'Objectifs sur 7\u00a0mois', 'titre dérivé : « Objectifs sur 7 mois » (16 novembre → 6 juin)');
+  ok((await texte(fr, '#goal-titre')) === 'Objectifs sur 6\u00a0mois', 'titre dérivé : « Objectifs sur 6 mois » (24 novembre → 6 juin, 194 jours)');
   ok(/nov/.test(await texte(fr, '#goal-periode')) && /juin/.test(await texte(fr, '#goal-periode')), 'période affichée depuis l\'horizon');
   ok(await fr.evaluate(() => document.getElementById('goal-horizon-fin').value) === '2027-06-06', 'champ date pré-rempli');
   /* on avance la fin au 31 décembre */
@@ -101,16 +101,17 @@ async function ordre(quand, dueISO){
 {
   /* 15 novembre : avant le jour 1 (PROGRAMME_DEBUT), le plan ne reproche plus la revision -- la semaine de
      septembre de ce test n'avait plus de ligne « Révision ». Les memes cas, dans la semaine du 16. */
-  let o = await ordre('2026-11-21T15:00:00+01:00', '2026-11-21');   /* samedi : dernier bloc (Cartes d'erreurs) à 16:00 */
+  /* 24 novembre : le jour 1 au mardi 24 -- le samedi 21 et le dimanche 22 sont avant lui ; les memes cas, le 28 et le 29. */
+  let o = await ordre('2026-11-28T15:00:00+01:00', '2026-11-28');   /* samedi : dernier bloc (Cartes d'erreurs) à 16:00 */
   ok(o.iRev > o.iTache && o.iTache >= 0, 'samedi 15:00 : révision pas encore urgente (Cartes d\'erreurs à 16:00)');
-  o = await ordre('2026-11-21T16:30:00+01:00', '2026-11-21');
+  o = await ordre('2026-11-28T16:30:00+01:00', '2026-11-28');
   ok(o.iRev >= 0 && o.iRev < o.iTache, 'samedi 16:30 : révision urgente, passe devant la tâche du jour');
-  o = await ordre('2026-11-22T11:00:00+01:00', '2026-11-22');       /* dimanche : dernier bloc (Réexpliquer) à 10:20 */
+  o = await ordre('2026-11-29T11:00:00+01:00', '2026-11-29');       /* dimanche : dernier bloc (Réexpliquer) à 10:20 */
   ok(o.iRev >= 0 && o.iRev < o.iTache, 'dimanche 11:00 : urgente dès 10:20 (dernier bloc du jour)');
   o = await ordre('2026-11-25T19:00:00+01:00', '2026-11-25');       /* mercredi : dernier bloc (Clore le cours du jour) à 20:30 (18 novembre : le 18 est la veille du jour 1 -- le 25) */
   ok(o.iRev > o.iTache && o.iTache >= 0, 'mercredi 19:00 : pas encore urgente (Clore le cours du jour à 20:30) — l\'ancien seuil 18:00 l\'aurait déjà rougie');
-  o = await ordre('2026-11-18T19:00:00+01:00', '2026-11-18');       /* la veille du jour 1 (jeudi 19) : rien à reprocher */
-  ok(o.iRev < 0 && o.iTache >= 0, 'mercredi 18, la veille du jour 1 : pas de ligne « Révision »');
+  o = await ordre('2026-11-23T19:00:00+01:00', '2026-11-23');       /* la veille du jour 1 (mardi 24) : rien à reprocher */
+  ok(o.iRev < 0 && o.iTache >= 0, 'lundi 23, la veille du jour 1 : pas de ligne « Révision »');
 }
 
 await browser.close();

@@ -160,19 +160,20 @@ console.log('\n== 293) Sans dates d\'examen, la Batcave le dit — et se taît d
      le mardi 20 (19 octobre), c'etait le vendredi 20 novembre ; depuis le mercredi 21 (21 octobre),
      c'etait le samedi 21 novembre ; depuis le jeudi 22 (21 octobre au matin), c'est le dimanche 22.
      18 novembre : jour 1 au jeudi 19 + 31 jours -- le dimanche 20 decembre.
-     19 novembre : jour 1 au vendredi 20 + 31 jours -- le lundi 21 decembre. */
-  const { ctx, fr } = await ouvrir('2026-12-20T09:00:00+01:00');   /* 15 novembre : jour 1 au lundi 16 + 31 jours -- le jeudi 17 decembre. 13 novembre : jour 1 au samedi 14 + 31 jours -- le mardi 15 decembre. 12 novembre : jour 1 au vendredi 13 + 31 jours -- le lundi 14 decembre. 31 octobre : jour 1 au dimanche 1er novembre + 31 jours -- le seuil etait le mercredi 2 decembre. 11 novembre : jour 1 au jeudi 12 + 31 jours -- le dimanche 13 decembre */
+     19 novembre : jour 1 au vendredi 20 + 31 jours -- le lundi 21 decembre.
+     24 novembre : jour 1 au mardi 24 + 31 jours -- le vendredi 25 decembre. */
+  const { ctx, fr } = await ouvrir('2026-12-24T09:00:00+01:00');   /* 15 novembre : jour 1 au lundi 16 + 31 jours -- le jeudi 17 decembre. 13 novembre : jour 1 au samedi 14 + 31 jours -- le mardi 15 decembre. 12 novembre : jour 1 au vendredi 13 + 31 jours -- le lundi 14 decembre. 31 octobre : jour 1 au dimanche 1er novembre + 31 jours -- le seuil etait le mercredi 2 decembre. 11 novembre : jour 1 au jeudi 12 + 31 jours -- le dimanche 13 decembre */
   const a = await fr.evaluate(() => document.getElementById('dash-plan').innerText);
-  ok(!/Aucune date d’examen/.test(a), 'le 20 décembre, la veille du seuil, rien encore');
+  ok(!/Aucune date d’examen/.test(a), 'le 24 décembre, la veille du seuil, rien encore');
   await ctx.close();
 }
 {
-  const { ctx, fr } = await ouvrir('2026-12-21T09:00:00+01:00');
+  const { ctx, fr } = await ouvrir('2026-12-25T09:00:00+01:00');
   const v = await fr.evaluate(() => ({
     t: document.getElementById('dash-plan').innerText,
     btn: document.querySelectorAll('#dash-plan [data-ouvrir="etudes"]').length
   }));
-  ok(/Aucune date d’examen saisie/.test(v.t), 'le 21 décembre, la ligne apparaît');
+  ok(/Aucune date d’examen saisie/.test(v.t), 'le 25 décembre, la ligne apparaît');
   ok(/pas de mode partiels/.test(v.t) && /sommeil majoré/.test(v.t), 'et elle dit ce qui reste éteint tant qu\'elles manquent');
   ok(v.btn === 1, 'un bouton qui ouvre l\'onglet Études');
   await ctx.close();

@@ -11,7 +11,7 @@ const note = m => { avert++; console.log('  ⚠     '+m); };
 /* 18 novembre : le jour 1 passe au jeudi 19. Les calculs d'un lundi se lisent au premier lundi du programme, le 23 ;
    le jour 1 lui-même (section 10) au jeudi 19. Avant : le lundi 16 (15 novembre), le lundi 14 septembre. */
 const JOUR = '2026-12-14';   /* lundi de JJB, dans le mois d'espagnol (19 novembre : pas de JJB avant le 2 decembre, et la semaine du 7 a un ferie) */
-const JOUR1 = '2026-11-20';  /* vendredi, jour 1 du programme (19 novembre ; avant, le jeudi 19) */
+const JOUR1 = '2026-11-24';  /* mardi, jour 1 du programme, verrouille (24 novembre ; avant, le vendredi 20, le jeudi 19) */
 async function ouvrir(seed, quand){
   const ctx = await b.newContext({viewport:{width:1440,height:1200}, timezoneId:'Europe/Madrid', locale:'fr-FR'});
   await ctx.addInitScript(s=>{
@@ -218,7 +218,7 @@ console.log('\n═══ 10. Jour 1 : aucun objectif en déficit ═══');
   const o = await objectifs(fr, page);
   /* la ligne de synthèse fait foi : « X/Y dans les clous ou mieux · N en retard · … » */
   const m = o.match(/(\d+)\/(\d+) dans les clous ou mieux · (\d+) en retard · (\d+) sans données · (\d+) % de la période écoulée/);
-  ok(m && m[3] === '0', 'le matin du 20 : ' + (m?m[3]:'?') + ' objectif(s) en retard (0 attendu) — ' + (m?m[0]:'ligne introuvable'));
+  ok(m && m[3] === '0', 'le matin du 24 : ' + (m?m[3]:'?') + ' objectif(s) en retard (0 attendu) — ' + (m?m[0]:'ligne introuvable'));
   ok(m && Number(m[5]) <= 6, 'part de période écoulée le jour 1 : ' + (m?m[5]:'?') + ' % (pas 100 %)');
   await ctx.close();
 }
@@ -236,10 +236,10 @@ console.log('\n═══ 11. Le réacteur et les cellules disent-ils la même ch
     const d = '2026-12-14';
     const {ctx, page, fr} = await ouvrir({}, d+'T21:00:00+01:00');
     const cel = await fr.evaluate(()=>((document.getElementById('dash-temps').innerText.replace(/\n/g,' ').match(/Projets perso 0 ([^·]+)/)||[])[1] || ''));
-    ok(/Español à leur place jusqu’au 19 déc\./.test(cel), d + ' : dans le mois d\'espagnol, la cellule le dit — « Projets perso 0 ' + cel.trim() + ' »');
+    ok(/Español à leur place jusqu’au 23 déc\./.test(cel), d + ' : dans le mois d\'espagnol, la cellule le dit — « Projets perso 0 ' + cel.trim() + ' »');
     await ctx.close();
   }
-  for(const d of ['2026-12-21','2027-02-15']){
+  for(const d of ['2026-12-28','2027-02-15']){   /* 24 novembre : le mois d'espagnol va jusqu'au 23 decembre -- le 28, l'e-commerce */
     const {ctx, page, fr} = await ouvrir({'batcave-sessions':[
       {id:'sa', date:d, debut:Date.parse(d+'T11:20:00+01:00'), fin:Date.parse(d+'T12:20:00+01:00'),
        duree:60, type:'projet', label:'Español · gramática'}]}, d+'T21:00:00+01:00');

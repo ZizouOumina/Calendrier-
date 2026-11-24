@@ -989,7 +989,7 @@
    {
     "h": "05:30",
     "l": "Anki matinal",
-    "c": "Jour off de sport : une heure de cartes de dentaire, deux Pomodoros 25 + 5. Toutes les échéances, puis les cartes des matières faibles. Le 20 décembre, la fin de la phase Español, ce créneau passe aux projets comme les autres — la file se vide alors dans Anki 1 et Anki 2."
+    "c": "Jour off de sport : une heure de cartes de dentaire, deux Pomodoros 25 + 5. Toutes les échéances, puis les cartes des matières faibles. Le 24 décembre, la fin de la phase Español, ce créneau passe aux projets comme les autres — la file se vide alors dans Anki 1 et Anki 2."
    },
    {
     "h": "06:30",
@@ -1536,7 +1536,7 @@
    {
     "h": "11:20",
     "l": "Projets perso 3",
-    "c": "Un bloc de projet de plus, sans minuteur : le livrable de la semaine d'abord (un devoir ou une présentation de la fac, celui que tu cocheras dimanche). Sinon, des révisions : tu choisis quoi. La boutique ne commence que le dimanche 20 décembre."
+    "c": "Un bloc de projet de plus, sans minuteur : le livrable de la semaine d'abord (un devoir ou une présentation de la fac, celui que tu cocheras dimanche). Sinon, des révisions : tu choisis quoi. La boutique ne commence que le jeudi 24 décembre."
    },
    {
     "h": "12:20",
@@ -2528,7 +2528,7 @@
    {
     "h": "18:00",
     "l": "Projets perso 3",
-    "c": "Samedi 18:00-19:30, une heure et demie d'un trait, sans minuteur : le livrable de la semaine d'abord (un devoir ou une présentation de la fac, celui que tu cocheras dimanche). Sinon, des révisions : tu choisis quoi. La boutique ne commence que le dimanche 20 décembre."
+    "c": "Samedi 18:00-19:30, une heure et demie d'un trait, sans minuteur : le livrable de la semaine d'abord (un devoir ou une présentation de la fac, celui que tu cocheras dimanche). Sinon, des révisions : tu choisis quoi. La boutique ne commence que le jeudi 24 décembre."
    },
    {
     "h": "19:30",
@@ -2965,7 +2965,7 @@
    {
     "h": "08:20",
     "l": "Anki 2",
-    "c": "Suite des échéances de dentaire. Les 5 dernières minutes : échéances du paquet Business (glossaire dropshipping)."
+    "c": "Suite des échéances de dentaire. Les 5 dernières minutes : les dix formules du jour (paquet Español)."
    },
    {
     "h": "09:20",
@@ -2979,8 +2979,8 @@
    },
    {
     "h": "11:20",
-    "l": "Projets perso 1",
-    "c": "Réserve : service client et chiffres du week-end quand la boutique tourne ; sinon, débordement du dossier."
+    "l": "Español · simulación",
+    "c": "Aujourd'hui, l'épreuve du dimanche, passage 4 sur 4 — la même que le 29 novembre. 45 min, dans cet ordre : 25 min pour écrire 200 mots sur un tema vu cette semaine, sans dictionnaire ni slides, puis « corrige » dans le projet Español (les erreurs pour 100 mots) ; 5 min à voix haute sur le même tema, enregistré au téléphone (les minutes avant ta première pause de trois secondes) ; 5 min, dix verbes × trois temps à voix haute, chronomètre en main (les secondes) ; 10 min, chaque erreur devient une carte dans Español::0 Errores. Les 15 min qui restent : une réponse de type examen sur un autre tema, puis « examen » avec Claude. Les trois chiffres se saisissent à la clôture du soir."
    },
    {
     "h": "12:20",
@@ -2994,8 +2994,8 @@
    },
    {
     "h": "13:30",
-    "l": "Projets perso 2",
-    "c": "Fiscalité F3 (réviser) : relecture des fiches, 10 cartes fiscalité, tableau de maîtrise du dossier (les cinq piliers), page « ce que je sais maintenant »."
+    "l": "Español · balance de la semana",
+    "c": "« balance » dans le projet Español, avec les chiffres de la semaine : les trois de l'épreuve de ce matin (erreurs pour 100 mots, minutes d'oral sans pause, secondes de drill), les pages lues et les minutes de conversation. Le code d'erreur dominant devient le point de grammaire de la semaine prochaine. Les trois de l'épreuve se saisissent aussi à la clôture du soir."
    },
    {
     "h": "14:30",
@@ -3005,7 +3005,7 @@
    {
     "h": "16:30",
     "l": "🧽 Ménage — sols, salle de bain, poussière",
-    "c": "À ton retour de la laverie (vers 16:30) : le lit refait avec la parure propre, puis aspirateur-serpillière dans tout l'appart, la salle de bain (la bonde de la douche débarrassée de ses cheveux), la poussière. Le linge propre plié et rangé. Puis l'entretien des deux machines, dix minutes. L'aspirateur-serpillière : le réservoir d'eau sale vidé et rincé, son cycle d'auto-nettoyage sur la base s'il en a un, la brosse-rouleau et le filtre sortis et mis à sécher à l'air, jamais rangés humides. Le robot : le bac vidé, ses brosses démêlées (les cheveux coupés aux ciseaux), le filtre tapoté contre la poubelle, sans le mouiller. L'éponge de la cuisine changée. À la fin, sors la poubelle."
+    "c": "À ton retour de la laverie (vers 16:30) : le lit refait avec la parure propre, puis aspirateur-serpillière dans tout l'appart, la salle de bain (la bonde de la douche débarrassée de ses cheveux), la poussière. Le linge propre plié et rangé. Puis l'entretien des deux machines, dix minutes. L'aspirateur-serpillière : le réservoir d'eau sale vidé et rincé, son cycle d'auto-nettoyage sur la base s'il en a un, la brosse-rouleau et le filtre sortis et mis à sécher à l'air, jamais rangés humides. Le robot : le bac vidé, ses brosses démêlées (les cheveux coupés aux ciseaux), le filtre tapoté contre la poubelle, sans le mouiller. Les brosses de douche en silicone : lavées au liquide vaisselle, puis dix minutes dans un bol d'eau chaude de la bouilloire, et suspendues pour sécher. Après chaque douche, rince-les et suspends-les. L'éponge de la cuisine changée. À la fin, sors la poubelle."
    },
    {
     "h": "17:30",
@@ -3045,7 +3045,7 @@
    {
     "h": "21:35",
     "l": "Coucher",
-    "c": "Clôture du jour faite ? Écran off, réveil posé loin du lit."
+    "c": "Clôture du jour faite, la ligne en espagnol ? Écran off, réveil posé loin du lit."
    }
   ],
   "habits": [
@@ -3174,7 +3174,7 @@
     "label": "Photos — peau et corps",
     "icon": "📸",
     "cycle": 4,
-    "ancre": "2026-11-22",
+    "ancre": "2026-11-29",
     "quinzaine": false
    },
    {
@@ -3190,7 +3190,7 @@
     "label": "Brosse à dents changée",
     "icon": "🪥",
     "cycle": 12,
-    "ancre": "2026-11-22",
+    "ancre": "2026-11-29",
     "quinzaine": false
    },
    {
@@ -3222,7 +3222,7 @@
     "label": "Ongles — mains ; pieds les dimanches de photo",
     "icon": "✂️",
     "cycle": 2,
-    "ancre": "2026-11-22",
+    "ancre": "2026-11-29",
     "quinzaine": false
    },
    {
@@ -3344,6 +3344,14 @@
     "cycle": 13,
     "ancre": "2026-12-06",
     "quinzaine": false
+   },
+   {
+    "id": "core-brosses-silicone",
+    "label": "Brosses de douche lavées et désinfectées",
+    "icon": "🫧",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
    }
   ],
   "duJour": [
@@ -3423,11 +3431,6 @@
     "icon": "⚖️"
    },
    {
-    "id": "core-photos-dim",
-    "label": "Photos — peau et corps",
-    "icon": "📸"
-   },
-   {
     "id": "core-rasage",
     "label": "Rasage — aisselles et parties intimes",
     "icon": "🪒"
@@ -3448,11 +3451,6 @@
     "icon": "🧽"
    },
    {
-    "id": "core-ongles",
-    "label": "Ongles — mains ; pieds les dimanches de photo",
-    "icon": "✂️"
-   },
-   {
     "id": "core-creatine",
     "label": "Créatine — 5 g",
     "icon": "🥄"
@@ -3471,6 +3469,11 @@
     "id": "core-entretien-semaine",
     "label": "Robot et aspirateur nettoyés",
     "icon": "🧹"
+   },
+   {
+    "id": "core-brosses-silicone",
+    "label": "Brosses de douche lavées et désinfectées",
+    "icon": "🫧"
    }
   ],
   "repas": {
@@ -3590,9 +3593,9 @@
   "cible": {
    "rev": 210,
    "proj": 0,
-   "es": 0
+   "es": 110
   },
-  "periode": null,
-  "espagnol": false
+  "periode": "es-1-reprise",
+  "espagnol": true
  }
 ]

@@ -7,7 +7,7 @@
    {
     "h": "05:30",
     "l": "Anki matinal",
-    "c": "Jour off de sport : une heure de cartes de dentaire, deux Pomodoros 25 + 5. Toutes les échéances, puis les cartes des matières faibles. Le 20 décembre, la fin de la phase Español, ce créneau passe aux projets comme les autres — la file se vide alors dans Anki 1 et Anki 2."
+    "c": "Jour off de sport : une heure de cartes de dentaire, deux Pomodoros 25 + 5. Toutes les échéances, puis les cartes des matières faibles. Le 24 décembre, la fin de la phase Español, ce créneau passe aux projets comme les autres — la file se vide alors dans Anki 1 et Anki 2."
    },
    {
     "h": "06:30",
@@ -1969,7 +1969,7 @@
    {
     "h": "12:00",
     "l": "Retour du club",
-    "c": "Le shake de récup en rentrant : 250 ml de boisson d'avoine, une banane, 20 g de flocons, au mixeur. Puis la douche dès que possible. Le kimono et le rashguard en machine le jour même, 30 °C, à l'envers, avec la tenue de salle de jeudi et celle de mardi et celle de samedi — jamais d'adoucissant sur le sport. Bois 500 ml d'eau en rentrant."
+    "c": "Le shake de récup en rentrant : 250 ml de boisson d'avoine, une banane, 20 g de flocons, au mixeur. Puis la douche dès que possible. Le kimono et le rashguard en machine le jour même, 30 °C, à l'envers, avec la tenue de salle de jeudi — jamais d'adoucissant sur le sport. Bois 500 ml d'eau en rentrant."
    },
    {
     "h": "12:20",
@@ -2985,7 +2985,7 @@
    {
     "h": "16:30",
     "l": "🧽 Ménage — sols, salle de bain, poussière",
-    "c": "À ton retour de la laverie (vers 16:30) : le lit refait avec la parure propre, puis aspirateur-serpillière dans tout l'appart, la salle de bain (la bonde de la douche débarrassée de ses cheveux), la poussière. Le linge propre plié et rangé. Puis l'entretien des deux machines, dix minutes. L'aspirateur-serpillière : le réservoir d'eau sale vidé et rincé, son cycle d'auto-nettoyage sur la base s'il en a un, la brosse-rouleau et le filtre sortis et mis à sécher à l'air, jamais rangés humides. Le robot : le bac vidé, ses brosses démêlées (les cheveux coupés aux ciseaux), le filtre tapoté contre la poubelle, sans le mouiller. Ce dimanche, l'entretien du mois. Le robot : ses capteurs de vide (dessous) et ses contacts de charge essuyés au chiffon sec, la roue avant démontée et débarrassée des cheveux, la brosse latérale dévissée et nettoyée. L'aspirateur-serpillière : la brosse-rouleau lavée à l'eau tiède, le joint et le conduit du réservoir sale rincés. Le lave-vaisselle : son filtre sorti du fond, rincé sous l'eau chaude, remis en place. La brosse latérale du robot est neuve aujourd'hui : une vis dessous, la neuve revissée. L'éponge de la cuisine changée. À la fin, sors la poubelle."
+    "c": "À ton retour de la laverie (vers 16:30) : le lit refait avec la parure propre, puis aspirateur-serpillière dans tout l'appart, la salle de bain (la bonde de la douche débarrassée de ses cheveux), la poussière. Le linge propre plié et rangé. Puis l'entretien des deux machines, dix minutes. L'aspirateur-serpillière : le réservoir d'eau sale vidé et rincé, son cycle d'auto-nettoyage sur la base s'il en a un, la brosse-rouleau et le filtre sortis et mis à sécher à l'air, jamais rangés humides. Le robot : le bac vidé, ses brosses démêlées (les cheveux coupés aux ciseaux), le filtre tapoté contre la poubelle, sans le mouiller. Ce dimanche, l'entretien du mois. Le robot : ses capteurs de vide (dessous) et ses contacts de charge essuyés au chiffon sec, la roue avant démontée et débarrassée des cheveux, la brosse latérale dévissée et nettoyée. L'aspirateur-serpillière : la brosse-rouleau lavée à l'eau tiède, le joint et le conduit du réservoir sale rincés. Le lave-vaisselle : son filtre sorti du fond, rincé sous l'eau chaude, remis en place. La brosse latérale du robot est neuve aujourd'hui : une vis dessous, la neuve revissée. Les brosses de douche en silicone : lavées au liquide vaisselle, puis dix minutes dans un bol d'eau chaude de la bouilloire, et suspendues pour sécher. Après chaque douche, rince-les et suspends-les. L'éponge de la cuisine changée. À la fin, sors la poubelle."
    },
    {
     "h": "17:30",
@@ -3154,7 +3154,7 @@
     "label": "Photos — peau et corps",
     "icon": "📸",
     "cycle": 4,
-    "ancre": "2026-11-22",
+    "ancre": "2026-11-29",
     "quinzaine": false
    },
    {
@@ -3170,7 +3170,7 @@
     "label": "Brosse à dents changée",
     "icon": "🪥",
     "cycle": 12,
-    "ancre": "2026-11-22",
+    "ancre": "2026-11-29",
     "quinzaine": false
    },
    {
@@ -3202,7 +3202,7 @@
     "label": "Ongles — mains ; pieds les dimanches de photo",
     "icon": "✂️",
     "cycle": 2,
-    "ancre": "2026-11-22",
+    "ancre": "2026-11-29",
     "quinzaine": false
    },
    {
@@ -3324,6 +3324,14 @@
     "cycle": 13,
     "ancre": "2026-12-06",
     "quinzaine": false
+   },
+   {
+    "id": "core-brosses-silicone",
+    "label": "Brosses de douche lavées et désinfectées",
+    "icon": "🫧",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
    }
   ],
   "duJour": [
@@ -3403,6 +3411,11 @@
     "icon": "⚖️"
    },
    {
+    "id": "core-photos-dim",
+    "label": "Photos — peau et corps",
+    "icon": "📸"
+   },
+   {
     "id": "core-rasage",
     "label": "Rasage — aisselles et parties intimes",
     "icon": "🪒"
@@ -3421,6 +3434,11 @@
     "id": "core-menage",
     "label": "Ménage du dimanche",
     "icon": "🧽"
+   },
+   {
+    "id": "core-ongles",
+    "label": "Ongles — mains ; pieds les dimanches de photo",
+    "icon": "✂️"
    },
    {
     "id": "core-creatine",
@@ -3451,6 +3469,11 @@
     "id": "core-robot-brosse-laterale",
     "label": "Robot : brosse latérale neuve",
     "icon": "🤖"
+   },
+   {
+    "id": "core-brosses-silicone",
+    "label": "Brosses de douche lavées et désinfectées",
+    "icon": "🫧"
    }
   ],
   "repas": {

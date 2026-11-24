@@ -36,7 +36,7 @@ async function ouvrir(quand, extra){
    tombe 14 jours plus tard. */
 /* 19 novembre : la salle reprend le samedi 21 (jour 1 au vendredi 20) -- le journal passe au samedi 21, et le lundi 7 decembre
    tombe apres ses quatorze jours a moitie (jusqu'au 4). */
-const log = (exo, type, series, charge) => ({id: 'l-' + exo, date: '2026-11-21', type, exo, series, charge, unite: 'reps'});
+const log = (exo, type, series, charge) => ({id: 'l-' + exo, date: '2026-11-24', type, exo, series, charge, unite: 'reps'});   /* 24 novembre : la premiere seance au mardi 24, le jour 1 */
 
 console.log('\n== 261) Le cran de charge suit l\'exercice ==');
 {
@@ -52,7 +52,7 @@ console.log('\n== 261) Le cran de charge suit l\'exercice ==');
     log('Développé incliné haltères', 'Haut volume', [12,12,12], 16),
     log('Dips', 'Haut lourd', [11,10,9], 5)
   ]};
-  const { ctx, fr } = await ouvrir('2026-12-07T09:00:00+01:00', LOG);   /* volume complet des le samedi 5 decembre (19 novembre : premiere seance le samedi 21) */
+  const { ctx, fr } = await ouvrir('2026-12-08T09:00:00+01:00', LOG);   /* volume complet des le mardi 8 decembre (24 novembre : premiere seance le mardi 24 ; 19 novembre : le samedi 21) */
   const c = await fr.evaluate(() => {
     const ex = {}; window.__bcSessionsSport().forEach(s => s.exercises.forEach(e => { if(!ex[e.name]) ex[e.name] = e; }));
     const r = {}; ['Flexion du cou','Extension du cou','Tractions','Élévations latérales','Relevés de jambes suspendus','Squat barre','Développé incliné haltères','Dips'].forEach(n => { const x = window.__bcCibleProchaine(ex[n]); r[n] = {charge: x.charge, monter: x.monter, series: x.series}; });
@@ -153,22 +153,25 @@ console.log('\n== 264) « Phase Español » ne veut dire que la phase Español =
      se lisent donc apres le 8 decembre (Bioquimica le 16).
      18 novembre : le mois court du 19 novembre au 18 decembre -- Bioquimica passe au mardi 22,
      ses partiels vont du 15 au 22 : dans la phase jusqu'au 18, hors phase le lundi 21. */
-  const EX = Object.assign({'batcave-examens': {'Anatomía I':'2026-10-16', 'Bioquímica':'2026-12-22'}}, NOEL);
+  /* 24 novembre : le mois court jusqu'au mercredi 23 decembre, et les vacances commencent le 23 -- plus aucun jour de partiels
+     hors phase en decembre. Les partiels hors phase se lisent en janvier : Microbiologia le vendredi 15, partiels du 8 au 15
+     (a plus de 21 jours du 22 decembre : une autre session). */
+  const EX = Object.assign({'batcave-examens': {'Anatomía I':'2026-10-16', 'Bioquímica':'2026-12-22', 'Microbiología':'2027-01-15'}}, NOEL);
   const { ctx, fr } = await ouvrir('2026-10-02T09:00:00+02:00', EX);
   const r = await fr.evaluate(() => ({
     oct2: (window.__bcPhaseEspanol('2026-10-02') || {}).id || null,
     oct13: window.__bcPhaseEspanol('2026-10-13'), oct13p: (window.__bcPeriode('2026-10-13') || {}).id,
-    nov19: (window.__bcPhaseEspanol('2026-11-20') || {}).id || null,
+    nov19: (window.__bcPhaseEspanol('2026-11-24') || {}).id || null,
     dec16: window.__bcPhaseEspanol('2026-12-16'), dec16p: (window.__bcPeriode('2026-12-16') || {}).id,
-    dec21: window.__bcPhaseEspanol('2026-12-21'), dec21p: (window.__bcPeriode('2026-12-21') || {}).id,
+    dec21: window.__bcPhaseEspanol('2027-01-11'), dec21p: (window.__bcPeriode('2027-01-11') || {}).id,
     dec28: window.__bcPhaseEspanol('2026-12-28'), dec28p: (window.__bcPeriode('2026-12-28') || {}).id,
     juil: window.__bcPhaseEspanol('2027-07-10'), juilp: (window.__bcPeriode('2027-07-10') || {}).id
   }));
   ok(r.oct2 === 'es-1', 'le 2 octobre : phase Español');
   ok(r.oct13p === 'partiels' && r.oct13 && r.oct13.sous === 'es-1', 'le 13 octobre, partiels dans la phase : la phase est toujours vue dessous');
-  ok(r.nov19 === 'es-1-reprise', 'le 20 novembre : le mois d\'espagnol repris (' + r.nov19 + ')');
+  ok(r.nov19 === 'es-1-reprise', 'le 24 novembre : le mois d\'espagnol repris (' + r.nov19 + ')');
   ok(r.dec16p === 'partiels' && r.dec16 && r.dec16.sous === 'es-1-reprise', 'le 16 décembre, partiels dans le mois repris : la phase est toujours vue dessous');
-  ok(r.dec21p === 'partiels' && r.dec21 === null, 'le 21 décembre, partiels hors phase : pas de phase Español');
+  ok(r.dec21p === 'partiels' && r.dec21 === null, 'le 11 janvier, partiels hors phase : pas de phase Español');
   ok(r.dec28p === 'vacances' && r.dec28 === null, 'le 28 décembre, vacances : pas de phase Español (' + r.dec28p + ')');
   ok(r.juilp === 'ete' && r.juil === null, 'en juillet, l\'été : pas de phase Español');
   await ctx.close();

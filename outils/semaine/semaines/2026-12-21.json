@@ -17,7 +17,7 @@
    {
     "h": "07:00",
     "l": "Sport",
-    "c": "La salle à 07:00, dès l'ouverture. Échauffement : 5 minutes de vélo ou de rameur (mardi et samedi : 2 rounds de 2 min de shadow boxing), puis deux séries d'approche du premier exercice (la moitié de la charge, puis les trois quarts). La séance du jour est dans l'onglet Sport, charges déjà calculées. Lundi, haut du corps en volume, à 2 ou 3 reps de l'échec : JJB à 10:30. Mardi, bas complet (squat), puis le sac en rounds techniques. Jeudi, haut lourd : c'est là que la force se construit. Samedi, le second bas et les bras, puis le sac en intervalles. Mardi et samedi, bandes et gants dans le sac. Squat et développé couché dans le rack, barres de sécurité réglées juste sous le bas du mouvement : à l'ouverture, la salle est presque vide. Retour à 07:55, douche en rentrant."
+    "c": "La salle à 07:00, dès l'ouverture : 5 minutes de vélo ou de rameur avec le podcast espagnol, les séries d'approche, puis la séance du jour dans l'onglet Sport. Fini à 07:55."
    },
    {
     "h": "07:55",
@@ -76,13 +76,13 @@
    },
    {
     "h": "14:00",
-    "l": "Projets perso 1",
-    "c": "Dossier dropshipping : la prochaine ligne non cochée. Dès que des pubs tournent, c'est le rituel du lundi (chiffres, décisions pub, opérations, argent, journal)."
+    "l": "Español · gramática",
+    "c": "Le point de grammaire de la semaine (Dossier Español, section 07). Ordre de départ, tiré de ton oral du 25 sept. (A2+) : 1) le passé — indefinido avec ayer / el lunes (comí), perfecto avec hoy / esta semana — et les pronominaux au passé (me levanté, me duché) ; 2) la bonne personne du verbe (vengo, tenía) et le « yo » qu’on retire ; 3) les faux amis (celoso, brasileño, gradiente). « Balance » change l’ordre si tes chiffres du dimanche disent autre chose. Méthode : chaque règle lue → dix phrases écrites et dix dites à voix haute sur tes sujets, puis les exercices du livre corrigés à la main. Pomodoro Español « gramática »."
    },
    {
     "h": "15:00",
-    "l": "Projets perso 4",
-    "c": "Lundi, 15:00-16:50, juste avant de partir en cours (hablar en phase Español). Même règle que les autres blocs de projet : un livrable à rendre d'abord, sinon la prochaine ligne non cochée du dossier e-commerce."
+    "l": "Español · hablar",
+    "c": "Quinze minutes de shadowing sur un cours d'anatomía, puis 45 min de tuteur, ou de conversation avec un compañero, ou en dictée avec Claude. Technique 4-3-2 pour finir."
    },
    {
     "h": "16:50",
@@ -92,17 +92,17 @@
    {
     "h": "17:00",
     "l": "Trajet cours",
-    "c": "Avant de fermer : clés, portefeuille, téléphone, gourde. Arrivé avant 17:30 : cinq minutes avec les compañeros, pas le téléphone."
+    "c": "Podcast en marchant, shadowing à mi-voix dans le tram. Arrivé avant 17:30 : conversation avec les compañeros, pas le téléphone."
    },
    {
     "h": "17:30",
     "l": "Cours",
-    "c": "Un « ? » dans la marge pour chaque mot inconnu, ce que le prof souligne entouré, ta question posée avant la fin."
+    "c": "Notes en espagnol, un « ? » dans la marge pour chaque mot inconnu, ta question posée avant la fin. Trente minutes de conversation réelle dans la journée."
    },
    {
     "h": "19:30",
     "l": "Trajet retour",
-    "c": "Une minute de résumé oral du cours enregistrée en marchant, puis un appel ou un message à ta famille."
+    "c": "Une minute de résumé oral du cours enregistrée en marchant, puis un appel ou un message à ta famille. Dans le tram : Anki Español et trois minutes de paquet Business."
    },
    {
     "h": "20:00",
@@ -112,7 +112,7 @@
    {
     "h": "20:25",
     "l": "Clore le cours du jour",
-    "c": "Le tema a déjà été étudié et approfondi le matin d'avant : vingt minutes par cours, pas plus. Dans le projet Dentaire : « cierra · matière Tn · tes ? d'amphi ». Ce que le prof a souligné et qui n'était pas dans les diapos → 3 à 5 cartes ; les cartes floues corrigées ; la case « Fiché » cochée et la note 0-3 du cours à la clôture. Deux cours : 20 + 20, fini à 21:10."
+    "c": "Le tema a déjà été étudié le matin d'avance : vingt minutes par cours, en espagnol. « cierra » dans le projet Dentaire avec tes « ? » d'amphi, ce que le prof a souligné en cartes, la note 0-3 du cours à la clôture."
    },
    {
     "h": "20:45",
@@ -132,7 +132,7 @@
    {
     "h": "21:35",
     "l": "Coucher",
-    "c": "Clôture du jour faite ? Écran off, réveil posé loin du lit."
+    "c": "Clôture du jour faite, la ligne en espagnol ? Écran off, réveil posé loin du lit."
    }
   ],
   "habits": [
@@ -503,10 +503,10 @@
   "cible": {
    "rev": 193,
    "proj": 0,
-   "es": 0
+   "es": 156
   },
-  "periode": null,
-  "espagnol": false
+  "periode": "es-1-reprise",
+  "espagnol": true
  },
  {
   "iso": "2026-12-22",
@@ -526,7 +526,7 @@
    {
     "h": "07:00",
     "l": "Sport",
-    "c": "La salle à 07:00, dès l'ouverture. Échauffement : 5 minutes de vélo ou de rameur (mardi et samedi : 2 rounds de 2 min de shadow boxing), puis deux séries d'approche du premier exercice (la moitié de la charge, puis les trois quarts). La séance du jour est dans l'onglet Sport, charges déjà calculées. Lundi, haut du corps en volume, à 2 ou 3 reps de l'échec : JJB à 10:30. Mardi, bas complet (squat), puis le sac en rounds techniques. Jeudi, haut lourd : c'est là que la force se construit. Samedi, le second bas et les bras, puis le sac en intervalles. Mardi et samedi, bandes et gants dans le sac. Squat et développé couché dans le rack, barres de sécurité réglées juste sous le bas du mouvement : à l'ouverture, la salle est presque vide. Retour à 07:55, douche en rentrant."
+    "c": "La salle à 07:00, dès l'ouverture : 5 minutes de vélo ou de rameur avec le podcast espagnol, les séries d'approche, puis la séance du jour dans l'onglet Sport. Fini à 07:55."
    },
    {
     "h": "07:55",
@@ -546,7 +546,7 @@
    {
     "h": "09:00",
     "l": "Anki 2",
-    "c": "Suite des échéances de dentaire. Les 5 dernières minutes : échéances du paquet Business (glossaire dropshipping)."
+    "c": "Suite des échéances de dentaire. Les 5 dernières minutes : les dix formules du jour (paquet Español)."
    },
    {
     "h": "10:00",
@@ -575,8 +575,8 @@
    },
    {
     "h": "14:00",
-    "l": "Projets perso 2",
-    "c": "Un livrable en cours d'abord (l'échéance la plus proche). Sinon la ligne suivante de type « construire » du dossier e-commerce : feuille, page, brief, fiche, compte. Quelque chose qui existe à la fin du bloc."
+    "l": "Español · escribir",
+    "c": "Une question ouverte d'examen sur un tema vu (Claude, « examen ») : 25 min sans dictionnaire, en espagnol, puis correction en deux temps — contenu, puis langue — et une carte par erreur. C'est de la révision qui se fait en espagnol : le Pomodoro Español la compte en espagnol, l'examen de janvier la note à 50 %."
    },
    {
     "h": "14:50",
@@ -586,17 +586,17 @@
    {
     "h": "15:00",
     "l": "Trajet cours",
-    "c": "Tapis enlevés du sol (rappel de 14:52) ? Le robot passe à 15:45 et à 18:15 ; ce soir, les tapis remis et son bac vidé. Avant de fermer : clés, portefeuille, téléphone, gourde. Arrivé avant 15:30 : cinq minutes avec les compañeros, pas le téléphone."
+    "c": "Tapis enlevés du sol (rappel de 14:52) ? Le robot passe à 15:45 et à 18:15 ; ce soir, les tapis remis et son bac vidé. Puis podcast en marchant, shadowing à mi-voix dans le tram. Arrivé avant 15:30 : conversation avec les compañeros, pas le téléphone."
    },
    {
     "h": "15:30",
     "l": "Cours",
-    "c": "Un « ? » dans la marge pour chaque mot inconnu, ce que le prof souligne entouré, ta question posée avant la fin."
+    "c": "Notes en espagnol, un « ? » dans la marge pour chaque mot inconnu, ta question posée avant la fin. Trente minutes de conversation réelle dans la journée."
    },
    {
     "h": "17:30",
     "l": "Trajet retour",
-    "c": "Une minute de résumé oral du cours enregistrée en marchant, puis un appel ou un message à ta famille."
+    "c": "Une minute de résumé oral du cours enregistrée en marchant, puis un appel ou un message à ta famille. Dans le tram : Anki Español et trois minutes de paquet Business."
    },
    {
     "h": "18:00",
@@ -606,7 +606,7 @@
    {
     "h": "18:30",
     "l": "Clore le cours du jour",
-    "c": "Le tema a déjà été étudié et approfondi le matin d'avant : vingt minutes par cours, pas plus. Dans le projet Dentaire : « cierra · matière Tn · tes ? d'amphi ». Ce que le prof a souligné et qui n'était pas dans les diapos → 3 à 5 cartes ; les cartes floues corrigées ; la case « Fiché » cochée et la note 0-3 du cours à la clôture. Deux cours : 20 + 20, fini à 21:10."
+    "c": "Le tema a déjà été étudié le matin d'avance : vingt minutes par cours, en espagnol. « cierra » dans le projet Dentaire avec tes « ? » d'amphi, ce que le prof a souligné en cartes, la note 0-3 du cours à la clôture."
    },
    {
     "h": "19:10",
@@ -631,7 +631,7 @@
    {
     "h": "21:35",
     "l": "Coucher",
-    "c": "Clôture du jour faite ? Écran off, réveil posé loin du lit."
+    "c": "Clôture du jour faite, la ligne en espagnol ? Écran off, réveil posé loin du lit."
    }
   ],
   "habits": [
@@ -976,10 +976,10 @@
   "cible": {
    "rev": 331,
    "proj": 0,
-   "es": 0
+   "es": 50
   },
-  "periode": null,
-  "espagnol": false
+  "periode": "es-1-reprise",
+  "espagnol": true
  },
  {
   "iso": "2026-12-23",
@@ -988,8 +988,8 @@
   "blocs": [
    {
     "h": "05:30",
-    "l": "Projets perso matinal",
-    "c": "05:30 : exécution pure d'une tâche déjà décidée la veille — montage, import, rédaction, fiches, code. Jamais une décision : à cette heure-là on exécute, on n'arbitre pas. Ce que tu feras s'écrit la veille au soir, à la clôture. Pas de minuteur : tu travailles jusqu'à la douche de 06:30."
+    "l": "Anki matinal",
+    "c": "Jour off de sport : une heure de cartes de dentaire, deux Pomodoros 25 + 5. Toutes les échéances, puis les cartes des matières faibles. Le 24 décembre, la fin de la phase Español, ce créneau passe aux projets comme les autres — la file se vide alors dans Anki 1 et Anki 2."
    },
    {
     "h": "06:30",
@@ -1048,8 +1048,8 @@
    },
    {
     "h": "14:00",
-    "l": "Projets perso 1",
-    "c": "Un devoir ou une présentation à rendre passe en premier (l'échéance la plus proche, onglet Calendrier). Sinon la boutique : la prochaine ligne non cochée du dossier e-commerce. Bloc des décisions (produit, fournisseur, pub). Sans minuteur : tu travailles jusqu'au bloc suivant."
+    "l": "Español · gramática",
+    "c": "Le point de grammaire de la semaine (Dossier Español, section 07). Ordre de départ, tiré de ton oral du 25 sept. (A2+) : 1) le passé — indefinido avec ayer / el lunes (comí), perfecto avec hoy / esta semana — et les pronominaux au passé (me levanté, me duché) ; 2) la bonne personne du verbe (vengo, tenía) et le « yo » qu’on retire ; 3) les faux amis (celoso, brasileño, gradiente). « Balance » change l’ordre si tes chiffres du dimanche disent autre chose. Méthode : chaque règle lue → dix phrases écrites et dix dites à voix haute sur tes sujets, puis les exercices du livre corrigés à la main. Pomodoro Español « gramática »."
    },
    {
     "h": "14:50",
@@ -1058,13 +1058,13 @@
    },
    {
     "h": "15:00",
-    "l": "Projets perso 4",
-    "c": "Pas de cours aujourd'hui : l'après-midi devient deux blocs de projet, celui-ci d'abord. Même règle que les autres : un livrable à rendre d'abord, sinon la prochaine ligne non cochée du dossier e-commerce."
+    "l": "Español · hablar",
+    "c": "Quinze minutes de shadowing sur un cours d'anatomía, puis 45 min de tuteur, ou de conversation avec un compañero, ou en dictée avec Claude. Technique 4-3-2 pour finir."
    },
    {
     "h": "16:00",
-    "l": "Projets perso 5",
-    "c": "Un jour sans cours, l'après-midi : même règle, un livrable d'abord, sinon la boutique."
+    "l": "Español · tutor",
+    "c": "Séance de tuteur : 3 min de conversation, 12 min à expliquer le cours de la veille, 10 min de corrections répétées, 5 min de jeu de rôle en usted. Dix cartes d'erreurs après."
    },
    {
     "h": "17:00",
@@ -1104,7 +1104,7 @@
    {
     "h": "21:35",
     "l": "Coucher",
-    "c": "Clôture du jour faite ? Écran off, réveil posé loin du lit."
+    "c": "Clôture du jour faite, la ligne en espagnol ? Écran off, réveil posé loin du lit."
    }
   ],
   "habits": [
@@ -1486,12 +1486,12 @@
    ]
   },
   "cible": {
-   "rev": 311,
+   "rev": 361,
    "proj": 0,
-   "es": 0
+   "es": 160
   },
-  "periode": null,
-  "espagnol": false
+  "periode": "es-1-reprise",
+  "espagnol": true
  },
  {
   "iso": "2026-12-24",
@@ -3025,7 +3025,7 @@
    {
     "h": "16:30",
     "l": "🧽 Ménage — sols, salle de bain, poussière",
-    "c": "À ton retour de la laverie (vers 16:30) : le lit refait avec la parure propre, puis aspirateur-serpillière dans tout l'appart, la salle de bain (la bonde de la douche débarrassée de ses cheveux), la poussière. Le linge propre plié et rangé. Puis l'entretien des deux machines, dix minutes. L'aspirateur-serpillière : le réservoir d'eau sale vidé et rincé, son cycle d'auto-nettoyage sur la base s'il en a un, la brosse-rouleau et le filtre sortis et mis à sécher à l'air, jamais rangés humides. Le robot : le bac vidé, ses brosses démêlées (les cheveux coupés aux ciseaux), le filtre tapoté contre la poubelle, sans le mouiller. Ce dimanche, l'entretien du mois. Le robot : ses capteurs de vide (dessous) et ses contacts de charge essuyés au chiffon sec, la roue avant démontée et débarrassée des cheveux, la brosse latérale dévissée et nettoyée. L'aspirateur-serpillière : la brosse-rouleau lavée à l'eau tiède, le joint et le conduit du réservoir sale rincés. Le lave-vaisselle : son filtre sorti du fond, rincé sous l'eau chaude, remis en place. Le filtre du robot est neuf aujourd'hui : l'ancien à la poubelle, le neuf glissé dans le bac, dans le sens de la flèche. L'éponge de la cuisine changée. À la fin, sors la poubelle."
+    "c": "À ton retour de la laverie (vers 16:30) : le lit refait avec la parure propre, puis aspirateur-serpillière dans tout l'appart, la salle de bain (la bonde de la douche débarrassée de ses cheveux), la poussière. Le linge propre plié et rangé. Puis l'entretien des deux machines, dix minutes. L'aspirateur-serpillière : le réservoir d'eau sale vidé et rincé, son cycle d'auto-nettoyage sur la base s'il en a un, la brosse-rouleau et le filtre sortis et mis à sécher à l'air, jamais rangés humides. Le robot : le bac vidé, ses brosses démêlées (les cheveux coupés aux ciseaux), le filtre tapoté contre la poubelle, sans le mouiller. Ce dimanche, l'entretien du mois. Le robot : ses capteurs de vide (dessous) et ses contacts de charge essuyés au chiffon sec, la roue avant démontée et débarrassée des cheveux, la brosse latérale dévissée et nettoyée. L'aspirateur-serpillière : la brosse-rouleau lavée à l'eau tiède, le joint et le conduit du réservoir sale rincés. Le lave-vaisselle : son filtre sorti du fond, rincé sous l'eau chaude, remis en place. Le filtre du robot est neuf aujourd'hui : l'ancien à la poubelle, le neuf glissé dans le bac, dans le sens de la flèche. Les brosses de douche en silicone : lavées au liquide vaisselle, puis dix minutes dans un bol d'eau chaude de la bouilloire, et suspendues pour sécher. Après chaque douche, rince-les et suspends-les. L'éponge de la cuisine changée. À la fin, sors la poubelle."
    },
    {
     "h": "17:30",
@@ -3194,7 +3194,7 @@
     "label": "Photos — peau et corps",
     "icon": "📸",
     "cycle": 4,
-    "ancre": "2026-11-22",
+    "ancre": "2026-11-29",
     "quinzaine": false
    },
    {
@@ -3210,7 +3210,7 @@
     "label": "Brosse à dents changée",
     "icon": "🪥",
     "cycle": 12,
-    "ancre": "2026-11-22",
+    "ancre": "2026-11-29",
     "quinzaine": false
    },
    {
@@ -3242,7 +3242,7 @@
     "label": "Ongles — mains ; pieds les dimanches de photo",
     "icon": "✂️",
     "cycle": 2,
-    "ancre": "2026-11-22",
+    "ancre": "2026-11-29",
     "quinzaine": false
    },
    {
@@ -3364,6 +3364,14 @@
     "cycle": 13,
     "ancre": "2026-12-06",
     "quinzaine": false
+   },
+   {
+    "id": "core-brosses-silicone",
+    "label": "Brosses de douche lavées et désinfectées",
+    "icon": "🫧",
+    "cycle": 0,
+    "ancre": null,
+    "quinzaine": false
    }
   ],
   "duJour": [
@@ -3443,6 +3451,11 @@
     "icon": "⚖️"
    },
    {
+    "id": "core-photos-dim",
+    "label": "Photos — peau et corps",
+    "icon": "📸"
+   },
+   {
     "id": "core-rasage",
     "label": "Rasage — aisselles et parties intimes",
     "icon": "🪒"
@@ -3461,6 +3474,11 @@
     "id": "core-menage",
     "label": "Ménage du dimanche",
     "icon": "🧽"
+   },
+   {
+    "id": "core-ongles",
+    "label": "Ongles — mains ; pieds les dimanches de photo",
+    "icon": "✂️"
    },
    {
     "id": "core-creatine",
@@ -3491,6 +3509,11 @@
     "id": "core-robot-filtre",
     "label": "Robot : filtre neuf",
     "icon": "🤖"
+   },
+   {
+    "id": "core-brosses-silicone",
+    "label": "Brosses de douche lavées et désinfectées",
+    "icon": "🫧"
    }
   ],
   "repas": {

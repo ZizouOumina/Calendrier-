@@ -27,7 +27,8 @@ async function ouvrir(quand){
 }
 const aller = async (fr, page, p) => { await fr.evaluate(x => document.querySelector('.nav-btn[data-page="' + x + '"]').click(), p); await page.waitForTimeout(250); };
 const lire = (fr, k) => fr.evaluate(x => JSON.parse((window.__bcLire || ((c) => localStorage.getItem(c)))(x) || 'null'), k);
-const DIMANCHE = '2026-11-22T20:00:00+01:00';
+/* 23 novembre : le jour 1 au mardi 24, l'ancre du dimanche au 29 (brosse a dents, photos) -- le dimanche lu passe au 29 */
+const DIMANCHE = '2026-11-29T20:00:00+01:00';
 
 console.log('\n== 1) La routine sort des cases, et garde ses dates ==');
 {
@@ -39,17 +40,17 @@ console.log('\n== 1) La routine sort des cases, et garde ses dates ==');
      'la routine est sans case (' + routine.length + ' habitudes)');
   ok(!habs.some(h => ['core-fajr','core-etirements','core-pesee-dim','core-es-formulas'].includes(h.id) && h.sansCase), 'les prières, les étirements, la pesée et l\'espagnol restent des cases');
   const r = await fr.evaluate(() => {
-    const dow = 0, iso = '2026-11-22';
+    const dow = 0, iso = '2026-11-29';
     return { tout: window.__bcHabitsDuJour(dow, iso).map(h => h.id), console: !!document.getElementById('dash-checklist') };
   });
-  ok(r.tout.includes('core-brosse-dents') && r.tout.includes('core-menage'), 'ses dates tiennent : la brosse à dents et le ménage tombent le dimanche 22');
+  ok(r.tout.includes('core-brosse-dents') && r.tout.includes('core-menage'), 'ses dates tiennent : la brosse à dents et le ménage tombent le dimanche 29');
   ok(!r.console, 'le tableau de bord n\'a plus de console de cases (17 novembre : tout se coche dans « Ma journée »)');
   await aller(fr, page, 'journee');
   const j = await fr.evaluate(() => ({ cases: [...document.querySelectorAll('#mj-cases input[data-mj-hab]')].map(x => x.dataset.mjHab),
                                        routine: [...document.querySelectorAll('#mj-routine input[data-mj-hab]')].map(x => x.dataset.mjHab) }));
   ok(!j.cases.includes('core-menage') && j.routine.includes('core-menage') && j.routine.includes('core-brosse-dents') && j.cases.includes('core-pesee-dim'),
      '« Ma journée » range la routine dans sa liste, à cocher aussi : ' + j.routine.length + ' cases');
-  const menage = await fr.evaluate(() => window.__bcConsigne('🧽 Ménage — sols, salle de bain, poussière', 0, '2026-11-22', '16:30'));
+  const menage = await fr.evaluate(() => window.__bcConsigne('🧽 Ménage — sols, salle de bain, poussière', 0, '2026-11-29', '16:30'));
   ok(/brosses démêlées/.test(menage), 'et la consigne du ménage dit toujours l\'entretien du robot, le jour dit');
   await ctx.close();
 }

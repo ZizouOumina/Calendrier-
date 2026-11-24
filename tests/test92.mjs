@@ -75,16 +75,16 @@ ok(!banniere, 'aucune bannière d\'incohérence après la remise à zéro' + (ba
    et photos -- donc mains ET pieds.
    11 novembre, la nuit : jour 1 au jeudi 12 novembre -- l'ancre passe au dimanche 15 (ancre-dimanche-v3).
    15 novembre : jour 1 au lundi 16 -- l'ancre passe au dimanche 22 (ancre-dimanche-v5). */
-await page.clock.setFixedTime(new Date('2026-11-22T09:00:00+01:00'));
+await page.clock.setFixedTime(new Date('2026-11-29T09:00:00+01:00'));   /* 24 novembre : le jour 1 au mardi 24, l'ancre au dimanche 29 (ancre-dimanche-v6) */
 await page.reload();
 await page.frameLocator('#f').locator('#dash-focus').waitFor({state:'attached', timeout:20000});
 const fr3 = page.frames().find(x => x.url().includes('batcave.html'));
 await fr3.evaluate(() => { document.querySelectorAll('.overlay').forEach(o => o.hidden = true); });
 await page.waitForTimeout(600);
 const l27 = await fr3.evaluate(() => { window.__bcJournee.rendre(); return [...document.querySelectorAll('#mj-cases li label, #mj-routine li label')].map(x=>x.textContent); });   /* 17 novembre : lues dans « Ma journée » */
-ok(l27.some(t=>/Ongles/.test(t)), 'dim. 22 nov : la case ongles est bien là, après la remise à zéro');
-ok(l27.some(t=>/Photos/.test(t)), 'dim. 22 nov : l\'ancre, donc photos du point de départ (mains et pieds)');
-ok(l27.some(t=>/Brosse à dents/.test(t)), 'dim. 22 nov : et la brosse à dents neuve');
+ok(l27.some(t=>/Ongles/.test(t)), 'dim. 29 nov : la case ongles est bien là, après la remise à zéro');
+ok(l27.some(t=>/Photos/.test(t)), 'dim. 29 nov : l\'ancre, donc photos du point de départ (mains et pieds)');
+ok(l27.some(t=>/Brosse à dents/.test(t)), 'dim. 29 nov : et la brosse à dents neuve');
 
 await ctx.close(); await b.close();
 console.log(err ? '\n' + err + ' ÉCHEC(S)' : '\nTOUT VERT');

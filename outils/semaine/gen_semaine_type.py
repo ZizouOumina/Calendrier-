@@ -131,7 +131,7 @@ html{scroll-behavior:smooth}
 <div class="wrap">
   <header>
     <h1>Ta semaine type</h1>
-    <p class="intro">La semaine du lundi 23 au dimanche 29 novembre, telle que la Batcave et l’onglet « Ma journée » te la donnent : chaque tâche à son heure, dans l’ordre, avec tes vraies échéances (l’exposé de Biología mardi, les deux TP de mercredi et jeudi). Touche une ligne pour voir ses étapes. Le JJB n’y est pas : il reprend le mercredi 2 décembre, lundi, mercredi et vendredi à 10:30, à la place du bloc de 10:20. La semaine du jour 1 (du vendredi 20 au dimanche 22) a les mêmes journées, plus ce qui est propre au départ ; à partir du dimanche 20 décembre, les blocs « Projets perso » passent à l’e-commerce. S’il manque quelque chose, dis-le-moi.</p>
+    <p class="intro">La semaine du lundi 23 au dimanche 29 novembre, telle que la Batcave et l’onglet « Ma journée » te la donnent : chaque tâche à son heure, dans l’ordre, avec tes vraies échéances (l’exposé de Biología mardi, les deux TP de mercredi et jeudi). Touche une ligne pour voir ses étapes. Le JJB n’y est pas : il reprend le mercredi 2 décembre, lundi, mercredi et vendredi à 10:30, à la place du bloc de 10:20. Le jour 1 est le mardi 24 : le lundi 23 montre une journée ordinaire, et le mardi a en plus ce qui est propre au départ (la séance de référence, les repas sans boîte) ; à partir du jeudi 24 décembre, les blocs « Projets perso » passent à l’e-commerce. S’il manque quelque chose, dis-le-moi.</p>
   </header>
   <nav class="jours" aria-label="Les jours">''' + nav + '''<button type="button" id="tout" aria-pressed="false">Tout déplier</button></nav>
 ''' + '\n'.join(jours) + '''

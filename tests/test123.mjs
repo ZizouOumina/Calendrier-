@@ -95,7 +95,8 @@ console.log('\n== 3) Le dimanche : l\'entretien avec le ménage, le linge rare a
     compte: (document.getElementById('mj-routine-compte') || {}).textContent || ''
   }));
   const menage = r.routine.find(t => /Ménage du dimanche/.test(t)) || '';
-  ok(/Ménage du dimanche avec : rideau de douche à la machine, 40 °C · bouilloire et rice cooker détartrés · robot et aspirateur nettoyés$/.test(menage), 'le ménage porte l\'entretien du jour : « ' + menage + ' »');
+  /* 24 novembre : les brosses de douche en silicone, lavees et desinfectees chaque dimanche, closent la liste */
+  ok(/Ménage du dimanche avec : rideau de douche à la machine, 40 °C · bouilloire et rice cooker détartrés · robot et aspirateur nettoyés · brosses de douche lavées et désinfectées$/.test(menage), 'le ménage porte l\'entretien du jour : « ' + menage + ' »');
   ok(['core-rideau-douche', 'core-detartrage', 'core-entretien-semaine'].every(id => r.brut.includes(id) && !r.ids.includes(id)), 'le rideau, le détartrage et l\'entretien tombent bien ce dimanche, mais n\'ont plus leur propre case');
   const draps = r.routine.find(t => /Draps/.test(t)) || '';
   ok(/Draps et taies d’oreiller changés avec : serviette de corps changée/.test(draps) && !r.ids.includes('core-serviette-corps'), 'la serviette de corps se coche avec les draps : « ' + draps + ' »');

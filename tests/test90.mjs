@@ -90,10 +90,11 @@ console.log('\n== 303) Un cloud déjà propre ne déclenche aucune réécriture 
                   {id:'core-aspi-pieces', label:'Aspirateur : brosse et filtre neufs', icon:'🧹', jours:[0], cycleSemaines:16, ancre:'2027-02-21'},
                   {id:'core-oreiller', label:'Oreiller lavé', icon:'🛏️', jours:[0], cycleSemaines:16, ancre:'2027-01-03'},
                   {id:'core-couette', label:'Couette lavée', icon:'🛌', jours:[0], cycleSemaines:26, ancre:'2027-01-17'},
-                  {id:'core-matelas', label:'Matelas tourné et aspiré', icon:'🛏️', jours:[0], cycleSemaines:13, ancre:'2026-12-06'}];   /* v13 = le rideau de douche (14 novembre), v14 = l'entretien des machines (15 novembre) */
+                  {id:'core-matelas', label:'Matelas tourné et aspiré', icon:'🛏️', jours:[0], cycleSemaines:13, ancre:'2026-12-06'},
+                  {id:'core-brosses-silicone', label:'Brosses de douche lavées et désinfectées', icon:'🫧', jours:[0], sansCase:true}];   /* v13 = le rideau de douche (14 novembre), v14 = l'entretien des machines (15 novembre), v16 = les brosses de douche (24 novembre) */
   const { ctx, fr } = await jour('2026-09-21T09:00:00+02:00', {
     'batcave-habits': propre, 'batcave-habits-seed-v2': true, 'batcave-habits-seed-v3': true,
-    'batcave-habits-seed-v4': true, 'batcave-habits-seed-v5': true, 'batcave-habits-seed-v6': true, 'batcave-habits-seed-v7': true, 'batcave-habits-seed-v8': true, 'batcave-habits-seed-v9': true, 'batcave-habits-seed-v10': true, 'batcave-habits-seed-v11': true, 'batcave-habits-seed-v12': true, 'batcave-habits-seed-v13': true, 'batcave-habits-seed-v14': true, 'batcave-habits-seed-v15': true });
+    'batcave-habits-seed-v4': true, 'batcave-habits-seed-v5': true, 'batcave-habits-seed-v6': true, 'batcave-habits-seed-v7': true, 'batcave-habits-seed-v8': true, 'batcave-habits-seed-v9': true, 'batcave-habits-seed-v10': true, 'batcave-habits-seed-v11': true, 'batcave-habits-seed-v12': true, 'batcave-habits-seed-v13': true, 'batcave-habits-seed-v14': true, 'batcave-habits-seed-v15': true, 'batcave-habits-seed-v16': true });
   const n = await fr.evaluate(() => window.__w.filter(k => k === 'batcave-habits').length);
   ok(n === 0, 'aucune écriture (' + n + ')');
   await ctx.close();
@@ -129,11 +130,11 @@ for (const [d, nom, du] of [['2026-09-20','dim. 20 sept (avant l\'ancre)',false]
                             ['2026-10-04','dim. 4 oct (l\'ancienne ancre, avant la nouvelle)',false],
                             ['2026-11-08','dim. 8 nov (avant l\'ancre)',false],
                             ['2026-11-15','dim. 15 nov (l\'ancienne ancre, la veille du jour 1)',false],
-                            ['2026-11-22','dim. 22 nov (la première)',true],
-                            ['2026-11-29','dim. 29 nov',false],
+                            ['2026-11-22','dim. 22 nov (l\'ancienne ancre, avant le jour 1)',false],
+                            ['2026-11-29','dim. 29 nov (la première)',true],
                             ['2026-12-27','dim. 27 déc (l\'ancien rythme)',false],
-                            ['2027-02-07','dim. 7 févr',false],
-                            ['2027-02-14','dim. 14 févr',true]]) {
+                            ['2027-02-14','dim. 14 févr',false],
+                            ['2027-02-21','dim. 21 févr',true]]) {   /* 24 novembre : jour 1 au mardi 24 -- l'ancre au dimanche 29 (ancre-dimanche-v6) : la brosse neuve le 29, puis le 21 fevrier */
   const { ctx, fr } = await jour(d + 'T09:00:00+02:00');
   const l = await duJour(fr);
   ok(l.some(t => /Brosse à dents/.test(t)) === du, nom + ' : brosse ' + (du ? 'due' : 'pas due'));
@@ -166,14 +167,17 @@ for (const [d, nom, pesee, photos, shamp] of [['2026-09-20','dim. 20 sept (avant
                                               ['2026-10-18','dim. 18 oct',true,false,false],
                                               ['2026-11-01','dim. 1er nov',true,false,false],
                                               ['2026-11-15','dim. 15 nov (la veille du jour 1)',true,false,false],
-                                              ['2026-11-22','dim. 22 nov (l\'ancre : le point de départ)',true,true,false],
-                                              ['2026-11-29','dim. 29 nov',true,false,false],
+                                              ['2026-11-22','dim. 22 nov (l\'ancienne ancre, avant le jour 1)',true,false,false],
+                                              ['2026-11-29','dim. 29 nov (l\'ancre : le point de départ)',true,true,false],
                                               ['2026-12-13','dim. 13 déc (le rideau, pas les photos)',true,false,false],
-                                              ['2026-12-20','dim. 20 déc',true,true,false],
+                                              ['2026-12-20','dim. 20 déc',true,false,false],
+                                              ['2026-12-27','dim. 27 déc',true,true,false],
                                               ['2027-01-10','dim. 10 janv',true,false,false],
-                                              ['2027-01-17','dim. 17 janv',true,true,false],
+                                              ['2027-01-17','dim. 17 janv',true,false,false],
+                                              ['2027-01-24','dim. 24 janv',true,true,false],
                                               ['2027-02-07','dim. 7 févr',true,false,false],
-                                              ['2027-02-14','dim. 14 févr (le bilan peau)',true,true,false],
+                                              ['2027-02-14','dim. 14 févr',true,false,false],
+                                              ['2027-02-21','dim. 21 févr (le bilan peau)',true,true,false],   /* 24 novembre : l'ancre au dimanche 29 -- photos les 29 novembre, 27 decembre, 24 janvier et 21 fevrier */
                                               ['2026-09-14','lun. 14 (muscu)',false,false,true],
                                               ['2026-09-15','mar. 15 (muscu)',false,false,true],
                                               ['2026-09-16','mer. 16 (repos)',false,false,false],
@@ -205,13 +209,14 @@ for (const [d, nom, du] of [['2026-09-20','dim. 20 sept (avant l\'ancre)',false]
                             ['2026-10-11','dim. 11 oct',false],
                             ['2026-10-18','dim. 18 oct',false],
                             ['2026-11-15','dim. 15 nov (la veille du jour 1)',false],
-                            ['2026-11-22','dim. 22 nov',true],
-                            ['2026-11-29','dim. 29 nov',false],
-                            ['2026-12-06','dim. 6 déc',true],
-                            ['2026-12-13','dim. 13 déc',false],
-                            ['2026-12-20','dim. 20 déc',true],
-                            ['2027-02-07','dim. 7 févr',false],
-                            ['2027-02-14','dim. 14 févr',true],
+                            ['2026-11-22','dim. 22 nov (l\'ancienne ancre, avant le jour 1)',false],
+                            ['2026-11-29','dim. 29 nov',true],
+                            ['2026-12-06','dim. 6 déc',false],
+                            ['2026-12-13','dim. 13 déc',true],
+                            ['2026-12-20','dim. 20 déc',false],
+                            ['2026-12-27','dim. 27 déc',true],
+                            ['2027-02-14','dim. 14 févr',false],
+                            ['2027-02-21','dim. 21 févr',true],   /* 24 novembre : l'ancre au dimanche 29 (jour 1 au mardi 24) */
                             ['2026-09-14','lun. 14',false],
                             ['2026-09-19','sam. 19',false]]) {
   const { ctx, fr } = await jour(d + 'T09:00:00+02:00');
@@ -226,7 +231,7 @@ for (const [d, nom, du] of [['2026-09-20','dim. 20 sept (avant l\'ancre)',false]
   await ctx.close();
 }
 {
-  const { ctx, fr } = await jour('2026-11-22T09:00:00+01:00');
+  const { ctx, fr } = await jour('2026-11-29T09:00:00+01:00');
   const t = (await duJour(fr)).find(x => /Ongles/.test(x)) || '';
   ok(/mains/.test(t) && /pieds les dimanches de photo/.test(t),
      'le libellé porte la règle : « ' + t.trim() + ' »');

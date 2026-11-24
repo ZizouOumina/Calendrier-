@@ -255,7 +255,8 @@ console.log('\n== 172b) Ton agenda porte déjà le planning en événements réc
   ok(crees.length === 462, '462 créations seulement (465 − 3 adoptés)');
   /* 31 octobre : la description d'une serie de septembre (« Réchauffage — repas préparés le dimanche. »)
      ne reste pas sur l'instance du jour : elle reprend la consigne du jour. */
-  ok(maj.some(m => m.input.eventId === 'rec3_20260908' && /La boîte du jour : les pâtes/.test(m.input.description || '')), 'le déjeuner adopté reprend la consigne du jour (les pâtes, dès le 16), pas la description de septembre');
+  /* 24 novembre : le mardi 24 est le jour 1, sans boite (le batch du dimanche 22 n'a pas eu lieu) -- sa consigne datee. */
+  ok(maj.some(m => m.input.eventId === 'rec3_20260908' && /Jour 1 : pas de boîte/.test(m.input.description || '')), 'le déjeuner adopté reprend la consigne du jour (le jour 1, sans boîte), pas la description de septembre');
   const r8 = await local(fr, 'batcave-gcal-2026-11-24');
   ok(r8 && r8['p6'] && r8['p6'].id === 'rec1_20260908' && r8['p6'].cree === false, 'le relevé pointe sur l\'instance récurrente adoptée, marquée « pas créée par la Batcave »');
   /* désactiver : les 3 événements adoptés (les tiens) restent, seuls les 38 créés partent */

@@ -119,7 +119,7 @@ console.log('\n== 97) Un cloud déjà à jour ne déclenche aucune réécriture 
      ce n'est pas un cloud a jour, c'est un cloud en retard d'une generation, et la
      reecriture qu'il declenche est justement celle qu'on veut. A chaque nouvelle graine,
      ce jeu d'essai se complete -- v9 (la taie d'oreiller du mercredi) le 20 septembre, v10 (le cou
-     du jeudi soir) le 30, v11 (la douche froide) le 5 octobre, v12 (la lumiere du matin) le 21, v13 (le rideau de douche) le 14 novembre, v14 (l'entretien des machines) le 15. */
+     du jeudi soir) le 30, v11 (la douche froide) le 5 octobre, v12 (la lumiere du matin) le 21, v13 (le rideau de douche) le 14 novembre, v14 (l'entretien des machines) le 15, v16 (les brosses de douche) le 24. */
   /* 17 novembre : sans la V3 ni la V10, vidées par le tri (« Courses faites », le cou du jeudi soir) */
   const aJour = {'batcave-habits': HABITS_17.concat([{id:'core-taie-merc', label:'Taie d’oreiller changée', icon:'🛌', jours:[3]},
                                                      {id:'core-douche-froide', label:'Douche froide — 30 à 60 s en fin de douche', icon:'🚿', jours:[0,3,5]},
@@ -136,8 +136,9 @@ console.log('\n== 97) Un cloud déjà à jour ne déclenche aucune réécriture 
                                                      {id:'core-aspi-pieces', label:'Aspirateur : brosse et filtre neufs', icon:'🧹', jours:[0], cycleSemaines:16, ancre:'2027-02-21'},
                                                      {id:'core-oreiller', label:'Oreiller lavé', icon:'🛏️', jours:[0], cycleSemaines:16, ancre:'2027-01-03'},
                                                      {id:'core-couette', label:'Couette lavée', icon:'🛌', jours:[0], cycleSemaines:26, ancre:'2027-01-17'},
-                                                     {id:'core-matelas', label:'Matelas tourné et aspiré', icon:'🛏️', jours:[0], cycleSemaines:13, ancre:'2026-12-06'}]),
-                 'batcave-sans-case-v1': true, 'batcave-habits-seed-v2': true, 'batcave-habits-seed-v3': true, 'batcave-habits-seed-v4': true, 'batcave-habits-seed-v5': true, 'batcave-habits-seed-v6': true, 'batcave-habits-seed-v7': true, 'batcave-habits-seed-v8': true, 'batcave-habits-seed-v9': true, 'batcave-habits-seed-v10': true, 'batcave-habits-seed-v11': true, 'batcave-habits-seed-v12': true, 'batcave-habits-seed-v13': true, 'batcave-habits-seed-v14': true, 'batcave-habits-seed-v15': true, 'batcave-objectifs-v5-espanol': true};
+                                                     {id:'core-matelas', label:'Matelas tourné et aspiré', icon:'🛏️', jours:[0], cycleSemaines:13, ancre:'2026-12-06'},
+                                                     {id:'core-brosses-silicone', label:'Brosses de douche lavées et désinfectées', icon:'🫧', jours:[0], sansCase:true}]),
+                 'batcave-sans-case-v1': true, 'batcave-habits-seed-v2': true, 'batcave-habits-seed-v3': true, 'batcave-habits-seed-v4': true, 'batcave-habits-seed-v5': true, 'batcave-habits-seed-v6': true, 'batcave-habits-seed-v7': true, 'batcave-habits-seed-v8': true, 'batcave-habits-seed-v9': true, 'batcave-habits-seed-v10': true, 'batcave-habits-seed-v11': true, 'batcave-habits-seed-v12': true, 'batcave-habits-seed-v13': true, 'batcave-habits-seed-v14': true, 'batcave-habits-seed-v15': true, 'batcave-habits-seed-v16': true, 'batcave-objectifs-v5-espanol': true};
   const { ctx, fr } = await ouvrir(aJour, aJour, SAMEDI);
   const ecrits = await fr.evaluate(() => window.__w.filter(k => k === 'batcave-habits'));
   ok(ecrits.length === 0, 'aucune réécriture inutile de batcave-habits');

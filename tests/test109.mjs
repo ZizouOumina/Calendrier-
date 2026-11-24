@@ -27,9 +27,9 @@ console.log('\n== 400) Un seul numéro de schéma ==');
 {
   const { ctx, fr } = await ouvrir('2026-09-28T10:00:00+02:00');
   const r = await fr.evaluate(() => ({ s: window.__bcSchema(), m: window.__bcDrapeaux(), fini: window.__bcInitFini === true }));
-  ok(r.s.attendu === 72 && r.s.enregistre === 72, 'batcave-schema écrit au démarrage : ' + r.s.enregistre + ' (attendu ' + r.s.attendu + ')');
+  ok(r.s.attendu === 73 && r.s.enregistre === 73, 'batcave-schema écrit au démarrage : ' + r.s.enregistre + ' (attendu ' + r.s.attendu + ')');
   ok(r.m.length === 0, 'toutes les migrations ont posé leur drapeau au premier chargement (manquants : ' + (r.m.join(', ') || 'aucun') + ')');
-  ok(await lire(fr, 'batcave-schema') === 72, 'la clé batcave-schema vaut 72 (le tri des habitudes et l\'onglet Habitudes retiré, sa décision du 17 novembre)');
+  ok(await lire(fr, 'batcave-schema') === 73, 'la clé batcave-schema vaut 73 (les brosses de douche et l\'ancre du dimanche 29, le 24 novembre)');
   ok(r.fini, 'le second temps du démarrage (les autres onglets) est terminé');
   await ctx.close();
 }
@@ -54,8 +54,8 @@ console.log('\n== 401) Santé de la Batcave : six contrôles, un relevé qui ne 
      15 novembre : jour 1 au lundi 16 -- clôture du mercredi 11, cinq jours avant.
      18 novembre : jour 1 au jeudi 19 -- clôture du samedi 14, cinq jours avant.
      19 novembre : jour 1 au vendredi 20 -- clôture du dimanche 15, cinq jours avant. */
-  const seed = {'batcave-journal-2026-11-15': {sommeil:'7', cloture:'21:20'}};
-  const { ctx, page, fr } = await ouvrir('2026-11-20T10:00:00+01:00', seed);
+  const seed = {'batcave-journal-2026-11-19': {sommeil:'7', cloture:'21:20'}};   /* 24 novembre : le jour 1 au mardi 24, la derniere cloture cinq jours avant */
+  const { ctx, page, fr } = await ouvrir('2026-11-24T10:00:00+01:00', seed);
   const r = await fr.evaluate(() => ({ vide: window.__bcAppVide(), sante: window.__bcSante().filter(c => !c.ok).map(c => c.id), releve: document.getElementById('bc-sante').hidden, txt: document.querySelector('#bc-sante .v').textContent }));
   ok(r.vide === false, 'une clôture suffit : l\'appli n\'est plus neuve');
   ok(r.sante.join(',') === 'sauvegarde,exercice,cloture', 'trois défauts : aucune sauvegarde, aucun exercice, clôture vieille de 5 jours (' + r.sante.join(', ') + ')');
@@ -164,10 +164,10 @@ console.log('\n== 403) Les bornes de saisie et l\'annulation d\'un geste ==');
 console.log('\n== 404) Le rappel de clôture part dans l\'agenda, et disparaît une fois la journée close ==');
 {
   /* le lundi 28 est passé avant le jour 1 : on lit le lundi 5 et le mardi 6 */
-  const { ctx, fr } = await ouvrir('2026-11-23T10:00:00+01:00');   /* 18 novembre : le lundi 23 et le mardi 24 (jour 1 au jeudi 19) ; 11 novembre : le lundi 16 et le mardi 17 (jour 1 au jeudi 12) ; 31 octobre : le lundi 2 et le mardi 3 (jour 1 au dimanche 1er) ; 12 octobre : un lundi et un mardi du programme (jour 1 au mardi 13) ; 19 octobre : le 26 et le 27 (jour 1 au mardi 20) */
+  const { ctx, fr } = await ouvrir('2026-11-30T10:00:00+01:00');   /* 24 novembre : le lundi 30 et le mardi 1er decembre (jour 1 au mardi 24) ; 18 novembre : le lundi 23 et le mardi 24 (jour 1 au jeudi 19) ; 11 novembre : le lundi 16 et le mardi 17 (jour 1 au jeudi 12) ; 31 octobre : le lundi 2 et le mardi 3 (jour 1 au dimanche 1er) ; 12 octobre : un lundi et un mardi du programme (jour 1 au mardi 13) ; 19 octobre : le 26 et le 27 (jour 1 au mardi 20) */
   const r = await fr.evaluate(() => ({
-    lun: window.__bcRappels('2026-11-23').filter(b => b.cle === 'cloture')[0],
-    mar: window.__bcRappels('2026-11-24').filter(b => b.cle === 'cloture')[0],
+    lun: window.__bcRappels('2026-11-30').filter(b => b.cle === 'cloture')[0],
+    mar: window.__bcRappels('2026-12-01').filter(b => b.cle === 'cloture')[0],
     avant: window.__bcRappels('2026-09-20').filter(b => b.cle === 'cloture').length,
     ete: window.__bcRappels('2027-07-05').filter(b => b.cle === 'cloture').length
   }));

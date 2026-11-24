@@ -175,7 +175,7 @@ console.log('\n== 6) Le rideau de douche à la machine, un dimanche sur quatre d
 {
   /* Une Batcave déjà semée jusqu'à la v12 : la v13 ajoute le rideau sans toucher au reste */
   const base = [{id:'core-lit', label:'Lit fait', icon:'🛏️'}];
-  const graines = {'batcave-habits-seed-v14': true, 'batcave-habits-seed-v15': true}; for(let v = 2; v <= 12; v++) graines['batcave-habits-seed-v' + v] = true;
+  const graines = {'batcave-habits-seed-v14': true, 'batcave-habits-seed-v15': true, 'batcave-habits-seed-v16': true}; for(let v = 2; v <= 12; v++) graines['batcave-habits-seed-v' + v] = true;
   const { ctx, fr } = await ouvrir('2026-11-14T21:00:00+01:00', Object.assign({'batcave-habits': base}, graines));
   const h = await fr.evaluate(() => JSON.parse(localStorage.getItem('batcave-habits') || '[]').map(x => x.id));
   ok(h.includes('core-lit') && h.includes('core-rideau-douche') && h.length === 2, 'ajouté à une Batcave existante, sans toucher au reste (' + h.join(', ') + ')');
@@ -205,7 +205,7 @@ console.log('\n== 8) L\'entretien des machines (v14) : le robot, l\'aspirateur-s
 {
   /* 15 novembre au soir, « même le nettoyage de mon aspirateur serpillère [...] même le nettoyage de mon roomba » */
   const base = [{id:'core-lit', label:'Lit fait', icon:'🛏️'}];
-  const graines = {'batcave-habits-seed-v15': true}; for(let v = 2; v <= 13; v++) graines['batcave-habits-seed-v' + v] = true;
+  const graines = {'batcave-habits-seed-v15': true, 'batcave-habits-seed-v16': true}; for(let v = 2; v <= 13; v++) graines['batcave-habits-seed-v' + v] = true;
   const { ctx, fr } = await ouvrir('2026-11-15T21:00:00+01:00', Object.assign({'batcave-habits': base}, graines));
   const r = await fr.evaluate(() => {
     const ids = JSON.parse(localStorage.getItem('batcave-habits') || '[]').map(x => x.id);
@@ -238,7 +238,7 @@ console.log('\n== 9) Les tâches rares à date (v15), dans « Ma journée » -- 
   /* 15 novembre, tard le soir : « comment je sais quand est-ce que je devrais remplacer ma brosse à dents [...] est-ce que
      j'aurais une notif ? ». 16 novembre : « pas besoin de plein de notifs, tant que ce que je dois faire s'affiche
      précisément dans ma journée dans la batcave » -- et pas les modèles : le ménage dit de commander les pièces. */
-  const graines = {}; for(let v = 2; v <= 14; v++) graines['batcave-habits-seed-v' + v] = true;
+  const graines = {'batcave-habits-seed-v16': true}; for(let v = 2; v <= 14; v++) graines['batcave-habits-seed-v' + v] = true;
   const base = [{id:'core-lit', label:'Lit fait', icon:'🛏️'}, {id:'core-pesee-dim', label:'Pesée, à jeun', icon:'⚖️', jours:[0]},
                 {id:'core-photos-dim', label:'Photos — peau et corps', icon:'📸', jours:[0], cycleSemaines:4, ancre:'2026-11-22'},
                 {id:'core-brosse-dents', label:'Brosse à dents changée', icon:'🪥', jours:[0], cycleSemaines:12, ancre:'2026-11-22'},
@@ -275,6 +275,28 @@ console.log('\n== 9) Les tâches rares à date (v15), dans « Ma journée » -- 
   ok(/commande aujourd'hui un filtre pour le robot et une brosse-rouleau et un filtre pour l'aspirateur-serpillière/.test(r.m07) && /au ménage du 21 février/.test(r.m07), 'le 7 février, le filtre du robot et les pièces de l\'aspirateur, pour le 21');
   ok(/commande aujourd'hui une brosse latérale pour le robot et les deux brosses principales du robot/.test(r.m02) && /au ménage du 16 mai/.test(r.m02), 'le 2 mai, la brosse latérale et les brosses principales, pour le 16');
   ok(!/commande aujourd'hui/.test(r.m27) && !/commande aujourd'hui/.test(r.m20), 'les autres dimanches, rien à commander');
+  await ctx.close();
+}
+
+console.log('\n== 10) Les brosses de douche en silicone (v16) : lavées et désinfectées chaque dimanche, avec le ménage ==');
+{
+  /* 24 novembre, la nuit : « j'ai des brosses en silicone pour la douche, rajoute a ma journée que je dois les laver et
+     desinfecter, selon le temps que tu desires » -- chaque dimanche, dans le ménage, sans case à part. */
+  const base = [{id:'core-lit', label:'Lit fait', icon:'🛏️'}];
+  const graines = {}; for(let v = 2; v <= 15; v++) graines['batcave-habits-seed-v' + v] = true;
+  const { ctx, fr } = await ouvrir('2026-11-24T06:00:00+01:00', Object.assign({'batcave-habits': base}, graines));
+  const r = await fr.evaluate(() => {
+    const ids = JSON.parse(localStorage.getItem('batcave-habits') || '[]').map(x => x.id);
+    const du = (id, iso) => window.__bcHabitsDuJour(new Date(iso + 'T00:00:00').getDay(), iso).some(h => h.id === id);
+    const men = iso => window.__bcConsigne('🧽 Ménage — sols, salle de bain, poussière', 0, iso, '16:30');
+    return { ids, dims: ['2026-11-29', '2026-12-06', '2026-12-27', '2027-03-07'].filter(i => du('core-brosses-silicone', i)).length,
+             semaine: ['2026-11-24', '2026-11-25', '2026-11-28', '2026-11-30'].filter(i => du('core-brosses-silicone', i)).length,
+             m29: men('2026-11-29'), m06: men('2026-12-06') };
+  });
+  ok(r.ids.includes('core-lit') && r.ids.includes('core-brosses-silicone') && r.ids.length === 2, 'ajoutée à une Batcave existante, sans toucher au reste (' + r.ids.join(', ') + ')');
+  ok(r.dims === 4 && r.semaine === 0, 'chaque dimanche, jamais en semaine (' + r.dims + '/4 dimanches, ' + r.semaine + ' en semaine)');
+  ok(/brosses de douche en silicone/.test(r.m29) && /bouilloire/.test(r.m29) && /suspendues pour sécher/.test(r.m29) && /brosses de douche en silicone/.test(r.m06),
+     'le ménage du dimanche dit comment : liquide vaisselle, eau chaude de la bouilloire, séchage suspendu');
   await ctx.close();
 }
 

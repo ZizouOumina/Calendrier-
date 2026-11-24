@@ -37,6 +37,15 @@ const texte = (fr, sel) => fr.evaluate(s => (document.querySelector(s) || {inner
    mardi, sans combat), et la fenetre suit : du 13 au 26 octobre, toute dans le programme. */
 /* 18 novembre : jour 1 au jeudi 19 -- le mardi 17 est avant le programme (l'objectif n'y attend rien) : le mardi 24 */
 const MARDI29 = '2026-11-24T10:00:00+01:00';   /* 31 octobre : jour 1 au dimanche 1er novembre -- le premier mardi dont les quatorze jours d'avant sont tous dans le programme */
+function sessionsMoitieDu(jours){
+  const out = [];
+  jours.forEach((iso, i) => {
+    const t0 = new Date(iso + 'T07:20:00+01:00').getTime();
+    out.push({id:'cx' + i, date: iso, type:'cours', label:'Anatomía', duree:150, debut:t0, fin:t0 + 150*60000});
+    out.push({id:'px' + i, date: iso, type:'projet', label:'Shopify', duree:60, debut:t0 + 5*3600e3, fin:t0 + 6*3600e3});
+  });
+  return out;
+}
 function sessionsMoitie(){
   const out = [];
   /* Les quatorze jours qui PRECEDENT le mardi de reference. Ils couraient du 7 au 20
@@ -116,7 +125,8 @@ console.log('\n== 213) Relevé OBJECTIF dans la barre ==');
      jours apres la fin des sessions (le 26). 31 octobre : jour 1 au 1er novembre -- on lit le
      vendredi 20 novembre, quatre jours apres la fin des sessions (le 16).
      19 novembre : jour 1 au vendredi 20 -- on lit le mardi 24, quatre jours de programme a moitie de la grille. */
-  const { ctx, fr } = await ouvrir('2026-11-24T10:00:00+01:00', {'batcave-sessions': sessionsMoitie()});
+  /* 24 novembre : jour 1 au mardi 24 -- on lit le samedi 28, quatre jours de programme a moitie de la grille. */
+  const { ctx, fr } = await ouvrir('2026-11-28T10:00:00+01:00', {'batcave-sessions': sessionsMoitie().concat(sessionsMoitieDu(['2026-11-24','2026-11-25','2026-11-26','2026-11-27']))});
   const r = await fr.evaluate(() => ({ txt: document.querySelector('#bc-objectif .v').textContent, titre: document.querySelector('#bc-objectif .v').title }));
   /* Lot 42 : le relevé ne montre plus un écart négatif nu (« Révision −90,7 h »), qui ne
      dit pas quoi faire, mais le réel sur l'attendu du jour. */

@@ -32,7 +32,8 @@ console.log('\n== 1) Le réacteur et la cellule disent la même chose : projets 
    leur donne dans la journee, et 1 h d'espagnol enregistree ne les remplit toujours pas. */
 /* 7 novembre : le mois d'espagnol repris court jusqu'au 8 decembre -- le lundi sans phase est le 14 */
 /* 18 novembre : le mois va jusqu'au vendredi 18 decembre -- le lundi sans phase est le 21 */
-for(const [d, desc] of [['2026-12-21','regime combat, projets perso au programme'],
+/* 24 novembre : le mois va jusqu'au mercredi 23 decembre -- le lundi sans phase est le 28 */
+for(const [d, desc] of [['2026-12-28','regime combat, projets perso au programme'],
                         ['2027-02-15','semestre 2']]){
   const {ctx, fr} = await ouvrir({'batcave-sessions':[es(d,60)]}, d+'T21:00:00+02:00');
   const l = await legend(fr), t = await temps(fr);
@@ -82,10 +83,10 @@ console.log('\n== 3) Sans bloc de projets dans la journée, la cellule dit pourq
   await ctx.close();
 }
 {
-  const {ctx, fr} = await ouvrir({}, '2026-12-21T09:00:00+01:00');   /* 18 novembre : le mois repris finit le vendredi 18 decembre ; la phase Español finit le 15 novembre (depuis le 15 octobre) ; le mois repris, le 8 decembre (7 novembre) */
+  const {ctx, fr} = await ouvrir({}, '2026-12-28T09:00:00+01:00');   /* 24 novembre : le mois repris finit le mercredi 23 decembre ; 18 novembre : le mois repris finit le vendredi 18 decembre ; la phase Español finit le 15 novembre (depuis le 15 octobre) ; le mois repris, le 8 decembre (7 novembre) */
   const t = await temps(fr);
   ok(!/Español à leur place/.test(t) && /Projets perso \| 0 \| \d+ h( \d+)? au planning, sans minuteur/.test(t),
-     'le 21 décembre, la mention disparaît et la grille redonne des blocs de projets, toujours sans minuteur : ' + (t.match(/Projets perso[^|]*\|[^|]*\|[^|]*/)||[''])[0].trim());
+     'le 28 décembre, la mention disparaît et la grille redonne des blocs de projets, toujours sans minuteur : ' + (t.match(/Projets perso[^|]*\|[^|]*\|[^|]*/)||[''])[0].trim());
   await ctx.close();
 }
 
@@ -125,9 +126,10 @@ console.log('\n== 4) Un rendez-vous dans l\'agenda Google n\'est pas un bloc man
 console.log('\n== 5) Les durées s\'écrivent en heures et minutes, jamais en dixièmes ==');
 {
   /* 15 novembre : avant le jour 1, le plan ne reproche plus la révision -- la scène se joue le lundi 23, dans le programme */
-  const {ctx, fr} = await ouvrir({'batcave-sessions':[{id:'s1',date:'2026-11-23',
-    debut:Date.parse('2026-11-23T05:30:00+01:00'), fin:Date.parse('2026-11-23T06:25:00+01:00'),
-    duree:55, type:'cours', label:'Anatomie'}]}, '2026-11-23T21:00:00+01:00');
+  /* 24 novembre : le lundi 23 est avant le jour 1 -- le lundi 30, meme grille (le mois d'espagnol, pas encore de JJB) */
+  const {ctx, fr} = await ouvrir({'batcave-sessions':[{id:'s1',date:'2026-11-30',
+    debut:Date.parse('2026-11-30T05:30:00+01:00'), fin:Date.parse('2026-11-30T06:25:00+01:00'),
+    duree:55, type:'cours', label:'Anatomie'}]}, '2026-11-30T21:00:00+01:00');
   const t = await plan(fr), c = await temps(fr), l = await legend(fr);
   const ligne = t.split('\n').filter(x=>/Révision —/.test(x))[0] || '';
   /* 19 novembre : pas de JJB avant le 2 decembre -- le lundi 23, la matinee du club est du travail : 4 h 21 au lieu de 3 h 13 */
@@ -181,8 +183,9 @@ console.log('\n== 7) Rattrapage unique après une absence ==');
      13 novembre : jour 1 au samedi 14 -- retour le lundi 16, les 14 et 15 sans cloture.
      15 novembre : jour 1 au lundi 16 -- retour le mercredi 18, les 16 et 17 sans cloture.
      18 novembre : jour 1 au jeudi 19 -- retour le samedi 21, les 19 et 20 sans cloture.
-     19 novembre : jour 1 au vendredi 20 -- retour le dimanche 22, les 20 et 21 sans cloture. */
-  const {ctx, page, fr} = await ouvrir({'batcave-last-open':'2026-09-16'}, '2026-11-22T10:00:00+01:00');
+     19 novembre : jour 1 au vendredi 20 -- retour le dimanche 22, les 20 et 21 sans cloture.
+     24 novembre : jour 1 au mardi 24 -- retour le jeudi 26, les 24 et 25 sans cloture. */
+  const {ctx, page, fr} = await ouvrir({'batcave-last-open':'2026-09-16'}, '2026-11-26T10:00:00+01:00');
   const t = await plan(fr);
   const l = t.split('\n').filter(x=>/Absence —/.test(x))[0] || '';
   ok(/2 journées sans clôture/.test(l), 'un seul item pour toute l\'absence : ' + l.trim().slice(0, 90));

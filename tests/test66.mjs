@@ -106,7 +106,9 @@ console.log('\n== 252) Mode partiels : J-7 avant le premier examen, jusqu\'au de
      'l\'après-midi libérée comme un jour sans cours : Lire, projets, Réexpliquer, dîner 19:00, pas de Muay Thai, coucher 21:35 (' + g.filter(x => /^1[3-9]|^2/.test(x)).join(' · ') + ')');
   ok(!g.some(x => /ciblée|Fiches de synthèse/.test(x)), 'aucun bloc « ciblé » : la grille de partiels n\'existe plus');
   const gl = await grille(fr, 'monday', '2026-11-23');
-  ok(gl.includes('07:00 Sport') && gl.includes('15:00 Español · hablar') && !gl.some(x => /Cours$/.test(x)), 'lundi en partiels : salle à 07:00, 15:00 en espagnol (phase jusqu\'au 15), pas de cours (' + gl.filter(x => /05:30|15:00/.test(x)).join(' · ') + ')');
+  /* 24 novembre : le jour 1 passe au mardi 24 -- le lundi 23, veille du jour 1, garde la grille ordinaire (ses cours, son 15:00 de projet) :
+     le mode partiels ne s'applique qu'aux jours du programme. Le mardi 24, plus haut, en est le premier. */
+  ok(gl.includes('15:00 Projets perso 4') && gl.some(x => /Cours$/.test(x)), 'lundi 23, veille du jour 1 : la grille ordinaire, le mode partiels commence avec le programme (' + gl.filter(x => /05:30|15:00/.test(x)).join(' · ') + ')');
   const gv = await grille(fr, 'friday', '2026-11-27');
   /* 14 octobre : la phase Español court jusqu'au 14 novembre -- le vendredi 13, le matinal et la plage liberee sont de l'espagnol. */
   /* 19 novembre : pas de JJB avant le mercredi 2 decembre -- le vendredi 27, sa matinee est du travail (COMBAT_PAUSE_2) */

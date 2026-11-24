@@ -111,19 +111,22 @@ console.log('\n== 84.6) Cibles hebdo : constantes en revision, croissantes en pr
      le 23 : la seule semaine ordinaire d'apres est celle du 11 janvier. L'apres-phase se lit donc
      jour par jour : du samedi 19 au mardi 22 decembre, chaque jour porte la revision du meme jour
      de la semaine du 11 janvier. La semaine du 23 novembre est la premiere entiere du mois. */
-  const t = await sem('2026-09-07'), e1 = await sem('2026-09-21'), e2 = await sem('2026-12-21'), e3 = await sem('2027-01-11'), rep = await sem('2026-11-23');
+  /* 24 novembre : le mois court du mardi 24 novembre au mercredi 23 decembre -- l'apres-phase commence avec les vacances de
+     Noel : elle se lit le week-end (le samedi 26 et le dimanche 27 valent ceux de la semaine du 11 janvier) et la semaine du
+     28 decembre. La premiere semaine entiere du mois est celle du 30 novembre, avec le JJB des le mercredi 2. */
+  const t = await sem('2026-09-07'), e1 = await sem('2026-09-21'), e2 = await sem('2026-12-28'), e3 = await sem('2027-01-11'), rep = await sem('2026-11-30');
   const pr = x => Math.round(x * 100) / 100;
   const jour = iso => fr.evaluate(iso => window.__bcPrevu(iso), iso);
   /* 19 novembre : le mois va jusqu'au samedi 19 decembre -- l'apres-phase se lit du dimanche 20 au mardi 22 */
-  const apres = [['2026-12-20', '2027-01-17'], ['2026-12-21', '2027-01-11'], ['2026-12-22', '2027-01-12']];
+  const apres = [['2026-12-26', '2027-01-16'], ['2026-12-27', '2027-01-17']];
   const ecarts = [];
   for (const [a, b] of apres) { const x = await jour(a), y = await jour(b); if (x.rev !== y.rev || x.proj !== y.proj || x.es !== y.es) ecarts.push(a + ' ' + x.rev + '/' + y.rev); }
   /* Regime combat : 29 h 13 de revision par semaine des le 28 septembre (33 h 12 sur la grille type d'avant). */
   ok(ecarts.length === 0,
-     'la revision ne bouge plus apres la phase (le mois repris finit le samedi 19 decembre) : du 20 au 22 decembre, chaque jour vaut celui de la semaine du 11 janvier ' + (ecarts.join(', ') || ''));
-  const v18 = await jour('2026-12-19'), s19 = await jour('2026-12-20');
+     'la revision ne bouge plus apres la phase (le mois repris finit le mercredi 23 decembre) : le samedi 26 et le dimanche 27 valent ceux de la semaine du 11 janvier ' + (ecarts.join(', ') || ''));
+  const v18 = await jour('2026-12-23'), s19 = await jour('2026-12-24');
   ok(v18.es > 0 && s19.es === 0 && s19.proj === 0,
-     'un mois pile : de l\'espagnol le samedi 19 decembre (' + v18.es + ' min), plus rien le dimanche 20 (' + s19.es + ')');
+     'un mois pile : de l\'espagnol le mercredi 23 decembre (' + v18.es + ' min), plus rien le jeudi 24 (' + s19.es + ')');
   /* 19 octobre : « Clore le cours » a vingt minutes les quatre soirs de cours -- 29 h 13 -> 27 h 53.
      21 octobre : la piscine du mardi -- le Clore du mardi passe a vingt minutes lui aussi : 27 h 33. */
   /* 30 octobre : la salle a 07:00 -- le trajet prend une demi-heure d'etude aux quatre matins de muscu : 25 h 43. */
@@ -138,7 +141,7 @@ console.log('\n== 84.6) Cibles hebdo : constantes en revision, croissantes en pr
      'une seule bascule : zero en phase 1, puis la meme valeur partout : ' + [pr(e1.proj), pr(e2.proj), pr(e3.proj), pr(t.proj)].join(' -> '));
   ok(e1.es > 0 && e2.es === 0 && e3.es === 0, 'l\'espagnol tombe a zero apres le mois repris : ' + [pr(e1.es), pr(e2.es), pr(e3.es)].join(' -> '));
   /* 19 novembre : pas de JJB avant le 2 decembre -- la semaine du 23, ses trois matins de club sont du travail : 30 h 19 de revision au lieu de 26 h 53 */
-  ok(pr(rep.es) === 10.6 && pr(rep.rev) === 30.32, 'la semaine du 23 novembre, la premiere entiere du mois repris : 10 h 36 d\'espagnol, et le mercredi 05:30 redevient de l\'Anki (30 h 19 de revision, sans JJB) (' + pr(rep.es) + ' / ' + pr(rep.rev) + ')');
+  ok(pr(rep.es) === 10.6 && pr(rep.rev) === 28.02, 'la semaine du 30 novembre, la premiere entiere du mois repris : 10 h 36 d\'espagnol, et le mercredi 05:30 redevient de l\'Anki (28 h 01 de revision, le JJB des le mercredi 2) (' + pr(rep.es) + ' / ' + pr(rep.rev) + ')');
   ok(pr(t.proj) === 0, 'grille type : plus aucun projet prevu, sans minuteur depuis le 25 septembre (' + pr(t.proj) + ')');
 }
 

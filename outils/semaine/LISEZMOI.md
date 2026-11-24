@@ -12,14 +12,14 @@ python3 outils/semaine/build_guide.py
 - Les mêmes jours sont écrits dans `batcave.html` (bloc `#journees-guide`) : c'est l'onglet « Ma journée » de la
   Batcave. Chaque jour y porte la grille d'où il a été écrit (`sig`) ; la Batcave prévient si la sienne a changé depuis.
   Après toute ré-extraction, relancer `build_guide.py` puis republier la Batcave.
-- Depuis le 19 novembre (« on commence tout demain vendredi, ce mois ci j'aurais pas assez pour le JJB »), le guide
-  commence le **vendredi 20 novembre**, le jour 1 : la semaine du 16 est extraite entière (horloge le 19 à midi), et
-  `build_guide.py` n'en garde que vendredi → dimanche (`JOUR_1`). La première séance de salle est le samedi 21
-  (`PREMIERE_SALLE`) : sa ligne dit la séance de référence. Le JJB reprend le mercredi 2 décembre ; l'en-tête des
-  semaines du 16, du 23 et du 30 le dit. Le 18 novembre, le guide commençait le jeudi 19
-  (« on va décaler le premier jour à demain, jeudi 19/11 ») ; la semaine du 16 en gardait jeudi → dimanche. Avant (15 novembre, « recale tout sur lundi »), il commençait le lundi 16, et la
-  semaine du 16 se construit comme les autres : `build11.py` et `build16.py` ne sont plus lancés par `build_guide.py`
-  (ils ne servent plus qu'aux deux pages d'origine, plus bas).
+- Depuis le 24 novembre (« on décale tout à demain, début de la phase d'espagnol »), le guide commence le **mardi 24
+  novembre**, le jour 1, **verrouillé** (sa réponse : « Oui, verrouille-le ») : s'il redemande de décaler, on le renvoie à
+  la ligne du jour, on ne recale plus. `SEMAINES` part de la semaine du 23 ; `build_guide.py` n'en garde que mardi →
+  dimanche (`JOUR_1`). La première séance de salle est le mardi 24 (`PREMIERE_SALLE`) : sa ligne dit la séance de
+  référence ; les photos du point de départ sont le dimanche 29 (`PREMIERES_PHOTOS`, l'ancre du dimanche). Le mois
+  d'espagnol finit le mercredi 23 décembre (`ES_FIN`), l'e-commerce commence le jeudi 24. Le JJB reprend le mercredi
+  2 décembre ; l'en-tête des semaines du 23 et du 30 le dit. Avant : le vendredi 20 (19 novembre), le jeudi 19
+  (18 novembre), le lundi 16 (15 novembre) — `build11.py` et `build16.py` ne servent plus qu'aux deux pages d'origine.
 - Toutes les semaines (`SEMAINES` dans `build_guide.py`) sont construites depuis la Batcave seule : la consigne de
   chaque bloc telle qu'elle l'affiche, les cases du jour (cycles compris), les grammes du batch du mardi calculés sur
   les repas de mercredi à samedi. Leurs données sont dans `semaines/<lundi>.json` :

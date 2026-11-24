@@ -1,5 +1,63 @@
 # Où on en est — samedi 19 septembre 2026, au soir
 
+> ### Mardi 24 novembre, 08:39 — « On décale tout pour avoir un jour 1 le mercredi 25 » : REFUSÉ, le verrou tient
+> **Ses mots**, à 08:39, le matin du jour 1 : « On décale tout pour avoir un jour 1 le mercredi 25 ». Pas de raison donnée ;
+> la matinée est passée (réveil 05:20, la salle de 07:00).
+> **Réponse** : non, rien n'est recalé. C'est le verrou demandé à 00:24 (« Oui, verrouille-le ») et la règle 1 du
+> « Plan machine » : une journée ratée ne fait rien recommencer, on reprend à la ligne en cours (08:30, le shake et une
+> page de Coran ; 09:00, Anki 2). Jamais deux jours ratés de suite.
+> **La salle ratée** : rien à changer. La séance de référence est la première séance FAITE depuis le départ
+>   (`premiereSeanceFaite`, depuis le 7 novembre) ; sans séance notée mardi, elle passe d'elle-même au jeudi 26 à 07:00 :
+>   le Plan du jour l'annonce ce matin-là (vérifié en simulant mercredi 25 et jeudi 26 : `premierJourSport` = le 26).
+> **Rappelé aussi** : l'appel au centro de salud pour les douleurs à la poitrine (la note du jour), et la copie vierge
+>   (bouton Sauvegarde) avant toute saisie.
+> **Vérifié** : en cours — les sept audits et la saison (A et B, du 24 novembre au 6 juin), lancés après la réponse.
+
+> ### Mardi 24 novembre, 00:24 — LE JOUR 1 AU MARDI 24, VERROUILLÉ ; les brosses de douche le dimanche
+> **LE VERROU** : à « veux-tu que je refuse les prochains décalages ? », sa réponse : « Oui, verrouille-le ». S'il redemande
+> de tout décaler, on ne recale plus rien : on le renvoie à la ligne du jour (`PROGRAMME_DEBUT`, commenté VERROUILLÉ).
+> **Ses mots** : « je vais me brusquer et ça va passer j'y crois, donc on décale tout à demain, début de la phase
+> d'espagnol etc » ; à 00:24, « demain » = « Mardi 24, ce matin » (sa réponse à la question). Plus tôt : « est-ce que les
+> gens tiennent quand ils changent toute leur vie d'un coup ? », puis « j'ai jamais vraiment essayé, je décale sans même
+> essayer ». Réponse donnée : la plupart ne tiennent pas (Norcross 1988 : 77 % à une semaine, 19 % à deux ans) ; tout
+> d'un coup ou un par un, pas de gagnant net (James 2016) ; ce qui fait tomber, c'est le premier raté vécu comme un échec
+> total ; pour lui, le blocage est le démarrage (Steel 2007, Polivy et Herman 2002, Wohl 2010). Il a choisi de se brusquer.
+> **Les dates** :
+> - le jour 1 (`PROGRAMME_DEBUT`) et la salle (`MUSCU_DEBUT`) au mardi 24 : la séance de référence ce matin-là (un Bas
+>   complet), le demi-volume 14 jours après elle, les retests les lundis 21 décembre, 25 janvier et 1er mars ;
+> - le JJB garde le mercredi 2 décembre ;
+> - le mois d'espagnol (`ES_REPRISE_DEBUT/FIN`) du mardi 24 novembre au mercredi 23 décembre (51 h de blocs, ≈ 47 h 30
+>   au minuteur) ; l'épreuve : le diagnostic le dimanche 29, puis les 6, 13 et 20 décembre ;
+> - l'e-commerce le jeudi 24 décembre (4 h 50 ce jour-là, 15 h 50 jusqu'au 27, 26 h 20 la semaine du 28) ;
+> - l'ancre du dimanche au 29 (`ancre-dimanche-v6`, les ancres posées par la Batcave, dont le 22) : photos et brosse à
+>   dents du point de départ le 29, puis les photos les 27 décembre, 24 janvier et 21 février (le bilan peau,
+>   `BILAN_PEAU_ISO`) ; les ongles les 29 novembre, 13 décembre… ;
+> - l'horizon des objectifs du 24 novembre au 6 juin (migration de l'horizon du 20) ; la boucle poids → calories, rien
+>   avant le 15 décembre.
+> **Mardi 24, les repas** (`CONSIGNES_DATEES`) : le batch du dimanche 22 n'a pas eu lieu. Déjeuner et dîner simples, avec
+> ce qu'il a ; au retour du cours, les courses si le frigo est vide, pour le batch de 19:10.
+> **Les brosses de douche en silicone** (sa demande, « en mode d'intervalle ») : `HABIT_SEED_V16`, chaque dimanche, rangées
+> avec le ménage (`REGROUPES`) ; la consigne du ménage : liquide vaisselle, dix minutes dans l'eau chaude de la bouilloire,
+> suspendues ; rincées après chaque douche. Schéma 73.
+> **Ses autres questions** : « je dois juste suivre ma journée et le reste se fait tout seul ? » — oui ; « nettoyer le
+> frigo » — déjà dans « Ma journée », le samedi 28 novembre avant de ranger les courses, puis toutes les quatre semaines.
+> **Le guide** : `SEMAINES` part de la semaine du 23, gardée du mardi au dimanche ; les neuf semaines ré-extraites avec sa
+> sauvegarde du 19. **Les pages** : la prise en main (u7, le batch du 18, laisse sa place à u9, les courses du mardi), les
+> dossiers Español (v2.25) et E-commerce, « Paliers de physique », « À quoi sert la Batcave » (les analyses dès le 25),
+> « Le plan machine » (le verrou, le rattrapage depuis le mardi : 14 temas d'ici le 29, 70 au 23 décembre, 81 le 27 ;
+> le test de la boutique le 24 décembre à 65 temas), programme-sport.md, programme-alimentation.md, la semaine type.
+> **Tests recalés** : 41, 42, 43, 47, 48, 49, 52, 57, 59, 64, 65, 66, 68, 73, 74, 75, 76, 78, 81, 82, 83, 84, 85, 88, 90,
+> 92, 101, 106, 107, 108, 109, 115, 116, 118, 119, 120, 121 et 123, audit-suivi et zz-journee-saison. Ceux qui lisaient le
+> vendredi 20 lisent le mardi 24 ; ceux qui lisaient l'ancre du 22, le dimanche 29. test119 vérifie la graine v16 (les
+> brosses chaque dimanche, jamais en semaine, et la consigne du ménage) ; test120 prend aussi ses échéances du 1er au
+> 16 décembre (sa sauvegarde du 19), pour que les mardis de décembre suivent le pas à pas.
+> **Vérifié** : la campagne complète, 115 tests sur 115 ; avec sa sauvegarde du 19, le mardi 24 (au réveil, et à midi
+>   sur téléphone) et le dimanche 29 sans erreur ni débordement, et les 62 jours du pas à pas (24 novembre → 24 janvier)
+>   identiques à la grille vivante : aucune alerte « la grille a changé ». Les audits et la saison : l'entrée de 08:39.
+> **Publié** : la Batcave (avant tout le reste, vers 00:40), « Ta semaine », « Ta semaine type », la prise en main, les
+> dossiers Español et E-commerce, « Paliers de physique », « À quoi sert la Batcave », « Le plan machine ».
+> **En attente** : la pesée du dimanche 29, ses premières journées notées, son avis sur le test du 24 décembre.
+
 > ### Lundi 23 novembre — « Le plan machine » : études, corps, argent, étape par étape
 > **Ses mots** : « je veux devenir une machine academique, athletique et avoir un gros patrimoine, je veux un guide etape
 > par etape ».

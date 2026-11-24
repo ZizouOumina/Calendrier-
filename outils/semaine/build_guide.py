@@ -16,7 +16,7 @@ import json, math, os, re, subprocess
 SP = os.path.dirname(os.path.abspath(__file__)) + '/'
 # 15 novembre, « recale tout sur lundi » : le jour 1 passe au lundi 16 et la semaine du 16 se construit comme les
 # autres, depuis la Batcave et SES donnees (semaines/2026-11-16.json) -- plus de week-end du depart ni de page ecrite a part.
-SEMAINES = ['2026-11-16', '2026-11-23', '2026-11-30', '2026-12-07', '2026-12-14', '2026-12-21', '2026-12-28', '2027-01-04', '2027-01-11', '2027-01-18']
+SEMAINES = ['2026-11-23', '2026-11-30', '2026-12-07', '2026-12-14', '2026-12-21', '2026-12-28', '2027-01-04', '2027-01-11', '2027-01-18']
 # 12 novembre, « que je n'aie plus besoin de toucher quoi que ce soit avant le debut du 2e semestre » : jusqu'au dimanche 24 janvier.
 # Les jours sans cours de la Batcave (JOURS_SANS_COURS_LISTE, periodeGrille) : le 8 decembre ferie, les vacances de Noel
 # (du 23 decembre au 6 janvier), les partiels (periode « partiels » des semaines extraites), puis les 21 et 22 janvier entre
@@ -24,7 +24,7 @@ SEMAINES = ['2026-11-16', '2026-11-23', '2026-11-30', '2026-12-07', '2026-12-14'
 FERIES = {'2026-12-08': 'l’Immaculée Conception'}
 VACANCES = ('2026-12-23', '2027-01-06')
 INTERSEMESTRE = ('2027-01-21', '2027-01-22')
-ES_FIN = '2026-12-19'                     # le dernier jour du mois d'espagnol (ES_REPRISE_FIN dans la Batcave) : 19 novembre, un mois pile depuis le vendredi 20 (avant : le 18 decembre)
+ES_FIN = '2026-12-23'                     # le dernier jour du mois d'espagnol (ES_REPRISE_FIN dans la Batcave) : 24 novembre, un mois pile depuis le mardi 24 (avant : le 19, le 18 decembre)
 
 def hh(m): return '%02d:%02d' % (m // 60, m % 60)
 def de(x): return ('d’' if x[:1] in 'AEIOUÁÉÍÓÚHaeiouáéíóúh' else 'de ') + x
@@ -82,7 +82,7 @@ ROUTINE_IDS = {'core-lit', 'core-shampoing', 'core-serviette-visage', 'core-serv
                'core-draps', 'core-rasage', 'core-menage', 'core-entretien-semaine', 'core-ongles', 'core-brosse-dents', 'core-cheveux',
                'core-frigo', 'core-entretien-mois', 'core-machine-filtre', 'core-matelas', 'core-rideau-douche', 'core-detartrage',
                'core-robot-filtre', 'core-robot-brosse-laterale', 'core-robot-brosses', 'core-aspi-pieces', 'core-oreiller', 'core-couette',
-               'core-creatine'}
+               'core-creatine', 'core-brosses-silicone'}
 ROUTINE_LIBELLES = {'Passer le balai', 'Vaisselle', 'Linge'}
 # les cases de chaque jour (la Batcave, 12 novembre) : elles ne vont pas dans « en plus aujourd'hui »
 QUOTIDIENNES = {'Lit fait', 'Étirements faits', 'Fajr', 'Dhuhr', "Jumu'ah (~14h)", 'Asr', 'Maghrib', 'Isha', 'Téléphone hors de la chambre',
@@ -92,7 +92,7 @@ QUOTIDIENNES = {'Lit fait', 'Étirements faits', 'Fajr', 'Dhuhr', "Jumu'ah (~14h
 # 17 novembre : les cases qui se rangent dans une autre le jour où celle-ci tombe (le même ordre que REGROUPES dans la Batcave)
 REGROUPES = {
     'core-menage': ['core-rideau-douche', 'core-detartrage', 'core-entretien-semaine', 'core-entretien-mois', 'core-robot-filtre',
-                    'core-robot-brosse-laterale', 'core-robot-brosses', 'core-aspi-pieces', 'core-machine-filtre'],
+                    'core-robot-brosse-laterale', 'core-robot-brosses', 'core-aspi-pieces', 'core-machine-filtre', 'core-brosses-silicone'],
     'core-draps': ['core-serviette-corps', 'core-matelas', 'core-oreiller', 'core-couette'],
 }
 COURTS = {'Robot : filtre neuf': 'Filtre du robot neuf', 'Robot : brosse latérale neuve': 'Brosse latérale du robot', 'Robot : brosses principales neuves': 'Brosses du robot',
@@ -103,7 +103,7 @@ COURTS = {'Robot : filtre neuf': 'Filtre du robot neuf', 'Robot : brosse latéra
           'Taie d’oreiller changée': 'Taie d’oreiller', 'Draps et taies d’oreiller changés': 'Draps et taies', 'Pesée, à jeun': 'Pesée à jeun',
           'Rasage — aisselles et parties intimes': 'Rasage', 'Douche froide — 30 à 60 s en fin de douche': 'Douche froide',
           'Ménage du dimanche': 'Ménage du dimanche', 'Photos — peau et corps': 'Photos de la peau et du corps',
-          'Ongles — mains ; pieds les dimanches de photo': 'Ongles des mains'}
+          'Ongles — mains ; pieds les dimanches de photo': 'Ongles des mains', 'Brosses de douche lavées et désinfectées': 'Brosses de douche'}
 
 # ---------- une consigne de la Batcave, coupee en etapes ----------
 def phrases(t):
@@ -576,7 +576,8 @@ def tete(S, jours, lundi=None):
     # 18 novembre : le jour 1 au jeudi 19 -- la premiere semaine commence ce jour-la, et le batch de la veille au soir la nourrit.
     # 19 novembre : le jour 1 au vendredi 20 -- la salle reprend le samedi 21, le JJB le mercredi 2 decembre.
     if S[0]['iso'] == JOUR_1:
-        L.insert(0, 'Le jour 1, c’est le vendredi 20 : le mois d’espagnol commence avec lui ; la salle reprend le samedi 21 (la séance de référence), le JJB le mercredi 2 décembre. Les midis et les soirs de vendredi et samedi viennent du batch du mercredi 18 au soir.')
+        # 24 novembre : le jour 1 au mardi 24 -- la salle et le mois d'espagnol partent avec lui ; le batch du dimanche 22 n'a pas eu lieu.
+        L.insert(0, 'Le jour 1, c’est le mardi 24 : le mois d’espagnol et la salle commencent avec lui (la séance de référence ce matin-là), le JJB reprend le mercredi 2 décembre. Le frigo est vide ? Mardi midi, mange simple avec ce que tu as ; les courses de la liste (onglet Courses) en rentrant du cours, puis le batch de 19:10.')
     ev = []   # les evenements de la semaine, dans l'ordre des jours
     for j in S:
         ls = [b['l'] for b in j['blocs']]
@@ -650,9 +651,9 @@ def vers_batcave(data, sig):
     open(chemin, 'w', encoding='utf-8').write(bc[:m.start(2)] + s + bc[m.end(2):])
     return len(s)
 
-JOUR_1 = '2026-11-20'            # PROGRAMME_DEBUT dans la Batcave (19 novembre : le vendredi 20 ; avant, le jeudi 19, le lundi 16)
-PREMIERE_SALLE = '2026-11-21'    # premierJourSport dans la Batcave : le vendredi n'a pas de salle, la premiere seance est le samedi 21
-PREMIERES_PHOTOS = '2026-11-22'  # ANCRE_DIMANCHE : le premier dimanche du programme
+JOUR_1 = '2026-11-24'            # PROGRAMME_DEBUT dans la Batcave (24 novembre : le mardi 24, VERROUILLE ; avant, le vendredi 20, le jeudi 19, le lundi 16)
+PREMIERE_SALLE = '2026-11-24'    # premierJourSport dans la Batcave : le mardi 24, jour de salle (un Bas complet), la seance de reference
+PREMIERES_PHOTOS = '2026-11-29'  # ANCRE_DIMANCHE : le premier dimanche du programme (24 novembre : le 29)
 # 17 novembre, le tri (sa décision) : la marche (les pas ne se notent plus) et la revue du jour (la clôture la fait) sortent
 CHAQUE_JOUR = ['Lumière du matin', 'Les cinq prières', 'Étirements', 'Téléphone hors de la chambre',
                'Sadaqah', 'Nouvelles à la famille', '30 min d’espagnol avec un natif', 'Les dix formules', '20 pages en espagnol']
@@ -694,7 +695,7 @@ def main():
         while d < debut: d += _dt.timedelta(weeks=cycle)
         while len(out) < n: out.append(d.isoformat()); d += _dt.timedelta(weeks=cycle)
         return ', '.join(str(int(i[8:])) + ('er' if i[8:] == '01' else '') + ' ' + nom_mois(i) + ('' if i[:4] == '2026' else ' ' + i[:4]) for i in out)
-    rare = [x.format(brosse=prochaines('2026-11-22', 12), oreiller=prochaines('2027-01-03', 16), couette=prochaines('2027-01-17', 26, 2),
+    rare = [x.format(brosse=prochaines('2026-11-29', 12), oreiller=prochaines('2027-01-03', 16), couette=prochaines('2027-01-17', 26, 2),
                      robot_filtre=prochaines('2026-12-27', 8, 4), robot_laterale=prochaines('2027-01-24', 16, 2), robot_brosses=prochaines('2027-05-16', 36, 2),
                      aspi=prochaines('2027-02-21', 16, 2), matelas=prochaines('2026-12-06', 13, 3)) for x in PLUS_RARE]
     rare.insert(1, 'Coiffeur : toutes les 3 semaines, le samedi avant les courses (' + ', '.join(str(int(i[8:])) + ('er' if i[8:] == '01' else '') + ' ' + nom_mois(i) for i in coif) + '…).')

@@ -42,8 +42,9 @@ console.log('\n== 1) Les paliers du plan sommeil, matin et soir ==');
      10 et 11 novembre : le jour 1 passe au jeudi 12. 12 novembre, la viande jetee : au vendredi 13.
      13 novembre, « on commence tout samedi » : au samedi 14. 15 novembre, « recale tout sur lundi » : au lundi 16.
      18 novembre, « on vas decaler le premier jour a demain, jeudi 19/11 » : au jeudi 19.
-     19 novembre, « on commence tout demain vendredi » : au vendredi 20. */
-  ok(debut === '2026-11-20', 'le jour 1 est le vendredi 20 novembre (' + debut + ')');
+     19 novembre, « on commence tout demain vendredi » : au vendredi 20.
+     23 novembre, « on decale tout a demain » : au mardi 24, verrouille. */
+  ok(debut === '2026-11-24', 'le jour 1 est le mardi 24 novembre (' + debut + ')');
   const mer = await grille(fr, '2026-10-21');
   ok(mer[0] === '07:15 ⏰ Lever' && mer.includes('07:20 Douche + préparation') && mer.includes('07:30 Petit-déjeuner + Coran (1 page)') && mer.includes('07:45 Anki 1'),
      'mercredi 21 : lever 07:15, douche, petit-déjeuner, et le premier bloc à 07:45 (' + mer.slice(0, 4).join(' · ') + ')');
@@ -69,21 +70,22 @@ console.log('\n== 1) Les paliers du plan sommeil, matin et soir ==');
   await ctx.close();
 }
 
-console.log('\n== 2) La muscu attend le samedi 21 novembre, la montée en charge part de là ==');
+console.log('\n== 2) La muscu attend le mardi 24 novembre, la montée en charge part de là ==');
 {
   const { ctx, fr } = await ouvrir('2026-10-21T07:20:00+02:00');
   const r = await fr.evaluate(() => ({
     premier: window.__bcPremierJourSport(),
-    types: ['2026-11-16', '2026-11-18', '2026-11-19', '2026-11-20', '2026-11-21', '2026-11-23'].map(d => window.__bcTypeSport(d)),
-    f: ['2026-11-21', '2026-12-04', '2026-12-05'].map(d => window.__bcFacteurTours(d))
+    types: ['2026-11-16', '2026-11-20', '2026-11-21', '2026-11-23', '2026-11-24', '2026-11-26'].map(d => window.__bcTypeSport(d)),
+    f: ['2026-11-24', '2026-12-07', '2026-12-08'].map(d => window.__bcFacteurTours(d))
   }));
   /* 11 novembre : jour 1 au jeudi 12, la salle attend le medecin jusqu'au dimanche 15 (MUSCU_DEBUT).
      18 novembre : la salle reprend avec le jour 1, le jeudi 19 (MUSCU_DEBUT) -- rien le lundi 16 ni le mardi 17.
-     19 novembre : jour 1 au vendredi 20, jour sans salle -- la premiere seance est le samedi 21. */
-  ok(r.premier === '2026-11-21', 'la première séance est le samedi 21 novembre (' + r.premier + ')');
-  ok(r.types[0] === 'Off' && r.types[1] === 'Off' && r.types[2] === 'Off' && r.types[3] === 'Off' && r.types[4] === 'Bas · charnière' && r.types[5] === 'Haut volume',
-     'du lundi 16 au vendredi 20 sans muscu, puis bas charnière le samedi 21, haut volume le lundi 23 : ' + r.types.join(' / '));
-  ok(r.f[0] === 0.5 && r.f[1] === 0.5 && r.f[2] === 1, 'tours × ½ du 21 novembre au 4 décembre, complets le 5 (' + r.f.join(' / ') + ')');
+     19 novembre : jour 1 au vendredi 20, jour sans salle -- la premiere seance est le samedi 21.
+     23 novembre : jour 1 au mardi 24, jour de salle -- la premiere seance est ce mardi, le bas complet de reference. */
+  ok(r.premier === '2026-11-24', 'la première séance est le mardi 24 novembre (' + r.premier + ')');
+  ok(r.types[0] === 'Off' && r.types[1] === 'Off' && r.types[2] === 'Off' && r.types[3] === 'Off' && r.types[4] === 'Bas complet' && r.types[5] === 'Haut lourd',
+     'du lundi 16 au lundi 23 sans muscu, puis bas complet le mardi 24, haut lourd le jeudi 26 : ' + r.types.join(' / '));
+  ok(r.f[0] === 0.5 && r.f[1] === 0.5 && r.f[2] === 1, 'tours × ½ du 24 novembre au 7 décembre, complets le 8 (' + r.f.join(' / ') + ')');
   await ctx.close();
 }
 
@@ -254,16 +256,17 @@ console.log('\n== 6) Le 21 octobre au soir : shake de récup, pesée chaque dima
 }
 {
   /* 9 novembre : le traitement n'avait pas commencé ; il part du mardi 10, le bilan passe au dimanche 7 février 2027.
-     15 novembre : le jour 1 au lundi 16, la premiere serie de photos le dimanche 22 -- le bilan au dimanche 14 fevrier. */
-  const { ctx, fr } = await ouvrir('2027-02-14T09:00:00+01:00');
+     15 novembre : le jour 1 au lundi 16, la premiere serie de photos le dimanche 22 -- le bilan au dimanche 14 fevrier.
+     23 novembre : le jour 1 au mardi 24, la premiere serie de photos le dimanche 29 -- le bilan au dimanche 21 fevrier. */
+  const { ctx, fr } = await ouvrir('2027-02-21T09:00:00+01:00');
   const plan = await fr.evaluate(() => document.getElementById('dash-plan').innerText);
-  ok(/Bilan peau des 12 semaines/.test(plan), 'dimanche 14 février : le plan du jour demande le bilan peau');
+  ok(/Bilan peau des 12 semaines/.test(plan), 'dimanche 21 février : le plan du jour demande le bilan peau');
   await ctx.close();
 }
 {
-  const { ctx, fr } = await ouvrir('2026-12-13T09:00:00+01:00');
+  const { ctx, fr } = await ouvrir('2027-02-14T09:00:00+01:00');
   const plan = await fr.evaluate(() => document.getElementById('dash-plan').innerText);
-  ok(!/Bilan peau/.test(plan), 'et pas un autre dimanche, ni l\'ancien 13 décembre');
+  ok(!/Bilan peau/.test(plan), 'et pas un autre dimanche, ni l\'ancien 14 février');
   await ctx.close();
 }
 
@@ -294,7 +297,7 @@ console.log('\n== 7) Le rattrapage serré : retiré le 15 novembre, le jour 1 pa
     sam14a: window.__bcConsigne('Anki 1', 6, '2026-11-14', '07:20'),
     sam14b: window.__bcConsigne('Anki 2', 6, '2026-11-14', '08:20'),
     dim15: window.__bcConsigne('Projets perso matinal', 0, '2026-11-15', '05:30'),
-    dim22sim: window.__bcConsigne('Español · simulación', 0, '2026-11-22', '11:20'),
+    dim29sim: window.__bcConsigne('Español · simulación', 0, '2026-11-29', '11:20'),
     lun16: window.__bcConsigne('Anki 1', 1, '2026-11-16', '05:30'),
     fin: window.__bcConsigne('Anki 2', 2, '2026-11-24', '09:00'),
     apres: window.__bcConsigne('Anki 1', 3, '2026-11-25', '07:20')
@@ -318,7 +321,7 @@ console.log('\n== 7) Le rattrapage serré : retiré le 15 novembre, le jour 1 pa
   /* 15 novembre, « on s'en fout de cette semaine [...] recale tout sur lundi » : plus de rattrapage le samedi 14 ni le dimanche 15 */
   ok(!/Rattrapage|jour \d sur/.test(c.sam14 + c.sam14a + c.sam14b), 'samedi 14 : plus de rattrapage daté (' + c.sam14.slice(0, 60) + '…)');
   ok(!/Rattrapage|jour \d sur/.test(c.dim15), 'dimanche 15 : plus de rattrapage non plus, c\'est la veille du jour 1 (' + c.dim15.slice(0, 60) + '…)');
-  ok(/premier passage/.test(c.dim22sim) && /diagnostic/.test(c.dim22sim), 'le diagnostic d\'espagnol passe au dimanche 22, premier dimanche du mois repris');
+  ok(/premier passage/.test(c.dim29sim) && /diagnostic/.test(c.dim29sim), 'le diagnostic d\'espagnol passe au dimanche 29, premier dimanche du mois repris');
   ok(!/📚|Rattrapage/.test(c.lun16) && !/📚|Rattrapage/.test(c.fin), 'dès le lundi 16, la grille ordinaire : plus rien de daté, ni le 16 ni le 24');
   ok(!/Rattrapage/.test(c.apres), 'mercredi 25 : plus de rattrapage');
   await ctx.close();
@@ -327,16 +330,17 @@ console.log('\n== 7) Le rattrapage serré : retiré le 15 novembre, le jour 1 pa
 console.log('\n== 8) Le 11 novembre au soir : la tenue de salle avec le kimono, les bandes les jours de sac ==');
 {
   /* 18 novembre : jour 1 au jeudi 19, le premier club le vendredi 20 -- lu la veille au soir.
-     19 novembre : pas de JJB en novembre -- le premier club est le mercredi 2 decembre, la semaine pleine celle du 14. */
-  const { ctx, fr } = await ouvrir('2026-11-19T20:00:00+01:00');
+     19 novembre : pas de JJB en novembre -- le premier club est le mercredi 2 decembre, la semaine pleine celle du 14.
+     23 novembre : la salle reprend le mardi 24 -- le sac se lit sur la premiere semaine, du mardi 24 au lundi 30. */
+  const { ctx, fr } = await ouvrir('2026-11-23T20:00:00+01:00');
   const c = await fr.evaluate(() => ({
     ven20: window.__bcConsigne('Retour du club', 3, '2026-12-02', '12:00'),
     lun23: window.__bcConsigne('Retour du club', 1, '2026-12-14', '12:00'),
     mer25: window.__bcConsigne('Retour du club', 3, '2026-12-16', '12:00'),
     ven27: window.__bcConsigne('Retour du club', 5, '2026-12-18', '12:00'),
-    sal19: window.__bcConsigne('Trajet salle', 4, '2026-11-19', '06:40'),
-    sal21: window.__bcConsigne('Trajet salle', 6, '2026-11-21', '06:40'),
-    sal23: window.__bcConsigne('Trajet salle', 1, '2026-11-23', '06:40'),
+    sal19: window.__bcConsigne('Trajet salle', 4, '2026-11-26', '06:40'),
+    sal21: window.__bcConsigne('Trajet salle', 6, '2026-11-28', '06:40'),
+    sal23: window.__bcConsigne('Trajet salle', 1, '2026-11-30', '06:40'),
     sal24: window.__bcConsigne('Trajet salle', 2, '2026-11-24', '06:40')
   }));
   ok(/à l'envers, avec la tenue de salle de mardi —/.test(c.ven20) && !/lundi|samedi|ce matin/.test(c.ven20.split('—')[0]), 'mercredi 2 décembre, le premier club : la tenue de mardi seulement — rien d\'avant');

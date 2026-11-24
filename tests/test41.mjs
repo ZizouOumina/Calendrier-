@@ -34,9 +34,9 @@ const plan = fr => fr.evaluate(() => document.getElementById('dash-plan').innerT
    ou le coucher est a 21:35 tous les soirs, le week-end compris. */
 const JOURS = [
   ['mercredi',  '2026-11-25T20:00:00+01:00', '21:35'],   /* 18 novembre : le mercredi 18 est la veille du jour 1 -- le 25 */
-  ['vendredi',  '2026-11-20T19:00:00+01:00', '21:35'],
-  ['samedi',    '2026-11-21T20:00:00+01:00', '21:35'],
-  ['dimanche',  '2026-11-22T19:00:00+01:00', '21:35']
+  ['vendredi',  '2026-11-27T19:00:00+01:00', '21:35'],   /* 24 novembre : le jour 1 au mardi 24 -- le vendredi 20 et le week-end du 21 sont avant lui */
+  ['samedi',    '2026-11-28T20:00:00+01:00', '21:35'],
+  ['dimanche',  '2026-11-29T19:00:00+01:00', '21:35']
 ];
 
 console.log('\n== 93) L\'alerte de rythme annonce le coucher du jour ==');

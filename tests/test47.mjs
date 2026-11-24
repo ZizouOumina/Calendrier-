@@ -31,7 +31,7 @@ const LUNDI = '2026-12-10T06:30:00+01:00';   /* 19 novembre : jour 1 au vendredi
 const SAMEDI = '2027-01-30T06:30:00+01:00';   /* le premier samedi de muscu apres le regime combat (S2) : hors montee en charge, 3 series */
 /* 28 septembre au soir : jour 1 au mardi 29, semaine de reprise en combat seul, la muscu
    commence le lundi 5 octobre -- semaine 2 du programme, encore a demi-charge. */
-const PREMIER_LUNDI = '2026-11-23T06:30:00+01:00';   /* 18 novembre : jour 1 au jeudi 19 -- le premier Haut volume est le lundi 23, en semaine 1 de muscu (sans seance notee, elle part de lui) */   /* 31 octobre : le premier Haut volume est le lundi 2 novembre (semaine 2) */   /* 12 octobre : jour 1 au mardi 13, le premier Haut volume est le lundi 19 (semaine 2). 19 octobre : jour 1 au mardi 20 -- le lundi 26 (semaine 2) */
+const PREMIER_LUNDI = '2026-11-30T06:30:00+01:00';   /* 24 novembre : jour 1 au mardi 24 -- le premier Haut volume est le lundi 30 ; sans seance notee, la premiere seance part de lui (semaine 1, demi-volume) */   /* 18 novembre : jour 1 au jeudi 19 -- le premier Haut volume est le lundi 23, en semaine 1 de muscu (sans seance notee, elle part de lui) */   /* 31 octobre : le premier Haut volume est le lundi 2 novembre (semaine 2) */   /* 12 octobre : jour 1 au mardi 13, le premier Haut volume est le lundi 19 (semaine 2). 19 octobre : jour 1 au mardi 20 -- le lundi 26 (semaine 2) */
 
 console.log('\n== 107) Première séance : cible = tours × bas de fourchette ==');
 {

@@ -36,7 +36,10 @@ console.log('\n== tours : moitie deux semaines, puis complet ==');
 /* 19 novembre : jour 1 au vendredi 20, sans salle -- la premiere seance est le samedi 21 (bas, charniere). Quatorze jours a
    moitie a partir d'elle, jusqu'au vendredi 4 decembre : les Haut lourd du 26 novembre et du 3 decembre sont a moitie, le
    jeudi 10 a tours complets. */
-const PREMIERE = {'batcave-sport-log': [{id:'p0', date:'2026-11-21', type:'Bas · charnière', exo:'Relevés de jambes suspendus', series:[15,15,15], charge:0, unite:'reps'}]};
+/* 24 novembre : jour 1 au mardi 24 (verrouille), la premiere seance ce jour-la (un Bas complet). Quatorze jours a moitie a
+   partir d'elle, jusqu'au lundi 7 decembre : les Haut lourd du 26 novembre et du 3 decembre sont a moitie, le jeudi 10 a
+   tours complets. */
+const PREMIERE = {'batcave-sport-log': [{id:'p0', date:'2026-11-24', type:'Bas complet', exo:'Squat barre', series:[8,8,8,8], charge:40, unite:'reps'}]};
 for (const [q, attendu, moitie] of [['2026-11-26T05:35:00+01:00',2,true],['2026-12-03T05:35:00+01:00',2,true],['2026-12-10T05:35:00+01:00',3,false]]) {   /* 15 octobre : le jeudi 15 est avant le jour 1. 19 octobre : jour 1 au mardi 20, semaines 1-2 du 19 octobre au 1er novembre. 21 octobre : la muscu commence le lundi 26, ses deux semaines a moitie vont jusqu'au 8 novembre */
   const d = q.slice(0, 10);
   const {ctx, fr} = await jour(q, PREMIERE);
@@ -105,10 +108,10 @@ for (const [d, jour_, pesee, coupe] of [
 console.log('\n== seance de reference : la premiere seance de MUSCU du programme, mardi 20 octobre ==');
 /* 7 novembre : la reference est la premiere seance FAITE. Une seance faite le lundi 2 : le mardi 3
    n'est plus la reference. Rien de fait le 2 : la reference glisse au mardi 3, et ainsi de suite. */
-for (const [d, attendu, local] of [['2026-10-06',false],['2026-10-13',false],['2026-10-20',false],['2026-10-26',false],['2026-10-27',false],['2026-11-15',false],['2026-11-18',false],['2026-11-19',false],['2026-11-20',false],['2026-11-21',true],['2026-11-23',false,PREMIERE],['2026-11-23',true],['2026-11-22',false]]) {   /* 19 novembre : jour 1 au vendredi 20, sans salle -- la reference est la seance du samedi 21 ; faite, le lundi 23 n'est plus la reference ; rien de fait le 21, elle glisse au lundi 23 */   /* 18 novembre : jour 1 au jeudi 19 -- la reference est le Haut lourd du 19 ; rien de fait ce jour-la, elle glisse au samedi 21 */   /* la reference passe au mardi 20, puis au lundi 26 (21 octobre : la muscu attend le plan sommeil), puis au lundi 2 novembre (31 octobre : jour 1 au dimanche 1er) */
+for (const [d, attendu, local] of [['2026-10-06',false],['2026-10-13',false],['2026-10-20',false],['2026-10-26',false],['2026-10-27',false],['2026-11-15',false],['2026-11-18',false],['2026-11-19',false],['2026-11-20',false],['2026-11-21',false],['2026-11-23',false],['2026-11-24',true],['2026-11-26',false,PREMIERE],['2026-11-26',true],['2026-11-25',false]]) {   /* 24 novembre : jour 1 au mardi 24 -- la reference est sa seance ; faite, le jeudi 26 n'en est plus une ; pas faite, elle glisse au jeudi 26 */   /* 19 novembre : jour 1 au vendredi 20, sans salle -- la reference est la seance du samedi 21 ; faite, le lundi 23 n'est plus la reference ; rien de fait le 21, elle glisse au lundi 23 */   /* 18 novembre : jour 1 au jeudi 19 -- la reference est le Haut lourd du 19 ; rien de fait ce jour-la, elle glisse au samedi 21 */   /* la reference passe au mardi 20, puis au lundi 26 (21 octobre : la muscu attend le plan sommeil), puis au lundi 2 novembre (31 octobre : jour 1 au dimanche 1er) */
   const {ctx, fr} = await jour(d+'T05:35:00+02:00', local);
   const p = await fr.evaluate(()=>document.getElementById('dash-plan').innerText);
-  ok(/Séance de référence/.test(p)===attendu, d+(local ? ' (séance faite le 21)' : '')+' : séance de référence dans le plan = '+/Séance de référence/.test(p));
+  ok(/Séance de référence/.test(p)===attendu, d+(local ? ' (séance faite le 24)' : '')+' : séance de référence dans le plan = '+/Séance de référence/.test(p));
   await ctx.close();
 }
 await b.close();
