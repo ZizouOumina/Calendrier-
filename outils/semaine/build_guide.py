@@ -24,7 +24,7 @@ SEMAINES = ['2026-11-23', '2026-11-30', '2026-12-07', '2026-12-14', '2026-12-21'
 FERIES = {'2026-12-08': 'l’Immaculée Conception'}
 VACANCES = ('2026-12-23', '2027-01-06')
 INTERSEMESTRE = ('2027-01-21', '2027-01-22')
-ES_FIN = '2026-12-23'                     # le dernier jour du mois d'espagnol (ES_REPRISE_FIN dans la Batcave) : 24 novembre, un mois pile depuis le mardi 24 (avant : le 19, le 18 decembre)
+ES_FIN = '2026-12-27'                     # le dernier jour du mois d'espagnol (ES_REPRISE_FIN dans la Batcave) : 26 novembre, un mois pile depuis le samedi 28 (avant : le 23, le 19, le 18 decembre)
 
 def hh(m): return '%02d:%02d' % (m // 60, m % 60)
 def de(x): return ('d’' if x[:1] in 'AEIOUÁÉÍÓÚHaeiouáéíóúh' else 'de ') + x
@@ -146,10 +146,18 @@ def sport_texte(c, dow):
 def somme(repas, nom, cle): return sum(x['q'] for x in repas.get(nom, []) if x['c'] == cle)
 
 # ---------- un jour construit depuis la Batcave ----------
+PAR_ISO = {}   # tous les jours extraits, par date : la veille et le lendemain se lisent d'une semaine a l'autre
+def _decale(iso, n):
+    import datetime as _dt
+    return (_dt.date.fromisoformat(iso) + _dt.timedelta(days=n)).isoformat()
+
 def construire(J, semaine, k):
     iso, dow, g = J['iso'], J['dow'], J['blocs']
-    prec = semaine[k - 1] if k > 0 else None
-    suiv = semaine[k + 1] if k + 1 < len(semaine) else None
+    # 26 novembre : la veille d'un lundi et le lendemain d'un dimanche sont dans la semaine voisine. Sans eux, le dimanche
+    # soir ne disait ni le sac de salle ni le sac de cours du lundi, ni « demain, examen » (Epidemiologia, le lundi 11 janvier),
+    # et le premier jour d'e-commerce, un lundi (le 28 decembre), n'avait pas sa note.
+    prec = PAR_ISO.get(_decale(iso, -1)) or (semaine[k - 1] if k > 0 else None)
+    suiv = PAR_ISO.get(_decale(iso, 1)) or (semaine[k + 1] if k + 1 < len(semaine) else None)
     labs = [b['l'] for b in g]
     hab = [h['label'] for h in (J.get('duJour') or [])]
     a = lambda mot: any(mot in h for h in hab)
@@ -233,6 +241,8 @@ def construire(J, semaine, k):
             if set(q) != attendu: raise SystemExit(iso + ' : le shake a changé dans la Batcave : ' + json.dumps(q))
             riz = somme(J['repas'], 'Dîner', 'riz') + somme(J['repas'], 'Déjeuner', 'riz')
             midi = 'à midi, tu cuis des pâtes fraîches' if 'repas frais' in consigne.get('Déjeuner', '') else 'à midi, ce sont les pâtes de ta boîte'
+            # 26 novembre : un jour sans boite (le jour 1, sans batch avant lui) -- le riz du soir, et rien a rechauffer a midi
+            if 'pas de boîte' in consigne.get('Déjeuner', ''): midi = 'à midi, un repas simple : pas de boîte aujourd’hui'
             # 15 novembre : un jour de salle, le riz part en rentrant, avant la douche (consigne « Retour de la salle ») --
             # a 08:30 il cuit deja ; « lance le riz » ici le faisait lancer deux fois
             salle = any(x['l'] == 'Retour de la salle' and x['h'] < h for x in g)
@@ -321,6 +331,9 @@ def construire(J, semaine, k):
     # ce que la grille n'a pas en bloc
     if 'Collation entraînement' not in labs and dow in (6, 0):
         texte = '50 g d’amandes, 3 œufs durs, 7 dattes. Tant qu’il reste du fromage de ta mère : une portion en plus (2 Vache qui rit, 30 g de Caprice des Dieux ou 30 g de Philadelphia).'
+        # 26 novembre : le jour 1 un samedi, aucun batch avant lui -- les oeufs durs de la semaine ne sont cuits que le dimanche
+        if iso == JOUR_1 and dow == 6:
+            texte = 'Jour 1 : pas encore d’œufs durs, le batch de demain les cuit. 50 g d’amandes, 7 dattes, et 3 œufs au plat ou brouillés, cinq minutes à la poêle (la boîte d’œufs prise en plus aux courses).'
         rows.append({'t': '15:45', 'k': 'repas', 'titre': 'Collation' + (', après le rangement' if dow == 6 else ', après le batch'), 'd': texte})
     if jjb:
         rows.append({'t': '13:10' if 'Trajet mosquée' in labs else '13:00', 'k': 'maison', 'titre': 'Étends le kimono et le rashguard',
@@ -460,7 +473,16 @@ def construire(J, semaine, k):
     N = []
     if iso == JOUR_1:
         N.append('Jour 1 : tout commence ce matin, réveil 05:20. D’abord la copie vierge (bouton Sauvegarde), avant toute saisie.')
-        N.append('Pas encore vu le médecin pour les douleurs à la poitrine ? Appelle le centro de salud à 08:00' + (', en rentrant de la salle' if 'Sport' in labs else '') + ' : rendez-vous et prise de sang.')
+        # 26 novembre : le jour 1 un samedi -- le centro de salud ne donne pas de rendez-vous le week-end ; l'appel passe au lundi
+        if dow in (6, 0):
+            N.append('Pas encore vu le médecin pour les douleurs à la poitrine ? Le centro de salud ne donne pas de rendez-vous le week-end : prends-le en ligne aujourd’hui (cita previa de la GVA), sinon appelle lundi à 08:00. Une douleur forte, qui serre ou qui coupe le souffle : les urgences, sans attendre.')
+        else:
+            N.append('Pas encore vu le médecin pour les douleurs à la poitrine ? Appelle le centro de salud à 08:00' + (', en rentrant de la salle' if 'Sport' in labs else '') + ' : rendez-vous et prise de sang.')
+        if 'pas de boîte' in consigne.get('Déjeuner', ''):
+            N.append('Pas de boîte aujourd’hui : le premier batch est demain. Ce matin et à midi, mange avec ce que tu as ; aux courses de 13:30, prends en plus de quoi dîner (70 g de viande hachée) et une boîte d’œufs.')
+    # le premier lundi apres un jour 1 de week-end : l'appel au centro de salud
+    if dow == 1 and _decale(iso, -2) <= JOUR_1 < iso:
+        N.append('08:00 : appelle le centro de salud, si le rendez-vous pour les douleurs à la poitrine n’est pas encore pris.')
     if prec is not None and prec.get('espagnol') and not J.get('espagnol'):
         N.append('Les blocs Projets perso reviennent : l’e-commerce commence aujourd’hui (Dossier E-commerce, semaine 1). Chaque bloc dit quoi faire.')
     exam = next((b for b in g if b['l'].startswith('Examen · ')), None)
@@ -583,7 +605,9 @@ def tete(S, jours, lundi=None):
     # 19 novembre : le jour 1 au vendredi 20 -- la salle reprend le samedi 21, le JJB le mercredi 2 decembre.
     if S[0]['iso'] == JOUR_1:
         # 24 novembre : le jour 1 au mardi 24 -- la salle et le mois d'espagnol partent avec lui ; le batch du dimanche 22 n'a pas eu lieu.
-        L.insert(0, 'Le jour 1, c’est le mardi 24 : le mois d’espagnol et la salle commencent avec lui (la séance de référence ce matin-là), le JJB reprend le mercredi 2 décembre. Le frigo est vide ? Mardi midi, mange simple avec ce que tu as ; les courses de la liste (onglet Courses) en rentrant du cours, puis le batch de 19:10.')
+        # 26 novembre : le jour 1 au samedi 28 (« on commence tout tout tout samedi ») -- la salle, le mois d'espagnol et le
+        # rattrapage partent avec lui ; pas de batch avant le dimanche 29 : les courses du samedi 13:30 portent le diner.
+        L.insert(0, 'Le jour 1, c’est le samedi 28 : le mois d’espagnol, la salle (la séance de référence ce matin-là) et le rattrapage commencent avec lui ; le JJB reprend le mercredi 2 décembre. Pas de boîte samedi : à midi, mange simple avec ce que tu as ; les courses à 13:30, avec de quoi dîner ; le premier batch dimanche à 14:30.')
     ev = []   # les evenements de la semaine, dans l'ordre des jours
     for j in S:
         ls = [b['l'] for b in j['blocs']]
@@ -618,7 +642,13 @@ def tete(S, jours, lundi=None):
     if S[0]['dow'] != 1:
         p, q = S[0], S[-1]
         titre = 'Du ' + (JOURS[p['dow']].lower() + ' ' + str(int(p['iso'][8:])) if p['iso'][:7] == q['iso'][:7] else date_longue(p['iso'], p['dow'])) + ' au ' + date_longue(q['iso'], q['dow'])
-    return {'cle': lundi, 'titre': titre, 'sous': sous, 'tete': L + COMMUNS, 'jours': jours}
+    # 26 novembre : pendant le rattrapage, chaque bloc d'etude dit son tema -- « tu choisis quoi réviser » etait faux ces semaines-la
+    communs = list(COMMUNS)
+    n_ratt = sum(1 for j in S if any(b['c'].startswith('📚') for b in j['blocs']))
+    if n_ratt:
+        communs[0] = ('Le rattrapage : chaque bloc d’étude dit quel tema faire, et de quelle heure à quelle heure ; l’espagnol garde ses blocs.' if n_ratt == len(S)
+                      else 'Le rattrapage jusqu’au lundi 21 décembre : chaque bloc d’étude dit quel tema faire ; ensuite, tu choisis quoi réviser.')
+    return {'cle': lundi, 'titre': titre, 'sous': sous, 'tete': L + communs, 'jours': jours}
 
 # ---------- les deux premieres semaines, telles qu'elles existent ----------
 def entete_gabarit(nom):
@@ -657,9 +687,9 @@ def vers_batcave(data, sig):
     open(chemin, 'w', encoding='utf-8').write(bc[:m.start(2)] + s + bc[m.end(2):])
     return len(s)
 
-JOUR_1 = '2026-11-24'            # PROGRAMME_DEBUT dans la Batcave (24 novembre : le mardi 24, VERROUILLE ; avant, le vendredi 20, le jeudi 19, le lundi 16)
-PREMIERE_SALLE = '2026-11-24'    # premierJourSport dans la Batcave : le mardi 24, jour de salle (un Bas complet), la seance de reference
-PREMIERES_PHOTOS = '2026-11-29'  # ANCRE_DIMANCHE : le premier dimanche du programme (24 novembre : le 29)
+JOUR_1 = '2026-11-28'            # PROGRAMME_DEBUT dans la Batcave (26 novembre : le samedi 28, « une derniere fois », VERROUILLE ; avant, le mardi 24, le vendredi 20, le jeudi 19, le lundi 16)
+PREMIERE_SALLE = '2026-11-28'    # premierJourSport dans la Batcave : le samedi 28, jour de salle (le second bas), la seance de reference
+PREMIERES_PHOTOS = '2026-11-29'  # ANCRE_DIMANCHE : le premier dimanche du programme (le 29 : inchange avec le jour 1 au samedi 28)
 # 17 novembre, le tri (sa décision) : la marche (les pas ne se notent plus) et la revue du jour (la clôture la fait) sortent
 CHAQUE_JOUR = ['Lumière du matin', 'Les cinq prières', 'Étirements', 'Téléphone hors de la chambre',
                'Sadaqah', 'Nouvelles à la famille', '30 min d’espagnol avec un natif', 'Les dix formules', '20 pages en espagnol']
@@ -680,6 +710,8 @@ PLUS_RARE = ['Brosse à dents neuve : toutes les 12 semaines, un dimanche matin 
 
 def main():
     semaines = []
+    for lundi in SEMAINES:
+        for J in json.load(open(SP + 'semaines/' + lundi + '.json', encoding='utf-8')): PAR_ISO[J['iso']] = J
     for lundi in SEMAINES:
         S = json.load(open(SP + 'semaines/' + lundi + '.json', encoding='utf-8'))
         if len(S) != 7 or S[0]['iso'] != lundi: raise SystemExit(lundi + ' : la semaine extraite ne commence pas ce lundi')

@@ -7,7 +7,7 @@
    {
     "h": "05:30",
     "l": "Anki 1",
-    "c": "Toutes les échéances de dentaire, deux Pomodoros 25 + 5 sans téléphone. File vide avant la fin : cartes du cours suivant à partir des notes."
+    "c": "📚 Problemas de genética — Rattrapage, jour 17 sur 24 : 1 tema fini aujourd’hui, 3 h 13 au minuteur. Demain, 15:30 : l’évaluation des problèmes de génétique. Un dernier entraînement. 05:30 → 05:45 : Anki, les cartes des jours d’avant. 05:45 → 06:40 : Problemas de genética · un dernier entraînement : trois problèmes, réponses courtes et justifiées, comme demain (la suite au bloc suivant). Protocole, 1 h 30 par tema : survol 10 min · partie par partie 45 min, IA fermée · « tema » dans le Projet Dentaire 20 min · vérification dans le cours 5 min · 8 à 10 cartes écrites par toi, puis « vérifie mes cartes ». Antropología et Documentación : version courte, 40 min, sans « tema ». Minuteur : Révision, avec la matière du tema — même dans un bloc Anki ou Projets. Les blocs d'espagnol restent à l'espagnol : « escribir » fait une question d'examen en espagnol sur un tema que tu viens de rattraper."
    },
    {
     "h": "06:40",
@@ -37,7 +37,7 @@
    {
     "h": "09:00",
     "l": "Étudier en avance",
-    "c": "Un tema que le prof n'a pas encore donné (la matière la plus loin de ses 3 d'avance). Lire les diapos en espagnol, une phrase à toi par point, « ? » dans la marge, 15-25 cartes Dentaire importées (40 en Anatomía). Puis, dans le projet Claude Dentaire : « estudia · matière Tn · tes ? » — la réponse en sept parties, la chaîne du mécanisme pour tout tema d'Anatomía, Biología ou Epidemiología, tes dix lignes en espagnol dans Notion, les cartes de la réponse importées. Pomodoro nommé « Étudier · matière Tn ». Une base qui manque (« base · notion ») passe devant tout le reste."
+    "c": "📚 Problemas de genética (fin) · Anatomía 4 I — 09:00 → 09:05 : la fin de Problemas de genética. 09:05 → 10:05 : Anatomía 4 I · Piel I (la suite au bloc suivant)."
    },
    {
     "h": "10:05",
@@ -72,7 +72,7 @@
    {
     "h": "13:00",
     "l": "Question ouverte ou autre",
-    "c": "Une heure de révision, à toi de choisir ce qui sert le plus cette semaine : une question ouverte d'examen rédigée en espagnol (25 min sans support, puis « examen » avec Claude : contenu, puis langue), des exercices d'Epidemiología (tableau 2×2, RR, OR, taux), le blanc du prochain questionnaire (15 questions, 20 min, livre fermé), ou la préparation d'un TP. Chaque erreur → une carte."
+    "c": "📚 Anatomía 4 I (fin) · Epidemiología 10 — 13:00 → 13:30 : la fin d’Anatomía 4 I. 13:30 → 14:00 : Epidemiología 10 · Estudios de cohortes (la suite demain matin)."
    },
    {
     "h": "14:00",
@@ -516,7 +516,7 @@
    {
     "h": "05:30",
     "l": "Anki 1",
-    "c": "Toutes les échéances de dentaire, deux Pomodoros 25 + 5 sans téléphone. File vide avant la fin : cartes du cours suivant à partir des notes."
+    "c": "📚 Epidemiología 10 (suite) — Rattrapage, jour 18 sur 24 : 3 temas finis aujourd’hui, 5 h 31 au minuteur. Demain : le simulacro de Biología à 15:30 et le cuestionario 4 d’Anatomía à 17:30. 05:30 → 05:45 : Anki, les cartes des jours d’avant. 05:45 → 06:40 : la suite d’Epidemiología 10 (la fin au bloc suivant). Protocole, 1 h 30 par tema : survol 10 min · partie par partie 45 min, IA fermée · « tema » dans le Projet Dentaire 20 min · vérification dans le cours 5 min · 8 à 10 cartes écrites par toi, puis « vérifie mes cartes ». Antropología et Documentación : version courte, 40 min, sans « tema ». Minuteur : Révision, avec la matière du tema — même dans un bloc Anki ou Projets. Les blocs d'espagnol restent à l'espagnol : « escribir » fait une question d'examen en espagnol sur un tema que tu viens de rattraper."
    },
    {
     "h": "06:40",
@@ -546,17 +546,17 @@
    {
     "h": "09:00",
     "l": "Anki 2",
-    "c": "Suite des échéances de dentaire. Les 5 dernières minutes : les dix formules du jour (paquet Español)."
+    "c": "📚 Epidemiología 10 (fin) · Cuestionario 4 d’Anatomía — 09:00 → 09:05 : la fin d’Epidemiología 10. 09:05 → 10:00 : Cuestionario 4 d’Anatomía · celui de demain : T7 à T9 de tête sur une feuille, puis vérifiés dans le cours (la suite au bloc suivant)."
    },
    {
     "h": "10:00",
     "l": "Étudier en avance",
-    "c": "Un tema que le prof n'a pas encore donné (la matière la plus loin de ses 3 d'avance). Lire les diapos en espagnol, une phrase à toi par point, « ? » dans la marge, 15-25 cartes Dentaire importées (40 en Anatomía). Puis, dans le projet Claude Dentaire : « estudia · matière Tn · tes ? » — la réponse en sept parties, la chaîne du mécanisme pour tout tema d'Anatomía, Biología ou Epidemiología, tes dix lignes en espagnol dans Notion, les cartes de la réponse importées. Pomodoro nommé « Étudier · matière Tn ». Une base qui manque (« base · notion ») passe devant tout le reste."
+    "c": "📚 Cuestionario 4 d’Anatomía (fin) · Anatomía 4 II — 10:00 → 10:05 : la fin de Cuestionario 4 d’Anatomía. 10:05 → 11:20 : Anatomía 4 II · Piel II (la suite au bloc suivant)."
    },
    {
     "h": "11:20",
     "l": "Question ouverte ou autre",
-    "c": "Une heure de révision, à toi de choisir ce qui sert le plus cette semaine : une question ouverte d'examen rédigée en espagnol (25 min sans support, puis « examen » avec Claude : contenu, puis langue), des exercices d'Epidemiología (tableau 2×2, RR, OR, taux), le blanc du prochain questionnaire (15 questions, 20 min, livre fermé), ou la préparation d'un TP. Chaque erreur → une carte."
+    "c": "📚 Anatomía 4 II (fin) · Epidemiología 11 — 11:20 → 11:35 : la fin d’Anatomía 4 II. 11:35 → 12:20 : Epidemiología 11 · Ensayos clínicos (la suite au bloc suivant)."
    },
    {
     "h": "12:20",
@@ -571,7 +571,7 @@
    {
     "h": "13:00",
     "l": "Lire",
-    "c": "Le chapitre que la réponse « estudia » du matin a indiqué : un bloc, un livre, en espagnol ou en anglais, une seule question en tête — qu'est-ce que le cours n'a pas expliqué ? Trois cartes au plus à la fin. Rien d'autre d'ouvert."
+    "c": "📚 Epidemiología 11 (fin) — 13:00 → 13:45 : la fin d’Epidemiología 11. 13:45 → 14:00 : marge, tes cartes du jour dans Anki."
    },
    {
     "h": "14:00",
@@ -989,7 +989,7 @@
    {
     "h": "05:30",
     "l": "Anki matinal",
-    "c": "Jour off de sport : une heure de cartes de dentaire, deux Pomodoros 25 + 5. Toutes les échéances, puis les cartes des matières faibles. Le 24 décembre, la fin de la phase Español, ce créneau passe aux projets comme les autres — la file se vide alors dans Anki 1 et Anki 2."
+    "c": "📚 Anatomía 5 — Rattrapage, jour 19 sur 24 : 2 temas finis aujourd’hui, 4 h 31 au minuteur. Le cuestionario 4 d’Anatomía est à 17:30 : un dernier passage ce matin. 05:30 → 05:45 : Anki, les cartes des jours d’avant. 05:45 → 06:30 : Anatomía 5 · Introducción a la anatomía (la suite au bloc suivant). Protocole, 1 h 30 par tema : survol 10 min · partie par partie 45 min, IA fermée · « tema » dans le Projet Dentaire 20 min · vérification dans le cours 5 min · 8 à 10 cartes écrites par toi, puis « vérifie mes cartes ». Antropología et Documentación : version courte, 40 min, sans « tema ». Minuteur : Révision, avec la matière du tema — même dans un bloc Anki ou Projets. Les blocs d'espagnol restent à l'espagnol : « escribir » fait une question d'examen en espagnol sur un tema que tu viens de rattraper."
    },
    {
     "h": "06:30",
@@ -1004,12 +1004,12 @@
    {
     "h": "07:20",
     "l": "Anki 1",
-    "c": "Toutes les échéances de dentaire, deux Pomodoros 25 + 5 sans téléphone. File vide avant la fin : cartes du cours suivant à partir des notes."
+    "c": "📚 Anatomía 5 (fin) — 07:20 → 08:05 : la fin d’Anatomía 5. 08:05 → 08:20 : marge, tes cartes du jour dans Anki."
    },
    {
     "h": "08:20",
     "l": "Étudier en avance",
-    "c": "Un tema que le prof n'a pas encore donné (la matière la plus loin de ses 3 d'avance). Lire les diapos en espagnol, une phrase à toi par point, « ? » dans la marge, 15-25 cartes Dentaire importées (40 en Anatomía). Puis, dans le projet Claude Dentaire : « estudia · matière Tn · tes ? » — la réponse en sept parties, la chaîne du mécanisme pour tout tema d'Anatomía, Biología ou Epidemiología, tes dix lignes en espagnol dans Notion, les cartes de la réponse importées. Pomodoro nommé « Étudier · matière Tn ». Une base qui manque (« base · notion ») passe devant tout le reste."
+    "c": "📚 Cuestionario 4 d’Anatomía · Epidemiología 12 — 08:20 → 09:05 : Cuestionario 4 d’Anatomía · celui de cet après-midi : dernier passage, tes cartes de T7 à T9. 09:05 → 10:05 : Epidemiología 12 · Inmunización activa y pasiva (la suite au bloc suivant)."
    },
    {
     "h": "10:05",
@@ -1044,7 +1044,7 @@
    {
     "h": "13:00",
     "l": "Approfondir",
-    "c": "Le sujet, c'est toi qui le choisis : le tema que le prof vient de donner, ou celui qui te servira le plus au fauteuil. Une heure : 25 min de lecture dans la référence (Guyton, Karp, Greenhalgh, Abbas), 15 min de teach-back enregistré en espagnol sans notes, 10 min de cartes de mécanisme en chaîne, 10 min de vignettes (« profundiza · sujet » dans le projet Dentaire). L'enregistrement se garde : Réexpliquer le réécoute. À la fin, écris le sujet dans Études → Approfondissements — c'est ce qui déclenche J+7, J+30 et J+90."
+    "c": "📚 Epidemiología 12 (fin) · Anatomía 6.1 — 13:00 → 13:30 : la fin d’Epidemiología 12. 13:30 → 14:00 : Anatomía 6.1 · Sistema esquelético I (la suite demain matin)."
    },
    {
     "h": "14:00",
@@ -1079,7 +1079,7 @@
    {
     "h": "20:25",
     "l": "Clore le cours du jour",
-    "c": "Le tema a déjà été étudié le matin d'avance : vingt minutes par cours, en espagnol. « cierra » dans le projet Dentaire avec tes « ? » d'amphi, ce que le prof a souligné en cartes, la note 0-3 du cours à la clôture."
+    "c": "Ce soir, le cours n'a pas été préparé le matin : le rattrapage a pris le créneau. Vingt minutes pour le fixer, en espagnol : « cierra » dans le projet Dentaire avec tes « ? » d'amphi et ce que le prof a souligné, en cartes. Il entre ensuite dans la file du rattrapage."
    },
    {
     "h": "20:45",
@@ -1496,7 +1496,7 @@
    {
     "h": "05:30",
     "l": "Anki 1",
-    "c": "Toutes les échéances de dentaire, deux Pomodoros 25 + 5 sans téléphone. File vide avant la fin : cartes du cours suivant à partir des notes."
+    "c": "📚 Anatomía 6.1 (suite) — Rattrapage, jour 20 sur 24 : 2 temas finis aujourd’hui, 4 h 16 au minuteur. L’actividad 3 d’Antropología (10 %) se rend avant demain. 05:30 → 05:45 : Anki, les cartes des jours d’avant. 05:45 → 06:40 : la suite d’Anatomía 6.1 (la fin au bloc suivant). Protocole, 1 h 30 par tema : survol 10 min · partie par partie 45 min, IA fermée · « tema » dans le Projet Dentaire 20 min · vérification dans le cours 5 min · 8 à 10 cartes écrites par toi, puis « vérifie mes cartes ». Antropología et Documentación : version courte, 40 min, sans « tema ». Minuteur : Révision, avec la matière du tema — même dans un bloc Anki ou Projets. Les blocs d'espagnol restent à l'espagnol : « escribir » fait une question d'examen en espagnol sur un tema que tu viens de rattraper."
    },
    {
     "h": "06:40",
@@ -1526,17 +1526,17 @@
    {
     "h": "09:00",
     "l": "Anki 2",
-    "c": "Suite des échéances de dentaire. Les 5 dernières minutes : les dix formules du jour (paquet Español)."
+    "c": "📚 Anatomía 6.1 (fin) · Actividad 3 d’Antropología — 09:00 → 09:05 : la fin d’Anatomía 6.1. 09:05 → 10:00 : Actividad 3 d’Antropología · les casos éticos (10 %), à rendre avant demain sur Canvas. Déjà rendue : prends le tema suivant (la suite au bloc suivant)."
    },
    {
     "h": "10:00",
     "l": "Étudier en avance",
-    "c": "Un tema que le prof n'a pas encore donné (la matière la plus loin de ses 3 d'avance). Lire les diapos en espagnol, une phrase à toi par point, « ? » dans la marge, 15-25 cartes Dentaire importées (40 en Anatomía). Puis, dans le projet Claude Dentaire : « estudia · matière Tn · tes ? » — la réponse en sept parties, la chaîne du mécanisme pour tout tema d'Anatomía, Biología ou Epidemiología, tes dix lignes en espagnol dans Notion, les cartes de la réponse importées. Pomodoro nommé « Étudier · matière Tn ». Une base qui manque (« base · notion ») passe devant tout le reste."
+    "c": "📚 Actividad 3 d’Antropología (fin) · Epidemiología 13 — 10:00 → 10:05 : la fin d’Actividad 3 d’Antropología. 10:05 → 11:20 : Epidemiología 13 · Enfermedades transmisibles (la suite au bloc suivant)."
    },
    {
     "h": "11:20",
     "l": "Projets perso 3",
-    "c": "Un bloc de projet de plus, sans minuteur : le livrable de la semaine d'abord (un devoir ou une présentation de la fac, celui que tu cocheras dimanche). Sinon, des révisions : tu choisis quoi. La boutique ne commence que le jeudi 24 décembre."
+    "c": "📚 Epidemiología 13 (fin) · Anatomía 6.2 — 11:20 → 11:35 : la fin d’Epidemiología 13. 11:35 → 12:20 : Anatomía 6.2 · Sistema esquelético II (la suite demain matin)."
    },
    {
     "h": "12:20",
@@ -1586,7 +1586,7 @@
    {
     "h": "20:25",
     "l": "Clore le cours du jour",
-    "c": "Le tema a déjà été étudié le matin d'avance : vingt minutes par cours, en espagnol. « cierra » dans le projet Dentaire avec tes « ? » d'amphi, ce que le prof a souligné en cartes, la note 0-3 du cours à la clôture."
+    "c": "Ce soir, le cours n'a pas été préparé le matin : le rattrapage a pris le créneau. Vingt minutes pour le fixer, en espagnol : « cierra » dans le projet Dentaire avec tes « ? » d'amphi et ce que le prof a souligné, en cartes. Il entre ensuite dans la file du rattrapage."
    },
    {
     "h": "20:45",
@@ -1949,7 +1949,7 @@
    ]
   },
   "cible": {
-   "rev": 201,
+   "rev": 256,
    "proj": 0,
    "es": 105
   },
@@ -1979,12 +1979,12 @@
    {
     "h": "07:20",
     "l": "Anki 1",
-    "c": "Toutes les échéances de dentaire, deux Pomodoros 25 + 5 sans téléphone. File vide avant la fin : cartes du cours suivant à partir des notes."
+    "c": "📚 Anatomía 6.2 (fin) — Rattrapage, jour 21 sur 24 : 2 temas finis aujourd’hui, 2 h 46 au minuteur. 07:20 → 07:35 : Anki, les cartes des jours d’avant. 07:35 → 08:20 : la fin d’Anatomía 6.2. Protocole, 1 h 30 par tema : survol 10 min · partie par partie 45 min, IA fermée · « tema » dans le Projet Dentaire 20 min · vérification dans le cours 5 min · 8 à 10 cartes écrites par toi, puis « vérifie mes cartes ». Antropología et Documentación : version courte, 40 min, sans « tema ». Minuteur : Révision, avec la matière du tema — même dans un bloc Anki ou Projets. Les blocs d'espagnol restent à l'espagnol : « escribir » fait une question d'examen en espagnol sur un tema que tu viens de rattraper."
    },
    {
     "h": "08:20",
     "l": "Étudier en avance",
-    "c": "Un tema que le prof n'a pas encore donné (la matière la plus loin de ses 3 d'avance). Lire les diapos en espagnol, une phrase à toi par point, « ? » dans la marge, 15-25 cartes Dentaire importées (40 en Anatomía). Puis, dans le projet Claude Dentaire : « estudia · matière Tn · tes ? » — la réponse en sept parties, la chaîne du mécanisme pour tout tema d'Anatomía, Biología ou Epidemiología, tes dix lignes en espagnol dans Notion, les cartes de la réponse importées. Pomodoro nommé « Étudier · matière Tn ». Une base qui manque (« base · notion ») passe devant tout le reste."
+    "c": "📚 Epidemiología 14 — 08:20 → 09:50 : Epidemiología 14 · Transmisión intestinal. 09:50 → 10:05 : marge, tes cartes du jour dans Anki."
    },
    {
     "h": "10:05",
@@ -2054,7 +2054,7 @@
    {
     "h": "20:25",
     "l": "Clore le cours du jour",
-    "c": "Le tema a déjà été étudié le matin d'avance : vingt minutes par cours, en espagnol. « cierra » dans le projet Dentaire avec tes « ? » d'amphi, ce que le prof a souligné en cartes, la note 0-3 du cours à la clôture."
+    "c": "Ce soir, le cours n'a pas été préparé le matin : le rattrapage a pris le créneau. Vingt minutes pour le fixer, en espagnol : « cierra » dans le projet Dentaire avec tes « ? » d'amphi et ce que le prof a souligné, en cartes. Il entre ensuite dans la file du rattrapage."
    },
    {
     "h": "20:45",
@@ -2458,7 +2458,7 @@
    {
     "h": "05:30",
     "l": "Anki 1",
-    "c": "Toutes les échéances de dentaire, deux Pomodoros 25 + 5 sans téléphone. File vide avant la fin : cartes du cours suivant à partir des notes."
+    "c": "📚 Anatomía 6.3 — Rattrapage, jour 22 sur 24 : 3 temas finis aujourd’hui, 5 h 24 au minuteur. 05:30 → 05:45 : Anki, les cartes des jours d’avant. 05:45 → 06:40 : Anatomía 6.3 · Tejido óseo y cartilaginoso (la suite au bloc suivant). Protocole, 1 h 30 par tema : survol 10 min · partie par partie 45 min, IA fermée · « tema » dans le Projet Dentaire 20 min · vérification dans le cours 5 min · 8 à 10 cartes écrites par toi, puis « vérifie mes cartes ». Antropología et Documentación : version courte, 40 min, sans « tema ». Minuteur : Révision, avec la matière du tema — même dans un bloc Anki ou Projets. Les blocs d'espagnol restent à l'espagnol : « escribir » fait une question d'examen en espagnol sur un tema que tu viens de rattraper."
    },
    {
     "h": "06:40",
@@ -2488,7 +2488,7 @@
    {
     "h": "09:00",
     "l": "Approfondir",
-    "c": "Le sujet, c'est toi qui le choisis : le tema que le prof vient de donner, ou celui qui te servira le plus au fauteuil. Le bloc dure 2 h 20 : DEUX séances d'une heure, à 09:00 et à 10:00 (la demi-heure qui reste, tes cartes). Une heure : 25 min de lecture dans la référence (Guyton, Karp, Greenhalgh, Abbas), 15 min de teach-back enregistré en espagnol sans notes, 10 min de cartes de mécanisme en chaîne, 10 min de vignettes (« profundiza · sujet » dans le projet Dentaire). L'enregistrement se garde : Réexpliquer le réécoute. À la fin, écris le sujet dans Études → Approfondissements — c'est ce qui déclenche J+7, J+30 et J+90."
+    "c": "📚 Anatomía 6.3 (fin) · Epidemiología 15 — 09:00 → 09:35 : la fin d’Anatomía 6.3. 09:35 → 11:05 : Epidemiología 15 · VIH. 11:05 → 11:20 : marge, tes cartes du jour dans Anki."
    },
    {
     "h": "11:20",
@@ -2518,7 +2518,7 @@
    {
     "h": "16:00",
     "l": "Cartes d'erreurs de la semaine",
-    "c": "Les cartes ratées de la semaine, les erreurs des questions ouvertes et des exercices de calcul → une carte de correction par cause, étiquette « erreur » + semaine."
+    "c": "📚 Biología 13 — 16:00 → 17:00 : Biología 13 · Polimorfismos genéticos (la suite au bloc suivant)."
    },
    {
     "h": "17:00",
@@ -2528,7 +2528,7 @@
    {
     "h": "18:00",
     "l": "Projets perso 3",
-    "c": "Samedi 18:00-19:30, une heure et demie d'un trait, sans minuteur : le livrable de la semaine d'abord (un devoir ou une présentation de la fac, celui que tu cocheras dimanche). Sinon, des révisions : tu choisis quoi. La boutique ne commence que le jeudi 24 décembre."
+    "c": "📚 Biología 13 (fin) · Epidemiología 16 — 18:00 → 18:30 : la fin de Biología 13. 18:30 → 19:30 : Epidemiología 16 · Hepatitis (la suite demain matin)."
    },
    {
     "h": "19:30",
@@ -2930,7 +2930,7 @@
    ]
   },
   "cible": {
-   "rev": 241,
+   "rev": 324,
    "proj": 0,
    "es": 110
   },
@@ -2945,7 +2945,7 @@
    {
     "h": "05:30",
     "l": "Projets perso matinal",
-    "c": "05:30 : exécution pure d'une tâche déjà décidée la veille — montage, import, rédaction, fiches, code. Jamais une décision : à cette heure-là on exécute, on n'arbitre pas. Ce que tu feras s'écrit la veille au soir, à la clôture. Pas de minuteur : tu travailles jusqu'à la douche de 06:30."
+    "c": "📚 Epidemiología 16 (fin) — Rattrapage, jour 23 sur 24 : 5 temas finis aujourd’hui, 5 h 48 au minuteur. 05:30 → 05:45 : Anki, les cartes des jours d’avant. 05:45 → 06:15 : la fin d’Epidemiología 16. 06:15 → 06:30 : marge, tes cartes du jour dans Anki. Protocole, 1 h 30 par tema : survol 10 min · partie par partie 45 min, IA fermée · « tema » dans le Projet Dentaire 20 min · vérification dans le cours 5 min · 8 à 10 cartes écrites par toi, puis « vérifie mes cartes ». Antropología et Documentación : version courte, 40 min, sans « tema ». Minuteur : Révision, avec la matière du tema — même dans un bloc Anki ou Projets. Les blocs d'espagnol restent à l'espagnol : « escribir » fait une question d'examen en espagnol sur un tema que tu viens de rattraper."
    },
    {
     "h": "06:30",
@@ -2960,27 +2960,27 @@
    {
     "h": "07:20",
     "l": "Anki 1",
-    "c": "Toutes les échéances de dentaire, deux Pomodoros 25 + 5 sans téléphone. File vide avant la fin : cartes du cours suivant à partir des notes."
+    "c": "📚 Epidemiología 17 — 07:20 → 08:20 : Epidemiología 17 · Transmisión aérea, tuberculosis y gripe (la suite au bloc suivant)."
    },
    {
     "h": "08:20",
     "l": "Anki 2",
-    "c": "Suite des échéances de dentaire. Les 5 dernières minutes : les dix formules du jour (paquet Español)."
+    "c": "📚 Epidemiología 17 (fin) · Antropología 10 — 08:20 → 08:50 : la fin d’Epidemiología 17. 08:50 → 09:20 : Antropología 10 · El siglo XX, version courte (la suite au bloc suivant)."
    },
    {
     "h": "09:20",
     "l": "Simulation dentaire",
-    "c": "La semaine avant un questionnaire : son blanc complet (15 questions, 20 min, sans support, en espagnol). Sinon : 10 QCM + une question ouverte sur le dernier bloc de trois temas de Biología ou d'Epidemiología, en alternance. En décembre : un examen blanc complet (40 QCM + 4 ouvertes, 90 min), une matière par dimanche. Le premier dimanche du mois : l'examen mensuel de vingt vignettes."
+    "c": "📚 Antropología 10 (fin) · Biología 14 — 09:20 → 09:30 : la fin d’Antropología 10. 09:30 → 10:20 : Biología 14 · Técnicas de análisis en genética humana (la suite au bloc suivant)."
    },
    {
     "h": "10:20",
     "l": "Réexpliquer",
-    "c": "Aucun rappel dû aujourd'hui : soit rien n'est encore enregistré, soit tout est à jour. Reprends le sujet que tu as le moins bien redit, ou avance sur les cartes de mécanisme. Chacun : quatre minutes au téléphone, sans notes, la chaîne complète — quoi, pourquoi, comment, quand ce n'est pas vrai, et au fauteuil. Compare à ton premier enregistrement, puis note-toi 0-3 dans Études → Approfondissements. Sous 2, le sujet reprend le prochain créneau « Approfondir »."
+    "c": "📚 Biología 14 (fin) · Epidemiología 19 — 10:20 → 11:00 : la fin de Biología 14. 11:00 → 11:20 : Epidemiología 19 · Cáncer (la suite au bloc suivant)."
    },
    {
     "h": "11:20",
     "l": "Español · simulación",
-    "c": "Aujourd'hui, l'épreuve du dimanche, passage 4 sur 4 — la même que le 29 novembre. 45 min, dans cet ordre : 25 min pour écrire 200 mots sur un tema vu cette semaine, sans dictionnaire ni slides, puis « corrige » dans le projet Español (les erreurs pour 100 mots) ; 5 min à voix haute sur le même tema, enregistré au téléphone (les minutes avant ta première pause de trois secondes) ; 5 min, dix verbes × trois temps à voix haute, chronomètre en main (les secondes) ; 10 min, chaque erreur devient une carte dans Español::0 Errores. Les 15 min qui restent : une réponse de type examen sur un autre tema, puis « examen » avec Claude. Les trois chiffres se saisissent à la clôture du soir."
+    "c": "Aujourd'hui, l'épreuve du dimanche, passage 4 sur 5 — la même que le 29 novembre. 45 min, dans cet ordre : 25 min pour écrire 200 mots sur un tema vu cette semaine, sans dictionnaire ni slides, puis « corrige » dans le projet Español (les erreurs pour 100 mots) ; 5 min à voix haute sur le même tema, enregistré au téléphone (les minutes avant ta première pause de trois secondes) ; 5 min, dix verbes × trois temps à voix haute, chronomètre en main (les secondes) ; 10 min, chaque erreur devient une carte dans Español::0 Errores. Les 15 min qui restent : une réponse de type examen sur un autre tema, puis « examen » avec Claude. Les trois chiffres se saisissent à la clôture du soir."
    },
    {
     "h": "12:20",
@@ -3010,7 +3010,7 @@
    {
     "h": "17:30",
     "l": "Projets perso 3",
-    "c": "Dimanche 17:30-19:00 : finir le livrable de la semaine — c'est lui que la revue du dimanche te demande de cocher. S'il est fait, prépare celui de la semaine suivante."
+    "c": "📚 Epidemiología 19 (fin) · Epidemiología 20 — 17:30 → 18:40 : la fin d’Epidemiología 19. 18:40 → 19:00 : Epidemiología 20 · Diabetes y obesidad (la suite demain matin)."
    },
    {
     "h": "19:00",
@@ -3591,7 +3591,7 @@
    ]
   },
   "cible": {
-   "rev": 210,
+   "rev": 348,
    "proj": 0,
    "es": 110
   },

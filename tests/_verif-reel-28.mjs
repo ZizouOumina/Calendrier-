@@ -1,12 +1,13 @@
-/* Ouvre la Batcave avec SES DONNÉES RÉELLES (DONNEES=<fichier.json>) : le mardi 24 (jour 1, au réveil), le mardi 24 midi
-   sur téléphone et le dimanche 29 (ménage, brosses, photos). Signale erreurs, débordements, et montre « Ma journée ». */
+/* Ouvre la Batcave avec SES DONNÉES RÉELLES (DONNEES=<fichier.json>) : le samedi 28 (jour 1, au réveil), le samedi 28 midi
+   sur téléphone et le dimanche 29 (ménage, brosses, photos). Signale erreurs, débordements, et montre « Ma journée ».
+   Puis compare, pour chaque jour du pas à pas embarqué, sa grille d'origine à la grille vivante de la Batcave. */
 import { chromium } from 'playwright';
 import fs from 'fs';
 const seed = JSON.parse(fs.readFileSync(process.env.DONNEES, 'utf8'));
 console.log('clés réelles chargées :', Object.keys(seed).length);
 const b = await chromium.launch();
 let errs = 0;
-for(const [w, h, quand, voir] of [[1440, 900, '2026-11-24T05:25:00+01:00', 'jour1'], [390, 844, '2026-11-24T12:00:00+01:00', ''], [390, 844, '2026-11-29T15:00:00+01:00', 'dimanche']]){
+for(const [w, h, quand, voir] of [[1440, 900, '2026-11-28T05:25:00+01:00', 'jour1'], [390, 844, '2026-11-28T12:00:00+01:00', ''], [390, 844, '2026-11-29T15:00:00+01:00', 'dimanche']]){
   const ctx = await b.newContext({viewport:{width:w,height:h}, timezoneId:'Europe/Madrid', locale:'fr-FR'});
   await ctx.addInitScript(() => { window.claude = undefined; });
   await ctx.addInitScript(x => { Object.keys(x).forEach(k => localStorage.setItem(k, JSON.stringify(x[k]))); }, seed);
@@ -43,6 +44,12 @@ for(const [w, h, quand, voir] of [[1440, 900, '2026-11-24T05:25:00+01:00', 'jour
       const cles = lignes.filter(x => /brosses|Ménage|Photos|Pesée|Ongles|Brosse à dents|draps|Draps|laverie|Rasage/i.test(x));
       console.log('  DIMANCHE, lignes utiles :\n    ' + cles.join('\n    ').slice(0, 5000));
     }
+  }
+  if(voir === 'jour1'){
+    const g = await fr.evaluate(() => { const G = window.__bcJournee.guide();
+      return { n: G.isos.length, premier: G.isos[0], dernier: G.isos[G.isos.length - 1], differents: G.isos.filter(i => G.parIso[i].jour.sig !== window.__bcJournee.signature(i)) }; });
+    console.log('  PAS À PAS : ' + g.n + ' jours, du ' + g.premier + ' au ' + g.dernier + ' · grilles différentes de la Batcave : ' + (g.differents.length ? g.differents.join(' ') : 'aucune'));
+    if(g.differents.length) errs++;
   }
   await ctx.close();
 }

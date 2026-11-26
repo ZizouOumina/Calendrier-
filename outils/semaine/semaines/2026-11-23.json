@@ -511,12 +511,12 @@
    {
     "h": "06:40",
     "l": "Trajet salle",
-    "c": "Départ 06:40, quinze à vingt minutes. Un grand verre d'eau avant de partir ; à jeun, c'est prévu : le shake t'attend au retour. Dans le sac : tenue, serviette, gourde pleine, cadenas, bandes et gants pour le sac, la séance ouverte dans l'onglet Sport."
+    "c": "Départ 06:40, quinze à vingt minutes. Un grand verre d'eau avant de partir ; à jeun, c'est prévu : le shake t'attend au retour. Dans le sac : tenue, serviette, gourde pleine, cadenas, la séance ouverte dans l'onglet Sport."
    },
    {
     "h": "07:00",
     "l": "Sport",
-    "c": "La salle à 07:00, dès l'ouverture : 5 minutes de vélo ou de rameur avec le podcast espagnol, les séries d'approche, puis la séance du jour dans l'onglet Sport. Fini à 07:55."
+    "c": "La salle à 07:00, dès l'ouverture. Échauffement : 5 minutes de vélo ou de rameur (mardi et samedi : 2 rounds de 2 min de shadow boxing), puis deux séries d'approche du premier exercice (la moitié de la charge, puis les trois quarts). La séance du jour est dans l'onglet Sport, charges déjà calculées. Lundi, haut du corps en volume, à 2 ou 3 reps de l'échec : JJB à 10:30. Mardi, bas complet (squat), puis le sac en rounds techniques. Jeudi, haut lourd : c'est là que la force se construit. Samedi, le second bas et les bras, puis le sac en intervalles. Mardi et samedi, bandes et gants dans le sac. Squat et développé couché dans le rack, barres de sécurité réglées juste sous le bas du mouvement : à l'ouverture, la salle est presque vide. Retour à 07:55, douche en rentrant."
    },
    {
     "h": "07:55",
@@ -536,7 +536,7 @@
    {
     "h": "09:00",
     "l": "Anki 2",
-    "c": "Suite des échéances de dentaire. Les 5 dernières minutes : les dix formules du jour (paquet Español)."
+    "c": "Suite des échéances de dentaire. Les 5 dernières minutes : échéances du paquet Business (glossaire dropshipping)."
    },
    {
     "h": "10:00",
@@ -551,7 +551,7 @@
    {
     "h": "12:20",
     "l": "Déjeuner",
-    "c": "Jour 1 : pas de boîte, le batch de dimanche n'a pas eu lieu. Un repas simple avec ce que tu as : 125 g de pâtes ou de riz (crus), 3 œufs ou une boîte de thon, un légume surgelé, 20 ml d'huile d'olive crue."
+    "c": "La boîte du jour : les pâtes (125 g crus, cuites au batch du dimanche), poulet 70 g, 80 g de brocoli, réchauffée à la poêle avec 2 à 3 cuillères d'eau, couvercle, 4 à 5 min, brûlante jusqu'au cœur. Pas de sauce : pâtes nature, les 20 ml d'huile d'olive crue mélangés à chaud, sel iodé et tes épices (cumin, ras el hanout, paprika ; une pointe de harissa si tu veux)."
    },
    {
     "h": "12:40",
@@ -565,8 +565,8 @@
    },
    {
     "h": "14:00",
-    "l": "Español · escribir",
-    "c": "Une question ouverte d'examen sur un tema vu (Claude, « examen ») : 25 min sans dictionnaire, en espagnol, puis correction en deux temps — contenu, puis langue — et une carte par erreur. C'est de la révision qui se fait en espagnol : le Pomodoro Español la compte en espagnol, l'examen de janvier la note à 50 %."
+    "l": "Projets perso 2",
+    "c": "Un livrable en cours d'abord (l'échéance la plus proche). Sinon la ligne suivante de type « construire » du dossier e-commerce : feuille, page, brief, fiche, compte. Quelque chose qui existe à la fin du bloc."
    },
    {
     "h": "14:50",
@@ -576,22 +576,22 @@
    {
     "h": "15:00",
     "l": "Trajet cours",
-    "c": "Tapis enlevés du sol (rappel de 14:52) ? Le robot passe à 15:45 et à 18:15 ; ce soir, les tapis remis et son bac vidé. Puis podcast en marchant, shadowing à mi-voix dans le tram. Arrivé avant 15:30 : conversation avec les compañeros, pas le téléphone."
+    "c": "Tapis enlevés du sol (rappel de 14:52) ? Le robot passe à 15:45 et à 18:15 ; ce soir, les tapis remis et son bac vidé. Avant de fermer : clés, portefeuille, téléphone, gourde. Arrivé avant 15:30 : cinq minutes avec les compañeros, pas le téléphone."
    },
    {
     "h": "15:30",
     "l": "Cours",
-    "c": "Notes en espagnol, un « ? » dans la marge pour chaque mot inconnu, ta question posée avant la fin. Trente minutes de conversation réelle dans la journée."
+    "c": "Un « ? » dans la marge pour chaque mot inconnu, ce que le prof souligne entouré, ta question posée avant la fin."
    },
    {
     "h": "17:30",
     "l": "Trajet retour",
-    "c": "Le frigo est vide ? Passe au supermarché en rentrant : la liste est dans l'onglet Courses (ce qu'il faut pour le batch de 19:10 et les repas jusqu'à samedi). Le dîner glisse d'autant, rien d'autre ne bouge."
+    "c": "Une minute de résumé oral du cours enregistrée en marchant, puis un appel ou un message à ta famille."
    },
    {
     "h": "18:00",
     "l": "Dîner",
-    "c": "Jour 1 : pas de boîte ce soir non plus. Le riz lancé ce matin (sinon 125 g crus, cuits maintenant), 3 œufs ou une boîte de thon, un légume surgelé. Le batch de 19:10 prépare les boîtes de mercredi à samedi."
+    "c": "La boîte de riz du matin (125 g crus) et la boîte du jour : viande hachée 70 g, 80 g d'épinards, réchauffées ensemble à la poêle. Pas de sauce : hors du feu, les 15 ml d'huile d'olive crue sur le riz, sel iodé et tes épices. La créatine, 5 g, avec le repas. Ensuite plus rien jusqu'au lendemain."
    },
    {
     "h": "18:30",
@@ -621,7 +621,7 @@
    {
     "h": "21:35",
     "l": "Coucher",
-    "c": "Clôture du jour faite, la ligne en espagnol ? Écran off, réveil posé loin du lit."
+    "c": "Clôture du jour faite ? Écran off, réveil posé loin du lit."
    }
   ],
   "habits": [
@@ -966,10 +966,10 @@
   "cible": {
    "rev": 331,
    "proj": 0,
-   "es": 50
+   "es": 0
   },
-  "periode": "es-1-reprise",
-  "espagnol": true
+  "periode": null,
+  "espagnol": false
  },
  {
   "iso": "2026-11-25",
@@ -978,8 +978,8 @@
   "blocs": [
    {
     "h": "05:30",
-    "l": "Anki matinal",
-    "c": "Jour off de sport : une heure de cartes de dentaire, deux Pomodoros 25 + 5. Toutes les échéances, puis les cartes des matières faibles. Le 24 décembre, la fin de la phase Español, ce créneau passe aux projets comme les autres — la file se vide alors dans Anki 1 et Anki 2."
+    "l": "Projets perso matinal",
+    "c": "05:30 : exécution pure d'une tâche déjà décidée la veille — montage, import, rédaction, fiches, code. Jamais une décision : à cette heure-là on exécute, on n'arbitre pas. Ce que tu feras s'écrit la veille au soir, à la clôture. Pas de minuteur : tu travailles jusqu'à la douche de 06:30."
    },
    {
     "h": "06:30",
@@ -1009,7 +1009,7 @@
    {
     "h": "11:20",
     "l": "Projets perso 3",
-    "c": "Un bloc de projet de plus, sans minuteur : le livrable de la semaine d'abord (un devoir ou une présentation de la fac, celui que tu cocheras dimanche). Sinon, des révisions : tu choisis quoi. La boutique ne commence que le jeudi 24 décembre."
+    "c": "Un bloc de projet de plus, sans minuteur : le livrable de la semaine d'abord (celui que tu cocheras dimanche), sinon la prochaine ligne non cochée du dossier e-commerce."
    },
    {
     "h": "12:20",
@@ -1028,8 +1028,8 @@
    },
    {
     "h": "14:00",
-    "l": "Español · gramática",
-    "c": "Le point de grammaire de la semaine (Dossier Español, section 07). Ordre de départ, tiré de ton oral du 25 sept. (A2+) : 1) le passé — indefinido avec ayer / el lunes (comí), perfecto avec hoy / esta semana — et les pronominaux au passé (me levanté, me duché) ; 2) la bonne personne du verbe (vengo, tenía) et le « yo » qu’on retire ; 3) les faux amis (celoso, brasileño, gradiente). « Balance » change l’ordre si tes chiffres du dimanche disent autre chose. Méthode : chaque règle lue → dix phrases écrites et dix dites à voix haute sur tes sujets, puis les exercices du livre corrigés à la main. Pomodoro Español « gramática »."
+    "l": "Projets perso 1",
+    "c": "Un devoir ou une présentation à rendre passe en premier (l'échéance la plus proche, onglet Calendrier). Sinon la boutique : la prochaine ligne non cochée du dossier e-commerce. Bloc des décisions (produit, fournisseur, pub). Sans minuteur : tu travailles jusqu'au bloc suivant."
    },
    {
     "h": "14:50",
@@ -1039,17 +1039,17 @@
    {
     "h": "15:00",
     "l": "Trajet cours",
-    "c": "Tapis enlevés du sol (rappel de 14:52) ? Le robot passe à 15:45 et à 18:15 ; ce soir, les tapis remis et son bac vidé. Puis podcast en marchant, shadowing à mi-voix dans le tram. Arrivé avant 15:30 : conversation avec les compañeros, pas le téléphone."
+    "c": "Tapis enlevés du sol (rappel de 14:52) ? Le robot passe à 15:45 et à 18:15 ; ce soir, les tapis remis et son bac vidé. Avant de fermer : clés, portefeuille, téléphone, gourde. Arrivé avant 15:30 : cinq minutes avec les compañeros, pas le téléphone."
    },
    {
     "h": "15:30",
     "l": "Cours",
-    "c": "Notes en espagnol, un « ? » dans la marge pour chaque mot inconnu, ta question posée avant la fin. Trente minutes de conversation réelle dans la journée."
+    "c": "Un « ? » dans la marge pour chaque mot inconnu, ce que le prof souligne entouré, ta question posée avant la fin."
    },
    {
     "h": "19:30",
     "l": "Trajet retour",
-    "c": "Une minute de résumé oral du cours enregistrée en marchant, puis un appel ou un message à ta famille. Dans le tram : Anki Español et trois minutes de paquet Business."
+    "c": "Une minute de résumé oral du cours enregistrée en marchant, puis un appel ou un message à ta famille."
    },
    {
     "h": "20:00",
@@ -1079,7 +1079,7 @@
    {
     "h": "21:35",
     "l": "Coucher",
-    "c": "Clôture du jour faite, la ligne en espagnol ? Écran off, réveil posé loin du lit."
+    "c": "Clôture du jour faite ? Écran off, réveil posé loin du lit."
    }
   ],
   "habits": [
@@ -1461,12 +1461,12 @@
    ]
   },
   "cible": {
-   "rev": 340,
+   "rev": 290,
    "proj": 0,
-   "es": 50
+   "es": 0
   },
-  "periode": "es-1-reprise",
-  "espagnol": true
+  "periode": null,
+  "espagnol": false
  },
  {
   "iso": "2026-11-26",
@@ -1486,7 +1486,7 @@
    {
     "h": "07:00",
     "l": "Sport",
-    "c": "La salle à 07:00, dès l'ouverture : 5 minutes de vélo ou de rameur avec le podcast espagnol, les séries d'approche, puis la séance du jour dans l'onglet Sport. Fini à 07:55."
+    "c": "La salle à 07:00, dès l'ouverture. Échauffement : 5 minutes de vélo ou de rameur (mardi et samedi : 2 rounds de 2 min de shadow boxing), puis deux séries d'approche du premier exercice (la moitié de la charge, puis les trois quarts). La séance du jour est dans l'onglet Sport, charges déjà calculées. Lundi, haut du corps en volume, à 2 ou 3 reps de l'échec : JJB à 10:30. Mardi, bas complet (squat), puis le sac en rounds techniques. Jeudi, haut lourd : c'est là que la force se construit. Samedi, le second bas et les bras, puis le sac en intervalles. Mardi et samedi, bandes et gants dans le sac. Squat et développé couché dans le rack, barres de sécurité réglées juste sous le bas du mouvement : à l'ouverture, la salle est presque vide. Retour à 07:55, douche en rentrant."
    },
    {
     "h": "07:55",
@@ -1506,7 +1506,7 @@
    {
     "h": "09:00",
     "l": "Anki 2",
-    "c": "Suite des échéances de dentaire. Les 5 dernières minutes : les dix formules du jour (paquet Español)."
+    "c": "Suite des échéances de dentaire. Les 5 dernières minutes : échéances du paquet Business (glossaire dropshipping)."
    },
    {
     "h": "10:00",
@@ -1516,7 +1516,7 @@
    {
     "h": "11:20",
     "l": "Projets perso 3",
-    "c": "Un bloc de projet de plus, sans minuteur : le livrable de la semaine d'abord (un devoir ou une présentation de la fac, celui que tu cocheras dimanche). Sinon, des révisions : tu choisis quoi. La boutique ne commence que le jeudi 24 décembre."
+    "c": "Un bloc de projet de plus, sans minuteur : le livrable de la semaine d'abord (celui que tu cocheras dimanche), sinon la prochaine ligne non cochée du dossier e-commerce."
    },
    {
     "h": "12:20",
@@ -1530,13 +1530,13 @@
    },
    {
     "h": "13:00",
-    "l": "Español · gramática",
-    "c": "Le point de grammaire de la semaine (Dossier Español, section 07). Ordre de départ, tiré de ton oral du 25 sept. (A2+) : 1) le passé — indefinido avec ayer / el lunes (comí), perfecto avec hoy / esta semana — et les pronominaux au passé (me levanté, me duché) ; 2) la bonne personne du verbe (vengo, tenía) et le « yo » qu’on retire ; 3) les faux amis (celoso, brasileño, gradiente). « Balance » change l’ordre si tes chiffres du dimanche disent autre chose. Méthode : chaque règle lue → dix phrases écrites et dix dites à voix haute sur tes sujets, puis les exercices du livre corrigés à la main. Pomodoro Español « gramática »."
+    "l": "Projets perso 1",
+    "c": "Un devoir ou une présentation à rendre passe en premier (l'échéance la plus proche, onglet Calendrier). Sinon la boutique : la prochaine ligne non cochée du dossier e-commerce. Bloc des décisions (produit, fournisseur, pub). Sans minuteur : tu travailles jusqu'au bloc suivant."
    },
    {
     "h": "14:00",
-    "l": "Español · escribir",
-    "c": "Une question ouverte d'examen sur un tema vu (Claude, « examen ») : 25 min sans dictionnaire, en espagnol, puis correction en deux temps — contenu, puis langue — et une carte par erreur. C'est de la révision qui se fait en espagnol : le Pomodoro Español la compte en espagnol, l'examen de janvier la note à 50 %."
+    "l": "Projets perso 2",
+    "c": "Un livrable en cours d'abord (l'échéance la plus proche). Sinon la ligne suivante de type « construire » du dossier e-commerce : feuille, page, brief, fiche, compte. Quelque chose qui existe à la fin du bloc."
    },
    {
     "h": "14:50",
@@ -1546,17 +1546,17 @@
    {
     "h": "15:00",
     "l": "Trajet cours",
-    "c": "Tapis enlevés du sol (rappel de 14:52) ? Le robot passe à 15:45 et à 18:15 ; ce soir, les tapis remis et son bac vidé. Puis podcast en marchant, shadowing à mi-voix dans le tram. Arrivé avant 15:30 : conversation avec les compañeros, pas le téléphone."
+    "c": "Tapis enlevés du sol (rappel de 14:52) ? Le robot passe à 15:45 et à 18:15 ; ce soir, les tapis remis et son bac vidé. Avant de fermer : clés, portefeuille, téléphone, gourde. Arrivé avant 15:30 : cinq minutes avec les compañeros, pas le téléphone."
    },
    {
     "h": "15:30",
     "l": "Cours",
-    "c": "Notes en espagnol, un « ? » dans la marge pour chaque mot inconnu, ta question posée avant la fin. Trente minutes de conversation réelle dans la journée."
+    "c": "Un « ? » dans la marge pour chaque mot inconnu, ce que le prof souligne entouré, ta question posée avant la fin."
    },
    {
     "h": "19:30",
     "l": "Trajet retour",
-    "c": "Une minute de résumé oral du cours enregistrée en marchant, puis un appel ou un message à ta famille. Dans le tram : Anki Español et trois minutes de paquet Business."
+    "c": "Une minute de résumé oral du cours enregistrée en marchant, puis un appel ou un message à ta famille."
    },
    {
     "h": "20:00",
@@ -1566,7 +1566,7 @@
    {
     "h": "20:25",
     "l": "Clore le cours du jour",
-    "c": "Le tema a déjà été étudié le matin d'avance : vingt minutes par cours, en espagnol. « cierra » dans le projet Dentaire avec tes « ? » d'amphi, ce que le prof a souligné en cartes, la note 0-3 du cours à la clôture."
+    "c": "Le tema a déjà été étudié et approfondi le matin d'avant : vingt minutes par cours, pas plus. Dans le projet Dentaire : « cierra · matière Tn · tes ? d'amphi ». Ce que le prof a souligné et qui n'était pas dans les diapos → 3 à 5 cartes ; les cartes floues corrigées ; la case « Fiché » cochée et la note 0-3 du cours à la clôture. Deux cours : 20 + 20, fini à 21:10."
    },
    {
     "h": "20:45",
@@ -1586,7 +1586,7 @@
    {
     "h": "21:35",
     "l": "Coucher",
-    "c": "Clôture du jour faite, la ligne en espagnol ? Écran off, réveil posé loin du lit."
+    "c": "Clôture du jour faite ? Écran off, réveil posé loin du lit."
    }
   ],
   "habits": [
@@ -1931,10 +1931,10 @@
   "cible": {
    "rev": 201,
    "proj": 0,
-   "es": 105
+   "es": 0
   },
-  "periode": "es-1-reprise",
-  "espagnol": true
+  "periode": null,
+  "espagnol": false
  },
  {
   "iso": "2026-11-27",
@@ -1943,8 +1943,8 @@
   "blocs": [
    {
     "h": "05:30",
-    "l": "Español · escribir largo",
-    "c": "300 mots chronométrés (30 min) sur un sujet d'examen, sans dictionnaire, puis « corrige » et les cartes d'erreurs."
+    "l": "Projets perso matinal",
+    "c": "05:30 : exécution pure d'une tâche déjà décidée la veille — montage, import, rédaction, fiches, code. Jamais une décision : à cette heure-là on exécute, on n'arbitre pas. Ce que tu feras s'écrit la veille au soir, à la clôture. Pas de minuteur : tu travailles jusqu'à la douche de 06:30."
    },
    {
     "h": "06:30",
@@ -1959,22 +1959,22 @@
    {
     "h": "07:20",
     "l": "Anki 1",
-    "c": "📚 Epidemiología 6 — Rattrapage, jour 1 sur 10 : 3 temas finis aujourd’hui, 4 h 50 au minuteur. Epidemiología 6, 8 et 10 d’abord : la base de l’examen RR/OR (le cronograma le met cet après-midi ; s’il a déjà eu lieu, c’est celle des problèmes de janvier). 07:20 → 08:20 : Epidemiología 6 · Medidas de asociación y contraste de hipótesis (la suite au bloc suivant). Protocole, 1 h 30 par tema : survol 10 min · partie par partie 45 min, IA fermée · « tema » dans le Projet Dentaire 20 min · vérification dans le cours 5 min · 8 à 10 cartes écrites par toi, puis « vérifie mes cartes ». Antropología et Documentación : version courte, 40 min, sans « tema ». Minuteur : Révision, avec la matière du tema — même dans un bloc Anki ou Projets. Les blocs d'espagnol restent à l'espagnol : « escribir » fait une question d'examen en espagnol sur un tema que tu viens de rattraper."
+    "c": "Toutes les échéances de dentaire, deux Pomodoros 25 + 5 sans téléphone. File vide avant la fin : cartes du cours suivant à partir des notes."
    },
    {
     "h": "08:20",
     "l": "Étudier en avance",
-    "c": "📚 Epidemiología 6 (fin) · Epidemiología 8 — 08:20 → 08:50 : la fin d’Epidemiología 6. 08:50 → 10:20 : Epidemiología 8 · Estudios de casos y controles."
+    "c": "Un tema que le prof n'a pas encore donné (la matière la plus loin de ses 3 d'avance). Lire les diapos en espagnol, une phrase à toi par point, « ? » dans la marge, 15-25 cartes Dentaire importées (40 en Anatomía). Puis, dans le projet Claude Dentaire : « estudia · matière Tn · tes ? » — la réponse en sept parties, la chaîne du mécanisme pour tout tema d'Anatomía, Biología ou Epidemiología, tes dix lignes en espagnol dans Notion, les cartes de la réponse importées. Pomodoro nommé « Étudier · matière Tn ». Une base qui manque (« base · notion ») passe devant tout le reste."
    },
    {
     "h": "10:20",
     "l": "Question ouverte ou autre",
-    "c": "📚 Epidemiología 10 — 10:20 → 11:20 : Epidemiología 10 · Estudios de cohortes (la suite au bloc suivant)."
+    "c": "Une heure de révision, à toi de choisir ce qui sert le plus cette semaine : une question ouverte d'examen rédigée en espagnol (25 min sans support, puis « examen » avec Claude : contenu, puis langue), des exercices d'Epidemiología (tableau 2×2, RR, OR, taux), le blanc du prochain questionnaire (15 questions, 20 min, livre fermé), ou la préparation d'un TP. Chaque erreur → une carte."
    },
    {
     "h": "11:20",
     "l": "Projets perso 3",
-    "c": "📚 Epidemiología 10 (fin) · Les tableaux RR et OR — 11:20 → 11:50 : la fin d’Epidemiología 10. 11:50 → 12:20 : Les tableaux RR et OR · deux tableaux 2×2 de tête, un RR (cohortes) et un OR (casos y controles), calculés puis interprétés."
+    "c": "Un bloc de projet de plus, sans minuteur : le livrable de la semaine d'abord (celui que tu cocheras dimanche), sinon la prochaine ligne non cochée du dossier e-commerce."
    },
    {
     "h": "12:20",
@@ -2004,17 +2004,17 @@
    {
     "h": "15:00",
     "l": "Trajet cours",
-    "c": "Tapis enlevés du sol (rappel de 14:52) ? Le robot passe à 15:45 et à 18:15 ; ce soir, les tapis remis et son bac vidé. Puis podcast en marchant, shadowing à mi-voix dans le tram. Arrivé avant 15:30 : conversation avec les compañeros, pas le téléphone."
+    "c": "Tapis enlevés du sol (rappel de 14:52) ? Le robot passe à 15:45 et à 18:15 ; ce soir, les tapis remis et son bac vidé. Avant de fermer : clés, portefeuille, téléphone, gourde. Arrivé avant 15:30 : cinq minutes avec les compañeros, pas le téléphone."
    },
    {
     "h": "15:30",
     "l": "Cours",
-    "c": "Notes en espagnol, un « ? » dans la marge pour chaque mot inconnu, ta question posée avant la fin. Trente minutes de conversation réelle dans la journée."
+    "c": "Un « ? » dans la marge pour chaque mot inconnu, ce que le prof souligne entouré, ta question posée avant la fin."
    },
    {
     "h": "19:30",
     "l": "Trajet retour",
-    "c": "Une minute de résumé oral du cours enregistrée en marchant, puis un appel ou un message à ta famille. Dans le tram : Anki Español et trois minutes de paquet Business."
+    "c": "Une minute de résumé oral du cours enregistrée en marchant, puis un appel ou un message à ta famille."
    },
    {
     "h": "20:00",
@@ -2024,7 +2024,7 @@
    {
     "h": "20:25",
     "l": "Clore le cours du jour",
-    "c": "Ce soir, le cours n'a pas été préparé le matin : le rattrapage a pris le créneau. Vingt minutes pour le fixer, en espagnol : « cierra » dans le projet Dentaire avec tes « ? » d'amphi et ce que le prof a souligné, en cartes. Il entre ensuite dans la file du rattrapage."
+    "c": "Le tema a déjà été étudié et approfondi le matin d'avant : vingt minutes par cours, pas plus. Dans le projet Dentaire : « cierra · matière Tn · tes ? d'amphi ». Ce que le prof a souligné et qui n'était pas dans les diapos → 3 à 5 cartes ; les cartes floues corrigées ; la case « Fiché » cochée et la note 0-3 du cours à la clôture. Deux cours : 20 + 20, fini à 21:10."
    },
    {
     "h": "20:45",
@@ -2044,7 +2044,7 @@
    {
     "h": "21:35",
     "l": "Coucher",
-    "c": "Clôture du jour faite, la ligne en espagnol ? Écran off, réveil posé loin du lit."
+    "c": "Clôture du jour faite ? Écran off, réveil posé loin du lit."
    }
   ],
   "habits": [
@@ -2413,12 +2413,12 @@
    ]
   },
   "cible": {
-   "rev": 290,
+   "rev": 235,
    "proj": 0,
-   "es": 55
+   "es": 0
   },
-  "periode": "es-1-reprise",
-  "espagnol": true
+  "periode": null,
+  "espagnol": false
  },
  {
   "iso": "2026-11-28",
@@ -2428,7 +2428,7 @@
    {
     "h": "05:30",
     "l": "Anki 1",
-    "c": "📚 Antropología 4 — Rattrapage, jour 2 sur 10 : 2 temas finis aujourd’hui, 5 h 24 au minuteur. L’Actividad 1 d’Antropología se rend avant lundi : elle passe ce matin. 05:30 → 05:45 : Anki, les cartes des jours d’avant. 05:45 → 06:25 : Antropología 4 · Paleodontología y paleopatologías, version courte. 06:25 → 06:40 : marge, tes cartes du jour dans Anki. Protocole, 1 h 30 par tema : survol 10 min · partie par partie 45 min, IA fermée · « tema » dans le Projet Dentaire 20 min · vérification dans le cours 5 min · 8 à 10 cartes écrites par toi, puis « vérifie mes cartes ». Antropología et Documentación : version courte, 40 min, sans « tema ». Minuteur : Révision, avec la matière du tema — même dans un bloc Anki ou Projets. Les blocs d'espagnol restent à l'espagnol : « escribir » fait une question d'examen en espagnol sur un tema que tu viens de rattraper."
+    "c": "📚 Antropología 4 · Actividad 1 d’Antropología — Rattrapage, jour 1 sur 24 : 3 temas finis aujourd’hui, 5 h 24 au minuteur. L’Actividad 1 d’Antropología se rend avant lundi : elle passe ce matin. Puis le système nerveux : le cuestionario 3 d’Anatomía (T10 à T13) est mercredi. 05:30 → 06:10 : Antropología 4 · Paleodontología y paleopatologías, version courte. 06:10 → 06:40 : Actividad 1 d’Antropología · à rendre avant le lundi 30 sur Canvas (10 %) : lis la consigne, identifie et interprète les restes, cite tes sources, puis rends-la. Déjà rendue : prends le tema suivant (la suite au bloc suivant). Protocole, 1 h 30 par tema : survol 10 min · partie par partie 45 min, IA fermée · « tema » dans le Projet Dentaire 20 min · vérification dans le cours 5 min · 8 à 10 cartes écrites par toi, puis « vérifie mes cartes ». Antropología et Documentación : version courte, 40 min, sans « tema ». Minuteur : Révision, avec la matière du tema — même dans un bloc Anki ou Projets. Les blocs d'espagnol restent à l'espagnol : « escribir » fait une question d'examen en espagnol sur un tema que tu viens de rattraper."
    },
    {
     "h": "06:40",
@@ -2453,12 +2453,12 @@
    {
     "h": "08:30",
     "l": "Petit-déjeuner + Coran (1 page)",
-    "c": "Avant le shake : le riz du jour au rice cooker — 125 g crus (pour le soir : à midi, ce sont les pâtes de ta boîte), rincés trois fois, l'eau jusqu'au trait, une pincée de sel iodé (« sal yodada » : quand ton paquet est fini, prends celui-là ; c'est lui qui complète l'iode). Il cuit pendant que tu bois le shake. Il part dans une boîte, au frigo dès qu'il est tiède."
+    "c": "Jour 1 : s'il te manque de quoi faire le shake ou le riz, mange ce que tu as — les courses sont à 13:30, et tout revient demain matin. Avant le shake : le riz du jour au rice cooker — 125 g crus (pour le soir : à midi, ce sont les pâtes de ta boîte), rincés trois fois, l'eau jusqu'au trait, une pincée de sel iodé (« sal yodada » : quand ton paquet est fini, prends celui-là ; c'est lui qui complète l'iode). Il cuit pendant que tu bois le shake. Il part dans une boîte, au frigo dès qu'il est tiède."
    },
    {
     "h": "09:00",
     "l": "Approfondir",
-    "c": "📚 Actividad 1 d’Antropología · Anatomía 10.1 — 09:00 → 11:00 : Actividad 1 d’Antropología · à rendre avant le lundi 30 sur Canvas (10 %) : lis la consigne, identifie et interprète les restes, cite tes sources, puis rends-la. Déjà rendue : prends le tema suivant. 11:00 → 11:20 : Anatomía 10.1 · Sistema nervioso I (la suite au bloc suivant)."
+    "c": "📚 Actividad 1 d’Antropología (fin) · Anatomía 10.1 — 09:00 → 10:30 : la fin d’Actividad 1 d’Antropología. 10:30 → 11:20 : Anatomía 10.1 · Sistema nervioso I (la suite au bloc suivant)."
    },
    {
     "h": "11:20",
@@ -2468,7 +2468,7 @@
    {
     "h": "12:20",
     "l": "Déjeuner",
-    "c": "La boîte du jour : les pâtes (125 g crus, cuites au batch du mardi), poulet 70 g, 80 g de brocoli, réchauffée à la poêle avec 2 à 3 cuillères d'eau, couvercle, 4 à 5 min, brûlante jusqu'au cœur. Pas de sauce : pâtes nature, les 20 ml d'huile d'olive crue mélangés à chaud, sel iodé et tes épices (cumin, ras el hanout, paprika ; une pointe de harissa si tu veux)."
+    "c": "Jour 1 : pas de boîte, le batch de mardi n'a pas eu lieu. Un repas simple avec ce que tu as : 125 g de pâtes ou de riz (crus), 3 œufs ou une boîte de thon, un légume surgelé, 20 ml d'huile d'olive crue. Les courses sont juste après, à 13:30."
    },
    {
     "h": "13:10",
@@ -2478,7 +2478,7 @@
    {
     "h": "13:30",
     "l": "🛒 Courses de la semaine",
-    "c": "Avant de partir, 10 min : regarde le frigo et le placard, fais le tour de la salle de bain et de la cuisine, et coche dans l'onglet Courses ce que tu as déjà. N'achète que ce qui te manque."
+    "c": "Jour 1 : pas de boîte ce soir non plus. En plus de la liste, pour aujourd'hui : 70 g de viande hachée pour le dîner (560 g au lieu de 490) et une boîte d'œufs de plus pour la collation (4 au lieu de 3) — le riz et les épinards sont déjà dans la liste. Avant de partir, 10 min : regarde le frigo et le placard, fais le tour de la salle de bain et de la cuisine, et coche dans l'onglet Courses ce que tu as déjà. N'achète que ce qui te manque."
    },
    {
     "h": "15:30",
@@ -2488,7 +2488,7 @@
    {
     "h": "16:00",
     "l": "Cartes d'erreurs de la semaine",
-    "c": "📚 Anatomía 10.1 (suite) — 16:00 → 17:00 : la suite d’Anatomía 10.1 (la fin au bloc suivant)."
+    "c": "📚 Anatomía 10.1 (fin) · Anatomía 10.2 — 16:00 → 16:40 : la fin d’Anatomía 10.1. 16:40 → 17:00 : Anatomía 10.2 · Sistema nervioso II (la suite au bloc suivant)."
    },
    {
     "h": "17:00",
@@ -2498,12 +2498,12 @@
    {
     "h": "18:00",
     "l": "Projets perso 3",
-    "c": "📚 Anatomía 10.1 (fin) · Anatomía 10.2 — 18:00 → 18:10 : la fin d’Anatomía 10.1. 18:10 → 19:30 : Anatomía 10.2 · Sistema nervioso II (la suite demain matin)."
+    "c": "📚 Anatomía 10.2 (fin) — 18:00 → 19:10 : la fin d’Anatomía 10.2. 19:10 → 19:30 : marge, tes cartes du jour dans Anki, et ce qui a pris du retard."
    },
    {
     "h": "19:30",
     "l": "Dîner",
-    "c": "La boîte de riz du matin (125 g crus) et la boîte du jour : viande hachée 70 g, 80 g d'épinards, réchauffées ensemble à la poêle. Pas de sauce : hors du feu, les 15 ml d'huile d'olive crue sur le riz, sel iodé et tes épices. La créatine, 5 g, avec le repas. Ensuite plus rien jusqu'au lendemain."
+    "c": "Jour 1 : pas de boîte ce soir. 125 g de riz (crus : celui du matin, sinon cuit maintenant), 70 g de la viande hachée achetée cet après-midi, 10 min à la poêle, 80 g d'épinards surgelés, 5 min à couvert. Hors du feu, 15 ml d'huile d'olive crue sur le riz, sel iodé et tes épices. La créatine, 5 g, avec le repas. Le reste de la viande attend au frigo, en bas : le batch de demain, 14:30, la cuit."
    },
    {
     "h": "20:00",
@@ -2920,7 +2920,7 @@
    {
     "h": "05:30",
     "l": "Projets perso matinal",
-    "c": "📚 Anatomía 10.2 (fin) · Anatomía 11 — Rattrapage, jour 3 sur 10 : 5 temas finis aujourd’hui, 5 h 48 au minuteur. Le système nerveux toute la journée : le cuestionario 3 d’Anatomía (T10 à T13) est mercredi. 05:30 → 05:45 : Anki, les cartes des jours d’avant. 05:45 → 05:55 : la fin d’Anatomía 10.2. 05:55 → 06:30 : Anatomía 11 · Tejido nervioso (la suite au bloc suivant). Protocole, 1 h 30 par tema : survol 10 min · partie par partie 45 min, IA fermée · « tema » dans le Projet Dentaire 20 min · vérification dans le cours 5 min · 8 à 10 cartes écrites par toi, puis « vérifie mes cartes ». Antropología et Documentación : version courte, 40 min, sans « tema ». Minuteur : Révision, avec la matière du tema — même dans un bloc Anki ou Projets. Les blocs d'espagnol restent à l'espagnol : « escribir » fait une question d'examen en espagnol sur un tema que tu viens de rattraper."
+    "c": "📚 Anatomía 11 — Rattrapage, jour 2 sur 24 : 4 temas finis aujourd’hui, 5 h 48 au minuteur. Le système nerveux toute la journée : le cuestionario 3 d’Anatomía (T10 à T13) est mercredi. 05:30 → 05:45 : Anki, les cartes des jours d’avant. 05:45 → 06:30 : Anatomía 11 · Tejido nervioso (la suite au bloc suivant). Protocole, 1 h 30 par tema : survol 10 min · partie par partie 45 min, IA fermée · « tema » dans le Projet Dentaire 20 min · vérification dans le cours 5 min · 8 à 10 cartes écrites par toi, puis « vérifie mes cartes ». Antropología et Documentación : version courte, 40 min, sans « tema ». Minuteur : Révision, avec la matière du tema — même dans un bloc Anki ou Projets. Les blocs d'espagnol restent à l'espagnol : « escribir » fait une question d'examen en espagnol sur un tema que tu viens de rattraper."
    },
    {
     "h": "06:30",
@@ -2935,7 +2935,7 @@
    {
     "h": "07:20",
     "l": "Anki 1",
-    "c": "📚 Anatomía 11 (fin) — 07:20 → 08:15 : la fin d’Anatomía 11. 08:15 → 08:20 : marge, tes cartes du jour dans Anki."
+    "c": "📚 Anatomía 11 (fin) — 07:20 → 08:05 : la fin d’Anatomía 11. 08:05 → 08:20 : marge, tes cartes du jour dans Anki."
    },
    {
     "h": "08:20",
