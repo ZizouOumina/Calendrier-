@@ -4,8 +4,9 @@ import json, re, html, sys, os
 
 SRC = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'batcave.html')
 OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'semaine-type.html')
-LUNDI = '2026-12-14'   # 24 novembre : la semaine du 23 part du mardi (le jour 1). 26 novembre :
-# celle du 30 novembre porte le rattrapage date, celle du 7 decembre le ferie du 8 -- la semaine type est la premiere ordinaire et pleine
+LUNDI = '2026-12-14'   # 26 novembre (jour 1 au samedi 28) : la semaine du 23 n'a que le week-end, celle du 7 decembre
+# porte le ferie du 8, celle du 21 les vacances -- la semaine du 14 est la plus ordinaire des semaines pleines ; ses blocs
+# d'etude portent le rattrapage (il finit le lundi 21)
 
 s = open(SRC, encoding='utf-8').read()
 G = json.loads(re.search(r'<script type="application/json" id="journees-guide">(.*?)</script>', s, re.S).group(1))
@@ -132,7 +133,7 @@ html{scroll-behavior:smooth}
 <div class="wrap">
   <header>
     <h1>Ta semaine type</h1>
-    <p class="intro">La semaine du lundi 14 au dimanche 20 décembre, une semaine pleine et ordinaire, telle que la Batcave et l’onglet « Ma journée » te la donnent : chaque tâche à son heure, dans l’ordre, avec tes vraies échéances (l’évaluation des problèmes de génétique mardi, le simulacro de Biología et le cuestionario 4 d’Anatomía mercredi, chacun préparé la veille au soir). Touche une ligne pour voir ses étapes. Le JJB lundi, mercredi et vendredi à 10:30, à la place du bloc de 10:20 ; l’espagnol jusqu’au mercredi 23 décembre. Jusqu’au 6 décembre, « Ma journée » porte en plus le rattrapage, tema par tema. À partir du jeudi 24 décembre, les blocs « Projets perso » passent à l’e-commerce. S’il manque quelque chose, dis-le-moi.</p>
+    <p class="intro">La semaine du lundi 14 au dimanche 20 décembre, une semaine pleine et ordinaire, telle que la Batcave et l’onglet « Ma journée » te la donnent : chaque tâche à son heure, dans l’ordre, avec tes vraies échéances (l’évaluation des problèmes de génétique mardi, le simulacro de Biología et le cuestionario 4 d’Anatomía mercredi, chacun préparé la veille au soir). Touche une ligne pour voir ses étapes. Le JJB lundi, mercredi et vendredi à 10:30, à la place du bloc de 10:20 ; l’espagnol jusqu’au dimanche 27 décembre. Jusqu’au lundi 21 décembre, chaque bloc d’étude porte en plus le rattrapage, tema par tema. À partir du lundi 28 décembre, les blocs « Projets perso » passent à l’e-commerce. S’il manque quelque chose, dis-le-moi.</p>
   </header>
   <nav class="jours" aria-label="Les jours">''' + nav + '''<button type="button" id="tout" aria-pressed="false">Tout déplier</button></nav>
 ''' + '\n'.join(jours) + '''
