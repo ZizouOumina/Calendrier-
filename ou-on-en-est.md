@@ -1,5 +1,38 @@
 # Où on en est — samedi 19 septembre 2026, au soir
 
+> ### Jeudi 26 novembre, 20:00 — le rattrapage, tema par tema, du vendredi 27 au dimanche 6 décembre
+> **Ses mots** : « fais moi un plan pour rattraper les cours sur les prochains jours, c'est super important j'ai bcp de
+> retard », puis « j'ai pas touché un cours depuis le début de l'année », puis « j'ai combien de temas a rattraper, il faut
+> que je rattrape les temes tout en gardant la periode d'espagnol dans ma journée ».
+> **Le compte** (cronogramas de `le-semestre.html`, sa dernière sauvegarde Drive date du 20) : **57 temas donnés au 26 novembre**
+>   — Anatomía 22, Epidemiología 15, Biología 12, Antropología 8 — et Documentación à part (sa base Notion porte encore
+>   des cours de Lille, le vrai plan est sur Canvas). 13 arrivent d'ici le 18 décembre : 70 avant les examens.
+> **Le plan** (`RATTRAPAGE_TEMAS`, du 27 novembre au 6 décembre, généré sur la grille réelle avec ses échéances) : chaque
+>   bloc d'étude et de projets dit son tema, dans l'ordre des échéances ; l'espagnol, la clôture du cours et la
+>   préparation de la veille restent. Vendredi Epidemiología 6, 8, 10 et les tableaux RR/OR (l'examen RR/OR, le 27 au
+>   cronograma) ; samedi Antropología 4 et l'actividad 1 (à rendre avant le 30), puis Anatomía 10.1 ; dimanche Anatomía
+>   10.2 à 13.1 ; lundi 13.2 et Biología 10 à 12 (le séminaire de génétique, le 1er) ; mardi les láminas 3 et le
+>   cuestionario 3 en rappel actif ; mercredi un dernier passage avant 17:30 ; jeudi Antropología 7 à 9 (le cuestionario
+>   du 4) ; samedi 5 Anatomía 7 et 8 (le cuestionario 4 du 16). Le reste suit l'ordre des examens : Anatomía,
+>   Epidemiología, Biología, un tema court d'Antropología sur quatre. 1 h 30 par tema, 40 min en Antropología,
+>   15 min d'Anki chaque matin dès le samedi. **32 temas finis le 6 décembre**, 38 dans la file ensuite (tout vu vers le 19).
+>   Le 9 novembre, il voulait seulement le « quand » : il demande un plan, les blocs redisent donc le « quoi ».
+> **Dans « Ma journée »** : une ligne du rattrapage s'ouvre sur son tema (`build_guide.py` lit « 📚 titre — détail »),
+>   la clôture du soir des 27, 2 et 4 ne dit plus « le tema a déjà été étudié le matin d'avance » (`CONSIGNES_DATEES`).
+>   Le protocole ne parle plus des créneaux de la salle et du JJB (repris le 9 novembre seulement).
+> **Les pages** : « Ta semaine type » passe à la semaine du 14 décembre (celle du 30 porte le rattrapage) ; « Le plan
+>   machine » reprend le compte (57 déjà donnés, 32 au 6 décembre, tout vu vers le 19) ; « Ta semaine » suit le guide.
+> **Tests recalés** : 43 (l'urgence du week-end lue les 12 et 13 décembre : les blocs de projets du rattrapage repoussent
+> le dernier bloc de révision), 48 (la cible de novembre, 31,9 h ; 24,9 h attendues le 29 ; 34,3 h sur 44), 78 (le lundi
+> 30, 5 h 16), 84 (la semaine du 30, 33 h 32 de révision, l'espagnol inchangé), 96 (les créneaux Approfondir lus la
+> semaine du 7 décembre : celui du samedi 28 sert au rattrapage).
+> **Vérifié** : la campagne complète (115 tests : 110 du premier coup, les 5 recalés verts ensuite, 120, 43 et 78 relancés
+>   sur la version finale) ; la saison avec sa sauvegarde, du 26 novembre au 6 juin : A, 193 jours et 3 652 cases, toutes
+>   justes, le pas à pas identique à la grille ; ses données réelles (le 24 et le 29) ; « Ma journée » du vendredi 27 et du
+>   mercredi 2 sur téléphone : chaque ligne du rattrapage porte son tema, aucune alerte, rien ne déborde ; verif-pages vert.
+> **Publié** : la Batcave (v212), « Ta semaine », « Ta semaine type », « Le plan machine ».
+> **En attente** : si l'examen RR/OR a eu lieu jeudi ou vendredi, si l'actividad 1 est rendue, et le plan de Documentación.
+
 > ### Mardi 24 novembre, 08:39 — « On décale tout pour avoir un jour 1 le mercredi 25 » : REFUSÉ, le verrou tient
 > **Ses mots**, à 08:39, le matin du jour 1 : « On décale tout pour avoir un jour 1 le mercredi 25 ». Pas de raison donnée ;
 > la matinée est passée (réveil 05:20, la salle de 07:00).

@@ -132,8 +132,9 @@ console.log('\n== 5) Les durées s\'écrivent en heures et minutes, jamais en di
     duree:55, type:'cours', label:'Anatomie'}]}, '2026-11-30T21:00:00+01:00');
   const t = await plan(fr), c = await temps(fr), l = await legend(fr);
   const ligne = t.split('\n').filter(x=>/Révision —/.test(x))[0] || '';
-  /* 19 novembre : pas de JJB avant le 2 decembre -- le lundi 23, la matinee du club est du travail : 4 h 21 au lieu de 3 h 13 */
-  ok(/Révision — 55 min sur 4 h 21 — il reste 3 h 26/.test(ligne), 'plan : ' + ligne.trim());
+  /* 19 novembre : pas de JJB avant le 2 decembre -- le lundi 23, la matinee du club est du travail : 4 h 21 au lieu de 3 h 13.
+     26 novembre : le rattrapage du 30 donne aussi le bloc de projets de 11:20 aux revisions -- 5 h 16 */
+  ok(/Révision — 55 min sur 5 h 16 — il reste 4 h 21/.test(ligne), 'plan : ' + ligne.trim());
   ok(!/\d,\dh|\d,\d h/.test(t + c + l), 'plus une seule durée en dixièmes d\'heure sur le tableau de bord');
   ok(/55 min/.test(c), 'cellule : ' + (c.match(/Révision[^|]*\|[^|]*/)||[''])[0].trim());
   await ctx.close();

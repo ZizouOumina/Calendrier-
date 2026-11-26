@@ -141,7 +141,9 @@ console.log('\n== 84.6) Cibles hebdo : constantes en revision, croissantes en pr
      'une seule bascule : zero en phase 1, puis la meme valeur partout : ' + [pr(e1.proj), pr(e2.proj), pr(e3.proj), pr(t.proj)].join(' -> '));
   ok(e1.es > 0 && e2.es === 0 && e3.es === 0, 'l\'espagnol tombe a zero apres le mois repris : ' + [pr(e1.es), pr(e2.es), pr(e3.es)].join(' -> '));
   /* 19 novembre : pas de JJB avant le 2 decembre -- la semaine du 23, ses trois matins de club sont du travail : 30 h 19 de revision au lieu de 26 h 53 */
-  ok(pr(rep.es) === 10.6 && pr(rep.rev) === 28.02, 'la semaine du 30 novembre, la premiere entiere du mois repris : 10 h 36 d\'espagnol, et le mercredi 05:30 redevient de l\'Anki (28 h 01 de revision, le JJB des le mercredi 2) (' + pr(rep.es) + ' / ' + pr(rep.rev) + ')');
+  /* 26 novembre : le rattrapage du 27 au 6 decembre donne aussi aux revisions les blocs de projets de la semaine (lundi,
+     jeudi, samedi et dimanche) -- 33 h 32 de revision ; l'espagnol ne bouge pas */
+  ok(pr(rep.es) === 10.6 && pr(rep.rev) === 33.53, 'la semaine du 30 novembre, la premiere entiere du mois repris : 10 h 36 d\'espagnol, et le mercredi 05:30 redevient de l\'Anki (33 h 32 de revision avec les blocs de projets du rattrapage, le JJB des le mercredi 2) (' + pr(rep.es) + ' / ' + pr(rep.rev) + ')');
   ok(pr(t.proj) === 0, 'grille type : plus aucun projet prevu, sans minuteur depuis le 25 septembre (' + pr(t.proj) + ')');
 }
 

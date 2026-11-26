@@ -101,12 +101,14 @@ async function ordre(quand, dueISO){
 {
   /* 15 novembre : avant le jour 1 (PROGRAMME_DEBUT), le plan ne reproche plus la revision -- la semaine de
      septembre de ce test n'avait plus de ligne « Révision ». Les memes cas, dans la semaine du 16. */
-  /* 24 novembre : le jour 1 au mardi 24 -- le samedi 21 et le dimanche 22 sont avant lui ; les memes cas, le 28 et le 29. */
-  let o = await ordre('2026-11-28T15:00:00+01:00', '2026-11-28');   /* samedi : dernier bloc (Cartes d'erreurs) à 16:00 */
+  /* 24 novembre : le jour 1 au mardi 24 -- le samedi 21 et le dimanche 22 sont avant lui ; les memes cas, le 28 et le 29.
+     26 novembre : le rattrapage du 27 au 6 decembre donne aussi les blocs de projets aux revisions (le dernier bloc du
+     samedi passe a 18:00, celui du dimanche a 17:30) -- les memes cas, un week-end ordinaire, le 12 et le 13 decembre. */
+  let o = await ordre('2026-12-12T15:00:00+01:00', '2026-12-12');   /* samedi : dernier bloc (Cartes d'erreurs) à 16:00 */
   ok(o.iRev > o.iTache && o.iTache >= 0, 'samedi 15:00 : révision pas encore urgente (Cartes d\'erreurs à 16:00)');
-  o = await ordre('2026-11-28T16:30:00+01:00', '2026-11-28');
+  o = await ordre('2026-12-12T16:30:00+01:00', '2026-12-12');
   ok(o.iRev >= 0 && o.iRev < o.iTache, 'samedi 16:30 : révision urgente, passe devant la tâche du jour');
-  o = await ordre('2026-11-29T11:00:00+01:00', '2026-11-29');       /* dimanche : dernier bloc (Réexpliquer) à 10:20 */
+  o = await ordre('2026-12-13T11:00:00+01:00', '2026-12-13');       /* dimanche : dernier bloc (Réexpliquer) à 10:20 */
   ok(o.iRev >= 0 && o.iRev < o.iTache, 'dimanche 11:00 : urgente dès 10:20 (dernier bloc du jour)');
   o = await ordre('2026-11-25T19:00:00+01:00', '2026-11-25');       /* mercredi : dernier bloc (Clore le cours du jour) à 20:30 (18 novembre : le 18 est la veille du jour 1 -- le 25) */
   ok(o.iRev > o.iTache && o.iTache >= 0, 'mercredi 19:00 : pas encore urgente (Clore le cours du jour à 20:30) — l\'ancien seuil 18:00 l\'aurait déjà rougie');

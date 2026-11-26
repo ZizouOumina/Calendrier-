@@ -183,7 +183,13 @@ def construire(J, semaine, k):
             # ligne « Révisions · 1 h 10 » sans consigne (un reste du rattrapage, où le quoi était libre) ; chacun a
             # maintenant sa ligne et sa consigne, comme dans l'agenda
             creneaux.append((mn(h), mn(fin)))
-            rows.append({'t': h, 'fin': fin, 'k': 'etude', 'titre': 'Révisions' if lab in PROJ else lab, 'd': c})
+            titre, d = ('Révisions' if lab in PROJ else lab), c
+            # 26 novembre : un bloc du rattrapage s'ouvre sur ce qu'il porte (« 📚 Anatomía 10.1 — … ») : la ligne prend ce
+            # titre, et la consigne garde le reste -- « Anki 1 » ou « Révisions » ne disaient pas quel tema faire
+            if c.startswith('📚 ') and ' — ' in c:
+                titre, d = c[2:].split(' — ', 1)
+                titre = titre.strip()
+            rows.append({'t': h, 'fin': fin, 'k': 'etude', 'titre': titre, 'd': d})
             continue
         if lab == 'Clore le cours du jour':
             clore += mn(fin) - mn(h)

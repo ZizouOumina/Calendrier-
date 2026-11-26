@@ -84,8 +84,9 @@ console.log('\n== 112) Semis : un seul palier, le mois ==');
      15 novembre : du lundi 16 au 30 -- 50,7 h (le week-end du rattrapage sort du mois).
      18 novembre : du jeudi 19 au 30 -- 38,9 h.
      19 novembre : du vendredi 20 au 30, sans JJB avant decembre (ses matins redeviennent du travail) -- 41 h.
-     24 novembre : du mardi 24 au 30, jour 1 verrouille -- 27 h. */
-  ok(m9 && m9.cible === 27, 'révision de novembre calculée depuis la grille, du mardi 24 au 30 : 27 h (' + (m9 && m9.cible) + ')');
+     24 novembre : du mardi 24 au 30, jour 1 verrouille -- 27 h.
+     26 novembre : le rattrapage donne aussi aux revisions les blocs de projets du 27 au 30 -- 31,9 h. */
+  ok(m9 && Math.abs(m9.cible - 31.9) < 0.05, 'révision de novembre calculée depuis la grille, du mardi 24 au 30, rattrapage compris : 31,9 h (' + (m9 && m9.cible) + ')');
   ok(m9 && m9.auto === true, 'la cible est marquée automatique : elle suivra la grille');
   ok(!o.liste.some(x => /exo:|snus|eau_moy|depenses_var/.test(x.metrique)),
      'ni niveaux, ni snus, ni eau, ni dépenses : ils ne sont plus semés du tout');
@@ -129,8 +130,9 @@ console.log('\n== 113) Comparaison sur des données réelles ==');
   /* 12 novembre : jour 1 au vendredi 13 -- 31,3 h attendues le vendredi 20 a 10:00.
      13 novembre : jour 1 au samedi 14 -- 28,0 h. 15 novembre : jour 1 au lundi 16 -- 16,9 h. 18 novembre : jour 1 au jeudi 19 -- 5,1 h.
      19 novembre : jour 1 au vendredi 20, lu le dimanche 22 a 10:00 -- 9,1 h.
-     24 novembre : jour 1 au mardi 24, lu le dimanche 29 a 10:00 -- 22,0 h. */
-  ok(rev && /réel 40,0 h/.test(rev.txt) && /attendu 22,0 h/.test(rev.txt) && /avance|atteint/.test(rev.led) && !/retard/.test(rev.led), 'Révision : réel 40,0 h pour 22,0 h attendues le dimanche 29 à 10:00 → en avance : ' + (rev && rev.txt.slice(0, 80)));
+     24 novembre : jour 1 au mardi 24, lu le dimanche 29 a 10:00 -- 22,0 h.
+     26 novembre : avec le rattrapage (les blocs de projets du 27, du 28 et du matin du 29) -- 24,9 h. */
+  ok(rev && /réel 40,0 h/.test(rev.txt) && /attendu 24,9 h/.test(rev.txt) && /avance|atteint/.test(rev.led) && !/retard/.test(rev.led), 'Révision : réel 40,0 h pour 24,9 h attendues le dimanche 29 à 10:00 → en avance : ' + (rev && rev.txt.slice(0, 80)));
   const som = await ligne(fr, 'Sommeil');
     /* 23 septembre : la cible de sommeil est du sommeil REEL (Bevel), le temps au lit × 0,88.
      L'objectif seme a 7,75 h -- une moyenne de temps au lit -- passe a la moyenne reelle
@@ -159,8 +161,8 @@ console.log('\n== 114) Éditer une cible, supprimer, ajouter ==');
   const rev = await ligne(fr, 'Révision');
   ok((await local(fr, 'batcave-objectifs')).liste.find(x => x.id === 'M2026-11:revision_h').cible === 44, 'cible enregistrée : 44');
   /* 7 novembre : le prevu du mois grandit (Anki matinal les 18 et 25), la part ecoulee baisse un peu : 16,3 h */
-  /* 12 novembre : jour 1 au vendredi 13 -- 21,1 h. 13 novembre : jour 1 au samedi 14 -- 44 x 28,0 / 61,9 = 19,9 h. 15 novembre : jour 1 au lundi 16 -- 44 x 16,9 / 50,7 = 14,6 h. 18 novembre : jour 1 au jeudi 19 -- 44 x 5,1 / 38,9 = 5,7 h. 19 novembre : jour 1 au vendredi 20 -- 44 x 9,1 / 41 = 9,7 h. 24 novembre : jour 1 au mardi 24 -- 44 x 22,0 / 27 = 35,9 h */
-  ok(rev && /attendu 35,9 h/.test(rev.txt) && /avance/.test(rev.led), 'recalcul immédiat sur une cible de 44 h : attendu 35,9 h, 40 h réelles → en avance (' + (rev && rev.txt.slice(0, 70)) + ')');
+  /* 12 novembre : jour 1 au vendredi 13 -- 21,1 h. 13 novembre : jour 1 au samedi 14 -- 44 x 28,0 / 61,9 = 19,9 h. 15 novembre : jour 1 au lundi 16 -- 44 x 16,9 / 50,7 = 14,6 h. 18 novembre : jour 1 au jeudi 19 -- 44 x 5,1 / 38,9 = 5,7 h. 19 novembre : jour 1 au vendredi 20 -- 44 x 9,1 / 41 = 9,7 h. 24 novembre : jour 1 au mardi 24 -- 44 x 22,0 / 27 = 35,9 h. 26 novembre : avec le rattrapage -- 44 x 24,9 / 31,9 = 34,3 h */
+  ok(rev && /attendu 34,3 h/.test(rev.txt) && /avance/.test(rev.led), 'recalcul immédiat sur une cible de 44 h : attendu 34,3 h, 40 h réelles → en avance (' + (rev && rev.txt.slice(0, 70)) + ')');
   ok((await local(fr, 'batcave-objectifs')).liste.find(x => x.id === 'M2026-11:revision_h').auto === false, 'une cible saisie à la main sort du calcul automatique');
   const avant = (await local(fr, 'batcave-objectifs')).liste.length;
   await fr.evaluate(() => document.querySelector('[data-obj-del="M2026-11:sommeil_moy"]').click());
