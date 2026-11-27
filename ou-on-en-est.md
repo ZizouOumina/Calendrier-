@@ -58,6 +58,10 @@
 >   le pas à pas identique à la grille. Ses données réelles (27, 28 et 29 novembre) : aucune erreur, rien ne déborde.
 >   audit, audit-suivi (recalé au jeudi 3 décembre), câblage, contraste, verif-profonde, verif-pages : verts. Le
 >   chargement ne ralentit pas (≈ 0,4 s avant comme après).
+> **Ensuite** (27 novembre, 02:40) : la veille au matin, le plan n'annonce plus les blocs de travail de la grille type
+>   (« 08:20 — Étudier en avance · à suivre ») ; il garde les repères réels (le déjeuner, la mosquée, le trajet des
+>   cours). Saison B : 191 jours ouverts comme « aujourd'hui », toutes les cases, verte. Les 20 tests qui touchent les
+>   jours d'avant le jour 1 relancés verts ; la Batcave republiée (v215).
 > **Publié** (27 novembre, 02:15) : la Batcave (v214), « Ta semaine » (v21), « Ta semaine type » (v14), « Le plan
 >   machine » (v5), « Ta journée, pas à pas » (v143), Dossier E-commerce (v39), « À quoi sert la Batcave » (v10) ;
 >   plus tôt dans la soirée, Dossier Español (v38) et Paliers de physique (v15).

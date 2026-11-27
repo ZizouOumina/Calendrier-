@@ -60,6 +60,11 @@ console.log('\n== 1) La veille du jour 1, rien n\'est compté ==');
   ok(/Clôturer la journée — 60 secondes/.test(plan) && /Révision — /.test(plan), 'le soir du jour 1, tout compte de nouveau : la clôture, la révision');
   ok(num === '1', 'et l\'anneau dit « 1 » sur 191 (' + num + ')');
   await ctx.close();
+  /* le vendredi matin, veille du jour 1 : le plan n'annonce aucun bloc de travail de la grille type, il garde les repères réels */
+  const v = await ouvrir('2026-11-27T08:00:00+01:00');
+  const pv = await texte(v.fr, 'dash-plan');
+  ok(!/Étudier en avance|Question ouverte|Projets perso|Anki/.test(pv) && /Déjeuner/.test(pv) && /Trajet mosquée/.test(pv), 'la veille au matin, le plan n\'annonce aucun bloc de travail ; il garde le déjeuner et la mosquée');
+  await v.ctx.close();
   const m = await ouvrir('2026-11-28T05:25:00+01:00');
   ok(/Ma journée : \d+ cases pas encore cochées/.test(await texte(m.fr, 'dash-plan')), 'le matin du jour 1, les cases de « Ma journée » sont comptées');
   await m.ctx.close();

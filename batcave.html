@@ -14729,7 +14729,9 @@
 
     var pkey = scheduleKeyForToday();
     var pblocks = agendaDuJour(weekday);
-    var upcomingBlocks = pblocks.filter(function(b){ return timeToMinutes(b[0]) >= nowMin; }).slice(0,3);
+    /* 26 novembre : avant le jour 1, le plan n'annonce pas les blocs de travail de la grille type (« 08:20 — Étudier en
+       avance · à suivre ») -- seuls restent les repères réels du jour : les repas, la mosquée, le trajet des cours, le coucher */
+    var upcomingBlocks = pblocks.filter(function(b){ return timeToMinutes(b[0]) >= nowMin && !(avantJour1(todayISO) && (typeBlocJour(b[1], todayISO) || /^(Projets perso|Español)/.test(b[1]))); }).slice(0,3);
     upcomingBlocks.forEach(function(b, i){
       items.push({pri: i===0 ? 1.5 : 4, icon:'⏱️', text: b[0]+' — '+b[1], meta: i===0 ? 'à suivre' : ''});
     });
