@@ -77,19 +77,21 @@ console.log('\n== 251) Formulaire : ajouter puis supprimer une journée ==');
 }
 
 /* 11 novembre : jour 1 au jeudi 12, la muscu le lundi 16 -- les dates de partiels du test decalees de 14 jours (examens les 30 novembre et 3 decembre). */
-const EXAMENS = {'batcave-examens': {'Anatomía I':'2026-11-30', 'Bioquímica':'2026-12-03', 'Microbiología':'2027-01-25'}, 'batcave-examens-heures': {'Bioquímica': {debut:'15:00', fin:'17:00'}}};
+/* 26 novembre : le jour 1 au samedi 28 -- la session (J-7 du lundi 30) part toujours du lundi 23, AVANT le jour 1 ; Bioquímica passe du jeudi 3
+   au jeudi 10 decembre, pour que la session garde un mardi (le 1er) et un vendredi (le 4) dans le programme. */
+const EXAMENS = {'batcave-examens': {'Anatomía I':'2026-11-30', 'Bioquímica':'2026-12-10', 'Microbiología':'2027-01-25'}, 'batcave-examens-heures': {'Bioquímica': {debut:'15:00', fin:'17:00'}}};
 console.log('\n== 252) Mode partiels : J-7 avant le premier examen, jusqu\'au dernier ==');
 {
-  const { ctx, fr } = await ouvrir('2026-11-24T08:00:00+02:00', EXAMENS);   /* mardi, J-6 */
+  const { ctx, fr } = await ouvrir('2026-12-01T08:00:00+01:00', EXAMENS);   /* mardi 1er decembre : Anatomía I passee la veille, Bioquímica a J-9 */
   const sess = await fr.evaluate(() => window.__bcSessionsPartiels());
-  ok(sess.length === 2 && sess[0].debut === '2026-11-23' && sess[0].fin === '2026-12-03' && sess[0].n === 2 && sess[1].debut === '2027-01-18', 'deux sessions : 9 → 19 nov. (2 examens) et 18 → 25 janv. (' + JSON.stringify(sess) + ')');
-  const p = await fr.evaluate(() => window.__bcPeriode('2026-11-24'));
-  ok(p && p.id === 'partiels' && p.debut === '2026-11-23', 'le 10 novembre est en mode partiels');
+  ok(sess.length === 2 && sess[0].debut === '2026-11-23' && sess[0].fin === '2026-12-10' && sess[0].n === 2 && sess[1].debut === '2027-01-18', 'deux sessions : 23 nov. → 10 déc. (2 examens) et 18 → 25 janv. (' + JSON.stringify(sess) + ')');
+  const p = await fr.evaluate(() => window.__bcPeriode('2026-12-01'));
+  ok(p && p.id === 'partiels' && p.debut === '2026-11-23', 'le mardi 1er décembre est en mode partiels');
   const p8 = await fr.evaluate(() => window.__bcPeriode('2026-11-08'));
   /* 12 octobre : la phase Español court jusqu'au 12 novembre -- le dimanche 8 en fait encore partie.
      7 novembre : es-1 s'arrete le 7 et la reprise part le 9 -- le dimanche 8 est hors phase. */
   ok(p8 === null, 'le dimanche 8 novembre est hors phase (es-1 jusqu\'au 7, la reprise dès le 12) (' + (p8 && p8.id) + ')');
-  const g = await grille(fr, 'tuesday', '2026-11-24');
+  const g = await grille(fr, 'tuesday', '2026-12-01');
   /* Depuis le 23 septembre, une journee de partiels est une journee SANS COURS, et rien
      d'autre : « pendant les partiels les seances restent les memes. mes journees ne
      changent pas. juste je n'ai pas cours ». La grille d'examen (Annales ciblées, Révision
@@ -107,22 +109,28 @@ console.log('\n== 252) Mode partiels : J-7 avant le premier examen, jusqu\'au de
   ok(!g.some(x => /ciblée|Fiches de synthèse/.test(x)), 'aucun bloc « ciblé » : la grille de partiels n\'existe plus');
   const gl = await grille(fr, 'monday', '2026-11-23');
   /* 24 novembre : le jour 1 passe au mardi 24 -- le lundi 23, veille du jour 1, garde la grille ordinaire (ses cours, son 15:00 de projet) :
-     le mode partiels ne s'applique qu'aux jours du programme. Le mardi 24, plus haut, en est le premier. */
-  ok(gl.includes('15:00 Projets perso 4') && gl.some(x => /Cours$/.test(x)), 'lundi 23, veille du jour 1 : la grille ordinaire, le mode partiels commence avec le programme (' + gl.filter(x => /05:30|15:00/.test(x)).join(' · ') + ')');
-  const gv = await grille(fr, 'friday', '2026-11-27');
+     le mode partiels ne s'applique qu'aux jours du programme.
+     26 novembre : le jour 1 au samedi 28 -- du lundi 23 au vendredi 27, la session est ouverte mais le programme n'a pas commence :
+     ces cinq jours gardent la grille ordinaire. Le mardi 1er decembre, plus haut, est dans les deux. */
+  ok(gl.includes('15:00 Projets perso 4') && gl.some(x => /Cours$/.test(x)), 'lundi 23, avant le jour 1 : la grille ordinaire, le mode partiels commence avec le programme (' + gl.filter(x => /05:30|15:00/.test(x)).join(' · ') + ')');
+  const gveille = await grille(fr, 'friday', '2026-11-27');
+  ok(gveille.includes('05:30 Projets perso matinal') && gveille.includes('15:30 Cours') && gveille.includes('20:25 Clore le cours du jour') && !gveille.some(x => /Español|JJB/.test(x)),
+     'vendredi 27, veille du jour 1 : la grille ordinaire aussi — ses cours, ni mois d\'espagnol ni JJB (' + gveille.filter(x => /05:30|11:20|15:[03]0/.test(x)).join(' · ') + ')');
+  const gv = await grille(fr, 'friday', '2026-12-04');
   /* 14 octobre : la phase Español court jusqu'au 14 novembre -- le vendredi 13, le matinal et la plage liberee sont de l'espagnol. */
   /* 19 novembre : pas de JJB avant le mercredi 2 decembre -- le vendredi 27, sa matinee est du travail (COMBAT_PAUSE_2) */
-  ok(gv.includes('05:30 Español · escribir largo') && !gv.some(x => /JJB/.test(x)) && gv.some(x => /^13:30 Jumu'ah/.test(x)) && gv.includes('15:00 Español · hablar'),
-     'vendredi 27 : le matinal (escribir largo, phase 1), pas de JJB avant le 2 décembre, Jumu\'ah, puis l\'après-midi libre (' + gv.filter(x => /05:30|11:20|15:00/.test(x)).join(' · ') + ')');
+  /* 26 novembre : le vendredi de la session dans le programme est le 4 decembre, deux jours apres la reprise du JJB -- sa matinee est de nouveau au club. */
+  ok(gv.includes('05:30 Español · escribir largo') && gv.includes('10:30 🥋 JJB') && gv.some(x => /^13:30 Jumu'ah/.test(x)) && gv.includes('15:00 Español · hablar') && !gv.some(x => /Cours$|Trajet cours|Clore le cours/.test(x)),
+     'vendredi 4 décembre : le matinal (escribir largo, phase 1), le JJB à 10:30 (repris le 2 décembre), Jumu\'ah, puis l\'après-midi libre, sans cours (' + gv.filter(x => /05:30|10:30|15:00/.test(x)).join(' · ') + ')');
   /* La matiere, elle, reste calculee : le lanceur de Pomodoro propose celle dont le besoin
      est le plus fort dans la session (ce qu'il reste a faire / jours avant SON examen). */
   const c = await fr.evaluate(() => [window.__bcMatiereBloc('2026-11-24'), window.__bcMatiereBloc('2026-12-01'), window.__bcTypeBloc('Révision ciblée')]);
-  ok(c[0] && c[0].m === 'Anatomía I' && c[0].jours === 6, 'le 10, la matière proposée est Anatomía I, à J-6 (' + JSON.stringify(c[0]) + ')');
-  ok(c[1] && c[1].m === 'Bioquímica', 'le 17, Anatomía passée : Bioquímica (' + (c[1] && c[1].m) + ')');
+  ok(c[0] && c[0].m === 'Anatomía I' && c[0].jours === 6, 'le mardi 24 novembre, la matière proposée est Anatomía I, à J-6 (' + JSON.stringify(c[0]) + ')');
+  ok(c[1] && c[1].m === 'Bioquímica' && c[1].jours === 9, 'le mardi 1er décembre, Anatomía passée : Bioquímica, à J-9 (' + JSON.stringify(c[1]) + ')');
   ok(c[2] === null, '« Révision ciblée » n\'est plus un libellé reconnu comme révision (' + c[2] + ')');
   const bar = await fr.evaluate(() => ({ grille: document.querySelector('#bc-grille .v').textContent, note: document.getElementById('examens-note').textContent, cal: document.getElementById('cal-schedule-label').textContent }));
   ok(/Partiels · J-9/.test(bar.grille), 'barre : Partiels · J-9 (' + bar.grille + ')');
-  ok(/mode partiels du 23 nov\. au 03 déc\./.test(bar.note), 'note Études (' + bar.note + ')');
+  ok(/mode partiels du 23 nov\. au 10 déc\./.test(bar.note), 'note Études (' + bar.note + ')');
   ok(/Partiels/.test(bar.cal), 'étiquette du calendrier (' + bar.cal + ')');
   const heures = await fr.evaluate(() => [...document.querySelectorAll('#examens-liste [data-examen-h]')].map(i => i.dataset.mat + ':' + i.dataset.examenH + '=' + i.value));
   ok(heures.includes('Bioquímica:debut=15:00') && heures.includes('Anatomía I:debut='), 'heures : Bioquímica 15:00, Anatomía vide (défaut)');
@@ -135,18 +143,19 @@ console.log('\n== 253) Jour d\'examen et veille ==');
 {
   const { ctx, fr } = await ouvrir('2026-11-30T06:00:00+02:00', EXAMENS);   /* lundi, Anatomía I 09:00 (défaut) */
   const g = await grille(fr, 'monday', '2026-11-30');
-  ok(g.includes('09:00 Examen · Anatomía I') && g.includes('08:30 Trajet · Examen · Anatomía I') && g.includes('11:00 Trajet retour'), 'lundi 16 : trajet 08:30, examen 09:00 → 11:00 (' + g.filter(x => /Examen|retour/.test(x)) + ')');
+  ok(g.includes('09:00 Examen · Anatomía I') && g.includes('08:30 Trajet · Examen · Anatomía I') && g.includes('11:00 Trajet retour'), 'lundi 30 novembre : trajet 08:30, examen 09:00 → 11:00 (' + g.filter(x => /Examen|retour/.test(x)) + ')');
   /* 30 octobre : un matin d'examen, pas de salle (elle n'ouvre qu'a 07:00) -- le matin des jours sans muscu. */
   ok(g.includes('07:20 Anki 1') && !g.some(x => /08:20 Anki 2/.test(x)) && g.includes('07:30 Préparer · Examen · Anatomía I') && !g.some(x => /Sport|Trajet salle/.test(x)) && g.includes('06:45 Petit-déjeuner + Coran (1 page)'),
      'Anki 1 gardé, Anki 2 sacrifié pour la préparation à 07:30 ; pas de salle un matin d\'examen, le shake à 06:45');
   const v = await grille(fr, 'weekend', '2026-11-29');
   /* 21 octobre : la mobilite des hanches prend 19:30 -> 19:40, le temps libre commence a 19:40 */
-  ok(v.includes('19:40 Préparer · Examen · Anatomía I') && v.includes('19:30 🧘 Mobilité des hanches') && v.includes('09:20 Simulation dentaire'), 'dimanche 15 : le temps libre du soir prépare l\'examen (après les dix minutes de mobilité), l\'annale du matin reste');
-  const j = await grille(fr, 'weekday', '2026-12-03');
-  ok(j.includes('15:00 Examen · Bioquímica') && j.includes('13:30 Préparer · Examen · Bioquímica') && j.includes('14:30 Trajet · Examen · Bioquímica') && !j.some(x => /Cours$/.test(x)), 'jeudi 19 : préparation 13:30, trajet 14:30, examen 15:00 → 17:00, le cours de 15:30 sacrifié');
-  const jour1 = await fr.evaluate(() => ({ p: window.__bcPeriode('2026-12-04'), g: window.__bcGrille('friday', '2026-12-04').map(b => b[1]) }));
+  ok(v.includes('19:40 Préparer · Examen · Anatomía I') && v.includes('19:30 🧘 Mobilité des hanches') && v.includes('09:20 Simulation dentaire'), 'dimanche 29 novembre : le temps libre du soir prépare l\'examen (après les dix minutes de mobilité), l\'annale du matin reste');
+  const j = await grille(fr, 'weekday', '2026-12-10');
+  ok(j.includes('15:00 Examen · Bioquímica') && j.includes('13:30 Préparer · Examen · Bioquímica') && j.includes('14:30 Trajet · Examen · Bioquímica') && !j.some(x => /Cours$/.test(x)), 'jeudi 10 décembre : préparation 13:30, trajet 14:30, examen 15:00 → 17:00, le cours de 15:30 sacrifié');
+  const jour1 = await fr.evaluate(() => ({ p: window.__bcPeriode('2026-12-11'), g: window.__bcGrille('friday', '2026-12-11').map(b => b[1]) }));
   /* 7 novembre : apres les partiels, c'est le mois d'espagnol repris qui reprend (jusqu'au 8 decembre) */
-  ok(jour1.p && jour1.p.id === 'es-1-reprise' && jour1.g.some(x => /Español · escribir largo/.test(x)), 'le 20 : fin des partiels, le mois d\'espagnol reprend (vendredi 05:30 : escribir largo)');
+  /* 26 novembre : le mois repris court jusqu'au dimanche 27 decembre -- le vendredi 11, lendemain du dernier examen, les cours reviennent. */
+  ok(jour1.p && jour1.p.id === 'es-1-reprise' && jour1.g.some(x => /Español · escribir largo/.test(x)) && jour1.g.includes('Cours'), 'le vendredi 11 : fin des partiels, le mois d\'espagnol reprend (vendredi 05:30 : escribir largo) et les cours reviennent');
   await ctx.close();
 }
 

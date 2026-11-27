@@ -87,8 +87,8 @@ console.log('\n== 2) Sous 12 jours notés, le chiffre est donné mais annoncé c
      13 novembre : jour 1 au samedi 14 -- fin au mardi 17 : deux, le lundi 16 et le mardi 17.
      18 novembre : jour 1 au jeudi 19 -- fin au vendredi 20 : deux, le jeudi 19 et le vendredi 20.
      19 novembre : jour 1 au vendredi 20 -- fin au lundi 23 : deux, le vendredi 20 et le lundi 23. */
-  const fin = '2026-11-25';   /* 24 novembre : jour 1 au mardi 24 -- deux jours de cours notes, le mardi 24 et le mercredi 25 */
-  const { ctx, page, fr } = await ouvrir({'batcave-cours-suivi': notes(fin, 10, 3)}, '2026-11-25T21:00:00+01:00');
+  const fin = '2026-12-01';   /* 26 novembre : jour 1 au samedi 28 -- fin au mardi 1er decembre : deux jours de cours notes, le lundi 30 et le mardi 1er (le samedi 28 et le dimanche 29 sont sans cours ; les huit notes d'avant le programme ne comptent pas) */   /* 24 novembre : jour 1 au mardi 24 -- deux jours de cours notes, le mardi 24 et le mercredi 25 */
+  const { ctx, page, fr } = await ouvrir({'batcave-cours-suivi': notes(fin, 10, 3)}, '2026-12-01T21:00:00+01:00');
   await etudes(fr, page);
   await fr.evaluate(() => { const t = document.getElementById('portes-toggle'); if(t) t.click(); });
   await page.waitForTimeout(300);
@@ -104,13 +104,13 @@ console.log('\n== 3) Au-dessus de 12 jours, la moyenne est ferme et le mot suit 
   /* Seize notes jusqu'au 30 : quatorze jours de cours une fois retires le 9 et le 12 (12 octobre : jour 1 au 13). */
   /* 11 novembre : jour 1 au jeudi 12 -- dix-sept notes jusqu'au mercredi 2 decembre, treize jours de cours (du 16 au 2).
      18 novembre : jour 1 au jeudi 19 -- dix-sept notes jusqu'au lundi 7 decembre, treize jours de cours (du 19 au 7). */
-  const fin = '2026-12-11';   /* 24 novembre : jour 1 au mardi 24 -- treize jours de cours notes, du mardi 24 au vendredi 11 decembre (le 8, ferie). */   /* 31 octobre : jour 1 au 1er novembre -- quinze jours de cours notes, du lundi 2 au vendredi 20. 15 octobre : seize notes jusqu'au 4 novembre, quatorze a partir du 16. 21 octobre : dix-sept notes jusqu'au vendredi 6, treize jours de cours a partir du 21 */
-  const { ctx, page, fr } = await ouvrir({'batcave-cours-suivi': notes(fin, 17, 3)}, '2026-12-11T21:00:00+01:00');
+  const fin = '2026-12-17';   /* 26 novembre : jour 1 au samedi 28 -- treize jours de cours notes, du lundi 30 novembre au jeudi 17 decembre (le 8, ferie). */   /* 24 novembre : jour 1 au mardi 24 -- treize jours de cours notes, du mardi 24 au vendredi 11 decembre (le 8, ferie). */   /* 31 octobre : jour 1 au 1er novembre -- quinze jours de cours notes, du lundi 2 au vendredi 20. 15 octobre : seize notes jusqu'au 4 novembre, quatorze a partir du 16. 21 octobre : dix-sept notes jusqu'au vendredi 6, treize jours de cours a partir du 21 */
+  const { ctx, page, fr } = await ouvrir({'batcave-cours-suivi': notes(fin, 17, 3)}, '2026-12-17T21:00:00+01:00');
   await etudes(fr, page);
   await fr.evaluate(() => { const t = document.getElementById('portes-toggle'); if(t) t.click(); });
   await page.waitForTimeout(300);
   const c = await carte(fr);
-  ok(/3,00 \/ 3/.test(c.etat), 'treize 3 donnent 3,00 / 3');
+  ok(/3,00 \/ 3/.test(c.etat) && /13 jours de cours notés/.test(c.etat), 'treize 3 donnent 3,00 / 3 (' + (c.etat.match(/\d+ jours de cours notés[^.—]*/) || [''])[0] + ')');
   ok(!/indicatif/.test(c.etat), 'au-dessus de 12 jours, plus de réserve');
   ok(/tu suis le fil/.test(c.etat), 'et le mot juste pour 3,00 : « tu suis le fil »');
   await ctx.close();
@@ -119,13 +119,14 @@ console.log('\n== 3) Au-dessus de 12 jours, la moyenne est ferme et le mot suit 
 console.log('\n== 4) Une note basse est dite sans détour, et renvoie à la langue ==');
 {
   /* 11 novembre : jour 1 au jeudi 12 -- jusqu'au mardi 1er decembre */
-  const fin = '2026-12-01';   /* 12 octobre : quatorze jours de cours, du 13 au 30. 31 octobre : du lundi 2 au jeudi 19 novembre */
-  const { ctx, page, fr } = await ouvrir({'batcave-cours-suivi': notes(fin, 14, 1)}, '2026-12-01T21:00:00+01:00');
+  /* 26 novembre : jour 1 au samedi 28 -- quatorze jours de cours, du lundi 30 novembre au vendredi 18 decembre (quinze notes : le mardi 8, ferie, ne compte pas) */
+  const fin = '2026-12-18';   /* 12 octobre : quatorze jours de cours, du 13 au 30. 31 octobre : du lundi 2 au jeudi 19 novembre */
+  const { ctx, page, fr } = await ouvrir({'batcave-cours-suivi': notes(fin, 15, 1)}, '2026-12-18T21:00:00+01:00');
   await etudes(fr, page);
   await fr.evaluate(() => { const t = document.getElementById('portes-toggle'); if(t) t.click(); });
   await page.waitForTimeout(300);
   const c = await carte(fr);
-  ok(/1,00 \/ 3/.test(c.etat), 'quatorze 1 donnent 1,00 / 3');
+  ok(/1,00 \/ 3/.test(c.etat) && /14 jours de cours notés/.test(c.etat), 'quatorze 1 donnent 1,00 / 3 (' + (c.etat.match(/\d+ jours de cours notés[^.—]*/) || [''])[0] + ')');
   ok(/perds le fil souvent/.test(c.etat), 'le mot ne ménage pas : « tu perds le fil souvent »');
   ok(/c’est la langue, pas la matière|c'est la langue, pas la matière/.test(c.etat),
      'et il nomme la cause probable plutôt que de laisser croire à un problème de matière');
@@ -137,6 +138,8 @@ console.log('\n== 5) La tendance compare aux 21 jours précédents ==');
   /* 1 pendant la première quinzaine, 3 ensuite : la fenêtre récente doit être en hausse. */
   /* 12 octobre : les deux fenetres de 21 jours doivent tomber apres le jour 1 (mardi 13). */
   /* 11 novembre : jour 1 au jeudi 12 -- les deux fenetres tombent apres lui jusqu'au mardi 22 decembre. */
+  /* 26 novembre : jour 1 au samedi 28 -- le mardi 22 reste le dernier jour de cours avant les vacances ; la fenetre recente (2 → 22 decembre)
+     est entiere, la precedente ne garde que deux jours de cours du programme (le lundi 30 et le mardi 1er, notes 1) : la comparaison tient. */
   const vieux = notes('2026-12-22', 30, i => (i < 12 ? 3 : 1));
   const { ctx, page, fr } = await ouvrir({'batcave-cours-suivi': vieux}, '2026-12-22T21:00:00+01:00');
   await etudes(fr, page);

@@ -36,7 +36,9 @@ const texte = (fr, sel) => fr.evaluate(s => (document.querySelector(s) || {inner
    tomberait a moitie avant le programme. Le mardi de reference devient le 27 (meme grille du
    mardi, sans combat), et la fenetre suit : du 13 au 26 octobre, toute dans le programme. */
 /* 18 novembre : jour 1 au jeudi 19 -- le mardi 17 est avant le programme (l'objectif n'y attend rien) : le mardi 24 */
-const MARDI29 = '2026-11-24T10:00:00+01:00';   /* 31 octobre : jour 1 au dimanche 1er novembre -- le premier mardi dont les quatorze jours d'avant sont tous dans le programme */
+/* 26 novembre : jour 1 au samedi 28 -- le mardi 24 est avant le programme (l'objectif n'y attend rien) : le mardi 1er
+   decembre, premier mardi du programme ; la fenetre des quatorze jours qui le precedent suit, du 17 au 30 novembre. */
+const MARDI29 = '2026-12-01T10:00:00+01:00';   /* 31 octobre : jour 1 au dimanche 1er novembre -- le premier mardi dont les quatorze jours d'avant sont tous dans le programme */
 function sessionsMoitieDu(jours){
   const out = [];
   jours.forEach((iso, i) => {
@@ -53,7 +55,7 @@ function sessionsMoitie(){
      mardi de reference au 29, et la fenetre suit : du 14 au 27. Sans ce decalage, la
      semaine du 21 au 27 serait vide et la regle « non-usage n'est pas infidelite »
      supprimerait la proposition -- le bloc ne testerait plus rien. */
-  const jours = ['2026-11-10','2026-11-11','2026-11-12','2026-11-13','2026-11-14','2026-11-15','2026-11-16','2026-11-17','2026-11-18','2026-11-19','2026-11-20','2026-11-21','2026-11-22','2026-11-23'];
+  const jours = ['2026-11-17','2026-11-18','2026-11-19','2026-11-20','2026-11-21','2026-11-22','2026-11-23','2026-11-24','2026-11-25','2026-11-26','2026-11-27','2026-11-28','2026-11-29','2026-11-30'];
   jours.forEach((iso, i) => {
     const t0 = new Date(iso + 'T07:20:00+01:00').getTime();
     out.push({id:'c' + i, date: iso, type:'cours', label:'Anatomía', duree:150, debut:t0, fin:t0 + 150*60000});       /* 2,5 h sur 4-5 h */
@@ -79,11 +81,11 @@ console.log('\n== 210) Deux semaines à ~50 % : la proposition apparaît dans le
   await fr.evaluate(() => document.querySelector('[data-plan-charge-oui]').click());
   await page.waitForTimeout(250);
   const ch = await local(fr, 'batcave-charge');
-  ok(ch && ch.facteur === 0.8 && ch.depuis === '2026-11-24' && ch.jusqua === '2026-12-07', 'charge réduite de 20 % pendant deux semaines, du 24 nov. au 7 déc. (' + JSON.stringify(ch) + ')');
+  ok(ch && ch.facteur === 0.8 && ch.depuis === '2026-12-01' && ch.jusqua === '2026-12-14', 'charge réduite de 20 % pendant deux semaines, du 1er au 14 déc. (' + JSON.stringify(ch) + ')');
   const temps2 = await texte(fr, '#dash-temps');
   ok(/\/ 4 h 2[45]/.test(temps2), 'après : cible du jour réduite de 20 % (≈ 4 h 25 au lieu de 5 h 31) (' + temps2.slice(0, 50) + ')');
   const sem = await texte(fr, '#dash-semaine');
-  ok(/Charge réduite de 20 % jusqu'au 07 déc\./.test(sem), 'la note de la semaine le dit : ' + sem.slice(0, 60));
+  ok(/Charge réduite de 20 % jusqu'au 14 déc\./.test(sem), 'la note de la semaine le dit : ' + sem.slice(0, 60));
   const objApres = await fr.evaluate(() => { document.querySelector('.nav-btn[data-page="objectifs"]').click(); const r = [...document.querySelectorAll('#obj-liste .obj-row')].find(x => /^Révision/.test(x.innerText)); return r ? r.innerText.replace(/\s+/g,' ') : ''; });
   const attenduApres = Number((objApres.match(/attendu ([\d,]+)/) || ['', '0'])[1].replace(',', '.'));
   ok(attenduAvant > 0 && attenduApres < attenduAvant, 'le rythme attendu de l\'objectif Révision baisse (' + attenduAvant + ' → ' + attenduApres + ' h), la cible du mois ne bouge pas');
@@ -97,7 +99,7 @@ console.log('\n== 211) Refuser : plus proposé cette semaine ; sans aucune sessi
   await fr.evaluate(() => document.querySelector('[data-plan-charge-non]').click());
   await page.waitForTimeout(200);
   const ch = await local(fr, 'batcave-charge');
-  ok(ch && ch.refus === '2026-11-23', 'le refus est noté pour la semaine du 23 nov. (' + JSON.stringify(ch) + ')');
+  ok(ch && ch.refus === '2026-11-30', 'le refus est noté pour la semaine du 30 nov. (' + JSON.stringify(ch) + ')');
   ok(!/réduire la cible du jour/.test(await texte(fr, '#dash-plan')), 'et la proposition disparaît');
   ok(/\/ 5 h 31/.test(await texte(fr, '#dash-temps')), 'la cible reste à 5 h 31');
   await ctx.close();
@@ -126,7 +128,9 @@ console.log('\n== 213) Relevé OBJECTIF dans la barre ==');
      vendredi 20 novembre, quatre jours apres la fin des sessions (le 16).
      19 novembre : jour 1 au vendredi 20 -- on lit le mardi 24, quatre jours de programme a moitie de la grille. */
   /* 24 novembre : jour 1 au mardi 24 -- on lit le samedi 28, quatre jours de programme a moitie de la grille. */
-  const { ctx, fr } = await ouvrir('2026-11-28T10:00:00+01:00', {'batcave-sessions': sessionsMoitie().concat(sessionsMoitieDu(['2026-11-24','2026-11-25','2026-11-26','2026-11-27']))});
+  /* 26 novembre : jour 1 au samedi 28 -- on lit le samedi 5 decembre, apres quatre jours de decembre (du mardi 1er au
+     vendredi 4) a moitie de la grille. */
+  const { ctx, fr } = await ouvrir('2026-12-05T10:00:00+01:00', {'batcave-sessions': sessionsMoitie().concat(sessionsMoitieDu(['2026-12-01','2026-12-02','2026-12-03','2026-12-04']))});
   const r = await fr.evaluate(() => ({ txt: document.querySelector('#bc-objectif .v').textContent, titre: document.querySelector('#bc-objectif .v').title }));
   /* Lot 42 : le relevé ne montre plus un écart négatif nu (« Révision −90,7 h »), qui ne
      dit pas quoi faire, mais le réel sur l'attendu du jour. */

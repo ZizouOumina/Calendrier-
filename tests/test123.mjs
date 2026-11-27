@@ -53,7 +53,7 @@ console.log('\n== 1) L\'agenda ne sonne qu\'aux départs, à la clôture et au c
 
 console.log('\n== 2) Le jeudi tient dans 07:00 → 07:55 ==');
 {
-  const { ctx, page, fr } = await ouvrir('2026-11-26T07:00:00+01:00');   /* 19 novembre : le premier jeudi de salle est le 26 */
+  const { ctx, page, fr } = await ouvrir('2026-12-03T07:00:00+01:00');   /* 26 novembre : jour 1 au samedi 28 -- le premier jeudi de salle est le 3 decembre (le jeudi 26 novembre, avant le jour 1, est sans seance) ; 19 novembre : c'etait le 26 */
   const s = await fr.evaluate(() => window.__bcSessionsSport().filter(x => x.type === 'Haut lourd')[0]);
   const reps = Object.fromEntries(s.exercises.map(e => [e.name, e.reps]));
   ok(reps['Tractions'] === '3×5-8' && reps['Développé couché barre'] === '3×5-8', 'une série de moins : tractions et développé couché en 3 × 5-8');

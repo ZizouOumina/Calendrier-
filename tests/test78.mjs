@@ -54,8 +54,9 @@ console.log('\n== 2) L\'espagnol manqué est une dette d\'espagnol, pas de proje
      21 octobre : le jour 1 passe au mercredi 21 -- on lit le jeudi 22 (gramática 13:00, escribir 14:00).
      31 octobre : le jour 1 passe au dimanche 1er novembre -- on lit le jeudi 5 (gramática 13:00, escribir 14:00). */
   /* 11 novembre : jour 1 au jeudi 12 -- on lit le jeudi 19 (gramática 13:00, escribir 14:00).
-     19 novembre : jour 1 au vendredi 20 -- on lit le jeudi 26. */
-  const {ctx, fr} = await ouvrir({}, '2026-11-26T21:00:00+01:00');
+     19 novembre : jour 1 au vendredi 20 -- on lit le jeudi 26.
+     26 novembre : jour 1 au samedi 28 -- on lit le jeudi 3 decembre (le rattrapage ne touche pas aux blocs d'espagnol). */
+  const {ctx, fr} = await ouvrir({}, '2026-12-03T21:00:00+01:00');
   const t = await plan(fr);
   const l = t.split('\n').filter(x=>/Bloc manqué/.test(x) && /Español/.test(x))[0] || '';
   ok(/d'espagnol/.test(l), 'libellé : ' + (l.trim() || '(aucun bloc Español manqué)'));
@@ -103,7 +104,9 @@ console.log('\n== 4) Un rendez-vous dans l\'agenda Google n\'est pas un bloc man
      on lit le mercredi 4 (Anki 1 a 07:20, Étudier en avance a 08:20). */
   /* 11 novembre : jour 1 au jeudi 12 -- on lit le mercredi 18 (Anki 1 a 07:20, Étudier en avance a 08:20). */
   /* 18 novembre : jour 1 au jeudi 19 -- le mercredi 18 est avant le programme ; on lit le mercredi 25 */
-  const {ctx, page, fr} = await ouvrir({}, '2026-11-25T21:00:00+01:00');
+  /* 26 novembre : jour 1 au samedi 28 -- le mercredi 25 est avant le programme ; on lit le mercredi 2 decembre (Anki 1 a 07:20,
+     Étudier en avance a 08:20, comme tous les mercredis ; le JJB de 10:30 n'entre pas dans le rendez-vous) */
+  const {ctx, page, fr} = await ouvrir({}, '2026-12-02T21:00:00+01:00');
   const avant = (await plan(fr)).split('\n').filter(l=>/Bloc manqué/.test(l)).length;
   await fr.evaluate(()=>{
     /* mercredi = 3 ; un vrai rendez-vous couvre Anki 1 et le debut d'Étudier en avance */
@@ -185,8 +188,9 @@ console.log('\n== 7) Rattrapage unique après une absence ==');
      15 novembre : jour 1 au lundi 16 -- retour le mercredi 18, les 16 et 17 sans cloture.
      18 novembre : jour 1 au jeudi 19 -- retour le samedi 21, les 19 et 20 sans cloture.
      19 novembre : jour 1 au vendredi 20 -- retour le dimanche 22, les 20 et 21 sans cloture.
-     24 novembre : jour 1 au mardi 24 -- retour le jeudi 26, les 24 et 25 sans cloture. */
-  const {ctx, page, fr} = await ouvrir({'batcave-last-open':'2026-09-16'}, '2026-11-26T10:00:00+01:00');
+     24 novembre : jour 1 au mardi 24 -- retour le jeudi 26, les 24 et 25 sans cloture.
+     26 novembre : jour 1 au samedi 28 -- retour le lundi 30, les 28 et 29 sans cloture. */
+  const {ctx, page, fr} = await ouvrir({'batcave-last-open':'2026-09-16'}, '2026-11-30T10:00:00+01:00');
   const t = await plan(fr);
   const l = t.split('\n').filter(x=>/Absence —/.test(x))[0] || '';
   ok(/2 journées sans clôture/.test(l), 'un seul item pour toute l\'absence : ' + l.trim().slice(0, 90));

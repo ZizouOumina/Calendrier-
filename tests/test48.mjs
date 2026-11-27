@@ -24,11 +24,11 @@ const ligne = (fr, titre) => fr.evaluate(t => { const r = [...document.querySele
 
 /* 30 septembre au soir : « on decale tout, demain c'est le vrai jour » -- le jour 1 passe au
    jeudi 1er octobre. Septembre ne porte plus aucun jour de programme : le test lit OCTOBRE. */
-const MI_SEPT = '2026-11-24T10:00:00+01:00';   /* 24 novembre : le jour 1 passe au mardi 24 (verrouille) */   /* 19 novembre : le jour 1 passe au vendredi 20 */   /* 18 novembre : le jour 1 passe au jeudi 19 */   /* 15 novembre : le jour 1 passe au lundi 16 */   /* 13 novembre : le jour 1 passe au samedi 14 */   /* 12 novembre : le jour 1 passe au vendredi 13 */   /* 11 novembre : le jour 1 passe au jeudi 12 */   /* le jour 1 (dimanche 1er novembre, depuis le 31 octobre ; octobre ne porte plus aucun jour de programme : le test lit NOVEMBRE) */
+const MI_SEPT = '2026-11-28T10:00:00+01:00';   /* 26 novembre : le jour 1 passe au samedi 28 (« une derniere fois », verrouille) */   /* 24 novembre : le jour 1 passe au mardi 24 (verrouille) */   /* 19 novembre : le jour 1 passe au vendredi 20 */   /* 18 novembre : le jour 1 passe au jeudi 19 */   /* 15 novembre : le jour 1 passe au lundi 16 */   /* 13 novembre : le jour 1 passe au samedi 14 */   /* 12 novembre : le jour 1 passe au vendredi 13 */   /* 11 novembre : le jour 1 passe au jeudi 12 */   /* le jour 1 (dimanche 1er novembre, depuis le 31 octobre ; octobre ne porte plus aucun jour de programme : le test lit NOVEMBRE) */
 /* Le 15 est le JOUR 1 : la regle « trop tot pour juger » met tout « dans les clous ».
    Pour lire de vrais verdicts il faut une periode entamee : mardi 22, une semaine
    plus tard, ou 46,3 % de la revision de septembre et 44,4 % des seances sont passes. */
-const SEMAINE2 = '2026-11-29T10:00:00+01:00';   /* 24 novembre : jour 1 au mardi 24, la salle le mardi 24, le jeudi 26 et le samedi 28 a 07:00 -- le dimanche 29 a 10:00, trois seances prevues et pas faites */   /* 19 novembre : jour 1 au vendredi 20, la salle le samedi 21 a 07:00 -- le dimanche 22 a 10:00, une seance prevue la veille et pas faite */   /* 11 novembre : neuf jours de programme depuis le jeudi 12, la muscu depuis le lundi 16 (trois seances passees) */   /* 31 octobre : le mercredi 11, dix jours de programme (la muscu depuis le lundi 2) */ //   /* une periode entamee : le mercredi 28, sept jours de programme (jour 1 au jeudi 22 depuis le 21 octobre ; la muscu depuis le lundi 26, deux seances passees) */
+const SEMAINE2 = '2026-11-29T10:00:00+01:00';   /* 26 novembre : jour 1 au samedi 28, la salle ce samedi a 07:00 (la seance de reference) -- le dimanche 29 a 10:00, une seance prevue la veille et pas faite, 52 % de la periode (28-30 novembre) ecoulee */   /* 24 novembre : jour 1 au mardi 24, la salle le mardi 24, le jeudi 26 et le samedi 28 a 07:00 -- le dimanche 29 a 10:00, trois seances prevues et pas faites */   /* 19 novembre : jour 1 au vendredi 20, la salle le samedi 21 a 07:00 -- le dimanche 22 a 10:00, une seance prevue la veille et pas faite */   /* 11 novembre : neuf jours de programme depuis le jeudi 12, la muscu depuis le lundi 16 (trois seances passees) */   /* 31 octobre : le mercredi 11, dix jours de programme (la muscu depuis le lundi 2) */ //   /* une periode entamee : le mercredi 28, sept jours de programme (jour 1 au jeudi 22 depuis le 21 octobre ; la muscu depuis le lundi 26, deux seances passees) */
 const sessions = [];
 for(let d = 1; d <= 10; d++) sessions.push({id:'s'+d, date:'2026-11-'+String(d).padStart(2,'0'), type:'cours', duree:240, label:'Anatomía I', debut: Date.UTC(2026,10,d,6)+1, fin: Date.UTC(2026,10,d,10)+1});  /* 40 h, du 1er au 10 novembre */
 const journaux = {}; for(let d = 1; d <= 14; d++) journaux['batcave-journal-2026-11-'+String(d).padStart(2,'0')] = {sommeil: 7.5, water: 3000, poids: 64 + d*0.05};
@@ -85,8 +85,9 @@ console.log('\n== 112) Semis : un seul palier, le mois ==');
      18 novembre : du jeudi 19 au 30 -- 38,9 h.
      19 novembre : du vendredi 20 au 30, sans JJB avant decembre (ses matins redeviennent du travail) -- 41 h.
      24 novembre : du mardi 24 au 30, jour 1 verrouille -- 27 h.
-     26 novembre : le rattrapage donne aussi aux revisions les blocs de projets du 27 au 30 -- 31,9 h. */
-  ok(m9 && Math.abs(m9.cible - 31.9) < 0.05, 'révision de novembre calculée depuis la grille, du mardi 24 au 30, rattrapage compris : 31,9 h (' + (m9 && m9.cible) + ')');
+     26 novembre : le rattrapage donne aussi aux revisions les blocs de projets du 27 au 30 -- 31,9 h.
+     26 novembre (au soir) : du samedi 28 au 30, jour 1 reverrouille, rattrapage compris -- 14,7 h. */
+  ok(m9 && Math.abs(m9.cible - 14.7) < 0.05, 'révision de novembre calculée depuis la grille, du samedi 28 au 30, rattrapage compris : 14,7 h (' + (m9 && m9.cible) + ')');
   ok(m9 && m9.auto === true, 'la cible est marquée automatique : elle suivra la grille');
   ok(!o.liste.some(x => /exo:|snus|eau_moy|depenses_var/.test(x.metrique)),
      'ni niveaux, ni snus, ni eau, ni dépenses : ils ne sont plus semés du tout');
@@ -107,8 +108,9 @@ console.log('\n== 113) Comparaison sur des données réelles ==');
        15 novembre : jour 1 au lundi 16 -- a 10:00, Anki 1 (05:30-06:40) et l'heure d'Étudier en avance, au minuteur : 1,7 h.
        18 novembre : jour 1 au jeudi 19 -- a 10:00, Anki 1 et l'heure qui suit la salle, au minuteur : 1,6 h.
        19 novembre : jour 1 au vendredi 20 -- a 10:00, les revisions depuis 07:20 (le 05:30 du vendredi est de l'espagnol) : 2,1 h.
-       24 novembre : jour 1 au mardi 24 -- a 10:00, Anki 1 et Anki 2, au minuteur : 1,6 h */
-    ok(r1 && /attendu 1,6 h/.test(r1.txt), 'au matin du jour 1 (mardi 24, 10:00), la grille n\'attend que 1,6 h (Anki 1 et Anki 2) — les jours d\'avant ne comptent plus (' + (r1 && (r1.txt.match(/attendu [^ ]+ h/) || [''])[0]) + ')');
+       24 novembre : jour 1 au mardi 24 -- a 10:00, Anki 1 et Anki 2, au minuteur : 1,6 h
+       26 novembre : jour 1 au samedi 28 -- a 10:00, Anki 1 (05:30-06:40) et la premiere heure d'Approfondir (09:00), au minuteur : 1,7 h */
+    ok(r1 && /attendu 1,7 h/.test(r1.txt), 'au matin du jour 1 (samedi 28, 10:00), la grille n\'attend que 1,7 h (Anki 1 et la première heure d\'Approfondir) — les jours d\'avant ne comptent plus (' + (r1 && (r1.txt.match(/attendu [^ ]+ h/) || [''])[0]) + ')');
     /* Ce que ce bloc garde, c'est qu'AUCUN objectif n'est en RETARD au matin du jour 1 :
        c'est le bug d'origine, « Projets perso −29,9 h » des la premiere ouverture. La
        Revision y lit desormais « atteint » et non « dans les clous », et c'est exact, pas
@@ -131,8 +133,10 @@ console.log('\n== 113) Comparaison sur des données réelles ==');
      13 novembre : jour 1 au samedi 14 -- 28,0 h. 15 novembre : jour 1 au lundi 16 -- 16,9 h. 18 novembre : jour 1 au jeudi 19 -- 5,1 h.
      19 novembre : jour 1 au vendredi 20, lu le dimanche 22 a 10:00 -- 9,1 h.
      24 novembre : jour 1 au mardi 24, lu le dimanche 29 a 10:00 -- 22,0 h.
-     26 novembre : avec le rattrapage (les blocs de projets du 27, du 28 et du matin du 29) -- 24,9 h. */
-  ok(rev && /réel 40,0 h/.test(rev.txt) && /attendu 24,9 h/.test(rev.txt) && /avance|atteint/.test(rev.led) && !/retard/.test(rev.led), 'Révision : réel 40,0 h pour 24,9 h attendues le dimanche 29 à 10:00 → en avance : ' + (rev && rev.txt.slice(0, 80)));
+     26 novembre : avec le rattrapage (les blocs de projets du 27, du 28 et du matin du 29) -- 24,9 h.
+     26 novembre (au soir) : jour 1 au samedi 28, lu le dimanche 29 a 10:00 (le samedi entier et le matin du dimanche,
+     rattrapage compris) -- 7,7 h sur les 14,7 h du mois : les 40 h de la graine depassent la cible, « atteint ». */
+  ok(rev && /réel 40,0 h/.test(rev.txt) && /attendu 7,7 h/.test(rev.txt) && /avance|atteint/.test(rev.led) && !/retard/.test(rev.led), 'Révision : réel 40,0 h pour 7,7 h attendues le dimanche 29 à 10:00 → atteint : ' + (rev && rev.txt.slice(0, 80)));
   const som = await ligne(fr, 'Sommeil');
     /* 23 septembre : la cible de sommeil est du sommeil REEL (Bevel), le temps au lit × 0,88.
      L'objectif seme a 7,75 h -- une moyenne de temps au lit -- passe a la moyenne reelle
@@ -146,7 +150,7 @@ console.log('\n== 113) Comparaison sur des données réelles ==');
      septembre n'en attend donc aucune -- zero seance n'y est pas un retard. */
   /* Depuis le 30 au soir, la muscu commence le jour 1 : le 12, six seances sont passees
      (depuis le 4 octobre : lundi 5, mardi 6, jeudi 8, lundi 12). Zero faite, c'est un vrai retard. */
-  ok(sport && /réel 0,0 séances/.test(sport.txt) && !/attendu 0,0 séances/.test(sport.txt) && /retard/.test(sport.led), 'Séances de sport : la muscu commence le mardi 24, zéro séance le dimanche 29 au matin → en retard (' + (sport && sport.txt.slice(0, 70)) + ')');
+  ok(sport && /réel 0,0 séances/.test(sport.txt) && !/attendu 0,0 séances/.test(sport.txt) && /retard/.test(sport.led), 'Séances de sport : la muscu commence le samedi 28, zéro séance le dimanche 29 au matin (une prévue la veille) → en retard (' + (sport && sport.txt.slice(0, 70)) + ')');
   const resume = await fr.evaluate(() => document.getElementById('obj-resume').innerText);
   ok(/en retard/.test(resume) && /% de la période/.test(resume), 'résumé : ' + resume);
   await ctx.close();
@@ -161,8 +165,8 @@ console.log('\n== 114) Éditer une cible, supprimer, ajouter ==');
   const rev = await ligne(fr, 'Révision');
   ok((await local(fr, 'batcave-objectifs')).liste.find(x => x.id === 'M2026-11:revision_h').cible === 44, 'cible enregistrée : 44');
   /* 7 novembre : le prevu du mois grandit (Anki matinal les 18 et 25), la part ecoulee baisse un peu : 16,3 h */
-  /* 12 novembre : jour 1 au vendredi 13 -- 21,1 h. 13 novembre : jour 1 au samedi 14 -- 44 x 28,0 / 61,9 = 19,9 h. 15 novembre : jour 1 au lundi 16 -- 44 x 16,9 / 50,7 = 14,6 h. 18 novembre : jour 1 au jeudi 19 -- 44 x 5,1 / 38,9 = 5,7 h. 19 novembre : jour 1 au vendredi 20 -- 44 x 9,1 / 41 = 9,7 h. 24 novembre : jour 1 au mardi 24 -- 44 x 22,0 / 27 = 35,9 h. 26 novembre : avec le rattrapage -- 44 x 24,9 / 31,9 = 34,3 h */
-  ok(rev && /attendu 34,3 h/.test(rev.txt) && /avance/.test(rev.led), 'recalcul immédiat sur une cible de 44 h : attendu 34,3 h, 40 h réelles → en avance (' + (rev && rev.txt.slice(0, 70)) + ')');
+  /* 12 novembre : jour 1 au vendredi 13 -- 21,1 h. 13 novembre : jour 1 au samedi 14 -- 44 x 28,0 / 61,9 = 19,9 h. 15 novembre : jour 1 au lundi 16 -- 44 x 16,9 / 50,7 = 14,6 h. 18 novembre : jour 1 au jeudi 19 -- 44 x 5,1 / 38,9 = 5,7 h. 19 novembre : jour 1 au vendredi 20 -- 44 x 9,1 / 41 = 9,7 h. 24 novembre : jour 1 au mardi 24 -- 44 x 22,0 / 27 = 35,9 h. 26 novembre : avec le rattrapage -- 44 x 24,9 / 31,9 = 34,3 h. 26 novembre (au soir) : jour 1 au samedi 28 -- 44 x 7,7 / 14,7 = 23,0 h */
+  ok(rev && /attendu 23,0 h/.test(rev.txt) && /avance/.test(rev.led), 'recalcul immédiat sur une cible de 44 h : attendu 23,0 h, 40 h réelles → en avance (' + (rev && rev.txt.slice(0, 70)) + ')');
   ok((await local(fr, 'batcave-objectifs')).liste.find(x => x.id === 'M2026-11:revision_h').auto === false, 'une cible saisie à la main sort du calcul automatique');
   const avant = (await local(fr, 'batcave-objectifs')).liste.length;
   await fr.evaluate(() => document.querySelector('[data-obj-del="M2026-11:sommeil_moy"]').click());

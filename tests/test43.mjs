@@ -31,14 +31,14 @@ console.log('\n== 101) Horizon des objectifs : dérivé du stockage, éditable =
   await aller(fr, page, 'objectifs');
   /* 15 novembre : l'horizon par défaut va du jour 1 (16 novembre) au dimanche 6 juin -- « 72 kg en juin » */
   ok((await texte(fr, '#goal-deadline-days')) === '275', 'par défaut : 275 jours jusqu\'au 6 juin 2027 (obtenu ' + await texte(fr, '#goal-deadline-days') + ')');
-  ok((await texte(fr, '#goal-titre')) === 'Objectifs sur 6\u00a0mois', 'titre dérivé : « Objectifs sur 6 mois » (24 novembre → 6 juin, 194 jours)');
+  ok((await texte(fr, '#goal-titre')) === 'Objectifs sur 6\u00a0mois', 'titre dérivé : « Objectifs sur 6 mois » (28 novembre → 6 juin, 190 jours)');
   ok(/nov/.test(await texte(fr, '#goal-periode')) && /juin/.test(await texte(fr, '#goal-periode')), 'période affichée depuis l\'horizon');
   ok(await fr.evaluate(() => document.getElementById('goal-horizon-fin').value) === '2027-06-06', 'champ date pré-rempli');
   /* on avance la fin au 31 décembre */
   await fr.evaluate(() => { const i = document.getElementById('goal-horizon-fin'); i.value = '2026-12-31'; i.dispatchEvent(new Event('change', {bubbles:true})); });
   await page.waitForTimeout(250);
   ok((await texte(fr, '#goal-deadline-days')) === '118', 'après modification : 118 jours (obtenu ' + await texte(fr, '#goal-deadline-days') + ')');
-  ok((await texte(fr, '#goal-titre')) === 'Objectifs sur 1\u00a0mois', 'titre recalculé : 1 mois (16 novembre → 31 décembre)');
+  ok((await texte(fr, '#goal-titre')) === 'Objectifs sur 1\u00a0mois', 'titre recalculé : 1 mois (28 novembre → 31 décembre)');
   ok((await lire(fr, 'batcave-horizon') || {}).fin === '2026-12-31', 'horizon enregistré');
   /* une fin avant le début est refusée */
   await fr.evaluate(() => { const i = document.getElementById('goal-horizon-fin'); i.value = '2026-01-01'; i.dispatchEvent(new Event('change', {bubbles:true})); });
@@ -103,17 +103,21 @@ async function ordre(quand, dueISO){
      septembre de ce test n'avait plus de ligne « Révision ». Les memes cas, dans la semaine du 16. */
   /* 24 novembre : le jour 1 au mardi 24 -- le samedi 21 et le dimanche 22 sont avant lui ; les memes cas, le 28 et le 29.
      26 novembre : le rattrapage du 27 au 6 decembre donne aussi les blocs de projets aux revisions (le dernier bloc du
-     samedi passe a 18:00, celui du dimanche a 17:30) -- les memes cas, un week-end ordinaire, le 12 et le 13 decembre. */
-  let o = await ordre('2026-12-12T15:00:00+01:00', '2026-12-12');   /* samedi : dernier bloc (Cartes d'erreurs) à 16:00 */
+     samedi passe a 18:00, celui du dimanche a 17:30) -- les memes cas, un week-end ordinaire, le 12 et le 13 decembre.
+     26 novembre (au soir) : le jour 1 au samedi 28, et le rattrapage court du 28 novembre au lundi 21 decembre -- le premier
+     week-end ordinaire est celui du 26 et du 27 decembre (les deux derniers jours du mois d'espagnol). */
+  let o = await ordre('2026-12-26T15:00:00+01:00', '2026-12-26');   /* samedi : dernier bloc (Cartes d'erreurs) à 16:00 */
   ok(o.iRev > o.iTache && o.iTache >= 0, 'samedi 15:00 : révision pas encore urgente (Cartes d\'erreurs à 16:00)');
-  o = await ordre('2026-12-12T16:30:00+01:00', '2026-12-12');
+  o = await ordre('2026-12-26T16:30:00+01:00', '2026-12-26');
   ok(o.iRev >= 0 && o.iRev < o.iTache, 'samedi 16:30 : révision urgente, passe devant la tâche du jour');
-  o = await ordre('2026-12-13T11:00:00+01:00', '2026-12-13');       /* dimanche : dernier bloc (Réexpliquer) à 10:20 */
+  o = await ordre('2026-12-27T11:00:00+01:00', '2026-12-27');       /* dimanche : dernier bloc (Réexpliquer) à 10:20 */
   ok(o.iRev >= 0 && o.iRev < o.iTache, 'dimanche 11:00 : urgente dès 10:20 (dernier bloc du jour)');
-  o = await ordre('2026-11-25T19:00:00+01:00', '2026-11-25');       /* mercredi : dernier bloc (Clore le cours du jour) à 20:30 (18 novembre : le 18 est la veille du jour 1 -- le 25) */
+  /* mercredi : dernier bloc (Clore le cours du jour) à 20:30. 26 novembre : le mercredi 25 est avant le jour 1 -- le premier
+     mercredi du programme est le 2 decembre (le rattrapage n'y prend aucun bloc apres 14:00 : le dernier reste la cloture) */
+  o = await ordre('2026-12-02T19:00:00+01:00', '2026-12-02');
   ok(o.iRev > o.iTache && o.iTache >= 0, 'mercredi 19:00 : pas encore urgente (Clore le cours du jour à 20:30) — l\'ancien seuil 18:00 l\'aurait déjà rougie');
-  o = await ordre('2026-11-23T19:00:00+01:00', '2026-11-23');       /* la veille du jour 1 (mardi 24) : rien à reprocher */
-  ok(o.iRev < 0 && o.iTache >= 0, 'lundi 23, la veille du jour 1 : pas de ligne « Révision »');
+  o = await ordre('2026-11-27T19:00:00+01:00', '2026-11-27');       /* la veille du jour 1 (samedi 28) : rien à reprocher */
+  ok(o.iRev < 0 && o.iTache >= 0, 'vendredi 27, la veille du jour 1 : pas de ligne « Révision »');
 }
 
 await browser.close();

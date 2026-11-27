@@ -22,7 +22,7 @@
    {
     "h": "07:00",
     "l": "Préparer · Examen · Documentación",
-    "c": "Veille de l’examen de Documentación : documents et matériel prêts, protocole ou programme relu, trois questions écrites, tenue et trajet préparés. Coucher à l'heure."
+    "c": "Avant l’examen de Documentación : tes cartes les plus floues et ta page de schémas, rien de nouveau. Pièce d’identité, convocation, stylos, eau ; départ à l’heure."
    },
    {
     "h": "08:00",
@@ -82,7 +82,7 @@
    {
     "h": "18:00",
     "l": "Lire",
-    "c": "Le chapitre que la réponse « estudia » du matin a indiqué : un bloc, un livre, en espagnol ou en anglais, une seule question en tête — qu'est-ce que le cours n'a pas expliqué ? Trois cartes au plus à la fin. Rien d'autre d'ouvert."
+    "c": "Antropología, le mercredi 20 janvier (J-2) : relis dans le cours le tema que tu as le moins bien redit, une seule question en tête — qu’est-ce que je ne saurais pas écrire à l’épreuve ? Trois cartes au plus à la fin. Rien d’autre d’ouvert."
    },
    {
     "h": "19:00",
@@ -521,7 +521,7 @@
    {
     "h": "10:00",
     "l": "Étudier en avance",
-    "c": "Un tema que le prof n'a pas encore donné (la matière la plus loin de ses 3 d'avance). Lire les diapos en espagnol, une phrase à toi par point, « ? » dans la marge, 15-25 cartes Dentaire importées (40 en Anatomía). Puis, dans le projet Claude Dentaire : « estudia · matière Tn · tes ? » — la réponse en sept parties, la chaîne du mécanisme pour tout tema d'Anatomía, Biología ou Epidemiología, tes dix lignes en espagnol dans Notion, les cartes de la réponse importées. Pomodoro nommé « Étudier · matière Tn ». Une base qui manque (« base · notion ») passe devant tout le reste."
+    "c": "Révision d’examen — Antropología, demain d’abord. Un tema entier, sans support : écris son plan de tête, redis-le à voix haute, puis vérifie dans le cours ; chaque trou devient une carte. Le tema le moins sûr en premier. Minuteur : Révision, avec la matière."
    },
    {
     "h": "11:20",
@@ -541,12 +541,12 @@
    {
     "h": "13:00",
     "l": "Lire",
-    "c": "Le chapitre que la réponse « estudia » du matin a indiqué : un bloc, un livre, en espagnol ou en anglais, une seule question en tête — qu'est-ce que le cours n'a pas expliqué ? Trois cartes au plus à la fin. Rien d'autre d'ouvert."
+    "c": "Antropología, demain : relis dans le cours le tema que tu as le moins bien redit, une seule question en tête — qu’est-ce que je ne saurais pas écrire à l’épreuve ? Trois cartes au plus à la fin. Rien d’autre d’ouvert."
    },
    {
     "h": "14:00",
     "l": "Projets perso 2",
-    "c": "Un livrable en cours d'abord (l'échéance la plus proche). Sinon la ligne suivante de type « construire » du dossier e-commerce : feuille, page, brief, fiche, compte. Quelque chose qui existe à la fin du bloc."
+    "c": "Examen d’Antropología demain : ce bloc passe à la révision — les études d’abord. La boutique reprend après l’épreuve."
    },
    {
     "h": "14:50",
@@ -556,12 +556,12 @@
    {
     "h": "15:00",
     "l": "Projets perso 4",
-    "c": "Pas de cours aujourd'hui : l'après-midi devient deux blocs de projet, celui-ci d'abord. Même règle que les autres : un livrable à rendre d'abord, sinon la prochaine ligne non cochée du dossier e-commerce."
+    "c": "Examen d’Antropología demain : ce bloc passe à la révision — les études d’abord. La boutique reprend après l’épreuve."
    },
    {
     "h": "16:00",
     "l": "Projets perso 5",
-    "c": "Un jour sans cours, l'après-midi : même règle, un livrable d'abord, sinon la boutique."
+    "c": "Examen d’Antropología demain : ce bloc passe à la révision — les études d’abord. La boutique reprend après l’épreuve."
    },
    {
     "h": "17:00",
@@ -571,7 +571,7 @@
    {
     "h": "18:00",
     "l": "Préparer · Examen · Antropología",
-    "c": "Veille de l’examen d’Antropología : documents et matériel prêts, protocole ou programme relu, trois questions écrites, tenue et trajet préparés. Coucher à l'heure."
+    "c": "Veille de l’examen d’Antropología : un dernier passage sur tes cartes et tes schémas, rien de nouveau ce soir. Pièce d’identité, convocation, stylos, eau, tenue et trajet prêts. Coucher à l'heure."
    },
    {
     "h": "19:00",
@@ -959,7 +959,7 @@
    {
     "h": "05:30",
     "l": "Projets perso matinal",
-    "c": "05:30 : exécution pure d'une tâche déjà décidée la veille — montage, import, rédaction, fiches, code. Jamais une décision : à cette heure-là on exécute, on n'arbitre pas. Ce que tu feras s'écrit la veille au soir, à la clôture. Pas de minuteur : tu travailles jusqu'à la douche de 06:30."
+    "c": "Examen d’Antropología aujourd’hui : ce bloc passe à la révision — les études d’abord. La boutique reprend après l’épreuve."
    },
    {
     "h": "06:30",
@@ -974,7 +974,7 @@
    {
     "h": "07:00",
     "l": "Préparer · Examen · Antropología",
-    "c": "Veille de l’examen d’Antropología : documents et matériel prêts, protocole ou programme relu, trois questions écrites, tenue et trajet préparés. Coucher à l'heure."
+    "c": "Avant l’examen d’Antropología : tes cartes les plus floues et ta page de schémas, rien de nouveau. Pièce d’identité, convocation, stylos, eau ; départ à l’heure."
    },
    {
     "h": "08:00",
@@ -3005,7 +3005,7 @@
    {
     "h": "19:40",
     "l": "Temps libre",
-    "c": "10 minutes pour la revue du dimanche guidée (onglet Études), 5 pour tes mails et tes factures, le reste est libre."
+    "c": "Dix minutes pour la revue de la semaine : elle est dans la clôture de ce soir (tes chiffres, le livrable, trois questions). Cinq pour tes mails et tes factures, le reste est libre."
    },
    {
     "h": "20:45",

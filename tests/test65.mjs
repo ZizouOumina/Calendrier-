@@ -30,7 +30,7 @@ const HABITS = [
 ];
 const seedHab = {'batcave-habits': HABITS, 'batcave-habits-seed-v2': true, 'batcave-habits-seed-v3': true, 'batcave-habits-seed-v4': true, 'batcave-habits-seed-v5': true, 'batcave-habits-seed-v6': true, 'batcave-habits-seed-v7': true, 'batcave-habits-ecran-v2': true, 'batcave-habitlog-hebdo-v1': true};
 
-console.log('\n== 240) Sport : mercredi 21 octobre = jour 1, première muscu le lundi 26 (tours × ½), lundi 16 novembre = retest ==');
+console.log('\n== 240) Sport : samedi 28 novembre = jour 1 et première muscu (tours × ½), lundi 21 décembre = retest ==');
 {
   /* 30 septembre au soir : jour 1 au jeudi 1er octobre, muscu des le jour 1 (street workout
      seul jusqu'au dimanche 4, le combat commence le lundi 5). */
@@ -46,24 +46,24 @@ console.log('\n== 240) Sport : mercredi 21 octobre = jour 1, première muscu le 
      21 octobre au matin : « on commence jeudi matin » -- jour 1 le jeudi 22, rien d'autre ne bouge.
      31 octobre : « on commence tout dimanche matin » -- jour 1 le dimanche 1er novembre, premiere
      seance le lundi 2 (semaine 2 : la semaine 1 est celle du lundi 26, dont le jour 1 est le dimanche). */
-  const { ctx, fr } = await ouvrir('2026-11-24T07:30:00+01:00');   /* 24 novembre : le jour 1 passe au mardi 24 (verrouille), premier jour de muscu (un Bas complet). */   /* 19 novembre : le jour 1 passe au vendredi 20, sans salle ; le premier jour de muscu est le samedi 21. 18 novembre : le jour 1 passe au jeudi 19, premier jour de muscu ; 15 novembre : au lundi 16 ; 13 novembre : au samedi 14 ; 12 novembre : au vendredi 13 ; 11 novembre : au jeudi 12 */
+  const { ctx, fr } = await ouvrir('2026-11-28T07:30:00+01:00');   /* 26 novembre : le jour 1 passe au samedi 28 (« une derniere fois », reverrouille), premier jour de muscu (un Bas · charniere, la seance de reference). */   /* 24 novembre : le jour 1 passe au mardi 24 (verrouille), premier jour de muscu (un Bas complet). */   /* 19 novembre : le jour 1 passe au vendredi 20, sans salle ; le premier jour de muscu est le samedi 21. 18 novembre : le jour 1 passe au jeudi 19, premier jour de muscu ; 15 novembre : au lundi 16 ; 13 novembre : au samedi 14 ; 12 novembre : au vendredi 13 ; 11 novembre : au jeudi 12 */
   const r = await fr.evaluate(() => ({ debut: window.__bcProgrammeDebut, note: document.getElementById('programme-note').textContent }));
-  ok(r.debut === '2026-11-24', 'PROGRAMME_DEBUT = 2026-11-24 (' + r.debut + ')');
-  ok(/semaine 1 de muscu/.test(r.note) && /½/.test(r.note), 'note de la première séance (mardi 24) : la semaine 1 de muscu commence avec elle (' + r.note + ')');
+  ok(r.debut === '2026-11-28', 'PROGRAMME_DEBUT = 2026-11-28 (' + r.debut + ')');
+  ok(/semaine 1 de muscu/.test(r.note) && /½/.test(r.note), 'note de la première séance (samedi 28) : la semaine 1 de muscu commence avec elle (' + r.note + ')');
   await ctx.close();
-  const v = await ouvrir('2026-11-23T20:00:00+01:00');
+  const v = await ouvrir('2026-11-27T20:00:00+01:00');
   const nv = await v.fr.evaluate(() => document.getElementById('programme-note').textContent);
-  ok(/muscu à partir du/.test(nv) && /24 nov/.test(nv), 'la veille du jour 1 : « muscu à partir du 24 nov. » (' + nv + ')');
+  ok(/muscu à partir du/.test(nv) && /28 nov/.test(nv), 'la veille du jour 1 (vendredi 27) : « muscu à partir du 28 nov. » (' + nv + ')');
   await v.ctx.close();
   /* 7 novembre : les semaines de muscu se comptent depuis la premiere seance faite -- le lundi 2,
      c'est la semaine 1, a la moitie des tours. */
-  const l5 = await ouvrir('2026-11-24T06:30:00+01:00');
+  const l5 = await ouvrir('2026-11-28T06:30:00+01:00');
   const n5b = await l5.fr.evaluate(() => document.getElementById('programme-note').textContent);
-  ok(/semaine 1 de muscu/.test(n5b) && /½/.test(n5b), 'mardi 24 novembre : semaine 1 de muscu, tours × ½ (' + n5b + ')');
+  ok(/semaine 1 de muscu/.test(n5b) && /½/.test(n5b), 'samedi 28 novembre : semaine 1 de muscu, tours × ½ (' + n5b + ')');
   await l5.ctx.close();
   const s = await ouvrir('2026-09-10T06:30:00+02:00');
   const n2 = await s.fr.evaluate(() => document.getElementById('programme-note').textContent);
-  ok(/muscu à partir du/.test(n2) && /24 nov/.test(n2), 'avant le jour 1 : « muscu à partir du 24 nov. » (' + n2 + ')');
+  ok(/muscu à partir du/.test(n2) && /28 nov/.test(n2), 'avant le jour 1 : « muscu à partir du 28 nov. » (' + n2 + ')');
   await s.ctx.close();
   /* 26 septembre : le jour 1 passe au LUNDI 28. La semaine de programme court du lundi au
      dimanche ; le lundi est un jour de sport (haut volume), premierJourSport() rend le 28
@@ -82,10 +82,12 @@ console.log('\n== 240) Sport : mercredi 21 octobre = jour 1, première muscu le 
   /* une premiere seance le lundi 2 : la semaine 5 est celle du lundi 30 -- quatre semaines de pratique */
   /* 18 novembre : la premiere seance au jeudi 19 (un Haut lourd) -- la semaine du lundi 16 reste la semaine 1 */
   /* 24 novembre : la premiere seance au mardi 24 (un Bas complet) -- la semaine du lundi 23 est la semaine 1, la semaine 5 celle du 21 decembre */
-  const premiere = {'batcave-sport-log': [{id: 'l-premiere', date: '2026-11-24', type: 'Bas complet', exo: 'Squat barre', series: [8, 8, 8, 8], charge: 40, unite: 'reps'}]};
+  /* 26 novembre : la premiere seance au samedi 28 (un Bas · charniere) -- la semaine du lundi 23 reste la semaine 1 (le samedi
+     et le dimanche seulement), la semaine 5 celle du 21 decembre ; une seance notee avant le 28 ne compte plus */
+  const premiere = {'batcave-sport-log': [{id: 'l-premiere', date: '2026-11-28', type: 'Bas · charnière', exo: 'Relevés de jambes suspendus', series: [10, 10, 10], charge: 0, unite: 'reps'}]};
   const r5 = await ouvrir('2026-12-21T06:30:00+01:00', premiere);
   const n5 = await r5.fr.evaluate(() => ({note: document.getElementById('programme-note').textContent, retests: document.getElementById('retest-dates').textContent}));
-  ok(/semaine 5 de muscu/.test(n5.note) && /tours complets/.test(n5.note) && /lundi : retest/.test(n5.note), 'première séance le mardi 24 novembre → lundi 21 décembre : semaine 5, tours complets, retest (' + n5.note + ')');
+  ok(/semaine 5 de muscu/.test(n5.note) && /tours complets/.test(n5.note) && /lundi : retest/.test(n5.note), 'première séance le samedi 28 novembre → lundi 21 décembre : semaine 5, tours complets, retest (' + n5.note + ')');
   ok(/21 déc/.test(n5.retests) && /25 janv/.test(n5.retests) && /01 mars/.test(n5.retests), 'retests les lundis 21 décembre, 25 janvier, 1er mars (' + n5.retests + ')');
   await r5.ctx.close();
 }

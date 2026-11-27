@@ -161,19 +161,20 @@ console.log('\n== 293) Sans dates d\'examen, la Batcave le dit — et se taît d
      c'etait le samedi 21 novembre ; depuis le jeudi 22 (21 octobre au matin), c'est le dimanche 22.
      18 novembre : jour 1 au jeudi 19 + 31 jours -- le dimanche 20 decembre.
      19 novembre : jour 1 au vendredi 20 + 31 jours -- le lundi 21 decembre.
-     24 novembre : jour 1 au mardi 24 + 31 jours -- le vendredi 25 decembre. */
-  const { ctx, fr } = await ouvrir('2026-12-24T09:00:00+01:00');   /* 15 novembre : jour 1 au lundi 16 + 31 jours -- le jeudi 17 decembre. 13 novembre : jour 1 au samedi 14 + 31 jours -- le mardi 15 decembre. 12 novembre : jour 1 au vendredi 13 + 31 jours -- le lundi 14 decembre. 31 octobre : jour 1 au dimanche 1er novembre + 31 jours -- le seuil etait le mercredi 2 decembre. 11 novembre : jour 1 au jeudi 12 + 31 jours -- le dimanche 13 decembre */
+     24 novembre : jour 1 au mardi 24 + 31 jours -- le vendredi 25 decembre.
+     26 novembre : jour 1 au samedi 28 (« une derniere fois ») + 31 jours -- le mardi 29 decembre. */
+  const { ctx, fr } = await ouvrir('2026-12-28T09:00:00+01:00');   /* 15 novembre : jour 1 au lundi 16 + 31 jours -- le jeudi 17 decembre. 13 novembre : jour 1 au samedi 14 + 31 jours -- le mardi 15 decembre. 12 novembre : jour 1 au vendredi 13 + 31 jours -- le lundi 14 decembre. 31 octobre : jour 1 au dimanche 1er novembre + 31 jours -- le seuil etait le mercredi 2 decembre. 11 novembre : jour 1 au jeudi 12 + 31 jours -- le dimanche 13 decembre */
   const a = await fr.evaluate(() => document.getElementById('dash-plan').innerText);
-  ok(!/Aucune date d’examen/.test(a), 'le 24 décembre, la veille du seuil, rien encore');
+  ok(!/Aucune date d’examen/.test(a), 'le 28 décembre, la veille du seuil, rien encore');
   await ctx.close();
 }
 {
-  const { ctx, fr } = await ouvrir('2026-12-25T09:00:00+01:00');
+  const { ctx, fr } = await ouvrir('2026-12-29T09:00:00+01:00');
   const v = await fr.evaluate(() => ({
     t: document.getElementById('dash-plan').innerText,
     btn: document.querySelectorAll('#dash-plan [data-ouvrir="etudes"]').length
   }));
-  ok(/Aucune date d’examen saisie/.test(v.t), 'le 25 décembre, la ligne apparaît');
+  ok(/Aucune date d’examen saisie/.test(v.t), 'le 29 décembre, la ligne apparaît');
   ok(/pas de mode partiels/.test(v.t) && /sommeil majoré/.test(v.t), 'et elle dit ce qui reste éteint tant qu\'elles manquent');
   ok(v.btn === 1, 'un bouton qui ouvre l\'onglet Études');
   await ctx.close();
@@ -212,18 +213,19 @@ console.log('\n== 294) Le panneau « Jours sans cours » : la saisie fait foi ==
      libere rien avant le depart. Le 29 est le mardi suivant : meme grille, meme phase.
      12 octobre : le jour 1 passe au mardi 13 -- on prend le mardi 20. 21 octobre : le jour 1 passe
      au mercredi 21 -- on prend le mardi 27. 31 octobre : jour 1 au dimanche 1er novembre -- on prend le mardi 10. 11 novembre : jour 1 au
-     jeudi 12 -- on prend le mardi 17. 18 novembre : jour 1 au jeudi 19 -- on prend le mardi 24. */
-  await fr.evaluate(() => { document.getElementById('sc-date').value = '2026-11-24'; document.getElementById('sc-add').click(); });
+     jeudi 12 -- on prend le mardi 17. 18 novembre : jour 1 au jeudi 19 -- on prend le mardi 24.
+     26 novembre : jour 1 au samedi 28 (« une derniere fois ») -- le mardi 24 est avant le depart, on prend le mardi 1er decembre. */
+  await fr.evaluate(() => { document.getElementById('sc-date').value = '2026-12-01'; document.getElementById('sc-add').click(); });
   await page.waitForTimeout(300);
   const ap = await fr.evaluate(() => ({
-    sans: window.__bcSansCours('2026-11-24'),
-    g: window.__bcGrille('tuesday', '2026-11-24').map(b => b[0] + ' ' + b[1]),
+    sans: window.__bcSansCours('2026-12-01'),
+    g: window.__bcGrille('tuesday', '2026-12-01').map(b => b[0] + ' ' + b[1]),
     st: JSON.parse((window.__bcLire || ((k) => localStorage.getItem(k)))('batcave-jours-sans-cours')),
     note: document.getElementById('sans-cours-note').textContent
   }));
   ok(ap.sans === true && ap.g.includes('15:00 Español · hablar') && ap.g.includes('21:35 Coucher'),
-     'le 24 novembre devient un jour sans cours, grille comprise');
-  ok(ap.st.ajoutes.length === 1 && ap.st.ajoutes[0] === '2026-11-24' && !ap.st.retires.length,
+     'le 1er décembre devient un jour sans cours, grille comprise');
+  ok(ap.st.ajoutes.length === 1 && ap.st.ajoutes[0] === '2026-12-01' && !ap.st.retires.length,
      'on ne garde que l\'écart à la liste de départ : ' + JSON.stringify(ap.st));
   ok(/26 jours à venir/.test(ap.note), 'le relevé suit : « ' + ap.note + ' »');
 

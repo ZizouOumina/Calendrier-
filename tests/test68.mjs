@@ -40,7 +40,9 @@ console.log('\n== 264) Les cibles sortent de la grille, phase par phase ==');
      18 novembre : jour 1 au jeudi 19, le mois va jusqu'au vendredi 18 decembre -- dans le mois, le lundi 23 novembre ;
      apres, le lundi 21 et le mardi 22 decembre (la veille des vacances).
      24 novembre : jour 1 au mardi 24, le mois va jusqu'au mercredi 23 decembre -- dans le mois, le lundi 30 novembre ;
-     apres, le lundi 28 et le mardi 29 decembre. */
+     apres, le lundi 28 et le mardi 29 decembre.
+     26 novembre : jour 1 au samedi 28, le mois va jusqu'au dimanche 27 decembre -- les memes jours tiennent : le lundi 30
+     novembre est dans le mois, le lundi 28 decembre est le premier jour d'apres. */
   ok(p.s16nov.es === 156 && p.s16nov.proj === 0, 'le lundi 30 nov., dans le mois repris : 156 min d\'espagnol prévues (' + JSON.stringify(p.s16nov) + ')');
   ok(p.s19oct.proj === 0 && p.s19oct.es === 0, 'le lundi 28 déc., après le mois repris : plus d\'espagnol, et les projets ne sont plus prévus (sans minuteur) (' + JSON.stringify(p.s19oct) + ')');
   ok(p.s1dec.proj === 0 && p.s1dec.es === 0, 'le mardi 29 déc. : même grille, rien de prévu en projets (' + JSON.stringify(p.s1dec) + ')');
@@ -67,15 +69,19 @@ console.log('\n== 265) Un jour de TP et les partiels ne créent aucun retard =='
      31 octobre : le jour 1 passe au dimanche 1er novembre -- la semaine testee est celle du 2 au 8, TP le jeudi 5.
      11 novembre : jour 1 au jeudi 12 -- la semaine testee est celle du 16 au 22, TP le jeudi 19. */
   /* 18 novembre : jour 1 au jeudi 19 -- la semaine testee est celle du 23 au 29, la premiere entiere, TP le jeudi 26 */
-  const TP = {'batcave-journees': {'2026-11-26': {type:'tp', label:'Anatomía I', debut:'11:00', fin:'13:00', trajet:30}}};
+  /* 26 novembre : jour 1 au samedi 28 -- la semaine du 23 n'a plus que son week-end dans le programme (un TP le jeudi 26 n'y changeait
+     plus rien : 10 h avec comme sans) ; la premiere entiere est celle du 30 novembre au 6 decembre, TP le jeudi 3. Le rattrapage y
+     compte « Projets perso 3 » en revision : le jour du TP se compare donc aussi au meme jeudi sans TP, pas seulement au seuil. */
+  const TP = {'batcave-journees': {'2026-12-03': {type:'tp', label:'Anatomía I', debut:'11:00', fin:'13:00', trajet:30}}};
   const { ctx, fr } = await ouvrir('2026-09-15T09:00:00+02:00');
-  const sans = await fr.evaluate(() => window.__bcCibleGrille('revision_h', '2026-11-23', '2026-11-29'));
+  const sans = await fr.evaluate(() => window.__bcCibleGrille('revision_h', '2026-11-30', '2026-12-06'));
+  const prevuSans = await fr.evaluate(() => window.__bcPrevu('2026-12-03'));
   await ctx.close();
   const b = await ouvrir('2026-09-15T09:00:00+02:00', TP);
-  const avec = await b.fr.evaluate(() => window.__bcCibleGrille('revision_h', '2026-11-23', '2026-11-29'));
+  const avec = await b.fr.evaluate(() => window.__bcCibleGrille('revision_h', '2026-11-30', '2026-12-06'));
   ok(avec < sans, 'la semaine du TP demande moins de révision : ' + avec + ' h au lieu de ' + sans + ' h');
-  const prevuTP = await b.fr.evaluate(() => window.__bcPrevu('2026-11-26'));
-  ok(prevuTP.rev < 265, 'le jour du TP, la grille prévoit moins de révision (' + prevuTP.rev + ' min)');
+  const prevuTP = await b.fr.evaluate(() => window.__bcPrevu('2026-12-03'));
+  ok(prevuTP.rev < 265 && prevuTP.rev < prevuSans.rev, 'le jour du TP, la grille prévoit moins de révision (' + prevuTP.rev + ' min, contre ' + prevuSans.rev + ' le même jeudi sans TP)');
   await b.ctx.close();
   /* Partiels : depuis le 23 septembre, un jour de partiels est un jour SANS COURS. La cible
      ne tombe donc plus a zero cote projets ; elle suit la grille liberee -- la plage du

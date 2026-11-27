@@ -103,17 +103,19 @@ console.log('\n== 284) Le mode partiels n\'est pas touché par la suppression ==
      programme. L'examen passe au vendredi 23, on lit le mardi 20. 21 octobre : jour 1 au mercredi 21 -- on lit le jeudi 22.
      31 octobre : jour 1 au dimanche 1er novembre -- l'examen passe au vendredi 6, on lit le jeudi 5. */
   /* 11 novembre : jour 1 au jeudi 12 -- les partiels du test passent apres lui (examen le vendredi 20).
-     19 novembre : jour 1 au vendredi 20 -- l'examen passe au mercredi 25, on lit le mardi 24 (escribir a 14:00). */
-  const { ctx, fr } = await ouvrir('2026-11-23T12:00:00+01:00',
-    Object.assign(SEED(3, 1.2), {'batcave-examens': {'Anatomía I':'2026-11-25'}}));
-  const p = await fr.evaluate(() => { const x = window.__bcPeriode('2026-11-24'); return x ? x.id : null; });
-  ok(p === 'partiels', 'le 5 novembre est en mode partiels (' + p + ')');
-  const g = await grille(fr, '2026-11-24');
+     19 novembre : jour 1 au vendredi 20 -- l'examen passe au mercredi 25, on lit le mardi 24 (escribir a 14:00).
+     26 novembre : jour 1 au samedi 28 (« une derniere fois ») -- le mardi 24 est desormais avant le programme (ni phase
+     d'espagnol, ni jour sans cours) : l'examen passe au mercredi 2 decembre, on lit le mardi 1er (escribir a 14:00). */
+  const { ctx, fr } = await ouvrir('2026-11-30T12:00:00+01:00',
+    Object.assign(SEED(3, 1.2), {'batcave-examens': {'Anatomía I':'2026-12-02'}}));
+  const p = await fr.evaluate(() => { const x = window.__bcPeriode('2026-12-01'); return x ? x.id : null; });
+  ok(p === 'partiels', 'le mardi 1er décembre est en mode partiels (' + p + ')');
+  const g = await grille(fr, '2026-12-01');
   /* Garde-fou du 23 septembre : les partiels ne remplacent plus rien, donc ils n'effacent
      plus la phase Español en dessous -- ils lui empruntent ses renommages. Sans ca, une
      semaine d'examen en octobre rendait tous les blocs Español au dropshipping. */
   ok(g.some(x => /14:00 Español/.test(x)), 'et 14:00 reste le bloc Español de la phase : les partiels ne l\'effacent pas (' + g.filter(x => /^14:00/.test(x)) + ')');
-  ok(!g.some(x => /Cours$/.test(x)), 'le 24 novembre en partiels : pas de cours');
+  ok(!g.some(x => /Cours$/.test(x)), 'le 1er décembre en partiels : pas de cours');
   await ctx.close();
 }
 

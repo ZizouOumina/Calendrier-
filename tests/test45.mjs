@@ -57,25 +57,30 @@ console.log('\n== 108) Deux blocs de révision échus sans session : signalés, 
 }
 
 console.log('\n== 109) Le lendemain, la cible intègre le report ==');
+/* 26 novembre : le jour 1 au samedi 28, et le rattrapage court du 28 novembre au lundi 21 decembre -- le jeudi 17 decembre
+   donne son « Projets perso 3 » de 11:20 aux revisions (4 h 16 au lieu de 3 h 21) et sa case Projets dit « leurs creneaux
+   vont au rattrapage ». Plus aucun jeudi de cours du premier semestre n'est hors rattrapage (les vacances, puis les
+   partiels) : le meme cas se joue le jeudi 28 janvier, premier jeudi du second semestre -- meme regime combat, salle a
+   07:00, et 11:20 y est « Question ouverte ou autre » : 4 h 16 de revision, 1 h 50 de projets sans minuteur. */
 {
-  const { ctx, fr } = await ouvrir('2026-12-17T10:00:00+01:00', {'batcave-report': {date:'2026-12-17', rev:120, proj:0}});
+  const { ctx, fr } = await ouvrir('2027-01-28T10:00:00+01:00', {'batcave-report': {date:'2027-01-28', rev:120, proj:0}});
   const cells = await fr.evaluate(() => [...document.querySelectorAll('#dash-temps .temps-cell')].map(e => e.innerText.replace(/\s+/g,' ')));
   /* 19 octobre : « Clore le cours » passe a vingt minutes (la soiree du sommeil) -- 4 h 10 -> 3 h 50 */
   /* 30 octobre : la salle a 07:00 (SALLE_HORAIRES_DEBUT) -- Anki 1 au reveil (70 min), Étudier en avance
      ramene a 1 h 20 par le trajet : le jeudi passe de 3 h 50 a 3 h 21 de revision. */
-  ok(/\/ 5 h 21/.test(cells[0]) && /\+2 h/.test(cells[0]), 'révision : « / 5 h 21 +2 h ↪ » (jeudi du régime combat, salle à 07:00 : 3 h 21 + 2 h) (obtenu ' + cells[0] + ')');
+  ok(/\/ 6 h 16/.test(cells[0]) && /\+2 h/.test(cells[0]), 'révision : « / 6 h 16 +2 h ↪ » (jeudi du régime combat, salle à 07:00, hors mois d\'espagnol : 4 h 16 + 2 h) (obtenu ' + cells[0] + ')');
   /* 1 h 45 et non 2 h 40 : en phase 3 un bloc « Projets perso » reste de l'espagnol.
      Ce qui compte ici, c'est l'absence de « + » : le report ne touche que la revision. */
   ok(/sans minuteur/.test(cells[1]) && !/\+/.test(cells[1]), 'projets : sans cible ni report (obtenu ' + cells[1] + ')');
   const plan = await texte(fr, '#dash-plan');
-  ok(/Révision — 0 sur 5 h 21/.test(plan), 'Plan du jour : cible 5 h 21 (3 h 21 + 2 h de report)');
+  ok(/Révision — 0 sur 6 h 16/.test(plan), 'Plan du jour : cible 6 h 16 (4 h 16 + 2 h de report)');
   await ctx.close();
 }
 {
   /* un report daté d'un autre jour ne s'applique pas */
-  const { ctx, fr } = await ouvrir('2026-12-17T10:00:00+01:00', {'batcave-report': {date:'2026-12-16', rev:120, proj:0}});
+  const { ctx, fr } = await ouvrir('2027-01-28T10:00:00+01:00', {'batcave-report': {date:'2027-01-27', rev:120, proj:0}});
   const cells = await fr.evaluate(() => [...document.querySelectorAll('#dash-temps .temps-cell .tv')].map(e => e.innerText.replace(/\s+/g,' ')));
-  ok(/\/ 3 h 21/.test(cells[0]) && !/\+/.test(cells[0]), 'report périmé ignoré : « / 3 h 21 »');
+  ok(/\/ 4 h 16/.test(cells[0]) && !/\+/.test(cells[0]), 'report périmé ignoré : « / 4 h 16 »');
   await ctx.close();
 }
 

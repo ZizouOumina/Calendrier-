@@ -53,9 +53,11 @@ console.log('\n== 401) Santé de la Batcave : six contrôles, un relevé qui ne 
      13 novembre : jour 1 au samedi 14 -- clôture du lundi 9, cinq jours avant.
      15 novembre : jour 1 au lundi 16 -- clôture du mercredi 11, cinq jours avant.
      18 novembre : jour 1 au jeudi 19 -- clôture du samedi 14, cinq jours avant.
-     19 novembre : jour 1 au vendredi 20 -- clôture du dimanche 15, cinq jours avant. */
-  const seed = {'batcave-journal-2026-11-19': {sommeil:'7', cloture:'21:20'}};   /* 24 novembre : le jour 1 au mardi 24, la derniere cloture cinq jours avant */
-  const { ctx, page, fr } = await ouvrir('2026-11-24T10:00:00+01:00', seed);
+     19 novembre : jour 1 au vendredi 20 -- clôture du dimanche 15, cinq jours avant.
+     24 novembre : jour 1 au mardi 24 -- clôture du jeudi 19, cinq jours avant.
+     26 novembre : jour 1 au samedi 28 (« une derniere fois ») -- clôture du lundi 23, cinq jours avant. */
+  const seed = {'batcave-journal-2026-11-23': {sommeil:'7', cloture:'21:20'}};   /* 26 novembre : le jour 1 au samedi 28, la derniere cloture cinq jours avant */
+  const { ctx, page, fr } = await ouvrir('2026-11-28T10:00:00+01:00', seed);
   const r = await fr.evaluate(() => ({ vide: window.__bcAppVide(), sante: window.__bcSante().filter(c => !c.ok).map(c => c.id), releve: document.getElementById('bc-sante').hidden, txt: document.querySelector('#bc-sante .v').textContent }));
   ok(r.vide === false, 'une clôture suffit : l\'appli n\'est plus neuve');
   ok(r.sante.join(',') === 'sauvegarde,exercice,cloture', 'trois défauts : aucune sauvegarde, aucun exercice, clôture vieille de 5 jours (' + r.sante.join(', ') + ')');

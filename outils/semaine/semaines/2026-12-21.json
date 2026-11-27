@@ -7,7 +7,7 @@
    {
     "h": "05:30",
     "l": "Anki 1",
-    "c": "📚 Epidemiología 20 (suite) — Rattrapage, jour 24 sur 24 : 2 temas finis aujourd’hui, 3 h 13 au minuteur. 05:30 → 05:45 : Anki, les cartes des jours d’avant. 05:45 → 06:40 : la suite d’Epidemiología 20 (la fin au bloc suivant). Protocole, 1 h 30 par tema : survol 10 min · partie par partie 45 min, IA fermée · « tema » dans le Projet Dentaire 20 min · vérification dans le cours 5 min · 8 à 10 cartes écrites par toi, puis « vérifie mes cartes ». Antropología et Documentación : version courte, 40 min, sans « tema ». Minuteur : Révision, avec la matière du tema — même dans un bloc Anki ou Projets. Les blocs d'espagnol restent à l'espagnol : « escribir » fait une question d'examen en espagnol sur un tema que tu viens de rattraper."
+    "c": "📚 Epidemiología 20 (suite) — Rattrapage, jour 24 sur 24 : 2 temas finis aujourd’hui, 3 h 13 au minuteur. 05:30 → 05:45 : Anki, les cartes des jours d’avant. 05:45 → 06:40 : la suite d’Epidemiología 20 (la fin au bloc suivant). Protocole, 1 h 30 par tema : survol 10 min · partie par partie 45 min, IA fermée · « tema » dans le Projet Dentaire 20 min · vérification dans le cours 5 min · 8 à 10 cartes écrites par toi, puis « vérifie mes cartes ». Tema fini : passe-le à « fait » dans Notion, c’est le compteur du rattrapage. Antropología et Documentación : version courte, 40 min, sans « tema ». Minuteur : Révision, avec la matière du tema — même dans un bloc Anki ou Projets. Les blocs d'espagnol restent à l'espagnol : « escribir » fait une question d'examen en espagnol sur un tema que tu viens de rattraper."
    },
    {
     "h": "06:40",
@@ -551,7 +551,7 @@
    {
     "h": "10:00",
     "l": "Étudier en avance",
-    "c": "Un tema que le prof n'a pas encore donné (la matière la plus loin de ses 3 d'avance). Lire les diapos en espagnol, une phrase à toi par point, « ? » dans la marge, 15-25 cartes Dentaire importées (40 en Anatomía). Puis, dans le projet Claude Dentaire : « estudia · matière Tn · tes ? » — la réponse en sept parties, la chaîne du mécanisme pour tout tema d'Anatomía, Biología ou Epidemiología, tes dix lignes en espagnol dans Notion, les cartes de la réponse importées. Pomodoro nommé « Étudier · matière Tn ». Une base qui manque (« base · notion ») passe devant tout le reste."
+    "c": "Révision d’examen — Anatomía I, le jeudi 7 janvier (J-16) d’abord. Un tema entier, sans support : écris son plan de tête, redis-le à voix haute, puis vérifie dans le cours ; chaque trou devient une carte. Le tema le moins sûr en premier. Minuteur : Révision, avec la matière."
    },
    {
     "h": "11:20",
@@ -571,7 +571,7 @@
    {
     "h": "13:00",
     "l": "Lire",
-    "c": "Le chapitre que la réponse « estudia » du matin a indiqué : un bloc, un livre, en espagnol ou en anglais, une seule question en tête — qu'est-ce que le cours n'a pas expliqué ? Trois cartes au plus à la fin. Rien d'autre d'ouvert."
+    "c": "Anatomía I, le jeudi 7 janvier (J-16) : relis dans le cours le tema que tu as le moins bien redit, une seule question en tête — qu’est-ce que je ne saurais pas écrire à l’épreuve ? Trois cartes au plus à la fin. Rien d’autre d’ouvert."
    },
    {
     "h": "14:00",
@@ -1009,7 +1009,7 @@
    {
     "h": "08:20",
     "l": "Étudier en avance",
-    "c": "Un tema que le prof n'a pas encore donné (la matière la plus loin de ses 3 d'avance). Lire les diapos en espagnol, une phrase à toi par point, « ? » dans la marge, 15-25 cartes Dentaire importées (40 en Anatomía). Puis, dans le projet Claude Dentaire : « estudia · matière Tn · tes ? » — la réponse en sept parties, la chaîne du mécanisme pour tout tema d'Anatomía, Biología ou Epidemiología, tes dix lignes en espagnol dans Notion, les cartes de la réponse importées. Pomodoro nommé « Étudier · matière Tn ». Une base qui manque (« base · notion ») passe devant tout le reste."
+    "c": "Révision d’examen — Anatomía I, le jeudi 7 janvier (J-15) d’abord. Un tema entier, sans support : écris son plan de tête, redis-le à voix haute, puis vérifie dans le cours ; chaque trou devient une carte. Le tema le moins sûr en premier. Minuteur : Révision, avec la matière."
    },
    {
     "h": "10:05",
@@ -1044,7 +1044,7 @@
    {
     "h": "13:00",
     "l": "Approfondir",
-    "c": "Le sujet, c'est toi qui le choisis : le tema que le prof vient de donner, ou celui qui te servira le plus au fauteuil. Une heure : 25 min de lecture dans la référence (Guyton, Karp, Greenhalgh, Abbas), 15 min de teach-back enregistré en espagnol sans notes, 10 min de cartes de mécanisme en chaîne, 10 min de vignettes (« profundiza · sujet » dans le projet Dentaire). L'enregistrement se garde : Réexpliquer le réécoute. À la fin, écris le sujet dans Études → Approfondissements — c'est ce qui déclenche J+7, J+30 et J+90."
+    "c": "Annales — Anatomía I, le jeudi 7 janvier (J-15). Une question ouverte d’examen ou un sujet des années passées, 25 min sans support, en espagnol ; puis « examen » dans le projet Dentaire : le contenu d’abord, la langue ensuite. Chaque erreur devient une carte."
    },
    {
     "h": "14:00",
@@ -1064,12 +1064,12 @@
    {
     "h": "16:00",
     "l": "Español · tutor",
-    "c": "Séance de tuteur : 3 min de conversation, 12 min à expliquer le cours de la veille, 10 min de corrections répétées, 5 min de jeu de rôle en usted. Dix cartes d'erreurs après."
+    "c": "Séance de tuteur : 3 min de conversation, 12 min à expliquer le cours de la veille, 10 min de corrections répétées, 5 min de jeu de rôle en usted. Dix cartes d'erreurs après. Sans tuteur réservé : « conversa » dans le projet Español, à voix haute, puis « cartas »."
    },
    {
     "h": "17:00",
     "l": "Lire",
-    "c": "Le chapitre que la réponse « estudia » du matin a indiqué : un bloc, un livre, en espagnol ou en anglais, une seule question en tête — qu'est-ce que le cours n'a pas expliqué ? Trois cartes au plus à la fin. Rien d'autre d'ouvert."
+    "c": "Anatomía I, le jeudi 7 janvier (J-15) : relis dans le cours le tema que tu as le moins bien redit, une seule question en tête — qu’est-ce que je ne saurais pas écrire à l’épreuve ? Trois cartes au plus à la fin. Rien d’autre d’ouvert."
    },
    {
     "h": "18:00",
@@ -1536,7 +1536,7 @@
    {
     "h": "10:00",
     "l": "Étudier en avance",
-    "c": "Un tema que le prof n'a pas encore donné (la matière la plus loin de ses 3 d'avance). Lire les diapos en espagnol, une phrase à toi par point, « ? » dans la marge, 15-25 cartes Dentaire importées (40 en Anatomía). Puis, dans le projet Claude Dentaire : « estudia · matière Tn · tes ? » — la réponse en sept parties, la chaîne du mécanisme pour tout tema d'Anatomía, Biología ou Epidemiología, tes dix lignes en espagnol dans Notion, les cartes de la réponse importées. Pomodoro nommé « Étudier · matière Tn ». Une base qui manque (« base · notion ») passe devant tout le reste."
+    "c": "Révision d’examen — Anatomía I, le jeudi 7 janvier (J-14) d’abord. Un tema entier, sans support : écris son plan de tête, redis-le à voix haute, puis vérifie dans le cours ; chaque trou devient une carte. Le tema le moins sûr en premier. Minuteur : Révision, avec la matière."
    },
    {
     "h": "11:20",
@@ -1576,12 +1576,12 @@
    {
     "h": "16:00",
     "l": "Español · tutor",
-    "c": "Séance de tuteur : 3 min de conversation, 12 min à expliquer le cours de la veille, 10 min de corrections répétées, 5 min de jeu de rôle en usted. Dix cartes d'erreurs après."
+    "c": "Séance de tuteur : 3 min de conversation, 12 min à expliquer le cours de la veille, 10 min de corrections répétées, 5 min de jeu de rôle en usted. Dix cartes d'erreurs après. Sans tuteur réservé : « conversa » dans le projet Español, à voix haute, puis « cartas »."
    },
    {
     "h": "17:00",
     "l": "Lire",
-    "c": "Le chapitre que la réponse « estudia » du matin a indiqué : un bloc, un livre, en espagnol ou en anglais, une seule question en tête — qu'est-ce que le cours n'a pas expliqué ? Trois cartes au plus à la fin. Rien d'autre d'ouvert."
+    "c": "Anatomía I, le jeudi 7 janvier (J-14) : relis dans le cours le tema que tu as le moins bien redit, une seule question en tête — qu’est-ce que je ne saurais pas écrire à l’épreuve ? Trois cartes au plus à la fin. Rien d’autre d’ouvert."
    },
    {
     "h": "18:00",
@@ -1994,7 +1994,7 @@
    {
     "h": "08:20",
     "l": "Étudier en avance",
-    "c": "Un tema que le prof n'a pas encore donné (la matière la plus loin de ses 3 d'avance). Lire les diapos en espagnol, une phrase à toi par point, « ? » dans la marge, 15-25 cartes Dentaire importées (40 en Anatomía). Puis, dans le projet Claude Dentaire : « estudia · matière Tn · tes ? » — la réponse en sept parties, la chaîne du mécanisme pour tout tema d'Anatomía, Biología ou Epidemiología, tes dix lignes en espagnol dans Notion, les cartes de la réponse importées. Pomodoro nommé « Étudier · matière Tn ». Une base qui manque (« base · notion ») passe devant tout le reste."
+    "c": "Révision d’examen — Anatomía I, le jeudi 7 janvier (J-13) d’abord. Un tema entier, sans support : écris son plan de tête, redis-le à voix haute, puis vérifie dans le cours ; chaque trou devient une carte. Le tema le moins sûr en premier. Minuteur : Révision, avec la matière."
    },
    {
     "h": "10:05",
@@ -2049,12 +2049,12 @@
    {
     "h": "16:00",
     "l": "Español · tutor",
-    "c": "Séance de tuteur : 3 min de conversation, 12 min à expliquer le cours de la veille, 10 min de corrections répétées, 5 min de jeu de rôle en usted. Dix cartes d'erreurs après."
+    "c": "Séance de tuteur : 3 min de conversation, 12 min à expliquer le cours de la veille, 10 min de corrections répétées, 5 min de jeu de rôle en usted. Dix cartes d'erreurs après. Sans tuteur réservé : « conversa » dans le projet Español, à voix haute, puis « cartas »."
    },
    {
     "h": "17:00",
     "l": "Lire",
-    "c": "Le chapitre que la réponse « estudia » du matin a indiqué : un bloc, un livre, en espagnol ou en anglais, une seule question en tête — qu'est-ce que le cours n'a pas expliqué ? Trois cartes au plus à la fin. Rien d'autre d'ouvert."
+    "c": "Anatomía I, le jeudi 7 janvier (J-13) : relis dans le cours le tema que tu as le moins bien redit, une seule question en tête — qu’est-ce que je ne saurais pas écrire à l’épreuve ? Trois cartes au plus à la fin. Rien d’autre d’ouvert."
    },
    {
     "h": "18:00",
@@ -2503,7 +2503,7 @@
    {
     "h": "09:00",
     "l": "Approfondir",
-    "c": "Le sujet, c'est toi qui le choisis : le tema que le prof vient de donner, ou celui qui te servira le plus au fauteuil. Le bloc dure 2 h 20 : DEUX séances d'une heure, à 09:00 et à 10:00 (la demi-heure qui reste, tes cartes). Une heure : 25 min de lecture dans la référence (Guyton, Karp, Greenhalgh, Abbas), 15 min de teach-back enregistré en espagnol sans notes, 10 min de cartes de mécanisme en chaîne, 10 min de vignettes (« profundiza · sujet » dans le projet Dentaire). L'enregistrement se garde : Réexpliquer le réécoute. À la fin, écris le sujet dans Études → Approfondissements — c'est ce qui déclenche J+7, J+30 et J+90."
+    "c": "Annales — Anatomía I, le jeudi 7 janvier (J-12). Une question ouverte d’examen ou un sujet des années passées, 25 min sans support, en espagnol ; puis « examen » dans le projet Dentaire : le contenu d’abord, la langue ensuite. Chaque erreur devient une carte."
    },
    {
     "h": "11:20",
@@ -2538,7 +2538,7 @@
    {
     "h": "17:00",
     "l": "Español · tutor",
-    "c": "Séance de tuteur : 3 min de conversation, 12 min à expliquer le cours de la veille, 10 min de corrections répétées, 5 min de jeu de rôle en usted. Dix cartes d'erreurs après."
+    "c": "Séance de tuteur : 3 min de conversation, 12 min à expliquer le cours de la veille, 10 min de corrections répétées, 5 min de jeu de rôle en usted. Dix cartes d'erreurs après. Sans tuteur réservé : « conversa » dans le projet Español, à voix haute, puis « cartas »."
    },
    {
     "h": "18:00",
@@ -2990,7 +2990,7 @@
    {
     "h": "09:20",
     "l": "Simulation dentaire",
-    "c": "La semaine avant un questionnaire : son blanc complet (15 questions, 20 min, sans support, en espagnol). Sinon : 10 QCM + une question ouverte sur le dernier bloc de trois temas de Biología ou d'Epidemiología, en alternance. En décembre : un examen blanc complet (40 QCM + 4 ouvertes, 90 min), une matière par dimanche. Le premier dimanche du mois : l'examen mensuel de vingt vignettes."
+    "c": "Examen blanc — Anatomía I, le jeudi 7 janvier (J-11) : les conditions de l’épreuve, 90 min sans support, en espagnol. Puis la correction, et une carte par erreur."
    },
    {
     "h": "10:20",
@@ -3045,7 +3045,7 @@
    {
     "h": "19:40",
     "l": "Temps libre",
-    "c": "10 minutes pour la revue du dimanche guidée (onglet Études), 5 pour tes mails et tes factures, le reste est libre."
+    "c": "Dix minutes pour la revue de la semaine : elle est dans la clôture de ce soir (tes chiffres, le livrable, trois questions). Cinq pour tes mails et tes factures, le reste est libre."
    },
    {
     "h": "20:45",

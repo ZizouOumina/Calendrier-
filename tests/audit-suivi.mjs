@@ -11,7 +11,7 @@ const note = m => { avert++; console.log('  ⚠     '+m); };
 /* 18 novembre : le jour 1 passe au jeudi 19. Les calculs d'un lundi se lisent au premier lundi du programme, le 23 ;
    le jour 1 lui-même (section 10) au jeudi 19. Avant : le lundi 16 (15 novembre), le lundi 14 septembre. */
 const JOUR = '2026-12-14';   /* lundi de JJB, dans le mois d'espagnol (19 novembre : pas de JJB avant le 2 decembre, et la semaine du 7 a un ferie) */
-const JOUR1 = '2026-11-24';  /* mardi, jour 1 du programme, verrouille (24 novembre ; avant, le vendredi 20, le jeudi 19) */
+const JOUR1 = '2026-11-28';  /* samedi, jour 1 du programme, verrouille (26 novembre, « une derniere fois » ; avant, le mardi 24, le vendredi 20, le jeudi 19) */
 async function ouvrir(seed, quand){
   const ctx = await b.newContext({viewport:{width:1440,height:1200}, timezoneId:'Europe/Madrid', locale:'fr-FR'});
   await ctx.addInitScript(s=>{
@@ -116,7 +116,8 @@ console.log('\n═══ 6. Sport : une séance vaut la part de ses cases coché
      15 novembre : le lundi 16, jour 1, est un « Haut volume » et la séance de référence -- la scène se joue le jeudi 19. */
   /* 17 novembre : 11, la flexion du cou ferme la séance du jeudi (en trio avec les tractions serviette et le crunch) */
   /* 19 novembre : jour 1 au vendredi 20, la salle des le samedi 21 -- le premier jeudi de salle est le 26 */
-  const TYPE = 'Haut lourd', N = 11, JEUDI = '2026-11-26';
+  /* 26 novembre : jour 1 au samedi 28 -- le premier jeudi de salle est le 3 decembre (le 26 novembre est avant le jour 1) */
+  const TYPE = 'Haut lourd', N = 11, JEUDI = '2026-12-03';
   for(const n of [0, 3, 4, 5, 7, N]){
     const st = {}; for(let i=0;i<n;i++) st[TYPE+'-'+i] = true;
     const {ctx, page, fr} = await ouvrir({['batcave-sport-'+JEUDI]: st}, JEUDI+'T21:00:00+01:00');
@@ -236,7 +237,8 @@ console.log('\n═══ 11. Le réacteur et les cellules disent-ils la même ch
     const d = '2026-12-14';
     const {ctx, page, fr} = await ouvrir({}, d+'T21:00:00+01:00');
     const cel = await fr.evaluate(()=>((document.getElementById('dash-temps').innerText.replace(/\n/g,' ').match(/Projets perso 0 ([^·]+)/)||[])[1] || ''));
-    ok(/Español à leur place jusqu’au 23 déc\./.test(cel), d + ' : dans le mois d\'espagnol, la cellule le dit — « Projets perso 0 ' + cel.trim() + ' »');
+    /* 26 novembre : le mois d'espagnol va du samedi 28 novembre au dimanche 27 decembre */
+    ok(/Español à leur place jusqu’au 27 déc\./.test(cel), d + ' : dans le mois d\'espagnol, la cellule le dit — « Projets perso 0 ' + cel.trim() + ' »');
     await ctx.close();
   }
   for(const d of ['2026-12-28','2027-02-15']){   /* 24 novembre : le mois d'espagnol va jusqu'au 23 decembre -- le 28, l'e-commerce */

@@ -1,6 +1,6 @@
 /* 17 novembre, sa demande : « je veux pouvoir cocher dans ma journée […] l'onglet ma journée doit tout afficher
-   correctement, il ne peut pas y avoir d'erreurs ». « Ma journée » vérifiée pour chaque jour de la saison, du mardi 24
-   novembre (le jour 1, verrouillé le 23 novembre) au dimanche 6 juin, avec SES données (DONNEES=<sauvegarde.json>).
+   correctement, il ne peut pas y avoir d'erreurs ». « Ma journée » vérifiée pour chaque jour de la saison, du samedi 28
+   novembre (le jour 1, verrouillé, « une dernière fois », le 26 novembre) au dimanche 6 juin, avec SES données (DONNEES=<sauvegarde.json>).
    A. Une seule ouverture, puis chaque jour à la suite (comme les flèches « Lendemain ») :
       - aucune erreur de page ;
       - chaque ligne a son heure (HH:MM, dans l'ordre de la journée) et un titre ; un bloc de travail a sa consigne ;
@@ -12,7 +12,7 @@
    node zz-journee-saison.mjs [début] [fin] [A|B|AB] */
 import { chromium } from 'playwright';
 import fs from 'fs';
-const [debut = '2026-11-24', fin = '2027-06-06', quoi = 'AB'] = process.argv.slice(2);
+const [debut = '2026-11-28', fin = '2027-06-06', quoi = 'AB'] = process.argv.slice(2);
 const URL = process.env.BC_HOST || 'http://127.0.0.1:8199/host.html';
 const DONNEES = process.env.DONNEES ? JSON.parse(fs.readFileSync(process.env.DONNEES, 'utf8')) : null;
 let echecs = 0;
@@ -48,7 +48,7 @@ function tombe(h, iso){
   if (js && !js.includes(dow)) return false;
   const n = h.cycleSemaines > 1 ? h.cycleSemaines : (h.quinzaine ? 2 : 0);
   if (n < 2) return true;
-  const a = h.ancre || (h.quinzaine ? '2026-10-04' : '2026-11-24');   /* PROGRAMME_DEBUT, le jour 1 (24 novembre, verrouille) */
+  const a = h.ancre || (h.quinzaine ? '2026-10-04' : '2026-11-28');   /* PROGRAMME_DEBUT, le jour 1 (26 novembre : le samedi 28, verrouille) */
   if (iso < a) return false;
   const jrs = Math.round((Date.parse(iso + 'T12:00:00Z') - Date.parse(a + 'T12:00:00Z')) / 864e5);
   return Math.floor(jrs / 7) % n === 0;

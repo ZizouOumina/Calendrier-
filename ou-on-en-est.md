@@ -1,5 +1,71 @@
 # Où on en est — samedi 19 septembre 2026, au soir
 
+> ### Jeudi 26 novembre, 20:44 — le jour 1 au samedi 28 (verrou levé par lui, « une dernière fois »), puis l'audit complet
+> **Ses mots** : « on va commencer le rattrapage samedi, on commence tout tout tout samedi, je sais que je t'ai dit de ne
+> plus decaler le jour d'utilisation de la batcave mais la on va le faire une derniere fois, je decide tu fais ce que je
+> veux », puis « ensuite tu vas verifier a 100% la batcave pour toutes les contradictions ou autre, tu vas tout rendre
+> parfait et me proposer des améliorations », et « tu vas me dire si cest bon, si je devrais utiliser la batcave au jour
+> le jour et si son utilisation est avantageuse ».
+> **Le verrou** : demandé par lui le 24 (« Oui, verrouille-le »), tenu le 24 à 08:39 (refus), levé PAR LUI le 26, une
+>   fois, en connaissance de cause. Il est **reposé sur le samedi 28 novembre**. S'il redemande : on lui rappelle le
+>   verrou et la ligne du jour ; c'est lui qui tranche.
+> **Le recalage** : `PROGRAMME_DEBUT`, `MUSCU_DEBUT`, `ES_REPRISE_DEBUT` = 28 novembre ; le mois d'espagnol jusqu'au
+>   dimanche 27 décembre (cinq épreuves : 29 novembre, 6, 13, 20, 27 décembre), l'e-commerce le lundi 28 ; demi-volume
+>   jusqu'au 11 décembre, retests les lundis 21 décembre, 25 janvier, 1er mars ; saison de 191 jours, +0,29 kg par
+>   semaine, boucle des calories muette jusqu'au 19 décembre. Le jour 1 tombe un samedi sans batch : pas de boîte
+>   (`CONSIGNES_DATEES['2026-11-28']` : déjeuner et dîner simples, les courses de 13:30 avec 70 g de viande hachée et
+>   une boîte d'œufs en plus), premier batch le dimanche 29.
+> **Le rattrapage** (`outils/rattrapage/plan.py`, régénérable) : 24 jours, du 28 novembre au 21 décembre, 70 temas
+>   (Anatomía 26, Epidemiología 20, Biología 14, Antropología 10) ; 7 faits le 29, 29 le 6 décembre, 50 le 13, 70 le 21.
+>   Documentación (11) n'a toujours pas de plan : sa base Notion porte des cours de Lille.
+> **L'audit** (chaque onglet et sous-onglet relu avec sa sauvegarde, aux dates charnières : la veille, le jour 1, le
+>   dimanche, un lundi, le premier JJB, un férié, le 21-23 décembre, le 28, les partiels) — ce qui se contredisait :
+>   1. *La veille du jour 1* : « Révision 0 / 3 h 55 », « 0 % À reprendre », « aucun Pomodoro depuis… », « 19 cases »,
+>      la clôture réclamée, pour une journée hors programme. La semaine du départ, avant le jour 1, rien n'est compté
+>      (`avantJour1`) : l'anneau dit « J-1 », le plan dit quoi préparer (le sac de salle, pas de boîte, les courses).
+>   2. *La séance de référence* : « chaque chiffre noté dans l'onglet Sport », et aucun champ pour eux ; « on ne suit
+>      pas la séance normale », alors que la séance du jour est cochable et compte. Une carte **Maximums** en haut de
+>      l'onglet Sport (`batcave-maximums` : référence, puis retests), et partout le même texte : les maximums d'abord,
+>      puis la séance du jour à la moitié des tours. Le retest du 21 décembre est annoncé au plan et dans le bloc.
+>   3. *Des vacances de Noël au dernier examen* : « Étudier en avance — un tema que le prof n'a pas encore donné »,
+>      « Approfondir — le tema que le prof vient de donner », alors que les cours sont finis. `revisionExamen` : dès
+>      le dernier jour de cours (mardi 22 décembre), ces blocs, « Lire » et la simulation du dimanche disent quelle
+>      matière réviser, l'examen le plus proche d'abord ; après l'épreuve du jour, la suivante. « Préparer · Examen »
+>      ne dit plus « Veille de… » le matin même. La veille et le matin d'un examen, un bloc « Projets perso » passe à
+>      la révision (la règle « les études d'abord », écrite partout, appliquée).
+>   4. *Un mardi sans cours* (férié, vacances, partiels) : deux « Temps libre », les deux annonçaient le batch.
+>   5. *Le bloc en cours du tableau de bord* recevait l'heure « NaN:NaN » : le départ de 15:00 affichait le texte de 17:00.
+>   6. *Cinq textes* promettaient « coucher à 21:00 » les jours sans cours ; sa grille garde 21:35.
+>   7. *Record* d'une série affiché sous la série en cours (« Snus 19 j · record 9 »).
+>   8. *Le plan machine* : 130 € dans la cagnotte (la Batcave dit 100 €) ; les deux prêts à 0 % comptés comme acquis
+>      (réservés aux étudiants inscrits en France : « à confirmer par écrit », 98 900 € sans eux).
+>   9. *Le guide* : le samedi, « tapis enlevés » à 14:52 pendant les courses ; le dimanche, la collation à 15:45
+>      pendant la laverie ; « la revue du dimanche (onglet Études) » alors qu'elle est dans la clôture ; la semaine du
+>      21 décembre annoncée « pas de cours » ; le premier JJB sans rappel de la licence ; le tuteur sans plan B dans la
+>      Batcave (« conversa », puis « cartas ») ; le petit-déjeuner du jour 1 sans sa consigne.
+>   10. *Les pages* : Dossier E-commerce resté au 13 et au 24 décembre par endroits ; suivi (cycles du 22 novembre) ;
+>      paliers (départ « 24 nov. », 60 ou 64 kg) ; « Objectifs » comptait 189 jours l'après-midi quand le tableau de
+>      bord en comptait 190 ; « Meal prep » : « plus rien au congélateur » (la viande crue du mardi y attend).
+> **Google Agenda** : les blocs de travail du vendredi 27 (séries de l'ancien plan : espagnol 05:30, Anki, étude,
+>   clôture) retirés pour ce jour-là seulement ; la Batcave reconstruit le reste (58 jours dès le 28) à sa prochaine
+>   ouverture.
+> **Outils** : `tests/_vider-onglets.mjs` (le texte de chaque onglet et sous-onglet à une date, avec ses données),
+>   `tests/_sonde-consignes.mjs`, `tests/_sonde-maximums.mjs`, `tests/_sonde-chiffres.mjs` ; `test124.mjs` couvre l'audit.
+> **Tests** : 37 recalés sur le samedi 28 (trois agents en parallèle, relus), 120 et 80 ajustés à l'audit, 17 rendu
+>   insensible à la charge. Campagne complète sur la version finale (116 tests) : 115 verts,
+>   et test17 (un enchaînement de Pomodoros sensible à la charge de trois files en parallèle) vert relancé seul, deux
+>   fois ; test124 vert. Saison A avec sa sauvegarde, du 28 novembre au 6 juin : 191 jours, 5 007 lignes, 3 616 cases,
+>   le pas à pas identique à la grille. Ses données réelles (27, 28 et 29 novembre) : aucune erreur, rien ne déborde.
+>   audit, audit-suivi (recalé au jeudi 3 décembre), câblage, contraste, verif-profonde, verif-pages : verts. Le
+>   chargement ne ralentit pas (≈ 0,4 s avant comme après).
+> **Proposé, pas fait** (à lui de dire) : 1) pendant les partiels (31 décembre → 20 janvier), tous les blocs de la
+>   boutique à la révision, la boutique le 21 janvier ; 2) une file de rattrapage vivante dans la Batcave ; 3) le
+>   plan de Documentación (il doit envoyer le cronograma de Canvas) ; 4) un mode « journée courte » ; 5) corriger sa
+>   page « 7 plans » (prêts à 0 %).
+> **En attente** : l'examen RR/OR en classe (jeudi 26 ou vendredi 27), l'actividad 1 d'Antropología avant lundi 30,
+>   la demande AideFi avant lundi 30 s'il y a droit cette année, le médecin (douleurs à la poitrine) avant d'aller au
+>   maximum, sa pesée du dimanche 29 (60 ou 64 kg).
+
 > ### Jeudi 26 novembre, 20:00 — le rattrapage, tema par tema, du vendredi 27 au dimanche 6 décembre
 > **Ses mots** : « fais moi un plan pour rattraper les cours sur les prochains jours, c'est super important j'ai bcp de
 > retard », puis « j'ai pas touché un cours depuis le début de l'année », puis « j'ai combien de temas a rattraper, il faut

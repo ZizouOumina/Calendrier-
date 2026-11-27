@@ -177,7 +177,7 @@ console.log('\n== 232) Avant le lundi 14 septembre : aucune période, la grille 
      'le 14 : révision dentaire, déjeuner et cours intacts : ' + [g.l0720, g.l0820, g.l0920, g.l1220, g.l1730].join(' / '));
   ok(g.l1120 === 'Question ouverte ou autre' && g.l1300 === 'Español · gramática' && g.l1400 === 'Español · escribir' && g.l1500 === 'Español · hablar',
      'le 14 : seuls les Projets perso deviennent Español, les quatre du lundi : ' + [g.l1120, g.l1300, g.l1400, g.l1500].join(' / '));
-  ok(/muscu à partir du/.test(g.sport) && /24 nov/.test(g.sport), 'sport : avant la première séance, « muscu à partir du 24 nov. » (le mardi 24 depuis le 24 novembre) (' + g.sport + ')');
+  ok(/muscu à partir du/.test(g.sport) && /28 nov/.test(g.sport), 'sport : avant la première séance, « muscu à partir du 28 nov. » (le samedi 28 depuis le 26 novembre) (' + g.sport + ')');
   await ctx.close();
 }
 
@@ -209,24 +209,27 @@ console.log('\n== 232) Avant le lundi 14 septembre : aucune période, la grille 
    19 novembre : jour 1 au vendredi 20 -- le mois repris va du vendredi 20 novembre au samedi 19 decembre ; premier jour
    sans phase le DIMANCHE 20 DECEMBRE. Les creneaux se lisent toujours sur le mardi 22 et le vendredi 25.
    24 novembre : jour 1 au mardi 24 (verrouille) -- le mois repris va du mardi 24 novembre au mercredi 23 decembre ;
-   premier jour sans phase le JEUDI 24 DECEMBRE. Les creneaux se lisent sur le mardi 29, le bloc matinal sur le vendredi 25. */
-console.log('\n== 233) Fin du mois repris (mercredi 23 décembre) puis la suite : les projets reviennent ==');
+   premier jour sans phase le JEUDI 24 DECEMBRE. Les creneaux se lisent sur le mardi 29, le bloc matinal sur le vendredi 25.
+   26 novembre : jour 1 au samedi 28 (« une derniere fois », reverrouille) -- le mois repris va du samedi 28 novembre au
+   dimanche 27 decembre ; premier jour sans phase le LUNDI 28 DECEMBRE. Les creneaux se lisent toujours sur le mardi 29,
+   le bloc matinal sur le vendredi 1er janvier, le samedi sur le 2 janvier. */
+console.log('\n== 233) Fin du mois repris (dimanche 27 décembre) puis la suite : les projets reviennent ==');
 {
-  const { ctx, fr } = await ouvrir('2026-12-24T12:00:00+01:00');
+  const { ctx, fr } = await ouvrir('2026-12-28T12:00:00+01:00');
   const g = await fr.evaluate(() => {
     const at = (cle, iso, h) => (window.__bcGrille(cle, iso).find(b => b[0] === h) || [])[1];
     /* Le vendredi n'a pas de bloc a 11:20 (Jumu'ah) : les trois creneaux se lisent donc sur
        le premier MARDI d'apres la phase, le 15 decembre ; le bloc matinal, sur le vendredi 11. */
-    return { p: (window.__bcPeriode('2026-12-24') || {}).id, p25: (window.__bcPeriode('2026-12-23') || {}).id,
-             p8: (window.__bcPeriode('2026-11-23') || {}).id, p16: (window.__bcPeriode('2026-11-24') || {}).id,
+    return { p: (window.__bcPeriode('2026-12-28') || {}).id, p25: (window.__bcPeriode('2026-12-27') || {}).id,
+             p8: (window.__bcPeriode('2026-11-27') || {}).id, p16: (window.__bcPeriode('2026-11-28') || {}).id,
              a1120: at('tuesday','2026-12-29','11:20'), a1300: at('tuesday','2026-12-29','13:00'), a1400: at('tuesday','2026-12-29','14:00'),
-             f0530: at('friday','2026-12-25','05:30'), releve: document.querySelector('#bc-grille .v').textContent,
-             ds1800: at('saturday','2026-12-26','18:00') };
+             f0530: at('friday','2027-01-01','05:30'), releve: document.querySelector('#bc-grille .v').textContent,
+             ds1800: at('saturday','2027-01-02','18:00') };
   });
   /* Regime combat : le mardi, 13:00 est « Lire » et les projets sont a 14:00. */
-  ok(g.p === undefined && g.a1120 === 'Question ouverte ou autre' && g.a1300 === 'Lire' && g.a1400 === 'Projets perso 2' && g.f0530 === 'Projets perso matinal', 'dès le 24 décembre : plus de phase, les blocs reviennent aux projets ('+[g.p,g.a1300,g.a1400].join(' / ')+')');
-  ok(g.p25 === 'es-1-reprise' && g.p16 === 'es-1-reprise', 'le mercredi 23 décembre est le dernier jour du mois repris, et le mardi 24 novembre (jour 1) en fait partie (' + [g.p25, g.p16].join(' / ') + ')');
-  ok(g.p8 === undefined, 'le lundi 23 novembre, veille du jour 1, est hors phase (' + g.p8 + ')');
+  ok(g.p === undefined && g.a1120 === 'Question ouverte ou autre' && g.a1300 === 'Lire' && g.a1400 === 'Projets perso 2' && g.f0530 === 'Projets perso matinal', 'dès le 28 décembre : plus de phase, les blocs reviennent aux projets ('+[g.p,g.a1300,g.a1400].join(' / ')+')');
+  ok(g.p25 === 'es-1-reprise' && g.p16 === 'es-1-reprise', 'le dimanche 27 décembre est le dernier jour du mois repris, et le samedi 28 novembre (jour 1) en fait partie (' + [g.p25, g.p16].join(' / ') + ')');
+  ok(g.p8 === undefined, 'le vendredi 27 novembre, veille du jour 1, est hors phase (' + g.p8 + ')');
   ok(!/phase/.test(g.releve), 'relevé GRILLE : ' + g.releve);
   ok(g.ds1800 === 'Projets perso 3', 'le samedi 18:00 reste un bloc de projets depuis le régime combat (' + g.ds1800 + ')');
   await ctx.close();

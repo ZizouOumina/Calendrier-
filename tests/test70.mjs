@@ -29,8 +29,11 @@ const MERCREDI = '2026-12-02T09:00:00+01:00';   /* 31 octobre : jour 1 au 1er no
 /* 18 novembre : jour 1 au jeudi 19 -- la premiere seance est ce jour-la (un Haut lourd) ; le jeudi 3 decembre, quatorze jours
    plus tard, est en tours complets. Les pompes claquees ne touchent pas la cible des tractions. */
 /* 19 novembre : jour 1 au vendredi 20, la salle des le samedi 21 -- le premier Haut lourd est le jeudi 26, sa montee en charge finit le 9 decembre : le jeudi de lecture passe au 10. */
-const PREMIERE = {'batcave-sport-log': [{id:'p0', date:'2026-11-26', type:'Haut lourd', exo:'Pompes claquées', series:[5,5,5], charge:0, unite:'reps'}]};
-const LUNDI    = '2026-12-10T09:00:00+01:00';   /* jeudi : la seance lourde depuis le regime combat (21 octobre : le 12, tours complets) */
+/* 26 novembre : jour 1 au samedi 28 -- une serie du jeudi 26, AVANT le depart, ne compte plus comme premiere seance (le jeudi 10 redevenait
+   « la premiere », a la moitie des tours : 5/5). Le premier Haut lourd du programme est le jeudi 3 decembre ; le jeudi 17, quatorze jours
+   plus tard, est en tours complets : le jeudi de lecture passe au 17. */
+const PREMIERE = {'batcave-sport-log': [{id:'p0', date:'2026-12-03', type:'Haut lourd', exo:'Pompes claquées', series:[5,5,5], charge:0, unite:'reps'}]};
+const LUNDI    = '2026-12-17T09:00:00+01:00';   /* jeudi : la seance lourde depuis le regime combat (21 octobre : le 12, tours complets) */
 
 console.log('\n== 270) Un jour off, le bandeau propose de choisir une séance ==');
 {
@@ -86,12 +89,12 @@ console.log('\n== 273) Saisie au pas : séries, répétitions, lest ==');
   ok(await valeursSaisie(fr) === '5/5/5', 'un appui sur − la retire');
   await saisirSeries(fr, [9, 8, 7, 7], 2.5);
   await page.waitForTimeout(250);
-  /* le journal porte aussi la premiere seance du 3 (PREMIERE) : on lit l'entree du jour */
-  const log = (await local(fr, 'batcave-sport-log')).filter(l => l.date === '2026-12-10');
+  /* le journal porte aussi la premiere seance du 3 decembre (PREMIERE) : on lit l'entree du jour */
+  const log = (await local(fr, 'batcave-sport-log')).filter(l => l.date === '2026-12-17');
   ok(log.length === 1 && JSON.stringify(log[0].series) === '[9,8,7,7]' && log[0].charge === 2.5,
      'journal : 9/8/7/7 @2,5 kg (' + JSON.stringify(log[0] && [log[0].series, log[0].charge]) + ')');
   ok(await fr.evaluate(() => document.querySelector('.sport-card.today li:not(.puissance) .saisie [data-valider]').textContent.trim()) === '✓ enregistré', 'le bouton passe à « enregistré »');
-  ok((await local(fr, 'batcave-sport-2026-12-10'))['Haut lourd-1'] === true, 'l\'exercice est coché tout seul');
+  ok((await local(fr, 'batcave-sport-2026-12-17'))['Haut lourd-1'] === true, 'l\'exercice est coché tout seul');
   await ctx.close();
 }
 
@@ -120,7 +123,7 @@ console.log('\n== 275) « Effacer » retire la séance du jour ==');
   await effacerSaisie(fr);
   await page.waitForTimeout(200);
   ok((await local(fr, 'batcave-sport-log')).length === 0, 'effacer vide le journal du jour');
-  ok((await local(fr, 'batcave-sport-2026-12-10'))['Haut lourd-1'] === false, 'et décoche l\'exercice');
+  ok((await local(fr, 'batcave-sport-2026-12-17'))['Haut lourd-1'] === false, 'et décoche l\'exercice');
   /* 7 novembre : rien d'autre au journal -- la seance du jour redevient la premiere, a la moitie des tours */
   ok(await valeursSaisie(fr) === '5/5', 'le bloc repart de la cible (' + await valeursSaisie(fr) + ')');
   await ctx.close();

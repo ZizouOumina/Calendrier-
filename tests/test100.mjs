@@ -62,8 +62,10 @@ console.log('\n== 326) Deux sorties par semaine, dans le temps libre ==');
      samedi suivant : 14 novembre. 14 octobre : la phase finit le samedi 14 -- samedi suivant : 21.
      7 novembre : le mois d'espagnol repris finit le mardi 8 decembre -- samedi suivant : 12.
      12 novembre : le mois repris finit le samedi 12 decembre, encore en phase -- samedi suivant : 19.
-     19 novembre : le mois repris finit le samedi 19 decembre, encore en phase -- samedi suivant : 26. */
-  const samApres = await grille(fr, '2026-12-26', 'saturday');
+     19 novembre : le mois repris finit le samedi 19 decembre, encore en phase -- samedi suivant : 26.
+     26 novembre : jour 1 au samedi 28 (« une derniere fois »), le mois repris finit le dimanche 27 decembre : le samedi 26
+     est encore en phase -- samedi suivant : 2 janvier. */
+  const samApres = await grille(fr, '2027-01-02', 'saturday');
   ok(samApres.some(x => x[1] === 'Projets perso 2') && /Projets perso 3/.test(samApres[i(samApres,'18:00')][1]),
      'après la phase Español, Projets perso 2 revient et 18:00 est un bloc de projets (le combat a remplacé la course le 28 septembre)');
   ok(dim.some(x => x[1] === 'Réexpliquer') && dim.some(x => /Batch cooking/.test(x[1])),

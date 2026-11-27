@@ -41,7 +41,7 @@ async function recharger(page){
   await page.waitForTimeout(300);
   return fr;
 }
-const JEUDI = '2026-11-26T07:30:00+01:00';   /* 19 novembre : jour 1 au vendredi 20, la salle des le samedi 21 -- le premier jeudi de salle est le 26 (avant : le jeudi 19, jour 1) */
+const JEUDI = '2026-12-03T07:30:00+01:00';   /* 26 novembre : jour 1 au samedi 28, la salle avec lui -- le premier jeudi de salle est le 3 decembre (le jeudi 26 novembre est avant le jour 1 : ni seance, ni score) ; 19 novembre : jour 1 au vendredi 20, la salle des le samedi 21 -- le premier jeudi de salle etait le 26 (avant : le jeudi 19, jour 1) */
 
 console.log('\n== 1) Le tri : quatre habitudes sortent ==');
 {
@@ -55,7 +55,7 @@ console.log('\n== 1) Le tri : quatre habitudes sortent ==');
   const vieux = {'batcave-habits': [{id:'core-fajr', label:'Fajr', icon:'🕌'}, {id:'core-revue', label:'Revue de la veille / plan du lendemain', icon:'📝'},
                                     {id:'core-marche', label:'Marche / pas', icon:'🚶'}, {id:'core-courses', label:'Courses faites', icon:'🛒', jour:6},
                                     {id:'core-cou-jeudi', label:'Cou — flexion et extension, 3 × 12-20', icon:'🦴', jours:[4]}, {id:'hab1', label:'Vaisselle', icon:'🍽️'}],
-                 'batcave-habitlog': {'core-revue': ['2026-11-25'], 'core-fajr': ['2026-11-25']}};
+                 'batcave-habitlog': {'core-revue': ['2026-12-02'], 'core-fajr': ['2026-12-02']}};
   const { ctx, page, fr } = await ouvrir(JEUDI, vieux);
   const ids = (await lire(fr, 'batcave-habits')).map(h => h.id);
   ok(!RETIREES.some(i => ids.includes(i)) && ids.includes('core-fajr') && ids.includes('hab1'), 'compte existant : les quatre sont retirées du stockage, ses habitudes à lui restent (' + ids.join(', ') + ')');
@@ -78,7 +78,7 @@ console.log('\n== 2) « Ma journée » : tout se coche, et le reste ==');
     cases: [...document.querySelectorAll('#mj-cases input[data-mj-hab]')].map(x => x.dataset.mjHab),
     routine: [...document.querySelectorAll('#mj-routine input[data-mj-hab]')].map(x => x.dataset.mjHab),
     titres: [...document.querySelectorAll('#mj-cases h3, #mj-routine h3')].map(x => x.textContent),
-    dus: window.__bcHabitsDuJour(4, '2026-11-26').map(h => h.id) }));
+    dus: window.__bcHabitsDuJour(4, '2026-12-03').map(h => h.id) }));
   ok(r.titres.join(' | ') === 'Tes habitudes du jour | La routine du jour', 'deux listes : ' + r.titres.join(' | '));
   ok(r.cases.includes('core-fajr') && r.cases.includes('core-lumiere') && r.routine.includes('core-lit') && r.routine.includes('core-creatine'), 'les habitudes et la routine ont leurs cases');
   ok([...r.cases, ...r.routine].sort().join() === [...r.dus].sort().join(), 'exactement ce qui tombe ce jeudi (' + r.dus.length + ')');
@@ -96,9 +96,9 @@ console.log('\n== 2) « Ma journée » : tout se coche, et le reste ==');
   const relu = await fr2.evaluate(() => Object.fromEntries([...document.querySelectorAll('input[data-mj-hab]')].map(x => [x.dataset.mjHab, x.checked])));
   ok(relu['core-lit'] === false && relu['core-fajr'] === true && relu['core-creatine'] === true, 'au rechargement : les cochées le restent, la décochée aussi');
   /* la veille et le lendemain */
-  const hier = await fr2.evaluate(() => { window.__bcJournee.aller('2026-11-25'); return { cases: document.querySelectorAll('#mj-corps input[data-mj-hab]').length, note: document.getElementById('mj-cases-compte').textContent }; });
+  const hier = await fr2.evaluate(() => { window.__bcJournee.aller('2026-12-02'); return { cases: document.querySelectorAll('#mj-corps input[data-mj-hab]').length, note: document.getElementById('mj-cases-compte').textContent }; });
   ok(hier.cases === 0 && / cochées$/.test(hier.note), 'un jour passé : pas de case, ce qui a été coché (« ' + hier.note + ' »)');
-  const demain = await fr2.evaluate(() => { window.__bcJournee.aller('2026-11-27'); return { cases: document.querySelectorAll('#mj-corps input[data-mj-hab]').length, note: document.getElementById('mj-cases-compte').textContent,
+  const demain = await fr2.evaluate(() => { window.__bcJournee.aller('2026-12-04'); return { cases: document.querySelectorAll('#mj-corps input[data-mj-hab]').length, note: document.getElementById('mj-cases-compte').textContent,
     dhuhr: [...document.querySelectorAll('#mj-cases li')].map(x => x.textContent).filter(t => /Dhuhr/.test(t))[0] }; });
   ok(demain.cases === 0 && /se cochent le jour même/.test(demain.note), 'un jour à venir : la liste, qui se cochera le jour même');
   ok(/Jumu’ah/.test(demain.dhuhr || ''), 'le vendredi, Dhuhr porte la Jumu\'ah : « ' + demain.dhuhr + ' »');
