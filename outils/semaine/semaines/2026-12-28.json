@@ -62,7 +62,7 @@
    {
     "h": "12:20",
     "l": "Déjeuner",
-    "c": "La boîte du jour : les pâtes (125 g crus, cuites au batch du dimanche), poulet 70 g, 80 g de brocoli, réchauffée à la poêle avec 2 à 3 cuillères d'eau, couvercle, 4 à 5 min, brûlante jusqu'au cœur. Pas de sauce : pâtes nature, les 20 ml d'huile d'olive crue mélangés à chaud, sel iodé et tes épices (cumin, ras el hanout, paprika ; une pointe de harissa si tu veux)."
+    "c": "La boîte du jour : les pâtes (125 g crus, cuites au batch du dimanche), poulet 100 g, 80 g de brocoli, réchauffée à la poêle avec 2 à 3 cuillères d'eau, couvercle, 4 à 5 min, brûlante jusqu'au cœur. Pas de sauce : pâtes nature, les 20 ml d'huile d'olive crue mélangés à chaud, sel iodé et tes épices (cumin, ras el hanout, paprika ; une pointe de harissa si tu veux)."
    },
    {
     "h": "12:40",
@@ -102,7 +102,7 @@
    {
     "h": "19:00",
     "l": "Dîner",
-    "c": "D'abord, trente secondes : la viande crue du mardi (poulet et viande hachée) passe du congélateur au frigo, dans une assiette creuse, en bas. Elle décongèle en 24 h pour la session de demain soir. La boîte de riz du matin (125 g crus) et la boîte du jour : viande hachée 70 g, 80 g d'épinards, réchauffées ensemble à la poêle. Pas de sauce : hors du feu, les 15 ml d'huile d'olive crue sur le riz, sel iodé et tes épices. La créatine, 5 g, avec le repas. Ensuite plus rien jusqu'au lendemain."
+    "c": "D'abord, trente secondes : la viande crue du mardi (poulet et viande hachée) passe du congélateur au frigo, dans une assiette creuse, en bas. Elle décongèle en 24 h pour la session de demain soir. La boîte de riz du matin (125 g crus) et la boîte du jour : viande hachée 100 g, 80 g d'épinards, réchauffées ensemble à la poêle. Pas de sauce : hors du feu, les 15 ml d'huile d'olive crue sur le riz, sel iodé et tes épices. La créatine, 5 g, avec le repas. Ensuite plus rien jusqu'au lendemain."
    },
    {
     "h": "19:30",
@@ -447,7 +447,7 @@
     },
     {
      "c": "poulet",
-     "q": 70
+     "q": 100
     },
     {
      "c": "legumes",
@@ -483,7 +483,7 @@
     },
     {
      "c": "hachee",
-     "q": 70
+     "q": 100
     },
     {
      "c": "legumes",
@@ -556,7 +556,7 @@
    {
     "h": "12:20",
     "l": "Déjeuner",
-    "c": "La boîte du jour : les pâtes (125 g crus, cuites au batch du dimanche), poulet 70 g, 80 g de brocoli, réchauffée à la poêle avec 2 à 3 cuillères d'eau, couvercle, 4 à 5 min, brûlante jusqu'au cœur. Pas de sauce : pâtes nature, les 20 ml d'huile d'olive crue mélangés à chaud, sel iodé et tes épices (cumin, ras el hanout, paprika ; une pointe de harissa si tu veux)."
+    "c": "La boîte du jour : les pâtes (125 g crus, cuites au batch du dimanche), poulet 100 g, 80 g de brocoli, réchauffée à la poêle avec 2 à 3 cuillères d'eau, couvercle, 4 à 5 min, brûlante jusqu'au cœur. Pas de sauce : pâtes nature, les 20 ml d'huile d'olive crue mélangés à chaud, sel iodé et tes épices (cumin, ras el hanout, paprika ; une pointe de harissa si tu veux)."
    },
    {
     "h": "12:40",
@@ -601,7 +601,7 @@
    {
     "h": "19:00",
     "l": "Dîner",
-    "c": "La boîte de riz du matin (125 g crus) et la boîte du jour : viande hachée 70 g, 80 g d'épinards, réchauffées ensemble à la poêle. Pas de sauce : hors du feu, les 15 ml d'huile d'olive crue sur le riz, sel iodé et tes épices. La créatine, 5 g, avec le repas. Ensuite plus rien jusqu'au lendemain."
+    "c": "La boîte de riz du matin (125 g crus) et la boîte du jour : viande hachée 100 g, 80 g d'épinards, réchauffées ensemble à la poêle. Pas de sauce : hors du feu, les 15 ml d'huile d'olive crue sur le riz, sel iodé et tes épices. La créatine, 5 g, avec le repas. Ensuite plus rien jusqu'au lendemain."
    },
    {
     "h": "19:30",
@@ -920,7 +920,7 @@
     },
     {
      "c": "poulet",
-     "q": 70
+     "q": 100
     },
     {
      "c": "legumes",
@@ -956,7 +956,7 @@
     },
     {
      "c": "hachee",
-     "q": 70
+     "q": 100
     },
     {
      "c": "legumes",
@@ -1029,7 +1029,7 @@
    {
     "h": "12:20",
     "l": "Déjeuner",
-    "c": "La boîte du jour : les pâtes (125 g crus, cuites au batch du mardi), poulet 70 g, 80 g de brocoli, réchauffée à la poêle avec 2 à 3 cuillères d'eau, couvercle, 4 à 5 min, brûlante jusqu'au cœur. Pas de sauce : pâtes nature, les 20 ml d'huile d'olive crue mélangés à chaud, sel iodé et tes épices (cumin, ras el hanout, paprika ; une pointe de harissa si tu veux)."
+    "c": "La boîte du jour : les pâtes (125 g crus, cuites au batch du mardi), poulet 100 g, 80 g de brocoli, réchauffée à la poêle avec 2 à 3 cuillères d'eau, couvercle, 4 à 5 min, brûlante jusqu'au cœur. Pas de sauce : pâtes nature, les 20 ml d'huile d'olive crue mélangés à chaud, sel iodé et tes épices (cumin, ras el hanout, paprika ; une pointe de harissa si tu veux)."
    },
    {
     "h": "12:40",
@@ -1074,7 +1074,7 @@
    {
     "h": "19:00",
     "l": "Dîner",
-    "c": "La boîte de riz du matin (125 g crus) et la boîte du jour : viande hachée 70 g, 80 g d'épinards, réchauffées ensemble à la poêle. Pas de sauce : hors du feu, les 15 ml d'huile d'olive crue sur le riz, sel iodé et tes épices. La créatine, 5 g, avec le repas. Ensuite plus rien jusqu'au lendemain."
+    "c": "La boîte de riz du matin (125 g crus) et la boîte du jour : viande hachée 100 g, 80 g d'épinards, réchauffées ensemble à la poêle. Pas de sauce : hors du feu, les 15 ml d'huile d'olive crue sur le riz, sel iodé et tes épices. La créatine, 5 g, avec le repas. Ensuite plus rien jusqu'au lendemain."
    },
    {
     "h": "19:30",
@@ -1432,7 +1432,7 @@
     },
     {
      "c": "poulet",
-     "q": 70
+     "q": 100
     },
     {
      "c": "legumes",
@@ -1468,7 +1468,7 @@
     },
     {
      "c": "hachee",
-     "q": 70
+     "q": 100
     },
     {
      "c": "legumes",
@@ -1541,7 +1541,7 @@
    {
     "h": "12:20",
     "l": "Déjeuner",
-    "c": "La boîte du jour : les pâtes (125 g crus, cuites au batch du mardi), poulet 70 g, 80 g de brocoli, réchauffée à la poêle avec 2 à 3 cuillères d'eau, couvercle, 4 à 5 min, brûlante jusqu'au cœur. Pas de sauce : pâtes nature, les 20 ml d'huile d'olive crue mélangés à chaud, sel iodé et tes épices (cumin, ras el hanout, paprika ; une pointe de harissa si tu veux)."
+    "c": "La boîte du jour : les pâtes (125 g crus, cuites au batch du mardi), poulet 100 g, 80 g de brocoli, réchauffée à la poêle avec 2 à 3 cuillères d'eau, couvercle, 4 à 5 min, brûlante jusqu'au cœur. Pas de sauce : pâtes nature, les 20 ml d'huile d'olive crue mélangés à chaud, sel iodé et tes épices (cumin, ras el hanout, paprika ; une pointe de harissa si tu veux)."
    },
    {
     "h": "12:40",
@@ -1586,7 +1586,7 @@
    {
     "h": "19:00",
     "l": "Dîner",
-    "c": "La boîte de riz du matin (125 g crus) et la boîte du jour : viande hachée 70 g, 80 g d'épinards, réchauffées ensemble à la poêle. Pas de sauce : hors du feu, les 15 ml d'huile d'olive crue sur le riz, sel iodé et tes épices. La créatine, 5 g, avec le repas. Ensuite plus rien jusqu'au lendemain."
+    "c": "La boîte de riz du matin (125 g crus) et la boîte du jour : viande hachée 100 g, 80 g d'épinards, réchauffées ensemble à la poêle. Pas de sauce : hors du feu, les 15 ml d'huile d'olive crue sur le riz, sel iodé et tes épices. La créatine, 5 g, avec le repas. Ensuite plus rien jusqu'au lendemain."
    },
    {
     "h": "19:30",
@@ -1905,7 +1905,7 @@
     },
     {
      "c": "poulet",
-     "q": 70
+     "q": 100
     },
     {
      "c": "legumes",
@@ -1941,7 +1941,7 @@
     },
     {
      "c": "hachee",
-     "q": 70
+     "q": 100
     },
     {
      "c": "legumes",
@@ -2014,7 +2014,7 @@
    {
     "h": "12:20",
     "l": "Déjeuner",
-    "c": "La boîte du jour : les pâtes (125 g crus, cuites au batch du mardi), poulet 70 g, 80 g de brocoli, réchauffée à la poêle avec 2 à 3 cuillères d'eau, couvercle, 4 à 5 min, brûlante jusqu'au cœur. Pas de sauce : pâtes nature, les 20 ml d'huile d'olive crue mélangés à chaud, sel iodé et tes épices (cumin, ras el hanout, paprika ; une pointe de harissa si tu veux)."
+    "c": "La boîte du jour : les pâtes (125 g crus, cuites au batch du mardi), poulet 100 g, 80 g de brocoli, réchauffée à la poêle avec 2 à 3 cuillères d'eau, couvercle, 4 à 5 min, brûlante jusqu'au cœur. Pas de sauce : pâtes nature, les 20 ml d'huile d'olive crue mélangés à chaud, sel iodé et tes épices (cumin, ras el hanout, paprika ; une pointe de harissa si tu veux)."
    },
    {
     "h": "13:15",
@@ -2059,7 +2059,7 @@
    {
     "h": "19:00",
     "l": "Dîner",
-    "c": "La boîte de riz du matin (125 g crus) et la boîte du jour : viande hachée 70 g, 80 g d'épinards, réchauffées ensemble à la poêle. Pas de sauce : hors du feu, les 15 ml d'huile d'olive crue sur le riz, sel iodé et tes épices. La créatine, 5 g, avec le repas. Ensuite plus rien jusqu'au lendemain."
+    "c": "La boîte de riz du matin (125 g crus) et la boîte du jour : viande hachée 100 g, 80 g d'épinards, réchauffées ensemble à la poêle. Pas de sauce : hors du feu, les 15 ml d'huile d'olive crue sur le riz, sel iodé et tes épices. La créatine, 5 g, avec le repas. Ensuite plus rien jusqu'au lendemain."
    },
    {
     "h": "19:30",
@@ -2404,7 +2404,7 @@
     },
     {
      "c": "poulet",
-     "q": 70
+     "q": 100
     },
     {
      "c": "legumes",
@@ -2440,7 +2440,7 @@
     },
     {
      "c": "hachee",
-     "q": 70
+     "q": 100
     },
     {
      "c": "legumes",
@@ -2508,7 +2508,7 @@
    {
     "h": "12:20",
     "l": "Déjeuner",
-    "c": "La boîte du jour : les pâtes (125 g crus, cuites au batch du mardi), poulet 70 g, 80 g de brocoli, réchauffée à la poêle avec 2 à 3 cuillères d'eau, couvercle, 4 à 5 min, brûlante jusqu'au cœur. Pas de sauce : pâtes nature, les 20 ml d'huile d'olive crue mélangés à chaud, sel iodé et tes épices (cumin, ras el hanout, paprika ; une pointe de harissa si tu veux)."
+    "c": "La boîte du jour : les pâtes (125 g crus, cuites au batch du mardi), poulet 100 g, 80 g de brocoli, réchauffée à la poêle avec 2 à 3 cuillères d'eau, couvercle, 4 à 5 min, brûlante jusqu'au cœur. Pas de sauce : pâtes nature, les 20 ml d'huile d'olive crue mélangés à chaud, sel iodé et tes épices (cumin, ras el hanout, paprika ; une pointe de harissa si tu veux)."
    },
    {
     "h": "13:10",
@@ -2523,7 +2523,7 @@
    {
     "h": "15:30",
     "l": "Rangement des courses",
-    "c": "La viande de la session du mardi va au congélateur tout de suite, crue : 280 g de poulet et 280 g de viande hachée (mercredi à samedi), à plat dans deux sacs congélation, la date dessus. Le reste de la viande au frigo, en bas : c'est celle de demain. Les surgelés au congélateur, puis le frais, puis le sec, puis les produits de salle de bain et de ménage à leur place. Les tickets dans Budget : la nourriture dans Nourriture, le reste dans Soin et santé ou Maison et ménage."
+    "c": "La viande de la session du mardi va au congélateur tout de suite, crue : 400 g de poulet et 400 g de viande hachée (mercredi à samedi), à plat dans deux sacs congélation, la date dessus. Le reste de la viande au frigo, en bas : c'est celle de demain. Les surgelés au congélateur, puis le frais, puis le sec, puis les produits de salle de bain et de ménage à leur place. Les tickets dans Budget : la nourriture dans Nourriture, le reste dans Soin et santé ou Maison et ménage."
    },
    {
     "h": "16:00",
@@ -2543,7 +2543,7 @@
    {
     "h": "19:30",
     "l": "Dîner",
-    "c": "La boîte de riz du matin (125 g crus) et la boîte du jour : viande hachée 70 g, 80 g d'épinards, réchauffées ensemble à la poêle. Pas de sauce : hors du feu, les 15 ml d'huile d'olive crue sur le riz, sel iodé et tes épices. La créatine, 5 g, avec le repas. Ensuite plus rien jusqu'au lendemain."
+    "c": "La boîte de riz du matin (125 g crus) et la boîte du jour : viande hachée 100 g, 80 g d'épinards, réchauffées ensemble à la poêle. Pas de sauce : hors du feu, les 15 ml d'huile d'olive crue sur le riz, sel iodé et tes épices. La créatine, 5 g, avec le repas. Ensuite plus rien jusqu'au lendemain."
    },
    {
     "h": "20:00",
@@ -2896,7 +2896,7 @@
     },
     {
      "c": "poulet",
-     "q": 70
+     "q": 100
     },
     {
      "c": "legumes",
@@ -2932,7 +2932,7 @@
     },
     {
      "c": "hachee",
-     "q": 70
+     "q": 100
     },
     {
      "c": "legumes",
@@ -3015,7 +3015,7 @@
    {
     "h": "14:30",
     "l": "🍲 Batch cooking de la semaine",
-    "c": "La première des deux sessions de la semaine, une heure (le détail dans l'onglet Meal prep). Une grande casserole d'eau salée : 250 g de pâtes (lundi et mardi midi), une minute de moins que le paquet, égouttées, un filet d'huile. Pendant ce temps, le poulet (140 g) à la poêle, feu vif : 4 min par face, puis 3 min à couvert. La viande hachée (210 g), en une fournée, 10 min. Les légumes surgelés (400 g), sans les décongeler : le brocoli 7 min, les épinards 5 min à couvert. Les 15 œufs durs de la semaine : 10 min dans l'eau bouillante, puis eau froide ; en coquille, au frigo. Tout refroidit 20 min à découvert, puis 5 boîtes, toutes au frigo, le jour écrit dessus : ce soir, puis lundi et mardi, midi et soir. La viande de mardi reste au congélateur. La vaisselle, le plan de travail essuyé. Puis, vers 15:30, la laverie : défais le lit — draps, taies, serviettes et lavettes dans le sac — l'oreiller aussi, dans le même sac (40 °C, ou ce que dit son étiquette, et un séchage long) — et pars à 15:35, à 5 min à pied (un lavage à 60 °C, sans adoucissant si tu as le choix, puis le séchage : 45 min en tout, 8,00 €). Tes 20 pages en espagnol pendant que ça tourne ; de retour vers 16:30, le lit se refait au début du ménage. Le ticket dans Budget, Maison et ménage."
+    "c": "La première des deux sessions de la semaine, une heure (le détail dans l'onglet Meal prep). Une grande casserole d'eau salée : 250 g de pâtes (lundi et mardi midi), une minute de moins que le paquet, égouttées, un filet d'huile. Pendant ce temps, le poulet (200 g) à la poêle, feu vif : 4 min par face, puis 3 min à couvert. La viande hachée (300 g), en deux fournées, 10 min chacune. Les légumes surgelés (400 g), sans les décongeler : le brocoli 7 min, les épinards 5 min à couvert. Les 15 œufs durs de la semaine : 10 min dans l'eau bouillante, puis eau froide ; en coquille, au frigo. Tout refroidit 20 min à découvert, puis 5 boîtes, toutes au frigo, le jour écrit dessus : ce soir, puis lundi et mardi, midi et soir. La viande de mardi reste au congélateur. La vaisselle, le plan de travail essuyé. Puis, vers 15:30, la laverie : défais le lit — draps, taies, serviettes et lavettes dans le sac — l'oreiller aussi, dans le même sac (40 °C, ou ce que dit son étiquette, et un séchage long) — et pars à 15:35, à 5 min à pied (un lavage à 60 °C, sans adoucissant si tu as le choix, puis le séchage : 45 min en tout, 8,00 €). Tes 20 pages en espagnol pendant que ça tourne ; de retour vers 16:30, le lit se refait au début du ménage. Le ticket dans Budget, Maison et ménage."
    },
    {
     "h": "16:30",
@@ -3030,7 +3030,7 @@
    {
     "h": "19:00",
     "l": "Dîner",
-    "c": "La boîte de riz du matin (125 g crus) et la boîte du jour : viande hachée 70 g, 80 g d'épinards, réchauffées ensemble à la poêle. Pas de sauce : hors du feu, les 15 ml d'huile d'olive crue sur le riz, sel iodé et tes épices. La créatine, 5 g, avec le repas. Ensuite plus rien jusqu'au lendemain."
+    "c": "La boîte de riz du matin (125 g crus) et la boîte du jour : viande hachée 100 g, 80 g d'épinards, réchauffées ensemble à la poêle. Pas de sauce : hors du feu, les 15 ml d'huile d'olive crue sur le riz, sel iodé et tes épices. La créatine, 5 g, avec le repas. Ensuite plus rien jusqu'au lendemain."
    },
    {
     "h": "19:30",
@@ -3603,7 +3603,7 @@
     },
     {
      "c": "hachee",
-     "q": 70
+     "q": 100
     },
     {
      "c": "legumes",

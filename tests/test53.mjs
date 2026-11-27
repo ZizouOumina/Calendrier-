@@ -86,8 +86,10 @@ console.log('\n== 180) Sans ajustement : plan de base, liste = plan × 7 ==');
   /* 25 octobre au soir : 70 g, 0,4 g/kg de proteines a chaque repas (Iraki 2019) -- 490 g. */
   /* 9 novembre au soir, deux sessions de batch : le dimanche midi devient un repas frais, 3 oeufs a la place
      du poulet -- 420 g de poulet (six midis), toujours 490 g de viande hachee (sept soirs). */
-  ok(c.items.some(t => /^Poulet — 420 g .*pesé au comptoir/.test(t) && !/demande/.test(t))
-  && c.items.some(t => /^Viande hachée 5 % — 490 g .*pesée au comptoir/.test(t))
+  /* 27 novembre, « ok passe la viande à 100 g dès maintenant » : 600 g de poulet (six midis), 700 g de viande hachée
+     (sept soirs) -- la liste sort de la semaine type du 14 décembre. */
+  ok(c.items.some(t => /^Poulet — 600 g .*pesé au comptoir/.test(t) && !/demande/.test(t))
+  && c.items.some(t => /^Viande hachée 5 % — 700 g .*pesée au comptoir/.test(t))
   && !c.items.some(t => /^Saumon/.test(t)),
      'viande au gramme près, pesée au comptoir, et plus de poisson : ' + c.items.filter(t => /^(Poulet|Viande|Saumon)/.test(t)).join(' · '));
   /* Les fruits se comptent, ils ne se pesent pas. */
@@ -206,7 +208,7 @@ console.log('\n== 181) Avec +150 kcal : le dîner et les courses l\'écrivent ==
   ok(/\+150 kcal\/jour/.test(c.note) && /\+40 g de riz cru/.test(c.note) && /\+280 g sur la semaine/.test(c.note), 'note : ' + c.note.slice(0, 120));
   /* La boucle kcal ne touche QUE le feculent du diner : les proteines gardent la quantite
      de la rotation, 560 g de poulet par semaine. */
-  ok(c.items.filter(t => /^Poulet/.test(t)).length === 1 && /420 g/.test(c.items.find(t => /^Poulet/.test(t))), 'les protéines ne bougent pas');   /* 420 g depuis les deux batchs du 9 novembre */
+  ok(c.items.filter(t => /^Poulet/.test(t)).length === 1 && /600 g/.test(c.items.find(t => /^Poulet/.test(t))), 'les protéines ne bougent pas');   /* 420 g depuis les deux batchs du 9 novembre ; 600 g depuis la viande à 100 g du 27 novembre */
   await ctx.close();
 }
 
@@ -294,7 +296,9 @@ console.log('\n== 183) La liste de courses sort du MEME plan que les repas ==');
   const { ctx, fr } = await ouvrir('2026-09-22T10:00:00+02:00');
   const r = await fr.evaluate(() => {
     const A = window.__bcAliments, alias = {banane:'bananes', fruit:'fruits'};
-    /* Semaine de reference du 16 au 22 novembre (21 octobre : celle du 2, la premiere aux trois
+    /* Semaine de reference du 14 au 20 decembre, celle de BESOIN_SEMAINE (27 novembre : la viande a 100 g des la
+       semaine du jour 1 -- la semaine du 16 novembre, a 70 g, n'est plus celle de la liste). Avant : du 16 au 22
+       novembre (21 octobre : celle du 2, la premiere aux trois
        matins de JJB ; 8 novembre : celle du 9, la premiere sans cottage cheese ; 9 novembre : celle du 16,
        la premiere aux pates du midi) : la collation combat et le shake de recup n'existent que les jours de combat (lundi,
        mercredi, vendredi).
@@ -302,7 +306,7 @@ console.log('\n== 183) La liste de courses sort du MEME plan que les repas ==');
     const noms = ['Petit-déjeuner','Déjeuner','Collation entraînement','Dîner'];
     const b = {};
     for(let j = 0; j < 7; j++){
-      const d = new Date(2026, 10, 16 + j), iso = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+      const d = new Date(2026, 11, 14 + j), iso = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
       const duJour = [1, 3, 5].indexOf(d.getDay()) > -1 ? noms.concat(['Collation combat', 'Récup combat']) : noms;
       duJour.forEach(n => window.__bcCompoRepas(n, iso, true).forEach(x => {
         const a = A[x.c], k = alias[x.c] || x.c;

@@ -5,7 +5,7 @@ Copie de référence du plan appliqué dans la Batcave (onglets Repas, Préparat
 prise de masse »), **finalisée le 29 octobre** (« il faut qu'il soit parfait ») : l'audit des
 vitamines et des minéraux, plus bas. **Le 8 novembre**, le cottage cheese sort (« enlève le cottage cheese,
 ça me dégoûte ») : un 3e œuf dur reprend sa place. **Dès le 16 novembre**, des pâtes à midi et le riz le soir
-(« le riz, ça monte vite au cerveau ; au pire, pâtes à midi tous les jours et riz le soir tous les jours »). Si un chiffre diverge, c'est l'application qui fait foi : les macros, la liste
+(« le riz, ça monte vite au cerveau ; au pire, pâtes à midi tous les jours et riz le soir tous les jours »). **Dès le samedi 28 novembre, le jour 1**, la viande passe de 70 à **100 g par repas** (27 novembre : « on m'a dit que je mangeais pas assez de viande », puis « ok passe la viande à 100 g dès maintenant »). Si un chiffre diverge, c'est l'application qui fait foi : les macros, la liste
 de courses et la préparation sortent toutes de la même source (`compoRepas`).
 
 ## Le cadre
@@ -15,10 +15,12 @@ de courses et la préparation sortent toutes de la même source (`compoRepas`).
 - **Peu de volume, beaucoup de calories** (23 octobre au soir : « il me faut du faible volume pour
   beaucoup de calories, j'arriverai pas à manger autant ») : un shake le matin, l'huile d'olive
   versée crue sur le riz (10 ml = 88 kcal sans une bouchée de plus), des amandes et des dattes.
-- **Jours normaux** (mardi, jeudi, samedi, dimanche) : **≈ 3 240 à 3 280 kcal · protéines
-  126 à 128 g (2,0 g par kilo) · glucides ≈ 415 g · lipides ≈ 123 à 126 g**, en quatre prises.
-- **Jours de JJB** (lundi, mercredi, vendredi, à partir du 2 décembre) : **≈ 3 800 kcal ·
-  protéines 136 g**, avec deux prises de plus.
+- **Jours normaux** (mardi, jeudi, samedi, dimanche) : **≈ 3 310 à 3 370 kcal · protéines
+  141 à 147 g (2,2 à 2,3 g par kilo) · glucides ≈ 403 g · lipides ≈ 125 à 132 g**, en quatre prises.
+- **Jours de JJB** (lundi, mercredi, vendredi, à partir du 2 décembre) : **≈ 3 905 kcal ·
+  protéines 156 g**, avec deux prises de plus.
+- Avant le 28 novembre, à 70 g de viande : 3 240 à 3 330 kcal et 131 à 134 g les jours normaux,
+  3 830 kcal et 142 g les jours de JJB.
 - **Plus de sauces depuis le 30 octobre** : l'huile d'olive, le sel iodé et les épices (plus bas).
 - Les valeurs : CIQUAL/USDA pour les aliments bruts, les étiquettes pour la boisson d'avoine
   (Lidl : 43 kcal, 1,3 g de protéines pour 100 ml) et le skyr. Recalculées à la main le 25 octobre, aliment par aliment : la
@@ -33,28 +35,35 @@ chiffre de la colonne « science » vient du résumé publié de la source, vér
 
 | Point | La science | Le plan | Source |
 |---|---|---|---|
-| Surplus | +10 à 20 % au-dessus de l'entretien | ≈ 3 490 kcal en moyenne sur la semaine, ≈ +18 % | Iraki 2019 |
+| Surplus | +10 à 20 % au-dessus de l'entretien | ≈ 3 580 kcal en moyenne sur la semaine, ≈ +21 % : un cran au-dessus depuis la viande à 100 g ; la boucle poids → calories corrige si la prise dépasse 0,5 % par semaine | Iraki 2019 |
 | Rythme de prise | 0,25 à 0,5 % du poids par semaine (0,16 à 0,32 kg à 64 kg) ; plus vite, c'est surtout du gras | vise 0,29 kg (64 → 72 kg du 28 novembre au 6 juin) ; la Batcave propose −100 kcal au-dessus de 0,5 % | Iraki 2019 ; Helms 2023 |
-| Protéines par jour | 1,6 à 2,2 g par kilo ; au-delà de ≈ 1,6, plus de gain mesurable | 2,0 (2,1 les jours de JJB) | Morton 2018 ; Iraki 2019 |
-| Protéines par repas | 0,40 à 0,55 g par kilo, sur 3 à 6 repas ; 4 × 20 g battent 2 × 40 et 8 × 10 | 4 repas, de 0,44 à 0,63 g par kilo | Iraki 2019 ; Schoenfeld et Aragon 2018 ; Areta 2013 |
-| Autour de l'entraînement | des protéines dans les 1 à 2 h avant ou après | le shake (40 g) 35 min après la séance de 07:00 ; après le JJB, la récup et le déjeuner (35 g) | Iraki 2019 ; Jäger 2017 (ISSN) |
-| Avant le coucher | 30 à 40 g de caséine augmentent la synthèse de la nuit | le dîner, 1 h 30 avant le coucher : 27 g, bas de la fourchette | Jäger 2017 (ISSN) |
-| Végétal ou animal | avec assez de protéines, pas de différence de muscle ni de force | ≈ 52 % animales (skyr, œufs, viande, sardines) | Hevia-Larraín 2021 ; Monteyne 2023 ; Joy 2013 |
-| Glucides | au moins 3 à 5 g par kilo | 6,4 (8,3 les jours de JJB) | Iraki 2019 |
-| Lipides | 0,5 à 1,5 g par kilo | **1,9 à 2,0 : au-dessus**, voir plus bas | Iraki 2019 |
+| Protéines par jour | 1,6 à 2,2 g par kilo ; au-delà de ≈ 1,6, plus de gain mesurable | **2,3 en moyenne à 64 kg (2,4 les jours de JJB) : un peu au-dessus**, voir plus bas | Morton 2018 ; Iraki 2019 |
+| Protéines par repas | 0,40 à 0,55 g par kilo, sur 3 à 6 repas ; 4 × 20 g battent 2 × 40 et 8 × 10 | 4 repas, de 0,49 à 0,63 g par kilo | Iraki 2019 ; Schoenfeld et Aragon 2018 ; Areta 2013 |
+| Autour de l'entraînement | des protéines dans les 1 à 2 h avant ou après | le shake (40 g) 35 min après la séance de 07:00 ; après le JJB, la récup et le déjeuner (47 g) | Iraki 2019 ; Jäger 2017 (ISSN) |
+| Avant le coucher | 30 à 40 g de caséine augmentent la synthèse de la nuit | le dîner, 1 h 30 avant le coucher : 33 g, dans la fourchette (viande, pas caséine) | Jäger 2017 (ISSN) |
+| Végétal ou animal | avec assez de protéines, pas de différence de muscle ni de force | ≈ 53 % animales (skyr, œufs, viande, sardines) | Hevia-Larraín 2021 ; Monteyne 2023 ; Joy 2013 |
+| Glucides | au moins 3 à 5 g par kilo | 6,3 (8,0 les jours de JJB) | Iraki 2019 |
+| Lipides | 0,5 à 1,5 g par kilo | **2,0 à 2,2 : au-dessus**, voir plus bas | Iraki 2019 |
 | Créatine | monohydrate, 3 à 5 g par jour | 5 g au dîner | Iraki 2019 ; Kreider 2017 (ISSN) |
 | Fruits et légumes | au moins 400 g par jour | ≈ 380 g frais et 70 g de dattes | OMS |
 | Vitamines et minéraux | couvrir les références de l'EFSA | tout couvert sauf la vitamine D l'hiver, voir l'audit | EFSA (valeurs de référence) |
 | Avant la séance de 07:00 | manger avant une séance de muscu le matin : effet nul ou minime dans la plupart des études | rien avant ; le shake après la séance | Stratton 2025 ; Naharudin 2019 |
 
-**Le seul écart, les lipides.** La fourchette d'Iraki sert à laisser assez de place aux glucides
-pour l'entraînement ; ici ils sont déjà à 6,4 g par kilo, au-dessus des 3 à 5 demandés. Aucune
+**Premier écart, les lipides.** La fourchette d'Iraki sert à laisser assez de place aux glucides
+pour l'entraînement ; ici ils sont déjà à 6,3 g par kilo, au-dessus des 3 à 5 demandés. Aucune
 étude ne montre qu'à protéines et glucides suffisants, plus de lipides freine la prise de muscle.
 Et l'huile d'olive est ce qui donne des calories sans volume : la retirer voudrait dire plus de
 riz dans l'assiette, ce qu'il ne peut pas manger.
 
-**Pourquoi 70 g de viande** (et non 50) : c'est le plus petit grammage qui met chaque repas à
-0,4 g de protéines par kilo (≈ 26 g). À 50 g, le déjeuner et le dîner tombaient à 23 g.
+**Second écart, les protéines, depuis le 28 novembre : 100 g de viande par repas.** Sa décision
+du 27 novembre (« on m'a dit que je mangeais pas assez de viande », puis « ok passe la viande à
+100 g dès maintenant »). À 70 g, le plan était déjà complet : c'était le plus petit grammage qui
+mettait chaque repas à 0,4 g de protéines par kilo, et la journée à 2,1 g par kilo. Les 30 g de plus
+à midi et le soir ajoutent ≈ 13 g de protéines et 73 kcal par jour, rien d'autre ne bouge. La
+semaine passe à ≈ 149 g de protéines par jour en moyenne : 2,3 g par kilo à 64 kg, un peu au-dessus
+des 1,6 à 2,2 de Morton. Chez quelqu'un en bonne santé, c'est sans danger ; il n'y a simplement
+plus de gain de muscle mesurable à en attendre. La fourchette le rattrape quand le poids monte :
+2,2 à 68 kg, 2,1 à 72 kg. Pour le budget : ≈ +17 € par mois.
 
 ### Les sources
 - Iraki J, Fitschen P, Espinar S, Helms E. *Nutrition Recommendations for Bodybuilders in the
@@ -110,9 +119,9 @@ riz dans l'assiette, ce qu'il ne peut pas manger.
 | Repas | Heure | Contenu | kcal · protéines |
 |---|---|---|---|
 | **Shake** | 08:30 les jours de muscu, 35 min après la séance (06:45 les autres jours) | boisson d'avoine au calcium 400 ml, skyr 150 g, flocons d'avoine 80 g, banane 120 g, fruits rouges surgelés 100 g, **miel 20 g**, amandes ou noix 30 g | ≈ 960 · 40 g |
-| **Déjeuner** | 12:20 | **riz 125 g** (rice cooker ; **dès le 16 novembre, pâtes 125 g, cuites au batch, dans la boîte**), **poulet 70 g**, **brocoli 80 g**, **huile d'olive 30 ml** (10 de cuisson, 20 crus sur le riz — ou 20 g de beurre), sel iodé, épices. **Le dimanche midi, dès le 22 novembre : un repas frais**, pâtes 125 g, **3 œufs** au plat ou brouillés, brocoli 80 g, huile 20 ml | ≈ 820 · 28 g |
+| **Déjeuner** | 12:20 | **riz 125 g** (rice cooker ; **dès le 16 novembre, pâtes 125 g, cuites au batch, dans la boîte**), **poulet 100 g** (70 g avant le 28 novembre), **brocoli 80 g**, **huile d'olive 30 ml** (10 de cuisson, 20 crus sur les pâtes — ou 20 g de beurre), sel iodé, épices. **Le dimanche midi, dès le 22 novembre : un repas frais**, pâtes 125 g, **3 œufs** au plat ou brouillés, brocoli 80 g, huile 20 ml | ≈ 850 · 40 g (le dimanche, ≈ 870 · 36 g) |
 | **Collation** | 14:50 (16:50 le lundi), à la maison | **amandes ou noix 50 g**, **3 œufs durs**, **7 dattes (70 g)** | ≈ 700 · 31 g |
-| **Dîner** | 20:00 (18:00 le mardi, 19:00 le dimanche, 19:30 le samedi) | **riz 125 g**, **viande hachée 5 % 70 g**, **épinards 80 g**, huile d'olive 25 ml (10 de cuisson, 15 crus sur le riz), sel iodé, épices, créatine 5 g | ≈ 800 · 27 g |
+| **Dîner** | 20:00 (18:00 le mardi, 19:00 le dimanche, 19:30 le samedi) | **riz 125 g**, **viande hachée 5 % 100 g** (70 g avant le 28 novembre), **épinards 80 g**, huile d'olive 25 ml (10 de cuisson, 15 crus sur le riz), sel iodé, épices, créatine 5 g | ≈ 835 · 33 g |
 
 - **Le mardi et le jeudi**, une boîte de sardines ou de maquereau (≈ 85 g égouttés) remplace les
   trois œufs de la collation : les oméga-3.
@@ -120,7 +129,7 @@ riz dans l'assiette, ce qu'il ne peut pas manger.
   3e œuf à sa place. Du 27 octobre au 7 novembre, 100 g de cottage cheese l'ont remplacé (« j'aime
   bien le cottage cheese aussi ») ; **depuis le 8 novembre, le 3e œuf est revenu** (« enlève le
   cottage cheese, ça me dégoûte ») : 6,3 g de protéines au lieu de 11,5, la collation reste à 31 g
-  (0,49 g par kilo, dans les 0,40 à 0,55 d'Iraki) et la journée à 2,0 g par kilo. Trois œufs par
+  (0,49 g par kilo, dans les 0,40 à 0,55 d'Iraki). Trois œufs par
   jour : chez de jeunes adultes en bonne santé, le LDL n'a pas monté et le HDL a monté (DiMarco
   2017). La collation se mange à la maison avant de partir en cours ; les œufs sont cuits le dimanche.
 - **Les jours de JJB**, deux prises en plus :
@@ -131,10 +140,11 @@ riz dans l'assiette, ce qu'il ne peut pas manger.
   - **12:00, le shake de récup** : boisson d'avoine 250 ml, banane 120 g, flocons 20 g (≈ 290
     kcal), au retour du club.
 
-### D'où viennent les protéines (un samedi, 126 g)
-Riz 18,5 g · poulet 16,1 · skyr 15,8 · viande hachée 15,1 · amandes 17,0 · œufs 18,9 · flocons
-10,6 · boisson d'avoine 5,2 · légumes 4,5 · dattes 1,8 · banane 1,3 · fruits rouges 0,9.
-Animales : ≈ 66 g. Le mardi et le jeudi, les sardines (20,9 g) prennent la place des trois œufs.
+### D'où viennent les protéines (un samedi, 145 g)
+Poulet 23,0 g · viande hachée 21,5 · œufs 18,9 · amandes 17,0 · skyr 15,8 · pâtes 15,0 · flocons
+10,6 · riz 9,3 · boisson d'avoine 5,2 · légumes 4,5 · dattes 1,8 · banane 1,3 · fruits rouges 0,9.
+Animales : ≈ 79 g, soit 55 % (≈ 66 g et 50 % à 70 g de viande). Le mardi et le jeudi, les sardines
+(20,9 g) prennent la place des trois œufs.
 
 ### Les fruits et les légumes
 - **Fruits, chaque jour** : une banane (120 g) et 100 g de fruits rouges dans le shake, 7 dattes
@@ -196,8 +206,9 @@ de parmesan.
 ≈ 2,5 g de protéines, le parmesan surtout) revient par **10 g d'amandes de plus à la collation**
 (50 g au lieu de 40 : +58 kcal, +2 g de protéines). Pas plus d'huile : à 60 ml par jour, le
 bidon de 2 L ne tenait plus les cinq semaines, il en aurait fallu deux. Les amandes tiennent
-dans les trois sachets de 200 g (560 g pour 600). La semaine passe de ≈ 3 490 à ≈ 3 510 kcal ;
-les protéines restent entre 128 et 141 g par jour, 2,0 à 2,2 g par kilo.
+dans les trois sachets de 200 g (560 g pour 600). La semaine passait alors de ≈ 3 490 à ≈ 3 510 kcal,
+les protéines restaient entre 128 et 141 g par jour (c'était avant la viande à 100 g du 28 novembre :
+≈ 3 580 kcal et 141 à 156 g depuis).
 
 Le seul laitier qui reste : le skyr (le cottage cheese est sorti le 8 novembre). La carte
 Condiments de l'onglet Courses a disparu avec les sauces.
@@ -222,8 +233,8 @@ surtout grasse. Pourquoi la taille : le rapport taille / poitrine explique à lu
 pèse plus que la carrure (Xia 2025).
 
 ## Les courses
-Le samedi à 13:30, la liste de l'onglet Courses, calculée pour le plan entier : poulet 420 g et
-viande hachée 490 g (pesés au comptoir), skyr, 18 œufs (3 boîtes de 6 : les 15 de la collation, les 3 du
+Le samedi à 13:30, la liste de l'onglet Courses, calculée pour le plan entier : poulet 600 g et
+viande hachée 700 g (pesés au comptoir ; 420 et 490 g avant le 28 novembre), skyr, 18 œufs (3 boîtes de 6 : les 15 de la collation, les 3 du
 dimanche midi), bananes,
 amandes, sardines ou maquereau, légumes verts surgelés, boisson d'avoine (en briks de 1 L),
 fruits rouges, galettes de riz, dattes, riz, flocons, huile d'olive, miel (un pot de 750 g toutes
@@ -235,26 +246,28 @@ leur depuis le 30 octobre : le mélange Auchan d'Alcampo, 2,85 € les 450 g.
 
 Depuis le 9 novembre au soir, la même liste porte aussi le soin, la santé et le ménage, en deux rayons à part
 (« Soin et santé », « Maison et ménage », 28 produits, dus pour la première fois le samedi 14) : ils ne
-touchent ni au plan de repas ni au plafond Nourriture (211 € depuis le 12 novembre, les dattes à 5 € le kilo), et ont leurs propres postes dans le budget.
+touchent pas au plan de repas, et ont leurs propres postes dans le budget. Le plan de repas coûte ≈ 228 € par mois
+en caisse depuis le 28 novembre (la viande à 100 g : +17 € ; 211 € avant, les dattes à 5 € le kilo). Depuis le 12 novembre,
+une seule enveloppe de 300 € par mois tient la nourriture, le soin, le ménage et la laverie.
 
 ## La préparation (batch cooking)
 **Deux sessions d'environ une heure, tout au frigo, depuis le dimanche 15 novembre** (9 novembre au
 soir : « si je divise le batch cooking en deux jours, comme ça je congèle ni riz ni pâtes ») :
 - **le dimanche à 14:30**, pour le dîner du dimanche, puis lundi et mardi, midi et soir : les pâtes
-  (250 g crus, une minute de moins que le paquet), le poulet (140 g), la viande hachée (210 g), les
+  (250 g crus, une minute de moins que le paquet), le poulet (200 g), la viande hachée (300 g, en deux fournées), les
   légumes (400 g : le brocoli pour les midis, les épinards pour les soirs) et les 15 œufs durs de la
   semaine. Cinq boîtes ;
 - **le mardi à 19:10**, après le dîner (son seul soir libre), pour mercredi à samedi : les pâtes
-  (500 g), le poulet (280 g), la viande hachée (280 g en deux fournées), les légumes (640 g). Huit boîtes.
+  (500 g), le poulet (400 g), la viande hachée (400 g en deux fournées), les légumes (640 g). Huit boîtes.
 
 Chaque boîte se mange dans les quatre jours (la viande cuite tient quatre jours à 4 °C) : ni les pâtes
 ni la viande ne passent au congélateur. Seule la viande crue du mardi, achetée le samedi, y va dès le
 rangement des courses (le poulet cru ne tient que deux jours au frigo) ; elle descend au frigo le lundi
 soir et décongèle en 24 h. **Le dimanche midi** ne vient d'aucune session (la boîte du mardi aurait
 cinq jours) : dès le 22 novembre, un repas frais de vingt minutes, les pâtes du jour, 3 œufs et le
-brocoli (le 15, la dernière boîte du congélateur). Les 3 œufs remplacent les 70 g de poulet : 19 g
-de protéines au lieu de 16, et 10 ml d'huile de moins (les œufs apportent leur gras) — la journée
-reste à ≈ +50 kcal. Ce dimanche-là, six œufs avec ceux de la collation ; sur la semaine, 18, moins de
+brocoli (le 15, la dernière boîte du congélateur). Les 3 œufs remplacent les 100 g de poulet : 19 g
+de protéines au lieu de 23, et 10 ml d'huile de moins (les œufs apportent leur gras) — la journée
+reste à ≈ +20 kcal. Ce dimanche-là, six œufs avec ceux de la collation ; sur la semaine, 18, moins de
 3 par jour en moyenne. L'huile crue, le sel et les épices se mettent à l'assiette.
 
 **Le riz se cuit chaque matin** (23 octobre au soir : « je vais cuire le riz fraîchement chaque

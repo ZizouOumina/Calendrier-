@@ -1,5 +1,39 @@
 # Où on en est — samedi 19 septembre 2026, au soir
 
+> ### Vendredi 27 novembre — la viande à 100 g par repas (« ok passe la viande a 100g des maintenant »)
+> **Ses mots** : « cest bien comme cest on laisse » (les cinq améliorations proposées après l'audit : aucune n'est à
+> faire) ; puis ses questions sur le physique (trois photos : il vise le plus sec des trois, ≈ 75 kg à 10-11 % pour
+> 1,82 m ; 72 kg en juin est la première marche) et sur l'alimentation : « on ma dit que je me mangeais pas assez de
+> viande tu en penses quoi ». Ma réponse : le total de protéines était déjà bon (2,1 g/kg), la viande à 100 g pouvait
+> attendre 68 kg, ≈ +17 € par mois. **Sa décision** : « ok passe la viande a 100g des maintenant ».
+> **Fait** : `VIANDE_100_DEBUT` (100 g de poulet à midi, 100 g de viande hachée le soir ; `grammesViande`). La date du
+>   code est le dimanche 22 novembre, le début de la semaine du jour 1 : rien n'est compté avant le 28, mais l'onglet
+>   Meal prep montre la semaine du dimanche au samedi — avec un début au 28, il affichait « poulet 310 g » le jour 1,
+>   en face d'une liste de courses à 600 et 700 g. Les jours d'avant gardent 70 g. Rien d'autre ne bouge (huile, riz,
+>   pâtes, collations).
+> **Les chiffres** (calculés par la Batcave, recomptés à la main) : un jour ordinaire passe de 3 275 kcal et 131 g de
+>   protéines à 3 348 kcal et 144 g (mardi et jeudi, sardines : 3 311 et 146 ; dimanche : 3 368 et 140) ; un jour de
+>   JJB, de 3 832 et 142 à 3 905 et 155. Sur la semaine : ≈ 3 580 kcal et 149 g par jour, soit 2,3 g/kg à 64 kg —
+>   un peu au-dessus des 1,6 à 2,2 de Morton (sans danger, sans gain mesurable de plus ; 2,2 à 68 kg, 2,1 à 72 kg).
+>   Courses : 600 g de poulet et 700 g de viande hachée par semaine (420 et 490 avant) ; ce qu'il mange vaut 49,63 €
+>   par semaine (45,76 avant), en caisse ≈ 227,82 € par mois (211,05 avant). Batch : le dimanche 200 g de poulet et
+>   300 g de viande hachée (désormais en deux fournées, elles tiennent avant le refroidissement de 15:15), le mardi
+>   400 g et 400 g ; au rangement du samedi, 400 g et 400 g au congélateur.
+> **Le jour 1** : les courses de samedi 13:30 disent 100 g de viande hachée en plus pour le dîner (800 g au lieu de
+>   700) ; le dîner, 100 g. Guide (58 jours), « Ta semaine type », « Ta journée, pas à pas » (u10), « À quoi sert la
+>   Batcave » (3 905 kcal et 155 g un jour de combat) et `programme-alimentation.md` (cadre, tableau science, repas,
+>   protéines par aliment, courses, batch) suivent.
+> **L'agenda** : les rappels du samedi 28 (courses, rangement, dîner — et la séance de référence, le tuteur, restés à
+>   leur ancien texte depuis l'audit) et du dimanche 29 (batch, dîner) réécrits à la main avec le texte exact de la
+>   Batcave (`tests/_agenda-jour.mjs`). À partir du lundi 30, c'est la Batcave qui les réécrit à sa prochaine
+>   ouverture (la reconstruction repart : son relevé date d'un autre jour 1 ; sinon l'envoi d'aujourd'hui et de demain).
+> **À trancher par lui — l'enveloppe de 300 €** : le plan coûte maintenant ≈ 306 € par mois (nourriture 228, laverie
+>   35, soin et ménage ≈ 43 d'après les prix du 9 novembre), sans les sardines, les galettes et le Nutella, toujours
+>   sans prix ; il en coûtait ≈ 289. Je n'ai pas touché à l'enveloppe (sa décision du 12 novembre). Proposé : 320 €
+>   (20 € de moins dans l'épargne du mois), ou 300 € en sachant que le plan dépasse de quelques euros.
+> **Tests** : test125 (26 vérifications : grammes, macros, courses, coût, batch, jour 1, Meal prep du jour 1) ; test49,
+>   test53, test114, test117, test119 recalés (calories, 600 et 700 g, 49,63 € et 227,82 €). `tests/_sonde-repas.mjs`.
+
 > ### Jeudi 26 novembre, 20:44 — le jour 1 au samedi 28 (verrou levé par lui, « une dernière fois »), puis l'audit complet
 > **Ses mots** : « on va commencer le rattrapage samedi, on commence tout tout tout samedi, je sais que je t'ai dit de ne
 > plus decaler le jour d'utilisation de la batcave mais la on va le faire une derniere fois, je decide tu fais ce que je

@@ -77,9 +77,10 @@ console.log('— samedi 14 novembre, 10:00 : tout est du, le tour de la salle de
   const h = await fr.evaluate(() => window.__bcCoutHors());
   /* 29 depuis le 15 novembre : le vinaigre blanc (le frigo et le detartrage) rejoint les 28. */
   ok(h.hebdo === 0 && h.mois === 0 && h.estimes.length === 0 && h.manque.length === 29, 'le soin et le menage ne coutent plus rien a part : ils sont dans l\'enveloppe, vinaigre blanc compris (' + h.hebdo + ', ' + h.mois + ', ' + h.manque.length + ' sans prix)');
-  /* 11-12 novembre : les dattes a 5 EUR le kilo -- la nourriture seule, 211,05 EUR par mois en caisse */
+  /* 11-12 novembre : les dattes a 5 EUR le kilo -- la nourriture seule, 211,05 EUR par mois en caisse.
+     27 novembre : la viande a 100 g par repas (600 g de poulet, 700 g de viande hachee par semaine) -- 227,82 EUR. */
   const am = await fr.evaluate(() => window.__bcCoutAchats());
-  ok(pres(am.mois, 211.05, 0.01), 'la nourriture seule dans coutAchatsMoyen : 211,05 € par mois (' + am.mois.toFixed(2) + ')');
+  ok(pres(am.mois, 227.82, 0.01), 'la nourriture seule dans coutAchatsMoyen : 227,82 € par mois (' + am.mois.toFixed(2) + ')');
   const autre = await fr.evaluate(() => document.querySelector('#dash-plan') && [...document.querySelectorAll('#dash-plan li')].filter(li => /salle de bain/.test(li.textContent)).length);
   ok(autre === 1, 'une seule ligne pour le tour des produits');
   await ctx.close();

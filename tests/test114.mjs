@@ -62,7 +62,9 @@ console.log('— vendredi 25 septembre : la premiere periode, 28 sept. -> 24 oct
      10 ml d'huile de moins par semaine : 43,76 EUR (le plafond, lui, baisse : les oeufs restent en 3 boites de 6). */
   /* Le meme soir, le Nutella remplace le miel sur les galettes du JJB : 45 g de miel de moins par semaine
      (-0,45 EUR), le Nutella attend son prix -- 43,31 EUR ; un pot de miel de moins toutes les cinq semaines. */
-  ok(pres(a.semaine, 45.76), 'courses : 45,76 EUR par semaine (les dattes a 5 EUR le kilo depuis le 12 novembre) hors les articles sans prix (sardines, galettes, Nutella), les fruits rouges releves le 30 octobre, les oeufs du 8 et du 9 novembre, le miel du shake seul (' + a.semaine.toFixed(2) + ')');
+  /* 27 novembre, « ok passe la viande a 100 g des maintenant » : 180 g de poulet (+1,35 EUR) et 210 g de viande hachee
+     (+2,52 EUR) de plus par semaine -- 49,63 EUR ; en caisse, ~228 EUR par mois au lieu de 211. */
+  ok(pres(a.semaine, 49.63), 'courses : 49,63 EUR par semaine (la viande a 100 g par repas depuis le 27 novembre : +3,87 EUR ; les dattes a 5 EUR le kilo depuis le 12) hors les articles sans prix (sardines, galettes, Nutella), les fruits rouges releves le 30 octobre, les oeufs du 8 et du 9 novembre, le miel du shake seul (' + a.semaine.toFixed(2) + ')');
   ok(a.estimes.length === 0, 'plus aucune estimation : les amandes ont leur prix releve');
   /* 9 novembre, la nuit : le soin, la sante et le menage entrent dans le plan -- 9,63 EUR par semaine en moyenne
      (9,54 avec les pastilles du lave-vaisselle, 9,93 a un lavage par jour ; le Skinoren compte 19,90 EUR), des le samedi 14. La periode la plus chere (5 samedis) en porte 49,65 : la
@@ -74,7 +76,7 @@ console.log('— vendredi 25 septembre : la premiere periode, 28 sept. -> 24 oct
   ok(a.cagnotte === 130, 'jour du virement : 130 EUR dans la cagnotte, l\'enveloppe de 300 EUR des le 25 novembre (70 avant l\'enveloppe du 12 novembre au soir ; 90 avant les dattes du 12 novembre ; 230 avant le prix des fruits rouges, 30 octobre ; 200 avant les oeufs du 8 novembre ; 190 avant Basic-Fit ; 170 avant le pot de miel en moins du 9 novembre au soir ; 180 avant le soin et le menage ; 130 avant la laverie du 11 novembre) — ce que laisse la periode la plus chere, les courses comptees en caisse (plan dense du 23 octobre au soir) (' + a.cagnotte + ')');
   ok(a.periode.debut === '2026-09-28' && a.periode.fin === '2026-10-24', 'premiere periode du 28 sept. (dernier virement a l\'ancienne date) au 24 oct.');
   ok(a.periode.samedis === 4, '4 samedis de courses');
-  ok(pres(a.periode.balayage, 132.82), 'le 24 : environ 132,82 EUR a balayer — cette periode-ci n\'a pas encore de soin ni de menage (ils commencent le 14 novembre), ni de laverie (le 15), et la cagnotte prend 130 EUR (' + a.periode.balayage.toFixed(2) + ')');
+  ok(pres(a.periode.balayage, 117.34), 'le 24 : environ 117,34 EUR a balayer (132,82 avant la viande a 100 g) — cette periode-ci n\'a pas encore de soin ni de menage (ils commencent le 14 novembre), ni de laverie (le 15), et la cagnotte prend 130 EUR (' + a.periode.balayage.toFixed(2) + ')');
   ok(pres(a.moyenne, 159.01), 'epargne moyenne : 159,01 EUR par mois — 459,01 libres moins l\'enveloppe de 300 EUR (courses, soin, menage, laverie), avant ce qui reste de l\'enveloppe (' + a.moyenne.toFixed(2) + ')');
   ok(a.prochaine5 && a.prochaine5.debut === '2026-12-25' && a.prochaine5.fin === '2027-01-24' && a.prochaine5.samedis === 5, 'prochaine periode a 5 samedis : 25 dec. -> 24 janv.');
   ok(pres(a.prochaine5.balayage, 31.51), 'une periode de l\'enveloppe : 459,01 moins 300 moins 130 de cagnotte -- il reste 31,51 EUR le 24, au plus la marge d\'un second prelevement Basic-Fit (' + a.prochaine5.balayage.toFixed(2) + ')');
@@ -203,15 +205,15 @@ console.log('— des charges au-dessus du virement : le fil le dit, sans solde n
 
 console.log('— le plafond Nourriture suit le prix des amandes');
 {
-  for(const [avant, attendu, nom, drapeaux] of [[201, 211, 'pose par la Batcave (201) : suit le plan en caisse, 211 (les dattes du 12 novembre ; conditionnements et cycles compris ; hors les prix a relever ; les fruits rouges releves le 30 octobre ; les oeufs du 8 novembre ; les deux batchs et le Nutella du 9)'], [209, 211, 'la valeur du 4 octobre (209) : 211'], [206, 211, 'la valeur du 6 octobre (206) : 211'], [180, 180, 'regle a la main (180) : ne bouge pas'],
+  for(const [avant, attendu, nom, drapeaux] of [[201, 228, 'pose par la Batcave (201) : suit le plan en caisse, 228 (la viande a 100 g du 27 novembre ; les dattes du 12 novembre ; conditionnements et cycles compris ; hors les prix a relever ; les fruits rouges releves le 30 octobre ; les oeufs du 8 novembre ; les deux batchs et le Nutella du 9)'], [209, 228, 'la valeur du 4 octobre (209) : 228'], [206, 228, 'la valeur du 6 octobre (206) : 228'], [180, 180, 'regle a la main (180) : ne bouge pas'],
       /* 8 novembre : sa Batcave a deja joue les migrations v2 a v7 et garde 201 ; la v8 le remonte */
-      [201, 211, 'deja migre jusqu\'a la v7, toujours 201 : la v8 le recale, la v11 le porte a 211 (les oeufs du 8 novembre, les deux batchs et le Nutella du 9)', ['v2', 'v3', 'v4', 'v5', 'v6', 'v7']],
+      [201, 228, 'deja migre jusqu\'a la v7, toujours 201 : la v8 le recale, la v11 le porte a 228 (les oeufs du 8 novembre, les deux batchs et le Nutella du 9)', ['v2', 'v3', 'v4', 'v5', 'v6', 'v7']],
       /* 9 novembre au soir : sa Batcave garde les 209 poses par la v8 la veille ; la v9 les ramene a 207 */
-      [209, 211, 'deja migre jusqu\'a la v8, 209 : la v9 le ramene, la v11 le porte a 211 (le dimanche midi frais, le Nutella)', ['v2', 'v3', 'v4', 'v5', 'v6', 'v7', 'v8']],
+      [209, 228, 'deja migre jusqu\'a la v8, 209 : la v9 le ramene, la v11 le porte a 228 (le dimanche midi frais, le Nutella)', ['v2', 'v3', 'v4', 'v5', 'v6', 'v7', 'v8']],
       /* le meme soir : une Batcave qui a deja la v9 garde 207 ; la v10 (le Nutella) le ramene a 200 */
-      [207, 211, 'deja migre jusqu\'a la v9, 207 : la v10 le ramene, la v11 le porte a 211 (un pot de miel en moins)', ['v2', 'v3', 'v4', 'v5', 'v6', 'v7', 'v8', 'v9']],
+      [207, 228, 'deja migre jusqu\'a la v9, 207 : la v10 le ramene, la v11 le porte a 228 (un pot de miel en moins)', ['v2', 'v3', 'v4', 'v5', 'v6', 'v7', 'v8', 'v9']],
       /* 12 novembre : sa Batcave garde les 200 poses par la v10 ; la v11 (les dattes a 5 EUR le kilo) les porte a 211 */
-      [200, 211, 'deja migre jusqu\'a la v10, 200 : la v11 le porte a 211 (les dattes a 5 EUR le kilo)', ['v2', 'v3', 'v4', 'v5', 'v6', 'v7', 'v8', 'v9', 'v10']],
+      [200, 228, 'deja migre jusqu\'a la v10, 200 : la v11 le porte a 228 (les dattes a 5 EUR le kilo)', ['v2', 'v3', 'v4', 'v5', 'v6', 'v7', 'v8', 'v9', 'v10']],
       [180, 180, 'deja migre jusqu\'a la v10, regle a la main (180) : la v11 n\'y touche pas', ['v2', 'v3', 'v4', 'v5', 'v6', 'v7', 'v8', 'v9', 'v10']],
       [180, 180, 'deja migre jusqu\'a la v9, regle a la main (180) : la v10 n\'y touche pas', ['v2', 'v3', 'v4', 'v5', 'v6', 'v7', 'v8', 'v9']],
       [180, 180, 'deja migre jusqu\'a la v8, regle a la main (180) : la v9 n\'y touche pas', ['v2', 'v3', 'v4', 'v5', 'v6', 'v7', 'v8']],

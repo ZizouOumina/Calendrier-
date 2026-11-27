@@ -82,7 +82,8 @@ console.log('\n== 120) Boucle poids → calories ==');
   ok(/Rythme visé : \+0,29 kg \/ semaine/.test(k.txt), 'rythme visé dérivé de l\'objectif poids (64 → 72 sur l\'horizon du 28 novembre au 6 juin) : ' + (k.txt.match(/Rythme visé[^.]*/) || [''])[0]);
   ok(/Tendance : \+0,00 kg/.test(k.txt) && !k.btn, 'tendance +0,00 kg, bouton « Appliquer » visible');
   /* 23 octobre au soir, le plan dense (riz midi et soir, huile crue, amandes, dattes) : 3 173 kcal ce jour-la. */
-  ok(/\/ 3238 kcal$/.test(k.sub), 'cible de base 3238 kcal (quatre prises, shake le matin, plan dense du 23 octobre, 70 g de viande et la boisson d\'avoine du Lidl le 25, plus de sauces et 50 g d\'amandes le 30) : ' + k.sub);
+  /* 27 novembre : la viande à 100 g par repas dès la semaine du jour 1 (VIANDE_100_DEBUT) -- +73 kcal, 3 311 un mardi. */
+  ok(/\/ 3311 kcal$/.test(k.sub), 'cible de base 3311 kcal (quatre prises, shake le matin, plan dense du 23 octobre, la boisson d\'avoine du Lidl le 25, plus de sauces et 50 g d\'amandes le 30, 100 g de viande depuis le 27 novembre) : ' + k.sub);
   await fr.evaluate(() => document.getElementById('kcal-appliquer').click());
   await page.waitForTimeout(300);
   const aj = await local(fr, 'batcave-kcal-ajustement');
@@ -90,8 +91,8 @@ console.log('\n== 120) Boucle poids → calories ==');
   k = await fr.evaluate(() => ({ sub: document.getElementById('meal-kcal-sub').innerText, txt: document.getElementById('kcal-analyse').innerText.replace(/\s+/g,' ') }));
   /* La boucle demande +150 kcal, les pates s'ajustent par pas de 10 g : elle en ajoute 144.
      C'est cet ecart REEL entre les deux journees qui s'affiche, sinon la soustraction ment. */
-  ok(/\/ 3382 kcal \(plan 3238 \+ 144\)/.test(k.sub), 'la barre Repas vise 3382 kcal : ' + k.sub);
-  ok(/Cible calorique actuelle : 3382 kcal/.test(k.txt), 'l\'analyse affiche la cible ajustée (' + ((k.txt.match(/Cible calorique actuelle : [^\n]*/) || [])[0] || '?') + ')');
+  ok(/\/ 3455 kcal \(plan 3311 \+ 144\)/.test(k.sub), 'la barre Repas vise 3455 kcal : ' + k.sub);
+  ok(/Cible calorique actuelle : 3455 kcal/.test(k.txt), 'l\'analyse affiche la cible ajustée (' + ((k.txt.match(/Cible calorique actuelle : [^\n]*/) || [])[0] || '?') + ')');
   /* 16 novembre, sa décision : plus de case aliment par aliment -- la carte dit quoi manger, la pesée dit si c'est assez */
   const cases = await fr.evaluate(() => document.querySelectorAll('#meal-grid input[type="checkbox"]').length);
   ok(cases === 0, 'les repas n\'ont plus de case à cocher (' + cases + ')');

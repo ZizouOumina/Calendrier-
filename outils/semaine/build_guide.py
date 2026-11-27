@@ -495,7 +495,7 @@ def construire(J, semaine, k):
         else:
             N.append('Pas encore vu le médecin pour les douleurs à la poitrine ? Appelle le centro de salud à 08:00' + (', en rentrant de la salle' if 'Sport' in labs else '') + ' : rendez-vous et prise de sang.')
         if 'pas de boîte' in consigne.get('Déjeuner', ''):
-            N.append('Pas de boîte aujourd’hui : le premier batch est demain. Ce matin et à midi, mange avec ce que tu as ; aux courses de 13:30, prends en plus de quoi dîner (70 g de viande hachée) et une boîte d’œufs.')
+            N.append('Pas de boîte aujourd’hui : le premier batch est demain. Ce matin et à midi, mange avec ce que tu as ; aux courses de 13:30, prends en plus de quoi dîner (100 g de viande hachée) et une boîte d’œufs.')
     # le premier lundi apres un jour 1 de week-end : l'appel au centro de salud
     if dow == 1 and _decale(iso, -2) <= JOUR_1 < iso:
         N.append('08:00 : appelle le centro de salud, si le rendez-vous pour les douleurs à la poitrine n’est pas encore pris.')

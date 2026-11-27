@@ -142,14 +142,16 @@ console.log('\n== 5) Pas de viande jeudi, pas de batch vendredi : le week-end du
   await fr.evaluate(() => document.querySelector('.nav-btn[data-page="courses"]').click());
   await page.waitForTimeout(400);
   const c = await fr.evaluate(() => document.getElementById('courses-grid').innerText);
-  ok(/Viande hachée 5 % — 560 g/.test(c) && /dont 70 g pour samedi soir/.test(c), 'la liste du samedi 14 : 560 g de viande hachée, dont 70 pour le soir');
+  /* 27 novembre : la viande à 100 g par repas -- la semaine type (celle du 14 décembre) demande 700 g de viande hachée ; le
+     dîner du samedi 14, lui, garde ses 70 g (avant VIANDE_100_DEBUT) : 770 g. */
+  ok(/Viande hachée 5 % — 770 g/.test(c) && /dont 70 g pour samedi soir/.test(c), 'la liste du samedi 14 : 770 g de viande hachée (la semaine type à 700 g depuis le 27 novembre), dont 70 pour le soir');
   ok(/Œufs — 24/.test(c) && /21 œufs/.test(c), 'et 24 œufs pour les 21 du plan');
   await ctx.close();
   const b = await ouvrir('2026-11-21T09:00:00+01:00');
   await b.fr.evaluate(() => document.querySelector('.nav-btn[data-page="courses"]').click());
   await b.page.waitForTimeout(400);
   const c2 = await b.fr.evaluate(() => document.getElementById('courses-grid').innerText);
-  ok(/Viande hachée 5 % — 490 g/.test(c2) && /Œufs — 18/.test(c2) && !/samedi soir/.test(c2), 'le samedi 21, la semaine type revient : 490 g, 18 œufs');
+  ok(/Viande hachée 5 % — 700 g/.test(c2) && /Œufs — 18/.test(c2) && !/samedi soir/.test(c2), 'le samedi 21, la semaine type revient : 700 g, 18 œufs');
   await b.fr.evaluate(() => document.querySelector('.nav-btn[data-page="repas"]').click());
   await b.page.waitForTimeout(300);
   const d21 = await b.fr.evaluate(() => document.getElementById('repas-desc').textContent);
