@@ -33,6 +33,11 @@
 >   (20 € de moins dans l'épargne du mois), ou 300 € en sachant que le plan dépasse de quelques euros.
 > **Tests** : test125 (26 vérifications : grammes, macros, courses, coût, batch, jour 1, Meal prep du jour 1) ; test49,
 >   test53, test114, test117, test119 recalés (calories, 600 et 700 g, 49,63 € et 227,82 €). `tests/_sonde-repas.mjs`.
+>   Campagne : 117 sur 117 ; audit, audit-suivi, audit-cablage, contraste, verif-profonde, verif-pages, données
+>   réelles : verts ; saison A (191 jours, 5 007 lignes, 3 616 cases, le pas à pas égal à la grille) et B : vertes.
+> **Publié** : Batcave v216, Ta semaine v22, Ta semaine type v15, Ta journée pas à pas v144, À quoi sert la Batcave
+>   v11. Les connecteurs de la Batcave (météo, Drive, Notion, Spotify, Shopify) sont repris tels quels, non re-testés
+>   ce jour-là ; Google Agenda a servi (lecture et écriture).
 
 > ### Jeudi 26 novembre, 20:44 — le jour 1 au samedi 28 (verrou levé par lui, « une dernière fois »), puis l'audit complet
 > **Ses mots** : « on va commencer le rattrapage samedi, on commence tout tout tout samedi, je sais que je t'ai dit de ne
