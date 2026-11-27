@@ -58,6 +58,9 @@
 >   le pas à pas identique à la grille. Ses données réelles (27, 28 et 29 novembre) : aucune erreur, rien ne déborde.
 >   audit, audit-suivi (recalé au jeudi 3 décembre), câblage, contraste, verif-profonde, verif-pages : verts. Le
 >   chargement ne ralentit pas (≈ 0,4 s avant comme après).
+> **Publié** (27 novembre, 02:15) : la Batcave (v214), « Ta semaine » (v21), « Ta semaine type » (v14), « Le plan
+>   machine » (v5), « Ta journée, pas à pas » (v143), Dossier E-commerce (v39), « À quoi sert la Batcave » (v10) ;
+>   plus tôt dans la soirée, Dossier Español (v38) et Paliers de physique (v15).
 > **Proposé, pas fait** (à lui de dire) : 1) pendant les partiels (31 décembre → 20 janvier), tous les blocs de la
 >   boutique à la révision, la boutique le 21 janvier ; 2) une file de rattrapage vivante dans la Batcave ; 3) le
 >   plan de Documentación (il doit envoyer le cronograma de Canvas) ; 4) un mode « journée courte » ; 5) corriger sa
